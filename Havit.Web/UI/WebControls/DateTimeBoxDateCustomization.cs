@@ -19,27 +19,48 @@ namespace Havit.Web.UI.WebControls
 		} 
 		#endregion
 
+		#region DateCustomizationFunctionContent
+		private string DateCustomizationFunctionContent
+		{
+			get
+			{
+				if (String.IsNullOrEmpty(_dateCustomizationFunctionContent))
+				{
+					StringBuilder sb = new StringBuilder();
+					sb.AppendLine("function " + DateCustomizationFunctionName + "(date, y, m, d) {");
+					sb.AppendLine(RenderDateStatusHandlerContent());
+					sb.AppendLine("}");
+
+					_dateCustomizationFunctionContent = sb.ToString();
+				}
+
+				return _dateCustomizationFunctionContent;
+			}
+		}
+		private string _dateCustomizationFunctionContent;
+		#endregion
+
 		/// <summary>
-		/// Vygeneruje funkci se special dates
-		/// </summary>
-		/// <returns></returns>
+		/// Vygeneruje funkci se special dates.
+		/// </summary>		
 		public string GetDatesCustomizationFunction(Page page)
 		{
 			if (String.IsNullOrEmpty(DateCustomizationFunctionName))
 			{
-				StringBuilder sb = new StringBuilder();
-
 				Guid functionNameGuid = Guid.NewGuid();
 				string functionName = "_" + functionNameGuid.ToString().Replace("-", "");
-				DateCustomizationFunctionName = functionName;
-				sb.AppendLine("function " + functionName + "(date, y, m, d) {");
-				sb.AppendLine(RenderDateStatusHandlerContent());
-				sb.AppendLine("}");
-				ScriptManager.RegisterClientScriptBlock(page, typeof(DateTimeBoxDateCustomization), DateCustomizationFunctionName, sb.ToString(), true);
-			}
+				DateCustomizationFunctionName = functionName;								
+			}			
+
+			// to avoid rare conditions
+			string dateCustomizationFunctionNameTemp = DateCustomizationFunctionName;
+
+			ScriptManager.RegisterClientScriptBlock(page, typeof(DateTimeBoxDateCustomization), dateCustomizationFunctionNameTemp, DateCustomizationFunctionContent, true);
 
 			return DateCustomizationFunctionName; 
 		}
+
+		
 		public abstract string RenderDateStatusHandlerContent();
 	}
 }

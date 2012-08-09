@@ -13,21 +13,31 @@ namespace WebApplicationTest
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
-			SpecialDTB.GetDateTimeBoxCustomization += new Havit.Web.UI.WebControls.DateTimeBox.DateTimeBoxDateCustomizationEventHandler(SpecialDTB_GetDateTimeBoxCustomization);
-			Special2DTB.GetDateTimeBoxCustomization += new DateTimeBox.DateTimeBoxDateCustomizationEventHandler(SpecialDTB_GetDateTimeBoxCustomization);
-
+			//DateTimeBox.GetDateTimeBoxCustomizationDefault += new DateTimeBox.DateTimeBoxDateCustomizationEventHandler(SpecialDTB_GetDateTimeBoxCustomization);
+			//SpecialDTB.GetDateTimeBoxCustomization += new Havit.Web.UI.WebControls.DateTimeBox.DateTimeBoxDateCustomizationEventHandler(SpecialDTB_GetDateTimeBoxCustomization);			
+			Special2DTB.GetDateTimeBoxCustomization += new DateTimeBox.DateTimeBoxDateCustomizationEventHandler(SpecialDTB_GetDateTimeBoxCustomization2);
 		}
-
+		
 		SpecialDateCustomization specialDateCollection;
 
-		void SpecialDTB_GetDateTimeBoxCustomization(object sender, DateTimeBoxDateCustomizationEventArgs args)
+		//void SpecialDTB_GetDateTimeBoxCustomization(object sender, DateTimeBoxDateCustomizationEventArgs args)
+		//{
+		//    if (specialDateCollectionDefault == null)
+		//    {
+		//        specialDateCollectionDefault = new SpecialDateCustomization(GetSpecialDates());
+		//    }
+
+		//    args.DateCustomization = specialDateCollectionDefault; 
+		//}
+
+		void SpecialDTB_GetDateTimeBoxCustomization2(object sender, DateTimeBoxDateCustomizationEventArgs args)
 		{
 			if (specialDateCollection == null)
 			{
-				specialDateCollection = new SpecialDateCustomization(GetSpecialDates());
+				specialDateCollection = new SpecialDateCustomization(GetSpecialDates2());
 			}
 
-			args.DateCustomization = specialDateCollection; 
+			args.DateCustomization = specialDateCollection;
 		}
 
 		private static List<SpecialDate> GetSpecialDates()
@@ -47,6 +57,17 @@ namespace WebApplicationTest
 				new SpecialDate(new DateTime(2012, 12, 25), false, "special"),
 				new SpecialDate(new DateTime(2012, 12, 26), false, "special"),
 				new SpecialDate(new DateTime(2013, 1, 1), false, "special")
+			};
+			return specialDatesList;
+		}
+
+		private static List<SpecialDate> GetSpecialDates2()
+		{
+			List<SpecialDate> specialDatesList = new List<SpecialDate>()
+			{	
+				new SpecialDate(new DateTime(2012, 5, 8), true, String.Empty),
+				new SpecialDate(new DateTime(2012, 5, 9), false, "special"),
+				new SpecialDate(new DateTime(2012, 5, 10), false, "special")				
 			};
 			return specialDatesList;
 		}

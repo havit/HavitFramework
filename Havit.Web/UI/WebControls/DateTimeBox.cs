@@ -311,7 +311,8 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 
 		#region GetDateTimeBoxCustomization
-		public event DateTimeBoxDateCustomizationEventHandler GetDateTimeBoxCustomization; 
+		public event DateTimeBoxDateCustomizationEventHandler GetDateTimeBoxCustomization;
+		public static DateTimeBoxDateCustomizationEventHandler GetDateTimeBoxCustomizationDefault;
 		#endregion		
 
 		#region ValidationGroup
@@ -538,7 +539,7 @@ namespace Havit.Web.UI.WebControls
 			dateTimePickerDynarchCalendar.Visible = ShowDateTimePicker;
 			dateTimePickerDynarchCalendar.InputField = "ValueTextBox";
 			dateTimePickerDynarchCalendar.Button = "DateTimePickerImage";
-			dateTimePickerDynarchCalendar.FirstDay = (int)this.FirstDayOfWeek; // číslování enumu v .NETu sedí s předpokládanou hodnotou pro dynarchcalendar
+			dateTimePickerDynarchCalendar.FirstDay = (int)this.FirstDayOfWeek; // číslování enumu v .NETu sedí s předpokládanou hodnotou pro dynarchcalendar			
 
 			if (GetDateTimeBoxCustomization != null)
 			{
@@ -549,7 +550,18 @@ namespace Havit.Web.UI.WebControls
 					throw new ArgumentException("Po obsluze události GetDateTimeBoxCustomization nesmí zůstat vlastnost DateCustomization null.");
 				}
 
-				dateTimePickerDynarchCalendar.DateStatusFunction = args.DateCustomization.GetDatesCustomizationFunction(this.Page);				
+				dateTimePickerDynarchCalendar.DateStatusFunction = args.DateCustomization.GetDatesCustomizationFunction(this.Page);
+			}
+			else 
+			{
+				DateTimeBoxDateCustomizationEventArgs args = new DateTimeBoxDateCustomizationEventArgs();
+				GetDateTimeBoxCustomizationDefault(this, args);
+				if (args.DateCustomization == null)
+				{
+					throw new ArgumentException("Po obsluze události GetDateTimeBoxCustomizationDefault nesmí zůstat vlastnost DateCustomization null.");
+				}
+
+				dateTimePickerDynarchCalendar.DateStatusFunction = args.DateCustomization.GetDatesCustomizationFunction(this.Page);
 			}
 			
 			switch (DateTimeMode)

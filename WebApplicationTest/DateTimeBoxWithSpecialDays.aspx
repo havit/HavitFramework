@@ -8,7 +8,7 @@
 </head>
 
 <style type="text/css">
-	.special { color: Red; background-color:lime;}	
+	.special { background-color:#82C8EB;}	
 </style>
 
 <body>
@@ -18,6 +18,9 @@
 		</div>
 		<div>
 			<havit:DateTimeBox ID="Special2DTB" runat="server" />
+		</div>
+		<div>
+			<havit:DateTimeBox ID="Special3DTB" runat="server" />
 		</div>
 	</form>
 </body>

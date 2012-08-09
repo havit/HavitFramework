@@ -164,7 +164,6 @@
     <Compile Include="UI\WebControls\CommandFieldStyle.cs" />
     <Compile Include="UI\WebControls\DateTimeBox.cs" />
     <Compile Include="UI\WebControls\DateTimeMode.cs" />
-    <Compile Include="UI\WebControls\DefaultStylesLinker.cs" />
     <Compile Include="UI\WebControls\DropDownListExt.cs" />
     <Compile Include="UI\WebControls\DynarchCalendar\DynarchCalendar.cs" />
     <Compile Include="UI\WebControls\DynarchCalendar\DynarchCalendarSkin.cs" />
@@ -314,9 +313,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="UI\Scriptlets\Scriptlet.cd" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="UI\WebControls\DefaultStyles.css" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="UI\Scriptlets\IControlExtender.xml" />

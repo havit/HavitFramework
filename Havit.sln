@@ -112,6 +112,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.WebTest", "Havit.WebT
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.PayMuzo", "Havit.PayMuzo\Havit.PayMuzo.csproj", "{23DD2985-0805-4A85-AE9F-DCF95416CF20}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Havit.vsmdi
@@ -237,6 +243,14 @@ Global
 		{B234340F-59D8-4BAC-9929-7BE7A7FA70C9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B234340F-59D8-4BAC-9929-7BE7A7FA70C9}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{B234340F-59D8-4BAC-9929-7BE7A7FA70C9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{23DD2985-0805-4A85-AE9F-DCF95416CF20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23DD2985-0805-4A85-AE9F-DCF95416CF20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23DD2985-0805-4A85-AE9F-DCF95416CF20}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{23DD2985-0805-4A85-AE9F-DCF95416CF20}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{23DD2985-0805-4A85-AE9F-DCF95416CF20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23DD2985-0805-4A85-AE9F-DCF95416CF20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23DD2985-0805-4A85-AE9F-DCF95416CF20}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{23DD2985-0805-4A85-AE9F-DCF95416CF20}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:tns1="http://request.pgw.muzo.com" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:impl="https://pay.muzo.com/testwebservices/services/pgw" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:intf="https://pay.muzo.com/testwebservices/services/pgw" targetNamespace="https://pay.muzo.com/testwebservices/services/pgw" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://request.pgw.muzo.com">
+      <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+      <xsd:complexType name="Response">
+        <xsd:sequence>
+          <xsd:element name="digest" nillable="true" type="xsd:string" />
+          <xsd:element name="ok" type="xsd:boolean" />
+          <xsd:element name="primaryReturnCode" type="xsd:int" />
+          <xsd:element name="secondaryReturnCode" type="xsd:int" />
+          <xsd:element name="requestId" type="xsd:long" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="OrderResponse">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="tns1:Response">
+            <xsd:sequence>
+              <xsd:element name="orderNumber" nillable="true" type="xsd:string" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="OrderStateResponse">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="tns1:OrderResponse">
+            <xsd:sequence>
+              <xsd:element name="state" type="xsd:int" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="batchCloseRequest">
+    <wsdl:part name="merchantNumber" type="xsd:string" />
+    <wsdl:part name="digest" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="deleteResponse">
+    <wsdl:part name="deleteReturn" type="tns1:OrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="depositResponse">
+    <wsdl:part name="depositReturn" type="tns1:OrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="batchCloseResponse">
+    <wsdl:part name="batchCloseReturn" type="tns1:Response" />
+  </wsdl:message>
+  <wsdl:message name="creditRequest">
+    <wsdl:part name="merchantNumber" type="xsd:string" />
+    <wsdl:part name="orderNumber" type="xsd:string" />
+    <wsdl:part name="amount" type="xsd:long" />
+    <wsdl:part name="digest" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="orderCloseRequest">
+    <wsdl:part name="merchantNumber" type="xsd:string" />
+    <wsdl:part name="orderNumber" type="xsd:string" />
+    <wsdl:part name="digest" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="orderCloseResponse">
+    <wsdl:part name="orderCloseReturn" type="tns1:OrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="queryOrderStateResponse">
+    <wsdl:part name="queryOrderStateReturn" type="tns1:OrderStateResponse" />
+  </wsdl:message>
+  <wsdl:message name="depositRequest">
+    <wsdl:part name="merchantNumber" type="xsd:string" />
+    <wsdl:part name="orderNumber" type="xsd:string" />
+    <wsdl:part name="amount" type="xsd:long" />
+    <wsdl:part name="digest" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="approveReversalResponse">
+    <wsdl:part name="approveReversalReturn" type="tns1:OrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="deleteRequest">
+    <wsdl:part name="merchantNumber" type="xsd:string" />
+    <wsdl:part name="orderNumber" type="xsd:string" />
+    <wsdl:part name="digest" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="approveReversalRequest">
+    <wsdl:part name="merchantNumber" type="xsd:string" />
+    <wsdl:part name="orderNumber" type="xsd:string" />
+    <wsdl:part name="digest" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="creditReversalResponse">
+    <wsdl:part name="creditReversalReturn" type="tns1:OrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="creditResponse">
+    <wsdl:part name="creditReturn" type="tns1:OrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="creditReversalRequest">
+    <wsdl:part name="merchantNumber" type="xsd:string" />
+    <wsdl:part name="orderNumber" type="xsd:string" />
+    <wsdl:part name="creditNumber" type="xsd:int" />
+    <wsdl:part name="digest" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="depositReversalResponse">
+    <wsdl:part name="depositReversalReturn" type="tns1:OrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="depositReversalRequest">
+    <wsdl:part name="merchantNumber" type="xsd:string" />
+    <wsdl:part name="orderNumber" type="xsd:string" />
+    <wsdl:part name="digest" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="queryOrderStateRequest">
+    <wsdl:part name="merchantNumber" type="xsd:string" />
+    <wsdl:part name="orderNumber" type="xsd:string" />
+    <wsdl:part name="digest" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:portType name="handleWS">
+    <wsdl:operation name="delete" parameterOrder="merchantNumber orderNumber digest">
+      <wsdl:input name="deleteRequest" message="intf:deleteRequest" />
+      <wsdl:output name="deleteResponse" message="intf:deleteResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="deposit" parameterOrder="merchantNumber orderNumber amount digest">
+      <wsdl:input name="depositRequest" message="intf:depositRequest" />
+      <wsdl:output name="depositResponse" message="intf:depositResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="approveReversal" parameterOrder="merchantNumber orderNumber digest">
+      <wsdl:input name="approveReversalRequest" message="intf:approveReversalRequest" />
+      <wsdl:output name="approveReversalResponse" message="intf:approveReversalResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="batchClose" parameterOrder="merchantNumber digest">
+      <wsdl:input name="batchCloseRequest" message="intf:batchCloseRequest" />
+      <wsdl:output name="batchCloseResponse" message="intf:batchCloseResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="credit" parameterOrder="merchantNumber orderNumber amount digest">
+      <wsdl:input name="creditRequest" message="intf:creditRequest" />
+      <wsdl:output name="creditResponse" message="intf:creditResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="creditReversal" parameterOrder="merchantNumber orderNumber creditNumber digest">
+      <wsdl:input name="creditReversalRequest" message="intf:creditReversalRequest" />
+      <wsdl:output name="creditReversalResponse" message="intf:creditReversalResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="depositReversal" parameterOrder="merchantNumber orderNumber digest">
+      <wsdl:input name="depositReversalRequest" message="intf:depositReversalRequest" />
+      <wsdl:output name="depositReversalResponse" message="intf:depositReversalResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="orderClose" parameterOrder="merchantNumber orderNumber digest">
+      <wsdl:input name="orderCloseRequest" message="intf:orderCloseRequest" />
+      <wsdl:output name="orderCloseResponse" message="intf:orderCloseResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="queryOrderState" parameterOrder="merchantNumber orderNumber digest">
+      <wsdl:input name="queryOrderStateRequest" message="intf:queryOrderStateRequest" />
+      <wsdl:output name="queryOrderStateResponse" message="intf:queryOrderStateResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="pgwSoapBinding" type="intf:handleWS">
+    <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
+    <wsdl:operation name="delete">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="deleteRequest">
+        <wsdlsoap:body use="encoded" namespace="http://webservices.pgw.muzo.com" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="deleteResponse">
+        <wsdlsoap:body use="encoded" namespace="https://pay.muzo.com/testwebservices/services/pgw" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deposit">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="depositRequest">
+        <wsdlsoap:body use="encoded" namespace="http://webservices.pgw.muzo.com" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="depositResponse">
+        <wsdlsoap:body use="encoded" namespace="https://pay.muzo.com/testwebservices/services/pgw" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="approveReversal">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="approveReversalRequest">
+        <wsdlsoap:body use="encoded" namespace="http://webservices.pgw.muzo.com" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="approveReversalResponse">
+        <wsdlsoap:body use="encoded" namespace="https://pay.muzo.com/testwebservices/services/pgw" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="batchClose">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="batchCloseRequest">
+        <wsdlsoap:body use="encoded" namespace="http://webservices.pgw.muzo.com" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="batchCloseResponse">
+        <wsdlsoap:body use="encoded" namespace="https://pay.muzo.com/testwebservices/services/pgw" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="credit">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="creditRequest">
+        <wsdlsoap:body use="encoded" namespace="http://webservices.pgw.muzo.com" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="creditResponse">
+        <wsdlsoap:body use="encoded" namespace="https://pay.muzo.com/testwebservices/services/pgw" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="creditReversal">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="creditReversalRequest">
+        <wsdlsoap:body use="encoded" namespace="http://webservices.pgw.muzo.com" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="creditReversalResponse">
+        <wsdlsoap:body use="encoded" namespace="https://pay.muzo.com/testwebservices/services/pgw" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="depositReversal">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="depositReversalRequest">
+        <wsdlsoap:body use="encoded" namespace="http://webservices.pgw.muzo.com" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="depositReversalResponse">
+        <wsdlsoap:body use="encoded" namespace="https://pay.muzo.com/testwebservices/services/pgw" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="orderClose">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="orderCloseRequest">
+        <wsdlsoap:body use="encoded" namespace="http://webservices.pgw.muzo.com" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="orderCloseResponse">
+        <wsdlsoap:body use="encoded" namespace="https://pay.muzo.com/testwebservices/services/pgw" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="queryOrderState">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="queryOrderStateRequest">
+        <wsdlsoap:body use="encoded" namespace="http://webservices.pgw.muzo.com" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="queryOrderStateResponse">
+        <wsdlsoap:body use="encoded" namespace="https://pay.muzo.com/testwebservices/services/pgw" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="handleWSService">
+    <wsdl:port name="pgw" binding="intf:pgwSoapBinding">
+      <wsdlsoap:address location="https://pay.muzo.com/testwebservices/services/pgw" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

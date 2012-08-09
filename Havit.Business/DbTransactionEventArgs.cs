@@ -13,6 +13,7 @@ namespace Havit.Business
         #region Transaction
         /// <summary>
         /// Transakce.
+		/// Pro OnBeforeSave a OnAfterSave nemùže být v pøípadì ActiveRecordBusinessObjectBase null, v pøípadì holého BusinessObjectBase ano.
         /// </summary>
         public DbTransaction Transaction
         {

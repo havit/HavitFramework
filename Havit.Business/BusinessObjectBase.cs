@@ -307,7 +307,7 @@ namespace Havit.Business
         /// Volá se pøed jakýmkoliv uložením objektu, tj. i pøed smazáním.
         /// V každém spuštìní uložení grafu objektù se metoda volá právì jednou, na rozdíl od Save, který mùže být (a je) spouštìn opakovanì v pøípadì ukládání stromù objektù.
         /// Metoda se volá pøed zavoláním validaèní metody CheckConstrains.
-        /// </summary>        
+        /// </summary>
         protected virtual void OnBeforeSave(BeforeSaveEventArgs transactionEventArgs)
         {
             // metoda vznikla jako reseni problemu opakovaneho volani Save a logiky, kterou jsme do Save vsude psali

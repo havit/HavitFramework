@@ -33,6 +33,9 @@
         <option>library</option>
         <file dir="${configdir}\Havit.Enterprise.Web\bin\Release" name="Havit.Enterprise.Web.dll" />
       </inputassembly>
+      <inputassembly>
+        <file dir="${configdir}\Havit.PayMuzo\bin\Release" name="Havit.PayMuzo.dll" />
+      </inputassembly>
     </asmlist>
   </input>
   <output>

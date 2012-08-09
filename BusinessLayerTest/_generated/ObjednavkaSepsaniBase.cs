@@ -34,7 +34,7 @@ namespace Havit.BusinessLayerTest
 		{
 			objectInfo = new ObjectInfo();
 			properties = new ObjednavkaSepsaniProperties();
-			objectInfo.Initialize("dbo", "ObjednavkaSepsani", false, ObjednavkaSepsani.CreateObject, ObjednavkaSepsani.GetObject, ObjednavkaSepsani.GetAll, null, properties.All);
+			objectInfo.Initialize("dbo", "ObjednavkaSepsani", "ObjednavkaSepsani", "Havit.BusinessLayerTest", false, ObjednavkaSepsani.CreateObject, ObjednavkaSepsani.GetObject, ObjednavkaSepsani.GetAll, null, properties.All);
 			properties.Initialize(objectInfo);
 		}
 		#endregion

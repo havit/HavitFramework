@@ -23,6 +23,8 @@ namespace Havit.Business
 		public void Initialize(
 			string dbSchema,
 			string dbTable,
+			string className,
+			string _namespace,
 			bool readOnly,
 			CreateObjectDelegate createObjectMethod,
 			GetObjectDelegate getObjectMethod,
@@ -32,6 +34,8 @@ namespace Havit.Business
 		{
 			this.dbSchema = dbSchema;
 			this.dbTable = dbTable;
+			this.className = className;
+			this._namespace = _namespace;
 			this.readOnly = readOnly;
 			this.createObjectMethod = createObjectMethod;
 			this.getObjectMethod = getObjectMethod;
@@ -87,6 +91,36 @@ namespace Havit.Business
 			}
 		}
 		private string dbTable; 
+		#endregion
+
+		#region ClassName
+		/// <summary>
+		/// Název tøídy dle databázové tabulky. Bez namespace.
+		/// </summary>
+		public string ClassName
+		{
+			get
+			{
+				CheckInitialization();
+				return className;
+			}
+		}
+		private string className;
+		#endregion
+
+		#region Namespace
+		/// <summary>
+		/// Namespace tøídy dle databázové tabulky. Bez názvu samotné tøídy.
+		/// </summary>
+		public string Namespace
+		{
+			get
+			{
+				CheckInitialization();
+				return _namespace;
+			}
+		}
+		private string _namespace;
 		#endregion
 
 		#region Properties

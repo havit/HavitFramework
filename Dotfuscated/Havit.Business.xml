@@ -2247,7 +2247,7 @@
             Reprezentuje informace o objektu (třídě).
             </summary>
         </member>
-        <member name="M:Havit.Business.ObjectInfo.Initialize(System.String,System.String,System.Boolean,Havit.Business.CreateObjectDelegate,Havit.Business.GetObjectDelegate,Havit.Business.GetAllDelegate,Havit.Business.FieldPropertyInfo,Havit.Business.PropertyInfoCollection)">
+        <member name="M:Havit.Business.ObjectInfo.Initialize(System.String,System.String,System.String,System.String,System.Boolean,Havit.Business.CreateObjectDelegate,Havit.Business.GetObjectDelegate,Havit.Business.GetAllDelegate,Havit.Business.FieldPropertyInfo,Havit.Business.PropertyInfoCollection)">
             <summary>
             Nastaví instanci třídy.
             </summary>
@@ -2277,6 +2277,16 @@
         <member name="P:Havit.Business.ObjectInfo.DbTable">
             <summary>
             Název databázové tabulky.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.ObjectInfo.ClassName">
+            <summary>
+            Název třídy dle databázové tabulky. Bez namespace.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.ObjectInfo.Namespace">
+            <summary>
+            Namespace třídy dle databázové tabulky. Bez názvu samotné třídy.
             </summary>
         </member>
         <member name="P:Havit.Business.ObjectInfo.Properties">

@@ -37,7 +37,7 @@ namespace Havit.BusinessLayerTest
 		{
 			objectInfo = new ObjectInfo();
 			properties = new RoleProperties();
-			objectInfo.Initialize("dbo", "Role", true, null, Role.GetObject, Role.GetAll, null, properties.All);
+			objectInfo.Initialize("dbo", "Role", "Role", "Havit.BusinessLayerTest", true, null, Role.GetObject, Role.GetAll, null, properties.All);
 			properties.Initialize(objectInfo);
 		}
 		#endregion

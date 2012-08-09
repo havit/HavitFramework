@@ -6,7 +6,7 @@ using Havit.Collections;
 using System.Xml.Serialization;
 using Havit.Web.UI.WebControls.ControlsValues;
 
-namespace Havit.Goran.WebBase.UI.WebControls.ControlsValues
+namespace Havit.Web.UI.WebControls.ControlsValues
 {	
 	/// <summary>
 	/// Reprezentuje stav GridViewExt pro uložení persisterem.

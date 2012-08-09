@@ -5,7 +5,6 @@ using System.Text;
 using Havit.Web.UI.WebControls.ControlsValues;
 using System.Web.UI.WebControls;
 using System.Web.UI;
-using System.Linq;
 
 namespace Havit.Web.UI.WebControls.ControlsValues
 {

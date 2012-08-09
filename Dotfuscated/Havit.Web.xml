@@ -3818,6 +3818,139 @@
             Hodnota parametru.
             </summary>
         </member>
+        <member name="T:Havit.Web.PageNavigator">
+            <summary>
+            Třída zajišťující navigaci mezi stránkami s historií navigace.
+            Adresy navigace jsou předávány v QueryString jako komprimovaný seznam adres.
+            Hodnoty nepřežívají postback, PageNavigator není control.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.PageNavigator.UrlsQueryParameterName">
+            <summary>
+            Název parametru používaného v QueryStringu, hodnota nese adresy historie.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.PageNavigator.#ctor(System.Web.HttpContext)">
+            <summary>
+            Konstruktor.
+            Inicializuje kolekci HistoryUrls.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.PageNavigator.InitializeHistoryUrls">
+            <summary>
+            Inicializuje kolekci HistoryUrls, voláno z konstruktoru.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.PageNavigator.TransitionalNavigateTo(System.String)">
+            <summary>
+            Provede přesměrování s předáním adres navigace. Do historie adres navigace není přidána žádná adresa.
+            </summary>
+            <param name="toUrl">Adresa, na kterou bude přesměrováno.</param>
+            <exception cref="T:System.ArgumentException">
+            Pokud je toUrl null nebo prázdný řetězec.
+            </exception>
+        </member>
+        <member name="M:Havit.Web.PageNavigator.NavigateFromTo(System.String,System.String)">
+            <summary>
+            Provede přesměrování s předáním adres navigace. Do historie adres navigace ja přidána adresa v parametru fromUrls.
+            </summary>
+            <param name="fromUrls">Adresa, která bude přidána do adres navigace (slouží pro návrat na aktuální stránku).</param>
+            <param name="toUrl">Adresa, na kterou bude přesměrováno.</param>
+            <exception cref="T:System.ArgumentException">
+            Pokud je fromUrl null nebo prázdný řetězec.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            Pokud je toUrl null nebo prázdný řetězec.
+            </exception>
+        </member>
+        <member name="M:Havit.Web.PageNavigator.NavigateFromRawUrlTo(System.String)">
+            <summary>
+            Provede přesměrování s předáním adres navigace. Jako adresa pro návrat na aktuální stránku se použije HttpRequest.RawUrl.
+            </summary>
+            <param name="toUrl">Adresa, na kterou bude přesměrováno.</param>
+            <exception cref="T:System.ArgumentException">
+            Pokud je toUrl null nebo prázdný řetězec.
+            </exception>
+        </member>
+        <member name="M:Havit.Web.PageNavigator.NavigateBack">
+            <summary>
+            Provede přesměrování na poslední adresu v historii adres.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">
+            Pokud není k dispozici adresa pro návrat.
+            </exception>
+        </member>
+        <member name="M:Havit.Web.PageNavigator.CanNavigateBack">
+            <summary>
+            Udává, zda je možné provést navigaci zpět (tj. zda je k dispozici adresa pro návrat).
+            </summary>
+        </member>
+        <member name="M:Havit.Web.PageNavigator.GetTransitionalNavigationUrlTo(System.String)">
+            <summary>
+            Vrátí adresu pro přesměrování s předáním adres navigace. Do historie adres navigace není přidána žádná adresa.
+            </summary>
+            <param name="toUrl">Adresa, na kterou bude přesměrováno.</param>
+            <exception cref="T:System.ArgumentException">
+            Pokud je toUrl null nebo prázdný řetězec.
+            </exception>
+        </member>
+        <member name="M:Havit.Web.PageNavigator.GetNavigationUrlFromTo(System.String,System.String)">
+            <summary>
+            Vrátí url pro přesměrování s předáním adres navigace.
+            </summary>
+            <param name="fromUrls">Adresa, která bude přidána do adres navigace (slouží pro návrat na aktuální stránku).</param>
+            <param name="toUrl">Adresa, na kterou bude přesměrováno.</param>
+            <exception cref="T:System.ArgumentException">
+            Pokud je fromUrl null nebo prázdný řetězec.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            Pokud je toUrl null nebo prázdný řetězec.
+            </exception>
+        </member>
+        <member name="M:Havit.Web.PageNavigator.GetNavigationUrlFromRawUrlTo(System.String)">
+            <summary>
+            Vrátí adresu pro přesměrování s předáním adres navigace. Jako adresa pro návrat na aktuální stránku se použije HttpRequest.RawUrl.
+            </summary>
+            <param name="toUrl">Adresa, na kterou bude přesměrováno.</param>
+            <exception cref="T:System.ArgumentException">
+            Pokud je toUrl null nebo prázdný řetězec.
+            </exception>
+        </member>
+        <member name="M:Havit.Web.PageNavigator.GetNavigationToUrlInternal(System.String,System.String,System.Boolean)">
+            <summary>
+            Vrátí adresu pro přesměrování s předáním adres navigace.
+            </summary>
+            <param name="fromUrls">Adresa, která bude přidána do adres navigace (slouží pro návrat na aktuální stránku).</param>
+            <param name="toUrl">Adresa, na kterou bude přesměrováno.</param>
+            <param name="passHistoryUrls">True, pokud má být přidán parametr s historií adres navigace.</param>
+            <returns>
+            Pokud je passHistoryUrls false, vrací toUrl.
+            Jinak sestaví url tak, že k toUrl přidá parametr se seznamem adres historie. Bere ohled na maximální délku url.
+            </returns>
+        </member>
+        <member name="M:Havit.Web.PageNavigator.GetNavigationUrlsValue(System.String,System.Int32)">
+            <summary>
+            Vrací hodnotu parametru, který nese seznam adres historie.
+            </summary>
+            <param name="fromUrl">Url pro návrat na aktuální stránku.</param>
+            <param name="maxSerializeIndex">Maximální počet položek historie, který je serializován.</param>
+            <returns>Encodovaná hodnota, je možné ji přímo použít do url.</returns>
+        </member>
+        <member name="M:Havit.Web.PageNavigator.GetUrlWithoutNavigationUrlParameter(System.String)">
+            <summary>
+            Vrátí url adresu bez parametru s historií adres navigace.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.PageNavigator.Current">
+            <summary>
+            Vrací instanci PageNavigatoru pro aktuální HttpContext. "HttpContext signleton".
+            </summary>
+        </member>
+        <member name="P:Havit.Web.PageNavigator.HistoryUrls">
+            <summary>
+            Seznam adres historie navigace (protected)
+            </summary>
+        </member>
         <member name="F:Havit.Web.UI.Scriptlets.ListControlExtender.priority">
             <summary>
             Priorita control extenderu.

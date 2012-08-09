@@ -885,7 +885,7 @@ namespace Havit.Web.UI.WebControls
 						// čeština Win-1250
 						
 						// POZOR! Pokud použiji ScriptManager na soubor uložený ve Windows-1250, nezobrazí se čeština správně.
-						// Ovšem pokud použiji v soubor uložený v UTF-8 při ResponseEncodind Windows-150, čeština je správně!
+						// Ovšem pokud použiji soubor uložený v UTF-8 při ResponseEncoding Windows-1250, čeština je správně!
 
 						Page.ClientScript.RegisterClientScriptResource(typeof(DynarchCalendar), "Havit.Web.UI.WebControls.DynarchCalendar.calendar-cs-win.js");
 						//ScriptManager.RegisterClientScriptResource(this, typeof(DynarchCalendar), "Havit.Web.UI.WebControls.DynarchCalendar.calendar-cs-win.js");

@@ -14,7 +14,7 @@ namespace Havit.Business
 		/// <summary>
 		/// Hashtable obsahující hashtable pro každý typ.
 		/// </summary>
-		private Hashtable types;
+		private Dictionary<Type, Dictionary<int, WeakReference>> types;
 		#endregion
 
 		#region Constructors
@@ -23,7 +23,7 @@ namespace Havit.Business
 		/// </summary>
 		public IdentityMap()
 		{
-			types = new Hashtable();
+			types = new Dictionary<Type, Dictionary<int, WeakReference>>();
 		}
 		#endregion
 
@@ -45,31 +45,31 @@ namespace Havit.Business
 			}
 
 			Type businessObjectType = businessObject.GetType();
-			Hashtable typeHashtable = types[businessObjectType] as Hashtable;
-			if (typeHashtable == null)
-			{
-				typeHashtable = new Hashtable();
-				types.Add(businessObjectType, typeHashtable);
+			Dictionary<int, WeakReference> typeDictionary;
+			if (!types.TryGetValue(businessObjectType, out typeDictionary))
+			{			
+				typeDictionary = new Dictionary<int, WeakReference>();
+				types.Add(businessObjectType, typeDictionary);
 			}
 
-			WeakReference temp = (WeakReference)typeHashtable[businessObject.ID];
-			if (temp != null)
+			WeakReference reference;
+			if (typeDictionary.TryGetValue(businessObject.ID, out reference))			
 			{
-				if (temp.Target != null)
+				if (reference.Target != null)
 				{
-					if (!Object.ReferenceEquals(temp.Target, businessObject))
+					if (!Object.ReferenceEquals(reference.Target, businessObject))
 					{
 						throw new InvalidOperationException("V IdentityMap je již jiná instance tohoto objektu.");
 					}
 				}
 				else
 				{
-					temp.Target = businessObject;
+					reference.Target = businessObject;
 				}
 			}
 			else
 			{
-				typeHashtable.Add(businessObject.ID, new WeakReference(businessObject));
+				typeDictionary.Add(businessObject.ID, new WeakReference(businessObject));
 			}
 		}
 		#endregion
@@ -85,19 +85,22 @@ namespace Havit.Business
 		public bool TryGet<T>(int id, out T target)
 			where T : BusinessObjectBase
 		{
-			target = null;
-			Hashtable typeHashtable = types[typeof(T)] as Hashtable;
-			if (typeHashtable == null)
+			Dictionary<int, WeakReference> typeDictionary;
+			if (!types.TryGetValue(typeof(T), out typeDictionary))
 			{
+				target = null;
 				return false;
 			}
-			WeakReference reference = (WeakReference)typeHashtable[id];
-			if (reference != null)
+
+			WeakReference reference;
+			if (!typeDictionary.TryGetValue(id, out reference))
 			{
-				target = (T)reference.Target;
+				target = null;
+				return false;
 			}
-			
-			return !(target == null);
+
+			target = (T)reference.Target;
+			return (target != null);
 		}
 		#endregion
 
@@ -111,16 +114,18 @@ namespace Havit.Business
 		public T Get<T>(int id)
 			where T : BusinessObjectBase
 		{
-			Hashtable typeHashtable = types[typeof(T)] as Hashtable;
-			if (typeHashtable == null)
+			Dictionary<int, WeakReference> typeDictionary;
+			if (!types.TryGetValue(typeof(T), out typeDictionary))
 			{
 				return null;
 			}
-			WeakReference reference = (WeakReference)typeHashtable[id];
-			if (reference == null)
+
+			WeakReference reference;
+			if (!typeDictionary.TryGetValue(id, out reference))
 			{
 				return null;
 			}
+
 			return (T)reference.Target;
 		}
 		#endregion

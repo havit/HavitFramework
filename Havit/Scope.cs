@@ -105,7 +105,7 @@ namespace Havit
 		}
 		#endregion
 
-		#region private field (static)
+		#region private field (thread static)
 		/// <summary>
 		/// Aktuální konec linked-listu nestovaných scope.
 		/// </summary>

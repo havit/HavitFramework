@@ -109,6 +109,7 @@
     <Compile Include="Reflection\Reflector.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Scope.cs" />
     <Compile Include="StringExt.cs">
       <SubType>Code</SubType>
     </Compile>

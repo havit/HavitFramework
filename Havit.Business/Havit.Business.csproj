@@ -94,6 +94,8 @@
     <Compile Include="CollectionPropertyInfo.cs" />
     <Compile Include="CollectionPropertyHolder.cs" />
     <Compile Include="GetObjectDelegate.cs" />
+    <Compile Include="IdentityMap.cs" />
+    <Compile Include="IdentityMapScope.cs" />
     <Compile Include="ObjectInfo.cs" />
     <Compile Include="Properties\GlobalSuppressions.cs" />
     <Compile Include="PropertyInfo.cs" />

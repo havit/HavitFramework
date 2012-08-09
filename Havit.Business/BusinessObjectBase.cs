@@ -15,6 +15,7 @@ namespace Havit.Business
 	/// Naèítání je implementováno jako lazy-load, kdy je objekt nejprve vytvoøen prázdný jako ghost se svým ID a teprve
 	/// pøi první potøebì je iniciováno jeho úplné naètení.<br/>
 	/// </remarks>
+	[Serializable]
 	public abstract class BusinessObjectBase
 	{
 		#region Consts
@@ -165,7 +166,7 @@ namespace Havit.Business
 		protected abstract void Load_Perform(DbTransaction transaction);
 		#endregion
 
-		#region Save logika (Insert, Update)
+		#region Save logika
 		/// <summary>
 		/// Uloží objekt do databáze, s použitím transakce. Nový objekt je vložen INSERT, existující objekt je aktualizován UPDATE.
 		/// </summary>

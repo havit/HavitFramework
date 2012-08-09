@@ -38,6 +38,49 @@
             <param name="requestedPath">The requested path.</param>
             <param name="app">The HttpApplication instance.</param>
         </member>
+        <member name="T:Havit.Web.UI.WebControls.HighlightingGridView">
+            <summary>
+            GridView, který automaticky zvýrazňuje položku na základě hodnoty určité 
+            property dat. Zvýraznění je provedeno nastavením hodnoty SelectedIndex.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.HighlightingGridView.SaveViewState">
+            <summary>
+            Zajistí uložení ViewState. Je přidáno uložení property Hightlighting.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.HighlightingGridView.LoadViewState(System.Object)">
+            <summary>
+            Zajistí načtení ViewState. Je přidáno načtení property Hightlighting.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.HighlightingGridView.PerformDataBinding(System.Collections.IEnumerable)">
+            <summary>
+            Zajistí zvýraznění řádku.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.HighlightingGridView.HighlightRow(System.Collections.IEnumerable)">
+            <summary>
+            Prohledá data, pokud najde hodnotu rovnou HighlightValue, 
+            vybere danou položku.
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.HighlightingGridView.HighlightIndex(System.Int32)">
+            <summary>
+            Vybere položku s daným indexem. Je-li hodnota příznaku AutoPageChangeEnabled
+            true, provede přestránkování, pokud je potřeba a nastaví hodnotu příznaku
+            na false, aby nedocházelo k nežádoucí změně stránky při změně stránky z 
+            uživatelskéro rozhraní a následného databindingu.
+            Hodnota indexu rovna -1 zruší zvýraznění položky.
+            </summary>
+            <param name="index">Index položky. Počítáno od nuly.</param>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.HighlightingGridView.Hightlighting">
+            <summary>
+            Vlastnosti pro zvýraznění řádku.
+            </summary>
+        </member>
         <member name="T:Havit.Web.UI.Scriptlets.BrowserHelper">
             <summary>
             Pomocník pro identifikaci prohlížeče.
@@ -522,6 +565,52 @@
             <b>System.Text.RegularExpression.Regex</b> class's <b>Replace()</b> method is used to replace
             the match in <see cref="P:Havit.Web.UrlRewriter.Config.RewriterRule.LookFor"/> with the value in <b>SendTo</b>.</remarks>
         </member>
+        <member name="T:Havit.Web.UI.WebControls.SortingGridView">
+            <summary>
+            SortingGridView zajišťuje řazení položek.
+            Ukládá nastavení řazení dle uživatele a případně zajišťuje automatické řazení pomocí GenericPropertyCompareru.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.SortingGridView.OnSorting(System.Web.UI.WebControls.GridViewSortEventArgs)">
+            <summary>
+            Při požadavku na řazení si zapamatujeme, jak chtěl uživatel řadit a nastavíme RequiresDataBinding na true.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.SortingGridView.SaveViewState">
+            <summary>
+            Zajistí uložení ViewState. Je přidáno uložení property Sorting.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.SortingGridView.LoadViewState(System.Object)">
+            <summary>
+            Zajistí načtení ViewState. Je přidáno načtení property Sorting.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.SortingGridView.PerformDataBinding(System.Collections.IEnumerable)">
+            <summary>
+            Provede databinding dat.
+            Pokud data nejsou null a AutoSort je true, automaticky seřadí data pomocí GenericPropertyCompareru.
+            Pokud uživatel dosud nenastavil žádné řazení, použije se řazení dle DefaultSortExpression.
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.SortingGridView.AutoSort">
+            <summary>
+            Nastavuje, zda má při databindingu dojít k seřazení položek podle nastavení.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.SortingGridView.DefaultSortExpression">
+            <summary>
+            Výchozí řazení, které se použije, pokud je povoleno automatické řazení nastavením vlastnosti AutoSort 
+            a uživatel dosuž žádné řazení nezvolil.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.SortingGridView.Sorting">
+            <summary>
+            Zajišťuje práci se senzamem položek, podle kterých se řadí.
+            </summary>
+        </member>
         <member name="T:Havit.Web.UI.WebControls.H6">
             <summary>
             Reprezentuje label, který se renderuje jako HTML tag H6.
@@ -726,6 +815,84 @@
         <member name="P:Havit.Web.UI.WebControls.H4.TagKey">
             <summary>
             Vrací HtmlTextWriterTag.H4 zajišťující správné renderování.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.EnterpriseGridView">
+            <summary>
+            EnterprisGridView poskytuje:
+            - hledání klíče řádku, ve kterém došlo k události
+            - hledání sloupce (IEnterpriseField) na základě ID sloupce
+            - stránkování
+            - zveřejňuje vlastnost RequiresDataBinding
+            - automatický databinding při prvním načtení stránky nebo nastavení RequiresDataBinding na true (podmíněno vlastností AutoDataBind)
+            - přechod na stránku 0 při změně řazení
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.#ctor">
+            <summary>
+            Vytvoří instanci EnterpriseGridView.
+            Vypne automatické generování sloupců při databindingu (nastaví AutoGenerateColumns na false).
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.OnInit(System.EventArgs)">
+            <summary>
+            Inicializuje EnterpriseGridView.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.GetKeyValue(System.Web.UI.Control)">
+            <summary>
+            Nalezne hodnotu klíče položky, ve kterém se nachází control.
+            </summary>
+            <param name="control">Control. Hledá se řádek, ve kterém se GridViewRow nalézá 
+            a DataKey řádku.</param>
+            <returns>Vrací hodnotu klíče. Pokud není klíč nalezen
+            (Control není v GridView), vrací null.
+            </returns>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.GetKeyValue(System.Web.UI.WebControls.GridViewCommandEventArgs)">
+            <summary>
+            Nalezne hodnotu klíče položky na základě události.
+            </summary>
+            <param name="e">Událost, ke které v gridu došlo.</param>
+            <returns>Vrací hodnotu klíče daného řádku. Pokud není klíč nalezen vrací null.</returns>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.FindColumn(System.String)">
+            <summary>
+            Vyhledá sloupec podle id. Vyhledává jen sloupce implementující rozhraní IEnterpriseField.
+            </summary>
+            <param name="id">ID, podle kterého se sloupec vyhledává.</param>
+            <returns>Nalezený sloupec nebo null, pokud není nalezen.</returns>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.OnPageIndexChanging(System.Web.UI.WebControls.GridViewPageEventArgs)">
+            <summary>
+            Pokud není stránkování stornováno, změníme stránku na cílovou.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.OnSorted(System.EventArgs)">
+            <summary>
+            Po setřídění podle sloupce zajistí u vícestránkových gridů návrat na první stránku
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.OnPreRender(System.EventArgs)">
+            <summary>
+            Zajistíme DataBinding, pokud mají vlastnosti AutoDataBind a RequiresDataBinding hodnotu true.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.SetRequiresDatabinding">
+            <summary>
+            Nastaví RequiresDataBinding na true.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseGridView.AutoDataBind">
+            <summary>
+            Nastavuje automatický databind na GridView.		
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseGridView.RequiresDataBinding">
+            <summary>
+            Zpřístupňuje pro čtení chráněnou vlastnost RequiresDataBinding.
             </summary>
         </member>
         <member name="T:Havit.Web.UI.WebControls.Collapser">
@@ -1051,6 +1218,29 @@
             Vrací HtmlTextWriterTag.H2 zajišťující správné renderování.
             </summary>
         </member>
+        <member name="T:Havit.Web.UI.WebControls.Hightlighting">
+            <summary>
+            Třída Hightlighting drží data pro zvýraznění vybrené položky podle hodnoty klíče.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.Hightlighting.HighlightValue">
+            <summary>
+            Hodnota "klíče" položky, která má být zvýrazněna.
+            Nastavuje příznak AutoPageChangeEnabled.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.Hightlighting.DataField">
+            <summary>
+            Položka dat, jejíž hodnota se porovnává s HighlightValue.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.Hightlighting.AutoPageChangeEnabled">
+            <summary>
+            Příznak, zda může dojít ke změně stránky pro zvýraznění položky.
+            Příznak je automaticky nastaven při nastavení hodnoty HighlightValue
+            a je po databindingu automaticky vypnut.
+            </summary>
+        </member>
         <member name="T:Havit.Web.UI.Scriptlets.Scriptlet">
             <summary>
             Scriptlet umožňuje snadnou tvorbu klientských skriptů.
@@ -1213,6 +1403,58 @@
             Cache pro klientské skripty. Klíčem je skript, hodnotou je název funkce,
             ve které je skript registrován.
             Cache je uložena v HttpContextu.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.CommandNames">
+            <summary>
+            Třída CommandNamesHelper obsahuje sdílené názvy příkazů (CommandNames).
+            Sdílí se mezi prvky vyvolávající událost příkazu (potomci GridViewImageButton)
+            a EnterpriseGridView.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.UI.CommandNames.Cancel">
+            <summary>
+            Cancel.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.UI.CommandNames.Delete">
+            <summary>
+            Delete.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.UI.CommandNames.Edit">
+            <summary>
+            Edit.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.UI.CommandNames.MoveDown">
+            <summary>
+            MoveDown.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.UI.CommandNames.MoveUp">
+            <summary>
+            MoveUp.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.UI.CommandNames.Update">
+            <summary>
+            Update.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.UI.CommandNames.Select">
+            <summary>
+            Select.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.UI.CommandNames.Detail">
+            <summary>
+            Detail.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.UI.CommandNames.Report">
+            <summary>
+            Report.
             </summary>
         </member>
         <member name="T:Havit.Web.HttpServerUtilityExt">
@@ -1517,214 +1759,6 @@
             Výchozí seznam control extenderů.
             </summary>
         </member>
-        <member name="T:Havit.Web.UI.Scriptlets.ValueParameter">
-            <summary>
-            Parametr předávající do klientského objektu konstantní řetězcovou hodnotu.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.Scriptlets.ValueParameter.CreateParameter(System.String,System.Web.UI.Control,Havit.Web.UI.Scriptlets.ScriptBuilder)">
-            <summary>
-            Vytvoří klientský skript pro parametr.
-            </summary>
-            <param name="parameterPrefix">Prefix parametru.</param>
-            <param name="parentControl">Control, v rámci kterého je tento parametr.</param>
-            <param name="scriptBuilder">Script builder.</param>
-        </member>
-        <member name="P:Havit.Web.UI.Scriptlets.ValueParameter.Value">
-            <summary>
-            Hodnota parametru.
-            </summary>
-        </member>
-        <member name="T:Havit.Web.UI.WebControls.HighlightingGridView">
-            <summary>
-            GridView, který automaticky zvýrazňuje položku na základě hodnoty určité 
-            property dat. Zvýraznění je provedeno nastavením hodnoty SelectedIndex.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.HighlightingGridView.SaveViewState">
-            <summary>
-            Zajistí uložení ViewState. Je přidáno uložení property Hightlighting.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.HighlightingGridView.LoadViewState(System.Object)">
-            <summary>
-            Zajistí načtení ViewState. Je přidáno načtení property Hightlighting.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.HighlightingGridView.PerformDataBinding(System.Collections.IEnumerable)">
-            <summary>
-            Zajistí zvýraznění řádku.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.HighlightingGridView.HighlightRow(System.Collections.IEnumerable)">
-            <summary>
-            Prohledá data, pokud najde hodnotu rovnou HighlightValue, 
-            vybere danou položku.
-            </summary>
-            <param name="data"></param>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.HighlightingGridView.HighlightIndex(System.Int32)">
-            <summary>
-            Vybere položku s daným indexem. Je-li hodnota příznaku AutoPageChangeEnabled
-            true, provede přestránkování, pokud je potřeba a nastaví hodnotu příznaku
-            na false, aby nedocházelo k nežádoucí změně stránky při změně stránky z 
-            uživatelskéro rozhraní a následného databindingu.
-            Hodnota indexu rovna -1 zruší zvýraznění položky.
-            </summary>
-            <param name="index">Index položky. Počítáno od nuly.</param>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.HighlightingGridView.Hightlighting">
-            <summary>
-            Vlastnosti pro zvýraznění řádku.
-            </summary>
-        </member>
-        <member name="T:Havit.Web.UI.WebControls.SortingGridView">
-            <summary>
-            SortingGridView zajišťuje řazení položek.
-            Ukládá nastavení řazení dle uživatele a případně zajišťuje automatické řazení pomocí GenericPropertyCompareru.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.SortingGridView.OnSorting(System.Web.UI.WebControls.GridViewSortEventArgs)">
-            <summary>
-            Při požadavku na řazení si zapamatujeme, jak chtěl uživatel řadit a nastavíme RequiresDataBinding na true.
-            </summary>
-            <param name="e"></param>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.SortingGridView.SaveViewState">
-            <summary>
-            Zajistí uložení ViewState. Je přidáno uložení property Sorting.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.SortingGridView.LoadViewState(System.Object)">
-            <summary>
-            Zajistí načtení ViewState. Je přidáno načtení property Sorting.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.SortingGridView.PerformDataBinding(System.Collections.IEnumerable)">
-            <summary>
-            Provede databinding dat.
-            Pokud data nejsou null a AutoSort je true, automaticky seřadí data pomocí GenericPropertyCompareru.
-            Pokud uživatel dosud nenastavil žádné řazení, použije se řazení dle DefaultSortExpression.
-            </summary>
-            <param name="data"></param>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.SortingGridView.AutoSort">
-            <summary>
-            Nastavuje, zda má při databindingu dojít k seřazení položek podle nastavení.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.SortingGridView.DefaultSortExpression">
-            <summary>
-            Výchozí řazení, které se použije, pokud je povoleno automatické řazení nastavením vlastnosti AutoSort 
-            a uživatel dosuž žádné řazení nezvolil.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.SortingGridView.Sorting">
-            <summary>
-            Zajišťuje práci se senzamem položek, podle kterých se řadí.
-            </summary>
-        </member>
-        <member name="T:Havit.Web.UI.WebControls.EnterpriseGridView">
-            <summary>
-            EnterprisGridView poskytuje:
-            - hledání klíče řádku, ve kterém došlo k události
-            - hledání sloupce (IEnterpriseField) na základě ID sloupce
-            - stránkování
-            - zveřejňuje vlastnost RequiresDataBinding
-            - automatický databinding při prvním načtení stránky nebo nastavení RequiresDataBinding na true (podmíněno vlastností AutoDataBind)
-            - přechod na stránku 0 při změně řazení
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.#ctor">
-            <summary>
-            Vytvoří instanci EnterpriseGridView.
-            Vypne automatické generování sloupců při databindingu (nastaví AutoGenerateColumns na false).
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.OnInit(System.EventArgs)">
-            <summary>
-            Inicializuje EnterpriseGridView.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.GetKeyValue(System.Web.UI.Control)">
-            <summary>
-            Nalezne hodnotu klíče položky, ve kterém se nachází control.
-            </summary>
-            <param name="control">Control. Hledá se řádek, ve kterém se GridViewRow nalézá 
-            a DataKey řádku.</param>
-            <returns>Vrací hodnotu klíče. Pokud není klíč nalezen
-            (Control není v GridView), vrací null.
-            </returns>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.GetKeyValue(System.Web.UI.WebControls.GridViewCommandEventArgs)">
-            <summary>
-            Nalezne hodnotu klíče položky na základě události.
-            </summary>
-            <param name="e">Událost, ke které v gridu došlo.</param>
-            <returns>Vrací hodnotu klíče daného řádku. Pokud není klíč nalezen vrací null.</returns>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.FindColumn(System.String)">
-            <summary>
-            Vyhledá sloupec podle id. Vyhledává jen sloupce implementující rozhraní IEnterpriseField.
-            </summary>
-            <param name="id">ID, podle kterého se sloupec vyhledává.</param>
-            <returns>Nalezený sloupec nebo null, pokud není nalezen.</returns>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.OnPageIndexChanging(System.Web.UI.WebControls.GridViewPageEventArgs)">
-            <summary>
-            Pokud není stránkování stornováno, změníme stránku na cílovou.
-            </summary>
-            <param name="e"></param>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.OnSorted(System.EventArgs)">
-            <summary>
-            Po setřídění podle sloupce zajistí u vícestránkových gridů návrat na první stránku
-            </summary>
-            <param name="e"></param>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.OnPreRender(System.EventArgs)">
-            <summary>
-            Zajistíme DataBinding, pokud mají vlastnosti AutoDataBind a RequiresDataBinding hodnotu true.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.SetRequiresDatabinding">
-            <summary>
-            Nastaví RequiresDataBinding na true.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.EnterpriseGridView.AutoDataBind">
-            <summary>
-            Nastavuje automatický databind na GridView.		
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.EnterpriseGridView.RequiresDataBinding">
-            <summary>
-            Zpřístupňuje pro čtení chráněnou vlastnost RequiresDataBinding.
-            </summary>
-        </member>
-        <member name="T:Havit.Web.UI.WebControls.Hightlighting">
-            <summary>
-            Třída Hightlighting drží data pro zvýraznění vybrené položky podle hodnoty klíče.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.Hightlighting.HighlightValue">
-            <summary>
-            Hodnota "klíče" položky, která má být zvýrazněna.
-            Nastavuje příznak AutoPageChangeEnabled.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.Hightlighting.DataField">
-            <summary>
-            Položka dat, jejíž hodnota se porovnává s HighlightValue.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.Hightlighting.AutoPageChangeEnabled">
-            <summary>
-            Příznak, zda může dojít ke změně stránky pro zvýraznění položky.
-            Příznak je automaticky nastaven při nastavení hodnoty HighlightValue
-            a je po databindingu automaticky vypnut.
-            </summary>
-        </member>
         <member name="T:Havit.Web.UI.WebControls.Sorting">
             <summary>
             Třída Sorting zajišťuje práci s řazením položek.
@@ -1741,40 +1775,32 @@
             Vyhledá index položky v seznamu položek řazení. Bere se ohled jen na Expression.
             </summary>
         </member>
-        <member name="M:Havit.Web.UI.WebControls.Sorting.RemoveField(System.String)">
+        <member name="M:Havit.Web.UI.WebControls.Sorting.RemoveExpression(System.String)">
             <summary>
             Odstraní položku řazení ze seznamu, pokud existuje.
             </summary>
             <param name="expression"></param>
         </member>
-        <member name="M:Havit.Web.UI.WebControls.Sorting.Add(System.String)">
+        <member name="M:Havit.Web.UI.WebControls.Sorting.AddSortExpression(System.String)">
             <summary>
-            Přidá položku řazení do seznamu na první pozici.
-            Pokud již v seznamu existuje, tak pokud existuje na první pozici (tj. na pozici 0),
-            změní směr řazení. Pokud existuje na jiné pozici, odstraní položku ze seznamu
-            a vloží ji na první pozici (tj. zvýší se "priorita" a řadí se vzestupně.
+            Rozebere sortExpression a přidá položky řazení na první místo.
+            Pokud položky pořadí již jsou na začátku seznamu, je jim otočen směr řazení.
             </summary>
-            <param name="expression"></param>
+            <param name="sortExpression">
+            Výraz pro řazení. Seznam oddělený čárkami. Sestupný směr se vyjádří doplněním mezery a DESC.<br/>
+            Např. "Nazev", "Prijmeni, Jmeno", "Vek DESC", "Vek desc".
+            </param>
         </member>
-        <member name="M:Havit.Web.UI.WebControls.Sorting.Add(System.String[])">
+        <member name="M:Havit.Web.UI.WebControls.Sorting.StartsWith(Havit.Collections.SortItemCollection)">
             <summary>
-            Přidá položky řazení do seznamu na první pozice (první položka kolekce bude na začátku).
-            Pokud již položky v seznamu existují na prvních pozicích změní směr řazení.
-            Pokud existuje na jiné pozici, odstraní položku ze seznamu
-            a vloží ji na první pozici (tj. zvýší se "priorita" a řadí se vzestupně.
+            Vrací true, pokud kolekce začíná stejnými položkami, jako jsou zde uvedené.
+            Na směr řazení se bere ohled v tom smyslu, že směr řazení všech stávající položek musí být stejný 
+            jako směr řazení nových položek nebo musí být směr řazení na všech položkách opačný.
             </summary>
         </member>
-        <member name="M:Havit.Web.UI.WebControls.Sorting.Add(System.String,Havit.Collections.SortDirection)">
+        <member name="P:Havit.Web.UI.WebControls.Sorting.SortItems">
             <summary>
-            Přidá položku řazení do seznamu na první pozici. 
-            Pokud již v seznamu existuje, je původní položka odstraněna.
-            </summary>
-            <param name="expression"></param>
-            <param name="sortDirection"></param>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.Sorting.ParseSortExpression(System.String)">
-            <summary>
-            Prozkoumá expression od uživatele a rozebere ji na jednotlivé položky řazení.
+            Položky řazení.
             </summary>
         </member>
         <member name="T:Havit.Web.UI.WebControls.EnterpriseDropDownList">
@@ -1810,14 +1836,14 @@
             Přidá na začátek seznamu řádek pro výběr prázdné hodnoty, pokud tam již není.
             </summary>
         </member>
-        <member name="P:Havit.Web.UI.WebControls.EnterpriseDropDownList.PropertyInfo">
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseDropDownList.ItemPropertyInfo">
             <summary>
             ReferenceFieldPropertyInfo property, jejíž hodnota se tímto DropDownListem vybírá.
             Nastavení této hodnoty rovněž přepíše hodnoty vlastností ItemsObjectInfo a Nullable.
             Hodnota této property nepřežívá postback.
             </summary>
         </member>
-        <member name="P:Havit.Web.UI.WebControls.EnterpriseDropDownList.ItemsObjectInfo">
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseDropDownList.ItemObjectInfo">
             <summary>
             Udává metodu, kterou se získá objekt na základě ID.
             Hodnota vlastnosti je automaticky nastavena nastavením vlastnosti PropertyInfo.
@@ -1827,6 +1853,11 @@
         <member name="P:Havit.Web.UI.WebControls.EnterpriseDropDownList.Nullable">
             <summary>
             Udává, zda má být na výběr prázdná hodnota. Výchozí hodnota je true.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseDropDownList.NullableText">
+            <summary>
+            Udává text prázdné hodnoty. Výchozí hodnota je "---".
             </summary>
         </member>
         <member name="P:Havit.Web.UI.WebControls.EnterpriseDropDownList.AutoSort">
@@ -1855,56 +1886,22 @@
             Není-li žádná položka vybrána, vrací null.
             </summary>
         </member>
-        <member name="T:Havit.Web.UI.CommandNames">
+        <member name="T:Havit.Web.UI.Scriptlets.ValueParameter">
             <summary>
-            Třída CommandNamesHelper obsahuje sdílené názvy příkazů (CommandNames).
-            Sdílí se mezi prvky vyvolávající událost příkazu (potomci GridViewImageButton)
-            a EnterpriseGridView.
+            Parametr předávající do klientského objektu konstantní řetězcovou hodnotu.
             </summary>
         </member>
-        <member name="F:Havit.Web.UI.CommandNames.Cancel">
+        <member name="M:Havit.Web.UI.Scriptlets.ValueParameter.CreateParameter(System.String,System.Web.UI.Control,Havit.Web.UI.Scriptlets.ScriptBuilder)">
             <summary>
-            Cancel.
+            Vytvoří klientský skript pro parametr.
             </summary>
+            <param name="parameterPrefix">Prefix parametru.</param>
+            <param name="parentControl">Control, v rámci kterého je tento parametr.</param>
+            <param name="scriptBuilder">Script builder.</param>
         </member>
-        <member name="F:Havit.Web.UI.CommandNames.Delete">
+        <member name="P:Havit.Web.UI.Scriptlets.ValueParameter.Value">
             <summary>
-            Delete.
-            </summary>
-        </member>
-        <member name="F:Havit.Web.UI.CommandNames.Edit">
-            <summary>
-            Edit.
-            </summary>
-        </member>
-        <member name="F:Havit.Web.UI.CommandNames.MoveDown">
-            <summary>
-            MoveDown.
-            </summary>
-        </member>
-        <member name="F:Havit.Web.UI.CommandNames.MoveUp">
-            <summary>
-            MoveUp.
-            </summary>
-        </member>
-        <member name="F:Havit.Web.UI.CommandNames.Update">
-            <summary>
-            Update.
-            </summary>
-        </member>
-        <member name="F:Havit.Web.UI.CommandNames.Select">
-            <summary>
-            Select.
-            </summary>
-        </member>
-        <member name="F:Havit.Web.UI.CommandNames.Detail">
-            <summary>
-            Detail.
-            </summary>
-        </member>
-        <member name="F:Havit.Web.UI.CommandNames.Report">
-            <summary>
-            Report.
+            Hodnota parametru.
             </summary>
         </member>
     </members>

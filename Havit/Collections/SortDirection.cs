@@ -7,16 +7,16 @@ namespace Havit.Collections
 	/// <summary>
 	/// Urèuje smìr øazení.
 	/// </summary>
-	public enum SortDirection: int
+	public enum SortDirection
 	{
 		/// <summary>
 		/// Vyestupné.
 		/// </summary>
-		Ascending = 1,
+		Ascending,
 
 		/// <summary>
 		/// Sestupné.
 		/// </summary>
-		Descending = 2
+		Descending
 	}
 }

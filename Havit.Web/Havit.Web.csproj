@@ -147,11 +147,21 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UI\WebControls\EnterpriseDropDownList.cs" />
-    <Compile Include="UI\WebControls\GridViews\EnterpriseGridView.cs" />
-    <Compile Include="UI\WebControls\GridViews\HighlightingGridView.cs" />
-    <Compile Include="UI\WebControls\GridViews\Hightlighting.cs" />
-    <Compile Include="UI\WebControls\GridViews\Sorting.cs" />
-    <Compile Include="UI\WebControls\GridViews\SortingGridView.cs" />
+    <Compile Include="UI\WebControls\GridViews\EnterpriseGridView.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\WebControls\GridViews\HighlightingGridView.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\WebControls\GridViews\Hightlighting.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\WebControls\GridViews\Sorting.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\WebControls\GridViews\SortingGridView.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="UI\WebControls\H1.cs">
       <SubType>Code</SubType>
     </Compile>

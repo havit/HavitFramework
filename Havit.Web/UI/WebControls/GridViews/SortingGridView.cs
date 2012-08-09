@@ -56,7 +56,7 @@ namespace Havit.Web.UI.WebControls
 		/// <param name="e"></param>
 		protected override void OnSorting(GridViewSortEventArgs e)
 		{
-			sorting.Add(Sorting.ParseSortExpression(e.SortExpression));
+			sorting.AddSortExpression(e.SortExpression);
 			base.RequiresDataBinding = true;
 		}
 		#endregion
@@ -98,8 +98,9 @@ namespace Havit.Web.UI.WebControls
 
 				if ((Sorting.SortItems.Count == 0) && !String.IsNullOrEmpty(DefaultSortExpression))
 				{
-#warning nemenit sorting
-					sorting.Add(Sorting.ParseSortExpression(DefaultSortExpression));
+					// sorting je nutné zmìnit na základì DefaultSortExpression,
+					// kdybychom jej nezmìnili, tak první kliknutí shodné s DefaultSortExpression nic neudìlá
+					sorting.AddSortExpression(DefaultSortExpression);
 				}
 
 				IEnumerable sortedData = SortHelper.PropertySort(data, Sorting.SortItems);

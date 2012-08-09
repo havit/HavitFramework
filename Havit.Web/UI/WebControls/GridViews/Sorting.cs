@@ -1,6 +1,8 @@
 using System;
 using Havit.Collections;
 using Havit.Business.Query;
+using System.Diagnostics;
+using System.Web;
 
 namespace Havit.Web.UI.WebControls
 {
@@ -10,16 +12,18 @@ namespace Havit.Web.UI.WebControls
 	/// 
 	[Serializable]
 	public class Sorting
-	#warning Neumí rozumnì sestupné øazení
 	{
-		private SortItemCollection sortItems = new SortItemCollection();
-		internal SortItemCollection SortItems
+		/// <summary>
+		/// Položky øazení.
+		/// </summary>
+		public SortItemCollection SortItems
 		{
 			get
 			{
 				return sortItems;
 			}
 		}
+		private SortItemCollection sortItems = new SortItemCollection();
 
 		/// <summary>
 		/// Vyprázdní seznam položek øazení.
@@ -35,8 +39,12 @@ namespace Havit.Web.UI.WebControls
 		protected int IndexOf(string expression)
 		{
 			for (int i = 0; i < SortItems.Count; i++)
+			{
 				if (SortItems[i].Expression == expression)
+				{
 					return i;
+				}
+			}
 			return -1;
 		}
 
@@ -44,88 +52,159 @@ namespace Havit.Web.UI.WebControls
 		/// Odstraní položku øazení ze seznamu, pokud existuje.
 		/// </summary>
 		/// <param name="expression"></param>
-		protected void RemoveField(string expression)
+		protected void RemoveExpression(string expression)
 		{
 			int i = IndexOf(expression);
 			if (i >= 0)
+			{
 				SortItems.RemoveAt(i);
+			}
 		}
 
 		/// <summary>
-		/// Pøidá položku øazení do seznamu na první pozici.
-		/// Pokud již v seznamu existuje, tak pokud existuje na první pozici (tj. na pozici 0),
-		/// zmìní smìr øazení. Pokud existuje na jiné pozici, odstraní položku ze seznamu
-		/// a vloží ji na první pozici (tj. zvýší se "priorita" a øadí se vzestupnì.
+		/// Rozebere sortExpression a pøidá položky øazení na první místo.
+		/// Pokud položky poøadí již jsou na zaèátku seznamu, je jim otoèen smìr øazení.
 		/// </summary>
-		/// <param name="expression"></param>
-		public void Add(string expression)
+		/// <param name="sortExpression">
+		/// Výraz pro øazení. Seznam oddìlený èárkami. Sestupný smìr se vyjádøí doplnìním mezery a DESC.<br/>
+		/// Napø. "Nazev", "Prijmeni, Jmeno", "Vek DESC", "Vek desc".
+		/// </param>
+		public void AddSortExpression(string sortExpression)
 		{
-			int i = IndexOf(expression);
-			if (i == 0)
-				Add(expression, (SortItems[0].Direction == SortDirection.Ascending) ? SortDirection.Descending : SortDirection.Ascending);
+			string[] expressions = sortExpression.Split(',');
+
+			if (expressions.Length == 0)
+			{
+				// pokud nic nepøidáváme, konèíme.
+				return;
+			}
+
+			SortItemCollection newItems = new SortItemCollection();
+			for (int i = 0; i < expressions.Length; i++)
+			{
+				string trimmedExpression = expressions[i].Trim();
+				if (trimmedExpression.ToLower().EndsWith(" desc"))
+				{
+					// pokud máme øedit sestupnì, vytvoøíme položku pro sestupné øazení
+					newItems.Add(new SortItem(trimmedExpression.Substring(0, trimmedExpression.Length - 5), SortDirection.Descending));
+				}
+				else
+				{
+					// jinak vytvoøíme položku pro vzestupné øazení.
+					newItems.Add(new SortItem(trimmedExpression, SortDirection.Ascending));
+				}
+			}
+
+			if (StartsWith(newItems))
+			{
+				// pokud už položky v seznamu jsou a jsou na zaèátku, otoèíme jim smìr øazení.				
+				for (int i = 0; i < newItems.Count; i++)
+				{
+					sortItems[i].Direction = (sortItems[i].Direction == SortDirection.Ascending) ? SortDirection.Descending : SortDirection.Ascending;
+				}
+			}
 			else
-				Add(expression, SortDirection.Ascending);
-		}
-
-        /// <summary>
-        /// Pøidá položky øazení do seznamu na první pozice (první položka kolekce bude na zaèátku).
-        /// Pokud již položky v seznamu existují na prvních pozicích zmìní smìr øazení.
-        /// Pokud existuje na jiné pozici, odstraní položku ze seznamu
-        /// a vloží ji na první pozici (tj. zvýší se "priorita" a øadí se vzestupnì.
-        /// </summary>
-		public void Add(string[] expression)
-        {
-            // øadíme vzestupnì
-			SortDirection newDirection = SortDirection.Ascending;
-
-			if (SortItems.Count >= expression.Length)
-            {
-                // øadíme sestupnì, ale dále to vìtšinou zpìt zmìníme
-				newDirection = SortDirection.Descending;
-
-                // projdeme všechny položky
-				for (int i = 0; i < expression.Length; i++)
-                {
-                    // a testujeme, jestli jsou na zaèátku seznamu a øazené vzestupnì
-                    // pokud ano, nedìláme nic (zùstane sestupné øazení
-                    // pokud ne, zmìníme øazení a konèíme test
-					if (expression[i] != SortItems[i].Expression || SortItems[i].Direction != SortDirection.Ascending)
-                    {
-						newDirection = SortDirection.Ascending;
-                        break;
-                    }
-                }
-            }
-
-            // pøidáme postupnì položky øazení (odzadu, protože poslední pøidaná bude mít nejvyšší prioritu)
-			for (int i = expression.Length - 1; i >= 0; i--)
-				Add(expression[i], newDirection);
-        }
-
-        /// <summary>
-        /// Pøidá položku øazení do seznamu na první pozici. 
-        /// Pokud již v seznamu existuje, je pùvodní položka odstranìna.
-        /// </summary>
-		/// <param name="expression"></param>
-        /// <param name="sortDirection"></param>
-		protected void Add(string expression, SortDirection sortDirection)
-		{
-			RemoveField(expression);
-			SortItems.Insert(0, new SortItem(expression, sortDirection));
+			{
+				// jinak je pøidáme na zaèátek seznamu (jsou-li v seznamu dále, vyhodíme je a dáme na zaèátek)
+				for (int i = 0; i < newItems.Count; i++)
+				{
+					RemoveExpression(newItems[i].Expression);
+					SortItems.Insert(0, newItems[0]);
+				}
+			}
 		}
 
 		/// <summary>
-		/// Prozkoumá expression od uživatele a rozebere ji na jednotlivé položky øazení.
+		/// Vrací true, pokud kolekce zaèíná stejnými položkami, jako jsou zde uvedené.
+		/// Na smìr øazení se bere ohled v tom smyslu, že smìr øazení všech stávající položek musí být stejný 
+		/// jako smìr øazení nových položek nebo musí být smìr øazení na všech položkách opaèný.
 		/// </summary>
-		public static string[] ParseSortExpression(string expression)
+		protected bool StartsWith(SortItemCollection referencingItems)
 		{
-			string[] sortExpressionItems = expression.Split(',');
+			if (referencingItems.Count == 0)
+			{
+				return true;
+			}
 
-			// odstranime pripadne mezery
-			for (int i = 0; i < sortExpressionItems.Length; i++)
-				sortExpressionItems[i] = sortExpressionItems[i].Trim();
+			if (referencingItems.Count > sortItems.Count)
+			{
+				return false;
+			}
 
-			return sortExpressionItems;
+			bool sameDirection = referencingItems[0].Direction == sortItems[0].Direction;
+
+			for (int i = 0; i < referencingItems.Count; i++)
+			{
+				if ((referencingItems[i].Expression != sortItems[i].Expression) // nejsou stejné expression
+				 || ((referencingItems[i].Direction == sortItems[i].Direction) ^ sameDirection)) // nebo není stejný smìr øazení
+				{
+					return false;
+				}
+			}
+
+			return true;
 		}
+
+
+		///// <summary>
+		///// Pøidá položky øazení do seznamu na první pozice (první položka kolekce bude na zaèátku).
+		///// Pokud již položky v seznamu existují na prvních pozicích zmìní smìr øazení.
+		///// Pokud existuje na jiné pozici, odstraní položku ze seznamu
+		///// a vloží ji na první pozici (tj. zvýší se "priorita" a øadí se vzestupnì.
+		///// </summary>
+		//public void Add(string[] expression)
+		//{
+		//    // øadíme vzestupnì
+		//    SortDirection newDirection = SortDirection.Ascending;
+
+		//    if (SortItems.Count >= expression.Length)
+		//    {
+		//        // øadíme sestupnì, ale dále to vìtšinou zpìt zmìníme
+		//        newDirection = SortDirection.Descending;
+
+		//        // projdeme všechny položky
+		//        for (int i = 0; i < expression.Length; i++)
+		//        {
+		//            // a testujeme, jestli jsou na zaèátku seznamu a øazené vzestupnì
+		//            // pokud ano, nedìláme nic (zùstane sestupné øazení
+		//            // pokud ne, zmìníme øazení a konèíme test
+		//            if (expression[i] != SortItems[i].Expression || SortItems[i].Direction != SortDirection.Ascending)
+		//            {
+		//                newDirection = SortDirection.Ascending;
+		//                break;
+		//            }
+		//        }
+		//    }
+
+		//    // pøidáme postupnì položky øazení (odzadu, protože poslední pøidaná bude mít nejvyšší prioritu)
+		//    for (int i = expression.Length - 1; i >= 0; i--)
+		//        Add(expression[i], newDirection);
+		//}
+
+		///// <summary>
+		///// Pøidá položku øazení do seznamu na první pozici. 
+		///// Pokud již v seznamu existuje, je pùvodní položka odstranìna.
+		///// </summary>
+		///// <param name="expression"></param>
+		///// <param name="sortDirection"></param>
+		//protected void Add(string expression, SortDirection sortDirection)
+		//{
+		//    RemoveExpression(expression);
+		//    SortItems.Insert(0, new SortItem(expression, sortDirection));
+		//}
+
+		///// <summary>
+		///// Prozkoumá expression od uživatele a rozebere ji na jednotlivé položky øazení.
+		///// </summary>
+		//public static string[] ParseSortExpression(string expression)
+		//{
+		//    string[] sortExpressionItems = expression.Split(',');
+
+		//    // odstranime pripadne mezery
+		//    for (int i = 0; i < sortExpressionItems.Length; i++)
+		//        sortExpressionItems[i] = sortExpressionItems[i].Trim();
+
+		//    return sortExpressionItems;
+		//}
 	}
 }

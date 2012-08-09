@@ -30,38 +30,46 @@ namespace Havit.Web.UI.WebControls
 		/// Nastavení této hodnoty rovnìž pøepíše hodnoty vlastností ItemsObjectInfo a Nullable.
 		/// Hodnota této property nepøežívá postback.
 		/// </summary>
-		public ReferenceFieldPropertyInfo PropertyInfo
+		public ReferenceFieldPropertyInfo ItemPropertyInfo
 		{
 			get
 			{
-				return propertyInfo;
+				return itemPropertyInfo;
 			}
 			set
 			{
-				propertyInfo = value;
-				itemsObjectInfo = propertyInfo.TargetObjectInfo;
-				Nullable = propertyInfo.Nullable;
+				if ((itemObjectInfo != null) && (itemObjectInfo != value.TargetObjectInfo))
+				{
+					throw new ArgumentException("Nekonzistence ItemPropertyInfo.TargetObjectInfo a ItemObjectInfo");
+				}
+				itemPropertyInfo = value;
+				itemObjectInfo = itemPropertyInfo.TargetObjectInfo;
+				Nullable = itemPropertyInfo.Nullable;
 			}
 		}
-		private ReferenceFieldPropertyInfo propertyInfo;
+		private ReferenceFieldPropertyInfo itemPropertyInfo;
 
 		/// <summary>
 		/// Udává metodu, kterou se získá objekt na základì ID.
 		/// Hodnota vlastnosti je automaticky nastavena nastavením vlastnosti PropertyInfo.
 		/// Hodnota vlastnosti nepøežívá postback.
 		/// </summary>
-		public ObjectInfo ItemsObjectInfo
+		public ObjectInfo ItemObjectInfo
 		{
 			get
 			{
-				return itemsObjectInfo;
+				return itemObjectInfo;
 			}
 			set
 			{
-				itemsObjectInfo = value;
+				if ((itemPropertyInfo != null) && (value != itemPropertyInfo.TargetObjectInfo))
+				{
+					throw new ArgumentException("Nekonzistence ItemPropertyInfo.TargetObjectInfo a ItemObjectInfo");
+				}
+				itemObjectInfo = value;
 			}
 		}
-		private ObjectInfo itemsObjectInfo;
+		private ObjectInfo itemObjectInfo;
 
 		/// <summary>
 		/// Udává, zda má být na výbìr prázdná hodnota. Výchozí hodnota je true.
@@ -70,6 +78,15 @@ namespace Havit.Web.UI.WebControls
 		{
 			get { return (bool)(ViewState["Nullable"] ?? true); }
 			set { ViewState["Nullable"] = value; }
+		}
+
+		/// <summary>
+		/// Udává text prázdné hodnoty. Výchozí hodnota je "---".
+		/// </summary>
+		public string NullableText
+		{
+			get { return (string)(ViewState["NullableText"] ?? "---"); }
+			set { ViewState["NullableText"] = value; }
 		}
 
 		/// <summary>
@@ -118,10 +135,10 @@ namespace Havit.Web.UI.WebControls
 		{
 			get
 			{
-				if (itemsObjectInfo == null)
-					throw new InvalidOperationException("Není nastavena vlastnost ObjectInfo.");
+				if (itemObjectInfo == null)
+					throw new InvalidOperationException("Není nastavena vlastnost ItemObjectInfo.");
 
-				return (SelectedId == null) ? null : itemsObjectInfo.GetObjectMethod(SelectedId.Value);
+				return (SelectedId == null) ? null : itemObjectInfo.GetObjectMethod(SelectedId.Value);
 			}
 			set
 			{
@@ -182,10 +199,10 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		protected void DataBindAll()
 		{
-			if (itemsObjectInfo == null)
-				throw new InvalidOperationException("Není nastavena vlastnost ItemsObjectInfo.");
+			if (itemObjectInfo == null)
+				throw new InvalidOperationException("Není nastavena vlastnost ItemObjectInfo.");
 
-			DataSource = itemsObjectInfo.GetAllMethod();
+			DataSource = itemObjectInfo.GetAllMethod();
 			DataBind();
 		}
 
@@ -216,7 +233,7 @@ namespace Havit.Web.UI.WebControls
 		protected void EnsureEmptyItem()
 		{
 			if ((Items.Count == 0) || (Items[0].Value != String.Empty))
-				Items.Insert(0, new ListItem("---", String.Empty));
+				Items.Insert(0, new ListItem(NullableText, String.Empty));
 		}
 		#endregion
 	}

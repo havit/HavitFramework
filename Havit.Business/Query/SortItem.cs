@@ -9,21 +9,21 @@ namespace Havit.Business.Query
 	/// Reprezentuje položku øazení.
 	/// </summary>
 	[Serializable]	
-	public class SortingItem
+	public class SortItem
 	{
 		#region Constructors
 
 		/// <summary>
 		/// Vytvoøí prázdnou instanci poøadí.
 		/// </summary>
-		public SortingItem()
+		public SortItem()
 		{
 		}
 
 		/// <summary>
 		/// Vytvoøí položdu øazení podle fieldName, vzestupné øazení.
 		/// </summary>
-		public SortingItem(string fieldName)
+		public SortItem(string fieldName)
 			: this(fieldName, ListSortDirection.Ascending)
 		{			
 		}
@@ -31,7 +31,7 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Vytvoøí položdu øazení podle fieldName a daného poøadí.
 		/// </summary>
-		public SortingItem(string fieldName, ListSortDirection direction)
+		public SortItem(string fieldName, ListSortDirection direction)
 			: this()
 		{
 			this.fieldName = fieldName;
@@ -41,7 +41,7 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Vytvoøí položdu øazení podle sloupce, vzestupné poøadí.
 		/// </summary>
-		public SortingItem(PropertyInfo property)
+		public SortItem(PropertyInfo property)
 			: this(property.FieldName, ListSortDirection.Ascending)
 		{
 		}
@@ -49,7 +49,7 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Vytvoøí položdu øazení podle sloupce a daného poøadí.
 		/// </summary>
-		public SortingItem(PropertyInfo property, ListSortDirection direction)
+		public SortItem(PropertyInfo property, ListSortDirection direction)
 			: this(property.FieldName, direction)
 		{
 		}

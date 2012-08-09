@@ -7,7 +7,7 @@ namespace Havit.Business.Query
 	/// <summary>
 	/// Vytváøí podmínky testující null hodnoty.
 	/// </summary>
-	public class NullCondition
+	public static class NullCondition
 	{
 		/// <summary>
 		/// Vytvoøí podmínku testující hodnotu na NULL.

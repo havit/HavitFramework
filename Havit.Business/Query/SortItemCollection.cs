@@ -6,10 +6,10 @@ using System.Collections.ObjectModel;
 namespace Havit.Business.Query
 {
 	/// <summary>
-	/// Kolekce objektù tøídy OrderItem.
+	/// Kolekce objektù tøídy SortItem.
 	/// </summary>
 	[Serializable]
-	public class OrderItemCollection : Collection<SortingItem>
+	public class SortItemCollection : Collection<SortItem>
 	{
 	}
 }

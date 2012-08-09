@@ -8,7 +8,7 @@ namespace Havit.Business.Query
 	/// <summary>
 	/// Kompozitní podmínka. Výsledek je pravdivý, jsou-li pravdivé všechny èlenské podmínky.
 	/// </summary>
-	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix"), Serializable]
+	[ComVisible(false)]
 	public class AndCondition: CompositeCondition
 	{
 		#region Constructor

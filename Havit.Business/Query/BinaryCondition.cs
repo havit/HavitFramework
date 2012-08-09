@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Globalization;
 
 namespace Havit.Business.Query
 {
@@ -24,7 +25,12 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Druhý operand.
 		/// </summary>
-		protected IOperand Operand2;
+		protected IOperand Operand2
+		{
+			get { return _operand2; }
+			set { _operand2 = value; }
+		}
+		private IOperand _operand2;
 
 		#region Constructors
 		/// <summary>
@@ -56,6 +62,16 @@ namespace Havit.Business.Query
 		/// <param name="whereBuilder"></param>
 		public override void GetWhereStatement(System.Data.Common.DbCommand command, StringBuilder whereBuilder)
 		{
+			if (command == null)
+			{
+				throw new ArgumentNullException("command");
+			}
+
+			if (whereBuilder == null)
+			{
+				throw new ArgumentNullException("whereBuilder");
+			}
+
 			whereBuilder.AppendFormat(ConditionPattern, Operand1.GetCommandValue(command), Operand2.GetCommandValue(command));
 		}
 		#endregion
@@ -67,7 +83,7 @@ namespace Havit.Business.Query
 		public static string GetComparisonPattern(ComparisonOperator comparisonOperator)
 		{
 			const string comparisonOperatorFormatPattern = "({{0}} {0} {{1}})";
-			return String.Format(comparisonOperatorFormatPattern, ComparisonOperatorHelper.GetOperatorText(comparisonOperator));
+			return String.Format(CultureInfo.InvariantCulture, comparisonOperatorFormatPattern, ComparisonOperatorHelper.GetOperatorText(comparisonOperator));
 		}
 		#endregion
 	}

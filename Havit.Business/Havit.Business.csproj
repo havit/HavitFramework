@@ -112,8 +112,8 @@
     <Compile Include="Query\ValueOperand.cs" />
     <Compile Include="ConstraintViolationException.cs" />
     <Compile Include="IPropertyInfo.cs" />
-    <Compile Include="Query\SortingItem.cs" />
-    <Compile Include="Query\SortingItemCollection.cs" />
+    <Compile Include="Query\SortItem.cs" />
+    <Compile Include="Query\SortItemCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

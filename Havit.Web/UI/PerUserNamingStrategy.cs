@@ -66,16 +66,6 @@ namespace Havit.Web.UI
 			}
 			#endregion
 
-			#region DeleteAllAnonymousFiles (static)
-			/// <summary>
-			/// Smaže soubory anonymního uživatele.
-			/// </summary>
-			public static void DeleteAllAnonymousFiles(string root)
-			{
-				DeleteAllUserFiles(root, null);
-			}
-			#endregion
-
 			#region DeleteAllUserFiles (static)
 			/// <summary>
 			/// Smaže soubory konkrétního uživatele.
@@ -83,10 +73,60 @@ namespace Havit.Web.UI
 			public static void DeleteAllUserFiles(string root, string username)
 			{
 				string folder = GetFolderForUserName(root, username);
-				string[] files = System.IO.Directory.GetFiles(folder, "*", System.IO.SearchOption.AllDirectories);
-				foreach (string file in files)
+				if (System.IO.Directory.Exists(folder))
 				{
-					System.IO.File.Delete(file);
+					string[] files = System.IO.Directory.GetFiles(folder, "*", System.IO.SearchOption.AllDirectories);
+					foreach (string file in files)
+					{
+						try
+						{
+							System.IO.File.Delete(file);
+						}
+						catch (Exception) // pokud nějaký soubor nejde smazat, končíme s mazáním
+						{
+							return;
+						}
+					}
+				}
+			}
+			#endregion
+
+			#region DeleteOldAnonymousFiles
+			/// <summary>
+			/// Smaže soubory starší dnou dnů anonymního uživatele uživatele.
+			/// </summary>
+			public static void DeleteOldAnonymousFiles(string root)
+			{
+				DeleteOldAnonymousFiles(root, new TimeSpan(2, 0, 0)); // 2 dny
+			}
+
+			/// <summary>
+			/// Smaže soubory anonymního uživatele uživatele.
+			/// Maximální stáří souborů se určuje parametrem maximalAge.
+			/// V případě, že se některý soubor nepodaří smazat, je mazání ukončeno, ale není vyhozena výjimka.
+			/// </summary>
+			public static void DeleteOldAnonymousFiles(string root, TimeSpan maximalAge)
+			{
+				DateTime now = DateTime.Now;
+
+				string folder = GetFolderForUserName(root, null);
+				if (System.IO.Directory.Exists(folder))
+				{
+					string[] files = System.IO.Directory.GetFiles(folder, "*", System.IO.SearchOption.AllDirectories);
+					foreach (string file in files)
+					{
+						if ((now - System.IO.File.GetLastWriteTime(file)) > maximalAge)
+						{
+							try
+							{
+								System.IO.File.Delete(file);
+							}
+							catch (Exception)
+							{
+								return; // pokud nějaký soubor nejde smazat, končíme s mazáním
+							}
+						}
+					}
 				}
 			}
 			#endregion

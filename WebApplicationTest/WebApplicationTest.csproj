@@ -81,6 +81,13 @@
     <Compile Include="DefaultStylesLinkerTest.aspx.designer.cs">
       <DependentUpon>DefaultStylesLinkerTest.aspx</DependentUpon>
     </Compile>
+    <Compile Include="EnterpriseCheckBoxListTest.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>EnterpriseCheckBoxListTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="EnterpriseCheckBoxListTest.aspx.designer.cs">
+      <DependentUpon>EnterpriseCheckBoxListTest.aspx</DependentUpon>
+    </Compile>
     <Compile Include="EnterpriseDropDownListTest.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>EnterpriseDropDownListTest.aspx</DependentUpon>
@@ -226,6 +233,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Browsers\CssFriendlyAdapters.browser" />
+    <Content Include="EnterpriseCheckBoxListTest.aspx" />
     <Content Include="havit.css" />
     <Content Include="HavitScripts.js" />
     <Content Include="JirkkaTest.aspx" />

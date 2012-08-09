@@ -189,5 +189,109 @@
             <param name="rowIndex">index řádku</param>
             <returns>Vrací hodnotu klíče daného řádku.</returns>
         </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseCheckBoxList.EnsureAutoDataBind">
+            <summary>
+            Zajistí nabindování dat pro režit AutoDataBind.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.UI.WebControls.EnterpriseCheckBoxList.isDataBinding">
+            <summary>
+            Indikuje právě porobíhající databinding.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.UI.WebControls.EnterpriseCheckBoxList.delayedSetSelectedObjects">
+            <summary>
+            Objekt, který má být nastaven jako vybraný, ale jeho nastavení bylo odloženo.
+            </summary>
+            <remarks>
+            Pokud nastavujeme SelectedObject během DataBindingu (ve stránce pomocí &lt;%# ... %&gt;),
+            odloží se nastavení hodnoty až na konec DataBindingu. To protože v okamžiku nastavování SelectedObject 
+            nemusí být v Items ještě data.
+            </remarks>
+        </member>
+        <member name="F:Havit.Web.UI.WebControls.EnterpriseCheckBoxList.delayedSetSelectedObjectSet">
+            <summary>
+            Udává, zda máme nastaven objekt pro odložené nastavení vybraného objektu.
+            </summary>
+            <remarks>
+            Pokud nastavujeme SelectedObject během DataBindingu (ve stránce pomocí &lt;%# ... %&gt;),
+            odloží se nastavení hodnoty až na konec DataBindingu. To protože v okamžiku nastavování SelectedObject 
+            nemusí být v Items ještě data. 
+            </remarks>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseCheckBoxList.OnLoad(System.EventArgs)">
+            <summary>
+            Pokud jde o první načtení stránky a není nastaveno AutoDataBind, zavolá DataBindAll.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseCheckBoxList.DataBind">
+            <summary>
+            Provádí databinding a řeší odložené nastavení SelectedObject.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseCheckBoxList.DataBindAll">
+            <summary>
+            Naváže na DropDownList všechny (nasmazané) business objekty určitého typu
+            (zavolá metodu GetAll(), nastaví výsledek je jako DataSource a zavolá DataBind).
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseCheckBoxList.PerformDataBinding(System.Collections.IEnumerable)">
+            <summary>
+            Zajistí, aby byl po databindingu doplněn řádek pro výběr prázdné hodnoty.
+            </summary>
+            <param name="dataSource"></param>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseCheckBoxList.ItemPropertyInfo">
+            <summary>
+            ReferenceFieldPropertyInfo property, jejíž hodnota se tímto DropDownListem vybírá.
+            Nastavení této hodnoty rovněž přepíše hodnoty vlastností ItemsObjectInfo a Nullable.
+            Hodnota této property nepřežívá postback.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseCheckBoxList.ItemObjectInfo">
+            <summary>
+            Udává metodu, kterou se získá objekt na základě ID.
+            Hodnota vlastnosti je automaticky nastavena nastavením vlastnosti PropertyInfo.
+            Hodnota vlastnosti nepřežívá postback.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseCheckBoxList.AutoSort">
+            <summary>
+            Udává, zda je zapnuto automatické řazení položek při databindingu. Výchozí hodnota je true.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseCheckBoxList.AutoDataBind">
+            <summary>
+            Udává, zda je zapnuto automatické nabindování položek při prvním načtení stránky. Výchozí hodnota je false.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseCheckBoxList.DataSortField">
+            <summary>
+            Určuje, podle jaké property jsou řazena. Pokud není žádná hodnota nastavena použije se hodnota vlastnosti DataTextField.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseCheckBoxList.SortDirection">
+            <summary>
+            Udává směr řazení položek.
+            Výchozí je vzestupné řazení (Ascending).
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseCheckBoxList.SelectedIds">
+            <summary>
+            Vrací ID vybrané položky. Není-li žádná položka vybraná, vrací null.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseCheckBoxList.SelectedObjects">
+            <summary>
+            Vrací objekt na základě vybrané položky v DropDownListu. Objekt se získává metodou ve vlastnosti ItemsObjectInfo.
+            Není-li žádná položka vybrána, vrací null.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseCheckBoxList.DataBindPerformed">
+            <summary>
+            Indikuje, zda již došlo k navázání dat.
+            </summary>
+        </member>
     </members>
 </doc>

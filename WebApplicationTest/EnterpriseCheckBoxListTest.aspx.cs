@@ -1,0 +1,31 @@
+using System;
+using System.Data;
+using System.Configuration;
+using System.Collections;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+using Havit.Web.UI.WebControls;
+using Havit.BusinessLayerTest;
+
+namespace WebApplicationTest
+{
+	public partial class EnterpriseCheckBoxListTest : System.Web.UI.Page
+	{
+		protected EnterpriseCheckBoxList E1;
+		protected override void OnLoad(EventArgs e)
+		{
+			base.OnLoad(e);
+
+			if (!Page.IsPostBack)
+			{
+				E1.DataSource = Role.GetAll().FindAll(delegate(Role role) { return role.ID < 2; });
+				E1.DataBind();
+				E1.SelectedObjects = Role.GetAll();
+			}
+		}
+	}
+}

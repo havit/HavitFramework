@@ -25,20 +25,15 @@ namespace WebApplicationTest
 		[WebMethod()]
 		public string GetSuggestions(string keyword, bool usePaging, int pageIndex, int pageSize, string context)
 		{
-			QueryParams qp = new QueryParams();
-			qp.Conditions.Add(TextCondition.CreateWildcards(Subjekt.Properties.Nazev, keyword, WildCardsLikeExpressionMode.Contains));
-			qp.TopRecords = pageSize;
+			if (String.IsNullOrEmpty(keyword))
+			{
+				return AutoSuggestMenu.ConvertMenuItemsToJSON(new List<AutoSuggestMenuItem>(), 0);
+			}
 
-			SubjektCollection subjekty = Subjekt.GetList(qp);
-
-			List<AutoSuggestMenuItem> menuItems = new List<AutoSuggestMenuItem>(subjekty.Count);
-
+			List<AutoSuggestMenuItem> menuItems = new List<AutoSuggestMenuItem>();
 			for (int i = 0; i < 15; i++)
 			{
-				foreach (Subjekt subjekt in subjekty)
-				{
-					menuItems.Add(new AutoSuggestMenuItem(subjekt.Nazev + i.ToString(), subjekt.ID.ToString()));
-				}
+				menuItems.Add(new AutoSuggestMenuItem(keyword + i.ToString(), i.ToString()));
 			}
 
 			return AutoSuggestMenu.ConvertMenuItemsToJSON(menuItems.Skip(pageSize * pageIndex).Take(pageSize).ToList(), menuItems.Count);

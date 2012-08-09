@@ -22,29 +22,10 @@ namespace WebApplicationTest
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
-			TimestampLabel.Text = DateTime.Now.ToLongTimeString();
-		}
 
-		[WebMethod()]
-		public static string GetSuggestions(string keyword, bool usePaging, int pageIndex, int pageSize, string context)
-		{
-			QueryParams qp = new QueryParams();
-			qp.Conditions.Add(TextCondition.CreateWildcards(Subjekt.Properties.Nazev, keyword, WildCardsLikeExpressionMode.Contains));
-			qp.TopRecords = pageSize;
+			SubjektLabel.Text = SubjektASM.SelectedValue;
+			TimestampLabel.Text = Convert.ToString(DateTime.Now);
 
-			SubjektCollection subjekty = Subjekt.GetList(qp);
-			
-			List<AutoSuggestMenuItem> menuItems = new List<AutoSuggestMenuItem>(subjekty.Count);
-
-			for (int i = 0; i < 15; i++)
-			{
-				foreach (Subjekt subjekt in subjekty)
-				{
-					//menuItems.Add(new AutoSuggestMenuItem(subjekt.Nazev + i.ToString(), subjekt.ID.ToString()));
-				}
-			}
-
-			return AutoSuggestMenu.ConvertMenuItemsToJSON(menuItems.Skip(pageSize * pageIndex).Take(pageSize).ToList(), menuItems.Count);
 		}
 	}
 }

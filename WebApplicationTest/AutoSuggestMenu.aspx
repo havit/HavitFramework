@@ -14,22 +14,29 @@
 			<asp:Label ID="TimestampLabel" runat="server" />
 		</div>
 		<div>
+			<asp:Label ID="SubjektLabel" runat="server" />
+		</div>
+		<div>
 			<asp:TextBox ID="SubjektTB" Width="150" runat="server" style="border: 1px solid black;" />
 			<havit:AutoSuggestMenu
 				ID="SubjektASM"
 				TargetControlID="SubjektTB"
 				ServicePath="~/AutoSuggestMenuService.asmx"
-				OnGetSuggestions="WebApplicationTest.AutoSuggestMenuService.GetSuggestions"
 				KeyPressDelay="300"	
 				UsePaging="true"
 				PageSize="10"	
-				UsePageMethods="false"							
 				MinSuggestChars="2"							
-				SelectedValue="10"
+				OnGetSuggestions="WebApplicationTest.AutoSuggestMenuService.GetSuggestions"
 				Mode="ClearTextOnNoSelection"
 				AutoPostBack="true"
+				UsePageMethods="false"
 				runat="server"
 			/>
+			<asp:Button Text="Postback" runat="server" />
+		</div>
+		<br />
+		<div>
+			<textarea id="txtTrace" style="width: 100%; height: 600px;"></textarea>
 		</div>
 	</form>
 </body>

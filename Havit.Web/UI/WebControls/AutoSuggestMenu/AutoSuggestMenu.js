@@ -627,7 +627,7 @@ function AutoSuggestMenu()
 	        _iFrame.style.visibility="visible";
 	    }
 	   
-	   // JK: Pøesunuto sem z funkce render.
+	   // JK: Přesunuto sem z funkce render.
 		_dom.style.minWidth = textBox.clientWidth + "px";
 		
 	    _dom.style.visibility = "visible";
@@ -655,7 +655,30 @@ function AutoSuggestMenu()
 		for(var i = 0; i < self.onMenuHiddenEventHandlers.length; i++)
 		{
 			self.onMenuHiddenEventHandlers[i]();
-		}	        
+		}
+
+	}
+
+	self.doClearTextOnNoSelection = function ()
+	{
+		var hiddenFieldElement = self.getSelectedValueHiddenField();
+
+		if ((self.clearTextOnNoSelection == true) && (hiddenFieldElement.value == '')) {
+			var textBox = getTextBoxCtrl();
+			textBox.value = '';
+		}
+	}
+
+	self.doAutoPostBack = function ()
+	{
+		var hiddenFieldElement = self.getSelectedValueHiddenField();
+		if (hiddenFieldElement.lastValueExtra != hiddenFieldElement.value) {
+			var autoPostBackScript = self.autoPostBackScript;
+			if (autoPostBackScript != null) {
+				hiddenFieldElement.lastValueExtra = hiddenFieldElement.value;
+				eval(autoPostBackScript);
+			}
+		}
 	}
 	
     
@@ -747,16 +770,16 @@ function AutoSuggestMenu()
     
      
     //Called from AutoSuggestMenuItem when clicked
-    self.onMenuItemClick = function(itemIndex)
-	{
+    self.onMenuItemClick = function (itemIndex) {
     	TRACE("AutoSuggestMenu.onMenuItemClick  itemIndex=" + itemIndex);
-	
-		selectMenuItem(itemIndex);
-		self.hide();
-		
-		//onBlur was called when user clicked on item. So switch the focus back to TextBox
-		focusOnTextBox();
-	}
+
+    	selectMenuItem(itemIndex);
+    	self.hide();
+    	self.doAutoPostBack();
+
+    	//onBlur was called when user clicked on item. So switch the focus back to TextBox
+    	focusOnTextBox();
+    }
 
 
     //Called from AutoSuggestMenuItem when higlighted
@@ -769,45 +792,43 @@ function AutoSuggestMenu()
 	
 	
     //The rest of the events are called from textbox
-	self.onTextBoxKeyDown = function(evt)
-	{
+	self.onTextBoxKeyDown = function (evt) {
 		TRACE("AutoSuggestMenu.OnTextBoxKeyDown  " + XUtils.getEventKey(evt) + ", " + self.textBoxID);
-		
+
 		//Save current text box value before key press takes affect
-		_oldTextBoxValue=getTextBoxValue();
+		_oldTextBoxValue = getTextBoxValue();
 		TRACE("AutoSuggestMenu.OnTextBoxKeyDown  old text box value='" + _oldTextBoxValue + "'");
-	
-		var key=XUtils.getEventKey(evt);
-				
+
+		var key = XUtils.getEventKey(evt);
+
 		TRACE("AutoSuggestMenu.OnTextBoxKeyDown  Key is " + key);
-				
+
 		//Detect if the user is using the down button
-		if(key==38) //Up arrow
+		if (key == 38) //Up arrow
 		{
 			moveUp();
 		}
-		else if(key==40) //Down arrow
+		else if (key == 40) //Down arrow
 		{
 			moveDown();
 		}
-		else if(key==13) //Enter
+		else if (key == 13) //Enter
 		{
 			TRACE("AutoSuggestMenu.OnTextBoxKeyDown : isVisible - " + self.isVisible());
-			if (self.isVisible())
-			{
-			    if (!self.updateTextBoxOnUpDown)
-			        updateTextBoxValue();
-			    
+			if (self.isVisible()) {
+				if (!self.updateTextBoxOnUpDown)
+					updateTextBoxValue();
+
 				self.hide();
-				
-				_cancelSubmit=true;
-     		}
-     		else
-     		{
-     			_cancelSubmit=false;
-     		}
+				self.doAutoPostBack();
+
+				_cancelSubmit = true;
+			}
+			else {
+				_cancelSubmit = false;
+			}
 		}
-						
+
 		return true;
 	}
 	
@@ -833,45 +854,54 @@ function AutoSuggestMenu()
 			
 		return true;
 	}
-		
-	
-	self.onTextBoxKeyUp = function(evt)
+
+
+	self.onTextBoxKeyUp = function (evt)
 	{
-		var key=XUtils.getEventKey(evt);
-		
+		var key = XUtils.getEventKey(evt);
+
 		TRACE("AutoSuggestMenu.onTextBoxKeyUp " + key);
-		
-		var newValue=getTextBoxValue();
-			
+
+		var newValue = getTextBoxValue();
+
 		//Skip up/down/enter
-		// JK: Doplìno ignorování tabelkátoru
-		if ((key!=38) && (key!=40) && (key!=13) && (key!=9))
-		{		
+		// JK: Doplněno ignorování tabelátoru
+		if ((key != 38) && (key != 40) && (key != 13) && (key != 9))
+		{
 			//Limit num of characters to display suggestions	
 			if ((newValue.length > 0) &&
 			    (newValue.length >= self.minSuggestChars) &&
 			    (newValue.length <= self.maxSuggestChars))
 			{
-			    //Set timer to update div.  If user types quickly return suggestions when he stops.  
-              	var divMenu = _dom;
-				if (_keyPressTimer!=null) 
-				    window.clearTimeout(_keyPressTimer);
-								
-			    //Setup a callback function with timer
-			    TRACE("AutoSuggestMenu.OnTextBoxKeyUp newValue=" + newValue + ", self.keyPressDelay=" + self.keyPressDelay);	
+				//Set timer to update div.  If user types quickly return suggestions when he stops.  
+				var divMenu = _dom;
+				if (_keyPressTimer != null)
+					window.clearTimeout(_keyPressTimer);
+
+				//Setup a callback function with timer
+				TRACE("AutoSuggestMenu.OnTextBoxKeyUp newValue=" + newValue + ", self.keyPressDelay=" + self.keyPressDelay);
 				_keyPressTimer = window.setTimeout(self.onTextBoxKeyUpTimer, self.keyPressDelay);
 			}
 			else
 			{
-			    //Hide the menu if it is visible
-			    if (self.isVisible())
-			        self.hide();
+				//Hide the menu if it is visible
+				if (self.isVisible())
+				{
+					self.hide();
+				}
 			}
-		
-		    TRACE("AutoSuggestMenu.onTextBoxKeyUp self.oldTextBoxValue=" + _oldTextBoxValue + ", newValue=" + newValue);
-		
-    		if (_oldTextBoxValue!=newValue)
-    			self.setSelectedValue("");
+
+			TRACE("AutoSuggestMenu.onTextBoxKeyUp self.oldTextBoxValue=" + _oldTextBoxValue + ", newValue=" + newValue);
+
+			if (_oldTextBoxValue != newValue)
+			{
+				self.setSelectedValue("");
+//				if (!self.isVisible())
+//				{
+//					self.doClearTextOnNoSelection();
+//					self.doAutoPostBack();
+//				}
+			}
 		}
 	}
 				
@@ -883,7 +913,7 @@ function AutoSuggestMenu()
 	}
 
 
-	self.onTextBoxBlur = function ()
+	self.onTextBoxBlur = function()
 	{
 		TRACE("AutoSuggestMenu.onTextBoxBlur");
 
@@ -891,35 +921,35 @@ function AutoSuggestMenu()
 		if (_cancelOnBlur)
 			focusOnTextBox();
 		else
-			_onBlurTimer = window.setTimeout(self.hide, 500);
+			_onBlurTimer = window.setTimeout(self.onTextBoxBlurTimer, 500);
 
 		_cancelOnBlur = false;
 
-		// JK: Doplnìno
-		var textBox = getTextBoxCtrl();
-		var hiddenFieldElement = self.getSelectedValueHiddenField();
-		var textBoxElement = getTextBoxCtrl();
+		// JK: Doplněno
+		// Jiné chování pro výběr myší a výběr klávesnicí.
+		// Pro myš se volá onTextBoxBlur, hide, set lastValueExtra, pak znovu onTextBoxBlur (a tedy teprve na druhý průchod je isVisible false)
+		// Pro klávesnici (opuštění TABem) se volá onTextBoxBlur, hide a nic víc. Volání s isVisible=false tedy není nikdy.
 
-		if ((hiddenFieldElement.focusedExtra == true) && (!self.isVisible()))
-		{
-			hiddenFieldElement.focusedExtra = false;
+//		var textBox = getTextBoxCtrl();
+//		var hiddenFieldElement = self.getSelectedValueHiddenField();
+//		var textBoxElement = getTextBoxCtrl();
 
-			if ((self.clearTextOnNoSelection == true) && (hiddenFieldElement.value == ''))
-			{
-				textBox.value = '';
-			}
+//		if ((hiddenFieldElement.focusedExtra == true) && (!self.isVisible()))
+//		{
+//			hiddenFieldElement.focusedExtra = false;
 
-			if (hiddenFieldElement.lastValueExtra != hiddenFieldElement.value)
-			{
-				var autoPostBackScript = self.autoPostBackScript;
-				if (autoPostBackScript != null)
-				{
-					eval(autoPostBackScript);
-				}
-			}
-		}
+//			self.doClearTextOnNoSelection();
+//			self.doAutoPostBack();
+//		}
 
-	}	
+	}
+
+	self.onTextBoxBlurTimer = function ()
+	{
+		self.hide();
+		self.doClearTextOnNoSelection();
+		self.doAutoPostBack();
+	}
 	
 	
 	self.onNextPage = function()
@@ -964,7 +994,7 @@ function AutoSuggestMenu()
 		// hodnoty pojmenovám se suffixem "Extra", abych zabránil konfliktu s hodnotami používanými v pickerech aplikací
 		// (v dobì tìchto úprav aplikace používají stejnì pojmenované hodnoty na stejných elementech).
 		hiddenFieldElement.lastValueExtra = hiddenFieldElement.value;
-		hiddenFieldElement.focusedExtra = true;
+		//hiddenFieldElement.focusedExtra = true;
 
 		// vybereme v textboxu vše
 		// pøedpokládáme, že v textboxu je buï vybraná hodnota, nebo nic (øeší nové ASM + vlastní øešení pomocí JS ve starších aplikacích)

@@ -268,7 +268,7 @@ function TRACE(sText)
     var txtTrace=document.getElementById("txtTrace");
     
     if (txtTrace!=null)
-        txtTrace.value = txtTrace.value + sText + "\n";
+        txtTrace.value = sText + "\n" + txtTrace.value;
 }
 
 

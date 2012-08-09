@@ -31,6 +31,24 @@ namespace WebApplicationTest {
         protected global::System.Web.UI.ScriptManager ScriptManager1;
         
         /// <summary>
+        /// TimestampLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label TimestampLabel;
+        
+        /// <summary>
+        /// SubjektLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label SubjektLabel;
+        
+        /// <summary>
         /// SubjektTB control.
         /// </summary>
         /// <remarks>
@@ -47,14 +65,5 @@ namespace WebApplicationTest {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Havit.Web.UI.WebControls.AutoSuggestMenu SubjektASM;
-        
-        /// <summary>
-        /// TimestampLabel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label TimestampLabel;
     }
 }

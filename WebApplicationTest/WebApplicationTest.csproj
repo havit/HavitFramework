@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.50727</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{28BB8E7F-089E-494E-9F11-6088C36DD4D0}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
@@ -135,6 +135,13 @@
     <Compile Include="MenuTest.aspx.designer.cs">
       <DependentUpon>MenuTest.aspx</DependentUpon>
     </Compile>
+    <Compile Include="MessengerTest.aspx.cs">
+      <DependentUpon>MessengerTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MessengerTest.aspx.designer.cs">
+      <DependentUpon>MessengerTest.aspx</DependentUpon>
+    </Compile>
     <Compile Include="NumericBoxTest.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>NumericBoxTest.aspx</DependentUpon>
@@ -242,6 +249,7 @@
     <Content Include="havit.css" />
     <Content Include="HavitScripts.js" />
     <Content Include="JirkkaTest.aspx" />
+    <Content Include="MessengerTest.aspx" />
     <Content Include="ScriptletTest3.aspx" />
     <Content Include="SingleSubmitProtectionTest.aspx" />
     <Content Include="TestFolder\GetApplicationPathUri.aspx" />
@@ -267,6 +275,10 @@
           <IISUrl>
           </IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>

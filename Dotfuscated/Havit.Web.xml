@@ -555,20 +555,40 @@
             Zobrazuje zprávy Messengera.
             </summary>
         </member>
-        <member name="M:Havit.Web.UI.WebControls.MessengerControl.GetText">
+        <member name="M:Havit.Web.UI.WebControls.MessengerControl.GetSummaryHtml">
             <summary>
             Vrátí obsah messengeru (HTML kód) připravený k vyrenderování do stránky.
             </summary>
         </member>
-        <member name="M:Havit.Web.UI.WebControls.MessengerControl.AddMessageText(Havit.Web.UI.WebControls.MessengerMessage,System.Text.StringBuilder)">
+        <member name="M:Havit.Web.UI.WebControls.MessengerControl.AddMessageSummaryHtml(Havit.Web.UI.WebControls.MessengerMessage,System.Text.StringBuilder)">
             <summary>
             Vrátí text zprávy messengeru (HTML kód) připravený k vyrenderování do stránky.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.MessengerControl.GetMessageBoxText">
+            <summary>
+            Vrátí obsah messengeru (text) připravený k zobrazení v message boxu (alert).
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.MessengerControl.AddMessageBoxText(Havit.Web.UI.WebControls.MessengerMessage,System.Text.StringBuilder)">
+            <summary>
+            Vrátí text zprávy messengeru připravený k zobrazení v message boxu (alert).
             </summary>
         </member>
         <member name="P:Havit.Web.UI.WebControls.MessengerControl.Messenger">
             <summary>
             Messenger použitý pro zprávy k zobrazení.
             Není-li nastaven, vrací Messenger.Default.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.MessengerControl.ShowMessageBox">
+            <summary>
+            Indikuje, zda se budou zprávy messengeru zobrazovat v message boxu (alert).
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.MessengerControl.ShowSummary">
+            <summary>
+            Indikuje, zda se budou zprávy messengeru renderovat do stránky.
             </summary>
         </member>
         <member name="T:Havit.Web.UrlRewriter.Config.RewriterRuleCollection">

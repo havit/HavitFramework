@@ -18,6 +18,17 @@ namespace WebApplicationTest
 {
 	public partial class AutoSuggestMenu_aspx : System.Web.UI.Page
 	{
+		protected override void OnInit(EventArgs e)
+		{
+			base.OnInit(e);
+			ShowDialogButton.Click += new EventHandler(ShowDialogButton_Click);
+		}
+
+		void ShowDialogButton_Click(object sender, EventArgs e)
+		{
+			TestDialog.Show();
+		}
+
 		[WebMethod()]
 		public static string GetSuggestions(string keyword, bool usePaging, int pageIndex, int pageSize)
 		{

@@ -617,6 +617,9 @@ function AutoSuggestMenu()
 	        _iFrame.style.visibility="visible";
 	    }
 	   
+	   // JK: Pøesunuto sem z funkce render.
+		_dom.style.minWidth = textBox.clientWidth + "px";
+		
 	    _dom.style.visibility = "visible";
 	}
 	
@@ -664,8 +667,11 @@ function AutoSuggestMenu()
         menuDiv.className=self.cssClass;
         menuDiv.sourceObject=self;
         
-        /**************************/
-		menuDiv.style.minWidth = textBox.clientWidth + "px";
+        /**************************/        
+        // JK: Pøesunuto do show. Zde je obèas textBox.clientWidth, zatímco v èase volání 
+        // funkce show je v této vlastnosti již správná hodnota.
+        // Tím napravujeme napø. chybnou velikost v dialogu.
+		//menuDiv.style.minWidth = textBox.clientWidth + "px";
         /**************************/
         
         XUtils.addEventListener(menuDiv, "scroll",    self.onMenuScroll);

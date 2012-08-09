@@ -142,6 +142,7 @@
     <Compile Include="UI\WebControls\DataGridExt.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UI\WebControls\GridViewExt.cs" />
     <Compile Include="UI\WebControls\GridViews\HighlightingGridView.cs">
       <SubType>Code</SubType>
     </Compile>

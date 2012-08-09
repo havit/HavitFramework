@@ -100,70 +100,29 @@
         </member>
         <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.#ctor">
             <summary>
-            Vytvoří instanci EnterpriseGridView.
-            Vypne automatické generování sloupců při databindingu (nastaví AutoGenerateColumns na false).
+            Vytvoří instanci EnterpriseGridView. Nastavuje defaultní DataKeyNames na ID.
             </summary>
         </member>
-        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.OnInit(System.EventArgs)">
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.GetRowID(System.Web.UI.Control)">
             <summary>
-            Inicializuje EnterpriseGridView.
+            Nalezne hodnotu ID klíče položky, ve kterém se nachází control.
             </summary>
+            <param name="control">Control. Hledá se řádek, ve kterém se GridViewRow nalézá a DataKey řádku.</param>
+            <returns>Vrací hodnotu klíče.</returns>
         </member>
-        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.GetKeyValue(System.Web.UI.Control)">
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.GetRowID(System.Web.UI.WebControls.GridViewCommandEventArgs)">
             <summary>
-            Nalezne hodnotu klíče položky, ve kterém se nachází control.
-            </summary>
-            <param name="control">Control. Hledá se řádek, ve kterém se GridViewRow nalézá 
-            a DataKey řádku.</param>
-            <returns>Vrací hodnotu klíče. Pokud není klíč nalezen
-            (Control není v GridView), vrací null.
-            </returns>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.GetKeyValue(System.Web.UI.WebControls.GridViewCommandEventArgs)">
-            <summary>
-            Nalezne hodnotu klíče položky na základě události.
+            Nalezne hodnotu ID klíče položky na základě události.
             </summary>
             <param name="e">Událost, ke které v gridu došlo.</param>
-            <returns>Vrací hodnotu klíče daného řádku. Pokud není klíč nalezen vrací null.</returns>
+            <returns>Vrací hodnotu klíče daného řádku.</returns>
         </member>
-        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.FindColumn(System.String)">
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.GetRowID(System.Int32)">
             <summary>
-            Vyhledá sloupec podle id. Vyhledává jen sloupce implementující rozhraní IEnterpriseField.
+            Nalezne hodnotu ID klíče položky na základě indexu řádku v gridu.
             </summary>
-            <param name="id">ID, podle kterého se sloupec vyhledává.</param>
-            <returns>Nalezený sloupec nebo null, pokud není nalezen.</returns>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.OnPageIndexChanging(System.Web.UI.WebControls.GridViewPageEventArgs)">
-            <summary>
-            Pokud není stránkování stornováno, změníme stránku na cílovou.
-            </summary>
-            <param name="e"></param>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.OnSorted(System.EventArgs)">
-            <summary>
-            Po setřídění podle sloupce zajistí u vícestránkových gridů návrat na první stránku
-            </summary>
-            <param name="e"></param>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.OnPreRender(System.EventArgs)">
-            <summary>
-            Zajistíme DataBinding, pokud mají vlastnosti AutoDataBind a RequiresDataBinding hodnotu true.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.SetRequiresDatabinding">
-            <summary>
-            Nastaví RequiresDataBinding na true.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.EnterpriseGridView.AutoDataBind">
-            <summary>
-            Nastavuje automatický databind na GridView.		
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.EnterpriseGridView.RequiresDataBinding">
-            <summary>
-            Zpřístupňuje pro čtení chráněnou vlastnost RequiresDataBinding.
-            </summary>
+            <param name="rowIndex">index řádku</param>
+            <returns>Vrací hodnotu klíče daného řádku.</returns>
         </member>
     </members>
 </doc>

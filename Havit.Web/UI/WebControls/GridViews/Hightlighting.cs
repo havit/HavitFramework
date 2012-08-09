@@ -11,10 +11,10 @@ using System.Web.UI.HtmlControls;
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
-	/// Tøída Hightlighting drží data pro zvýraznìní vybrené položky podle hodnoty klíèe.
+	/// Tøída Highlighting drží data pro zvýraznìní vybrané položky podle hodnoty klíèe.
 	/// </summary>
 	[Serializable]
-	public class Hightlighting
+	public class Highlighting
 	{
 		/// <summary>
 		/// Hodnota "klíèe" položky, která má být zvýraznìna.

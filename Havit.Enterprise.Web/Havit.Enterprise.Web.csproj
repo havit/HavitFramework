@@ -35,7 +35,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\WebControls\EnterpriseDropDownList.cs" />
-    <Compile Include="UI\WebControls\GridViews\EnterpriseGridView.cs" />
+    <Compile Include="UI\WebControls\EnterpriseGridView.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Havit.Business\Havit.Business.csproj">

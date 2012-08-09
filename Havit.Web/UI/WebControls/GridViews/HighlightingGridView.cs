@@ -15,22 +15,22 @@ namespace Havit.Web.UI.WebControls
 	/// GridView, který automaticky zvýrazòuje položku na základì hodnoty urèité 
 	/// property dat. Zvýraznìní je provedeno nastavením hodnoty SelectedIndex.
 	/// </summary>
-	public class HighlightingGridView : GridView
+	public abstract class HighlightingGridView : GridView
 	{
 		#region Properties
 		/// <summary>
 		/// Vlastnosti pro zvýraznìní øádku.
 		/// </summary>
-		public Hightlighting Hightlighting
+		public Highlighting Hightlighting
 		{
 			get
 			{
 				if (hightlighting == null)
-					hightlighting = new Hightlighting();
+					hightlighting = new Highlighting();
 				return hightlighting;
 			}
 		}
-		private Hightlighting hightlighting;
+		private Highlighting hightlighting;
 		#endregion
 
 		#region SaveViewState, LoadViewState
@@ -55,7 +55,7 @@ namespace Havit.Web.UI.WebControls
 			Pair viewStateData = (Pair)savedState;
 			base.LoadViewState(viewStateData.First);
 			if (viewStateData.Second != null)
-				hightlighting = (Hightlighting)viewStateData.Second;
+				hightlighting = (Highlighting)viewStateData.Second;
 		}
 		#endregion
 

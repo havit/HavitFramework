@@ -12,7 +12,7 @@ namespace Havit.Web.UI.WebControls
 	/// SortingGridView zajišuje øazení poloek.
 	/// Ukládá nastavení øazení dle uivatele a pøípadnì zajišuje automatické øazení pomocí GenericPropertyCompareru.
 	/// </summary>
-	public class SortingGridView: HighlightingGridView
+	public abstract class SortingGridView: HighlightingGridView
 	{
 		#region Properties
 
@@ -49,15 +49,26 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 
 		#region	OnSorting
-		
 		/// <summary>
 		/// Pøi poadavku na øazení si zapamatujeme, jak chtìl uivatel øadit a nastavíme RequiresDataBinding na true.
 		/// </summary>
-		/// <param name="e"></param>
+		/// <param name="e">argumenty události</param>
 		protected override void OnSorting(GridViewSortEventArgs e)
 		{
 			sorting.AddSortExpression(e.SortExpression);
 			base.RequiresDataBinding = true;
+		}
+		#endregion
+
+		#region OnSorted
+		/// <summary>
+		/// Po setøídìní podle sloupce zajistí u vícestránkovıch gridù návrat na první stránku
+		/// </summary>
+		/// <param name="e">argumenty události</param>
+		protected override void OnSorted(EventArgs e)
+		{
+			base.OnSorted(e);
+			PageIndex = 0;
 		}
 		#endregion
 
@@ -85,6 +96,7 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region PerformDataBinding
 		/// <summary>
 		/// Provede databinding dat.
 		/// Pokud data nejsou null a AutoSort je true, automaticky seøadí data pomocí GenericPropertyCompareru.
@@ -95,7 +107,6 @@ namespace Havit.Web.UI.WebControls
 		{
 			if ((data != null) && AutoSort)
 			{
-
 				if ((Sorting.SortItems.Count == 0) && !String.IsNullOrEmpty(DefaultSortExpression))
 				{
 					// sorting je nutné zmìnit na základì DefaultSortExpression,
@@ -111,5 +122,6 @@ namespace Havit.Web.UI.WebControls
 				base.PerformDataBinding(data);
 			}
 		}
+		#endregion
 	}
 }

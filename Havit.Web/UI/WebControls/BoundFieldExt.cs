@@ -12,7 +12,7 @@ namespace Havit.Web.UI.WebControls
 	/// <summary>
 	/// Sloupec pro heterogenní seznamy.
 	/// </summary>
-	public class BoundFieldExt : System.Web.UI.WebControls.BoundField, IEnterpriseField
+	public class BoundFieldExt : System.Web.UI.WebControls.BoundField, IIdentifiableField
 	{
 		#region IEnterpriseField Members
 		/// <summary>

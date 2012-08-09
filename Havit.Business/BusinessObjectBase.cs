@@ -88,6 +88,16 @@ namespace Havit.Business
 			protected set { _isDeleted = value; }
 		}
 		private bool _isDeleted;
+
+		/// <summary>
+		/// Indikuje, zda-li je objekt zrovna ukládán (hlídá cyklické reference pøi ukládání).
+		/// </summary>
+		public bool IsSaving
+		{
+			get { return _isSaving; }
+			set { _isSaving = value; }
+		}
+		private bool _isSaving = false;
 		#endregion
 
 		#region PropertyHolders
@@ -191,12 +201,15 @@ namespace Havit.Business
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
 		public virtual void Save(DbTransaction transaction)
 		{			
-			if (!IsLoaded)
+			if (!IsLoaded || IsSaving)
 			{
 				return;
 			}
 
+			IsSaving = true; // øeší cyklické reference pøi ukládání objektových struktur
+
 			CheckConstraints();
+
 
 			if (IsNew)
 			{
@@ -216,6 +229,7 @@ namespace Havit.Business
 
 			IsNew = false; // uložený objekt není už nový, dostal i pøidìlené ID
 			IsDirty = false; // uložený objekt je aktuální
+			IsSaving = false;
 		}
 
 		/// <summary>

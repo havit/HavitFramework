@@ -774,14 +774,6 @@
             <param name="controlContainer">Control container (řádek GridView), kterému se získává hodnota.</param>
             <returns></returns>
         </member>
-        <member name="M:Havit.Web.UI.WebControls.BoundFieldExt.GetValue(System.Object,System.String)">
-            <summary>
-            Získá hodnotu pro zobrazení z předaného objektu a dataField.
-            </summary>
-            <param name="dataItem">Položka dat z DataSource</param>
-            <param name="dataField">DataField</param>
-            <returns></returns>
-        </member>
         <member name="M:Havit.Web.UI.WebControls.BoundFieldExt.FormatDataValue(System.Object)">
             <summary>
             Formátuje hodnotu k zobrazení.
@@ -940,6 +932,40 @@
             <summary>
             Vrací HtmlTextWriterTag.H6 zajišťující správné renderování.
             </summary>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.DropDownListExt">
+            <summary>
+            Vylepšený <see cref="T:System.Web.UI.WebControls.DropDownList"/>.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.DropDownListExt.PerformDataBinding(System.Collections.IEnumerable)">
+            <summary>
+            Binds the specified data source to the control that is derived from the <see cref="T:System.Web.UI.WebControls.ListControl"/> class.
+            </summary>
+            <param name="dataSource">An <see cref="T:System.Collections.IEnumerable"/> that represents the data source.</param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.DropDownListExt.FindItemIndexByValue(System.Web.UI.WebControls.ListItemCollection,System.String)">
+            <summary>
+            Implementace nahrazující internal metody ListItemCollection.FindByValueInternal()
+            </summary>
+            <param name="listItemCollection">prohledávaná ListItemCollection</param>
+            <param name="value">hledaná hodnota</param>
+            <param name="includeDisabled">indikuje, zda-li se mají prohledávat i disablované položky</param>
+            <returns></returns>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.DropDownListExt.SelectedIndex">
+            <summary>
+            Gets or sets the index of the selected item in the <see cref="T:System.Web.UI.WebControls.DropDownList"/> control.
+            </summary>
+            <value></value>
+            <returns>The index of the selected item in the <see cref="T:System.Web.UI.WebControls.DropDownList"/> control. The default value is 0, which selects the first item in the list.</returns>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.DropDownListExt.SelectedValue">
+            <summary>
+            Gets the value of the selected item in the list control, or selects the item in the list control that contains the specified value.
+            </summary>
+            <value></value>
+            <returns>The value of the selected item in the list control. The default is an empty string ("").</returns>
         </member>
         <member name="T:Havit.Web.UI.Scriptlets.ControlParameter">
             <summary>
@@ -2669,6 +2695,31 @@
             <summary>
             Hodnota parametru.
             </summary>
+        </member>
+        <member name="T:Havit.Web.UI.DataBinderExt">
+            <summary>
+            Rozšiřující funkčnost analogická k <see cref="T:System.Web.UI.DataBinder"/>.
+            </summary>
+            <remarks>
+            Používá se např. pro resolvování BoundFieldExt.DataField, DropDownListExt.DataTextField, ...
+            </remarks>
+        </member>
+        <member name="M:Havit.Web.UI.DataBinderExt.GetValue(System.Object,System.String)">
+            <summary>
+            Získá hodnotu pro zobrazení z předaného objektu a dataField.
+            </summary>
+            <param name="dataItem">Položka dat z DataSource</param>
+            <param name="dataField">DataField</param>
+            <returns>hodnota, pokud se ji podařilo získat; jinak <c>null</c></returns>
+        </member>
+        <member name="M:Havit.Web.UI.DataBinderExt.GetValue(System.Object,System.String,System.String)">
+            <summary>
+            Získá hodnotu pro zobrazení z předaného objektu a dataField a zformtátuje ji.
+            </summary>
+            <param name="dataItem">Položka dat z DataSource</param>
+            <param name="dataField">DataField</param>
+            <param name="format">formátovací řetězec</param>
+            <returns>hodnota, pokud se ji podařilo získat a zformátovat; jinak <c>String.Empty</c></returns>
         </member>
         <member name="T:Havit.Web.UI.Adapters.CssAdapters.CssMenuAdapter">
             <summary>

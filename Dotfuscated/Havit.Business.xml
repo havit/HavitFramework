@@ -507,6 +507,7 @@
         <member name="M:Havit.Business.BusinessObjectBase.Equals(Havit.Business.BusinessObjectBase)">
             <summary>
             Zjistí rovnost druhého objektu s instancí. Základní implementace porovná jejich ID.
+            Nové objekty jsou si rovny v případě identity (stejná reference).
             </summary>
             <param name="obj">objekt k porovnání</param>
             <returns>true, pokud jsou si rovny; jinak false</returns>

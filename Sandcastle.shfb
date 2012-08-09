@@ -6,7 +6,6 @@
         <assembly assemblyPath=".\Dotfuscated\Havit.Data.SqlServer.dll" xmlCommentsPath=".\Dotfuscated\Havit.Data.SqlServer.xml" commentsOnly="False" />
         <assembly assemblyPath=".\Dotfuscated\Havit.Drawing.dll" xmlCommentsPath=".\Dotfuscated\Havit.Drawing.xml" commentsOnly="False" />
         <assembly assemblyPath=".\Dotfuscated\Havit.Web.dll" xmlCommentsPath=".\Dotfuscated\Havit.Web.xml" commentsOnly="False" />
-        <assembly assemblyPath=".\Dotfuscated\Havit.Web.UI.WebControls.DynarchCalendar.dll" xmlCommentsPath=".\Dotfuscated\Havit.Web.UI.WebControls.DynarchCalendar.xml" commentsOnly="False" />
         <assembly assemblyPath=".\Dotfuscated\Havit.Xml.dll" xmlCommentsPath=".\Dotfuscated\Havit.Xml.xml" commentsOnly="False" />
         <assembly assemblyPath=".\Dotfuscated\Havit.Enterprise.Web.dll" xmlCommentsPath=".\Dotfuscated\Havit.Enterprise.Web.xml" commentsOnly="False" />
     </assemblies>
@@ -60,11 +59,11 @@
     <CopyrightHref>http://www.havit.cz</CopyrightHref>
     <CopyrightText>HAVIT, s.r.o., All rights reserved.</CopyrightText>
     <FeedbackEMailAddress>info@havit.cz</FeedbackEMailAddress>
-    <HeaderText>HAVIT .NET Framework</HeaderText>
+    <HeaderText />
     <FooterText>Copyright HAVIT, s.r.o., All Rights Reserved</FooterText>
     <ProjectLinkType>Local</ProjectLinkType>
     <SdkLinkType>Msdn</SdkLinkType>
-    <PresentationStyle>Prototype</PresentationStyle>
+    <PresentationStyle>vs2005</PresentationStyle>
     <NamingMethod>Guid</NamingMethod>
     <SyntaxFilters>CSharp</SyntaxFilters>
     <ContentPlacement>AboveNamespaces</ContentPlacement>

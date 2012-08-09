@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Havit.Business.Query
 {
@@ -118,5 +119,51 @@ namespace Havit.Business.Query
 		}
 		#endregion
 	
+		/// <summary>
+		/// Vrátí regulární výraz pro hledání v textu.
+		/// Více o myšlence wildcardù je uvedeno u metody <see cref="CreateWildcards">CreateWildcards</see>.
+		/// </summary>
+		/// <param name="text">Text, který má být hledán a pro který se tvoøí regulární výraz.</param>
+		public static Regex GetWildcardRegex(string text)
+		{
+			string regexPattern = text;
+			regexPattern = regexPattern.Replace("\\", "\\\\"); // zdvojíme zpìtná lomítka
+			regexPattern = regexPattern.Replace("^", "\\^");
+			regexPattern = regexPattern.Replace("$", "\\$");
+			regexPattern = regexPattern.Replace("+", "\\+");
+			regexPattern = regexPattern.Replace(".", "\\.");
+			regexPattern = regexPattern.Replace("(", "\\(");
+			regexPattern = regexPattern.Replace(")", "\\)");
+			regexPattern = regexPattern.Replace("|", "\\|");
+			regexPattern = regexPattern.Replace("{", "\\{");
+			regexPattern = regexPattern.Replace("}", "\\}");
+			regexPattern = regexPattern.Replace("[", "\\[");
+			regexPattern = regexPattern.Replace("]", "\\]");
+			regexPattern = regexPattern.Replace("?", "\\?");
+
+			// hvìzdièka je pro nás zvláštní symbol
+			regexPattern = regexPattern.Replace("*", "(.*)");
+			// hledáme od zaèátku
+			regexPattern = "^" + regexPattern;
+			// pokud je hvìzdièka, pak hledáme "pøesnou" shodu
+			// pokud hvezdièka není, chceme, aby se hledání chovalo, jako by byla hvìzdièka na konci, slovy regulárních výrazù pak netøeba $ na konci.
+			if (text.Contains("*"))
+			{
+				regexPattern += "$";
+			}
+			return new Regex(regexPattern, RegexOptions.IgnoreCase);			
+		}
+
+		/// <summary>
+		/// Vrátí true, pokud textToBeSearched obsahuje hledaný vzorek wildcardExpressionToSearch (s logikou wildcards - uvedena u metody <see cref="CreateWildcards">CreateWildcards</see>).
+		/// </summary>
+		/// <param name="wildcardExpressionToSearch">Vzorek, který je vyhledáván.</param>
+		/// <param name="textToBeSearched">Text, který je prohledáván.</param>
+		/// <returns></returns>
+		public static bool IsWildcardMatch(string wildcardExpressionToSearch, string textToBeSearched)
+		{
+			Regex regex = GetWildcardRegex(wildcardExpressionToSearch);
+			return regex.IsMatch(textToBeSearched);
+		}
 	}
 }

@@ -152,6 +152,13 @@
     <Compile Include="ScriptletTest2.aspx.designer.cs">
       <DependentUpon>ScriptletTest2.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SingleSubmitProtectionTest.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>SingleSubmitProtectionTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SingleSubmitProtectionTest.aspx.designer.cs">
+      <DependentUpon>SingleSubmitProtectionTest.aspx</DependentUpon>
+    </Compile>
     <Compile Include="TestFolder\GetApplicationPathUri.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>GetApplicationPathUri.aspx</DependentUpon>
@@ -215,6 +222,7 @@
     <Content Include="havit.css" />
     <Content Include="HavitScripts.js" />
     <Content Include="JirkkaTest.aspx" />
+    <Content Include="SingleSubmitProtectionTest.aspx" />
     <Content Include="TestFolder\GetApplicationPathUri.aspx" />
     <Content Include="WebDialogsTest.aspx" />
   </ItemGroup>

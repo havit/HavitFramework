@@ -8,29 +8,40 @@
 </head>
 <body>
 	<form id="form1" runat="server">
-		<div>
+		<div>			
 			<asp:ScriptManager runat="server" />
 			<asp:UpdatePanel runat="server">
-				<ContentTemplate>
+				<ContentTemplate>				
 					<table>
 						<tr>
 							<td></td>
-							<td><havit:NumericBox runat="server" /></td>
+							<td>
+								<havit:NumericBox ID="Test1NumericBox" runat="server" />								
+							</td>
 						</tr>
 						<tr>
 							<td>AllowNegativeNumber</td>
-							<td><havit:NumericBox AllowNegativeNumber="true" runat="server" /></td>
+							<td>
+								<havit:NumericBox ID="Test2NumericBox" AllowNegativeNumber="true" runat="server" />
+								<havit:NumericBoxValidator Text="error" ControlToValidate="Test2NumericBox" runat="server" />
+							</td>
 						</tr>
 						<tr>
 							<td>Decimals=2</td>
-							<td><havit:NumericBox Decimals="2" runat="server" /></td>
+							<td>
+								<havit:NumericBox ID="Test3NumericBox" Decimals="2" runat="server" />
+								<havit:NumericBoxValidator Text="error" ControlToValidate="Test3NumericBox" runat="server" />
+							</td>
 						</tr>
 						<tr>
 							<td>AllowNegativeNumber, Decimals=2</td>
-							<td><havit:NumericBox AllowNegativeNumber="true" Decimals="2" runat="server" /></td>
+							<td>
+								<havit:NumericBox ID="Test4NumericBox" AllowNegativeNumber="true" Decimals="2" runat="server" />
+								<havit:NumericBoxValidator Text="error" ControlToValidate="Test4NumericBox" runat="server" />
+							</td>
 						</tr>
 					</table>
-					<asp:Button runat="server" text="Callback" />
+					<asp:Button ID="CallBackButton" CausesValidation="true" runat="server" text="Callback" />
 				</ContentTemplate>
 			</asp:UpdatePanel>
 		</div>

@@ -13,9 +13,13 @@ namespace WebApplicationTest
 {
 	public partial class NumericBoxTest : System.Web.UI.Page
 	{
-		protected void Page_Load(object sender, EventArgs e)
+		protected override void OnPreRender(EventArgs e)
 		{
-
+			base.OnPreRender(e);
+			if (Page.IsPostBack)
+			{
+				CallBackButton.Text = Page.IsValid.ToString();
+			}
 		}
 	}
 }

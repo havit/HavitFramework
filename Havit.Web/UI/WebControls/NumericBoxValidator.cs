@@ -90,6 +90,19 @@ namespace Havit.Web.UI.WebControls
 				return false;
 			}
 
+			// otestujeme desetinná místa
+			decimal tempValue = numericValue.Value;
+			decimal tmpDecimals = numericBox.Decimals;
+			while (tmpDecimals > 0)
+			{
+				tempValue *= 10;
+				tmpDecimals -= 1;
+			}			
+			if (Math.Abs(tempValue) != Math.Floor(Math.Abs(tempValue))) // je více desetinným míst
+			{
+				return false;
+			}
+
 			return true;
 		}
 		#endregion

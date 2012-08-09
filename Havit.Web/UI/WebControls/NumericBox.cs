@@ -222,7 +222,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region IsValid
 		/// <summary>
-		/// Vrací true, pokud obsahuje platné číslo (tj. prázdnou hodnotu NEBO "validní" datum).
+		/// Vrací true, pokud obsahuje platné číslo (tj. prázdnou hodnotu NEBO "validní" číslo).
 		/// </summary>
 		public bool IsValid
 		{

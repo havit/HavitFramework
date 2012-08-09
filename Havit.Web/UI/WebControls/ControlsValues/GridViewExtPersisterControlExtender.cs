@@ -18,9 +18,11 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 		#region GetValue
 		public object GetValue(Control control)
 		{
+			GridViewExt gridView = ((GridViewExt)control);
 			GridViewExtValue gridViewExtValue = new GridViewExtValue();
-			gridViewExtValue.SortItems = ((GridViewExt)control).SortExpressions.SortItems;
-			gridViewExtValue.PageIndex = ((GridViewExt)control).PageIndex;
+			gridViewExtValue.SortItems = gridView.SortExpressions.SortItems;
+			gridViewExtValue.PageIndex = gridView.PageIndex;
+			gridViewExtValue.AllowPaging = gridView.AllowPaging;
 
 			return gridViewExtValue;
 		} 
@@ -39,6 +41,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 			GridViewExt gridView = (GridViewExt)control;			
 			GridViewExtValue gridViewExtValue = (GridViewExtValue)value;
 
+			gridView.AllowPaging = gridViewExtValue.AllowPaging;
 			gridView.PageIndex = gridViewExtValue.PageIndex;
 			gridView.SortExpressions.ClearSelection();
 

@@ -66,25 +66,33 @@ namespace Havit.Web.UI
 			}
 			#endregion
 
-			#region DeleteAllUserFiles (static)
+			#region DeleteUserFiles (static)
 			/// <summary>
 			/// Smaže soubory konkrétního uživatele.
+			/// Pokud není uživatel zadán (String.IsNullOrEmpty), maže soubory anonymního uživatele.
+			/// Maximální stáří souborů se určuje parametrem fileAge. Pokud m8 hodnotu null, stáří souborů se nebere v úvahu (jsou smazány všechny)
+			/// V případě, že se některý soubor nepodaří smazat, je mazání ukončeno, ale není vyhozena výjimka.
 			/// </summary>
-			public static void DeleteAllUserFiles(string root, string username)
+			public static void DeleteUserFiles(string root, string username, TimeSpan? fileAge = null)
 			{
+				DateTime now = DateTime.Now;
+
 				string folder = GetFolderForUserName(root, username);
 				if (System.IO.Directory.Exists(folder))
 				{
 					string[] files = System.IO.Directory.GetFiles(folder, "*", System.IO.SearchOption.AllDirectories);
 					foreach (string file in files)
 					{
-						try
+						if ((fileAge == null) || ((now - System.IO.File.GetLastWriteTime(file)) > fileAge.Value))
 						{
-							System.IO.File.Delete(file);
-						}
-						catch (Exception) // pokud nějaký soubor nejde smazat, končíme s mazáním
-						{
-							return;
+							try
+							{
+								System.IO.File.Delete(file);
+							}
+							catch (Exception) // pokud nějaký soubor nejde smazat, končíme s mazáním
+							{
+								return;
+							}
 						}
 					}
 				}
@@ -94,40 +102,11 @@ namespace Havit.Web.UI
 			#region DeleteOldAnonymousFiles
 			/// <summary>
 			/// Smaže soubory starší dnou dnů anonymního uživatele uživatele.
+			/// V případě, že se některý soubor nepodaří smazat, je mazání ukončeno, ale není vyhozena výjimka.
 			/// </summary>
 			public static void DeleteOldAnonymousFiles(string root)
 			{
-				DeleteOldAnonymousFiles(root, new TimeSpan(2, 0, 0)); // 2 dny
-			}
-
-			/// <summary>
-			/// Smaže soubory anonymního uživatele uživatele.
-			/// Maximální stáří souborů se určuje parametrem maximalAge.
-			/// V případě, že se některý soubor nepodaří smazat, je mazání ukončeno, ale není vyhozena výjimka.
-			/// </summary>
-			public static void DeleteOldAnonymousFiles(string root, TimeSpan maximalAge)
-			{
-				DateTime now = DateTime.Now;
-
-				string folder = GetFolderForUserName(root, null);
-				if (System.IO.Directory.Exists(folder))
-				{
-					string[] files = System.IO.Directory.GetFiles(folder, "*", System.IO.SearchOption.AllDirectories);
-					foreach (string file in files)
-					{
-						if ((now - System.IO.File.GetLastWriteTime(file)) > maximalAge)
-						{
-							try
-							{
-								System.IO.File.Delete(file);
-							}
-							catch (Exception)
-							{
-								return; // pokud nějaký soubor nejde smazat, končíme s mazáním
-							}
-						}
-					}
-				}
+				DeleteUserFiles(root, null, new TimeSpan(2, 0, 0)); // 2 dny
 			}
 			#endregion
 

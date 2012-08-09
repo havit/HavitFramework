@@ -1895,6 +1895,11 @@
             Gets or sets the tab order of the control within its container.		
             </summary>
         </member>
+        <member name="P:Havit.Web.UI.WebControls.DateTimeBox.ToolTip">
+            <summary>
+            Gets or sets the text displayed when the mouse pointer hovers over the Web server control.
+            </summary>
+        </member>
         <member name="P:Havit.Web.UI.WebControls.DateTimeBox.Value">
             <summary>
             Vrací zadané datum. Není-li zadán žádný text, vrací null.
@@ -3571,6 +3576,11 @@
         <member name="P:Havit.Web.UI.WebControls.NumericBox.ValueBoxStyle">
             <summary>
             Stylování ValueTextBoxu.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.NumericBox.ToolTip">
+            <summary>
+            Gets or sets the text displayed when the mouse pointer hovers over the Web server control.
             </summary>
         </member>
         <member name="P:Havit.Web.UI.WebControls.NumericBox.Value">

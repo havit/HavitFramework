@@ -153,6 +153,23 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region ToolTip
+		/// <summary>
+		/// Gets or sets the text displayed when the mouse pointer hovers over the Web server control.
+		/// </summary>
+		public string ToolTip
+		{
+			get
+			{
+				return valueTextBox.ToolTip;
+			}
+			set
+			{
+				valueTextBox.ToolTip = value;
+			}
+		} 
+		#endregion
+
 		#endregion
 
 		#region Value properties

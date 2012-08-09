@@ -656,7 +656,14 @@ namespace Havit.Data
 			if ((outerTransaction == null) || 
 				((isolationLevel != IsolationLevel.Unspecified) && (outerTransaction.IsolationLevel != isolationLevel)))
 			{
-				currentTransaction = connection.BeginTransaction(isolationLevel);
+				if (isolationLevel == IsolationLevel.Unspecified)
+				{
+					currentTransaction = connection.BeginTransaction();
+				}
+				else
+				{
+					currentTransaction = connection.BeginTransaction(IsolationLevel.Unspecified);
+				}
 				mustCommitOrRollbackTransaction = true;
 			}
 

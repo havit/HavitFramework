@@ -3,48 +3,95 @@ using System.Collections.Generic;
 using System.Text;
 using System.Web.UI.WebControls;
 using System.Web.UI;
+using System.Web;
 
 namespace Havit.Web.UI.Scriptlets
 {
 	class ListControlExtender : IControlExtender
-	{		
+	{
+		#region Private fields
+		/// <summary>
+		/// Priorita control extenderu.
+		/// </summary>
 		private int priority;
-		private Type controlType;
 
+		/// <summary>
+		/// Typ, ke kterému je extender registrován.
+		/// </summary>
+		private Type controlType;				
+		#endregion
+
+		#region Constructor
+		/// <summary>
+		/// Vytvoøí instanci ListControlExtenderu.
+		/// </summary>
+		/// <param name="controlType">Typ, ke kterému je instance vytváøena.</param>
+		/// <param name="priority">Priorita control extenderu.</param>
 		public ListControlExtender(Type controlType, int priority)
 		{
 			this.priority = priority;
-	        this.controlType = controlType;
+			this.controlType = controlType;
 		}
-		
-        public int? GetPriority(Control control)
-        {
-            return (this.controlType.IsAssignableFrom(control.GetType())) ? (int?)this.priority : null;
-        }
-        
-		public void CreateParameter(string parameterPrefix, IScriptletParameter parameter, System.Web.UI.Control control, ScriptBuilder scriptBuilder)
+		#endregion
+
+		#region GetPriority
+		/// <include file='..\\Dotfuscated\\Havit.Web.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetPriority")]/*' />		
+		public int? GetPriority(Control control)
 		{
-            // vytvoøíme objekt
-            scriptBuilder.AppendFormat("{0}.{1} = new Array();\n", parameterPrefix, parameter.Name, control.ClientID);
-                        
-            ListControl listControl = control as ListControl;
-            if (listControl == null)
-				throw new ArgumentException("ListControlExtender podporuje pouze controly typu ListControl.");
-				
+			return (this.controlType.IsAssignableFrom(control.GetType())) ? (int?)this.priority : null;
+		}
+		#endregion
+
+		#region GetInitializeClientSideValueScript
+		/// <include file='..\\Dotfuscated\\Havit.Web.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetInitializeClientSideValueScript")]/*' />
+		public void GetInitializeClientSideValueScript(string parameterPrefix, IScriptletParameter parameter, System.Web.UI.Control control, ScriptBuilder scriptBuilder)
+		{
+			if (!(control is ListControl))
+			{
+				throw new HttpException("ListControlExtender podporuje pouze controly typu ListControl.");
+			}
+
+			ListControl listControl = (ListControl)control;
+			scriptBuilder.AppendLineFormat("{0}.{1} = new Array();", parameterPrefix, parameter.Name, control.ClientID);
 			for (int i = 0; i < listControl.Items.Count; i++)
 			{
-				scriptBuilder.AppendFormat("{0}.{1}[{2}] = document.getElementById(\"{3}_{2}\");\n", parameterPrefix, parameter.Name, i, control.ClientID);
+				scriptBuilder.AppendLineFormat("{0}.{1}[{2}] = document.getElementById(\"{3}_{2}\");", parameterPrefix, parameter.Name, i, control.ClientID);
+			}
+		}
+		#endregion
+		
+		#region GetAttachEventsScript
+		/// <include file='..\\Dotfuscated\\Havit.Web.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetAttachEventsScript")]/*' />
+		public void GetAttachEventsScript(string parameterPrefix, IScriptletParameter parameter, Control control, ScriptBuilder scriptBuilder)
+		{
+			GetEventsScript(BrowserHelper.GetAttachEventScript, parameterPrefix, parameter, control, scriptBuilder);
+		}
+		#endregion
+
+		#region GetDetachEventsScript
+		/// <include file='..\\Dotfuscated\\Havit.Web.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetDetachEventsScript")]/*' />
+		public void GetDetachEventsScript(string parameterPrefix, IScriptletParameter parameter, Control control, ScriptBuilder scriptBuilder)
+		{
+			GetEventsScript(BrowserHelper.GetDetachEventScript, parameterPrefix, parameter, control, scriptBuilder);
+		}
+		#endregion
+		
+		#region GetEventsScript
+		private void GetEventsScript(BrowserHelper.GetAttachDetachEventScriptEventHandler getEventScript, string parameterPrefix, IScriptletParameter parameter, Control control, ScriptBuilder scriptBuilder)
+		{
+			ListControl listControl = (ListControl)control;
+			for (int i = 0; i < listControl.Items.Count; i++)
+			{
 				if (((ControlParameter)parameter).StartOnChange)
 				{
-					scriptBuilder.Append(BrowserHelper.GetAttachEvent(
-                        String.Format("{0}.{1}[{2}]", parameterPrefix, parameter.Name, i),
-                        "onclick",
-                        parameter.Scriptlet.ClientSideFunctionCall
-                    ));
-                    scriptBuilder.Append("\n");
+					scriptBuilder.AppendLine(getEventScript.Invoke(
+						String.Format("{0}.{1}[{2}]", parameterPrefix, parameter.Name, i),
+						"onclick",
+						parameter.Scriptlet.ClientSideScriptFunctionCall
+					));
 				}
 			}
-		
 		}
+		#endregion		
 	}
 }

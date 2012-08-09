@@ -821,7 +821,7 @@ namespace Havit.Web.UI.WebControls
 	public delegate void GridViewInsertedEventHandler(object sender, GridViewInsertedEventArgs e);
 
 	/// <summary>
-	/// Reprezentuje metodu, která obsluhuje událost <see cref="GridViewExt.RowRenderingCommandButton"/>.
+	/// Reprezentuje metodu, která obsluhuje událost <see cref="GridViewExt.RowCustomizingCommandButton"/>.
 	/// </summary>
 	/// <param name="sender">odesílatel události (GridView)</param>
 	/// <param name="e">argumenty události</param>

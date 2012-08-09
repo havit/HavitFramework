@@ -109,11 +109,11 @@ namespace Havit.Web.UI.WebControls
 		#region Function properties
 
 		#region Value
-		[Themeable(false)]
 		/// <summary>
 		/// Vrací zadané èíslo. Není-li zadán žádný text, vrací null (pokud je ZeroAsEmpty, vrací nulu).
 		/// Je-li zadáno neplatné èíslo, vyhodí výjimku.
 		/// </summary>
+		[Themeable(false)]
 		public decimal? Value
 		{
 			get

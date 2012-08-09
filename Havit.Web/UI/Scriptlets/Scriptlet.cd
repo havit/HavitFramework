@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="Segoe UI" Size="9" />
+  <Class Name="Havit.Web.UI.Scriptlets.Scriptlet">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>UI\Scriptlets\Scriptlet.cs</FileName>
+      <HashCode>CEAAAAAAAAAICEACAAAEAAAAACBARAAAAQAFAAAAACA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="Havit.Web.UI.Scriptlets.BrowserHelper">
+    <Position X="15" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>UI\Scriptlets\BrowserHelper.cs</FileName>
+      <HashCode>AAAAAgAAAABAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Havit.Web.UI.Scriptlets.ClientScript">
+    <Position X="2.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>UI\Scriptlets\ClientScript.cs</FileName>
+      <HashCode>AEEkCAAAAAAAAAAAAACAAAARCAAAAQAAAAAAQADgAAA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="Havit.Web.UI.Scriptlets.ControlParameter">
+    <Position X="6.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>UI\Scriptlets\ControlParameter.cs</FileName>
+      <HashCode>AAAQAAAAwAAAAQQAAAACAAQEAAAIAAIAAAAAAAAAAAE=</HashCode>
+    </TypeIdentifier>
+    <NestedTypes>
+      <Delegate Name="Havit.Web.UI.Scriptlets.ControlParameter.ExtenderJob" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>UI\Scriptlets\ControlParameter.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+  </Class>
+  <Class Name="Havit.Web.UI.Scriptlets.ListControlExtender" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>UI\Scriptlets\ListControlExtender.cs</FileName>
+      <HashCode>AAAQAAAAAARAAQAAAAAAAAAAAAAIAAAIAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Havit.Web.UI.Scriptlets.NoLiteralContolBuilder" Collapsed="true">
+    <Position X="15" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>UI\Scriptlets\NoLiteralContolBuilder.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAACAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Havit.Web.UI.Scriptlets.ParameterBase">
+    <Position X="4.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>UI\Scriptlets\ParameterBase.cs</FileName>
+      <HashCode>AAAQAAAAgAAAAQAAAAACAAQAAAAIAAAAAAABAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Havit.Web.UI.Scriptlets.RepeaterControlExtender" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>UI\Scriptlets\RepeaterControlExtender.cs</FileName>
+      <HashCode>AAAQAAAAAARAAQAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Havit.Web.UI.Scriptlets.ScriptBuilder">
+    <Position X="15" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>UI\Scriptlets\ScriptBuilder.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAEAAgAQAAAAAAIAQAAAAAIAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="Havit.Web.UI.Scriptlets.ScriptletNestedControl">
+    <Position X="2.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>UI\Scriptlets\ScriptletNestedControl.cs</FileName>
+      <HashCode>AAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Havit.Web.UI.Scriptlets.ScriptSubstitutionRepository" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>UI\Scriptlets\ScriptSubstitutionRepository.cs</FileName>
+      <HashCode>ABAAAAAAAAAAAgAAAAAAIAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Havit.Web.UI.Scriptlets.SimpleControlExtender" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>UI\Scriptlets\SimpleControlExtender.cs</FileName>
+      <HashCode>AAAQAAAAAARAAQAAAAAAAAAAAAAIAAAIAAAAAAAAIAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Havit.Web.UI.Scriptlets.ValueParameter">
+    <Position X="4.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>UI\Scriptlets\ValueParameter.cs</FileName>
+      <HashCode>AAAQAAAAAAAAAQAAAAAAAAAAAAAIAAAAAAAgAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Havit.Web.UI.Scriptlets.ControlExtenderRepository" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>UI\Scriptlets\ControlExtenderRepository.cs</FileName>
+      <HashCode>ABAAAAAAAAAAAAAAAAAAIAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Interface Name="Havit.Web.UI.Scriptlets.IScriptSubstitution">
+    <Position X="12.5" Y="2.75" Width="2" />
+    <TypeIdentifier>
+      <FileName>UI\Scriptlets\IScriptSubstitution.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Havit.Web.UI.Scriptlets.IScriptletParameter">
+    <Position X="12.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>UI\Scriptlets\IScriptletParameter.cs</FileName>
+      <HashCode>AAAUAAAAAAAAAQAAAAACAAQAAAAIAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Havit.Web.UI.Scriptlets.IControlExtender">
+    <Position X="10" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>UI\Scriptlets\IControlExtender.cs</FileName>
+      <HashCode>AAAQAAAAAABAAQAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Havit.Web.UI.Scriptlets.IControlExtenderRepository">
+    <Position X="10" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <FileName>UI\Scriptlets\IControlExtenderRepository.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+</ClassDiagram>

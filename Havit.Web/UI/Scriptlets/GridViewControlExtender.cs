@@ -11,7 +11,7 @@ namespace Havit.Web.UI.Scriptlets
 	/// <summary>
 	/// Control extender, který umí pracovat s Repeaterem.
 	/// </summary>
-    public class RepeaterControlExtender: IControlExtender
+    public class GridViewControlExtender: IControlExtender
     {
 		#region Private fields
 		private int priority;		
@@ -22,7 +22,7 @@ namespace Havit.Web.UI.Scriptlets
 		/// Vytvoøí extender s danou prioritou.
 		/// </summary>
 		/// <param name="priority">Priorita extenderu.</param>
-		public RepeaterControlExtender(int priority)
+		public GridViewControlExtender(int priority)
 		{
 			this.priority = priority;
 		}
@@ -38,7 +38,7 @@ namespace Havit.Web.UI.Scriptlets
 		/// <returns>Priorita.</returns>
 		public int? GetPriority(Control control)
 		{
-			return (control is Repeater) ? (int?)priority : null;
+			return (control is GridView) ? (int?)priority : null;
 		}		
 		#endregion
 
@@ -52,18 +52,18 @@ namespace Havit.Web.UI.Scriptlets
 		/// <param name="scriptBuilder">Script builder.</param>
 		public void GetInitializeClientSideValueScript(string parameterPrefix, IScriptletParameter parameter, Control control, ScriptBuilder scriptBuilder)
         {
-	        if (!(control is Repeater))
+			if (!(control is GridView))
 		    {
-				throw new HttpException("RepeaterControlExtender podporuje pouze controly typu Repeater.");	    
+				throw new HttpException("GridViewControlExtender podporuje pouze controly typu GridView.");	    
 			}
 			
             scriptBuilder.AppendFormat("{0}.{1} = new Array();\n", parameterPrefix, parameter.Name);
-            Repeater repeater = (Repeater)control;
+			GridView gridView = (GridView)control;
 
             int index = 0;
-            foreach (RepeaterItem item in repeater.Items)
+			foreach (GridViewRow row in gridView.Rows)
             {
-                if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem)
+				if (row.RowType == DataControlRowType.DataRow)
                 {
 					string newParameterPrefix = String.Format("{0}.{1}[{2}]", parameterPrefix, parameter.Name, index);
 					scriptBuilder.AppendFormat("{0} = new Object();\n", newParameterPrefix);
@@ -75,7 +75,7 @@ namespace Havit.Web.UI.Scriptlets
 						{
 							continue;
 						}
-                        nestedParameter.GetInitializeClientSideValueScript(newParameterPrefix, item, scriptBuilder);
+						nestedParameter.GetInitializeClientSideValueScript(newParameterPrefix, row, scriptBuilder);
                     }
                     index++;
                 }
@@ -111,13 +111,13 @@ namespace Havit.Web.UI.Scriptlets
 		#region GetEventsScript
 		private void GetEventsScript(string parameterPrefix, IScriptletParameter parameter, Control control, ScriptBuilder scriptBuilder, JobOnNesterParameterEventHandler jobOnNesterParameter)
 		{
-			Repeater repeater = (Repeater)control;
+			GridView gridView = (GridView)control;
 
 			int index = 0;
-			foreach (RepeaterItem item in repeater.Items)
+			foreach (GridViewRow row in gridView.Rows)
             {
-                if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem)
-                {				
+				if (row.RowType == DataControlRowType.DataRow)
+                {
 					foreach (Control nestedControl in ((Control)parameter).Controls)
                     {
                         IScriptletParameter nestedParameter = nestedControl as IScriptletParameter;
@@ -126,7 +126,7 @@ namespace Havit.Web.UI.Scriptlets
 							continue;
 						}
 						string newParameterPrefix = String.Format("{0}.{1}[{2}]", parameterPrefix, parameter.Name, index);
-						jobOnNesterParameter(nestedParameter, newParameterPrefix, item, scriptBuilder);
+						jobOnNesterParameter(nestedParameter, newParameterPrefix, row, scriptBuilder);
 					}
 				}
 				index++;

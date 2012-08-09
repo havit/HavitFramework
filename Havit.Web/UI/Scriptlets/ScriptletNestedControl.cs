@@ -10,17 +10,25 @@ namespace Havit.Web.UI.Scriptlets
 	/// </summary>
 	public abstract class ScriptletNestedControl: Control
 	{
-		/// <summary>
-		/// Zpøístupòuje Scriplet, ve kterém je tento ClientScript obsažen.
-		/// </summary>
+		#region Scriptlet
+		/// <include file='..\\Dotfuscated\\Havit.Web.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlParameter.Scriptlet")]/*' />
 		public Scriptlet Scriptlet
 		{
-			get {
-                if (Parent is IScriptletParameter)
-                    return ((IScriptletParameter)Parent).Scriptlet;
-                return (Scriptlet)Parent; 
-            }
+			get
+			{
+				if (Parent is IScriptletParameter)
+				{
+					return ((IScriptletParameter)Parent).Scriptlet;
+				}
+				
+				if (!(Parent is Scriptlet))
+				{
+					throw new InvalidOperationException("Scriptlet nebyl nalezen - control se nachází na neznámém místì ve stromu controlù.");
+				}
+				
+				return (Scriptlet)Parent;
+			}
 		}
-
+		#endregion
 	}
 }

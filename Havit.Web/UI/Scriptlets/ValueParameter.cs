@@ -13,24 +13,39 @@ namespace Havit.Web.UI.Scriptlets
     /// </summary>
     public class ValueParameter : ParameterBase
     {
-        /// <summary>
-        /// Hodnota parametru.
-        /// </summary>
-        public string Value
-        {
-            get { return (string)(ViewState["Value"] ?? String.Empty); }
-            set { ViewState["Value"] = value; }
-        }
-
+		#region Value
 		/// <summary>
-		/// Vytvoøí klientský skript pro parametr.
+		/// Hodnota parametru.
 		/// </summary>
-		/// <param name="parameterPrefix">Prefix parametru.</param>
-		/// <param name="parentControl">Control, v rámci kterého je tento parametr.</param>
-		/// <param name="scriptBuilder">Script builder.</param>
-		public override void CreateParameter(string parameterPrefix, Control parentControl, ScriptBuilder scriptBuilder)
+		public string Value
+		{
+			get { return (string)(ViewState["Value"] ?? String.Empty); }
+			set { ViewState["Value"] = value; }
+		}		
+		#endregion
+
+		#region GetInitializeClientSideValueScript
+		/// <include file='..\\Dotfuscated\\Havit.Web.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlParameter.GetInitializeClientSideValueScript")]/*' />
+		public override void GetInitializeClientSideValueScript(string parameterPrefix, Control parentControl, ScriptBuilder scriptBuilder)
         {
             scriptBuilder.AppendFormat("{0}.{1} = '{2}';\n", parameterPrefix, Name, Value);
         }
-    }
+		#endregion
+
+		#region CreateOnLoadScript
+		/// <include file='..\\Dotfuscated\\Havit.Web.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlParameter.GetAttachEventsScript")]/*' />
+		public override void GetAttachEventsScript(string parameterPrefix, Control parentControl, ScriptBuilder scriptBuilder)
+		{
+			//NOOP
+		}
+		#endregion
+		
+		#region CreateOnUnLoadScript
+		/// <include file='..\\Dotfuscated\\Havit.Web.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlParameter.GetDetachEventsScript")]/*' />
+		public override void GetDetachEventsScript(string parameterPrefix, Control parentControl, ScriptBuilder scriptBuilder)
+		{
+			//NOOP
+		}
+		#endregion
+	}
 }

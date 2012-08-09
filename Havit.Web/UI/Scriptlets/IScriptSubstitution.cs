@@ -13,11 +13,13 @@ namespace Havit.Web.UI.Scriptlets
 	/// </summary>
     public interface IScriptSubstitution
     {
+		#region Substitute
 		/// <summary>
 		/// Substituje ve skriptu.
 		/// </summary>
 		/// <param name="script">Skript, ve kterém má dojít k substituci.</param>
 		/// <returns>Substituovaný skript.</returns>
         string Substitute(string script);
-    }
+		#endregion
+	}
 }

@@ -141,11 +141,11 @@ namespace Havit.Web.UI.WebControls
 		#region Value properties
 
 		#region Value
-		[Themeable(false)]
 		/// <summary>
 		/// Vrací zadané datum. Není-li zadán žádný text, vrací null.
 		/// Je-li zadán neplatný datum, vyhodí výjimku.
 		/// </summary>
+		[Themeable(false)]
 		public DateTime? Value
 		{
 			get

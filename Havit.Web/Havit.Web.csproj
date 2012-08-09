@@ -129,6 +129,7 @@
     <Compile Include="UI\Scriptlets\ClientScript.cs" />
     <Compile Include="UI\Scriptlets\ControlExtenderRepository.cs" />
     <Compile Include="UI\Scriptlets\ControlParameter.cs" />
+    <Compile Include="UI\Scriptlets\GridViewControlExtender.cs" />
     <Compile Include="UI\Scriptlets\IControlExtender.cs" />
     <Compile Include="UI\Scriptlets\IControlExtenderRepository.cs" />
     <Compile Include="UI\Scriptlets\IScriptletParameter.cs" />
@@ -305,6 +306,9 @@
     <EmbeddedResource Include="UI\WebControls\AutoSuggestMenu\Blank.html" />
     <EmbeddedResource Include="UI\WebControls\AutoSuggestMenu\Events.js" />
     <EmbeddedResource Include="UI\WebControls\AutoSuggestMenu\XUtils.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="UI\Scriptlets\Scriptlet.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

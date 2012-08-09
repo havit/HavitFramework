@@ -9,21 +9,26 @@ using System.Web.UI.HtmlControls;
 namespace Havit.Web.UI.Scriptlets
 {
     /// <summary>
-    /// Control builder pro Scriptlet.
-    /// Zajišuje omezuje chybné pouití controlu Scriptlet.
+	/// Control builder pro <see cref="Scriptlet">Scriptlet</see>.
+	/// Omezuje chybné pouití controlu <see cref="Scriptlet">Scriptlet</see>.
     /// </summary>
     internal class NoLiteralContolBuilder : ControlBuilder
     {
-        public override bool AllowWhitespaceLiterals()
-        {
-            return false;
-        }
+		#region AllowWhitespaceLiterals
+		public override bool AllowWhitespaceLiterals()
+		{
+			return false;
+		}
+		#endregion
 
-        public override void AppendLiteralString(string s)
-        {
-            if (s.Trim().Length > 0)
-                throw new ArgumentException("Textovı literál je na nepovoleném místì.");
-        }
-        
+		#region AppendLiteralString
+		public override void AppendLiteralString(string s)
+		{
+			if (s.Trim().Length > 0)
+			{
+				throw new HttpException("Textovı literál je na nepovoleném místì.");
+			}
+		}
+		#endregion        
     }
 }

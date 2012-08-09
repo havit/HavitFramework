@@ -131,6 +131,8 @@
     <Compile Include="UI\Scriptlets\ScriptSubstitutionRepository.cs" />
     <Compile Include="UI\Scriptlets\SimpleControlExtender.cs" />
     <Compile Include="UI\Scriptlets\ValueParameter.cs" />
+    <Compile Include="UI\WebControls\BooleanField.cs" />
+    <Compile Include="UI\WebControls\BoundFieldExt.cs" />
     <Compile Include="UI\WebControls\ButtonColumnExt.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -156,6 +158,7 @@
     <Compile Include="UI\WebControls\H6.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UI\WebControls\IEntepriseField.cs" />
     <Compile Include="UrlRewriter\BaseModuleRewriter.cs">
       <SubType>Code</SubType>
     </Compile>

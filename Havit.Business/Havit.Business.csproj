@@ -96,6 +96,8 @@
     <Compile Include="GetObjectDelegate.cs" />
     <Compile Include="IdentityMap.cs" />
     <Compile Include="IdentityMapScope.cs" />
+    <Compile Include="Money.cs" />
+    <Compile Include="MoneyImplementationBase.cs" />
     <Compile Include="ObjectInfo.cs" />
     <Compile Include="Properties\GlobalSuppressions.cs" />
     <Compile Include="PropertyInfo.cs" />

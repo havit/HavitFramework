@@ -1806,5 +1806,157 @@
             Identifikuje, zda probíhá Save_Insert_InsertRequiredForMinimalInsert (nesmí se zacyklit).
             </summary>
         </member>
+        <member name="T:Havit.Business.Money`1">
+            <summary>
+            Třída reprezentující peněžní částky s měnou.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Money`1.#ctor">
+            <summary>
+            Inicializuje třídu money s prázdními hodnotami (Amount i Currency jsou null).
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Money`1.#ctor(System.Nullable{System.Decimal},`0)">
+            <summary>
+            Inicializuje třídu money zadanými hodnotami.
+            </summary>
+            <param name="amount"></param>
+            <param name="currency"></param>
+        </member>
+        <member name="M:Havit.Business.Money`1.GetHashCode">
+            <summary>
+            HashCode je složen jako XOR hash kódů amount a currency, pokud tyto hodnoty nejsou null.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Money`1.AssertSameCurrencies(`0,`0)">
+            <summary>
+            Porovná měny zadané v parametrech. Pokud se liší, je vyhozena výjimka.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Money`1.AssertNotNull(System.Object,System.String)">
+            <summary>
+            Vyvolá výjimku, pokud má parametr hodnotu null.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Money`1.op_GreaterThan(Havit.Business.Money{`0},Havit.Business.Money{`0})">
+            <summary>
+            Porovná se částka. Pokud se neshoduje měna, operace vyvolá výjimku.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Money`1.op_LessThan(Havit.Business.Money{`0},Havit.Business.Money{`0})">
+            <summary>
+            Porovná se částka. Pokud se neshoduje měna, operace vyvolá výjimku.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Money`1.op_GreaterThanOrEqual(Havit.Business.Money{`0},Havit.Business.Money{`0})">
+            <summary>
+            Porovná se částka. Pokud se neshoduje měna, operace vyvolá výjimku.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Money`1.op_LessThanOrEqual(Havit.Business.Money{`0},Havit.Business.Money{`0})">
+            <summary>
+            Porovná se částka. Pokud se neshoduje měna, operace vyvolá výjimku.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Money`1.op_Addition(Havit.Business.Money{`0},Havit.Business.Money{`0})">
+            <summary>
+            Sečte dvě hodnoty Money. Pokud se neshoduje měna, operace vyvolá výjimku.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Money`1.op_Subtraction(Havit.Business.Money{`0},Havit.Business.Money{`0})">
+            <summary>
+            Odečte dvě hodnoty Money. Pokud se neshoduje měna, operace vyvolá výjimku.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Havit.Business.Money`1.op_Multiply(Havit.Business.Money{`0},System.Decimal)">
+            <summary>
+            Vynásobí hodnotu Money konstantou typu decimal.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Money`1.op_Multiply(Havit.Business.Money{`0},System.Int32)">
+            <summary>
+            Vynásobí hodnotu Money konstantou typu int.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Money`1.op_Division(Havit.Business.Money{`0},System.Decimal)">
+            <summary>
+            Vydělí hodnotu Money konstantou typu decimal.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Money`1.op_Division(Havit.Business.Money{`0},System.Int32)">
+            <summary>
+            Vydělí hodnotu Money konstantou typu int.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Money`1.SumMoney``1(Havit.Business.Money{`0},Havit.Business.Money{`0})">
+            <summary>
+            Sečte dvě hodnoty Money. Pokud se neshoduje měna, operace vyvolá výjimku.	
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Money`1.SubtractMoney``1(Havit.Business.Money{`0},Havit.Business.Money{`0})">
+            <summary>
+            Odečte měny (odčítá se money2 od money1). Pokud se neshoduje měna, operace vyvolá výjimku.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Money`1.MultipleMoney``1(Havit.Business.Money{`0},System.Decimal)">
+            <summary>
+            Vynásobí částku konstantou.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Money`1.DivideMoney``1(Havit.Business.Money{`0},System.Decimal)">
+            <summary>
+            Vydělí částku konstantou.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.Money`1.Amount">
+            <summary>
+            Částka v jednotkách měny. Udává se hodnota v základní
+            jednotce a zlomky měny (např. haléře) se zadávají za desetinou tečkou (např.
+            57.30).
+            </summary>
+        </member>
+        <member name="P:Havit.Business.Money`1.Currency">
+            <summary>
+            Měna částky.
+            </summary>
+        </member>
+        <member name="T:Havit.Business.MoneyImplementationBase`2">
+            <summary>
+            Třída reprezentující částku a měnu.
+            Třída je určena ke zdědění, potomkem by měla být projektová třída Money.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.MoneyImplementationBase`2.op_Addition(Havit.Business.MoneyImplementationBase{`0,`1},Havit.Business.MoneyImplementationBase{`0,`1})">
+            <summary>
+            Sečte dvě hodnoty Money. Pokud se neshoduje měna, operace vyvolá výjimku.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.MoneyImplementationBase`2.op_Subtraction(Havit.Business.MoneyImplementationBase{`0,`1},Havit.Business.MoneyImplementationBase{`0,`1})">
+            <summary>
+            Odečte dvě hodnoty Money. Pokud se neshoduje měna, operace vyvolá výjimku.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Havit.Business.MoneyImplementationBase`2.op_Multiply(Havit.Business.MoneyImplementationBase{`0,`1},System.Decimal)">
+            <summary>
+            Vynásobí hodnotu Money konstantou typu decimal.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.MoneyImplementationBase`2.op_Multiply(Havit.Business.MoneyImplementationBase{`0,`1},System.Int32)">
+            <summary>
+            Vynásobí hodnotu Money konstantou typu int.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.MoneyImplementationBase`2.op_Division(Havit.Business.MoneyImplementationBase{`0,`1},System.Decimal)">
+            <summary>
+            Vydělí hodnotu Money konstantou typu decimal.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.MoneyImplementationBase`2.op_Division(Havit.Business.MoneyImplementationBase{`0,`1},System.Int32)">
+            <summary>
+            Vydělí hodnotu Money konstantou typu int.
+            </summary>
+        </member>
     </members>
 </doc>

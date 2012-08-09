@@ -86,6 +86,19 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region DateTimePickerStyle
+		/// <summary>
+		/// Styl obrázku (ikonky) pro zobrazení kalendáře.
+		/// </summary>
+		public Style DateTimePickerStyle
+		{
+			get
+			{
+				return dateTimePickerImage.Style;
+			}
+		}
+		#endregion
+
 		#region DateTimePickerEnabledImageUrl
 		/// <summary>
 		/// Url obrázku pro ikonku vyvolávající kalendář (pokud je DateTimeBox povolen).
@@ -122,6 +135,7 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		#endregion
+
 
 		#endregion
 
@@ -237,12 +251,16 @@ namespace Havit.Web.UI.WebControls
 		{
 			valueTextBox = new TextBox();
 			valueTextBox.ID = "ValueTextBox";
+
 			seperatorLiteralControl = new LiteralControl(" ");
 			seperatorLiteralControl.ID = "SeparatorLiteralControl";
+
 			dateTimePickerImage = new Image();
 			dateTimePickerImage.ID = "DateTimePickerImage";
+			
 			dateTimePickerDynarchCalendar = new DynarchCalendar();
 			dateTimePickerDynarchCalendar.ID = "DateTimePickerDynarchCalendar";
+			dateTimePickerDynarchCalendar.Electric = false;
 		}
 		#endregion
 		

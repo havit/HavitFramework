@@ -169,6 +169,7 @@
     <Compile Include="Collections\SortItem.cs" />
     <Compile Include="Collections\SortItemCollection.cs" />
     <Compile Include="Diagnostics\ExceptionTracer.cs" />
+    <Compile Include="Diagnostics\SmtpTraceListerner.cs" />
     <Compile Include="ITypeConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

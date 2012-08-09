@@ -1802,6 +1802,11 @@
             Vytvoří kompozitní podmínku. Lze inicializovat sadou členských podmínek.
             </summary>		
         </member>
+        <member name="M:Havit.Business.Query.AndCondition.Create(Havit.Business.Query.Condition[])">
+            <summary>
+            Vytvoří kompozitní podmínku. Lze inicializovat sadou členských podmínek.
+            </summary>
+        </member>
         <member name="T:Havit.Business.Query.ValueOperand">
             <summary>
             Konstanta jako operand databázového dotazu.
@@ -1881,6 +1886,11 @@
             <summary>
             Vytvoří kompozitní podmínku. Lze inicializovat sadou členských podmínek.
             </summary>		
+        </member>
+        <member name="M:Havit.Business.Query.OrCondition.Create(Havit.Business.Query.Condition[])">
+            <summary>
+            Vytvoří kompozitní podmínku. Lze inicializovat sadou členských podmínek.
+            </summary>
         </member>
         <member name="T:Havit.Business.Query.FieldPropertySortItem">
             <summary>
@@ -2151,6 +2161,36 @@
         <member name="F:Havit.Business.Query.MatchListMode.CommaSeparatedList">
             <summary>
             Podmínka je tvořena způsobem: WHERE Field IN (1, 2, 3, 4).
+            </summary>
+        </member>
+        <member name="T:Havit.Business.Query.NotCondition">
+            <summary>
+            Podmínka, která neguje vnitřní (kompozitní) podmínky.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.NotCondition.#ctor(Havit.Business.Query.Condition[])">
+            <summary>
+            Vytvoří instanci podmínky NotCondition a případně ji inicializuje zadanými vnitřními podmínkami.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.NotCondition.GetWhereStatement(System.Data.Common.DbCommand,System.Text.StringBuilder)">
+            <summary>
+            Přidá část SQL příkaz pro sekci WHERE.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.NotCondition.IsEmptyCondition">
+            <summary>
+            Udává, zda podmínka reprezentuje prázdnou podmínku, která nebude renderována.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.NotCondition.Create(Havit.Business.Query.Condition[])">
+            <summary>
+            Vytvoří instanci podmínky NotCondition a případně ji inicializuje zadanými vnitřními podmínkami.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.Query.NotCondition.Conditions">
+            <summary>
+            Podmínky, které jsou negovány. Mezi podmínkami je operátor AND.
             </summary>
         </member>
     </members>

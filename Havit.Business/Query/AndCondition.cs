@@ -12,7 +12,7 @@ namespace Havit.Business.Query
 	[Serializable]
 	public class AndCondition : CompositeCondition
 	{
-		#region Constructor
+		#region Constructors
 		/// <summary>
 		/// Vytvoøí kompozitní podmínku. Lze inicializovat sadou èlenských podmínek.
 		/// </summary>		
@@ -21,5 +21,15 @@ namespace Havit.Business.Query
 		{
 		}
 		#endregion
+
+        #region Create (static)
+        /// <summary>
+        /// Vytvoøí kompozitní podmínku. Lze inicializovat sadou èlenských podmínek.
+        /// </summary>
+        public static AndCondition Create(params Condition[] conditions)
+        {
+            return new AndCondition(conditions);
+        } 
+        #endregion
 	}
 }

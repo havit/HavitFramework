@@ -23,20 +23,24 @@ namespace Havit.Business.Query
 		{
 			get { return conditions; }
 		}
-		private ConditionList conditions = new ConditionList();
+        private ConditionList conditions;
 		#endregion
 
-		#region Constructor
+		#region Constructors
 		/// <summary>
 		/// Vytvoøí instanci.
 		/// </summary>
 		protected CompositeCondition(string operatorBetweenOperands, params Condition[] conditions)
 		{
+            this.conditions = new ConditionList();
 			this.operatorBetweenOperands = operatorBetweenOperands;
-			for (int index = 0; index < conditions.Length; index++)
-			{
-				this.Conditions.Add(conditions[index]);
-			}
+            if (conditions != null)
+            {
+                for (int index = 0; index < conditions.Length; index++)
+                {
+                    this.Conditions.Add(conditions[index]);
+                }
+            }
 		}
 		#endregion
 

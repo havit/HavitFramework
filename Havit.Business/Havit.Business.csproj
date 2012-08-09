@@ -115,6 +115,7 @@
     <Compile Include="GetAllDelegate.cs" />
     <Compile Include="Query\DateRangeCondition.cs" />
     <Compile Include="Query\EmptyCondition.cs" />
+    <Compile Include="Query\NotCondition.cs" />
     <Compile Include="Query\StaticCondition.cs" />
     <Compile Include="Query\FieldPropertySortItem.cs" />
     <Compile Include="Query\GuidCondition.cs" />

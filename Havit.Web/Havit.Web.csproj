@@ -113,6 +113,24 @@
     <Compile Include="UI\HtmlControls\HtmlFormExt.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UI\Scriptlets\BrowserHelper.cs" />
+    <Compile Include="UI\Scriptlets\ClientScript.cs" />
+    <Compile Include="UI\Scriptlets\ControlExtenderRepository.cs" />
+    <Compile Include="UI\Scriptlets\ControlParameter.cs" />
+    <Compile Include="UI\Scriptlets\IControlExtender.cs" />
+    <Compile Include="UI\Scriptlets\IControlExtenderRepository.cs" />
+    <Compile Include="UI\Scriptlets\IScriptletParameter.cs" />
+    <Compile Include="UI\Scriptlets\IScriptSubstitution.cs" />
+    <Compile Include="UI\Scriptlets\ListControlExtender.cs" />
+    <Compile Include="UI\Scriptlets\NoLiteralContolBuilder.cs" />
+    <Compile Include="UI\Scriptlets\ParameterBase.cs" />
+    <Compile Include="UI\Scriptlets\RepeaterControlExtender.cs" />
+    <Compile Include="UI\Scriptlets\ScriptBuilder.cs" />
+    <Compile Include="UI\Scriptlets\Scriptlet.cs" />
+    <Compile Include="UI\Scriptlets\ScriptletNestedControl.cs" />
+    <Compile Include="UI\Scriptlets\ScriptSubstitutionRepository.cs" />
+    <Compile Include="UI\Scriptlets\SimpleControlExtender.cs" />
+    <Compile Include="UI\Scriptlets\ValueParameter.cs" />
     <Compile Include="UI\WebControls\ButtonColumnExt.cs">
       <SubType>Code</SubType>
     </Compile>

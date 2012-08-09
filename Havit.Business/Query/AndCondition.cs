@@ -9,6 +9,7 @@ namespace Havit.Business.Query
 	/// Kompozitní podmínka. Výsledek je pravdivý, jsou-li pravdivé všechny èlenské podmínky.
 	/// </summary>
 	[ComVisible(false)]
+	[Serializable]
 	public class AndCondition: CompositeCondition
 	{
 		#region Constructor

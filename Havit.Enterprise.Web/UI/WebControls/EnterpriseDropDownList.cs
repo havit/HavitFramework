@@ -14,17 +14,7 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class EnterpriseDropDownList : DropDownListExt
 	{
-		#region Constructor
-		/// <summary>
-		/// Inicialuze DataValueField na "ID".
-		/// </summary>
-		public EnterpriseDropDownList()
-		{
-			DataValueField = "ID";
-		}
-		#endregion
-
-		#region Properties
+		#region ItemPropertyInfo
 		/// <summary>
 		/// ReferenceFieldPropertyInfo property, jejíž hodnota se tímto DropDownListem vybírá.
 		/// Nastavení této hodnoty rovnìž pøepíše hodnoty vlastností ItemsObjectInfo a Nullable.
@@ -44,11 +34,13 @@ namespace Havit.Web.UI.WebControls
 				}
 				itemPropertyInfo = value;
 				itemObjectInfo = itemPropertyInfo.TargetObjectInfo;
-				Nullable = itemPropertyInfo.Nullable;
+				//				Nullable = itemPropertyInfo.Nullable;
 			}
 		}
 		private ReferenceFieldPropertyInfo itemPropertyInfo;
+		#endregion
 
+		#region ItemObjectInfo
 		/// <summary>
 		/// Udává metodu, kterou se získá objekt na základì ID.
 		/// Hodnota vlastnosti je automaticky nastavena nastavením vlastnosti PropertyInfo.
@@ -71,6 +63,9 @@ namespace Havit.Web.UI.WebControls
 		}
 		private ObjectInfo itemObjectInfo;
 
+		#endregion
+
+		#region Nullable
 		/// <summary>
 		/// Udává, zda má být na výbìr prázdná hodnota. Výchozí hodnota je true.
 		/// </summary>
@@ -78,8 +73,10 @@ namespace Havit.Web.UI.WebControls
 		{
 			get { return (bool)(ViewState["Nullable"] ?? true); }
 			set { ViewState["Nullable"] = value; }
-		}
+		}		
+		#endregion
 
+		#region NullableText
 		/// <summary>
 		/// Udává text prázdné hodnoty. Výchozí hodnota je "---".
 		/// </summary>
@@ -87,8 +84,10 @@ namespace Havit.Web.UI.WebControls
 		{
 			get { return (string)(ViewState["NullableText"] ?? "---"); }
 			set { ViewState["NullableText"] = value; }
-		}
+		}		
+		#endregion
 
+		#region AutoSort
 		/// <summary>
 		/// Udává, zda je zapnuto automatické øazení položek pøi databindingu. Výchozí hodnota je true.
 		/// </summary>
@@ -97,7 +96,9 @@ namespace Havit.Web.UI.WebControls
 			get { return (bool)(ViewState["AutoSort"] ?? true); }
 			set { ViewState["AutoSort"] = value; }
 		}
+		#endregion
 
+		#region AutoDataBind
 		/// <summary>
 		/// Udává, zda je zapnuto automatické nabindování položek pøi prvním naètení stránky. Výchozí hodnota je false.
 		/// </summary>
@@ -106,7 +107,9 @@ namespace Havit.Web.UI.WebControls
 			get { return (bool)(ViewState["AutoDataBind"] ?? false); }
 			set { ViewState["AutoDataBind"] = value; }
 		}
+		#endregion
 
+		#region DataSortField
 		/// <summary>
 		/// Urèuje, podle jaké property jsou øazena. Pokud není žádná hodnota nastavena použije se hodnota vlastnosti DataTextField.
 		/// </summary>
@@ -114,8 +117,10 @@ namespace Havit.Web.UI.WebControls
 		{
 			get { return (string)(ViewState["DataSortField"] ?? DataTextField); }
 			set { ViewState["DataSortField"] = value; }
-		}
-		
+		}		
+		#endregion		
+
+		#region SelectedId
 		/// <summary>
 		/// Vrací ID vybrané položky. Není-li žádná položka vybraná, vrací null.
 		/// </summary>
@@ -125,8 +130,10 @@ namespace Havit.Web.UI.WebControls
 			{
 				return (SelectedValue == String.Empty) ? (int?)null : int.Parse(SelectedValue);
 			}
-		}
+		}		
+		#endregion
 
+		#region SelectedObject
 		/// <summary>
 		/// Vrací objekt na základì vybrané položky v DropDownListu. Objekt se získává metodou ve vlastnosti ItemsObjectInfo.
 		/// Není-li žádná položka vybrána, vrací null.
@@ -163,7 +170,7 @@ namespace Havit.Web.UI.WebControls
 					{
 						throw new ArgumentException("Nelze vybrat neuložený objekt.");
 					}
-					
+
 					EnsureAutoDataBind();
 
 					// pokud nastavujeme objekt
@@ -183,8 +190,10 @@ namespace Havit.Web.UI.WebControls
 					}
 				}
 			}
-		}
+		}		
+		#endregion
 
+		#region EnsureAutoDataBind
 		/// <summary>
 		/// Zajistí nabindování dat pro režit AutoDataBind.
 		/// </summary>
@@ -194,25 +203,7 @@ namespace Havit.Web.UI.WebControls
 			{
 				DataBindAll();
 			}
-		}
-
-		/// <summary>
-		/// Provádí databinding a øeší odložené nastavení SelectedObject.
-		/// </summary>
-		public override void DataBind()
-		{
-			isDataBinding = true;
-			base.DataBind();
-			isDataBinding = false;
-
-			if (delayedSetSelectedObjectSet)
-			{
-				SelectedObject = delayedSetSelectedObject;
-				delayedSetSelectedObjectSet = false;
-				delayedSetSelectedObject = null;
-			}
-		}
-
+		}		
 		#endregion
 
 		#region Private properties
@@ -221,7 +212,7 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		private bool DataBindPerformed
 		{
-			get { return (bool)(ViewState["DataBindPerformed"] ?? false);  }
+			get { return (bool)(ViewState["DataBindPerformed"] ?? false); }
 			set { ViewState["DataBindPerformed"] = value; }
 		}
 
@@ -249,13 +240,44 @@ namespace Havit.Web.UI.WebControls
 		/// odloží se nastavení hodnoty až na konec DataBindingu. To protože v okamžiku nastavování SelectedObject 
 		/// nemusí být v Items ještì data. 
 		/// </remarks>
-
 		bool delayedSetSelectedObjectSet = false;
+
+		#region IsNullable
+		/// <summary>
+		/// Udává, zda je EDDL nullable, viz kód...
+		/// </summary>
+		private bool IsNullable
+		{
+			get
+			{
+				if (itemPropertyInfo != null)
+				{
+					return itemPropertyInfo.Nullable;
+				}
+				else
+				{
+					return Nullable;
+				}
+			}
+		}
+		#endregion
 
 		#endregion
 
-		#region DataBinding
+		#region ---------------------------------------------------------------------------------------------
+		#endregion
 
+		#region Constructor
+		/// <summary>
+		/// Inicialuze DataValueField na "ID".
+		/// </summary>
+		public EnterpriseDropDownList()
+		{
+			DataValueField = "ID";
+		}
+		#endregion
+
+		#region OnLoad
 		/// <summary>
 		/// Pokud jde o první naètení stránky a není nastaveno AutoDataBind, zavolá DataBindAll.
 		/// </summary>
@@ -265,7 +287,28 @@ namespace Havit.Web.UI.WebControls
 			base.OnLoad(e);
 			EnsureAutoDataBind();
 		}
+		#endregion
 
+		#region DataBind
+		/// <summary>
+		/// Provádí databinding a øeší odložené nastavení SelectedObject.
+		/// </summary>
+		public override void DataBind()
+		{
+			isDataBinding = true;
+			base.DataBind();
+			isDataBinding = false;
+
+			if (delayedSetSelectedObjectSet)
+			{
+				SelectedObject = delayedSetSelectedObject;
+				delayedSetSelectedObjectSet = false;
+				delayedSetSelectedObject = null;
+			}
+		}
+		#endregion
+
+		#region DataBindAll
 		/// <summary>
 		/// Naváže na DropDownList všechny (nasmazané) business objekty urèitého typu
 		/// (zavolá metodu GetAll(), nastaví výsledek je jako DataSource a zavolá DataBind).
@@ -278,8 +321,10 @@ namespace Havit.Web.UI.WebControls
 			}
 
 			PerformDataBinding(itemObjectInfo.GetAllMethod());
-		}
+		}		
+		#endregion
 
+		#region PerformDataBinding
 		/// <summary>
 		/// Zajistí, aby byl po databindingu doplnìn øádek pro výbìr prázdné hodnoty.
 		/// </summary>
@@ -304,16 +349,38 @@ namespace Havit.Web.UI.WebControls
 			{
 				base.PerformDataBinding(dataSource);
 			}
-			
-			if (Nullable)
+
+			CheckNullableConsistency();
+			if (IsNullable)
 			{
 				EnsureEmptyItem();
 				SelectedIndex = 0;
 			}
 			DataBindPerformed = true;
 
+		}		
+		#endregion
+
+		#region CheckNullableConsistency
+		/// <summary>
+		/// Ovìøí konzistentní zadání ItemPropertyInfo.Nullable a Nullable.
+		/// 
+		/// </summary>
+		private void CheckNullableConsistency()
+		{
+			bool? nullable = (bool?)ViewState["Nullable"];
+			if ((nullable != null) && (itemPropertyInfo != null))
+			{
+				if (itemPropertyInfo.Nullable != nullable)
+				{
+					throw new ApplicationException("Je-li nastavena hodnota ItemPropertyInfo a Nullable, musí být ItemPropertyInfo.Nullable a Nullable shodné. Nyní se liší.");
+				}
+			}
 		}
 
+		#endregion
+
+		#region EnsureEmptyItem
 		/// <summary>
 		/// Pøidá na zaèátek seznamu øádek pro výbìr prázdné hodnoty, pokud tam již není.
 		/// </summary>

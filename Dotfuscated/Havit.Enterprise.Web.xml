@@ -9,19 +9,9 @@
             EnterpriseDropDownList zajišťuje pohodlnější práci s DropDownListem, jehož prvky mají vazbu ne business objekty.	
             </summary>
         </member>
-        <member name="M:Havit.Web.UI.WebControls.EnterpriseDropDownList.#ctor">
-            <summary>
-            Inicialuze DataValueField na "ID".
-            </summary>
-        </member>
         <member name="M:Havit.Web.UI.WebControls.EnterpriseDropDownList.EnsureAutoDataBind">
             <summary>
             Zajistí nabindování dat pro režit AutoDataBind.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.EnterpriseDropDownList.DataBind">
-            <summary>
-            Provádí databinding a řeší odložené nastavení SelectedObject.
             </summary>
         </member>
         <member name="F:Havit.Web.UI.WebControls.EnterpriseDropDownList.isDataBinding">
@@ -49,11 +39,21 @@
             nemusí být v Items ještě data. 
             </remarks>
         </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseDropDownList.#ctor">
+            <summary>
+            Inicialuze DataValueField na "ID".
+            </summary>
+        </member>
         <member name="M:Havit.Web.UI.WebControls.EnterpriseDropDownList.OnLoad(System.EventArgs)">
             <summary>
             Pokud jde o první načtení stránky a není nastaveno AutoDataBind, zavolá DataBindAll.
             </summary>
             <param name="e"></param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseDropDownList.DataBind">
+            <summary>
+            Provádí databinding a řeší odložené nastavení SelectedObject.
+            </summary>
         </member>
         <member name="M:Havit.Web.UI.WebControls.EnterpriseDropDownList.DataBindAll">
             <summary>
@@ -66,6 +66,12 @@
             Zajistí, aby byl po databindingu doplněn řádek pro výběr prázdné hodnoty.
             </summary>
             <param name="dataSource"></param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseDropDownList.CheckNullableConsistency">
+            <summary>
+            Ověří konzistentní zadání ItemPropertyInfo.Nullable a Nullable.
+            
+            </summary>
         </member>
         <member name="M:Havit.Web.UI.WebControls.EnterpriseDropDownList.EnsureEmptyItem">
             <summary>
@@ -125,6 +131,11 @@
         <member name="P:Havit.Web.UI.WebControls.EnterpriseDropDownList.DataBindPerformed">
             <summary>
             Indikuje, zda již došlo k navázání dat.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseDropDownList.IsNullable">
+            <summary>
+            Udává, zda je EDDL nullable, viz kód...
             </summary>
         </member>
         <member name="T:Havit.Web.UI.WebControls.EnterpriseGridView">

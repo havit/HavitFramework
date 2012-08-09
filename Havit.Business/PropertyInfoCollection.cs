@@ -14,6 +14,23 @@ namespace Havit.Business
 	public class PropertyInfoCollection : Collection<PropertyInfo>
 	{
 		/// <summary>
+		/// Vyvoøí prázdnou kolekci.
+		/// </summary>
+		public PropertyInfoCollection()
+		{
+		}
+
+		/// <summary>
+		/// Vytvoøí kolekci a vloží do ní zadané objekty PropertyInfo.
+		/// </summary>
+		public PropertyInfoCollection(params PropertyInfo[] properties)
+			: this()
+		{
+			foreach (PropertyInfo propertyInfo in properties)
+				this.Add(propertyInfo);
+		}
+
+		/// <summary>
 		/// Pøidá prvek do kolekce, pokud v kolekci již není.
 		/// </summary>
 		protected override void InsertItem(int index, PropertyInfo item)

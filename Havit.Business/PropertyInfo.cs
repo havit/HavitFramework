@@ -9,6 +9,14 @@ namespace Havit.Business
 	/// </summary>
 	public abstract class PropertyInfo
 	{
-#warning Parent ClassInfo - tøída, které property náleží 
+		/// <summary>
+		/// Tøída, které property náleží.
+		/// </summary>
+		public ObjectInfo Parent
+		{
+			get { return parent; }
+			internal set { parent = value; }
+		}
+		private ObjectInfo parent;
 	}
 }

@@ -17,16 +17,18 @@ namespace Havit.Business
 		/// <summary>
 		/// Vytvoøí instanci sloupce.
 		/// </summary>
-		/// <param name="fieldName"></param>
-		/// <param name="isPrimaryKey"></param>
-		/// <param name="nullable"></param>
-		/// <param name="fieldType"></param>
-		public FieldPropertyInfo(string fieldName, bool isPrimaryKey, SqlDbType fieldType, bool nullable)
+		/// <param name="fieldName">Název sloupce v databázy.</param>
+		/// <param name="isPrimaryKey">Indikuje, zda je sloupec primárním klíèem</param>
+		/// <param name="nullable">Indukuje, zda je povolena hodnota null.</param>
+		/// <param name="fieldType">Typ databázového sloupce.</param>
+		/// <param name="maximumLength">Maximální délka dat databázového sloupce.</param>		
+		public FieldPropertyInfo(string fieldName, bool isPrimaryKey, SqlDbType fieldType, bool nullable, int maximumLength)
 		{
 			this.fieldName = fieldName;
 			this.nullable = nullable;
 			this.fieldType = fieldType;
 			this.isPrimaryKey = isPrimaryKey;
+			this.maximumLength = maximumLength;
 		}
 
 		/// <summary>
@@ -64,6 +66,15 @@ namespace Havit.Business
 			get { return isPrimaryKey; }
 		}
 		private bool isPrimaryKey;
+
+		/// <summary>
+		/// Udává, zda je sloupec primárním klíèem.
+		/// </summary>
+		public int MaximumLength
+		{
+			get { return maximumLength; }
+		}
+		private int maximumLength;
 
 		/// <summary>
 		/// Vrátí øetìzec pro vytažení daného sloupce z databáze.

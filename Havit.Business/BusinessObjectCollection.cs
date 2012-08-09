@@ -17,10 +17,10 @@ namespace Havit.Business
 	/// </remarks>
 	/// <typeparam name="T">èlenský typ kolekce</typeparam>
 	[Serializable]
-	public class BusinessObjectCollection<T> : Collection<T>
-		where T : BusinessObjectBase
+	public class BusinessObjectCollection<TItem, TCollection> : Collection<TItem>
+		where TItem : BusinessObjectBase
+		where TCollection : BusinessObjectCollection<TItem, TCollection>, new()
 	{
-
 		#region Event - CollectionChanged
 		/// <summary>
 		/// Událost vyvolaná po jakékoliv zmìnì kolekce (Insert, Remove, Set, Clear).
@@ -48,10 +48,10 @@ namespace Havit.Business
 		/// </summary>
 		public bool AllowDuplicates
 		{
-			get { return allowDuplicates; }
-			set { allowDuplicates = value; }
+			get { return _allowDuplicates; }
+			set { _allowDuplicates = value; }
 		}
-		private bool allowDuplicates = true;
+		private bool _allowDuplicates = true;
 		#endregion
 
 		#region AddRange
@@ -59,12 +59,11 @@ namespace Havit.Business
 		/// Pøidá do kolekce prvky pøedané kolekce.
 		/// </summary>
 		/// <param name="source">Kolekce, jejíž prvky mají být pøidány.</param>
-		public void AddRange(IEnumerable<T> source)
+		public void AddRange(IEnumerable<TItem> source)
 		{
-			foreach (T item in source)
-			{
-				this.Add(item);
-			}
+			List<TItem> innerList = (List<TItem>)Items;
+			innerList.AddRange(source);
+			OnCollectionChanged(EventArgs.Empty);
 		}
 		#endregion
 
@@ -76,9 +75,9 @@ namespace Havit.Business
 		/// <param name="index">The zero-based index at which item should be inserted.</param>
 		/// <param name="item">The object to insert. The value can be null for reference types.</param>
 		/// <exception cref="T:System.ArgumentOutOfRangeException">index is less than zero.-or-index is greater than <see cref="P:System.Collections.ObjectModel.Collection`1.Count"></see>.</exception>
-		protected override void InsertItem(int index, T item)
+		protected override void InsertItem(int index, TItem item)
 		{
-			if ((!allowDuplicates) && (this.Contains(item)))
+			if ((!_allowDuplicates) && (this.Contains(item)))
 			{
 				throw new ArgumentException("Položka v kolekci již existuje (a není povoleno vkládání duplicit).");
 			}
@@ -109,9 +108,9 @@ namespace Havit.Business
 		/// <param name="index">The zero-based index of the element to replace.</param>
 		/// <param name="item">The new value for the element at the specified index. The value can be null for reference types.</param>
 		/// <exception cref="T:System.ArgumentOutOfRangeException">index is less than zero.-or-index is greater than <see cref="P:System.Collections.ObjectModel.Collection`1.Count"></see>.</exception>
-		protected override void SetItem(int index, T item)
+		protected override void SetItem(int index, TItem item)
 		{
-			if (!allowDuplicates && (this.IndexOf(item) != index))
+			if (!_allowDuplicates && (this.IndexOf(item) != index))
 			{
 				throw new ArgumentException("Položka v kolekci již existuje (a není povoleno vkládání duplicit).");
 			}
@@ -139,7 +138,7 @@ namespace Havit.Business
 		/// Použit je wrappující constructor Collection(Of T), abychom si vynutili List(Of T).
 		/// </remarks>
 		public BusinessObjectCollection()
-			: base(new List<T>())
+			: base(new List<TItem>())
 		{
 		}
 
@@ -150,7 +149,7 @@ namespace Havit.Business
 		/// Je to rychlé! Nikam se nic nekopíruje, ale pozor, ani neklonuje!
 		/// </remarks>
 		/// <param name="list">List prvkù</param>
-		public BusinessObjectCollection(List<T> list)
+		public BusinessObjectCollection(List<TItem> list)
 			: base(list)
 		{
 		}
@@ -165,11 +164,11 @@ namespace Havit.Business
 		/// </remarks>
 		/// <param name="id">ID prvku</param>
 		/// <returns>první nalezený prvek s požadovaným ID; null, pokud nic nenalezeno</returns>
-		public T FindByID(int id)
+		public TItem FindByID(int id)
 		{
-			List<T> innerList = (List<T>)Items;
-			T result = null;
-			result = innerList.Find(delegate(T item)
+			List<TItem> innerList = (List<TItem>)Items;
+			TItem result = null;
+			result = innerList.Find(delegate(TItem item)
 								  {
 									  if (item.ID == id)
 									  {
@@ -194,9 +193,9 @@ namespace Havit.Business
 		/// </remarks>
 		/// <param name="match">kritérium ve formì predikátu</param>
 		/// <returns>kolekce všech prvkù odpovídajících kritériu match</returns>
-		public virtual T Find(Predicate<T> match)
+		public virtual TItem Find(Predicate<TItem> match)
 		{
-			List<T> innerList = (List<T>)Items;
+			List<TItem> innerList = (List<TItem>)Items;
 			return innerList.Find(match);
 		}
 		#endregion
@@ -210,10 +209,14 @@ namespace Havit.Business
 		/// </remarks>
 		/// <param name="match">kritérium ve formì predikátu</param>
 		/// <returns>kolekce všech prvkù odpovídajících kritériu match</returns>
-		public virtual BusinessObjectCollection<T> FindAll(Predicate<T> match)
+		public virtual TCollection FindAll(Predicate<TItem> match)
 		{
-			List<T> innerList = (List<T>)Items;
-			return new BusinessObjectCollection<T>(innerList.FindAll(match));
+			List<TItem> innerList = (List<TItem>)Items;
+			List<TItem> found = innerList.FindAll(match);
+			TCollection result = new TCollection();
+			result.AllowDuplicates = this.AllowDuplicates; // ???
+			result.AddRange(found);
+			return result;
 		}
 		#endregion
 
@@ -231,9 +234,9 @@ namespace Havit.Business
 		/// Je rychlejší, než <c>foreach</c>, protože neprochází enumerator, ale iteruje prvky ve for cyklu podle indexu.
 		/// </remarks>
 		/// <param name="action">akce, která má být spuštìna</param>
-		public void ForEach(Action<T> action)
+		public void ForEach(Action<TItem> action)
 		{
-			List<T> innerList = (List<T>)Items;
+			List<TItem> innerList = (List<TItem>)Items;
 			innerList.ForEach(action);
 		}
 		#endregion
@@ -251,17 +254,17 @@ namespace Havit.Business
 		/// <param name="ascending">true, pokud se má øadit vzestupnì, false, pokud sestupnì</param>
 		public void Sort(string propertyName, bool ascending)
 		{
-			List<T> innerList = (List<T>)Items;
-			innerList.Sort(new GenericPropertyComparer<T>(propertyName, ascending));
+			List<TItem> innerList = (List<TItem>)Items;
+			innerList.Sort(new GenericPropertyComparer<TItem>(propertyName, ascending));
 		}
 
 		/// <summary>
 		/// Seøadí prvky kolekce dle zadaného srovnání. Publikuje metodu Sort(Generic Comparsion) inner-Listu.
 		/// </summary>
 		/// <param name="comparsion">srovnání, podle kterého mají být prvky seøazeny</param>
-		public void Sort(Comparison<T> comparsion)
+		public void Sort(Comparison<TItem> comparsion)
 		{
-			List<T> innerList = (List<T>)Items;
+			List<TItem> innerList = (List<TItem>)Items;
 			innerList.Sort(comparsion);
 		}
 		#endregion
@@ -273,7 +276,7 @@ namespace Havit.Business
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v které mají být prvky uloženy</param>
 		public virtual void SaveAll(DbTransaction transaction)
 		{
-			ForEach(delegate(T item)
+			ForEach(delegate(TItem item)
 				{
 					item.Save(transaction);
 				});
@@ -296,7 +299,7 @@ namespace Havit.Business
 		public int[] GetIDs()
 		{
 			int[] array = new int[this.Count];
-			List<T> innerList = (List<T>)Items;
+			List<TItem> innerList = (List<TItem>)Items;
 			for (int i = 0; i < innerList.Count; i++)
 			{
 				array[i] = innerList[i].ID;

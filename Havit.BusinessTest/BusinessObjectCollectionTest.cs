@@ -44,7 +44,7 @@ namespace Havit.BusinessTest
 		/// Testuje zákaz duplicit - pomocí indexeru.
 		/// </summary>
 		[TestMethod()]
-		public void AllowDuplicatesTest_DoNotAllow_Indexer_Same()
+		public void AllowDuplicatesTest_DoNotAllow_Indexer_SameNew()
 		{
 			SubjektCollection subjekty = new SubjektCollection();
 			subjekty.AllowDuplicates = false;
@@ -55,6 +55,24 @@ namespace Havit.BusinessTest
 			subjekty.Add(subjekt1);
 			subjekty.Add(subjekt2);
 			subjekty[0] = subjekt1;			
+			// ok
+		}
+
+		/// <summary>
+		/// Testuje zákaz duplicit - pomocí indexeru.
+		/// </summary>
+		[TestMethod()]
+		public void AllowDuplicatesTest_DoNotAllow_Indexer_Same()
+		{
+			SubjektCollection subjekty = new SubjektCollection();
+			subjekty.AllowDuplicates = false;
+
+			Subjekt subjekt1 = Subjekt.GetObject(1);
+			Subjekt subjekt2 = Subjekt.GetObject(1);
+
+			subjekty.Add(subjekt1);
+			subjekty.Add(subjekt2);
+			subjekty[0] = subjekt1;
 			// ok
 		}
 

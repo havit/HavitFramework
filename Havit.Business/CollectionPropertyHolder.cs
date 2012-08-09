@@ -12,7 +12,7 @@ namespace Havit.Business
 	[Serializable]
 	public class CollectionPropertyHolder<CollectionType, BusinessObjectType>: PropertyHolderBase
 		where BusinessObjectType : BusinessObjectBase
-		where CollectionType: BusinessObjectCollection<BusinessObjectType>, new()		
+		where CollectionType: BusinessObjectCollection<BusinessObjectType, CollectionType>, new()		
 	{
 		#region Constructors
 		/// <summary>

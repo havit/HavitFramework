@@ -330,7 +330,7 @@ namespace Havit.Business
 		/// <param name="propertyName">property, podle které se má øadit</param>
 		/// <param name="ascending">true, pokud se má øadit vzestupnì, false, pokud sestupnì</param>
 		[Obsolete]
-		public void Sort(string propertyName, bool ascending)
+		public virtual void Sort(string propertyName, bool ascending)
 		{
 			List<TItem> innerList = (List<TItem>)Items;
 			innerList.Sort(new GenericPropertyComparer<TItem>(new SortItem(propertyName, ascending ? SortDirection.Ascending : SortDirection.Descending)));
@@ -346,7 +346,7 @@ namespace Havit.Business
 		/// </remarks>
 		/// <param name="propertyInfo">Property, podle které se má øadit.</param>
 		/// <param name="sortDirection">Smìr øazení.</param>
-		public void Sort(PropertyInfo propertyInfo, SortDirection sortDirection)
+		public virtual void Sort(PropertyInfo propertyInfo, SortDirection sortDirection)
 		{
 			List<TItem> innerList = (List<TItem>)Items;
 			innerList.Sort(new GenericPropertyComparer<TItem>(new SortItem(propertyInfo.PropertyName, sortDirection)));
@@ -356,7 +356,7 @@ namespace Havit.Business
 		/// Seøadí prvky kolekce dle zadaného srovnání. Publikuje metodu Sort(Generic Comparsion) inner-Listu.
 		/// </summary>
 		/// <param name="comparsion">srovnání, podle kterého mají být prvky seøazeny</param>
-		public void Sort(Comparison<TItem> comparsion)
+		public virtual void Sort(Comparison<TItem> comparsion)
 		{
 			List<TItem> innerList = (List<TItem>)Items;
 			innerList.Sort(comparsion);

@@ -53,13 +53,18 @@ namespace Havit.Business
 				types.Add(typeof(T), typeHashtable);
 			}
 
-			if (typeHashtable.ContainsKey(businessObject.ID))
+			T temp = (T)typeHashtable[businessObject.ID];
+			if (temp != null)
 			{
-#warning Co se má stát pøi ukládání existujícího objektu do IdentityMap?
-				throw new InvalidOperationException("IdentityMap již tento objekt obsahuje.");
+				if (Object.Equals(temp, businessObject))
+				{
+					throw new InvalidOperationException("V IdentityMap je již jiná instance tohoto objektu.");
+				}
 			}
-
-			typeHashtable.Add(businessObject.ID, businessObject);
+			else
+			{
+				typeHashtable.Add(businessObject.ID, businessObject);
+			}
 		}
 		#endregion
 

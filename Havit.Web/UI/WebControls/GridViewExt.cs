@@ -233,6 +233,19 @@ namespace Havit.Web.UI.WebControls
 		private static readonly object EventItemInserted = new object();
 		#endregion
 
+		#region InsertIndex
+		/// <summary>
+		/// Index øádku (RowIndex) vkládaného prvku. Pokud nejsme v insert módu, je -1.
+		/// </summary>
+		public int InsertIndex
+		{
+			get
+			{
+				return insertRowIndex;
+			}
+		}
+		#endregion
+
 		#region insertRowIndex (private)
 		/// <summary>
 		/// Skuteèný index InsertRow na stránce.
@@ -286,16 +299,9 @@ namespace Havit.Web.UI.WebControls
 			{
 				throw new InvalidOperationException("Není nastavena property DataKeyNames, nelze pracovat s klíèi.");
 			}
-			if ((control == null) || (control.Parent == null))
-			{
-				throw new ArgumentException("Z controlu se nepodaøilo klíè dohledat.", "control");
-			}
 
-			if ((control is GridViewRow) && (control.Parent.Parent == this))
-			{
-				return DataKeys[((GridViewRow)control).RowIndex];
-			}
-			return GetRowKey(control.NamingContainer);
+			GridViewRow row = GetRow(control);			
+			return DataKeys[row.RowIndex];
 		}
 
 		/// <summary>
@@ -337,6 +343,29 @@ namespace Havit.Web.UI.WebControls
 			}
 
 			return this.DataKeys[rowIndex];
+		}
+		#endregion
+
+		#region GetRow
+		/// <summary>
+		/// Najde GridViewRow obsahující daný control.
+		/// Pokud není Control v GridView, vyvolá výjimku.
+		/// </summary>
+		/// <param name="control">Control, na základì nìhož se hledá GridViewRow.</param>
+		/// <returns>Nalezený GridViewRow.</returns>
+		public GridViewRow GetRow(Control control)
+		{
+			if ((control == null) || (control.Parent == null))
+			{
+				throw new ArgumentException("Nepodaøilo dohledat pøíslušný GridViewRow.", "control");
+			}
+
+			if ((control is GridViewRow) && (control.Parent.Parent == this))
+			{
+				return (GridViewRow)control;
+			}
+
+			return GetRow(control.NamingContainer);
 		}
 		#endregion
 

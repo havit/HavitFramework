@@ -1622,6 +1622,14 @@
             <param name="rowIndex">index řádku</param>
             <returns>Vrací hodnotu klíče daného řádku.</returns>
         </member>
+        <member name="M:Havit.Web.UI.WebControls.GridViewExt.GetRow(System.Web.UI.Control)">
+            <summary>
+            Najde GridViewRow obsahující daný control.
+            Pokud není Control v GridView, vyvolá výjimku.
+            </summary>
+            <param name="control">Control, na základě něhož se hledá GridViewRow.</param>
+            <returns>Nalezený GridViewRow.</returns>
+        </member>
         <member name="M:Havit.Web.UI.WebControls.GridViewExt.FindColumn(System.String)">
             <summary>
             Vyhledá sloupec (field) podle id. Vyhledává jen sloupce implementující rozhraní IEnterpriseField.
@@ -1807,6 +1815,11 @@
         <member name="E:Havit.Web.UI.WebControls.GridViewExt.RowInserted">
             <summary>
             Událost, která se volá po vložení nového řádku (po události RowInserting).
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.GridViewExt.InsertIndex">
+            <summary>
+            Index řádku (RowIndex) vkládaného prvku. Pokud nejsme v insert módu, je -1.
             </summary>
         </member>
         <member name="T:Havit.Web.UI.WebControls.GridViewInsertEventHandler">

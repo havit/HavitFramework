@@ -1,0 +1,169 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Havit.Enterprise.Web</name>
+    </assembly>
+    <members>
+        <member name="T:Havit.Web.UI.WebControls.EnterpriseDropDownList">
+            <summary>
+            EnterpriseDropDownList zajišťuje pohodlnější práci s DropDownListem, jehož prvky mají vazbu ne business objekty.	
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseDropDownList.#ctor">
+            <summary>
+            Inicialuze DataValueField na "ID".
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseDropDownList.OnLoad(System.EventArgs)">
+            <summary>
+            Pokud jde o první načtení stránky a není nastaveno AutoDataBind, zavolá DataBindAll.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseDropDownList.DataBindAll">
+            <summary>
+            Naváže na DropDownList všechny (nasmazané) business objekty určitého typu
+            (zavolá metodu GetAll(), nastaví výsledek je jako DataSource a zavolá DataBind).
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseDropDownList.PerformDataBinding(System.Collections.IEnumerable)">
+            <summary>
+            Zajistí, aby byl po databindingu doplněn řádek pro výběr prázdné hodnoty.
+            </summary>
+            <param name="dataSource"></param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseDropDownList.EnsureEmptyItem">
+            <summary>
+            Přidá na začátek seznamu řádek pro výběr prázdné hodnoty, pokud tam již není.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseDropDownList.ItemPropertyInfo">
+            <summary>
+            ReferenceFieldPropertyInfo property, jejíž hodnota se tímto DropDownListem vybírá.
+            Nastavení této hodnoty rovněž přepíše hodnoty vlastností ItemsObjectInfo a Nullable.
+            Hodnota této property nepřežívá postback.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseDropDownList.ItemObjectInfo">
+            <summary>
+            Udává metodu, kterou se získá objekt na základě ID.
+            Hodnota vlastnosti je automaticky nastavena nastavením vlastnosti PropertyInfo.
+            Hodnota vlastnosti nepřežívá postback.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseDropDownList.Nullable">
+            <summary>
+            Udává, zda má být na výběr prázdná hodnota. Výchozí hodnota je true.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseDropDownList.NullableText">
+            <summary>
+            Udává text prázdné hodnoty. Výchozí hodnota je "---".
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseDropDownList.AutoSort">
+            <summary>
+            Udává, zda je zapnuto automatické řazení položek při databindingu. Výchozí hodnota je true.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseDropDownList.AutoDataBind">
+            <summary>
+            Udává, zda je zapnuto automatické nabindování položek při prvním načtení stránky. Výchozí hodnota je false.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseDropDownList.DataSortField">
+            <summary>
+            Určuje, podle jaké property jsou řazena. Pokud není žádná hodnota nastavena použije se hodnota vlastnosti DataTextField.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseDropDownList.SelectedId">
+            <summary>
+            Vrací ID vybrané položky. Není-li žádná položka vybraná, vrací null.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseDropDownList.SelectedObject">
+            <summary>
+            Vrací objekt na základě vybrané položky v DropDownListu. Objekt se získává metodou ve vlastnosti ItemsObjectInfo.
+            Není-li žádná položka vybrána, vrací null.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.EnterpriseGridView">
+            <summary>
+            EnterprisGridView poskytuje:
+            - hledání klíče řádku, ve kterém došlo k události
+            - hledání sloupce (IEnterpriseField) na základě ID sloupce
+            - stránkování
+            - zveřejňuje vlastnost RequiresDataBinding
+            - automatický databinding při prvním načtení stránky nebo nastavení RequiresDataBinding na true (podmíněno vlastností AutoDataBind)
+            - přechod na stránku 0 při změně řazení
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.#ctor">
+            <summary>
+            Vytvoří instanci EnterpriseGridView.
+            Vypne automatické generování sloupců při databindingu (nastaví AutoGenerateColumns na false).
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.OnInit(System.EventArgs)">
+            <summary>
+            Inicializuje EnterpriseGridView.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.GetKeyValue(System.Web.UI.Control)">
+            <summary>
+            Nalezne hodnotu klíče položky, ve kterém se nachází control.
+            </summary>
+            <param name="control">Control. Hledá se řádek, ve kterém se GridViewRow nalézá 
+            a DataKey řádku.</param>
+            <returns>Vrací hodnotu klíče. Pokud není klíč nalezen
+            (Control není v GridView), vrací null.
+            </returns>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.GetKeyValue(System.Web.UI.WebControls.GridViewCommandEventArgs)">
+            <summary>
+            Nalezne hodnotu klíče položky na základě události.
+            </summary>
+            <param name="e">Událost, ke které v gridu došlo.</param>
+            <returns>Vrací hodnotu klíče daného řádku. Pokud není klíč nalezen vrací null.</returns>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.FindColumn(System.String)">
+            <summary>
+            Vyhledá sloupec podle id. Vyhledává jen sloupce implementující rozhraní IEnterpriseField.
+            </summary>
+            <param name="id">ID, podle kterého se sloupec vyhledává.</param>
+            <returns>Nalezený sloupec nebo null, pokud není nalezen.</returns>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.OnPageIndexChanging(System.Web.UI.WebControls.GridViewPageEventArgs)">
+            <summary>
+            Pokud není stránkování stornováno, změníme stránku na cílovou.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.OnSorted(System.EventArgs)">
+            <summary>
+            Po setřídění podle sloupce zajistí u vícestránkových gridů návrat na první stránku
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.OnPreRender(System.EventArgs)">
+            <summary>
+            Zajistíme DataBinding, pokud mají vlastnosti AutoDataBind a RequiresDataBinding hodnotu true.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.SetRequiresDatabinding">
+            <summary>
+            Nastaví RequiresDataBinding na true.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseGridView.AutoDataBind">
+            <summary>
+            Nastavuje automatický databind na GridView.		
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseGridView.RequiresDataBinding">
+            <summary>
+            Zpřístupňuje pro čtení chráněnou vlastnost RequiresDataBinding.
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -90,10 +90,6 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
-    <ProjectReference Include="..\Havit.Business\Havit.Business.csproj">
-      <Project>{81995BC1-9F25-4F46-8258-8ED1F965CABB}</Project>
-      <Name>Havit.Business</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Havit\Havit.csproj">
       <Name>Havit</Name>
       <Project>{9ACC94B9-B8FD-47C1-ABF8-0658C7673905}</Project>
@@ -144,10 +140,6 @@
     </Compile>
     <Compile Include="UI\WebControls\Collapser.cs" />
     <Compile Include="UI\WebControls\DataGridExt.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="UI\WebControls\EnterpriseDropDownList.cs" />
-    <Compile Include="UI\WebControls\GridViews\EnterpriseGridView.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UI\WebControls\GridViews\HighlightingGridView.cs">

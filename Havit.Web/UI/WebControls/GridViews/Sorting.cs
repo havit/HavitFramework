@@ -1,7 +1,5 @@
 using System;
 using Havit.Collections;
-using Havit.Business.Query;
-using System.Diagnostics;
 using System.Web;
 
 namespace Havit.Web.UI.WebControls

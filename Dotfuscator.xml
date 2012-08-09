@@ -33,6 +33,9 @@
         <option>library</option>
         <file dir="${configdir}\Havit.Xml\bin\Release" name="Havit.Xml.dll" />
       </inputassembly>
+      <inputassembly>
+        <file dir="${configdir}\Havit.Enterprise.Web\bin\Release" name="Havit.Enterprise.Web.dll" />
+      </inputassembly>
     </asmlist>
   </input>
   <output>

@@ -94,7 +94,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			get
 			{
-				return dateTimePickerImage.Style;
+				return dateTimePickerImage.ControlStyle;
 			}
 		}
 		#endregion
@@ -135,7 +135,6 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		#endregion
-
 
 		#endregion
 

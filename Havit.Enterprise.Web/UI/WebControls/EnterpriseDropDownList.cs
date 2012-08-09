@@ -298,6 +298,7 @@ namespace Havit.Web.UI.WebControls
 			if (Nullable)
 			{
 				EnsureEmptyItem();
+				SelectedIndex = 0;
 			}
 			DataBindPerformed = true;
 

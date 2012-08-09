@@ -442,11 +442,11 @@ namespace Havit.Web.UI.WebControls
 			// (charCode < 31) .. speciální symboly (Home, End, Enter, Backspace, apod.)
 			// (allowNegativeNumber && (charCode == 45)) ... znaménko mínus, je-li povolena záporná èísla
 			// ((decimals > 0) && ... ) ... desetinný oddìlovaè, jsou-li desetinná místa povolena a zároveò ještì desetinný oddìlovaè není uveden
-			string javaScript = 
+			string javaScript =
 @"function HavitNumericBox_KeyPress(e, allowNegativeNumber, decimals)
 {
 	var charCode = (window.event) ? window.event.keyCode : e.charCode;
-	var element = (e.target) ? e.target : window.event.srcElement;
+	var element = (e && e.target) ? e.target : window.event.srcElement;
 	var validKey = (charCode == " + (byte)thousandsSeparator[0] + @")
 		|| ((charCode >= 48) && (charCode <= 57)) 
 		|| (charCode <= 31)
@@ -461,7 +461,7 @@ namespace Havit.Web.UI.WebControls
 
 function HavitNumericBox_Fix(e, allowNegativeNumber, decimals)
 {
-	var element = (e.target) ? e.target : window.event.srcElement;
+	var element = (e && e.target) ? e.target : window.event.srcElement;
 	var position;
 
 	var value = element.value;
@@ -475,7 +475,7 @@ function HavitNumericBox_Fix(e, allowNegativeNumber, decimals)
 
 function HavitNumericBox_Focus(e)
 {
-	var element = (e.target) ? e.target : window.event.srcElement;
+	var element = (e && e.target) ? e.target : window.event.srcElement;
 	if ((element != null) && element.createTextRange)
 	{
 		element.createTextRange().select();

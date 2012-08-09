@@ -642,7 +642,7 @@ namespace Havit.Web.UI.WebControls
 
 function HavitDateTimeBox_Change(e)
 {
-	var element = (e.target) ? e.target : window.event.srcElement;
+	var element = (e && e.target) ? e.target : window.event.srcElement;
 	var datum = new Date();
 	var datumMesic = datum.getMonth() + 1;
 	var datumRok = datum.getFullYear();
@@ -709,7 +709,7 @@ function HavitDateTimeBox_Change(e)
 
 function HavitDateTimeBox_Focus(e)
 {
-	var element = (e.target) ? e.target : window.event.srcElement;
+	var element = (e && e.target) ? e.target : window.event.srcElement;
 	if ((element != null) && element.createTextRange)
 	{
 		element.createTextRange().select();

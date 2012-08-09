@@ -170,6 +170,27 @@ namespace Havit.BusinessTest
 		}
 		
 		#endregion
+
+		#region CheckConstraintOnDeletedObject
+		[TestMethod]
+		public void CheckConstraintOnDeletedObject()
+		{
+			DbConnector.Default.ExecuteTransaction(delegate(DbTransaction transaction)
+			{
+				Subjekt subjekt = Subjekt.CreateObject();
+				subjekt.Save(transaction);
+				string s = "";
+				while (s.Length <= Subjekt.Properties.Nazev.MaximumLength)
+				{
+					s = s + "0";
+				}
+
+				subjekt.Nazev = s;
+				subjekt.Delete(transaction);
+			});
+		}
+		
+		#endregion		
 	}
 
 

@@ -75,6 +75,53 @@ namespace Havit.BusinessLayerTest
 		}
 		#endregion
 		
+		#region Sort
+		/// <summary>
+		/// Seřadí prvky kolekce dle požadované property, která implementuje IComparable.
+		/// </summary>
+		/// <remarks>
+		/// Používá <see cref="Havit.Collections.GenericPropertyComparer{T}"/>. K porovnávání podle property
+		/// tedy dochází pomocí reflexe - relativně pomalu. Pokud je potřeba vyšší výkon, je potřeba použít
+		/// overload Sort(Generic Comparsion) s přímým přístupem k property.
+		/// </remarks>
+		/// <param name="propertyName">property, podle které se má řadit</param>
+		/// <param name="ascending">true, pokud se má řadit vzestupně, false, pokud sestupně</param>
+		[Obsolete]
+		public override void Sort(string propertyName, bool ascending)
+		{
+			LoadAll();
+			base.Sort(propertyName, ascending);
+		}
+		
+		/// <summary>
+		/// Seřadí prvky kolekce dle požadované property, která implementuje IComparable.
+		/// Před řazením načtě všechny prvky metodou LoadAll.
+		/// </summary>
+		/// <remarks>
+		/// Používá <see cref="Havit.Collections.GenericPropertyComparer{T}"/>. K porovnávání podle property
+		/// tedy dochází pomocí reflexe - relativně pomalu. Pokud je potřeba vyšší výkon, je potřeba použít
+		/// overload Sort(Generic Comparsion) s přímým přístupem k property.
+		/// </remarks>
+		/// <param name="propertyInfo">Property, podle které se má řadit.</param>
+		/// <param name="sortDirection">Směr řazení.</param>
+		public override void Sort(PropertyInfo propertyInfo, SortDirection sortDirection)
+		{
+			LoadAll();
+			base.Sort(propertyInfo, sortDirection);
+		}
+		
+		/// <summary>
+		/// Seřadí prvky kolekce dle zadaného srovnání. Publikuje metodu Sort(Generic Comparsion) inner-Listu.
+		/// Před řazením načtě všechny prvky metodou LoadAll.
+		/// </summary>
+		/// <param name="comparsion">srovnání, podle kterého mají být prvky seřazeny</param>
+		public override void Sort(Comparison<Uzivatel> comparsion)
+		{
+			LoadAll();
+			base.Sort(comparsion);
+		}
+		#endregion
+		
 		#region LoadAll
 		/// <summary>
 		/// Načte všechny prvky kolekce.

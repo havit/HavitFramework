@@ -269,7 +269,7 @@ namespace Havit.BusinessLayerTest
 		}
 		#endregion
 		
-		#region Save & Delete: Save_SaveMembers, Save_SaveCollections, Save_MinimalInsert, Save_FullInsert, Save_Update, Save_Insert_InsertRequiredForMinimalInsert, Save_Insert_InsertRequiredForFullInsert, Delete_Perform
+		#region Save & Delete: Save_SaveMembers, Save_SaveCollections, Save_MinimalInsert, Save_FullInsert, Save_Update, Save_Insert_InsertRequiredForMinimalInsert, Save_Insert_InsertRequiredForFullInsert, Delete, Delete_Perform
 		
 		/// <summary>
 		/// Ukládá member-objekty.
@@ -471,11 +471,23 @@ namespace Havit.BusinessLayerTest
 		}
 		
 		/// <summary>
+		/// Smaže objekt, nebo ho označí jako smazaný, podle zvolené logiky. Změnu uloží do databáze, v transakci.
+		/// </summary>
+		/// <remarks>
+		/// Neprovede se, pokud je již objekt smazán.
+		/// </remarks>
+		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které se smazání provede; null, pokud bez transakce</param>
+		public override void Delete(DbTransaction transaction)
+		{
+			Deleted = System.DateTime.Now;
+			base.Delete(transaction);
+		}
+		
+		/// <summary>
 		/// Metoda označí objekt jako smazaný a uloží jej.
 		/// </summary>
 		protected override sealed void Delete_Perform(DbTransaction transaction)
 		{
-			Deleted = System.DateTime.Now;
 			Save_Update(transaction);
 		}
 		

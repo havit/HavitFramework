@@ -257,7 +257,7 @@ namespace Havit.Business
 
 			IsSaving = true; // øeší cyklické reference pøi ukládání objektových struktur
 
-			if (IsDirty)
+			if (IsDirty && !IsDeleted)
 			{
 				CheckConstraints();
 			}

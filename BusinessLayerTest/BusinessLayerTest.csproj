@@ -44,14 +44,17 @@
     <Compile Include="_generated\Role.partial.cs" />
     <Compile Include="_generated\RoleBase.cs" />
     <Compile Include="_generated\RoleCollection.partial.cs" />
+    <Compile Include="_generated\RoleCollectionBase.cs" />
     <Compile Include="_generated\RolePropertiesBase.cs" />
     <Compile Include="_generated\Subjekt.partial.cs" />
     <Compile Include="_generated\SubjektBase.cs" />
     <Compile Include="_generated\SubjektCollection.partial.cs" />
+    <Compile Include="_generated\SubjektCollectionBase.cs" />
     <Compile Include="_generated\SubjektPropertiesBase.cs" />
     <Compile Include="_generated\Uzivatel.partial.cs" />
     <Compile Include="_generated\UzivatelBase.cs" />
     <Compile Include="_generated\UzivatelCollection.partial.cs" />
+    <Compile Include="_generated\UzivatelCollectionBase.cs" />
     <Compile Include="_generated\UzivatelPropertiesBase.cs" />
     <Compile Include="_properties\RoleProperties.cs" />
     <Compile Include="_properties\SubjektProperties.cs" />

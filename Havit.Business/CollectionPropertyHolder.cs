@@ -50,7 +50,7 @@ namespace Havit.Business
 			{
 				// první inicializace
 				_value = new CollectionType();
-				_value.IgnoreDuplicates = true;
+				_value.AllowDuplicates = false;
 				IsInitialized = true;
 				_value.CollectionChanged += delegate(object sender, EventArgs e)
 				{

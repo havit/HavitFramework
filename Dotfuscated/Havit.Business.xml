@@ -923,7 +923,7 @@
         <member name="M:Havit.Business.BusinessObjectCollection`1.InsertItem(System.Int32,`0)">
             <summary>
             Inserts an element into the <see cref="T:System.Collections.ObjectModel.Collection`1"></see> at the specified index.
-            When IgnoresDuplicates is true, checks whether item already is in the collection. If so, does not insert item.
+            When AllowDuplicates is false, checks whether item already is in the collection. If so, throws an ArgumentException.
             </summary>
             <param name="index">The zero-based index at which item should be inserted.</param>
             <param name="item">The object to insert. The value can be null for reference types.</param>
@@ -939,6 +939,7 @@
         <member name="M:Havit.Business.BusinessObjectCollection`1.SetItem(System.Int32,`0)">
             <summary>
             Replaces the element at the specified index.
+            When AllowDuplicates is false, checks whether item already is in the collection. If so, throws an ArgumentException.
             </summary>
             <param name="index">The zero-based index of the element to replace.</param>
             <param name="item">The new value for the element at the specified index. The value can be null for reference types.</param>
@@ -1051,10 +1052,10 @@
             Událost vyvolaná po jakékoliv změně kolekce (Insert, Remove, Set, Clear).
             </summary>
         </member>
-        <member name="P:Havit.Business.BusinessObjectCollection`1.IgnoreDuplicates">
+        <member name="P:Havit.Business.BusinessObjectCollection`1.AllowDuplicates">
             <summary>
             Určuje, zda je možné do kolekce vložit hodnotu, která již v kolekci je.
-            Pokud je nastaveno na true, přidání hodnoty, která v kolekci již je, neproběhne (nic se nestane).
+            Pokud je nastaveno na true, přidání hodnoty, která v kolekci již je, vyvolá výjimku.
             Pokud je nastaveno na false (výchozí), je možné hodnotu do kolekce přidat vícekrát.
             </summary>
         </member>

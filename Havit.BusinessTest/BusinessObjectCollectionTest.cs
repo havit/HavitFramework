@@ -16,52 +16,85 @@ namespace Havit.BusinessTest
 	public class BusinessObjectCollectionTest
 	{
 		/// <summary>
-		/// Testuje výchozí hodnotu IgnoreDuplicates.
+		/// Testuje výchozí hodnotu AllowDuplicates.
 		/// </summary>
 		[TestMethod()]
-		public void IgnoreDuplicatesTest_Default()
+		public void AllowDuplicatesTest_Default()
 		{
 			SubjektCollection subjekty = new SubjektCollection();
-			Assert.IsTrue(subjekty.IgnoreDuplicates == false);
+			Assert.IsTrue(subjekty.AllowDuplicates);
 		}
+
 		/// <summary>
-		/// Testuje, zda ignorování duplicit.
+		/// Testuje zákaz duplicit - pomocí insertu.
 		/// </summary>
 		[TestMethod()]
-		public void IgnoreDuplicatesTest_Ignore()
+		[ExpectedException(typeof(ArgumentException))]
+		public void AllowDuplicatesTest_DoNotAllow_Insert()
 		{
 			SubjektCollection subjekty = new SubjektCollection();
-			subjekty.IgnoreDuplicates = true;
+			subjekty.AllowDuplicates = false;
 			Subjekt subjekt = Subjekt.CreateObject();
-			subjekty.Add(subjekt);
-			subjekty.Add(subjekt);
-			subjekty.Insert(0, subjekt);
-			subjekty.Insert(0, subjekt);
 
-			Assert.IsTrue(subjekty.Count == 1);
+			subjekty.Add(subjekt);
+			subjekty.Add(subjekt);
 		}
 
 		/// <summary>
-		/// Testuje neignorování duplicit.
+		/// Testuje zákaz duplicit - pomocí indexeru.
 		/// </summary>
 		[TestMethod()]
-		public void IgnoreDuplicatesTest_DoNotIgnore()
+		public void AllowDuplicatesTest_DoNotAllow_Indexer_Same()
+		{
+			SubjektCollection subjekty = new SubjektCollection();
+			subjekty.AllowDuplicates = false;
+
+			Subjekt subjekt1 = Subjekt.CreateObject();
+			Subjekt subjekt2 = Subjekt.CreateObject();
+
+			subjekty.Add(subjekt1);
+			subjekty.Add(subjekt2);
+			subjekty[0] = subjekt1;			
+			// ok
+		}
+
+		/// <summary>
+		/// Testuje zákaz duplicit - pomocí indexeru.
+		/// </summary>
+		[TestMethod()]
+		[ExpectedException(typeof(ArgumentException))]		
+		public void AllowDuplicatesTest_DoNotAllow_Indexer_Different()
+		{
+			SubjektCollection subjekty = new SubjektCollection();
+			subjekty.AllowDuplicates = false;
+
+			Subjekt subjekt1 = Subjekt.CreateObject();
+			Subjekt subjekt2 = Subjekt.CreateObject();
+
+			subjekty.Add(subjekt1);
+			subjekty.Add(subjekt2);
+			subjekty[1] = subjekt1;
+		}
+
+		/// <summary>
+		/// Testuje povolení duplicit.
+		/// </summary>
+		[TestMethod()]
+		public void AllowDuplicatesTest_Allow()
 		{
 			SubjektCollection subjekty;
 
 			Subjekt subjekt = Subjekt.CreateObject();
 
 			subjekty = new SubjektCollection();
-			subjekty.IgnoreDuplicates = false;
+			subjekty.AllowDuplicates = true;
 			subjekty.Add(subjekt);
 			subjekty.Add(subjekt);
 			Assert.IsTrue(subjekty.Count == 2);
 
-			subjekty = new SubjektCollection();
-			subjekty.IgnoreDuplicates = false;
-			subjekty.Insert(0, subjekt);
-			subjekty.Insert(0, subjekt);
-			Assert.IsTrue(subjekty.Count == 2);
+			subjekty[0] = subjekt;
+			subjekty[1] = subjekt;
+			// ok
 		}
 
 	}

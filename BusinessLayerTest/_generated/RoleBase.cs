@@ -327,7 +327,9 @@ namespace Havit.BusinessLayerTest
 					}
 				}
 			}
-			return collection;
+			RoleCollection result = new RoleCollection();
+			result.AddRange(collection);
+			return result;
 		}
 		
 		#endregion

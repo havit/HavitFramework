@@ -126,6 +126,17 @@ namespace Havit.BusinessTest
 		//}
 		//
 		#endregion
+
+		/// <summary>
+		/// Testuje, zda cachovaný GetAll vrací klon kolekce.
+		/// </summary>
+		[TestMethod]
+		public void GetAllCacheClone()
+		{
+			RoleCollection roleCollection1 = Role.GetAll();
+			RoleCollection roleCollection2 = Role.GetAll();
+			Assert.IsTrue(roleCollection1 != roleCollection2);
+		}
 	}
 
 

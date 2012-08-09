@@ -40,18 +40,18 @@ namespace Havit.Business
 		}
 		#endregion
 
-		#region IgnoreDuplicates
+		#region AllowDuplicates
 		/// <summary>
 		/// Urèuje, zda je možné do kolekce vložit hodnotu, která již v kolekci je.
-		/// Pokud je nastaveno na true, pøidání hodnoty, která v kolekci již je, neprobìhne (nic se nestane).
+		/// Pokud je nastaveno na true, pøidání hodnoty, která v kolekci již je, vyvolá výjimku.
 		/// Pokud je nastaveno na false (výchozí), je možné hodnotu do kolekce pøidat vícekrát.
 		/// </summary>
-		public bool IgnoreDuplicates
+		public bool AllowDuplicates
 		{
-			get { return ignoreDuplicates; }
-			set { ignoreDuplicates = value; }
+			get { return allowDuplicates; }
+			set { allowDuplicates = value; }
 		}
-		private bool ignoreDuplicates = false;
+		private bool allowDuplicates = true;
 		#endregion
 
 		#region AddRange
@@ -71,16 +71,16 @@ namespace Havit.Business
 		#region InsertItem (override)
 		/// <summary>
 		/// Inserts an element into the <see cref="T:System.Collections.ObjectModel.Collection`1"></see> at the specified index.
-		/// When IgnoresDuplicates is true, checks whether item already is in the collection. If so, does not insert item.
+		/// When AllowDuplicates is false, checks whether item already is in the collection. If so, throws an ArgumentException.
 		/// </summary>
 		/// <param name="index">The zero-based index at which item should be inserted.</param>
 		/// <param name="item">The object to insert. The value can be null for reference types.</param>
 		/// <exception cref="T:System.ArgumentOutOfRangeException">index is less than zero.-or-index is greater than <see cref="P:System.Collections.ObjectModel.Collection`1.Count"></see>.</exception>
 		protected override void InsertItem(int index, T item)
 		{
-			if (ignoreDuplicates && this.Contains(item))
+			if ((!allowDuplicates) && (this.Contains(item)))
 			{
-				return;
+				throw new ArgumentException("Položka v kolekci již existuje (a není povoleno vkládání duplicit).");
 			}
 
 			base.InsertItem(index, item);
@@ -104,12 +104,17 @@ namespace Havit.Business
 		#region SetItem (override)
 		/// <summary>
 		/// Replaces the element at the specified index.
+		/// When AllowDuplicates is false, checks whether item already is in the collection. If so, throws an ArgumentException.
 		/// </summary>
 		/// <param name="index">The zero-based index of the element to replace.</param>
 		/// <param name="item">The new value for the element at the specified index. The value can be null for reference types.</param>
 		/// <exception cref="T:System.ArgumentOutOfRangeException">index is less than zero.-or-index is greater than <see cref="P:System.Collections.ObjectModel.Collection`1.Count"></see>.</exception>
 		protected override void SetItem(int index, T item)
 		{
+			if (!allowDuplicates && (this.IndexOf(item) != index))
+			{
+				throw new ArgumentException("Položka v kolekci již existuje (a není povoleno vkládání duplicit).");
+			}
 			base.SetItem(index, item);
 			OnCollectionChanged(EventArgs.Empty);
 		}

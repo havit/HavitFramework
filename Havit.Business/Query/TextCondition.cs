@@ -69,12 +69,12 @@ namespace Havit.Business.Query
 		}
 
 
-		#region GetLikeEscapedExpression, GetWildCardsLikeExpression
+		#region GetLikeExpression, GetWildCardsLikeExpression
 		/// <summary>
 		/// Transformuje øetìzec naøetìzec, který je možné použít jako hodnota k operátoru like.
 		/// Nahrazuje % na [%] a _ na [_].
 		/// </summary>
-		public static string GetLikeEscapedExpression(string text)
+		public static string GetLikeExpression(string text)
 		{
 			if (String.IsNullOrEmpty(text))
 			{
@@ -96,7 +96,7 @@ namespace Havit.Business.Query
 		public static string GetWildCardsLikeExpression(string text)
 		{
 			string result;
-			result = GetLikeEscapedExpression(text);
+			result = GetLikeExpression(text);
 
 			if (result.Contains("*"))
 			{

@@ -73,6 +73,17 @@ namespace Havit
 		}
 
 		/// <summary>
+		/// Zaokrouhlí (aritmeticky) číslo na nejbližší násobek (multiple) jiného čísla.
+		/// </summary>
+		/// <param name="d">číslo k zaohrouhlení</param>
+		/// <param name="multiple">číslo, na jehož násobek se má zaokrouhlit (multiple)</param>
+		/// <returns>číslo zaokrouhlené (aritmeticky) na nejbliží násobek (multiple)</returns>
+		public static decimal RoundToMultiple(decimal d, decimal multiple)
+		{
+			return (decimal)Math.Round(d / multiple) * multiple;
+		}
+
+		/// <summary>
 		/// Zaokrouhlí číslo na nejbližší vyšší násobek (multiple) jiného čísla.
 		/// </summary>
 		/// <param name="d">číslo k zaohrouhlení</param>
@@ -95,6 +106,17 @@ namespace Havit
 		}
 
 		/// <summary>
+		/// Zaokrouhlí číslo na nejbližší vyšší násobek (multiple) jiného čísla.
+		/// </summary>
+		/// <param name="d">číslo k zaohrouhlení</param>
+		/// <param name="multiple">číslo, na jehož násobek se má zaokrouhlit (multiple)</param>
+		/// <returns>číslo zaokrouhlené na nejbliží vyšší násobek (multiple)</returns>
+		public static decimal CeilingToMultiple(decimal d, decimal multiple)
+		{
+			return (decimal)Math.Ceiling(d / multiple) * multiple;
+		}
+
+		/// <summary>
 		/// Zaokrouhlí číslo na nejbližší nižší násobek (multiple) jiného čísla.
 		/// </summary>
 		/// <param name="d">číslo k zaohrouhlení</param>
@@ -114,6 +136,17 @@ namespace Havit
 		public static int FloorToMultiple(double d, int multiple)
 		{
 			return (int)Math.Floor(d / multiple) * multiple;
+		}
+
+		/// <summary>
+		/// Zaokrouhlí číslo na nejbližší nižší násobek (multiple) jiného čísla.
+		/// </summary>
+		/// <param name="d">číslo k zaohrouhlení</param>
+		/// <param name="multiple">číslo, na jehož násobek se má zaokrouhlit (multiple)</param>
+		/// <returns>číslo zaokrouhlené na nejbliží nižší násobek (multiple)</returns>
+		public static decimal FloorToMultiple(decimal d, decimal multiple)
+		{
+			return (decimal)Math.Floor(d / multiple) * multiple;
 		}
 		#endregion
 

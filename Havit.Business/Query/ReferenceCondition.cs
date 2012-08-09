@@ -115,7 +115,25 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateIn(IOperand operand, int[] ids)
 		{
-			return new BinaryCondition("{0} IN (SELECT Value FROM dbo.IntArrayToTable({1}))", operand, SqlInt32ArrayOperand.Create(ids));
+			if (ids.Length < 2000)
+			{
+				return new BinaryCondition("{0} IN (SELECT Value FROM dbo.IntArrayToTable({1}))", operand, SqlInt32ArrayOperand.Create(ids));
+			}
+			else
+			{
+				OrCondition result = new OrCondition();
+				int startIndex = 0;
+				while (startIndex < ids.Length)
+				{
+					int length = Math.Min(ids.Length - startIndex, 1999);
+					
+					int[] subarray = new int[length];
+					Array.Copy(ids, startIndex, subarray, 0, length);
+					result.Conditions.Add(ReferenceCondition.CreateIn(operand, subarray));
+					startIndex += length;
+				}
+				return result;
+			}
 		}
 		#endregion
 
@@ -125,7 +143,25 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateNotIn(IOperand operand, int[] ids)
 		{
-			return new BinaryCondition("{0} NOT IN (SELECT Value FROM dbo.IntArrayToTable({1}))", operand, SqlInt32ArrayOperand.Create(ids));
+			if (ids.Length < 2000)
+			{
+				return new BinaryCondition("{0} NOT IN (SELECT Value FROM dbo.IntArrayToTable({1}))", operand, SqlInt32ArrayOperand.Create(ids));
+			}
+			else
+			{
+				OrCondition result = new OrCondition();
+				int startIndex = 0;
+				while (startIndex < ids.Length)
+				{
+					int length = Math.Min(ids.Length - startIndex, 1999);
+
+					int[] subarray = new int[length];
+					Array.Copy(ids, startIndex, subarray, 0, length);
+					result.Conditions.Add(ReferenceCondition.CreateNotIn(operand, subarray));
+					startIndex += length;
+				}
+				return result;
+			}
 		}
 		#endregion
 	}

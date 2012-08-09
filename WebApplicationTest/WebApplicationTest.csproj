@@ -108,6 +108,13 @@
     <Compile Include="GridViewExtTest.aspx.designer.cs">
       <DependentUpon>GridViewExtTest.aspx</DependentUpon>
     </Compile>
+    <Compile Include="JirkkaTest.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>JirkkaTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="JirkkaTest.aspx.designer.cs">
+      <DependentUpon>JirkkaTest.aspx</DependentUpon>
+    </Compile>
     <Compile Include="MenuTest.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>MenuTest.aspx</DependentUpon>
@@ -199,6 +206,7 @@
     <Content Include="App_Browsers\CssFriendlyAdapters.browser" />
     <Content Include="havit.css" />
     <Content Include="HavitScripts.js" />
+    <Content Include="JirkkaTest.aspx" />
     <Content Include="WebDialogsTest.aspx" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -704,13 +704,13 @@ function AutoSuggestMenu()
             document.body.appendChild(_iFrame);
            
             //Display menu in front of iframe
-            _dom.style.zIndex=_dom.style.zIndex+1;
+            _dom.style.zIndex=_dom.style.zIndex+1001;
         }
          
         TRACE("AutoSuggestMenu.render  _dom.style.zIndex=" + _dom.style.zIndex);
 		
         //Add menu to the page
-        document.body.appendChild(_dom); 
+        document.body.appendChild(_dom);
     }
     
         

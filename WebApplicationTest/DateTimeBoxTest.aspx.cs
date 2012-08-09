@@ -20,6 +20,13 @@ namespace WebApplicationTest
 			AutoPostBackDateTimeBox.ValueChanged += new EventHandler(AutoPostBackDateTimeBox_ValueChanged);
 			AutoPostBackDateTimeBoxValidator.ServerValidate += new ServerValidateEventHandler(AutoPostBackDateTimeBoxValidator_ServerValidate);
 			AutoPostBackOnInitValueLabel.Text = AutoPostBackDateTimeBox.Value.ToString();
+
+			SecondDateTimeBoxValidator.ServerValidate += new ServerValidateEventHandler(SecondDateTimeBoxValidator_ServerValidate);
+		}
+
+		private void SecondDateTimeBoxValidator_ServerValidate(object source, ServerValidateEventArgs args)
+		{
+			PostBackButton.Text = "Valid: " + SecondDateTimeBox.IsValid.ToString();
 		}	
 
 		private void AutoPostBackDateTimeBox_ValueChanged(object sender, EventArgs e)

@@ -9,7 +9,7 @@
     <form id="form1" runat="server">
     <div>
 		<asp:ScriptManager runat="server" />
-<%--		<asp:UpdatePanel runat="server">
+		<asp:UpdatePanel runat="server">
 			<ContentTemplate>
 				<table>
 					<tr>
@@ -36,13 +36,13 @@
 				
 				<asp:Button runat="server" text="Callback" />
 			</ContentTemplate>
-		</asp:UpdatePanel>--%>
+		</asp:UpdatePanel>
 		
 		
 		<table>
 		    <tr>
 		        <td>AutoPostBack</td>
-		        <td><havit:DateTimeBox ID="AutoPostBackDateTimeBox" CausesValidation="true" AutoPostBack="true" runat="server" /></td>
+		        <td><havit:DateTimeBox ID="AutoPostBackDateTimeBox" DateTimeMode="DateTime" CausesValidation="true" AutoPostBack="true" runat="server" /></td>
 		    </tr>
 		    <tr>
 		        <td>OnInit</td>
@@ -68,8 +68,12 @@
 		        <td><asp:Label ID="ChangedLabel" runat="server" /></td>		        
 		    </tr>
 		    
-		</table>
+		</table>		
     </div>
+    
+    <havit:DateTimeBox ID="SecondDateTimeBox" DateTimeMode="DateTime" CausesValidation="true" runat="server" />
+    <asp:CustomValidator ID="SecondDateTimeBoxValidator" ControlToValidate="SecondDateTimeBox" runat="server" />
+    <asp:Button ID="PostBackButton" Text="Postback" runat="server" />
     </form>
 </body>
 </html>

@@ -40,7 +40,17 @@ namespace WebApplicationTest
 			TestEnum item = (TestEnum)e.DataItem;
 			// e.Item.Text = item.ToString("d");
 		}
+
+		protected override void  OnLoad(EventArgs e)
+{
+ 	 base.OnLoad(e);
+			MainGridView.DataSource = new string[] { "a", "b" };
+			MainGridView.DataBind();
+		}
+
+		protected GridView MainGridView;
 	}
+
 
 	public enum TestEnum
 	{

@@ -65,7 +65,7 @@ namespace Havit.Web.UI.WebControls
 						throw new ArgumentException("Hodnota není typu EnumType.", "value");
 					}
 					EnsureAutoDataBind();
-					SelectedValue = ((Enum)value).ToString(EnumValueFormatString);
+					SelectedIndex = Items.IndexOf(Items.FindByValue(((Enum)value).ToString(EnumValueFormatString)));
 				}
 			}
 			get
@@ -248,12 +248,15 @@ namespace Havit.Web.UI.WebControls
 		{
 			base.PerformDataBinding(dataSource);
 
-			if (this.Nullable)
+			if (dataSource != null)
 			{
-				EnsureEmptyItem();
-				SelectedIndex = 0;
+				if (this.Nullable)
+				{
+					EnsureEmptyItem();
+					SelectedIndex = 0;
+				}
+				DataBindPerformed = true;
 			}
-			DataBindPerformed = true;
 		}
 		#endregion
 

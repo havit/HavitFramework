@@ -44,7 +44,7 @@ namespace Havit.Web
 				}
 				return result;
 			}
-		}		
+		}
 		#endregion
 
 		#region HistoryUrls
@@ -371,55 +371,62 @@ namespace Havit.Web
 		/// </summary>
 		private string GetUrlWithoutNavigationUrlParameter(string url)
 		{
-			if (!url.Contains(PageNavigator.UrlsQueryParameterName))
+			if (!url.ToLower().Contains(PageNavigator.UrlsQueryParameterName.ToLower()))
 			{
 				// pokud v url ani není obsaženo slovo názvu parametru, vracíme původní URL.
 				return url;
 			}
 
 			string[] urlParts = url.Split('?');
-			if (urlParts.Length == 1)
+			if (urlParts.Length < 2)
 			{
 				// pokud nemáme část s QP, vracíme původní adresu
 				return url;
 			}
 
-			// rozebereme QS na hodnoty
-			string[] queryStringParts = urlParts[1].Split('&');
-			NameValueCollection parameters = new NameValueCollection();
-			foreach (string queryStringPart in queryStringParts)
-			{
-				// každý parametr přidáme do kolekce parametrů
-				string[] itemInfo = queryStringPart.Split('=');
-				parameters.Add(itemInfo[0], itemInfo[1]);
-			}
+			// rozebereme querystring
+			QueryStringBuilder qsb = QueryStringBuilder.Parse(urlParts[1]);
+			//odstranime hodnotu s historií adres, pokud existuje
+			qsb.Remove(PageNavigator.UrlsQueryParameterName);
+			// a opet slozime adresu
+			return qsb.GetUrlWithQueryString(urlParts[0]);
 
-			if (String.IsNullOrEmpty(parameters[PageNavigator.UrlsQueryParameterName]))
-			{
-				// pokud není hodnota s historií adres, vracíme původní url
-				return url;
-			}
+			//// rozebereme QS na hodnoty
+			//string[] queryStringParts = urlParts[1].Split('&');
+			//NameValueCollection parameters = new NameValueCollection();
+			//foreach (string queryStringPart in queryStringParts)
+			//{
+			//    // každý parametr přidáme do kolekce parametrů
+			//    string[] itemInfo = queryStringPart.Split('=');
+			//    parameters.Add(itemInfo[0], itemInfo[1]);
+			//}
 
-			// odstraníme hodnota s historií adres
-			parameters.Remove(PageNavigator.UrlsQueryParameterName);
+			//if (String.IsNullOrEmpty(parameters[PageNavigator.UrlsQueryParameterName]))
+			//{
+			//    // pokud není hodnota s historií adres, vracíme původní url
+			//    return url;
+			//}
 
-			// sestavíme url a tu vrátíme
-			StringBuilder result = new StringBuilder();
-			foreach (string key in parameters.Keys)
-			{
-				if (result.Length > 0)
-				{
-					result.Append("&");
-				}
-				result.Append(key);
-				result.Append("=");
-				result.Append(parameters[key]);
-			}
+			//// odstraníme hodnota s historií adres
+			//parameters.Remove(PageNavigator.UrlsQueryParameterName);
 
-			result.Insert(0, "?");
-			result.Insert(0, urlParts[0]);
+			//// sestavíme url a tu vrátíme
+			//StringBuilder result = new StringBuilder();
+			//foreach (string key in parameters.Keys)
+			//{
+			//    if (result.Length > 0)
+			//    {
+			//        result.Append("&");
+			//    }
+			//    result.Append(key);
+			//    result.Append("=");
+			//    result.Append(parameters[key]);
+			//}
 
-			return result.ToString();
+			//result.Insert(0, "?");
+			//result.Insert(0, urlParts[0]);
+
+			//return result.ToString();
 		}
 		
 		#endregion

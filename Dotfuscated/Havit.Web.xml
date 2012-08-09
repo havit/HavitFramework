@@ -1416,6 +1416,23 @@
             Vrací HtmlTextWriterTag.H4 zajišťující správné renderování.
             </summary>
         </member>
+        <member name="T:Havit.Web.UI.WebControls.DefaultStylesLinker">
+            <summary>
+            Control, který vytvoří odkazy (link) na výchozí CSS styly HAVIT umístěné ve frameworkové assembly.
+            </summary>
+            <example>
+            <code>
+            &lt;head runat="server"&gt;
+            	&lt;havit:DefaultStylesLinker runat="server"&gt;
+            &lt;/head&gt;
+            </code>
+            </example>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.DefaultStylesLinker.CreateChildControls">
+            <summary>
+            Vytvoří child-controly.
+            </summary>
+        </member>
         <member name="T:Havit.Web.UI.WebControls.CheckBoxFieldExt">
             <summary>
             Rozšířená verze <see cref="T:System.Web.UI.WebControls.CheckBoxField"/>.
@@ -3628,23 +3645,6 @@
             Udává, zda v případě změny hodnoty prvku (zaškrtnutí, změna textu, apod.)
             dojde ke spuštění skriptu.
             Výchozí hodnota je <c>false</c>.
-            </summary>
-        </member>
-        <member name="T:Havit.Web.UI.WebControls.DefaultStylesLinker">
-            <summary>
-            Control, který vytvoří odkazy (link) na výchozí CSS styly HAVIT umístěné ve frameworkové assembly.
-            </summary>
-            <example>
-            <code>
-            &lt;head runat="server"&gt;
-            	&lt;havit:DefaultStylesLinker runat="server"&gt;
-            &lt;/head&gt;
-            </code>
-            </example>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.DefaultStylesLinker.CreateChildControls">
-            <summary>
-            Vytvoří child-controly.
             </summary>
         </member>
     </members>

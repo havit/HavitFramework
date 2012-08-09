@@ -29,6 +29,7 @@ namespace Havit.Web.UI.WebControls
 			HtmlLink defaultStylesHtmlLink = new HtmlLink();
 			defaultStylesHtmlLink.Href = Page.ClientScript.GetWebResourceUrl(typeof(DefaultStylesLinker), "Havit.Web.UI.WebControls.DefaultStyles.css");
 			defaultStylesHtmlLink.Attributes.Add("type", "text/css");
+			defaultStylesHtmlLink.Attributes.Add("rel", "stylesheet");
 
 			this.Controls.Add(defaultStylesHtmlLink);
 		}

@@ -30,6 +30,8 @@ namespace Havit.Web.UI.WebControls
 	public class AutoSuggestMenu : WebControl, INamingContainer
 	{
         private string _targetControlID;
+		private AutoSuggestMenuMode _mode = AutoSuggestMenuMode.Classic;
+		private bool _autoPostBack = false;
 
         private int _minSuggestChars;
 		private int _maxSuggestChars;
@@ -57,7 +59,18 @@ namespace Havit.Web.UI.WebControls
 
 
 		#region Class Properties
+		public AutoSuggestMenuMode Mode
+		{
+			get { return _mode; }
+			set { _mode = value; }
+		}
 
+		public bool AutoPostBack
+		{
+			get { return _autoPostBack; }
+			set { _autoPostBack = value; }
+		}
+	
         public string TargetControlID
         {
             get { return _targetControlID; }
@@ -269,7 +282,8 @@ namespace Havit.Web.UI.WebControls
 			base.LoadViewState(savedState);
              
             _targetControlID            = (string)ViewState["TargetControlID"];
-			
+			_mode						= (AutoSuggestMenuMode)ViewState["Mode"];
+			_autoPostBack				= (bool)ViewState["AutoPostBack"];
 			 _minSuggestChars            = (int)ViewState["MinSuggestChars"];
              _maxSuggestChars = (int)ViewState["MaxSuggestChars"];
            
@@ -302,7 +316,8 @@ namespace Havit.Web.UI.WebControls
 		protected override object SaveViewState()
 		{
             ViewState["TargetControlID"]        = _targetControlID;
-			
+			ViewState["Mode"]					= _mode;
+			ViewState["AutoPostBack"]			= _autoPostBack;
 			ViewState["MinSuggestChars"]        = _minSuggestChars;
             ViewState["MaxSuggestChars"]        = _maxSuggestChars;
            
@@ -413,6 +428,18 @@ namespace Havit.Web.UI.WebControls
 			//writer.WriteLine("menu.resourcesDir=\"" + GetAbsoluteResourcesDir() + "\";");
 			string resourceName = "Havit.Web.UI.WebControls.AutoSuggestMenu.Blank.html";
 			writer.WriteLine("menu.blankPage=\"" + Page.ClientScript.GetWebResourceUrl(typeof(AutoSuggestMenu), resourceName) + "\";");  // RH, místo resourcesDir
+
+			switch (Mode)
+			{
+				case AutoSuggestMenuMode.ClearTextOnNoSelection:
+					writer.WriteLine("menu.clearTextOnNoSelection=true;");
+					break;
+			}
+
+			if (AutoPostBack)
+			{
+				writer.WriteLine(String.Format("menu.autoPostBackScript=\"{0}\";", Page.ClientScript.GetPostBackEventReference(this, "")));
+			}
 
             string func = _onGetSuggestions;
             if (_usePageMethods)

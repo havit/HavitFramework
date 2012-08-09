@@ -55,7 +55,26 @@ namespace Havit.Business.Query
 		/// </example>
 		public static Condition CreateWildcards(IOperand operand, string value)
 		{
-			return new BinaryCondition(BinaryCondition.LikePattern, operand, ValueOperand.Create(GetWildCardsLikeExpression(value)));
+			return CreateWildcards(operand, value, WildCardsLikeExpressionMode.StartsWith);
+		}
+
+		/// <summary>
+		/// Vytvoøí podmínku testující øetìzec na podobnost operátorem LIKE.
+		/// </summary>
+		/// <param name="operand"></param>
+		/// <param name="value">
+		/// Podporována hvìzdièková konvence takto:
+		///		- pokud parametr neobsahuje hvìzdièku, hledá se pomocí LIKE parametr% nebo LIKE %parametr% podle parametru wildCardsLikeExpressionMode.
+		///		- pokud parametr obsahuje hvìzdièku, zamìní se hvìzdièka za procento a hledá se LIKE parametr.
+		///	Pokud parametr obsahuje speciální znaky pro operátor LIKE jako procento nebo podtržítko,
+		///	jsou tyto znaky pøekódovány, takže nemají funkèní význam.
+		/// </param>
+		/// <example>
+		///	Pø. Hledání výrazu "k_lo*" nenajde "kolo" ani "kolotoè" protože _ nemá funkèní význam, ale najde "k_lo" i "k_olotoè".
+		/// </example>
+		public static Condition CreateWildcards(IOperand operand, string value, WildCardsLikeExpressionMode wildCardsLikeExpressionMode)
+		{
+			return new BinaryCondition(BinaryCondition.LikePattern, operand, ValueOperand.Create(GetWildCardsLikeExpression(value, wildCardsLikeExpressionMode)));
 		}
 		#endregion
 
@@ -103,6 +122,16 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static string GetWildCardsLikeExpression(string text)
 		{
+			return GetWildCardsLikeExpression(text, WildCardsLikeExpressionMode.StartsWith);
+		}
+
+		/// <summary>
+		/// Transformuje øetìzec naøetìzec, který je možné použít jako hodnota k operátoru like. 
+		/// Navíc je vzat ohled na hvìzdièkovou konvenci podle parametru wildCardsLikeExpressionMode (pokud nejsou použity wildcards, doplní % na konec (StartsWith) nebo na zaèátek i na konec (Contains) ).
+		/// Pøíklad "*text1%text2*text3" bude transformováno na "%text1[%]text2%text3".
+		/// </summary>
+		public static string GetWildCardsLikeExpression(string text, WildCardsLikeExpressionMode wildCardsLikeExpressionMode)
+		{
 			string result;
 			result = GetLikeExpression(text);
 
@@ -112,7 +141,15 @@ namespace Havit.Business.Query
 			}
 			else
 			{
-				result += "%";
+				if (wildCardsLikeExpressionMode == WildCardsLikeExpressionMode.StartsWith)
+				{
+					result += "%";
+				}
+
+				if (wildCardsLikeExpressionMode == WildCardsLikeExpressionMode.Contains)
+				{
+					result = "%" + result + "%";
+				}
 			}
 
 			return result;

@@ -22,6 +22,7 @@ namespace WebApplicationTest
 		{
 			base.OnInit(e);
 			ShowDialogButton.Click += new EventHandler(ShowDialogButton_Click);
+			SubjektASM.Context = "Testovací\"' '' \"\"kontext";
 		}
 
 		void ShowDialogButton_Click(object sender, EventArgs e)
@@ -30,10 +31,10 @@ namespace WebApplicationTest
 		}
 
 		[WebMethod()]
-		public static string GetSuggestions(string keyword, bool usePaging, int pageIndex, int pageSize)
+		public static string GetSuggestions(string keyword, bool usePaging, int pageIndex, int pageSize, string context)
 		{
 			QueryParams qp = new QueryParams();
-			qp.Conditions.Add(TextCondition.CreateWildcards(Subjekt.Properties.Nazev, keyword));
+			qp.Conditions.Add(TextCondition.CreateWildcards(Subjekt.Properties.Nazev, keyword, WildCardsLikeExpressionMode.Contains));
 			qp.TopRecords = pageSize;
 
 			SubjektCollection subjekty = Subjekt.GetList(qp);

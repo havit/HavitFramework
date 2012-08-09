@@ -238,6 +238,7 @@
     <Compile Include="PropertyHolder.cs" />
     <Compile Include="PropertyHolderBase.cs" />
     <Compile Include="Query\QueryParams.cs" />
+    <Compile Include="Query\WildCardsLikeExpressionMode.cs" />
     <Compile Include="ReferenceFieldPropertyInfo.cs" />
     <Compile Include="DbTransactionEventArgs.cs" />
   </ItemGroup>

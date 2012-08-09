@@ -22,7 +22,9 @@ function AutoSuggestMenu()
     self.id=null;
     self.textBoxID=null;
     self.hiddenSelectedValueID=null;
-    
+    self.clearTextOnNoSelection = false;
+    self.autoPostBackScript = null;
+
     self.minSuggestChars=1;
 	self.maxSuggestChars=5;
 	self.keyPressDelay=300;
@@ -683,11 +685,8 @@ function AutoSuggestMenu()
         
         menuDiv.id=self.id;
         menuDiv.className=self.cssClass;
-        menuDiv.sourceObject=self;
-
-	    // JK: Doplnìno
-        textBox.autoSuggestMenuDiv = menuDiv.id;
-        
+        menuDiv.sourceObject = self;
+		
         /**************************/        
         // JK: Pøesunuto do show. Zde je obèas textBox.clientWidth, zatímco v èase volání 
         // funkce show je v této vlastnosti již správná hodnota.
@@ -710,7 +709,11 @@ function AutoSuggestMenu()
         XUtils.addEventListener(textBox, "keypress", self.onTextBoxKeyPress);
         XUtils.addEventListener(textBox, "keyup",    self.onTextBoxKeyUp);
         XUtils.addEventListener(textBox, "blur",     self.onTextBoxBlur);
-                		
+
+        // JK: Doplnìno
+        textBox.autoSuggestMenuDiv = menuDiv.id;
+        XUtils.addEventListener(textBox, "focus", self.onTextBoxFocus);
+		        		
         //Disable autocomplete on textbox
         textBox.setAttribute("autocomplete", "off");
         
@@ -882,19 +885,44 @@ function AutoSuggestMenu()
 	    TRACE("AutoSuggestMenu.onTextBoxKeyUpTimer");
 	    refreshMenuItems();
 	}
-	
-	
-	self.onTextBoxBlur = function()
+
+
+	self.onTextBoxBlur = function ()
 	{
 		TRACE("AutoSuggestMenu.onTextBoxBlur");
-	
-	    //Hide menu with a slight delay - in case there was a click
-	    if (_cancelOnBlur)
-	        focusOnTextBox();
-	    else
-	        _onBlurTimer=window.setTimeout(self.hide, 500);
-		
-		_cancelOnBlur=false;
+
+		//Hide menu with a slight delay - in case there was a click
+		if (_cancelOnBlur)
+			focusOnTextBox();
+		else
+			_onBlurTimer = window.setTimeout(self.hide, 500);
+
+		_cancelOnBlur = false;
+
+		// JK: Doplnìno
+		var textBox = getTextBoxCtrl();
+		var hiddenFieldElement = self.getSelectedValueHiddenField();
+		var textBoxElement = getTextBoxCtrl();
+
+		if ((hiddenFieldElement.focusedExtra == true) && (!self.isVisible()))
+		{
+			hiddenFieldElement.focusedExtra = false;
+
+			if ((self.clearTextOnNoSelection == true) && (hiddenFieldElement.value == ''))
+			{
+				textBox.value = '';
+			}
+
+			if (hiddenFieldElement.lastValueExtra != hiddenFieldElement.value)
+			{
+				var autoPostBackScript = self.autoPostBackScript;
+				if (autoPostBackScript != null)
+				{
+					eval(autoPostBackScript);
+				}
+			}
+		}
+
 	}	
 	
 	
@@ -931,6 +959,16 @@ function AutoSuggestMenu()
 	self.addMenuHiddenHandler = function(eventHandler)
 	{
 		self.onMenuHiddenEventHandlers.push(eventHandler);
+	}
+
+	// JK: Doplnìno
+	self.onTextBoxFocus = function ()
+	{
+		var hiddenFieldElement = self.getSelectedValueHiddenField();
+		// hodnoty pojmenovám se suffixem "Extra", abych zabránil konfliktu s hodnotami používanými v pickerech aplikací
+		// (v dobì tìchto úprav aplikace používají stejnì pojmenované hodnoty na stejných elementech).
+		hiddenFieldElement.lastValueExtra = hiddenFieldElement.value;
+		hiddenFieldElement.focusedExtra = true;
 	}
 	
 }

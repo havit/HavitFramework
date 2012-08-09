@@ -204,6 +204,7 @@
     <Compile Include="UI\Adapters\CssAdapters\CssTreeViewAdapter.cs" />
     <Compile Include="UI\Adapters\CssAdapters\WebControlAdapterExtender.cs" />
     <Compile Include="UI\Adapters\SessionPageStatePersisterPageAdapter.cs" />
+    <Compile Include="UI\WebControls\AutoSuggestMenu\AutoSuggestMenuMode.cs" />
     <Compile Include="UI\WebControls\CheckBoxListExt.cs" />
     <Compile Include="UI\WebControls\CheckBoxValidator.cs" />
     <Compile Include="UI\WebControls\ControlsValues\CheckBoxListPersisterControlExtender.cs" />

@@ -23,30 +23,8 @@ namespace Havit.Web.UI.WebControls
 	/// &lt;/havit:GridViewExt&gt;
 	/// </code>
 	/// </example>
-	public class GridViewCommandField : CommandField, IIdentifiableField
+	public class GridViewCommandField : CommandFieldExt
 	{
-		#region ID (IIdentifiableField Members)
-		/// <summary>
-		/// ID sloupce.
-		/// </summary>
-		public string ID
-		{
-			get
-			{
-				object tmp = ViewState["ID"];
-				if (tmp != null)
-				{
-					return (string)tmp;
-				}
-				return String.Empty;
-			}
-			set
-			{
-				ViewState["ID"] = value;
-			}
-		}
-		#endregion
-
 		#region DeleteConfirmationText
 		/// <summary>
 		/// Text, na který se má ptát jscript:confirm() pøed smazáním záznamu. Pokud je prázdný, na nic se neptá.

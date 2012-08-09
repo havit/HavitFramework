@@ -139,7 +139,10 @@
     <Compile Include="UI\WebControls\ButtonColumnExt.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UI\WebControls\ButtonFieldExt.cs" />
+    <Compile Include="UI\WebControls\CheckBoxFieldExt.cs" />
     <Compile Include="UI\WebControls\Collapser.cs" />
+    <Compile Include="UI\WebControls\CommandFieldExt.cs" />
     <Compile Include="UI\WebControls\CommandFieldStyle.cs" />
     <Compile Include="UI\WebControls\GridViewCommandField.cs" />
     <Compile Include="UI\WebControls\DataControlButtonExt.cs" />
@@ -158,7 +161,9 @@
     <Compile Include="UI\WebControls\GridViews\Hightlighting.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UI\WebControls\HyperLinkFieldExt.cs" />
     <Compile Include="UI\WebControls\ICommandFieldStyle.cs" />
+    <Compile Include="UI\WebControls\ImageFieldExt.cs" />
     <Compile Include="UI\WebControls\SortExpressions.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -181,6 +186,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UI\WebControls\IIdentifiableField.cs" />
+    <Compile Include="UI\WebControls\TemplateFieldExt.cs" />
     <Compile Include="UrlRewriter\BaseModuleRewriter.cs">
       <SubType>Code</SubType>
     </Compile>

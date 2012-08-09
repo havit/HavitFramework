@@ -342,7 +342,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region FindColumn - Hledání sloupcù
 		/// <summary>
-		/// Vyhledá sloupec podle id. Vyhledává jen sloupce implementující rozhraní IEnterpriseField.
+		/// Vyhledá sloupec (field) podle id. Vyhledává jen sloupce implementující rozhraní IEnterpriseField.
 		/// </summary>
 		/// <param name="id">ID, podle kterého se sloupec vyhledává.</param>
 		/// <returns>Nalezený sloupec nebo null, pokud není nalezen.</returns>

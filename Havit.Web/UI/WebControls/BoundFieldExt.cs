@@ -16,7 +16,7 @@ namespace Havit.Web.UI.WebControls
 	{
 		#region ID (IIdentifiableField Members)
 		/// <summary>
-		/// ID sloupce.
+		/// Identifikátor fieldu na který se lze odkazovat pomocí <see cref="GridViewExt.FindColumn(string)"/>.
 		/// </summary>
 		public string ID
 		{

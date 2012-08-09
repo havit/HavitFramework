@@ -23,7 +23,7 @@ namespace Havit.Business
 		/// Hodnota, kterou má ID objektu neuloženého v databázi (bez perzistence).
 		/// </summary>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1706:ShortAcronymsShouldBeUppercase", MessageId = "Member")]
-		public const int NoID = -1;
+		public const int NoID = Int32.MinValue;
 		#endregion
 
 		#region Events

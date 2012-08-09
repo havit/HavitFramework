@@ -899,7 +899,7 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 
-		#region XxxTooltip
+		#region Tooltips
 
 		#region CancelTooltip
 		/// <summary>

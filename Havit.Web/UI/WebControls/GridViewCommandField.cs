@@ -723,7 +723,7 @@ namespace Havit.Web.UI.WebControls
 					if (style.ViewState["SelectImageUrl"] != null)
 					{
 						this.SelectImageUrl = style.SelectImageUrl;
-					}
+					}					
 					if (style.ViewState["SelectText"] != null)
 					{
 						this.SelectText = style.SelectText;
@@ -768,7 +768,7 @@ namespace Havit.Web.UI.WebControls
 					{
 						this.Visible = style.Visible;
 					}
-
+					
 					// tooltipy
 					if (style.ViewState["CancelTooltip"] != null)
 					{

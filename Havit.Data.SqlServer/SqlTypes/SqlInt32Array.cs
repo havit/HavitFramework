@@ -178,7 +178,7 @@ namespace Havit.Data.SqlTypes
 			FillRowMethodName = "FillSqlInt32Row")]
 		public static IEnumerable GetSqlInt32Values(SqlInt32Array values)
 		{
-			if (values != null)
+			if ((values != null) && (!values.IsNull))
 			{
 				return values.GetSqlInt32Array();
 			}
@@ -192,7 +192,14 @@ namespace Havit.Data.SqlTypes
 		/// <param name="value">výstupní hodnota øádku</param>
 		public static void FillSqlInt32Row(object sqlInt32ArrayElement, out SqlInt32 value)
 		{
-			value = (SqlInt32)sqlInt32ArrayElement;
+			if (sqlInt32ArrayElement is SqlInt32)
+			{
+				value = (SqlInt32)sqlInt32ArrayElement;
+			}
+			else
+			{
+				value = SqlInt32.Null;
+			}
 		}
 		#endregion
 

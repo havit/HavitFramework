@@ -25,8 +25,12 @@ namespace Havit.Data.SqlTypes
 	[Serializable]
 	[Microsoft.SqlServer.Server.SqlUserDefinedAggregate(
 		Format.UserDefined,
-		IsInvariantToDuplicates = false, IsInvariantToNulls = false, IsInvariantToOrder = true, IsNullIfEmpty = true,
-		MaxByteSize = 8000,	Name = "IntArrayAggregate")]
+		IsInvariantToDuplicates = false,
+		IsInvariantToNulls = false,
+		IsInvariantToOrder = true,
+		IsNullIfEmpty = true,
+		MaxByteSize = 8000,
+		Name = "IntArrayAggregate")]
 	public class SqlInt32ArrayAggregate : IBinarySerialize
 	{
 		#region private value holder
@@ -53,7 +57,10 @@ namespace Havit.Data.SqlTypes
 		/// <param name="value">pøidávaná hodnota</param>
 		public void Accumulate(SqlInt32 value)
 		{
-			array.Add(value);
+			if (!value.IsNull)
+			{
+				array.Add(value);
+			}
 		}
 		#endregion
 
@@ -64,7 +71,10 @@ namespace Havit.Data.SqlTypes
 		/// <param name="group">druhá agregace</param>
 		public void Merge(SqlInt32ArrayAggregate group)
 		{
-			group.array.Merge(group.array);
+			if (group != null)
+			{
+				group.array.Merge(group.array);
+			}
 		}
 		#endregion
 

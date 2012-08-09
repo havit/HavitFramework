@@ -363,7 +363,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-cs-utf8.js" />
     <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-cs-win.js" />
     <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-setup_stripped.js" />
     <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar_stripped.js" />
@@ -399,7 +398,6 @@
   <ItemGroup>
     <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-he.js" />
     <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-hr.js" />
-    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-hu.js" />
     <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-it.js" />
     <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-jp.js" />
     <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-ko.js" />
@@ -434,6 +432,9 @@
     <None Include="UI\Scriptlets\Scriptlet.cd" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-cs-utf8.js" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-sl.js" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-hu.js" />
     <EmbeddedResource Include="UI\Adapters\CssAdapters\CssTreeViewAdapter.css" />
     <EmbeddedResource Include="UI\Adapters\CssAdapters\CssTreeViewAdapter.js" />
     <Content Include="UI\Scriptlets\IControlExtender.xml" />

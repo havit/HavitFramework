@@ -1,4 +1,4 @@
-// ** I18N
+﻿// ** I18N
 Calendar._DN = new Array
 ("Duminică",
  "Luni",
@@ -9,6 +9,7 @@ Calendar._DN = new Array
  "Sâmbătă",
  "Duminică");
 Calendar._SDN_len = 2;
+Calendar._FD = 1;
 Calendar._MN = new Array
 ("Ianuarie",
  "Februarie",

@@ -1,4 +1,6 @@
-﻿// ** I18N
+﻿Calendar._FD = 1;
+
+// ** I18N
 
 // Calendar PL language
 // Author: Dariusz Pietrzak, <eyck@ghost.anime.pl>
@@ -70,6 +72,9 @@ Calendar._TT["ABOUT_TIME"] = "\n\n" +
 "- Kliknij na jednym z pól czasu by zwiększyć jego wartość\n" +
 "- lub kliknij trzymając Shift by zmiejszyć jego wartość\n" +
 "- lub kliknij i przeciągnij dla szybszego wyboru.";
+
+Calendar._TT["DAY_FIRST"] = "Wyświetl %s jako pierwszy";
+Calendar._TT["WEEKEND"] = "0,6";
 
 //Calendar._TT["TOGGLE"] = "Zmień pierwszy dzień tygodnia";
 Calendar._TT["PREV_YEAR"] = "Poprzedni rok (przytrzymaj dla menu)";

@@ -41,6 +41,7 @@ using System.Diagnostics;
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-ro.js", "text/javascript")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-ru.js", "text/javascript")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-si.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-sl.js", "text/javascript")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-sk.js", "text/javascript")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-sp.js", "text/javascript")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-sv.js", "text/javascript")]
@@ -177,6 +178,7 @@ namespace Havit.Web.UI.WebControls
 			supportedLanguages.Add("ro", null);
 			supportedLanguages.Add("ru", null);
 			supportedLanguages.Add("si", null);
+			supportedLanguages.Add("sl", null);
 			supportedLanguages.Add("sk", null);
 			supportedLanguages.Add("sp", null);
 			supportedLanguages.Add("sv", null);

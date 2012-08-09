@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="DateTimeBoxTest.aspx.cs" Inherits="WebApplicationTest.DateTimeBoxTest" %>
+ï»¿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="DateTimeBoxTest.aspx.cs" Inherits="WebApplicationTest.DateTimeBoxTest" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" >
@@ -62,7 +62,7 @@
 			</tr>
 			<tr>
 				<td>
-					Serverový validátor
+					ServerovÃ½ validÃ¡tor
 					<asp:CustomValidator ID="AutoPostBackDateTimeBoxValidator" runat="server" />
 				</td>
 				<td><asp:Label ID="AutoPostBackServerValidatorValueLabel" runat="server" /></td>		        

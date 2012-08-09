@@ -1,4 +1,4 @@
-<%@ Page Language="C#" Trace="true" CodeBehind="GridViewExtTest.aspx.cs" Inherits="WebApplicationTest.GridViewExtTest" %>
+ï»¿<%@ Page Language="C#" Trace="true" CodeBehind="GridViewExtTest.aspx.cs" Inherits="WebApplicationTest.GridViewExtTest" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -9,9 +9,9 @@
 <body>
     <form id="form1" runat="server">
     <div>
-		<havit:GridViewExt ID="TestGV1" AllowPaging="true" PagerSettings-Position="bottom" PagerSettingsShowAllPagesButton="true" PagerSettingsAllPagesButtonText="Vše" PagerSettings-Mode="Numeric" PageSize="2000" AllowSorting="true" AutoSort="true" runat="server">
+		<havit:GridViewExt ID="TestGV1" AllowPaging="true" PagerSettings-Position="bottom" PagerSettingsShowAllPagesButton="true" PagerSettingsAllPagesButtonText="VÅ¡e" PagerSettings-Mode="Numeric" PageSize="2000" AllowSorting="true" AutoSort="true" runat="server">
 			<Columns>
-				<havit:TemplateFieldExt SortExpression="Nazev" HeaderText="Název">
+				<havit:TemplateFieldExt SortExpression="Nazev" HeaderText="NÃ¡zev">
 					<ItemTemplate>
 						<%# Eval("Nazev") %>
 					</ItemTemplate>

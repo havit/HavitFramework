@@ -1598,6 +1598,16 @@
             Vydělí hodnotu Money konstantou typu int.
             </summary>
         </member>
+        <member name="M:Havit.Business.MoneyImplementationBase`2.#ctor">
+            <summary>
+            Inicializuje třídu money s prázdními hodnotami (Amount i Currency jsou null).
+            </summary>
+        </member>
+        <member name="M:Havit.Business.MoneyImplementationBase`2.#ctor(System.Nullable{System.Decimal},`0)">
+            <summary>
+            Inicializuje třídu money zadanými hodnotami.
+            </summary>
+        </member>
         <member name="T:Havit.Business.Query.DateCondition">
             <summary>
             Vytváří podmínky testující datumy.

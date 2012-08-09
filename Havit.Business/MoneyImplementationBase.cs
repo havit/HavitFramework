@@ -63,6 +63,23 @@ namespace Havit.Business
 			return DivideMoney<TResult>(money, multiplicand);
 		}
 		#endregion
-		
+
+		#region Constructors
+		/// <summary>
+		/// Inicializuje tøídu money s prázdními hodnotami (Amount i Currency jsou null).
+		/// </summary>
+		public MoneyImplementationBase()
+			: base()
+		{
+		}
+
+		/// <summary>
+		/// Inicializuje tøídu money zadanými hodnotami.
+		/// </summary>
+		public MoneyImplementationBase(decimal? amount, TCurrency currency)
+			: base(amount, currency)
+		{
+		}
+		#endregion
 	}
 }

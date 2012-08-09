@@ -183,6 +183,9 @@ namespace Havit.Business
 		#endregion
 
 		#region Load logika
+		// zámek pro naèítání objektù
+		private object loadLock = new object();
+
 		/// <summary>
 		/// Nahraje objekt z perzistentního uložištì, bez transakce.
 		/// </summary>
@@ -199,10 +202,17 @@ namespace Havit.Business
 				return;
 			}
 
-			Load_Perform(transaction);
-
-			this.IsLoaded = true;
-			this.IsDirty = false; // naètený objekt není Dirty.
+			// naèítání se zamyká kvùli cachovaným readonly objektùm
+			// tam je sdílena instance, která by mohla být naèítána najednou ze dvou threadù
+			lock (loadLock)
+			{
+				if (!this.IsLoaded)
+				{
+					Load_Perform(transaction);
+					this.IsLoaded = true;
+					this.IsDirty = false; // naètený objekt není Dirty.			
+				}
+			}
 		}
 
 		/// <summary>

@@ -16,7 +16,7 @@
 						<tr>
 							<td></td>
 							<td>
-								<havit:NumericBox ID="Test1NumericBox" runat="server" />								
+								<havit:NumericBox ID="Test1NumericBox" MaxLength="4" runat="server" />								
 							</td>
 						</tr>
 						<tr>

@@ -156,6 +156,16 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region MaxLength
+		/// <summary>
+		/// Maximální délka <strong>textu</strong> zapsatelná do NumericBoxu.
+		/// </summary>
+		public int MaxLength
+		{
+			get { return valueTextBox.MaxLength; }
+			set { valueTextBox.MaxLength = value; }
+		}
+		#endregion
 		#endregion
 
 		#region Function properties
@@ -340,6 +350,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			valueTextBox = new TextBox();
 			valueTextBox.ID = "ValueTextBox";
+			valueTextBox.MaxLength = 12;
 		}
 		#endregion
 
@@ -398,11 +409,6 @@ namespace Havit.Web.UI.WebControls
 			if (Enabled)
 			{
 				RegisterScripts();
-
-				if (valueTextBox.MaxLength == 0)
-				{
-					valueTextBox.MaxLength = 12;
-				}
 
 				if (KeyBlockingClientScriptEnabled)
 				{

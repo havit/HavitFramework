@@ -264,23 +264,9 @@ namespace Havit.Business
 			OnPreSave(EventArgs.Empty);
 			CheckConstraints();
 
-			if (IsNew)
-			{
-				Save_SaveMembers(transaction);
-				Save_Perform(transaction);
-				Save_SaveCollections(transaction);
-			}
-			else
-			{
-				Save_SaveMembers(transaction);
-				Save_SaveCollections(transaction);
-				if (IsDirty)
-				{
-					Save_Perform(transaction);
-				}
-			}
+			Save_Perform(transaction);
 
-			IsNew = false; // uložený objekt není už nový, dostal i pøidìlené ID
+			//IsNew = false; // uložený objekt není už nový, dostal i pøidìlené ID
 			IsDirty = false; // uložený objekt je aktuální
 			IsSaving = false;
 		}
@@ -305,25 +291,6 @@ namespace Havit.Business
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member")]
 		protected abstract void Save_Perform(DbTransaction transaction);
 
-		/// <summary>
-		/// Ukládá member-objekty.
-		/// </summary>
-		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které mají být member-objekty uloženy; null, pokud bez transakce</param>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member")]
-		protected virtual void Save_SaveMembers(DbTransaction transaction)
-		{
-			// NOOP
-		}
-
-		/// <summary>
-		/// Ukládá member-kolekce objektu.
-		/// </summary>
-		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které mají být member-kolekce uloženy; null, pokud bez transakce</param>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member")]
-		protected virtual void Save_SaveCollections(DbTransaction transaction)
-		{
-			// NOOP
-		}
 		#endregion
 
 		#region Delete logika

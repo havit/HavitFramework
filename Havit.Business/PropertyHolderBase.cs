@@ -31,7 +31,7 @@ namespace Havit.Business
 			{
 				return _isDirty;
 			}
-			internal set
+			set
 			{
 				_isDirty = value;
 				if (_isDirty)

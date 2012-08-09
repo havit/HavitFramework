@@ -149,19 +149,51 @@ namespace Havit.Business
 		/// Výkonná èást uložení objektu do perzistentního uložištì.
 		/// </summary>
 		/// <remarks>
-		/// Pokud je objekt nový, volá Insert, jinak Update.
+		/// Pokud je objekt nový, volá Save_Insert_SaveRequiredForFullInsert a Insert, jinak Update.
 		/// </remarks>
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
 		protected override void Save_Perform(DbTransaction transaction)
 		{
-			if (this.IsNew)
+			if (IsNew)
 			{
-				Save_Insert(transaction);
+				Save_Insert_InsertRequiredForFullInsert(transaction);
+			}
+
+			if (IsNew)
+			{
+				Save_SaveMembers(transaction);
+				Save_FullInsert(transaction);
+				Save_SaveCollections(transaction);
 			}
 			else
 			{
-				Save_Update(transaction);
+				Save_SaveMembers(transaction);
+				Save_SaveCollections(transaction);
+				if (IsDirty)
+				{
+					Save_Update(transaction);
+				}
 			}
+		}
+
+		/// <summary>
+		/// Ukládá member-objekty.
+		/// </summary>
+		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které mají být member-objekty uloženy; null, pokud bez transakce</param>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member")]
+		protected virtual void Save_SaveMembers(DbTransaction transaction)
+		{
+			// NOOP
+		}
+
+		/// <summary>
+		/// Ukládá member-kolekce objektu.
+		/// </summary>
+		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které mají být member-kolekce uloženy; null, pokud bez transakce</param>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member")]
+		protected virtual void Save_SaveCollections(DbTransaction transaction)
+		{
+			// NOOP
 		}
 
 		/// <summary>
@@ -169,7 +201,14 @@ namespace Havit.Business
 		/// </summary>
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member")]
-		protected abstract void Save_Insert(DbTransaction transaction);
+		protected abstract void Save_FullInsert(DbTransaction transaction);
+
+		/// <summary>
+		/// Implementace metody vloží jen not-null vlastnosti objektu do databáze a nastaví novì pøidìlené ID (primární klíè).
+		/// </summary>
+		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member")]
+		public abstract void Save_MinimalInsert(DbTransaction transaction);
 
 		/// <summary>
 		/// Implementace metody aktualizuje data objektu v databázi.
@@ -177,6 +216,41 @@ namespace Havit.Business
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member")]
 		protected abstract void Save_Update(DbTransaction transaction);
+
+		/// <summary>
+		/// Ukládá hodnoty potøebné pro provedení plného insertu.
+		/// </summary>
+		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
+		protected virtual void Save_Insert_InsertRequiredForFullInsert(DbTransaction transaction)
+		{
+			Save_Insert_InsertRequiredForMinimalInsert(transaction);
+			IsMinimalInserting = false;
+		}
+		
+		/// <summary>
+		/// Ukládá hodnoty potøebné pro provedení minimálního insertu. Volá Save_Insert_SaveRequiredForMinimalInsert.
+		/// </summary>
+		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
+		protected virtual void Save_Insert_InsertRequiredForMinimalInsert(DbTransaction transaction)
+		{
+			if (IsMinimalInserting)
+			{
+				throw new InvalidOperationException("Pøi ukládání objektù se vyskytla neøešitelná cyklická závislost stylu 'Co vzniklo první: zrno nebo klas?'");
+			}
+
+			IsMinimalInserting = true;
+		}
+
+		/// <summary>
+		/// Identifikuje, zda probíhá Save_Insert_InsertRequiredForMinimalInsert (nesmí se zacyklit).
+		/// </summary>
+		protected bool IsMinimalInserting
+		{
+			get { return isMinimalInserting; }
+			set { isMinimalInserting = value; }
+		}
+		private bool isMinimalInserting = false;
+
 		#endregion
 	}
 }

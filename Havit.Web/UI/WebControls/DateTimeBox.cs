@@ -251,7 +251,7 @@ namespace Havit.Web.UI.WebControls
 			valueTextBox = new TextBox();
 			valueTextBox.ID = "ValueTextBox";
 
-			seperatorLiteralControl = new LiteralControl(" ");
+			seperatorLiteralControl = new LiteralControl("&nbsp");
 			seperatorLiteralControl.ID = "SeparatorLiteralControl";
 
 			dateTimePickerImage = new Image();
@@ -313,7 +313,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			base.OnPreRender(e);
 
-			valueTextBox.Enabled = Enabled;
+			valueTextBox.Enabled = IsEnabled;
 			valueTextBox.AutoPostBack = AutoPostBack;
 
 			seperatorLiteralControl.Visible = ShowDateTimePicker;
@@ -321,7 +321,7 @@ namespace Havit.Web.UI.WebControls
 			dateTimePickerImage.Visible = ShowDateTimePicker;
 
 			#region Nastavení DateTimePickerImage.ImageUrl
-			if (this.Enabled)
+			if (this.IsEnabled)
 			{
 				string url = DateTimePickerEnabledImageUrl;
 				if (!String.IsNullOrEmpty(url))
@@ -347,7 +347,7 @@ namespace Havit.Web.UI.WebControls
 			}
 			#endregion
 
-			dateTimePickerDynarchCalendar.Enabled = Enabled;
+			dateTimePickerDynarchCalendar.Enabled = IsEnabled;
 			dateTimePickerDynarchCalendar.Visible = ShowDateTimePicker;
 			dateTimePickerDynarchCalendar.InputField = "ValueTextBox";
 			dateTimePickerDynarchCalendar.Button = "DateTimePickerImage";
@@ -372,7 +372,7 @@ namespace Havit.Web.UI.WebControls
 					throw new ApplicationException("Neznámý DateTimeMode.");
 			}
 
-			if (Enabled)
+			if (IsEnabled)
 			{
 				RegisterClientScript();
 				valueTextBox.Attributes.Add("onKeyPress", "HavitDateTimeBox_KeyPress();");
@@ -380,6 +380,21 @@ namespace Havit.Web.UI.WebControls
 
 			ViewState["ValueMemento"] = GetValueMemento();
 		}
+		#endregion
+
+		#region Render
+		/// <summary>
+		/// Render (overriden).
+		/// </summary>
+		protected override void Render(HtmlTextWriter writer)
+		{
+			writer.WriteBeginTag("span");
+			writer.WriteAttribute("style", "white-space: nowrap;");
+			writer.Write(">");
+			base.Render(writer);
+			writer.WriteEndTag("span");
+		}
+
 		#endregion
 
 		#region ClientID
@@ -394,6 +409,37 @@ namespace Havit.Web.UI.WebControls
 			get
 			{
 				return valueTextBox.ClientID;
+			}
+		}
+		#endregion
+
+		#region IsEnabled
+		/// <summary>
+		/// Vrací false, pokud je control sám zakázaný nebo pokud některý z parentů controlu je zakázaným WebControlem.
+		/// Jinak vrací true.
+		/// </summary>
+		protected bool IsEnabled
+		{
+			get
+			{
+				if (!Enabled)
+				{
+					return false;
+				}
+
+				Control control = this;
+				while (control != null) // projdeme od nás výše
+				{
+					if (control is WebControl) // pokud máme WebControl
+					{
+						if (!((WebControl)control).Enabled) // a WebControl je zakázaný  
+						{
+							return false; // vrátíme false
+						}
+					}
+					control = control.Parent;
+				}
+				return true;
 			}
 		}
 		#endregion

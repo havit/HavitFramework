@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AutoSuggestMenu.aspx" />
+    <Content Include="DateTimeBoxTest.aspx" />
     <Content Include="GridViewExtTest.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -55,6 +56,13 @@
     </Compile>
     <Compile Include="AutoSuggestMenu.aspx.designer.cs">
       <DependentUpon>AutoSuggestMenu.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DateTimeBoxTest.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>DateTimeBoxTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DateTimeBoxTest.aspx.designer.cs">
+      <DependentUpon>DateTimeBoxTest.aspx</DependentUpon>
     </Compile>
     <Compile Include="GridViewExtTest.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>

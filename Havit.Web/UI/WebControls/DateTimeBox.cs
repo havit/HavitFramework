@@ -402,6 +402,10 @@ namespace Havit.Web.UI.WebControls
 			{
 				RegisterClientScript();
 				valueTextBox.Attributes.Add("onKeyPress", String.Format("HavitDateTimeBox_KeyPress(event, {0});", (this.DateTimeMode == DateTimeMode.DateTime).ToString().ToLower()));
+				//if (!ReadOnly)
+				//{
+				valueTextBox.Attributes.Add("onFocus", "HavitDateTimeBox_Focus(event);");
+				//}
 			}
 
 			ViewState["ValueMemento"] = GetValueMemento();
@@ -495,6 +499,15 @@ namespace Havit.Web.UI.WebControls
 	if (!validChar)
 	{
 		if (window.event) { window.event.returnValue = null; } else { e.preventDefault(); }
+	}
+}
+
+function HavitDateTimeBox_Focus(e)
+{
+	var element = (e.target) ? e.target : window.event.srcElement;
+	if ((element != null) && element.createTextRange)
+	{
+		element.createTextRange().select();
 	}
 }";
 			ScriptManager.RegisterClientScriptBlock(this.Page, typeof(DateTimeBox), "KeyPress", javaScript, true);

@@ -333,6 +333,10 @@ namespace Havit.Web.UI.WebControls
 
 				valueTextBox.Attributes.Add("onkeypress", String.Format("HavitNumericBox_KeyPress(event, {0}, {1});", AllowNegativeNumber.ToString().ToLower(), Decimals));
 				valueTextBox.Attributes.Add("onchange", String.Format("HavitNumericBox_Fix(event, {0}, {1});", AllowNegativeNumber.ToString().ToLower(), Decimals));
+				if (!ReadOnly)
+				{
+					valueTextBox.Attributes.Add("onfocus", "HavitNumericBox_Focus(event);");
+				}
 			}
 		}		
 		#endregion
@@ -386,6 +390,15 @@ function HavitNumericBox_Fix(e, allowNegativeNumber, decimals)
 	{
 		value = value.substr(0, position + decimals + 1);								
 		element.value = value;
+	}
+}
+
+function HavitNumericBox_Focus(e)
+{
+	var element = (e.target) ? e.target : window.event.srcElement;
+	if ((element != null) && element.createTextRange)
+	{
+		element.createTextRange().select();
 	}
 }";
 

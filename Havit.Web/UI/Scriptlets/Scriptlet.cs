@@ -158,14 +158,17 @@ namespace Havit.Web.UI.Scriptlets
 
 			PrepareClientSideScripts(builder);
 
-			// zaregistrujeme jej na konec stránky, aby byly controly již dostupné
-			ScriptManager.RegisterStartupScript(
-				this.Page,
-				typeof(Scriptlet),
-				this.UniqueID,
-				builder.ToString(),
-				true
-			);
+			if (!builder.IsEmpty)
+			{
+				// zaregistrujeme jej na konec stránky, aby byly controly již dostupné
+				ScriptManager.RegisterStartupScript(
+					this.Page,
+					typeof(Scriptlet),
+					this.UniqueID,
+					builder.ToString(),
+					true
+				);
+			}
 		}
 		#endregion
 		
@@ -179,6 +182,13 @@ namespace Havit.Web.UI.Scriptlets
 			string code;
 
 			code = clientScript.GetClientSideFunctionCode();
+
+			if (String.IsNullOrEmpty(code))
+			{
+				// pokud je výkonný skript prázdný, nic neregistrujeme - ani attach metody, nemají význam.
+				return;
+			}
+
 			bool clientSideScriptFunctionReused;
 			string clientSideScriptFunctionName = "scriptlet_" + this.ClientID + "_Function";
 			PrepareClientSideScripts_WriteFunctionWithReuse(builder, ref clientSideScriptFunctionName, _clientScriptScriptletFunctionParameters, code, "ScriptletFunctionHash", out clientSideScriptFunctionReused);

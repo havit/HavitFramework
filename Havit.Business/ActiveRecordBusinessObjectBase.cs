@@ -22,7 +22,8 @@ namespace Havit.Business
 	[Serializable]
 	public abstract class ActiveRecordBusinessObjectBase : BusinessObjectBase
 	{
-		#region Properties - Stav objektu
+		/*
+		#region Properties - Stav objektu		
 		/// <summary>
 		/// Indikuje, zda-li byla data objektu naètena z databáze èásteènì, tedy zda-li se jednalo o partial-load.
 		/// </summary>
@@ -33,7 +34,7 @@ namespace Havit.Business
 		}
 		private bool _isLoadedPartially;
 		#endregion
-
+		*/
 		#region Constructors
 		/// <summary>
 		/// Konstruktor pro nový objekt (bez perzistence v databázi).
@@ -71,7 +72,7 @@ namespace Havit.Business
 		
 			this.Load_ParseDataRecord(record);
 
-			this._isLoadedPartially = !record.FullLoad;
+//			this._isLoadedPartially = !record.FullLoad;
 			this.IsLoaded = true;
 		}
 		#endregion
@@ -117,10 +118,10 @@ namespace Havit.Business
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
 		public override void Save(DbTransaction transaction)
 		{
-			if (IsLoadedPartially)
-			{
-				throw new ApplicationException("Partially-loaded object cannot be saved.");
-			}
+			//if (IsLoadedPartially)
+			//{
+			//    throw new ApplicationException("Partially-loaded object cannot be saved.");
+			//}
 
 			// vynucení transakce nad celou Save() operací (BusinessObjectBase ji pouze oèekává, ale nevynucuje).
 			SqlDataAccess.ExecuteTransaction(delegate(SqlTransaction myTransaction)

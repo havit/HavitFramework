@@ -15,7 +15,7 @@
 			ItemObjectInfo="<%$ Expression: Role.ObjectInfo %>" 
 			AutoDataBind="false"
 			AutoPostBack="true"
-			DataTextField="Symbol"		
+			DataTextField="Symbol.Length"		
 			runat="server" 
 		/>
 		<br />		

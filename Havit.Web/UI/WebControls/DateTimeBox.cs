@@ -71,6 +71,23 @@ namespace Havit.Web.UI.WebControls
 		}		
 		#endregion
 
+		#region KeyBlockingClientScriptEnabled
+		/// <summary>
+		/// Udává, zda se pro zapouzdřený textbox použije javascript, který brání vložení nepovolených znaků. Výchozí hodnota je true.
+		/// </summary>
+		public bool KeyBlockingClientScriptEnabled
+		{
+			get
+			{
+				return (bool)(ViewState["KeyBlockingClientScriptEnabled"] ?? true);
+			}
+			set
+			{
+				ViewState["KeyBlockingClientScriptEnabled"] = value;
+			}
+		}
+		#endregion 
+
 		#endregion
 		
 		#region Appereance properties
@@ -517,7 +534,10 @@ namespace Havit.Web.UI.WebControls
 			if (IsEnabled)
 			{
 				RegisterClientScript();
-				valueTextBox.Attributes.Add("onKeyPress", String.Format("HavitDateTimeBox_KeyPress(event, {0});", (this.DateTimeMode == DateTimeMode.DateTime).ToString().ToLower()));
+				if (KeyBlockingClientScriptEnabled)
+				{
+					valueTextBox.Attributes.Add("onKeyPress", String.Format("HavitDateTimeBox_KeyPress(event, {0});", (this.DateTimeMode == DateTimeMode.DateTime).ToString().ToLower()));
+				}
 				//if (!ReadOnly)
 				//{
 				valueTextBox.Attributes.Add("onFocus", "HavitDateTimeBox_Focus(event);");

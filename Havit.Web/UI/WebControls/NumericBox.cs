@@ -105,6 +105,23 @@ namespace Havit.Web.UI.WebControls
 		}		
 		#endregion
 
+		#region KeyBlockingClientScriptEnabled
+		/// <summary>
+		/// Udává, zda se pro zapouzdøený textbox použije javascript, který brání vložení nepovolených znakù. Výchozí hodnota je true.
+		/// </summary>
+		public bool KeyBlockingClientScriptEnabled
+		{
+			get
+			{
+				return (bool)(ViewState["KeyBlockingClientScriptEnabled"] ?? true);
+			}
+			set
+			{
+				ViewState["KeyBlockingClientScriptEnabled"] = value;
+			}
+		}
+		#endregion 
+
 		#endregion
 
 		#region Appereance properties
@@ -387,7 +404,10 @@ namespace Havit.Web.UI.WebControls
 					valueTextBox.MaxLength = 12;
 				}
 
-				valueTextBox.Attributes.Add("onkeypress", String.Format("HavitNumericBox_KeyPress(event, {0}, {1});", AllowNegativeNumber.ToString().ToLower(), Decimals));
+				if (KeyBlockingClientScriptEnabled)
+				{
+					valueTextBox.Attributes.Add("onkeypress", String.Format("HavitNumericBox_KeyPress(event, {0}, {1});", AllowNegativeNumber.ToString().ToLower(), Decimals));
+				}
 				valueTextBox.Attributes.Add("onchange", String.Format("HavitNumericBox_Fix(event, {0}, {1});", AllowNegativeNumber.ToString().ToLower(), Decimals));
 				if (!ReadOnly)
 				{

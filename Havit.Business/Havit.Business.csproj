@@ -93,6 +93,7 @@
     <Compile Include="BusinessObjectCollection.cs" />
     <Compile Include="CollectionPropertyInfo.cs" />
     <Compile Include="CollectionPropertyHolder.cs" />
+    <Compile Include="GetObjectDelegate.cs" />
     <Compile Include="ObjectInfo.cs" />
     <Compile Include="Properties\GlobalSuppressions.cs" />
     <Compile Include="PropertyInfo.cs" />
@@ -135,6 +136,7 @@
     <Compile Include="PropertyHolder.cs" />
     <Compile Include="PropertyHolderBase.cs" />
     <Compile Include="Query\QueryParams.cs" />
+    <Compile Include="ReferenceFieldPropertyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Havit.Data\Havit.Data.csproj">

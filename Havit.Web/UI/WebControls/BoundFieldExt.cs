@@ -70,7 +70,7 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Získá hodnotu pro zobrazení na základì datového zdroje a DataFieldu.
 		/// </summary>
-		/// <param name="dataItem">Položka dat z DataSource</param>
+		/// <param name="controlContainer">Control container (øádek GridView), kterému se získává hodnota.</param>
 		/// <returns></returns>
 		protected override object GetValue(Control controlContainer)
 		{

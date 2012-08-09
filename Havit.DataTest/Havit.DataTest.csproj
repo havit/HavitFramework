@@ -40,9 +40,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AuthoringTests.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Havit.Data\Havit.Data.csproj">
       <Project>{703235E0-86C0-44F3-95BB-3D9F39886966}</Project>
       <Name>Havit.Data</Name>

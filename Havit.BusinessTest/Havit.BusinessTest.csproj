@@ -41,9 +41,6 @@
     <Compile Include="TestingBusinessObject.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AuthoringTests.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\BusinessLayerTest\BusinessLayerTest.csproj">
       <Project>{5A35A57F-7D3D-4858-BC69-B91025CDE667}</Project>
       <Name>BusinessLayerTest</Name>

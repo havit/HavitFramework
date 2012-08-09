@@ -2,12 +2,19 @@ using System;
 using System.Text;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar_stripped.js", "text/javascript")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-setup_stripped.js", "text/javascript")]
 
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-cs-utf8.js", "text/javascript")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-cs-win.js", "text/javascript")]
+
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-blue.css", "text/css")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-blue2.css", "text/css")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-brown.css", "text/css")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-green.css", "text/css")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-system.css", "text/css")]
 
 namespace Havit.Web.UI.WebControls
 {
@@ -79,6 +86,17 @@ namespace Havit.Web.UI.WebControls
 			set { setupScriptUrl = value; }
 		}
 		private static string setupScriptUrl = String.Empty;
+
+		/// <summary>
+		/// Urèuje, jaký kaskádový styl bude automaticky pøipojen do stránky.
+		/// </summary>
+		public static DynarchCalendarSkin Skin
+		{
+			get { return skin; }
+			set { skin = value; }
+		}
+		private static DynarchCalendarSkin skin = DynarchCalendarSkin.System;
+
 		#endregion
 
 		#region Originální vlastnosti kalendáøe odpovídající JScrípt
@@ -826,7 +844,31 @@ namespace Havit.Web.UI.WebControls
 			if (this.Enabled)
 			{
 				this.ValidateControlProperties();
+				this.RegisterCss();
 				this.RegisterClientScript();
+			}
+		}
+
+		/// <summary>
+		/// Zaregistruje css pro zobrazení kalendáøe.
+		/// </summary>
+		protected void RegisterCss()
+		{
+			if ((Page.Header != null) && (Skin != DynarchCalendarSkin.None))
+			{
+				bool registered = (bool)(Context.Items["Havit.Web.UI.WebControls.DynarchCalendar.RegisterCss_registered"] ?? false);
+
+				if (!registered)
+				{
+					HtmlLink htmlLink = new HtmlLink();
+					string resourceName = "Havit.Web.UI.WebControls.DynarchCalendar.calendar-" + Skin.ToString().ToLower() + ".css";
+					htmlLink.Href = Page.ClientScript.GetWebResourceUrl(typeof(DynarchCalendar), resourceName);
+					htmlLink.Attributes.Add("rel", "stylesheet");
+					htmlLink.Attributes.Add("type", "text/css");
+//							<link rel="stylesheet" type="text/css" href="~/templates/styles/calendar-system.css" />
+					Page.Header.Controls.Add(htmlLink);
+					Context.Items["Havit.Web.UI.WebControls.DynarchCalendar.RegisterCss_registered"] = true;
+				}			
 			}
 		}
 		#endregion

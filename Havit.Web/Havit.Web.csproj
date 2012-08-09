@@ -146,6 +146,7 @@
     <Compile Include="UI\WebControls\CommandFieldExt.cs" />
     <Compile Include="UI\WebControls\CommandFieldStyle.cs" />
     <Compile Include="UI\WebControls\DynarchCalendar\DynarchCalendar.cs" />
+    <Compile Include="UI\WebControls\DynarchCalendar\DynarchCalendarSkin.cs" />
     <Compile Include="UI\WebControls\GridViewCommandField.cs" />
     <Compile Include="UI\WebControls\DataControlButtonExt.cs" />
     <Compile Include="UI\WebControls\DataControlImageButtonExt.cs" />
@@ -222,6 +223,13 @@
     <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-cs-win.js" />
     <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-setup_stripped.js" />
     <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar_stripped.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-blue.css" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-blue2.css" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-brown.css" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-green.css" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-system.css" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

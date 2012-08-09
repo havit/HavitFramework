@@ -179,6 +179,11 @@
             </summary>
             <param name="e">EventArgs</param>
         </member>
+        <member name="M:Havit.Web.UI.WebControls.DynarchCalendar.RegisterCss">
+            <summary>
+            Zaregistruje css pro zobrazení kalendáře.
+            </summary>
+        </member>
         <member name="M:Havit.Web.UI.WebControls.DynarchCalendar.Render(System.Web.UI.HtmlTextWriter)">
             <summary>
             Vyrenderuje script nastavení kalendáře přes Calendar.setup(...).
@@ -208,6 +213,11 @@
             <summary>
             Cesta k setup scriptu calendar-setup[_stripped].js
             Prázdná hodnota způsobí použití setup skriptu přes WebResource.axd.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.DynarchCalendar.Skin">
+            <summary>
+            Určuje, jaký kaskádový styl bude automaticky připojen do stránky.
             </summary>
         </member>
         <member name="P:Havit.Web.UI.WebControls.DynarchCalendar.InputField">
@@ -2654,6 +2664,11 @@
         <member name="P:Havit.Web.UI.WebControls.ButtonFieldExt.ID">
             <summary>
             Identifikátor fieldu na který se lze odkazovat pomocí <see cref="M:Havit.Web.UI.WebControls.GridViewExt.FindColumn(System.String)"/>.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.DynarchCalendarSkin">
+            <summary>
+            Styl zobrazení kalendáře. Určuje, jaké styly jsou automaticky připojeny.
             </summary>
         </member>
     </members>

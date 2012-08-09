@@ -110,10 +110,10 @@ namespace Havit.Web.UI.WebControls
 				int TargetPageIndex = (!AllowPaging) ? 0 : index / PageSize;
 				int TargetSelectedIndex = index - TargetPageIndex * PageSize;
 
-				if (Hightlighting.AutoPageChangeEnabled)
+				if (Hightlighting.AutoPageChangeEnabled && Hightlighting.PageChangeEnabled)
 				{
 					PageIndex = TargetPageIndex;
-					Hightlighting.AutoPageChangeEnabled = false;
+					Hightlighting.PageChangeEnabled = false;
 				}
 				if (PageIndex == TargetPageIndex)
 				{

@@ -29,7 +29,7 @@ namespace Havit.Web.UI.WebControls
 			set
 			{
 				highlightValue = value;
-				AutoPageChangeEnabled = true;
+				PageChangeEnabled = true;
 			}
 		}
 		private object highlightValue;
@@ -52,10 +52,8 @@ namespace Havit.Web.UI.WebControls
 
 		/// <summary>
 		/// Pøíznak, zda mùže dojít ke zmìnì stránky pro zvýraznìní položky.
-		/// Pøíznak je automaticky nastaven pøi nastavení hodnoty HighlightValue
-		/// a je po databindingu automaticky vypnut.
 		/// </summary>
-		internal bool AutoPageChangeEnabled
+		public bool AutoPageChangeEnabled
 		{
 			get
 			{
@@ -66,7 +64,26 @@ namespace Havit.Web.UI.WebControls
 				autoPageChangeEnabled = value;
 			}
 		}
-		bool autoPageChangeEnabled = false;
+		bool autoPageChangeEnabled = true;
+
+		/// <summary>
+		/// Pøíznak, zda mùže dojít je možná zmìna stránky.
+		/// Pøíznak je automaticky nastaven pøi nastavení hodnoty HighlightValue
+		/// a je po databindingu automaticky vypnut. Tím je zajištìno pøepnutí stránky pouze pøi prvním zobrazení stránky
+		/// po nastavení HiglightValue. Dále se stránka nepøepíná a uživatel mùže v klidu stránkovat.
+		/// </summary>
+		internal bool PageChangeEnabled
+		{
+			get
+			{
+				return pageChangeEnabled;
+			}
+			set
+			{
+				pageChangeEnabled = value;
+			}
+		}
+		bool pageChangeEnabled = false;
 
 	}
 }

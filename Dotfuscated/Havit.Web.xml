@@ -3183,5 +3183,67 @@
             Výchozí hodnota je false.
             </summary>
         </member>
+        <member name="T:Havit.Web.UI.WebControls.AutoSuggestMenuItem">
+            <summary>Data structure for menu items in suggestion div</summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:Havit.Web.UI.WebControls.XJsonWriter" -->
+        <member name="M:Havit.Web.UI.WebControls.XJsonWriter.#ctor">
+            <summary>Initializes new instance of XHtmlWriter.</summary>
+            <remarks>Creates a new StringWriter object and uses that as Internal Writer</remarks>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.AutoSuggestMenu">
+            <summary>Represents a control for extending TextBox with suggestions.</summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.AutoSuggestMenu.#ctor">
+            <summary>Initializes new instance of AutoSuggestMenu/// </summary>
+            <remarks>Wire the events so the control can participate in them</remarks>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.AutoSuggestMenu.CreateChildControls">
+            <summary>This member overrides <see cref="M:System.Web.UI.Control.CreateChildControls"/></summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.AutoSuggestMenu.LoadViewState(System.Object)">
+            <summary>This member overrides <see cref="M:System.Web.UI.Control.LoadViewState(System.Object)"/></summary>
+            <remarks>Loads date from view-state saved in previous page into date control properties</remarks>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.AutoSuggestMenu.SaveViewState">
+            <summary>This member overrides <see cref="M:System.Web.UI.Control.SaveViewState"/></summary>
+            <remarks>Stores date control properties in view-state for future page</remarks>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.AutoSuggestMenu.OnPreRender(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Web.UI.Control.PreRender"/> event.
+            </summary>
+            <param name="e">An <see cref="T:System.EventArgs"/> object that contains the event data.</param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.AutoSuggestMenu.Render(System.Web.UI.HtmlTextWriter)">
+            <summary>Renders AutoSuggestMenu to the output HTML parameter specified.</summary>
+            <param name="output"> The HTML writer to write out to</param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.AutoSuggestMenu.WriteCssLink">
+            <summary>
+            Vytvoří do head odkaz na CSS menu.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.AutoSuggestMenu.ConvertMenuItemsToJSON(System.Collections.Generic.List{Havit.Web.UI.WebControls.AutoSuggestMenuItem},System.Int32)">
+             <summary>
+                 Used to send data back to browser.
+             </summary>
+             <param name="menuItems"></param>
+             <returns>
+            {"MenuItems": 
+             [
+                 {"label": "Option1", "value": "1"},
+                 {"label": "Option2", "value": "2"},
+                 {"label": "Option3", "value": "3"},
+             ]
+            }
+            </returns>
+            
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.AutoSuggestMenu.ServicePath">
+            <summary>
+            Cesta k webové službě, která má být přilinkována.
+            </summary>
+        </member>
     </members>
 </doc>

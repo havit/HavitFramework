@@ -38,12 +38,24 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Mobile" />
+    <Reference Include="Validators, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\Validators.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AutoSuggestMenu.aspx" />
     <Content Include="GridViewExtTest.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoSuggestMenu.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>AutoSuggestMenu.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AutoSuggestMenu.aspx.designer.cs">
+      <DependentUpon>AutoSuggestMenu.aspx</DependentUpon>
+    </Compile>
     <Compile Include="GridViewExtTest.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>GridViewExtTest.aspx</DependentUpon>

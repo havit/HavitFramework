@@ -12,6 +12,13 @@ using System.Collections.Specialized;
 
 using System.Collections.Generic;
 
+[assembly: WebResource("Havit.Web.UI.WebControls.AutoSuggestMenu.AutoSuggestMenu.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.AutoSuggestMenu.AutoSuggestMenuItem.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.AutoSuggestMenu.XUtils.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.AutoSuggestMenu.Events.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.AutoSuggestMenu.AutoSuggestMenu.css", "text/css")]
+[assembly: WebResource("Havit.Web.UI.WebControls.AutoSuggestMenu.Blank.html", "text/html")]
+
 
 namespace Havit.Web.UI.WebControls
 {
@@ -37,7 +44,7 @@ namespace Havit.Web.UI.WebControls
 
         private bool _updateTextBoxOnUpDown;
 		private bool _useIFrame;
-        private string _resourcesDir;
+		//private string _resourcesDir;
 
         private bool _usePageMethods;
 
@@ -136,11 +143,11 @@ namespace Havit.Web.UI.WebControls
 		}
 
 
-		public string ResourcesDir
-		{
-			get	{return _resourcesDir;}
-			set	{_resourcesDir=value;}
-		}
+		//public string ResourcesDir
+		//{
+		//    get	{return _resourcesDir;}
+		//    set	{_resourcesDir=value;}
+		//}
 	
 
         public bool UsePageMethods
@@ -180,6 +187,22 @@ namespace Havit.Web.UI.WebControls
         }
 		#endregion
 
+		/// <summary>
+		/// Cesta k webové službì, která má být pøilinkována.
+		/// </summary>
+		public string ServicePath
+		{
+			get
+			{
+				return _servicePath;
+			}
+			set
+			{
+				_servicePath = value;
+			}
+		}
+		private string _servicePath;
+
 
         
         /// <summary>Initializes new instance of AutoSuggestMenu/// </summary>
@@ -190,7 +213,7 @@ namespace Havit.Web.UI.WebControls
             _minSuggestChars = 1;
             _maxSuggestChars = 5;
             
-            _resourcesDir = "~/asm_includes";
+			//_resourcesDir = "~/asm_includes";
 
             //Number of milliseconds to wait before returning Suggestions div
             //Makes control more efficient
@@ -252,11 +275,13 @@ namespace Havit.Web.UI.WebControls
 
             _updateTextBoxOnUpDown      = (bool)ViewState["UpdateTextBoxOnUpDown"];
 			_useIFrame				    = (bool)ViewState["UseIFrame"];
-			_resourcesDir			    = (string)ViewState["ResourcesDir"];
+			//_resourcesDir			    = (string)ViewState["ResourcesDir"];
 
             _usePageMethods             = (bool)ViewState["UsePageMethods"];
             _onGetSuggestions           = (string)ViewState["OnGetSuggestions"];
             _onClientTextBoxUpdate      = (string)ViewState["OnClientTextBoxUpdate"];
+
+			_servicePath = (string)ViewState["ServicePath"];
 		}
 		
 
@@ -283,46 +308,54 @@ namespace Havit.Web.UI.WebControls
             ViewState["UpdateTextBoxOnUpDown"]  = _updateTextBoxOnUpDown;
 			
 			ViewState["UseIFrame"]			    = _useIFrame;
-			ViewState["ResourcesDir"]		    = _resourcesDir;
+			//ViewState["ResourcesDir"]		    = _resourcesDir;
 
             ViewState["UsePageMethods"]         = _usePageMethods;
             ViewState["OnGetSuggestions"]       = _onGetSuggestions;
             ViewState["OnClientTextBoxUpdate"]  = _onClientTextBoxUpdate;
+
+			ViewState["ServicePath"] = _servicePath;
 
 			return base.SaveViewState();
 		}
 
 
 
-        internal string GetAbsoluteResourcesDir()
-        {
-            string resourcesDir = _resourcesDir;
-            if (resourcesDir.Substring(0, 1) == "~")
-            {
-                //Remove ~
-                resourcesDir = resourcesDir.Substring(1, resourcesDir.Length - 1);
+		//internal string GetAbsoluteResourcesDir()
+		//{
+		//    string resourcesDir = _resourcesDir;
+		//    if (resourcesDir.Substring(0, 1) == "~")
+		//    {
+		//        //Remove ~
+		//        resourcesDir = resourcesDir.Substring(1, resourcesDir.Length - 1);
 
-                if (HttpRuntime.AppDomainAppVirtualPath != "/")
-                    resourcesDir = HttpRuntime.AppDomainAppVirtualPath + resourcesDir;
-            }
+		//        if (HttpRuntime.AppDomainAppVirtualPath != "/")
+		//            resourcesDir = HttpRuntime.AppDomainAppVirtualPath + resourcesDir;
+		//    }
 
-            return resourcesDir;
-        }
+		//    return resourcesDir;
+		//}
 
              
 
         protected void WriteJSIncludes()
         {
-            if (!this.Page.ClientScript.IsClientScriptIncludeRegistered("AutoSuggestMenu_XUtils"))
-            {
-                string resourcesDir = GetAbsoluteResourcesDir();
+			//if (!this.Page.ClientScript.IsClientScriptIncludeRegistered("AutoSuggestMenu_XUtils"))
+			//{
+				//string resourcesDir = GetAbsoluteResourcesDir();
 
-                RegisterClientScriptInclude("AutoSuggestMenu_XUtils", resourcesDir + "/XUtils.js");
-                RegisterClientScriptInclude("AutoSuggestMenu_Events", resourcesDir + "/Events.js");
+				//RegisterClientScriptInclude("AutoSuggestMenu_XUtils", resourcesDir + "/XUtils.js");
+				ScriptManager.RegisterClientScriptResource(this, typeof(AutoSuggestMenu), "Havit.Web.UI.WebControls.AutoSuggestMenu.XUtils.js");
+
+                // RegisterClientScriptInclude("AutoSuggestMenu_Events", resourcesDir + "/Events.js");
+				ScriptManager.RegisterClientScriptResource(this, typeof(AutoSuggestMenu), "Havit.Web.UI.WebControls.AutoSuggestMenu.Events.js");
            
-                RegisterClientScriptInclude("AutoSuggestMenu_AutoSuggestMenu", resourcesDir + "/AutoSuggestMenu.js");
-                RegisterClientScriptInclude("AutoSuggestMenu_AutoSuggestMenuItem", resourcesDir + "/AutoSuggestMenuItem.js");
-            } 
+                // RegisterClientScriptInclude("AutoSuggestMenu_AutoSuggestMenu", resourcesDir + "/AutoSuggestMenu.js");
+				ScriptManager.RegisterClientScriptResource(this, typeof(AutoSuggestMenu), "Havit.Web.UI.WebControls.AutoSuggestMenu.AutoSuggestMenu.js");
+				
+				//RegisterClientScriptInclude("AutoSuggestMenu_AutoSuggestMenuItem", resourcesDir + "/AutoSuggestMenuItem.js");
+				ScriptManager.RegisterClientScriptResource(this, typeof(AutoSuggestMenu), "Havit.Web.UI.WebControls.AutoSuggestMenu.AutoSuggestMenuItem.js");
+			//} 
         }
 
                 
@@ -360,7 +393,10 @@ namespace Havit.Web.UI.WebControls
 
             writer.WriteLine("menu.updateTextBoxOnUpDown=" + _updateTextBoxOnUpDown.ToString().ToLower() + ";");
             writer.WriteLine("menu.useIFrame=" + _useIFrame.ToString().ToLower() + ";");
-            writer.WriteLine("menu.resourcesDir=\"" + GetAbsoluteResourcesDir() + "\";");
+
+			//writer.WriteLine("menu.resourcesDir=\"" + GetAbsoluteResourcesDir() + "\";");
+			string resourceName = "Havit.Web.UI.WebControls.AutoSuggestMenu.Blank.html";
+			writer.WriteLine("menu.blankPage=\"" + Page.ClientScript.GetWebResourceUrl(typeof(AutoSuggestMenu), resourceName) + "\";");  // RH, místo resourcesDir
 
             string func = _onGetSuggestions;
             if (_usePageMethods)
@@ -403,35 +439,69 @@ namespace Havit.Web.UI.WebControls
                 throw new Exception("onGetSuggestions property is required.");
 
             //Make sure resources directory exists
-            string dir=GetAbsoluteResourcesDir();
-            dir=this.Page.Request.MapPath(dir);
+			//string dir=GetAbsoluteResourcesDir();
+			//dir=this.Page.Request.MapPath(dir);
 
-            if (!System.IO.Directory.Exists(dir))
-                throw new Exception("ResourcesDir '" + _resourcesDir + "' doesn't exist");
+			//if (!System.IO.Directory.Exists(dir))
+			//    throw new Exception("ResourcesDir '" + _resourcesDir + "' doesn't exist");
         }
 
 
-        
+
+		/// <summary>
+		/// Raises the <see cref="E:System.Web.UI.Control.PreRender"/> event.
+		/// </summary>
+		/// <param name="e">An <see cref="T:System.EventArgs"/> object that contains the event data.</param>
         protected override void OnPreRender(EventArgs e)
         {
             CheckRequiredProperties();
 
             base.OnPreRender(e);
 
+			RegisterServicePath();
             WriteJSIncludes();
-            WriteMenu();
-        }
+			WriteCssLink();
+			WriteMenu();
+		}
+
+		private void RegisterServicePath()
+		{
+			if (!String.IsNullOrEmpty(this.ServicePath))
+			{
+				ScriptManager.GetCurrent(this.Page).Services.Add(new ServiceReference(this.ServicePath));
+			}
+		}
 
         
 		/// <summary>Renders AutoSuggestMenu to the output HTML parameter specified.</summary>
 		/// <param name="output"> The HTML writer to write out to</param>
 		protected override void Render(HtmlTextWriter output)
 		{
-            output.WriteLine("<link href=\"" + GetAbsoluteResourcesDir() + "/AutoSuggestMenu.css\" type=\"text/css\" rel=\"stylesheet\">");
-            
+			//output.WriteLine("<link href=\"" + GetAbsoluteResourcesDir() + "/AutoSuggestMenu.css\" type=\"text/css\" rel=\"stylesheet\">");
+
+			
             //base.Render(output);
             
             _hdnSelectedValue.RenderControl(output);
+		}
+
+		/// <summary>
+		/// Vytvoøí do head odkaz na CSS menu.
+		/// </summary>
+		private void WriteCssLink()
+		{
+			bool registered = (bool)(HttpContext.Current.Items["Havit.Web.UI.WebControls.AutoSuggestMenu.RegisterCss_registered"] ?? false);
+
+			if (!registered)
+			{
+				HtmlLink htmlLink = new HtmlLink();
+				string resourceName = "Havit.Web.UI.WebControls.AutoSuggestMenu.AutoSuggestMenu.css";
+				htmlLink.Href = Page.ClientScript.GetWebResourceUrl(typeof(AutoSuggestMenu), resourceName);
+				htmlLink.Attributes.Add("rel", "stylesheet");
+				htmlLink.Attributes.Add("type", "text/css");
+				Page.Header.Controls.Add(htmlLink);
+				HttpContext.Current.Items["Havit.Web.UI.WebControls.AutoSuggestMenu.RegisterCss_registered"] = true;
+			}
 		}
 
         

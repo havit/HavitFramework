@@ -335,10 +335,10 @@ function AutoSuggestMenu()
         //Create a frame to make sure there is no    
         var iFrame=XUtils.createElement("IFRAME");
         
-    	var blankPage=self.resourcesDir + "/Blank.html";
-    	TRACE("AutoSuggestMenu.createIFrame blankPage=" + blankPage);
+//    	var blankPage=self.resourcesDir + "/Blank.html";
+//    	TRACE("AutoSuggestMenu.createIFrame blankPage=" + blankPage);
 
-        iFrame.setAttribute("src",  blankPage);
+        iFrame.setAttribute("src",  self.blankPage);
         
         iFrame.style.position="absolute";
         iFrame.style.visibility="hidden";

@@ -140,10 +140,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UI\WebControls\Collapser.cs" />
-    <Compile Include="UI\WebControls\DatePicker\DatePicker.cs" />
-    <Compile Include="UI\WebControls\DateTimeBox.cs" />
-    <Compile Include="UI\WebControls\DateTimePart.cs" />
-    <Compile Include="UI\WebControls\DateTimeValidator.cs" />
     <Compile Include="UI\WebControls\GridViewCommandField.cs" />
     <Compile Include="UI\WebControls\DataControlButtonExt.cs" />
     <Compile Include="UI\WebControls\DataControlImageButtonExt.cs" />
@@ -210,17 +206,6 @@
     <Compile Include="UrlRewriter\RewriterUtils.cs">
       <SubType>Code</SubType>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="UI\WebControls\DateTimeValidator.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="UI\WebControls\DatePicker\Calendar-cs.js" />
-    <EmbeddedResource Include="UI\WebControls\DatePicker\Calendar-en.js" />
-    <EmbeddedResource Include="UI\WebControls\DatePicker\Calendar-Setup.js" />
-    <EmbeddedResource Include="UI\WebControls\DatePicker\Calendar.gif" />
-    <EmbeddedResource Include="UI\WebControls\DatePicker\Calendar.js" />
-    <EmbeddedResource Include="UI\WebControls\DatePicker\CalendarDisabled.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

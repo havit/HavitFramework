@@ -152,6 +152,8 @@
     <Compile Include="UI\WebControls\Collapser.cs" />
     <Compile Include="UI\WebControls\CommandFieldExt.cs" />
     <Compile Include="UI\WebControls\CommandFieldStyle.cs" />
+    <Compile Include="UI\WebControls\DateTimeBox.cs" />
+    <Compile Include="UI\WebControls\DateTimeMode.cs" />
     <Compile Include="UI\WebControls\DropDownListExt.cs" />
     <Compile Include="UI\WebControls\DynarchCalendar\DynarchCalendar.cs" />
     <Compile Include="UI\WebControls\DynarchCalendar\DynarchCalendarSkin.cs" />
@@ -175,6 +177,8 @@
     <Compile Include="UI\WebControls\HyperLinkFieldExt.cs" />
     <Compile Include="UI\WebControls\ICommandFieldStyle.cs" />
     <Compile Include="UI\WebControls\ImageFieldExt.cs" />
+    <Compile Include="UI\WebControls\NumericBox.cs" />
+    <Compile Include="UI\WebControls\NumericBoxValidator.cs" />
     <Compile Include="UI\WebControls\SortExpressions.cs">
       <SubType>Code</SubType>
     </Compile>

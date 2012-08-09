@@ -1252,6 +1252,55 @@
             Vrací HtmlTextWriterTag.H6 zajišťující správné renderování.
             </summary>
         </member>
+        <member name="T:Havit.Web.UI.Scriptlets.SubstitutionControlExtenderBase">
+            <summary>
+            ControlExtender určený ke tvorbě potomků, kteří provádějí substituci za jiný control.
+            Např. pokud je potřeba substituovat UserControl za některý vnořený control.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.Scriptlets.SubstitutionControlExtenderBase.GetPriority(System.Web.UI.Control)">
+            <summary>
+            Vrací priotitu vhodnosti extenderu pro zpracování controlu.
+            Pokud extender není vhodný pro zpracování controlu, vrací null.
+            </summary>
+            <param name="control">Ověřovaný control.</param>
+            <returns>Priorita.</returns>
+        </member>
+        <member name="M:Havit.Web.UI.Scriptlets.SubstitutionControlExtenderBase.GetInitializeClientSideValueScript(System.String,Havit.Web.UI.Scriptlets.IScriptletParameter,System.Web.UI.Control,Havit.Web.UI.Scriptlets.ScriptBuilder)">
+            <summary>
+            Vytvoří klientský parametr pro předaný control.
+            </summary>
+            <param name="parameterPrefix">Název objektu na klientské straně.</param>
+            <param name="parameter">Parametr předávající řízení extenderu.</param>
+            <param name="control">Control ke zpracování.</param>
+            <param name="scriptBuilder">Script builder.</param>
+        </member>
+        <member name="M:Havit.Web.UI.Scriptlets.SubstitutionControlExtenderBase.GetAttachEventsScript(System.String,Havit.Web.UI.Scriptlets.IScriptletParameter,System.Web.UI.Control,Havit.Web.UI.Scriptlets.ScriptBuilder)">
+            <summary>
+            Vrátí skript pro navázání událostí k objektu na klientské straně.
+            </summary><param name="parameterPrefix">Název objektu na klientské straně.</param><param name="parameter">Parametr předávající řízení extenderu.</param><param name="control">Control ke zpracování.</param><param name="scriptBuilder">Script builder.</param>
+        </member>
+        <member name="M:Havit.Web.UI.Scriptlets.SubstitutionControlExtenderBase.GetDetachEventsScript(System.String,Havit.Web.UI.Scriptlets.IScriptletParameter,System.Web.UI.Control,Havit.Web.UI.Scriptlets.ScriptBuilder)">
+            <summary>
+            Vrátí skript pro odpojení událostí od objektu na klientské straně.
+            </summary><param name="parameterPrefix">Název objektu na klientské straně.</param><param name="parameter">Parametr předávající řízení extenderu.</param><param name="control">Control ke zpracování.</param><param name="scriptBuilder">Script builder.</param>
+        </member>
+        <member name="M:Havit.Web.UI.Scriptlets.SubstitutionControlExtenderBase.GetSubstitutedControl(System.Web.UI.Control)">
+            <summary>
+            Vrací substituovaný control.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.Scriptlets.SubstitutionControlExtenderBase.GetSupportedControlType">
+            <summary>
+            Vrací typ, který je třídou podporován k substituci.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.Scriptlets.SubstitutionControlExtenderBase.GetPriorityValue">
+            <summary>
+            Vrátí hodnotu priority ControlExtenderu, která se použije, pokud je 
+            ControlExtender použitelný pro zpracování controlu.
+            </summary>
+        </member>
         <member name="T:Havit.Web.UI.Scriptlets.ControlParameter">
             <summary>
             Parametr Skriptletu reprezentující renderovaný control Control.
@@ -3571,53 +3620,14 @@
             Identifikátor fieldu na který se lze odkazovat pomocí <see cref="M:Havit.Web.UI.WebControls.GridViewExt.FindColumn(System.String)"/>.
             </summary>
         </member>
-        <member name="T:Havit.Web.UI.Scriptlets.SubstitutionControlExtenderBase">
+        <member name="T:Havit.Web.UI.Scriptlets.ClientScriptSubstituingEventArgs">
             <summary>
-            ControlExtender určený ke tvorbě potomků, kteří provádějí substituci za jiný control.
-            Např. pokud je potřeba substituovat UserControl za některý vnořený control.
+            Argumenty události ScriptSubstituing.
             </summary>
         </member>
-        <member name="M:Havit.Web.UI.Scriptlets.SubstitutionControlExtenderBase.GetPriority(System.Web.UI.Control)">
+        <member name="P:Havit.Web.UI.Scriptlets.ClientScriptSubstituingEventArgs.ClientScript">
             <summary>
-            Vrací priotitu vhodnosti extenderu pro zpracování controlu.
-            Pokud extender není vhodný pro zpracování controlu, vrací null.
-            </summary>
-            <param name="control">Ověřovaný control.</param>
-            <returns>Priorita.</returns>
-        </member>
-        <member name="M:Havit.Web.UI.Scriptlets.SubstitutionControlExtenderBase.GetInitializeClientSideValueScript(System.String,Havit.Web.UI.Scriptlets.IScriptletParameter,System.Web.UI.Control,Havit.Web.UI.Scriptlets.ScriptBuilder)">
-            <summary>
-            Vytvoří klientský parametr pro předaný control.
-            </summary>
-            <param name="parameterPrefix">Název objektu na klientské straně.</param>
-            <param name="parameter">Parametr předávající řízení extenderu.</param>
-            <param name="control">Control ke zpracování.</param>
-            <param name="scriptBuilder">Script builder.</param>
-        </member>
-        <member name="M:Havit.Web.UI.Scriptlets.SubstitutionControlExtenderBase.GetAttachEventsScript(System.String,Havit.Web.UI.Scriptlets.IScriptletParameter,System.Web.UI.Control,Havit.Web.UI.Scriptlets.ScriptBuilder)">
-            <summary>
-            Vrátí skript pro navázání událostí k objektu na klientské straně.
-            </summary><param name="parameterPrefix">Název objektu na klientské straně.</param><param name="parameter">Parametr předávající řízení extenderu.</param><param name="control">Control ke zpracování.</param><param name="scriptBuilder">Script builder.</param>
-        </member>
-        <member name="M:Havit.Web.UI.Scriptlets.SubstitutionControlExtenderBase.GetDetachEventsScript(System.String,Havit.Web.UI.Scriptlets.IScriptletParameter,System.Web.UI.Control,Havit.Web.UI.Scriptlets.ScriptBuilder)">
-            <summary>
-            Vrátí skript pro odpojení událostí od objektu na klientské straně.
-            </summary><param name="parameterPrefix">Název objektu na klientské straně.</param><param name="parameter">Parametr předávající řízení extenderu.</param><param name="control">Control ke zpracování.</param><param name="scriptBuilder">Script builder.</param>
-        </member>
-        <member name="M:Havit.Web.UI.Scriptlets.SubstitutionControlExtenderBase.GetSubstitutedControl(System.Web.UI.Control)">
-            <summary>
-            Vrací substituovaný control.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.Scriptlets.SubstitutionControlExtenderBase.GetSupportedControlType">
-            <summary>
-            Vrací typ, který je třídou podporován k substituci.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.Scriptlets.SubstitutionControlExtenderBase.GetPriorityValue">
-            <summary>
-            Vrátí hodnotu priority ControlExtenderu, která se použije, pokud je 
-            ControlExtender použitelný pro zpracování controlu.
+            Klientský skript k substituci.
             </summary>
         </member>
     </members>

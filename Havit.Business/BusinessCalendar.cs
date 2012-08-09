@@ -64,7 +64,7 @@ namespace Havit.Business
 
 		#region FillDates
 		/// <summary>
-		/// Pøidá do nastavení <see cref="BusinessCalendar"/> významné dny.
+		/// Pøidá do nastavení <see cref="BusinessCalendar"/> významné dny. Pokud již nìkterý den v kalendáøi existuje, pøepíše ho. 
 		/// </summary>
 		/// <typeparam name="T">typ významných dnù (musí implementovat rozhraní <see cref="IDateInfo"/>)</typeparam>
 		/// <param name="dateInfos">kolekce významných dnù</param>
@@ -73,7 +73,7 @@ namespace Havit.Business
 		{
 			foreach (T item in dateInfos)
 			{
-				this.dates.Add(item.Date.Date, item);
+				dates[item.Date.Date] = item;
 			}
 		}
 		#endregion

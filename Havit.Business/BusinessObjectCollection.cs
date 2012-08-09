@@ -152,6 +152,15 @@ namespace Havit.Business
 			: base(list)
 		{
 		}
+
+		/// <summary>
+		/// Vytvoøí novou instanci kolekce a zkopíruje do ní prvky z pøedané kolekce.
+		/// </summary>
+		/// <param name="collection">kolekce, jejíž prvky se mají do naší kolekce zkopírovat</param>
+		public BusinessObjectCollection(IEnumerable<TItem> collection)
+			: base(new List<TItem>(collection))
+		{
+		}
 		#endregion
 
 		#region FindByID

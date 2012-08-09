@@ -1514,6 +1514,12 @@
             </remarks>
             <param name="list">List prvků</param>
         </member>
+        <member name="M:Havit.Business.BusinessObjectCollection`2.#ctor(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Vytvoří novou instanci kolekce a zkopíruje do ní prvky z předané kolekce.
+            </summary>
+            <param name="collection">kolekce, jejíž prvky se mají do naší kolekce zkopírovat</param>
+        </member>
         <member name="M:Havit.Business.BusinessObjectCollection`2.FindByID(System.Int32)">
             <summary>
             Prohledá kolekci a vrátí první nalezený prvek s požadovaným ID.

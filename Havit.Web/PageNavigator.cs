@@ -97,16 +97,19 @@ namespace Havit.Web
 
 			// pokud máme hodnotu parametru , provedeme dekompresi a parse adres historie
 			byte[] buffer = HttpServerUtility.UrlTokenDecode(historyParameterValue);
-			using (System.IO.MemoryStream memoryStream = new System.IO.MemoryStream(buffer, false))
+			if (buffer != null) // pokud je hodnota parametru poškozena, získáváme null (bohužel není v dokumentaci MSDN uvedeno)
 			{
-				using (System.IO.Compression.DeflateStream compressStream = new System.IO.Compression.DeflateStream(memoryStream, System.IO.Compression.CompressionMode.Decompress))
+				using (System.IO.MemoryStream memoryStream = new System.IO.MemoryStream(buffer, false))
 				{
-					using (StreamReader reader = new StreamReader(compressStream, Encoding.UTF8))
+					using (System.IO.Compression.DeflateStream compressStream = new System.IO.Compression.DeflateStream(memoryStream, System.IO.Compression.CompressionMode.Decompress))
 					{
-						string line;
-						while ((line = reader.ReadLine()) != null) // přečteme řádek do proměnné line a porovnáme s hodnotou null
+						using (StreamReader reader = new StreamReader(compressStream, Encoding.UTF8))
 						{
-							HistoryUrls.Add(line);
+							string line;
+							while ((line = reader.ReadLine()) != null) // přečteme řádek do proměnné line a porovnáme s hodnotou null
+							{
+								HistoryUrls.Add(line);
+							}
 						}
 					}
 				}

@@ -14,6 +14,16 @@ namespace Havit.Business.Query
 	[Serializable]	
 	public class QueryParams
 	{
+		/// <summary>
+		/// Instance tøídy ObjectInfo nesoucí informace o tom, z jaké tabulky se bude dotaz dotazovat.
+		/// </summary>
+		public ObjectInfo ObjectInfo
+		{
+			get { return objectInfo; }
+			set { objectInfo = value; }
+		}
+		private ObjectInfo objectInfo;
+
 		#region Parametry dotazu
 		/// <summary>
 		/// Maximální poèet záznamù, který se vrací z databáze - (SELECT TOP n ...).
@@ -26,24 +36,15 @@ namespace Havit.Business.Query
 		private int? topRecords;
 
 		/// <summary>
-		/// Název tabulky nebo view, do které se tvoøí dotaz (FROM xxx).
+		/// Udává, zda se mají vracet i záznamy oznaèené za smazané.
+		/// Výchozí hodnota je false, smazané záznamy se nevrací.
 		/// </summary>
-		public string TableName
+		public bool IncludeDeleted
 		{
-			get { return tableName; }
-			set { tableName = value; }
+			get { return includeDeleted; }
+			set { includeDeleted = value; }
 		}
-		private string tableName;
-
-		/// <summary>
-		/// Seznam sloupcù (sekce SQL dotazu SELECT), které se vytáhnou v pøípadì, že kolekce fields je prázdná.
-		/// </summary>
-		public string FieldsWhenEmpty
-		{
-			get { return fieldsWhenEmpty; }
-			set { fieldsWhenEmpty = value; }
-		}
-		private string fieldsWhenEmpty;
+		private bool includeDeleted = false;
 
 		/// <summary>
 		/// Seznam sloupcù, které jsou výsledkem dotazu (SELECT sloupec1, sloupec2...).
@@ -146,19 +147,23 @@ namespace Havit.Business.Query
 		/// </summary>
 		protected virtual string GetSelectFieldsStatement(DbCommand command)
 		{
-			if (properties.Count == 0)
-				return fieldsWhenEmpty;
+			PropertyInfoCollection queryProperties = properties;
 
-			StringBuilder fieldsBuilder = new StringBuilder();			
-			for (int i = 0; i < properties.Count; i++)				
+			if (queryProperties.Count == 0)
+			{
+				queryProperties = objectInfo.Properties;
+			}
+
+			StringBuilder fieldsBuilder = new StringBuilder();
+			for (int i = 0; i < queryProperties.Count; i++)				
 			{
 				if (i > 0)
 					fieldsBuilder.Append(", ");
 
-				if (properties[i] is IFieldsBuilder)
+				if (queryProperties[i] is IFieldsBuilder)
 				{
 #warning Pøepracovat tak, aby každá property obecnì mohl emitovat fieldy, které potøebuje ke své inicializaci.
-					fieldsBuilder.Append(((IFieldsBuilder)properties[i]).GetSelectFieldStatement(command));
+					fieldsBuilder.Append(((IFieldsBuilder)queryProperties[i]).GetSelectFieldStatement(command));
 				}
 			}
 			return fieldsBuilder.ToString();
@@ -169,7 +174,7 @@ namespace Havit.Business.Query
 		/// </summary>
 		protected virtual string GetFromStatement(DbCommand command)
 		{
-			return String.Format(CultureInfo.InvariantCulture, "FROM {0}", tableName);
+			return String.Format(CultureInfo.InvariantCulture, "FROM {0}.{1}", objectInfo.DbSchema, objectInfo.DbTable);
 		}
 
 		/// <summary>
@@ -178,8 +183,23 @@ namespace Havit.Business.Query
 		public virtual string GetWhereStatement(DbCommand command)
 		{
 			StringBuilder whereBuilder = new StringBuilder();
-			
-			conditions.GetWhereStatement(command, whereBuilder);
+
+			Condition whereConditions = conditions;
+
+			if (!includeDeleted && objectInfo.DeletedProperty != null)
+			{
+				if (objectInfo.DeletedProperty.FieldType == System.Data.SqlDbType.Bit)
+					whereConditions = new AndCondition(
+						BoolCondition.CreateFalse(objectInfo.DeletedProperty),
+						whereConditions);
+
+				if (objectInfo.DeletedProperty.FieldType == System.Data.SqlDbType.DateTime)
+					whereConditions = new AndCondition(
+						NullCondition.CreateIsNotNull(objectInfo.DeletedProperty),
+						whereConditions);
+			}
+
+			whereConditions.GetWhereStatement(command, whereBuilder);
 			if (whereBuilder.Length > 0)
 				whereBuilder.Insert(0, "WHERE ");
 						

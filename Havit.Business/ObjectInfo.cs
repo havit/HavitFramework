@@ -16,7 +16,8 @@ namespace Havit.Business
 		/// <param name="dbTable">Název databázové tabulky.</param>
 		/// <param name="readOnly">Urèuje, zda je tøída jen ke ètení.</param>
 		/// <param name="properties">Properties tøídy.</param>
-		public ObjectInfo(string dbSchema, string dbTable, bool readOnly, PropertyInfoCollection properties)
+		/// <param name="deletedProperty">FieldPropertyInfo, která identifikuje pøíznakem smazané záznamy.</param>
+		public ObjectInfo(string dbSchema, string dbTable, bool readOnly, PropertyInfoCollection properties, FieldPropertyInfo deletedProperty)
 		{
 			if (properties == null)
 				throw new ArgumentNullException("properties");
@@ -25,6 +26,7 @@ namespace Havit.Business
 			this.dbTable = dbTable;
 			this.readOnly = readOnly;
 			this.properties = properties;
+			this.deletedProperty = deletedProperty;
 
 			foreach (PropertyInfo propertyInfo in properties)
 			{
@@ -67,6 +69,15 @@ namespace Havit.Business
 			get { return properties; }
 		}
 		private PropertyInfoCollection properties;
+
+		/// <summary>
+		/// Property, která oznaèuje smazané záznamy.
+		/// </summary>
+		public FieldPropertyInfo DeletedProperty
+		{
+			get { return deletedProperty;  }
+		}
+		private FieldPropertyInfo deletedProperty;
 
 	}
 }

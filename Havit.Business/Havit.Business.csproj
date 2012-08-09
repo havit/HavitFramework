@@ -103,6 +103,7 @@
     <Compile Include="DateInfoDictionary.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="PropertyHolder.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Havit.Data\Havit.Data.csproj">

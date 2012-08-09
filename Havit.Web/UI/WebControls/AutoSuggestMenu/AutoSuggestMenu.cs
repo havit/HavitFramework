@@ -211,7 +211,7 @@ namespace Havit.Web.UI.WebControls
         {
             //Set Defaults
             _minSuggestChars = 1;
-            _maxSuggestChars = 5;
+            _maxSuggestChars = 999;
             
 			//_resourcesDir = "~/asm_includes";
 

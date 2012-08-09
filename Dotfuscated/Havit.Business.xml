@@ -765,6 +765,21 @@
             Vytvoří podmínku testující hodnoty pomocí zadaného operátoru.
             </summary>
         </member>
+        <member name="T:Havit.Business.IDateInfo">
+            <summary>
+            Interface představující informace o jednom dni pro business-calendar.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.IDateInfo.Date">
+            <summary>
+            Datum, kterého se objekt týká.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.IDateInfo.IsHoliday">
+            <summary>
+            Indikuje, zda-li je den svátkem.
+            </summary>
+        </member>
         <member name="T:Havit.Business.PropertyInfoCollection">
             <summary>
             Kolekce objektů PropertyInfo.<br/>
@@ -1097,6 +1112,16 @@
             Př. Hledání výrazu "k_lo*" nenajde "kolo" ani "kolotoč" protože _ nemá funkční význam, ale najde "k_lo" i "k_olotoč".
             </example>
         </member>
+        <member name="M:Havit.Business.Query.TextCondition.Create(Havit.Business.Query.IOperand,Havit.Business.Query.ComparisonOperator,System.String)">
+            <summary>
+            Vytvoří podmínku testující hodnoty pomocí zadaného operátoru.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.TextCondition.Create(Havit.Business.Query.IOperand,Havit.Business.Query.ComparisonOperator,Havit.Business.Query.IOperand)">
+            <summary>
+            Vytvoří podmínku testující hodnoty pomocí zadaného operátoru.
+            </summary>
+        </member>
         <member name="M:Havit.Business.Query.TextCondition.GetLikeExpression(System.String)">
             <summary>
             Transformuje řetězec nařetězec, který je možné použít jako hodnota k operátoru like.
@@ -1272,21 +1297,6 @@
         <member name="T:Havit.Business.DateInfo">
             <summary>
             Třída pro informace o dni.
-            </summary>
-        </member>
-        <member name="T:Havit.Business.IDateInfo">
-            <summary>
-            Interface představující informace o jednom dni pro business-calendar.
-            </summary>
-        </member>
-        <member name="P:Havit.Business.IDateInfo.Date">
-            <summary>
-            Datum, kterého se objekt týká.
-            </summary>
-        </member>
-        <member name="P:Havit.Business.IDateInfo.IsHoliday">
-            <summary>
-            Indikuje, zda-li je den svátkem.
             </summary>
         </member>
         <member name="M:Havit.Business.DateInfo.#ctor(System.DateTime)">
@@ -1862,6 +1872,21 @@
             Vytvoří operand z řetězce.
             </summary>
         </member>
+        <member name="T:Havit.Business.CountBusinessDaysOptions">
+            <summary>
+            Options pro volání metody <see cref="M:Havit.Business.BusinessCalendar.CountBusinessDays(System.DateTime,System.DateTime,Havit.Business.CountBusinessDaysOptions)"/>.
+            </summary>
+        </member>
+        <member name="F:Havit.Business.CountBusinessDaysOptions.IncludeEndDate">
+            <summary>
+            Zahrne do počtu dnů i koncové datum (od pondělí do pátku bude 5 pracovních dnů).
+            </summary>
+        </member>
+        <member name="F:Havit.Business.CountBusinessDaysOptions.ExcludeEndDate">
+            <summary>
+            Vyloučí z počtu pracovních dnů koncové datum (standardní rozdíl dvou dat; pokud jsou shodná, rozdíl je 0).
+            </summary>
+        </member>
         <member name="T:Havit.Business.ActiveRecordBusinessObjectBase">
             <summary>
             Bázová třída pro všechny business-objekty, která definuje jejich základní chování (Layer Supertype),
@@ -1994,21 +2019,6 @@
         <member name="P:Havit.Business.ActiveRecordBusinessObjectBase.IsMinimalInserting">
             <summary>
             Identifikuje, zda probíhá Save_Insert_InsertRequiredForMinimalInsert (nesmí se zacyklit).
-            </summary>
-        </member>
-        <member name="T:Havit.Business.CountBusinessDaysOptions">
-            <summary>
-            Options pro volání metody <see cref="M:Havit.Business.BusinessCalendar.CountBusinessDays(System.DateTime,System.DateTime,Havit.Business.CountBusinessDaysOptions)"/>.
-            </summary>
-        </member>
-        <member name="F:Havit.Business.CountBusinessDaysOptions.IncludeEndDate">
-            <summary>
-            Zahrne do počtu dnů i koncové datum (od pondělí do pátku bude 5 pracovních dnů).
-            </summary>
-        </member>
-        <member name="F:Havit.Business.CountBusinessDaysOptions.ExcludeEndDate">
-            <summary>
-            Vyloučí z počtu pracovních dnů koncové datum (standardní rozdíl dvou dat; pokud jsou shodná, rozdíl je 0).
             </summary>
         </member>
     </members>

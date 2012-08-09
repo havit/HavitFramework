@@ -49,8 +49,18 @@ namespace Havit.Business
 		public bool AllowDuplicates
 		{
 			get { return _allowDuplicates; }
-			set { _allowDuplicates = value; }
+			set {
+				if (_allowDuplicates && !value)
+				{
+					if (CheckDuplicates())
+					{
+						throw new InvalidOperationException("Kolekce obsahuje duplicity.");
+					}
+				}
+				_allowDuplicates = value; 
+			}
 		}
+
 		private bool _allowDuplicates = true;
 		#endregion
 
@@ -110,7 +120,9 @@ namespace Havit.Business
 		/// <exception cref="T:System.ArgumentOutOfRangeException">index is less than zero.-or-index is greater than <see cref="P:System.Collections.ObjectModel.Collection`1.Count"></see>.</exception>
 		protected override void SetItem(int index, TItem item)
 		{
-			if (!_allowDuplicates && (this.IndexOf(item) != index))
+			// je zajištìno, že v režimu !AllowDuplicates kolekce neobsahuje duplikáty
+			// potom mùžeme použít IndexOf na hledání výskytu (je garantováno, že prvek je v kolekci nejvýše jednou).
+			if (!_allowDuplicates && (this.IndexOf(item) != index)) 
 			{
 				throw new ArgumentException("Položka v kolekci již existuje (a není povoleno vkládání duplicit).");
 			}
@@ -307,5 +319,34 @@ namespace Havit.Business
 			return array;
 		}
 		#endregion
+
+		#region CheckDuplicates
+		/// <summary>
+		/// Vrací true, pokud kolekce obsahuje duplicity.
+		/// </summary>		
+		private bool CheckDuplicates()
+		{			
+			// obsahuje-li kolekce ménì než dva prvky, nemùže obsahovat duplicity.
+			if (Items.Count < 2)
+			{
+				return false;
+			}
+
+			//sem se dostaneme málokdy (pokud vùbec), takže není nutné implementovat buhví jak optimalizovanì
+			List<TItem> innerList = (List<TItem>)Items;
+			for (int i = 0; i < innerList.Count - 1; i++)
+			{				
+				// pokud poslední výskyt prvku je jiný, než aktuální, jde o duplicitu
+				// (Místo LastIndexOf bychom mohli v klidu použít IndexOf, je to zcela jedno.)
+				if (innerList.LastIndexOf(innerList[i]) != i)
+				{
+					return true;
+				}
+			}
+
+			return false;			
+		}
+		#endregion
+
 	}
 }

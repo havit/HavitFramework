@@ -22,29 +22,52 @@ namespace Havit.BusinessTest
 		public void AllowDuplicatesTest_Default()
 		{
 			SubjektCollection subjekty = new SubjektCollection();
+			// je AllowDuplicates zapnuto?
 			Assert.IsTrue(subjekty.AllowDuplicates);
 		}
 
 		/// <summary>
-		/// Testuje zákaz duplicit - pomocí insertu.
+		/// Testuje, zda je při zákazu duplicit ověřeno, zda kolekce již neobsahuje duplicity.
+		/// </summary>
+		[TestMethod()]
+		[ExpectedException(typeof(InvalidOperationException))]
+		public void AllowDuplicatesTest_Change()
+		{
+			SubjektCollection subjekty = new SubjektCollection();
+			Subjekt subjekt = Subjekt.CreateObject();
+
+			//přidáme do kolekce dva stejné objekty
+			subjekty.Add(subjekt);
+			subjekty.Add(subjekt);
+
+			// zapneme test na duplicity
+			subjekty.AllowDuplicates = false;
+			// je-li vyhozena výjimka, je vše ok (viz atribut metody)			
+		}
+
+		/// <summary>
+		/// Testuje zákaz duplicit - vkládání pomocí insertu.
 		/// </summary>
 		[TestMethod()]
 		[ExpectedException(typeof(ArgumentException))]
-		public void AllowDuplicatesTest_DoNotAllow_Insert()
+		public void AllowDuplicatesTest_DoNotAllow_Insert_Different_New()
 		{
 			SubjektCollection subjekty = new SubjektCollection();
 			subjekty.AllowDuplicates = false;
 			Subjekt subjekt = Subjekt.CreateObject();
 
+			// duplicity jsou zakázány
+			// přidáme dvakrát stejný subjekt (stejnou instanci)
 			subjekty.Add(subjekt);
 			subjekty.Add(subjekt);
+			// je-li vyhozena výjimka, je vše ok (viz atribut metody)
 		}
 
 		/// <summary>
-		/// Testuje zákaz duplicit - pomocí indexeru.
+		/// Testuje zákaz duplicit - vkládání pomocí indexeru.
 		/// </summary>
 		[TestMethod()]
-		public void AllowDuplicatesTest_DoNotAllow_Indexer_SameNew()
+		public void AllowDuplicatesTest_Allow_Indexer_Different_New()
 		{
 			SubjektCollection subjekty = new SubjektCollection();
 			subjekty.AllowDuplicates = false;
@@ -52,17 +75,19 @@ namespace Havit.BusinessTest
 			Subjekt subjekt1 = Subjekt.CreateObject();
 			Subjekt subjekt2 = Subjekt.CreateObject();
 
+			// přidáme dvakrát dva různé objekty, pak přes indexerem první nastavíme sám na sebe
 			subjekty.Add(subjekt1);
 			subjekty.Add(subjekt2);
 			subjekty[0] = subjekt1;			
-			// ok
+			// nedošlo-li k výjimce, je vše ok
 		}
 
 		/// <summary>
 		/// Testuje zákaz duplicit - pomocí indexeru.
 		/// </summary>
 		[TestMethod()]
-		public void AllowDuplicatesTest_DoNotAllow_Indexer_Same()
+		[ExpectedException(typeof(ArgumentException))]
+		public void AllowDuplicatesTest_DoNotAllow_Insert_Same_Persistent()
 		{
 			SubjektCollection subjekty = new SubjektCollection();
 			subjekty.AllowDuplicates = false;
@@ -70,10 +95,11 @@ namespace Havit.BusinessTest
 			Subjekt subjekt1 = Subjekt.GetObject(1);
 			Subjekt subjekt2 = Subjekt.GetObject(1);
 
+			// přidáme dva objekty (různé instance, ale stejné business objekty)
 			subjekty.Add(subjekt1);
 			subjekty.Add(subjekt2);
-			subjekty[0] = subjekt1;
-			// ok
+			// je-li vyhozena výjimka, je vše ok (viz atribut metody)
+
 		}
 
 		/// <summary>
@@ -89,16 +115,19 @@ namespace Havit.BusinessTest
 			Subjekt subjekt1 = Subjekt.CreateObject();
 			Subjekt subjekt2 = Subjekt.CreateObject();
 
+			// vložím dva různé objekty
 			subjekty.Add(subjekt1);
 			subjekty.Add(subjekt2);
+			// druhý objekt přepíšu prvním
 			subjekty[1] = subjekt1;
+			// je-li vyhozena výjimka, je vše ok (viz atribut metody)			
 		}
 
 		/// <summary>
 		/// Testuje povolení duplicit.
 		/// </summary>
 		[TestMethod()]
-		public void AllowDuplicatesTest_Allow()
+		public void AllowDuplicatesTest_Allow_Insert_And_Indexer()
 		{
 			SubjektCollection subjekty;
 
@@ -106,13 +135,16 @@ namespace Havit.BusinessTest
 
 			subjekty = new SubjektCollection();
 			subjekty.AllowDuplicates = true;
+
+			// povoleny duplicity
+			// mohu přidávat a nastavovat jeden objekt dokola 
+
 			subjekty.Add(subjekt);
 			subjekty.Add(subjekt);
-			Assert.IsTrue(subjekty.Count == 2);
 
 			subjekty[0] = subjekt;
 			subjekty[1] = subjekt;
-			// ok
+			// nedošlo-li k výjimce, je vše ok
 		}
 
 	}

@@ -12,6 +12,12 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class GridViewCommandField : CommandField
 	{
+		public string DeleteConfirmText
+		{
+			get { return (string)ViewState["DeleteConfirmText"]; }
+			set { ViewState["DeleteConfirmText"] = value; }
+		}
+
 		#region InitializeCell
 		public override void InitializeCell(
 			DataControlFieldCell cell,
@@ -79,7 +85,15 @@ namespace Havit.Web.UI.WebControls
 								child = new LiteralControl("&nbsp;");
 								cell.Controls.Add(child);
 							}
-							this.AddButtonToCell(cell, "Delete", this.DeleteText, false, string.Empty, rowIndex, this.DeleteImageUrl);
+							
+							IButtonControl button = this.AddButtonToCell(cell, "Delete", this.DeleteText, false, string.Empty, rowIndex, this.DeleteImageUrl);
+
+							// doplneni o DeleteConfirmText
+							if (!String.IsNullOrEmpty(DeleteConfirmText))
+							{
+								((WebControl)button).Attributes.Add("onclick", String.Format("return confirm('{0}');", DeleteConfirmText.Replace("'", "''")));
+							}
+
 							insertSpace = false;
 						}
 						// U Insertu nechceme New
@@ -112,7 +126,7 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 
 		#region AddButtonToCell
-		private void AddButtonToCell(DataControlFieldCell cell, string commandName, string buttonText, bool causesValidation, string validationGroup, int rowIndex, string imageUrl)
+		private IButtonControl AddButtonToCell(DataControlFieldCell cell, string commandName, string buttonText, bool causesValidation, string validationGroup, int rowIndex, string imageUrl)
 		{
 			IButtonControl control;
 			IPostBackContainer container = base.Control as IPostBackContainer;
@@ -165,6 +179,7 @@ namespace Havit.Web.UI.WebControls
 			}
 			control.ValidationGroup = validationGroup;
 			cell.Controls.Add((WebControl)control);
+			return control;
 		}
 		#endregion
 	}

@@ -123,8 +123,18 @@ namespace Havit.Web.UI.WebControls
 					}
 					else
 					{
+						if (showSelectButton)
+						{
+							this.AddButtonToCell(cell, "Select", HttpUtilityExt.GetResourceString(this.SelectText), false, string.Empty, rowIndex, this.SelectImageUrl);
+							insertSpace = false;
+						}
 						if (showEditButton)
 						{
+							if (!insertSpace)
+							{
+								child = new LiteralControl("&nbsp;");
+								cell.Controls.Add(child);
+							}
 							this.AddButtonToCell(cell, "Edit", HttpUtilityExt.GetResourceString(this.EditText), false, string.Empty, rowIndex, this.EditImageUrl);
 							insertSpace = false;
 						}
@@ -172,16 +182,7 @@ namespace Havit.Web.UI.WebControls
 							flag6 = false;
 						}
 						*/
-						if (showSelectButton)
-						{
-							if (!insertSpace)
-							{
-								child = new LiteralControl("&nbsp;");
-								cell.Controls.Add(child);
-							}
-							this.AddButtonToCell(cell, "Select", HttpUtilityExt.GetResourceString(this.SelectText), false, string.Empty, rowIndex, this.SelectImageUrl);
-							insertSpace = false;
-						}
+
 					}
 				}
 			}

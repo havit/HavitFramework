@@ -140,7 +140,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			get
 			{
-				return (SelectedValue == String.Empty) ? (int?)null : int.Parse(SelectedValue);
+				return (String.IsNullOrEmpty(SelectedValue) ? (int?)null : int.Parse(SelectedValue));
 			}
 		}		
 		#endregion
@@ -370,7 +370,7 @@ namespace Havit.Web.UI.WebControls
 			if (IsNullable)
 			{
 				EnsureEmptyItem();
-				SelectedIndex = 0;
+				// SelectedIndex = 0;
 			}
 			DataBindPerformed = true;
 

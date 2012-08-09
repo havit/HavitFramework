@@ -552,7 +552,7 @@ namespace Havit.Web.UI.WebControls
 
 				dateTimePickerDynarchCalendar.DateStatusFunction = args.DateCustomization.GetDatesCustomizationFunction(this.Page);
 			}
-			else 
+			else if(GetDateTimeBoxCustomizationDefault != null)
 			{
 				DateTimeBoxDateCustomizationEventArgs args = new DateTimeBoxDateCustomizationEventArgs();
 				GetDateTimeBoxCustomizationDefault(this, args);

@@ -91,8 +91,28 @@
     <Compile Include="ActiveRecordBusinessObjectBase.cs" />
     <Compile Include="BusinessObjectBase.cs" />
     <Compile Include="BusinessObjectCollection.cs" />
+    <Compile Include="CollectionProperty.cs" />
     <Compile Include="CollectionPropertyHolder.cs" />
+    <Compile Include="Conditions\AndCondition.cs" />
+    <Compile Include="Conditions\BinaryCondition.cs" />
+    <Compile Include="Conditions\BoolCondition.cs" />
+    <Compile Include="Conditions\ComparisonOperator.cs" />
+    <Compile Include="Conditions\ComparisonOperatorHelper.cs" />
+    <Compile Include="Conditions\CompositeCondition.cs" />
+    <Compile Include="Conditions\ICondition.cs" />
+    <Compile Include="Conditions\IOperand.cs" />
+    <Compile Include="Conditions\NullCondition.cs" />
+    <Compile Include="Conditions\NumberCondition.cs" />
+    <Compile Include="Conditions\OrCondition.cs" />
+    <Compile Include="Conditions\ReferenceCondition.cs" />
+    <Compile Include="Conditions\TernaryCondition.cs" />
+    <Compile Include="Conditions\TextCondition.cs" />
+    <Compile Include="Conditions\UnaryCondition.cs" />
+    <Compile Include="Conditions\ValueOperand.cs" />
     <Compile Include="ConstraintViolationException.cs" />
+    <Compile Include="IProperty.cs" />
+    <Compile Include="OrderItem.cs" />
+    <Compile Include="OrderItemCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -105,8 +125,11 @@
     <Compile Include="DateInfoDictionary.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Property.cs" />
+    <Compile Include="PropertyCollection.cs" />
     <Compile Include="PropertyHolder.cs" />
     <Compile Include="PropertyHolderBase.cs" />
+    <Compile Include="QueryParams.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Havit.Data\Havit.Data.csproj">

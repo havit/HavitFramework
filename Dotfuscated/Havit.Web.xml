@@ -551,6 +551,42 @@
             <param name="requestedPath">The Path being requested.</param>
             <param name="app">The HttpApplication instance.</param>
         </member>
+        <member name="T:Havit.Web.UI.WebControls.GridViewRowCustomizingCommandButtonEventArgs">
+            <summary>
+            Argumenty události <see cref="E:Havit.Web.UI.WebControls.GridViewExt.RowCustomizingCommandButton"/>.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.GridViewRowCustomizingCommandButtonEventArgs.#ctor(System.String,System.Int32,System.Object)">
+            <summary>
+            Vytvoří instanci třídy <see cref="T:Havit.Web.UI.WebControls.GridViewRowCustomizingCommandButtonEventArgs"/>.
+            </summary>
+            <param name="commandName">CommandName obsluhovaného buttonu</param>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.GridViewRowCustomizingCommandButtonEventArgs.CommandName">
+            <summary>
+            Vrátí CommandName tlačítka.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.GridViewRowCustomizingCommandButtonEventArgs.Visible">
+            <summary>
+            Vlastnost Visible tlačítka.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.GridViewRowCustomizingCommandButtonEventArgs.Enabled">
+            <summary>
+            Vlastnosti Enabled tlačítka.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.GridViewRowCustomizingCommandButtonEventArgs.RowIndex">
+            <summary>
+            Index řádku, kterého se událost týká.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.GridViewRowCustomizingCommandButtonEventArgs.DataItem">
+            <summary>
+            DataItem řádku, kterého se událost týká.
+            </summary>
+        </member>
         <member name="T:Havit.Web.UI.Scriptlets.RepeaterControlExtender">
             <summary>
             Control extender, který umí pracovat s Repeaterem.
@@ -1197,6 +1233,17 @@
             </remarks>
             <param name="urlWithQueryString">vstupní text</param>
             <returns>Text encodovaný pro použití v URL.</returns>
+        </member>
+        <member name="M:Havit.Web.HttpUtilityExt.GetResourceString(System.String)">
+            <summary>
+            Vrátí resource-řetězec (lokalizaci) resolvovanou ze standardizované podoby resource odkazu používané např. ve web.sitemap, skinech, menu, atp.
+            </summary>
+            <example>
+            $resources: MyGlobalResources, MyResourceKey, My default value<br/>
+            $resources: MyGlobalResources, MyResourceKey<br/>
+            </example>
+            <param name="resourceExpression">resource odkaz dle příkladů</param>
+            <returns>resolvovaný lokalizační řetězec</returns>
         </member>
         <member name="T:Havit.Web.HtmlEncodeOptions">
             <summary>
@@ -3134,42 +3181,6 @@
             Udává, zda v případě změny hodnoty prvku (zaškrtnutí, změna textu, apod.)
             dojde ke spuštění skriptu.
             Výchozí hodnota je false.
-            </summary>
-        </member>
-        <member name="T:Havit.Web.UI.WebControls.GridViewRowCustomizingCommandButtonEventArgs">
-            <summary>
-            Argumenty události <see cref="E:Havit.Web.UI.WebControls.GridViewExt.RowCustomizingCommandButton"/>.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.GridViewRowCustomizingCommandButtonEventArgs.#ctor(System.String,System.Int32,System.Object)">
-            <summary>
-            Vytvoří instanci třídy <see cref="T:Havit.Web.UI.WebControls.GridViewRowCustomizingCommandButtonEventArgs"/>.
-            </summary>
-            <param name="commandName">CommandName obsluhovaného buttonu</param>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.GridViewRowCustomizingCommandButtonEventArgs.CommandName">
-            <summary>
-            Vrátí CommandName tlačítka.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.GridViewRowCustomizingCommandButtonEventArgs.Visible">
-            <summary>
-            Vlastnost Visible tlačítka.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.GridViewRowCustomizingCommandButtonEventArgs.Enabled">
-            <summary>
-            Vlastnosti Enabled tlačítka.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.GridViewRowCustomizingCommandButtonEventArgs.RowIndex">
-            <summary>
-            Index řádku, kterého se událost týká.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.GridViewRowCustomizingCommandButtonEventArgs.DataItem">
-            <summary>
-            DataItem řádku, kterého se událost týká.
             </summary>
         </member>
     </members>

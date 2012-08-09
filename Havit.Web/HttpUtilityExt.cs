@@ -2,6 +2,9 @@ using System;
 using System.Text;
 using System.Web;
 using Havit;
+using System.Globalization;
+using System.Configuration;
+using System.Resources;
 
 namespace Havit.Web
 {
@@ -250,9 +253,69 @@ namespace Havit.Web
 			return urlWithQueryString;
 		}
 		#endregion
+
+		#region GetResourceString
+		/// <summary>
+		/// Vrátí resource-øetìzec (lokalizaci) resolvovanou ze standardizované podoby resource odkazu používané napø. ve web.sitemap, skinech, menu, atp.
+		/// </summary>
+		/// <example>
+		/// $resources: MyGlobalResources, MyResourceKey, My default value<br/>
+		/// $resources: MyGlobalResources, MyResourceKey<br/>
+		/// </example>
+		/// <param name="resourceExpression">resource odkaz dle pøíkladù</param>
+		/// <returns>resolvovaný lokalizaèní øetìzec</returns>
+		public static string GetResourceString(string resourceExpression)
+		{
+			if ((resourceExpression != null)
+				&& (resourceExpression.Length > 10)
+				&& resourceExpression.ToLower(CultureInfo.InvariantCulture).StartsWith("$resources:", StringComparison.Ordinal))
+			{
+				string resourceOdkaz = resourceExpression.Substring(11);
+				if (resourceOdkaz.Length == 0)
+				{
+					throw new InvalidOperationException("Resource odkaz nesmí být prázdný.");
+				}
+				string resourceClassKey = null;
+				string resourceKey = null;
+				int length = resourceOdkaz.IndexOf(',');
+				if (length == -1)
+				{
+					throw new InvalidOperationException("Resource odkaz není platný");
+				}
+				resourceClassKey = resourceOdkaz.Substring(0, length);
+				resourceKey = resourceOdkaz.Substring(length + 1);
+				string defaultPropertyValue = null;
+				int index = resourceKey.IndexOf(',');
+				if (index != -1)
+				{
+					defaultPropertyValue = resourceKey.Substring(index + 1); // default value
+					resourceKey = resourceKey.Substring(0, index);
+				}
+				else
+				{
+					resourceExpression = null;
+				}
+
+				try
+				{
+					resourceExpression = (string)HttpContext.GetGlobalResourceObject(resourceClassKey.Trim(), resourceKey.Trim());
+				}
+				catch (MissingManifestResourceException)
+				{
+					// NOOP
+				}
+
+				if (resourceExpression == null)
+				{
+					resourceExpression = defaultPropertyValue;
+				}
+			}
+			return resourceExpression;
+		}
+		#endregion
 	}
 
-	#region HtmlEncodeOptions
+	#region HtmlEncodeOptions (enum)
 	/// <summary>
 	/// Poskytuje množinu hodnot k nastavení voleb metody <see cref="Havit.Web.HttpUtilityExt.HtmlEncode(string, HtmlEncodeOptions)"/>
 	/// </summary>

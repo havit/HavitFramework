@@ -1,0 +1,39 @@
+﻿<project schemaVersion="1.2">
+    <assemblies>
+        <assembly assemblyPath="E:\Visual Studio\Projects\Havit\Havit\bin\Release\Havit.dll" xmlCommentsPath="E:\Visual Studio\Projects\Havit\Havit\bin\Release\Havit.xml" />
+        <assembly assemblyPath="E:\Visual Studio\Projects\Havit\Havit.Business\bin\Release\Havit.Business.dll" xmlCommentsPath="E:\Visual Studio\Projects\Havit\Havit.Business\bin\Release\Havit.Business.xml" />
+        <assembly assemblyPath="E:\Visual Studio\Projects\Havit\Havit.Data\bin\Release\Havit.Data.dll" xmlCommentsPath="E:\Visual Studio\Projects\Havit\Havit.Data\bin\Release\Havit.Data.xml" />
+        <assembly assemblyPath="E:\Visual Studio\Projects\Havit\Havit.Data.SqlServer\bin\Release\Havit.Data.SqlServer.dll" xmlCommentsPath="E:\Visual Studio\Projects\Havit\Havit.Data.SqlServer\bin\Release\Havit.Data.SqlServer.xml" />
+        <assembly assemblyPath="E:\Visual Studio\Projects\Havit\Havit.Drawing\bin\Release\Havit.Drawing.dll" xmlCommentsPath="E:\Visual Studio\Projects\Havit\Havit.Drawing\bin\Release\Havit.Drawing.xml" />
+        <assembly assemblyPath="E:\Visual Studio\Projects\Havit\Havit.Web\bin\Release\Havit.Web.dll" xmlCommentsPath="E:\Visual Studio\Projects\Havit\Havit.Web\bin\Release\Havit.Web.xml" />
+        <assembly assemblyPath="E:\Visual Studio\Projects\Havit\Havit.Web.UI.WebControls.DynarchCalendar\bin\Release\Havit.Web.UI.WebControls.DynarchCalendar.dll" xmlCommentsPath="E:\Visual Studio\Projects\Havit\Havit.Web.UI.WebControls.DynarchCalendar\bin\Release\Havit.Web.UI.WebControls.DynarchCalendar.xml" />
+        <assembly assemblyPath="E:\Visual Studio\Projects\Havit\Havit.Xml\bin\Release\Havit.Xml.dll" xmlCommentsPath="E:\Visual Studio\Projects\Havit\Havit.Xml\bin\Release\Havit.Xml.xml" />
+    </assemblies>
+    <contentPlacement>AboveNamespaces</contentPlacement>
+    <dependencies>
+        <dependencyItem depPath="GAC:System.Configuration, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    </dependencies>
+    <projectSummary />
+    <sandcastlePath>C:\Program Files\Sandcastle\</sandcastlePath>
+    <hhcPath>C:\Program Files\HTML Help Workshop\</hhcPath>
+    <hxcompPath>C:\Program Files\Visual Studio 2005 SDK\2006.09\VisualStudioIntegration\Archive\HelpIntegration\</hxcompPath>
+    <outputPath>.\doc\</outputPath>
+    <helpFileFormat>HtmlHelp1x</helpFileFormat>
+    <cleanIntermediates>True</cleanIntermediates>
+    <purgeDuplicateTopics>True</purgeDuplicateTopics>
+    <binaryTOC>True</binaryTOC>
+    <includeFavorites>False</includeFavorites>
+    <preliminary>False</preliminary>
+    <rootNSContainer>False</rootNSContainer>
+    <helpTitle>HAVIT .NET Framework Extensions</helpTitle>
+    <htmlHelpName>HAVIT .NET Framework Extensions</htmlHelpName>
+    <language>cs-CZ</language>
+    <copyrightHref>http://www.havit.cz</copyrightHref>
+    <copyrightText>HAVIT, s.r.o., All rights reserved.</copyrightText>
+    <feedbackEMailAddress>info@havit.cz</feedbackEMailAddress>
+    <headerText>HAVIT .NET Framework Extensions</headerText>
+    <projectLinks>Local</projectLinks>
+    <sdkLinks>Msdn</sdkLinks>
+    <documentAttributes>False</documentAttributes>
+    <documentInternals>False</documentInternals>
+</project>

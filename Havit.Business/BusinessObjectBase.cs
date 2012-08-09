@@ -1,0 +1,335 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using Havit.Data;
+using System.Data.Common;
+
+namespace Havit.Business
+{
+	/// <summary>
+	/// Bázová tøída pro všechny business-objekty, která definuje jejich základní chování, zejména ve vztahu k databázi (Layer Supertype).
+	/// </summary>
+	/// <remarks>
+	/// Tøída je základem pro všechny business-objekty a implementuje základní pattern pro komunikaci s perzistentními uložišti.
+	/// Naèítání je implementováno jako lazy-load, kdy je objekt nejprve vytvoøen prázdný jako ghost se svým ID a teprve
+	/// pøi první potøebì je iniciováno jeho úplné naètení.<br/>
+	/// </remarks>
+	public abstract class BusinessObjectBase
+	{
+		#region Consts
+		/// <summary>
+		/// Hodnota, kterou má ID objektu neuloženého v databázi (bez perzistence).
+		/// </summary>
+		public const int NoID = -1;
+		#endregion
+
+		#region Property - ID
+		/// <summary>
+		/// Primární klíè objektu.
+		/// </summary>
+		public int ID
+		{
+			get { return _id; }
+			protected set { _id = value; }
+		}
+		private int _id;
+		#endregion
+
+		#region Properties - Stav objektu
+		/// <summary>
+		/// Indikuje, zda-li byla data objektu zmìnìna oproti datùm v databázi.
+		/// </summary>
+		public bool IsDirty
+		{
+			get { return _isDirty; }
+			protected set { _isDirty = value; }
+		}
+		private bool _isDirty;
+
+		/// <summary>
+		/// Indikuje, zda-li byla data objektu naètena z databáze,
+		/// resp. zda-li je potøeba objekt nahrávat z databáze.
+		/// </summary>
+		public bool IsLoaded
+		{
+			get { return _isLoaded; }
+			protected set { _isLoaded = value; }
+		}
+		private bool _isLoaded;
+
+		/// <summary>
+		/// Indikuje, zda-li jde o nový objekt bez perzistence, který nebyl dosud uložen do databáze.
+		/// Èeká na INSERT.
+		/// </summary>
+		public bool IsNew
+		{
+			get { return _isNew; }
+			protected set { _isNew = value; }
+		}
+		private bool _isNew;
+
+		/// <summary>
+		/// Indikuje, zda-li je objekt smazán z databáze, pøípadnì je v ní oznaèen jako smazaný.
+		/// </summary>
+		public bool IsDeleted
+		{
+			get { return _isDeleted; }
+			protected set { _isDeleted = value; }
+		}
+		private bool _isDeleted;
+		#endregion
+
+		#region Constructors
+		/// <summary>
+		/// Konstruktor pro nový objekt (bez perzistence v databázi).
+		/// </summary>
+		protected BusinessObjectBase()
+		{
+			this._id = NoID;
+			this._isNew = true;
+			this._isDirty = false;
+			this._isLoaded = true;
+		}
+
+		/// <summary>
+		/// Konstruktor pro objekt s obrazem v databázi (perzistentní).
+		/// </summary>
+		/// <param name="id">primární klíè objektu</param>
+		protected BusinessObjectBase(int id)
+		{
+			this._id = id;
+			this._isLoaded = false;
+			this._isDirty = false;
+		}
+		#endregion
+
+		#region Load logika
+		/// <summary>
+		/// Nahraje objekt z perzistentního uložištì, bez transakce.
+		/// </summary>
+		/// <remarks>
+		/// Pozor, pokud je již objekt naèten a není urèena transakce (null), znovu se nenahrává.
+		/// Pokud je transakce urèena, naète se znovu.
+		/// </remarks>
+		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt naèten; null, pokud bez transakce</param>
+		public virtual void Load(DbTransaction transaction)
+		{
+			if (this.IsLoaded && (transaction == null))
+			{
+				// pokud je již objekt naèten, nenaèítáme ho znovu
+				return;
+			}
+
+			Load_Perform(transaction);
+
+			this.IsLoaded = true;
+		}
+
+		/// <summary>
+		/// Nahraje objekt z perzistentního uložištì, bez transakce.
+		/// </summary>
+		/// <remarks>
+		/// Pozor, pokud je již objekt naèten, znovu se nenahrává.
+		/// </remarks>
+		public virtual void Load()
+		{
+			Load(null);
+		}
+
+		/// <summary>
+		/// Výkonná èást nahrání objektu z perzistentního uložištì.
+		/// </summary>
+		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt naèten; null, pokud bez transakce</param>
+		protected abstract void Load_Perform(DbTransaction transaction);
+		#endregion
+
+		#region Save logika (Insert, Update)
+		/// <summary>
+		/// Uloží objekt do databáze, s použitím transakce. Nový objekt je vložen INSERT, existující objekt je aktualizován UPDATE.
+		/// </summary>
+		/// <remarks>
+		/// Metoda neprovede uložení objektu, pokud není nahrán (!IsLoaded), není totiž ani co ukládat,
+		/// data nemohla být zmìnìna, když nebyla ani jednou použita.<br/>
+		/// Metoda také neprovede uložení, pokud objekt nebyl zmìnìn a souèasnì nejde o nový objekt (!IsDirty &amp;&amp; !IsNew)
+		/// </remarks>
+		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
+		public virtual void Save(DbTransaction transaction)
+		{
+			if ((!IsLoaded)
+				|| (!IsDirty && !IsNew))
+			{
+				return;
+			}
+
+			Save_Perform(transaction);
+
+			IsNew = false; // uložený objekt není už nový, dostal i pøidìlené ID
+			IsDirty = false; // uložený objekt je aktuální
+		}
+
+		/// <summary>
+		/// Uloží objekt do databáze, bez transakce. Nový objekt je vložen INSERT, existující objekt je aktualizován UPDATE.
+		/// </summary>
+		/// <remarks>
+		/// Metoda neprovede uložení objektu, pokud není nahrán (!IsLoaded), není totiž ani co ukládat,
+		/// data nemohla být zmìnìna, když nebyla ani jednou použita.<br/>
+		/// Metoda také neprovede uložení, pokud objekt nebyl zmìnìn a souèasnì nejde o nový objekt (!IsDirty &amp;&amp; !IsNew)
+		/// </remarks>
+		public void Save()
+		{
+			Save(null);
+		}
+
+		/// <summary>
+		/// Výkonná èást uložení objektu do perzistentního uložištì.
+		/// </summary>
+		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
+		protected abstract void Save_Perform(DbTransaction transaction);
+		#endregion
+
+		#region Delete logika
+		/// <summary>
+		/// Smaže objekt, nebo ho oznaèí jako smazaný, podle zvolené logiky. Zmìnu uloží do databáze, v transakci.
+		/// </summary>
+		/// <remarks>
+		/// Neprovede se, pokud je již objekt smazán.
+		/// </remarks>
+		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které se smazání provede; null, pokud bez transakce</param>
+		public virtual void Delete(DbTransaction transaction)
+		{
+			EnsureLoaded();
+
+			if (IsDeleted)
+			{
+				return;
+			}
+
+			Delete_Perform(transaction);
+
+			IsDeleted = true;
+		}
+
+		/// <summary>
+		/// Smaže objekt, nebo ho oznaèí jako smazaný, podle zvolené logiky. Zmìnu uloží do databáze, bez transakce.
+		/// </summary>
+		/// <remarks>
+		/// Neprovede se, pokud je již objekt smazán.
+		/// </remarks>
+		public virtual void Delete()
+		{
+			Delete(null);
+		}
+
+		/// <summary>
+		/// Implementace metody vymaže objekt z perzistentního uložištì nebo ho oznaèí jako smazaný.
+		/// </summary>
+		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které se smazání provede; null, pokud bez transakce</param>
+		protected abstract void Delete_Perform(DbTransaction transaction);
+		#endregion
+
+		#region Implementaèní metody - EnsureLoaded, CheckChange
+		/// <summary>
+		/// Ovìøí, jestli jsou data objektu naètena z databáze (IsLoaded). Pokud nejsou, provede jejich naètení.
+		/// </summary>
+		/// <remarks>
+		/// Metoda EnsureLoaded se volá pøed každou operací, která potøebuje data objektu. Zajištuje lazy-load.
+		/// </remarks>
+		protected void EnsureLoaded()
+		{
+			if (IsLoaded || IsNew)
+			{
+				return;
+			}
+
+			Load();
+
+			IsLoaded = true;
+		}
+
+		/// <summary>
+		/// Metoda zkontroluje rovnost dvou objektù - jestliže nejsou stejné, je objekt oznaèen jako zmìnìný (IsDirty = true).
+		/// </summary>
+		/// <remarks>
+		/// Metoda se používá zejména v set-accesorech properties, kde hlídá, jestli dochází ke zmìnì,
+		/// kterou bude potøeba uložit.
+		/// </remarks>
+		/// <param name="currentValue">dosavadní hodnota</param>
+		/// <param name="newValue">nová hodnota</param>
+		/// <returns>false, pokud jsou hodnoty stejné; true, pokud dochází ke zmìnì</returns>
+		protected bool CheckChange(object currentValue, object newValue)
+		{
+			if (!Object.Equals(currentValue, newValue))
+			{
+				IsDirty = true;
+				return true;
+			}
+			return false;
+		}
+		#endregion
+
+		#region Equals, GetHashCode, operátory == a != (override)
+		/// <summary>
+		/// Zjistí rovnost druhého objektu s instancí. Základní implementace porovná jejich ID.
+		/// </summary>
+		/// <param name="obj">objekt k porovnání</param>
+		/// <returns>true, pokud jsou si rovny; jinak false</returns>
+		public virtual bool Equals(BusinessObjectBase obj)
+		{
+			if (obj == null)
+			{
+				return false;
+			}
+			if (!Object.Equals(this.ID, obj.ID))
+			{
+				return false;
+			}
+			return true;
+		}
+		
+		/// <summary>
+		/// Zjistí rovnost druhého objektu s instancí. Základní implementace porovná jejich ID.
+		/// </summary>
+		/// <param name="obj">objekt k porovnání</param>
+		/// <returns>true, pokud jsou si rovny; jinak false</returns>
+		public override bool Equals(object obj)
+		{
+			if (obj is BusinessObjectBase)
+			{
+				BusinessObjectBase bob = obj as BusinessObjectBase;
+				return this.Equals(bob);
+			}
+			return false;
+		}
+
+		/// <summary>
+		/// Operátor ==, ovìøuje rovnost ID.
+		/// </summary>
+		/// <param name="objA">první objekt</param>
+		/// <param name="objB">druhý objekt</param>
+		/// <returns>true, pokud mají objekty stejné ID; jinak false</returns>
+		public static bool operator ==(BusinessObjectBase objA, BusinessObjectBase objB)
+		{
+			return Object.Equals(objA, objB);
+		}
+
+		/// <summary>
+		/// Operátor !=, ovìøuje rovnost ID.
+		/// </summary>
+		/// <param name="objA">první objekt</param>
+		/// <param name="objB">druhý objekt</param>
+		/// <returns>false, pokud mají objekty stejné ID; jinak true</returns>
+		public static bool operator !=(BusinessObjectBase objA, BusinessObjectBase objB)
+		{
+			return !Object.Equals(objA, objB);
+		}
+
+		/// <summary>
+		/// Vrací ID jako HashCode.
+		/// </summary>
+		public override int GetHashCode()
+		{
+			return this.ID;
+		}
+		#endregion
+	}
+}

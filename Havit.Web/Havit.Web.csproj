@@ -1,0 +1,174 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{52891FB3-CA20-403B-AC25-7D9CA5738B6B}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>Havit.Web</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Havit.Web</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>Havit.Web.xml</DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Web">
+      <Name>System.Web</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <ProjectReference Include="..\Havit\Havit.csproj">
+      <Name>Havit</Name>
+      <Project>{9ACC94B9-B8FD-47C1-ABF8-0658C7673905}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HttpResponseExt.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HttpServerUtilityExt.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HttpUtilityExt.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\HtmlControls\HtmlFormExt.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\WebControls\ButtonColumnExt.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\WebControls\Collapser.cs" />
+    <Compile Include="UI\WebControls\DataGridExt.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\WebControls\H1.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\WebControls\H2.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\WebControls\H3.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\WebControls\H4.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\WebControls\H5.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\WebControls\H6.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UrlRewriter\BaseModuleRewriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UrlRewriter\Config\RewriterConfigSerializerSectionHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UrlRewriter\Config\RewriterConfiguration.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UrlRewriter\Config\RewriterRule.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UrlRewriter\Config\RewriterRuleCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UrlRewriter\ModuleRewriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UrlRewriter\NamespaceDoc.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UrlRewriter\RewriterFactoryHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UrlRewriter\RewriterUtils.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

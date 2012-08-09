@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Havit.Drawing</name>
+    </assembly>
+    <members>
+        <member name="T:Havit.Drawing.ResizeMode">
+            <summary>
+            Režimy pro ImageExt.Resize()
+            </summary>
+        </member>
+        <member name="F:Havit.Drawing.ResizeMode.PreserveAspectRatioFitBox">
+            <summary>
+            Upraví rozměry obrázku tak, aby se jeho vnější obrys vešel do požadovaných rozměrů. Poměr stran zachová.
+            </summary>
+        </member>
+        <member name="F:Havit.Drawing.ResizeMode.PreserveAspectRatioFitBoxReduceOnly">
+            <summary>
+            Pokud je obrázek větší než požadované rozměry, je redukován tak, aby se jeho vnější rozměr vešel do požadovaného boxu.
+            Poměr stran je zachován. Pokud je obrázek menší, není zvětšen, ale zůstává nezměněn.
+            </summary>
+        </member>
+        <member name="F:Havit.Drawing.ResizeMode.AdjustToBox">
+            <summary>
+            Obrázek se upraví na přesně požadované rozměry. V případě potřeby je natáhnut, nemusí být zachován poměr stran.
+            </summary>
+        </member>
+        <member name="T:Havit.Drawing.BitmapExt">
+            <summary>
+            Třída s metodami pro rychlou práci s obrázky.
+            </summary>
+        </member>
+        <member name="M:Havit.Drawing.BitmapExt.RotateFlip(System.String,System.String,System.Drawing.RotateFlipType)">
+            <summary>
+            Metoda rotuje a/nebo překlápí obrázek.
+            </summary>
+            <param name="sourceFilename">Zdrojový obrázek.</param>
+            <param name="destinationFilename">Cílový obrázek.</param>
+            <param name="rotateFlipType"><see cref="T:System.Drawing.RotateFlipType"/> určující směr otočení a/nebo překlopení.</param>
+        </member>
+        <member name="M:Havit.Drawing.BitmapExt.RotateFlip(System.String,System.Drawing.RotateFlipType)">
+            <summary>
+            Metoda rotuje a/nebo překlápí obrázek.
+            </summary>
+            <remarks>
+            Tato varianta implementace obchází nemožnost zápisu do otevřeného obrázku jeho vykopírováním,
+            uzavřením a uložením. Je proto o malinko pomalejší než vytvoření cílového obrázku do vedlejšího souboru.
+            </remarks>
+            <param name="filename">obrázek</param>
+            <param name="rotateFlipType"><see cref="T:System.Drawing.RotateFlipType"/> určující směr otočení a/nebo překlopení.</param>
+        </member>
+        <member name="M:Havit.Drawing.BitmapExt.Resize(System.String,System.String,System.Int32,System.Int32,Havit.Drawing.ResizeMode,System.Int32)">
+            <summary>
+            Změní rozměry obrázku.
+            </summary>
+            <remarks>
+            Jako vedlejší efekt lze změnit i formát obrázku, pokud zvolíme jinou cílovou příponu.
+            </remarks>
+            <param name="sourceFilename">zdrojový obrázek (název souboru včetně cesty)</param>
+            <param name="destinationFilename">cílový obrázek (název souboru včetně cesty)</param>
+            <param name="width">cílová šířka</param>
+            <param name="height">cílová výška</param>
+            <param name="resizeMode"><see cref="T:Havit.Drawing.ResizeMode"/> možnost určující režim</param>
+            <param name="quality">kvalita převodu a výsledného obrázku 0-100</param>
+            <returns><see cref="T:System.Drawing.Size"/> s rozměry výsledného obrázku</returns>
+        </member>
+        <member name="M:Havit.Drawing.BitmapExt.Resize(System.String,System.Int32,System.Int32,Havit.Drawing.ResizeMode,System.Int32)">
+            <summary>
+            Změní rozměry obrázku.
+            </summary>
+            <remarks>
+            Jako vedlejší efekt lze změnit i formát obrázku, pokud zvolíme jinou cílovou příponu.
+            </remarks>
+            <param name="filename">obrázek (název souboru včetně cesty)</param>
+            <param name="width">cílová šířka</param>
+            <param name="height">cílová výška</param>
+            <param name="resizeMode"><see cref="T:Havit.Drawing.ResizeMode"/> možnost určující režim</param>
+            <param name="quality">kvalita převodu a výsledného obrázku 0-100</param>
+            <returns><see cref="T:System.Drawing.Size"/> s rozměry výsledného obrázku</returns>
+        </member>
+        <member name="M:Havit.Drawing.BitmapExt.Resize(System.String,System.String,System.Int32,System.Int32,Havit.Drawing.ResizeMode)">
+            <summary>
+            Změní rozměry obrázku.
+            Pozor, používá default-quality 75.
+            </summary>
+            <param name="sourceFilename">zdrojový obrázek (název souboru včetně cesty)</param>
+            <param name="destinationFilename">cílový obrázek (název souboru včetně cesty)</param>
+            <param name="width">cílová šířka</param>
+            <param name="height">cílová výška</param>
+            <param name="resizeMode"><see cref="T:Havit.Drawing.ResizeMode"/> možnost určující režim</param>
+            <returns><see cref="T:System.Drawing.Size"/> s rozměry výsledného obrázku</returns>
+        </member>
+        <member name="M:Havit.Drawing.BitmapExt.Resize(System.String,System.Int32,System.Int32,Havit.Drawing.ResizeMode)">
+            <summary>
+            Změní rozměry obrázku.
+            Pozor, používá default-quality 75.
+            </summary>
+            <param name="filename">obrázek (název souboru včetně cesty)</param>
+            <param name="width">cílová šířka</param>
+            <param name="height">cílová výška</param>
+            <param name="resizeMode"><see cref="T:Havit.Drawing.ResizeMode"/> možnost určující režim</param>
+            <returns><see cref="T:System.Drawing.Size"/> s rozměry výsledného obrázku</returns>
+        </member>
+    </members>
+</doc>

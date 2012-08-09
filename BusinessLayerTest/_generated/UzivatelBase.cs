@@ -95,6 +95,9 @@ namespace Havit.BusinessLayerTest
 				}
 			}
 		}
+		/// <summary>
+		/// PropertyHolder pro vlastnost Username.
+		/// </summary>
 		protected PropertyHolder<string> _UsernamePropertyHolder;
 		
 		/// <summary>
@@ -120,6 +123,9 @@ namespace Havit.BusinessLayerTest
 				}
 			}
 		}
+		/// <summary>
+		/// PropertyHolder pro vlastnost Password.
+		/// </summary>
 		protected PropertyHolder<string> _PasswordPropertyHolder;
 		
 		/// <summary>
@@ -145,6 +151,9 @@ namespace Havit.BusinessLayerTest
 				}
 			}
 		}
+		/// <summary>
+		/// PropertyHolder pro vlastnost DisplayAs.
+		/// </summary>
 		protected PropertyHolder<string> _DisplayAsPropertyHolder;
 		
 		/// <summary>
@@ -170,6 +179,9 @@ namespace Havit.BusinessLayerTest
 				}
 			}
 		}
+		/// <summary>
+		/// PropertyHolder pro vlastnost Email.
+		/// </summary>
 		protected PropertyHolder<string> _EmailPropertyHolder;
 		
 		/// <summary>
@@ -188,6 +200,9 @@ namespace Havit.BusinessLayerTest
 				_DisabledPropertyHolder.Value = value;
 			}
 		}
+		/// <summary>
+		/// PropertyHolder pro vlastnost Disabled.
+		/// </summary>
 		protected PropertyHolder<bool> _DisabledPropertyHolder;
 		
 		/// <summary>
@@ -207,6 +222,9 @@ namespace Havit.BusinessLayerTest
 				_LockedTimePropertyHolder.Value = value;
 			}
 		}
+		/// <summary>
+		/// PropertyHolder pro vlastnost LockedTime.
+		/// </summary>
 		protected PropertyHolder<DateTime?> _LockedTimePropertyHolder;
 		
 		/// <summary>
@@ -225,6 +243,9 @@ namespace Havit.BusinessLayerTest
 				_LoginLastPropertyHolder.Value = value;
 			}
 		}
+		/// <summary>
+		/// PropertyHolder pro vlastnost LoginLast.
+		/// </summary>
 		protected PropertyHolder<DateTime?> _LoginLastPropertyHolder;
 		
 		/// <summary>
@@ -243,6 +264,9 @@ namespace Havit.BusinessLayerTest
 				_LoginCountPropertyHolder.Value = value;
 			}
 		}
+		/// <summary>
+		/// PropertyHolder pro vlastnost LoginCount.
+		/// </summary>
 		protected PropertyHolder<int> _LoginCountPropertyHolder;
 		
 		/// <summary>
@@ -256,6 +280,9 @@ namespace Havit.BusinessLayerTest
 				return _CreatedPropertyHolder.Value;
 			}
 		}
+		/// <summary>
+		/// PropertyHolder pro vlastnost Created.
+		/// </summary>
 		protected PropertyHolder<DateTime> _CreatedPropertyHolder;
 		
 		/// <summary>
@@ -274,6 +301,9 @@ namespace Havit.BusinessLayerTest
 				_DeletedPropertyHolder.Value = value;
 			}
 		}
+		/// <summary>
+		/// PropertyHolder pro vlastnost Deleted.
+		/// </summary>
 		protected PropertyHolder<bool> _DeletedPropertyHolder;
 		
 		public virtual Havit.BusinessLayerTest.RoleCollection Role
@@ -284,6 +314,9 @@ namespace Havit.BusinessLayerTest
 				return _RolePropertyHolder.Value;
 			}
 		}
+		/// <summary>
+		/// PropertyHolder pro vlastnost Role.
+		/// </summary>
 		protected CollectionPropertyHolder<Havit.BusinessLayerTest.RoleCollection, Havit.BusinessLayerTest.Role> _RolePropertyHolder;
 		
 		#endregion
@@ -316,6 +349,7 @@ namespace Havit.BusinessLayerTest
 				_LockedTimePropertyHolder.Value = null;
 				_LoginLastPropertyHolder.Value = null;
 				_LoginCountPropertyHolder.Value = 0;
+				_CreatedPropertyHolder.Value = System.DateTime.Now;
 				_DeletedPropertyHolder.Value = false;
 				_RolePropertyHolder.Initialize();
 			}
@@ -912,6 +946,10 @@ namespace Havit.BusinessLayerTest
 			return Uzivatel.GetFirst(queryParams, null);
 		}
 		
+		/// <summary>
+		/// Vrátí první nalezený objekt typu Uzivatel dle parametrů v queryParams.
+		/// Pokud není žádný objekt nalezen, vrací null. Data jsou načítána v předané transakci.
+		/// </summary>
 		public static Uzivatel GetFirst(QueryParams queryParams, DbTransaction transaction)
 		{
 			queryParams.TopRecords = 1;
@@ -927,6 +965,9 @@ namespace Havit.BusinessLayerTest
 			return Uzivatel.GetList(queryParams, null);
 		}
 		
+		/// <summary>
+		/// Vrátí objekty typu Uzivatel dle parametrů v queryParams. Data jsou načítána v předané transakci.
+		/// </summary>
 		public static UzivatelCollection GetList(QueryParams queryParams, DbTransaction transaction)
 		{
 			SqlCommand sqlCommand = new SqlCommand();
@@ -963,11 +1004,17 @@ namespace Havit.BusinessLayerTest
 			return result;
 		}
 		
+		/// <summary>
+		/// Vrátí všechny (příznakem) nesmazané objekty typu Uzivatel.
+		/// </summary>
 		public static UzivatelCollection GetAll()
 		{
 			return Uzivatel.GetAll(false);
 		}
 		
+		/// <summary>
+		/// Vrátí všechny objekty typu Uzivatel. Parametr udává, zda se mají vrátit i (příznakem) smazané záznamy.
+		/// </summary>
 		public static UzivatelCollection GetAll(bool includeDeleted)
 		{
 			UzivatelCollection collection = null;
@@ -980,6 +1027,9 @@ namespace Havit.BusinessLayerTest
 		#endregion
 		
 		#region ObjectInfo
+		/// <summary>
+		/// Objektová reprezentace metadat typu Uzivatel.
+		/// </summary>
 		public static ObjectInfo ObjectInfo
 		{
 			get
@@ -992,7 +1042,7 @@ namespace Havit.BusinessLayerTest
 		
 		#region Properties
 		/// <summary>
-		/// Objektová reprezentace vlastností třídy Uzivatel.
+		/// Objektová reprezentace metadat vlastností typu Uzivatel.
 		/// </summary>
 		public static UzivatelProperties Properties
 		{

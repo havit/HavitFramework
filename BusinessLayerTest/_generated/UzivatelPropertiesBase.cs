@@ -26,8 +26,14 @@ using Havit.Business.Query;
 
 namespace Havit.BusinessLayerTest
 {
+	/// <summary>
+	/// Objektová reprezentace metadat vlastností typu Uzivatel.
+	/// </summary>
 	public class UzivatelPropertiesBase
 	{
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
 		public UzivatelPropertiesBase()
 		{
 			_id = new FieldPropertyInfo();
@@ -45,6 +51,9 @@ namespace Havit.BusinessLayerTest
 			_all = new PropertyInfoCollection(_id, _username, _password, _displayAs, _email, _disabled, _lockedTime, _loginLast, _loginCount, _created, _deleted, _role);
 		}
 		
+		/// <summary>
+		/// Inicializuje hodnoty metadat.
+		/// </summary>
 		public void Initialize(ObjectInfo objectInfo)
 		{
 			_id.Initialize(objectInfo, "ID", "UzivatelID", true, SqlDbType.Int, false, 4);
@@ -61,6 +70,9 @@ namespace Havit.BusinessLayerTest
 			_role.Initialize(objectInfo, "Role", typeof(Havit.BusinessLayerTest.Role), "(SELECT dbo.IntArrayAggregate(_items.RoleID) FROM dbo.Uzivatel_Role AS _items WHERE (_items.UzivatelID = dbo.Uzivatel.UzivatelID)) AS Role");
 		}
 		
+		/// <summary>
+		/// Identifikátor objektu.
+		/// </summary>
 		public FieldPropertyInfo ID
 		{
 			get
@@ -200,6 +212,9 @@ namespace Havit.BusinessLayerTest
 		}
 		private CollectionPropertyInfo _role;
 		
+		/// <summary>
+		/// Všechny sloupečky typu Uzivatel.
+		/// </summary>
 		public PropertyInfoCollection All
 		{
 			get

@@ -32,5 +32,21 @@ namespace Havit.BusinessLayerTest
 		// </auto-generated>
 		//------------------------------------------------------------------------------
 		
+		#region Constructors
+		/// <summary>
+		/// Vytvoří novou instanci kolekce.
+		/// </summary>
+		public RoleCollection() : base()
+		{
+		}
+		
+		/// <summary>
+		/// Vytvoří novou instanci kolekce a zkopíruje do ní prvky z předané kolekce.
+		/// </summary>
+		public RoleCollection(IEnumerable<Role> collection) : base(collection)
+		{
+		}
+		#endregion
+		
 	}
 }

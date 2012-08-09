@@ -39,6 +39,22 @@ namespace Havit.BusinessLayerTest
 		// </auto-generated>
 		//------------------------------------------------------------------------------
 		
+		#region Constructors
+		/// <summary>
+		/// Vytvoří novou instanci kolekce.
+		/// </summary>
+		public UzivatelCollectionBase() : base()
+		{
+		}
+		
+		/// <summary>
+		/// Vytvoří novou instanci kolekce a zkopíruje do ní prvky z předané kolekce.
+		/// </summary>
+		public UzivatelCollectionBase(IEnumerable<Uzivatel> collection) : base(collection)
+		{
+		}
+		#endregion
+		
 		#region Find & FindAll
 		/// <summary>
 		/// Prohledá kolekci a vrátí první nalezený prvek odpovídající kritériu match.

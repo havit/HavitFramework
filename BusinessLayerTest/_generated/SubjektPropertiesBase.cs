@@ -26,8 +26,14 @@ using Havit.Business.Query;
 
 namespace Havit.BusinessLayerTest
 {
+	/// <summary>
+	/// Objektová reprezentace metadat vlastností typu Subjekt.
+	/// </summary>
 	public class SubjektPropertiesBase
 	{
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
 		public SubjektPropertiesBase()
 		{
 			_id = new FieldPropertyInfo();
@@ -38,6 +44,9 @@ namespace Havit.BusinessLayerTest
 			_all = new PropertyInfoCollection(_id, _nazev, _uzivatel, _created, _deleted);
 		}
 		
+		/// <summary>
+		/// Inicializuje hodnoty metadat.
+		/// </summary>
 		public void Initialize(ObjectInfo objectInfo)
 		{
 			_id.Initialize(objectInfo, "ID", "SubjektID", true, SqlDbType.Int, false, 4);
@@ -47,6 +56,9 @@ namespace Havit.BusinessLayerTest
 			_deleted.Initialize(objectInfo, "Deleted", "Deleted", false, SqlDbType.SmallDateTime, true, 4);
 		}
 		
+		/// <summary>
+		/// Identifikátor objektu.
+		/// </summary>
 		public FieldPropertyInfo ID
 		{
 			get
@@ -104,6 +116,9 @@ namespace Havit.BusinessLayerTest
 		}
 		private FieldPropertyInfo _deleted;
 		
+		/// <summary>
+		/// Všechny sloupečky typu Subjekt.
+		/// </summary>
 		public PropertyInfoCollection All
 		{
 			get

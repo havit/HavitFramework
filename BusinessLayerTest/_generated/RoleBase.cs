@@ -75,6 +75,9 @@ namespace Havit.BusinessLayerTest
 				return _SymbolPropertyHolder.Value;
 			}
 		}
+		/// <summary>
+		/// PropertyHolder pro vlastnost Symbol.
+		/// </summary>
 		protected PropertyHolder<string> _SymbolPropertyHolder;
 		
 		#endregion
@@ -254,6 +257,10 @@ namespace Havit.BusinessLayerTest
 			return Role.GetFirst(queryParams, null);
 		}
 		
+		/// <summary>
+		/// Vrátí první nalezený objekt typu Role dle parametrů v queryParams.
+		/// Pokud není žádný objekt nalezen, vrací null. Data jsou načítána v předané transakci.
+		/// </summary>
 		public static Role GetFirst(QueryParams queryParams, DbTransaction transaction)
 		{
 			queryParams.TopRecords = 1;
@@ -269,6 +276,9 @@ namespace Havit.BusinessLayerTest
 			return Role.GetList(queryParams, null);
 		}
 		
+		/// <summary>
+		/// Vrátí objekty typu Role dle parametrů v queryParams. Data jsou načítána v předané transakci.
+		/// </summary>
 		public static RoleCollection GetList(QueryParams queryParams, DbTransaction transaction)
 		{
 			SqlCommand sqlCommand = new SqlCommand();
@@ -305,8 +315,11 @@ namespace Havit.BusinessLayerTest
 			return result;
 		}
 		
-		public static object lockGetAllCacheAccess = new object();
+		private static object lockGetAllCacheAccess = new object();
 		
+		/// <summary>
+		/// Vrátí všechny objekty typu Role.
+		/// </summary>
 		public static RoleCollection GetAll()
 		{
 			RoleCollection collection = null;
@@ -343,6 +356,9 @@ namespace Havit.BusinessLayerTest
 		#endregion
 		
 		#region ObjectInfo
+		/// <summary>
+		/// Objektová reprezentace metadat typu Role.
+		/// </summary>
 		public static ObjectInfo ObjectInfo
 		{
 			get
@@ -355,7 +371,7 @@ namespace Havit.BusinessLayerTest
 		
 		#region Properties
 		/// <summary>
-		/// Objektová reprezentace vlastností třídy Role.
+		/// Objektová reprezentace metadat vlastností typu Role.
 		/// </summary>
 		public static RoleProperties Properties
 		{

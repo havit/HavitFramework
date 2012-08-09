@@ -84,7 +84,6 @@ namespace Havit.Business
 		#endregion
 
 		#region Load logika
-
 		/// <summary>
 		/// Nastaví objektu hodnoty z DataRecordu.
 		/// Pokud je objekt již naèten, vyhodí výjimku.
@@ -92,6 +91,11 @@ namespace Havit.Business
 		/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu naètenými z databáze.</param>
 		public void Load(DataRecord record)
 		{
+			if (record == null)
+			{
+				throw new ArgumentNullException("record");
+			}
+
 			if (this.IsLoaded)
 			{
 				throw new InvalidOperationException("Nelze nastavit objektu hodnoty z DataRecordu, pokud objekt není ghostem.");
@@ -115,6 +119,12 @@ namespace Havit.Business
 		protected override void Load_Perform(DbTransaction transaction)
 		{
 			DataRecord record = Load_GetDataRecord(transaction);
+
+			if (record == null)
+			{
+				throw new InvalidOperationException(String.Format("Pro objekt ID={0} se nepodaøilo získat data z databáze.", this.ID));
+			}
+
 			Load_ParseDataRecord(record);
 		}
 		/// <summary>

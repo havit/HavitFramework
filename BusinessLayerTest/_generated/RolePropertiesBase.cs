@@ -26,8 +26,14 @@ using Havit.Business.Query;
 
 namespace Havit.BusinessLayerTest
 {
+	/// <summary>
+	/// Objektová reprezentace metadat vlastností typu Role.
+	/// </summary>
 	public class RolePropertiesBase
 	{
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
 		public RolePropertiesBase()
 		{
 			_id = new FieldPropertyInfo();
@@ -35,12 +41,18 @@ namespace Havit.BusinessLayerTest
 			_all = new PropertyInfoCollection(_id, _symbol);
 		}
 		
+		/// <summary>
+		/// Inicializuje hodnoty metadat.
+		/// </summary>
 		public void Initialize(ObjectInfo objectInfo)
 		{
 			_id.Initialize(objectInfo, "ID", "RoleID", true, SqlDbType.Int, false, 4);
 			_symbol.Initialize(objectInfo, "Symbol", "Symbol", false, SqlDbType.VarChar, true, 50);
 		}
 		
+		/// <summary>
+		/// Identifikátor objektu.
+		/// </summary>
 		public FieldPropertyInfo ID
 		{
 			get
@@ -62,6 +74,9 @@ namespace Havit.BusinessLayerTest
 		}
 		private FieldPropertyInfo _symbol;
 		
+		/// <summary>
+		/// Všechny sloupečky typu Role.
+		/// </summary>
 		public PropertyInfoCollection All
 		{
 			get

@@ -95,6 +95,9 @@ namespace Havit.BusinessLayerTest
 				}
 			}
 		}
+		/// <summary>
+		/// PropertyHolder pro vlastnost Nazev.
+		/// </summary>
 		protected PropertyHolder<string> _NazevPropertyHolder;
 		
 		/// <summary>
@@ -113,6 +116,9 @@ namespace Havit.BusinessLayerTest
 				_UzivatelPropertyHolder.Value = value;
 			}
 		}
+		/// <summary>
+		/// PropertyHolder pro vlastnost Uzivatel.
+		/// </summary>
 		protected PropertyHolder<Havit.BusinessLayerTest.Uzivatel> _UzivatelPropertyHolder;
 		
 		/// <summary>
@@ -126,6 +132,9 @@ namespace Havit.BusinessLayerTest
 				return _CreatedPropertyHolder.Value;
 			}
 		}
+		/// <summary>
+		/// PropertyHolder pro vlastnost Created.
+		/// </summary>
 		protected PropertyHolder<DateTime> _CreatedPropertyHolder;
 		
 		/// <summary>
@@ -144,6 +153,9 @@ namespace Havit.BusinessLayerTest
 				_DeletedPropertyHolder.Value = value;
 			}
 		}
+		/// <summary>
+		/// PropertyHolder pro vlastnost Deleted.
+		/// </summary>
 		protected PropertyHolder<DateTime?> _DeletedPropertyHolder;
 		
 		#endregion
@@ -163,6 +175,7 @@ namespace Havit.BusinessLayerTest
 			{
 				_NazevPropertyHolder.Value = String.Empty;
 				_UzivatelPropertyHolder.Value = null;
+				_CreatedPropertyHolder.Value = System.DateTime.Now;
 				_DeletedPropertyHolder.Value = null;
 			}
 		}
@@ -459,7 +472,7 @@ namespace Havit.BusinessLayerTest
 				throw new InvalidOperationException("Nelze smazat nový objekt.");
 			}
 			
-			Deleted = DateTime.Now;
+			Deleted = System.DateTime.Now;
 			Save(transaction);
 		}
 		
@@ -475,6 +488,10 @@ namespace Havit.BusinessLayerTest
 			return Subjekt.GetFirst(queryParams, null);
 		}
 		
+		/// <summary>
+		/// Vrátí první nalezený objekt typu Subjekt dle parametrů v queryParams.
+		/// Pokud není žádný objekt nalezen, vrací null. Data jsou načítána v předané transakci.
+		/// </summary>
 		public static Subjekt GetFirst(QueryParams queryParams, DbTransaction transaction)
 		{
 			queryParams.TopRecords = 1;
@@ -490,6 +507,9 @@ namespace Havit.BusinessLayerTest
 			return Subjekt.GetList(queryParams, null);
 		}
 		
+		/// <summary>
+		/// Vrátí objekty typu Subjekt dle parametrů v queryParams. Data jsou načítána v předané transakci.
+		/// </summary>
 		public static SubjektCollection GetList(QueryParams queryParams, DbTransaction transaction)
 		{
 			SqlCommand sqlCommand = new SqlCommand();
@@ -526,11 +546,17 @@ namespace Havit.BusinessLayerTest
 			return result;
 		}
 		
+		/// <summary>
+		/// Vrátí všechny (příznakem) nesmazané objekty typu Subjekt.
+		/// </summary>
 		public static SubjektCollection GetAll()
 		{
 			return Subjekt.GetAll(false);
 		}
 		
+		/// <summary>
+		/// Vrátí všechny objekty typu Subjekt. Parametr udává, zda se mají vrátit i (příznakem) smazané záznamy.
+		/// </summary>
 		public static SubjektCollection GetAll(bool includeDeleted)
 		{
 			SubjektCollection collection = null;
@@ -543,6 +569,9 @@ namespace Havit.BusinessLayerTest
 		#endregion
 		
 		#region ObjectInfo
+		/// <summary>
+		/// Objektová reprezentace metadat typu Subjekt.
+		/// </summary>
 		public static ObjectInfo ObjectInfo
 		{
 			get
@@ -555,7 +584,7 @@ namespace Havit.BusinessLayerTest
 		
 		#region Properties
 		/// <summary>
-		/// Objektová reprezentace vlastností třídy Subjekt.
+		/// Objektová reprezentace metadat vlastností typu Subjekt.
 		/// </summary>
 		public static SubjektProperties Properties
 		{

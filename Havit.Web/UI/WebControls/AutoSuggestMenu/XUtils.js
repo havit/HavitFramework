@@ -272,12 +272,6 @@ function TRACE(sText)
 }
 
 
-function $(elementID)
-{ 
-    return document.getElementById(elementID); 
-}
-
-
 //===========================
 //Text Formatting 
 //===========================
@@ -454,8 +448,8 @@ XUtils.copyDDLValue=function(fromID, toID)
 {
     //alert("CopyDDL: " + fromID + ", " + toID);
     
-    ddlFrom=$(fromID);
-    ddlTo=$(toID);
+    ddlFrom=document.getElementById(fromID);
+    ddlTo = document.getElementById(toID);
      
     selValue=XUtils.getSelectedOptionValue(ddlFrom);
 
@@ -465,7 +459,7 @@ XUtils.copyDDLValue=function(fromID, toID)
 
 XUtils.copyTextBoxValue=function (fromTextBoxID, toTextBoxID)
 {
-    $(toTextBoxID).value=$(fromTextBoxID).value;
+	document.getElementById(toTextBoxID).value = document.getElementById(fromTextBoxID).value;
 }
 
 
@@ -478,7 +472,7 @@ XUtils.checkAll=function(ctrlID, checked)
     while (true)
     {
         checkBoxID=ctrlID + "_" + count;
-        checkBox=$(checkBoxID);
+        checkBox = document.getElementById(checkBoxID);
         
         if (checkBox==null)
             break;

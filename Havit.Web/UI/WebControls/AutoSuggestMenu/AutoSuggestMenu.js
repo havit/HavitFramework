@@ -1032,7 +1032,7 @@ AutoSuggestMenu.getMenu = function(menuID)
 // JK: Doplnìno
 AutoSuggestMenu.getMenuForElement = function(elementID)
 {
-	var element=$(elementID);
+	var element=document.getElementById(elementID);
     
     if (element==null)
         throw "Element (ID: '" + element + "') doesn't exist";

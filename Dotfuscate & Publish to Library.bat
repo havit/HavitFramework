@@ -38,7 +38,8 @@ rem Copy to Library
 rem ****************************************************************************************************
 
 xcopy /y Dotfuscated\*.* \\dev\Library\Framework\
-xcopy /y References\System.Web.Extensions.dll \\dev\Library\Framework\
+rem System.Web.Extensions uz nekopirujeme do library frameworku, je k dispozici v library ajaxu
+rem xcopy /y References\System.Web.Extensions.dll \\dev\Library\Framework\
 xcopy /y "doc\HAVIT .NET Framework.chm" \\dev\Library\Documentation\
 
 xcopy /y Scripts\*.js \\dev\Library\Scripts\

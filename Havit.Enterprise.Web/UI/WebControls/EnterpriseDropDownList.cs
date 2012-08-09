@@ -145,12 +145,14 @@ namespace Havit.Web.UI.WebControls
 				if (isDataBinding)
 				{
 					// pokud jsme v databindingu, odložíme nastavení hodnoty, protože ještì nemusíme mít DataSource ani data v Items.
+					delayedSetSelectedObjectSet = true;
 					delayedSetSelectedObject = value;
 					return;
 				}
 
 				if (value == null)
 				{
+					EnsureAutoDataBind(); // jinak následný databinding zlikviduje vybranou hodnotu
 					// pokud nastavujeme null, zajistime, aby existoval prazdny radek a vybereme jej
 					EnsureEmptyItem();
 					SelectedIndex = 0;
@@ -203,9 +205,10 @@ namespace Havit.Web.UI.WebControls
 			base.DataBind();
 			isDataBinding = false;
 
-			if (delayedSetSelectedObject != null)
+			if (delayedSetSelectedObjectSet)
 			{
 				SelectedObject = delayedSetSelectedObject;
+				delayedSetSelectedObjectSet = false;
 				delayedSetSelectedObject = null;
 			}
 		}
@@ -229,11 +232,25 @@ namespace Havit.Web.UI.WebControls
 		bool isDataBinding = false;
 
 		/// <summary>
+		/// Objekt, který má být nastaven jako vybraný, ale jeho nastavení bylo odloženo.
+		/// </summary>
+		/// <remarks>
 		/// Pokud nastavujeme SelectedObject bìhem DataBindingu (ve stránce pomocí &lt;%# ... %&gt;),
 		/// odloží se nastavení hodnoty až na konec DataBindingu. To protože v okamžiku nastavování SelectedObject 
 		/// nemusí být v Items ještì data.
-		/// </summary>
+		/// </remarks>
 		BusinessObjectBase delayedSetSelectedObject = null;
+
+		/// <summary>
+		/// Udává, zda máme nastaven objekt pro odložené nastavení vybraného objektu.
+		/// </summary>
+		/// <remarks>
+		/// Pokud nastavujeme SelectedObject bìhem DataBindingu (ve stránce pomocí &lt;%# ... %&gt;),
+		/// odloží se nastavení hodnoty až na konec DataBindingu. To protože v okamžiku nastavování SelectedObject 
+		/// nemusí být v Items ještì data. 
+		/// </remarks>
+
+		bool delayedSetSelectedObjectSet = false;
 
 		#endregion
 
@@ -256,7 +273,9 @@ namespace Havit.Web.UI.WebControls
 		protected void DataBindAll()
 		{
 			if (itemObjectInfo == null)
+			{
 				throw new InvalidOperationException("Není nastavena vlastnost ItemObjectInfo.");
+			}
 
 			PerformDataBinding(itemObjectInfo.GetAllMethod());
 		}
@@ -281,6 +300,7 @@ namespace Havit.Web.UI.WebControls
 				EnsureEmptyItem();
 			}
 			DataBindPerformed = true;
+
 		}
 
 		/// <summary>
@@ -289,7 +309,9 @@ namespace Havit.Web.UI.WebControls
 		public void EnsureEmptyItem()
 		{
 			if ((Items.Count == 0) || (Items[0].Value != String.Empty))
+			{
 				Items.Insert(0, new ListItem(NullableText, String.Empty));
+			}
 		}
 		#endregion
 	}

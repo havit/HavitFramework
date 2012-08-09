@@ -25,6 +25,7 @@
         <namespaceSummaryItem name="Havit.Web" isDocumented="True" />
         <namespaceSummaryItem name="Havit.Web.Compilation" isDocumented="True" />
         <namespaceSummaryItem name="Havit.Web.Security" isDocumented="True" />
+        <namespaceSummaryItem name="Havit.Web.UI" isDocumented="True" />
         <namespaceSummaryItem name="Havit.Web.UI.HtmlControls" isDocumented="True" />
         <namespaceSummaryItem name="Havit.Web.UI.Scriptlets" isDocumented="True" />
         <namespaceSummaryItem name="Havit.Web.UI.WebControls" isDocumented="True" />
@@ -60,11 +61,11 @@
     <copyrightText>HAVIT, s.r.o., All rights reserved.</copyrightText>
     <feedbackEMailAddress>info@havit.cz</feedbackEMailAddress>
     <headerText>HAVIT .NET Framework</headerText>
-    <projectLinks>Index</projectLinks>
-    <sdkLinks>Index</sdkLinks>
-    <presentationStyle>Prototype</presentationStyle>
+    <projectLinks>Local</projectLinks>
+    <sdkLinks>Msdn</sdkLinks>
+    <presentationStyle>VS2005</presentationStyle>
     <namingMethod>Guid</namingMethod>
     <syntaxFilters>CSharp</syntaxFilters>
-    <missingTags>Summary, Parameter, Returns, AutoDocumentCtors</missingTags>
+    <missingTags>None</missingTags>
     <visibleItems>InheritedMembers, InheritedFrameworkMembers, Protected, SealedProtected</visibleItems>
 </project>

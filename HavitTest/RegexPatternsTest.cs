@@ -21,13 +21,13 @@ namespace HavitTest
 			Assert.IsTrue(IsEmailAddressValid("k.a.n.d.a@h.a.v.i.t.cz"), "k.a.n.d.a@h.a.v.i.t.cz");
 			Assert.IsTrue(IsEmailAddressValid("a@b.cz"), "a@b.cz");
 			Assert.IsTrue(IsEmailAddressValid("a@b.info"), "a@b.info");
+			Assert.IsTrue(IsEmailAddressValid("o'realy@havit.cz"), "o'realy@havit.cz");
 
 			Assert.IsFalse(IsEmailAddressValid("@havit.cz"), "@havit.cz");
 			Assert.IsFalse(IsEmailAddressValid("kanda@"), "kanda@");
 			Assert.IsFalse(IsEmailAddressValid("kanda@havit"), "kanda@havit");
 			Assert.IsFalse(IsEmailAddressValid("kanda@havit..cz"), "kanda@havit..cz");
 			Assert.IsFalse(IsEmailAddressValid("kanda@ha..vit.cz"), "kanda@ha..vit.cz");
-			Assert.IsFalse(IsEmailAddressValid("o'realy@havit.cz"), "o'realy@havit.cz");
 			Assert.IsFalse(IsEmailAddressValid("k..anda@havit.cz"), "k..anda@havit.cz");
 		}
 

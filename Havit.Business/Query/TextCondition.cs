@@ -96,7 +96,7 @@ namespace Havit.Business.Query
 		}
 		#endregion
 
-		#region CreateIsNullOrEmpty, CreateIsNotNullNorEmpty
+		#region CreateIsNullOrEmpty, CreateIsNotNullOrEmpty
 		/// <summary>
 		/// Vytvoøí podmínku testující øetìzec na prázdnou hodnotu - null nebo empty.
 		/// </summary>
@@ -111,7 +111,7 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Vytvoøí podmínku testující øetìzec na ne prázdnou hodnotu - ani null ani empty.
 		/// </summary>
-		public static Condition CreateIsNotNullNorEmpty(IOperand operand)
+		public static Condition CreateIsNotNullOrEmpty(IOperand operand)
 		{
 			return AndCondition.Create(
 				NullCondition.CreateIsNotNull(operand),

@@ -256,12 +256,8 @@ function AutoSuggestMenu()
 
 	    if (XUtils.isIE())
 	    {
-	        //Send cursor to the end of the textBox
-            var value = textBox.value;
-            var textRange = textBox.createTextRange();
-            
-            textRange.moveStart('character', value.length);
-            textRange.select();
+	    	//Vybereme vše
+			textBox.createTextRange().select();
 	    }	
 	    
 	    textBox.focus();
@@ -969,6 +965,15 @@ function AutoSuggestMenu()
 		// (v dobì tìchto úprav aplikace používají stejnì pojmenované hodnoty na stejných elementech).
 		hiddenFieldElement.lastValueExtra = hiddenFieldElement.value;
 		hiddenFieldElement.focusedExtra = true;
+
+		// vybereme v textboxu vše
+		// pøedpokládáme, že v textboxu je buï vybraná hodnota, nebo nic (øeší nové ASM + vlastní øešení pomocí JS ve starších aplikacích)
+		var textBoxElement = getTextBoxCtrl();
+		if ((textBoxElement != null) && textBoxElement.createTextRange)
+		{
+			var textRange = textBoxElement.createTextRange().select();
+		}
+
 	}
 	
 }

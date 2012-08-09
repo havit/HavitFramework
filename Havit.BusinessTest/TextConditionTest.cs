@@ -34,20 +34,20 @@ namespace Havit.BusinessTest
 		}
 
 		[TestMethod]
-		public void CreateIsNotNullNorEmptyTest()
+		public void CreateIsNotNullOrEmptyTest()
 		{
 			QueryParams qp;
 
 			qp = new QueryParams();
-			qp.Conditions.Add(TextCondition.CreateIsNotNullNorEmpty(ValueOperand.Create("")));
+			qp.Conditions.Add(TextCondition.CreateIsNotNullOrEmpty(ValueOperand.Create("")));
 			Assert.IsTrue(Role.GetList(qp).Count == 0);
 
 			qp = new QueryParams();
-			qp.Conditions.Add(TextCondition.CreateIsNotNullNorEmpty(ValueOperand.Create((string)null)));
+			qp.Conditions.Add(TextCondition.CreateIsNotNullOrEmpty(ValueOperand.Create((string)null)));
 			Assert.IsTrue(Role.GetList(qp).Count == 0);
 
 			qp = new QueryParams();
-			qp.Conditions.Add(TextCondition.CreateIsNotNullNorEmpty(ValueOperand.Create("aaa")));
+			qp.Conditions.Add(TextCondition.CreateIsNotNullOrEmpty(ValueOperand.Create("aaa")));
 			Assert.IsTrue(Role.GetList(qp).Count > 0);
 
 		}

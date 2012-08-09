@@ -429,7 +429,7 @@ namespace Havit.Web.UI.WebControls
 	
             writer.WriteLine("menu.cssClass=\"" + this.CssClass + "\";");
 
-			string jsMessageOnClearText = HttpUtilityExt.GetResourceString((_messageOnClearText ?? String.Empty)).Replace("\"", "\\\"");
+			string jsMessageOnClearText = (HttpUtilityExt.GetResourceString((_messageOnClearText ?? String.Empty)) ?? String.Empty).Replace("\"", "\\\"");
 			writer.WriteLine("menu.messageOnClearText=\"" + jsMessageOnClearText + "\";");
 			
 			writer.WriteLine("menu.menuItemCssClass=\"" + _menuItemCssClass + "\";");

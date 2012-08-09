@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.50727</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F71BDA61-8039-4E17-B4B8-0B8B553B89DC}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -35,6 +35,8 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -48,6 +50,7 @@
     <Compile Include="IdentityMapTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReferenceConditionTest.cs" />
+    <Compile Include="StringExtTest.cs" />
     <Compile Include="TestingBusinessObject.cs" />
   </ItemGroup>
   <ItemGroup>

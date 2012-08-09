@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace Havit
 {
@@ -111,6 +112,29 @@ namespace Havit
 			}
 			return (char) ((ushort) ((cislice - 10) + 0x61));
 		}
+		#endregion
+
+		#region NormalizeForUrl
+		/// <summary>
+		/// Normalizuje textový øetìzec do podoby použitelné v URL adrese (pro SEO).
+		/// 1) Pøevede na malá písmena.
+		/// 2) Odebere diakritiku.
+		/// 3) vše mimo písmen a èíslic nahradí za pomlèku (vèetnì whitespace). 
+		/// 4) potom vícenásobné pomlèky slouèí v jednu. 
+		/// 5) odebere pøípadné pomèky na zaèátku a konci øetìzce. 
+		/// </summary>
+		/// <param name="text">vstupní text</param>
+		/// <returns>normalizovaný text pro URL (SEO)</returns>
+		public static string NormalizeForUrl(string text)
+		{
+			text = text.ToLower();
+			text = StringExt.OdeberDiakritiku(text);
+			text = Regex.Replace(text, "[^A-Za-z0-9]", "-");
+			text = Regex.Replace(text, @"-{2,}", "-");
+			text = text.Trim('-');
+
+			return text;
+		} 
 		#endregion
 	}
 }

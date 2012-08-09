@@ -305,6 +305,18 @@
             <param name="cislice">Číslice (0..15)</param>
             <returns>char-reprezentace (0..9, A..F) šestnáctkové číslice (0-15).</returns>
         </member>
+        <member name="M:Havit.StringExt.NormalizeForUrl(System.String)">
+            <summary>
+            Normalizuje textový řetězec do podoby použitelné v URL adrese (pro SEO).
+            1) Převede na malá písmena.
+            2) Odebere diakritiku.
+            3) vše mimo písmen a číslic nahradí za pomlčku (včetně whitespace). 
+            4) potom vícenásobné pomlčky sloučí v jednu. 
+            5) odebere případné pomčky na začátku a konci řetězce. 
+            </summary>
+            <param name="text">vstupní text</param>
+            <returns>normalizovaný text pro URL (SEO)</returns>
+        </member>
         <member name="T:Havit.Collections.SortDirection">
             <summary>
             Určuje směr řazení.

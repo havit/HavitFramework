@@ -25,7 +25,7 @@ namespace Havit.Business.Query
 		public static Condition CreateEquals(IOperand operand1, IOperand operand2)
 		{
 			return new BinaryCondition(BinaryCondition.EqualsPattern, operand1, operand2);
-		} 
+		}
 		#endregion
 
 		#region CreateLike
@@ -35,7 +35,7 @@ namespace Havit.Business.Query
 		public static Condition CreateLike(IOperand operand, string value)
 		{
 			return new BinaryCondition(BinaryCondition.LikePattern, operand, ValueOperand.Create(value));
-		} 
+		}
 		#endregion
 
 		#region CreateWildcards
@@ -74,7 +74,7 @@ namespace Havit.Business.Query
 		public static Condition Create(IOperand operand1, ComparisonOperator comparisonOperator, IOperand operand2)
 		{
 			return new BinaryCondition(operand1, BinaryCondition.GetComparisonPattern(comparisonOperator), operand2);
-		} 
+		}
 		#endregion
 
 		#region GetLikeExpression, GetWildCardsLikeExpression
@@ -88,7 +88,7 @@ namespace Havit.Business.Query
 			{
 				throw new ArgumentException("Argument text nesmí být null ani prázdný.", "text");
 			}
-			
+
 			string result;
 			result = text.Trim().Replace("%", "[%]");
 			result = result.Replace("_", "[_]");
@@ -118,52 +118,5 @@ namespace Havit.Business.Query
 			return result;
 		}
 		#endregion
-	
-		/// <summary>
-		/// Vrátí regulární výraz pro hledání v textu.
-		/// Více o myšlence wildcardù je uvedeno u metody <see cref="CreateWildcards">CreateWildcards</see>.
-		/// </summary>
-		/// <param name="text">Text, který má být hledán a pro který se tvoøí regulární výraz.</param>
-		public static Regex GetWildcardRegex(string text)
-		{
-			string regexPattern = text;
-			regexPattern = regexPattern.Replace("\\", "\\\\"); // zdvojíme zpìtná lomítka
-			regexPattern = regexPattern.Replace("^", "\\^");
-			regexPattern = regexPattern.Replace("$", "\\$");
-			regexPattern = regexPattern.Replace("+", "\\+");
-			regexPattern = regexPattern.Replace(".", "\\.");
-			regexPattern = regexPattern.Replace("(", "\\(");
-			regexPattern = regexPattern.Replace(")", "\\)");
-			regexPattern = regexPattern.Replace("|", "\\|");
-			regexPattern = regexPattern.Replace("{", "\\{");
-			regexPattern = regexPattern.Replace("}", "\\}");
-			regexPattern = regexPattern.Replace("[", "\\[");
-			regexPattern = regexPattern.Replace("]", "\\]");
-			regexPattern = regexPattern.Replace("?", "\\?");
-
-			// hvìzdièka je pro nás zvláštní symbol
-			regexPattern = regexPattern.Replace("*", "(.*)");
-			// hledáme od zaèátku
-			regexPattern = "^" + regexPattern;
-			// pokud je hvìzdièka, pak hledáme "pøesnou" shodu
-			// pokud hvezdièka není, chceme, aby se hledání chovalo, jako by byla hvìzdièka na konci, slovy regulárních výrazù pak netøeba $ na konci.
-			if (text.Contains("*"))
-			{
-				regexPattern += "$";
-			}
-			return new Regex(regexPattern, RegexOptions.IgnoreCase);			
-		}
-
-		/// <summary>
-		/// Vrátí true, pokud textToBeSearched obsahuje hledaný vzorek wildcardExpressionToSearch (s logikou wildcards - uvedena u metody <see cref="CreateWildcards">CreateWildcards</see>).
-		/// </summary>
-		/// <param name="wildcardExpressionToSearch">Vzorek, který je vyhledáván.</param>
-		/// <param name="textToBeSearched">Text, který je prohledáván.</param>
-		/// <returns></returns>
-		public static bool IsWildcardMatch(string wildcardExpressionToSearch, string textToBeSearched)
-		{
-			Regex regex = GetWildcardRegex(wildcardExpressionToSearch);
-			return regex.IsMatch(textToBeSearched);
-		}
 	}
 }

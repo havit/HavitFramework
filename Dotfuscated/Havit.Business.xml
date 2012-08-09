@@ -874,21 +874,6 @@
             Příklad "*text1%text2*text3" bude transformováno na "%text1[%]text2%text3".
             </summary>
         </member>
-        <member name="M:Havit.Business.Query.TextCondition.GetWildcardRegex(System.String)">
-            <summary>
-            Vrátí regulární výraz pro hledání v textu.
-            Více o myšlence wildcardů je uvedeno u metody <see cref="M:Havit.Business.Query.TextCondition.CreateWildcards(Havit.Business.Query.IOperand,System.String)">CreateWildcards</see>.
-            </summary>
-            <param name="text">Text, který má být hledán a pro který se tvoří regulární výraz.</param>
-        </member>
-        <member name="M:Havit.Business.Query.TextCondition.IsWildcardMatch(System.String,System.String)">
-            <summary>
-            Vrátí true, pokud textToBeSearched obsahuje hledaný vzorek wildcardExpressionToSearch (s logikou wildcards - uvedena u metody <see cref="M:Havit.Business.Query.TextCondition.CreateWildcards(Havit.Business.Query.IOperand,System.String)">CreateWildcards</see>).
-            </summary>
-            <param name="wildcardExpressionToSearch">Vzorek, který je vyhledáván.</param>
-            <param name="textToBeSearched">Text, který je prohledáván.</param>
-            <returns></returns>
-        </member>
         <member name="T:Havit.Business.Query.EmptyCondition">
             <summary>
             Vytváří podmínky, které nic netestují.

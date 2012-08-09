@@ -3,6 +3,7 @@ using System.Text;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Text.RegularExpressions;
+using Havit.Text.RegularExpressions;
 
 namespace HavitTest
 {
@@ -35,5 +36,25 @@ namespace HavitTest
 		{
 			return Regex.IsMatch(emailAddress, Havit.Text.RegularExpressions.RegexPatterns.EmailStrict);
 		}
+
+		[TestMethod]
+		public void IsWildcardMatchTest()
+		{
+			Assert.IsTrue(RegexPatterns.IsWildcardMatch("kolo", "kolo"));
+			Assert.IsTrue(RegexPatterns.IsWildcardMatch("kolo", "kolotoè"));
+			Assert.IsFalse(RegexPatterns.IsWildcardMatch("kolo", "okolo"));
+
+			Assert.IsTrue(RegexPatterns.IsWildcardMatch("k*o", "kolo"));
+			Assert.IsTrue(RegexPatterns.IsWildcardMatch("k*lo", "kolo"));
+			Assert.IsTrue(RegexPatterns.IsWildcardMatch("k*olo", "kolo"));
+			Assert.IsFalse(RegexPatterns.IsWildcardMatch("k*o", "kolotoè"));
+			Assert.IsFalse(RegexPatterns.IsWildcardMatch("k*o", "okolo"));
+
+			Assert.IsTrue(RegexPatterns.IsWildcardMatch("k.lo", "k.lo"));
+			Assert.IsTrue(RegexPatterns.IsWildcardMatch("k?lo", "k?lo"));
+			Assert.IsFalse(RegexPatterns.IsWildcardMatch("k.lo", "kolo"));
+			Assert.IsFalse(RegexPatterns.IsWildcardMatch("k?lo", "kolo"));
+		}
+
 	}
 }

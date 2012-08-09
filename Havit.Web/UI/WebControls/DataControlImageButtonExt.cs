@@ -31,6 +31,13 @@ namespace Havit.Web.UI.WebControls
 
 		protected sealed override PostBackOptions GetPostBackOptions()
 		{
+			if (getPostBackOptionsDisabled)
+			{
+				// brutální oprava dvojího vyvolání event (dva requesty na server) na image buttonech
+				// viz AddAttributesToRender
+				return null;
+			}
+
 			if (this._container != null)
 			{
 				return this._container.GetPostBackOptions(this);
@@ -72,5 +79,69 @@ namespace Havit.Web.UI.WebControls
 				throw new NotSupportedException("CannotSetValidationOnDataControlButtons");
 			}
 		}
+
+		private bool getPostBackOptionsDisabled = false;
+		protected override void AddAttributesToRender(HtmlTextWriter writer)
+		{
+			// brutální oprava dvojího vyvolání event (dva requesty na server) na image buttonech
+			// <input type="image" src="image.gif" onclick="javascript:__doPostBack('GridView1','Delete$0')" />
+			// První request vznikne z type="image",
+			// druhý request vznikne z __doPostBack.
+			if (base.IsEnabled)
+			{
+				string onClick = Attributes["onclick"];
+				string onClientClick = this.OnClientClick;
+				Attributes.Remove("onclick");
+				this.OnClientClick = "";
+
+				PostBackOptions postBackOptions = this.GetPostBackOptions();
+				Page.ClientScript.RegisterForEventValidation(postBackOptions);
+				string postBackEventReference = Page.ClientScript.GetPostBackEventReference(postBackOptions, false);
+				string result = MergeScript(MergeScript(MergeScript(EnsureEndWithSemiColon(onClientClick), EnsureEndWithSemiColon(onClick)), EnsureEndWithSemiColon(postBackEventReference)), "return false;");
+
+				getPostBackOptionsDisabled = true;
+				base.AddAttributesToRender(writer);
+				writer.AddAttribute(HtmlTextWriterAttribute.Onclick, result);
+				getPostBackOptionsDisabled = false;
+
+			}
+			else
+			{
+				base.AddAttributesToRender(writer);
+			}
+
+		}
+
+		internal static string MergeScript(string firstScript, string secondScript)
+		{
+			if (secondScript == null)
+			{
+				secondScript = "";
+			}
+
+			if (!string.IsNullOrEmpty(firstScript))
+			{
+				return (firstScript + secondScript);
+			}
+			if (secondScript.TrimStart(new char[0]).StartsWith("javascript:", StringComparison.Ordinal))
+			{
+				return secondScript;
+			}
+			return ("javascript:" + secondScript);
+		}
+
+		internal static string EnsureEndWithSemiColon(string value)
+		{
+			if (value != null)
+			{
+				int length = value.Length;
+				if ((length > 0) && (value[length - 1] != ';'))
+				{
+					return (value + ";");
+				}
+			}
+			return value;
+		}
+
 	}
 }

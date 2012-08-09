@@ -143,6 +143,7 @@
     <Compile Include="UI\Scriptlets\ScriptletNestedControl.cs" />
     <Compile Include="UI\Scriptlets\ScriptSubstitutionRepository.cs" />
     <Compile Include="UI\Scriptlets\SimpleControlExtender.cs" />
+    <Compile Include="UI\Scriptlets\SubstitutionControlExtenderBase.cs" />
     <Compile Include="UI\Scriptlets\ValueParameter.cs" />
     <Compile Include="UI\WebControls\AutoSuggestMenu\AutoSuggestMenu.cs" />
     <Compile Include="UI\WebControls\AutoSuggestMenu\AutoSuggestMenuDesigner.cs" />

@@ -3559,6 +3559,22 @@
             Položky řazení.
             </summary>
         </member>
+        <member name="F:Havit.Web.UI.WebControls.SingleSubmitProtection.SetProcessingDisableJavaScript">
+            <summary>
+            Volání JavaScriptové funkce, která zablokuje SetProcessing na SingleSubmitPage.
+            Tato konstanta se může vložit např. do Button.OnClientClick.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.SingleSubmitProtection.#ctor">
+            <summary>
+            Prvek je založen na elementu DIV.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.SingleSubmitProtection.RegisterStylesheets(System.Web.UI.Page)">
+            <summary>
+            Zaregistruje css.        
+            </summary>
+        </member>
         <member name="M:Havit.Web.UI.WebControls.ListControlItemDataBoundEventArgs.#ctor(System.Web.UI.WebControls.ListItem,System.Object)">
             <summary>
             Vytvoří instanci.
@@ -4160,22 +4176,6 @@
         <member name="P:Havit.Web.UI.WebControls.MessengerMessage.MessageType">
             <summary>
             Typ zprávy.
-            </summary>
-        </member>
-        <member name="F:Havit.Web.UI.WebControls.SingleSubmitProtection.SetProcessingDisableJavaScript">
-            <summary>
-            Volání JavaScriptové funkce, která zablokuje SetProcessing na SingleSubmitPage.
-            Tato konstanta se může vložit např. do Button.OnClientClick.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.SingleSubmitProtection.#ctor">
-            <summary>
-            Prvek je založen na elementu DIV.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.SingleSubmitProtection.RegisterStylesheets(System.Web.UI.Page)">
-            <summary>
-            Zaregistruje css.        
             </summary>
         </member>
     </members>

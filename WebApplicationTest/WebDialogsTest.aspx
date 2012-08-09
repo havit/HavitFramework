@@ -56,6 +56,7 @@ Integer urna. Nunc ac urna pulvinar purus blandit euismod. Donec in risus. Suspe
 		<asp:Button runat="server" Text="Server close" ID="ServerClose2Button" />
 		<asp:Button runat="server" Text="Refresh" />
 			<%= DateTime.Now %>
+			<asp:Button runat="server" ID="EnlargeButton" />
 		</ContentTemplate>
 		<Triggers>
 			<asp:AsyncPostBackTrigger ControlID="ServerOpen2Button" />

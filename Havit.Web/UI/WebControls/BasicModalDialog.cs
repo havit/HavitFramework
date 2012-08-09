@@ -242,10 +242,10 @@ namespace Havit.Web.UI.WebControls
 			string script = String.Format(
 				"havitSetDialogSize('{0}', '{1}', '{2}', '{3}', '{4}'); havitShowDialog('{0}');",
 				_dialogPanel.ClientID,
-				Width.Value.ToString(),
-				Height.Value.ToString(),
-				MarginLeft.Value.ToString(),
-				MarginTop.Value.ToString());
+				Width.ToString(),
+                Height.ToString(),
+                MarginLeft.ToString(),
+                MarginTop.ToString());
 			return script;
 		}
 

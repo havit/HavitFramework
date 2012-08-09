@@ -23,6 +23,8 @@ namespace HavitTest
 			Assert.IsTrue(IsEmailAddressValid("a@b.cz"), "a@b.cz");
 			Assert.IsTrue(IsEmailAddressValid("a@b.info"), "a@b.info");
 			Assert.IsTrue(IsEmailAddressValid("o'realy@havit.cz"), "o'realy@havit.cz");
+			Assert.IsTrue(IsEmailAddressValid("james@007.uk"), "james@007.uk");
+			Assert.IsTrue(IsEmailAddressValid("007@007.uk"), "james@007.uk");
 
 			Assert.IsFalse(IsEmailAddressValid("@havit.cz"), "@havit.cz");
 			Assert.IsFalse(IsEmailAddressValid("kanda@"), "kanda@");
@@ -30,6 +32,13 @@ namespace HavitTest
 			Assert.IsFalse(IsEmailAddressValid("kanda@havit..cz"), "kanda@havit..cz");
 			Assert.IsFalse(IsEmailAddressValid("kanda@ha..vit.cz"), "kanda@ha..vit.cz");
 			Assert.IsFalse(IsEmailAddressValid("k..anda@havit.cz"), "k..anda@havit.cz");
+
+			// IDN není podporováno v .NETu
+			Assert.IsFalse(IsEmailAddressValid("jiří@kanda.eu"), "jiří@kanda.eu");
+			Assert.IsFalse(IsEmailAddressValid("email@jiříkanda.eu"), "email@jiříkanda.eu");
+			Assert.IsFalse(IsEmailAddressValid("můjmail@jiříkanda.eu"), "můjmail@jiříkanda.eu");
+			Assert.IsFalse(IsEmailAddressValid("můjmail@jiříkanda.eu"), "můjmail@jiříkanda.eu");
+			Assert.IsFalse(IsEmailAddressValid("můjmail@jiříkanda.eu"), "můjmail@jiříkanda.eu");
 		}
 
 		private bool IsEmailAddressValid(string emailAddress)

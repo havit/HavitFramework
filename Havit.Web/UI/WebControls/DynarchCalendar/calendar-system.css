@@ -40,7 +40,7 @@
 .calendar .nav {
   color: Black;
   font-weight: normal;
-  background: ButtonFace url(menuarrow.gif) no-repeat 100% 100%;
+  background: ButtonFace no-repeat 100% 100%;
 }
 
 .calendar thead .title { /* This holds the current "month, year" */

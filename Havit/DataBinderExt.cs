@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
+using System.ComponentModel;
 
 namespace Havit
 {
@@ -47,24 +48,34 @@ namespace Havit
 
 				if (expression.IndexOfAny(indexExprStartChars) < 0)
 				{
-					Type currentType = currentValue.GetType();
 					System.ComponentModel.PropertyDescriptorCollection properties;
 
-					lock (getValuePropertiesCache)
+					if (currentValue is ICustomTypeDescriptor)
 					{
-						getValuePropertiesCache.TryGetValue(currentType, out properties);
+						// pro typu implementující ICustomTypeDescriptor (DataViewRow, atp.) nemůžeme properties cachovat
+						properties = System.ComponentModel.TypeDescriptor.GetProperties(currentValue);						
 					}
-
-					if (properties == null)
+					else
 					{
-						properties = System.ComponentModel.TypeDescriptor.GetProperties(currentType);
+						// pro ostatní (tj. běžné) typy můžeme cachovat properties
+						Type currentType = currentValue.GetType();
 						lock (getValuePropertiesCache)
 						{
-							getValuePropertiesCache[currentType] = properties;
+							getValuePropertiesCache.TryGetValue(currentType, out properties);
+						}
+
+						if (properties == null)
+						{
+							properties = System.ComponentModel.TypeDescriptor.GetProperties(currentType);
+							lock (getValuePropertiesCache)
+							{
+								getValuePropertiesCache[currentType] = properties;
+							}
 						}
 					}
 
-					System.ComponentModel.PropertyDescriptor descriptor = properties.Find(expression, true); // tohle skoro nic nestojí
+					System.ComponentModel.PropertyDescriptor descriptor = properties.Find(expression, true);
+					// tohle skoro nic nestojí
 					currentValue = descriptor.GetValue(currentValue);
 				}
 				else
@@ -99,26 +110,6 @@ namespace Havit
 				return propertyValue.ToString();
 			}
 			return String.Format(format, propertyValue);
-		}
-
-		private class SafeDictionary<TKey, TValue>
-		{
-			private Dictionary<TKey, TValue> innerDictionary = new Dictionary<TKey, TValue>();
-			public void Add(TKey key, TValue value)
-			{
-				lock (innerDictionary)
-				{
-					innerDictionary[key] = value;
-				}
-			}
-
-			public bool TryGetValue(TKey key, out TValue value)
-			{
-				lock (innerDictionary)
-				{
-					return innerDictionary.TryGetValue(key, out value);
-				}
-			}
-		}
+		}		
 	}
 }

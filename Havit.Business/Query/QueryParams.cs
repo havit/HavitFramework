@@ -127,6 +127,8 @@ namespace Havit.Business.Query
 			commandBuilder.Append(GetWhereStatement(command));
 			commandBuilder.Append(" ");
 			commandBuilder.Append(GetOrderByStatement(command));
+			commandBuilder.Append(" ");
+			commandBuilder.Append(GetOptionStatementStatement(command));
 			commandBuilder.Append(";");
 
 			OnAfterPrepareCommand(command, commandBuilder);
@@ -265,5 +267,28 @@ namespace Havit.Business.Query
 			return orderByBuilder.ToString();
 		}
 		#endregion
+
+		/// <summary>
+		/// Vrátí sekci SQL dotazu OPTION - použito na OPTION (RECOMPILE).
+		/// OPTION (RECOMPILE): workaround pro http://connect.microsoft.com/SQLServer/feedback/ViewFeedback.aspx?FeedbackID=256717
+		/// </summary>
+		protected virtual string GetOptionStatementStatement(DbCommand command)
+		{
+			PropertyInfoCollection queryProperties = properties;
+
+			if (queryProperties.Count == 0)
+			{
+				queryProperties = objectInfo.Properties;
+			}
+
+			foreach (PropertyInfo propertyInfo in queryProperties)
+			{
+				if (propertyInfo is CollectionPropertyInfo)
+				{
+					return "OPTION (RECOMPILE)";
+				}
+			}
+			return "";			
+		}
 	}
 }

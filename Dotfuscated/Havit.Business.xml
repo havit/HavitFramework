@@ -1931,6 +1931,12 @@
             Vrátí sekci SQL dotazu ORDER BY.
             </summary>
         </member>
+        <member name="M:Havit.Business.Query.QueryParams.GetOptionStatementStatement(System.Data.Common.DbCommand)">
+            <summary>
+            Vrátí sekci SQL dotazu OPTION - použito na OPTION (RECOMPILE).
+            OPTION (RECOMPILE): workaround pro http://connect.microsoft.com/SQLServer/feedback/ViewFeedback.aspx?FeedbackID=256717
+            </summary>
+        </member>
         <member name="P:Havit.Business.Query.QueryParams.ObjectInfo">
             <summary>
             Instance třídy ObjectInfo nesoucí informace o tom, z jaké tabulky se bude dotaz dotazovat.

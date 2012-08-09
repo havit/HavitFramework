@@ -65,33 +65,17 @@ namespace Havit.Business.Query
 		}
 		#endregion
 
-		#region Create - Floats, Decimal
+		#region Create - DateTime
 		/// <summary>
-		/// Vytvoøí operand z èísla.
+		/// Vytvoøí operand z DateTime.
 		/// </summary>
-		public static IOperand Create(Single value)
+		public static IOperand Create(DateTime value)
 		{
-			return new ValueOperand(value, DbType.Single);
-		}
-
-		/// <summary>
-		/// Vytvoøí operand z èísla.
-		/// </summary>
-		public static IOperand Create(Double value)
-		{
-			return new ValueOperand(value, DbType.Double);
-		}
-
-		/// <summary>
-		/// Vytvoøí operand z èísla.
-		/// </summary>
-		public static IOperand Create(decimal value)
-		{
-			return new ValueOperand(value, DbType.Decimal);
+			return new ValueOperand(value, DbType.DateTime);
 		}
 		#endregion
 
-		#region Create - Integery
+		#region Create - Int16, Int32, Int64
 		/// <summary>
 		/// Vytvoøí operand z celého èísla.
 		/// </summary>
@@ -117,6 +101,42 @@ namespace Havit.Business.Query
 		}
 		#endregion
 
+		#region Create - Single, Double, Decimal
+		/// <summary>
+		/// Vytvoøí operand z èísla.
+		/// </summary>
+		public static IOperand Create(Single value)
+		{
+			return new ValueOperand(value, DbType.Single);
+		}
+
+		/// <summary>
+		/// Vytvoøí operand z èísla.
+		/// </summary>
+		public static IOperand Create(Double value)
+		{
+			return new ValueOperand(value, DbType.Double);
+		}
+
+		/// <summary>
+		/// Vytvoøí operand z èísla.
+		/// </summary>
+		public static IOperand Create(decimal value)
+		{
+			return new ValueOperand(value, DbType.Decimal);
+		}
+		#endregion
+
+		#region Create - GUID
+		/// <summary>
+		/// Vytvoøí operand z GUIDu.
+		/// </summary>
+		public static IOperand Create(Guid value)
+		{
+			return new ValueOperand(value, DbType.Guid);
+		}
+		#endregion
+
 		#region Create - String
 		/// <summary>
 		/// Vytvoøí operand z øetìzce.
@@ -126,6 +146,5 @@ namespace Havit.Business.Query
 			return new ValueOperand(value, DbType.String);
 		}
 		#endregion
-
 	}
 }

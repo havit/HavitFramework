@@ -664,14 +664,17 @@ function AutoSuggestMenu()
 	{
 		var hiddenFieldElement = self.getSelectedValueHiddenField();
 
-		if ((self.clearTextOnNoSelection == true) && (hiddenFieldElement.value == ''))
+		if ((self.clearTextOnNoSelection == true) && (hiddenFieldElement != null) && (hiddenFieldElement.value == ''))
 		{
 			var textBox = getTextBoxCtrl();
-			var textBoxWasEmpty = (textBox.value == '');
-			textBox.value = '';
-			if (!textBoxWasEmpty && ((self.messageOnClearText != null) && (self.messageOnClearText != '')))
+			if (textBox != null)
 			{
-				alert(self.messageOnClearText);
+				var textBoxWasEmpty = (textBox.value == '');
+				textBox.value = '';
+				if (!textBoxWasEmpty && ((self.messageOnClearText != null) && (self.messageOnClearText != '')))
+				{
+					alert(self.messageOnClearText);
+				}
 			}
 		}
 	}
@@ -679,7 +682,8 @@ function AutoSuggestMenu()
 	self.doAutoPostBack = function ()
 	{
 		var hiddenFieldElement = self.getSelectedValueHiddenField();
-		if (hiddenFieldElement.lastValueExtra != hiddenFieldElement.value) {
+
+		if ((hiddenFieldElement != null) && (hiddenFieldElement.lastValueExtra != hiddenFieldElement.value)) {
 			var autoPostBackScript = self.autoPostBackScript;
 			if (autoPostBackScript != null) {
 				hiddenFieldElement.lastValueExtra = hiddenFieldElement.value;

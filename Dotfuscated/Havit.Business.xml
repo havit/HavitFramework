@@ -1129,17 +1129,22 @@
             Reprezentuje informace o objektu (třídě).
             </summary>
         </member>
-        <member name="M:Havit.Business.ObjectInfo.#ctor(System.String,System.String,System.Boolean,Havit.Business.PropertyInfoCollection,Havit.Business.FieldPropertyInfo,Havit.Business.GetObjectDelegate,Havit.Business.GetAllDelegate)">
+        <member name="M:Havit.Business.ObjectInfo.#ctor(System.String,System.String,System.Boolean,Havit.Business.FieldPropertyInfo,Havit.Business.GetObjectDelegate,Havit.Business.GetAllDelegate)">
             <summary>
             Vytvoří instanci třídy.
             </summary>
             <param name="dbSchema">Název schémata databázové tabulky.</param>
             <param name="dbTable">Název databázové tabulky.</param>
             <param name="readOnly">Určuje, zda je třída jen ke čtení.</param>
-            <param name="properties">Properties třídy.</param>
             <param name="deletedProperty">FieldPropertyInfo, která identifikuje příznakem smazané záznamy.</param>
             <param name="getObjectMethod">Delegát na metodu vracející objekt třídy na základě ID.</param>
             <param name="getAllMethod">Delegát na metodu vracející všechny (nesmazané) objekty třídy.</param>
+        </member>
+        <member name="M:Havit.Business.ObjectInfo.RegisterProperties(Havit.Business.PropertyInfoCollection)">
+            <summary>
+            Registruje kolekci properties.
+            Každé registrované property nastaví parenta na tuto instanci třídy ObjectInfo.
+            </summary>
         </member>
         <member name="P:Havit.Business.ObjectInfo.ReadOnly">
             <summary>

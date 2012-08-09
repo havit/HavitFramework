@@ -15,28 +15,18 @@ namespace Havit.Business
 		/// <param name="dbSchema">Název schémata databázové tabulky.</param>
 		/// <param name="dbTable">Název databázové tabulky.</param>
 		/// <param name="readOnly">Urèuje, zda je tøída jen ke ètení.</param>
-		/// <param name="properties">Properties tøídy.</param>
 		/// <param name="deletedProperty">FieldPropertyInfo, která identifikuje pøíznakem smazané záznamy.</param>
 		/// <param name="getObjectMethod">Delegát na metodu vracející objekt tøídy na základì ID.</param>
 		/// <param name="getAllMethod">Delegát na metodu vracející všechny (nesmazané) objekty tøídy.</param>
-		public ObjectInfo(string dbSchema, string dbTable, bool readOnly, PropertyInfoCollection properties, FieldPropertyInfo deletedProperty, 
+		public ObjectInfo(string dbSchema, string dbTable, bool readOnly, FieldPropertyInfo deletedProperty, 
 			GetObjectDelegate getObjectMethod, GetAllDelegate getAllMethod)
 		{
-			if (properties == null)
-				throw new ArgumentNullException("properties");
-
 			this.dbSchema = dbSchema;
 			this.dbTable = dbTable;
 			this.readOnly = readOnly;
-			this.properties = properties;
 			this.deletedProperty = deletedProperty;
 			this.getObjectMethod = getObjectMethod;
 			this.getAllMethod = getAllMethod;
-
-			foreach (PropertyInfo propertyInfo in properties)
-			{
-				propertyInfo.Parent = this;
-			}
 		}
 
 		/// <summary>
@@ -101,7 +91,24 @@ namespace Havit.Business
 			get { return getAllMethod; }
 		}
 		private GetAllDelegate getAllMethod;
-	
-		
+
+		/// <summary>
+		/// Registruje kolekci properties.
+		/// Každé registrované property nastaví parenta na tuto instanci tøídy ObjectInfo.
+		/// </summary>
+		public void RegisterProperties(PropertyInfoCollection properties)
+		{
+			if (properties == null)
+			{
+				throw new ArgumentNullException("properties");
+			}
+
+			this.properties = properties;
+
+			foreach (PropertyInfo propertyInfo in properties)
+			{
+				propertyInfo.Parent = this;
+			}
+		}
 	}
 }

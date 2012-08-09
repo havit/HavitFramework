@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Havit.Collections;
 using System.Data.Common;
+using Havit.Data;
 
 namespace Havit.Business
 {
@@ -369,10 +370,13 @@ namespace Havit.Business
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v které mají být prvky uloženy</param>
 		public virtual void SaveAll(DbTransaction transaction)
 		{
-			ForEach(delegate(TItem item)
+			DbConnector.Default.ExecuteTransaction(innerTransaction =>
 				{
-					item.Save(transaction);
-				});
+					ForEach(delegate(TItem item)
+						{
+							item.Save(innerTransaction);
+						});
+				}, transaction);
 		}
 
 		/// <summary>

@@ -52,6 +52,23 @@ namespace Havit.Business.Query
 			return new BinaryCondition(BinaryCondition.LikePattern, operand, ValueOperand.Create(GetWildCardsLikeExpression(value)));
 		}
 
+		/// <summary>
+		/// Vytvoøí podmínku testující hodnoty pomocí zadaného operátoru.
+		/// </summary>
+		public static Condition Create(IOperand operand, ComparisonOperator comparisonOperator, string value)
+		{
+			return Create(operand, comparisonOperator, ValueOperand.Create(value));
+		}
+
+		/// <summary>
+		/// Vytvoøí podmínku testující hodnoty pomocí zadaného operátoru.
+		/// </summary>
+		public static Condition Create(IOperand operand1, ComparisonOperator comparisonOperator, IOperand operand2)
+		{
+			return new BinaryCondition(operand1, BinaryCondition.GetComparisonPattern(comparisonOperator), operand2);
+		}
+
+
 		#region GetLikeExpression, GetWildCardsLikeExpression
 		/// <summary>
 		/// Transformuje øetìzec naøetìzec, který je možné použít jako hodnota k operátoru like.

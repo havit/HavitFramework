@@ -1,4 +1,4 @@
-// ** I18N
+﻿// ** I18N
 
 // Calendar EN language
 // Author: Idan Sofer, <idan@idanso.dyndns.org>
@@ -42,6 +42,8 @@ Calendar._SDN = new Array
  "ו",
  "ש",
  "א");
+
+Calendar._FD = 1;
 
 // full month names
 Calendar._MN = new Array

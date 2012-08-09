@@ -192,7 +192,7 @@ namespace Havit.Web.UI.WebControls
 			}
 			protected set
 			{
-				base.RequiresDataBinding = true;
+				base.RequiresDataBinding = value;
 			}
 		}
 
@@ -567,6 +567,11 @@ namespace Havit.Web.UI.WebControls
 			}
 
 			base.PerformDataBinding(insertingData);
+
+			if (insertingData != null)
+			{
+				RequiresDataBinding = false;
+			}
 		}
 		#endregion
 

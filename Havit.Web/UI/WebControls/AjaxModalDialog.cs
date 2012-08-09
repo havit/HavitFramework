@@ -13,7 +13,7 @@ namespace Havit.Web.UI.WebControls
 	/// <summary>
 	/// Dialog, který zapouzdřuje UpdatePanel.
 	/// </summary>
-	public class WebModalDialog : BasicModalDialog
+	public class AjaxModalDialog : BasicModalDialog
 	{
 		#region Private fiels
 		private UpdatePanel _updatePanel;
@@ -36,7 +36,10 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 
 		#region Constructor
-		public WebModalDialog()
+		/// <summary>
+		/// Konstuktor.
+		/// </summary>
+		public AjaxModalDialog()
 		{
 			_updatePanel = new UpdatePanel();
 			_updatePanel.UpdateMode = UpdatePanelUpdateMode.Conditional;
@@ -46,6 +49,9 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 
 		#region CreateChildControls
+		/// <summary>
+		/// Inicializuje podstrom controlů.
+		/// </summary>
 		protected override void CreateChildControls()
 		{
 			_updatePanel.ContentTemplateContainer.Controls.Add(_contentPlaceHolder);			
@@ -56,6 +62,10 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 
 		#region GetContentContainer
+		/// <summary>
+		/// Vrací control, který je kontejnerem, do kterého se bude instanciovat šablona obsahu.
+		/// </summary>
+		/// <returns></returns>
 		protected override Control GetContentContainer()
 		{
 			return _contentPlaceHolder;
@@ -63,6 +73,11 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 
 		#region OnDialogShown
+		/// <summary>
+		/// Obsluhuje událost zobrazení dialogu.
+		/// Provádí update vnořeného UpdatePanelu.
+		/// </summary>
+		/// <param name="eventArgs"></param>
 		protected override void OnDialogShown(EventArgs eventArgs)
 		{
 			base.OnDialogShown(eventArgs);
@@ -71,14 +86,22 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 
 		#region OnDialogHidden
+		/// <summary>
+		/// Obsluhuje událost skrytí dialogu.
+		/// Provádí update vnořeného UpdatePanelu.
+		/// </summary>
+		/// <param name="eventArgs"></param>
 		protected override void OnDialogHidden(EventArgs eventArgs)
 		{
 			base.OnDialogHidden(eventArgs);
-			//_updatePanel.Update();
+			_updatePanel.Update();
 		}
 		#endregion
 
 		#region OnPreRender
+		/// <summary>
+		/// PreRender.
+		/// </summary>
 		protected override void OnPreRender(EventArgs e)
 		{
 			base.OnPreRender(e);
@@ -87,6 +110,10 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 
 		#region CheckDialogSize
+		/// <summary>
+		/// Ověří zadání velikosti dialogu.
+		/// Kontrola probíhá jen, pokud je dialog zobrazen.
+		/// </summary>
 		protected override void CheckDialogSize()
 		{
 			// velikost kontrolujeme pouze u zobrazeného dialogu

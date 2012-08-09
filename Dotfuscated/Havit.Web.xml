@@ -2693,6 +2693,136 @@
             Insert.
             </summary>
         </member>
+        <member name="T:Havit.Web.UI.WebControls.BasicModalDialog">
+            <summary>
+            Základní třída pro modální dialog. Umí pozicovat, zobrazovat a skrývat dialog.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.BasicModalDialog.#ctor">
+            <summary>
+            Konstruktor.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.BasicModalDialog.OnInit(System.EventArgs)">
+            <summary>
+            OnInit.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.BasicModalDialog.CreateChildControls">
+            <summary>
+            Inicializuje podstrom controlů.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.BasicModalDialog.GetContentContainer">
+            <summary>
+            Vrací kontejner, do kterého je instanciována šablona.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.BasicModalDialog.Show">
+            <summary>
+            Zobrazí dialog.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.BasicModalDialog.Hide">
+            <summary>
+            Skryje dialog.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.BasicModalDialog.OnDialogShown(System.EventArgs)">
+            <summary>
+            Obsluhuje událost zobrazení dialogu.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.BasicModalDialog.OnDialogHidden(System.EventArgs)">
+            <summary>
+            Obsluhuje událost skrytí dialogu.
+            </summary>
+            <param name="eventArgs"></param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.BasicModalDialog.GetShowScript">
+            <summary>
+            Vrátí skript pro zobrazení dialogu na klientské straně.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.BasicModalDialog.GetHideScript">
+            <summary>
+            Vrátí skript pro skrytí dialogu na klientské straně.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.BasicModalDialog.RegisterShowScript">
+            <summary>
+            Zaregistruje skript, který zobrazí dialog na klientské straně.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.BasicModalDialog.RegisterHideScript">
+            <summary>
+            Zaregistruje skript, který skryje dialog na klientské straně.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.BasicModalDialog.OnPreRender(System.EventArgs)">
+            <summary>
+            OnPreRender.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.BasicModalDialog.CheckDialogSize">
+            <summary>
+            Ověří správné nastavení vlastností controlu.
+            Ověřuje nastavení vlastností Width a Height, 
+            pokud nejsou kladné (výchozí = 0) je vyvolána výjimka InvalidOperationException.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.BasicModalDialog.ContentTemplate">
+            <summary>
+            Šablona obsahu dialogu. Instancovaný obsah šablony je v ContentTemplateContainer (instancováno v průběhu OnInit).
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.BasicModalDialog.ContentTemplateContainer">
+            <summary>
+            Instancovaný obsah dialogu.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.BasicModalDialog.Controls">
+            <summary>
+            Kolekce controlů.
+            Přístup k property zajistí inicializaci podstromu controlů (EnsureChildControls).
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.BasicModalDialog.Width">
+            <summary>
+            Šířka dialogu v pixelech.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.BasicModalDialog.Height">
+            <summary>
+            Výška dialogu v pixelech.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.BasicModalDialog.MarginLeft">
+            <summary>
+            Určeno pro centrování dialogu: Posun dialogu doleva vůči středu. 
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.BasicModalDialog.MarginTop">
+            <summary>
+            Určeno pro centrování dialogu: Posun dialogu nahoru vůči středu. 
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.BasicModalDialog.DialogVisible">
+            <summary>
+            Udává, zda je dialog viditelný.
+            </summary>
+        </member>
+        <member name="E:Havit.Web.UI.WebControls.BasicModalDialog.DialogShown">
+            <summary>
+            Událost oznamující zobrazení dialogu.
+            </summary>
+        </member>
+        <member name="E:Havit.Web.UI.WebControls.BasicModalDialog.DialogHidden">
+            <summary>
+            Událost oznamujíxí skrytí dialogu.
+            </summary>
+        </member>
         <member name="T:Havit.Web.HttpServerUtilityExt">
             <summary>
             Poskytuje další pomocné metody pro ovládání webového serveru.
@@ -3613,184 +3743,136 @@
             Identifikátor fieldu na který se lze odkazovat pomocí <see cref="M:Havit.Web.UI.WebControls.GridViewExt.FindColumn(System.String)"/>.
             </summary>
         </member>
-        <member name="T:Havit.Web.UI.WebControls.WebModalDialogUserControlBase">
+        <member name="T:Havit.Web.UI.WebControls.AjaxModalDialog">
             <summary>
-            Předek pro vlastní user controly, 
-            které jsou zobrazovány jako dialog.
+            Dialog, který zapouzdřuje UpdatePanel.
             </summary>
         </member>
-        <member name="M:Havit.Web.UI.WebControls.WebModalDialogUserControlBase.AddParsedSubObject(System.Object)">
+        <member name="M:Havit.Web.UI.WebControls.AjaxModalDialog.#ctor">
+            <summary>
+            Konstuktor.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.AjaxModalDialog.CreateChildControls">
+            <summary>
+            Inicializuje podstrom controlů.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.AjaxModalDialog.GetContentContainer">
+            <summary>
+            Vrací control, který je kontejnerem, do kterého se bude instanciovat šablona obsahu.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.AjaxModalDialog.OnDialogShown(System.EventArgs)">
+            <summary>
+            Obsluhuje událost zobrazení dialogu.
+            Provádí update vnořeného UpdatePanelu.
+            </summary>
+            <param name="eventArgs"></param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.AjaxModalDialog.OnDialogHidden(System.EventArgs)">
+            <summary>
+            Obsluhuje událost skrytí dialogu.
+            Provádí update vnořeného UpdatePanelu.
+            </summary>
+            <param name="eventArgs"></param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.AjaxModalDialog.OnPreRender(System.EventArgs)">
+            <summary>
+            PreRender.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.AjaxModalDialog.CheckDialogSize">
+            <summary>
+            Ověří zadání velikosti dialogu.
+            Kontrola probíhá jen, pokud je dialog zobrazen.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.AjaxModalDialog.Triggers">
+            <summary>
+            Triggery zapouzdřeného UpdatePanelu.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.AjaxModalDialogUserControlBase">
+            <summary>
+            Předek pro vlastní user controly, 
+            které jsou zobrazovány jako dialog prostřednictvím zapouzdřeného AjaxModalDialogu.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.AjaxModalDialogUserControlBase.#ctor">
+            <summary>
+            Konstruktor.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.AjaxModalDialogUserControlBase.FrameworkInitialize">
+            <summary>
+            FrameworkInitialize.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.AjaxModalDialogUserControlBase.AddParsedSubObject(System.Object)">
             <summary>
             Zajišťuje, aby se controly user controlu nevkládaly do kolece controls tohoto usercontrolu,
             ale do kolekce controlů MainWebModalDialog. Nedochází tak k žádnému přehazování controls ve stromu controlů, apod.
             </summary>
         </member>
-        <member name="M:Havit.Web.UI.WebControls.WebModalDialogUserControlBase.Show">
+        <member name="M:Havit.Web.UI.WebControls.AjaxModalDialogUserControlBase.OnInit(System.EventArgs)">
+            <summary>
+            OnInit.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.AjaxModalDialogUserControlBase.Show">
             <summary>
             Zobrazí dialog.
             </summary>
         </member>
-        <member name="M:Havit.Web.UI.WebControls.WebModalDialogUserControlBase.Hide">
+        <member name="M:Havit.Web.UI.WebControls.AjaxModalDialogUserControlBase.Hide">
             <summary>
             Skryje dialog.
             </summary>
         </member>
-        <member name="M:Havit.Web.UI.WebControls.WebModalDialogUserControlBase.OnDialogShown(System.EventArgs)">
+        <member name="M:Havit.Web.UI.WebControls.AjaxModalDialogUserControlBase.OnDialogShown(System.EventArgs)">
             <summary>
             Obsluhuje událost zobrazení dialogu.
             </summary>
         </member>
-        <member name="M:Havit.Web.UI.WebControls.WebModalDialogUserControlBase.OnDialogHidden(System.EventArgs)">
+        <member name="M:Havit.Web.UI.WebControls.AjaxModalDialogUserControlBase.OnDialogHidden(System.EventArgs)">
             <summary>
             Obsluhuje událost skrytí dialogu.
             </summary>
             <param name="eventArgs"></param>
         </member>
-        <member name="P:Havit.Web.UI.WebControls.WebModalDialogUserControlBase.DialogVisible">
+        <member name="P:Havit.Web.UI.WebControls.AjaxModalDialogUserControlBase.MainAjaxModalDialog">
+            <summary>
+            Zapouzdřený AjaxModalDialog.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.AjaxModalDialogUserControlBase.DialogVisible">
             <summary>
             Udává, zda je dialog viditelný.
             </summary>
         </member>
-        <member name="P:Havit.Web.UI.WebControls.WebModalDialogUserControlBase.Width">
+        <member name="P:Havit.Web.UI.WebControls.AjaxModalDialogUserControlBase.Width">
             <summary>
             Šířka dialogu v pixelech.
             </summary>
         </member>
-        <member name="P:Havit.Web.UI.WebControls.WebModalDialogUserControlBase.Height">
+        <member name="P:Havit.Web.UI.WebControls.AjaxModalDialogUserControlBase.Height">
             <summary>
             Výška dialogu v pixelech.
             </summary>
         </member>
-        <member name="E:Havit.Web.UI.WebControls.WebModalDialogUserControlBase.DialogShown">
+        <member name="E:Havit.Web.UI.WebControls.AjaxModalDialogUserControlBase.DialogShown">
             <summary>
             Událost oznamující zobrazení dialogu.
             </summary>
         </member>
-        <member name="E:Havit.Web.UI.WebControls.WebModalDialogUserControlBase.DialogHidden">
+        <member name="E:Havit.Web.UI.WebControls.AjaxModalDialogUserControlBase.DialogHidden">
             <summary>
             Událost oznamujíxí skrytí dialogu.
             </summary>
         </member>
-        <member name="P:Havit.Web.UI.WebControls.WebModalDialogUserControlBase.Triggers">
-            <summary>
-            Triggery zapouzdřeného UpdatePanelu.
-            </summary>
-        </member>
-        <member name="T:Havit.Web.UI.WebControls.BasicModalDialog">
-            <summary>
-            Základní třída pro modální dialog. Umí pozicovat, zobrazovat a skrývat dialog.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.BasicModalDialog.#ctor">
-            <summary>
-            Konstruktor.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.BasicModalDialog.GetContentContainer">
-            <summary>
-            Vrací kontejner, do kterého je instanciována šablona.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.BasicModalDialog.Show">
-            <summary>
-            Zobrazí dialog.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.BasicModalDialog.Hide">
-            <summary>
-            Skryje dialog.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.BasicModalDialog.OnDialogShown(System.EventArgs)">
-            <summary>
-            Obsluhuje událost zobrazení dialogu.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.BasicModalDialog.OnDialogHidden(System.EventArgs)">
-            <summary>
-            Obsluhuje událost skrytí dialogu.
-            </summary>
-            <param name="eventArgs"></param>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.BasicModalDialog.GetShowScript">
-            <summary>
-            Vrátí skript pro zobrazení dialogu na klientské straně.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.BasicModalDialog.GetHideScript">
-            <summary>
-            Vrátí skript pro skrytí dialogu na klientské straně.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.BasicModalDialog.RegisterShowScript">
-            <summary>
-            Zaregistruje skript, který zobrazí dialog na klientské straně.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.BasicModalDialog.RegisterHideScript">
-            <summary>
-            Zaregistruje skript, který skryje dialog na klientské straně.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.BasicModalDialog.CheckDialogSize">
-            <summary>
-            Ověří správné nastavení vlastností controlu.
-            Ověřuje nastavení vlastností Width a Height, 
-            pokud nejsou kladné (výchozí = 0) je vyvolána výjimka InvalidOperationException.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.BasicModalDialog.ContentTemplate">
-            <summary>
-            Šablona obsahu dialogu. Instancovaný obsah šablony je v ContentTemplateContainer (instancováno v průběhu OnInit).
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.BasicModalDialog.ContentTemplateContainer">
-            <summary>
-            Instancovaný obsah dialogu.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.BasicModalDialog.Width">
-            <summary>
-            Šířka dialogu v pixelech.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.BasicModalDialog.Height">
-            <summary>
-            Výška dialogu v pixelech.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.BasicModalDialog.MarginLeft">
-            <summary>
-            Určeno pro centrování dialogu: Posun dialogu doleva vůči středu. 
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.BasicModalDialog.MarginTop">
-            <summary>
-            Určeno pro centrování dialogu: Posun dialogu nahoru vůči středu. 
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.BasicModalDialog.DialogVisible">
-            <summary>
-            Udává, zda je dialog viditelný.
-            </summary>
-        </member>
-        <member name="E:Havit.Web.UI.WebControls.BasicModalDialog.DialogShown">
-            <summary>
-            Událost oznamující zobrazení dialogu.
-            </summary>
-        </member>
-        <member name="E:Havit.Web.UI.WebControls.BasicModalDialog.DialogHidden">
-            <summary>
-            Událost oznamujíxí skrytí dialogu.
-            </summary>
-        </member>
-        <member name="T:Havit.Web.UI.WebControls.WebModalDialog">
-            <summary>
-            Dialog, který zapouzdřuje UpdatePanel.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.WebModalDialog.Triggers">
+        <member name="P:Havit.Web.UI.WebControls.AjaxModalDialogUserControlBase.Triggers">
             <summary>
             Triggery zapouzdřeného UpdatePanelu.
             </summary>

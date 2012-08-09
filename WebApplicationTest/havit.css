@@ -1,0 +1,61 @@
+form {padding:0; margin: 0;}
+img {border: 0;}
+table {border-collapse: collapse;}
+thead {display: table-header-group;}
+tfoot {display: table-footer-group;}
+/****************************************************************************************/
+.indent {text-indent: 1.3em !important;}
+.justify {text-align: justify !important;}
+.center {text-align: center !important;}
+.centerblock {display: block !important; margin-left: auto !important; margin-right: auto !important;}
+.right {text-align: right !important;}
+.left {text-align: left !important;}
+.top {vertical-align: top !important;}
+.bold {font-weight: bold !important;}
+.nobold {font-weight: normal !important;}
+.noborder {border: none !important;}
+.nowrap {white-space: nowrap !important;}
+.clear {clear: both !important;}
+.floatleft {float: left !important;}
+.floatright {float: right !important;}
+.floatend {clear: both !important; font-size: 1px !important; height: 1px !important;}
+.topmargin1em {margin-top: 1em !important;}
+.topmargin2em {margin-top: 2em !important;}
+.bottommargin1em {margin-bottom: 1em !important;}
+.bottommargin2em {margin-bottom: 2em !important;}
+.notopmargin {margin-top: 0 !important;}
+.nobottommargin {margin-bottom: 0 !important;}
+.inline {display: inline !important;}
+.block {display: block !important;}
+
+@media print 
+{
+	.noprint {display: none !important;}
+}
+
+/* webdialog */
+.webdialog {
+	display: none;
+	position: absolute;	
+	background-color: white;
+	z-index:1001;
+	border: 2px solid #808080;
+	overflow: auto;		
+}
+
+#webdialogoverlay{
+	display:none;
+	position:absolute;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	z-index:1000;
+	background-color:#333;
+	-moz-opacity: 0.40;
+	opacity:.40;
+	filter: alpha(opacity=40);
+}
+
+.webdialog[id]{ /* IE6 and below Can't See This */    position:fixed;    }
+#webdialogoverlay[id]{ /* IE6 and below Can't See This */    position:fixed;    }

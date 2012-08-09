@@ -8,34 +8,43 @@ namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
 	/// Předek pro vlastní user controly, 
-	/// které jsou zobrazovány jako dialog.
+	/// které jsou zobrazovány jako dialog prostřednictvím zapouzdřeného AjaxModalDialogu.
 	/// </summary>
-	public class WebModalDialogUserControlBase: UserControl
+	public class AjaxModalDialogUserControlBase: UserControl
 	{
 
 		#region MainWebModalDialog
-		private WebModalDialog MainWebModalDialog
+		/// <summary>
+		/// Zapouzdřený AjaxModalDialog.
+		/// </summary>
+		private AjaxModalDialog MainAjaxModalDialog
 		{
 			get
 			{
-				return _mainWebModalDialog;
+				return _mainAjaxModalDialog;
 			}
 		}
-		private WebModalDialog _mainWebModalDialog;
+		private AjaxModalDialog _mainAjaxModalDialog;
 		#endregion
 
 		#region Constructor
-		public WebModalDialogUserControlBase()
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
+		public AjaxModalDialogUserControlBase()
 		{
-			_mainWebModalDialog = new WebModalDialog();
+			_mainAjaxModalDialog = new AjaxModalDialog();
 		}
 		#endregion
 
 		#region FrameworkInitialize, AddParsedSubObject
+		/// <summary>
+		/// FrameworkInitialize.
+		/// </summary>
 		protected override void FrameworkInitialize()
 		{
 			base.FrameworkInitialize();
-			this.Controls.Add(MainWebModalDialog);
+			this.Controls.Add(MainAjaxModalDialog);
 		}
 
 		/// <summary>
@@ -44,16 +53,20 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		protected override void AddParsedSubObject(object obj)
 		{
-			MainWebModalDialog.ContentTemplateContainer.Controls.Add((Control)obj);
+			MainAjaxModalDialog.ContentTemplateContainer.Controls.Add((Control)obj);
 		}
 		#endregion
+
 		#region OnInit
+		/// <summary>
+		/// OnInit.
+		/// </summary>
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
 
-			MainWebModalDialog.DialogShown += new EventHandler(MainWebModalDialog_DialogShown);
-			MainWebModalDialog.DialogHidden += new EventHandler(MainWebModalDialog_DialogHidden);
+			MainAjaxModalDialog.DialogShown += new EventHandler(MainWebModalDialog_DialogShown);
+			MainAjaxModalDialog.DialogHidden += new EventHandler(MainWebModalDialog_DialogHidden);
 		}
 		#endregion
 		
@@ -65,7 +78,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			get
 			{
-				return MainWebModalDialog.DialogVisible;
+				return MainAjaxModalDialog.DialogVisible;
 			}
 		}
 		#endregion
@@ -78,11 +91,11 @@ namespace Havit.Web.UI.WebControls
 		{
 			get
 			{
-				return MainWebModalDialog.Width;
+				return MainAjaxModalDialog.Width;
 			}
 			set
 			{
-				MainWebModalDialog.Width = value;
+				MainAjaxModalDialog.Width = value;
 			}
 		}
 
@@ -93,11 +106,11 @@ namespace Havit.Web.UI.WebControls
 		{
 			get
 			{
-				return MainWebModalDialog.Height;
+				return MainAjaxModalDialog.Height;
 			}
 			set
 			{
-				MainWebModalDialog.Height = value;
+				MainAjaxModalDialog.Height = value;
 			}
 		}
 		#endregion
@@ -132,7 +145,7 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		public void Show()
 		{
-			MainWebModalDialog.Show();
+			MainAjaxModalDialog.Show();
 		}
 
 		/// <summary>
@@ -140,7 +153,7 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		public void Hide()
 		{
-			MainWebModalDialog.Hide();
+			MainAjaxModalDialog.Hide();
 		}
 
 		/// <summary>
@@ -176,7 +189,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			get
 			{
-				return MainWebModalDialog.Triggers;
+				return MainAjaxModalDialog.Triggers;
 			}
 		}
 		#endregion

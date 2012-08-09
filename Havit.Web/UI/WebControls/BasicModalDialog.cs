@@ -13,7 +13,7 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	[ParseChildren(true)]
 	[PersistChildren(false)]
-	public class BasicModalDialog: CompositeControl
+	public class BasicModalDialog: Control
 	{
 		#region Private fields
 		private Panel _dialogPanel;
@@ -53,6 +53,21 @@ namespace Havit.Web.UI.WebControls
 				return GetContentContainer();
 			}
 		}		
+		#endregion
+
+		#region Controls
+		/// <summary>
+		/// Kolekce controlů.
+		/// Přístup k property zajistí inicializaci podstromu controlů (EnsureChildControls).
+		/// </summary>
+		public override ControlCollection Controls
+		{
+			get
+			{
+				EnsureChildControls();
+				return base.Controls;
+			}
+		}
 		#endregion
 
 		#region Width, Height, MarginLeft, MarginTop
@@ -138,6 +153,9 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 
 		#region OnInit
+		/// <summary>
+		/// OnInit.
+		/// </summary>
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
@@ -146,6 +164,9 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 
 		#region CreateChildControls
+		/// <summary>
+		/// Inicializuje podstrom controlů.
+		/// </summary>
 		protected override void CreateChildControls()
 		{
 			this.Controls.Clear();
@@ -272,9 +293,14 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 
 		#region OnPreRender
+		/// <summary>
+		/// OnPreRender.
+		/// </summary>
 		protected override void OnPreRender(EventArgs e)
 		{
 			base.OnPreRender(e);
+
+			EnsureChildControls();
 
 			CheckDialogSize();
 

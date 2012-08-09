@@ -144,6 +144,14 @@
     <Compile Include="ScriptletTest2.aspx.designer.cs">
       <DependentUpon>ScriptletTest2.aspx</DependentUpon>
     </Compile>
+    <Compile Include="TestPage.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>TestPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TestPage.aspx.designer.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>TestPage.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BusinessLayerTest\BusinessLayerTest.csproj">
@@ -189,6 +197,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Browsers\CssFriendlyAdapters.browser" />
+    <Content Include="havit.css" />
+    <Content Include="HavitScripts.js" />
+    <Content Include="TestPage.aspx" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v8.0\WebApplications\Microsoft.WebApplication.targets" />

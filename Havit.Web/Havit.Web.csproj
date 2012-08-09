@@ -217,8 +217,8 @@
     </Compile>
     <Compile Include="UI\WebControls\IIdentifiableField.cs" />
     <Compile Include="UI\WebControls\TemplateFieldExt.cs" />
-    <Compile Include="UI\WebControls\WebModalDialog.cs" />
-    <Compile Include="UI\WebControls\WebModalDialogUserControlBase.cs">
+    <Compile Include="UI\WebControls\AjaxModalDialog.cs" />
+    <Compile Include="UI\WebControls\AjaxModalDialogUserControlBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="UrlRewriter\BaseModuleRewriter.cs">

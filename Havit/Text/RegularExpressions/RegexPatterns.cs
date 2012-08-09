@@ -68,7 +68,7 @@ namespace Havit.Text.RegularExpressions
 		#region GetWildcardRegex, IsWildcardMatch
 		/// <summary>
 		/// Vrátí regulární výraz pro hledání v textu.
-		/// Více o myšlence wildcardů je uvedeno u metody <see cref="CreateWildcards">TextCondition.CreateWildcards</see>.
+		/// Více o myšlence wildcardů je uvedeno u metody TextCondition.CreateWildcards.
 		/// </summary>
 		/// <param name="text">Text, který má být hledán a pro který se tvoří regulární výraz.</param>
 		public static Regex GetWildcardRegex(string text)
@@ -102,7 +102,7 @@ namespace Havit.Text.RegularExpressions
 		} 
 
 		/// <summary>
-		/// Vrátí true, pokud textToBeSearched obsahuje hledaný vzorek wildcardExpressionToSearch (s logikou wildcards - uvedena u metody <see cref="CreateWildcards">CreateWildcards</see>).
+		/// Vrátí true, pokud textToBeSearched obsahuje hledaný vzorek wildcardExpressionToSearch (s logikou wildcards - uvedena u metody CreateWildcards).
 		/// </summary>
 		/// <param name="wildcardExpressionToSearch">Vzorek, který je vyhledáván.</param>
 		/// <param name="textToBeSearched">Text, který je prohledáván.</param>

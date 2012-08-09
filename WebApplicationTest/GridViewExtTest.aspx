@@ -11,6 +11,7 @@
     <div>
 		<havit:GridViewExt ID="TestGV1" AllowPaging="true" PagerSettings-Position="bottom" PagerSettingsShowAllPagesButton="true" PagerSettingsAllPagesButtonText="Vše" PagerSettings-Mode="Numeric" PageSize="2000" AllowSorting="true" AutoSort="true" runat="server">
 			<Columns>
+				<havit:BoundFieldExt DataField="Nazev" SortExpression="Nazev" HeaderText="Název" />
 				<havit:TemplateFieldExt SortExpression="Nazev" HeaderText="Název">
 					<ItemTemplate>
 						<%# Eval("Nazev") %>

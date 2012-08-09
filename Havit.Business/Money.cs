@@ -55,6 +55,9 @@ namespace Havit.Business
 		private TCurrency _currency;
 		#endregion
 
+		/// <summary>
+		/// Událost oznamujízí změnu hodnoty ve třídě Money (vyvoláno, pokud se změní částka nebo měna).
+		/// </summary>
 		public event EventHandler ValueChanged;
 
 		#region Constructors
@@ -78,6 +81,9 @@ namespace Havit.Business
 		#endregion
 
 		#region Equals, operátory == a !=
+		/// <summary>
+		/// Vrátí true, pokud se hodnoty aktuální instance rovnají hodnotám instance v parametru. Porovnává se částka a měna.
+		/// </summary>
 		public virtual bool Equals(Money<TCurrency> money)
 		{
 			if ((money == null) || (this.GetType() != money.GetType()))
@@ -87,6 +93,9 @@ namespace Havit.Business
 			return (this.Amount == money.Amount) && (this.Currency == money.Currency);
 		}
 
+		/// <summary>
+		/// Vrátí true, pokud se hodnoty aktuální instance rovnají hodnotám instance v parametru. Porovnává se částka a měna.
+		/// </summary>
 		public override bool Equals(object obj)
 		{
 			if (obj is Money<TCurrency>)
@@ -97,10 +106,17 @@ namespace Havit.Business
 			return false;
 		}
 
+		/// <summary>
+		/// Vrátí true, pokud se rovnají hodnoty instancí (porovnává se částka a měna), nebo pokud jsou obojí null.
+		/// </summary>
 		public static bool operator ==(Money<TCurrency> objA, Money<TCurrency> objB)
 		{
 			return Object.Equals(objA, objB);
 		}
+
+		/// <summary>
+		/// Vrátí true, pokud se nerovnají hodnoty instancí (porovnává se částka a měna), nebo pokud má právě jeden z parametrů hodnotu null.		
+		/// </summary>
 		public static bool operator !=(Money<TCurrency> objA, Money<TCurrency> objB)
 		{
 			return !Object.Equals(objA, objB);

@@ -437,41 +437,42 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-        /// <summary>
-        /// Vybere objekt dle ID, pokud je objekt s tímto ID mezi daty.
-        /// Pokud není, neprovede nic.
-        /// Vrací true/false indikující, zda se podařilo objekt vybrat.
-        /// Metoda je určena pro vnitřní implementaci ukládání hondot filtrů.
-        /// </summary>
-#warning Po přesunu ukládání hodnot filtrů z DSV do frameworku udělat metodu interní.
-        public bool SelectObjectIfPresent(int? objectID)
-        {
+		#region SelectObjectIfPresent
+		/// <summary>
+		/// Vybere objekt dle ID, pokud je objekt s tímto ID mezi daty.
+		/// Pokud není, neprovede nic.
+		/// Vrací true/false indikující, zda se podařilo objekt vybrat.
+		/// Metoda je určena pro vnitřní implementaci ukládání hondot filtrů.
+		/// </summary>
+		public bool SelectObjectIfPresent(int? objectID)
+		{
 
-            if ((objectID == null) && Nullable)
-            {
-                EnsureAutoDataBind();
-                EnsureEmptyItem();
-                SelectedValue = "";
-                return true;
-            }
+			if ((objectID == null) && Nullable)
+			{
+				EnsureAutoDataBind();
+				EnsureEmptyItem();
+				SelectedValue = "";
+				return true;
+			}
 
-            if (objectID != null)
-            {
-                EnsureAutoDataBind();
-                // pokud nastavujeme objekt
-                ListItem listItem = Items.FindByValue(objectID.Value.ToString());
-                if (listItem != null)
-                {
-                    // nastavovany objekt je v seznamu
-                    SelectedValue = listItem.Value;
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            return false;
-        }   
+			if (objectID != null)
+			{
+				EnsureAutoDataBind();
+				// pokud nastavujeme objekt
+				ListItem listItem = Items.FindByValue(objectID.Value.ToString());
+				if (listItem != null)
+				{
+					// nastavovany objekt je v seznamu
+					SelectedValue = listItem.Value;
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+			return false;
+		}
+		#endregion   
 	}
 }

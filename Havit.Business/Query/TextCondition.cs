@@ -69,6 +69,7 @@ namespace Havit.Business.Query
 		///	Pokud parametr obsahuje speciální znaky pro operátor LIKE jako procento nebo podtržítko,
 		///	jsou tyto znaky překódovány, takže nemají funkční význam.
 		/// </param>
+		/// <param name="wildCardsLikeExpressionMode">Režim použitý v případě, že hodnota value neobsahuje speciální znak (hvězdičku či otazník).</param>
 		/// <example>
 		///	Př. Hledání výrazu "k_lo*" nenajde "kolo" ani "kolotoč" protože _ nemá funkční význam, ale najde "k_lo" i "k_olotoč".
 		/// </example>

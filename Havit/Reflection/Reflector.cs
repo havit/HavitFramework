@@ -65,6 +65,7 @@ namespace Havit.Reflection
 		/// <param name="target">Objekt, z kterého má být property získána.</param>
 		/// <param name="targetType">Typ z kterého má být property získána (může být i rodičovským typem targetu).</param>
 		/// <param name="propertyName">Jméno property.</param>
+		/// <param name="value">Hodnota, která má být nastavena.</param>
 		public static void SetPropertyValue(Object target, Type targetType, String propertyName, object value)
 		{
 			SetPropertyValue(
@@ -83,6 +84,7 @@ namespace Havit.Reflection
 		/// </summary>
 		/// <param name="target">Objekt, z kterého má být property získána.</param>
 		/// <param name="propertyName">Jméno property.</param>
+		/// <param name="value">Hodnota, která má být nastavena.</param>
 		public static void SetPropertyValue(Object target, String propertyName, object value)
 		{
 			SetPropertyValue(

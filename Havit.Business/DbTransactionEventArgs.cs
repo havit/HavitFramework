@@ -23,6 +23,10 @@ namespace Havit.Business
         #endregion
 
         #region Constructors
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
+		/// <param name="transaction"></param>
         public DbTransactionEventArgs(DbTransaction transaction)
         {
             this._transaction = transaction;

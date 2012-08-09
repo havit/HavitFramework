@@ -127,6 +127,7 @@
     <Content Include="GridViewExtTest.aspx" />
     <Content Include="HavitScripts.js" />
     <Content Include="Web.config" />
+    <Content Include="WrapperTest.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_GlobalResources\TestEnum.Designer.cs">
@@ -311,6 +312,13 @@
       <SubType>Code</SubType>
       <DependentUpon>WebDialogsTest.aspx</DependentUpon>
     </Compile>
+    <Compile Include="WrapperTest.aspx.cs">
+      <DependentUpon>WrapperTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WrapperTest.aspx.designer.cs">
+      <DependentUpon>WrapperTest.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BusinessLayerTest\BusinessLayerTest.csproj">
@@ -367,6 +375,9 @@
     <Content Include="SingleSubmitProtectionTest.aspx" />
     <Content Include="TestFolder\GetApplicationPathUri.aspx" />
     <Content Include="WebDialogsTest.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Themes\Theme1\Skin1.skin" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

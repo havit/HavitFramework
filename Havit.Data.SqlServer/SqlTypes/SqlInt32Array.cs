@@ -52,7 +52,7 @@ namespace Havit.Data.SqlTypes
 		Format.UserDefined,
 		Name = "IntArray",
 		IsByteOrdered = true,
-		MaxByteSize = 8000)]
+		MaxByteSize = -1)]
 	public class SqlInt32Array : INullable, IBinarySerialize
 	{
 		#region private value holder
@@ -79,11 +79,11 @@ namespace Havit.Data.SqlTypes
 				this.values = null;
 				return;
 			}
-			if (values.Length > 1999)
-			{
-				throw new ArgumentException(String.Format("Maximální velikost pole je 1999 hodnot, požadováno je však {0} hodnot.",
-					values.Length));
-			}
+			//if (values.Length > 1999)
+			//{
+			//    throw new ArgumentException(String.Format("Maximální velikost pole je 1999 hodnot, požadováno je však {0} hodnot.",
+			//        values.Length));
+			//}
 
 			this.values = new List<SqlInt32>();
 			for (int i = 0; i < values.Length; i++)

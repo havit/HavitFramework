@@ -11,6 +11,21 @@ namespace Havit.Business.Query
 	public static class DateCondition
 	{
 		/// <summary>
+		/// Vytvoøí podmínku testující rovnost datumù. Jeli datum roven null, testuje se na IS NULL.
+		/// </summary>
+		public static Condition CreateEquals(IOperand operand, DateTime? dateTime)
+		{
+			if (dateTime == null)
+			{
+				return NullCondition.CreateIsNull(operand);
+			}
+			else
+			{
+				return CreateEquals(operand, dateTime.Value);
+			}
+		}
+
+		/// <summary>
 		/// Vytvoøí podmínku testující rovnost datumù.
 		/// </summary>
 		public static Condition CreateEquals(IOperand operand, DateTime dateTime)

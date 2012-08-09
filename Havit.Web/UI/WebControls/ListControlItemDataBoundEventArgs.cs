@@ -5,6 +5,9 @@ using System.Web.UI.WebControls;
 
 namespace Havit.Web.UI.WebControls
 {
+    /// <summary>
+    /// Argumenty události oznamující nabidnování hodnoty do seznamového prvku (DropDownList, CheckBoxList, EnumDropDownList, apod.)
+    /// </summary>
 	public class ListControlItemDataBoundEventArgs : EventArgs
 	{
 		/// <summary>

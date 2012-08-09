@@ -9,6 +9,9 @@ using System.Collections;
 
 namespace Havit.Web.UI.WebControls
 {
+    /// <summary>
+    /// EnterpriseCheckBoxList zajišuje pohodlnìjší práci s CheckBoxListem, jeho poloky pøedstavují business objekty.	
+    /// </summary>
 	public class EnterpriseCheckBoxList: CheckBoxListExt
 	{
 		#region ItemPropertyInfo

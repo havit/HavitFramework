@@ -12,6 +12,10 @@ using System.Web;
 
 namespace Havit.Web.UI.WebControls
 {
+    /// <summary>
+    /// Control, který zamezuje dvojímu odeslání formuláøe.
+    /// Pøi submitu pøekryje viditelnou èást formuláøe prùhledným, ale neprokliknutelným, DIVem.
+    /// </summary>
 	public class SingleSubmitProtection : WebControl
 	{
 		#region Constructor

@@ -10,6 +10,7 @@ namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
 	/// Vylepšený <see cref="DropDownList"/>.
+    /// Podporuje lepší zpracování hodnoty DataTextField pøi databindingu.
 	/// </summary>
 	public class DropDownListExt : DropDownList
 	{

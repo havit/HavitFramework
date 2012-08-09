@@ -5,6 +5,9 @@ using System.Web;
 
 namespace Havit.Web.UI.WebControls
 {
+    /// <summary>
+    /// Messenger - tøída pro sbìr zpráv (informaèních zpráv, upozornìnní a chybových zpráv) k zobrazení v uživatelském rozhraní.
+    /// </summary>
     public class Messenger
     {
         #region Messages (private)

@@ -7,6 +7,10 @@ using System.Globalization;
 
 namespace Havit.Web.UI.WebControls
 {
+    /// <summary>
+    /// Vylepšený <see cref="System.Web.UI.WebControls.CheckBoxList"/>.
+    /// Podporuje lepší zpracování hodnoty DataTextField při databindingu.
+    /// </summary>
 	public class CheckBoxListExt: CheckBoxList
 	{
 		#region ItemDataBound (event)

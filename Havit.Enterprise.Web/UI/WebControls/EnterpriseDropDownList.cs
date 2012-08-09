@@ -10,7 +10,7 @@ using Havit.Collections;
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
-	/// EnterpriseDropDownList zajišuje pohodlnìjší práci s DropDownListem, jeho prvky mají vazbu ne business objekty.	
+	/// EnterpriseDropDownList zajišuje pohodlnìjší práci s DropDownListem, jeho prvky pøedstavují business objekty.	
 	/// </summary>
 	public class EnterpriseDropDownList : DropDownListExt
 	{

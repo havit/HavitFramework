@@ -84,6 +84,7 @@
     <Reference Include="System.Data">
       <Name>System.Data</Name>
     </Reference>
+    <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web">
       <Name>System.Web</Name>
@@ -142,6 +143,10 @@
     <Compile Include="UI\Scriptlets\ScriptSubstitutionRepository.cs" />
     <Compile Include="UI\Scriptlets\SimpleControlExtender.cs" />
     <Compile Include="UI\Scriptlets\ValueParameter.cs" />
+    <Compile Include="UI\WebControls\AutoSuggestMenu\AutoSuggestMenu.cs" />
+    <Compile Include="UI\WebControls\AutoSuggestMenu\AutoSuggestMenuDesigner.cs" />
+    <Compile Include="UI\WebControls\AutoSuggestMenu\AutoSuggestMenuItem.cs" />
+    <Compile Include="UI\WebControls\AutoSuggestMenu\XJsonWriter.cs" />
     <Compile Include="UI\WebControls\BooleanField.cs" />
     <Compile Include="UI\WebControls\BoundFieldExt.cs" />
     <Compile Include="UI\WebControls\ButtonColumnExt.cs">
@@ -290,6 +295,14 @@
   <ItemGroup>
     <EmbeddedResource Include="UI\WebControls\DateTimeBox_DateTimePickerDisabled.gif" />
     <EmbeddedResource Include="UI\WebControls\DateTimeBox_DateTimePickerEnabled.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UI\WebControls\AutoSuggestMenu\AutoSuggestMenu.css" />
+    <EmbeddedResource Include="UI\WebControls\AutoSuggestMenu\AutoSuggestMenu.js" />
+    <EmbeddedResource Include="UI\WebControls\AutoSuggestMenu\AutoSuggestMenuItem.js" />
+    <EmbeddedResource Include="UI\WebControls\AutoSuggestMenu\Blank.html" />
+    <EmbeddedResource Include="UI\WebControls\AutoSuggestMenu\Events.js" />
+    <EmbeddedResource Include="UI\WebControls\AutoSuggestMenu\XUtils.js" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

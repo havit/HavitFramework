@@ -436,7 +436,7 @@ namespace Havit.Web.UI.WebControls
 
         
         
-        public static void WriteMenuItemsToJSON(List<AutoSuggestMenuItem> menuItems, int totalResults, XJsonWriter writer)
+        internal static void WriteMenuItemsToJSON(List<AutoSuggestMenuItem> menuItems, int totalResults, XJsonWriter writer)
         {            
             List<string> jsonMenuItems=new List<string>();
 

@@ -12,6 +12,9 @@ namespace Havit.Web.UI.WebControls
 	public abstract class DateTimeBoxDateCustomization
 	{
 		#region DateCustomizationFunctionName
+		/// <summary>
+		/// Název javascript funkce pro customizaci DateTimeBoxu.
+		/// </summary>
 		private string DateCustomizationFunctionName
 		{
 			get;
@@ -20,22 +23,13 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 
 		#region DateCustomizationFunctionContent
+		/// <summary>
+		/// Obsah (tělo) javascript funkce pro customizaci DateTimeBoxu.
+		/// </summary>
 		private string DateCustomizationFunctionContent
 		{
-			get
-			{
-				if (String.IsNullOrEmpty(_dateCustomizationFunctionContent))
-				{
-					StringBuilder sb = new StringBuilder();
-					sb.AppendLine("function " + DateCustomizationFunctionName + "(date, y, m, d) {");
-					sb.AppendLine(RenderDateStatusHandlerContent());
-					sb.AppendLine("}");
-
-					_dateCustomizationFunctionContent = sb.ToString();
-				}
-
-				return _dateCustomizationFunctionContent;
-			}
+			get;
+			set;
 		}
 		private string _dateCustomizationFunctionContent;
 		#endregion
@@ -47,15 +41,24 @@ namespace Havit.Web.UI.WebControls
 		{
 			if (String.IsNullOrEmpty(DateCustomizationFunctionName))
 			{
-				Guid functionNameGuid = Guid.NewGuid();
-				string functionName = "_" + functionNameGuid.ToString().Replace("-", "");
-				DateCustomizationFunctionName = functionName;								
+				lock(typeof(DateTimeBoxDateCustomization))
+				{
+					if (String.IsNullOrEmpty(DateCustomizationFunctionName))
+					{
+						Guid functionNameGuid = Guid.NewGuid();
+						string functionName = "_" + functionNameGuid.ToString().Replace("-", "");
+						DateCustomizationFunctionName = functionName;
+
+						StringBuilder sb = new StringBuilder();
+						sb.AppendLine("function " + functionName + "(date, y, m, d) {");
+						sb.AppendLine(RenderDateStatusHandlerContent());
+						sb.AppendLine("}");
+						DateCustomizationFunctionContent = sb.ToString();
+					}
+				}
 			}			
 
-			// to avoid rare conditions
-			string dateCustomizationFunctionNameTemp = DateCustomizationFunctionName;
-
-			ScriptManager.RegisterClientScriptBlock(page, typeof(DateTimeBoxDateCustomization), dateCustomizationFunctionNameTemp, DateCustomizationFunctionContent, true);
+			ScriptManager.RegisterClientScriptBlock(page, typeof(DateTimeBoxDateCustomization), DateCustomizationFunctionName, DateCustomizationFunctionContent, true);
 
 			return DateCustomizationFunctionName; 
 		}

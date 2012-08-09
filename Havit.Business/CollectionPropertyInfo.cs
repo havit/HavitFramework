@@ -12,10 +12,12 @@ namespace Havit.Business
 		/// <summary>
 		/// Vytvoøí instanci CollectionProperty.
 		/// </summary>
+		/// <param name="owner">Nadøazený objectInfo.</param>
 		/// <param name="itemType">Typ prvkù kolekce.</param>
 		/// <param name="collectionSelectFieldStatement">Èást SQL dotazu pro vytažení hodnoty daného sloupce.</param>
-		public CollectionPropertyInfo(Type itemType, string collectionSelectFieldStatement)
+		public void Initialize(ObjectInfo owner, Type itemType, string collectionSelectFieldStatement)
 		{
+			Initialize(owner);
 			this.itemType = itemType;
 			this.collectionSelectFieldStatement = collectionSelectFieldStatement;
 		}
@@ -25,7 +27,11 @@ namespace Havit.Business
 		/// </summary>
 		public Type ItemType
 		{
-			get { return itemType; }
+			get
+			{
+				CheckInitialization();
+				return itemType;
+			}
 		}
 		private Type itemType;
 
@@ -34,7 +40,11 @@ namespace Havit.Business
 		/// </summary>
 		public string CollectionSelectFieldStatement
 		{
-			get { return collectionSelectFieldStatement; }
+			get
+			{
+				CheckInitialization();
+				return collectionSelectFieldStatement;
+			}
 		}
 		private string collectionSelectFieldStatement;
 
@@ -43,6 +53,7 @@ namespace Havit.Business
 		/// </summary>
 		public string GetSelectFieldStatement(System.Data.Common.DbCommand command)
 		{
+			CheckInitialization();
 			return collectionSelectFieldStatement;
 		}
 	}

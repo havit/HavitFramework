@@ -10,31 +10,40 @@ namespace Havit.Business
 	public class ObjectInfo
 	{
 		/// <summary>
-		/// Vytvoøí instanci tøídy.
+		/// Nastaví instanci tøídy.
 		/// </summary>
 		/// <param name="dbSchema">Název schémata databázové tabulky.</param>
 		/// <param name="dbTable">Název databázové tabulky.</param>
 		/// <param name="readOnly">Urèuje, zda je tøída jen ke ètení.</param>
-		/// <param name="deletedProperty">FieldPropertyInfo, která identifikuje pøíznakem smazané záznamy.</param>
 		/// <param name="getObjectMethod">Delegát na metodu vracející objekt tøídy na základì ID.</param>
 		/// <param name="getAllMethod">Delegát na metodu vracející všechny (nesmazané) objekty tøídy.</param>
-		public ObjectInfo(string dbSchema, string dbTable, bool readOnly, FieldPropertyInfo deletedProperty, 
-			GetObjectDelegate getObjectMethod, GetAllDelegate getAllMethod)
+		/// <param name="deletedProperty">FieldPropertyInfo, která identifikuje pøíznakem smazané záznamy.</param>
+		/// <param name="properties">Kolekce všech vlastností objektu.</param>
+		public void Initialize(string dbSchema, string dbTable, bool readOnly, 
+			GetObjectDelegate getObjectMethod, GetAllDelegate getAllMethod, FieldPropertyInfo deletedProperty, PropertyInfoCollection properties)
 		{
 			this.dbSchema = dbSchema;
 			this.dbTable = dbTable;
 			this.readOnly = readOnly;
-			this.deletedProperty = deletedProperty;
 			this.getObjectMethod = getObjectMethod;
 			this.getAllMethod = getAllMethod;
+			this.deletedProperty = deletedProperty;
+			this.properties = properties;
+
+			this.isInitialized = true;
 		}
+		private bool isInitialized = false;
 
 		/// <summary>
 		/// Indikuje, zda je objekt urèen jen ke ètení.
 		/// </summary>
 		public bool ReadOnly
 		{
-			get { return readOnly; }
+			get
+			{
+				CheckInitialization();
+				return readOnly;
+			}
 		}
 		private bool readOnly;
 
@@ -43,7 +52,11 @@ namespace Havit.Business
 		/// </summary>
 		public string DbSchema
 		{
-			get { return dbSchema; }
+			get
+			{
+				CheckInitialization();
+				return dbSchema;
+			}
 		}
 		private string dbSchema;
 
@@ -52,7 +65,11 @@ namespace Havit.Business
 		/// </summary>
 		public string DbTable
 		{
-			get { return dbTable; }
+			get
+			{
+				CheckInitialization();
+				return dbTable;
+			}
 		}
 		private string dbTable;
 
@@ -61,7 +78,11 @@ namespace Havit.Business
 		/// </summary>
 		public PropertyInfoCollection Properties
 		{
-			get { return properties; }
+			get
+			{
+				CheckInitialization();
+				return properties;
+			}
 		}
 		private PropertyInfoCollection properties;
 
@@ -70,7 +91,11 @@ namespace Havit.Business
 		/// </summary>
 		public FieldPropertyInfo DeletedProperty
 		{
-			get { return deletedProperty;  }
+			get
+			{
+				CheckInitialization();
+				return deletedProperty;
+			}
 		}
 		private FieldPropertyInfo deletedProperty;
 
@@ -79,7 +104,11 @@ namespace Havit.Business
 		/// </summary>
 		public GetObjectDelegate GetObjectMethod
 		{
-			get { return getObjectMethod; }
+			get
+			{
+				CheckInitialization();
+				return getObjectMethod;
+			}
 		}
 		private GetObjectDelegate getObjectMethod;
 
@@ -88,27 +117,24 @@ namespace Havit.Business
 		/// </summary>
 		public GetAllDelegate GetAllMethod
 		{
-			get { return getAllMethod; }
+			get
+			{
+				CheckInitialization();
+				return getAllMethod; 
+			}
 		}
 		private GetAllDelegate getAllMethod;
 
 		/// <summary>
-		/// Registruje kolekci properties.
-		/// Každé registrované property nastaví parenta na tuto instanci tøídy ObjectInfo.
+		/// Ovìøí, že byla instance inicializována. Pokud ne, vyhodí výjimku.
 		/// </summary>
-		public void RegisterProperties(PropertyInfoCollection properties)
+		protected void CheckInitialization()
 		{
-			if (properties == null)
+			if (!isInitialized)
 			{
-				throw new ArgumentNullException("properties");
-			}
-
-			this.properties = properties;
-
-			foreach (PropertyInfo propertyInfo in properties)
-			{
-				propertyInfo.Parent = this;
+				throw new InvalidOperationException("Instance nebyla inicializována.");
 			}
 		}
+
 	}
 }

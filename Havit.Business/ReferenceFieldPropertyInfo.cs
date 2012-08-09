@@ -14,8 +14,9 @@ namespace Havit.Business
 	public class ReferenceFieldPropertyInfo : FieldPropertyInfo
 	{
 		/// <summary>
-		/// Vytvoøí instanci sloupce.
+		/// Inicializuje instanci sloupce.
 		/// </summary>
+		/// <param name="owner">Nadøazený objectInfo.</param>
 		/// <param name="fieldName">Název sloupce v databázy.</param>
 		/// <param name="isPrimaryKey">Indikuje, zda je sloupec primárním klíèem</param>
 		/// <param name="nullable">Indukuje, zda je povolena hodnota null.</param>
@@ -23,9 +24,9 @@ namespace Havit.Business
 		/// <param name="maximumLength">Maximální délka dat databázového sloupce.</param>		
 		/// <param name="targetType">Typ, jenž property nese.</param>
 		/// <param name="targetObjectInfo">ObjectInfo na typ, jenž property nese.</param>
-		public ReferenceFieldPropertyInfo(string fieldName, bool isPrimaryKey, SqlDbType fieldType, bool nullable, int maximumLength, Type targetType, ObjectInfo targetObjectInfo)
-			: base(fieldName, isPrimaryKey, fieldType, nullable, maximumLength)
+		public void Initialize(ObjectInfo owner, string fieldName, bool isPrimaryKey, SqlDbType fieldType, bool nullable, int maximumLength, Type targetType, ObjectInfo targetObjectInfo)			
 		{
+			Initialize(owner, fieldName, isPrimaryKey, fieldType, nullable, maximumLength);
 			this.targetType = targetType;
 			this.targetObjectInfo = targetObjectInfo;
 		}

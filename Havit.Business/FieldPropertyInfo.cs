@@ -15,15 +15,17 @@ namespace Havit.Business
 	public class FieldPropertyInfo : PropertyInfo, IFieldsBuilder, IOperand
 	{
 		/// <summary>
-		/// Vytvoøí instanci sloupce.
+		/// Inicializuje instanci sloupce.
 		/// </summary>
+		/// <param name="owner">Nadøazený objectInfo.</param>
 		/// <param name="fieldName">Název sloupce v databázy.</param>
 		/// <param name="isPrimaryKey">Indikuje, zda je sloupec primárním klíèem</param>
 		/// <param name="nullable">Indukuje, zda je povolena hodnota null.</param>
 		/// <param name="fieldType">Typ databázového sloupce.</param>
 		/// <param name="maximumLength">Maximální délka dat databázového sloupce.</param>		
-		public FieldPropertyInfo(string fieldName, bool isPrimaryKey, SqlDbType fieldType, bool nullable, int maximumLength)
+		public void Initialize(ObjectInfo owner, string fieldName, bool isPrimaryKey, SqlDbType fieldType, bool nullable, int maximumLength)
 		{
+			Initialize(owner);
 			this.fieldName = fieldName;
 			this.nullable = nullable;
 			this.fieldType = fieldType;
@@ -36,7 +38,11 @@ namespace Havit.Business
 		/// </summary>
 		public string FieldName
 		{
-			get { return fieldName; }
+			get
+			{
+				CheckInitialization();
+				return fieldName;
+			}
 		}
 		private string fieldName;
 
@@ -45,7 +51,11 @@ namespace Havit.Business
 		/// </summary>
 		public bool Nullable
 		{
-			get { return nullable; }
+			get
+			{
+				CheckInitialization();
+				return nullable;
+			}
 		}
 		private bool nullable;
 
@@ -54,7 +64,11 @@ namespace Havit.Business
 		/// </summary>
 		public SqlDbType FieldType
 		{
-			get { return fieldType; }
+			get
+			{
+				CheckInitialization();
+				return fieldType;
+			}
 		}
 		private SqlDbType fieldType;
 
@@ -63,7 +77,11 @@ namespace Havit.Business
 		/// </summary>
 		public bool IsPrimaryKey
 		{
-			get { return isPrimaryKey; }
+			get
+			{
+				CheckInitialization();
+				return isPrimaryKey;
+			}
 		}
 		private bool isPrimaryKey;
 
@@ -72,7 +90,12 @@ namespace Havit.Business
 		/// </summary>
 		public int MaximumLength
 		{
-			get { return maximumLength; }
+			get
+			{
+				CheckInitialization();
+				return maximumLength;
+			}
+
 		}
 		private int maximumLength;
 
@@ -81,11 +104,13 @@ namespace Havit.Business
 		/// </summary>
 		public virtual string GetSelectFieldStatement(DbCommand command)
 		{
+			CheckInitialization();
 			return fieldName;
 		}
 
 		string IOperand.GetCommandValue(DbCommand command)
 		{
+			CheckInitialization();
 			return fieldName;
 		}
 	}

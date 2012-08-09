@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Collections.ObjectModel;
+using System.Runtime.InteropServices;
 
 namespace Havit.Business
 {
@@ -11,6 +12,7 @@ namespace Havit.Business
 	/// property nebude do kolekce pøidána podruhé a nedojde k chybì).
 	/// </summary>
 	[Serializable]
+	[ComVisible(false)]
 	public class PropertyCollection : Collection<IProperty>
 	{
 		/// <summary>

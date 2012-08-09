@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Collections.ObjectModel;
+using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 namespace Havit.Business.Query
 {
@@ -17,7 +19,7 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Vytvoøí instanci.
 		/// </summary>
-		public CompositeCondition(string operatorBetweenOperands, params ICondition[] conditions)
+		protected CompositeCondition(string operatorBetweenOperands, params ICondition[] conditions)
 		{
 			this.operatorBetweenOperands = operatorBetweenOperands;
 			this.AddRange(conditions);
@@ -30,6 +32,8 @@ namespace Havit.Business.Query
 		/// </summary>
 		public virtual void GetWhereStatement(System.Data.Common.DbCommand command, StringBuilder whereBuilder)
 		{
+			Debug.Assert(whereBuilder != null);
+
 			if (Count == 0)
 			{
 				return;

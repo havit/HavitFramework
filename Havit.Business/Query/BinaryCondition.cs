@@ -49,7 +49,6 @@ namespace Havit.Business.Query
 		#endregion
 
 		#region ICondition Members
-
 		/// <summary>
 		/// Pøidá èást SQL pøíkaz pro sekci WHERE
 		/// </summary>
@@ -59,7 +58,6 @@ namespace Havit.Business.Query
 		{
 			whereBuilder.AppendFormat(ConditionPattern, Operand1.GetCommandValue(command), Operand2.GetCommandValue(command));
 		}
-
 		#endregion
 
 		#region GetComparisonPattern

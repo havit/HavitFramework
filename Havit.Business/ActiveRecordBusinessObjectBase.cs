@@ -94,12 +94,14 @@ namespace Havit.Business
 		/// </summary>
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt naèten; null, pokud bez transakce</param>
 		/// <returns><see cref="Havit.Data.DataRecord"/> s daty objektu naètenými z databáze; null, pokud nenalezeno</returns>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member")]
 		protected abstract DataRecord Load_GetDataRecord(DbTransaction transaction);
 
 		/// <summary>
 		/// Implemetace metody naplní hodnoty objektu z DataRecordu.
 		/// </summary>
 		/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu naètenými z databáze; null, pokud nenalezeno</param>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member")]
 		protected abstract void Load_ParseDataRecord(DataRecord record);
 		#endregion
 
@@ -158,12 +160,14 @@ namespace Havit.Business
 		/// Implementace metody vloží nový objekt do databáze a nastaví novì pøidìlené ID (primární klíè).
 		/// </summary>
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member")]
 		protected abstract void Save_Insert(DbTransaction transaction);
 
 		/// <summary>
 		/// Implementace metody aktualizuje data objektu v databázi.
 		/// </summary>
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member")]
 		protected abstract void Save_Update(DbTransaction transaction);
 		#endregion
 	}

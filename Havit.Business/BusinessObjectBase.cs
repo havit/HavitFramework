@@ -22,6 +22,7 @@ namespace Havit.Business
 		/// <summary>
 		/// Hodnota, kterou má ID objektu neuloženého v databázi (bez perzistence).
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1706:ShortAcronymsShouldBeUppercase", MessageId = "Member")]
 		public const int NoID = -1;
 		#endregion
 
@@ -29,6 +30,7 @@ namespace Havit.Business
 		/// <summary>
 		/// Primární klíè objektu.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1706:ShortAcronymsShouldBeUppercase", MessageId = "Member")]
 		public int ID
 		{
 			get { return _id; }
@@ -171,6 +173,7 @@ namespace Havit.Business
 		/// Výkonná èást nahrání objektu z perzistentního uložištì.
 		/// </summary>
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt naèten; null, pokud bez transakce</param>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member")]
 		protected abstract void Load_Perform(DbTransaction transaction);
 		#endregion
 
@@ -232,12 +235,14 @@ namespace Havit.Business
 		/// Výkonná èást uložení objektu do perzistentního uložištì.
 		/// </summary>
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member")]
 		protected abstract void Save_Perform(DbTransaction transaction);
 
 		/// <summary>
 		/// Ukládá member-objekty.
 		/// </summary>
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které mají být member-objekty uloženy; null, pokud bez transakce</param>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member")]
 		protected virtual void Save_SaveMembers(DbTransaction transaction)
 		{
 			// NOOP
@@ -247,6 +252,7 @@ namespace Havit.Business
 		/// Ukládá member-kolekce objektu.
 		/// </summary>
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které mají být member-kolekce uloženy; null, pokud bez transakce</param>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member")]
 		protected virtual void Save_SaveCollections(DbTransaction transaction)
 		{
 			// NOOP
@@ -290,6 +296,7 @@ namespace Havit.Business
 		/// Implementace metody vymaže objekt z perzistentního uložištì nebo ho oznaèí jako smazaný.
 		/// </summary>
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které se smazání provede; null, pokud bez transakce</param>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member")]
 		protected abstract void Delete_Perform(DbTransaction transaction);
 		#endregion
 
@@ -357,9 +364,9 @@ namespace Havit.Business
 		/// <returns>true, pokud jsou si rovny; jinak false</returns>
 		public override bool Equals(object obj)
 		{
-			if (obj is BusinessObjectBase)
+			BusinessObjectBase bob = obj as BusinessObjectBase;
+			if (bob != null)
 			{
-				BusinessObjectBase bob = obj as BusinessObjectBase;
 				return this.Equals(bob);
 			}
 			return false;

@@ -93,6 +93,7 @@
     <Compile Include="BusinessObjectCollection.cs" />
     <Compile Include="CollectionProperty.cs" />
     <Compile Include="CollectionPropertyHolder.cs" />
+    <Compile Include="Properties\GlobalSuppressions.cs" />
     <Compile Include="Query\AndCondition.cs" />
     <Compile Include="Query\BinaryCondition.cs" />
     <Compile Include="Query\BoolCondition.cs" />

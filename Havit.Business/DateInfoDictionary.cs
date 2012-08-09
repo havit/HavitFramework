@@ -42,6 +42,11 @@ namespace Havit.Business
 		/// <param name="value">Prvek, který má být pøidán do slovníku.</param>
 		public void Add(DateInfo value)
 		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("value");
+			}
+
 			Dictionary.Add(value.Date, value);
 		}
 		#endregion

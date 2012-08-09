@@ -13,27 +13,27 @@ namespace Havit.Business
 		/// </summary>
 		public DateTime Date
 		{
-			get { return date; }
+			get { return _date; }
 		}
-		private readonly DateTime date;
+		private readonly DateTime _date;
 
 		/// <summary>
 		/// Indikuje, zda-li je den svátkem.
 		/// </summary>
 		public bool IsHoliday
 		{
-			get { return isHoliday; }
+			get { return _isHoliday; }
 		}
-		private bool isHoliday;
+		private bool _isHoliday;
 
 		/// <summary>
 		/// Textový popis svátku, pokud je den svátkem.
 		/// </summary>
 		public string HolidayDescription
 		{
-			get { return holidayDescription; }
+			get { return _holidayDescription; }
 		}
-		private string holidayDescription;
+		private string _holidayDescription;
 		#endregion
 
 		#region Constructor
@@ -43,7 +43,7 @@ namespace Havit.Business
 		/// <param name="date">den, který má být reprezentován</param>
 		public DateInfo(DateTime date)
 		{
-			this.date = date.Date;
+			this._date = date.Date;
 		}
 		#endregion
 
@@ -54,8 +54,8 @@ namespace Havit.Business
 		/// <param name="holidayDescription">textový popis svátku</param>
 		public void SetAsHoliday(string holidayDescription)
 		{
-			this.isHoliday = true;
-			this.holidayDescription = holidayDescription;
+			this._isHoliday = true;
+			this._holidayDescription = holidayDescription;
 		}
 
 		/// <summary>

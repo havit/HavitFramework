@@ -232,6 +232,9 @@ namespace Havit.BusinessLayerTest
 		#endregion
 		
 		#region Enum members
+		/// <summary>
+		/// ZaporneID
+		/// </summary>
 		public static Role ZaporneID
 		{
 			get
@@ -240,6 +243,9 @@ namespace Havit.BusinessLayerTest
 			}
 		}
 		
+		/// <summary>
+		/// NuloveID
+		/// </summary>
 		public static Role NuloveID
 		{
 			get
@@ -248,6 +254,9 @@ namespace Havit.BusinessLayerTest
 			}
 		}
 		
+		/// <summary>
+		/// Administrator
+		/// </summary>
 		public static Role Administrator
 		{
 			get
@@ -256,6 +265,9 @@ namespace Havit.BusinessLayerTest
 			}
 		}
 		
+		/// <summary>
+		/// Editor
+		/// </summary>
 		public static Role Editor
 		{
 			get
@@ -264,6 +276,9 @@ namespace Havit.BusinessLayerTest
 			}
 		}
 		
+		/// <summary>
+		/// Publisher
+		/// </summary>
 		public static Role Publisher
 		{
 			get
@@ -272,6 +287,9 @@ namespace Havit.BusinessLayerTest
 			}
 		}
 		
+		/// <summary>
+		/// Operator
+		/// </summary>
 		public static Role Operator
 		{
 			get
@@ -288,12 +306,36 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static class EnumIDs
 		{
+			/// <summary>
+			/// ZaporneID
+			/// </summary>
 			public const int ZaporneID = -1;
+			
+			/// <summary>
+			/// NuloveID
+			/// </summary>
 			public const int NuloveID = 0;
+			
+			/// <summary>
+			/// Administrator
+			/// </summary>
 			public const int Administrator = 1;
+			
+			/// <summary>
+			/// Editor
+			/// </summary>
 			public const int Editor = 2;
+			
+			/// <summary>
+			/// Publisher
+			/// </summary>
 			public const int Publisher = 3;
+			
+			/// <summary>
+			/// Operator
+			/// </summary>
 			public const int Operator = 4;
+			
 		}
 		#endregion
 		

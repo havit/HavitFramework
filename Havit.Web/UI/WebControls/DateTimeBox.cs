@@ -154,7 +154,14 @@ namespace Havit.Web.UI.WebControls
 				{
 					throw new InvalidOperationException("Nelze číst Value, pokud IsValid je false.");
 				}
-				return (DateTime?)ViewState["Value"];
+
+				DateTime? result = (DateTime?)ViewState["Value"];
+				// pokud jsme v řežimu zobrazení data bez času, nevracíme čas (mohl být zadaný setterem property Value nebo mohlo po postbacku dojít k přepnutí vlastnosti DateTimeMode)
+				if ((result != null) && (DateTimeMode == DateTimeMode.Date)) 
+				{
+					return result.Value.Date;
+				}
+				return result;
 			}
 			set
 			{

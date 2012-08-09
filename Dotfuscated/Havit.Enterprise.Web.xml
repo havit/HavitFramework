@@ -4,43 +4,6 @@
         <name>Havit.Enterprise.Web</name>
     </assembly>
     <members>
-        <member name="T:Havit.Web.UI.WebControls.EnterpriseGridView">
-            <summary>
-            EnterprisGridView poskytuje:
-            - hledání klíče řádku, ve kterém došlo k události
-            - hledání sloupce (IEnterpriseField) na základě ID sloupce
-            - stránkování
-            - zveřejňuje vlastnost RequiresDataBinding
-            - automatický databinding při prvním načtení stránky nebo nastavení RequiresDataBinding na true (podmíněno vlastností AutoDataBind)
-            - přechod na stránku 0 při změně řazení
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.#ctor">
-            <summary>
-            Vytvoří instanci EnterpriseGridView. Nastavuje defaultní DataKeyNames na ID.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.GetRowID(System.Web.UI.Control)">
-            <summary>
-            Nalezne hodnotu ID klíče položky, ve kterém se nachází control.
-            </summary>
-            <param name="control">Control. Hledá se řádek, ve kterém se GridViewRow nalézá a DataKey řádku.</param>
-            <returns>Vrací hodnotu klíče.</returns>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.GetRowID(System.Web.UI.WebControls.GridViewCommandEventArgs)">
-            <summary>
-            Nalezne hodnotu ID klíče položky na základě události.
-            </summary>
-            <param name="e">Událost, ke které v gridu došlo.</param>
-            <returns>Vrací hodnotu klíče daného řádku.</returns>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.GetRowID(System.Int32)">
-            <summary>
-            Nalezne hodnotu ID klíče položky na základě indexu řádku v gridu.
-            </summary>
-            <param name="rowIndex">index řádku</param>
-            <returns>Vrací hodnotu klíče daného řádku.</returns>
-        </member>
         <member name="T:Havit.Web.UI.WebControls.EnterpriseDropDownList">
             <summary>
             EnterpriseDropDownList zajišťuje pohodlnější práci s DropDownListem, jehož prvky mají vazbu ne business objekty.	
@@ -188,6 +151,43 @@
             <summary>
             Udává, zda je EDDL nullable, viz kód...
             </summary>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.EnterpriseGridView">
+            <summary>
+            EnterprisGridView poskytuje:
+            - hledání klíče řádku, ve kterém došlo k události
+            - hledání sloupce (IEnterpriseField) na základě ID sloupce
+            - stránkování
+            - zveřejňuje vlastnost RequiresDataBinding
+            - automatický databinding při prvním načtení stránky nebo nastavení RequiresDataBinding na true (podmíněno vlastností AutoDataBind)
+            - přechod na stránku 0 při změně řazení
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.#ctor">
+            <summary>
+            Vytvoří instanci EnterpriseGridView. Nastavuje defaultní DataKeyNames na ID.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.GetRowID(System.Web.UI.Control)">
+            <summary>
+            Nalezne hodnotu ID klíče položky, ve kterém se nachází control.
+            </summary>
+            <param name="control">Control. Hledá se řádek, ve kterém se GridViewRow nalézá a DataKey řádku.</param>
+            <returns>Vrací hodnotu klíče.</returns>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.GetRowID(System.Web.UI.WebControls.GridViewCommandEventArgs)">
+            <summary>
+            Nalezne hodnotu ID klíče položky na základě události.
+            </summary>
+            <param name="e">Událost, ke které v gridu došlo.</param>
+            <returns>Vrací hodnotu klíče daného řádku.</returns>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseGridView.GetRowID(System.Int32)">
+            <summary>
+            Nalezne hodnotu ID klíče položky na základě indexu řádku v gridu.
+            </summary>
+            <param name="rowIndex">index řádku</param>
+            <returns>Vrací hodnotu klíče daného řádku.</returns>
         </member>
     </members>
 </doc>

@@ -1894,22 +1894,42 @@
         </member>
         <member name="M:Havit.Business.Query.ReferenceCondition.CreateEquals(Havit.Business.Query.IOperand,System.Nullable{System.Int32})">
             <summary>
-            Vytvoří podmínku na rovnost.
+            Vytvoří podmínku na rovnost reference.
             </summary>
         </member>
         <member name="M:Havit.Business.Query.ReferenceCondition.CreateEquals(Havit.Business.Query.IOperand,Havit.Business.BusinessObjectBase)">
             <summary>
-            Vytvoří podmínku na rovnost.
+            Vytvoří podmínku na rovnost reference.
             </summary>
         </member>
         <member name="M:Havit.Business.Query.ReferenceCondition.CreateEquals(Havit.Business.Query.IOperand,Havit.Business.Query.IOperand)">
             <summary>
-            Vytvoří podmínku na rovnost dvou operandů.
+            Vytvoří podmínku na rovnost reference.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.ReferenceCondition.CreateNotEquals(Havit.Business.Query.IOperand,System.Nullable{System.Int32})">
+            <summary>
+            Vytvoří podmínku na nerovnost reference.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.ReferenceCondition.CreateNotEquals(Havit.Business.Query.IOperand,Havit.Business.BusinessObjectBase)">
+            <summary>
+            Vytvoří podmínku na nerovnost reference.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.ReferenceCondition.CreateNotEquals(Havit.Business.Query.IOperand,Havit.Business.Query.IOperand)">
+            <summary>
+            Vytvoří podmínku na nerovnost reference.
             </summary>
         </member>
         <member name="M:Havit.Business.Query.ReferenceCondition.CreateIn(Havit.Business.Query.IOperand,System.Int32[])">
             <summary>
-            Vytvoří podmínku existence hodnoty v poli integerů.
+            Vytvoří podmínku existence reference v poli ID objektů.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.ReferenceCondition.CreateNotIn(Havit.Business.Query.IOperand,System.Int32[])">
+            <summary>
+            Vytvoří podmínku neexistence hodnoty v poli ID objektů.
             </summary>
         </member>
         <member name="T:Havit.Business.CollectionPropertyInfo">

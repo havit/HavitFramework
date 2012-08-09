@@ -461,7 +461,7 @@ namespace Havit.Web.UI.WebControls
 		|| (!window.event && e.ctrlKey && !e.altKey && !e.shiftKey && (charCode == 65 || charCode == 97 || charCode == 88 || charCode == 120 || charCode == 67 || charCode == 99 || charCode == 86 || charCode == 118));
 	if (!validKey)
 	{
-		if (window.event) { window.event.returnValue = null; } else { e.preventDefault(); }
+		if (window.event) { window.event.returnValue = false; } else { e.preventDefault(); }
 	}
 }
 

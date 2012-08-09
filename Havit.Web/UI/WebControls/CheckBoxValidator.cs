@@ -102,7 +102,7 @@ namespace Havit.Web.UI.WebControls
 
     		if (EnableClientScript)
     		{
-    			ScriptManager.RegisterClientScriptBlock(this.Page, this.GetType(), "Havit.Web.UI.WebControls.CheckBoxValidator", validationScript, true);
+    			ScriptManager.RegisterClientScriptBlock(this.Page, typeof(CheckBoxValidator), "Havit.Web.UI.WebControls.CheckBoxValidator", validationScript, true);
     		}
     	}
     	private const string validationScript = @"

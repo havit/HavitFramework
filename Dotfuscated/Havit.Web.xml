@@ -3199,6 +3199,16 @@
             Identifikátor fieldu na který se lze odkazovat pomocí <see cref="M:Havit.Web.UI.WebControls.GridViewExt.FindColumn(System.String)"/>.
             </summary>
         </member>
+        <member name="T:Havit.Web.UI.Scriptlets.ClientScriptSubstituingEventArgs">
+            <summary>
+            Argumenty události ScriptSubstituing.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.Scriptlets.ClientScriptSubstituingEventArgs.ClientScript">
+            <summary>
+            Klientský skript k substituci.
+            </summary>
+        </member>
         <member name="T:Havit.Web.UI.WebControls.SortExpressions">
             <summary>
             Třída SortExpressions zajišťuje práci s řazením položek.
@@ -3618,16 +3628,6 @@
         <member name="P:Havit.Web.UI.WebControls.ButtonFieldExt.ID">
             <summary>
             Identifikátor fieldu na který se lze odkazovat pomocí <see cref="M:Havit.Web.UI.WebControls.GridViewExt.FindColumn(System.String)"/>.
-            </summary>
-        </member>
-        <member name="T:Havit.Web.UI.Scriptlets.ClientScriptSubstituingEventArgs">
-            <summary>
-            Argumenty události ScriptSubstituing.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.Scriptlets.ClientScriptSubstituingEventArgs.ClientScript">
-            <summary>
-            Klientský skript k substituci.
             </summary>
         </member>
     </members>

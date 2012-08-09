@@ -12,6 +12,7 @@ using System.Text;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
+using System.Data.SqlTypes;
 using System.Web;
 using System.Web.Caching;
 using Havit.Data;
@@ -43,18 +44,18 @@ namespace Havit.BusinessLayerTest
 		
 		public void Initialize(ObjectInfo objectInfo)
 		{
-			_id.Initialize(objectInfo, "UzivatelID", true, SqlDbType.Int, false, 4);
-			_username.Initialize(objectInfo, "Username", false, SqlDbType.VarChar, false, 50);
-			_password.Initialize(objectInfo, "Password", false, SqlDbType.NVarChar, false, 30);
-			_displayAs.Initialize(objectInfo, "DisplayAs", false, SqlDbType.NVarChar, false, 50);
-			_email.Initialize(objectInfo, "Email", false, SqlDbType.NVarChar, false, 100);
-			_disabled.Initialize(objectInfo, "Disabled", false, SqlDbType.Bit, false, 1);
-			_lockedTime.Initialize(objectInfo, "LockedTime", false, SqlDbType.SmallDateTime, true, 4);
-			_loginLast.Initialize(objectInfo, "LoginLast", false, SqlDbType.SmallDateTime, true, 4);
-			_loginCount.Initialize(objectInfo, "LoginCount", false, SqlDbType.Int, false, 4);
-			_created.Initialize(objectInfo, "Created", false, SqlDbType.SmallDateTime, false, 4);
-			_deleted.Initialize(objectInfo, "Deleted", false, SqlDbType.Bit, false, 1);
-			_role.Initialize(objectInfo, typeof(Havit.BusinessLayerTest.Role), "(SELECT dbo.IntArrayAggregate(innerSelect.RoleID) FROM dbo.Uzivatel_Role AS innerSelect WHERE (innerSelect.UzivatelID = dbo.Uzivatel.UzivatelID)) AS Role");
+			_id.Initialize(objectInfo, "ID", "UzivatelID", true, SqlDbType.Int, false, 4);
+			_username.Initialize(objectInfo, "Username", "Username", false, SqlDbType.VarChar, false, 50);
+			_password.Initialize(objectInfo, "Password", "Password", false, SqlDbType.NVarChar, false, 30);
+			_displayAs.Initialize(objectInfo, "DisplayAs", "DisplayAs", false, SqlDbType.NVarChar, false, 50);
+			_email.Initialize(objectInfo, "Email", "Email", false, SqlDbType.NVarChar, false, 100);
+			_disabled.Initialize(objectInfo, "Disabled", "Disabled", false, SqlDbType.Bit, false, 1);
+			_lockedTime.Initialize(objectInfo, "LockedTime", "LockedTime", false, SqlDbType.SmallDateTime, true, 4);
+			_loginLast.Initialize(objectInfo, "LoginLast", "LoginLast", false, SqlDbType.SmallDateTime, true, 4);
+			_loginCount.Initialize(objectInfo, "LoginCount", "LoginCount", false, SqlDbType.Int, false, 4);
+			_created.Initialize(objectInfo, "Created", "Created", false, SqlDbType.SmallDateTime, false, 4);
+			_deleted.Initialize(objectInfo, "Deleted", "Deleted", false, SqlDbType.Bit, false, 1);
+			_role.Initialize(objectInfo, "Role", typeof(Havit.BusinessLayerTest.Role), "(SELECT dbo.IntArrayAggregate(innerSelect.RoleID) FROM dbo.Uzivatel_Role AS innerSelect WHERE (innerSelect.UzivatelID = dbo.Uzivatel.UzivatelID)) AS Role");
 		}
 		
 		public FieldPropertyInfo ID

@@ -9,49 +9,66 @@ using Havit.BusinessLayerTest;
 namespace Havit.BusinessTest
 {
 	/// <summary>
-	///This is a test class for Havit.Business.ActiveRecordBusinessObjectBase and is intended
-	///to contain all Havit.Business.ActiveRecordBusinessObjectBase Unit Tests
+	///This is a test class for Havit.Business.BusinessObjectBase and is intended
+	///to contain all Havit.Business.BusinessObjectBase Unit Tests
 	///</summary>
 	[TestClass()]
-	public class BusinessLayerTest
+	public class BusinessObjectBaseTest
 	{
-		#region BusinessLayerTest_ZaporneID
+		#region EqualsTest_StejneID
 		/// <summary>
-		/// Základní test na funkčnost záporných ID.
+		/// Základní test na funkčnost Equals při stejných ID.
 		///</summary>
 		[TestMethod()]
-		public void BusinessLayerTest_ZaporneID()
+		public void EqualsTest_StejneID()
 		{
-			Role role = Role.GetObject(-1);
+			Role role1 = Role.GetObject(-1);
+			Role role2 = Role.GetObject(-1);
 
-			Assert.IsFalse(String.IsNullOrEmpty(role.Symbol));
-			Assert.Equals(role.Symbol, Role.ZaporneID.Symbol);
+			Assert.IsTrue(role1.Equals(role2));
+			Assert.IsTrue(role2.Equals(role1));
+			Assert.IsTrue(role1 == role2);
+			Assert.IsTrue(role2 == role1);
 		}
 		#endregion
 
-		#region BusinessLayerTest_NuloveID
+		#region EqualsTest_RuzneID
 		/// <summary>
-		/// Základní test na funkčnost nulových ID.
+		/// Základní test na funkčnost Equals při různých ID.
 		///</summary>
 		[TestMethod()]
-		public void BusinessLayerTest_NuloveID()
+		public void EqualsTest_RuzneID()
 		{
-			Role role = Role.GetObject(0);
+			Role role1 = Role.GetObject(-1);
+			Role role2 = Role.GetObject(1);
 
-			Assert.IsFalse(String.IsNullOrEmpty(role.Symbol));
-			Assert.Equals(role.Symbol, Role.NuloveID.Symbol);
+			Assert.IsFalse(role1.Equals(role2));
+			Assert.IsFalse(role2.Equals(role1));
+			Assert.IsFalse(role1 == role2);
+			Assert.IsFalse(role2 == role1);
 		}
 		#endregion
 
-		#region BusinessLayerTest_ZakazaneNoID
+		#region EqualsTest_Nove
 		/// <summary>
-		/// Základní test na funkčnost zakázaného NoID.
+		/// Základní test na funkčnost Equals na nové objekty.
 		///</summary>
 		[TestMethod()]
-		[ExpectedException(typeof(InvalidOperationException))]
-		public void BusinessLayerTest_ZakazaneNoID()
+		public void EqualsTest_Nove()
 		{
-			Role role = Role.GetObject(Role.NoID);
+			Subjekt subjekt1 = Subjekt.CreateObject();
+			Subjekt subjekt2 = Subjekt.CreateObject();
+			Subjekt subjekt3 = subjekt1;
+
+			Assert.IsFalse(subjekt1.Equals(subjekt2));
+			Assert.IsFalse(subjekt1.Equals(subjekt2));
+			Assert.IsFalse(subjekt1 == subjekt2);
+			Assert.IsFalse(subjekt1 == subjekt2);
+
+			Assert.IsTrue(subjekt1.Equals(subjekt3));
+			Assert.IsTrue(subjekt1.Equals(subjekt3));
+			Assert.IsTrue(subjekt1 == subjekt3);
+			Assert.IsTrue(subjekt1 == subjekt3);
 		}
 		#endregion
 

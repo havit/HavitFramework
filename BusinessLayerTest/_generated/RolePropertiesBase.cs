@@ -12,6 +12,7 @@ using System.Text;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
+using System.Data.SqlTypes;
 using System.Web;
 using System.Web.Caching;
 using Havit.Data;
@@ -33,8 +34,8 @@ namespace Havit.BusinessLayerTest
 		
 		public void Initialize(ObjectInfo objectInfo)
 		{
-			_id.Initialize(objectInfo, "RoleID", true, SqlDbType.Int, false, 4);
-			_symbol.Initialize(objectInfo, "Symbol", false, SqlDbType.VarChar, true, 50);
+			_id.Initialize(objectInfo, "ID", "RoleID", true, SqlDbType.Int, false, 4);
+			_symbol.Initialize(objectInfo, "Symbol", "Symbol", false, SqlDbType.VarChar, true, 50);
 		}
 		
 		public FieldPropertyInfo ID

@@ -12,6 +12,7 @@ using System.Text;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
+using System.Data.SqlTypes;
 using System.Web;
 using System.Web.Caching;
 using Havit.Data;
@@ -84,7 +85,7 @@ namespace Havit.BusinessLayerTest
 			
 			if (IsNew)
 			{
-				_SymbolPropertyHolder.Value = null;
+				_SymbolPropertyHolder.Value = String.Empty;
 			}
 		}
 		#endregion

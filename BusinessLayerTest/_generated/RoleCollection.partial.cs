@@ -5,6 +5,7 @@ using System.Text;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
+using System.Data.SqlTypes;
 using System.Web;
 using System.Web.Caching;
 using Havit.Data;
@@ -88,18 +89,19 @@ namespace Havit.BusinessLayerTest
 			queryParams.Conditions.Add(ReferenceCondition.CreateIn(Role.Properties.ID, ghosts.ToArray()));
 			queryParams.PrepareCommand(sqlCommand);
 			
-			SqlDataReader reader = SqlDataAccess.ExecuteReader(sqlCommand);
-			
-			while (reader.Read())
+			using (SqlDataReader reader = SqlDataAccess.ExecuteReader(sqlCommand))
 			{
-				DataRecord dataRecord = new DataRecord(reader, queryParams.GetDataLoadPower());
-				int id = dataRecord.Get<int>(Role.Properties.ID.FieldName);
-				
-				foreach (Role ghost in this)
+				while (reader.Read())
 				{
-					if (!ghost.IsLoaded && (ghost.ID == id))
+					DataRecord dataRecord = new DataRecord(reader, queryParams.GetDataLoadPower());
+					int id = dataRecord.Get<int>(Role.Properties.ID.FieldName);
+					
+					foreach (Role ghost in this)
 					{
-						ghost.Load(dataRecord);
+						if (!ghost.IsLoaded && (ghost.ID == id))
+						{
+							ghost.Load(dataRecord);
+						}
 					}
 				}
 			}

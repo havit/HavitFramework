@@ -380,6 +380,7 @@ namespace Havit.Business
 		#region Equals, GetHashCode, operátory == a != (override)
 		/// <summary>
 		/// Zjistí rovnost druhého objektu s instancí. Základní implementace porovná jejich ID.
+		/// Nové objekty jsou si rovny v pøípadì identity (stejná reference).
 		/// </summary>
 		/// <param name="obj">objekt k porovnání</param>
 		/// <returns>true, pokud jsou si rovny; jinak false</returns>
@@ -389,6 +390,14 @@ namespace Havit.Business
 			{
 				return false;
 			}
+			
+			// nové objekty jsou si rovny pouze v pøípadì identity (stejná reference)
+			if (this.IsNew || obj.IsNew)
+			{
+				return Object.ReferenceEquals(this, obj);
+			}
+			
+			// bìžné objekty jsou si rovny, pokud mají stejné ID
 			if (!Object.Equals(this.ID, obj.ID))
 			{
 				return false;

@@ -12,6 +12,7 @@ using System.Text;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
+using System.Data.SqlTypes;
 using System.Web;
 using System.Web.Caching;
 using Havit.Data;
@@ -80,7 +81,7 @@ namespace Havit.BusinessLayerTest
 			set
 			{
 				EnsureLoaded();
-				_UsernamePropertyHolder.Value = value;
+				_UsernamePropertyHolder.Value = value ?? String.Empty;
 			}
 		}
 		protected PropertyHolder<string> _UsernamePropertyHolder;
@@ -98,7 +99,7 @@ namespace Havit.BusinessLayerTest
 			set
 			{
 				EnsureLoaded();
-				_PasswordPropertyHolder.Value = value;
+				_PasswordPropertyHolder.Value = value ?? String.Empty;
 			}
 		}
 		protected PropertyHolder<string> _PasswordPropertyHolder;
@@ -116,7 +117,7 @@ namespace Havit.BusinessLayerTest
 			set
 			{
 				EnsureLoaded();
-				_DisplayAsPropertyHolder.Value = value;
+				_DisplayAsPropertyHolder.Value = value ?? String.Empty;
 			}
 		}
 		protected PropertyHolder<string> _DisplayAsPropertyHolder;
@@ -134,7 +135,7 @@ namespace Havit.BusinessLayerTest
 			set
 			{
 				EnsureLoaded();
-				_EmailPropertyHolder.Value = value;
+				_EmailPropertyHolder.Value = value ?? String.Empty;
 			}
 		}
 		protected PropertyHolder<string> _EmailPropertyHolder;
@@ -275,15 +276,14 @@ namespace Havit.BusinessLayerTest
 			
 			if (IsNew)
 			{
-				_UsernamePropertyHolder.Value = default(string);
-				_PasswordPropertyHolder.Value = default(string);
-				_DisplayAsPropertyHolder.Value = default(string);
-				_EmailPropertyHolder.Value = default(string);
+				_UsernamePropertyHolder.Value = String.Empty;
+				_PasswordPropertyHolder.Value = String.Empty;
+				_DisplayAsPropertyHolder.Value = String.Empty;
+				_EmailPropertyHolder.Value = String.Empty;
 				_DisabledPropertyHolder.Value = false;
 				_LockedTimePropertyHolder.Value = null;
 				_LoginLastPropertyHolder.Value = null;
 				_LoginCountPropertyHolder.Value = 0;
-				_LoginCountPropertyHolder.Value = default(int);
 				_DeletedPropertyHolder.Value = false;
 				_RolePropertyHolder.Initialize();
 			}
@@ -313,6 +313,28 @@ namespace Havit.BusinessLayerTest
 			if (_EmailPropertyHolder.IsDirty && (_EmailPropertyHolder.Value != null) && (_EmailPropertyHolder.Value.Length > 100))
 			{
 				throw new ConstraintViolationException(this, "Řetězec v \"Email\" přesáhl maximální délku 100 znaků.");
+			}
+			
+			if (_LockedTimePropertyHolder.IsDirty)
+			{
+				if (_LockedTimePropertyHolder.Value != null)
+				{
+					if ((_LockedTimePropertyHolder.Value.Value < SqlDateTime.MinValue.Value) || (_LockedTimePropertyHolder.Value.Value > SqlDateTime.MaxValue.Value))
+					{
+						throw new ConstraintViolationException(this, "Vlastnost \"LockedTime\" nesmí nabývat hodnoty mimo rozsah SqlDateTime.MinValue-SqlDateTime.MaxValue.");
+					}
+				}
+			}
+			
+			if (_LoginLastPropertyHolder.IsDirty)
+			{
+				if (_LoginLastPropertyHolder.Value != null)
+				{
+					if ((_LoginLastPropertyHolder.Value.Value < SqlDateTime.MinValue.Value) || (_LoginLastPropertyHolder.Value.Value > SqlDateTime.MaxValue.Value))
+					{
+						throw new ConstraintViolationException(this, "Vlastnost \"LoginLast\" nesmí nabývat hodnoty mimo rozsah SqlDateTime.MinValue-SqlDateTime.MaxValue.");
+					}
+				}
 			}
 			
 		}
@@ -585,10 +607,10 @@ namespace Havit.BusinessLayerTest
 			StringBuilder commandBuilder = new StringBuilder();
 			commandBuilder.Append("UPDATE dbo.Uzivatel SET ");
 			
-			bool wasFirst = false;
+			bool dirtyFieldExists = false;
 			if (_UsernamePropertyHolder.IsDirty)
 			{
-				if (wasFirst)
+				if (dirtyFieldExists)
 				{
 					commandBuilder.Append(", ");
 				}
@@ -598,12 +620,12 @@ namespace Havit.BusinessLayerTest
 				sqlParameterUsername.Value = _UsernamePropertyHolder.Value ?? String.Empty;
 				sqlCommand.Parameters.Add(sqlParameterUsername);
 				
-				wasFirst = true;
+				dirtyFieldExists = true;
 			}
 			
 			if (_PasswordPropertyHolder.IsDirty)
 			{
-				if (wasFirst)
+				if (dirtyFieldExists)
 				{
 					commandBuilder.Append(", ");
 				}
@@ -613,12 +635,12 @@ namespace Havit.BusinessLayerTest
 				sqlParameterPassword.Value = _PasswordPropertyHolder.Value ?? String.Empty;
 				sqlCommand.Parameters.Add(sqlParameterPassword);
 				
-				wasFirst = true;
+				dirtyFieldExists = true;
 			}
 			
 			if (_DisplayAsPropertyHolder.IsDirty)
 			{
-				if (wasFirst)
+				if (dirtyFieldExists)
 				{
 					commandBuilder.Append(", ");
 				}
@@ -628,12 +650,12 @@ namespace Havit.BusinessLayerTest
 				sqlParameterDisplayAs.Value = _DisplayAsPropertyHolder.Value ?? String.Empty;
 				sqlCommand.Parameters.Add(sqlParameterDisplayAs);
 				
-				wasFirst = true;
+				dirtyFieldExists = true;
 			}
 			
 			if (_EmailPropertyHolder.IsDirty)
 			{
-				if (wasFirst)
+				if (dirtyFieldExists)
 				{
 					commandBuilder.Append(", ");
 				}
@@ -643,12 +665,12 @@ namespace Havit.BusinessLayerTest
 				sqlParameterEmail.Value = _EmailPropertyHolder.Value ?? String.Empty;
 				sqlCommand.Parameters.Add(sqlParameterEmail);
 				
-				wasFirst = true;
+				dirtyFieldExists = true;
 			}
 			
 			if (_DisabledPropertyHolder.IsDirty)
 			{
-				if (wasFirst)
+				if (dirtyFieldExists)
 				{
 					commandBuilder.Append(", ");
 				}
@@ -658,12 +680,12 @@ namespace Havit.BusinessLayerTest
 				sqlParameterDisabled.Value = _DisabledPropertyHolder.Value;
 				sqlCommand.Parameters.Add(sqlParameterDisabled);
 				
-				wasFirst = true;
+				dirtyFieldExists = true;
 			}
 			
 			if (_LockedTimePropertyHolder.IsDirty)
 			{
-				if (wasFirst)
+				if (dirtyFieldExists)
 				{
 					commandBuilder.Append(", ");
 				}
@@ -673,12 +695,12 @@ namespace Havit.BusinessLayerTest
 				sqlParameterLockedTime.Value = (_LockedTimePropertyHolder.Value == null) ? DBNull.Value : (object)_LockedTimePropertyHolder.Value;
 				sqlCommand.Parameters.Add(sqlParameterLockedTime);
 				
-				wasFirst = true;
+				dirtyFieldExists = true;
 			}
 			
 			if (_LoginLastPropertyHolder.IsDirty)
 			{
-				if (wasFirst)
+				if (dirtyFieldExists)
 				{
 					commandBuilder.Append(", ");
 				}
@@ -688,12 +710,12 @@ namespace Havit.BusinessLayerTest
 				sqlParameterLoginLast.Value = (_LoginLastPropertyHolder.Value == null) ? DBNull.Value : (object)_LoginLastPropertyHolder.Value;
 				sqlCommand.Parameters.Add(sqlParameterLoginLast);
 				
-				wasFirst = true;
+				dirtyFieldExists = true;
 			}
 			
 			if (_LoginCountPropertyHolder.IsDirty)
 			{
-				if (wasFirst)
+				if (dirtyFieldExists)
 				{
 					commandBuilder.Append(", ");
 				}
@@ -703,12 +725,12 @@ namespace Havit.BusinessLayerTest
 				sqlParameterLoginCount.Value = _LoginCountPropertyHolder.Value;
 				sqlCommand.Parameters.Add(sqlParameterLoginCount);
 				
-				wasFirst = true;
+				dirtyFieldExists = true;
 			}
 			
 			if (_DeletedPropertyHolder.IsDirty)
 			{
-				if (wasFirst)
+				if (dirtyFieldExists)
 				{
 					commandBuilder.Append(", ");
 				}
@@ -718,10 +740,10 @@ namespace Havit.BusinessLayerTest
 				sqlParameterDeleted.Value = _DeletedPropertyHolder.Value;
 				sqlCommand.Parameters.Add(sqlParameterDeleted);
 				
-				wasFirst = true;
+				dirtyFieldExists = true;
 			}
 			
-			if (sqlCommand.Parameters.Count > 0)
+			if (dirtyFieldExists)
 			{
 				// objekt je sice IsDirty (volá se tato metoda), ale může být změněná jen kolekce
 				commandBuilder.Append(" WHERE UzivatelID = @UzivatelID; ");
@@ -731,8 +753,10 @@ namespace Havit.BusinessLayerTest
 				commandBuilder = new StringBuilder();
 			}
 			
+			bool dirtyCollectionExists = false;
 			if (_RolePropertyHolder.IsDirty)
 			{
+				dirtyCollectionExists = true;
 				commandBuilder.AppendFormat("DELETE FROM dbo.Uzivatel_Role WHERE UzivatelID = @UzivatelID; ");
 				if (_RolePropertyHolder.Value.Count > 0)
 				{
@@ -746,7 +770,7 @@ namespace Havit.BusinessLayerTest
 			}
 			
 			// pokud je objekt dirty, ale žádná property není dirty (Save_MinimalInsert poukládal všechno), neukládáme
-			if (sqlCommand.Parameters.Count > 0)
+			if (dirtyFieldExists || dirtyCollectionExists)
 			{
 				SqlParameter sqlParameterID = new SqlParameter("@UzivatelID", SqlDbType.Int);
 				sqlParameterID.Value = this.ID;

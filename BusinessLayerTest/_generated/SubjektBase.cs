@@ -12,6 +12,7 @@ using System.Text;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
+using System.Data.SqlTypes;
 using System.Web;
 using System.Web.Caching;
 using Havit.Data;
@@ -80,7 +81,7 @@ namespace Havit.BusinessLayerTest
 			set
 			{
 				EnsureLoaded();
-				_NazevPropertyHolder.Value = value;
+				_NazevPropertyHolder.Value = value ?? String.Empty;
 			}
 		}
 		protected PropertyHolder<string> _NazevPropertyHolder;
@@ -149,7 +150,7 @@ namespace Havit.BusinessLayerTest
 			
 			if (IsNew)
 			{
-				_NazevPropertyHolder.Value = null;
+				_NazevPropertyHolder.Value = String.Empty;
 				_UzivatelPropertyHolder.Value = null;
 				_DeletedPropertyHolder.Value = null;
 			}
@@ -164,6 +165,17 @@ namespace Havit.BusinessLayerTest
 			if (_NazevPropertyHolder.IsDirty && (_NazevPropertyHolder.Value != null) && (_NazevPropertyHolder.Value.Length > 50))
 			{
 				throw new ConstraintViolationException(this, "Řetězec v \"Nazev\" přesáhl maximální délku 50 znaků.");
+			}
+			
+			if (_DeletedPropertyHolder.IsDirty)
+			{
+				if (_DeletedPropertyHolder.Value != null)
+				{
+					if ((_DeletedPropertyHolder.Value.Value < SqlDateTime.MinValue.Value) || (_DeletedPropertyHolder.Value.Value > SqlDateTime.MaxValue.Value))
+					{
+						throw new ConstraintViolationException(this, "Vlastnost \"Deleted\" nesmí nabývat hodnoty mimo rozsah SqlDateTime.MinValue-SqlDateTime.MaxValue.");
+					}
+				}
 			}
 			
 		}
@@ -306,10 +318,10 @@ namespace Havit.BusinessLayerTest
 			StringBuilder commandBuilder = new StringBuilder();
 			commandBuilder.Append("UPDATE dbo.Subjekt SET ");
 			
-			bool wasFirst = false;
+			bool dirtyFieldExists = false;
 			if (_NazevPropertyHolder.IsDirty)
 			{
-				if (wasFirst)
+				if (dirtyFieldExists)
 				{
 					commandBuilder.Append(", ");
 				}
@@ -319,12 +331,12 @@ namespace Havit.BusinessLayerTest
 				sqlParameterNazev.Value = _NazevPropertyHolder.Value ?? String.Empty;
 				sqlCommand.Parameters.Add(sqlParameterNazev);
 				
-				wasFirst = true;
+				dirtyFieldExists = true;
 			}
 			
 			if (_UzivatelPropertyHolder.IsDirty)
 			{
-				if (wasFirst)
+				if (dirtyFieldExists)
 				{
 					commandBuilder.Append(", ");
 				}
@@ -334,12 +346,12 @@ namespace Havit.BusinessLayerTest
 				sqlParameterUzivatel.Value = (_UzivatelPropertyHolder.Value == null) ? DBNull.Value : (object)_UzivatelPropertyHolder.Value.ID;
 				sqlCommand.Parameters.Add(sqlParameterUzivatel);
 				
-				wasFirst = true;
+				dirtyFieldExists = true;
 			}
 			
 			if (_DeletedPropertyHolder.IsDirty)
 			{
-				if (wasFirst)
+				if (dirtyFieldExists)
 				{
 					commandBuilder.Append(", ");
 				}
@@ -349,10 +361,10 @@ namespace Havit.BusinessLayerTest
 				sqlParameterDeleted.Value = (_DeletedPropertyHolder.Value == null) ? DBNull.Value : (object)_DeletedPropertyHolder.Value;
 				sqlCommand.Parameters.Add(sqlParameterDeleted);
 				
-				wasFirst = true;
+				dirtyFieldExists = true;
 			}
 			
-			if (sqlCommand.Parameters.Count > 0)
+			if (dirtyFieldExists)
 			{
 				// objekt je sice IsDirty (volá se tato metoda), ale může být změněná jen kolekce
 				commandBuilder.Append(" WHERE SubjektID = @SubjektID; ");
@@ -362,8 +374,9 @@ namespace Havit.BusinessLayerTest
 				commandBuilder = new StringBuilder();
 			}
 			
+			bool dirtyCollectionExists = false;
 			// pokud je objekt dirty, ale žádná property není dirty (Save_MinimalInsert poukládal všechno), neukládáme
-			if (sqlCommand.Parameters.Count > 0)
+			if (dirtyFieldExists || dirtyCollectionExists)
 			{
 				SqlParameter sqlParameterID = new SqlParameter("@SubjektID", SqlDbType.Int);
 				sqlParameterID.Value = this.ID;

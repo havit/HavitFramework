@@ -12,6 +12,7 @@ using System.Text;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
+using System.Data.SqlTypes;
 using System.Web;
 using System.Web.Caching;
 using Havit.Data;
@@ -36,11 +37,11 @@ namespace Havit.BusinessLayerTest
 		
 		public void Initialize(ObjectInfo objectInfo)
 		{
-			_id.Initialize(objectInfo, "SubjektID", true, SqlDbType.Int, false, 4);
-			_nazev.Initialize(objectInfo, "Nazev", false, SqlDbType.NVarChar, true, 50);
-			_uzivatel.Initialize(objectInfo, "UzivatelID", false, SqlDbType.Int, true, 4, typeof(Havit.BusinessLayerTest.Uzivatel), Havit.BusinessLayerTest.Uzivatel.ObjectInfo);
-			_created.Initialize(objectInfo, "Created", false, SqlDbType.SmallDateTime, false, 4);
-			_deleted.Initialize(objectInfo, "Deleted", false, SqlDbType.SmallDateTime, true, 4);
+			_id.Initialize(objectInfo, "ID", "SubjektID", true, SqlDbType.Int, false, 4);
+			_nazev.Initialize(objectInfo, "Nazev", "Nazev", false, SqlDbType.NVarChar, true, 50);
+			_uzivatel.Initialize(objectInfo, "Uzivatel", "UzivatelID", false, SqlDbType.Int, true, 4, typeof(Havit.BusinessLayerTest.Uzivatel), Havit.BusinessLayerTest.Uzivatel.ObjectInfo);
+			_created.Initialize(objectInfo, "Created", "Created", false, SqlDbType.SmallDateTime, false, 4);
+			_deleted.Initialize(objectInfo, "Deleted", "Deleted", false, SqlDbType.SmallDateTime, true, 4);
 		}
 		
 		public FieldPropertyInfo ID

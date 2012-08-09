@@ -166,7 +166,7 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		public BasicModalDialog()
 		{
-			_dialogPanel = new Panel();			
+			_dialogPanel = new Panel();
 			_dialogPanel.CssClass = "webdialog";
 		}
 		#endregion
@@ -195,6 +195,7 @@ namespace Havit.Web.UI.WebControls
 				_contentTemplate.InstantiateIn(GetContentContainer());
 			}
 			this.Controls.Add(_dialogPanel);
+			_dialogPanel.ID = this.ID + "__DP";
 		}
 		#endregion	
 

@@ -42,9 +42,11 @@ namespace Havit.Web.UI.WebControls
 		public AjaxModalDialog()
 		{
 			_updatePanel = new UpdatePanelExt();
+			_updatePanel.ID = "__UP";
 			_updatePanel.UpdateMode = UpdatePanelUpdateMode.Conditional;
 
 			_contentPlaceHolder = new PlaceHolder();
+			_contentPlaceHolder.ID = "__CPH";
 		}
 		#endregion
 

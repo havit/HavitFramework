@@ -12,9 +12,6 @@ namespace Havit.Web.UI.WebControls
 {
     /// <summary>Used for writing out JSON data code.</summary>
     /// <remarks>This class inherits from System.Web.UI.HtmlTextWriter class which contains many methods for writing out Html.</remarks>
-  
-    /// </example>
-
     internal class XJsonWriter : StringWriter
     {
         #region Class Properties
@@ -22,8 +19,6 @@ namespace Havit.Web.UI.WebControls
 
 
         /// <overloads>Initializes new instance of XHtmlWriter.</overloads>
-
-
         /// <summary>Initializes new instance of XHtmlWriter.</summary>
         /// <remarks>Creates a new StringWriter object and uses that as Internal Writer</remarks>
         public XJsonWriter()

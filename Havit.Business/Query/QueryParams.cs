@@ -184,24 +184,24 @@ namespace Havit.Business.Query
 		{
 			StringBuilder whereBuilder = new StringBuilder();
 
-			Condition whereConditions = conditions;
-
 			if (!includeDeleted && objectInfo.DeletedProperty != null)
 			{
 				if (objectInfo.DeletedProperty.FieldType == System.Data.SqlDbType.Bit)
-					whereConditions = new AndCondition(
-						BoolCondition.CreateFalse(objectInfo.DeletedProperty),
-						whereConditions);
+				{
+					Conditions.Add(BoolCondition.CreateFalse(objectInfo.DeletedProperty));
+				}
 
-				if (objectInfo.DeletedProperty.FieldType == System.Data.SqlDbType.DateTime)
-					whereConditions = new AndCondition(
-						NullCondition.CreateIsNotNull(objectInfo.DeletedProperty),
-						whereConditions);
+				if ((objectInfo.DeletedProperty.FieldType == System.Data.SqlDbType.DateTime) || (objectInfo.DeletedProperty.FieldType == System.Data.SqlDbType.SmallDateTime))
+				{
+					Conditions.Add(NullCondition.CreateIsNull(objectInfo.DeletedProperty));
+				}
 			}
 
-			whereConditions.GetWhereStatement(command, whereBuilder);
+			conditions.GetWhereStatement(command, whereBuilder);
 			if (whereBuilder.Length > 0)
+			{
 				whereBuilder.Insert(0, "WHERE ");
+			}
 						
 			return whereBuilder.ToString();
 		}

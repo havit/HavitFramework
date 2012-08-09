@@ -8,6 +8,7 @@
         <assembly assemblyPath="Dotfuscated\Havit.Web.dll" xmlCommentsPath="Dotfuscated\Havit.Web.xml" commentsOnly="False" />
         <assembly assemblyPath="Dotfuscated\Havit.Web.UI.WebControls.DynarchCalendar.dll" xmlCommentsPath="Dotfuscated\Havit.Web.UI.WebControls.DynarchCalendar.xml" commentsOnly="False" />
         <assembly assemblyPath="Dotfuscated\Havit.Xml.dll" xmlCommentsPath="Dotfuscated\Havit.Xml.xml" commentsOnly="False" />
+        <assembly assemblyPath=".\Dotfuscated\Havit.Enterprise.Web.dll" xmlCommentsPath=".\Dotfuscated\Havit.Enterprise.Web.xml" commentsOnly="False" />
     </assemblies>
     <namespaceSummaries>
         <namespaceSummaryItem name="" isDocumented="True" />

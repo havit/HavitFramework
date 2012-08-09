@@ -619,7 +619,7 @@
         </member>
         <member name="P:Havit.Business.FieldPropertyInfo.MaximumLength">
             <summary>
-            Udává, zda je sloupec primárním klíčem.
+            Maximální délka řetězce (u typů varchar, nvarchar, apod.), případně velikost datového typu (u typů 
             </summary>
         </member>
         <member name="T:Havit.Business.Query.BinaryCondition">

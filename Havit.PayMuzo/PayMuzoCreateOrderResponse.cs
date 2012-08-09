@@ -173,8 +173,8 @@ namespace Havit.PayMuzo
 				}
 			}
 
-			// MERCHORDERNUM
-			string strMerchantOrderNumber = responseData["MERCHORDERNUM"];
+			// MERORDERNUM
+			string strMerchantOrderNumber = responseData["MERORDERNUM"];
 			if (!String.IsNullOrEmpty(strMerchantOrderNumber))
 			{
 				int tmp;

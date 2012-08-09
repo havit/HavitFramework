@@ -76,12 +76,13 @@ namespace Havit.Web.UI.Scriptlets
 
 		#region GetAttachEventsScript (abstract, IScriptletParameter)
 		/// <include file='..\\Dotfuscated\\Havit.Web.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlParameter.GetAttachEventsScript")]/*' />
-		public abstract void GetAttachEventsScript(string parameterPrefix, Control parentControl, ScriptBuilder scriptBuilder);
+		public abstract void GetAttachEventsScript(string parameterPrefix, Control parentControl, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder);
 		#endregion
 
 		#region GetDetachEventsScript (abstract, IScriptletParameter)
 		/// <include file='..\\Dotfuscated\\Havit.Web.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlParameter.GetDetachEventsScript")]/*' />
-		public abstract void GetDetachEventsScript(string parameterPrefix, Control parentControl, ScriptBuilder scriptBuilder);
+		public abstract void GetDetachEventsScript(string parameterPrefix, Control parentControl, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder);
 		#endregion
-	}
+
+		}
 }

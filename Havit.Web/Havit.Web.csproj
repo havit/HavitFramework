@@ -139,6 +139,7 @@
     <Compile Include="UI\Scriptlets\ParameterBase.cs" />
     <Compile Include="UI\Scriptlets\RepeaterControlExtender.cs" />
     <Compile Include="UI\Scriptlets\ScriptBuilder.cs" />
+    <Compile Include="UI\Scriptlets\ScriptCacheHelper.cs" />
     <Compile Include="UI\Scriptlets\Scriptlet.cs" />
     <Compile Include="UI\Scriptlets\ScriptletNestedControl.cs" />
     <Compile Include="UI\Scriptlets\ClientScriptSubstituingEventHandler.cs" />

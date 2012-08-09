@@ -34,7 +34,7 @@ namespace Havit.Web.UI.Scriptlets
 
 		#region CreateOnLoadScript
 		/// <include file='..\\Dotfuscated\\Havit.Web.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlParameter.GetAttachEventsScript")]/*' />
-		public override void GetAttachEventsScript(string parameterPrefix, Control parentControl, ScriptBuilder scriptBuilder)
+		public override void GetAttachEventsScript(string parameterPrefix, Control parentControl, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder)
 		{
 			//NOOP
 		}
@@ -42,7 +42,7 @@ namespace Havit.Web.UI.Scriptlets
 		
 		#region CreateOnUnLoadScript
 		/// <include file='..\\Dotfuscated\\Havit.Web.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlParameter.GetDetachEventsScript")]/*' />
-		public override void GetDetachEventsScript(string parameterPrefix, Control parentControl, ScriptBuilder scriptBuilder)
+		public override void GetDetachEventsScript(string parameterPrefix, Control parentControl, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder)
 		{
 			//NOOP
 		}

@@ -12,7 +12,7 @@
     	
     	<asp:ScriptManager runat="server" />
 		
-		<asp:UpdatePanel runat="server" >
+		<asp:UpdatePanel runat="server" UpdateMode="Conditional" >
 			<ContentTemplate>
 				
 				<div>
@@ -43,6 +43,12 @@
 					<asp:Repeater ID="TestRepeater" runat="server">
 						<ItemTemplate>
 							<asp:CheckBox ID="TestCheckBox" runat="server" Text="<%# (string)Container.DataItem %>"/>
+							<asp:UpdatePanel runat="server" UpdateMode="Conditional" ChildrenAsTriggers="false">
+								<Triggers>
+									<asp:AsyncPostBackTrigger runat="server" ControlID="TestCheckBox" />
+								</Triggers>
+								<ContentTemplate></ContentTemplate>
+							</asp:UpdatePanel>
 						</ItemTemplate>
 					</asp:Repeater>
 					<havit:Scriptlet runat="server">		
@@ -61,18 +67,17 @@
 							<asp:TemplateField runat="server">
 								<ItemTemplate>
 									<asp:CheckBox ID="TestCheckBox" runat="server" Text="<%# (string)Container.DataItem %>" />
+									<havit:Scriptlet runat="server">		
+										<havit:ControlParameter ControlName="TestCheckBox" runat="server" StartOnChange="true" />							
+										<havit:ClientScript runat="server">
+											alert("gridview checkbox changed");
+										</havit:ClientScript>
+									</havit:Scriptlet>
 								</ItemTemplate>
+								
 							</asp:TemplateField>
 						</Columns>
 					</asp:GridView>
-					<havit:Scriptlet runat="server">		
-						<havit:ControlParameter ControlName="TestGridView" runat="server" StartOnChange="true">
-							<havit:ControlParameter ControlName="TestCheckBox" runat="server" StartOnChange="true" />
-						</havit:ControlParameter>
-						<havit:ClientScript runat="server">
-							alert("gridview checkbox changed");
-						</havit:ClientScript>
-					</havit:Scriptlet>
 				</div>
 
 				<asp:Button runat="server" Text="Callback" ID="CallbackButton" />

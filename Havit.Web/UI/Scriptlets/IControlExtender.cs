@@ -41,8 +41,9 @@ namespace Havit.Web.UI.Scriptlets
 		/// <param name="parameterPrefix">Název objektu na klientské stranì.</param>
 		/// <param name="parameter">Parametr pøedávající øízení extenderu.</param>
 		/// <param name="control">Control ke zpracování.</param>
+		/// <param name="scriptletFunctionCallDelegate">Delegát volání funkce scriptletu.</param>
 		/// <param name="scriptBuilder">Script builder.</param>
-		void GetAttachEventsScript(string parameterPrefix, IScriptletParameter parameter, Control control, ScriptBuilder scriptBuilder);		
+		void GetAttachEventsScript(string parameterPrefix, IScriptletParameter parameter, Control control, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder);		
 		#endregion
 
 		#region GetDetachEventsScript
@@ -52,8 +53,9 @@ namespace Havit.Web.UI.Scriptlets
 		/// <param name="parameterPrefix">Název objektu na klientské stranì.</param>
 		/// <param name="parameter">Parametr pøedávající øízení extenderu.</param>
 		/// <param name="control">Control ke zpracování.</param>
+		/// <param name="scriptletFunctionCallDelegate">Delegát volání funkce scriptletu.</param>
 		/// <param name="scriptBuilder">Script builder.</param>
-		void GetDetachEventsScript(string parameterPrefix, IScriptletParameter parameter, Control control, ScriptBuilder scriptBuilder); 
+		void GetDetachEventsScript(string parameterPrefix, IScriptletParameter parameter, Control control, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder); 
 		#endregion
 	}
 }

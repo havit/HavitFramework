@@ -13,6 +13,20 @@ namespace Havit.Web.UI.Scriptlets
     /// </summary>
     public class ControlParameter : ParameterBase
     {
+#warning Comment
+		public Control Control
+		{
+			get
+			{
+				return _control;
+			}
+			set
+			{
+				_control = value;
+			}
+		}
+		private Control _control;
+
 		#region ControlName
 		/// <summary>
 		/// Název Controlu, který je zdrojem pro vytvoøení klientského parametru.
@@ -59,7 +73,7 @@ namespace Havit.Web.UI.Scriptlets
 		{
 			base.CheckProperties();
 			// navíc zkontrolujeme nastavení ControlName
-			CheckControlNameProperty();
+			CheckControlAndControlNameProperty();
 		}		
 		#endregion
 
@@ -76,18 +90,22 @@ namespace Havit.Web.UI.Scriptlets
 		}
 		#endregion
 
-		#region CheckControlNameProperty
+		#region CheckControlAndControlNameProperty
 		/// <summary>
-		/// Zkontroluje nastavení property <see cref="ControlName">ControlName</see>.
-		/// Pokud není hodnota nastavena, vyhodí výjimku.
+		/// Zkontroluje nastavení property <see cref="Control">Control</see> a <see cref="ControlName">ControlName</see>.
+		/// Pokud není nastavena hodnota právì jedné vlastnosti, vyhodí výjimku.
 		/// </summary>
-		protected virtual void CheckControlNameProperty()
+		protected virtual void CheckControlAndControlNameProperty()
 		{
-			if (String.IsNullOrEmpty(ControlName))
+			if ((_control == null) && String.IsNullOrEmpty(ControlName))
 			{
-				throw new HttpException("Property ControlName nemá hodnotu.");
+				throw new HttpException("Není urèen control, nastavte vlastnost Control nebo ControlName.");
 			}
-		}		
+			if ((_control != null) && !String.IsNullOrEmpty(ControlName))
+			{
+				throw new HttpException("Není možné urèit control vlastnostmi Control a ControlName zároveò.");
+			}
+		}
 		#endregion
 
 		#region GetInitializeClientSideValueScript
@@ -105,31 +123,31 @@ namespace Havit.Web.UI.Scriptlets
 
 		#region GetAttachEventsScript
 		/// <include file='..\\Dotfuscated\\Havit.Web.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlParameter.GetAttachEventsScript")]/*' />
-		public override void GetAttachEventsScript(string parameterPrefix, Control parentControl, ScriptBuilder scriptBuilder)
+		public override void GetAttachEventsScript(string parameterPrefix, Control parentControl, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder)
 		{
 			// najdeme control
 			Control control = GetControl(parentControl);
 			DoJobOnExtender(control, delegate(IControlExtender extender)
 			{
-				extender.GetAttachEventsScript(parameterPrefix, this, control, scriptBuilder);
+				extender.GetAttachEventsScript(parameterPrefix, this, control, scriptletFunctionCallDelegate, scriptBuilder);
 			});
 		}
 		#endregion
 
 		#region GetDetachEventsScript
 		/// <include file='..\\Dotfuscated\\Havit.Web.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlParameter.GetDetachEventsScript")]/*' />
-		public override void GetDetachEventsScript(string parameterPrefix, Control parentControl, ScriptBuilder scriptBuilder)
+		public override void GetDetachEventsScript(string parameterPrefix, Control parentControl, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder)
 		{
 			// najdeme control
 			Control control = GetControl(parentControl);
 			DoJobOnExtender(control, delegate(IControlExtender extender)
 			{
-				extender.GetDetachEventsScript(parameterPrefix, this, control, scriptBuilder);
+				extender.GetDetachEventsScript(parameterPrefix, this, control, scriptletFunctionCallDelegate, scriptBuilder);
 			});
 		}
 		#endregion
 
-		#region DoJobOnExtender (ExtenderJobEventHandler
+		#region DoJobOnExtender (ExtenderJobEventHandler)
 		private void DoJobOnExtender(Control control, ExtenderJobEventHandler job)
 		{
 			// ak když je viditelný
@@ -154,6 +172,11 @@ namespace Havit.Web.UI.Scriptlets
 		/// <returns>Control.</returns>
 		protected virtual Control GetControl(Control parentControl)
 		{
+			if (_control != null)
+			{
+				return Control;
+			}
+
 			string controlName = ControlName.Replace(".", "$");
 
 			Control result = parentControl.FindControl(controlName);

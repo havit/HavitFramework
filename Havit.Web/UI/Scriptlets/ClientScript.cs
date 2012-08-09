@@ -16,6 +16,9 @@ namespace Havit.Web.UI.Scriptlets
 	[ParseChildren(true, "Script")]
 	public class ClientScript : ScriptletNestedControl
 	{
+
+		/* PARAMETY CLIENTSCRIPTU *************** */
+
 		#region Script
 		/// <summary>
 		/// Klientský skript. Okolo skriptu je vytvoøena obálka a pøípadnì je spuštìn po naètení stránky èi callbacku.
@@ -53,8 +56,30 @@ namespace Havit.Web.UI.Scriptlets
 			set { ViewState["StartOnAjaxCallback"] = value; }
 		}		
 		#endregion		
-		
-		#region ClientSideScriptFunctionName
+
+		/*  *************** */
+
+		#region GetAutoStart
+		/// <summary>
+		/// Vrací true, pokud má být renderován skript pro automatické spuštìní funkce scriptletu.
+		/// </summary>
+		/// <returns></returns>
+		public bool GetAutoStart()
+		{
+			if (this.Scriptlet.IsInAsyncPostBack)
+			{
+				return StartOnAjaxCallback;
+			}
+			else
+			{
+				return StartOnLoad;
+			}
+		}
+		#endregion
+
+		/* RENDEROVÁNÍ *************** */
+/*
+		#region ClientSideScriptFunctionName (internal)
 		/// <summary>
 		/// Název funkce, pod jakou je klientský skript zaregistrován.
 		/// Hodnota je dostupná až po zavolání metody RegisterClientScript.
@@ -73,7 +98,7 @@ namespace Havit.Web.UI.Scriptlets
 		}
 		private string clientSideScriptFunctionName;
 		#endregion
-
+*/
 		#region GetClientSideScriptFunction
 		/// <summary>
 		/// Metoda vytvoøí funkci okolo klienského skriptu a zaregistruje ji do stránky.
@@ -81,38 +106,40 @@ namespace Havit.Web.UI.Scriptlets
 		/// (napø. pøi použití controlu v repeateru).
 		/// </summary>
 		/// <param name="scriptBuilder">ScriptBuilder, do kterého je tvoøen klientský skript.</param>
-		public virtual void GetClientSideScriptFunction(ScriptBuilder scriptBuilder)
+		public virtual string GetClientSideFunctionCode()
 		{
 			// naèteme klientský script
-			string clientScript = GetSubstitutedScript();
-			// podíváme se, zda již byl registrován
-			string functionName = GetFunctionNameFromCache(clientScript);
+			return GetSubstitutedScript();
+//            // podíváme se, zda již byl registrován
+//            string functionName = ScriptCacheHelper.GetFunctionNameFromCache(_clientScriptParameters, code);
 
-			if (functionName == null)
-			{
-				// pokud tento skript ještì nebyl registrován...				
-				CreateFunctionName(null);
-				// uložíme jej do cache
-				AddFunctionToCache(clientSideScriptFunctionName, clientScript);
-				// a zaregistrujeme
-				scriptBuilder.Append(WrapClientSideScriptToFunction(clientScript));
-			}
-			else
-			{
-				// pokud tento skript již byl registrován,
-				// použijeme tento registrovaný skript
-				clientSideScriptFunctionName = functionName;
-			}
+//            if (functionName == null)
+//            {
+//                // pokud tento skript ještì nebyl registrován...				
+//                CreateFunctionName(null);
+//                // uložíme jej do cache
+//                ScriptCacheHelper.AddFunctionToCache(clientSideScriptFunctionName, _clientScriptParameters, code);
+//                // a zaregistrujeme
+//                return WrapClientSideScriptToFunction(clientSideScriptFunctionName, _clientScriptParameters, code);
+//            }
+//            else
+//            {
+//                // pokud tento skript již byl registrován,
+//                // použijeme tento registrovaný skript
+//                CreateFunctionName(functionName);
+////				clientSideScriptFunctionName = functionName;
+//                return null;
+//            }
 		}
 		#endregion
-		
-		#region CreateFunctionName
+	/*
+		#region CreateFunctionName (private)
 		/// <summary>
 		/// Vytvoøí název klientské funkce. Pokud je parametr reuseFunction prázdný,
 		/// vytvoøí nový název, jinak použije hodnotu tohoto parametru.
 		/// </summary>
 		/// <param name="reuseFunctionName"></param>
-		protected virtual void CreateFunctionName(string reuseFunctionName)
+		private void CreateFunctionName(string reuseFunctionName)
 		{
 			if (!String.IsNullOrEmpty(reuseFunctionName))
 			{
@@ -124,35 +151,12 @@ namespace Havit.Web.UI.Scriptlets
 			}
 		}		
 		#endregion
-
-		#region GetClientSideStartupScript
-		/// <summary>
-		/// Registruje spuštìní klientského skriptu pøi naštìní stránky.
-		/// </summary>
-		/// <param name="scriptBuilder">ScriptBuilder, do kterého je tvoøen klientský skript.</param>
-		public virtual void GetClientSideStartupScript(ScriptBuilder scriptBuilder)
-		{
-			bool startOnLoad;
-
-			ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);
-			if ((scriptManager != null) && scriptManager.IsInAsyncPostBack)
-			{
-				startOnLoad = this.StartOnAjaxCallback;
-			}
-			else
-			{
-				startOnLoad = this.StartOnLoad;
-			}
-
-			if (startOnLoad)
-			{
-				scriptBuilder.AppendLine(Scriptlet.ClientSideScriptFunctionCall);
-			}
-		}
+		*/
+		private static string[] _clientScriptParameters = new string[] { "parameters" };
 		
-		#endregion
-		
-		#region GetSubstitutedScript
+		/* SUBSTITUCE *************** */
+
+		#region GetSubstitutedScript (protected)
 		/// <summary>
 		/// Vrátí pøipravený klientský skript. Provede nad skriptem substituce.
 		/// </summary>
@@ -165,7 +169,7 @@ namespace Havit.Web.UI.Scriptlets
 		}
 		#endregion
 
-		#region ClientScriptSubstituingEventArgs
+		#region ClientScriptSubstituingEventArgs (protected)
 		protected virtual void OnClientScriptSubstituing(ClientScriptSubstituingEventArgs eventArgs)
 		{
 			if (_clientScriptSubstituing != null)
@@ -191,78 +195,22 @@ namespace Havit.Web.UI.Scriptlets
 		
 		#endregion
 
-		#region Functions cache
-		
-		#region FunctionCache
-		/// <summary>
-		/// Cache pro klientské skripty. Klíèem je skript, hodnotou je název funkce,
-		/// ve které je skript registrován.
-		/// Cache je uložena v HttpContextu.
-		/// </summary>
-		protected virtual Dictionary<string, string> FunctionCache
-		{
-			get
-			{
-				Dictionary<string, string> result = (Dictionary<string, string>)HttpContext.Current.Items[typeof(ClientScript)];
+		/* STATIC  *************** */
 
-				if (result == null)
-				{
-					// pokud cache ještì není, vytvoøíme ji a vrátíme
-					// žádné zámky (lock { ... }) nejsou potøeba, jsme stále v jednom HttpContextu
-					result = new Dictionary<string, string>();
-					HttpContext.Current.Items[typeof(ClientScript)] = result;
-				}
-
-				return result;
-			}
-		}		
-		#endregion
-
-		#region AddFunctionToCache
-		/// <summary>
-		/// Pøidá klientský skript do cache.
-		/// </summary>
-		/// <param name="functionName">Název funkce, ve které je skript registrován.</param>
-		/// <param name="clientScript">Klientský skript.</param>
-		protected virtual void AddFunctionToCache(string functionName, string clientScript)
-		{
-			FunctionCache.Add(clientScript, functionName);
-		}		
-		#endregion
-
-		#region GetFunctionNameFromCache
-		/// <summary>
-		/// Nalezne název funkce, ve které je klientský skript registrován.
-		/// </summary>
-		/// <param name="clientScript">Klientský skript.</param>
-		/// <returns>Nalezne název funkce, ve které je klientský skript 
-		/// registrován. Pokud skript není registrován, vrátí null.</returns>
-		protected virtual string GetFunctionNameFromCache(string clientScript)
-		{
-			string result;
-			if (FunctionCache.TryGetValue(clientScript, out result))
-			{
-				return result;
-			}
-			else
-			{
-				return null;
-			}
-		}
-		#endregion
-		
-		#region WrapClientSideScriptToFunction
+		#region WrapClientSideScriptToFunction (static)
 		/// <summary>
 		/// Zabalí klientský skript do funkce.
 		/// </summary>
-		/// <param name="clientScript">Název funkce, která se tvoøí.</param>
 		/// <returns>Klientský skript jako funkce pøipravená k registraci do stránky.</returns>
-		protected string WrapClientSideScriptToFunction(string clientScript)
+		public static string WrapClientSideScriptToFunction(string functionName, string[] parameters, string clientScript)
 		{
-			return String.Format("function {0}(parameters){2}{{{2}{1}{2}}}{2}", clientSideScriptFunctionName, clientScript, Environment.NewLine);
+			return String.Format("function {0}({1}){3}{{{3}{2}{3}}}{3}",
+				functionName,
+				parameters == null ? String.Empty : String.Join(", ", parameters),
+				clientScript.Trim(),
+				Environment.NewLine);
 		}
 		#endregion
-		
-		#endregion
+
 	}
 }

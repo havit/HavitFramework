@@ -62,30 +62,22 @@ namespace Havit.Web.UI.Scriptlets
 		
 		#region GetAttachEventsScript
 		/// <include file='..\\Dotfuscated\\Havit.Web.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetAttachEventsScript")]/*' />
-		public void GetAttachEventsScript(string parameterPrefix, IScriptletParameter parameter, Control control, ScriptBuilder scriptBuilder)
+		public void GetAttachEventsScript(string parameterPrefix, IScriptletParameter parameter, Control control, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder)
 		{
-#warning JK: Workaround za to, ze nefunguje odpojovaní událostí v JS! Nutno doøešit!
-			scriptBuilder.AppendLineFormat("if ({0}.{1}.{2} != 'registered')", parameterPrefix, parameter.Name, parameter.Scriptlet.ClientID);
-			scriptBuilder.AppendLine("{");
-			scriptBuilder.AppendLineFormat("{0}.{1}.{2} = 'registered';", parameterPrefix, parameter.Name, parameter.Scriptlet.ClientID);
-
-			GetEventsScript(BrowserHelper.GetAttachEventScript, parameterPrefix, parameter, control, scriptBuilder);
-
-			scriptBuilder.AppendLine("}");
-
+			GetEventsScript(BrowserHelper.GetAttachEventScript, parameterPrefix, parameter, control, scriptletFunctionCallDelegate, scriptBuilder);
 		}
 		#endregion
 
 		#region GetDetachEventsScript
 		/// <include file='..\\Dotfuscated\\Havit.Web.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetDetachEventsScript")]/*' />
-		public void GetDetachEventsScript(string parameterPrefix, IScriptletParameter parameter, Control control, ScriptBuilder scriptBuilder)
+		public void GetDetachEventsScript(string parameterPrefix, IScriptletParameter parameter, Control control, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder)
 		{
-			GetEventsScript(BrowserHelper.GetDetachEventScript, parameterPrefix, parameter, control, scriptBuilder);
+			GetEventsScript(BrowserHelper.GetDetachEventScript, parameterPrefix, parameter, control, scriptletFunctionCallDelegate, scriptBuilder);
 		}
 		#endregion
 		
 		#region GetEventsScript
-		private void GetEventsScript(BrowserHelper.GetAttachDetachEventScriptEventHandler getEventScript, string parameterPrefix, IScriptletParameter parameter, Control control, ScriptBuilder scriptBuilder)
+		private void GetEventsScript(BrowserHelper.GetAttachDetachEventScriptEventHandler getEventScript, string parameterPrefix, IScriptletParameter parameter, Control control, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder)
 		{
 			ListControl listControl = (ListControl)control;
 			for (int i = 0; i < listControl.Items.Count; i++)
@@ -95,7 +87,7 @@ namespace Havit.Web.UI.Scriptlets
 					scriptBuilder.AppendLine(getEventScript.Invoke(
 						String.Format("{0}.{1}[{2}]", parameterPrefix, parameter.Name, i),
 						"onclick",
-						parameter.Scriptlet.ClientSideScriptFunctionCall
+						scriptletFunctionCallDelegate
 					));
 				}
 			}

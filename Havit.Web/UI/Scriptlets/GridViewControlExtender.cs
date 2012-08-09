@@ -85,12 +85,12 @@ namespace Havit.Web.UI.Scriptlets
 
 		#region GetAttachEventsScript
 		/// <include file='..\\Dotfuscated\\Havit.Web.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetAttachEventsScript")]/*' />
-		public void GetAttachEventsScript(string parameterPrefix, IScriptletParameter parameter, Control control, ScriptBuilder scriptBuilder)
+		public void GetAttachEventsScript(string parameterPrefix, IScriptletParameter parameter, Control control, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder)
 		{
-			GetEventsScript(parameterPrefix, parameter, control, scriptBuilder,
-				delegate(IScriptletParameter nestedParameter, string nestedParameterPrefix, Control nestedParentControl, ScriptBuilder nestedScriptBuilder)
+			GetEventsScript(parameterPrefix, parameter, control, scriptletFunctionCallDelegate, scriptBuilder,
+				delegate(IScriptletParameter nestedParameter, string nestedParameterPrefix, Control nestedParentControl, string nestedScriptletFunctionCallDelegate, ScriptBuilder nestedScriptBuilder)
 				{
-					nestedParameter.GetAttachEventsScript(nestedParameterPrefix, nestedParentControl, nestedScriptBuilder);
+					nestedParameter.GetAttachEventsScript(nestedParameterPrefix, nestedParentControl, nestedScriptletFunctionCallDelegate, nestedScriptBuilder);
 				});
 		}
 
@@ -98,18 +98,18 @@ namespace Havit.Web.UI.Scriptlets
 
 		#region GetDetachEventsScript
 		/// <include file='..\\Dotfuscated\\Havit.Web.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetDetachEventsScript")]/*' />
-		public void GetDetachEventsScript(string parameterPrefix, IScriptletParameter parameter, Control control, ScriptBuilder scriptBuilder)
+		public void GetDetachEventsScript(string parameterPrefix, IScriptletParameter parameter, Control control, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder)
 		{
-			GetEventsScript(parameterPrefix, parameter, control, scriptBuilder,
-				delegate(IScriptletParameter nestedParameter, string nestedParameterPrefix, Control nestedParentControl, ScriptBuilder nestedScriptBuilder)
+			GetEventsScript(parameterPrefix, parameter, control, scriptletFunctionCallDelegate, scriptBuilder,
+				delegate(IScriptletParameter nestedParameter, string nestedParameterPrefix, Control nestedParentControl, string nestedScriptletFunctionCallDelegate, ScriptBuilder nestedScriptBuilder)
 			{
-				nestedParameter.GetDetachEventsScript(nestedParameterPrefix, nestedParentControl, nestedScriptBuilder);
+				nestedParameter.GetDetachEventsScript(nestedParameterPrefix, nestedParentControl, nestedScriptletFunctionCallDelegate, nestedScriptBuilder);
 			});
 		}
 		#endregion
 
 		#region GetEventsScript
-		private void GetEventsScript(string parameterPrefix, IScriptletParameter parameter, Control control, ScriptBuilder scriptBuilder, JobOnNesterParameterEventHandler jobOnNesterParameter)
+		private void GetEventsScript(string parameterPrefix, IScriptletParameter parameter, Control control, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder, JobOnNestedParameterEventHandler jobOnNestedParameter)
 		{
 			GridView gridView = (GridView)control;
 
@@ -126,14 +126,14 @@ namespace Havit.Web.UI.Scriptlets
 							continue;
 						}
 						string newParameterPrefix = String.Format("{0}.{1}[{2}]", parameterPrefix, parameter.Name, index);
-						jobOnNesterParameter(nestedParameter, newParameterPrefix, row, scriptBuilder);
+						jobOnNestedParameter(nestedParameter, newParameterPrefix, row, scriptletFunctionCallDelegate, scriptBuilder);
 					}
 				}
 				index++;
 			}
 		}
-		
-		private delegate void JobOnNesterParameterEventHandler(IScriptletParameter nestedParameter, string nestedParameterPrefix, Control nestedParentControl, ScriptBuilder nestedScriptBuilder);
+
+		private delegate void JobOnNestedParameterEventHandler(IScriptletParameter nestedParameter, string nestedParameterPrefix, Control nestedParentControl, string scriptletFunctionCallDelegate, ScriptBuilder nestedScriptBuilder);
 		#endregion		
 	}
 }

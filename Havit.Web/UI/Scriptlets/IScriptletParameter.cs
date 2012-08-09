@@ -52,7 +52,7 @@ namespace Havit.Web.UI.Scriptlets
 		/// <param name="parameterPrefix">Prefix pro název parametru. Parametry mohou být vnoøené (napø. TextBox v Repeateru).</param>
 		/// <param name="parentControl">Rodièovský prvek, pro který je parametr renderován.</param>
 		/// <param name="scriptBuilder">Script builder.</param>
-		void GetAttachEventsScript(string parameterPrefix, Control parentControl, ScriptBuilder scriptBuilder);
+		void GetAttachEventsScript(string parameterPrefix, Control parentControl, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder);
 		#endregion
 		
 		#region GetDetachEventsScript
@@ -62,7 +62,7 @@ namespace Havit.Web.UI.Scriptlets
 		/// <param name="parameterPrefix">Prefix pro název parametru. Parametry mohou být vnoøené (napø. TextBox v Repeateru).</param>
 		/// <param name="parentControl">Rodièovský prvek, pro který je parametr renderován.</param>
 		/// <param name="scriptBuilder">Script builder.</param>
-		void GetDetachEventsScript(string parameterPrefix, Control parentControl, ScriptBuilder scriptBuilder);
+		void GetDetachEventsScript(string parameterPrefix, Control parentControl, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder);
 		#endregion
 	}
 }

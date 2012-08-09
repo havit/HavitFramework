@@ -12,62 +12,11 @@ namespace Havit.Web.UI.Scriptlets
 	/// Scriptlet umožòuje snadnou tvorbu klientských skriptù.
 	/// </summary>
 	[ControlBuilder(typeof(NoLiteralContolBuilder))]	
-	public class Scriptlet : Control
+	public class Scriptlet : Control, IScriptControl
 	{
 		#region Private fields
 		private ClientScript clientScript = null;
 		private List<IScriptletParameter> scriptletParameters = new List<IScriptletParameter>();
-		#endregion
-
-		#region ClientSideGetDataObjectFunctionName
-		/// <summary>
-		/// Vrací skrit volání klienské metody vracející objekt nesoucí parametry scriptletu.
-		/// </summary>
-		protected virtual string ClientSideGetDataObjectFunctionName
-		{
-			get
-			{
-				return "scriptletGetDataObject_" + this.ClientID;
-			}
-		}		
-		#endregion
-
-		#region ClientSideGetDataObjectFunctionCall
-		/// <summary>
-		/// Vrací skrit volání klienské metody vracející objekt nesoucí parametry scriptletu.
-		/// </summary>
-		protected virtual string ClientSideGetDataObjectFunctionCall
-		{
-			get
-			{
-				return ClientSideGetDataObjectFunctionName + "()";
-			}
-		}
-		#endregion
-
-		#region ClientSideScriptFunctionName
-		///<summary>
-		///Název funkce vygenerované ClientScriptem. Dostupné až po vygenerování skriptu.
-		///Pokud není funkce generována opakovanì (v repeateru, apod.) vrací název sdílené
-		///funkce.
-		///</summary>
-		protected virtual string ClientSideScriptFunctionName
-		{
-			get { return clientScript.ClientSideScriptFunctionName; }
-		}
-		#endregion
-
-		#region ClientSideScriptFunctionCall
-		/// <summary>
-		/// Vrací klientský skript pro volání klientské funkce s klientským parametrem.
-		/// </summary>
-		public string ClientSideScriptFunctionCall
-		{
-			get
-			{
-				return String.Format("{0}({1});", ClientSideScriptFunctionName, ClientSideGetDataObjectFunctionCall);
-			}
-		}
 		#endregion
 		
 		#region ControlExtenderRepository
@@ -156,7 +105,12 @@ namespace Havit.Web.UI.Scriptlets
 		protected override void OnPreRender(EventArgs e)
 		{
 			base.OnPreRender(e);
-
+			
+			ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);
+			if (scriptManager != null)
+			{
+				scriptManager.RegisterScriptControl(this);
+			}
 			CheckControlConditions();
 			PrepareAndRegisterClientScript();
 		}
@@ -175,32 +129,6 @@ namespace Havit.Web.UI.Scriptlets
 		}
 		#endregion
 		
-		#region RenderControl
-		///// <summary>
-		///// Zajistí tvorbu klienstkého skriptu.
-		///// </summary>
-		//protected override void Render(HtmlTextWriter writer)
-		//{
-		//    base.Render(writer);
-
-		//    ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);
-		//    if ((scriptManager != null) && scriptManager.IsInAsyncPostBack)
-		//    {
-		//        PrepareAndRegisterClientScript();
-		//    }
-		//}
-
-		/// <summary>
-		/// Zajistí, aby se na scriptletu nepoužilo klasické renderování.
-		/// Místo renderování se registrují klientské skripty v metodì OnPreRender.
-		/// </summary>
-		/// <param name="writer"></param>
-		public override void RenderControl(HtmlTextWriter writer)
-		{
-			// nebudeme renderovat nic z vnitøku controlu
-		}		
-		#endregion
-
 		#region PrepareAndRegisterClientScript
 		/// <summary>
 		/// Sestaví kompletní klientský skript seskládáním funkce, vytvoøení objektu 
@@ -234,23 +162,68 @@ namespace Havit.Web.UI.Scriptlets
 		/// Vrátí klientský skript scriptletu.
 		/// </summary>
 		/// <param name="builder">Script builder.</param>
-		protected virtual void PrepareClientSideScripts(ScriptBuilder builder)
+		protected virtual void PrepareClientSideScripts(ScriptBuilder mainBuilder)
 		{
-			ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);
+			string code;
 
-			// nejdøíve musíme vytvoøit funkci, abychom získali jméno obálky
-			// (navíc mùže dojít k reuse scriptu)
-			
-			// získáme funkci reprezentující ClientScript	
-			clientScript.GetClientSideScriptFunction(builder);
+			code = clientScript.GetClientSideFunctionCode();
+			bool clientSideScriptFunctionReused;
+			string clientSideScriptFunctionName = "scriptlet_" + this.ClientID + "_Function";
+			clientSideScriptFunctionName = PrepareClientSideScripts_WriteScriptWithReuse(mainBuilder, clientSideScriptFunctionName, new string[] { "parameters" }, code, "ScriptletFunctionHash", out clientSideScriptFunctionReused);
 
-			// nyní již se mùžeme zeptat na jméno klientské funkce se skriptem
-			string attachEventsFunctionName = this.ClientID + "_AttachEvents";
-			string detachEventsFunctionName = this.ClientID + "_DetachEvents";
+			code = PrepareClientSideScripts_GetParametersFunctionCode();
+			bool clientSideGetParametersFunctionReused;
+			string clientSideGetParametersFunctionName = "scriptlet_" + this.ClientID + "_GetParameters";
+			clientSideGetParametersFunctionName = PrepareClientSideScripts_WriteScriptWithReuse(mainBuilder, clientSideGetParametersFunctionName, null, code, "GetParametersHash", out clientSideGetParametersFunctionReused);
 
-			// vytvoøíme funkci pro získání objektu nesoucí parametry
-			builder.AppendLineFormat("function {0}()", ClientSideGetDataObjectFunctionName);
-			builder.AppendLine("{");
+			code = PrepareClientSideScripts_GetAttachEventsFunctionCode();
+			bool clientSideAttachEventsFunctionReused;
+			string clientSideAttachEventsFunctionName = "scriptlet_" + this.ClientID + "_AttachEvents";
+			clientSideAttachEventsFunctionName = PrepareClientSideScripts_WriteScriptWithReuse(mainBuilder, clientSideAttachEventsFunctionName, new string[] { "data", "delegatex", "handler" }, code, "AttachEventsHash", out clientSideAttachEventsFunctionReused);
+
+			string handlerDelegate = String.Format("scriptlet_{0}_HD", this.ClientID);
+			string attachFunctionDelegate = String.Format("scriptlet_{0}_AE", this.ClientID);
+			string detachFunctionDelegate = String.Format("scriptlet_{0}_DE", this.ClientID);
+
+			if (!IsScriptManager)
+			{
+				mainBuilder.AppendLineFormat("var {0} = new Function(\"{1}({2}());\");", handlerDelegate, clientSideScriptFunctionName, clientSideGetParametersFunctionName);
+				mainBuilder.AppendLineFormat("var {0} = new Function(\"{1}({2}(), {0}, {3});\");", attachFunctionDelegate, clientSideAttachEventsFunctionName, clientSideGetParametersFunctionName, handlerDelegate);
+				mainBuilder.AppendLine(BrowserHelper.GetAttachEventScript("window", "onload", attachFunctionDelegate));
+			}
+			else
+			{
+				code = PrepareClientSideScripts_GetDetachEventsFunctionCode();
+				bool clientSideDetachEventsFunctionReused;
+				string clientSideDetachEventsFunctionName = "scriptlet_" + this.ClientID + "_DetachEvents";
+				clientSideDetachEventsFunctionName = PrepareClientSideScripts_WriteScriptWithReuse(mainBuilder, clientSideDetachEventsFunctionName, new string[] { "data", "delegatex", "handler" }, code, "DetachEventsHash", out clientSideDetachEventsFunctionReused);
+
+				if (!(IsInAsyncPostBack && clientSideScriptFunctionReused && clientSideGetParametersFunctionReused && clientSideAttachEventsFunctionReused && clientSideDetachEventsFunctionReused))
+				{
+					mainBuilder.AppendLineFormat("var {0} = new Function(\"{1}({2}());\");", handlerDelegate, clientSideScriptFunctionName, clientSideGetParametersFunctionName);
+					mainBuilder.AppendLineFormat("var {0} = new Function(\"{1}({2}(), {0}, {3});\");", attachFunctionDelegate, clientSideAttachEventsFunctionName, clientSideGetParametersFunctionName, handlerDelegate);
+					mainBuilder.AppendLineFormat("var {0} = new Function(\"{1}({2}(), {0}, {3});\");", detachFunctionDelegate, clientSideDetachEventsFunctionName, clientSideGetParametersFunctionName, handlerDelegate);
+				}
+
+				mainBuilder.AppendLineFormat("Sys.WebForms.PageRequestManager.getInstance().add_pageLoading({0});", detachFunctionDelegate);
+				// pageLoaded nám zajistí navázání událostí po výmìnì elementù
+				mainBuilder.AppendLineFormat("Sys.WebForms.PageRequestManager.getInstance().add_pageLoaded({0});", attachFunctionDelegate);
+			}
+
+			if (clientScript.GetAutoStart())
+			{
+				mainBuilder.AppendLineFormat("{0}();", handlerDelegate);
+			}
+		}
+		#endregion
+
+
+
+
+		// vytvoøíme funkci pro získání objektu nesoucí parametry
+		private string PrepareClientSideScripts_GetParametersFunctionCode()
+		{
+			ScriptBuilder builder = new ScriptBuilder();
 			builder.AppendLine("var result = new Object();");
 			foreach (IScriptletParameter scriptletParameter in scriptletParameters)
 			{
@@ -258,70 +231,130 @@ namespace Havit.Web.UI.Scriptlets
 				scriptletParameter.GetInitializeClientSideValueScript("result", this.NamingContainer, builder);
 			}
 			builder.AppendLine("return result;");
-			builder.AppendLine("}");
+			return builder.ToString();
+		}
 
-			builder.AppendLineFormat("function {0}()", attachEventsFunctionName);
-			builder.AppendLine("{");
+		private string PrepareClientSideScripts_GetAttachEventsFunctionCode()
+		{
+			ScriptBuilder attachBuilder = new ScriptBuilder();
 
-			// pokud používáme klientské události ASP.NET AJAXu, potøebujeme se odpojit od pageLoaded
-			builder.AppendLine("if (!((typeof(Sys) == 'undefined') || (typeof(Sys.WebForms) == 'undefined')))");
-			builder.AppendLine("{");
-			builder.AppendLineFormat("Sys.WebForms.PageRequestManager.getInstance().remove_pageLoaded({0});", attachEventsFunctionName);
-			builder.AppendLine("}");
+			// pokud máme script manager, odpojíme stávající navázání událostí (kvùli callbackùm)			
+			if (IsScriptManager)
+			{
+				attachBuilder.AppendLineFormat("Sys.WebForms.PageRequestManager.getInstance().remove_pageLoaded(delegatex);");
+			}
 
-			builder.AppendLineFormat("var data = {0};", ClientSideGetDataObjectFunctionCall);
 			foreach (IScriptletParameter scriptletParameter in scriptletParameters)
 			{
-				scriptletParameter.GetAttachEventsScript("data", this.NamingContainer, builder);
+				scriptletParameter.GetAttachEventsScript("data", this.NamingContainer, "handler", attachBuilder);
 			}
 			
-			builder.AppendLine("}");
+			return attachBuilder.ToString();
+		}
 
-			// pro neAJAXové stránky scriptlet nepotøebuje odpojovat události
-			if (scriptManager != null)
+		private string PrepareClientSideScripts_GetDetachEventsFunctionCode()
+		{
+			ScriptBuilder detachBuilder = new ScriptBuilder();
+			if (IsScriptManager)
 			{
-				builder.AppendLineFormat("function {0}()", detachEventsFunctionName);
-				builder.AppendLine("{");
-
-				// pokud používáme klientské události ASP.NET AJAXu, potøebujeme se odpojit od pageLoadingu
-				builder.AppendLine("if (!((typeof(Sys) == 'undefined') || (typeof(Sys.WebForms) == 'undefined')))");
-				builder.AppendLine("{");
-				builder.AppendLineFormat("Sys.WebForms.PageRequestManager.getInstance().remove_pageLoading({0});", detachEventsFunctionName);
-				builder.AppendLine("}");
-				
-				builder.AppendLineFormat("var data = {0};", ClientSideGetDataObjectFunctionCall);
-				foreach (IScriptletParameter scriptletParameter in scriptletParameters)
-				{
-					scriptletParameter.GetDetachEventsScript("data", this.NamingContainer, builder);				
-				}
-				builder.AppendLine("}");
+				detachBuilder.AppendLineFormat("Sys.WebForms.PageRequestManager.getInstance().remove_pageLoading(delegatex);");
 			}
-		
-			clientScript.GetClientSideStartupScript(builder);
-						
-			if (scriptManager == null)
+			foreach (IScriptletParameter scriptletParameter in scriptletParameters)
 			{
-				builder.AppendLine(BrowserHelper.GetAttachEventScript("window", "onload", attachEventsFunctionName));
+				scriptletParameter.GetDetachEventsScript("data", this.NamingContainer, "handler", detachBuilder);
+			}
+
+			return detachBuilder.ToString();
+		}
+		
+		private string PrepareClientSideScripts_WriteScriptWithReuse(ScriptBuilder mainBuilder, string functionName, string[] functionParameter, string code, string hashIdentifier, out bool reused)
+		{
+
+			if (String.IsNullOrEmpty(code))
+			{
+				reused = false;
+				return null;
+			}
+
+			// vezmeme jméno funkce z cache
+			string name = ScriptCacheHelper.GetFunctionNameFromCache(functionParameter, code);
+			bool foundInCache = false;
+			if (String.IsNullOrEmpty(name))
+			{
+				// pokud jsme jej nenašli, použijeme zadané jméno
+				name = functionName;
+				ScriptCacheHelper.AddFunctionToCache(name, functionParameter, code);
 			}
 			else
 			{
-				builder.AppendLine("if ((typeof(Sys) == 'undefined') || (typeof(Sys.WebForms) == 'undefined'))");
-				builder.AppendLine("{");
-				builder.AppendLine(BrowserHelper.GetAttachEventScript("window", "onload", attachEventsFunctionName));
-				builder.AppendLine("}");
-				builder.AppendLine("else");
-				builder.AppendLine("{");
-				//builder.AppendLine("if (typeof(document.scriptletEvents" + this.UniqueID + "Registered) == 'undefined')");
-				//builder.AppendLine("{");				
-				// pageLoading nám zajistí odebrání událostí ještì pøed výmìnou elementù v dokumentu
-				builder.AppendLineFormat("Sys.WebForms.PageRequestManager.getInstance().add_pageLoading({0});", detachEventsFunctionName);
-				// pageLoaded nám zajistí navázání událostí po výmìnì elementù
-				builder.AppendLineFormat("Sys.WebForms.PageRequestManager.getInstance().add_pageLoaded({0});", attachEventsFunctionName);
-				//builder.AppendLine("document.scriptletEvents" + this.UniqueID + "Registered = true;");				
-				builder.AppendLine("}");
-				//builder.AppendLine("}");
+				foundInCache = true;
+			}
+
+			string functionBlock = ClientScript.WrapClientSideScriptToFunction(name, functionParameter, code);
+			reused = false;
+			int hash = functionBlock.GetHashCode(); // pøedpokládáme, že pokud se liší skripty, liší se i GetHashCode. Shoda možná, nepravdìpodobná. Kdyžtak MD5 ci SHA1.
+			if (IsInAsyncPostBack && !String.IsNullOrEmpty(hashIdentifier))
+			{
+				// pokud jsme v callbacku, mùžeme zkusit reuse skriptu
+				// tj. nerenderovat jej, protože na klientu už je
+				reused = (int)ViewState[hashIdentifier] == hash;				
+			}
+
+			if (!foundInCache && !reused)
+			{
+				mainBuilder.Append(functionBlock);
+			}
+			
+			if (!reused && IsScriptManager)
+			{
+				ViewState[hashIdentifier] = hash;
+			}
+
+
+			return name;
+		}
+
+#warning comment
+		public bool IsInAsyncPostBack
+		{
+			get
+			{
+				if (_isInAsyncPostBack == null)
+				{
+					ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);
+					_isInAsyncPostBack = (scriptManager != null) && scriptManager.IsInAsyncPostBack;
+				}
+				return _isInAsyncPostBack.Value;
 			}
 		}
+		private bool? _isInAsyncPostBack = null;
+
+
+		public bool IsScriptManager
+		{
+			get
+			{
+				if (_isScriptManager == null)
+				{
+					_isScriptManager = ScriptManager.GetCurrent(this.Page) != null;
+				}
+				return _isScriptManager.Value;
+			}
+		}
+		private bool? _isScriptManager = null;
+
+		#region IScriptControl Members
+
+		IEnumerable<ScriptDescriptor> IScriptControl.GetScriptDescriptors()
+		{
+			return null;
+		}
+
+		IEnumerable<ScriptReference> IScriptControl.GetScriptReferences()
+		{
+			return null;
+		}
+
 		#endregion
 	}
 }

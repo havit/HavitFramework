@@ -42,7 +42,7 @@ namespace WebApplicationTest
 		private void TestGV_DataBinding(object sender, EventArgs e)
 		{
 			Random r = new Random();
-			TestGV.DataSource = System.Linq.Enumerable.Range(1, r.Next(10) + 1);
+			TestGV.DataSource = System.Linq.Enumerable.Range(1, 5);
 		}
 
 		private void SecondDateTimeBoxValidator_ServerValidate(object source, ServerValidateEventArgs args)

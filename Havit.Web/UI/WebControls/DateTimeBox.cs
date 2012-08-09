@@ -538,6 +538,7 @@ namespace Havit.Web.UI.WebControls
 				if (KeyBlockingClientScriptEnabled)
 				{
 					valueTextBox.Attributes.Add("onKeyPress", String.Format("HavitDateTimeBox_KeyPress(event, {0});", (this.DateTimeMode == DateTimeMode.DateTime).ToString().ToLower()));
+					valueTextBox.Attributes.Add("onBlur", "HavitDateTimeBox_Blur(event);");
 				}
 				//if (!ReadOnly)
 				//{
@@ -613,7 +614,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region RegisterClientScript
 		/// <summary>
-		/// Zaregistruje klientské skripty pro omezení vstupu z klávesnice.
+		/// Zaregistruje klientské skripty pro omezení vstupu z klávesnice, doplnění datumu podle masky
 		/// </summary>
 		private void RegisterClientScript()
 		{
@@ -637,6 +638,50 @@ namespace Havit.Web.UI.WebControls
 	{
 		if (window.event) { window.event.returnValue = null; } else { e.preventDefault(); }
 	}
+}
+
+function HavitDateTimeBox_Blur(e)
+{
+	var element = (e.target) ? e.target : window.event.srcElement;
+	var datum = new Date();
+	var datumMesic = datum.getMonth() + 1;
+	var datumRok = datum.getYear();
+	var datumSeparator = '" + dateTimeFormatInfo.DateSeparator + @"';
+	var regDen = '([1-9]|0[1-9]|[1-2]\\d|3[01])';
+	var regDenCely = '(0[1-9]|[1-2]\\d|3[01])';
+	var regMesic = '([1-9]|0[1-9]|1[0-2])';
+	var regMesicCely = '(0[1-9]|1[0-2])';
+	var regRok = '((19|20)\\d\\d)';
+	var patterns = new Array
+					(
+							new Array(regDen + '(\\' + datumSeparator + ')?',
+										'\$1' + datumSeparator + datumMesic + datumSeparator + datumRok
+							),
+							new Array(regDen + '(\\' + datumSeparator + ')' + regMesic + '(\\' + datumSeparator + ')?',
+										'\$1' + datumSeparator + '\$3' + datumSeparator + datumRok
+							),
+							new Array(regDenCely + regMesicCely + '(\\' + datumSeparator + ')?',
+										'\$1' + datumSeparator + '\$2' + datumSeparator + datumRok
+							),
+							new Array(regDenCely + '(\\' + datumSeparator + ')?' + regMesicCely + '(\\' + datumSeparator + ')?' + regRok,
+										'\$1' + datumSeparator + '\$3' + datumSeparator + '\$5'
+							)
+					);
+	var i = 0;
+	var found = false;
+	while (i < patterns.length && !found)
+	{
+		var regPattern = new RegExp('^' + patterns[i][0] + '$');
+		var replacement = patterns[i][1];
+		var value = element.value;
+		if (regPattern.test(value)) 
+		{
+			element.value = value.replace(regPattern, replacement);
+			found = true;
+		}
+		i++;
+	}
+
 }
 
 function HavitDateTimeBox_Focus(e)

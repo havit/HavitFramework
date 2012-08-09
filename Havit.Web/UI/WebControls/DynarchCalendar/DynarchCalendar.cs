@@ -894,28 +894,15 @@ namespace Havit.Web.UI.WebControls
 				this.RegisterCalendarSetupScript();
 			}
 		}
+		#endregion
 
+		#region RegisterCss
 		/// <summary>
 		/// Zaregistruje css pro zobrazení kalendáøe.
 		/// </summary>
 		protected void RegisterCss()
 		{
-			if ((Page.Header != null) && (Skin != DynarchCalendarSkin.None))
-			{
-				bool registered = (bool)(Context.Items["Havit.Web.UI.WebControls.DynarchCalendar.RegisterCss_registered"] ?? false);
-
-				if (!registered)
-				{
-					HtmlLink htmlLink = new HtmlLink();
-					string resourceName = "Havit.Web.UI.WebControls.DynarchCalendar.calendar-" + Skin.ToString().ToLower() + ".css";
-					htmlLink.Href = Page.ClientScript.GetWebResourceUrl(typeof(DynarchCalendar), resourceName);
-					htmlLink.Attributes.Add("rel", "stylesheet");
-					htmlLink.Attributes.Add("type", "text/css");
-//							<link rel="stylesheet" type="text/css" href="~/templates/styles/calendar-system.css" />
-					Page.Header.Controls.Add(htmlLink);
-					Context.Items["Havit.Web.UI.WebControls.DynarchCalendar.RegisterCss_registered"] = true;
-				}
-			}
+			RegisterCalendarSkinStylesheets(this.Page);
 		}
 		#endregion
 
@@ -1165,6 +1152,31 @@ namespace Havit.Web.UI.WebControls
 			return result;
 		}
 		#endregion
-	
+
+		#region RegisterCssForCalendarSkin (static)
+		/// <summary>
+		/// Zaregistruje css pro zobrazení kalendáøe.
+		/// Statická metoda je urèena k øešení
+		/// </summary>
+		public static void RegisterCalendarSkinStylesheets(Page page)
+		{
+			if ((page.Header != null) && (Skin != DynarchCalendarSkin.None))
+			{
+				bool registered = (bool)(HttpContext.Current.Items["Havit.Web.UI.WebControls.DynarchCalendar.RegisterCss_registered"] ?? false);
+
+				if (!registered)
+				{
+					HtmlLink htmlLink = new HtmlLink();
+					string resourceName = "Havit.Web.UI.WebControls.DynarchCalendar.calendar-" + Skin.ToString().ToLower() + ".css";
+					htmlLink.Href = page.ClientScript.GetWebResourceUrl(typeof(DynarchCalendar), resourceName);
+					htmlLink.Attributes.Add("rel", "stylesheet");
+					htmlLink.Attributes.Add("type", "text/css");
+					//							<link rel="stylesheet" type="text/css" href="~/templates/styles/calendar-system.css" />
+					page.Header.Controls.Add(htmlLink);
+					HttpContext.Current.Items["Havit.Web.UI.WebControls.DynarchCalendar.RegisterCss_registered"] = true;
+				}
+			}
+		}
+		#endregion
 	}
 }

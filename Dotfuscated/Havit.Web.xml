@@ -209,6 +209,12 @@
             <param name="separator">Řetězec, který má být použit jako oddělovač dne, měsíce a roku.</param>
             <returns>DateFormat používaný DynarchCalendarem.</returns>
         </member>
+        <member name="M:Havit.Web.UI.WebControls.DynarchCalendar.RegisterCalendarSkinStylesheets(System.Web.UI.Page)">
+            <summary>
+            Zaregistruje css pro zobrazení kalendáře.
+            Statická metoda je určena k řešení
+            </summary>
+        </member>
         <member name="P:Havit.Web.UI.WebControls.DynarchCalendar.MainScriptUrl">
             <summary>
             Cesta k hlavnímu skriptu calendar[_stripped].js

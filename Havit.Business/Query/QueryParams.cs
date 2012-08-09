@@ -154,7 +154,12 @@ namespace Havit.Business.Query
 			{
 				if (i > 0)
 					fieldsBuilder.Append(", ");
-				fieldsBuilder.Append(properties[i].GetSelectFieldStatement(command));
+
+				if (properties[i] is IFieldsBuilder)
+				{
+#warning Pøepracovat tak, aby každá property obecnì mohl emitovat fieldy, které potøebuje ke své inicializaci.
+					fieldsBuilder.Append(((IFieldsBuilder)properties[i]).GetSelectFieldStatement(command));
+				}
 			}
 			return fieldsBuilder.ToString();
 		}

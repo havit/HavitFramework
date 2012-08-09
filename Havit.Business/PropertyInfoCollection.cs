@@ -6,17 +6,17 @@ using System.Collections.ObjectModel;
 namespace Havit.Business
 {
 	/// <summary>
-	/// Kolekce objektù implementujících IProperty.
+	/// Kolekce objektù PropertyInfo.<br/>
 	/// Pøi opakovaném pøidání property do kolekce se nic nestane (tj. 
 	/// property nebude do kolekce pøidána podruhé a nedojde k chybì).
 	/// </summary>
 	[Serializable]
-	public class PropertyInfoCollection : Collection<IPropertyInfo>
+	public class PropertyInfoCollection : Collection<PropertyInfo>
 	{
 		/// <summary>
 		/// Pøidá prvek do kolekce, pokud v kolekci již není.
 		/// </summary>
-		protected override void InsertItem(int index, IPropertyInfo item)
+		protected override void InsertItem(int index, PropertyInfo item)
 		{
 			if (this.Contains(item))
 				return;

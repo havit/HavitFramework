@@ -26,13 +26,23 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Operand.
 		/// </summary>
-		protected IOperand Operand1;
+		public IOperand Operand1
+		{
+			get { return _operand1; }
+			set { _operand1 = value; }
+		}
+		private IOperand _operand1;
 
 		/// <summary>
 		/// Vzor podmínky SQL dotazu.
 		/// Následnì je formátován operandem (v potomcích operandy).
 		/// </summary>
-		protected string ConditionPattern;
+		public string ConditionPattern
+		{
+			get { return _conditionPattern; }
+			set { _conditionPattern = value; }
+		}
+		private string _conditionPattern;
 		#endregion
 
 		#region Constructor
@@ -66,6 +76,16 @@ namespace Havit.Business.Query
 		/// <param name="whereBuilder"></param>
 		public override void GetWhereStatement(System.Data.Common.DbCommand command, StringBuilder whereBuilder)
 		{
+			if (command == null)
+			{
+				throw new ArgumentNullException("command");
+			}
+
+			if (whereBuilder == null)
+			{
+				throw new ArgumentNullException("whereBuilder");
+			}
+
 			whereBuilder.AppendFormat(ConditionPattern, Operand1.GetCommandValue(command));
 		}
 		#endregion

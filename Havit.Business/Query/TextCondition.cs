@@ -51,6 +51,11 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static string GetLikeExpression(string text)
 		{
+			if (String.IsNullOrEmpty(text))
+			{
+				throw new ArgumentException("Argument text nesmí být null ani prázdný.", "text");
+			}
+			
 			string result;
 			result = text.Trim().Replace("%", "[%]");
 			result = result.Replace("_", "[_]");

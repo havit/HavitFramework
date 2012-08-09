@@ -230,7 +230,7 @@ namespace Havit.Data
 		/// </returns>
 		/// <exception cref="ArgumentException">pokud nebyl field nalezen a <see cref="FullLoad"/> je <c>true</c></exception>
 		/// <exception cref="InvalidCastException">pokud nelze pøevést field na výstupní typ</exception>
-		[Obsolete]
+		[Obsolete("Metoda Load<T>() je obsolete, použijte TryGet<T>().")]
 		public bool Load<T>(string fieldName, ref T target)
 		{
 			object value;
@@ -280,6 +280,7 @@ namespace Havit.Data
 		/// <param name="fieldName">jméno parametru</param>
 		/// <param name="target">cíl, kam má být parametr uložen</param>
 		/// <returns>false, pokud má parametr hodnotu NULL; true, pokud byla naètena hodnota</returns>
+		[Obsolete("Metoda LoadObject() je obsolete, použijte TryGet<object>().")]
 		public bool LoadObject(string fieldName, ref object target)
 		{
 			return Load<object>(fieldName, ref target);
@@ -303,6 +304,7 @@ namespace Havit.Data
 		/// <param name="fieldName">jméno parametru</param>
 		/// <param name="target">cíl, kam má být parametr uložen</param>
 		/// <returns>false, pokud má parametr hodnotu NULL; true, pokud byla naètena hodnota</returns>
+		[Obsolete("Metoda LoadString() je obsolete, použijte TryGet<string>().")]
 		public bool LoadString(string fieldName, ref string target)
 		{
 			return Load<string>(fieldName, ref target);
@@ -326,6 +328,7 @@ namespace Havit.Data
 		/// <param name="fieldName">jméno parametru</param>
 		/// <param name="target">cíl, kam má být parametr uložen</param>
 		/// <returns>false, pokud má parametr hodnotu NULL; true, pokud byla naètena hodnota</returns>
+		[Obsolete("Metoda LoadInt32() je obsolete, použijte TryGet<int>().")]
 		public bool LoadInt32(string fieldName, ref Int32 target)
 		{
 			return Load<Int32>(fieldName, ref target);
@@ -349,6 +352,7 @@ namespace Havit.Data
 		/// <param name="fieldName">jméno parametru</param>
 		/// <param name="target">cíl, kam má být parametr uložen</param>
 		/// <returns>false, pokud má parametr hodnotu NULL; true, pokud byla naètena hodnota</returns>
+		[Obsolete("Metoda LoadDouble() je obsolete, použijte TryGet<double>().")]
 		public bool LoadDouble(string fieldName, ref double target)
 		{
 			return Load<double>(fieldName, ref target);
@@ -373,6 +377,7 @@ namespace Havit.Data
 		/// <param name="fieldName">jméno parametru</param>
 		/// <param name="target">cíl, kam má být parametr uložen</param>
 		/// <returns>false, pokud má parametr hodnotu NULL; true, pokud byla naètena hodnota</returns>
+		[Obsolete("Metoda LoadBoolean() je obsolete, použijte TryGet<bool>().")]
 		public bool LoadBoolean(string fieldName, ref bool target)
 		{
 			return Load<Boolean>(fieldName, ref target);
@@ -396,6 +401,7 @@ namespace Havit.Data
 		/// <param name="fieldName">jméno parametru</param>
 		/// <param name="target">cíl, kam má být parametr uložen</param>
 		/// <returns>false, pokud má parametr hodnotu NULL; true, pokud byla naètena hodnota</returns>
+		[Obsolete("Metoda LoadDateTime() je obsolete, použijte TryGet<DateTime>().")]
 		public bool LoadDateTime(string fieldName, ref DateTime target)
 		{
 			return Load<DateTime>(fieldName, ref target);

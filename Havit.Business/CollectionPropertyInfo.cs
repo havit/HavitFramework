@@ -7,7 +7,7 @@ namespace Havit.Business
 	/// <summary>
 	/// Kolekce objektù tøídy IProperty.
 	/// </summary>
-	public class CollectionPropertyInfo : IPropertyInfo
+	public class CollectionPropertyInfo : PropertyInfo, IFieldsBuilder
 	{
 		/// <summary>
 		/// Vytvoøí instanci CollectionProperty.

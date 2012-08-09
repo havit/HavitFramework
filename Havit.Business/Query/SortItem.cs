@@ -20,20 +20,24 @@ namespace Havit.Business.Query
 		{
 		}
 
+		/*
 		/// <summary>
 		/// Vytvoøí položdu øazení podle fieldName, vzestupné øazení.
 		/// </summary>
 		public SortItem(string fieldName)
-			: this(fieldName, ListSortDirection.Ascending)
-		{			
+			: this(fieldName, SortDirection.Ascending)
+		{
+#warning Chceme umožnit stringové zadání fieldName?
 		}
+		 */
 
 		/// <summary>
 		/// Vytvoøí položdu øazení podle fieldName a daného poøadí.
 		/// </summary>
-		public SortItem(string fieldName, ListSortDirection direction)
+		protected SortItem(string fieldName, SortDirection direction)
 			: this()
 		{
+#warning Chceme umožnit stringové zadání fieldName?
 			this.fieldName = fieldName;
 			this.direction = direction;
 		}
@@ -41,15 +45,15 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Vytvoøí položdu øazení podle sloupce, vzestupné poøadí.
 		/// </summary>
-		public SortItem(PropertyInfo property)
-			: this(property.FieldName, ListSortDirection.Ascending)
+		public SortItem(FieldPropertyInfo property)
+			: this(property.FieldName, SortDirection.Ascending)
 		{
 		}
 
 		/// <summary>
 		/// Vytvoøí položdu øazení podle sloupce a daného poøadí.
 		/// </summary>
-		public SortItem(PropertyInfo property, ListSortDirection direction)
+		public SortItem(FieldPropertyInfo property, SortDirection direction)
 			: this(property.FieldName, direction)
 		{
 		}
@@ -62,6 +66,7 @@ namespace Havit.Business.Query
 		/// </summary>
 		public string FieldName
 		{
+#warning Nebìl by SortItem pracovat ještì  s PropertyInfo, spíš než se stringovým FieldName?
 			get { return fieldName; }
 			set { fieldName = value; }
 		}
@@ -70,12 +75,12 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Smìr øazení.
 		/// </summary>
-		public ListSortDirection Direction
+		public SortDirection Direction
 		{
 			get { return direction; }
 			set { direction = value; }
 		}
-		private ListSortDirection direction = ListSortDirection.Ascending;
+		private SortDirection direction = SortDirection.Ascending;
 
 		#endregion
 
@@ -83,10 +88,11 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Vrátí výraz pro øazení.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
 		public virtual string GetSqlOrderBy()
 		{
 			string result = fieldName;
-			if (direction == ListSortDirection.Descending)
+			if (direction == SortDirection.Descending)
 			{
 				result = result + " DESC";
 			}

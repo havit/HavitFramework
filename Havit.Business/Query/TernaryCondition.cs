@@ -14,7 +14,12 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Tøetí operand.
 		/// </summary>
-		protected IOperand Operand3;
+		public IOperand Operand3
+		{
+			get { return _operand3; }
+			set { _operand3 = value; }
+		}
+		private IOperand _operand3;
 		#endregion
 
 		#region Constructor
@@ -41,6 +46,16 @@ namespace Havit.Business.Query
 		/// <param name="whereBuilder"></param>
 		public override void GetWhereStatement(System.Data.Common.DbCommand command, StringBuilder whereBuilder)
 		{
+			if (command == null)
+			{
+				throw new ArgumentNullException("command");
+			}
+
+			if (whereBuilder == null)
+			{
+				throw new ArgumentNullException("whereBuilder");
+			}
+
 			whereBuilder.AppendFormat(ConditionPattern, Operand1.GetCommandValue(command), Operand2.GetCommandValue(command), Operand3.GetCommandValue(command));
 		}
 		#endregion

@@ -94,6 +94,7 @@
     <Compile Include="CollectionPropertyInfo.cs" />
     <Compile Include="CollectionPropertyHolder.cs" />
     <Compile Include="Properties\GlobalSuppressions.cs" />
+    <Compile Include="PropertyInfo.cs" />
     <Compile Include="Query\AndCondition.cs" />
     <Compile Include="Query\BinaryCondition.cs" />
     <Compile Include="Query\BoolCondition.cs" />
@@ -106,12 +107,13 @@
     <Compile Include="Query\NumberCondition.cs" />
     <Compile Include="Query\OrCondition.cs" />
     <Compile Include="Query\ReferenceCondition.cs" />
+    <Compile Include="Query\SortDirection.cs" />
     <Compile Include="Query\TernaryCondition.cs" />
     <Compile Include="Query\TextCondition.cs" />
     <Compile Include="Query\UnaryCondition.cs" />
     <Compile Include="Query\ValueOperand.cs" />
     <Compile Include="ConstraintViolationException.cs" />
-    <Compile Include="IPropertyInfo.cs" />
+    <Compile Include="IFieldsBuilder.cs" />
     <Compile Include="Query\SortItem.cs" />
     <Compile Include="Query\SortItemCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -126,7 +128,7 @@
     <Compile Include="DateInfoDictionary.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="PropertyInfo.cs" />
+    <Compile Include="FieldPropertyInfo.cs" />
     <Compile Include="PropertyInfoCollection.cs" />
     <Compile Include="PropertyHolder.cs" />
     <Compile Include="PropertyHolderBase.cs" />

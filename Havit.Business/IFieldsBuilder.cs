@@ -6,7 +6,7 @@ namespace Havit.Business
 	/// <summary>
 	/// Interface pro Property popisující strukturu domény.	
 	/// </summary>
-	public interface IPropertyInfo
+	public interface IFieldsBuilder
 	{
 		/// <summary>
 		/// Vrátí řetězec pro vytažení daného sloupce z databáze.

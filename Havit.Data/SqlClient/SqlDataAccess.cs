@@ -625,6 +625,11 @@ namespace Havit.Data.SqlClient
 		/// <param name="outerTransaction">transakce</param>
 		public static void ExecuteTransaction(SqlTransactionDelegate transactionWork, SqlTransaction outerTransaction)
 		{
+			if (transactionWork == null)
+			{
+				throw new ArgumentException("transactionWork");
+			}
+
 			SqlTransaction currentTransaction = outerTransaction;
 			SqlConnection connection;
 			if (outerTransaction == null)

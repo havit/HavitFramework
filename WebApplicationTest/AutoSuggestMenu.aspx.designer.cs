@@ -22,6 +22,15 @@ namespace WebApplicationTest {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
+        /// ScriptManager1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.ScriptManager ScriptManager1;
+        
+        /// <summary>
         /// SubjektTB control.
         /// </summary>
         /// <remarks>
@@ -38,41 +47,5 @@ namespace WebApplicationTest {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Havit.Web.UI.WebControls.AutoSuggestMenu SubjektASM;
-        
-        /// <summary>
-        /// ShowDialogButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button ShowDialogButton;
-        
-        /// <summary>
-        /// TestDialog control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Havit.Web.UI.WebControls.AjaxModalDialog TestDialog;
-        
-        /// <summary>
-        /// DialogSubjektTB control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox DialogSubjektTB;
-        
-        /// <summary>
-        /// DialogSubjektASM control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Havit.Web.UI.WebControls.AutoSuggestMenu DialogSubjektASM;
     }
 }

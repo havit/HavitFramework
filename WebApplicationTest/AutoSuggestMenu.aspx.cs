@@ -22,13 +22,18 @@ namespace WebApplicationTest
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
-			ShowDialogButton.Click += new EventHandler(ShowDialogButton_Click);
-			SubjektASM.Context = "Testovací\"' '' \"\"kontext";
+			//ShowDialogButton.Click += new EventHandler(ShowDialogButton_Click);
+			//SubjektASM.Context = "Testovací\"' '' \"\"kontext";
 		}
 
 		void ShowDialogButton_Click(object sender, EventArgs e)
 		{
-			TestDialog.Show();
+			//TestDialog.Show();
+		}
+
+		protected void ScriptManager1_AsyncPostBackError(object sender, AsyncPostBackErrorEventArgs e)
+		{
+			throw e.Exception;
 		}
 
 		[WebMethod()]
@@ -46,7 +51,7 @@ namespace WebApplicationTest
 			{
 				foreach (Subjekt subjekt in subjekty)
 				{
-					menuItems.Add(new AutoSuggestMenuItem(subjekt.Nazev + i.ToString(), subjekt.ID.ToString()));
+					//menuItems.Add(new AutoSuggestMenuItem(subjekt.Nazev + i.ToString(), subjekt.ID.ToString()));
 				}
 			}
 

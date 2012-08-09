@@ -123,6 +123,7 @@
     <Content Include="ControlsValuesPersisterTest.aspx" />
     <Content Include="DateTimeBoxTest.aspx" />
     <Content Include="DropDownListTest.aspx" />
+    <Content Include="Global.asax" />
     <Content Include="GridViewExtTest.aspx" />
     <Content Include="HavitScripts.js" />
     <Content Include="Web.config" />
@@ -220,6 +221,9 @@
     </Compile>
     <Compile Include="Experiments.aspx.designer.cs">
       <DependentUpon>Experiments.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="GridViewExtTest.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>

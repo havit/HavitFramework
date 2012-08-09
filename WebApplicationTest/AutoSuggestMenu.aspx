@@ -9,14 +9,14 @@
 </head>
 <body>
 	<form id="form1" runat="server">
-		<asp:ScriptManager EnablePageMethods="true" runat="server" />
+		<asp:ScriptManager EnablePageMethods="true" ID="ScriptManager1" AllowCustomErrorsRedirect="false"  OnAsyncPostBackError="ScriptManager1_AsyncPostBackError" runat="server" />
 		<div>
 			<asp:TextBox ID="SubjektTB" Text="test2" Width="150" runat="server" style="border: 1px solid black;" />
 			<havit:AutoSuggestMenu
 				ID="SubjektASM"
 				TargetControlID="SubjektTB"
 				ServicePath="~/AutoSuggestMenuService.asmx"
-				OnGetSuggestions="GetSuggestions"
+				OnGetSuggestions="WebApplicationTest.AutoSuggestMenuService.GetSuggestions"
 				KeyPressDelay="300"	
 				UsePaging="true"
 				PageSize="10"	
@@ -29,7 +29,7 @@
 			/>
 		</div>
 		<br /><br />
-		<div>
+		<%--div>
 		    <asp:Button ID="ShowDialogButton" text="Zobraz dialog" runat="server" />
 		    <havit:AjaxModalDialog ID="TestDialog" Width="300" Height="200" runat="server">
 		        <ContentTemplate>
@@ -45,7 +45,7 @@
 		            
 		        </ContentTemplate>
 		    </havit:AjaxModalDialog>
-		</div>
+		</div--%>
 	</form>
 </body>
 </html>

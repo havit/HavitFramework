@@ -23,8 +23,10 @@ namespace WebApplicationTest
 	{
 		[ScriptMethod]
 		[WebMethod()]
-		public static string GetSuggestions(string keyword, bool usePaging, int pageIndex, int pageSize, string context)
+		public string GetSuggestions(string keyword, bool usePaging, int pageIndex, int pageSize, string context)
 		{
+			throw new Exception();
+
 			QueryParams qp = new QueryParams();
 			qp.Conditions.Add(TextCondition.CreateWildcards(Subjekt.Properties.Nazev, keyword, WildCardsLikeExpressionMode.Contains));
 			qp.TopRecords = pageSize;

@@ -5,7 +5,7 @@ using System.Text;
 using System.Web.Management;
 using System.Web.Services.Protocols;
 
-namespace Havit.Web.Services.Extenstions
+namespace Havit.Web.Services.Extensions
 {
 	/// <summary>
 	/// V případě chyby ve zpracování web metody (webové služby) zajistí oznámení chyby health monitoringem.

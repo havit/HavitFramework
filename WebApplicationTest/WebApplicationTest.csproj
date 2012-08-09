@@ -86,6 +86,13 @@
     <Compile Include="DefaultStylesLinkerTest.aspx.designer.cs">
       <DependentUpon>DefaultStylesLinkerTest.aspx</DependentUpon>
     </Compile>
+    <Compile Include="DynarchCalendarTest.aspx.cs">
+      <DependentUpon>DynarchCalendarTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DynarchCalendarTest.aspx.designer.cs">
+      <DependentUpon>DynarchCalendarTest.aspx</DependentUpon>
+    </Compile>
     <Compile Include="EnterpriseCheckBoxListTest.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>EnterpriseCheckBoxListTest.aspx</DependentUpon>
@@ -245,6 +252,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Browsers\CssFriendlyAdapters.browser" />
+    <Content Include="DynarchCalendarTest.aspx" />
     <Content Include="EnterpriseCheckBoxListTest.aspx" />
     <Content Include="havit.css" />
     <Content Include="HavitScripts.js" />

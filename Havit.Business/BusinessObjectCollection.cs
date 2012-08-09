@@ -257,8 +257,14 @@ namespace Havit.Business
 		public void AddRange(IEnumerable<TItem> source)
 		{
 			List<TItem> innerList = (List<TItem>)Items;
+			int originalItemsCount = innerList.Count;
 			innerList.AddRange(source);
-			OnCollectionChanged(EventArgs.Empty);
+
+			// vyvoláme událost informující o zmìnì kolekce, pokud se zmìnil poèet objektù v kolekci
+			if (originalItemsCount != innerList.Count)
+			{
+				OnCollectionChanged(EventArgs.Empty);
+			}
 		}
 		#endregion
 
@@ -273,8 +279,16 @@ namespace Havit.Business
 		/// <returns>poèet odstranìných prvkù</returns>
 		public virtual int RemoveAll(Predicate<TItem> match)
 		{
-			List<TItem> innerList = (List<TItem>)Items;
-			return innerList.RemoveAll(match);
+			List<TItem> innerList = (List<TItem>)Items;		
+			int itemsRemovedCount = innerList.RemoveAll(match);
+			
+			// vyvoláme událost informující o zmìnì kolekce, pokud nìjaké objekty byly z kolekce odstranìny
+			if (itemsRemovedCount != 0)
+			{
+				OnCollectionChanged(EventArgs.Empty);
+			}
+
+			return itemsRemovedCount;
 		}
 		#endregion
 
@@ -286,6 +300,7 @@ namespace Havit.Business
 		/// <returns>poèet prvkù, které byly skuteènì odstranìny</returns>
 		public virtual int RemoveRange(IEnumerable<TItem> items)
 		{
+			List<TItem> innerList = (List<TItem>)Items;		
 			if (items == null)
 			{
 				throw new ArgumentNullException("items");

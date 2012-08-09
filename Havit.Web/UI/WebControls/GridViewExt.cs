@@ -544,7 +544,7 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-		#region CreateRow (override - Insert)
+		#region CreateRow (override - Insert, øešení THEAD, apod.)
 		/// <summary>
 		/// CreateRow.
 		/// </summary>
@@ -566,6 +566,12 @@ namespace Havit.Web.UI.WebControls
 			{
 				row.Visible = false;
 			}
+
+			switch (row.RowType)
+			{
+				case DataControlRowType.Header: row.TableSection = TableRowSection.TableHeader; break;				
+			}
+
 			return row;
 		}
 		#endregion

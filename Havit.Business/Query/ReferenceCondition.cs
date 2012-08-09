@@ -43,6 +43,14 @@ namespace Havit.Business.Query
 		}
 
 		/// <summary>
+		/// Vytvoøí podmínku na rovnost dvou operandù.
+		/// </summary>
+		public static Condition CreateEquals(IOperand operand1, IOperand operand2)
+		{
+			return NumberCondition.CreateEquals(operand1, operand2);
+		}
+
+		/// <summary>
 		/// Vytvoøí podmínku existence hodnoty v poli integerù.
 		/// </summary>
 		public static Condition CreateIn(IOperand operand, int[] ids)

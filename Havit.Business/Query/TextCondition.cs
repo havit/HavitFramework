@@ -14,7 +14,15 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateEquals(IOperand operand, string value)
 		{
-			return new BinaryCondition(BinaryCondition.EqualsPattern, operand, ValueOperand.Create(value));
+			return CreateEquals(operand, ValueOperand.Create(value));			
+		}
+
+		/// <summary>
+		/// Vytvoøí podmínku testující rovnost dvou operandù. Citlivost na velká a malá písmena, diakritiku apod. vychází z nastavení serveru.
+		/// </summary>
+		public static Condition CreateEquals(IOperand operand1, IOperand operand2)
+		{
+			return new BinaryCondition(BinaryCondition.EqualsPattern, operand1, operand2);
 		}
 
 		/// <summary>

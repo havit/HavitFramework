@@ -238,6 +238,18 @@
         <member name="M:Havit.Business.Query.BoolCondition.CreateEquals(Havit.Business.Query.IOperand,System.Nullable{System.Boolean})">
             <summary>
             Vytvoří podmínku pro vlastnost rovnou dané hodnotě.
+            Je-li hodnota value null, testuje se operand na null (IS NULL).
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.BoolCondition.CreateEquals(Havit.Business.Query.IOperand,Havit.Business.Query.IOperand)">
+            <summary>
+            Vytvoří podmínku porovnávající hodnoty dvou operandů na rovnost.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.BoolCondition.CreateNotEquals(Havit.Business.Query.IOperand,Havit.Business.Query.IOperand)">
+            <summary>
+            Vytvoří podmínku porovnávající hodnoty dvou operandů na nerovnost.
+            Hodnota null není žádným způsobem zpracovávána, tj. pokud alespoň jeden operand má hodnotu null, není ve výsledku dotazu.
             </summary>
         </member>
         <member name="M:Havit.Business.Query.BoolCondition.CreateTrue(Havit.Business.Query.IOperand)">
@@ -313,6 +325,11 @@
         <member name="F:Havit.Business.Query.BinaryCondition.EqualsPattern">
             <summary>
             Vzor pro podmínku rovnosti.
+            </summary>
+        </member>
+        <member name="F:Havit.Business.Query.BinaryCondition.NotEqualsPattern">
+            <summary>
+            Vzor pro podmínku nerovnosti.
             </summary>
         </member>
         <member name="M:Havit.Business.Query.BinaryCondition.#ctor(System.String,Havit.Business.Query.IOperand,Havit.Business.Query.IOperand)">
@@ -1149,6 +1166,11 @@
             Vytvoří podmínku testující řetězec na rovnost. Citlivost na velká a malá písmena, diakritiku apod. vychází z nastavení serveru.
             </summary>
         </member>
+        <member name="M:Havit.Business.Query.TextCondition.CreateEquals(Havit.Business.Query.IOperand,Havit.Business.Query.IOperand)">
+            <summary>
+            Vytvoří podmínku testující rovnost dvou operandů. Citlivost na velká a malá písmena, diakritiku apod. vychází z nastavení serveru.
+            </summary>
+        </member>
         <member name="M:Havit.Business.Query.TextCondition.CreateLike(Havit.Business.Query.IOperand,System.String)">
             <summary>
             Vytvoří podmínku testující řetězec na podobnost operátorem LIKE. Citlivost na velká a malá písmena, diakritiku apod. vychází z nastavení serveru.
@@ -1286,9 +1308,19 @@
             Vytvoří podmínku testující rovnost datumů.
             </summary>
         </member>
+        <member name="M:Havit.Business.Query.DateCondition.CreateEquals(Havit.Business.Query.IOperand,Havit.Business.Query.IOperand)">
+            <summary>
+            Vytvoří podmínku testující rovnost dvou operandů.
+            </summary>
+        </member>
         <member name="M:Havit.Business.Query.DateCondition.Create(Havit.Business.Query.IOperand,Havit.Business.Query.ComparisonOperator,System.DateTime)">
             <summary>
             Vytvoří podmínku testující hodnoty pomocí zadaného operátoru.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.DateCondition.Create(Havit.Business.Query.IOperand,Havit.Business.Query.ComparisonOperator,Havit.Business.Query.IOperand)">
+            <summary>
+            Vytvoří podmínku testující hodnoty operandů.
             </summary>
         </member>
         <member name="T:Havit.Business.Query.CompositeCondition">
@@ -1321,7 +1353,17 @@
             Vytvoří podmínku testující rovnost hodnoty.
             </summary>
         </member>
+        <member name="M:Havit.Business.Query.NumberCondition.CreateEquals(Havit.Business.Query.IOperand,Havit.Business.Query.IOperand)">
+            <summary>
+            Vytvoří podmínku testující rovnost hodnoty operandů.
+            </summary>
+        </member>
         <member name="M:Havit.Business.Query.NumberCondition.Create(Havit.Business.Query.IOperand,Havit.Business.Query.ComparisonOperator,System.Int32)">
+            <summary>
+            Vytvoří podmínku testující hodnoty pomocí zadaného operátoru.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.NumberCondition.Create(Havit.Business.Query.IOperand,Havit.Business.Query.ComparisonOperator,Havit.Business.Query.IOperand)">
             <summary>
             Vytvoří podmínku testující hodnoty pomocí zadaného operátoru.
             </summary>
@@ -1474,6 +1516,11 @@
         <member name="M:Havit.Business.Query.ReferenceCondition.CreateEquals(Havit.Business.Query.IOperand,Havit.Business.BusinessObjectBase)">
             <summary>
             Vytvoří podmínku na rovnost.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.ReferenceCondition.CreateEquals(Havit.Business.Query.IOperand,Havit.Business.Query.IOperand)">
+            <summary>
+            Vytvoří podmínku na rovnost dvou operandů.
             </summary>
         </member>
         <member name="M:Havit.Business.Query.ReferenceCondition.CreateIn(Havit.Business.Query.IOperand,System.Int32[])">

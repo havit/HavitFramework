@@ -154,7 +154,7 @@ namespace Havit.Web.UI.WebControls
 				return EmptyText;
 			}
 
-			throw new MissingMemberException("Nepodaøilo se vyhodnotit DataField.");
+			throw new MissingMemberException(String.Format("Nepodaøilo se vyhodnotit DataField \"{0}\".", DataField));
 		}
 		#endregion
 

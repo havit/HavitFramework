@@ -21,6 +21,11 @@ namespace Havit.Business.Query
 		/// Vzor pro podmínku rovnosti.
 		/// </summary>
 		public const string EqualsPattern = "({0} = {1})";
+
+		/// <summary>
+		/// Vzor pro podmínku nerovnosti.
+		/// </summary>
+		public const string NotEqualsPattern = "({0} <> {1})";
 		#endregion
 
 		/// <summary>

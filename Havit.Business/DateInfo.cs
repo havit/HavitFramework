@@ -5,7 +5,7 @@ namespace Havit.Business
 	/// <summary>
 	/// Tøída pro informace o dni.
 	/// </summary>
-	public class DateInfo
+	public class DateInfo : IDateInfo
 	{
 		#region Data Fields - hodnoty
 		/// <summary>

@@ -1274,6 +1274,21 @@
             Třída pro informace o dni.
             </summary>
         </member>
+        <member name="T:Havit.Business.IDateInfo">
+            <summary>
+            Interface představující informace o jednom dni pro business-calendar.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.IDateInfo.Date">
+            <summary>
+            Datum, kterého se objekt týká.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.IDateInfo.IsHoliday">
+            <summary>
+            Indikuje, zda-li je den svátkem.
+            </summary>
+        </member>
         <member name="M:Havit.Business.DateInfo.#ctor(System.DateTime)">
             <summary>
             Vytvoří instanci <see cref="T:Havit.Business.DateInfo"/>.
@@ -1683,40 +1698,44 @@
             </summary>
             <remarks>
             Pracovním dnem (business day) je den, který není sobotou, nedělí ani svátkem.<br/>
-            Třída se instancializuje se sadou svátků (holidays), nebo bez svátků (pracovním
+            Třída se instancializuje se sadou významných dnů (zpravidla svátků), nebo bez svátků (pracovním
             dnem je pak den, který není sobotou ani nedělí).<br/>
             Jako svátky (holiday) lze samozřejmě předat i různé dovolené apod.<br/>
             <br/>
-            Jednou vytvořenou instanci třídy lze s výhodou cachovat.
+            Jednou vytvořenou instanci třídy lze s výhodou opakovaně používat.
             </remarks>
         </member>
-        <member name="F:Havit.Business.BusinessCalendar.holidayDictionary">
+        <member name="F:Havit.Business.BusinessCalendar.dates">
             <summary>
-            Interní dictionary svátků.<br/>
+            Interní seznam významných dnů, tj. dnů, které se liší od běžného pracovního dne (např. svátků, atp.).<br/>
             Klíč je DateTime, hodnota je DateInfo.
             </summary>
         </member>
         <member name="M:Havit.Business.BusinessCalendar.#ctor">
             <summary>
-            Vytvoří instanci <see cref="T:Havit.Business.BusinessCalendar"/> bez svátků.<br/>
+            Vytvoří instanci <see cref="T:Havit.Business.BusinessCalendar"/> bez významných dnů.<br/>
             Pracovními dny budou všechny dny mimo víkendů, dokud nebudou přidány nějaké svátky.
             </summary>
         </member>
-        <member name="M:Havit.Business.BusinessCalendar.#ctor(Havit.Business.DateInfoDictionary)">
+        <member name="M:Havit.Business.BusinessCalendar.#ctor(System.Collections.Generic.IDictionary{System.DateTime,Havit.Business.IDateInfo})">
             <summary>
-            Vytvoří instanci <see cref="T:Havit.Business.BusinessCalendar"/> se svátky.<br/>
+            Vytvoří instanci <see cref="T:Havit.Business.BusinessCalendar"/>.<br/>
             </summary>
-            <param name="holidayDictionary"><see cref="T:Havit.Business.DateInfoDictionary"/> se svátky (POUZE SE SVÁTKY!!!)</param>
-            <remarks>
-            Nekontroluje se, jestli mají všechny dny z holidayDictionary nastaveno <see cref="P:Havit.Business.DateInfo.IsHoliday"/>.
-            </remarks>
+            <param name="dateInfoDictionary">dictionary s informacemi o významných dnech</param>
         </member>
         <member name="M:Havit.Business.BusinessCalendar.#ctor(System.DateTime[])">
             <summary>
-            Vytvoří instanci <see cref="T:Havit.Business.BusinessCalendar"/> se svátky.<br/>
+            Vytvoří instanci <see cref="T:Havit.Business.BusinessCalendar"/>.<br/>
             Svátky jsou předány v poli <see cref="T:System.DateTime"/>.
             </summary>
             <param name="holidays">pole svátků <see cref="T:System.DateTime"/></param>
+        </member>
+        <member name="M:Havit.Business.BusinessCalendar.FillDates``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Přidá do nastavení <see cref="T:Havit.Business.BusinessCalendar"/> významné dny.
+            </summary>
+            <typeparam name="T">typ významných dnů (musí implementovat rozhraní <see cref="T:Havit.Business.IDateInfo"/>)</typeparam>
+            <param name="dateInfos">kolekce významných dnů</param>
         </member>
         <member name="M:Havit.Business.BusinessCalendar.GetNextBusinessDay(System.DateTime)">
             <summary>
@@ -1763,6 +1782,15 @@
             </summary>
             <param name="time"><see cref="T:System.DateTime"/>, u kterého určujeme</param>
             <returns><b>true</b>, pokud je zadaný <see cref="T:System.DateTime"/> sobota nebo neděle; jinak <b>false</b></returns>
+        </member>
+        <member name="M:Havit.Business.BusinessCalendar.CountBusinessDays(System.DateTime,System.DateTime,Havit.Business.CountBusinessDaysOptions)">
+            <summary>
+            Spočítá počet pracovních dní mezi dvěma daty. 
+            </summary>
+            <param name="startDate">počáteční datum</param>
+            <param name="endDate">koncové datum</param>
+            <param name="options">Options pro počítání dnů.</param>
+            <returns>počet pracovních dnů mezi počátečním a koncovým datem (v závislosti na <c>options</c>)</returns>
         </member>
         <member name="T:Havit.Business.Query.ValueOperand">
             <summary>
@@ -1966,6 +1994,21 @@
         <member name="P:Havit.Business.ActiveRecordBusinessObjectBase.IsMinimalInserting">
             <summary>
             Identifikuje, zda probíhá Save_Insert_InsertRequiredForMinimalInsert (nesmí se zacyklit).
+            </summary>
+        </member>
+        <member name="T:Havit.Business.CountBusinessDaysOptions">
+            <summary>
+            Options pro volání metody <see cref="M:Havit.Business.BusinessCalendar.CountBusinessDays(System.DateTime,System.DateTime,Havit.Business.CountBusinessDaysOptions)"/>.
+            </summary>
+        </member>
+        <member name="F:Havit.Business.CountBusinessDaysOptions.IncludeEndDate">
+            <summary>
+            Zahrne do počtu dnů i koncové datum (od pondělí do pátku bude 5 pracovních dnů).
+            </summary>
+        </member>
+        <member name="F:Havit.Business.CountBusinessDaysOptions.ExcludeEndDate">
+            <summary>
+            Vyloučí z počtu pracovních dnů koncové datum (standardní rozdíl dvou dat; pokud jsou shodná, rozdíl je 0).
             </summary>
         </member>
     </members>

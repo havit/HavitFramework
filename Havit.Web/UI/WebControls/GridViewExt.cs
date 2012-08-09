@@ -932,6 +932,7 @@ namespace Havit.Web.UI.WebControls
 						allPagesImageButton.ID = "AllPagesImageButton";
 						allPagesImageButton.ImageUrl = this.PagerSettingsAllPagesButtonImageUrl;
 						allPagesImageButton.Click += new ImageClickEventHandler(AllPagesImageButton_Click);
+						allPagesImageButton.CausesValidation = false;
 						allPagesControl = allPagesImageButton;
 					}
 					else
@@ -940,6 +941,7 @@ namespace Havit.Web.UI.WebControls
 						allPagesLinkButton.ID = "AllPagesLinkButton";
 						allPagesLinkButton.Text = this.PagerSettingsAllPagesButtonText;
 						allPagesLinkButton.Click += new EventHandler(AllPagesLinkButton_Click);
+						allPagesLinkButton.CausesValidation = false;
 						allPagesControl = allPagesLinkButton;
 					}
 

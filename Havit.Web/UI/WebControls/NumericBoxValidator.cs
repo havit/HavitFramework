@@ -4,7 +4,7 @@ using System.Text;
 using System.Web.UI.WebControls;
 using System.Web.UI;
 
-namespace Havit.DsvCommerce.WebBase.UI.WebControls
+namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
 	/// Validátor hodnoty controlu NumericBox.

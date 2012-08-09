@@ -6,7 +6,7 @@ using System.Web.UI.WebControls;
 using System.Text.RegularExpressions;
 using System.Threading;
 
-namespace Havit.DsvCommerce.WebBase.UI.WebControls
+namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
 	/// NumericBox slouží k zadání èísla.

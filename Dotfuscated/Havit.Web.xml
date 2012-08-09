@@ -2960,106 +2960,106 @@
             Režim pro zobrazení data a času.
             </summary>
         </member>
-        <member name="T:Havit.DsvCommerce.WebBase.UI.WebControls.NumericBox">
+        <member name="T:Havit.Web.UI.WebControls.NumericBox">
             <summary>
             NumericBox slouží k zadání čísla.
             </summary>
         </member>
-        <member name="M:Havit.DsvCommerce.WebBase.UI.WebControls.NumericBox.#ctor">
+        <member name="M:Havit.Web.UI.WebControls.NumericBox.#ctor">
             <summary>
             Kontruktor.
             </summary>
         </member>
-        <member name="M:Havit.DsvCommerce.WebBase.UI.WebControls.NumericBox.OnInit(System.EventArgs)">
+        <member name="M:Havit.Web.UI.WebControls.NumericBox.OnInit(System.EventArgs)">
             <summary>
             OnInit (overriden).
             </summary>
         </member>
-        <member name="M:Havit.DsvCommerce.WebBase.UI.WebControls.NumericBox.CreateChildControls">
+        <member name="M:Havit.Web.UI.WebControls.NumericBox.CreateChildControls">
             <summary>
             CreateChildControls (overriden).
             Vytvoří kolekci controlů obsahující TextBox, LiteralControl (mezera), Image a na něj navěšený DynarchCalendar.
             </summary>
         </member>
-        <member name="M:Havit.DsvCommerce.WebBase.UI.WebControls.NumericBox.OnPreRender(System.EventArgs)">
+        <member name="M:Havit.Web.UI.WebControls.NumericBox.OnPreRender(System.EventArgs)">
             <summary>
             OnPreRender (overriden).
             </summary>
         </member>
-        <member name="M:Havit.DsvCommerce.WebBase.UI.WebControls.NumericBox.RegisterScripts">
+        <member name="M:Havit.Web.UI.WebControls.NumericBox.RegisterScripts">
             <summary>
             Registruje klientské skripty omezující vstup z klávesnice.
             </summary>
         </member>
-        <member name="M:Havit.DsvCommerce.WebBase.UI.WebControls.NumericBox.ValueTextBox_TextChanged(System.Object,System.EventArgs)">
+        <member name="M:Havit.Web.UI.WebControls.NumericBox.ValueTextBox_TextChanged(System.Object,System.EventArgs)">
             <summary>
             Obsluha změny textu v nested controlu.
             Ověřuje, zda došlo ke změně hodnoty a pokud ano, vyvolá prostřednictvím metody OnValueChanged událost ValueChanged.
             </summary>
         </member>
-        <member name="M:Havit.DsvCommerce.WebBase.UI.WebControls.NumericBox.GetValueMemento">
+        <member name="M:Havit.Web.UI.WebControls.NumericBox.GetValueMemento">
             <summary>
             Metoda vrací editovanou hodnotu jako stav.
             Slouží k detekci, zda došlo ke změně hodnoty mezi postbacky.
             </summary>
         </member>
-        <member name="M:Havit.DsvCommerce.WebBase.UI.WebControls.NumericBox.OnValueChanged(System.EventArgs)">
+        <member name="M:Havit.Web.UI.WebControls.NumericBox.OnValueChanged(System.EventArgs)">
             <summary>
             Vyvolává událost ValueChanged. Více viz ValueChanged.
             </summary>
         </member>
-        <member name="P:Havit.DsvCommerce.WebBase.UI.WebControls.NumericBox.AutoPostBack">
+        <member name="P:Havit.Web.UI.WebControls.NumericBox.AutoPostBack">
             <summary>
             Udává, zda má po změně hodnoty v UI dojít k postbacku.
             </summary>
         </member>
-        <member name="P:Havit.DsvCommerce.WebBase.UI.WebControls.NumericBox.Enabled">
+        <member name="P:Havit.Web.UI.WebControls.NumericBox.Enabled">
             <summary>
             Udává, zda je control pro zadání čísla povolen.
             Pokud je zakázán, není možné v UI zadávat hodnotu.
             </summary>
         </member>
-        <member name="P:Havit.DsvCommerce.WebBase.UI.WebControls.NumericBox.Decimals">
+        <member name="P:Havit.Web.UI.WebControls.NumericBox.Decimals">
             <summary>
             Nastavuje počet desetinných míst, které lze v UI zadat. Na tento počet desetinných míst se číslo formátuje pro zobrazení.
             Výchozí hodnota je 0.
             </summary>
         </member>
-        <member name="P:Havit.DsvCommerce.WebBase.UI.WebControls.NumericBox.AllowNegativeNumber">
+        <member name="P:Havit.Web.UI.WebControls.NumericBox.AllowNegativeNumber">
             <summary>
             Udává, zda je povoleno zadávat v UI záporná čísla (tj. znak "-").
             Výchozí hodnota je false.
             </summary>
         </member>
-        <member name="P:Havit.DsvCommerce.WebBase.UI.WebControls.NumericBox.ZeroAsEmpty">
+        <member name="P:Havit.Web.UI.WebControls.NumericBox.ZeroAsEmpty">
             <summary>
             Zobrazí editovací okno jako prázdné, pokud je v nastavena hodnota nula a naopak (prázdná hodnota je vracena jako nula).
             Výchozí hodnota je false.
             </summary>
         </member>
-        <member name="P:Havit.DsvCommerce.WebBase.UI.WebControls.NumericBox.ValueBoxStyle">
+        <member name="P:Havit.Web.UI.WebControls.NumericBox.ValueBoxStyle">
             <summary>
             Stylování ValueTextBoxu.
             </summary>
         </member>
-        <member name="P:Havit.DsvCommerce.WebBase.UI.WebControls.NumericBox.ValueAsInt">
+        <member name="P:Havit.Web.UI.WebControls.NumericBox.ValueAsInt">
             <summary>
             Vrací zadané číslo jako Int32. Není-li zadán žádný text, vrací null (pokud je ZeroAsEmpty, vrací nulu).
             Je-li zadáno neplatné číslo, vyhodí výjimku.
             </summary>
         </member>
-        <member name="P:Havit.DsvCommerce.WebBase.UI.WebControls.NumericBox.IsValid">
+        <member name="P:Havit.Web.UI.WebControls.NumericBox.IsValid">
             <summary>
             Vrací true, pokud obsahuje platné číslo (tj. prázdnou hodnotu NEBO "validní" datum).
             </summary>
         </member>
-        <member name="P:Havit.DsvCommerce.WebBase.UI.WebControls.NumericBox.NumberText">
+        <member name="P:Havit.Web.UI.WebControls.NumericBox.NumberText">
             <summary>
             Hodnota zadaná v textovém políčku ořezanou o whitespaces (i z prostředka textu, nikoliv prostý trim).
             Vlastnost není určena pro zpracování, slouží pro validátory a pro parsování hodnoty na číslo.
             </summary>
         </member>
-        <member name="E:Havit.DsvCommerce.WebBase.UI.WebControls.NumericBox.ValueChanged">
+        <member name="E:Havit.Web.UI.WebControls.NumericBox.ValueChanged">
             <summary>
             Událost je vyvolána, kdykoliv uživatel změní editovanou hodnotu, resp. kdykoliv se po uživatelově zásahu změní hodnota Value.
             (programová změna Value nevyvolá událost ValueChanged).
@@ -3077,12 +3077,12 @@
             </list>
             </summary>
         </member>
-        <member name="P:Havit.DsvCommerce.WebBase.UI.WebControls.NumericBox.Controls">
+        <member name="P:Havit.Web.UI.WebControls.NumericBox.Controls">
             <summary>
             Controls (overriden).
             </summary>
         </member>
-        <member name="P:Havit.DsvCommerce.WebBase.UI.WebControls.NumericBox.ClientID">
+        <member name="P:Havit.Web.UI.WebControls.NumericBox.ClientID">
             <summary>
             ClientID (overriden).
             Vrací ClientID obsaženého TextBoxu pro zadávání hodnoty.
@@ -3090,22 +3090,22 @@
             obsahuje klientskou vlastnost "value". Tímto klientskému validátoru místo DateTimeBoxu podstrčíme nested TextBox.
             </summary>
         </member>
-        <member name="T:Havit.DsvCommerce.WebBase.UI.WebControls.NumericBoxValidator">
+        <member name="T:Havit.Web.UI.WebControls.NumericBoxValidator">
             <summary>
             Validátor hodnoty controlu NumericBox.
             </summary>
         </member>
-        <member name="M:Havit.DsvCommerce.WebBase.UI.WebControls.NumericBoxValidator.EvaluateIsValid">
+        <member name="M:Havit.Web.UI.WebControls.NumericBoxValidator.EvaluateIsValid">
             <summary>
             Testuje platnost čísla.
             </summary>
         </member>
-        <member name="P:Havit.DsvCommerce.WebBase.UI.WebControls.NumericBoxValidator.MinValue">
+        <member name="P:Havit.Web.UI.WebControls.NumericBoxValidator.MinValue">
             <summary>
             Minimální hodnota, která je považována za platnou hodnotu.
             </summary>
         </member>
-        <member name="P:Havit.DsvCommerce.WebBase.UI.WebControls.NumericBoxValidator.MaxValue">
+        <member name="P:Havit.Web.UI.WebControls.NumericBoxValidator.MaxValue">
             <summary>
             Maximální hodnota, která je považována za platnou hodnotu.
             </summary>

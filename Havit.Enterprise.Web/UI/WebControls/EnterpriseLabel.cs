@@ -92,14 +92,14 @@ namespace Havit.Web.UI.WebControls
 		} 
 		#endregion
 
-		#region ShowRequiredSign
+		#region ShowRequired
 		/// <summary>
-		/// Indikuje, zda se má pro povinná pole renderovat symbol povinného pole.
+		/// Indikuje, zda se má pro povinná pole renderovat symbol povinného pole a zda se má nastavovat css třída pro povinné pole.
 		/// </summary>
-		public bool ShowRequiredSign
+		public bool ShowRequired
 		{
-			get { return (bool)(ViewState["ShowRequiredSign"] ?? false); }
-			set { ViewState["ShowRequiredSign"] = value; }
+			get { return (bool)(ViewState["ShowRequired"] ?? false); }
+			set { ViewState["ShowRequired"] = value; }
 		}
 		#endregion
 
@@ -130,7 +130,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			// pokud je pole povinné, nastavíme CssClass
 			// nastavení hodnoty v Render zajišťuje, že se nám hodnota neserializuje do ViewState
-			if (IsRequired)
+			if (ShowRequired && IsRequired)
 			{
 				CssClass = RequiredCssClass;
 			}
@@ -150,7 +150,7 @@ namespace Havit.Web.UI.WebControls
 			base.RenderContents(writer);
 
 			// pro povinná pole vyrenderujeme symbol povinného pole, pokud je to nastaveno.
-			if (ShowRequiredSign && IsRequired)
+			if (ShowRequired && IsRequired)
 			{
 				if (!String.IsNullOrEmpty(RequiredSignCssClass))
 				{

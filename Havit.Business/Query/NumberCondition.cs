@@ -10,6 +10,7 @@ namespace Havit.Business.Query
 	/// </summary>
 	public static class NumberCondition
 	{
+		#region CreateEquals
 		/// <summary>
 		/// Vytvoøí podmínku testující rovnost hodnoty.
 		/// </summary>
@@ -32,8 +33,10 @@ namespace Havit.Business.Query
 		public static Condition CreateEquals(IOperand operand1, IOperand operand2)
 		{
 			return new BinaryCondition(operand1, BinaryCondition.EqualsPattern, operand2);
-		}
+		} 
+		#endregion
 
+		#region Create
 		/// <summary>
 		/// Vytvoøí podmínku testující hodnoty pomocí zadaného operátoru.
 		/// </summary>
@@ -56,6 +59,7 @@ namespace Havit.Business.Query
 		public static Condition Create(IOperand operand1, ComparisonOperator comparisonOperator, IOperand operand2)
 		{
 			return new BinaryCondition(operand1, BinaryCondition.GetComparisonPattern(comparisonOperator), operand2);
-		}
+		} 
+		#endregion
 	}
 }

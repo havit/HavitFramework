@@ -9,6 +9,7 @@ namespace Havit.Business.Query
 	/// </summary>
 	public static class DateRangeCondition
 	{
+		#region Create
 		/// <summary>
 		/// Vytvoøí podmínku testující, zda je datum v intervalu datumù.
 		/// </summary>
@@ -34,8 +35,10 @@ namespace Havit.Business.Query
 			return DateCondition.Create(operand, ComparisonOperator.Lower, date2.Value);
 			//}
 
-		}
+		} 
+		#endregion
 
+		#region CreateDays
 		/// <summary>
 		/// Vytvoøí podmínku testující, zda je den data (datumu) v intervalu dnù datumù.
 		/// Zajišuje, aby hodnota operandu byla vìtší nebo rovna datu date1 a aby byla menší ne pùlnoc konce date2.
@@ -44,9 +47,10 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateDays(IOperand operand, DateTime? date1, DateTime? date2)
 		{
-			return Create(operand, 
+			return Create(operand,
 				date1 == null ? null : (DateTime?)date1.Value.Date,
 				date2 == null ? null : (DateTime?)date2.Value.Date.AddDays(1));
-		}
+		} 
+		#endregion
 	}
 }

@@ -9,12 +9,13 @@ namespace Havit.Business.Query
 	/// </summary>
 	public static class TextCondition
 	{
+		#region CreateEquals
 		/// <summary>
 		/// Vytvoøí podmínku testující øetìzec na rovnost. Citlivost na velká a malá písmena, diakritiku apod. vychází z nastavení serveru.
 		/// </summary>
 		public static Condition CreateEquals(IOperand operand, string value)
 		{
-			return CreateEquals(operand, ValueOperand.Create(value));			
+			return CreateEquals(operand, ValueOperand.Create(value));
 		}
 
 		/// <summary>
@@ -23,16 +24,20 @@ namespace Havit.Business.Query
 		public static Condition CreateEquals(IOperand operand1, IOperand operand2)
 		{
 			return new BinaryCondition(BinaryCondition.EqualsPattern, operand1, operand2);
-		}
+		} 
+		#endregion
 
+		#region CreateLike
 		/// <summary>
 		/// Vytvoøí podmínku testující øetìzec na podobnost operátorem LIKE. Citlivost na velká a malá písmena, diakritiku apod. vychází z nastavení serveru.
 		/// </summary>
 		public static Condition CreateLike(IOperand operand, string value)
 		{
 			return new BinaryCondition(BinaryCondition.LikePattern, operand, ValueOperand.Create(value));
-		}
+		} 
+		#endregion
 
+		#region CreateWildcards
 		/// <summary>
 		/// Vytvoøí podmínku testující øetìzec na podobnost operátorem LIKE.
 		/// </summary>
@@ -51,7 +56,9 @@ namespace Havit.Business.Query
 		{
 			return new BinaryCondition(BinaryCondition.LikePattern, operand, ValueOperand.Create(GetWildCardsLikeExpression(value)));
 		}
+		#endregion
 
+		#region Create
 		/// <summary>
 		/// Vytvoøí podmínku testující hodnoty pomocí zadaného operátoru.
 		/// </summary>
@@ -66,8 +73,8 @@ namespace Havit.Business.Query
 		public static Condition Create(IOperand operand1, ComparisonOperator comparisonOperator, IOperand operand2)
 		{
 			return new BinaryCondition(operand1, BinaryCondition.GetComparisonPattern(comparisonOperator), operand2);
-		}
-
+		} 
+		#endregion
 
 		#region GetLikeExpression, GetWildCardsLikeExpression
 		/// <summary>

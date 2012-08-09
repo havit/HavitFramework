@@ -9,6 +9,7 @@ namespace Havit.Business.Query
 	/// </summary>	
 	public static class BoolCondition
 	{
+		#region CreateEquals
 		/// <summary>
 		/// Vytvoøí podmínku pro vlastnost rovnou dané hodnotì.
 		/// Je-li hodnota value null, testuje se operand na null (IS NULL).
@@ -23,7 +24,7 @@ namespace Havit.Business.Query
 			{
 				return new BinaryCondition(BinaryCondition.EqualsPattern, operand, ValueOperand.Create(value.Value));
 			}
-		}
+		} 
 
 		/// <summary>
 		/// Vytvoøí podmínku porovnávající hodnoty dvou operandù na rovnost.
@@ -31,8 +32,10 @@ namespace Havit.Business.Query
 		public static Condition CreateEquals(IOperand operand1, IOperand operand2)
 		{
 			return new BinaryCondition(BinaryCondition.EqualsPattern, operand1, operand2);
-		}
+		} 
+		#endregion
 
+		#region CreateNotEquals
 		/// <summary>
 		/// Vytvoøí podmínku porovnávající hodnoty dvou operandù na nerovnost.
 		/// Hodnota null není žádným zpùsobem zpracovávána, tj. pokud alespoò jeden operand má hodnotu null, není ve výsledku dotazu.
@@ -40,22 +43,27 @@ namespace Havit.Business.Query
 		public static Condition CreateNotEquals(IOperand operand1, IOperand operand2)
 		{
 			return new BinaryCondition(BinaryCondition.NotEqualsPattern, operand1, operand2);
-		}
+		} 
+		#endregion
 
+		#region CreateTrue
 		/// <summary>
 		/// Vytvoøí podmínku testující vlastnost na hodnotu true.
 		/// </summary>
 		public static Condition CreateTrue(IOperand operand)
 		{
 			return CreateEquals(operand, true);
-		}
+		} 
+		#endregion
 
+		#region CreateFalse
 		/// <summary>
 		/// Vytvoøí podmínku testující vlastnost na hodnotu false.
 		/// </summary>
 		public static Condition CreateFalse(IOperand operand)
 		{
 			return CreateEquals(operand, false);
-		}
+		} 
+		#endregion
 	}
 }

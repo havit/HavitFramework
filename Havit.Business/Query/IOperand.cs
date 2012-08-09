@@ -11,12 +11,14 @@ namespace Havit.Business.Query
 	/// </summary>
 	public interface IOperand
 	{
+		#region GetCommandValue
 		/// <summary>
 		/// Vrací øetìzec, který reprezentuje hodnotu operandu v SQL dotazu.
 		/// Mùže pøidávat databázové parametry do commandu.
 		/// </summary>
 		/// <param name="command">Databázový pøíkaz. Je možné do nìj pøidávat databázové parametry.</param>
 		/// <returns>Øetìzec reprezentující hodnotu operandu v SQL dotazu.</returns>
-		string GetCommandValue(DbCommand command);
+		string GetCommandValue(DbCommand command); 
+		#endregion
 	}
 }

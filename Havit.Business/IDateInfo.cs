@@ -6,14 +6,18 @@ namespace Havit.Business
 	/// </summary>
 	public interface IDateInfo
 	{
+		#region Date
 		/// <summary>
 		/// Datum, kterého se objekt týká.
 		/// </summary>
-		DateTime Date { get; }
+		DateTime Date { get; } 
+		#endregion
 
+		#region IsHoliday
 		/// <summary>
 		/// Indikuje, zda-li je den svátkem.
 		/// </summary>
-		bool IsHoliday { get; }
+		bool IsHoliday { get; } 
+		#endregion
 	}
 }

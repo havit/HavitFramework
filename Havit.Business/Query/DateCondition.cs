@@ -10,6 +10,7 @@ namespace Havit.Business.Query
 	/// </summary>
 	public static class DateCondition
 	{
+		#region CreateEquals
 		/// <summary>
 		/// Vytvoøí podmínku testující rovnost datumù. Jeli datum roven null, testuje se na IS NULL.
 		/// </summary>
@@ -23,15 +24,15 @@ namespace Havit.Business.Query
 			{
 				return CreateEquals(operand, dateTime.Value);
 			}
-		}
+		} 
 
 		/// <summary>
 		/// Vytvoøí podmínku testující rovnost datumù.
 		/// </summary>
 		public static Condition CreateEquals(IOperand operand, DateTime dateTime)
 		{
-			return CreateEquals(operand, ValueOperand.Create(dateTime));			
-		}
+			return CreateEquals(operand, ValueOperand.Create(dateTime));
+		} 
 
 		/// <summary>
 		/// Vytvoøí podmínku testující rovnost dvou operandù.
@@ -39,15 +40,17 @@ namespace Havit.Business.Query
 		public static Condition CreateEquals(IOperand operand1, IOperand operand2)
 		{
 			return new BinaryCondition(operand1, BinaryCondition.EqualsPattern, operand2);
-		}
+		} 
+		#endregion
 
+		#region Create
 		/// <summary>
 		/// Vytvoøí podmínku testující hodnoty pomocí zadaného operátoru.
 		/// </summary>
 		public static Condition Create(IOperand operand, ComparisonOperator comparisonOperator, DateTime value)
 		{
 			return Create(operand, comparisonOperator, ValueOperand.Create(value));
-		}
+		} 
 
 		/// <summary>
 		/// Vytvoøí podmínku testující hodnoty operandù.
@@ -56,6 +59,7 @@ namespace Havit.Business.Query
 		{
 			return new BinaryCondition(operand1, BinaryCondition.GetComparisonPattern(comparisonOperator), operand2);
 		}
+		#endregion
 
 	}
 }

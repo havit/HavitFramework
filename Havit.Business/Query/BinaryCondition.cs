@@ -28,6 +28,7 @@ namespace Havit.Business.Query
 		public const string NotEqualsPattern = "({0} <> {1})";
 		#endregion
 
+		#region Operand2
 		/// <summary>
 		/// Druhý operand.
 		/// </summary>
@@ -36,7 +37,8 @@ namespace Havit.Business.Query
 			get { return _operand2; }
 			set { _operand2 = value; }
 		}
-		private IOperand _operand2;
+		private IOperand _operand2; 
+		#endregion
 
 		#region Constructors
 		/// <summary>

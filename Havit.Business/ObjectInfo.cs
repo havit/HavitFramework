@@ -9,6 +9,7 @@ namespace Havit.Business
 	/// </summary>
 	public class ObjectInfo
 	{
+		#region Initialize
 		/// <summary>
 		/// Nastaví instanci tøídy.
 		/// </summary>
@@ -19,12 +20,20 @@ namespace Havit.Business
 		/// <param name="getAllMethod">Delegát na metodu vracející všechny (nesmazané) objekty tøídy.</param>
 		/// <param name="deletedProperty">FieldPropertyInfo, která identifikuje pøíznakem smazané záznamy.</param>
 		/// <param name="properties">Kolekce všech vlastností objektu.</param>
-		public void Initialize(string dbSchema, string dbTable, bool readOnly, 
-			GetObjectDelegate getObjectMethod, GetAllDelegate getAllMethod, FieldPropertyInfo deletedProperty, PropertyInfoCollection properties)
+		public void Initialize(
+			string dbSchema,
+			string dbTable,
+			bool readOnly,
+			CreateObjectDelegate createObjectMethod,
+			GetObjectDelegate getObjectMethod,
+			GetAllDelegate getAllMethod,
+			FieldPropertyInfo deletedProperty,
+			PropertyInfoCollection properties)
 		{
 			this.dbSchema = dbSchema;
 			this.dbTable = dbTable;
 			this.readOnly = readOnly;
+			this.createObjectMethod = createObjectMethod;
 			this.getObjectMethod = getObjectMethod;
 			this.getAllMethod = getAllMethod;
 			this.deletedProperty = deletedProperty;
@@ -32,8 +41,10 @@ namespace Havit.Business
 
 			this.isInitialized = true;
 		}
-		private bool isInitialized = false;
+		private bool isInitialized = false; 
+	#endregion
 
+		#region ReadOnly
 		/// <summary>
 		/// Indikuje, zda je objekt urèen jen ke ètení.
 		/// </summary>
@@ -45,8 +56,10 @@ namespace Havit.Business
 				return readOnly;
 			}
 		}
-		private bool readOnly;
+		private bool readOnly; 
+		#endregion
 
+		#region DbSchema
 		/// <summary>
 		/// Název schématu databázové tabulky.
 		/// </summary>
@@ -58,8 +71,10 @@ namespace Havit.Business
 				return dbSchema;
 			}
 		}
-		private string dbSchema;
+		private string dbSchema; 
+		#endregion
 
+		#region DbTable
 		/// <summary>
 		/// Název databázové tabulky.
 		/// </summary>
@@ -71,8 +86,10 @@ namespace Havit.Business
 				return dbTable;
 			}
 		}
-		private string dbTable;
+		private string dbTable; 
+		#endregion
 
+		#region Properties
 		/// <summary>
 		/// Property ve tøídì.
 		/// </summary>
@@ -84,8 +101,10 @@ namespace Havit.Business
 				return properties;
 			}
 		}
-		private PropertyInfoCollection properties;
+		private PropertyInfoCollection properties; 
+		#endregion
 
+		#region DeletedProperty
 		/// <summary>
 		/// Property, která oznaèuje smazané záznamy.
 		/// </summary>
@@ -97,10 +116,27 @@ namespace Havit.Business
 				return deletedProperty;
 			}
 		}
-		private FieldPropertyInfo deletedProperty;
+		private FieldPropertyInfo deletedProperty; 
+		#endregion
 
+		#region CreateObjectMethod
 		/// <summary>
-		/// Metoda vracující instanci objektu.
+		/// Delegát metody (bez parametrù) vracující nový objekt.
+		/// </summary>
+		public CreateObjectDelegate CreateObjectMethod
+		{
+			get
+			{
+				CheckInitialization();
+				return createObjectMethod;
+			}
+		}
+		private CreateObjectDelegate createObjectMethod; 
+		#endregion
+
+		#region GetObjectMethod
+		/// <summary>
+		/// Delegát metody vracující instanci objektu.
 		/// </summary>
 		public GetObjectDelegate GetObjectMethod
 		{
@@ -110,8 +146,10 @@ namespace Havit.Business
 				return getObjectMethod;
 			}
 		}
-		private GetObjectDelegate getObjectMethod;
+		private GetObjectDelegate getObjectMethod; 
+		#endregion
 
+		#region GetAllMethod
 		/// <summary>
 		/// Metoda vracející seznam všech instancí.
 		/// </summary>
@@ -120,11 +158,13 @@ namespace Havit.Business
 			get
 			{
 				CheckInitialization();
-				return getAllMethod; 
+				return getAllMethod;
 			}
 		}
-		private GetAllDelegate getAllMethod;
+		private GetAllDelegate getAllMethod; 
+		#endregion
 
+		#region CheckInitialization
 		/// <summary>
 		/// Ovìøí, že byla instance inicializována. Pokud ne, vyhodí výjimku.
 		/// </summary>
@@ -134,7 +174,8 @@ namespace Havit.Business
 			{
 				throw new InvalidOperationException("Instance nebyla inicializována.");
 			}
-		}
+		} 
+		#endregion
 
 	}
 }

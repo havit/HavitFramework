@@ -96,6 +96,7 @@
     <Compile Include="CollectionPropertyInfo.cs" />
     <Compile Include="CollectionPropertyHolder.cs" />
     <Compile Include="CountBusinessDaysOptions.cs" />
+    <Compile Include="CreateObjectDelegate.cs" />
     <Compile Include="GetObjectDelegate.cs" />
     <Compile Include="IDateInfo.cs" />
     <Compile Include="IdentityMap.cs" />

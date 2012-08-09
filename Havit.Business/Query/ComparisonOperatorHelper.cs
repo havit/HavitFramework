@@ -9,6 +9,7 @@ namespace Havit.Business.Query
 	/// </summary>
 	public static class ComparisonOperatorHelper
 	{
+		#region GetOperatorText
 		/// <summary>
 		/// Pøevede comparison operátor na øetìzec, napø. Equals na "=", NotEquals na "&lt;&gt;", apod.
 		/// </summary>
@@ -31,7 +32,8 @@ namespace Havit.Business.Query
 				default:
 					throw new ArgumentException("Neznámá hodnota ComparisonOperator.", "comparsionOperator");
 			}
-		}
+		} 
+		#endregion
 
 	}
 }

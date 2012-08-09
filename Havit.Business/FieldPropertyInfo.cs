@@ -14,6 +14,7 @@ namespace Havit.Business
 	[Serializable]
 	public class FieldPropertyInfo : PropertyInfo, IFieldsBuilder, IOperand
 	{
+		#region Initialize
 		/// <summary>
 		/// Inicializuje instanci sloupce.
 		/// </summary>
@@ -32,8 +33,10 @@ namespace Havit.Business
 			this.fieldType = fieldType;
 			this.isPrimaryKey = isPrimaryKey;
 			this.maximumLength = maximumLength;
-		}
+		} 
+		#endregion
 
+		#region FieldName
 		/// <summary>
 		/// Název sloupce v databázi.
 		/// </summary>
@@ -45,8 +48,10 @@ namespace Havit.Business
 				return fieldName;
 			}
 		}
-		private string fieldName;
+		private string fieldName; 
+		#endregion
 
+		#region Nullable
 		/// <summary>
 		/// Udává, zda je možné uložit null hodnotu.
 		/// </summary>
@@ -58,8 +63,10 @@ namespace Havit.Business
 				return nullable;
 			}
 		}
-		private bool nullable;
+		private bool nullable; 
+		#endregion
 
+		#region FieldType
 		/// <summary>
 		/// Typ sloupce v databázi.
 		/// </summary>
@@ -71,8 +78,10 @@ namespace Havit.Business
 				return fieldType;
 			}
 		}
-		private SqlDbType fieldType;
+		private SqlDbType fieldType; 
+		#endregion
 
+		#region IsPrimaryKey
 		/// <summary>
 		/// Udává, zda je sloupec primárním klíèem.
 		/// </summary>
@@ -84,8 +93,10 @@ namespace Havit.Business
 				return isPrimaryKey;
 			}
 		}
-		private bool isPrimaryKey;
+		private bool isPrimaryKey; 
+		#endregion
 
+		#region MaximumLength
 		/// <summary>
 		/// Maximální délka øetìzce (u typù varchar, nvarchar, apod.), pøípadnì velikost datového typu (u typù 
 		/// </summary>
@@ -98,8 +109,10 @@ namespace Havit.Business
 			}
 
 		}
-		private int maximumLength;
+		private int maximumLength; 
+		#endregion
 
+		#region GetSelectFieldStatement
 		/// <summary>
 		/// Vrátí øetìzec pro vytažení daného sloupce z databáze.
 		/// </summary>
@@ -107,12 +120,15 @@ namespace Havit.Business
 		{
 			CheckInitialization();
 			return "[" + fieldName + "]";
-		}
+		} 
+		#endregion
 
+		#region IOperand.GetCommandValue
 		string IOperand.GetCommandValue(DbCommand command)
 		{
 			CheckInitialization();
 			return fieldName;
-		}
+		} 
+		#endregion
 	}
 }

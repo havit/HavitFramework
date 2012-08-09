@@ -11,14 +11,19 @@ namespace Havit.Business.Query
 	[Serializable]
 	public class FieldPropertySortItem: SortItem
 	{
+		#region Constructor (obsolete)
 		/// <summary>
 		/// Vytvoøí nenastavenou položku øazení podle.
 		/// </summary>
 		[Obsolete]
-		public FieldPropertySortItem(): base()
+		public FieldPropertySortItem()
+			: base()
 		{
 		}
+		
+		#endregion
 
+		#region Constructors
 		/// <summary>
 		/// Vytvoøí položku øazení podle sloupce, vzestupné poøadí.
 		/// </summary>
@@ -26,7 +31,7 @@ namespace Havit.Business.Query
 			: this(property, SortDirection.Ascending)
 		{
 		}
-
+		
 		/// <summary>
 		/// Vytvoøí položku øazení podle sloupce a daného poøadí.
 		/// </summary>
@@ -34,5 +39,6 @@ namespace Havit.Business.Query
 			: base(property.FieldName, direction)
 		{
 		}
+		#endregion
 	}
 }

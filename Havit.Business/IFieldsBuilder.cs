@@ -8,9 +8,11 @@ namespace Havit.Business
 	/// </summary>
 	public interface IFieldsBuilder
 	{
+		#region GetSelectFieldStatement
 		/// <summary>
 		/// Vrátí řetězec pro vytažení daného sloupce z databáze.
 		/// </summary>
-		string GetSelectFieldStatement(DbCommand command);
+		string GetSelectFieldStatement(DbCommand command); 
+		#endregion
 	}
 }

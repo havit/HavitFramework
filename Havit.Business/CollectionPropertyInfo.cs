@@ -9,6 +9,7 @@ namespace Havit.Business
 	/// </summary>
 	public class CollectionPropertyInfo : PropertyInfo, IFieldsBuilder
 	{
+		#region Initialize
 		/// <summary>
 		/// Vytvoøí instanci CollectionProperty.
 		/// </summary>
@@ -21,8 +22,10 @@ namespace Havit.Business
 			Initialize(owner, propertyName);
 			this.itemType = itemType;
 			this.collectionSelectFieldStatement = collectionSelectFieldStatement;
-		}
+		} 
+		#endregion
 
+		#region ItemType
 		/// <summary>
 		/// Typ prvkù kolekce.
 		/// </summary>
@@ -34,8 +37,10 @@ namespace Havit.Business
 				return itemType;
 			}
 		}
-		private Type itemType;
+		private Type itemType; 
+		#endregion
 
+		#region CollectionSelectFieldStatement
 		/// <summary>
 		/// Èást SQL dotazu pro vytažení hodnoty daného sloupce.
 		/// </summary>
@@ -47,8 +52,10 @@ namespace Havit.Business
 				return collectionSelectFieldStatement;
 			}
 		}
-		private string collectionSelectFieldStatement;
+		private string collectionSelectFieldStatement; 
+		#endregion
 
+		#region GetSelectFieldStatement
 		/// <summary>
 		/// Vrátí øetìzec pro vytažení daného sloupce z databáze.
 		/// </summary>
@@ -56,6 +63,7 @@ namespace Havit.Business
 		{
 			CheckInitialization();
 			return collectionSelectFieldStatement;
-		}
+		} 
+		#endregion
 	}
 }

@@ -9,12 +9,14 @@ namespace Havit.Business
 	/// </summary>
 	public class IdentityMapScope : Scope<IdentityMap>
 	{
+		#region Constructor
 		/// <summary>
 		/// Vytvoøí <see cref="IdentityMapScope"/> obalující novou <see cref="IdentityMap"/>.
 		/// </summary>
 		public IdentityMapScope()
 			: base(new IdentityMap(), true)
 		{
-		}
+		} 
+		#endregion
 	}
 }

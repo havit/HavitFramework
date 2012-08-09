@@ -13,6 +13,7 @@ namespace Havit.Business
 	[Serializable]
 	public class PropertyInfoCollection : Collection<PropertyInfo>
 	{
+		#region Constructors
 		/// <summary>
 		/// Vyvoøí prázdnou kolekci.
 		/// </summary>
@@ -28,8 +29,10 @@ namespace Havit.Business
 		{
 			foreach (PropertyInfo propertyInfo in properties)
 				this.Add(propertyInfo);
-		}
+		} 
+		#endregion
 
+		#region InsertItem
 		/// <summary>
 		/// Pøidá prvek do kolekce, pokud v kolekci již není.
 		/// </summary>
@@ -39,6 +42,7 @@ namespace Havit.Business
 				return;
 
 			base.InsertItem(index, item);
-		}
+		} 
+		#endregion
 	}
 }

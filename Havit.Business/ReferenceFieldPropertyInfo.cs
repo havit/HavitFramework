@@ -13,6 +13,7 @@ namespace Havit.Business
 	[Serializable]
 	public class ReferenceFieldPropertyInfo : FieldPropertyInfo
 	{
+		#region Initialize
 		/// <summary>
 		/// Inicializuje instanci sloupce.
 		/// </summary>
@@ -25,13 +26,15 @@ namespace Havit.Business
 		/// <param name="maximumLength">Maximální délka dat databázového sloupce.</param>		
 		/// <param name="targetType">Typ, jenž property nese.</param>
 		/// <param name="targetObjectInfo">ObjectInfo na typ, jenž property nese.</param>
-		public void Initialize(ObjectInfo owner, string propertyName, string fieldName, bool isPrimaryKey, SqlDbType fieldType, bool nullable, int maximumLength, Type targetType, ObjectInfo targetObjectInfo)			
+		public void Initialize(ObjectInfo owner, string propertyName, string fieldName, bool isPrimaryKey, SqlDbType fieldType, bool nullable, int maximumLength, Type targetType, ObjectInfo targetObjectInfo)
 		{
 			Initialize(owner, propertyName, fieldName, isPrimaryKey, fieldType, nullable, maximumLength);
 			this.targetType = targetType;
 			this.targetObjectInfo = targetObjectInfo;
 		}
+		#endregion
 
+		#region TargetType
 		/// <summary>
 		/// Typ, jenž property nese.
 		/// </summary>
@@ -39,8 +42,10 @@ namespace Havit.Business
 		{
 			get { return targetType; }
 		}
-		private Type targetType;
+		private Type targetType; 
+		#endregion
 
+		#region TargetObjectInfo
 		/// <summary>
 		/// Delegát na metodu vracející objekt na základì ID.
 		/// </summary>
@@ -51,6 +56,7 @@ namespace Havit.Business
 				return targetObjectInfo;
 			}
 		}
-		private ObjectInfo targetObjectInfo;
+		private ObjectInfo targetObjectInfo; 
+		#endregion
 	}
 }

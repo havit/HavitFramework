@@ -47,6 +47,15 @@ namespace WebApplicationTest {
         protected global::System.Web.UI.WebControls.Button VycistitButton;
         
         /// <summary>
+        /// ZobrazitButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button ZobrazitButton;
+        
+        /// <summary>
         /// AutoPostBackDateTimeBox control.
         /// </summary>
         /// <remarks>

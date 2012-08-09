@@ -336,6 +336,7 @@ namespace Havit.Web.UI.WebControls
 		{			
 			base.OnInit(e);
 			this.Page.PreLoad += new EventHandler(Page_PreLoad);
+			this.Page.PreRender += new EventHandler(Page_PreRender);
 			valueTextBox.TextChanged += new EventHandler(ValueTextBox_TextChanged);
 			EnsureChildControls();
 		}
@@ -350,6 +351,14 @@ namespace Havit.Web.UI.WebControls
 				// přečteme hodnotu z vnořeného textboxu
 				SetValueFromNestedTextBox();
 			}
+		} 
+		#endregion
+
+		#region Page_PreRender
+		private void Page_PreRender(object sender, EventArgs e)
+		{
+			// řeší problém, kdy se schovanému prvku nenastaví Value.
+			SetValueToNestedTextBox();
 		} 
 		#endregion
 
@@ -374,6 +383,32 @@ namespace Havit.Web.UI.WebControls
 				else
 				{
 					SetValue(null, false);
+				}
+			}
+		} 
+		#endregion
+
+		#region SetValueToNestedTextBox
+		/// <summary>
+		/// Nastaví hodnotu z Value do DateTimeBoxu.		
+		/// </summary>
+		private void SetValueToNestedTextBox()
+		{
+			if (IsValid)
+			{
+				DateTime? value = Value;
+				if ((value == null) || (value == DateTime.MinValue))
+				{
+					valueTextBox.Text = String.Empty;
+				}
+				else
+				{
+					switch (this.DateTimeMode)
+					{
+						case DateTimeMode.Date: valueTextBox.Text = value.Value.ToShortDateString(); break;
+						case DateTimeMode.DateTime: valueTextBox.Text = value.Value.ToString("g"); break;
+						default: throw new ApplicationException("Neznámá hodnota DateTimeMode.");
+					}
 				}
 			}
 		} 
@@ -416,24 +451,6 @@ namespace Havit.Web.UI.WebControls
 		protected override void OnPreRender(EventArgs e)
 		{
 			base.OnPreRender(e);
-
-			if (IsValid)
-			{
-				DateTime? value = Value;
-				if ((value == null) || (value == DateTime.MinValue))
-				{
-					valueTextBox.Text = String.Empty;
-				}
-				else
-				{
-					switch (this.DateTimeMode)
-					{
-						case DateTimeMode.Date: valueTextBox.Text = value.Value.ToShortDateString(); break;
-						case DateTimeMode.DateTime: valueTextBox.Text = value.Value.ToString("g"); break;
-						default: throw new ApplicationException("Neznámá hodnota DateTimeMode.");
-					}
-				}
-			}
 
 			valueTextBox.Enabled = this.IsEnabled;
 			valueTextBox.AutoPostBack = this.AutoPostBack;

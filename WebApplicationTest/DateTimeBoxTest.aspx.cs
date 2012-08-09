@@ -24,6 +24,7 @@ namespace WebApplicationTest
 			SecondDateTimeBoxValidator.ServerValidate += new ServerValidateEventHandler(SecondDateTimeBoxValidator_ServerValidate);
 
 			VycistitButton.Click += new EventHandler(VycistitButton_Click);
+			ZobrazitButton.Click += new EventHandler(ZobrazitButton_Click);
 		}
 
 		private void SecondDateTimeBoxValidator_ServerValidate(object source, ServerValidateEventArgs args)
@@ -60,7 +61,12 @@ namespace WebApplicationTest
 		void VycistitButton_Click(object sender, EventArgs e)
 		{
 			DrubyDateTimeBox.Value = null;
+			DrubyDateTimeBox.Visible = false;
 		}
 
+		void ZobrazitButton_Click(object sender, EventArgs e)
+		{
+			DrubyDateTimeBox.Visible = true;
+		}
 	}
 }

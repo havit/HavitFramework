@@ -79,8 +79,8 @@ namespace Havit.Business.Query
 
 		#region GetLikeExpression, GetWildCardsLikeExpression
 		/// <summary>
-		/// Transformuje øetìzec naøetìzec, který je možné použít jako hodnota k operátoru like.
-		/// Nahrazuje % na [%] a _ na [_].
+		/// Transformuje øetìzec naøetìzec, který je možné použít jako hodnota k operátoru like. Tj. nahrazuje % na [%] a _ na [_].
+		/// Nepøidává % na konec, to dìlá GetWildCardsLikeExpression().
 		/// </summary>
 		public static string GetLikeExpression(string text)
 		{
@@ -97,8 +97,8 @@ namespace Havit.Business.Query
 
 		/// <summary>
 		/// Transformuje øetìzec naøetìzec, který je možné použít jako hodnota k operátoru like. 
-		/// Navíc je vzat ohled na hvìzdièkovou konvenci.
-		/// Nahrazuje % na [%] a _ na [_] a jako poslední zamìní * za %.
+		/// Navíc je vzat ohled na hvìzdièkovou konvenci našeho standardního UI (pokud výraz neobsahuje wildcards, pøidá hvìzdièku na konec).
+		/// (Nahrazuje % na [%] a _ na [_] a jako poslední zamìní * za %, resp. pøidá % nakonec, pokud wildcards nebyly použity.)
 		/// Pøíklad "*text1%text2*text3" bude transformováno na "%text1[%]text2%text3".
 		/// </summary>
 		public static string GetWildCardsLikeExpression(string text)

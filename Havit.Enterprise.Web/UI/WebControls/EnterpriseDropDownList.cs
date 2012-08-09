@@ -286,7 +286,7 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Pøidá na zaèátek seznamu øádek pro výbìr prázdné hodnoty, pokud tam již není.
 		/// </summary>
-		protected void EnsureEmptyItem()
+		public void EnsureEmptyItem()
 		{
 			if ((Items.Count == 0) || (Items[0].Value != String.Empty))
 				Items.Insert(0, new ListItem(NullableText, String.Empty));

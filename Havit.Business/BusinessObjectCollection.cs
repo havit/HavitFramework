@@ -16,6 +16,7 @@ namespace Havit.Business
 	/// použitím wrappujícího constructoru.
 	/// </remarks>
 	/// <typeparam name="T">èlenský typ kolekce</typeparam>
+	[Serializable]
 	public class BusinessObjectCollection<T> : Collection<T>
 		where T : BusinessObjectBase
 	{

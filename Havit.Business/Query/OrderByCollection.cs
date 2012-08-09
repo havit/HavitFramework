@@ -5,6 +5,11 @@ using Havit.Collections;
 
 namespace Havit.Business.Query
 {
+	/// <summary>
+	/// Kolekce položek SortItem.
+	/// Urèeno pro položky ORDER BY skládaèe SQL dotazu (QueryParameters).
+	/// </summary>
+	[Serializable]
 	public class OrderByCollection: Havit.Collections.SortItemCollection
 	{
 		/// <summary>

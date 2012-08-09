@@ -1,0 +1,52 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Havit.Business.Query
+{
+	/// <summary>
+	/// Vytváøí podmínky testující rozsah datumù.
+	/// </summary>
+	class DateRangeCondition
+	{
+		/// <summary>
+		/// Vytvoøí podmínku testující, zda je datum v intervalu datumù.
+		/// </summary>
+		public static Condition Create(IOperand operand, DateTime? date1, DateTime? date2)
+		{
+			if ((date1 == null) && (date2 == null))
+			{
+				throw new ArgumentException("Hodnoty date1 a date2 nesmí bıt obojí null.");
+			}
+
+			if ((date1 != null) && (date2 != null))
+			{
+				return new TernaryCondition("({0} >= {1} and {0} < {2})", operand, ValueOperand.Create(date1.Value), ValueOperand.Create(date2.Value));
+			}
+
+			if (date1 != null)
+			{
+				return DateCondition.Create(operand, ComparisonOperator.GreaterOrEquals, date1.Value);
+			}
+
+			//if (date2 != null)
+			//{
+			return DateCondition.Create(operand, ComparisonOperator.Lower, date2.Value);
+			//}
+
+		}
+
+		/// <summary>
+		/// Vytvoøí podmínku testující, zda je den data (datumu) v intervalu dnù datumù.
+		/// Zajišuje, aby hodnota operandu byla vìtší nebo rovna datu date1 a aby byla menší ne pùlnoc konce date2.
+		/// Jinımi slovy: Argumenty moho obsahovat datum a èas, ale testuje se jen datum bez èasu. Potom 
+		/// je zajišováno: DATUM(date1) &lt;= DATUM(operand) &lt; DATUM(date2).
+		/// </summary>
+		public static Condition CreateDays(IOperand operand, DateTime? date1, DateTime? date2)
+		{
+			return Create(operand, 
+				date1 == null ? null : (DateTime?)date1.Value.Date,
+				date2 == null ? null : (DateTime?)date2.Value.Date.AddDays(1));
+		}
+	}
+}

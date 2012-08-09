@@ -8,6 +8,7 @@ namespace Havit.Business.Query
 	/// <summary>
 	/// Reprezentuje položku øazení.
 	/// </summary>
+	[Serializable]
 	public class FieldPropertySortItem: SortItem
 	{
 		/// <summary>

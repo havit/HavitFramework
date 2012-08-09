@@ -6,7 +6,7 @@ using System.Text;
 namespace Havit.Business.Query
 {
 	/// <summary>
-	/// Vytváøí podmínky testující rozsah datumù.
+	/// Vytváøí podmínky testující datumy.
 	/// </summary>
 	public static class DateCondition
 	{
@@ -19,22 +19,12 @@ namespace Havit.Business.Query
 		}
 
 		/// <summary>
-		/// Vytvoøí podmínku testující, zda je datum v intervalu datumù.
+		/// Vytvoøí podmínku testující hodnoty pomocí zadaného operátoru.
 		/// </summary>
-		public static Condition Create(IOperand operand, DateTime date1, DateTime date2)
+		public static Condition Create(IOperand operand, ComparisonOperator comparisonOperator, DateTime value)
 		{
-			return new TernaryCondition("({0} >= {1} and {0} < {2})", operand, ValueOperand.Create(date1), ValueOperand.Create(date2));
+			return new BinaryCondition(operand, BinaryCondition.GetComparisonPattern(comparisonOperator), ValueOperand.Create(value));
 		}
 
-		/// <summary>
-		/// Vytvoøí podmínku testující, zda je den data (datumu) v intervalu dnù datumù.
-		/// Zajišuje, aby hodnota operandu byla vìtší nebo rovna datu date1 a aby byla menší ne pùlnoc konce date2.
-		/// Jinımi slovy: Argumenty moho obsahovat datum a èas, ale testuje se jen datum bez èasu. Potom 
-		/// je zajišováno: DATUM(date1) &lt;= DATUM(operand) &lt; DATUM(date2).
-		/// </summary>
-		public static Condition CreateDays(IOperand operand, DateTime date1, DateTime date2)
-		{
-			return Create(operand, date1.Date, date2.Date.AddDays(1));
-		}
 	}
 }

@@ -8,6 +8,7 @@ namespace Havit.Business
 	/// Tøída pro objekt, který nese hodnotu a vlastnosti jednotlivé property BusinessObjectu.
 	/// </summary>
 	/// <typeparam name="T">typ property, jíž je PropertyHolder nosièem</typeparam>
+	[Serializable]
 	public class PropertyHolder<T> : PropertyHolderBase
 	{
 		#region Constructors

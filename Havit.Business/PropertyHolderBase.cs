@@ -8,6 +8,7 @@ namespace Havit.Business
 	/// Pøedek generického typu <see cref="PropertyHolder{T}"/>. 
 	/// Potøebujeme kolekci PropertyHolderù a kolekci generických typù nelze udìlat.
 	/// </summary>
+	[Serializable]
 	public abstract class PropertyHolderBase
 	{
 		#region Owner

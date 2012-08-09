@@ -9,6 +9,7 @@ namespace Havit.Business.Query
 	/// <summary>
 	/// Konstanta jako operand databázového dotazu.
 	/// </summary>
+	[Serializable]
 	public sealed class ValueOperand: IOperand
 	{	
 		#region Private fields		

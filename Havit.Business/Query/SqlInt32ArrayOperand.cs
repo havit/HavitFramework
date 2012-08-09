@@ -11,6 +11,7 @@ namespace Havit.Business.Query
 	/// <summary>
 	/// SqlInt32Array jako operand databázového dotazu.
 	/// </summary>
+	[Serializable]
 	public sealed class SqlInt32ArrayOperand : IOperand
 	{
 		#region Private fields

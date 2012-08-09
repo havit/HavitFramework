@@ -284,7 +284,7 @@ namespace Havit.Business
 			// vyvoláme událost informující o zmìnì kolekce, pokud se zmìnil poèet objektù v kolekci
 			if (originalItemsCount != innerList.Count)
 			{
-				if (source.Any(item => (item != null) && !item.IsLoaded))
+				if (!LoadAllRequired && source.Any(item => (item != null) && !item.IsLoaded)) /* optimalizujeme volání Any jen tehdy, když dosud není nastaven příznak LoadAllRequired */
 				{
 					LoadAllRequired = true;
 				}

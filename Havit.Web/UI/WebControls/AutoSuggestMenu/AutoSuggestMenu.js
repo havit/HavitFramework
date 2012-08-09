@@ -23,6 +23,7 @@ function AutoSuggestMenu()
     self.textBoxID=null;
     self.hiddenSelectedValueID=null;
     self.clearTextOnNoSelection = false;
+    self.messageOnClearText = null;
     self.autoPostBackScript = null;
 
     self.minSuggestChars=1;
@@ -663,9 +664,15 @@ function AutoSuggestMenu()
 	{
 		var hiddenFieldElement = self.getSelectedValueHiddenField();
 
-		if ((self.clearTextOnNoSelection == true) && (hiddenFieldElement.value == '')) {
+		if ((self.clearTextOnNoSelection == true) && (hiddenFieldElement.value == ''))
+		{
 			var textBox = getTextBoxCtrl();
+			var textBoxWasEmpty = (textBox.value == '');
 			textBox.value = '';
+			if (!textBoxWasEmpty && ((self.messageOnClearText != null) && (self.messageOnClearText != '')))
+			{
+				alert(self.messageOnClearText);
+			}
 		}
 	}
 

@@ -31,6 +31,7 @@ namespace Havit.Web.UI.WebControls
 	{
         private string _targetControlID;
 		private AutoSuggestMenuMode _mode = AutoSuggestMenuMode.Classic;
+		private string _messageOnClearText;
 		private bool _autoPostBack = false;
 
         private int _minSuggestChars;
@@ -63,6 +64,12 @@ namespace Havit.Web.UI.WebControls
 		{
 			get { return _mode; }
 			set { _mode = value; }
+		}
+
+		public string MessageOnClearText
+		{
+			get { return _messageOnClearText ?? String.Empty; }
+			set { _messageOnClearText = value; }
 		}
 
 		public bool AutoPostBack
@@ -306,6 +313,8 @@ namespace Havit.Web.UI.WebControls
             _onGetSuggestions           = (string)ViewState["OnGetSuggestions"];
             _onClientTextBoxUpdate      = (string)ViewState["OnClientTextBoxUpdate"];
 
+			_messageOnClearText			= (string)ViewState["MessageOnClearText"];
+
 			_servicePath = (string)ViewState["ServicePath"];
 		}
 		
@@ -341,8 +350,9 @@ namespace Havit.Web.UI.WebControls
             ViewState["OnGetSuggestions"]       = _onGetSuggestions;
             ViewState["OnClientTextBoxUpdate"]  = _onClientTextBoxUpdate;
 
-			ViewState["ServicePath"] = _servicePath;
-
+			ViewState["ServicePath"]			= _servicePath;
+			ViewState["MessageOnClearText"]		= _messageOnClearText;
+			
 			return base.SaveViewState();
 		}
 
@@ -418,6 +428,10 @@ namespace Havit.Web.UI.WebControls
                 writer.WriteLine("menu.maxHeight=\"" + _maxHeight.ToString() + "\";");
 	
             writer.WriteLine("menu.cssClass=\"" + this.CssClass + "\";");
+
+			string jsMessageOnClearText = HttpUtilityExt.GetResourceString((_messageOnClearText ?? String.Empty)).Replace("\"", "\\\"");
+			writer.WriteLine("menu.messageOnClearText=\"" + jsMessageOnClearText + "\";");
+			
 			writer.WriteLine("menu.menuItemCssClass=\"" + _menuItemCssClass + "\";");
 			writer.WriteLine("menu.selMenuItemCssClass=\"" + _selMenuItemCssClass + "\";");
             writer.WriteLine("menu.navigationLinkCssClass=\"" + _navigationLinkCssClass + "\";");

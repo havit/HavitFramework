@@ -1,555 +1,75 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Tests>
-  <edtdocversion branch="retail" build="50727" revision="3082" />
-  <TestCategory type="Microsoft.VisualStudio.TestTools.Common.TestCategory">
-    <id type="Microsoft.VisualStudio.TestTools.Common.TestCategoryId">
-      <id type="System.Guid">8c43106b-9dc1-4907-a29f-aa66a61bf5b6</id>
-    </id>
-    <name type="System.String">Lists of Tests</name>
-    <description type="System.String" />
-    <enabled type="System.Boolean">True</enabled>
-    <parentCategoryId type="Microsoft.VisualStudio.TestTools.Common.TestCategoryId">
-      <id type="System.Guid">00000000-0000-0000-0000-000000000000</id>
-    </parentCategoryId>
-    <runConfiguration type="Microsoft.VisualStudio.TestTools.Common.Link">
-      <id type="System.Guid">41a41799-d5c7-439c-882b-f1ca5ba7111c</id>
-      <name type="System.String">Local Test Run</name>
-      <storage type="System.String">localtestrun.testrunconfig</storage>
-      <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.Common.TestRunConfiguration</type>
-      <enabled type="System.Boolean">True</enabled>
-    </runConfiguration>
-  </TestCategory>
-  <TestCategory type="Microsoft.VisualStudio.TestTools.Common.TestCategory">
-    <id type="Microsoft.VisualStudio.TestTools.Common.TestCategoryId">
-      <id type="System.Guid">c425e5e0-0222-4297-9ea6-27949e70a25a</id>
-    </id>
-    <name type="System.String">Release tests</name>
-    <description type="System.String" />
-    <enabled type="System.Boolean">True</enabled>
-    <parentCategoryId type="Microsoft.VisualStudio.TestTools.Common.TestCategoryId">
-      <id type="System.Guid">8c43106b-9dc1-4907-a29f-aa66a61bf5b6</id>
-    </parentCategoryId>
-    <testLinks type="System.Collections.Hashtable">
-      <key type="System.Guid">2974e459-873d-cece-707b-fa7198c60f09</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">2974e459-873d-cece-707b-fa7198c60f09</id>
-        <name type="System.String">CountBusinessDaysTest_SingleDayHolidayIncludeEndDate</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">aedd34c6-c0ff-060b-95fe-d31bdb088177</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">aedd34c6-c0ff-060b-95fe-d31bdb088177</id>
-        <name type="System.String">GenerateTest_TooLong</name>
-        <storage type="System.String">havittest\bin\release\havittest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">ac71e121-3107-8990-ea10-22c6f83c9aee</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">ac71e121-3107-8990-ea10-22c6f83c9aee</id>
-        <name type="System.String">GetObject_Neexistujici</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">abc5755d-3def-646f-772b-b055a5988db7</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">abc5755d-3def-646f-772b-b055a5988db7</id>
-        <name type="System.String">ConstructorTest_ConnectionStringSettings</name>
-        <storage type="System.String">havit.datatest\bin\release\havit.datatest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">9ace40b4-2b5d-e323-8088-528fa85814c0</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">9ace40b4-2b5d-e323-8088-528fa85814c0</id>
-        <name type="System.String">TryGetTest_PretypovaniIntNaNullableInt</name>
-        <storage type="System.String">havit.datatest\bin\release\havit.datatest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">551b00df-e416-eddb-7cda-e4505f7b29a8</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">551b00df-e416-eddb-7cda-e4505f7b29a8</id>
-        <name type="System.String">TryGetTest_NenalezenoNotFullLoad</name>
-        <storage type="System.String">havit.datatest\bin\release\havit.datatest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">c131eae4-aeda-2ffe-74ad-a8b648127e60</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">c131eae4-aeda-2ffe-74ad-a8b648127e60</id>
-        <name type="System.String">IsIntegerTest_Null</name>
-        <storage type="System.String">havittest\bin\release\havittest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">90478b14-c93f-381b-1098-f7c3e9024af3</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">90478b14-c93f-381b-1098-f7c3e9024af3</id>
-        <name type="System.String">DefaultTest_get</name>
-        <storage type="System.String">havit.datatest\bin\release\havit.datatest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">e7884721-e1e3-3fd6-8a35-08a5ca303e23</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">e7884721-e1e3-3fd6-8a35-08a5ca303e23</id>
-        <name type="System.String">TryGetTest_GC</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">1b2c5169-7484-41dc-9b49-7054c4aa6f54</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">1b2c5169-7484-41dc-9b49-7054c4aa6f54</id>
-        <name type="System.String">AllowDuplicatesTest_Allow_Insert_And_Indexer</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">110a1db4-be3c-483f-6477-937a208f9db3</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">110a1db4-be3c-483f-6477-937a208f9db3</id>
-        <name type="System.String">AndCondition_ConstructorWithEmptyConditionsTest</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">24881129-fabe-5dd4-9268-e41febd52515</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">24881129-fabe-5dd4-9268-e41febd52515</id>
-        <name type="System.String">AllowDuplicatesTest_Change</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">1eabd7dc-63af-3533-4f7a-4f7218c4e6d3</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">1eabd7dc-63af-3533-4f7a-4f7218c4e6d3</id>
-        <name type="System.String">GetTest_Exist</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">46154206-4d5c-059e-cd8c-46574ab48e24</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">46154206-4d5c-059e-cd8c-46574ab48e24</id>
-        <name type="System.String">AndCondition_AddEmptyConditionsTest</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">5e9c6868-e474-ac9d-9774-f51ecd874b5f</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">5e9c6868-e474-ac9d-9774-f51ecd874b5f</id>
-        <name type="System.String">ExecuteScalarTest</name>
-        <storage type="System.String">havit.datatest\bin\release\havit.datatest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">e166da7a-4925-1fb2-eb83-87d6b484d377</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">e166da7a-4925-1fb2-eb83-87d6b484d377</id>
-        <name type="System.String">IsIntegerTest_Empty</name>
-        <storage type="System.String">havittest\bin\release\havittest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">8b7eb786-8edf-baa6-e4c4-60e193f20ce6</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">8b7eb786-8edf-baa6-e4c4-60e193f20ce6</id>
-        <name type="System.String">AllowDuplicatesTest_DoNotAllow_Insert_Different_New</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">33307036-bf4c-dba8-7173-ac8a35b72676</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">33307036-bf4c-dba8-7173-ac8a35b72676</id>
-        <name type="System.String">AllowDuplicatesTest_DoNotAllow_Indexer_Different</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">e6661ccc-a31b-a264-595e-08393f1e58df</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">e6661ccc-a31b-a264-595e-08393f1e58df</id>
-        <name type="System.String">AllowDuplicatesTest_Default</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">06d41a37-fd00-7ac0-057f-3dd8aa5f1ae4</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">06d41a37-fd00-7ac0-057f-3dd8aa5f1ae4</id>
-        <name type="System.String">CountBusinessDaysTest_SingleDayNoHolidaysIncludeEndDate</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">45ff30ab-4d3d-03ea-eca5-9ef820bc46cd</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">45ff30ab-4d3d-03ea-eca5-9ef820bc46cd</id>
-        <name type="System.String">CountBusinessDaysTest_Weekend</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">afc1fbb1-3a14-05dd-3b24-ddbafae40634</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">afc1fbb1-3a14-05dd-3b24-ddbafae40634</id>
-        <name type="System.String">StoreTest_StoreRuznychInstanci</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">e4eb75d4-a580-8dba-1bd9-c226c1b1721f</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">e4eb75d4-a580-8dba-1bd9-c226c1b1721f</id>
-        <name type="System.String">AllowDuplicatesTest_DoNotAllow_Insert_Same_Persistent</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">59189e32-f845-d5a5-9bae-843a8f7867c4</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">59189e32-f845-d5a5-9bae-843a8f7867c4</id>
-        <name type="System.String">CompositeCondition_NestedConditionTest</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">682dc41a-286d-59bf-7a57-3fad965eeb17</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">682dc41a-286d-59bf-7a57-3fad965eeb17</id>
-        <name type="System.String">GetTest_NotExist</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">e23c6c27-8b4f-555e-c7d8-3f4a4359b17c</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">e23c6c27-8b4f-555e-c7d8-3f4a4359b17c</id>
-        <name type="System.String">IdentityMapScopeTest_GetFirst_PartialLoad_OpacnePoradi</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">acb068d9-7672-9fea-507e-2a54ad1e1c12</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">acb068d9-7672-9fea-507e-2a54ad1e1c12</id>
-        <name type="System.String">BusinessLayerTest_ZakazaneNoID</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">488f8f52-4907-9a09-7988-07c5b9a966e6</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">488f8f52-4907-9a09-7988-07c5b9a966e6</id>
-        <name type="System.String">IdentityMapScopeTest_GetFirst_FullLoad_OpacnePoradi</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">edebb103-beb5-1755-20a7-e44244d8265d</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">edebb103-beb5-1755-20a7-e44244d8265d</id>
-        <name type="System.String">GetAllCacheClone</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">7936962b-56ec-bcd3-fff0-893806d1c7cc</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">7936962b-56ec-bcd3-fff0-893806d1c7cc</id>
-        <name type="System.String">CountBusinessDaysTest_NoHolidaysIncludeEndDate</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">d7d87dc2-c564-8094-cecd-bddc36c300f2</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">d7d87dc2-c564-8094-cecd-bddc36c300f2</id>
-        <name type="System.String">EqualsTest_RuzneID</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">e8c03ed6-6f7c-d91c-ab7f-8ceb47386618</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">e8c03ed6-6f7c-d91c-ab7f-8ceb47386618</id>
-        <name type="System.String">EqualsTest_StejneID</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">74f642f0-68e0-d339-e799-ec9c8578070d</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">74f642f0-68e0-d339-e799-ec9c8578070d</id>
-        <name type="System.String">GenerateTest_Length</name>
-        <storage type="System.String">havittest\bin\release\havittest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">8c803e21-0a78-eba1-750a-e8837803d960</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">8c803e21-0a78-eba1-750a-e8837803d960</id>
-        <name type="System.String">IsIntegerTest_PositiveInteger</name>
-        <storage type="System.String">havittest\bin\release\havittest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">5e3538b4-78e2-9948-9c58-949910e63dea</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">5e3538b4-78e2-9948-9c58-949910e63dea</id>
-        <name type="System.String">CountBusinessDaysTest_ReverseDates</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">8350311d-1216-ba2c-7ec1-2eead9223254</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">8350311d-1216-ba2c-7ec1-2eead9223254</id>
-        <name type="System.String">IdentityMapScopeTest_GetFirst_Ghost_OpacnePoradi</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">96e8d05b-00da-fb96-a6a8-607e6abb3c86</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">96e8d05b-00da-fb96-a6a8-607e6abb3c86</id>
-        <name type="System.String">Save_SaveAndDeleteTest</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">31d51cac-ae0e-9910-df20-925bc8cff490</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">31d51cac-ae0e-9910-df20-925bc8cff490</id>
-        <name type="System.String">BusinessLayerTest_NuloveID</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">0c1cc1cd-4b98-6246-47a4-40bcfafd3e19</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">0c1cc1cd-4b98-6246-47a4-40bcfafd3e19</id>
-        <name type="System.String">IsIntegerTest_NegativeInteger</name>
-        <storage type="System.String">havittest\bin\release\havittest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">06210c8a-7458-7e0c-1258-e23c31111be1</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">06210c8a-7458-7e0c-1258-e23c31111be1</id>
-        <name type="System.String">ConstructorTest2_string_string</name>
-        <storage type="System.String">havit.datatest\bin\release\havit.datatest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">ce202de1-ae65-1b48-1064-e0f3be6072f7</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">ce202de1-ae65-1b48-1064-e0f3be6072f7</id>
-        <name type="System.String">TryGetTest_InvalidCast</name>
-        <storage type="System.String">havit.datatest\bin\release\havit.datatest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">5f429e14-a432-6ece-98ad-d3d8f944e749</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">5f429e14-a432-6ece-98ad-d3d8f944e749</id>
-        <name type="System.String">TryGetTest_PretypovaniDecimalNaDouble</name>
-        <storage type="System.String">havit.datatest\bin\release\havit.datatest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">224f27eb-0b20-c3be-f84d-cb77cf97d2fe</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">224f27eb-0b20-c3be-f84d-cb77cf97d2fe</id>
-        <name type="System.String">CountBusinessDaysTest_SingleDayNoHolidaysExcludeEndDate</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">7a73dff4-1ec7-3fb5-7902-30e95b42b03a</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">7a73dff4-1ec7-3fb5-7902-30e95b42b03a</id>
-        <name type="System.String">DefaultTest_get_set_get_set</name>
-        <storage type="System.String">havit.datatest\bin\release\havit.datatest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">c0bf4df5-fd1a-0c0e-c855-98297f5a9675</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">c0bf4df5-fd1a-0c0e-c855-98297f5a9675</id>
-        <name type="System.String">IdentityMapScopeTest_GetFirst_FullLoad</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">7b9c87d7-531e-c540-4c80-ffa26375c469</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">7b9c87d7-531e-c540-4c80-ffa26375c469</id>
-        <name type="System.String">CountBusinessDaysTest_TwoDatesNoHolidaysExcludeEndDate</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">910be006-d5e7-9039-a7f3-73731a9f84ef</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">910be006-d5e7-9039-a7f3-73731a9f84ef</id>
-        <name type="System.String">MinimalInsertUsesCheckConstraint</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">f450fbf0-d577-a0ff-aed0-07271cb65ee9</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">f450fbf0-d577-a0ff-aed0-07271cb65ee9</id>
-        <name type="System.String">TryGetTest_NullOK</name>
-        <storage type="System.String">havit.datatest\bin\release\havit.datatest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">1d7effcc-1613-a4e0-91f9-c5f6787aa102</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">1d7effcc-1613-a4e0-91f9-c5f6787aa102</id>
-        <name type="System.String">AllowDuplicatesTest_Allow_Indexer_Different_New</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">f405c736-69bd-d0a6-73d0-bb7d3e426b9c</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">f405c736-69bd-d0a6-73d0-bb7d3e426b9c</id>
-        <name type="System.String">TryGetTest_NenalezenoFullLoad</name>
-        <storage type="System.String">havit.datatest\bin\release\havit.datatest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">cb1f4b17-33cd-69c5-02d3-3d6687a422f9</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">cb1f4b17-33cd-69c5-02d3-3d6687a422f9</id>
-        <name type="System.String">TryGetTest_Exist</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">b26d6449-26ee-b1b0-ed52-7316083026a9</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">b26d6449-26ee-b1b0-ed52-7316083026a9</id>
-        <name type="System.String">IdentityMapScopeTest_GetFirst_Ghost</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">3e533bb2-ac65-f31d-4d32-5a46dc5dd5b8</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">3e533bb2-ac65-f31d-4d32-5a46dc5dd5b8</id>
-        <name type="System.String">IdentityMapScopeTest_Zakladni</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">8ffb379c-5542-ed66-45bc-4164bc6c5bc6</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">8ffb379c-5542-ed66-45bc-4164bc6c5bc6</id>
-        <name type="System.String">CreateEqualsTest_ZaporneID_Neexistujici</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">068baafb-b7a5-c910-9be5-fa09e4a2c467</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">068baafb-b7a5-c910-9be5-fa09e4a2c467</id>
-        <name type="System.String">TryGetTest_NotExist</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">97b44a25-4203-92c7-2179-13045347bb4e</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">97b44a25-4203-92c7-2179-13045347bb4e</id>
-        <name type="System.String">CompositeCondition_IsNotEmptyTest</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">de63148e-bd26-b391-743a-6d91c9a569ed</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">de63148e-bd26-b391-743a-6d91c9a569ed</id>
-        <name type="System.String">EqualsTest_Nove</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">aa9efdc9-85ae-6467-4c3e-fc35c499c090</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">aa9efdc9-85ae-6467-4c3e-fc35c499c090</id>
-        <name type="System.String">BusinessLayerTest_ZaporneID</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">4076a54f-939c-8096-4ceb-67b7c0eecc42</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">4076a54f-939c-8096-4ceb-67b7c0eecc42</id>
-        <name type="System.String">IdentityMapScopeTest_GetFirst_PartialLoad</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">bf6d4e2b-0592-53dc-9ce1-01f9c5baecc2</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">bf6d4e2b-0592-53dc-9ce1-01f9c5baecc2</id>
-        <name type="System.String">IsIntegerTest_Invalid</name>
-        <storage type="System.String">havittest\bin\release\havittest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">06663a28-1cca-142f-c2ee-61d0c2dcd450</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">06663a28-1cca-142f-c2ee-61d0c2dcd450</id>
-        <name type="System.String">ConstructorTest_string_DbProviderFactory</name>
-        <storage type="System.String">havit.datatest\bin\release\havit.datatest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">5d3ea582-25e7-f6b3-b44e-371af4dd349e</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">5d3ea582-25e7-f6b3-b44e-371af4dd349e</id>
-        <name type="System.String">CountBusinessDaysTest_TwoDaysWithHolidayIncludeEndDate</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">7084ea3b-2dfd-41fe-9362-678088587d40</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">7084ea3b-2dfd-41fe-9362-678088587d40</id>
-        <name type="System.String">CompositeCondition_IsEmptyTest</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">9195f8ee-1a46-8a9c-98e4-348f1c8d68e5</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">9195f8ee-1a46-8a9c-98e4-348f1c8d68e5</id>
-        <name type="System.String">TryGetTest_NacteniInt</name>
-        <storage type="System.String">havit.datatest\bin\release\havit.datatest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-      <key type="System.Guid">1ab18331-63a6-88ce-78e6-fa4795e8af76</key>
-      <value type="Microsoft.VisualStudio.TestTools.Common.Link">
-        <id type="System.Guid">1ab18331-63a6-88ce-78e6-fa4795e8af76</id>
-        <name type="System.String">IdentityMapScopeTest_BezIdentityMap</name>
-        <storage type="System.String">havit.businesstest\bin\release\havit.businesstest.dll</storage>
-        <type type="System.Type, mscorlib">Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</type>
-        <enabled type="System.Boolean">True</enabled>
-      </value>
-    </testLinks>
-  </TestCategory>
-</Tests>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<TestLists xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2006">
+  <TestList name="Lists of Tests" id="8c43106b-9dc1-4907-a29f-aa66a61bf5b6">
+    <RunConfiguration id="41a41799-d5c7-439c-882b-f1ca5ba7111c" name="Local Test Run" storage="localtestrun.testrunconfig" type="Microsoft.VisualStudio.TestTools.Common.TestRunConfiguration, Microsoft.VisualStudio.QualityTools.Common,   PublicKeyToken=b03f5f7f11d50a3a" />
+  </TestList>
+  <TestList name="Release tests" id="c425e5e0-0222-4297-9ea6-27949e70a25a" parentListId="8c43106b-9dc1-4907-a29f-aa66a61bf5b6">
+    <TestLinks>
+      <TestLink id="2974e459-873d-cece-707b-fa7198c60f09" name="CountBusinessDaysTest_SingleDayHolidayIncludeEndDate" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="aedd34c6-c0ff-060b-95fe-d31bdb088177" name="GenerateTest_TooLong" storage="havittest\bin\release\havittest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="ac71e121-3107-8990-ea10-22c6f83c9aee" name="GetObject_Neexistujici" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="abc5755d-3def-646f-772b-b055a5988db7" name="ConstructorTest_ConnectionStringSettings" storage="havit.datatest\bin\release\havit.datatest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="9ace40b4-2b5d-e323-8088-528fa85814c0" name="TryGetTest_PretypovaniIntNaNullableInt" storage="havit.datatest\bin\release\havit.datatest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="551b00df-e416-eddb-7cda-e4505f7b29a8" name="TryGetTest_NenalezenoNotFullLoad" storage="havit.datatest\bin\release\havit.datatest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="c131eae4-aeda-2ffe-74ad-a8b648127e60" name="IsIntegerTest_Null" storage="havittest\bin\release\havittest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="4076a54f-939c-8096-4ceb-67b7c0eecc42" name="IdentityMapScopeTest_GetFirst_PartialLoad" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="90478b14-c93f-381b-1098-f7c3e9024af3" name="DefaultTest_get" storage="havit.datatest\bin\release\havit.datatest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="e7884721-e1e3-3fd6-8a35-08a5ca303e23" name="TryGetTest_GC" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="aa9efdc9-85ae-6467-4c3e-fc35c499c090" name="BusinessLayerTest_ZaporneID" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="110a1db4-be3c-483f-6477-937a208f9db3" name="AndCondition_ConstructorWithEmptyConditionsTest" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="1eabd7dc-63af-3533-4f7a-4f7218c4e6d3" name="GetTest_Exist" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="46154206-4d5c-059e-cd8c-46574ab48e24" name="AndCondition_AddEmptyConditionsTest" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="5e9c6868-e474-ac9d-9774-f51ecd874b5f" name="ExecuteScalarTest" storage="havit.datatest\bin\release\havit.datatest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="e166da7a-4925-1fb2-eb83-87d6b484d377" name="IsIntegerTest_Empty" storage="havittest\bin\release\havittest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="8b7eb786-8edf-baa6-e4c4-60e193f20ce6" name="AllowDuplicatesTest_DoNotAllow_Insert_Different_New" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="33307036-bf4c-dba8-7173-ac8a35b72676" name="AllowDuplicatesTest_DoNotAllow_Indexer_Different" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="5f429e14-a432-6ece-98ad-d3d8f944e749" name="TryGetTest_PretypovaniDecimalNaDouble" storage="havit.datatest\bin\release\havit.datatest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="06d41a37-fd00-7ac0-057f-3dd8aa5f1ae4" name="CountBusinessDaysTest_SingleDayNoHolidaysIncludeEndDate" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="45ff30ab-4d3d-03ea-eca5-9ef820bc46cd" name="CountBusinessDaysTest_Weekend" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="afc1fbb1-3a14-05dd-3b24-ddbafae40634" name="StoreTest_StoreRuznychInstanci" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="e4eb75d4-a580-8dba-1bd9-c226c1b1721f" name="AllowDuplicatesTest_DoNotAllow_Insert_Same_Persistent" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="59189e32-f845-d5a5-9bae-843a8f7867c4" name="CompositeCondition_NestedConditionTest" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="682dc41a-286d-59bf-7a57-3fad965eeb17" name="GetTest_NotExist" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="e23c6c27-8b4f-555e-c7d8-3f4a4359b17c" name="IdentityMapScopeTest_GetFirst_PartialLoad_OpacnePoradi" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="acb068d9-7672-9fea-507e-2a54ad1e1c12" name="BusinessLayerTest_ZakazaneNoID" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="488f8f52-4907-9a09-7988-07c5b9a966e6" name="IdentityMapScopeTest_GetFirst_FullLoad_OpacnePoradi" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="edebb103-beb5-1755-20a7-e44244d8265d" name="GetAllCacheClone" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="7936962b-56ec-bcd3-fff0-893806d1c7cc" name="CountBusinessDaysTest_NoHolidaysIncludeEndDate" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="d7d87dc2-c564-8094-cecd-bddc36c300f2" name="EqualsTest_RuzneID" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="e8c03ed6-6f7c-d91c-ab7f-8ceb47386618" name="EqualsTest_StejneID" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="de63148e-bd26-b391-743a-6d91c9a569ed" name="EqualsTest_Nove" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="74f642f0-68e0-d339-e799-ec9c8578070d" name="GenerateTest_Length" storage="havittest\bin\release\havittest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="8c803e21-0a78-eba1-750a-e8837803d960" name="IsIntegerTest_PositiveInteger" storage="havittest\bin\release\havittest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="5e3538b4-78e2-9948-9c58-949910e63dea" name="CountBusinessDaysTest_ReverseDates" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="8350311d-1216-ba2c-7ec1-2eead9223254" name="IdentityMapScopeTest_GetFirst_Ghost_OpacnePoradi" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="96e8d05b-00da-fb96-a6a8-607e6abb3c86" name="Save_SaveAndDeleteTest" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="31d51cac-ae0e-9910-df20-925bc8cff490" name="BusinessLayerTest_NuloveID" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="0c1cc1cd-4b98-6246-47a4-40bcfafd3e19" name="IsIntegerTest_NegativeInteger" storage="havittest\bin\release\havittest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="06210c8a-7458-7e0c-1258-e23c31111be1" name="ConstructorTest2_string_string" storage="havit.datatest\bin\release\havit.datatest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="ce202de1-ae65-1b48-1064-e0f3be6072f7" name="TryGetTest_InvalidCast" storage="havit.datatest\bin\release\havit.datatest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="224f27eb-0b20-c3be-f84d-cb77cf97d2fe" name="CountBusinessDaysTest_SingleDayNoHolidaysExcludeEndDate" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="7a73dff4-1ec7-3fb5-7902-30e95b42b03a" name="DefaultTest_get_set_get_set" storage="havit.datatest\bin\release\havit.datatest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="c0bf4df5-fd1a-0c0e-c855-98297f5a9675" name="IdentityMapScopeTest_GetFirst_FullLoad" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="7b9c87d7-531e-c540-4c80-ffa26375c469" name="CountBusinessDaysTest_TwoDatesNoHolidaysExcludeEndDate" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="910be006-d5e7-9039-a7f3-73731a9f84ef" name="MinimalInsertUsesCheckConstraint" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="f450fbf0-d577-a0ff-aed0-07271cb65ee9" name="TryGetTest_NullOK" storage="havit.datatest\bin\release\havit.datatest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="1d7effcc-1613-a4e0-91f9-c5f6787aa102" name="AllowDuplicatesTest_Allow_Indexer_Different_New" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="f405c736-69bd-d0a6-73d0-bb7d3e426b9c" name="TryGetTest_NenalezenoFullLoad" storage="havit.datatest\bin\release\havit.datatest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="cb1f4b17-33cd-69c5-02d3-3d6687a422f9" name="TryGetTest_Exist" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="b26d6449-26ee-b1b0-ed52-7316083026a9" name="IdentityMapScopeTest_GetFirst_Ghost" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="3e533bb2-ac65-f31d-4d32-5a46dc5dd5b8" name="IdentityMapScopeTest_Zakladni" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="1b2c5169-7484-41dc-9b49-7054c4aa6f54" name="AllowDuplicatesTest_Allow_Insert_And_Indexer" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="068baafb-b7a5-c910-9be5-fa09e4a2c467" name="TryGetTest_NotExist" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="97b44a25-4203-92c7-2179-13045347bb4e" name="CompositeCondition_IsNotEmptyTest" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="e6661ccc-a31b-a264-595e-08393f1e58df" name="AllowDuplicatesTest_Default" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="24881129-fabe-5dd4-9268-e41febd52515" name="AllowDuplicatesTest_Change" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="9195f8ee-1a46-8a9c-98e4-348f1c8d68e5" name="TryGetTest_NacteniInt" storage="havit.datatest\bin\release\havit.datatest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="bf6d4e2b-0592-53dc-9ce1-01f9c5baecc2" name="IsIntegerTest_Invalid" storage="havittest\bin\release\havittest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="06663a28-1cca-142f-c2ee-61d0c2dcd450" name="ConstructorTest_string_DbProviderFactory" storage="havit.datatest\bin\release\havit.datatest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="5d3ea582-25e7-f6b3-b44e-371af4dd349e" name="CountBusinessDaysTest_TwoDaysWithHolidayIncludeEndDate" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="7084ea3b-2dfd-41fe-9362-678088587d40" name="CompositeCondition_IsEmptyTest" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="8ffb379c-5542-ed66-45bc-4164bc6c5bc6" name="CreateEqualsTest_ZaporneID_Neexistujici" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="1ab18331-63a6-88ce-78e6-fa4795e8af76" name="IdentityMapScopeTest_BezIdentityMap" storage="havit.businesstest\bin\release\havit.businesstest.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+    </TestLinks>
+  </TestList>
+</TestLists>

@@ -25,7 +25,7 @@ namespace Havit.BusinessTest
 			Role role = Role.GetObject(-1);
 
 			Assert.IsFalse(String.IsNullOrEmpty(role.Symbol));
-			Assert.Equals(role.Symbol, Role.ZaporneID.Symbol);
+            Assert.AreEqual(role.Symbol, Role.ZaporneID.Symbol);
 		}
 		#endregion
 
@@ -39,7 +39,7 @@ namespace Havit.BusinessTest
 			Role role = Role.GetObject(0);
 
 			Assert.IsFalse(String.IsNullOrEmpty(role.Symbol));
-			Assert.Equals(role.Symbol, Role.NuloveID.Symbol);
+			Assert.AreEqual(role.Symbol, Role.NuloveID.Symbol);
 		}
 		#endregion
 

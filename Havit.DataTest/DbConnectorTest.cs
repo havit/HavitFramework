@@ -28,8 +28,8 @@ namespace Havit.DataTest
 			ConnectionStringSettings connectionStringSettings = ConfigurationManager.ConnectionStrings["Test"];
 			DbConnector target = new DbConnector(connectionStringSettings);
 
-			Assert.Equals(target.ConnectionString, connectionStringSettings.ConnectionString);
-			Assert.Equals(target.ProviderFactory.GetType(), typeof(OleDbFactory));
+            Assert.AreEqual(target.ConnectionString, connectionStringSettings.ConnectionString);
+            Assert.AreEqual(target.ProviderFactory.GetType(), typeof(OleDbFactory));
 		}
 
 		/// <summary>
@@ -38,13 +38,13 @@ namespace Havit.DataTest
 		[TestMethod()]
 		public void ConstructorTest_string_DbProviderFactory()
 		{
-			string connectionString = "Data Source=oskar;Initial Catalog=HavitTest;User Id=development;Password=development;";
+			string connectionString = "Data Source=dev;Initial Catalog=HavitTest;User Id=development;Password=development;";
 			DbProviderFactory providerFactory = DbProviderFactories.GetFactory("System.Data.SqlClient");
 
 			DbConnector target = new DbConnector(connectionString, providerFactory);
 
-			Assert.Equals(target.ConnectionString, connectionString);
-			Assert.Equals(target.ProviderFactory, providerFactory);
+            Assert.AreEqual(target.ConnectionString, connectionString);
+            Assert.AreEqual(target.ProviderFactory, providerFactory);
 		}
 
 		/// <summary>
@@ -53,13 +53,13 @@ namespace Havit.DataTest
 		[TestMethod()]
 		public void ConstructorTest2_string_string()
 		{
-			string connectionString = "Data Source=oskar;Initial Catalog=HavitTest;User Id=development;Password=development;";
+			string connectionString = "Data Source=dev;Initial Catalog=HavitTest;User Id=development;Password=development;";
 			string providerInvariantName = "System.Data.SqlClient";
 
 			DbConnector target = new DbConnector(connectionString, providerInvariantName);
 
-			Assert.Equals(target.ConnectionString, connectionString);
-			Assert.Equals(target.ProviderFactory.GetType(), typeof(SqlClientFactory));
+			Assert.AreEqual(target.ConnectionString, connectionString);
+            Assert.AreEqual(target.ProviderFactory.GetType(), typeof(SqlClientFactory));
 		}
 		#endregion
 

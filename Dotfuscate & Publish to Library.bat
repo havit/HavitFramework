@@ -2,7 +2,7 @@ rem ****************************************************************************
 rem Dotfuscate
 rem ****************************************************************************************************
 
-"%ProgramFiles%\Microsoft Visual Studio 8\Application\PreEmptive Solutions\Dotfuscator Community Edition\dotfuscator.exe" Dotfuscator.xml
+"C:\Program Files (x86)\Microsoft Visual Studio 9.0\Application\PreEmptive Solutions\Dotfuscator Community Edition\dotfuscator.exe" -v Dotfuscator.xml
 
 
 rem ****************************************************************************************************

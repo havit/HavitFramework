@@ -72,9 +72,16 @@ namespace Havit.Diagnostics
 		/// </summary>
 		public string TraceSourceName
 		{
-			get;
-			private set;
+			get
+			{
+				return _traceSourceName;
+			}
+			private set
+			{
+				_traceSourceName = value;
+			}
 		}
+		private string _traceSourceName;
 		#endregion
 
 		#region constructor
@@ -84,7 +91,7 @@ namespace Havit.Diagnostics
 		/// <param name="traceSourceName">jméno TraceSource, pøes který se budou výjimky emitovat</param>
 		public ExceptionTracer(string traceSourceName)
 		{
-			this.TraceSourceName = traceSourceName;
+			this._traceSourceName = traceSourceName;
 		}
 		#endregion
 

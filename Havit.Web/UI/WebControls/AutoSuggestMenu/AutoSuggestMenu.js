@@ -640,7 +640,7 @@ function AutoSuggestMenu()
         menuDiv.sourceObject=self;
         
         /**************************/
-		menuDiv.style.minWidth = textBox.style.width;
+		menuDiv.style.minWidth = textBox.clientWidth + "px";
         /**************************/
         
         XUtils.addEventListener(menuDiv, "scroll",    self.onMenuScroll);

@@ -2,6 +2,7 @@
 {
 	position: absolute;
 	overflow-y: auto;
+	overflow-x: hidden;
 	z-index: 5;
 	
 	border: 1px solid black;

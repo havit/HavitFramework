@@ -132,7 +132,7 @@ namespace Havit.Business.Query
 				case MatchListMode.IntArray:
 					if (ids.Length < 2000)
 					{
-						return new BinaryCondition("{0} IN (SELECT Value FROM dbo.IntArrayToTable({1}))", operand, SqlInt32ArrayOperand.Create(ids));
+						return new BinaryCondition("{0} IN (SELECT [Value] FROM dbo.IntArrayToTable({1}))", operand, SqlInt32ArrayOperand.Create(ids));
 					}
 					else
 					{
@@ -194,7 +194,7 @@ namespace Havit.Business.Query
 				case MatchListMode.IntArray:
 					if (ids.Length < 2000)
 					{
-						return new BinaryCondition("{0} NOT IN (SELECT Value FROM dbo.IntArrayToTable({1}))", operand, SqlInt32ArrayOperand.Create(ids));
+						return new BinaryCondition("{0} NOT IN (SELECT [Value] FROM dbo.IntArrayToTable({1}))", operand, SqlInt32ArrayOperand.Create(ids));
 					}
 					else
 					{

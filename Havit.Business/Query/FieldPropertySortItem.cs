@@ -36,7 +36,7 @@ namespace Havit.Business.Query
 		/// Vytvoří položku řazení podle sloupce a daného pořadí.
 		/// </summary>
 		public FieldPropertySortItem(FieldPropertyInfo property, SortDirection direction)
-			: base(property.FieldName, direction)
+			: base("[" + property.FieldName + "]", direction)
 		{
 		}
 		#endregion

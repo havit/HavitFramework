@@ -127,7 +127,7 @@ namespace Havit.Business
 		string IOperand.GetCommandValue(DbCommand command)
 		{
 			CheckInitialization();
-			return fieldName;
+			return "[" + fieldName + "]";
 		} 
 		#endregion
 	}

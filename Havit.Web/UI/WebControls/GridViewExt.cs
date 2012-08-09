@@ -415,7 +415,7 @@ namespace Havit.Web.UI.WebControls
 						{
 							insertingData.Insert(0, insertRowDataItem);
 						}
-						for (int i = this.PageIndex + 1; i < pageCount; i++)   // pøepoèítat
+						for (int i = this.PageIndex + 1; i < pageCount; i++)
 						{
 							insertingData.Add(insertRowDataItem);
 						}

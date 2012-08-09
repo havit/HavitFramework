@@ -145,6 +145,7 @@
     <Compile Include="UI\WebControls\Collapser.cs" />
     <Compile Include="UI\WebControls\CommandFieldExt.cs" />
     <Compile Include="UI\WebControls\CommandFieldStyle.cs" />
+    <Compile Include="UI\WebControls\DynarchCalendar\DynarchCalendar.cs" />
     <Compile Include="UI\WebControls\GridViewCommandField.cs" />
     <Compile Include="UI\WebControls\DataControlButtonExt.cs" />
     <Compile Include="UI\WebControls\DataControlImageButtonExt.cs" />
@@ -215,6 +216,12 @@
     <Compile Include="UrlRewriter\RewriterUtils.cs">
       <SubType>Code</SubType>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-cs-utf8.js" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-cs-win.js" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-setup_stripped.js" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar_stripped.js" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

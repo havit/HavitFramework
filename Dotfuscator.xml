@@ -27,13 +27,10 @@
       </inputassembly>
       <inputassembly>
         <option>library</option>
-        <file dir="${configdir}\Havit.Web.UI.WebControls.DynarchCalendar\bin\Release" name="Havit.Web.UI.WebControls.DynarchCalendar.dll" />
-      </inputassembly>
-      <inputassembly>
-        <option>library</option>
         <file dir="${configdir}\Havit.Xml\bin\Release" name="Havit.Xml.dll" />
       </inputassembly>
       <inputassembly>
+        <option>library</option>
         <file dir="${configdir}\Havit.Enterprise.Web\bin\Release" name="Havit.Enterprise.Web.dll" />
       </inputassembly>
     </asmlist>
@@ -45,6 +42,15 @@
     <file dir="C:\Temp" />
   </tempdir>
   <renaming>
+    <excludelist>
+      <type name="Havit.Business.BusinessObjectCollection`1&lt;T&gt;" />
+      <type name="Havit.Business.BusinessObjectCollection`1/&lt;&gt;c__DisplayClass1&lt;T&gt;" />
+      <type name="Havit.Business.BusinessObjectCollection`1/&lt;&gt;c__DisplayClass4&lt;T&gt;" />
+      <type name="Havit.Business.CollectionPropertyHolder`2&lt;CollectionType,BusinessObjectType&gt;" />
+      <type name="Havit.Business.PropertyHolder`1&lt;T&gt;" />
+      <type name="Havit.Collections.GenericPropertyComparer`1&lt;T&gt;" />
+      <type name="Havit.Scope`1&lt;T&gt;" />
+    </excludelist>
     <mapping>
       <mapoutput overwrite="false">
         <file dir="${configdir}\Dotfuscated" name="Map.xml" />

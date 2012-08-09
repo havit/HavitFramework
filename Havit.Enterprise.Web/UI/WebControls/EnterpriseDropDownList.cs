@@ -177,6 +177,17 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region Private properties
+		/// <summary>
+		/// Indikuje, zda již došlo k navázání dat.
+		/// </summary>
+		private bool DataBindPerformed
+		{
+			get { return (bool)(ViewState["DataBindPerformed"] ?? false);  }
+			set { ViewState["DataBindPerformed"] = value; }
+		}
+		#endregion
+
 		#region DataBinding
 
 		/// <summary>
@@ -187,7 +198,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			base.OnLoad(e);
 
-			if (!Page.IsPostBack && AutoDataBind)
+			if (AutoDataBind && !DataBindPerformed)
 			{
 				DataBindAll();
 			}
@@ -225,6 +236,7 @@ namespace Havit.Web.UI.WebControls
 			{
 				EnsureEmptyItem();
 			}
+			DataBindPerformed = true;
 		}
 
 		/// <summary>

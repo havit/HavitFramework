@@ -117,6 +117,7 @@
     <Compile Include="HttpUtilityExt.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="QueryStringBuilder.cs" />
     <Compile Include="Security\FormsRolesAuthentication.cs" />
     <Compile Include="UI\Adapters\CssAdapters\CssMenuAdapter.cs" />
     <Compile Include="UI\Adapters\CssAdapters\CssTreeViewAdapter.cs" />

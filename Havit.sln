@@ -106,6 +106,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{2FA7
 		Scripts\HavitScripts.js = Scripts\HavitScripts.js
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.WebTest", "Havit.WebTest\Havit.WebTest.csproj", "{B234340F-59D8-4BAC-9929-7BE7A7FA70C9}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Havit.vsmdi
@@ -223,6 +229,14 @@ Global
 		{28BB8E7F-089E-494E-9F11-6088C36DD4D0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{28BB8E7F-089E-494E-9F11-6088C36DD4D0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{28BB8E7F-089E-494E-9F11-6088C36DD4D0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{B234340F-59D8-4BAC-9929-7BE7A7FA70C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B234340F-59D8-4BAC-9929-7BE7A7FA70C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B234340F-59D8-4BAC-9929-7BE7A7FA70C9}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{B234340F-59D8-4BAC-9929-7BE7A7FA70C9}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{B234340F-59D8-4BAC-9929-7BE7A7FA70C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B234340F-59D8-4BAC-9929-7BE7A7FA70C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B234340F-59D8-4BAC-9929-7BE7A7FA70C9}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{B234340F-59D8-4BAC-9929-7BE7A7FA70C9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

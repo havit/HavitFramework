@@ -110,6 +110,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Scope.cs" />
+    <Compile Include="Security\PasswordCharacterSet.cs" />
+    <Compile Include="Security\PasswordGenerator.cs" />
     <Compile Include="StringExt.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -1,0 +1,358 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Security.Cryptography;
+
+namespace Havit.Security
+{
+	/// <summary>
+	/// Generátor hesel.
+	/// </summary>
+	/// <remarks>
+	/// Vychází pùvodnì z http://www.codeproject.com/csharp/pwdgen.asp
+	/// </remarks>
+	public class PasswordGenerator
+	{
+		#region MinimumLength
+		/// <summary>
+		/// Minimální délka hesla. Default 6.
+		/// </summary>
+		public int MinimumLength
+		{
+			get { return this._mininumLength; }
+			set
+			{
+				this._mininumLength = value;
+			}
+		}
+		private int _mininumLength;
+		#endregion
+
+		#region MaximumLength
+		/// <summary>
+		/// Maximální délka hesla. Default 10.
+		/// </summary>
+		public int MaximumLength
+		{
+			get { return this._maximumLength; }
+			set
+			{
+				this._maximumLength = value;
+			}
+		}
+		private int _maximumLength;
+		#endregion
+
+		#region PasswordCharacterSet
+		/// <summary>
+		/// Sada znakù, z ní se mají vybírat znaky pro generované heslo.
+		/// </summary>
+		public PasswordCharacterSet PasswordCharacterSet
+		{
+			get { return this._passwordCharacterSet; }
+			set
+			{
+				this._passwordCharacterSet = value;
+				passwordCharArrayUpperBound = GetCharacterArrayUpperBound();
+			}
+		}
+		private PasswordCharacterSet _passwordCharacterSet;
+		private int passwordCharArrayUpperBound;
+
+		#region GetCharacterArrayUpperBound
+		/// <summary>
+		/// Vrátí horní index pole znakù, do kterého se smí provádìt vıbìr pro generované heslo.
+		/// </summary>
+		private int GetCharacterArrayUpperBound()
+		{
+			int upperBound = pwdCharArray.GetUpperBound(0);
+
+			switch (this.PasswordCharacterSet)
+			{
+				case PasswordCharacterSet.LowerCaseLetters:
+					upperBound = PasswordGenerator.LowerCaseLettersUpperBound;
+					break;
+				case PasswordCharacterSet.Letters:
+					upperBound = PasswordGenerator.LettersUpperBound;
+					break;
+				case PasswordCharacterSet.LettersAndDigits:
+					upperBound = PasswordGenerator.LettersAndDigitsUpperBound;
+					break;
+				case PasswordCharacterSet.LettersDigitsAndSpecialCharacters:
+					// NOOP
+					break;
+			}
+			return upperBound;
+		}
+		#endregion
+		#endregion
+
+		#region AllowRepeatingCharacters
+		/// <summary>
+		/// Indikuje, zda-li se smí v heslu opakovat znaky. Zda-li mùe bıt nìkterı znak v heslu vícekrát. Default <c>true</c>.
+		/// </summary>
+		public bool AllowRepeatingCharacters
+		{
+			get { return this._allowRepeatingCharacters; }
+			set { this._allowRepeatingCharacters = value; }
+		}
+		private bool _allowRepeatingCharacters;
+		#endregion
+
+		#region AllowConsecutiveCharacters
+		/// <summary>
+		/// Indikuje, zda-li smí heslo obsahovat shluky stejnıch znakù. Default <c>false</c>.
+		/// </summary>
+		public bool AllowConsecutiveCharacters
+		{
+			get { return this._allowConsecutiveCharacters; }
+			set { this._allowConsecutiveCharacters = value; }
+		}
+		private bool _allowConsecutiveCharacters;
+		#endregion
+
+		#region Exclusions
+		/// <summary>
+		/// Øetìzec znakù, které nechceme mít v heslu.
+		/// </summary>
+		public string Exclusions
+		{
+			get { return this._exclusions; }
+			set { this._exclusions = value; }
+		}
+		private string _exclusions;
+		#endregion
+
+		#region private consts
+		private const int DefaultMinimum = 6;
+		private const int DefaultMaximum = 10;
+		private const int LowerCaseLettersUpperBound = 25;
+		private const int LettersUpperBound = 51;
+		private const int LettersAndDigitsUpperBound = 61;
+		#endregion
+
+		#region Constructor
+		/// <summary>
+		/// Vytvoøí instanci PasswordGeneratoru a nastaví vıchozí hodnoty pro sloitost generovaného hesla.
+		/// </summary>
+		public PasswordGenerator()
+		{
+			this.MinimumLength = DefaultMinimum;
+			this.MaximumLength = DefaultMaximum;
+			this.AllowConsecutiveCharacters = false;
+			this.AllowRepeatingCharacters = true;
+			this.PasswordCharacterSet = PasswordCharacterSet.LettersAndDigits;
+			this.Exclusions = null;
+
+			rng = new RNGCryptoServiceProvider();
+		}
+		#endregion
+
+		#region GetCryptographicRandomNumber (protected)
+		/// <summary>
+		/// Vygeneruje náhodné èíslo pomocí crypto-API.
+		/// </summary>
+		/// <param name="lBound">dolní mez</param>
+		/// <param name="uBound">horní mez</param>
+		protected int GetCryptographicRandomNumber(int lBound, int uBound)
+		{
+			// Assumes lBound >= 0 && lBound < uBound
+			// returns an int >= lBound and < uBound
+			uint urndnum;
+			byte[] rndnum = new Byte[4];
+			if (lBound == uBound - 1)
+			{
+				// test for degenerate case where only lBound can be returned   
+				return lBound;
+			}
+
+			uint xcludeRndBase = (uint.MaxValue - (uint.MaxValue % (uint)(uBound - lBound)));
+
+			do
+			{
+				rng.GetBytes(rndnum);
+				urndnum = System.BitConverter.ToUInt32(rndnum, 0);
+			} while (urndnum >= xcludeRndBase);
+
+			return (int)(urndnum % (uBound - lBound)) + lBound;
+		}
+		#endregion
+
+		#region GetRandomCharacter (protected)
+		/// <summary>
+		/// Vrátí náhodnı znak.
+		/// </summary>
+		protected char GetRandomCharacter()
+		{
+			int upperBound = GetCharacterArrayUpperBound();
+
+			int randomCharPosition = GetCryptographicRandomNumber(pwdCharArray.GetLowerBound(0), upperBound);
+
+			char randomChar = pwdCharArray[randomCharPosition];
+
+			return randomChar;
+		}
+		#endregion
+
+		#region Generate
+		/// <summary>
+		/// Vygeneruje heslo sloitosti dle nastaveného generátoru.
+		/// </summary>
+		/// <returns>vygenerované heslo</returns>
+		public string Generate()
+		{
+			ValidateSettings();
+
+			int passwordLength;
+			if (this.MinimumLength == this.MaximumLength)
+			{
+				passwordLength = this.MinimumLength;
+			}
+			else
+			{
+				// Pick random length between minimum and maximum   
+				passwordLength = GetCryptographicRandomNumber(this.MinimumLength, this.MaximumLength);
+			}
+
+			if ((!AllowRepeatingCharacters) && (passwordLength > passwordCharArrayUpperBound + 1))
+			{
+				// Pokud má bıt heslo vìtší, ne je monı poèet znakù, pak ho musíme zkrátit.
+				// Minimální délku u zajišuje ValidateSettings();
+				passwordLength = passwordCharArrayUpperBound + 1;
+			}
+
+			StringBuilder paswordBuffer = new StringBuilder();
+			paswordBuffer.Capacity = this.MaximumLength;
+
+			// Generate random characters
+			char lastCharacter, nextCharacter;
+
+			// Initial dummy character flag
+			lastCharacter = nextCharacter = '\n';
+
+			for (int i = 0; i < passwordLength; i++)
+			{
+				nextCharacter = GetRandomCharacter();
+
+				if (!this.AllowConsecutiveCharacters)
+				{
+					while (lastCharacter == nextCharacter)
+					{
+						nextCharacter = GetRandomCharacter();
+					}
+				}
+
+				if (!this.AllowRepeatingCharacters)
+				{
+					string temp = paswordBuffer.ToString();
+					int duplicateIndex = temp.IndexOf(nextCharacter);
+					while (-1 != duplicateIndex)
+					{
+						nextCharacter = GetRandomCharacter();
+						duplicateIndex = temp.IndexOf(nextCharacter);
+					}
+				}
+
+				if ((null != this.Exclusions))
+				{
+					while (-1 != this.Exclusions.IndexOf(nextCharacter))
+					{
+						nextCharacter = GetRandomCharacter();
+					}
+				}
+
+				paswordBuffer.Append(nextCharacter);
+				lastCharacter = nextCharacter;
+			}
+
+			if (null != paswordBuffer)
+			{
+				return paswordBuffer.ToString();
+			}
+			else
+			{
+				return String.Empty;
+			}
+		}
+		#endregion
+
+		#region ValidateSettings
+		/// <summary>
+		/// Kontroluje nastavení generátoru a vyhazuje pøípadné vıjimky.
+		/// </summary>
+		private void ValidateSettings()
+		{
+			if (this.MaximumLength < this.MinimumLength)
+			{
+				throw new InvalidOperationException("MaximumLength < MinimumLength");
+			}
+
+			if ((!AllowRepeatingCharacters) && (this.MinimumLength > passwordCharArrayUpperBound + 1))
+			{
+				throw new InvalidOperationException("Není dostatek znakù pro vygenerování hesla poadované délky.");
+			}
+		}
+		#endregion
+
+		#region private fields
+		private RNGCryptoServiceProvider rng;
+		private char[] pwdCharArray = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789`~!@#$%^&*()-_=+[]{}\\|;:'\",<.>/?".ToCharArray();
+		#endregion
+
+		#region Generate (static)
+		/// <summary>
+		/// Vygeneruje heslo sloitosti dle poadovanıch parametrù.
+		/// </summary>
+		/// <param name="minimumLength">minimální délka hesla</param>
+		/// <param name="maximumLength">maximální délka hesla</param>
+		/// <param name="passwordCharacterSet">Sada znakù, z ní se mají vybírat znaky pro generované heslo.</param>
+		/// <param name="allowRepeatingCharacters">Indikuje, zda-li se smí v heslu opakovat znaky. Zda-li mùe bıt nìkterı znak v heslu vícekrát.</param>
+		/// <param name="allowConsecutiveCharacters">Indikuje, zda-li smí heslo obsahovat shluky stejnıch znakù.</param>
+		/// <returns>vygenerované heslo odpovídající vstupním poadavkùm</returns>
+		public static string Generate(int minimumLength, int maximumLength, PasswordCharacterSet passwordCharacterSet, bool allowRepeatingCharacters, bool allowConsecutiveCharacters)
+		{
+			PasswordGenerator passwordGenerator = new PasswordGenerator();
+			passwordGenerator.MinimumLength = minimumLength;
+			passwordGenerator.MaximumLength = maximumLength;
+			passwordGenerator.PasswordCharacterSet = passwordCharacterSet;
+			passwordGenerator.AllowRepeatingCharacters = allowRepeatingCharacters;
+			passwordGenerator.AllowConsecutiveCharacters = allowConsecutiveCharacters;
+
+			return passwordGenerator.Generate();
+		}
+
+		/// <summary>
+		/// Vygeneruje heslo sloitosti dle poadovanıch parametrù.
+		/// </summary>
+		/// <param name="minimumLength">minimální délka hesla</param>
+		/// <param name="maximumLength">maximální délka hesla</param>
+		/// <param name="passwordCharacterSet">Sada znakù, z ní se mají vybírat znaky pro generované heslo.</param>
+		/// <returns>vygenerované heslo odpovídající vstupním poadavkùm</returns>
+		public static string Generate(int minimumLength, int maximumLength, PasswordCharacterSet passwordCharacterSet)
+		{
+			PasswordGenerator passwordGenerator = new PasswordGenerator();
+			passwordGenerator.MinimumLength = minimumLength;
+			passwordGenerator.MaximumLength = maximumLength;
+			passwordGenerator.PasswordCharacterSet = passwordCharacterSet;
+
+			return passwordGenerator.Generate();
+		}
+
+		/// <summary>
+		/// Vygeneruje heslo sloitosti dle poadovanıch parametrù.
+		/// </summary>
+		/// <param name="length"> délka hesla</param>
+		/// <param name="passwordCharacterSet">Sada znakù, z ní se mají vybírat znaky pro generované heslo.</param>
+		/// <returns>vygenerované heslo odpovídající vstupním poadavkùm</returns>
+		public static string Generate(int length, PasswordCharacterSet passwordCharacterSet)
+		{
+			PasswordGenerator passwordGenerator = new PasswordGenerator();
+			passwordGenerator.MinimumLength = length;
+			passwordGenerator.MaximumLength = length;
+			passwordGenerator.PasswordCharacterSet = passwordCharacterSet;
+
+			return passwordGenerator.Generate();
+		}
+		#endregion
+	}
+}

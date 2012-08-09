@@ -119,7 +119,7 @@ namespace Havit.BusinessTest
 
 		#region TryGet
 		/// <summary>
-		///A test for Get&lt;&gt; (int)
+		///A test for TryGet&lt;&gt; (int)
 		///</summary>
 		[TestMethod()]
 		public void TryGetTest_Exist()
@@ -137,7 +137,7 @@ namespace Havit.BusinessTest
 		}
 
 		/// <summary>
-		///A test for Get&lt;&gt; (int)
+		///A test for TryGet&lt;&gt; (int)
 		///</summary>
 		[TestMethod()]
 		public void TryGetTest_NotExist()
@@ -155,10 +155,10 @@ namespace Havit.BusinessTest
 		}
 
 		/// <summary>
-		///A test for Get&lt;&gt; (int)
+		///A test for TryGet&lt;&gt; (int)
 		///</summary>
 		[TestMethod()]
-		public void TryGetTest_StoredGC()
+		public void TryGetTest_GC()
 		{
 			IdentityMap im = new IdentityMap();
 

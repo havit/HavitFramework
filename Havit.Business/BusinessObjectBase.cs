@@ -242,8 +242,6 @@ namespace Havit.Business
 			}
 
 			Load();
-
-			IsLoaded = true;
 		}
 
 		/// <summary>
@@ -275,6 +273,8 @@ namespace Havit.Business
 		/// <returns>true, pokud jsou si rovny; jinak false</returns>
 		public virtual bool Equals(BusinessObjectBase obj)
 		{
+			#warning Typová kontrola porovnávání zákazníka s fakturou???
+
 			if (obj == null)
 			{
 				return false;

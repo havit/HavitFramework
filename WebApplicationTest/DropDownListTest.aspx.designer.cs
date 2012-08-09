@@ -10,7 +10,7 @@
 namespace WebApplicationTest {
     
     
-    public partial class DowpDownListTest {
+    public partial class DropDownListTest {
         
         /// <summary>
         /// form1 control.
@@ -22,13 +22,13 @@ namespace WebApplicationTest {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// HavitDDLExt control.
+        /// TestGridView control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Havit.Web.UI.WebControls.DropDownListExt HavitDDLExt;
+        protected global::Havit.Web.UI.WebControls.GridViewExt TestGridView;
         
         /// <summary>
         /// PostbackButton control.

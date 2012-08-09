@@ -172,6 +172,7 @@ namespace Havit.Web.UI.WebControls
 				if (isDataBinding)
 				{
 					// pokud jsme v databindingu, odložíme nastavení hodnoty, protože ještì nemusíme mít DataSource ani data v Items.
+					ClearSelection(); // potøebujeme potlaèit chování v pøedkovi - cachedSelectedIndex a cachedSelectedValue (Už tam mùže být nastavena hodnota, ale my chceme jinou, jenže díky delayedXXX ji nastavíme až za chvilku. Takže by nám to bez tohoto øádku mohlo padat.)
 					delayedSetSelectedObjectSet = true;
 					delayedSetSelectedObject = value;
 					return;

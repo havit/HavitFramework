@@ -41,6 +41,9 @@
 				<havit:GridViewCommandField ShowEditButton="true" ShowDeleteButton="true" />
 			</Columns>
 		</havit:GridViewExt>
+		<asp:Button ID="HideButton" Text="Hide" runat="server" />
+		<asp:Button ID="SRDBButton" Text="SetRequiresDatabinding" runat="server" />
+		<asp:Button ID="PostbackButton" Text="Postback" runat="server" />
     </div>
     </form>
 </body>

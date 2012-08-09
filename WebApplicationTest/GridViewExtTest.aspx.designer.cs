@@ -56,5 +56,32 @@ namespace WebApplicationTest {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Havit.Web.UI.WebControls.GridViewExt TestGV4;
+        
+        /// <summary>
+        /// HideButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button HideButton;
+        
+        /// <summary>
+        /// SRDBButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button SRDBButton;
+        
+        /// <summary>
+        /// PostbackButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button PostbackButton;
     }
 }

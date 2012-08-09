@@ -20,6 +20,12 @@ namespace Havit.Web.UI.WebControls
 	/// </remarks>
 	public class GridViewExt : HighlightingGridView, ICommandFieldStyle
 	{
+
+		/// <summary>
+		/// Příznak, zda má dojít k databindingu ještě v tomto requestu.
+		/// Nastavováno (na true) v metodě SetRequiresDataBinding, vypínáno v metodě S
+		/// </summary>
+		private bool _cuurentlyRequiresDataBinding = false;
 		#region GetInsertRowDataItem (delegate)
 		/// <summary>
 		/// Metoda, která vrací data-item nového Insert řádku. Obvykle přednastaveno default hodnotami.
@@ -198,10 +204,13 @@ namespace Havit.Web.UI.WebControls
 
 		/// <summary>
 		/// Nastaví RequiresDataBinding na true.
+		/// Zajistí zavolání databindingu ještě v aktuálním requestu. Běžně v OnPreRender,
+		/// pokud je ale GridView schovaný, pak se DataBind volá z Page.PreRenderComplete.
 		/// </summary>
 		public void SetRequiresDatabinding()
 		{
 			RequiresDataBinding = true;
+			_cuurentlyRequiresDataBinding = true;
 		}
 		#endregion
 
@@ -323,8 +332,8 @@ namespace Havit.Web.UI.WebControls
 			this.RowEditing += new GridViewEditEventHandler(GridViewExt_EventBlackHole);
 			this.RowUpdating += new GridViewUpdateEventHandler(GridViewExt_EventBlackHole);
 			this.Sorting += new GridViewSortEventHandler(GridViewExt_EventBlackHole);
+			this.Page.PreRenderComplete += new EventHandler(Page_PreRenderComplete);
 		}
-
 		private void GridViewExt_EventBlackHole(object sender, EventArgs e)
 		{
 			// NOOP
@@ -582,8 +591,9 @@ namespace Havit.Web.UI.WebControls
 
 			if (insertingData != null)
 			{
-				RequiresDataBinding = false;
+				RequiresDataBinding = false; // příznak nabidnování dat nastavíme jen tehdy, když jsou data skutečně nabindována (i kdyby neobsahovala žádný záznam)
 			}
+			_cuurentlyRequiresDataBinding = false; // příznak pro aktuální request vypneme v každém případě
 
 			if (data != null)
 			{
@@ -866,6 +876,19 @@ namespace Havit.Web.UI.WebControls
 			}
 
 			base.OnPreRender(e);
+		}
+		#endregion
+
+		#region Page_PreRenderComplete
+		private void Page_PreRenderComplete(object sender, EventArgs e)
+		{
+			// pokud je control schovaný (není visible), nevolá se jeho OnPreRender.
+			// Pokud ale byla zavolána metoda SetRequiresDatabinding, určitě chceme, aby k databindingu došlo ještě v tomto requestu.
+			// Proto se něvěsíme na Page.PreRenderComplete jako nouzové řešení.
+			if (_cuurentlyRequiresDataBinding && AutoDataBind && RequiresDataBinding)
+			{
+				DataBind();
+			}
 		}
 		#endregion
 

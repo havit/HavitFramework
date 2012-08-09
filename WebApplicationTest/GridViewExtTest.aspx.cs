@@ -26,6 +26,23 @@ namespace WebApplicationTest
 			TestGV2.DataBinding += new EventHandler(TestGV_DataBinding);
 			TestGV3.DataBinding += new EventHandler(TestGV_DataBinding);
 			TestGV4.DataBinding += new EventHandler(TestGV_DataBinding);
+
+			HideButton.Click += new EventHandler(HideButton_Click);
+			SRDBButton.Click += new EventHandler(SRDBButton_Click);
+
+			TestGV1.Visible = false;
+			TestGV2.Visible = false;
+			TestGV3.Visible = false;
+		}
+
+		void HideButton_Click(object sender, EventArgs e)
+		{
+			TestGV4.Visible = false;
+		}
+
+		void SRDBButton_Click(object sender, EventArgs e)
+		{
+			TestGV4.SetRequiresDatabinding();
 		}
 
 		void TestGV_RowCustomizingCommandButton(object sender, GridViewRowCustomizingCommandButtonEventArgs e)
@@ -42,8 +59,8 @@ namespace WebApplicationTest
 
 		void TestGV_DataBinding(object sender, EventArgs e)
 		{
-			SubjektCollection items = new SubjektCollection();
-			//SubjektCollection items = Subjekt.GetAll();
+			//SubjektCollection items = new SubjektCollection();
+			SubjektCollection items = Subjekt.GetAll();
 			//items.AddRange(items);
 			//items.AddRange(items);
 			//items.AddRange(items);

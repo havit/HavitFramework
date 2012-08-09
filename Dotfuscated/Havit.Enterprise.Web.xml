@@ -4,6 +4,45 @@
         <name>Havit.Enterprise.Web</name>
     </assembly>
     <members>
+        <member name="T:Havit.Web.UI.WebControls.EnterpriseLabel">
+            <summary>
+            EnterpriseLabel je label, který:
+            a) umí brát text z resources (na základě ItemPropertyInfo),
+            b) umí renderovat hvězdičku (nebo jiný symbol) pro povinná pole (na základě IsRequired nebo ItemPropertyInfo).
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseLabel.ItemPropertyInfo">
+            <summary>
+            ItemPropertyInfo. Na základě něj se určuje povinnost pole nebo text labelu z resourců.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseLabel.IsRequired">
+            <summary>
+            Indikuje, zda bude pole renderováno jako povinné.
+            Pokud není explicitně nastavena hodnota, vrací se hodnota dle ItemPropertyInfo (
+            Pokud není vlastnost ItemPropertyInfo nastavena, vyhazuje výjimku.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseLabel.RequiredCssClass">
+            <summary>
+            CssClass pro povinné pole (použito na celém labelu).
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseLabel.ShowRequiredSign">
+            <summary>
+            Indikuje, zda se má pro povinná pole renderovat symbol povinného pole.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseLabel.RequiredSignCssClass">
+            <summary>
+            CssClass použitý pro symbol povinného pole.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseLabel.RequiredSignText">
+            <summary>
+            Text (symbol) označující povinná pole.
+            </summary>
+        </member>
         <member name="T:Havit.Web.UI.WebControls.EnterpriseDropDownList">
             <summary>
             EnterpriseDropDownList zajišťuje pohodlnější práci s DropDownListem, jehož prvky mají vazbu ne business objekty.	
@@ -291,45 +330,6 @@
             </summary>
             <param name="rowIndex">index řádku</param>
             <returns>Vrací hodnotu klíče daného řádku.</returns>
-        </member>
-        <member name="T:Havit.Web.UI.WebControls.EnterpriseLabel">
-            <summary>
-            EnterpriseLabel je label, který:
-            a) umí brát text z resources (na základě ItemPropertyInfo),
-            b) umí renderovat hvězdičku (nebo jiný symbol) pro povinná pole (na základě IsRequired nebo ItemPropertyInfo).
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.EnterpriseLabel.ItemPropertyInfo">
-            <summary>
-            ItemPropertyInfo. Na základě něj se určuje povinnost pole nebo text labelu z resourců.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.EnterpriseLabel.IsRequired">
-            <summary>
-            Indikuje, zda bude pole renderováno jako povinné.
-            Pokud není explicitně nastavena hodnota, vrací se hodnota dle ItemPropertyInfo (
-            Pokud není vlastnost ItemPropertyInfo nastavena, vyhazuje výjimku.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.EnterpriseLabel.RequiredCssClass">
-            <summary>
-            CssClass pro povinné pole (použito na celém labelu).
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.EnterpriseLabel.ShowRequiredSign">
-            <summary>
-            Indikuje, zda se má pro povinná pole renderovat symbol povinného pole.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.EnterpriseLabel.RequiredSignCssClass">
-            <summary>
-            CssClass použitý pro symbol povinného pole.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.EnterpriseLabel.RequiredSignText">
-            <summary>
-            Text (symbol) označující povinná pole.
-            </summary>
         </member>
     </members>
 </doc>

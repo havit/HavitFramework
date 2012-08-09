@@ -125,6 +125,7 @@
     <Compile Include="UI\Adapters\CssAdapters\WebControlAdapterExtender.cs" />
     <Compile Include="UI\Adapters\SessionPageStatePersisterPageAdapter.cs" />
     <Compile Include="UI\WebControls\CheckBoxListExt.cs" />
+    <Compile Include="UI\WebControls\CheckBoxValidator.cs" />
     <Compile Include="UI\WebControls\MessengerControl.cs" />
     <Compile Include="UI\WebControls\MessengerMessage.cs" />
     <Compile Include="UI\WebControls\MessengerType.cs" />

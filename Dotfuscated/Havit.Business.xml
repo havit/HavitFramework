@@ -348,6 +348,12 @@
             </summary>
             <param name="transaction">transakce <see cref="T:System.Data.Common.DbTransaction"/>, v rámci které má být objekt načten; null, pokud bez transakce</param>
         </member>
+        <member name="M:Havit.Business.BusinessObjectBase.OnPreSave(System.EventArgs)">
+            <summary>
+            Spouští událost <see cref="E:Havit.Business.BusinessObjectBase.PreSave"/>.
+            </summary>
+            <param name="e">prádné</param>
+        </member>
         <member name="M:Havit.Business.BusinessObjectBase.Save(System.Data.Common.DbTransaction)">
             <summary>
             Uloží objekt do databáze, s případným použitím VNĚJŠÍ transakce.
@@ -492,6 +498,11 @@
             Touto metodou se k objektu registrují sami PropertyHoldery ve svých constructorech.
             </remarks>
             <param name="propertyHolder">PropertyHolder k zaregistrování</param>
+        </member>
+        <member name="E:Havit.Business.BusinessObjectBase.PreSave">
+            <summary>
+            Událost, která se volá před ukládáním, ještě před constraint-checky.
+            </summary>
         </member>
         <member name="P:Havit.Business.BusinessObjectBase.ID">
             <summary>

@@ -26,6 +26,13 @@ namespace Havit.Business
 		public const int NoID = -1;
 		#endregion
 
+		#region Events
+		/// <summary>
+		/// Událost, která se volá pøed ukládáním, ještì pøed constraint-checky.
+		/// </summary>
+		public event EventHandler<EventArgs> PreSave;
+		#endregion
+
 		#region Property - ID
 		/// <summary>
 		/// Primární klíè objektu.
@@ -187,6 +194,20 @@ namespace Havit.Business
 		protected abstract void Load_Perform(DbTransaction transaction);
 		#endregion
 
+		#region OnPreSave
+		/// <summary>
+		/// Spouští událost <see cref="PreSave"/>.
+		/// </summary>
+		/// <param name="e">prádné</param>
+		public virtual void OnPreSave(EventArgs e)
+		{
+			if (PreSave != null)
+			{
+				PreSave(this, e);
+			}
+		}
+		#endregion
+
 		#region Save logika
 		/// <summary>
 		/// Uloží objekt do databáze, s pøípadným použitím VNÌJŠÍ transakce.
@@ -208,8 +229,8 @@ namespace Havit.Business
 
 			IsSaving = true; // øeší cyklické reference pøi ukládání objektových struktur
 
+			OnPreSave(EventArgs.Empty);
 			CheckConstraints();
-
 
 			if (IsNew)
 			{

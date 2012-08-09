@@ -460,7 +460,7 @@ namespace Havit.Web.UI.WebControls
 
 			RegisterServicePath();
             WriteJSIncludes();
-			WriteCssLink();
+			RegisterStylesheets(this.Page);
 			WriteMenu();
 		}
 
@@ -488,7 +488,7 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Vytvoøí do head odkaz na CSS menu.
 		/// </summary>
-		private void WriteCssLink()
+		public static void RegisterStylesheets(Page page)
 		{
 			bool registered = (bool)(HttpContext.Current.Items["Havit.Web.UI.WebControls.AutoSuggestMenu.RegisterCss_registered"] ?? false);
 
@@ -496,10 +496,10 @@ namespace Havit.Web.UI.WebControls
 			{
 				HtmlLink htmlLink = new HtmlLink();
 				string resourceName = "Havit.Web.UI.WebControls.AutoSuggestMenu.AutoSuggestMenu.css";
-				htmlLink.Href = Page.ClientScript.GetWebResourceUrl(typeof(AutoSuggestMenu), resourceName);
+				htmlLink.Href = page.ClientScript.GetWebResourceUrl(typeof(AutoSuggestMenu), resourceName);
 				htmlLink.Attributes.Add("rel", "stylesheet");
 				htmlLink.Attributes.Add("type", "text/css");
-				Page.Header.Controls.Add(htmlLink);
+				page.Header.Controls.Add(htmlLink);
 				HttpContext.Current.Items["Havit.Web.UI.WebControls.AutoSuggestMenu.RegisterCss_registered"] = true;
 			}
 		}

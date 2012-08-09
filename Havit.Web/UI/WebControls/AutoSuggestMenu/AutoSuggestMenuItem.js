@@ -86,7 +86,3 @@ function AutoSuggestMenuItem(label, value)
 	    self.menu.onMenuItemClick(self.index);
 	}
 }
-
-//Required for ASP.NET Ajax Extensions
-if(typeof(Sys) !== "undefined")
-    Sys.Application.notifyScriptLoaded();

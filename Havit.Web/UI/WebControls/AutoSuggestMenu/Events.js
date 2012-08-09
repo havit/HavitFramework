@@ -27,7 +27,3 @@ function TextBoxUpdateEvent()
 	}
 }
 
-
-//Required for ASP.NET Ajax Extensions
-if(typeof(Sys) !== "undefined")
-    Sys.Application.notifyScriptLoaded();

@@ -506,7 +506,3 @@ XUtils.getScreenResolution=function()
     return ( screen.width + " x " +  screen.height)
 }
 
-
-//Required for ASP.NET Ajax Extensions
-if(typeof(Sys) !== "undefined")
-    Sys.Application.notifyScriptLoaded();

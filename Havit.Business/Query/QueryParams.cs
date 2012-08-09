@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Data.Common;
+using System.Globalization;
 
 namespace Havit.Business.Query
 {
@@ -80,6 +81,11 @@ namespace Havit.Business.Query
 		/// <param name="command"></param>
 		public void PrepareCommand(DbCommand command)
 		{
+			if (command == null)
+			{
+				throw new ArgumentNullException("command");
+			}
+
 			OnBeforePrepareCommand();
 
 			StringBuilder commandBuilder = new StringBuilder();
@@ -126,9 +132,13 @@ namespace Havit.Business.Query
 		protected virtual string GetSelectStatement(DbCommand command)
 		{
 			if (topRecords == null)
+			{
 				return "SELECT";
+			}
 			else
-				return "SELECT TOP " + topRecords.Value.ToString();
+			{
+				return "SELECT TOP " + topRecords.Value.ToString(CultureInfo.InvariantCulture);
+			}
 		}
 
 		/// <summary>
@@ -154,7 +164,7 @@ namespace Havit.Business.Query
 		/// </summary>
 		protected virtual string GetFromStatement(DbCommand command)
 		{
-			return String.Format("FROM {0}", tableName);
+			return String.Format(CultureInfo.InvariantCulture, "FROM {0}", tableName);
 		}
 
 		/// <summary>

@@ -1047,7 +1047,7 @@ namespace Havit.Web.UI.WebControls
 				firstLine = false;
 			}
 
-			if (this.FirstDay > 0)
+			if (this.FirstDay >= 0)
 			{
 				if (!firstLine) sb.AppendLine(",");
 				sb.AppendFormat("firstDay : {0}", this.FirstDay);

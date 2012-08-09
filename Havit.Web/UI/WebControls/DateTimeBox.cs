@@ -49,6 +49,24 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region FirstDayOfWeek
+		/// <summary>
+		/// První den v týdnu.
+		/// Výchozí hodnota se bere z CurrentUICulture.
+		/// </summary>
+		public DayOfWeek FirstDayOfWeek
+		{
+			get
+			{
+				return (DayOfWeek)(ViewState["FirstDayOfWeek"] ?? CultureInfo.CurrentUICulture.DateTimeFormat.FirstDayOfWeek);
+			}
+			set
+			{
+				ViewState["FirstDayOfWeek"] = value;
+			}
+		}
+		#endregion
+
 		#region Enabled
 		/// <summary>
 		/// Udává, zda je control pro výběr data/data a času povolen.
@@ -511,6 +529,7 @@ namespace Havit.Web.UI.WebControls
 			dateTimePickerDynarchCalendar.Visible = ShowDateTimePicker;
 			dateTimePickerDynarchCalendar.InputField = "ValueTextBox";
 			dateTimePickerDynarchCalendar.Button = "DateTimePickerImage";
+			dateTimePickerDynarchCalendar.FirstDay = (int)this.FirstDayOfWeek; // číslování enumu v .NETu sedí s předpokládanou hodnotou pro dynarchcalendar
 			
 			switch (DateTimeMode)
 			{

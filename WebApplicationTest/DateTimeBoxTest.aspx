@@ -22,7 +22,7 @@
 					<tr>
 						<td>DateTime</td>
 						<td>
-							<havit:DateTimeBox ID="DrubyDateTimeBox" KeyBlockingClientScriptEnabled="false" runat="server" />
+							<havit:DateTimeBox ID="DrubyDateTimeBox" FirstDayOfWeek="Sunday" KeyBlockingClientScriptEnabled="false" runat="server" />
 							<asp:Button ID="VycistitButton" text="Vycistit a schovat" runat="server" />
 							<asp:Button ID="ZobrazitButton" text="Zobrazit" runat="server" />
 						</td>

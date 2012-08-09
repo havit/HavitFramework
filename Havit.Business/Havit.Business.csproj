@@ -92,6 +92,7 @@
     <Compile Include="BusinessObjectBase.cs" />
     <Compile Include="BusinessObjectCollection.cs" />
     <Compile Include="CollectionPropertyHolder.cs" />
+    <Compile Include="ConstraintViolationException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

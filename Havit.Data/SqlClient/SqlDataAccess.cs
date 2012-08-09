@@ -2,6 +2,7 @@ using System;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Data.Common;
 
 namespace Havit.Data.SqlClient
 {
@@ -16,54 +17,6 @@ namespace Havit.Data.SqlClient
 	[Obsolete("Místo tøídy SqlDataAccess pouijte Havit.Data.DbConnector.")]
 	public static class SqlDataAccess
 	{
-		#region private CreateCommand, SetCommandDefaults
-		/// <summary>
-		/// Vytvoøí prázdnı SqlCommand dle zadanıch parametrù. Nenastavuje spojení ani jiné vlastnosti.
-		/// </summary>
-		/// <param name="cmdText">SQL text pøíkazu</param>
-		/// <param name="cmdType">typ pøíkazu</param>
-		/// <returns></returns>
-		private static SqlCommand CreateCommand(string cmdText, CommandType cmdType)
-		{
-			if ((cmdText == null) || (cmdText.Length == 0))
-			{
-				throw new ArgumentNullException("cmdText");
-			}
-
-			// CommandType nemùe bıt null a není potøeba ho kontrolovat
-
-			SqlCommand cmd = new SqlCommand(cmdText);
-			cmd.CommandType = cmdType;
-
-			return cmd;
-		}
-
-		/// <summary>
-		/// Nastaví pøíkazu default parametry (zatím pouze Connection), nejsou-li nastaveny.
-		/// </summary>
-		/// <remarks>
-		/// Pokud jsme v transakci, pak sjednotíme Connection (nechápu, proè to nedìlá sám .NET Framework).
-		/// </remarks>
-		/// <param name="cmd">SqlCommand k nastavení</param>
-		private static void SetCommandDefaults(SqlCommand cmd)
-		{
-			if (cmd == null)
-			{
-				throw new ArgumentNullException("cmd");
-			}
-
-			if (cmd.Transaction != null)
-			{
-				cmd.Connection = cmd.Transaction.Connection;
-			}
-			
-			if (cmd.Connection == null)
-			{
-				cmd.Connection = GetConnection();
-			}
-		}
-		#endregion
-
 		#region ConnectionString, ConfigConnectionString
 		/// <summary>
 		/// Implicitní ConnectionString.
@@ -79,18 +32,9 @@ namespace Havit.Data.SqlClient
 		{
 			get
 			{
-				if ((connectionString == null) || (connectionString.Length == 0))
-				{
-					connectionString = ConfigConnectionString;
-				}
-				return connectionString;
-			}
-			set
-			{
-				connectionString = value;
+				return DbConnector.Default.ConnectionString;
 			}
 		}
-		private static string connectionString;
 
 
 		/// <summary>
@@ -143,30 +87,6 @@ namespace Havit.Data.SqlClient
 		}
 		#endregion
 
-		#region DefaultCommandType
-
-		/// <summary>
-		/// CommandType, kterı se pouije pro internì vytváøené pøíkazy,
-		/// je-li jako parametr metody zadán pouze textovı SQL pøíkaz.
-		/// </summary>
-		/// <remarks>
-		/// Vıchozí hodnota nastavena na <c>CommandType.StoredProcedure</c>.
-		/// </remarks>
-		public static CommandType DefaultCommandType
-		{
-			get
-			{
-				return defaultCommandType;
-			}
-			set
-			{
-				defaultCommandType = value;
-			}
-		}
-		private static CommandType defaultCommandType = CommandType.StoredProcedure;
-
-		#endregion
-
 		#region GetConnection
 		/// <summary>
 		/// Vytvoøí novou instanci SqlConnection podle poadovaného connectionStringu
@@ -194,7 +114,7 @@ namespace Havit.Data.SqlClient
 		/// <returns>nová instance SqlConnection</returns>
 		public static SqlConnection GetConnection(bool open)
 		{
-			return GetConnection(ConnectionString, open);
+			return (SqlConnection)DbConnector.Default.GetConnection(open);
 		}
 
 
@@ -205,7 +125,7 @@ namespace Havit.Data.SqlClient
 		/// <returns>nová instance SqlConnection (není otevøena)</returns>
 		public static SqlConnection GetConnection()
 		{
-			return GetConnection(ConnectionString, false);
+			return (SqlConnection)DbConnector.Default.GetConnection();
 		}
 		#endregion
 
@@ -224,37 +144,7 @@ namespace Havit.Data.SqlClient
 		/// <returns>poèet dotèenıch øádek</returns>
 		public static int ExecuteNonQuery(SqlCommand cmd)
 		{
-			if (cmd == null)
-			{
-				throw new ArgumentNullException("cmd");
-			}
-
-			SetCommandDefaults(cmd);
-
-			bool mustCloseConnection = false;
-			if (cmd.Connection.State != ConnectionState.Open)
-			{
-				mustCloseConnection = true;
-				cmd.Connection.Open();
-			}
-
-			int result;
-			try
-			{
-				result = cmd.ExecuteNonQuery();
-			}
-			catch
-			{
-				cmd.Connection.Close();
-				throw;
-			}
-
-			if (mustCloseConnection)
-			{
-				cmd.Connection.Close();
-			}
-
-			return result;
+			return DbConnector.Default.ExecuteNonQuery(cmd);
 		}
 
 
@@ -266,7 +156,7 @@ namespace Havit.Data.SqlClient
 		/// <returns>poèet dotèenıch øádek</returns>
 		public static int ExecuteNonQuery(string cmdText, CommandType cmdType)
 		{
-			return ExecuteNonQuery(CreateCommand(cmdText, cmdType));
+			return DbConnector.Default.ExecuteNonQuery(cmdText, cmdType);
 		}
 
 
@@ -278,7 +168,7 @@ namespace Havit.Data.SqlClient
 		/// <returns>poèet dotèenıch øádek</returns>
 		public static int ExecuteNonQuery(string cmdText)
 		{
-			return ExecuteNonQuery(cmdText, DefaultCommandType);
+			return DbConnector.Default.ExecuteNonQuery(cmdText);
 		}
 
 		#endregion
@@ -295,21 +185,7 @@ namespace Havit.Data.SqlClient
 		/// <returns>resultset pøíkazu ve formì DataSetu</returns>
 		public static DataSet ExecuteDataSet(SqlCommand cmd)
 		{
-			if (cmd == null)
-			{
-				throw new ArgumentNullException("cmd");
-			}
-
-			SetCommandDefaults(cmd);
-
-			using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
-			{
-				DataSet ds = new DataSet();
-
-				adapter.Fill(ds);
-
-				return ds;
-			}
+			return DbConnector.Default.ExecuteDataSet(cmd);
 		}
 
 
@@ -322,7 +198,7 @@ namespace Havit.Data.SqlClient
 		/// <returns>resultset pøíkazu ve formì DataSetu</returns>
 		public static DataSet ExecuteDataSet(string cmdText, CommandType cmdType)
 		{
-			return ExecuteDataSet(CreateCommand(cmdText, cmdType));
+			return DbConnector.Default.ExecuteDataSet(cmdText, cmdType);
 		}
 
 
@@ -334,7 +210,7 @@ namespace Havit.Data.SqlClient
 		/// <returns>resultset ve formì DataSetu</returns>
 		public static DataSet ExecuteDataSet(string cmdText)
 		{
-			return ExecuteDataSet(cmdText, DefaultCommandType);
+			return DbConnector.Default.ExecuteDataSet(cmdText);			
 		}
 
 		#endregion
@@ -350,21 +226,7 @@ namespace Havit.Data.SqlClient
 		/// <returns>první resultset pøíkazu ve formì <see cref="System.Data.DataTable"/></returns>
 		public static DataTable ExecuteDataTable(SqlCommand cmd)
 		{
-			if (cmd == null)
-			{
-				throw new ArgumentNullException("cmd");
-			}
-
-			SetCommandDefaults(cmd);
-
-			using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
-			{
-				DataTable dt = new DataTable();
-
-				adapter.Fill(dt);
-
-				return dt;
-			}
+			return DbConnector.Default.ExecuteDataTable(cmd);
 		}
 
 
@@ -377,7 +239,7 @@ namespace Havit.Data.SqlClient
 		/// <returns>první resultset pøíkazu ve formì <see cref="System.Data.DataTable"/></returns>
 		public static DataTable ExecuteDataTable(string cmdText, CommandType cmdType)
 		{
-			return ExecuteDataTable(CreateCommand(cmdText, cmdType));
+			return DbConnector.Default.ExecuteDataTable(cmdText, cmdType);
 		}
 
 
@@ -390,7 +252,7 @@ namespace Havit.Data.SqlClient
 		/// <returns>první resultset ve formì <see cref="System.Data.DataTable"/></returns>
 		public static DataTable ExecuteDataTable(string cmdText)
 		{
-			return ExecuteDataTable(cmdText, DefaultCommandType);
+			return DbConnector.Default.ExecuteDataTable(cmdText);
 		}
 		#endregion
 
@@ -405,45 +267,7 @@ namespace Havit.Data.SqlClient
 		/// <returns>Resultset jako SqlDataReader</returns>
 		public static SqlDataReader ExecuteReader(SqlCommand cmd, CommandBehavior behavior)
 		{
-			if (cmd == null)
-			{
-				throw new ArgumentNullException("cmd");
-			}
-
-			SetCommandDefaults(cmd);
-
-			bool mustCloseConnection = false;
-			if (cmd.Connection.State != ConnectionState.Open)
-			{
-				mustCloseConnection = true;
-				cmd.Connection.Open();
-			}
-
-			SqlDataReader reader;
-
-			try
-			{
-				if (mustCloseConnection)
-				{
-					// otevøeme-li si spojení sami, postaráme se i o jeho zavøení
-					reader = cmd.ExecuteReader(behavior | CommandBehavior.CloseConnection);
-				}
-				else
-				{
-					// spojení bylo ji otevøeno, tak ho tak necháme, a se stará nadøazená aplikace
-					reader = cmd.ExecuteReader(behavior);
-				}
-			}
-			catch
-			{
-				if (mustCloseConnection)
-				{
-					cmd.Connection.Close();
-				}
-				throw;
-			}
-
-			return reader;
+			return (SqlDataReader)DbConnector.Default.ExecuteReader(cmd, behavior);
 		}
 
 
@@ -454,7 +278,7 @@ namespace Havit.Data.SqlClient
 		/// <returns></returns>
 		public static SqlDataReader ExecuteReader(SqlCommand cmd)
 		{
-			return ExecuteReader(cmd, CommandBehavior.Default);
+			return (SqlDataReader)DbConnector.Default.ExecuteReader(cmd);
 		}
 
 
@@ -467,7 +291,7 @@ namespace Havit.Data.SqlClient
 		/// <returns>resultset ve formì SqlDataReaderu</returns>
 		public static SqlDataReader ExecuteReader(string cmdText, CommandType cmdType)
 		{
-			return ExecuteReader(CreateCommand(cmdText, cmdType));
+			return (SqlDataReader)DbConnector.Default.ExecuteReader(cmdText, cmdType);
 		}
 
 
@@ -480,7 +304,7 @@ namespace Havit.Data.SqlClient
 		/// <returns>resultset ve formì SqlDataReaderu</returns>
 		public static SqlDataReader ExecuteReader(string cmdText)
 		{
-			return ExecuteReader(cmdText, DefaultCommandType);
+			return (SqlDataReader)DbConnector.Default.ExecuteReader(cmdText);
 		}
 
 		#endregion
@@ -495,14 +319,7 @@ namespace Havit.Data.SqlClient
 		/// <returns>první øádek prvního resultsetu ve formì <see cref="Havit.Data.DataRecord"/></returns>
 		public static DataRecord ExecuteDataRecord(SqlCommand cmd, CommandBehavior behavior)
 		{
-			using (SqlDataReader reader = ExecuteReader(cmd, behavior))
-			{
-				if (reader.Read())
-				{
-					return new DataRecord(reader, DataLoadPower.FullLoad);
-				}
-				return null;
-			}
+			return DbConnector.Default.ExecuteDataRecord(cmd, behavior);
 		}
 
 		/// <summary>
@@ -513,7 +330,7 @@ namespace Havit.Data.SqlClient
 		/// <returns>první øádek prvního resultsetu ve formì <see cref="Havit.Data.DataRecord"/></returns>
 		public static DataRecord ExecuteDataRecord(SqlCommand cmd)
 		{
-			return ExecuteDataRecord(cmd, CommandBehavior.Default);
+			return DbConnector.Default.ExecuteDataRecord(cmd);
 		}
 
 
@@ -526,7 +343,7 @@ namespace Havit.Data.SqlClient
 		/// <returns>první øádek prvního resultsetu ve formì <see cref="Havit.Data.DataRecord"/></returns>
 		public static DataRecord ExecuteDataRecord(string cmdText, CommandType cmdType)
 		{
-			return ExecuteDataRecord(CreateCommand(cmdText, cmdType));
+			return DbConnector.Default.ExecuteDataRecord(cmdText, cmdType);
 		}
 
 
@@ -539,7 +356,7 @@ namespace Havit.Data.SqlClient
 		/// <returns>první øádek prvního resultsetu ve formì <see cref="Havit.Data.DataRecord"/></returns>
 		public static DataRecord ExecuteDataRecord(string cmdText)
 		{
-			return ExecuteDataRecord(cmdText, DefaultCommandType);
+			return DbConnector.Default.ExecuteDataRecord(cmdText);
 		}
 		#endregion
 
@@ -555,38 +372,7 @@ namespace Havit.Data.SqlClient
 		/// <returns>první sloupec prvního øádku resultsetu</returns>
 		public static object ExecuteScalar(SqlCommand cmd)
 		{
-			if (cmd == null)
-			{
-				throw new ArgumentNullException("cmd");
-			}
-
-			SetCommandDefaults(cmd);
-
-			bool mustCloseConnection = false;
-			if (cmd.Connection.State != ConnectionState.Open)
-			{
-				mustCloseConnection = true;
-				cmd.Connection.Open();
-			}
-
-			object result;
-
-			try
-			{
-				result = cmd.ExecuteScalar();
-			}
-			catch
-			{
-				cmd.Connection.Close();
-				throw;
-			}
-
-			if (mustCloseConnection)
-			{
-				cmd.Connection.Close();
-			}
-
-			return result;
+			return DbConnector.Default.ExecuteScalar(cmd);
 		}
 
 
@@ -599,7 +385,7 @@ namespace Havit.Data.SqlClient
 		/// <returns>první sloupec prvního øádku resultsetu</returns>
 		public static object ExecuteScalar(string cmdText, CommandType cmdType)
 		{
-			return ExecuteScalar(CreateCommand(cmdText, cmdType));
+			return DbConnector.Default.ExecuteScalar(cmdText, cmdType);
 		}
 
 
@@ -611,7 +397,7 @@ namespace Havit.Data.SqlClient
 		/// <returns>první sloupec prvního øádku resultsetu</returns>
 		public static object ExecuteScalar(string cmdText)
 		{
-			return ExecuteScalar(CreateCommand(cmdText, DefaultCommandType));
+			return DbConnector.Default.ExecuteScalar(cmdText);
 		}
 
 		#endregion
@@ -626,55 +412,10 @@ namespace Havit.Data.SqlClient
 		/// <param name="outerTransaction">transakce</param>
 		public static void ExecuteTransaction(SqlTransactionDelegate transactionWork, SqlTransaction outerTransaction)
 		{
-			if (transactionWork == null)
+			DbConnector.Default.ExecuteTransaction(delegate(DbTransaction innerTransaction)
 			{
-				throw new ArgumentException("transactionWork");
-			}
-
-			SqlTransaction currentTransaction = outerTransaction;
-			SqlConnection connection;
-			if (outerTransaction == null)
-			{
-				// otevøení spojení, pokud jsme iniciátory transakce
-				connection = SqlDataAccess.GetConnection();
-				connection.Open();
-				currentTransaction = connection.BeginTransaction();
-			}
-			else
-			{
-				connection = currentTransaction.Connection;
-			}
-
-			try
-			{
-				transactionWork(currentTransaction);
-
-				if (outerTransaction == null)
-				{
-					// commit chceme jen v pøípadì, e nejsme uvnitø vnìjší transakce
-					currentTransaction.Commit();
-				}
-			}
-			catch
-			{
-				try
-				{
-					currentTransaction.Rollback();
-				}
-				catch
-				{
-					// chceme vyhodit vnìjší vıjimku, ne problém s rollbackem
-				}
-				throw;
-			}
-			finally
-			{
-				// uzavøení spojení, pokud jsme iniciátory transakce
-				if (outerTransaction == null)
-				{
-					connection.Close();
-				}
-			}
+				transactionWork((SqlTransaction)innerTransaction);
+			}, outerTransaction);
 		}
 
 		/// <summary>
@@ -684,7 +425,10 @@ namespace Havit.Data.SqlClient
 		/// <param name="transactionWork"><see cref="SqlTransactionDelegate"/> reprezentující s úkony, které mají bıt souèástí transakce</param>
 		public static void ExecuteTransaction(SqlTransactionDelegate transactionWork)
 		{
-			ExecuteTransaction(transactionWork, null);
+			DbConnector.Default.ExecuteTransaction(delegate(DbTransaction innerTransaction)
+			{
+				transactionWork((SqlTransaction)innerTransaction);
+			}, null);
 		}
 		#endregion
 	}

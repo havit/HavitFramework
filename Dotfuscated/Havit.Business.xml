@@ -1897,7 +1897,7 @@
             </remarks>
             <param name="transaction">transakce <see cref="T:System.Data.Common.DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
         </member>
-        <member name="M:Havit.Business.ActiveRecordBusinessObjectBase.Save_BaseInTransaction(System.Data.SqlClient.SqlTransaction)">
+        <member name="M:Havit.Business.ActiveRecordBusinessObjectBase.Save_BaseInTransaction(System.Data.Common.DbTransaction)">
             <summary>
             Voláno z metody Save - řeší warning při kompilaci při volání base.Save(...) z anonymní metody.
             </summary>

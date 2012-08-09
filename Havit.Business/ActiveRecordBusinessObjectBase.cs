@@ -22,19 +22,6 @@ namespace Havit.Business
 	[Serializable]
 	public abstract class ActiveRecordBusinessObjectBase : BusinessObjectBase
 	{
-		/*
-		#region Properties - Stav objektu		
-		/// <summary>
-		/// Indikuje, zda-li byla data objektu naètena z databáze èásteènì, tedy zda-li se jednalo o partial-load.
-		/// </summary>
-		public bool IsLoadedPartially
-		{
-			get { return _isLoadedPartially; }
-			set { _isLoadedPartially = value; }
-		}
-		private bool _isLoadedPartially;
-		#endregion
-		*/
 		#region Constructors
 		/// <summary>
 		/// Konstruktor pro nový objekt (bez perzistence v databázi).
@@ -164,16 +151,16 @@ namespace Havit.Business
 			//}
 
 			// vynucení transakce nad celou Save() operací (BusinessObjectBase ji pouze oèekává, ale nevynucuje).
-			SqlDataAccess.ExecuteTransaction(delegate(SqlTransaction myTransaction)
+			DbConnector.Default.ExecuteTransaction(delegate(DbTransaction myTransaction)
 				{
 					Save_BaseInTransaction(myTransaction); // base.Save(myTransaction) hlásí warning
-				}, (SqlTransaction)transaction);
+				}, transaction);
 		}
 
 		/// <summary>
 		/// Voláno z metody Save - øeší warning pøi kompilaci pøi volání base.Save(...) z anonymní metody.
 		/// </summary>
-		private void Save_BaseInTransaction(SqlTransaction myTransaction)
+		private void Save_BaseInTransaction(DbTransaction myTransaction)
 		{
 			base.Save(myTransaction);
 		}
@@ -187,33 +174,30 @@ namespace Havit.Business
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
 		protected override void Save_Perform(DbTransaction transaction)
 		{
-			SqlDataAccess.ExecuteTransaction(delegate(SqlTransaction innerTransaction)
+			// transakce je zajištìna v override Save(DbTransaction), zde není potøeba zakládat další
+			
+			if (IsNew)
 			{
+				Save_Insert_InsertRequiredForFullInsert(transaction);
+			}
 
-				if (IsNew)
+			// nesluèovat do jedné podmínky, InsertRequiredForFullInsert mùže zavolat mùj MinimalInsert a pak už nejsem New
+
+			if (IsNew)
+			{
+				Save_SaveMembers(transaction);
+				Save_FullInsert(transaction);
+				Save_SaveCollections(transaction);
+			}
+			else
+			{
+				Save_SaveMembers(transaction);
+				Save_SaveCollections(transaction);
+				if (IsDirty)
 				{
-					Save_Insert_InsertRequiredForFullInsert(innerTransaction);
+					Save_Update(transaction);
 				}
-
-				// nesluèovat do jedné podmínky, InsertRequiredForFullInsert mùže zavolat mùj MinimalInsert a pak už nejsem New
-
-				if (IsNew)
-				{
-					Save_SaveMembers(innerTransaction);
-					Save_FullInsert(innerTransaction);
-					Save_SaveCollections(innerTransaction);
-				}
-				else
-				{
-					Save_SaveMembers(innerTransaction);
-					Save_SaveCollections(innerTransaction);
-					if (IsDirty)
-					{
-						Save_Update(innerTransaction);
-					}
-				}
-
-			}, (SqlTransaction)transaction);
+			}
 		}
 
 		/// <summary>

@@ -112,6 +112,8 @@ namespace Havit.DataTest
 		#endregion
 
 
+
+
 		#region TestContext
 		private TestContext testContextInstance;
 
@@ -165,9 +167,5 @@ namespace Havit.DataTest
 		//}
 		//
 		#endregion
-
-
 	}
-
-
 }

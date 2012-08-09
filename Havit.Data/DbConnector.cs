@@ -627,7 +627,7 @@ namespace Havit.Data
 		/// </summary>
 		/// <param name="transactionWork"><see cref="DbTransactionDelegate"/> reprezentující s úkony, které mají být souèástí transakce</param>
 		/// <param name="outerTransaction">vnìjší transakce, pokud existuje; jinak <c>null</c></param>
-		/// <param name="isolationLevel">požadovaný <see cref="IsolationLevel"/> transakce</param>
+		/// <param name="isolationLevel">požadovaný <see cref="IsolationLevel"/> transakce; pokud je <see cref="IsolationLevel.Unspecified"/>, použije se outerTransaction, pokud je definována, nebo založí nová transakce s defaultním isolation-levelem</param>
 		public void ExecuteTransaction(DbTransactionDelegate transactionWork, DbTransaction outerTransaction, IsolationLevel isolationLevel)
 		{
 			if (transactionWork == null)
@@ -653,7 +653,8 @@ namespace Havit.Data
 				connection = outerTransaction.Connection;
 			}
 
-			if ((outerTransaction == null) || (outerTransaction.IsolationLevel != isolationLevel))
+			if ((outerTransaction == null) || 
+				((isolationLevel != IsolationLevel.Unspecified) && (outerTransaction.IsolationLevel != isolationLevel)))
 			{
 				currentTransaction = connection.BeginTransaction(isolationLevel);
 				mustCommitOrRollbackTransaction = true;
@@ -712,6 +713,16 @@ namespace Havit.Data
 			ExecuteTransaction(transactionWork, outerTransaction, IsolationLevel.Unspecified);
 		}
 
+		/// <summary>
+		/// Vykoná požadované kroky v rámci transakce s daným isolation-levelem.
+		/// </summary>
+		/// <param name="transactionWork"><see cref="DbTransactionDelegate"/> reprezentující s úkony, které mají být souèástí transakce</param>
+		/// <param name="isolationLevel">požadovaný <see cref="IsolationLevel"/> transakce</param>
+		public void ExecuteTransaction(DbTransactionDelegate transactionWork, IsolationLevel isolationLevel)
+		{
+			ExecuteTransaction(transactionWork, null, isolationLevel);
+		}
+
 
 		/// <summary>
 		/// Vykoná požadované kroky v rámci transakce.
@@ -720,7 +731,7 @@ namespace Havit.Data
 		/// <param name="transactionWork"><see cref="DbTransactionDelegate"/> reprezentující s úkony, které mají být souèástí transakce</param>
 		public void ExecuteTransaction(DbTransactionDelegate transactionWork)
 		{
-			ExecuteTransaction(transactionWork, null);
+			ExecuteTransaction(transactionWork, null, IsolationLevel.Unspecified);
 		}
 		#endregion
 

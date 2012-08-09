@@ -436,18 +436,6 @@
             </summary>
             <param name="transaction">transakce <see cref="T:System.Data.Common.DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
         </member>
-        <member name="M:Havit.Business.BusinessObjectBase.Save_SaveMembers(System.Data.Common.DbTransaction)">
-            <summary>
-            Ukládá member-objekty.
-            </summary>
-            <param name="transaction">transakce <see cref="T:System.Data.Common.DbTransaction"/>, v rámci které mají být member-objekty uloženy; null, pokud bez transakce</param>
-        </member>
-        <member name="M:Havit.Business.BusinessObjectBase.Save_SaveCollections(System.Data.Common.DbTransaction)">
-            <summary>
-            Ukládá member-kolekce objektu.
-            </summary>
-            <param name="transaction">transakce <see cref="T:System.Data.Common.DbTransaction"/>, v rámci které mají být member-kolekce uloženy; null, pokud bez transakce</param>
-        </member>
         <member name="M:Havit.Business.BusinessObjectBase.Delete(System.Data.Common.DbTransaction)">
             <summary>
             Smaže objekt, nebo ho označí jako smazaný, podle zvolené logiky. Změnu uloží do databáze, v transakci.
@@ -821,6 +809,26 @@
         <member name="P:Havit.Business.CollectionPropertyHolder`2.Value">
             <summary>
             Hodnota, kterou CollectionPropertyHolder nese.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.OrderByCollection.Add(Havit.Business.FieldPropertyInfo)">
+            <summary>
+            Přidá na konec kolekce položku pro vzestupné řazení.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.OrderByCollection.Add(Havit.Business.FieldPropertyInfo,Havit.Collections.SortDirection)">
+            <summary>
+            Přidá na konec kolekce položku pro řazení.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.OrderByCollection.Insert(System.Int32,Havit.Business.FieldPropertyInfo)">
+            <summary>
+            Přidá do kolekce položku pro vzestuné řazení.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.OrderByCollection.Insert(System.Int32,Havit.Business.FieldPropertyInfo,Havit.Collections.SortDirection)">
+            <summary>
+            Přidá do kolekce položku pro řazení.
             </summary>
         </member>
         <member name="T:Havit.Business.BusinessObjectCollection`1">
@@ -1530,13 +1538,31 @@
             Výkonná část uložení objektu do perzistentního uložiště.
             </summary>
             <remarks>
-            Pokud je objekt nový, volá Insert, jinak Update.
+            Pokud je objekt nový, volá Save_Insert_SaveRequiredForFullInsert a Insert, jinak Update.
             </remarks>
             <param name="transaction">transakce <see cref="T:System.Data.Common.DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
         </member>
-        <member name="M:Havit.Business.ActiveRecordBusinessObjectBase.Save_Insert(System.Data.Common.DbTransaction)">
+        <member name="M:Havit.Business.ActiveRecordBusinessObjectBase.Save_SaveMembers(System.Data.Common.DbTransaction)">
+            <summary>
+            Ukládá member-objekty.
+            </summary>
+            <param name="transaction">transakce <see cref="T:System.Data.Common.DbTransaction"/>, v rámci které mají být member-objekty uloženy; null, pokud bez transakce</param>
+        </member>
+        <member name="M:Havit.Business.ActiveRecordBusinessObjectBase.Save_SaveCollections(System.Data.Common.DbTransaction)">
+            <summary>
+            Ukládá member-kolekce objektu.
+            </summary>
+            <param name="transaction">transakce <see cref="T:System.Data.Common.DbTransaction"/>, v rámci které mají být member-kolekce uloženy; null, pokud bez transakce</param>
+        </member>
+        <member name="M:Havit.Business.ActiveRecordBusinessObjectBase.Save_FullInsert(System.Data.Common.DbTransaction)">
             <summary>
             Implementace metody vloží nový objekt do databáze a nastaví nově přidělené ID (primární klíč).
+            </summary>
+            <param name="transaction">transakce <see cref="T:System.Data.Common.DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
+        </member>
+        <member name="M:Havit.Business.ActiveRecordBusinessObjectBase.Save_MinimalInsert(System.Data.Common.DbTransaction)">
+            <summary>
+            Implementace metody vloží jen not-null vlastnosti objektu do databáze a nastaví nově přidělené ID (primární klíč).
             </summary>
             <param name="transaction">transakce <see cref="T:System.Data.Common.DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
         </member>
@@ -1546,24 +1572,21 @@
             </summary>
             <param name="transaction">transakce <see cref="T:System.Data.Common.DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
         </member>
-        <member name="M:Havit.Business.Query.OrderByCollection.Add(Havit.Business.FieldPropertyInfo)">
+        <member name="M:Havit.Business.ActiveRecordBusinessObjectBase.Save_Insert_InsertRequiredForFullInsert(System.Data.Common.DbTransaction)">
             <summary>
-            Přidá na konec kolekce položku pro vzestupné řazení.
+            Ukládá hodnoty potřebné pro provedení plného insertu.
             </summary>
+            <param name="transaction">transakce <see cref="T:System.Data.Common.DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
         </member>
-        <member name="M:Havit.Business.Query.OrderByCollection.Add(Havit.Business.FieldPropertyInfo,Havit.Collections.SortDirection)">
+        <member name="M:Havit.Business.ActiveRecordBusinessObjectBase.Save_Insert_InsertRequiredForMinimalInsert(System.Data.Common.DbTransaction)">
             <summary>
-            Přidá na konec kolekce položku pro řazení.
+            Ukládá hodnoty potřebné pro provedení minimálního insertu. Volá Save_Insert_SaveRequiredForMinimalInsert.
             </summary>
+            <param name="transaction">transakce <see cref="T:System.Data.Common.DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
         </member>
-        <member name="M:Havit.Business.Query.OrderByCollection.Insert(System.Int32,Havit.Business.FieldPropertyInfo)">
+        <member name="P:Havit.Business.ActiveRecordBusinessObjectBase.IsMinimalInserting">
             <summary>
-            Přidá do kolekce položku pro vzestuné řazení.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.OrderByCollection.Insert(System.Int32,Havit.Business.FieldPropertyInfo,Havit.Collections.SortDirection)">
-            <summary>
-            Přidá do kolekce položku pro řazení.
+            Identifikuje, zda probíhá Save_Insert_InsertRequiredForMinimalInsert (nesmí se zacyklit).
             </summary>
         </member>
     </members>

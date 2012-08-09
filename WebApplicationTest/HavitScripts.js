@@ -40,27 +40,37 @@ function havitFormatInt(value) {
 	var digit = 0;
 	
 	if (value == null) 
+	{
 		return "";
+	}
 		
 	if (typeof(value) != "number" || isNaN(value))
+	{
 		return Number.NaN;
+	}
 		
 	if (value == 0)
+	{
 		return "0";
+	}
 	
 	value = Math.abs(value);
 	
 	while (value != 0)
 	{
 		if (digit % 3 == 0 && digit > 0)
+		{
 			result = " " + result;
+		}
 		result = (value % 10) + result;
 		value = Math.floor(value / 10);
 		digit += 1;
 	}
 
 	if (originalValue < 0)
+	{
 		result = "-" + result;
+	}
 		
 	return result;
 }
@@ -71,10 +81,14 @@ function havitFormatFloat(value, decimals) {
 /// <param name="decimals">pocet desetinnych mist</param>
 	
 	if (value == null) 
+	{
 		return "";
+	}
 		
 	if (typeof(value) != "number" || isNaN(value))
+	{
 		return Number.NaN;
+	}
 		
 	var originalValue = value;
 	var result = havitFormatInt(Math.floor(Math.abs(value)));
@@ -83,7 +97,9 @@ function havitFormatFloat(value, decimals) {
 	
 	var exp = 1;
 	for (var i = 0; i < decimals; i++)
+	{
 		exp *= 10;
+	}
 	
 	value = Math.round(value * exp) % exp;
 
@@ -124,7 +140,9 @@ function havitReformatNumber(value) {
 			return havitFormatFloat(parsedValue, workValue.length - index - 1);
 		}
 		else
-			return havitFormatInt(parsedValue);		
+		{
+			return havitFormatInt(parsedValue);
+		}
 	}
 	return value;
 }
@@ -156,7 +174,9 @@ function havitIsChecked(elements, value) {
 
 	var element = havitFindElementInArray(elements, value);
 	if (element != null && element.checked)
+	{
 		return true;
+	}
 	return false;
 }
 
@@ -171,7 +191,9 @@ function havitFindElementInArray(elements, value) {
 	for (var i = 0; i < elements.length; i++)
 	{
 		if (elements[i].value == value)
+		{
 			return elements[i];
+		}
 	}
 	return null;
 }
@@ -193,9 +215,13 @@ function havitHideElement(element, keepSpace) {
 /// <param name="keepSpace">Pokud je keepSpace true, nastavuje visibility na hidden, pokud je keepSpace false, nastavuje display na none.</param>
 
 	if (keepSpace)
+	{
 		element.style.visibility = "hidden";
+	}
 	else
+	{
 		element.style.display = "none";
+	}
 }
 
 function havitBlockElement(element) {
@@ -222,8 +248,12 @@ function havitBlockElement(element) {
 	}
 	
 	if (element.children)
+	{
 		for (var i = 0; i < element.children.length; i++)
+		{
 			havitBlockElement(element.children[i]);
+		}
+	}
 }
 
 function havitUnblockElement(element) {
@@ -250,8 +280,12 @@ function havitUnblockElement(element) {
 	}
 
 	if (element.children)
+	{
 		for (var i = 0; i < element.children.length; i++)
+		{
 			havitUnblockElement(element.children[i]);
+		}
+	}
 }
 
 function havitCopyToClipboard(text) {
@@ -294,12 +328,18 @@ function havitShowDialog(elementId)
 /// Zobrazi dialog.
 /// <summary>
 	var element = document.getElementById(elementId);
-	_havitGetDialogOverlay().style.display = 'block';
+	var overlay = _havitGetDialogOverlay();
+	overlay.style.display = 'block';
 
 	if (_havitIsPreIE7())
 	{
+		var marginTopPixels = element.getAttribute("requestedMarginTopPixels");		
+		// IE6 neumí position:fixed (pozice do zobrazovacího zaøízení), ale pozicuje do dokumentu
+		element.style.marginTop = (document.documentElement.scrollTop + havitParseInt(marginTopPixels)) + "px";
+		overlay.style.width = document.documentElement.clientWidth + "px";
+		overlay.style.height = document.documentElement.clientHeight + "px";
+		overlay.style.marginTop = document.documentElement.scrollTop + "px";
 		_havitHideSelects(document);
-		_havitRestoreSelects(element);
 	}
 	
 	element.style.display = 'block';
@@ -340,19 +380,24 @@ function _havitGetDialogOverlay()
 	return overlay;
 }
 
-function havitSetDialogSize(dialogElementId, widthUnit, heightUnit, marginLeftUnit, marginTopUnit)
+function havitSetDialogSize(dialogElementId, widthPixels, heightPixels, marginLeftPixels, marginTopPixels)
 {
 /// <summary>
 /// Nastaví dialogu velikost a umístí jej doprostøed.
 /// Centrování je øešeno "fintou", viz http://interval.cz/clanky/zarovnani-prezentace-na-stred-pomoci-css/
 /// <summary>
 	var dialogElement = document.getElementById(dialogElementId);	
-	dialogElement.style.width = widthUnit;
-	dialogElement.style.height = heightUnit;
+	dialogElement.style.width = widthPixels + "px";
+	dialogElement.style.height = heightPixels + "px";
 	dialogElement.style.left = '50%';
 	dialogElement.style.top = '50%';
-	dialogElement.style.marginLeft = marginLeftUnit;
-	dialogElement.style.marginTop = marginTopUnit;
+	dialogElement.style.marginLeft = marginLeftPixels + "px";
+	dialogElement.style.marginTop = marginTopPixels + "px";
+
+	if (_havitIsPreIE7())
+	{
+		dialogElement.setAttribute("requestedMarginTopPixels", marginTopPixels);
+	}
 }
 
 

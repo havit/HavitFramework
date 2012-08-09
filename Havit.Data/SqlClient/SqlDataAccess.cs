@@ -13,6 +13,7 @@ namespace Havit.Data.SqlClient
 	/// Inspirováno <a href="http://msdn.microsoft.com/vcsharp/downloads/components/default.aspx?pull=/library/en-us/dnbda/html/daab-rm.asp">
 	/// Microsoft Data Access Application Block verze 2.0</a>.
 	/// </remarks>
+	[Obsolete("Místo tøídy SqlDataAccess použijte Havit.Data.DbConnector.")]
 	public static class SqlDataAccess
 	{
 		#region private CreateCommand, SetCommandDefaults

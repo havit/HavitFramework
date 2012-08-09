@@ -34,6 +34,7 @@
     </namespaceSummaries>
     <dependencies>
         <dependencyItem depPath="GAC:System.Configuration, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+        <dependencyItem depPath=".\References\System.Web.Extensions.dll" />
     </dependencies>
     <ProjectSummary />
     <MissingTags>AutoDocumentCtors</MissingTags>

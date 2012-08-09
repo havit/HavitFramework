@@ -91,6 +91,8 @@
   <ItemGroup>
     <Compile Include="DataLoadPower.cs" />
     <Compile Include="DataRecord.cs" />
+    <Compile Include="DbConnector.cs" />
+    <Compile Include="DbTransactionDelegate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -65,6 +65,121 @@
             Indexer přes klíče <see cref="T:System.DateTime"/>.
             </summary>
         </member>
+        <member name="T:Havit.Business.GetObjectDelegate">
+            <summary>
+            Delegát na metodu GetObject.
+            </summary>
+            <param name="objectID">ID objektu, který se má metodou vrátit.</param>
+            <returns>Business objekt na základě ID.</returns>
+        </member>
+        <member name="T:Havit.Business.ReferenceFieldPropertyInfo">
+            <summary>
+            Reprezentuje sloupec v databázi,
+            který je referencí na jiný typ (je cizím klíčem do jiné tabulky).
+            </summary>
+        </member>
+        <member name="T:Havit.Business.FieldPropertyInfo">
+            <summary>
+            Reprezentuje sloupec v databázi,
+            nese informace o daném sloupci a jeho vazbu na objektovou strukturu.
+            </summary>
+        </member>
+        <member name="T:Havit.Business.PropertyInfo">
+            <summary>
+            Bázová třída pro všechny property-info objektu.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.PropertyInfo.Parent">
+            <summary>
+            Třída, které property náleží.
+            </summary>
+        </member>
+        <member name="T:Havit.Business.IFieldsBuilder">
+            <summary>
+            Interface pro Property popisující strukturu domény.	
+            </summary>
+        </member>
+        <member name="M:Havit.Business.IFieldsBuilder.GetSelectFieldStatement(System.Data.Common.DbCommand)">
+            <summary>
+            Vrátí řetězec pro vytažení daného sloupce z databáze.
+            </summary>
+        </member>
+        <member name="T:Havit.Business.Query.IOperand">
+            <summary>
+            Interface pro operandy SQL dotazu.
+            Operandem může být výraz, databázový sloupec, sklalární hodnota...
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.IOperand.GetCommandValue(System.Data.Common.DbCommand)">
+            <summary>
+            Vrací řetězec, který reprezentuje hodnotu operandu v SQL dotazu.
+            Může přidávat databázové parametry do commandu.
+            </summary>
+            <param name="command">Databázový příkaz. Je možné do něj přidávat databázové parametry.</param>
+            <returns>Řetězec reprezentující hodnotu operandu v SQL dotazu.</returns>
+        </member>
+        <member name="M:Havit.Business.FieldPropertyInfo.#ctor(System.String,System.Boolean,System.Data.SqlDbType,System.Boolean,System.Int32)">
+            <summary>
+            Vytvoří instanci sloupce.
+            </summary>
+            <param name="fieldName">Název sloupce v databázy.</param>
+            <param name="isPrimaryKey">Indikuje, zda je sloupec primárním klíčem</param>
+            <param name="nullable">Indukuje, zda je povolena hodnota null.</param>
+            <param name="fieldType">Typ databázového sloupce.</param>
+            <param name="maximumLength">Maximální délka dat databázového sloupce.</param>		
+        </member>
+        <member name="M:Havit.Business.FieldPropertyInfo.GetSelectFieldStatement(System.Data.Common.DbCommand)">
+            <summary>
+            Vrátí řetězec pro vytažení daného sloupce z databáze.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.FieldPropertyInfo.FieldName">
+            <summary>
+            Název sloupce v databázi.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.FieldPropertyInfo.Nullable">
+            <summary>
+            Udává, zda je možné uložit null hodnotu.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.FieldPropertyInfo.FieldType">
+            <summary>
+            Typ sloupce v databázi.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.FieldPropertyInfo.IsPrimaryKey">
+            <summary>
+            Udává, zda je sloupec primárním klíčem.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.FieldPropertyInfo.MaximumLength">
+            <summary>
+            Udává, zda je sloupec primárním klíčem.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.ReferenceFieldPropertyInfo.#ctor(System.String,System.Boolean,System.Data.SqlDbType,System.Boolean,System.Int32,System.Type,Havit.Business.ObjectInfo)">
+            <summary>
+            Vytvoří instanci sloupce.
+            </summary>
+            <param name="fieldName">Název sloupce v databázy.</param>
+            <param name="isPrimaryKey">Indikuje, zda je sloupec primárním klíčem</param>
+            <param name="nullable">Indukuje, zda je povolena hodnota null.</param>
+            <param name="fieldType">Typ databázového sloupce.</param>
+            <param name="maximumLength">Maximální délka dat databázového sloupce.</param>		
+            <param name="targetType">Typ, jenž property nese.</param>
+            <param name="targetObjectInfo">ObjectInfo na typ, jenž property nese.</param>
+        </member>
+        <member name="P:Havit.Business.ReferenceFieldPropertyInfo.TargetType">
+            <summary>
+            Typ, jenž property nese.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.ReferenceFieldPropertyInfo.TargetObjectInfo">
+            <summary>
+            Delegát na metodu vracející objekt na základě ID.
+            </summary>
+        </member>
         <member name="T:Havit.Business.DateInfo">
             <summary>
             Třída pro informace o dni.
@@ -612,86 +727,6 @@
             BusinessObject, ve kterém došlo k porušení pravidla.
             </summary>
         </member>
-        <member name="T:Havit.Business.FieldPropertyInfo">
-            <summary>
-            Reprezentuje sloupec v databázi,
-            nese informace o daném sloupci a jeho vazbu na objektovou strukturu.
-            </summary>
-        </member>
-        <member name="T:Havit.Business.PropertyInfo">
-            <summary>
-            Bázová třída pro všechny property-info objektu.
-            </summary>
-        </member>
-        <member name="P:Havit.Business.PropertyInfo.Parent">
-            <summary>
-            Třída, které property náleží.
-            </summary>
-        </member>
-        <member name="T:Havit.Business.IFieldsBuilder">
-            <summary>
-            Interface pro Property popisující strukturu domény.	
-            </summary>
-        </member>
-        <member name="M:Havit.Business.IFieldsBuilder.GetSelectFieldStatement(System.Data.Common.DbCommand)">
-            <summary>
-            Vrátí řetězec pro vytažení daného sloupce z databáze.
-            </summary>
-        </member>
-        <member name="T:Havit.Business.Query.IOperand">
-            <summary>
-            Interface pro operandy SQL dotazu.
-            Operandem může být výraz, databázový sloupec, sklalární hodnota...
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.IOperand.GetCommandValue(System.Data.Common.DbCommand)">
-            <summary>
-            Vrací řetězec, který reprezentuje hodnotu operandu v SQL dotazu.
-            Může přidávat databázové parametry do commandu.
-            </summary>
-            <param name="command">Databázový příkaz. Je možné do něj přidávat databázové parametry.</param>
-            <returns>Řetězec reprezentující hodnotu operandu v SQL dotazu.</returns>
-        </member>
-        <member name="M:Havit.Business.FieldPropertyInfo.#ctor(System.String,System.Boolean,System.Data.SqlDbType,System.Boolean,System.Int32)">
-            <summary>
-            Vytvoří instanci sloupce.
-            </summary>
-            <param name="fieldName">Název sloupce v databázy.</param>
-            <param name="isPrimaryKey">Indikuje, zda je sloupec primárním klíčem</param>
-            <param name="nullable">Indukuje, zda je povolena hodnota null.</param>
-            <param name="fieldType">Typ databázového sloupce.</param>
-            <param name="maximumLength">Maximální délka dat databázového sloupce.</param>		
-        </member>
-        <member name="M:Havit.Business.FieldPropertyInfo.GetSelectFieldStatement(System.Data.Common.DbCommand)">
-            <summary>
-            Vrátí řetězec pro vytažení daného sloupce z databáze.
-            </summary>
-        </member>
-        <member name="P:Havit.Business.FieldPropertyInfo.FieldName">
-            <summary>
-            Název sloupce v databázi.
-            </summary>
-        </member>
-        <member name="P:Havit.Business.FieldPropertyInfo.Nullable">
-            <summary>
-            Udává, zda je možné uložit null hodnotu.
-            </summary>
-        </member>
-        <member name="P:Havit.Business.FieldPropertyInfo.FieldType">
-            <summary>
-            Typ sloupce v databázi.
-            </summary>
-        </member>
-        <member name="P:Havit.Business.FieldPropertyInfo.IsPrimaryKey">
-            <summary>
-            Udává, zda je sloupec primárním klíčem.
-            </summary>
-        </member>
-        <member name="P:Havit.Business.FieldPropertyInfo.MaximumLength">
-            <summary>
-            Udává, zda je sloupec primárním klíčem.
-            </summary>
-        </member>
         <member name="T:Havit.Business.Query.ComparisonOperator">
             <summary>
             Operátor pro porovnání hodnot.
@@ -1052,7 +1087,7 @@
             Reprezentuje informace o objektu (třídě).
             </summary>
         </member>
-        <member name="M:Havit.Business.ObjectInfo.#ctor(System.String,System.String,System.Boolean,Havit.Business.PropertyInfoCollection,Havit.Business.FieldPropertyInfo)">
+        <member name="M:Havit.Business.ObjectInfo.#ctor(System.String,System.String,System.Boolean,Havit.Business.PropertyInfoCollection,Havit.Business.FieldPropertyInfo,Havit.Business.GetObjectDelegate,Havit.Business.GetAllDelegate)">
             <summary>
             Vytvoří instanci třídy.
             </summary>
@@ -1061,6 +1096,8 @@
             <param name="readOnly">Určuje, zda je třída jen ke čtení.</param>
             <param name="properties">Properties třídy.</param>
             <param name="deletedProperty">FieldPropertyInfo, která identifikuje příznakem smazané záznamy.</param>
+            <param name="getObjectMethod">Delegát na metodu vracející objekt třídy na základě ID.</param>
+            <param name="getAllMethod">Delegát na metodu vracející všechny (nesmazané) objekty třídy.</param>
         </member>
         <member name="P:Havit.Business.ObjectInfo.ReadOnly">
             <summary>
@@ -1085,6 +1122,16 @@
         <member name="P:Havit.Business.ObjectInfo.DeletedProperty">
             <summary>
             Property, která označuje smazané záznamy.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.ObjectInfo.GetObjectMethod">
+            <summary>
+            Metoda vracující instanci objektu.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.ObjectInfo.GetAllMethod">
+            <summary>
+            Metoda vracející seznam všech instancí.
             </summary>
         </member>
         <member name="T:Havit.Business.PropertyHolder`1">
@@ -1469,40 +1516,11 @@
             Indikuje, zda-li byla data objektu načtena z databáze částečně, tedy zda-li se jednalo o partial-load.
             </summary>
         </member>
-        <member name="T:Havit.Business.ReferenceFieldPropertyInfo">
+        <member name="T:Havit.Business.GetAllDelegate">
             <summary>
-            Reprezentuje sloupec v databázi,
-            který je referencí na jiný typ (je cizím klíčem do jiné tabulky).
+            Delegát na metodu GetAll.
             </summary>
-        </member>
-        <member name="M:Havit.Business.ReferenceFieldPropertyInfo.#ctor(System.String,System.Boolean,System.Data.SqlDbType,System.Boolean,System.Int32,System.Type,Havit.Business.GetObjectDelegate)">
-            <summary>
-            Vytvoří instanci sloupce.
-            </summary>
-            <param name="fieldName">Název sloupce v databázy.</param>
-            <param name="isPrimaryKey">Indikuje, zda je sloupec primárním klíčem</param>
-            <param name="nullable">Indukuje, zda je povolena hodnota null.</param>
-            <param name="fieldType">Typ databázového sloupce.</param>
-            <param name="maximumLength">Maximální délka dat databázového sloupce.</param>		
-            <param name="memberType">Typ, jenž property nese.</param>
-            <param name="getObjectMethod">Delegát na metodu vracející objekt na základě ID.</param>
-        </member>
-        <member name="P:Havit.Business.ReferenceFieldPropertyInfo.MemberType">
-            <summary>
-            Typ, jenž property nese.
-            </summary>
-        </member>
-        <member name="P:Havit.Business.ReferenceFieldPropertyInfo.GetObjectMethod">
-            <summary>
-            Delegát na metodu vracející objekt na základě ID.
-            </summary>
-        </member>
-        <member name="T:Havit.Business.GetObjectDelegate">
-            <summary>
-            Delegát na metodu GetObject.
-            </summary>
-            <param name="objectID">ID objektu, který se má metodou vrátit.</param>
-            <returns>Business objekt na základě ID.</returns>
+            <returns>Vrací všechny (nesmazané) objekty dané třídy.</returns>
         </member>
     </members>
 </doc>

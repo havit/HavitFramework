@@ -17,7 +17,10 @@ namespace Havit.Business
 		/// <param name="readOnly">Urèuje, zda je tøída jen ke ètení.</param>
 		/// <param name="properties">Properties tøídy.</param>
 		/// <param name="deletedProperty">FieldPropertyInfo, která identifikuje pøíznakem smazané záznamy.</param>
-		public ObjectInfo(string dbSchema, string dbTable, bool readOnly, PropertyInfoCollection properties, FieldPropertyInfo deletedProperty)
+		/// <param name="getObjectMethod">Delegát na metodu vracející objekt tøídy na základì ID.</param>
+		/// <param name="getAllMethod">Delegát na metodu vracející všechny (nesmazané) objekty tøídy.</param>
+		public ObjectInfo(string dbSchema, string dbTable, bool readOnly, PropertyInfoCollection properties, FieldPropertyInfo deletedProperty, 
+			GetObjectDelegate getObjectMethod, GetAllDelegate getAllMethod)
 		{
 			if (properties == null)
 				throw new ArgumentNullException("properties");
@@ -27,6 +30,8 @@ namespace Havit.Business
 			this.readOnly = readOnly;
 			this.properties = properties;
 			this.deletedProperty = deletedProperty;
+			this.getObjectMethod = getObjectMethod;
+			this.getAllMethod = getAllMethod;
 
 			foreach (PropertyInfo propertyInfo in properties)
 			{
@@ -79,5 +84,24 @@ namespace Havit.Business
 		}
 		private FieldPropertyInfo deletedProperty;
 
+		/// <summary>
+		/// Metoda vracující instanci objektu.
+		/// </summary>
+		public GetObjectDelegate GetObjectMethod
+		{
+			get { return getObjectMethod; }
+		}
+		private GetObjectDelegate getObjectMethod;
+
+		/// <summary>
+		/// Metoda vracející seznam všech instancí.
+		/// </summary>
+		public GetAllDelegate GetAllMethod
+		{
+			get { return getAllMethod; }
+		}
+		private GetAllDelegate getAllMethod;
+	
+		
 	}
 }

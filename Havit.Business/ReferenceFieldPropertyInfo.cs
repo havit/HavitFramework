@@ -21,34 +21,34 @@ namespace Havit.Business
 		/// <param name="nullable">Indukuje, zda je povolena hodnota null.</param>
 		/// <param name="fieldType">Typ databázového sloupce.</param>
 		/// <param name="maximumLength">Maximální délka dat databázového sloupce.</param>		
-		/// <param name="memberType">Typ, jenž property nese.</param>
-		/// <param name="getObjectMethod">Delegát na metodu vracející objekt na základì ID.</param>
-		public ReferenceFieldPropertyInfo(string fieldName, bool isPrimaryKey, SqlDbType fieldType, bool nullable, int maximumLength, Type memberType, GetObjectDelegate getObjectMethod)
+		/// <param name="targetType">Typ, jenž property nese.</param>
+		/// <param name="targetObjectInfo">ObjectInfo na typ, jenž property nese.</param>
+		public ReferenceFieldPropertyInfo(string fieldName, bool isPrimaryKey, SqlDbType fieldType, bool nullable, int maximumLength, Type targetType, ObjectInfo targetObjectInfo)
 			: base(fieldName, isPrimaryKey, fieldType, nullable, maximumLength)
 		{
-			this.memberType = memberType;
-			this.getObjectMethod = getObjectMethod;
+			this.targetType = targetType;
+			this.targetObjectInfo = targetObjectInfo;
 		}
 
 		/// <summary>
 		/// Typ, jenž property nese.
 		/// </summary>
-		public Type MemberType
+		public Type TargetType
 		{
-			get { return memberType; }
+			get { return targetType; }
 		}
-		private Type memberType;
+		private Type targetType;
 
 		/// <summary>
 		/// Delegát na metodu vracející objekt na základì ID.
 		/// </summary>
-		public GetObjectDelegate GetObjectMethod
+		public ObjectInfo TargetObjectInfo
 		{
 			get
 			{
-				return getObjectMethod;
+				return targetObjectInfo;
 			}
 		}
-		private GetObjectDelegate getObjectMethod;
+		private ObjectInfo targetObjectInfo;
 	}
 }

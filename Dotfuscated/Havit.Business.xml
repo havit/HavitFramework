@@ -89,11 +89,12 @@
             Bázová třída pro všechny property-info objektu.
             </summary>
         </member>
-        <member name="M:Havit.Business.PropertyInfo.Initialize(Havit.Business.ObjectInfo)">
+        <member name="M:Havit.Business.PropertyInfo.Initialize(Havit.Business.ObjectInfo,System.String)">
             <summary>
             Inicializuje instanci.
             </summary>
-            <param name="owner"></param>
+            <param name="owner">ObjectInfo vlastnící property.</param>
+            <param name="propertyName">Název vlastnosti.</param>
         </member>
         <member name="M:Havit.Business.PropertyInfo.CheckInitialization">
             <summary>
@@ -103,6 +104,11 @@
         <member name="P:Havit.Business.PropertyInfo.Owner">
             <summary>
             Třída, které property náleží.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.PropertyInfo.PropertyName">
+            <summary>
+            Název property reprezentované instancí.
             </summary>
         </member>
         <member name="T:Havit.Business.IFieldsBuilder">
@@ -129,11 +135,12 @@
             <param name="command">Databázový příkaz. Je možné do něj přidávat databázové parametry.</param>
             <returns>Řetězec reprezentující hodnotu operandu v SQL dotazu.</returns>
         </member>
-        <member name="M:Havit.Business.FieldPropertyInfo.Initialize(Havit.Business.ObjectInfo,System.String,System.Boolean,System.Data.SqlDbType,System.Boolean,System.Int32)">
+        <member name="M:Havit.Business.FieldPropertyInfo.Initialize(Havit.Business.ObjectInfo,System.String,System.String,System.Boolean,System.Data.SqlDbType,System.Boolean,System.Int32)">
             <summary>
             Inicializuje instanci sloupce.
             </summary>
             <param name="owner">Nadřazený objectInfo.</param>
+            <param name="propertyName">Název property.</param>
             <param name="fieldName">Název sloupce v databázy.</param>
             <param name="isPrimaryKey">Indikuje, zda je sloupec primárním klíčem</param>
             <param name="nullable">Indukuje, zda je povolena hodnota null.</param>
@@ -170,11 +177,12 @@
             Maximální délka řetězce (u typů varchar, nvarchar, apod.), případně velikost datového typu (u typů 
             </summary>
         </member>
-        <member name="M:Havit.Business.ReferenceFieldPropertyInfo.Initialize(Havit.Business.ObjectInfo,System.String,System.Boolean,System.Data.SqlDbType,System.Boolean,System.Int32,System.Type,Havit.Business.ObjectInfo)">
+        <member name="M:Havit.Business.ReferenceFieldPropertyInfo.Initialize(Havit.Business.ObjectInfo,System.String,System.String,System.Boolean,System.Data.SqlDbType,System.Boolean,System.Int32,System.Type,Havit.Business.ObjectInfo)">
             <summary>
             Inicializuje instanci sloupce.
             </summary>
             <param name="owner">Nadřazený objectInfo.</param>
+            <param name="propertyName">Název property.</param>
             <param name="fieldName">Název sloupce v databázy.</param>
             <param name="isPrimaryKey">Indikuje, zda je sloupec primárním klíčem</param>
             <param name="nullable">Indukuje, zda je povolena hodnota null.</param>
@@ -1593,11 +1601,12 @@
             Kolekce objektů třídy IProperty.
             </summary>
         </member>
-        <member name="M:Havit.Business.CollectionPropertyInfo.Initialize(Havit.Business.ObjectInfo,System.Type,System.String)">
+        <member name="M:Havit.Business.CollectionPropertyInfo.Initialize(Havit.Business.ObjectInfo,System.String,System.Type,System.String)">
             <summary>
             Vytvoří instanci CollectionProperty.
             </summary>
             <param name="owner">Nadřazený objectInfo.</param>
+            <param name="propertyName">Název property.</param>
             <param name="itemType">Typ prvků kolekce.</param>
             <param name="collectionSelectFieldStatement">Část SQL dotazu pro vytažení hodnoty daného sloupce.</param>
         </member>

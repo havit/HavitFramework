@@ -13,11 +13,12 @@ namespace Havit.Business
 		/// Vytvoøí instanci CollectionProperty.
 		/// </summary>
 		/// <param name="owner">Nadøazený objectInfo.</param>
+		/// <param name="propertyName">Název property.</param>
 		/// <param name="itemType">Typ prvkù kolekce.</param>
 		/// <param name="collectionSelectFieldStatement">Èást SQL dotazu pro vytažení hodnoty daného sloupce.</param>
-		public void Initialize(ObjectInfo owner, Type itemType, string collectionSelectFieldStatement)
+		public void Initialize(ObjectInfo owner, string propertyName, Type itemType, string collectionSelectFieldStatement)
 		{
-			Initialize(owner);
+			Initialize(owner, propertyName);
 			this.itemType = itemType;
 			this.collectionSelectFieldStatement = collectionSelectFieldStatement;
 		}

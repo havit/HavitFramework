@@ -18,14 +18,15 @@ namespace Havit.Business
 		/// Inicializuje instanci sloupce.
 		/// </summary>
 		/// <param name="owner">Nadøazený objectInfo.</param>
+		/// <param name="propertyName">Název property.</param>
 		/// <param name="fieldName">Název sloupce v databázy.</param>
 		/// <param name="isPrimaryKey">Indikuje, zda je sloupec primárním klíèem</param>
 		/// <param name="nullable">Indukuje, zda je povolena hodnota null.</param>
 		/// <param name="fieldType">Typ databázového sloupce.</param>
 		/// <param name="maximumLength">Maximální délka dat databázového sloupce.</param>		
-		public void Initialize(ObjectInfo owner, string fieldName, bool isPrimaryKey, SqlDbType fieldType, bool nullable, int maximumLength)
+		public void Initialize(ObjectInfo owner, string propertyName, string fieldName, bool isPrimaryKey, SqlDbType fieldType, bool nullable, int maximumLength)
 		{
-			Initialize(owner);
+			Initialize(owner, propertyName);
 			this.fieldName = fieldName;
 			this.nullable = nullable;
 			this.fieldType = fieldType;

@@ -17,7 +17,7 @@ namespace Havit.BusinessTest
 		{
 		}
 
-		protected override void Load_Perform(System.Data.Common.DbTransaction transaction)
+		protected override bool TryLoad_Perform(System.Data.Common.DbTransaction transaction)
 		{
 			throw new Exception("The method or operation is not implemented.");
 		}

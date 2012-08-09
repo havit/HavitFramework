@@ -152,6 +152,33 @@ namespace Havit.BusinessTest
 		}
 		#endregion
 
+		#region TryLoad_Existujici
+		/// <summary>
+		/// Základní test na TryLoad existujícího objektu.
+		///</summary>
+		[TestMethod()]
+		public void TryLoad_Existujici()
+		{
+			Role role = Role.GetObject(0);
+			Assert.IsTrue(role.TryLoad());
+			Assert.IsTrue(role.TryLoad());
+		}
+		#endregion
+
+		#region TryLoad_Neexistujici
+		/// <summary>
+		/// Základní test na funkčnost TryLoad neexistujícího objektu.
+		///</summary>
+		[TestMethod()]
+		public void TryLoad_Neexistujici()
+		{
+			Role role = Role.GetObject(999);
+			Assert.IsFalse(role.TryLoad());
+		}
+		#endregion
+
+
+
 		#region Save_MultipleSaveTest
 		[TestMethod]
 		public void Save_SaveAndDeleteTest()

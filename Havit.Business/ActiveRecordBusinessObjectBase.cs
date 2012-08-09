@@ -115,16 +115,17 @@ namespace Havit.Business
 		/// Naète objekt z databáze do <see cref="DataRecord"/> a parsuje získaný <see cref="DataRecord"/> do objektu.
 		/// </remarks>
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt naèten; null, pokud bez transakce</param>
-		protected override sealed void Load_Perform(DbTransaction transaction)
+		protected override sealed bool TryLoad_Perform(DbTransaction transaction)
 		{
 			DataRecord record = Load_GetDataRecord(transaction);
 
 			if (record == null)
 			{
-				throw new InvalidOperationException(String.Format("Pro objekt ID={0} se nepodaøilo získat data z databáze.", this.ID));
+				return false;
 			}
 
 			Load_ParseDataRecord(record);
+			return true;
 		}
 		/// <summary>
 		/// Implementace metody naète DataRecord objektu z databáze.

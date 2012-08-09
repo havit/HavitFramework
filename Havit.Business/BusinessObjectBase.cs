@@ -188,36 +188,62 @@ namespace Havit.Business
 		private object loadLock = new object();
 
 		/// <summary>
-		/// Nahraje objekt z perzistentního uložištì, bez transakce.
+		/// Nahraje objekt z perzistentního uložištì.
 		/// </summary>
 		/// <remarks>
 		/// Pozor, pokud je již objekt naèten a není urèena transakce (null), znovu se nenahrává.
 		/// Pokud je transakce urèena, naète se znovu.
+		/// Pokud se naètení podaøí (nebo není naèítání tøeba, tj. není urèena transakce a objekt je již naèten), vrací true. Jinak (napø. v pøípadì neexistence dat pro objekt) vrací false.
 		/// </remarks>
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt naèten; null, pokud bez transakce</param>
-		public virtual void Load(DbTransaction transaction)
+		public bool TryLoad(DbTransaction transaction)
 		{
 			if (this.IsLoaded && (transaction == null))
 			{
 				// pokud je již objekt naèten, nenaèítáme ho znovu
-				return;
+				return true;
 			}
 
 			// naèítání se zamyká kvùli cachovaným readonly objektùm
 			// tam je sdílena instance, která by mohla být naèítána najednou ze dvou threadù
 			lock (loadLock)
 			{
-				if (!this.IsLoaded)
+				if (this.IsLoaded)
 				{
-					Load_Perform(transaction);
+					return true;
+				}
+				bool successful = TryLoad_Perform(transaction);
+				if (successful)
+				{
 					this.IsLoaded = true;
 					this.IsDirty = false; // naètený objekt není Dirty.			
 				}
+				return successful;
+
+			}
+		}
+
+		/// <summary>
+		/// Nahraje objekt z perzistentního uložištì.
+		/// </summary>
+		/// <remarks>
+		/// Pozor, pokud je již objekt naèten a není urèena transakce (null), znovu se nenahrává.
+		/// Pokud je transakce urèena, naète se znovu.
+		/// Pokud se naètení nedaøí, je vyhozena výjimka.
+		/// </remarks>
+		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt naèten; null, pokud bez transakce</param>
+		public void Load(DbTransaction transaction)
+		{
+			if (!TryLoad(transaction))
+			{
+				// JK: Popis výjimky není pøesný.
+				throw new InvalidOperationException(String.Format("Pro objekt {0}.ID={1} se nepodaøilo získat data z databáze.", this.GetType().FullName, this.ID));
 			}
 		}
 
 		/// <summary>
 		/// Nahraje objekt z perzistentního uložištì, bez transakce.
+		/// Pokud se naètení nedaøí, je vyhozena výjimka.
 		/// </summary>
 		/// <remarks>
 		/// Pozor, pokud je již objekt naèten, znovu se nenahrává.
@@ -228,11 +254,24 @@ namespace Havit.Business
 		}
 
 		/// <summary>
+		/// Nahraje objekt z perzistentního uložištì, bez transakce.
+		/// Pokud se naètení podaøí, vrací true, jinak (napø. v pøípadì neexistence dat pro objekt) vrací false.
+		/// </summary>
+		/// <remarks>
+		/// Pozor, pokud je již objekt naèten, znovu se nenahrává.
+		/// </remarks>
+		public bool TryLoad()
+		{
+			return TryLoad(null);
+		}
+
+		/// <summary>
 		/// Výkonná èást nahrání objektu z perzistentního uložištì.
 		/// </summary>
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt naèten; null, pokud bez transakce</param>
+		/// <returns>True, pokud se podaøilo objekt naèíst, jinak false.</returns>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member")]
-		protected abstract void Load_Perform(DbTransaction transaction);
+		protected abstract bool TryLoad_Perform(DbTransaction transaction);
 		#endregion
 
 		#region Save logika

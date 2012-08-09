@@ -226,7 +226,7 @@ namespace Havit.Business.Query
 				if (orderBy[i].Direction == Havit.Collections.SortDirection.Descending)
 					orderByBuilder.Append(" DESC");
 			}
-			return orderBy.ToString();
+			return orderByBuilder.ToString();
 		}
 	}
 }

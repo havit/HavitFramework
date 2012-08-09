@@ -197,7 +197,7 @@ namespace Havit.Web.UI.WebControls
 				return EmptyText;
 			}
 
-			throw new MissingMemberException(String.Format("Nepodařilo se vyhodnotit DataField \"{0}\".", DataField));
+			throw new InvalidOperationException(String.Format("Při zpracování hodnoty z DataFieldu \"{0}\" byla získána hodnota null nebo DBNull.Value, ale není nastavena hodnota vlastnosti EmptyText.", DataField));
 		}
 		#endregion
 

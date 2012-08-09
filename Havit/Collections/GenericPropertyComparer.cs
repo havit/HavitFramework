@@ -113,7 +113,7 @@ namespace Havit.Collections
 		{
 			object result = DataBinderExt.GetValue(obj, sortItems[index].Expression);
 
-			if (result == DBNull.Value) // pro účely srovnání budeme tvrdit, že null a DbNull.Value jsou shodné (tedy null).
+			if (result == DBNull.Value) // pro účely srovnání budeme tvrdit, že null a DBNull.Value jsou shodné (tedy null).
 			{
 				return null;
 			}

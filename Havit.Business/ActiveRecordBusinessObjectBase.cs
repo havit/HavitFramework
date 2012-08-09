@@ -144,6 +144,8 @@ namespace Havit.Business
 		#endregion
 
 		#region Save logika
+		private WeakReference lastSaveTransaction;
+
 		/// <summary>
 		/// Uloží objekt do databáze, s použitím transakce. Nový objekt je vložen INSERT, existující objekt je aktualizován UPDATE.
 		/// </summary>
@@ -155,14 +157,18 @@ namespace Havit.Business
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
 		public override void Save(DbTransaction transaction)
 		{
-			//if (IsLoadedPartially)
-			//{
-			//    throw new ApplicationException("Partially-loaded object cannot be saved.");
-			//}
-
 			// vynucení transakce nad celou Save() operací (BusinessObjectBase ji pouze oèekává, ale nevynucuje).
 			DbConnector.Default.ExecuteTransaction(delegate(DbTransaction myTransaction)
 				{
+
+					// nechceme dvojí Save v rámci jedné transakce, proto si transakci ukládáme jako scope sejvu a v rámci stejného scope vykopneme Save
+					if ((lastSaveTransaction != null) && (object.ReferenceEquals(lastSaveTransaction.Target, myTransaction)))
+					{
+						return;
+					}
+					lastSaveTransaction = new WeakReference(myTransaction);
+
+
 					Save_BaseInTransaction(myTransaction); // base.Save(myTransaction) hlásí warning
 				}, transaction);
 		}

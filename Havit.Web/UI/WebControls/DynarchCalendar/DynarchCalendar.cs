@@ -263,7 +263,16 @@ namespace Havit.Web.UI.WebControls
 				{
 					return tmp;
 				}
-				return TransformDatePatternToClientScript(Thread.CurrentThread.CurrentCulture.DateTimeFormat.ShortDatePattern, Thread.CurrentThread.CurrentCulture.DateTimeFormat.DateSeparator);
+
+				string pattern = Thread.CurrentThread.CurrentCulture.DateTimeFormat.ShortDatePattern;
+
+				if (ShowsTime)
+				{
+					pattern += " ";
+					pattern += Thread.CurrentThread.CurrentCulture.DateTimeFormat.ShortTimePattern;
+				}
+
+				return TransformDatePatternToClientScript(pattern, Thread.CurrentThread.CurrentCulture.DateTimeFormat.DateSeparator, Thread.CurrentThread.CurrentCulture.DateTimeFormat.TimeSeparator);
 			}
 			set
 			{
@@ -1121,33 +1130,62 @@ namespace Havit.Web.UI.WebControls
 		/// <param name="pattern">Date pattern.</param>
 		/// <param name="separator">Øetìzec, který má být použit jako oddìlovaè dne, mìsíce a roku.</param>
 		/// <returns>DateFormat používaný DynarchCalendarem.</returns>
-		private string TransformDatePatternToClientScript(string pattern, string separator)
+		private string TransformDatePatternToClientScript(string pattern, string dateSeparator, string timeSeparator)
 		{
 			string result = pattern;
 
 			result = result.Replace("%", "");
 
+			// date
 			result = result.Replace("dddd", "%A");
 			result = result.Replace("ddd", "%a");
-			result = result.Replace("dd", "#X#");
-			result = result.Replace("d", "%d");
-			result = result.Replace("#X#", "%d");
+			result = result.Replace("dd", "#0#"); // %d
+			result = result.Replace("d", "#0#");
 
 			result = result.Replace("MMMM", "%B");
 			result = result.Replace("MMM", "%b");
-			result = result.Replace("MM", "%m");
-			result = result.Replace("M", "%m");
+			result = result.Replace("MM", "#1#");
+			result = result.Replace("M", "#1#");
 
 			result = result.Replace("yyyy", "%Y");
 			result = result.Replace("yy", "%y");
 			result = result.Replace("y", "%y");
 
-			// Ignore gg, z, zz, zzz
+			// ignore gg, z, zz, zzz
 			result = result.Replace("gg", "");
 			result = result.Replace("z", "");
+			
+			// date: ve výsledku mohli pøibýt A, a, B, b, Y, y
+
+			// time
+			result = result.Replace("%H", "%k");
+			result = result.Replace("HH", "#2#"); // %H
+			result = result.Replace("H", "%k");
+			result = result.Replace("hh", "%I");
+			result = result.Replace("h", "%l");
+
+			result = result.Replace("mm", "%M");
+			result = result.Replace("%m", "%M");
+			result = result.Replace("m", "%M");
+
+			result = result.Replace("ss", "%S");
+			result = result.Replace("%s", "%S");
+			result = result.Replace("s", "%S");
+
+			result = result.Replace("tt", "%P");
+			result = result.Replace("%t", "%P");
+			result = result.Replace("t", "%P");
+			
+			// time: ve výsledku mohli pøibýt I, k, l, M, S, P
+
+			// doèasné náhrady
+			result = result.Replace("#0#", "%d");
+			result = result.Replace("#1#", "%m");
+			result = result.Replace("#2#", "%H");
 
 			// Replace date separator
-			result = result.Replace("/", separator);
+			result = result.Replace("/", dateSeparator);
+			result = result.Replace(":", timeSeparator);
 
 			return result;
 		}

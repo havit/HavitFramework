@@ -80,7 +80,7 @@ namespace WebApplicationTest
 
 		void TestGV_DataBinding(object sender, EventArgs e)
 		{
-			((GridView)sender).DataSource = Subjekt.GetAll().Take(10).ToList();
+			((GridView)sender).DataSource = Subjekt.GetAll().Take(0).ToList();
 		}
 
 		private object TestGV1_GetInsertRowDataItem()

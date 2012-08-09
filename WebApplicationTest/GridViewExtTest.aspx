@@ -10,7 +10,7 @@
 <body>
     <form id="form1" runat="server">
     <div>
-		<havit:EnterpriseGridView ID="TestGV1" AllowInserting="True" InsertRowPosition="Bottom" runat="server">
+		<havit:EnterpriseGridView ID="TestGV1" AllowInserting="True" AllowPaging="true" PageSize="5" PagerSettings-Position="Bottom" runat="server">
 			<Columns>
 				<havit:BoundFieldExt DataField="Nazev" SortExpression="Nazev" HeaderText="Název" />
 				<havit:TemplateFieldExt SortExpression="Nazev" HeaderText="Název">

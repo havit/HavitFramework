@@ -121,6 +121,7 @@
     <Compile Include="UI\Adapters\CssAdapters\CssTreeViewAdapter.cs" />
     <Compile Include="UI\Adapters\CssAdapters\WebControlAdapterExtender.cs" />
     <Compile Include="UI\Adapters\SessionPageStatePersisterPageAdapter.cs" />
+    <Compile Include="UI\WebControls\BasicModalDialog.cs" />
     <Compile Include="UI\CommandNames.cs" />
     <Compile Include="UI\DataBinderExt.cs" />
     <Compile Include="UI\HtmlControls\HtmlFormExt.cs">
@@ -216,6 +217,10 @@
     </Compile>
     <Compile Include="UI\WebControls\IIdentifiableField.cs" />
     <Compile Include="UI\WebControls\TemplateFieldExt.cs" />
+    <Compile Include="UI\WebControls\WebModalDialog.cs" />
+    <Compile Include="UI\WebControls\WebModalDialogUserControlBase.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="UrlRewriter\BaseModuleRewriter.cs">
       <SubType>Code</SubType>
     </Compile>

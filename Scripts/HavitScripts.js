@@ -287,3 +287,112 @@ function havitCopyToClipboard(text) {
 	}
 	return false;
 }
+
+function havitShowDialog(elementId)
+{
+/// <summary>
+/// Zobrazi dialog.
+/// <summary>
+	var element = document.getElementById(elementId);
+	_havitGetDialogOverlay().style.display = 'block';
+
+	if (_havitIsPreIE7())
+	{
+		_havitHideSelects(document);
+		_havitRestoreSelects(element);
+	}
+	
+	element.style.display = 'block';
+	try 
+	{
+		element.focus();
+	}
+	catch (e)
+	{
+	}
+}
+
+function havitHideDialog(elementId)
+{
+/// <summary>
+/// Skryje dialog.
+/// <summary>
+	document.getElementById(elementId).style.display = 'none';
+	_havitGetDialogOverlay().style.display = 'none';
+	if (_havitIsPreIE7())
+	{
+		_havitRestoreSelects(document);
+	}
+}
+
+function _havitGetDialogOverlay()
+{
+/// <summary>
+/// (Vytváøí a) vrací element, který pøekrývá okno.
+/// <summary>
+	var overlay = document.getElementById('webdialogoverlay');
+	if (overlay == null)
+	{	
+		overlay = document.createElement('div');
+		overlay.id = 'webdialogoverlay';
+		document.body.appendChild(overlay);
+	}
+	return overlay;
+}
+
+function havitSetDialogSize(dialogElementId, widthUnit, heightUnit, marginLeftUnit, marginTopUnit)
+{
+/// <summary>
+/// Nastaví dialogu velikost a umístí jej doprostøed.
+/// Centrování je øešeno "fintou", viz http://interval.cz/clanky/zarovnani-prezentace-na-stred-pomoci-css/
+/// <summary>
+	var dialogElement = document.getElementById(dialogElementId);	
+	dialogElement.style.width = widthUnit;
+	dialogElement.style.height = heightUnit;
+	dialogElement.style.left = '50%';
+	dialogElement.style.top = '50%';
+	dialogElement.style.marginLeft = marginLeftUnit;
+	dialogElement.style.marginTop = marginTopUnit;
+}
+
+
+function _havitHideSelects(element)
+{
+	var selects = element.getElementsByTagName('select');
+	for(i = 0; i < selects.length; i++)
+	{
+		selects[i].setAttribute('originalVisibility', selects[i].style.visibility);
+		selects[i].style.visibility = 'hidden';
+	}
+}
+
+function _havitRestoreSelects(element)
+{
+	var selects = element.getElementsByTagName('select');
+	for(i = 0; i < selects.length; i++)
+	{	
+		var originalVisibility = selects[i].getAttribute('originalVisibility');
+		if ((originalVisibility != null) && (typeof originalVisibility != undefined))
+		{
+			selects[i].style.visibility = selects[i].getAttribute('originalVisibility');
+			selects[i].getAttribute('originalVisibility', null);
+		}
+	}
+}
+
+function _havitIsPreIE7()
+{
+	var userAgent = navigator.userAgent;
+	var versionOffset = userAgent.indexOf("MSIE");
+	var isIE = (versionOffset >= 0);
+	if (isIE)
+	{
+	    fullVersionIE = parseFloat(userAgent.substring(versionOffset+5, userAgent.length));
+	    majorVersionIE = parseInt('' + fullVersionIE);
+	    if (majorVersionIE < 7)
+	    {
+			return true;
+	    }
+	}
+	return false;
+}

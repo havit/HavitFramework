@@ -62,10 +62,14 @@ namespace Havit.Web.Security
 				throw new InvalidOperationException("HttpContext.Current not available");
 			}
 
-			string[] roles = ticket.UserData.Split(',');
-			for (int i = 0; i < roles.Length; i++)
+			string[] roles = null;
+			if (!String.IsNullOrEmpty(ticket.UserData))
 			{
-				roles[i] = roles[i].Trim();
+				roles = ticket.UserData.Split(',');
+				for (int i = 0; i < roles.Length; i++)
+				{
+					roles[i] = roles[i].Trim();
+				}
 			}
 
 			FormsIdentity identity = new FormsIdentity(ticket);
@@ -110,6 +114,12 @@ namespace Havit.Web.Security
 		{
 			FormsAuthenticationTicket authTicket;
 
+			string userData = string.Empty;
+			if (roles != null)
+			{
+				userData = String.Join(",", roles);
+			}
+
 			// .NET FW 2.0 obsahuje bug, kdy do persistentního ticketu nastavuje platnost jako nepersistentní
 			if (createPersistent)
 			{
@@ -119,7 +129,7 @@ namespace Havit.Web.Security
 					DateTime.Now,								// issueDate
 					DateTime.Now.AddYears(50),					// expiration
 					createPersistent,							// isPersistent
-					String.Join(",", roles),					// userData
+					userData,								// userData
 					cookiePath);								// cookiePath
 			}
 			else
@@ -130,7 +140,7 @@ namespace Havit.Web.Security
 					DateTime.Now,								// issueDate
 					DateTime.Now.AddMinutes((double)Timeout),	// expiration
 					createPersistent,							// isPersistent
-					String.Join(",", roles),					// userData
+					userData,									// userData
 					cookiePath);								// cookiePath
 			}
 			return authTicket;

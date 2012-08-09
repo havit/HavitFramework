@@ -14,6 +14,7 @@ using Havit.Business.Query;
 using Havit.BusinessLayerTest;
 using Havit.Web.UI.WebControls;
 using System.Collections.Generic;
+using Havit.Web.UI;
 
 namespace WebApplicationTest
 {
@@ -97,59 +98,4 @@ namespace WebApplicationTest
 		PageStatePersister _currentPageStatePersister;
     }
 
-	public class FilePageStatePersister: PageStatePersister
-	{
-		private const string FilenameWithUserPattern = "viewstate.{1}\\{0}";
-		private const string FilenameWithoutUserPattern = "viewstate.anonymous\\{0}";
-
-		private string _viewstatePath;
-
-		public FilePageStatePersister(Page page, string viewstatePath): base(page)
-		{
-			_viewstatePath = viewstatePath;
-		}
-
-		public override void Load()
-		{
-			string state = System.IO.File.ReadAllText(GetFilename(Page.Request.Form["__VIEWSTATE_STORAGE"]));
-			Pair pair = (Pair)StateFormatter.Deserialize(state);
-			ViewState = pair.First;
-			ControlState = pair.Second;
-		}
-
-		public override void Save()
-		{
-			string guid = Guid.NewGuid().ToString();
-			System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(GetFilename(guid)));
-			using (System.IO.StreamWriter writer = System.IO.File.CreateText(GetFilename(guid)))
-			{
-				writer.Write(StateFormatter.Serialize(new Pair(ViewState, base.ControlState)));
-			}
-			this.Page.ClientScript.RegisterHiddenField("__VIEWSTATE_STORAGE", guid);
-		}
-
-		public static void DeleteAllUserFiles(string viewstatePath, string username)
-		{
-			string[] files = System.IO.Directory.GetFiles(viewstatePath, String.Format(FilenameWithUserPattern, "*", username.GetHashCode() % 1000000), System.IO.SearchOption.AllDirectories);
-			foreach (string file in files)
-			{
-				System.IO.File.Delete(file);
-			}
-		}
-		public static void DeleteOldFiles(string viewstatePath)
-		{
-			// to je blbě
-			string[] files = System.IO.Directory.GetFiles(viewstatePath, "*.viewstate", System.IO.SearchOption.AllDirectories);
-			DateTime yesterday = DateTime.Today.AddDays(-1);
-			foreach (string file in files.Where(file => System.IO.File.GetCreationTime(file) < yesterday))
-			{
-				System.IO.File.Delete(file);
-			}
-		}
-
-		private string GetFilename(string code)
-		{
-			return System.IO.Path.Combine(_viewstatePath, string.Format(Page.User.Identity.IsAuthenticated ? FilenameWithUserPattern : FilenameWithoutUserPattern, code, Page.User.Identity.Name.GetHashCode() % 1000000));
-		}
-	}
 }

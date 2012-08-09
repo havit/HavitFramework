@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Havit.Business;
 using Havit.Collections;
+using Havit.Web.UI.WebControls.ControlsValues;
 
 namespace Havit.Web.UI.WebControls
 {
@@ -14,6 +15,13 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class EnterpriseDropDownList : DropDownListExt
 	{
+		#region Constructors (static)
+		static EnterpriseDropDownList()
+		{
+			Havit.Web.UI.WebControls.ControlsValues.PersisterControlExtenderRepository.Default.Add(new EnterpriseDropDownListPersisterControlExtender());
+		} 
+		#endregion
+		
 		#region ItemPropertyInfo
 		/// <summary>
 		/// ReferenceFieldPropertyInfo property, jejíž hodnota se tímto DropDownListem vybírá.

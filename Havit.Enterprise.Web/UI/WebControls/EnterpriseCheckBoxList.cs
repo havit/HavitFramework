@@ -6,6 +6,7 @@ using Havit.Business;
 using System.Web.UI;
 using Havit.Collections;
 using System.Collections;
+using Havit.Web.UI.WebControls.ControlsValues;
 
 namespace Havit.Web.UI.WebControls
 {
@@ -14,6 +15,13 @@ namespace Havit.Web.UI.WebControls
     /// </summary>
 	public class EnterpriseCheckBoxList: CheckBoxListExt
 	{
+		#region Constructors (static)
+		static EnterpriseCheckBoxList()
+		{
+			Havit.Web.UI.WebControls.ControlsValues.PersisterControlExtenderRepository.Default.Add(new EnterpriseCheckBoxListPersisterControlExtender());
+		} 
+		#endregion
+
 		#region ItemPropertyInfo
 		/// <summary>
 		/// ReferenceFieldPropertyInfo property, jejíž hodnota se tímto CheckBoxListem vybírá.

@@ -1,0 +1,60 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Havit.Web.UI.WebControls.ControlsValues;
+using System.Web.UI.WebControls;
+using System.Web.UI;
+using System.Linq;
+
+namespace Havit.Web.UI.WebControls.ControlsValues
+{
+	/// <summary>
+	/// IPersisterControlExtender pro ListBox.
+	/// </summary>
+	class ListBoxPersisterControlExtender : IPersisterControlExtender
+	{
+		#region GetValue
+		public object GetValue(Control control)
+		{
+			return ((ListBox)control).Items.Cast<ListItem>().Where(item => item.Selected).Select(item => item.Value).ToArray();
+		} 
+		#endregion
+
+		#region GetValueType
+		public Type GetValueType()
+		{
+			return typeof(String[]);
+		} 
+		#endregion
+
+		#region SetValue
+		public void SetValue(Control control, object value)
+		{
+			ListBox listBox = (ListBox)control;
+			string[] values = (string[])value;
+
+			listBox.ClearSelection();
+			foreach (string item in values)
+			{
+				ListItem listItem = listBox.Items.FindByValue(item);
+				if (listItem != null)
+				{
+					listItem.Selected = true;
+				}
+			}
+		} 
+		#endregion
+
+		#region GetPriority
+		public int? GetPriority(System.Web.UI.Control control)
+		{
+			if (control is ListBox)
+			{
+				return 1;
+			}
+			return null;
+		} 
+		#endregion	
+	}
+}

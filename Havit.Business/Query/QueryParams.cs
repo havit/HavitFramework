@@ -4,6 +4,7 @@ using System.Text;
 using System.Data.Common;
 using System.Globalization;
 using Havit.Data;
+using System.Diagnostics.Contracts;
 
 namespace Havit.Business.Query
 {
@@ -52,7 +53,11 @@ namespace Havit.Business.Query
 		/// </summary>
 		public PropertyInfoCollection Properties
 		{
-		  get { return properties; }
+			get
+			{
+				Contract.Ensures(Contract.Result<PropertyInfoCollection>() != null);
+				return properties;
+			}
 		}
 		private PropertyInfoCollection properties = new PropertyInfoCollection();
 
@@ -61,7 +66,11 @@ namespace Havit.Business.Query
 		/// </summary>
 		public ConditionList Conditions
 		{
-			get { return conditions.Conditions; }
+			get
+			{
+				Contract.Ensures(Contract.Result<ConditionList>() != null);
+				return conditions.Conditions;
+			}
 		}
 		private AndCondition conditions = new AndCondition();
 
@@ -70,7 +79,11 @@ namespace Havit.Business.Query
 		/// </summary>
 		public OrderByCollection OrderBy
 		{
-			get { return orderBy; }
+			get
+			{
+				Contract.Ensures(Contract.Result<OrderByCollection>() != null);
+				return orderBy;
+			}
 		}
 		private OrderByCollection orderBy = new OrderByCollection();
 		#endregion
@@ -108,10 +121,7 @@ namespace Havit.Business.Query
 		/// <param name="command"></param>
 		public void PrepareCommand(DbCommand command)
 		{
-			if (command == null)
-			{
-				throw new ArgumentNullException("command");
-			}
+			Contract.Requires<ArgumentNullException>(command != null, "command");
 
 			OnBeforePrepareCommand();
 

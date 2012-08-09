@@ -10,12 +10,15 @@
     <form id="form1" runat="server">
     <div>
     
-		<asp:Menu runat="server" Orientation="Horizontal" DisappearAfter="600">
+		<asp:Menu runat="server" Orientation="Horizontal" DisappearAfter="1000">
 			<Items>
 				<asp:MenuItem Text="Tests">
 				</asp:MenuItem>
 				<asp:MenuItem Text="Scriptlet">
-					<asp:MenuItem Text="ScriptletTest" NavigateUrl="~/ScriptletTest.aspx" />
+					<asp:MenuItem Text="ScriptletTest" NavigateUrl="~/ScriptletTest.aspx">
+						<asp:MenuItem Text="ScriptletTest" NavigateUrl="~/bScriptletTest.aspx" />
+						<asp:MenuItem Text="ScriptletTest2" NavigateUrl="~/bScriptletTest2.aspx" />
+					</asp:MenuItem>
 					<asp:MenuItem Text="ScriptletTest2" NavigateUrl="~/ScriptletTest2.aspx" />
 					<asp:MenuItem Text="ScriptletAjaxTest">
 						<asp:MenuItem Text="ScriptletTest" NavigateUrl="~/aScriptletTest.aspx" />

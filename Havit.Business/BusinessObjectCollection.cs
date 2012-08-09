@@ -365,7 +365,7 @@ namespace Havit.Business
 
 		#region SaveAll
 		/// <summary>
-		/// Uloží všechny prvky kolekce, v transakci.
+		/// Uloží všechny prvky kolekce, v transakci (pokud je null, založí si samo novou).
 		/// </summary>
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v které mají být prvky uloženy</param>
 		public virtual void SaveAll(DbTransaction transaction)
@@ -380,7 +380,7 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Uloží všechny prvky kolekce, bez transakce.
+		/// Uloží všechny prvky kolekce (v transakci, kterou si samo vytvoøí).
 		/// </summary>
 		public virtual void SaveAll()
 		{

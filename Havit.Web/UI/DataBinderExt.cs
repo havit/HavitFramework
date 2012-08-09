@@ -18,7 +18,7 @@ namespace Havit.Web.UI
 		/// </summary>
 		/// <param name="dataItem">Položka dat z DataSource</param>
 		/// <param name="dataField">DataField</param>
-		/// <returns>hodnota, pokud se ji podaøilo získat; jinak <c>null</c></returns>
+		/// <returns>hodnota, pokud se ji podaøilo získat; jinak <c>null</c> nebo DBNull.Value</returns>
 		public static object GetValue(object dataItem, string dataField)
 		{
 			string[] expressionParts = dataField.Split('.');
@@ -43,6 +43,11 @@ namespace Havit.Web.UI
 				if (currentValue == null) // && (i < lastExpressionIndex))
 				{
 					return null;
+				}
+
+				if (currentValue == DBNull.Value) // && (i < lastExpressionIndex))
+				{
+					return DBNull.Value;
 				}
 			}
 

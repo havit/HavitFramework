@@ -127,7 +127,7 @@ namespace Havit.Web.UI.WebControls
 				return dataItem;
 
 			object value = DataBinderExt.GetValue(dataItem, DataField);
-			if (value == null)
+			if ((value == null) || (value == DBNull.Value))
 			{
 				return GetNotFoundDataItem();
 			}

@@ -111,6 +111,10 @@ namespace Havit.Collections
 		/// </summary>
 		private object GetValue(object obj, int index)
 		{
+			if ((obj == null) || (obj == DBNull.Value))
+			{
+				return null;
+			}
 			object result = DataBinder.Eval(obj, sortItems[index].Expression);
 			if (result == DBNull.Value)
 			{

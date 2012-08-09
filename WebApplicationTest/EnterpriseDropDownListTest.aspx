@@ -22,6 +22,60 @@
 			DataTextField="Symbol"		
 			runat="server"
 		/>
+	
+	<table>
+	<tr>
+	<td>
+		<havit:EnterpriseGridView runat="server" AutoDataBind="false" ID="Test1GV">
+			<Columns>
+				<havit:BoundFieldExt DataField="Nazev" />
+				<havit:TemplateFieldExt>
+					<ItemTemplate>
+						<havit:EnterpriseDropDownList 
+							ID="TestDDL"
+							AutoDataBind="true"
+							DataTextField="Nazev"
+							ItemObjectInfo="<%$ Expression: Subjekt.ObjectInfo %>"
+							runat="server"
+						/>
+					</ItemTemplate>
+				</havit:TemplateFieldExt>
+			</Columns>
+		</havit:EnterpriseGridView>
+	</td>
+	<td>
+		<havit:EnterpriseGridView runat="server" AutoDataBind="true" ID="Test2GV">
+			<Columns>
+				<havit:BoundFieldExt DataField="Nazev" />
+				<havit:TemplateFieldExt>
+					<ItemTemplate>
+						<havit:EnterpriseDropDownList 
+							ID="TestDDL"
+							AutoDataBind="true"
+							DataTextField="Nazev"
+							ItemObjectInfo="<%$ Expression: Subjekt.ObjectInfo %>"
+							runat="server"
+						/>
+					</ItemTemplate>
+				</havit:TemplateFieldExt>
+			</Columns>
+		</havit:EnterpriseGridView>
+	</td>
+	</tr>
+	</table>
+		
+		<asp:Repeater runat="server" ID="TestRepeater">
+			<ItemTemplate>
+				<havit:EnterpriseDropDownList 
+					ID="TestDDL"
+					AutoDataBind="true"
+					DataTextField="Nazev"
+					ItemObjectInfo="<%$ Expression: Subjekt.ObjectInfo %>"
+					SelectedObject="<%# Subjekt.GetObject(9) %>"
+					runat="server"
+				/>			
+			</ItemTemplate>
+		</asp:Repeater>
     </div>
     </form>
 </body>

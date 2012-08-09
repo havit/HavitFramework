@@ -307,6 +307,11 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		public override void DataBind()
 		{
+			// v pøípadì použití z GridView (v EnterpriseGV bez AutoDataBind)
+			// se vyvolá nejdøív DataBind a poté teprve OnLoad.
+			// musíme proto zajistit naplnìní hodnot seznamu i zde
+			EnsureAutoDataBind();
+
 			isDataBinding = true;
 			base.DataBind();
 			isDataBinding = false;

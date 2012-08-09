@@ -349,14 +349,14 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-		#region SelectObjectsIfPresent
+		#region SelectExistingItems
 		/// <summary>
 		/// Vybere objekt dle ID, pokud je objekt s tímto ID mezi daty.
 		/// Pokud není, neprovede nic. Výslední kolekce objektù nastaví výbìr (SelectedObjects).
 		/// Metoda je urèena pro vnitøní implementaci ukládání hodnot.
 		/// </summary>
 		/// <param name="objectIDs"></param>
-		public void SelectObjectsIfPresent(int[] objectIDs)
+		internal void SelectExistingItems(int[] objectIDs)
 		{
 			List<object> objectsList = new List<object>();
 

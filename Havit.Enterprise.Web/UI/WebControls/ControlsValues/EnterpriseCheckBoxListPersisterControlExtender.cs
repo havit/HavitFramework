@@ -32,7 +32,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 		{			
 			int[] selectedIDs = (int[])value;
 			EnterpriseCheckBoxList enterpriseCheckBoxList = (EnterpriseCheckBoxList)control;
-			enterpriseCheckBoxList.SelectObjectsIfPresent(selectedIDs);			
+			enterpriseCheckBoxList.SelectExistingItems(selectedIDs);			
 		} 
 		#endregion
 

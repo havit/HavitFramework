@@ -966,7 +966,7 @@ namespace Havit.Web.UI.WebControls
 					{
 						LinkButton allPagesLinkButton = new LinkButton();
 						allPagesLinkButton.ID = "AllPagesLinkButton";
-						allPagesLinkButton.Text = this.PagerSettingsAllPagesButtonText;
+						allPagesLinkButton.Text = HttpUtilityExt.GetResourceString(this.PagerSettingsAllPagesButtonText);
 						allPagesLinkButton.Click += new EventHandler(AllPagesLinkButton_Click);
 						allPagesLinkButton.CausesValidation = false;
 						allPagesControl = allPagesLinkButton;

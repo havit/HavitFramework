@@ -294,7 +294,7 @@ namespace Havit.Data
 		/// <summary>
 		/// Naète parametr typu Double.
 		/// </summary>
-		/// <param name="field">jméno parametru</param>
+		/// <param name="fieldName">jméno parametru</param>
 		/// <param name="target">cíl, kam má být parametr uložen</param>
 		/// <returns>false, pokud má parametr hodnotu NULL; true, pokud byla naètena hodnota</returns>
 		public bool LoadDouble(string fieldName, ref double target)

@@ -5,7 +5,7 @@ using System.Text;
 namespace Havit.Business
 {
 	/// <summary>
-	/// Pøedek generického typu <see cref="PropertyHolder"/>. 
+	/// Pøedek generického typu <see cref="PropertyHolder{T}"/>. 
 	/// Potøebujeme kolekci PropertyHolderù a kolekci generických typù nelze udìlat.
 	/// </summary>
 	public abstract class PropertyHolderBase

@@ -621,12 +621,13 @@ namespace Havit.Data.SqlClient
 		/// Pokud je zadaná transakce <c>null</c>, je spuštìna a commitována nová.
 		/// Pokud zadaná transakce není <c>null</c>, jsou zadané kroky pouze vykonány.
 		/// </summary>
-		/// <param name="transaction">transakce</param>
-		public static void ExecuteTransaction(SqlTransactionDelegate transactionWork, SqlTransaction transaction)
+		/// <param name="transactionWork"><see cref="SqlTransactionDelegate"/> reprezentující s úkony, které mají být souèástí transakce</param>
+		/// <param name="outerTransaction">transakce</param>
+		public static void ExecuteTransaction(SqlTransactionDelegate transactionWork, SqlTransaction outerTransaction)
 		{
-			SqlTransaction currentTransaction = transaction;
+			SqlTransaction currentTransaction = outerTransaction;
 			SqlConnection connection;
-			if (transaction == null)
+			if (outerTransaction == null)
 			{
 				// otevøení spojení, pokud jsme iniciátory transakce
 				connection = SqlDataAccess.GetConnection();
@@ -642,7 +643,7 @@ namespace Havit.Data.SqlClient
 			{
 				transactionWork(currentTransaction);
 
-				if (transaction == null)
+				if (outerTransaction == null)
 				{
 					// commit chceme jen v pøípadì, že nejsme uvnitø vnìjší transakce
 					currentTransaction.Commit();
@@ -663,7 +664,7 @@ namespace Havit.Data.SqlClient
 			finally
 			{
 				// uzavøení spojení, pokud jsme iniciátory transakce
-				if (transaction == null)
+				if (outerTransaction == null)
 				{
 					connection.Close();
 				}
@@ -674,6 +675,7 @@ namespace Havit.Data.SqlClient
 		/// Vykoná požadované kroky v rámci transakce.
 		/// Je spuštìna a commitována nová samostatná transakce.
 		/// </summary>
+		/// <param name="transactionWork"><see cref="SqlTransactionDelegate"/> reprezentující s úkony, které mají být souèástí transakce</param>
 		public static void ExecuteTransaction(SqlTransactionDelegate transactionWork)
 		{
 			ExecuteTransaction(transactionWork, null);

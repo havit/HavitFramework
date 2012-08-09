@@ -80,6 +80,23 @@ namespace Havit.Business
 		private bool _isDeleted;
 		#endregion
 
+		#region PropertyHolders
+		/// <summary>
+		/// Kolekce referencí na jednotlivé property-holder objekty.
+		/// </summary>
+		/// <remarks>
+		/// Kolekce je urèena pro hromadné operace s property-holdery. Jednotlivé property si reference na své property-holdery udržují v private fieldu.
+		/// </remarks>
+		internal protected Collection<PropertyHolderBase> PropertyHolders
+		{
+			get
+			{
+				return _propertyHolders;
+			}
+		}
+		private Collection<PropertyHolderBase> _propertyHolders = new Collection<PropertyHolderBase>();
+		#endregion
+
 		#region Constructors
 		/// <summary>
 		/// Konstruktor pro nový objekt (bez perzistence v databázi).
@@ -90,6 +107,7 @@ namespace Havit.Business
 			this._isNew = true;
 			this._isDirty = false;
 			this._isLoaded = true;
+
 			Init();
 		}
 
@@ -102,6 +120,7 @@ namespace Havit.Business
 			this._id = id;
 			this._isLoaded = false;
 			this._isDirty = false;
+
 			Init();
 		}
 		#endregion
@@ -337,37 +356,61 @@ namespace Havit.Business
 		}
 		#endregion
 
-//NOVE
-		private Collection<PropertyHolderBase> _propertyHolders = new Collection<PropertyHolderBase>();
-		internal protected Collection<PropertyHolderBase> PropertyHolders
-		{
-			get
-			{
-				return _propertyHolders;
-			}
-		}
-
+		#region PreSave
+		/// <summary>
+		/// Metoda, která je volána pøed uložením objektu, po zkontrolování constraints.
+		/// </summary>
+		/// <remarks>
+		/// V pøípadì, že objekt není ukládán (napø. není Dirty), metoda PreSave() se nevolá.<br/>
+		/// </remarks>
 		protected virtual void PreSave()
 		{
+			// NOOP
 		}
+		#endregion
 
+		/// <summary>
+		/// Kontroluje konzistenci objektu jako celku.
+		/// </summary>
+		/// <remarks>
+		/// Automaticky je voláno pøed ukládáním objektu Save(), pøed fází PreSave().
+		/// </remarks>
 		protected virtual void CheckConstraints()
 		{
+#warning Nebylo by lepší umožnit metodu volat i explicitnì a dát ji public?
+#warning Nutno pøipravit vlastní ConstraintViolationException
 		}
 
+		/// <summary>
+		/// Inicializaèní metoda, která je volána pøi vytvoøení objektu (pøímo z konstruktorù).
+		/// Pøipravena pro override potomky.
+		/// </summary>
+		/// <remarks>
+		/// Metoda Init() je zamýšlena mj. pro incializaci PropertyHolderù (vytvoøení instance) a kolekcí (vytvoøení instance, navázání událostí).
+		/// </remarks>
 		protected virtual void Init()
 		{
+			// NOOP
 		}
 
 		internal void SetDirty()
 		{
+#warning K èemu je SetDirty() potøeba? Proè nestaèí set-accessor od property IsDirty?
 			this._isDirty = true;
 		}
 
+		#region RegisterPropertyHolder (internal)
+		/// <summary>
+		/// Zaregistruje PropertyHolder do kolekce PropertyHolders.
+		/// </summary>
+		/// <remarks>
+		/// Touto metodou se k objektu registrují sami PropertyHoldery ve svých constructorech.
+		/// </remarks>
+		/// <param name="propertyHolder">PropertyHolder k zaregistrování</param>
 		internal void RegisterPropertyHolder(PropertyHolderBase propertyHolder)
 		{
 			_propertyHolders.Add(propertyHolder);
 		}
-//
+		#endregion
 	}
 }

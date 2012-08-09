@@ -107,7 +107,7 @@ namespace Havit.Business
 		/// <remarks>
 		/// Metoda neprovede uložení objektu, pokud není nahrán (!IsLoaded), není totiž ani co ukládat,
 		/// data nemohla být zmìnìna, když nebyla ani jednou použita.<br/>
-		/// Metoda také neprovede uložení, pokud objekt nebyl zmìnìn a souèasnì nejde o nový objekt (!IsDirty && !IsNew)
+		/// Metoda také neprovede uložení, pokud objekt nebyl zmìnìn a souèasnì nejde o nový objekt (!IsDirty &amp;&amp; !IsNew)
 		/// </remarks>
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
 		public override void Save(DbTransaction transaction)

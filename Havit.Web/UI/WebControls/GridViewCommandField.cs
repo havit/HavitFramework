@@ -47,6 +47,112 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region Tooltipy (EditTooltip, CancelTooltip, SelectTooltip, UpdateTooltip, DeleteTooltip, InsertTooltip)
+
+		#region EditTooltip
+		/// <summary>
+		/// Tooltip tlačítka pro vstup do editace záznamu.
+		/// </summary>
+		public string EditTooltip
+		{
+			get
+			{
+				return (string)(ViewState["EditTooltip"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["EditTooltip"] = value;
+			}
+		}
+		#endregion
+
+		#region CancelTooltip
+		/// <summary>
+		/// Tooltip tlačítka pro zrušení editačního režimu bez úpravy záznamu (cancel).
+		/// </summary>
+		public string CancelTooltip
+		{
+			get
+			{
+				return (string)(ViewState["CancelTooltip"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["CancelTooltip"] = value;
+			}
+		}
+		#endregion
+
+		#region SelectTooltip
+		/// <summary>
+		/// Tooltip tlačítka pro výběr řádku.
+		/// </summary>
+		public string SelectTooltip
+		{
+			get
+			{
+				return (string)(ViewState["SelectTooltip"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["SelectTooltip"] = value;
+			}
+		}
+		#endregion
+
+		#region UpdateTooltip
+		/// <summary>
+		/// Tooltip  tlačítka pro potvrzení úpravy záznamu.
+		/// </summary>
+		public string UpdateTooltip
+		{
+			get
+			{
+				return (string)(ViewState["UpdateTooltip"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["UpdateTooltip"] = value;
+			}
+		}
+		#endregion
+
+		#region DeleteTooltip
+		/// <summary>
+		/// Tooltip tlačítka pro smazání záznamu.
+		/// </summary>
+		public string DeleteTooltip
+		{
+			get
+			{
+				return (string)(ViewState["DeleteTooltip"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["DeleteTooltip"] = value;
+			}
+		}
+		#endregion
+
+		#region InsertTooltip
+		/// <summary>
+		/// Tooltip tlačítko pro vložení nového záznamu.
+		/// </summary>
+		public string InsertTooltip
+		{
+			get
+			{
+				return (string)(ViewState["InsertTooltip"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["InsertTooltip"] = value;
+			}
+		}
+		#endregion
+
+		#endregion
+
 		#region Initialize
 		/// <summary>
 		/// Inicializuje field (volá se jednou z GridView.CreateChildControls()).
@@ -99,18 +205,18 @@ namespace Havit.Web.UI.WebControls
 						if (((rowState & DataControlRowState.Edit) != DataControlRowState.Normal) && showEditButton)
 						{
 							// stejné jako CommandField
-							this.AddButtonToCell(cell, "Update", HttpUtilityExt.GetResourceString(this.UpdateText), causesValidation, validationGroup, rowIndex, this.UpdateImageUrl);
+							this.AddButtonToCell(cell, "Update", HttpUtilityExt.GetResourceString(this.UpdateText), HttpUtilityExt.GetResourceString(this.UpdateTooltip), causesValidation, validationGroup, rowIndex, this.UpdateImageUrl);
 							if (showCancelButton)
 							{
 								child = new LiteralControl("&nbsp;");
 								cell.Controls.Add(child);
-								this.AddButtonToCell(cell, "Cancel", HttpUtilityExt.GetResourceString(this.CancelText), false, string.Empty, rowIndex, this.CancelImageUrl);
+								this.AddButtonToCell(cell, "Cancel", HttpUtilityExt.GetResourceString(this.CancelText), HttpUtilityExt.GetResourceString(this.CancelTooltip), false, string.Empty, rowIndex, this.CancelImageUrl);
 							}
 						}
 						if (((rowState & DataControlRowState.Insert) != DataControlRowState.Normal) && showInsertButton)
 						{
 							// Nechceme Cancel
-							this.AddButtonToCell(cell, "Insert", HttpUtilityExt.GetResourceString(this.InsertText), causesValidation, validationGroup, rowIndex, this.InsertImageUrl);
+							this.AddButtonToCell(cell, "Insert", HttpUtilityExt.GetResourceString(this.InsertText), HttpUtilityExt.GetResourceString(this.InsertTooltip), causesValidation, validationGroup, rowIndex, this.InsertImageUrl);
 							/*
 							if (showCancelButton)
 							{
@@ -125,7 +231,7 @@ namespace Havit.Web.UI.WebControls
 					{
 						if (showSelectButton)
 						{
-							this.AddButtonToCell(cell, "Select", HttpUtilityExt.GetResourceString(this.SelectText), false, string.Empty, rowIndex, this.SelectImageUrl);
+							this.AddButtonToCell(cell, "Select", HttpUtilityExt.GetResourceString(this.SelectText), HttpUtilityExt.GetResourceString(this.SelectTooltip), false, string.Empty, rowIndex, this.SelectImageUrl);
 							insertSpace = false;
 						}
 						if (showEditButton)
@@ -135,7 +241,7 @@ namespace Havit.Web.UI.WebControls
 								child = new LiteralControl("&nbsp;");
 								cell.Controls.Add(child);
 							}
-							this.AddButtonToCell(cell, "Edit", HttpUtilityExt.GetResourceString(this.EditText), false, string.Empty, rowIndex, this.EditImageUrl);
+							this.AddButtonToCell(cell, "Edit", HttpUtilityExt.GetResourceString(this.EditText), HttpUtilityExt.GetResourceString(this.EditTooltip), false, string.Empty, rowIndex, this.EditImageUrl);
 							insertSpace = false;
 						}
 						if (showDeleteButton)
@@ -145,8 +251,8 @@ namespace Havit.Web.UI.WebControls
 								child = new LiteralControl("&nbsp;");
 								cell.Controls.Add(child);
 							}
-							
-							IButtonControl button = this.AddButtonToCell(cell, "Delete", HttpUtilityExt.GetResourceString(this.DeleteText), false, string.Empty, rowIndex, this.DeleteImageUrl);
+
+							IButtonControl button = this.AddButtonToCell(cell, "Delete", HttpUtilityExt.GetResourceString(this.DeleteText), HttpUtilityExt.GetResourceString(this.DeleteTooltip), false, string.Empty, rowIndex, this.DeleteImageUrl);
 
 							// doplneni o DeleteConfirmText
 							string deleteConfirmationTextResolved = HttpUtilityExt.GetResourceString(DeleteConfirmationText);
@@ -190,48 +296,57 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 
 		#region AddButtonToCell
-		private IButtonControl AddButtonToCell(DataControlFieldCell cell, string commandName, string buttonText, bool causesValidation, string validationGroup, int rowIndex, string imageUrl)
+		private IButtonControl AddButtonToCell(DataControlFieldCell cell, string commandName, string buttonText, string tooltipText, bool causesValidation, string validationGroup, int rowIndex, string imageUrl)
 		{
-			IButtonControl control;
+			IButtonControl control;			
 			IPostBackContainer container = base.Control as IPostBackContainer;
 			bool flag = true;
 			switch (this.ButtonType)
 			{
 				case ButtonType.Button:
+					Button button;
 					if ((container == null) || causesValidation)
 					{
-						control = new Button();
+						button = new Button();
 					}
 					else
 					{
-						control = new DataControlButtonExt(container);
+						button = new DataControlButtonExt(container);
 						flag = false;
 					}
+					button.ToolTip = tooltipText;
+					control = button;
 					break;
 
 				case ButtonType.Link:
+					LinkButton linkButton;
 					if ((container == null) || causesValidation)
 					{
-						control = new DataControlLinkButtonExt(null);
+						linkButton = new DataControlLinkButtonExt(null);
 					}
 					else
 					{
-						control = new DataControlLinkButtonExt(container);
+						linkButton = new DataControlLinkButtonExt(container);
 						flag = false;
 					}
+					linkButton.ToolTip = tooltipText;
+					control = linkButton;
 					break;
 
 				default:
+					ImageButton imageButton;
 					if ((container != null) && !causesValidation)
 					{
-						control = new DataControlImageButtonExt(container);
+						imageButton = new DataControlImageButtonExt(container);						
 						flag = false;
 					}
 					else
 					{
-						control = new ImageButton();
+						imageButton = new ImageButton();
 					}
-					((ImageButton)control).ImageUrl = imageUrl;
+					imageButton.ToolTip = tooltipText;
+					imageButton.ImageUrl = imageUrl;
+					control = imageButton;
 					break;
 			}
 			control.Text = buttonText;
@@ -241,15 +356,11 @@ namespace Havit.Web.UI.WebControls
 			{
 				control.CausesValidation = causesValidation;
 			}
-			control.ValidationGroup = validationGroup;
-
-
-
+			control.ValidationGroup = validationGroup;			
+			
 			/* Customizace jednotlivých řádek */
 			Control buttonControl = (Control)control;
 			buttonControl.DataBinding += new EventHandler(buttonControl_DataBinding);
-
-
 
 			cell.Controls.Add((WebControl)control);
 			return control;

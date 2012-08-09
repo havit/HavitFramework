@@ -201,7 +201,7 @@
     </Compile>
     <Compile Include="QueryStringBuilder.cs" />
     <Compile Include="Security\FormsRolesAuthentication.cs" />
-    <Compile Include="Services\Extenstions\SoapExceptionHealthMonitoringHandler.cs" />
+    <Compile Include="Services\Extensions\SoapExceptionHealthMonitoringHandler.cs" />
     <Compile Include="UI\Adapters\CssAdapters\CssMenuAdapter.cs" />
     <Compile Include="UI\Adapters\CssAdapters\CssTreeViewAdapter.cs" />
     <Compile Include="UI\Adapters\CssAdapters\WebControlAdapterExtender.cs" />

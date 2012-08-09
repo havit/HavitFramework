@@ -64,19 +64,6 @@ namespace Havit.Business
 		private bool _allowDuplicates = true;
 		#endregion
 
-		#region AddRange
-		/// <summary>
-		/// Pøidá do kolekce prvky pøedané kolekce.
-		/// </summary>
-		/// <param name="source">Kolekce, jejíž prvky mají být pøidány.</param>
-		public void AddRange(IEnumerable<TItem> source)
-		{
-			List<TItem> innerList = (List<TItem>)Items;
-			innerList.AddRange(source);
-			OnCollectionChanged(EventArgs.Empty);
-		}
-		#endregion
-
 		#region InsertItem (override)
 		/// <summary>
 		/// Inserts an element into the <see cref="T:System.Collections.ObjectModel.Collection`1"></see> at the specified index.
@@ -253,6 +240,19 @@ namespace Havit.Business
 		}
 		#endregion
 
+		#region AddRange
+		/// <summary>
+		/// Pøidá do kolekce prvky pøedané kolekce.
+		/// </summary>
+		/// <param name="source">Kolekce, jejíž prvky mají být pøidány.</param>
+		public void AddRange(IEnumerable<TItem> source)
+		{
+			List<TItem> innerList = (List<TItem>)Items;
+			innerList.AddRange(source);
+			OnCollectionChanged(EventArgs.Empty);
+		}
+		#endregion
+
 		#region RemoveAll
 		/// <summary>
 		/// Odstraní z kolekce všechny prvky odpovídající kritériu match.
@@ -266,6 +266,31 @@ namespace Havit.Business
 		{
 			List<TItem> innerList = (List<TItem>)Items;
 			return innerList.RemoveAll(match);
+		}
+		#endregion
+
+		#region RemoveRange
+		/// <summary>
+		/// Odstraní z kolekce požadované prvky.
+		/// </summary>
+		/// <param name="items">prvky, které mají být z kolekce odstranìny</param>
+		/// <returns>poèet prvkù, které byly skuteènì odstranìny</returns>
+		public virtual int RemoveRange(IEnumerable<TItem> items)
+		{
+			if (items == null)
+			{
+				throw new ArgumentNullException("items");
+			}
+
+			int count = 0;
+			foreach (TItem item in items)
+			{
+				if (this.Remove(item))
+				{
+					count++;
+				}
+			}
+			return count;
 		}
 		#endregion
 
@@ -353,7 +378,9 @@ namespace Havit.Business
 		}
 		#endregion
 
-		#region CheckDuplicates
+		/***********************************************************************/
+
+		#region CheckDuplicates (private)
 		/// <summary>
 		/// Vrací true, pokud kolekce obsahuje duplicity.
 		/// </summary>		

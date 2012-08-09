@@ -1467,12 +1467,6 @@
             </summary>
             <param name="e">prázdné</param>
         </member>
-        <member name="M:Havit.Business.BusinessObjectCollection`2.AddRange(System.Collections.Generic.IEnumerable{`0})">
-            <summary>
-            Přidá do kolekce prvky předané kolekce.
-            </summary>
-            <param name="source">Kolekce, jejíž prvky mají být přidány.</param>
-        </member>
         <member name="M:Havit.Business.BusinessObjectCollection`2.InsertItem(System.Int32,`0)">
             <summary>
             Inserts an element into the <see cref="T:System.Collections.ObjectModel.Collection`1"></see> at the specified index.
@@ -1565,6 +1559,12 @@
             </remarks>
             <param name="action">akce, která má být spuštěna</param>
         </member>
+        <member name="M:Havit.Business.BusinessObjectCollection`2.AddRange(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Přidá do kolekce prvky předané kolekce.
+            </summary>
+            <param name="source">Kolekce, jejíž prvky mají být přidány.</param>
+        </member>
         <member name="M:Havit.Business.BusinessObjectCollection`2.RemoveAll(System.Predicate{`0})">
             <summary>
             Odstraní z kolekce všechny prvky odpovídající kritériu match.
@@ -1574,6 +1574,13 @@
             </remarks>
             <param name="match">kritérium ve formě predikátu</param>
             <returns>počet odstraněných prvků</returns>
+        </member>
+        <member name="M:Havit.Business.BusinessObjectCollection`2.RemoveRange(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Odstraní z kolekce požadované prvky.
+            </summary>
+            <param name="items">prvky, které mají být z kolekce odstraněny</param>
+            <returns>počet prvků, které byly skutečně odstraněny</returns>
         </member>
         <member name="M:Havit.Business.BusinessObjectCollection`2.Sort(System.String,System.Boolean)">
             <summary>

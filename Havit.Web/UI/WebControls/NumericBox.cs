@@ -268,7 +268,6 @@ namespace Havit.Web.UI.WebControls
 		#region CreateChildControls
 		/// <summary>
 		/// CreateChildControls (overriden).
-		/// Vytvoøí kolekci controlù obsahující TextBox, LiteralControl (mezera), Image a na nìj navìšený DynarchCalendar.
 		/// </summary>
 		protected override void CreateChildControls()
 		{

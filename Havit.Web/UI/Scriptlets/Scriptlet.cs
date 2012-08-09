@@ -220,7 +220,7 @@ namespace Havit.Web.UI.Scriptlets
 
 			// zaregistrujeme jej na konec stránky, aby byly controly již dostupné
 			ScriptManager.RegisterStartupScript(
-				this,
+				this.Page,
 				typeof(Scriptlet),
 				this.UniqueID,
 				builder.ToString(),
@@ -317,7 +317,7 @@ namespace Havit.Web.UI.Scriptlets
 				builder.AppendLineFormat("Sys.WebForms.PageRequestManager.getInstance().add_pageLoading({0});", detachEventsFunctionName);
 				// pageLoaded nám zajistí navázání událostí po výmìnì elementù
 				builder.AppendLineFormat("Sys.WebForms.PageRequestManager.getInstance().add_pageLoaded({0});", attachEventsFunctionName);
-				builder.AppendLine("document.scriptletEvents" + this.UniqueID + "Registered = true;");				
+				//builder.AppendLine("document.scriptletEvents" + this.UniqueID + "Registered = true;");				
 				builder.AppendLine("}");
 				//builder.AppendLine("}");
 			}

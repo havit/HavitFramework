@@ -198,11 +198,11 @@
         </member>
         <member name="M:Havit.Web.UI.WebControls.DynarchCalendar.TransformDatePatternToClientScript(System.String,System.String)">
             <summary>
-            Transforms Date pattern from .NET to client side format.
+            Transformuje .NETový Date pattern do formátu používáného DynarchCalendarem.
             </summary>
-            <param name="pattern"></param>
-            <param name="separator"></param>
-            <returns></returns>
+            <param name="pattern">Date pattern.</param>
+            <param name="separator">Řetězec, který má být použit jako oddělovač dne, měsíce a roku.</param>
+            <returns>DateFormat používaný DynarchCalendarem.</returns>
         </member>
         <member name="P:Havit.Web.UI.WebControls.DynarchCalendar.MainScriptUrl">
             <summary>

@@ -4,6 +4,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Threading;
+using System.Diagnostics;
 
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar_stripped.js", "text/javascript")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-setup_stripped.js", "text/javascript")]
@@ -12,12 +13,11 @@ using System.Threading;
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-cs-utf8.js", "text/javascript")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-cs-win.js", "text/javascript")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-af.js", "text/javascript")]
-[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-af.js", "text/javascript")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-al.js", "text/javascript")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-bg.js", "text/javascript")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-br.js", "text/javascript")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-ca.js", "text/javascript")]
-[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-cs.js", "text/javascript")]
+//assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-cs.js", "text/javascript")
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-da.js", "text/javascript")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-de.js", "text/javascript")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-du.js", "text/javascript")]
@@ -87,7 +87,7 @@ namespace Havit.Web.UI.WebControls
 	/// </example>
 	public class DynarchCalendar : System.Web.UI.Control
 	{		
-		#region static Properties
+		#region Static Properties
 		/// <summary>
 		/// Cesta k hlavnímu skriptu calendar[_stripped].js
 		/// Prázdná hodnota zpùsobí použití skriptu pøes WebResource.axd.
@@ -139,7 +139,7 @@ namespace Havit.Web.UI.WebControls
 
 		#endregion
 
-		#region Originální vlastnosti kalendáøe odpovídající JScrípt
+		#region Originální vlastnosti kalendáøe odpovídající JavaScript
 		/// <summary>
 		/// The ID of your input field.
 		/// </summary>
@@ -156,7 +156,7 @@ namespace Havit.Web.UI.WebControls
 				{
 					return tmp;
 				}
-				return TransformDatePatternToClientScript(Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortDatePattern, Thread.CurrentThread.CurrentUICulture.DateTimeFormat.DateSeparator);
+				return string.Empty;
 			}
 			set
 			{
@@ -263,7 +263,7 @@ namespace Havit.Web.UI.WebControls
 				{
 					return tmp;
 				}
-				return String.Empty;
+				return TransformDatePatternToClientScript(Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortDatePattern, Thread.CurrentThread.CurrentUICulture.DateTimeFormat.DateSeparator);
 			}
 			set
 			{
@@ -790,17 +790,11 @@ namespace Havit.Web.UI.WebControls
 		{
 			if (String.IsNullOrEmpty(DynarchCalendar.MainScriptUrl))
 			{
-				Page.ClientScript.RegisterClientScriptResource(typeof(DynarchCalendar), "Havit.Web.UI.WebControls.DynarchCalendar.calendar_stripped.js");
+				ScriptManager.RegisterClientScriptResource(this, typeof(DynarchCalendar), "Havit.Web.UI.WebControls.DynarchCalendar.calendar_stripped.js");
 			}
-			else
+			else			
 			{
-				if (!this.Page.ClientScript.IsClientScriptBlockRegistered("DynarchCalendar.MainScript"))
-				{
-					StringBuilder sb = new StringBuilder();
-					sb.AppendFormat("<script type=\"text/javascript\" src=\"{0}\"></script>",
-						this.ResolveUrl(DynarchCalendar.MainScriptUrl));
-					this.Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "DynarchCalendar.MainScript", sb.ToString());
-				}
+				ScriptManager.RegisterClientScriptInclude(this, typeof(DynarchCalendar), "DynarchCalendar.MainScriptUrl", this.ResolveUrl(MainScriptUrl));
 			}
 		}
 		#endregion
@@ -827,29 +821,28 @@ namespace Havit.Web.UI.WebControls
 					if (HttpContext.Current.Response.ContentEncoding == Encoding.UTF8)
 					{
 						// èeština UTF-8
-						Page.ClientScript.RegisterClientScriptResource(typeof(DynarchCalendar), "Havit.Web.UI.WebControls.DynarchCalendar.calendar-cs-utf8.js");
+						ScriptManager.RegisterClientScriptResource(this, typeof(DynarchCalendar), "Havit.Web.UI.WebControls.DynarchCalendar.calendar-cs-utf8.js");
 					}
 					else
-					{
+					{						
 						// èeština Win-1250
+						
+						// POZOR! Pokud použiji ScriptManager na soubor uložený ve Windows-1250, nezobrazí se èeština správnì.
+						// Ovšem pokud použiji v soubor uložený v UTF-8 pøi ResponseEncodind Windows-150, èeština je správnì!
+
 						Page.ClientScript.RegisterClientScriptResource(typeof(DynarchCalendar), "Havit.Web.UI.WebControls.DynarchCalendar.calendar-cs-win.js");
+						//ScriptManager.RegisterClientScriptResource(this, typeof(DynarchCalendar), "Havit.Web.UI.WebControls.DynarchCalendar.calendar-cs-win.js");
 					}
 				}
 				else
 				{
 					// ostatni, utf-8
-					Page.ClientScript.RegisterClientScriptResource(typeof(DynarchCalendar), "Havit.Web.UI.WebControls.DynarchCalendar.calendar-" + Thread.CurrentThread.CurrentUICulture.Name.Substring(0, 2) + ".js");
+					ScriptManager.RegisterClientScriptResource(this, typeof(DynarchCalendar), "Havit.Web.UI.WebControls.DynarchCalendar.calendar-" + Thread.CurrentThread.CurrentUICulture.Name.Substring(0, 2) + ".js");
 				}
 			}
 			else
 			{
-				if (!this.Page.ClientScript.IsClientScriptBlockRegistered("DynarchCalendar.LanguageScript"))
-				{
-					StringBuilder sb = new StringBuilder();
-					sb.AppendFormat("<script type=\"text/javascript\" src=\"{0}\"></script>",
-						this.ResolveUrl(DynarchCalendar.LanguageScriptUrl));
-					this.Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "DynarchCalendar.LanguageScript", sb.ToString());
-				}
+				ScriptManager.RegisterClientScriptInclude(this, typeof(DynarchCalendar), "DynarchCalendar.LanguageScript", this.ResolveUrl(DynarchCalendar.LanguageScriptUrl));
 			}
 		}
 		#endregion
@@ -863,17 +856,11 @@ namespace Havit.Web.UI.WebControls
 			if (String.IsNullOrEmpty(SetupScriptUrl))
 			{
 				// pokud není URL skriptu zadáno, použijeme soubor z resources
-				Page.ClientScript.RegisterClientScriptResource(typeof(DynarchCalendar), "Havit.Web.UI.WebControls.DynarchCalendar.calendar-setup_stripped.js");
+				ScriptManager.RegisterClientScriptResource(this, typeof(DynarchCalendar), "Havit.Web.UI.WebControls.DynarchCalendar.calendar-setup_stripped.js");
 			}
 			else
 			{
-				if (!this.Page.ClientScript.IsClientScriptBlockRegistered("DynarchCalendar.SetupScript"))
-				{
-					StringBuilder sb = new StringBuilder();
-					sb.AppendFormat("<script type=\"text/javascript\" src=\"{0}\"></script>",
-						this.ResolveUrl(DynarchCalendar.SetupScriptUrl));
-					this.Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "DynarchCalendar.SetupScript", sb.ToString());
-				}
+				ScriptManager.RegisterClientScriptInclude(this, typeof(DynarchCalendar), "DynarchCalendar.SetupScript", this.ResolveUrl(DynarchCalendar.SetupScriptUrl));
 			}
 		}
 		#endregion
@@ -927,7 +914,7 @@ namespace Havit.Web.UI.WebControls
 //							<link rel="stylesheet" type="text/css" href="~/templates/styles/calendar-system.css" />
 					Page.Header.Controls.Add(htmlLink);
 					Context.Items["Havit.Web.UI.WebControls.DynarchCalendar.RegisterCss_registered"] = true;
-				}			
+				}
 			}
 		}
 		#endregion
@@ -948,7 +935,6 @@ namespace Havit.Web.UI.WebControls
 			bool firstLine = true;
 			if (this.InputField.Length > 0)
 			{
-				if (!firstLine) sb.AppendLine(",");
 				sb.AppendFormat("inputField : \"{0}\"", this.ResolveID(this.InputField));
 				firstLine = false;
 			}
@@ -1143,11 +1129,11 @@ namespace Havit.Web.UI.WebControls
 
 		#region TransformDatePatternToClientScript
 		/// <summary>
-		/// Transforms Date pattern from .NET to client side format.
+		/// Transformuje .NETový Date pattern do formátu používáného DynarchCalendarem.
 		/// </summary>
-		/// <param name="pattern"></param>
-		/// <param name="separator"></param>
-		/// <returns></returns>
+		/// <param name="pattern">Date pattern.</param>
+		/// <param name="separator">Øetìzec, který má být použit jako oddìlovaè dne, mìsíce a roku.</param>
+		/// <returns>DateFormat používaný DynarchCalendarem.</returns>
 		private string TransformDatePatternToClientScript(string pattern, string separator)
 		{
 			string result = pattern;

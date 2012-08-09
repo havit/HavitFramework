@@ -24,7 +24,7 @@ namespace Havit.Web.UI.WebControls
 		#region IsRequired
 		/// <summary>
 		/// Indikuje, zda bude pole renderováno jako povinné.
-		/// Pokud není explicitně nastavena hodnota, vrací se hodnota dle ItemPropertyInfo (
+		/// Pokud není explicitně nastavena hodnota, vrací se hodnota dle ItemPropertyInfo (s výjimkou dle SupressIsRequiresForBooleanType).
 		/// Pokud není vlastnost ItemPropertyInfo nastavena, vyhazuje výjimku.
 		/// </summary>
 		public bool IsRequired
@@ -43,6 +43,11 @@ namespace Havit.Web.UI.WebControls
 						Havit.Business.FieldPropertyInfo fpi = ItemPropertyInfo as Havit.Business.FieldPropertyInfo;
 						if (fpi != null)
 						{
+							// pokud je nastaveno, potlačíme povinnost datového typu boolean
+							if (SupressIsRequiresForBooleanType && (fpi.FieldType == System.Data.SqlDbType.Bit))
+							{
+								return false;
+							}
 							return !fpi.Nullable;
 						}
 						else
@@ -62,6 +67,18 @@ namespace Havit.Web.UI.WebControls
 				ViewState["IsRequired"] = value;
 			}
 		} 
+		#endregion
+
+		#region SupressIsRequiresForBooleanType
+		/// <summary>
+		/// Potlačuje povinnost datového typu boolean pro UI.
+		/// (Boolean je sice typicky povinný, ale edituje se obvykle checkboxem, který se nepovažuje za nutný z hlediska uživatele vyplňovat - uživatel by mohl povinnost chápat jako nutnost zaškrtnutí.)
+		/// </summary>
+		public bool SupressIsRequiresForBooleanType
+		{
+			get { return (bool)(ViewState["SupressIsRequiresForBooleanType"] ?? true); }
+			set { ViewState["SupressIsRequiresForBooleanType"] = value; }
+		}
 		#endregion
 
 		#region RequiredCssClass

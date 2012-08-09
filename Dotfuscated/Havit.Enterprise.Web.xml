@@ -4,6 +4,127 @@
         <name>Havit.Enterprise.Web</name>
     </assembly>
     <members>
+        <member name="T:Havit.Web.UI.WebControls.EnterpriseListBox">
+            <summary>
+            EnterpriseListBox zajišťuje pohodlnější práci s ListBoxem, jehož položky představují business objekty.	
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseListBox.EnsureAutoDataBind">
+            <summary>
+            Zajistí nabindování dat pro režim AutoDataBind.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.UI.WebControls.EnterpriseListBox.isDataBinding">
+            <summary>
+            Indikuje právě porobíhající databinding.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.UI.WebControls.EnterpriseListBox.delayedSetSelectedObjects">
+            <summary>
+            Objekt, který má být nastaven jako vybraný, ale jeho nastavení bylo odloženo.
+            </summary>
+            <remarks>
+            Pokud nastavujeme SelectedObject během DataBindingu (ve stránce pomocí &lt;%# ... %&gt;),
+            odloží se nastavení hodnoty až na konec DataBindingu. To protože v okamžiku nastavování SelectedObject 
+            nemusí být v Items ještě data.
+            </remarks>
+        </member>
+        <member name="F:Havit.Web.UI.WebControls.EnterpriseListBox.delayedSetSelectedObjectSet">
+            <summary>
+            Udává, zda máme nastaven objekt pro odložené nastavení vybraného objektu.
+            </summary>
+            <remarks>
+            Pokud nastavujeme SelectedObject během DataBindingu (ve stránce pomocí &lt;%# ... %&gt;),
+            odloží se nastavení hodnoty až na konec DataBindingu. To protože v okamžiku nastavování SelectedObject 
+            nemusí být v Items ještě data. 
+            </remarks>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseListBox.#ctor">
+            <summary>
+            Vytvoří instanci EnterpriseCheckBoxList.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseListBox.OnLoad(System.EventArgs)">
+            <summary>
+            Pokud jde o první načtení stránky a není nastaveno AutoDataBind, zavolá DataBindAll.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseListBox.DataBind">
+            <summary>
+            Provádí databinding a řeší odložené nastavení SelectedObject.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseListBox.DataBindAll">
+            <summary>
+            Naváže na ListBox všechny (nasmazané) business objekty určitého typu
+            (zavolá metodu GetAll(), nastaví výsledek je jako DataSource a zavolá DataBind).
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseListBox.PerformDataBinding(System.Collections.IEnumerable)">
+            <summary>
+            Zajistí, aby byl po databindingu doplněn řádek pro výběr prázdné hodnoty.
+            </summary>
+            <param name="dataSource"></param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseListBox.SelectObjectsIfPresent(System.Int32[])">
+            <summary>
+            Vybere objekt dle ID, pokud je objekt s tímto ID mezi daty.
+            Pokud není, neprovede nic. Výslední kolekce objektů nastaví výběr (SelectedObjects).
+            Metoda je určena pro vnitřní implementaci ukládání hodnot.
+            </summary>
+            <param name="objectIDs"></param>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseListBox.ItemPropertyInfo">
+            <summary>
+            ReferenceFieldPropertyInfo property, jejíž hodnota se tímto ListBoxem vybírá.
+            Nastavení této hodnoty rovněž přepíše hodnoty vlastností ItemObjectInfo a Nullable.
+            Hodnota této property nepřežívá postback.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseListBox.ItemObjectInfo">
+            <summary>
+            Udává metodu, kterou se získá objekt na základě ID.
+            Hodnota vlastnosti je automaticky nastavena nastavením vlastnosti PropertyInfo.
+            Hodnota vlastnosti nepřežívá postback.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseListBox.AutoSort">
+            <summary>
+            Udává, zda je zapnuto automatické řazení položek při databindingu. Výchozí hodnota je true.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseListBox.AutoDataBind">
+            <summary>
+            Udává, zda je zapnuto automatické nabindování položek při prvním načtení stránky. Výchozí hodnota je false.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseListBox.DataSortField">
+            <summary>
+            Určuje, podle jaké property jsou řazena. Pokud není žádná hodnota nastavena použije se hodnota vlastnosti DataTextField.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseListBox.SortDirection">
+            <summary>
+            Udává směr řazení položek.
+            Výchozí je vzestupné řazení (Ascending).
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseListBox.SelectedIds">
+            <summary>
+            Vrací ID vybrané položky. Není-li žádná položka vybraná, vrací null.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseListBox.SelectedObjects">
+            <summary>
+            Vrací výčet s vybranými objekty (na základě zaškrtnutí CheckBoxů). Objekt se získává metodou ve vlastnosti ItemObjectInfo.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseListBox.DataBindPerformed">
+            <summary>
+            Indikuje, zda již došlo k navázání dat.
+            </summary>
+        </member>
         <member name="T:Havit.Web.UI.WebControls.EnterpriseLabel">
             <summary>
             EnterpriseLabel je label, který:
@@ -19,8 +140,14 @@
         <member name="P:Havit.Web.UI.WebControls.EnterpriseLabel.IsRequired">
             <summary>
             Indikuje, zda bude pole renderováno jako povinné.
-            Pokud není explicitně nastavena hodnota, vrací se hodnota dle ItemPropertyInfo (
+            Pokud není explicitně nastavena hodnota, vrací se hodnota dle ItemPropertyInfo (s výjimkou dle SupressIsRequiresForBooleanType).
             Pokud není vlastnost ItemPropertyInfo nastavena, vyhazuje výjimku.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseLabel.SupressIsRequiresForBooleanType">
+            <summary>
+            Potlačuje povinnost datového typu boolean pro UI.
+            (Boolean je sice typicky povinný, ale edituje se obvykle checkboxem, který se nepovažuje za nutný z hlediska uživatele vyplňovat - uživatel by mohl povinnost chápat jako nutnost zaškrtnutí.)
             </summary>
         </member>
         <member name="P:Havit.Web.UI.WebControls.EnterpriseLabel.RequiredCssClass">
@@ -348,127 +475,6 @@
             </summary>
             <param name="rowIndex">index řádku</param>
             <returns>Vrací hodnotu klíče daného řádku.</returns>
-        </member>
-        <member name="T:Havit.Web.UI.WebControls.EnterpriseListBox">
-            <summary>
-            EnterpriseListBox zajišťuje pohodlnější práci s ListBoxem, jehož položky představují business objekty.	
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.EnterpriseListBox.EnsureAutoDataBind">
-            <summary>
-            Zajistí nabindování dat pro režim AutoDataBind.
-            </summary>
-        </member>
-        <member name="F:Havit.Web.UI.WebControls.EnterpriseListBox.isDataBinding">
-            <summary>
-            Indikuje právě porobíhající databinding.
-            </summary>
-        </member>
-        <member name="F:Havit.Web.UI.WebControls.EnterpriseListBox.delayedSetSelectedObjects">
-            <summary>
-            Objekt, který má být nastaven jako vybraný, ale jeho nastavení bylo odloženo.
-            </summary>
-            <remarks>
-            Pokud nastavujeme SelectedObject během DataBindingu (ve stránce pomocí &lt;%# ... %&gt;),
-            odloží se nastavení hodnoty až na konec DataBindingu. To protože v okamžiku nastavování SelectedObject 
-            nemusí být v Items ještě data.
-            </remarks>
-        </member>
-        <member name="F:Havit.Web.UI.WebControls.EnterpriseListBox.delayedSetSelectedObjectSet">
-            <summary>
-            Udává, zda máme nastaven objekt pro odložené nastavení vybraného objektu.
-            </summary>
-            <remarks>
-            Pokud nastavujeme SelectedObject během DataBindingu (ve stránce pomocí &lt;%# ... %&gt;),
-            odloží se nastavení hodnoty až na konec DataBindingu. To protože v okamžiku nastavování SelectedObject 
-            nemusí být v Items ještě data. 
-            </remarks>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.EnterpriseListBox.#ctor">
-            <summary>
-            Vytvoří instanci EnterpriseCheckBoxList.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.EnterpriseListBox.OnLoad(System.EventArgs)">
-            <summary>
-            Pokud jde o první načtení stránky a není nastaveno AutoDataBind, zavolá DataBindAll.
-            </summary>
-            <param name="e"></param>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.EnterpriseListBox.DataBind">
-            <summary>
-            Provádí databinding a řeší odložené nastavení SelectedObject.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.EnterpriseListBox.DataBindAll">
-            <summary>
-            Naváže na ListBox všechny (nasmazané) business objekty určitého typu
-            (zavolá metodu GetAll(), nastaví výsledek je jako DataSource a zavolá DataBind).
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.EnterpriseListBox.PerformDataBinding(System.Collections.IEnumerable)">
-            <summary>
-            Zajistí, aby byl po databindingu doplněn řádek pro výběr prázdné hodnoty.
-            </summary>
-            <param name="dataSource"></param>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.EnterpriseListBox.SelectObjectsIfPresent(System.Int32[])">
-            <summary>
-            Vybere objekt dle ID, pokud je objekt s tímto ID mezi daty.
-            Pokud není, neprovede nic. Výslední kolekce objektů nastaví výběr (SelectedObjects).
-            Metoda je určena pro vnitřní implementaci ukládání hodnot.
-            </summary>
-            <param name="objectIDs"></param>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.EnterpriseListBox.ItemPropertyInfo">
-            <summary>
-            ReferenceFieldPropertyInfo property, jejíž hodnota se tímto ListBoxem vybírá.
-            Nastavení této hodnoty rovněž přepíše hodnoty vlastností ItemObjectInfo a Nullable.
-            Hodnota této property nepřežívá postback.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.EnterpriseListBox.ItemObjectInfo">
-            <summary>
-            Udává metodu, kterou se získá objekt na základě ID.
-            Hodnota vlastnosti je automaticky nastavena nastavením vlastnosti PropertyInfo.
-            Hodnota vlastnosti nepřežívá postback.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.EnterpriseListBox.AutoSort">
-            <summary>
-            Udává, zda je zapnuto automatické řazení položek při databindingu. Výchozí hodnota je true.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.EnterpriseListBox.AutoDataBind">
-            <summary>
-            Udává, zda je zapnuto automatické nabindování položek při prvním načtení stránky. Výchozí hodnota je false.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.EnterpriseListBox.DataSortField">
-            <summary>
-            Určuje, podle jaké property jsou řazena. Pokud není žádná hodnota nastavena použije se hodnota vlastnosti DataTextField.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.EnterpriseListBox.SortDirection">
-            <summary>
-            Udává směr řazení položek.
-            Výchozí je vzestupné řazení (Ascending).
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.EnterpriseListBox.SelectedIds">
-            <summary>
-            Vrací ID vybrané položky. Není-li žádná položka vybraná, vrací null.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.EnterpriseListBox.SelectedObjects">
-            <summary>
-            Vrací výčet s vybranými objekty (na základě zaškrtnutí CheckBoxů). Objekt se získává metodou ve vlastnosti ItemObjectInfo.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.EnterpriseListBox.DataBindPerformed">
-            <summary>
-            Indikuje, zda již došlo k navázání dat.
-            </summary>
         </member>
     </members>
 </doc>

@@ -123,11 +123,6 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Vytvoøí ListItem, souèást PerformDataBindingu.
 		/// </summary>
-		/// <param name="dataTextField">The data text field.</param>
-		/// <param name="dataValueField">The data value field.</param>
-		/// <param name="dataTextFormatString">The data text format string.</param>
-		/// <param name="dataItem">The data item.</param>
-		/// <returns></returns>
 		protected virtual ListItem CreateItem(object dataItem)
 		{
 			bool flag = false;
@@ -188,7 +183,7 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Raises the <see cref="E:ItemDataBound"/> event.
 		/// </summary>
-		/// <param name="e">The <see cref="Havit.Web.UI.WebControls.ListControlItemEventArgs"/> instance containing the event data.</param>
+		/// <param name="e">The <see cref="Havit.Web.UI.WebControls.ListControlItemDataBoundEventArgs"/> instance containing the event data.</param>
 		protected virtual void OnItemDataBound(ListControlItemDataBoundEventArgs e)
 		{
 			EventHandler<ListControlItemDataBoundEventArgs> h = (EventHandler<ListControlItemDataBoundEventArgs>)base.Events[eventItemDataBound];

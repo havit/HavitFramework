@@ -91,7 +91,9 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Vytvoøí instanci tøídy <see cref="GridViewRowCustomizingCommandButtonEventArgs"/>.
 		/// </summary>
-		/// <param name="commandName">CommandName obsluhovaného buttonu</param>
+		/// <param name="commandName">CommandName obsluhovaného buttonu.</param>
+		/// <param name="rowIndex">Index øádku.</param>
+		/// <param name="dataItem">Datový objekt øádku.</param>
 		public GridViewRowCustomizingCommandButtonEventArgs(string commandName, int rowIndex, object dataItem)
 		{
 			this._commandName = commandName;

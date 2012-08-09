@@ -17,7 +17,7 @@ namespace Havit.Web.UI.Scriptlets
 	public class ClientScript : ScriptletNestedControl
 	{
 
-		/* PARAMETY CLIENTSCRIPTU *************** */
+		/* Parametry ClientScriptu *************** */
 
 		#region Script
 		/// <summary>
@@ -37,7 +37,7 @@ namespace Havit.Web.UI.Scriptlets
 		/// Udává, zda má po naètení stránky dojít k automatickému spuštìní skriptu. Výchozí hodnota je <c>false</c>.
 		/// </summary>				
 		/// <remarks>
-		/// Nemá vliv na zpracování stránky pøi asynchronním postbacku (callbacku). K tomu slouží vlastnost <see cref="StartOnAjaxCallback"/>StartOnAjaxCallback</see>.
+		/// Nemá vliv na zpracování stránky pøi asynchronním postbacku (callbacku). K tomu slouží vlastnost <see cref="StartOnAjaxCallback">StartOnAjaxCallback</see>.
 		/// </remarks>
 		public bool StartOnLoad
 		{
@@ -77,82 +77,15 @@ namespace Havit.Web.UI.Scriptlets
 		}
 		#endregion
 
-		/* RENDEROVÁNÍ *************** */
-/*
-		#region ClientSideScriptFunctionName (internal)
+		#region GetClientSideFunctionCode
 		/// <summary>
-		/// Název funkce, pod jakou je klientský skript zaregistrován.
-		/// Hodnota je dostupná až po zavolání metody RegisterClientScript.
+		/// Vrátí kód pro hlavní funkci skriptletu.
 		/// </summary>
-		internal string ClientSideScriptFunctionName
-		{
-			get
-			{
-				if (clientSideScriptFunctionName == null)
-				{
-					throw new InvalidOperationException("Èíst vlastnost ClientSideFunctionName ještì není dovoleno.");
-				}
-
-				return clientSideScriptFunctionName;
-			}
-		}
-		private string clientSideScriptFunctionName;
-		#endregion
-*/
-		#region GetClientSideScriptFunction
-		/// <summary>
-		/// Metoda vytvoøí funkci okolo klienského skriptu a zaregistruje ji do stránky.
-		/// Je zajištìno, aby nebyla funkce se shodným obsahem registrována víckrát
-		/// (napø. pøi použití controlu v repeateru).
-		/// </summary>
-		/// <param name="scriptBuilder">ScriptBuilder, do kterého je tvoøen klientský skript.</param>
 		public virtual string GetClientSideFunctionCode()
 		{
-			// naèteme klientský script
 			return GetSubstitutedScript();
-//            // podíváme se, zda již byl registrován
-//            string functionName = ScriptCacheHelper.GetFunctionNameFromCache(_clientScriptParameters, code);
-
-//            if (functionName == null)
-//            {
-//                // pokud tento skript ještì nebyl registrován...				
-//                CreateFunctionName(null);
-//                // uložíme jej do cache
-//                ScriptCacheHelper.AddFunctionToCache(clientSideScriptFunctionName, _clientScriptParameters, code);
-//                // a zaregistrujeme
-//                return WrapClientSideScriptToFunction(clientSideScriptFunctionName, _clientScriptParameters, code);
-//            }
-//            else
-//            {
-//                // pokud tento skript již byl registrován,
-//                // použijeme tento registrovaný skript
-//                CreateFunctionName(functionName);
-////				clientSideScriptFunctionName = functionName;
-//                return null;
-//            }
 		}
 		#endregion
-	/*
-		#region CreateFunctionName (private)
-		/// <summary>
-		/// Vytvoøí název klientské funkce. Pokud je parametr reuseFunction prázdný,
-		/// vytvoøí nový název, jinak použije hodnotu tohoto parametru.
-		/// </summary>
-		/// <param name="reuseFunctionName"></param>
-		private void CreateFunctionName(string reuseFunctionName)
-		{
-			if (!String.IsNullOrEmpty(reuseFunctionName))
-			{
-				clientSideScriptFunctionName = reuseFunctionName;
-			}
-			else
-			{
-				clientSideScriptFunctionName = "scriptletFunction_" + this.Scriptlet.ClientID;
-			}
-		}		
-		#endregion
-		*/
-		private static string[] _clientScriptParameters = new string[] { "parameters" };
 		
 		/* SUBSTITUCE *************** */
 
@@ -170,6 +103,9 @@ namespace Havit.Web.UI.Scriptlets
 		#endregion
 
 		#region ClientScriptSubstituingEventArgs (protected)
+		/// <summary>
+		/// Obslouží událost ClientScriptSubstituing.
+		/// </summary>
 		protected virtual void OnClientScriptSubstituing(ClientScriptSubstituingEventArgs eventArgs)
 		{
 			if (_clientScriptSubstituing != null)
@@ -180,6 +116,9 @@ namespace Havit.Web.UI.Scriptlets
 		#endregion
 
 		#region ClientScriptSubstituing
+		/// <summary>
+		/// Událost pro provedení substituce v klietském skriptu.
+		/// </summary>
 		public event ClientScriptSubstituingEventHandler ClientScriptSubstituing
 		{
 			add
@@ -193,23 +132,6 @@ namespace Havit.Web.UI.Scriptlets
 		}
 		private ClientScriptSubstituingEventHandler _clientScriptSubstituing;
 		
-		#endregion
-
-		/* STATIC  *************** */
-
-		#region WrapClientSideScriptToFunction (static)
-		/// <summary>
-		/// Zabalí klientský skript do funkce.
-		/// </summary>
-		/// <returns>Klientský skript jako funkce pøipravená k registraci do stránky.</returns>
-		public static string WrapClientSideScriptToFunction(string functionName, string[] parameters, string clientScript)
-		{
-			return String.Format("function {0}({1}){3}{{{3}{2}{3}}}{3}",
-				functionName,
-				parameters == null ? String.Empty : String.Join(", ", parameters),
-				clientScript.Trim(),
-				Environment.NewLine);
-		}
 		#endregion
 
 	}

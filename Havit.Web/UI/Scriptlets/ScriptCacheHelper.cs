@@ -5,9 +5,12 @@ using System.Web;
 
 namespace Havit.Web.UI.Scriptlets
 {
-	public static class ScriptCacheHelper
+	/// <summary>
+	/// Cache skriptù. Umožòuje sdílet skripty mezi instancemi skriptletu. Napø. pro skriptlet v øádcích repeateru, apod.
+	/// </summary>
+	internal static class ScriptCacheHelper
 	{
-		#region FunctionCache
+		#region FunctionCache (private)
 		/// <summary>
 		/// Cache pro klientské skripty. Klíèem je skript a parametry funkce, hodnotou je název funkce,
 		/// ve které je skript registrován.
@@ -34,27 +37,28 @@ namespace Havit.Web.UI.Scriptlets
 
 		#region AddFunctionToCache
 		/// <summary>
-		/// Pøidá klientský skript do cache.
+		/// Pøidá kód s parametry (klíè) do cache pod zadaný název funkce (hodnota).
 		/// </summary>
 		/// <param name="functionName">Název funkce, ve které je skript registrován.</param>
-		/// <param name="code">Klientský skript.</param>
-		public static void AddFunctionToCache(string functionName, string[] parameters, string code)
+		/// <param name="functionParameters">Názvy parametrù funkce.</param>
+		/// <param name="functionCode">Kód funkce.</param>
+		public static void AddFunctionToCache(string functionName, string[] functionParameters, string functionCode)
 		{
-			FunctionCache.Add(GetCacheKey(parameters, code), functionName);
+			FunctionCache.Add(GetCacheKey(functionParameters, functionCode), functionName);
 		}		
 		#endregion
 
 		#region GetFunctionNameFromCache
 		/// <summary>
-		/// Nalezne název funkce, ve které je klientský skript registrován.
+		/// Vyhledá v cache a vrátí název funkce, se stejnými parametry a kódem skriptu.
+		/// Pokud není název funkce nalezen, vrací null.
 		/// </summary>
-		/// <param name="code">Klientský skript.</param>
-		/// <returns>Nalezne název funkce, ve které je klientský skript 
-		/// registrován. Pokud skript není registrován, vrátí null.</returns>
-		public static string GetFunctionNameFromCache(string[] parameters, string code)
+		/// <param name="functionParameters">Názvy parametrù funkce.</param>
+		/// <param name="functionCode">Kód funkce.</param>
+		public static string GetFunctionNameFromCache(string[] functionParameters, string functionCode)
 		{
 			string result;
-			if (FunctionCache.TryGetValue(GetCacheKey(parameters, code), out result))
+			if (FunctionCache.TryGetValue(GetCacheKey(functionParameters, functionCode), out result))
 			{
 				return result;
 			}
@@ -65,17 +69,14 @@ namespace Havit.Web.UI.Scriptlets
 		}
 		#endregion
 
-#warning Comment
+		#region GetCacheKey (private)
+		/// <summary>
+		/// Vrátí klíè do cache z parametrù.
+		/// </summary>
 		private static string GetCacheKey(string[] parameters, string code)
 		{
-			if (parameters == null)
-			{
-				return code;
-			}
-			else
-			{
-				return String.Join("|", parameters) + "|" + code;
-			}
+			return String.Join("|", parameters) + "|" + code;
 		}
+		#endregion
 	}
 }

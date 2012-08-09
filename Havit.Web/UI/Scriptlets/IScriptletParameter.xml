@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<doc>
+	<members>
+		<member name="T:Havit.Web.UI.Scriptlets.IScriptletParameter">
+			<summary>
+				Parametr obsažený ve <see cref="P:Havit.Web.UI.Scriptlets.IScriptletParameter.Scriptlet">Scripletu</see>.
+			</summary>
+		</member>
+		<member name="M:Havit.Web.UI.Scriptlets.IScriptletParameter.CheckProperties">
+			<summary>Zkontroluje nastavení parametru. Je-li nějaké nastavení chybně, má být vyhozena výjimka.</summary>
+		</member>
+		<member name="M:Havit.Web.UI.Scriptlets.IScriptletParameter.GetInitializeClientSideValueScript(System.String,System.Web.UI.Control,Havit.Web.UI.Scriptlets.ScriptBuilder)">
+			<summary>Vrátí skript pro inicializaci hodnoty parametru na klientské straně.</summary>
+			<param name="parameterPrefix">Prefix pro název parametru. Parametry mohou být vnořené (např. TextBox v Repeateru).</param>
+			<param name="parentControl">Rodičovský prvek, pro který je parametr renderován.</param>
+			<param name="scriptBuilder">Script builder.</param>
+		</member>
+		<member name="M:Havit.Web.UI.Scriptlets.IScriptletParameter.GetAttachEventsScript(System.String,System.Web.UI.Control,System.String,Havit.Web.UI.Scriptlets.ScriptBuilder)">
+			<summary>Vrátí skript pro navázání událostí k objektu na klientské straně.</summary>
+			<param name="parameterPrefix">Prefix pro název parametru. Parametry mohou být vnořené (např. TextBox v Repeateru).</param>
+			<param name="parentControl">Rodičovský prvek, pro který je parametr renderován.</param>
+			<param name="scriptletFunctionCallDelegate">Identifikátor nesoucí hodnotu delegáta funkce skriptletu.</param>
+			<param name="scriptBuilder">Script builder.</param>
+		</member>
+		<member name="M:Havit.Web.UI.Scriptlets.IScriptletParameter.GetDetachEventsScript(System.String,System.Web.UI.Control,System.String,Havit.Web.UI.Scriptlets.ScriptBuilder)">
+			<summary>Vrátí skript pro odpojení událostí od objektu na klientské straně.</summary>
+			<param name="parameterPrefix">Prefix pro název parametru. Parametry mohou být vnořené (např. TextBox v Repeateru).</param>
+			<param name="parentControl">Rodičovský prvek, pro který je parametr renderován.</param>
+			<param name="scriptletFunctionCallDelegate">Identifikátor nesoucí hodnotu delegáta funkce skriptletu.</param>
+			<param name="scriptBuilder">Script builder.</param>
+		</member>
+		<member name="P:Havit.Web.UI.Scriptlets.IScriptletParameter.Name">
+			<summary>Název parametru, pod kterým bude identifikován v klientském skriptu.</summary>
+		</member>
+		<member name="P:Havit.Web.UI.Scriptlets.IScriptletParameter.Scriptlet">
+			<summary>Zpřístupňuje scriptlet, ve kterém je parametr obsažen.</summary>
+		</member>
+	</members>
+</doc>

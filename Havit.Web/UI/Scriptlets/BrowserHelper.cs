@@ -91,7 +91,7 @@ namespace Havit.Web.UI.Scriptlets
 		/// <param name="eventName">Název události vèetnì "on", napøíklad "onchange", "onclick", atp.</param>
 		/// <param name="functionDelegateName">Delegát, který je pøipojován.</param>
 		/// <returns>Pøíkaz pøipojující událost k objektu.</returns>
-		internal delegate string GetAttachDetachEventScriptEventHandler(string manipulatingObject, string eventName, string function);
+		internal delegate string GetAttachDetachEventScriptEventHandler(string manipulatingObject, string eventName, string functionDelegateName);
 		#endregion
 
 	}

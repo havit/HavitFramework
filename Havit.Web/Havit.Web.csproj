@@ -318,6 +318,10 @@
   <ItemGroup>
     <EmbeddedResource Include="UI\WebControls\DefaultStyles.css" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="UI\Scriptlets\IControlExtender.xml" />
+    <Content Include="UI\Scriptlets\IScriptletParameter.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

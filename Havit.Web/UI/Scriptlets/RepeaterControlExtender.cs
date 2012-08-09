@@ -29,13 +29,7 @@ namespace Havit.Web.UI.Scriptlets
 		#endregion		
 		
 		#region GetPriority
-		/// <summary>
-		/// Vrátí prioritu extenderu pro daný control.
-		/// Pokud je control Repeaterem, vrátí prioritu zadanou v konstruktoru,
-		/// jinak vrací null.
-		/// </summary>
-		/// <param name="control">Control, pro který se ovìøuje priorita.</param>
-		/// <returns>Priorita.</returns>
+		/// <include file='IControlExtender.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetPriority")]/*' />
 		public int? GetPriority(Control control)
 		{
 			return (control is Repeater) ? (int?)priority : null;
@@ -43,13 +37,7 @@ namespace Havit.Web.UI.Scriptlets
 		#endregion
 
 		#region GetInitializeClientSideValueScript
-		/// <summary>
-		/// Vytvoøí klientský parametr pro pøedaný control.
-		/// </summary>
-		/// <param name="parameterPrefix">Název objektu na klientské stranì.</param>
-		/// <param name="parameter">Parametr pøedávající øízení extenderu.</param>
-		/// <param name="control">Control ke zpracování.</param>
-		/// <param name="scriptBuilder">Script builder.</param>
+		/// <include file='IControlExtender.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetInitializeClientSideValueScript")]/*' />
 		public void GetInitializeClientSideValueScript(string parameterPrefix, IScriptletParameter parameter, Control control, ScriptBuilder scriptBuilder)
         {
 	        if (!(control is Repeater))
@@ -84,7 +72,7 @@ namespace Havit.Web.UI.Scriptlets
 		#endregion
 
 		#region GetAttachEventsScript
-		/// <include file='..\\Dotfuscated\\Havit.Web.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetAttachEventsScript")]/*' />
+		/// <include file='IControlExtender.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetAttachEventsScript")]/*' />
 		public void GetAttachEventsScript(string parameterPrefix, IScriptletParameter parameter, Control control, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder)
 		{
 			GetEventsScript(parameterPrefix, parameter, control, scriptletFunctionCallDelegate, scriptBuilder,
@@ -96,7 +84,7 @@ namespace Havit.Web.UI.Scriptlets
 		#endregion
 
 		#region GetDetachEventsScript
-		/// <include file='..\\Dotfuscated\\Havit.Web.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetDetachEventsScript")]/*' />
+		/// <include file='IControlExtender.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetDetachEventsScript")]/*' />
 		public void GetDetachEventsScript(string parameterPrefix, IScriptletParameter parameter, Control control, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder)
 		{
 			GetEventsScript(parameterPrefix, parameter, control, scriptletFunctionCallDelegate, scriptBuilder,

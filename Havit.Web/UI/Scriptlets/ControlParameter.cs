@@ -13,7 +13,15 @@ namespace Havit.Web.UI.Scriptlets
     /// </summary>
     public class ControlParameter : ParameterBase
     {
-#warning Comment
+
+		/* Parametry ControlParametru *************** */
+
+		#region Control
+		/// <summary>
+		/// Controlu, který je zdrojem pro vytvoøení klientského parametru.
+		/// Nesmí být zadáno souèasnì s ControlName.
+		/// Hodnota nepøežívá postback.
+		/// </summary>
 		public Control Control
 		{
 			get
@@ -26,11 +34,13 @@ namespace Havit.Web.UI.Scriptlets
 			}
 		}
 		private Control _control;
+		#endregion
 
 		#region ControlName
 		/// <summary>
-		/// Název Controlu, který je zdrojem pro vytvoøení klientského parametru.
+		/// Název controlu, který je zdrojem pro vytvoøení klientského parametru.
 		/// Pro vyhledávání ve vnoøeném naming containeru lze názvy controlù oddìlit teèkou.
+		/// Nesmí být zadáno souèasnì s Control.
 		/// </summary>
 		public string ControlName
 		{
@@ -40,11 +50,7 @@ namespace Havit.Web.UI.Scriptlets
 		#endregion
 
 		#region Name
-		/// <summary>
-		/// Název parametru, pod kterým bude parametr pøístupný v klienském skriptu.
-		/// Pokud není hodnota nastavena, použije se hodnota <see cref="ControlName">ControlName</see>.
-		/// Obsahuje-li <see cref="ControlName">ControlName</see> teèku, je nahrazena podtržítkem.
-		/// </summary>
+		/// <include file='IScriptletParameter.xml' path='doc/members/member[starts-with(@name,"P:Havit.Web.UI.Scriptlets.IScriptletParameter.Name")]/*' />        
 		public override string Name
 		{
 			get { return base.Name ?? ControlName.Replace(".", "_"); }
@@ -65,10 +71,10 @@ namespace Havit.Web.UI.Scriptlets
 		}
 		#endregion
 
+		/* Kontrola platnosti parametrù *************** */
+
 		#region CheckProperties (overriden)
-		/// <summary>
-		/// Zkontroluje, zda je parametr správnì inicializován.
-		/// </summary>
+		/// <include file='IScriptletParameter.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IScriptletParameter.CheckProperties")]/*' />
 		public override void CheckProperties()
 		{
 			base.CheckProperties();
@@ -108,21 +114,23 @@ namespace Havit.Web.UI.Scriptlets
 		}
 		#endregion
 
+		/* Parametry IScriptletParameter *************** */
+
 		#region GetInitializeClientSideValueScript
-		/// <include file='..\\Dotfuscated\\Havit.Web.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlParameter.GetInitializeClientSideValueScript")]/*' />        
-		public override void GetInitializeClientSideValueScript(string parameterPrefix, Control parentControl, ScriptBuilder builder)
+		/// <include file='IScriptletParameter.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IScriptletParameter.GetInitializeClientSideValueScript")]/*' />        
+		public override void GetInitializeClientSideValueScript(string parameterPrefix, Control parentControl, ScriptBuilder scriptBuilder)
 		{
 			// najdeme control
 			Control control = GetControl(parentControl);
 			DoJobOnExtender(control, delegate(IControlExtender extender)
 			{
-				extender.GetInitializeClientSideValueScript(parameterPrefix, this, control, builder);
+				extender.GetInitializeClientSideValueScript(parameterPrefix, this, control, scriptBuilder);
 			});
 		}
 		#endregion
 
 		#region GetAttachEventsScript
-		/// <include file='..\\Dotfuscated\\Havit.Web.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlParameter.GetAttachEventsScript")]/*' />
+		/// <include file='IScriptletParameter.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IScriptletParameter.GetAttachEventsScript")]/*' />
 		public override void GetAttachEventsScript(string parameterPrefix, Control parentControl, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder)
 		{
 			// najdeme control
@@ -135,7 +143,7 @@ namespace Havit.Web.UI.Scriptlets
 		#endregion
 
 		#region GetDetachEventsScript
-		/// <include file='..\\Dotfuscated\\Havit.Web.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlParameter.GetDetachEventsScript")]/*' />
+		/// <include file='IScriptletParameter.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IScriptletParameter.GetDetachEventsScript")]/*' />
 		public override void GetDetachEventsScript(string parameterPrefix, Control parentControl, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder)
 		{
 			// najdeme control
@@ -163,6 +171,8 @@ namespace Havit.Web.UI.Scriptlets
 		
 		#endregion		
 
+		/* *************** */
+
 		#region GetControl
 		/// <summary>
 		/// Nalezne Control, který má být zpracován.
@@ -179,8 +189,16 @@ namespace Havit.Web.UI.Scriptlets
 
 			string controlName = ControlName.Replace(".", "$");
 
-			Control result = parentControl.FindControl(controlName);
-
+			Control result;
+			if (controlName.StartsWith("Page."))
+			{
+				result = this.Page.FindControl(controlName.Substring(5)); // 5 .. pøeskoèíme "Page."
+			}
+			else
+			{
+				result = parentControl.FindControl(controlName);
+			}
+			
 			if (result == null)
 			{
 				throw new HttpException(String.Format("Control {0} nebyl nalezen.", ControlName));

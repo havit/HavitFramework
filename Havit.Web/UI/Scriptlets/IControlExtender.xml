@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<doc>
+	<members>
+		<member name="T:Havit.Web.UI.Scriptlets.IControlExtender">
+			<summary>
+				Control extender je zodpovědný za vytoření klienského skriptu pro předaný control. Díky této obecnosti je možné přidávat vlastní control extendery (či měnit existující) a tím upravit chování <see cref="T:Havit.Web.UI.Scriptlets.Scriptlet">Scriptletu</see> pro další controly.
+			</summary>
+		</member>
+		<member name="M:Havit.Web.UI.Scriptlets.IControlExtender.GetPriority(System.Web.UI.Control)">
+			<summary>
+				Vrací prioritu, s jakou je extender vhodný pro zpracování controlu. Pokud je extender nevhodný pro zpracování, vrácí se <c>null</c>.
+			</summary>
+			<param name="control">Control, který bude zpracováván.</param>
+			<returns>Priorita extenderu.</returns>
+		</member>
+		<member name="M:Havit.Web.UI.Scriptlets.IControlExtender.GetInitializeClientSideValueScript(System.String,Havit.Web.UI.Scriptlets.IScriptletParameter,System.Web.UI.Control,Havit.Web.UI.Scriptlets.ScriptBuilder)">
+			<summary>Vrátí skript pro inicializaci parametru hodnotou objektu na klientské straně.</summary>
+			<param name="parameterPrefix">Název objektu na klientské straně.</param>
+			<param name="parameter">Parametr předávající řízení extenderu.</param>
+			<param name="control">Control ke zpracování.</param>
+			<param name="scriptBuilder">Script builder.</param>
+		</member>
+		<member name="M:Havit.Web.UI.Scriptlets.IControlExtender.GetAttachEventsScript(System.String,Havit.Web.UI.Scriptlets.IScriptletParameter,System.Web.UI.Control,System.String,Havit.Web.UI.Scriptlets.ScriptBuilder)">
+			<summary>Vrátí skript pro navázání událostí k objektu na klientské straně.</summary>
+			<param name="parameterPrefix">Název objektu na klientské straně.</param>
+			<param name="parameter">Parametr předávající řízení extenderu.</param>
+			<param name="control">Control ke zpracování.</param>
+			<param name="scriptletFunctionCallDelegate">Delegát volání funkce scriptletu.</param>
+			<param name="scriptBuilder">Script builder.</param>
+		</member>
+		<member name="M:Havit.Web.UI.Scriptlets.IControlExtender.GetDetachEventsScript(System.String,Havit.Web.UI.Scriptlets.IScriptletParameter,System.Web.UI.Control,System.String,Havit.Web.UI.Scriptlets.ScriptBuilder)">
+			<summary>Vrátí skript pro odpojení událostí od objektu na klientské straně.</summary>
+			<param name="parameterPrefix">Název objektu na klientské straně.</param>
+			<param name="parameter">Parametr předávající řízení extenderu.</param>
+			<param name="control">Control ke zpracování.</param>
+			<param name="scriptletFunctionCallDelegate">Delegát volání funkce scriptletu.</param>
+			<param name="scriptBuilder">Script builder.</param>
+		</member>
+	</members>
+</doc>

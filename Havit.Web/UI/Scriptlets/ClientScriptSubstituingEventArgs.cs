@@ -10,6 +10,10 @@ namespace Havit.Web.UI.Scriptlets
 	public class ClientScriptSubstituingEventArgs: EventArgs
 	{
 		#region Constructor
+		/// <summary>
+		/// Konstuktor.
+		/// </summary>
+		/// <param name="clientScript">Klientský skript k substituci.</param>
 		public ClientScriptSubstituingEventArgs(string clientScript)
 		{
 			this.clientScript = clientScript;

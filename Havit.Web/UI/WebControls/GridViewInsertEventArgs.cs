@@ -5,6 +5,9 @@ using System.ComponentModel;
 
 namespace Havit.Web.UI.WebControls
 {
+	/// <summary>
+	/// Parametry události vložení záznamu do GridView.
+	/// </summary>
 	public class GridViewInsertEventArgs : CancelEventArgs
 	{
 		/// <summary>

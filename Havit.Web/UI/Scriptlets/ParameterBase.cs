@@ -11,13 +11,11 @@ namespace Havit.Web.UI.Scriptlets
     /// <summary>
     /// Pøedek pro tvorbu klientských parametrù.
     /// </summary>
-    [ControlBuilder(typeof(NoLiteralContolBuilder))]
-    public abstract class ParameterBase : ScriptletNestedControl, IScriptletParameter
-    {
+	[ControlBuilder(typeof(NoLiteralContolBuilder))]
+	public abstract class ParameterBase : ScriptletNestedControl, IScriptletParameter
+	{
 		#region Name
-		/// <summary>
-		/// Název parametru, pod kterým bude parametr pøístupný v klienském skriptu.
-		/// </summary>
+		/// <include file='IScriptletParameter.xml' path='doc/members/member[starts-with(@name,"P:Havit.Web.UI.Scriptlets.IScriptletParameter.Name")]/*' />
 		public virtual string Name
 		{
 			get { return (string)ViewState["Name"]; }
@@ -26,9 +24,7 @@ namespace Havit.Web.UI.Scriptlets
 		#endregion
 
 		#region CheckProperties
-		/// <summary>
-		/// Zkontroluje, zda je parametr správnì inicializován.
-		/// </summary>
+		/// <include file='IScriptletParameter.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IScriptletParameter.CheckProperties")]/*' />
 		public virtual void CheckProperties()
 		{
 			// zkontrolujeme property Name
@@ -70,19 +66,19 @@ namespace Havit.Web.UI.Scriptlets
 		#endregion
 
 		#region GetInitializeClientSideValueScript (abstract, IScriptletParameter)
-		/// <include file='..\\Dotfuscated\\Havit.Web.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlParameter.GetInitializeClientSideValueScript")]/*' />
+		/// <include file='IScriptletParameter.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IScriptletParameter.GetInitializeClientSideValueScript")]/*' />
 		public abstract void GetInitializeClientSideValueScript(string parameterPrefix, Control parentControl, ScriptBuilder scriptBuilder);
 		#endregion
 
 		#region GetAttachEventsScript (abstract, IScriptletParameter)
-		/// <include file='..\\Dotfuscated\\Havit.Web.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlParameter.GetAttachEventsScript")]/*' />
+		/// <include file='IScriptletParameter.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IScriptletParameter.GetAttachEventsScript")]/*' />
 		public abstract void GetAttachEventsScript(string parameterPrefix, Control parentControl, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder);
 		#endregion
 
 		#region GetDetachEventsScript (abstract, IScriptletParameter)
-		/// <include file='..\\Dotfuscated\\Havit.Web.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlParameter.GetDetachEventsScript")]/*' />
+		/// <include file='IScriptletParameter.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IScriptletParameter.GetDetachEventsScript")]/*' />
 		public abstract void GetDetachEventsScript(string parameterPrefix, Control parentControl, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder);
 		#endregion
 
-		}
+	}
 }

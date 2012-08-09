@@ -1128,7 +1128,8 @@ namespace Havit.Web.UI.WebControls
 		/// Transformuje .NETový Date pattern do formátu používáného DynarchCalendarem.
 		/// </summary>
 		/// <param name="pattern">Date pattern.</param>
-		/// <param name="separator">Øetìzec, který má být použit jako oddìlovaè dne, mìsíce a roku.</param>
+		/// <param name="dateSeparator">Øetìzec, který má být použit jako oddìlovaè dne, mìsíce a roku.</param>
+		/// <param name="timeSeparator">Øetìzec, který má být použit jako oddìlovaè hodin a minut.</param>
 		/// <returns>DateFormat používaný DynarchCalendarem.</returns>
 		private string TransformDatePatternToClientScript(string pattern, string dateSeparator, string timeSeparator)
 		{

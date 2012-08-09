@@ -6,30 +6,24 @@ rem ****************************************************************************
 
 
 rem ****************************************************************************************************
-rem DLLs
+rem DLLs, které nejsou dotèeny obfuskátorem
 rem ****************************************************************************************************
 
-rem xcopy /y Havit.Data.SqlServer\bin\Release\Havit.Data.SqlServer.dll Dotfuscated\
-
-
+xcopy /y Havit.Data.SqlServer\bin\Release\Havit.Data.SqlServer.dll Dotfuscated\
 
 
 rem ****************************************************************************************************
 rem XML Comments
 rem ****************************************************************************************************
 
-call "Dotfuscated - update.bat"
-
-rem xcopy /y Havit\bin\Release\Havit.xml Dotfuscated\
-rem xcopy /y Havit.Business\bin\Release\Havit.Business.xml Dotfuscated\
-rem xcopy /y Havit.Data\bin\Release\Havit.Data.xml Dotfuscated\
-rem xcopy /y Havit.Data.SqlServer\bin\Release\Havit.Data.SqlServer.xml Dotfuscated\
-rem xcopy /y Havit.Drawing\bin\Release\Havit.Drawing.xml Dotfuscated\
-rem xcopy /y Havit.Web\bin\Release\Havit.Web.xml Dotfuscated\
-rem xcopy /y Havit.Enterprise.Web\bin\Release\Havit.Enterprise.Web.xml Dotfuscated\
-rem rem xcopy /y Havit.Web.UI.WebControls.DynarchCalendar\bin\Release\Havit.Web.UI.WebControls.DynarchCalendar.xml Dotfuscated\
-rem xcopy /y Havit.Xml\bin\Release\Havit.Xml.xml Dotfuscated\
-
+xcopy /y Havit\bin\Release\Havit.xml Dotfuscated\
+xcopy /y Havit.Business\bin\Release\Havit.Business.xml Dotfuscated\
+xcopy /y Havit.Data\bin\Release\Havit.Data.xml Dotfuscated\
+xcopy /y Havit.Data.SqlServer\bin\Release\Havit.Data.SqlServer.xml Dotfuscated\
+xcopy /y Havit.Drawing\bin\Release\Havit.Drawing.xml Dotfuscated\
+xcopy /y Havit.Web\bin\Release\Havit.Web.xml Dotfuscated\
+xcopy /y Havit.Enterprise.Web\bin\Release\Havit.Enterprise.Web.xml Dotfuscated\
+xcopy /y Havit.Xml\bin\Release\Havit.Xml.xml Dotfuscated\
 
 
 rem ****************************************************************************************************
@@ -43,11 +37,9 @@ rem ****************************************************************************
 rem Copy to Library
 rem ****************************************************************************************************
 
-call "Publish to Library.bat"
-
-rem xcopy /y Dotfuscated\*.* \\oskar\Library\Framework\
-
-
+xcopy /y Dotfuscated\*.* \\dev\Library\Framework\
+xcopy /y References\System.Web.Extensions.dll \\dev\Library\Framework\
+xcopy /y "doc\HAVIT .NET Framework.chm" \\dev\Library\Documentation\
 
 
 pause

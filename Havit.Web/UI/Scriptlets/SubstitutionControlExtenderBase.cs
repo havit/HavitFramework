@@ -38,14 +38,14 @@ namespace Havit.Web.UI.Scriptlets
 			parameter.Scriptlet.ControlExtenderRepository.FindControlExtender(substitutedControl).GetInitializeClientSideValueScript(parameterPrefix, parameter, substitutedControl, scriptBuilder);
 		}
 
-		/// <include file='..\\Dotfuscated\\Havit.Web.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetAttachEventsScript")]/*' />
+		/// <include file='IControlExtender.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetAttachEventsScript")]/*' />
 		public void GetAttachEventsScript(string parameterPrefix, IScriptletParameter parameter, System.Web.UI.Control control, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder)
 		{
 			Control substitutedControl = GetSubstitutedControl(control);
 			parameter.Scriptlet.ControlExtenderRepository.FindControlExtender(substitutedControl).GetAttachEventsScript(parameterPrefix, parameter, substitutedControl, scriptletFunctionCallDelegate, scriptBuilder);
 		}
-		
-		/// <include file='..\\Dotfuscated\\Havit.Web.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetDetachEventsScript")]/*' />
+
+		/// <include file='IControlExtender.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetDetachEventsScript")]/*' />
 		public void GetDetachEventsScript(string parameterPrefix, IScriptletParameter parameter, System.Web.UI.Control control, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder)
 		{
 			Control substitutedControl = GetSubstitutedControl(control);

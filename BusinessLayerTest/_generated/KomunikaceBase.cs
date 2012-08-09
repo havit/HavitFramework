@@ -8,25 +8,27 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Globalization;
-using System.Text;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
+using System.Globalization;
+using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Web;
 using System.Web.Caching;
 using System.Xml;
 using Havit.Collections;
+using Havit.Business;
+using Havit.Business.Query;
 using Havit.Data;
 using Havit.Data.SqlClient;
 using Havit.Data.SqlTypes;
-using Havit.Business;
-using Havit.Business.Query;
 
 namespace Havit.BusinessLayerTest
 {
+	[System.Diagnostics.Contracts.ContractVerification(false)]
 	public abstract class KomunikaceBase : ActiveRecordBusinessObjectBase
 	{
 		#region Static constructor
@@ -423,6 +425,8 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static Komunikace GetFirst(QueryParams queryParams)
 		{
+			global::System.Diagnostics.Contracts.Contract.Requires(queryParams != null);
+			
 			return Komunikace.GetFirst(queryParams, null);
 		}
 		
@@ -432,6 +436,8 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static Komunikace GetFirst(QueryParams queryParams, DbTransaction transaction)
 		{
+			global::System.Diagnostics.Contracts.Contract.Requires(queryParams != null);
+			
 			int? originalTopRecords = queryParams.TopRecords;
 			queryParams.TopRecords = 1;
 			KomunikaceCollection getListResult = Komunikace.GetList(queryParams, transaction);
@@ -444,6 +450,9 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static KomunikaceCollection GetList(QueryParams queryParams)
 		{
+			global::System.Diagnostics.Contracts.Contract.Requires(queryParams != null);
+			global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<KomunikaceCollection>() != null);
+			
 			return Komunikace.GetList(queryParams, null);
 		}
 		
@@ -452,6 +461,9 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static KomunikaceCollection GetList(QueryParams queryParams, DbTransaction transaction)
 		{
+			global::System.Diagnostics.Contracts.Contract.Requires(queryParams != null);
+			global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<KomunikaceCollection>() != null);
+			
 			DbCommand dbCommand = DbConnector.Default.ProviderFactory.CreateCommand();
 			dbCommand.Transaction = transaction;
 			
@@ -467,6 +479,8 @@ namespace Havit.BusinessLayerTest
 		
 		private static KomunikaceCollection GetList(DbCommand dbCommand, DataLoadPower dataLoadPower)
 		{
+			global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<KomunikaceCollection>() != null);
+			
 			if (dbCommand == null)
 			{
 				throw new ArgumentNullException("dbCommand");
@@ -491,6 +505,8 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static KomunikaceCollection GetAll()
 		{
+			global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<KomunikaceCollection>() != null);
+			
 			KomunikaceCollection collection = null;
 			QueryParams queryParams = new QueryParams();
 			collection = Komunikace.GetList(queryParams);
@@ -507,6 +523,8 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
+				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<ObjectInfo>() != null);
+				
 				return objectInfo;
 			}
 		}
@@ -521,6 +539,8 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
+				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<KomunikaceProperties>() != null);
+				
 				return properties;
 			}
 		}

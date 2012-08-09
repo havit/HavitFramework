@@ -8,28 +8,30 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Globalization;
-using System.Text;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
+using System.Globalization;
+using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Web;
 using System.Web.Caching;
 using System.Xml;
 using Havit.Collections;
+using Havit.Business;
+using Havit.Business.Query;
 using Havit.Data;
 using Havit.Data.SqlClient;
 using Havit.Data.SqlTypes;
-using Havit.Business;
-using Havit.Business.Query;
 
 namespace Havit.BusinessLayerTest
 {
 	/// <summary>
 	/// Uživatelská role. Určuje oprávnění v systému. [cached, read-only]
 	/// </summary>
+	[System.Diagnostics.Contracts.ContractVerification(false)]
 	public abstract class RoleBase : ActiveRecordBusinessObjectBase
 	{
 		#region Static constructor
@@ -71,6 +73,7 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
+				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<string>() != null);
 				EnsureLoaded();
 				return _SymbolPropertyHolder.Value;
 			}
@@ -153,7 +156,7 @@ namespace Havit.BusinessLayerTest
 			string _tempSymbol;
 			if (record.TryGet<string>("Symbol", out _tempSymbol))
 			{
-				_SymbolPropertyHolder.Value = _tempSymbol ?? "";
+				_SymbolPropertyHolder.Value = _tempSymbol ?? String.Empty;
 			}
 			
 		}
@@ -239,6 +242,8 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
+				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<Role>() != null);
+				
 				return Role.GetObject(EnumIDs.ZaporneID);
 			}
 		}
@@ -250,6 +255,8 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
+				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<Role>() != null);
+				
 				return Role.GetObject(EnumIDs.NuloveID);
 			}
 		}
@@ -261,6 +268,8 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
+				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<Role>() != null);
+				
 				return Role.GetObject(EnumIDs.Administrator);
 			}
 		}
@@ -272,6 +281,8 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
+				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<Role>() != null);
+				
 				return Role.GetObject(EnumIDs.Editor);
 			}
 		}
@@ -283,6 +294,8 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
+				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<Role>() != null);
+				
 				return Role.GetObject(EnumIDs.Publisher);
 			}
 		}
@@ -294,6 +307,8 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
+				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<Role>() != null);
+				
 				return Role.GetObject(EnumIDs.Operator);
 			}
 		}
@@ -346,6 +361,8 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static Role GetFirst(QueryParams queryParams)
 		{
+			global::System.Diagnostics.Contracts.Contract.Requires(queryParams != null);
+			
 			return Role.GetFirst(queryParams, null);
 		}
 		
@@ -355,6 +372,8 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static Role GetFirst(QueryParams queryParams, DbTransaction transaction)
 		{
+			global::System.Diagnostics.Contracts.Contract.Requires(queryParams != null);
+			
 			int? originalTopRecords = queryParams.TopRecords;
 			queryParams.TopRecords = 1;
 			RoleCollection getListResult = Role.GetList(queryParams, transaction);
@@ -367,6 +386,9 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static RoleCollection GetList(QueryParams queryParams)
 		{
+			global::System.Diagnostics.Contracts.Contract.Requires(queryParams != null);
+			global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<RoleCollection>() != null);
+			
 			return Role.GetList(queryParams, null);
 		}
 		
@@ -375,6 +397,9 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static RoleCollection GetList(QueryParams queryParams, DbTransaction transaction)
 		{
+			global::System.Diagnostics.Contracts.Contract.Requires(queryParams != null);
+			global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<RoleCollection>() != null);
+			
 			DbCommand dbCommand = DbConnector.Default.ProviderFactory.CreateCommand();
 			dbCommand.Transaction = transaction;
 			
@@ -390,6 +415,8 @@ namespace Havit.BusinessLayerTest
 		
 		private static RoleCollection GetList(DbCommand dbCommand, DataLoadPower dataLoadPower)
 		{
+			global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<RoleCollection>() != null);
+			
 			if (dbCommand == null)
 			{
 				throw new ArgumentNullException("dbCommand");
@@ -416,6 +443,8 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static RoleCollection GetAll()
 		{
+			global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<RoleCollection>() != null);
+			
 			RoleCollection collection = null;
 			int[] ids = null;
 			string cacheKey = "Havit.BusinessLayerTest.Role.GetAll()";
@@ -466,6 +495,8 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
+				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<ObjectInfo>() != null);
+				
 				return objectInfo;
 			}
 		}
@@ -480,6 +511,8 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
+				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<RoleProperties>() != null);
+				
 				return properties;
 			}
 		}

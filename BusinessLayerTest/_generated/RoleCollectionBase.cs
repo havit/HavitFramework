@@ -8,28 +8,30 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Globalization;
-using System.Text;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
+using System.Globalization;
+using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Web;
 using System.Web.Caching;
 using System.Xml;
 using Havit.Collections;
+using Havit.Business;
+using Havit.Business.Query;
 using Havit.Data;
 using Havit.Data.SqlClient;
 using Havit.Data.SqlTypes;
-using Havit.Business;
-using Havit.Business.Query;
 
 namespace Havit.BusinessLayerTest
 {
 	/// <summary>
 	/// Kolekce business objektů typu Havit.BusinessLayerTest.Role.
 	/// </summary>
+	[System.Diagnostics.Contracts.ContractVerification(false)]
 	public partial class RoleCollectionBase : BusinessObjectCollection<Role, RoleCollection>
 	{
 		//------------------------------------------------------------------------------
@@ -141,14 +143,17 @@ namespace Havit.BusinessLayerTest
 				return;
 			}
 			
-			List<int> ghosts = new List<int>();
+			Dictionary<int, Role> ghosts = new Dictionary<int, Role>();
 			
 			for (int i = 0; i < this.Count; i++)
 			{
 				Role currentObject = this[i];
 				if (!currentObject.IsLoaded)
 				{
-					ghosts.Add(currentObject.ID);
+					if (!ghosts.ContainsKey(currentObject.ID))
+					{
+						ghosts.Add(currentObject.ID, currentObject);
+					}
 				}
 			}
 			
@@ -159,7 +164,7 @@ namespace Havit.BusinessLayerTest
 				
 				QueryParams queryParams = new QueryParams();
 				queryParams.ObjectInfo = Role.ObjectInfo;
-				queryParams.Conditions.Add(ReferenceCondition.CreateIn(Role.Properties.ID, ghosts.ToArray()));
+				queryParams.Conditions.Add(ReferenceCondition.CreateIn(Role.Properties.ID, ghosts.Keys.ToArray()));
 				queryParams.IncludeDeleted = true;
 				queryParams.PrepareCommand(dbCommand);
 				
@@ -170,12 +175,10 @@ namespace Havit.BusinessLayerTest
 						DataRecord dataRecord = new DataRecord(reader, queryParams.GetDataLoadPower());
 						int id = dataRecord.Get<int>(Role.Properties.ID.FieldName);
 						
-						foreach (Role ghost in this)
+						Role ghost = ghosts[id];
+						if (!ghost.IsLoaded)
 						{
-							if (!ghost.IsLoaded && (ghost.ID == id))
-							{
-								ghost.Load(dataRecord);
-							}
+							ghost.Load(dataRecord);
 						}
 					}
 				}

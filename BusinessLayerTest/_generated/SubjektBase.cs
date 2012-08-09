@@ -8,28 +8,30 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Globalization;
-using System.Text;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
+using System.Globalization;
+using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Web;
 using System.Web.Caching;
 using System.Xml;
 using Havit.Collections;
+using Havit.Business;
+using Havit.Business.Query;
 using Havit.Data;
 using Havit.Data.SqlClient;
 using Havit.Data.SqlTypes;
-using Havit.Business;
-using Havit.Business.Query;
 
 namespace Havit.BusinessLayerTest
 {
 	/// <summary>
 	/// Subjekt.
 	/// </summary>
+	[System.Diagnostics.Contracts.ContractVerification(false)]
 	public abstract class SubjektBase : ActiveRecordBusinessObjectBase
 	{
 		#region Static constructor
@@ -79,6 +81,7 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
+				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<string>() != null);
 				EnsureLoaded();
 				return _NazevPropertyHolder.Value;
 			}
@@ -162,6 +165,8 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
+				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<Havit.BusinessLayerTest.KomunikaceCollection>() != null);
+				
 				EnsureLoaded();
 				return _KomunikacePropertyHolder.Value;
 			}
@@ -170,6 +175,7 @@ namespace Havit.BusinessLayerTest
 		/// PropertyHolder pro vlastnost Komunikace.
 		/// </summary>
 		protected CollectionPropertyHolder<Havit.BusinessLayerTest.KomunikaceCollection, Havit.BusinessLayerTest.Komunikace> _KomunikacePropertyHolder;
+		private Havit.BusinessLayerTest.KomunikaceCollection _loadedKomunikaceValues;
 		
 		#endregion
 		
@@ -263,7 +269,7 @@ namespace Havit.BusinessLayerTest
 			string _tempNazev;
 			if (record.TryGet<string>("Nazev", out _tempNazev))
 			{
-				_NazevPropertyHolder.Value = _tempNazev ?? "";
+				_NazevPropertyHolder.Value = _tempNazev ?? String.Empty;
 			}
 			
 			int? _tempUzivatel;
@@ -290,6 +296,8 @@ namespace Havit.BusinessLayerTest
 				_KomunikacePropertyHolder.Initialize();
 				if ((_tempKomunikace != null) && (!_tempKomunikace.IsNull))
 				{
+					_KomunikacePropertyHolder.Value.Clear();
+					_KomunikacePropertyHolder.Value.AllowDuplicates = true; // Z výkonových důvodů. Víme, že duplicity nepřidáme.
 					for (int i = 0; i < _tempKomunikace.Count; i++)
 					{
 						if (!_tempKomunikace[i].IsNull)
@@ -297,6 +305,8 @@ namespace Havit.BusinessLayerTest
 							_KomunikacePropertyHolder.Value.Add(Havit.BusinessLayerTest.Komunikace.GetObject(_tempKomunikace[i].Value));
 						}
 					}
+					_KomunikacePropertyHolder.Value.AllowDuplicates = false;
+					_loadedKomunikaceValues = new Havit.BusinessLayerTest.KomunikaceCollection(_KomunikacePropertyHolder.Value);
 				}
 			}
 			
@@ -494,15 +504,20 @@ namespace Havit.BusinessLayerTest
 			}
 			
 			bool dirtyCollectionExists = false;
-			if (_KomunikacePropertyHolder.IsDirty)
+			if (_KomunikacePropertyHolder.IsDirty && (_loadedKomunikaceValues != null))
 			{
-				dirtyCollectionExists = true;
-				// OPTION (RECOMPILE): workaround pro http://connect.microsoft.com/SQLServer/feedback/ViewFeedback.aspx?FeedbackID=256717
-				commandBuilder.AppendFormat("DELETE FROM [dbo].[Komunikace] WHERE KomunikaceID IN (SELECT KomunikaceID FROM [dbo].[Komunikace] WHERE (SubjektID = @SubjektID) EXCEPT SELECT Value FROM dbo.IntArrayToTable(@Komunikace)) OPTION (RECOMPILE);");
-				SqlParameter dbParameterKomunikace = new SqlParameter("@Komunikace", SqlDbType.Udt);
-				dbParameterKomunikace.UdtTypeName = "IntArray";
-				dbParameterKomunikace.Value = new SqlInt32Array(this._KomunikacePropertyHolder.Value.GetIDs());
-				dbCommand.Parameters.Add(dbParameterKomunikace);
+				Havit.BusinessLayerTest.KomunikaceCollection _komunikaceToRemove = new Havit.BusinessLayerTest.KomunikaceCollection(_loadedKomunikaceValues.Except(_KomunikacePropertyHolder.Value)).FindAll(item => !item.IsDeleted && (!item.IsLoaded || (item.Subjekt == this)));
+				if (_komunikaceToRemove.Count > 0)
+				{
+					dirtyCollectionExists = true;
+					// OPTION (RECOMPILE): workaround pro http://connect.microsoft.com/SQLServer/feedback/ViewFeedback.aspx?FeedbackID=256717
+					commandBuilder.AppendFormat("DELETE FROM [dbo].[Komunikace] WHERE (SubjektID = @SubjektID) AND KomunikaceID IN (SELECT Value FROM dbo.IntArrayToTable(@Komunikace)) OPTION (RECOMPILE);");
+					SqlParameter dbParameterKomunikace = new SqlParameter("@Komunikace", SqlDbType.Udt);
+					dbParameterKomunikace.UdtTypeName = "IntArray";
+					dbParameterKomunikace.Value = new SqlInt32Array(_komunikaceToRemove.GetIDs());
+					dbCommand.Parameters.Add(dbParameterKomunikace);
+					_loadedKomunikaceValues = new Havit.BusinessLayerTest.KomunikaceCollection(_KomunikacePropertyHolder.Value);
+				}
 			}
 			
 			// pokud je objekt dirty, ale žádná property není dirty (Save_MinimalInsert poukládal všechno), neukládáme
@@ -572,6 +587,8 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static Subjekt GetFirst(QueryParams queryParams)
 		{
+			global::System.Diagnostics.Contracts.Contract.Requires(queryParams != null);
+			
 			return Subjekt.GetFirst(queryParams, null);
 		}
 		
@@ -581,6 +598,8 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static Subjekt GetFirst(QueryParams queryParams, DbTransaction transaction)
 		{
+			global::System.Diagnostics.Contracts.Contract.Requires(queryParams != null);
+			
 			int? originalTopRecords = queryParams.TopRecords;
 			queryParams.TopRecords = 1;
 			SubjektCollection getListResult = Subjekt.GetList(queryParams, transaction);
@@ -593,6 +612,9 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static SubjektCollection GetList(QueryParams queryParams)
 		{
+			global::System.Diagnostics.Contracts.Contract.Requires(queryParams != null);
+			global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<SubjektCollection>() != null);
+			
 			return Subjekt.GetList(queryParams, null);
 		}
 		
@@ -601,6 +623,9 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static SubjektCollection GetList(QueryParams queryParams, DbTransaction transaction)
 		{
+			global::System.Diagnostics.Contracts.Contract.Requires(queryParams != null);
+			global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<SubjektCollection>() != null);
+			
 			DbCommand dbCommand = DbConnector.Default.ProviderFactory.CreateCommand();
 			dbCommand.Transaction = transaction;
 			
@@ -616,6 +641,8 @@ namespace Havit.BusinessLayerTest
 		
 		private static SubjektCollection GetList(DbCommand dbCommand, DataLoadPower dataLoadPower)
 		{
+			global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<SubjektCollection>() != null);
+			
 			if (dbCommand == null)
 			{
 				throw new ArgumentNullException("dbCommand");
@@ -640,6 +667,8 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static SubjektCollection GetAll()
 		{
+			global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<SubjektCollection>() != null);
+			
 			return Subjekt.GetAll(false);
 		}
 		
@@ -648,6 +677,8 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static SubjektCollection GetAll(bool includeDeleted)
 		{
+			global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<SubjektCollection>() != null);
+			
 			SubjektCollection collection = null;
 			QueryParams queryParams = new QueryParams();
 			queryParams.IncludeDeleted = includeDeleted;
@@ -665,6 +696,8 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
+				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<ObjectInfo>() != null);
+				
 				return objectInfo;
 			}
 		}
@@ -679,6 +712,8 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
+				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<SubjektProperties>() != null);
+				
 				return properties;
 			}
 		}

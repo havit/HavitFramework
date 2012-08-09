@@ -1,22 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Globalization;
-using System.Text;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
+using System.Globalization;
+using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Web;
 using System.Web.Caching;
 using System.Xml;
 using Havit.Collections;
+using Havit.Business;
+using Havit.Business.Query;
 using Havit.Data;
 using Havit.Data.SqlClient;
 using Havit.Data.SqlTypes;
-using Havit.Business;
-using Havit.Business.Query;
 
 namespace Havit.BusinessLayerTest
 {
@@ -55,13 +56,17 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		/// <param name="id">RoleID (PK)</param>
 		/// <returns></returns>
+		[System.Diagnostics.Contracts.ContractVerification(false)]
 		public static Role GetObject(int id)
 		{
+			global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<Role>() != null);
+			
 			Role result;
 			
 			IdentityMap currentIdentityMap = IdentityMapScope.Current;
 			if ((currentIdentityMap != null) && (currentIdentityMap.TryGet<Role>(id, out result)))
 			{
+				global::System.Diagnostics.Contracts.Contract.Assume(result != null);
 				return result;
 			}
 			
@@ -102,8 +107,12 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Vrátí existující objekt inicializovaný daty z DataReaderu.
 		/// </summary>
+		[System.Diagnostics.Contracts.ContractVerification(false)]
 		internal static Role GetObject(DataRecord dataRecord)
 		{
+			global::System.Diagnostics.Contracts.Contract.Requires(dataRecord != null);
+			global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<Role>() != null);
+			
 			Role result = null;
 			
 			int id = dataRecord.Get<int>(Role.Properties.ID.FieldName);

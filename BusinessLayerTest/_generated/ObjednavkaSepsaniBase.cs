@@ -8,25 +8,27 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Globalization;
-using System.Text;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
+using System.Globalization;
+using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Web;
 using System.Web.Caching;
 using System.Xml;
 using Havit.Collections;
+using Havit.Business;
+using Havit.Business.Query;
 using Havit.Data;
 using Havit.Data.SqlClient;
 using Havit.Data.SqlTypes;
-using Havit.Business;
-using Havit.Business.Query;
 
 namespace Havit.BusinessLayerTest
 {
+	[System.Diagnostics.Contracts.ContractVerification(false)]
 	public abstract class ObjednavkaSepsaniBase : ActiveRecordBusinessObjectBase
 	{
 		#region Static constructor
@@ -345,6 +347,8 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static ObjednavkaSepsani GetFirst(QueryParams queryParams)
 		{
+			global::System.Diagnostics.Contracts.Contract.Requires(queryParams != null);
+			
 			return ObjednavkaSepsani.GetFirst(queryParams, null);
 		}
 		
@@ -354,6 +358,8 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static ObjednavkaSepsani GetFirst(QueryParams queryParams, DbTransaction transaction)
 		{
+			global::System.Diagnostics.Contracts.Contract.Requires(queryParams != null);
+			
 			int? originalTopRecords = queryParams.TopRecords;
 			queryParams.TopRecords = 1;
 			ObjednavkaSepsaniCollection getListResult = ObjednavkaSepsani.GetList(queryParams, transaction);
@@ -366,6 +372,9 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static ObjednavkaSepsaniCollection GetList(QueryParams queryParams)
 		{
+			global::System.Diagnostics.Contracts.Contract.Requires(queryParams != null);
+			global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<ObjednavkaSepsaniCollection>() != null);
+			
 			return ObjednavkaSepsani.GetList(queryParams, null);
 		}
 		
@@ -374,6 +383,9 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static ObjednavkaSepsaniCollection GetList(QueryParams queryParams, DbTransaction transaction)
 		{
+			global::System.Diagnostics.Contracts.Contract.Requires(queryParams != null);
+			global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<ObjednavkaSepsaniCollection>() != null);
+			
 			DbCommand dbCommand = DbConnector.Default.ProviderFactory.CreateCommand();
 			dbCommand.Transaction = transaction;
 			
@@ -389,6 +401,8 @@ namespace Havit.BusinessLayerTest
 		
 		private static ObjednavkaSepsaniCollection GetList(DbCommand dbCommand, DataLoadPower dataLoadPower)
 		{
+			global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<ObjednavkaSepsaniCollection>() != null);
+			
 			if (dbCommand == null)
 			{
 				throw new ArgumentNullException("dbCommand");
@@ -413,6 +427,8 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static ObjednavkaSepsaniCollection GetAll()
 		{
+			global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<ObjednavkaSepsaniCollection>() != null);
+			
 			ObjednavkaSepsaniCollection collection = null;
 			QueryParams queryParams = new QueryParams();
 			collection = ObjednavkaSepsani.GetList(queryParams);
@@ -429,6 +445,8 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
+				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<ObjectInfo>() != null);
+				
 				return objectInfo;
 			}
 		}
@@ -443,6 +461,8 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
+				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<ObjednavkaSepsaniProperties>() != null);
+				
 				return properties;
 			}
 		}

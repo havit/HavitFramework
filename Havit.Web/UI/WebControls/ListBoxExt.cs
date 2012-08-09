@@ -7,7 +7,11 @@ using System.Globalization;
 
 namespace Havit.Web.UI.WebControls
 {
-	public class CheckBoxListExt: CheckBoxList
+	/// <summary>
+	/// Vylepšený <see cref="DropDownList"/>.
+	/// Podporuje lepší zpracování hodnoty DataTextField při databindingu.
+	/// </summary>
+	public class ListBoxExt: ListBox
 	{
 		#region ItemDataBound (event)
 		/// <summary>
@@ -99,7 +103,7 @@ namespace Havit.Web.UI.WebControls
 				num = FindItemIndexByValue(this.Items, this.cachedSelectedValue);
 				if (-1 == num)
 				{
-					throw new ArgumentOutOfRangeException("value", "DropDownList neobsahuje hodnotu SelectedValue.");
+					throw new ArgumentOutOfRangeException("value", "ListBoxEx neobsahuje hodnotu SelectedValue.");
 				}
 				if ((this.cachedSelectedIndex != -1) && (this.cachedSelectedIndex != num))
 				{

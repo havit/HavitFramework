@@ -114,6 +114,13 @@
     <Compile Include="EnterpriseDropDownListTest.aspx.designer.cs">
       <DependentUpon>EnterpriseDropDownListTest.aspx</DependentUpon>
     </Compile>
+    <Compile Include="EnterpriseListBoxTest.aspx.cs">
+      <DependentUpon>EnterpriseListBoxTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EnterpriseListBoxTest.aspx.designer.cs">
+      <DependentUpon>EnterpriseListBoxTest.aspx</DependentUpon>
+    </Compile>
     <Compile Include="EnumDropDownList.aspx.cs">
       <DependentUpon>EnumDropDownList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -262,6 +269,7 @@
     <Content Include="CheckBoxValidatorTest.aspx" />
     <Content Include="DynarchCalendarTest.aspx" />
     <Content Include="EnterpriseCheckBoxListTest.aspx" />
+    <Content Include="EnterpriseListBoxTest.aspx" />
     <Content Include="havit.css" />
     <Content Include="HavitScripts.js" />
     <Content Include="JirkkaTest.aspx" />

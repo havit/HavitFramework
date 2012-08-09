@@ -10,13 +10,13 @@ using System.Collections;
 namespace Havit.Web.UI.WebControls
 {
     /// <summary>
-    /// EnterpriseCheckBoxList zajišuje pohodlnìjší práci s CheckBoxListem, jeho poloky pøedstavují business objekty.	
+    /// EnterpriseListBox zajišuje pohodlnìjší práci s ListBoxem, jeho poloky pøedstavují business objekty.	
     /// </summary>
-	public class EnterpriseCheckBoxList: CheckBoxListExt
+	public class EnterpriseListBox: ListBoxExt
 	{
 		#region ItemPropertyInfo
 		/// <summary>
-		/// ReferenceFieldPropertyInfo property, její hodnota se tímto CheckBoxListem vybírá.
+		/// ReferenceFieldPropertyInfo property, její hodnota se tímto ListBoxem vybírá.
 		/// Nastavení této hodnoty rovnì pøepíše hodnoty vlastností ItemObjectInfo a Nullable.
 		/// Hodnota této property nepøeívá postback.
 		/// </summary>
@@ -256,7 +256,7 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Vytvoøí instanci EnterpriseCheckBoxList.
 		/// </summary>
-		public EnterpriseCheckBoxList()
+		public EnterpriseListBox()
 		{
 			DataValueField = "ID";
 		} 
@@ -300,7 +300,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region DataBindAll
 		/// <summary>
-		/// Naváe na CheckBoxList všechny (nasmazané) business objekty urèitého typu
+		/// Naváe na ListBox všechny (nasmazané) business objekty urèitého typu
 		/// (zavolá metodu GetAll(), nastaví vısledek je jako DataSource a zavolá DataBind).
 		/// </summary>
 		protected void DataBindAll()

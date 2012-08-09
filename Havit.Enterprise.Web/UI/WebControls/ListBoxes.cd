@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Havit.Web.UI.WebControls.EnterpriseListBox" Collapsed="true">
+    <Position X="8.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAIAAEAgAEBpAAAIAAAAACUAAQAQAAAAAQIAICQAA=</HashCode>
+      <FileName>UI\WebControls\EnterpriseListBox.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Havit.Web.UI.WebControls.EnterpriseCheckBoxList" Collapsed="true">
+    <Position X="4.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAIAAEAgAEBpAAAIAAAAACUAAQAQAAAAAQIAICQAA=</HashCode>
+      <FileName>UI\WebControls\EnterpriseCheckBoxList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Havit.Web.UI.WebControls.EnterpriseDropDownList" Collapsed="true">
+    <Position X="6.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAIAAEAgAERFAAQIAAAQACUAAQAQAAAAAUIAIKIAA=</HashCode>
+      <FileName>UI\WebControls\EnterpriseDropDownList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Havit.Web.UI.WebControls.DropDownListExt" Collapsed="true">
+    <Position X="6.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Havit.Web.UI.WebControls.CheckBoxListExt" Collapsed="true">
+    <Position X="4.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Havit.Web.UI.WebControls.ListBoxExt" Collapsed="true">
+    <Position X="8.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="System.Web.UI.WebControls.ListBox" Collapsed="true">
+    <Position X="8.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.908" Collapsed="true" />
+  </Class>
+  <Class Name="System.Web.UI.WebControls.CheckBoxList" Collapsed="true">
+    <Position X="4.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.215" Collapsed="true" />
+  </Class>
+  <Class Name="System.Web.UI.WebControls.ListControl" Collapsed="true">
+    <Position X="6.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="System.Web.UI.WebControls.DropDownList" Collapsed="true">
+    <Position X="6.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="1.012" Collapsed="true" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Havit.Collections;
@@ -10,29 +10,35 @@ using System.Diagnostics.Contracts;
 namespace Havit.Business
 {
 	/// <summary>
-	/// Bázová tøída pro všechny kolekce BusinessObjectBase (Layer SuperType)
+	/// BÃ¡zovÃ¡ tÃ¸Ã­da pro vÅ¡echny kolekce BusinessObjectBase (Layer SuperType)
 	/// </summary>
 	/// <remarks>
-	/// POZOR! Vnitøní implementace je závislá na faktu, e this.Items je List(Of T).
-	/// To je vıchozí chování Collection(Of T), ale pro jistotu si to ještì vynucujeme
-	/// pouitím wrappujícího constructoru.
+	/// POZOR! VnitÃ¸nÃ­ implementace je zÃ¡vislÃ¡ na faktu, Å¾e this.Items je List(Of T).
+	/// To je vÃ½chozÃ­ chovÃ¡nÃ­ Collection(Of T), ale pro jistotu si to jeÅ¡tÃ¬ vynucujeme
+	/// pouÅ¾itÃ­m wrappujÃ­cÃ­ho constructoru.
 	/// </remarks>
-	/// <typeparam name="TItem">èlenskı typ kolekce</typeparam>
-	/// <typeparam name="TCollection">typ pouívané business object kolekce</typeparam>
+	/// <typeparam name="TItem">Ã¨lenskÃ½ typ kolekce</typeparam>
+	/// <typeparam name="TCollection">typ pouÅ¾Ã­vanÃ© business object kolekce</typeparam>
 	public class BusinessObjectCollection<TItem, TCollection> : Collection<TItem>
 		where TItem : BusinessObjectBase
 		where TCollection : BusinessObjectCollection<TItem, TCollection>, new()
 	{
 		#region Event - CollectionChanged
 		/// <summary>
-		/// Událost vyvolaná po jakékoliv zmìnì kolekce (Insert, Remove, Set, Clear).
+		/// UdÃ¡lost vyvolanÃ¡ po jakÃ©koliv zmÃ¬nÃ¬ kolekce (Insert, Remove, Set, Clear).
 		/// </summary>
 		public event EventHandler CollectionChanged;
 
 		/// <summary>
-		/// Provádí se jako volání události <see cref="CollectionChanged"/>.
+		/// PÅ™Ã­znak, pokud je false znamenÃ¡ to,Å¾e LoadAll nemusÃ­ naÄÃ­tat objekty - v kolekci nenÃ­ Å¾Ã¡dnÃ½ ghost.
+		/// Pokud je true, v kolekci mÅ¯Å¾e (ale nemusÃ­ bÃ½t ghost).
 		/// </summary>
-		/// <param name="e">prázdné</param>
+		protected bool LoadAllRequired { get; set; }
+
+		/// <summary>
+		/// ProvÃ¡dÃ­ se jako volÃ¡nÃ­ udÃ¡losti <see cref="CollectionChanged"/>.
+		/// </summary>
+		/// <param name="e">prÃ¡zdnÃ©</param>
 		protected void OnCollectionChanged(EventArgs e)
 		{
 			if (CollectionChanged != null)
@@ -44,9 +50,9 @@ namespace Havit.Business
 
 		#region AllowDuplicates
 		/// <summary>
-		/// Urèuje, zda je moné do kolekce vloit hodnotu, která ji v kolekci je.
-		/// Pokud je nastaveno na true, pøidání hodnoty, která v kolekci ji je, vyvolá vıjimku.
-		/// Pokud je nastaveno na false (vıchozí), je moné hodnotu do kolekce pøidat vícekrát.
+		/// UrÃ¨uje, zda je moÅ¾nÃ© do kolekce vloÅ¾it hodnotu, kterÃ¡ jiÅ¾ v kolekci je.
+		/// Pokud je nastaveno na true, pÃ¸idÃ¡nÃ­ hodnoty, kterÃ¡ v kolekci jiÅ¾ je, vyvolÃ¡ vÃ½jimku.
+		/// Pokud je nastaveno na false (vÃ½chozÃ­), je moÅ¾nÃ© hodnotu do kolekce pÃ¸idat vÃ­cekrÃ¡t.
 		/// </summary>
 		public bool AllowDuplicates
 		{
@@ -78,10 +84,14 @@ namespace Havit.Business
 		{
 			if ((!_allowDuplicates) && (this.Contains(item)))
 			{
-				throw new ArgumentException("Poloka v kolekci ji existuje (a není povoleno vkládání duplicit).");
+				throw new ArgumentException("PoloÅ¾ka v kolekci jiÅ¾ existuje (a nenÃ­ povoleno vklÃ¡dÃ¡nÃ­ duplicit).");
 			}
 
 			base.InsertItem(index, item);
+			if ((item != null) && !item.IsLoaded)
+			{
+				LoadAllRequired = true;
+			}
 			OnCollectionChanged(EventArgs.Empty);
 		}
 		#endregion
@@ -109,13 +119,17 @@ namespace Havit.Business
 		/// <exception cref="T:System.ArgumentOutOfRangeException">index is less than zero.-or-index is greater than <see cref="P:System.Collections.ObjectModel.Collection`1.Count"></see>.</exception>
 		protected override void SetItem(int index, TItem item)
 		{
-			// je zajištìno, e v reimu !AllowDuplicates kolekce neobsahuje duplikáty
-			// potom mùeme pouít IndexOf na hledání vıskytu (je garantováno, e prvek je v kolekci nejvıše jednou).
+			// je zajiÅ¡tÃ¬no, Å¾e v reÅ¾imu !AllowDuplicates kolekce neobsahuje duplikÃ¡ty
+			// potom mÃ¹Å¾eme pouÅ¾Ã­t IndexOf na hledÃ¡nÃ­ vÃ½skytu (je garantovÃ¡no, Å¾e prvek je v kolekci nejvÃ½Å¡e jednou).
 			if (!_allowDuplicates && (this.IndexOf(item) != index)) 
 			{
-				throw new ArgumentException("Poloka v kolekci ji existuje (a není povoleno vkládání duplicit).");
+				throw new ArgumentException("PoloÅ¾ka v kolekci jiÅ¾ existuje (a nenÃ­ povoleno vklÃ¡dÃ¡nÃ­ duplicit).");
 			}
 			base.SetItem(index, item);
+			if ((item != null) && !item.IsLoaded)
+			{
+				LoadAllRequired = true;
+			}
 			OnCollectionChanged(EventArgs.Empty);
 		}
 		#endregion
@@ -127,53 +141,57 @@ namespace Havit.Business
 		protected override void ClearItems()
 		{
 			base.ClearItems();
+			LoadAllRequired = false;
 			OnCollectionChanged(EventArgs.Empty);
 		}
 		#endregion
 
 		#region Constructors
 		/// <summary>
-		/// Vytvoøí novou instanci kolekce bez prvkù - prázdnou.
+		/// VytvoÃ¸Ã­ novou instanci kolekce bez prvkÃ¹ - prÃ¡zdnou.
 		/// </summary>
 		/// <remarks>
-		/// Pouit je wrappující constructor Collection(Of T), abychom si vynutili List(Of T).
+		/// PouÅ¾it je wrappujÃ­cÃ­ constructor Collection(Of T), abychom si vynutili List(Of T).
 		/// </remarks>
 		public BusinessObjectCollection()
 			: base(new List<TItem>())
 		{
+			LoadAllRequired = false;
 		}
 
 		/// <summary>
-		/// Vytvoøí novou instanci kolekce wrapnutím Listu prvkù (neklonuje!).
+		/// VytvoÃ¸Ã­ novou instanci kolekce wrapnutÃ­m Listu prvkÃ¹ (neklonuje!).
 		/// </summary>
 		/// <remarks>
-		/// Je to rychlé! Nikam se nic nekopíruje, ale pozor, ani neklonuje!
+		/// Je to rychlÃ©! Nikam se nic nekopÃ­ruje, ale pozor, ani neklonuje!
 		/// </remarks>
-		/// <param name="list">List prvkù</param>
+		/// <param name="list">List prvkÃ¹</param>
 		public BusinessObjectCollection(List<TItem> list)
 			: base(list)
 		{
+			LoadAllRequired = this.Any(item => (item != null) && !item.IsLoaded);
 		}
 
 		/// <summary>
-		/// Vytvoøí novou instanci kolekce a zkopíruje do ní prvky z pøedané kolekce.
+		/// VytvoÃ¸Ã­ novou instanci kolekce a zkopÃ­ruje do nÃ­ prvky z pÃ¸edanÃ© kolekce.
 		/// </summary>
-		/// <param name="collection">kolekce, její prvky se mají do naší kolekce zkopírovat</param>
+		/// <param name="collection">kolekce, jejÃ­Å¾ prvky se majÃ­ do naÅ¡Ã­ kolekce zkopÃ­rovat</param>
 		public BusinessObjectCollection(IEnumerable<TItem> collection)
 			: base(new List<TItem>(collection))
 		{
+			LoadAllRequired = this.Any(item => (item != null) && !item.IsLoaded);
 		}
 		#endregion
 
 		#region FindByID
 		/// <summary>
-		/// Prohledá kolekci a vrátí první nalezenı prvek s poadovanım ID.
+		/// ProhledÃ¡ kolekci a vrÃ¡tÃ­ prvnÃ­ nalezenÃ½ prvek s poÅ¾adovanÃ½m ID.
 		/// </summary>
 		/// <remarks>
-		/// Vzhledem k tomu, e jsou prvky v kolekci obvykle unikátní, najde prostì zadané ID.
+		/// Vzhledem k tomu, Å¾e jsou prvky v kolekci obvykle unikÃ¡tnÃ­, najde prostÃ¬ zadanÃ© ID.
 		/// </remarks>
 		/// <param name="id">ID prvku</param>
-		/// <returns>první nalezenı prvek s poadovanım ID; null, pokud nic nenalezeno</returns>
+		/// <returns>prvnÃ­ nalezenÃ½ prvek s poÅ¾adovanÃ½m ID; null, pokud nic nenalezeno</returns>
 		public TItem FindByID(int id)
 		{
 			List<TItem> innerList = (List<TItem>)Items;
@@ -196,13 +214,13 @@ namespace Havit.Business
 
 		#region Find
 		/// <summary>
-		/// Prohledá kolekci a vrátí první nalezenı prvek odpovídající kritériu match.
+		/// ProhledÃ¡ kolekci a vrÃ¡tÃ­ prvnÃ­ nalezenÃ½ prvek odpovÃ­dajÃ­cÃ­ kritÃ©riu match.
 		/// </summary>
 		/// <remarks>
 		/// Metoda pouze publikuje metodu Find() inner-Listu Items.
 		/// </remarks>
-		/// <param name="match">kritérium ve formì predikátu</param>
-		/// <returns>kolekce všech prvkù odpovídajících kritériu match</returns>
+		/// <param name="match">kritÃ©rium ve formÃ¬ predikÃ¡tu</param>
+		/// <returns>kolekce vÅ¡ech prvkÃ¹ odpovÃ­dajÃ­cÃ­ch kritÃ©riu match</returns>
 		public virtual TItem Find(Predicate<TItem> match)
 		{
 			List<TItem> innerList = (List<TItem>)Items;
@@ -212,13 +230,13 @@ namespace Havit.Business
 
 		#region FindAll
 		/// <summary>
-		/// Prohledá kolekci a vrátí všechny prvky odpovídající kritériu match.
+		/// ProhledÃ¡ kolekci a vrÃ¡tÃ­ vÅ¡echny prvky odpovÃ­dajÃ­cÃ­ kritÃ©riu match.
 		/// </summary>
 		/// <remarks>
 		/// Metoda pouze publikuje metodu FindAll() inner-listu Items.
 		/// </remarks>
-		/// <param name="match">kritérium ve formì predikátu</param>
-		/// <returns>kolekce všech prvkù odpovídajících kritériu match</returns>
+		/// <param name="match">kritÃ©rium ve formÃ¬ predikÃ¡tu</param>
+		/// <returns>kolekce vÅ¡ech prvkÃ¹ odpovÃ­dajÃ­cÃ­ch kritÃ©riu match</returns>
 		public virtual TCollection FindAll(Predicate<TItem> match)
 		{
 			Contract.Ensures(Contract.Result<TCollection>() != null);
@@ -233,7 +251,7 @@ namespace Havit.Business
 
 		#region ForEach
 		/// <summary>
-		/// Spustí akci nad všemi prvky kolekce.
+		/// SpustÃ­ akci nad vÅ¡emi prvky kolekce.
 		/// </summary>
 		/// <example>
 		/// orders.ForEach(delegate(Order item)
@@ -242,9 +260,9 @@ namespace Havit.Business
 		///		});
 		/// </example>
 		/// <remarks>
-		/// Je rychlejší, ne <c>foreach</c>, protoe neprochází enumerator, ale iteruje prvky ve for cyklu podle indexu.
+		/// Je rychlejÅ¡Ã­, neÅ¾ <c>foreach</c>, protoÅ¾e neprochÃ¡zÃ­ enumerator, ale iteruje prvky ve for cyklu podle indexu.
 		/// </remarks>
-		/// <param name="action">akce, která má bıt spuštìna</param>
+		/// <param name="action">akce, kterÃ¡ mÃ¡ bÃ½t spuÅ¡tÃ¬na</param>
 		public void ForEach(Action<TItem> action)
 		{
 			List<TItem> innerList = (List<TItem>)Items;
@@ -254,18 +272,22 @@ namespace Havit.Business
 
 		#region AddRange
 		/// <summary>
-		/// Pøidá do kolekce prvky pøedané kolekce.
+		/// PÃ¸idÃ¡ do kolekce prvky pÃ¸edanÃ© kolekce.
 		/// </summary>
-		/// <param name="source">Kolekce, její prvky mají bıt pøidány.</param>
+		/// <param name="source">Kolekce, jejÃ­Å¾ prvky majÃ­ bÃ½t pÃ¸idÃ¡ny.</param>
 		public void AddRange(IEnumerable<TItem> source)
 		{
 			List<TItem> innerList = (List<TItem>)Items;
 			int originalItemsCount = innerList.Count;
 			innerList.AddRange(source);
 
-			// vyvoláme událost informující o zmìnì kolekce, pokud se zmìnil poèet objektù v kolekci
+			// vyvolÃ¡me udÃ¡lost informujÃ­cÃ­ o zmÃ¬nÃ¬ kolekce, pokud se zmÃ¬nil poÃ¨et objektÃ¹ v kolekci
 			if (originalItemsCount != innerList.Count)
 			{
+				if (source.Any(item => (item != null) && !item.IsLoaded))
+				{
+					LoadAllRequired = true;
+				}
 				OnCollectionChanged(EventArgs.Empty);
 			}
 		}
@@ -273,19 +295,19 @@ namespace Havit.Business
 
 		#region RemoveAll
 		/// <summary>
-		/// Odstraní z kolekce všechny prvky odpovídající kritériu match.
+		/// OdstranÃ­ z kolekce vÅ¡echny prvky odpovÃ­dajÃ­cÃ­ kritÃ©riu match.
 		/// </summary>
 		/// <remarks>
 		/// Metoda pouze publikuje metodu RemoveAll() inner-listu Items.
 		/// </remarks>
-		/// <param name="match">kritérium ve formì predikátu</param>
-		/// <returns>poèet odstranìnıch prvkù</returns>
+		/// <param name="match">kritÃ©rium ve formÃ¬ predikÃ¡tu</param>
+		/// <returns>poÃ¨et odstranÃ¬nÃ½ch prvkÃ¹</returns>
 		public virtual int RemoveAll(Predicate<TItem> match)
 		{
 			List<TItem> innerList = (List<TItem>)Items;		
 			int itemsRemovedCount = innerList.RemoveAll(match);
 			
-			// vyvoláme událost informující o zmìnì kolekce, pokud nìjaké objekty byly z kolekce odstranìny
+			// vyvolÃ¡me udÃ¡lost informujÃ­cÃ­ o zmÃ¬nÃ¬ kolekce, pokud nÃ¬jakÃ© objekty byly z kolekce odstranÃ¬ny
 			if (itemsRemovedCount != 0)
 			{
 				OnCollectionChanged(EventArgs.Empty);
@@ -297,10 +319,10 @@ namespace Havit.Business
 
 		#region RemoveRange
 		/// <summary>
-		/// Odstraní z kolekce poadované prvky.
+		/// OdstranÃ­ z kolekce poÅ¾adovanÃ© prvky.
 		/// </summary>
-		/// <param name="items">prvky, které mají bıt z kolekce odstranìny</param>
-		/// <returns>poèet prvkù, které byly skuteènì odstranìny</returns>
+		/// <param name="items">prvky, kterÃ© majÃ­ bÃ½t z kolekce odstranÃ¬ny</param>
+		/// <returns>poÃ¨et prvkÃ¹, kterÃ© byly skuteÃ¨nÃ¬ odstranÃ¬ny</returns>
 		public virtual int RemoveRange(IEnumerable<TItem> items)
 		{
 			List<TItem> innerList = (List<TItem>)Items;		
@@ -323,15 +345,15 @@ namespace Havit.Business
 
 		#region Sort
 		/// <summary>
-		/// Seøadí prvky kolekce dle poadované property, která implementuje IComparable.
+		/// SeÃ¸adÃ­ prvky kolekce dle poÅ¾adovanÃ© property, kterÃ¡ implementuje IComparable.
 		/// </summary>
 		/// <remarks>
-		/// Pouívá <see cref="Havit.Collections.GenericPropertyComparer{T}"/>. K porovnávání podle property
-		/// tedy dochází pomocí reflexe - relativnì pomalu. Pokud je potøeba vyšší vıkon, je potøeba pouít
-		/// overload Sort(Generic Comparsion) s pøímım pøístupem k property.
+		/// PouÅ¾Ã­vÃ¡ <see cref="Havit.Collections.GenericPropertyComparer{T}"/>. K porovnÃ¡vÃ¡nÃ­ podle property
+		/// tedy dochÃ¡zÃ­ pomocÃ­ reflexe - relativnÃ¬ pomalu. Pokud je potÃ¸eba vyÅ¡Å¡Ã­ vÃ½kon, je potÃ¸eba pouÅ¾Ã­t
+		/// overload Sort(Generic Comparsion) s pÃ¸Ã­mÃ½m pÃ¸Ã­stupem k property.
 		/// </remarks>
-		/// <param name="propertyName">property, podle které se má øadit</param>
-		/// <param name="ascending">true, pokud se má øadit vzestupnì, false, pokud sestupnì</param>
+		/// <param name="propertyName">property, podle kterÃ© se mÃ¡ Ã¸adit</param>
+		/// <param name="ascending">true, pokud se mÃ¡ Ã¸adit vzestupnÃ¬, false, pokud sestupnÃ¬</param>
 		[Obsolete]
 		public virtual void Sort(string propertyName, bool ascending)
 		{
@@ -340,15 +362,15 @@ namespace Havit.Business
 		}
 		
 		/// <summary>
-		/// Seøadí prvky kolekce dle poadované property, která implementuje IComparable.
+		/// SeÃ¸adÃ­ prvky kolekce dle poÅ¾adovanÃ© property, kterÃ¡ implementuje IComparable.
 		/// </summary>
 		/// <remarks>
-		/// Pouívá <see cref="Havit.Collections.GenericPropertyComparer{T}"/>. K porovnávání podle property
-		/// tedy dochází pomocí reflexe - relativnì pomalu. Pokud je potøeba vyšší vıkon, je potøeba pouít
-		/// overload Sort(Generic Comparsion) s pøímım pøístupem k property.
+		/// PouÅ¾Ã­vÃ¡ <see cref="Havit.Collections.GenericPropertyComparer{T}"/>. K porovnÃ¡vÃ¡nÃ­ podle property
+		/// tedy dochÃ¡zÃ­ pomocÃ­ reflexe - relativnÃ¬ pomalu. Pokud je potÃ¸eba vyÅ¡Å¡Ã­ vÃ½kon, je potÃ¸eba pouÅ¾Ã­t
+		/// overload Sort(Generic Comparsion) s pÃ¸Ã­mÃ½m pÃ¸Ã­stupem k property.
 		/// </remarks>
-		/// <param name="propertyInfo">Property, podle které se má øadit.</param>
-		/// <param name="sortDirection">Smìr øazení.</param>
+		/// <param name="propertyInfo">Property, podle kterÃ© se mÃ¡ Ã¸adit.</param>
+		/// <param name="sortDirection">SmÃ¬r Ã¸azenÃ­.</param>
 		public virtual void Sort(PropertyInfo propertyInfo, SortDirection sortDirection)
 		{
 			List<TItem> innerList = (List<TItem>)Items;
@@ -356,9 +378,9 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Seøadí prvky kolekce dle zadaného srovnání. Publikuje metodu Sort(Generic Comparsion) inner-Listu.
+		/// SeÃ¸adÃ­ prvky kolekce dle zadanÃ©ho srovnÃ¡nÃ­. Publikuje metodu Sort(Generic Comparsion) inner-Listu.
 		/// </summary>
-		/// <param name="comparsion">srovnání, podle kterého mají bıt prvky seøazeny</param>
+		/// <param name="comparsion">srovnÃ¡nÃ­, podle kterÃ©ho majÃ­ bÃ½t prvky seÃ¸azeny</param>
 		public virtual void Sort(Comparison<TItem> comparsion)
 		{
 			List<TItem> innerList = (List<TItem>)Items;
@@ -368,9 +390,9 @@ namespace Havit.Business
 
 		#region SaveAll
 		/// <summary>
-		/// Uloí všechny prvky kolekce, v transakci (pokud je null, zaloí si samo novou).
+		/// UloÅ¾Ã­ vÅ¡echny prvky kolekce, v transakci (pokud je null, zaloÅ¾Ã­ si samo novou).
 		/// </summary>
-		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v které mají bıt prvky uloeny</param>
+		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v kterÃ© majÃ­ bÃ½t prvky uloÅ¾eny</param>
 		public virtual void SaveAll(DbTransaction transaction)
 		{
 			DbConnector.Default.ExecuteTransaction(innerTransaction =>
@@ -383,7 +405,7 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Uloí všechny prvky kolekce (v transakci, kterou si samo vytvoøí).
+		/// UloÅ¾Ã­ vÅ¡echny prvky kolekce (v transakci, kterou si samo vytvoÃ¸Ã­).
 		/// </summary>
 		public virtual void SaveAll()
 		{
@@ -393,9 +415,9 @@ namespace Havit.Business
 
 		#region GetIDs
 		/// <summary>
-		/// Vrátí pole hodnot ID všech prvkù kolekce.
+		/// VrÃ¡tÃ­ pole hodnot ID vÅ¡ech prvkÃ¹ kolekce.
 		/// </summary>
-		/// <returns>pole hodnot ID všech prvkù kolekce</returns>
+		/// <returns>pole hodnot ID vÅ¡ech prvkÃ¹ kolekce</returns>
 		public int[] GetIDs()
 		{
 			int[] array = new int[this.Count];
@@ -412,20 +434,20 @@ namespace Havit.Business
 
 		#region CheckDuplicates (private)
 		/// <summary>
-		/// Vrací true, pokud kolekce obsahuje duplicity.
+		/// VracÃ­ true, pokud kolekce obsahuje duplicity.
 		/// </summary>		
 		private bool CheckDuplicates()
 		{			
-			// obsahuje-li kolekce ménì ne dva prvky, nemùe obsahovat duplicity.
+			// obsahuje-li kolekce mÃ©nÃ¬ neÅ¾ dva prvky, nemÃ¹Å¾e obsahovat duplicity.
 			if (Items.Count < 2)
 			{
 				return false;
 			}
 
-			// otestujeme duplicity uloenıch objektù
+			// otestujeme duplicity uloÅ¾enÃ½ch objektÃ¹
 			List<TItem> savedObjects = this.Where(item => !item.IsNew).ToList();
 			int distinctSavedObjectsCount = 0;
-			if (savedObjects.Count > 1) // kolekce obsahuje uloenı objekt
+			if (savedObjects.Count > 1) // kolekce obsahuje uloÅ¾enÃ½ objekt
 			{
 				distinctSavedObjectsCount = savedObjects.Select(item => item.ID).Distinct().Count();
 				if ((savedObjects.Count > 1) && (distinctSavedObjectsCount != savedObjects.Count))
@@ -434,9 +456,9 @@ namespace Havit.Business
 				}
 			}
 
-			if (distinctSavedObjectsCount != this.Count) // kolekce obsahuje i neuloenı objekt
+			if (distinctSavedObjectsCount != this.Count) // kolekce obsahuje i neuloÅ¾enÃ½ objekt
 			{
-				// otestujeme duplicity neuloenıch objektù
+				// otestujeme duplicity neuloÅ¾enÃ½ch objektÃ¹
 				List<TItem> newObjects = this.Where(item => item.IsNew).ToList();
 				if (newObjects.Count > 1)
 				{
@@ -448,7 +470,7 @@ namespace Havit.Business
 				}
 			}
 
-			// nenašli jsme duplicitu
+			// nenaÅ¡li jsme duplicitu
 			return false;			
 		}
 		#endregion

@@ -142,6 +142,13 @@ namespace Havit.Web.UI.WebControls
 			}
 			set
 			{
+				if (isDataBinding)
+				{
+					// pokud jsme v databindingu, odložíme nastavení hodnoty, protože ještì nemusíme mít DataSource ani data v Items.
+					delayedSetSelectedObject = value;
+					return;
+				}
+
 				if (value == null)
 				{
 					// pokud nastavujeme null, zajistime, aby existoval prazdny radek a vybereme jej
@@ -154,6 +161,8 @@ namespace Havit.Web.UI.WebControls
 					{
 						throw new ArgumentException("Nelze vybrat neuložený objekt.");
 					}
+					
+					EnsureAutoDataBind();
 
 					// pokud nastavujeme objekt
 					ListItem listItem = Items.FindByValue(value.ID.ToString());
@@ -164,17 +173,43 @@ namespace Havit.Web.UI.WebControls
 					}
 					else
 					{
-						// nastavovany objekt neni v seznamu, pridame jej
-						bool oldAppendDataBoundItems = AppendDataBoundItems;
-						AppendDataBoundItems = true;
-						DataSource = new object[] { value };
-						DataBind();
-						AppendDataBoundItems = oldAppendDataBoundItems;
+						ListItem newListItem = new ListItem();
+						newListItem.Text = DataBinder.Eval(value, DataTextField).ToString();
+						newListItem.Value = DataBinder.Eval(value, DataValueField).ToString();
+						Items.Add(newListItem);
 						SelectedIndex = Items.Count - 1;
 					}
 				}
 			}
 		}
+
+		/// <summary>
+		/// Zajistí nabindování dat pro režit AutoDataBind.
+		/// </summary>
+		protected void EnsureAutoDataBind()
+		{
+			if (AutoDataBind && !DataBindPerformed)
+			{
+				DataBindAll();
+			}
+		}
+
+		/// <summary>
+		/// Provádí databinding a øeší odložené nastavení SelectedObject.
+		/// </summary>
+		public override void DataBind()
+		{
+			isDataBinding = true;
+			base.DataBind();
+			isDataBinding = false;
+
+			if (delayedSetSelectedObject != null)
+			{
+				SelectedObject = delayedSetSelectedObject;
+				delayedSetSelectedObject = null;
+			}
+		}
+
 		#endregion
 
 		#region Private properties
@@ -186,6 +221,20 @@ namespace Havit.Web.UI.WebControls
 			get { return (bool)(ViewState["DataBindPerformed"] ?? false);  }
 			set { ViewState["DataBindPerformed"] = value; }
 		}
+
+
+		/// <summary>
+		/// Indikuje právì porobíhající databinding.
+		/// </summary>
+		bool isDataBinding = false;
+
+		/// <summary>
+		/// Pokud nastavujeme SelectedObject bìhem DataBindingu (ve stránce pomocí &lt;%# ... %&gt;),
+		/// odloží se nastavení hodnoty až na konec DataBindingu. To protože v okamžiku nastavování SelectedObject 
+		/// nemusí být v Items ještì data.
+		/// </summary>
+		BusinessObjectBase delayedSetSelectedObject = null;
+
 		#endregion
 
 		#region DataBinding
@@ -197,11 +246,7 @@ namespace Havit.Web.UI.WebControls
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
-
-			if (AutoDataBind && !DataBindPerformed)
-			{
-				DataBindAll();
-			}
+			EnsureAutoDataBind();
 		}
 
 		/// <summary>
@@ -213,8 +258,7 @@ namespace Havit.Web.UI.WebControls
 			if (itemObjectInfo == null)
 				throw new InvalidOperationException("Není nastavena vlastnost ItemObjectInfo.");
 
-			DataSource = itemObjectInfo.GetAllMethod();
-			DataBind();
+			PerformDataBinding(itemObjectInfo.GetAllMethod());
 		}
 
 		/// <summary>

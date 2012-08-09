@@ -4,37 +4,39 @@
         <name>Havit.Web</name>
     </assembly>
     <members>
-        <member name="T:Havit.Web.UI.WebControls.Highlighting">
+        <member name="T:Havit.Web.UrlRewriter.BaseModuleRewriter">
             <summary>
-            Třída Highlighting drží data pro zvýraznění vybrané položky podle hodnoty klíče.
+            The base class for module rewriting.  This class is abstract, and therefore must be derived from.
+            </summary>
+            <remarks>Provides the essential base functionality for a rewriter using the HttpModule approach.</remarks>
+        </member>
+        <member name="M:Havit.Web.UrlRewriter.BaseModuleRewriter.Init(System.Web.HttpApplication)">
+            <summary>
+            Executes when the module is initialized.
+            </summary>
+            <param name="app">A reference to the HttpApplication object processing this request.</param>
+            <remarks>Wires up the HttpApplication's AuthorizeRequest event to the
+            <see cref="M:Havit.Web.UrlRewriter.BaseModuleRewriter.BaseModuleRewriter_AuthorizeRequest(System.Object,System.EventArgs)"/> event handler.</remarks>
+        </member>
+        <member name="M:Havit.Web.UrlRewriter.BaseModuleRewriter.Dispose">
+            <summary>
+            Prázdná implementace, vyžadováno IHttpModule.
             </summary>
         </member>
-        <member name="P:Havit.Web.UI.WebControls.Highlighting.HighlightValue">
+        <member name="M:Havit.Web.UrlRewriter.BaseModuleRewriter.BaseModuleRewriter_AuthorizeRequest(System.Object,System.EventArgs)">
             <summary>
-            Hodnota "klíče" položky, která má být zvýrazněna.
-            Nastavuje příznak AutoPageChangeEnabled.
+            Called when the module's AuthorizeRequest event fires.
             </summary>
+            <remarks>This event handler calls the <see cref="M:Havit.Web.UrlRewriter.BaseModuleRewriter.Rewrite(System.String,System.Web.HttpApplication)"/> method, passing in the
+            <b>RawUrl</b> and HttpApplication passed in via the <b>sender</b> parameter.</remarks>
         </member>
-        <member name="P:Havit.Web.UI.WebControls.Highlighting.DataField">
+        <member name="M:Havit.Web.UrlRewriter.BaseModuleRewriter.Rewrite(System.String,System.Web.HttpApplication)">
             <summary>
-            Položka dat, jejíž hodnota se porovnává s HighlightValue.
+            The <b>Rewrite</b> method must be overriden.  It is where the logic for rewriting an incoming
+            URL is performed.
             </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.Highlighting.AutoPageChangeEnabled">
-            <summary>
-            Příznak, zda může dojít ke změně stránky pro zvýraznění položky.
-            Příznak je automaticky nastaven při nastavení hodnoty HighlightValue
-            a je po databindingu automaticky vypnut.
-            </summary>
-        </member>
-        <member name="T:Havit.Web.UI.WebControls.GridViewExt">
-            <summary>
-            GridView implementující hightlighting, sorting a výchozí obsluhu událostí editace, stránkování, ...
-            </summary>
-            <remarks>
-            Funkčnost <b>Sorting</b> ukládá nastavení řazení dle uživatele a případně zajišťuje automatické řazení pomocí GenericPropertyCompareru.<br/>
-            Funkčnost <b>Inserting</b> umožňuje použití Insert-řádku pro přidávání nových položek.<br/>
-            </remarks>
+            <param name="requestedPath">The requested path.</param>
+            <param name="app">The HttpApplication instance.</param>
         </member>
         <member name="T:Havit.Web.UI.WebControls.HighlightingGridView">
             <summary>
@@ -78,6 +80,1076 @@
             <summary>
             Vlastnosti pro zvýraznění řádku.
             </summary>
+        </member>
+        <member name="T:Havit.Web.UI.Scriptlets.BrowserHelper">
+            <summary>
+            Pomocník pro identifikaci prohlížeče.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.Scriptlets.BrowserHelper.GetAttachEvent(System.String,System.String,System.String)">
+            <summary>
+            Vrátí příkaz pro připojení události k objektu.
+            Detekuji IE, který připojuje události jinak než ostatní prohlížeče.
+            </summary>
+            <param name="attachingObject">Objekt, ke kterému je připojována událost.</param>
+            <param name="eventName">Název události vč "on", např "onchange", "onclick".</param>
+            <param name="function">Funkce, která je připojována. Obsahuje-li řetězev, musí být uvozen uvozovkami a nikoliv apostrofy.</param>
+            <returns>Příkaz připojující událost k objektu.</returns>
+        </member>
+        <member name="P:Havit.Web.UI.Scriptlets.BrowserHelper.IsInternetExplorer">
+            <summary>
+            Vrací true, pokud byl aktuální HttpRequest pochází z Internet Exploreru 
+            (nebo shodně se identifikujícího browseru).
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.GridViewInsertedEventArgs.KeepInEditMode">
+            <summary>
+            Indikuje, zda-li má GridView zůstat po zpracování událost v režimu editace nového řádku.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.HttpUtilityExt">
+            <summary>
+            Poskytuje další pomocné metody pro kódování a dekódování textu pro použití na webu.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.HttpUtilityExt.HtmlEncode(System.String,Havit.Web.HtmlEncodeOptions)">
+            <summary>
+            Zkonvertuje string do HTML-encoded podoby.
+            Oproti standardnímu <see cref="M:System.Web.HttpUtility.HtmlEncode(System.String)"/> může encodovat všechny non-ASCII znaky
+            a hlavně umožňuje pomocí options řídit požadovanou výslednou podobu. Lze například použít rozšířenou sadu HTML-entit,
+            popřípadě úplně vyloučit převod ne-ASCII znaků na podobu &amp;#1234;.
+            </summary>
+            <param name="unicodeText">převáděný string v Unicode</param>
+            <param name="options">options volby konverze</param>
+            <returns>HTML-encoded string dle options</returns>
+        </member>
+        <member name="M:Havit.Web.HttpUtilityExt.HtmlEncode(System.String)">
+            <summary>
+            Zkonvertuje string do HTML-encoded podoby s použitím výchozích options.
+            Oproti standardnímu <see cref="M:System.Web.HttpUtility.HtmlEncode(System.String)"/> encoduje všechny non-ASCII znaky.
+            </summary>
+            <remarks>
+            Pro podrobné řízení voleb konverze je nutno použít overload s options, takto je použito <see cref="F:Havit.Web.HtmlEncodeOptions.None"/>,
+            tj. pouze pět standardních XML entit (&amp;gt;; &amp;lt;, &amp;amp;, &amp;quot;, &amp;apos;)
+            </remarks>
+            <param name="unicodeText">převáděný string v Unicode</param>
+            <returns>HTML-encoded string</returns>
+        </member>
+        <member name="M:Havit.Web.HttpUtilityExt.UrlEncodeSpaces(System.String)">
+            <summary>
+            Encoduje řetězec tak, že vymění mezery za %20.
+            </summary>
+            <remarks>
+            Public přepis internal metody System.Web.HttpUtility.UrlEncodeSpaces.
+            </remarks>
+            <param name="str">Text k encodování</param>
+            <returns>Řetězec, kde jsou mezery vyměněny za %20.</returns>
+        </member>
+        <member name="M:Havit.Web.HttpUtilityExt.UrlEncodeNonAscii(System.String,System.Text.Encoding)">
+            <summary>
+            Encoduje všechny non-ACSII znaky v zadaném řetězci pro bezpečný přenos v URL.
+            Lze použít na již sestavený QueryString, nezlikviduje totiž &amp;, =, atp.
+            </summary>
+            <remarks>
+            Public přepis internal metody System.Web.HttpUtility.UrlEncodeNonAcsii.
+            </remarks>
+            <param name="str">Text k encodování.</param>
+            <param name="e">Encoding textu</param>
+            <returns>Text encodovaný pro použití v URL.</returns>
+        </member>
+        <member name="M:Havit.Web.HttpUtilityExt.UrlEncodeBytesToBytesNonAscii(System.Byte[])">
+            <summary>
+            Encoduje všechny non-ACSII znaky v zadaném poli bytů pro bezpečný přenos v URL.
+            Lze použít na již sestavený QueryString, nezlikviduje totiž &amp;, =, atp.
+            </summary>
+            <remarks>
+            Public přepis internal metody System.Web.HttpUtility.UrlEncodeBytesToBytesInternalNonAscii.
+            </remarks>
+            <param name="bytes">vstupní text</param>
+            <returns>Text encodovaný pro použití v URL.</returns>
+        </member>
+        <member name="M:Havit.Web.HttpUtilityExt.UrlEncodePathWithQueryString(System.String)">
+            <summary>
+            Encoduje všechny non-ACSII znaky v zadaném poli bytů pro bezpečný přenos v URL.
+            Lze použít na již sestavený QueryString, nezlikviduje totiž &amp;, =, atp.
+            </summary>
+            <remarks>
+            Public přepis internal metody System.Web.HttpUtility.UrlEncodeBytesToBytesInternalNonAscii.
+            </remarks>
+            <param name="urlWithQueryString">vstupní text</param>
+            <returns>Text encodovaný pro použití v URL.</returns>
+        </member>
+        <member name="T:Havit.Web.HtmlEncodeOptions">
+            <summary>
+            Poskytuje množinu hodnot k nastavení voleb metody <see cref="M:Havit.Web.HttpUtilityExt.HtmlEncode(System.String,Havit.Web.HtmlEncodeOptions)"/>
+            </summary>
+        </member>
+        <member name="F:Havit.Web.HtmlEncodeOptions.None">
+            <summary>
+            Označuje, že nemají být nastaveny žádné options, použije se default postup.
+            Default postup převede pouze čtyři základní entity
+            <list type="bullet">
+            	<item>&lt; --- &amp;lt;</item>
+            	<item>&gt; --- &amp;gt;</item>
+            	<item>&amp; --- &amp;amp;</item>
+            	<item>&quot; --- &amp;quot;</item>
+            </list>
+            </summary>
+        </member>
+        <member name="F:Havit.Web.HtmlEncodeOptions.IgnoreNonASCIICharacters">
+            <summary>
+            Při konverzi budou ignorovány znaky mimo ASCII hodnoty, nebudou tedy tvořeny číselné entity typu &amp;#123;.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.HtmlEncodeOptions.ExtendedHtmlEntities">
+            <summary>
+            Při konverzi bude použita rozšířená sada HTML-entit, které by se jinak převedly na číselné entity.
+            Např. bude použito &amp;copy;, &amp;nbsp;, &amp;sect;, atp. 
+            </summary>
+        </member>
+        <member name="F:Havit.Web.HtmlEncodeOptions.XmlApostropheEntity">
+            <summary>
+            Při konverzi převede apostrofy na &amp;apos; entitu.
+            POZOR! &amp;apos; není standardní HTML entita a třeba IE ji v HTML režimu nepozná!!!
+            </summary>
+            <remarks>
+            V kombinaci se základním <see cref="F:Havit.Web.HtmlEncodeOptions.None"/> dostaneme sadu pěti built-in XML entit:
+            <list type="bullet">
+            	<item>&lt; --- &amp;lt;</item>
+            	<item>&gt; --- &amp;gt;</item>
+            	<item>&amp; --- &amp;amp;</item>
+            	<item>" --- &amp;quot;</item>
+            	<item>' --- &amp;apos;</item>
+            </list>
+            </remarks>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.DataControlButtonExt">
+            <summary>
+            Přepis třídy Microsoft .NET Frameworku. Potřeba pro GridViewCommandField.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.Scriptlets.ScriptBuilder">
+            <summary>
+            Jednoduchý skládač řetězce. 
+            Vnitřně používá StringBuilder, na rozdíl od něj umožňuje text
+            jen přidávat, neumožňuje jej modifikovat.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.Scriptlets.ScriptBuilder.Append(System.String)">
+            <summary>
+            Připojí řetězec na konec textu.
+            </summary>
+            <param name="value">Přidávaná hodnota.</param>
+        </member>
+        <member name="M:Havit.Web.UI.Scriptlets.ScriptBuilder.AppendFormat(System.String,System.Object[])">
+            <summary>
+            Po zformátování připojí řetězec na konec textu.
+            </summary>
+            <param name="value">Šablona přidávané hodnota.</param>
+            <param name="parameters">Parametry šablony.</param>
+        </member>
+        <member name="M:Havit.Web.UI.Scriptlets.ScriptBuilder.ToString">
+            <summary>
+            Vrátí složený text.
+            </summary>
+            <returns>Složený text.</returns>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.DataGridExt">
+            <summary>
+            DataGrid rozšířený o další funkcionalitu:
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.DataGridExt.OnDataBindRequest(System.EventArgs)">
+            <summary>
+            Vyvolá událost <see cref="E:Havit.Web.UI.WebControls.DataGridExt.DataBindRequest"/>.
+            </summary>
+            <param name="e">data události</param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.DataGridExt.OnSortCommand(System.Web.UI.WebControls.DataGridSortCommandEventArgs)">
+            <summary>
+            Default implementace sortění.
+            Při zapnutém ViewStatu zajišťuje obousměrné přepínání SortExpression.
+            Při vypnutém ViewStatu zajišťuje pouze běžné přepínání SortExpression.
+            Lze zapnout/vypnout pomocí AutoHandleSortCommand.
+            </summary>
+            <param name="e">DataGirdSortCommandEventArgs</param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.DataGridExt.AutoSortCommandHandler(System.Web.UI.WebControls.DataGridSortCommandEventArgs)">
+            <summary>
+            Automatický handler SortCommandu.
+            Může být přepsán v dceřinné implementaci.
+            </summary>
+            <param name="e">args</param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.DataGridExt.OnPageIndexChanged(System.Web.UI.WebControls.DataGridPageChangedEventArgs)">
+            <summary>
+            Zajišťuje volání události PageIndexChanged.
+            Při povoleném AutoHandlePageIndexChanged nejprve zavolá AutoPageIndexChangedHandler.
+            </summary>
+            <param name="e">DataGridPageChangedEventArgs</param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.DataGridExt.AutoPageIndexChangedHandler(System.Web.UI.WebControls.DataGridPageChangedEventArgs)">
+            <summary>
+            Automatický handler - nastavuje this.CurrentPageIndex = e.NewPageIndex a DataBind().
+            Lze přepsat v odvozeném controlu.
+            </summary>
+            <param name="e">DataGridPageChangedEventArgs</param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.DataGridExt.OnItemCreated(System.Web.UI.WebControls.DataGridItemEventArgs)">
+            <summary>
+            Zajišťuje volání události ItemCreated.
+            Implementace přidává do Headeru symboly směru sortění.
+            </summary>
+            <param name="e">args</param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.DataGridExt.OnEditCommand(System.Web.UI.WebControls.DataGridCommandEventArgs)">
+            <summary>
+            Zajistí volání obsluhy události EditCommand.
+            Pokud je AutoHandleEditCommand true, provede default obsluhu AutoEditCommandHandler().
+            </summary>
+            <param name="e">DataGridCommandEventArgs</param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.DataGridExt.AutoEditCommandHandler(System.Web.UI.WebControls.DataGridCommandEventArgs)">
+            <summary>
+            Default obsluha EditCommand události.
+            </summary>
+            <param name="e">DataGridCommandEventArgs</param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.DataGridExt.OnCancelCommand(System.Web.UI.WebControls.DataGridCommandEventArgs)">
+            <summary>
+            Zajistí volání obsluhy události CancelCommand.
+            Pokud je AutoHandleCancelCommand true, provede default obsluhu AutoCancelCommandHandler().
+            </summary>
+            <param name="e">DataGridCommandEventArgs</param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.DataGridExt.AutoCancelCommandHandler(System.Web.UI.WebControls.DataGridCommandEventArgs)">
+            <summary>
+            Default obsluha EditCommand události.
+            </summary>
+            <param name="e">DataGridCommandEventArgs</param>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.DataGridExt.AutoHandleCancelCommand">
+            <summary>
+            Povoluje/zakazuje automatické zpracování události <see cref="E:System.Web.UI.WebControls.DataGrid.CancelCommand"/>.
+            </summary>
+            <value><b>true</b>, pokud má být použit <see cref="M:Havit.Web.UI.WebControls.DataGridExt.AutoCancelCommandHandler(System.Web.UI.WebControls.DataGridCommandEventArgs)"/>, jinak <b>false</b>; Default je <b>true</b>.</value>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.DataGridExt.AutoHandleEditCommand">
+            <summary>
+            Povoluje/zakazuje automatické zpracování události <see cref="E:System.Web.UI.WebControls.DataGrid.EditCommand"/>.
+            </summary>
+            <value><b>true</b>, pokud má být použit <see cref="M:Havit.Web.UI.WebControls.DataGridExt.AutoEditCommandHandler(System.Web.UI.WebControls.DataGridCommandEventArgs)"/>, jinak <b>false</b>; Default je <b>true</b>.</value>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.DataGridExt.AutoHandlePageIndexChanged">
+            <summary>
+            Povoluje/zakazuje automatické zpracování události <see cref="E:System.Web.UI.WebControls.DataGrid.PageIndexChanged"/>.
+            </summary>
+            <value><b>true</b>, pokud má být použit <see cref="M:Havit.Web.UI.WebControls.DataGridExt.AutoPageIndexChangedHandler(System.Web.UI.WebControls.DataGridPageChangedEventArgs)"/>, jinak <b>false</b>; Default je <b>true</b>.</value>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.DataGridExt.AutoHandleSortCommand">
+            <summary>
+            Povoluje/zakazuje automatické zpracování události <see cref="E:System.Web.UI.WebControls.DataGrid.SortCommand"/> ve vztahu k <see cref="P:Havit.Web.UI.WebControls.DataGridExt.SortExpression"/>.
+            </summary>
+            <value><b>true</b>, pokud má být použit <see cref="M:Havit.Web.UI.WebControls.DataGridExt.AutoCancelCommandHandler(System.Web.UI.WebControls.DataGridCommandEventArgs)"/>, jinak <b>false</b>; Default je <b>true</b>.</value>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.DataGridExt.SortExpression">
+            <summary>
+            SortExpression do DataView nebo SQL.
+            Mění se SortCommandem, ukládá do ViewState.
+            Pro obousměné sortění je potřeba povolit ViewState !!!
+            </summary>
+            <value>Default je <see cref="F:System.String.Empty"/>.</value>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.DataGridExt.SortHeaderImageCssClass">
+            <summary>
+            CssClass symbolu sortění do Header sloupce.
+            </summary>
+            <value>Default je <see cref="F:System.String.Empty"/>.</value>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.DataGridExt.SortHeaderImageUrlAsc">
+            <summary>
+            URL obrázku symbolu vzestupného sortění do Header sloupce.
+            </summary>
+            <value>Default je <see cref="F:System.String.Empty"/>.</value>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.DataGridExt.SortHeaderImageUrlDesc">
+            <summary>
+            URL obrázku symbolu sestupného sortění do Header sloupce.
+            </summary>
+            <value>Default je <see cref="F:System.String.Empty"/>.</value>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.DataGridExt.UpdateCausesValidation">
+            <summary>
+            Povoluje/zakazuje validaci na příkazu Update 
+            </summary>
+            <value>Default je <see cref="F:System.String.Empty"/>.</value>
+        </member>
+        <member name="E:Havit.Web.UI.WebControls.DataGridExt.DataBindRequest">
+            <summary>
+            Vyskytne se, když DataGridExt potřebuje přebindovat data.
+            </summary>
+            <remarks>
+            Událost je vyvolávána smart-extenzemi v situaci, kdy je potřeba na DataGrid znovu nabindovat data.
+            Např. po standardní obsluze událostí EditCommand, CancelCommand, PageIndexChanged, atp.
+            </remarks>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.BooleanField">
+            <summary>
+            Sloupec pro zobrazení boolean hodnoty.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.BoundFieldExt">
+            <summary>
+            Sloupec pro heterogenní seznamy.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.IIdentifiableField">
+            <summary>
+            Sloupec, který se umí identifikovat (má ID).
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.IIdentifiableField.ID">
+            <summary>
+            ID sloupce. Umožní GridView hledat sloupec podle ID.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.BoundFieldExt.CreateField">
+            <summary>
+            Vyžadováno implementací Fieldu v .NETu. V potomcích nutno přepsat.
+            </summary>
+            <returns>Instance této třídy.</returns>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.BoundFieldExt.GetValue(System.Web.UI.Control)">
+            <summary>
+            Získá hodnotu pro zobrazení na základě datového zdroje a DataFieldu.
+            </summary>
+            <param name="controlContainer">Control container (řádek GridView), kterému se získává hodnota.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.BoundFieldExt.GetValue(System.Object,System.String)">
+            <summary>
+            Získá hodnotu pro zobrazení z předaného objektu a dataField.
+            </summary>
+            <param name="dataItem">Položka dat z DataSource</param>
+            <param name="dataField">DataField</param>
+            <returns></returns>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.BoundFieldExt.FormatDataValue(System.Object)">
+            <summary>
+            Formátuje hodnotu k zobrazení.
+            </summary>
+            <param name="value">Data</param>
+            <returns>Text k zobrazení.</returns>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.BoundFieldExt.GetNotFoundDataItem">
+            <summary>
+            Metoda je volána, pokud se metodě GetValue nepodaří získat hodnotu.
+            Není-li EmptyText rovno null, vrací se hodnota Empty text. 
+            Jinak je vyhozena výjimka MissingMemberException.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.BoundFieldExt.InitializeDataCell(System.Web.UI.WebControls.DataControlFieldCell,System.Web.UI.WebControls.DataControlRowState)">
+            <summary>
+            Pokud není CellCssClass prázdné, generuje se do buňky tabulky &lt;div="CellCssClass"&gt;...&lt;/div&gt;.
+            Jinak se použije normálně samotná buňka tabulky.
+            </summary>
+            <param name="cell"></param>
+            <param name="rowState"></param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.BoundFieldExt.InitializeDataCellContent(System.Web.UI.Control,System.Web.UI.WebControls.DataControlRowState)">
+            <summary>
+            Inicializuje obsah buňky daty.
+            </summary>
+            <param name="control">Control, do kterého se má obsah inicializovat.</param>
+            <param name="rowState">RowState.</param>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.BoundFieldExt.ID">
+            <summary>
+            ID sloupce.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.BoundFieldExt.CellCssClass">
+            <summary>
+            Css třída vygenerované buňky.	
+            Zamýšleno např. pro omezení šírky sloupce.
+            Viz	<see cref="M:Havit.Web.UI.WebControls.BoundFieldExt.InitializeDataCell(System.Web.UI.WebControls.DataControlFieldCell,System.Web.UI.WebControls.DataControlRowState)"/>.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.BoundFieldExt.EmptyText">
+            <summary>
+            Pokud se metodě GetValue nepodaří získat hodnotu z dat, použije se tato hodnota, pokud není null.
+            Rozlišuje se null a prázdný řetězec.
+            Viz metody GetNotFoundDataItem a GetValue.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.BooleanField.FormatDataValue(System.Object)">
+            <summary>
+            Zajistí transformaci boolean hodnoty na text s použitím vlastností TrueText, FalseText.
+            </summary>
+            <param name="value">Hodnota ke zformátování.</param>
+            <returns>Text k zobrazení.</returns>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.BooleanField.TrueText">
+            <summary>
+            Text zobrazený, pokud je hodnota true.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.BooleanField.FalseText">
+            <summary>
+            Text zobrazený, pokud je hodnota false.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.Scriptlets.IControlExtender">
+            <summary>
+            Control extender je zodpovědný za vytoření klienského skriptu pro 
+            předaný control. Díky této obecnosti je možné přidávat vlastní control
+            extendery (či měnit existující) a tím upravit chování Scriptletu pro
+            další controly.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.Scriptlets.IControlExtender.GetPriority(System.Web.UI.Control)">
+            <summary>
+            Vrací prioritu, s jakou je extender chodný pro zpracování controlu.
+            Pokud je extender nevhodný pro zpracování, vrácí se null.
+            </summary>
+            <param name="control">Control, který bude zpracováván.</param>
+            <returns>Priorita extenderu.</returns>
+        </member>
+        <member name="M:Havit.Web.UI.Scriptlets.IControlExtender.CreateParameter(System.String,Havit.Web.UI.Scriptlets.IScriptletParameter,System.Web.UI.Control,Havit.Web.UI.Scriptlets.ScriptBuilder)">
+            <summary>
+            Vytvoří klientský parametr pro předaný control.
+            </summary>
+            <param name="parameterPrefix">Název objektu na klientské straně.</param>
+            <param name="parameter">Parametr předávající řízení extenderu.</param>
+            <param name="control">Control ke zpracování.</param>
+            <param name="builder">Script builder.</param>
+        </member>
+        <member name="T:Havit.Web.UrlRewriter.RewriterFactoryHandler">
+            <summary>
+            Provides an HttpHandler that performs redirection.
+            </summary>
+            <remarks>The RewriterFactoryHandler checks the rewriting rules, rewrites the path if needed, and then
+            delegates the responsibility of processing the ASP.NET page to the <b>PageParser</b> class (the same one
+            used by the <b>PageHandlerFactory</b> class).</remarks>
+        </member>
+        <member name="M:Havit.Web.UrlRewriter.RewriterFactoryHandler.GetHandler(System.Web.HttpContext,System.String,System.String,System.String)">
+            <summary>
+            GetHandler is executed by the ASP.NET pipeline after the associated HttpModules have run.  The job of
+            GetHandler is to return an instance of an HttpHandler that can process the page.
+            </summary>
+            <param name="context">The HttpContext for this request.</param>
+            <param name="requestType">The HTTP data transfer method (<b>GET</b> or <b>POST</b>)</param>
+            <param name="url">The RawUrl of the requested resource.</param>
+            <param name="pathTranslated">The physical path to the requested resource.</param>
+            <returns>An instance that implements IHttpHandler; specifically, an HttpHandler instance returned
+            by the <b>PageParser</b> class, which is the same class that the default ASP.NET PageHandlerFactory delegates
+            to.</returns>
+        </member>
+        <member name="M:Havit.Web.UrlRewriter.RewriterFactoryHandler.ReleaseHandler(System.Web.IHttpHandler)">
+            <summary>
+            Prázdná implementace, je však vyžadována IHttpHandlerFactory.
+            </summary>
+            <param name="handler">handler</param>
+        </member>
+        <member name="T:Havit.Web.UrlRewriter.Config.RewriterRule">
+            <summary>
+            Represents a rewriter rule.  A rewriter rule is composed of a pattern to search for and a string to replace
+            the pattern with (if matched).
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UrlRewriter.Config.RewriterRule.LookFor">
+            <summary>
+            Gets or sets the pattern to look for.
+            </summary>
+            <remarks><b>LookFor</b> is a regular expression pattern.  Therefore, you might need to escape
+            characters in the pattern that are reserved characters in regular expression syntax (., ?, ^, $, etc.).
+            <p />
+            The pattern is searched for using the <b>System.Text.RegularExpression.Regex</b> class's <b>IsMatch()</b>
+            method.  The pattern is case insensitive.</remarks>
+        </member>
+        <member name="P:Havit.Web.UrlRewriter.Config.RewriterRule.SendTo">
+            <summary>
+            The string to replace the pattern with, if found.
+            </summary>
+            <remarks>The replacement string may use grouping symbols, like $1, $2, etc.  Specifically, the
+            <b>System.Text.RegularExpression.Regex</b> class's <b>Replace()</b> method is used to replace
+            the match in <see cref="P:Havit.Web.UrlRewriter.Config.RewriterRule.LookFor"/> with the value in <b>SendTo</b>.</remarks>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.H6">
+            <summary>
+            Reprezentuje label, který se renderuje jako HTML tag H6.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.H6.TagKey">
+            <summary>
+            Vrací HtmlTextWriterTag.H6 zajišťující správné renderování.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.Scriptlets.ControlParameter">
+            <summary>
+            Parametr Skriptletu reprezentující renderovaný control Control.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.Scriptlets.ParameterBase">
+            <summary>
+            Předek pro tvorbu klientských parametrů.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.Scriptlets.ScriptletNestedControl">
+            <summary>
+            Čistě formální třída zpřístupňující Scriptlet pro prvky vkládané do Scritletu.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.Scriptlets.ScriptletNestedControl.Scriptlet">
+            <summary>
+            Zpřístupňuje Scriplet, ve kterém je tento ClientScript obsažen.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.Scriptlets.IScriptletParameter">
+            <summary>
+            Parametr obsažený ve scripletu.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.Scriptlets.IScriptletParameter.CheckProperties">
+            <summary>
+            Zkontroluje nastavení parametru. Je-li nějaké nastavení chybně,
+            má být vyhozena výjimka.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.Scriptlets.IScriptletParameter.CreateParameter(System.String,System.Web.UI.Control,Havit.Web.UI.Scriptlets.ScriptBuilder)">
+            <summary>
+            Vytvoří klientský skript pro parametr.
+            </summary>
+            <param name="parameterPrefix">Prefix pro název parametru. Controly mohou být složené (např. TextBox v Repeateru).</param>
+            <param name="parentControl">Rodičovský prvek, pro který je parametr renderován.</param>
+            <param name="scriptBuilder">Script builder.</param>
+        </member>
+        <member name="P:Havit.Web.UI.Scriptlets.IScriptletParameter.Scriptlet">
+            <summary>
+            Zpřístupňuje scriptlet, ve kterém je parametr obsažen.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.Scriptlets.IScriptletParameter.Name">
+            <summary>
+            Název parametru, pod kterým bude identifikován v klientském skriptu.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.Scriptlets.ParameterBase.CreateParameter(System.String,System.Web.UI.Control,Havit.Web.UI.Scriptlets.ScriptBuilder)">
+            <summary>
+            Vytvoří klientský skript pro parametr.
+            </summary>
+            <param name="parameterPrefix">Prefix parametru.</param>
+            <param name="parentControl">Control, v rámci kterého je tento parametr.</param>
+            <param name="scriptBuilder">Script builder.</param>
+        </member>
+        <member name="M:Havit.Web.UI.Scriptlets.ParameterBase.CheckProperties">
+            <summary>
+            Zkontroluje, zda je parametr správně inicializován.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.Scriptlets.ParameterBase.CheckNameProperty">
+            <summary>
+            Testuje nastavení hodnoty property Name.
+            Pokud není hodnota nastavena, je vyhozena výjimka.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.Scriptlets.ParameterBase.AddedControl(System.Web.UI.Control,System.Int32)">
+            <summary>
+            Zavoláno, když je do kolekce Controls přidán Control.
+            Zajišťuje, aby nebyl přidán control neimplementující 
+            IScriptletParameter.
+            </summary>
+            <param name="control">Přidávaný control.</param>
+            <param name="index">Pozice v kolekci controlů, kam je control přidáván.</param>
+        </member>
+        <member name="P:Havit.Web.UI.Scriptlets.ParameterBase.Name">
+            <summary>
+            Název parametru, pod kterým bude parametr přístupný v klienském skriptu.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.Scriptlets.ControlParameter.CheckProperties">
+            <summary>
+            Zkontroluje, zda je parametr správně inicializován.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.Scriptlets.ControlParameter.CheckNameProperty">
+            <summary>
+            Testuje nastavení hodnoty property Name.
+            Přepisuje chování předka tím způsobem, že zde není property Name povinná
+            (takže se ani netestuje).
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.Scriptlets.ControlParameter.CheckControlNameProperty">
+            <summary>
+            Zkontroluje nastavení property ControlName.
+            Pokud není hodnota nastavena, vyhodí výjimku.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.Scriptlets.ControlParameter.CreateParameter(System.String,System.Web.UI.Control,Havit.Web.UI.Scriptlets.ScriptBuilder)">
+            <summary>
+            Vytvoří klientský skript pro parametr.
+            </summary>
+            <param name="parameterPrefix">Prefix pro název parametru. Controly mohou být složené (např. TextBox v Repeateru).</param>
+            <param name="parentControl">Rodičovský prvek, pro který je parametr renderován.</param>
+            <param name="builder">Script builder.</param>
+        </member>
+        <member name="M:Havit.Web.UI.Scriptlets.ControlParameter.GetControl(System.Web.UI.Control)">
+            <summary>
+            Nalezne Control, který má být zpracován.
+            Pokud není Control nalezen, vyhodí výjimku.
+            </summary>
+            <param name="parentControl">Control v rámci něhož se hledá (NamingContainer).</param>
+            <returns>Control.</returns>
+        </member>
+        <member name="P:Havit.Web.UI.Scriptlets.ControlParameter.ControlName">
+            <summary>
+            Název Controlu, který je zdrojem pro vytvoření klientského parametru.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.Scriptlets.ControlParameter.Name">
+            <summary>
+            Název parametru, pod kterým bude parametr přístupný v klienském skriptu.
+            Pokud není hodnota nastavena, použije se ControlName.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.Scriptlets.ControlParameter.StartOnChange">
+            <summary>
+            Udává, zda v případě změny hodnoty prvku (zaškrtnutí, změna textu, apod.)
+            dojde ke spuštění skriptu.
+            Výchozí hodnota je false.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UrlRewriter.Config.RewriterConfigSerializerSectionHandler">
+            <summary>
+            Deserializes the markup in Web.config into an instance of the <see cref="T:Havit.Web.UrlRewriter.Config.RewriterConfiguration"/> class.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UrlRewriter.Config.RewriterConfigSerializerSectionHandler.Create(System.Object,System.Object,System.Xml.XmlNode)">
+            <summary>
+            Creates an instance of the <see cref="T:Havit.Web.UrlRewriter.Config.RewriterConfiguration"/> class.
+            </summary>
+            <remarks>Uses XML Serialization to deserialize the XML in the Web.config file into an
+            <see cref="T:Havit.Web.UrlRewriter.Config.RewriterConfiguration"/> instance.</remarks>
+            <returns>An instance of the <see cref="T:Havit.Web.UrlRewriter.Config.RewriterConfiguration"/> class.</returns>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.H5">
+            <summary>
+            Reprezentuje label, který se renderuje jako HTML tag H5.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.H5.TagKey">
+            <summary>
+            Vrací HtmlTextWriterTag.H5 zajišťující správné renderování.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.HtmlControls.HtmlFormExt">
+            <summary>
+            Rozšíření .NET controlu HtmlForm.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.HtmlControls.HtmlFormExt.RenderAttributes(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Overriden. Zajišťuje vlastní renderování atributu Action
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="M:Havit.Web.UI.HtmlControls.HtmlFormExt.GetBaseActionAttribute">
+            <summary>
+            Pomocí reflexe vrátí původní private base.GetActionAttribute()
+            </summary>
+            <returns>Microsoft implementace action atributu formuláře</returns>
+        </member>
+        <member name="P:Havit.Web.UI.HtmlControls.HtmlFormExt.Action">
+            <summary>
+            Vrátí nebo nastaví cílové URL formuláře. Atribut Action formuláře.
+            Pokud není explicitně nastaveno, vrací automaticky Microsoft implementaci (včetně QueryStringu).
+            </summary>
+            <remarks>Nedělá se ResolveUrl.</remarks>
+        </member>
+        <member name="P:Havit.Web.UI.HtmlControls.HtmlFormExt.Page_ClientOnSubmitEvent">
+            <summary>
+            Pomocí reflexe vrátí internal ClientOnSubmitEvent vlastnost Page
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.H4">
+            <summary>
+            Reprezentuje label, který se renderuje jako HTML tag H4.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.H4.TagKey">
+            <summary>
+            Vrací HtmlTextWriterTag.H4 zajišťující správné renderování.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.Collapser">
+            <summary>
+            Collapser je ovládací prvek, který zajišťuje funkčnost collapse/expand pro libovolný jiný element stránky.
+            </summary>
+            <example>
+            Jednoduchý Collapser:
+            <code>
+            &lt;havit:Collapser
+            	Text="První možnost zadání textu"
+            	ContentElement="CollapseDiv"
+            	CssClass="normal"
+            	CssClassExpanded="expanded"
+            	CssClassCollapsed="collapsed"
+            	Runat="server"
+            &gt;Text je možné zadat i jako inner-text&lt;/havit:Collapser&gt;
+            
+            &lt;div id="CollapseDiv"&gt;
+            	Od:
+            	&lt;asp:TextBox ID="OdDateTB" Text="3.3.2004" Runat="server" /&gt;
+            &lt;/div&gt;
+            </code>
+            </example>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.Collapser.#ctor">
+            <summary>
+            Vytvoří instanci controlu.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.Collapser.AddParsedSubObject(System.Object)">
+            <summary>
+            Zajišťuje pronesení inner-textu controlu do property <see cref="P:Havit.Web.UI.WebControls.Collapser.Text"/>.
+            </summary>
+            <param name="obj"></param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.Collapser.OnPreRender(System.EventArgs)">
+            <summary>
+            Voláno před renderováním.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.Collapser.AddAttributesToRender(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Doplní Attributes o hodnoty z properties.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.Collapser.RenderContents(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Renderuje obsahu elementu.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.Collapser.ResolveID(System.String)">
+            <summary>
+            Pokud ID patří controlu, pak vrátí jeho ClientID, jinak vrátí zpět původní ID.
+            </summary>
+            <param name="id">ID k resolvování</param>
+            <returns>cílové ID</returns>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.Collapser.Text">
+            <summary>
+            Text ovládací prvku.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.Collapser.CssClassExpanded">
+            <summary>
+            CssClass pro ovládací prvek ve stavu expanded.
+            </summary>
+            <remarks>
+            Pomocí stylu můžeme například nastavit obrázek pozadí na mínus [-].
+            </remarks>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.Collapser.CssClassCollapsed">
+            <summary>
+            CssClass pro ovládací prvek ve stavu collapsed.
+            </summary>
+            <remarks>
+            Pomocí stylu můžeme například nastavit obrázek pozadí na mínus [-].
+            </remarks>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.Collapser.ContentElement">
+            <summary>
+            Odkaz (ID) na element, která má být expandována/collapsována.<br/>
+            </summary>
+            <remarks>
+            Nejprve se zkouší, jestli neexistuje control s tímto ID.
+            Pokud ano, použije se jeho ClientID, pokud ne, použije se přímo ContentElement.
+            </remarks>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.Collapser.Collapsed">
+            <summary>
+            Indikuje, zda-li má být <see cref="P:Havit.Web.UI.WebControls.Collapser.ContentElement"/> zobrazen sbalený/rozbalený.<br/>
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.Collapser.cssClassCollapsedFull">
+            <summary>
+            Úplná CssClass pro stav Collapsed
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.Collapser.cssClassExpandedFull">
+            <summary>
+            Úplná CssClass pro stav Expanded
+            </summary>
+        </member>
+        <member name="T:Havit.Web.Security.FormsRolesAuthentication">
+            <summary>
+            Poskytuje statické metody pro snadnou implementaci FormAuthentication, kdy jsou do role ukládány do ticketu jako userData.
+            </summary>
+            <remarks>
+            Implementováno výhradně pro cookies-authentizaci. Nepodporuje cookieless!
+            </remarks>
+        </member>
+        <member name="M:Havit.Web.Security.FormsRolesAuthentication.ApplyAuthenticationTicket(System.Web.Security.FormsAuthenticationTicket)">
+            <summary>
+            Aplikuje autentizační ticket, tj. vytáhne z něj informace o přihlášeném uživateli
+            a jeho rolích a naplní jimi objekt User.
+            </summary>
+            <remarks>
+            Vytáhne z authentication-ticketu role, vytvoří z něj identity, spojí to v principal a ten nastaví jako aktuálního uživatele.
+            </remarks>
+            <exception cref="T:System.ArgumentNullException">pokud je <c>ticket</c> null</exception>
+            <param name="ticket">authentication-ticket</param>
+        </member>
+        <member name="M:Havit.Web.Security.FormsRolesAuthentication.ApplyAuthenticationTicket">
+            <summary>
+            Aplikuje případný autentizační ticket, tj. vytáhne z něj informace o přihlášeném uživateli
+            a jeho rolích a naplní jimi objekt User.
+            </summary>
+            <remarks>
+            Autentizační ticket se pokouší zjistit ve formě cookie a decryptovat. V případě nalezení ho aplikuje.
+            </remarks>
+        </member>
+        <member name="M:Havit.Web.Security.FormsRolesAuthentication.GetAuthTicket(System.String,System.String[],System.Boolean,System.String)">
+            <summary>
+            Vytvoří autentizační ticket pro forms-authentication s ukládáním rolí do userData.
+            </summary>
+            <param name="username">přihlašovací jméno uživatele</param>
+            <param name="roles">role, které uživateli přísluší</param>
+            <param name="createPersistent"><c>true</c>, pokud se má být ticket persistentní; jinak <c>false</c></param>
+            <param name="cookiePath">cookie-path pro autentizační ticket</param>
+            <returns>autentizační ticket na základě předaných argumentů</returns>
+        </member>
+        <member name="M:Havit.Web.Security.FormsRolesAuthentication.GetAuthCookie(System.String,System.String[],System.Boolean,System.String)">
+            <summary>
+            Vytvoří authentizační cookie pro forms-authentication s ukládáním rolí do userData.
+            </summary>
+            <param name="username">přihlašovací jméno uživatele</param>
+            <param name="roles">role, které uživateli přísluší</param>
+            <param name="createPersistentCookie"><c>true</c>, pokud se má vytvořit trvalá cookie, která přežije session browseru; jinak <c>false</c></param>
+            <param name="cookiePath">cookie-path pro autentizační ticket</param>
+            <returns></returns>
+        </member>
+        <member name="M:Havit.Web.Security.FormsRolesAuthentication.RedirectFromLoginPage(System.String,System.String[],System.Boolean,System.String,System.String)">
+            <summary>
+            Redirektuje autentizovaného uživatele zpět na původní URL (nebo default URL).
+            Součástí response je autentizační cookie s příslušným autentizačním ticketem.
+            </summary>
+            <param name="username">přihlašovací jméno uživatele</param>
+            <param name="roles">role, které uživateli přísluší</param>
+            <param name="createPersistentCookie"><c>true</c>, pokud se má vytvořit trvalá cookie, která přežije session browseru; jinak <c>false</c></param>
+            <param name="cookiePath">cookie-path pro autentizační ticket</param>
+            <param name="redirectUrl">URL, na které má být provedeno přesměrování</param>
+        </member>
+        <member name="M:Havit.Web.Security.FormsRolesAuthentication.RedirectFromLoginPage(System.String,System.String[],System.Boolean)">
+            <summary>
+            Redirektuje autentizovaného uživatele zpět na původní URL (nebo default URL).
+            Součástí response je autentizační cookie s příslušným autentizačním ticketem.
+            </summary>
+            <param name="username">přihlašovací jméno uživatele</param>
+            <param name="roles">role, které uživateli přísluší</param>
+            <param name="createPersistentCookie"><c>true</c>, pokud se má vytvořit trvalá cookie, která přežije session browseru; jinak <c>false</c></param>
+        </member>
+        <member name="M:Havit.Web.Security.FormsRolesAuthentication.RedirectFromLoginPage(System.String,System.String[])">
+            <summary>
+            Redirektuje autentizovaného uživatele zpět na původní URL (nebo default URL).
+            Součástí response je autentizační cookie s příslušným autentizačním ticketem, bez persistence.
+            </summary>
+            <param name="username">přihlašovací jméno uživatele</param>
+            <param name="roles">role, které uživateli přísluší</param>
+        </member>
+        <member name="P:Havit.Web.Security.FormsRolesAuthentication.Timeout">
+            <summary>
+            Timeout pro authentication-ticket (web.config: system.web/authentication/forms/timeout).
+            </summary>
+            <remarks>
+            Jako jedna z mála konfiguračních parametrů není přístupné přes <see cref="T:System.Web.Security.FormsAuthentication"/>.
+            </remarks>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.H3">
+            <summary>
+            Reprezentuje label, který se renderuje jako HTML tag H3.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.H3.TagKey">
+            <summary>
+            Vrací HtmlTextWriterTag.H3 zajišťující správné renderování.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.GridViewInsertRowPosition">
+            <summary>
+            Slouží pro volbu pozice Insert-řádku v <see cref="T:Havit.Web.UI.WebControls.GridViewExt"/>.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.UI.WebControls.GridViewInsertRowPosition.Top">
+            <summary>
+            Nahoře.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.UI.WebControls.GridViewInsertRowPosition.Bottom">
+            <summary>
+            Dole.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.ButtonColumnExt">
+            <summary>
+            Rozšířená <see cref="T:System.Web.UI.WebControls.ButtonColumn"/> k <see cref="T:System.Web.UI.WebControls.DataGrid"/>u,
+            např. o confirmation, zapínání/vypínání validace, atp.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.ButtonColumnExt.InitializeCell(System.Web.UI.WebControls.TableCell,System.Int32,System.Web.UI.WebControls.ListItemType)">
+            <summary>
+            Resets a cell in the ButtonColumn to its initial state.
+            </summary>
+            <param name="cell">A <see cref="T:System.Web.UI.WebControls.TableCell"/> that represents the cell to reset.</param>
+            <param name="columnIndex">The column number where the cell is located.</param>
+            <param name="itemType">One of the <see cref="T:System.Web.UI.WebControls.ListItemType"/> values.</param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.ButtonColumnExt.OnDataBindColumn(System.Object,System.EventArgs)">
+            <summary>
+            Zajistí navázání dat na tlačítko.
+            </summary>
+            <param name="sender">sender.Namingcontainer je <see cref="T:System.Web.UI.WebControls.DataGridItem"/></param>
+            <param name="e">prázdné</param>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.ButtonColumnExt.ConfirmationText">
+            <summary>
+            Vrátí/nastaví statický text, který se má zobrazovat do confirmation dialogu při kliknutí tlačítka.
+            </summary>
+            <remarks>
+            Pro dynamický text lze použít též <see cref="P:Havit.Web.UI.WebControls.ButtonColumnExt.ConfirmationDataField"/> a <see cref="P:Havit.Web.UI.WebControls.ButtonColumnExt.ConfirmationDataFormatString"/>.
+            </remarks>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.ButtonColumnExt.ConfirmationDataField">
+            <summary>
+            Vrátí/nastaví název pole z DataSource, které má být nabindovaná do confirmation dialogu.
+            </summary>
+            <remarks>
+            Formátování se nastavuje pomocí <see cref="P:Havit.Web.UI.WebControls.ButtonColumnExt.ConfirmationDataFormatString"/>.
+            </remarks>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.ButtonColumnExt.ConfirmationDataFormatString">
+            <summary>
+            Vrátí/nastaví FormatString dat bindovaných do confirmation dialogu.
+            </summary>
+            <remarks>
+            Formátuje <see cref="P:Havit.Web.UI.WebControls.ButtonColumnExt.ConfirmationDataField"/>.
+            Pokud chceme zobrazit pouze statický text, použije se <see cref="P:Havit.Web.UI.WebControls.ButtonColumnExt.ConfirmationText"/>.
+            </remarks>
+            <value>Default je <see cref="F:System.String.Empty"/>.</value>
+        </member>
+        <member name="T:Havit.Web.UI.Scriptlets.ScriptSubstitutionRepository">
+            <summary>
+            Repository substitucí.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.Scriptlets.IScriptSubstitution">
+            <summary>
+            Interface pro substituce v klientském skriptu scriptletu.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.Scriptlets.IScriptSubstitution.Substitute(System.String)">
+            <summary>
+            Substituje ve skriptu.
+            </summary>
+            <param name="script">Skript, ve kterém má dojít k substituci.</param>
+            <returns>Substituovaný skript.</returns>
+        </member>
+        <member name="M:Havit.Web.UI.Scriptlets.ScriptSubstitutionRepository.Substitute(System.String)">
+            <summary>
+            Provede substituci tím způsobem, že zavolá postupně substituce
+            na všech instancích v repository.
+            </summary>
+            <param name="script">Skript, ve kterém má dojít k substituci.</param>
+            <returns>Substituovaný skript.</returns>
+        </member>
+        <member name="P:Havit.Web.UI.Scriptlets.ScriptSubstitutionRepository.Default">
+            <summary>
+            Výchozí substituce. Použita, pokud není scriptletu nastaveno jinak.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.Scriptlets.RepeaterControlExtender">
+            <summary>
+            Control extender, který umí pracovat s Repeaterem.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.Scriptlets.RepeaterControlExtender.#ctor(System.Int32)">
+            <summary>
+            Vytvoří extender s danou prioritou.
+            </summary>
+            <param name="priority">Priorita extenderu.</param>
+        </member>
+        <member name="M:Havit.Web.UI.Scriptlets.RepeaterControlExtender.GetPriority(System.Web.UI.Control)">
+            <summary>
+            Vrátí prioritu extenderu pro daný control.
+            Pokud je control Repeaterem, vrátí prioritu zadanou v konstruktoru,
+            jinak vrací null.
+            </summary>
+            <param name="control">Control, pro který se ověřuje priorita.</param>
+            <returns>Priorita.</returns>
+        </member>
+        <member name="M:Havit.Web.UI.Scriptlets.RepeaterControlExtender.CreateParameter(System.String,Havit.Web.UI.Scriptlets.IScriptletParameter,System.Web.UI.Control,Havit.Web.UI.Scriptlets.ScriptBuilder)">
+            <summary>
+            Vytvoří klientský parametr pro předaný control.
+            </summary>
+            <param name="parameterPrefix">Název objektu na klientské straně.</param>
+            <param name="parameter">Parametr předávající řízení extenderu.</param>
+            <param name="control">Control ke zpracování.</param>
+            <param name="scriptBuilder">Script builder.</param>
+        </member>
+        <member name="T:Havit.Web.UrlRewriter.ModuleRewriter">
+            <summary>
+            Provides a rewriting HttpModule.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UrlRewriter.ModuleRewriter.Rewrite(System.String,System.Web.HttpApplication)">
+            <summary>
+            Metoda řešící vlastní UrlRewriting zdrojové adresy na cílovou.
+            </summary>
+            <param name="requestedPath">The Path being requested.</param>
+            <param name="app">The HttpApplication instance.</param>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.H2">
+            <summary>
+            Reprezentuje label, který se renderuje jako HTML tag H2.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.H2.TagKey">
+            <summary>
+            Vrací HtmlTextWriterTag.H2 zajišťující správné renderování.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.Highlighting">
+            <summary>
+            Třída Highlighting drží data pro zvýraznění vybrané položky podle hodnoty klíče.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.Highlighting.HighlightValue">
+            <summary>
+            Hodnota "klíče" položky, která má být zvýrazněna.
+            Nastavuje příznak AutoPageChangeEnabled.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.Highlighting.DataField">
+            <summary>
+            Položka dat, jejíž hodnota se porovnává s HighlightValue.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.Highlighting.AutoPageChangeEnabled">
+            <summary>
+            Příznak, zda může dojít ke změně stránky pro zvýraznění položky.
+            Příznak je automaticky nastaven při nastavení hodnoty HighlightValue
+            a je po databindingu automaticky vypnut.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.GridViewExt">
+            <summary>
+            GridView implementující hightlighting, sorting a výchozí obsluhu událostí editace, stránkování, ...
+            </summary>
+            <remarks>
+            Funkčnost <b>Sorting</b> ukládá nastavení řazení dle uživatele a případně zajišťuje automatické řazení pomocí GenericPropertyCompareru.<br/>
+            Funkčnost <b>Inserting</b> umožňuje použití Insert-řádku pro přidávání nových položek.<br/>
+            </remarks>
         </member>
         <member name="M:Havit.Web.UI.WebControls.GridViewExt.SetRequiresDatabinding">
             <summary>
@@ -312,1016 +1384,14 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="T:Havit.Web.UI.Scriptlets.IControlExtenderRepository">
+        <member name="T:Havit.Web.UI.WebControls.DataControlImageButtonExt">
             <summary>
-            Repository extenderů. 
+            Přepis třídy Microsoft .NET Frameworku. Potřeba pro GridViewCommandField.
             </summary>
         </member>
-        <member name="M:Havit.Web.UI.Scriptlets.IControlExtenderRepository.FindControlExtender(System.Web.UI.Control)">
+        <member name="T:Havit.Web.UI.WebControls.GridViewCommandField">
             <summary>
-            Vrací extender, který má Control zpracovávat.
-            </summary>
-            <param name="control">Control, který bude zpracováván.</param>
-            <returns>Nalezený extender.</returns>
-        </member>
-        <member name="T:Havit.Web.HttpServerUtilityExt">
-            <summary>
-            Poskytuje další pomocné metody pro ovládání webového serveru.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.HttpServerUtilityExt.ClearCache">
-            <summary>
-            Vyčistí cache webové aplikace.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.HttpServerUtilityExt.ResolveUrl(System.String,System.String)">
-            <summary>
-            Converts a URL into one that is usable on the requesting client.
-            </summary>
-            <remarks>Converts ~ to the requesting application path.  Mimics the behavior of the 
-            <b>Control.ResolveUrl()</b> method, which is often used by control developers.</remarks>
-            <param name="appPath">The application path.</param>
-            <param name="url">The URL, which might contain ~.</param>
-            <returns>A resolved URL.  If the input parameter <b>url</b> contains ~, it is replaced with the
-            value of the <b>appPath</b> parameter.</returns>
-        </member>
-        <member name="M:Havit.Web.HttpServerUtilityExt.ResolveUrl(System.String)">
-            <summary>
-            Converts a URL into one that is usable on the requesting client.
-            </summary>
-            <remarks>Converts ~ to the requesting application path.  Mimics the behavior of the 
-            <b>Control.ResolveUrl()</b> method, which is often used by control developers.</remarks>
-            <param name="url">The URL, which might contain ~.</param>
-            <returns>A resolved URL.  If the input parameter <b>url</b> contains ~, it is replaced with the
-            value of the <see cref="P:System.Web.HttpRequest.ApplicationPath"/> parameter
-            of <see cref="P:System.Web.HttpContext.Current"/>.</returns>
-        </member>
-        <member name="M:Havit.Web.HttpServerUtilityExt.#ctor">
-            <summary>
-            private constructor zabraňuje vytvoření instance třídy
-            </summary>
-        </member>
-        <member name="T:Havit.Web.Compilation.CodeExpressionBuilder">
-            <summary>
-            Prostý expression-builder pro výrazy v podobě &lt;%$ Expression: MujVyraz %&gt;.
-            </summary>
-            <example>
-            Do webové aplikace zavedeme pomocí web.config:<br/>
-            <code>
-            &lt;compilation&gt;<br/>
-            	&lt;expressionBuilders&gt;<br/>
-            		&lt;add expressionPrefix="Expression" type="Havit.Web.Compilation.CodeExpressionBuilder, Havit.Web" /&gt;<br/>
-            	&lt;/expressionBuilders&gt;<br/>
-            &lt;/compilation&gt;<br/>
-            </code>
-            Ve stránce používáme již jako klasický expression:<br/>
-            <code>
-            &lt;asp:TextBox ID="NoveHesloTB" TextMode="Password" MaxLength="&lt;%$ Expression: Uzivatel.Properties.Password.MaximumLength %&gt;" runat="server" /&gt;<br/>
-            </code>
-            </example>
-        </member>
-        <member name="M:Havit.Web.Compilation.CodeExpressionBuilder.GetCodeExpression(System.Web.UI.BoundPropertyEntry,System.Object,System.Web.Compilation.ExpressionBuilderContext)">
-            <summary>
-            Vrací kód, který se použije namísto vyhodnocovaného výrazu při kompilaci.
-            </summary>
-            <param name="entry">objekt reprezentující informace o property, na kterou se výraz navazuje</param>
-            <param name="parsedData">objekt obsahující parsovaná data vrácená metodou ParseExpression</param>
-            <param name="context">kontext</param>
-            <returns>CodeExpression pro přiřezení k property</returns>
-        </member>
-        <member name="T:Havit.Web.UrlRewriter.ModuleRewriter">
-            <summary>
-            Provides a rewriting HttpModule.
-            </summary>
-        </member>
-        <member name="T:Havit.Web.UrlRewriter.BaseModuleRewriter">
-            <summary>
-            The base class for module rewriting.  This class is abstract, and therefore must be derived from.
-            </summary>
-            <remarks>Provides the essential base functionality for a rewriter using the HttpModule approach.</remarks>
-        </member>
-        <member name="M:Havit.Web.UrlRewriter.BaseModuleRewriter.Init(System.Web.HttpApplication)">
-            <summary>
-            Executes when the module is initialized.
-            </summary>
-            <param name="app">A reference to the HttpApplication object processing this request.</param>
-            <remarks>Wires up the HttpApplication's AuthorizeRequest event to the
-            <see cref="M:Havit.Web.UrlRewriter.BaseModuleRewriter.BaseModuleRewriter_AuthorizeRequest(System.Object,System.EventArgs)"/> event handler.</remarks>
-        </member>
-        <member name="M:Havit.Web.UrlRewriter.BaseModuleRewriter.Dispose">
-            <summary>
-            Prázdná implementace, vyžadováno IHttpModule.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UrlRewriter.BaseModuleRewriter.BaseModuleRewriter_AuthorizeRequest(System.Object,System.EventArgs)">
-            <summary>
-            Called when the module's AuthorizeRequest event fires.
-            </summary>
-            <remarks>This event handler calls the <see cref="M:Havit.Web.UrlRewriter.BaseModuleRewriter.Rewrite(System.String,System.Web.HttpApplication)"/> method, passing in the
-            <b>RawUrl</b> and HttpApplication passed in via the <b>sender</b> parameter.</remarks>
-        </member>
-        <member name="M:Havit.Web.UrlRewriter.BaseModuleRewriter.Rewrite(System.String,System.Web.HttpApplication)">
-            <summary>
-            The <b>Rewrite</b> method must be overriden.  It is where the logic for rewriting an incoming
-            URL is performed.
-            </summary>
-            <param name="requestedPath">The requested path.</param>
-            <param name="app">The HttpApplication instance.</param>
-        </member>
-        <member name="M:Havit.Web.UrlRewriter.ModuleRewriter.Rewrite(System.String,System.Web.HttpApplication)">
-            <summary>
-            Metoda řešící vlastní UrlRewriting zdrojové adresy na cílovou.
-            </summary>
-            <param name="requestedPath">The Path being requested.</param>
-            <param name="app">The HttpApplication instance.</param>
-        </member>
-        <member name="T:Havit.Web.UI.Scriptlets.RepeaterControlExtender">
-            <summary>
-            Control extender, který umí pracovat s Repeaterem.
-            </summary>
-        </member>
-        <member name="T:Havit.Web.UI.Scriptlets.IControlExtender">
-            <summary>
-            Control extender je zodpovědný za vytoření klienského skriptu pro 
-            předaný control. Díky této obecnosti je možné přidávat vlastní control
-            extendery (či měnit existující) a tím upravit chování Scriptletu pro
-            další controly.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.Scriptlets.IControlExtender.GetPriority(System.Web.UI.Control)">
-            <summary>
-            Vrací prioritu, s jakou je extender chodný pro zpracování controlu.
-            Pokud je extender nevhodný pro zpracování, vrácí se null.
-            </summary>
-            <param name="control">Control, který bude zpracováván.</param>
-            <returns>Priorita extenderu.</returns>
-        </member>
-        <member name="M:Havit.Web.UI.Scriptlets.IControlExtender.CreateParameter(System.String,Havit.Web.UI.Scriptlets.IScriptletParameter,System.Web.UI.Control,Havit.Web.UI.Scriptlets.ScriptBuilder)">
-            <summary>
-            Vytvoří klientský parametr pro předaný control.
-            </summary>
-            <param name="parameterPrefix">Název objektu na klientské straně.</param>
-            <param name="parameter">Parametr předávající řízení extenderu.</param>
-            <param name="control">Control ke zpracování.</param>
-            <param name="builder">Script builder.</param>
-        </member>
-        <member name="M:Havit.Web.UI.Scriptlets.RepeaterControlExtender.#ctor(System.Int32)">
-            <summary>
-            Vytvoří extender s danou prioritou.
-            </summary>
-            <param name="priority">Priorita extenderu.</param>
-        </member>
-        <member name="M:Havit.Web.UI.Scriptlets.RepeaterControlExtender.GetPriority(System.Web.UI.Control)">
-            <summary>
-            Vrátí prioritu extenderu pro daný control.
-            Pokud je control Repeaterem, vrátí prioritu zadanou v konstruktoru,
-            jinak vrací null.
-            </summary>
-            <param name="control">Control, pro který se ověřuje priorita.</param>
-            <returns>Priorita.</returns>
-        </member>
-        <member name="M:Havit.Web.UI.Scriptlets.RepeaterControlExtender.CreateParameter(System.String,Havit.Web.UI.Scriptlets.IScriptletParameter,System.Web.UI.Control,Havit.Web.UI.Scriptlets.ScriptBuilder)">
-            <summary>
-            Vytvoří klientský parametr pro předaný control.
-            </summary>
-            <param name="parameterPrefix">Název objektu na klientské straně.</param>
-            <param name="parameter">Parametr předávající řízení extenderu.</param>
-            <param name="control">Control ke zpracování.</param>
-            <param name="scriptBuilder">Script builder.</param>
-        </member>
-        <member name="T:Havit.Web.UI.Scriptlets.NoLiteralContolBuilder">
-            <summary>
-            Control builder pro Scriptlet.
-            Zajišťuje omezuje chybné použití controlu Scriptlet.
-            </summary>
-        </member>
-        <member name="T:Havit.Web.UI.Scriptlets.ClientScript">
-            <summary>
-            Představuje klientský skript - funkci, která je vyvolána při změně vstupních
-            parametrů Scriptletu nebo při načtění stránky (pokud je povoleno).
-            </summary>
-        </member>
-        <member name="T:Havit.Web.UI.Scriptlets.ScriptletNestedControl">
-            <summary>
-            Čistě formální třída zpřístupňující Scriptlet pro prvky vkládané do Scritletu.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.Scriptlets.ScriptletNestedControl.Scriptlet">
-            <summary>
-            Zpřístupňuje Scriplet, ve kterém je tento ClientScript obsažen.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.Scriptlets.ClientScript.CreateClientSideScript(Havit.Web.UI.Scriptlets.ScriptBuilder)">
-            <summary>
-            Metoda vytvoří funkci okolo klienského skriptu a zaregistruje ji do stránky.
-            Je zajištěno, aby nebyla funkce se shodným obsahem registrována víckrát
-            (např. při použití controlu v repeateru).
-            </summary>
-            <param name="scriptBuilder">ScriptBuilder, do kterého je tvořen klientský skript.</param>
-        </member>
-        <member name="M:Havit.Web.UI.Scriptlets.ClientScript.CreateFunctionName(System.String)">
-            <summary>
-            Vytvoří název klientské funkce. Pokud je parametr reuseFunction prázdný,
-            vytvoří nový název, jinak použije hodnotu tohoto parametru.
-            </summary>
-            <param name="reuseFunctionName"></param>
-        </member>
-        <member name="M:Havit.Web.UI.Scriptlets.ClientScript.CreateClientSideStartOnLoadEvent(Havit.Web.UI.Scriptlets.ScriptBuilder)">
-            <summary>
-            Registruje spuštění klientského skriptu při naštění stránky.
-            </summary>
-            <param name="scriptBuilder">ScriptBuilder, do kterého je tvořen klientský skript.</param>
-        </member>
-        <member name="M:Havit.Web.UI.Scriptlets.ClientScript.DoSubstitutions">
-            <summary>
-            Vrátí připravený klientský skript. Provede nad skriptem substituce.
-            </summary>
-            <returns>Klientský skript připravený k vytvoření obálky a registraci.</returns>
-        </member>
-        <member name="M:Havit.Web.UI.Scriptlets.ClientScript.AddFunctionToCache(System.String,System.String)">
-            <summary>
-            Přidá klientský skript do cache.
-            </summary>
-            <param name="functionName">Název funkce, ve které je skript registrován.</param>
-            <param name="clientScript">Klientský skript.</param>
-        </member>
-        <member name="M:Havit.Web.UI.Scriptlets.ClientScript.GetFunctionNameFromCache(System.String)">
-            <summary>
-            Nalezne název funkce, ve které je klientský skript registrován.
-            </summary>
-            <param name="clientScript">Klientský skript.</param>
-            <returns>Nalezne název funkce, ve které je klientský skript 
-            registrován. Pokud skript není registrován, vrátí null.</returns>
-        </member>
-        <member name="M:Havit.Web.UI.Scriptlets.ClientScript.WrapClientSideScriptToFunction(System.String)">
-            <summary>
-            Zabalí klientský skript do funkce.
-            </summary>
-            <param name="clientScript">Název funkce, která se tvoří.</param>
-            <returns>Klientský skript jako funkce připravená k registraci do stránky.</returns>
-        </member>
-        <member name="P:Havit.Web.UI.Scriptlets.ClientScript.Script">
-            <summary>
-            Klientský skript. Okolo skriptu je vytvořena obálka a případně je spuštěn při načtení stránky.
-            </summary>		
-        </member>
-        <member name="P:Havit.Web.UI.Scriptlets.ClientScript.StartOnLoad">
-            <summary>
-            Udává, zda má po načtení stránky dojít k automatickému spuštění skriptu. Výchozí hodnota je <b>false</b>.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.Scriptlets.ClientScript.ClientSideFunctionName">
-            <summary>
-            Název funkce, pod jakou je klientský skript zaregistrován.
-            Hodnota je dostupná až po zavolání metody RegisterClientScript.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.Scriptlets.ClientScript.FunctionCache">
-            <summary>
-            Cache pro klientské skripty. Klíčem je skript, hodnotou je název funkce,
-            ve které je skript registrován.
-            Cache je uložena v HttpContextu.
-            </summary>
-        </member>
-        <member name="T:Havit.Web.UI.WebControls.ButtonColumnExt">
-            <summary>
-            Rozšířená <see cref="T:System.Web.UI.WebControls.ButtonColumn"/> k <see cref="T:System.Web.UI.WebControls.DataGrid"/>u,
-            např. o confirmation, zapínání/vypínání validace, atp.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.ButtonColumnExt.InitializeCell(System.Web.UI.WebControls.TableCell,System.Int32,System.Web.UI.WebControls.ListItemType)">
-            <summary>
-            Resets a cell in the ButtonColumn to its initial state.
-            </summary>
-            <param name="cell">A <see cref="T:System.Web.UI.WebControls.TableCell"/> that represents the cell to reset.</param>
-            <param name="columnIndex">The column number where the cell is located.</param>
-            <param name="itemType">One of the <see cref="T:System.Web.UI.WebControls.ListItemType"/> values.</param>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.ButtonColumnExt.OnDataBindColumn(System.Object,System.EventArgs)">
-            <summary>
-            Zajistí navázání dat na tlačítko.
-            </summary>
-            <param name="sender">sender.Namingcontainer je <see cref="T:System.Web.UI.WebControls.DataGridItem"/></param>
-            <param name="e">prázdné</param>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.ButtonColumnExt.ConfirmationText">
-            <summary>
-            Vrátí/nastaví statický text, který se má zobrazovat do confirmation dialogu při kliknutí tlačítka.
-            </summary>
-            <remarks>
-            Pro dynamický text lze použít též <see cref="P:Havit.Web.UI.WebControls.ButtonColumnExt.ConfirmationDataField"/> a <see cref="P:Havit.Web.UI.WebControls.ButtonColumnExt.ConfirmationDataFormatString"/>.
-            </remarks>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.ButtonColumnExt.ConfirmationDataField">
-            <summary>
-            Vrátí/nastaví název pole z DataSource, které má být nabindovaná do confirmation dialogu.
-            </summary>
-            <remarks>
-            Formátování se nastavuje pomocí <see cref="P:Havit.Web.UI.WebControls.ButtonColumnExt.ConfirmationDataFormatString"/>.
-            </remarks>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.ButtonColumnExt.ConfirmationDataFormatString">
-            <summary>
-            Vrátí/nastaví FormatString dat bindovaných do confirmation dialogu.
-            </summary>
-            <remarks>
-            Formátuje <see cref="P:Havit.Web.UI.WebControls.ButtonColumnExt.ConfirmationDataField"/>.
-            Pokud chceme zobrazit pouze statický text, použije se <see cref="P:Havit.Web.UI.WebControls.ButtonColumnExt.ConfirmationText"/>.
-            </remarks>
-            <value>Default je <see cref="F:System.String.Empty"/>.</value>
-        </member>
-        <member name="T:Havit.Web.UI.Scriptlets.IScriptSubstitution">
-            <summary>
-            Interface pro substituce v klientském skriptu scriptletu.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.Scriptlets.IScriptSubstitution.Substitute(System.String)">
-            <summary>
-            Substituje ve skriptu.
-            </summary>
-            <param name="script">Skript, ve kterém má dojít k substituci.</param>
-            <returns>Substituovaný skript.</returns>
-        </member>
-        <member name="T:Havit.Web.UI.CommandNames">
-            <summary>
-            Třída CommandNames obsahuje sdílené názvy příkazů (CommandNames).
-            Sdílí se mezi prvky vyvolávající událost příkazu (potomci GridViewImageButton)
-            a EnterpriseGridView.
-            </summary>
-        </member>
-        <member name="F:Havit.Web.UI.CommandNames.Cancel">
-            <summary>
-            Cancel.
-            </summary>
-        </member>
-        <member name="F:Havit.Web.UI.CommandNames.Delete">
-            <summary>
-            Delete.
-            </summary>
-        </member>
-        <member name="F:Havit.Web.UI.CommandNames.Edit">
-            <summary>
-            Edit.
-            </summary>
-        </member>
-        <member name="F:Havit.Web.UI.CommandNames.MoveDown">
-            <summary>
-            MoveDown.
-            </summary>
-        </member>
-        <member name="F:Havit.Web.UI.CommandNames.MoveUp">
-            <summary>
-            MoveUp.
-            </summary>
-        </member>
-        <member name="F:Havit.Web.UI.CommandNames.Update">
-            <summary>
-            Update.
-            </summary>
-        </member>
-        <member name="F:Havit.Web.UI.CommandNames.Select">
-            <summary>
-            Select.
-            </summary>
-        </member>
-        <member name="F:Havit.Web.UI.CommandNames.Detail">
-            <summary>
-            Detail.
-            </summary>
-        </member>
-        <member name="F:Havit.Web.UI.CommandNames.Report">
-            <summary>
-            Report.
-            </summary>
-        </member>
-        <member name="F:Havit.Web.UI.CommandNames.Insert">
-            <summary>
-            Insert.
-            </summary>
-        </member>
-        <member name="T:Havit.Web.UI.Scriptlets.ParameterBase">
-            <summary>
-            Předek pro tvorbu klientských parametrů.
-            </summary>
-        </member>
-        <member name="T:Havit.Web.UI.Scriptlets.IScriptletParameter">
-            <summary>
-            Parametr obsažený ve scripletu.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.Scriptlets.IScriptletParameter.CheckProperties">
-            <summary>
-            Zkontroluje nastavení parametru. Je-li nějaké nastavení chybně,
-            má být vyhozena výjimka.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.Scriptlets.IScriptletParameter.CreateParameter(System.String,System.Web.UI.Control,Havit.Web.UI.Scriptlets.ScriptBuilder)">
-            <summary>
-            Vytvoří klientský skript pro parametr.
-            </summary>
-            <param name="parameterPrefix">Prefix pro název parametru. Controly mohou být složené (např. TextBox v Repeateru).</param>
-            <param name="parentControl">Rodičovský prvek, pro který je parametr renderován.</param>
-            <param name="scriptBuilder">Script builder.</param>
-        </member>
-        <member name="P:Havit.Web.UI.Scriptlets.IScriptletParameter.Scriptlet">
-            <summary>
-            Zpřístupňuje scriptlet, ve kterém je parametr obsažen.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.Scriptlets.IScriptletParameter.Name">
-            <summary>
-            Název parametru, pod kterým bude identifikován v klientském skriptu.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.Scriptlets.ParameterBase.CreateParameter(System.String,System.Web.UI.Control,Havit.Web.UI.Scriptlets.ScriptBuilder)">
-            <summary>
-            Vytvoří klientský skript pro parametr.
-            </summary>
-            <param name="parameterPrefix">Prefix parametru.</param>
-            <param name="parentControl">Control, v rámci kterého je tento parametr.</param>
-            <param name="scriptBuilder">Script builder.</param>
-        </member>
-        <member name="M:Havit.Web.UI.Scriptlets.ParameterBase.CheckProperties">
-            <summary>
-            Zkontroluje, zda je parametr správně inicializován.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.Scriptlets.ParameterBase.CheckNameProperty">
-            <summary>
-            Testuje nastavení hodnoty property Name.
-            Pokud není hodnota nastavena, je vyhozena výjimka.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.Scriptlets.ParameterBase.AddedControl(System.Web.UI.Control,System.Int32)">
-            <summary>
-            Zavoláno, když je do kolekce Controls přidán Control.
-            Zajišťuje, aby nebyl přidán control neimplementující 
-            IScriptletParameter.
-            </summary>
-            <param name="control">Přidávaný control.</param>
-            <param name="index">Pozice v kolekci controlů, kam je control přidáván.</param>
-        </member>
-        <member name="P:Havit.Web.UI.Scriptlets.ParameterBase.Name">
-            <summary>
-            Název parametru, pod kterým bude parametr přístupný v klienském skriptu.
-            </summary>
-        </member>
-        <member name="T:Havit.Web.HttpResponseExt">
-            <summary>
-            Obsahuje rozšiřující funkčnost k třídě <see cref="T:System.Web.HttpResponse"/>.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.HttpResponseExt.MovedPermanently(System.String,System.Boolean)">
-            <summary>
-            Provede redirect pomocí HTTP status kódu 301 - Moved Permanently.
-            Klasický <see cref="M:System.Web.HttpResponse.Redirect(System.String)"/> provádí redirect přes 302 - Found (Object Moved).
-            </summary>
-            <remarks>
-            Zatímco klasický <see cref="M:System.Web.HttpResponse.Redirect(System.String)"/> provádí redirect přes HTTP status kód 302,
-            což je "temporarily moved", redirect přes "301 - Moved Permanently" říká klientovi, že URL požadované stránky
-            se definitivně změnilo na novou adresu.<br/>
-            Klient by měl teoreticky reagovat úpravou bookmarku, ale žádný to nedělá. Smysl to má však pro indexovací roboty
-            vyhledávačů, které se tím údajně docela řídí.<br/>
-            POZOR: Na rozdíl od <see cref="M:System.Web.HttpResponse.Redirect(System.String)"/> nekontroluje, jestli už nebyly odeslány klientovi hlavičky.
-            </remarks>
-            <param name="url">Cílová adresa.</param>
-            <param name="endResponse">Indikuje, zda-li má skončit zpracování vykonávání stránky.</param>
-        </member>
-        <member name="M:Havit.Web.HttpResponseExt.MovedPermanently(System.String)">
-            <summary>
-            Provede redirect pomocí HTTP status kódu 301 - Moved Permanently a ukončí zpracování stránky.
-            Klasický <see cref="M:System.Web.HttpResponse.Redirect(System.String)"/> provádí redirect přes 302 - Found (Object Moved).
-            </summary>
-            <remarks>
-            Zatímco klasický <see cref="M:System.Web.HttpResponse.Redirect(System.String)"/> provádí redirect přes HTTP status kód 302,
-            což je "temporarily moved", redirect přes "301 - Moved Permanently" říká klientovi, že URL požadované stránky
-            se definitivně změnilo na novou adresu.<br/>
-            Klient by měl teoreticky reagovat úpravou bookmarku, ale žádný to nedělá. Smysl to má však pro indexovací roboty
-            vyhledávačů, které se tím údajně docela řídí.
-            </remarks>
-            <param name="url">Cílová adresa.</param>
-        </member>
-        <member name="M:Havit.Web.HttpResponseExt.Gone(System.Boolean)">
-            <summary>
-            Odešle klientovi odezvu se status kódem 410 - Gone, tj. "stránka byla zrušena bez náhrady".
-            </summary>
-            <param name="endResponse">Indikuje, zda-li má skončit zpracování vykonávání stránky.</param>
-        </member>
-        <member name="M:Havit.Web.HttpResponseExt.Gone">
-            <summary>
-            Odešle klientovi odezvu se status kódem 410 - Gone, tj. "stránka byla zrušena bez náhrady"
-            a ukončí zpracování stránky.
-            </summary>
-        </member>
-        <member name="T:Havit.Web.UI.Scriptlets.ValueParameter">
-            <summary>
-            Parametr předávající do klientského objektu konstantní řetězcovou hodnotu.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.Scriptlets.ValueParameter.CreateParameter(System.String,System.Web.UI.Control,Havit.Web.UI.Scriptlets.ScriptBuilder)">
-            <summary>
-            Vytvoří klientský skript pro parametr.
-            </summary>
-            <param name="parameterPrefix">Prefix parametru.</param>
-            <param name="parentControl">Control, v rámci kterého je tento parametr.</param>
-            <param name="scriptBuilder">Script builder.</param>
-        </member>
-        <member name="P:Havit.Web.UI.Scriptlets.ValueParameter.Value">
-            <summary>
-            Hodnota parametru.
-            </summary>
-        </member>
-        <member name="T:Havit.Web.UI.WebControls.H6">
-            <summary>
-            Reprezentuje label, který se renderuje jako HTML tag H6.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.H6.TagKey">
-            <summary>
-            Vrací HtmlTextWriterTag.H6 zajišťující správné renderování.
-            </summary>
-        </member>
-        <member name="T:Havit.Web.UI.Scriptlets.BrowserHelper">
-            <summary>
-            Pomocník pro identifikaci prohlížeče.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.Scriptlets.BrowserHelper.GetAttachEvent(System.String,System.String,System.String)">
-            <summary>
-            Vrátí příkaz pro připojení události k objektu.
-            Detekuji IE, který připojuje události jinak než ostatní prohlížeče.
-            </summary>
-            <param name="attachingObject">Objekt, ke kterému je připojována událost.</param>
-            <param name="eventName">Název události vč "on", např "onchange", "onclick".</param>
-            <param name="function">Funkce, která je připojována. Obsahuje-li řetězev, musí být uvozen uvozovkami a nikoliv apostrofy.</param>
-            <returns>Příkaz připojující událost k objektu.</returns>
-        </member>
-        <member name="P:Havit.Web.UI.Scriptlets.BrowserHelper.IsInternetExplorer">
-            <summary>
-            Vrací true, pokud byl aktuální HttpRequest pochází z Internet Exploreru 
-            (nebo shodně se identifikujícího browseru).
-            </summary>
-        </member>
-        <member name="T:Havit.Web.UI.WebControls.H5">
-            <summary>
-            Reprezentuje label, který se renderuje jako HTML tag H5.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.H5.TagKey">
-            <summary>
-            Vrací HtmlTextWriterTag.H5 zajišťující správné renderování.
-            </summary>
-        </member>
-        <member name="T:Havit.Web.UI.Scriptlets.ScriptSubstitutionRepository">
-            <summary>
-            Repository substitucí.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.Scriptlets.ScriptSubstitutionRepository.Substitute(System.String)">
-            <summary>
-            Provede substituci tím způsobem, že zavolá postupně substituce
-            na všech instancích v repository.
-            </summary>
-            <param name="script">Skript, ve kterém má dojít k substituci.</param>
-            <returns>Substituovaný skript.</returns>
-        </member>
-        <member name="P:Havit.Web.UI.Scriptlets.ScriptSubstitutionRepository.Default">
-            <summary>
-            Výchozí substituce. Použita, pokud není scriptletu nastaveno jinak.
-            </summary>
-        </member>
-        <member name="T:Havit.Web.HttpUtilityExt">
-            <summary>
-            Poskytuje další pomocné metody pro kódování a dekódování textu pro použití na webu.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.HttpUtilityExt.HtmlEncode(System.String,Havit.Web.HtmlEncodeOptions)">
-            <summary>
-            Zkonvertuje string do HTML-encoded podoby.
-            Oproti standardnímu <see cref="M:System.Web.HttpUtility.HtmlEncode(System.String)"/> může encodovat všechny non-ASCII znaky
-            a hlavně umožňuje pomocí options řídit požadovanou výslednou podobu. Lze například použít rozšířenou sadu HTML-entit,
-            popřípadě úplně vyloučit převod ne-ASCII znaků na podobu &amp;#1234;.
-            </summary>
-            <param name="unicodeText">převáděný string v Unicode</param>
-            <param name="options">options volby konverze</param>
-            <returns>HTML-encoded string dle options</returns>
-        </member>
-        <member name="M:Havit.Web.HttpUtilityExt.HtmlEncode(System.String)">
-            <summary>
-            Zkonvertuje string do HTML-encoded podoby s použitím výchozích options.
-            Oproti standardnímu <see cref="M:System.Web.HttpUtility.HtmlEncode(System.String)"/> encoduje všechny non-ASCII znaky.
-            </summary>
-            <remarks>
-            Pro podrobné řízení voleb konverze je nutno použít overload s options, takto je použito <see cref="F:Havit.Web.HtmlEncodeOptions.None"/>,
-            tj. pouze pět standardních XML entit (&amp;gt;; &amp;lt;, &amp;amp;, &amp;quot;, &amp;apos;)
-            </remarks>
-            <param name="unicodeText">převáděný string v Unicode</param>
-            <returns>HTML-encoded string</returns>
-        </member>
-        <member name="M:Havit.Web.HttpUtilityExt.UrlEncodeSpaces(System.String)">
-            <summary>
-            Encoduje řetězec tak, že vymění mezery za %20.
-            </summary>
-            <remarks>
-            Public přepis internal metody System.Web.HttpUtility.UrlEncodeSpaces.
-            </remarks>
-            <param name="str">Text k encodování</param>
-            <returns>Řetězec, kde jsou mezery vyměněny za %20.</returns>
-        </member>
-        <member name="M:Havit.Web.HttpUtilityExt.UrlEncodeNonAscii(System.String,System.Text.Encoding)">
-            <summary>
-            Encoduje všechny non-ACSII znaky v zadaném řetězci pro bezpečný přenos v URL.
-            Lze použít na již sestavený QueryString, nezlikviduje totiž &amp;, =, atp.
-            </summary>
-            <remarks>
-            Public přepis internal metody System.Web.HttpUtility.UrlEncodeNonAcsii.
-            </remarks>
-            <param name="str">Text k encodování.</param>
-            <param name="e">Encoding textu</param>
-            <returns>Text encodovaný pro použití v URL.</returns>
-        </member>
-        <member name="M:Havit.Web.HttpUtilityExt.UrlEncodeBytesToBytesNonAscii(System.Byte[])">
-            <summary>
-            Encoduje všechny non-ACSII znaky v zadaném poli bytů pro bezpečný přenos v URL.
-            Lze použít na již sestavený QueryString, nezlikviduje totiž &amp;, =, atp.
-            </summary>
-            <remarks>
-            Public přepis internal metody System.Web.HttpUtility.UrlEncodeBytesToBytesInternalNonAscii.
-            </remarks>
-            <param name="bytes">vstupní text</param>
-            <returns>Text encodovaný pro použití v URL.</returns>
-        </member>
-        <member name="M:Havit.Web.HttpUtilityExt.UrlEncodePathWithQueryString(System.String)">
-            <summary>
-            Encoduje všechny non-ACSII znaky v zadaném poli bytů pro bezpečný přenos v URL.
-            Lze použít na již sestavený QueryString, nezlikviduje totiž &amp;, =, atp.
-            </summary>
-            <remarks>
-            Public přepis internal metody System.Web.HttpUtility.UrlEncodeBytesToBytesInternalNonAscii.
-            </remarks>
-            <param name="urlWithQueryString">vstupní text</param>
-            <returns>Text encodovaný pro použití v URL.</returns>
-        </member>
-        <member name="T:Havit.Web.HtmlEncodeOptions">
-            <summary>
-            Poskytuje množinu hodnot k nastavení voleb metody <see cref="M:Havit.Web.HttpUtilityExt.HtmlEncode(System.String,Havit.Web.HtmlEncodeOptions)"/>
-            </summary>
-        </member>
-        <member name="F:Havit.Web.HtmlEncodeOptions.None">
-            <summary>
-            Označuje, že nemají být nastaveny žádné options, použije se default postup.
-            Default postup převede pouze čtyři základní entity
-            <list type="bullet">
-            	<item>&lt; --- &amp;lt;</item>
-            	<item>&gt; --- &amp;gt;</item>
-            	<item>&amp; --- &amp;amp;</item>
-            	<item>&quot; --- &amp;quot;</item>
-            </list>
-            </summary>
-        </member>
-        <member name="F:Havit.Web.HtmlEncodeOptions.IgnoreNonASCIICharacters">
-            <summary>
-            Při konverzi budou ignorovány znaky mimo ASCII hodnoty, nebudou tedy tvořeny číselné entity typu &amp;#123;.
-            </summary>
-        </member>
-        <member name="F:Havit.Web.HtmlEncodeOptions.ExtendedHtmlEntities">
-            <summary>
-            Při konverzi bude použita rozšířená sada HTML-entit, které by se jinak převedly na číselné entity.
-            Např. bude použito &amp;copy;, &amp;nbsp;, &amp;sect;, atp. 
-            </summary>
-        </member>
-        <member name="F:Havit.Web.HtmlEncodeOptions.XmlApostropheEntity">
-            <summary>
-            Při konverzi převede apostrofy na &amp;apos; entitu.
-            POZOR! &amp;apos; není standardní HTML entita a třeba IE ji v HTML režimu nepozná!!!
-            </summary>
-            <remarks>
-            V kombinaci se základním <see cref="F:Havit.Web.HtmlEncodeOptions.None"/> dostaneme sadu pěti built-in XML entit:
-            <list type="bullet">
-            	<item>&lt; --- &amp;lt;</item>
-            	<item>&gt; --- &amp;gt;</item>
-            	<item>&amp; --- &amp;amp;</item>
-            	<item>" --- &amp;quot;</item>
-            	<item>' --- &amp;apos;</item>
-            </list>
-            </remarks>
-        </member>
-        <member name="T:Havit.Web.UI.WebControls.H4">
-            <summary>
-            Reprezentuje label, který se renderuje jako HTML tag H4.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.H4.TagKey">
-            <summary>
-            Vrací HtmlTextWriterTag.H4 zajišťující správné renderování.
-            </summary>
-        </member>
-        <member name="T:Havit.Web.UI.Scriptlets.ScriptBuilder">
-            <summary>
-            Jednoduchý skládač řetězce. 
-            Vnitřně používá StringBuilder, na rozdíl od něj umožňuje text
-            jen přidávat, neumožňuje jej modifikovat.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.Scriptlets.ScriptBuilder.Append(System.String)">
-            <summary>
-            Připojí řetězec na konec textu.
-            </summary>
-            <param name="value">Přidávaná hodnota.</param>
-        </member>
-        <member name="M:Havit.Web.UI.Scriptlets.ScriptBuilder.AppendFormat(System.String,System.Object[])">
-            <summary>
-            Po zformátování připojí řetězec na konec textu.
-            </summary>
-            <param name="value">Šablona přidávané hodnota.</param>
-            <param name="parameters">Parametry šablony.</param>
-        </member>
-        <member name="M:Havit.Web.UI.Scriptlets.ScriptBuilder.ToString">
-            <summary>
-            Vrátí složený text.
-            </summary>
-            <returns>Složený text.</returns>
-        </member>
-        <member name="T:Havit.Web.UrlRewriter.Config.RewriterConfigSerializerSectionHandler">
-            <summary>
-            Deserializes the markup in Web.config into an instance of the <see cref="T:Havit.Web.UrlRewriter.Config.RewriterConfiguration"/> class.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UrlRewriter.Config.RewriterConfigSerializerSectionHandler.Create(System.Object,System.Object,System.Xml.XmlNode)">
-            <summary>
-            Creates an instance of the <see cref="T:Havit.Web.UrlRewriter.Config.RewriterConfiguration"/> class.
-            </summary>
-            <remarks>Uses XML Serialization to deserialize the XML in the Web.config file into an
-            <see cref="T:Havit.Web.UrlRewriter.Config.RewriterConfiguration"/> instance.</remarks>
-            <returns>An instance of the <see cref="T:Havit.Web.UrlRewriter.Config.RewriterConfiguration"/> class.</returns>
-        </member>
-        <member name="T:Havit.Web.UI.WebControls.IIdentifiableField">
-            <summary>
-            Sloupec, který se umí identifikovat (má ID).
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.IIdentifiableField.ID">
-            <summary>
-            ID sloupce. Umožní GridView hledat sloupec podle ID.
-            </summary>
-        </member>
-        <member name="T:Havit.Web.UI.WebControls.H3">
-            <summary>
-            Reprezentuje label, který se renderuje jako HTML tag H3.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.H3.TagKey">
-            <summary>
-            Vrací HtmlTextWriterTag.H3 zajišťující správné renderování.
-            </summary>
-        </member>
-        <member name="T:Havit.Web.UI.WebControls.BooleanField">
-            <summary>
-            Sloupec pro zobrazení boolean hodnoty.
-            </summary>
-        </member>
-        <member name="T:Havit.Web.UI.WebControls.BoundFieldExt">
-            <summary>
-            Sloupec pro heterogenní seznamy.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.BoundFieldExt.CreateField">
-            <summary>
-            Vyžadováno implementací Fieldu v .NETu. V potomcích nutno přepsat.
-            </summary>
-            <returns>Instance této třídy.</returns>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.BoundFieldExt.GetValue(System.Web.UI.Control)">
-            <summary>
-            Získá hodnotu pro zobrazení na základě datového zdroje a DataFieldu.
-            </summary>
-            <param name="controlContainer">Control container (řádek GridView), kterému se získává hodnota.</param>
-            <returns></returns>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.BoundFieldExt.GetValue(System.Object,System.String)">
-            <summary>
-            Získá hodnotu pro zobrazení z předaného objektu a dataField.
-            </summary>
-            <param name="dataItem">Položka dat z DataSource</param>
-            <param name="dataField">DataField</param>
-            <returns></returns>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.BoundFieldExt.FormatDataValue(System.Object)">
-            <summary>
-            Formátuje hodnotu k zobrazení.
-            </summary>
-            <param name="value">Data</param>
-            <returns>Text k zobrazení.</returns>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.BoundFieldExt.GetNotFoundDataItem">
-            <summary>
-            Metoda je volána, pokud se metodě GetValue nepodaří získat hodnotu.
-            Není-li EmptyText rovno null, vrací se hodnota Empty text. 
-            Jinak je vyhozena výjimka MissingMemberException.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.BoundFieldExt.InitializeDataCell(System.Web.UI.WebControls.DataControlFieldCell,System.Web.UI.WebControls.DataControlRowState)">
-            <summary>
-            Pokud není CellCssClass prázdné, generuje se do buňky tabulky &lt;div="CellCssClass"&gt;...&lt;/div&gt;.
-            Jinak se použije normálně samotná buňka tabulky.
-            </summary>
-            <param name="cell"></param>
-            <param name="rowState"></param>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.BoundFieldExt.InitializeDataCellContent(System.Web.UI.Control,System.Web.UI.WebControls.DataControlRowState)">
-            <summary>
-            Inicializuje obsah buňky daty.
-            </summary>
-            <param name="control">Control, do kterého se má obsah inicializovat.</param>
-            <param name="rowState">RowState.</param>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.BoundFieldExt.ID">
-            <summary>
-            ID sloupce.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.BoundFieldExt.CellCssClass">
-            <summary>
-            Css třída vygenerované buňky.	
-            Zamýšleno např. pro omezení šírky sloupce.
-            Viz	<see cref="M:Havit.Web.UI.WebControls.BoundFieldExt.InitializeDataCell(System.Web.UI.WebControls.DataControlFieldCell,System.Web.UI.WebControls.DataControlRowState)"/>.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.BoundFieldExt.EmptyText">
-            <summary>
-            Pokud se metodě GetValue nepodaří získat hodnotu z dat, použije se tato hodnota, pokud není null.
-            Rozlišuje se null a prázdný řetězec.
-            Viz metody GetNotFoundDataItem a GetValue.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.BooleanField.FormatDataValue(System.Object)">
-            <summary>
-            Zajistí transformaci boolean hodnoty na text s použitím vlastností TrueText, FalseText.
-            </summary>
-            <param name="value">Hodnota ke zformátování.</param>
-            <returns>Text k zobrazení.</returns>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.BooleanField.TrueText">
-            <summary>
-            Text zobrazený, pokud je hodnota true.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.BooleanField.FalseText">
-            <summary>
-            Text zobrazený, pokud je hodnota false.
-            </summary>
-        </member>
-        <member name="T:Havit.Web.UI.WebControls.H2">
-            <summary>
-            Reprezentuje label, který se renderuje jako HTML tag H2.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.H2.TagKey">
-            <summary>
-            Vrací HtmlTextWriterTag.H2 zajišťující správné renderování.
-            </summary>
-        </member>
-        <member name="T:Havit.Web.UI.WebControls.SortingGridView">
-            <summary>
-            SortingGridView zajišťuje řazení položek.
-            Ukládá nastavení řazení dle uživatele a případně zajišťuje automatické řazení pomocí GenericPropertyCompareru.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.SortingGridView.PerformDataBinding(System.Collections.IEnumerable)">
-            <summary>
-            Provede databinding dat.
-            Pokud data nejsou null a AutoSort je true, automaticky seřadí data pomocí GenericPropertyCompareru.
-            Pokud uživatel dosud nenastavil žádné řazení, použije se řazení dle DefaultSortExpression.
-            </summary>
-            <param name="data"></param>
-        </member>
-        <member name="T:Havit.Web.UI.WebControls.H1">
-            <summary>
-            Reprezentuje label, který se renderuje jako HTML tag H1.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.H1.TagKey">
-            <summary>
-            Vrací HtmlTextWriterTag.H1 zajišťující správné renderování.
-            </summary>
-        </member>
-        <member name="T:Havit.Web.UI.WebControls.Collapser">
-            <summary>
-            Collapser je ovládací prvek, který zajišťuje funkčnost collapse/expand pro libovolný jiný element stránky.
-            </summary>
-            <example>
-            Jednoduchý Collapser:
-            <code>
-            &lt;havit:Collapser
-            	Text="První možnost zadání textu"
-            	ContentElement="CollapseDiv"
-            	CssClass="normal"
-            	CssClassExpanded="expanded"
-            	CssClassCollapsed="collapsed"
-            	Runat="server"
-            &gt;Text je možné zadat i jako inner-text&lt;/havit:Collapser&gt;
-            
-            &lt;div id="CollapseDiv"&gt;
-            	Od:
-            	&lt;asp:TextBox ID="OdDateTB" Text="3.3.2004" Runat="server" /&gt;
-            &lt;/div&gt;
-            </code>
-            </example>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.Collapser.#ctor">
-            <summary>
-            Vytvoří instanci controlu.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.Collapser.AddParsedSubObject(System.Object)">
-            <summary>
-            Zajišťuje pronesení inner-textu controlu do property <see cref="P:Havit.Web.UI.WebControls.Collapser.Text"/>.
-            </summary>
-            <param name="obj"></param>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.Collapser.OnPreRender(System.EventArgs)">
-            <summary>
-            Voláno před renderováním.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.Collapser.AddAttributesToRender(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            Doplní Attributes o hodnoty z properties.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.Collapser.RenderContents(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            Renderuje obsahu elementu.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.Collapser.ResolveID(System.String)">
-            <summary>
-            Pokud ID patří controlu, pak vrátí jeho ClientID, jinak vrátí zpět původní ID.
-            </summary>
-            <param name="id">ID k resolvování</param>
-            <returns>cílové ID</returns>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.Collapser.Text">
-            <summary>
-            Text ovládací prvku.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.Collapser.CssClassExpanded">
-            <summary>
-            CssClass pro ovládací prvek ve stavu expanded.
-            </summary>
-            <remarks>
-            Pomocí stylu můžeme například nastavit obrázek pozadí na mínus [-].
-            </remarks>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.Collapser.CssClassCollapsed">
-            <summary>
-            CssClass pro ovládací prvek ve stavu collapsed.
-            </summary>
-            <remarks>
-            Pomocí stylu můžeme například nastavit obrázek pozadí na mínus [-].
-            </remarks>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.Collapser.ContentElement">
-            <summary>
-            Odkaz (ID) na element, která má být expandována/collapsována.<br/>
-            </summary>
-            <remarks>
-            Nejprve se zkouší, jestli neexistuje control s tímto ID.
-            Pokud ano, použije se jeho ClientID, pokud ne, použije se přímo ContentElement.
-            </remarks>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.Collapser.Collapsed">
-            <summary>
-            Indikuje, zda-li má být <see cref="P:Havit.Web.UI.WebControls.Collapser.ContentElement"/> zobrazen sbalený/rozbalený.<br/>
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.Collapser.cssClassCollapsedFull">
-            <summary>
-            Úplná CssClass pro stav Collapsed
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.Collapser.cssClassExpandedFull">
-            <summary>
-            Úplná CssClass pro stav Expanded
-            </summary>
-        </member>
-        <member name="T:Havit.Web.UI.Scriptlets.ControlExtenderRepository">
-            <summary>
-            Výchozí implementace IControlExtenderRepository.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.Scriptlets.ControlExtenderRepository.FindControlExtender(System.Web.UI.Control)">
-            <summary>
-            Nalezne pro control extender, který bude control zpracovávat.
-            Pokud není žádný vhodný extender nalezen, je vyhozena výjimka.
-            </summary>
-            <param name="control">Control ke zpracování.</param>
-            <returns>Nalezený control extender.</returns>
-        </member>
-        <member name="P:Havit.Web.UI.Scriptlets.ControlExtenderRepository.Default">
-            <summary>
-            Výchozí seznam control extenderů.
+            Vylepšený command-field určený pro použití s GridViewExt.
             </summary>
         </member>
         <member name="T:Havit.Web.UI.Scriptlets.Scriptlet">
@@ -1410,232 +1480,205 @@
             Vrací nebo nastavuje substituci použitou pro tvorbu klienského skriptu.
             </summary>
         </member>
-        <member name="T:Havit.Web.UI.HtmlControls.HtmlFormExt">
+        <member name="T:Havit.Web.UI.Scriptlets.ClientScript">
             <summary>
-            Rozšíření .NET controlu HtmlForm.
+            Představuje klientský skript - funkci, která je vyvolána při změně vstupních
+            parametrů Scriptletu nebo při načtění stránky (pokud je povoleno).
             </summary>
         </member>
-        <member name="M:Havit.Web.UI.HtmlControls.HtmlFormExt.RenderAttributes(System.Web.UI.HtmlTextWriter)">
+        <member name="M:Havit.Web.UI.Scriptlets.ClientScript.CreateClientSideScript(Havit.Web.UI.Scriptlets.ScriptBuilder)">
             <summary>
-            Overriden. Zajišťuje vlastní renderování atributu Action
+            Metoda vytvoří funkci okolo klienského skriptu a zaregistruje ji do stránky.
+            Je zajištěno, aby nebyla funkce se shodným obsahem registrována víckrát
+            (např. při použití controlu v repeateru).
             </summary>
-            <param name="writer"></param>
+            <param name="scriptBuilder">ScriptBuilder, do kterého je tvořen klientský skript.</param>
         </member>
-        <member name="M:Havit.Web.UI.HtmlControls.HtmlFormExt.GetBaseActionAttribute">
+        <member name="M:Havit.Web.UI.Scriptlets.ClientScript.CreateFunctionName(System.String)">
             <summary>
-            Pomocí reflexe vrátí původní private base.GetActionAttribute()
+            Vytvoří název klientské funkce. Pokud je parametr reuseFunction prázdný,
+            vytvoří nový název, jinak použije hodnotu tohoto parametru.
             </summary>
-            <returns>Microsoft implementace action atributu formuláře</returns>
+            <param name="reuseFunctionName"></param>
         </member>
-        <member name="P:Havit.Web.UI.HtmlControls.HtmlFormExt.Action">
+        <member name="M:Havit.Web.UI.Scriptlets.ClientScript.CreateClientSideStartOnLoadEvent(Havit.Web.UI.Scriptlets.ScriptBuilder)">
             <summary>
-            Vrátí nebo nastaví cílové URL formuláře. Atribut Action formuláře.
-            Pokud není explicitně nastaveno, vrací automaticky Microsoft implementaci (včetně QueryStringu).
+            Registruje spuštění klientského skriptu při naštění stránky.
             </summary>
-            <remarks>Nedělá se ResolveUrl.</remarks>
+            <param name="scriptBuilder">ScriptBuilder, do kterého je tvořen klientský skript.</param>
         </member>
-        <member name="P:Havit.Web.UI.HtmlControls.HtmlFormExt.Page_ClientOnSubmitEvent">
+        <member name="M:Havit.Web.UI.Scriptlets.ClientScript.DoSubstitutions">
             <summary>
-            Pomocí reflexe vrátí internal ClientOnSubmitEvent vlastnost Page
+            Vrátí připravený klientský skript. Provede nad skriptem substituce.
             </summary>
+            <returns>Klientský skript připravený k vytvoření obálky a registraci.</returns>
         </member>
-        <member name="T:Havit.Web.UrlRewriter.RewriterFactoryHandler">
+        <member name="M:Havit.Web.UI.Scriptlets.ClientScript.AddFunctionToCache(System.String,System.String)">
             <summary>
-            Provides an HttpHandler that performs redirection.
+            Přidá klientský skript do cache.
             </summary>
-            <remarks>The RewriterFactoryHandler checks the rewriting rules, rewrites the path if needed, and then
-            delegates the responsibility of processing the ASP.NET page to the <b>PageParser</b> class (the same one
-            used by the <b>PageHandlerFactory</b> class).</remarks>
+            <param name="functionName">Název funkce, ve které je skript registrován.</param>
+            <param name="clientScript">Klientský skript.</param>
         </member>
-        <member name="M:Havit.Web.UrlRewriter.RewriterFactoryHandler.GetHandler(System.Web.HttpContext,System.String,System.String,System.String)">
+        <member name="M:Havit.Web.UI.Scriptlets.ClientScript.GetFunctionNameFromCache(System.String)">
             <summary>
-            GetHandler is executed by the ASP.NET pipeline after the associated HttpModules have run.  The job of
-            GetHandler is to return an instance of an HttpHandler that can process the page.
+            Nalezne název funkce, ve které je klientský skript registrován.
             </summary>
-            <param name="context">The HttpContext for this request.</param>
-            <param name="requestType">The HTTP data transfer method (<b>GET</b> or <b>POST</b>)</param>
-            <param name="url">The RawUrl of the requested resource.</param>
-            <param name="pathTranslated">The physical path to the requested resource.</param>
-            <returns>An instance that implements IHttpHandler; specifically, an HttpHandler instance returned
-            by the <b>PageParser</b> class, which is the same class that the default ASP.NET PageHandlerFactory delegates
-            to.</returns>
+            <param name="clientScript">Klientský skript.</param>
+            <returns>Nalezne název funkce, ve které je klientský skript 
+            registrován. Pokud skript není registrován, vrátí null.</returns>
         </member>
-        <member name="M:Havit.Web.UrlRewriter.RewriterFactoryHandler.ReleaseHandler(System.Web.IHttpHandler)">
+        <member name="M:Havit.Web.UI.Scriptlets.ClientScript.WrapClientSideScriptToFunction(System.String)">
             <summary>
-            Prázdná implementace, je však vyžadována IHttpHandlerFactory.
+            Zabalí klientský skript do funkce.
             </summary>
-            <param name="handler">handler</param>
+            <param name="clientScript">Název funkce, která se tvoří.</param>
+            <returns>Klientský skript jako funkce připravená k registraci do stránky.</returns>
         </member>
-        <member name="T:Havit.Web.UI.WebControls.DataGridExt">
+        <member name="P:Havit.Web.UI.Scriptlets.ClientScript.Script">
             <summary>
-            DataGrid rozšířený o další funkcionalitu:
-            </summary>
+            Klientský skript. Okolo skriptu je vytvořena obálka a případně je spuštěn při načtení stránky.
+            </summary>		
         </member>
-        <member name="M:Havit.Web.UI.WebControls.DataGridExt.OnDataBindRequest(System.EventArgs)">
+        <member name="P:Havit.Web.UI.Scriptlets.ClientScript.StartOnLoad">
             <summary>
-            Vyvolá událost <see cref="E:Havit.Web.UI.WebControls.DataGridExt.DataBindRequest"/>.
-            </summary>
-            <param name="e">data události</param>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.DataGridExt.OnSortCommand(System.Web.UI.WebControls.DataGridSortCommandEventArgs)">
-            <summary>
-            Default implementace sortění.
-            Při zapnutém ViewStatu zajišťuje obousměrné přepínání SortExpression.
-            Při vypnutém ViewStatu zajišťuje pouze běžné přepínání SortExpression.
-            Lze zapnout/vypnout pomocí AutoHandleSortCommand.
-            </summary>
-            <param name="e">DataGirdSortCommandEventArgs</param>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.DataGridExt.AutoSortCommandHandler(System.Web.UI.WebControls.DataGridSortCommandEventArgs)">
-            <summary>
-            Automatický handler SortCommandu.
-            Může být přepsán v dceřinné implementaci.
-            </summary>
-            <param name="e">args</param>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.DataGridExt.OnPageIndexChanged(System.Web.UI.WebControls.DataGridPageChangedEventArgs)">
-            <summary>
-            Zajišťuje volání události PageIndexChanged.
-            Při povoleném AutoHandlePageIndexChanged nejprve zavolá AutoPageIndexChangedHandler.
-            </summary>
-            <param name="e">DataGridPageChangedEventArgs</param>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.DataGridExt.AutoPageIndexChangedHandler(System.Web.UI.WebControls.DataGridPageChangedEventArgs)">
-            <summary>
-            Automatický handler - nastavuje this.CurrentPageIndex = e.NewPageIndex a DataBind().
-            Lze přepsat v odvozeném controlu.
-            </summary>
-            <param name="e">DataGridPageChangedEventArgs</param>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.DataGridExt.OnItemCreated(System.Web.UI.WebControls.DataGridItemEventArgs)">
-            <summary>
-            Zajišťuje volání události ItemCreated.
-            Implementace přidává do Headeru symboly směru sortění.
-            </summary>
-            <param name="e">args</param>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.DataGridExt.OnEditCommand(System.Web.UI.WebControls.DataGridCommandEventArgs)">
-            <summary>
-            Zajistí volání obsluhy události EditCommand.
-            Pokud je AutoHandleEditCommand true, provede default obsluhu AutoEditCommandHandler().
-            </summary>
-            <param name="e">DataGridCommandEventArgs</param>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.DataGridExt.AutoEditCommandHandler(System.Web.UI.WebControls.DataGridCommandEventArgs)">
-            <summary>
-            Default obsluha EditCommand události.
-            </summary>
-            <param name="e">DataGridCommandEventArgs</param>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.DataGridExt.OnCancelCommand(System.Web.UI.WebControls.DataGridCommandEventArgs)">
-            <summary>
-            Zajistí volání obsluhy události CancelCommand.
-            Pokud je AutoHandleCancelCommand true, provede default obsluhu AutoCancelCommandHandler().
-            </summary>
-            <param name="e">DataGridCommandEventArgs</param>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.DataGridExt.AutoCancelCommandHandler(System.Web.UI.WebControls.DataGridCommandEventArgs)">
-            <summary>
-            Default obsluha EditCommand události.
-            </summary>
-            <param name="e">DataGridCommandEventArgs</param>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.DataGridExt.AutoHandleCancelCommand">
-            <summary>
-            Povoluje/zakazuje automatické zpracování události <see cref="E:System.Web.UI.WebControls.DataGrid.CancelCommand"/>.
-            </summary>
-            <value><b>true</b>, pokud má být použit <see cref="M:Havit.Web.UI.WebControls.DataGridExt.AutoCancelCommandHandler(System.Web.UI.WebControls.DataGridCommandEventArgs)"/>, jinak <b>false</b>; Default je <b>true</b>.</value>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.DataGridExt.AutoHandleEditCommand">
-            <summary>
-            Povoluje/zakazuje automatické zpracování události <see cref="E:System.Web.UI.WebControls.DataGrid.EditCommand"/>.
-            </summary>
-            <value><b>true</b>, pokud má být použit <see cref="M:Havit.Web.UI.WebControls.DataGridExt.AutoEditCommandHandler(System.Web.UI.WebControls.DataGridCommandEventArgs)"/>, jinak <b>false</b>; Default je <b>true</b>.</value>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.DataGridExt.AutoHandlePageIndexChanged">
-            <summary>
-            Povoluje/zakazuje automatické zpracování události <see cref="E:System.Web.UI.WebControls.DataGrid.PageIndexChanged"/>.
-            </summary>
-            <value><b>true</b>, pokud má být použit <see cref="M:Havit.Web.UI.WebControls.DataGridExt.AutoPageIndexChangedHandler(System.Web.UI.WebControls.DataGridPageChangedEventArgs)"/>, jinak <b>false</b>; Default je <b>true</b>.</value>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.DataGridExt.AutoHandleSortCommand">
-            <summary>
-            Povoluje/zakazuje automatické zpracování události <see cref="E:System.Web.UI.WebControls.DataGrid.SortCommand"/> ve vztahu k <see cref="P:Havit.Web.UI.WebControls.DataGridExt.SortExpression"/>.
-            </summary>
-            <value><b>true</b>, pokud má být použit <see cref="M:Havit.Web.UI.WebControls.DataGridExt.AutoCancelCommandHandler(System.Web.UI.WebControls.DataGridCommandEventArgs)"/>, jinak <b>false</b>; Default je <b>true</b>.</value>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.DataGridExt.SortExpression">
-            <summary>
-            SortExpression do DataView nebo SQL.
-            Mění se SortCommandem, ukládá do ViewState.
-            Pro obousměné sortění je potřeba povolit ViewState !!!
-            </summary>
-            <value>Default je <see cref="F:System.String.Empty"/>.</value>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.DataGridExt.SortHeaderImageCssClass">
-            <summary>
-            CssClass symbolu sortění do Header sloupce.
-            </summary>
-            <value>Default je <see cref="F:System.String.Empty"/>.</value>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.DataGridExt.SortHeaderImageUrlAsc">
-            <summary>
-            URL obrázku symbolu vzestupného sortění do Header sloupce.
-            </summary>
-            <value>Default je <see cref="F:System.String.Empty"/>.</value>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.DataGridExt.SortHeaderImageUrlDesc">
-            <summary>
-            URL obrázku symbolu sestupného sortění do Header sloupce.
-            </summary>
-            <value>Default je <see cref="F:System.String.Empty"/>.</value>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.DataGridExt.UpdateCausesValidation">
-            <summary>
-            Povoluje/zakazuje validaci na příkazu Update 
-            </summary>
-            <value>Default je <see cref="F:System.String.Empty"/>.</value>
-        </member>
-        <member name="E:Havit.Web.UI.WebControls.DataGridExt.DataBindRequest">
-            <summary>
-            Vyskytne se, když DataGridExt potřebuje přebindovat data.
-            </summary>
-            <remarks>
-            Událost je vyvolávána smart-extenzemi v situaci, kdy je potřeba na DataGrid znovu nabindovat data.
-            Např. po standardní obsluze událostí EditCommand, CancelCommand, PageIndexChanged, atp.
-            </remarks>
-        </member>
-        <member name="T:Havit.Web.UI.Scriptlets.SimpleControlExtender">
-            <summary>
-            Control extender pro jednoduché Controly (WebControls).
-            Extender tvoří skript jen tak, že najde příslušný element
-            ve stránce a použije jej jako hodnotu parametru.    
+            Udává, zda má po načtení stránky dojít k automatickému spuštění skriptu. Výchozí hodnota je <b>false</b>.
             </summary>
         </member>
-        <member name="M:Havit.Web.UI.Scriptlets.SimpleControlExtender.#ctor(System.Type,System.Int32,System.String[])">
+        <member name="P:Havit.Web.UI.Scriptlets.ClientScript.ClientSideFunctionName">
             <summary>
-            Vytvoří extender pro daný typ s danou prioritou.
+            Název funkce, pod jakou je klientský skript zaregistrován.
+            Hodnota je dostupná až po zavolání metody RegisterClientScript.
             </summary>
-            <param name="controlType">Typ, který bude tato instance umět řešit.</param>
-            <param name="priority">Priorita, s jakou jej bude řešit.</param>
-            <param name="changeEvents">Události, na které je potřeba se navázat pokud má být klientský skript vyvolán v případě změny. Null znamená, že pro tento typ controlu nejsou changeEvents podporovány.</param>
         </member>
-        <member name="M:Havit.Web.UI.Scriptlets.SimpleControlExtender.GetPriority(System.Web.UI.Control)">
+        <member name="P:Havit.Web.UI.Scriptlets.ClientScript.FunctionCache">
             <summary>
-            Vrací priotitu vhodnosti extenderu pro zpracování controlu.
-            Pokud extender není vhodný pro zpracování controlu, vrací null.
+            Cache pro klientské skripty. Klíčem je skript, hodnotou je název funkce,
+            ve které je skript registrován.
+            Cache je uložena v HttpContextu.
             </summary>
-            <param name="control">Ověřovaný control.</param>
-            <returns>Priorita.</returns>
         </member>
-        <member name="M:Havit.Web.UI.Scriptlets.SimpleControlExtender.CreateParameter(System.String,Havit.Web.UI.Scriptlets.IScriptletParameter,System.Web.UI.Control,Havit.Web.UI.Scriptlets.ScriptBuilder)">
+        <member name="T:Havit.Web.UI.CommandNames">
             <summary>
-            Vytvoří klientský parametr pro předaný control.
+            Třída CommandNames obsahuje sdílené názvy příkazů (CommandNames).
+            Sdílí se mezi prvky vyvolávající událost příkazu (potomci GridViewImageButton)
+            a EnterpriseGridView.
             </summary>
-            <param name="parameterPrefix">Název objektu na klientské straně.</param>
-            <param name="parameter">Parametr předávající řízení extenderu.</param>
-            <param name="control">Control ke zpracování.</param>
-            <param name="scriptBuilder">Script builder.</param>
+        </member>
+        <member name="F:Havit.Web.UI.CommandNames.Cancel">
+            <summary>
+            Cancel.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.UI.CommandNames.Delete">
+            <summary>
+            Delete.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.UI.CommandNames.Edit">
+            <summary>
+            Edit.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.UI.CommandNames.MoveDown">
+            <summary>
+            MoveDown.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.UI.CommandNames.MoveUp">
+            <summary>
+            MoveUp.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.UI.CommandNames.Update">
+            <summary>
+            Update.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.UI.CommandNames.Select">
+            <summary>
+            Select.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.UI.CommandNames.Detail">
+            <summary>
+            Detail.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.UI.CommandNames.Report">
+            <summary>
+            Report.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.UI.CommandNames.Insert">
+            <summary>
+            Insert.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.HttpServerUtilityExt">
+            <summary>
+            Poskytuje další pomocné metody pro ovládání webového serveru.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.HttpServerUtilityExt.ClearCache">
+            <summary>
+            Vyčistí cache webové aplikace.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.HttpServerUtilityExt.ResolveUrl(System.String,System.String)">
+            <summary>
+            Converts a URL into one that is usable on the requesting client.
+            </summary>
+            <remarks>Converts ~ to the requesting application path.  Mimics the behavior of the 
+            <b>Control.ResolveUrl()</b> method, which is often used by control developers.</remarks>
+            <param name="appPath">The application path.</param>
+            <param name="url">The URL, which might contain ~.</param>
+            <returns>A resolved URL.  If the input parameter <b>url</b> contains ~, it is replaced with the
+            value of the <b>appPath</b> parameter.</returns>
+        </member>
+        <member name="M:Havit.Web.HttpServerUtilityExt.ResolveUrl(System.String)">
+            <summary>
+            Converts a URL into one that is usable on the requesting client.
+            </summary>
+            <remarks>Converts ~ to the requesting application path.  Mimics the behavior of the 
+            <b>Control.ResolveUrl()</b> method, which is often used by control developers.</remarks>
+            <param name="url">The URL, which might contain ~.</param>
+            <returns>A resolved URL.  If the input parameter <b>url</b> contains ~, it is replaced with the
+            value of the <see cref="P:System.Web.HttpRequest.ApplicationPath"/> parameter
+            of <see cref="P:System.Web.HttpContext.Current"/>.</returns>
+        </member>
+        <member name="M:Havit.Web.HttpServerUtilityExt.#ctor">
+            <summary>
+            private constructor zabraňuje vytvoření instance třídy
+            </summary>
+        </member>
+        <member name="T:Havit.Web.Compilation.CodeExpressionBuilder">
+            <summary>
+            Prostý expression-builder pro výrazy v podobě &lt;%$ Expression: MujVyraz %&gt;.
+            </summary>
+            <example>
+            Do webové aplikace zavedeme pomocí web.config:<br/>
+            <code>
+            &lt;compilation&gt;<br/>
+            	&lt;expressionBuilders&gt;<br/>
+            		&lt;add expressionPrefix="Expression" type="Havit.Web.Compilation.CodeExpressionBuilder, Havit.Web" /&gt;<br/>
+            	&lt;/expressionBuilders&gt;<br/>
+            &lt;/compilation&gt;<br/>
+            </code>
+            Ve stránce používáme již jako klasický expression:<br/>
+            <code>
+            &lt;asp:TextBox ID="NoveHesloTB" TextMode="Password" MaxLength="&lt;%$ Expression: Uzivatel.Properties.Password.MaximumLength %&gt;" runat="server" /&gt;<br/>
+            </code>
+            </example>
+        </member>
+        <member name="M:Havit.Web.Compilation.CodeExpressionBuilder.GetCodeExpression(System.Web.UI.BoundPropertyEntry,System.Object,System.Web.Compilation.ExpressionBuilderContext)">
+            <summary>
+            Vrací kód, který se použije namísto vyhodnocovaného výrazu při kompilaci.
+            </summary>
+            <param name="entry">objekt reprezentující informace o property, na kterou se výraz navazuje</param>
+            <param name="parsedData">objekt obsahující parsovaná data vrácená metodou ParseExpression</param>
+            <param name="context">kontext</param>
+            <returns>CodeExpression pro přiřezení k property</returns>
         </member>
         <member name="T:Havit.Web.UrlRewriter.Config.RewriterRuleCollection">
             <summary>
@@ -1669,6 +1712,69 @@
         <member name="P:Havit.Web.UrlRewriter.Config.RewriterRuleCollection.Item(System.Int32)">
             <summary>
             Gets or sets a RewriterRule at a specified ordinal index.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.H1">
+            <summary>
+            Reprezentuje label, který se renderuje jako HTML tag H1.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.H1.TagKey">
+            <summary>
+            Vrací HtmlTextWriterTag.H1 zajišťující správné renderování.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.Scriptlets.NoLiteralContolBuilder">
+            <summary>
+            Control builder pro Scriptlet.
+            Zajišťuje omezuje chybné použití controlu Scriptlet.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.HttpResponseExt">
+            <summary>
+            Obsahuje rozšiřující funkčnost k třídě <see cref="T:System.Web.HttpResponse"/>.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.HttpResponseExt.MovedPermanently(System.String,System.Boolean)">
+            <summary>
+            Provede redirect pomocí HTTP status kódu 301 - Moved Permanently.
+            Klasický <see cref="M:System.Web.HttpResponse.Redirect(System.String)"/> provádí redirect přes 302 - Found (Object Moved).
+            </summary>
+            <remarks>
+            Zatímco klasický <see cref="M:System.Web.HttpResponse.Redirect(System.String)"/> provádí redirect přes HTTP status kód 302,
+            což je "temporarily moved", redirect přes "301 - Moved Permanently" říká klientovi, že URL požadované stránky
+            se definitivně změnilo na novou adresu.<br/>
+            Klient by měl teoreticky reagovat úpravou bookmarku, ale žádný to nedělá. Smysl to má však pro indexovací roboty
+            vyhledávačů, které se tím údajně docela řídí.<br/>
+            POZOR: Na rozdíl od <see cref="M:System.Web.HttpResponse.Redirect(System.String)"/> nekontroluje, jestli už nebyly odeslány klientovi hlavičky.
+            </remarks>
+            <param name="url">Cílová adresa.</param>
+            <param name="endResponse">Indikuje, zda-li má skončit zpracování vykonávání stránky.</param>
+        </member>
+        <member name="M:Havit.Web.HttpResponseExt.MovedPermanently(System.String)">
+            <summary>
+            Provede redirect pomocí HTTP status kódu 301 - Moved Permanently a ukončí zpracování stránky.
+            Klasický <see cref="M:System.Web.HttpResponse.Redirect(System.String)"/> provádí redirect přes 302 - Found (Object Moved).
+            </summary>
+            <remarks>
+            Zatímco klasický <see cref="M:System.Web.HttpResponse.Redirect(System.String)"/> provádí redirect přes HTTP status kód 302,
+            což je "temporarily moved", redirect přes "301 - Moved Permanently" říká klientovi, že URL požadované stránky
+            se definitivně změnilo na novou adresu.<br/>
+            Klient by měl teoreticky reagovat úpravou bookmarku, ale žádný to nedělá. Smysl to má však pro indexovací roboty
+            vyhledávačů, které se tím údajně docela řídí.
+            </remarks>
+            <param name="url">Cílová adresa.</param>
+        </member>
+        <member name="M:Havit.Web.HttpResponseExt.Gone(System.Boolean)">
+            <summary>
+            Odešle klientovi odezvu se status kódem 410 - Gone, tj. "stránka byla zrušena bez náhrady".
+            </summary>
+            <param name="endResponse">Indikuje, zda-li má skončit zpracování vykonávání stránky.</param>
+        </member>
+        <member name="M:Havit.Web.HttpResponseExt.Gone">
+            <summary>
+            Odešle klientovi odezvu se status kódem 410 - Gone, tj. "stránka byla zrušena bez náhrady"
+            a ukončí zpracování stránky.
             </summary>
         </member>
         <member name="T:Havit.Web.UrlRewriter.RewriterUtils">
@@ -1749,186 +1855,6 @@
             A <see cref="T:Havit.Web.UrlRewriter.Config.RewriterRuleCollection"/> instance that provides access to a set of <see cref="T:Havit.Web.UrlRewriter.Config.RewriterRule"/>s.
             </summary>
         </member>
-        <member name="T:Havit.Web.Security.FormsRolesAuthentication">
-            <summary>
-            Poskytuje statické metody pro snadnou implementaci FormAuthentication, kdy jsou do role ukládány do ticketu jako userData.
-            </summary>
-            <remarks>
-            Implementováno výhradně pro cookies-authentizaci. Nepodporuje cookieless!
-            </remarks>
-        </member>
-        <member name="M:Havit.Web.Security.FormsRolesAuthentication.ApplyAuthenticationTicket(System.Web.Security.FormsAuthenticationTicket)">
-            <summary>
-            Aplikuje autentizační ticket, tj. vytáhne z něj informace o přihlášeném uživateli
-            a jeho rolích a naplní jimi objekt User.
-            </summary>
-            <remarks>
-            Vytáhne z authentication-ticketu role, vytvoří z něj identity, spojí to v principal a ten nastaví jako aktuálního uživatele.
-            </remarks>
-            <exception cref="T:System.ArgumentNullException">pokud je <c>ticket</c> null</exception>
-            <param name="ticket">authentication-ticket</param>
-        </member>
-        <member name="M:Havit.Web.Security.FormsRolesAuthentication.ApplyAuthenticationTicket">
-            <summary>
-            Aplikuje případný autentizační ticket, tj. vytáhne z něj informace o přihlášeném uživateli
-            a jeho rolích a naplní jimi objekt User.
-            </summary>
-            <remarks>
-            Autentizační ticket se pokouší zjistit ve formě cookie a decryptovat. V případě nalezení ho aplikuje.
-            </remarks>
-        </member>
-        <member name="M:Havit.Web.Security.FormsRolesAuthentication.GetAuthTicket(System.String,System.String[],System.Boolean,System.String)">
-            <summary>
-            Vytvoří autentizační ticket pro forms-authentication s ukládáním rolí do userData.
-            </summary>
-            <param name="username">přihlašovací jméno uživatele</param>
-            <param name="roles">role, které uživateli přísluší</param>
-            <param name="createPersistent"><c>true</c>, pokud se má být ticket persistentní; jinak <c>false</c></param>
-            <param name="cookiePath">cookie-path pro autentizační ticket</param>
-            <returns>autentizační ticket na základě předaných argumentů</returns>
-        </member>
-        <member name="M:Havit.Web.Security.FormsRolesAuthentication.GetAuthCookie(System.String,System.String[],System.Boolean,System.String)">
-            <summary>
-            Vytvoří authentizační cookie pro forms-authentication s ukládáním rolí do userData.
-            </summary>
-            <param name="username">přihlašovací jméno uživatele</param>
-            <param name="roles">role, které uživateli přísluší</param>
-            <param name="createPersistentCookie"><c>true</c>, pokud se má vytvořit trvalá cookie, která přežije session browseru; jinak <c>false</c></param>
-            <param name="cookiePath">cookie-path pro autentizační ticket</param>
-            <returns></returns>
-        </member>
-        <member name="M:Havit.Web.Security.FormsRolesAuthentication.RedirectFromLoginPage(System.String,System.String[],System.Boolean,System.String,System.String)">
-            <summary>
-            Redirektuje autentizovaného uživatele zpět na původní URL (nebo default URL).
-            Součástí response je autentizační cookie s příslušným autentizačním ticketem.
-            </summary>
-            <param name="username">přihlašovací jméno uživatele</param>
-            <param name="roles">role, které uživateli přísluší</param>
-            <param name="createPersistentCookie"><c>true</c>, pokud se má vytvořit trvalá cookie, která přežije session browseru; jinak <c>false</c></param>
-            <param name="cookiePath">cookie-path pro autentizační ticket</param>
-            <param name="redirectUrl">URL, na které má být provedeno přesměrování</param>
-        </member>
-        <member name="M:Havit.Web.Security.FormsRolesAuthentication.RedirectFromLoginPage(System.String,System.String[],System.Boolean)">
-            <summary>
-            Redirektuje autentizovaného uživatele zpět na původní URL (nebo default URL).
-            Součástí response je autentizační cookie s příslušným autentizačním ticketem.
-            </summary>
-            <param name="username">přihlašovací jméno uživatele</param>
-            <param name="roles">role, které uživateli přísluší</param>
-            <param name="createPersistentCookie"><c>true</c>, pokud se má vytvořit trvalá cookie, která přežije session browseru; jinak <c>false</c></param>
-        </member>
-        <member name="M:Havit.Web.Security.FormsRolesAuthentication.RedirectFromLoginPage(System.String,System.String[])">
-            <summary>
-            Redirektuje autentizovaného uživatele zpět na původní URL (nebo default URL).
-            Součástí response je autentizační cookie s příslušným autentizačním ticketem, bez persistence.
-            </summary>
-            <param name="username">přihlašovací jméno uživatele</param>
-            <param name="roles">role, které uživateli přísluší</param>
-        </member>
-        <member name="P:Havit.Web.Security.FormsRolesAuthentication.Timeout">
-            <summary>
-            Timeout pro authentication-ticket (web.config: system.web/authentication/forms/timeout).
-            </summary>
-            <remarks>
-            Jako jedna z mála konfiguračních parametrů není přístupné přes <see cref="T:System.Web.Security.FormsAuthentication"/>.
-            </remarks>
-        </member>
-        <member name="T:Havit.Web.UrlRewriter.Config.RewriterRule">
-            <summary>
-            Represents a rewriter rule.  A rewriter rule is composed of a pattern to search for and a string to replace
-            the pattern with (if matched).
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UrlRewriter.Config.RewriterRule.LookFor">
-            <summary>
-            Gets or sets the pattern to look for.
-            </summary>
-            <remarks><b>LookFor</b> is a regular expression pattern.  Therefore, you might need to escape
-            characters in the pattern that are reserved characters in regular expression syntax (., ?, ^, $, etc.).
-            <p />
-            The pattern is searched for using the <b>System.Text.RegularExpression.Regex</b> class's <b>IsMatch()</b>
-            method.  The pattern is case insensitive.</remarks>
-        </member>
-        <member name="P:Havit.Web.UrlRewriter.Config.RewriterRule.SendTo">
-            <summary>
-            The string to replace the pattern with, if found.
-            </summary>
-            <remarks>The replacement string may use grouping symbols, like $1, $2, etc.  Specifically, the
-            <b>System.Text.RegularExpression.Regex</b> class's <b>Replace()</b> method is used to replace
-            the match in <see cref="P:Havit.Web.UrlRewriter.Config.RewriterRule.LookFor"/> with the value in <b>SendTo</b>.</remarks>
-        </member>
-        <member name="T:Havit.Web.UI.Scriptlets.ControlParameter">
-            <summary>
-            Parametr Skriptletu reprezentující renderovaný control Control.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.Scriptlets.ControlParameter.CheckProperties">
-            <summary>
-            Zkontroluje, zda je parametr správně inicializován.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.Scriptlets.ControlParameter.CheckNameProperty">
-            <summary>
-            Testuje nastavení hodnoty property Name.
-            Přepisuje chování předka tím způsobem, že zde není property Name povinná
-            (takže se ani netestuje).
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.Scriptlets.ControlParameter.CheckControlNameProperty">
-            <summary>
-            Zkontroluje nastavení property ControlName.
-            Pokud není hodnota nastavena, vyhodí výjimku.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.Scriptlets.ControlParameter.CreateParameter(System.String,System.Web.UI.Control,Havit.Web.UI.Scriptlets.ScriptBuilder)">
-            <summary>
-            Vytvoří klientský skript pro parametr.
-            </summary>
-            <param name="parameterPrefix">Prefix pro název parametru. Controly mohou být složené (např. TextBox v Repeateru).</param>
-            <param name="parentControl">Rodičovský prvek, pro který je parametr renderován.</param>
-            <param name="builder">Script builder.</param>
-        </member>
-        <member name="M:Havit.Web.UI.Scriptlets.ControlParameter.GetControl(System.Web.UI.Control)">
-            <summary>
-            Nalezne Control, který má být zpracován.
-            Pokud není Control nalezen, vyhodí výjimku.
-            </summary>
-            <param name="parentControl">Control v rámci něhož se hledá (NamingContainer).</param>
-            <returns>Control.</returns>
-        </member>
-        <member name="P:Havit.Web.UI.Scriptlets.ControlParameter.ControlName">
-            <summary>
-            Název Controlu, který je zdrojem pro vytvoření klientského parametru.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.Scriptlets.ControlParameter.Name">
-            <summary>
-            Název parametru, pod kterým bude parametr přístupný v klienském skriptu.
-            Pokud není hodnota nastavena, použije se ControlName.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.Scriptlets.ControlParameter.StartOnChange">
-            <summary>
-            Udává, zda v případě změny hodnoty prvku (zaškrtnutí, změna textu, apod.)
-            dojde ke spuštění skriptu.
-            Výchozí hodnota je false.
-            </summary>
-        </member>
-        <member name="T:Havit.Web.UI.WebControls.GridViewInsertRowPosition">
-            <summary>
-            Slouží pro volbu pozice Insert-řádku v <see cref="T:Havit.Web.UI.WebControls.GridViewExt"/>.
-            </summary>
-        </member>
-        <member name="F:Havit.Web.UI.WebControls.GridViewInsertRowPosition.Top">
-            <summary>
-            Nahoře.
-            </summary>
-        </member>
-        <member name="F:Havit.Web.UI.WebControls.GridViewInsertRowPosition.Bottom">
-            <summary>
-            Dole.
-            </summary>
-        </member>
         <member name="M:Havit.Web.UI.WebControls.GridViewInsertEventArgs.#ctor(System.Int32)">
             <summary>
             Vytvoří instanci.
@@ -1940,30 +1866,37 @@
             Vrací index řádku GridView, v kterém se odehrává Insert.
             </summary>
         </member>
-        <member name="P:Havit.Web.UI.WebControls.GridViewInsertedEventArgs.KeepInEditMode">
+        <member name="T:Havit.Web.UI.Scriptlets.SimpleControlExtender">
             <summary>
-            Indikuje, zda-li má GridView zůstat po zpracování událost v režimu editace nového řádku.
+            Control extender pro jednoduché Controly (WebControls).
+            Extender tvoří skript jen tak, že najde příslušný element
+            ve stránce a použije jej jako hodnotu parametru.    
             </summary>
         </member>
-        <member name="T:Havit.Web.UI.WebControls.DataControlButtonExt">
+        <member name="M:Havit.Web.UI.Scriptlets.SimpleControlExtender.#ctor(System.Type,System.Int32,System.String[])">
             <summary>
-            Přepis třídy Microsoft .NET Frameworku. Potřeba pro GridViewCommandField.
+            Vytvoří extender pro daný typ s danou prioritou.
             </summary>
+            <param name="controlType">Typ, který bude tato instance umět řešit.</param>
+            <param name="priority">Priorita, s jakou jej bude řešit.</param>
+            <param name="changeEvents">Události, na které je potřeba se navázat pokud má být klientský skript vyvolán v případě změny. Null znamená, že pro tento typ controlu nejsou changeEvents podporovány.</param>
         </member>
-        <member name="T:Havit.Web.UI.WebControls.DataControlImageButtonExt">
+        <member name="M:Havit.Web.UI.Scriptlets.SimpleControlExtender.GetPriority(System.Web.UI.Control)">
             <summary>
-            Přepis třídy Microsoft .NET Frameworku. Potřeba pro GridViewCommandField.
+            Vrací priotitu vhodnosti extenderu pro zpracování controlu.
+            Pokud extender není vhodný pro zpracování controlu, vrací null.
             </summary>
+            <param name="control">Ověřovaný control.</param>
+            <returns>Priorita.</returns>
         </member>
-        <member name="T:Havit.Web.UI.WebControls.DataControlLinkButtonExt">
+        <member name="M:Havit.Web.UI.Scriptlets.SimpleControlExtender.CreateParameter(System.String,Havit.Web.UI.Scriptlets.IScriptletParameter,System.Web.UI.Control,Havit.Web.UI.Scriptlets.ScriptBuilder)">
             <summary>
-            Přepis třídy Microsoft .NET Frameworku. Potřeba pro GridViewCommandField.
+            Vytvoří klientský parametr pro předaný control.
             </summary>
-        </member>
-        <member name="T:Havit.Web.UI.WebControls.GridViewCommandField">
-            <summary>
-            Vylepšený command-field určený pro použití s GridViewExt.
-            </summary>
+            <param name="parameterPrefix">Název objektu na klientské straně.</param>
+            <param name="parameter">Parametr předávající řízení extenderu.</param>
+            <param name="control">Control ke zpracování.</param>
+            <param name="scriptBuilder">Script builder.</param>
         </member>
         <member name="T:Havit.Web.UI.WebControls.SortExpressions">
             <summary>
@@ -2007,6 +1940,59 @@
         <member name="P:Havit.Web.UI.WebControls.SortExpressions.SortItems">
             <summary>
             Položky řazení.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.Scriptlets.IControlExtenderRepository">
+            <summary>
+            Repository extenderů. 
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.Scriptlets.IControlExtenderRepository.FindControlExtender(System.Web.UI.Control)">
+            <summary>
+            Vrací extender, který má Control zpracovávat.
+            </summary>
+            <param name="control">Control, který bude zpracováván.</param>
+            <returns>Nalezený extender.</returns>
+        </member>
+        <member name="T:Havit.Web.UI.Scriptlets.ControlExtenderRepository">
+            <summary>
+            Výchozí implementace IControlExtenderRepository.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.Scriptlets.ControlExtenderRepository.FindControlExtender(System.Web.UI.Control)">
+            <summary>
+            Nalezne pro control extender, který bude control zpracovávat.
+            Pokud není žádný vhodný extender nalezen, je vyhozena výjimka.
+            </summary>
+            <param name="control">Control ke zpracování.</param>
+            <returns>Nalezený control extender.</returns>
+        </member>
+        <member name="P:Havit.Web.UI.Scriptlets.ControlExtenderRepository.Default">
+            <summary>
+            Výchozí seznam control extenderů.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.Scriptlets.ValueParameter">
+            <summary>
+            Parametr předávající do klientského objektu konstantní řetězcovou hodnotu.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.Scriptlets.ValueParameter.CreateParameter(System.String,System.Web.UI.Control,Havit.Web.UI.Scriptlets.ScriptBuilder)">
+            <summary>
+            Vytvoří klientský skript pro parametr.
+            </summary>
+            <param name="parameterPrefix">Prefix parametru.</param>
+            <param name="parentControl">Control, v rámci kterého je tento parametr.</param>
+            <param name="scriptBuilder">Script builder.</param>
+        </member>
+        <member name="P:Havit.Web.UI.Scriptlets.ValueParameter.Value">
+            <summary>
+            Hodnota parametru.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.DataControlLinkButtonExt">
+            <summary>
+            Přepis třídy Microsoft .NET Frameworku. Potřeba pro GridViewCommandField.
             </summary>
         </member>
     </members>

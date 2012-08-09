@@ -32,15 +32,21 @@ ul.AspNet-Menu ul
     visibility: visible !important;    
 }
 
+/*
+Adapter no more uses :hover
 ul.AspNet-Menu li:hover ul ul,
+*/
 ul.AspNet-Menu li.AspNet-Menu-Hover ul ul
 {
     visibility: visible !important;    
 }
 
+/*
+Adapter no more uses :hover
 ul.AspNet-Menu li:hover ul,
 ul.AspNet-Menu li li:hover ul,
 ul.AspNet-Menu li li li:hover ul,
+*/
 ul.AspNet-Menu li.AspNet-Menu-Hover ul,
 ul.AspNet-Menu li li.AspNet-Menu-Hover ul,
 ul.AspNet-Menu li li li.AspNet-Menu-Hover ul
@@ -55,8 +61,11 @@ ul.AspNet-Menu ul
     display: none;    
 }
 
+/*
+Adapter no more uses :hover
 ul.AspNet-Menu li:hover ul ul,
 ul.AspNet-Menu li:hover ul ul ul,
+*/
 ul.AspNet-Menu li.AspNet-Menu-Hover ul ul,
 ul.AspNet-Menu li.AspNet-Menu-Hover ul ul ul,
 ul.AspNet-Menu li.AspNet-Menu-Hover ul ul ul ul,
@@ -65,9 +74,12 @@ ul.AspNet-Menu li.AspNet-Menu-Hover ul ul ul ul ul
     display: none;
 }
 
+/*
+Adapter no more uses :hover
 ul.AspNet-Menu li:hover ul,
 ul.AspNet-Menu li li:hover ul,
 ul.AspNet-Menu li li li:hover ul,
+*/
 ul.AspNet-Menu li.AspNet-Menu-Hover ul,
 ul.AspNet-Menu li li.AspNet-Menu-Hover ul,
 ul.AspNet-Menu li li li.AspNet-Menu-Hover ul,

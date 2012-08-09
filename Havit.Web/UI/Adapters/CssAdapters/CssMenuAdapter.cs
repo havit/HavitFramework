@@ -141,6 +141,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
                 if (isRoot)
                 {
                     writer.WriteAttribute("class", "AspNet-Menu");
+					writer.WriteAttribute("disappearAfter", ((Menu)Control).DisappearAfter.ToString()); // render desapperAfter attribute
                 }
                 writer.Write(HtmlTextWriter.TagRightChar);
                 writer.Indent++;
@@ -187,7 +188,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 
                     MenuItemTemplateContainer container = new MenuItemTemplateContainer(menu.Items.IndexOf(item), item);
                     if ((item.Depth < menu.StaticDisplayLevels) && (menu.StaticItemTemplate != null))
-                    {
+                    {						
                         menu.StaticItemTemplate.InstantiateIn(container);
                     }
                     else

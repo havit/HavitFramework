@@ -40,16 +40,22 @@ ul.AspNet-Menu ul
 }
 
 /* Add more rules here if your menus have more than three (3) tiers */
+/* 
+Adapter no more uses :hover
 ul.AspNet-Menu li:hover ul ul,
+*/
 ul.AspNet-Menu li.AspNet-Menu-Hover ul ul
 {
     visibility: hidden;
 }
 
 /* Add more rules here if your menus have more than three (3) tiers */
+/* 
+Adapter no more uses :hover
 ul.AspNet-Menu li:hover ul,
 ul.AspNet-Menu li li:hover ul,
 ul.AspNet-Menu li li li:hover ul,
+*/
 ul.AspNet-Menu li.AspNet-Menu-Hover ul,
 ul.AspNet-Menu li li.AspNet-Menu-Hover ul,
 ul.AspNet-Menu li li li.AspNet-Menu-Hover ul

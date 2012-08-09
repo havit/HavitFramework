@@ -4,40 +4,6 @@
         <name>Havit.Xml</name>
     </assembly>
     <members>
-        <member name="T:Havit.Xml.Rss.RssFeed">
-            <summary>
-            Hlavní třída reprezentující celý RSS dokument.
-            RSS verze 2.0
-            Specifikace na http://blogs.law.harvard.edu/tech/rss
-            </summary>
-        </member>
-        <member name="M:Havit.Xml.Rss.RssFeed.#ctor">
-            <summary>
-            Vytvoří novou instanci RSS feedu.
-            </summary>
-        </member>
-        <member name="M:Havit.Xml.Rss.RssFeed.SerializeToXmlDocument">
-            <summary>
-            Vrátí RSS feed jako XmlDocument
-            </summary>
-            <returns>RSS feed jako XmlDocument</returns>
-        </member>
-        <member name="M:Havit.Xml.Rss.RssFeed.ToString">
-            <summary>
-            Vrátí RSS feed jako String s XML dokumentem
-            </summary>
-            <returns>RSS feed jako String</returns>
-        </member>
-        <member name="P:Havit.Xml.Rss.RssFeed.Version">
-            <summary>
-            Atribut "version", nastaven na implementovanou verzi.
-            </summary>
-        </member>
-        <member name="P:Havit.Xml.Rss.RssFeed.Channels">
-            <summary>
-            Kolekce channelů ve feedu.
-            </summary>
-        </member>
         <member name="T:Havit.Xml.Rss.RssChannel">
             <summary>
             Třída reprezentující RSS channel
@@ -157,56 +123,6 @@
             Kolekce jednotlivých prvků ITEM.
             </summary>
         </member>
-        <member name="T:Havit.Xml.Rss.RssItemCollection">
-            <summary>
-            Kolekce RssItem prvků.
-            </summary>
-        </member>
-        <member name="M:Havit.Xml.Rss.RssItemCollection.Add(Havit.Xml.Rss.RssItem)">
-            <summary>
-            Přidá nový item do kolekce
-            </summary>
-            <param name="newItem">nový item</param>
-        </member>
-        <member name="M:Havit.Xml.Rss.RssItemCollection.CopyTo(Havit.Xml.Rss.RssItem[],System.Int32)">
-            <summary>
-            Vykopíruje prvky kolekce do pole.
-            </summary>
-            <param name="array">cílové pole</param>
-            <param name="index">startovní pozice v cílovém poli</param>
-        </member>
-        <member name="M:Havit.Xml.Rss.RssItemCollection.Insert(System.Int32,Havit.Xml.Rss.RssItem)">
-            <summary>
-            Vloží prvek do kolekce na zadanou pozici.
-            </summary>
-            <param name="index">pozice</param>
-            <param name="value">prvek</param>
-        </member>
-        <member name="M:Havit.Xml.Rss.RssItemCollection.IndexOf(Havit.Xml.Rss.RssItem)">
-            <summary>
-            Zjistí pozici prvku v kolekci
-            </summary>
-            <param name="value">hledný prvek</param>
-            <returns>pozice v kolekci</returns>
-        </member>
-        <member name="M:Havit.Xml.Rss.RssItemCollection.Remove(Havit.Xml.Rss.RssItem)">
-            <summary>
-            Odebere prvke z kolekce.
-            </summary>
-            <param name="value">prvek k odebrání</param>
-        </member>
-        <member name="M:Havit.Xml.Rss.RssItemCollection.Contains(Havit.Xml.Rss.RssItem)">
-            <summary>
-            Zjistí, zda-li je prvek v kolekci.
-            </summary>
-            <param name="value">prvek</param>
-            <returns>true, je-li prvek v kolekci, jinak false</returns>
-        </member>
-        <member name="P:Havit.Xml.Rss.RssItemCollection.Item(System.Int32)">
-            <summary>
-            Indexer na kolekci zpřístupňující prvek na požadované pozici.
-            </summary>
-        </member>
         <member name="T:Havit.Xml.Rss.RssImage">
             <summary>
             Třída reprezentující RSS prvek "image"
@@ -259,6 +175,90 @@
         <member name="P:Havit.Xml.Rss.RssImage.Description">
             <summary>
             Contains text that is included in the TITLE attribute of the link formed around the image in the HTML rendering.
+            </summary>
+        </member>
+        <member name="T:Havit.Xml.Rss.RssFeed">
+            <summary>
+            Hlavní třída reprezentující celý RSS dokument.
+            RSS verze 2.0
+            Specifikace na http://blogs.law.harvard.edu/tech/rss
+            </summary>
+        </member>
+        <member name="M:Havit.Xml.Rss.RssFeed.#ctor">
+            <summary>
+            Vytvoří novou instanci RSS feedu.
+            </summary>
+        </member>
+        <member name="M:Havit.Xml.Rss.RssFeed.SerializeToXmlDocument">
+            <summary>
+            Vrátí RSS feed jako XmlDocument
+            </summary>
+            <returns>RSS feed jako XmlDocument</returns>
+        </member>
+        <member name="M:Havit.Xml.Rss.RssFeed.ToString">
+            <summary>
+            Vrátí RSS feed jako String s XML dokumentem
+            </summary>
+            <returns>RSS feed jako String</returns>
+        </member>
+        <member name="P:Havit.Xml.Rss.RssFeed.Version">
+            <summary>
+            Atribut "version", nastaven na implementovanou verzi.
+            </summary>
+        </member>
+        <member name="P:Havit.Xml.Rss.RssFeed.Channels">
+            <summary>
+            Kolekce channelů ve feedu.
+            </summary>
+        </member>
+        <member name="T:Havit.Xml.Rss.RssChannelCollection">
+            <summary>
+            Kolekce RssChannel prvků.
+            </summary>
+        </member>
+        <member name="M:Havit.Xml.Rss.RssChannelCollection.Add(Havit.Xml.Rss.RssChannel)">
+            <summary>
+            Přidá nový kanál do kolekce
+            </summary>
+            <param name="channel">kanál k přidání</param>
+        </member>
+        <member name="M:Havit.Xml.Rss.RssChannelCollection.CopyTo(Havit.Xml.Rss.RssChannel[],System.Int32)">
+            <summary>
+            Zkopíruje kanály do array, na pozici index
+            </summary>
+            <param name="array">cílové pole</param>
+            <param name="index">pozice v cílovém poli</param>
+        </member>
+        <member name="M:Havit.Xml.Rss.RssChannelCollection.Insert(System.Int32,Havit.Xml.Rss.RssChannel)">
+            <summary>
+            Vloží na určené místo v kolekci kanál.
+            </summary>
+            <param name="index">pozice</param>
+            <param name="value">kanál</param>
+        </member>
+        <member name="M:Havit.Xml.Rss.RssChannelCollection.IndexOf(Havit.Xml.Rss.RssChannel)">
+            <summary>
+            Vyhledá pozici kanálu v kolekci
+            </summary>
+            <param name="value">kanák</param>
+            <returns>pozice kanálu v kolekci</returns>
+        </member>
+        <member name="M:Havit.Xml.Rss.RssChannelCollection.Remove(Havit.Xml.Rss.RssChannel)">
+            <summary>
+            Odstraní kanál z kolekce.
+            </summary>
+            <param name="value">kanál k odstranění</param>
+        </member>
+        <member name="M:Havit.Xml.Rss.RssChannelCollection.Contains(Havit.Xml.Rss.RssChannel)">
+            <summary>
+            Zjistí, zda-li se kanál nachází v kolekci
+            </summary>
+            <param name="value">kanál</param>
+            <returns>true, pokud již kanál v kolekci existuje, jinak false</returns>
+        </member>
+        <member name="P:Havit.Xml.Rss.RssChannelCollection.Item(System.Int32)">
+            <summary>
+            Indexer zpřístupňující kanál na dané pozici kolekce.
             </summary>
         </member>
         <member name="T:Havit.Xml.Rss.RssItem">
@@ -331,54 +331,54 @@
             If it's a date in the future, aggregators may choose to not display the item until that date. 
             </remarks>
         </member>
-        <member name="T:Havit.Xml.Rss.RssChannelCollection">
+        <member name="T:Havit.Xml.Rss.RssItemCollection">
             <summary>
-            Kolekce RssChannel prvků.
+            Kolekce RssItem prvků.
             </summary>
         </member>
-        <member name="M:Havit.Xml.Rss.RssChannelCollection.Add(Havit.Xml.Rss.RssChannel)">
+        <member name="M:Havit.Xml.Rss.RssItemCollection.Add(Havit.Xml.Rss.RssItem)">
             <summary>
-            Přidá nový kanál do kolekce
+            Přidá nový item do kolekce
             </summary>
-            <param name="channel">kanál k přidání</param>
+            <param name="newItem">nový item</param>
         </member>
-        <member name="M:Havit.Xml.Rss.RssChannelCollection.CopyTo(Havit.Xml.Rss.RssChannel[],System.Int32)">
+        <member name="M:Havit.Xml.Rss.RssItemCollection.CopyTo(Havit.Xml.Rss.RssItem[],System.Int32)">
             <summary>
-            Zkopíruje kanály do array, na pozici index
+            Vykopíruje prvky kolekce do pole.
             </summary>
             <param name="array">cílové pole</param>
-            <param name="index">pozice v cílovém poli</param>
+            <param name="index">startovní pozice v cílovém poli</param>
         </member>
-        <member name="M:Havit.Xml.Rss.RssChannelCollection.Insert(System.Int32,Havit.Xml.Rss.RssChannel)">
+        <member name="M:Havit.Xml.Rss.RssItemCollection.Insert(System.Int32,Havit.Xml.Rss.RssItem)">
             <summary>
-            Vloží na určené místo v kolekci kanál.
+            Vloží prvek do kolekce na zadanou pozici.
             </summary>
             <param name="index">pozice</param>
-            <param name="value">kanál</param>
+            <param name="value">prvek</param>
         </member>
-        <member name="M:Havit.Xml.Rss.RssChannelCollection.IndexOf(Havit.Xml.Rss.RssChannel)">
+        <member name="M:Havit.Xml.Rss.RssItemCollection.IndexOf(Havit.Xml.Rss.RssItem)">
             <summary>
-            Vyhledá pozici kanálu v kolekci
+            Zjistí pozici prvku v kolekci
             </summary>
-            <param name="value">kanák</param>
-            <returns>pozice kanálu v kolekci</returns>
+            <param name="value">hledný prvek</param>
+            <returns>pozice v kolekci</returns>
         </member>
-        <member name="M:Havit.Xml.Rss.RssChannelCollection.Remove(Havit.Xml.Rss.RssChannel)">
+        <member name="M:Havit.Xml.Rss.RssItemCollection.Remove(Havit.Xml.Rss.RssItem)">
             <summary>
-            Odstraní kanál z kolekce.
+            Odebere prvke z kolekce.
             </summary>
-            <param name="value">kanál k odstranění</param>
+            <param name="value">prvek k odebrání</param>
         </member>
-        <member name="M:Havit.Xml.Rss.RssChannelCollection.Contains(Havit.Xml.Rss.RssChannel)">
+        <member name="M:Havit.Xml.Rss.RssItemCollection.Contains(Havit.Xml.Rss.RssItem)">
             <summary>
-            Zjistí, zda-li se kanál nachází v kolekci
+            Zjistí, zda-li je prvek v kolekci.
             </summary>
-            <param name="value">kanál</param>
-            <returns>true, pokud již kanál v kolekci existuje, jinak false</returns>
+            <param name="value">prvek</param>
+            <returns>true, je-li prvek v kolekci, jinak false</returns>
         </member>
-        <member name="P:Havit.Xml.Rss.RssChannelCollection.Item(System.Int32)">
+        <member name="P:Havit.Xml.Rss.RssItemCollection.Item(System.Int32)">
             <summary>
-            Indexer zpřístupňující kanál na dané pozici kolekce.
+            Indexer na kolekci zpřístupňující prvek na požadované pozici.
             </summary>
         </member>
     </members>

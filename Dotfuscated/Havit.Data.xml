@@ -4,11 +4,25 @@
         <name>Havit.Data</name>
     </assembly>
     <members>
-        <member name="T:Havit.Data.SqlClient.SqlTransactionDelegate">
+        <member name="T:Havit.Data.DataLoadPower">
             <summary>
-            Reprezentuje metodu, která vykonává jednotlivé kroky transakce.
+            Rozsah dat v datovém zdroji.
             </summary>
-            <param name="transaction">transakce, v rámci které mají být jednotlivé kroky vykonány</param>
+        </member>
+        <member name="F:Havit.Data.DataLoadPower.Ghost">
+            <summary>
+            Datový zdroj obsahuje jen informace pro založení ghosta (primární klíč).
+            </summary>
+        </member>
+        <member name="F:Havit.Data.DataLoadPower.FullLoad">
+            <summary>
+            Datový zdroj obsahuje kompletní řádek dat (všechny možné sloupce).
+            </summary>
+        </member>
+        <member name="F:Havit.Data.DataLoadPower.PartialLoad">
+            <summary>
+            Datový zdroj obsahuje nekompletní řádek dat.
+            </summary>
         </member>
         <member name="T:Havit.Data.DataRecord">
             <summary>
@@ -224,319 +238,7 @@
             <param name="field">pole, sloupec</param>
             <returns>hodnota</returns>
         </member>
-        <member name="T:Havit.Data.SqlClient.SqlDataAccess">
-            <summary>
-            Třída SqlDataAccess obsahuje metody usnadňující práci se základní třídou
-            <b>System.Data.</b><see cref="N:System.Data.SqlClient"/>.
-            </summary>
-            <remarks>
-            Inspirováno <a href="http://msdn.microsoft.com/vcsharp/downloads/components/default.aspx?pull=/library/en-us/dnbda/html/daab-rm.asp">
-            Microsoft Data Access Application Block verze 2.0</a>.
-            </remarks>
-        </member>
-        <member name="M:Havit.Data.SqlClient.SqlDataAccess.GetConnection(System.String,System.Boolean)">
-            <summary>
-            Vytvoří novou instanci SqlConnection podle požadovaného connectionStringu
-            a případně ji rovnou otevře.
-            </summary>
-            <param name="connectionString">ConnectionString</param>
-            <param name="open"><c>true</c>, má-li se nová SqlConnection rovnou otevřít</param>
-            <returns>nová instance SqlConnection</returns>
-        </member>
-        <member name="M:Havit.Data.SqlClient.SqlDataAccess.GetConnection(System.Boolean)">
-            <summary>
-            Vytvoří novou instanci SqlConnection podle z implicitního <see cref="P:Havit.Data.SqlClient.SqlDataAccess.ConnectionString"/>
-            a případně ji rovnou otevře.
-            </summary>
-            <param name="open"><c>true</c>, má-li se nová SqlConnection rovnou otevřít</param>
-            <returns>nová instance SqlConnection</returns>
-        </member>
-        <member name="M:Havit.Data.SqlClient.SqlDataAccess.GetConnection">
-            <summary>
-            Vytvoří novou instanci SqlConnection podle implicitního <see cref="P:Havit.Data.SqlClient.SqlDataAccess.ConnectionString"/>.
-            SqlConnection není otevřena.
-            </summary>
-            <returns>nová instance SqlConnection (není otevřena)</returns>
-        </member>
-        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteNonQuery(System.Data.SqlClient.SqlCommand)">
-            <summary>
-            Vykoná SqlCommand a vrátí počet dotčených řádek.
-            Nejobecnější metoda, kterou používají ostatní overloady.
-            </summary>
-            <remarks>
-            Není-li SqlConnection příkazu nastaveno, použije imlicitní.
-            Není-li SqlConnection dosud otevřeno, otevře ho, vykoná příkaz a zavře.
-            Nemá-li počet dotčených řádek smysl, vrací -1.
-            </remarks>
-            <param name="cmd">SqlCommand, který má být vykonán</param>
-            <returns>počet dotčených řádek</returns>
-        </member>
-        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteNonQuery(System.String,System.Data.CommandType)">
-            <summary>
-            Vykoná zadaný příkaz určeného typu bez parametrů. Vrátí počet dotčených řádek.
-            </summary>
-            <param name="cmdText">SQL příkaz</param>
-            <param name="cmdType">CommandType příkazu</param>
-            <returns>počet dotčených řádek</returns>
-        </member>
-        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteNonQuery(System.String)">
-            <summary>
-            Vykoná zadaný příkaz bez parametrů. Vrátí počet dotčených řádek.
-            CommandType příkazu je nastaven z property DefaultCommandType.
-            </summary>
-            <param name="cmdText">SQL příkaz</param>
-            <returns>počet dotčených řádek</returns>
-        </member>
-        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteDataSet(System.Data.SqlClient.SqlCommand)">
-            <summary>
-            Vykoná SqlCommand a vrátí resultset ve formě DataSetu.
-            </summary>
-            <remarks>
-            Je-li cmd.Connection otevřeno, nechá ho otevřené. Není-li, otevře si ho a zase zavře.
-            </remarks>
-            <param name="cmd">SqlCommand k vykonání</param>
-            <returns>resultset příkazu ve formě DataSetu</returns>
-        </member>
-        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteDataSet(System.String,System.Data.CommandType)">
-            <summary>
-            Vykoná příkaz cmdText daného cmdType proti implicitní connection
-            a vrátí resultset ve formě DataSetu.
-            </summary>
-            <param name="cmdText">SQL příkaz</param>
-            <param name="cmdType">typ příkazu</param>
-            <returns>resultset příkazu ve formě DataSetu</returns>
-        </member>
-        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteDataSet(System.String)">
-            <summary>
-            Vykoná SQL příkaz cmdText s implicitního typu (DefaultCommandType)
-            proti implicitní connection (GetConnection).
-            </summary>
-            <param name="cmdText">textový SQL příkaz</param>
-            <returns>resultset ve formě DataSetu</returns>
-        </member>
-        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteDataTable(System.Data.SqlClient.SqlCommand)">
-            <summary>
-            Vykoná SqlCommand a vrátí první resultset ve formě <see cref="T:System.Data.DataTable"/>.
-            </summary>
-            <remarks>
-            Je-li cmd.Connection otevřeno, nechá ho otevřené. Není-li, otevře si ho a zase zavře.
-            </remarks>
-            <param name="cmd">SqlCommand k vykonání</param>
-            <returns>první resultset příkazu ve formě <see cref="T:System.Data.DataTable"/></returns>
-        </member>
-        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteDataTable(System.String,System.Data.CommandType)">
-            <summary>
-            Vykoná příkaz cmdText daného cmdType proti implicitní connection
-            a vrátí první resultset ve formě <see cref="T:System.Data.DataTable"/>.
-            </summary>
-            <param name="cmdText">SQL příkaz</param>
-            <param name="cmdType">typ příkazu</param>
-            <returns>první resultset příkazu ve formě <see cref="T:System.Data.DataTable"/></returns>
-        </member>
-        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteDataTable(System.String)">
-            <summary>
-            Vykoná SQL příkaz cmdText s implicitního typu (DefaultCommandType)
-            proti implicitní connection (GetConnection) a vrátí první resultset
-            ve formě <see cref="T:System.Data.DataTable"/>.
-            </summary>
-            <param name="cmdText">textový SQL příkaz</param>
-            <returns>první resultset ve formě <see cref="T:System.Data.DataTable"/></returns>
-        </member>
-        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteReader(System.Data.SqlClient.SqlCommand,System.Data.CommandBehavior)">
-            <summary>
-            Donastaví a vykoná SqlCommand pomocí CommandBehavior a vrátí výsledný resultset
-            ve formě SqlDataReaderu.
-            </summary>
-            <param name="cmd">příkaz (nemusí mít nastaveno Connection)</param>
-            <param name="behavior">požadované "chování"</param>
-            <returns>Resultset jako SqlDataReader</returns>
-        </member>
-        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteReader(System.Data.SqlClient.SqlCommand)">
-            <summary>
-            Donastaví a vykoná SqlCommand a vrátí výsledný resultset ve formě SqlDataReaderu.
-            </summary>
-            <param name="cmd">příkaz (nemusí mít nastaveno Connection)</param>
-            <returns></returns>
-        </member>
-        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteReader(System.String,System.Data.CommandType)">
-            <summary>
-            Vytvoří, nastaví a vykoná SqlCommand dle zadaných parametrů a vrátí
-            výsledný resultset ve formě SqlDataReaderu.
-            </summary>
-            <param name="cmdText">text SQL příkazu</param>
-            <param name="cmdType">typ příkazu</param>
-            <returns>resultset ve formě SqlDataReaderu</returns>
-        </member>
-        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteReader(System.String)">
-            <summary>
-            Vytvoří, nastaví a vykoná SqlCommand dle zadaného SQL příkazu
-            a vrátí výsledný resultset ve formě SqlDataReaderu.
-            Jako typ příkazu se použije DefaultCommandType.
-            </summary>
-            <param name="cmdText">text SQL příkazu</param>
-            <returns>resultset ve formě SqlDataReaderu</returns>
-        </member>
-        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteDataRecord(System.Data.SqlClient.SqlCommand,System.Data.CommandBehavior)">
-            <summary>
-            Donastaví a vykoná SqlCommand pomocí CommandBehavior a vrátí první řádek prvního resultsetu
-            ve formě <see cref="T:Havit.Data.DataRecord"/>. Pokud neexistuje, vrátí null.
-            </summary>
-            <param name="cmd">příkaz (nemusí mít nastaveno Connection)</param>
-            <param name="behavior">požadované "chování"</param>
-            <returns>první řádek prvního resultsetu ve formě <see cref="T:Havit.Data.DataRecord"/></returns>
-        </member>
-        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteDataRecord(System.Data.SqlClient.SqlCommand)">
-            <summary>
-            Donastaví a vykoná SqlCommand a vrátí první řádek prvního resultsetu
-            ve formě <see cref="T:Havit.Data.DataRecord"/>. Pokud neexistuje, vrátí null.
-            </summary>
-            <param name="cmd">příkaz (nemusí mít nastaveno Connection)</param>
-            <returns>první řádek prvního resultsetu ve formě <see cref="T:Havit.Data.DataRecord"/></returns>
-        </member>
-        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteDataRecord(System.String,System.Data.CommandType)">
-            <summary>
-            Vytvoří SqlCommand dle zadaných parametrů, donasataví ho a vrátí první řádek prvního resultsetu
-            ve formě <see cref="T:Havit.Data.DataRecord"/>. Pokud neexistuje, vrátí null.
-            </summary>
-            <param name="cmdText">text SQL příkazu</param>
-            <param name="cmdType">typ SQL příkazu</param>
-            <returns>první řádek prvního resultsetu ve formě <see cref="T:Havit.Data.DataRecord"/></returns>
-        </member>
-        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteDataRecord(System.String)">
-            <summary>
-            Vytvoří, nastaví a vykoná SqlCommand dle zadaného SQL příkazu
-            a vrátí výsledný resultset ve formě <see cref="T:Havit.Data.DataRecord"/>.
-            Jako typ příkazu se použije <see cref="!:DefaultCommandType"/>.
-            </summary>
-            <param name="cmdText">text SQL příkazu</param>
-            <returns>první řádek prvního resultsetu ve formě <see cref="T:Havit.Data.DataRecord"/></returns>
-        </member>
-        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteScalar(System.Data.SqlClient.SqlCommand)">
-            <summary>
-            Donastaví a vykoná SqlCommand a vrátí první sloupec prvního řádku jeho resultsetu.
-            </summary>
-            <example>
-            int result = (int)ExecuteScalar(cmd);
-            </example>
-            <param name="cmd">příkaz (nemusí mít nastaveno Connection)</param>
-            <returns>první sloupec prvního řádku resultsetu</returns>
-        </member>
-        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteScalar(System.String,System.Data.CommandType)">
-            <summary>
-            Vytvoří ze zadaných parametrů SqlCommand, vykoná ho a vrátí první sloupec
-            prvního řádku jeho resultsetu.
-            </summary>
-            <param name="cmdText">text SQL příkazu</param>
-            <param name="cmdType">typ příkazu</param>
-            <returns>první sloupec prvního řádku resultsetu</returns>
-        </member>
-        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteScalar(System.String)">
-            <summary>
-            Vytvoří SqlCommand, nastaví mu DefaultCommandType, vykoná ho a vrátí
-            první sloupec prvního řádku jeho resultsetu.
-            </summary>
-            <param name="cmdText">text SQL příkazu</param>
-            <returns>první sloupec prvního řádku resultsetu</returns>
-        </member>
-        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteTransaction(Havit.Data.SqlClient.SqlTransactionDelegate,System.Data.SqlClient.SqlTransaction)">
-            <summary>
-            Vykoná požadované kroky v rámci transakce.
-            Pokud je zadaná transakce <c>null</c>, je spuštěna a commitována nová.
-            Pokud zadaná transakce není <c>null</c>, jsou zadané kroky pouze vykonány.
-            </summary>
-            <param name="transactionWork"><see cref="T:Havit.Data.SqlClient.SqlTransactionDelegate"/> reprezentující s úkony, které mají být součástí transakce</param>
-            <param name="outerTransaction">transakce</param>
-        </member>
-        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteTransaction(Havit.Data.SqlClient.SqlTransactionDelegate)">
-            <summary>
-            Vykoná požadované kroky v rámci transakce.
-            Je spuštěna a commitována nová samostatná transakce.
-            </summary>
-            <param name="transactionWork"><see cref="T:Havit.Data.SqlClient.SqlTransactionDelegate"/> reprezentující s úkony, které mají být součástí transakce</param>
-        </member>
-        <member name="P:Havit.Data.SqlClient.SqlDataAccess.ConnectionString">
-            <summary>
-            Implicitní ConnectionString.
-            Použije se vždy, není-li metodě jakkoliv explicitně předán jiný.
-            Není-li nastaven klientskou aplikací, načte se z .config souboru.
-            </summary>
-            <remarks>
-            Pokus o načtení z .config souboru je proveden vždy, je-li právě nastaven
-            na <c>null</c> nebo <c>String.Empty</c>. Jeho nastavením na <c>null</c> lze tedy
-            poručit, aby se ConnectionString načetl z .config souboru.
-            </remarks>
-        </member>
-        <member name="P:Havit.Data.SqlClient.SqlDataAccess.ConfigConnectionString">
-            <summary>
-            ConnectionString z .config souboru (web.config nebo applikace.exe.config).
-            </summary>
-            <remarks>
-            Pro .NET Framework 2.0 rozšířeno o použití hodnoty <b>DefaultConnectionString</b>
-            z konfigurační sekce &lt;connectionStrings&gt;.
-            </remarks>
-            <example>
-            Buď <b>DefaultConnectionString</b> z konfigurační sekce &lt;connectionStrings&gt;:
-            <code>
-            &lt;configuration&gt;
-            	&lt;connectionStrings&gt;
-            		&lt;add name="DefaultConnectionString"
-            			connectionString="Server=localhost;Database=pubs;UID=user;PWD=heslo;"
-            			providerName="System.Data.SqlClient"
-            		/&gt;
-            	&lt;/connectionStrings&gt;
-            &lt;/configuration&gt;
-            </code>
-            a nebo po staru <b>ConnectionString</b> z konfigurační sekce &lt;appStrings&gt;:
-            <code>
-            &lt;configuration&gt;
-            	&lt;appSettings&gt;
-            		&lt;add key="ConnectionString" value="Server=localhost;Database=pubs;UID=user;PWD=heslo;" /&gt;
-            	&lt;/appSettings&gt;
-            &lt;/configuration&gt;
-            </code>
-            </example>
-        </member>
-        <member name="T:Havit.Data.DataLoadPower">
-            <summary>
-            Rozsah dat v datovém zdroji.
-            </summary>
-        </member>
-        <member name="F:Havit.Data.DataLoadPower.Ghost">
-            <summary>
-            Datový zdroj obsahuje jen informace pro založení ghosta (primární klíč).
-            </summary>
-        </member>
-        <member name="F:Havit.Data.DataLoadPower.FullLoad">
-            <summary>
-            Datový zdroj obsahuje kompletní řádek dat (všechny možné sloupce).
-            </summary>
-        </member>
-        <member name="F:Havit.Data.DataLoadPower.PartialLoad">
-            <summary>
-            Datový zdroj obsahuje nekompletní řádek dat.
-            </summary>
-        </member>
-        <member name="T:Havit.Data.SqlTypes.SqlSmallDateTime">
-            <summary>
-            Reprezentuje pomocné hodnoty pro databázový typ smalldatetime.
-            </summary>
-        </member>
-        <member name="F:Havit.Data.SqlTypes.SqlSmallDateTime.MinValue">
-            <summary>
-            Minimální hodnota použitelná pro databázový typ smalldatetime.
-            </summary>
-        </member>
-        <member name="F:Havit.Data.SqlTypes.SqlSmallDateTime.MaxValue">
-            <summary>
-            Maximální hodnota použitelná pro databázový typ smalldatetime.
-            </summary>
-        </member>
-        <member name="P:Havit.Data.SqlTypes.SqlSmallDateTime.Value">
-            <summary>
-            Hodnota reprezentovaná jako DateTime.
-            </summary>
-        </member>
-        <member name="T:Havit.Data.DbTransactionDelegate">
+        <member name="T:Havit.Data.SqlClient.SqlTransactionDelegate">
             <summary>
             Reprezentuje metodu, která vykonává jednotlivé kroky transakce.
             </summary>
@@ -870,6 +572,304 @@
             &lt;/configuration&gt;
             </code>
             </example>
+        </member>
+        <member name="T:Havit.Data.SqlTypes.SqlSmallDateTime">
+            <summary>
+            Reprezentuje pomocné hodnoty pro databázový typ smalldatetime.
+            </summary>
+        </member>
+        <member name="F:Havit.Data.SqlTypes.SqlSmallDateTime.MinValue">
+            <summary>
+            Minimální hodnota použitelná pro databázový typ smalldatetime.
+            </summary>
+        </member>
+        <member name="F:Havit.Data.SqlTypes.SqlSmallDateTime.MaxValue">
+            <summary>
+            Maximální hodnota použitelná pro databázový typ smalldatetime.
+            </summary>
+        </member>
+        <member name="P:Havit.Data.SqlTypes.SqlSmallDateTime.Value">
+            <summary>
+            Hodnota reprezentovaná jako DateTime.
+            </summary>
+        </member>
+        <member name="T:Havit.Data.SqlClient.SqlDataAccess">
+            <summary>
+            Třída SqlDataAccess obsahuje metody usnadňující práci se základní třídou
+            <b>System.Data.</b><see cref="N:System.Data.SqlClient"/>.
+            </summary>
+            <remarks>
+            Inspirováno <a href="http://msdn.microsoft.com/vcsharp/downloads/components/default.aspx?pull=/library/en-us/dnbda/html/daab-rm.asp">
+            Microsoft Data Access Application Block verze 2.0</a>.
+            </remarks>
+        </member>
+        <member name="M:Havit.Data.SqlClient.SqlDataAccess.GetConnection(System.String,System.Boolean)">
+            <summary>
+            Vytvoří novou instanci SqlConnection podle požadovaného connectionStringu
+            a případně ji rovnou otevře.
+            </summary>
+            <param name="connectionString">ConnectionString</param>
+            <param name="open"><c>true</c>, má-li se nová SqlConnection rovnou otevřít</param>
+            <returns>nová instance SqlConnection</returns>
+        </member>
+        <member name="M:Havit.Data.SqlClient.SqlDataAccess.GetConnection(System.Boolean)">
+            <summary>
+            Vytvoří novou instanci SqlConnection podle z implicitního <see cref="P:Havit.Data.SqlClient.SqlDataAccess.ConnectionString"/>
+            a případně ji rovnou otevře.
+            </summary>
+            <param name="open"><c>true</c>, má-li se nová SqlConnection rovnou otevřít</param>
+            <returns>nová instance SqlConnection</returns>
+        </member>
+        <member name="M:Havit.Data.SqlClient.SqlDataAccess.GetConnection">
+            <summary>
+            Vytvoří novou instanci SqlConnection podle implicitního <see cref="P:Havit.Data.SqlClient.SqlDataAccess.ConnectionString"/>.
+            SqlConnection není otevřena.
+            </summary>
+            <returns>nová instance SqlConnection (není otevřena)</returns>
+        </member>
+        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteNonQuery(System.Data.SqlClient.SqlCommand)">
+            <summary>
+            Vykoná SqlCommand a vrátí počet dotčených řádek.
+            Nejobecnější metoda, kterou používají ostatní overloady.
+            </summary>
+            <remarks>
+            Není-li SqlConnection příkazu nastaveno, použije imlicitní.
+            Není-li SqlConnection dosud otevřeno, otevře ho, vykoná příkaz a zavře.
+            Nemá-li počet dotčených řádek smysl, vrací -1.
+            </remarks>
+            <param name="cmd">SqlCommand, který má být vykonán</param>
+            <returns>počet dotčených řádek</returns>
+        </member>
+        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteNonQuery(System.String,System.Data.CommandType)">
+            <summary>
+            Vykoná zadaný příkaz určeného typu bez parametrů. Vrátí počet dotčených řádek.
+            </summary>
+            <param name="cmdText">SQL příkaz</param>
+            <param name="cmdType">CommandType příkazu</param>
+            <returns>počet dotčených řádek</returns>
+        </member>
+        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteNonQuery(System.String)">
+            <summary>
+            Vykoná zadaný příkaz bez parametrů. Vrátí počet dotčených řádek.
+            CommandType příkazu je nastaven z property DefaultCommandType.
+            </summary>
+            <param name="cmdText">SQL příkaz</param>
+            <returns>počet dotčených řádek</returns>
+        </member>
+        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteDataSet(System.Data.SqlClient.SqlCommand)">
+            <summary>
+            Vykoná SqlCommand a vrátí resultset ve formě DataSetu.
+            </summary>
+            <remarks>
+            Je-li cmd.Connection otevřeno, nechá ho otevřené. Není-li, otevře si ho a zase zavře.
+            </remarks>
+            <param name="cmd">SqlCommand k vykonání</param>
+            <returns>resultset příkazu ve formě DataSetu</returns>
+        </member>
+        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteDataSet(System.String,System.Data.CommandType)">
+            <summary>
+            Vykoná příkaz cmdText daného cmdType proti implicitní connection
+            a vrátí resultset ve formě DataSetu.
+            </summary>
+            <param name="cmdText">SQL příkaz</param>
+            <param name="cmdType">typ příkazu</param>
+            <returns>resultset příkazu ve formě DataSetu</returns>
+        </member>
+        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteDataSet(System.String)">
+            <summary>
+            Vykoná SQL příkaz cmdText s implicitního typu (DefaultCommandType)
+            proti implicitní connection (GetConnection).
+            </summary>
+            <param name="cmdText">textový SQL příkaz</param>
+            <returns>resultset ve formě DataSetu</returns>
+        </member>
+        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteDataTable(System.Data.SqlClient.SqlCommand)">
+            <summary>
+            Vykoná SqlCommand a vrátí první resultset ve formě <see cref="T:System.Data.DataTable"/>.
+            </summary>
+            <remarks>
+            Je-li cmd.Connection otevřeno, nechá ho otevřené. Není-li, otevře si ho a zase zavře.
+            </remarks>
+            <param name="cmd">SqlCommand k vykonání</param>
+            <returns>první resultset příkazu ve formě <see cref="T:System.Data.DataTable"/></returns>
+        </member>
+        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteDataTable(System.String,System.Data.CommandType)">
+            <summary>
+            Vykoná příkaz cmdText daného cmdType proti implicitní connection
+            a vrátí první resultset ve formě <see cref="T:System.Data.DataTable"/>.
+            </summary>
+            <param name="cmdText">SQL příkaz</param>
+            <param name="cmdType">typ příkazu</param>
+            <returns>první resultset příkazu ve formě <see cref="T:System.Data.DataTable"/></returns>
+        </member>
+        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteDataTable(System.String)">
+            <summary>
+            Vykoná SQL příkaz cmdText s implicitního typu (DefaultCommandType)
+            proti implicitní connection (GetConnection) a vrátí první resultset
+            ve formě <see cref="T:System.Data.DataTable"/>.
+            </summary>
+            <param name="cmdText">textový SQL příkaz</param>
+            <returns>první resultset ve formě <see cref="T:System.Data.DataTable"/></returns>
+        </member>
+        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteReader(System.Data.SqlClient.SqlCommand,System.Data.CommandBehavior)">
+            <summary>
+            Donastaví a vykoná SqlCommand pomocí CommandBehavior a vrátí výsledný resultset
+            ve formě SqlDataReaderu.
+            </summary>
+            <param name="cmd">příkaz (nemusí mít nastaveno Connection)</param>
+            <param name="behavior">požadované "chování"</param>
+            <returns>Resultset jako SqlDataReader</returns>
+        </member>
+        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteReader(System.Data.SqlClient.SqlCommand)">
+            <summary>
+            Donastaví a vykoná SqlCommand a vrátí výsledný resultset ve formě SqlDataReaderu.
+            </summary>
+            <param name="cmd">příkaz (nemusí mít nastaveno Connection)</param>
+            <returns></returns>
+        </member>
+        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteReader(System.String,System.Data.CommandType)">
+            <summary>
+            Vytvoří, nastaví a vykoná SqlCommand dle zadaných parametrů a vrátí
+            výsledný resultset ve formě SqlDataReaderu.
+            </summary>
+            <param name="cmdText">text SQL příkazu</param>
+            <param name="cmdType">typ příkazu</param>
+            <returns>resultset ve formě SqlDataReaderu</returns>
+        </member>
+        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteReader(System.String)">
+            <summary>
+            Vytvoří, nastaví a vykoná SqlCommand dle zadaného SQL příkazu
+            a vrátí výsledný resultset ve formě SqlDataReaderu.
+            Jako typ příkazu se použije DefaultCommandType.
+            </summary>
+            <param name="cmdText">text SQL příkazu</param>
+            <returns>resultset ve formě SqlDataReaderu</returns>
+        </member>
+        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteDataRecord(System.Data.SqlClient.SqlCommand,System.Data.CommandBehavior)">
+            <summary>
+            Donastaví a vykoná SqlCommand pomocí CommandBehavior a vrátí první řádek prvního resultsetu
+            ve formě <see cref="T:Havit.Data.DataRecord"/>. Pokud neexistuje, vrátí null.
+            </summary>
+            <param name="cmd">příkaz (nemusí mít nastaveno Connection)</param>
+            <param name="behavior">požadované "chování"</param>
+            <returns>první řádek prvního resultsetu ve formě <see cref="T:Havit.Data.DataRecord"/></returns>
+        </member>
+        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteDataRecord(System.Data.SqlClient.SqlCommand)">
+            <summary>
+            Donastaví a vykoná SqlCommand a vrátí první řádek prvního resultsetu
+            ve formě <see cref="T:Havit.Data.DataRecord"/>. Pokud neexistuje, vrátí null.
+            </summary>
+            <param name="cmd">příkaz (nemusí mít nastaveno Connection)</param>
+            <returns>první řádek prvního resultsetu ve formě <see cref="T:Havit.Data.DataRecord"/></returns>
+        </member>
+        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteDataRecord(System.String,System.Data.CommandType)">
+            <summary>
+            Vytvoří SqlCommand dle zadaných parametrů, donasataví ho a vrátí první řádek prvního resultsetu
+            ve formě <see cref="T:Havit.Data.DataRecord"/>. Pokud neexistuje, vrátí null.
+            </summary>
+            <param name="cmdText">text SQL příkazu</param>
+            <param name="cmdType">typ SQL příkazu</param>
+            <returns>první řádek prvního resultsetu ve formě <see cref="T:Havit.Data.DataRecord"/></returns>
+        </member>
+        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteDataRecord(System.String)">
+            <summary>
+            Vytvoří, nastaví a vykoná SqlCommand dle zadaného SQL příkazu
+            a vrátí výsledný resultset ve formě <see cref="T:Havit.Data.DataRecord"/>.
+            Jako typ příkazu se použije <see cref="!:DefaultCommandType"/>.
+            </summary>
+            <param name="cmdText">text SQL příkazu</param>
+            <returns>první řádek prvního resultsetu ve formě <see cref="T:Havit.Data.DataRecord"/></returns>
+        </member>
+        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteScalar(System.Data.SqlClient.SqlCommand)">
+            <summary>
+            Donastaví a vykoná SqlCommand a vrátí první sloupec prvního řádku jeho resultsetu.
+            </summary>
+            <example>
+            int result = (int)ExecuteScalar(cmd);
+            </example>
+            <param name="cmd">příkaz (nemusí mít nastaveno Connection)</param>
+            <returns>první sloupec prvního řádku resultsetu</returns>
+        </member>
+        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteScalar(System.String,System.Data.CommandType)">
+            <summary>
+            Vytvoří ze zadaných parametrů SqlCommand, vykoná ho a vrátí první sloupec
+            prvního řádku jeho resultsetu.
+            </summary>
+            <param name="cmdText">text SQL příkazu</param>
+            <param name="cmdType">typ příkazu</param>
+            <returns>první sloupec prvního řádku resultsetu</returns>
+        </member>
+        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteScalar(System.String)">
+            <summary>
+            Vytvoří SqlCommand, nastaví mu DefaultCommandType, vykoná ho a vrátí
+            první sloupec prvního řádku jeho resultsetu.
+            </summary>
+            <param name="cmdText">text SQL příkazu</param>
+            <returns>první sloupec prvního řádku resultsetu</returns>
+        </member>
+        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteTransaction(Havit.Data.SqlClient.SqlTransactionDelegate,System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            Vykoná požadované kroky v rámci transakce.
+            Pokud je zadaná transakce <c>null</c>, je spuštěna a commitována nová.
+            Pokud zadaná transakce není <c>null</c>, jsou zadané kroky pouze vykonány.
+            </summary>
+            <param name="transactionWork"><see cref="T:Havit.Data.SqlClient.SqlTransactionDelegate"/> reprezentující s úkony, které mají být součástí transakce</param>
+            <param name="outerTransaction">transakce</param>
+        </member>
+        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteTransaction(Havit.Data.SqlClient.SqlTransactionDelegate)">
+            <summary>
+            Vykoná požadované kroky v rámci transakce.
+            Je spuštěna a commitována nová samostatná transakce.
+            </summary>
+            <param name="transactionWork"><see cref="T:Havit.Data.SqlClient.SqlTransactionDelegate"/> reprezentující s úkony, které mají být součástí transakce</param>
+        </member>
+        <member name="P:Havit.Data.SqlClient.SqlDataAccess.ConnectionString">
+            <summary>
+            Implicitní ConnectionString.
+            Použije se vždy, není-li metodě jakkoliv explicitně předán jiný.
+            Není-li nastaven klientskou aplikací, načte se z .config souboru.
+            </summary>
+            <remarks>
+            Pokus o načtení z .config souboru je proveden vždy, je-li právě nastaven
+            na <c>null</c> nebo <c>String.Empty</c>. Jeho nastavením na <c>null</c> lze tedy
+            poručit, aby se ConnectionString načetl z .config souboru.
+            </remarks>
+        </member>
+        <member name="P:Havit.Data.SqlClient.SqlDataAccess.ConfigConnectionString">
+            <summary>
+            ConnectionString z .config souboru (web.config nebo applikace.exe.config).
+            </summary>
+            <remarks>
+            Pro .NET Framework 2.0 rozšířeno o použití hodnoty <b>DefaultConnectionString</b>
+            z konfigurační sekce &lt;connectionStrings&gt;.
+            </remarks>
+            <example>
+            Buď <b>DefaultConnectionString</b> z konfigurační sekce &lt;connectionStrings&gt;:
+            <code>
+            &lt;configuration&gt;
+            	&lt;connectionStrings&gt;
+            		&lt;add name="DefaultConnectionString"
+            			connectionString="Server=localhost;Database=pubs;UID=user;PWD=heslo;"
+            			providerName="System.Data.SqlClient"
+            		/&gt;
+            	&lt;/connectionStrings&gt;
+            &lt;/configuration&gt;
+            </code>
+            a nebo po staru <b>ConnectionString</b> z konfigurační sekce &lt;appStrings&gt;:
+            <code>
+            &lt;configuration&gt;
+            	&lt;appSettings&gt;
+            		&lt;add key="ConnectionString" value="Server=localhost;Database=pubs;UID=user;PWD=heslo;" /&gt;
+            	&lt;/appSettings&gt;
+            &lt;/configuration&gt;
+            </code>
+            </example>
+        </member>
+        <member name="T:Havit.Data.DbTransactionDelegate">
+            <summary>
+            Reprezentuje metodu, která vykonává jednotlivé kroky transakce.
+            </summary>
+            <param name="transaction">transakce, v rámci které mají být jednotlivé kroky vykonány</param>
         </member>
     </members>
 </doc>

@@ -201,7 +201,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region EnsureAutoDataBind
 		/// <summary>
-		/// Zajistí nabindování dat pro režit AutoDataBind.
+		/// Zajistí nabindování dat pro režim AutoDataBind.
 		/// </summary>
 		protected void EnsureAutoDataBind()
 		{
@@ -250,6 +250,9 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 
 		#region Constructor
+		/// <summary>
+		/// Vytvoøí instanci EnterpriseCheckBoxList.
+		/// </summary>
 		public EnterpriseCheckBoxList()
 		{
 			DataValueField = "ID";

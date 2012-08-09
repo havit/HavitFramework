@@ -176,6 +176,4 @@ namespace Havit.BusinessTest
 
 		#endregion
 	}
-
-
 }

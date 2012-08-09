@@ -6,9 +6,9 @@ using System.Data.Common;
 namespace Havit.Business
 {
     /// <summary>
-    /// Argumenty nesoucí transakci.
+    /// Argument nesoucí instanci databázové transakce.
     /// </summary>
-    public class TransactionEventArgs: EventArgs
+    public class DbTransactionEventArgs: EventArgs
     {
         #region Transaction
         /// <summary>
@@ -17,13 +17,12 @@ namespace Havit.Business
         public DbTransaction Transaction
         {
             get { return _transaction; }
-            set { _transaction = value; }
         }
         private DbTransaction _transaction; 
         #endregion
 
         #region Constructors
-        public TransactionEventArgs(DbTransaction transaction)
+        public DbTransactionEventArgs(DbTransaction transaction)
         {
             this._transaction = transaction;
         } 

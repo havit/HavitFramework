@@ -89,6 +89,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActiveRecordBusinessObjectBase.cs" />
+    <Compile Include="AfterSaveEventArgs.cs" />
+    <Compile Include="BeforeSaveEventArgs.cs" />
     <Compile Include="BusinessObjectBase.cs" />
     <Compile Include="BusinessObjectCollection.cs" />
     <Compile Include="CollectionPropertyInfo.cs" />
@@ -151,7 +153,7 @@
     <Compile Include="PropertyHolderBase.cs" />
     <Compile Include="Query\QueryParams.cs" />
     <Compile Include="ReferenceFieldPropertyInfo.cs" />
-    <Compile Include="TransactionEventArgs.cs" />
+    <Compile Include="DbTransactionEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Havit.Data.SqlServer\Havit.Data.SqlServer.csproj">

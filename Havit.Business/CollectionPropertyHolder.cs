@@ -28,7 +28,7 @@ namespace Havit.Business
 		/// <summary>
 		/// Hodnota, kterou CollectionPropertyHolder nese.
 		/// </summary>
-				public CollectionType Value
+		public CollectionType Value
 		{
 			get
 			{

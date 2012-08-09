@@ -115,6 +115,7 @@
     <Compile Include="GetAllDelegate.cs" />
     <Compile Include="Query\DateRangeCondition.cs" />
     <Compile Include="Query\EmptyCondition.cs" />
+    <Compile Include="Query\StaticCondition.cs" />
     <Compile Include="Query\FieldPropertySortItem.cs" />
     <Compile Include="Query\GuidCondition.cs" />
     <Compile Include="Query\IOperand.cs" />
@@ -123,6 +124,7 @@
     <Compile Include="Query\OrCondition.cs" />
     <Compile Include="Query\OrderByCollection.cs" />
     <Compile Include="Query\ReferenceCondition.cs" />
+    <Compile Include="Query\MatchListMode.cs" />
     <Compile Include="Query\SqlInt32ArrayOperand.cs" />
     <Compile Include="Query\TernaryCondition.cs" />
     <Compile Include="Query\TextCondition.cs" />

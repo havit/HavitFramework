@@ -111,28 +111,62 @@ namespace Havit.Business.Query
 
 		#region CreateIn
 		/// <summary>
-		/// Vytvoøí podmínku existence reference v poli ID objektù.
+		/// Vytvoøí podmínku existence hodnoty v poli ID objektù.
 		/// </summary>
 		public static Condition CreateIn(IOperand operand, int[] ids)
 		{
-			if (ids.Length < 2000)
+			return CreateIn(operand, ids, MatchListMode.IntArray);
+		}
+
+		/// <summary>
+		/// Vytvoøí podmínku existence hodnoty v poli ID objektù.
+		/// </summary>
+		/// <param name="operand">Testovaný operand.</param>
+		/// <param name="ids">Seznam hodnot. Ovìøue se, že hodnota operandu je mezi tìmito hodnotami.</param>
+		/// <param name="mode">Zpùsob tvoøení dotazu.</param>
+		/// <returns>Podmínka testující existenci hodnoty v poli ID objektù.</returns>
+		public static Condition CreateIn(IOperand operand, int[] ids, MatchListMode mode)
+		{
+			switch (mode)
 			{
-				return new BinaryCondition("{0} IN (SELECT Value FROM dbo.IntArrayToTable({1}))", operand, SqlInt32ArrayOperand.Create(ids));
-			}
-			else
-			{
-				OrCondition result = new OrCondition();
-				int startIndex = 0;
-				while (startIndex < ids.Length)
-				{
-					int length = Math.Min(ids.Length - startIndex, 1999);
-					
-					int[] subarray = new int[length];
-					Array.Copy(ids, startIndex, subarray, 0, length);
-					result.Conditions.Add(ReferenceCondition.CreateIn(operand, subarray));
-					startIndex += length;
-				}
-				return result;
+				case MatchListMode.IntArray:
+					if (ids.Length < 2000)
+					{
+						return new BinaryCondition("{0} IN (SELECT Value FROM dbo.IntArrayToTable({1}))", operand, SqlInt32ArrayOperand.Create(ids));
+					}
+					else
+					{
+						OrCondition result = new OrCondition();
+						int startIndex = 0;
+						while (startIndex < ids.Length)
+						{
+							int length = Math.Min(ids.Length - startIndex, 1999);
+							
+							int[] subarray = new int[length];
+							Array.Copy(ids, startIndex, subarray, 0, length);
+							result.Conditions.Add(ReferenceCondition.CreateIn(operand, subarray));
+							startIndex += length;
+						}
+						return result;
+					}
+				case MatchListMode.CommaSeparatedList:
+					if (ids.Length == 0)
+					{
+						return StaticCondition.CreateFalse();
+					}
+					else
+					{
+						string condition = String.Format("{{0}} IN ({0})",
+							String.Join(",", Array.ConvertAll<int, string>(ids,
+								delegate(int item)
+								{
+									return item.ToString();
+								}))
+							);
+						return new UnaryCondition(condition, operand);
+					}
+				default:
+					throw new InvalidOperationException("Neznámá hodnota MatchListMode.");
 			}
 		}
 		#endregion
@@ -143,24 +177,58 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateNotIn(IOperand operand, int[] ids)
 		{
-			if (ids.Length < 2000)
-			{
-				return new BinaryCondition("{0} NOT IN (SELECT Value FROM dbo.IntArrayToTable({1}))", operand, SqlInt32ArrayOperand.Create(ids));
-			}
-			else
-			{
-				OrCondition result = new OrCondition();
-				int startIndex = 0;
-				while (startIndex < ids.Length)
-				{
-					int length = Math.Min(ids.Length - startIndex, 1999);
+			return CreateNotIn(operand, ids, MatchListMode.IntArray);
+		}
 
-					int[] subarray = new int[length];
-					Array.Copy(ids, startIndex, subarray, 0, length);
-					result.Conditions.Add(ReferenceCondition.CreateNotIn(operand, subarray));
-					startIndex += length;
-				}
-				return result;
+		/// <summary>
+		/// Vytvoøí podmínku neexistence hodnoty v poli ID objektù.
+		/// </summary>
+		/// <param name="operand">Testovaný operand.</param>
+		/// <param name="ids">Seznam hodnot. Ovìøue se, že hodnota operandu není mezi tìmito hodnotami.</param>
+		/// <param name="mode">Zpùsob tvoøení dotazu.</param>
+		/// <returns>Podmínka testující neexistenci hodnoty v poli ID objektù.</returns>
+		public static Condition CreateNotIn(IOperand operand, int[] ids, MatchListMode mode)
+		{
+			switch (mode)
+			{
+				case MatchListMode.IntArray:
+					if (ids.Length < 2000)
+					{
+						return new BinaryCondition("{0} NOT IN (SELECT Value FROM dbo.IntArrayToTable({1}))", operand, SqlInt32ArrayOperand.Create(ids));
+					}
+					else
+					{
+						OrCondition result = new OrCondition();
+						int startIndex = 0;
+						while (startIndex < ids.Length)
+						{
+							int length = Math.Min(ids.Length - startIndex, 1999);
+
+							int[] subarray = new int[length];
+							Array.Copy(ids, startIndex, subarray, 0, length);
+							result.Conditions.Add(ReferenceCondition.CreateNotIn(operand, subarray));
+							startIndex += length;
+						}
+						return result;
+					}
+				case MatchListMode.CommaSeparatedList:
+					if (ids.Length == 0)
+					{
+						return StaticCondition.CreateTrue();
+					}
+					else
+					{
+						string condition = String.Format("{{0}} NOT IN ({0})",
+							String.Join(",", Array.ConvertAll<int, string>(ids,
+								delegate(int item)
+								{
+									return item.ToString();
+								}))
+							);
+						return new UnaryCondition(condition, operand);
+					}
+				default:
+					throw new InvalidOperationException("Neznámá hodnota MatchListMode.");
 			}
 		}
 		#endregion

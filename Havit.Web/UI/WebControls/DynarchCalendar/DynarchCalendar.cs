@@ -9,6 +9,9 @@ using System.Threading;
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-setup_stripped.js", "text/javascript")]
 
 #region WebResources - Languages
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-cs-utf8.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-cs-win.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-af.js", "text/javascript")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-af.js", "text/javascript")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-al.js", "text/javascript")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-bg.js", "text/javascript")]
@@ -811,30 +814,31 @@ namespace Havit.Web.UI.WebControls
 		{
 			if (String.IsNullOrEmpty(LanguageScriptUrl))
 			{
-				// ovìøíme responce encoding
+				// ovìøíme response encoding
 				// povoleno utf-8 a win-1250 pro èeštinu
-				if ((HttpContext.Current.Response.ContentEncoding != Encoding.UTF8) || ((Thread.CurrentThread.CurrentUICulture.Name.Substring(0, 2) == "cs") && (HttpContext.Current.Response.ContentEncoding != Encoding.GetEncoding(1250))))
+				if ((HttpContext.Current.Response.ContentEncoding != Encoding.UTF8) &&
+					!((Thread.CurrentThread.CurrentUICulture.Name.Substring(0, 2) == "cs") && (HttpContext.Current.Response.ContentEncoding == Encoding.GetEncoding(1250))))
 				{
 					throw new ApplicationException("Response encoding must be UTF8 (or Windows-1250 for czech). Otherwise DynarchCalendar's javascripts won't work.");
 				}
 				
 				if ((Thread.CurrentThread.CurrentUICulture.Name.Substring(0, 2) == "cs"))
 				{
-					if (HttpContext.Current.Response.ContentEncoding != Encoding.UTF8)
+					if (HttpContext.Current.Response.ContentEncoding == Encoding.UTF8)
 					{
 						// èeština UTF-8
-						Page.ClientScript.RegisterClientScriptResource(typeof(DynarchCalendar), "Havit.Domiphone.WebBase.WebControls.DynarchCalendar.calendar-cs-utf8.js");
+						Page.ClientScript.RegisterClientScriptResource(typeof(DynarchCalendar), "Havit.Web.UI.WebControls.DynarchCalendar.calendar-cs-utf8.js");
 					}
 					else
 					{
 						// èeština Win-1250
-						Page.ClientScript.RegisterClientScriptResource(typeof(DynarchCalendar), "Havit.Domiphone.WebBase.WebControls.DynarchCalendar.calendar-cs-win.js");
+						Page.ClientScript.RegisterClientScriptResource(typeof(DynarchCalendar), "Havit.Web.UI.WebControls.DynarchCalendar.calendar-cs-win.js");
 					}
 				}
 				else
 				{
 					// ostatni, utf-8
-					Page.ClientScript.RegisterClientScriptResource(typeof(DynarchCalendar), "Havit.Domiphone.WebBase.WebControls.DynarchCalendar.calendar-" + Thread.CurrentThread.CurrentUICulture.Name.Substring(0, 2) + ".js");
+					Page.ClientScript.RegisterClientScriptResource(typeof(DynarchCalendar), "Havit.Web.UI.WebControls.DynarchCalendar.calendar-" + Thread.CurrentThread.CurrentUICulture.Name.Substring(0, 2) + ".js");
 				}
 			}
 			else

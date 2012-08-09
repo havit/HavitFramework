@@ -422,7 +422,7 @@ namespace Havit.BusinessLayerTest
 		{
 			DataRecord result;
 			
-			SqlCommand sqlCommand = new SqlCommand("SELECT UzivatelID, Username, Password, DisplayAs, Email, Disabled, LockedTime, LoginLast, LoginCount, Created, Deleted, (SELECT dbo.IntArrayAggregate(_items.RoleID) FROM dbo.Uzivatel_Role AS _items WHERE (_items.UzivatelID = @UzivatelID)) AS Role FROM dbo.Uzivatel WHERE UzivatelID = @UzivatelID");
+			SqlCommand sqlCommand = new SqlCommand("SELECT UzivatelID, Username, Password, DisplayAs, Email, Disabled, LockedTime, LoginLast, LoginCount, Created, Deleted, (SELECT dbo.IntArrayAggregate(_items.RoleID) FROM [dbo].[Uzivatel_Role] AS _items WHERE (_items.UzivatelID = @UzivatelID)) AS Role FROM [dbo].[Uzivatel] WHERE UzivatelID = @UzivatelID");
 			sqlCommand.Transaction = (SqlTransaction)transaction;
 			
 			SqlParameter sqlParameterUzivatelID = new SqlParameter("@UzivatelID", SqlDbType.Int);
@@ -524,7 +524,7 @@ namespace Havit.BusinessLayerTest
 		
 		#region Save & Delete: Save_SaveMembers, Save_SaveCollections, Save_MinimalInsert, Save_FullInsert, Save_Update, Save_Insert_InsertRequiredForMinimalInsert, Save_Insert_InsertRequiredForFullInsert, Delete_Perform
 		
-		// Save_SaveMembers: Není co ukládat
+		// Save_SaveMembers: Není co ukládat.
 		
 		/// <summary>
 		/// Ukládá member-kolekce objektu.
@@ -543,7 +543,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Implementace metody vloží jen not-null vlastnosti objektu do databáze a nastaví nově přidělené ID (primární klíč).
 		/// </summary>
-		public override void Save_MinimalInsert(DbTransaction transaction)
+		public override sealed void Save_MinimalInsert(DbTransaction transaction)
 		{
 			base.Save_MinimalInsert(transaction);
 			Save_Insert_InsertRequiredForMinimalInsert(transaction);
@@ -605,7 +605,7 @@ namespace Havit.BusinessLayerTest
 			sqlCommand.Parameters.Add(sqlParameterDeleted);
 			_DeletedPropertyHolder.IsDirty = false;
 			
-			sqlCommand.CommandText = "DECLARE @UzivatelID INT; INSERT INTO dbo.Uzivatel (Username, Password, DisplayAs, Email, Disabled, LockedTime, LoginLast, LoginCount, Deleted) VALUES (@Username, @Password, @DisplayAs, @Email, @Disabled, @LockedTime, @LoginLast, @LoginCount, @Deleted); SELECT @UzivatelID = SCOPE_IDENTITY(); SELECT @UzivatelID; ";
+			sqlCommand.CommandText = "DECLARE @UzivatelID INT; INSERT INTO [dbo].[Uzivatel] (Username, Password, DisplayAs, Email, Disabled, LockedTime, LoginLast, LoginCount, Deleted) VALUES (@Username, @Password, @DisplayAs, @Email, @Disabled, @LockedTime, @LoginLast, @LoginCount, @Deleted); SELECT @UzivatelID = SCOPE_IDENTITY(); SELECT @UzivatelID; ";
 			
 			this.ID = (int)DbConnector.Default.ExecuteScalar(sqlCommand);
 			this.IsNew = false; // uložený objekt není už nový, dostal i přidělené ID
@@ -618,7 +618,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Implementace metody vloží nový objekt do databáze a nastaví nově přidělené ID (primární klíč).
 		/// </summary>
-		protected override void Save_FullInsert(DbTransaction transaction)
+		protected override sealed void Save_FullInsert(DbTransaction transaction)
 		{
 			SqlCommand sqlCommand = new SqlCommand();
 			sqlCommand.Transaction = (SqlTransaction)transaction;
@@ -687,10 +687,10 @@ namespace Havit.BusinessLayerTest
 				sqlCommand.Parameters.Add(sqlParameterRole);
 				
 				// OPTION (RECOMPILE): workaround pro http://connect.microsoft.com/SQLServer/feedback/ViewFeedback.aspx?FeedbackID=256717
-				collectionCommandBuilder.Append("INSERT INTO dbo.Uzivatel_Role (UzivatelID, RoleID) SELECT @UzivatelID AS UzivatelID, Value AS RoleID FROM dbo.IntArrayToTable(@Role) OPTION (RECOMPILE); ");
+				collectionCommandBuilder.Append("INSERT INTO [dbo].[Uzivatel_Role] (UzivatelID, RoleID) SELECT @UzivatelID AS UzivatelID, Value AS RoleID FROM dbo.IntArrayToTable(@Role) OPTION (RECOMPILE); ");
 			}
 			
-			sqlCommand.CommandText = "DECLARE @UzivatelID INT; INSERT INTO dbo.Uzivatel (Username, Password, DisplayAs, Email, Disabled, LockedTime, LoginLast, LoginCount, Deleted) VALUES (@Username, @Password, @DisplayAs, @Email, @Disabled, @LockedTime, @LoginLast, @LoginCount, @Deleted); SELECT @UzivatelID = SCOPE_IDENTITY(); " + collectionCommandBuilder.ToString() + "SELECT @UzivatelID; ";
+			sqlCommand.CommandText = "DECLARE @UzivatelID INT; INSERT INTO [dbo].[Uzivatel] (Username, Password, DisplayAs, Email, Disabled, LockedTime, LoginLast, LoginCount, Deleted) VALUES (@Username, @Password, @DisplayAs, @Email, @Disabled, @LockedTime, @LoginLast, @LoginCount, @Deleted); SELECT @UzivatelID = SCOPE_IDENTITY(); " + collectionCommandBuilder.ToString() + "SELECT @UzivatelID; ";
 			
 			this.ID = (int)DbConnector.Default.ExecuteScalar(sqlCommand);
 			this.IsNew = false; // uložený objekt není už nový, dostal i přidělené ID
@@ -703,13 +703,13 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Implementace metody aktualizuje data objektu v databázi.
 		/// </summary>
-		protected override void Save_Update(DbTransaction transaction)
+		protected override sealed void Save_Update(DbTransaction transaction)
 		{
 			SqlCommand sqlCommand = new SqlCommand();
 			sqlCommand.Transaction = (SqlTransaction)transaction;
 			
 			StringBuilder commandBuilder = new StringBuilder();
-			commandBuilder.Append("UPDATE dbo.Uzivatel SET ");
+			commandBuilder.Append("UPDATE [dbo].[Uzivatel] SET ");
 			
 			bool dirtyFieldExists = false;
 			if (_UsernamePropertyHolder.IsDirty)
@@ -870,11 +870,11 @@ namespace Havit.BusinessLayerTest
 			if (_RolePropertyHolder.IsDirty)
 			{
 				dirtyCollectionExists = true;
-				commandBuilder.AppendFormat("DELETE FROM dbo.Uzivatel_Role WHERE UzivatelID = @UzivatelID; ");
+				commandBuilder.AppendFormat("DELETE FROM [dbo].[Uzivatel_Role] WHERE UzivatelID = @UzivatelID; ");
 				if (_RolePropertyHolder.Value.Count > 0)
 				{
 					// OPTION (RECOMPILE): workaround pro http://connect.microsoft.com/SQLServer/feedback/ViewFeedback.aspx?FeedbackID=256717
-					commandBuilder.AppendFormat("INSERT INTO dbo.Uzivatel_Role (UzivatelID, RoleID) SELECT @UzivatelID AS UzivatelID, Value AS RoleID FROM dbo.IntArrayToTable(@Role) OPTION (RECOMPILE); ");
+					commandBuilder.AppendFormat("INSERT INTO [dbo].[Uzivatel_Role] (UzivatelID, RoleID) SELECT @UzivatelID AS UzivatelID, Value AS RoleID FROM dbo.IntArrayToTable(@Role) OPTION (RECOMPILE); ");
 					SqlParameter sqlParameterRole = new SqlParameter("@Role", SqlDbType.Udt);
 					sqlParameterRole.UdtTypeName = "IntArray";
 					sqlParameterRole.Value = new SqlInt32Array(this._RolePropertyHolder.Value.GetIDs());
@@ -897,7 +897,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Ukládá hodnoty potřebné pro provedení minimálního insertu. Volá Save_Insert_SaveRequiredForMinimalInsert.
 		/// </summary>
-		protected override void Save_Insert_InsertRequiredForMinimalInsert(DbTransaction transaction)
+		protected override sealed void Save_Insert_InsertRequiredForMinimalInsert(DbTransaction transaction)
 		{
 			base.Save_Insert_InsertRequiredForMinimalInsert(transaction);
 			
@@ -906,7 +906,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Ukládá hodnoty potřebné pro provedení plného insertu.
 		/// </summary>
-		protected override void Save_Insert_InsertRequiredForFullInsert(DbTransaction transaction)
+		protected override sealed void Save_Insert_InsertRequiredForFullInsert(DbTransaction transaction)
 		{
 			base.Save_Insert_InsertRequiredForFullInsert(transaction);
 			
@@ -923,7 +923,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Metoda označí objekt jako smazaný a uloží jej.
 		/// </summary>
-		protected override void Delete_Perform(DbTransaction transaction)
+		protected override sealed void Delete_Perform(DbTransaction transaction)
 		{
 			if (IsNew)
 			{

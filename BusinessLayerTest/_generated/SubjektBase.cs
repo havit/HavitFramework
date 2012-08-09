@@ -221,7 +221,7 @@ namespace Havit.BusinessLayerTest
 		{
 			DataRecord result;
 			
-			SqlCommand sqlCommand = new SqlCommand("SELECT SubjektID, Nazev, UzivatelID, Created, Deleted FROM dbo.Subjekt WHERE SubjektID = @SubjektID");
+			SqlCommand sqlCommand = new SqlCommand("SELECT SubjektID, Nazev, UzivatelID, Created, Deleted FROM [dbo].[Subjekt] WHERE SubjektID = @SubjektID");
 			sqlCommand.Transaction = (SqlTransaction)transaction;
 			
 			SqlParameter sqlParameterSubjektID = new SqlParameter("@SubjektID", SqlDbType.Int);
@@ -285,12 +285,12 @@ namespace Havit.BusinessLayerTest
 			
 		}
 		
-		// Save_SaveCollections: Není co ukládat
+		// Save_SaveCollections: Není co ukládat.
 		
 		/// <summary>
 		/// Implementace metody vloží jen not-null vlastnosti objektu do databáze a nastaví nově přidělené ID (primární klíč).
 		/// </summary>
-		public override void Save_MinimalInsert(DbTransaction transaction)
+		public override sealed void Save_MinimalInsert(DbTransaction transaction)
 		{
 			base.Save_MinimalInsert(transaction);
 			Save_Insert_InsertRequiredForMinimalInsert(transaction);
@@ -310,7 +310,7 @@ namespace Havit.BusinessLayerTest
 			sqlCommand.Parameters.Add(sqlParameterDeleted);
 			_DeletedPropertyHolder.IsDirty = false;
 			
-			sqlCommand.CommandText = "DECLARE @SubjektID INT; INSERT INTO dbo.Subjekt (Nazev, Deleted) VALUES (@Nazev, @Deleted); SELECT @SubjektID = SCOPE_IDENTITY(); SELECT @SubjektID; ";
+			sqlCommand.CommandText = "DECLARE @SubjektID INT; INSERT INTO [dbo].[Subjekt] (Nazev, Deleted) VALUES (@Nazev, @Deleted); SELECT @SubjektID = SCOPE_IDENTITY(); SELECT @SubjektID; ";
 			
 			this.ID = (int)DbConnector.Default.ExecuteScalar(sqlCommand);
 			this.IsNew = false; // uložený objekt není už nový, dostal i přidělené ID
@@ -323,7 +323,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Implementace metody vloží nový objekt do databáze a nastaví nově přidělené ID (primární klíč).
 		/// </summary>
-		protected override void Save_FullInsert(DbTransaction transaction)
+		protected override sealed void Save_FullInsert(DbTransaction transaction)
 		{
 			SqlCommand sqlCommand = new SqlCommand();
 			sqlCommand.Transaction = (SqlTransaction)transaction;
@@ -346,7 +346,7 @@ namespace Havit.BusinessLayerTest
 			sqlCommand.Parameters.Add(sqlParameterDeleted);
 			_DeletedPropertyHolder.IsDirty = false;
 			
-			sqlCommand.CommandText = "DECLARE @SubjektID INT; INSERT INTO dbo.Subjekt (Nazev, UzivatelID, Deleted) VALUES (@Nazev, @UzivatelID, @Deleted); SELECT @SubjektID = SCOPE_IDENTITY(); SELECT @SubjektID; ";
+			sqlCommand.CommandText = "DECLARE @SubjektID INT; INSERT INTO [dbo].[Subjekt] (Nazev, UzivatelID, Deleted) VALUES (@Nazev, @UzivatelID, @Deleted); SELECT @SubjektID = SCOPE_IDENTITY(); SELECT @SubjektID; ";
 			
 			this.ID = (int)DbConnector.Default.ExecuteScalar(sqlCommand);
 			this.IsNew = false; // uložený objekt není už nový, dostal i přidělené ID
@@ -359,13 +359,13 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Implementace metody aktualizuje data objektu v databázi.
 		/// </summary>
-		protected override void Save_Update(DbTransaction transaction)
+		protected override sealed void Save_Update(DbTransaction transaction)
 		{
 			SqlCommand sqlCommand = new SqlCommand();
 			sqlCommand.Transaction = (SqlTransaction)transaction;
 			
 			StringBuilder commandBuilder = new StringBuilder();
-			commandBuilder.Append("UPDATE dbo.Subjekt SET ");
+			commandBuilder.Append("UPDATE [dbo].[Subjekt] SET ");
 			
 			bool dirtyFieldExists = false;
 			if (_NazevPropertyHolder.IsDirty)
@@ -442,7 +442,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Ukládá hodnoty potřebné pro provedení minimálního insertu. Volá Save_Insert_SaveRequiredForMinimalInsert.
 		/// </summary>
-		protected override void Save_Insert_InsertRequiredForMinimalInsert(DbTransaction transaction)
+		protected override sealed void Save_Insert_InsertRequiredForMinimalInsert(DbTransaction transaction)
 		{
 			base.Save_Insert_InsertRequiredForMinimalInsert(transaction);
 			
@@ -451,7 +451,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Ukládá hodnoty potřebné pro provedení plného insertu.
 		/// </summary>
-		protected override void Save_Insert_InsertRequiredForFullInsert(DbTransaction transaction)
+		protected override sealed void Save_Insert_InsertRequiredForFullInsert(DbTransaction transaction)
 		{
 			base.Save_Insert_InsertRequiredForFullInsert(transaction);
 			
@@ -465,7 +465,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Metoda označí objekt jako smazaný a uloží jej.
 		/// </summary>
-		protected override void Delete_Perform(DbTransaction transaction)
+		protected override sealed void Delete_Perform(DbTransaction transaction)
 		{
 			if (IsNew)
 			{

@@ -126,7 +126,7 @@ namespace Havit.BusinessLayerTest
 		{
 			DataRecord result;
 			
-			SqlCommand sqlCommand = new SqlCommand("SELECT RoleID, Symbol FROM dbo.Role WHERE RoleID = @RoleID");
+			SqlCommand sqlCommand = new SqlCommand("SELECT RoleID, Symbol FROM [dbo].[Role] WHERE RoleID = @RoleID");
 			sqlCommand.Transaction = (SqlTransaction)transaction;
 			
 			SqlParameter sqlParameterRoleID = new SqlParameter("@RoleID", SqlDbType.Int);
@@ -158,14 +158,12 @@ namespace Havit.BusinessLayerTest
 		
 		#region Save & Delete: Save_SaveMembers, Save_SaveCollections, Save_MinimalInsert, Save_FullInsert, Save_Update, Save_Insert_InsertRequiredForMinimalInsert, Save_Insert_InsertRequiredForFullInsert, Delete_Perform
 		
-		// Save_SaveMembers: Není co ukládat
-		
-		// Save_SaveCollections: Není co ukládat
-		
+		// Save_SaveMembers: Neukládáme, jsme read-only třídou.
+		// Save_SaveCollections: Neukládáme, jsme read-only třídou.
 		/// <summary>
 		/// Implementace metody vloží jen not-null vlastnosti objektu do databáze a nastaví nově přidělené ID (primární klíč).
 		/// </summary>
-		public override void Save_MinimalInsert(DbTransaction transaction)
+		public override sealed void Save_MinimalInsert(DbTransaction transaction)
 		{
 			throw new InvalidOperationException("Objekty třídy Havit.BusinessLayerTest.Role jsou určeny jen pro čtení.");
 		}
@@ -173,7 +171,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Implementace metody vloží nový objekt do databáze a nastaví nově přidělené ID (primární klíč).
 		/// </summary>
-		protected override void Save_FullInsert(DbTransaction transaction)
+		protected override sealed void Save_FullInsert(DbTransaction transaction)
 		{
 			throw new InvalidOperationException("Objekty třídy Havit.BusinessLayerTest.Role jsou určeny jen pro čtení.");
 		}
@@ -181,7 +179,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Implementace metody aktualizuje data objektu v databázi.
 		/// </summary>
-		protected override void Save_Update(DbTransaction transaction)
+		protected override sealed void Save_Update(DbTransaction transaction)
 		{
 			throw new InvalidOperationException("Objekty třídy Havit.BusinessLayerTest.Role jsou určeny jen pro čtení.");
 		}
@@ -189,7 +187,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Objekt je typu readonly. Metoda vyhazuje výjimku InvalidOperationException.
 		/// </summary>
-		protected override void Delete_Perform(DbTransaction transaction)
+		protected override sealed void Delete_Perform(DbTransaction transaction)
 		{
 			throw new InvalidOperationException("Objekty třídy Havit.BusinessLayerTest.Role jsou určeny jen pro čtení.");
 		}

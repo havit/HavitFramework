@@ -150,36 +150,18 @@ namespace Havit.Web.UI.WebControls
 		{
 			get
 			{
-				if (_propertyValueChanged)
+				if (!IsValid)
 				{
-					return _propertyValue;
+					throw new InvalidOperationException("Nelze číst Value, pokud IsValid je false.");
 				}
-
-				string text = valueTextBox.Text.Trim();
-				if (String.IsNullOrEmpty(text))
-				{
-					return null;
-				}
-
-				return DateTime.Parse(text, Thread.CurrentThread.CurrentCulture.DateTimeFormat);
+				return (DateTime?)ViewState["Value"];
 			}
 			set
 			{
-				_propertyValueChanged = true;
-				_propertyValue = value;
-
-				//if (value == null || value == DateTime.MinValue)
-				//{
-				//    valueTextBox.Text = String.Empty;
-				//    return;
-				//}
-				
-				//valueTextBox.Text = value.Value.ToShortDateString();
+				SetValue(value, true);
 			}
 		}
-		private bool _propertyValueChanged = false;
-		private DateTime? _propertyValue = null;
-		#endregion.
+		#endregion
 
 		#region ValueText
 		/// <summary>
@@ -203,20 +185,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			get
 			{
-				if (_propertyValueChanged)
-				{
-					return true;
-				}
-
-				string text = valueTextBox.Text.Trim();
-
-				if (text.Length == 0)
-				{
-					return true;
-				}
-
-				DateTime dt;
-				return DateTime.TryParse(text, Thread.CurrentThread.CurrentCulture.DateTimeFormat, DateTimeStyles.None, out dt);
+				return (bool)(ViewState["IsValid"] ?? true);
 			}
 		}
 		#endregion
@@ -328,9 +297,10 @@ namespace Havit.Web.UI.WebControls
 		{
 			base.OnPreRender(e);
 
-			if (_propertyValueChanged)
+			if (IsValid)
 			{
-				if ((_propertyValue == null) || (_propertyValue == DateTime.MinValue))
+				DateTime? value = Value;
+				if ((value == null) || (value == DateTime.MinValue))
 				{
 					valueTextBox.Text = String.Empty;
 				}
@@ -338,8 +308,8 @@ namespace Havit.Web.UI.WebControls
 				{
 					switch (this.DateTimeMode)
 					{
-						case DateTimeMode.Date: valueTextBox.Text = _propertyValue.Value.ToShortDateString(); break;
-						case DateTimeMode.DateTime: valueTextBox.Text = _propertyValue.Value.ToString("g"); break;
+						case DateTimeMode.Date: valueTextBox.Text = value.Value.ToShortDateString(); break;
+						case DateTimeMode.DateTime: valueTextBox.Text = value.Value.ToString("g"); break;
 						default: throw new ApplicationException("Neznámá hodnota DateTimeMode.");
 					}
 				}
@@ -514,6 +484,25 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		private void ValueTextBox_TextChanged(object sender, EventArgs e)
 		{
+
+			string text = valueTextBox.Text.Trim();
+			if (String.IsNullOrEmpty(text))
+			{
+				SetValue(null, true);
+			}
+			else
+			{
+				DateTime dt;
+				if (DateTime.TryParse(text, Thread.CurrentThread.CurrentCulture.DateTimeFormat, DateTimeStyles.None, out dt))
+				{
+					SetValue(dt, true);
+				}
+				else
+				{
+					SetValue(null, false);
+				}
+			}
+			
 			if (!Object.Equals(ViewState["ValueMemento"], GetValueMemento()))
 			{
 				OnValueChanged(EventArgs.Empty);
@@ -536,6 +525,17 @@ namespace Havit.Web.UI.WebControls
 			{
 				return DateTimeBox.InvalidValueMemento;
 			}
+		}
+		#endregion
+
+		#region SetValue
+		/// <summary>
+		/// Nastaví hodnoty vlastností Value a IsValid.
+		/// </summary>
+		protected void SetValue(DateTime? value, bool isValid)
+		{
+			ViewState["Value"] = value;
+			ViewState["IsValid"] = isValid;
 		}
 		#endregion
 

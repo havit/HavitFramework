@@ -1569,6 +1569,11 @@
             Slouží k detekci, zda došlo ke změně hodnoty mezi postbacky.
             </summary>
         </member>
+        <member name="M:Havit.Web.UI.WebControls.DateTimeBox.SetValue(System.Nullable{System.DateTime},System.Boolean)">
+            <summary>
+            Nastaví hodnoty vlastností Value a IsValid.
+            </summary>
+        </member>
         <member name="M:Havit.Web.UI.WebControls.DateTimeBox.OnValueChanged(System.EventArgs)">
             <summary>
             Vyvolává událost ValueChanged. Více viz ValueChanged.

@@ -128,7 +128,7 @@
         </member>
         <member name="M:Havit.Web.UI.WebControls.GridViewExt.FindColumn(System.String)">
             <summary>
-            Vyhledá sloupec podle id. Vyhledává jen sloupce implementující rozhraní IEnterpriseField.
+            Vyhledá sloupec (field) podle id. Vyhledává jen sloupce implementující rozhraní IEnterpriseField.
             </summary>
             <param name="id">ID, podle kterého se sloupec vyhledává.</param>
             <returns>Nalezený sloupec nebo null, pokud není nalezen.</returns>
@@ -899,6 +899,26 @@
             (nebo shodně se identifikujícího browseru).
             </summary>
         </member>
+        <member name="T:Havit.Web.UI.WebControls.TemplateFieldExt">
+            <summary>
+            Rozšířená verze <see cref="T:System.Web.UI.WebControls.TemplateField"/>.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.IIdentifiableField">
+            <summary>
+            Sloupec, který se umí identifikovat (má ID).
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.IIdentifiableField.ID">
+            <summary>
+            ID sloupce. Umožní GridView hledat sloupec podle ID.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.TemplateFieldExt.ID">
+            <summary>
+            Identifikátor fieldu na který se lze odkazovat pomocí <see cref="M:Havit.Web.UI.WebControls.GridViewExt.FindColumn(System.String)"/>.
+            </summary>
+        </member>
         <member name="T:Havit.Web.UI.WebControls.H5">
             <summary>
             Reprezentuje label, který se renderuje jako HTML tag H5.
@@ -912,6 +932,18 @@
         <member name="P:Havit.Web.UI.WebControls.GridViewInsertedEventArgs.KeepInEditMode">
             <summary>
             Indikuje, zda-li má GridView zůstat po zpracování událost v režimu editace nového řádku.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.CommandFieldExt">
+            <summary>
+            Rozšířená verze <see cref="T:System.Web.UI.WebControls.ButtonField"/> (základní rozšíření společné pro GridView i jiná použití fieldu).
+            Pro použití v <see cref="T:Havit.Web.UI.WebControls.GridViewExt"/> a odvozených (např. <see cref="!:Havit.Web.UI.WebControls.EnterpriseGridView"/>)
+            je doporučeno použít bohatšího potomka <see cref="T:Havit.Web.UI.WebControls.GridViewCommandField"/>.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.CommandFieldExt.ID">
+            <summary>
+            Identifikátor fieldu na který se lze odkazovat pomocí <see cref="M:Havit.Web.UI.WebControls.GridViewExt.FindColumn(System.String)"/>.
             </summary>
         </member>
         <member name="T:Havit.Web.UI.Scriptlets.ScriptSubstitutionRepository">
@@ -1058,6 +1090,16 @@
             Vrací HtmlTextWriterTag.H4 zajišťující správné renderování.
             </summary>
         </member>
+        <member name="T:Havit.Web.UI.WebControls.CheckBoxFieldExt">
+            <summary>
+            Rozšířená verze <see cref="T:System.Web.UI.WebControls.CheckBoxField"/>.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.CheckBoxFieldExt.ID">
+            <summary>
+            Identifikátor fieldu na který se lze odkazovat pomocí <see cref="M:Havit.Web.UI.WebControls.GridViewExt.FindColumn(System.String)"/>.
+            </summary>
+        </member>
         <member name="T:Havit.Web.UI.Scriptlets.ScriptBuilder">
             <summary>
             Jednoduchý skládač řetězce. 
@@ -1151,6 +1193,16 @@
             Položky řazení.
             </summary>
         </member>
+        <member name="T:Havit.Web.UI.WebControls.ButtonFieldExt">
+            <summary>
+            Rozšířená verze <see cref="T:System.Web.UI.WebControls.ButtonField"/>.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.ButtonFieldExt.ID">
+            <summary>
+            Identifikátor fieldu na který se lze odkazovat pomocí <see cref="M:Havit.Web.UI.WebControls.GridViewExt.FindColumn(System.String)"/>.
+            </summary>
+        </member>
         <member name="T:Havit.Web.UI.WebControls.BooleanField">
             <summary>
             Sloupec pro zobrazení boolean hodnoty.
@@ -1159,16 +1211,6 @@
         <member name="T:Havit.Web.UI.WebControls.BoundFieldExt">
             <summary>
             Sloupec pro heterogenní seznamy.
-            </summary>
-        </member>
-        <member name="T:Havit.Web.UI.WebControls.IIdentifiableField">
-            <summary>
-            Sloupec, který se umí identifikovat (má ID).
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.IIdentifiableField.ID">
-            <summary>
-            ID sloupce. Umožní GridView hledat sloupec podle ID.
             </summary>
         </member>
         <member name="M:Havit.Web.UI.WebControls.BoundFieldExt.CreateField">
@@ -1223,7 +1265,7 @@
         </member>
         <member name="P:Havit.Web.UI.WebControls.BoundFieldExt.ID">
             <summary>
-            ID sloupce.
+            Identifikátor fieldu na který se lze odkazovat pomocí <see cref="M:Havit.Web.UI.WebControls.GridViewExt.FindColumn(System.String)"/>.
             </summary>
         </member>
         <member name="P:Havit.Web.UI.WebControls.BoundFieldExt.CellCssClass">
@@ -1285,6 +1327,16 @@
             Vrací HtmlTextWriterTag.H1 zajišťující správné renderování.
             </summary>
         </member>
+        <member name="T:Havit.Web.UI.WebControls.ImageFieldExt">
+            <summary>
+            Rozšířená verze <see cref="T:System.Web.UI.WebControls.ImageField"/>.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.ImageFieldExt.ID">
+            <summary>
+            Identifikátor fieldu na který se lze odkazovat pomocí <see cref="M:Havit.Web.UI.WebControls.GridViewExt.FindColumn(System.String)"/>.
+            </summary>
+        </member>
         <member name="T:Havit.Web.UI.WebControls.GridViewCommandField">
             <summary>
             Vylepšený command-field určený pro použití s GridViewExt.
@@ -1322,11 +1374,6 @@
             <param name="style">styl k aplikování</param>
             <param name="theme">režim Theme (přepsat vše) zapnut</param>
             <param name="styleSheetTheme">režim StyleSheetTheme (lokální nastavení mají prioritu) zapnut</param>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.GridViewCommandField.ID">
-            <summary>
-            ID sloupce.
-            </summary>
         </member>
         <member name="P:Havit.Web.UI.WebControls.GridViewCommandField.DeleteConfirmationText">
             <summary>
@@ -1450,6 +1497,16 @@
         <member name="P:Havit.Web.UI.Scriptlets.ControlExtenderRepository.Default">
             <summary>
             Výchozí seznam control extenderů.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.HyperLinkFieldExt">
+            <summary>
+            Rozšířená verze <see cref="!:System.Web.UI.WebControls.HyperLinkFieldExt"/>.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.HyperLinkFieldExt.ID">
+            <summary>
+            Identifikátor fieldu na který se lze odkazovat pomocí <see cref="M:Havit.Web.UI.WebControls.GridViewExt.FindColumn(System.String)"/>.
             </summary>
         </member>
         <member name="T:Havit.Web.UI.Scriptlets.Scriptlet">
@@ -2256,6 +2313,20 @@
             dojde ke spuštění skriptu.
             Výchozí hodnota je false.
             </summary>
+        </member>
+        <member name="T:Havit.Web.UI.Adapters.SessionPageStatePersisterPageAdapter">
+            <summary>
+            <see cref="T:System.Web.UI.Adapters.PageAdapter"/>, který jako <see cref="T:System.Web.UI.PageStatePersister"/> v metodě <see cref="M:Havit.Web.UI.Adapters.SessionPageStatePersisterPageAdapter.GetStatePersister"/>
+            vrací <see cref="T:System.Web.UI.SessionPageStatePersister"/>.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.Adapters.SessionPageStatePersisterPageAdapter.GetStatePersister">
+            <summary>
+            Returns an object that is used by the Web page to maintain the control and view states. 
+            </summary>
+            <returns>
+            An object derived from <see cref="T:System.Web.UI.PageStatePersister"/> that supports creating and extracting the combined control and view states for the <see cref="T:System.Web.UI.Page"/>.
+            </returns>
         </member>
     </members>
 </doc>

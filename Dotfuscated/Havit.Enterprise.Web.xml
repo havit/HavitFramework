@@ -193,7 +193,7 @@
         </member>
         <member name="M:Havit.Web.UI.WebControls.EnterpriseCheckBoxList.EnsureAutoDataBind">
             <summary>
-            Zajistí nabindování dat pro režit AutoDataBind.
+            Zajistí nabindování dat pro režim AutoDataBind.
             </summary>
         </member>
         <member name="F:Havit.Web.UI.WebControls.EnterpriseCheckBoxList.isDataBinding">
@@ -220,6 +220,11 @@
             odloží se nastavení hodnoty až na konec DataBindingu. To protože v okamžiku nastavování SelectedObject 
             nemusí být v Items ještě data. 
             </remarks>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseCheckBoxList.#ctor">
+            <summary>
+            Vytvoří instanci EnterpriseCheckBoxList.
+            </summary>
         </member>
         <member name="M:Havit.Web.UI.WebControls.EnterpriseCheckBoxList.OnLoad(System.EventArgs)">
             <summary>

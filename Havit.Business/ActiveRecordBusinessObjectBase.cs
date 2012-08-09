@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data.Common;
 using Havit.Data;
+using Havit.Data.SqlClient;
+using System.Data.SqlClient;
 
 namespace Havit.Business
 {
@@ -118,7 +120,11 @@ namespace Havit.Business
 				throw new ApplicationException("Partially-loaded object cannot be saved.");
 			}
 
-			base.Save(transaction);
+			// vynucení transakce nad celou Save() operací (BusinessObjectBase ji pouze oèekává, ale nevynucuje).
+			SqlDataAccess.ExecuteTransaction(delegate(SqlTransaction myTransaction)
+				{
+					base.Save(myTransaction);
+				}, (SqlTransaction)transaction);
 		}
 
 		/// <summary>

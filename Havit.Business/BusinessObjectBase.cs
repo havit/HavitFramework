@@ -175,25 +175,40 @@ namespace Havit.Business
 
 		#region Save logika
 		/// <summary>
-		/// Uloží objekt do databáze, s použitím transakce. Nový objekt je vložen INSERT, existující objekt je aktualizován UPDATE.
+		/// Uloží objekt do databáze, s pøípadným použitím VNÌJŠÍ transakce.
 		/// </summary>
 		/// <remarks>
 		/// Metoda neprovede uložení objektu, pokud není nahrán (!IsLoaded), není totiž ani co ukládat,
 		/// data nemohla být zmìnìna, když nebyla ani jednou použita.<br/>
-		/// Metoda také neprovede uložení, pokud objekt nebyl zmìnìn a souèasnì nejde o nový objekt (!IsDirty &amp;&amp; !IsNew)
+		/// Metoda také neprovede uložení, pokud objekt nebyl zmìnìn a souèasnì nejde o nový objekt (!IsDirty &amp;&amp; !IsNew).<br/>
+		/// Metoda nezakládá vlastní transakci, která by sdružovala uložení kolekcí, èlenských objektù a vlastních dat!!!
+		/// Pøíslušná transakce musí být pøedána (explicitní transakci doplòuje až ActiveRecordBusinessObjectbase).<br/>
 		/// </remarks>
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
 		public virtual void Save(DbTransaction transaction)
-		{
-			if ((!IsLoaded)
-				|| (!IsDirty && !IsNew))
+		{			
+			if (!IsLoaded)
 			{
 				return;
 			}
 
 			CheckConstraints();
-			PreSave();
-			Save_Perform(transaction);
+
+			if (IsNew)
+			{
+				Save_SaveMembers(transaction);
+				Save_Perform(transaction);
+				Save_SaveCollections(transaction);
+			}
+			else
+			{
+				Save_SaveMembers(transaction);
+				Save_SaveCollections(transaction);
+				if (IsDirty)
+				{
+					Save_Perform(transaction);
+				}
+			}
 
 			IsNew = false; // uložený objekt není už nový, dostal i pøidìlené ID
 			IsDirty = false; // uložený objekt je aktuální
@@ -217,6 +232,24 @@ namespace Havit.Business
 		/// </summary>
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
 		protected abstract void Save_Perform(DbTransaction transaction);
+
+		/// <summary>
+		/// Ukládá member-objekty.
+		/// </summary>
+		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které mají být member-objekty uloženy; null, pokud bez transakce</param>
+		protected virtual void Save_SaveMembers(DbTransaction transaction)
+		{
+			// NOOP
+		}
+
+		/// <summary>
+		/// Ukládá member-kolekce objektu.
+		/// </summary>
+		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které mají být member-kolekce uloženy; null, pokud bez transakce</param>
+		protected virtual void Save_SaveCollections(DbTransaction transaction)
+		{
+			// NOOP
+		}
 		#endregion
 
 		#region Delete logika
@@ -362,25 +395,12 @@ namespace Havit.Business
 		}
 		#endregion
 
-		#region PreSave
-		/// <summary>
-		/// Metoda, která je volána pøed uložením objektu, po zkontrolování constraints.
-		/// </summary>
-		/// <remarks>
-		/// V pøípadì, že objekt není ukládán (napø. není Dirty), metoda PreSave() se nevolá.<br/>
-		/// </remarks>
-		protected virtual void PreSave()
-		{
-			// NOOP
-		}
-		#endregion
-
 		#region CheckConstraints
 		/// <summary>
 		/// Kontroluje konzistenci objektu jako celku.
 		/// </summary>
 		/// <remarks>
-		/// Automaticky je voláno pøed ukládáním objektu Save(), pøed fází PreSave().
+		/// Automaticky je voláno pøed ukládáním objektu Save(), pokud je objekt opravdu ukládán.
 		/// </remarks>
 		protected virtual void CheckConstraints()
 		{

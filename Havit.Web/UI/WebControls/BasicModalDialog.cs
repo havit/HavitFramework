@@ -350,6 +350,26 @@ namespace Havit.Web.UI.WebControls
 			{
 				throw new InvalidOperationException("Není nastavena vlastnost Height.");
 			}
+
+			if (this.Width.Type != UnitType.Pixel)
+			{
+				throw new InvalidOperationException("Vlastnost Width není v pixelech.");
+			}
+
+			if (this.Height.Type != UnitType.Pixel)
+			{
+				throw new InvalidOperationException("Vlastnost Height není v pixelech.");
+			}
+
+			if (this.Width.Value != Math.Floor(this.Width.Value))
+			{
+				throw new InvalidOperationException("Vlastnost Width nesmí obsahovat desetinné číslo.");
+			}
+
+			if (this.Height.Value != Math.Floor(this.Height.Value))
+			{
+				throw new InvalidOperationException("Vlastnost Height nesmí obsahovat desetinné číslo.");
+			}
 		}
 		#endregion
 	}

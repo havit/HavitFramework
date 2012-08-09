@@ -20,6 +20,25 @@ namespace Havit.Web.UI.WebControls
 		private bool _dialogCurrentlyHiding = false;
 		#endregion
 
+		#region DialogPanelClientIDMemento
+		/// <summary>
+		/// Paměť pro _dialogPanel.ClientID.
+		/// Využívá metoda RegisterHideScript (volána z Page_PreRenderComplete) pro registraci scriptu pro schování dialogu na klientské straně.
+		/// Slouží pro řešení situace, kdy potřebujeme ze stránky vyhodit control, protože již ve stránce neexistuje (byl vyhozen databindingem, atp.).
+		/// </summary>
+		public string DialogPanelClientIDMemento
+		{
+			get
+			{
+				return (string)ViewState["DialogPanelClientIDMemento"];
+			}
+			set
+			{
+				ViewState["DialogPanelClientIDMemento"] = value;
+			}
+		}
+		#endregion
+
 		#region ContentTemplate
 		/// <summary>
 		/// Šablona obsahu dialogu. Instancovaný obsah šablony je v ContentTemplateContainer (instancováno v průběhu OnInit).
@@ -160,6 +179,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			base.OnInit(e);
 			EnsureChildControls();
+			this.Page.PreRenderComplete += new EventHandler(Page_PreRenderComplete);
 		}
 		#endregion
 
@@ -196,6 +216,7 @@ namespace Havit.Web.UI.WebControls
 		public void Show()
 		{
 			DialogVisible = true;
+			DialogPanelClientIDMemento = _dialogPanel.ClientID;
 			OnDialogShown(EventArgs.Empty);
 		}
 
@@ -254,7 +275,7 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		public string GetHideScript()
 		{
-			return String.Format("havitHideDialog('{0}');", _dialogPanel.ClientID);
+			return String.Format("havitHideDialog('{0}');", DialogPanelClientIDMemento ?? _dialogPanel.ClientID);
 		}
 
 		/// <summary>
@@ -317,17 +338,25 @@ namespace Havit.Web.UI.WebControls
 			{
 				RegisterShowScript();
 			}
-			else
-			{
-				if (_dialogCurrentlyHiding)
-				{
-					ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);
+		}
+		#endregion
 
-					// pokud jsme v callbacku, vyrenderujeme skript schovávající dialog
-					if (scriptManager != null && scriptManager.IsInAsyncPostBack)
-					{
-						RegisterHideScript();
-					}
+		#region Page_PreRenderComplete
+		void Page_PreRenderComplete(object sender, EventArgs e)
+		{
+			// Dialog nemá být vidět a právě jej schováváme.
+			// To se může stát, že control již není ve stránce (např. byl v repeateru, který byl rebindován) 
+			// nebo je nadřazený element schovaný a pak se nevyvolá OnPreRender,
+			// proto zkusíme control schovat v každém případě (Page.PreRenderComplete)
+						
+			if (!DialogVisible && _dialogCurrentlyHiding)
+			{
+				ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);
+
+				// pokud jsme v callbacku, vyrenderujeme skript schovávající dialog
+				if (scriptManager != null && scriptManager.IsInAsyncPostBack)
+				{
+					RegisterHideScript();
 				}
 			}
 		}

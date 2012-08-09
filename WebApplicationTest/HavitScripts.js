@@ -378,7 +378,11 @@ function havitHideDialog(elementId)
 /// <summary>
 /// Skryje dialog.
 /// <summary>
-	document.getElementById(elementId).style.display = 'none';
+	if (document.getElementById(elementId) != null)
+	{
+		document.getElementById(elementId).style.display = 'none';
+	}
+
 	if (elementId == _havitLastShownDialogElementId) // pokud zavíráme poslední otevřený dialog, jinak již byl otevřen jiný
 	{
 		_havitGetDialogOverlay().style.display = 'none';

@@ -11,7 +11,7 @@ namespace Havit.Text.RegularExpressions
 		/// Pattern pro kontrolu bìžného e-mailu:
 		/// <list type="bullet">
 		///		<item>povoleny jsou pouze znaky anglické abecedy, teèky, podtržítka, pomlèky a plus</item>
-		///		<item>dva rùzné symboly nesmí následovat po sobì, stejné ano [test--test@test.com] projde</item>
+		///		<item>dva rùzné symboly nesmí následovat po sobì, stejné (s výjimkou teèky) mohou [test--test@test.com] projde, [test..test@test.com] neprojde</item>
 		///		<item>nesmí zaèínat symbolem</item>
 		///		<item>TLD musí mít 2-6 znakù (.museum)</item>
 		///		<item>v doménì smí být teèky a pomlèky, ale nesmí následovat</item>
@@ -22,7 +22,10 @@ namespace Havit.Text.RegularExpressions
 		/// <remarks>
 		/// http://www.regexlib.com/REDetails.aspx?regexp_id=295
 		/// </remarks>
-		public const string EmailStrict = @"^(([A-Za-z0-9]+_+)|([A-Za-z0-9]+\-+)|([A-Za-z0-9]+\.+)|([A-Za-z0-9]+\++))*[A-Za-z0-9]+"
+		// JK: Fix defectu 2011:
+		//public const string EmailStrict = @"^(([A-Za-z0-9]+_+)|([A-Za-z0-9]+\-+)|([A-Za-z0-9]+\.+)|([A-Za-z0-9]+\++))*[A-Za-z0-9]+"
+		//                                + @"@((\w+\-+)|(\w+\.))*\w{1,63}\.[a-zA-Z]{2,6}$";
+		public const string EmailStrict = @"^(([A-Za-z0-9]+_+)|([A-Za-z0-9]+\-+)|([A-Za-z0-9]+\.?)|([A-Za-z0-9]+\++))*[A-Za-z0-9]+"
 										+ @"@((\w+\-+)|(\w+\.))*\w{1,63}\.[a-zA-Z]{2,6}$";
 		
 		/// <summary>

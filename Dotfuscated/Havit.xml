@@ -205,7 +205,7 @@
             Pattern pro kontrolu běžného e-mailu:
             <list type="bullet">
             	<item>povoleny jsou pouze znaky anglické abecedy, tečky, podtržítka, pomlčky a plus</item>
-            	<item>dva různé symboly nesmí následovat po sobě, stejné ano [test--test@test.com] projde</item>
+            	<item>dva různé symboly nesmí následovat po sobě, stejné (s výjimkou tečky) mohou [test--test@test.com] projde, [test..test@test.com] neprojde</item>
             	<item>nesmí začínat symbolem</item>
             	<item>TLD musí mít 2-6 znaků (.museum)</item>
             	<item>v doméně smí být tečky a pomlčky, ale nesmí následovat</item>

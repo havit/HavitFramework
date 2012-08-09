@@ -199,6 +199,120 @@ namespace Havit.WebTest
 		}
 		#endregion
 
+		#region FillFromStringTest_Simple
+		/// <summary>
+		///A test for FillFromString (string)
+		///</summary>
+		[TestMethod()]
+		public void FillFromStringTest_Simple()
+		{
+			QueryStringBuilder target = new QueryStringBuilder();
+
+			string queryString = "key1=value1&key2=value2";
+
+			target.FillFromString(queryString);
+
+			Assert.IsTrue(target["key1"] == "value1");
+			Assert.IsTrue(target["key2"] == "value2");
+			Assert.IsTrue(target.Count == 2);
+			Assert.IsTrue(target.ToString() == queryString);
+		}
+		#endregion
+
+		#region FillFromStringTest_UrlEncoded
+		/// <summary>
+		///A test for FillFromString (string)
+		///</summary>
+		[TestMethod()]
+		public void FillFromStringTest_UrlEncoded()
+		{
+			QueryStringBuilder target = new QueryStringBuilder();
+
+			string queryString = "key=%C4%9B%C5%A1%C4%8D%C5%99%C5%BE%C3%BD%C3%A1%C3%AD%C3%A9%C3%BA%C5%AF";
+
+			target.FillFromString(queryString);
+
+			Assert.IsTrue(target["key"] == "ěščřžýáíéúů");
+		}
+		#endregion
+
+		#region FillFromStringTest_Ampersands
+		/// <summary>
+		///A test for FillFromString (string)
+		///</summary>
+		[TestMethod()]
+		public void FillFromStringTest_Ampersands()
+		{
+			QueryStringBuilder target = new QueryStringBuilder();
+
+			string queryString = "&key1=value1&&key2=value2&";
+
+			target.FillFromString(queryString);
+
+			Assert.IsTrue(target["key1"] == "value1");
+			Assert.IsTrue(target["key2"] == "value2");
+			Assert.IsTrue(target.Count == 2);
+			Assert.IsTrue(target.ToString() == "key1=value1&key2=value2");
+		}
+		#endregion
+
+		#region FillFromStringTest_EmptyValue
+		/// <summary>
+		///A test for FillFromString (string)
+		///</summary>
+		[TestMethod()]
+		public void FillFromStringTest_EmptyValue()
+		{
+			QueryStringBuilder target = new QueryStringBuilder();
+
+			string queryString = "key1=";
+
+			target.FillFromString(queryString);
+
+			Assert.IsTrue(target["key1"] == String.Empty);
+			Assert.IsTrue(target.Count == 1);
+			Assert.IsTrue(target.ToString() == "key1=");
+		}
+		#endregion
+
+		#region FillFromStringTest_EmptyInput
+		/// <summary>
+		///A test for FillFromString (string)
+		///</summary>
+		[TestMethod()]
+		public void FillFromStringTest_EmptyInput()
+		{
+			QueryStringBuilder target = new QueryStringBuilder();
+
+			string queryString = "";
+
+			target.FillFromString(queryString);
+
+			Assert.IsTrue(target.Count == 0);
+			Assert.IsTrue(target.ToString() == String.Empty);
+		}
+		#endregion
+
+		#region FillFromStringTest_NullInput
+		/// <summary>
+		///A test for FillFromString (string)
+		///</summary>
+		[TestMethod()]
+		public void FillFromStringTest_NullInput()
+		{
+			QueryStringBuilder target = new QueryStringBuilder();
+
+			string queryString = null;
+
+			target.FillFromString(queryString);
+
+			Assert.IsTrue(target.Count == 0);
+			Assert.IsTrue(target.ToString() == String.Empty);
+		}
+		#endregion
+
+		/*****************************************************************/
+
 		#region TestContext
 		private TestContext testContextInstance;
 
@@ -252,5 +366,6 @@ namespace Havit.WebTest
 		//}
 		//
 		#endregion
+
 	}
 }

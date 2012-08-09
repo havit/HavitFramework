@@ -166,5 +166,96 @@ namespace Havit.Web
 			return url + this.ToString();
 		}
 		#endregion
+
+		#region FillFromString
+		/// <summary>
+		/// Naète data z queryStringu. Dosavadní data v instanci se nemažou, pouze se provádí Add() nových.
+		/// </summary>
+		/// <param name="queryString">queryString z kterého se mají data pøevzít</param>
+		/// <param name="urlEncoded">indikuje, zda-li je queryString url-encoded a má být dekódován</param>
+		public void FillFromString(string queryString, bool urlEncoded)
+		{
+			int length = (queryString != null) ? queryString.Length : 0;  
+			for (int i = 0; i < length; i++)
+			{
+				int startIndex = i;
+				int rovnitko = -1;
+				while (i < length)
+				{
+					char ch = queryString[i];
+					if (ch == '=')
+					{
+						if (rovnitko < 0)
+						{
+							rovnitko = i;
+						}
+					}
+					else if (ch == '&')
+					{
+						break;
+					}
+					i++;
+				}
+				string key = null;
+				string value = null;
+				if (rovnitko >= 0)
+				{
+					key = queryString.Substring(startIndex, rovnitko - startIndex);
+					value = queryString.Substring(rovnitko + 1, (i - rovnitko) - 1);
+				}
+				else
+				{
+					value = queryString.Substring(startIndex, i - startIndex);
+				}
+				if (!String.IsNullOrEmpty(key))
+				{
+					if (urlEncoded)
+					{
+						base.Add(HttpUtility.UrlDecode(key), HttpUtility.UrlDecode(value));
+					}
+					else
+					{
+						base.Add(key, value);
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Naète data z queryStringu, provádí url-decoding. Dosavadní data v instanci se nemažou, pouze se provádí Add() nových.
+		/// </summary>
+		/// <param name="queryString">queryString z kterého se mají data pøevzít</param>
+		public void FillFromString(string queryString)
+		{
+			this.FillFromString(queryString, true);
+		}
+		#endregion
+
+		/**********************************************************/
+
+		#region Parse (static)
+		/// <summary>
+		/// Rozparsuje vstupní queryString a vrátí ho jako QueryStringBuilder.
+		/// </summary>
+		/// <param name="queryString">queryString z kterého se mají data pøevzít</param>
+		/// <param name="urlEncoded">indikuje, zda-li je queryString url-encoded a má být dekódován</param>
+		/// <returns>QueryStringBuilder s rozparsovanými daty vstupního queryStringu</returns>
+		public static QueryStringBuilder Parse(string queryString, bool urlEncoded)
+		{
+			QueryStringBuilder qsb = new QueryStringBuilder();
+			qsb.FillFromString(queryString, urlEncoded);
+			return qsb;
+		}
+
+		/// <summary>
+		/// Rozparsuje vstupní queryString a vrátí ho jako QueryStringBuilder. Provádí url-decoding.
+		/// </summary>
+		/// <param name="queryString">queryString z kterého se mají data pøevzít</param>
+		/// <returns>QueryStringBuilder s rozparsovanými daty vstupního queryStringu</returns>
+		public static QueryStringBuilder Parse(string queryString)
+		{
+			return Parse(queryString, true);
+		}
+		#endregion
 	}
 }

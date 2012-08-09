@@ -4301,5 +4301,33 @@
             <param name="url">vstupní URL (které již může nějaký QueryString obsahovat)</param>
             <returns>URL s QueryStringem</returns>
         </member>
+        <member name="M:Havit.Web.QueryStringBuilder.FillFromString(System.String,System.Boolean)">
+            <summary>
+            Načte data z queryStringu. Dosavadní data v instanci se nemažou, pouze se provádí Add() nových.
+            </summary>
+            <param name="queryString">queryString z kterého se mají data převzít</param>
+            <param name="urlEncoded">indikuje, zda-li je queryString url-encoded a má být dekódován</param>
+        </member>
+        <member name="M:Havit.Web.QueryStringBuilder.FillFromString(System.String)">
+            <summary>
+            Načte data z queryStringu, provádí url-decoding. Dosavadní data v instanci se nemažou, pouze se provádí Add() nových.
+            </summary>
+            <param name="queryString">queryString z kterého se mají data převzít</param>
+        </member>
+        <member name="M:Havit.Web.QueryStringBuilder.Parse(System.String,System.Boolean)">
+            <summary>
+            Rozparsuje vstupní queryString a vrátí ho jako QueryStringBuilder.
+            </summary>
+            <param name="queryString">queryString z kterého se mají data převzít</param>
+            <param name="urlEncoded">indikuje, zda-li je queryString url-encoded a má být dekódován</param>
+            <returns>QueryStringBuilder s rozparsovanými daty vstupního queryStringu</returns>
+        </member>
+        <member name="M:Havit.Web.QueryStringBuilder.Parse(System.String)">
+            <summary>
+            Rozparsuje vstupní queryString a vrátí ho jako QueryStringBuilder. Provádí url-decoding.
+            </summary>
+            <param name="queryString">queryString z kterého se mají data převzít</param>
+            <returns>QueryStringBuilder s rozparsovanými daty vstupního queryStringu</returns>
+        </member>
     </members>
 </doc>

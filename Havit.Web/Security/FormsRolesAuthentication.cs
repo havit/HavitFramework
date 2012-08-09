@@ -192,6 +192,11 @@ namespace Havit.Web.Security
 					throw new InvalidOperationException("HttpContext.Current not available");
 				}
 
+				if (String.IsNullOrEmpty(redirectUrl))
+				{
+					redirectUrl = FormsAuthentication.GetRedirectUrl(username, createPersistentCookie);
+				}
+
 				AddAuthCookie(username, roles, createPersistentCookie, cookiePath);
 				context.Response.Redirect(redirectUrl, false);
 			}

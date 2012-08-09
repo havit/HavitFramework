@@ -604,6 +604,32 @@ namespace Havit.Web.UI.WebControls
 					{
 						this.Visible = style.Visible;
 					}
+
+					// tooltipy
+					if (ViewState["CancelTooltip"] == null)
+					{
+						this.CancelTooltip = style.CancelTooltip;
+					}
+					if (ViewState["DeleteTooltip"] == null)
+					{
+						this.DeleteTooltip = style.DeleteTooltip;
+					}
+					if (ViewState["EditTooltip"] == null)
+					{
+						this.EditTooltip = style.EditTooltip;
+					}
+					if (ViewState["InsertTooltip"] == null)
+					{
+						this.InsertTooltip = style.InsertTooltip;
+					}
+					if (ViewState["SelectTooltip"] == null)
+					{
+						this.SelectTooltip = style.SelectTooltip;
+					}
+					if (ViewState["UpdateTooltip"] == null)
+					{
+						this.UpdateTooltip = style.UpdateTooltip;
+					}
 				}
 
 				if (theme)
@@ -742,6 +768,33 @@ namespace Havit.Web.UI.WebControls
 					{
 						this.Visible = style.Visible;
 					}
+
+					// tooltipy
+					if (style.ViewState["CancelTooltip"] != null)
+					{
+						this.CancelTooltip = style.CancelTooltip;
+					}
+					if (style.ViewState["DeleteTooltip"] != null)
+					{
+						this.DeleteTooltip = style.DeleteTooltip;
+					}
+					if (style.ViewState["EditTooltip"] != null)
+					{
+						this.EditTooltip = style.EditTooltip;
+					}
+					if (style.ViewState["InsertTooltip"] != null)
+					{
+						this.InsertTooltip = style.InsertTooltip;
+					}
+					if (style.ViewState["SelectTooltip"] != null)
+					{
+						this.SelectTooltip = style.SelectTooltip;
+					}
+					if (style.ViewState["UpdateTooltip"] != null)
+					{
+						this.UpdateTooltip = style.UpdateTooltip;
+					}
+
 				}
 			}
 		}

@@ -1,3 +1,13 @@
 ﻿<havit:Wrapper SkinID="Test1" BeginHtml="a" runat="server" />
 
 <havit:Wrapper SkinID="Test2" EndHtml='Nahrazení <strong>zn"ačky: <strong>#TESTATTRIBUTEVALUE#</strong>' runat="server" />
+
+<havit:EnterpriseGridView runat="server">
+	<CommandFieldStyle 
+		EditTooltip="EditTooltip*"
+		SelectTooltip="SelectTooltip*"
+		InsertTooltip="InsertTooltip*"
+		CancelTooltip="CancelTooltip*"
+		DeleteTooltip="DeleteTooltip*"
+		UpdateTooltip="UpdateTooltip*"/>
+</havit:EnterpriseGridView>

@@ -898,6 +898,122 @@ namespace Havit.Web.UI.WebControls
 				}
 			}
 		}
+
+		#region XxxTooltip
+
+		#region CancelTooltip
+		/// <summary>
+		/// Tooltip tlačítka pro storno.
+		/// </summary>
+		public string CancelTooltip
+		{
+			get
+			{
+				return (string)(ViewState["CancelTooltip"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["CancelTooltip"] = value;
+			}
+		}
+		#endregion
+
+		#region DeleteTooltip
+		/// <summary>
+		/// Tooltip tlačítka pro smazání.
+		/// </summary>
+		[Category("Appearance")]
+		[DefaultValue("")]
+		public string DeleteTooltip
+		{
+			get
+			{
+				return (string)(ViewState["DeleteTooltip"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["DeleteTooltip"] = value;
+			}
+		}
+		#endregion
+
+		#region EditTooltip
+		/// <summary>
+		/// Tooltip editačního tlačítka.
+		/// </summary>
+		[Category("Appearance")]
+		[DefaultValue("")]
+		public string EditTooltip
+		{
+			get
+			{
+				return (string)(ViewState["EditTooltip"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["EditTooltip"] = value;
+			}
+		}
+		#endregion
+
+		#region InsertTooltip
+		/// <summary>
+		/// Tooltip tlačítka pro vložení.
+		/// </summary>
+		[Category("Appearance")]
+		[DefaultValue("")]
+		public string InsertTooltip
+		{
+			get
+			{
+				return (string)(ViewState["InsertTooltip"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["InsertTooltip"] = value;
+			}
+		}
+		#endregion
+
+		#region SelectTooltip
+		/// <summary>
+		/// Tooltip tlačítka pro výběr.
+		/// </summary>
+		[Category("Appearance")]
+		[DefaultValue("")]
+		public string SelectTooltip
+		{
+			get
+			{
+				return (string)(ViewState["SelectTooltip"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["SelectTooltip"] = value;
+			}
+		}
+		#endregion
+
+		#region UpdateTooltip
+		/// <summary>
+		/// Tooltip tlačítka pro aktualizaci.
+		/// </summary>
+		[Category("Appearance")]
+		[DefaultValue("")]
+		public string UpdateTooltip
+		{
+			get
+			{
+				return (string)(ViewState["UpdateTooltip"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["UpdateTooltip"] = value;
+			}
+		}
+		#endregion
+		#endregion
+
 		#endregion
 
 		#region ViewState

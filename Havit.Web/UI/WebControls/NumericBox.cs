@@ -226,6 +226,23 @@ namespace Havit.Web.UI.WebControls
 		private EventHandler _valueChanged;
 		#endregion
 
+		#region TabIndex
+		/// <summary>
+		/// Gets or sets the tab order of the control within its container.		
+		/// </summary>
+		public short TabIndex
+		{
+			get
+			{
+				return valueTextBox.TabIndex;
+			}
+			set
+			{
+				valueTextBox.TabIndex = value;
+			}
+		}
+		#endregion
+
 		#region --------------------------------------------------------------------------------
 		#endregion
 

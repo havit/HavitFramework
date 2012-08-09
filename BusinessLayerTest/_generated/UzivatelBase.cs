@@ -7,12 +7,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Globalization;
 using System.Text;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
+using System.Threading;
 using System.Web;
 using System.Web.Caching;
 using Havit.Data;
@@ -81,7 +83,14 @@ namespace Havit.BusinessLayerTest
 			set
 			{
 				EnsureLoaded();
-				_UsernamePropertyHolder.Value = value ?? String.Empty;
+				if (value == null)
+				{
+					_UsernamePropertyHolder.Value = String.Empty;
+				}
+				else
+				{
+					_UsernamePropertyHolder.Value = value;
+				}
 			}
 		}
 		protected PropertyHolder<string> _UsernamePropertyHolder;
@@ -99,7 +108,14 @@ namespace Havit.BusinessLayerTest
 			set
 			{
 				EnsureLoaded();
-				_PasswordPropertyHolder.Value = value ?? String.Empty;
+				if (value == null)
+				{
+					_PasswordPropertyHolder.Value = String.Empty;
+				}
+				else
+				{
+					_PasswordPropertyHolder.Value = value;
+				}
 			}
 		}
 		protected PropertyHolder<string> _PasswordPropertyHolder;
@@ -117,7 +133,14 @@ namespace Havit.BusinessLayerTest
 			set
 			{
 				EnsureLoaded();
-				_DisplayAsPropertyHolder.Value = value ?? String.Empty;
+				if (value == null)
+				{
+					_DisplayAsPropertyHolder.Value = String.Empty;
+				}
+				else
+				{
+					_DisplayAsPropertyHolder.Value = value;
+				}
 			}
 		}
 		protected PropertyHolder<string> _DisplayAsPropertyHolder;
@@ -135,7 +158,14 @@ namespace Havit.BusinessLayerTest
 			set
 			{
 				EnsureLoaded();
-				_EmailPropertyHolder.Value = value ?? String.Empty;
+				if (value == null)
+				{
+					_EmailPropertyHolder.Value = String.Empty;
+				}
+				else
+				{
+					_EmailPropertyHolder.Value = value;
+				}
 			}
 		}
 		protected PropertyHolder<string> _EmailPropertyHolder;
@@ -244,7 +274,7 @@ namespace Havit.BusinessLayerTest
 		}
 		protected PropertyHolder<bool> _DeletedPropertyHolder;
 		
-		public Havit.BusinessLayerTest.RoleCollection Role
+		public virtual Havit.BusinessLayerTest.RoleCollection Role
 		{
 			get
 			{
@@ -291,6 +321,12 @@ namespace Havit.BusinessLayerTest
 		#endregion
 		
 		#region CheckConstraints
+		/// <summary>
+		/// Kontroluje konzistenci objektu jako celku.
+		/// </summary>
+		/// <remarks>
+		/// Automaticky je voláno před ukládáním objektu Save(), pokud je objekt opravdu ukládán.
+		/// </remarks>
 		protected override void CheckConstraints()
 		{
 			base.CheckConstraints();
@@ -453,6 +489,9 @@ namespace Havit.BusinessLayerTest
 		
 		// Save_SaveMembers: Není co ukládat
 		
+		/// <summary>
+		/// Ukládá member-kolekce objektu.
+		/// </summary>
 		protected override void Save_SaveCollections(DbTransaction transaction)
 		{
 			base.Save_SaveCollections(transaction);
@@ -464,6 +503,9 @@ namespace Havit.BusinessLayerTest
 			
 		}
 		
+		/// <summary>
+		/// Implementace metody vloží jen not-null vlastnosti objektu do databáze a nastaví nově přidělené ID (primární klíč).
+		/// </summary>
 		public override void Save_MinimalInsert(DbTransaction transaction)
 		{
 			Save_Insert_InsertRequiredForMinimalInsert(transaction);
@@ -526,6 +568,9 @@ namespace Havit.BusinessLayerTest
 			}
 		}
 		
+		/// <summary>
+		/// Implementace metody vloží nový objekt do databáze a nastaví nově přidělené ID (primární klíč).
+		/// </summary>
 		protected override void Save_FullInsert(DbTransaction transaction)
 		{
 			SqlCommand sqlCommand = new SqlCommand();
@@ -599,6 +644,9 @@ namespace Havit.BusinessLayerTest
 			}
 		}
 		
+		/// <summary>
+		/// Implementace metody aktualizuje data objektu v databázi.
+		/// </summary>
 		protected override void Save_Update(DbTransaction transaction)
 		{
 			SqlCommand sqlCommand = new SqlCommand();
@@ -780,12 +828,18 @@ namespace Havit.BusinessLayerTest
 			}
 		}
 		
+		/// <summary>
+		/// Ukládá hodnoty potřebné pro provedení minimálního insertu. Volá Save_Insert_SaveRequiredForMinimalInsert.
+		/// </summary>
 		protected override void Save_Insert_InsertRequiredForMinimalInsert(DbTransaction transaction)
 		{
 			base.Save_Insert_InsertRequiredForMinimalInsert(transaction);
 			
 		}
 		
+		/// <summary>
+		/// Ukládá hodnoty potřebné pro provedení plného insertu.
+		/// </summary>
 		protected override void Save_Insert_InsertRequiredForFullInsert(DbTransaction transaction)
 		{
 			base.Save_Insert_InsertRequiredForFullInsert(transaction);
@@ -800,6 +854,9 @@ namespace Havit.BusinessLayerTest
 			
 		}
 		
+		/// <summary>
+		/// Metoda označí objekt jako smazaný a uloží jej.
+		/// </summary>
 		protected override void Delete_Perform(DbTransaction transaction)
 		{
 			if (IsNew)
@@ -876,11 +933,11 @@ namespace Havit.BusinessLayerTest
 		
 		public static UzivatelCollection GetAll(bool includeDeleted)
 		{
-			UzivatelCollection result;
+			UzivatelCollection collection;
 			QueryParams queryParams = new QueryParams();
 			queryParams.IncludeDeleted = includeDeleted;
-			result = Uzivatel.GetList(queryParams);
-			return result;
+			collection = Uzivatel.GetList(queryParams);
+			return collection;
 		}
 		
 		#endregion
@@ -897,6 +954,9 @@ namespace Havit.BusinessLayerTest
 		#endregion
 		
 		#region Properties
+		/// <summary>
+		/// Objektová reprezentace vlastností třídy Uzivatel.
+		/// </summary>
 		public static UzivatelProperties Properties
 		{
 			get

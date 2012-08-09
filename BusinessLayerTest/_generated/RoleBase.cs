@@ -7,12 +7,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Globalization;
 using System.Text;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
+using System.Threading;
 using System.Web;
 using System.Web.Caching;
 using Havit.Data;
@@ -91,6 +93,12 @@ namespace Havit.BusinessLayerTest
 		#endregion
 		
 		#region CheckConstraints
+		/// <summary>
+		/// Kontroluje konzistenci objektu jako celku.
+		/// </summary>
+		/// <remarks>
+		/// Automaticky je voláno před ukládáním objektu Save(), pokud je objekt opravdu ukládán.
+		/// </remarks>
 		protected override void CheckConstraints()
 		{
 			base.CheckConstraints();
@@ -148,21 +156,33 @@ namespace Havit.BusinessLayerTest
 		
 		// Save_SaveCollections: Není co ukládat
 		
+		/// <summary>
+		/// Implementace metody vloží jen not-null vlastnosti objektu do databáze a nastaví nově přidělené ID (primární klíč).
+		/// </summary>
 		public override void Save_MinimalInsert(DbTransaction transaction)
 		{
 			throw new InvalidOperationException("Objekty třídy Havit.BusinessLayerTest.Role jsou určeny jen pro čtení.");
 		}
 		
+		/// <summary>
+		/// Implementace metody vloží nový objekt do databáze a nastaví nově přidělené ID (primární klíč).
+		/// </summary>
 		protected override void Save_FullInsert(DbTransaction transaction)
 		{
 			throw new InvalidOperationException("Objekty třídy Havit.BusinessLayerTest.Role jsou určeny jen pro čtení.");
 		}
 		
+		/// <summary>
+		/// Implementace metody aktualizuje data objektu v databázi.
+		/// </summary>
 		protected override void Save_Update(DbTransaction transaction)
 		{
 			throw new InvalidOperationException("Objekty třídy Havit.BusinessLayerTest.Role jsou určeny jen pro čtení.");
 		}
 		
+		/// <summary>
+		/// Objekt je typu readonly. Metoda vyhazuje výjimku InvalidOperationException.
+		/// </summary>
 		protected override void Delete_Perform(DbTransaction transaction)
 		{
 			throw new InvalidOperationException("Objekty třídy Havit.BusinessLayerTest.Role jsou určeny jen pro čtení.");
@@ -281,24 +301,24 @@ namespace Havit.BusinessLayerTest
 		
 		public static RoleCollection GetAll()
 		{
-			RoleCollection result;
-			string cacheKey = "Havit.BusinessLayerTest.Role.GetAll";
+			RoleCollection collection;
+			string cacheKey = "Havit.BusinessLayerTest.Role.GetAll()";
 			
-			result = (RoleCollection)HttpRuntime.Cache.Get(cacheKey);
-			if (result == null)
+			collection = (RoleCollection)HttpRuntime.Cache.Get(cacheKey);
+			if (collection == null)
 			{
 				lock (lockGetAllCacheAccess)
 				{
-					result = (RoleCollection)HttpRuntime.Cache.Get(cacheKey);
-					if (result == null)
+					collection = (RoleCollection)HttpRuntime.Cache.Get(cacheKey);
+					if (collection == null)
 					{
 						QueryParams queryParams = new QueryParams();
 						queryParams.IncludeDeleted = true;
-						result = Role.GetList(queryParams);
+						collection = Role.GetList(queryParams);
 						
 						HttpRuntime.Cache.Add(
 							cacheKey,
-							result,
+							collection,
 							null, // dependencies
 							Cache.NoAbsoluteExpiration,
 							Cache.NoSlidingExpiration,
@@ -307,7 +327,7 @@ namespace Havit.BusinessLayerTest
 					}
 				}
 			}
-			return result;
+			return collection;
 		}
 		
 		#endregion
@@ -324,6 +344,9 @@ namespace Havit.BusinessLayerTest
 		#endregion
 		
 		#region Properties
+		/// <summary>
+		/// Objektová reprezentace vlastností třídy Role.
+		/// </summary>
 		public static RoleProperties Properties
 		{
 			get

@@ -20,6 +20,7 @@ namespace Havit.Business
 	public class BusinessObjectCollection<T> : Collection<T>
 		where T : BusinessObjectBase
 	{
+
 		#region Event - CollectionChanged
 		/// <summary>
 		/// Událost vyvolaná po jakékoliv zmìnì kolekce (Insert, Remove, Set, Clear).
@@ -39,15 +40,49 @@ namespace Havit.Business
 		}
 		#endregion
 
+		#region IgnoreDuplicates
+		/// <summary>
+		/// Urèuje, zda je možné do kolekce vložit hodnotu, která již v kolekci je.
+		/// Pokud je nastaveno na true, pøidání hodnoty, která v kolekci již je, neprobìhne (nic se nestane).
+		/// Pokud je nastaveno na false (výchozí), je možné hodnotu do kolekce pøidat vícekrát.
+		/// </summary>
+		public bool IgnoreDuplicates
+		{
+			get { return ignoreDuplicates; }
+			set { ignoreDuplicates = value; }
+		}
+		private bool ignoreDuplicates = false;
+		#endregion
+
+		#region AddRange
+		/// <summary>
+		/// Pøidá do kolekce prvky pøedané kolekce.
+		/// </summary>
+		/// <param name="source">Kolekce, jejíž prvky mají být pøidány.</param>
+		public void AddRange(IEnumerable<T> source)
+		{
+			foreach (T item in source)
+			{
+				this.Add(item);
+			}
+		}
+		#endregion
+
 		#region InsertItem (override)
 		/// <summary>
 		/// Inserts an element into the <see cref="T:System.Collections.ObjectModel.Collection`1"></see> at the specified index.
+		/// When IgnoresDuplicates is true, checks whether item already is in the collection. If so, does not insert item.
 		/// </summary>
 		/// <param name="index">The zero-based index at which item should be inserted.</param>
 		/// <param name="item">The object to insert. The value can be null for reference types.</param>
 		/// <exception cref="T:System.ArgumentOutOfRangeException">index is less than zero.-or-index is greater than <see cref="P:System.Collections.ObjectModel.Collection`1.Count"></see>.</exception>
 		protected override void InsertItem(int index, T item)
 		{
+			if (ignoreDuplicates && this.Contains(item))
+			{
+				return;
+			}
+
 			base.InsertItem(index, item);
 			OnCollectionChanged(EventArgs.Empty);
 		}

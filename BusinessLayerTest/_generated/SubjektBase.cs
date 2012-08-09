@@ -7,12 +7,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Globalization;
 using System.Text;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
+using System.Threading;
 using System.Web;
 using System.Web.Caching;
 using Havit.Data;
@@ -81,7 +83,14 @@ namespace Havit.BusinessLayerTest
 			set
 			{
 				EnsureLoaded();
-				_NazevPropertyHolder.Value = value ?? String.Empty;
+				if (value == null)
+				{
+					_NazevPropertyHolder.Value = String.Empty;
+				}
+				else
+				{
+					_NazevPropertyHolder.Value = value;
+				}
 			}
 		}
 		protected PropertyHolder<string> _NazevPropertyHolder;
@@ -158,6 +167,12 @@ namespace Havit.BusinessLayerTest
 		#endregion
 		
 		#region CheckConstraints
+		/// <summary>
+		/// Kontroluje konzistenci objektu jako celku.
+		/// </summary>
+		/// <remarks>
+		/// Automaticky je voláno před ukládáním objektu Save(), pokud je objekt opravdu ukládán.
+		/// </remarks>
 		protected override void CheckConstraints()
 		{
 			base.CheckConstraints();
@@ -240,6 +255,9 @@ namespace Havit.BusinessLayerTest
 		
 		#region Save & Delete: Save_SaveMembers, Save_SaveCollections, Save_MinimalInsert, Save_FullInsert, Save_Update, Save_Insert_InsertRequiredForMinimalInsert, Save_Insert_InsertRequiredForFullInsert, Delete_Perform
 		
+		/// <summary>
+		/// Ukládá member-objekty.
+		/// </summary>
 		protected override void Save_SaveMembers(DbTransaction transaction)
 		{
 			base.Save_SaveMembers(transaction);
@@ -253,6 +271,9 @@ namespace Havit.BusinessLayerTest
 		
 		// Save_SaveCollections: Není co ukládat
 		
+		/// <summary>
+		/// Implementace metody vloží jen not-null vlastnosti objektu do databáze a nastaví nově přidělené ID (primární klíč).
+		/// </summary>
 		public override void Save_MinimalInsert(DbTransaction transaction)
 		{
 			Save_Insert_InsertRequiredForMinimalInsert(transaction);
@@ -280,6 +301,9 @@ namespace Havit.BusinessLayerTest
 			}
 		}
 		
+		/// <summary>
+		/// Implementace metody vloží nový objekt do databáze a nastaví nově přidělené ID (primární klíč).
+		/// </summary>
 		protected override void Save_FullInsert(DbTransaction transaction)
 		{
 			SqlCommand sqlCommand = new SqlCommand();
@@ -310,6 +334,9 @@ namespace Havit.BusinessLayerTest
 			}
 		}
 		
+		/// <summary>
+		/// Implementace metody aktualizuje data objektu v databázi.
+		/// </summary>
 		protected override void Save_Update(DbTransaction transaction)
 		{
 			SqlCommand sqlCommand = new SqlCommand();
@@ -386,12 +413,18 @@ namespace Havit.BusinessLayerTest
 			}
 		}
 		
+		/// <summary>
+		/// Ukládá hodnoty potřebné pro provedení minimálního insertu. Volá Save_Insert_SaveRequiredForMinimalInsert.
+		/// </summary>
 		protected override void Save_Insert_InsertRequiredForMinimalInsert(DbTransaction transaction)
 		{
 			base.Save_Insert_InsertRequiredForMinimalInsert(transaction);
 			
 		}
 		
+		/// <summary>
+		/// Ukládá hodnoty potřebné pro provedení plného insertu.
+		/// </summary>
 		protected override void Save_Insert_InsertRequiredForFullInsert(DbTransaction transaction)
 		{
 			base.Save_Insert_InsertRequiredForFullInsert(transaction);
@@ -403,6 +436,9 @@ namespace Havit.BusinessLayerTest
 			
 		}
 		
+		/// <summary>
+		/// Metoda označí objekt jako smazaný a uloží jej.
+		/// </summary>
 		protected override void Delete_Perform(DbTransaction transaction)
 		{
 			if (IsNew)
@@ -479,11 +515,11 @@ namespace Havit.BusinessLayerTest
 		
 		public static SubjektCollection GetAll(bool includeDeleted)
 		{
-			SubjektCollection result;
+			SubjektCollection collection;
 			QueryParams queryParams = new QueryParams();
 			queryParams.IncludeDeleted = includeDeleted;
-			result = Subjekt.GetList(queryParams);
-			return result;
+			collection = Subjekt.GetList(queryParams);
+			return collection;
 		}
 		
 		#endregion
@@ -500,6 +536,9 @@ namespace Havit.BusinessLayerTest
 		#endregion
 		
 		#region Properties
+		/// <summary>
+		/// Objektová reprezentace vlastností třídy Subjekt.
+		/// </summary>
 		public static SubjektProperties Properties
 		{
 			get

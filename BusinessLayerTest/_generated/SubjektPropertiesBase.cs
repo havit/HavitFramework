@@ -7,12 +7,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Globalization;
 using System.Text;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
+using System.Threading;
 using System.Web;
 using System.Web.Caching;
 using Havit.Data;
@@ -77,6 +79,9 @@ namespace Havit.BusinessLayerTest
 		}
 		private ReferenceFieldPropertyInfo _uzivatel;
 		
+		/// <summary>
+		/// Čas vytvoření objektu.
+		/// </summary>
 		public FieldPropertyInfo Created
 		{
 			get
@@ -86,6 +91,9 @@ namespace Havit.BusinessLayerTest
 		}
 		private FieldPropertyInfo _created;
 		
+		/// <summary>
+		/// Čas smazání objektu.
+		/// </summary>
 		public FieldPropertyInfo Deleted
 		{
 			get

@@ -8,8 +8,16 @@ namespace Havit.Business.Query
 	/// <summary>
 	/// Vytváøí podmínky testující rozsah datumù.
 	/// </summary>
-	public static class DateRangeCondition
+	public static class DateCondition
 	{
+		/// <summary>
+		/// Vytvoøí podmínku testující rovnost datumù.
+		/// </summary>
+		public static Condition CreateEquals(IOperand operand, DateTime dateTime)
+		{
+			return new BinaryCondition(operand, BinaryCondition.EqualsPattern, ValueOperand.Create(dateTime));
+		}
+
 		/// <summary>
 		/// Vytvoøí podmínku testující, zda je datum v intervalu datumù.
 		/// </summary>

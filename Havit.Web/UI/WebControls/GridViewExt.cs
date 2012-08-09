@@ -795,8 +795,13 @@ namespace Havit.Web.UI.WebControls
 		/// <param name="e">argumenty události</param>
 		protected override void OnSorting(GridViewSortEventArgs e)
 		{
-			_sortExpressions.AddSortExpression(e.SortExpression);
-			base.RequiresDataBinding = true;
+			base.OnSorting(e);
+
+			if (!e.Cancel)
+			{
+				_sortExpressions.AddSortExpression(e.SortExpression);
+				base.RequiresDataBinding = true;
+			}
 		}
 		#endregion
 

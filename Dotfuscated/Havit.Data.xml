@@ -4,225 +4,31 @@
         <name>Havit.Data</name>
     </assembly>
     <members>
-        <member name="T:Havit.Data.SqlClient.SqlTransactionDelegate">
+        <member name="T:Havit.Data.DbTransactionDelegate">
             <summary>
             Reprezentuje metodu, která vykonává jednotlivé kroky transakce.
             </summary>
             <param name="transaction">transakce, v rámci které mají být jednotlivé kroky vykonány</param>
         </member>
-        <member name="T:Havit.Data.DataRecord">
+        <member name="T:Havit.Data.SqlTypes.SqlSmallDateTime">
             <summary>
-            DataRecord usnadňuje načítání dat objektu z databáze.
-            Zejména vhodný je pro situace, kdy je možné i částečné načítání.
-            </summary>
-            <remarks>
-            DataRecord pracuje tak, že v constructoru zkopíruje celý datový záznam do slovníku Dictionary&lt;field, value&gt;.
-            V jednotlivých Loadech pak už jenom načítá data ze slovníku.<br/>
-            Datový zdroj je tedy potřeba pouze v okamžiku volání constructoru a následně ho můžeme zlikvidovat.<br/>
-            Stejnětak je vhodné použít na všechny loady jeden DataRecord a předávat si ho mezi objekty.
-            </remarks>
-        </member>
-        <member name="F:Havit.Data.DataRecord.dataDictionary">
-            <summary>
-            Data z databáze.
+            Reprezentuje pomocné hodnoty pro databázový typ smalldatetime.
             </summary>
         </member>
-        <member name="M:Havit.Data.DataRecord.#ctor(System.Data.DataRow,Havit.Data.DataLoadPower)">
+        <member name="F:Havit.Data.SqlTypes.SqlSmallDateTime.MinValue">
             <summary>
-            Vytvoří instanci DataRecordu a načte do ní data z <see cref="T:System.Data.DataRow"/>.
-            </summary>
-            <param name="row">datový zdroj typu DataRow</param>
-            <param name="dataLoadPower">Rozsah dat v datovém zdroji.</param>
-        </member>
-        <member name="M:Havit.Data.DataRecord.#ctor(System.Data.DataRow,System.Boolean)">
-            <summary>
-            Vytvoří instanci DataRecordu a načte do ní data z <see cref="T:System.Data.DataRow"/>.
-            </summary>
-            <param name="row">datový zdroj typu DataRow</param>
-            <param name="fullLoad">true, má-li být při nenalezení parametru vyvolána výjimka</param>
-        </member>
-        <member name="M:Havit.Data.DataRecord.#ctor(System.Data.DataRow)">
-            <summary>
-            Vytvoří instanci DataRecordu a načte do ní data z <see cref="T:System.Data.DataRow"/>.
-            </summary>
-            <param name="row">datový zdroj typu <see cref="T:System.Data.DataRow"/></param>
-        </member>
-        <member name="M:Havit.Data.DataRecord.#ctor(System.Data.IDataRecord,Havit.Data.DataLoadPower)">
-            <summary>
-            Vytvoří instanci DataRecordu a načte do ní data z <see cref="T:System.Data.IDataRecord"/>
-            (např. <see cref="T:System.Data.SqlClient.SqlDataReader"/>).
-            </summary>
-            <param name="record">datový zdroj <see cref="T:System.Data.IDataRecord"/> (např. <see cref="T:System.Data.SqlClient.SqlDataReader"/>)</param>
-            <param name="dataLoadPower">Rozsah dat v datovém zdroji.</param>
-        </member>
-        <member name="M:Havit.Data.DataRecord.#ctor(System.Data.IDataRecord,System.Boolean)">
-            <summary>
-            Vytvoří instanci DataRecordu a načte do ní data z <see cref="T:System.Data.IDataRecord"/>
-            (např. <see cref="T:System.Data.SqlClient.SqlDataReader"/>).
-            </summary>
-            <param name="record">datový zdroj <see cref="T:System.Data.IDataRecord"/> (např. <see cref="T:System.Data.SqlClient.SqlDataReader"/>)</param>
-            <param name="fullLoad">true, má-li být při nenalezení parametru vyvolána výjimka</param>
-        </member>
-        <member name="M:Havit.Data.DataRecord.#ctor(System.Data.IDataRecord)">
-            <summary>
-            Vytvoří instanci DataRecordu a načte do ní data z <see cref="T:System.Data.IDataRecord"/>
-            (např. <see cref="T:System.Data.SqlClient.SqlDataReader"/>).
-            </summary>
-            <param name="record">datový zdroj <see cref="T:System.Data.IDataRecord"/> (např. <see cref="T:System.Data.SqlClient.SqlDataReader"/>)</param>
-        </member>
-        <member name="M:Havit.Data.DataRecord.TryGet``1(System.String,``0@)">
-            <summary>
-            Načte parametr zadaného generického typu T.
-            </summary>
-            <param name="fieldName">jméno parametru</param>
-            <param name="target">cíl, kam má být parametr uložen</param>
-            <returns>
-            <c>true</c>, pokud byla načtena hodnota;<br/>
-            <c>false</c>, pokud field v data recordu není a vlastnost <see cref="P:Havit.Data.DataRecord.FullLoad"/> je <c>false</c> (target je pak nastaven na <c>default(T)</c>);<br/>
-            </returns>
-            <exception cref="T:System.ArgumentException">pokud field v data recordu není a vlastnost <see cref="P:Havit.Data.DataRecord.FullLoad"/> je <c>true</c></exception>
-            <exception cref="T:System.InvalidCastException">pokud nelze převést field na výstupní typ, nebo pokud je field <see cref="T:System.DBNull"/> a výstupní typ nemá <c>null</c></exception>
-        </member>
-        <member name="M:Havit.Data.DataRecord.Get``1(System.String)">
-            <summary>
-            Vrátí parametr zadaného generického typu.
-            </summary>
-            <remarks>
-            Mimo castingu se pokouší i o konverzi typu pomocí IConvertible.
-            </remarks>
-            <param name="fieldName">jméno parametru</param>
-            <returns>
-            vrátí hodnotu typu T;<br/>
-            pokud parametr neexistuje a není <see cref="P:Havit.Data.DataRecord.FullLoad"/>, pak vrací <c>default(T)</c>, ve FullLoad hází výjimku ArgumentException;<br/>
-            pokud má parametr hodnotu NULL, pak vrací <c>null</c> pro referenční typy, pro hodnotové typy hází výjimku InvalidCastException<br/>
-            </returns>
-            <exception cref="T:System.ArgumentException">pokud field v data recordu není a vlastnost <see cref="P:Havit.Data.DataRecord.FullLoad"/> je <c>true</c></exception>
-            <exception cref="T:System.InvalidCastException">pokud nelze převést field na výstupní typ, nebo pokud je field <see cref="T:System.DBNull"/> a výstupní typ nemá <c>null</c></exception>
-        </member>
-        <member name="M:Havit.Data.DataRecord.Load``1(System.String,``0@)">
-            <summary>
-            Načte parametr zadaného generického typu T.
-            </summary>
-            <remarks>
-            Narozdíl od <see cref="M:Havit.Data.DataRecord.TryGet``1(System.String,``0@)"/> neindikuje přítomnost fieldu v data recordu, nýbrž je-li field roven <see cref="T:System.DBNull"/>.<br/>
-            Pokud je field <see cref="T:System.DBNull"/>, pak parametr <c>target</c> nezmění
-            </remarks>
-            <param name="fieldName">jméno parametru</param>
-            <param name="target">cíl, kam má být parametr uložen</param>
-            <returns>
-            <c>false</c>, pokud má field hodnotu <see cref="T:System.DBNull"/>;<br/>
-            <c>false</c>, pokud nebyl field nalezen a <see cref="P:Havit.Data.DataRecord.FullLoad"/> je <c>false</c>;
-            <c>true</c>, pokud byla načtena hodnota
-            </returns>
-            <exception cref="T:System.ArgumentException">pokud nebyl field nalezen a <see cref="P:Havit.Data.DataRecord.FullLoad"/> je <c>true</c></exception>
-            <exception cref="T:System.InvalidCastException">pokud nelze převést field na výstupní typ</exception>
-        </member>
-        <member name="M:Havit.Data.DataRecord.LoadObject(System.String,System.Object@)">
-            <summary>
-            Načte parametr typu Object.
-            </summary>
-            <param name="fieldName">jméno parametru</param>
-            <param name="target">cíl, kam má být parametr uložen</param>
-            <returns>false, pokud má parametr hodnotu NULL; true, pokud byla načtena hodnota</returns>
-        </member>
-        <member name="M:Havit.Data.DataRecord.GetObject(System.String)">
-            <summary>
-            Vrátí parametr typu Object.
-            </summary>
-            <param name="fieldName">jméno parametru</param>
-            <returns>null, pokud má parametr hodnotu NULL, nebo neexistuje; jinak hodnota typu Object</returns>
-        </member>
-        <member name="M:Havit.Data.DataRecord.LoadString(System.String,System.String@)">
-            <summary>
-            Načte parametr typu string.
-            </summary>
-            <param name="fieldName">jméno parametru</param>
-            <param name="target">cíl, kam má být parametr uložen</param>
-            <returns>false, pokud má parametr hodnotu NULL; true, pokud byla načtena hodnota</returns>
-        </member>
-        <member name="M:Havit.Data.DataRecord.GetString(System.String)">
-            <summary>
-            Vrátí parametr typu String.
-            </summary>
-            <param name="fieldName">jméno parametru</param>
-            <returns>null, pokud má parametr hodnotu NULL, nebo neexistuje; jinak hodnota typu String</returns>
-        </member>
-        <member name="M:Havit.Data.DataRecord.LoadInt32(System.String,System.Int32@)">
-            <summary>
-            Načte parametr typu Int32.
-            </summary>
-            <param name="fieldName">jméno parametru</param>
-            <param name="target">cíl, kam má být parametr uložen</param>
-            <returns>false, pokud má parametr hodnotu NULL; true, pokud byla načtena hodnota</returns>
-        </member>
-        <member name="M:Havit.Data.DataRecord.GetNullableInt32(System.String)">
-            <summary>
-            Vrátí parametr typu Int32?.
-            </summary>
-            <param name="fieldName">jméno parametru</param>
-            <returns>null, pokud má parametr hodnotu NULL, nebo neexistuje; jinak hodnota typu Int32</returns>
-        </member>
-        <member name="M:Havit.Data.DataRecord.LoadDouble(System.String,System.Double@)">
-            <summary>
-            Načte parametr typu Double.
-            </summary>
-            <param name="fieldName">jméno parametru</param>
-            <param name="target">cíl, kam má být parametr uložen</param>
-            <returns>false, pokud má parametr hodnotu NULL; true, pokud byla načtena hodnota</returns>
-        </member>
-        <member name="M:Havit.Data.DataRecord.GetNullableDouble(System.String)">
-            <summary>
-            Vrátí parametr typu Double?.
-            </summary>
-            <param name="fieldName">jméno parametru</param>
-            <returns>null, pokud má parametr hodnotu NULL, nebo neexistuje; jinak hodnota typu Double</returns>
-        </member>
-        <member name="M:Havit.Data.DataRecord.LoadBoolean(System.String,System.Boolean@)">
-            <summary>
-            Načte parametr typu Boolean.
-            </summary>
-            <param name="fieldName">jméno parametru</param>
-            <param name="target">cíl, kam má být parametr uložen</param>
-            <returns>false, pokud má parametr hodnotu NULL; true, pokud byla načtena hodnota</returns>
-        </member>
-        <member name="M:Havit.Data.DataRecord.GetNullableBoolean(System.String)">
-            <summary>
-            Vrátí parametr typu bool?.
-            </summary>
-            <param name="fieldName">jméno parametru</param>
-            <returns>null, pokud má parametr hodnotu NULL, nebo neexistuje; jinak hodnota typu Boolean</returns>
-        </member>
-        <member name="M:Havit.Data.DataRecord.LoadDateTime(System.String,System.DateTime@)">
-            <summary>
-            Načte parametr typu DateTime.
-            </summary>
-            <param name="fieldName">jméno parametru</param>
-            <param name="target">cíl, kam má být parametr uložen</param>
-            <returns>false, pokud má parametr hodnotu NULL; true, pokud byla načtena hodnota</returns>
-        </member>
-        <member name="M:Havit.Data.DataRecord.GetNullableDateTime(System.String)">
-            <summary>
-            Vrátí parametr typu DateTime?.
-            </summary>
-            <param name="fieldName">jméno parametru</param>
-            <returns>null, pokud má parametr hodnotu NULL, nebo neexistuje; jinak hodnota typu DateTime</returns>
-        </member>
-        <member name="P:Havit.Data.DataRecord.FullLoad">
-            <summary>
-            Indikuje, zda-li je požadována 100% úspěšnost pro načítání položek (true), nebo zda-li se mají neúspěchy ignorovat.
+            Minimální hodnota použitelná pro databázový typ smalldatetime.
             </summary>
         </member>
-        <member name="P:Havit.Data.DataRecord.DataLoadPower">
+        <member name="F:Havit.Data.SqlTypes.SqlSmallDateTime.MaxValue">
             <summary>
-            Indikuje množství dat, které jsou uloženy v DataRecordu vůči všem možným sloupcům řádků.
+            Maximální hodnota použitelná pro databázový typ smalldatetime.
             </summary>
         </member>
-        <member name="P:Havit.Data.DataRecord.Item(System.String)">
+        <member name="P:Havit.Data.SqlTypes.SqlSmallDateTime.Value">
             <summary>
-            Indexer pro získání k prvku pomocí názvu pole.
+            Hodnota reprezentovaná jako DateTime.
             </summary>
-            <param name="field">pole, sloupec</param>
-            <returns>hodnota</returns>
         </member>
         <member name="T:Havit.Data.SqlClient.SqlDataAccess">
             <summary>
@@ -495,52 +301,6 @@
             &lt;/configuration&gt;
             </code>
             </example>
-        </member>
-        <member name="T:Havit.Data.DataLoadPower">
-            <summary>
-            Rozsah dat v datovém zdroji.
-            </summary>
-        </member>
-        <member name="F:Havit.Data.DataLoadPower.Ghost">
-            <summary>
-            Datový zdroj obsahuje jen informace pro založení ghosta (primární klíč).
-            </summary>
-        </member>
-        <member name="F:Havit.Data.DataLoadPower.FullLoad">
-            <summary>
-            Datový zdroj obsahuje kompletní řádek dat (všechny možné sloupce).
-            </summary>
-        </member>
-        <member name="F:Havit.Data.DataLoadPower.PartialLoad">
-            <summary>
-            Datový zdroj obsahuje nekompletní řádek dat.
-            </summary>
-        </member>
-        <member name="T:Havit.Data.SqlTypes.SqlSmallDateTime">
-            <summary>
-            Reprezentuje pomocné hodnoty pro databázový typ smalldatetime.
-            </summary>
-        </member>
-        <member name="F:Havit.Data.SqlTypes.SqlSmallDateTime.MinValue">
-            <summary>
-            Minimální hodnota použitelná pro databázový typ smalldatetime.
-            </summary>
-        </member>
-        <member name="F:Havit.Data.SqlTypes.SqlSmallDateTime.MaxValue">
-            <summary>
-            Maximální hodnota použitelná pro databázový typ smalldatetime.
-            </summary>
-        </member>
-        <member name="P:Havit.Data.SqlTypes.SqlSmallDateTime.Value">
-            <summary>
-            Hodnota reprezentovaná jako DateTime.
-            </summary>
-        </member>
-        <member name="T:Havit.Data.DbTransactionDelegate">
-            <summary>
-            Reprezentuje metodu, která vykonává jednotlivé kroky transakce.
-            </summary>
-            <param name="transaction">transakce, v rámci které mají být jednotlivé kroky vykonány</param>
         </member>
         <member name="T:Havit.Data.DbConnector">
             <summary>
@@ -870,6 +630,246 @@
             &lt;/configuration&gt;
             </code>
             </example>
+        </member>
+        <member name="T:Havit.Data.SqlClient.SqlTransactionDelegate">
+            <summary>
+            Reprezentuje metodu, která vykonává jednotlivé kroky transakce.
+            </summary>
+            <param name="transaction">transakce, v rámci které mají být jednotlivé kroky vykonány</param>
+        </member>
+        <member name="T:Havit.Data.DataRecord">
+            <summary>
+            DataRecord usnadňuje načítání dat objektu z databáze.
+            Zejména vhodný je pro situace, kdy je možné i částečné načítání.
+            </summary>
+            <remarks>
+            DataRecord pracuje tak, že v constructoru zkopíruje celý datový záznam do slovníku Dictionary&lt;field, value&gt;.
+            V jednotlivých Loadech pak už jenom načítá data ze slovníku.<br/>
+            Datový zdroj je tedy potřeba pouze v okamžiku volání constructoru a následně ho můžeme zlikvidovat.<br/>
+            Stejnětak je vhodné použít na všechny loady jeden DataRecord a předávat si ho mezi objekty.
+            </remarks>
+        </member>
+        <member name="F:Havit.Data.DataRecord.dataDictionary">
+            <summary>
+            Data z databáze.
+            </summary>
+        </member>
+        <member name="M:Havit.Data.DataRecord.#ctor(System.Data.DataRow,Havit.Data.DataLoadPower)">
+            <summary>
+            Vytvoří instanci DataRecordu a načte do ní data z <see cref="T:System.Data.DataRow"/>.
+            </summary>
+            <param name="row">datový zdroj typu DataRow</param>
+            <param name="dataLoadPower">Rozsah dat v datovém zdroji.</param>
+        </member>
+        <member name="M:Havit.Data.DataRecord.#ctor(System.Data.DataRow,System.Boolean)">
+            <summary>
+            Vytvoří instanci DataRecordu a načte do ní data z <see cref="T:System.Data.DataRow"/>.
+            </summary>
+            <param name="row">datový zdroj typu DataRow</param>
+            <param name="fullLoad">true, má-li být při nenalezení parametru vyvolána výjimka</param>
+        </member>
+        <member name="M:Havit.Data.DataRecord.#ctor(System.Data.DataRow)">
+            <summary>
+            Vytvoří instanci DataRecordu a načte do ní data z <see cref="T:System.Data.DataRow"/>.
+            </summary>
+            <param name="row">datový zdroj typu <see cref="T:System.Data.DataRow"/></param>
+        </member>
+        <member name="M:Havit.Data.DataRecord.#ctor(System.Data.IDataRecord,Havit.Data.DataLoadPower)">
+            <summary>
+            Vytvoří instanci DataRecordu a načte do ní data z <see cref="T:System.Data.IDataRecord"/>
+            (např. <see cref="T:System.Data.SqlClient.SqlDataReader"/>).
+            </summary>
+            <param name="record">datový zdroj <see cref="T:System.Data.IDataRecord"/> (např. <see cref="T:System.Data.SqlClient.SqlDataReader"/>)</param>
+            <param name="dataLoadPower">Rozsah dat v datovém zdroji.</param>
+        </member>
+        <member name="M:Havit.Data.DataRecord.#ctor(System.Data.IDataRecord,System.Boolean)">
+            <summary>
+            Vytvoří instanci DataRecordu a načte do ní data z <see cref="T:System.Data.IDataRecord"/>
+            (např. <see cref="T:System.Data.SqlClient.SqlDataReader"/>).
+            </summary>
+            <param name="record">datový zdroj <see cref="T:System.Data.IDataRecord"/> (např. <see cref="T:System.Data.SqlClient.SqlDataReader"/>)</param>
+            <param name="fullLoad">true, má-li být při nenalezení parametru vyvolána výjimka</param>
+        </member>
+        <member name="M:Havit.Data.DataRecord.#ctor(System.Data.IDataRecord)">
+            <summary>
+            Vytvoří instanci DataRecordu a načte do ní data z <see cref="T:System.Data.IDataRecord"/>
+            (např. <see cref="T:System.Data.SqlClient.SqlDataReader"/>).
+            </summary>
+            <param name="record">datový zdroj <see cref="T:System.Data.IDataRecord"/> (např. <see cref="T:System.Data.SqlClient.SqlDataReader"/>)</param>
+        </member>
+        <member name="M:Havit.Data.DataRecord.TryGet``1(System.String,``0@)">
+            <summary>
+            Načte parametr zadaného generického typu T.
+            </summary>
+            <param name="fieldName">jméno parametru</param>
+            <param name="target">cíl, kam má být parametr uložen</param>
+            <returns>
+            <c>true</c>, pokud byla načtena hodnota;<br/>
+            <c>false</c>, pokud field v data recordu není a vlastnost <see cref="P:Havit.Data.DataRecord.FullLoad"/> je <c>false</c> (target je pak nastaven na <c>default(T)</c>);<br/>
+            </returns>
+            <exception cref="T:System.ArgumentException">pokud field v data recordu není a vlastnost <see cref="P:Havit.Data.DataRecord.FullLoad"/> je <c>true</c></exception>
+            <exception cref="T:System.InvalidCastException">pokud nelze převést field na výstupní typ, nebo pokud je field <see cref="T:System.DBNull"/> a výstupní typ nemá <c>null</c></exception>
+        </member>
+        <member name="M:Havit.Data.DataRecord.Get``1(System.String)">
+            <summary>
+            Vrátí parametr zadaného generického typu.
+            </summary>
+            <remarks>
+            Mimo castingu se pokouší i o konverzi typu pomocí IConvertible.
+            </remarks>
+            <param name="fieldName">jméno parametru</param>
+            <returns>
+            vrátí hodnotu typu T;<br/>
+            pokud parametr neexistuje a není <see cref="P:Havit.Data.DataRecord.FullLoad"/>, pak vrací <c>default(T)</c>, ve FullLoad hází výjimku ArgumentException;<br/>
+            pokud má parametr hodnotu NULL, pak vrací <c>null</c> pro referenční typy, pro hodnotové typy hází výjimku InvalidCastException<br/>
+            </returns>
+            <exception cref="T:System.ArgumentException">pokud field v data recordu není a vlastnost <see cref="P:Havit.Data.DataRecord.FullLoad"/> je <c>true</c></exception>
+            <exception cref="T:System.InvalidCastException">pokud nelze převést field na výstupní typ, nebo pokud je field <see cref="T:System.DBNull"/> a výstupní typ nemá <c>null</c></exception>
+        </member>
+        <member name="M:Havit.Data.DataRecord.Load``1(System.String,``0@)">
+            <summary>
+            Načte parametr zadaného generického typu T.
+            </summary>
+            <remarks>
+            Narozdíl od <see cref="M:Havit.Data.DataRecord.TryGet``1(System.String,``0@)"/> neindikuje přítomnost fieldu v data recordu, nýbrž je-li field roven <see cref="T:System.DBNull"/>.<br/>
+            Pokud je field <see cref="T:System.DBNull"/>, pak parametr <c>target</c> nezmění
+            </remarks>
+            <param name="fieldName">jméno parametru</param>
+            <param name="target">cíl, kam má být parametr uložen</param>
+            <returns>
+            <c>false</c>, pokud má field hodnotu <see cref="T:System.DBNull"/>;<br/>
+            <c>false</c>, pokud nebyl field nalezen a <see cref="P:Havit.Data.DataRecord.FullLoad"/> je <c>false</c>;
+            <c>true</c>, pokud byla načtena hodnota
+            </returns>
+            <exception cref="T:System.ArgumentException">pokud nebyl field nalezen a <see cref="P:Havit.Data.DataRecord.FullLoad"/> je <c>true</c></exception>
+            <exception cref="T:System.InvalidCastException">pokud nelze převést field na výstupní typ</exception>
+        </member>
+        <member name="M:Havit.Data.DataRecord.LoadObject(System.String,System.Object@)">
+            <summary>
+            Načte parametr typu Object.
+            </summary>
+            <param name="fieldName">jméno parametru</param>
+            <param name="target">cíl, kam má být parametr uložen</param>
+            <returns>false, pokud má parametr hodnotu NULL; true, pokud byla načtena hodnota</returns>
+        </member>
+        <member name="M:Havit.Data.DataRecord.GetObject(System.String)">
+            <summary>
+            Vrátí parametr typu Object.
+            </summary>
+            <param name="fieldName">jméno parametru</param>
+            <returns>null, pokud má parametr hodnotu NULL, nebo neexistuje; jinak hodnota typu Object</returns>
+        </member>
+        <member name="M:Havit.Data.DataRecord.LoadString(System.String,System.String@)">
+            <summary>
+            Načte parametr typu string.
+            </summary>
+            <param name="fieldName">jméno parametru</param>
+            <param name="target">cíl, kam má být parametr uložen</param>
+            <returns>false, pokud má parametr hodnotu NULL; true, pokud byla načtena hodnota</returns>
+        </member>
+        <member name="M:Havit.Data.DataRecord.GetString(System.String)">
+            <summary>
+            Vrátí parametr typu String.
+            </summary>
+            <param name="fieldName">jméno parametru</param>
+            <returns>null, pokud má parametr hodnotu NULL, nebo neexistuje; jinak hodnota typu String</returns>
+        </member>
+        <member name="M:Havit.Data.DataRecord.LoadInt32(System.String,System.Int32@)">
+            <summary>
+            Načte parametr typu Int32.
+            </summary>
+            <param name="fieldName">jméno parametru</param>
+            <param name="target">cíl, kam má být parametr uložen</param>
+            <returns>false, pokud má parametr hodnotu NULL; true, pokud byla načtena hodnota</returns>
+        </member>
+        <member name="M:Havit.Data.DataRecord.GetNullableInt32(System.String)">
+            <summary>
+            Vrátí parametr typu Int32?.
+            </summary>
+            <param name="fieldName">jméno parametru</param>
+            <returns>null, pokud má parametr hodnotu NULL, nebo neexistuje; jinak hodnota typu Int32</returns>
+        </member>
+        <member name="M:Havit.Data.DataRecord.LoadDouble(System.String,System.Double@)">
+            <summary>
+            Načte parametr typu Double.
+            </summary>
+            <param name="fieldName">jméno parametru</param>
+            <param name="target">cíl, kam má být parametr uložen</param>
+            <returns>false, pokud má parametr hodnotu NULL; true, pokud byla načtena hodnota</returns>
+        </member>
+        <member name="M:Havit.Data.DataRecord.GetNullableDouble(System.String)">
+            <summary>
+            Vrátí parametr typu Double?.
+            </summary>
+            <param name="fieldName">jméno parametru</param>
+            <returns>null, pokud má parametr hodnotu NULL, nebo neexistuje; jinak hodnota typu Double</returns>
+        </member>
+        <member name="M:Havit.Data.DataRecord.LoadBoolean(System.String,System.Boolean@)">
+            <summary>
+            Načte parametr typu Boolean.
+            </summary>
+            <param name="fieldName">jméno parametru</param>
+            <param name="target">cíl, kam má být parametr uložen</param>
+            <returns>false, pokud má parametr hodnotu NULL; true, pokud byla načtena hodnota</returns>
+        </member>
+        <member name="M:Havit.Data.DataRecord.GetNullableBoolean(System.String)">
+            <summary>
+            Vrátí parametr typu bool?.
+            </summary>
+            <param name="fieldName">jméno parametru</param>
+            <returns>null, pokud má parametr hodnotu NULL, nebo neexistuje; jinak hodnota typu Boolean</returns>
+        </member>
+        <member name="M:Havit.Data.DataRecord.LoadDateTime(System.String,System.DateTime@)">
+            <summary>
+            Načte parametr typu DateTime.
+            </summary>
+            <param name="fieldName">jméno parametru</param>
+            <param name="target">cíl, kam má být parametr uložen</param>
+            <returns>false, pokud má parametr hodnotu NULL; true, pokud byla načtena hodnota</returns>
+        </member>
+        <member name="M:Havit.Data.DataRecord.GetNullableDateTime(System.String)">
+            <summary>
+            Vrátí parametr typu DateTime?.
+            </summary>
+            <param name="fieldName">jméno parametru</param>
+            <returns>null, pokud má parametr hodnotu NULL, nebo neexistuje; jinak hodnota typu DateTime</returns>
+        </member>
+        <member name="P:Havit.Data.DataRecord.FullLoad">
+            <summary>
+            Indikuje, zda-li je požadována 100% úspěšnost pro načítání položek (true), nebo zda-li se mají neúspěchy ignorovat.
+            </summary>
+        </member>
+        <member name="P:Havit.Data.DataRecord.DataLoadPower">
+            <summary>
+            Indikuje množství dat, které jsou uloženy v DataRecordu vůči všem možným sloupcům řádků.
+            </summary>
+        </member>
+        <member name="P:Havit.Data.DataRecord.Item(System.String)">
+            <summary>
+            Indexer pro získání k prvku pomocí názvu pole.
+            </summary>
+            <param name="field">pole, sloupec</param>
+            <returns>hodnota</returns>
+        </member>
+        <member name="T:Havit.Data.DataLoadPower">
+            <summary>
+            Rozsah dat v datovém zdroji.
+            </summary>
+        </member>
+        <member name="F:Havit.Data.DataLoadPower.Ghost">
+            <summary>
+            Datový zdroj obsahuje jen informace pro založení ghosta (primární klíč).
+            </summary>
+        </member>
+        <member name="F:Havit.Data.DataLoadPower.FullLoad">
+            <summary>
+            Datový zdroj obsahuje kompletní řádek dat (všechny možné sloupce).
+            </summary>
+        </member>
+        <member name="F:Havit.Data.DataLoadPower.PartialLoad">
+            <summary>
+            Datový zdroj obsahuje nekompletní řádek dat.
+            </summary>
         </member>
     </members>
 </doc>

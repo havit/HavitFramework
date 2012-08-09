@@ -1,4 +1,4 @@
-function havitParseInt(value) {
+Ôªøfunction havitParseInt(value) {
 /// <summary>Prevadi retezec na cele cislo. Argumentem muze byt cislo obsahujici whitespaces (napr. "10 000").</summary>
 
 	value = value.replace(/\s/g, "");
@@ -229,7 +229,7 @@ function havitHideElement(element, keepSpace) {
 
 function havitBlockElement(element) {
 /// <summary>
-/// Zablokuje element - nastavi disabled, readonly a odstranÌ obsluhu onClick.
+/// Zablokuje element - nastavi disabled, readonly a odstran√≠ obsluhu onClick.
 /// <summary>
 
 	if (element.getAttribute("disabled") != null)
@@ -325,12 +325,15 @@ function havitCopyToClipboard(text) {
 	return false;
 }
 
+var _havitLastShownDialogElementId = null;
+
 function havitShowDialog(elementId)
 {
 /// <summary>
 /// Zobrazi dialog.
 /// <summary>
 	var element = document.getElementById(elementId);
+	_havitLastShownDialogElementId = elementId;
 	_havitGetDialogOverlay().style.display = 'block';
 
     _havitStoreScrollPosition();
@@ -376,7 +379,10 @@ function havitHideDialog(elementId)
 /// Skryje dialog.
 /// <summary>
 	document.getElementById(elementId).style.display = 'none';
-	_havitGetDialogOverlay().style.display = 'none';
+	if (elementId == _havitLastShownDialogElementId) // pokud zav√≠r√°me posledn√≠ otev≈ôen√Ω dialog, jinak ji≈æ byl otev≈ôen jin√Ω
+	{
+		_havitGetDialogOverlay().style.display = 'none';
+	}
 	if (_havitIsPreIE7())
 	{
 		_havitRestoreSelects(document);
@@ -407,7 +413,7 @@ function havitHideDialog(elementId)
 function _havitGetDialogOverlay()
 {
 /// <summary>
-/// (Vytv·¯Ì a) vracÌ element, kter˝ p¯ekr˝v· okno.
+/// (Vytv√°√∏√≠ a) vrac√≠ element, kter√Ω p√∏ekr√Ωv√° okno.
 /// <summary>
 	var overlay = document.getElementById('webdialogoverlay');
 	if (overlay == null)
@@ -422,8 +428,8 @@ function _havitGetDialogOverlay()
 function havitSetDialogSize(dialogElementId, widthUnit, heightUnit, marginLeftUnit, marginTopUnit)
 {
 /// <summary>
-/// NastavÌ dialogu velikost a umÌstÌ jej doprost¯ed.
-/// Centrov·nÌ je ¯eöeno "fintou", viz http://interval.cz/clanky/zarovnani-prezentace-na-stred-pomoci-css/
+/// Nastav√≠ dialogu velikost a um√≠st√≠ jej doprost√∏ed.
+/// Centrov√°n√≠ je √∏e≈°eno "fintou", viz http://interval.cz/clanky/zarovnani-prezentace-na-stred-pomoci-css/
 /// <summary>
 	var dialogElement = document.getElementById(dialogElementId);	
 	dialogElement.style.width = widthUnit;

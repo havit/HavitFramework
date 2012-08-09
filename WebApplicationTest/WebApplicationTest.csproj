@@ -122,6 +122,7 @@
     <Content Include="DateTimeBoxTest.aspx" />
     <Content Include="DropDownListTest.aspx" />
     <Content Include="GridViewExtTest.aspx" />
+    <Content Include="HavitScripts.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -350,7 +351,6 @@
     <Content Include="EnterpriseCheckBoxListTest.aspx" />
     <Content Include="EnterpriseListBoxTest.aspx" />
     <Content Include="havit.css" />
-    <Content Include="HavitScripts.js" />
     <Content Include="JirkkaTest.aspx" />
     <Content Include="MessengerTest.aspx" />
     <Content Include="ScriptletTest3.aspx" />

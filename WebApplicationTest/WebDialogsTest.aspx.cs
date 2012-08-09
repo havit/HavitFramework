@@ -23,6 +23,7 @@ namespace Havit.DsvCommerce.Web
 
 			ServerOpen2Button.Click += new EventHandler(ServerOpen2Button_Click);
 			ServerClose2Button.Click += new EventHandler(ServerClose2Button_Click);
+			CloseOpenButton.Click += new EventHandler(CloseOpenButton_Click);
 
             EnlargeButton.Click += new EventHandler(EnlargeButton_Click);
 		}
@@ -53,7 +54,13 @@ namespace Havit.DsvCommerce.Web
 			MyAjaxModalDialog.Hide();
 		}
 
-        private void EnlargeButton_Click(object sender, EventArgs e)
+		void CloseOpenButton_Click(object sender, EventArgs e)
+		{
+			MyAjaxModalDialog.Hide();
+			MyAjaxModalDialog.Show();
+		}
+		
+		private void EnlargeButton_Click(object sender, EventArgs e)
         {
             MyAjaxModalDialog.Width = new Unit(MyAjaxModalDialog.Width.Value + 10, UnitType.Pixel);
             MyAjaxModalDialog.Height = new Unit(MyAjaxModalDialog.Height.Value + 10, UnitType.Pixel);

@@ -67,6 +67,7 @@ Integer urna. Nunc ac urna pulvinar purus blandit euismod. Donec in risus. Suspe
 		<ContentTemplate>
 		<asp:Button runat="server" Text="Client close" OnClientClick='<%# MyAjaxModalDialog.GetHideScript() + "return false;" %>' />
 		<asp:Button runat="server" Text="Server close" ID="ServerClose2Button" />
+		<asp:Button runat="server" Text="Close and Open" ID="CloseOpenButton" />
 		<asp:Button runat="server" Text="Refresh" />
 			<%= DateTime.Now %>
 			<havit:DateTimeBox runat="server" />

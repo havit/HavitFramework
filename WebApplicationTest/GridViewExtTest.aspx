@@ -1,4 +1,5 @@
 ﻿<%@ Page Language="C#" Trace="true" CodeBehind="GridViewExtTest.aspx.cs" Inherits="WebApplicationTest.GridViewExtTest" %>
+<%@ Register TagPrefix="uc" TagName="GridViewExtTest_InnerGVControl" src="GridViewExtTest_InnerGVControl.ascx"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -9,20 +10,28 @@
 <body>
     <form id="form1" runat="server">
     <div>
-		<havit:GridViewExt ID="TestGV1" AllowPaging="true" PagerSettings-Position="bottom" PagerSettingsShowAllPagesButton="true" PagerSettingsAllPagesButtonText="Vše" PagerSettings-Mode="Numeric" PageSize="2000" AllowSorting="true" AutoSort="true" runat="server">
+		<havit:EnterpriseGridView ID="TestGV1" AllowInserting="True" InsertRowPosition="Bottom" runat="server">
 			<Columns>
 				<havit:BoundFieldExt DataField="Nazev" SortExpression="Nazev" HeaderText="Název" />
 				<havit:TemplateFieldExt SortExpression="Nazev" HeaderText="Název">
 					<ItemTemplate>
 						<%# Eval("Nazev") %>
 					</ItemTemplate>
-					<EditItemTemplate>
+					<EditItemTemplate>						
 						Edit: <%# Eval("Nazev") %>
 					</EditItemTemplate>
 				</havit:TemplateFieldExt>
-				<havit:GridViewCommandField ShowEditButton="true" ShowDeleteButton="true" />
+				<havit:TemplateFieldExt HeaderText="Grid">
+					<EditItemTemplate>
+						<asp:Panel runat="server">
+							<uc:GridViewExtTest_InnerGVControl runat="server"/>
+						</asp:Panel>
+					</EditItemTemplate>
+				</havit:TemplateFieldExt>
+				<havit:GridViewCommandField InsertText="Insert" ButtonType="Image" ShowInsertButton="true" ShowEditButton="true" ShowDeleteButton="true" />
 			</Columns>
-		</havit:GridViewExt>
+		</havit:EnterpriseGridView>
+
 		<havit:GridViewExt ID="TestGV2" AllowPaging="true" PagerSettings-Position="bottom" PagerSettingsShowAllPagesButton="true" PagerSettingsAllPagesButtonImageUrl="~/a/test.gif" PagerSettings-Mode="NumericFirstLast" PageSize="2" runat="server">
 			<Columns>
 				<havit:BoundFieldExt DataField="Nazev" />

@@ -28,7 +28,7 @@ namespace WebApplicationTest {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Havit.Web.UI.WebControls.GridViewExt TestGV1;
+        protected global::Havit.Web.UI.WebControls.EnterpriseGridView TestGV1;
         
         /// <summary>
         /// TestGV2 control.

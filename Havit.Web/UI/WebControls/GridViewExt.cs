@@ -535,7 +535,7 @@ namespace Havit.Web.UI.WebControls
 				{
 					if (GetInsertRowDataItem == null)
 					{
-						throw new InvalidOperationException("Při AllowInserting musíte nastavit GetInsertRowData.");
+						throw new InvalidOperationException("Při AllowInserting musíte nastavit GetInsertRowDataItem.");
 					}
 
 					object insertRowDataItem = GetInsertRowDataItem();
@@ -717,6 +717,36 @@ namespace Havit.Web.UI.WebControls
 					}
 				}
 			}
+		}
+		#endregion
+
+		#region OnBubbleEvent
+		protected override bool OnBubbleEvent(object source, EventArgs e)
+		{
+			bool result = base.OnBubbleEvent(source, e);
+
+			// pokud se má událost propagovat, ověříme, zda nejde o insert
+			// Insert nechceme propagovat, stejně jako se nepropaguje Update, Delete, atp.
+			// ve frameworku 2.0/3.5 se nepropaguje, ve frameworku 4.0 se propaguje
+			// framework kompilujeme pod .NET 3.5, problém se ale objeví jen v aplikaci běžící pod .NET 4.0
+
+			if (!result)
+			{
+				GridViewCommandEventArgs args = e as GridViewCommandEventArgs;
+				if (args != null)
+				{
+					IButtonControl commandSource = args.CommandSource as IButtonControl;
+					if (commandSource != null)
+					{
+						if (String.Equals(commandSource.CommandName, "Insert", StringComparison.InvariantCultureIgnoreCase))
+						{
+							result = true; // ano, metoda se jmenuje onbubbleevent, ale true znamená cancel
+						}
+					}
+				}
+			}
+
+			return result;
 		}
 		#endregion
 

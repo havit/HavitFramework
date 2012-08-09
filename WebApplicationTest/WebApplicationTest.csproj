@@ -19,6 +19,7 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
     <UseIISExpress>true</UseIISExpress>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -97,25 +98,20 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.DataSetExtensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="System.Web.Extensions.Design, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Extensions.Design" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Mobile" />
-    <Reference Include="System.Xml.Linq, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AutoSuggestMenu.aspx" />
@@ -126,6 +122,7 @@
     <Content Include="DropDownListTest.aspx" />
     <Content Include="Global.asax" />
     <Content Include="GridViewExtTest.aspx" />
+    <Content Include="GridViewExtTest_InnerGVControl.ascx" />
     <Content Include="HavitScripts.js" />
     <Content Include="SimpleTest.aspx" />
     <Content Include="Web.config" />
@@ -248,6 +245,13 @@
     </Compile>
     <Compile Include="GridViewExtTest.aspx.designer.cs">
       <DependentUpon>GridViewExtTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GridViewExtTest_InnerGVControl.ascx.cs">
+      <DependentUpon>GridViewExtTest_InnerGVControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GridViewExtTest_InnerGVControl.ascx.designer.cs">
+      <DependentUpon>GridViewExtTest_InnerGVControl.ascx</DependentUpon>
     </Compile>
     <Compile Include="JirkkaTest.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>

@@ -8,7 +8,7 @@ namespace Havit.Web
 	/// <summary>
 	/// Obsahuje rozšiøující funkènost k tøídì <see cref="System.Web.HttpResponse"/>.
 	/// </summary>
-	public class HttpResponseExt
+	public static class HttpResponseExt
 	{
 		#region MovedPermanently
 		/// <summary>
@@ -114,10 +114,6 @@ namespace Havit.Web
 		{
 			HttpResponseExt.Gone(true);
 		}
-		#endregion
-
-		#region Private Constructor
-		private HttpResponseExt() {}
 		#endregion
 	}
 }

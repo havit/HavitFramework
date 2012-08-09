@@ -14,14 +14,25 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class BoundFieldExt : System.Web.UI.WebControls.BoundField, IIdentifiableField
 	{
-		#region IEnterpriseField Members
+		#region ID (IIdentifiableField Members)
 		/// <summary>
 		/// ID sloupce.
 		/// </summary>
 		public string ID
 		{
-			get { return (string)(ViewState["ID"]); }
-			set { ViewState["ID"] = value; }
+			get
+			{
+				object tmp = ViewState["ID"];
+				if (tmp != null)
+				{
+					return (string)tmp;
+				}
+				return String.Empty;
+			}
+			set
+			{
+				ViewState["ID"] = value;
+			}
 		}
 		#endregion
 

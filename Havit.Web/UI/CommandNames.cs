@@ -27,6 +27,11 @@ namespace Havit.Web.UI
 		public const string Edit = "Edit";
 
 		/// <summary>
+		/// New.
+		/// </summary>
+		public const string New = "New";
+
+		/// <summary>
 		/// MoveDown.
 		/// </summary>
 		public const string MoveDown = "MoveDown";

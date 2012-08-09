@@ -18,7 +18,7 @@ namespace Havit.Web.UI.WebControls
 	/// Funkènost <b>Sorting</b> ukládá nastavení øazení dle uivatele a pøípadnì zajišuje automatické øazení pomocí GenericPropertyCompareru.<br/>
 	/// Funkènost <b>Inserting</b> umoòuje pouití Insert-øádku pro pøidávání novıch poloek.<br/>
 	/// </remarks>
-	public class GridViewExt : HighlightingGridView
+	public class GridViewExt : HighlightingGridView, ICommandFieldStyle
 	{
 		#region GetInsertRowDataItem
 		/// <summary>
@@ -152,6 +152,32 @@ namespace Havit.Web.UI.WebControls
 				ViewState["AutoDataBind"] = value;
 			}
 		}
+		#endregion
+
+		#region CommandFieldStyle
+		/// <summary>
+		/// Skinovatelné vlastnosti, které se mají pøedat CommandFieldu.
+		/// </summary>
+		[Category("Styles")]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+		[NotifyParentProperty(true)]
+		[PersistenceMode(PersistenceMode.InnerProperty)]
+		public virtual CommandFieldStyle CommandFieldStyle
+		{
+			get
+			{
+				if (this._commandFieldStyle == null)
+				{
+					this._commandFieldStyle = new CommandFieldStyle();
+					if (base.IsTrackingViewState)
+					{
+						((IStateManager)this._commandFieldStyle).TrackViewState();
+					}
+				}
+				return this._commandFieldStyle;
+			}
+		}
+		private CommandFieldStyle _commandFieldStyle;
 		#endregion
 
 		#region RequiresDataBinding (new), SetRequiresDatabinding
@@ -333,28 +359,47 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-		#region LoadViewState, SaveViewState - Naèítání a ukládání ViewState (sorting)
+		#region LoadViewState, SaveViewState - Naèítání a ukládání ViewState (sorting, CommandFieldStyle)
 		/// <summary>
 		/// Zajistí uloení ViewState. Je pøidáno uloení property Sorting.
 		/// </summary>
 		protected override object SaveViewState()
 		{
-			Pair viewStateData = new Pair();
+			Triplet viewStateData = new Triplet();
 			viewStateData.First = base.SaveViewState();
 			viewStateData.Second = _sortExpressions;
+			viewStateData.Third = (this._commandFieldStyle != null) ? ((IStateManager)this._commandFieldStyle).SaveViewState() : null;
 			return viewStateData;
 		}
+
+		#region TrackViewState
+		/// <summary>
+		/// Spouští sledování ViewState.
+		/// </summary>
+		protected override void TrackViewState()
+		{
+			base.TrackViewState();
+			((IStateManager)this.CommandFieldStyle).TrackViewState();
+		}
+		#endregion
+
 
 		/// <summary>
 		/// Zajistí naètení ViewState. Je pøidáno naètení property Sorting.
 		/// </summary>
 		protected override void LoadViewState(object savedState)
 		{
-			Pair viewStateData = (Pair)savedState;
+			Triplet viewStateData = savedState as Triplet;
+			Debug.Assert(viewStateData != null);
+
 			base.LoadViewState(viewStateData.First);
 			if (viewStateData.Second != null)
 			{
 				_sortExpressions = (SortExpressions)viewStateData.Second;
+			}
+			if (viewStateData.Third != null)
+			{
+				((IStateManager)this.CommandFieldStyle).LoadViewState(viewStateData.Third);
 			}
 		}
 		#endregion

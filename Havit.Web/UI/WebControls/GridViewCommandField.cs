@@ -4,23 +4,93 @@ using System.Text;
 using System.Web.UI.WebControls;
 using System.Web.UI;
 using System.Globalization;
+using System.Diagnostics;
 
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
 	/// Vylepšený command-field urèený pro použití s GridViewExt.
 	/// </summary>
-	public class GridViewCommandField : CommandField
+	/// <remarks>
+	/// GridViewCommandField lze skinovat, pokud rodièovský GridView implementuje rozhraní <see cref="ICommandFieldStyle"/>,
+	/// což implementuje napøíklad <see cref="GridViewExt"/>.
+	/// </remarks>
+	/// <example>
+	/// Skinovat lze pomocí:
+	/// <code>
+	/// &lt;havit:GridViewExt ... &gt;
+	///     &lt;CommandFieldStyle ButtonType=&quot;Image&quot; ... /&gt;
+	/// &lt;/havit:GridViewExt&gt;
+	/// </code>
+	/// </example>
+	public class GridViewCommandField : CommandField, IIdentifiableField
 	{
+		#region ID (IIdentifiableField Members)
+		/// <summary>
+		/// ID sloupce.
+		/// </summary>
+		public string ID
+		{
+			get
+			{
+				object tmp = ViewState["ID"];
+				if (tmp != null)
+				{
+					return (string)tmp;
+				}
+				return String.Empty;
+			}
+			set
+			{
+				ViewState["ID"] = value;
+			}
+		}
+		#endregion
+
 		#region DeleteConfirmationText
+		/// <summary>
+		/// Text, na který se má ptát jscript:confirm() pøed smazáním záznamu. Pokud je prázdný, na nic se neptá.
+		/// </summary>
 		public string DeleteConfirmationText
 		{
-			get { return (string)ViewState["DeleteConfirmText"]; }
-			set { ViewState["DeleteConfirmText"] = value; }
+			get
+			{
+				object tmp = ViewState["DeleteConfirmationText"];
+				if (tmp != null)
+				{
+					return (string)tmp;
+				}
+				return String.Empty;
+			}
+			set
+			{
+				ViewState["DeleteConfirmationText"] = value;
+			}
+		}
+		#endregion
+
+		#region Initialize
+		/// <summary>
+		/// Inicializuje field (volá se jednou z GridView.CreateChildControls()).
+		/// </summary>
+		/// <param name="sortingEnabled">indikuje, zda-li je povolený sorting</param>
+		/// <param name="control">parent control (GridView)</param>
+		/// <returns>false (vždy)</returns>
+		public override bool Initialize(bool sortingEnabled, System.Web.UI.Control control)
+		{
+			if (control is ICommandFieldStyle)
+			{
+				ApplyStyle(((ICommandFieldStyle)control).CommandFieldStyle, !String.IsNullOrEmpty(control.Page.Theme), !String.IsNullOrEmpty(control.Page.StyleSheetTheme));
+			}
+
+			return base.Initialize(sortingEnabled, control);
 		}
 		#endregion
 
 		#region InitializeCell
+		/// <summary>
+		/// Inicializuje buòku.
+		/// </summary>
 		public override void InitializeCell(
 			DataControlFieldCell cell,
 			DataControlCellType cellType,
@@ -93,7 +163,19 @@ namespace Havit.Web.UI.WebControls
 							// doplneni o DeleteConfirmText
 							if (!String.IsNullOrEmpty(DeleteConfirmationText))
 							{
-								((WebControl)button).Attributes.Add("onclick", String.Format("return confirm('{0}');", DeleteConfirmationText.Replace("'", "''")));
+								if (button is Button)
+								{
+									((Button)button).OnClientClick = String.Format("if (!confirm('{0}')) return false;", DeleteConfirmationText.Replace("'", "''"));
+								}
+								else if (button is LinkButton)
+								{
+									((LinkButton)button).OnClientClick = String.Format("if (!confirm('{0}')) return false;", DeleteConfirmationText.Replace("'", "''"));
+								}
+								else
+								{
+									Debug.Assert(button is ImageButton);
+									((ImageButton)button).OnClientClick = String.Format("if (!confirm('{0}')) return false;", DeleteConfirmationText.Replace("'", "''"));
+								}
 							}
 
 							insertSpace = false;
@@ -182,6 +264,296 @@ namespace Havit.Web.UI.WebControls
 			control.ValidationGroup = validationGroup;
 			cell.Controls.Add((WebControl)control);
 			return control;
+		}
+		#endregion
+
+		#region ApplyStyle
+		/// <summary>
+		/// Aplikuje CommandFieldStyle na field.
+		/// </summary>
+		/// <param name="style">styl k aplikování</param>
+		/// <param name="theme">režim Theme (pøepsat vše) zapnut</param>
+		/// <param name="styleSheetTheme">režim StyleSheetTheme (lokální nastavení mají prioritu) zapnut</param>
+		private void ApplyStyle(CommandFieldStyle style, bool theme, bool styleSheetTheme)
+		{
+			if (style != null)
+			{
+				if (styleSheetTheme)
+				{
+					// pokud sami nastaveni nejsme (ViewState je nepoužitý), pak volíme styl
+
+					if (ViewState["AccessibleHeaderText"] == null)
+					{
+						this.AccessibleHeaderText = style.AccessibleHeaderText;
+					}
+					if (ViewState["ButtonType"] == null)
+					{
+						this.ButtonType = style.ButtonType;
+					}
+					if (ViewState["CancelImageUrl"] == null)
+					{
+						this.CancelImageUrl = style.CancelImageUrl;
+					}
+					if (ViewState["CancelText"] == null)
+					{
+						this.CancelText = style.CancelText;
+					}
+					if (ViewState["CausesValidation"] == null)
+					{
+						this.CausesValidation = style.CausesValidation;
+					}
+					if (this.ControlStyle.IsEmpty)
+					{
+						this.ControlStyle.CopyFrom(style.ControlStyle);
+					}
+					if (ViewState["DeleteConfirmationText"] == null)
+					{
+						this.DeleteConfirmationText = style.DeleteConfirmationText;
+					}
+					if (ViewState["DeleteImageUrl"] == null)
+					{
+						this.DeleteImageUrl = style.DeleteImageUrl;
+					}
+					if (ViewState["DeleteText"] == null)
+					{
+						this.DeleteText = style.DeleteText;
+					}
+					if (ViewState["EditImageUrl"] == null)
+					{
+						this.EditImageUrl = style.EditImageUrl;
+					}
+					if (ViewState["EditText"] == null)
+					{
+						this.EditText = style.EditText;
+					}
+					if (this.FooterStyle.IsEmpty)
+					{
+						this.FooterStyle.CopyFrom(style.FooterStyle);
+					}
+					if (ViewState["FooterText"] == null)
+					{
+						this.FooterText = style.FooterText;
+					}
+					if (ViewState["HeaderImageUrl"] == null)
+					{
+						this.HeaderImageUrl = style.HeaderImageUrl;
+					}
+					if (ViewState["HeaderStyle.IsEmpty"] == null)
+					{
+						this.HeaderStyle.CopyFrom(style.HeaderStyle);
+					}
+					if (ViewState["HeaderText"] == null)
+					{
+						this.HeaderText = style.HeaderText;
+					}
+					if (ViewState["InsertImageUrl"] == null)
+					{
+						this.InsertImageUrl = style.InsertImageUrl;
+					}
+					if (ViewState["InsertText"] == null)
+					{
+						this.InsertText = style.InsertText;
+					}
+					if (this.ItemStyle.IsEmpty)
+					{
+						this.ItemStyle.CopyFrom(style.ItemStyle);
+					}
+					if (ViewState["NewImageUrl"] == null)
+					{
+						this.NewImageUrl = style.NewImageUrl;
+					}
+					if (ViewState["NewText"] == null)
+					{
+						this.NewText = style.NewText;
+					}
+					if (ViewState["SelectImageUrl"] == null)
+					{
+						this.SelectImageUrl = style.SelectImageUrl;
+					}
+					if (ViewState["SelectText"] == null)
+					{
+						this.SelectText = style.SelectText;
+					}
+					if (ViewState["ShowCancelButton"] == null)
+					{
+						this.ShowCancelButton = style.ShowCancelButton;
+					}
+					if (ViewState["ShowDeleteButton"] == null)
+					{
+						this.ShowDeleteButton = style.ShowDeleteButton;
+					}
+					if (ViewState["ShowEditButton"] == null)
+					{
+						this.ShowEditButton = style.ShowEditButton;
+					}
+					if (ViewState["ShowHeader"] == null)
+					{
+						this.ShowHeader = style.ShowHeader;
+					}
+					if (ViewState["ShowInsertButton"] == null)
+					{
+						this.ShowInsertButton = this.ShowInsertButton;
+					}
+					if (ViewState["ShowSelectButton"] == null)
+					{
+						this.ShowSelectButton = this.ShowSelectButton;
+					}
+					if (ViewState["UpdateImageUrl"] == null)
+					{
+						this.UpdateImageUrl = this.UpdateImageUrl;
+					}
+					if (ViewState["UpdateText"] == null)
+					{
+						this.UpdateText = this.UpdateText;
+					}
+					if (ViewState["ValidationGroup"] == null)
+					{
+						this.ValidationGroup = this.ValidationGroup;
+					}
+					if (ViewState["Visible"] == null)
+					{
+						this.Visible = this.Visible;
+					}
+				}
+
+				if (theme)
+				{
+					// pokud je nastaven skin, pak volíme vždy styl
+
+					if (style.ViewState["AccessibleHeaderText"] != null)
+					{
+						this.AccessibleHeaderText = style.AccessibleHeaderText;
+					}
+					if (style.ViewState["ButtonType"] != null)
+					{
+						this.ButtonType = style.ButtonType;
+					}
+					if (style.ViewState["CancelImageUrl"] != null)
+					{
+						this.CancelImageUrl = style.CancelImageUrl;
+					}
+					if (style.ViewState["CancelText"] != null)
+					{
+						this.CancelText = style.CancelText;
+					}
+					if (style.ViewState["CausesValidation"] != null)
+					{
+						this.CausesValidation = style.CausesValidation;
+					}
+					if (this.ControlStyle.IsEmpty)
+					{
+						this.ControlStyle.CopyFrom(style.ControlStyle);
+					}
+					if (style.ViewState["DeleteConfirmationText"] != null)
+					{
+						this.DeleteConfirmationText = style.DeleteConfirmationText;
+					}
+					if (style.ViewState["DeleteImageUrl"] != null)
+					{
+						this.DeleteImageUrl = style.DeleteImageUrl;
+					}
+					if (style.ViewState["DeleteText"] != null)
+					{
+						this.DeleteText = style.DeleteText;
+					}
+					if (style.ViewState["EditImageUrl"] != null)
+					{
+						this.EditImageUrl = style.EditImageUrl;
+					}
+					if (style.ViewState["EditText"] != null)
+					{
+						this.EditText = style.EditText;
+					}
+					if (this.FooterStyle.IsEmpty)
+					{
+						this.FooterStyle.CopyFrom(style.FooterStyle);
+					}
+					if (style.ViewState["FooterText"] != null)
+					{
+						this.FooterText = style.FooterText;
+					}
+					if (style.ViewState["HeaderImageUrl"] != null)
+					{
+						this.HeaderImageUrl = style.HeaderImageUrl;
+					}
+					if (style.ViewState["HeaderStyle.IsEmpty"] != null)
+					{
+						this.HeaderStyle.CopyFrom(style.HeaderStyle);
+					}
+					if (style.ViewState["HeaderText"] != null)
+					{
+						this.HeaderText = style.HeaderText;
+					}
+					if (style.ViewState["InsertImageUrl"] != null)
+					{
+						this.InsertImageUrl = style.InsertImageUrl;
+					}
+					if (style.ViewState["InsertText"] != null)
+					{
+						this.InsertText = style.InsertText;
+					}
+					if (this.ItemStyle.IsEmpty)
+					{
+						this.ItemStyle.CopyFrom(style.ItemStyle);
+					}
+					if (style.ViewState["NewImageUrl"] != null)
+					{
+						this.NewImageUrl = style.NewImageUrl;
+					}
+					if (style.ViewState["NewText"] != null)
+					{
+						this.NewText = style.NewText;
+					}
+					if (style.ViewState["SelectImageUrl"] != null)
+					{
+						this.SelectImageUrl = style.SelectImageUrl;
+					}
+					if (style.ViewState["SelectText"] != null)
+					{
+						this.SelectText = style.SelectText;
+					}
+					if (style.ViewState["ShowCancelButton"] != null)
+					{
+						this.ShowCancelButton = style.ShowCancelButton;
+					}
+					if (style.ViewState["ShowDeleteButton"] != null)
+					{
+						this.ShowDeleteButton = style.ShowDeleteButton;
+					}
+					if (style.ViewState["ShowEditButton"] != null)
+					{
+						this.ShowEditButton = style.ShowEditButton;
+					}
+					if (style.ViewState["ShowHeader"] != null)
+					{
+						this.ShowHeader = style.ShowHeader;
+					}
+					if (style.ViewState["ShowInsertButton"] != null)
+					{
+						this.ShowInsertButton = this.ShowInsertButton;
+					}
+					if (style.ViewState["ShowSelectButton"] != null)
+					{
+						this.ShowSelectButton = this.ShowSelectButton;
+					}
+					if (style.ViewState["UpdateImageUrl"] != null)
+					{
+						this.UpdateImageUrl = this.UpdateImageUrl;
+					}
+					if (style.ViewState["UpdateText"] != null)
+					{
+						this.UpdateText = this.UpdateText;
+					}
+					if (style.ViewState["ValidationGroup"] != null)
+					{
+						this.ValidationGroup = this.ValidationGroup;
+					}
+					if (style.ViewState["Visible"] != null)
+					{
+						this.Visible = this.Visible;
+					}
+				}
+			}
 		}
 		#endregion
 	}

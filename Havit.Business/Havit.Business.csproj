@@ -112,6 +112,7 @@
     <Compile Include="Query\DateRangeCondition.cs" />
     <Compile Include="Query\EmptyCondition.cs" />
     <Compile Include="Query\FieldPropertySortItem.cs" />
+    <Compile Include="Query\GuidCondition.cs" />
     <Compile Include="Query\IOperand.cs" />
     <Compile Include="Query\NullCondition.cs" />
     <Compile Include="Query\NumberCondition.cs" />

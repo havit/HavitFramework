@@ -241,6 +241,13 @@ namespace Havit.PayMuzo
 		/// <returns><c>true</c>, pokud podpis odpovídá; jinak <c>false</c></returns>
 		public static bool VerifyDigest(string data, string digest, X509Certificate2 certificate, bool urlEncoded)
 		{
+			// Pokud není zadán žádný podpis, není platný automaticky (mj. řeší podvrhy).
+			// Také se stalo, že banka vrátila chybu Technical Reason jako důvod neprovedení platby a zpráva nebyla podepsána.
+			if (String.IsNullOrEmpty(digest))
+			{
+				return false;
+			}
+
 			string urlDecodedDigest = digest;
 			if (urlEncoded)
 			{

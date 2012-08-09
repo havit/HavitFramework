@@ -1,4 +1,4 @@
-//==============================
+Ôªø//==============================
 //AutoSuggestMenu version 1.1.0
 //==============================
 
@@ -210,10 +210,10 @@ function AutoSuggestMenu()
        	    //Update text box text	
 		    var textBox=getTextBoxCtrl();
 		    
-		    // JIÿÕ KANDA:
-		    // d¯Ìve:
+		    // JI√ò√ç KANDA:
+		    // d√∏√≠ve:
 		    // textBox.value = menuItem.label;
-		    // nynÌ:
+		    // nyn√≠:
 			// zajistujeme vyvolani udalosti onchange, pokud je zmenen text.
 			var oldValue = textBox.value;
 			var newValue = menuItem.label;
@@ -256,7 +256,7 @@ function AutoSuggestMenu()
 
 	    if (XUtils.isIE())
 	    {
-	    	//Vybereme vöe
+	    	//Vybereme v≈°e
 			textBox.createTextRange().select();
 	    }	
 	    
@@ -627,7 +627,7 @@ function AutoSuggestMenu()
 	        _iFrame.style.visibility="visible";
 	    }
 	   
-	   // JK: P¯esunuto sem z funkce render.
+	   // JK: P√∏esunuto sem z funkce render.
 		_dom.style.minWidth = textBox.clientWidth + "px";
 		
 	    _dom.style.visibility = "visible";
@@ -651,7 +651,7 @@ function AutoSuggestMenu()
 	    if (_iFrame)
 	        _iFrame.style.visibility="hidden";
 	    
-	    // JK: DoplnÏna obsluha "ud·lostÌ"    
+	    // JK: Dopln√¨na obsluha "ud√°lost√≠"    
 		for(var i = 0; i < self.onMenuHiddenEventHandlers.length; i++)
 		{
 			self.onMenuHiddenEventHandlers[i]();
@@ -684,9 +684,9 @@ function AutoSuggestMenu()
         menuDiv.sourceObject = self;
 		
         /**************************/        
-        // JK: P¯esunuto do show. Zde je obËas textBox.clientWidth, zatÌmco v Ëase vol·nÌ 
-        // funkce show je v tÈto vlastnosti jiû spr·vn· hodnota.
-        // TÌm napravujeme nap¯. chybnou velikost v dialogu.
+        // JK: P√∏esunuto do show. Zde je ob√®as textBox.clientWidth, zat√≠mco v √®ase vol√°n√≠ 
+        // funkce show je v t√©to vlastnosti ji≈æ spr√°vn√° hodnota.
+        // T√≠m napravujeme nap√∏. chybnou velikost v dialogu.
 		//menuDiv.style.minWidth = textBox.clientWidth + "px";
         /**************************/
         
@@ -706,7 +706,7 @@ function AutoSuggestMenu()
         XUtils.addEventListener(textBox, "keyup",    self.onTextBoxKeyUp);
         XUtils.addEventListener(textBox, "blur",     self.onTextBoxBlur);
 
-        // JK: DoplnÏno
+        // JK: Dopln√¨no
         textBox.autoSuggestMenuDiv = menuDiv.id;
         XUtils.addEventListener(textBox, "focus", self.onTextBoxFocus);
 		        		
@@ -844,7 +844,7 @@ function AutoSuggestMenu()
 		var newValue=getTextBoxValue();
 			
 		//Skip up/down/enter
-		// JK: DoplÏno ignorov·nÌ tabelk·toru
+		// JK: Dopl√¨no ignorov√°n√≠ tabelk√°toru
 		if ((key!=38) && (key!=40) && (key!=13) && (key!=9))
 		{		
 			//Limit num of characters to display suggestions	
@@ -895,7 +895,7 @@ function AutoSuggestMenu()
 
 		_cancelOnBlur = false;
 
-		// JK: DoplnÏno
+		// JK: Dopln√¨no
 		var textBox = getTextBoxCtrl();
 		var hiddenFieldElement = self.getSelectedValueHiddenField();
 		var textBoxElement = getTextBoxCtrl();
@@ -957,17 +957,17 @@ function AutoSuggestMenu()
 		self.onMenuHiddenEventHandlers.push(eventHandler);
 	}
 
-	// JK: DoplnÏno
+	// JK: Dopln√¨no
 	self.onTextBoxFocus = function ()
 	{
 		var hiddenFieldElement = self.getSelectedValueHiddenField();
-		// hodnoty pojmenov·m se suffixem "Extra", abych zabr·nil konfliktu s hodnotami pouûÌvan˝mi v pickerech aplikacÌ
-		// (v dobÏ tÏchto ˙prav aplikace pouûÌvajÌ stejnÏ pojmenovanÈ hodnoty na stejn˝ch elementech).
+		// hodnoty pojmenov√°m se suffixem "Extra", abych zabr√°nil konfliktu s hodnotami pou≈æ√≠van√Ωmi v pickerech aplikac√≠
+		// (v dob√¨ t√¨chto √∫prav aplikace pou≈æ√≠vaj√≠ stejn√¨ pojmenovan√© hodnoty na stejn√Ωch elementech).
 		hiddenFieldElement.lastValueExtra = hiddenFieldElement.value;
 		hiddenFieldElement.focusedExtra = true;
 
-		// vybereme v textboxu vöe
-		// p¯edpokl·d·me, ûe v textboxu je buÔ vybran· hodnota, nebo nic (¯eöÌ novÈ ASM + vlastnÌ ¯eöenÌ pomocÌ JS ve staröÌch aplikacÌch)
+		// vybereme v textboxu v≈°e
+		// p√∏edpokl√°d√°me, ≈æe v textboxu je bu√Ø vybran√° hodnota, nebo nic (√∏e≈°√≠ nov√© ASM + vlastn√≠ √∏e≈°en√≠ pomoc√≠ JS ve star≈°√≠ch aplikac√≠ch)
 		var textBoxElement = getTextBoxCtrl();
 		if ((textBoxElement != null) && textBoxElement.createTextRange)
 		{
@@ -992,7 +992,7 @@ AutoSuggestMenu.getMenu = function(menuID)
     return menu;
 }
 
-// JK: DoplnÏno
+// JK: Dopln√¨no
 AutoSuggestMenu.getMenuForElement = function(elementID)
 {
 	var element=$(elementID);

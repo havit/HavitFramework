@@ -335,14 +335,18 @@ function havitShowDialog(elementId)
 
     _havitStoreScrollPosition();
 
-    if (window.attachEvent)
-    {
-        window.attachEvent("onscroll", _havitDialog_ScrollTo00);
-    }
-    else
-    {
-        window.addEventListener("scroll", _havitDialog_ScrollTo00, false);
-    }   
+	if (window._havitDialog_ScrollTo00Attached != true)
+	{
+		if (window.attachEvent)
+	    {
+			window.attachEvent("onscroll", _havitDialog_ScrollTo00);
+		}
+		else
+	    {
+			window.addEventListener("scroll", _havitDialog_ScrollTo00, false);
+		}
+	    window._havitDialog_ScrollTo00Attached = true;
+    }  
     window.scroll(0, 0);
         
 	if (_havitIsPreIE7())
@@ -381,14 +385,18 @@ function havitHideDialog(elementId)
 	_havitRestoreScrollPosition();
 	try 
 	{
-	    if (window.attachEvent)
-        {
-            window.detachEvent("onscroll", _havitDialog_ScrollTo00);
-        }
-        else
-        {
-            window.removeEventListener("scroll", _havitDialog_ScrollTo00, false);
-        }
+		if (window._havitDialog_ScrollTo00Attached == true)
+		{
+			if (window.attachEvent)
+			{        
+	            window.detachEvent("onscroll", _havitDialog_ScrollTo00);
+		    }
+			else
+	        {
+		        window.removeEventListener("scroll", _havitDialog_ScrollTo00, false);
+			}
+			window._havitDialog_ScrollTo00Attached = false;
+		}
     }
     catch (e)
     {

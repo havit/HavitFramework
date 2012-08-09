@@ -11,10 +11,12 @@
     <div>
 		<havit:EnterpriseDropDownList 
 			ItemObjectInfo="<%$ Expression: Role.ObjectInfo %>" 
-			AutoDataBind="true"
+			AutoDataBind="false"
+			AutoPostBack="true"
 			DataTextField="Symbol"		
+			ID="AutoPostBackEDDL"
 			runat="server" 
-		/>
+		/> Vybrano: <asp:Label ID="AutoPostBackResultLabel" runat="server" /><br />
 		<havit:EnterpriseDropDownList 
 			SortDirection="Descending"
 			ItemObjectInfo="<%$ Expression: Role.ObjectInfo %>" 

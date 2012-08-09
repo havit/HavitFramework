@@ -71,6 +71,7 @@ Integer urna. Nunc ac urna pulvinar purus blandit euismod. Donec in risus. Suspe
 			<%= DateTime.Now %>
 			<havit:DateTimeBox runat="server" />
 			<asp:Button runat="server" ID="EnlargeButton" />
+			
 		</ContentTemplate>
 		<Triggers>
 			<asp:AsyncPostBackTrigger ControlID="ServerOpen2Button" />

@@ -483,13 +483,13 @@ function HavitNumericBox_Focus(e)
 		/// </summary>
 		private object GetValueMemento()
 		{
-			if (!IsValid)
+			if (IsValid)
 			{
-				return InvalidMemento;
+				return Value ?? (object)"null";
 			}
 			else
 			{
-				return Value;
+				return InvalidMemento;				
 			}
 		}
 		#endregion

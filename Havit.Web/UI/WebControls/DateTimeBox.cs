@@ -172,7 +172,8 @@ namespace Havit.Web.UI.WebControls
 					throw new InvalidOperationException("Nelze číst Value, pokud IsValid je false.");
 				}
 
-				DateTime? result = (DateTime?)ViewState["Value"];
+//				DateTime? result = (DateTime?)ViewState["Value"];
+				DateTime? result = (DateTime?)_value;
 				// pokud jsme v řežimu zobrazení data bez času, nevracíme čas (mohl být zadaný setterem property Value nebo mohlo po postbacku dojít k přepnutí vlastnosti DateTimeMode)
 				if ((result != null) && (DateTimeMode == DateTimeMode.Date)) 
 				{
@@ -209,10 +210,15 @@ namespace Havit.Web.UI.WebControls
 		{
 			get
 			{
-				return (bool)(ViewState["IsValid"] ?? true);
+//				return (bool)(ViewState["IsValid"] ?? true);
+				return (bool)(_isValid ?? true);
 			}
 		}
 		#endregion
+
+		private DateTime? _value;
+		private bool? _isValid;
+		private bool _valueSet = false;
 
 		#endregion
 
@@ -310,11 +316,50 @@ namespace Havit.Web.UI.WebControls
 		/// OnInit (overriden).
 		/// </summary>
 		protected override void OnInit(EventArgs e)
-		{
+		{			
 			base.OnInit(e);
+			this.Page.PreLoad += new EventHandler(Page_PreLoad);
 			valueTextBox.TextChanged += new EventHandler(ValueTextBox_TextChanged);
 			EnsureChildControls();
 		}
+		#endregion
+
+		#region Page_PreLoad
+		private void Page_PreLoad(object sender, EventArgs e)
+		{
+			if (ViewState["ValueMemento"] != null)
+			{
+				// pokud již alespoň jednou proběhl životní cyklus controlu (repeatery, gridy, databinding, apod.)
+				// přečteme hodnotu z vnořeného textboxu
+				SetValueFromNestedTextBox();
+			}
+		} 
+		#endregion
+
+		#region SetValueFromNestedTextBox
+		/// <summary>
+		/// Nastaví Value a IsValue na základě hodnoty ve vnořeném texboxu.
+		/// </summary>
+		private void SetValueFromNestedTextBox()
+		{
+			string text = valueTextBox.Text.Trim();
+			if (String.IsNullOrEmpty(text))
+			{
+				SetValue(null, true);
+			}
+			else
+			{
+				DateTime dt;
+				if (DateTime.TryParse(text, Thread.CurrentThread.CurrentCulture.DateTimeFormat, DateTimeStyles.None, out dt))
+				{
+					SetValue(dt, true);
+				}
+				else
+				{
+					SetValue(null, false);
+				}
+			}
+		} 
 		#endregion
 
 		#region Controls
@@ -557,25 +602,6 @@ function HavitDateTimeBox_Focus(e)
 		/// </summary>
 		private void ValueTextBox_TextChanged(object sender, EventArgs e)
 		{
-
-			string text = valueTextBox.Text.Trim();
-			if (String.IsNullOrEmpty(text))
-			{
-				SetValue(null, true);
-			}
-			else
-			{
-				DateTime dt;
-				if (DateTime.TryParse(text, Thread.CurrentThread.CurrentCulture.DateTimeFormat, DateTimeStyles.None, out dt))
-				{
-					SetValue(dt, true);
-				}
-				else
-				{
-					SetValue(null, false);
-				}
-			}
-			
 			if (!Object.Equals(ViewState["ValueMemento"], GetValueMemento()))
 			{
 				OnValueChanged(EventArgs.Empty);
@@ -592,7 +618,7 @@ function HavitDateTimeBox_Focus(e)
 		{
 			if (IsValid)
 			{
-				return Value;
+				return Value ?? (object)"null";
 			}
 			else
 			{
@@ -607,8 +633,11 @@ function HavitDateTimeBox_Focus(e)
 		/// </summary>
 		protected void SetValue(DateTime? value, bool isValid)
 		{
-			ViewState["Value"] = value;
-			ViewState["IsValid"] = isValid;
+			this._value = value;
+			this._isValid = isValid;
+			_valueSet = true;
+			//ViewState["Value"] = value;
+			//ViewState["IsValid"] = isValid;
 		}
 		#endregion
 

@@ -9,7 +9,7 @@
     <form id="form1" runat="server">
     <div>
 		<asp:ScriptManager runat="server" />
-		<asp:UpdatePanel runat="server">
+<%--		<asp:UpdatePanel runat="server">
 			<ContentTemplate>
 				<table>
 					<tr>
@@ -36,8 +36,39 @@
 				
 				<asp:Button runat="server" text="Callback" />
 			</ContentTemplate>
-		</asp:UpdatePanel>
+		</asp:UpdatePanel>--%>
 		
+		
+		<table>
+		    <tr>
+		        <td>AutoPostBack</td>
+		        <td><havit:DateTimeBox ID="AutoPostBackDateTimeBox" CausesValidation="true" AutoPostBack="true" runat="server" /></td>
+		    </tr>
+		    <tr>
+		        <td>OnInit</td>
+		        <td><asp:Label ID="AutoPostBackOnInitValueLabel" runat="server" /></td>		        
+		    </tr>
+		    <tr>
+		        <td>
+		            Serverový validátor
+		            <asp:CustomValidator ID="AutoPostBackDateTimeBoxValidator" runat="server" />
+		        </td>
+		        <td><asp:Label ID="AutoPostBackServerValidatorValueLabel" runat="server" /></td>		        
+		    </tr>
+		    <tr>
+		        <td>OnLoad</td>
+		        <td><asp:Label ID="AutoPostBackOnLoadValueLabel" runat="server" /></td>		        
+		    </tr>		    		    
+		    <tr>
+		        <td>OnLoadComplete</td>
+		        <td><asp:Label ID="AutoPostBackOnLoadCompleteValueLabel" runat="server" /></td>		        
+		    </tr>
+		    <tr>
+		        <td>Changed</td>
+		        <td><asp:Label ID="ChangedLabel" runat="server" /></td>		        
+		    </tr>
+		    
+		</table>
     </div>
     </form>
 </body>

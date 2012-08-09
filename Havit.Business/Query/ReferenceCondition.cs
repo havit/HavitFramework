@@ -47,7 +47,7 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateIn(IOperand operand, int[] ids)
 		{
-			return new BinaryCondition("{0} IN (SELECT Value FROM dbo.IntArrayToTable({1})", operand, SqlInt32ArrayOperand.Create(ids));
+			return new BinaryCondition("{0} IN (SELECT Value FROM dbo.IntArrayToTable({1}))", operand, SqlInt32ArrayOperand.Create(ids));
 		}
 		
 	}

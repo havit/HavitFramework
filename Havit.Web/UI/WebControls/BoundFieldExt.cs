@@ -118,8 +118,10 @@ namespace Havit.Web.UI.WebControls
 					currentValue = DataBinder.GetIndexedPropertyValue(currentValue, expression);
 				}
 
-				if ((currentValue == null) && (i < lastExpressionIndex))
+				if (currentValue == null) // && (i < lastExpressionIndex))
+				{
 					return GetNotFoundDataItem();
+				}
 			}
 
 			return currentValue;

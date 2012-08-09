@@ -51,7 +51,7 @@ namespace Havit.Business.Query
 		///	jsou tyto znaky pøekódovány, takže nemají funkèní význam.
 		/// </param>
 		/// <example>
-		///	Pø. Hledání výrazu "k_lo*" nenajde "kolo" ani "kolotoè" protože _ nemá funkèní význam, ale najde "k_lo" i "k_olotoè".
+		///	Pø. Hledání výrazu "k_lo*" nenajde "kolo" ani "kolotoè" protože _ nemá funkèní význam, ale najde "k_lo" i "k_lotoè".
 		/// </example>
 		public static Condition CreateWildcards(IOperand operand, string value)
 		{

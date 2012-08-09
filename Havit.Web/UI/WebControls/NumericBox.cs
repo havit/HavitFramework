@@ -437,6 +437,7 @@ namespace Havit.Web.UI.WebControls
 				thousandsSeparator = thousandsSeparator.Substring(0, 1);
 			}
 
+			// !window.event && e.ctrlKey && ... ( ... charCode == 86 || charCode == 118) ... podpora Ctrl-a|x|c|v ve Firefoxu
 			// ((charCode >= 48) && (charCode <= 57)) ... znaky 0-9
 			// (charCode < 31) .. speciální symboly (Home, End, Enter, Backspace, apod.)
 			// (allowNegativeNumber && (charCode == 45)) ... znaménko mínus, je-li povolena záporná èísla
@@ -448,7 +449,11 @@ namespace Havit.Web.UI.WebControls
 " + (((decimalSeparator == '.') && thousandsSeparator != ",") ? "	if (window.event && (charCode == 44)) { charCode = 46; e.keyCode = 46; }\r\n" : "")
   + (((decimalSeparator == ',') && thousandsSeparator != ".") ? "	if (window.event && (charCode == 46)) { charCode = 44; e.keyCode = 44; }\r\n" : "")
   + @"var element = (e.target) ? e.target : window.event.srcElement;
-    var validKey = (charCode == " + (byte)thousandsSeparator[0] + @")
+	if (!window.event && e.ctrlKey && !e.altKey && !e.shiftKey && (charCode == 65 || charCode == 97 || charCode == 88 || charCode == 120 || charCode == 67 || charCode == 99 || charCode == 86 || charCode == 118))
+	{
+		return;
+	}
+	var validKey = (charCode == " + (byte)thousandsSeparator[0] + @")
 		|| ((charCode >= 48) && (charCode <= 57)) 
 		|| (charCode <= 31)
         || (allowNegativeNumber && (charCode == 45) && element.value.indexOf(String.fromCharCode(charCode)) == -1)

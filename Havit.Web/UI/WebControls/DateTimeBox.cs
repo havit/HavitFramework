@@ -626,8 +626,12 @@ namespace Havit.Web.UI.WebControls
 @"function HavitDateTimeBox_KeyPress(e, allowTime)
 {
 	var charCode = (window.event) ? window.event.keyCode : e.charCode;
-" + ((dateTimeFormatInfo.DateSeparator == ".") ? "	if (window.event && (charCode == 44)) { charCode = 46; e.keyCode = 46; }\r\n" : "") 
-  + @"	var validChar = ((charCode >= 48) && (charCode <= 57))
+" + ((dateTimeFormatInfo.DateSeparator == ".") ? "	if (window.event && (charCode == 44)) { charCode = 46; e.keyCode = 46; }\r\n" : "")
++ @"if (!window.event && e.ctrlKey && !e.altKey && !e.shiftKey && (charCode == 65 || charCode == 97 || charCode == 88 || charCode == 120 || charCode == 67 || charCode == 99 || charCode == 86 || charCode == 118))
+	{
+		return;
+	}
+	var validChar = ((charCode >= 48) && (charCode <= 57))
 		|| (charCode == " + dateSeparatorCode + @")
 		|| (charCode <= 31)
 		|| (allowTime

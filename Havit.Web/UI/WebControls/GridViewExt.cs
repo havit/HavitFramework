@@ -457,7 +457,7 @@ namespace Havit.Web.UI.WebControls
 						int pageCount = itemsCount / this.PageSize;
 
 						// pokud by InsertingRow mìlo zbýt samotné na poslední stránce, pak snížíme poèet stránek (mùže se stát po smazání poslední položky)
-						if (((this.PageSize - 1) * (this.PageIndex)) == insertingData.Count)
+						if ((this.PageIndex > 0) && ((this.PageSize - 1) * (this.PageIndex)) == insertingData.Count)
 						{
 							this.PageIndex--;
 						}

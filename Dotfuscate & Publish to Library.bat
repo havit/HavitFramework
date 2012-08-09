@@ -41,5 +41,7 @@ xcopy /y Dotfuscated\*.* \\dev\Library\Framework\
 xcopy /y References\System.Web.Extensions.dll \\dev\Library\Framework\
 xcopy /y "doc\HAVIT .NET Framework.chm" \\dev\Library\Documentation\
 
+xcopy /y Scripts\*.js \\dev\Library\Scripts\
+xcopy /y Styles\*.css \\dev\Library\Styles\
 
 pause

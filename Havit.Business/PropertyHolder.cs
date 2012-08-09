@@ -29,10 +29,7 @@ namespace Havit.Business
 		{
 			get
 			{
-				if (!IsInitialized)
-				{
-					throw new InvalidOperationException("Hodnota nebyla inicializována.");
-				}
+				InitializationCheck();
 				return _value;
 			}
 			set
@@ -40,7 +37,7 @@ namespace Havit.Business
 				if (!Object.Equals(_value, value))
 				{
 					IsDirty = true;
-					Owner.IsDirty = true;
+					
 				}
 
 				IsInitialized = true;

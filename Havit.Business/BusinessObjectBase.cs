@@ -40,11 +40,18 @@ namespace Havit.Business
 		#region Properties - Stav objektu (IsDirty, IsLoaded, IsNew, IsDeleted)
 		/// <summary>
 		/// Indikuje, zda-li byla data objektu zmìnìna oproti datùm v databázi.
+		/// Pøi nastavení na false zruší pøíznak zmìn všem PropertyHolderùm.
 		/// </summary>
 		public bool IsDirty
 		{
 			get { return _isDirty; }
-			protected internal set { _isDirty = value; }
+			protected internal set
+			{
+				_isDirty = value;
+				if (!value)
+					foreach (PropertyHolderBase propertyHolder in PropertyHolders)
+						propertyHolder.IsDirty = false;
+			}
 		}
 		private bool _isDirty;
 

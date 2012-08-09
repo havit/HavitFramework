@@ -34,6 +34,8 @@ namespace Havit.Business
 			internal set
 			{
 				_isDirty = value;
+				if (_isDirty)
+					Owner.IsDirty = true;
 			}
 		}
 		private bool _isDirty = false;
@@ -56,6 +58,18 @@ namespace Havit.Business
 		}
 		private bool _isInitialized = false;
 		#endregion
+
+		/// <summary>
+		/// Pokud nebyla hodnota PropertyHolderu nastavena, vyhodí InvalidOperationException.
+		/// Pokud byla hodnota PropertyHolderu nastavena, neudìlá nic (projde).
+		/// </summary>
+		protected void InitializationCheck()
+		{
+			if (!_isInitialized)
+			{
+				throw new InvalidOperationException("Hodnota nebyla inicializována.");
+			}
+		}
 
 		#region Constructors
 		/// <summary>

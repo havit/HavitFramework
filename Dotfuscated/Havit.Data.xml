@@ -4,6 +4,32 @@
         <name>Havit.Data</name>
     </assembly>
     <members>
+        <member name="T:Havit.Data.DbTransactionDelegate">
+            <summary>
+            Reprezentuje metodu, která vykonává jednotlivé kroky transakce.
+            </summary>
+            <param name="transaction">transakce, v rámci které mají být jednotlivé kroky vykonány</param>
+        </member>
+        <member name="T:Havit.Data.SqlTypes.SqlSmallDateTime">
+            <summary>
+            Reprezentuje pomocné hodnoty pro databázový typ smalldatetime.
+            </summary>
+        </member>
+        <member name="F:Havit.Data.SqlTypes.SqlSmallDateTime.MinValue">
+            <summary>
+            Minimální hodnota použitelná pro databázový typ smalldatetime.
+            </summary>
+        </member>
+        <member name="F:Havit.Data.SqlTypes.SqlSmallDateTime.MaxValue">
+            <summary>
+            Maximální hodnota použitelná pro databázový typ smalldatetime.
+            </summary>
+        </member>
+        <member name="P:Havit.Data.SqlTypes.SqlSmallDateTime.Value">
+            <summary>
+            Hodnota reprezentovaná jako DateTime.
+            </summary>
+        </member>
         <member name="T:Havit.Data.SqlClient.SqlDataAccess">
             <summary>
             Třída SqlDataAccess obsahuje metody usnadňující práci se základní třídou
@@ -275,58 +301,6 @@
             &lt;/configuration&gt;
             </code>
             </example>
-        </member>
-        <member name="T:Havit.Data.DbTransactionDelegate">
-            <summary>
-            Reprezentuje metodu, která vykonává jednotlivé kroky transakce.
-            </summary>
-            <param name="transaction">transakce, v rámci které mají být jednotlivé kroky vykonány</param>
-        </member>
-        <member name="T:Havit.Data.DataLoadPower">
-            <summary>
-            Rozsah dat v datovém zdroji.
-            </summary>
-        </member>
-        <member name="F:Havit.Data.DataLoadPower.Ghost">
-            <summary>
-            Datový zdroj obsahuje jen informace pro založení ghosta (primární klíč).
-            </summary>
-        </member>
-        <member name="F:Havit.Data.DataLoadPower.FullLoad">
-            <summary>
-            Datový zdroj obsahuje kompletní řádek dat (všechny možné sloupce).
-            </summary>
-        </member>
-        <member name="F:Havit.Data.DataLoadPower.PartialLoad">
-            <summary>
-            Datový zdroj obsahuje nekompletní řádek dat.
-            </summary>
-        </member>
-        <member name="T:Havit.Data.SqlTypes.SqlSmallDateTime">
-            <summary>
-            Reprezentuje pomocné hodnoty pro databázový typ smalldatetime.
-            </summary>
-        </member>
-        <member name="F:Havit.Data.SqlTypes.SqlSmallDateTime.MinValue">
-            <summary>
-            Minimální hodnota použitelná pro databázový typ smalldatetime.
-            </summary>
-        </member>
-        <member name="F:Havit.Data.SqlTypes.SqlSmallDateTime.MaxValue">
-            <summary>
-            Maximální hodnota použitelná pro databázový typ smalldatetime.
-            </summary>
-        </member>
-        <member name="P:Havit.Data.SqlTypes.SqlSmallDateTime.Value">
-            <summary>
-            Hodnota reprezentovaná jako DateTime.
-            </summary>
-        </member>
-        <member name="T:Havit.Data.SqlClient.SqlTransactionDelegate">
-            <summary>
-            Reprezentuje metodu, která vykonává jednotlivé kroky transakce.
-            </summary>
-            <param name="transaction">transakce, v rámci které mají být jednotlivé kroky vykonány</param>
         </member>
         <member name="T:Havit.Data.DbConnector">
             <summary>
@@ -657,6 +631,12 @@
             </code>
             </example>
         </member>
+        <member name="T:Havit.Data.SqlClient.SqlTransactionDelegate">
+            <summary>
+            Reprezentuje metodu, která vykonává jednotlivé kroky transakce.
+            </summary>
+            <param name="transaction">transakce, v rámci které mají být jednotlivé kroky vykonány</param>
+        </member>
         <member name="T:Havit.Data.DataRecord">
             <summary>
             DataRecord usnadňuje načítání dat objektu z databáze.
@@ -870,6 +850,26 @@
             </summary>
             <param name="field">pole, sloupec</param>
             <returns>hodnota</returns>
+        </member>
+        <member name="T:Havit.Data.DataLoadPower">
+            <summary>
+            Rozsah dat v datovém zdroji.
+            </summary>
+        </member>
+        <member name="F:Havit.Data.DataLoadPower.Ghost">
+            <summary>
+            Datový zdroj obsahuje jen informace pro založení ghosta (primární klíč).
+            </summary>
+        </member>
+        <member name="F:Havit.Data.DataLoadPower.FullLoad">
+            <summary>
+            Datový zdroj obsahuje kompletní řádek dat (všechny možné sloupce).
+            </summary>
+        </member>
+        <member name="F:Havit.Data.DataLoadPower.PartialLoad">
+            <summary>
+            Datový zdroj obsahuje nekompletní řádek dat.
+            </summary>
         </member>
     </members>
 </doc>

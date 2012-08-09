@@ -535,6 +535,14 @@ namespace Havit.Web.UI.WebControls
 							this.PageIndex--;
 						}
 
+						// pokud nìkdo binduje nová data a zùstala mu nastavená stránka nìkam mimo rozsah (zapomnìl pøestránkovat)
+						// tak tomu trochu pomùžeme a tento zjevný problém vyøešíme už tady pøestránkováním na 1. stránku
+						// problém se projevoval tøeba tak, že když jsem byl na 5. stránce a dal hledání (nová menší data)
+						if (pageCount < (this.PageIndex + 1))
+						{
+							this.PageIndex = 0;
+						}
+
 						for (int i = 0; i < this.PageIndex; i++)
 						{
 							insertingData.Insert(0, insertRowDataItem);

@@ -443,7 +443,7 @@ namespace Havit.Web.UI.WebControls
 				{
 					if (GetInsertRowDataItem == null)
 					{
-						throw new InvalidOperationException("Pøi AllowInserting musíte nastavit GetInsertRowData");
+						throw new InvalidOperationException("Pøi AllowInserting musíte nastavit GetInsertRowData.");
 					}
 
 					object insertRowDataItem = GetInsertRowDataItem();
@@ -510,7 +510,7 @@ namespace Havit.Web.UI.WebControls
 			}
 
 			// abychom mìli na stránce vždy stejný poèet øádek, tak u insertingu pøi editaci skrýváme poslední øádek
-			if ((AllowInserting) && (insertRowIndex < 0) && (rowIndex == (this.PageSize - 1)))
+			if ((AllowInserting) && (insertRowIndex < 0) && (AllowPaging) && (rowIndex == (this.PageSize - 1)))
 			{
 				row.Visible = false;
 			}

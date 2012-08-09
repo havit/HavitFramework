@@ -35,10 +35,10 @@ namespace Havit.Business
 			}
 			set
 			{
-				if (!Object.Equals(_value, value))
+				if (!Object.Equals(_value, value) || (!IsInitialized))
 				{
-					IsDirty = true;
-					
+					// pokud meníme hodnotu nebo nastavujeme novou hodnotu, rekneme, ze jsme zmeneny
+					IsDirty = true;					
 				}
 
 				IsInitialized = true;

@@ -14,7 +14,7 @@ namespace Havit.Web.UI.WebControls
 		#region ItemPropertyInfo
 		/// <summary>
 		/// ReferenceFieldPropertyInfo property, jejíž hodnota se tímto DropDownListem vybírá.
-		/// Nastavení této hodnoty rovnìž pøepíše hodnoty vlastností ItemsObjectInfo a Nullable.
+		/// Nastavení této hodnoty rovnìž pøepíše hodnoty vlastností ItemObjectInfo a Nullable.
 		/// Hodnota této property nepøežívá postback.
 		/// </summary>
 		public ReferenceFieldPropertyInfo ItemPropertyInfo
@@ -130,8 +130,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region SelectedObjects
 		/// <summary>
-		/// Vrací objekt na základì vybrané položky v DropDownListu. Objekt se získává metodou ve vlastnosti ItemsObjectInfo.
-		/// Není-li žádná položka vybrána, vrací null.
+		/// Vrací výèet s vybranými objekty (na základì zaškrtnutí CheckBoxù). Objekt se získává metodou ve vlastnosti ItemObjectInfo.
 		/// </summary>
 		public IEnumerable SelectedObjects
 		{

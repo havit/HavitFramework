@@ -6,7 +6,7 @@ using System.Web.Services.Protocols;
 using System.Web.UI;
 using Havit.Web.Management;
 
-namespace Havit.Web.UI
+namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
 	/// Control zajišťuje funkci health monitoringu i v asychronním postbacku (což standardně v ASP.NET nefunguje, bohužel).

@@ -235,7 +235,7 @@ namespace Havit.Web.UI.WebControls
 			valueTextBox = new TextBox();
 			valueTextBox.ID = "ValueTextBox";
 
-			seperatorLiteralControl = new LiteralControl("&nbsp");
+			seperatorLiteralControl = new LiteralControl("&nbsp;");
 			seperatorLiteralControl.ID = "SeparatorLiteralControl";
 
 			dateTimePickerImage = new Image();

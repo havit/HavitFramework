@@ -3,11 +3,11 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head runat="server">
-    <title>Untitled Page</title>
+	<title>Untitled Page</title>
 </head>
 <body>
-    <form id="form1" runat="server">
-    <div>
+	<form id="form1" runat="server">
+	<div>
 		<asp:ScriptManager runat="server" />
 		<asp:UpdatePanel runat="server">
 			<ContentTemplate>
@@ -44,42 +44,42 @@
 		
 		
 		<table>
-		    <tr>
-		        <td>AutoPostBack</td>
-		        <td><havit:DateTimeBox ID="AutoPostBackDateTimeBox" DateTimeMode="DateTime" CausesValidation="true" AutoPostBack="true" runat="server" /></td>
-		    </tr>
-		    <tr>
-		        <td>OnInit</td>
-		        <td><asp:Label ID="AutoPostBackOnInitValueLabel" runat="server" /></td>		        
-		    </tr>
-		    <tr>
-		        <td>
-		            Serverový validátor
-		            <asp:CustomValidator ID="AutoPostBackDateTimeBoxValidator" runat="server" />
-		        </td>
-		        <td><asp:Label ID="AutoPostBackServerValidatorValueLabel" runat="server" /></td>		        
-		    </tr>
-		    <tr>
-		        <td>OnLoad</td>
-		        <td><asp:Label ID="AutoPostBackOnLoadValueLabel" runat="server" /></td>		        
-		    </tr>		    		    
-		    <tr>
-		        <td>OnLoadComplete</td>
-		        <td><asp:Label ID="AutoPostBackOnLoadCompleteValueLabel" runat="server" /></td>		        
-		    </tr>
-		    <tr>
-		        <td>Changed</td>
-		        <td><asp:Label ID="ChangedLabel" runat="server" /></td>		        
-		    </tr>
-		    
+			<tr>
+				<td>AutoPostBack</td>
+				<td><havit:DateTimeBox ID="AutoPostBackDateTimeBox" DateTimeMode="DateTime" CausesValidation="true" AutoPostBack="true" runat="server" /></td>
+			</tr>
+			<tr>
+				<td>OnInit</td>
+				<td><asp:Label ID="AutoPostBackOnInitValueLabel" runat="server" /></td>		        
+			</tr>
+			<tr>
+				<td>
+					Serverový validátor
+					<asp:CustomValidator ID="AutoPostBackDateTimeBoxValidator" runat="server" />
+				</td>
+				<td><asp:Label ID="AutoPostBackServerValidatorValueLabel" runat="server" /></td>		        
+			</tr>
+			<tr>
+				<td>OnLoad</td>
+				<td><asp:Label ID="AutoPostBackOnLoadValueLabel" runat="server" /></td>		        
+			</tr>		    		    
+			<tr>
+				<td>OnLoadComplete</td>
+				<td><asp:Label ID="AutoPostBackOnLoadCompleteValueLabel" runat="server" /></td>		        
+			</tr>
+			<tr>
+				<td>Changed</td>
+				<td><asp:Label ID="ChangedLabel" runat="server" /></td>		        
+			</tr>
+			
 		</table>		
-    </div>
-    
-    <havit:DateTimeBox ID="SecondDateTimeBox" DateTimeMode="DateTime" CausesValidation="true" runat="server" />
-    <asp:CustomValidator ID="SecondDateTimeBoxValidator" ControlToValidate="SecondDateTimeBox" runat="server" />
-    <asp:Button ID="PostBackButton" Text="Postback" runat="server" />
-    
-    <havit:GridViewExt ID="TestGV" runat="server" AutoDataBind="true">
+	</div>
+	
+	<havit:DateTimeBox ID="SecondDateTimeBox" DateTimeMode="DateTime" CausesValidation="true" runat="server" />
+	<asp:CustomValidator ID="SecondDateTimeBoxValidator" ControlToValidate="SecondDateTimeBox" runat="server" />
+	<asp:Button ID="PostBackButton" Text="Postback" runat="server" />
+	
+	<havit:GridViewExt ID="TestGV" runat="server" AutoDataBind="true">
 		<Columns>
 			<havit:TemplateFieldExt>
 				<ItemTemplate>
@@ -91,7 +91,7 @@
 			</havit:TemplateFieldExt>
 			<havit:GridViewCommandField ShowEditButton="true" ShowCancelButton="true" />
 		</Columns>
-    </havit:GridViewExt>
-    </form>
+	</havit:GridViewExt>
+	</form>
 </body>
 </html>

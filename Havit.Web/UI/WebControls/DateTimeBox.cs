@@ -375,7 +375,7 @@ namespace Havit.Web.UI.WebControls
 			if (IsEnabled)
 			{
 				RegisterClientScript();
-				valueTextBox.Attributes.Add("onKeyPress", "HavitDateTimeBox_KeyPress();");
+				valueTextBox.Attributes.Add("onKeyPress", String.Format("HavitDateTimeBox_KeyPress(event, {0});", (this.DateTimeMode == DateTimeMode.DateTime).ToString().ToLower()));
 			}
 
 			ViewState["ValueMemento"] = GetValueMemento();
@@ -455,9 +455,22 @@ namespace Havit.Web.UI.WebControls
 			// ziskat ASCII kody oddelovacu datumu a casu
 			System.Globalization.DateTimeFormatInfo dateTimeFormatInfo = CultureInfo.CurrentCulture.DateTimeFormat;
 			string dateSeparatorCode = System.Text.Encoding.ASCII.GetBytes(dateTimeFormatInfo.DateSeparator)[0].ToString();
-			#region JavaScript
-			string javaScript = @"function HavitDateTimeBox_KeyPress() { event.returnValue = (event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode == " + dateSeparatorCode + @");	}";
-			#endregion
+			string timeSeparatorCode = System.Text.Encoding.ASCII.GetBytes(dateTimeFormatInfo.TimeSeparator)[0].ToString();
+			string javaScript =
+@"function HavitDateTimeBox_KeyPress(e, allowTime)
+{
+	var charCode = (window.event) ? window.event.keyCode : e.charCode;
+    var validChar = ((charCode >= 48) && (charCode <= 57))
+		|| (charCode == " + dateSeparatorCode + @")
+		|| (charCode <= 31)
+		|| (allowTime
+			&& ((charCode == 32)
+				|| (charCode == " + timeSeparatorCode + @")));
+	if (!validChar)
+	{
+		if (window.event) { window.event.returnValue = null; } else { e.preventDefault(); }
+	}
+}";
 			ScriptManager.RegisterClientScriptBlock(this.Page, typeof(DateTimeBox), "KeyPress", javaScript, true);
 		}
 		#endregion

@@ -297,8 +297,8 @@ namespace Havit.Web.UI.WebControls
 					valueTextBox.MaxLength = 12;
 				}
 
-				valueTextBox.Attributes.Add("onkeypress", String.Format("HavitNumericBox_KeyPress({0}, {1})", AllowNegativeNumber.ToString().ToLower(), Decimals));
-				valueTextBox.Attributes.Add("onchange", String.Format("HavitNumericBox_Change({0}, {1})", AllowNegativeNumber.ToString().ToLower(), Decimals));
+				valueTextBox.Attributes.Add("onkeypress", String.Format("HavitNumericBox_KeyPress(event, {0}, {1});", AllowNegativeNumber.ToString().ToLower(), Decimals));
+				valueTextBox.Attributes.Add("onchange", String.Format("HavitNumericBox_Fix(event, {0}, {1});", AllowNegativeNumber.ToString().ToLower(), Decimals));
 			}
 		}		
 		#endregion
@@ -321,31 +321,41 @@ namespace Havit.Web.UI.WebControls
 				thousandsSeparator = thousandsSeparator.Substring(0, 1);
 			}
 
-			string javaScript = @"
-                    <script language=""JavaScript"">
-                        function HavitNumericBox_KeyPress(allowNegativeNumber, decimals)
-						{
-	                        event.returnValue = (event.keyCode == " + (byte)thousandsSeparator[0] + @") 
-								|| ((event.keyCode >= 48) && (event.keyCode <= 57))
-		                        || (allowNegativeNumber && (event.keyCode == 45))
-		                        || ((decimals > 0) && (event.keyCode == " + (byte)decimalSeparator + @") && event.srcElement.value.indexOf(String.fromCharCode(event.keyCode)) == -1);
-                        }
-                        
-						function HavitNumericBox_Change(allowNegativeNumber, decimals)
-						{
-							value = event.srcElement.value;
+			// ((charCode >= 48) && (charCode <= 57)) ... znaky 0-9
+			// (charCode < 31) .. speciální symboly (Home, End, Enter, Backspace, apod.)
+			// (allowNegativeNumber && (charCode == 45)) ... znaménko mínus, je-li povolena záporná èísla
+			// ((decimals > 0) && ... ) ... desetinný oddìlovaè, jsou-li desetinná místa povolena a zároveò ještì desetinný oddìlovaè není uveden
+			string javaScript = 
+@"function HavitNumericBox_KeyPress(e, allowNegativeNumber, decimals)
+{
+	var charCode = (window.event) ? window.event.keyCode : e.charCode;
+	var element = (e.target) ? e.target : window.event.srcElement;
+    var validKey = (charCode == " + (byte)thousandsSeparator[0] + @")
+		|| ((charCode >= 48) && (charCode <= 57)) 
+		|| (charCode <= 31)
+        || (allowNegativeNumber && (charCode == 45) && element.value.indexOf(String.fromCharCode(charCode)) == -1)
+        || ((decimals > 0) && (charCode == " + (byte)decimalSeparator + @") && element.value.indexOf(String.fromCharCode(charCode)) == -1);
+	if (!validKey)
+	{
+		if (window.event) { window.event.returnValue = null; } else { e.preventDefault(); }
+	}
+}
 
-							var position = value.indexOf('" + decimalSeparator + @"');
-							if (position >= 0)
-							{
-								value = value.substr(0, position + decimals + 1);
-								event.srcElement.value = value;
-							}
-                        }
-                    </script>
-				    ";
+function HavitNumericBox_Fix(e, allowNegativeNumber, decimals)
+{
+	var element = (e.target) ? e.target : window.event.srcElement;
+	var position;
 
-			ScriptManager.RegisterClientScriptBlock(this.Page, typeof(NumericBox), clientScriptBlockName, javaScript, false);
+	var value = element.value;
+	position = value.indexOf('" + decimalSeparator + @"');
+	if (position >= 0)
+	{
+		value = value.substr(0, position + decimals + 1);								
+		element.value = value;
+	}
+}";
+
+			ScriptManager.RegisterClientScriptBlock(this.Page, typeof(NumericBox), clientScriptBlockName, javaScript, true);
 		}
 		#endregion
 

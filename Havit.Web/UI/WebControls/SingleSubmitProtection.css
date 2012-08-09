@@ -1,0 +1,8 @@
+﻿#progress-layer
+{
+	filter: Alpha(Opacity=0, Style=0); /* pruhlednost v IE */
+	opacity: 0.0; /* pruhlednost ve firefoxu */
+	background-color: gray;
+	z-index: 999;
+	position: absolute;
+}

@@ -199,6 +199,7 @@
     <Compile Include="UI\WebControls\Messenger.cs" />
     <Compile Include="UI\WebControls\NumericBox.cs" />
     <Compile Include="UI\WebControls\NumericBoxValidator.cs" />
+    <Compile Include="UI\WebControls\SingleSubmitProtection.cs" />
     <Compile Include="UI\WebControls\SortExpressions.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -330,6 +331,8 @@
     <EmbeddedResource Include="UI\Adapters\CssAdapters\CssTreeViewAdapter.js" />
     <Content Include="UI\Scriptlets\IControlExtender.xml" />
     <Content Include="UI\Scriptlets\IScriptletParameter.xml" />
+    <EmbeddedResource Include="UI\WebControls\SingleSubmitProtection.css" />
+    <EmbeddedResource Include="UI\WebControls\SingleSubmitProtection.js" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

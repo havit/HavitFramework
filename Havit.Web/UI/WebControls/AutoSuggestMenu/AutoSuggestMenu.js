@@ -1020,7 +1020,7 @@ function AutoSuggestMenu()
 
 AutoSuggestMenu.getMenu = function(menuID)
 {
-    var div=$(menuID);
+    var div=document.getElementById(menuID);
     
     if (div==null)
         throw "AutoSuggestMenu (ID: '" + menuID + "') doesn't exist";

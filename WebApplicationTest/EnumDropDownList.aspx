@@ -9,7 +9,7 @@
 <body>
     <form id="form1" runat="server">
     <div>
-		<havit:EnumDropDownList ID="TestDDL" EnumType="<%$ Expression: typeof(WebApplicationTest.TestEnum) %>" DataTextFormatString="$resources: TestEnum, {0}" Nullable="true" runat="server" />
+		<havit:EnumDropDownList ID="TestDDL" EnumType="<%$ Expression: typeof(WebApplicationTest.TestEnum) %>" DataTextFormatString="$resources: {1}, {0}" Nullable="true" runat="server" />
 		<asp:Label ID="TestLb" runat="server" />
 		<asp:Button ID="TestBt" Text="Test" runat="server" />
     </div>

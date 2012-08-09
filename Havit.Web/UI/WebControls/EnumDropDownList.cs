@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI.WebControls;
+using System.Web.UI;
 
 namespace Havit.Web.UI.WebControls
 {
@@ -107,6 +108,27 @@ namespace Havit.Web.UI.WebControls
 			set
 			{
 				ViewState["NullableText"] = value;
+			}
+		}
+		#endregion
+
+		#region DataTextFormatString
+		/// <summary>
+		/// Format-string pro Text itemù. Lze skinovat a použít syntaxi $resources. Jako data jsou poskytnuta {0} = dataItem, {1} = EnumType.Name, {2} = EnumType.Namespace.
+		/// </summary>
+		/// <remarks>
+		/// Hidujeme kvùli povolení skinování.
+		/// </remarks>
+		[Themeable(true)]
+		public new string DataTextFormatString
+		{
+			get
+			{
+				return base.DataTextFormatString;
+			}
+			set
+			{
+				base.DataTextFormatString = value;
 			}
 		}
 		#endregion
@@ -244,7 +266,7 @@ namespace Havit.Web.UI.WebControls
 
 			if (!String.IsNullOrEmpty(DataTextFormatString))
 			{
-				item.Text = HttpUtilityExt.GetResourceString(String.Format(DataTextFormatString, dataItem));
+				item.Text = HttpUtilityExt.GetResourceString(String.Format(DataTextFormatString, dataItem, EnumType.Name, EnumType.Namespace));
 			}
 			else
 			{

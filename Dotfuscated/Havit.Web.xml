@@ -3371,6 +3371,14 @@
             Udává text prázdné hodnoty. Výchozí hodnota je "---".
             </summary>
         </member>
+        <member name="P:Havit.Web.UI.WebControls.EnumDropDownList.DataTextFormatString">
+            <summary>
+            Format-string pro Text itemů. Lze skinovat a použít syntaxi $resources. Jako data jsou poskytnuta {0} = dataItem, {1} = EnumType.Name, {2} = EnumType.Namespace.
+            </summary>
+            <remarks>
+            Hidujeme kvůli povolení skinování.
+            </remarks>
+        </member>
         <member name="P:Havit.Web.UI.WebControls.EnumDropDownList.DataBindPerformed">
             <summary>
             Indikuje, zda již došlo k navázání dat.

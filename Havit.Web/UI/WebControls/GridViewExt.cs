@@ -449,12 +449,18 @@ namespace Havit.Web.UI.WebControls
 					object insertRowDataItem = GetInsertRowDataItem();
 					if (AllowPaging)
 					{
-						int pageCount = (insertingData.Count + this.PageSize) - 1;
-						if (pageCount < 0)
+						int itemsCount = (insertingData.Count + this.PageSize) - 1;
+						if (itemsCount < 0)
 						{
-							pageCount = 1;
+							itemsCount = 1;
 						}
-						pageCount = pageCount / this.PageSize;
+						int pageCount = itemsCount / this.PageSize;
+
+						// pokud by InsertingRow mìlo zbýt samotné na poslední stránce, pak snížíme poèet stránek (mùže se stát po smazání poslední položky)
+						if (((this.PageSize - 1) * (this.PageIndex)) == insertingData.Count)
+						{
+							this.PageIndex--;
+						}
 
 						for (int i = 0; i < this.PageIndex; i++)
 						{

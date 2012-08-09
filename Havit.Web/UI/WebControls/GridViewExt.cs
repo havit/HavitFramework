@@ -815,6 +815,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			base.OnSorted(e);
 			PageIndex = 0;
+			this.EditIndex = -1;
 		}
 		#endregion
 

@@ -106,16 +106,13 @@ namespace Havit.Web.UI.WebControls
     		}
     	}
     	private const string validationScript = @"
-				<script type=""text/javascript"">
 				function CheckBoxValidatorEvaluateIsValid(val)
 				{
 					var control = document.getElementById(val.controltovalidate);
 					var validCheckedState = Boolean(val.validCheckedState == 'true');
 
 					return control.checked == validCheckedState;
-				}
-				</script>
-				";
+				}";
 		#endregion
 	}
 }

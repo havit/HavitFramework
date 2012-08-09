@@ -72,6 +72,13 @@
     <Compile Include="AutoSuggestMenu.aspx.designer.cs">
       <DependentUpon>AutoSuggestMenu.aspx</DependentUpon>
     </Compile>
+    <Compile Include="CheckBoxValidatorTest.aspx.cs">
+      <DependentUpon>CheckBoxValidatorTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CheckBoxValidatorTest.aspx.designer.cs">
+      <DependentUpon>CheckBoxValidatorTest.aspx</DependentUpon>
+    </Compile>
     <Compile Include="DateTimeBoxTest.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>DateTimeBoxTest.aspx</DependentUpon>
@@ -252,6 +259,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Browsers\CssFriendlyAdapters.browser" />
+    <Content Include="CheckBoxValidatorTest.aspx" />
     <Content Include="DynarchCalendarTest.aspx" />
     <Content Include="EnterpriseCheckBoxListTest.aspx" />
     <Content Include="havit.css" />

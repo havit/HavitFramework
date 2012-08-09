@@ -24,7 +24,8 @@ namespace Havit.Web.UI.WebControls
 		/// Slouží k reprezentaci chybné hodnoty v metodě GetValueMemento.
 		/// </summary>
 		private const string InvalidValueMemento = "invalid";
-		#endregion
+        private const string clientScriptBlockName = "Havit.DsvCommerce.WebBase.UI.WebControls.DateTimeBox_Script";
+        #endregion
 
 		#region Nested controls (private)
 
@@ -616,8 +617,6 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		private void RegisterClientScript()
 		{
-			string clientScriptBlockName = typeof(DateTimeBox).FullName + "_KeyPress";
-
 			// ziskat ASCII kody oddelovacu datumu a casu
 			System.Globalization.DateTimeFormatInfo dateTimeFormatInfo = CultureInfo.CurrentCulture.DateTimeFormat;
 			string dateSeparatorCode = System.Text.Encoding.ASCII.GetBytes(dateTimeFormatInfo.DateSeparator)[0].ToString();
@@ -648,7 +647,7 @@ function HavitDateTimeBox_Focus(e)
 		element.createTextRange().select();
 	}
 }";
-			ScriptManager.RegisterClientScriptBlock(this.Page, typeof(DateTimeBox), "KeyPress", javaScript, true);
+            ScriptManager.RegisterClientScriptBlock(this.Page, typeof(DateTimeBox), clientScriptBlockName, javaScript, true);
 		}
 		#endregion
 

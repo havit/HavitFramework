@@ -6,6 +6,10 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 
+[assembly: WebResource("Havit.Web.UI.Adapters.CssAdapters.CssMenuAdapter.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.Adapters.CssAdapters.CssMenuAdapter.css", "text/css")]
+[assembly: WebResource("Havit.Web.UI.Adapters.CssAdapters.CssMenuAdapter-IE6.css", "text/css")]
+
 namespace Havit.Web.UI.Adapters.CssAdapters
 {
 	/// <summary>
@@ -39,20 +43,54 @@ namespace Havit.Web.UI.Adapters.CssAdapters
             if (Extender.AdapterEnabled)
             {
                 RegisterScripts();
+				RegisterStyles();
             }
         }
 
         private void RegisterScripts()
         {
             Extender.RegisterScripts();
-            string folderPath = WebConfigurationManager.AppSettings.Get("CSSFriendly-JavaScript-Path");
-            if (String.IsNullOrEmpty(folderPath))
-            {
-                folderPath = "~/JavaScript";
-            }
-            string filePath = folderPath.EndsWith("/") ? folderPath + "MenuAdapter.js" : folderPath + "/MenuAdapter.js";
-            Page.ClientScript.RegisterClientScriptInclude(GetType(), GetType().ToString(), Page.ResolveUrl(filePath));
+
+			Page.ClientScript.RegisterClientScriptResource(typeof(CssMenuAdapter), "Havit.Web.UI.Adapters.CssAdapters.CssMenuAdapter.js");
+			
+			//string folderPath = WebConfigurationManager.AppSettings.Get("CSSFriendly-JavaScript-Path");
+			//if (String.IsNullOrEmpty(folderPath))
+			//{
+			//    folderPath = "~/JavaScript";
+			//}
+			//string filePath = folderPath.EndsWith("/") ? folderPath + "MenuAdapter.js" : folderPath + "/MenuAdapter.js";
+			//Page.ClientScript.RegisterClientScriptInclude(GetType(), GetType().ToString(), Page.ResolveUrl(filePath));
         }
+
+		private void RegisterStyles()
+		{
+			HttpContext context = HttpContext.Current;
+
+			if (Page.Header != null)
+			{
+				bool registered = (bool)(context.Items["Havit.Web.UI.Adapters.CssAdapters.CssMenuAdapter_registered"] ?? false);
+
+				if (!registered)
+				{
+					HtmlLink stylesBasic = new HtmlLink();
+					stylesBasic.Href = Page.ClientScript.GetWebResourceUrl(typeof(CssMenuAdapter), "Havit.Web.UI.Adapters.CssAdapters.CssMenuAdapter.css");
+					stylesBasic.Attributes.Add("rel", "stylesheet");
+					stylesBasic.Attributes.Add("type", "text/css");
+					Page.Header.Controls.Add(stylesBasic);
+
+					if (Browser.Browser.Contains("MSIE") && (Browser.MajorVersion < 7))
+					{
+						HtmlLink stylesIE6 = new HtmlLink();
+						stylesIE6.Href = Page.ClientScript.GetWebResourceUrl(typeof(CssMenuAdapter), "Havit.Web.UI.Adapters.CssAdapters.CssMenuAdapter-IE6.css");
+						stylesIE6.Attributes.Add("rel", "stylesheet");
+						stylesIE6.Attributes.Add("type", "text/css");
+						Page.Header.Controls.Add(stylesIE6);
+					}
+
+					context.Items["Havit.Web.UI.Adapters.CssAdapters.CssMenuAdapter_registered"] = true;
+				}
+			}
+		}
 
         protected override void RenderBeginTag(HtmlTextWriter writer)
         {

@@ -14,6 +14,8 @@ using System.Web.UI.WebControls.Adapters;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 
+[assembly: WebResource("Havit.Web.UI.Adapters.CssAdapters.CssAdaptersUtils.js", "text/javascript")]
+
 namespace Havit.Web.UI.Adapters.CssAdapters
 {
     /// <summary>
@@ -85,13 +87,15 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 
         public void RegisterScripts()
         {
-            string folderPath = WebConfigurationManager.AppSettings.Get("CSSFriendly-JavaScript-Path");
-            if (String.IsNullOrEmpty(folderPath))
-            {
-                folderPath = "~/JavaScript";
-            }
-            string filePath = folderPath.EndsWith("/") ? folderPath + "AdapterUtils.js" : folderPath + "/AdapterUtils.js";
-            AdaptedControl.Page.ClientScript.RegisterClientScriptInclude(GetType(), GetType().ToString(), AdaptedControl.Page.ResolveUrl(filePath));
+			_adaptedControl.Page.ClientScript.RegisterClientScriptResource(typeof(WebControlAdapterExtender), "Havit.Web.UI.Adapters.CssAdapters.CssAdaptersUtils.js");
+
+			//string folderPath = WebConfigurationManager.AppSettings.Get("CSSFriendly-JavaScript-Path");
+			//if (String.IsNullOrEmpty(folderPath))
+			//{
+			//    folderPath = "~/JavaScript";
+			//}
+			//string filePath = folderPath.EndsWith("/") ? folderPath + "AdapterUtils.js" : folderPath + "/AdapterUtils.js";
+			//AdaptedControl.Page.ClientScript.RegisterClientScriptInclude(GetType(), GetType().ToString(), AdaptedControl.Page.ResolveUrl(filePath));
         }
 
         public string ResolveUrl(string url)

@@ -33,7 +33,7 @@ namespace Havit.Business.Query
 		protected CompositeCondition(string operatorBetweenOperands, params Condition[] conditions)
 		{
 			this.operatorBetweenOperands = operatorBetweenOperands;
-			for (int index = 0; index <= conditions.Length; index++)
+			for (int index = 0; index < conditions.Length; index++)
 			{
 				this.Conditions.Add(conditions[index]);
 			}

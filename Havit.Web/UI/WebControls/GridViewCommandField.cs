@@ -99,18 +99,18 @@ namespace Havit.Web.UI.WebControls
 						if (((rowState & DataControlRowState.Edit) != DataControlRowState.Normal) && showEditButton)
 						{
 							// stejné jako CommandField
-							this.AddButtonToCell(cell, "Update", this.UpdateText, causesValidation, validationGroup, rowIndex, this.UpdateImageUrl);
+							this.AddButtonToCell(cell, "Update", HttpUtilityExt.GetResourceString(this.UpdateText), causesValidation, validationGroup, rowIndex, this.UpdateImageUrl);
 							if (showCancelButton)
 							{
 								child = new LiteralControl("&nbsp;");
 								cell.Controls.Add(child);
-								this.AddButtonToCell(cell, "Cancel", this.CancelText, false, string.Empty, rowIndex, this.CancelImageUrl);
+								this.AddButtonToCell(cell, "Cancel", HttpUtilityExt.GetResourceString(this.CancelText), false, string.Empty, rowIndex, this.CancelImageUrl);
 							}
 						}
 						if (((rowState & DataControlRowState.Insert) != DataControlRowState.Normal) && showInsertButton)
 						{
 							// Nechceme Cancel
-							this.AddButtonToCell(cell, "Insert", this.InsertText, causesValidation, validationGroup, rowIndex, this.InsertImageUrl);
+							this.AddButtonToCell(cell, "Insert", HttpUtilityExt.GetResourceString(this.InsertText), causesValidation, validationGroup, rowIndex, this.InsertImageUrl);
 							/*
 							if (showCancelButton)
 							{
@@ -125,7 +125,7 @@ namespace Havit.Web.UI.WebControls
 					{
 						if (showEditButton)
 						{
-							this.AddButtonToCell(cell, "Edit", this.EditText, false, string.Empty, rowIndex, this.EditImageUrl);
+							this.AddButtonToCell(cell, "Edit", HttpUtilityExt.GetResourceString(this.EditText), false, string.Empty, rowIndex, this.EditImageUrl);
 							insertSpace = false;
 						}
 						if (showDeleteButton)
@@ -136,23 +136,24 @@ namespace Havit.Web.UI.WebControls
 								cell.Controls.Add(child);
 							}
 							
-							IButtonControl button = this.AddButtonToCell(cell, "Delete", this.DeleteText, false, string.Empty, rowIndex, this.DeleteImageUrl);
+							IButtonControl button = this.AddButtonToCell(cell, "Delete", HttpUtilityExt.GetResourceString(this.DeleteText), false, string.Empty, rowIndex, this.DeleteImageUrl);
 
 							// doplneni o DeleteConfirmText
-							if (!String.IsNullOrEmpty(DeleteConfirmationText))
+							string deleteConfirmationTextResolved = HttpUtilityExt.GetResourceString(DeleteConfirmationText);
+							if (!String.IsNullOrEmpty(deleteConfirmationTextResolved))
 							{
 								if (button is Button)
 								{
-									((Button)button).OnClientClick = String.Format("if (!confirm('{0}')) return false;", DeleteConfirmationText.Replace("'", "''"));
+									((Button)button).OnClientClick = String.Format("if (!confirm('{0}')) return false;", deleteConfirmationTextResolved.Replace("'", "''"));
 								}
 								else if (button is LinkButton)
 								{
-									((LinkButton)button).OnClientClick = String.Format("if (!confirm('{0}')) return false;", DeleteConfirmationText.Replace("'", "''"));
+									((LinkButton)button).OnClientClick = String.Format("if (!confirm('{0}')) return false;", deleteConfirmationTextResolved.Replace("'", "''"));
 								}
 								else
 								{
 									Debug.Assert(button is ImageButton);
-									((ImageButton)button).OnClientClick = String.Format("if (!confirm('{0}')) return false;", DeleteConfirmationText.Replace("'", "''"));
+									((ImageButton)button).OnClientClick = String.Format("if (!confirm('{0}')) return false;", deleteConfirmationTextResolved.Replace("'", "''"));
 								}
 							}
 
@@ -178,7 +179,7 @@ namespace Havit.Web.UI.WebControls
 								child = new LiteralControl("&nbsp;");
 								cell.Controls.Add(child);
 							}
-							this.AddButtonToCell(cell, "Select", this.SelectText, false, string.Empty, rowIndex, this.SelectImageUrl);
+							this.AddButtonToCell(cell, "Select", HttpUtilityExt.GetResourceString(this.SelectText), false, string.Empty, rowIndex, this.SelectImageUrl);
 							insertSpace = false;
 						}
 					}

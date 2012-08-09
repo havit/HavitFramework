@@ -13,6 +13,7 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class DropDownListExt : DropDownList
 	{
+		#region SelectedIndex, SelectedValue (override)
 		private int cachedSelectedIndex = -1;
 		private string cachedSelectedValue;
 
@@ -51,7 +52,9 @@ namespace Havit.Web.UI.WebControls
 				cachedSelectedValue = value;
 			}
 		}
+		#endregion
 
+		#region PerformDataBinding (override)
 		/// <summary>
 		/// Binds the specified data source to the control that is derived from the <see cref="T:System.Web.UI.WebControls.ListControl"/> class.
 		/// </summary>
@@ -149,6 +152,6 @@ namespace Havit.Web.UI.WebControls
 			}
 			return -1;
 		}
-
+		#endregion
 	}
 }

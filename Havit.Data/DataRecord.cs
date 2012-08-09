@@ -22,10 +22,22 @@ namespace Havit.Data
 		/// </summary>
 		public bool FullLoad
 		{
-			get { return fullLoad; }
-			set { fullLoad = value; }
+			get { return DataLoadPower == DataLoadPower.FullLoad; }
+//			set { 
+//				fullLoad = value; }
 		}
-		private bool fullLoad;
+		//private bool fullLoad;
+
+		/// <summary>
+		/// Indikuje množství dat, které jsou uloženy v DataRecordu vùèi všem možným sloupcùm øádkù.
+		/// </summary>
+		public DataLoadPower DataLoadPower
+		{
+			get { return dataLoadPower; }
+			set { dataLoadPower = value; }
+		}
+		private DataLoadPower dataLoadPower;
+		
 		#endregion
 
 		#region private data fields
@@ -40,10 +52,10 @@ namespace Havit.Data
 		/// Vytvoøí instanci DataRecordu a naète do ní data z <see cref="System.Data.DataRow"/>.
 		/// </summary>
 		/// <param name="row">datový zdroj typu DataRow</param>
-		/// <param name="fullLoad">true, má-li být pøi nenalezení parametru vyvolána výjimka</param>
-		public DataRecord(DataRow row, bool fullLoad)
+		/// <param name="dataLoadPower">Rozsah dat v datovém zdroji.</param>
+		public DataRecord(DataRow row, DataLoadPower dataLoadPower)
 		{
-			this.fullLoad = fullLoad;
+			this.dataLoadPower = dataLoadPower;
 
 			// zkopíruje data do dataDictionary
 			this.dataDictionary = new Dictionary<string, object>(row.Table.Columns.Count);
@@ -59,18 +71,39 @@ namespace Havit.Data
 		/// <summary>
 		/// Vytvoøí instanci DataRecordu a naète do ní data z <see cref="System.Data.DataRow"/>.
 		/// </summary>
-		/// <param name="row">datový zdroj typu <see cref="System.Data.DataRow"/></param>
-		public DataRecord(DataRow row)
+		/// <param name="row">datový zdroj typu DataRow</param>
+		/// <param name="fullLoad">true, má-li být pøi nenalezení parametru vyvolána výjimka</param>
+		[Obsolete]
+		public DataRecord(DataRow row, bool fullLoad): this(row, fullLoad ? DataLoadPower.FullLoad : DataLoadPower.PartialLoad)
 		{
-			this.fullLoad = true;
+		}
+
+		/// <summary>
+		/// Vytvoøí instanci DataRecordu a naète do ní data z <see cref="System.Data.DataRow"/>.
+		/// </summary>
+		/// <param name="row">datový zdroj typu <see cref="System.Data.DataRow"/></param>
+		[Obsolete]
+		public DataRecord(DataRow row): this(row, true)
+		{
+		}
+
+		/// <summary>
+		/// Vytvoøí instanci DataRecordu a naète do ní data z <see cref="System.Data.IDataRecord"/>
+		/// (napø. <see cref="System.Data.SqlClient.SqlDataReader"/>).
+		/// </summary>
+		/// <param name="record">datový zdroj <see cref="System.Data.IDataRecord"/> (napø. <see cref="System.Data.SqlClient.SqlDataReader"/>)</param>
+		/// <param name="dataLoadPower">Rozsah dat v datovém zdroji.</param>
+		public DataRecord(IDataRecord record, DataLoadPower dataLoadPower)
+		{
+			this.dataLoadPower = dataLoadPower;
 
 			// zkopíruje data do dataDictionary
-			this.dataDictionary = new Dictionary<string, object>(row.Table.Columns.Count);
-			for (int i = 0; i < row.Table.Columns.Count; i++)
+			this.dataDictionary = new Dictionary<string, object>(record.FieldCount);
+			for (int i = 0; i < record.FieldCount; i++)
 			{
-				if (!this.dataDictionary.ContainsKey(row.Table.Columns[i].ColumnName))
+				if (!this.dataDictionary.ContainsKey(record.GetName(i)))
 				{
-					this.dataDictionary.Add(row.Table.Columns[i].ColumnName, row[i]);
+					this.dataDictionary.Add(record.GetName(i), record[i]);
 				}
 			}
 		}
@@ -81,19 +114,9 @@ namespace Havit.Data
 		/// </summary>
 		/// <param name="record">datový zdroj <see cref="System.Data.IDataRecord"/> (napø. <see cref="System.Data.SqlClient.SqlDataReader"/>)</param>
 		/// <param name="fullLoad">true, má-li být pøi nenalezení parametru vyvolána výjimka</param>
-		public DataRecord(IDataRecord record, bool fullLoad)
+		[Obsolete]
+		public DataRecord(IDataRecord record, bool fullLoad): this(record, fullLoad ? DataLoadPower.FullLoad : DataLoadPower.PartialLoad)
 		{
-			this.fullLoad = fullLoad;
-
-			// zkopíruje data do dataDictionary
-			this.dataDictionary = new Dictionary<string, object>(record.FieldCount);
-			for (int i = 0; i < record.FieldCount; i++)
-			{
-				if (!this.dataDictionary.ContainsKey(record.GetName(i)))
-				{
-					this.dataDictionary.Add(record.GetName(i), record[i]);
-				}
-			}
 		}
 
 		/// <summary>
@@ -101,19 +124,9 @@ namespace Havit.Data
 		/// (napø. <see cref="System.Data.SqlClient.SqlDataReader"/>).
 		/// </summary>
 		/// <param name="record">datový zdroj <see cref="System.Data.IDataRecord"/> (napø. <see cref="System.Data.SqlClient.SqlDataReader"/>)</param>
-		public DataRecord(IDataRecord record)
-		{
-			this.fullLoad = true;
-
-			// zkopíruje data do dataDictionary
-			this.dataDictionary = new Dictionary<string, object>(record.FieldCount);
-			for (int i = 0; i < record.FieldCount; i++)
-			{
-				if (!this.dataDictionary.ContainsKey(record.GetName(i)))
-				{
-					this.dataDictionary.Add(record.GetName(i), record[i]);
-				}
-			}
+		[Obsolete]
+		public DataRecord(IDataRecord record): this(record, true)
+		{			
 		}
 		#endregion
 
@@ -182,7 +195,7 @@ namespace Havit.Data
 
 				return true;
 			}
-			else if (fullLoad)
+			else if (dataLoadPower != DataLoadPower.PartialLoad)
 			{
 				throw new ArgumentException("Parametr požadovaného jména nebyl v DataRecordu nalezen.", fieldName);
 			}
@@ -265,7 +278,7 @@ namespace Havit.Data
 					}
 				}
 			}
-			else if (fullLoad)
+			else if (dataLoadPower != DataLoadPower.PartialLoad)
 			{
 				throw new ArgumentException("Parametr ve vstupních datech nebyl nalezen", fieldName);
 			}

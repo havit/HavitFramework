@@ -227,8 +227,8 @@ namespace Havit.DataTest
 			table.Columns.Add("ColumnName", typeof(int));
 			table.Rows.Add(10);
 
-			DataRecord record = new DataRecord(table.Rows[0]);
-			record.FullLoad = false;
+			DataRecord record = new DataRecord(table.Rows[0], false);
+//			record.FullLoad = false;
 
 			string fieldName = "ColumnName_Jiny";
 

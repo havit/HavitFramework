@@ -498,7 +498,7 @@ namespace Havit.Data.SqlClient
 			{
 				if (reader.Read())
 				{
-					return new DataRecord(reader);
+					return new DataRecord(reader, DataLoadPower.FullLoad);
 				}
 				return null;
 			}

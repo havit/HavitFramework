@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data.Common;
 using System.Globalization;
+using Havit.Data;
 
 namespace Havit.Business.Query
 {
@@ -14,6 +15,7 @@ namespace Havit.Business.Query
 	[Serializable]	
 	public class QueryParams
 	{
+		#region Parametry dotazu
 		/// <summary>
 		/// Instance tøídy ObjectInfo nesoucí informace o tom, z jaké tabulky se bude dotaz dotazovat.
 		/// </summary>
@@ -24,7 +26,6 @@ namespace Havit.Business.Query
 		}
 		private ObjectInfo objectInfo;
 
-		#region Parametry dotazu
 		/// <summary>
 		/// Maximální poèet záznamù, který se vrací z databáze - (SELECT TOP n ...).
 		/// </summary>
@@ -74,6 +75,31 @@ namespace Havit.Business.Query
 		private OrderByCollection orderBy = new OrderByCollection();
 		#endregion
 
+		#region GetDataLoadPower
+		/// <summary>
+		/// Podle kolekce properties urèí režim záznamù, které budou vráceny.
+		/// Pro prázdnou kolekci vrací FullLoad, pro kolekci o jednom prvku, který je primárním klíèem, vrací Ghost. Jinak vrací PartialLoad.
+		/// </summary>		
+		public DataLoadPower GetDataLoadPower()
+		{
+			if (properties.Count == 0)
+			{
+				return DataLoadPower.FullLoad;
+			}
+
+			if (properties.Count == 1)
+			{
+				FieldPropertyInfo fieldPropertyInfo = properties[0] as FieldPropertyInfo;
+				if ((fieldPropertyInfo != null) && (fieldPropertyInfo.IsPrimaryKey))
+				{
+					return DataLoadPower.Ghosts;
+				}
+			}
+			
+			return DataLoadPower.PartialLoad;
+		}
+		#endregion
+
 		#region PrepareCommand
 		/// <summary>
 		/// Vytvoøí dotaz, nastaví jej do commandu.
@@ -110,6 +136,7 @@ namespace Havit.Business.Query
 
 		#endregion
 
+		#region OnBeforePrepareCommand, OnAfterPrepareCommand
 		/// <summary>
 		/// Slouží k pøípravì objektu pøed zaèátkem skládání databázového dotazu.
 		/// </summary>
@@ -126,7 +153,9 @@ namespace Havit.Business.Query
 		public virtual void OnAfterPrepareCommand(DbCommand command, StringBuilder commandBuilder)
 		{
 		}
+		#endregion
 
+		#region SQL Statement builder
 		/// <summary>
 		/// Vrátí sekci SQL dotazu SELECT.
 		/// </summary>
@@ -228,5 +257,6 @@ namespace Havit.Business.Query
 			}
 			return orderByBuilder.ToString();
 		}
+		#endregion
 	}
 }

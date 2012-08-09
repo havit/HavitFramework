@@ -842,6 +842,12 @@
             a řazení v jakém se mají záznamy (objekty) získat.
             </summary>
         </member>
+        <member name="M:Havit.Business.Query.QueryParams.GetDataLoadPower">
+            <summary>
+            Podle kolekce properties určí režim záznamů, které budou vráceny.
+            Pro prázdnou kolekci vrací FullLoad, pro kolekci o jednom prvku, který je primárním klíčem, vrací Ghost. Jinak vrací PartialLoad.
+            </summary>		
+        </member>
         <member name="M:Havit.Business.Query.QueryParams.PrepareCommand(System.Data.Common.DbCommand)">
             <summary>
             Vytvoří dotaz, nastaví jej do commandu.

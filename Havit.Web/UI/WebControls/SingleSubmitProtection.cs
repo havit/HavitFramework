@@ -35,32 +35,35 @@ namespace Havit.Web.UI.WebControls
 		{
 			base.OnPreRender(e);
 
-            SingleSubmitProtection.RegisterStylesheets(this.Page);
+            if (this.Enabled)
+            {
+                SingleSubmitProtection.RegisterStylesheets(this.Page);
 
-			// Registruje klientské skripty pro zamezení opakovaného odeslání stránky.
-			ScriptManager.RegisterClientScriptResource(
-				this.Page,
-				typeof (SingleSubmitProtection),
-                "Havit.Web.UI.WebControls.SingleSubmitProtection.js");
+                // Registruje klientské skripty pro zamezení opakovaného odeslání stránky.
+                ScriptManager.RegisterClientScriptResource(
+                    this.Page,
+                    typeof(SingleSubmitProtection),
+                    "Havit.Web.UI.WebControls.SingleSubmitProtection.js");
 
-			// zaregistruje javascript pro OnSubmit 
-			ScriptManager.RegisterOnSubmitStatement(
-				this.Page, 
-				typeof(SingleSubmitProtection),
-				"HidePage",
-				"if (!_SingleSubmit_IsRecursive) return SingleSubmit_OnSubmit();\n\n");
+                // zaregistruje javascript pro OnSubmit 
+                ScriptManager.RegisterOnSubmitStatement(
+                    this.Page,
+                    typeof(SingleSubmitProtection),
+                    "HidePage",
+                    "if (!_SingleSubmit_IsRecursive) return SingleSubmit_OnSubmit();\n\n");
 
-			// zajištìní mizení progress panelu po async postbacku
-			ScriptManager currentScriptManager = ScriptManager.GetCurrent(this.Page);
-			if ((currentScriptManager != null) && (currentScriptManager.EnablePartialRendering))
-			{
-				ScriptManager.RegisterStartupScript(
-					this.Page,
-					typeof (SingleSubmitProtection),
-					"SingleSubmit_Startup",
-					"SingleSubmit_Startup();",
-					true);
-			}
+                // zajištìní mizení progress panelu po async postbacku
+                ScriptManager currentScriptManager = ScriptManager.GetCurrent(this.Page);
+                if ((currentScriptManager != null) && (currentScriptManager.EnablePartialRendering))
+                {
+                    ScriptManager.RegisterStartupScript(
+                        this.Page,
+                        typeof(SingleSubmitProtection),
+                        "SingleSubmit_Startup",
+                        "SingleSubmit_Startup();",
+                        true);
+                }
+            }
 		}
 		#endregion		
 

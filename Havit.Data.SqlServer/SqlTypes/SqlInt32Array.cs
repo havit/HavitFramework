@@ -173,6 +173,9 @@ namespace Havit.Data.SqlTypes
 		/// <param name="values">Promìnná, která má být rozbalena do tabulky hodnot Int32.</param>
 		/// <returns>tabulka Int32 hodnot (pomocí FillInt32Row)</returns>
 		[SqlFunctionAttribute(
+			DataAccess= DataAccessKind.None,
+			IsDeterministic= true,
+			IsPrecise= true,
 			Name= "IntArrayToTable",
 			TableDefinition = "[Value] int",
 			FillRowMethodName = "FillSqlInt32Row")]

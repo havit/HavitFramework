@@ -124,7 +124,7 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		public string SortExpression
 		{
-			get { return (string)ViewState["SortExpression"] ?? (DataTextField + ((SortDirection == Collections.SortDirection.Descending) ? " DESC" : String.Empty)); }
+			get { return (string)ViewState["SortExpression"] ?? (DataSortField + ((SortDirection == Collections.SortDirection.Descending) ? " DESC" : String.Empty)); }
 			set { ViewState["SortExpression"] = value; }
 		}
 		#endregion

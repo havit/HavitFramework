@@ -70,20 +70,24 @@ namespace Havit.Web.UI
 			/// <summary>
 			/// Smaže soubory konkrétního uživatele.
 			/// Pokud není uživatel zadán (String.IsNullOrEmpty), maže soubory anonymního uživatele.
-			/// Maximální stáří souborů se určuje parametrem fileAge. Pokud m8 hodnotu null, stáří souborů se nebere v úvahu (jsou smazány všechny)
+			/// Maximální stáří souborů se určuje parametrem fileAge. Pokud má hodnotu null, mažou se alespoň den staré soubory.
 			/// V případě, že se některý soubor nepodaří smazat, je mazání ukončeno, ale není vyhozena výjimka.
 			/// </summary>
 			public static void DeleteUserFiles(string root, string username, TimeSpan? fileAge = null)
 			{
 				DateTime now = DateTime.Now;
 
+				if (fileAge == null)
+				{
+					fileAge = new TimeSpan(1, 0, 0, 0);
+				}
 				string folder = GetFolderForUserName(root, username);
 				if (System.IO.Directory.Exists(folder))
 				{
 					string[] files = System.IO.Directory.GetFiles(folder, "*", System.IO.SearchOption.AllDirectories);
 					foreach (string file in files)
 					{
-						if ((fileAge == null) || ((now - System.IO.File.GetLastWriteTime(file)) > fileAge.Value))
+						if ((now - System.IO.File.GetLastWriteTime(file)) > fileAge.Value)
 						{
 							try
 							{

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web.UI;
@@ -77,7 +78,7 @@ namespace Havit.Web.UI
 			string storageFilename = _fileNamingStrategy.GetFilename(storageSymbol); // ze symbolu získáme celou cestu
 
 			Pair pair;
-			using (System.IO.FileStream fileStream = System.IO.File.Open(storageFilename, System.IO.FileMode.Open))
+			using (System.IO.FileStream fileStream = System.IO.File.Open(storageFilename, System.IO.FileMode.Open, FileAccess.Read, FileShare.Read | FileShare.Delete))
 			{
 				System.Runtime.Serialization.Formatters.Binary.BinaryFormatter formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
 				pair = (Pair)formatter.Deserialize(fileStream);

@@ -6,6 +6,7 @@ using System.Text;
 using System.Collections.Generic;
 using Havit.Business;
 using Havit.BusinessLayerTest;
+using Havit.Business.Query;
 
 namespace Havit.BusinessTest
 {
@@ -16,11 +17,12 @@ namespace Havit.BusinessTest
 	[TestClass()]
 	public class IdentityMapScopeTest
 	{
+		#region Základní funkčnost
 		/// <summary>
 		///A test for IdentityMapScope ()
 		///</summary>
 		[TestMethod()]
-		public void ConstructorTest()
+		public void IdentityMapScopeTest_Zakladni()
 		{
 			Uzivatel uzivatel1;
 			Uzivatel uzivatel2;
@@ -38,7 +40,7 @@ namespace Havit.BusinessTest
 		///A test for IdentityMapScope ()
 		///</summary>
 		[TestMethod()]
-		public void ConstructorTest_BezIdentityMap()
+		public void IdentityMapScopeTest_BezIdentityMap()
 		{
 			Uzivatel uzivatel1;
 			Uzivatel uzivatel2;
@@ -46,9 +48,127 @@ namespace Havit.BusinessTest
 			uzivatel1 = Uzivatel.GetObject(1);
 			uzivatel2 = Uzivatel.GetObject(1);
 
-			// pozor, nemusí být nutně různé, pokud zapůsobí jiný vliv (caching, atp.), spíš by ale měly být!
 			Assert.AreNotSame(uzivatel1, uzivatel2);
 		}
+		#endregion
+
+		#region GetFirst/GetList
+		/// <summary>
+		/// Test na IM při full-load GetFirst.
+		///</summary>
+		[TestMethod()]
+		public void IdentityMapScopeTest_GetFirst_FullLoad()
+		{
+			using (IdentityMapScope ims = new IdentityMapScope())
+			{
+				Uzivatel uzivatel1 = Uzivatel.GetObject(1);
+
+				QueryParams qp = new QueryParams();
+				qp.Conditions.Add(NumberCondition.CreateEquals(Uzivatel.Properties.ID, 1));
+				Uzivatel uzivatel2 = Uzivatel.GetFirst(qp);
+
+				Assert.AreSame(uzivatel1, uzivatel2);
+			}
+		}
+
+		/// <summary>
+		/// Test na IM při full-load GetFirst.
+		///</summary>
+		[TestMethod()]
+		public void IdentityMapScopeTest_GetFirst_FullLoad_OpacnePoradi()
+		{
+			using (IdentityMapScope ims = new IdentityMapScope())
+			{
+				QueryParams qp = new QueryParams();
+				qp.Conditions.Add(NumberCondition.CreateEquals(Uzivatel.Properties.ID, 1));
+				Uzivatel uzivatel2 = Uzivatel.GetFirst(qp);
+
+				Uzivatel uzivatel1 = Uzivatel.GetObject(1);
+
+				Assert.AreSame(uzivatel1, uzivatel2);
+			}
+		}
+
+		/// <summary>
+		/// Test na IM při ghost GetFirst.
+		///</summary>
+		[TestMethod()]
+		public void IdentityMapScopeTest_GetFirst_Ghost()
+		{
+			using (IdentityMapScope ims = new IdentityMapScope())
+			{
+				Uzivatel uzivatel1 = Uzivatel.GetObject(1);
+
+				QueryParams qp = new QueryParams();
+				qp.Properties.Add(Uzivatel.Properties.ID);
+				qp.Conditions.Add(NumberCondition.CreateEquals(Uzivatel.Properties.ID, 1));
+				Uzivatel uzivatel2 = Uzivatel.GetFirst(qp);
+
+				Assert.AreSame(uzivatel1, uzivatel2);
+			}
+		}
+
+		/// <summary>
+		/// Test na IM při ghost GetFirst.
+		///</summary>
+		[TestMethod()]
+		public void IdentityMapScopeTest_GetFirst_Ghost_OpacnePoradi()
+		{
+			using (IdentityMapScope ims = new IdentityMapScope())
+			{
+				QueryParams qp = new QueryParams();
+				qp.Properties.Add(Uzivatel.Properties.ID);
+				qp.Conditions.Add(NumberCondition.CreateEquals(Uzivatel.Properties.ID, 1));
+				Uzivatel uzivatel2 = Uzivatel.GetFirst(qp);
+
+				Uzivatel uzivatel1 = Uzivatel.GetObject(1);
+
+				Assert.AreSame(uzivatel1, uzivatel2);
+			}
+		}
+
+		/// <summary>
+		/// Test na IM při partial-load GetFirst.
+		/// Pokud je objekt načítán pouze částečně, nepatří do IdentityMap.
+		///</summary>
+		[TestMethod()]
+		public void IdentityMapScopeTest_GetFirst_PartialLoad()
+		{
+			using (IdentityMapScope ims = new IdentityMapScope())
+			{
+				Uzivatel uzivatel1 = Uzivatel.GetObject(1);
+
+				QueryParams qp = new QueryParams();
+				qp.Properties.Add(Uzivatel.Properties.ID);
+				qp.Properties.Add(Uzivatel.Properties.Username);
+				qp.Conditions.Add(NumberCondition.CreateEquals(Uzivatel.Properties.ID, 1));
+				Uzivatel uzivatel2 = Uzivatel.GetFirst(qp);
+
+				Assert.AreNotSame(uzivatel1, uzivatel2);
+			}
+		}
+
+		/// <summary>
+		/// Test na IM při partial-load GetFirst.
+		/// Pokud je objekt načítán pouze částečně, nepatří do IdentityMap.
+		///</summary>
+		[TestMethod()]
+		public void IdentityMapScopeTest_GetFirst_PartialLoad_OpacnePoradi()
+		{
+			using (IdentityMapScope ims = new IdentityMapScope())
+			{
+				QueryParams qp = new QueryParams();
+				qp.Properties.Add(Uzivatel.Properties.ID);
+				qp.Properties.Add(Uzivatel.Properties.Username);
+				qp.Conditions.Add(NumberCondition.CreateEquals(Uzivatel.Properties.ID, 1));
+				Uzivatel uzivatel2 = Uzivatel.GetFirst(qp);
+
+				Uzivatel uzivatel1 = Uzivatel.GetObject(1);
+
+				Assert.AreNotSame(uzivatel1, uzivatel2);
+			}
+		}
+		#endregion
 
 		#region TestContext
 		private TestContext testContextInstance;

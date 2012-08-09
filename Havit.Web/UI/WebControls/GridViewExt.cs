@@ -757,15 +757,14 @@ namespace Havit.Web.UI.WebControls
 			
 			if (!e.Cancel)
 			{
-				this.EditIndex = e.NewEditIndex;
-				if ((AllowInserting) && (this.InsertRowDataSourceIndex >= 0) && (this.insertRowIndex < e.NewEditIndex))
+				int newEditIndex = e.NewEditIndex;
+				if ((AllowInserting) && (this.InsertRowDataSourceIndex >= 0) && (this.insertRowIndex < newEditIndex))
 				{
-					this.EditIndex = this.EditIndex - 1;
+					newEditIndex = newEditIndex - 1;
 				}
-				SetRequiresDatabinding();
-				this.InsertRowDataSourceIndex = -1;
-				// .NET 4.0 má vlastní logiku, která nastavuje EditIndex po volání této metody. Ale jen za podmínky, že není Cancel nastaveno na true.
-				// My zde potřebujeme nastavit EditIndex a říct, aby nám předek tuto hodnotu již nezměnil. Proto nastavíme Cancel na true.
+
+				// .NET 4.0 má vlastní logiku, která nastavuje EditIndex po volání této metody. 
+				// My zde opravujeme nastavení NewEditIndex, čímž řešíme logiku změny při insert řádku nahoře
 				#region Komentář - HandleEdit vykopírované z .NET 3.5 a .NET 4.0
 
 				// ASP.NET 3.5 
@@ -799,7 +798,11 @@ namespace Havit.Web.UI.WebControls
 				//}
 				#endregion
 
-				e.Cancel = true; 
+				this.EditIndex = newEditIndex;
+				e.NewEditIndex = newEditIndex;
+
+				SetRequiresDatabinding();
+				this.InsertRowDataSourceIndex = -1;
 			}
 		}
 		#endregion

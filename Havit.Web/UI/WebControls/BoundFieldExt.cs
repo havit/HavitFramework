@@ -126,44 +126,49 @@ namespace Havit.Web.UI.WebControls
 			if (DataField == ThisExpression)
 				return dataItem;
 
-			return (GetValue(dataItem, DataField));
-		}
-
-		/// <summary>
-		/// Získá hodnotu pro zobrazení z pøedaného objektu a dataField.
-		/// </summary>
-		/// <param name="dataItem">Položka dat z DataSource</param>
-		/// <param name="dataField">DataField</param>
-		/// <returns></returns>
-		protected object GetValue(object dataItem, string dataField)
-		{
-			string[] expressionParts = dataField.Split('.');
-
-			object currentValue = dataItem;
-
-			int i = 0;
-			int lastExpressionIndex = expressionParts.Length - 1;
-			for (i = 0; i <= lastExpressionIndex; i++)
+			object value = DataBinderExt.GetValue(dataItem, DataField);
+			if (value == null)
 			{
-				string expression = expressionParts[i];
-
-				if (expression.IndexOfAny(indexExprStartChars) < 0)
-				{
-					currentValue = DataBinder.GetPropertyValue(currentValue, expression);
-				}
-				else
-				{
-					currentValue = DataBinder.GetIndexedPropertyValue(currentValue, expression);
-				}
-
-				if (currentValue == null) // && (i < lastExpressionIndex))
-				{
-					return GetNotFoundDataItem();
-				}
+				return GetNotFoundDataItem();
 			}
-
-			return currentValue;
+			return value;
 		}
+
+		///// <summary>
+		///// Získá hodnotu pro zobrazení z pøedaného objektu a dataField.
+		///// </summary>
+		///// <param name="dataItem">Položka dat z DataSource</param>
+		///// <param name="dataField">DataField</param>
+		///// <returns></returns>
+		//protected object GetValue(object dataItem, string dataField)
+		//{
+		//    string[] expressionParts = dataField.Split('.');
+
+		//    object currentValue = dataItem;
+
+		//    int i = 0;
+		//    int lastExpressionIndex = expressionParts.Length - 1;
+		//    for (i = 0; i <= lastExpressionIndex; i++)
+		//    {
+		//        string expression = expressionParts[i];
+
+		//        if (expression.IndexOfAny(indexExprStartChars) < 0)
+		//        {
+		//            currentValue = DataBinder.GetPropertyValue(currentValue, expression);
+		//        }
+		//        else
+		//        {
+		//            currentValue = DataBinder.GetIndexedPropertyValue(currentValue, expression);
+		//        }
+
+		//        if (currentValue == null) // && (i < lastExpressionIndex))
+		//        {
+		//            return GetNotFoundDataItem();
+		//        }
+		//    }
+
+		//    return currentValue;
+		//}
 
 		/// <summary>
 		/// Formátuje hodnotu k zobrazení.

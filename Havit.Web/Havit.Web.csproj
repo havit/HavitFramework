@@ -116,6 +116,7 @@
     <Compile Include="UI\Adapters\CssAdapters\WebControlAdapterExtender.cs" />
     <Compile Include="UI\Adapters\SessionPageStatePersisterPageAdapter.cs" />
     <Compile Include="UI\CommandNames.cs" />
+    <Compile Include="UI\DataBinderExt.cs" />
     <Compile Include="UI\HtmlControls\HtmlFormExt.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -147,6 +148,7 @@
     <Compile Include="UI\WebControls\Collapser.cs" />
     <Compile Include="UI\WebControls\CommandFieldExt.cs" />
     <Compile Include="UI\WebControls\CommandFieldStyle.cs" />
+    <Compile Include="UI\WebControls\DropDownListExt.cs" />
     <Compile Include="UI\WebControls\DynarchCalendar\DynarchCalendar.cs" />
     <Compile Include="UI\WebControls\DynarchCalendar\DynarchCalendarSkin.cs" />
     <Compile Include="UI\WebControls\GridViewCommandField.cs" />

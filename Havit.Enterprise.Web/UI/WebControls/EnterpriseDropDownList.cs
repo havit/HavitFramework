@@ -12,7 +12,7 @@ namespace Havit.Web.UI.WebControls
 	/// <summary>
 	/// EnterpriseDropDownList zajiöùuje pohodlnÏjöÌ pr·ci s DropDownListem, jehoû prvky majÌ vazbu ne business objekty.	
 	/// </summary>
-	public class EnterpriseDropDownList : DropDownList
+	public class EnterpriseDropDownList : DropDownListExt
 	{
 		#region Constructor
 		/// <summary>

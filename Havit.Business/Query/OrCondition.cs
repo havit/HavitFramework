@@ -13,7 +13,7 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Vytvoøí kompozitní podmínku. Lze inicializovat sadou èlenských podmínek.
 		/// </summary>		
-		public OrCondition(params ICondition[] conditions) : base("or", conditions)
+		public OrCondition(params ICondition[] conditions) : base("OR", conditions)
 		{
 		}
 	}

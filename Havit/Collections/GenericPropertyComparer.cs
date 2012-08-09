@@ -118,7 +118,12 @@ namespace Havit.Collections
 		/// Pokud je hodnota této property DBNull.Value, vrací null.
 		/// </summary>
 		private IComparable GetValue(object obj, int index)
-		{			
+		{
+			if ((obj == null) || (obj == DBNull.Value))
+			{
+				return null;
+			}
+
 			Dictionary<object, IComparable> getValueCache = getValueCacheList[index];
 
 			IComparable result;

@@ -96,6 +96,30 @@ namespace Havit.Business.Query
 		}
 		#endregion
 
+		#region CreateIsNullOrEmpty, CreateIsNotNullNorEmpty
+		/// <summary>
+		/// Vytvoøí podmínku testující øetìzec na prázdnou hodnotu - null nebo empty.
+		/// </summary>
+		public static Condition CreateIsNullOrEmpty(IOperand operand)
+		{
+			return OrCondition.Create(
+				NullCondition.CreateIsNull(operand),
+				TextCondition.CreateEquals(operand, string.Empty)
+			);
+		}
+
+		/// <summary>
+		/// Vytvoøí podmínku testující øetìzec na ne prázdnou hodnotu - ani null ani empty.
+		/// </summary>
+		public static Condition CreateIsNotNullNorEmpty(IOperand operand)
+		{
+			return AndCondition.Create(
+				NullCondition.CreateIsNotNull(operand),
+				TextCondition.Create(operand, ComparisonOperator.NotEquals, string.Empty)
+			);
+		}
+		#endregion
+		
 		#region GetLikeExpression, GetWildCardsLikeExpression
 		/// <summary>
 		/// Transformuje øetìzec naøetìzec, který je možné použít jako hodnota k operátoru like. Tj. nahrazuje % na [%] a _ na [_].
@@ -155,5 +179,6 @@ namespace Havit.Business.Query
 			return result;
 		}
 		#endregion
+
 	}
 }

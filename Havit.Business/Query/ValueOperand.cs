@@ -48,7 +48,7 @@ namespace Havit.Business.Query
 
 			DbParameter parameter = command.CreateParameter();
 			parameter.ParameterName = parameterName;
-			parameter.Value = value;
+			parameter.Value = value ?? DBNull.Value;
 			parameter.DbType = dbType;
 			command.Parameters.Add(parameter);
 

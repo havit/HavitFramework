@@ -130,6 +130,7 @@
     <Compile Include="ReferenceConditionTest.cs" />
     <Compile Include="StringExtTest.cs" />
     <Compile Include="TestingBusinessObject.cs" />
+    <Compile Include="TextConditionTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BusinessLayerTest\BusinessLayerTest.csproj">

@@ -784,30 +784,6 @@
             A <see cref="T:Havit.Web.UrlRewriter.Config.RewriterRuleCollection"/> instance that provides access to a set of <see cref="T:Havit.Web.UrlRewriter.Config.RewriterRule"/>s.
             </summary>
         </member>
-        <member name="T:Havit.Web.UrlRewriter.Config.RewriterRule">
-            <summary>
-            Represents a rewriter rule.  A rewriter rule is composed of a pattern to search for and a string to replace
-            the pattern with (if matched).
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UrlRewriter.Config.RewriterRule.LookFor">
-            <summary>
-            Gets or sets the pattern to look for.
-            </summary>
-            <remarks><b>LookFor</b> is a regular expression pattern.  Therefore, you might need to escape
-            characters in the pattern that are reserved characters in regular expression syntax (., ?, ^, $, etc.).
-            <p />
-            The pattern is searched for using the <b>System.Text.RegularExpression.Regex</b> class's <b>IsMatch()</b>
-            method.  The pattern is case insensitive.</remarks>
-        </member>
-        <member name="P:Havit.Web.UrlRewriter.Config.RewriterRule.SendTo">
-            <summary>
-            The string to replace the pattern with, if found.
-            </summary>
-            <remarks>The replacement string may use grouping symbols, like $1, $2, etc.  Specifically, the
-            <b>System.Text.RegularExpression.Regex</b> class's <b>Replace()</b> method is used to replace
-            the match in <see cref="P:Havit.Web.UrlRewriter.Config.RewriterRule.LookFor"/> with the value in <b>SendTo</b>.</remarks>
-        </member>
         <member name="T:Havit.Web.Security.FormsRolesAuthentication">
             <summary>
             Poskytuje statické metody pro snadnou implementaci FormAuthentication, kdy jsou do role ukládány do ticketu jako userData.
@@ -891,6 +867,30 @@
             <remarks>
             Jako jedna z mála konfiguračních parametrů není přístupné přes <see cref="T:System.Web.Security.FormsAuthentication"/>.
             </remarks>
+        </member>
+        <member name="T:Havit.Web.UrlRewriter.Config.RewriterRule">
+            <summary>
+            Represents a rewriter rule.  A rewriter rule is composed of a pattern to search for and a string to replace
+            the pattern with (if matched).
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UrlRewriter.Config.RewriterRule.LookFor">
+            <summary>
+            Gets or sets the pattern to look for.
+            </summary>
+            <remarks><b>LookFor</b> is a regular expression pattern.  Therefore, you might need to escape
+            characters in the pattern that are reserved characters in regular expression syntax (., ?, ^, $, etc.).
+            <p />
+            The pattern is searched for using the <b>System.Text.RegularExpression.Regex</b> class's <b>IsMatch()</b>
+            method.  The pattern is case insensitive.</remarks>
+        </member>
+        <member name="P:Havit.Web.UrlRewriter.Config.RewriterRule.SendTo">
+            <summary>
+            The string to replace the pattern with, if found.
+            </summary>
+            <remarks>The replacement string may use grouping symbols, like $1, $2, etc.  Specifically, the
+            <b>System.Text.RegularExpression.Regex</b> class's <b>Replace()</b> method is used to replace
+            the match in <see cref="P:Havit.Web.UrlRewriter.Config.RewriterRule.LookFor"/> with the value in <b>SendTo</b>.</remarks>
         </member>
     </members>
 </doc>

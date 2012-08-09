@@ -1,0 +1,206 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Havit.Data.SqlServer</name>
+    </assembly>
+    <members>
+        <member name="T:Havit.Data.SqlTypes.SqlInt32Array">
+            <summary>
+            UDT reprezentující pole SqlInt32 (T-SQL: int) hodnot.
+            </summary>
+            <remarks>
+            Vzhledem k tomu, že maximální velikost UDT je 8KB, maximem je 1999 hodnot (jedna je stavová).<br/>
+            <br/>
+            Binární serializace je takováto:<br/>
+            byte 1-4 ~ Int32 Length (velikost pole, pokud je 0, pak je hodnota NULL)<br/>
+            byte 5-(8000) ~ values<br/>
+            </remarks>
+            <example>
+            Vytvoření UDT typu:<br/>
+            <code>
+            CREATE TYPE [dbo].IntArray<br/>
+            EXTERNAL NAME [Havit.Data.SqlServer].[Havit.Data.SqlTypes.SqlInt32Array]<br/>
+            </code>
+            Vytvoření funkce:<br/>
+            <code>
+            CREATE FUNCTION IntArrayToTable<br/>
+            (<br/>
+                @array dbo.IntArray<br/>
+            )<br/>
+            RETURNS TABLE<br/>
+            (<br/>
+                [Value] int<br/>
+            )<br/>
+            AS EXTERNAL NAME [Havit.Data.SqlServer].[Havit.Data.SqlTypes.SqlInt32Array].[GetInt32Values]<br/>
+            </code>
+            Použití ve filtru:<br/>
+            <code>
+            CREATE PROCEDURE Filter<br/>
+            (<br/>
+                @Vlastnosti dbo.IntArray = NULL<br/>
+            )<br/>
+            AS<br/>
+                SELECT col FROM tab<br/>
+                    WHERE ((@Vlastnosti IS NULL) OR (VlastnostID IN (SELECT Value FROM dbo.IntArrayToTable(@Vlastnosti))))<br/>
+            </code>
+            </example>
+        </member>
+        <member name="M:Havit.Data.SqlTypes.SqlInt32Array.#ctor">
+            <summary>
+            Vytvoří instanci s hodnotou NULL.
+            </summary>
+        </member>
+        <member name="M:Havit.Data.SqlTypes.SqlInt32Array.#ctor(System.Int32[])">
+            <summary>
+            Vytvoří instanci a naplní ji předanými hodnotami.
+            </summary>
+            <param name="values">hodnoty, které mají instance reprezentovat</param>
+        </member>
+        <member name="M:Havit.Data.SqlTypes.SqlInt32Array.Add(System.Data.SqlTypes.SqlInt32)">
+            <summary>
+            Přidá prvek do pole.
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:Havit.Data.SqlTypes.SqlInt32Array.Merge(Havit.Data.SqlTypes.SqlInt32Array)">
+            <summary>
+            Spojí dvě pole v jedno.
+            </summary>
+            <param name="array">přidávané pole</param>
+        </member>
+        <member name="M:Havit.Data.SqlTypes.SqlInt32Array.GetSqlInt32Array">
+            <summary>
+            Vrátí pole SqlInt32[] s hodnotami.
+            </summary>
+            <returns>Pole SqlInt32[] s hodnotami.</returns>
+        </member>
+        <member name="M:Havit.Data.SqlTypes.SqlInt32Array.GetSqlInt32Values(Havit.Data.SqlTypes.SqlInt32Array)">
+            <summary>
+            Vrací tabulku Int32 hodnot.
+            Metoda určená pro mapování do T-SQL na table-valued function (TVF).
+            </summary>
+            <param name="values">Proměnná, která má být rozbalena do tabulky hodnot Int32.</param>
+            <returns>tabulka Int32 hodnot (pomocí FillInt32Row)</returns>
+        </member>
+        <member name="M:Havit.Data.SqlTypes.SqlInt32Array.FillSqlInt32Row(System.Object,System.Data.SqlTypes.SqlInt32@)">
+            <summary>
+            Metoda zajišťující převod řádku v table-valued function (TVF).
+            </summary>
+            <param name="sqlInt32ArrayElement">vstupní hodnota řádku</param>
+            <param name="value">výstupní hodnota řádku</param>
+        </member>
+        <member name="M:Havit.Data.SqlTypes.SqlInt32Array.Parse(System.Data.SqlTypes.SqlString)">
+            <summary>
+            Vytvoří z CSV textové reprezentace hodnotu pole.
+            </summary>
+            <param name="text">CSV text hodnot</param>
+            <returns>pole s hodnotami dle CSV</returns>
+        </member>
+        <member name="M:Havit.Data.SqlTypes.SqlInt32Array.ToString">
+            <summary>
+            Převede hodnotu na CSV textovou reprezentaci string
+            </summary>
+            <returns>CSV seznam hodnot</returns>
+        </member>
+        <member name="M:Havit.Data.SqlTypes.SqlInt32Array.Read(System.IO.BinaryReader)">
+            <summary>
+            Načte hodnotu z binární reprezentace.
+            </summary>
+            <remarks>
+            Binární serializace je takováto:
+            byte 1-4 ~ Int32 Length (velikost pole, pokud je 0, pak je hodnota NULL)
+            byte 5-(8000) ~ values (NULL hodnoty reprezentuje Int32.MinValue)
+            </remarks>
+            <param name="r"><see cref="T:System.IO.BinaryReader"/> s binární reprezentací hodnoty</param>
+        </member>
+        <member name="M:Havit.Data.SqlTypes.SqlInt32Array.Write(System.IO.BinaryWriter)">
+            <summary>
+            Vytvoří binární reprezentace hodnoty.
+            </summary>
+            <remarks>
+            Binární serializace je takováto:
+            byte 1-4 ~ Int32 Length (velikost pole, pokud je 0, pak je hodnota NULL)
+            byte 5-(8000) ~ values (NULL hodnoty implementuje Int32.MinValue)
+            </remarks>
+            <param name="w"><see cref="T:System.IO.BinaryWriter"/> do kterého má být binární reprezentace zapsána</param>
+        </member>
+        <member name="P:Havit.Data.SqlTypes.SqlInt32Array.Count">
+            <summary>
+            Počet prvků v seznamu.
+            </summary>
+        </member>
+        <member name="P:Havit.Data.SqlTypes.SqlInt32Array.Item(System.Int32)">
+            <summary>
+            Indexer pro přístup k prvkům podle jejich pořadí.
+            </summary>
+            <param name="index">index (pořadí) prvku</param>
+            <returns>hodnota <see cref="T:System.Data.SqlTypes.SqlInt32"/></returns>
+        </member>
+        <member name="P:Havit.Data.SqlTypes.SqlInt32Array.Null">
+            <summary>
+            Hodnota NULL.
+            </summary>
+        </member>
+        <member name="P:Havit.Data.SqlTypes.SqlInt32Array.IsNull">
+            <summary>
+            Indikuje, zda-li je hodnota NULL.
+            </summary>
+        </member>
+        <member name="T:Havit.Data.SqlTypes.SqlInt32ArrayAggregate">
+            <summary>
+            Aggregate k UDT SqlInt32Array, který zajišťuje převod tabulky hodnot na pole.
+            </summary>
+            <example>
+            Vytvoření agregátu typu:<br/>
+            <code>
+            CREATE AGGREGATE [dbo].IntArrayAggregate<br/>
+            RETURNS IntArray<br/>
+            EXTERNAL NAME [Havit.Data.SqlServer].[Havit.Data.SqlTypes.SqlInt32ArrayAggregate]<br/>
+            </code>
+            Použití agregátu pro vytvoření pole hodnot:<br/>
+            <code>
+            SELECT IntArrayAggreagate(ItemID) AS Items FROM dbo.Item WHERE ...<br/>
+            </code>
+            </example>
+        </member>
+        <member name="F:Havit.Data.SqlTypes.SqlInt32ArrayAggregate.array">
+            <summary>
+            Uchovává mezivýsledek.
+            </summary>
+        </member>
+        <member name="M:Havit.Data.SqlTypes.SqlInt32ArrayAggregate.Init">
+            <summary>
+            Inicializace agregátoru.
+            </summary>
+        </member>
+        <member name="M:Havit.Data.SqlTypes.SqlInt32ArrayAggregate.Accumulate(System.Data.SqlTypes.SqlInt32)">
+            <summary>
+            Přidá další hodnotu do agregace.
+            </summary>
+            <param name="value">přidávaná hodnota</param>
+        </member>
+        <member name="M:Havit.Data.SqlTypes.SqlInt32ArrayAggregate.Merge(Havit.Data.SqlTypes.SqlInt32ArrayAggregate)">
+            <summary>
+            Spojí dva agregáty v jeden
+            </summary>
+            <param name="group">druhá agregace</param>
+        </member>
+        <member name="M:Havit.Data.SqlTypes.SqlInt32ArrayAggregate.Terminate">
+            <summary>
+            Vrátí výsledek agregace.
+            </summary>
+        </member>
+        <member name="M:Havit.Data.SqlTypes.SqlInt32ArrayAggregate.Read(System.IO.BinaryReader)">
+            <summary>
+            De-serializuje agregaci.
+            </summary>
+            <param name="r">BinaryReader</param>
+        </member>
+        <member name="M:Havit.Data.SqlTypes.SqlInt32ArrayAggregate.Write(System.IO.BinaryWriter)">
+            <summary>
+            Serializuje agregaci.
+            </summary>
+            <param name="w">BinaryWriter</param>
+        </member>
+    </members>
+</doc>

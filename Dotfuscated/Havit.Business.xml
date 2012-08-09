@@ -296,6 +296,31 @@
             Kolekce je určena pro hromadné operace s property-holdery. Jednotlivé property si reference na své property-holdery udržují v private fieldu.
             </remarks>
         </member>
+        <member name="T:Havit.Business.ConstraintViolationException">
+            <summary>
+            Výjimka reprezentující porušení business pravidla.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.ConstraintViolationException.#ctor(Havit.Business.BusinessObjectBase,System.String)">
+            <summary>
+            Vytvoří instanci výjimky.
+            </summary>
+            <param name="businessObject">Business object, ve kterém došlo k porušení pravidla.</param>
+            <param name="message">Popis výjimky.</param>
+        </member>
+        <member name="M:Havit.Business.ConstraintViolationException.#ctor(Havit.Business.BusinessObjectBase,System.String,System.Exception)">
+            <summary>
+            Vytvoří instanci výjimky.
+            </summary>
+            <param name="businessObject">Business object, ve kterém došlo k porušení pravidla.</param>
+            <param name="message">Popis výjimky.</param>
+            <param name="innerException">Vnořená výjimka.</param>
+        </member>
+        <member name="P:Havit.Business.ConstraintViolationException.BusinessObject">
+            <summary>
+            BusinessObject, ve kterém došlo k porušení pravidla.
+            </summary>
+        </member>
         <member name="T:Havit.Business.PropertyHolder`1">
             <summary>
             Třída pro objekt, který nese hodnotu a vlastnosti jednotlivé property BusinessObjectu.

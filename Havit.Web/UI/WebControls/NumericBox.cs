@@ -451,7 +451,7 @@ namespace Havit.Web.UI.WebControls
 			string javaScript =
 @"function HavitNumericBox_KeyPress(e, allowNegativeNumber, decimals)
 {
-	var charCode = (window.event) ? window.event.keyCode : e.charCode;
+	var charCode = (window.event) ? window.event.keyCode : e.charCode || e.keyCode;
 	var element = (e && e.target) ? e.target : window.event.srcElement;
 	var validKey = (charCode == " + (byte)thousandsSeparator[0] + @")
 		|| ((charCode >= 48) && (charCode <= 57)) 

@@ -30,7 +30,7 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateLike(IOperand operand, string value)
 		{
-			return new BinaryCondition(BinaryCondition.LikePattern, operand, ValueOperand.Create(GetLikeExpression(value)));
+			return new BinaryCondition(BinaryCondition.LikePattern, operand, ValueOperand.Create(value));
 		}
 
 		/// <summary>
@@ -69,12 +69,12 @@ namespace Havit.Business.Query
 		}
 
 
-		#region GetLikeExpression, GetWildCardsLikeExpression
+		#region GetLikeEscapedExpression, GetWildCardsLikeExpression
 		/// <summary>
 		/// Transformuje øetìzec naøetìzec, který je možné použít jako hodnota k operátoru like.
 		/// Nahrazuje % na [%] a _ na [_].
 		/// </summary>
-		public static string GetLikeExpression(string text)
+		public static string GetLikeEscapedExpression(string text)
 		{
 			if (String.IsNullOrEmpty(text))
 			{
@@ -96,7 +96,7 @@ namespace Havit.Business.Query
 		public static string GetWildCardsLikeExpression(string text)
 		{
 			string result;
-			result = GetLikeExpression(text);
+			result = GetLikeEscapedExpression(text);
 
 			if (result.Contains("*"))
 			{

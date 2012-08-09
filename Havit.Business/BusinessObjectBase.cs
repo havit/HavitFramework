@@ -337,6 +337,11 @@ namespace Havit.Business
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které se smazání provede; null, pokud bez transakce</param>
 		public virtual void Delete(DbTransaction transaction)
 		{
+			if (IsNew)
+			{
+				throw new InvalidOperationException("Nový objekt nelze smazat.");
+			}
+			
 			EnsureLoaded();
 
 			if (IsDeleted)

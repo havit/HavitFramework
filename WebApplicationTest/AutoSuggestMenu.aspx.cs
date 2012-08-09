@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using Havit.Web.UI.WebControls;
 using Havit.BusinessLayerTest;
 using Havit.Business.Query;
+using System.Linq;
 
 namespace WebApplicationTest
 {
@@ -40,12 +41,16 @@ namespace WebApplicationTest
 			SubjektCollection subjekty = Subjekt.GetList(qp);
 			
 			List<AutoSuggestMenuItem> menuItems = new List<AutoSuggestMenuItem>(subjekty.Count);
-			foreach (Subjekt subjekt in subjekty)
+
+			for (int i = 0; i < 15; i++)
 			{
-				menuItems.Add(new AutoSuggestMenuItem(subjekt.Nazev, subjekt.ID.ToString()));
+				foreach (Subjekt subjekt in subjekty)
+				{
+					menuItems.Add(new AutoSuggestMenuItem(subjekt.Nazev + i.ToString(), subjekt.ID.ToString()));
+				}
 			}
 
-			return AutoSuggestMenu.ConvertMenuItemsToJSON(menuItems, menuItems.Count);
+			return AutoSuggestMenu.ConvertMenuItemsToJSON(menuItems.Skip(pageSize * pageIndex).Take(pageSize).ToList(), menuItems.Count);
 		}
 	}
 }

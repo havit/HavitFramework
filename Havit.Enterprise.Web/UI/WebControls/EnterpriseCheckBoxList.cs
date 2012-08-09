@@ -95,10 +95,23 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region SortExpression
+		/// <summary>
+		/// Urèuje, podle jaké property jsou øazena. Pokud není žádná hodnota nastavena použije se hodnota vlastnosti DataSortField a SortDirection.
+		/// Mùže obsahovat více vlastností oddìlených èárkou, smìr øazení ASC/DESC. Má tedy význam podobný jako DefaultSortExpression u GridViewExt.
+		/// </summary>
+		public string SortExpression
+		{
+			get { return (string)ViewState["SortExpression"] ?? (DataTextField + ((SortDirection == Collections.SortDirection.Descending) ? " DESC" : String.Empty)); }
+			set { ViewState["SortExpression"] = value; }
+		}
+		#endregion
+
 		#region DataSortField
 		/// <summary>
 		/// Urèuje, podle jaké property jsou øazena. Pokud není žádná hodnota nastavena použije se hodnota vlastnosti DataTextField.
 		/// </summary>
+		[Obsolete("Nahrazeno SortExpression.")]
 		public string DataSortField
 		{
 			get { return (string)(ViewState["DataSortField"] ?? DataTextField); }
@@ -111,6 +124,7 @@ namespace Havit.Web.UI.WebControls
 		/// Udává smìr øazení položek.
 		/// Výchozí je vzestupné øazení (Ascending).
 		/// </summary>
+		[Obsolete("Nahrazeno SortExpression.")]
 		public Havit.Collections.SortDirection SortDirection
 		{
 			get { return (Havit.Collections.SortDirection)(ViewState["SortDirection"] ?? Havit.Collections.SortDirection.Ascending); }
@@ -341,9 +355,9 @@ namespace Havit.Web.UI.WebControls
 					throw new InvalidOperationException(String.Format("AutoSort je true, ale není nastavena hodnota vlastnosti DataSortField controlu {0}.", ID));
 				}
 
-				SortItemCollection sorting = new SortItemCollection();
-				sorting.Add(new SortItem(this.DataSortField, this.SortDirection));
-				IEnumerable sortedData = SortHelper.PropertySort(dataSource, sorting);
+				SortExpressions sortExpressions = new SortExpressions();
+				sortExpressions.AddSortExpression(SortExpression);
+				IEnumerable sortedData = SortHelper.PropertySort(dataSource, sortExpressions.SortItems);
 
 				base.PerformDataBinding(sortedData);
 			}

@@ -17,7 +17,8 @@
 				TargetControlID="SubjektTB"
 				OnGetSuggestions="GetSuggestions"
 				KeyPressDelay="300"	
-				UsePaging="false"
+				UsePaging="true"
+				PageSize="10"				
 				MinSuggestChars="2"							
 				SelectedValue="10"
 				Mode="ClearTextOnNoSelection"
@@ -36,6 +37,7 @@
 				        ID="DialogSubjektASM"
 				        TargetControlID="DialogSubjektTB"
 				        OnGetSuggestions="GetSuggestions"
+						Mode="ClearTextOnNoSelection"
 				        runat="server"
 		            />
 		            

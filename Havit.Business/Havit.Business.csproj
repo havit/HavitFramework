@@ -104,6 +104,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PropertyHolder.cs" />
+    <Compile Include="PropertyHolderBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Havit.Data\Havit.Data.csproj">

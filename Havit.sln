@@ -1,73 +1,30 @@
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Xml", "Havit.Xml\Havit.Xml.csproj", "{38430A3A-3538-4051-BC07-B3A4D4743955}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Web", "Havit.Web\Havit.Web.csproj", "{52891FB3-CA20-403B-AC25-7D9CA5738B6B}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Web.UI.WebControls.DynarchCalendar", "Havit.Web.UI.WebControls.DynarchCalendar\Havit.Web.UI.WebControls.DynarchCalendar.csproj", "{318CCF55-A452-48C0-B3CB-F5FD2BFF8383}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Business", "Havit.Business\Havit.Business.csproj", "{81995BC1-9F25-4F46-8258-8ED1F965CABB}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Drawing", "Havit.Drawing\Havit.Drawing.csproj", "{0A4C075E-E474-4AD5-8377-5F7C7E3488D8}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Data.SqlServer", "Havit.Data.SqlServer\Havit.Data.SqlServer.csproj", "{60804BE3-2622-481A-8784-3C173C080936}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Data", "Havit.Data\Havit.Data.csproj", "{703235E0-86C0-44F3-95BB-3D9F39886966}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit", "Havit\Havit.csproj", "{9ACC94B9-B8FD-47C1-ABF8-0658C7673905}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HavitTest", "HavitTest\HavitTest.csproj", "{9F79CB68-4B61-48E2-A9E5-B545A65BAC89}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1C9D6C81-DCFD-49C6-9BEE-0E52304CFE98}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
 	ProjectSection(SolutionItems) = preProject
 		Havit.vsmdi = Havit.vsmdi
 		localtestrun.testrunconfig = localtestrun.testrunconfig
 	EndProjectSection
 EndProject
 Global
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = Havit.vsmdi
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -120,7 +77,6 @@ Global
 		{60804BE3-2622-481A-8784-3C173C080936}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{60804BE3-2622-481A-8784-3C173C080936}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
 		{60804BE3-2622-481A-8784-3C173C080936}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{60804BE3-2622-481A-8784-3C173C080936}.Debug|Mixed Platforms.Deploy.0 = Debug|Any CPU
 		{60804BE3-2622-481A-8784-3C173C080936}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60804BE3-2622-481A-8784-3C173C080936}.Release|Any CPU.Build.0 = Release|Any CPU
 		{60804BE3-2622-481A-8784-3C173C080936}.Release|Any CPU.Deploy.0 = Release|Any CPU
@@ -154,5 +110,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = Havit.vsmdi
 	EndGlobalSection
 EndGlobal

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Havit.Data;
 using System.Data.Common;
+using System.Collections.ObjectModel;
 
 namespace Havit.Business
 {
@@ -89,6 +90,7 @@ namespace Havit.Business
 			this._isNew = true;
 			this._isDirty = false;
 			this._isLoaded = true;
+			Init();
 		}
 
 		/// <summary>
@@ -100,6 +102,7 @@ namespace Havit.Business
 			this._id = id;
 			this._isLoaded = false;
 			this._isDirty = false;
+			Init();
 		}
 		#endregion
 
@@ -161,6 +164,8 @@ namespace Havit.Business
 				return;
 			}
 
+			CheckConstraints();
+			PreSave();
 			Save_Perform(transaction);
 
 			IsNew = false; // uložený objekt není už nový, dostal i pøidìlené ID
@@ -331,5 +336,38 @@ namespace Havit.Business
 			return this.ID;
 		}
 		#endregion
+
+//NOVE
+		private Collection<PropertyHolderBase> _propertyHolders = new Collection<PropertyHolderBase>();
+		internal protected Collection<PropertyHolderBase> PropertyHolders
+		{
+			get
+			{
+				return _propertyHolders;
+			}
+		}
+
+		protected virtual void PreSave()
+		{
+		}
+
+		protected virtual void CheckConstraints()
+		{
+		}
+
+		protected virtual void Init()
+		{
+		}
+
+		internal void SetDirty()
+		{
+			this._isDirty = true;
+		}
+
+		internal void RegisterPropertyHolder(PropertyHolderBase propertyHolder)
+		{
+			_propertyHolders.Add(propertyHolder);
+		}
+//
 	}
 }

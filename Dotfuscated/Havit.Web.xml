@@ -2476,6 +2476,16 @@
             </summary>
             <param name="e">argumenty události</param>
         </member>
+        <member name="M:Havit.Web.UI.WebControls.GridViewExt.OnAllPagesShowing(System.ComponentModel.CancelEventArgs)">
+            <summary>
+            Obsluha událost při obsluze kliknutí na tlačítko "All Pages" (tlačítko, vypínající stránkování). Dává možnost zrušit akci.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.GridViewExt.OnAllPagesShown(System.EventArgs)">
+            <summary>
+            Obsluha události oznamující obsloužení kliknutí na tlačítko "All Pages" (tlačítko, vypínající stránkování).
+            </summary>
+        </member>
         <member name="P:Havit.Web.UI.WebControls.GridViewExt.GetInsertRowDataItem">
             <summary>
             Metoda, která vrací data-item nového Insert řádku. Obvykle přednastaveno default hodnotami.
@@ -2552,9 +2562,34 @@
             Událost, která se volá při customizaci command-buttonu řádku (implementováno v <see cref="T:Havit.Web.UI.WebControls.GridViewCommandField"/>).
             </summary>
         </member>
+        <member name="E:Havit.Web.UI.WebControls.GridViewExt.AllPagesShowing">
+            <summary>
+            Událost, která se volá při obsluze kliknutí na tlačítko "All Pages" (tlačítko, vypínající stránkování). Dává možnost zrušit akci.
+            </summary>
+        </member>
+        <member name="E:Havit.Web.UI.WebControls.GridViewExt.AllPagesShown">
+            <summary>
+            Událost oznamující obsloužení kliknutí na tlačítko "All Pages" (tlačítko, vypínající stránkování).
+            </summary>
+        </member>
         <member name="P:Havit.Web.UI.WebControls.GridViewExt.InsertIndex">
             <summary>
             Index řádku (RowIndex) vkládaného prvku. Pokud nejsme v insert módu, je -1.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.GridViewExt.PagerSettingsShowAllPagesButton">
+            <summary>
+            Povoluje/zakazuje zobrazení tlačítka pro vypnutí stránkování.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.GridViewExt.PagerSettingsAllPagesButtonText">
+            <summary>
+            Text tlačítka pro vypnutí stránkování. Pokud je nastaveno PagerSettingsAllPagesButtonImageUrl, má toto přednost a tlačítko bude obrázkové.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.GridViewExt.PagerSettingsAllPagesButtonImageUrl">
+            <summary>
+            ImageUrl tlačítka pro vypnutí stránkování. Má přednost před PagerSettingsAllPagesButtonText.
             </summary>
         </member>
         <member name="T:Havit.Web.UI.WebControls.GridViewInsertEventHandler">

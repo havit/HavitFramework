@@ -20,11 +20,15 @@ namespace WebApplicationTest
 		{
 			base.OnInit(e);
 
-			TestedGV.DataBinding += new EventHandler(TestedGV_DataBinding);
-			TestedGV.RowCustomizingCommandButton += new GridViewRowCustomizingCommandButtonEventHandler(TestedGV_RowCustomizingCommandButton);
+			TestGV1.DataBinding += new EventHandler(TestGV_DataBinding);
+			TestGV1.RowCustomizingCommandButton += new GridViewRowCustomizingCommandButtonEventHandler(TestGV_RowCustomizingCommandButton);
+
+			TestGV2.DataBinding += new EventHandler(TestGV_DataBinding);
+			TestGV3.DataBinding += new EventHandler(TestGV_DataBinding);
+			TestGV4.DataBinding += new EventHandler(TestGV_DataBinding);
 		}
 
-		void TestedGV_RowCustomizingCommandButton(object sender, GridViewRowCustomizingCommandButtonEventArgs e)
+		void TestGV_RowCustomizingCommandButton(object sender, GridViewRowCustomizingCommandButtonEventArgs e)
 		{
 			if ((e.CommandName == CommandNames.Delete) && (e.RowIndex == 1))
 			{
@@ -32,9 +36,13 @@ namespace WebApplicationTest
 			}
 		}
 
-		void TestedGV_DataBinding(object sender, EventArgs e)
+		void TestGV_DataBinding(object sender, EventArgs e)
 		{
-			TestedGV.DataSource = Subjekt.GetAll();
+			SubjektCollection items = Subjekt.GetAll();
+			items.AddRange(items);
+			items.AddRange(items);
+			items.AddRange(items);
+			((GridView)sender).DataSource = items;
 		}
 	}
 }

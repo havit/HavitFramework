@@ -245,9 +245,35 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 
+		#region AllPagesShowing
+		/// <summary>
+		/// Událost, která se volá pøi obsluze kliknutí na tlaèítko "All Pages" (tlaèítko, vypínající stránkování). Dává možnost zrušit akci.
+		/// </summary>
+		[Category("Action")]
+		public event CancelEventHandler AllPagesShowing
+		{
+			add { base.Events.AddHandler(eventAllPagesShowing, value); }
+			remove { base.Events.RemoveHandler(eventAllPagesShowing, value); }
+		} 
+		#endregion
+
+		#region AllPagesShown
+		/// <summary>
+		/// Událost oznamující obsloužení kliknutí na tlaèítko "All Pages" (tlaèítko, vypínající stránkování).
+		/// </summary>
+		[Category("Action")]
+		public event EventHandler AllPagesShown
+		{
+			add { base.Events.AddHandler(eventAllPagesShown, value); }
+			remove { base.Events.RemoveHandler(eventAllPagesShown, value); }
+		} 
+		#endregion
+
 		private static readonly object eventItemInserting = new object();
 		private static readonly object eventItemInserted = new object();
 		private static readonly object eventRowCustomizingCommandButton = new object();
+		private static readonly object eventAllPagesShowing = new object();
+		private static readonly object eventAllPagesShown = new object();
 		#endregion
 
 		#region InsertIndex
@@ -809,6 +835,153 @@ namespace Havit.Web.UI.WebControls
 				h(this, e);
 			}
 		}
+		#endregion
+
+		#region PagerSettingsShowAllPagesButton
+		/// <summary>
+		/// Povoluje/zakazuje zobrazení tlaèítka pro vypnutí stránkování.
+		/// </summary>
+		public bool PagerSettingsShowAllPagesButton
+		{
+			get
+			{
+				return (bool)(ViewState["PagerSettingsShowAllPagesButton"] ?? false);
+			}
+			set
+			{
+				ViewState["PagerSettingsShowAllPagesButton"] = value;
+			}
+		} 
+		#endregion
+
+		#region PagerSettingsAllPagesButtonText
+		/// <summary>
+		/// Text tlaèítka pro vypnutí stránkování. Pokud je nastaveno PagerSettingsAllPagesButtonImageUrl, má toto pøednost a tlaèítko bude obrázkové.
+		/// </summary>
+		public string PagerSettingsAllPagesButtonText
+		{
+			get
+			{
+				return (string)ViewState["PagerSettingsAllPagesButtonText"] ?? "*";
+			}
+			set
+			{
+				ViewState["PagerSettingsAllPagesButtonText"] = value;
+			}
+		} 
+		#endregion
+
+		#region PagerSettingsAllPagesButtonImageUrl
+		/// <summary>
+		/// ImageUrl tlaèítka pro vypnutí stránkování. Má pøednost pøed PagerSettingsAllPagesButtonText.
+		/// </summary>
+		public string PagerSettingsAllPagesButtonImageUrl
+		{
+			get
+			{
+				return (string)ViewState["PagerSettingsAllPagesButtonImageUrl"];
+			}
+			set
+			{
+				ViewState["PagerSettingsAllPagesButtonImageUrl"] = value;
+			}
+		} 
+		#endregion
+
+		#region InitializePager
+		protected override void InitializePager(GridViewRow row, int columnSpan, PagedDataSource pagedDataSource)
+		{
+			base.InitializePager(row, columnSpan, pagedDataSource);
+			// pokud je použita výchozí šablona a je povoleno tlaèítko pro vypnutí stránkování, pøidáme jej
+			if ((this.PagerTemplate == null) && (this.PagerSettingsShowAllPagesButton))
+			{
+				// najdeme øádek tabulky, do které budeme pøidávat "All Pages Button".
+				TableRow row2 = null;
+				if ((row.Controls.Count == 1) && (row.Controls[0].Controls.Count == 1) && (row.Controls[0].Controls[0].Controls.Count == 1)) ;
+				{
+					row2 = row.Controls[0].Controls[0].Controls[0] as TableRow;
+				}
+
+				if (row2 != null)
+				{
+
+					Control allPagesControl;
+					if (!String.IsNullOrEmpty(this.PagerSettingsAllPagesButtonImageUrl))
+					{
+						ImageButton allPagesImageButton = new ImageButton();
+						allPagesImageButton.ID = "AllPagesImageButton";
+						allPagesImageButton.ImageUrl = this.PagerSettingsAllPagesButtonImageUrl;
+						allPagesImageButton.Click += new ImageClickEventHandler(AllPagesImageButton_Click);
+						allPagesControl = allPagesImageButton;
+					}
+					else
+					{
+						LinkButton allPagesLinkButton = new LinkButton();
+						allPagesLinkButton.ID = "AllPagesLinkButton";
+						allPagesLinkButton.Text = this.PagerSettingsAllPagesButtonText;
+						allPagesLinkButton.Click += new EventHandler(AllPagesLinkButton_Click);
+						allPagesControl = allPagesLinkButton;
+					}
+
+					TableCell cell = new TableCell();
+					row2.Cells.Add(cell);
+					cell.Controls.Add(allPagesControl);
+				}
+
+			}
+		} 
+		#endregion
+
+		#region AllPagesImageButton_Click, AllPagesLinkButton_Click, HandleAllPagesClicked
+		private void AllPagesImageButton_Click(object sender, ImageClickEventArgs e)
+		{
+			HandleAllPagesClicked();
+		}
+
+		private void AllPagesLinkButton_Click(object sender, EventArgs e)
+		{
+			HandleAllPagesClicked();
+		}
+
+		private void HandleAllPagesClicked()
+		{
+			CancelEventArgs cancelEventArgs = new CancelEventArgs();
+			OnAllPagesShowing(cancelEventArgs);
+			if (!cancelEventArgs.Cancel)
+			{
+				this.AllowPaging = false;
+				SetRequiresDatabinding();
+				OnAllPagesShown(EventArgs.Empty);
+			}
+		}
+		
+		#endregion
+
+		#region OnAllPagesShowing, OnAllPagesShown
+		/// <summary>
+		/// Obsluha událost pøi obsluze kliknutí na tlaèítko "All Pages" (tlaèítko, vypínající stránkování). Dává možnost zrušit akci.
+		/// </summary>
+		protected virtual void OnAllPagesShowing(CancelEventArgs cancelEventArgs)
+		{
+			CancelEventHandler h = (CancelEventHandler)base.Events[eventAllPagesShowing];
+			if (h != null)
+			{
+				h(this, cancelEventArgs);
+			}
+		}
+
+		/// <summary>
+		/// Obsluha události oznamující obsloužení kliknutí na tlaèítko "All Pages" (tlaèítko, vypínající stránkování).
+		/// </summary>
+		protected virtual void OnAllPagesShown(EventArgs eventArgs)
+		{
+			EventHandler h = (EventHandler)base.Events[eventAllPagesShown];
+			if (h != null)
+			{
+				h(this, eventArgs);
+			}
+		}
+		
 		#endregion
 	}
 

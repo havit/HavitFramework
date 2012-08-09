@@ -12,29 +12,29 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Vytvoøí podmínku na rovnost.
 		/// </summary>
-		public static Condition CreateEquals(PropertyInfo property, int? id)
+		public static Condition CreateEquals(IOperand operand, int? id)
 		{
 			if (id == null || id < 0)
 			{
-				return NullCondition.CreateIsNull(property);
+				return NullCondition.CreateIsNull(operand);
 			}
 			else
 			{
-				return NumberCondition.CreateEquals(property, id.Value);
+				return NumberCondition.CreateEquals(operand, id.Value);
 			}
 		}
 
 		/// <summary>
 		/// Vytvoøí podmínku na rovnost.
 		/// </summary>
-		public static Condition CreateEquals(PropertyInfo property, BusinessObjectBase businessObject)
+		public static Condition CreateEquals(IOperand operand, BusinessObjectBase businessObject)
 		{
 			if (businessObject.IsNew)
 			{
 				throw new ArgumentException("Nelze vyhledávat podle nového neuloženého objektu.", "businessObject");
 			}
 
-			return CreateEquals(property, businessObject.ID);
+			return CreateEquals(operand, businessObject.ID);
 		}
 		
 	}

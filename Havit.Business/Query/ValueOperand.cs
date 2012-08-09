@@ -9,9 +9,8 @@ namespace Havit.Business.Query
 	/// <summary>
 	/// Konstanta jako operand databázového dotazu.
 	/// </summary>
-	public class ValueOperand: IOperand
-	{
-	
+	public sealed class ValueOperand: IOperand
+	{	
 		#region Private fields		
 		/// <summary>
 		/// Hodnota konstanty ValueOperandu.

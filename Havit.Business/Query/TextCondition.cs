@@ -12,23 +12,23 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Vytvoøí podmínku testující øetìzec na rovnost. Citlivost na velká a malá písmena, diakritiku apod. vychází z nastavení serveru.
 		/// </summary>
-		public static Condition CreateEquals(PropertyInfo property, string value)
+		public static Condition CreateEquals(IOperand operand, string value)
 		{
-			return new BinaryCondition(BinaryCondition.EqualsPattern, property, ValueOperand.Create(value));
+			return new BinaryCondition(BinaryCondition.EqualsPattern, operand, ValueOperand.Create(value));
 		}
 
 		/// <summary>
 		/// Vytvoøí podmínku testující øetìzec na podobnost operátorem LIKE. Citlivost na velká a malá písmena, diakritiku apod. vychází z nastavení serveru.
 		/// </summary>
-		public static Condition CreateLike(PropertyInfo property, string value)
+		public static Condition CreateLike(IOperand operand, string value)
 		{
-			return new BinaryCondition(BinaryCondition.LikePattern, property, ValueOperand.Create(GetLikeExpression(value)));
+			return new BinaryCondition(BinaryCondition.LikePattern, operand, ValueOperand.Create(GetLikeExpression(value)));
 		}
 
 		/// <summary>
 		/// Vytvoøí podmínku testující øetìzec na podobnost operátorem LIKE.
 		/// </summary>
-		/// <param name="property"></param>
+		/// <param name="operand"></param>
 		/// <param name="value">
 		/// Podporována hvìzdièková konvence takto:
 		///		- pokud parametr neobsahuje hvìzdièku, hledá se LIKE parametr%
@@ -39,9 +39,9 @@ namespace Havit.Business.Query
 		/// <example>
 		///	Pø. Hledání výrazu "k_lo*" nenajde "kolo" ani "kolotoè" protože _ nemá funkèní význam, ale najde "k_lo" i "k_olotoè".
 		/// </example>
-		public static Condition CreateWildcards(PropertyInfo property, string value)
+		public static Condition CreateWildcards(IOperand operand, string value)
 		{
-			return new BinaryCondition(BinaryCondition.LikePattern, property, ValueOperand.Create(GetWildCardsLikeExpression(value)));
+			return new BinaryCondition(BinaryCondition.LikePattern, operand, ValueOperand.Create(GetWildCardsLikeExpression(value)));
 		}
 
 		#region GetLikeExpression, GetWildCardsLikeExpression

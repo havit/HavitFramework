@@ -59,6 +59,7 @@ namespace Havit.Business
 		private bool _isInitialized = false;
 		#endregion
 
+		#region CheckInitialization
 		/// <summary>
 		/// Pokud nebyla hodnota PropertyHolderu nastavena, vyhodí InvalidOperationException.
 		/// Pokud byla hodnota PropertyHolderu nastavena, neudìlá nic (projde).
@@ -70,6 +71,7 @@ namespace Havit.Business
 				throw new InvalidOperationException("Hodnota nebyla inicializována.");
 			}
 		}
+		#endregion
 
 		#region Constructors
 		/// <summary>

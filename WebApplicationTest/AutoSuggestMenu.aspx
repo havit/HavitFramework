@@ -15,10 +15,12 @@
 			<havit:AutoSuggestMenu
 				ID="SubjektASM"
 				TargetControlID="SubjektTB"
+				ServicePath="~/AutoSuggestMenuService.asmx"
 				OnGetSuggestions="GetSuggestions"
 				KeyPressDelay="300"	
 				UsePaging="true"
-				PageSize="10"				
+				PageSize="10"	
+				UsePageMethods="false"							
 				MinSuggestChars="2"							
 				SelectedValue="10"
 				Mode="ClearTextOnNoSelection"

@@ -18,6 +18,7 @@
     </UpgradeBackupLocation>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
+    <UseIISExpress>false</UseIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -118,6 +119,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AutoSuggestMenu.aspx" />
+    <Content Include="AutoSuggestMenuService.asmx" />
     <Content Include="ControlsValuesPersisterTest.aspx" />
     <Content Include="DateTimeBoxTest.aspx" />
     <Content Include="DropDownListTest.aspx" />
@@ -137,6 +139,10 @@
     </Compile>
     <Compile Include="AutoSuggestMenu.aspx.designer.cs">
       <DependentUpon>AutoSuggestMenu.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AutoSuggestMenuService.asmx.cs">
+      <DependentUpon>AutoSuggestMenuService.asmx</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="CheckBoxValidatorTest.aspx.cs">
       <DependentUpon>CheckBoxValidatorTest.aspx</DependentUpon>

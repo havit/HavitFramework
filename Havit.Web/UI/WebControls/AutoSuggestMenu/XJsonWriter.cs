@@ -101,7 +101,8 @@ namespace Havit.Web.UI.WebControls
                 valueText = (string)value;
 
                 //Escape double-quotes for strings and enclose in quotes
-                valueText = "\"" + valueText.Replace("\"", "\\\"") + "\"";
+				// RH: Doplnìno escapování zpìtného lomítka 
+                valueText = "\"" + valueText.Replace(@"\", @"\\").Replace("\"", "\\\"") + "\"";
             }
             else
             {

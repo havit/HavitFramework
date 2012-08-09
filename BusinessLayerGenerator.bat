@@ -1,2 +1,2 @@
-\\oskar\Library\BusinessLayerGenerator\BusinessLayerGenerator.exe -sqlserver:oskar -database:HavitTest -outputpath:./BusinessLayerTest -namespace:Havit.BusinessLayerTest
+\\dev\Library\BusinessLayerGenerator\BusinessLayerGenerator.exe -sqlserver:dev -database:HavitTest -outputpath:./BusinessLayerTest -namespace:Havit.BusinessLayerTest
 pause

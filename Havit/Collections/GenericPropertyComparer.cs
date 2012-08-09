@@ -106,11 +106,17 @@ namespace Havit.Collections
 		}
 
 		/// <summary>
-		/// Vrátí hodnotu index-té property objektu.
+		/// Vrátí hodnot index-té property objektu.
+		/// Pokud je hodnota této property DBNull.Value, vrací null.
 		/// </summary>
 		private object GetValue(object obj, int index)
 		{
-			return DataBinder.Eval(obj, sortItems[index].Expression);
+			object result = DataBinder.Eval(obj, sortItems[index].Expression);
+			if (result == DBNull.Value)
+			{
+				return null;
+			}
+			return result;
 		}
 
 		#endregion

@@ -4,6 +4,62 @@
         <name>Havit.Data.SqlServer</name>
     </assembly>
     <members>
+        <member name="T:Havit.Data.SqlTypes.SqlInt32ArrayAggregate">
+            <summary>
+            Aggregate k UDT SqlInt32Array, který zajišťuje převod tabulky hodnot na pole.
+            </summary>
+            <example>
+            Vytvoření agregátu typu:<br/>
+            <code>
+            CREATE AGGREGATE [dbo].IntArrayAggregate<br/>
+            RETURNS IntArray<br/>
+            EXTERNAL NAME [Havit.Data.SqlServer].[Havit.Data.SqlTypes.SqlInt32ArrayAggregate]<br/>
+            </code>
+            Použití agregátu pro vytvoření pole hodnot:<br/>
+            <code>
+            SELECT IntArrayAggreagate(ItemID) AS Items FROM dbo.Item WHERE ...<br/>
+            </code>
+            </example>
+        </member>
+        <member name="F:Havit.Data.SqlTypes.SqlInt32ArrayAggregate.array">
+            <summary>
+            Uchovává mezivýsledek.
+            </summary>
+        </member>
+        <member name="M:Havit.Data.SqlTypes.SqlInt32ArrayAggregate.Init">
+            <summary>
+            Inicializace agregátoru.
+            </summary>
+        </member>
+        <member name="M:Havit.Data.SqlTypes.SqlInt32ArrayAggregate.Accumulate(System.Data.SqlTypes.SqlInt32)">
+            <summary>
+            Přidá další hodnotu do agregace.
+            </summary>
+            <param name="value">přidávaná hodnota</param>
+        </member>
+        <member name="M:Havit.Data.SqlTypes.SqlInt32ArrayAggregate.Merge(Havit.Data.SqlTypes.SqlInt32ArrayAggregate)">
+            <summary>
+            Spojí dva agregáty v jeden
+            </summary>
+            <param name="group">druhá agregace</param>
+        </member>
+        <member name="M:Havit.Data.SqlTypes.SqlInt32ArrayAggregate.Terminate">
+            <summary>
+            Vrátí výsledek agregace.
+            </summary>
+        </member>
+        <member name="M:Havit.Data.SqlTypes.SqlInt32ArrayAggregate.Read(System.IO.BinaryReader)">
+            <summary>
+            De-serializuje agregaci.
+            </summary>
+            <param name="r">BinaryReader</param>
+        </member>
+        <member name="M:Havit.Data.SqlTypes.SqlInt32ArrayAggregate.Write(System.IO.BinaryWriter)">
+            <summary>
+            Serializuje agregaci.
+            </summary>
+            <param name="w">BinaryWriter</param>
+        </member>
         <member name="T:Havit.Data.SqlTypes.SqlInt32Array">
             <summary>
             UDT reprezentující pole SqlInt32 (T-SQL: int) hodnot.
@@ -145,62 +201,6 @@
             <summary>
             Indikuje, zda-li je hodnota NULL.
             </summary>
-        </member>
-        <member name="T:Havit.Data.SqlTypes.SqlInt32ArrayAggregate">
-            <summary>
-            Aggregate k UDT SqlInt32Array, který zajišťuje převod tabulky hodnot na pole.
-            </summary>
-            <example>
-            Vytvoření agregátu typu:<br/>
-            <code>
-            CREATE AGGREGATE [dbo].IntArrayAggregate<br/>
-            RETURNS IntArray<br/>
-            EXTERNAL NAME [Havit.Data.SqlServer].[Havit.Data.SqlTypes.SqlInt32ArrayAggregate]<br/>
-            </code>
-            Použití agregátu pro vytvoření pole hodnot:<br/>
-            <code>
-            SELECT IntArrayAggreagate(ItemID) AS Items FROM dbo.Item WHERE ...<br/>
-            </code>
-            </example>
-        </member>
-        <member name="F:Havit.Data.SqlTypes.SqlInt32ArrayAggregate.array">
-            <summary>
-            Uchovává mezivýsledek.
-            </summary>
-        </member>
-        <member name="M:Havit.Data.SqlTypes.SqlInt32ArrayAggregate.Init">
-            <summary>
-            Inicializace agregátoru.
-            </summary>
-        </member>
-        <member name="M:Havit.Data.SqlTypes.SqlInt32ArrayAggregate.Accumulate(System.Data.SqlTypes.SqlInt32)">
-            <summary>
-            Přidá další hodnotu do agregace.
-            </summary>
-            <param name="value">přidávaná hodnota</param>
-        </member>
-        <member name="M:Havit.Data.SqlTypes.SqlInt32ArrayAggregate.Merge(Havit.Data.SqlTypes.SqlInt32ArrayAggregate)">
-            <summary>
-            Spojí dva agregáty v jeden
-            </summary>
-            <param name="group">druhá agregace</param>
-        </member>
-        <member name="M:Havit.Data.SqlTypes.SqlInt32ArrayAggregate.Terminate">
-            <summary>
-            Vrátí výsledek agregace.
-            </summary>
-        </member>
-        <member name="M:Havit.Data.SqlTypes.SqlInt32ArrayAggregate.Read(System.IO.BinaryReader)">
-            <summary>
-            De-serializuje agregaci.
-            </summary>
-            <param name="r">BinaryReader</param>
-        </member>
-        <member name="M:Havit.Data.SqlTypes.SqlInt32ArrayAggregate.Write(System.IO.BinaryWriter)">
-            <summary>
-            Serializuje agregaci.
-            </summary>
-            <param name="w">BinaryWriter</param>
         </member>
     </members>
 </doc>

@@ -153,6 +153,7 @@ namespace Havit.Business
 			Load_Perform(transaction);
 
 			this.IsLoaded = true;
+			this.IsDirty = false; // naètený objekt není Dirty.
 		}
 
 		/// <summary>

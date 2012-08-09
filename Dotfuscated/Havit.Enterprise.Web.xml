@@ -87,6 +87,11 @@
             Není-li žádná položka vybrána, vrací null.
             </summary>
         </member>
+        <member name="P:Havit.Web.UI.WebControls.EnterpriseDropDownList.DataBindPerformed">
+            <summary>
+            Indikuje, zda již došlo k navázání dat.
+            </summary>
+        </member>
         <member name="T:Havit.Web.UI.WebControls.EnterpriseGridView">
             <summary>
             EnterprisGridView poskytuje:

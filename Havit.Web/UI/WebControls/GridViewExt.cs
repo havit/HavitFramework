@@ -754,16 +754,52 @@ namespace Havit.Web.UI.WebControls
 		protected override void OnRowEditing(GridViewEditEventArgs e)
 		{
 			base.OnRowEditing(e);
-
+			
 			if (!e.Cancel)
 			{
 				this.EditIndex = e.NewEditIndex;
 				if ((AllowInserting) && (this.InsertRowDataSourceIndex >= 0) && (this.insertRowIndex < e.NewEditIndex))
 				{
 					this.EditIndex = this.EditIndex - 1;
-					SetRequiresDatabinding();
 				}
+				SetRequiresDatabinding();
 				this.InsertRowDataSourceIndex = -1;
+				// .NET 4.0 má vlastní logiku, která nastavuje EditIndex po volání této metody. Ale jen za podmínky, že není Cancel nastaveno na true.
+				// My zde potřebujeme nastavit EditIndex a říct, aby nám předek tuto hodnotu již nezměnil. Proto nastavíme Cancel na true.
+				#region Komentář - HandleEdit vykopírované z .NET 3.5 a .NET 4.0
+
+				// ASP.NET 3.5 
+
+				//private void HandleEdit(int rowIndex)
+				//{
+				//    GridViewEditEventArgs e = new GridViewEditEventArgs(rowIndex);
+				//    this.OnRowEditing(e);
+				//    if (!e.Cancel)
+				//    {
+				//        if (base.IsBoundUsingDataSourceID)
+				//        {
+				//            this.EditIndex = e.NewEditIndex;
+				//        }
+				//        base.RequiresDataBinding = true;
+				//    }
+				//}
+
+				// ASP.NET 4.0
+				// zde zmizela podmínka na IsBoundUsingDataSourceID
+
+				//private void HandleEdit(int rowIndex)
+				//{
+				//    GridViewEditEventArgs e = new GridViewEditEventArgs(rowIndex);
+				//    this.OnRowEditing(e);
+				//    if (!e.Cancel)
+				//    {
+				//        this.EditIndex = e.NewEditIndex;
+				//        base.RequiresDataBinding = true;
+				//    }
+				//}
+				#endregion
+
+				e.Cancel = true; 
 			}
 		}
 		#endregion
@@ -999,7 +1035,7 @@ namespace Havit.Web.UI.WebControls
 			{
 				// najdeme řádek tabulky, do které budeme přidávat "All Pages Button".
 				TableRow row2 = null;
-				if ((row.Controls.Count == 1) && (row.Controls[0].Controls.Count == 1) && (row.Controls[0].Controls[0].Controls.Count == 1)) ;
+				if ((row.Controls.Count == 1) && (row.Controls[0].Controls.Count == 1) && (row.Controls[0].Controls[0].Controls.Count == 1))
 				{
 					row2 = row.Controls[0].Controls[0].Controls[0] as TableRow;
 				}

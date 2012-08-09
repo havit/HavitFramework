@@ -24,9 +24,6 @@ namespace WebApplicationTest
 			TestGV1.DataBinding += new EventHandler(TestGV_DataBinding);
 			TestGV1.RowCustomizingCommandButton += new GridViewRowCustomizingCommandButtonEventHandler(TestGV_RowCustomizingCommandButton);
 			TestGV1.GetInsertRowDataItem += TestGV1_GetInsertRowDataItem;
-			TestGV1.RowInserting += new GridViewInsertEventHandler(TestGV1_RowInserting);
-			TestGV1.RowDeleting += new GridViewDeleteEventHandler(TestGV1_RowDeleting);
-			TestGV1.RowEditing += new GridViewEditEventHandler(TestGV1_RowEditing);
 
 			TestGV2.DataBinding += new EventHandler(TestGV_DataBinding);
 			TestGV3.DataBinding += new EventHandler(TestGV_DataBinding);
@@ -40,21 +37,6 @@ namespace WebApplicationTest
 			TestGV3.Visible = false;
 		}
 
-		void TestGV1_RowEditing(object sender, GridViewEditEventArgs e)
-		{
-			Trace.Write("TestGV1_RowEditing");
-		}
-
-		void TestGV1_RowDeleting(object sender, GridViewDeleteEventArgs e)
-		{
-			Trace.Write("TestGV1_RowDeleting");
-		}
-
-		void TestGV1_RowInserting(object sender, GridViewInsertEventArgs e)
-		{
-			Trace.Write("TestGV1_RowInserting");
-		}
-
 		void HideButton_Click(object sender, EventArgs e)
 		{
 			TestGV4.Visible = false;
@@ -64,7 +46,6 @@ namespace WebApplicationTest
 		{
 			TestGV4.SetRequiresDatabinding();
 		}
-
 		
 		void TestGV_RowCustomizingCommandButton(object sender, GridViewRowCustomizingCommandButtonEventArgs e)
 		{
@@ -80,7 +61,7 @@ namespace WebApplicationTest
 
 		void TestGV_DataBinding(object sender, EventArgs e)
 		{
-			((GridView)sender).DataSource = Subjekt.GetAll().Take(0).ToList();
+			((GridView)sender).DataSource = Subjekt.GetAll().ToList();
 		}
 
 		private object TestGV1_GetInsertRowDataItem()

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" Trace="true" CodeBehind="GridViewExtTest.aspx.cs" Inherits="WebApplicationTest.GridViewExtTest" StyleSheetTheme="Theme1" %>
+﻿<%@ Page Language="C#" CodeBehind="GridViewExtTest.aspx.cs" Inherits="WebApplicationTest.GridViewExtTest" StyleSheetTheme="Theme1" %>
 <%@ Register TagPrefix="uc" TagName="GridViewExtTest_InnerGVControl" src="GridViewExtTest_InnerGVControl.ascx"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -10,7 +10,7 @@
 <body>
     <form id="form1" runat="server">
     <div>
-		<havit:EnterpriseGridView ID="TestGV1" AllowInserting="True" AllowPaging="true" PageSize="5" PagerSettings-Position="Bottom" runat="server">
+		<havit:EnterpriseGridView ID="TestGV1" AllowInserting="True" InsertRowPosition="Top" AllowPaging="false" PageSize="100" PagerSettings-Position="Bottom" runat="server">
 			<Columns>
 				<havit:BoundFieldExt DataField="Nazev" SortExpression="Nazev" HeaderText="Název" />
 				<havit:TemplateFieldExt SortExpression="Nazev" HeaderText="Název">
@@ -21,14 +21,7 @@
 						Edit: <%# Eval("Nazev") %>
 					</EditItemTemplate>
 				</havit:TemplateFieldExt>
-				<havit:TemplateFieldExt HeaderText="Grid">
-					<EditItemTemplate>
-						<asp:Panel runat="server">
-							<uc:GridViewExtTest_InnerGVControl runat="server"/>
-						</asp:Panel>
-					</EditItemTemplate>
-				</havit:TemplateFieldExt>
-				<havit:GridViewCommandField InsertText="Insert" ButtonType="Image" ShowInsertButton="true" ShowEditButton="true" ShowDeleteButton="true" />
+				<havit:GridViewCommandField ShowCancelButton="true" ShowDeleteButton="true" ShowInsertButton="true" ShowEditButton="true" />
 			</Columns>
 		</havit:EnterpriseGridView>
 

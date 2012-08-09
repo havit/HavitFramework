@@ -13,6 +13,24 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class DropDownListExt : DropDownList
 	{
+		#region ItemDataBound (event)
+		/// <summary>
+		/// Událost, která se volá po vytvoøení itemu a jeho data-bindingu.
+		/// </summary>
+		public event EventHandler<ListControlItemDataBoundEventArgs> ItemDataBound
+		{
+			add
+			{
+				base.Events.AddHandler(eventItemDataBound, value);
+			}
+			remove
+			{
+				base.Events.RemoveHandler(eventItemDataBound, value);
+			}
+		}
+		private static readonly object eventItemDataBound = new object();
+		#endregion
+
 		#region SelectedIndex, SelectedValue (override)
 		private int cachedSelectedIndex = -1;
 		private string cachedSelectedValue;
@@ -63,11 +81,6 @@ namespace Havit.Web.UI.WebControls
 		{
 			if (dataSource != null)
 			{
-				bool flag = false;
-				bool flag2 = false;
-				string dataTextField = this.DataTextField;
-				string dataValueField = this.DataValueField;
-				string dataTextFormatString = this.DataTextFormatString;
 				if (!this.AppendDataBoundItems)
 				{
 					this.Items.Clear();
@@ -77,41 +90,11 @@ namespace Havit.Web.UI.WebControls
 				{
 					this.Items.Capacity = @null.Count + this.Items.Count;
 				}
-				if ((dataTextField.Length != 0) || (dataValueField.Length != 0))
-				{
-					flag = true;
-				}
-				if (dataTextFormatString.Length != 0)
-				{
-					flag2 = true;
-				}
 				foreach (object dataItem in dataSource)
 				{
-					ListItem item = new ListItem();
-					if (flag)
-					{
-						if (dataTextField.Length > 0)
-						{
-							item.Text = DataBinderExt.GetValue(dataItem, dataTextField, dataTextFormatString);
-						}
-						if (dataValueField.Length > 0)
-						{
-							item.Value = DataBinderExt.GetValue(dataItem, dataValueField, null);
-						}
-					}
-					else
-					{
-						if (flag2)
-						{
-							item.Text = string.Format(CultureInfo.CurrentCulture, dataTextFormatString, new object[] { dataItem });
-						}
-						else
-						{
-							item.Text = dataItem.ToString();
-						}
-						item.Value = dataItem.ToString();
-					}
+					ListItem item = CreateItem(dataItem);
 					this.Items.Add(item);
+					OnItemDataBound(new ListControlItemDataBoundEventArgs(item, dataItem));
 				}
 			}
 			if (this.cachedSelectedValue != null)
@@ -138,6 +121,53 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
+		/// Vytvoøí ListItem, souèást PerformDataBindingu.
+		/// </summary>
+		/// <param name="dataTextField">The data text field.</param>
+		/// <param name="dataValueField">The data value field.</param>
+		/// <param name="dataTextFormatString">The data text format string.</param>
+		/// <param name="dataItem">The data item.</param>
+		/// <returns></returns>
+		protected virtual ListItem CreateItem(object dataItem)
+		{
+			bool flag = false;
+			bool flag2 = false;
+			if ((DataTextField.Length != 0) || (DataValueField.Length != 0))
+			{
+				flag = true;
+			}
+			if (DataTextFormatString.Length != 0)
+			{
+				flag2 = true;
+			}
+			ListItem item = new ListItem();
+			if (flag)
+			{
+				if (DataTextField.Length > 0)
+				{
+					item.Text = DataBinderExt.GetValue(dataItem, DataTextField, DataTextFormatString);
+				}
+				if (DataValueField.Length > 0)
+				{
+					item.Value = DataBinderExt.GetValue(dataItem, DataValueField, null);
+				}
+			}
+			else
+			{
+				if (flag2)
+				{
+					item.Text = string.Format(CultureInfo.CurrentCulture, DataTextFormatString, new object[] { dataItem });
+				}
+				else
+				{
+					item.Text = dataItem.ToString();
+				}
+				item.Value = dataItem.ToString();
+			}
+			return item;
+		}
+
+		/// <summary>
 		/// Implementace nahrazující internal metody ListItemCollection.FindByValueInternal()
 		/// </summary>
 		/// <param name="listItemCollection">prohledávaná ListItemCollection</param>
@@ -151,6 +181,22 @@ namespace Havit.Web.UI.WebControls
 				return listItemCollection.IndexOf(item);
 			}
 			return -1;
+		}
+		#endregion
+
+		#region OnItemDataBound
+		/// <summary>
+		/// Raises the <see cref="E:ItemDataBound"/> event.
+		/// </summary>
+		/// <param name="e">The <see cref="Havit.Web.UI.WebControls.ListControlItemEventArgs"/> instance containing the event data.</param>
+		protected virtual void OnItemDataBound(ListControlItemDataBoundEventArgs e)
+		{
+			EventHandler<ListControlItemDataBoundEventArgs> h = (EventHandler<ListControlItemDataBoundEventArgs>)base.Events[eventItemDataBound];
+			if (h != null)
+			{
+				h(this, e);
+			}
+
 		}
 		#endregion
 	}

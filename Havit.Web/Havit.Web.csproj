@@ -162,6 +162,7 @@
     <Compile Include="UI\WebControls\DropDownListExt.cs" />
     <Compile Include="UI\WebControls\DynarchCalendar\DynarchCalendar.cs" />
     <Compile Include="UI\WebControls\DynarchCalendar\DynarchCalendarSkin.cs" />
+    <Compile Include="UI\WebControls\EnumDropDownList.cs" />
     <Compile Include="UI\WebControls\GridViewCommandField.cs" />
     <Compile Include="UI\WebControls\DataControlButtonExt.cs" />
     <Compile Include="UI\WebControls\DataControlImageButtonExt.cs" />
@@ -183,6 +184,7 @@
     <Compile Include="UI\WebControls\HyperLinkFieldExt.cs" />
     <Compile Include="UI\WebControls\ICommandFieldStyle.cs" />
     <Compile Include="UI\WebControls\ImageFieldExt.cs" />
+    <Compile Include="UI\WebControls\ListControlItemDataBoundEventArgs.cs" />
     <Compile Include="UI\WebControls\NumericBox.cs" />
     <Compile Include="UI\WebControls\NumericBoxValidator.cs" />
     <Compile Include="UI\WebControls\SortExpressions.cs">

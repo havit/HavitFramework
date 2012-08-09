@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web.Management;
 using System.Web.Services.Protocols;
+using Havit.Web.Management;
 
 namespace Havit.Web.Services.Extensions
 {
@@ -26,7 +27,7 @@ namespace Havit.Web.Services.Extensions
 						{
 							exception = exception.InnerException;
 						}
-						new RecoveredWebRequestErrorEvent(exception.Message, message, exception).Raise();
+						new WebRequestErrorEventExt(exception.Message, message, exception).Raise();
 					}
 				}
 			}
@@ -52,19 +53,6 @@ namespace Havit.Web.Services.Extensions
 		#region Initialize
 		public override void Initialize(object initializer)
 		{
-		}
-		#endregion
-
-		#region RecoveredWebRequestErrorEvent (nested class)
-		/// <summary>
-		/// Pomocná třída pro oznámení události health monitoringem.
-		/// </summary>
-		private class RecoveredWebRequestErrorEvent : WebRequestErrorEvent
-		{
-			public RecoveredWebRequestErrorEvent(string message, object eventSource, Exception exception)
-				: base(message, eventSource, WebEventCodes.WebExtendedBase + 999, exception)
-			{
-			}
 		}
 		#endregion
 	}

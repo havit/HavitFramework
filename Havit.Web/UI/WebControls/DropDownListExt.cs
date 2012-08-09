@@ -10,8 +10,15 @@ namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
 	/// Vylepšenı <see cref="DropDownList"/>.
-    /// Podporuje lepší zpracování hodnoty DataTextField pøi databindingu.
+    /// Podporuje lepší zpracování hodnoty DataTextField pøi databindingu.	
 	/// </summary>
+	/// <remarks>
+	/// Known issue:
+	/// Pokud je v jednom requestu nejprve nastaven SelectedIndex/SelectedValue a poté je proveden DataBind, pokusí se DataBind znovu vybrat poloku, která byla vybrána.
+	/// Pokud se to nepovede (není nalezena), pak je vyhozena vıjimka.
+	/// Není šance toto potlaèit (a podle RH nemáme toto chování rušit, pøestoe nemám tušení, k èemu to je),
+	/// proto do ClearSelection doplòujeme vymazání pøíznakù, kterımi se øídí DataBind.
+	/// </remarks>
 	public class DropDownListExt : DropDownList
 	{
 		#region ItemDataBound (event)
@@ -33,7 +40,7 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 
 		#region SelectedIndex, SelectedValue (override)
-		private int cachedSelectedIndex = -1;
+		private int cachedSelectedIndex = -1; // JK: A mi nìkdo z MS vysvìtlí, jak má tohle fungovat. Podle mne to ani nemá logiku.
 		private string cachedSelectedValue;
 
 		/// <summary>
@@ -70,6 +77,18 @@ namespace Havit.Web.UI.WebControls
 				base.SelectedValue = value;
 				cachedSelectedValue = value;
 			}
+		}
+		#endregion
+
+		#region ClearSelection
+		/// <summary>
+		/// Zruší vıbìr aktuálnì vybrané poloky.
+		/// </summary>
+		public override void ClearSelection()
+		{
+			base.ClearSelection();
+			this.cachedSelectedIndex = -1;
+			this.cachedSelectedValue = null;
 		}
 		#endregion
 
@@ -179,7 +198,7 @@ namespace Havit.Web.UI.WebControls
 			return -1;
 		}
 		#endregion
-
+		
 		#region OnItemDataBound
 		/// <summary>
 		/// Raises the <see cref="E:ItemDataBound"/> event.

@@ -120,6 +120,7 @@
     <Content Include="AutoSuggestMenu.aspx" />
     <Content Include="ControlsValuesPersisterTest.aspx" />
     <Content Include="DateTimeBoxTest.aspx" />
+    <Content Include="DowpDownListTest.aspx" />
     <Content Include="GridViewExtTest.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -163,6 +164,13 @@
     </Compile>
     <Compile Include="DefaultStylesLinkerTest.aspx.designer.cs">
       <DependentUpon>DefaultStylesLinkerTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DowpDownListTest.aspx.cs">
+      <DependentUpon>DowpDownListTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DowpDownListTest.aspx.designer.cs">
+      <DependentUpon>DowpDownListTest.aspx</DependentUpon>
     </Compile>
     <Compile Include="DynarchCalendarTest.aspx.cs">
       <DependentUpon>DynarchCalendarTest.aspx</DependentUpon>

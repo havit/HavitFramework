@@ -182,7 +182,7 @@ namespace Havit.Web.UI.WebControls
 					EnsureAutoDataBind(); // jinak následný databinding zlikviduje vybranou hodnotu
 					// pokud nastavujeme null, zajistime, aby existoval prazdny radek a vybereme jej
 					EnsureEmptyItem();
-					SelectedIndex = 0;
+					SelectedValue = "";
 				}
 				else
 				{
@@ -206,7 +206,7 @@ namespace Havit.Web.UI.WebControls
 						newListItem.Text = DataBinder.Eval(value, DataTextField).ToString();
 						newListItem.Value = DataBinder.Eval(value, DataValueField).ToString();
 						Items.Add(newListItem);
-						SelectedIndex = Items.Count - 1;
+						SelectedValue = newListItem.Value;
 					}
 				}
 			}
@@ -436,7 +436,7 @@ namespace Havit.Web.UI.WebControls
             {
                 EnsureAutoDataBind();
                 EnsureEmptyItem();
-                SelectedIndex = 0;
+                SelectedValue = "";
                 return true;
             }
 

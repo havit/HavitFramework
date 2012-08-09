@@ -31,7 +31,7 @@ namespace Havit.Business
 
 		/// <summary>
 		/// Příznak, pokud je false znamená to,že LoadAll nemusí načítat objekty - v kolekci není žádný ghost.
-		/// Pokud je true, v kolekci může (ale nemusí být ghost).
+		/// Pokud je true, v kolekci může (ale nemusí) být ghost.
 		/// </summary>
 		protected bool LoadAllRequired { get; set; }
 

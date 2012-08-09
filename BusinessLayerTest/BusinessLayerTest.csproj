@@ -1,0 +1,89 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5A35A57F-7D3D-4858-BC69-B91025CDE667}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BusinessLayerTest</RootNamespace>
+    <AssemblyName>BusinessLayerTest</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Role.cs" />
+    <Compile Include="RoleCollection.cs" />
+    <Compile Include="Subjekt.cs" />
+    <Compile Include="SubjektCollection.cs" />
+    <Compile Include="Uzivatel.cs" />
+    <Compile Include="UzivatelCollection.cs" />
+    <Compile Include="_generated\Role.partial.cs" />
+    <Compile Include="_generated\RoleBase.cs" />
+    <Compile Include="_generated\RoleCollection.partial.cs" />
+    <Compile Include="_generated\RoleCollectionBase.cs" />
+    <Compile Include="_generated\RolePropertiesBase.cs" />
+    <Compile Include="_generated\Subjekt.partial.cs" />
+    <Compile Include="_generated\SubjektBase.cs" />
+    <Compile Include="_generated\SubjektCollection.partial.cs" />
+    <Compile Include="_generated\SubjektCollectionBase.cs" />
+    <Compile Include="_generated\SubjektPropertiesBase.cs" />
+    <Compile Include="_generated\Uzivatel.partial.cs" />
+    <Compile Include="_generated\UzivatelBase.cs" />
+    <Compile Include="_generated\UzivatelCollection.partial.cs" />
+    <Compile Include="_generated\UzivatelCollectionBase.cs" />
+    <Compile Include="_generated\UzivatelPropertiesBase.cs" />
+    <Compile Include="_properties\RoleProperties.cs" />
+    <Compile Include="_properties\SubjektProperties.cs" />
+    <Compile Include="_properties\UzivatelProperties.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Havit.Business\Havit.Business.csproj">
+      <Project>{81995BC1-9F25-4F46-8258-8ED1F965CABB}</Project>
+      <Name>Havit.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Havit.Data.SqlServer\Havit.Data.SqlServer.csproj">
+      <Project>{60804BE3-2622-481A-8784-3C173C080936}</Project>
+      <Name>Havit.Data.SqlServer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Havit.Data\Havit.Data.csproj">
+      <Project>{703235E0-86C0-44F3-95BB-3D9F39886966}</Project>
+      <Name>Havit.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Havit\Havit.csproj">
+      <Project>{9ACC94B9-B8FD-47C1-ABF8-0658C7673905}</Project>
+      <Name>Havit</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

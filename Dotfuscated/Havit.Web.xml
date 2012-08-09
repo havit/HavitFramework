@@ -662,6 +662,16 @@
             <see cref="T:Havit.Web.UrlRewriter.Config.RewriterConfiguration"/> instance.</remarks>
             <returns>An instance of the <see cref="T:Havit.Web.UrlRewriter.Config.RewriterConfiguration"/> class.</returns>
         </member>
+        <member name="T:Havit.Web.UI.WebControls.IEnterpriseField">
+            <summary>
+            Sloupec, který se umí identifikovat (má ID).
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.IEnterpriseField.ID">
+            <summary>
+            ID sloupce. Umožní GridView hledat sloupec podle ID.
+            </summary>
+        </member>
         <member name="T:Havit.Web.UI.WebControls.H3">
             <summary>
             Reprezentuje label, který se renderuje jako HTML tag H3.
@@ -670,6 +680,102 @@
         <member name="P:Havit.Web.UI.WebControls.H3.TagKey">
             <summary>
             Vrací HtmlTextWriterTag.H3 zajišťující správné renderování.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.BooleanField">
+            <summary>
+            Sloupec pro zobrazení boolean hodnoty.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.BoundFieldExt">
+            <summary>
+            Sloupec pro heterogenní seznamy.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.BoundFieldExt.CreateField">
+            <summary>
+            Vyžadováno implementací Fieldu v .NETu. V potomcích nutno přepsat.
+            </summary>
+            <returns>Instance této třídy.</returns>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.BoundFieldExt.GetValue(System.Web.UI.Control)">
+            <summary>
+            Získá hodnotu pro zobrazení na základě datového zdroje a DataFieldu.
+            </summary>
+            <param name="dataItem">Položka dat z DataSource</param>
+            <returns></returns>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.BoundFieldExt.GetValue(System.Object,System.String)">
+            <summary>
+            Získá hodnotu pro zobrazení z předaného objektu a dataField.
+            </summary>
+            <param name="dataItem">Položka dat z DataSource</param>
+            <param name="dataField">DataField</param>
+            <returns></returns>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.BoundFieldExt.FormatDataValue(System.Object)">
+            <summary>
+            Formátuje hodnotu k zobrazení.
+            </summary>
+            <param name="value">Data</param>
+            <returns>Text k zobrazení.</returns>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.BoundFieldExt.GetNotFoundDataItem">
+            <summary>
+            Metoda je volána, pokud se metodě GetValue nepodaří získat hodnotu.
+            Není-li EmptyText rovno null, vrací se hodnota Empty text. 
+            Jinak je vyhozena výjimka MissingMemberException.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.BoundFieldExt.InitializeDataCell(System.Web.UI.WebControls.DataControlFieldCell,System.Web.UI.WebControls.DataControlRowState)">
+            <summary>
+            Pokud není CellCssClass prázdné, generuje se do buňky tabulky &lt;div="CellCssClass"&gt;...&lt;/div&gt;.
+            Jinak se použije normálně samotná buňka tabulky.
+            </summary>
+            <param name="cell"></param>
+            <param name="rowState"></param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.BoundFieldExt.InitializeDataCellContent(System.Web.UI.Control,System.Web.UI.WebControls.DataControlRowState)">
+            <summary>
+            Inicializuje obsah buňky daty.
+            </summary>
+            <param name="control">Control, do kterého se má obsah inicializovat.</param>
+            <param name="rowState">RowState.</param>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.BoundFieldExt.ID">
+            <summary>
+            ID sloupce.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.BoundFieldExt.CellCssClass">
+            <summary>
+            Css třída vygenerované buňky.	
+            Zamýšleno např. pro omezení šírky sloupce.
+            Viz	<see cref="M:Havit.Web.UI.WebControls.BoundFieldExt.InitializeDataCell(System.Web.UI.WebControls.DataControlFieldCell,System.Web.UI.WebControls.DataControlRowState)"/>.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.BoundFieldExt.EmptyText">
+            <summary>
+            Pokud se metodě GetValue nepodaří získat hodnotu z dat, použije se tato hodnota, pokud není null.
+            Rozlišuje se null a prázdný řetězec.
+            Viz metody GetNotFoundDataItem a GetValue.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.BooleanField.FormatDataValue(System.Object)">
+            <summary>
+            Zajistí transformaci boolean hodnoty na text s použitím vlastností TrueText, FalseText.
+            </summary>
+            <param name="value">Hodnota ke zformátování.</param>
+            <returns>Text k zobrazení.</returns>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.BooleanField.TrueText">
+            <summary>
+            Text zobrazený, pokud je hodnota true.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.BooleanField.FalseText">
+            <summary>
+            Text zobrazený, pokud je hodnota false.
             </summary>
         </member>
         <member name="T:Havit.Web.UI.WebControls.H2">

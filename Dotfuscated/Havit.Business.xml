@@ -68,12 +68,30 @@
             <param name="command">Databázový příkaz. Je možné do něj přidávat databázové parametry.</param>
             <returns>Řetězec reprezentující hodnotu operandu v SQL dotazu.</returns>
         </member>
+        <member name="T:Havit.Business.Query.DateRangeCondition">
+            <summary>
+            Vytváří podmínky testující rozsah datumů.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.DateRangeCondition.Create(Havit.Business.Query.IOperand,System.DateTime,System.DateTime)">
+            <summary>
+            Vytvoří podmínku testující, zda je datum v intervalu datumů.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.DateRangeCondition.CreateDays(Havit.Business.Query.IOperand,System.DateTime,System.DateTime)">
+            <summary>
+            Vytvoří podmínku testující, zda je den data (datumu) v intervalu dnů datumů.
+            Zajišťuje, aby hodnota operandu byla větší nebo rovna datu date1 a aby byla menší než půlnoc konce date2.
+            Jinými slovy: Argumenty moho obsahovat datum a čas, ale testuje se jen datum bez času. Potom 
+            je zajišťováno: DATUM(date1) &lt;= DATUM(operand) &lt; DATUM(date2).
+            </summary>
+        </member>
         <member name="T:Havit.Business.ObjectInfo">
             <summary>
             Reprezentuje informace o objektu (třídě).
             </summary>
         </member>
-        <member name="M:Havit.Business.ObjectInfo.#ctor(System.String,System.String,System.Boolean,Havit.Business.PropertyInfoCollection)">
+        <member name="M:Havit.Business.ObjectInfo.#ctor(System.String,System.String,System.Boolean,Havit.Business.PropertyInfoCollection,Havit.Business.FieldPropertyInfo)">
             <summary>
             Vytvoří instanci třídy.
             </summary>
@@ -81,6 +99,7 @@
             <param name="dbTable">Název databázové tabulky.</param>
             <param name="readOnly">Určuje, zda je třída jen ke čtení.</param>
             <param name="properties">Properties třídy.</param>
+            <param name="deletedProperty">FieldPropertyInfo, která identifikuje příznakem smazané záznamy.</param>
         </member>
         <member name="P:Havit.Business.ObjectInfo.ReadOnly">
             <summary>
@@ -100,6 +119,11 @@
         <member name="P:Havit.Business.ObjectInfo.Properties">
             <summary>
             Property ve třídě.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.ObjectInfo.DeletedProperty">
+            <summary>
+            Property, která označuje smazané záznamy.
             </summary>
         </member>
         <member name="T:Havit.Business.Query.SortDirection">
@@ -743,19 +767,20 @@
             Vrátí sekci SQL dotazu ORDER BY.
             </summary>
         </member>
+        <member name="P:Havit.Business.Query.QueryParams.ObjectInfo">
+            <summary>
+            Instance třídy ObjectInfo nesoucí informace o tom, z jaké tabulky se bude dotaz dotazovat.
+            </summary>
+        </member>
         <member name="P:Havit.Business.Query.QueryParams.TopRecords">
             <summary>
             Maximální počet záznamů, který se vrací z databáze - (SELECT TOP n ...).
             </summary>
         </member>
-        <member name="P:Havit.Business.Query.QueryParams.TableName">
+        <member name="P:Havit.Business.Query.QueryParams.IncludeDeleted">
             <summary>
-            Název tabulky nebo view, do které se tvoří dotaz (FROM xxx).
-            </summary>
-        </member>
-        <member name="P:Havit.Business.Query.QueryParams.FieldsWhenEmpty">
-            <summary>
-            Seznam sloupců (sekce SQL dotazu SELECT), které se vytáhnou v případě, že kolekce fields je prázdná.
+            Udává, zda se mají vracet i záznamy označené za smazané.
+            Výchozí hodnota je false, smazané záznamy se nevrací.
             </summary>
         </member>
         <member name="P:Havit.Business.Query.QueryParams.Properties">

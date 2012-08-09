@@ -35,7 +35,7 @@
 				<havit:GridViewCommandField ShowEditButton="true" ShowDeleteButton="true" />
 			</Columns>
 		</havit:GridViewExt>
-		<havit:GridViewExt ID="TestGV4" AllowPaging="true" PagerSettings-Position="bottom" PagerSettingsShowAllPagesButton="true" PagerSettings-Mode="NextPreviousFirstLast" PageSize="2" runat="server">
+		<havit:GridViewExt ID="TestGV4" EmptyDataText="No records." AllowPaging="true" PagerSettings-Position="bottom" PagerSettingsShowAllPagesButton="true" PagerSettings-Mode="NextPreviousFirstLast" PageSize="2" runat="server">
 			<Columns>
 				<havit:BoundFieldExt DataField="Nazev" />
 				<havit:GridViewCommandField ShowEditButton="true" ShowDeleteButton="true" />

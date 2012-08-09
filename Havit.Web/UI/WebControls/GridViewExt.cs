@@ -575,7 +575,10 @@ namespace Havit.Web.UI.WebControls
 				}
 			}
 
+			string originalEmptyDataText = this.EmptyDataText;
+			EmptyDataText = HttpUtilityExt.GetResourceString(EmptyDataText);
 			base.PerformDataBinding(insertingData);
+			this.EmptyDataText = originalEmptyDataText;
 
 			if (insertingData != null)
 			{

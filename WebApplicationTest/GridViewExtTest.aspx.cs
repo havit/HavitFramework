@@ -31,7 +31,7 @@ namespace WebApplicationTest
 		void TestGV_RowCustomizingCommandButton(object sender, GridViewRowCustomizingCommandButtonEventArgs e)
 		{
 			if ((e.CommandName == CommandNames.Delete) && (e.RowIndex == 1))
-			{
+			{								
 				e.Enabled = false;
 			}
 			if ((e.CommandName == CommandNames.Edit) && (e.RowIndex % 5 == 0))
@@ -42,10 +42,11 @@ namespace WebApplicationTest
 
 		void TestGV_DataBinding(object sender, EventArgs e)
 		{
-			SubjektCollection items = Subjekt.GetAll();
-			items.AddRange(items);
-			items.AddRange(items);
-			items.AddRange(items);
+			SubjektCollection items = new SubjektCollection();
+			//SubjektCollection items = Subjekt.GetAll();
+			//items.AddRange(items);
+			//items.AddRange(items);
+			//items.AddRange(items);
 			((GridView)sender).DataSource = items;
 		}
 	}

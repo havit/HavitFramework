@@ -248,6 +248,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			base.OnInit(e);
 			valueTextBox.TextChanged += new EventHandler(ValueTextBox_TextChanged);
+			EnsureChildControls();
 		}
 		#endregion
 

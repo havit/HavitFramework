@@ -2370,6 +2370,108 @@
             Přepis třídy Microsoft .NET Frameworku. Potřeba pro GridViewCommandField.
             </summary>
         </member>
+        <member name="T:Havit.Web.UI.WebControls.EnumDropDownList">
+            <summary>
+            DropDownList pro práci s výčtovým datovým typem enum
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnumDropDownList.OnLoad(System.EventArgs)">
+            <summary>
+            Handles the <see cref="E:System.Web.UI.Control.Load"/> event.
+            </summary>
+            <param name="e">An <see cref="T:System.EventArgs"/> object that contains event data.</param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnumDropDownList.EnsureAutoDataBind">
+            <summary>
+            Zajistí nabindování dat.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnumDropDownList.DataBind">
+            <summary>
+            Provádí databinding a řeší odložené nastavení SelectedObject.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.UI.WebControls.EnumDropDownList.isDataBinding">
+            <summary>
+            Indikuje právě porobíhající databinding.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.UI.WebControls.EnumDropDownList.delayedSetSelectedEnumValue">
+            <summary>
+            Objekt, který má být nastaven jako vybraný, ale jeho nastavení bylo odloženo.
+            </summary>
+            <remarks>
+            Pokud nastavujeme SelectedObject během DataBindingu (ve stránce pomocí &lt;%# ... %&gt;),
+            odloží se nastavení hodnoty až na konec DataBindingu. To protože v okamžiku nastavování SelectedObject 
+            nemusí být v Items ještě data.
+            </remarks>
+        </member>
+        <member name="F:Havit.Web.UI.WebControls.EnumDropDownList.delayedSetSelectedEnumValueNeeded">
+            <summary>
+            Udává, zda máme nastaven objekt pro odložené nastavení vybraného objektu.
+            </summary>
+            <remarks>
+            Pokud nastavujeme SelectedObject během DataBindingu (ve stránce pomocí &lt;%# ... %&gt;),
+            odloží se nastavení hodnoty až na konec DataBindingu. To protože v okamžiku nastavování SelectedObject 
+            nemusí být v Items ještě data. 
+            </remarks>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnumDropDownList.DataBindAll">
+            <summary>
+            Naváže na DropDownList všechny hodnoty enumu.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnumDropDownList.PerformDataBinding(System.Collections.IEnumerable)">
+            <summary>
+            Zajistí, aby byl po databindingu doplněn řádek pro výběr prázdné hodnoty.
+            </summary>
+            <param name="dataSource"></param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnumDropDownList.CreateItem(System.Object)">
+            <summary>
+            Vytvoří ListItem, součást PerformDataBindingu.
+            </summary>
+            <param name="dataItem">The data item.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.EnumDropDownList.EnsureEmptyItem">
+            <summary>
+            Přidá na začátek seznamu řádek pro výběr prázdné hodnoty, pokud tam již není.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnumDropDownList.EnumType">
+            <summary>
+            Typ enum, který obsluhujeme.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnumDropDownList.SelectedEnumValue">
+            <summary>
+            Hodnota typu enum, která je nastavena DropDownListu
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnumDropDownList.Nullable">
+            <summary>
+            Udává, zda má být na výběr prázdná hodnota. Výchozí hodnota je true.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnumDropDownList.NullableText">
+            <summary>
+            Udává text prázdné hodnoty. Výchozí hodnota je "---".
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnumDropDownList.DataTextFormatString">
+            <summary>
+            Format-string pro Text itemů. Lze skinovat a použít syntaxi $resources. Jako data jsou poskytnuta {0} = dataItem, {1} = EnumType.Name, {2} = EnumType.Namespace.
+            </summary>
+            <remarks>
+            Hidujeme kvůli povolení skinování.
+            </remarks>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.EnumDropDownList.DataBindPerformed">
+            <summary>
+            Indikuje, zda již došlo k navázání dat.
+            </summary>
+        </member>
         <member name="T:Havit.Web.UI.WebControls.DynarchCalendar">
             <summary>
             Wrapper pro Dynarch DHTML/JavaScript Calendar
@@ -2719,6 +2821,22 @@
         <member name="P:Havit.Web.UI.WebControls.DynarchCalendar.Enabled">
             <summary>
             Enables/disables whole calendar.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.ListControlItemDataBoundEventArgs.#ctor(System.Web.UI.WebControls.ListItem,System.Object)">
+            <summary>
+            Vytvoří instanci.
+            </summary>
+            <param name="item">Prvek, kterého se událost týká.</param>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.ListControlItemDataBoundEventArgs.Item">
+            <summary>
+            Prvek, kterého se událost týká.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.ListControlItemDataBoundEventArgs.DataItem">
+            <summary>
+            Data, na jejich základě prvek vzniknul.
             </summary>
         </member>
         <member name="T:Havit.Web.UrlRewriter.RewriterUtils">
@@ -3280,124 +3398,6 @@
             Udává, zda v případě změny hodnoty prvku (zaškrtnutí, změna textu, apod.)
             dojde ke spuštění skriptu.
             Výchozí hodnota je false.
-            </summary>
-        </member>
-        <member name="T:Havit.Web.UI.WebControls.EnumDropDownList">
-            <summary>
-            DropDownList pro práci s výčtovým datovým typem enum
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.EnumDropDownList.OnLoad(System.EventArgs)">
-            <summary>
-            Handles the <see cref="E:System.Web.UI.Control.Load"/> event.
-            </summary>
-            <param name="e">An <see cref="T:System.EventArgs"/> object that contains event data.</param>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.EnumDropDownList.EnsureAutoDataBind">
-            <summary>
-            Zajistí nabindování dat.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.EnumDropDownList.DataBind">
-            <summary>
-            Provádí databinding a řeší odložené nastavení SelectedObject.
-            </summary>
-        </member>
-        <member name="F:Havit.Web.UI.WebControls.EnumDropDownList.isDataBinding">
-            <summary>
-            Indikuje právě porobíhající databinding.
-            </summary>
-        </member>
-        <member name="F:Havit.Web.UI.WebControls.EnumDropDownList.delayedSetSelectedEnumValue">
-            <summary>
-            Objekt, který má být nastaven jako vybraný, ale jeho nastavení bylo odloženo.
-            </summary>
-            <remarks>
-            Pokud nastavujeme SelectedObject během DataBindingu (ve stránce pomocí &lt;%# ... %&gt;),
-            odloží se nastavení hodnoty až na konec DataBindingu. To protože v okamžiku nastavování SelectedObject 
-            nemusí být v Items ještě data.
-            </remarks>
-        </member>
-        <member name="F:Havit.Web.UI.WebControls.EnumDropDownList.delayedSetSelectedEnumValueNeeded">
-            <summary>
-            Udává, zda máme nastaven objekt pro odložené nastavení vybraného objektu.
-            </summary>
-            <remarks>
-            Pokud nastavujeme SelectedObject během DataBindingu (ve stránce pomocí &lt;%# ... %&gt;),
-            odloží se nastavení hodnoty až na konec DataBindingu. To protože v okamžiku nastavování SelectedObject 
-            nemusí být v Items ještě data. 
-            </remarks>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.EnumDropDownList.DataBindAll">
-            <summary>
-            Naváže na DropDownList všechny hodnoty enumu.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.EnumDropDownList.PerformDataBinding(System.Collections.IEnumerable)">
-            <summary>
-            Zajistí, aby byl po databindingu doplněn řádek pro výběr prázdné hodnoty.
-            </summary>
-            <param name="dataSource"></param>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.EnumDropDownList.CreateItem(System.Object)">
-            <summary>
-            Vytvoří ListItem, součást PerformDataBindingu.
-            </summary>
-            <param name="dataItem">The data item.</param>
-            <returns></returns>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.EnumDropDownList.EnsureEmptyItem">
-            <summary>
-            Přidá na začátek seznamu řádek pro výběr prázdné hodnoty, pokud tam již není.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.EnumDropDownList.EnumType">
-            <summary>
-            Typ enum, který obsluhujeme.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.EnumDropDownList.SelectedEnumValue">
-            <summary>
-            Hodnota typu enum, která je nastavena DropDownListu
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.EnumDropDownList.Nullable">
-            <summary>
-            Udává, zda má být na výběr prázdná hodnota. Výchozí hodnota je true.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.EnumDropDownList.NullableText">
-            <summary>
-            Udává text prázdné hodnoty. Výchozí hodnota je "---".
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.EnumDropDownList.DataTextFormatString">
-            <summary>
-            Format-string pro Text itemů. Lze skinovat a použít syntaxi $resources. Jako data jsou poskytnuta {0} = dataItem, {1} = EnumType.Name, {2} = EnumType.Namespace.
-            </summary>
-            <remarks>
-            Hidujeme kvůli povolení skinování.
-            </remarks>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.EnumDropDownList.DataBindPerformed">
-            <summary>
-            Indikuje, zda již došlo k navázání dat.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.ListControlItemDataBoundEventArgs.#ctor(System.Web.UI.WebControls.ListItem,System.Object)">
-            <summary>
-            Vytvoří instanci.
-            </summary>
-            <param name="item">Prvek, kterého se událost týká.</param>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.ListControlItemDataBoundEventArgs.Item">
-            <summary>
-            Prvek, kterého se událost týká.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.ListControlItemDataBoundEventArgs.DataItem">
-            <summary>
-            Data, na jejich základě prvek vzniknul.
             </summary>
         </member>
     </members>

@@ -11,6 +11,8 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class EnumDropDownList : DropDownListExt
 	{
+		private const string EnumValueFormatString = "d";
+
 		#region EnumType
 		/// <summary>
 		/// Typ enum, který obsluhujeme.
@@ -58,8 +60,12 @@ namespace Havit.Web.UI.WebControls
 				}
 				else
 				{
+					if (value.GetType() != EnumType)
+					{
+						throw new ArgumentException("Hodnota není typu EnumType.", "value");
+					}
 					EnsureAutoDataBind();
-					SelectedValue = value.ToString();
+					SelectedValue = ((Enum)value).ToString(EnumValueFormatString);
 				}
 			}
 			get
@@ -262,7 +268,7 @@ namespace Havit.Web.UI.WebControls
 			Enum enumDataItem = (Enum)dataItem;
 
 			ListItem item = new ListItem();
-			item.Value = enumDataItem.ToString("d");
+			item.Value = enumDataItem.ToString(EnumValueFormatString);
 
 			if (!String.IsNullOrEmpty(DataTextFormatString))
 			{

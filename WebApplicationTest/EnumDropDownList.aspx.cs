@@ -31,6 +31,8 @@ namespace WebApplicationTest
 			{
 				TestLb.Text = ((TestEnum)TestDDL.SelectedEnumValue).ToString();
 			}
+
+			TestDDL.SelectedEnumValue = TestEnum.EnumHodnota2;
 		}
 
 		void TestDDL_ItemDataBound(object sender, Havit.Web.UI.WebControls.ListControlItemDataBoundEventArgs e)

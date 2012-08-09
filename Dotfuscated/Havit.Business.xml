@@ -1752,12 +1752,22 @@
             Vytvoří podmínku testující rovnost hodnoty.
             </summary>
         </member>
+        <member name="M:Havit.Business.Query.NumberCondition.CreateEquals(Havit.Business.Query.IOperand,System.Decimal)">
+            <summary>
+            Vytvoří podmínku testující rovnost hodnoty.
+            </summary>
+        </member>
         <member name="M:Havit.Business.Query.NumberCondition.CreateEquals(Havit.Business.Query.IOperand,Havit.Business.Query.IOperand)">
             <summary>
             Vytvoří podmínku testující rovnost hodnoty operandů.
             </summary>
         </member>
         <member name="M:Havit.Business.Query.NumberCondition.Create(Havit.Business.Query.IOperand,Havit.Business.Query.ComparisonOperator,System.Int32)">
+            <summary>
+            Vytvoří podmínku testující hodnoty pomocí zadaného operátoru.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.NumberCondition.Create(Havit.Business.Query.IOperand,Havit.Business.Query.ComparisonOperator,System.Decimal)">
             <summary>
             Vytvoří podmínku testující hodnoty pomocí zadaného operátoru.
             </summary>

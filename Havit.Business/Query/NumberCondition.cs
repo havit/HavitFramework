@@ -19,6 +19,14 @@ namespace Havit.Business.Query
 		}
 
 		/// <summary>
+		/// Vytvoøí podmínku testující rovnost hodnoty.
+		/// </summary>
+		public static Condition CreateEquals(IOperand operand, decimal value)
+		{
+			return CreateEquals(operand, ValueOperand.Create(value));
+		}
+
+		/// <summary>
 		/// Vytvoøí podmínku testující rovnost hodnoty operandù.
 		/// </summary>
 		public static Condition CreateEquals(IOperand operand1, IOperand operand2)
@@ -30,6 +38,14 @@ namespace Havit.Business.Query
 		/// Vytvoøí podmínku testující hodnoty pomocí zadaného operátoru.
 		/// </summary>
 		public static Condition Create(IOperand operand, ComparisonOperator comparisonOperator, int value)
+		{
+			return Create(operand, comparisonOperator, ValueOperand.Create(value));
+		}
+
+		/// <summary>
+		/// Vytvoøí podmínku testující hodnoty pomocí zadaného operátoru.
+		/// </summary>
+		public static Condition Create(IOperand operand, ComparisonOperator comparisonOperator, decimal value)
 		{
 			return Create(operand, comparisonOperator, ValueOperand.Create(value));
 		}

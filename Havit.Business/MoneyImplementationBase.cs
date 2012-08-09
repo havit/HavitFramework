@@ -62,6 +62,15 @@ namespace Havit.Business
 		{
 			return DivideMoney<TResult>(money, multiplicand);
 		}
+
+		/// <summary>
+		/// Vypoète podíl èástek. Napø. pro výpoèet pomìru èástek, marže, apod.
+		/// </summary>	
+		public static decimal operator /(MoneyImplementationBase<TCurrency, TResult> dividend, MoneyImplementationBase<TCurrency, TResult> divisor)
+		{
+			return DivideMoney(dividend, divisor);
+		}
+
 		#endregion
 
 		#region Constructors

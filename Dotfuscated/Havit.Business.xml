@@ -1362,6 +1362,11 @@
             Vydělí hodnotu Money konstantou typu int.
             </summary>
         </member>
+        <member name="M:Havit.Business.Money`1.op_Division(Havit.Business.Money{`0},Havit.Business.Money{`0})">
+            <summary>
+            Vypočte podíl částek. Např. pro výpočet poměru částek, marže, apod.
+            </summary>
+        </member>
         <member name="M:Havit.Business.Money`1.SumMoney``1(Havit.Business.Money{`0},Havit.Business.Money{`0})">
             <summary>
             Sečte dvě hodnoty Money. Pokud se neshoduje měna, operace vyvolá výjimku.	
@@ -1380,6 +1385,11 @@
         <member name="M:Havit.Business.Money`1.DivideMoney``1(Havit.Business.Money{`0},System.Decimal)">
             <summary>
             Vydělí částku konstantou.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Money`1.DivideMoney(Havit.Business.Money{`0},Havit.Business.Money{`0})">
+            <summary>
+            Vypočte podíl částek. Např. pro výpočet poměru částek, marže, apod.
             </summary>
         </member>
         <member name="P:Havit.Business.Money`1.Amount">
@@ -1597,6 +1607,11 @@
             <summary>
             Vydělí hodnotu Money konstantou typu int.
             </summary>
+        </member>
+        <member name="M:Havit.Business.MoneyImplementationBase`2.op_Division(Havit.Business.MoneyImplementationBase{`0,`1},Havit.Business.MoneyImplementationBase{`0,`1})">
+            <summary>
+            Vypočte podíl částek. Např. pro výpočet poměru částek, marže, apod.
+            </summary>	
         </member>
         <member name="M:Havit.Business.MoneyImplementationBase`2.#ctor">
             <summary>

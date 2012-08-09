@@ -241,6 +241,15 @@ namespace Havit.Business
 		{
 			return DivideMoney<Money<TCurrency>>(money, multiplicand);
 		}
+		
+		/// <summary>
+		/// Vypoète podíl èástek. Napø. pro výpoèet pomìru èástek, marže, apod.
+		/// </summary>
+		public static decimal operator /(Money<TCurrency> dividend, Money<TCurrency> divisor)
+		{
+			return DivideMoney(dividend, divisor);
+		}
+
 		#endregion
 
 		#region SumMoney
@@ -315,6 +324,24 @@ namespace Havit.Business
 			result.Currency = money.Currency;
 			return result;
 		}
+
+		/// <summary>
+		/// Vypoète podíl èástek. Napø. pro výpoèet pomìru èástek, marže, apod.
+		/// </summary>
+		public static decimal DivideMoney(Money<TCurrency> dividend, Money<TCurrency> divisor)			
+		{
+			AssertNotNull(dividend, "dividend");
+			AssertNotNull(dividend.Amount, "dividend.Amount");
+
+			AssertNotNull(divisor, "divisor");
+			AssertNotNull(divisor.Amount, "divisor.Amount");			
+			
+			AssertSameCurrencies(dividend.Currency, divisor.Currency);
+
+			decimal result = dividend.Amount.Value / divisor.Amount.Value;
+			return result;
+		}
+
 		#endregion
 	}	
 }

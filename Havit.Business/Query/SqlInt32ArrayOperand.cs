@@ -42,10 +42,12 @@ namespace Havit.Business.Query
 			SqlCommand sqlCommand = command as SqlCommand;
 
 			string parameterName;
+			int index = 1;
 			do
 			{
-				parameterName = "@param" + new Random().Next(Int32.MaxValue);
-			} while (sqlCommand.Parameters.Contains(parameterName));
+				parameterName = "@param" + (command.Parameters.Count + index).ToString();
+				index += 1;
+			} while (command.Parameters.Contains(parameterName));
 
 			SqlParameter parameter = new SqlParameter();
 			parameter.ParameterName = parameterName;

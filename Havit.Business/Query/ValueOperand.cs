@@ -39,9 +39,11 @@ namespace Havit.Business.Query
 		string IOperand.GetCommandValue(System.Data.Common.DbCommand command)
 		{
 			string parameterName;
+			int index = 1;
 			do
 			{
-				parameterName = "@param" + new Random().Next(Int32.MaxValue);
+				parameterName = "@param" + (command.Parameters.Count + index).ToString();
+				index += 1;
 			} while (command.Parameters.Contains(parameterName));
 
 			DbParameter parameter = command.CreateParameter();

@@ -517,14 +517,14 @@ namespace Havit.Web.UI.WebControls
 					dateTimePickerDynarchCalendar.ShowsTime = false;
 					if (valueTextBox.MaxLength == 0)
 					{
-						valueTextBox.MaxLength = 10;
+						valueTextBox.MaxLength = new DateTime(2000, 12, 31).ToShortDateString().Length;
 					}
 					break;
 				case DateTimeMode.DateTime:
 					dateTimePickerDynarchCalendar.ShowsTime = true;
 					if (valueTextBox.MaxLength == 0)
 					{
-						valueTextBox.MaxLength = 16;
+						valueTextBox.MaxLength = new DateTime(2000, 12, 31, 23, 59, 59, 999).ToString("g").Length;
 					}
 					break;
 				default:

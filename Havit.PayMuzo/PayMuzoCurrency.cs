@@ -16,6 +16,28 @@ namespace Havit.PayMuzo
 		/// CZK, 203, Koruna česká.
 		/// </summary>
 		public static PayMuzoCurrency Czk { get { return FindByNumericCode(203); } }
+
+		/// <summary>
+		/// EUR, 978, Euro
+		/// </summary>
+		public static PayMuzoCurrency Eur
+		{
+			get
+			{
+				return FindByNumericCode(978);
+			}
+		}
+
+		/// <summary>
+		/// USD, 840, Americký dolar.
+		/// </summary>
+		public static PayMuzoCurrency Usd
+		{
+			get
+			{
+				return FindByNumericCode(840);
+			}
+		}
 		#endregion
 
 		#region Properties
@@ -80,6 +102,8 @@ namespace Havit.PayMuzo
 			currencies = new Hashtable();
 
 			RegisterCurrency(new PayMuzoCurrency("CZK", 203, 100));
+			RegisterCurrency(new PayMuzoCurrency("EUR", 978, 100));
+			RegisterCurrency(new PayMuzoCurrency("USD", 840, 100));
 		}
 		#endregion
 

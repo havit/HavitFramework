@@ -15,28 +15,6 @@ namespace Havit.Web.UI.WebControls
 	{
 		#region Data Members (abecednì)
 		/// <summary>
-		/// Vrátí/nastaví hodnotu indikující, zda-li se má pøi kliknutí na tlaèítko provést validace.
-		/// </summary>
-		/// <value>Default hodnota je <b>false</b>!!! Aby bylo chování stejné jako <see cref="ButtonColumn"/></value>
-		public bool CausesValidation
-		{
-			get
-			{
-				object obj = ViewState["CausesValidation"]; 
-				if (obj != null)
-				{
-					return (bool)obj;
-				}
-				return false;
-			}
-			set
-			{
-				ViewState["CausesValidation"] = value; 
-				this.OnColumnChanged();
-			}
-		}
-
-		/// <summary>
 		/// Vrátí/nastaví statický text, který se má zobrazovat do confirmation dialogu pøi kliknutí tlaèítka.
 		/// </summary>
 		/// <remarks>
@@ -128,16 +106,6 @@ namespace Havit.Web.UI.WebControls
 			{
 				// button je podle SDK vždy nultý control
 				WebControl button = (WebControl)cell.Controls[0];
-
-				// nastavení CausesValidation
-				if (button is Button)
-				{
-					((Button)button).CausesValidation = this.CausesValidation;
-				}
-				else
-				{
-					((LinkButton)button).CausesValidation = this.CausesValidation;
-				}
 
 				// DataBinding se musí dìlat v DataBinding události, protože nyní nemáme pøístup k Item prvku (datùm)
 				// tam si doøešíme tøeba ConfirmationDialog

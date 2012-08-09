@@ -25,6 +25,10 @@ namespace WebApplicationTest
 				E1.DataSource = Role.GetAll().FindAll(delegate(Role role) { return role.ID < 2; });
 				E1.DataBind();
 				E1.SelectedObjects = Role.GetAll();
+
+				// Vybere roli 1 a 3. Role 5 neexistuje.
+				int[] abc = { 1, 3, 5 };
+				E2.SelectObjectsIfPresent(abc);
 			}
 		}
 	}

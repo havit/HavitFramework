@@ -343,5 +343,32 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region SelectObjectsIfPresent
+		/// <summary>
+		/// Vybere objekt dle ID, pokud je objekt s tímto ID mezi daty.
+		/// Pokud není, neprovede nic. Výslední kolekce objektù nastaví výbìr (SelectedObjects).
+		/// Metoda je urèena pro vnitøní implementaci ukládání hodnot.
+		/// </summary>
+		/// <param name="objectIDs"></param>
+		public void SelectObjectsIfPresent(int[] objectIDs)
+		{
+			List<object> objectsList = new List<object>();
+
+			EnsureAutoDataBind();
+
+			foreach (int objectID in objectIDs)
+			{
+				// pokud se objectID nachází mezi prvkama ERBL, získáme objekt a pøidáme ho do kolekce
+				if (Items.FindByValue(objectID.ToString()) != null)
+				{
+					Object obj = ItemObjectInfo.GetObjectMethod(objectID);
+					objectsList.Add(obj);
+				}
+			}
+
+			// Nastavení vybraných položek
+			SelectedObjects = objectsList.ToArray();
+		} 
+		#endregion
 	}
 }

@@ -1740,6 +1740,196 @@
             Např. po standardní obsluze událostí EditCommand, CancelCommand, PageIndexChanged, atp.
             </remarks>
         </member>
+        <member name="T:Havit.Web.UI.WebControls.CommandFieldStyle">
+            <summary>
+            Zapouzdření pro skinování CommandFieldu, uložiště hodnot.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.CommandFieldStyle.#ctor">
+            <summary>
+            Vytvoří instanci.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.CommandFieldStyle.OnPropertyChanged">
+            <summary>
+            Zajišťuje spuštění události <see cref="E:Havit.Web.UI.WebControls.CommandFieldStyle.PropertyChanged"/>.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.AccessibleHeaderText">
+            <summary>
+            Gets or sets text that is rendered as the AbbreviatedText property value in some controls.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.ButtonType">
+            <summary>
+            Gets or sets the button type to display in the button field.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.CancelImageUrl">
+            <summary>
+            Gets or sets the URL to an image to display for the Cancel button in a CommandField field.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.CancelText">
+            <summary>
+            Gets or sets the caption for the Cancel button displayed in a CommandField field.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.CausesValidation">
+            <summary>
+            Gets or sets a value indicating whether validation is performed when the user clicks a button in a CommandField field.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.ControlStyle">
+            <summary>
+            Gets or sets the style of any Web server controls contained by the DataControlField object.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.DeleteImageUrl">
+            <summary>
+            Gets or sets the URL to an image to display for a Delete button in a CommandField field.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.DeleteConfirmationText">
+            <summary>
+            Text, na který se má ptát jscript:confirm() před smazáním záznamu. Pokud je prázdný, na nic se neptá.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.DeleteText">
+            <summary>
+            Gets or sets the caption for a Delete button in a CommandField field.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.EditImageUrl">
+            <summary>
+            Gets or sets the URL to an image to display for an Edit button in a CommandField field.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.EditText">
+            <summary>
+            Gets or sets the caption for an Edit button in a CommandField field.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.FooterText">
+            <summary>
+            Gets or sets the style of the footer of the data control field.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.FooterStyle">
+            <summary>
+            Gets or sets the text that is displayed in the footer item of a data control field.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.HeaderImageUrl">
+            <summary>
+            Gets or sets the URL of an image that is displayed in the header item of a data control field.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.HeaderStyle">
+            <summary>
+            Gets or sets the style of the header of the data control field.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.HeaderText">
+            <summary>
+            Gets or sets the text that is displayed in the header item of a data control field.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.InsertImageUrl">
+            <summary>
+            Gets or sets the URL to an image to display for the Insert button in a CommandField field.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.InsertText">
+            <summary>
+            Gets or sets the caption for the Insert button in a CommandField field.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.ItemStyle">
+            <summary>
+            Gets the style of any text-based content displayed by a data control field.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.NewImageUrl">
+            <summary>
+            Gets or sets the URL to an image to display for the New button in a CommandField field.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.NewText">
+            <summary>
+            Gets or sets the caption for the New button in a CommandField field.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.SelectImageUrl">
+            <summary>
+            Gets or sets the URL to an image to display for a Select button in a CommandField field.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.SelectText">
+            <summary>
+            Gets or sets the caption for a Select button in a CommandField field.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.ShowCancelButton">
+            <summary>
+            Gets or sets a value indicating whether a Cancel button is displayed in a CommandField field.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.ShowDeleteButton">
+            <summary>
+            Gets or sets a value indicating whether a Delete button is displayed in a CommandField field.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.ShowEditButton">
+            <summary>
+            Gets or sets a value indicating whether an Edit button is displayed in a CommandField field.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.ShowHeader">
+            <summary>
+            Gets or sets a value indicating whether the header section is displayed in a ButtonFieldBase object.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.ShowInsertButton">
+            <summary>
+            Gets or sets a value indicating whether a New button is displayed in a CommandField field.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.ShowSelectButton">
+            <summary>
+            Gets or sets a value indicating whether a Select button is displayed in a CommandField field.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.UpdateImageUrl">
+            <summary>
+            Gets or sets the URL to an image to display for an Update button in a CommandField field.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.UpdateText">
+            <summary>
+            Gets or sets the caption for an Update button in a CommandField field.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.ValidationGroup">
+            <summary>
+            Gets or sets the name of the group of validation controls to validate when a button in a ButtonFieldBase object is clicked.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.Visible">
+            <summary>
+            Gets or sets a value indicating whether a data control field is rendered.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.ViewState">
+            <summary>
+            ViewState pro ukládání hodnot.
+            </summary>
+        </member>
+        <member name="E:Havit.Web.UI.WebControls.CommandFieldStyle.PropertyChanged">
+            <summary>
+            Událost, která se zavolá při změně některé property.
+            </summary>
+        </member>
         <member name="T:Havit.Web.UI.Scriptlets.SimpleControlExtender">
             <summary>
             Control extender pro jednoduché Controly (WebControls).
@@ -2057,191 +2247,6 @@
             Udává, zda v případě změny hodnoty prvku (zaškrtnutí, změna textu, apod.)
             dojde ke spuštění skriptu.
             Výchozí hodnota je false.
-            </summary>
-        </member>
-        <member name="T:Havit.Web.UI.WebControls.CommandFieldStyle">
-            <summary>
-            Zapouzdření pro skinování CommandFieldu, uložiště hodnot.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.CommandFieldStyle.#ctor">
-            <summary>
-            Vytvoří instanci.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.CommandFieldStyle.OnPropertyChanged">
-            <summary>
-            Zajišťuje spuštění události <see cref="E:Havit.Web.UI.WebControls.CommandFieldStyle.PropertyChanged"/>.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.AccessibleHeaderText">
-            <summary>
-            Gets or sets text that is rendered as the AbbreviatedText property value in some controls.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.ButtonType">
-            <summary>
-            Gets or sets the button type to display in the button field.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.CancelImageUrl">
-            <summary>
-            Gets or sets the URL to an image to display for the Cancel button in a CommandField field.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.CancelText">
-            <summary>
-            Gets or sets the caption for the Cancel button displayed in a CommandField field.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.CausesValidation">
-            <summary>
-            Gets or sets a value indicating whether validation is performed when the user clicks a button in a CommandField field.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.ControlStyle">
-            <summary>
-            Gets or sets the style of any Web server controls contained by the DataControlField object.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.DeleteImageUrl">
-            <summary>
-            Gets or sets the URL to an image to display for a Delete button in a CommandField field.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.DeleteConfirmationText">
-            <summary>
-            Text, na který se má ptát jscript:confirm() před smazáním záznamu. Pokud je prázdný, na nic se neptá.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.DeleteText">
-            <summary>
-            Gets or sets the caption for a Delete button in a CommandField field.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.EditImageUrl">
-            <summary>
-            Gets or sets the URL to an image to display for an Edit button in a CommandField field.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.EditText">
-            <summary>
-            Gets or sets the caption for an Edit button in a CommandField field.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.FooterText">
-            <summary>
-            Gets or sets the style of the footer of the data control field.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.FooterStyle">
-            <summary>
-            Gets or sets the text that is displayed in the footer item of a data control field.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.HeaderImageUrl">
-            <summary>
-            Gets or sets the URL of an image that is displayed in the header item of a data control field.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.HeaderStyle">
-            <summary>
-            Gets or sets the style of the header of the data control field.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.HeaderText">
-            <summary>
-            Gets or sets the text that is displayed in the header item of a data control field.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.InsertImageUrl">
-            <summary>
-            Gets or sets the URL to an image to display for the Insert button in a CommandField field.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.InsertText">
-            <summary>
-            Gets or sets the caption for the Insert button in a CommandField field.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.ItemStyle">
-            <summary>
-            Gets the style of any text-based content displayed by a data control field.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.NewImageUrl">
-            <summary>
-            Gets or sets the URL to an image to display for the New button in a CommandField field.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.NewText">
-            <summary>
-            Gets or sets the caption for the New button in a CommandField field.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.SelectImageUrl">
-            <summary>
-            Gets or sets the URL to an image to display for a Select button in a CommandField field.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.SelectText">
-            <summary>
-            Gets or sets the caption for a Select button in a CommandField field.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.ShowCancelButton">
-            <summary>
-            Gets or sets a value indicating whether a Cancel button is displayed in a CommandField field.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.ShowDeleteButton">
-            <summary>
-            Gets or sets a value indicating whether a Delete button is displayed in a CommandField field.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.ShowEditButton">
-            <summary>
-            Gets or sets a value indicating whether an Edit button is displayed in a CommandField field.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.ShowHeader">
-            <summary>
-            Gets or sets a value indicating whether the header section is displayed in a ButtonFieldBase object.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.ShowInsertButton">
-            <summary>
-            Gets or sets a value indicating whether a New button is displayed in a CommandField field.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.ShowSelectButton">
-            <summary>
-            Gets or sets a value indicating whether a Select button is displayed in a CommandField field.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.UpdateImageUrl">
-            <summary>
-            Gets or sets the URL to an image to display for an Update button in a CommandField field.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.UpdateText">
-            <summary>
-            Gets or sets the caption for an Update button in a CommandField field.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.ValidationGroup">
-            <summary>
-            Gets or sets the name of the group of validation controls to validate when a button in a ButtonFieldBase object is clicked.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.CommandFieldStyle.ViewState">
-            <summary>
-            ViewState pro ukládání hodnot.
-            </summary>
-        </member>
-        <member name="E:Havit.Web.UI.WebControls.CommandFieldStyle.PropertyChanged">
-            <summary>
-            Událost, která se zavolá při změně některé property.
             </summary>
         </member>
     </members>

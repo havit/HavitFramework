@@ -392,27 +392,27 @@ namespace Havit.Web.UI.WebControls
 					}
 					if (ViewState["ShowInsertButton"] == null)
 					{
-						this.ShowInsertButton = this.ShowInsertButton;
+						this.ShowInsertButton = style.ShowInsertButton;
 					}
 					if (ViewState["ShowSelectButton"] == null)
 					{
-						this.ShowSelectButton = this.ShowSelectButton;
+						this.ShowSelectButton = style.ShowSelectButton;
 					}
 					if (ViewState["UpdateImageUrl"] == null)
 					{
-						this.UpdateImageUrl = this.UpdateImageUrl;
+						this.UpdateImageUrl = style.UpdateImageUrl;
 					}
 					if (ViewState["UpdateText"] == null)
 					{
-						this.UpdateText = this.UpdateText;
+						this.UpdateText = style.UpdateText;
 					}
 					if (ViewState["ValidationGroup"] == null)
 					{
-						this.ValidationGroup = this.ValidationGroup;
+						this.ValidationGroup = style.ValidationGroup;
 					}
 					if (ViewState["Visible"] == null)
 					{
-						this.Visible = this.Visible;
+						this.Visible = style.Visible;
 					}
 				}
 
@@ -530,27 +530,27 @@ namespace Havit.Web.UI.WebControls
 					}
 					if (style.ViewState["ShowInsertButton"] != null)
 					{
-						this.ShowInsertButton = this.ShowInsertButton;
+						this.ShowInsertButton = style.ShowInsertButton;
 					}
 					if (style.ViewState["ShowSelectButton"] != null)
 					{
-						this.ShowSelectButton = this.ShowSelectButton;
+						this.ShowSelectButton = style.ShowSelectButton;
 					}
 					if (style.ViewState["UpdateImageUrl"] != null)
 					{
-						this.UpdateImageUrl = this.UpdateImageUrl;
+						this.UpdateImageUrl = style.UpdateImageUrl;
 					}
 					if (style.ViewState["UpdateText"] != null)
 					{
-						this.UpdateText = this.UpdateText;
+						this.UpdateText = style.UpdateText;
 					}
 					if (style.ViewState["ValidationGroup"] != null)
 					{
-						this.ValidationGroup = this.ValidationGroup;
+						this.ValidationGroup = style.ValidationGroup;
 					}
 					if (style.ViewState["Visible"] != null)
 					{
-						this.Visible = this.Visible;
+						this.Visible = style.Visible;
 					}
 				}
 			}

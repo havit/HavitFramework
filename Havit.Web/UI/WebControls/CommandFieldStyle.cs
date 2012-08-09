@@ -871,6 +871,33 @@ namespace Havit.Web.UI.WebControls
 				}
 			}
 		}
+
+		/// <summary>
+		/// Gets or sets a value indicating whether a data control field is rendered.
+		/// </summary>
+		[Category("Behavior")]
+		[DefaultValue(true)]
+		public bool Visible
+		{
+			get
+			{
+				object temp = this.ViewState["Visible"];
+				if (temp != null)
+				{
+					return (bool)temp;
+				}
+				return true;
+			}
+			set
+			{
+				object temp = this.ViewState["Visible"];
+				if ((temp == null) || (value != ((bool)temp)))
+				{
+					this.ViewState["Visible"] = value;
+					this.OnPropertyChanged();
+				}
+			}
+		}
 		#endregion
 
 		#region ViewState

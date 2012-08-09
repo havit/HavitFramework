@@ -106,7 +106,7 @@ namespace Havit.Web.UI
 			/// </summary>
 			public static void DeleteOldAnonymousFiles(string root)
 			{
-				DeleteUserFiles(root, null, new TimeSpan(2, 0, 0)); // 2 dny
+				DeleteUserFiles(root, null, new TimeSpan(2, 0, 0, 0)); // 2 dny
 			}
 			#endregion
 

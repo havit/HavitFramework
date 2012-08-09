@@ -274,7 +274,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Ukládá member-objekty.
 		/// </summary>
-		protected override void Save_SaveMembers(DbTransaction transaction)
+		protected override sealed void Save_SaveMembers(DbTransaction transaction)
 		{
 			base.Save_SaveMembers(transaction);
 			
@@ -288,7 +288,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Ukládá member-kolekce objektu.
 		/// </summary>
-		protected override void Save_SaveCollections(DbTransaction transaction)
+		protected override sealed void Save_SaveCollections(DbTransaction transaction)
 		{
 			base.Save_SaveCollections(transaction);
 			
@@ -475,13 +475,8 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		protected override sealed void Delete_Perform(DbTransaction transaction)
 		{
-			if (IsNew)
-			{
-				throw new InvalidOperationException("Nelze smazat nový objekt.");
-			}
-			
 			Deleted = System.DateTime.Now;
-			Save(transaction);
+			Save_Update(transaction);
 		}
 		
 		#endregion

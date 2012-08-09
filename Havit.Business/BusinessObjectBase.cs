@@ -308,9 +308,9 @@ namespace Havit.Business
 				return;
 			}
 
-			Delete_Perform(transaction);
-
+			IsDirty = true;
 			IsDeleted = true;
+			Save(transaction);
 		}
 
 		/// <summary>

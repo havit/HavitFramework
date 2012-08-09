@@ -162,12 +162,12 @@ namespace Havit.Business
 				{
 
 					// nechceme dvojí Save v rámci jedné transakce, proto si transakci ukládáme jako scope sejvu a v rámci stejného scope vykopneme Save
-					if ((lastSaveTransaction != null) && (object.ReferenceEquals(lastSaveTransaction.Target, myTransaction)))
+					// ovšem pokud jsme dirty, tak budeme pokraèovat ukládáním
+					if (!IsDirty && (lastSaveTransaction != null) && (object.ReferenceEquals(lastSaveTransaction.Target, myTransaction)))
 					{
 						return;
 					}
 					lastSaveTransaction = new WeakReference(myTransaction);
-
 
 					Save_BaseInTransaction(myTransaction); // base.Save(myTransaction) hlásí warning
 				}, transaction);
@@ -199,6 +199,11 @@ namespace Havit.Business
 
 			// nesluèovat do jedné podmínky, InsertRequiredForFullInsert mùže zavolat mùj MinimalInsert a pak už nejsem New
 
+			if (IsNew && IsDeleted)
+			{
+				throw new InvalidOperationException("Nový objekt nemùže být smazán.");
+			}
+
 			if (IsNew)
 			{
 				Save_SaveMembers(transaction);
@@ -211,7 +216,14 @@ namespace Havit.Business
 				Save_SaveCollections(transaction);
 				if (IsDirty)
 				{
-					Save_Update(transaction);
+					if (IsDeleted)
+					{
+						Delete_Perform(transaction);
+					}
+					else
+					{
+						Save_Update(transaction);
+					}
 				}
 			}
 		}

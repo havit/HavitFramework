@@ -161,7 +161,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Ukládá member-objekty.
 		/// </summary>
-		protected override void Save_SaveMembers(DbTransaction transaction)
+		protected override sealed void Save_SaveMembers(DbTransaction transaction)
 		{
 			base.Save_SaveMembers(transaction);
 			
@@ -171,7 +171,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Ukládá member-kolekce objektu.
 		/// </summary>
-		protected override void Save_SaveCollections(DbTransaction transaction)
+		protected override sealed void Save_SaveCollections(DbTransaction transaction)
 		{
 			base.Save_SaveCollections(transaction);
 			

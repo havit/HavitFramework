@@ -5,6 +5,8 @@ using System;
 using System.Text;
 using System.Collections.Generic;
 using Havit.BusinessLayerTest;
+using Havit.Data;
+using System.Data.Common;
 
 namespace Havit.BusinessTest
 {
@@ -140,13 +142,33 @@ namespace Havit.BusinessTest
 		}
 		#endregion
 
-		#region MyRegion
+		#region GetObject_Neexistujici
 		[TestMethod]
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void GetObject_Neexistujici()
 		{
 			Role.GetObject(-999).Load();
 		}
+		#endregion
+
+		#region Save_MultipleSaveTest
+		[TestMethod]
+		public void Save_SaveAndDeleteTest()
+		{
+			int originalCount = Subjekt.GetAll().Count;
+			Subjekt subjekt = Subjekt.CreateObject();
+			subjekt.Nazev = "test";
+			subjekt.Save();
+			DbConnector.Default.ExecuteTransaction(delegate(DbTransaction transaction)
+				{
+					subjekt.Nazev = "test2";
+					subjekt.Save(transaction);
+					subjekt.Delete(transaction);
+				});
+			int newCount = Subjekt.GetAll().Count;
+			Assert.AreEqual(originalCount, newCount);
+		}
+		
 		#endregion
 	}
 

@@ -12,11 +12,13 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class GridViewCommandField : CommandField
 	{
-		public string DeleteConfirmText
+		#region DeleteConfirmationText
+		public string DeleteConfirmationText
 		{
 			get { return (string)ViewState["DeleteConfirmText"]; }
 			set { ViewState["DeleteConfirmText"] = value; }
 		}
+		#endregion
 
 		#region InitializeCell
 		public override void InitializeCell(
@@ -89,9 +91,9 @@ namespace Havit.Web.UI.WebControls
 							IButtonControl button = this.AddButtonToCell(cell, "Delete", this.DeleteText, false, string.Empty, rowIndex, this.DeleteImageUrl);
 
 							// doplneni o DeleteConfirmText
-							if (!String.IsNullOrEmpty(DeleteConfirmText))
+							if (!String.IsNullOrEmpty(DeleteConfirmationText))
 							{
-								((WebControl)button).Attributes.Add("onclick", String.Format("return confirm('{0}');", DeleteConfirmText.Replace("'", "''")));
+								((WebControl)button).Attributes.Add("onclick", String.Format("return confirm('{0}');", DeleteConfirmationText.Replace("'", "''")));
 							}
 
 							insertSpace = false;

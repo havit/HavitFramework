@@ -47,18 +47,18 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Seznam sloupcù, které jsou výsledkem dotazu (SELECT sloupec1, sloupec2...).
 		/// </summary>
-		public PropertyCollection Properties
+		public PropertyInfoCollection Properties
 		{
 		  get { return properties; }
 		}
-		private PropertyCollection properties = new PropertyCollection();
+		private PropertyInfoCollection properties = new PropertyInfoCollection();
 
 		/// <summary>
 		/// Podmínky dotazu (WHERE ...).
 		/// </summary>
-		public CompositeCondition Conditions
+		public List<Condition> Conditions
 		{
-		  get { return conditions; }
+			get { return conditions.Conditions; }
 		}
 		private AndCondition conditions = new AndCondition();
 
@@ -164,7 +164,7 @@ namespace Havit.Business.Query
 		{
 			StringBuilder whereBuilder = new StringBuilder();
 			
-			Conditions.GetWhereStatement(command, whereBuilder);
+			conditions.GetWhereStatement(command, whereBuilder);
 			if (whereBuilder.Length > 0)
 				whereBuilder.Insert(0, "WHERE ");
 						

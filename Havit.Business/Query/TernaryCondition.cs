@@ -7,7 +7,7 @@ namespace Havit.Business.Query
 	/// <summary>
 	/// Tøída reprezentující podmínku o tøech operandech.
 	/// </summary>
-	public class TernaryCondition : BinaryCondition, ICondition
+	public class TernaryCondition : BinaryCondition
 	{
 		#region Protected fields
 		/// <summary>

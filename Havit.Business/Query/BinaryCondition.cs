@@ -7,7 +7,7 @@ namespace Havit.Business.Query
 	/// <summary>
 	/// Tøída reprezentující podmínku o dvou operandech.
 	/// </summary>
-	public class BinaryCondition : UnaryCondition, ICondition
+	public class BinaryCondition : UnaryCondition
 	{
 		#region Patterns
 		/// <summary>

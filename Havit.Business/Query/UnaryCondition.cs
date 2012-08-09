@@ -7,7 +7,7 @@ namespace Havit.Business.Query
 	/// <summary>
 	/// Tøída reprezentující podmínku o jednom operandu.
 	/// </summary>
-	public class UnaryCondition : ICondition
+	public class UnaryCondition : Condition
 	{
 		#region Patterns
 		/// <summary>
@@ -63,7 +63,7 @@ namespace Havit.Business.Query
 		/// </summary>
 		/// <param name="command"></param>
 		/// <param name="whereBuilder"></param>
-		public virtual void GetWhereStatement(System.Data.Common.DbCommand command, StringBuilder whereBuilder)
+		public override void GetWhereStatement(System.Data.Common.DbCommand command, StringBuilder whereBuilder)
 		{
 			whereBuilder.AppendFormat(ConditionPattern, Operand1.GetCommandValue(command));
 		}

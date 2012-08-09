@@ -13,7 +13,7 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Vytvoøí podmínku testující rovnost hodnoty.
 		/// </summary>
-		public static ICondition CreateEquals(Property property, int value)
+		public static Condition CreateEquals(PropertyInfo property, int value)
 		{
 			return new BinaryCondition(BinaryCondition.EqualsPattern, property, ValueOperand.Create(value));
 		}
@@ -21,7 +21,7 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Vytvoøí podmínku testující hodnoty pomocí zadaného operátoru.
 		/// </summary>
-		public static ICondition Create(Property property, ComparisonOperator comparisonOperator, int value)
+		public static Condition Create(PropertyInfo property, ComparisonOperator comparisonOperator, int value)
 		{
 			return new BinaryCondition(property, BinaryCondition.GetComparisonPattern(comparisonOperator), ValueOperand.Create(value));			
 		}

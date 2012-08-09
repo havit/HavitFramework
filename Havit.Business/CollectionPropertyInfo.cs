@@ -7,14 +7,14 @@ namespace Havit.Business
 	/// <summary>
 	/// Kolekce objektù tøídy IProperty.
 	/// </summary>
-	public class CollectionProperty : IProperty
+	public class CollectionPropertyInfo : IPropertyInfo
 	{
 		/// <summary>
 		/// Vytvoøí instanci CollectionProperty.
 		/// </summary>
 		/// <param name="itemType">Typ prvkù kolekce.</param>
 		/// <param name="collectionSelectFieldStatement">Èást SQL dotazu pro vytažení hodnoty daného sloupce.</param>
-		public CollectionProperty(Type itemType, string collectionSelectFieldStatement)
+		public CollectionPropertyInfo(Type itemType, string collectionSelectFieldStatement)
 		{
 			this.itemType = itemType;
 			this.collectionSelectFieldStatement = collectionSelectFieldStatement;

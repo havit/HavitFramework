@@ -41,7 +41,7 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Vytvoøí položdu øazení podle sloupce, vzestupné poøadí.
 		/// </summary>
-		public SortingItem(Property property)
+		public SortingItem(PropertyInfo property)
 			: this(property.FieldName, ListSortDirection.Ascending)
 		{
 		}
@@ -49,7 +49,7 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Vytvoøí položdu øazení podle sloupce a daného poøadí.
 		/// </summary>
-		public SortingItem(Property property, ListSortDirection direction)
+		public SortingItem(PropertyInfo property, ListSortDirection direction)
 			: this(property.FieldName, direction)
 		{
 		}

@@ -91,7 +91,7 @@
     <Compile Include="ActiveRecordBusinessObjectBase.cs" />
     <Compile Include="BusinessObjectBase.cs" />
     <Compile Include="BusinessObjectCollection.cs" />
-    <Compile Include="CollectionProperty.cs" />
+    <Compile Include="CollectionPropertyInfo.cs" />
     <Compile Include="CollectionPropertyHolder.cs" />
     <Compile Include="Properties\GlobalSuppressions.cs" />
     <Compile Include="Query\AndCondition.cs" />
@@ -100,7 +100,7 @@
     <Compile Include="Query\ComparisonOperator.cs" />
     <Compile Include="Query\ComparisonOperatorHelper.cs" />
     <Compile Include="Query\CompositeCondition.cs" />
-    <Compile Include="Query\ICondition.cs" />
+    <Compile Include="Query\Condition.cs" />
     <Compile Include="Query\IOperand.cs" />
     <Compile Include="Query\NullCondition.cs" />
     <Compile Include="Query\NumberCondition.cs" />
@@ -111,7 +111,7 @@
     <Compile Include="Query\UnaryCondition.cs" />
     <Compile Include="Query\ValueOperand.cs" />
     <Compile Include="ConstraintViolationException.cs" />
-    <Compile Include="IProperty.cs" />
+    <Compile Include="IPropertyInfo.cs" />
     <Compile Include="Query\SortingItem.cs" />
     <Compile Include="Query\SortingItemCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -126,8 +126,8 @@
     <Compile Include="DateInfoDictionary.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Property.cs" />
-    <Compile Include="PropertyCollection.cs" />
+    <Compile Include="PropertyInfo.cs" />
+    <Compile Include="PropertyInfoCollection.cs" />
     <Compile Include="PropertyHolder.cs" />
     <Compile Include="PropertyHolderBase.cs" />
     <Compile Include="Query\QueryParams.cs" />

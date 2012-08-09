@@ -15,7 +15,7 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Vytvoøí kompozitní podmínku. Lze inicializovat sadou èlenských podmínek.
 		/// </summary>		
-		public AndCondition(params ICondition[] conditions)
+		public AndCondition(params Condition[] conditions)
 			: base("AND", conditions)
 		{
 		}

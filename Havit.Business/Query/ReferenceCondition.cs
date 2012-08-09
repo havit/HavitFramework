@@ -12,7 +12,7 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Vytvoøí podmínku na rovnost.
 		/// </summary>
-		public static ICondition CreateEquals(Property property, int? ID)
+		public static Condition CreateEquals(PropertyInfo property, int? ID)
 		{
 			if (ID == null || ID < 0)
 			{
@@ -27,7 +27,7 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Vytvoøí podmínku na rovnost.
 		/// </summary>
-		public static ICondition CreateEquals(Property property, BusinessObjectBase businessObject)
+		public static Condition CreateEquals(PropertyInfo property, BusinessObjectBase businessObject)
 		{
 			if (businessObject.IsNew)
 			{

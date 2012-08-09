@@ -12,7 +12,7 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Vytvoøí podmínku pro vlastnost rovnou dané hodnotì.
 		/// </summary>
-		public static ICondition CreateEquals(Property property, bool? value)
+		public static Condition CreateEquals(PropertyInfo property, bool? value)
 		{
 			if (value == null)
 			{
@@ -27,7 +27,7 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Vytvoøí podmínku testující vlastnost na hodnotu true.
 		/// </summary>
-		public static ICondition CreateTrue(Property property)
+		public static Condition CreateTrue(PropertyInfo property)
 		{
 			return CreateEquals(property, true);
 		}
@@ -35,7 +35,7 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Vytvoøí podmínku testující vlastnost na hodnotu false.
 		/// </summary>
-		public static ICondition CreateFalse(Property property)
+		public static Condition CreateFalse(PropertyInfo property)
 		{
 			return CreateEquals(property, false);
 		}

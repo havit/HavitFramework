@@ -12,7 +12,7 @@ namespace Havit.Business
 	/// nese informace o daném sloupci a jeho vazbu na objektovou strukturu.
 	/// </summary>
 	[Serializable]
-	public class Property : IProperty, IOperand
+	public class PropertyInfo : IPropertyInfo, IOperand
 	{
 		/// <summary>
 		/// Vytvoøí instanci sloupce.
@@ -21,7 +21,7 @@ namespace Havit.Business
 		/// <param name="isPrimaryKey"></param>
 		/// <param name="nullable"></param>
 		/// <param name="fieldType"></param>
-		public Property(string fieldName, bool isPrimaryKey, SqlDbType fieldType, bool nullable)
+		public PropertyInfo(string fieldName, bool isPrimaryKey, SqlDbType fieldType, bool nullable)
 		{
 			this.fieldName = fieldName;
 			this.nullable = nullable;

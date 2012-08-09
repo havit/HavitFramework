@@ -88,6 +88,23 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region ReadOnly
+		/// <summary>
+		/// Udává, zda lze hodnotu v textovém políèku editovat.
+		/// </summary>
+		public bool ReadOnly
+		{
+			get
+			{
+				return valueTextBox.ReadOnly;
+			}
+			set
+			{
+				valueTextBox.ReadOnly = value;
+			}
+		}		
+		#endregion
+
 		#endregion
 
 		#region Appereance properties

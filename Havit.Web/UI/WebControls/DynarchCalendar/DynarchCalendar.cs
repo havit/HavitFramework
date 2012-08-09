@@ -263,7 +263,7 @@ namespace Havit.Web.UI.WebControls
 				{
 					return tmp;
 				}
-				return TransformDatePatternToClientScript(Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortDatePattern, Thread.CurrentThread.CurrentUICulture.DateTimeFormat.DateSeparator);
+				return TransformDatePatternToClientScript(Thread.CurrentThread.CurrentCulture.DateTimeFormat.ShortDatePattern, Thread.CurrentThread.CurrentCulture.DateTimeFormat.DateSeparator);
 			}
 			set
 			{

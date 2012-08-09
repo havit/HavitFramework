@@ -99,7 +99,7 @@ namespace Havit.Business
 		/// <summary>
 		/// Indikuje, zda-li je objekt zrovna ukládán (hlídá cyklické reference pøi ukládání).
 		/// </summary>
-		public bool IsSaving
+		protected internal bool IsSaving
 		{
 			get { return _isSaving; }
 			set { _isSaving = value; }
@@ -126,16 +126,41 @@ namespace Havit.Business
 
 		#region Constructors
 		/// <summary>
+		/// Implementaèní konstruktor.
+		/// </summary>
+		/// <param name="id">ID objektu (PK)</param>
+		/// <param name="isNew">indikuje nový objekt</param>
+		/// <param name="isDirty">indikuje objekt zmìnìný vùèi perzistentnímu uložišti</param>
+		/// <param name="isLoaded">indikuje naètený objekt</param>
+		protected internal BusinessObjectBase(int id, bool isNew, bool isDirty, bool isLoaded)
+		{
+			this._id = id;
+			this._isNew = isNew;
+			this._isDirty = isDirty;
+			this._isLoaded = isLoaded;
+
+			Init();
+		}
+
+		/// <summary>
 		/// Konstruktor pro nový objekt (bez perzistence v databázi).
 		/// </summary>
 		protected BusinessObjectBase()
+			: this(
+			NoID,		// ID
+			true,		// IsNew
+			false,		// IsDirty
+			true)		// IsLoaded
+
 		{
+			/*
 			this._id = NoID;
 			this._isNew = true;
 			this._isDirty = false;
 			this._isLoaded = true;
 
 			Init();
+			*/
 		}
 
 		/// <summary>
@@ -143,12 +168,19 @@ namespace Havit.Business
 		/// </summary>
 		/// <param name="id">primární klíè objektu</param>
 		protected BusinessObjectBase(int id)
+			: this(
+			id,		// ID
+			false,	// IsNew
+			false,	// IsDirty
+			false)	// IsLoaded
 		{
+			/*
 			this._id = id;
 			this._isLoaded = false;
 			this._isDirty = false;
 
 			Init();
+			 */
 		}
 		#endregion
 

@@ -59,15 +59,22 @@ namespace Havit.Business
 		/// </summary>
 		/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu naètenými z databáze</param>
 		protected ActiveRecordBusinessObjectBase(DataRecord record)
-			: base()
+			: base(
+			NoID,	// ID
+			false,	// IsNew
+			false,	// IsDirty
+			false)	// IsLoaded
+
 		{
 			if (record == null)
 			{
 				throw new ArgumentNullException("record");
 			}
 
+/* nahradil implementaèní constructor base(...)
 			this.IsNew = false;
 			this.IsLoaded = false;
+*/
 		
 			this.Load_ParseDataRecord(record);
 

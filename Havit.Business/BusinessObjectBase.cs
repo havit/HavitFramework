@@ -4,6 +4,7 @@ using System.Text;
 using Havit.Data;
 using System.Data.Common;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace Havit.Business
 {
@@ -16,6 +17,7 @@ namespace Havit.Business
 	/// pøi první potøebì je iniciováno jeho úplné naètení.<br/>
 	/// </remarks>
 	[Serializable]
+	[DebuggerDisplay("{GetType().FullName,nq} (ID={IsNew ? \"New\" : ID.ToString(),nq}, IsLoaded={IsLoaded,nq}, IsDirty={IsDirty,nq})")]
 	public abstract class BusinessObjectBase
 	{
 		#region Consts

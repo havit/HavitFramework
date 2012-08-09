@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Web;
 using System.Web.UI;
 using System.ComponentModel;
 
@@ -76,6 +77,12 @@ namespace Havit
 
 					System.ComponentModel.PropertyDescriptor descriptor = properties.Find(expression, true);
 					// tohle skoro nic nestojí
+					if (descriptor == null)
+					{
+						// standardní DataBinder vyhazuje HttpException, já nechci měnit typy výjimek, pro případně try/catch.
+						throw new HttpException(String.Format("Nepodařilo se vyhodnotit výraz '{0}', typ '{1}' neobsahuje vlastnost '{2}'.", dataField, currentValue.GetType().FullName, expression));
+
+					}
 					currentValue = descriptor.GetValue(currentValue);
 				}
 				else

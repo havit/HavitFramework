@@ -126,6 +126,7 @@
     <Content Include="Global.asax" />
     <Content Include="GridViewExtTest.aspx" />
     <Content Include="HavitScripts.js" />
+    <Content Include="SimpleTest.aspx" />
     <Content Include="Web.config" />
     <Content Include="WebFormExceptionTest.aspx" />
     <Content Include="WebServiceExceptionTest.asmx" />
@@ -291,6 +292,13 @@
     </Compile>
     <Compile Include="ScriptletTest3.aspx.designer.cs">
       <DependentUpon>ScriptletTest3.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SimpleTest.aspx.cs">
+      <DependentUpon>SimpleTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SimpleTest.aspx.designer.cs">
+      <DependentUpon>SimpleTest.aspx</DependentUpon>
     </Compile>
     <Compile Include="SingleSubmitProtectionTest.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>

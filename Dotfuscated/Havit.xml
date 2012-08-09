@@ -4,6 +4,540 @@
         <name>Havit</name>
     </assembly>
     <members>
+        <member name="T:Havit.Collections.GenericPropertyComparer`1">
+            <summary>
+            Porovnává hodnoty vlastností dvou objektů. Názvy vlastností jsou dodány, porovnávají se v dodaném pořadí.
+            Názvy vlastností mohou být složené: např. "Kniha.Autor.Prijmeni".
+            Property musí implementovat IComparable.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:Havit.Collections.GenericPropertyComparer`1.#ctor(System.String,System.Boolean)">
+            <summary>
+            Vytvoří instanci compareru pro řazení dle dané property.
+            </summary>
+            <param name="sortPropertyName">název property, podle které se má řadit</param>
+            <param name="ascending">true, má-li se řadit vzestupně, false, pokud sestupně</param>
+        </member>
+        <member name="M:Havit.Collections.GenericPropertyComparer`1.#ctor(Havit.Collections.SortItem)">
+            <summary>
+            Vytvoří instanci compareru pro řazení dle dané property.
+            </summary>
+            <param name="sortItem">Určuje parametr řazení.</param>
+        </member>
+        <member name="M:Havit.Collections.GenericPropertyComparer`1.#ctor(System.Collections.Generic.IList{Havit.Collections.SortItem})">
+            <summary>
+            Vytvoří instanci compareru pro řazení dle kolekce vlastností.
+            </summary>
+            <param name="sortItems">Určuje parametry řazení.</param>
+        </member>
+        <member name="M:Havit.Collections.GenericPropertyComparer`1.Compare(System.Object,System.Object,System.Int32)">
+            <summary>
+            Porovná vlastnosti instancí dvou objektů. Porovnávají se index-té vlastnosti uvedené ve fieldu sortItemCollection.
+            </summary>
+            <param name="x">První porovnávaný objekt.</param>
+            <param name="y">Druhý porovnávaný objekt.</param>
+            <param name="index">Index porovnávané vlastnosti.</param>
+            <returns>-1, 0, 1 - jako Compare(T, T)</returns>
+        </member>
+        <member name="M:Havit.Collections.GenericPropertyComparer`1.GetValue(System.Object,System.Int32)">
+            <summary>
+            Vrátí hodnot index-té property objektu.
+            Pokud je hodnota této property DBNull.Value, vrací null.
+            </summary>
+        </member>
+        <member name="T:Havit.Security.PasswordCharacterSet">
+            <summary>
+            Sada znaků, z níž <see cref="T:Havit.Security.PasswordGenerator"/> vybírá znaky pro generování hesla.
+            </summary>
+        </member>
+        <member name="F:Havit.Security.PasswordCharacterSet.LowerCaseLetters">
+            <summary>
+            Pouze malá písmena.
+            </summary>
+        </member>
+        <member name="F:Havit.Security.PasswordCharacterSet.Letters">
+            <summary>
+            Velká a malá písmena.
+            </summary>
+        </member>
+        <member name="F:Havit.Security.PasswordCharacterSet.LettersAndDigits">
+            <summary>
+            Písmena (velká i malá) a číslice.
+            </summary>
+        </member>
+        <member name="F:Havit.Security.PasswordCharacterSet.LettersDigitsAndSpecialCharacters">
+            <summary>
+            Písmena (velká i malá), číslice a speciální znaky.
+            </summary>
+        </member>
+        <member name="T:Havit.Scope`1">
+            <summary>
+            Thread-specific Scope obalující dosah platnosti určitého objektu (transakce, identity mapy, atp.),
+            který je následně přístupný přes property <see cref="P:Havit.Scope`1.Current"/>.
+            </summary>
+            <example>
+            <code>
+            using (new Scope&lt;IdentityMap&gt;(new IdentityMap()))
+            {
+            	Console.WriteLine(Scope.Current.SomeMethod("outer scope"));
+            
+            	using (new Scope&lt;IdentityMap&gt;(new IdentityMap()))
+            	{
+            		Console.WriteLine(Scope.Current.SomeMethod("inner scope"));
+            	}
+            	
+            	Console.WriteLine(Scope.Current.SomeMethod("inner scope"));
+            }
+            </code>
+            </example>
+            <remarks>
+            Implementace vycházející z MSDN Magazine článku <a href="http://msdn.microsoft.com/msdnmag/issues/06/09/netmatters/default.aspx">Stephen Toub: Scope&lt;T&gt; and More</a>.
+            </remarks>
+            <typeparam name="T">typ objektu, jehož scope řešíme</typeparam>
+        </member>
+        <member name="F:Havit.Scope`1.disposed">
+            <summary>
+            Indikuje, zda-li již proběhl Dispose třídy.
+            </summary>
+        </member>
+        <member name="F:Havit.Scope`1.ownsInstance">
+            <summary>
+            Indikuje, zda-li je instance scopem vlastněná, tj. máme-li ji na konci scope disposovat.
+            </summary>
+        </member>
+        <member name="F:Havit.Scope`1.instance">
+            <summary>
+            Instance, kterou scope obaluje.
+            </summary>
+        </member>
+        <member name="F:Havit.Scope`1.parent">
+            <summary>
+            Nadřazený scope v linked-listu nestovaných scope.
+            </summary>
+        </member>
+        <member name="M:Havit.Scope`1.#ctor(`0)">
+            <summary>
+            Vytvoří instanci třídy <see cref="T:Havit.Scope`1"/> kolem instance. Instance bude při disposingu Scope též disposována.
+            </summary>
+            <param name="instance">instance, kterou scope obaluje</param>
+        </member>
+        <member name="M:Havit.Scope`1.#ctor(`0,System.Boolean)">
+            <summary>
+            Vytvoří instanci třídy <see cref="T:Havit.Scope`1"/> kolem instance.
+            </summary>
+            <param name="instance">instance, kterou scope obaluje</param>
+            <param name="ownsInstance">indikuje, zda-li instanci vlastníme, tedy zda-li ji máme s koncem scopu disposovat</param>
+        </member>
+        <member name="M:Havit.Scope`1.Dispose">
+            <summary>
+            Ukončí scope a disposuje vlastněné instance.
+            </summary>
+            <remarks>
+            ResourceWrapper pattern nepotřebujeme, protože nemáme žádné unmanaged resources, které bychom museli jistit destructorem.
+            </remarks>
+        </member>
+        <member name="F:Havit.Scope`1.head">
+            <summary>
+            Aktuální konec linked-listu nestovaných scope.
+            </summary>
+        </member>
+        <member name="P:Havit.Scope`1.Current">
+            <summary>
+            Aktuální instance obalovaná scopem.
+            </summary>
+        </member>
+        <member name="T:Havit.Collections.SortableCollectionBase">
+            <summary>
+            Abstraktní třída pro strong-typed collections s řazením dle jedné libovolné property.
+            </summary>
+            <remarks>
+            Property, podle které má být řazeno, musí implementovat <see cref="T:System.IComparable"/>
+            </remarks>
+        </member>
+        <member name="M:Havit.Collections.SortableCollectionBase.Sort(System.String,System.Boolean)">
+            <summary>
+            Seřadí prvky dle požadované property, která implementuje IComparable.
+            </summary>
+            <param name="propertyName">property, podle které se má řadit</param>
+            <param name="ascending">true, pokud se má řadit vzestupně, false, pokud sestupně</param>
+        </member>
+        <member name="M:Havit.Collections.SortableCollectionBase.IndexOf(System.String,System.Object)">
+            <summary>
+            Vrátí polohu prvku v seřazené collection.
+            </summary>
+            <param name="searchedValue">hodnota property prvku</param>
+            <param name="propertyName">jméno property</param>
+            <returns>poloha prvku</returns>
+        </member>
+        <member name="T:Havit.Collections.SortableCollectionBase.GenericPropertySort">
+            <summary>
+            Comparer pro řazení dle libobovolné IComparable property.
+            </summary>
+        </member>
+        <member name="M:Havit.Collections.SortableCollectionBase.GenericPropertySort.#ctor(System.String,System.Boolean)">
+            <summary>
+            Vytvoří instanci compareru pro řazení dle dané property.
+            </summary>
+            <param name="sortPropertyName">název property, podle které se má řadit</param>
+            <param name="ascending">true, má-li se řadit vzestupně, false, pokud sestupně</param>
+        </member>
+        <member name="M:Havit.Collections.SortableCollectionBase.GenericPropertySort.Compare(System.Object,System.Object)">
+            <summary>
+            Porovná dva objekty.
+            </summary>
+            <param name="x">první objekt</param>
+            <param name="y">druhý objekt</param>
+            <returns>výsledek porovnání</returns>
+        </member>
+        <member name="T:Havit.Collections.SortItemCollection">
+            <summary>
+            Kolekce objektů třídy SortItem.
+            </summary>
+        </member>
+        <member name="T:Havit.EnumExt">
+            <summary>
+            Poskytuje metody týkající se základního výčtového typu System.Enum.
+            </summary>
+            <remarks>
+            Třída samostná není potomkem System.Enum, protože ze System.Enum nelze dědit.
+            </remarks>
+        </member>
+        <member name="M:Havit.EnumExt.GetDescription(System.Type,System.Object)">
+            <summary>
+            Vrátí hodnotu atributu [Description("...")] určité hodnoty zadaného výčtového typu.
+            </summary>
+            <param name="enumType">výčtový typ</param>
+            <param name="hodnota">hodnota, jejíž Description chceme</param>
+            <returns>hodnota atributu [Description("...")]</returns>
+            <remarks>Není-li atribut Description definován, vrátí prázdný řetězec.</remarks>
+            <example>
+            <code>
+            using System.ComponentModel;<br/>
+            <br/>
+            public enum Barvy<br/>
+            {<br/>
+            	[Description("červená")]<br/>
+            	Cervena,<br/>
+            <br/>
+            	[Description("modrá")]<br/>
+            	Modra<br/>
+            }<br/>
+            </code>
+            </example>
+        </member>
+        <member name="T:Havit.ITypeConverter`1">
+            <summary>
+            Interface pro typovou konverzi.
+            </summary>
+            <remarks>
+            Používáno např. v BL pro konverzi mezi DB typem a BL typem property.
+            </remarks>
+            <typeparam name="T">Typ, pro který je type-converter určen.</typeparam>
+        </member>
+        <member name="M:Havit.ITypeConverter`1.CanConvertFrom(System.Type)">
+            <summary>
+            Returns whether this converter can convert an object of the given type to the type of this converter.
+            </summary>
+            <param name="sourceType">A <see cref="T:System.Type"/> that represents the type you want to convert from.</param>
+            <returns><c>true</c> if this converter can perform the conversion; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:Havit.ITypeConverter`1.CanConvertTo(System.Type)">
+            <summary>
+            Returns whether this converter can convert the object to the specified type. 
+            </summary>
+            <param name="destinationType">A <see cref="T:System.Type"/> that represents the type you want to convert to.</param>
+            <returns><c>true</c> if this converter can perform the conversion; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:Havit.ITypeConverter`1.ConvertTo(`0,System.Type)">
+            <summary>
+            Converts the given value object to the specified type, using the arguments. 
+            </summary>
+            <exception cref="T:System.NotSupportedException">The conversion cannot be performed.</exception>
+            <exception cref="T:System.ArgumentNullException">The destinationType parameter is a null reference.</exception>
+            <param name="value">The <see cref="T:System.Object"/> to convert.</param>
+            <param name="destinationType">The <see cref="T:System.Type"/> to convert the value parameter to.</param>
+            <returns>An Object that represents the converted value.</returns>
+        </member>
+        <member name="M:Havit.ITypeConverter`1.ConvertFrom(System.Object)">
+            <summary>
+            Converts the given value to the type of this converter. 
+            </summary>
+            <exception cref="T:System.NotSupportedException">The conversion cannot be performed.</exception>
+            <param name="value">The <see cref="T:System.Object"/> to convert.</param>
+            <returns>An Object that represents the converted value.</returns>
+        </member>
+        <member name="T:Havit.StringExt">
+            <summary>
+            Rozšiřující funkce pro práci s textovými řetězci <see cref="T:System.String"/>.
+            Třída poskytuje statické metody a konstanty, je neinstanční.
+            </summary>
+        </member>
+        <member name="M:Havit.StringExt.Left(System.String,System.Int32)">
+            <summary>
+            Returns a string containing a specified number of characters from the left side of a string.
+            </summary>
+            <param name="str">String expression from which the leftmost characters are returned.</param>
+            <param name="length">Numeric expression indicating how many characters to return. If 0, a zero-length string ("") is returned. If greater than or equal to the number of characters in Str, the entire string is returned.</param>
+            <returns>string containing a specified number of characters from the left side of a string</returns>
+        </member>
+        <member name="M:Havit.StringExt.Right(System.String,System.Int32)">
+            <summary>
+            Returns a string containing a specified number of characters from the right side of a string.
+            </summary>
+            <param name="str">String expression from which the rightmost characters are returned.</param>
+            <param name="length">Numeric expression indicating how many characters to return. If 0, a zero-length string ("") is returned. If greater than or equal to the number of characters in <c>str</c>, the entire string is returned.</param>
+            <returns>string containing a specified number of characters from the right side of a string</returns>
+        </member>
+        <member name="M:Havit.StringExt.OdeberDiakritiku(System.String)">
+            <summary>
+            Odebere diakritiku z textu, tj. převede na text bez diakritiky.
+            </summary>
+            <remarks>Odebírá veškerou diakritiku všech národních znaků obecně.</remarks>
+            <param name="text">Text, kterému má být diakritika odebrána.</param>
+            <returns>text bez diakritiky</returns>
+        </member>
+        <member name="M:Havit.StringExt.IntToHex(System.Int32)">
+            <summary>
+            Vrátí char-reprezentaci (0..9, A..F) šestnáctkové číslice (0-15).
+            </summary>
+            <remarks>Z důvodu rychlosti neprovádí kontrolu rozsahu a převede např. i číslici 16 jako G.</remarks>
+            <param name="cislice">Číslice (0..15)</param>
+            <returns>char-reprezentace (0..9, A..F) šestnáctkové číslice (0-15).</returns>
+        </member>
+        <member name="T:Havit.Collections.SortDirection">
+            <summary>
+            Určuje směr řazení.
+            </summary>
+        </member>
+        <member name="F:Havit.Collections.SortDirection.Ascending">
+            <summary>
+            Vyestupné.
+            </summary>
+        </member>
+        <member name="F:Havit.Collections.SortDirection.Descending">
+            <summary>
+            Sestupné.
+            </summary>
+        </member>
+        <member name="T:Havit.Reflection.Reflector">
+            <summary>
+            Třída se statickými metodami pro jednoduché operace reflexe.
+            </summary>
+        </member>
+        <member name="M:Havit.Reflection.Reflector.GetPropertyValue(System.Object,System.Type,System.String)">
+            <summary>
+            Získá hodnotu property, i kdyby byla označená jako protected, internal, nebo private.
+            </summary>
+            <param name="target">Objekt, z kterého má být property získána.</param>
+            <param name="targetType">Typ z kterého má být property získána (může být i rodičovským typem targetu).</param>
+            <param name="propertyName">Jméno property.</param>
+            <returns>Hodnota property, nebo null, není-li nalezena.</returns>
+        </member>
+        <member name="M:Havit.Reflection.Reflector.#ctor">
+            <summary>
+            private constructor, aby nebylo možno vytvořit instanci třídy
+            </summary>
+        </member>
+        <member name="T:Havit.Collections.SortItem">
+            <summary>
+            Reprezentuje položku řazení.
+            </summary>
+        </member>
+        <member name="M:Havit.Collections.SortItem.#ctor">
+            <summary>
+            Vytvoří prázdnou instanci pořadí.
+            </summary>
+        </member>
+        <member name="M:Havit.Collections.SortItem.#ctor(System.String,Havit.Collections.SortDirection)">
+            <summary>
+            Vytvoří položku řazení podle expression a směru řazení.
+            </summary>
+        </member>
+        <member name="P:Havit.Collections.SortItem.Expression">
+            <summary>
+            Výraz, dle kterého se řadí.
+            </summary>
+        </member>
+        <member name="P:Havit.Collections.SortItem.Direction">
+            <summary>
+            Směr řazení.
+            </summary>
+        </member>
+        <member name="T:Havit.Collections.SortHelper">
+            <summary>
+            Pomocná třída pro řazení.
+            </summary>
+        </member>
+        <member name="M:Havit.Collections.SortHelper.PropertySort(System.Collections.IEnumerable,Havit.Collections.SortItemCollection)">
+            <summary>
+            Vrátí data seřazená podle properties v sortItemCollection.
+            Pokud je sortItemCollection prázdná kolekce, vrací parametr data.
+            </summary>
+            <param name="data">Data k seřazení.</param>
+            <param name="sortItemCollection">Instrukce, jak seřadit.</param>
+            <returns>Seřazená data.</returns>
+        </member>
+        <member name="M:Havit.Collections.SortHelper.PropertySort(System.Collections.IEnumerable,System.String)">
+            <summary>
+            Vrátí data seřazená podle property.
+            </summary>
+            <param name="data">Data k seřazení.</param>
+            <param name="property">Property, podle které se řadí.</param>
+            <returns>Seřazená data.</returns>
+        </member>
+        <member name="T:Havit.Security.PasswordGenerator">
+            <summary>
+            Generátor hesel.
+            </summary>
+            <remarks>
+            Vychází původně z http://www.codeproject.com/csharp/pwdgen.asp
+            </remarks>
+        </member>
+        <member name="M:Havit.Security.PasswordGenerator.GetCharacterArrayUpperBound">
+            <summary>
+            Vrátí horní index pole znaků, do kterého se smí provádět výběr pro generované heslo.
+            </summary>
+        </member>
+        <member name="M:Havit.Security.PasswordGenerator.#ctor">
+            <summary>
+            Vytvoří instanci PasswordGeneratoru a nastaví výchozí hodnoty pro složitost generovaného hesla.
+            </summary>
+        </member>
+        <member name="M:Havit.Security.PasswordGenerator.GetCryptographicRandomNumber(System.Int32,System.Int32)">
+            <summary>
+            Vygeneruje náhodné číslo pomocí crypto-API.
+            </summary>
+            <param name="lBound">dolní mez</param>
+            <param name="uBound">horní mez</param>
+        </member>
+        <member name="M:Havit.Security.PasswordGenerator.GetRandomCharacter">
+            <summary>
+            Vrátí náhodný znak.
+            </summary>
+        </member>
+        <member name="M:Havit.Security.PasswordGenerator.Generate">
+            <summary>
+            Vygeneruje heslo složitosti dle nastaveného generátoru.
+            </summary>
+            <returns>vygenerované heslo</returns>
+        </member>
+        <member name="M:Havit.Security.PasswordGenerator.ValidateSettings">
+            <summary>
+            Kontroluje nastavení generátoru a vyhazuje případné výjimky.
+            </summary>
+        </member>
+        <member name="M:Havit.Security.PasswordGenerator.Generate(System.Int32,System.Int32,Havit.Security.PasswordCharacterSet,System.Boolean,System.Boolean)">
+            <summary>
+            Vygeneruje heslo složitosti dle požadovaných parametrů.
+            </summary>
+            <param name="minimumLength">minimální délka hesla</param>
+            <param name="maximumLength">maximální délka hesla</param>
+            <param name="passwordCharacterSet">Sada znaků, z níž se mají vybírat znaky pro generované heslo.</param>
+            <param name="allowRepeatingCharacters">Indikuje, zda-li se smí v heslu opakovat znaky. Zda-li může být některý znak v heslu vícekrát.</param>
+            <param name="allowConsecutiveCharacters">Indikuje, zda-li smí heslo obsahovat shluky stejných znaků.</param>
+            <returns>vygenerované heslo odpovídající vstupním požadavkům</returns>
+        </member>
+        <member name="M:Havit.Security.PasswordGenerator.Generate(System.Int32,System.Int32,Havit.Security.PasswordCharacterSet)">
+            <summary>
+            Vygeneruje heslo složitosti dle požadovaných parametrů.
+            </summary>
+            <param name="minimumLength">minimální délka hesla</param>
+            <param name="maximumLength">maximální délka hesla</param>
+            <param name="passwordCharacterSet">Sada znaků, z níž se mají vybírat znaky pro generované heslo.</param>
+            <returns>vygenerované heslo odpovídající vstupním požadavkům</returns>
+        </member>
+        <member name="M:Havit.Security.PasswordGenerator.Generate(System.Int32,Havit.Security.PasswordCharacterSet)">
+            <summary>
+            Vygeneruje heslo složitosti dle požadovaných parametrů.
+            </summary>
+            <param name="length"> délka hesla</param>
+            <param name="passwordCharacterSet">Sada znaků, z níž se mají vybírat znaky pro generované heslo.</param>
+            <returns>vygenerované heslo odpovídající vstupním požadavkům</returns>
+        </member>
+        <member name="P:Havit.Security.PasswordGenerator.MinimumLength">
+            <summary>
+            Minimální délka hesla. Default 6.
+            </summary>
+        </member>
+        <member name="P:Havit.Security.PasswordGenerator.MaximumLength">
+            <summary>
+            Maximální délka hesla. Default 10.
+            </summary>
+        </member>
+        <member name="P:Havit.Security.PasswordGenerator.PasswordCharacterSet">
+            <summary>
+            Sada znaků, z níž se mají vybírat znaky pro generované heslo.
+            </summary>
+        </member>
+        <member name="P:Havit.Security.PasswordGenerator.AllowRepeatingCharacters">
+            <summary>
+            Indikuje, zda-li se smí v heslu opakovat znaky. Zda-li může být některý znak v heslu vícekrát. Default <c>true</c>.
+            </summary>
+        </member>
+        <member name="P:Havit.Security.PasswordGenerator.AllowConsecutiveCharacters">
+            <summary>
+            Indikuje, zda-li smí heslo obsahovat shluky stejných znaků. Default <c>false</c>.
+            </summary>
+        </member>
+        <member name="P:Havit.Security.PasswordGenerator.Exclusions">
+            <summary>
+            Řetězec znaků, které nechceme mít v heslu.
+            </summary>
+        </member>
+        <member name="T:Havit.Text.RegularExpressions.RegexPatterns">
+            <summary>
+            Typické vyhledávací vzory pro regulární výrazy.
+            </summary>
+        </member>
+        <member name="F:Havit.Text.RegularExpressions.RegexPatterns.EmailStrict">
+            <summary>
+            Pattern pro kontrolu běžného e-mailu:
+            <list type="bullet">
+            	<item>povoleny jsou pouze znaky anglické abecedy, tečky, podtržítka, pomlčky a plus</item>
+            	<item>dva různé symboly nesmí následovat po sobě, stejné ano [test--test@test.com] projde</item>
+            	<item>nesmí začínat symbolem</item>
+            	<item>TLD musí mít 2-6 znaků (.museum)</item>
+            	<item>v doméně smí být tečky a pomlčky, ale nesmí následovat</item>
+            	<item>nepříjímá IP adresy</item>
+            	<item>nepřijímá rozšířený syntax typu [Petr Novak &lt;novak@test.com&gt;]</item>
+            </list>
+            </summary>
+            <remarks>
+            http://www.regexlib.com/REDetails.aspx?regexp_id=295
+            </remarks>
+        </member>
+        <member name="F:Havit.Text.RegularExpressions.RegexPatterns.Identifier">
+            <summary>
+            Pattern pro kontrolu identifikátorů.
+            Identifikátor musí začínat písmenem nebo podtržítkem, nesledovat mohou i číslice.
+            </summary>
+        </member>
+        <member name="F:Havit.Text.RegularExpressions.RegexPatterns.Time24h">
+            <summary>
+            Pattern pro kontrolu času. 24-hodinnový formát, odělovač dvojtečka, nepovinné vteřiny. Např. 23:59:00.
+            Nepřijímá 24:00.
+            </summary>
+        </member>
+        <member name="F:Havit.Text.RegularExpressions.RegexPatterns.IPAddress">
+            <summary>
+            Pattern pro kontrolu IP adresy v4.
+            </summary>
+        </member>
+        <member name="F:Havit.Text.RegularExpressions.RegexPatterns.Integer">
+            <summary>
+            Pattern pro ověření celých čísel.
+            </summary>
+            <remarks>
+            Přijímá: [1], [+15], [0], [-10], [+0]<br/>
+            Odmítá: [1.0], [abc], [+], [1,15]
+            </remarks>
+        </member>
+        <member name="M:Havit.Text.RegularExpressions.RegexPatterns.#ctor">
+            <summary>
+            private constructor k zabránění instanciace statické třídy.
+            </summary>
+        </member>
         <member name="T:Havit.MathExt">
             <summary>
             Matematické funkce, konstanty a různé další pomůcky.
@@ -152,540 +686,6 @@
             </summary>
             <param name="values">čísla k porovnání</param>
             <returns>největší z values</returns>
-        </member>
-        <member name="T:Havit.Collections.GenericPropertyComparer`1">
-            <summary>
-            Porovnává hodnoty vlastností dvou objektů. Názvy vlastností jsou dodány, porovnávají se v dodaném pořadí.
-            Názvy vlastností mohou být složené: např. "Kniha.Autor.Prijmeni".
-            Property musí implementovat IComparable.
-            </summary>
-            <typeparam name="T"></typeparam>
-        </member>
-        <member name="M:Havit.Collections.GenericPropertyComparer`1.#ctor(System.String,System.Boolean)">
-            <summary>
-            Vytvoří instanci compareru pro řazení dle dané property.
-            </summary>
-            <param name="sortPropertyName">název property, podle které se má řadit</param>
-            <param name="ascending">true, má-li se řadit vzestupně, false, pokud sestupně</param>
-        </member>
-        <member name="M:Havit.Collections.GenericPropertyComparer`1.#ctor(Havit.Collections.SortItem)">
-            <summary>
-            Vytvoří instanci compareru pro řazení dle dané property.
-            </summary>
-            <param name="sortItem">Určuje parametr řazení.</param>
-        </member>
-        <member name="M:Havit.Collections.GenericPropertyComparer`1.#ctor(System.Collections.Generic.IList{Havit.Collections.SortItem})">
-            <summary>
-            Vytvoří instanci compareru pro řazení dle kolekce vlastností.
-            </summary>
-            <param name="sortItems">Určuje parametry řazení.</param>
-        </member>
-        <member name="M:Havit.Collections.GenericPropertyComparer`1.Compare(System.Object,System.Object,System.Int32)">
-            <summary>
-            Porovná vlastnosti instancí dvou objektů. Porovnávají se index-té vlastnosti uvedené ve fieldu sortItemCollection.
-            </summary>
-            <param name="x">První porovnávaný objekt.</param>
-            <param name="y">Druhý porovnávaný objekt.</param>
-            <param name="index">Index porovnávané vlastnosti.</param>
-            <returns>-1, 0, 1 - jako Compare(T, T)</returns>
-        </member>
-        <member name="M:Havit.Collections.GenericPropertyComparer`1.GetValue(System.Object,System.Int32)">
-            <summary>
-            Vrátí hodnot index-té property objektu.
-            Pokud je hodnota této property DBNull.Value, vrací null.
-            </summary>
-        </member>
-        <member name="T:Havit.Text.RegularExpressions.RegexPatterns">
-            <summary>
-            Typické vyhledávací vzory pro regulární výrazy.
-            </summary>
-        </member>
-        <member name="F:Havit.Text.RegularExpressions.RegexPatterns.EmailStrict">
-            <summary>
-            Pattern pro kontrolu běžného e-mailu:
-            <list type="bullet">
-            	<item>povoleny jsou pouze znaky anglické abecedy, tečky, podtržítka, pomlčky a plus</item>
-            	<item>dva různé symboly nesmí následovat po sobě, stejné ano [test--test@test.com] projde</item>
-            	<item>nesmí začínat symbolem</item>
-            	<item>TLD musí mít 2-6 znaků (.museum)</item>
-            	<item>v doméně smí být tečky a pomlčky, ale nesmí následovat</item>
-            	<item>nepříjímá IP adresy</item>
-            	<item>nepřijímá rozšířený syntax typu [Petr Novak &lt;novak@test.com&gt;]</item>
-            </list>
-            </summary>
-            <remarks>
-            http://www.regexlib.com/REDetails.aspx?regexp_id=295
-            </remarks>
-        </member>
-        <member name="F:Havit.Text.RegularExpressions.RegexPatterns.Identifier">
-            <summary>
-            Pattern pro kontrolu identifikátorů.
-            Identifikátor musí začínat písmenem nebo podtržítkem, nesledovat mohou i číslice.
-            </summary>
-        </member>
-        <member name="F:Havit.Text.RegularExpressions.RegexPatterns.Time24h">
-            <summary>
-            Pattern pro kontrolu času. 24-hodinnový formát, odělovač dvojtečka, nepovinné vteřiny. Např. 23:59:00.
-            Nepřijímá 24:00.
-            </summary>
-        </member>
-        <member name="F:Havit.Text.RegularExpressions.RegexPatterns.IPAddress">
-            <summary>
-            Pattern pro kontrolu IP adresy v4.
-            </summary>
-        </member>
-        <member name="F:Havit.Text.RegularExpressions.RegexPatterns.Integer">
-            <summary>
-            Pattern pro ověření celých čísel.
-            </summary>
-            <remarks>
-            Přijímá: [1], [+15], [0], [-10], [+0]<br/>
-            Odmítá: [1.0], [abc], [+], [1,15]
-            </remarks>
-        </member>
-        <member name="M:Havit.Text.RegularExpressions.RegexPatterns.#ctor">
-            <summary>
-            private constructor k zabránění instanciace statické třídy.
-            </summary>
-        </member>
-        <member name="T:Havit.Security.PasswordGenerator">
-            <summary>
-            Generátor hesel.
-            </summary>
-            <remarks>
-            Vychází původně z http://www.codeproject.com/csharp/pwdgen.asp
-            </remarks>
-        </member>
-        <member name="M:Havit.Security.PasswordGenerator.GetCharacterArrayUpperBound">
-            <summary>
-            Vrátí horní index pole znaků, do kterého se smí provádět výběr pro generované heslo.
-            </summary>
-        </member>
-        <member name="M:Havit.Security.PasswordGenerator.#ctor">
-            <summary>
-            Vytvoří instanci PasswordGeneratoru a nastaví výchozí hodnoty pro složitost generovaného hesla.
-            </summary>
-        </member>
-        <member name="M:Havit.Security.PasswordGenerator.GetCryptographicRandomNumber(System.Int32,System.Int32)">
-            <summary>
-            Vygeneruje náhodné číslo pomocí crypto-API.
-            </summary>
-            <param name="lBound">dolní mez</param>
-            <param name="uBound">horní mez</param>
-        </member>
-        <member name="M:Havit.Security.PasswordGenerator.GetRandomCharacter">
-            <summary>
-            Vrátí náhodný znak.
-            </summary>
-        </member>
-        <member name="M:Havit.Security.PasswordGenerator.Generate">
-            <summary>
-            Vygeneruje heslo složitosti dle nastaveného generátoru.
-            </summary>
-            <returns>vygenerované heslo</returns>
-        </member>
-        <member name="M:Havit.Security.PasswordGenerator.ValidateSettings">
-            <summary>
-            Kontroluje nastavení generátoru a vyhazuje případné výjimky.
-            </summary>
-        </member>
-        <member name="M:Havit.Security.PasswordGenerator.Generate(System.Int32,System.Int32,Havit.Security.PasswordCharacterSet,System.Boolean,System.Boolean)">
-            <summary>
-            Vygeneruje heslo složitosti dle požadovaných parametrů.
-            </summary>
-            <param name="minimumLength">minimální délka hesla</param>
-            <param name="maximumLength">maximální délka hesla</param>
-            <param name="passwordCharacterSet">Sada znaků, z níž se mají vybírat znaky pro generované heslo.</param>
-            <param name="allowRepeatingCharacters">Indikuje, zda-li se smí v heslu opakovat znaky. Zda-li může být některý znak v heslu vícekrát.</param>
-            <param name="allowConsecutiveCharacters">Indikuje, zda-li smí heslo obsahovat shluky stejných znaků.</param>
-            <returns>vygenerované heslo odpovídající vstupním požadavkům</returns>
-        </member>
-        <member name="M:Havit.Security.PasswordGenerator.Generate(System.Int32,System.Int32,Havit.Security.PasswordCharacterSet)">
-            <summary>
-            Vygeneruje heslo složitosti dle požadovaných parametrů.
-            </summary>
-            <param name="minimumLength">minimální délka hesla</param>
-            <param name="maximumLength">maximální délka hesla</param>
-            <param name="passwordCharacterSet">Sada znaků, z níž se mají vybírat znaky pro generované heslo.</param>
-            <returns>vygenerované heslo odpovídající vstupním požadavkům</returns>
-        </member>
-        <member name="M:Havit.Security.PasswordGenerator.Generate(System.Int32,Havit.Security.PasswordCharacterSet)">
-            <summary>
-            Vygeneruje heslo složitosti dle požadovaných parametrů.
-            </summary>
-            <param name="length"> délka hesla</param>
-            <param name="passwordCharacterSet">Sada znaků, z níž se mají vybírat znaky pro generované heslo.</param>
-            <returns>vygenerované heslo odpovídající vstupním požadavkům</returns>
-        </member>
-        <member name="P:Havit.Security.PasswordGenerator.MinimumLength">
-            <summary>
-            Minimální délka hesla. Default 6.
-            </summary>
-        </member>
-        <member name="P:Havit.Security.PasswordGenerator.MaximumLength">
-            <summary>
-            Maximální délka hesla. Default 10.
-            </summary>
-        </member>
-        <member name="P:Havit.Security.PasswordGenerator.PasswordCharacterSet">
-            <summary>
-            Sada znaků, z níž se mají vybírat znaky pro generované heslo.
-            </summary>
-        </member>
-        <member name="P:Havit.Security.PasswordGenerator.AllowRepeatingCharacters">
-            <summary>
-            Indikuje, zda-li se smí v heslu opakovat znaky. Zda-li může být některý znak v heslu vícekrát. Default <c>true</c>.
-            </summary>
-        </member>
-        <member name="P:Havit.Security.PasswordGenerator.AllowConsecutiveCharacters">
-            <summary>
-            Indikuje, zda-li smí heslo obsahovat shluky stejných znaků. Default <c>false</c>.
-            </summary>
-        </member>
-        <member name="P:Havit.Security.PasswordGenerator.Exclusions">
-            <summary>
-            Řetězec znaků, které nechceme mít v heslu.
-            </summary>
-        </member>
-        <member name="T:Havit.StringExt">
-            <summary>
-            Rozšiřující funkce pro práci s textovými řetězci <see cref="T:System.String"/>.
-            Třída poskytuje statické metody a konstanty, je neinstanční.
-            </summary>
-        </member>
-        <member name="M:Havit.StringExt.Left(System.String,System.Int32)">
-            <summary>
-            Returns a string containing a specified number of characters from the left side of a string.
-            </summary>
-            <param name="str">String expression from which the leftmost characters are returned.</param>
-            <param name="length">Numeric expression indicating how many characters to return. If 0, a zero-length string ("") is returned. If greater than or equal to the number of characters in Str, the entire string is returned.</param>
-            <returns>string containing a specified number of characters from the left side of a string</returns>
-        </member>
-        <member name="M:Havit.StringExt.Right(System.String,System.Int32)">
-            <summary>
-            Returns a string containing a specified number of characters from the right side of a string.
-            </summary>
-            <param name="str">String expression from which the rightmost characters are returned.</param>
-            <param name="length">Numeric expression indicating how many characters to return. If 0, a zero-length string ("") is returned. If greater than or equal to the number of characters in <c>str</c>, the entire string is returned.</param>
-            <returns>string containing a specified number of characters from the right side of a string</returns>
-        </member>
-        <member name="M:Havit.StringExt.OdeberDiakritiku(System.String)">
-            <summary>
-            Odebere diakritiku z textu, tj. převede na text bez diakritiky.
-            </summary>
-            <remarks>Odebírá veškerou diakritiku všech národních znaků obecně.</remarks>
-            <param name="text">Text, kterému má být diakritika odebrána.</param>
-            <returns>text bez diakritiky</returns>
-        </member>
-        <member name="M:Havit.StringExt.IntToHex(System.Int32)">
-            <summary>
-            Vrátí char-reprezentaci (0..9, A..F) šestnáctkové číslice (0-15).
-            </summary>
-            <remarks>Z důvodu rychlosti neprovádí kontrolu rozsahu a převede např. i číslici 16 jako G.</remarks>
-            <param name="cislice">Číslice (0..15)</param>
-            <returns>char-reprezentace (0..9, A..F) šestnáctkové číslice (0-15).</returns>
-        </member>
-        <member name="T:Havit.Reflection.Reflector">
-            <summary>
-            Třída se statickými metodami pro jednoduché operace reflexe.
-            </summary>
-        </member>
-        <member name="M:Havit.Reflection.Reflector.GetPropertyValue(System.Object,System.Type,System.String)">
-            <summary>
-            Získá hodnotu property, i kdyby byla označená jako protected, internal, nebo private.
-            </summary>
-            <param name="target">Objekt, z kterého má být property získána.</param>
-            <param name="targetType">Typ z kterého má být property získána (může být i rodičovským typem targetu).</param>
-            <param name="propertyName">Jméno property.</param>
-            <returns>Hodnota property, nebo null, není-li nalezena.</returns>
-        </member>
-        <member name="M:Havit.Reflection.Reflector.#ctor">
-            <summary>
-            private constructor, aby nebylo možno vytvořit instanci třídy
-            </summary>
-        </member>
-        <member name="T:Havit.Collections.SortableCollectionBase">
-            <summary>
-            Abstraktní třída pro strong-typed collections s řazením dle jedné libovolné property.
-            </summary>
-            <remarks>
-            Property, podle které má být řazeno, musí implementovat <see cref="T:System.IComparable"/>
-            </remarks>
-        </member>
-        <member name="M:Havit.Collections.SortableCollectionBase.Sort(System.String,System.Boolean)">
-            <summary>
-            Seřadí prvky dle požadované property, která implementuje IComparable.
-            </summary>
-            <param name="propertyName">property, podle které se má řadit</param>
-            <param name="ascending">true, pokud se má řadit vzestupně, false, pokud sestupně</param>
-        </member>
-        <member name="M:Havit.Collections.SortableCollectionBase.IndexOf(System.String,System.Object)">
-            <summary>
-            Vrátí polohu prvku v seřazené collection.
-            </summary>
-            <param name="searchedValue">hodnota property prvku</param>
-            <param name="propertyName">jméno property</param>
-            <returns>poloha prvku</returns>
-        </member>
-        <member name="T:Havit.Collections.SortableCollectionBase.GenericPropertySort">
-            <summary>
-            Comparer pro řazení dle libobovolné IComparable property.
-            </summary>
-        </member>
-        <member name="M:Havit.Collections.SortableCollectionBase.GenericPropertySort.#ctor(System.String,System.Boolean)">
-            <summary>
-            Vytvoří instanci compareru pro řazení dle dané property.
-            </summary>
-            <param name="sortPropertyName">název property, podle které se má řadit</param>
-            <param name="ascending">true, má-li se řadit vzestupně, false, pokud sestupně</param>
-        </member>
-        <member name="M:Havit.Collections.SortableCollectionBase.GenericPropertySort.Compare(System.Object,System.Object)">
-            <summary>
-            Porovná dva objekty.
-            </summary>
-            <param name="x">první objekt</param>
-            <param name="y">druhý objekt</param>
-            <returns>výsledek porovnání</returns>
-        </member>
-        <member name="T:Havit.Collections.SortItem">
-            <summary>
-            Reprezentuje položku řazení.
-            </summary>
-        </member>
-        <member name="M:Havit.Collections.SortItem.#ctor">
-            <summary>
-            Vytvoří prázdnou instanci pořadí.
-            </summary>
-        </member>
-        <member name="M:Havit.Collections.SortItem.#ctor(System.String,Havit.Collections.SortDirection)">
-            <summary>
-            Vytvoří položku řazení podle expression a směru řazení.
-            </summary>
-        </member>
-        <member name="P:Havit.Collections.SortItem.Expression">
-            <summary>
-            Výraz, dle kterého se řadí.
-            </summary>
-        </member>
-        <member name="P:Havit.Collections.SortItem.Direction">
-            <summary>
-            Směr řazení.
-            </summary>
-        </member>
-        <member name="T:Havit.Scope`1">
-            <summary>
-            Thread-specific Scope obalující dosah platnosti určitého objektu (transakce, identity mapy, atp.),
-            který je následně přístupný přes property <see cref="P:Havit.Scope`1.Current"/>.
-            </summary>
-            <example>
-            <code>
-            using (new Scope&lt;IdentityMap&gt;(new IdentityMap()))
-            {
-            	Console.WriteLine(Scope.Current.SomeMethod("outer scope"));
-            
-            	using (new Scope&lt;IdentityMap&gt;(new IdentityMap()))
-            	{
-            		Console.WriteLine(Scope.Current.SomeMethod("inner scope"));
-            	}
-            	
-            	Console.WriteLine(Scope.Current.SomeMethod("inner scope"));
-            }
-            </code>
-            </example>
-            <remarks>
-            Implementace vycházející z MSDN Magazine článku <a href="http://msdn.microsoft.com/msdnmag/issues/06/09/netmatters/default.aspx">Stephen Toub: Scope&lt;T&gt; and More</a>.
-            </remarks>
-            <typeparam name="T">typ objektu, jehož scope řešíme</typeparam>
-        </member>
-        <member name="F:Havit.Scope`1.disposed">
-            <summary>
-            Indikuje, zda-li již proběhl Dispose třídy.
-            </summary>
-        </member>
-        <member name="F:Havit.Scope`1.ownsInstance">
-            <summary>
-            Indikuje, zda-li je instance scopem vlastněná, tj. máme-li ji na konci scope disposovat.
-            </summary>
-        </member>
-        <member name="F:Havit.Scope`1.instance">
-            <summary>
-            Instance, kterou scope obaluje.
-            </summary>
-        </member>
-        <member name="F:Havit.Scope`1.parent">
-            <summary>
-            Nadřazený scope v linked-listu nestovaných scope.
-            </summary>
-        </member>
-        <member name="M:Havit.Scope`1.#ctor(`0)">
-            <summary>
-            Vytvoří instanci třídy <see cref="T:Havit.Scope`1"/> kolem instance. Instance bude při disposingu Scope též disposována.
-            </summary>
-            <param name="instance">instance, kterou scope obaluje</param>
-        </member>
-        <member name="M:Havit.Scope`1.#ctor(`0,System.Boolean)">
-            <summary>
-            Vytvoří instanci třídy <see cref="T:Havit.Scope`1"/> kolem instance.
-            </summary>
-            <param name="instance">instance, kterou scope obaluje</param>
-            <param name="ownsInstance">indikuje, zda-li instanci vlastníme, tedy zda-li ji máme s koncem scopu disposovat</param>
-        </member>
-        <member name="M:Havit.Scope`1.Dispose">
-            <summary>
-            Ukončí scope a disposuje vlastněné instance.
-            </summary>
-            <remarks>
-            ResourceWrapper pattern nepotřebujeme, protože nemáme žádné unmanaged resources, které bychom museli jistit destructorem.
-            </remarks>
-        </member>
-        <member name="F:Havit.Scope`1.head">
-            <summary>
-            Aktuální konec linked-listu nestovaných scope.
-            </summary>
-        </member>
-        <member name="P:Havit.Scope`1.Current">
-            <summary>
-            Aktuální instance obalovaná scopem.
-            </summary>
-        </member>
-        <member name="T:Havit.ITypeConverter`1">
-            <summary>
-            Interface pro typovou konverzi.
-            </summary>
-            <remarks>
-            Používáno např. v BL pro konverzi mezi DB typem a BL typem property.
-            </remarks>
-            <typeparam name="T">Typ, pro který je type-converter určen.</typeparam>
-        </member>
-        <member name="M:Havit.ITypeConverter`1.CanConvertFrom(System.Type)">
-            <summary>
-            Returns whether this converter can convert an object of the given type to the type of this converter.
-            </summary>
-            <param name="sourceType">A <see cref="T:System.Type"/> that represents the type you want to convert from.</param>
-            <returns><c>true</c> if this converter can perform the conversion; otherwise, <c>false</c>.</returns>
-        </member>
-        <member name="M:Havit.ITypeConverter`1.CanConvertTo(System.Type)">
-            <summary>
-            Returns whether this converter can convert the object to the specified type. 
-            </summary>
-            <param name="destinationType">A <see cref="T:System.Type"/> that represents the type you want to convert to.</param>
-            <returns><c>true</c> if this converter can perform the conversion; otherwise, <c>false</c>.</returns>
-        </member>
-        <member name="M:Havit.ITypeConverter`1.ConvertTo(`0,System.Type)">
-            <summary>
-            Converts the given value object to the specified type, using the arguments. 
-            </summary>
-            <exception cref="T:System.NotSupportedException">The conversion cannot be performed.</exception>
-            <exception cref="T:System.ArgumentNullException">The destinationType parameter is a null reference.</exception>
-            <param name="value">The <see cref="T:System.Object"/> to convert.</param>
-            <param name="destinationType">The <see cref="T:System.Type"/> to convert the value parameter to.</param>
-            <returns>An Object that represents the converted value.</returns>
-        </member>
-        <member name="M:Havit.ITypeConverter`1.ConvertFrom(System.Object)">
-            <summary>
-            Converts the given value to the type of this converter. 
-            </summary>
-            <exception cref="T:System.NotSupportedException">The conversion cannot be performed.</exception>
-            <param name="value">The <see cref="T:System.Object"/> to convert.</param>
-            <returns>An Object that represents the converted value.</returns>
-        </member>
-        <member name="T:Havit.Collections.SortHelper">
-            <summary>
-            Pomocná třída pro řazení.
-            </summary>
-        </member>
-        <member name="M:Havit.Collections.SortHelper.PropertySort(System.Collections.IEnumerable,Havit.Collections.SortItemCollection)">
-            <summary>
-            Vrátí data seřazená podle properties v sortItemCollection.
-            Pokud je sortItemCollection prázdná kolekce, vrací parametr data.
-            </summary>
-            <param name="data">Data k seřazení.</param>
-            <param name="sortItemCollection">Instrukce, jak seřadit.</param>
-            <returns>Seřazená data.</returns>
-        </member>
-        <member name="M:Havit.Collections.SortHelper.PropertySort(System.Collections.IEnumerable,System.String)">
-            <summary>
-            Vrátí data seřazená podle property.
-            </summary>
-            <param name="data">Data k seřazení.</param>
-            <param name="property">Property, podle které se řadí.</param>
-            <returns>Seřazená data.</returns>
-        </member>
-        <member name="T:Havit.EnumExt">
-            <summary>
-            Poskytuje metody týkající se základního výčtového typu System.Enum.
-            </summary>
-            <remarks>
-            Třída samostná není potomkem System.Enum, protože ze System.Enum nelze dědit.
-            </remarks>
-        </member>
-        <member name="M:Havit.EnumExt.GetDescription(System.Type,System.Object)">
-            <summary>
-            Vrátí hodnotu atributu [Description("...")] určité hodnoty zadaného výčtového typu.
-            </summary>
-            <param name="enumType">výčtový typ</param>
-            <param name="hodnota">hodnota, jejíž Description chceme</param>
-            <returns>hodnota atributu [Description("...")]</returns>
-            <remarks>Není-li atribut Description definován, vrátí prázdný řetězec.</remarks>
-            <example>
-            <code>
-            using System.ComponentModel;<br/>
-            <br/>
-            public enum Barvy<br/>
-            {<br/>
-            	[Description("červená")]<br/>
-            	Cervena,<br/>
-            <br/>
-            	[Description("modrá")]<br/>
-            	Modra<br/>
-            }<br/>
-            </code>
-            </example>
-        </member>
-        <member name="T:Havit.Collections.SortDirection">
-            <summary>
-            Určuje směr řazení.
-            </summary>
-        </member>
-        <member name="F:Havit.Collections.SortDirection.Ascending">
-            <summary>
-            Vyestupné.
-            </summary>
-        </member>
-        <member name="F:Havit.Collections.SortDirection.Descending">
-            <summary>
-            Sestupné.
-            </summary>
-        </member>
-        <member name="T:Havit.Collections.SortItemCollection">
-            <summary>
-            Kolekce objektů třídy SortItem.
-            </summary>
-        </member>
-        <member name="T:Havit.Security.PasswordCharacterSet">
-            <summary>
-            Sada znaků, z níž <see cref="T:Havit.Security.PasswordGenerator"/> vybírá znaky pro generování hesla.
-            </summary>
-        </member>
-        <member name="F:Havit.Security.PasswordCharacterSet.LowerCaseLetters">
-            <summary>
-            Pouze malá písmena.
-            </summary>
-        </member>
-        <member name="F:Havit.Security.PasswordCharacterSet.Letters">
-            <summary>
-            Velká a malá písmena.
-            </summary>
-        </member>
-        <member name="F:Havit.Security.PasswordCharacterSet.LettersAndDigits">
-            <summary>
-            Písmena (velká i malá) a číslice.
-            </summary>
-        </member>
-        <member name="F:Havit.Security.PasswordCharacterSet.LettersDigitsAndSpecialCharacters">
-            <summary>
-            Písmena (velká i malá), číslice a speciální znaky.
-            </summary>
         </member>
     </members>
 </doc>

@@ -319,7 +319,7 @@ namespace Havit.Business
 		/// <remarks>
 		/// Neprovede se, pokud je již objekt smazán.
 		/// </remarks>
-		public virtual void Delete()
+		public void Delete()
 		{
 			Delete(null);
 		}

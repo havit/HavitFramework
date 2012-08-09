@@ -45,12 +45,16 @@ namespace Havit.Business
 		/// </summary>
 		public void Initialize()
 		{
-			_value = new CollectionType();
-			IsInitialized = true;
-			_value.CollectionChanged += delegate(object sender, EventArgs e)
+			if (_value == null)
 			{
-				IsDirty = true;
-			};
+				// první inicializace
+				_value = new CollectionType();
+				IsInitialized = true;
+				_value.CollectionChanged += delegate(object sender, EventArgs e)
+				{
+					IsDirty = true;
+				};
+			}
 		}
 		#endregion
 	}

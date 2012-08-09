@@ -132,14 +132,26 @@ namespace Havit.Data
 		}
 		#endregion
 
-		#region Load<T>, Get<T>
+		#region Get<T>, TryGet<T>, Load<T>
 		/// <summary>
 		/// Naète parametr zadaného generického typu T.
 		/// </summary>
 		/// <param name="fieldName">jméno parametru</param>
 		/// <param name="target">cíl, kam má být parametr uložen</param>
 		/// <returns>false, pokud má parametr hodnotu NULL; true, pokud byla naètena hodnota</returns>
+		[Obsolete]
 		public bool Load<T>(string fieldName, ref T target)
+		{
+			return TryGet<T>(fieldName, ref target);
+		}
+
+		/// <summary>
+		/// Naète parametr zadaného generického typu T.
+		/// </summary>
+		/// <param name="fieldName">jméno parametru</param>
+		/// <param name="target">cíl, kam má být parametr uložen</param>
+		/// <returns>false, pokud má parametr hodnotu NULL; true, pokud byla naètena hodnota</returns>
+		public bool TryGet<T>(string fieldName, ref T target)
 		{
 			if (dataDictionary.ContainsKey(fieldName))
 			{

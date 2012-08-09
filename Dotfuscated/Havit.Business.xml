@@ -426,12 +426,6 @@
             </summary>
             <param name="transaction">transakce <see cref="T:System.Data.Common.DbTransaction"/>, v rámci které má být objekt načten; null, pokud bez transakce</param>
         </member>
-        <member name="M:Havit.Business.BusinessObjectBase.OnPreSave(System.EventArgs)">
-            <summary>
-            Spouští událost <see cref="E:Havit.Business.BusinessObjectBase.PreSave"/>.
-            </summary>
-            <param name="e">prádné</param>
-        </member>
         <member name="M:Havit.Business.BusinessObjectBase.Save(System.Data.Common.DbTransaction)">
             <summary>
             Uloží objekt do databáze, s případným použitím VNĚJŠÍ transakce.
@@ -565,11 +559,6 @@
             Touto metodou se k objektu registrují sami PropertyHoldery ve svých constructorech.
             </remarks>
             <param name="propertyHolder">PropertyHolder k zaregistrování</param>
-        </member>
-        <member name="E:Havit.Business.BusinessObjectBase.PreSave">
-            <summary>
-            Událost, která se volá před ukládáním, ještě před constraint-checky.
-            </summary>
         </member>
         <member name="P:Havit.Business.BusinessObjectBase.ID">
             <summary>
@@ -897,7 +886,7 @@
             Přidá do kolekce položku pro řazení.
             </summary>
         </member>
-        <member name="T:Havit.Business.BusinessObjectCollection`1">
+        <member name="T:Havit.Business.BusinessObjectCollection`2">
             <summary>
             Bázová třída pro všechny kolekce BusinessObjectBase (Layer SuperType)
             </summary>
@@ -908,19 +897,19 @@
             </remarks>
             <typeparam name="T">členský typ kolekce</typeparam>
         </member>
-        <member name="M:Havit.Business.BusinessObjectCollection`1.OnCollectionChanged(System.EventArgs)">
+        <member name="M:Havit.Business.BusinessObjectCollection`2.OnCollectionChanged(System.EventArgs)">
             <summary>
-            Provádí se jako volání události <see cref="E:Havit.Business.BusinessObjectCollection`1.CollectionChanged"/>.
+            Provádí se jako volání události <see cref="E:Havit.Business.BusinessObjectCollection`2.CollectionChanged"/>.
             </summary>
             <param name="e">prázdné</param>
         </member>
-        <member name="M:Havit.Business.BusinessObjectCollection`1.AddRange(System.Collections.Generic.IEnumerable{`0})">
+        <member name="M:Havit.Business.BusinessObjectCollection`2.AddRange(System.Collections.Generic.IEnumerable{`0})">
             <summary>
             Přidá do kolekce prvky předané kolekce.
             </summary>
             <param name="source">Kolekce, jejíž prvky mají být přidány.</param>
         </member>
-        <member name="M:Havit.Business.BusinessObjectCollection`1.InsertItem(System.Int32,`0)">
+        <member name="M:Havit.Business.BusinessObjectCollection`2.InsertItem(System.Int32,`0)">
             <summary>
             Inserts an element into the <see cref="T:System.Collections.ObjectModel.Collection`1"></see> at the specified index.
             When AllowDuplicates is false, checks whether item already is in the collection. If so, throws an ArgumentException.
@@ -929,14 +918,14 @@
             <param name="item">The object to insert. The value can be null for reference types.</param>
             <exception cref="T:System.ArgumentOutOfRangeException">index is less than zero.-or-index is greater than <see cref="P:System.Collections.ObjectModel.Collection`1.Count"></see>.</exception>
         </member>
-        <member name="M:Havit.Business.BusinessObjectCollection`1.RemoveItem(System.Int32)">
+        <member name="M:Havit.Business.BusinessObjectCollection`2.RemoveItem(System.Int32)">
             <summary>
             Removes the element at the specified index of the <see cref="T:System.Collections.ObjectModel.Collection`1"></see>.
             </summary>
             <param name="index">The zero-based index of the element to remove.</param>
             <exception cref="T:System.ArgumentOutOfRangeException">index is less than zero.-or-index is equal to or greater than <see cref="P:System.Collections.ObjectModel.Collection`1.Count"></see>.</exception>
         </member>
-        <member name="M:Havit.Business.BusinessObjectCollection`1.SetItem(System.Int32,`0)">
+        <member name="M:Havit.Business.BusinessObjectCollection`2.SetItem(System.Int32,`0)">
             <summary>
             Replaces the element at the specified index.
             When AllowDuplicates is false, checks whether item already is in the collection. If so, throws an ArgumentException.
@@ -945,12 +934,12 @@
             <param name="item">The new value for the element at the specified index. The value can be null for reference types.</param>
             <exception cref="T:System.ArgumentOutOfRangeException">index is less than zero.-or-index is greater than <see cref="P:System.Collections.ObjectModel.Collection`1.Count"></see>.</exception>
         </member>
-        <member name="M:Havit.Business.BusinessObjectCollection`1.ClearItems">
+        <member name="M:Havit.Business.BusinessObjectCollection`2.ClearItems">
             <summary>
             Removes all elements from the <see cref="T:System.Collections.ObjectModel.Collection`1"></see>.
             </summary>
         </member>
-        <member name="M:Havit.Business.BusinessObjectCollection`1.#ctor">
+        <member name="M:Havit.Business.BusinessObjectCollection`2.#ctor">
             <summary>
             Vytvoří novou instanci kolekce bez prvků - prázdnou.
             </summary>
@@ -958,7 +947,7 @@
             Použit je wrappující constructor Collection(Of T), abychom si vynutili List(Of T).
             </remarks>
         </member>
-        <member name="M:Havit.Business.BusinessObjectCollection`1.#ctor(System.Collections.Generic.List{`0})">
+        <member name="M:Havit.Business.BusinessObjectCollection`2.#ctor(System.Collections.Generic.List{`0})">
             <summary>
             Vytvoří novou instanci kolekce wrapnutím Listu prvků (neklonuje!).
             </summary>
@@ -967,7 +956,7 @@
             </remarks>
             <param name="list">List prvků</param>
         </member>
-        <member name="M:Havit.Business.BusinessObjectCollection`1.FindByID(System.Int32)">
+        <member name="M:Havit.Business.BusinessObjectCollection`2.FindByID(System.Int32)">
             <summary>
             Prohledá kolekci a vrátí první nalezený prvek s požadovaným ID.
             </summary>
@@ -977,7 +966,7 @@
             <param name="id">ID prvku</param>
             <returns>první nalezený prvek s požadovaným ID; null, pokud nic nenalezeno</returns>
         </member>
-        <member name="M:Havit.Business.BusinessObjectCollection`1.Find(System.Predicate{`0})">
+        <member name="M:Havit.Business.BusinessObjectCollection`2.Find(System.Predicate{`0})">
             <summary>
             Prohledá kolekci a vrátí první nalezený prvek odpovídající kritériu match.
             </summary>
@@ -987,7 +976,7 @@
             <param name="match">kritérium ve formě predikátu</param>
             <returns>kolekce všech prvků odpovídajících kritériu match</returns>
         </member>
-        <member name="M:Havit.Business.BusinessObjectCollection`1.FindAll(System.Predicate{`0})">
+        <member name="M:Havit.Business.BusinessObjectCollection`2.FindAll(System.Predicate{`0})">
             <summary>
             Prohledá kolekci a vrátí všechny prvky odpovídající kritériu match.
             </summary>
@@ -997,7 +986,7 @@
             <param name="match">kritérium ve formě predikátu</param>
             <returns>kolekce všech prvků odpovídajících kritériu match</returns>
         </member>
-        <member name="M:Havit.Business.BusinessObjectCollection`1.ForEach(System.Action{`0})">
+        <member name="M:Havit.Business.BusinessObjectCollection`2.ForEach(System.Action{`0})">
             <summary>
             Spustí akci nad všemi prvky kolekce.
             </summary>
@@ -1012,7 +1001,7 @@
             </remarks>
             <param name="action">akce, která má být spuštěna</param>
         </member>
-        <member name="M:Havit.Business.BusinessObjectCollection`1.Sort(System.String,System.Boolean)">
+        <member name="M:Havit.Business.BusinessObjectCollection`2.Sort(System.String,System.Boolean)">
             <summary>
             Seřadí prvky kolekce dle požadované property, která implementuje IComparable.
             </summary>
@@ -1024,35 +1013,40 @@
             <param name="propertyName">property, podle které se má řadit</param>
             <param name="ascending">true, pokud se má řadit vzestupně, false, pokud sestupně</param>
         </member>
-        <member name="M:Havit.Business.BusinessObjectCollection`1.Sort(System.Comparison{`0})">
+        <member name="M:Havit.Business.BusinessObjectCollection`2.Sort(System.Comparison{`0})">
             <summary>
             Seřadí prvky kolekce dle zadaného srovnání. Publikuje metodu Sort(Generic Comparsion) inner-Listu.
             </summary>
             <param name="comparsion">srovnání, podle kterého mají být prvky seřazeny</param>
         </member>
-        <member name="M:Havit.Business.BusinessObjectCollection`1.SaveAll(System.Data.Common.DbTransaction)">
+        <member name="M:Havit.Business.BusinessObjectCollection`2.SaveAll(System.Data.Common.DbTransaction)">
             <summary>
             Uloží všechny prvky kolekce, v transakci.
             </summary>
             <param name="transaction">transakce <see cref="T:System.Data.Common.DbTransaction"/>, v které mají být prvky uloženy</param>
         </member>
-        <member name="M:Havit.Business.BusinessObjectCollection`1.SaveAll">
+        <member name="M:Havit.Business.BusinessObjectCollection`2.SaveAll">
             <summary>
             Uloží všechny prvky kolekce, bez transakce.
             </summary>
         </member>
-        <member name="M:Havit.Business.BusinessObjectCollection`1.GetIDs">
+        <member name="M:Havit.Business.BusinessObjectCollection`2.GetIDs">
             <summary>
             Vrátí pole hodnot ID všech prvků kolekce.
             </summary>
             <returns>pole hodnot ID všech prvků kolekce</returns>
         </member>
-        <member name="E:Havit.Business.BusinessObjectCollection`1.CollectionChanged">
+        <member name="M:Havit.Business.BusinessObjectCollection`2.CheckDuplicates">
+            <summary>
+            Vrací true, pokud kolekce obsahuje duplicity.
+            </summary>		
+        </member>
+        <member name="E:Havit.Business.BusinessObjectCollection`2.CollectionChanged">
             <summary>
             Událost vyvolaná po jakékoliv změně kolekce (Insert, Remove, Set, Clear).
             </summary>
         </member>
-        <member name="P:Havit.Business.BusinessObjectCollection`1.AllowDuplicates">
+        <member name="P:Havit.Business.BusinessObjectCollection`2.AllowDuplicates">
             <summary>
             Určuje, zda je možné do kolekce vložit hodnotu, která již v kolekci je.
             Pokud je nastaveno na true, přidání hodnoty, která v kolekci již je, vyvolá výjimku.

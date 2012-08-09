@@ -154,7 +154,7 @@ namespace Havit.Business
 		/// </remarks>
 		/// <param name="match">kritérium ve formì predikátu</param>
 		/// <returns>kolekce všech prvkù odpovídajících kritériu match</returns>
-		public T Find(Predicate<T> match)
+		public virtual T Find(Predicate<T> match)
 		{
 			List<T> innerList = (List<T>)Items;
 			return innerList.Find(match);
@@ -170,7 +170,7 @@ namespace Havit.Business
 		/// </remarks>
 		/// <param name="match">kritérium ve formì predikátu</param>
 		/// <returns>kolekce všech prvkù odpovídajících kritériu match</returns>
-		public BusinessObjectCollection<T> FindAll(Predicate<T> match)
+		public virtual BusinessObjectCollection<T> FindAll(Predicate<T> match)
 		{
 			List<T> innerList = (List<T>)Items;
 			return new BusinessObjectCollection<T>(innerList.FindAll(match));

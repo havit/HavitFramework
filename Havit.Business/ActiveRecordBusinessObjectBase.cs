@@ -75,16 +75,35 @@ namespace Havit.Business
 			this.IsNew = false;
 			this.IsLoaded = false;
 */
-		
-			this.Load_ParseDataRecord(record);
+
+			Load(record);
+			//this.Load_ParseDataRecord(record);
 
 //			this._isLoadedPartially = !record.FullLoad;
-			this.IsLoaded = true;
-			this.IsDirty = false;
+			//this.IsLoaded = true;
+			//this.IsDirty = false;
 		}
 		#endregion
 
 		#region Load logika
+
+		/// <summary>
+		/// Nastaví objektu hodnoty z DataRecordu.
+		/// Pokud je objekt již naèten, vyhodí výjimku.
+		/// </summary>
+		/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu naètenými z databáze.</param>
+		public void Load(DataRecord record)
+		{
+			if (this.IsLoaded)
+			{
+				throw new InvalidOperationException("Nelze nastavit objektu hodnoty z DataRecordu, pokud objekt není ghostem.");
+			}
+			Load_ParseDataRecord(record);
+
+			this.IsLoaded = true;
+			this.IsDirty = false;
+		}
+
 		/// <summary>
 		/// Výkonná èást nahrání objektu z perzistentního uložištì.
 		/// </summary>

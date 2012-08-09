@@ -4,165 +4,6 @@
         <name>Havit.Business</name>
     </assembly>
     <members>
-        <member name="T:Havit.Business.IFieldsBuilder">
-            <summary>
-            Interface pro Property popisující strukturu domény.	
-            </summary>
-        </member>
-        <member name="M:Havit.Business.IFieldsBuilder.GetSelectFieldStatement(System.Data.Common.DbCommand)">
-            <summary>
-            Vrátí řetězec pro vytažení daného sloupce z databáze.
-            </summary>
-        </member>
-        <member name="T:Havit.Business.Query.OrCondition">
-            <summary>
-            Kompozitní podmínka. Výsledek je pravdivý, je-li pravdivá alespoň jedna členská podmínka.
-            </summary>
-        </member>
-        <member name="T:Havit.Business.Query.CompositeCondition">
-            <summary>
-            Předek kompozitních podmínek.
-            </summary>
-        </member>
-        <member name="T:Havit.Business.Query.Condition">
-            <summary>
-            Interface podmínky dotazu.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.Condition.GetWhereStatement(System.Data.Common.DbCommand,System.Text.StringBuilder)">
-            <summary>
-            Přidá část SQL příkaz pro sekci WHERE. Je VELMI doporučeno, aby byla podmínka přidána včetně závorek.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.CompositeCondition.#ctor(System.String,Havit.Business.Query.Condition[])">
-            <summary>
-            Vytvoří instanci.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.CompositeCondition.GetWhereStatement(System.Data.Common.DbCommand,System.Text.StringBuilder)">
-            <summary>
-            Poskládá členské podmínky. Mezi podmínkami (operandy) je operátor zadaný v konstruktoru.
-            </summary>
-        </member>
-        <member name="P:Havit.Business.Query.CompositeCondition.Conditions">
-            <summary>
-            Podmínky v kompozitu.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.OrCondition.#ctor(Havit.Business.Query.Condition[])">
-            <summary>
-            Vytvoří kompozitní podmínku. Lze inicializovat sadou členských podmínek.
-            </summary>		
-        </member>
-        <member name="T:Havit.Business.Query.IOperand">
-            <summary>
-            Interface pro operandy SQL dotazu.
-            Operandem může být výraz, databázový sloupec, sklalární hodnota...
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.IOperand.GetCommandValue(System.Data.Common.DbCommand)">
-            <summary>
-            Vrací řetězec, který reprezentuje hodnotu operandu v SQL dotazu.
-            Může přidávat databázové parametry do commandu.
-            </summary>
-            <param name="command">Databázový příkaz. Je možné do něj přidávat databázové parametry.</param>
-            <returns>Řetězec reprezentující hodnotu operandu v SQL dotazu.</returns>
-        </member>
-        <member name="T:Havit.Business.Query.DateRangeCondition">
-            <summary>
-            Vytváří podmínky testující rozsah datumů.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.DateRangeCondition.Create(Havit.Business.Query.IOperand,System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
-            <summary>
-            Vytvoří podmínku testující, zda je datum v intervalu datumů.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.DateRangeCondition.CreateDays(Havit.Business.Query.IOperand,System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
-            <summary>
-            Vytvoří podmínku testující, zda je den data (datumu) v intervalu dnů datumů.
-            Zajišťuje, aby hodnota operandu byla větší nebo rovna datu date1 a aby byla menší než půlnoc konce date2.
-            Jinými slovy: Argumenty moho obsahovat datum a čas, ale testuje se jen datum bez času. Potom 
-            je zajišťováno: DATUM(date1) &lt;= DATUM(operand) &lt; DATUM(date2).
-            </summary>
-        </member>
-        <member name="T:Havit.Business.ObjectInfo">
-            <summary>
-            Reprezentuje informace o objektu (třídě).
-            </summary>
-        </member>
-        <member name="M:Havit.Business.ObjectInfo.Initialize(System.String,System.String,System.Boolean,Havit.Business.GetObjectDelegate,Havit.Business.GetAllDelegate,Havit.Business.FieldPropertyInfo,Havit.Business.PropertyInfoCollection)">
-            <summary>
-            Nastaví instanci třídy.
-            </summary>
-            <param name="dbSchema">Název schémata databázové tabulky.</param>
-            <param name="dbTable">Název databázové tabulky.</param>
-            <param name="readOnly">Určuje, zda je třída jen ke čtení.</param>
-            <param name="getObjectMethod">Delegát na metodu vracející objekt třídy na základě ID.</param>
-            <param name="getAllMethod">Delegát na metodu vracející všechny (nesmazané) objekty třídy.</param>
-            <param name="deletedProperty">FieldPropertyInfo, která identifikuje příznakem smazané záznamy.</param>
-            <param name="properties">Kolekce všech vlastností objektu.</param>
-        </member>
-        <member name="M:Havit.Business.ObjectInfo.CheckInitialization">
-            <summary>
-            Ověří, že byla instance inicializována. Pokud ne, vyhodí výjimku.
-            </summary>
-        </member>
-        <member name="P:Havit.Business.ObjectInfo.ReadOnly">
-            <summary>
-            Indikuje, zda je objekt určen jen ke čtení.
-            </summary>
-        </member>
-        <member name="P:Havit.Business.ObjectInfo.DbSchema">
-            <summary>
-            Název schématu databázové tabulky.
-            </summary>
-        </member>
-        <member name="P:Havit.Business.ObjectInfo.DbTable">
-            <summary>
-            Název databázové tabulky.
-            </summary>
-        </member>
-        <member name="P:Havit.Business.ObjectInfo.Properties">
-            <summary>
-            Property ve třídě.
-            </summary>
-        </member>
-        <member name="P:Havit.Business.ObjectInfo.DeletedProperty">
-            <summary>
-            Property, která označuje smazané záznamy.
-            </summary>
-        </member>
-        <member name="P:Havit.Business.ObjectInfo.GetObjectMethod">
-            <summary>
-            Metoda vracující instanci objektu.
-            </summary>
-        </member>
-        <member name="P:Havit.Business.ObjectInfo.GetAllMethod">
-            <summary>
-            Metoda vracející seznam všech instancí.
-            </summary>
-        </member>
-        <member name="T:Havit.Business.Query.SqlInt32ArrayOperand">
-            <summary>
-            SqlInt32Array jako operand databázového dotazu.
-            </summary>
-        </member>
-        <member name="F:Havit.Business.Query.SqlInt32ArrayOperand.value">
-            <summary>
-            Hodnota konstanty ValueOperandu.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.SqlInt32ArrayOperand.#ctor(System.Int32[])">
-            <summary>
-            Vytvoří instanci třídy SqlInt32ArrayOperand.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.SqlInt32ArrayOperand.Create(System.Int32[])">
-            <summary>
-            Vytvoří operand z pole integerů.
-            </summary>
-        </member>
         <member name="T:Havit.Business.PropertyHolderBase">
             <summary>
             Předek generického typu <see cref="T:Havit.Business.PropertyHolder`1"/>. 
@@ -196,31 +37,6 @@
             Indikuje, zda je hodnota property nastavena.
             </summary>
         </member>
-        <member name="T:Havit.Business.Query.NumberCondition">
-            <summary>
-            Vytváří podmínky testující číselné hodnoty.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.NumberCondition.CreateEquals(Havit.Business.Query.IOperand,System.Int32)">
-            <summary>
-            Vytvoří podmínku testující rovnost hodnoty.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.NumberCondition.CreateEquals(Havit.Business.Query.IOperand,Havit.Business.Query.IOperand)">
-            <summary>
-            Vytvoří podmínku testující rovnost hodnoty operandů.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.NumberCondition.Create(Havit.Business.Query.IOperand,Havit.Business.Query.ComparisonOperator,System.Int32)">
-            <summary>
-            Vytvoří podmínku testující hodnoty pomocí zadaného operátoru.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.NumberCondition.Create(Havit.Business.Query.IOperand,Havit.Business.Query.ComparisonOperator,Havit.Business.Query.IOperand)">
-            <summary>
-            Vytvoří podmínku testující hodnoty pomocí zadaného operátoru.
-            </summary>
-        </member>
         <member name="T:Havit.Business.DateInfoDictionary">
             <summary>
             Dictionary pro klíč <see cref="T:System.DateTime"/> a hodnoty <see cref="T:Havit.Business.DateInfo"/>.
@@ -247,6 +63,171 @@
         <member name="P:Havit.Business.DateInfoDictionary.Item(System.DateTime)">
             <summary>
             Indexer přes klíče <see cref="T:System.DateTime"/>.
+            </summary>
+        </member>
+        <member name="T:Havit.Business.GetObjectDelegate">
+            <summary>
+            Delegát na metodu GetObject.
+            </summary>
+            <param name="objectID">ID objektu, který se má metodou vrátit.</param>
+            <returns>Business objekt na základě ID.</returns>
+        </member>
+        <member name="T:Havit.Business.ReferenceFieldPropertyInfo">
+            <summary>
+            Reprezentuje sloupec v databázi,
+            který je referencí na jiný typ (je cizím klíčem do jiné tabulky).
+            </summary>
+        </member>
+        <member name="T:Havit.Business.FieldPropertyInfo">
+            <summary>
+            Reprezentuje sloupec v databázi,
+            nese informace o daném sloupci a jeho vazbu na objektovou strukturu.
+            </summary>
+        </member>
+        <member name="T:Havit.Business.PropertyInfo">
+            <summary>
+            Bázová třída pro všechny property-info objektu.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.PropertyInfo.Initialize(Havit.Business.ObjectInfo)">
+            <summary>
+            Inicializuje instanci.
+            </summary>
+            <param name="owner"></param>
+        </member>
+        <member name="M:Havit.Business.PropertyInfo.CheckInitialization">
+            <summary>
+            Ověří, že byla instance inicializována. Pokud ne, vyhodí výjimku.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.PropertyInfo.Owner">
+            <summary>
+            Třída, které property náleží.
+            </summary>
+        </member>
+        <member name="T:Havit.Business.IFieldsBuilder">
+            <summary>
+            Interface pro Property popisující strukturu domény.	
+            </summary>
+        </member>
+        <member name="M:Havit.Business.IFieldsBuilder.GetSelectFieldStatement(System.Data.Common.DbCommand)">
+            <summary>
+            Vrátí řetězec pro vytažení daného sloupce z databáze.
+            </summary>
+        </member>
+        <member name="T:Havit.Business.Query.IOperand">
+            <summary>
+            Interface pro operandy SQL dotazu.
+            Operandem může být výraz, databázový sloupec, sklalární hodnota...
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.IOperand.GetCommandValue(System.Data.Common.DbCommand)">
+            <summary>
+            Vrací řetězec, který reprezentuje hodnotu operandu v SQL dotazu.
+            Může přidávat databázové parametry do commandu.
+            </summary>
+            <param name="command">Databázový příkaz. Je možné do něj přidávat databázové parametry.</param>
+            <returns>Řetězec reprezentující hodnotu operandu v SQL dotazu.</returns>
+        </member>
+        <member name="M:Havit.Business.FieldPropertyInfo.Initialize(Havit.Business.ObjectInfo,System.String,System.Boolean,System.Data.SqlDbType,System.Boolean,System.Int32)">
+            <summary>
+            Inicializuje instanci sloupce.
+            </summary>
+            <param name="owner">Nadřazený objectInfo.</param>
+            <param name="fieldName">Název sloupce v databázy.</param>
+            <param name="isPrimaryKey">Indikuje, zda je sloupec primárním klíčem</param>
+            <param name="nullable">Indukuje, zda je povolena hodnota null.</param>
+            <param name="fieldType">Typ databázového sloupce.</param>
+            <param name="maximumLength">Maximální délka dat databázového sloupce.</param>		
+        </member>
+        <member name="M:Havit.Business.FieldPropertyInfo.GetSelectFieldStatement(System.Data.Common.DbCommand)">
+            <summary>
+            Vrátí řetězec pro vytažení daného sloupce z databáze.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.FieldPropertyInfo.FieldName">
+            <summary>
+            Název sloupce v databázi.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.FieldPropertyInfo.Nullable">
+            <summary>
+            Udává, zda je možné uložit null hodnotu.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.FieldPropertyInfo.FieldType">
+            <summary>
+            Typ sloupce v databázi.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.FieldPropertyInfo.IsPrimaryKey">
+            <summary>
+            Udává, zda je sloupec primárním klíčem.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.FieldPropertyInfo.MaximumLength">
+            <summary>
+            Maximální délka řetězce (u typů varchar, nvarchar, apod.), případně velikost datového typu (u typů 
+            </summary>
+        </member>
+        <member name="M:Havit.Business.ReferenceFieldPropertyInfo.Initialize(Havit.Business.ObjectInfo,System.String,System.Boolean,System.Data.SqlDbType,System.Boolean,System.Int32,System.Type,Havit.Business.ObjectInfo)">
+            <summary>
+            Inicializuje instanci sloupce.
+            </summary>
+            <param name="owner">Nadřazený objectInfo.</param>
+            <param name="fieldName">Název sloupce v databázy.</param>
+            <param name="isPrimaryKey">Indikuje, zda je sloupec primárním klíčem</param>
+            <param name="nullable">Indukuje, zda je povolena hodnota null.</param>
+            <param name="fieldType">Typ databázového sloupce.</param>
+            <param name="maximumLength">Maximální délka dat databázového sloupce.</param>		
+            <param name="targetType">Typ, jenž property nese.</param>
+            <param name="targetObjectInfo">ObjectInfo na typ, jenž property nese.</param>
+        </member>
+        <member name="P:Havit.Business.ReferenceFieldPropertyInfo.TargetType">
+            <summary>
+            Typ, jenž property nese.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.ReferenceFieldPropertyInfo.TargetObjectInfo">
+            <summary>
+            Delegát na metodu vracející objekt na základě ID.
+            </summary>
+        </member>
+        <member name="T:Havit.Business.DateInfo">
+            <summary>
+            Třída pro informace o dni.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.DateInfo.#ctor(System.DateTime)">
+            <summary>
+            Vytvoří instanci <see cref="T:Havit.Business.DateInfo"/>.
+            </summary>
+            <param name="date">den, který má být reprezentován</param>
+        </member>
+        <member name="M:Havit.Business.DateInfo.SetAsHoliday(System.String)">
+            <summary>
+            Nastaví den jako svátek.
+            </summary>
+            <param name="holidayDescription">textový popis svátku</param>
+        </member>
+        <member name="M:Havit.Business.DateInfo.SetAsHoliday">
+            <summary>
+            Nastaví den jako svátek.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.DateInfo.Date">
+            <summary>
+            Vrátí den, kterému DateInfo patří.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.DateInfo.IsHoliday">
+            <summary>
+            Indikuje, zda-li je den svátkem.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.DateInfo.HolidayDescription">
+            <summary>
+            Textový popis svátku, pokud je den svátkem.
             </summary>
         </member>
         <member name="T:Havit.Business.Query.BoolCondition">
@@ -281,60 +262,101 @@
             Vytvoří podmínku testující vlastnost na hodnotu false.
             </summary>
         </member>
-        <member name="T:Havit.Business.GetObjectDelegate">
+        <member name="T:Havit.Business.Query.BinaryCondition">
             <summary>
-            Delegát na metodu GetObject.
-            </summary>
-            <param name="objectID">ID objektu, který se má metodou vrátit.</param>
-            <returns>Business objekt na základě ID.</returns>
-        </member>
-        <member name="T:Havit.Business.CollectionPropertyInfo">
-            <summary>
-            Kolekce objektů třídy IProperty.
+            Třída reprezentující podmínku o dvou operandech.
             </summary>
         </member>
-        <member name="T:Havit.Business.PropertyInfo">
+        <member name="T:Havit.Business.Query.UnaryCondition">
             <summary>
-            Bázová třída pro všechny property-info objektu.
+            Třída reprezentující podmínku o jednom operandu.
             </summary>
         </member>
-        <member name="M:Havit.Business.PropertyInfo.Initialize(Havit.Business.ObjectInfo)">
+        <member name="T:Havit.Business.Query.Condition">
             <summary>
-            Inicializuje instanci.
-            </summary>
-            <param name="owner"></param>
-        </member>
-        <member name="M:Havit.Business.PropertyInfo.CheckInitialization">
-            <summary>
-            Ověří, že byla instance inicializována. Pokud ne, vyhodí výjimku.
+            Interface podmínky dotazu.
             </summary>
         </member>
-        <member name="P:Havit.Business.PropertyInfo.Owner">
+        <member name="M:Havit.Business.Query.Condition.GetWhereStatement(System.Data.Common.DbCommand,System.Text.StringBuilder)">
             <summary>
-            Třída, které property náleží.
+            Přidá část SQL příkaz pro sekci WHERE. Je VELMI doporučeno, aby byla podmínka přidána včetně závorek.
             </summary>
         </member>
-        <member name="M:Havit.Business.CollectionPropertyInfo.Initialize(Havit.Business.ObjectInfo,System.Type,System.String)">
+        <member name="F:Havit.Business.Query.UnaryCondition.IsNullPattern">
             <summary>
-            Vytvoří instanci CollectionProperty.
-            </summary>
-            <param name="owner">Nadřazený objectInfo.</param>
-            <param name="itemType">Typ prvků kolekce.</param>
-            <param name="collectionSelectFieldStatement">Část SQL dotazu pro vytažení hodnoty daného sloupce.</param>
-        </member>
-        <member name="M:Havit.Business.CollectionPropertyInfo.GetSelectFieldStatement(System.Data.Common.DbCommand)">
-            <summary>
-            Vrátí řetězec pro vytažení daného sloupce z databáze.
+            Vzor pro podmínku IS NULL.
             </summary>
         </member>
-        <member name="P:Havit.Business.CollectionPropertyInfo.ItemType">
+        <member name="F:Havit.Business.Query.UnaryCondition.IsNotNullPattern">
             <summary>
-            Typ prvků kolekce.
+            Vzor pro podmínku IS NOT NULL.
             </summary>
         </member>
-        <member name="P:Havit.Business.CollectionPropertyInfo.CollectionSelectFieldStatement">
+        <member name="M:Havit.Business.Query.UnaryCondition.#ctor(System.String,Havit.Business.Query.IOperand)">
             <summary>
-            Část SQL dotazu pro vytažení hodnoty daného sloupce.
+            Vytvoří instanci unární podmínky.
+            </summary>
+            <param name="conditionPattern"></param>
+            <param name="operand"></param>
+        </member>
+        <member name="M:Havit.Business.Query.UnaryCondition.GetWhereStatement(System.Data.Common.DbCommand,System.Text.StringBuilder)">
+            <summary>
+            Přidá část SQL příkaz pro sekci WHERE.
+            </summary>
+            <param name="command"></param>
+            <param name="whereBuilder"></param>
+        </member>
+        <member name="P:Havit.Business.Query.UnaryCondition.Operand1">
+            <summary>
+            Operand.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.Query.UnaryCondition.ConditionPattern">
+            <summary>
+            Vzor podmínky SQL dotazu.
+            Následně je formátován operandem (v potomcích operandy).
+            </summary>
+        </member>
+        <member name="F:Havit.Business.Query.BinaryCondition.LikePattern">
+            <summary>
+            Vzor pro podmínku LIKE.
+            </summary>
+        </member>
+        <member name="F:Havit.Business.Query.BinaryCondition.EqualsPattern">
+            <summary>
+            Vzor pro podmínku rovnosti.
+            </summary>
+        </member>
+        <member name="F:Havit.Business.Query.BinaryCondition.NotEqualsPattern">
+            <summary>
+            Vzor pro podmínku nerovnosti.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.BinaryCondition.#ctor(System.String,Havit.Business.Query.IOperand,Havit.Business.Query.IOperand)">
+            <summary>
+            Vytvoří binární (dvojoperandovou) podmínku.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.BinaryCondition.#ctor(Havit.Business.Query.IOperand,System.String,Havit.Business.Query.IOperand)">
+            <summary>
+            Vytvoří binární (dvojoperandovou) podmínku.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.BinaryCondition.GetWhereStatement(System.Data.Common.DbCommand,System.Text.StringBuilder)">
+            <summary>
+            Přidá část SQL příkaz pro sekci WHERE
+            </summary>
+            <param name="command"></param>
+            <param name="whereBuilder"></param>
+        </member>
+        <member name="M:Havit.Business.Query.BinaryCondition.GetComparisonPattern(Havit.Business.Query.ComparisonOperator)">
+            <summary>
+            Vrátí vzor podmínky pro běžné porovnání dvou hodnot (vrací např. "({0} = {1})").
+            </summary>
+        </member>
+        <member name="P:Havit.Business.Query.BinaryCondition.Operand2">
+            <summary>
+            Druhý operand.
             </summary>
         </member>
         <member name="T:Havit.Business.BusinessObjectBase">
@@ -593,31 +615,6 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="T:Havit.Business.Query.ReferenceCondition">
-            <summary>
-            Vytváří podmínku testující referenční hodnotu (cizí klíč).
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.ReferenceCondition.CreateEquals(Havit.Business.Query.IOperand,System.Nullable{System.Int32})">
-            <summary>
-            Vytvoří podmínku na rovnost.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.ReferenceCondition.CreateEquals(Havit.Business.Query.IOperand,Havit.Business.BusinessObjectBase)">
-            <summary>
-            Vytvoří podmínku na rovnost.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.ReferenceCondition.CreateEquals(Havit.Business.Query.IOperand,Havit.Business.Query.IOperand)">
-            <summary>
-            Vytvoří podmínku na rovnost dvou operandů.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.ReferenceCondition.CreateIn(Havit.Business.Query.IOperand,System.Int32[])">
-            <summary>
-            Vytvoří podmínku existence hodnoty v poli integerů.
-            </summary>
-        </member>
         <member name="T:Havit.Business.PropertyInfoCollection">
             <summary>
             Kolekce objektů PropertyInfo.<br/>
@@ -640,284 +637,93 @@
             Přidá prvek do kolekce, pokud v kolekci již není.
             </summary>
         </member>
-        <member name="T:Havit.Business.Query.ConditionList">
+        <member name="T:Havit.Business.BusinessCalendar">
             <summary>
-            Seznam podmínek, který nemůže obsahovat prázdnou podmínku.
+            Třída poskytující funkčnost pro práci s pracovním kalendářem,
+            pracovními dny, svátky, atp.
+            </summary>
+            <remarks>
+            Pracovním dnem (business day) je den, který není sobotou, nedělí ani svátkem.<br/>
+            Třída se instancializuje se sadou svátků (holidays), nebo bez svátků (pracovním
+            dnem je pak den, který není sobotou ani nedělí).<br/>
+            Jako svátky (holiday) lze samozřejmě předat i různé dovolené apod.<br/>
+            <br/>
+            Jednou vytvořenou instanci třídy lze s výhodou cachovat.
+            </remarks>
+        </member>
+        <member name="F:Havit.Business.BusinessCalendar.holidayDictionary">
+            <summary>
+            Interní dictionary svátků.<br/>
+            Klíč je DateTime, hodnota je DateInfo.
             </summary>
         </member>
-        <member name="M:Havit.Business.Query.ConditionList.InsertItem(System.Int32,Havit.Business.Query.Condition)">
+        <member name="M:Havit.Business.BusinessCalendar.#ctor">
             <summary>
-            Předefinování metody pro vkládání podmínek. Není možné vložit null (hodnota null je ignorována a není přidána do kolekce.
-            </summary>
-            <param name="index"></param>
-            <param name="item"></param>
-        </member>
-        <member name="T:Havit.Business.FieldPropertyInfo">
-            <summary>
-            Reprezentuje sloupec v databázi,
-            nese informace o daném sloupci a jeho vazbu na objektovou strukturu.
+            Vytvoří instanci <see cref="T:Havit.Business.BusinessCalendar"/> bez svátků.<br/>
+            Pracovními dny budou všechny dny mimo víkendů, dokud nebudou přidány nějaké svátky.
             </summary>
         </member>
-        <member name="M:Havit.Business.FieldPropertyInfo.Initialize(Havit.Business.ObjectInfo,System.String,System.Boolean,System.Data.SqlDbType,System.Boolean,System.Int32)">
+        <member name="M:Havit.Business.BusinessCalendar.#ctor(Havit.Business.DateInfoDictionary)">
             <summary>
-            Inicializuje instanci sloupce.
+            Vytvoří instanci <see cref="T:Havit.Business.BusinessCalendar"/> se svátky.<br/>
             </summary>
-            <param name="owner">Nadřazený objectInfo.</param>
-            <param name="fieldName">Název sloupce v databázy.</param>
-            <param name="isPrimaryKey">Indikuje, zda je sloupec primárním klíčem</param>
-            <param name="nullable">Indukuje, zda je povolena hodnota null.</param>
-            <param name="fieldType">Typ databázového sloupce.</param>
-            <param name="maximumLength">Maximální délka dat databázového sloupce.</param>		
+            <param name="holidayDictionary"><see cref="T:Havit.Business.DateInfoDictionary"/> se svátky (POUZE SE SVÁTKY!!!)</param>
+            <remarks>
+            Nekontroluje se, jestli mají všechny dny z holidayDictionary nastaveno <see cref="P:Havit.Business.DateInfo.IsHoliday"/>.
+            </remarks>
         </member>
-        <member name="M:Havit.Business.FieldPropertyInfo.GetSelectFieldStatement(System.Data.Common.DbCommand)">
+        <member name="M:Havit.Business.BusinessCalendar.#ctor(System.DateTime[])">
             <summary>
-            Vrátí řetězec pro vytažení daného sloupce z databáze.
+            Vytvoří instanci <see cref="T:Havit.Business.BusinessCalendar"/> se svátky.<br/>
+            Svátky jsou předány v poli <see cref="T:System.DateTime"/>.
             </summary>
+            <param name="holidays">pole svátků <see cref="T:System.DateTime"/></param>
         </member>
-        <member name="P:Havit.Business.FieldPropertyInfo.FieldName">
+        <member name="M:Havit.Business.BusinessCalendar.GetNextBusinessDay(System.DateTime)">
             <summary>
-            Název sloupce v databázi.
+            Určí následující pracovní den.
             </summary>
+            <param name="time"><see cref="T:System.DateTime"/>, ke kterému má být následující pracovní den určen.</param>
+            <returns><see cref="T:System.DateTime"/>, který je následujícím pracovním dnem.</returns>
+            <remarks>Časový údaj zůstane nedotčen.</remarks>
         </member>
-        <member name="P:Havit.Business.FieldPropertyInfo.Nullable">
+        <member name="M:Havit.Business.BusinessCalendar.GetPreviousBusinessDay(System.DateTime)">
             <summary>
-            Udává, zda je možné uložit null hodnotu.
+            Určí předchozí pracovní den.
             </summary>
+            <param name="time"><see cref="T:System.DateTime"/>, ke kterému má být předchozí pracovní den určen.</param>
+            <returns><see cref="T:System.DateTime"/>, který je předchozím pracovním dnem.</returns>
+            <remarks>Časový údaj zůstane nedotčen.</remarks>
         </member>
-        <member name="P:Havit.Business.FieldPropertyInfo.FieldType">
+        <member name="M:Havit.Business.BusinessCalendar.AddBusinessDays(System.DateTime,System.Int32)">
             <summary>
-            Typ sloupce v databázi.
+            Určí den, který je x-tým následujícím pracovním dnem po dni zadaném.
             </summary>
+            <param name="time"><see cref="T:System.DateTime"/>, od kterého se určovaný den odvíjí.</param>
+            <param name="businessDays">kolikátý pracovní den má být určen</param>
+            <returns><see cref="T:System.DateTime"/>, který je x-tým následujícím pracovním dnem po dni zadaném.</returns>
+            <remarks>Časový údaj zůstane nedotčen.</remarks>
         </member>
-        <member name="P:Havit.Business.FieldPropertyInfo.IsPrimaryKey">
+        <member name="M:Havit.Business.BusinessCalendar.IsBusinessDay(System.DateTime)">
             <summary>
-            Udává, zda je sloupec primárním klíčem.
+            Určí, zda-li je zadaný den dnem pracovním.
             </summary>
+            <param name="time"><see cref="T:System.DateTime"/>, u kterého chceme vlastnosti zjistit</param>
+            <returns><b>false</b>, pokud je <see cref="T:System.DateTime"/> víkendem nebo svátkem; jinak <b>true</b></returns>
         </member>
-        <member name="P:Havit.Business.FieldPropertyInfo.MaximumLength">
+        <member name="M:Havit.Business.BusinessCalendar.IsHoliday(System.DateTime)">
             <summary>
-            Maximální délka řetězce (u typů varchar, nvarchar, apod.), případně velikost datového typu (u typů 
+            Zjistí, zda-li je <see cref="T:System.DateTime"/> svátkem (dovolenou, ...).
             </summary>
+            <param name="time"><see cref="T:System.DateTime"/>, u kterého má být vlastnost zjištěna</param>
+            <returns><b>true</b>, pokud je den v seznamu svátků, s nimiž byl <see cref="T:Havit.Business.BusinessCalendar"/> instanciován; jinak <b>false</b></returns>
         </member>
-        <member name="T:Havit.Business.Query.BinaryCondition">
+        <member name="M:Havit.Business.BusinessCalendar.IsWeekend(System.DateTime)">
             <summary>
-            Třída reprezentující podmínku o dvou operandech.
+            Určí, zda-li je zadaný den sobotou nebo nedělí.
             </summary>
-        </member>
-        <member name="T:Havit.Business.Query.UnaryCondition">
-            <summary>
-            Třída reprezentující podmínku o jednom operandu.
-            </summary>
-        </member>
-        <member name="F:Havit.Business.Query.UnaryCondition.IsNullPattern">
-            <summary>
-            Vzor pro podmínku IS NULL.
-            </summary>
-        </member>
-        <member name="F:Havit.Business.Query.UnaryCondition.IsNotNullPattern">
-            <summary>
-            Vzor pro podmínku IS NOT NULL.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.UnaryCondition.#ctor(System.String,Havit.Business.Query.IOperand)">
-            <summary>
-            Vytvoří instanci unární podmínky.
-            </summary>
-            <param name="conditionPattern"></param>
-            <param name="operand"></param>
-        </member>
-        <member name="M:Havit.Business.Query.UnaryCondition.GetWhereStatement(System.Data.Common.DbCommand,System.Text.StringBuilder)">
-            <summary>
-            Přidá část SQL příkaz pro sekci WHERE.
-            </summary>
-            <param name="command"></param>
-            <param name="whereBuilder"></param>
-        </member>
-        <member name="P:Havit.Business.Query.UnaryCondition.Operand1">
-            <summary>
-            Operand.
-            </summary>
-        </member>
-        <member name="P:Havit.Business.Query.UnaryCondition.ConditionPattern">
-            <summary>
-            Vzor podmínky SQL dotazu.
-            Následně je formátován operandem (v potomcích operandy).
-            </summary>
-        </member>
-        <member name="F:Havit.Business.Query.BinaryCondition.LikePattern">
-            <summary>
-            Vzor pro podmínku LIKE.
-            </summary>
-        </member>
-        <member name="F:Havit.Business.Query.BinaryCondition.EqualsPattern">
-            <summary>
-            Vzor pro podmínku rovnosti.
-            </summary>
-        </member>
-        <member name="F:Havit.Business.Query.BinaryCondition.NotEqualsPattern">
-            <summary>
-            Vzor pro podmínku nerovnosti.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.BinaryCondition.#ctor(System.String,Havit.Business.Query.IOperand,Havit.Business.Query.IOperand)">
-            <summary>
-            Vytvoří binární (dvojoperandovou) podmínku.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.BinaryCondition.#ctor(Havit.Business.Query.IOperand,System.String,Havit.Business.Query.IOperand)">
-            <summary>
-            Vytvoří binární (dvojoperandovou) podmínku.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.BinaryCondition.GetWhereStatement(System.Data.Common.DbCommand,System.Text.StringBuilder)">
-            <summary>
-            Přidá část SQL příkaz pro sekci WHERE
-            </summary>
-            <param name="command"></param>
-            <param name="whereBuilder"></param>
-        </member>
-        <member name="M:Havit.Business.Query.BinaryCondition.GetComparisonPattern(Havit.Business.Query.ComparisonOperator)">
-            <summary>
-            Vrátí vzor podmínky pro běžné porovnání dvou hodnot (vrací např. "({0} = {1})").
-            </summary>
-        </member>
-        <member name="P:Havit.Business.Query.BinaryCondition.Operand2">
-            <summary>
-            Druhý operand.
-            </summary>
-        </member>
-        <member name="T:Havit.Business.Query.QueryParams">
-            <summary>
-            Objektová struktura SQL dotazu.
-            Obsahuje seznam properties, které se mají z databáze získat, seznam podmínek fitrující záznamy
-            a řazení v jakém se mají záznamy (objekty) získat.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.QueryParams.PrepareCommand(System.Data.Common.DbCommand)">
-            <summary>
-            Vytvoří dotaz, nastaví jej do commandu.
-            Přidá parametry.
-            </summary>
-            <param name="command"></param>
-        </member>
-        <member name="M:Havit.Business.Query.QueryParams.OnBeforePrepareCommand">
-            <summary>
-            Slouží k přípravě objektu před začátkem skládání databázového dotazu.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.QueryParams.OnAfterPrepareCommand(System.Data.Common.DbCommand,System.Text.StringBuilder)">
-            <summary>
-            Slouží k dokončení skládání databázového dotazu.
-            Voláno po poskládání databázového dotazu, naskládání parametrů do commandu,
-            ale PŘED nastavením property command.CommandText. Je tak možno databázový
-            dotaz upravit na poslední chvíli.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.QueryParams.GetSelectStatement(System.Data.Common.DbCommand)">
-            <summary>
-            Vrátí sekci SQL dotazu SELECT.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.QueryParams.GetSelectFieldsStatement(System.Data.Common.DbCommand)">
-            <summary>
-            Vrátí seznam sloupců, které se z databáze získávají.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.QueryParams.GetFromStatement(System.Data.Common.DbCommand)">
-            <summary>
-            Vrátí sekci SQL dotazu FROM.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.QueryParams.GetWhereStatement(System.Data.Common.DbCommand)">
-            <summary>
-            Vrátí sekci SQL dotazu WHERE.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.QueryParams.GetOrderByStatement(System.Data.Common.DbCommand)">
-            <summary>
-            Vrátí sekci SQL dotazu ORDER BY.
-            </summary>
-        </member>
-        <member name="P:Havit.Business.Query.QueryParams.ObjectInfo">
-            <summary>
-            Instance třídy ObjectInfo nesoucí informace o tom, z jaké tabulky se bude dotaz dotazovat.
-            </summary>
-        </member>
-        <member name="P:Havit.Business.Query.QueryParams.TopRecords">
-            <summary>
-            Maximální počet záznamů, který se vrací z databáze - (SELECT TOP n ...).
-            </summary>
-        </member>
-        <member name="P:Havit.Business.Query.QueryParams.IncludeDeleted">
-            <summary>
-            Udává, zda se mají vracet i záznamy označené za smazané.
-            Výchozí hodnota je false, smazané záznamy se nevrací.
-            </summary>
-        </member>
-        <member name="P:Havit.Business.Query.QueryParams.Properties">
-            <summary>
-            Seznam sloupců, které jsou výsledkem dotazu (SELECT sloupec1, sloupec2...).
-            </summary>
-        </member>
-        <member name="P:Havit.Business.Query.QueryParams.Conditions">
-            <summary>
-            Podmínky dotazu (WHERE ...).
-            </summary>
-        </member>
-        <member name="P:Havit.Business.Query.QueryParams.OrderBy">
-            <summary>
-            Pořadí záznamů (ORDER BY ...).
-            </summary>
-        </member>
-        <member name="T:Havit.Business.Query.TextCondition">
-            <summary>
-            Vytváří podmínky testující textový řetězec.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.TextCondition.CreateEquals(Havit.Business.Query.IOperand,System.String)">
-            <summary>
-            Vytvoří podmínku testující řetězec na rovnost. Citlivost na velká a malá písmena, diakritiku apod. vychází z nastavení serveru.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.TextCondition.CreateEquals(Havit.Business.Query.IOperand,Havit.Business.Query.IOperand)">
-            <summary>
-            Vytvoří podmínku testující rovnost dvou operandů. Citlivost na velká a malá písmena, diakritiku apod. vychází z nastavení serveru.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.TextCondition.CreateLike(Havit.Business.Query.IOperand,System.String)">
-            <summary>
-            Vytvoří podmínku testující řetězec na podobnost operátorem LIKE. Citlivost na velká a malá písmena, diakritiku apod. vychází z nastavení serveru.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.TextCondition.CreateWildcards(Havit.Business.Query.IOperand,System.String)">
-            <summary>
-            Vytvoří podmínku testující řetězec na podobnost operátorem LIKE.
-            </summary>
-            <param name="operand"></param>
-            <param name="value">
-            Podporována hvězdičková konvence takto:
-            	- pokud parametr neobsahuje hvězdičku, hledá se LIKE parametr%
-            	- pokud parametr obsahuje hvězdičku, zamění se hvězdička za procento a hledá se LIKE parametr.
-            Pokud parametr obsahuje speciální znaky pro operátor LIKE jako procento nebo podtržítko,
-            jsou tyto znaky překódovány, takže nemají funkční význam.
-            </param>
-            <example>
-            Př. Hledání výrazu "k_lo*" nenajde "kolo" ani "kolotoč" protože _ nemá funkční význam, ale najde "k_lo" i "k_olotoč".
-            </example>
-        </member>
-        <member name="M:Havit.Business.Query.TextCondition.GetLikeExpression(System.String)">
-            <summary>
-            Transformuje řetězec nařetězec, který je možné použít jako hodnota k operátoru like.
-            Nahrazuje % na [%] a _ na [_].
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.TextCondition.GetWildCardsLikeExpression(System.String)">
-            <summary>
-            Transformuje řetězec nařetězec, který je možné použít jako hodnota k operátoru like. 
-            Navíc je vzat ohled na hvězdičkovou konvenci.
-            Nahrazuje % na [%] a _ na [_] a jako poslední zamění * za %.
-            Příklad "*text1%text2*text3" bude transformováno na "%text1[%]text2%text3".
-            </summary>
+            <param name="time"><see cref="T:System.DateTime"/>, u kterého určujeme</param>
+            <returns><b>true</b>, pokud je zadaný <see cref="T:System.DateTime"/> sobota nebo neděle; jinak <b>false</b></returns>
         </member>
         <member name="T:Havit.Business.ConstraintViolationException">
             <summary>
@@ -976,163 +782,17 @@
             BusinessObject, ve kterém došlo k porušení pravidla.
             </summary>
         </member>
-        <member name="T:Havit.Business.Query.TernaryCondition">
+        <member name="T:Havit.Business.Query.ConditionList">
             <summary>
-            Třída reprezentující podmínku o třech operandech.
+            Seznam podmínek, který nemůže obsahovat prázdnou podmínku.
             </summary>
         </member>
-        <member name="M:Havit.Business.Query.TernaryCondition.#ctor(System.String,Havit.Business.Query.IOperand,Havit.Business.Query.IOperand,Havit.Business.Query.IOperand)">
+        <member name="M:Havit.Business.Query.ConditionList.InsertItem(System.Int32,Havit.Business.Query.Condition)">
             <summary>
-            Vytvoří instanci ternární podmínky.
+            Předefinování metody pro vkládání podmínek. Není možné vložit null (hodnota null je ignorována a není přidána do kolekce.
             </summary>
-        </member>
-        <member name="M:Havit.Business.Query.TernaryCondition.GetWhereStatement(System.Data.Common.DbCommand,System.Text.StringBuilder)">
-            <summary>
-            Přidá část SQL příkaz pro sekci WHERE.
-            </summary>
-            <param name="command"></param>
-            <param name="whereBuilder"></param>
-        </member>
-        <member name="P:Havit.Business.Query.TernaryCondition.Operand3">
-            <summary>
-            Třetí operand.
-            </summary>
-        </member>
-        <member name="T:Havit.Business.Query.OrderByCollection">
-            <summary>
-            Kolekce položek SortItem.
-            Určeno pro položky ORDER BY skládače SQL dotazu (QueryParameters).
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.OrderByCollection.Add(Havit.Business.FieldPropertyInfo)">
-            <summary>
-            Přidá na konec kolekce položku pro vzestupné řazení.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.OrderByCollection.Add(Havit.Business.FieldPropertyInfo,Havit.Collections.SortDirection)">
-            <summary>
-            Přidá na konec kolekce položku pro řazení.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.OrderByCollection.Insert(System.Int32,Havit.Business.FieldPropertyInfo)">
-            <summary>
-            Přidá do kolekce položku pro vzestuné řazení.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.OrderByCollection.Insert(System.Int32,Havit.Business.FieldPropertyInfo,Havit.Collections.SortDirection)">
-            <summary>
-            Přidá do kolekce položku pro řazení.
-            </summary>
-        </member>
-        <member name="T:Havit.Business.GetAllDelegate">
-            <summary>
-            Delegát na metodu GetAll.
-            </summary>
-            <returns>Vrací všechny (nesmazané) objekty dané třídy.</returns>
-        </member>
-        <member name="T:Havit.Business.Query.DateCondition">
-            <summary>
-            Vytváří podmínky testující datumy.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.DateCondition.CreateEquals(Havit.Business.Query.IOperand,System.Nullable{System.DateTime})">
-            <summary>
-            Vytvoří podmínku testující rovnost datumů. Jeli datum roven null, testuje se na IS NULL.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.DateCondition.CreateEquals(Havit.Business.Query.IOperand,System.DateTime)">
-            <summary>
-            Vytvoří podmínku testující rovnost datumů.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.DateCondition.CreateEquals(Havit.Business.Query.IOperand,Havit.Business.Query.IOperand)">
-            <summary>
-            Vytvoří podmínku testující rovnost dvou operandů.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.DateCondition.Create(Havit.Business.Query.IOperand,Havit.Business.Query.ComparisonOperator,System.DateTime)">
-            <summary>
-            Vytvoří podmínku testující hodnoty pomocí zadaného operátoru.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.DateCondition.Create(Havit.Business.Query.IOperand,Havit.Business.Query.ComparisonOperator,Havit.Business.Query.IOperand)">
-            <summary>
-            Vytvoří podmínku testující hodnoty operandů.
-            </summary>
-        </member>
-        <member name="T:Havit.Business.PropertyHolder`1">
-            <summary>
-            Třída pro objekt, který nese hodnotu a vlastnosti jednotlivé property BusinessObjectu.
-            </summary>
-            <typeparam name="T">typ property, jíž je PropertyHolder nosičem</typeparam>
-        </member>
-        <member name="M:Havit.Business.PropertyHolder`1.#ctor(Havit.Business.BusinessObjectBase)">
-            <summary>
-            Založí instanci PropertyHolderu.
-            </summary>
-            <param name="owner">objekt, kterému PropertyHolder patří</param>
-        </member>
-        <member name="P:Havit.Business.PropertyHolder`1.Value">
-            <summary>
-            Hodnota, kterou PropertyHolder nese.
-            </summary>
-        </member>
-        <member name="T:Havit.Business.DateInfo">
-            <summary>
-            Třída pro informace o dni.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.DateInfo.#ctor(System.DateTime)">
-            <summary>
-            Vytvoří instanci <see cref="T:Havit.Business.DateInfo"/>.
-            </summary>
-            <param name="date">den, který má být reprezentován</param>
-        </member>
-        <member name="M:Havit.Business.DateInfo.SetAsHoliday(System.String)">
-            <summary>
-            Nastaví den jako svátek.
-            </summary>
-            <param name="holidayDescription">textový popis svátku</param>
-        </member>
-        <member name="M:Havit.Business.DateInfo.SetAsHoliday">
-            <summary>
-            Nastaví den jako svátek.
-            </summary>
-        </member>
-        <member name="P:Havit.Business.DateInfo.Date">
-            <summary>
-            Vrátí den, kterému DateInfo patří.
-            </summary>
-        </member>
-        <member name="P:Havit.Business.DateInfo.IsHoliday">
-            <summary>
-            Indikuje, zda-li je den svátkem.
-            </summary>
-        </member>
-        <member name="P:Havit.Business.DateInfo.HolidayDescription">
-            <summary>
-            Textový popis svátku, pokud je den svátkem.
-            </summary>
-        </member>
-        <member name="T:Havit.Business.Query.FieldPropertySortItem">
-            <summary>
-            Reprezentuje položku řazení.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.FieldPropertySortItem.#ctor">
-            <summary>
-            Vytvoří nenastavenou položku řazení podle.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.FieldPropertySortItem.#ctor(Havit.Business.FieldPropertyInfo)">
-            <summary>
-            Vytvoří položku řazení podle sloupce, vzestupné pořadí.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.FieldPropertySortItem.#ctor(Havit.Business.FieldPropertyInfo,Havit.Collections.SortDirection)">
-            <summary>
-            Vytvoří položku řazení podle sloupce a daného pořadí.
-            </summary>
+            <param name="index"></param>
+            <param name="item"></param>
         </member>
         <member name="T:Havit.Business.Query.ComparisonOperator">
             <summary>
@@ -1169,45 +829,6 @@
             Větší nebo rovno.
             </summary>
         </member>
-        <member name="T:Havit.Business.ReferenceFieldPropertyInfo">
-            <summary>
-            Reprezentuje sloupec v databázi,
-            který je referencí na jiný typ (je cizím klíčem do jiné tabulky).
-            </summary>
-        </member>
-        <member name="M:Havit.Business.ReferenceFieldPropertyInfo.Initialize(Havit.Business.ObjectInfo,System.String,System.Boolean,System.Data.SqlDbType,System.Boolean,System.Int32,System.Type,Havit.Business.ObjectInfo)">
-            <summary>
-            Inicializuje instanci sloupce.
-            </summary>
-            <param name="owner">Nadřazený objectInfo.</param>
-            <param name="fieldName">Název sloupce v databázy.</param>
-            <param name="isPrimaryKey">Indikuje, zda je sloupec primárním klíčem</param>
-            <param name="nullable">Indukuje, zda je povolena hodnota null.</param>
-            <param name="fieldType">Typ databázového sloupce.</param>
-            <param name="maximumLength">Maximální délka dat databázového sloupce.</param>		
-            <param name="targetType">Typ, jenž property nese.</param>
-            <param name="targetObjectInfo">ObjectInfo na typ, jenž property nese.</param>
-        </member>
-        <member name="P:Havit.Business.ReferenceFieldPropertyInfo.TargetType">
-            <summary>
-            Typ, jenž property nese.
-            </summary>
-        </member>
-        <member name="P:Havit.Business.ReferenceFieldPropertyInfo.TargetObjectInfo">
-            <summary>
-            Delegát na metodu vracející objekt na základě ID.
-            </summary>
-        </member>
-        <member name="T:Havit.Business.Query.AndCondition">
-            <summary>
-            Kompozitní podmínka. Výsledek je pravdivý, jsou-li pravdivé všechny členské podmínky.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.AndCondition.#ctor(Havit.Business.Query.Condition[])">
-            <summary>
-            Vytvoří kompozitní podmínku. Lze inicializovat sadou členských podmínek.
-            </summary>		
-        </member>
         <member name="T:Havit.Business.CollectionPropertyHolder`2">
             <summary>
             Třída pro objekt, který nese kolekci property BusinessObjectu.
@@ -1229,6 +850,32 @@
         <member name="P:Havit.Business.CollectionPropertyHolder`2.Value">
             <summary>
             Hodnota, kterou CollectionPropertyHolder nese.
+            </summary>
+        </member>
+        <member name="T:Havit.Business.Query.OrderByCollection">
+            <summary>
+            Kolekce položek SortItem.
+            Určeno pro položky ORDER BY skládače SQL dotazu (QueryParameters).
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.OrderByCollection.Add(Havit.Business.FieldPropertyInfo)">
+            <summary>
+            Přidá na konec kolekce položku pro vzestupné řazení.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.OrderByCollection.Add(Havit.Business.FieldPropertyInfo,Havit.Collections.SortDirection)">
+            <summary>
+            Přidá na konec kolekce položku pro řazení.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.OrderByCollection.Insert(System.Int32,Havit.Business.FieldPropertyInfo)">
+            <summary>
+            Přidá do kolekce položku pro vzestuné řazení.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.OrderByCollection.Insert(System.Int32,Havit.Business.FieldPropertyInfo,Havit.Collections.SortDirection)">
+            <summary>
+            Přidá do kolekce položku pro řazení.
             </summary>
         </member>
         <member name="T:Havit.Business.BusinessObjectCollection`1">
@@ -1378,6 +1025,354 @@
             Událost vyvolaná po jakékoliv změně kolekce (Insert, Remove, Set, Clear).
             </summary>
         </member>
+        <member name="T:Havit.Business.Query.QueryParams">
+            <summary>
+            Objektová struktura SQL dotazu.
+            Obsahuje seznam properties, které se mají z databáze získat, seznam podmínek fitrující záznamy
+            a řazení v jakém se mají záznamy (objekty) získat.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.QueryParams.PrepareCommand(System.Data.Common.DbCommand)">
+            <summary>
+            Vytvoří dotaz, nastaví jej do commandu.
+            Přidá parametry.
+            </summary>
+            <param name="command"></param>
+        </member>
+        <member name="M:Havit.Business.Query.QueryParams.OnBeforePrepareCommand">
+            <summary>
+            Slouží k přípravě objektu před začátkem skládání databázového dotazu.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.QueryParams.OnAfterPrepareCommand(System.Data.Common.DbCommand,System.Text.StringBuilder)">
+            <summary>
+            Slouží k dokončení skládání databázového dotazu.
+            Voláno po poskládání databázového dotazu, naskládání parametrů do commandu,
+            ale PŘED nastavením property command.CommandText. Je tak možno databázový
+            dotaz upravit na poslední chvíli.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.QueryParams.GetSelectStatement(System.Data.Common.DbCommand)">
+            <summary>
+            Vrátí sekci SQL dotazu SELECT.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.QueryParams.GetSelectFieldsStatement(System.Data.Common.DbCommand)">
+            <summary>
+            Vrátí seznam sloupců, které se z databáze získávají.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.QueryParams.GetFromStatement(System.Data.Common.DbCommand)">
+            <summary>
+            Vrátí sekci SQL dotazu FROM.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.QueryParams.GetWhereStatement(System.Data.Common.DbCommand)">
+            <summary>
+            Vrátí sekci SQL dotazu WHERE.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.QueryParams.GetOrderByStatement(System.Data.Common.DbCommand)">
+            <summary>
+            Vrátí sekci SQL dotazu ORDER BY.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.Query.QueryParams.ObjectInfo">
+            <summary>
+            Instance třídy ObjectInfo nesoucí informace o tom, z jaké tabulky se bude dotaz dotazovat.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.Query.QueryParams.TopRecords">
+            <summary>
+            Maximální počet záznamů, který se vrací z databáze - (SELECT TOP n ...).
+            </summary>
+        </member>
+        <member name="P:Havit.Business.Query.QueryParams.IncludeDeleted">
+            <summary>
+            Udává, zda se mají vracet i záznamy označené za smazané.
+            Výchozí hodnota je false, smazané záznamy se nevrací.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.Query.QueryParams.Properties">
+            <summary>
+            Seznam sloupců, které jsou výsledkem dotazu (SELECT sloupec1, sloupec2...).
+            </summary>
+        </member>
+        <member name="P:Havit.Business.Query.QueryParams.Conditions">
+            <summary>
+            Podmínky dotazu (WHERE ...).
+            </summary>
+        </member>
+        <member name="P:Havit.Business.Query.QueryParams.OrderBy">
+            <summary>
+            Pořadí záznamů (ORDER BY ...).
+            </summary>
+        </member>
+        <member name="T:Havit.Business.Query.TernaryCondition">
+            <summary>
+            Třída reprezentující podmínku o třech operandech.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.TernaryCondition.#ctor(System.String,Havit.Business.Query.IOperand,Havit.Business.Query.IOperand,Havit.Business.Query.IOperand)">
+            <summary>
+            Vytvoří instanci ternární podmínky.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.TernaryCondition.GetWhereStatement(System.Data.Common.DbCommand,System.Text.StringBuilder)">
+            <summary>
+            Přidá část SQL příkaz pro sekci WHERE.
+            </summary>
+            <param name="command"></param>
+            <param name="whereBuilder"></param>
+        </member>
+        <member name="P:Havit.Business.Query.TernaryCondition.Operand3">
+            <summary>
+            Třetí operand.
+            </summary>
+        </member>
+        <member name="T:Havit.Business.Query.SqlInt32ArrayOperand">
+            <summary>
+            SqlInt32Array jako operand databázového dotazu.
+            </summary>
+        </member>
+        <member name="F:Havit.Business.Query.SqlInt32ArrayOperand.value">
+            <summary>
+            Hodnota konstanty ValueOperandu.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.SqlInt32ArrayOperand.#ctor(System.Int32[])">
+            <summary>
+            Vytvoří instanci třídy SqlInt32ArrayOperand.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.SqlInt32ArrayOperand.Create(System.Int32[])">
+            <summary>
+            Vytvoří operand z pole integerů.
+            </summary>
+        </member>
+        <member name="T:Havit.Business.GetAllDelegate">
+            <summary>
+            Delegát na metodu GetAll.
+            </summary>
+            <returns>Vrací všechny (nesmazané) objekty dané třídy.</returns>
+        </member>
+        <member name="T:Havit.Business.Query.TextCondition">
+            <summary>
+            Vytváří podmínky testující textový řetězec.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.TextCondition.CreateEquals(Havit.Business.Query.IOperand,System.String)">
+            <summary>
+            Vytvoří podmínku testující řetězec na rovnost. Citlivost na velká a malá písmena, diakritiku apod. vychází z nastavení serveru.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.TextCondition.CreateEquals(Havit.Business.Query.IOperand,Havit.Business.Query.IOperand)">
+            <summary>
+            Vytvoří podmínku testující rovnost dvou operandů. Citlivost na velká a malá písmena, diakritiku apod. vychází z nastavení serveru.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.TextCondition.CreateLike(Havit.Business.Query.IOperand,System.String)">
+            <summary>
+            Vytvoří podmínku testující řetězec na podobnost operátorem LIKE. Citlivost na velká a malá písmena, diakritiku apod. vychází z nastavení serveru.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.TextCondition.CreateWildcards(Havit.Business.Query.IOperand,System.String)">
+            <summary>
+            Vytvoří podmínku testující řetězec na podobnost operátorem LIKE.
+            </summary>
+            <param name="operand"></param>
+            <param name="value">
+            Podporována hvězdičková konvence takto:
+            	- pokud parametr neobsahuje hvězdičku, hledá se LIKE parametr%
+            	- pokud parametr obsahuje hvězdičku, zamění se hvězdička za procento a hledá se LIKE parametr.
+            Pokud parametr obsahuje speciální znaky pro operátor LIKE jako procento nebo podtržítko,
+            jsou tyto znaky překódovány, takže nemají funkční význam.
+            </param>
+            <example>
+            Př. Hledání výrazu "k_lo*" nenajde "kolo" ani "kolotoč" protože _ nemá funkční význam, ale najde "k_lo" i "k_olotoč".
+            </example>
+        </member>
+        <member name="M:Havit.Business.Query.TextCondition.GetLikeExpression(System.String)">
+            <summary>
+            Transformuje řetězec nařetězec, který je možné použít jako hodnota k operátoru like.
+            Nahrazuje % na [%] a _ na [_].
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.TextCondition.GetWildCardsLikeExpression(System.String)">
+            <summary>
+            Transformuje řetězec nařetězec, který je možné použít jako hodnota k operátoru like. 
+            Navíc je vzat ohled na hvězdičkovou konvenci.
+            Nahrazuje % na [%] a _ na [_] a jako poslední zamění * za %.
+            Příklad "*text1%text2*text3" bude transformováno na "%text1[%]text2%text3".
+            </summary>
+        </member>
+        <member name="T:Havit.Business.ObjectInfo">
+            <summary>
+            Reprezentuje informace o objektu (třídě).
+            </summary>
+        </member>
+        <member name="M:Havit.Business.ObjectInfo.Initialize(System.String,System.String,System.Boolean,Havit.Business.GetObjectDelegate,Havit.Business.GetAllDelegate,Havit.Business.FieldPropertyInfo,Havit.Business.PropertyInfoCollection)">
+            <summary>
+            Nastaví instanci třídy.
+            </summary>
+            <param name="dbSchema">Název schémata databázové tabulky.</param>
+            <param name="dbTable">Název databázové tabulky.</param>
+            <param name="readOnly">Určuje, zda je třída jen ke čtení.</param>
+            <param name="getObjectMethod">Delegát na metodu vracející objekt třídy na základě ID.</param>
+            <param name="getAllMethod">Delegát na metodu vracející všechny (nesmazané) objekty třídy.</param>
+            <param name="deletedProperty">FieldPropertyInfo, která identifikuje příznakem smazané záznamy.</param>
+            <param name="properties">Kolekce všech vlastností objektu.</param>
+        </member>
+        <member name="M:Havit.Business.ObjectInfo.CheckInitialization">
+            <summary>
+            Ověří, že byla instance inicializována. Pokud ne, vyhodí výjimku.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.ObjectInfo.ReadOnly">
+            <summary>
+            Indikuje, zda je objekt určen jen ke čtení.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.ObjectInfo.DbSchema">
+            <summary>
+            Název schématu databázové tabulky.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.ObjectInfo.DbTable">
+            <summary>
+            Název databázové tabulky.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.ObjectInfo.Properties">
+            <summary>
+            Property ve třídě.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.ObjectInfo.DeletedProperty">
+            <summary>
+            Property, která označuje smazané záznamy.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.ObjectInfo.GetObjectMethod">
+            <summary>
+            Metoda vracující instanci objektu.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.ObjectInfo.GetAllMethod">
+            <summary>
+            Metoda vracející seznam všech instancí.
+            </summary>
+        </member>
+        <member name="T:Havit.Business.PropertyHolder`1">
+            <summary>
+            Třída pro objekt, který nese hodnotu a vlastnosti jednotlivé property BusinessObjectu.
+            </summary>
+            <typeparam name="T">typ property, jíž je PropertyHolder nosičem</typeparam>
+        </member>
+        <member name="M:Havit.Business.PropertyHolder`1.#ctor(Havit.Business.BusinessObjectBase)">
+            <summary>
+            Založí instanci PropertyHolderu.
+            </summary>
+            <param name="owner">objekt, kterému PropertyHolder patří</param>
+        </member>
+        <member name="P:Havit.Business.PropertyHolder`1.Value">
+            <summary>
+            Hodnota, kterou PropertyHolder nese.
+            </summary>
+        </member>
+        <member name="T:Havit.Business.Query.DateRangeCondition">
+            <summary>
+            Vytváří podmínky testující rozsah datumů.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.DateRangeCondition.Create(Havit.Business.Query.IOperand,System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
+            <summary>
+            Vytvoří podmínku testující, zda je datum v intervalu datumů.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.DateRangeCondition.CreateDays(Havit.Business.Query.IOperand,System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
+            <summary>
+            Vytvoří podmínku testující, zda je den data (datumu) v intervalu dnů datumů.
+            Zajišťuje, aby hodnota operandu byla větší nebo rovna datu date1 a aby byla menší než půlnoc konce date2.
+            Jinými slovy: Argumenty moho obsahovat datum a čas, ale testuje se jen datum bez času. Potom 
+            je zajišťováno: DATUM(date1) &lt;= DATUM(operand) &lt; DATUM(date2).
+            </summary>
+        </member>
+        <member name="T:Havit.Business.Query.DateCondition">
+            <summary>
+            Vytváří podmínky testující datumy.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.DateCondition.CreateEquals(Havit.Business.Query.IOperand,System.Nullable{System.DateTime})">
+            <summary>
+            Vytvoří podmínku testující rovnost datumů. Jeli datum roven null, testuje se na IS NULL.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.DateCondition.CreateEquals(Havit.Business.Query.IOperand,System.DateTime)">
+            <summary>
+            Vytvoří podmínku testující rovnost datumů.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.DateCondition.CreateEquals(Havit.Business.Query.IOperand,Havit.Business.Query.IOperand)">
+            <summary>
+            Vytvoří podmínku testující rovnost dvou operandů.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.DateCondition.Create(Havit.Business.Query.IOperand,Havit.Business.Query.ComparisonOperator,System.DateTime)">
+            <summary>
+            Vytvoří podmínku testující hodnoty pomocí zadaného operátoru.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.DateCondition.Create(Havit.Business.Query.IOperand,Havit.Business.Query.ComparisonOperator,Havit.Business.Query.IOperand)">
+            <summary>
+            Vytvoří podmínku testující hodnoty operandů.
+            </summary>
+        </member>
+        <member name="T:Havit.Business.Query.CompositeCondition">
+            <summary>
+            Předek kompozitních podmínek.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.CompositeCondition.#ctor(System.String,Havit.Business.Query.Condition[])">
+            <summary>
+            Vytvoří instanci.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.CompositeCondition.GetWhereStatement(System.Data.Common.DbCommand,System.Text.StringBuilder)">
+            <summary>
+            Poskládá členské podmínky. Mezi podmínkami (operandy) je operátor zadaný v konstruktoru.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.Query.CompositeCondition.Conditions">
+            <summary>
+            Podmínky v kompozitu.
+            </summary>
+        </member>
+        <member name="T:Havit.Business.Query.NumberCondition">
+            <summary>
+            Vytváří podmínky testující číselné hodnoty.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.NumberCondition.CreateEquals(Havit.Business.Query.IOperand,System.Int32)">
+            <summary>
+            Vytvoří podmínku testující rovnost hodnoty.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.NumberCondition.CreateEquals(Havit.Business.Query.IOperand,Havit.Business.Query.IOperand)">
+            <summary>
+            Vytvoří podmínku testující rovnost hodnoty operandů.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.NumberCondition.Create(Havit.Business.Query.IOperand,Havit.Business.Query.ComparisonOperator,System.Int32)">
+            <summary>
+            Vytvoří podmínku testující hodnoty pomocí zadaného operátoru.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.NumberCondition.Create(Havit.Business.Query.IOperand,Havit.Business.Query.ComparisonOperator,Havit.Business.Query.IOperand)">
+            <summary>
+            Vytvoří podmínku testující hodnoty pomocí zadaného operátoru.
+            </summary>
+        </member>
         <member name="T:Havit.Business.Query.NullCondition">
             <summary>
             Vytváří podmínky testující null hodnoty.
@@ -1393,103 +1388,15 @@
             Vytvoří podmínku testující hodnotu na NOT NULL.
             </summary>
         </member>
-        <member name="T:Havit.Business.Query.ComparisonOperatorHelper">
+        <member name="T:Havit.Business.Query.AndCondition">
             <summary>
-            Pomocník pro práci s výčtem ComparisonOperator.
+            Kompozitní podmínka. Výsledek je pravdivý, jsou-li pravdivé všechny členské podmínky.
             </summary>
         </member>
-        <member name="M:Havit.Business.Query.ComparisonOperatorHelper.GetOperatorText(Havit.Business.Query.ComparisonOperator)">
+        <member name="M:Havit.Business.Query.AndCondition.#ctor(Havit.Business.Query.Condition[])">
             <summary>
-            Převede comparison operátor na řetězec, např. Equals na "=", NotEquals na "&lt;&gt;", apod.
-            </summary>
-        </member>
-        <member name="T:Havit.Business.BusinessCalendar">
-            <summary>
-            Třída poskytující funkčnost pro práci s pracovním kalendářem,
-            pracovními dny, svátky, atp.
-            </summary>
-            <remarks>
-            Pracovním dnem (business day) je den, který není sobotou, nedělí ani svátkem.<br/>
-            Třída se instancializuje se sadou svátků (holidays), nebo bez svátků (pracovním
-            dnem je pak den, který není sobotou ani nedělí).<br/>
-            Jako svátky (holiday) lze samozřejmě předat i různé dovolené apod.<br/>
-            <br/>
-            Jednou vytvořenou instanci třídy lze s výhodou cachovat.
-            </remarks>
-        </member>
-        <member name="F:Havit.Business.BusinessCalendar.holidayDictionary">
-            <summary>
-            Interní dictionary svátků.<br/>
-            Klíč je DateTime, hodnota je DateInfo.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.BusinessCalendar.#ctor">
-            <summary>
-            Vytvoří instanci <see cref="T:Havit.Business.BusinessCalendar"/> bez svátků.<br/>
-            Pracovními dny budou všechny dny mimo víkendů, dokud nebudou přidány nějaké svátky.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.BusinessCalendar.#ctor(Havit.Business.DateInfoDictionary)">
-            <summary>
-            Vytvoří instanci <see cref="T:Havit.Business.BusinessCalendar"/> se svátky.<br/>
-            </summary>
-            <param name="holidayDictionary"><see cref="T:Havit.Business.DateInfoDictionary"/> se svátky (POUZE SE SVÁTKY!!!)</param>
-            <remarks>
-            Nekontroluje se, jestli mají všechny dny z holidayDictionary nastaveno <see cref="P:Havit.Business.DateInfo.IsHoliday"/>.
-            </remarks>
-        </member>
-        <member name="M:Havit.Business.BusinessCalendar.#ctor(System.DateTime[])">
-            <summary>
-            Vytvoří instanci <see cref="T:Havit.Business.BusinessCalendar"/> se svátky.<br/>
-            Svátky jsou předány v poli <see cref="T:System.DateTime"/>.
-            </summary>
-            <param name="holidays">pole svátků <see cref="T:System.DateTime"/></param>
-        </member>
-        <member name="M:Havit.Business.BusinessCalendar.GetNextBusinessDay(System.DateTime)">
-            <summary>
-            Určí následující pracovní den.
-            </summary>
-            <param name="time"><see cref="T:System.DateTime"/>, ke kterému má být následující pracovní den určen.</param>
-            <returns><see cref="T:System.DateTime"/>, který je následujícím pracovním dnem.</returns>
-            <remarks>Časový údaj zůstane nedotčen.</remarks>
-        </member>
-        <member name="M:Havit.Business.BusinessCalendar.GetPreviousBusinessDay(System.DateTime)">
-            <summary>
-            Určí předchozí pracovní den.
-            </summary>
-            <param name="time"><see cref="T:System.DateTime"/>, ke kterému má být předchozí pracovní den určen.</param>
-            <returns><see cref="T:System.DateTime"/>, který je předchozím pracovním dnem.</returns>
-            <remarks>Časový údaj zůstane nedotčen.</remarks>
-        </member>
-        <member name="M:Havit.Business.BusinessCalendar.AddBusinessDays(System.DateTime,System.Int32)">
-            <summary>
-            Určí den, který je x-tým následujícím pracovním dnem po dni zadaném.
-            </summary>
-            <param name="time"><see cref="T:System.DateTime"/>, od kterého se určovaný den odvíjí.</param>
-            <param name="businessDays">kolikátý pracovní den má být určen</param>
-            <returns><see cref="T:System.DateTime"/>, který je x-tým následujícím pracovním dnem po dni zadaném.</returns>
-            <remarks>Časový údaj zůstane nedotčen.</remarks>
-        </member>
-        <member name="M:Havit.Business.BusinessCalendar.IsBusinessDay(System.DateTime)">
-            <summary>
-            Určí, zda-li je zadaný den dnem pracovním.
-            </summary>
-            <param name="time"><see cref="T:System.DateTime"/>, u kterého chceme vlastnosti zjistit</param>
-            <returns><b>false</b>, pokud je <see cref="T:System.DateTime"/> víkendem nebo svátkem; jinak <b>true</b></returns>
-        </member>
-        <member name="M:Havit.Business.BusinessCalendar.IsHoliday(System.DateTime)">
-            <summary>
-            Zjistí, zda-li je <see cref="T:System.DateTime"/> svátkem (dovolenou, ...).
-            </summary>
-            <param name="time"><see cref="T:System.DateTime"/>, u kterého má být vlastnost zjištěna</param>
-            <returns><b>true</b>, pokud je den v seznamu svátků, s nimiž byl <see cref="T:Havit.Business.BusinessCalendar"/> instanciován; jinak <b>false</b></returns>
-        </member>
-        <member name="M:Havit.Business.BusinessCalendar.IsWeekend(System.DateTime)">
-            <summary>
-            Určí, zda-li je zadaný den sobotou nebo nedělí.
-            </summary>
-            <param name="time"><see cref="T:System.DateTime"/>, u kterého určujeme</param>
-            <returns><b>true</b>, pokud je zadaný <see cref="T:System.DateTime"/> sobota nebo neděle; jinak <b>false</b></returns>
+            Vytvoří kompozitní podmínku. Lze inicializovat sadou členských podmínek.
+            </summary>		
         </member>
         <member name="T:Havit.Business.Query.ValueOperand">
             <summary>
@@ -1561,6 +1468,99 @@
             Vytvoří operand z řetězce.
             </summary>
         </member>
+        <member name="T:Havit.Business.Query.OrCondition">
+            <summary>
+            Kompozitní podmínka. Výsledek je pravdivý, je-li pravdivá alespoň jedna členská podmínka.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.OrCondition.#ctor(Havit.Business.Query.Condition[])">
+            <summary>
+            Vytvoří kompozitní podmínku. Lze inicializovat sadou členských podmínek.
+            </summary>		
+        </member>
+        <member name="T:Havit.Business.Query.FieldPropertySortItem">
+            <summary>
+            Reprezentuje položku řazení.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.FieldPropertySortItem.#ctor">
+            <summary>
+            Vytvoří nenastavenou položku řazení podle.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.FieldPropertySortItem.#ctor(Havit.Business.FieldPropertyInfo)">
+            <summary>
+            Vytvoří položku řazení podle sloupce, vzestupné pořadí.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.FieldPropertySortItem.#ctor(Havit.Business.FieldPropertyInfo,Havit.Collections.SortDirection)">
+            <summary>
+            Vytvoří položku řazení podle sloupce a daného pořadí.
+            </summary>
+        </member>
+        <member name="T:Havit.Business.Query.ComparisonOperatorHelper">
+            <summary>
+            Pomocník pro práci s výčtem ComparisonOperator.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.ComparisonOperatorHelper.GetOperatorText(Havit.Business.Query.ComparisonOperator)">
+            <summary>
+            Převede comparison operátor na řetězec, např. Equals na "=", NotEquals na "&lt;&gt;", apod.
+            </summary>
+        </member>
+        <member name="T:Havit.Business.Query.ReferenceCondition">
+            <summary>
+            Vytváří podmínku testující referenční hodnotu (cizí klíč).
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.ReferenceCondition.CreateEquals(Havit.Business.Query.IOperand,System.Nullable{System.Int32})">
+            <summary>
+            Vytvoří podmínku na rovnost.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.ReferenceCondition.CreateEquals(Havit.Business.Query.IOperand,Havit.Business.BusinessObjectBase)">
+            <summary>
+            Vytvoří podmínku na rovnost.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.ReferenceCondition.CreateEquals(Havit.Business.Query.IOperand,Havit.Business.Query.IOperand)">
+            <summary>
+            Vytvoří podmínku na rovnost dvou operandů.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.ReferenceCondition.CreateIn(Havit.Business.Query.IOperand,System.Int32[])">
+            <summary>
+            Vytvoří podmínku existence hodnoty v poli integerů.
+            </summary>
+        </member>
+        <member name="T:Havit.Business.CollectionPropertyInfo">
+            <summary>
+            Kolekce objektů třídy IProperty.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.CollectionPropertyInfo.Initialize(Havit.Business.ObjectInfo,System.Type,System.String)">
+            <summary>
+            Vytvoří instanci CollectionProperty.
+            </summary>
+            <param name="owner">Nadřazený objectInfo.</param>
+            <param name="itemType">Typ prvků kolekce.</param>
+            <param name="collectionSelectFieldStatement">Část SQL dotazu pro vytažení hodnoty daného sloupce.</param>
+        </member>
+        <member name="M:Havit.Business.CollectionPropertyInfo.GetSelectFieldStatement(System.Data.Common.DbCommand)">
+            <summary>
+            Vrátí řetězec pro vytažení daného sloupce z databáze.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.CollectionPropertyInfo.ItemType">
+            <summary>
+            Typ prvků kolekce.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.CollectionPropertyInfo.CollectionSelectFieldStatement">
+            <summary>
+            Část SQL dotazu pro vytažení hodnoty daného sloupce.
+            </summary>
+        </member>
         <member name="T:Havit.Business.ActiveRecordBusinessObjectBase">
             <summary>
             Bázová třída pro všechny business-objekty, která definuje jejich základní chování (Layer Supertype),
@@ -1591,6 +1591,13 @@
             Základní cesta vytvoření partially-loaded instance.
             </summary>
             <param name="record"><see cref="T:Havit.Data.DataRecord"/> s daty objektu načtenými z databáze</param>
+        </member>
+        <member name="M:Havit.Business.ActiveRecordBusinessObjectBase.Load(Havit.Data.DataRecord)">
+            <summary>
+            Nastaví objektu hodnoty z DataRecordu.
+            Pokud je objekt již načten, vyhodí výjimku.
+            </summary>
+            <param name="record"><see cref="T:Havit.Data.DataRecord"/> s daty objektu načtenými z databáze.</param>
         </member>
         <member name="M:Havit.Business.ActiveRecordBusinessObjectBase.Load_Perform(System.Data.Common.DbTransaction)">
             <summary>

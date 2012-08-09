@@ -15,9 +15,13 @@ namespace Havit.Business.Query
 		public static ICondition CreateEquals(Property property, bool? value)
 		{
 			if (value == null)
+			{
 				return NullCondition.CreateIsNull(property);
+			}
 			else
+			{
 				return new BinaryCondition(BinaryCondition.EqualsPattern, property, ValueOperand.Create(value.Value));
+			}
 		}
 
 		/// <summary>

@@ -87,7 +87,9 @@ namespace Havit.Business.Query
 		{
 			string result = fieldName;
 			if (direction == ListSortDirection.Descending)
+			{
 				result = result + " DESC";
+			}
 			return result;
 		}
 		#endregion

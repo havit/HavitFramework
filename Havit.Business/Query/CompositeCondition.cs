@@ -11,7 +11,7 @@ namespace Havit.Business.Query
 	[Serializable]
 	public abstract class CompositeCondition : List<ICondition>, ICondition
 	{
-		string operatorBetweenOperands = null;
+		private string operatorBetweenOperands = null;
 
 		#region Constructor
 		/// <summary>
@@ -31,7 +31,9 @@ namespace Havit.Business.Query
 		public virtual void GetWhereStatement(System.Data.Common.DbCommand command, StringBuilder whereBuilder)
 		{
 			if (Count == 0)
+			{
 				return;
+			}
 
 			if (Count == 1)
 			{			
@@ -43,7 +45,9 @@ namespace Havit.Business.Query
 			for (int i = 0; i < Count; i++)
 			{
 				if (i > 0)
+				{
 					whereBuilder.AppendFormat(" {0} ", operatorBetweenOperands);
+				}
 				this[i].GetWhereStatement(command, whereBuilder);
 			}
 			whereBuilder.Append(")");

@@ -7,7 +7,7 @@ namespace Havit.Business.Query
 	/// <summary>
 	/// Tøída reprezentující podmínku o tøech operandech.
 	/// </summary>
-	public class TernaryCondition : BinaryCondition
+	public class TernaryCondition : BinaryCondition, ICondition
 	{
 		#region Protected fields
 		/// <summary>
@@ -24,7 +24,9 @@ namespace Havit.Business.Query
 			base(conditionPattern, operand1, operand2)
 		{
 			if (operand3 == null)
+			{
 				throw new ArgumentNullException("operand3");
+			}
 
 			this.Operand3 = operand3;
 		}

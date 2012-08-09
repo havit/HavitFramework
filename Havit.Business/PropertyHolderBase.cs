@@ -78,7 +78,7 @@ namespace Havit.Business
 		/// Založí instanci PropertyHolderu.
 		/// </summary>
 		/// <param name="owner">objekt, kterému PropertyHolder patøí</param>
-		public PropertyHolderBase(BusinessObjectBase owner)
+		protected PropertyHolderBase(BusinessObjectBase owner)
 		{
 			if (owner == null)
 			{

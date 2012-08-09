@@ -54,16 +54,18 @@ namespace Havit.Business.Query
 		}
 
 		#endregion
-		
-		/// <summary>
-		/// Vytvoøí operand z øetìzce.
-		/// </summary>
-		public static IOperand Create(string value)
-		{
-			return new ValueOperand(value, DbType.String);
-		}
 
-		#region Create - integery
+		#region Create - Boolean
+		/// <summary>
+		/// Vytvoøí operand z logické hodnoty.
+		/// </summary>
+		public static IOperand Create(bool value)
+		{
+			return new ValueOperand(value, DbType.Boolean);
+		}
+		#endregion
+
+		#region Create - Integery
 		/// <summary>
 		/// Vytvoøí operand z celého èísla.
 		/// </summary>
@@ -88,15 +90,16 @@ namespace Havit.Business.Query
 			return new ValueOperand(value, DbType.Int64);
 		}
 		#endregion
-		
-		/// <summary>
-		/// Vytvoøí operand z logické hodnoty.
-		/// </summary>
-		public static IOperand Create(bool value)
-		{
-			return new ValueOperand(value, DbType.Boolean);
-		}
 
+		#region Create - String
+		/// <summary>
+		/// Vytvoøí operand z øetìzce.
+		/// </summary>
+		public static IOperand Create(string value)
+		{
+			return new ValueOperand(value, DbType.String);
+		}
+		#endregion
 
 	}
 }

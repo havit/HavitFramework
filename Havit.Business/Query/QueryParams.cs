@@ -37,7 +37,7 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Seznam sloupcù (sekce SQL dotazu SELECT), které se vytáhnou v pøípadì, že kolekce fields je prázdná.
 		/// </summary>
-		internal string FieldsWhenEmpty
+		public string FieldsWhenEmpty
 		{
 			get { return fieldsWhenEmpty; }
 			set { fieldsWhenEmpty = value; }

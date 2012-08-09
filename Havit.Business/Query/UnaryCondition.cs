@@ -43,10 +43,14 @@ namespace Havit.Business.Query
 		public UnaryCondition(string conditionPattern, IOperand operand)
 		{
 			if (conditionPattern == null)
+			{
 				throw new ArgumentNullException("conditionPattern");
+			}
 
 			if (operand == null)
+			{
 				throw new ArgumentNullException("operand");
+			}
 
 			Operand1 = operand;
 			ConditionPattern = conditionPattern;

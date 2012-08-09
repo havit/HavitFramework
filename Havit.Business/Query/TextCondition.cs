@@ -69,9 +69,13 @@ namespace Havit.Business.Query
 			result = GetLikeExpression(text);
 
 			if (result.Contains("*"))
+			{
 				result = result.Replace("*", "%");
+			}
 			else
+			{
 				result += "%";
+			}
 
 			return result;
 		}

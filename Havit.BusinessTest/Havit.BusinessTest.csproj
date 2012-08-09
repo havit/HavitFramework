@@ -35,6 +35,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusinessLayerTest.cs" />
     <Compile Include="IdentityMapScopeTest.cs" />
     <Compile Include="IdentityMapTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -177,6 +177,8 @@ namespace Havit.BusinessLayerTest
 		/// <returns>úplná data objektu</returns>
 		protected override DataRecord Load_GetDataRecord(DbTransaction transaction)
 		{
+			DataRecord result;
+			
 			SqlCommand sqlCommand = new SqlCommand("SELECT SubjektID, Nazev, UzivatelID, Created, Deleted FROM dbo.Subjekt WHERE SubjektID = @SubjektID");
 			sqlCommand.Transaction = (SqlTransaction)transaction;
 			
@@ -184,7 +186,9 @@ namespace Havit.BusinessLayerTest
 			sqlParameterID.Value = this.ID;
 			sqlCommand.Parameters.Add(sqlParameterID);
 			
-			return SqlDataAccess.ExecuteDataRecord(sqlCommand);
+			result = SqlDataAccess.ExecuteDataRecord(sqlCommand);
+			
+			return result;
 		}
 		
 		/// <summary>

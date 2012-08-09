@@ -326,6 +326,8 @@ namespace Havit.BusinessLayerTest
 		/// <returns>úplná data objektu</returns>
 		protected override DataRecord Load_GetDataRecord(DbTransaction transaction)
 		{
+			DataRecord result;
+			
 			SqlCommand sqlCommand = new SqlCommand("SELECT UzivatelID, Username, Password, DisplayAs, Email, Disabled, LockedTime, LoginLast, LoginCount, Created, Deleted, (SELECT dbo.IntArrayAggregate(innerSelect.RoleID) FROM dbo.Uzivatel_Role AS innerSelect WHERE (innerSelect.UzivatelID = @UzivatelID)) AS Role FROM dbo.Uzivatel WHERE UzivatelID = @UzivatelID");
 			sqlCommand.Transaction = (SqlTransaction)transaction;
 			
@@ -333,7 +335,9 @@ namespace Havit.BusinessLayerTest
 			sqlParameterID.Value = this.ID;
 			sqlCommand.Parameters.Add(sqlParameterID);
 			
-			return SqlDataAccess.ExecuteDataRecord(sqlCommand);
+			result = SqlDataAccess.ExecuteDataRecord(sqlCommand);
+			
+			return result;
 		}
 		
 		/// <summary>

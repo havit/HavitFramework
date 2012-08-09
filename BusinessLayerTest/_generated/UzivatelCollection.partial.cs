@@ -56,7 +56,7 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public void LoadAll(DbTransaction transaction)
 		{
-			if (this.Count < 2)
+			if (this.Count == 0)
 			{
 				return;
 			}
@@ -65,15 +65,18 @@ namespace Havit.BusinessLayerTest
 			
 			for (int i = 0; i < this.Count; i++)
 			{
-				if (!this[i].IsLoaded && !ghosts.Contains(this[i].ID))
+				Uzivatel currentObject = this[i];
+				if (!currentObject.IsLoaded)
 				{
-					ghosts.Add(this[i].ID);
+					if (!ghosts.Contains(currentObject.ID))
+					{
+						ghosts.Add(currentObject.ID);
+					}
 				}
 			}
 			
-			if (ghosts.Count <= 1)
+			if (ghosts.Count == 0)
 			{
-				// žádný nebo jeden objekt - nic nenačítáme, nažté se při prvním přístupu.
 				return;
 			}
 			

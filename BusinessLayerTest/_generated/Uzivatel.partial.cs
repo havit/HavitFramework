@@ -77,6 +77,7 @@ namespace Havit.BusinessLayerTest
 			}
 			
 			result = new Uzivatel(id);
+			
 			if (IdentityMapScope.Current != null)
 			{
 				IdentityMapScope.Current.Store(result);

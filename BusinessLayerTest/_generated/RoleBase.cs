@@ -110,6 +110,8 @@ namespace Havit.BusinessLayerTest
 		/// <returns>úplná data objektu</returns>
 		protected override DataRecord Load_GetDataRecord(DbTransaction transaction)
 		{
+			DataRecord result;
+			
 			SqlCommand sqlCommand = new SqlCommand("SELECT RoleID, Symbol FROM dbo.Role WHERE RoleID = @RoleID");
 			sqlCommand.Transaction = (SqlTransaction)transaction;
 			
@@ -117,7 +119,9 @@ namespace Havit.BusinessLayerTest
 			sqlParameterID.Value = this.ID;
 			sqlCommand.Parameters.Add(sqlParameterID);
 			
-			return SqlDataAccess.ExecuteDataRecord(sqlCommand);
+			result = SqlDataAccess.ExecuteDataRecord(sqlCommand);
+			
+			return result;
 		}
 		
 		/// <summary>
@@ -166,6 +170,22 @@ namespace Havit.BusinessLayerTest
 		#endregion
 		
 		#region Enum members
+		public static Role ZaporneID
+		{
+			get
+			{
+				return Role.GetObject(-1);
+			}
+		}
+		
+		public static Role NuloveID
+		{
+			get
+			{
+				return Role.GetObject(0);
+			}
+		}
+		
 		public static Role Administrator
 		{
 			get

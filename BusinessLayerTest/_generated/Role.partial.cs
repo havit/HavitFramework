@@ -82,6 +82,7 @@ namespace Havit.BusinessLayerTest
 					}
 				}
 			}
+			
 			if (IdentityMapScope.Current != null)
 			{
 				IdentityMapScope.Current.Store(result);

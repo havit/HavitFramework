@@ -134,6 +134,11 @@ namespace Havit.Business
 		/// <param name="isLoaded">indikuje naètený objekt</param>
 		protected internal BusinessObjectBase(int id, bool isNew, bool isDirty, bool isLoaded)
 		{
+			if (!isNew && (id == NoID))
+			{
+				throw new InvalidOperationException("Nelze vytvoøit objekt, který by nebyl nový a mìl NoID.");
+			}
+
 			this._id = id;
 			this._isNew = isNew;
 			this._isDirty = isDirty;

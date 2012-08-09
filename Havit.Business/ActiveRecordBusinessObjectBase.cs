@@ -70,17 +70,16 @@ namespace Havit.Business
 			false,	// IsNew
 			false,	// IsDirty
 			false)	// IsLoaded
-
 		{
 			if (record == null)
 			{
 				throw new ArgumentNullException("record");
 			}
 
-/* nahradil implementaèní constructor base(...)
-			this.IsNew = false;
-			this.IsLoaded = false;
-*/
+			/* nahradil implementaèní constructor base(...)
+						this.IsNew = false;
+						this.IsLoaded = false;
+			*/
 			if ((IdentityMapScope.Current != null)
 				&& ((record.DataLoadPower == DataLoadPower.Ghost) || (record.DataLoadPower == DataLoadPower.FullLoad)))
 			{
@@ -91,7 +90,7 @@ namespace Havit.Business
 
 			//this.Load_ParseDataRecord(record);
 
-//			this._isLoadedPartially = !record.FullLoad;
+			//			this._isLoadedPartially = !record.FullLoad;
 			//this.IsLoaded = true;
 			//this.IsDirty = false;
 		}
@@ -188,26 +187,33 @@ namespace Havit.Business
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
 		protected override void Save_Perform(DbTransaction transaction)
 		{
-			if (IsNew)
+			SqlDataAccess.ExecuteTransaction(delegate(SqlTransaction innerTransaction)
 			{
-				Save_Insert_InsertRequiredForFullInsert(transaction);
-			}
 
-			if (IsNew)
-			{
-				Save_SaveMembers(transaction);
-				Save_FullInsert(transaction);
-				Save_SaveCollections(transaction);
-			}
-			else
-			{
-				Save_SaveMembers(transaction);
-				Save_SaveCollections(transaction);
-				if (IsDirty)
+				if (IsNew)
 				{
-					Save_Update(transaction);
+					Save_Insert_InsertRequiredForFullInsert(innerTransaction);
 				}
-			}
+
+				// nesluèovat do jedné podmínky, InsertRequiredForFullInsert mùže zavolat mùj MinimalInsert a pak už nejsem New
+
+				if (IsNew)
+				{
+					Save_SaveMembers(innerTransaction);
+					Save_FullInsert(innerTransaction);
+					Save_SaveCollections(innerTransaction);
+				}
+				else
+				{
+					Save_SaveMembers(innerTransaction);
+					Save_SaveCollections(innerTransaction);
+					if (IsDirty)
+					{
+						Save_Update(innerTransaction);
+					}
+				}
+
+			}, (SqlTransaction)transaction);
 		}
 
 		/// <summary>
@@ -260,7 +266,7 @@ namespace Havit.Business
 			Save_Insert_InsertRequiredForMinimalInsert(transaction);
 			IsMinimalInserting = false;
 		}
-		
+
 		/// <summary>
 		/// Ukládá hodnoty potøebné pro provedení minimálního insertu. Volá Save_Insert_SaveRequiredForMinimalInsert.
 		/// </summary>

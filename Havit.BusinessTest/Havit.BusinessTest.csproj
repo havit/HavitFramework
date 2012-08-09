@@ -36,6 +36,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActiveRecordBusinessObjectBase.cs" />
     <Compile Include="BusinessLayerTest.cs" />
     <Compile Include="BusinessObjectBaseTest.cs" />
     <Compile Include="BusinessObjectCollectionTest.cs" />

@@ -232,7 +232,11 @@ namespace Havit.Business
 		/// </summary>
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member")]
-		public abstract void Save_MinimalInsert(DbTransaction transaction);
+		public virtual void Save_MinimalInsert(DbTransaction transaction)
+		{
+			CheckConstraints();
+		}
+
 
 		/// <summary>
 		/// Implementace metody aktualizuje data objektu v databázi.

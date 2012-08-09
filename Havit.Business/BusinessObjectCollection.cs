@@ -179,7 +179,14 @@ namespace Havit.Business
 		public BusinessObjectCollection(IEnumerable<TItem> collection)
 			: base(new List<TItem>(collection))
 		{
-			LoadAllRequired = this.Any(item => (item != null) && !item.IsLoaded);
+			if ((collection is BusinessObjectCollection<TItem, TCollection>) && !((BusinessObjectCollection<TItem, TCollection>)collection).LoadAllRequired)
+			{
+				LoadAllRequired = false; // pokud ani původní kolekci nebylo třeba načíst, příznak LoadAllRequired zůstává false.
+			}
+			else
+			{
+				LoadAllRequired = this.Any(item => (item != null) && !item.IsLoaded);				
+			}
 		}
 		#endregion
 
@@ -284,9 +291,16 @@ namespace Havit.Business
 			// vyvoláme událost informující o zmìnì kolekce, pokud se zmìnil poèet objektù v kolekci
 			if (originalItemsCount != innerList.Count)
 			{
-				if (!LoadAllRequired && source.Any(item => (item != null) && !item.IsLoaded)) /* optimalizujeme volání Any jen tehdy, když dosud není nastaven příznak LoadAllRequired */
+				if ((source is BusinessObjectCollection<TItem, TCollection>) && !((BusinessObjectCollection<TItem, TCollection>)source).LoadAllRequired)
 				{
-					LoadAllRequired = true;
+					// NOOP - pokud ani původní kolekci nebylo třeba načíst, nemění se příznak LoadAllRequired.
+				}
+				else
+				{
+					if (!LoadAllRequired && source.Any(item => (item != null) && !item.IsLoaded)) /* optimalizujeme volání Any jen tehdy, když dosud není nastaven příznak LoadAllRequired */
+					{
+						LoadAllRequired = true;
+					}
 				}
 				OnCollectionChanged(EventArgs.Empty);
 			}

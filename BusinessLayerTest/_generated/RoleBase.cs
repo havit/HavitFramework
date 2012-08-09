@@ -29,7 +29,6 @@ namespace Havit.BusinessLayerTest
 	/// <summary>
 	/// Uživatelská role. Určuje oprávnění v systému.
 	/// </summary>
-	[Serializable]
 	public abstract class RoleBase : ActiveRecordBusinessObjectBase
 	{
 		#region Static constructor

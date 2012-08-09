@@ -22,7 +22,6 @@ namespace Havit.BusinessLayerTest
 	/// <summary>
 	/// Subjekt.
 	/// </summary>
-	[Serializable]
 	public partial class Subjekt : SubjektBase
 	{
 		#region Constructors

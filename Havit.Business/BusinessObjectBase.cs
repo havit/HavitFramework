@@ -16,7 +16,6 @@ namespace Havit.Business
 	/// Naèítání je implementováno jako lazy-load, kdy je objekt nejprve vytvoøen prázdný jako ghost se svým ID a teprve
 	/// pøi první potøebì je iniciováno jeho úplné naètení.<br/>
 	/// </remarks>
-	[Serializable]
 	[DebuggerDisplay("{GetType().FullName,nq} (ID={IsNew ? \"New\" : ID.ToString(),nq}, IsLoaded={IsLoaded,nq}, IsDirty={IsDirty,nq})")]
 	public abstract class BusinessObjectBase
 	{

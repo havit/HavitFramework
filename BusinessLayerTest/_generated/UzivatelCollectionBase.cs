@@ -29,7 +29,6 @@ namespace Havit.BusinessLayerTest
 	/// <summary>
 	/// Kolekce business objektů typu Havit.BusinessLayerTest.Uzivatel.
 	/// </summary>
-	[Serializable]
 	public partial class UzivatelCollectionBase : BusinessObjectCollection<Uzivatel, UzivatelCollection>
 	{
 		//------------------------------------------------------------------------------

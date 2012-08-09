@@ -22,7 +22,6 @@ namespace Havit.BusinessLayerTest
 	/// <summary>
 	/// Uživatel.
 	/// </summary>
-	[Serializable]
 	public partial class Uzivatel : UzivatelBase
 	{
 		#region Constructors

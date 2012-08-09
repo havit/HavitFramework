@@ -22,7 +22,6 @@ namespace Havit.BusinessLayerTest
 	/// <summary>
 	/// Uživatelská role. Určuje oprávnění v systému.
 	/// </summary>
-	[Serializable]
 	public partial class Role : RoleBase
 	{
 		#region Constructors

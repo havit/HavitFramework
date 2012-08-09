@@ -22,7 +22,6 @@ namespace Havit.BusinessLayerTest
 	/// <summary>
 	/// Kolekce business objektů typu Havit.BusinessLayerTest.Subjekt.
 	/// </summary>
-	[Serializable]
 	public partial class SubjektCollection
 	{
 		//------------------------------------------------------------------------------

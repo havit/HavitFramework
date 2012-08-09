@@ -29,7 +29,6 @@ namespace Havit.BusinessLayerTest
 	/// <summary>
 	/// Kolekce business objektů typu Havit.BusinessLayerTest.Role.
 	/// </summary>
-	[Serializable]
 	public partial class RoleCollectionBase : BusinessObjectCollection<Role, RoleCollection>
 	{
 		//------------------------------------------------------------------------------

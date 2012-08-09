@@ -29,7 +29,6 @@ namespace Havit.BusinessLayerTest
 	/// <summary>
 	/// Uživatel.
 	/// </summary>
-	[Serializable]
 	public abstract class UzivatelBase : ActiveRecordBusinessObjectBase
 	{
 		#region Static constructor

@@ -19,7 +19,6 @@ namespace Havit.Business
 	/// Prostøednictvím constructoru BusinessObjectBase(DataRecord record) lze vytvoøit i neúplnì naètenou instanci objektu,
 	/// samotná funkènost však není øešena a každý si musí sám ohlídat, aby bylo naèteno vše, co je potøeba.
 	/// </remarks>
-	[Serializable]
 	public abstract class ActiveRecordBusinessObjectBase : BusinessObjectBase
 	{
 		#region Constructors

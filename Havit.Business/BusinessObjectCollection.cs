@@ -16,7 +16,6 @@ namespace Havit.Business
 	/// </remarks>
 	/// <typeparam name="TItem">èlenský typ kolekce</typeparam>
 	/// <typeparam name="TCollection">typ používané business object kolekce</typeparam>
-	[Serializable]
 	public class BusinessObjectCollection<TItem, TCollection> : Collection<TItem>
 		where TItem : BusinessObjectBase
 		where TCollection : BusinessObjectCollection<TItem, TCollection>, new()

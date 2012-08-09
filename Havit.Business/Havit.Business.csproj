@@ -111,6 +111,7 @@
     <Compile Include="Query\NullCondition.cs" />
     <Compile Include="Query\NumberCondition.cs" />
     <Compile Include="Query\OrCondition.cs" />
+    <Compile Include="Query\OrderByCollection.cs" />
     <Compile Include="Query\ReferenceCondition.cs" />
     <Compile Include="Query\SqlInt32ArrayOperand.cs" />
     <Compile Include="Query\TernaryCondition.cs" />

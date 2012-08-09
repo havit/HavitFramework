@@ -67,11 +67,11 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Poøadí záznamù (ORDER BY ...).
 		/// </summary>
-		public Havit.Collections.SortItemCollection OrderBy
+		public OrderByCollection OrderBy
 		{
 			get { return orderBy; }
 		}
-		private Havit.Collections.SortItemCollection orderBy = new Havit.Collections.SortItemCollection();
+		private OrderByCollection orderBy = new OrderByCollection();
 		#endregion
 
 		#region PrepareCommand

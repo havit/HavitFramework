@@ -1546,5 +1546,25 @@
             </summary>
             <param name="transaction">transakce <see cref="T:System.Data.Common.DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
         </member>
+        <member name="M:Havit.Business.Query.OrderByCollection.Add(Havit.Business.FieldPropertyInfo)">
+            <summary>
+            Přidá na konec kolekce položku pro vzestupné řazení.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.OrderByCollection.Add(Havit.Business.FieldPropertyInfo,Havit.Collections.SortDirection)">
+            <summary>
+            Přidá na konec kolekce položku pro řazení.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.OrderByCollection.Insert(System.Int32,Havit.Business.FieldPropertyInfo)">
+            <summary>
+            Přidá do kolekce položku pro vzestuné řazení.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.OrderByCollection.Insert(System.Int32,Havit.Business.FieldPropertyInfo,Havit.Collections.SortDirection)">
+            <summary>
+            Přidá do kolekce položku pro řazení.
+            </summary>
+        </member>
     </members>
 </doc>

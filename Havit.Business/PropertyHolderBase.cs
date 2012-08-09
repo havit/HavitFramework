@@ -63,7 +63,7 @@ namespace Havit.Business
 		/// Pokud nebyla hodnota PropertyHolderu nastavena, vyhodí InvalidOperationException.
 		/// Pokud byla hodnota PropertyHolderu nastavena, neudìlá nic (projde).
 		/// </summary>
-		protected void InitializationCheck()
+		protected void CheckInitialization()
 		{
 			if (!_isInitialized)
 			{

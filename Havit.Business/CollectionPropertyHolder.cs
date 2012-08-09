@@ -32,7 +32,7 @@ namespace Havit.Business
 		{
 			get
 			{
-				InitializationCheck();
+				CheckInitialization();
 				return _value;
 			}
 		}

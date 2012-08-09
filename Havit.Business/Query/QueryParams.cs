@@ -203,7 +203,14 @@ namespace Havit.Business.Query
 		/// </summary>
 		protected virtual string GetFromStatement(DbCommand command)
 		{
-			return String.Format(CultureInfo.InvariantCulture, "FROM [{0}].[{1}]", objectInfo.DbSchema, objectInfo.DbTable);
+            if (String.IsNullOrEmpty(objectInfo.DbSchema))
+            {
+                return String.Format(CultureInfo.InvariantCulture, "FROM [{0}]", objectInfo.DbTable);
+            }
+            else
+            {
+                return String.Format(CultureInfo.InvariantCulture, "FROM [{0}].[{1}]", objectInfo.DbSchema, objectInfo.DbTable);
+            }
 		}
 
 		/// <summary>

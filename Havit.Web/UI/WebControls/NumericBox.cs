@@ -260,6 +260,23 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region ValidationGroup
+		/// <summary>
+		/// ValidationGroup pro validaci.
+		/// </summary>
+		public string ValidationGroup
+		{
+			get
+			{
+				return (string)ViewState["ValidationGroup"] ?? String.Empty;
+			}
+			set
+			{
+				ViewState["ValidationGroup"] = value;
+			}
+		}
+		#endregion
+
 		#region --------------------------------------------------------------------------------
 		#endregion
 
@@ -320,6 +337,8 @@ namespace Havit.Web.UI.WebControls
 			base.OnPreRender(e);
 
 			valueTextBox.Enabled = this.Enabled;
+			valueTextBox.AutoPostBack = this.AutoPostBack;
+			valueTextBox.ValidationGroup = this.ValidationGroup;
 			valueTextBox.Style.Add("text-align", "right");
 
 			if (Enabled)

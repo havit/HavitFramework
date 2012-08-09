@@ -4030,5 +4030,137 @@
             Identifikátor fieldu na který se lze odkazovat pomocí <see cref="M:Havit.Web.UI.WebControls.GridViewExt.FindColumn(System.String)"/>.
             </summary>
         </member>
+        <member name="M:Havit.Web.UI.WebControls.Messenger.AddMessage(Havit.Web.UI.WebControls.MessengerMessage)">
+            <summary>
+            Přidá zprávu
+            </summary>
+            <param name="format">formátovací řetězec pro String.Format()</param>
+            <param name="args">argumenty pro String.Format()</param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.Messenger.AddMessage(Havit.Web.UI.WebControls.MessageType,System.String)">
+            <summary>
+            Přidá zprávu
+            </summary>
+            <param name="messageType">typ zprávy (information, error, ...)</param>
+            <param name="text">text zprávy</param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.Messenger.AddMessage(Havit.Web.UI.WebControls.MessageType,System.String,System.Object[])">
+            <summary>
+            Přidá zprávu pomocí String.Format();
+            </summary>
+            <param name="messageType">typ zprávy (information, error, ...)</param>
+            <param name="format">formátovací řetězec pro String.Format()</param>
+            <param name="args">argumenty pro String.Format()</param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.Messenger.AddMessage(System.String,System.Object[])">
+            <summary>
+            Přidá zprávu typu Information pomocí String.Format();
+            </summary>
+            <param name="format">formátovací řetězec pro String.Format()</param>
+            <param name="args">argumenty pro String.Format()</param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.Messenger.AddMessage(System.String)">
+            <summary>
+            Prosté přidání zprávy typu Information.
+            </summary>
+            <param name="message">zpráva</param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.Messenger.AddGlobalResourceMessage(Havit.Web.UI.WebControls.MessageType,System.String,System.String)">
+            <summary>
+            Přidá zprávu z App_GlobalResources.
+            </summary>
+            <param name="classKey">název global-resource souboru</param>
+            <param name="resourceKey">klíč resourcu</param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.Messenger.AddGlobalResourceMessage(System.String,System.String)">
+            <summary>
+            Přidá zprávu z App_GlobalResources typu Information.
+            </summary>
+            <param name="classKey">název global-resource souboru</param>
+            <param name="resourceKey">klíč resourcu</param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.Messenger.Clear">
+            <summary>
+            Vyčistí kolekci zpráv.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.Messenger.Messages">
+            <summary>
+            Zprávy k zobrazení.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.Messenger.Default">
+            <summary>
+            Výchozí instance messengera.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.MessageType">
+            <summary>
+            Typ zprávy Messengeru.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.UI.WebControls.MessageType.Information">
+            <summary>
+            Informace, potvrzení operace.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.UI.WebControls.MessageType.Warning">
+            <summary>
+            Varování, např. upozornění na další nutné kroky k dokončení operace.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.UI.WebControls.MessageType.Error">
+            <summary>
+            Chyba.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.MessengerMessage">
+            <summary>
+            Zpráva do messengera.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.MessengerMessage.#ctor">
+            <summary>
+            Vytvoří instanci zprávy a nastaví typ zprávy na Information.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.MessengerMessage.#ctor(System.String,Havit.Web.UI.WebControls.MessageType)">
+            <summary>
+            Vytvoří instanci zprávy.
+            </summary>
+            <param name="text">text zprávy</param>
+            <param name="messageType">typ zprávy</param>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.MessengerMessage.Text">
+            <summary>
+            Text zprávy.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.MessengerMessage.MessageType">
+            <summary>
+            Typ zprávy.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.MessengerControl">
+            <summary>
+            Zobrazuje zprávy Messengera.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.MessengerControl.GetText">
+            <summary>
+            Vrátí obsah messengeru (HTML kód) připravený k vyrenderování do stránky.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.MessengerControl.AddMessageText(Havit.Web.UI.WebControls.MessengerMessage,System.Text.StringBuilder)">
+            <summary>
+            Vrátí text zprávy messengeru (HTML kód) připravený k vyrenderování do stránky.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.MessengerControl.Messenger">
+            <summary>
+            Messenger použitý pro zprávy k zobrazení.
+            Není-li nastaven, vrací Messenger.Default.
+            </summary>
+        </member>
     </members>
 </doc>

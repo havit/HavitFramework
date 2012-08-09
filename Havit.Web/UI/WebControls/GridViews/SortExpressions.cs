@@ -5,11 +5,11 @@ using System.Web;
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
-	/// Tøída Sorting zajišuje práci s øazením poloek.
+	/// Tøída SortExpressions zajišuje práci s øazením poloek.
 	/// </summary>
 	/// 
 	[Serializable]
-	public class Sorting
+	public class SortExpressions
 	{
 		/// <summary>
 		/// Poloky øazení.

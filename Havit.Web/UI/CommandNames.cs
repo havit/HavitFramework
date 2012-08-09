@@ -5,11 +5,11 @@ using System.Text;
 namespace Havit.Web.UI
 {
 	/// <summary>
-	/// Tøída CommandNamesHelper obsahuje sdílené názvy pøíkazù (CommandNames).
+	/// Tøída CommandNames obsahuje sdílené názvy pøíkazù (CommandNames).
 	/// Sdílí se mezi prvky vyvolávající událost pøíkazu (potomci GridViewImageButton)
 	/// a EnterpriseGridView.
 	/// </summary>
-	internal static class CommandNames // zatím nikde nepoužito, rozmyslet, jestli nestaèí DataControlCommandName
+	public static class CommandNames
 	{
 		/// <summary>
 		/// Cancel.
@@ -55,5 +55,10 @@ namespace Havit.Web.UI
 		/// Report.
 		/// </summary>
 		public const string Report = "Report";
+
+		/// <summary>
+		/// Insert.
+		/// </summary>
+		public const string Insert = "Insert";
 	}
 }

@@ -12,7 +12,6 @@ namespace Havit.Collections
 	public class SortItem
 	{
 		#region Constructors
-
 		/// <summary>
 		/// Vytvoøí prázdnou instanci poøadí.
 		/// </summary>
@@ -29,7 +28,6 @@ namespace Havit.Collections
 			this.expression = expression;
 			this.direction = direction;
 		}
-
 		#endregion
 
 		#region Properties
@@ -52,8 +50,6 @@ namespace Havit.Collections
 			set { direction = value; }
 		}
 		private SortDirection direction = SortDirection.Ascending;
-
 		#endregion
-
 	}
 }

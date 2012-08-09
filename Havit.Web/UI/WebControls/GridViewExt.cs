@@ -7,13 +7,18 @@ using System.Diagnostics;
 using System.ComponentModel;
 using System.Collections;
 using System.Globalization;
+using Havit.Collections;
 
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
 	/// GridView implementující hightlighting, sorting a vıchozí obsluhu událostí editace, stránkování, ...
 	/// </summary>
-	public class GridViewExt : SortingGridView
+	/// <remarks>
+	/// Funkènost <b>Sorting</b> ukládá nastavení øazení dle uivatele a pøípadnì zajišuje automatické øazení pomocí GenericPropertyCompareru.<br/>
+	/// Funkènost <b>Inserting</b> umoòuje pouití Insert-øádku pro pøidávání novıch poloek.<br/>
+	/// </remarks>
+	public class GridViewExt : HighlightingGridView
 	{
 		#region GetInsertRowDataItem
 		/// <summary>
@@ -95,6 +100,43 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region AutoSort
+		/// <summary>
+		/// Nastavuje, zda má pøi databindingu dojít k seøazení poloek podle nastavení.
+		/// </summary>
+		public bool AutoSort
+		{
+			get { return (bool)(ViewState["AutoSort"] ?? false); }
+			set { ViewState["AutoSort"] = value; }
+		}
+		#endregion
+
+		#region DefaultSortExpression
+		/// <summary>
+		/// Vıchozí øazení, které se pouije, pokud je povoleno automatické øazení nastavením vlastnosti AutoSort 
+		/// a uivatel dosu ádné øazení nezvolil.
+		/// </summary>
+		public string DefaultSortExpression
+		{
+			get { return (string)(ViewState["DefaultSortExpression"] ?? String.Empty); }
+			set { ViewState["DefaultSortExpression"] = value; }
+		}
+		#endregion
+
+		#region SortExpressions
+		/// <summary>
+		/// Zajišuje práci se seznamem poloek, podle kterıch se øadí.
+		/// </summary>
+		public new SortExpressions SortExpressions
+		{
+			get
+			{
+				return _sortExpressions;
+			}
+		}
+		private SortExpressions _sortExpressions = new SortExpressions();
+		#endregion
+
 		#region AutoDataBind
 		/// <summary>
 		/// Nastavuje automatickı databind na GridView.		
@@ -165,7 +207,7 @@ namespace Havit.Web.UI.WebControls
 		private static readonly object EventItemInserted = new object();
 		#endregion
 
-		#region _insertRowIndex
+		#region insertRowIndex (private)
 		/// <summary>
 		/// Skuteènı index InsertRow na stránce.
 		/// </summary>
@@ -291,32 +333,75 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region LoadViewState, SaveViewState - Naèítání a ukládání ViewState (sorting)
+		/// <summary>
+		/// Zajistí uloení ViewState. Je pøidáno uloení property Sorting.
+		/// </summary>
+		protected override object SaveViewState()
+		{
+			Pair viewStateData = new Pair();
+			viewStateData.First = base.SaveViewState();
+			viewStateData.Second = _sortExpressions;
+			return viewStateData;
+		}
+
+		/// <summary>
+		/// Zajistí naètení ViewState. Je pøidáno naètení property Sorting.
+		/// </summary>
+		protected override void LoadViewState(object savedState)
+		{
+			Pair viewStateData = (Pair)savedState;
+			base.LoadViewState(viewStateData.First);
+			if (viewStateData.Second != null)
+			{
+				_sortExpressions = (SortExpressions)viewStateData.Second;
+			}
+		}
+		#endregion
+
 		#region PerformDataBinding (override - Insert)
 		/// <summary>
 		/// Zajišuje data-binding dat na GridView.
 		/// </summary>
+		/// <remarks>
+		/// Pro reim Sorting zajišuje pøi AutoSort sesortìní.
+		/// Pro reim Inserting zajišuje správu novıch øádek, popø. vkládání fake-øádek pøi stránkování.
+		/// </remarks>
 		/// <param name="data">data</param>
 		protected override void PerformDataBinding(IEnumerable data)
 		{
-			insertRowIndex = -1;
+			// SORTING
+			IEnumerable sortedData = data;
+			if ((sortedData != null) && AutoSort)
+			{
+				if ((SortExpressions.SortItems.Count == 0) && !String.IsNullOrEmpty(DefaultSortExpression))
+				{
+					// sorting je nutné zmìnit na základì DefaultSortExpression,
+					// kdybychom jej nezmìnili, tak první kliknutí shodné s DefaultSortExpression nic neudìlá
+					_sortExpressions.AddSortExpression(DefaultSortExpression);
+				}
+
+				sortedData = SortHelper.PropertySort(sortedData, SortExpressions.SortItems);
+			}
 
 			// INSERTING
+			ArrayList insertingData = new ArrayList();
+			foreach (object item in sortedData)
+			{
+				insertingData.Add(item);
+			}
+			insertRowIndex = -1;
 			if (AllowInserting)
 			{
 				if (GetInsertRowDataItem == null)
 				{
 					throw new InvalidOperationException("Pøi AllowInserting musíte nastavit GetInsertRowData");
 				}
-				ArrayList newData = new ArrayList();
 
 				object insertRowDataItem = GetInsertRowDataItem();
-				foreach (object item in data)
-				{
-					newData.Add(item);
-				}
 				if (AllowPaging)
 				{
-					int pageCount = (newData.Count + this.PageSize) - 1;
+					int pageCount = (insertingData.Count + this.PageSize) - 1;
 					if (pageCount < 0)
 					{
 						pageCount = 1;
@@ -325,11 +410,11 @@ namespace Havit.Web.UI.WebControls
 
 					for (int i = 0; i < this.PageIndex; i++)
 					{
-						newData.Insert(0, insertRowDataItem);
+						insertingData.Insert(0, insertRowDataItem);
 					}
 					for (int i = this.PageIndex + 1; i < pageCount; i++)   // pøepoèítat
 					{
-						newData.Add(insertRowDataItem);
+						insertingData.Add(insertRowDataItem);
 					}
 				}
 				if (EditIndex < 0)
@@ -342,19 +427,19 @@ namespace Havit.Web.UI.WebControls
 						case GridViewInsertRowPosition.Bottom:
 							if (AllowPaging)
 							{
-								this.InsertRowDataSourceIndex = Math.Min((((this.PageIndex + 1) * this.PageSize) - 1), newData.Count);
+								this.InsertRowDataSourceIndex = Math.Min((((this.PageIndex + 1) * this.PageSize) - 1), insertingData.Count);
 							}
 							else
 							{
-								this.InsertRowDataSourceIndex = newData.Count;
+								this.InsertRowDataSourceIndex = insertingData.Count;
 							}
 							break;
 					}
-					newData.Insert(InsertRowDataSourceIndex, insertRowDataItem);
+					insertingData.Insert(InsertRowDataSourceIndex, insertRowDataItem);
 				}
-				data = newData;
 			}
-			base.PerformDataBinding(data);
+
+			base.PerformDataBinding(insertingData);
 		}
 		#endregion
 
@@ -559,6 +644,30 @@ namespace Havit.Web.UI.WebControls
 			{
 				h(this, e);
 			}
+		}
+		#endregion
+
+		#region	OnSorting
+		/// <summary>
+		/// Pøi poadavku na øazení si zapamatujeme, jak chtìl uivatel øadit a nastavíme RequiresDataBinding na true.
+		/// </summary>
+		/// <param name="e">argumenty události</param>
+		protected override void OnSorting(GridViewSortEventArgs e)
+		{
+			_sortExpressions.AddSortExpression(e.SortExpression);
+			base.RequiresDataBinding = true;
+		}
+		#endregion
+
+		#region OnSorted
+		/// <summary>
+		/// Po setøídìní podle sloupce zajistí u vícestránkovıch gridù návrat na první stránku
+		/// </summary>
+		/// <param name="e">argumenty události</param>
+		protected override void OnSorted(EventArgs e)
+		{
+			base.OnSorted(e);
+			PageIndex = 0;
 		}
 		#endregion
 

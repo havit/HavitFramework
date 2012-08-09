@@ -157,7 +157,7 @@
     <Compile Include="UI\WebControls\GridViews\Hightlighting.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI\WebControls\GridViews\Sorting.cs">
+    <Compile Include="UI\WebControls\GridViews\SortExpressions.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UI\WebControls\GridViews\SortingGridView.cs">

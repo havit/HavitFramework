@@ -14,7 +14,12 @@
 				<table>
 					<tr>
 						<td></td>
-						<td><havit:DateTimeBox runat="server" /></td>
+						<td>							
+							<havit:DateTimeBox ID="PrvniDTB" runat="server" />
+	
+							<asp:RequiredFieldValidator ControlToValidate="PrvniDTB" runat="server" text="error1" />
+							<asp:CompareValidator ControlToValidate="PrvniDTB" Operator="DataTypeCheck" Type="Date" runat="server" text="error2" />
+						</td>
 					</tr>
 					<tr>
 						<td>DateTime</td>
@@ -46,7 +51,12 @@
 		<table>
 			<tr>
 				<td>AutoPostBack</td>
-				<td><havit:DateTimeBox ID="AutoPostBackDateTimeBox" DateTimeMode="DateTime" CausesValidation="true" AutoPostBack="true" runat="server" /></td>
+				<td>
+					<havit:DateTimeBox ID="AutoPostBackDateBox" CausesValidation="false" AutoPostBack="true" runat="server" />
+					<br />
+					<havit:DateTimeBox ID="AutoPostBackDateTimeBox" DateTimeMode="DateTime" CausesValidation="true" AutoPostBack="true" runat="server" />
+					
+				</td>
 			</tr>
 			<tr>
 				<td>OnInit</td>

@@ -645,7 +645,7 @@ function HavitDateTimeBox_Blur(e)
 	var element = (e.target) ? e.target : window.event.srcElement;
 	var datum = new Date();
 	var datumMesic = datum.getMonth() + 1;
-	var datumRok = datum.getYear();
+	var datumRok = datum.getFullYear();
 	var datumSeparator = '" + dateTimeFormatInfo.DateSeparator + @"';
 	var regDen = '([1-9]|0[1-9]|[1-2]\\d|3[01])';
 	var regDenCely = '(0[1-9]|[1-2]\\d|3[01])';

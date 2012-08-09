@@ -266,7 +266,7 @@ namespace Havit.Web
 			string fromUrl = GetUrlWithoutNavigationUrlParameter(_currentContext.Request.RawUrl);
 			toUrl = GetUrlWithoutNavigationUrlParameter(toUrl);
 
-			return GetNavigationToUrlInternal(_currentContext.Request.RawUrl, toUrl, true);
+            return GetNavigationToUrlInternal(fromUrl, toUrl, true);
 		}
 		
 		#endregion
@@ -354,7 +354,7 @@ namespace Havit.Web
 		                {
 		                    writer.WriteLine(HistoryUrls[i]);
 		                }
-		            }
+		            }                    
 		        }
 
 		        buffer = new byte[(int)memoryStream.Length];

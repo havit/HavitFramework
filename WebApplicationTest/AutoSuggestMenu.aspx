@@ -9,9 +9,12 @@
 </head>
 <body>
 	<form id="form1" runat="server">
-		<asp:ScriptManager EnablePageMethods="true" ID="ScriptManager1" AllowCustomErrorsRedirect="false"  OnAsyncPostBackError="ScriptManager1_AsyncPostBackError" runat="server" />
+		<asp:ScriptManager EnablePageMethods="true" ID="ScriptManager1" AllowCustomErrorsRedirect="false" runat="server" />
 		<div>
-			<asp:TextBox ID="SubjektTB" Text="test2" Width="150" runat="server" style="border: 1px solid black;" />
+			<asp:Label ID="TimestampLabel" runat="server" />
+		</div>
+		<div>
+			<asp:TextBox ID="SubjektTB" Width="150" runat="server" style="border: 1px solid black;" />
 			<havit:AutoSuggestMenu
 				ID="SubjektASM"
 				TargetControlID="SubjektTB"
@@ -24,28 +27,10 @@
 				MinSuggestChars="2"							
 				SelectedValue="10"
 				Mode="ClearTextOnNoSelection"
-				AutoPostBack="false"
+				AutoPostBack="true"
 				runat="server"
 			/>
 		</div>
-		<br /><br />
-		<%--div>
-		    <asp:Button ID="ShowDialogButton" text="Zobraz dialog" runat="server" />
-		    <havit:AjaxModalDialog ID="TestDialog" Width="300" Height="200" runat="server">
-		        <ContentTemplate>
-		        
-			        <asp:TextBox ID="DialogSubjektTB" Width="150" runat="server" style="border: 1px solid black;"  />
-			        <havit:AutoSuggestMenu
-				        ID="DialogSubjektASM"
-				        TargetControlID="DialogSubjektTB"
-				        OnGetSuggestions="GetSuggestions"
-						Mode="ClearTextOnNoSelection"
-				        runat="server"
-		            />
-		            
-		        </ContentTemplate>
-		    </havit:AjaxModalDialog>
-		</div--%>
 	</form>
 </body>
 </html>

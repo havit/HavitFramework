@@ -18,7 +18,7 @@
     </UpgradeBackupLocation>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -127,6 +127,8 @@
     <Content Include="GridViewExtTest.aspx" />
     <Content Include="HavitScripts.js" />
     <Content Include="Web.config" />
+    <Content Include="WebFormExceptionTest.aspx" />
+    <Content Include="WebServiceExceptionTest.asmx" />
     <Content Include="WrapperTest.aspx" />
   </ItemGroup>
   <ItemGroup>
@@ -312,6 +314,17 @@
       <SubType>Code</SubType>
       <DependentUpon>WebDialogsTest.aspx</DependentUpon>
     </Compile>
+    <Compile Include="WebFormExceptionTest.aspx.cs">
+      <DependentUpon>WebFormExceptionTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebFormExceptionTest.aspx.designer.cs">
+      <DependentUpon>WebFormExceptionTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebServiceExceptionTest.asmx.cs">
+      <DependentUpon>WebServiceExceptionTest.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="WrapperTest.aspx.cs">
       <DependentUpon>WrapperTest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -379,6 +392,10 @@
   <ItemGroup>
     <Content Include="App_Themes\Theme1\Skin1.skin" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Config\healthMonitoring.config" />
+    <Content Include="Config\mailSettings-smtp.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -392,12 +409,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>19509</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>
-          </IISUrl>
+          <IISUrl>http://localhost:19509/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

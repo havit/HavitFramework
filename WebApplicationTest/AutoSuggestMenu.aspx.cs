@@ -19,21 +19,10 @@ namespace WebApplicationTest
 {
 	public partial class AutoSuggestMenu_aspx : System.Web.UI.Page
 	{
-		protected override void OnInit(EventArgs e)
+		protected override void OnLoad(EventArgs e)
 		{
-			base.OnInit(e);
-			//ShowDialogButton.Click += new EventHandler(ShowDialogButton_Click);
-			//SubjektASM.Context = "Testovací\"' '' \"\"kontext";
-		}
-
-		void ShowDialogButton_Click(object sender, EventArgs e)
-		{
-			//TestDialog.Show();
-		}
-
-		protected void ScriptManager1_AsyncPostBackError(object sender, AsyncPostBackErrorEventArgs e)
-		{
-			throw e.Exception;
+			base.OnLoad(e);
+			TimestampLabel.Text = DateTime.Now.ToLongTimeString();
 		}
 
 		[WebMethod()]

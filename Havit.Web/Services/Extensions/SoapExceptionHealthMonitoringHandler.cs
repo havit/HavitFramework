@@ -5,11 +5,14 @@ using System.Text;
 using System.Web.Management;
 using System.Web.Services.Protocols;
 using Havit.Web.Management;
+using System.Web;
 
 namespace Havit.Web.Services.Extensions
 {
 	/// <summary>
 	/// V případě chyby ve zpracování web metody (webové služby) zajistí oznámení chyby health monitoringem.
+	/// Pozor, toto nefunguje (a chyby healthmonitoringu tak nejsou oznamovány),
+	/// pokud se webové služby testují v browseru!!! Pro testování nutno použít skutečného klienta webové služby (třeba service reference v konzolovce).
 	/// </summary>
 	public class SoapExceptionHealthMonitoringHandler : System.Web.Services.Protocols.SoapExtension
 	{
@@ -24,6 +27,10 @@ namespace Havit.Web.Services.Extensions
 					{
 						Exception exception = message.Exception;
 						if ((exception is SoapException) && (exception.InnerException != null))
+						{
+							exception = exception.InnerException;
+						}
+						if ((exception is HttpUnhandledException) && (exception.InnerException != null))
 						{
 							exception = exception.InnerException;
 						}

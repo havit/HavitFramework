@@ -47,16 +47,36 @@ namespace Havit
 
 				if (expression.IndexOfAny(indexExprStartChars) < 0)
 				{
-					currentValue = DataBinder.GetPropertyValue(currentValue, expression);
+					Type currentType = currentValue.GetType();
+					System.ComponentModel.PropertyDescriptorCollection properties;
+
+					lock (getValuePropertiesCache)
+					{
+						getValuePropertiesCache.TryGetValue(currentType, out properties);
+					}
+
+					if (properties == null)
+					{
+						properties = System.ComponentModel.TypeDescriptor.GetProperties(currentType);
+						lock (getValuePropertiesCache)
+						{
+							getValuePropertiesCache[currentType] = properties;
+						}
+					}
+
+					System.ComponentModel.PropertyDescriptor descriptor = properties.Find(expression, true); // tohle skoro nic nestojí
+					currentValue = descriptor.GetValue(currentValue);
 				}
 				else
 				{
+					// tohle se snad nikde nepoužívá, proto neoptimalizuji
 					currentValue = DataBinder.GetIndexedPropertyValue(currentValue, expression);
 				}
 			}
 
 			return currentValue;
 		}
+		private static Dictionary<Type, System.ComponentModel.PropertyDescriptorCollection> getValuePropertiesCache = new Dictionary<Type, System.ComponentModel.PropertyDescriptorCollection>();
 		private static readonly char[] indexExprStartChars = new char[] { '[', '(' };
 
 		/// <summary>
@@ -79,6 +99,26 @@ namespace Havit
 				return propertyValue.ToString();
 			}
 			return String.Format(format, propertyValue);
+		}
+
+		private class SafeDictionary<TKey, TValue>
+		{
+			private Dictionary<TKey, TValue> innerDictionary = new Dictionary<TKey, TValue>();
+			public void Add(TKey key, TValue value)
+			{
+				lock (innerDictionary)
+				{
+					innerDictionary[key] = value;
+				}
+			}
+
+			public bool TryGetValue(TKey key, out TValue value)
+			{
+				lock (innerDictionary)
+				{
+					return innerDictionary.TryGetValue(key, out value);
+				}
+			}
 		}
 	}
 }

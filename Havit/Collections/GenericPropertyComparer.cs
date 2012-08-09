@@ -15,6 +15,7 @@ namespace Havit.Collections
 	{
 		#region Private fields
 		private IList<SortItem> sortItems;
+		private Dictionary<object, IComparable>[] getValueCacheList;
 		#endregion
 
 		#region Constructors
@@ -44,6 +45,11 @@ namespace Havit.Collections
 		public GenericPropertyComparer(IList<SortItem> sortItems)
 		{
 			this.sortItems = sortItems;
+			this.getValueCacheList = new Dictionary<object, IComparable>[sortItems.Count];
+			for (int i = 0; i < sortItems.Count; i++)
+			{
+				getValueCacheList[i] = new Dictionary<object, IComparable>();
+			}
 		}
 		#endregion
 
@@ -60,23 +66,25 @@ namespace Havit.Collections
 		/// <param name="y">Druhý porovnávaný objekt.</param>
 		/// <param name="index">Index porovnávané vlastnosti.</param>
 		/// <returns>-1, 0, 1 - jako Compare(T, T)</returns>
-		protected int Compare(object x, object y, int index)
+		private int Compare(object x, object y, int index)
 		{
 			if (index >= sortItems.Count)
+			{
 				return 0;
+			}
 
 			/* napsáno trochu komplikovaněji - pro přehlednost */
 			IComparable value1;
 			IComparable value2;
 			if (sortItems[index].Direction == SortDirection.Ascending)
 			{
-				value1 = (IComparable)GetValue(x, index);
-				value2 = (IComparable)GetValue(y, index);
+				value1 = GetValue(x, index);
+				value2 = GetValue(y, index);
 			}
 			else
 			{
-				value2 = (IComparable)GetValue(x, index);
-				value1 = (IComparable)GetValue(y, index);
+				value2 = GetValue(x, index);
+				value1 = GetValue(y, index);
 			}
 
 			int result = 0;
@@ -102,24 +110,36 @@ namespace Havit.Collections
 				result = value1.CompareTo(value2);
 			}
 
-			return result == 0 ? Compare(x, y, index + 1) : result;
+			return (result == 0) ? Compare(x, y, index + 1) : result;
 		}
 
 		/// <summary>
 		/// Vrátí hodnot index-té property objektu.
 		/// Pokud je hodnota této property DBNull.Value, vrací null.
 		/// </summary>
-		private object GetValue(object obj, int index)
-		{
-			object result = DataBinderExt.GetValue(obj, sortItems[index].Expression);
+		private IComparable GetValue(object obj, int index)
+		{			
+			Dictionary<object, IComparable> getValueCache = getValueCacheList[index];
 
-			if (result == DBNull.Value) // pro účely srovnání budeme tvrdit, že null a DBNull.Value jsou shodné (tedy null).
+			IComparable result;
+			if (getValueCache.TryGetValue(obj, out result))
 			{
-				return null;
+				return result;
 			}
-			return result;
-		}
+			else
+			{
+				object value = DataBinderExt.GetValue(obj, sortItems[index].Expression);
 
+				if (value == DBNull.Value) // pro účely srovnání budeme tvrdit, že null a DBNull.Value jsou shodné (tedy null).
+				{
+					value = null;
+				}
+				result = (IComparable)value;
+
+				getValueCache.Add(obj, result);
+				return result;
+			}
+		}
 		#endregion
 	}
 }

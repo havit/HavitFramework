@@ -244,6 +244,14 @@
             </summary>
             <param name="dataSource"></param>
         </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseCheckBoxList.SelectObjectsIfPresent(System.Int32[])">
+            <summary>
+            Vybere objekt dle ID, pokud je objekt s tímto ID mezi daty.
+            Pokud není, neprovede nic. Výslední kolekce objektů nastaví výběr (SelectedObjects).
+            Metoda je určena pro vnitřní implementaci ukládání hodnot.
+            </summary>
+            <param name="objectIDs"></param>
+        </member>
         <member name="P:Havit.Web.UI.WebControls.EnterpriseCheckBoxList.ItemPropertyInfo">
             <summary>
             ReferenceFieldPropertyInfo property, jejíž hodnota se tímto DropDownListem vybírá.

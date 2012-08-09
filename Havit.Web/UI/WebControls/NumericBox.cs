@@ -449,15 +449,12 @@ namespace Havit.Web.UI.WebControls
 " + (((decimalSeparator == '.') && thousandsSeparator != ",") ? "	if (window.event && (charCode == 44)) { charCode = 46; e.keyCode = 46; }\r\n" : "")
   + (((decimalSeparator == ',') && thousandsSeparator != ".") ? "	if (window.event && (charCode == 46)) { charCode = 44; e.keyCode = 44; }\r\n" : "")
   + @"var element = (e.target) ? e.target : window.event.srcElement;
-	if (!window.event && e.ctrlKey && !e.altKey && !e.shiftKey && (charCode == 65 || charCode == 97 || charCode == 88 || charCode == 120 || charCode == 67 || charCode == 99 || charCode == 86 || charCode == 118))
-	{
-		return;
-	}
 	var validKey = (charCode == " + (byte)thousandsSeparator[0] + @")
 		|| ((charCode >= 48) && (charCode <= 57)) 
 		|| (charCode <= 31)
         || (allowNegativeNumber && (charCode == 45) && element.value.indexOf(String.fromCharCode(charCode)) == -1)
-        || ((decimals > 0) && (charCode == " + (byte)decimalSeparator + @") && element.value.indexOf(String.fromCharCode(charCode)) == -1);
+        || ((decimals > 0) && (charCode == " + (byte)decimalSeparator + @") && element.value.indexOf(String.fromCharCode(charCode)) == -1)
+		|| (!window.event && e.ctrlKey && !e.altKey && !e.shiftKey && (charCode == 65 || charCode == 97 || charCode == 88 || charCode == 120 || charCode == 67 || charCode == 99 || charCode == 86 || charCode == 118));
 	if (!validKey)
 	{
 		if (window.event) { window.event.returnValue = null; } else { e.preventDefault(); }

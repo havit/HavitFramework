@@ -3799,6 +3799,36 @@
             <param name="format">formátovací řetězec</param>
             <returns>hodnota, pokud se ji podařilo získat a zformátovat; jinak <c>String.Empty</c></returns>
         </member>
+        <member name="T:Havit.Web.UI.WebControls.CheckBoxValidator">
+            <summary>
+            Validátor, který řeší povinnost zaškrtnutí (eventuelně odškrtnutí - viz vlastnost ValidCheckedState) CheckBoxu.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.CheckBoxValidator.ControlPropertiesValid">
+            <summary>
+            Zkontroluje, zda je validátor nastaven správně, jinak vyhodí vyjímku.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.CheckBoxValidator.EvaluateIsValid">
+            <summary>
+            Vyhodnotí validátor
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.CheckBoxValidator.AddAttributesToRender(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Přidá renderované atributy potřebné pro klientskou validaci
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.CheckBoxValidator.ValidCheckedState">
+            <summary>
+            Udává validní hodnotu - zaškrtnutý [default] nebo odškrtnutý.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.CheckBoxValidator.CheckBoxToValidate">
+            <summary>
+            CheckBox, který se bude validovat, získán z ControlToValidate.
+            </summary>
+        </member>
         <member name="T:Havit.Web.UI.Adapters.CssAdapters.CssMenuAdapter">
             <summary>
             MenuAdapter z CSS Friendly Control Adapters. Renderuje Menu pomocí HTML elementů ol, li, CSS stylů a JScriptu.
@@ -4424,36 +4454,6 @@
         </member>
         <member name="M:Havit.Web.UI.Scriptlets.RepeaterControlExtender.GetDetachEventsScript(System.String,Havit.Web.UI.Scriptlets.IScriptletParameter,System.Web.UI.Control,System.String,Havit.Web.UI.Scriptlets.ScriptBuilder)">
             <summary>Vrátí skript pro odpojení událostí od objektu na klientské straně.</summary><param name="parameterPrefix">Název objektu na klientské straně.</param><param name="parameter">Parametr předávající řízení extenderu.</param><param name="control">Control ke zpracování.</param><param name="scriptletFunctionCallDelegate">Delegát volání funkce scriptletu.</param><param name="scriptBuilder">Script builder.</param>
-        </member>
-        <member name="T:Havit.Web.UI.WebControls.CheckBoxValidator">
-            <summary>
-            Validátor, který řeší povinnost zaškrtnutí (eventuelně odškrtnutí - viz vlastnost ValidCheckedState) CheckBoxu.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.CheckBoxValidator.ControlPropertiesValid">
-            <summary>
-            Zkontroluje, zda je validátor nastaven správně, jinak vyhodí vyjímku.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.CheckBoxValidator.EvaluateIsValid">
-            <summary>
-            Vyhodnotí validátor
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.CheckBoxValidator.AddAttributesToRender(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            Přidá renderované atributy potřebné pro klientskou validaci
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.CheckBoxValidator.ValidCheckedState">
-            <summary>
-            Udává validní hodnotu - zaškrtnutý [default] nebo odškrtnutý.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.CheckBoxValidator.CheckBoxToValidate">
-            <summary>
-            CheckBox, který se bude validovat, získán z ControlToValidate.
-            </summary>
         </member>
     </members>
 </doc>

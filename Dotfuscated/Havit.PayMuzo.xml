@@ -4,6 +4,587 @@
         <name>Havit.PayMuzo</name>
     </assembly>
     <members>
+        <member name="T:Havit.PayMuzo.PayMuzoPrimaryReturnCode">
+            <summary>
+            Třída pro primární návratový kód PayMUZO.
+            </summary>
+        </member>
+        <member name="T:Havit.PayMuzo.PayMuzoReturnCode">
+            <summary>
+            Návratový kód PayMUZO, hlášení výsledku operace.
+            </summary>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoReturnCode.#ctor(System.Int32,System.String,System.String)">
+            <summary>
+            Vytvoří instanci return-code a nastaví počáteční hodnoty.
+            </summary>
+            <param name="value">numeric code</param>
+            <param name="csText">význam česky</param>
+            <param name="enText">význam anglicky</param>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoReturnCode.FindByValueInternal``1(System.Int32)">
+            <summary>
+            Najde kód a vrátí ho. Pokud není nalezen, vrací <c>null</c>.
+            </summary>
+            <param name="value">numerická hodnota kódu</param>
+            <typeparam name="T">typ kódu</typeparam>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoReturnCode.RegisterCode(Havit.PayMuzo.PayMuzoReturnCode)">
+            <summary>
+            Zaregistruje return-code do interní Hashtable.
+            </summary>
+            <param name="code"></param>
+        </member>
+        <member name="P:Havit.PayMuzo.PayMuzoReturnCode.CsText">
+            <summary>
+            Český význam.
+            </summary>
+        </member>
+        <member name="P:Havit.PayMuzo.PayMuzoReturnCode.EnText">
+            <summary>
+            Anglický význam.
+            </summary>
+        </member>
+        <member name="P:Havit.PayMuzo.PayMuzoReturnCode.Value">
+            <summary>
+            Číselná hodnota návratového kódu.
+            </summary>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoPrimaryReturnCode.#ctor(System.Int32,System.String,System.String)">
+            <summary>
+            Vytvoří instanci <see cref="T:Havit.PayMuzo.PayMuzoPrimaryReturnCode"/>.
+            </summary>
+            <param name="value">numeric code</param>
+            <param name="csText">význam česky</param>
+            <param name="enText">význam anglicky</param>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoPrimaryReturnCode.#cctor">
+            <summary>
+            Statický constructor
+            </summary>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoPrimaryReturnCode.FindByValue(System.Int32)">
+            <summary>
+            Najde instanci podle numerické hodnoty kódu. Pokud není nalezen, vrací <c>null</c>.
+            </summary>
+            <param name="value">numerická hodnota kódu</param>
+        </member>
+        <member name="T:Havit.PayMuzo.PayMuzoWebServiceClient">
+            <summary>
+            Klient webových služeb PayMuzo. Pozor, není thread-safe.
+            </summary>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoWebServiceClient.#ctor(System.String,System.Security.Cryptography.X509Certificates.X509Certificate2,System.Int32,System.Security.Cryptography.X509Certificates.X509Certificate2)">
+            <summary>
+            Vytvoří instanci WebClienta a nastaví základní parametry komunikace.
+            </summary>
+            <param name="serviceUrl">URL adresa webové služby</param>
+            <param name="payMuzoGateCertificate">certifikát s veřejným klíčem PayMUZO brány</param>
+            <param name="merchantNumber">číslo obchodníka</param>
+            <param name="merchantCertificate">certifikát s privátním i veřejným klíčem obchodníka</param>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoWebServiceClient.QueryOrderState(System.Int32)">
+            <summary>
+            Queries the state of the order.
+            </summary>
+            <exception cref="T:Havit.PayMuzo.PayMuzoInvalidDigestException">pokud se nepodaří ověřit podpis odpovědi</exception>
+            <exception cref="T:Havit.PayMuzo.PayMuzoResponseException">pokud odpověď není OK</exception>
+            <param name="orderNumber">The order number.</param>
+            <returns>orderState</returns>
+        </member>
+        <member name="P:Havit.PayMuzo.PayMuzoWebServiceClient.LastResponse">
+            <summary>
+            Response poslední provedené operace. Pozor, není thread-safe!
+            </summary>
+        </member>
+        <member name="P:Havit.PayMuzo.PayMuzoWebServiceClient.LastRawResponse">
+            <summary>
+            Raw-Response poslední provedené operace. Pozor, není thread-safe!
+            </summary>
+        </member>
+        <member name="T:Havit.PayMuzo.PayMuzoOrderWebServiceResponse">
+            <summary>
+            Třída pro zpracování odezvy webové služby ORDER.
+            </summary>
+        </member>
+        <member name="T:Havit.PayMuzo.PayMuzoWebServiceResponse">
+            <summary>
+            Abstraktní předek pro zpracování odezvy webových služeb PayMUZO.
+            </summary>
+        </member>
+        <member name="T:Havit.PayMuzo.PayMuzoResponse">
+            <summary>
+            Třída pro strong-type reprezentaci odpovědí z PayMUZO.
+            </summary>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoResponse.VerifyDigest(System.Security.Cryptography.X509Certificates.X509Certificate2)">
+            <summary>
+            Ověří správnost podpisu.
+            </summary>
+            <param name="certificate">certifikát, vůči kterému má být podpis ověřen (veřejný klíč PayMUZO)</param>
+            <returns><c>true, pokud je podpis korektní</c>, jinak <c>false</c></returns>
+        </member>
+        <member name="P:Havit.PayMuzo.PayMuzoResponse.Digest">
+            <summary>
+            Podpis.
+            </summary>
+        </member>
+        <member name="P:Havit.PayMuzo.PayMuzoResponse.PrimaryReturnCode">
+            <summary>
+            Primární návratový kód.
+            </summary>
+        </member>
+        <member name="P:Havit.PayMuzo.PayMuzoResponse.SecondaryReturnCode">
+            <summary>
+            Sekundární návratový kód.
+            </summary>
+        </member>
+        <member name="P:Havit.PayMuzo.PayMuzoResponse.NormalizedRawData">
+            <summary>
+            Data v normalizované podobě (správné pořadí, všechny parametry).
+            </summary>
+        </member>
+        <member name="P:Havit.PayMuzo.PayMuzoResponse.IsDigestUrlEncoded">
+            <summary>
+            Gets a value indicating whether this instance is digest URL encoded.
+            </summary>
+            <value>
+            	<c>true</c> if this instance is digest URL encoded; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoWebServiceResponse.#ctor(Havit.PayMuzo.WebServiceProxies.Response)">
+            <summary>
+            Inicializuje novou instanci třídy <see cref="T:Havit.PayMuzo.PayMuzoWebServiceResponse"/> na základě odpovědi z WebService.
+            </summary>
+            <param name="response">odpověď z WebService</param>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoWebServiceResponse.ParseResponse(Havit.PayMuzo.WebServiceProxies.Response)">
+            <summary>
+            Vytahá z web-servicové response data do properties.
+            </summary>
+            <param name="response">odpověď z WebService</param>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoWebServiceResponse.CreateNormalizedData(Havit.PayMuzo.WebServiceProxies.Response)">
+            <summary>
+            Vytvoří normalizovaná data pro ověření podpisu.
+            </summary>
+            <param name="response">odpověď z WebService</param>
+        </member>
+        <member name="P:Havit.PayMuzo.PayMuzoWebServiceResponse.Ok">
+            <summary>
+            OK pole z odpovědi web-service.
+            </summary>
+        </member>
+        <member name="P:Havit.PayMuzo.PayMuzoWebServiceResponse.RequestId">
+            <summary>
+            Pole requestId z odpovědi web-service.
+            </summary>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoOrderWebServiceResponse.#ctor(Havit.PayMuzo.WebServiceProxies.OrderResponse)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Havit.PayMuzo.PayMuzoOrderWebServiceResponse"/> class.
+            </summary>
+            <param name="response">The response.</param>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoOrderWebServiceResponse.ParseResponse(Havit.PayMuzo.WebServiceProxies.Response)">
+            <summary>
+            Vytahá z web-servicové response data do properties.
+            </summary>
+            <param name="response">odpověď z WebService</param>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoOrderWebServiceResponse.CreateNormalizedData(Havit.PayMuzo.WebServiceProxies.Response)">
+            <summary>
+            Vytvoří normalizovaná data pro ověření podpisu.
+            </summary>
+            <param name="response">odpověď z WebService</param>
+            <returns></returns>
+        </member>
+        <member name="P:Havit.PayMuzo.PayMuzoOrderWebServiceResponse.OrderNumber">
+            <summary>
+            Číslo objednávky v systému PayMUZO.
+            </summary>
+        </member>
+        <member name="P:Havit.PayMuzo.PayMuzoOrderWebServiceResponse.IsDigestUrlEncoded">
+            <summary>
+            Gets a value indicating whether this instance is digest URL encoded.
+            </summary>
+            <value>
+            	<c>true</c> if this instance is digest URL encoded; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="T:Havit.PayMuzo.PayMuzoOrderStateWebServiceResponse">
+            <summary>
+            Třída pro zpracování odezvy webové služby ORDER STATE.
+            </summary>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoOrderStateWebServiceResponse.#ctor(Havit.PayMuzo.WebServiceProxies.OrderStateResponse)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Havit.PayMuzo.PayMuzoOrderStateWebServiceResponse"/> class.
+            </summary>
+            <param name="response">The response.</param>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoOrderStateWebServiceResponse.ParseResponse(Havit.PayMuzo.WebServiceProxies.Response)">
+            <summary>
+            Vytahá z web-servicové response data do properties.
+            </summary>
+            <param name="response">odpověď z WebService</param>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoOrderStateWebServiceResponse.CreateNormalizedData(Havit.PayMuzo.WebServiceProxies.Response)">
+            <summary>
+            Vytvoří normalizovaná data pro ověření podpisu.
+            </summary>
+            <param name="response">odpověď z WebService</param>
+            <returns></returns>
+        </member>
+        <member name="P:Havit.PayMuzo.PayMuzoOrderStateWebServiceResponse.OrderState">
+            <summary>
+            Stav objednávky PayMUZO.
+            </summary>
+        </member>
+        <member name="T:Havit.PayMuzo.PayMuzoOrderState">
+            <summary>
+            Stavy objednávky v systému PayMUZO. Výsledek operace queryOrderState.
+            </summary>
+        </member>
+        <member name="F:Havit.PayMuzo.PayMuzoOrderState.Requested">
+            <summary>
+            Neukončena. Objednávka byla úspěšně přijata do Pay MUZO eBanka – čeká se na výsledek vyplnění citlivých informací držitele karty.
+            </summary>
+        </member>
+        <member name="F:Havit.PayMuzo.PayMuzoOrderState.Pending">
+            <summary>
+            Neukončena. Pokud držitel karty vyplnil citlivé informace, je zaslán dotaz do 3D systému, zda je požadována autentikace držitele karty. Čeká se na výsledek z 3D systému.
+            </summary>
+        </member>
+        <member name="F:Havit.PayMuzo.PayMuzoOrderState.Created">
+            <summary>
+            Neukončena. Jestliže držitel karty přeruší zadávání údajů karty, je to finální stav objednávky.
+            </summary>
+        </member>
+        <member name="F:Havit.PayMuzo.PayMuzoOrderState.Approved">
+            <summary>
+            Autorizována. Výsledek autentikace držitele karty povoluje pokračování, byl poslán požadavek na autorizaci do autorizačního centra. Výsledek autorizace objednávky je úspěšný.
+            </summary>
+        </member>
+        <member name="F:Havit.PayMuzo.PayMuzoOrderState.ApproveReversed">
+            <summary>
+            Reverzována. Autorizace objednávky byla zneplatněna. Na straně držitele karty došlo k odblokování původně autorizovaných finančních prostředků.
+            </summary>
+        </member>
+        <member name="F:Havit.PayMuzo.PayMuzoOrderState.Unapproved">
+            <summary>
+            Neautorizována. Výsledek autorizace objednávky je neúspěšný, objednávku není možné uhradit. Není možné pokračovat.
+            </summary>
+        </member>
+        <member name="F:Havit.PayMuzo.PayMuzoOrderState.DepositedBatchOpened">
+            <summary>
+            Uhrazena. Objednávka byla označena pro uhrazení během následného dávkového zpracování. Je možné zneplatnit úhradu objednávky do okamžiku, než proběhne uzavření dávky, ve které se daná úhrada nachází. 
+            </summary>
+        </member>
+        <member name="F:Havit.PayMuzo.PayMuzoOrderState.DepositedBatchClosed">
+            <summary>
+            Zpracována. Proběhl automatický proces uzavírání dávek a přenos dat do finančních systémů.
+            </summary>
+        </member>
+        <member name="F:Havit.PayMuzo.PayMuzoOrderState.OrderClosed">
+            <summary>
+            Uzvařena. Objednávka byla uzavřena. Jediná přípustná operace je vymazání.
+            </summary>
+        </member>
+        <member name="F:Havit.PayMuzo.PayMuzoOrderState.Deleted">
+            <summary>
+            Vymazána. Objednávka byla odstraněna.
+            </summary>
+        </member>
+        <member name="F:Havit.PayMuzo.PayMuzoOrderState.CreditedBatchOpened">
+            <summary>
+            Kreditována. Objednávka byla označena pro návrat během následného dávkového zpracování.
+            </summary>
+        </member>
+        <member name="F:Havit.PayMuzo.PayMuzoOrderState.CreditedBatchClosed">
+            <summary>
+            Kreditována. Je možné zneplatnit návrat objednávky do okamžiku, než proběhne uzavření dávky, ve které se daná objednávka nachází. Po uzavření dávky zůstává v tomto stavu. 
+            </summary>
+        </member>
+        <member name="F:Havit.PayMuzo.PayMuzoOrderState.Declined">
+            <summary>
+            Zamítnuta. Výsledek autentikace držitele karty v 3D systému je neúspěšný. Držitel karty není autentikován – není možné pokračovat. Objednávku je možné odstranit.
+            </summary>
+        </member>
+        <member name="T:Havit.PayMuzo.PayMuzoException">
+            <summary>
+            Obecná výjimka PayMUZO subsystému. Použito zejména jako bázová třída pro další výjimky.
+            </summary>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoException.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Havit.PayMuzo.PayMuzoException"/> class.
+            </summary>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Havit.PayMuzo.PayMuzoException"/> class.
+            </summary>
+            <param name="message">The message.</param>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Havit.PayMuzo.PayMuzoException"/> class.
+            </summary>
+            <param name="message">The message.</param>
+            <param name="inner">The inner.</param>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Havit.PayMuzo.PayMuzoException"/> class.
+            </summary>
+            <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
+            <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="info"/> parameter is null. </exception>
+            <exception cref="T:System.Runtime.Serialization.SerializationException">The class name is null or <see cref="P:System.Exception.HResult"/> is zero (0). </exception>
+        </member>
+        <member name="T:Havit.PayMuzo.PayMuzoRequestData">
+            <summary>
+            Kolekce dat pro PayMUZO request. Potomek <see cref="T:System.Collections.Specialized.NameValueCollection"/> s pomocnými metodami.
+            </summary>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoRequestData.GetPipedRawData">
+            <summary>
+            Vrátí raw-data requestu jako pipe-separated-string.
+            </summary>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoRequestData.GetUrlWithQueryString(System.String)">
+            <summary>
+            Vrátí URL s QueryStringem s daty requestu. Lze následně použít pro GET volání, např. Response.Redirect.
+            </summary>
+            <param name="targetUrlWithoutQueryString">základní URL adresa bez QueryStringu</param>
+        </member>
+        <member name="T:Havit.PayMuzo.PayMuzoResponseException">
+            <summary>
+            Výjimka vyhazováná při zpracování odpovědi PayMuzo.
+            </summary>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoResponseException.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Havit.PayMuzo.PayMuzoResponseException"/> class.
+            </summary>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoResponseException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Havit.PayMuzo.PayMuzoResponseException"/> class.
+            </summary>
+            <param name="message">The message.</param>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoResponseException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Havit.PayMuzo.PayMuzoResponseException"/> class.
+            </summary>
+            <param name="message">The message.</param>
+            <param name="inner">The inner.</param>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoResponseException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Havit.PayMuzo.PayMuzoResponseException"/> class.
+            </summary>
+            <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
+            <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="info"/> parameter is null. </exception>
+            <exception cref="T:System.Runtime.Serialization.SerializationException">The class name is null or <see cref="P:System.Exception.HResult"/> is zero (0). </exception>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoResponseException.#ctor(Havit.PayMuzo.PayMuzoResponse)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Havit.PayMuzo.PayMuzoResponseException"/> class.
+            </summary>
+        </member>
+        <member name="P:Havit.PayMuzo.PayMuzoResponseException.Response">
+            <summary>
+            Odpověď PayMUZO.
+            </summary>
+        </member>
+        <member name="T:Havit.PayMuzo.PayMuzoCurrency">
+            <summary>
+            Třída pro identifikátor měny v PayMUZO komunikaci. Pro použití v BusinessLayeru je připraven TypeConverter na Int32.
+            PayMUZO stejně podporuje jenom Kč s kódem currency 203.
+            </summary>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoCurrency.#ctor(System.String,System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Havit.PayMuzo.PayMuzoCurrency"/> class.
+            </summary>
+            <param name="code">Currency Code podle ISO 4217.</param>
+            <param name="numericCode">Numeric Code podle ISO 4217.</param>
+            <param name="smallestUnits">Počet nejmenších jednotek dané měny. Např. 100 pro haléře.</param>
+        </member>
+        <member name="F:Havit.PayMuzo.PayMuzoCurrency.currencies">
+            <summary>
+            Hashtabulka s unikátními sdílenými instancemi.
+            </summary>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoCurrency.#cctor">
+            <summary>
+            Statický constructor
+            </summary>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoCurrency.RegisterCurrency(Havit.PayMuzo.PayMuzoCurrency)">
+            <summary>
+            Zaregistruje měnu do interní Hashtable.
+            </summary>
+            <param name="currency">měna k registraci</param>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoCurrency.FindByNumericCode(System.Int32)">
+            <summary>
+            Najde měnu podle numerického kódu a vrátí ji. Pokud není nalezena, vrací <c>null</c>.
+            </summary>
+            <param name="numericCode">numerický kód měny</param>
+        </member>
+        <member name="P:Havit.PayMuzo.PayMuzoCurrency.Czk">
+            <summary>
+            CZK, 203, Koruna česká.
+            </summary>
+        </member>
+        <member name="P:Havit.PayMuzo.PayMuzoCurrency.Code">
+            <summary>
+            Kód měny, např. "CZK". 
+            </summary>
+        </member>
+        <member name="P:Havit.PayMuzo.PayMuzoCurrency.NumericCode">
+            <summary>
+            Číselný kód, např. 203 pro CZK
+            </summary>
+        </member>
+        <member name="P:Havit.PayMuzo.PayMuzoCurrency.SmallestUnits">
+            <summary>
+            Počet nejmenších jednotek dané měny. Např. 100 pro haléře.
+            </summary>
+        </member>
+        <member name="T:Havit.PayMuzo.PayMuzoRawResponse">
+            <summary>
+            Abstraktní předek pro odezvy parsované z čisté datové podoby (další cestou je např. PayMuzoWebServiceResponse).
+            </summary>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoRawResponse.#ctor(System.Collections.Specialized.NameValueCollection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Havit.PayMuzo.PayMuzoResponse"/> class.
+            </summary>
+            <param name="rawResponseData">The response data, raw.</param>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoRawResponse.NormalizeData(System.Collections.Specialized.NameValueCollection)">
+            <summary>
+            Normalizuje data na vstupu, do správného pořadí.
+            </summary>
+            <param name="rawResponseData">data k normalizaci</param>
+            <returns>data v normalizované podobě</returns>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoRawResponse.ParseResponseData(System.Collections.Specialized.NameValueCollection)">
+            <summary>
+            Rozparsuje data do strong-type properties.
+            </summary>
+            <param name="responseData">data požadavku</param>
+        </member>
+        <member name="T:Havit.PayMuzo.PayMuzoHelper">
+            <summary>
+            Třída s pomocnými metodami pro implementaci platebního systému PayMUZO.
+            </summary>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoHelper.CreateOrder(System.Int32,System.Int32,System.Decimal,Havit.PayMuzo.PayMuzoCurrency,System.Boolean,System.String,System.Nullable{System.Int32},System.String,System.String)">
+            <summary>
+            Vrátí <see cref="T:Havit.PayMuzo.PayMuzoRequestData"/> s daty pro request CREATE_ORDER. Následně lze podepsat a použít pro GET (QueryString) nebo POST (form).
+            </summary>
+            <param name="merchantNumber">Přidělené číslo obchodníka</param>
+            <param name="orderNumber">Pořadové číslo objednávky, číslo musí být v každém požadavku od obchodníka unikátní.</param>
+            <param name="amount">Částka. Požadovaný převod na nejmenší jednotky dané měny se provede.</param>
+            <param name="currency">Měna (Identifikátor měny dle ISO 4217).</param>
+            <param name="depositFlag">Udává, zda má být objednávka uhrazena automaticky. <c>false</c> = není požadována úhrada, <c>true</c> = je požadována úhrada.</param>
+            <param name="returnUrl">Plná URL adresa obchodníka. (včetně specifikace protokolu – např. https:// ) Na tuto adresu bude odeslán výsledek požadavku. V případě chybného podpisu dat se chybové hlášení zasílá zpět do internetového prohlížeče, ze kterého tento požadavek přišel.</param>
+            <param name="merchantOrderNumber">Identifikace objednávky pro obchodníka. Zobrazí se na výpisu z banky. V případě, že není zadáno (null), použije se hodnota ORDERNUMBER.</param>
+            <param name="description">Popis nákupu (nepovinný). Obsah pole se přenáší do 3-D systému pro možnost následné kontroly držitelem karty během autentikace u Access Control Serveru vydavatelské banky. Pole musí obsahovat pouze ASCII znaky v rozsahu 0x20 – 0x7E.</param>
+            <param name="merchantData">Libovolná data obchodníka (nepovinné), která jsou vrácena obchodníkovi v odpovědi v nezměněné podobě. Pole se používá pro uspokojení rozdílných požadavků jednotlivých e shopů. Pole musí obsahovat pouze ASCII znaky v rozsahu 0x20 – 0x7E. Pokud je nezbytné přenášet jiná data, potom je zapotřebí použít BASE64 kódování. (viz. Dodatek Base64). Pole nesmí obsahovat osobní údaje. Výsledná délka dat může být maximálně 30 B.</param>
+            <returns><see cref="T:Havit.PayMuzo.PayMuzoRequestData"/> s daty pro request CREATE_ORDER. Následně lze použít pro GET (QueryString) nebo POST (form), avšak je nutno zachovat kódování (již nedělat UrlEncode) a nesmí se změnit pořadí.</returns>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoHelper.AddDigestToRequest(Havit.PayMuzo.PayMuzoRequestData,System.Security.Cryptography.X509Certificates.X509Certificate2)">
+            <summary>
+            Podepíše data requestu a přidá podpis do requestu.
+            </summary>
+            <param name="requestData">request k podepsání</param>
+            <param name="certificate">certifikát s veřejným i privátním klíčem</param>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoHelper.CreateDigest(System.String,System.Security.Cryptography.X509Certificates.X509Certificate2,System.Boolean)">
+            <summary>
+            Podepíše data (pipe-delimitted) a vrátí podpis (již UrlEncoded!).
+            </summary>
+            <param name="data">data k podepsání</param>
+            <param name="certificate">certifikát s privátním i veřejným klíčem</param>
+            <param name="urlEncode">indikuje, zda-li má být podpis UrlEncoded</param>
+            <returns>podpis</returns>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoHelper.VerifyDigest(System.String,System.String,System.Security.Cryptography.X509Certificates.X509Certificate2,System.Boolean)">
+            <summary>
+            Ověří vygenerovaný podpis.
+            </summary>
+            <param name="data">data, z kterých byl podpis vytvořen</param>
+            <param name="digest">podpis, který byl z dat vytvořen</param>
+            <param name="certificate">certifikát s veřejným klíčem</param>
+            <param name="urlEncoded">indikuje, zda-li je podpis UrlEncoded</param>
+            <returns><c>true</c>, pokud podpis odpovídá; jinak <c>false</c></returns>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoHelper.ExtractRawDataFromRawQueryString(System.String)">
+            <summary>
+            Z textového řetězce ve formátu query-stringu vyextrahuje raw-data.
+            </summary>
+            <param name="rawQueryString">textový řetězec ve formátu query-string</param>
+        </member>
+        <member name="T:Havit.PayMuzo.PayMuzoCreateOrderResponse">
+            <summary>
+            Třída pro strong-type reprezentaci odpovědí z PayMUZO na request CREATE_ORDER (<see cref="M:Havit.PayMuzo.PayMuzoHelper.CreateOrder(System.Int32,System.Int32,System.Decimal,Havit.PayMuzo.PayMuzoCurrency,System.Boolean,System.String,System.Nullable{System.Int32},System.String,System.String)"/>).
+            </summary>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoCreateOrderResponse.#ctor(System.Collections.Specialized.NameValueCollection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Havit.PayMuzo.PayMuzoCreateOrderResponse"/> class.
+            </summary>
+            <param name="rawResponseData">The response data, raw.</param>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoCreateOrderResponse.NormalizeData(System.Collections.Specialized.NameValueCollection)">
+            <summary>
+            Normalizuje data na vstupu, do správného pořadí.
+            </summary>
+            <param name="rawResponseData">data k normalizaci</param>
+            <returns>data v normalizované podobě</returns>
+        </member>
+        <member name="M:Havit.PayMuzo.PayMuzoCreateOrderResponse.ParseResponseData(System.Collections.Specialized.NameValueCollection)">
+            <summary>
+            Rozparsuje data do strong-type properties.
+            </summary>
+            <param name="responseData">data požadavku</param>
+        </member>
+        <member name="P:Havit.PayMuzo.PayMuzoCreateOrderResponse.OrderNumber">
+            <summary>
+            Číslo objednávky na straně PayMUZO.
+            </summary>
+        </member>
+        <member name="P:Havit.PayMuzo.PayMuzoCreateOrderResponse.MerchantOrderNumber">
+            <summary>
+            Číslo objednávky na straně obchodníka (na naší straně).
+            </summary>
+        </member>
+        <member name="P:Havit.PayMuzo.PayMuzoCreateOrderResponse.MerchantData">
+            <summary>
+            Data obchodníka (context).
+            </summary>
+        </member>
+        <member name="P:Havit.PayMuzo.PayMuzoCreateOrderResponse.ResultText">
+            <summary>
+            Textová informace o výsledku operace.
+            </summary>
+        </member>
+        <member name="P:Havit.PayMuzo.PayMuzoCreateOrderResponse.IsDigestUrlEncoded">
+            <summary>
+            Gets a value indicating whether this instance is digest URL encoded.
+            </summary>
+            <value>
+            	<c>true</c> if this instance is digest URL encoded; otherwise, <c>false</c>.
+            </value>
+        </member>
         <member name="T:Havit.PayMuzo.WebServiceProxies.handleWSService">
             <remarks/>
         </member>
@@ -286,179 +867,6 @@
         <member name="P:Havit.PayMuzo.WebServiceProxies.queryOrderStateCompletedEventArgs.Result">
             <remarks/>
         </member>
-        <member name="T:Havit.PayMuzo.PayMuzoRequestData">
-            <summary>
-            Kolekce dat pro PayMUZO request. Potomek <see cref="T:System.Collections.Specialized.NameValueCollection"/> s pomocnými metodami.
-            </summary>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoRequestData.GetPipedRawData">
-            <summary>
-            Vrátí raw-data requestu jako pipe-separated-string.
-            </summary>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoRequestData.GetUrlWithQueryString(System.String)">
-            <summary>
-            Vrátí URL s QueryStringem s daty requestu. Lze následně použít pro GET volání, např. Response.Redirect.
-            </summary>
-            <param name="targetUrlWithoutQueryString">základní URL adresa bez QueryStringu</param>
-        </member>
-        <member name="T:Havit.PayMuzo.PayMuzoCreateOrderResponse">
-            <summary>
-            Třída pro strong-type reprezentaci odpovědí z PayMUZO na request CREATE_ORDER (<see cref="M:Havit.PayMuzo.PayMuzoHelper.CreateOrder(System.Int32,System.Int32,System.Decimal,Havit.PayMuzo.PayMuzoCurrency,System.Boolean,System.String,System.Nullable{System.Int32},System.String,System.String)"/>).
-            </summary>
-        </member>
-        <member name="T:Havit.PayMuzo.PayMuzoRawResponse">
-            <summary>
-            Abstraktní předek pro odezvy parsované z čisté datové podoby (další cestou je např. PayMuzoWebServiceResponse).
-            </summary>
-        </member>
-        <member name="T:Havit.PayMuzo.PayMuzoResponse">
-            <summary>
-            Třída pro strong-type reprezentaci odpovědí z PayMUZO.
-            </summary>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoResponse.VerifyDigest(System.Security.Cryptography.X509Certificates.X509Certificate2)">
-            <summary>
-            Ověří správnost podpisu.
-            </summary>
-            <param name="certificate">certifikát, vůči kterému má být podpis ověřen (veřejný klíč PayMUZO)</param>
-            <returns><c>true, pokud je podpis korektní</c>, jinak <c>false</c></returns>
-        </member>
-        <member name="P:Havit.PayMuzo.PayMuzoResponse.Digest">
-            <summary>
-            Podpis.
-            </summary>
-        </member>
-        <member name="P:Havit.PayMuzo.PayMuzoResponse.PrimaryReturnCode">
-            <summary>
-            Primární návratový kód.
-            </summary>
-        </member>
-        <member name="P:Havit.PayMuzo.PayMuzoResponse.SecondaryReturnCode">
-            <summary>
-            Sekundární návratový kód.
-            </summary>
-        </member>
-        <member name="P:Havit.PayMuzo.PayMuzoResponse.NormalizedRawData">
-            <summary>
-            Data v normalizované podobě (správné pořadí, všechny parametry).
-            </summary>
-        </member>
-        <member name="P:Havit.PayMuzo.PayMuzoResponse.IsDigestUrlEncoded">
-            <summary>
-            Gets a value indicating whether this instance is digest URL encoded.
-            </summary>
-            <value>
-            	<c>true</c> if this instance is digest URL encoded; otherwise, <c>false</c>.
-            </value>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoRawResponse.#ctor(System.Collections.Specialized.NameValueCollection)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Havit.PayMuzo.PayMuzoResponse"/> class.
-            </summary>
-            <param name="rawResponseData">The response data, raw.</param>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoRawResponse.NormalizeData(System.Collections.Specialized.NameValueCollection)">
-            <summary>
-            Normalizuje data na vstupu, do správného pořadí.
-            </summary>
-            <param name="rawResponseData">data k normalizaci</param>
-            <returns>data v normalizované podobě</returns>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoRawResponse.ParseResponseData(System.Collections.Specialized.NameValueCollection)">
-            <summary>
-            Rozparsuje data do strong-type properties.
-            </summary>
-            <param name="responseData">data požadavku</param>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoCreateOrderResponse.#ctor(System.Collections.Specialized.NameValueCollection)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Havit.PayMuzo.PayMuzoCreateOrderResponse"/> class.
-            </summary>
-            <param name="rawResponseData">The response data, raw.</param>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoCreateOrderResponse.NormalizeData(System.Collections.Specialized.NameValueCollection)">
-            <summary>
-            Normalizuje data na vstupu, do správného pořadí.
-            </summary>
-            <param name="rawResponseData">data k normalizaci</param>
-            <returns>data v normalizované podobě</returns>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoCreateOrderResponse.ParseResponseData(System.Collections.Specialized.NameValueCollection)">
-            <summary>
-            Rozparsuje data do strong-type properties.
-            </summary>
-            <param name="responseData">data požadavku</param>
-        </member>
-        <member name="P:Havit.PayMuzo.PayMuzoCreateOrderResponse.OrderNumber">
-            <summary>
-            Číslo objednávky na straně PayMUZO.
-            </summary>
-        </member>
-        <member name="P:Havit.PayMuzo.PayMuzoCreateOrderResponse.MerchantOrderNumber">
-            <summary>
-            Číslo objednávky na straně obchodníka (na naší straně).
-            </summary>
-        </member>
-        <member name="P:Havit.PayMuzo.PayMuzoCreateOrderResponse.MerchantData">
-            <summary>
-            Data obchodníka (context).
-            </summary>
-        </member>
-        <member name="P:Havit.PayMuzo.PayMuzoCreateOrderResponse.ResultText">
-            <summary>
-            Textová informace o výsledku operace.
-            </summary>
-        </member>
-        <member name="P:Havit.PayMuzo.PayMuzoCreateOrderResponse.IsDigestUrlEncoded">
-            <summary>
-            Gets a value indicating whether this instance is digest URL encoded.
-            </summary>
-            <value>
-            	<c>true</c> if this instance is digest URL encoded; otherwise, <c>false</c>.
-            </value>
-        </member>
-        <member name="T:Havit.PayMuzo.PayMuzoReturnCode">
-            <summary>
-            Návratový kód PayMUZO, hlášení výsledku operace.
-            </summary>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoReturnCode.#ctor(System.Int32,System.String,System.String)">
-            <summary>
-            Vytvoří instanci return-code a nastaví počáteční hodnoty.
-            </summary>
-            <param name="value">numeric code</param>
-            <param name="csText">význam česky</param>
-            <param name="enText">význam anglicky</param>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoReturnCode.FindByValueInternal``1(System.Int32)">
-            <summary>
-            Najde kód a vrátí ho. Pokud není nalezen, vrací <c>null</c>.
-            </summary>
-            <param name="value">numerická hodnota kódu</param>
-            <typeparam name="T">typ kódu</typeparam>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoReturnCode.RegisterCode(Havit.PayMuzo.PayMuzoReturnCode)">
-            <summary>
-            Zaregistruje return-code do interní Hashtable.
-            </summary>
-            <param name="code"></param>
-        </member>
-        <member name="P:Havit.PayMuzo.PayMuzoReturnCode.CsText">
-            <summary>
-            Český význam.
-            </summary>
-        </member>
-        <member name="P:Havit.PayMuzo.PayMuzoReturnCode.EnText">
-            <summary>
-            Anglický význam.
-            </summary>
-        </member>
-        <member name="P:Havit.PayMuzo.PayMuzoReturnCode.Value">
-            <summary>
-            Číselná hodnota návratového kódu.
-            </summary>
-        </member>
         <member name="T:Havit.PayMuzo.PayMuzoSecondaryReturnCode">
             <summary>
             Třída pro sekundární návratový kód PayMUZO.
@@ -482,358 +890,6 @@
             Najde instanci podle numerické hodnoty kódu. Pokud není nalezen, vrací <c>null</c>.
             </summary>
             <param name="value">numerická hodnota kódu</param>
-        </member>
-        <member name="T:Havit.PayMuzo.PayMuzoOrderWebServiceResponse">
-            <summary>
-            Třída pro zpracování odezvy webové služby ORDER.
-            </summary>
-        </member>
-        <member name="T:Havit.PayMuzo.PayMuzoWebServiceResponse">
-            <summary>
-            Abstraktní předek pro zpracování odezvy webových služeb PayMUZO.
-            </summary>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoWebServiceResponse.#ctor(Havit.PayMuzo.WebServiceProxies.Response)">
-            <summary>
-            Inicializuje novou instanci třídy <see cref="T:Havit.PayMuzo.PayMuzoWebServiceResponse"/> na základě odpovědi z WebService.
-            </summary>
-            <param name="response">odpověď z WebService</param>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoWebServiceResponse.ParseResponse(Havit.PayMuzo.WebServiceProxies.Response)">
-            <summary>
-            Vytahá z web-servicové response data do properties.
-            </summary>
-            <param name="response">odpověď z WebService</param>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoWebServiceResponse.CreateNormalizedData(Havit.PayMuzo.WebServiceProxies.Response)">
-            <summary>
-            Vytvoří normalizovaná data pro ověření podpisu.
-            </summary>
-            <param name="response">odpověď z WebService</param>
-        </member>
-        <member name="P:Havit.PayMuzo.PayMuzoWebServiceResponse.Ok">
-            <summary>
-            OK pole z odpovědi web-service.
-            </summary>
-        </member>
-        <member name="P:Havit.PayMuzo.PayMuzoWebServiceResponse.RequestId">
-            <summary>
-            Pole requestId z odpovědi web-service.
-            </summary>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoOrderWebServiceResponse.#ctor(Havit.PayMuzo.WebServiceProxies.OrderResponse)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Havit.PayMuzo.PayMuzoOrderWebServiceResponse"/> class.
-            </summary>
-            <param name="response">The response.</param>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoOrderWebServiceResponse.ParseResponse(Havit.PayMuzo.WebServiceProxies.Response)">
-            <summary>
-            Vytahá z web-servicové response data do properties.
-            </summary>
-            <param name="response">odpověď z WebService</param>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoOrderWebServiceResponse.CreateNormalizedData(Havit.PayMuzo.WebServiceProxies.Response)">
-            <summary>
-            Vytvoří normalizovaná data pro ověření podpisu.
-            </summary>
-            <param name="response">odpověď z WebService</param>
-            <returns></returns>
-        </member>
-        <member name="P:Havit.PayMuzo.PayMuzoOrderWebServiceResponse.OrderNumber">
-            <summary>
-            Číslo objednávky v systému PayMUZO.
-            </summary>
-        </member>
-        <member name="P:Havit.PayMuzo.PayMuzoOrderWebServiceResponse.IsDigestUrlEncoded">
-            <summary>
-            Gets a value indicating whether this instance is digest URL encoded.
-            </summary>
-            <value>
-            	<c>true</c> if this instance is digest URL encoded; otherwise, <c>false</c>.
-            </value>
-        </member>
-        <member name="T:Havit.PayMuzo.PayMuzoPrimaryReturnCode">
-            <summary>
-            Třída pro primární návratový kód PayMUZO.
-            </summary>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoPrimaryReturnCode.#ctor(System.Int32,System.String,System.String)">
-            <summary>
-            Vytvoří instanci <see cref="T:Havit.PayMuzo.PayMuzoPrimaryReturnCode"/>.
-            </summary>
-            <param name="value">numeric code</param>
-            <param name="csText">význam česky</param>
-            <param name="enText">význam anglicky</param>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoPrimaryReturnCode.#cctor">
-            <summary>
-            Statický constructor
-            </summary>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoPrimaryReturnCode.FindByValue(System.Int32)">
-            <summary>
-            Najde instanci podle numerické hodnoty kódu. Pokud není nalezen, vrací <c>null</c>.
-            </summary>
-            <param name="value">numerická hodnota kódu</param>
-        </member>
-        <member name="T:Havit.PayMuzo.PayMuzoWebServiceClient">
-            <summary>
-            Klient webových služeb PayMuzo. Pozor, není thread-safe.
-            </summary>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoWebServiceClient.#ctor(System.String,System.Security.Cryptography.X509Certificates.X509Certificate2,System.Int32,System.Security.Cryptography.X509Certificates.X509Certificate2)">
-            <summary>
-            Vytvoří instanci WebClienta a nastaví základní parametry komunikace.
-            </summary>
-            <param name="serviceUrl">URL adresa webové služby</param>
-            <param name="payMuzoGateCertificate">certifikát s veřejným klíčem PayMUZO brány</param>
-            <param name="merchantNumber">číslo obchodníka</param>
-            <param name="merchantCertificate">certifikát s privátním i veřejným klíčem obchodníka</param>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoWebServiceClient.QueryOrderState(System.Int32)">
-            <summary>
-            Queries the state of the order.
-            </summary>
-            <exception cref="T:Havit.PayMuzo.PayMuzoInvalidDigestException">pokud se nepodaří ověřit podpis odpovědi</exception>
-            <exception cref="T:Havit.PayMuzo.PayMuzoResponseException">pokud odpověď není OK</exception>
-            <param name="orderNumber">The order number.</param>
-            <returns>orderState</returns>
-        </member>
-        <member name="P:Havit.PayMuzo.PayMuzoWebServiceClient.LastResponse">
-            <summary>
-            Response poslední provedené operace. Pozor, není thread-safe!
-            </summary>
-        </member>
-        <member name="P:Havit.PayMuzo.PayMuzoWebServiceClient.LastRawResponse">
-            <summary>
-            Raw-Response poslední provedené operace. Pozor, není thread-safe!
-            </summary>
-        </member>
-        <member name="T:Havit.PayMuzo.PayMuzoResponseException">
-            <summary>
-            Výjimka vyhazováná při zpracování odpovědi PayMuzo.
-            </summary>
-        </member>
-        <member name="T:Havit.PayMuzo.PayMuzoException">
-            <summary>
-            Obecná výjimka PayMUZO subsystému. Použito zejména jako bázová třída pro další výjimky.
-            </summary>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoException.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:Havit.PayMuzo.PayMuzoException"/> class.
-            </summary>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoException.#ctor(System.String)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Havit.PayMuzo.PayMuzoException"/> class.
-            </summary>
-            <param name="message">The message.</param>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoException.#ctor(System.String,System.Exception)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Havit.PayMuzo.PayMuzoException"/> class.
-            </summary>
-            <param name="message">The message.</param>
-            <param name="inner">The inner.</param>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Havit.PayMuzo.PayMuzoException"/> class.
-            </summary>
-            <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
-            <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination.</param>
-            <exception cref="T:System.ArgumentNullException">The <paramref name="info"/> parameter is null. </exception>
-            <exception cref="T:System.Runtime.Serialization.SerializationException">The class name is null or <see cref="P:System.Exception.HResult"/> is zero (0). </exception>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoResponseException.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:Havit.PayMuzo.PayMuzoResponseException"/> class.
-            </summary>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoResponseException.#ctor(System.String)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Havit.PayMuzo.PayMuzoResponseException"/> class.
-            </summary>
-            <param name="message">The message.</param>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoResponseException.#ctor(System.String,System.Exception)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Havit.PayMuzo.PayMuzoResponseException"/> class.
-            </summary>
-            <param name="message">The message.</param>
-            <param name="inner">The inner.</param>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoResponseException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Havit.PayMuzo.PayMuzoResponseException"/> class.
-            </summary>
-            <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
-            <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination.</param>
-            <exception cref="T:System.ArgumentNullException">The <paramref name="info"/> parameter is null. </exception>
-            <exception cref="T:System.Runtime.Serialization.SerializationException">The class name is null or <see cref="P:System.Exception.HResult"/> is zero (0). </exception>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoResponseException.#ctor(Havit.PayMuzo.PayMuzoResponse)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Havit.PayMuzo.PayMuzoResponseException"/> class.
-            </summary>
-        </member>
-        <member name="P:Havit.PayMuzo.PayMuzoResponseException.Response">
-            <summary>
-            Odpověď PayMUZO.
-            </summary>
-        </member>
-        <member name="T:Havit.PayMuzo.PayMuzoHelper">
-            <summary>
-            Třída s pomocnými metodami pro implementaci platebního systému PayMUZO.
-            </summary>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoHelper.CreateOrder(System.Int32,System.Int32,System.Decimal,Havit.PayMuzo.PayMuzoCurrency,System.Boolean,System.String,System.Nullable{System.Int32},System.String,System.String)">
-            <summary>
-            Vrátí <see cref="T:Havit.PayMuzo.PayMuzoRequestData"/> s daty pro request CREATE_ORDER. Následně lze podepsat a použít pro GET (QueryString) nebo POST (form).
-            </summary>
-            <param name="merchantNumber">Přidělené číslo obchodníka</param>
-            <param name="orderNumber">Pořadové číslo objednávky, číslo musí být v každém požadavku od obchodníka unikátní.</param>
-            <param name="amount">Částka. Požadovaný převod na nejmenší jednotky dané měny se provede.</param>
-            <param name="currency">Měna (Identifikátor měny dle ISO 4217).</param>
-            <param name="depositFlag">Udává, zda má být objednávka uhrazena automaticky. <c>false</c> = není požadována úhrada, <c>true</c> = je požadována úhrada.</param>
-            <param name="returnUrl">Plná URL adresa obchodníka. (včetně specifikace protokolu – např. https:// ) Na tuto adresu bude odeslán výsledek požadavku. V případě chybného podpisu dat se chybové hlášení zasílá zpět do internetového prohlížeče, ze kterého tento požadavek přišel.</param>
-            <param name="merchantOrderNumber">Identifikace objednávky pro obchodníka. Zobrazí se na výpisu z banky. V případě, že není zadáno (null), použije se hodnota ORDERNUMBER.</param>
-            <param name="description">Popis nákupu (nepovinný). Obsah pole se přenáší do 3-D systému pro možnost následné kontroly držitelem karty během autentikace u Access Control Serveru vydavatelské banky. Pole musí obsahovat pouze ASCII znaky v rozsahu 0x20 – 0x7E.</param>
-            <param name="merchantData">Libovolná data obchodníka (nepovinné), která jsou vrácena obchodníkovi v odpovědi v nezměněné podobě. Pole se používá pro uspokojení rozdílných požadavků jednotlivých e shopů. Pole musí obsahovat pouze ASCII znaky v rozsahu 0x20 – 0x7E. Pokud je nezbytné přenášet jiná data, potom je zapotřebí použít BASE64 kódování. (viz. Dodatek Base64). Pole nesmí obsahovat osobní údaje. Výsledná délka dat může být maximálně 30 B.</param>
-            <returns><see cref="T:Havit.PayMuzo.PayMuzoRequestData"/> s daty pro request CREATE_ORDER. Následně lze použít pro GET (QueryString) nebo POST (form), avšak je nutno zachovat kódování (již nedělat UrlEncode) a nesmí se změnit pořadí.</returns>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoHelper.AddDigestToRequest(Havit.PayMuzo.PayMuzoRequestData,System.Security.Cryptography.X509Certificates.X509Certificate2)">
-            <summary>
-            Podepíše data requestu a přidá podpis do requestu.
-            </summary>
-            <param name="requestData">request k podepsání</param>
-            <param name="certificate">certifikát s veřejným i privátním klíčem</param>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoHelper.CreateDigest(System.String,System.Security.Cryptography.X509Certificates.X509Certificate2,System.Boolean)">
-            <summary>
-            Podepíše data (pipe-delimitted) a vrátí podpis (již UrlEncoded!).
-            </summary>
-            <param name="data">data k podepsání</param>
-            <param name="certificate">certifikát s privátním i veřejným klíčem</param>
-            <param name="urlEncode">indikuje, zda-li má být podpis UrlEncoded</param>
-            <returns>podpis</returns>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoHelper.VerifyDigest(System.String,System.String,System.Security.Cryptography.X509Certificates.X509Certificate2,System.Boolean)">
-            <summary>
-            Ověří vygenerovaný podpis.
-            </summary>
-            <param name="data">data, z kterých byl podpis vytvořen</param>
-            <param name="digest">podpis, který byl z dat vytvořen</param>
-            <param name="certificate">certifikát s veřejným klíčem</param>
-            <param name="urlEncoded">indikuje, zda-li je podpis UrlEncoded</param>
-            <returns><c>true</c>, pokud podpis odpovídá; jinak <c>false</c></returns>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoHelper.ExtractRawDataFromRawQueryString(System.String)">
-            <summary>
-            Z textového řetězce ve formátu query-stringu vyextrahuje raw-data.
-            </summary>
-            <param name="rawQueryString">textový řetězec ve formátu query-string</param>
-        </member>
-        <member name="T:Havit.PayMuzo.PayMuzoOrderStateWebServiceResponse">
-            <summary>
-            Třída pro zpracování odezvy webové služby ORDER STATE.
-            </summary>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoOrderStateWebServiceResponse.#ctor(Havit.PayMuzo.WebServiceProxies.OrderStateResponse)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Havit.PayMuzo.PayMuzoOrderStateWebServiceResponse"/> class.
-            </summary>
-            <param name="response">The response.</param>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoOrderStateWebServiceResponse.ParseResponse(Havit.PayMuzo.WebServiceProxies.Response)">
-            <summary>
-            Vytahá z web-servicové response data do properties.
-            </summary>
-            <param name="response">odpověď z WebService</param>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoOrderStateWebServiceResponse.CreateNormalizedData(Havit.PayMuzo.WebServiceProxies.Response)">
-            <summary>
-            Vytvoří normalizovaná data pro ověření podpisu.
-            </summary>
-            <param name="response">odpověď z WebService</param>
-            <returns></returns>
-        </member>
-        <member name="P:Havit.PayMuzo.PayMuzoOrderStateWebServiceResponse.OrderState">
-            <summary>
-            Stav objednávky PayMUZO.
-            </summary>
-        </member>
-        <member name="T:Havit.PayMuzo.PayMuzoOrderState">
-            <summary>
-            Stavy objednávky v systému PayMUZO. Výsledek operace queryOrderState.
-            </summary>
-        </member>
-        <member name="F:Havit.PayMuzo.PayMuzoOrderState.Requested">
-            <summary>
-            Neukončena. Objednávka byla úspěšně přijata do Pay MUZO eBanka – čeká se na výsledek vyplnění citlivých informací držitele karty.
-            </summary>
-        </member>
-        <member name="F:Havit.PayMuzo.PayMuzoOrderState.Pending">
-            <summary>
-            Neukončena. Pokud držitel karty vyplnil citlivé informace, je zaslán dotaz do 3D systému, zda je požadována autentikace držitele karty. Čeká se na výsledek z 3D systému.
-            </summary>
-        </member>
-        <member name="F:Havit.PayMuzo.PayMuzoOrderState.Created">
-            <summary>
-            Neukončena. Jestliže držitel karty přeruší zadávání údajů karty, je to finální stav objednávky.
-            </summary>
-        </member>
-        <member name="F:Havit.PayMuzo.PayMuzoOrderState.Approved">
-            <summary>
-            Autorizována. Výsledek autentikace držitele karty povoluje pokračování, byl poslán požadavek na autorizaci do autorizačního centra. Výsledek autorizace objednávky je úspěšný.
-            </summary>
-        </member>
-        <member name="F:Havit.PayMuzo.PayMuzoOrderState.ApproveReversed">
-            <summary>
-            Reverzována. Autorizace objednávky byla zneplatněna. Na straně držitele karty došlo k odblokování původně autorizovaných finančních prostředků.
-            </summary>
-        </member>
-        <member name="F:Havit.PayMuzo.PayMuzoOrderState.Unapproved">
-            <summary>
-            Neautorizována. Výsledek autorizace objednávky je neúspěšný, objednávku není možné uhradit. Není možné pokračovat.
-            </summary>
-        </member>
-        <member name="F:Havit.PayMuzo.PayMuzoOrderState.DepositedBatchOpened">
-            <summary>
-            Uhrazena. Objednávka byla označena pro uhrazení během následného dávkového zpracování. Je možné zneplatnit úhradu objednávky do okamžiku, než proběhne uzavření dávky, ve které se daná úhrada nachází. 
-            </summary>
-        </member>
-        <member name="F:Havit.PayMuzo.PayMuzoOrderState.DepositedBatchClosed">
-            <summary>
-            Zpracována. Proběhl automatický proces uzavírání dávek a přenos dat do finančních systémů.
-            </summary>
-        </member>
-        <member name="F:Havit.PayMuzo.PayMuzoOrderState.OrderClosed">
-            <summary>
-            Uzvařena. Objednávka byla uzavřena. Jediná přípustná operace je vymazání.
-            </summary>
-        </member>
-        <member name="F:Havit.PayMuzo.PayMuzoOrderState.Deleted">
-            <summary>
-            Vymazána. Objednávka byla odstraněna.
-            </summary>
-        </member>
-        <member name="F:Havit.PayMuzo.PayMuzoOrderState.CreditedBatchOpened">
-            <summary>
-            Kreditována. Objednávka byla označena pro návrat během následného dávkového zpracování.
-            </summary>
-        </member>
-        <member name="F:Havit.PayMuzo.PayMuzoOrderState.CreditedBatchClosed">
-            <summary>
-            Kreditována. Je možné zneplatnit návrat objednávky do okamžiku, než proběhne uzavření dávky, ve které se daná objednávka nachází. Po uzavření dávky zůstává v tomto stavu. 
-            </summary>
-        </member>
-        <member name="F:Havit.PayMuzo.PayMuzoOrderState.Declined">
-            <summary>
-            Zamítnuta. Výsledek autentikace držitele karty v 3D systému je neúspěšný. Držitel karty není autentikován – není možné pokračovat. Objednávku je možné odstranit.
-            </summary>
         </member>
         <member name="T:Havit.PayMuzo.TypeConverters.PayMuzoCurrencyTypeConverter">
             <summary>
@@ -912,62 +968,6 @@
             <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination.</param>
             <exception cref="T:System.ArgumentNullException">The <paramref name="info"/> parameter is null. </exception>
             <exception cref="T:System.Runtime.Serialization.SerializationException">The class name is null or <see cref="P:System.Exception.HResult"/> is zero (0). </exception>
-        </member>
-        <member name="T:Havit.PayMuzo.PayMuzoCurrency">
-            <summary>
-            Třída pro identifikátor měny v PayMUZO komunikaci. Pro použití v BusinessLayeru je připraven TypeConverter na Int32.
-            PayMUZO stejně podporuje jenom Kč s kódem currency 203.
-            </summary>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoCurrency.#ctor(System.String,System.Int32,System.Int32)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Havit.PayMuzo.PayMuzoCurrency"/> class.
-            </summary>
-            <param name="code">Currency Code podle ISO 4217.</param>
-            <param name="numericCode">Numeric Code podle ISO 4217.</param>
-            <param name="smallestUnits">Počet nejmenších jednotek dané měny. Např. 100 pro haléře.</param>
-        </member>
-        <member name="F:Havit.PayMuzo.PayMuzoCurrency.currencies">
-            <summary>
-            Hashtabulka s unikátními sdílenými instancemi.
-            </summary>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoCurrency.#cctor">
-            <summary>
-            Statický constructor
-            </summary>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoCurrency.RegisterCurrency(Havit.PayMuzo.PayMuzoCurrency)">
-            <summary>
-            Zaregistruje měnu do interní Hashtable.
-            </summary>
-            <param name="currency">měna k registraci</param>
-        </member>
-        <member name="M:Havit.PayMuzo.PayMuzoCurrency.FindByNumericCode(System.Int32)">
-            <summary>
-            Najde měnu podle numerického kódu a vrátí ji. Pokud není nalezena, vrací <c>null</c>.
-            </summary>
-            <param name="numericCode">numerický kód měny</param>
-        </member>
-        <member name="P:Havit.PayMuzo.PayMuzoCurrency.Czk">
-            <summary>
-            CZK, 203, Koruna česká.
-            </summary>
-        </member>
-        <member name="P:Havit.PayMuzo.PayMuzoCurrency.Code">
-            <summary>
-            Kód měny, např. "CZK". 
-            </summary>
-        </member>
-        <member name="P:Havit.PayMuzo.PayMuzoCurrency.NumericCode">
-            <summary>
-            Číselný kód, např. 203 pro CZK
-            </summary>
-        </member>
-        <member name="P:Havit.PayMuzo.PayMuzoCurrency.SmallestUnits">
-            <summary>
-            Počet nejmenších jednotek dané měny. Např. 100 pro haléře.
-            </summary>
         </member>
     </members>
 </doc>

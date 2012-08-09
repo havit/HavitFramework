@@ -1,0 +1,25 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="DateTimeBoxWithSpecialDays.aspx.cs" Inherits="WebApplicationTest.DateTimeBoxWithSpecialDays" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+	<title></title>
+</head>
+
+<style type="text/css">
+	.special { color: Red; background-color:lime;}	
+</style>
+
+<body>
+	<form id="form1" runat="server">
+		<div>
+			<havit:DateTimeBox ID="SpecialDTB" runat="server" />
+		</div>
+		<div>
+			<havit:DateTimeBox ID="Special2DTB" runat="server" />
+		</div>
+	</form>
+</body>
+</html>
+

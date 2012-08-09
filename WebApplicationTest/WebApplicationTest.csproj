@@ -119,6 +119,7 @@
     <Content Include="CollapserTest.aspx" />
     <Content Include="ControlsValuesPersisterTest.aspx" />
     <Content Include="DateTimeBoxTest.aspx" />
+    <Content Include="DateTimeBoxWithSpecialDays.aspx" />
     <Content Include="DropDownListTest.aspx" />
     <Content Include="Global.asax" />
     <Content Include="GridViewExtTest.aspx" />
@@ -179,6 +180,13 @@
     </Compile>
     <Compile Include="DateTimeBoxTest.aspx.designer.cs">
       <DependentUpon>DateTimeBoxTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DateTimeBoxWithSpecialDays.aspx.cs">
+      <DependentUpon>DateTimeBoxWithSpecialDays.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DateTimeBoxWithSpecialDays.aspx.designer.cs">
+      <DependentUpon>DateTimeBoxWithSpecialDays.aspx</DependentUpon>
     </Compile>
     <Compile Include="DefaultStylesLinkerTest.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
@@ -440,7 +448,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>19509</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

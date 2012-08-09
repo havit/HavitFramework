@@ -24,8 +24,8 @@ namespace Havit.Web.UI.WebControls
 		/// Slouží k reprezentaci chybné hodnoty v metodě GetValueMemento.
 		/// </summary>
 		private const string InvalidValueMemento = "invalid";
-        private const string clientScriptBlockName = "Havit.DsvCommerce.WebBase.UI.WebControls.DateTimeBox_Script";
-        #endregion
+		private const string clientScriptBlockName = "Havit.DsvCommerce.WebBase.UI.WebControls.DateTimeBox_Script";
+		#endregion
 
 		#region Nested controls (private)
 
@@ -304,7 +304,15 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		private event EventHandler _valueChanged;
+		#endregion		
+
+		#region DateTimeBoxDateCustomizationEventHandler
+		public delegate void DateTimeBoxDateCustomizationEventHandler(object sender, DateTimeBoxDateCustomizationEventArgs args);
 		#endregion
+
+		#region GetDateTimeBoxCustomization
+		public event DateTimeBoxDateCustomizationEventHandler GetDateTimeBoxCustomization; 
+		#endregion		
 
 		#region ValidationGroup
 		/// <summary>
@@ -360,7 +368,7 @@ namespace Havit.Web.UI.WebControls
 			
 			dateTimePickerDynarchCalendar = new DynarchCalendar();
 			dateTimePickerDynarchCalendar.ID = "DateTimePickerDynarchCalendar";
-			dateTimePickerDynarchCalendar.Electric = false;
+			dateTimePickerDynarchCalendar.Electric = false;			
 		}
 		#endregion
 		
@@ -531,6 +539,18 @@ namespace Havit.Web.UI.WebControls
 			dateTimePickerDynarchCalendar.InputField = "ValueTextBox";
 			dateTimePickerDynarchCalendar.Button = "DateTimePickerImage";
 			dateTimePickerDynarchCalendar.FirstDay = (int)this.FirstDayOfWeek; // číslování enumu v .NETu sedí s předpokládanou hodnotou pro dynarchcalendar
+
+			if (GetDateTimeBoxCustomization != null)
+			{
+				DateTimeBoxDateCustomizationEventArgs args = new DateTimeBoxDateCustomizationEventArgs();
+				GetDateTimeBoxCustomization(this, args);
+				if (args.DateCustomization == null)
+				{
+					throw new ArgumentException("Po obsluze události GetDateTimeBoxCustomization nesmí zůstat vlastnost DateCustomization null.");
+				}
+
+				dateTimePickerDynarchCalendar.DateStatusFunction = args.DateCustomization.GetDatesCustomizationFunction(this.Page);				
+			}
 			
 			switch (DateTimeMode)
 			{
@@ -722,7 +742,7 @@ function HavitDateTimeBox_Change(e)
 			evt.initEvent('change', true, true);
 			element.dispatchEvent(evt);
 		}
- 		return false;
+		return false;
 	}
 	return true;
 }
@@ -735,7 +755,7 @@ function HavitDateTimeBox_Focus(e)
 		element.createTextRange().select();
 	}
 }";
-            ScriptManager.RegisterClientScriptBlock(this.Page, typeof(DateTimeBox), clientScriptBlockName, javaScript, true);
+			ScriptManager.RegisterClientScriptBlock(this.Page, typeof(DateTimeBox), clientScriptBlockName, javaScript, true);
 		}
 		#endregion
 

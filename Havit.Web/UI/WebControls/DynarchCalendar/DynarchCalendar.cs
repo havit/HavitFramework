@@ -403,7 +403,7 @@ namespace Havit.Web.UI.WebControls
 			{
 				ViewState["DateStatusFunction"] = value;
 			}
-		}
+		}		
 
 		/// <summary>
 		/// Specifies which day is to be displayed as the first day of week.
@@ -806,7 +806,7 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 
-		#endregion
+		#endregion		
 
 		#region ValidateControlProperties
 		/// <summary>
@@ -963,6 +963,21 @@ namespace Havit.Web.UI.WebControls
 				this.ValidateControlProperties();
 				this.RegisterCss();
 				this.RegisterClientScript();
+
+				//string csName = this.DateStatusFunctionName;
+				//Type csType = this.GetType();
+
+				//ClientScriptManager cs = Page.ClientScript;
+
+				//if (!cs.IsClientScriptBlockRegistered(csType, csName))
+				//{
+				//    StringBuilder sb = new StringBuilder();
+				//    sb.Append("<script type=text/javascript>");
+				//    sb.Append(this.DateStatusFunction);
+				//    sb.Append("</script>");
+				//    cs.RegisterClientScriptBlock(csType, csName, sb.ToString(), false);
+				//}
+
 				this.RegisterCalendarSetupScript();
 			}
 		}
@@ -978,13 +993,13 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-		#region RegisterSetupScript
+		#region RegisterCalendarSetupScript
 		/// <summary>
 		/// Emituje script nastavení kalendáře přes Calendar.setup(...).
 		/// </summary>
 		protected void RegisterCalendarSetupScript()
 		{
-			StringBuilder sb = new StringBuilder();
+			StringBuilder sb = new StringBuilder();		
 
 			//writer.WriteLine("<script type=\"text/javascript\">");
 			//writer.Indent++;
@@ -1281,6 +1296,6 @@ namespace Havit.Web.UI.WebControls
 				}
 			}
 		}
-		#endregion
+		#endregion		
 	}
 }

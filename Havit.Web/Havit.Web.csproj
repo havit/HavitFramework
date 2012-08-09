@@ -230,6 +230,8 @@
     <Compile Include="UI\WebControls\ControlsValues\PersisterControlExtenderRepository.cs" />
     <Compile Include="UI\WebControls\ControlsValues\RadioButtonListPersisterControlExtender.cs" />
     <Compile Include="UI\WebControls\ControlsValues\TextBoxPersisterControlExtender.cs" />
+    <Compile Include="UI\WebControls\DateTimeBoxDateCustomization.cs" />
+    <Compile Include="UI\WebControls\DateTimeBoxDateCustomizationEventArgs.cs" />
     <Compile Include="UI\WebControls\ListBoxExt.cs" />
     <Compile Include="UI\WebControls\MessengerControl.cs" />
     <Compile Include="UI\WebControls\MessengerMessage.cs" />
@@ -330,6 +332,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UI\WebControls\IIdentifiableField.cs" />
+    <Compile Include="UI\WebControls\SpecialDate.cs" />
     <Compile Include="UI\WebControls\TemplateFieldExt.cs" />
     <Compile Include="UI\WebControls\AjaxModalDialog.cs" />
     <Compile Include="UI\WebControls\AjaxModalDialogUserControlBase.cs">

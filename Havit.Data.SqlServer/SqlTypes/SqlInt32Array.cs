@@ -9,41 +9,42 @@ using System.Collections.Generic;
 namespace Havit.Data.SqlTypes
 {
 	/// <summary>
-	/// UDT reprezentující pole SqlInt32 (SQL: int) hodnot.
+	/// UDT reprezentující pole SqlInt32 (T-SQL: int) hodnot.
 	/// </summary>
 	/// <remarks>
-	/// Vzhledem k tomu, že maximální velikost UDT je 8KB, maximem je 1999 hodnot (jedna je stavová).
-	/// Binární serializace je takováto:
-	/// byte 1-4 ~ Int32 Length (velikost pole, pokud je 0, pak je hodnota NULL)
-	/// byte 5-(8000) ~ values
+	/// Vzhledem k tomu, že maximální velikost UDT je 8KB, maximem je 1999 hodnot (jedna je stavová).<br/>
+	/// <br/>
+	/// Binární serializace je takováto:<br/>
+	/// byte 1-4 ~ Int32 Length (velikost pole, pokud je 0, pak je hodnota NULL)<br/>
+	/// byte 5-(8000) ~ values<br/>
 	/// </remarks>
 	/// <example>
-	/// Vytvoøení UDT typu:
+	/// Vytvoøení UDT typu:<br/>
 	/// <code>
-	/// CREATE TYPE [dbo].IntArray
-	/// EXTERNAL NAME [Havit.Data.SqlServer].[Havit.Data.SqlTypes.SqlInt32Array]
+	/// CREATE TYPE [dbo].IntArray<br/>
+	/// EXTERNAL NAME [Havit.Data.SqlServer].[Havit.Data.SqlTypes.SqlInt32Array]<br/>
 	/// </code>
-	/// Vytvoøení funkce:
+	/// Vytvoøení funkce:<br/>
 	/// <code>
-	/// CREATE FUNCTION IntArrayToTable
-	/// (
-	///     @array dbo.IntArray
-	/// )
-	/// RETURNS TABLE
-	/// (
-	///     [Value] int
-	/// )
-	/// AS EXTERNAL NAME [Havit.Data.SqlServer].[Havit.Data.SqlTypes.SqlInt32Array].[GetInt32Values]
+	/// CREATE FUNCTION IntArrayToTable<br/>
+	/// (<br/>
+	///     @array dbo.IntArray<br/>
+	/// )<br/>
+	/// RETURNS TABLE<br/>
+	/// (<br/>
+	///     [Value] int<br/>
+	/// )<br/>
+	/// AS EXTERNAL NAME [Havit.Data.SqlServer].[Havit.Data.SqlTypes.SqlInt32Array].[GetInt32Values]<br/>
 	/// </code>
-	/// Použití ve filtru:
+	/// Použití ve filtru:<br/>
 	/// <code>
-	/// CREATE PROCEDURE Filter
-	/// (
-	///     @Vlastnosti dbo.IntArray = NULL
-	/// )
-	/// AS
-	///     SELECT col FROM tab
-	///         WHERE ((@Vlastnosti IS NULL) OR (VlastnostID IN (SELECT Value FROM dbo.IntArrayToTable(@Vlastnosti))))
+	/// CREATE PROCEDURE Filter<br/>
+	/// (<br/>
+	///     @Vlastnosti dbo.IntArray = NULL<br/>
+	/// )<br/>
+	/// AS<br/>
+	///     SELECT col FROM tab<br/>
+	///         WHERE ((@Vlastnosti IS NULL) OR (VlastnostID IN (SELECT Value FROM dbo.IntArrayToTable(@Vlastnosti))))<br/>
 	/// </code>
 	/// </example>
 	[Serializable]

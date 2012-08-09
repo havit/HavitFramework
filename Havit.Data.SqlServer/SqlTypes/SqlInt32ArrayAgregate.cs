@@ -11,15 +11,15 @@ namespace Havit.Data.SqlTypes
 	/// Aggregate k UDT SqlInt32Array, kterı zajišuje pøevod tabulky hodnot na pole.
 	/// </summary>
 	/// <example>
-	/// Vytvoøení agregátu typu:
+	/// Vytvoøení agregátu typu:<br/>
 	/// <code>
-	/// CREATE AGGREGATE [dbo].IntArrayAggregate
-	/// RETURNS IntArray
-	/// EXTERNAL NAME [Havit.Data.SqlServer].[Havit.Data.SqlTypes.SqlInt32ArrayAggregate]
+	/// CREATE AGGREGATE [dbo].IntArrayAggregate<br/>
+	/// RETURNS IntArray<br/>
+	/// EXTERNAL NAME [Havit.Data.SqlServer].[Havit.Data.SqlTypes.SqlInt32ArrayAggregate]<br/>
 	/// </code>
-	/// Pouití agregátu pro vytvoøení pole hodnot:
+	/// Pouití agregátu pro vytvoøení pole hodnot:<br/>
 	/// <code>
-	/// SELECT IntArrayAggreagate(ItemID) AS Items FROM dbo.Item WHERE ...
+	/// SELECT IntArrayAggreagate(ItemID) AS Items FROM dbo.Item WHERE ...<br/>
 	/// </code>
 	/// </example>
 	[Serializable]

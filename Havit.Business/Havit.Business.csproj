@@ -101,6 +101,9 @@
     <Compile Include="IDateInfo.cs" />
     <Compile Include="IdentityMap.cs" />
     <Compile Include="IdentityMapScope.cs" />
+    <Compile Include="ILanguage.cs" />
+    <Compile Include="ILocalizable.cs" />
+    <Compile Include="ILocalizationCollection.cs" />
     <Compile Include="Money.cs" />
     <Compile Include="MoneyImplementationBase.cs" />
     <Compile Include="ObjectInfo.cs" />

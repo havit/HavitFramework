@@ -2255,5 +2255,40 @@
             Podmínka je tvořena způsobem: WHERE Field IN (1, 2, 3, 4).
             </summary>
         </member>
+        <member name="T:Havit.Business.ILocalizable">
+            <summary>
+            Rozhraní označující lokalizovaný objekt.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.ILocalizable.CreateLocalization(Havit.Business.ILanguage)">
+            <summary>
+            Vytvoří položku lokalizace pro daný jazyk.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.ILocalizable.Localizations">
+            <summary>
+            Lokalizace.
+            </summary>
+        </member>
+        <member name="T:Havit.Business.ILanguage">
+            <summary>
+            Interface označující třídu reprezentující jazyk.
+            </summary>
+        </member>
+        <member name="T:Havit.Business.ILocalizationCollection">
+            <summary>
+            Rozhraní kolekce lokalizačních business objektů.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.ILocalizationCollection.Current">
+            <summary>
+            Vrátí business objekt pro aktuální jazyk.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.ILocalizationCollection.Item(Havit.Business.ILanguage)">
+            <summary>
+            Vrýtí business objekt pro zadaný jazyk.
+            </summary>
+        </member>
     </members>
 </doc>

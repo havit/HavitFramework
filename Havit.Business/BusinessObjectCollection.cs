@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using Havit.Collections;
 using System.Data.Common;
 using Havit.Data;
+using System.Linq;
 
 namespace Havit.Business
 {
@@ -419,18 +420,33 @@ namespace Havit.Business
 				return false;
 			}
 
-			//sem se dostaneme málokdy (pokud vùbec), takže není nutné implementovat buhví jak optimalizovanì
-			List<TItem> innerList = (List<TItem>)Items;
-			for (int i = 0; i < innerList.Count - 1; i++)
-			{				
-				// pokud poslední výskyt prvku je jiný, než aktuální, jde o duplicitu
-				// (Místo LastIndexOf bychom mohli v klidu použít IndexOf, je to zcela jedno.)
-				if (innerList.LastIndexOf(innerList[i]) != i)
+			// otestujeme duplicity uložených objektù
+			List<TItem> savedObjects = this.Where(item => !item.IsNew).ToList();
+			int distinctSavedObjectsCount = 0;
+			if (savedObjects.Count > 1) // kolekce obsahuje uložený objekt
+			{
+				distinctSavedObjectsCount = savedObjects.Select(item => item.ID).Distinct().Count();
+				if ((savedObjects.Count > 1) && (distinctSavedObjectsCount != savedObjects.Count))
 				{
 					return true;
 				}
 			}
 
+			if (distinctSavedObjectsCount != this.Count) // kolekce obsahuje i neuložený objekt
+			{
+				// otestujeme duplicity neuložených objektù
+				List<TItem> newObjects = this.Where(item => item.IsNew).ToList();
+				if (newObjects.Count > 1)
+				{
+					int distinctNewObjectsCount = newObjects.Distinct().Count();
+					if (distinctNewObjectsCount != newObjects.Count)
+					{
+						return true;
+					}
+				}
+			}
+
+			// nenašli jsme duplicitu
 			return false;			
 		}
 		#endregion

@@ -190,7 +190,7 @@ namespace Havit.Web.UI.Scriptlets
 			string controlName = ControlName.Replace(".", "$");
 
 			Control result;
-			if (controlName.StartsWith("Page."))
+			if (controlName.StartsWith("Page$"))
 			{
 				result = this.Page.FindControl(controlName.Substring(5)); // 5 .. pøeskoèíme "Page."
 			}

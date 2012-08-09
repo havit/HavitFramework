@@ -4,36 +4,33 @@
 	overflow-y: auto;
 	z-index: 5;
 	
-	border: 1px solid lightblue;
+	border: 1px solid black;
 	background: #ffffff;
 	padding: 5;
 	white-space: nowrap;
 }
-	
-				
 .asmMenuItem, .asmSelMenuItem
 {			
-	color: blue;
+	color: black;
 	background: #ffffff;
 	cursor: hand;
 	cursor: pointer;
+	padding: 0 2px;
+	border: solid 1px white;
 	
-	font-family: Arial, Verdana, helvetica, 'sans serif';
 	font-size: 9pt;
+	font-family: "Arial CE", Arial, Sans-Serif;
 }
-
-
 .asmSelMenuItem
 {			
-	background: lightblue;
+	color: White;
+	background-color: #0A246A;
 	white-space: nowrap;
+	border: dotted 1px #F5DB95;
 }
-
-
 A:link.asmNavigationLink, A:active.asmNavigationLink, A:visited.asmNavigationLink, A:hover.asmNavigationLink
 {
 	color: blue;
-	font-family: Arial, Verdana, helvetica, 'sans serif';
 	font-size: 9pt;
 	margin:0px;
 	text-decoration: none;

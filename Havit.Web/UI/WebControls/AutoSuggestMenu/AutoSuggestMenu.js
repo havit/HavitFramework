@@ -639,6 +639,10 @@ function AutoSuggestMenu()
         menuDiv.className=self.cssClass;
         menuDiv.sourceObject=self;
         
+        /**************************/
+		menuDiv.style.minWidth = textBox.style.width;
+        /**************************/
+        
         XUtils.addEventListener(menuDiv, "scroll",    self.onMenuScroll);
                     
      	TRACE("AutoSuggestMenu.render absoluteLeft=" + XUtils.getAbsoluteLeft(textBox) + ", absoluteTop=" + XUtils.getAbsoluteTop(textBox));

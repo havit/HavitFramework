@@ -9,7 +9,7 @@
 	<form id="form1" runat="server">
 		<asp:ScriptManager EnablePageMethods="true" runat="server" />
 		<div>
-			<asp:TextBox ID="SubjektTB" runat="server" />
+			<asp:TextBox ID="SubjektTB" Width="150" runat="server" />
 			<havit:AutoSuggestMenu
 				ID="SubjektASM"
 				TargetControlID="SubjektTB"

@@ -1037,6 +1037,32 @@
             Třetí operand.
             </summary>
         </member>
+        <member name="T:Havit.Business.Query.SqlInt32ArrayOperand">
+            <summary>
+            SqlInt32Array jako operand databázového dotazu.
+            </summary>
+        </member>
+        <member name="F:Havit.Business.Query.SqlInt32ArrayOperand.value">
+            <summary>
+            Hodnota konstanty ValueOperandu.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.SqlInt32ArrayOperand.#ctor(System.Int32[])">
+            <summary>
+            Vytvoří instanci třídy SqlInt32ArrayOperand.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.SqlInt32ArrayOperand.Create(System.Int32[])">
+            <summary>
+            Vytvoří operand z pole integerů.
+            </summary>
+        </member>
+        <member name="T:Havit.Business.GetAllDelegate">
+            <summary>
+            Delegát na metodu GetAll.
+            </summary>
+            <returns>Vrací všechny (nesmazané) objekty dané třídy.</returns>
+        </member>
         <member name="T:Havit.Business.Query.TextCondition">
             <summary>
             Vytváří podmínky testující textový řetězec.
@@ -1204,11 +1230,6 @@
             Vytvoří podmínku testující hodnoty pomocí zadaného operátoru.
             </summary>
         </member>
-        <member name="T:Havit.Business.Query.SortItemCollection">
-            <summary>
-            Kolekce objektů třídy SortItem.
-            </summary>
-        </member>
         <member name="T:Havit.Business.Query.NullCondition">
             <summary>
             Vytváří podmínky testující null hodnoty.
@@ -1314,46 +1335,6 @@
             Vytvoří kompozitní podmínku. Lze inicializovat sadou členských podmínek.
             </summary>		
         </member>
-        <member name="T:Havit.Business.Query.SortItem">
-            <summary>
-            Reprezentuje položku řazení.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.SortItem.#ctor">
-            <summary>
-            Vytvoří prázdnou instanci pořadí.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.SortItem.#ctor(System.String,Havit.Business.Query.SortDirection)">
-            <summary>
-            Vytvoří položdu řazení podle fieldName a daného pořadí.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.SortItem.#ctor(Havit.Business.FieldPropertyInfo)">
-            <summary>
-            Vytvoří položdu řazení podle sloupce, vzestupné pořadí.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.SortItem.#ctor(Havit.Business.FieldPropertyInfo,Havit.Business.Query.SortDirection)">
-            <summary>
-            Vytvoří položdu řazení podle sloupce a daného pořadí.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.SortItem.GetSqlOrderBy">
-            <summary>
-            Vrátí výraz pro řazení.
-            </summary>
-        </member>
-        <member name="P:Havit.Business.Query.SortItem.FieldName">
-            <summary>
-            Název sloupce, dle kterého se řadí.
-            </summary>
-        </member>
-        <member name="P:Havit.Business.Query.SortItem.Direction">
-            <summary>
-            Směr řazení.
-            </summary>
-        </member>
         <member name="T:Havit.Business.Query.ComparisonOperatorHelper">
             <summary>
             Pomocník pro práci s výčtem ComparisonOperator.
@@ -1362,21 +1343,6 @@
         <member name="M:Havit.Business.Query.ComparisonOperatorHelper.GetOperatorText(Havit.Business.Query.ComparisonOperator)">
             <summary>
             Převede comparison operátor na řetězec, např. Equals na "=", NotEquals na "&lt;&gt;", apod.
-            </summary>
-        </member>
-        <member name="T:Havit.Business.Query.SortDirection">
-            <summary>
-            Určuje směr řazení.
-            </summary>
-        </member>
-        <member name="F:Havit.Business.Query.SortDirection.Ascending">
-            <summary>
-            Vyestupné.
-            </summary>
-        </member>
-        <member name="F:Havit.Business.Query.SortDirection.Descending">
-            <summary>
-            Sestupné.
             </summary>
         </member>
         <member name="T:Havit.Business.Query.ReferenceCondition">
@@ -1392,6 +1358,11 @@
         <member name="M:Havit.Business.Query.ReferenceCondition.CreateEquals(Havit.Business.Query.IOperand,Havit.Business.BusinessObjectBase)">
             <summary>
             Vytvoří podmínku na rovnost.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.ReferenceCondition.CreateIn(Havit.Business.Query.IOperand,System.Int32[])">
+            <summary>
+            Vytvoří podmínku existence hodnoty v poli integerů.
             </summary>
         </member>
         <member name="T:Havit.Business.CollectionPropertyInfo">
@@ -1516,11 +1487,25 @@
             Indikuje, zda-li byla data objektu načtena z databáze částečně, tedy zda-li se jednalo o partial-load.
             </summary>
         </member>
-        <member name="T:Havit.Business.GetAllDelegate">
+        <member name="T:Havit.Business.Query.FieldPropertySortItem">
             <summary>
-            Delegát na metodu GetAll.
+            Reprezentuje položku řazení.
             </summary>
-            <returns>Vrací všechny (nesmazané) objekty dané třídy.</returns>
+        </member>
+        <member name="M:Havit.Business.Query.FieldPropertySortItem.#ctor">
+            <summary>
+            Vytvoří nenastavenou položku řazení podle.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.FieldPropertySortItem.#ctor(Havit.Business.FieldPropertyInfo)">
+            <summary>
+            Vytvoří položku řazení podle sloupce, vzestupné pořadí.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.FieldPropertySortItem.#ctor(Havit.Business.FieldPropertyInfo,Havit.Collections.SortDirection)">
+            <summary>
+            Vytvoří položku řazení podle sloupce a daného pořadí.
+            </summary>
         </member>
     </members>
 </doc>

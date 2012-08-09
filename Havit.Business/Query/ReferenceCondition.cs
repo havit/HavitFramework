@@ -36,6 +36,14 @@ namespace Havit.Business.Query
 
 			return CreateEquals(operand, businessObject.ID);
 		}
+
+		/// <summary>
+		/// Vytvoøí podmínku existence hodnoty v poli integerù.
+		/// </summary>
+		public static Condition CreateIn(IOperand operand, int[] ids)
+		{
+			return new BinaryCondition("{0} IN (SELECT Value FROM dbo.IntArrayToTable({1})", operand, SqlInt32ArrayOperand.Create(ids));
+		}
 		
 	}
 }

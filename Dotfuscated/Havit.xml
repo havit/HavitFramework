@@ -155,8 +155,11 @@
         </member>
         <member name="T:Havit.Collections.GenericPropertyComparer`1">
             <summary>
-            Comparer pro řazení dle libobovolné IComparable property.
+            Porovnává hodnoty vlastností dvou objektů. Názvy vlastností jsou dodány, porovnávají se v dodaném pořadí.
+            Názvy vlastností mohou být složené: např. "Kniha.Autor.Prijmeni".
+            Property musí implementovat IComparable.
             </summary>
+            <typeparam name="T"></typeparam>
         </member>
         <member name="M:Havit.Collections.GenericPropertyComparer`1.#ctor(System.String,System.Boolean)">
             <summary>
@@ -165,13 +168,25 @@
             <param name="sortPropertyName">název property, podle které se má řadit</param>
             <param name="ascending">true, má-li se řadit vzestupně, false, pokud sestupně</param>
         </member>
-        <member name="M:Havit.Collections.GenericPropertyComparer`1.Compare(`0,`0)">
+        <member name="M:Havit.Collections.GenericPropertyComparer`1.#ctor(Havit.Collections.SortItemCollection)">
             <summary>
-            Porovná dva objekty.
+            Vytvoří instanci compareru pro řazení dle kolekce vlastností.
             </summary>
-            <param name="x">první objekt</param>
-            <param name="y">druhý objekt</param>
-            <returns>výsledek porovnání</returns>
+            <param name="sortItemCollection"></param>
+        </member>
+        <member name="M:Havit.Collections.GenericPropertyComparer`1.Compare(System.Object,System.Object,System.Int32)">
+            <summary>
+            Porovná vlastnosti instancí dvou objektů. Porovnávají se index-té vlastnosti uvedené ve fieldu sortItemCollection.
+            </summary>
+            <param name="x">První porovnávaný objekt.</param>
+            <param name="y">Druhý porovnávaný objekt.</param>
+            <param name="index">Index porovnávané vlastnosti.</param>
+            <returns>-1, 0, 1 - jako Compare(T, T)</returns>
+        </member>
+        <member name="M:Havit.Collections.GenericPropertyComparer`1.GetValue(System.Object,System.Int32)">
+            <summary>
+            Vrátí hodnotu index-té property objektu.
+            </summary>
         </member>
         <member name="T:Havit.Text.RegularExpressions.RegexPatterns">
             <summary>
@@ -356,6 +371,65 @@
             }<br/>
             </code>
             </example>
+        </member>
+        <member name="T:Havit.Collections.SortItemCollection">
+            <summary>
+            Kolekce objektů třídy SortItem.
+            </summary>
+        </member>
+        <member name="T:Havit.Collections.SortItem">
+            <summary>
+            Reprezentuje položku řazení.
+            </summary>
+        </member>
+        <member name="M:Havit.Collections.SortItem.#ctor">
+            <summary>
+            Vytvoří prázdnou instanci pořadí.
+            </summary>
+        </member>
+        <member name="M:Havit.Collections.SortItem.#ctor(System.String,Havit.Collections.SortDirection)">
+            <summary>
+            Vytvoří položku řazení podle expression a směru řazení.
+            </summary>
+        </member>
+        <member name="P:Havit.Collections.SortItem.Expression">
+            <summary>
+            Výraz, dle kterého se řadí.
+            </summary>
+        </member>
+        <member name="P:Havit.Collections.SortItem.Direction">
+            <summary>
+            Směr řazení.
+            </summary>
+        </member>
+        <member name="T:Havit.Collections.SortDirection">
+            <summary>
+            Určuje směr řazení.
+            </summary>
+        </member>
+        <member name="F:Havit.Collections.SortDirection.Ascending">
+            <summary>
+            Vyestupné.
+            </summary>
+        </member>
+        <member name="F:Havit.Collections.SortDirection.Descending">
+            <summary>
+            Sestupné.
+            </summary>
+        </member>
+        <member name="T:Havit.Collections.SortHelper">
+            <summary>
+            Pomocná třída pro řazení.
+            </summary>
+        </member>
+        <member name="M:Havit.Collections.SortHelper.PropertySort(System.Collections.IEnumerable,Havit.Collections.SortItemCollection)">
+            <summary>
+            Vrátí data seřazená podle properties v sortItemCollection.
+            Pokud je sortItemCollection prázdná kolekce, vrací parametr data.
+            </summary>
+            <param name="data">Data k seřazení.</param>
+            <param name="sortItemCollection">Instrukce, jak seřadit.</param>
+            <returns>Seřazená data.</returns>
         </member>
     </members>
 </doc>

@@ -67,11 +67,11 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Poøadí záznamù (ORDER BY ...).
 		/// </summary>
-		public SortItemCollection OrderBy
+		public Havit.Collections.SortItemCollection OrderBy
 		{
 			get { return orderBy; }
 		}
-		private SortItemCollection orderBy = new SortItemCollection();
+		private Havit.Collections.SortItemCollection orderBy = new Havit.Collections.SortItemCollection();
 		#endregion
 
 		#region PrepareCommand
@@ -220,7 +220,11 @@ namespace Havit.Business.Query
 			{
 				if (i > 0)
 					orderByBuilder.Append(", ");
-				orderByBuilder.Append(orderBy[i].GetSqlOrderBy());
+
+#warning není moc OOP
+				orderByBuilder.Append(orderBy[i].Expression);
+				if (orderBy[i].Direction == Havit.Collections.SortDirection.Descending)
+					orderByBuilder.Append(" DESC");
 			}
 			return orderBy.ToString();
 		}

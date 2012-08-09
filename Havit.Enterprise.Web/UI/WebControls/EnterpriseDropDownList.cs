@@ -286,8 +286,17 @@ namespace Havit.Web.UI.WebControls
 		/// <param name="dataSource"></param>
 		protected override void PerformDataBinding(System.Collections.IEnumerable dataSource)
 		{
+			if (String.IsNullOrEmpty(DataTextField))
+			{
+				throw new InvalidOperationException(String.Format("Není nastavena hodnota vlastnosti DataTextField controlu {0}.", ID));
+			}
+
 			if ((dataSource != null) && AutoSort)
 			{
+				if (String.IsNullOrEmpty(DataSortField))
+				{
+					throw new InvalidOperationException(String.Format("AutoSort je true, ale není nastavena hodnota vlastnosti DataSortField controlu {0}.", ID));
+				}
 				IEnumerable sortedData = SortHelper.PropertySort(dataSource, DataSortField);
 				base.PerformDataBinding(sortedData);
 			}
@@ -295,6 +304,7 @@ namespace Havit.Web.UI.WebControls
 			{
 				base.PerformDataBinding(dataSource);
 			}
+			
 			if (Nullable)
 			{
 				EnsureEmptyItem();

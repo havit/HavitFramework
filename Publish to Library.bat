@@ -1,3 +1,2 @@
 xcopy /y Dotfuscated\*.* \\oskar\Library\Framework\
-
-pause
+xcopy /y References\System.Web.Extensions.dll \\oskar\Library\Framework\

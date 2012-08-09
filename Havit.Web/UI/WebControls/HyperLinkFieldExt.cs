@@ -6,7 +6,7 @@ using System.Web.UI.WebControls;
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
-	/// Rozšíøená verze <see cref="System.Web.UI.WebControls.HyperLinkFieldExt"/>.
+	/// Rozšíøená verze <see cref="System.Web.UI.WebControls.HyperLinkField"/>.
 	/// </summary>
 	public class HyperLinkFieldExt : HyperLinkField, IIdentifiableField
 	{

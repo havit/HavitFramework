@@ -920,7 +920,8 @@
             To je výchozí chování Collection(Of T), ale pro jistotu si to ještě vynucujeme
             použitím wrappujícího constructoru.
             </remarks>
-            <typeparam name="T">členský typ kolekce</typeparam>
+            <typeparam name="TItem">členský typ kolekce</typeparam>
+            <typeparam name="TCollection">typ používané business object kolekce</typeparam>
         </member>
         <member name="M:Havit.Business.BusinessObjectCollection`2.OnCollectionChanged(System.EventArgs)">
             <summary>
@@ -1037,6 +1038,18 @@
             </remarks>
             <param name="propertyName">property, podle které se má řadit</param>
             <param name="ascending">true, pokud se má řadit vzestupně, false, pokud sestupně</param>
+        </member>
+        <member name="M:Havit.Business.BusinessObjectCollection`2.Sort(Havit.Business.PropertyInfo,Havit.Collections.SortDirection)">
+            <summary>
+            Seřadí prvky kolekce dle požadované property, která implementuje IComparable.
+            </summary>
+            <remarks>
+            Používá <see cref="T:Havit.Collections.GenericPropertyComparer`1"/>. K porovnávání podle property
+            tedy dochází pomocí reflexe - relativně pomalu. Pokud je potřeba vyšší výkon, je potřeba použít
+            overload Sort(Generic Comparsion) s přímým přístupem k property.
+            </remarks>
+            <param name="propertyInfo">Property, podle které se má řadit.</param>
+            <param name="sortDirection">Směr řazení.</param>
         </member>
         <member name="M:Havit.Business.BusinessObjectCollection`2.Sort(System.Comparison{`0})">
             <summary>

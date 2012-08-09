@@ -25,7 +25,7 @@ namespace Havit.Business.Query
 		/// </summary>
 		public void Add(FieldPropertyInfo propertyInfo, SortDirection direction)
 		{
-			Add(new FieldPropertySortItem(propertyInfo, direction));			
+			Add(new FieldPropertySortItem(propertyInfo, direction));						
 		}
 
 		/// <summary>

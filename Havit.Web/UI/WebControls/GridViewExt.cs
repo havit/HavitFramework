@@ -43,8 +43,8 @@ namespace Havit.Web.UI.WebControls
 		/// Indikuje, zda-li je povoleno pøidávání novıch poloek øádkem Insert.
 		/// </summary>
 		/// <remarks>
-		/// Spolu s AllowInserting je potøeba nastavit delegáta <see cref="GetInsertRowDataItem"/>
-		/// pro získávání vıchozích dat pro novou poloku. Dále lze nastavit pozici pomocí <see cref="InsertPosition"/>.
+		/// Spolu s AllowInserting je potøeba nastavit delegáta <see cref="GetInsertRowDataItemDelegate" />
+		/// pro získávání vıchozích dat pro novou poloku. Dále lze nastavit pozici pomocí <see cref="InsertRowPosition"/>.
 		/// </remarks>
 		[Browsable(true), DefaultValue("true"), Category("Behavior")]
 		public bool AllowInserting
@@ -127,7 +127,7 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Zajišuje práci se seznamem poloek, podle kterıch se øadí.
 		/// </summary>
-		public new SortExpressions SortExpressions
+		public SortExpressions SortExpressions
 		{
 			get
 			{
@@ -493,6 +493,9 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 
 		#region CreateRow (override - Insert)
+		/// <summary>
+		/// CreateRow.
+		/// </summary>
 		protected override GridViewRow CreateRow(int rowIndex, int dataSourceIndex, DataControlRowType rowType, DataControlRowState rowState)
 		{
 			GridViewRow row = base.CreateRow(rowIndex, dataSourceIndex, rowType, rowState);

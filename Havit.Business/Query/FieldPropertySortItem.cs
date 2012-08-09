@@ -14,6 +14,7 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Vytvoøí nenastavenou položku øazení podle.
 		/// </summary>
+		[Obsolete]
 		public FieldPropertySortItem(): base()
 		{
 		}

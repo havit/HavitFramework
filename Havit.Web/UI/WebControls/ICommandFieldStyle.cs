@@ -10,6 +10,9 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public interface ICommandFieldStyle
 	{
+		/// <summary>
+		/// CommandFieldStyle.
+		/// </summary>
 		CommandFieldStyle CommandFieldStyle { get; }
 	}
 }

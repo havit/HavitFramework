@@ -21,6 +21,3 @@ xcopy /y Havit.Xml\bin\Release\Havit.Xml.xml Dotfuscated\
 rem Delete map files
 del Dotfuscated\Map*.xml
 
-
-
-pause

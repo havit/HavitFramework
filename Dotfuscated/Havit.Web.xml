@@ -102,6 +102,11 @@
             (nebo shodně se identifikujícího browseru).
             </summary>
         </member>
+        <member name="T:Havit.Web.UI.WebControls.GridViewInsertedEventArgs">
+            <summary>
+            GridViewInsertedEventArgs.
+            </summary>
+        </member>
         <member name="P:Havit.Web.UI.WebControls.GridViewInsertedEventArgs.KeepInEditMode">
             <summary>
             Indikuje, zda-li má GridView zůstat po zpracování událost v režimu editace nového řádku.
@@ -957,7 +962,6 @@
             </summary>
             <param name="listItemCollection">prohledávaná ListItemCollection</param>
             <param name="value">hledaná hodnota</param>
-            <param name="includeDisabled">indikuje, zda-li se mají prohledávat i disablované položky</param>
             <returns></returns>
         </member>
         <member name="P:Havit.Web.UI.WebControls.DropDownListExt.SelectedIndex">
@@ -1566,6 +1570,11 @@
             Implementuje např. <see cref="T:Havit.Web.UI.WebControls.GridViewExt"/>, aby přes GridView mohl být skinován jeho CommandField.
             </summary>
         </member>
+        <member name="P:Havit.Web.UI.WebControls.ICommandFieldStyle.CommandFieldStyle">
+            <summary>
+            CommandFieldStyle.
+            </summary>
+        </member>
         <member name="M:Havit.Web.UI.WebControls.GridViewExt.SetRequiresDatabinding">
             <summary>
             Nastaví RequiresDataBinding na true.
@@ -1638,6 +1647,11 @@
             Pro režim Inserting zajišťuje správu nových řádek, popř. vkládání fake-řádek při stránkování.
             </remarks>
             <param name="data">data</param>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.GridViewExt.CreateRow(System.Int32,System.Int32,System.Web.UI.WebControls.DataControlRowType,System.Web.UI.WebControls.DataControlRowState)">
+            <summary>
+            CreateRow.
+            </summary>
         </member>
         <member name="M:Havit.Web.UI.WebControls.GridViewExt.OnRowCommand(System.Web.UI.WebControls.GridViewCommandEventArgs)">
             <summary>
@@ -1728,8 +1742,8 @@
             Indikuje, zda-li je povoleno přidávání nových položek řádkem Insert.
             </summary>
             <remarks>
-            Spolu s AllowInserting je potřeba nastavit delegáta <see cref="P:Havit.Web.UI.WebControls.GridViewExt.GetInsertRowDataItem"/>
-            pro získávání výchozích dat pro novou položku. Dále lze nastavit pozici pomocí <see cref="!:InsertPosition"/>.
+            Spolu s AllowInserting je potřeba nastavit delegáta <see cref="T:Havit.Web.UI.WebControls.GetInsertRowDataItemDelegate"/>
+            pro získávání výchozích dat pro novou položku. Dále lze nastavit pozici pomocí <see cref="P:Havit.Web.UI.WebControls.GridViewExt.InsertRowPosition"/>.
             </remarks>
         </member>
         <member name="P:Havit.Web.UI.WebControls.GridViewExt.InsertRowPosition">
@@ -1834,7 +1848,7 @@
         <member name="T:Havit.Web.UI.WebControls.CommandFieldExt">
             <summary>
             Rozšířená verze <see cref="T:System.Web.UI.WebControls.ButtonField"/> (základní rozšíření společné pro GridView i jiná použití fieldu).
-            Pro použití v <see cref="T:Havit.Web.UI.WebControls.GridViewExt"/> a odvozených (např. <see cref="!:Havit.Web.UI.WebControls.EnterpriseGridView"/>)
+            Pro použití v <see cref="T:Havit.Web.UI.WebControls.GridViewExt"/> a odvozených (např. Havit.Web.UI.WebControls.EnterpriseGridView).
             je doporučeno použít bohatšího potomka <see cref="T:Havit.Web.UI.WebControls.GridViewCommandField"/>.
             </summary>
         </member>
@@ -1872,6 +1886,36 @@
         <member name="T:Havit.Web.UI.WebControls.DynarchCalendarSkin">
             <summary>
             Styl zobrazení kalendáře. Určuje, jaké styly jsou automaticky připojeny.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.UI.WebControls.DynarchCalendarSkin.None">
+            <summary>
+            None
+            </summary>
+        </member>
+        <member name="F:Havit.Web.UI.WebControls.DynarchCalendarSkin.Blue">
+            <summary>
+            Blue
+            </summary>
+        </member>
+        <member name="F:Havit.Web.UI.WebControls.DynarchCalendarSkin.Blue2">
+            <summary>
+            Blue2
+            </summary>
+        </member>
+        <member name="F:Havit.Web.UI.WebControls.DynarchCalendarSkin.Brown">
+            <summary>
+            Brown
+            </summary>
+        </member>
+        <member name="F:Havit.Web.UI.WebControls.DynarchCalendarSkin.Green">
+            <summary>
+            Green
+            </summary>
+        </member>
+        <member name="F:Havit.Web.UI.WebControls.DynarchCalendarSkin.System">
+            <summary>
+            System
             </summary>
         </member>
         <member name="T:Havit.Web.UI.Scriptlets.Scriptlet">
@@ -2360,7 +2404,7 @@
         </member>
         <member name="T:Havit.Web.UI.WebControls.HyperLinkFieldExt">
             <summary>
-            Rozšířená verze <see cref="!:System.Web.UI.WebControls.HyperLinkFieldExt"/>.
+            Rozšířená verze <see cref="T:System.Web.UI.WebControls.HyperLinkField"/>.
             </summary>
         </member>
         <member name="P:Havit.Web.UI.WebControls.HyperLinkFieldExt.ID">

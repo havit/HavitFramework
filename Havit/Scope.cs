@@ -55,13 +55,13 @@ namespace Havit
 
 		#region Constructors
 		/// <summary>
-		/// Vytvoøí instanci tøídy <see cref="Scope"/> kolem instance. Instance bude pøi disposingu Scope té disposována.
+		/// Vytvoøí instanci tøídy <see cref="Scope{T}"/> kolem instance. Instance bude pøi disposingu Scope té disposována.
 		/// </summary>
 		/// <param name="instance">instance, kterou scope obaluje</param>
 		public Scope(T instance) : this(instance, true) { }
 
 		/// <summary>
-		/// Vytvoøí instanci tøídy <see cref="Scope"/> kolem instance.
+		/// Vytvoøí instanci tøídy <see cref="Scope{T}"/> kolem instance.
 		/// </summary>
 		/// <param name="instance">instance, kterou scope obaluje</param>
 		/// <param name="ownsInstance">indikuje, zda-li instanci vlastníme, tedy zda-li ji máme s koncem scopu disposovat</param>

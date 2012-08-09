@@ -168,11 +168,17 @@
             <param name="sortPropertyName">název property, podle které se má řadit</param>
             <param name="ascending">true, má-li se řadit vzestupně, false, pokud sestupně</param>
         </member>
-        <member name="M:Havit.Collections.GenericPropertyComparer`1.#ctor(Havit.Collections.SortItemCollection)">
+        <member name="M:Havit.Collections.GenericPropertyComparer`1.#ctor(Havit.Collections.SortItem)">
+            <summary>
+            Vytvoří instanci compareru pro řazení dle dané property.
+            </summary>
+            <param name="sortItem">Určuje parametr řazení.</param>
+        </member>
+        <member name="M:Havit.Collections.GenericPropertyComparer`1.#ctor(System.Collections.Generic.IList{Havit.Collections.SortItem})">
             <summary>
             Vytvoří instanci compareru pro řazení dle kolekce vlastností.
             </summary>
-            <param name="sortItemCollection"></param>
+            <param name="sortItems">Určuje parametry řazení.</param>
         </member>
         <member name="M:Havit.Collections.GenericPropertyComparer`1.Compare(System.Object,System.Object,System.Int32)">
             <summary>
@@ -413,13 +419,13 @@
         </member>
         <member name="M:Havit.Scope`1.#ctor(`0)">
             <summary>
-            Vytvoří instanci třídy <see cref="!:Scope"/> kolem instance. Instance bude při disposingu Scope též disposována.
+            Vytvoří instanci třídy <see cref="T:Havit.Scope`1"/> kolem instance. Instance bude při disposingu Scope též disposována.
             </summary>
             <param name="instance">instance, kterou scope obaluje</param>
         </member>
         <member name="M:Havit.Scope`1.#ctor(`0,System.Boolean)">
             <summary>
-            Vytvoří instanci třídy <see cref="!:Scope"/> kolem instance.
+            Vytvoří instanci třídy <see cref="T:Havit.Scope`1"/> kolem instance.
             </summary>
             <param name="instance">instance, kterou scope obaluje</param>
             <param name="ownsInstance">indikuje, zda-li instanci vlastníme, tedy zda-li ji máme s koncem scopu disposovat</param>

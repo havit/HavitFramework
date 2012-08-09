@@ -139,7 +139,6 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		/// <param name="listItemCollection">prohledávaná ListItemCollection</param>
 		/// <param name="value">hledaná hodnota</param>
-		/// <param name="includeDisabled">indikuje, zda-li se mají prohledávat i disablované položky</param>
 		/// <returns></returns>
 		private int FindItemIndexByValue(ListItemCollection listItemCollection, string value)
 		{

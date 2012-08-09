@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System;
 
 //
 // General Information about an assembly is controlled through the following 
@@ -14,7 +15,6 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyCopyright("Copyright HAVIT, s.r.o.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
-
 //
 // Version information for an assembly consists of the following four values:
 //
@@ -56,3 +56,5 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyDelaySign(false)]
 [assembly: AssemblyKeyFile("")]
 [assembly: AssemblyKeyName("")]
+
+[assembly: CLSCompliant(false)]

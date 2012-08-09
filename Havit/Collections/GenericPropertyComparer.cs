@@ -14,7 +14,7 @@ namespace Havit.Collections
 	public class GenericPropertyComparer<T> : IComparer<T>
 	{
 		#region Private fields
-		private SortItemCollection sortItemCollection;
+		private IList<SortItem> sortItems;
 		#endregion
 
 		#region Constructors
@@ -23,19 +23,27 @@ namespace Havit.Collections
 		/// </summary>
 		/// <param name="sortPropertyName">název property, podle které se má øadit</param>
 		/// <param name="ascending">true, má-li se øadit vzestupnì, false, pokud sestupnì</param>
+		[Obsolete]
 		public GenericPropertyComparer(String sortPropertyName, bool ascending)
+			: this(new SortItem(sortPropertyName, ascending ? SortDirection.Ascending : SortDirection.Descending))
 		{			
-			sortItemCollection = new SortItemCollection();
-			sortItemCollection.Add(new SortItem(sortPropertyName, ascending ? SortDirection.Ascending : SortDirection.Descending));
+		}
+
+		/// <summary>
+		/// Vytvoøí instanci compareru pro øazení dle dané property.
+		/// </summary>
+		/// <param name="sortItem">Urèuje parametr øazení.</param>
+		public GenericPropertyComparer(SortItem sortItem): this( new SortItem[] { sortItem })
+		{
 		}
 
 		/// <summary>
 		/// Vytvoøí instanci compareru pro øazení dle kolekce vlastností.
 		/// </summary>
-		/// <param name="sortItemCollection"></param>
-		public GenericPropertyComparer(SortItemCollection sortItemCollection)
+		/// <param name="sortItems">Urèuje parametry øazení.</param>
+		public GenericPropertyComparer(IList<SortItem> sortItems)
 		{
-			this.sortItemCollection = sortItemCollection;
+			this.sortItems = sortItems;
 		}
 		#endregion
 
@@ -54,13 +62,13 @@ namespace Havit.Collections
 		/// <returns>-1, 0, 1 - jako Compare(T, T)</returns>
 		protected int Compare(object x, object y, int index)
 		{
-			if (index >= sortItemCollection.Count)
+			if (index >= sortItems.Count)
 				return 0;
 
 			/* napsáno trochu komplikovanìji - pro pøehlednost */
 			IComparable value1;
 			IComparable value2;
-			if (sortItemCollection[index].Direction == SortDirection.Ascending)
+			if (sortItems[index].Direction == SortDirection.Ascending)
 			{
 				value1 = (IComparable)GetValue(x, index);
 				value2 = (IComparable)GetValue(y, index);
@@ -88,10 +96,10 @@ namespace Havit.Collections
 				// value2 je null (value1 neni null), potom value2 < value1
 				result = 1;
 			}
-			else if (value1 != null || value2 != null)
+			else /*if (value1 != null || value2 != null)*/
 			{
 				// ani jedno neni null -> porovname
-				result = ((IComparable)value1).CompareTo((IComparable)value2);
+				result = value1.CompareTo(value2);
 			}
 
 			return result == 0 ? Compare(x, y, index + 1) : result;
@@ -102,7 +110,7 @@ namespace Havit.Collections
 		/// </summary>
 		private object GetValue(object obj, int index)
 		{
-			return DataBinder.Eval(obj, sortItemCollection[index].Expression);
+			return DataBinder.Eval(obj, sortItems[index].Expression);
 		}
 
 		#endregion

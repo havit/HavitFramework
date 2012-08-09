@@ -4,6 +4,9 @@ using System.Text;
 
 namespace Havit.Web.UI.WebControls
 {
+	/// <summary>
+	/// GridViewInsertedEventArgs.
+	/// </summary>
 	public class GridViewInsertedEventArgs : EventArgs
 	{
 		/// <summary>

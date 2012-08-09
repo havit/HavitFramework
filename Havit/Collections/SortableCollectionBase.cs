@@ -8,6 +8,7 @@ namespace Havit.Collections
 	/// <remarks>
 	/// Property, podle které má být øazeno, musí implementovat <see cref="System.IComparable"/>
 	/// </remarks>
+	[Obsolete]
 	public abstract class SortableCollectionBase : System.Collections.CollectionBase
 	{
 		/// <summary>

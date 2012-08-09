@@ -120,6 +120,7 @@
   <ItemGroup>
     <Content Include="AutoSuggestMenu.aspx" />
     <Content Include="AutoSuggestMenuService.asmx" />
+    <Content Include="CollapserTest.aspx" />
     <Content Include="ControlsValuesPersisterTest.aspx" />
     <Content Include="DateTimeBoxTest.aspx" />
     <Content Include="DropDownListTest.aspx" />
@@ -160,6 +161,13 @@
     </Compile>
     <Compile Include="CheckBoxValidatorTest.aspx.designer.cs">
       <DependentUpon>CheckBoxValidatorTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CollapserTest.aspx.cs">
+      <DependentUpon>CollapserTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CollapserTest.aspx.designer.cs">
+      <DependentUpon>CollapserTest.aspx</DependentUpon>
     </Compile>
     <Compile Include="ControlsValuesPersisterTest.aspx.cs">
       <DependentUpon>ControlsValuesPersisterTest.aspx</DependentUpon>

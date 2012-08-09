@@ -191,6 +191,23 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region OnLoad
+		protected override void OnLoad(EventArgs e)
+		{
+			string value = this.Page.Request.Form[this.ClientID + "State"];
+			if (value == "collapsed")
+			{
+				Collapsed = true;
+			}
+			else if (value == "expanded")
+			{
+				Collapsed = false;
+			}
+
+			base.OnLoad(e);
+		}
+		#endregion
+
 		#region OnPreRender
 		/// <summary>
 		/// Voláno před renderováním.
@@ -201,6 +218,9 @@ namespace Havit.Web.UI.WebControls
 			{
 				RegisterClientScript();
 			}
+			
+			ScriptManager.RegisterHiddenField(this, this.ClientID + "State", "");
+
 			base.OnPreRender(e);
 		}
 		#endregion
@@ -245,42 +265,77 @@ namespace Havit.Web.UI.WebControls
 		{
 			const string clientScriptKey = "Havit.Web.UI.WebControls.Collapser";
 			const string toggleCollapser =
-					  "<script type=\"text/javascript\" language=\"JScript\">\n"
-					  + "function toggleCollapser(collapserElementId, contentElementId, cssClassCollapsed, cssClassExpanded)\n"
-					  + "{\n"
-					  + "\tvar collapser = document.getElementById(collapserElementId);\n"
-					  + "\tvar content = document.getElementById(contentElementId);\n"
-					  + "\tif (content.style.display != 'none')\n"
-					  + "\t{\n"
-					  + "\t\tcontent.setAttribute('previousDisplayStyle', content.style.display);\n"
-					  + "\t\tcontent.style.display = 'none';\n"
-					  + "\t\tcollapser.className = cssClassCollapsed;\n"
-					  + "\t}\n"
-					  + "\telse\n"
-					  + "\t{\n"
-					  + "\t\tcontent.style.display = content.getAttribute('previousDisplayStyle');\n"
-					  + "\t\tcollapser.className = cssClassExpanded;\n"
-					  + "\t}\n"
-					  + "}\n"
-					  + "</script>\n";
+					 @"
+function havitCollapserToggle(collapserElementId, collapserStateElementId, contentElementId, cssClassCollapsed, cssClassExpanded)
+{
+	var content = document.getElementById(contentElementId);
+	if (content.style.display == 'none')
+	{
+		havitCollapserExpand(collapserElementId, collapserStateElementId, contentElementId, cssClassExpanded);
+	}
+	else
+	{
+		havitCollapserCollapse(collapserElementId, collapserStateElementId, contentElementId, cssClassCollapsed);
+	}
+}
 
-			if (!Page.ClientScript.IsClientScriptBlockRegistered(clientScriptKey))
-			{
-				ScriptManager.RegisterClientScriptBlock(this.Page, this.GetType(), clientScriptKey, toggleCollapser, false);
-			}
+function havitCollapserCollapse(collapserElementId, collapserStateElementId, contentElementId, cssClassCollapsed)
+{
+	var content = document.getElementById(contentElementId);
+	if (content.style.display != 'none')
+	{
+		content.setAttribute('previousDisplayStyle', content.style.display);
+	}
+	content.style.display = 'none';
 
-			string toggleCall = String.Format("toggleCollapser('{0}','{1}','{2}','{3}');",
+	var collapser = document.getElementById(collapserElementId);
+	collapser.className = cssClassCollapsed;
+
+	var collapserState = document.getElementById(collapserStateElementId);
+	collapserState.value = 'collapsed';
+}
+
+function havitCollapserExpand(collapserElementId, collapserStateElementId, contentElementId, cssClassExpanded)
+{
+
+	var content = document.getElementById(contentElementId);
+	var previousDisplayStyle = content.getAttribute('previousDisplayStyle');
+	if (typeof(previousDisplayStyle) != 'undefined')
+	{
+		content.style.display = previousDisplayStyle;
+	}
+	else
+	{
+		content.style.display = '';
+	}
+
+	var collapser = document.getElementById(collapserElementId);
+	collapser.className = cssClassExpanded;
+
+	var collapserState = document.getElementById(collapserStateElementId);
+	collapserState.value = 'expanded';
+
+}";
+			 
+			ScriptManager.RegisterClientScriptBlock(this.Page, this.GetType(), clientScriptKey, toggleCollapser, true);
+			
+			string toggleScript = String.Format("havitCollapserToggle('{0}', '{0}State', '{1}', '{2}', '{3}');",
 				this.ClientID,
 				ResolveID(this.ContentElement),
 				this.cssClassCollapsedFull,
 				this.cssClassExpandedFull);
+			this.Attributes.Add("onclick", toggleScript);
 
-			this.Attributes.Add("onClick", toggleCall);
 
 			if (this.Collapsed)
 			{
+				string collapseScript = String.Format("havitCollapserCollapse('{0}', '{0}State', '{1}', '{2}');",
+					this.ClientID,
+					ResolveID(this.ContentElement),
+					this.cssClassCollapsedFull);
+
 				ScriptManager.RegisterStartupScript(this.Page, this.GetType(), clientScriptKey + ResolveID(this.ContentElement),  // zajistí jediné volání pro element
-					"<script type=\"text/javascript\" language=\"JScript\">" + toggleCall + "</script>\n", false);
+					collapseScript, true);
 			}
 		}
 		#endregion

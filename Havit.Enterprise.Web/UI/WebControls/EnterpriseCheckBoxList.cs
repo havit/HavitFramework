@@ -9,7 +9,7 @@ using System.Collections;
 
 namespace Havit.Web.UI.WebControls
 {
-	public class EnterpriseCheckBoxList: CheckBoxList
+	public class EnterpriseCheckBoxList: CheckBoxListExt
 	{
 		#region ItemPropertyInfo
 		/// <summary>

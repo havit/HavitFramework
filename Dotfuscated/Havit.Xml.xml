@@ -123,144 +123,6 @@
             Kolekce jednotlivých prvků ITEM.
             </summary>
         </member>
-        <member name="T:Havit.Xml.Rss.RssImage">
-            <summary>
-            Třída reprezentující RSS prvek "image"
-            </summary>
-        </member>
-        <member name="M:Havit.Xml.Rss.RssImage.#ctor">
-            <summary>
-            Default constructor musí být kvůli XmlSerializeru.
-            Nutné zadat Url, Title a Link.
-            </summary>
-        </member>
-        <member name="M:Havit.Xml.Rss.RssImage.#ctor(System.String,System.String,System.String)">
-            <summary>
-            Constructor s povinnými prvky elementu Image.
-            </summary>
-        </member>
-        <member name="P:Havit.Xml.Rss.RssImage.Url">
-            <summary>
-            URL of a GIF, JPEG or PNG image that represents the channel.
-            REQUIRED.
-            </summary>
-        </member>
-        <member name="P:Havit.Xml.Rss.RssImage.Title">
-            <summary>
-            Describes the image, it's used in the ALT attribute of the HTML "img" tag when the channel is rendered in HTML.
-            REQUIRED.
-            </summary>
-        </member>
-        <member name="P:Havit.Xml.Rss.RssImage.Link">
-            <summary>
-            The URL of the site, when the channel is rendered, the image is a link to the site.
-            REQUIRED.
-            </summary>
-            <remarks>
-            Note, in practice the image "title" and "link" should have the same value as the channel's "title" and "link". 
-            </remarks>
-        </member>
-        <member name="P:Havit.Xml.Rss.RssImage.Width">
-            <summary>
-            Width of the image in pixels.
-            Maximum value for width is 144, default value is 88.
-            </summary>
-        </member>
-        <member name="P:Havit.Xml.Rss.RssImage.Height">
-            <summary>
-            Height of the image in pixels.
-            Maximum value for height is 400, default value is 31.
-            </summary>
-        </member>
-        <member name="P:Havit.Xml.Rss.RssImage.Description">
-            <summary>
-            Contains text that is included in the TITLE attribute of the link formed around the image in the HTML rendering.
-            </summary>
-        </member>
-        <member name="T:Havit.Xml.Rss.RssFeed">
-            <summary>
-            Hlavní třída reprezentující celý RSS dokument.
-            RSS verze 2.0
-            Specifikace na http://blogs.law.harvard.edu/tech/rss
-            </summary>
-        </member>
-        <member name="M:Havit.Xml.Rss.RssFeed.#ctor">
-            <summary>
-            Vytvoří novou instanci RSS feedu.
-            </summary>
-        </member>
-        <member name="M:Havit.Xml.Rss.RssFeed.SerializeToXmlDocument">
-            <summary>
-            Vrátí RSS feed jako XmlDocument
-            </summary>
-            <returns>RSS feed jako XmlDocument</returns>
-        </member>
-        <member name="M:Havit.Xml.Rss.RssFeed.ToString">
-            <summary>
-            Vrátí RSS feed jako String s XML dokumentem
-            </summary>
-            <returns>RSS feed jako String</returns>
-        </member>
-        <member name="P:Havit.Xml.Rss.RssFeed.Version">
-            <summary>
-            Atribut "version", nastaven na implementovanou verzi.
-            </summary>
-        </member>
-        <member name="P:Havit.Xml.Rss.RssFeed.Channels">
-            <summary>
-            Kolekce channelů ve feedu.
-            </summary>
-        </member>
-        <member name="T:Havit.Xml.Rss.RssChannelCollection">
-            <summary>
-            Kolekce RssChannel prvků.
-            </summary>
-        </member>
-        <member name="M:Havit.Xml.Rss.RssChannelCollection.Add(Havit.Xml.Rss.RssChannel)">
-            <summary>
-            Přidá nový kanál do kolekce
-            </summary>
-            <param name="channel">kanál k přidání</param>
-        </member>
-        <member name="M:Havit.Xml.Rss.RssChannelCollection.CopyTo(Havit.Xml.Rss.RssChannel[],System.Int32)">
-            <summary>
-            Zkopíruje kanály do array, na pozici index
-            </summary>
-            <param name="array">cílové pole</param>
-            <param name="index">pozice v cílovém poli</param>
-        </member>
-        <member name="M:Havit.Xml.Rss.RssChannelCollection.Insert(System.Int32,Havit.Xml.Rss.RssChannel)">
-            <summary>
-            Vloží na určené místo v kolekci kanál.
-            </summary>
-            <param name="index">pozice</param>
-            <param name="value">kanál</param>
-        </member>
-        <member name="M:Havit.Xml.Rss.RssChannelCollection.IndexOf(Havit.Xml.Rss.RssChannel)">
-            <summary>
-            Vyhledá pozici kanálu v kolekci
-            </summary>
-            <param name="value">kanák</param>
-            <returns>pozice kanálu v kolekci</returns>
-        </member>
-        <member name="M:Havit.Xml.Rss.RssChannelCollection.Remove(Havit.Xml.Rss.RssChannel)">
-            <summary>
-            Odstraní kanál z kolekce.
-            </summary>
-            <param name="value">kanál k odstranění</param>
-        </member>
-        <member name="M:Havit.Xml.Rss.RssChannelCollection.Contains(Havit.Xml.Rss.RssChannel)">
-            <summary>
-            Zjistí, zda-li se kanál nachází v kolekci
-            </summary>
-            <param name="value">kanál</param>
-            <returns>true, pokud již kanál v kolekci existuje, jinak false</returns>
-        </member>
-        <member name="P:Havit.Xml.Rss.RssChannelCollection.Item(System.Int32)">
-            <summary>
-            Indexer zpřístupňující kanál na dané pozici kolekce.
-            </summary>
-        </member>
         <member name="T:Havit.Xml.Rss.RssItem">
             <summary>
             Třída reprezentující RSS prvek "item".
@@ -330,6 +192,144 @@
             <remarks>
             If it's a date in the future, aggregators may choose to not display the item until that date. 
             </remarks>
+        </member>
+        <member name="T:Havit.Xml.Rss.RssImage">
+            <summary>
+            Třída reprezentující RSS prvek "image"
+            </summary>
+        </member>
+        <member name="M:Havit.Xml.Rss.RssImage.#ctor">
+            <summary>
+            Default constructor musí být kvůli XmlSerializeru.
+            Nutné zadat Url, Title a Link.
+            </summary>
+        </member>
+        <member name="M:Havit.Xml.Rss.RssImage.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Constructor s povinnými prvky elementu Image.
+            </summary>
+        </member>
+        <member name="P:Havit.Xml.Rss.RssImage.Url">
+            <summary>
+            URL of a GIF, JPEG or PNG image that represents the channel.
+            REQUIRED.
+            </summary>
+        </member>
+        <member name="P:Havit.Xml.Rss.RssImage.Title">
+            <summary>
+            Describes the image, it's used in the ALT attribute of the HTML "img" tag when the channel is rendered in HTML.
+            REQUIRED.
+            </summary>
+        </member>
+        <member name="P:Havit.Xml.Rss.RssImage.Link">
+            <summary>
+            The URL of the site, when the channel is rendered, the image is a link to the site.
+            REQUIRED.
+            </summary>
+            <remarks>
+            Note, in practice the image "title" and "link" should have the same value as the channel's "title" and "link". 
+            </remarks>
+        </member>
+        <member name="P:Havit.Xml.Rss.RssImage.Width">
+            <summary>
+            Width of the image in pixels.
+            Maximum value for width is 144, default value is 88.
+            </summary>
+        </member>
+        <member name="P:Havit.Xml.Rss.RssImage.Height">
+            <summary>
+            Height of the image in pixels.
+            Maximum value for height is 400, default value is 31.
+            </summary>
+        </member>
+        <member name="P:Havit.Xml.Rss.RssImage.Description">
+            <summary>
+            Contains text that is included in the TITLE attribute of the link formed around the image in the HTML rendering.
+            </summary>
+        </member>
+        <member name="T:Havit.Xml.Rss.RssChannelCollection">
+            <summary>
+            Kolekce RssChannel prvků.
+            </summary>
+        </member>
+        <member name="M:Havit.Xml.Rss.RssChannelCollection.Add(Havit.Xml.Rss.RssChannel)">
+            <summary>
+            Přidá nový kanál do kolekce
+            </summary>
+            <param name="channel">kanál k přidání</param>
+        </member>
+        <member name="M:Havit.Xml.Rss.RssChannelCollection.CopyTo(Havit.Xml.Rss.RssChannel[],System.Int32)">
+            <summary>
+            Zkopíruje kanály do array, na pozici index
+            </summary>
+            <param name="array">cílové pole</param>
+            <param name="index">pozice v cílovém poli</param>
+        </member>
+        <member name="M:Havit.Xml.Rss.RssChannelCollection.Insert(System.Int32,Havit.Xml.Rss.RssChannel)">
+            <summary>
+            Vloží na určené místo v kolekci kanál.
+            </summary>
+            <param name="index">pozice</param>
+            <param name="value">kanál</param>
+        </member>
+        <member name="M:Havit.Xml.Rss.RssChannelCollection.IndexOf(Havit.Xml.Rss.RssChannel)">
+            <summary>
+            Vyhledá pozici kanálu v kolekci
+            </summary>
+            <param name="value">kanák</param>
+            <returns>pozice kanálu v kolekci</returns>
+        </member>
+        <member name="M:Havit.Xml.Rss.RssChannelCollection.Remove(Havit.Xml.Rss.RssChannel)">
+            <summary>
+            Odstraní kanál z kolekce.
+            </summary>
+            <param name="value">kanál k odstranění</param>
+        </member>
+        <member name="M:Havit.Xml.Rss.RssChannelCollection.Contains(Havit.Xml.Rss.RssChannel)">
+            <summary>
+            Zjistí, zda-li se kanál nachází v kolekci
+            </summary>
+            <param name="value">kanál</param>
+            <returns>true, pokud již kanál v kolekci existuje, jinak false</returns>
+        </member>
+        <member name="P:Havit.Xml.Rss.RssChannelCollection.Item(System.Int32)">
+            <summary>
+            Indexer zpřístupňující kanál na dané pozici kolekce.
+            </summary>
+        </member>
+        <member name="T:Havit.Xml.Rss.RssFeed">
+            <summary>
+            Hlavní třída reprezentující celý RSS dokument.
+            RSS verze 2.0
+            Specifikace na http://blogs.law.harvard.edu/tech/rss
+            </summary>
+        </member>
+        <member name="M:Havit.Xml.Rss.RssFeed.#ctor">
+            <summary>
+            Vytvoří novou instanci RSS feedu.
+            </summary>
+        </member>
+        <member name="M:Havit.Xml.Rss.RssFeed.SerializeToXmlDocument">
+            <summary>
+            Vrátí RSS feed jako XmlDocument
+            </summary>
+            <returns>RSS feed jako XmlDocument</returns>
+        </member>
+        <member name="M:Havit.Xml.Rss.RssFeed.ToString">
+            <summary>
+            Vrátí RSS feed jako String s XML dokumentem
+            </summary>
+            <returns>RSS feed jako String</returns>
+        </member>
+        <member name="P:Havit.Xml.Rss.RssFeed.Version">
+            <summary>
+            Atribut "version", nastaven na implementovanou verzi.
+            </summary>
+        </member>
+        <member name="P:Havit.Xml.Rss.RssFeed.Channels">
+            <summary>
+            Kolekce channelů ve feedu.
+            </summary>
         </member>
         <member name="T:Havit.Xml.Rss.RssItemCollection">
             <summary>

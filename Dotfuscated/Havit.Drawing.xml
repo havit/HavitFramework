@@ -4,27 +4,6 @@
         <name>Havit.Drawing</name>
     </assembly>
     <members>
-        <member name="T:Havit.Drawing.ResizeMode">
-            <summary>
-            Režimy pro ImageExt.Resize()
-            </summary>
-        </member>
-        <member name="F:Havit.Drawing.ResizeMode.PreserveAspectRatioFitBox">
-            <summary>
-            Upraví rozměry obrázku tak, aby se jeho vnější obrys vešel do požadovaných rozměrů. Poměr stran zachová.
-            </summary>
-        </member>
-        <member name="F:Havit.Drawing.ResizeMode.PreserveAspectRatioFitBoxReduceOnly">
-            <summary>
-            Pokud je obrázek větší než požadované rozměry, je redukován tak, aby se jeho vnější rozměr vešel do požadovaného boxu.
-            Poměr stran je zachován. Pokud je obrázek menší, není zvětšen, ale zůstává nezměněn.
-            </summary>
-        </member>
-        <member name="F:Havit.Drawing.ResizeMode.AdjustToBox">
-            <summary>
-            Obrázek se upraví na přesně požadované rozměry. V případě potřeby je natáhnut, nemusí být zachován poměr stran.
-            </summary>
-        </member>
         <member name="T:Havit.Drawing.BitmapExt">
             <summary>
             Třída s metodami pro rychlou práci s obrázky.
@@ -100,6 +79,27 @@
             <param name="height">cílová výška</param>
             <param name="resizeMode"><see cref="T:Havit.Drawing.ResizeMode"/> možnost určující režim</param>
             <returns><see cref="T:System.Drawing.Size"/> s rozměry výsledného obrázku</returns>
+        </member>
+        <member name="T:Havit.Drawing.ResizeMode">
+            <summary>
+            Režimy pro ImageExt.Resize()
+            </summary>
+        </member>
+        <member name="F:Havit.Drawing.ResizeMode.PreserveAspectRatioFitBox">
+            <summary>
+            Upraví rozměry obrázku tak, aby se jeho vnější obrys vešel do požadovaných rozměrů. Poměr stran zachová.
+            </summary>
+        </member>
+        <member name="F:Havit.Drawing.ResizeMode.PreserveAspectRatioFitBoxReduceOnly">
+            <summary>
+            Pokud je obrázek větší než požadované rozměry, je redukován tak, aby se jeho vnější rozměr vešel do požadovaného boxu.
+            Poměr stran je zachován. Pokud je obrázek menší, není zvětšen, ale zůstává nezměněn.
+            </summary>
+        </member>
+        <member name="F:Havit.Drawing.ResizeMode.AdjustToBox">
+            <summary>
+            Obrázek se upraví na přesně požadované rozměry. V případě potřeby je natáhnut, nemusí být zachován poměr stran.
+            </summary>
         </member>
     </members>
 </doc>

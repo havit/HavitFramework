@@ -199,6 +199,11 @@ namespace Havit.Web.Security
 				throw new HttpException("Unable to encrypt cookie for authentication ticket");
 			}
 
+			if (String.IsNullOrEmpty(cookiePath))
+			{
+				cookiePath = FormsAuthentication.FormsCookiePath;
+			}
+
 			HttpCookie authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
 			authCookie.HttpOnly = true;
 			authCookie.Path = cookiePath;

@@ -42,8 +42,9 @@ namespace Havit.Web.UI.WebControls
 		/// Zamýšleno napø. pro omezení šírky sloupce.
 		/// Viz	<see cref="InitializeDataCell(System.Web.UI.WebControls.DataControlFieldCell, System.Web.UI.WebControls.DataControlRowState)" />.
 		/// </summary>
-		public string CellCssClass
+		internal string CellCssClass
 		{
+#warning nevhodná implementace, pøedìlat na ContentStyle typu Style (používá se na pøidávání vnitøního obalového divu)
 			get { return (string)(ViewState["CellCssClass"] ?? String.Empty); }
 			set { ViewState["CellCssClass"] = value; }
 		}
@@ -60,6 +61,32 @@ namespace Havit.Web.UI.WebControls
 				return (string)ViewState["EmptyText"];
 			}
 			set { ViewState["EmptyText"] = value; }
+		}
+		#endregion
+
+		#region DataFormatString
+		/// <summary>
+		/// Gets or sets the string that specifies the display format for the value of the field.
+		/// </summary>
+		/// <remarks>
+		/// Nastavením se pøepne výchozí hodnota HtmlEncode na false.
+		/// </remarks>
+		public override string DataFormatString
+		{
+			get
+			{
+				return base.DataFormatString;
+			}
+			set
+			{
+				base.DataFormatString = value;
+				
+				// pokud není explicitnì nastaveno HtmlEncode, pak ho vypneme
+				if (ViewState["HtmlEncode"] == null)
+				{
+					this.HtmlEncode = false;
+				}
+			}
 		}
 		#endregion
 
@@ -208,6 +235,5 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		#endregion
-
 	}
 }

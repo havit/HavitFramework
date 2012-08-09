@@ -68,15 +68,38 @@ namespace Havit.Text.RegularExpressions
 		private RegexPatterns() {}
 		#endregion
 
-		#region GetWildcardRegex, IsWildcardMatch
+		#region GetWildcardRegex, IsWildcardMatch, GetWildcardRegexPattern (private)
 		/// <summary>
 		/// Vrátí regulární výraz pro hledání v textu.
 		/// Více o myšlence wildcardů je uvedeno u metody TextCondition.CreateWildcards.
 		/// </summary>
-		/// <param name="text">Text, který má být hledán a pro který se tvoří regulární výraz.</param>
-		public static Regex GetWildcardRegex(string text)
+		/// <param name="wildcardExpression">Text, který má být hledán a pro který se tvoří regulární výraz.</param>
+		public static Regex GetWildcardRegex(string wildcardExpression)
 		{
-			string regexPattern = text;
+			string regexPattern = GetWildcardRegexPattern(wildcardExpression);
+			return new Regex(regexPattern, RegexOptions.IgnoreCase);
+		} 
+
+		/// <summary>
+		/// Vrátí true, pokud textToBeSearched obsahuje hledaný vzorek wildcardExpressionToSearch (s logikou wildcards - uvedena u metody CreateWildcards).
+		/// </summary>
+		/// <param name="wildcardExpressionToSearch">Vzorek, který je vyhledáván.</param>
+		/// <param name="textToBeSearched">Text, který je prohledáván.</param>
+		/// <returns></returns>
+		public static bool IsWildcardMatch(string wildcardExpressionToSearch, string textToBeSearched)
+		{
+			string regexPattern = GetWildcardRegexPattern(wildcardExpressionToSearch);
+			return Regex.IsMatch(textToBeSearched, regexPattern, RegexOptions.IgnoreCase);
+		}
+
+		/// <summary>
+		/// Vrátí pattern pro regulární výraz na základě textu.
+		/// </summary>
+		/// <param name="text"></param>
+		/// <returns></returns>
+		private static string GetWildcardRegexPattern(string wildcardExpression)
+		{
+			string regexPattern = wildcardExpression;
 			regexPattern = regexPattern.Replace("\\", "\\\\"); // zdvojíme zpětná lomítka
 			regexPattern = regexPattern.Replace("^", "\\^");
 			regexPattern = regexPattern.Replace("$", "\\$");
@@ -92,28 +115,17 @@ namespace Havit.Text.RegularExpressions
 			regexPattern = regexPattern.Replace("?", "\\?");
 
 			// hvězdička je pro nás zvláštní symbol
-			regexPattern = regexPattern.Replace("*", "(.*)");
+			regexPattern = regexPattern.Replace("*", "((.|\n)*)");
 			// hledáme od začátku
 			regexPattern = "^" + regexPattern;
 			// pokud je hvězdička, pak hledáme "přesnou" shodu
 			// pokud hvezdička není, chceme, aby se hledání chovalo, jako by byla hvězdička na konci, slovy regulárních výrazů pak netřeba $ na konci.
-			if (text.Contains("*"))
+			if (wildcardExpression.Contains("*"))
 			{
 				regexPattern += "$";
 			}
-			return new Regex(regexPattern, RegexOptions.IgnoreCase);
-		} 
 
-		/// <summary>
-		/// Vrátí true, pokud textToBeSearched obsahuje hledaný vzorek wildcardExpressionToSearch (s logikou wildcards - uvedena u metody CreateWildcards).
-		/// </summary>
-		/// <param name="wildcardExpressionToSearch">Vzorek, který je vyhledáván.</param>
-		/// <param name="textToBeSearched">Text, který je prohledáván.</param>
-		/// <returns></returns>
-		public static bool IsWildcardMatch(string wildcardExpressionToSearch, string textToBeSearched)
-		{
-			Regex regex = GetWildcardRegex(wildcardExpressionToSearch);
-			return regex.IsMatch(textToBeSearched);
+			return regexPattern;
 		}
 		#endregion
 

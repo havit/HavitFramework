@@ -54,6 +54,7 @@ namespace HavitTest
 			Assert.IsFalse(RegexPatterns.IsWildcardMatch("kolo", "okolo"));
 
 			Assert.IsTrue(RegexPatterns.IsWildcardMatch("k*o", "kolo"));
+			Assert.IsTrue(RegexPatterns.IsWildcardMatch("k*o", "koulo"));
 			Assert.IsTrue(RegexPatterns.IsWildcardMatch("k*lo", "kolo"));
 			Assert.IsTrue(RegexPatterns.IsWildcardMatch("k*olo", "kolo"));
 			Assert.IsFalse(RegexPatterns.IsWildcardMatch("k*o", "kolotoč"));
@@ -63,6 +64,20 @@ namespace HavitTest
 			Assert.IsTrue(RegexPatterns.IsWildcardMatch("k?lo", "k?lo"));
 			Assert.IsFalse(RegexPatterns.IsWildcardMatch("k.lo", "kolo"));
 			Assert.IsFalse(RegexPatterns.IsWildcardMatch("k?lo", "kolo"));
+
+			Assert.IsTrue(RegexPatterns.IsWildcardMatch("*description*", "<p>descriptionX</p>"));
+			Assert.IsFalse(RegexPatterns.IsWildcardMatch("description*", "<p>descriptionX</p>"));
+			Assert.IsFalse(RegexPatterns.IsWildcardMatch("description*", "<p>descriptionX</p>"));
+			Assert.IsTrue(RegexPatterns.IsWildcardMatch("*description*", "<p>descriptionX</p>"));
+			// test výrazu na dalším řádku
+			Assert.IsTrue(RegexPatterns.IsWildcardMatch("*description*", @"<p>
+				<u>descriptionX</u>
+			</p>"));
+
+			// test režimu RegexOptions.Multiline
+			Assert.IsFalse(RegexPatterns.IsWildcardMatch("description", @"<p>
+descriptionX</u>
+			</p>"));
 		}
 
 	}

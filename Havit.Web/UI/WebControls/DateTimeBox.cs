@@ -571,7 +571,8 @@ namespace Havit.Web.UI.WebControls
 @"function HavitDateTimeBox_KeyPress(e, allowTime)
 {
 	var charCode = (window.event) ? window.event.keyCode : e.charCode;
-    var validChar = ((charCode >= 48) && (charCode <= 57))
+" + ((dateTimeFormatInfo.DateSeparator == ".") ? "	if (window.event && (charCode == 44)) { charCode = 46; e.keyCode = 46; }\r\n" : "") 
+  + @"	var validChar = ((charCode >= 48) && (charCode <= 57))
 		|| (charCode == " + dateSeparatorCode + @")
 		|| (charCode <= 31)
 		|| (allowTime

@@ -178,7 +178,7 @@
     <Compile Include="UI\WebControls\H6.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI\WebControls\IEntepriseField.cs" />
+    <Compile Include="UI\WebControls\IIdentifiableField.cs" />
     <Compile Include="UrlRewriter\BaseModuleRewriter.cs">
       <SubType>Code</SubType>
     </Compile>

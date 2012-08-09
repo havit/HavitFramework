@@ -286,6 +286,10 @@
     <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-tr.js" />
     <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-zh.js" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UI\WebControls\DateTimeBox_DateTimePickerDisabled.gif" />
+    <EmbeddedResource Include="UI\WebControls\DateTimeBox_DateTimePickerEnabled.gif" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

@@ -7,6 +7,9 @@ using System.Web.UI;
 using System.Threading;
 using System.Globalization;
 
+[assembly: WebResource("Havit.Web.UI.WebControls.DateTimeBox_DateTimePickerEnabled.gif", "image/gif")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DateTimeBox_DateTimePickerDisabled.gif", "image/gif")]
+
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
@@ -86,6 +89,7 @@ namespace Havit.Web.UI.WebControls
 		#region DateTimePickerEnabledImageUrl
 		/// <summary>
 		/// Url obrázku pro ikonku vyvolávající kalendář (pokud je DateTimeBox povolen).
+		/// Pokud není Url nastavena, použije se výchozí obrázek z resources.
 		/// </summary>
 		public string DateTimePickerEnabledImageUrl
 		{
@@ -97,6 +101,7 @@ namespace Havit.Web.UI.WebControls
 		#region DateTimePickerDisabledImageUrl
 		/// <summary>
 		/// Url obrázku pro ikonku vyvolávající kalendář (pokud je DateTimeBox zakázán).
+		/// Pokud není Url nastavena, použije se výchozí obrázek z resources.
 		/// </summary>
 		public string DateTimePickerDisabledImageUrl
 		{
@@ -296,8 +301,33 @@ namespace Havit.Web.UI.WebControls
 			seperatorLiteralControl.Visible = ShowDateTimePicker;
 
 			dateTimePickerImage.Visible = ShowDateTimePicker;
-#warning Vychozi obrazky v Resources?
-			dateTimePickerImage.ImageUrl = Enabled ? DateTimePickerEnabledImageUrl : DateTimePickerDisabledImageUrl;
+
+			#region Nastavení DateTimePickerImage.ImageUrl
+			if (this.Enabled)
+			{
+				string url = DateTimePickerEnabledImageUrl;
+				if (!String.IsNullOrEmpty(url))
+				{
+					dateTimePickerImage.ImageUrl = url;
+				}
+				else
+				{
+					dateTimePickerImage.ImageUrl = Page.ClientScript.GetWebResourceUrl(typeof(DateTimeBox), "Havit.Web.UI.WebControls.DateTimeBox_DateTimePickerEnabled.gif");
+				}
+			}
+			else
+			{
+				string url = DateTimePickerDisabledImageUrl;
+				if (!String.IsNullOrEmpty(url))
+				{
+					dateTimePickerImage.ImageUrl = url;
+				}
+				else
+				{
+					dateTimePickerImage.ImageUrl = Page.ClientScript.GetWebResourceUrl(typeof(DateTimeBox), "Havit.Web.UI.WebControls.DateTimeBox_DateTimePickerDisabled.gif");
+				}
+			}
+			#endregion
 
 			dateTimePickerDynarchCalendar.Enabled = Enabled;
 			dateTimePickerDynarchCalendar.Visible = ShowDateTimePicker;

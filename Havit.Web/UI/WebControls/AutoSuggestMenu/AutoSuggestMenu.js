@@ -203,7 +203,6 @@ function AutoSuggestMenu()
         {
        	    //Update text box text	
 		    var textBox=getTextBoxCtrl();
-		    textBox.value = menuItem.label;
 		    
 		    // JIØÍ KANDA:
 		    // døíve:
@@ -211,7 +210,7 @@ function AutoSuggestMenu()
 		    // nyní:
 			// zajistujeme vyvolani udalosti onchange, pokud je zmenen text.
 			var oldValue = textBox.value;
-			var newValue = menuItem.label;						
+			var newValue = menuItem.label;
 			if (oldValue != newValue)
 			{
 				textBox.value = newValue;

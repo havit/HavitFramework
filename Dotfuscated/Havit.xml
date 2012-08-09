@@ -341,6 +341,53 @@
             <param name="y">druhý objekt</param>
             <returns>výsledek porovnání</returns>
         </member>
+        <member name="T:Havit.Collections.SortItem">
+            <summary>
+            Reprezentuje položku řazení.
+            </summary>
+        </member>
+        <member name="M:Havit.Collections.SortItem.#ctor">
+            <summary>
+            Vytvoří prázdnou instanci pořadí.
+            </summary>
+        </member>
+        <member name="M:Havit.Collections.SortItem.#ctor(System.String,Havit.Collections.SortDirection)">
+            <summary>
+            Vytvoří položku řazení podle expression a směru řazení.
+            </summary>
+        </member>
+        <member name="P:Havit.Collections.SortItem.Expression">
+            <summary>
+            Výraz, dle kterého se řadí.
+            </summary>
+        </member>
+        <member name="P:Havit.Collections.SortItem.Direction">
+            <summary>
+            Směr řazení.
+            </summary>
+        </member>
+        <member name="T:Havit.Collections.SortHelper">
+            <summary>
+            Pomocná třída pro řazení.
+            </summary>
+        </member>
+        <member name="M:Havit.Collections.SortHelper.PropertySort(System.Collections.IEnumerable,Havit.Collections.SortItemCollection)">
+            <summary>
+            Vrátí data seřazená podle properties v sortItemCollection.
+            Pokud je sortItemCollection prázdná kolekce, vrací parametr data.
+            </summary>
+            <param name="data">Data k seřazení.</param>
+            <param name="sortItemCollection">Instrukce, jak seřadit.</param>
+            <returns>Seřazená data.</returns>
+        </member>
+        <member name="M:Havit.Collections.SortHelper.PropertySort(System.Collections.IEnumerable,System.String)">
+            <summary>
+            Vrátí data seřazená podle property.
+            </summary>
+            <param name="data">Data k seřazení.</param>
+            <param name="property">Property, podle které se řadí.</param>
+            <returns>Seřazená data.</returns>
+        </member>
         <member name="T:Havit.EnumExt">
             <summary>
             Poskytuje metody týkající se základního výčtového typu System.Enum.
@@ -372,36 +419,6 @@
             </code>
             </example>
         </member>
-        <member name="T:Havit.Collections.SortItemCollection">
-            <summary>
-            Kolekce objektů třídy SortItem.
-            </summary>
-        </member>
-        <member name="T:Havit.Collections.SortItem">
-            <summary>
-            Reprezentuje položku řazení.
-            </summary>
-        </member>
-        <member name="M:Havit.Collections.SortItem.#ctor">
-            <summary>
-            Vytvoří prázdnou instanci pořadí.
-            </summary>
-        </member>
-        <member name="M:Havit.Collections.SortItem.#ctor(System.String,Havit.Collections.SortDirection)">
-            <summary>
-            Vytvoří položku řazení podle expression a směru řazení.
-            </summary>
-        </member>
-        <member name="P:Havit.Collections.SortItem.Expression">
-            <summary>
-            Výraz, dle kterého se řadí.
-            </summary>
-        </member>
-        <member name="P:Havit.Collections.SortItem.Direction">
-            <summary>
-            Směr řazení.
-            </summary>
-        </member>
         <member name="T:Havit.Collections.SortDirection">
             <summary>
             Určuje směr řazení.
@@ -417,27 +434,10 @@
             Sestupné.
             </summary>
         </member>
-        <member name="T:Havit.Collections.SortHelper">
+        <member name="T:Havit.Collections.SortItemCollection">
             <summary>
-            Pomocná třída pro řazení.
+            Kolekce objektů třídy SortItem.
             </summary>
-        </member>
-        <member name="M:Havit.Collections.SortHelper.PropertySort(System.Collections.IEnumerable,Havit.Collections.SortItemCollection)">
-            <summary>
-            Vrátí data seřazená podle properties v sortItemCollection.
-            Pokud je sortItemCollection prázdná kolekce, vrací parametr data.
-            </summary>
-            <param name="data">Data k seřazení.</param>
-            <param name="sortItemCollection">Instrukce, jak seřadit.</param>
-            <returns>Seřazená data.</returns>
-        </member>
-        <member name="M:Havit.Collections.SortHelper.PropertySort(System.Collections.IEnumerable,System.String)">
-            <summary>
-            Vrátí data seřazená podle property.
-            </summary>
-            <param name="data">Data k seřazení.</param>
-            <param name="property">Property, podle které se řadí.</param>
-            <returns>Seřazená data.</returns>
         </member>
     </members>
 </doc>

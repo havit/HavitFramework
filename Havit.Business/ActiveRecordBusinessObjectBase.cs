@@ -116,7 +116,7 @@ namespace Havit.Business
 		/// Naète objekt z databáze do <see cref="DataRecord"/> a parsuje získaný <see cref="DataRecord"/> do objektu.
 		/// </remarks>
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt naèten; null, pokud bez transakce</param>
-		protected override void Load_Perform(DbTransaction transaction)
+		protected override sealed void Load_Perform(DbTransaction transaction)
 		{
 			DataRecord record = Load_GetDataRecord(transaction);
 
@@ -188,7 +188,7 @@ namespace Havit.Business
 		/// Pokud je objekt nový, volá Save_Insert_SaveRequiredForFullInsert a Insert, jinak Update.
 		/// </remarks>
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
-		protected override void Save_Perform(DbTransaction transaction)
+		protected override sealed void Save_Perform(DbTransaction transaction)
 		{
 			// transakce je zajištìna v override Save(DbTransaction), zde není potøeba zakládat další
 			

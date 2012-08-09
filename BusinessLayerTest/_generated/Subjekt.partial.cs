@@ -76,7 +76,8 @@ namespace Havit.BusinessLayerTest
 		{
 			Subjekt result;
 			
-			if ((IdentityMapScope.Current != null) && (IdentityMapScope.Current.TryGet<Subjekt>(id, out result)))
+			IdentityMap currentIdentityMap = IdentityMapScope.Current;
+			if ((currentIdentityMap != null) && (currentIdentityMap.TryGet<Subjekt>(id, out result)))
 			{
 				return result;
 			}
@@ -95,11 +96,12 @@ namespace Havit.BusinessLayerTest
 			
 			int id = dataRecord.Get<int>(Subjekt.Properties.ID.FieldName);
 			
-			if ((IdentityMapScope.Current != null)
+			IdentityMap currentIdentityMap = IdentityMapScope.Current;
+			if ((currentIdentityMap != null)
 				&& ((dataRecord.DataLoadPower == DataLoadPower.Ghost)
 					|| (dataRecord.DataLoadPower == DataLoadPower.FullLoad)))
 			{
-				if (IdentityMapScope.Current.TryGet<Subjekt>(id, out result))
+				if (currentIdentityMap.TryGet<Subjekt>(id, out result))
 				{
 					if (!result.IsLoaded && (dataRecord.DataLoadPower == DataLoadPower.FullLoad))
 					{

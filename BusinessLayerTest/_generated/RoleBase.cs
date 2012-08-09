@@ -122,7 +122,7 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		/// <param name="transaction">případná transakce</param>
 		/// <returns>úplná data objektu</returns>
-		protected override DataRecord Load_GetDataRecord(DbTransaction transaction)
+		protected override sealed DataRecord Load_GetDataRecord(DbTransaction transaction)
 		{
 			DataRecord result;
 			
@@ -143,7 +143,7 @@ namespace Havit.BusinessLayerTest
 		/// Vytahá data objektu z DataRecordu.
 		/// </summary>
 		/// <param name="record">DataRecord s daty objektu</param>
-		protected override void Load_ParseDataRecord(DataRecord record)
+		protected override sealed void Load_ParseDataRecord(DataRecord record)
 		{
 			this.ID = record.Get<int>("RoleID");
 			
@@ -158,8 +158,26 @@ namespace Havit.BusinessLayerTest
 		
 		#region Save & Delete: Save_SaveMembers, Save_SaveCollections, Save_MinimalInsert, Save_FullInsert, Save_Update, Save_Insert_InsertRequiredForMinimalInsert, Save_Insert_InsertRequiredForFullInsert, Delete_Perform
 		
-		// Save_SaveMembers: Neukládáme, jsme read-only třídou.
-		// Save_SaveCollections: Neukládáme, jsme read-only třídou.
+		/// <summary>
+		/// Ukládá member-objekty.
+		/// </summary>
+		protected override void Save_SaveMembers(DbTransaction transaction)
+		{
+			base.Save_SaveMembers(transaction);
+			
+			// Neukládáme, jsme read-only třídou.
+		}
+		
+		/// <summary>
+		/// Ukládá member-kolekce objektu.
+		/// </summary>
+		protected override void Save_SaveCollections(DbTransaction transaction)
+		{
+			base.Save_SaveCollections(transaction);
+			
+			// Neukládáme, jsme read-only třídou.
+		}
+		
 		/// <summary>
 		/// Implementace metody vloží jen not-null vlastnosti objektu do databáze a nastaví nově přidělené ID (primární klíč).
 		/// </summary>
@@ -180,6 +198,22 @@ namespace Havit.BusinessLayerTest
 		/// Implementace metody aktualizuje data objektu v databázi.
 		/// </summary>
 		protected override sealed void Save_Update(DbTransaction transaction)
+		{
+			throw new InvalidOperationException("Objekty třídy Havit.BusinessLayerTest.Role jsou určeny jen pro čtení.");
+		}
+		
+		/// <summary>
+		/// Ukládá hodnoty potřebné pro provedení minimálního insertu. Volá Save_Insert_SaveRequiredForMinimalInsert.
+		/// </summary>
+		protected override sealed void Save_Insert_InsertRequiredForMinimalInsert(DbTransaction transaction)
+		{
+			throw new InvalidOperationException("Objekty třídy Havit.BusinessLayerTest.Role jsou určeny jen pro čtení.");
+		}
+		
+		/// <summary>
+		/// Ukládá hodnoty potřebné pro provedení plného insertu.
+		/// </summary>
+		protected override sealed void Save_Insert_InsertRequiredForFullInsert(DbTransaction transaction)
 		{
 			throw new InvalidOperationException("Objekty třídy Havit.BusinessLayerTest.Role jsou určeny jen pro čtení.");
 		}
@@ -321,23 +355,24 @@ namespace Havit.BusinessLayerTest
 		public static RoleCollection GetAll()
 		{
 			RoleCollection collection = null;
+			int[] ids = null;
 			string cacheKey = "Havit.BusinessLayerTest.Role.GetAll()";
 			
-			collection = (RoleCollection)HttpRuntime.Cache.Get(cacheKey);
-			if (collection == null)
+			ids = (int[])HttpRuntime.Cache.Get(cacheKey);
+			if (ids == null)
 			{
 				lock (lockGetAllCacheAccess)
 				{
-					collection = (RoleCollection)HttpRuntime.Cache.Get(cacheKey);
-					if (collection == null)
+					ids = (int[])HttpRuntime.Cache.Get(cacheKey);
+					if (ids == null)
 					{
 						QueryParams queryParams = new QueryParams();
-						queryParams.IncludeDeleted = true;
 						collection = Role.GetList(queryParams);
+						ids = collection.GetIDs();
 						
 						HttpRuntime.Cache.Add(
 							cacheKey,
-							collection,
+							ids,
 							null, // dependencies
 							Cache.NoAbsoluteExpiration,
 							Cache.NoSlidingExpiration,
@@ -346,9 +381,17 @@ namespace Havit.BusinessLayerTest
 					}
 				}
 			}
-			RoleCollection result = new RoleCollection();
-			result.AddRange(collection);
-			return result;
+			if (collection == null)
+			{
+				collection = new RoleCollection();
+				collection.AddRange(Array.ConvertAll<int, Role>(ids, delegate(int value)
+					{
+						return Role.GetObject(value);
+						}));
+				collection.LoadAll();
+			}
+			
+			return collection;
 		}
 		
 		#endregion

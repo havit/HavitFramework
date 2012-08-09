@@ -59,7 +59,8 @@ namespace Havit.BusinessLayerTest
 		{
 			Role result;
 			
-			if ((IdentityMapScope.Current != null) && (IdentityMapScope.Current.TryGet<Role>(id, out result)))
+			IdentityMap currentIdentityMap = IdentityMapScope.Current;
+			if ((currentIdentityMap != null) && (currentIdentityMap.TryGet<Role>(id, out result)))
 			{
 				return result;
 			}
@@ -75,8 +76,8 @@ namespace Havit.BusinessLayerTest
 					result = (Role)HttpRuntime.Cache.Get(cacheKey);
 					if (result == null)
 					{
-						fromCache = true;
-result = new Role(id);
+						fromCache = false;
+						result = new Role(id);
 						
 						HttpRuntime.Cache.Add(
 							cacheKey,
@@ -90,9 +91,9 @@ result = new Role(id);
 				}
 			}
 			
-			if (!fromCache && (IdentityMapScope.Current != null))
+			if (fromCache && (currentIdentityMap != null))
 			{
-				IdentityMapScope.Current.Store(result);
+				currentIdentityMap.Store(result);
 			}
 			
 			return result;
@@ -107,11 +108,12 @@ result = new Role(id);
 			
 			int id = dataRecord.Get<int>(Role.Properties.ID.FieldName);
 			
-			if ((IdentityMapScope.Current != null)
+			IdentityMap currentIdentityMap = IdentityMapScope.Current;
+			if ((currentIdentityMap != null)
 				&& ((dataRecord.DataLoadPower == DataLoadPower.Ghost)
 					|| (dataRecord.DataLoadPower == DataLoadPower.FullLoad)))
 			{
-				if (IdentityMapScope.Current.TryGet<Role>(id, out result))
+				if (currentIdentityMap.TryGet<Role>(id, out result))
 				{
 					if (!result.IsLoaded && (dataRecord.DataLoadPower == DataLoadPower.FullLoad))
 					{

@@ -127,6 +127,7 @@ namespace Havit.BusinessTest
 		//
 		#endregion
 
+		#region GetAllCacheClone
 		/// <summary>
 		/// Testuje, zda cachovaný GetAll vrací klon kolekce.
 		/// </summary>
@@ -137,6 +138,16 @@ namespace Havit.BusinessTest
 			RoleCollection roleCollection2 = Role.GetAll();
 			Assert.IsTrue(roleCollection1 != roleCollection2);
 		}
+		#endregion
+
+		#region MyRegion
+		[TestMethod]
+		[ExpectedException(typeof(InvalidOperationException))]
+		public void GetObject_Neexistujici()
+		{
+			Role.GetObject(-999).Load();
+		}
+		#endregion
 	}
 
 

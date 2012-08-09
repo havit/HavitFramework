@@ -109,14 +109,14 @@ namespace Havit.Business
 		/// <remarks>
 		/// Kolekce je urèena pro hromadné operace s property-holdery. Jednotlivé property si reference na své property-holdery udržují v private fieldu.
 		/// </remarks>
-		internal protected Collection<PropertyHolderBase> PropertyHolders
+		internal protected List<PropertyHolderBase> PropertyHolders
 		{
 			get
 			{
 				return _propertyHolders;
 			}
 		}
-		private Collection<PropertyHolderBase> _propertyHolders = new Collection<PropertyHolderBase>();
+		private List<PropertyHolderBase> _propertyHolders = new List<PropertyHolderBase>(16);
 		#endregion
 
 		#region Constructors
@@ -223,7 +223,7 @@ namespace Havit.Business
 		/// <remarks>
 		/// Pozor, pokud je již objekt naèten, znovu se nenahrává.
 		/// </remarks>
-		public virtual void Load()
+		public void Load()
 		{
 			Load(null);
 		}

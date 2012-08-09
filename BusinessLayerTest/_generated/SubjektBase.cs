@@ -217,7 +217,7 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		/// <param name="transaction">případná transakce</param>
 		/// <returns>úplná data objektu</returns>
-		protected override DataRecord Load_GetDataRecord(DbTransaction transaction)
+		protected override sealed DataRecord Load_GetDataRecord(DbTransaction transaction)
 		{
 			DataRecord result;
 			
@@ -238,7 +238,7 @@ namespace Havit.BusinessLayerTest
 		/// Vytahá data objektu z DataRecordu.
 		/// </summary>
 		/// <param name="record">DataRecord s daty objektu</param>
-		protected override void Load_ParseDataRecord(DataRecord record)
+		protected override sealed void Load_ParseDataRecord(DataRecord record)
 		{
 			this.ID = record.Get<int>("SubjektID");
 			
@@ -285,7 +285,15 @@ namespace Havit.BusinessLayerTest
 			
 		}
 		
-		// Save_SaveCollections: Není co ukládat.
+		/// <summary>
+		/// Ukládá member-kolekce objektu.
+		/// </summary>
+		protected override void Save_SaveCollections(DbTransaction transaction)
+		{
+			base.Save_SaveCollections(transaction);
+			
+			// Není co ukládat.
+		}
 		
 		/// <summary>
 		/// Implementace metody vloží jen not-null vlastnosti objektu do databáze a nastaví nově přidělené ID (primární klíč).

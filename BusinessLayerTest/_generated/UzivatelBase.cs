@@ -418,7 +418,7 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		/// <param name="transaction">případná transakce</param>
 		/// <returns>úplná data objektu</returns>
-		protected override DataRecord Load_GetDataRecord(DbTransaction transaction)
+		protected override sealed DataRecord Load_GetDataRecord(DbTransaction transaction)
 		{
 			DataRecord result;
 			
@@ -439,7 +439,7 @@ namespace Havit.BusinessLayerTest
 		/// Vytahá data objektu z DataRecordu.
 		/// </summary>
 		/// <param name="record">DataRecord s daty objektu</param>
-		protected override void Load_ParseDataRecord(DataRecord record)
+		protected override sealed void Load_ParseDataRecord(DataRecord record)
 		{
 			this.ID = record.Get<int>("UzivatelID");
 			
@@ -524,7 +524,15 @@ namespace Havit.BusinessLayerTest
 		
 		#region Save & Delete: Save_SaveMembers, Save_SaveCollections, Save_MinimalInsert, Save_FullInsert, Save_Update, Save_Insert_InsertRequiredForMinimalInsert, Save_Insert_InsertRequiredForFullInsert, Delete_Perform
 		
-		// Save_SaveMembers: Není co ukládat.
+		/// <summary>
+		/// Ukládá member-objekty.
+		/// </summary>
+		protected override void Save_SaveMembers(DbTransaction transaction)
+		{
+			base.Save_SaveMembers(transaction);
+			
+			// Není co ukládat.
+		}
 		
 		/// <summary>
 		/// Ukládá member-kolekce objektu.

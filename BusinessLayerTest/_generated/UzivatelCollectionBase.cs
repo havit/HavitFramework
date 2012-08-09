@@ -101,10 +101,7 @@ namespace Havit.BusinessLayerTest
 				Uzivatel currentObject = this[i];
 				if (!currentObject.IsLoaded)
 				{
-					if (!ghosts.Contains(currentObject.ID))
-					{
-						ghosts.Add(currentObject.ID);
-					}
+					ghosts.Add(currentObject.ID);
 				}
 			}
 			

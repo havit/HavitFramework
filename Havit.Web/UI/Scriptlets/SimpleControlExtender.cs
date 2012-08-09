@@ -66,7 +66,13 @@ namespace Havit.Web.UI.Scriptlets
 		/// <include file='..\\Dotfuscated\\Havit.Web.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetAttachEventsScript")]/*' />
 		public void GetAttachEventsScript(string parameterPrefix, IScriptletParameter parameter, Control control, ScriptBuilder scriptBuilder)
 		{
+#warning JK: Workaround za to, ze nefunguje odpojovaní událostí v JS! Nutno doøešit!
+			scriptBuilder.AppendLineFormat("if ({0}.{1}.{2} != 'registered')", parameterPrefix, parameter.Name, parameter.Scriptlet.ClientID);
+			scriptBuilder.AppendLine("{");
+			scriptBuilder.AppendLineFormat("{0}.{1}.{2} = 'registered';", parameterPrefix, parameter.Name, parameter.Scriptlet.ClientID);
+
 			GetEventsScript(BrowserHelper.GetAttachEventScript, parameterPrefix, parameter, control, scriptBuilder);
+			scriptBuilder.AppendLine("}");
 		}
 		
 		#endregion

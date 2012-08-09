@@ -245,8 +245,8 @@ namespace Havit.Web.UI.Scriptlets
 			clientScript.GetClientSideScriptFunction(builder);
 
 			// nyní již se mùžeme zeptat na jméno klientské funkce se skriptem
-			string attachEventsFunctionName = ClientSideScriptFunctionName + "_AttachEvents";
-			string detachEventsFunctionName = ClientSideScriptFunctionName + "_DetachEvents";
+			string attachEventsFunctionName = this.ClientID + "_AttachEvents";
+			string detachEventsFunctionName = this.ClientID + "_DetachEvents";
 
 			// vytvoøíme funkci pro získání objektu nesoucí parametry
 			builder.AppendLineFormat("function {0}()", ClientSideGetDataObjectFunctionName);

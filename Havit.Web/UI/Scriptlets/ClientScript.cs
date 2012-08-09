@@ -120,7 +120,7 @@ namespace Havit.Web.UI.Scriptlets
 			}
 			else
 			{
-				clientSideScriptFunctionName = "scriptletFunction_" + this.Parent.ClientID;
+				clientSideScriptFunctionName = "scriptletFunction_" + this.Scriptlet.ClientID;
 			}
 		}		
 		#endregion

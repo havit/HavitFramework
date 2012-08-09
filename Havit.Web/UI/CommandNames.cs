@@ -9,7 +9,7 @@ namespace Havit.Web.UI
 	/// Sdílí se mezi prvky vyvolávající událost pøíkazu (potomci GridViewImageButton)
 	/// a EnterpriseGridView.
 	/// </summary>
-	public static class CommandNames
+	internal static class CommandNames // zatím nikde nepoužito, rozmyslet, jestli nestaèí DataControlCommandName
 	{
 		/// <summary>
 		/// Cancel.

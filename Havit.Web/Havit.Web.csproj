@@ -84,6 +84,7 @@
     <Reference Include="System.Data">
       <Name>System.Data</Name>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Web">
       <Name>System.Web</Name>
     </Reference>
@@ -139,10 +140,17 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UI\WebControls\Collapser.cs" />
+    <Compile Include="UI\WebControls\GridViewCommandField.cs" />
+    <Compile Include="UI\WebControls\DataControlButtonExt.cs" />
+    <Compile Include="UI\WebControls\DataControlImageButtonExt.cs" />
+    <Compile Include="UI\WebControls\DataControlLinkButtonExt.cs" />
     <Compile Include="UI\WebControls\DataGridExt.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UI\WebControls\GridViewExt.cs" />
+    <Compile Include="UI\WebControls\GridViewInsertedEventArgs.cs" />
+    <Compile Include="UI\WebControls\GridViewInsertEventArgs.cs" />
+    <Compile Include="UI\WebControls\GridViewInsertRowPosition.cs" />
     <Compile Include="UI\WebControls\GridViews\HighlightingGridView.cs">
       <SubType>Code</SubType>
     </Compile>

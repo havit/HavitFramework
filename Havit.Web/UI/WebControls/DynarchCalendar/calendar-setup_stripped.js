@@ -37,9 +37,12 @@
 		}
 		else
 		{
-			var changeEvent = document.createEvent("HTMLEvents");
-			changeEvent.initEvent("change", true, true);
-			p.inputField.dispatchEvent(changeEvent);
+			if (p.inputField.dispatchEvent)
+			{
+				var changeEvent = document.createEvent("HTMLEvents");
+				changeEvent.initEvent("change", true, true);
+				p.inputField.dispatchEvent(changeEvent);
+			}
 		}
 	}
 }

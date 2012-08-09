@@ -17,6 +17,7 @@ using System.Data.SqlTypes;
 using System.Threading;
 using System.Web;
 using System.Web.Caching;
+using Havit.Collections;
 using Havit.Data;
 using Havit.Data.SqlClient;
 using Havit.Data.SqlTypes;

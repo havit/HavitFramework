@@ -17,6 +17,7 @@ using System.Data.SqlTypes;
 using System.Threading;
 using System.Web;
 using System.Web.Caching;
+using Havit.Collections;
 using Havit.Data;
 using Havit.Data.SqlClient;
 using Havit.Data.SqlTypes;
@@ -104,7 +105,7 @@ namespace Havit.BusinessLayerTest
 			queryParams.Conditions.Add(ReferenceCondition.CreateIn(Subjekt.Properties.ID, ghosts.ToArray()));
 			queryParams.PrepareCommand(sqlCommand);
 			
-			using (SqlDataReader reader = SqlDataAccess.ExecuteReader(sqlCommand))
+			using (DbDataReader reader = DbConnector.Default.ExecuteReader(sqlCommand))
 			{
 				while (reader.Read())
 				{

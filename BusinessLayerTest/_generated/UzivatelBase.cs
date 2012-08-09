@@ -17,6 +17,7 @@ using System.Data.SqlTypes;
 using System.Threading;
 using System.Web;
 using System.Web.Caching;
+using Havit.Collections;
 using Havit.Data;
 using Havit.Data.SqlClient;
 using Havit.Data.SqlTypes;
@@ -387,7 +388,7 @@ namespace Havit.BusinessLayerTest
 		{
 			DataRecord result;
 			
-			SqlCommand sqlCommand = new SqlCommand("SELECT UzivatelID, Username, Password, DisplayAs, Email, Disabled, LockedTime, LoginLast, LoginCount, Created, Deleted, (SELECT dbo.IntArrayAggregate(innerSelect.RoleID) FROM dbo.Uzivatel_Role AS innerSelect WHERE (innerSelect.UzivatelID = @UzivatelID)) AS Role FROM dbo.Uzivatel WHERE UzivatelID = @UzivatelID");
+			SqlCommand sqlCommand = new SqlCommand("SELECT UzivatelID, Username, Password, DisplayAs, Email, Disabled, LockedTime, LoginLast, LoginCount, Created, Deleted, (SELECT dbo.IntArrayAggregate(_items.RoleID) FROM dbo.Uzivatel_Role AS _items WHERE (_items.UzivatelID = @UzivatelID)) AS Role FROM dbo.Uzivatel WHERE UzivatelID = @UzivatelID");
 			sqlCommand.Transaction = (SqlTransaction)transaction;
 			
 			SqlParameter sqlParameterUzivatelID = new SqlParameter("@UzivatelID", SqlDbType.Int);
@@ -395,7 +396,7 @@ namespace Havit.BusinessLayerTest
 			sqlParameterUzivatelID.Value = this.ID;
 			sqlCommand.Parameters.Add(sqlParameterUzivatelID);
 			
-			result = SqlDataAccess.ExecuteDataRecord(sqlCommand);
+			result = DbConnector.Default.ExecuteDataRecord(sqlCommand);
 			
 			return result;
 		}
@@ -510,6 +511,7 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public override void Save_MinimalInsert(DbTransaction transaction)
 		{
+			base.Save_MinimalInsert(transaction);
 			Save_Insert_InsertRequiredForMinimalInsert(transaction);
 			
 			SqlCommand sqlCommand = new SqlCommand();
@@ -571,7 +573,7 @@ namespace Havit.BusinessLayerTest
 			
 			sqlCommand.CommandText = "DECLARE @UzivatelID INT; INSERT INTO dbo.Uzivatel (Username, Password, DisplayAs, Email, Disabled, LockedTime, LoginLast, LoginCount, Deleted) VALUES (@Username, @Password, @DisplayAs, @Email, @Disabled, @LockedTime, @LoginLast, @LoginCount, @Deleted); SELECT @UzivatelID = SCOPE_IDENTITY(); SELECT @UzivatelID; ";
 			
-			this.ID = (int)SqlDataAccess.ExecuteScalar(sqlCommand);
+			this.ID = (int)DbConnector.Default.ExecuteScalar(sqlCommand);
 			this.IsNew = false; // uložený objekt není už nový, dostal i přidělené ID
 			if (IdentityMapScope.Current != null)
 			{
@@ -656,7 +658,7 @@ namespace Havit.BusinessLayerTest
 			
 			sqlCommand.CommandText = "DECLARE @UzivatelID INT; INSERT INTO dbo.Uzivatel (Username, Password, DisplayAs, Email, Disabled, LockedTime, LoginLast, LoginCount, Deleted) VALUES (@Username, @Password, @DisplayAs, @Email, @Disabled, @LockedTime, @LoginLast, @LoginCount, @Deleted); SELECT @UzivatelID = SCOPE_IDENTITY(); " + collectionCommandBuilder.ToString() + "SELECT @UzivatelID; ";
 			
-			this.ID = (int)SqlDataAccess.ExecuteScalar(sqlCommand);
+			this.ID = (int)DbConnector.Default.ExecuteScalar(sqlCommand);
 			this.IsNew = false; // uložený objekt není už nový, dostal i přidělené ID
 			if (IdentityMapScope.Current != null)
 			{
@@ -854,7 +856,7 @@ namespace Havit.BusinessLayerTest
 				sqlParameterUzivatelID.Value = this.ID;
 				sqlCommand.Parameters.Add(sqlParameterUzivatelID);
 				sqlCommand.CommandText = commandBuilder.ToString();
-				SqlDataAccess.ExecuteNonQuery(sqlCommand);
+				DbConnector.Default.ExecuteNonQuery(sqlCommand);
 			}
 		}
 		
@@ -935,16 +937,16 @@ namespace Havit.BusinessLayerTest
 			return Uzivatel.GetList(sqlCommand, queryParams.GetDataLoadPower());
 		}
 		
-		private static UzivatelCollection GetList(SqlCommand sqlCommand, DataLoadPower dataLoadPower)
+		private static UzivatelCollection GetList(DbCommand dbCommand, DataLoadPower dataLoadPower)
 		{
-			if (sqlCommand == null)
+			if (dbCommand == null)
 			{
-				throw new ArgumentNullException("sqlCommand");
+				throw new ArgumentNullException("dbCommand");
 			}
 			
 			UzivatelCollection result = new UzivatelCollection();
 			
-			using (SqlDataReader reader = SqlDataAccess.ExecuteReader(sqlCommand))
+			using (DbDataReader reader = DbConnector.Default.ExecuteReader(dbCommand))
 			{
 				while (reader.Read())
 				{
@@ -963,7 +965,7 @@ namespace Havit.BusinessLayerTest
 		
 		public static UzivatelCollection GetAll(bool includeDeleted)
 		{
-			UzivatelCollection collection;
+			UzivatelCollection collection = null;
 			QueryParams queryParams = new QueryParams();
 			queryParams.IncludeDeleted = includeDeleted;
 			collection = Uzivatel.GetList(queryParams);

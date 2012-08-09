@@ -17,6 +17,7 @@ using System.Data.SqlTypes;
 using System.Threading;
 using System.Web;
 using System.Web.Caching;
+using Havit.Collections;
 using Havit.Data;
 using Havit.Data.SqlClient;
 using Havit.Data.SqlTypes;
@@ -215,7 +216,7 @@ namespace Havit.BusinessLayerTest
 			sqlParameterSubjektID.Value = this.ID;
 			sqlCommand.Parameters.Add(sqlParameterSubjektID);
 			
-			result = SqlDataAccess.ExecuteDataRecord(sqlCommand);
+			result = DbConnector.Default.ExecuteDataRecord(sqlCommand);
 			
 			return result;
 		}
@@ -278,6 +279,7 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public override void Save_MinimalInsert(DbTransaction transaction)
 		{
+			base.Save_MinimalInsert(transaction);
 			Save_Insert_InsertRequiredForMinimalInsert(transaction);
 			
 			SqlCommand sqlCommand = new SqlCommand();
@@ -297,7 +299,7 @@ namespace Havit.BusinessLayerTest
 			
 			sqlCommand.CommandText = "DECLARE @SubjektID INT; INSERT INTO dbo.Subjekt (Nazev, Deleted) VALUES (@Nazev, @Deleted); SELECT @SubjektID = SCOPE_IDENTITY(); SELECT @SubjektID; ";
 			
-			this.ID = (int)SqlDataAccess.ExecuteScalar(sqlCommand);
+			this.ID = (int)DbConnector.Default.ExecuteScalar(sqlCommand);
 			this.IsNew = false; // uložený objekt není už nový, dostal i přidělené ID
 			if (IdentityMapScope.Current != null)
 			{
@@ -333,7 +335,7 @@ namespace Havit.BusinessLayerTest
 			
 			sqlCommand.CommandText = "DECLARE @SubjektID INT; INSERT INTO dbo.Subjekt (Nazev, UzivatelID, Deleted) VALUES (@Nazev, @UzivatelID, @Deleted); SELECT @SubjektID = SCOPE_IDENTITY(); SELECT @SubjektID; ";
 			
-			this.ID = (int)SqlDataAccess.ExecuteScalar(sqlCommand);
+			this.ID = (int)DbConnector.Default.ExecuteScalar(sqlCommand);
 			this.IsNew = false; // uložený objekt není už nový, dostal i přidělené ID
 			if (IdentityMapScope.Current != null)
 			{
@@ -420,7 +422,7 @@ namespace Havit.BusinessLayerTest
 				sqlParameterSubjektID.Value = this.ID;
 				sqlCommand.Parameters.Add(sqlParameterSubjektID);
 				sqlCommand.CommandText = commandBuilder.ToString();
-				SqlDataAccess.ExecuteNonQuery(sqlCommand);
+				DbConnector.Default.ExecuteNonQuery(sqlCommand);
 			}
 		}
 		
@@ -498,16 +500,16 @@ namespace Havit.BusinessLayerTest
 			return Subjekt.GetList(sqlCommand, queryParams.GetDataLoadPower());
 		}
 		
-		private static SubjektCollection GetList(SqlCommand sqlCommand, DataLoadPower dataLoadPower)
+		private static SubjektCollection GetList(DbCommand dbCommand, DataLoadPower dataLoadPower)
 		{
-			if (sqlCommand == null)
+			if (dbCommand == null)
 			{
-				throw new ArgumentNullException("sqlCommand");
+				throw new ArgumentNullException("dbCommand");
 			}
 			
 			SubjektCollection result = new SubjektCollection();
 			
-			using (SqlDataReader reader = SqlDataAccess.ExecuteReader(sqlCommand))
+			using (DbDataReader reader = DbConnector.Default.ExecuteReader(dbCommand))
 			{
 				while (reader.Read())
 				{
@@ -526,7 +528,7 @@ namespace Havit.BusinessLayerTest
 		
 		public static SubjektCollection GetAll(bool includeDeleted)
 		{
-			SubjektCollection collection;
+			SubjektCollection collection = null;
 			QueryParams queryParams = new QueryParams();
 			queryParams.IncludeDeleted = includeDeleted;
 			collection = Subjekt.GetList(queryParams);

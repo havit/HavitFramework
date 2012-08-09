@@ -17,6 +17,7 @@ using System.Data.SqlTypes;
 using System.Threading;
 using System.Web;
 using System.Web.Caching;
+using Havit.Collections;
 using Havit.Data;
 using Havit.Data.SqlClient;
 using Havit.Data.SqlTypes;
@@ -57,7 +58,7 @@ namespace Havit.BusinessLayerTest
 			_loginCount.Initialize(objectInfo, "LoginCount", "LoginCount", false, SqlDbType.Int, false, 4);
 			_created.Initialize(objectInfo, "Created", "Created", false, SqlDbType.SmallDateTime, false, 4);
 			_deleted.Initialize(objectInfo, "Deleted", "Deleted", false, SqlDbType.Bit, false, 1);
-			_role.Initialize(objectInfo, "Role", typeof(Havit.BusinessLayerTest.Role), "(SELECT dbo.IntArrayAggregate(innerSelect.RoleID) FROM dbo.Uzivatel_Role AS innerSelect WHERE (innerSelect.UzivatelID = dbo.Uzivatel.UzivatelID)) AS Role");
+			_role.Initialize(objectInfo, "Role", typeof(Havit.BusinessLayerTest.Role), "(SELECT dbo.IntArrayAggregate(_items.RoleID) FROM dbo.Uzivatel_Role AS _items WHERE (_items.UzivatelID = dbo.Uzivatel.UzivatelID)) AS Role");
 		}
 		
 		public FieldPropertyInfo ID

@@ -17,6 +17,7 @@ using System.Data.SqlTypes;
 using System.Threading;
 using System.Web;
 using System.Web.Caching;
+using Havit.Collections;
 using Havit.Data;
 using Havit.Data.SqlClient;
 using Havit.Data.SqlTypes;
@@ -130,7 +131,7 @@ namespace Havit.BusinessLayerTest
 			sqlParameterRoleID.Value = this.ID;
 			sqlCommand.Parameters.Add(sqlParameterRoleID);
 			
-			result = SqlDataAccess.ExecuteDataRecord(sqlCommand);
+			result = DbConnector.Default.ExecuteDataRecord(sqlCommand);
 			
 			return result;
 		}
@@ -278,16 +279,16 @@ namespace Havit.BusinessLayerTest
 			return Role.GetList(sqlCommand, queryParams.GetDataLoadPower());
 		}
 		
-		private static RoleCollection GetList(SqlCommand sqlCommand, DataLoadPower dataLoadPower)
+		private static RoleCollection GetList(DbCommand dbCommand, DataLoadPower dataLoadPower)
 		{
-			if (sqlCommand == null)
+			if (dbCommand == null)
 			{
-				throw new ArgumentNullException("sqlCommand");
+				throw new ArgumentNullException("dbCommand");
 			}
 			
 			RoleCollection result = new RoleCollection();
 			
-			using (SqlDataReader reader = SqlDataAccess.ExecuteReader(sqlCommand))
+			using (DbDataReader reader = DbConnector.Default.ExecuteReader(dbCommand))
 			{
 				while (reader.Read())
 				{
@@ -303,7 +304,7 @@ namespace Havit.BusinessLayerTest
 		
 		public static RoleCollection GetAll()
 		{
-			RoleCollection collection;
+			RoleCollection collection = null;
 			string cacheKey = "Havit.BusinessLayerTest.Role.GetAll()";
 			
 			collection = (RoleCollection)HttpRuntime.Cache.Get(cacheKey);

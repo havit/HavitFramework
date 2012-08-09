@@ -94,7 +94,7 @@ namespace Havit.BusinessLayerTest
 			Uzivatel result = null;
 			
 			if ((IdentityMapScope.Current != null)
-				&& ((dataRecord.DataLoadPower == DataLoadPower.Ghosts)
+				&& ((dataRecord.DataLoadPower == DataLoadPower.Ghost)
 					|| (dataRecord.DataLoadPower == DataLoadPower.FullLoad)))
 			{
 				int id = dataRecord.Get<int>(Uzivatel.Properties.ID.FieldName);
@@ -108,7 +108,7 @@ namespace Havit.BusinessLayerTest
 				}
 				else
 				{
-					if (dataRecord.DataLoadPower == DataLoadPower.Ghosts)
+					if (dataRecord.DataLoadPower == DataLoadPower.Ghost)
 					{
 						result = Uzivatel.GetObject(id);
 					}

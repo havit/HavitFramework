@@ -195,7 +195,7 @@ namespace Havit.Data
 
 				return true;
 			}
-			else if (dataLoadPower != DataLoadPower.PartialLoad)
+			else if (dataLoadPower == DataLoadPower.FullLoad)
 			{
 				throw new ArgumentException("Parametr požadovaného jména nebyl v DataRecordu nalezen.", fieldName);
 			}
@@ -278,7 +278,7 @@ namespace Havit.Data
 					}
 				}
 			}
-			else if (dataLoadPower != DataLoadPower.PartialLoad)
+			else if (dataLoadPower == DataLoadPower.FullLoad)
 			{
 				throw new ArgumentException("Parametr ve vstupních datech nebyl nalezen", fieldName);
 			}

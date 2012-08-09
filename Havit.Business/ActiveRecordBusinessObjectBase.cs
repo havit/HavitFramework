@@ -77,6 +77,7 @@ namespace Havit.Business
 */
 
 			Load(record);
+
 			//this.Load_ParseDataRecord(record);
 
 //			this._isLoadedPartially = !record.FullLoad;
@@ -100,7 +101,10 @@ namespace Havit.Business
 			}
 			Load_ParseDataRecord(record);
 
-			this.IsLoaded = true;
+			if (record.DataLoadPower != DataLoadPower.Ghost)
+			{
+				this.IsLoaded = true;
+			}
 			this.IsDirty = false;
 		}
 

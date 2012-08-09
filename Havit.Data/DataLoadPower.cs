@@ -13,16 +13,16 @@ namespace Havit.Data
 		/// <summary>
 		/// Datový zdroj obsahuje jen informace pro založení ghosta (primární klíè).
 		/// </summary>
-		Ghosts,
+		Ghost = 0,
 
 		/// <summary>
 		/// Datový zdroj obsahuje kompletní øádek dat (všechny možné sloupce).
 		/// </summary>
-		FullLoad,
+		FullLoad = 1,
 
 		/// <summary>
 		/// Datový zdroj obsahuje nekompletní øádek dat.
 		/// </summary>
-		PartialLoad
+		PartialLoad = 2
 	}
 }

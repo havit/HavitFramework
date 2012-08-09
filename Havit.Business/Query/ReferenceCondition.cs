@@ -15,12 +15,12 @@ namespace Havit.Business.Query
 		public static Condition CreateEquals(IOperand operand, int? id)
 		{
 
-			if (id <= 0)
+			if (id == BusinessObjectBase.NoID)
 			{
-				throw new ArgumentException("ID objektu musí být kladné èíslo nebo null.", "id");
+				throw new ArgumentException("ID objektu nesmí mít hodnotu BusinessObjectBase.NoID.", "id");
 			}
 
-			if (id == null || id < 0)
+			if (id == null)
 			{
 				return NullCondition.CreateIsNull(operand);
 			}

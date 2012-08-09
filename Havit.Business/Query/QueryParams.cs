@@ -92,7 +92,7 @@ namespace Havit.Business.Query
 				FieldPropertyInfo fieldPropertyInfo = properties[0] as FieldPropertyInfo;
 				if ((fieldPropertyInfo != null) && (fieldPropertyInfo.IsPrimaryKey))
 				{
-					return DataLoadPower.Ghosts;
+					return DataLoadPower.Ghost;
 				}
 			}
 			

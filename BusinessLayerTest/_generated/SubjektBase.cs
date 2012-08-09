@@ -472,8 +472,13 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static Subjekt GetFirst(QueryParams queryParams)
 		{
+			return Subjekt.GetFirst(queryParams, null);
+		}
+		
+		public static Subjekt GetFirst(QueryParams queryParams, DbTransaction transaction)
+		{
 			queryParams.TopRecords = 1;
-			SubjektCollection getListResult = Subjekt.GetList(queryParams);
+			SubjektCollection getListResult = Subjekt.GetList(queryParams, transaction);
 			return (getListResult.Count == 0) ? null : getListResult[0];
 		}
 		

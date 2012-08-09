@@ -253,6 +253,22 @@ namespace Havit.Business
 		}
 		#endregion
 
+		#region RemoveAll
+		/// <summary>
+		/// Odstraní z kolekce všechny prvky odpovídající kritériu match.
+		/// </summary>
+		/// <remarks>
+		/// Metoda pouze publikuje metodu RemoveAll() inner-listu Items.
+		/// </remarks>
+		/// <param name="match">kritérium ve formì predikátu</param>
+		/// <returns>poèet odstranìných prvkù</returns>
+		public virtual int RemoveAll(Predicate<TItem> match)
+		{
+			List<TItem> innerList = (List<TItem>)Items;
+			return innerList.RemoveAll(match);
+		}
+		#endregion
+
 		#region Sort
 		/// <summary>
 		/// Seøadí prvky kolekce dle požadované property, která implementuje IComparable.
@@ -286,37 +302,6 @@ namespace Havit.Business
 			List<TItem> innerList = (List<TItem>)Items;
 			innerList.Sort(new GenericPropertyComparer<TItem>(new SortItem(propertyInfo.PropertyName, sortDirection)));
 		}
-
-		/*
-		/// <summary>
-		/// Seøadí prvky kolekce dle požadované property, která implementuje IComparable.
-		/// </summary>
-		/// <remarks>
-		/// Používá <see cref="Havit.Collections.GenericPropertyComparer{T}"/>. K porovnávání podle property
-		/// tedy dochází pomocí reflexe - relativnì pomalu. Pokud je potøeba vyšší výkon, je potøeba použít
-		/// overload Sort(Generic Comparsion) s pøímým pøístupem k property.
-		/// </remarks>
-		/// <param name="sortItems">Parametry øazení.</param>
-		public void Sort(IList<SortItem> sortItems)
-		{
-			List<TItem> innerList = (List<TItem>)Items;
-			innerList.Sort(new GenericPropertyComparer<TItem>(sortItems));
-		}
-
-		/// <summary>
-		/// Seøadí prvky kolekce dle požadované property, která implementuje IComparable.
-		/// </summary>
-		/// <remarks>
-		/// Používá <see cref="Havit.Collections.GenericPropertyComparer{T}"/>. K porovnávání podle property
-		/// tedy dochází pomocí reflexe - relativnì pomalu. Pokud je potøeba vyšší výkon, je potøeba použít
-		/// overload Sort(Generic Comparsion) s pøímým pøístupem k property.
-		/// </remarks>
-		/// <param name="sortItems">Parametry øazení.</param>
-		public void Sort(params SortItem[] sortItems)
-		{
-			Sort(sortItems);
-		}
-		*/
 
 		/// <summary>
 		/// Seøadí prvky kolekce dle zadaného srovnání. Publikuje metodu Sort(Generic Comparsion) inner-Listu.

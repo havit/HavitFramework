@@ -909,8 +909,13 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static Uzivatel GetFirst(QueryParams queryParams)
 		{
+			return Uzivatel.GetFirst(queryParams, null);
+		}
+		
+		public static Uzivatel GetFirst(QueryParams queryParams, DbTransaction transaction)
+		{
 			queryParams.TopRecords = 1;
-			UzivatelCollection getListResult = Uzivatel.GetList(queryParams);
+			UzivatelCollection getListResult = Uzivatel.GetList(queryParams, transaction);
 			return (getListResult.Count == 0) ? null : getListResult[0];
 		}
 		

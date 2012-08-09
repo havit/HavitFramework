@@ -251,8 +251,13 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static Role GetFirst(QueryParams queryParams)
 		{
+			return Role.GetFirst(queryParams, null);
+		}
+		
+		public static Role GetFirst(QueryParams queryParams, DbTransaction transaction)
+		{
 			queryParams.TopRecords = 1;
-			RoleCollection getListResult = Role.GetList(queryParams);
+			RoleCollection getListResult = Role.GetList(queryParams, transaction);
 			return (getListResult.Count == 0) ? null : getListResult[0];
 		}
 		

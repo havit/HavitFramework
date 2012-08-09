@@ -524,5 +524,24 @@ namespace Havit.Business
 			_propertyHolders.Add(propertyHolder);
 		}
 		#endregion
+
+		/**********************************************************************************/
+
+		#region GetNullableID (static)
+		/// <summary>
+		/// Vrátí ID objektu, nebo null, pokud je vstupní objekt null.
+		/// Urèeno pro pøehledné získávání ID, obvykle pøi pøedávání do DB.
+		/// </summary>
+		/// <param name="businessObject">objekt, jehož ID chceme</param>
+		/// <returns>ID objektu, nebo null, pokud je vstupní objekt null</returns>
+		public static int? GetNullableID(BusinessObjectBase businessObject)
+		{
+			if (businessObject == null)
+			{
+				return null;
+			}
+			return businessObject.ID;
+		}
+		#endregion
 	}
 }

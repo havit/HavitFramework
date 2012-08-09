@@ -4084,6 +4084,11 @@
             Udává, zda lze hodnotu v textovém políčku editovat.
             </summary>
         </member>
+        <member name="P:Havit.Web.UI.WebControls.NumericBox.KeyBlockingClientScriptEnabled">
+            <summary>
+            Udává, zda se pro zapouzdřený textbox použije javascript, který brání vložení nepovolených znaků. Výchozí hodnota je true.
+            </summary>
+        </member>
         <member name="P:Havit.Web.UI.WebControls.NumericBox.ValueBoxStyle">
             <summary>
             Stylování ValueTextBoxu.
@@ -4250,6 +4255,11 @@
         <member name="P:Havit.Web.UI.WebControls.DateTimeBox.DateTimeMode">
             <summary>
             Režim zobrazení data/data a času.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.DateTimeBox.KeyBlockingClientScriptEnabled">
+            <summary>
+            Udává, zda se pro zapouzdřený textbox použije javascript, který brání vložení nepovolených znaků. Výchozí hodnota je true.
             </summary>
         </member>
         <member name="P:Havit.Web.UI.WebControls.DateTimeBox.ShowDateTimePicker">

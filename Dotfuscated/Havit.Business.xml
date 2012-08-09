@@ -753,6 +753,14 @@
             </remarks>
             <param name="propertyHolder">PropertyHolder k zaregistrování</param>
         </member>
+        <member name="M:Havit.Business.BusinessObjectBase.GetNullableID(Havit.Business.BusinessObjectBase)">
+            <summary>
+            Vrátí ID objektu, nebo null, pokud je vstupní objekt null.
+            Určeno pro přehledné získávání ID, obvykle při předávání do DB.
+            </summary>
+            <param name="businessObject">objekt, jehož ID chceme</param>
+            <returns>ID objektu, nebo null, pokud je vstupní objekt null</returns>
+        </member>
         <member name="P:Havit.Business.BusinessObjectBase.ID">
             <summary>
             Primární klíč objektu.

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using Havit.BusinessLayerTest;
 using Havit.Data;
 using System.Data.Common;
+using Havit.Business;
 
 namespace Havit.BusinessTest
 {
@@ -191,6 +192,33 @@ namespace Havit.BusinessTest
 		}
 		
 		#endregion		
+
+		#region GetNullableID
+		/// <summary>
+		///A test for GetNullableID
+		///</summary>
+		[TestMethod()]
+		public void GetNullableIDTest_ID()
+		{
+			BusinessObjectBase businessObject = Role.ZaporneID;
+			Nullable<int> expected = Role.ZaporneID.ID;
+			Nullable<int> actual;
+			actual = BusinessObjectBase.GetNullableID(businessObject);
+		}
+
+		/// <summary>
+		///A test for GetNullableID
+		///</summary>
+		[TestMethod()]
+		public void GetNullableIDTest_Null()
+		{
+			BusinessObjectBase businessObject = null;
+			Nullable<int> expected = null;
+			Nullable<int> actual;
+			actual = BusinessObjectBase.GetNullableID(businessObject);
+			Assert.AreEqual(expected, actual);
+		}
+		#endregion
 	}
 
 

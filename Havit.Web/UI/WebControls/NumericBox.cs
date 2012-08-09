@@ -277,6 +277,23 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region CausesValidation
+		/// <summary>
+		/// Urèuje, zda dochází k validaci pøi postbacku zpùsobeným tímto controlem (autopostback).
+		/// </summary>
+		public bool CausesValidation
+		{
+			get
+			{
+				return (bool)(ViewState["CausesValidation"] ?? false);
+			}
+			set
+			{
+				ViewState["CausesValidation"] = value;
+			}
+		}
+		#endregion
+
 		#region --------------------------------------------------------------------------------
 		#endregion
 
@@ -339,6 +356,8 @@ namespace Havit.Web.UI.WebControls
 			valueTextBox.Enabled = this.Enabled;
 			valueTextBox.AutoPostBack = this.AutoPostBack;
 			valueTextBox.ValidationGroup = this.ValidationGroup;
+			valueTextBox.CausesValidation = this.CausesValidation;
+
 			valueTextBox.Style.Add("text-align", "right");
 
 			if (Enabled)

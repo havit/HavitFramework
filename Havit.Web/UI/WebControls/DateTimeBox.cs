@@ -247,6 +247,40 @@ namespace Havit.Web.UI.WebControls
 		private event EventHandler _valueChanged;
 		#endregion
 
+		#region ValidationGroup
+		/// <summary>
+		/// ValidationGroup pro validaci.
+		/// </summary>
+		public string ValidationGroup
+		{
+			get
+			{
+				return (string)ViewState["ValidationGroup"] ?? String.Empty;
+			}
+			set
+			{
+				ViewState["ValidationGroup"] = value;
+			}
+		}
+		#endregion
+
+		#region CausesValidation
+		/// <summary>
+		/// Určuje, zda dochází k validaci při postbacku způsobeným tímto controlem (autopostback).
+		/// </summary>
+		public bool CausesValidation
+		{
+			get
+			{
+				return (bool)(ViewState["CausesValidation"] ?? false);
+			}
+			set
+			{
+				ViewState["CausesValidation"] = value;
+			}
+		}
+		#endregion
+
 		#region --------------------------------------------------------------------------------
 		#endregion
 
@@ -339,9 +373,11 @@ namespace Havit.Web.UI.WebControls
 				}
 			}
 
-			valueTextBox.Enabled = IsEnabled;
-			valueTextBox.AutoPostBack = AutoPostBack;
-
+			valueTextBox.Enabled = this.IsEnabled;
+			valueTextBox.AutoPostBack = this.AutoPostBack;
+			valueTextBox.ValidationGroup = this.ValidationGroup;
+			valueTextBox.CausesValidation = this.CausesValidation;
+		
 			seperatorLiteralControl.Visible = ShowDateTimePicker;
 
 			dateTimePickerImage.Visible = ShowDateTimePicker;

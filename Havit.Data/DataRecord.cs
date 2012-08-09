@@ -138,61 +138,15 @@ namespace Havit.Data
 		/// </summary>
 		/// <param name="fieldName">jméno parametru</param>
 		/// <param name="target">cíl, kam má být parametr uložen</param>
-		/// <returns>false, pokud má parametr hodnotu NULL; true, pokud byla naètena hodnota</returns>
-		[Obsolete]
-		public bool Load<T>(string fieldName, ref T target)
-		{
-			return TryGet<T>(fieldName, ref target);
-		}
-
-		/// <summary>
-		/// Naète parametr zadaného generického typu T.
-		/// </summary>
-		/// <param name="fieldName">jméno parametru</param>
-		/// <param name="target">cíl, kam má být parametr uložen</param>
-		/// <returns>false, pokud má parametr hodnotu NULL; true, pokud byla naètena hodnota</returns>
-		public bool TryGet<T>(string fieldName, ref T target)
-		{
-			if (dataDictionary.ContainsKey(fieldName))
-			{
-				if (dataDictionary[fieldName] != DBNull.Value)
-				{
-					try
-					{
-
-#warning Load nemá tak silnou typovou konverzi jako Get<T>()! Je potøeba sjednotit.
-
-						target = (T)dataDictionary[fieldName];
-					}
-					catch (InvalidCastException e)
-					{
-						throw new InvalidCastException("Specified cast is not valid, field type is " + dataDictionary[fieldName].GetType().FullName, e);
-					}
-					return true;
-				}
-				else
-				{
-					return false;
-				}
-			}
-			else if (fullLoad)
-			{
-				throw new ArgumentException("Parametr ve vstupních datech nebyl nalezen", fieldName);
-			}
-			return false;
-		}
-
-		/// <summary>
-		/// Vrátí parametr zadaného generického typu.
-		/// </summary>
-		/// <param name="fieldName">jméno parametru</param>
 		/// <returns>
-		/// vrátí hodnotu typu T;<br/>
-		/// pokud parametr neexistuje a není FullLoad, pak vrací default(T), ve FullLoad hází výjimku ArgumentException;<br/>
-		/// pokud má parametr hodnotu NULL, pak vrací <c>null</c> pro referenèní typy, pro hodnotové typy hází výjimku InvalidCastException<br/>
+		/// <c>true</c>, pokud byla naètena hodnota;<br/>
+		/// <c>false</c>, pokud field v data recordu není a vlastnost <see cref="FullLoad"/> je <c>false</c> (target je pak nastaven na <c>default(T)</c>);<br/>
 		/// </returns>
-		public T Get<T>(string fieldName)
+		/// <exception cref="ArgumentException">pokud field v data recordu není a vlastnost <see cref="FullLoad"/> je <c>true</c></exception>
+		/// <exception cref="InvalidCastException">pokud nelze pøevést field na výstupní typ, nebo pokud je field <see cref="DBNull"/> a výstupní typ nemá <c>null</c></exception>
+		public bool TryGet<T>(string fieldName, out T target)
 		{
+			target = default(T);
 			object value;
 			if (dataDictionary.TryGetValue(fieldName, out value))
 			{
@@ -202,43 +156,120 @@ namespace Havit.Data
 					{
 						throw new InvalidCastException("Hodnota NULL nelze pøevést na ValueType.");
 					}
-					return default(T);
+					target = default(T); // null
 				}
 				else
 				{
 					if (value is T)
 					{
-						return (T)value;
+						target = (T)value;
 					}
 					else
 					{
-						try
+						if (value is IConvertible)
 						{
-							return (T)dataDictionary[fieldName];
-						}
-						catch (InvalidCastException e)
-						{
-							if (value is IConvertible)
+							try
 							{
-								try
-								{
-									return (T)Convert.ChangeType(value, typeof(T));	 // poslední pokus napø. pro konverzi decimal -> double
-								}
-								catch
-								{
-								}
+								target = (T)Convert.ChangeType(value, typeof(T));	 // poslední pokus napø. pro konverzi decimal -> double
 							}
-							throw new InvalidCastException("Specified cast is not valid, field '" + fieldName + "', type " + dataDictionary[fieldName].GetType().FullName, e);
+							catch (InvalidCastException e)
+							{
+								throw new InvalidCastException("Specified cast is not valid, field '" + fieldName + "', from " + value.GetType().FullName, e);
+							}
+						}
+					}
+				}
+
+				return true;
+			}
+			else if (fullLoad)
+			{
+				throw new ArgumentException("Parametr požadovaného jména nebyl v DataRecordu nalezen.", fieldName);
+			}
+			else
+			{
+				target = default(T);
+				return false;
+			}
+		}
+
+		/// <summary>
+		/// Vrátí parametr zadaného generického typu.
+		/// </summary>
+		/// <remarks>
+		/// Mimo castingu se pokouší i o konverzi typu pomocí IConvertible.
+		/// </remarks>
+		/// <param name="fieldName">jméno parametru</param>
+		/// <returns>
+		/// vrátí hodnotu typu T;<br/>
+		/// pokud parametr neexistuje a není <see cref="FullLoad"/>, pak vrací <c>default(T)</c>, ve FullLoad hází výjimku ArgumentException;<br/>
+		/// pokud má parametr hodnotu NULL, pak vrací <c>null</c> pro referenèní typy, pro hodnotové typy hází výjimku InvalidCastException<br/>
+		/// </returns>
+		/// <exception cref="ArgumentException">pokud field v data recordu není a vlastnost <see cref="FullLoad"/> je <c>true</c></exception>
+		/// <exception cref="InvalidCastException">pokud nelze pøevést field na výstupní typ, nebo pokud je field <see cref="DBNull"/> a výstupní typ nemá <c>null</c></exception>
+		public T Get<T>(string fieldName)
+		{
+			T target;
+			TryGet<T>(fieldName, out target);
+			return target;
+		}
+
+		/// <summary>
+		/// Naète parametr zadaného generického typu T.
+		/// </summary>
+		/// <remarks>
+		/// Narozdíl od <see cref="TryGet{T}(string, out T)"/> neindikuje pøítomnost fieldu v data recordu, nýbrž je-li field roven <see cref="DBNull"/>.<br/>
+		/// Pokud je field <see cref="DBNull"/>, pak parametr <c>target</c> nezmìní
+		/// </remarks>
+		/// <param name="fieldName">jméno parametru</param>
+		/// <param name="target">cíl, kam má být parametr uložen</param>
+		/// <returns>
+		/// <c>false</c>, pokud má field hodnotu <see cref="DBNull"/>;<br/>
+		/// <c>false</c>, pokud nebyl field nalezen a <see cref="FullLoad"/> je <c>false</c>;
+		/// <c>true</c>, pokud byla naètena hodnota
+		/// </returns>
+		/// <exception cref="ArgumentException">pokud nebyl field nalezen a <see cref="FullLoad"/> je <c>true</c></exception>
+		/// <exception cref="InvalidCastException">pokud nelze pøevést field na výstupní typ</exception>
+		[Obsolete]
+		public bool Load<T>(string fieldName, ref T target)
+		{
+			object value;
+			if (dataDictionary.TryGetValue(fieldName, out value))
+			{
+				if (value == DBNull.Value)
+				{
+					// nemìníme hodnotu target
+					return false;
+				}
+				else
+				{
+					if (value is T)
+					{
+						target = (T)value;
+						return true;
+					}
+					else
+					{
+						if (value is IConvertible)
+						{
+							try
+							{
+								target = (T)Convert.ChangeType(value, typeof(T));	 // poslední pokus napø. pro konverzi decimal -> double
+								return true;
+							}
+							catch (InvalidCastException e)
+							{
+								throw new InvalidCastException("Specified cast is not valid, field '" + fieldName + "', from " + value.GetType().FullName, e);
+							}
 						}
 					}
 				}
 			}
 			else if (fullLoad)
 			{
-				throw new ArgumentException("Parametr požadovaného jména nebyl v DataRecordu nalezen.", fieldName);
+				throw new ArgumentException("Parametr ve vstupních datech nebyl nalezen", fieldName);
 			}
-
-			return default(T);
+			return false;
 		}
 		#endregion
 

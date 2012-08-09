@@ -41,6 +41,12 @@
 				<havit:GridViewCommandField ShowEditButton="true" ShowDeleteButton="true" />
 			</Columns>
 		</havit:GridViewExt>
+		<havit:GridViewExt ID="TestGV5" EmptyDataText="$resources: Glossary, NoData" AllowPaging="true" PagerSettings-Position="bottom" PagerSettingsShowAllPagesButton="true" PagerSettings-Mode="NextPreviousFirstLast" PageSize="2" runat="server">
+			<Columns>
+				<havit:BoundFieldExt DataField="Nazev" />
+				<havit:GridViewCommandField ShowEditButton="true" ShowDeleteButton="true" />
+			</Columns>
+		</havit:GridViewExt>
 		<asp:Button ID="HideButton" Text="Hide" runat="server" />
 		<asp:Button ID="SRDBButton" Text="SetRequiresDatabinding" runat="server" />
 		<asp:Button ID="PostbackButton" Text="Postback" runat="server" />

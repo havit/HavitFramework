@@ -133,6 +133,11 @@
     <Content Include="WrapperTest.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_GlobalResources\Glossary.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Glossary.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\TestEnum.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -403,6 +408,12 @@
   <ItemGroup>
     <Content Include="Config\healthMonitoring.config" />
     <Content Include="Config\mailSettings-smtp.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Glossary.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Glossary.Designer.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

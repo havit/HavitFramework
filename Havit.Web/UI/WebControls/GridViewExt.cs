@@ -186,6 +186,16 @@ namespace Havit.Web.UI.WebControls
 		private CommandFieldStyle _commandFieldStyle;
 		#endregion
 
+		#region CreateChildControls
+		protected override int CreateChildControls(IEnumerable dataSource, bool dataBinding)
+		{
+			string originalEmptyDataText = this.EmptyDataText;
+			EmptyDataText = HttpUtilityExt.GetResourceString(EmptyDataText);
+			return base.CreateChildControls(dataSource, dataBinding);
+			EmptyDataText = originalEmptyDataText;
+		}
+		#endregion
+
 		#region RequiresDataBinding (new), SetRequiresDatabinding
 		/// <summary>
 		/// Zpřístupňuje pro čtení chráněnou vlastnost RequiresDataBinding.
@@ -584,10 +594,7 @@ namespace Havit.Web.UI.WebControls
 				}
 			}
 
-			string originalEmptyDataText = this.EmptyDataText;
-			EmptyDataText = HttpUtilityExt.GetResourceString(EmptyDataText);
 			base.PerformDataBinding(insertingData);
-			this.EmptyDataText = originalEmptyDataText;
 
 			if (insertingData != null)
 			{

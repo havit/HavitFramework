@@ -1387,12 +1387,14 @@
         <member name="P:Havit.Web.UI.Scriptlets.ControlParameter.ControlName">
             <summary>
             Název Controlu, který je zdrojem pro vytvoření klientského parametru.
+            Pro vyhledávání ve vnořeném naming containeru lze názvy controlů oddělit tečkou.
             </summary>
         </member>
         <member name="P:Havit.Web.UI.Scriptlets.ControlParameter.Name">
             <summary>
             Název parametru, pod kterým bude parametr přístupný v klienském skriptu.
             Pokud není hodnota nastavena, použije se hodnota <see cref="P:Havit.Web.UI.Scriptlets.ControlParameter.ControlName">ControlName</see>.
+            Obsahuje-li <see cref="P:Havit.Web.UI.Scriptlets.ControlParameter.ControlName">ControlName</see> tečku, je nahrazena podtržítkem.
             </summary>
         </member>
         <member name="P:Havit.Web.UI.Scriptlets.ControlParameter.StartOnChange">

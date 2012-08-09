@@ -16,6 +16,7 @@ namespace Havit.Web.UI.Scriptlets
 		#region ControlName
 		/// <summary>
 		/// Název Controlu, který je zdrojem pro vytvoøení klientského parametru.
+		/// Pro vyhledávání ve vnoøeném naming containeru lze názvy controlù oddìlit teèkou.
 		/// </summary>
 		public string ControlName
 		{
@@ -28,10 +29,11 @@ namespace Havit.Web.UI.Scriptlets
 		/// <summary>
 		/// Název parametru, pod kterým bude parametr pøístupný v klienském skriptu.
 		/// Pokud není hodnota nastavena, použije se hodnota <see cref="ControlName">ControlName</see>.
+		/// Obsahuje-li <see cref="ControlName">ControlName</see> teèku, je nahrazena podtržítkem.
 		/// </summary>
 		public override string Name
 		{
-			get { return base.Name ?? ControlName; }
+			get { return base.Name ?? ControlName.Replace(".", "_"); }
 			set { base.Name = value; }
 		}		
 		#endregion
@@ -152,7 +154,9 @@ namespace Havit.Web.UI.Scriptlets
 		/// <returns>Control.</returns>
 		protected virtual Control GetControl(Control parentControl)
 		{
-			Control result = parentControl.FindControl(ControlName);
+			string controlName = ControlName.Replace(".", "$");
+
+			Control result = parentControl.FindControl(controlName);
 
 			if (result == null)
 			{

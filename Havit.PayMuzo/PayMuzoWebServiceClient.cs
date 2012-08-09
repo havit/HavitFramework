@@ -15,7 +15,7 @@ namespace Havit.PayMuzo
 		private handleWSService webServiceProxy;
 		private X509Certificate2 merchantCertificate;
 		private X509Certificate2 payMuzoGateCertificate;
-		private int merchantNumber;
+		private ulong merchantNumber;
 		private string serviceUrl;
 		#endregion
 
@@ -54,7 +54,7 @@ namespace Havit.PayMuzo
 		public PayMuzoWebServiceClient(
 			string serviceUrl,
 			X509Certificate2 payMuzoGateCertificate,
-			int merchantNumber,
+			ulong merchantNumber,
 			X509Certificate2 merchantCertificate)
 		{
 			if (String.IsNullOrEmpty(serviceUrl))
@@ -65,7 +65,7 @@ namespace Havit.PayMuzo
 			{
 				throw new ArgumentNullException("payMuzoGateCertificate");
 			}
-			if (merchantNumber < 0)
+			if (merchantNumber < 0ul)
 			{
 				throw new ArgumentException("Argument musí být kladný", "merchantNumber");
 			}

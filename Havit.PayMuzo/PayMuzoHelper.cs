@@ -29,7 +29,7 @@ namespace Havit.PayMuzo
 		/// <param name="merchantData">Libovolná data obchodníka (nepovinné), která jsou vrácena obchodníkovi v odpovědi v nezměněné podobě. Pole se používá pro uspokojení rozdílných požadavků jednotlivých e shopů. Pole musí obsahovat pouze ASCII znaky v rozsahu 0x20 – 0x7E. Pokud je nezbytné přenášet jiná data, potom je zapotřebí použít BASE64 kódování. (viz. Dodatek Base64). Pole nesmí obsahovat osobní údaje. Výsledná délka dat může být maximálně 30 B.</param>
 		/// <returns><see cref="PayMuzoRequestData"/> s daty pro request CREATE_ORDER. Následně lze použít pro GET (QueryString) nebo POST (form), avšak je nutno zachovat kódování (již nedělat UrlEncode) a nesmí se změnit pořadí.</returns>
 		public static PayMuzoRequestData CreateOrder(
-			int merchantNumber,
+			ulong merchantNumber,
 			int orderNumber,
 			decimal amount,
 			PayMuzoCurrency currency,
@@ -49,7 +49,7 @@ namespace Havit.PayMuzo
 
 
 			// 1. MERCHANTNUMBER
-			if (merchantNumber <= 0)
+			if (merchantNumber <= 0ul)
 			{
 				throw new ArgumentOutOfRangeException("merchantNumber", "merchantNumber musí být kladné číslo");
 			}

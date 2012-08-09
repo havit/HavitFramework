@@ -4,6 +4,16 @@
         <name>Havit.Business</name>
     </assembly>
     <members>
+        <member name="T:Havit.Business.IFieldsBuilder">
+            <summary>
+            Interface pro Property popisující strukturu domény.	
+            </summary>
+        </member>
+        <member name="M:Havit.Business.IFieldsBuilder.GetSelectFieldStatement(System.Data.Common.DbCommand)">
+            <summary>
+            Vrátí řetězec pro vytažení daného sloupce z databáze.
+            </summary>
+        </member>
         <member name="T:Havit.Business.Query.OrCondition">
             <summary>
             Kompozitní podmínka. Výsledek je pravdivý, je-li pravdivá alespoň jedna členská podmínka.
@@ -57,6 +67,55 @@
             </summary>
             <param name="command">Databázový příkaz. Je možné do něj přidávat databázové parametry.</param>
             <returns>Řetězec reprezentující hodnotu operandu v SQL dotazu.</returns>
+        </member>
+        <member name="T:Havit.Business.ObjectInfo">
+            <summary>
+            Reprezentuje informace o objektu (třídě).
+            </summary>
+        </member>
+        <member name="M:Havit.Business.ObjectInfo.#ctor(System.String,System.String,System.Boolean,Havit.Business.PropertyInfoCollection)">
+            <summary>
+            Vytvoří instanci třídy.
+            </summary>
+            <param name="dbSchema">Název schémata databázové tabulky.</param>
+            <param name="dbTable">Název databázové tabulky.</param>
+            <param name="readOnly">Určuje, zda je třída jen ke čtení.</param>
+            <param name="properties">Properties třídy.</param>
+        </member>
+        <member name="P:Havit.Business.ObjectInfo.ReadOnly">
+            <summary>
+            Indikuje, zda je objekt určen jen ke čtení.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.ObjectInfo.DbSchema">
+            <summary>
+            Název schématu databázové tabulky.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.ObjectInfo.DbTable">
+            <summary>
+            Název databázové tabulky.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.ObjectInfo.Properties">
+            <summary>
+            Property ve třídě.
+            </summary>
+        </member>
+        <member name="T:Havit.Business.Query.SortDirection">
+            <summary>
+            Určuje směr řazení.
+            </summary>
+        </member>
+        <member name="F:Havit.Business.Query.SortDirection.Ascending">
+            <summary>
+            Vyestupné.
+            </summary>
+        </member>
+        <member name="F:Havit.Business.Query.SortDirection.Descending">
+            <summary>
+            Sestupné.
+            </summary>
         </member>
         <member name="T:Havit.Business.PropertyHolderBase">
             <summary>
@@ -134,6 +193,51 @@
             Indexer přes klíče <see cref="T:System.DateTime"/>.
             </summary>
         </member>
+        <member name="T:Havit.Business.Query.SortItemCollection">
+            <summary>
+            Kolekce objektů třídy SortItem.
+            </summary>
+        </member>
+        <member name="T:Havit.Business.Query.SortItem">
+            <summary>
+            Reprezentuje položku řazení.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.SortItem.#ctor">
+            <summary>
+            Vytvoří prázdnou instanci pořadí.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.SortItem.#ctor(System.String,Havit.Business.Query.SortDirection)">
+            <summary>
+            Vytvoří položdu řazení podle fieldName a daného pořadí.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.SortItem.#ctor(Havit.Business.FieldPropertyInfo)">
+            <summary>
+            Vytvoří položdu řazení podle sloupce, vzestupné pořadí.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.SortItem.#ctor(Havit.Business.FieldPropertyInfo,Havit.Business.Query.SortDirection)">
+            <summary>
+            Vytvoří položdu řazení podle sloupce a daného pořadí.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.SortItem.GetSqlOrderBy">
+            <summary>
+            Vrátí výraz pro řazení.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.Query.SortItem.FieldName">
+            <summary>
+            Název sloupce, dle kterého se řadí.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.Query.SortItem.Direction">
+            <summary>
+            Směr řazení.
+            </summary>
+        </member>
         <member name="T:Havit.Business.Query.BoolCondition">
             <summary>
             Vytváří podmínku testující logickou hodnotu.
@@ -164,14 +268,9 @@
             Bázová třída pro všechny property-info objektu.
             </summary>
         </member>
-        <member name="T:Havit.Business.IFieldsBuilder">
+        <member name="P:Havit.Business.PropertyInfo.Parent">
             <summary>
-            Interface pro Property popisující strukturu domény.	
-            </summary>
-        </member>
-        <member name="M:Havit.Business.IFieldsBuilder.GetSelectFieldStatement(System.Data.Common.DbCommand)">
-            <summary>
-            Vrátí řetězec pro vytažení daného sloupce z databáze.
+            Třída, které property náleží.
             </summary>
         </member>
         <member name="M:Havit.Business.CollectionPropertyInfo.#ctor(System.Type,System.String)">
@@ -449,9 +548,65 @@
             property nebude do kolekce přidána podruhé a nedojde k chybě).
             </summary>
         </member>
+        <member name="M:Havit.Business.PropertyInfoCollection.#ctor">
+            <summary>
+            Vyvoří prázdnou kolekci.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.PropertyInfoCollection.#ctor(Havit.Business.PropertyInfo[])">
+            <summary>
+            Vytvoří kolekci a vloží do ní zadané objekty PropertyInfo.
+            </summary>
+        </member>
         <member name="M:Havit.Business.PropertyInfoCollection.InsertItem(System.Int32,Havit.Business.PropertyInfo)">
             <summary>
             Přidá prvek do kolekce, pokud v kolekci již není.
+            </summary>
+        </member>
+        <member name="T:Havit.Business.FieldPropertyInfo">
+            <summary>
+            Reprezentuje sloupec v databázi,
+            nese informace o daném sloupci a jeho vazbu na objektovou strukturu.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.FieldPropertyInfo.#ctor(System.String,System.Boolean,System.Data.SqlDbType,System.Boolean,System.Int32)">
+            <summary>
+            Vytvoří instanci sloupce.
+            </summary>
+            <param name="fieldName">Název sloupce v databázy.</param>
+            <param name="isPrimaryKey">Indikuje, zda je sloupec primárním klíčem</param>
+            <param name="nullable">Indukuje, zda je povolena hodnota null.</param>
+            <param name="fieldType">Typ databázového sloupce.</param>
+            <param name="maximumLength">Maximální délka dat databázového sloupce.</param>		
+        </member>
+        <member name="M:Havit.Business.FieldPropertyInfo.GetSelectFieldStatement(System.Data.Common.DbCommand)">
+            <summary>
+            Vrátí řetězec pro vytažení daného sloupce z databáze.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.FieldPropertyInfo.FieldName">
+            <summary>
+            Název sloupce v databázi.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.FieldPropertyInfo.Nullable">
+            <summary>
+            Udává, zda je možné uložit null hodnotu.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.FieldPropertyInfo.FieldType">
+            <summary>
+            Typ sloupce v databázi.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.FieldPropertyInfo.IsPrimaryKey">
+            <summary>
+            Udává, zda je sloupec primárním klíčem.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.FieldPropertyInfo.MaximumLength">
+            <summary>
+            Udává, zda je sloupec primárním klíčem.
             </summary>
         </member>
         <member name="T:Havit.Business.Query.BinaryCondition">
@@ -1287,106 +1442,6 @@
         <member name="P:Havit.Business.ActiveRecordBusinessObjectBase.IsLoadedPartially">
             <summary>
             Indikuje, zda-li byla data objektu načtena z databáze částečně, tedy zda-li se jednalo o partial-load.
-            </summary>
-        </member>
-        <member name="T:Havit.Business.Query.SortItem">
-            <summary>
-            Reprezentuje položku řazení.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.SortItem.#ctor">
-            <summary>
-            Vytvoří prázdnou instanci pořadí.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.SortItem.#ctor(System.String,Havit.Business.Query.SortDirection)">
-            <summary>
-            Vytvoří položdu řazení podle fieldName a daného pořadí.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.SortItem.#ctor(Havit.Business.FieldPropertyInfo)">
-            <summary>
-            Vytvoří položdu řazení podle sloupce, vzestupné pořadí.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.SortItem.#ctor(Havit.Business.FieldPropertyInfo,Havit.Business.Query.SortDirection)">
-            <summary>
-            Vytvoří položdu řazení podle sloupce a daného pořadí.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.Query.SortItem.GetSqlOrderBy">
-            <summary>
-            Vrátí výraz pro řazení.
-            </summary>
-        </member>
-        <member name="P:Havit.Business.Query.SortItem.FieldName">
-            <summary>
-            Název sloupce, dle kterého se řadí.
-            </summary>
-        </member>
-        <member name="P:Havit.Business.Query.SortItem.Direction">
-            <summary>
-            Směr řazení.
-            </summary>
-        </member>
-        <member name="T:Havit.Business.Query.SortItemCollection">
-            <summary>
-            Kolekce objektů třídy SortItem.
-            </summary>
-        </member>
-        <member name="T:Havit.Business.FieldPropertyInfo">
-            <summary>
-            Reprezentuje sloupec v databázi,
-            nese informace o daném sloupci a jeho vazbu na objektovou strukturu.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.FieldPropertyInfo.#ctor(System.String,System.Boolean,System.Data.SqlDbType,System.Boolean)">
-            <summary>
-            Vytvoří instanci sloupce.
-            </summary>
-            <param name="fieldName"></param>
-            <param name="isPrimaryKey"></param>
-            <param name="nullable"></param>
-            <param name="fieldType"></param>
-        </member>
-        <member name="M:Havit.Business.FieldPropertyInfo.GetSelectFieldStatement(System.Data.Common.DbCommand)">
-            <summary>
-            Vrátí řetězec pro vytažení daného sloupce z databáze.
-            </summary>
-        </member>
-        <member name="P:Havit.Business.FieldPropertyInfo.FieldName">
-            <summary>
-            Název sloupce v databázi.
-            </summary>
-        </member>
-        <member name="P:Havit.Business.FieldPropertyInfo.Nullable">
-            <summary>
-            Udává, zda je možné uložit null hodnotu.
-            </summary>
-        </member>
-        <member name="P:Havit.Business.FieldPropertyInfo.FieldType">
-            <summary>
-            Typ sloupce v databázi.
-            </summary>
-        </member>
-        <member name="P:Havit.Business.FieldPropertyInfo.IsPrimaryKey">
-            <summary>
-            Udává, zda je sloupec primárním klíčem.
-            </summary>
-        </member>
-        <member name="T:Havit.Business.Query.SortDirection">
-            <summary>
-            Určuje směr řazení.
-            </summary>
-        </member>
-        <member name="F:Havit.Business.Query.SortDirection.Ascending">
-            <summary>
-            Vyestupné.
-            </summary>
-        </member>
-        <member name="F:Havit.Business.Query.SortDirection.Descending">
-            <summary>
-            Sestupné.
             </summary>
         </member>
     </members>

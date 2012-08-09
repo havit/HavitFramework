@@ -431,5 +431,13 @@
             <param name="sortItemCollection">Instrukce, jak seřadit.</param>
             <returns>Seřazená data.</returns>
         </member>
+        <member name="M:Havit.Collections.SortHelper.PropertySort(System.Collections.IEnumerable,System.String)">
+            <summary>
+            Vrátí data seřazená podle property.
+            </summary>
+            <param name="data">Data k seřazení.</param>
+            <param name="property">Property, podle které se řadí.</param>
+            <returns>Seřazená data.</returns>
+        </member>
     </members>
 </doc>

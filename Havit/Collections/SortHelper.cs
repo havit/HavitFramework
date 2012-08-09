@@ -36,6 +36,20 @@ namespace Havit.Collections
 			// provedeme databinding na seøazených datech
 			return dataList;
 		}
+
+		/// <summary>
+		/// Vrátí data seøazená podle property.
+		/// </summary>
+		/// <param name="data">Data k seøazení.</param>
+		/// <param name="property">Property, podle které se øadí.</param>
+		/// <returns>Seøazená data.</returns>
+		public static IEnumerable PropertySort(IEnumerable data, string property)
+		{
+			SortItemCollection sortItemCollection = new SortItemCollection();
+			sortItemCollection.Add(new SortItem(property, SortDirection.Ascending));
+			return PropertySort(data, sortItemCollection);
+		}
+
 		#endregion
 	}
 }

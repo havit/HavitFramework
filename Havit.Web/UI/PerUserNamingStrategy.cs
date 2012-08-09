@@ -102,7 +102,7 @@ namespace Havit.Web.UI
 					username = AnonymousUserFolderName;
 				}
 
-				string userFolder = username;
+				string userFolder = username.ToLower();
 				foreach (char invalidChar in System.IO.Path.GetInvalidFileNameChars())
 				{
 					userFolder = userFolder.Replace(invalidChar, '_');

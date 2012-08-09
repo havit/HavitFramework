@@ -15,10 +15,8 @@
 					<tr>
 						<td></td>
 						<td>							
-							<havit:DateTimeBox ID="PrvniDTB" runat="server" />
-	
-							<asp:RequiredFieldValidator ControlToValidate="PrvniDTB" runat="server" text="error1" />
-							<asp:CompareValidator ControlToValidate="PrvniDTB" Operator="DataTypeCheck" Type="Date" runat="server" text="error2" />
+							<havit:DateTimeBox ID="PrvniDTB" AutoPostBack="true" ValidationGroup="VG1" runat="server" />
+							<asp:CompareValidator ControlToValidate="PrvniDTB" ValidationGroup="VG1" Operator="DataTypeCheck" Type="Date" runat="server" text="error2" />
 						</td>
 					</tr>
 					<tr>

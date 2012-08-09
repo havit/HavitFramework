@@ -537,12 +537,12 @@ namespace Havit.Web.UI.WebControls
 				RegisterClientScript();
 				if (KeyBlockingClientScriptEnabled)
 				{
-					valueTextBox.Attributes.Add("onKeyPress", String.Format("HavitDateTimeBox_KeyPress(event, {0});", (this.DateTimeMode == DateTimeMode.DateTime).ToString().ToLower()));
-					valueTextBox.Attributes.Add("onBlur", "HavitDateTimeBox_Blur(event);");
+					valueTextBox.Attributes.Add("onkeypress", String.Format("HavitDateTimeBox_KeyPress(event, {0});", (this.DateTimeMode == DateTimeMode.DateTime).ToString().ToLower()));
 				}
 				//if (!ReadOnly)
 				//{
-				valueTextBox.Attributes.Add("onFocus", "HavitDateTimeBox_Focus(event);");
+				valueTextBox.Attributes.Add("onchange", "if (!HavitDateTimeBox_Change(event)) return false;");
+				valueTextBox.Attributes.Add("onfocus", "HavitDateTimeBox_Focus(event);");
 				//}
 			}
 
@@ -640,7 +640,7 @@ namespace Havit.Web.UI.WebControls
 	}
 }
 
-function HavitDateTimeBox_Blur(e)
+function HavitDateTimeBox_Change(e)
 {
 	var element = (e.target) ? e.target : window.event.srcElement;
 	var datum = new Date();
@@ -680,8 +680,27 @@ function HavitDateTimeBox_Blur(e)
 			found = true;
 		}
 		i++;
+	}" 
+	// před výměnou hodnoty se aplikují validátory
+	// potřebujeme zavolat druhé volání onchange, po výměně hodnoty, které validátory zase vypne
+	// musíme ale zastavit propagaci události, protože jinak by se mohl volat dvakrát postback
+	// v případě autopostbacku, proto return false
+	+ @"
+	if (found)
+	{
+		if (element.fireEvent)
+		{
+			element.fireEvent('onchange');
+		}
+		else
+		{
+			var evt = document.createEvent('HTMLEvents');
+			evt.initEvent('change', true, true);
+			element.dispatchEvent(evt);
+		}
+ 		return false;
 	}
-
+	return true;
 }
 
 function HavitDateTimeBox_Focus(e)

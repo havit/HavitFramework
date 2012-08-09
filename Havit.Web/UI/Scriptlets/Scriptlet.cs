@@ -280,8 +280,8 @@ namespace Havit.Web.UI.Scriptlets
 				{
 					scriptletParameter.GetDetachEventsScript("data", this.NamingContainer, builder);				
 				}
+				builder.AppendLine("}");
 			}
-			builder.AppendLine("}");
 		
 			clientScript.GetClientSideStartupScript(builder);
 						

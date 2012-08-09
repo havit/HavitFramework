@@ -30,6 +30,8 @@ namespace Havit.Web.UI.Scriptlets
 						_default.Add(new SimpleControlExtender(typeof(RadioButton), 100, new string[] { "onclick" }));
 						_default.Add(new SimpleControlExtender(typeof(Button), 100, new string[] { "onclick" }));
 						_default.Add(new SimpleControlExtender(typeof(DropDownList), 100, new string[] { "onchange" }));
+						_default.Add(new SimpleControlExtender(typeof(Havit.Web.UI.WebControls.NumericBox), 100, new string[] { "onchange" }));
+						_default.Add(new SimpleControlExtender(typeof(Havit.Web.UI.WebControls.DateTimeBox), 100, new string[] { "onchange" }));
 						_default.Add(new SimpleControlExtender(typeof(WebControl), 10, null));
 						_default.Add(new ListControlExtender(typeof(RadioButtonList), 100));
 						_default.Add(new ListControlExtender(typeof(CheckBoxList), 100));

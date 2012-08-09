@@ -12,15 +12,15 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Vytvoøí podmínku na rovnost.
 		/// </summary>
-		public static Condition CreateEquals(PropertyInfo property, int? ID)
+		public static Condition CreateEquals(PropertyInfo property, int? id)
 		{
-			if (ID == null || ID < 0)
+			if (id == null || id < 0)
 			{
 				return NullCondition.CreateIsNull(property);
 			}
 			else
 			{
-				return NumberCondition.CreateEquals(property, ID.Value);
+				return NumberCondition.CreateEquals(property, id.Value);
 			}
 		}
 

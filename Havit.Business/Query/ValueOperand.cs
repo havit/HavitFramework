@@ -65,6 +65,32 @@ namespace Havit.Business.Query
 		}
 		#endregion
 
+		#region Create - Floats, Decimal
+		/// <summary>
+		/// Vytvoøí operand z èísla.
+		/// </summary>
+		public static IOperand Create(Single value)
+		{
+			return new ValueOperand(value, DbType.Single);
+		}
+
+		/// <summary>
+		/// Vytvoøí operand z èísla.
+		/// </summary>
+		public static IOperand Create(Double value)
+		{
+			return new ValueOperand(value, DbType.Double);
+		}
+
+		/// <summary>
+		/// Vytvoøí operand z èísla.
+		/// </summary>
+		public static IOperand Create(decimal value)
+		{
+			return new ValueOperand(value, DbType.Decimal);
+		}
+		#endregion
+
 		#region Create - Integery
 		/// <summary>
 		/// Vytvoøí operand z celého èísla.

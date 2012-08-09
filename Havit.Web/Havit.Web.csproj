@@ -163,6 +163,7 @@
     <Compile Include="UI\WebControls\CommandFieldStyle.cs" />
     <Compile Include="UI\WebControls\DateTimeBox.cs" />
     <Compile Include="UI\WebControls\DateTimeMode.cs" />
+    <Compile Include="UI\WebControls\DefaultStylesLinker.cs" />
     <Compile Include="UI\WebControls\DropDownListExt.cs" />
     <Compile Include="UI\WebControls\DynarchCalendar\DynarchCalendar.cs" />
     <Compile Include="UI\WebControls\DynarchCalendar\DynarchCalendarSkin.cs" />
@@ -312,6 +313,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="UI\Scriptlets\Scriptlet.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UI\WebControls\DefaultStyles.css" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

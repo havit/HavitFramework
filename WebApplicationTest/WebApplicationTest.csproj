@@ -73,6 +73,13 @@
     <Compile Include="DateTimeBoxTest.aspx.designer.cs">
       <DependentUpon>DateTimeBoxTest.aspx</DependentUpon>
     </Compile>
+    <Compile Include="DefaultStylesLinkerTest.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>DefaultStylesLinkerTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DefaultStylesLinkerTest.aspx.designer.cs">
+      <DependentUpon>DefaultStylesLinkerTest.aspx</DependentUpon>
+    </Compile>
     <Compile Include="EnterpriseDropDownListTest.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>EnterpriseDropDownListTest.aspx</DependentUpon>
@@ -142,6 +149,7 @@
       <LastGenOutput>TestEnum.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="DefaultStylesLinkerTest.aspx" />
     <Content Include="EnterpriseDropDownListTest.aspx" />
     <Content Include="EnumDropDownList.aspx" />
     <Content Include="ScriptletAjaxTest.aspx" />

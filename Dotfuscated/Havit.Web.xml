@@ -1648,6 +1648,13 @@
             <param name="resourceExpression">resource odkaz dle příkladů</param>
             <returns>resolvovaný lokalizační řetězec</returns>
         </member>
+        <member name="M:Havit.Web.HttpUtilityExt.GetApplicationRootUri">
+            <summary>
+            Vrátí Uri rootu webové aplikace vytvořené na základě aktuálního requestu!
+            (WebSite může poslouchat pro více hostnames a nikde není řečeno, který je primární.)
+            </summary>
+            <returns>Uri rootu webové aplikace vytvořená na základě aktuálního requestu</returns>
+        </member>
         <member name="T:Havit.Web.HtmlEncodeOptions">
             <summary>
             Poskytuje množinu hodnot k nastavení voleb metody <see cref="M:Havit.Web.HttpUtilityExt.HtmlEncode(System.String,Havit.Web.HtmlEncodeOptions)"/>

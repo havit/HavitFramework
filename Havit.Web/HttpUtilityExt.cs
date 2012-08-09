@@ -313,6 +313,32 @@ namespace Havit.Web
 			return resourceExpression;
 		}
 		#endregion
+
+		#region GetApplicationRootUri
+		/// <summary>
+		/// Vrátí Uri rootu webové aplikace vytvoøené na základì aktuálního requestu!
+		/// (WebSite mùže poslouchat pro více hostnames a nikde není øeèeno, který je primární.)
+		/// </summary>
+		/// <returns>Uri rootu webové aplikace vytvoøená na základì aktuálního requestu</returns>
+		public static Uri GetApplicationRootUri()
+		{
+			HttpContext context = HttpContext.Current;
+			if (context == null)
+			{
+				throw new InvalidOperationException("HttpContext.Current je null, nelze vyhodnotit GetApplicationRootUri()");
+			}
+
+			HttpRequest request = context.Request;
+			if (request == null)
+			{
+				throw new InvalidOperationException("HttpContext.Current.Request je null, nelze vyhodnotit GetApplicationRootUri()");
+			}
+
+			UriBuilder ub = new UriBuilder(request.Url.Scheme, request.Url.Host, request.Url.Port, request.ApplicationPath);
+
+			return ub.Uri;
+		}
+		#endregion
 	}
 
 	#region HtmlEncodeOptions (enum)

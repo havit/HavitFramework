@@ -152,6 +152,13 @@
     <Compile Include="ScriptletTest2.aspx.designer.cs">
       <DependentUpon>ScriptletTest2.aspx</DependentUpon>
     </Compile>
+    <Compile Include="TestFolder\GetApplicationPathUri.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>GetApplicationPathUri.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TestFolder\GetApplicationPathUri.aspx.designer.cs">
+      <DependentUpon>GetApplicationPathUri.aspx</DependentUpon>
+    </Compile>
     <Compile Include="WebDialogsTest.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>WebDialogsTest.aspx</DependentUpon>
@@ -208,6 +215,7 @@
     <Content Include="havit.css" />
     <Content Include="HavitScripts.js" />
     <Content Include="JirkkaTest.aspx" />
+    <Content Include="TestFolder\GetApplicationPathUri.aspx" />
     <Content Include="WebDialogsTest.aspx" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

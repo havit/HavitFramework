@@ -168,6 +168,19 @@ namespace Havit.Business
 					}
 					lastSaveTransaction = new WeakReference(myTransaction);
 
+					// Øeší cyklické ukládání, kdy mne ukládá existující objekt díky cyklu.
+					// Pøeze mne již Save jednou prošel (já jsem ho nejspíš inicioval), proto jsem IsSaving
+					// Save se na mne dostal podruhé, tzn. nìkdo mì potøebuje.
+					// a pokud jsem tedy nový, nutnì je vyžadován MinimalInsert
+					// Neøeší zøejmì situaci, že ten kdo mì ukládá, by mì nemusel potøebovat a mohl se uložit
+					// sám dvoufázovì.
+					if (this.IsNew && this.IsSaving)
+					{
+						// jsem New, ukládám se a zase jsem cyklem došel sám na sebe
+						// nezbývá, než se zkusit uložit.
+						this.Save_MinimalInsert(myTransaction);
+					}
+
 					Save_BaseInTransaction(myTransaction); // base.Save(myTransaction) hlásí warning
 				}, transaction);
 		}
@@ -203,15 +216,14 @@ namespace Havit.Business
 				throw new InvalidOperationException("Nový objekt nemùže být smazán.");
 			}
 
+			Save_SaveMembers(transaction);
 			if (IsNew)
 			{
-				Save_SaveMembers(transaction);
 				Save_FullInsert(transaction);
 				Save_SaveCollections(transaction);
 			}
 			else
 			{
-				Save_SaveMembers(transaction);
 				Save_SaveCollections(transaction);
 				if (IsDirty)
 				{

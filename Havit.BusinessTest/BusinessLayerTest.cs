@@ -55,6 +55,38 @@ namespace Havit.BusinessTest
 		}
 		#endregion
 
+		#region BusinessLayerTest_CyclicUpdateWithInsert
+		/// <summary>
+		/// Nový objekt ukládá cyklický graf, kde sám by měl být minimal-insertován od jiného objektu, který je Update.
+		///</summary>
+		[TestMethod()]
+		public void BusinessLayerTest_CyclicUpdateWithInsert()
+		{
+			Subjekt s = Subjekt.CreateObject();
+			s.Save();
+
+			Komunikace k1 = Komunikace.CreateObject();
+			k1.Subjekt = s;
+			s.Komunikace.Add(k1);
+			k1.Save();
+
+			ObjednavkaSepsani o1 = ObjednavkaSepsani.CreateObject();
+			k1.ObjednavkaSepsani = o1;
+			k1.Save();
+
+			Komunikace k2 = Komunikace.CreateObject();
+			k2.Subjekt = s;
+			s.Komunikace.Add(k2);
+
+			o1.StornoKomunikace = k2;
+			k2.Save();
+
+			Assert.IsFalse(k2.IsDirty);
+			Assert.IsFalse(k2.IsNew);
+			Assert.IsFalse(o1.IsDirty);
+		}
+		#endregion
+
 
 		#region TestContext
 		private TestContext testContextInstance;

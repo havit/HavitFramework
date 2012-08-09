@@ -42,7 +42,8 @@ namespace Havit.BusinessLayerTest
 			_uzivatel = new ReferenceFieldPropertyInfo();
 			_created = new FieldPropertyInfo();
 			_deleted = new FieldPropertyInfo();
-			_all = new PropertyInfoCollection(_id, _nazev, _uzivatel, _created, _deleted);
+			_komunikace = new CollectionPropertyInfo();
+			_all = new PropertyInfoCollection(_id, _nazev, _uzivatel, _created, _deleted, _komunikace);
 		}
 		
 		/// <summary>
@@ -55,6 +56,7 @@ namespace Havit.BusinessLayerTest
 			_uzivatel.Initialize(objectInfo, "Uzivatel", "UzivatelID", false, SqlDbType.Int, true, 4, typeof(Havit.BusinessLayerTest.Uzivatel), Havit.BusinessLayerTest.Uzivatel.ObjectInfo);
 			_created.Initialize(objectInfo, "Created", "Created", false, SqlDbType.SmallDateTime, false, 4);
 			_deleted.Initialize(objectInfo, "Deleted", "Deleted", false, SqlDbType.SmallDateTime, true, 4);
+			_komunikace.Initialize(objectInfo, "Komunikace", typeof(Havit.BusinessLayerTest.Komunikace), "(SELECT dbo.IntArrayAggregate(_items.KomunikaceID) FROM [dbo].[Komunikace] AS _items WHERE (_items.SubjektID = [dbo].[Subjekt].[SubjektID])) AS Komunikace");
 		}
 		
 		/// <summary>
@@ -116,6 +118,15 @@ namespace Havit.BusinessLayerTest
 			}
 		}
 		private FieldPropertyInfo _deleted;
+		
+		public CollectionPropertyInfo Komunikace
+		{
+			get
+			{
+				return _komunikace;
+			}
+		}
+		private CollectionPropertyInfo _komunikace;
 		
 		/// <summary>
 		/// Všechny sloupečky typu Subjekt.

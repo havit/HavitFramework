@@ -158,6 +158,19 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		protected PropertyHolder<DateTime?> _DeletedPropertyHolder;
 		
+		public virtual Havit.BusinessLayerTest.KomunikaceCollection Komunikace
+		{
+			get
+			{
+				EnsureLoaded();
+				return _KomunikacePropertyHolder.Value;
+			}
+		}
+		/// <summary>
+		/// PropertyHolder pro vlastnost Komunikace.
+		/// </summary>
+		protected CollectionPropertyHolder<Havit.BusinessLayerTest.KomunikaceCollection, Havit.BusinessLayerTest.Komunikace> _KomunikacePropertyHolder;
+		
 		#endregion
 		
 		#region Init
@@ -170,6 +183,7 @@ namespace Havit.BusinessLayerTest
 			_UzivatelPropertyHolder = new PropertyHolder<Havit.BusinessLayerTest.Uzivatel>(this);
 			_CreatedPropertyHolder = new PropertyHolder<DateTime>(this);
 			_DeletedPropertyHolder = new PropertyHolder<DateTime?>(this);
+			_KomunikacePropertyHolder = new CollectionPropertyHolder<Havit.BusinessLayerTest.KomunikaceCollection, Havit.BusinessLayerTest.Komunikace>(this);
 			
 			if (IsNew)
 			{
@@ -177,6 +191,7 @@ namespace Havit.BusinessLayerTest
 				_UzivatelPropertyHolder.Value = null;
 				_CreatedPropertyHolder.Value = System.DateTime.Now;
 				_DeletedPropertyHolder.Value = null;
+				_KomunikacePropertyHolder.Initialize();
 			}
 		}
 		#endregion
@@ -222,7 +237,7 @@ namespace Havit.BusinessLayerTest
 			DataRecord result;
 			
 			DbCommand dbCommand = DbConnector.Default.ProviderFactory.CreateCommand();
-			dbCommand.CommandText = "SELECT SubjektID, Nazev, UzivatelID, Created, Deleted FROM [dbo].[Subjekt] WHERE SubjektID = @SubjektID";
+			dbCommand.CommandText = "SELECT SubjektID, Nazev, UzivatelID, Created, Deleted, (SELECT dbo.IntArrayAggregate(_items.KomunikaceID) FROM [dbo].[Komunikace] AS _items WHERE (_items.SubjektID = @SubjektID)) AS Komunikace FROM [dbo].[Subjekt] WHERE SubjektID = @SubjektID";
 			dbCommand.Transaction = transaction;
 			
 			DbParameter dbParameterSubjektID = DbConnector.Default.ProviderFactory.CreateParameter();
@@ -269,6 +284,22 @@ namespace Havit.BusinessLayerTest
 				_DeletedPropertyHolder.Value = _tempDeleted;
 			}
 			
+			SqlInt32Array _tempKomunikace;
+			if (record.TryGet<SqlInt32Array>("Komunikace", out _tempKomunikace))
+			{
+				_KomunikacePropertyHolder.Initialize();
+				if ((_tempKomunikace != null) && (!_tempKomunikace.IsNull))
+				{
+					for (int i = 0; i < _tempKomunikace.Count; i++)
+					{
+						if (!_tempKomunikace[i].IsNull)
+						{
+							_KomunikacePropertyHolder.Value.Add(Havit.BusinessLayerTest.Komunikace.GetObject(_tempKomunikace[i].Value));
+						}
+					}
+				}
+			}
+			
 		}
 		#endregion
 		
@@ -295,7 +326,11 @@ namespace Havit.BusinessLayerTest
 		{
 			base.Save_SaveCollections(transaction);
 			
-			// Není co ukládat.
+			if (_KomunikacePropertyHolder.IsInitialized)
+			{
+				_KomunikacePropertyHolder.Value.SaveAll(transaction);
+			}
+			
 		}
 		
 		/// <summary>
@@ -459,6 +494,17 @@ namespace Havit.BusinessLayerTest
 			}
 			
 			bool dirtyCollectionExists = false;
+			if (_KomunikacePropertyHolder.IsDirty)
+			{
+				dirtyCollectionExists = true;
+				// OPTION (RECOMPILE): workaround pro http://connect.microsoft.com/SQLServer/feedback/ViewFeedback.aspx?FeedbackID=256717
+				commandBuilder.AppendFormat("DELETE FROM [dbo].[Komunikace] WHERE SubjektID = @SubjektID AND KomunikaceID NOT IN (SELECT Value FROM dbo.IntArrayToTable(@Komunikace)) OPTION (RECOMPILE);");
+				SqlParameter dbParameterKomunikace = new SqlParameter("@Komunikace", SqlDbType.Udt);
+				dbParameterKomunikace.UdtTypeName = "IntArray";
+				dbParameterKomunikace.Value = new SqlInt32Array(this._KomunikacePropertyHolder.Value.GetIDs());
+				dbCommand.Parameters.Add(dbParameterKomunikace);
+			}
+			
 			// pokud je objekt dirty, ale žádná property není dirty (Save_MinimalInsert poukládal všechno), neukládáme
 			if (dirtyFieldExists || dirtyCollectionExists)
 			{

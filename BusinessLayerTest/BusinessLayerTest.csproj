@@ -34,6 +34,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Komunikace.cs" />
+    <Compile Include="KomunikaceCollection.cs" />
+    <Compile Include="ObjednavkaSepsani.cs" />
+    <Compile Include="ObjednavkaSepsaniCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Role.cs" />
     <Compile Include="RoleCollection.cs" />
@@ -41,6 +45,16 @@
     <Compile Include="SubjektCollection.cs" />
     <Compile Include="Uzivatel.cs" />
     <Compile Include="UzivatelCollection.cs" />
+    <Compile Include="_generated\Komunikace.partial.cs" />
+    <Compile Include="_generated\KomunikaceBase.cs" />
+    <Compile Include="_generated\KomunikaceCollection.partial.cs" />
+    <Compile Include="_generated\KomunikaceCollectionBase.cs" />
+    <Compile Include="_generated\KomunikacePropertiesBase.cs" />
+    <Compile Include="_generated\ObjednavkaSepsani.partial.cs" />
+    <Compile Include="_generated\ObjednavkaSepsaniBase.cs" />
+    <Compile Include="_generated\ObjednavkaSepsaniCollection.partial.cs" />
+    <Compile Include="_generated\ObjednavkaSepsaniCollectionBase.cs" />
+    <Compile Include="_generated\ObjednavkaSepsaniPropertiesBase.cs" />
     <Compile Include="_generated\Role.partial.cs" />
     <Compile Include="_generated\RoleBase.cs" />
     <Compile Include="_generated\RoleCollection.partial.cs" />
@@ -56,6 +70,8 @@
     <Compile Include="_generated\UzivatelCollection.partial.cs" />
     <Compile Include="_generated\UzivatelCollectionBase.cs" />
     <Compile Include="_generated\UzivatelPropertiesBase.cs" />
+    <Compile Include="_properties\KomunikaceProperties.cs" />
+    <Compile Include="_properties\ObjednavkaSepsaniProperties.cs" />
     <Compile Include="_properties\RoleProperties.cs" />
     <Compile Include="_properties\SubjektProperties.cs" />
     <Compile Include="_properties\UzivatelProperties.cs" />

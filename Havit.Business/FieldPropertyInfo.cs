@@ -68,7 +68,7 @@ namespace Havit.Business
 		private bool isPrimaryKey;
 
 		/// <summary>
-		/// Udává, zda je sloupec primárním klíèem.
+		/// Maximální délka øetìzce (u typù varchar, nvarchar, apod.), pøípadnì velikost datového typu (u typù 
 		/// </summary>
 		public int MaximumLength
 		{

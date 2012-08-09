@@ -67,13 +67,13 @@ namespace Havit.Business
 			}
 
 			this.IsNew = false;
-			this.IsDirty = false;
 			this.IsLoaded = false;
 		
 			this.Load_ParseDataRecord(record);
 
 //			this._isLoadedPartially = !record.FullLoad;
 			this.IsLoaded = true;
+			this.IsDirty = false;
 		}
 		#endregion
 

@@ -107,7 +107,7 @@ namespace Havit.Web.UI.WebControls
 				for (int i = 0; i < newItems.Count; i++)
 				{
 					RemoveExpression(newItems[i].Expression);
-					SortItems.Insert(0, newItems[0]);
+					SortItems.Insert(i, newItems[i]);
 				}
 			}
 		}

@@ -97,7 +97,7 @@ namespace Havit.Web.UI.WebControls
 				PostBackOptions postBackOptions = this.GetPostBackOptions();
 				Page.ClientScript.RegisterForEventValidation(postBackOptions);
 				string postBackEventReference = Page.ClientScript.GetPostBackEventReference(postBackOptions, false);
-				string result = MergeScript(MergeScript(MergeScript(EnsureEndWithSemiColon(onClientClick), EnsureEndWithSemiColon(onClick)), EnsureEndWithSemiColon(postBackEventReference)), "return false;");
+				string result = EnsureStartWithJavascript(MergeScript(MergeScript(MergeScript(onClientClick, onClick), postBackEventReference), "return false;"));
 
 				getPostBackOptionsDisabled = true;
 				base.AddAttributesToRender(writer);
@@ -114,20 +114,17 @@ namespace Havit.Web.UI.WebControls
 
 		internal static string MergeScript(string firstScript, string secondScript)
 		{
-			if (secondScript == null)
+			if (String.IsNullOrEmpty(secondScript))
 			{
-				secondScript = "";
+				return firstScript ?? String.Empty;
 			}
 
-			if (!string.IsNullOrEmpty(firstScript))
+			if (String.IsNullOrEmpty(firstScript))
 			{
-				return (firstScript + secondScript);
+				return secondScript ?? String.Empty;
 			}
-			if (secondScript.TrimStart(new char[0]).StartsWith("javascript:", StringComparison.Ordinal))
-			{
-				return secondScript;
-			}
-			return ("javascript:" + secondScript);
+
+			return EnsureEndWithSemiColon(firstScript) + EnsureEndWithSemiColon(secondScript);
 		}
 
 		internal static string EnsureEndWithSemiColon(string value)
@@ -143,5 +140,18 @@ namespace Havit.Web.UI.WebControls
 			return value;
 		}
 
+		internal static string EnsureStartWithJavascript(string value)
+		{
+			if (String.IsNullOrEmpty(value))
+			{
+				return value;
+			}
+
+			if (value.TrimStart(new char[0]).StartsWith("javascript:"))
+			{
+				return value;
+			}
+			return "javascript:" + value;
+		}
 	}
 }

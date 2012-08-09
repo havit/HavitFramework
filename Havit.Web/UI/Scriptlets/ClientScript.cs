@@ -159,10 +159,38 @@ namespace Havit.Web.UI.Scriptlets
 		/// <returns>Klientský skript pøipravený k vytvoøení obálky a registraci.</returns>
 		protected virtual string GetSubstitutedScript()
 		{
-			return Scriptlet.ScriptSubstitution.Substitute(Script);
+			ClientScriptSubstituingEventArgs eventArgs = new ClientScriptSubstituingEventArgs(Script);
+			OnClientScriptSubstituing(eventArgs);
+			return Scriptlet.ScriptSubstitution.Substitute(eventArgs.ClientScript);
 		}
 		#endregion
-				
+
+		#region ClientScriptSubstituingEventArgs
+		protected virtual void OnClientScriptSubstituing(ClientScriptSubstituingEventArgs eventArgs)
+		{
+			if (_clientScriptSubstituing != null)
+			{
+				_clientScriptSubstituing.Invoke(this, eventArgs);
+			}
+		}
+		#endregion
+
+		#region ClientScriptSubstituing
+		public event ClientScriptSubstituingEventHandler ClientScriptSubstituing
+		{
+			add
+			{
+				_clientScriptSubstituing += value;
+			}
+			remove
+			{
+				_clientScriptSubstituing -= value;
+			}
+		}
+		private ClientScriptSubstituingEventHandler _clientScriptSubstituing;
+		
+		#endregion
+
 		#region Functions cache
 		
 		#region FunctionCache

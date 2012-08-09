@@ -262,6 +262,13 @@ namespace Havit.Web.UI.Scriptlets
 
 			builder.AppendLineFormat("function {0}()", attachEventsFunctionName);
 			builder.AppendLine("{");
+
+			// pokud používáme klientské události ASP.NET AJAXu, potøebujeme se odpojit od pageLoaded
+			builder.AppendLine("if (!((typeof(Sys) == 'undefined') || (typeof(Sys.WebForms) == 'undefined')))");
+			builder.AppendLine("{");
+			builder.AppendLineFormat("Sys.WebForms.PageRequestManager.getInstance().remove_pageLoaded({0});", attachEventsFunctionName);
+			builder.AppendLine("}");
+
 			builder.AppendLineFormat("var data = {0};", ClientSideGetDataObjectFunctionCall);
 			foreach (IScriptletParameter scriptletParameter in scriptletParameters)
 			{
@@ -275,6 +282,13 @@ namespace Havit.Web.UI.Scriptlets
 			{
 				builder.AppendLineFormat("function {0}()", detachEventsFunctionName);
 				builder.AppendLine("{");
+
+				// pokud používáme klientské události ASP.NET AJAXu, potøebujeme se odpojit od pageLoadingu
+				builder.AppendLine("if (!((typeof(Sys) == 'undefined') || (typeof(Sys.WebForms) == 'undefined')))");
+				builder.AppendLine("{");
+				builder.AppendLineFormat("Sys.WebForms.PageRequestManager.getInstance().remove_pageLoading({0});", detachEventsFunctionName);
+				builder.AppendLine("}");
+				
 				builder.AppendLineFormat("var data = {0};", ClientSideGetDataObjectFunctionCall);
 				foreach (IScriptletParameter scriptletParameter in scriptletParameters)
 				{
@@ -297,15 +311,15 @@ namespace Havit.Web.UI.Scriptlets
 				builder.AppendLine("}");
 				builder.AppendLine("else");
 				builder.AppendLine("{");
-				builder.AppendLine("if (typeof(document.scriptletEvents" + this.UniqueID + "Registered) == 'undefined')");
-				builder.AppendLine("{");				
+				//builder.AppendLine("if (typeof(document.scriptletEvents" + this.UniqueID + "Registered) == 'undefined')");
+				//builder.AppendLine("{");				
 				// pageLoading nám zajistí odebrání událostí ještì pøed výmìnou elementù v dokumentu
-				builder.AppendLine("Sys.WebForms.PageRequestManager.getInstance().add_pageLoading(" + attachEventsFunctionName + ");");
+				builder.AppendLineFormat("Sys.WebForms.PageRequestManager.getInstance().add_pageLoading({0});", detachEventsFunctionName);
 				// pageLoaded nám zajistí navázání událostí po výmìnì elementù
-				builder.AppendLine("Sys.WebForms.PageRequestManager.getInstance().add_pageLoaded(" + attachEventsFunctionName + ");");
+				builder.AppendLineFormat("Sys.WebForms.PageRequestManager.getInstance().add_pageLoaded({0});", attachEventsFunctionName);
 				builder.AppendLine("document.scriptletEvents" + this.UniqueID + "Registered = true;");				
 				builder.AppendLine("}");
-				builder.AppendLine("}");
+				//builder.AppendLine("}");
 			}
 		}
 		#endregion

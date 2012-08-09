@@ -141,7 +141,9 @@
     <Compile Include="UI\Scriptlets\ScriptBuilder.cs" />
     <Compile Include="UI\Scriptlets\Scriptlet.cs" />
     <Compile Include="UI\Scriptlets\ScriptletNestedControl.cs" />
+    <Compile Include="UI\Scriptlets\ClientScriptSubstituingEventHandler.cs" />
     <Compile Include="UI\Scriptlets\ScriptSubstitutionRepository.cs" />
+    <Compile Include="UI\Scriptlets\ClientScriptSubstituingEventArgs.cs" />
     <Compile Include="UI\Scriptlets\SimpleControlExtender.cs" />
     <Compile Include="UI\Scriptlets\SubstitutionControlExtenderBase.cs" />
     <Compile Include="UI\Scriptlets\ValueParameter.cs" />

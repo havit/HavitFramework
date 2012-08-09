@@ -292,6 +292,7 @@ namespace Havit.Web.UI.WebControls
 				row.RowIndex,
 				row.DataItem);
 
+			// JK: Tohle není úplnì OK! Pozor na schování v nadøazeném controlu bìhem databindingu!
 			args.Visible = control.Visible;
 
 			if (sender is LinkButton)
@@ -310,14 +311,19 @@ namespace Havit.Web.UI.WebControls
 				args.Enabled = button.Enabled;
 			}
 
-
 			// zavoláme obsluhu události
 			gridViewExt.OnRowCustomizingCommandButton(args);
-
 
 			// nastavíme výsledek z argumentù do buttonu
 
 			control.Visible = args.Visible;
+			
+			// pokud je ZA controlem mezera (LiteralControl), chceme ji taky zobrazit/schovat
+			int index = control.Parent.Controls.IndexOf(control);
+			if ((index < control.Parent.Controls.Count - 1) && (control.Parent.Controls[index + 1] is LiteralControl))
+			{
+				control.Parent.Controls[index + 1].Visible = args.Visible;
+			}
 
 			if (sender is LinkButton)
 			{

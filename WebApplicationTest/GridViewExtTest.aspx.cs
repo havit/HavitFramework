@@ -34,6 +34,10 @@ namespace WebApplicationTest
 			{
 				e.Enabled = false;
 			}
+			if ((e.CommandName == CommandNames.Edit) && (e.RowIndex % 5 == 0))
+			{
+				e.Visible = false;
+			}
 		}
 
 		void TestGV_DataBinding(object sender, EventArgs e)

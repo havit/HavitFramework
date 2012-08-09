@@ -10,6 +10,7 @@
 			<havit:MessengerControl ShowMessageBox="true" ShowSummary="true" runat="server" />
 			<asp:Button Text="PostBack" runat="server" />
 			<asp:Button ID="MessagesButton" Text="Add messages" runat="server" />
+			<input type=button value="x" onclick="window.setTimeout(function() {{ alert('hello'); }}, 10);" />
 		</div>
 	</form>
 </body>

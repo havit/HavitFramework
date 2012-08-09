@@ -66,7 +66,8 @@ namespace Havit.Web.UI.WebControls
 				string messageBoxText = this.GetMessageBoxText();
 				if (!String.IsNullOrEmpty(messageBoxText))
 				{
-					string script = String.Format("alert('{0}');", messageBoxText.Replace("'", "\\'"));
+					//string script = String.Format("alert('{0}');", messageBoxText.Replace("'", "\\'"));
+					string script = String.Format("window.setTimeout(function() {{ alert('{0}'); }}, 10);", messageBoxText.Replace("'", "\\'"));
 					System.Web.UI.ScriptManager.RegisterStartupScript(this, typeof(MessengerControl), "Summary", script, true);
 				}
 			}

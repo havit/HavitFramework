@@ -19,6 +19,8 @@ namespace WebApplicationTest
 		{
 			Messenger.Default.AddMessage("Je právě: " + DateTime.Now.ToString("g"));
 			Messenger.Default.AddMessage(MessageType.Error, "Error message's testing single quotation mark.");
+			Messenger.Default.AddMessage(MessageType.Error, "Error message\"s testing single quotation mark.");
+			Messenger.Default.AddMessage(MessageType.Error, "Error message'\"\"'s testing single quotation mark.");			
 		}
 	}
 }

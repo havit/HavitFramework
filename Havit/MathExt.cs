@@ -8,7 +8,7 @@ namespace Havit
 	/// Matematické funkce, konstanty a rùzné další pomùcky.
 	/// Tøída poskytuje statické metody a konstanty, je neinstanèní.
 	/// </summary>
-	public sealed class MathExt
+	public static class MathExt
 	{
 		#region IsEven, IsOdd
 		/// <summary>
@@ -289,13 +289,6 @@ namespace Havit
 			}
 			return result;
 		}
-		#endregion
-
-		#region private constructor
-		/// <summary>
-		/// Prázdný private constructor zamezující vytvoøení instance tøídy.
-		/// </summary>
-		private MathExt() {}
 		#endregion
 	}
 }

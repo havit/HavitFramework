@@ -8,7 +8,7 @@ namespace Havit
 	/// <remarks>
 	/// Tøída samostná není potomkem System.Enum, protože ze System.Enum nelze dìdit.
 	/// </remarks>
-	public sealed class EnumExt
+	public static class EnumExt
 	{
 		/// <summary>
 		/// Vrátí hodnotu atributu [Description("...")] urèité hodnoty zadaného výètového typu.
@@ -19,16 +19,16 @@ namespace Havit
 		/// <remarks>Není-li atribut Description definován, vrátí prázdný øetìzec.</remarks>
 		/// <example>
 		///	<code>
-		/// using System.ComponentModel;
-		/// 
-		/// public enum Barvy
-		/// {
-		///		[Description("èervená")]
-		///		Cervena,
-		///		
-		///		[Description("modrá")]
-		///		Modra
-		///	}
+		/// using System.ComponentModel;<br/>
+		/// <br/>
+		/// public enum Barvy<br/>
+		/// {<br/>
+		///		[Description("èervená")]<br/>
+		///		Cervena,<br/>
+		///	<br/>
+		///		[Description("modrá")]<br/>
+		///		Modra<br/>
+		///	}<br/>
 		///	</code>
 		/// </example>
 		public static string GetDescription(Type enumType, object hodnota)
@@ -52,11 +52,5 @@ namespace Havit
 
 			return strRet;
 		}
-
-		
-		/// <summary>
-		/// Prázdný private constructor zamezující vytvoøení instance tøídy.
-		/// </summary>
-		private EnumExt() {}
 	}
 }

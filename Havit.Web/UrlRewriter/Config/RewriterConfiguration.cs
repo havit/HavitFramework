@@ -67,7 +67,7 @@ namespace Havit.Web.UrlRewriter.Config
 
 			if (result == null)
 			{
-				result = (RewriterConfiguration)ConfigurationSettings.GetConfig(sectionName);
+				result = (RewriterConfiguration)ConfigurationManager.GetSection(sectionName);
 				HttpContext.Current.Cache[sectionName] = result;
 			}
 

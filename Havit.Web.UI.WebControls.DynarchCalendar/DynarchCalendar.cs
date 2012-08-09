@@ -739,12 +739,12 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		protected virtual void RegisterMainScript()
 		{
-			if (!this.Page.IsClientScriptBlockRegistered("DynarchCalendar.MainScript"))
+			if (!this.Page.ClientScript.IsClientScriptBlockRegistered("DynarchCalendar.MainScript"))
 			{
 				StringBuilder sb = new StringBuilder();
 				sb.AppendFormat("<script type=\"text/javascript\" src=\"{0}\"></script>",
 					this.ResolveUrl(DynarchCalendar.MainScriptUrl));
-				this.Page.RegisterClientScriptBlock("DynarchCalendar.MainScript", sb.ToString());
+				this.Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "DynarchCalendar.MainScript", sb.ToString());
 			}
 		}
 		#endregion
@@ -756,12 +756,12 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		protected virtual void RegisterLanguageScript()
 		{
-			if (!this.Page.IsClientScriptBlockRegistered("DynarchCalendar.LanguageScript"))
+			if (!this.Page.ClientScript.IsClientScriptBlockRegistered("DynarchCalendar.LanguageScript"))
 			{
 				StringBuilder sb = new StringBuilder();
 				sb.AppendFormat("<script type=\"text/javascript\" src=\"{0}\"></script>",
 					this.ResolveUrl(DynarchCalendar.LanguageScriptUrl));
-				this.Page.RegisterClientScriptBlock("DynarchCalendar.LanguageScript", sb.ToString());
+				this.Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "DynarchCalendar.LanguageScript", sb.ToString());
 			}
 		}
 		#endregion
@@ -772,12 +772,12 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		protected virtual void RegisterSetupScript()
 		{
-			if (!this.Page.IsClientScriptBlockRegistered("DynarchCalendar.SetupScript"))
+			if (!this.Page.ClientScript.IsClientScriptBlockRegistered("DynarchCalendar.SetupScript"))
 			{
 				StringBuilder sb = new StringBuilder();
 				sb.AppendFormat("<script type=\"text/javascript\" src=\"{0}\"></script>",
 					this.ResolveUrl(DynarchCalendar.SetupScriptUrl));
-				this.Page.RegisterClientScriptBlock("DynarchCalendar.SetupScript", sb.ToString());
+				this.Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "DynarchCalendar.SetupScript", sb.ToString());
 			}
 		}
 		#endregion

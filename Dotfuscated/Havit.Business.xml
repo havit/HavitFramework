@@ -10,6 +10,12 @@
             Potřebujeme kolekci PropertyHolderů a kolekci generických typů nelze udělat.
             </summary>
         </member>
+        <member name="M:Havit.Business.PropertyHolderBase.CheckInitialization">
+            <summary>
+            Pokud nebyla hodnota PropertyHolderu nastavena, vyhodí InvalidOperationException.
+            Pokud byla hodnota PropertyHolderu nastavena, neudělá nic (projde).
+            </summary>
+        </member>
         <member name="M:Havit.Business.PropertyHolderBase.#ctor(Havit.Business.BusinessObjectBase)">
             <summary>
             Založí instanci PropertyHolderu.
@@ -111,12 +117,14 @@
         </member>
         <member name="M:Havit.Business.BusinessObjectBase.Save(System.Data.Common.DbTransaction)">
             <summary>
-            Uloží objekt do databáze, s použitím transakce. Nový objekt je vložen INSERT, existující objekt je aktualizován UPDATE.
+            Uloží objekt do databáze, s případným použitím VNĚJŠÍ transakce.
             </summary>
             <remarks>
             Metoda neprovede uložení objektu, pokud není nahrán (!IsLoaded), není totiž ani co ukládat,
             data nemohla být změněna, když nebyla ani jednou použita.<br/>
-            Metoda také neprovede uložení, pokud objekt nebyl změněn a současně nejde o nový objekt (!IsDirty &amp;&amp; !IsNew)
+            Metoda také neprovede uložení, pokud objekt nebyl změněn a současně nejde o nový objekt (!IsDirty &amp;&amp; !IsNew).<br/>
+            Metoda nezakládá vlastní transakci, která by sdružovala uložení kolekcí, členských objektů a vlastních dat!!!
+            Příslušná transakce musí být předána (explicitní transakci doplňuje až ActiveRecordBusinessObjectbase).<br/>
             </remarks>
             <param name="transaction">transakce <see cref="T:System.Data.Common.DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
         </member>
@@ -135,6 +143,18 @@
             Výkonná část uložení objektu do perzistentního uložiště.
             </summary>
             <param name="transaction">transakce <see cref="T:System.Data.Common.DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
+        </member>
+        <member name="M:Havit.Business.BusinessObjectBase.Save_SaveMembers(System.Data.Common.DbTransaction)">
+            <summary>
+            Ukládá member-objekty.
+            </summary>
+            <param name="transaction">transakce <see cref="T:System.Data.Common.DbTransaction"/>, v rámci které mají být member-objekty uloženy; null, pokud bez transakce</param>
+        </member>
+        <member name="M:Havit.Business.BusinessObjectBase.Save_SaveCollections(System.Data.Common.DbTransaction)">
+            <summary>
+            Ukládá member-kolekce objektu.
+            </summary>
+            <param name="transaction">transakce <see cref="T:System.Data.Common.DbTransaction"/>, v rámci které mají být member-kolekce uloženy; null, pokud bez transakce</param>
         </member>
         <member name="M:Havit.Business.BusinessObjectBase.Delete(System.Data.Common.DbTransaction)">
             <summary>
@@ -214,20 +234,12 @@
             Vrací ID jako HashCode.
             </summary>
         </member>
-        <member name="M:Havit.Business.BusinessObjectBase.PreSave">
-            <summary>
-            Metoda, která je volána před uložením objektu, po zkontrolování constraints.
-            </summary>
-            <remarks>
-            V případě, že objekt není ukládán (např. není Dirty), metoda PreSave() se nevolá.<br/>
-            </remarks>
-        </member>
         <member name="M:Havit.Business.BusinessObjectBase.CheckConstraints">
             <summary>
             Kontroluje konzistenci objektu jako celku.
             </summary>
             <remarks>
-            Automaticky je voláno před ukládáním objektu Save(), před fází PreSave().
+            Automaticky je voláno před ukládáním objektu Save(), pokud je objekt opravdu ukládán.
             </remarks>
         </member>
         <member name="M:Havit.Business.BusinessObjectBase.Init">
@@ -256,6 +268,7 @@
         <member name="P:Havit.Business.BusinessObjectBase.IsDirty">
             <summary>
             Indikuje, zda-li byla data objektu změněna oproti datům v databázi.
+            Při nastavení na false zruší příznak změn všem PropertyHolderům.
             </summary>
         </member>
         <member name="P:Havit.Business.BusinessObjectBase.IsLoaded">
@@ -335,6 +348,29 @@
         <member name="P:Havit.Business.DateInfo.HolidayDescription">
             <summary>
             Textový popis svátku, pokud je den svátkem.
+            </summary>
+        </member>
+        <member name="T:Havit.Business.CollectionPropertyHolder`2">
+            <summary>
+            Třída pro objekt, který nese kolekci property BusinessObjectu.
+            </summary>
+            <typeparam name="CollectionType">typ kolekce, jíž je CollectionPropertyHolder nosičem</typeparam>
+            <typeparam name="BusinessObjectType">typ prvku kolekce</typeparam>
+        </member>
+        <member name="M:Havit.Business.CollectionPropertyHolder`2.#ctor(Havit.Business.BusinessObjectBase)">
+            <summary>
+            Založí instanci CollectionPropertyHolderu.
+            </summary>
+            <param name="owner">objekt, kterému CollectionPropertyHolder patří</param>
+        </member>
+        <member name="M:Havit.Business.CollectionPropertyHolder`2.Initialize">
+            <summary>
+            Inicializuje obsaženou kolekci.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.CollectionPropertyHolder`2.Value">
+            <summary>
+            Hodnota, kterou CollectionPropertyHolder nese.
             </summary>
         </member>
         <member name="T:Havit.Business.BusinessObjectCollection`1">

@@ -4,47 +4,88 @@
         <name>Havit.Web</name>
     </assembly>
     <members>
-        <member name="T:Havit.Web.UI.HtmlControls.HtmlFormExt">
+        <member name="T:Havit.Web.HttpServerUtilityExt">
             <summary>
-            Rozšíření .NET controlu HtmlForm.
+            Poskytuje další pomocné metody pro ovládání webového serveru.
             </summary>
         </member>
-        <member name="M:Havit.Web.UI.HtmlControls.HtmlFormExt.RenderAttributes(System.Web.UI.HtmlTextWriter)">
+        <member name="M:Havit.Web.HttpServerUtilityExt.ClearCache">
             <summary>
-            Overriden. Zajišťuje vlastní renderování atributu Action
-            </summary>
-            <param name="writer"></param>
-        </member>
-        <member name="M:Havit.Web.UI.HtmlControls.HtmlFormExt.GetBaseActionAttribute">
-            <summary>
-            Pomocí reflexe vrátí původní private base.GetActionAttribute()
-            </summary>
-            <returns>Microsoft implementace action atributu formuláře</returns>
-        </member>
-        <member name="P:Havit.Web.UI.HtmlControls.HtmlFormExt.Action">
-            <summary>
-            Vrátí nebo nastaví cílové URL formuláře. Atribut Action formuláře.
-            Pokud není explicitně nastaveno, vrací automaticky Microsoft implementaci (včetně QueryStringu).
-            </summary>
-            <remarks>Nedělá se ResolveUrl.</remarks>
-        </member>
-        <member name="P:Havit.Web.UI.HtmlControls.HtmlFormExt.Page_ClientOnSubmitEvent">
-            <summary>
-            Pomocí reflexe vrátí internal ClientOnSubmitEvent vlastnost Page
+            Vyčistí cache webové aplikace.
             </summary>
         </member>
-        <member name="T:Havit.Web.UrlRewriter.Config.RewriterConfigSerializerSectionHandler">
+        <member name="M:Havit.Web.HttpServerUtilityExt.ResolveUrl(System.String,System.String)">
             <summary>
-            Deserializes the markup in Web.config into an instance of the <see cref="T:Havit.Web.UrlRewriter.Config.RewriterConfiguration"/> class.
+            Converts a URL into one that is usable on the requesting client.
+            </summary>
+            <remarks>Converts ~ to the requesting application path.  Mimics the behavior of the 
+            <b>Control.ResolveUrl()</b> method, which is often used by control developers.</remarks>
+            <param name="appPath">The application path.</param>
+            <param name="url">The URL, which might contain ~.</param>
+            <returns>A resolved URL.  If the input parameter <b>url</b> contains ~, it is replaced with the
+            value of the <b>appPath</b> parameter.</returns>
+        </member>
+        <member name="M:Havit.Web.HttpServerUtilityExt.ResolveUrl(System.String)">
+            <summary>
+            Converts a URL into one that is usable on the requesting client.
+            </summary>
+            <remarks>Converts ~ to the requesting application path.  Mimics the behavior of the 
+            <b>Control.ResolveUrl()</b> method, which is often used by control developers.</remarks>
+            <param name="url">The URL, which might contain ~.</param>
+            <returns>A resolved URL.  If the input parameter <b>url</b> contains ~, it is replaced with the
+            value of the <see cref="P:System.Web.HttpRequest.ApplicationPath"/> parameter
+            of <see cref="P:System.Web.HttpContext.Current"/>.</returns>
+        </member>
+        <member name="M:Havit.Web.HttpServerUtilityExt.#ctor">
+            <summary>
+            private constructor zabraňuje vytvoření instance třídy
             </summary>
         </member>
-        <member name="M:Havit.Web.UrlRewriter.Config.RewriterConfigSerializerSectionHandler.Create(System.Object,System.Object,System.Xml.XmlNode)">
+        <member name="T:Havit.Web.UrlRewriter.ModuleRewriter">
             <summary>
-            Creates an instance of the <see cref="T:Havit.Web.UrlRewriter.Config.RewriterConfiguration"/> class.
+            Provides a rewriting HttpModule.
             </summary>
-            <remarks>Uses XML Serialization to deserialize the XML in the Web.config file into an
-            <see cref="T:Havit.Web.UrlRewriter.Config.RewriterConfiguration"/> instance.</remarks>
-            <returns>An instance of the <see cref="T:Havit.Web.UrlRewriter.Config.RewriterConfiguration"/> class.</returns>
+        </member>
+        <member name="T:Havit.Web.UrlRewriter.BaseModuleRewriter">
+            <summary>
+            The base class for module rewriting.  This class is abstract, and therefore must be derived from.
+            </summary>
+            <remarks>Provides the essential base functionality for a rewriter using the HttpModule approach.</remarks>
+        </member>
+        <member name="M:Havit.Web.UrlRewriter.BaseModuleRewriter.Init(System.Web.HttpApplication)">
+            <summary>
+            Executes when the module is initialized.
+            </summary>
+            <param name="app">A reference to the HttpApplication object processing this request.</param>
+            <remarks>Wires up the HttpApplication's AuthorizeRequest event to the
+            <see cref="M:Havit.Web.UrlRewriter.BaseModuleRewriter.BaseModuleRewriter_AuthorizeRequest(System.Object,System.EventArgs)"/> event handler.</remarks>
+        </member>
+        <member name="M:Havit.Web.UrlRewriter.BaseModuleRewriter.Dispose">
+            <summary>
+            Prázdná implementace, vyžadováno IHttpModule.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UrlRewriter.BaseModuleRewriter.BaseModuleRewriter_AuthorizeRequest(System.Object,System.EventArgs)">
+            <summary>
+            Called when the module's AuthorizeRequest event fires.
+            </summary>
+            <remarks>This event handler calls the <see cref="M:Havit.Web.UrlRewriter.BaseModuleRewriter.Rewrite(System.String,System.Web.HttpApplication)"/> method, passing in the
+            <b>RawUrl</b> and HttpApplication passed in via the <b>sender</b> parameter.</remarks>
+        </member>
+        <member name="M:Havit.Web.UrlRewriter.BaseModuleRewriter.Rewrite(System.String,System.Web.HttpApplication)">
+            <summary>
+            The <b>Rewrite</b> method must be overriden.  It is where the logic for rewriting an incoming
+            URL is performed.
+            </summary>
+            <param name="requestedPath">The requested path.</param>
+            <param name="app">The HttpApplication instance.</param>
+        </member>
+        <member name="M:Havit.Web.UrlRewriter.ModuleRewriter.Rewrite(System.String,System.Web.HttpApplication)">
+            <summary>
+            Metoda řešící vlastní UrlRewriting zdrojové adresy na cílovou.
+            </summary>
+            <param name="requestedPath">The Path being requested.</param>
+            <param name="app">The HttpApplication instance.</param>
         </member>
         <member name="T:Havit.Web.UI.WebControls.ButtonColumnExt">
             <summary>
@@ -144,6 +185,195 @@
             <summary>
             Odešle klientovi odezvu se status kódem 410 - Gone, tj. "stránka byla zrušena bez náhrady"
             a ukončí zpracování stránky.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.H6">
+            <summary>
+            Reprezentuje label, který se renderuje jako HTML tag H6.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.H6.TagKey">
+            <summary>
+            Vrací HtmlTextWriterTag.H6 zajišťující správné renderování.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.H5">
+            <summary>
+            Reprezentuje label, který se renderuje jako HTML tag H5.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.H5.TagKey">
+            <summary>
+            Vrací HtmlTextWriterTag.H5 zajišťující správné renderování.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.HttpUtilityExt">
+            <summary>
+            Poskytuje další pomocné metody pro kódování a dekódování textu pro použití na webu.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.HttpUtilityExt.HtmlEncode(System.String,Havit.Web.HtmlEncodeOptions)">
+            <summary>
+            Zkonvertuje string do HTML-encoded podoby.
+            Oproti standardnímu <see cref="M:System.Web.HttpUtility.HtmlEncode(System.String)"/> může encodovat všechny non-ASCII znaky
+            a hlavně umožňuje pomocí options řídit požadovanou výslednou podobu. Lze například použít rozšířenou sadu HTML-entit,
+            popřípadě úplně vyloučit převod ne-ASCII znaků na podobu &amp;#1234;.
+            </summary>
+            <param name="unicodeText">převáděný string v Unicode</param>
+            <param name="options">options volby konverze</param>
+            <returns>HTML-encoded string dle options</returns>
+        </member>
+        <member name="M:Havit.Web.HttpUtilityExt.HtmlEncode(System.String)">
+            <summary>
+            Zkonvertuje string do HTML-encoded podoby s použitím výchozích options.
+            Oproti standardnímu <see cref="M:System.Web.HttpUtility.HtmlEncode(System.String)"/> encoduje všechny non-ASCII znaky.
+            </summary>
+            <remarks>
+            Pro podrobné řízení voleb konverze je nutno použít overload s options, takto je použito <see cref="F:Havit.Web.HtmlEncodeOptions.None"/>,
+            tj. pouze pět standardních XML entit (&amp;gt;; &amp;lt;, &amp;amp;, &amp;quot;, &amp;apos;)
+            </remarks>
+            <param name="unicodeText">převáděný string v Unicode</param>
+            <returns>HTML-encoded string</returns>
+        </member>
+        <member name="M:Havit.Web.HttpUtilityExt.UrlEncodeSpaces(System.String)">
+            <summary>
+            Encoduje řetězec tak, že vymění mezery za %20.
+            </summary>
+            <remarks>
+            Public přepis internal metody System.Web.HttpUtility.UrlEncodeSpaces.
+            </remarks>
+            <param name="str">Text k encodování</param>
+            <returns>Řetězec, kde jsou mezery vyměněny za %20.</returns>
+        </member>
+        <member name="M:Havit.Web.HttpUtilityExt.UrlEncodeNonAscii(System.String,System.Text.Encoding)">
+            <summary>
+            Encoduje všechny non-ACSII znaky v zadaném řetězci pro bezpečný přenos v URL.
+            Lze použít na již sestavený QueryString, nezlikviduje totiž &amp;, =, atp.
+            </summary>
+            <remarks>
+            Public přepis internal metody System.Web.HttpUtility.UrlEncodeNonAcsii.
+            </remarks>
+            <param name="str">Text k encodování.</param>
+            <param name="e">Encoding textu</param>
+            <returns>Text encodovaný pro použití v URL.</returns>
+        </member>
+        <member name="M:Havit.Web.HttpUtilityExt.UrlEncodeBytesToBytesNonAscii(System.Byte[])">
+            <summary>
+            Encoduje všechny non-ACSII znaky v zadaném poli bytů pro bezpečný přenos v URL.
+            Lze použít na již sestavený QueryString, nezlikviduje totiž &amp;, =, atp.
+            </summary>
+            <remarks>
+            Public přepis internal metody System.Web.HttpUtility.UrlEncodeBytesToBytesInternalNonAscii.
+            </remarks>
+            <param name="bytes">vstupní text</param>
+            <returns>Text encodovaný pro použití v URL.</returns>
+        </member>
+        <member name="M:Havit.Web.HttpUtilityExt.UrlEncodePathWithQueryString(System.String)">
+            <summary>
+            Encoduje všechny non-ACSII znaky v zadaném poli bytů pro bezpečný přenos v URL.
+            Lze použít na již sestavený QueryString, nezlikviduje totiž &amp;, =, atp.
+            </summary>
+            <remarks>
+            Public přepis internal metody System.Web.HttpUtility.UrlEncodeBytesToBytesInternalNonAscii.
+            </remarks>
+            <param name="urlWithQueryString">vstupní text</param>
+            <returns>Text encodovaný pro použití v URL.</returns>
+        </member>
+        <member name="T:Havit.Web.HtmlEncodeOptions">
+            <summary>
+            Poskytuje množinu hodnot k nastavení voleb metody <see cref="M:Havit.Web.HttpUtilityExt.HtmlEncode(System.String,Havit.Web.HtmlEncodeOptions)"/>
+            </summary>
+        </member>
+        <member name="F:Havit.Web.HtmlEncodeOptions.None">
+            <summary>
+            Označuje, že nemají být nastaveny žádné options, použije se default postup.
+            Default postup převede pouze čtyři základní entity
+            <list type="bullet">
+            	<item>&lt; --- &amp;lt;</item>
+            	<item>&gt; --- &amp;gt;</item>
+            	<item>&amp; --- &amp;amp;</item>
+            	<item>&quot; --- &amp;quot;</item>
+            </list>
+            </summary>
+        </member>
+        <member name="F:Havit.Web.HtmlEncodeOptions.IgnoreNonASCIICharacters">
+            <summary>
+            Při konverzi budou ignorovány znaky mimo ASCII hodnoty, nebudou tedy tvořeny číselné entity typu &amp;#123;.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.HtmlEncodeOptions.ExtendedHtmlEntities">
+            <summary>
+            Při konverzi bude použita rozšířená sada HTML-entit, které by se jinak převedly na číselné entity.
+            Např. bude použito &amp;copy;, &amp;nbsp;, &amp;sect;, atp. 
+            </summary>
+        </member>
+        <member name="F:Havit.Web.HtmlEncodeOptions.XmlApostropheEntity">
+            <summary>
+            Při konverzi převede apostrofy na &amp;apos; entitu.
+            POZOR! &amp;apos; není standardní HTML entita a třeba IE ji v HTML režimu nepozná!!!
+            </summary>
+            <remarks>
+            V kombinaci se základním <see cref="F:Havit.Web.HtmlEncodeOptions.None"/> dostaneme sadu pěti built-in XML entit:
+            <list type="bullet">
+            	<item>&lt; --- &amp;lt;</item>
+            	<item>&gt; --- &amp;gt;</item>
+            	<item>&amp; --- &amp;amp;</item>
+            	<item>" --- &amp;quot;</item>
+            	<item>' --- &amp;apos;</item>
+            </list>
+            </remarks>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.H4">
+            <summary>
+            Reprezentuje label, který se renderuje jako HTML tag H4.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.H4.TagKey">
+            <summary>
+            Vrací HtmlTextWriterTag.H4 zajišťující správné renderování.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UrlRewriter.Config.RewriterConfigSerializerSectionHandler">
+            <summary>
+            Deserializes the markup in Web.config into an instance of the <see cref="T:Havit.Web.UrlRewriter.Config.RewriterConfiguration"/> class.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UrlRewriter.Config.RewriterConfigSerializerSectionHandler.Create(System.Object,System.Object,System.Xml.XmlNode)">
+            <summary>
+            Creates an instance of the <see cref="T:Havit.Web.UrlRewriter.Config.RewriterConfiguration"/> class.
+            </summary>
+            <remarks>Uses XML Serialization to deserialize the XML in the Web.config file into an
+            <see cref="T:Havit.Web.UrlRewriter.Config.RewriterConfiguration"/> instance.</remarks>
+            <returns>An instance of the <see cref="T:Havit.Web.UrlRewriter.Config.RewriterConfiguration"/> class.</returns>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.H3">
+            <summary>
+            Reprezentuje label, který se renderuje jako HTML tag H3.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.H3.TagKey">
+            <summary>
+            Vrací HtmlTextWriterTag.H3 zajišťující správné renderování.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.H2">
+            <summary>
+            Reprezentuje label, který se renderuje jako HTML tag H2.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.H2.TagKey">
+            <summary>
+            Vrací HtmlTextWriterTag.H2 zajišťující správné renderování.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.H1">
+            <summary>
+            Reprezentuje label, který se renderuje jako HTML tag H1.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.H1.TagKey">
+            <summary>
+            Vrací HtmlTextWriterTag.H1 zajišťující správné renderování.
             </summary>
         </member>
         <member name="T:Havit.Web.UI.WebControls.Collapser">
@@ -247,6 +477,35 @@
             Úplná CssClass pro stav Expanded
             </summary>
         </member>
+        <member name="T:Havit.Web.UI.HtmlControls.HtmlFormExt">
+            <summary>
+            Rozšíření .NET controlu HtmlForm.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.HtmlControls.HtmlFormExt.RenderAttributes(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Overriden. Zajišťuje vlastní renderování atributu Action
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="M:Havit.Web.UI.HtmlControls.HtmlFormExt.GetBaseActionAttribute">
+            <summary>
+            Pomocí reflexe vrátí původní private base.GetActionAttribute()
+            </summary>
+            <returns>Microsoft implementace action atributu formuláře</returns>
+        </member>
+        <member name="P:Havit.Web.UI.HtmlControls.HtmlFormExt.Action">
+            <summary>
+            Vrátí nebo nastaví cílové URL formuláře. Atribut Action formuláře.
+            Pokud není explicitně nastaveno, vrací automaticky Microsoft implementaci (včetně QueryStringu).
+            </summary>
+            <remarks>Nedělá se ResolveUrl.</remarks>
+        </member>
+        <member name="P:Havit.Web.UI.HtmlControls.HtmlFormExt.Page_ClientOnSubmitEvent">
+            <summary>
+            Pomocí reflexe vrátí internal ClientOnSubmitEvent vlastnost Page
+            </summary>
+        </member>
         <member name="T:Havit.Web.UrlRewriter.RewriterFactoryHandler">
             <summary>
             Provides an HttpHandler that performs redirection.
@@ -273,177 +532,6 @@
             Prázdná implementace, je však vyžadována IHttpHandlerFactory.
             </summary>
             <param name="handler">handler</param>
-        </member>
-        <member name="T:Havit.Web.UrlRewriter.Config.RewriterConfiguration">
-            <summary>
-            Specifies the configuration settings in the Web.config for the RewriterRule.
-            </summary>
-            <remarks>This class defines the structure of the Rewriter configuration file in the Web.config file.
-            Currently, it allows only for a set of rewrite rules; however, this approach allows for customization.
-            For example, you could provide a ruleset that <i>doesn't</i> use regular expression matching; or a set of
-            constant names and values, which could then be referenced in rewrite rules.
-            <p />
-            The structure in the Web.config file is as follows:
-            <code>
-            &lt;configuration&gt;
-            	&lt;configSections&gt;
-            		&lt;section name="UrlRewriterConfig" 
-            		            type="Havit.Web.UrlRewriter.Config.RewriterConfigSerializerSectionHandler, Havit.Web" /&gt;
-            	&lt;/configSections&gt;
-            	
-            	&lt;UrlRewriterConfig&gt;
-            		&lt;Rules&gt;
-            			&lt;RewriterRule&gt;
-            				&lt;LookFor&gt;<i>pattern</i>&lt;/LookFor&gt;
-            				&lt;SendTo&gt;<i>replace with</i>&lt;/SendTo&gt;
-            			&lt;/RewriterRule&gt;
-            			&lt;RewriterRule&gt;
-            				&lt;LookFor&gt;<i>pattern</i>&lt;/LookFor&gt;
-            				&lt;SendTo&gt;<i>replace with</i>&lt;/SendTo&gt;
-            			&lt;/RewriterRule&gt;
-            			...
-            			&lt;RewriterRule&gt;
-            				&lt;LookFor&gt;<i>pattern</i>&lt;/LookFor&gt;
-            				&lt;SendTo&gt;<i>replace with</i>&lt;/SendTo&gt;
-            			&lt;/RewriterRule&gt;
-            		&lt;/Rules&gt;
-            	&lt;/UrlRewriterConfig&gt;
-            	
-            	&lt;system.web&gt;
-            		...
-            	&lt;/system.web&gt;
-            &lt;/configuration&gt;
-            </code>
-            </remarks>
-        </member>
-        <member name="M:Havit.Web.UrlRewriter.Config.RewriterConfiguration.GetConfig">
-            <summary>
-            GetConfig() returns an instance of the <b>RewriterConfiguration</b> class with the values populated from
-            the Web.config file.  It uses XML deserialization to convert the XML structure in Web.config into
-            a <b>RewriterConfiguration</b> instance.
-            </summary>
-            <returns>A <see cref="T:Havit.Web.UrlRewriter.Config.RewriterConfiguration"/> instance.</returns>
-        </member>
-        <member name="P:Havit.Web.UrlRewriter.Config.RewriterConfiguration.Rules">
-            <summary>
-            A <see cref="T:Havit.Web.UrlRewriter.Config.RewriterRuleCollection"/> instance that provides access to a set of <see cref="T:Havit.Web.UrlRewriter.Config.RewriterRule"/>s.
-            </summary>
-        </member>
-        <member name="T:Havit.Web.HttpUtilityExt">
-            <summary>
-            Poskytuje další pomocné metody pro kódování a dekódování textu pro použití na webu.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.HttpUtilityExt.HtmlEncode(System.String,Havit.Web.HtmlEncodeOptions)">
-            <summary>
-            Zkonvertuje string do HTML-encoded podoby.
-            Oproti standardnímu <see cref="M:System.Web.HttpUtility.HtmlEncode(System.String)"/> může encodovat všechny non-ASCII znaky
-            a hlavně umožňuje pomocí options řídit požadovanou výslednou podobu. Lze například použít rozšířenou sadu HTML-entit,
-            popřípadě úplně vyloučit převod ne-ASCII znaků na podobu &amp;#1234;.
-            </summary>
-            <param name="unicodeText">převáděný string v Unicode</param>
-            <param name="options">options volby konverze</param>
-            <returns>HTML-encoded string dle options</returns>
-        </member>
-        <member name="M:Havit.Web.HttpUtilityExt.HtmlEncode(System.String)">
-            <summary>
-            Zkonvertuje string do HTML-encoded podoby s použitím výchozích options.
-            Oproti standardnímu <see cref="M:System.Web.HttpUtility.HtmlEncode(System.String)"/> encoduje všechny non-ASCII znaky.
-            </summary>
-            <remarks>
-            Pro podrobné řízení voleb konverze je nutno použít overload s options, takto je použito <see cref="F:Havit.Web.HtmlEncodeOptions.None"/>,
-            tj. pouze pět standardních XML entit (&amp;gt;; &amp;lt;, &amp;amp;, &amp;quot;, &amp;apos;)
-            </remarks>
-            <param name="unicodeText">převáděný string v Unicode</param>
-            <returns>HTML-encoded string</returns>
-        </member>
-        <member name="M:Havit.Web.HttpUtilityExt.UrlEncodeSpaces(System.String)">
-            <summary>
-            Encoduje řetězec tak, že vymění mezery za %20.
-            </summary>
-            <remarks>
-            Public přepis internal metody <see cref="!:System.Web.HttpUtility.UrlEncodeSpaces"/>
-            </remarks>
-            <param name="str">Text k encodování</param>
-            <returns>Řetězec, kde jsou mezery vyměněny za %20.</returns>
-        </member>
-        <member name="M:Havit.Web.HttpUtilityExt.UrlEncodeNonAscii(System.String,System.Text.Encoding)">
-            <summary>
-            Encoduje všechny non-ACSII znaky v zadaném řetězci pro bezpečný přenos v URL.
-            Lze použít na již sestavený QueryString, nezlikviduje totiž &amp;, =, atp.
-            </summary>
-            <remarks>
-            Public přepis internal metody System.Web.HttpUtility.UrlEncodeNonAcsii.
-            </remarks>
-            <param name="str">Text k encodování.</param>
-            <param name="e">Encoding textu</param>
-            <returns>Text encodovaný pro použití v URL.</returns>
-        </member>
-        <member name="M:Havit.Web.HttpUtilityExt.UrlEncodeBytesToBytesNonAscii(System.Byte[])">
-            <summary>
-            Encoduje všechny non-ACSII znaky v zadaném poli bytů pro bezpečný přenos v URL.
-            Lze použít na již sestavený QueryString, nezlikviduje totiž &amp;, =, atp.
-            </summary>
-            <remarks>
-            Public přepis internal metody <see cref="!:System.Web.HttpUtility.UrlEncodeBytesToBytesInternalNonAscii"/>.
-            </remarks>
-            <param name="bytes">vstupní text</param>
-            <returns>Text encodovaný pro použití v URL.</returns>
-        </member>
-        <member name="M:Havit.Web.HttpUtilityExt.UrlEncodePathWithQueryString(System.String)">
-            <summary>
-            Encoduje všechny non-ACSII znaky v zadaném poli bytů pro bezpečný přenos v URL.
-            Lze použít na již sestavený QueryString, nezlikviduje totiž &amp;, =, atp.
-            </summary>
-            <remarks>
-            Public přepis internal metody <see cref="!:System.Web.HttpUtility.UrlEncodeBytesToBytesInternalNonAscii"/>.
-            </remarks>
-            <param name="urlWithQueryString">vstupní text</param>
-            <returns>Text encodovaný pro použití v URL.</returns>
-        </member>
-        <member name="T:Havit.Web.HtmlEncodeOptions">
-            <summary>
-            Poskytuje množinu hodnot k nastavení voleb metody <see cref="M:Havit.Web.HttpUtilityExt.HtmlEncode(System.String,Havit.Web.HtmlEncodeOptions)"/>
-            </summary>
-        </member>
-        <member name="F:Havit.Web.HtmlEncodeOptions.None">
-            <summary>
-            Označuje, že nemají být nastaveny žádné options, použije se default postup.
-            Default postup převede pouze čtyři základní entity
-            <list type="bullet">
-            	<item>&lt; --- &amp;lt;</item>
-            	<item>&gt; --- &amp;gt;</item>
-            	<item>&amp; --- &amp;amp;</item>
-            	<item>&quot; --- &amp;quot;</item>
-            </list>
-            </summary>
-        </member>
-        <member name="F:Havit.Web.HtmlEncodeOptions.IgnoreNonASCIICharacters">
-            <summary>
-            Při konverzi budou ignorovány znaky mimo ASCII hodnoty, nebudou tedy tvořeny číselné entity typu &amp;#123;.
-            </summary>
-        </member>
-        <member name="F:Havit.Web.HtmlEncodeOptions.ExtendedHtmlEntities">
-            <summary>
-            Při konverzi bude použita rozšířená sada HTML-entit, které by se jinak převedly na číselné entity.
-            Např. bude použito &amp;copy;, &amp;nbsp;, &amp;sect;, atp. 
-            </summary>
-        </member>
-        <member name="F:Havit.Web.HtmlEncodeOptions.XmlApostropheEntity">
-            <summary>
-            Při konverzi převede apostrofy na &amp;apos; entitu.
-            POZOR! &amp;apos; není standardní HTML entita a třeba IE ji v HTML režimu nepozná!!!
-            </summary>
-            <remarks>
-            V kombinaci se základním <see cref="F:Havit.Web.HtmlEncodeOptions.None"/> dostaneme sadu pěti built-in XML entit:
-            <list type="bullet">
-            	<item>&lt; --- &amp;lt;</item>
-            	<item>&gt; --- &amp;gt;</item>
-            	<item>&amp; --- &amp;amp;</item>
-            	<item>" --- &amp;quot;</item>
-            	<item>' --- &amp;apos;</item>
-            </list>
-            </remarks>
         </member>
         <member name="T:Havit.Web.UI.WebControls.DataGridExt">
             <summary>
@@ -584,29 +672,6 @@
             Např. po standardní obsluze událostí EditCommand, CancelCommand, PageIndexChanged, atp.
             </remarks>
         </member>
-        <member name="T:Havit.Web.UrlRewriter.RewriterUtils">
-            <summary>
-            Provides utility helper methods for the rewriting HttpModule and HttpHandler.
-            </summary>
-            <remarks>This class is marked as internal, meaning only classes in the same assembly will be
-            able to access its methods.</remarks>
-        </member>
-        <member name="M:Havit.Web.UrlRewriter.RewriterUtils.RewriteUrl(System.Web.HttpContext,System.String)">
-            <summary>
-            Rewrite's a URL using <b>HttpContext.RewriteUrl()</b>.
-            </summary>
-            <param name="context">The HttpContext object to rewrite the URL to.</param>
-            <param name="sendToUrl">The URL to rewrite to.</param>
-        </member>
-        <member name="M:Havit.Web.UrlRewriter.RewriterUtils.RewriteUrl(System.Web.HttpContext,System.String,System.String@,System.String@)">
-            <summary>
-            Rewrite's a URL using <b>HttpContext.RewriteUrl()</b>.
-            </summary>
-            <param name="context">The HttpContext object to rewrite the URL to.</param>
-            <param name="sendToUrl">The URL to rewrite to.</param>
-            <param name="sendToUrlLessQString">Returns the value of sendToUrl stripped of the querystring.</param>
-            <param name="filePath">Returns the physical file path to the requested page.</param>
-        </member>
         <member name="T:Havit.Web.UrlRewriter.Config.RewriterRuleCollection">
             <summary>
             The RewriterRuleCollection models a set of RewriterRules in the Web.config file.
@@ -641,58 +706,82 @@
             Gets or sets a RewriterRule at a specified ordinal index.
             </summary>
         </member>
-        <member name="T:Havit.Web.UrlRewriter.BaseModuleRewriter">
+        <member name="T:Havit.Web.UrlRewriter.RewriterUtils">
             <summary>
-            The base class for module rewriting.  This class is abstract, and therefore must be derived from.
+            Provides utility helper methods for the rewriting HttpModule and HttpHandler.
             </summary>
-            <remarks>Provides the essential base functionality for a rewriter using the HttpModule approach.</remarks>
+            <remarks>This class is marked as internal, meaning only classes in the same assembly will be
+            able to access its methods.</remarks>
         </member>
-        <member name="M:Havit.Web.UrlRewriter.BaseModuleRewriter.Init(System.Web.HttpApplication)">
+        <member name="M:Havit.Web.UrlRewriter.RewriterUtils.RewriteUrl(System.Web.HttpContext,System.String)">
             <summary>
-            Executes when the module is initialized.
+            Rewrite's a URL using <b>HttpContext.RewriteUrl()</b>.
             </summary>
-            <param name="app">A reference to the HttpApplication object processing this request.</param>
-            <remarks>Wires up the HttpApplication's AuthorizeRequest event to the
-            <see cref="M:Havit.Web.UrlRewriter.BaseModuleRewriter.BaseModuleRewriter_AuthorizeRequest(System.Object,System.EventArgs)"/> event handler.</remarks>
+            <param name="context">The HttpContext object to rewrite the URL to.</param>
+            <param name="sendToUrl">The URL to rewrite to.</param>
         </member>
-        <member name="M:Havit.Web.UrlRewriter.BaseModuleRewriter.Dispose">
+        <member name="M:Havit.Web.UrlRewriter.RewriterUtils.RewriteUrl(System.Web.HttpContext,System.String,System.String@,System.String@)">
             <summary>
-            Prázdná implementace, vyžadováno IHttpModule.
+            Rewrite's a URL using <b>HttpContext.RewriteUrl()</b>.
             </summary>
+            <param name="context">The HttpContext object to rewrite the URL to.</param>
+            <param name="sendToUrl">The URL to rewrite to.</param>
+            <param name="sendToUrlLessQString">Returns the value of sendToUrl stripped of the querystring.</param>
+            <param name="filePath">Returns the physical file path to the requested page.</param>
         </member>
-        <member name="M:Havit.Web.UrlRewriter.BaseModuleRewriter.BaseModuleRewriter_AuthorizeRequest(System.Object,System.EventArgs)">
+        <member name="T:Havit.Web.UrlRewriter.Config.RewriterConfiguration">
             <summary>
-            Called when the module's AuthorizeRequest event fires.
+            Specifies the configuration settings in the Web.config for the RewriterRule.
             </summary>
-            <remarks>This event handler calls the <see cref="M:Havit.Web.UrlRewriter.BaseModuleRewriter.Rewrite(System.String,System.Web.HttpApplication)"/> method, passing in the
-            <b>RawUrl</b> and HttpApplication passed in via the <b>sender</b> parameter.</remarks>
+            <remarks>This class defines the structure of the Rewriter configuration file in the Web.config file.
+            Currently, it allows only for a set of rewrite rules; however, this approach allows for customization.
+            For example, you could provide a ruleset that <i>doesn't</i> use regular expression matching; or a set of
+            constant names and values, which could then be referenced in rewrite rules.
+            <p />
+            The structure in the Web.config file is as follows:
+            <code>
+            &lt;configuration&gt;
+            	&lt;configSections&gt;
+            		&lt;section name="UrlRewriterConfig" 
+            		            type="Havit.Web.UrlRewriter.Config.RewriterConfigSerializerSectionHandler, Havit.Web" /&gt;
+            	&lt;/configSections&gt;
+            	
+            	&lt;UrlRewriterConfig&gt;
+            		&lt;Rules&gt;
+            			&lt;RewriterRule&gt;
+            				&lt;LookFor&gt;<i>pattern</i>&lt;/LookFor&gt;
+            				&lt;SendTo&gt;<i>replace with</i>&lt;/SendTo&gt;
+            			&lt;/RewriterRule&gt;
+            			&lt;RewriterRule&gt;
+            				&lt;LookFor&gt;<i>pattern</i>&lt;/LookFor&gt;
+            				&lt;SendTo&gt;<i>replace with</i>&lt;/SendTo&gt;
+            			&lt;/RewriterRule&gt;
+            			...
+            			&lt;RewriterRule&gt;
+            				&lt;LookFor&gt;<i>pattern</i>&lt;/LookFor&gt;
+            				&lt;SendTo&gt;<i>replace with</i>&lt;/SendTo&gt;
+            			&lt;/RewriterRule&gt;
+            		&lt;/Rules&gt;
+            	&lt;/UrlRewriterConfig&gt;
+            	
+            	&lt;system.web&gt;
+            		...
+            	&lt;/system.web&gt;
+            &lt;/configuration&gt;
+            </code>
+            </remarks>
         </member>
-        <member name="M:Havit.Web.UrlRewriter.BaseModuleRewriter.Rewrite(System.String,System.Web.HttpApplication)">
+        <member name="M:Havit.Web.UrlRewriter.Config.RewriterConfiguration.GetConfig">
             <summary>
-            The <b>Rewrite</b> method must be overriden.  It is where the logic for rewriting an incoming
-            URL is performed.
+            GetConfig() returns an instance of the <b>RewriterConfiguration</b> class with the values populated from
+            the Web.config file.  It uses XML deserialization to convert the XML structure in Web.config into
+            a <b>RewriterConfiguration</b> instance.
             </summary>
-            <param name="requestedPath">The requested path.</param>
-            <param name="app">The HttpApplication instance.</param>
+            <returns>A <see cref="T:Havit.Web.UrlRewriter.Config.RewriterConfiguration"/> instance.</returns>
         </member>
-        <member name="T:Havit.Web.UI.WebControls.H6">
+        <member name="P:Havit.Web.UrlRewriter.Config.RewriterConfiguration.Rules">
             <summary>
-            Reprezentuje label, který se renderuje jako HTML tag H6.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.H6.TagKey">
-            <summary>
-            Vrací HtmlTextWriterTag.H6 zajišťující správné renderování.
-            </summary>
-        </member>
-        <member name="T:Havit.Web.UI.WebControls.H5">
-            <summary>
-            Reprezentuje label, který se renderuje jako HTML tag H5.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.H5.TagKey">
-            <summary>
-            Vrací HtmlTextWriterTag.H5 zajišťující správné renderování.
+            A <see cref="T:Havit.Web.UrlRewriter.Config.RewriterRuleCollection"/> instance that provides access to a set of <see cref="T:Havit.Web.UrlRewriter.Config.RewriterRule"/>s.
             </summary>
         </member>
         <member name="T:Havit.Web.UrlRewriter.Config.RewriterRule">
@@ -719,94 +808,89 @@
             <b>System.Text.RegularExpression.Regex</b> class's <b>Replace()</b> method is used to replace
             the match in <see cref="P:Havit.Web.UrlRewriter.Config.RewriterRule.LookFor"/> with the value in <b>SendTo</b>.</remarks>
         </member>
-        <member name="T:Havit.Web.UI.WebControls.H4">
+        <member name="T:Havit.Web.Security.FormsRolesAuthentication">
             <summary>
-            Reprezentuje label, který se renderuje jako HTML tag H4.
+            Poskytuje statické metody pro snadnou implementaci FormAuthentication, kdy jsou do role ukládány do ticketu jako userData.
             </summary>
+            <remarks>
+            Implementováno výhradně pro cookies-authentizaci. Nepodporuje cookieless!
+            </remarks>
         </member>
-        <member name="P:Havit.Web.UI.WebControls.H4.TagKey">
+        <member name="M:Havit.Web.Security.FormsRolesAuthentication.ApplyAuthenticationTicket(System.Web.Security.FormsAuthenticationTicket)">
             <summary>
-            Vrací HtmlTextWriterTag.H4 zajišťující správné renderování.
+            Aplikuje autentizační ticket, tj. vytáhne z něj informace o přihlášeném uživateli
+            a jeho rolích a naplní jimi objekt User.
             </summary>
+            <remarks>
+            Vytáhne z authentication-ticketu role, vytvoří z něj identity, spojí to v principal a ten nastaví jako aktuálního uživatele.
+            </remarks>
+            <exception cref="T:System.ArgumentNullException">pokud je <c>ticket</c> null</exception>
+            <param name="ticket">authentication-ticket</param>
         </member>
-        <member name="T:Havit.Web.HttpServerUtilityExt">
+        <member name="M:Havit.Web.Security.FormsRolesAuthentication.ApplyAuthenticationTicket">
             <summary>
-            Poskytuje další pomocné metody pro ovládání webového serveru.
+            Aplikuje případný autentizační ticket, tj. vytáhne z něj informace o přihlášeném uživateli
+            a jeho rolích a naplní jimi objekt User.
             </summary>
+            <remarks>
+            Autentizační ticket se pokouší zjistit ve formě cookie a decryptovat. V případě nalezení ho aplikuje.
+            </remarks>
         </member>
-        <member name="M:Havit.Web.HttpServerUtilityExt.ClearCache">
+        <member name="M:Havit.Web.Security.FormsRolesAuthentication.GetAuthTicket(System.String,System.String[],System.Boolean,System.String)">
             <summary>
-            Vyčistí cache webové aplikace.
+            Vytvoří autentizační ticket pro forms-authentication s ukládáním rolí do userData.
             </summary>
+            <param name="username">přihlašovací jméno uživatele</param>
+            <param name="roles">role, které uživateli přísluší</param>
+            <param name="createPersistent"><c>true</c>, pokud se má být ticket persistentní; jinak <c>false</c></param>
+            <param name="cookiePath">cookie-path pro autentizační ticket</param>
+            <returns>autentizační ticket na základě předaných argumentů</returns>
         </member>
-        <member name="M:Havit.Web.HttpServerUtilityExt.ResolveUrl(System.String,System.String)">
+        <member name="M:Havit.Web.Security.FormsRolesAuthentication.GetAuthCookie(System.String,System.String[],System.Boolean,System.String)">
             <summary>
-            Converts a URL into one that is usable on the requesting client.
+            Vytvoří authentizační cookie pro forms-authentication s ukládáním rolí do userData.
             </summary>
-            <remarks>Converts ~ to the requesting application path.  Mimics the behavior of the 
-            <b>Control.ResolveUrl()</b> method, which is often used by control developers.</remarks>
-            <param name="appPath">The application path.</param>
-            <param name="url">The URL, which might contain ~.</param>
-            <returns>A resolved URL.  If the input parameter <b>url</b> contains ~, it is replaced with the
-            value of the <b>appPath</b> parameter.</returns>
+            <param name="username">přihlašovací jméno uživatele</param>
+            <param name="roles">role, které uživateli přísluší</param>
+            <param name="createPersistentCookie"><c>true</c>, pokud se má vytvořit trvalá cookie, která přežije session browseru; jinak <c>false</c></param>
+            <param name="cookiePath">cookie-path pro autentizační ticket</param>
+            <returns></returns>
         </member>
-        <member name="M:Havit.Web.HttpServerUtilityExt.ResolveUrl(System.String)">
+        <member name="M:Havit.Web.Security.FormsRolesAuthentication.RedirectFromLoginPage(System.String,System.String[],System.Boolean,System.String,System.String)">
             <summary>
-            Converts a URL into one that is usable on the requesting client.
+            Redirektuje autentizovaného uživatele zpět na původní URL (nebo default URL).
+            Součástí response je autentizační cookie s příslušným autentizačním ticketem.
             </summary>
-            <remarks>Converts ~ to the requesting application path.  Mimics the behavior of the 
-            <b>Control.ResolveUrl()</b> method, which is often used by control developers.</remarks>
-            <param name="url">The URL, which might contain ~.</param>
-            <returns>A resolved URL.  If the input parameter <b>url</b> contains ~, it is replaced with the
-            value of the <see cref="P:System.Web.HttpRequest.ApplicationPath"/> parameter
-            of <see cref="P:System.Web.HttpContext.Current"/>.</returns>
+            <param name="username">přihlašovací jméno uživatele</param>
+            <param name="roles">role, které uživateli přísluší</param>
+            <param name="createPersistentCookie"><c>true</c>, pokud se má vytvořit trvalá cookie, která přežije session browseru; jinak <c>false</c></param>
+            <param name="cookiePath">cookie-path pro autentizační ticket</param>
+            <param name="redirectUrl">URL, na které má být provedeno přesměrování</param>
         </member>
-        <member name="M:Havit.Web.HttpServerUtilityExt.#ctor">
+        <member name="M:Havit.Web.Security.FormsRolesAuthentication.RedirectFromLoginPage(System.String,System.String[],System.Boolean)">
             <summary>
-            private constructor zabraňuje vytvoření instance třídy
+            Redirektuje autentizovaného uživatele zpět na původní URL (nebo default URL).
+            Součástí response je autentizační cookie s příslušným autentizačním ticketem.
             </summary>
+            <param name="username">přihlašovací jméno uživatele</param>
+            <param name="roles">role, které uživateli přísluší</param>
+            <param name="createPersistentCookie"><c>true</c>, pokud se má vytvořit trvalá cookie, která přežije session browseru; jinak <c>false</c></param>
         </member>
-        <member name="T:Havit.Web.UrlRewriter.ModuleRewriter">
+        <member name="M:Havit.Web.Security.FormsRolesAuthentication.RedirectFromLoginPage(System.String,System.String[])">
             <summary>
-            Provides a rewriting HttpModule.
+            Redirektuje autentizovaného uživatele zpět na původní URL (nebo default URL).
+            Součástí response je autentizační cookie s příslušným autentizačním ticketem, bez persistence.
             </summary>
+            <param name="username">přihlašovací jméno uživatele</param>
+            <param name="roles">role, které uživateli přísluší</param>
         </member>
-        <member name="M:Havit.Web.UrlRewriter.ModuleRewriter.Rewrite(System.String,System.Web.HttpApplication)">
+        <member name="P:Havit.Web.Security.FormsRolesAuthentication.Timeout">
             <summary>
-            Metoda řešící vlastní UrlRewriting zdrojové adresy na cílovou.
+            Timeout pro authentication-ticket (web.config: system.web/authentication/forms/timeout).
             </summary>
-            <param name="requestedPath">The Path being requested.</param>
-            <param name="app">The HttpApplication instance.</param>
-        </member>
-        <member name="T:Havit.Web.UI.WebControls.H3">
-            <summary>
-            Reprezentuje label, který se renderuje jako HTML tag H3.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.H3.TagKey">
-            <summary>
-            Vrací HtmlTextWriterTag.H3 zajišťující správné renderování.
-            </summary>
-        </member>
-        <member name="T:Havit.Web.UI.WebControls.H2">
-            <summary>
-            Reprezentuje label, který se renderuje jako HTML tag H2.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.H2.TagKey">
-            <summary>
-            Vrací HtmlTextWriterTag.H2 zajišťující správné renderování.
-            </summary>
-        </member>
-        <member name="T:Havit.Web.UI.WebControls.H1">
-            <summary>
-            Reprezentuje label, který se renderuje jako HTML tag H1.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.H1.TagKey">
-            <summary>
-            Vrací HtmlTextWriterTag.H1 zajišťující správné renderování.
-            </summary>
+            <remarks>
+            Jako jedna z mála konfiguračních parametrů není přístupné přes <see cref="T:System.Web.Security.FormsAuthentication"/>.
+            </remarks>
         </member>
     </members>
 </doc>

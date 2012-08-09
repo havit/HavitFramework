@@ -13,7 +13,7 @@ namespace Havit.Web
 		#region HtmlEncode
 		/// <summary>
 		/// Zkonvertuje string do HTML-encoded podoby.
-		/// Oproti standardnímu <see cref="System.Web.HttpUtility.HtmlEncode"/> mùže encodovat všechny non-ASCII znaky
+		/// Oproti standardnímu <see cref="System.Web.HttpUtility.HtmlEncode(string)"/> mùže encodovat všechny non-ASCII znaky
 		/// a hlavnì umožòuje pomocí options øídit požadovanou výslednou podobu. Lze napøíklad použít rozšíøenou sadu HTML-entit,
 		/// popøípadì úplnì vylouèit pøevod ne-ASCII znakù na podobu &amp;#1234;.
 		/// </summary>
@@ -116,7 +116,7 @@ namespace Havit.Web
 
 		/// <summary>
 		/// Zkonvertuje string do HTML-encoded podoby s použitím výchozích options.
-		/// Oproti standardnímu <see cref="System.Web.HttpUtility.HtmlEncode"/> encoduje všechny non-ASCII znaky.
+		/// Oproti standardnímu <see cref="System.Web.HttpUtility.HtmlEncode(string)"/> encoduje všechny non-ASCII znaky.
 		/// </summary>
 		/// <remarks>
 		/// Pro podrobné øízení voleb konverze je nutno použít overload s options, takto je použito <see cref="HtmlEncodeOptions.None"/>,
@@ -135,7 +135,7 @@ namespace Havit.Web
 		/// Encoduje øetìzec tak, že vymìní mezery za %20.
 		/// </summary>
 		/// <remarks>
-		/// Public pøepis internal metody <see cref="System.Web.HttpUtility.UrlEncodeSpaces"/>
+		/// Public pøepis internal metody System.Web.HttpUtility.UrlEncodeSpaces.
 		/// </remarks>
 		/// <param name="str">Text k encodování</param>
 		/// <returns>Øetìzec, kde jsou mezery vymìnìny za %20.</returns>
@@ -180,7 +180,7 @@ namespace Havit.Web
 		/// Lze použít na již sestavený QueryString, nezlikviduje totiž &amp;, =, atp.
 		/// </summary>
 		/// <remarks>
-		/// Public pøepis internal metody <see cref="System.Web.HttpUtility.UrlEncodeBytesToBytesInternalNonAscii"/>.
+		/// Public pøepis internal metody System.Web.HttpUtility.UrlEncodeBytesToBytesInternalNonAscii.
 		/// </remarks>
 		/// <param name="bytes">vstupní text</param>
 		/// <returns>Text encodovaný pro použití v URL.</returns>
@@ -225,7 +225,7 @@ namespace Havit.Web
 		/// Lze použít na již sestavený QueryString, nezlikviduje totiž &amp;, =, atp.
 		/// </summary>
 		/// <remarks>
-		/// Public pøepis internal metody <see cref="System.Web.HttpUtility.UrlEncodeBytesToBytesInternalNonAscii"/>.
+		/// Public pøepis internal metody System.Web.HttpUtility.UrlEncodeBytesToBytesInternalNonAscii.
 		/// </remarks>
 		/// <param name="urlWithQueryString">vstupní text</param>
 		/// <returns>Text encodovaný pro použití v URL.</returns>
@@ -254,7 +254,7 @@ namespace Havit.Web
 
 	#region HtmlEncodeOptions
 	/// <summary>
-	/// Poskytuje množinu hodnot k nastavení voleb metody <see cref="Havit.Web.HttpUtilityExt.HtmlEncode"/>
+	/// Poskytuje množinu hodnot k nastavení voleb metody <see cref="Havit.Web.HttpUtilityExt.HtmlEncode(string, HtmlEncodeOptions)"/>
 	/// </summary>
 	[Flags]
 	public enum HtmlEncodeOptions

@@ -4,58 +4,25 @@
         <name>Havit</name>
     </assembly>
     <members>
-        <member name="T:Havit.Text.RegularExpressions.RegexPatterns">
+        <member name="T:Havit.Collections.GenericPropertyComparer`1">
             <summary>
-            Typické vyhledávací vzory pro regulární výrazy.
+            Comparer pro řazení dle libobovolné IComparable property.
             </summary>
         </member>
-        <member name="F:Havit.Text.RegularExpressions.RegexPatterns.EmailStrict">
+        <member name="M:Havit.Collections.GenericPropertyComparer`1.#ctor(System.String,System.Boolean)">
             <summary>
-            Pattern pro kontrolu běžného e-mailu:
-            <list type="bullet">
-            	<item>povoleny jsou pouze znaky anglické abecedy, tečky, podtržítka, pomlčky a plus</item>
-            	<item>dva různé symboly nesmí následovat po sobě, stejné ano [test--test@test.com] projde</item>
-            	<item>nesmí začínat symbolem</item>
-            	<item>TLD musí mít 2-6 znaků (.museum)</item>
-            	<item>v doméně smí být tečky a pomlčky, ale nesmí následovat</item>
-            	<item>nepříjímá IP adresy</item>
-            	<item>nepřijímá rozšířený syntax typu [Petr Novak &lt;novak@test.com&gt;]</item>
-            </list>
+            Vytvoří instanci compareru pro řazení dle dané property.
             </summary>
-            <remarks>
-            http://www.regexlib.com/REDetails.aspx?regexp_id=295
-            </remarks>
+            <param name="sortPropertyName">název property, podle které se má řadit</param>
+            <param name="ascending">true, má-li se řadit vzestupně, false, pokud sestupně</param>
         </member>
-        <member name="F:Havit.Text.RegularExpressions.RegexPatterns.Identifier">
+        <member name="M:Havit.Collections.GenericPropertyComparer`1.Compare(`0,`0)">
             <summary>
-            Pattern pro kontrolu identifikátorů.
-            Identifikátor musí začínat písmenem nebo podtržítkem, nesledovat mohou i číslice.
+            Porovná dva objekty.
             </summary>
-        </member>
-        <member name="F:Havit.Text.RegularExpressions.RegexPatterns.Time24h">
-            <summary>
-            Pattern pro kontrolu času. 24-hodinnový formát, odělovač dvojtečka, nepovinné vteřiny. Např. 23:59:00.
-            Nepřijímá 24:00.
-            </summary>
-        </member>
-        <member name="F:Havit.Text.RegularExpressions.RegexPatterns.IPAddress">
-            <summary>
-            Pattern pro kontrolu IP adresy v4.
-            </summary>
-        </member>
-        <member name="F:Havit.Text.RegularExpressions.RegexPatterns.Integer">
-            <summary>
-            Pattern pro ověření celých čísel.
-            </summary>
-            <remarks>
-            Přijímá: [1], [+15], [0], [-10], [+0]<br/>
-            Odmítá: [1.0], [abc], [+], [1,15]
-            </remarks>
-        </member>
-        <member name="M:Havit.Text.RegularExpressions.RegexPatterns.#ctor">
-            <summary>
-            private constructor k zabránění instanciace statické třídy.
-            </summary>
+            <param name="x">první objekt</param>
+            <param name="y">druhý objekt</param>
+            <returns>výsledek porovnání</returns>
         </member>
         <member name="T:Havit.Collections.SortableCollectionBase">
             <summary>
@@ -118,23 +85,18 @@
             <remarks>Není-li atribut Description definován, vrátí prázdný řetězec.</remarks>
             <example>
             <code>
-            using System.ComponentModel;
-            
-            public enum Barvy
-            {
-            	[Description("červená")]
-            	Cervena,
-            	
-            	[Description("modrá")]
-            	Modra
-            }
+            using System.ComponentModel;<br/>
+            <br/>
+            public enum Barvy<br/>
+            {<br/>
+            	[Description("červená")]<br/>
+            	Cervena,<br/>
+            <br/>
+            	[Description("modrá")]<br/>
+            	Modra<br/>
+            }<br/>
             </code>
             </example>
-        </member>
-        <member name="M:Havit.EnumExt.#ctor">
-            <summary>
-            Prázdný private constructor zamezující vytvoření instance třídy.
-            </summary>
         </member>
         <member name="T:Havit.StringExt">
             <summary>
@@ -191,6 +153,59 @@
         <member name="M:Havit.Reflection.Reflector.#ctor">
             <summary>
             private constructor, aby nebylo možno vytvořit instanci třídy
+            </summary>
+        </member>
+        <member name="T:Havit.Text.RegularExpressions.RegexPatterns">
+            <summary>
+            Typické vyhledávací vzory pro regulární výrazy.
+            </summary>
+        </member>
+        <member name="F:Havit.Text.RegularExpressions.RegexPatterns.EmailStrict">
+            <summary>
+            Pattern pro kontrolu běžného e-mailu:
+            <list type="bullet">
+            	<item>povoleny jsou pouze znaky anglické abecedy, tečky, podtržítka, pomlčky a plus</item>
+            	<item>dva různé symboly nesmí následovat po sobě, stejné ano [test--test@test.com] projde</item>
+            	<item>nesmí začínat symbolem</item>
+            	<item>TLD musí mít 2-6 znaků (.museum)</item>
+            	<item>v doméně smí být tečky a pomlčky, ale nesmí následovat</item>
+            	<item>nepříjímá IP adresy</item>
+            	<item>nepřijímá rozšířený syntax typu [Petr Novak &lt;novak@test.com&gt;]</item>
+            </list>
+            </summary>
+            <remarks>
+            http://www.regexlib.com/REDetails.aspx?regexp_id=295
+            </remarks>
+        </member>
+        <member name="F:Havit.Text.RegularExpressions.RegexPatterns.Identifier">
+            <summary>
+            Pattern pro kontrolu identifikátorů.
+            Identifikátor musí začínat písmenem nebo podtržítkem, nesledovat mohou i číslice.
+            </summary>
+        </member>
+        <member name="F:Havit.Text.RegularExpressions.RegexPatterns.Time24h">
+            <summary>
+            Pattern pro kontrolu času. 24-hodinnový formát, odělovač dvojtečka, nepovinné vteřiny. Např. 23:59:00.
+            Nepřijímá 24:00.
+            </summary>
+        </member>
+        <member name="F:Havit.Text.RegularExpressions.RegexPatterns.IPAddress">
+            <summary>
+            Pattern pro kontrolu IP adresy v4.
+            </summary>
+        </member>
+        <member name="F:Havit.Text.RegularExpressions.RegexPatterns.Integer">
+            <summary>
+            Pattern pro ověření celých čísel.
+            </summary>
+            <remarks>
+            Přijímá: [1], [+15], [0], [-10], [+0]<br/>
+            Odmítá: [1.0], [abc], [+], [1,15]
+            </remarks>
+        </member>
+        <member name="M:Havit.Text.RegularExpressions.RegexPatterns.#ctor">
+            <summary>
+            private constructor k zabránění instanciace statické třídy.
             </summary>
         </member>
         <member name="T:Havit.MathExt">
@@ -341,31 +356,6 @@
             </summary>
             <param name="values">čísla k porovnání</param>
             <returns>největší z values</returns>
-        </member>
-        <member name="M:Havit.MathExt.#ctor">
-            <summary>
-            Prázdný private constructor zamezující vytvoření instance třídy.
-            </summary>
-        </member>
-        <member name="T:Havit.Collections.GenericPropertyComparer`1">
-            <summary>
-            Comparer pro řazení dle libobovolné IComparable property.
-            </summary>
-        </member>
-        <member name="M:Havit.Collections.GenericPropertyComparer`1.#ctor(System.String,System.Boolean)">
-            <summary>
-            Vytvoří instanci compareru pro řazení dle dané property.
-            </summary>
-            <param name="sortPropertyName">název property, podle které se má řadit</param>
-            <param name="ascending">true, má-li se řadit vzestupně, false, pokud sestupně</param>
-        </member>
-        <member name="M:Havit.Collections.GenericPropertyComparer`1.Compare(`0,`0)">
-            <summary>
-            Porovná dva objekty.
-            </summary>
-            <param name="x">první objekt</param>
-            <param name="y">druhý objekt</param>
-            <returns>výsledek porovnání</returns>
         </member>
     </members>
 </doc>

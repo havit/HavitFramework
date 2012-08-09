@@ -13,15 +13,15 @@ namespace Havit.Web
 		#region MovedPermanently
 		/// <summary>
 		/// Provede redirect pomocí HTTP status kódu 301 - Moved Permanently.
-		/// Klasický <see cref="System.Web.HttpResponse.Redirect"/> provádí redirect pøes 302 - Found (Object Moved).
+		/// Klasický <see cref="System.Web.HttpResponse.Redirect(string)"/> provádí redirect pøes 302 - Found (Object Moved).
 		/// </summary>
 		/// <remarks>
-		/// Zatímco klasický <see cref="System.Web.HttpResponse.Redirect"/> provádí redirect pøes HTTP status kód 302,
+		/// Zatímco klasický <see cref="System.Web.HttpResponse.Redirect(string)"/> provádí redirect pøes HTTP status kód 302,
 		/// což je "temporarily moved", redirect pøes "301 - Moved Permanently" øíká klientovi, že URL požadované stránky
 		/// se definitivnì zmìnilo na novou adresu.<br/>
 		/// Klient by mìl teoreticky reagovat úpravou bookmarku, ale žádný to nedìlá. Smysl to má však pro indexovací roboty
 		/// vyhledávaèù, které se tím údajnì docela øídí.<br/>
-		/// POZOR: Na rozdíl od <see cref="System.Web.HttpResponse.Redirect"/> nekontroluje, jestli už nebyly odeslány klientovi hlavièky.
+		/// POZOR: Na rozdíl od <see cref="System.Web.HttpResponse.Redirect(string)"/> nekontroluje, jestli už nebyly odeslány klientovi hlavièky.
 		/// </remarks>
 		/// <param name="url">Cílová adresa.</param>
 		/// <param name="endResponse">Indikuje, zda-li má skonèit zpracování vykonávání stránky.</param>
@@ -62,10 +62,10 @@ namespace Havit.Web
 
 		/// <summary>
 		/// Provede redirect pomocí HTTP status kódu 301 - Moved Permanently a ukonèí zpracování stránky.
-		/// Klasický <see cref="System.Web.HttpResponse.Redirect"/> provádí redirect pøes 302 - Found (Object Moved).
+		/// Klasický <see cref="System.Web.HttpResponse.Redirect(string)"/> provádí redirect pøes 302 - Found (Object Moved).
 		/// </summary>
 		/// <remarks>
-		/// Zatímco klasický <see cref="System.Web.HttpResponse.Redirect"/> provádí redirect pøes HTTP status kód 302,
+		/// Zatímco klasický <see cref="System.Web.HttpResponse.Redirect(string)"/> provádí redirect pøes HTTP status kód 302,
 		/// což je "temporarily moved", redirect pøes "301 - Moved Permanently" øíká klientovi, že URL požadované stránky
 		/// se definitivnì zmìnilo na novou adresu.<br/>
 		/// Klient by mìl teoreticky reagovat úpravou bookmarku, ale žádný to nedìlá. Smysl to má však pro indexovací roboty

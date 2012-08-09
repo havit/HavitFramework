@@ -264,9 +264,9 @@ namespace Havit.Web.UI.WebControls
 					  + "}\n"
 					  + "</script>\n";
 
-			if (!Page.IsClientScriptBlockRegistered(clientScriptKey))
+			if (!Page.ClientScript.IsClientScriptBlockRegistered(clientScriptKey))
 			{
-				Page.RegisterClientScriptBlock(clientScriptKey, toggleCollapser);
+				Page.ClientScript.RegisterClientScriptBlock(this.GetType(), clientScriptKey, toggleCollapser);
 			}
 
 			string toggleCall = String.Format("toggleCollapser('{0}','{1}','{2}','{3}');",
@@ -279,7 +279,7 @@ namespace Havit.Web.UI.WebControls
 
 			if (this.Collapsed)
 			{
-				Page.RegisterStartupScript(clientScriptKey + ResolveID(this.ContentElement),  // zajistí jediné volání pro element
+				Page.ClientScript.RegisterStartupScript(this.GetType(), clientScriptKey + ResolveID(this.ContentElement),  // zajistí jediné volání pro element
 					"<script type=\"text/javascript\" language=\"JScript\">" + toggleCall + "</script>\n");
 			}
 		}

@@ -235,10 +235,21 @@
             <param name="cmdText">text SQL příkazu</param>
             <returns>první sloupec prvního řádku resultsetu</returns>
         </member>
-        <member name="M:Havit.Data.SqlClient.SqlDataAccess.#ctor">
+        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteTransaction(Havit.Data.SqlClient.SqlTransactionDelegate,System.Data.SqlClient.SqlTransaction)">
             <summary>
-            Private constructor zabraňující vytvoření instance třídy.
+            Vykoná požadované kroky v rámci transakce.
+            Pokud je zadaná transakce <c>null</c>, je spuštěna a commitována nová.
+            Pokud zadaná transakce není <c>null</c>, jsou zadané kroky pouze vykonány.
             </summary>
+            <param name="transactionWork"><see cref="T:Havit.Data.SqlClient.SqlTransactionDelegate"/> reprezentující s úkony, které mají být součástí transakce</param>
+            <param name="outerTransaction">transakce</param>
+        </member>
+        <member name="M:Havit.Data.SqlClient.SqlDataAccess.ExecuteTransaction(Havit.Data.SqlClient.SqlTransactionDelegate)">
+            <summary>
+            Vykoná požadované kroky v rámci transakce.
+            Je spuštěna a commitována nová samostatná transakce.
+            </summary>
+            <param name="transactionWork"><see cref="T:Havit.Data.SqlClient.SqlTransactionDelegate"/> reprezentující s úkony, které mají být součástí transakce</param>
         </member>
         <member name="P:Havit.Data.SqlClient.SqlDataAccess.ConnectionString">
             <summary>
@@ -291,6 +302,12 @@
             Výchozí hodnota nastavena na <c>CommandType.StoredProcedure</c>.
             </remarks>
         </member>
+        <member name="T:Havit.Data.SqlClient.SqlTransactionDelegate">
+            <summary>
+            Reprezentuje metodu, která vykonává jednotlivé kroky transakce.
+            </summary>
+            <param name="transaction">transakce, v rámci které mají být jednotlivé kroky vykonány</param>
+        </member>
         <member name="T:Havit.Data.DataRecord">
             <summary>
             DataRecord usnadňuje načítání dat objektu z databáze.
@@ -319,7 +336,7 @@
             <summary>
             Vytvoří instanci DataRecordu a načte do ní data z <see cref="T:System.Data.DataRow"/>.
             </summary>
-            <param name="row">datový zdroj typu DataRow</param>
+            <param name="row">datový zdroj typu <see cref="T:System.Data.DataRow"/></param>
         </member>
         <member name="M:Havit.Data.DataRecord.#ctor(System.Data.IDataRecord,System.Boolean)">
             <summary>
@@ -336,11 +353,30 @@
             </summary>
             <param name="record">datový zdroj <see cref="T:System.Data.IDataRecord"/> (např. <see cref="T:System.Data.SqlClient.SqlDataReader"/>)</param>
         </member>
+        <member name="M:Havit.Data.DataRecord.Load``1(System.String,``0@)">
+            <summary>
+            Načte parametr zadaného generického typu T.
+            </summary>
+            <param name="fieldName">jméno parametru</param>
+            <param name="target">cíl, kam má být parametr uložen</param>
+            <returns>false, pokud má parametr hodnotu NULL; true, pokud byla načtena hodnota</returns>
+        </member>
+        <member name="M:Havit.Data.DataRecord.Get``1(System.String)">
+            <summary>
+            Vrátí parametr zadaného generického typu.
+            </summary>
+            <param name="fieldName">jméno parametru</param>
+            <returns>
+            vrátí hodnotu typu T;<br/>
+            pokud parametr neexistuje a není FullLoad, pak vrací default(T), ve FullLoad hází výjimku ArgumentException;<br/>
+            pokud má parametr hodnotu NULL, pak vrací <c>null</c> pro referenční typy, pro hodnotové typy hází výjimku InvalidCastException<br/>
+            </returns>
+        </member>
         <member name="M:Havit.Data.DataRecord.LoadObject(System.String,System.Object@)">
             <summary>
             Načte parametr typu Object.
             </summary>
-            <param name="field">jméno parametru</param>
+            <param name="fieldName">jméno parametru</param>
             <param name="target">cíl, kam má být parametr uložen</param>
             <returns>false, pokud má parametr hodnotu NULL; true, pokud byla načtena hodnota</returns>
         </member>
@@ -348,14 +384,14 @@
             <summary>
             Vrátí parametr typu Object.
             </summary>
-            <param name="field">jméno parametru</param>
+            <param name="fieldName">jméno parametru</param>
             <returns>null, pokud má parametr hodnotu NULL, nebo neexistuje; jinak hodnota typu Object</returns>
         </member>
         <member name="M:Havit.Data.DataRecord.LoadString(System.String,System.String@)">
             <summary>
             Načte parametr typu string.
             </summary>
-            <param name="field">jméno parametru</param>
+            <param name="fieldName">jméno parametru</param>
             <param name="target">cíl, kam má být parametr uložen</param>
             <returns>false, pokud má parametr hodnotu NULL; true, pokud byla načtena hodnota</returns>
         </member>
@@ -363,14 +399,14 @@
             <summary>
             Vrátí parametr typu String.
             </summary>
-            <param name="field">jméno parametru</param>
+            <param name="fieldName">jméno parametru</param>
             <returns>null, pokud má parametr hodnotu NULL, nebo neexistuje; jinak hodnota typu String</returns>
         </member>
         <member name="M:Havit.Data.DataRecord.LoadInt32(System.String,System.Int32@)">
             <summary>
             Načte parametr typu Int32.
             </summary>
-            <param name="field">jméno parametru</param>
+            <param name="fieldName">jméno parametru</param>
             <param name="target">cíl, kam má být parametr uložen</param>
             <returns>false, pokud má parametr hodnotu NULL; true, pokud byla načtena hodnota</returns>
         </member>
@@ -378,14 +414,14 @@
             <summary>
             Vrátí parametr typu Int32?.
             </summary>
-            <param name="field">jméno parametru</param>
+            <param name="fieldName">jméno parametru</param>
             <returns>null, pokud má parametr hodnotu NULL, nebo neexistuje; jinak hodnota typu Int32</returns>
         </member>
         <member name="M:Havit.Data.DataRecord.LoadDouble(System.String,System.Double@)">
             <summary>
             Načte parametr typu Double.
             </summary>
-            <param name="field">jméno parametru</param>
+            <param name="fieldName">jméno parametru</param>
             <param name="target">cíl, kam má být parametr uložen</param>
             <returns>false, pokud má parametr hodnotu NULL; true, pokud byla načtena hodnota</returns>
         </member>
@@ -393,14 +429,14 @@
             <summary>
             Vrátí parametr typu Double?.
             </summary>
-            <param name="field">jméno parametru</param>
+            <param name="fieldName">jméno parametru</param>
             <returns>null, pokud má parametr hodnotu NULL, nebo neexistuje; jinak hodnota typu Double</returns>
         </member>
         <member name="M:Havit.Data.DataRecord.LoadBoolean(System.String,System.Boolean@)">
             <summary>
             Načte parametr typu Boolean.
             </summary>
-            <param name="field">jméno parametru</param>
+            <param name="fieldName">jméno parametru</param>
             <param name="target">cíl, kam má být parametr uložen</param>
             <returns>false, pokud má parametr hodnotu NULL; true, pokud byla načtena hodnota</returns>
         </member>
@@ -408,14 +444,14 @@
             <summary>
             Vrátí parametr typu bool?.
             </summary>
-            <param name="field">jméno parametru</param>
+            <param name="fieldName">jméno parametru</param>
             <returns>null, pokud má parametr hodnotu NULL, nebo neexistuje; jinak hodnota typu Boolean</returns>
         </member>
         <member name="M:Havit.Data.DataRecord.LoadDateTime(System.String,System.DateTime@)">
             <summary>
             Načte parametr typu DateTime.
             </summary>
-            <param name="field">jméno parametru</param>
+            <param name="fieldName">jméno parametru</param>
             <param name="target">cíl, kam má být parametr uložen</param>
             <returns>false, pokud má parametr hodnotu NULL; true, pokud byla načtena hodnota</returns>
         </member>
@@ -423,7 +459,7 @@
             <summary>
             Vrátí parametr typu DateTime?.
             </summary>
-            <param name="field">jméno parametru</param>
+            <param name="fieldName">jméno parametru</param>
             <returns>null, pokud má parametr hodnotu NULL, nebo neexistuje; jinak hodnota typu DateTime</returns>
         </member>
         <member name="P:Havit.Data.DataRecord.FullLoad">

@@ -717,7 +717,7 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// If set to "true" then days belonging to months overlapping with the currently displayed month
 		/// will also be displayed in the calendar (but in a "faded-out" color)
-		/// Default: false.
+		/// Default: true. (Na rozdíl od výchozího DC).
 		/// </summary>
 		public bool ShowOthers
 		{
@@ -728,7 +728,7 @@ namespace Havit.Web.UI.WebControls
 				{
 					return (bool)tmp;
 				}
-				return false;
+				return true;
 			}
 			set
 			{

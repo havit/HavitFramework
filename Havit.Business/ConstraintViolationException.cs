@@ -7,7 +7,7 @@ namespace Havit.Business
 	/// <summary>
 	/// Výjimka reprezentující porušení business pravidla.
 	/// </summary>
-	public class ConstraintViolationException: ApplicationException
+	public class ConstraintViolationException: Exception
 	{
 		/// <summary>
 		/// Vytvoøí instanci výjimky.
@@ -25,7 +25,8 @@ namespace Havit.Business
 		/// <param name="businessObject">Business object, ve kterém došlo k porušení pravidla.</param>
 		/// <param name="message">Popis výjimky.</param>
 		/// <param name="innerException">Vnoøená výjimka.</param>
-		public ConstraintViolationException(BusinessObjectBase businessObject, string message, Exception innerException): base(message, innerException)
+		public ConstraintViolationException(BusinessObjectBase businessObject, string message, Exception innerException)
+			: base(message, innerException)
 		{
 			this.businessObject = businessObject;
 		}

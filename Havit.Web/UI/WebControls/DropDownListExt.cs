@@ -13,7 +13,7 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class DropDownListExt : DropDownList
 	{
-		private int cachedSelectedIndex;
+		private int cachedSelectedIndex = -1;
 		private string cachedSelectedValue;
 
 		/// <summary>

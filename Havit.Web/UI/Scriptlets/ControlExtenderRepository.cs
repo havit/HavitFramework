@@ -29,6 +29,7 @@ namespace Havit.Web.UI.Scriptlets
 						_default.Add(new SimpleControlExtender(typeof(CheckBox), 100, new string[] { "onclick" }));
 						_default.Add(new SimpleControlExtender(typeof(RadioButton), 100, new string[] { "onclick" }));
 						_default.Add(new SimpleControlExtender(typeof(Button), 100, new string[] { "onclick" }));
+						_default.Add(new SimpleControlExtender(typeof(LinkButton), 100, new string[] { "onclick" }));
 						_default.Add(new SimpleControlExtender(typeof(DropDownList), 100, new string[] { "onchange" }));
 						_default.Add(new SimpleControlExtender(typeof(FileUpload), 100, new string[] { "onchange" }));
 						_default.Add(new SimpleControlExtender(typeof(HiddenField), 100, null));

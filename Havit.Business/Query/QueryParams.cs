@@ -167,7 +167,7 @@ namespace Havit.Business.Query
 			}
 			else
 			{
-				return "SELECT TOP " + topRecords.Value.ToString(CultureInfo.InvariantCulture);
+				return String.Format("SELECT TOP ({0})", topRecords.Value.ToString(CultureInfo.InvariantCulture));
 			}
 		}
 

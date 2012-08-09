@@ -14,6 +14,11 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateEquals(IOperand operand, int? id)
 		{
+			if (id <= 0)
+			{
+				throw new ArgumentException("ID objektu musí být kladné èíslo nebo null.", "id");
+			}
+
 			if (id == null || id < 0)
 			{
 				return NullCondition.CreateIsNull(operand);

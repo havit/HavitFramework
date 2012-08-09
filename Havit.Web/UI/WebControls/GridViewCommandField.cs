@@ -240,8 +240,101 @@ namespace Havit.Web.UI.WebControls
 				control.CausesValidation = causesValidation;
 			}
 			control.ValidationGroup = validationGroup;
+
+
+
+			/* Customizace jednotlivých øádek */
+			Control buttonControl = (Control)control;
+			buttonControl.DataBinding += new EventHandler(buttonControl_DataBinding);
+
+
+
 			cell.Controls.Add((WebControl)control);
 			return control;
+		}
+
+		#endregion
+
+		#region buttonControl_DataBinding (customizace command-buttonu)
+		/// <summary>
+		/// Handles the DataBinding event of the buttonControl control.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+		private void buttonControl_DataBinding(object sender, EventArgs e)
+		{
+			Debug.Assert(sender != null);
+			Debug.Assert(sender is IButtonControl);
+			Debug.Assert((sender is LinkButton) || (sender is ImageButton) || (sender is Button));
+			
+			Control control = (Control)sender;
+			IButtonControl buttonControl = (IButtonControl)sender;
+
+			DataControlFieldCell cell = (DataControlFieldCell)control.Parent;
+			Debug.Assert(cell != null);
+
+			GridViewRow row = (GridViewRow)cell.Parent;
+			Debug.Assert(row != null);
+
+			Table childTable = (Table)row.Parent;
+			Debug.Assert(childTable != null);
+
+			GridViewExt gridViewExt = childTable.Parent as GridViewExt;
+			if (gridViewExt == null)
+			{
+				// je použito mimo GridViewExt, nedìláme nic
+				return;
+			}
+
+			// pøipravíme argumenty
+			GridViewRowCustomizingCommandButtonEventArgs args = new GridViewRowCustomizingCommandButtonEventArgs(
+				buttonControl.CommandName,
+				row.RowIndex,
+				row.DataItem);
+
+			args.Visible = control.Visible;
+
+			if (sender is LinkButton)
+			{
+				LinkButton linkButton = (LinkButton)sender;
+				args.Enabled = linkButton.Enabled;
+			}
+			else if (sender is ImageButton)
+			{
+				ImageButton imageButton = (ImageButton)sender;
+				args.Enabled = imageButton.Enabled;
+			}
+			else if (sender is Button)
+			{
+				Button button = (Button)sender;
+				args.Enabled = button.Enabled;
+			}
+
+
+			// zavoláme obsluhu události
+			gridViewExt.OnRowCustomizingCommandButton(args);
+
+
+			// nastavíme výsledek z argumentù do buttonu
+
+			control.Visible = args.Visible;
+
+			if (sender is LinkButton)
+			{
+				LinkButton linkButton = (LinkButton)sender;
+				linkButton.Enabled = args.Enabled;
+			}
+			else if (sender is ImageButton)
+			{
+				ImageButton imageButton = (ImageButton)sender;
+				imageButton.Enabled = args.Enabled;
+			}
+			else if (sender is Button)
+			{
+				Button button = (Button)sender;
+				button.Enabled = args.Enabled;
+			}
+			
 		}
 		#endregion
 

@@ -82,6 +82,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLayerTest", "Busine
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplicationTest", "WebApplicationTest\WebApplicationTest.csproj", "{28BB8E7F-089E-494E-9F11-6088C36DD4D0}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Havit.vsmdi
@@ -191,6 +197,14 @@ Global
 		{5A35A57F-7D3D-4858-BC69-B91025CDE667}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5A35A57F-7D3D-4858-BC69-B91025CDE667}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{5A35A57F-7D3D-4858-BC69-B91025CDE667}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{28BB8E7F-089E-494E-9F11-6088C36DD4D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28BB8E7F-089E-494E-9F11-6088C36DD4D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28BB8E7F-089E-494E-9F11-6088C36DD4D0}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{28BB8E7F-089E-494E-9F11-6088C36DD4D0}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{28BB8E7F-089E-494E-9F11-6088C36DD4D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28BB8E7F-089E-494E-9F11-6088C36DD4D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28BB8E7F-089E-494E-9F11-6088C36DD4D0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{28BB8E7F-089E-494E-9F11-6088C36DD4D0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

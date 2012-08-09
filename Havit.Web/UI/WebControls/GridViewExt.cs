@@ -20,7 +20,7 @@ namespace Havit.Web.UI.WebControls
 	/// </remarks>
 	public class GridViewExt : HighlightingGridView, ICommandFieldStyle
 	{
-		#region GetInsertRowDataItem
+		#region GetInsertRowDataItem (delegate)
 		/// <summary>
 		/// Metoda, která vrací data-item nového Insert øádku. Obvykle pøednastaveno default hodnotami.
 		/// </summary>
@@ -205,7 +205,7 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-		#region Events - RowInserting, RowInserted
+		#region Events - RowInserting, RowInserted, RowCustomizingCommandButton
 		/// <summary>
 		/// Událost, která se volá pøi vložení nového øádku (kliknutí na tlaèítko Insert).
 		/// </summary>
@@ -215,8 +215,8 @@ namespace Havit.Web.UI.WebControls
 		[Category("Action")]
 		public event GridViewInsertEventHandler RowInserting
 		{
-			add { base.Events.AddHandler(EventItemInserting, value); }
-			remove { base.Events.RemoveHandler(EventItemInserting, value); }
+			add { base.Events.AddHandler(eventItemInserting, value); }
+			remove { base.Events.RemoveHandler(eventItemInserting, value); }
 		}
 
 		/// <summary>
@@ -225,12 +225,29 @@ namespace Havit.Web.UI.WebControls
 		[Category("Action")]
 		public event GridViewInsertedEventHandler RowInserted
 		{
-			add { base.Events.AddHandler(EventItemInserted, value); }
-			remove { base.Events.RemoveHandler(EventItemInserted, value); }
+			add { base.Events.AddHandler(eventItemInserted, value); }
+			remove { base.Events.RemoveHandler(eventItemInserted, value); }
 		}
 
-		private static readonly object EventItemInserting = new object();
-		private static readonly object EventItemInserted = new object();
+		/// <summary>
+		/// Událost, která se volá pøi customizaci command-buttonu øádku (implementováno v <see cref="GridViewCommandField"/>).
+		/// </summary>
+		[Category("Action")]
+		public event GridViewRowCustomizingCommandButtonEventHandler RowCustomizingCommandButton
+		{
+			add
+			{
+				base.Events.AddHandler(eventRowCustomizingCommandButton, value);
+			}
+			remove
+			{
+				base.Events.RemoveHandler(eventRowCustomizingCommandButton, value);
+			}
+		}
+
+		private static readonly object eventItemInserting = new object();
+		private static readonly object eventItemInserted = new object();
+		private static readonly object eventRowCustomizingCommandButton = new object();
 		#endregion
 
 		#region InsertIndex
@@ -713,7 +730,7 @@ namespace Havit.Web.UI.WebControls
 		/// <param name="e">argumenty události</param>
 		protected virtual void OnRowInserting(GridViewInsertEventArgs e)
 		{
-			GridViewInsertEventHandler h = (GridViewInsertEventHandler)base.Events[EventItemInserting];
+			GridViewInsertEventHandler h = (GridViewInsertEventHandler)base.Events[eventItemInserting];
 			if (h != null)
 			{
 				h(this, e);
@@ -726,7 +743,7 @@ namespace Havit.Web.UI.WebControls
 		/// <param name="e">argumenty události</param>
 		protected virtual void OnRowInserted(GridViewInsertedEventArgs e)
 		{
-			GridViewInsertedEventHandler h = (GridViewInsertedEventHandler)base.Events[EventItemInserted];
+			GridViewInsertedEventHandler h = (GridViewInsertedEventHandler)base.Events[eventItemInserted];
 			if (h != null)
 			{
 				h(this, e);
@@ -772,6 +789,21 @@ namespace Havit.Web.UI.WebControls
 			base.OnPreRender(e);
 		}
 		#endregion
+
+		#region OnRowCustomizingCommandButton
+		/// <summary>
+		/// Spouští událost <see cref="RowCustomizingCommandButton"/>.
+		/// </summary>
+		/// <param name="e">argumenty události</param>
+		protected internal virtual void OnRowCustomizingCommandButton(GridViewRowCustomizingCommandButtonEventArgs e)
+		{
+			GridViewRowCustomizingCommandButtonEventHandler h = (GridViewRowCustomizingCommandButtonEventHandler)base.Events[eventRowCustomizingCommandButton];
+			if (h != null)
+			{
+				h(this, e);
+			}
+		}
+		#endregion
 	}
 
 	/// <summary>
@@ -787,6 +819,13 @@ namespace Havit.Web.UI.WebControls
 	/// <param name="sender">odesílatel události (GridView)</param>
 	/// <param name="e">argumenty události</param>
 	public delegate void GridViewInsertedEventHandler(object sender, GridViewInsertedEventArgs e);
+
+	/// <summary>
+	/// Reprezentuje metodu, která obsluhuje událost <see cref="GridViewExt.RowRenderingCommandButton"/>.
+	/// </summary>
+	/// <param name="sender">odesílatel události (GridView)</param>
+	/// <param name="e">argumenty události</param>
+	public delegate void GridViewRowCustomizingCommandButtonEventHandler(object sender, GridViewRowCustomizingCommandButtonEventArgs e);
 
 
 	/// <summary>

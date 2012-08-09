@@ -281,6 +281,12 @@
             Zajistíme DataBinding, pokud mají vlastnosti AutoDataBind a RequiresDataBinding hodnotu true.
             </summary>
         </member>
+        <member name="M:Havit.Web.UI.WebControls.GridViewExt.OnRowCustomizingCommandButton(Havit.Web.UI.WebControls.GridViewRowCustomizingCommandButtonEventArgs)">
+            <summary>
+            Spouští událost <see cref="E:Havit.Web.UI.WebControls.GridViewExt.RowCustomizingCommandButton"/>.
+            </summary>
+            <param name="e">argumenty události</param>
+        </member>
         <member name="P:Havit.Web.UI.WebControls.GridViewExt.GetInsertRowDataItem">
             <summary>
             Metoda, která vrací data-item nového Insert řádku. Obvykle přednastaveno default hodnotami.
@@ -352,6 +358,11 @@
             Událost, která se volá po vložení nového řádku (po události RowInserting).
             </summary>
         </member>
+        <member name="E:Havit.Web.UI.WebControls.GridViewExt.RowCustomizingCommandButton">
+            <summary>
+            Událost, která se volá při customizaci command-buttonu řádku (implementováno v <see cref="T:Havit.Web.UI.WebControls.GridViewCommandField"/>).
+            </summary>
+        </member>
         <member name="P:Havit.Web.UI.WebControls.GridViewExt.InsertIndex">
             <summary>
             Index řádku (RowIndex) vkládaného prvku. Pokud nejsme v insert módu, je -1.
@@ -367,6 +378,13 @@
         <member name="T:Havit.Web.UI.WebControls.GridViewInsertedEventHandler">
             <summary>
             Reprezentuje metodu, která obsluhuje událost RowInserted controlu GridViewExt.
+            </summary>
+            <param name="sender">odesílatel události (GridView)</param>
+            <param name="e">argumenty události</param>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.GridViewRowCustomizingCommandButtonEventHandler">
+            <summary>
+            Reprezentuje metodu, která obsluhuje událost <see cref="!:GridViewExt.RowRenderingCommandButton"/>.
             </summary>
             <param name="sender">odesílatel události (GridView)</param>
             <param name="e">argumenty události</param>
@@ -1510,6 +1528,13 @@
             <summary>
             Inicializuje buňku.
             </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.GridViewCommandField.buttonControl_DataBinding(System.Object,System.EventArgs)">
+            <summary>
+            Handles the DataBinding event of the buttonControl control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
         </member>
         <member name="M:Havit.Web.UI.WebControls.GridViewCommandField.ApplyStyle(Havit.Web.UI.WebControls.CommandFieldStyle,System.Boolean,System.Boolean)">
             <summary>
@@ -3109,6 +3134,42 @@
             Udává, zda v případě změny hodnoty prvku (zaškrtnutí, změna textu, apod.)
             dojde ke spuštění skriptu.
             Výchozí hodnota je false.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.UI.WebControls.GridViewRowCustomizingCommandButtonEventArgs">
+            <summary>
+            Argumenty události <see cref="E:Havit.Web.UI.WebControls.GridViewExt.RowCustomizingCommandButton"/>.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.GridViewRowCustomizingCommandButtonEventArgs.#ctor(System.String,System.Int32,System.Object)">
+            <summary>
+            Vytvoří instanci třídy <see cref="T:Havit.Web.UI.WebControls.GridViewRowCustomizingCommandButtonEventArgs"/>.
+            </summary>
+            <param name="commandName">CommandName obsluhovaného buttonu</param>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.GridViewRowCustomizingCommandButtonEventArgs.CommandName">
+            <summary>
+            Vrátí CommandName tlačítka.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.GridViewRowCustomizingCommandButtonEventArgs.Visible">
+            <summary>
+            Vlastnost Visible tlačítka.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.GridViewRowCustomizingCommandButtonEventArgs.Enabled">
+            <summary>
+            Vlastnosti Enabled tlačítka.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.GridViewRowCustomizingCommandButtonEventArgs.RowIndex">
+            <summary>
+            Index řádku, kterého se událost týká.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.UI.WebControls.GridViewRowCustomizingCommandButtonEventArgs.DataItem">
+            <summary>
+            DataItem řádku, kterého se událost týká.
             </summary>
         </member>
     </members>

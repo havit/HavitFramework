@@ -516,6 +516,26 @@
             Datový zdroj obsahuje nekompletní řádek dat.
             </summary>
         </member>
+        <member name="T:Havit.Data.SqlTypes.SqlSmallDateTime">
+            <summary>
+            Reprezentuje pomocné hodnoty pro databázový typ smalldatetime.
+            </summary>
+        </member>
+        <member name="F:Havit.Data.SqlTypes.SqlSmallDateTime.MinValue">
+            <summary>
+            Minimální hodnota použitelná pro databázový typ smalldatetime.
+            </summary>
+        </member>
+        <member name="F:Havit.Data.SqlTypes.SqlSmallDateTime.MaxValue">
+            <summary>
+            Maximální hodnota použitelná pro databázový typ smalldatetime.
+            </summary>
+        </member>
+        <member name="P:Havit.Data.SqlTypes.SqlSmallDateTime.Value">
+            <summary>
+            Hodnota reprezentovaná jako DateTime.
+            </summary>
+        </member>
         <member name="T:Havit.Data.DbTransactionDelegate">
             <summary>
             Reprezentuje metodu, která vykonává jednotlivé kroky transakce.
@@ -850,26 +870,6 @@
             &lt;/configuration&gt;
             </code>
             </example>
-        </member>
-        <member name="T:Havit.Data.SqlTypes.SqlSmallDateTime">
-            <summary>
-            Reprezentuje pomocné hodnoty pro databázový typ smalldatetime.
-            </summary>
-        </member>
-        <member name="F:Havit.Data.SqlTypes.SqlSmallDateTime.MinValue">
-            <summary>
-            Minimální hodnota použitelná pro databázový typ smalldatetime.
-            </summary>
-        </member>
-        <member name="F:Havit.Data.SqlTypes.SqlSmallDateTime.MaxValue">
-            <summary>
-            Maximální hodnota použitelná pro databázový typ smalldatetime.
-            </summary>
-        </member>
-        <member name="P:Havit.Data.SqlTypes.SqlSmallDateTime.Value">
-            <summary>
-            Hodnota reprezentovaná jako DateTime.
-            </summary>
         </member>
     </members>
 </doc>

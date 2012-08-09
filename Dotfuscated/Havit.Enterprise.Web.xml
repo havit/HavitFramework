@@ -78,6 +78,14 @@
             Přidá na začátek seznamu řádek pro výběr prázdné hodnoty, pokud tam již není.
             </summary>
         </member>
+        <member name="M:Havit.Web.UI.WebControls.EnterpriseDropDownList.SelectObjectIfPresent(System.Nullable{System.Int32})">
+            <summary>
+            Vybere objekt dle ID, pokud je objekt s tímto ID mezi daty.
+            Pokud není, neprovede nic.
+            Vrací true/false indikující, zda se podařilo objekt vybrat.
+            Metoda je určena pro vnitřní implementaci ukládání hondot filtrů.
+            </summary>
+        </member>
         <member name="P:Havit.Web.UI.WebControls.EnterpriseDropDownList.ItemPropertyInfo">
             <summary>
             ReferenceFieldPropertyInfo property, jejíž hodnota se tímto DropDownListem vybírá.

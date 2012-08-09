@@ -413,5 +413,42 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		#endregion
+
+        /// <summary>
+        /// Vybere objekt dle ID, pokud je objekt s tímto ID mezi daty.
+        /// Pokud není, neprovede nic.
+        /// Vrací true/false indikující, zda se podaøilo objekt vybrat.
+        /// Metoda je urèena pro vnitøní implementaci ukládání hondot filtrù.
+        /// </summary>
+#warning Po pøesunu ukládání hodnot filtrù z DSV do frameworku udìlat metodu interní.
+        public bool SelectObjectIfPresent(int? objectID)
+        {
+
+            if ((objectID == null) && Nullable)
+            {
+                EnsureAutoDataBind();
+                EnsureEmptyItem();
+                SelectedIndex = 0;
+                return true;
+            }
+
+            if (objectID != null)
+            {
+                EnsureAutoDataBind();
+                // pokud nastavujeme objekt
+                ListItem listItem = Items.FindByValue(objectID.Value.ToString());
+                if (listItem != null)
+                {
+                    // nastavovany objekt je v seznamu
+                    SelectedValue = listItem.Value;
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return false;
+        }   
 	}
 }

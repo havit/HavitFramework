@@ -385,57 +385,61 @@ namespace Havit.Web.UI.WebControls
 			}
 
 			// INSERTING
-			ArrayList insertingData = new ArrayList();
-			foreach (object item in sortedData)
+			ArrayList insertingData = null;
+			if (sortedData != null)
 			{
-				insertingData.Add(item);
-			}
-			insertRowIndex = -1;
-			if (AllowInserting)
-			{
-				if (GetInsertRowDataItem == null)
+				insertingData = new ArrayList();
+				foreach (object item in sortedData)
 				{
-					throw new InvalidOperationException("Pøi AllowInserting musíte nastavit GetInsertRowData");
+					insertingData.Add(item);
 				}
-
-				object insertRowDataItem = GetInsertRowDataItem();
-				if (AllowPaging)
+				insertRowIndex = -1;
+				if (AllowInserting)
 				{
-					int pageCount = (insertingData.Count + this.PageSize) - 1;
-					if (pageCount < 0)
+					if (GetInsertRowDataItem == null)
 					{
-						pageCount = 1;
+						throw new InvalidOperationException("Pøi AllowInserting musíte nastavit GetInsertRowData");
 					}
-					pageCount = pageCount / this.PageSize;
 
-					for (int i = 0; i < this.PageIndex; i++)
+					object insertRowDataItem = GetInsertRowDataItem();
+					if (AllowPaging)
 					{
-						insertingData.Insert(0, insertRowDataItem);
+						int pageCount = (insertingData.Count + this.PageSize) - 1;
+						if (pageCount < 0)
+						{
+							pageCount = 1;
+						}
+						pageCount = pageCount / this.PageSize;
+
+						for (int i = 0; i < this.PageIndex; i++)
+						{
+							insertingData.Insert(0, insertRowDataItem);
+						}
+						for (int i = this.PageIndex + 1; i < pageCount; i++)   // pøepoèítat
+						{
+							insertingData.Add(insertRowDataItem);
+						}
 					}
-					for (int i = this.PageIndex + 1; i < pageCount; i++)   // pøepoèítat
+					if (EditIndex < 0)
 					{
-						insertingData.Add(insertRowDataItem);
+						switch (InsertRowPosition)
+						{
+							case GridViewInsertRowPosition.Top:
+								this.InsertRowDataSourceIndex = (this.PageSize * this.PageIndex);
+								break;
+							case GridViewInsertRowPosition.Bottom:
+								if (AllowPaging)
+								{
+									this.InsertRowDataSourceIndex = Math.Min((((this.PageIndex + 1) * this.PageSize) - 1), insertingData.Count);
+								}
+								else
+								{
+									this.InsertRowDataSourceIndex = insertingData.Count;
+								}
+								break;
+						}
+						insertingData.Insert(InsertRowDataSourceIndex, insertRowDataItem);
 					}
-				}
-				if (EditIndex < 0)
-				{
-					switch (InsertRowPosition)
-					{
-						case GridViewInsertRowPosition.Top:
-							this.InsertRowDataSourceIndex = (this.PageSize * this.PageIndex);
-							break;
-						case GridViewInsertRowPosition.Bottom:
-							if (AllowPaging)
-							{
-								this.InsertRowDataSourceIndex = Math.Min((((this.PageIndex + 1) * this.PageSize) - 1), insertingData.Count);
-							}
-							else
-							{
-								this.InsertRowDataSourceIndex = insertingData.Count;
-							}
-							break;
-					}
-					insertingData.Insert(InsertRowDataSourceIndex, insertRowDataItem);
 				}
 			}
 
@@ -466,7 +470,7 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-		#region OnRowCommand (override -Insert)
+		#region OnRowCommand (override - Insert)
 		/// <summary>
 		/// Metoda, která spouští událost RowCommand.
 		/// </summary>

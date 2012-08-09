@@ -192,14 +192,7 @@ namespace Havit.Web.Security
 					throw new InvalidOperationException("HttpContext.Current not available");
 				}
 
-				if (String.IsNullOrEmpty(redirectUrl))
-				{
-					redirectUrl = FormsAuthentication.GetRedirectUrl(username, createPersistentCookie);
-				}
-
-				HttpCookie authCookie = GetAuthCookie(username, roles, createPersistentCookie, cookiePath);
-
-				context.Response.Cookies.Add(authCookie);
+				AddAuthCookie(username, roles, createPersistentCookie, cookiePath);
 				context.Response.Redirect(redirectUrl, false);
 			}
 		}
@@ -225,6 +218,57 @@ namespace Havit.Web.Security
 		public static void RedirectFromLoginPage(string username, string[] roles)
 		{
 			RedirectFromLoginPage(username, roles, false, null, null);
+		}
+		#endregion
+
+		#region AddAuthCookie
+		/// <summary>
+		/// Pøidá do Response autentizaèní cookie s pøíslušným autentizaèním ticketem.
+		/// </summary>
+		/// <param name="username">pøihlašovací jméno uživatele</param>
+		/// <param name="roles">role, které uživateli pøísluší</param>
+		/// <param name="createPersistentCookie"><c>true</c>, pokud se má vytvoøit trvalá cookie, která pøežije session browseru; jinak <c>false</c></param>
+		/// <param name="cookiePath">cookie-path pro autentizaèní ticket</param>
+		/// <returns>autnetizaèní cookie, která byla vytvoøena a pøidána do Response</returns>
+		public static HttpCookie AddAuthCookie(string username, string[] roles, bool createPersistentCookie, string cookiePath)
+		{
+			if (username != null)
+			{
+				HttpContext context = HttpContext.Current;
+				if (context == null)
+				{
+					throw new InvalidOperationException("HttpContext.Current not available");
+				}
+
+				HttpCookie authCookie = GetAuthCookie(username, roles, createPersistentCookie, cookiePath);
+				context.Response.Cookies.Add(authCookie);
+				
+				return authCookie;
+			}
+			return null;
+		}
+
+		/// <summary>
+		/// Pøidá do Response autentizaèní cookie s pøíslušným autentizaèním ticketem. Cookie není persistentní.
+		/// </summary>
+		/// <param name="username">pøihlašovací jméno uživatele</param>
+		/// <param name="roles">role, které uživateli pøísluší</param>
+		/// <returns>autentizaèní cookie, která byla vytvoøena a pøidána do Response</returns>
+		public static HttpCookie AddAuthCookie(string username, string[] roles)
+		{
+			return AddAuthCookie(username, roles, false, null);
+		}
+
+		/// <summary>
+		/// Pøidá do Response autentizaèní cookie s pøíslušným autentizaèním ticketem.
+		/// </summary>
+		/// <param name="username">pøihlašovací jméno uživatele</param>
+		/// <param name="roles">role, které uživateli pøísluší</param>
+		/// <param name="createPersistentCookie"><c>true</c>, pokud se má vytvoøit trvalá cookie, která pøežije session browseru; jinak <c>false</c></param>
+		/// <returns>autnetizaèní cookie, která byla vytvoøena a pøidána do Response</returns>
+		public static HttpCookie AddAuthCookie(string username, string[] roles, bool createPersistentCookie)
+		{
+			return AddAuthCookie(username, roles, createPersistentCookie, null);
 		}
 		#endregion
 	}

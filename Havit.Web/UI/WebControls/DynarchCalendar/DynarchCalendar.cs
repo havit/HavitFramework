@@ -137,6 +137,52 @@ namespace Havit.Web.UI.WebControls
 		}
 		private static DynarchCalendarSkin skin = DynarchCalendarSkin.System;
 
+		private static System.Collections.Generic.Dictionary<string, string> supportedLanguages;
+		private static object supportedLanguagesLock = new object();
+
+		#endregion
+
+		#region Constructor (static)
+		static DynarchCalendar()
+		{
+			// inicializujeme kolekci podporovaných jazykù
+			// protože jde o statický konstruktor, nemusíme øešit žádné zámky
+			supportedLanguages = new System.Collections.Generic.Dictionary<string, string>();
+			supportedLanguages.Add("af", null);
+			supportedLanguages.Add("ak", null);
+			supportedLanguages.Add("bg", null);
+			supportedLanguages.Add("br", null);
+			supportedLanguages.Add("ca", null);
+			// cs má výjimky v kódu kvùli Win1250 + Utf8
+			supportedLanguages.Add("da", null);
+			supportedLanguages.Add("de", null);
+			supportedLanguages.Add("du", null);
+			supportedLanguages.Add("el", null);
+			supportedLanguages.Add("en", null);
+			supportedLanguages.Add("es", null);
+			supportedLanguages.Add("fi", null);
+			supportedLanguages.Add("fr", null);
+			supportedLanguages.Add("he", null);
+			supportedLanguages.Add("hr", null);
+			supportedLanguages.Add("hu", null);
+			supportedLanguages.Add("it", null);
+			supportedLanguages.Add("jp", null);
+			supportedLanguages.Add("ko", null);
+			supportedLanguages.Add("lt", null);
+			supportedLanguages.Add("lv", null);
+			supportedLanguages.Add("nl", null);
+			supportedLanguages.Add("no", null);
+			supportedLanguages.Add("pl", null);
+			supportedLanguages.Add("pt", null);
+			supportedLanguages.Add("ro", null);
+			supportedLanguages.Add("ru", null);
+			supportedLanguages.Add("si", null);
+			supportedLanguages.Add("sk", null);
+			supportedLanguages.Add("sp", null);
+			supportedLanguages.Add("sv", null);
+			supportedLanguages.Add("tr", null);
+			supportedLanguages.Add("zh", null);
+		} 
 		#endregion
 
 		#region Originální vlastnosti kalendáøe odpovídající JavaScript
@@ -845,8 +891,23 @@ namespace Havit.Web.UI.WebControls
 				}
 				else
 				{
-					// ostatni, utf-8
-					ScriptManager.RegisterClientScriptResource(this, typeof(DynarchCalendar), "Havit.Web.UI.WebControls.DynarchCalendar.calendar-" + Thread.CurrentThread.CurrentUICulture.Name.Substring(0, 2) + ".js");
+					string languageCode = Thread.CurrentThread.CurrentUICulture.Name.Substring(0, 2);
+					bool isLanguageSupported;
+					lock (supportedLanguagesLock)
+					{
+						isLanguageSupported = supportedLanguages.ContainsKey(languageCode);
+					}
+
+					if (isLanguageSupported)
+					{
+						// ostatni, utf-8
+						ScriptManager.RegisterClientScriptResource(this, typeof(DynarchCalendar), "Havit.Web.UI.WebControls.DynarchCalendar.calendar-" + languageCode + ".js");
+					}
+					else
+					{
+						// nepodporovaný jazyk, použijeme angliètinu
+						ScriptManager.RegisterClientScriptResource(this, typeof(DynarchCalendar), "Havit.Web.UI.WebControls.DynarchCalendar.calendar-en.js");
+					}
 				}
 			}
 			else

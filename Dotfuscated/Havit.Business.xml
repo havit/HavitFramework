@@ -72,6 +72,16 @@
             <param name="objectID">ID objektu, který se má metodou vrátit.</param>
             <returns>Business objekt na základě ID.</returns>
         </member>
+        <member name="T:Havit.Business.DbTransactionEventArgs">
+            <summary>
+            Argument nesoucí instanci databázové transakce.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.DbTransactionEventArgs.Transaction">
+            <summary>
+            Transakce.
+            </summary>
+        </member>
         <member name="T:Havit.Business.ReferenceFieldPropertyInfo">
             <summary>
             Reprezentuje sloupec v databázi,
@@ -1852,6 +1862,21 @@
             Vytvoří kompozitní podmínku. Lze inicializovat sadou členských podmínek.
             </summary>
         </member>
+        <member name="T:Havit.Business.AfterSaveEventArgs">
+            <summary>
+            Argumenty události po uložení objektu.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.AfterSaveEventArgs.#ctor(System.Data.Common.DbTransaction,System.Boolean)">
+            <summary>
+            Konstruktor.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.AfterSaveEventArgs.WasNew">
+            <summary>
+            Indikuje, zda byl objekt před uložením nový.
+            </summary>
+        </member>
         <member name="T:Havit.Business.Query.ValueOperand">
             <summary>
             Konstanta jako operand databázového dotazu.
@@ -2059,6 +2084,16 @@
             Část SQL dotazu pro vytažení hodnoty daného sloupce.
             </summary>
         </member>
+        <member name="T:Havit.Business.BeforeSaveEventArgs">
+            <summary>
+            Argumenty události před uložením objektu.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.BeforeSaveEventArgs.#ctor(System.Data.Common.DbTransaction)">
+            <summary>
+            Konstruktor.
+            </summary>
+        </member>
         <member name="T:Havit.Business.ActiveRecordBusinessObjectBase">
             <summary>
             Bázová třída pro všechny business-objekty, která definuje jejich základní chování (Layer Supertype),
@@ -2206,41 +2241,6 @@
         <member name="F:Havit.Business.Query.MatchListMode.CommaSeparatedList">
             <summary>
             Podmínka je tvořena způsobem: WHERE Field IN (1, 2, 3, 4).
-            </summary>
-        </member>
-        <member name="T:Havit.Business.DbTransactionEventArgs">
-            <summary>
-            Argument nesoucí instanci databázové transakce.
-            </summary>
-        </member>
-        <member name="P:Havit.Business.DbTransactionEventArgs.Transaction">
-            <summary>
-            Transakce.
-            </summary>
-        </member>
-        <member name="T:Havit.Business.BeforeSaveEventArgs">
-            <summary>
-            Argumenty události před uložením objektu.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.BeforeSaveEventArgs.#ctor(System.Data.Common.DbTransaction)">
-            <summary>
-            Konstruktor.
-            </summary>
-        </member>
-        <member name="T:Havit.Business.AfterSaveEventArgs">
-            <summary>
-            Argumenty události po uložení objektu.
-            </summary>
-        </member>
-        <member name="M:Havit.Business.AfterSaveEventArgs.#ctor(System.Data.Common.DbTransaction,System.Boolean)">
-            <summary>
-            Konstruktor.
-            </summary>
-        </member>
-        <member name="P:Havit.Business.AfterSaveEventArgs.WasNew">
-            <summary>
-            Indikuje, zda byl objekt před uložením nový.
             </summary>
         </member>
     </members>

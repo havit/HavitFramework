@@ -94,6 +94,7 @@
     <Compile Include="Collections\SortHelper.cs" />
     <Compile Include="Collections\SortItem.cs" />
     <Compile Include="Collections\SortItemCollection.cs" />
+    <Compile Include="ITypeConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

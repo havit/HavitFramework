@@ -40,27 +40,37 @@ function havitFormatInt(value) {
 	var digit = 0;
 	
 	if (value == null) 
+	{
 		return "";
+	}
 		
 	if (typeof(value) != "number" || isNaN(value))
+	{
 		return Number.NaN;
+	}
 		
 	if (value == 0)
+	{
 		return "0";
+	}
 	
 	value = Math.abs(value);
 	
 	while (value != 0)
 	{
 		if (digit % 3 == 0 && digit > 0)
+		{
 			result = " " + result;
+		}
 		result = (value % 10) + result;
 		value = Math.floor(value / 10);
 		digit += 1;
 	}
 
 	if (originalValue < 0)
+    {
 		result = "-" + result;
+	}
 		
 	return result;
 }
@@ -71,10 +81,14 @@ function havitFormatFloat(value, decimals) {
 /// <param name="decimals">pocet desetinnych mist</param>
 	
 	if (value == null) 
+	{
 		return "";
+	}
 		
 	if (typeof(value) != "number" || isNaN(value))
+	{
 		return Number.NaN;
+	}
 		
 	var originalValue = value;
 	var result = havitFormatInt(Math.floor(Math.abs(value)));
@@ -83,7 +97,9 @@ function havitFormatFloat(value, decimals) {
 	
 	var exp = 1;
 	for (var i = 0; i < decimals; i++)
+	{
 		exp *= 10;
+	}
 	
 	value = Math.round(value * exp) % exp;
 
@@ -124,7 +140,9 @@ function havitReformatNumber(value) {
 			return havitFormatFloat(parsedValue, workValue.length - index - 1);
 		}
 		else
+		{
 			return havitFormatInt(parsedValue);		
+		}
 	}
 	return value;
 }
@@ -133,7 +151,8 @@ function havitParseDate(item) {
 /// <summary>Prevadi retezec na desetinne cislo, pokud se prevod nepodari, vrati se valueOnException.</summary>
         
    re = /^(\d+)\.(\d+)\.(\d+)$/
-   if (re.test(item)) {         
+   if (re.test(item))
+   {
       var myArray = re.exec(item);         
       var d = new Date();
       d.setFullYear(myArray[3]);      
@@ -141,9 +160,11 @@ function havitParseDate(item) {
       d.setDate(myArray[1]);                              
       d.setHours(0, 0, 0, 0);      
       return d;
-   } else {   
+   }
+   else
+   {   
       return null;
-   }             
+   }          
 }
 
 function havitIsChecked(elements, value) {
@@ -156,7 +177,9 @@ function havitIsChecked(elements, value) {
 
 	var element = havitFindElementInArray(elements, value);
 	if (element != null && element.checked)
+	{
 		return true;
+	}
 	return false;
 }
 
@@ -171,7 +194,9 @@ function havitFindElementInArray(elements, value) {
 	for (var i = 0; i < elements.length; i++)
 	{
 		if (elements[i].value == value)
+		{
 			return elements[i];
+		}
 	}
 	return null;
 }
@@ -193,9 +218,13 @@ function havitHideElement(element, keepSpace) {
 /// <param name="keepSpace">Pokud je keepSpace true, nastavuje visibility na hidden, pokud je keepSpace false, nastavuje display na none.</param>
 
 	if (keepSpace)
+	{
 		element.style.visibility = "hidden";
+	}
 	else
+	{
 		element.style.display = "none";
+	}
 }
 
 function havitBlockElement(element) {
@@ -222,8 +251,12 @@ function havitBlockElement(element) {
 	}
 	
 	if (element.children)
+	{
 		for (var i = 0; i < element.children.length; i++)
+		{
 			havitBlockElement(element.children[i]);
+		}
+	}
 }
 
 function havitUnblockElement(element) {
@@ -250,8 +283,12 @@ function havitUnblockElement(element) {
 	}
 
 	if (element.children)
+	{
 		for (var i = 0; i < element.children.length; i++)
+		{
 			havitUnblockElement(element.children[i]);
+		}
+	}
 }
 
 function havitCopyToClipboard(text) {
@@ -296,6 +333,18 @@ function havitShowDialog(elementId)
 	var element = document.getElementById(elementId);
 	_havitGetDialogOverlay().style.display = 'block';
 
+    _havitStoreScrollPosition();
+
+    if (window.attachEvent)
+    {
+        window.attachEvent("onscroll", _havitDialog_ScrollTo00);
+    }
+    else
+    {
+        window.addEventListener("scroll", _havitDialog_ScrollTo00, false);
+    }   
+    window.scroll(0, 0);
+        
 	if (_havitIsPreIE7())
 	{
 		_havitHideSelects(document);
@@ -312,6 +361,11 @@ function havitShowDialog(elementId)
 	}
 }
 
+function _havitDialog_ScrollTo00()
+{
+    window.scroll(0,0);
+}
+
 function havitHideDialog(elementId)
 {
 /// <summary>
@@ -323,6 +377,23 @@ function havitHideDialog(elementId)
 	{
 		_havitRestoreSelects(document);
 	}
+	
+	_havitRestoreScrollPosition();
+	try 
+	{
+	    if (window.attachEvent)
+        {
+            window.detachEvent("onscroll", _havitDialog_ScrollTo00);
+        }
+        else
+        {
+            window.removeEventListener("scroll", _havitDialog_ScrollTo00, false);
+        }
+    }
+    catch (e)
+    {
+    }   
+
 }
 
 function _havitGetDialogOverlay()
@@ -355,6 +426,36 @@ function havitSetDialogSize(dialogElementId, widthUnit, heightUnit, marginLeftUn
 	dialogElement.style.marginTop = marginTopUnit;
 }
 
+
+var _originalScrollLeft = null;
+var _originalScrollTop = null;
+
+function _havitStoreScrollPosition()
+{
+    _originalScrollLeft = 0;
+    _originalScrollTop = 0;
+	if (document.documentElement && document.documentElement.scrollTop)
+	{
+		_originalScrollLeft = document.documentElement.scrollLeft;
+		_originalScrollTop = document.documentElement.scrollTop;
+	}
+	else
+	{
+	    if (document.body)
+	    {
+		    _originalScrollLeft = document.body.scrollLeft;
+		    _originalScrollTop = document.body.scrollTop;
+	    }
+	}
+}
+
+function _havitRestoreScrollPosition()
+{
+    if ((_originalScrollLeft != null) && (_originalScrollTop != null))
+    {
+        window.scroll(_originalScrollLeft, _originalScrollTop);
+    }
+}
 
 function _havitHideSelects(element)
 {

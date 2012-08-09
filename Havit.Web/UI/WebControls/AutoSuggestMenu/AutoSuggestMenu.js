@@ -1,4 +1,4 @@
-//==============================
+ //==============================
 //AutoSuggestMenu version 1.1.0
 //==============================
 
@@ -44,7 +44,10 @@ function AutoSuggestMenu()
     self.menuItems=new Array();    //Array of AutoSuggestMenuItems
     self.onGetMenuItems=null;      //Overridable method to return suggestions
     self.onTextBoxUpdate=null;     //Overridable event handler that is called after textbox is updated with suggestion
-            
+    
+    // JK: Doplneno
+    self.onMenuHiddenEventHandlers = new Array();
+        
     //Internal attributes
     var _dom=null;  	
     
@@ -562,6 +565,12 @@ function AutoSuggestMenu()
 		return hdnSelectedValue.value;
 	}
 	
+    self.getSelectedValueHiddenField = function()
+	{
+		TRACE("AutoSuggestMenu.getSelectedValueHiddenField");
+	
+		return document.getElementById(self.hiddenSelectedValueID);
+	}
 
 	self.getSelectedMenuItem = function()
     {
@@ -640,6 +649,12 @@ function AutoSuggestMenu()
 	    
 	    if (_iFrame)
 	        _iFrame.style.visibility="hidden";
+	    
+	    // JK: Doplnìna obsluha "událostí"    
+		for(var i = 0; i < self.onMenuHiddenEventHandlers.length; i++)
+		{
+			self.onMenuHiddenEventHandlers[i]();
+		}	        
 	}
 	
     
@@ -657,7 +672,7 @@ function AutoSuggestMenu()
 	        throw "hiddenSelectedValueID is required.";
 	   
 	    var textBox=getTextBoxCtrl();
-        
+	           
 	    //Only render menu once. 
 	    //After that just replace the menu Items.
 	    var menuDiv;
@@ -666,6 +681,9 @@ function AutoSuggestMenu()
         menuDiv.id=self.id;
         menuDiv.className=self.cssClass;
         menuDiv.sourceObject=self;
+
+	    // JK: Doplnìno
+        textBox.autoSuggestMenuDiv = menuDiv.id;
         
         /**************************/        
         // JK: Pøesunuto do show. Zde je obèas textBox.clientWidth, zatímco v èase volání 
@@ -824,8 +842,9 @@ function AutoSuggestMenu()
 		var newValue=getTextBoxValue();
 			
 		//Skip up/down/enter
-		if ((key!=38) && (key!=40) && (key!=13))
-		{
+		// JK: Doplìno ignorování tabelkátoru
+		if ((key!=38) && (key!=40) && (key!=13) && (key!=9))
+		{		
 			//Limit num of characters to display suggestions	
 			if ((newValue.length > 0) &&
 			    (newValue.length >= self.minSuggestChars) &&
@@ -849,8 +868,8 @@ function AutoSuggestMenu()
 		
 		    TRACE("AutoSuggestMenu.onTextBoxKeyUp self.oldTextBoxValue=" + _oldTextBoxValue + ", newValue=" + newValue);
 		
-	    	if (_oldTextBoxValue!=newValue)
-	    		self.setSelectedValue("");
+    		if (_oldTextBoxValue!=newValue)
+    			self.setSelectedValue("");
 		}
 	}
 				
@@ -905,6 +924,12 @@ function AutoSuggestMenu()
 	   
 	    _cancelOnBlur=true;
 	}
+	
+	self.addMenuHiddenHandler = function(eventHandler)
+	{
+		self.onMenuHiddenEventHandlers.push(eventHandler);
+	}
+	
 }
 
 
@@ -921,3 +946,13 @@ AutoSuggestMenu.getMenu = function(menuID)
     return menu;
 }
 
+// JK: Doplnìno
+AutoSuggestMenu.getMenuForElement = function(elementID)
+{
+	var element=$(elementID);
+    
+    if (element==null)
+        throw "Element (ID: '" + element + "') doesn't exist";
+        
+    return AutoSuggestMenu.getMenu(element.autoSuggestMenuDiv);
+}

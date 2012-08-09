@@ -10,15 +10,21 @@
 <body>
 	<form id="form1" runat="server">
 		<asp:ScriptManager EnablePageMethods="true" runat="server" />
+		<asp:TextBox runat="server" Text="TextBox" />
 		<div>
-			<asp:TextBox ID="SubjektTB" Width="150" runat="server" style="border: 1px solid black;" />
+			<asp:TextBox ID="SubjektTB" Text="test2" Width="150" runat="server" style="border: 1px solid black;" onblur="window.setTimeout('alert(document.getElementById(\'SubjektASM_hdnSelectedValue\').value);', 500);" />
 			<havit:AutoSuggestMenu
 				ID="SubjektASM"
 				TargetControlID="SubjektTB"
 				OnGetSuggestions="GetSuggestions"
+				KeyPressDelay="300"	
+				UsePaging="false"
+				MinSuggestChars="2"							
+				SelectedValue="10"
 				runat="server"
 			/>
 		</div>
+		<asp:TextBox runat="server" Text="TextBox" />
 		<br /><br />
 		<div>
 		    <asp:Button ID="ShowDialogButton" text="Zobraz dialog" runat="server" />

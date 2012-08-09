@@ -230,7 +230,6 @@
     <Compile Include="UI\WebControls\MessengerType.cs" />
     <Compile Include="UI\WebControls\BasicModalDialog.cs" />
     <Compile Include="UI\CommandNames.cs" />
-    <Compile Include="UI\DataBinderExt.cs" />
     <Compile Include="UI\HtmlControls\HtmlFormExt.cs">
       <SubType>Code</SubType>
     </Compile>

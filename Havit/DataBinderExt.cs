@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
 
-namespace Havit.Web.UI
+namespace Havit
 {
 	/// <summary>
 	/// Rozšiřující funkčnost analogická k <see cref="System.Web.UI.DataBinder"/>.
@@ -15,10 +15,14 @@ namespace Havit.Web.UI
 	{
 		/// <summary>
 		/// Získá hodnotu pro zobrazení z předaného objektu a dataField.
+		/// Vyhodnocuje s ohledem na &quot;tečkovou&quot; notaci, tedy například z objektu třídy Subjekt dokáže vrátit &quot;HlavniAdresa.Ulice&quot;.
+		/// Pokud je dataItem <c>null</c> nebo <c>DBNull.Value</c>, vrací se tato hodnota.
+		/// Pokud se při vyhodnocování &quot;po cestě&quot; získá <c>null</c> nebo <c>DBNull.Value</c>, vrací se <c>null</c>/<c>DBNull.Value</c>
+		/// (příklad: Při vyhodnocování HlavniAdresa.Ulice je HlavniAdresa <c>null</c>, pak je výsledkem metody <c>null</c>.
 		/// </summary>
-		/// <param name="dataItem">Položka dat z DataSource</param>
-		/// <param name="dataField">DataField</param>
-		/// <returns>hodnota, pokud se ji podařilo získat; jinak <c>null</c> nebo DBNull.Value</returns>
+		/// <param name="dataItem">Datový objekt, ze kterého se získává hodnota</param>
+		/// <param name="dataField">Vlastnost, jejíž hodnota je získávána.</param>
+		/// <returns>Hodnota, pokud se ji podařilo získat; jinak <c>null</c> nebo <c>DBNull.Value</c>.</returns>
 		public static object GetValue(object dataItem, string dataField)
 		{
 			string[] expressionParts = dataField.Split('.');
@@ -28,7 +32,17 @@ namespace Havit.Web.UI
 			int i = 0;
 			int lastExpressionIndex = expressionParts.Length - 1;
 			for (i = 0; i <= lastExpressionIndex; i++)
-			{
+			{				
+				if (currentValue == null)
+				{
+					return null;
+				}
+
+				if (currentValue == DBNull.Value)
+				{
+					return DBNull.Value;
+				}
+
 				string expression = expressionParts[i];
 
 				if (expression.IndexOfAny(indexExprStartChars) < 0)
@@ -39,16 +53,6 @@ namespace Havit.Web.UI
 				{
 					currentValue = DataBinder.GetIndexedPropertyValue(currentValue, expression);
 				}
-
-				if (currentValue == null) // && (i < lastExpressionIndex))
-				{
-					return null;
-				}
-
-				if (currentValue == DBNull.Value) // && (i < lastExpressionIndex))
-				{
-					return DBNull.Value;
-				}
 			}
 
 			return currentValue;
@@ -57,23 +61,24 @@ namespace Havit.Web.UI
 
 		/// <summary>
 		/// Získá hodnotu pro zobrazení z předaného objektu a dataField a zformtátuje ji.
+		/// Viz DataBinderExt.GetValue(object dataItem, string dataField).
 		/// </summary>
-		/// <param name="dataItem">Položka dat z DataSource</param>
-		/// <param name="dataField">DataField</param>
-		/// <param name="format">formátovací řetězec</param>
-		/// <returns>hodnota, pokud se ji podařilo získat a zformátovat; jinak <c>String.Empty</c></returns>
+		/// <param name="dataItem">Datový objekt, ze kterého se získává hodnota</param>
+		/// <param name="dataField">Vlastnost, jejíž hodnota je získávána.</param>
+		/// <param name="format">Formátovací řetězec.</param>
+		/// <returns>Hdnota, pokud se ji podařilo získat a zformátovat; jinak <c>String.Empty</c>.</returns>
 		public static string GetValue(object dataItem, string dataField, string format)
 		{
 			object propertyValue = GetValue(dataItem, dataField);
 			if ((propertyValue == null) || (propertyValue == DBNull.Value))
 			{
-				return string.Empty;
+				return String.Empty;
 			}
-			if (string.IsNullOrEmpty(format))
+			if (String.IsNullOrEmpty(format))
 			{
 				return propertyValue.ToString();
 			}
-			return string.Format(format, propertyValue);
+			return String.Format(format, propertyValue);
 		}
 	}
 }

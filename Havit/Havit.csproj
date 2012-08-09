@@ -183,6 +183,7 @@
     <Compile Include="MathExt.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DataBinderExt.cs" />
     <Compile Include="Reflection\Reflector.cs">
       <SubType>Code</SubType>
     </Compile>

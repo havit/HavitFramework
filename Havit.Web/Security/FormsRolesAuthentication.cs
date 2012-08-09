@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Web.Security;
 using System.Web;
 using System.Security.Principal;
+using System.Diagnostics.Contracts;
 
 namespace Havit.Web.Security
 {
@@ -105,20 +106,33 @@ namespace Havit.Web.Security
 		/// <summary>
 		/// Vytvoří autentizační ticket pro forms-authentication s ukládáním rolí do userData.
 		/// </summary>
-		/// <param name="username">přihlašovací jméno uživatele</param>
-		/// <param name="roles">role, které uživateli přísluší</param>
-		/// <param name="createPersistent"><c>true</c>, pokud se má být ticket persistentní; jinak <c>false</c></param>
-		/// <param name="cookiePath">cookie-path pro autentizační ticket</param>
-		/// <returns>autentizační ticket na základě předaných argumentů</returns>
-		public static FormsAuthenticationTicket GetAuthTicket(string username, string[] roles, bool createPersistent, string cookiePath)
+		/// <param name="username">Přihlašovací jméno uživatele.</param>
+		/// <param name="roles">Role, které uživateli přísluší.</param>
+		/// <param name="createPersistent"><c>True</c>, pokud se má být ticket persistentní; jinak <c>false</c>.</param>
+		/// <param name="cookiePath">Cookie-path pro autentizační ticket.</param>
+		/// <param name="timeout">Doba platnosti autentizačního tiketu v minutách. Pro perzistentní cookie musí být hodnota null, pro neperzistentní je hodnota povinná.</param>
+		/// <returns>Autentizační ticket na základě předaných argumentů.</returns>
+		public static FormsAuthenticationTicket GetAuthTicket(string username, string[] roles, bool createPersistent, string cookiePath, int? timeout)
 		{
-			FormsAuthenticationTicket authTicket;
-
+			Contract.Requires((createPersistent && (timeout == null)) || (!createPersistent && (timeout != null)), "Pro perzistentní cookie nelze zadat timeout, pro neperzistentní je timeout povinný.");
+			
+			if (username == null)
+			{
+				username = String.Empty;
+			}
+			
 			string userData = string.Empty;
 			if (roles != null)
 			{
 				userData = String.Join(",", roles);
 			}
+
+			if (String.IsNullOrEmpty(cookiePath))
+			{
+				cookiePath = FormsAuthentication.FormsCookiePath;
+			}
+	
+			FormsAuthenticationTicket authTicket;
 
 			// .NET FW 2.0 obsahuje bug, kdy do persistentního ticketu nastavuje platnost jako nepersistentní
 			if (createPersistent)
@@ -128,22 +142,35 @@ namespace Havit.Web.Security
 					username,									// name
 					DateTime.Now,								// issueDate
 					DateTime.Now.AddYears(50),					// expiration
-					createPersistent,							// isPersistent
-					userData,								// userData
+					true,										// isPersistent
+					userData,									// userData
 					cookiePath);								// cookiePath
 			}
 			else
 			{
 				authTicket = new FormsAuthenticationTicket(
-					2,											// version
-					username,									// name
-					DateTime.Now,								// issueDate
-					DateTime.Now.AddMinutes((double)Timeout),	// expiration
-					createPersistent,							// isPersistent
-					userData,									// userData
-					cookiePath);								// cookiePath
+					2,												// version
+					username,										// name
+					DateTime.Now,									// issueDate
+					DateTime.Now.AddMinutes((double)timeout.Value),	// expiration
+					false,											// isPersistent
+					userData,										// userData
+					cookiePath);									// cookiePath
 			}
 			return authTicket;
+		}
+
+		/// <summary>
+		/// Vytvoří autentizační ticket pro forms-authentication s ukládáním rolí do userData.
+		/// </summary>
+		/// <param name="username">Přihlašovací jméno uživatele.</param>
+		/// <param name="roles">Role, které uživateli přísluší.</param>
+		/// <param name="createPersistent"><c>True</c>, pokud se má být ticket persistentní; jinak <c>false</c>.</param>
+		/// <param name="cookiePath">Cookie-path pro autentizační ticket.</param>
+		/// <returns>Autentizační ticket na základě předaných argumentů.</returns>
+		public static FormsAuthenticationTicket GetAuthTicket(string username, string[] roles, bool createPersistent, string cookiePath)
+		{
+			return GetAuthTicket(username, roles, createPersistent, cookiePath, createPersistent ? (int?)null : Timeout);
 		}
 		#endregion
 
@@ -164,16 +191,6 @@ namespace Havit.Web.Security
 				throw new InvalidOperationException("HttpContext.Current not available");
 			}
 
-			if (username == null)
-			{
-				username = String.Empty;
-			}
-
-			if (String.IsNullOrEmpty(cookiePath))
-			{
-				cookiePath = FormsAuthentication.FormsCookiePath;
-			}
-
 			FormsAuthenticationTicket authTicket = GetAuthTicket(username, roles, createPersistentCookie, cookiePath);
 
 			string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
@@ -190,6 +207,7 @@ namespace Havit.Web.Security
 			{
 				authCookie.Domain = FormsAuthentication.CookieDomain;
 			}
+
 			if (authTicket.IsPersistent)
 			{
 				authCookie.Expires = authTicket.Expiration;

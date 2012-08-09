@@ -10,7 +10,7 @@ namespace Havit.Business.Query
 	/// </summary>
 	[ComVisible(false)]
 	[Serializable]
-	public class AndCondition: CompositeCondition
+	public class AndCondition : CompositeCondition
 	{
 		#region Constructor
 		/// <summary>

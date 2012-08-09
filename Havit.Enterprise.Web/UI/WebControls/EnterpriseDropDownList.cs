@@ -118,7 +118,19 @@ namespace Havit.Web.UI.WebControls
 			get { return (string)(ViewState["DataSortField"] ?? DataTextField); }
 			set { ViewState["DataSortField"] = value; }
 		}		
-		#endregion		
+		#endregion
+
+		#region SortDirection
+		/// <summary>
+		/// Udává smìr øazení položek.
+		/// Výchozí je vzestupné øazení (Ascending).
+		/// </summary>
+		public Havit.Collections.SortDirection SortDirection
+		{
+			get { return (Havit.Collections.SortDirection)(ViewState["SortDirection"] ?? Havit.Collections.SortDirection.Ascending); }
+			set { ViewState["SortDirection"] = value; }
+		}
+		#endregion
 
 		#region SelectedId
 		/// <summary>
@@ -342,7 +354,11 @@ namespace Havit.Web.UI.WebControls
 				{
 					throw new InvalidOperationException(String.Format("AutoSort je true, ale není nastavena hodnota vlastnosti DataSortField controlu {0}.", ID));
 				}
-				IEnumerable sortedData = SortHelper.PropertySort(dataSource, DataSortField);
+
+				SortItemCollection sorting = new SortItemCollection();
+				sorting.Add(new SortItem(this.DataSortField, this.SortDirection));
+				IEnumerable sortedData = SortHelper.PropertySort(dataSource, sorting);
+
 				base.PerformDataBinding(sortedData);
 			}
 			else

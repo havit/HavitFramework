@@ -68,7 +68,7 @@ namespace Havit.Business.Query
 		}
 		#endregion
 
-		#region ICondition Members
+		#region GetWhereStatement
 		/// <summary>
 		/// Pøidá èást SQL pøíkaz pro sekci WHERE.
 		/// </summary>
@@ -87,6 +87,18 @@ namespace Havit.Business.Query
 			}
 
 			whereBuilder.AppendFormat(ConditionPattern, Operand1.GetCommandValue(command));
+		}
+		
+		#endregion
+
+		#region IsEmptyCondition
+		/// <summary>
+		/// Udává, zda je podmínka prázdná.
+		/// Vrací vždy false.
+		/// </summary>
+		public override bool IsEmptyCondition()
+		{
+			return false;
 		}
 		#endregion
 	}

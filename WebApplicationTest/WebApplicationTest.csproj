@@ -73,6 +73,13 @@
     <Compile Include="DateTimeBoxTest.aspx.designer.cs">
       <DependentUpon>DateTimeBoxTest.aspx</DependentUpon>
     </Compile>
+    <Compile Include="EnterpriseDropDownListTest.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>EnterpriseDropDownListTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="EnterpriseDropDownListTest.aspx.designer.cs">
+      <DependentUpon>EnterpriseDropDownListTest.aspx</DependentUpon>
+    </Compile>
     <Compile Include="EnumDropDownList.aspx.cs">
       <DependentUpon>EnumDropDownList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -121,6 +128,7 @@
       <LastGenOutput>TestEnum.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="EnterpriseDropDownListTest.aspx" />
     <Content Include="EnumDropDownList.aspx" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

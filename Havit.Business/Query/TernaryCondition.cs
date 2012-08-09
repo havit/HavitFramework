@@ -38,7 +38,7 @@ namespace Havit.Business.Query
 		}
 		#endregion
 
-		#region ICondition Members
+		#region GetWhereStatement
 		/// <summary>
 		/// Pøidá èást SQL pøíkaz pro sekci WHERE.
 		/// </summary>

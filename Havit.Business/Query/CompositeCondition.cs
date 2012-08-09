@@ -40,7 +40,7 @@ namespace Havit.Business.Query
 		}
 		#endregion
 
-		#region ICondition Members
+		#region GetWhereStatement
 		/// <summary>
 		/// Poskládá èlenské podmínky. Mezi podmínkami (operandy) je operátor zadaný v konstruktoru.
 		/// </summary>
@@ -53,22 +53,45 @@ namespace Havit.Business.Query
 				return;
 			}
 
-			if (Conditions.Count == 1)
-			{			
-				Conditions[0].GetWhereStatement(command, whereBuilder);
-				return;
-			}
+			//if (Conditions.Count == 1)
+			//{			
+			//    Conditions[0].GetWhereStatement(command, whereBuilder);
+			//    return;
+			//}
 
 			whereBuilder.Append("(");
+			bool renderedFirst = false;
 			for (int i = 0; i < Conditions.Count; i++)
 			{
-				if (i > 0)
+				Condition condition = Conditions[i];
+				if (!condition.IsEmptyCondition())
 				{
-					whereBuilder.AppendFormat(" {0} ", operatorBetweenOperands);
+					if (renderedFirst)
+					{
+						whereBuilder.AppendFormat(" {0} ", operatorBetweenOperands);
+					}
+					condition.GetWhereStatement(command, whereBuilder);
+					renderedFirst = true;
 				}
-				Conditions[i].GetWhereStatement(command, whereBuilder);
 			}
 			whereBuilder.Append(")");
+		}
+		#endregion
+
+		#region IsEmptyCondition
+		/// <summary>
+		/// 
+		/// </summary>
+		public override bool IsEmptyCondition()
+		{
+			foreach (Condition item in this.Conditions)
+			{
+				if (!item.IsEmptyCondition())
+				{
+					return false;
+				}
+			}
+			return true;
 		}
 		#endregion
 	}

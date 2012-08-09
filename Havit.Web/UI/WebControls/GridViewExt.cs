@@ -106,7 +106,7 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		public bool AutoSort
 		{
-			get { return (bool)(ViewState["AutoSort"] ?? false); }
+			get { return (bool)(ViewState["AutoSort"] ?? true); }
 			set { ViewState["AutoSort"] = value; }
 		}
 		#endregion

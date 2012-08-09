@@ -41,6 +41,7 @@
     <Compile Include="BusinessLayerTest.cs" />
     <Compile Include="BusinessObjectBaseTest.cs" />
     <Compile Include="BusinessObjectCollectionTest.cs" />
+    <Compile Include="CompositeConditionTest.cs" />
     <Compile Include="IdentityMapScopeTest.cs" />
     <Compile Include="IdentityMapTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

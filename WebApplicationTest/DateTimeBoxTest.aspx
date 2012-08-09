@@ -18,7 +18,10 @@
 					</tr>
 					<tr>
 						<td>DateTime</td>
-						<td><havit:DateTimeBox DateTimeMode="DateTime" runat="server" /></td>
+						<td>
+							<havit:DateTimeBox ID="DrubyDateTimeBox" DateTimeMode="DateTime" runat="server" />
+							<asp:Button ID="VycistitButton" text="Vycistit" runat="server" />
+						</td>
 					</tr>
 					<tr>
 						<td>Enabled=false</td>

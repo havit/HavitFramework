@@ -22,6 +22,8 @@ namespace WebApplicationTest
 			AutoPostBackOnInitValueLabel.Text = AutoPostBackDateTimeBox.Value.ToString();
 
 			SecondDateTimeBoxValidator.ServerValidate += new ServerValidateEventHandler(SecondDateTimeBoxValidator_ServerValidate);
+
+			VycistitButton.Click += new EventHandler(VycistitButton_Click);
 		}
 
 		private void SecondDateTimeBoxValidator_ServerValidate(object source, ServerValidateEventArgs args)
@@ -54,5 +56,11 @@ namespace WebApplicationTest
 			base.OnLoadComplete(e);
 			AutoPostBackOnLoadCompleteValueLabel.Text = AutoPostBackDateTimeBox.Value.ToString();
 		}
+
+		void VycistitButton_Click(object sender, EventArgs e)
+		{
+			DrubyDateTimeBox.Value = null;
+		}
+
 	}
 }

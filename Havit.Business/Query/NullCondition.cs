@@ -2,15 +2,24 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Havit.Business.Conditions
+namespace Havit.Business.Query
 {
+	/// <summary>
+	/// Vytváøí podmínky testující null hodnoty.
+	/// </summary>
 	public class NullCondition
 	{
+		/// <summary>
+		/// Vytvoøí podmínku testující hodnotu na NULL.
+		/// </summary>
 		public static ICondition CreateIsNull(IOperand operand)
 		{
 			return new UnaryCondition(UnaryCondition.IsNullPattern, operand);
 		}
 
+		/// <summary>
+		/// Vytvoøí podmínku testující hodnotu na NOT NULL.
+		/// </summary>
 		public static ICondition CreateIsNotNull(IOperand operand)
 		{
 			return new UnaryCondition(UnaryCondition.IsNotNullPattern, operand);

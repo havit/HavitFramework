@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Data.Common;
-using Havit.Business.Conditions;
 
-namespace Havit.Business
+namespace Havit.Business.Query
 {
 	/// <summary>
 	/// Objektová struktura SQL dotazu.
@@ -38,7 +37,7 @@ namespace Havit.Business
 		/// <summary>
 		/// Seznam sloupcù (sekce SQL dotazu SELECT), které se vytáhnou v pøípadì, že kolekce fields je prázdná.
 		/// </summary>
-		public string FieldsWhenEmpty
+		internal string FieldsWhenEmpty
 		{
 			get { return fieldsWhenEmpty; }
 			set { fieldsWhenEmpty = value; }
@@ -104,10 +103,19 @@ namespace Havit.Business
 
 		#endregion
 
+		/// <summary>
+		/// Slouží k pøípravì objektu pøed zaèátkem skládání databázového dotazu.
+		/// </summary>
 		public virtual void OnBeforePrepareCommand()
 		{
 		}
 
+		/// <summary>
+		/// Slouží k dokonèení skládání databázového dotazu.
+		/// Voláno po poskládání databázového dotazu, naskládání parametrù do commandu,
+		/// ale PØED nastavením property command.CommandText. Je tak možno databázový
+		/// dotaz upravit na poslední chvíli.
+		/// </summary>
 		public virtual void OnAfterPrepareCommand(DbCommand command, StringBuilder commandBuilder)
 		{
 		}

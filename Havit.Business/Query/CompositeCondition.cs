@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Collections.ObjectModel;
 
-namespace Havit.Business.Conditions
+namespace Havit.Business.Query
 {
 	/// <summary>
 	/// Pøedek kompozitních podmínek.

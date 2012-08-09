@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Havit.Business.Conditions
+namespace Havit.Business.Query
 {
 	/// <summary>
 	/// Tøída reprezentující podmínku o dvou operandech.
@@ -11,7 +11,7 @@ namespace Havit.Business.Conditions
 	{
 		#region Patterns
 		/// <summary>
-		/// Vzor pro podmínku LIKE
+		/// Vzor pro podmínku LIKE.
 		/// </summary>
 		public const string LikePattern = "({0} LIKE {1})";
 
@@ -50,6 +50,11 @@ namespace Havit.Business.Conditions
 
 		#region ICondition Members
 
+		/// <summary>
+		/// Pøidá èást SQL pøíkaz pro sekci WHERE
+		/// </summary>
+		/// <param name="command"></param>
+		/// <param name="whereBuilder"></param>
 		public override void GetWhereStatement(System.Data.Common.DbCommand command, StringBuilder whereBuilder)
 		{
 			whereBuilder.AppendFormat(ConditionPattern, Operand1.GetCommandValue(command), Operand2.GetCommandValue(command));

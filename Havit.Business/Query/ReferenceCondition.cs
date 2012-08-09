@@ -2,10 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Havit.Business.Conditions
+namespace Havit.Business.Query
 {
+	/// <summary>
+	/// Vytváøí podmínku testující referenèní hodnotu (cizí klíè).
+	/// </summary>
 	public static class ReferenceCondition
 	{
+		/// <summary>
+		/// Vytvoøí podmínku na rovnost.
+		/// </summary>
 		public static ICondition CreateEquals(Property property, int? ID)
 		{
 			if (ID == null || ID < 0)
@@ -14,6 +20,9 @@ namespace Havit.Business.Conditions
 				return NumberCondition.CreateEquals(property, ID.Value);
 		}
 
+		/// <summary>
+		/// Vytvoøí podmínku na rovnost.
+		/// </summary>
 		public static ICondition CreateEquals(Property property, BusinessObjectBase businessObject)
 		{
 			if (businessObject.IsNew)

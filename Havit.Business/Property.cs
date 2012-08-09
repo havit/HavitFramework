@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data;
 using System.Data.Common;
-using Havit.Business.Conditions;
+using Havit.Business.Query;
 
 namespace Havit.Business
 {
@@ -18,6 +18,7 @@ namespace Havit.Business
 		/// Vytvoøí instanci sloupce.
 		/// </summary>
 		/// <param name="fieldName"></param>
+		/// <param name="isPrimaryKey"></param>
 		/// <param name="nullable"></param>
 		/// <param name="fieldType"></param>
 		public Property(string fieldName, bool isPrimaryKey, SqlDbType fieldType, bool nullable)

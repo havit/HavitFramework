@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data.Common;
-using Havit.Business.Conditions;
 
 namespace Havit.Business
 {

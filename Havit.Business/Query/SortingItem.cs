@@ -3,34 +3,36 @@ using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel;
 
-namespace Havit.Business
+namespace Havit.Business.Query
 {
 	/// <summary>
 	/// Reprezentuje položku øazení.
 	/// </summary>
 	[Serializable]	
-	public class OrderItem
+	public class SortingItem
 	{
 		#region Constructors
 
 		/// <summary>
 		/// Vytvoøí prázdnou instanci poøadí.
 		/// </summary>
-		public OrderItem()
+		public SortingItem()
 		{
 		}
 
 		/// <summary>
 		/// Vytvoøí položdu øazení podle fieldName, vzestupné øazení.
 		/// </summary>
-		public OrderItem(string fieldName): this(fieldName, ListSortDirection.Ascending)
+		public SortingItem(string fieldName)
+			: this(fieldName, ListSortDirection.Ascending)
 		{			
 		}
 
 		/// <summary>
 		/// Vytvoøí položdu øazení podle fieldName a daného poøadí.
 		/// </summary>
-		public OrderItem(string fieldName, ListSortDirection direction): this()
+		public SortingItem(string fieldName, ListSortDirection direction)
+			: this()
 		{
 			this.fieldName = fieldName;
 			this.direction = direction;
@@ -39,14 +41,16 @@ namespace Havit.Business
 		/// <summary>
 		/// Vytvoøí položdu øazení podle sloupce, vzestupné poøadí.
 		/// </summary>
-		public OrderItem(Property property): this(property.FieldName, ListSortDirection.Ascending)
+		public SortingItem(Property property)
+			: this(property.FieldName, ListSortDirection.Ascending)
 		{
 		}
 
 		/// <summary>
 		/// Vytvoøí položdu øazení podle sloupce a daného poøadí.
 		/// </summary>
-		public OrderItem(Property property, ListSortDirection direction): this(property.FieldName, direction)
+		public SortingItem(Property property, ListSortDirection direction)
+			: this(property.FieldName, direction)
 		{
 		}
 

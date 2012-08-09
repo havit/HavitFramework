@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Havit.Business.Conditions
+namespace Havit.Business.Query
 {
 	/// <summary>
 	/// Pomocník pro práci s výètem ComparisonOperator.

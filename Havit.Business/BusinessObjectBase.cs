@@ -405,8 +405,6 @@ namespace Havit.Business
 		/// </remarks>
 		protected virtual void CheckConstraints()
 		{
-#warning Nebylo by lepší umožnit metodu CheckConstraints() volat i explicitnì a dát ji public?
-#warning Nutno pøipravit vlastní ConstraintViolationException
 		}
 		#endregion
 

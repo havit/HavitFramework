@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Havit.Business.Conditions;
 
-namespace Havit.Business.Conditions
+namespace Havit.Business.Query
 {
 	/// <summary>
 	/// Vytváøí podmínku testující logickou hodnotu.
@@ -18,7 +17,7 @@ namespace Havit.Business.Conditions
 			if (value == null)
 				return NullCondition.CreateIsNull(property);
 			else
-				return new BinaryCondition(BinaryCondition.EqualsPattern, property, ValueOperand.FromBoolean(value.Value));
+				return new BinaryCondition(BinaryCondition.EqualsPattern, property, ValueOperand.Create(value.Value));
 		}
 
 		/// <summary>

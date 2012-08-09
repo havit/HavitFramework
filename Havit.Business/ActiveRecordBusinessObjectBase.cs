@@ -123,8 +123,16 @@ namespace Havit.Business
 			// vynucení transakce nad celou Save() operací (BusinessObjectBase ji pouze oèekává, ale nevynucuje).
 			SqlDataAccess.ExecuteTransaction(delegate(SqlTransaction myTransaction)
 				{
-					base.Save(myTransaction);
+					Save_BaseInTransaction(myTransaction); // base.Save(myTransaction) hlásí warning
 				}, (SqlTransaction)transaction);
+		}
+
+		/// <summary>
+		/// Voláno z metody Save - øeší warning pøi kompilaci pøi volání base.Save(...) z anonymní metody.
+		/// </summary>
+		private void Save_BaseInTransaction(SqlTransaction myTransaction)
+		{
+			base.Save(myTransaction);
 		}
 
 		/// <summary>

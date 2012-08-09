@@ -376,6 +376,8 @@ namespace Havit.Web.UI.WebControls
 					valueTextBox.Attributes.Add("onfocus", "HavitNumericBox_Focus(event);");
 				}
 			}
+
+			ViewState["ValueMemento"] = GetValueMemento();
 		}		
 		#endregion
 

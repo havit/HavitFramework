@@ -154,7 +154,7 @@ namespace Havit.Business
 		/// Metoda také neprovede uložení, pokud objekt nebyl zmìnìn a souèasnì nejde o nový objekt (!IsDirty &amp;&amp; !IsNew)
 		/// </remarks>
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
-		public override void Save(DbTransaction transaction)
+		public override sealed void Save(DbTransaction transaction)
 		{
 			// vynucení transakce nad celou Save() operací (BusinessObjectBase ji pouze oèekává, ale nevynucuje).
 			DbConnector.Default.ExecuteTransaction(delegate(DbTransaction myTransaction)

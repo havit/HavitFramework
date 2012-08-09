@@ -17,6 +17,7 @@ using System.Data.SqlTypes;
 using System.Threading;
 using System.Web;
 using System.Web.Caching;
+using System.Xml;
 using Havit.Collections;
 using Havit.Data;
 using Havit.Data.SqlClient;
@@ -125,15 +126,18 @@ namespace Havit.BusinessLayerTest
 		{
 			DataRecord result;
 			
-			SqlCommand sqlCommand = new SqlCommand("SELECT RoleID, Symbol FROM [dbo].[Role] WHERE RoleID = @RoleID");
-			sqlCommand.Transaction = (SqlTransaction)transaction;
+			DbCommand dbCommand = DbConnector.Default.ProviderFactory.CreateCommand();
+			dbCommand.CommandText = "SELECT RoleID, Symbol FROM [dbo].[Role] WHERE RoleID = @RoleID";
+			dbCommand.Transaction = transaction;
 			
-			SqlParameter sqlParameterRoleID = new SqlParameter("@RoleID", SqlDbType.Int);
-			sqlParameterRoleID.Direction = ParameterDirection.Input;
-			sqlParameterRoleID.Value = this.ID;
-			sqlCommand.Parameters.Add(sqlParameterRoleID);
+			DbParameter dbParameterRoleID = DbConnector.Default.ProviderFactory.CreateParameter();
+			dbParameterRoleID.ParameterName = "RoleID";
+			dbParameterRoleID.DbType = DbType.Int32;
+			dbParameterRoleID.Direction = ParameterDirection.Input;
+			dbParameterRoleID.Value = this.ID;
+			dbCommand.Parameters.Add(dbParameterRoleID);
 			
-			result = DbConnector.Default.ExecuteDataRecord(sqlCommand);
+			result = DbConnector.Default.ExecuteDataRecord(dbCommand);
 			
 			return result;
 		}
@@ -312,8 +316,8 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static RoleCollection GetList(QueryParams queryParams, DbTransaction transaction)
 		{
-			SqlCommand sqlCommand = new SqlCommand();
-			sqlCommand.Transaction = (SqlTransaction)transaction;
+			DbCommand dbCommand = DbConnector.Default.ProviderFactory.CreateCommand();
+			dbCommand.Transaction = transaction;
 			
 			queryParams.ObjectInfo = Role.ObjectInfo;
 			if (queryParams.Properties.Count > 0)
@@ -321,8 +325,8 @@ namespace Havit.BusinessLayerTest
 				queryParams.Properties.Add(Role.Properties.ID);
 			}
 			
-			queryParams.PrepareCommand(sqlCommand);
-			return Role.GetList(sqlCommand, queryParams.GetDataLoadPower());
+			queryParams.PrepareCommand(dbCommand);
+			return Role.GetList(dbCommand, queryParams.GetDataLoadPower());
 		}
 		
 		private static RoleCollection GetList(DbCommand dbCommand, DataLoadPower dataLoadPower)

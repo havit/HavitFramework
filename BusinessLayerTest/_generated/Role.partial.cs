@@ -10,6 +10,7 @@ using System.Data.SqlTypes;
 using System.Threading;
 using System.Web;
 using System.Web.Caching;
+using System.Xml;
 using Havit.Collections;
 using Havit.Data;
 using Havit.Data.SqlClient;

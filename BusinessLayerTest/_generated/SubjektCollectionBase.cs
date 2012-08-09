@@ -17,6 +17,7 @@ using System.Data.SqlTypes;
 using System.Threading;
 using System.Web;
 using System.Web.Caching;
+using System.Xml;
 using Havit.Collections;
 using Havit.Data;
 using Havit.Data.SqlClient;
@@ -156,15 +157,16 @@ namespace Havit.BusinessLayerTest
 				return;
 			}
 			
-			SqlCommand sqlCommand = new SqlCommand();
-			sqlCommand.Transaction = (SqlTransaction)transaction;
+			DbCommand dbCommand = DbConnector.Default.ProviderFactory.CreateCommand();
+			dbCommand.Transaction = transaction;
 			
 			QueryParams queryParams = new QueryParams();
 			queryParams.ObjectInfo = Subjekt.ObjectInfo;
 			queryParams.Conditions.Add(ReferenceCondition.CreateIn(Subjekt.Properties.ID, ghosts.ToArray()));
-			queryParams.PrepareCommand(sqlCommand);
+			queryParams.IncludeDeleted = true;
+			queryParams.PrepareCommand(dbCommand);
 			
-			using (DbDataReader reader = DbConnector.Default.ExecuteReader(sqlCommand))
+			using (DbDataReader reader = DbConnector.Default.ExecuteReader(dbCommand))
 			{
 				while (reader.Read())
 				{

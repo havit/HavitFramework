@@ -151,6 +151,7 @@
     <Compile Include="PropertyHolderBase.cs" />
     <Compile Include="Query\QueryParams.cs" />
     <Compile Include="ReferenceFieldPropertyInfo.cs" />
+    <Compile Include="TransactionEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Havit.Data.SqlServer\Havit.Data.SqlServer.csproj">

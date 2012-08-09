@@ -17,6 +17,7 @@ using System.Data.SqlTypes;
 using System.Threading;
 using System.Web;
 using System.Web.Caching;
+using System.Xml;
 using Havit.Collections;
 using Havit.Data;
 using Havit.Data.SqlClient;
@@ -390,9 +391,9 @@ namespace Havit.BusinessLayerTest
 			{
 				if (_LockedTimePropertyHolder.Value != null)
 				{
-					if ((_LockedTimePropertyHolder.Value.Value < SqlDateTime.MinValue.Value) || (_LockedTimePropertyHolder.Value.Value > SqlDateTime.MaxValue.Value))
+					if ((_LockedTimePropertyHolder.Value.Value < Havit.Data.SqlTypes.SqlSmallDateTime.MinValue.Value) || (_LockedTimePropertyHolder.Value.Value > Havit.Data.SqlTypes.SqlSmallDateTime.MaxValue.Value))
 					{
-						throw new ConstraintViolationException(this, "Vlastnost \"LockedTime\" nesmí nabývat hodnoty mimo rozsah SqlDateTime.MinValue-SqlDateTime.MaxValue.");
+						throw new ConstraintViolationException(this, "Vlastnost \"LockedTime\" nesmí nabývat hodnoty mimo rozsah SqlSmallDateTime.MinValue-SqlSmallDateTime.MaxValue.");
 					}
 				}
 			}
@@ -401,9 +402,9 @@ namespace Havit.BusinessLayerTest
 			{
 				if (_LoginLastPropertyHolder.Value != null)
 				{
-					if ((_LoginLastPropertyHolder.Value.Value < SqlDateTime.MinValue.Value) || (_LoginLastPropertyHolder.Value.Value > SqlDateTime.MaxValue.Value))
+					if ((_LoginLastPropertyHolder.Value.Value < Havit.Data.SqlTypes.SqlSmallDateTime.MinValue.Value) || (_LoginLastPropertyHolder.Value.Value > Havit.Data.SqlTypes.SqlSmallDateTime.MaxValue.Value))
 					{
-						throw new ConstraintViolationException(this, "Vlastnost \"LoginLast\" nesmí nabývat hodnoty mimo rozsah SqlDateTime.MinValue-SqlDateTime.MaxValue.");
+						throw new ConstraintViolationException(this, "Vlastnost \"LoginLast\" nesmí nabývat hodnoty mimo rozsah SqlSmallDateTime.MinValue-SqlSmallDateTime.MaxValue.");
 					}
 				}
 			}
@@ -421,15 +422,18 @@ namespace Havit.BusinessLayerTest
 		{
 			DataRecord result;
 			
-			SqlCommand sqlCommand = new SqlCommand("SELECT UzivatelID, Username, Password, DisplayAs, Email, Disabled, LockedTime, LoginLast, LoginCount, Created, Deleted, (SELECT dbo.IntArrayAggregate(_items.RoleID) FROM [dbo].[Uzivatel_Role] AS _items WHERE (_items.UzivatelID = @UzivatelID)) AS Role FROM [dbo].[Uzivatel] WHERE UzivatelID = @UzivatelID");
-			sqlCommand.Transaction = (SqlTransaction)transaction;
+			DbCommand dbCommand = DbConnector.Default.ProviderFactory.CreateCommand();
+			dbCommand.CommandText = "SELECT UzivatelID, Username, Password, DisplayAs, Email, Disabled, LockedTime, LoginLast, LoginCount, Created, Deleted, (SELECT dbo.IntArrayAggregate(_items.RoleID) FROM [dbo].[Uzivatel_Role] AS _items WHERE (_items.UzivatelID = @UzivatelID)) AS Role FROM [dbo].[Uzivatel] WHERE UzivatelID = @UzivatelID";
+			dbCommand.Transaction = transaction;
 			
-			SqlParameter sqlParameterUzivatelID = new SqlParameter("@UzivatelID", SqlDbType.Int);
-			sqlParameterUzivatelID.Direction = ParameterDirection.Input;
-			sqlParameterUzivatelID.Value = this.ID;
-			sqlCommand.Parameters.Add(sqlParameterUzivatelID);
+			DbParameter dbParameterUzivatelID = DbConnector.Default.ProviderFactory.CreateParameter();
+			dbParameterUzivatelID.ParameterName = "UzivatelID";
+			dbParameterUzivatelID.DbType = DbType.Int32;
+			dbParameterUzivatelID.Direction = ParameterDirection.Input;
+			dbParameterUzivatelID.Value = this.ID;
+			dbCommand.Parameters.Add(dbParameterUzivatelID);
 			
-			result = DbConnector.Default.ExecuteDataRecord(sqlCommand);
+			result = DbConnector.Default.ExecuteDataRecord(dbCommand);
 			
 			return result;
 		}
@@ -555,67 +559,90 @@ namespace Havit.BusinessLayerTest
 			base.Save_MinimalInsert(transaction);
 			Save_Insert_InsertRequiredForMinimalInsert(transaction);
 			
-			SqlCommand sqlCommand = new SqlCommand();
-			sqlCommand.Transaction = (SqlTransaction)transaction;
+			DbCommand dbCommand;
+			dbCommand = DbConnector.Default.ProviderFactory.CreateCommand();
+			dbCommand.Transaction = transaction;
 			
-			SqlParameter sqlParameterUsername = new SqlParameter("@Username", SqlDbType.VarChar, 50);
-			sqlParameterUsername.Direction = ParameterDirection.Input;
-			sqlParameterUsername.Value = _UsernamePropertyHolder.Value ?? String.Empty;
-			sqlCommand.Parameters.Add(sqlParameterUsername);
+			DbParameter dbParameterUsername = DbConnector.Default.ProviderFactory.CreateParameter();
+			dbParameterUsername.ParameterName = "Username";
+			dbParameterUsername.DbType = DbType.AnsiString;
+			dbParameterUsername.Size = 50;
+			dbParameterUsername.Direction = ParameterDirection.Input;
+			dbParameterUsername.Value = _UsernamePropertyHolder.Value ?? String.Empty;
+			dbCommand.Parameters.Add(dbParameterUsername);
 			_UsernamePropertyHolder.IsDirty = false;
 			
-			SqlParameter sqlParameterPassword = new SqlParameter("@Password", SqlDbType.NVarChar, 30);
-			sqlParameterPassword.Direction = ParameterDirection.Input;
-			sqlParameterPassword.Value = _PasswordPropertyHolder.Value ?? String.Empty;
-			sqlCommand.Parameters.Add(sqlParameterPassword);
+			DbParameter dbParameterPassword = DbConnector.Default.ProviderFactory.CreateParameter();
+			dbParameterPassword.ParameterName = "Password";
+			dbParameterPassword.DbType = DbType.String;
+			dbParameterPassword.Size = 30;
+			dbParameterPassword.Direction = ParameterDirection.Input;
+			dbParameterPassword.Value = _PasswordPropertyHolder.Value ?? String.Empty;
+			dbCommand.Parameters.Add(dbParameterPassword);
 			_PasswordPropertyHolder.IsDirty = false;
 			
-			SqlParameter sqlParameterDisplayAs = new SqlParameter("@DisplayAs", SqlDbType.NVarChar, 50);
-			sqlParameterDisplayAs.Direction = ParameterDirection.Input;
-			sqlParameterDisplayAs.Value = _DisplayAsPropertyHolder.Value ?? String.Empty;
-			sqlCommand.Parameters.Add(sqlParameterDisplayAs);
+			DbParameter dbParameterDisplayAs = DbConnector.Default.ProviderFactory.CreateParameter();
+			dbParameterDisplayAs.ParameterName = "DisplayAs";
+			dbParameterDisplayAs.DbType = DbType.String;
+			dbParameterDisplayAs.Size = 50;
+			dbParameterDisplayAs.Direction = ParameterDirection.Input;
+			dbParameterDisplayAs.Value = _DisplayAsPropertyHolder.Value ?? String.Empty;
+			dbCommand.Parameters.Add(dbParameterDisplayAs);
 			_DisplayAsPropertyHolder.IsDirty = false;
 			
-			SqlParameter sqlParameterEmail = new SqlParameter("@Email", SqlDbType.NVarChar, 100);
-			sqlParameterEmail.Direction = ParameterDirection.Input;
-			sqlParameterEmail.Value = _EmailPropertyHolder.Value ?? String.Empty;
-			sqlCommand.Parameters.Add(sqlParameterEmail);
+			DbParameter dbParameterEmail = DbConnector.Default.ProviderFactory.CreateParameter();
+			dbParameterEmail.ParameterName = "Email";
+			dbParameterEmail.DbType = DbType.String;
+			dbParameterEmail.Size = 100;
+			dbParameterEmail.Direction = ParameterDirection.Input;
+			dbParameterEmail.Value = _EmailPropertyHolder.Value ?? String.Empty;
+			dbCommand.Parameters.Add(dbParameterEmail);
 			_EmailPropertyHolder.IsDirty = false;
 			
-			SqlParameter sqlParameterDisabled = new SqlParameter("@Disabled", SqlDbType.Bit);
-			sqlParameterDisabled.Direction = ParameterDirection.Input;
-			sqlParameterDisabled.Value = _DisabledPropertyHolder.Value;
-			sqlCommand.Parameters.Add(sqlParameterDisabled);
+			DbParameter dbParameterDisabled = DbConnector.Default.ProviderFactory.CreateParameter();
+			dbParameterDisabled.ParameterName = "Disabled";
+			dbParameterDisabled.DbType = DbType.Boolean;
+			dbParameterDisabled.Direction = ParameterDirection.Input;
+			dbParameterDisabled.Value = _DisabledPropertyHolder.Value;
+			dbCommand.Parameters.Add(dbParameterDisabled);
 			_DisabledPropertyHolder.IsDirty = false;
 			
-			SqlParameter sqlParameterLockedTime = new SqlParameter("@LockedTime", SqlDbType.SmallDateTime);
-			sqlParameterLockedTime.Direction = ParameterDirection.Input;
-			sqlParameterLockedTime.Value = (_LockedTimePropertyHolder.Value == null) ? DBNull.Value : (object)_LockedTimePropertyHolder.Value;
-			sqlCommand.Parameters.Add(sqlParameterLockedTime);
+			DbParameter dbParameterLockedTime = DbConnector.Default.ProviderFactory.CreateParameter();
+			dbParameterLockedTime.ParameterName = "LockedTime";
+			dbParameterLockedTime.DbType = DbType.DateTime;
+			dbParameterLockedTime.Direction = ParameterDirection.Input;
+			dbParameterLockedTime.Value = (_LockedTimePropertyHolder.Value == null) ? DBNull.Value : (object)_LockedTimePropertyHolder.Value;
+			dbCommand.Parameters.Add(dbParameterLockedTime);
 			_LockedTimePropertyHolder.IsDirty = false;
 			
-			SqlParameter sqlParameterLoginLast = new SqlParameter("@LoginLast", SqlDbType.SmallDateTime);
-			sqlParameterLoginLast.Direction = ParameterDirection.Input;
-			sqlParameterLoginLast.Value = (_LoginLastPropertyHolder.Value == null) ? DBNull.Value : (object)_LoginLastPropertyHolder.Value;
-			sqlCommand.Parameters.Add(sqlParameterLoginLast);
+			DbParameter dbParameterLoginLast = DbConnector.Default.ProviderFactory.CreateParameter();
+			dbParameterLoginLast.ParameterName = "LoginLast";
+			dbParameterLoginLast.DbType = DbType.DateTime;
+			dbParameterLoginLast.Direction = ParameterDirection.Input;
+			dbParameterLoginLast.Value = (_LoginLastPropertyHolder.Value == null) ? DBNull.Value : (object)_LoginLastPropertyHolder.Value;
+			dbCommand.Parameters.Add(dbParameterLoginLast);
 			_LoginLastPropertyHolder.IsDirty = false;
 			
-			SqlParameter sqlParameterLoginCount = new SqlParameter("@LoginCount", SqlDbType.Int);
-			sqlParameterLoginCount.Direction = ParameterDirection.Input;
-			sqlParameterLoginCount.Value = _LoginCountPropertyHolder.Value;
-			sqlCommand.Parameters.Add(sqlParameterLoginCount);
+			DbParameter dbParameterLoginCount = DbConnector.Default.ProviderFactory.CreateParameter();
+			dbParameterLoginCount.ParameterName = "LoginCount";
+			dbParameterLoginCount.DbType = DbType.Int32;
+			dbParameterLoginCount.Direction = ParameterDirection.Input;
+			dbParameterLoginCount.Value = _LoginCountPropertyHolder.Value;
+			dbCommand.Parameters.Add(dbParameterLoginCount);
 			_LoginCountPropertyHolder.IsDirty = false;
 			
-			SqlParameter sqlParameterDeleted = new SqlParameter("@Deleted", SqlDbType.Bit);
-			sqlParameterDeleted.Direction = ParameterDirection.Input;
-			sqlParameterDeleted.Value = _DeletedPropertyHolder.Value;
-			sqlCommand.Parameters.Add(sqlParameterDeleted);
+			DbParameter dbParameterDeleted = DbConnector.Default.ProviderFactory.CreateParameter();
+			dbParameterDeleted.ParameterName = "Deleted";
+			dbParameterDeleted.DbType = DbType.Boolean;
+			dbParameterDeleted.Direction = ParameterDirection.Input;
+			dbParameterDeleted.Value = _DeletedPropertyHolder.Value;
+			dbCommand.Parameters.Add(dbParameterDeleted);
 			_DeletedPropertyHolder.IsDirty = false;
 			
-			sqlCommand.CommandText = "DECLARE @UzivatelID INT; INSERT INTO [dbo].[Uzivatel] (Username, Password, DisplayAs, Email, Disabled, LockedTime, LoginLast, LoginCount, Deleted) VALUES (@Username, @Password, @DisplayAs, @Email, @Disabled, @LockedTime, @LoginLast, @LoginCount, @Deleted); SELECT @UzivatelID = SCOPE_IDENTITY(); SELECT @UzivatelID; ";
-			
-			this.ID = (int)DbConnector.Default.ExecuteScalar(sqlCommand);
+			dbCommand.CommandText = "DECLARE @UzivatelID INT; INSERT INTO [dbo].[Uzivatel] (Username, Password, DisplayAs, Email, Disabled, LockedTime, LoginLast, LoginCount, Deleted) VALUES (@Username, @Password, @DisplayAs, @Email, @Disabled, @LockedTime, @LoginLast, @LoginCount, @Deleted); SELECT @UzivatelID = SCOPE_IDENTITY(); SELECT @UzivatelID; ";
+			this.ID = (int)DbConnector.Default.ExecuteScalar(dbCommand);
 			this.IsNew = false; // uložený objekt není už nový, dostal i přidělené ID
+			
 			if (IdentityMapScope.Current != null)
 			{
 				IdentityMapScope.Current.Store(this);
@@ -627,80 +654,103 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		protected override sealed void Save_FullInsert(DbTransaction transaction)
 		{
-			SqlCommand sqlCommand = new SqlCommand();
-			sqlCommand.Transaction = (SqlTransaction)transaction;
+			DbCommand dbCommand;
+			dbCommand = DbConnector.Default.ProviderFactory.CreateCommand();
+			dbCommand.Transaction = transaction;
 			
-			SqlParameter sqlParameterUsername = new SqlParameter("@Username", SqlDbType.VarChar, 50);
-			sqlParameterUsername.Direction = ParameterDirection.Input;
-			sqlParameterUsername.Value = _UsernamePropertyHolder.Value ?? String.Empty;
-			sqlCommand.Parameters.Add(sqlParameterUsername);
+			DbParameter dbParameterUsername = DbConnector.Default.ProviderFactory.CreateParameter();
+			dbParameterUsername.ParameterName = "Username";
+			dbParameterUsername.DbType = DbType.AnsiString;
+			dbParameterUsername.Size = 50;
+			dbParameterUsername.Direction = ParameterDirection.Input;
+			dbParameterUsername.Value = _UsernamePropertyHolder.Value ?? String.Empty;
+			dbCommand.Parameters.Add(dbParameterUsername);
 			_UsernamePropertyHolder.IsDirty = false;
 			
-			SqlParameter sqlParameterPassword = new SqlParameter("@Password", SqlDbType.NVarChar, 30);
-			sqlParameterPassword.Direction = ParameterDirection.Input;
-			sqlParameterPassword.Value = _PasswordPropertyHolder.Value ?? String.Empty;
-			sqlCommand.Parameters.Add(sqlParameterPassword);
+			DbParameter dbParameterPassword = DbConnector.Default.ProviderFactory.CreateParameter();
+			dbParameterPassword.ParameterName = "Password";
+			dbParameterPassword.DbType = DbType.String;
+			dbParameterPassword.Size = 30;
+			dbParameterPassword.Direction = ParameterDirection.Input;
+			dbParameterPassword.Value = _PasswordPropertyHolder.Value ?? String.Empty;
+			dbCommand.Parameters.Add(dbParameterPassword);
 			_PasswordPropertyHolder.IsDirty = false;
 			
-			SqlParameter sqlParameterDisplayAs = new SqlParameter("@DisplayAs", SqlDbType.NVarChar, 50);
-			sqlParameterDisplayAs.Direction = ParameterDirection.Input;
-			sqlParameterDisplayAs.Value = _DisplayAsPropertyHolder.Value ?? String.Empty;
-			sqlCommand.Parameters.Add(sqlParameterDisplayAs);
+			DbParameter dbParameterDisplayAs = DbConnector.Default.ProviderFactory.CreateParameter();
+			dbParameterDisplayAs.ParameterName = "DisplayAs";
+			dbParameterDisplayAs.DbType = DbType.String;
+			dbParameterDisplayAs.Size = 50;
+			dbParameterDisplayAs.Direction = ParameterDirection.Input;
+			dbParameterDisplayAs.Value = _DisplayAsPropertyHolder.Value ?? String.Empty;
+			dbCommand.Parameters.Add(dbParameterDisplayAs);
 			_DisplayAsPropertyHolder.IsDirty = false;
 			
-			SqlParameter sqlParameterEmail = new SqlParameter("@Email", SqlDbType.NVarChar, 100);
-			sqlParameterEmail.Direction = ParameterDirection.Input;
-			sqlParameterEmail.Value = _EmailPropertyHolder.Value ?? String.Empty;
-			sqlCommand.Parameters.Add(sqlParameterEmail);
+			DbParameter dbParameterEmail = DbConnector.Default.ProviderFactory.CreateParameter();
+			dbParameterEmail.ParameterName = "Email";
+			dbParameterEmail.DbType = DbType.String;
+			dbParameterEmail.Size = 100;
+			dbParameterEmail.Direction = ParameterDirection.Input;
+			dbParameterEmail.Value = _EmailPropertyHolder.Value ?? String.Empty;
+			dbCommand.Parameters.Add(dbParameterEmail);
 			_EmailPropertyHolder.IsDirty = false;
 			
-			SqlParameter sqlParameterDisabled = new SqlParameter("@Disabled", SqlDbType.Bit);
-			sqlParameterDisabled.Direction = ParameterDirection.Input;
-			sqlParameterDisabled.Value = _DisabledPropertyHolder.Value;
-			sqlCommand.Parameters.Add(sqlParameterDisabled);
+			DbParameter dbParameterDisabled = DbConnector.Default.ProviderFactory.CreateParameter();
+			dbParameterDisabled.ParameterName = "Disabled";
+			dbParameterDisabled.DbType = DbType.Boolean;
+			dbParameterDisabled.Direction = ParameterDirection.Input;
+			dbParameterDisabled.Value = _DisabledPropertyHolder.Value;
+			dbCommand.Parameters.Add(dbParameterDisabled);
 			_DisabledPropertyHolder.IsDirty = false;
 			
-			SqlParameter sqlParameterLockedTime = new SqlParameter("@LockedTime", SqlDbType.SmallDateTime);
-			sqlParameterLockedTime.Direction = ParameterDirection.Input;
-			sqlParameterLockedTime.Value = (_LockedTimePropertyHolder.Value == null) ? DBNull.Value : (object)_LockedTimePropertyHolder.Value;
-			sqlCommand.Parameters.Add(sqlParameterLockedTime);
+			DbParameter dbParameterLockedTime = DbConnector.Default.ProviderFactory.CreateParameter();
+			dbParameterLockedTime.ParameterName = "LockedTime";
+			dbParameterLockedTime.DbType = DbType.DateTime;
+			dbParameterLockedTime.Direction = ParameterDirection.Input;
+			dbParameterLockedTime.Value = (_LockedTimePropertyHolder.Value == null) ? DBNull.Value : (object)_LockedTimePropertyHolder.Value;
+			dbCommand.Parameters.Add(dbParameterLockedTime);
 			_LockedTimePropertyHolder.IsDirty = false;
 			
-			SqlParameter sqlParameterLoginLast = new SqlParameter("@LoginLast", SqlDbType.SmallDateTime);
-			sqlParameterLoginLast.Direction = ParameterDirection.Input;
-			sqlParameterLoginLast.Value = (_LoginLastPropertyHolder.Value == null) ? DBNull.Value : (object)_LoginLastPropertyHolder.Value;
-			sqlCommand.Parameters.Add(sqlParameterLoginLast);
+			DbParameter dbParameterLoginLast = DbConnector.Default.ProviderFactory.CreateParameter();
+			dbParameterLoginLast.ParameterName = "LoginLast";
+			dbParameterLoginLast.DbType = DbType.DateTime;
+			dbParameterLoginLast.Direction = ParameterDirection.Input;
+			dbParameterLoginLast.Value = (_LoginLastPropertyHolder.Value == null) ? DBNull.Value : (object)_LoginLastPropertyHolder.Value;
+			dbCommand.Parameters.Add(dbParameterLoginLast);
 			_LoginLastPropertyHolder.IsDirty = false;
 			
-			SqlParameter sqlParameterLoginCount = new SqlParameter("@LoginCount", SqlDbType.Int);
-			sqlParameterLoginCount.Direction = ParameterDirection.Input;
-			sqlParameterLoginCount.Value = _LoginCountPropertyHolder.Value;
-			sqlCommand.Parameters.Add(sqlParameterLoginCount);
+			DbParameter dbParameterLoginCount = DbConnector.Default.ProviderFactory.CreateParameter();
+			dbParameterLoginCount.ParameterName = "LoginCount";
+			dbParameterLoginCount.DbType = DbType.Int32;
+			dbParameterLoginCount.Direction = ParameterDirection.Input;
+			dbParameterLoginCount.Value = _LoginCountPropertyHolder.Value;
+			dbCommand.Parameters.Add(dbParameterLoginCount);
 			_LoginCountPropertyHolder.IsDirty = false;
 			
-			SqlParameter sqlParameterDeleted = new SqlParameter("@Deleted", SqlDbType.Bit);
-			sqlParameterDeleted.Direction = ParameterDirection.Input;
-			sqlParameterDeleted.Value = _DeletedPropertyHolder.Value;
-			sqlCommand.Parameters.Add(sqlParameterDeleted);
+			DbParameter dbParameterDeleted = DbConnector.Default.ProviderFactory.CreateParameter();
+			dbParameterDeleted.ParameterName = "Deleted";
+			dbParameterDeleted.DbType = DbType.Boolean;
+			dbParameterDeleted.Direction = ParameterDirection.Input;
+			dbParameterDeleted.Value = _DeletedPropertyHolder.Value;
+			dbCommand.Parameters.Add(dbParameterDeleted);
 			_DeletedPropertyHolder.IsDirty = false;
 			
 			StringBuilder collectionCommandBuilder = new StringBuilder();
 			
 			if (_RolePropertyHolder.Value.Count > 0)
 			{
-				SqlParameter sqlParameterRole = new SqlParameter("@Role", SqlDbType.Udt);
-				sqlParameterRole.UdtTypeName = "IntArray";
-				sqlParameterRole.Value = new SqlInt32Array(this._RolePropertyHolder.Value.GetIDs());
-				sqlCommand.Parameters.Add(sqlParameterRole);
+				SqlParameter dbParameterRole = new SqlParameter("@Role", SqlDbType.Udt);
+				dbParameterRole.UdtTypeName = "IntArray";
+				dbParameterRole.Value = new SqlInt32Array(this._RolePropertyHolder.Value.GetIDs());
+				dbCommand.Parameters.Add(dbParameterRole);
 				
 				// OPTION (RECOMPILE): workaround pro http://connect.microsoft.com/SQLServer/feedback/ViewFeedback.aspx?FeedbackID=256717
 				collectionCommandBuilder.Append("INSERT INTO [dbo].[Uzivatel_Role] (UzivatelID, RoleID) SELECT @UzivatelID AS UzivatelID, Value AS RoleID FROM dbo.IntArrayToTable(@Role) OPTION (RECOMPILE); ");
 			}
 			
-			sqlCommand.CommandText = "DECLARE @UzivatelID INT; INSERT INTO [dbo].[Uzivatel] (Username, Password, DisplayAs, Email, Disabled, LockedTime, LoginLast, LoginCount, Deleted) VALUES (@Username, @Password, @DisplayAs, @Email, @Disabled, @LockedTime, @LoginLast, @LoginCount, @Deleted); SELECT @UzivatelID = SCOPE_IDENTITY(); " + collectionCommandBuilder.ToString() + "SELECT @UzivatelID; ";
-			
-			this.ID = (int)DbConnector.Default.ExecuteScalar(sqlCommand);
+			dbCommand.CommandText = "DECLARE @UzivatelID INT; INSERT INTO [dbo].[Uzivatel] (Username, Password, DisplayAs, Email, Disabled, LockedTime, LoginLast, LoginCount, Deleted) VALUES (@Username, @Password, @DisplayAs, @Email, @Disabled, @LockedTime, @LoginLast, @LoginCount, @Deleted); SELECT @UzivatelID = SCOPE_IDENTITY(); " + collectionCommandBuilder.ToString() + "SELECT @UzivatelID; ";
+			this.ID = (int)DbConnector.Default.ExecuteScalar(dbCommand);
 			this.IsNew = false; // uložený objekt není už nový, dostal i přidělené ID
+			
 			if (IdentityMapScope.Current != null)
 			{
 				IdentityMapScope.Current.Store(this);
@@ -712,8 +762,8 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		protected override sealed void Save_Update(DbTransaction transaction)
 		{
-			SqlCommand sqlCommand = new SqlCommand();
-			sqlCommand.Transaction = (SqlTransaction)transaction;
+			DbCommand dbCommand = DbConnector.Default.ProviderFactory.CreateCommand();
+			dbCommand.Transaction = transaction;
 			
 			StringBuilder commandBuilder = new StringBuilder();
 			commandBuilder.Append("UPDATE [dbo].[Uzivatel] SET ");
@@ -727,10 +777,13 @@ namespace Havit.BusinessLayerTest
 				}
 				commandBuilder.Append("Username = @Username");
 				
-				SqlParameter sqlParameterUsername = new SqlParameter("@Username", SqlDbType.VarChar, 50);
-				sqlParameterUsername.Direction = ParameterDirection.Input;
-				sqlParameterUsername.Value = _UsernamePropertyHolder.Value ?? String.Empty;
-				sqlCommand.Parameters.Add(sqlParameterUsername);
+				DbParameter dbParameterUsername = DbConnector.Default.ProviderFactory.CreateParameter();
+				dbParameterUsername.ParameterName = "Username";
+				dbParameterUsername.DbType = DbType.AnsiString;
+				dbParameterUsername.Size = 50;
+				dbParameterUsername.Direction = ParameterDirection.Input;
+				dbParameterUsername.Value = _UsernamePropertyHolder.Value ?? String.Empty;
+				dbCommand.Parameters.Add(dbParameterUsername);
 				
 				dirtyFieldExists = true;
 			}
@@ -743,10 +796,13 @@ namespace Havit.BusinessLayerTest
 				}
 				commandBuilder.Append("Password = @Password");
 				
-				SqlParameter sqlParameterPassword = new SqlParameter("@Password", SqlDbType.NVarChar, 30);
-				sqlParameterPassword.Direction = ParameterDirection.Input;
-				sqlParameterPassword.Value = _PasswordPropertyHolder.Value ?? String.Empty;
-				sqlCommand.Parameters.Add(sqlParameterPassword);
+				DbParameter dbParameterPassword = DbConnector.Default.ProviderFactory.CreateParameter();
+				dbParameterPassword.ParameterName = "Password";
+				dbParameterPassword.DbType = DbType.String;
+				dbParameterPassword.Size = 30;
+				dbParameterPassword.Direction = ParameterDirection.Input;
+				dbParameterPassword.Value = _PasswordPropertyHolder.Value ?? String.Empty;
+				dbCommand.Parameters.Add(dbParameterPassword);
 				
 				dirtyFieldExists = true;
 			}
@@ -759,10 +815,13 @@ namespace Havit.BusinessLayerTest
 				}
 				commandBuilder.Append("DisplayAs = @DisplayAs");
 				
-				SqlParameter sqlParameterDisplayAs = new SqlParameter("@DisplayAs", SqlDbType.NVarChar, 50);
-				sqlParameterDisplayAs.Direction = ParameterDirection.Input;
-				sqlParameterDisplayAs.Value = _DisplayAsPropertyHolder.Value ?? String.Empty;
-				sqlCommand.Parameters.Add(sqlParameterDisplayAs);
+				DbParameter dbParameterDisplayAs = DbConnector.Default.ProviderFactory.CreateParameter();
+				dbParameterDisplayAs.ParameterName = "DisplayAs";
+				dbParameterDisplayAs.DbType = DbType.String;
+				dbParameterDisplayAs.Size = 50;
+				dbParameterDisplayAs.Direction = ParameterDirection.Input;
+				dbParameterDisplayAs.Value = _DisplayAsPropertyHolder.Value ?? String.Empty;
+				dbCommand.Parameters.Add(dbParameterDisplayAs);
 				
 				dirtyFieldExists = true;
 			}
@@ -775,10 +834,13 @@ namespace Havit.BusinessLayerTest
 				}
 				commandBuilder.Append("Email = @Email");
 				
-				SqlParameter sqlParameterEmail = new SqlParameter("@Email", SqlDbType.NVarChar, 100);
-				sqlParameterEmail.Direction = ParameterDirection.Input;
-				sqlParameterEmail.Value = _EmailPropertyHolder.Value ?? String.Empty;
-				sqlCommand.Parameters.Add(sqlParameterEmail);
+				DbParameter dbParameterEmail = DbConnector.Default.ProviderFactory.CreateParameter();
+				dbParameterEmail.ParameterName = "Email";
+				dbParameterEmail.DbType = DbType.String;
+				dbParameterEmail.Size = 100;
+				dbParameterEmail.Direction = ParameterDirection.Input;
+				dbParameterEmail.Value = _EmailPropertyHolder.Value ?? String.Empty;
+				dbCommand.Parameters.Add(dbParameterEmail);
 				
 				dirtyFieldExists = true;
 			}
@@ -791,10 +853,12 @@ namespace Havit.BusinessLayerTest
 				}
 				commandBuilder.Append("Disabled = @Disabled");
 				
-				SqlParameter sqlParameterDisabled = new SqlParameter("@Disabled", SqlDbType.Bit);
-				sqlParameterDisabled.Direction = ParameterDirection.Input;
-				sqlParameterDisabled.Value = _DisabledPropertyHolder.Value;
-				sqlCommand.Parameters.Add(sqlParameterDisabled);
+				DbParameter dbParameterDisabled = DbConnector.Default.ProviderFactory.CreateParameter();
+				dbParameterDisabled.ParameterName = "Disabled";
+				dbParameterDisabled.DbType = DbType.Boolean;
+				dbParameterDisabled.Direction = ParameterDirection.Input;
+				dbParameterDisabled.Value = _DisabledPropertyHolder.Value;
+				dbCommand.Parameters.Add(dbParameterDisabled);
 				
 				dirtyFieldExists = true;
 			}
@@ -807,10 +871,12 @@ namespace Havit.BusinessLayerTest
 				}
 				commandBuilder.Append("LockedTime = @LockedTime");
 				
-				SqlParameter sqlParameterLockedTime = new SqlParameter("@LockedTime", SqlDbType.SmallDateTime);
-				sqlParameterLockedTime.Direction = ParameterDirection.Input;
-				sqlParameterLockedTime.Value = (_LockedTimePropertyHolder.Value == null) ? DBNull.Value : (object)_LockedTimePropertyHolder.Value;
-				sqlCommand.Parameters.Add(sqlParameterLockedTime);
+				DbParameter dbParameterLockedTime = DbConnector.Default.ProviderFactory.CreateParameter();
+				dbParameterLockedTime.ParameterName = "LockedTime";
+				dbParameterLockedTime.DbType = DbType.DateTime;
+				dbParameterLockedTime.Direction = ParameterDirection.Input;
+				dbParameterLockedTime.Value = (_LockedTimePropertyHolder.Value == null) ? DBNull.Value : (object)_LockedTimePropertyHolder.Value;
+				dbCommand.Parameters.Add(dbParameterLockedTime);
 				
 				dirtyFieldExists = true;
 			}
@@ -823,10 +889,12 @@ namespace Havit.BusinessLayerTest
 				}
 				commandBuilder.Append("LoginLast = @LoginLast");
 				
-				SqlParameter sqlParameterLoginLast = new SqlParameter("@LoginLast", SqlDbType.SmallDateTime);
-				sqlParameterLoginLast.Direction = ParameterDirection.Input;
-				sqlParameterLoginLast.Value = (_LoginLastPropertyHolder.Value == null) ? DBNull.Value : (object)_LoginLastPropertyHolder.Value;
-				sqlCommand.Parameters.Add(sqlParameterLoginLast);
+				DbParameter dbParameterLoginLast = DbConnector.Default.ProviderFactory.CreateParameter();
+				dbParameterLoginLast.ParameterName = "LoginLast";
+				dbParameterLoginLast.DbType = DbType.DateTime;
+				dbParameterLoginLast.Direction = ParameterDirection.Input;
+				dbParameterLoginLast.Value = (_LoginLastPropertyHolder.Value == null) ? DBNull.Value : (object)_LoginLastPropertyHolder.Value;
+				dbCommand.Parameters.Add(dbParameterLoginLast);
 				
 				dirtyFieldExists = true;
 			}
@@ -839,10 +907,12 @@ namespace Havit.BusinessLayerTest
 				}
 				commandBuilder.Append("LoginCount = @LoginCount");
 				
-				SqlParameter sqlParameterLoginCount = new SqlParameter("@LoginCount", SqlDbType.Int);
-				sqlParameterLoginCount.Direction = ParameterDirection.Input;
-				sqlParameterLoginCount.Value = _LoginCountPropertyHolder.Value;
-				sqlCommand.Parameters.Add(sqlParameterLoginCount);
+				DbParameter dbParameterLoginCount = DbConnector.Default.ProviderFactory.CreateParameter();
+				dbParameterLoginCount.ParameterName = "LoginCount";
+				dbParameterLoginCount.DbType = DbType.Int32;
+				dbParameterLoginCount.Direction = ParameterDirection.Input;
+				dbParameterLoginCount.Value = _LoginCountPropertyHolder.Value;
+				dbCommand.Parameters.Add(dbParameterLoginCount);
 				
 				dirtyFieldExists = true;
 			}
@@ -855,10 +925,12 @@ namespace Havit.BusinessLayerTest
 				}
 				commandBuilder.Append("Deleted = @Deleted");
 				
-				SqlParameter sqlParameterDeleted = new SqlParameter("@Deleted", SqlDbType.Bit);
-				sqlParameterDeleted.Direction = ParameterDirection.Input;
-				sqlParameterDeleted.Value = _DeletedPropertyHolder.Value;
-				sqlCommand.Parameters.Add(sqlParameterDeleted);
+				DbParameter dbParameterDeleted = DbConnector.Default.ProviderFactory.CreateParameter();
+				dbParameterDeleted.ParameterName = "Deleted";
+				dbParameterDeleted.DbType = DbType.Boolean;
+				dbParameterDeleted.Direction = ParameterDirection.Input;
+				dbParameterDeleted.Value = _DeletedPropertyHolder.Value;
+				dbCommand.Parameters.Add(dbParameterDeleted);
 				
 				dirtyFieldExists = true;
 			}
@@ -882,22 +954,24 @@ namespace Havit.BusinessLayerTest
 				{
 					// OPTION (RECOMPILE): workaround pro http://connect.microsoft.com/SQLServer/feedback/ViewFeedback.aspx?FeedbackID=256717
 					commandBuilder.AppendFormat("INSERT INTO [dbo].[Uzivatel_Role] (UzivatelID, RoleID) SELECT @UzivatelID AS UzivatelID, Value AS RoleID FROM dbo.IntArrayToTable(@Role) OPTION (RECOMPILE); ");
-					SqlParameter sqlParameterRole = new SqlParameter("@Role", SqlDbType.Udt);
-					sqlParameterRole.UdtTypeName = "IntArray";
-					sqlParameterRole.Value = new SqlInt32Array(this._RolePropertyHolder.Value.GetIDs());
-					sqlCommand.Parameters.Add(sqlParameterRole);
+					SqlParameter dbParameterRole = new SqlParameter("@Role", SqlDbType.Udt);
+					dbParameterRole.UdtTypeName = "IntArray";
+					dbParameterRole.Value = new SqlInt32Array(this._RolePropertyHolder.Value.GetIDs());
+					dbCommand.Parameters.Add(dbParameterRole);
 				}
 			}
 			
 			// pokud je objekt dirty, ale žádná property není dirty (Save_MinimalInsert poukládal všechno), neukládáme
 			if (dirtyFieldExists || dirtyCollectionExists)
 			{
-				SqlParameter sqlParameterUzivatelID = new SqlParameter("@UzivatelID", SqlDbType.Int);
-				sqlParameterUzivatelID.Direction = ParameterDirection.Input;
-				sqlParameterUzivatelID.Value = this.ID;
-				sqlCommand.Parameters.Add(sqlParameterUzivatelID);
-				sqlCommand.CommandText = commandBuilder.ToString();
-				DbConnector.Default.ExecuteNonQuery(sqlCommand);
+				DbParameter dbParameterUzivatelID = DbConnector.Default.ProviderFactory.CreateParameter();
+				dbParameterUzivatelID.ParameterName = "UzivatelID";
+				dbParameterUzivatelID.DbType = DbType.Int32;
+				dbParameterUzivatelID.Direction = ParameterDirection.Input;
+				dbParameterUzivatelID.Value = this.ID;
+				dbCommand.Parameters.Add(dbParameterUzivatelID);
+				dbCommand.CommandText = commandBuilder.ToString();
+				DbConnector.Default.ExecuteNonQuery(dbCommand);
 			}
 		}
 		
@@ -984,8 +1058,8 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static UzivatelCollection GetList(QueryParams queryParams, DbTransaction transaction)
 		{
-			SqlCommand sqlCommand = new SqlCommand();
-			sqlCommand.Transaction = (SqlTransaction)transaction;
+			DbCommand dbCommand = DbConnector.Default.ProviderFactory.CreateCommand();
+			dbCommand.Transaction = transaction;
 			
 			queryParams.ObjectInfo = Uzivatel.ObjectInfo;
 			if (queryParams.Properties.Count > 0)
@@ -993,8 +1067,8 @@ namespace Havit.BusinessLayerTest
 				queryParams.Properties.Add(Uzivatel.Properties.ID);
 			}
 			
-			queryParams.PrepareCommand(sqlCommand);
-			return Uzivatel.GetList(sqlCommand, queryParams.GetDataLoadPower());
+			queryParams.PrepareCommand(dbCommand);
+			return Uzivatel.GetList(dbCommand, queryParams.GetDataLoadPower());
 		}
 		
 		private static UzivatelCollection GetList(DbCommand dbCommand, DataLoadPower dataLoadPower)

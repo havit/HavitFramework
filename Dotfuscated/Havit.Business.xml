@@ -477,6 +477,7 @@
             Metoda také neprovede uložení, pokud objekt nebyl změněn a současně nejde o nový objekt (!IsDirty &amp;&amp; !IsNew).<br/>
             Metoda nezakládá vlastní transakci, která by sdružovala uložení kolekcí, členských objektů a vlastních dat!!!
             Příslušná transakce musí být předána (explicitní transakci doplňuje až ActiveRecordBusinessObjectbase).<br/>
+            Mazání objektů rovněž ukládá přes tuto metodu.
             </remarks>
             <param name="transaction">transakce <see cref="T:System.Data.Common.DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
         </member>
@@ -495,6 +496,20 @@
             Výkonná část uložení objektu do perzistentního uložiště.
             </summary>
             <param name="transaction">transakce <see cref="T:System.Data.Common.DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
+        </member>
+        <member name="M:Havit.Business.BusinessObjectBase.OnBeforeSave(Havit.Business.TransactionEventArgs)">
+            <summary>
+            Volá se před uložením objektu.
+            V každém spuštění uložení grafu objektů se metoda volá právě jednou, na rozdíl od Save, který může být (a je) spouštěn opakovaně v případě ukládání stromů objektů.
+            Metoda se volá před zavoláním validační metody CheckConstrains.
+            </summary>        
+        </member>
+        <member name="M:Havit.Business.BusinessObjectBase.OnAfterSave(Havit.Business.TransactionEventArgs)">
+            <summary>
+            Volá se po uložení objektu.
+            V každém spuštění uložení grafu objektů se metoda volá právě jednou, na rozdíl od Save, který může být (a je) spouštěn opakovaně v případě ukládání stromů objektů.
+            Metoda se volá po nastavení příznaků IsDirty, IsNew, apod.
+            </summary>        
         </member>
         <member name="M:Havit.Business.BusinessObjectBase.Delete(System.Data.Common.DbTransaction)">
             <summary>
@@ -1805,6 +1820,16 @@
         <member name="M:Havit.Business.Query.NumberCondition.Create(Havit.Business.Query.IOperand,Havit.Business.Query.ComparisonOperator,Havit.Business.Query.IOperand)">
             <summary>
             Vytvoří podmínku testující hodnoty pomocí zadaného operátoru.
+            </summary>
+        </member>
+        <member name="T:Havit.Business.TransactionEventArgs">
+            <summary>
+            Argumenty nesoucí transakci.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.TransactionEventArgs.Transaction">
+            <summary>
+            Transakce.
             </summary>
         </member>
         <member name="T:Havit.Business.Query.NullCondition">

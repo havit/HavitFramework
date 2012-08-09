@@ -245,6 +245,7 @@ namespace Havit.Business
 		/// Metoda také neprovede uložení, pokud objekt nebyl zmìnìn a souèasnì nejde o nový objekt (!IsDirty &amp;&amp; !IsNew).<br/>
 		/// Metoda nezakládá vlastní transakci, která by sdružovala uložení kolekcí, èlenských objektù a vlastních dat!!!
 		/// Pøíslušná transakce musí být pøedána (explicitní transakci doplòuje až ActiveRecordBusinessObjectbase).<br/>
+        /// Mazání objektù rovnìž ukládá pøes tuto metodu.
 		/// </remarks>
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
 		public virtual void Save(DbTransaction transaction)
@@ -256,6 +257,12 @@ namespace Havit.Business
 
 			IsSaving = true; // øeší cyklické reference pøi ukládání objektových struktur
 
+            bool callBeforeAfterSave = IsNew || IsDirty;
+            if (callBeforeAfterSave)
+            {
+                OnBeforeSave(new TransactionEventArgs(transaction));
+            }
+
 			if (IsDirty && !IsDeleted)
 			{
 				CheckConstraints();
@@ -263,9 +270,13 @@ namespace Havit.Business
 
 			Save_Perform(transaction);
 
-			//IsNew = false; // uložený objekt není už nový, dostal i pøidìlené ID
+			IsNew = false; // uložený objekt není už nový, dostal i pøidìlené ID
 			IsDirty = false; // uložený objekt je aktuální
-			IsSaving = false;
+			if (callBeforeAfterSave)
+			{
+				OnAfterSave(new TransactionEventArgs(transaction));
+			}
+            IsSaving = false;
 		}
 
 		/// <summary>
@@ -288,7 +299,29 @@ namespace Havit.Business
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member")]
 		protected abstract void Save_Perform(DbTransaction transaction);
 
-		#endregion
+        /// <summary>
+        /// Volá se pøed uložením objektu.
+        /// V každém spuštìní uložení grafu objektù se metoda volá právì jednou, na rozdíl od Save, který mùže být (a je) spouštìn opakovanì v pøípadì ukládání stromù objektù.
+        /// Metoda se volá pøed zavoláním validaèní metody CheckConstrains.
+        /// </summary>        
+        protected virtual void OnBeforeSave(TransactionEventArgs transactionEventArgs)
+        {
+            // metoda vznikla jako reseni problemu opakovaneho volani Save a logiky, kterou jsme do Save vsude psali
+            // az budeme potrebovat, implementujeme udalost oznamujici okamzik pred ulozeni objektu (a pred jeho validaci).
+        }
+
+        /// <summary>
+        /// Volá se po uložení objektu.
+        /// V každém spuštìní uložení grafu objektù se metoda volá právì jednou, na rozdíl od Save, který mùže být (a je) spouštìn opakovanì v pøípadì ukládání stromù objektù.
+        /// Metoda se volá po nastavení pøíznakù IsDirty, IsNew, apod.
+        /// </summary>        
+        protected virtual void OnAfterSave(TransactionEventArgs transactionEventArgs)
+        {
+            // metoda vznikla jako reseni problemu opakovaneho volani Save a logiky, kterou jsme do Save vsude psali
+            // az budeme potrebovat, implementujeme udalost oznamujici okamzik pred ulozeni objektu (a pred jeho validaci).
+        }
+
+        #endregion
 
 		#region Delete logika
 		/// <summary>

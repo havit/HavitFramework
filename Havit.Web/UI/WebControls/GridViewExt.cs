@@ -581,6 +581,30 @@ namespace Havit.Web.UI.WebControls
 			{
 				RequiresDataBinding = false;
 			}
+
+			if (data != null)
+			{
+				if (HeaderRow != null)
+				{
+					HeaderRow.TableSection = TableRowSection.TableHeader;
+				}
+
+				if (FooterRow != null)
+				{
+					FooterRow.TableSection = TableRowSection.TableFooter;
+				}
+
+				if (TopPagerRow != null)
+				{
+					TopPagerRow.TableSection = TableRowSection.TableHeader;
+				}
+
+				if (BottomPagerRow != null)
+				{
+					BottomPagerRow.TableSection = TableRowSection.TableFooter;
+				}
+			}
+
 		}
 		#endregion
 

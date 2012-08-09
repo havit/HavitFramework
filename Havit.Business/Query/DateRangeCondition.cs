@@ -7,7 +7,7 @@ namespace Havit.Business.Query
 	/// <summary>
 	/// Vytváøí podmínky testující rozsah datumù.
 	/// </summary>
-	class DateRangeCondition
+	public static class DateRangeCondition
 	{
 		/// <summary>
 		/// Vytvoøí podmínku testující, zda je datum v intervalu datumù.
@@ -16,7 +16,7 @@ namespace Havit.Business.Query
 		{
 			if ((date1 == null) && (date2 == null))
 			{
-				throw new ArgumentException("Hodnoty date1 a date2 nesmí být obojí null.");
+				return EmptyCondition.Create();
 			}
 
 			if ((date1 != null) && (date2 != null))

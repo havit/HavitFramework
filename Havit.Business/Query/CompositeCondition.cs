@@ -19,11 +19,11 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Podmínky v kompozitu.
 		/// </summary>
-		public List<Condition> Conditions
+		public ConditionList Conditions
 		{
 			get { return conditions; }
 		}
-		private List<Condition> conditions = new List<Condition>();
+		private ConditionList conditions = new ConditionList();
 		#endregion
 
 		#region Constructor
@@ -33,7 +33,10 @@ namespace Havit.Business.Query
 		protected CompositeCondition(string operatorBetweenOperands, params Condition[] conditions)
 		{
 			this.operatorBetweenOperands = operatorBetweenOperands;
-			this.Conditions.AddRange(conditions);
+			for (int index = 0; index <= conditions.Length; index++)
+			{
+				this.Conditions.Add(conditions[index]);
+			}
 		}
 		#endregion
 

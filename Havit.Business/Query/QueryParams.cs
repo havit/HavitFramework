@@ -58,7 +58,7 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Podmínky dotazu (WHERE ...).
 		/// </summary>
-		public List<Condition> Conditions
+		public ConditionList Conditions
 		{
 			get { return conditions.Conditions; }
 		}

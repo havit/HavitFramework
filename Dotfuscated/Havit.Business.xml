@@ -1234,6 +1234,24 @@
             Hodnota, kterou PropertyHolder nese.
             </summary>
         </member>
+        <member name="T:Havit.Business.Query.DateRangeCondition">
+            <summary>
+            Vytváří podmínky testující rozsah datumů.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.DateRangeCondition.Create(Havit.Business.Query.IOperand,System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
+            <summary>
+            Vytvoří podmínku testující, zda je datum v intervalu datumů.
+            </summary>
+        </member>
+        <member name="M:Havit.Business.Query.DateRangeCondition.CreateDays(Havit.Business.Query.IOperand,System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
+            <summary>
+            Vytvoří podmínku testující, zda je den data (datumu) v intervalu dnů datumů.
+            Zajišťuje, aby hodnota operandu byla větší nebo rovna datu date1 a aby byla menší než půlnoc konce date2.
+            Jinými slovy: Argumenty moho obsahovat datum a čas, ale testuje se jen datum bez času. Potom 
+            je zajišťováno: DATUM(date1) &lt;= DATUM(operand) &lt; DATUM(date2).
+            </summary>
+        </member>
         <member name="T:Havit.Business.Query.DateCondition">
             <summary>
             Vytváří podmínky testující datumy.
@@ -1592,23 +1610,29 @@
             Identifikuje, zda probíhá Save_Insert_InsertRequiredForMinimalInsert (nesmí se zacyklit).
             </summary>
         </member>
-        <member name="T:Havit.Business.Query.DateRangeCondition">
+        <member name="T:Havit.Business.Query.ConditionList">
             <summary>
-            Vytváří podmínky testující rozsah datumů.
+            Seznam podmínek, který nemůže obsahovat prázdnou podmínku.
             </summary>
         </member>
-        <member name="M:Havit.Business.Query.DateRangeCondition.Create(Havit.Business.Query.IOperand,System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
+        <member name="M:Havit.Business.Query.ConditionList.InsertItem(System.Int32,Havit.Business.Query.Condition)">
             <summary>
-            Vytvoří podmínku testující, zda je datum v intervalu datumů.
+            Předefinování metody pro vkládání podmínek. Není možné vložit null (hodnota null je ignorována a není přidána do kolekce.
+            </summary>
+            <param name="index"></param>
+            <param name="item"></param>
+        </member>
+        <member name="T:Havit.Business.Query.EmptyCondition">
+            <summary>
+            Vytváří podmínky, které nic netestují.
+            Nyní je taková podmínka reprezentována hodnotou null.
             </summary>
         </member>
-        <member name="M:Havit.Business.Query.DateRangeCondition.CreateDays(Havit.Business.Query.IOperand,System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
+        <member name="M:Havit.Business.Query.EmptyCondition.Create">
             <summary>
-            Vytvoří podmínku testující, zda je den data (datumu) v intervalu dnů datumů.
-            Zajišťuje, aby hodnota operandu byla větší nebo rovna datu date1 a aby byla menší než půlnoc konce date2.
-            Jinými slovy: Argumenty moho obsahovat datum a čas, ale testuje se jen datum bez času. Potom 
-            je zajišťováno: DATUM(date1) &lt;= DATUM(operand) &lt; DATUM(date2).
+            Vytvoří podmínku reprezentující prázdnou podmínku (nic není testováno). Nyní vrací null.
             </summary>
+            <returns></returns>
         </member>
     </members>
 </doc>

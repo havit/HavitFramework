@@ -322,6 +322,7 @@ namespace Havit.Web.UI.WebControls
 			this.RowDeleting += new GridViewDeleteEventHandler(GridViewExt_EventBlackHole);
 			this.RowEditing += new GridViewEditEventHandler(GridViewExt_EventBlackHole);
 			this.RowUpdating += new GridViewUpdateEventHandler(GridViewExt_EventBlackHole);
+			this.Sorting += new GridViewSortEventHandler(GridViewExt_EventBlackHole);
 		}
 
 		private void GridViewExt_EventBlackHole(object sender, EventArgs e)

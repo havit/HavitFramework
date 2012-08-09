@@ -676,12 +676,16 @@ function HavitDateTimeBox_Change(e)
 		var value = element.value;
 		if (regPattern.test(value)) 
 		{
-			element.value = value.replace(regPattern, replacement);
-			found = true;
+			var newValue = value.replace(regPattern, replacement);
+			element.value = newValue
+			if (value != newValue)
+			{
+				found = true;
+			}
 		}
 		i++;
-	}" 
-	// před výměnou hodnoty se aplikují validátory
+	}"
+				// před výměnou hodnoty se aplikují validátory
 	// potřebujeme zavolat druhé volání onchange, po výměně hodnoty, které validátory zase vypne
 	// musíme ale zastavit propagaci události, protože jinak by se mohl volat dvakrát postback
 	// v případě autopostbacku, proto return false

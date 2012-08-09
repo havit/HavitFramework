@@ -53,18 +53,52 @@ namespace Havit.Business
 				types.Add(typeof(T), typeHashtable);
 			}
 
-			T temp = (T)typeHashtable[businessObject.ID];
+			WeakReference temp = (WeakReference)typeHashtable[businessObject.ID];
 			if (temp != null)
 			{
-				if (Object.Equals(temp, businessObject))
+				if (temp.Target != null)
 				{
-					throw new InvalidOperationException("V IdentityMap je již jiná instance tohoto objektu.");
+					if (!Object.ReferenceEquals(temp.Target, businessObject))
+					{
+						throw new InvalidOperationException("V IdentityMap je již jiná instance tohoto objektu.");
+					}
+				}
+				else
+				{
+					temp.Target = businessObject;
 				}
 			}
 			else
 			{
-				typeHashtable.Add(businessObject.ID, businessObject);
+				typeHashtable.Add(businessObject.ID, new WeakReference(businessObject));
 			}
+		}
+		#endregion
+
+		#region TryGet<T>
+		/// <summary>
+		/// Naète business-objekt z identity-map.
+		/// </summary>
+		/// <typeparam name="T">typ business objektu</typeparam>
+		/// <param name="id">ID business objektu</param>
+		/// <param name="target">cíl, kam má být business-objekt naèten</param>
+		/// <returns><c>true</c>, pokud se podaøilo naèíst; <c>false</c>, pokud objekt v identity-map není (target pak obsahuje <c>null</c>)</returns>
+		public bool TryGet<T>(int id, out T target)
+			where T : BusinessObjectBase
+		{
+			target = null;
+			Hashtable typeHashtable = types[typeof(T)] as Hashtable;
+			if (typeHashtable == null)
+			{
+				return false;
+			}
+			WeakReference reference = (WeakReference)typeHashtable[id];
+			if (reference != null)
+			{
+				target = (T)reference.Target;
+			}
+			
+			return !(target == null);
 		}
 		#endregion
 
@@ -83,7 +117,12 @@ namespace Havit.Business
 			{
 				return null;
 			}
-			return (T)typeHashtable[id];
+			WeakReference reference = (WeakReference)typeHashtable[id];
+			if (reference == null)
+			{
+				return null;
+			}
+			return (T)reference.Target;
 		}
 		#endregion
 	}

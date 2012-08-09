@@ -68,6 +68,7 @@ namespace Havit.BusinessTest
 		//
 		#endregion
 
+		#region Store
 		/// <summary>
 		///A test for Store&lt;&gt; (T)
 		///</summary>
@@ -83,28 +84,97 @@ namespace Havit.BusinessTest
 			target.Store(businessObject1);
 			target.Store(businessObject2);
 		}
+		#endregion
+
+		#region Get
+		/// <summary>
+		///A test for Get&lt;&gt; (int)
+		///</summary>
+		[TestMethod()]
+		public void GetTest_Exist()
+		{
+			IdentityMap target = new IdentityMap();
+
+			TestingBusinessObject businessObject = new TestingBusinessObject(10);
+			TestingBusinessObject actual;
+
+			target.Store(businessObject);
+			actual = target.Get<TestingBusinessObject>(10);
+
+			Assert.AreSame(actual, businessObject);
+		}
 
 		/// <summary>
 		///A test for Get&lt;&gt; (int)
 		///</summary>
 		[TestMethod()]
-		public void GetTest()
+		public void GetTest_NotExist()
 		{
 			IdentityMap target = new IdentityMap();
+			TestingBusinessObject actual = target.Get<TestingBusinessObject>(10);
 
-			int id = 0; // TODO: Initialize to an appropriate value
+			Assert.IsNull(actual);
+		}
+		#endregion
 
-			T expected = 0;
-			T actual;
+		#region TryGet
+		/// <summary>
+		///A test for Get&lt;&gt; (int)
+		///</summary>
+		[TestMethod()]
+		public void TryGetTest_Exist()
+		{
+			IdentityMap im = new IdentityMap();
 
-			actual = target.Get(id);
+			TestingBusinessObject businessObject = new TestingBusinessObject(10);
+			TestingBusinessObject target;
 
-			Assert.AreEqual(expected, actual, "Havit.Business.IdentityMap.Get<T> did not return the expected value.");
-			Assert.Inconclusive("Verify the correctness of this test method.");
-			Assert.Inconclusive("Generics testing must be manually provided.");
+			im.Store(businessObject);
+			bool result = im.TryGet<TestingBusinessObject>(10, out target);
+
+			Assert.AreSame(target, businessObject);
+			Assert.IsTrue(result);
 		}
 
+		/// <summary>
+		///A test for Get&lt;&gt; (int)
+		///</summary>
+		[TestMethod()]
+		public void TryGetTest_NotExist()
+		{
+			IdentityMap im = new IdentityMap();
 
+			TestingBusinessObject businessObject = new TestingBusinessObject(10);
+			TestingBusinessObject target;
+
+			im.Store(businessObject);
+			bool result = im.TryGet<TestingBusinessObject>(11, out target);
+
+			Assert.IsNull(target);
+			Assert.IsFalse(result);
+		}
+
+		/// <summary>
+		///A test for Get&lt;&gt; (int)
+		///</summary>
+		[TestMethod()]
+		public void TryGetTest_StoredGC()
+		{
+			IdentityMap im = new IdentityMap();
+
+			TestingBusinessObject businessObject = new TestingBusinessObject(10);
+			TestingBusinessObject target;
+
+			im.Store(businessObject);
+			businessObject = null;
+			GC.Collect();
+			bool result = im.TryGet<TestingBusinessObject>(10, out target);
+
+			Assert.IsNull(target);
+			Assert.IsFalse(result);
+		}
+
+		#endregion
 	}
 
 

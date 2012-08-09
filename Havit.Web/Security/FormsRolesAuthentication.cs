@@ -108,14 +108,31 @@ namespace Havit.Web.Security
 		/// <returns>autentizaèní ticket na základì pøedaných argumentù</returns>
 		public static FormsAuthenticationTicket GetAuthTicket(string username, string[] roles, bool createPersistent, string cookiePath)
 		{
-			FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(
-				2,											// version
-				username,									// name
-				DateTime.Now,								// issueDate
-				DateTime.Now.AddMinutes((double)Timeout),	// expiration
-				createPersistent,						// isPersistent
-				String.Join(",", roles),					// userData
-				cookiePath);								// cookiePath
+			FormsAuthenticationTicket authTicket;
+
+			// .NET FW 2.0 obsahuje bug, kdy do persistentního ticketu nastavuje platnost jako nepersistentní
+			if (createPersistent)
+			{
+				authTicket = new FormsAuthenticationTicket(
+					2,											// version
+					username,									// name
+					DateTime.Now,								// issueDate
+					DateTime.Now.AddYears(50),					// expiration
+					createPersistent,							// isPersistent
+					String.Join(",", roles),					// userData
+					cookiePath);								// cookiePath
+			}
+			else
+			{
+				authTicket = new FormsAuthenticationTicket(
+					2,											// version
+					username,									// name
+					DateTime.Now,								// issueDate
+					DateTime.Now.AddMinutes((double)Timeout),	// expiration
+					createPersistent,							// isPersistent
+					String.Join(",", roles),					// userData
+					cookiePath);								// cookiePath
+			}
 			return authTicket;
 		}
 		#endregion

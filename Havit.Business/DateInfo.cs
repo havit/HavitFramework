@@ -1,15 +1,15 @@
-using System;
+ï»¿using System;
 
 namespace Havit.Business
 {
 	/// <summary>
-	/// Tøída pro informace o dni.
+	/// TÅ™Ã­da pro informace o dni.
 	/// </summary>
 	public class DateInfo : IDateInfo
 	{
 		#region Data Fields - hodnoty
 		/// <summary>
-		/// Vrátí den, kterému DateInfo patøí.
+		/// VrÃ¡tÃ­ den, kterÃ©mu DateInfo patÅ™Ã­.
 		/// </summary>
 		public DateTime Date
 		{
@@ -18,7 +18,7 @@ namespace Havit.Business
 		private readonly DateTime _date;
 
 		/// <summary>
-		/// Indikuje, zda-li je den svátkem.
+		/// Indikuje, zda-li je den svÃ¡tkem.
 		/// </summary>
 		public bool IsHoliday
 		{
@@ -27,7 +27,7 @@ namespace Havit.Business
 		private bool _isHoliday;
 
 		/// <summary>
-		/// Textovı popis svátku, pokud je den svátkem.
+		/// TextovÃ½ popis svÃ¡tku, pokud je den svÃ¡tkem.
 		/// </summary>
 		public string HolidayDescription
 		{
@@ -38,9 +38,9 @@ namespace Havit.Business
 
 		#region Constructor
 		/// <summary>
-		/// Vytvoøí instanci <see cref="DateInfo"/>.
+		/// VytvoÅ™Ã­ instanci <see cref="DateInfo"/>.
 		/// </summary>
-		/// <param name="date">den, kterı má bıt reprezentován</param>
+		/// <param name="date">den, kterÃ½ mÃ¡ bÃ½t reprezentovÃ¡n</param>
 		public DateInfo(DateTime date)
 		{
 			this._date = date.Date;
@@ -49,9 +49,9 @@ namespace Havit.Business
 
 		#region SetAsHoliday
 		/// <summary>
-		/// Nastaví den jako svátek.
+		/// NastavÃ­ den jako svÃ¡tek.
 		/// </summary>
-		/// <param name="holidayDescription">textovı popis svátku</param>
+		/// <param name="holidayDescription">textovÃ½ popis svÃ¡tku</param>
 		public void SetAsHoliday(string holidayDescription)
 		{
 			this._isHoliday = true;
@@ -59,7 +59,7 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Nastaví den jako svátek.
+		/// NastavÃ­ den jako svÃ¡tek.
 		/// </summary>
 		public void SetAsHoliday()
 		{

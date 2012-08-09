@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Data;
 using System.Configuration;
 using System.Collections;
@@ -26,7 +26,7 @@ namespace WebApplicationTest
 				E1.DataBind();
 				E1.SelectedObjects = Role.GetAll();
 
-				// JK: Zrušeno, metoda pøejmenována a viditelnost zmìnìna na internal.
+				// JK: ZruÅ¡eno, metoda pÅ™ejmenovÃ¡na a viditelnost zmÄ›nÄ›na na internal.
 				// Vybere roli 1 a 3. Role 5 neexistuje.
 				//int[] abc = { 1, 3, 5 };
 				//E2.SelectExistingItems(abc);

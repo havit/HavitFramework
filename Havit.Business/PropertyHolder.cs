@@ -1,21 +1,21 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Havit.Business
 {
 	/// <summary>
-	/// Tøída pro objekt, kterı nese hodnotu a vlastnosti jednotlivé property BusinessObjectu.
+	/// TÅ™Ã­da pro objekt, kterÃ½ nese hodnotu a vlastnosti jednotlivÃ© property BusinessObjectu.
 	/// </summary>
-	/// <typeparam name="T">typ property, jí je PropertyHolder nosièem</typeparam>
+	/// <typeparam name="T">typ property, jÃ­Å¾ je PropertyHolder nosiÄem</typeparam>
 	[Serializable]
 	public class PropertyHolder<T> : PropertyHolderBase
 	{
 		#region Constructors
 		/// <summary>
-		/// Zaloí instanci PropertyHolderu.
+		/// ZaloÅ¾Ã­ instanci PropertyHolderu.
 		/// </summary>
-		/// <param name="owner">objekt, kterému PropertyHolder patøí</param>
+		/// <param name="owner">objekt, kterÃ©mu PropertyHolder patÅ™Ã­</param>
 		public PropertyHolder(BusinessObjectBase owner)
 			: base(owner)
 		{
@@ -37,15 +37,15 @@ namespace Havit.Business
 			{
 				if (!Object.Equals(_value, value) || (!IsInitialized))
 				{
-					// pokud meníme hodnotu nebo nastavujeme novou hodnotu, rekneme, ze jsme zmeneny
+					// pokud menÃ­me hodnotu nebo nastavujeme novou hodnotu, rekneme, ze jsme zmeneny
 					IsDirty = true;					
 				}
 
 				IsInitialized = true;
 
-				// není pod podmínkou !Object.Equals(), protoe mùe dojít k uloení jiné instance, která je sice nyní rovna,
-				// ale pokud by se s ní dále pracovalo, mohou se u tyto instance rozcházet
-				// (nastavení IsDirty musíme v tom pøípadì sledovat pøes odbìr události "zmìna")
+				// nenÃ­ pod podmÃ­nkou !Object.Equals(), protoÅ¾e mÅ¯Å¾e dojÃ­t k uloÅ¾enÃ­ jinÃ© instance, kterÃ¡ je sice nynÃ­ rovna,
+				// ale pokud by se s nÃ­ dÃ¡le pracovalo, mohou se uÅ¾ tyto instance rozchÃ¡zet
+				// (nastavenÃ­ IsDirty musÃ­me v tom pÅ™Ã­padÄ› sledovat pÅ™es odbÄ›r udÃ¡losti "zmÄ›na")
 				_value = value;
 			}
 		}

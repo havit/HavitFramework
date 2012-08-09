@@ -124,6 +124,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GenericPropertyComparerTest.cs" />
     <Compile Include="MathExtTest.cs" />
     <Compile Include="PasswordGeneratorTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

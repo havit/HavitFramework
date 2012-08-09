@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Collections.ObjectModel;
@@ -8,7 +8,7 @@ using System.Diagnostics;
 namespace Havit.Business.Query
 {
 	/// <summary>
-	/// Pøedek kompozitních podmínek.
+	/// PÅ™edek kompozitnÃ­ch podmÃ­nek.
 	/// </summary>
 	[Serializable]
 	public abstract class CompositeCondition : Condition
@@ -17,7 +17,7 @@ namespace Havit.Business.Query
 
 		#region Conditions
 		/// <summary>
-		/// Podmínky v kompozitu.
+		/// PodmÃ­nky v kompozitu.
 		/// </summary>
 		public ConditionList Conditions
 		{
@@ -28,7 +28,7 @@ namespace Havit.Business.Query
 
 		#region Constructors
 		/// <summary>
-		/// Vytvoøí instanci.
+		/// VytvoÅ™Ã­ instanci.
 		/// </summary>
 		protected CompositeCondition(string operatorBetweenOperands, params Condition[] conditions)
 		{
@@ -46,7 +46,7 @@ namespace Havit.Business.Query
 
 		#region GetWhereStatement
 		/// <summary>
-		/// Poskládá èlenské podmínky. Mezi podmínkami (operandy) je operátor zadanı v konstruktoru.
+		/// PosklÃ¡dÃ¡ ÄlenskÃ© podmÃ­nky. Mezi podmÃ­nkami (operandy) je operÃ¡tor zadanÃ½ v konstruktoru.
 		/// </summary>
 		public override void GetWhereStatement(System.Data.Common.DbCommand command, StringBuilder whereBuilder)
 		{

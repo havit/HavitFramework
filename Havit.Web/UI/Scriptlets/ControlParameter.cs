@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
@@ -9,7 +9,7 @@ using System.Web.UI.WebControls;
 namespace Havit.Web.UI.Scriptlets
 {
     /// <summary>
-    /// Parametr Skriptletu reprezentující renderovanı control Control.
+    /// Parametr Skriptletu reprezentujÃ­cÃ­ renderovanÃ½ control Control.
     /// </summary>
     public class ControlParameter : ParameterBase
     {
@@ -18,9 +18,9 @@ namespace Havit.Web.UI.Scriptlets
 
 		#region Control
 		/// <summary>
-		/// Controlu, kterı je zdrojem pro vytvoøení klientského parametru.
-		/// Nesmí bıt zadáno souèasnì s ControlName.
-		/// Hodnota nepøeívá postback.
+		/// Controlu, kterÃ½ je zdrojem pro vytvoÅ™enÃ­ klientskÃ©ho parametru.
+		/// NesmÃ­ bÃ½t zadÃ¡no souÄasnÄ› s ControlName.
+		/// Hodnota nepÅ™eÅ¾Ã­vÃ¡ postback.
 		/// </summary>
 		public Control Control
 		{
@@ -38,9 +38,9 @@ namespace Havit.Web.UI.Scriptlets
 
 		#region ControlName
 		/// <summary>
-		/// Název controlu, kterı je zdrojem pro vytvoøení klientského parametru.
-		/// Pro vyhledávání ve vnoøeném naming containeru lze názvy controlù oddìlit teèkou.
-		/// Nesmí bıt zadáno souèasnì s Control.
+		/// NÃ¡zev controlu, kterÃ½ je zdrojem pro vytvoÅ™enÃ­ klientskÃ©ho parametru.
+		/// Pro vyhledÃ¡vÃ¡nÃ­ ve vnoÅ™enÃ©m naming containeru lze nÃ¡zvy controlÅ¯ oddÄ›lit teÄkou.
+		/// NesmÃ­ bÃ½t zadÃ¡no souÄasnÄ› s Control.
 		/// </summary>
 		public string ControlName
 		{
@@ -60,9 +60,9 @@ namespace Havit.Web.UI.Scriptlets
 
 		#region StartOnChange
 		/// <summary>
-		/// Udává, zda v pøípadì zmìny hodnoty prvku (zaškrtnutí, zmìna textu, apod.)
-		/// dojde ke spuštìní skriptu.
-		/// Vıchozí hodnota je <c>false</c>.
+		/// UdÃ¡vÃ¡, zda v pÅ™Ã­padÄ› zmÄ›ny hodnoty prvku (zaÅ¡krtnutÃ­, zmÄ›na textu, apod.)
+		/// dojde ke spuÅ¡tÄ›nÃ­ skriptu.
+		/// VÃ½chozÃ­ hodnota je <c>false</c>.
 		/// </summary>
 		public bool StartOnChange
 		{
@@ -71,45 +71,45 @@ namespace Havit.Web.UI.Scriptlets
 		}
 		#endregion
 
-		/* Kontrola platnosti parametrù *************** */
+		/* Kontrola platnosti parametrÅ¯ *************** */
 
 		#region CheckProperties (overriden)
 		/// <include file='IScriptletParameter.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IScriptletParameter.CheckProperties")]/*' />
 		public override void CheckProperties()
 		{
 			base.CheckProperties();
-			// navíc zkontrolujeme nastavení ControlName
+			// navÃ­c zkontrolujeme nastavenÃ­ ControlName
 			CheckControlAndControlNameProperty();
 		}		
 		#endregion
 
 		#region CheckNameProperty
 		/// <summary>
-		/// Testuje nastavení hodnoty property Name.
-		/// Pøepisuje chování pøedka tím zpùsobem, e zde není property Name povinná
-		/// (take se ani netestuje).
+		/// Testuje nastavenÃ­ hodnoty property Name.
+		/// PÅ™episuje chovÃ¡nÃ­ pÅ™edka tÃ­m zpÅ¯sobem, Å¾e zde nenÃ­ property Name povinnÃ¡
+		/// (takÅ¾e se ani netestuje).
 		/// </summary>
 		protected override void CheckNameProperty()
 		{
-			// narozdíl od zde definujeme jméno jako nepovinné
-			// nebudeme zde tedy jméno kontrolovat
+			// narozdÃ­l od zde definujeme jmÃ©no jako nepovinnÃ©
+			// nebudeme zde tedy jmÃ©no kontrolovat
 		}
 		#endregion
 
 		#region CheckControlAndControlNameProperty
 		/// <summary>
-		/// Zkontroluje nastavení property <see cref="Control">Control</see> a <see cref="ControlName">ControlName</see>.
-		/// Pokud není nastavena hodnota právì jedné vlastnosti, vyhodí vıjimku.
+		/// Zkontroluje nastavenÃ­ property <see cref="Control">Control</see> a <see cref="ControlName">ControlName</see>.
+		/// Pokud nenÃ­ nastavena hodnota prÃ¡vÄ› jednÃ© vlastnosti, vyhodÃ­ vÃ½jimku.
 		/// </summary>
 		protected virtual void CheckControlAndControlNameProperty()
 		{
 			if ((_control == null) && String.IsNullOrEmpty(ControlName))
 			{
-				throw new HttpException("Není urèen control, nastavte vlastnost Control nebo ControlName.");
+				throw new HttpException("NenÃ­ urÄen control, nastavte vlastnost Control nebo ControlName.");
 			}
 			if ((_control != null) && !String.IsNullOrEmpty(ControlName))
 			{
-				throw new HttpException("Není moné urèit control vlastnostmi Control a ControlName zároveò.");
+				throw new HttpException("NenÃ­ moÅ¾nÃ© urÄit control vlastnostmi Control a ControlName zÃ¡roveÅˆ.");
 			}
 		}
 		#endregion
@@ -158,12 +158,12 @@ namespace Havit.Web.UI.Scriptlets
 		#region DoJobOnExtender (ExtenderJobEventHandler)
 		private void DoJobOnExtender(Control control, ExtenderJobEventHandler job)
 		{
-			// ak kdy je viditelnı
+			// ak kdyÅ¾ je viditelnÃ½
 			if (control.Visible)
 			{
-				// najdeme extender, kterı tento control bude øešit
+				// najdeme extender, kterÃ½ tento control bude Å™eÅ¡it
 				IControlExtender extender = Scriptlet.ControlExtenderRepository.FindControlExtender(control);
-				// a øekneme, a ho vyøeší
+				// a Å™ekneme, aÅ¥ ho vyÅ™eÅ¡Ã­
 				job(extender);
 			}
 		}
@@ -175,10 +175,10 @@ namespace Havit.Web.UI.Scriptlets
 
 		#region GetControl
 		/// <summary>
-		/// Nalezne Control, kterı má bıt zpracován.
-		/// Pokud není Control nalezen, vyhodí vıjimku HttpException.
+		/// Nalezne Control, kterÃ½ mÃ¡ bÃ½t zpracovÃ¡n.
+		/// Pokud nenÃ­ Control nalezen, vyhodÃ­ vÃ½jimku HttpException.
 		/// </summary>
-		/// <param name="parentControl">Control v rámci nìho se hledá (NamingContainer).</param>
+		/// <param name="parentControl">Control v rÃ¡mci nÄ›hoÅ¾ se hledÃ¡ (NamingContainer).</param>
 		/// <returns>Control.</returns>
 		protected virtual Control GetControl(Control parentControl)
 		{
@@ -192,7 +192,7 @@ namespace Havit.Web.UI.Scriptlets
 			Control result;
 			if (controlName.StartsWith("Page$"))
 			{
-				result = this.Page.FindControl(controlName.Substring(5)); // 5 .. pøeskoèíme "Page."
+				result = this.Page.FindControl(controlName.Substring(5)); // 5 .. pÅ™eskoÄÃ­me "Page."
 			}
 			else
 			{

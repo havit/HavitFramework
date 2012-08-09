@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Text.RegularExpressions;
 using System.Configuration;
 using Havit.Web.UrlRewriter.Config;
@@ -11,7 +11,7 @@ namespace Havit.Web.UrlRewriter
 	public class ModuleRewriter : BaseModuleRewriter
 	{
 		/// <summary>
-		/// Metoda øešící vlastní UrlRewriting zdrojové adresy na cílovou.
+		/// Metoda Å™eÅ¡Ã­cÃ­ vlastnÃ­ UrlRewriting zdrojovÃ© adresy na cÃ­lovou.
 		/// </summary>
 		/// <param name="requestedPath">The Path being requested.</param>
 		/// <param name="app">The HttpApplication instance.</param>

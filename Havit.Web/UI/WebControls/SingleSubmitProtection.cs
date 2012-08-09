@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI.WebControls;
@@ -13,14 +13,14 @@ using System.Web;
 namespace Havit.Web.UI.WebControls
 {
     /// <summary>
-    /// Control, kterı zamezuje dvojímu odeslání formuláøe.
-    /// Pøi submitu pøekryje viditelnou èást formuláøe prùhlednım, ale neprokliknutelnım, DIVem.
+    /// Control, kterÃ½ zamezuje dvojÃ­mu odeslÃ¡nÃ­ formulÃ¡Å™e.
+    /// PÅ™i submitu pÅ™ekryje viditelnou ÄÃ¡st formulÃ¡Å™e prÅ¯hlednÃ½m, ale neprokliknutelnÃ½m, DIVem.
     /// </summary>
 	public class SingleSubmitProtection : WebControl
 	{
 		#region Constructor
 		/// <summary>
-		/// Prvek je zaloen na elementu DIV.
+		/// Prvek je zaloÅ¾en na elementu DIV.
 		/// </summary>
 		public SingleSubmitProtection()
 			: base(HtmlTextWriterTag.Div)
@@ -29,8 +29,8 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 
 		/// <summary>
-		/// Volání JavaScriptové funkce, která zablokuje SetProcessing na SingleSubmitPage.
-		/// Tato konstanta se mùe vloit napø. do Button.OnClientClick.
+		/// VolÃ¡nÃ­ JavaScriptovÃ© funkce, kterÃ¡ zablokuje SetProcessing na SingleSubmitPage.
+		/// Tato konstanta se mÅ¯Å¾e vloÅ¾it napÅ™. do Button.OnClientClick.
 		/// </summary>
 		public const string SetProcessingDisableJavaScript = "SingleSubmit_SetProcessing_Disable();";
 
@@ -45,14 +45,14 @@ namespace Havit.Web.UI.WebControls
 				
 				SingleSubmitProtection.RegisterStylesheets(this.Page);
 
-                // Registruje klientské skripty pro zamezení opakovaného odeslání stránky.
+                // Registruje klientskÃ© skripty pro zamezenÃ­ opakovanÃ©ho odeslÃ¡nÃ­ strÃ¡nky.
                 ScriptManager.RegisterClientScriptResource(
                     this.Page,
                     typeof(SingleSubmitProtection),
                     "Havit.Web.UI.WebControls.SingleSubmitProtection.js");
 
 				// zaregistruje javascript pro OnSubmit
-				// javascript se neregistruje pro async postback, protoe by se skript jednotlivımi callbacky pøidával a pøidával
+				// javascript se neregistruje pro async postback, protoÅ¾e by se skript jednotlivÃ½mi callbacky pÅ™idÃ¡val a pÅ™idÃ¡val
 				if ((currentScriptManager == null) || (!currentScriptManager.IsInAsyncPostBack))
 				{
 					ScriptManager.RegisterOnSubmitStatement(
@@ -62,7 +62,7 @@ namespace Havit.Web.UI.WebControls
 						"if (!_SingleSubmit_IsRecursive) return SingleSubmit_OnSubmit();\n\n");
 				}
 
-                // zajištìní mizení progress panelu po async postbacku
+                // zajiÅ¡tÄ›nÃ­ mizenÃ­ progress panelu po async postbacku
                 if ((currentScriptManager != null) && (currentScriptManager.EnablePartialRendering))
                 {
                     ScriptManager.RegisterStartupScript(

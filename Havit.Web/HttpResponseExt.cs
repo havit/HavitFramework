@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Text;
 using System.Web;
 using Havit.Reflection;
@@ -6,25 +6,25 @@ using Havit.Reflection;
 namespace Havit.Web
 {
 	/// <summary>
-	/// Obsahuje rozšiøující funkènost k tøídì <see cref="System.Web.HttpResponse"/>.
+	/// Obsahuje rozÅ¡iÅ™ujÃ­cÃ­ funkÄnost k tÅ™Ã­dÄ› <see cref="System.Web.HttpResponse"/>.
 	/// </summary>
 	public static class HttpResponseExt
 	{
 		#region MovedPermanently
 		/// <summary>
-		/// Provede redirect pomocí HTTP status kódu 301 - Moved Permanently.
-		/// Klasickı <see cref="System.Web.HttpResponse.Redirect(string)"/> provádí redirect pøes 302 - Found (Object Moved).
+		/// Provede redirect pomocÃ­ HTTP status kÃ³du 301 - Moved Permanently.
+		/// KlasickÃ½ <see cref="System.Web.HttpResponse.Redirect(string)"/> provÃ¡dÃ­ redirect pÅ™es 302 - Found (Object Moved).
 		/// </summary>
 		/// <remarks>
-		/// Zatímco klasickı <see cref="System.Web.HttpResponse.Redirect(string)"/> provádí redirect pøes HTTP status kód 302,
-		/// co je "temporarily moved", redirect pøes "301 - Moved Permanently" øíká klientovi, e URL poadované stránky
-		/// se definitivnì zmìnilo na novou adresu.<br/>
-		/// Klient by mìl teoreticky reagovat úpravou bookmarku, ale ádnı to nedìlá. Smysl to má však pro indexovací roboty
-		/// vyhledávaèù, které se tím údajnì docela øídí.<br/>
-		/// POZOR: Na rozdíl od <see cref="System.Web.HttpResponse.Redirect(string)"/> nekontroluje, jestli u nebyly odeslány klientovi hlavièky.
+		/// ZatÃ­mco klasickÃ½ <see cref="System.Web.HttpResponse.Redirect(string)"/> provÃ¡dÃ­ redirect pÅ™es HTTP status kÃ³d 302,
+		/// coÅ¾ je "temporarily moved", redirect pÅ™es "301 - Moved Permanently" Å™Ã­kÃ¡ klientovi, Å¾e URL poÅ¾adovanÃ© strÃ¡nky
+		/// se definitivnÄ› zmÄ›nilo na novou adresu.<br/>
+		/// Klient by mÄ›l teoreticky reagovat Ãºpravou bookmarku, ale Å¾Ã¡dnÃ½ to nedÄ›lÃ¡. Smysl to mÃ¡ vÅ¡ak pro indexovacÃ­ roboty
+		/// vyhledÃ¡vaÄÅ¯, kterÃ© se tÃ­m ÃºdajnÄ› docela Å™Ã­dÃ­.<br/>
+		/// POZOR: Na rozdÃ­l od <see cref="System.Web.HttpResponse.Redirect(string)"/> nekontroluje, jestli uÅ¾ nebyly odeslÃ¡ny klientovi hlaviÄky.
 		/// </remarks>
-		/// <param name="url">Cílová adresa.</param>
-		/// <param name="endResponse">Indikuje, zda-li má skonèit zpracování vykonávání stránky.</param>
+		/// <param name="url">CÃ­lovÃ¡ adresa.</param>
+		/// <param name="endResponse">Indikuje, zda-li mÃ¡ skonÄit zpracovÃ¡nÃ­ vykonÃ¡vÃ¡nÃ­ strÃ¡nky.</param>
 		public static void MovedPermanently(string url, bool endResponse)
 		{
 			if ((HttpContext.Current == null)
@@ -61,17 +61,17 @@ namespace Havit.Web
 		}
 
 		/// <summary>
-		/// Provede redirect pomocí HTTP status kódu 301 - Moved Permanently a ukonèí zpracování stránky.
-		/// Klasickı <see cref="System.Web.HttpResponse.Redirect(string)"/> provádí redirect pøes 302 - Found (Object Moved).
+		/// Provede redirect pomocÃ­ HTTP status kÃ³du 301 - Moved Permanently a ukonÄÃ­ zpracovÃ¡nÃ­ strÃ¡nky.
+		/// KlasickÃ½ <see cref="System.Web.HttpResponse.Redirect(string)"/> provÃ¡dÃ­ redirect pÅ™es 302 - Found (Object Moved).
 		/// </summary>
 		/// <remarks>
-		/// Zatímco klasickı <see cref="System.Web.HttpResponse.Redirect(string)"/> provádí redirect pøes HTTP status kód 302,
-		/// co je "temporarily moved", redirect pøes "301 - Moved Permanently" øíká klientovi, e URL poadované stránky
-		/// se definitivnì zmìnilo na novou adresu.<br/>
-		/// Klient by mìl teoreticky reagovat úpravou bookmarku, ale ádnı to nedìlá. Smysl to má však pro indexovací roboty
-		/// vyhledávaèù, které se tím údajnì docela øídí.
+		/// ZatÃ­mco klasickÃ½ <see cref="System.Web.HttpResponse.Redirect(string)"/> provÃ¡dÃ­ redirect pÅ™es HTTP status kÃ³d 302,
+		/// coÅ¾ je "temporarily moved", redirect pÅ™es "301 - Moved Permanently" Å™Ã­kÃ¡ klientovi, Å¾e URL poÅ¾adovanÃ© strÃ¡nky
+		/// se definitivnÄ› zmÄ›nilo na novou adresu.<br/>
+		/// Klient by mÄ›l teoreticky reagovat Ãºpravou bookmarku, ale Å¾Ã¡dnÃ½ to nedÄ›lÃ¡. Smysl to mÃ¡ vÅ¡ak pro indexovacÃ­ roboty
+		/// vyhledÃ¡vaÄÅ¯, kterÃ© se tÃ­m ÃºdajnÄ› docela Å™Ã­dÃ­.
 		/// </remarks>
-		/// <param name="url">Cílová adresa.</param>
+		/// <param name="url">CÃ­lovÃ¡ adresa.</param>
 		public static void MovedPermanently(string url)
 		{
 			HttpResponseExt.MovedPermanently(url, true);
@@ -80,9 +80,9 @@ namespace Havit.Web
 
 		#region Gone
 		/// <summary>
-		/// Odešle klientovi odezvu se status kódem 410 - Gone, tj. "stránka byla zrušena bez náhrady".
+		/// OdeÅ¡le klientovi odezvu se status kÃ³dem 410 - Gone, tj. "strÃ¡nka byla zruÅ¡ena bez nÃ¡hrady".
 		/// </summary>
-		/// <param name="endResponse">Indikuje, zda-li má skonèit zpracování vykonávání stránky.</param>
+		/// <param name="endResponse">Indikuje, zda-li mÃ¡ skonÄit zpracovÃ¡nÃ­ vykonÃ¡vÃ¡nÃ­ strÃ¡nky.</param>
 		public static void Gone(bool endResponse)
 		{
 			if ((HttpContext.Current == null)
@@ -107,8 +107,8 @@ namespace Havit.Web
 		}
 
 		/// <summary>
-		/// Odešle klientovi odezvu se status kódem 410 - Gone, tj. "stránka byla zrušena bez náhrady"
-		/// a ukonèí zpracování stránky.
+		/// OdeÅ¡le klientovi odezvu se status kÃ³dem 410 - Gone, tj. "strÃ¡nka byla zruÅ¡ena bez nÃ¡hrady"
+		/// a ukonÄÃ­ zpracovÃ¡nÃ­ strÃ¡nky.
 		/// </summary>
 		public static void Gone()
 		{

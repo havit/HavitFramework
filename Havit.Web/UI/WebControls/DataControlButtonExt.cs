@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI.WebControls;
@@ -7,7 +7,7 @@ using System.Web.UI;
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
-	/// Pøepis tøídy Microsoft .NET Frameworku. Potøeba pro GridViewCommandField.
+	/// PÅ™epis tÅ™Ã­dy Microsoft .NET Frameworku. PotÅ™eba pro GridViewCommandField.
 	/// </summary>
 	[SupportsEventValidation]
 	internal sealed class DataControlButtonExt : Button

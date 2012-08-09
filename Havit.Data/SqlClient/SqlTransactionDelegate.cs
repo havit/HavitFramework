@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 using System.Collections.Generic;
 using System.Text;
 using System.Data.SqlClient;
@@ -6,9 +6,9 @@ using System.Data.SqlClient;
 namespace Havit.Data.SqlClient
 {
 	/// <summary>
-	/// Reprezentuje metodu, kter· vykon·v· jednotlivÈ kroky transakce.
+	/// Reprezentuje metodu, kter√° vykon√°v√° jednotliv√© kroky transakce.
 	/// </summary>
-	/// <param name="transaction">transakce, v r·mci kterÈ majÌ b˝t jednotlivÈ kroky vykon·ny</param>
+	/// <param name="transaction">transakce, v r√°mci kter√© maj√≠ b√Ωt jednotliv√© kroky vykon√°ny</param>
 	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
 	public delegate void SqlTransactionDelegate(SqlTransaction transaction);
 }

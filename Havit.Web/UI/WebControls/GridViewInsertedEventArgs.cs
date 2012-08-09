@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -10,7 +10,7 @@ namespace Havit.Web.UI.WebControls
 	public class GridViewInsertedEventArgs : EventArgs
 	{
 		/// <summary>
-		/// Indikuje, zda-li m· GridView z˘stat po zpracov·nÌ ud·lost v reûimu editace novÈho ¯·dku.
+		/// Indikuje, zda-li m√° GridView z≈Østat po zpracov√°n√≠ ud√°lost v re≈æimu editace nov√©ho ≈ô√°dku.
 		/// </summary>
 		public bool KeepInEditMode
 		{

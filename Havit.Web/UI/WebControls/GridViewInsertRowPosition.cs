@@ -1,16 +1,16 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
-	/// Slouží pro volbu pozice Insert-øádku v <see cref="GridViewExt"/>.
+	/// SlouÅ¾Ã­ pro volbu pozice Insert-Å™Ã¡dku v <see cref="GridViewExt"/>.
 	/// </summary>
 	public enum GridViewInsertRowPosition
 	{
 		/// <summary>
-		/// Nahoøe.
+		/// NahoÅ™e.
 		/// </summary>
 		Top = 0,
 

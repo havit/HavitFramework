@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Collections;
@@ -6,17 +6,17 @@ using System.Collections;
 namespace Havit.Business
 {
 	/// <summary>
-	/// Rozhraní kolekce lokalizaèních business objektù.
+	/// RozhranÃ­ kolekce lokalizaÄnÃ­ch business objektÅ¯.
 	/// </summary>
 	public interface ILocalizationCollection: ICollection
 	{
 		/// <summary>
-		/// Vrátí business objekt pro aktuální jazyk.
+		/// VrÃ¡tÃ­ business objekt pro aktuÃ¡lnÃ­ jazyk.
 		/// </summary>
 		BusinessObjectBase Current { get;}
 
 		/// <summary>
-		/// Vrıtí business objekt pro zadanı jazyk.
+		/// VrÃ½tÃ­ business objekt pro zadanÃ½ jazyk.
 		/// </summary>
 		BusinessObjectBase this[ILanguage language] { get; }
 	}

@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI.WebControls;
@@ -9,21 +9,21 @@ using System.Globalization;
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
-	/// Vylepšenı <see cref="DropDownList"/>.
-    /// Podporuje lepší zpracování hodnoty DataTextField pøi databindingu.	
+	/// VylepÅ¡enÃ½ <see cref="DropDownList"/>.
+    /// Podporuje lepÅ¡Ã­ zpracovÃ¡nÃ­ hodnoty DataTextField pÅ™i databindingu.	
 	/// </summary>
 	/// <remarks>
 	/// Known issue:
-	/// Pokud je v jednom requestu nejprve nastaven SelectedIndex/SelectedValue a poté je proveden DataBind, pokusí se DataBind znovu vybrat poloku, která byla vybrána.
-	/// Pokud se to nepovede (není nalezena), pak je vyhozena vıjimka.
-	/// Není šance toto potlaèit (a podle RH nemáme toto chování rušit, pøestoe nemám tušení, k èemu to je),
-	/// proto do ClearSelection doplòujeme vymazání pøíznakù, kterımi se øídí DataBind.
+	/// Pokud je v jednom requestu nejprve nastaven SelectedIndex/SelectedValue a potÃ© je proveden DataBind, pokusÃ­ se DataBind znovu vybrat poloÅ¾ku, kterÃ¡ byla vybrÃ¡na.
+	/// Pokud se to nepovede (nenÃ­ nalezena), pak je vyhozena vÃ½jimka.
+	/// NenÃ­ Å¡ance toto potlaÄit (a podle RH nemÃ¡me toto chovÃ¡nÃ­ ruÅ¡it, pÅ™estoÅ¾e nemÃ¡m tuÅ¡enÃ­, k Äemu to je),
+	/// proto do ClearSelection doplÅˆujeme vymazÃ¡nÃ­ pÅ™Ã­znakÅ¯, kterÃ½mi se Å™Ã­dÃ­ DataBind.
 	/// </remarks>
 	public class DropDownListExt : DropDownList
 	{
 		#region ItemDataBound (event)
 		/// <summary>
-		/// Událost, která se volá po vytvoøení itemu a jeho data-bindingu.
+		/// UdÃ¡lost, kterÃ¡ se volÃ¡ po vytvoÅ™enÃ­ itemu a jeho data-bindingu.
 		/// </summary>
 		public event EventHandler<ListControlItemDataBoundEventArgs> ItemDataBound
 		{
@@ -40,7 +40,7 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 
 		#region SelectedIndex, SelectedValue (override)
-		private int cachedSelectedIndex = -1; // JK: A mi nìkdo z MS vysvìtlí, jak má tohle fungovat. Podle mne to ani nemá logiku.
+		private int cachedSelectedIndex = -1; // JK: AÅ¥ mi nÄ›kdo z MS vysvÄ›tlÃ­, jak mÃ¡ tohle fungovat. Podle mne to ani nemÃ¡ logiku.
 		private string cachedSelectedValue;
 
 		/// <summary>
@@ -82,7 +82,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region ClearSelection
 		/// <summary>
-		/// Zruší vıbìr aktuálnì vybrané poloky.
+		/// ZruÅ¡Ã­ vÃ½bÄ›r aktuÃ¡lnÄ› vybranÃ© poloÅ¾ky.
 		/// </summary>
 		public override void ClearSelection()
 		{
@@ -127,7 +127,7 @@ namespace Havit.Web.UI.WebControls
 				}
 				if ((this.cachedSelectedIndex != -1) && (this.cachedSelectedIndex != num))
 				{
-					throw new ArgumentException("Hodnoty SelectedValue a SelectedIndex se navzájem vyluèují.");
+					throw new ArgumentException("Hodnoty SelectedValue a SelectedIndex se navzÃ¡jem vyluÄujÃ­.");
 				}
 				this.SelectedIndex = num;
 				this.cachedSelectedValue = null;
@@ -141,7 +141,7 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// Vytvoøí ListItem, souèást PerformDataBindingu.
+		/// VytvoÅ™Ã­ ListItem, souÄÃ¡st PerformDataBindingu.
 		/// </summary>
 		protected virtual ListItem CreateItem(object dataItem)
 		{
@@ -183,10 +183,10 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// Implementace nahrazující internal metody ListItemCollection.FindByValueInternal()
+		/// Implementace nahrazujÃ­cÃ­ internal metody ListItemCollection.FindByValueInternal()
 		/// </summary>
-		/// <param name="listItemCollection">prohledávaná ListItemCollection</param>
-		/// <param name="value">hledaná hodnota</param>
+		/// <param name="listItemCollection">prohledÃ¡vanÃ¡ ListItemCollection</param>
+		/// <param name="value">hledanÃ¡ hodnota</param>
 		/// <returns></returns>
 		private int FindItemIndexByValue(ListItemCollection listItemCollection, string value)
 		{

@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI.WebControls;
@@ -16,16 +16,16 @@ namespace Havit.Web.UI.Scriptlets
 		private int priority;
 
 		/// <summary>
-		/// Typ, ke kterÈmu je extender registrov·n.
+		/// Typ, ke kter√©mu je extender registrov√°n.
 		/// </summary>
 		private Type controlType;				
 		#endregion
 
 		#region Constructor
 		/// <summary>
-		/// Vytvo¯Ì instanci ListControlExtenderu.
+		/// Vytvo≈ô√≠ instanci ListControlExtenderu.
 		/// </summary>
-		/// <param name="controlType">Typ, ke kterÈmu je instance vytv·¯ena.</param>
+		/// <param name="controlType">Typ, ke kter√©mu je instance vytv√°≈ôena.</param>
 		/// <param name="priority">Priorita control extenderu.</param>
 		public ListControlExtender(Type controlType, int priority)
 		{

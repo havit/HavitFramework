@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
@@ -9,7 +9,7 @@ using System.Web.UI.HtmlControls;
 namespace Havit.Web.UI.Scriptlets
 {
     /// <summary>
-    /// Parametr pøedávající do klientského objektu konstantní øetìzcovou hodnotu.
+    /// Parametr pÅ™edÃ¡vajÃ­cÃ­ do klientskÃ©ho objektu konstantnÃ­ Å™etÄ›zcovou hodnotu.
     /// </summary>
     public class ValueParameter : ParameterBase
     {

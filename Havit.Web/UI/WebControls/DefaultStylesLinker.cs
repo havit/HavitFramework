@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI.WebControls;
@@ -10,7 +10,7 @@ using System.Web.UI;
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
-	/// Control, kterı vytvoøí odkazy (link) na vıchozí CSS styly HAVIT umístìné ve frameworkové assembly.
+	/// Control, kterÃ½ vytvoÅ™Ã­ odkazy (link) na vÃ½chozÃ­ CSS styly HAVIT umÃ­stÄ›nÃ© ve frameworkovÃ© assembly.
 	/// </summary>
 	/// <example>
 	/// <code>
@@ -22,7 +22,7 @@ namespace Havit.Web.UI.WebControls
 	public class DefaultStylesLinker : CompositeControl
 	{
 		/// <summary>
-		/// Vytvoøí child-controly.
+		/// VytvoÅ™Ã­ child-controly.
 		/// </summary>
 		protected override void CreateChildControls()
 		{

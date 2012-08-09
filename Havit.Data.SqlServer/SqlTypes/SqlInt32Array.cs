@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 using System.Data;
 using Microsoft.SqlServer.Server;
 using System.Data.SqlTypes;
@@ -9,22 +9,22 @@ using System.Collections.Generic;
 namespace Havit.Data.SqlTypes
 {
 	/// <summary>
-	/// UDT reprezentujÌcÌ pole SqlInt32 (T-SQL: int) hodnot.
+	/// UDT reprezentuj√≠c√≠ pole SqlInt32 (T-SQL: int) hodnot.
 	/// </summary>
 	/// <remarks>
-	/// Vzhledem k tomu, ûe maxim·lnÌ velikost UDT je 8KB, maximem je 1999 hodnot (jedna je stavov·).<br/>
+	/// Vzhledem k tomu, ≈æe maxim√°ln√≠ velikost UDT je 8KB, maximem je 1999 hodnot (jedna je stavov√°).<br/>
 	/// <br/>
-	/// Bin·rnÌ serializace je takov·to:<br/>
+	/// Bin√°rn√≠ serializace je takov√°to:<br/>
 	/// byte 1-4 ~ Int32 Length (velikost pole, pokud je 0, pak je hodnota NULL)<br/>
 	/// byte 5-(8000) ~ values<br/>
 	/// </remarks>
 	/// <example>
-	/// Vytvo¯enÌ UDT typu:<br/>
+	/// Vytvo≈ôen√≠ UDT typu:<br/>
 	/// <code>
 	/// CREATE TYPE [dbo].IntArray<br/>
 	/// EXTERNAL NAME [Havit.Data.SqlServer].[Havit.Data.SqlTypes.SqlInt32Array]<br/>
 	/// </code>
-	/// Vytvo¯enÌ funkce:<br/>
+	/// Vytvo≈ôen√≠ funkce:<br/>
 	/// <code>
 	/// CREATE FUNCTION IntArrayToTable<br/>
 	/// (<br/>
@@ -36,7 +36,7 @@ namespace Havit.Data.SqlTypes
 	/// )<br/>
 	/// AS EXTERNAL NAME [Havit.Data.SqlServer].[Havit.Data.SqlTypes.SqlInt32Array].[GetInt32Values]<br/>
 	/// </code>
-	/// PouûitÌ ve filtru:<br/>
+	/// Pou≈æit√≠ ve filtru:<br/>
 	/// <code>
 	/// CREATE PROCEDURE Filter<br/>
 	/// (<br/>
@@ -61,7 +61,7 @@ namespace Havit.Data.SqlTypes
 
 		#region Constructors
 		/// <summary>
-		/// Vytvo¯Ì instanci s hodnotou NULL.
+		/// Vytvo≈ô√≠ instanci s hodnotou NULL.
 		/// </summary>
 		public SqlInt32Array()
 		{
@@ -69,9 +69,9 @@ namespace Havit.Data.SqlTypes
 		}
 
 		/// <summary>
-		/// Vytvo¯Ì instanci a naplnÌ ji p¯edan˝mi hodnotami.
+		/// Vytvo≈ô√≠ instanci a napln√≠ ji p≈ôedan√Ωmi hodnotami.
 		/// </summary>
-		/// <param name="values">hodnoty, kterÈ majÌ instance reprezentovat</param>
+		/// <param name="values">hodnoty, kter√© maj√≠ instance reprezentovat</param>
 		public SqlInt32Array(int[] values)
 		{
 			if ((values == null) || (values.Length == 0))
@@ -81,7 +81,7 @@ namespace Havit.Data.SqlTypes
 			}
 			//if (values.Length > 1999)
 			//{
-			//    throw new ArgumentException(String.Format("Maxim·lnÌ velikost pole je 1999 hodnot, poûadov·no je vöak {0} hodnot.",
+			//    throw new ArgumentException(String.Format("Maxim√°ln√≠ velikost pole je 1999 hodnot, po≈æadov√°no je v≈°ak {0} hodnot.",
 			//        values.Length));
 			//}
 
@@ -95,14 +95,14 @@ namespace Havit.Data.SqlTypes
 
 		#region Add
 		/// <summary>
-		/// P¯id· prvek do pole.
+		/// P≈ôid√° prvek do pole.
 		/// </summary>
 		/// <param name="value"></param>
 		public void Add(SqlInt32 value)
 		{
 			if (!value.IsNull && (value.Value == Int32.MinValue))
 			{
-				throw new ArgumentException("Prvek nesmÌ mÌt vyhrazenou hodnotu Int32.MinValue.");
+				throw new ArgumentException("Prvek nesm√≠ m√≠t vyhrazenou hodnotu Int32.MinValue.");
 			}
 
 			if (this.values == null)
@@ -115,7 +115,7 @@ namespace Havit.Data.SqlTypes
 
 		#region Count
 		/// <summary>
-		/// PoËet prvk˘ v seznamu.
+		/// Poƒçet prvk≈Ø v seznamu.
 		/// </summary>
 		public int Count
 		{
@@ -125,9 +125,9 @@ namespace Havit.Data.SqlTypes
 
 		#region Indexer
 		/// <summary>
-		/// Indexer pro p¯Ìstup k prvk˘m podle jejich po¯adÌ.
+		/// Indexer pro p≈ô√≠stup k prvk≈Øm podle jejich po≈ôad√≠.
 		/// </summary>
-		/// <param name="index">index (po¯adÌ) prvku</param>
+		/// <param name="index">index (po≈ôad√≠) prvku</param>
 		/// <returns>hodnota <see cref="SqlInt32"/></returns>
 		public SqlInt32 this[int index]
 		{
@@ -137,9 +137,9 @@ namespace Havit.Data.SqlTypes
 
 		#region Merge
 		/// <summary>
-		/// SpojÌ dvÏ pole v jedno.
+		/// Spoj√≠ dvƒõ pole v jedno.
 		/// </summary>
-		/// <param name="array">p¯id·vanÈ pole</param>
+		/// <param name="array">p≈ôid√°van√© pole</param>
 		public void Merge(SqlInt32Array array)
 		{
 			if (!array.IsNull)
@@ -154,7 +154,7 @@ namespace Havit.Data.SqlTypes
 
 		#region Accessors
 		/// <summary>
-		/// Vr·tÌ pole SqlInt32[] s hodnotami.
+		/// Vr√°t√≠ pole SqlInt32[] s hodnotami.
 		/// </summary>
 		/// <returns>Pole SqlInt32[] s hodnotami.</returns>
 		public SqlInt32[] GetSqlInt32Array()
@@ -167,11 +167,11 @@ namespace Havit.Data.SqlTypes
 		}
 
 		/// <summary>
-		/// VracÌ tabulku Int32 hodnot.
-		/// Metoda urËen· pro mapov·nÌ do T-SQL na table-valued function (TVF).
+		/// Vrac√≠ tabulku Int32 hodnot.
+		/// Metoda urƒçen√° pro mapov√°n√≠ do T-SQL na table-valued function (TVF).
 		/// </summary>
-		/// <param name="values">PromÏnn·, kter· m· b˝t rozbalena do tabulky hodnot Int32.</param>
-		/// <returns>tabulka Int32 hodnot (pomocÌ FillInt32Row)</returns>
+		/// <param name="values">Promƒõnn√°, kter√° m√° b√Ωt rozbalena do tabulky hodnot Int32.</param>
+		/// <returns>tabulka Int32 hodnot (pomoc√≠ FillInt32Row)</returns>
 		[SqlFunctionAttribute(
 			DataAccess= DataAccessKind.None,
 			IsDeterministic= true,
@@ -189,10 +189,10 @@ namespace Havit.Data.SqlTypes
 		}
 
 		/// <summary>
-		/// Metoda zajiöùujÌcÌ p¯evod ¯·dku v table-valued function (TVF).
+		/// Metoda zaji≈°≈•uj√≠c√≠ p≈ôevod ≈ô√°dku v table-valued function (TVF).
 		/// </summary>
-		/// <param name="sqlInt32ArrayElement">vstupnÌ hodnota ¯·dku</param>
-		/// <param name="value">v˝stupnÌ hodnota ¯·dku</param>
+		/// <param name="sqlInt32ArrayElement">vstupn√≠ hodnota ≈ô√°dku</param>
+		/// <param name="value">v√Ωstupn√≠ hodnota ≈ô√°dku</param>
 		public static void FillSqlInt32Row(object sqlInt32ArrayElement, out SqlInt32 value)
 		{
 			if (sqlInt32ArrayElement is SqlInt32)
@@ -208,7 +208,7 @@ namespace Havit.Data.SqlTypes
 
 		#region Parse
 		/// <summary>
-		/// Vytvo¯Ì z CSV textovÈ reprezentace hodnotu pole.
+		/// Vytvo≈ô√≠ z CSV textov√© reprezentace hodnotu pole.
 		/// </summary>
 		/// <param name="text">CSV text hodnot</param>
 		/// <returns>pole s hodnotami dle CSV</returns>
@@ -239,7 +239,7 @@ namespace Havit.Data.SqlTypes
 
 		#region ToString
 		/// <summary>
-		/// P¯evede hodnotu na CSV textovou reprezentaci string
+		/// P≈ôevede hodnotu na CSV textovou reprezentaci string
 		/// </summary>
 		/// <returns>CSV seznam hodnot</returns>
 		public override string ToString()
@@ -297,17 +297,17 @@ namespace Havit.Data.SqlTypes
 
 		#region IBinarySerialize Members
 		/// <summary>
-		/// NaËte hodnotu z bin·rnÌ reprezentace.
+		/// Naƒçte hodnotu z bin√°rn√≠ reprezentace.
 		/// </summary>
 		/// <remarks>
-		/// Bin·rnÌ serializace je takov·to:
+		/// Bin√°rn√≠ serializace je takov√°to:
 		/// byte 1-4 ~ Int32 Length (velikost pole, pokud je 0, pak je hodnota NULL)
 		/// byte 5-(8000) ~ values (NULL hodnoty reprezentuje Int32.MinValue)
 		/// </remarks>
-		/// <param name="r"><see cref="System.IO.BinaryReader"/> s bin·rnÌ reprezentacÌ hodnoty</param>
+		/// <param name="r"><see cref="System.IO.BinaryReader"/> s bin√°rn√≠ reprezentac√≠ hodnoty</param>
 		public void Read(System.IO.BinaryReader r)
 		{
-			// byte 1 - poËet hodnot
+			// byte 1 - poƒçet hodnot
 			Int32 length = r.ReadInt32();
 			if (length == 0)
 			{
@@ -334,17 +334,17 @@ namespace Havit.Data.SqlTypes
 		}
 
 		/// <summary>
-		/// Vytvo¯Ì bin·rnÌ reprezentace hodnoty.
+		/// Vytvo≈ô√≠ bin√°rn√≠ reprezentace hodnoty.
 		/// </summary>
 		/// <remarks>
-		/// Bin·rnÌ serializace je takov·to:
+		/// Bin√°rn√≠ serializace je takov√°to:
 		/// byte 1-4 ~ Int32 Length (velikost pole, pokud je 0, pak je hodnota NULL)
 		/// byte 5-(8000) ~ values (NULL hodnoty implementuje Int32.MinValue)
 		/// </remarks>
-		/// <param name="w"><see cref="System.IO.BinaryWriter"/> do kterÈho m· b˝t bin·rnÌ reprezentace zaps·na</param>
+		/// <param name="w"><see cref="System.IO.BinaryWriter"/> do kter√©ho m√° b√Ωt bin√°rn√≠ reprezentace zaps√°na</param>
 		public void Write(System.IO.BinaryWriter w)
 		{
-			// byte 1 - poËet hodnot
+			// byte 1 - poƒçet hodnot
 			if (this.IsNull)
 			{
 				w.Write(0);

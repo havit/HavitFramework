@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -7,15 +7,15 @@ using System.Web.UI.WebControls;
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
-	/// DataGrid rozšíøenı o další funkcionalitu:
+	/// DataGrid rozÅ¡Ã­Å™enÃ½ o dalÅ¡Ã­ funkcionalitu:
 	/// </summary>
 	public class DataGridExt : System.Web.UI.WebControls.DataGrid
 	{
 		#region Data members (podle abecedy)
 		/// <summary>
-		/// Povoluje/zakazuje automatické zpracování události <see cref="DataGrid.CancelCommand"/>.
+		/// Povoluje/zakazuje automatickÃ© zpracovÃ¡nÃ­ udÃ¡losti <see cref="DataGrid.CancelCommand"/>.
 		/// </summary>
-		/// <value><b>true</b>, pokud má bıt pouit <see cref="AutoCancelCommandHandler"/>, jinak <b>false</b>; Default je <b>true</b>.</value>
+		/// <value><b>true</b>, pokud mÃ¡ bÃ½t pouÅ¾it <see cref="AutoCancelCommandHandler"/>, jinak <b>false</b>; Default je <b>true</b>.</value>
 		public bool AutoHandleCancelCommand
 		{
 			get
@@ -34,9 +34,9 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// Povoluje/zakazuje automatické zpracování události <see cref="DataGrid.EditCommand"/>.
+		/// Povoluje/zakazuje automatickÃ© zpracovÃ¡nÃ­ udÃ¡losti <see cref="DataGrid.EditCommand"/>.
 		/// </summary>
-		/// <value><b>true</b>, pokud má bıt pouit <see cref="AutoEditCommandHandler"/>, jinak <b>false</b>; Default je <b>true</b>.</value>
+		/// <value><b>true</b>, pokud mÃ¡ bÃ½t pouÅ¾it <see cref="AutoEditCommandHandler"/>, jinak <b>false</b>; Default je <b>true</b>.</value>
 		public bool AutoHandleEditCommand
 		{
 			get
@@ -55,9 +55,9 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// Povoluje/zakazuje automatické zpracování události <see cref="DataGrid.PageIndexChanged"/>.
+		/// Povoluje/zakazuje automatickÃ© zpracovÃ¡nÃ­ udÃ¡losti <see cref="DataGrid.PageIndexChanged"/>.
 		/// </summary>
-		/// <value><b>true</b>, pokud má bıt pouit <see cref="AutoPageIndexChangedHandler"/>, jinak <b>false</b>; Default je <b>true</b>.</value>
+		/// <value><b>true</b>, pokud mÃ¡ bÃ½t pouÅ¾it <see cref="AutoPageIndexChangedHandler"/>, jinak <b>false</b>; Default je <b>true</b>.</value>
 		public bool AutoHandlePageIndexChanged
 		{
 			get
@@ -76,9 +76,9 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// Povoluje/zakazuje automatické zpracování události <see cref="DataGrid.SortCommand"/> ve vztahu k <see cref="SortExpression"/>.
+		/// Povoluje/zakazuje automatickÃ© zpracovÃ¡nÃ­ udÃ¡losti <see cref="DataGrid.SortCommand"/> ve vztahu k <see cref="SortExpression"/>.
 		/// </summary>
-		/// <value><b>true</b>, pokud má bıt pouit <see cref="AutoCancelCommandHandler"/>, jinak <b>false</b>; Default je <b>true</b>.</value>
+		/// <value><b>true</b>, pokud mÃ¡ bÃ½t pouÅ¾it <see cref="AutoCancelCommandHandler"/>, jinak <b>false</b>; Default je <b>true</b>.</value>
 		public bool AutoHandleSortCommand
 		{
 			get
@@ -98,8 +98,8 @@ namespace Havit.Web.UI.WebControls
 
 		/// <summary>
 		/// SortExpression do DataView nebo SQL.
-		/// Mìní se SortCommandem, ukládá do ViewState.
-		/// Pro obousmìné sortìní je potøeba povolit ViewState !!!
+		/// MÄ›nÃ­ se SortCommandem, uklÃ¡dÃ¡ do ViewState.
+		/// Pro obousmÄ›nÃ© sortÄ›nÃ­ je potÅ™eba povolit ViewState !!!
 		/// </summary>
 		/// <value>Default je <see cref="String.Empty"/>.</value>
 		public string SortExpression
@@ -120,7 +120,7 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// CssClass symbolu sortìní do Header sloupce.
+		/// CssClass symbolu sortÄ›nÃ­ do Header sloupce.
 		/// </summary>
 		/// <value>Default je <see cref="String.Empty"/>.</value>
 		public string SortHeaderImageCssClass
@@ -141,7 +141,7 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// URL obrázku symbolu vzestupného sortìní do Header sloupce.
+		/// URL obrÃ¡zku symbolu vzestupnÃ©ho sortÄ›nÃ­ do Header sloupce.
 		/// </summary>
 		/// <value>Default je <see cref="String.Empty"/>.</value>
 		public string SortHeaderImageUrlAsc
@@ -162,7 +162,7 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// URL obrázku symbolu sestupného sortìní do Header sloupce.
+		/// URL obrÃ¡zku symbolu sestupnÃ©ho sortÄ›nÃ­ do Header sloupce.
 		/// </summary>
 		/// <value>Default je <see cref="String.Empty"/>.</value>
 		public string SortHeaderImageUrlDesc
@@ -183,7 +183,7 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// Povoluje/zakazuje validaci na pøíkazu Update 
+		/// Povoluje/zakazuje validaci na pÅ™Ã­kazu Update 
 		/// </summary>
 		/// <value>Default je <see cref="String.Empty"/>.</value>
 		public bool UpdateCausesValidation
@@ -207,18 +207,18 @@ namespace Havit.Web.UI.WebControls
 
 		#region DataBindRequest (event)
 		/// <summary>
-		/// Vyskytne se, kdy DataGridExt potøebuje pøebindovat data.
+		/// Vyskytne se, kdyÅ¾ DataGridExt potÅ™ebuje pÅ™ebindovat data.
 		/// </summary>
 		/// <remarks>
-		/// Událost je vyvolávána smart-extenzemi v situaci, kdy je potøeba na DataGrid znovu nabindovat data.
-		/// Napø. po standardní obsluze událostí EditCommand, CancelCommand, PageIndexChanged, atp.
+		/// UdÃ¡lost je vyvolÃ¡vÃ¡na smart-extenzemi v situaci, kdy je potÅ™eba na DataGrid znovu nabindovat data.
+		/// NapÅ™. po standardnÃ­ obsluze udÃ¡lostÃ­ EditCommand, CancelCommand, PageIndexChanged, atp.
 		/// </remarks>
 		public event EventHandler DataBindRequest;
 
 		/// <summary>
-		/// Vyvolá událost <see cref="Havit.Web.UI.WebControls.DataGridExt.DataBindRequest"/>.
+		/// VyvolÃ¡ udÃ¡lost <see cref="Havit.Web.UI.WebControls.DataGridExt.DataBindRequest"/>.
 		/// </summary>
-		/// <param name="e">data události</param>
+		/// <param name="e">data udÃ¡losti</param>
 		protected virtual void OnDataBindRequest(EventArgs e)
 		{
 			if (this.DataBindRequest != null)
@@ -230,10 +230,10 @@ namespace Havit.Web.UI.WebControls
 
 		#region OnSortCommand
 		/// <summary>
-		/// Default implementace sortìní.
-		/// Pøi zapnutém ViewStatu zajišuje obousmìrné pøepínání SortExpression.
-		/// Pøi vypnutém ViewStatu zajišuje pouze bìné pøepínání SortExpression.
-		/// Lze zapnout/vypnout pomocí AutoHandleSortCommand.
+		/// Default implementace sortÄ›nÃ­.
+		/// PÅ™i zapnutÃ©m ViewStatu zajiÅ¡Å¥uje obousmÄ›rnÃ© pÅ™epÃ­nÃ¡nÃ­ SortExpression.
+		/// PÅ™i vypnutÃ©m ViewStatu zajiÅ¡Å¥uje pouze bÄ›Å¾nÃ© pÅ™epÃ­nÃ¡nÃ­ SortExpression.
+		/// Lze zapnout/vypnout pomocÃ­ AutoHandleSortCommand.
 		/// </summary>
 		/// <param name="e">DataGirdSortCommandEventArgs</param>
 		protected override void OnSortCommand(DataGridSortCommandEventArgs e)
@@ -246,8 +246,8 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// Automatickı handler SortCommandu.
-		/// Mùe bıt pøepsán v dceøinné implementaci.
+		/// AutomatickÃ½ handler SortCommandu.
+		/// MÅ¯Å¾e bÃ½t pÅ™epsÃ¡n v dceÅ™innÃ© implementaci.
 		/// </summary>
 		/// <param name="e">args</param>
 		protected virtual void AutoSortCommandHandler(DataGridSortCommandEventArgs e)
@@ -260,19 +260,19 @@ namespace Havit.Web.UI.WebControls
 				this.SortExpression = String.Empty;
 			}
 			else if ((previousSorts.Length != wantedSorts.Length)
-				|| (!this.EnableViewState)	// není-li pouitelnı ViewState, funguje jen jednosmìrnı sortìní
-				|| (!Page.EnableViewState)	// není zøejmé, co se stane, kdy DG bude jako child-control s vypnutım ViewState
+				|| (!this.EnableViewState)	// nenÃ­-li pouÅ¾itelnÃ½ ViewState, funguje jen jednosmÄ›rnÃ½ sortÄ›nÃ­
+				|| (!Page.EnableViewState)	// nenÃ­ zÅ™ejmÃ©, co se stane, kdyÅ¾ DG bude jako child-control s vypnutÃ½m ViewState
 				|| (this.SortExpression == null)
-				|| (this.SortExpression.Length == 0)) // rùznı poèet znamená rùzné sortìní
+				|| (this.SortExpression.Length == 0)) // rÅ¯znÃ½ poÄet znamenÃ¡ rÅ¯znÃ© sortÄ›nÃ­
 			{
-				// jednosmìrné sortìní
+				// jednosmÄ›rnÃ© sortÄ›nÃ­
 				this.SortExpression = e.SortExpression;
 			}
 			else
 			{
-				// obousmìrné sortìní
+				// obousmÄ›rnÃ© sortÄ›nÃ­
 				int length = wantedSorts.Length;
-				for (int i = 0; i < length; i++) // porovnání sloek
+				for (int i = 0; i < length; i++) // porovnÃ¡nÃ­ sloÅ¾ek
 				{
 					string wpart = wantedSorts[i].ToLower();
 					if (wpart.Trim().IndexOf(' ') != -1)
@@ -307,8 +307,8 @@ namespace Havit.Web.UI.WebControls
 
 		#region OnPageIndexChanged
 		/// <summary>
-		/// Zajišuje volání události PageIndexChanged.
-		/// Pøi povoleném AutoHandlePageIndexChanged nejprve zavolá AutoPageIndexChangedHandler.
+		/// ZajiÅ¡Å¥uje volÃ¡nÃ­ udÃ¡losti PageIndexChanged.
+		/// PÅ™i povolenÃ©m AutoHandlePageIndexChanged nejprve zavolÃ¡ AutoPageIndexChangedHandler.
 		/// </summary>
 		/// <param name="e">DataGridPageChangedEventArgs</param>
 		protected override void OnPageIndexChanged(DataGridPageChangedEventArgs e)
@@ -321,8 +321,8 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// Automatickı handler - nastavuje this.CurrentPageIndex = e.NewPageIndex a DataBind().
-		/// Lze pøepsat v odvozeném controlu.
+		/// AutomatickÃ½ handler - nastavuje this.CurrentPageIndex = e.NewPageIndex a DataBind().
+		/// Lze pÅ™epsat v odvozenÃ©m controlu.
 		/// </summary>
 		/// <param name="e">DataGridPageChangedEventArgs</param>
 		protected virtual void AutoPageIndexChangedHandler(DataGridPageChangedEventArgs e)
@@ -334,8 +334,8 @@ namespace Havit.Web.UI.WebControls
 
 		#region OnItemCreated
 		/// <summary>
-		/// Zajišuje volání události ItemCreated.
-		/// Implementace pøidává do Headeru symboly smìru sortìní.
+		/// ZajiÅ¡Å¥uje volÃ¡nÃ­ udÃ¡losti ItemCreated.
+		/// Implementace pÅ™idÃ¡vÃ¡ do Headeru symboly smÄ›ru sortÄ›nÃ­.
 		/// </summary>
 		/// <param name="e">args</param>
 		protected override void OnItemCreated(DataGridItemEventArgs e)
@@ -344,7 +344,7 @@ namespace Havit.Web.UI.WebControls
 
 			base.OnItemCreated (e);
 
-			// vypnutí CausesValidation u Update pøíkazu
+			// vypnutÃ­ CausesValidation u Update pÅ™Ã­kazu
 			if ((e.Item.ItemIndex == this.EditItemIndex) && (item.HasControls()))
 			{
 				for (int i = 0; i < item.Cells.Count; i++)
@@ -411,7 +411,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region OnEditCommand
 		/// <summary>
-		/// Zajistí volání obsluhy události EditCommand.
+		/// ZajistÃ­ volÃ¡nÃ­ obsluhy udÃ¡losti EditCommand.
 		/// Pokud je AutoHandleEditCommand true, provede default obsluhu AutoEditCommandHandler().
 		/// </summary>
 		/// <param name="e">DataGridCommandEventArgs</param>
@@ -425,7 +425,7 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// Default obsluha EditCommand události.
+		/// Default obsluha EditCommand udÃ¡losti.
 		/// </summary>
 		/// <param name="e">DataGridCommandEventArgs</param>
 		protected virtual void AutoEditCommandHandler(DataGridCommandEventArgs e)
@@ -437,7 +437,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region OnCancelCommand
 		/// <summary>
-		/// Zajistí volání obsluhy události CancelCommand.
+		/// ZajistÃ­ volÃ¡nÃ­ obsluhy udÃ¡losti CancelCommand.
 		/// Pokud je AutoHandleCancelCommand true, provede default obsluhu AutoCancelCommandHandler().
 		/// </summary>
 		/// <param name="e">DataGridCommandEventArgs</param>
@@ -451,7 +451,7 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// Default obsluha EditCommand události.
+		/// Default obsluha EditCommand udÃ¡losti.
 		/// </summary>
 		/// <param name="e">DataGridCommandEventArgs</param>
 		protected virtual void AutoCancelCommandHandler(DataGridCommandEventArgs e)

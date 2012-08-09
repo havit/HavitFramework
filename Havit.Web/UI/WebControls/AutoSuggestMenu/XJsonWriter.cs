@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -96,7 +96,7 @@ namespace Havit.Web.UI.WebControls
                 valueText = (string)value;
 
                 //Escape double-quotes for strings and enclose in quotes
-				// RH: Doplnìno escapování zpìtného lomítka 
+				// RH: DoplnÄ›no escapovÃ¡nÃ­ zpÄ›tnÃ©ho lomÃ­tka 
                 valueText = "\"" + valueText.Replace(@"\", @"\\").Replace("\"", "\\\"") + "\"";
             }
             else

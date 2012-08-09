@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
@@ -7,26 +7,26 @@ using System.Data.Common;
 namespace Havit.Data.SqlClient
 {
 	/// <summary>
-	/// Tøída SqlDataAccess obsahuje metody usnadòující práci se základní tøídou
+	/// TÅ™Ã­da SqlDataAccess obsahuje metody usnadÅˆujÃ­cÃ­ prÃ¡ci se zÃ¡kladnÃ­ tÅ™Ã­dou
 	/// <b>System.Data.</b><see cref="System.Data.SqlClient"/>.
 	/// </summary>
 	/// <remarks>
-	/// Inspirováno <a href="http://msdn.microsoft.com/vcsharp/downloads/components/default.aspx?pull=/library/en-us/dnbda/html/daab-rm.asp">
+	/// InspirovÃ¡no <a href="http://msdn.microsoft.com/vcsharp/downloads/components/default.aspx?pull=/library/en-us/dnbda/html/daab-rm.asp">
 	/// Microsoft Data Access Application Block verze 2.0</a>.
 	/// </remarks>
-	[Obsolete("Místo tøídy SqlDataAccess pouijte Havit.Data.DbConnector.")]
+	[Obsolete("MÃ­sto tÅ™Ã­dy SqlDataAccess pouÅ¾ijte Havit.Data.DbConnector.")]
 	public static class SqlDataAccess
 	{
 		#region ConnectionString, ConfigConnectionString
 		/// <summary>
-		/// Implicitní ConnectionString.
-		/// Pouije se vdy, není-li metodì jakkoliv explicitnì pøedán jinı.
-		/// Není-li nastaven klientskou aplikací, naète se z .config souboru.
+		/// ImplicitnÃ­ ConnectionString.
+		/// PouÅ¾ije se vÅ¾dy, nenÃ­-li metodÄ› jakkoliv explicitnÄ› pÅ™edÃ¡n jinÃ½.
+		/// NenÃ­-li nastaven klientskou aplikacÃ­, naÄte se z .config souboru.
 		/// </summary>
 		/// <remarks>
-		/// Pokus o naètení z .config souboru je proveden vdy, je-li právì nastaven
-		/// na <c>null</c> nebo <c>String.Empty</c>. Jeho nastavením na <c>null</c> lze tedy
-		/// poruèit, aby se ConnectionString naèetl z .config souboru.
+		/// Pokus o naÄtenÃ­ z .config souboru je proveden vÅ¾dy, je-li prÃ¡vÄ› nastaven
+		/// na <c>null</c> nebo <c>String.Empty</c>. Jeho nastavenÃ­m na <c>null</c> lze tedy
+		/// poruÄit, aby se ConnectionString naÄetl z .config souboru.
 		/// </remarks>
 		public static string ConnectionString
 		{
@@ -41,11 +41,11 @@ namespace Havit.Data.SqlClient
 		/// ConnectionString z .config souboru (web.config nebo applikace.exe.config).
 		/// </summary>
 		/// <remarks>
-		/// Pro .NET Framework 2.0 rozšíøeno o pouití hodnoty <b>DefaultConnectionString</b>
-		/// z konfiguraèní sekce &lt;connectionStrings&gt;.
+		/// Pro .NET Framework 2.0 rozÅ¡Ã­Å™eno o pouÅ¾itÃ­ hodnoty <b>DefaultConnectionString</b>
+		/// z konfiguraÄnÃ­ sekce &lt;connectionStrings&gt;.
 		/// </remarks>
 		/// <example>
-		/// Buï <b>DefaultConnectionString</b> z konfiguraèní sekce &lt;connectionStrings&gt;:
+		/// BuÄ <b>DefaultConnectionString</b> z konfiguraÄnÃ­ sekce &lt;connectionStrings&gt;:
 		/// <code>
 		/// &lt;configuration&gt;
 		///		&lt;connectionStrings&gt;
@@ -56,7 +56,7 @@ namespace Havit.Data.SqlClient
 		///		&lt;/connectionStrings&gt;
 		///	&lt;/configuration&gt;
 		/// </code>
-		/// a nebo po staru <b>ConnectionString</b> z konfiguraèní sekce &lt;appStrings&gt;:
+		/// a nebo po staru <b>ConnectionString</b> z konfiguraÄnÃ­ sekce &lt;appStrings&gt;:
 		/// <code>
 		/// &lt;configuration&gt;
 		///		&lt;appSettings&gt;
@@ -79,7 +79,7 @@ namespace Havit.Data.SqlClient
 					string result = ConfigurationManager.AppSettings["ConnectionString"];
 					if (result == null)
 					{
-						throw new ConfigurationErrorsException("V konfiguraèním souboru není nastaven vıchozí ConnectionString");
+						throw new ConfigurationErrorsException("V konfiguraÄnÃ­m souboru nenÃ­ nastaven vÃ½chozÃ­ ConnectionString");
 					}
 					return result;
 				}
@@ -89,12 +89,12 @@ namespace Havit.Data.SqlClient
 
 		#region GetConnection
 		/// <summary>
-		/// Vytvoøí novou instanci SqlConnection podle poadovaného connectionStringu
-		/// a pøípadnì ji rovnou otevøe.
+		/// VytvoÅ™Ã­ novou instanci SqlConnection podle poÅ¾adovanÃ©ho connectionStringu
+		/// a pÅ™Ã­padnÄ› ji rovnou otevÅ™e.
 		/// </summary>
 		/// <param name="connectionString">ConnectionString</param>
-		/// <param name="open"><c>true</c>, má-li se nová SqlConnection rovnou otevøít</param>
-		/// <returns>nová instance SqlConnection</returns>
+		/// <param name="open"><c>true</c>, mÃ¡-li se novÃ¡ SqlConnection rovnou otevÅ™Ã­t</param>
+		/// <returns>novÃ¡ instance SqlConnection</returns>
 		public static SqlConnection GetConnection(string connectionString, bool open)
 		{
 			SqlConnection conn = new SqlConnection(connectionString);
@@ -107,11 +107,11 @@ namespace Havit.Data.SqlClient
 
 
 		/// <summary>
-		/// Vytvoøí novou instanci SqlConnection podle z implicitního <see cref="ConnectionString"/>
-		/// a pøípadnì ji rovnou otevøe.
+		/// VytvoÅ™Ã­ novou instanci SqlConnection podle z implicitnÃ­ho <see cref="ConnectionString"/>
+		/// a pÅ™Ã­padnÄ› ji rovnou otevÅ™e.
 		/// </summary>
-		/// <param name="open"><c>true</c>, má-li se nová SqlConnection rovnou otevøít</param>
-		/// <returns>nová instance SqlConnection</returns>
+		/// <param name="open"><c>true</c>, mÃ¡-li se novÃ¡ SqlConnection rovnou otevÅ™Ã­t</param>
+		/// <returns>novÃ¡ instance SqlConnection</returns>
 		public static SqlConnection GetConnection(bool open)
 		{
 			return (SqlConnection)DbConnector.Default.GetConnection(open);
@@ -119,10 +119,10 @@ namespace Havit.Data.SqlClient
 
 
 		/// <summary>
-		/// Vytvoøí novou instanci SqlConnection podle implicitního <see cref="ConnectionString"/>.
-		/// SqlConnection není otevøena.
+		/// VytvoÅ™Ã­ novou instanci SqlConnection podle implicitnÃ­ho <see cref="ConnectionString"/>.
+		/// SqlConnection nenÃ­ otevÅ™ena.
 		/// </summary>
-		/// <returns>nová instance SqlConnection (není otevøena)</returns>
+		/// <returns>novÃ¡ instance SqlConnection (nenÃ­ otevÅ™ena)</returns>
 		public static SqlConnection GetConnection()
 		{
 			return (SqlConnection)DbConnector.Default.GetConnection();
@@ -132,16 +132,16 @@ namespace Havit.Data.SqlClient
 		#region ExecuteNonQuery
 
 		/// <summary>
-		/// Vykoná SqlCommand a vrátí poèet dotèenıch øádek.
-		/// Nejobecnìjší metoda, kterou pouívají ostatní overloady.
+		/// VykonÃ¡ SqlCommand a vrÃ¡tÃ­ poÄet dotÄenÃ½ch Å™Ã¡dek.
+		/// NejobecnÄ›jÅ¡Ã­ metoda, kterou pouÅ¾Ã­vajÃ­ ostatnÃ­ overloady.
 		/// </summary>
 		/// <remarks>
-		/// Není-li SqlConnection pøíkazu nastaveno, pouije imlicitní.
-		/// Není-li SqlConnection dosud otevøeno, otevøe ho, vykoná pøíkaz a zavøe.
-		/// Nemá-li poèet dotèenıch øádek smysl, vrací -1.
+		/// NenÃ­-li SqlConnection pÅ™Ã­kazu nastaveno, pouÅ¾ije imlicitnÃ­.
+		/// NenÃ­-li SqlConnection dosud otevÅ™eno, otevÅ™e ho, vykonÃ¡ pÅ™Ã­kaz a zavÅ™e.
+		/// NemÃ¡-li poÄet dotÄenÃ½ch Å™Ã¡dek smysl, vracÃ­ -1.
 		/// </remarks>
-		/// <param name="cmd">SqlCommand, kterı má bıt vykonán</param>
-		/// <returns>poèet dotèenıch øádek</returns>
+		/// <param name="cmd">SqlCommand, kterÃ½ mÃ¡ bÃ½t vykonÃ¡n</param>
+		/// <returns>poÄet dotÄenÃ½ch Å™Ã¡dek</returns>
 		public static int ExecuteNonQuery(SqlCommand cmd)
 		{
 			return DbConnector.Default.ExecuteNonQuery(cmd);
@@ -149,11 +149,11 @@ namespace Havit.Data.SqlClient
 
 
 		/// <summary>
-		/// Vykoná zadanı pøíkaz urèeného typu bez parametrù. Vrátí poèet dotèenıch øádek.
+		/// VykonÃ¡ zadanÃ½ pÅ™Ã­kaz urÄenÃ©ho typu bez parametrÅ¯. VrÃ¡tÃ­ poÄet dotÄenÃ½ch Å™Ã¡dek.
 		/// </summary>
-		/// <param name="cmdText">SQL pøíkaz</param>
-		/// <param name="cmdType">CommandType pøíkazu</param>
-		/// <returns>poèet dotèenıch øádek</returns>
+		/// <param name="cmdText">SQL pÅ™Ã­kaz</param>
+		/// <param name="cmdType">CommandType pÅ™Ã­kazu</param>
+		/// <returns>poÄet dotÄenÃ½ch Å™Ã¡dek</returns>
 		public static int ExecuteNonQuery(string cmdText, CommandType cmdType)
 		{
 			return DbConnector.Default.ExecuteNonQuery(cmdText, cmdType);
@@ -161,11 +161,11 @@ namespace Havit.Data.SqlClient
 
 
 		/// <summary>
-		/// Vykoná zadanı pøíkaz bez parametrù. Vrátí poèet dotèenıch øádek.
-		/// CommandType pøíkazu je nastaven z property DefaultCommandType.
+		/// VykonÃ¡ zadanÃ½ pÅ™Ã­kaz bez parametrÅ¯. VrÃ¡tÃ­ poÄet dotÄenÃ½ch Å™Ã¡dek.
+		/// CommandType pÅ™Ã­kazu je nastaven z property DefaultCommandType.
 		/// </summary>
-		/// <param name="cmdText">SQL pøíkaz</param>
-		/// <returns>poèet dotèenıch øádek</returns>
+		/// <param name="cmdText">SQL pÅ™Ã­kaz</param>
+		/// <returns>poÄet dotÄenÃ½ch Å™Ã¡dek</returns>
 		public static int ExecuteNonQuery(string cmdText)
 		{
 			return DbConnector.Default.ExecuteNonQuery(cmdText);
@@ -176,13 +176,13 @@ namespace Havit.Data.SqlClient
 		#region ExecuteDataSet
 
 		/// <summary>
-		/// Vykoná SqlCommand a vrátí resultset ve formì DataSetu.
+		/// VykonÃ¡ SqlCommand a vrÃ¡tÃ­ resultset ve formÄ› DataSetu.
 		/// </summary>
 		/// <remarks>
-		/// Je-li cmd.Connection otevøeno, nechá ho otevøené. Není-li, otevøe si ho a zase zavøe.
+		/// Je-li cmd.Connection otevÅ™eno, nechÃ¡ ho otevÅ™enÃ©. NenÃ­-li, otevÅ™e si ho a zase zavÅ™e.
 		/// </remarks>
-		/// <param name="cmd">SqlCommand k vykonání</param>
-		/// <returns>resultset pøíkazu ve formì DataSetu</returns>
+		/// <param name="cmd">SqlCommand k vykonÃ¡nÃ­</param>
+		/// <returns>resultset pÅ™Ã­kazu ve formÄ› DataSetu</returns>
 		public static DataSet ExecuteDataSet(SqlCommand cmd)
 		{
 			return DbConnector.Default.ExecuteDataSet(cmd);
@@ -190,12 +190,12 @@ namespace Havit.Data.SqlClient
 
 
 		/// <summary>
-		/// Vykoná pøíkaz cmdText daného cmdType proti implicitní connection
-		/// a vrátí resultset ve formì DataSetu.
+		/// VykonÃ¡ pÅ™Ã­kaz cmdText danÃ©ho cmdType proti implicitnÃ­ connection
+		/// a vrÃ¡tÃ­ resultset ve formÄ› DataSetu.
 		/// </summary>
-		/// <param name="cmdText">SQL pøíkaz</param>
-		/// <param name="cmdType">typ pøíkazu</param>
-		/// <returns>resultset pøíkazu ve formì DataSetu</returns>
+		/// <param name="cmdText">SQL pÅ™Ã­kaz</param>
+		/// <param name="cmdType">typ pÅ™Ã­kazu</param>
+		/// <returns>resultset pÅ™Ã­kazu ve formÄ› DataSetu</returns>
 		public static DataSet ExecuteDataSet(string cmdText, CommandType cmdType)
 		{
 			return DbConnector.Default.ExecuteDataSet(cmdText, cmdType);
@@ -203,11 +203,11 @@ namespace Havit.Data.SqlClient
 
 
 		/// <summary>
-		/// Vykoná SQL pøíkaz cmdText s implicitního typu (DefaultCommandType)
-		/// proti implicitní connection (GetConnection).
+		/// VykonÃ¡ SQL pÅ™Ã­kaz cmdText s implicitnÃ­ho typu (DefaultCommandType)
+		/// proti implicitnÃ­ connection (GetConnection).
 		/// </summary>
-		/// <param name="cmdText">textovı SQL pøíkaz</param>
-		/// <returns>resultset ve formì DataSetu</returns>
+		/// <param name="cmdText">textovÃ½ SQL pÅ™Ã­kaz</param>
+		/// <returns>resultset ve formÄ› DataSetu</returns>
 		public static DataSet ExecuteDataSet(string cmdText)
 		{
 			return DbConnector.Default.ExecuteDataSet(cmdText);			
@@ -217,13 +217,13 @@ namespace Havit.Data.SqlClient
 
 		#region ExecuteDataTable
 		/// <summary>
-		/// Vykoná SqlCommand a vrátí první resultset ve formì <see cref="System.Data.DataTable"/>.
+		/// VykonÃ¡ SqlCommand a vrÃ¡tÃ­ prvnÃ­ resultset ve formÄ› <see cref="System.Data.DataTable"/>.
 		/// </summary>
 		/// <remarks>
-		/// Je-li cmd.Connection otevøeno, nechá ho otevøené. Není-li, otevøe si ho a zase zavøe.
+		/// Je-li cmd.Connection otevÅ™eno, nechÃ¡ ho otevÅ™enÃ©. NenÃ­-li, otevÅ™e si ho a zase zavÅ™e.
 		/// </remarks>
-		/// <param name="cmd">SqlCommand k vykonání</param>
-		/// <returns>první resultset pøíkazu ve formì <see cref="System.Data.DataTable"/></returns>
+		/// <param name="cmd">SqlCommand k vykonÃ¡nÃ­</param>
+		/// <returns>prvnÃ­ resultset pÅ™Ã­kazu ve formÄ› <see cref="System.Data.DataTable"/></returns>
 		public static DataTable ExecuteDataTable(SqlCommand cmd)
 		{
 			return DbConnector.Default.ExecuteDataTable(cmd);
@@ -231,12 +231,12 @@ namespace Havit.Data.SqlClient
 
 
 		/// <summary>
-		/// Vykoná pøíkaz cmdText daného cmdType proti implicitní connection
-		/// a vrátí první resultset ve formì <see cref="System.Data.DataTable"/>.
+		/// VykonÃ¡ pÅ™Ã­kaz cmdText danÃ©ho cmdType proti implicitnÃ­ connection
+		/// a vrÃ¡tÃ­ prvnÃ­ resultset ve formÄ› <see cref="System.Data.DataTable"/>.
 		/// </summary>
-		/// <param name="cmdText">SQL pøíkaz</param>
-		/// <param name="cmdType">typ pøíkazu</param>
-		/// <returns>první resultset pøíkazu ve formì <see cref="System.Data.DataTable"/></returns>
+		/// <param name="cmdText">SQL pÅ™Ã­kaz</param>
+		/// <param name="cmdType">typ pÅ™Ã­kazu</param>
+		/// <returns>prvnÃ­ resultset pÅ™Ã­kazu ve formÄ› <see cref="System.Data.DataTable"/></returns>
 		public static DataTable ExecuteDataTable(string cmdText, CommandType cmdType)
 		{
 			return DbConnector.Default.ExecuteDataTable(cmdText, cmdType);
@@ -244,12 +244,12 @@ namespace Havit.Data.SqlClient
 
 
 		/// <summary>
-		/// Vykoná SQL pøíkaz cmdText s implicitního typu (DefaultCommandType)
-		/// proti implicitní connection (GetConnection) a vrátí první resultset
-		/// ve formì <see cref="System.Data.DataTable"/>.
+		/// VykonÃ¡ SQL pÅ™Ã­kaz cmdText s implicitnÃ­ho typu (DefaultCommandType)
+		/// proti implicitnÃ­ connection (GetConnection) a vrÃ¡tÃ­ prvnÃ­ resultset
+		/// ve formÄ› <see cref="System.Data.DataTable"/>.
 		/// </summary>
-		/// <param name="cmdText">textovı SQL pøíkaz</param>
-		/// <returns>první resultset ve formì <see cref="System.Data.DataTable"/></returns>
+		/// <param name="cmdText">textovÃ½ SQL pÅ™Ã­kaz</param>
+		/// <returns>prvnÃ­ resultset ve formÄ› <see cref="System.Data.DataTable"/></returns>
 		public static DataTable ExecuteDataTable(string cmdText)
 		{
 			return DbConnector.Default.ExecuteDataTable(cmdText);
@@ -259,11 +259,11 @@ namespace Havit.Data.SqlClient
 		#region ExecuteReader
 
 		/// <summary>
-		/// Donastaví a vykoná SqlCommand pomocí CommandBehavior a vrátí vıslednı resultset
-		/// ve formì SqlDataReaderu.
+		/// DonastavÃ­ a vykonÃ¡ SqlCommand pomocÃ­ CommandBehavior a vrÃ¡tÃ­ vÃ½slednÃ½ resultset
+		/// ve formÄ› SqlDataReaderu.
 		/// </summary>
-		/// <param name="cmd">pøíkaz (nemusí mít nastaveno Connection)</param>
-		/// <param name="behavior">poadované "chování"</param>
+		/// <param name="cmd">pÅ™Ã­kaz (nemusÃ­ mÃ­t nastaveno Connection)</param>
+		/// <param name="behavior">poÅ¾adovanÃ© "chovÃ¡nÃ­"</param>
 		/// <returns>Resultset jako SqlDataReader</returns>
 		public static SqlDataReader ExecuteReader(SqlCommand cmd, CommandBehavior behavior)
 		{
@@ -272,9 +272,9 @@ namespace Havit.Data.SqlClient
 
 
 		/// <summary>
-		/// Donastaví a vykoná SqlCommand a vrátí vıslednı resultset ve formì SqlDataReaderu.
+		/// DonastavÃ­ a vykonÃ¡ SqlCommand a vrÃ¡tÃ­ vÃ½slednÃ½ resultset ve formÄ› SqlDataReaderu.
 		/// </summary>
-		/// <param name="cmd">pøíkaz (nemusí mít nastaveno Connection)</param>
+		/// <param name="cmd">pÅ™Ã­kaz (nemusÃ­ mÃ­t nastaveno Connection)</param>
 		/// <returns></returns>
 		public static SqlDataReader ExecuteReader(SqlCommand cmd)
 		{
@@ -283,12 +283,12 @@ namespace Havit.Data.SqlClient
 
 
 		/// <summary>
-		/// Vytvoøí, nastaví a vykoná SqlCommand dle zadanıch parametrù a vrátí
-		/// vıslednı resultset ve formì SqlDataReaderu.
+		/// VytvoÅ™Ã­, nastavÃ­ a vykonÃ¡ SqlCommand dle zadanÃ½ch parametrÅ¯ a vrÃ¡tÃ­
+		/// vÃ½slednÃ½ resultset ve formÄ› SqlDataReaderu.
 		/// </summary>
-		/// <param name="cmdText">text SQL pøíkazu</param>
-		/// <param name="cmdType">typ pøíkazu</param>
-		/// <returns>resultset ve formì SqlDataReaderu</returns>
+		/// <param name="cmdText">text SQL pÅ™Ã­kazu</param>
+		/// <param name="cmdType">typ pÅ™Ã­kazu</param>
+		/// <returns>resultset ve formÄ› SqlDataReaderu</returns>
 		public static SqlDataReader ExecuteReader(string cmdText, CommandType cmdType)
 		{
 			return (SqlDataReader)DbConnector.Default.ExecuteReader(cmdText, cmdType);
@@ -296,12 +296,12 @@ namespace Havit.Data.SqlClient
 
 
 		/// <summary>
-		/// Vytvoøí, nastaví a vykoná SqlCommand dle zadaného SQL pøíkazu
-		/// a vrátí vıslednı resultset ve formì SqlDataReaderu.
-		/// Jako typ pøíkazu se pouije DefaultCommandType.
+		/// VytvoÅ™Ã­, nastavÃ­ a vykonÃ¡ SqlCommand dle zadanÃ©ho SQL pÅ™Ã­kazu
+		/// a vrÃ¡tÃ­ vÃ½slednÃ½ resultset ve formÄ› SqlDataReaderu.
+		/// Jako typ pÅ™Ã­kazu se pouÅ¾ije DefaultCommandType.
 		/// </summary>
-		/// <param name="cmdText">text SQL pøíkazu</param>
-		/// <returns>resultset ve formì SqlDataReaderu</returns>
+		/// <param name="cmdText">text SQL pÅ™Ã­kazu</param>
+		/// <returns>resultset ve formÄ› SqlDataReaderu</returns>
 		public static SqlDataReader ExecuteReader(string cmdText)
 		{
 			return (SqlDataReader)DbConnector.Default.ExecuteReader(cmdText);
@@ -311,23 +311,23 @@ namespace Havit.Data.SqlClient
 
 		#region ExecuteDataRecord
 		/// <summary>
-		/// Donastaví a vykoná SqlCommand pomocí CommandBehavior a vrátí první øádek prvního resultsetu
-		/// ve formì <see cref="Havit.Data.DataRecord"/>. Pokud neexistuje, vrátí null.
+		/// DonastavÃ­ a vykonÃ¡ SqlCommand pomocÃ­ CommandBehavior a vrÃ¡tÃ­ prvnÃ­ Å™Ã¡dek prvnÃ­ho resultsetu
+		/// ve formÄ› <see cref="Havit.Data.DataRecord"/>. Pokud neexistuje, vrÃ¡tÃ­ null.
 		/// </summary>
-		/// <param name="cmd">pøíkaz (nemusí mít nastaveno Connection)</param>
-		/// <param name="behavior">poadované "chování"</param>
-		/// <returns>první øádek prvního resultsetu ve formì <see cref="Havit.Data.DataRecord"/></returns>
+		/// <param name="cmd">pÅ™Ã­kaz (nemusÃ­ mÃ­t nastaveno Connection)</param>
+		/// <param name="behavior">poÅ¾adovanÃ© "chovÃ¡nÃ­"</param>
+		/// <returns>prvnÃ­ Å™Ã¡dek prvnÃ­ho resultsetu ve formÄ› <see cref="Havit.Data.DataRecord"/></returns>
 		public static DataRecord ExecuteDataRecord(SqlCommand cmd, CommandBehavior behavior)
 		{
 			return DbConnector.Default.ExecuteDataRecord(cmd, behavior);
 		}
 
 		/// <summary>
-		/// Donastaví a vykoná SqlCommand a vrátí první øádek prvního resultsetu
-		/// ve formì <see cref="Havit.Data.DataRecord"/>. Pokud neexistuje, vrátí null.
+		/// DonastavÃ­ a vykonÃ¡ SqlCommand a vrÃ¡tÃ­ prvnÃ­ Å™Ã¡dek prvnÃ­ho resultsetu
+		/// ve formÄ› <see cref="Havit.Data.DataRecord"/>. Pokud neexistuje, vrÃ¡tÃ­ null.
 		/// </summary>
-		/// <param name="cmd">pøíkaz (nemusí mít nastaveno Connection)</param>
-		/// <returns>první øádek prvního resultsetu ve formì <see cref="Havit.Data.DataRecord"/></returns>
+		/// <param name="cmd">pÅ™Ã­kaz (nemusÃ­ mÃ­t nastaveno Connection)</param>
+		/// <returns>prvnÃ­ Å™Ã¡dek prvnÃ­ho resultsetu ve formÄ› <see cref="Havit.Data.DataRecord"/></returns>
 		public static DataRecord ExecuteDataRecord(SqlCommand cmd)
 		{
 			return DbConnector.Default.ExecuteDataRecord(cmd);
@@ -335,12 +335,12 @@ namespace Havit.Data.SqlClient
 
 
 		/// <summary>
-		/// Vytvoøí SqlCommand dle zadanıch parametrù, donasataví ho a vrátí první øádek prvního resultsetu
-		/// ve formì <see cref="Havit.Data.DataRecord"/>. Pokud neexistuje, vrátí null.
+		/// VytvoÅ™Ã­ SqlCommand dle zadanÃ½ch parametrÅ¯, donasatavÃ­ ho a vrÃ¡tÃ­ prvnÃ­ Å™Ã¡dek prvnÃ­ho resultsetu
+		/// ve formÄ› <see cref="Havit.Data.DataRecord"/>. Pokud neexistuje, vrÃ¡tÃ­ null.
 		/// </summary>
-		/// <param name="cmdText">text SQL pøíkazu</param>
-		/// <param name="cmdType">typ SQL pøíkazu</param>
-		/// <returns>první øádek prvního resultsetu ve formì <see cref="Havit.Data.DataRecord"/></returns>
+		/// <param name="cmdText">text SQL pÅ™Ã­kazu</param>
+		/// <param name="cmdType">typ SQL pÅ™Ã­kazu</param>
+		/// <returns>prvnÃ­ Å™Ã¡dek prvnÃ­ho resultsetu ve formÄ› <see cref="Havit.Data.DataRecord"/></returns>
 		public static DataRecord ExecuteDataRecord(string cmdText, CommandType cmdType)
 		{
 			return DbConnector.Default.ExecuteDataRecord(cmdText, cmdType);
@@ -348,12 +348,12 @@ namespace Havit.Data.SqlClient
 
 
 		/// <summary>
-		/// Vytvoøí, nastaví a vykoná SqlCommand dle zadaného SQL pøíkazu
-		/// a vrátí vıslednı resultset ve formì <see cref="Havit.Data.DataRecord"/>.
-		/// Jako typ pøíkazu se pouije <see cref="DefaultCommandType"/>.
+		/// VytvoÅ™Ã­, nastavÃ­ a vykonÃ¡ SqlCommand dle zadanÃ©ho SQL pÅ™Ã­kazu
+		/// a vrÃ¡tÃ­ vÃ½slednÃ½ resultset ve formÄ› <see cref="Havit.Data.DataRecord"/>.
+		/// Jako typ pÅ™Ã­kazu se pouÅ¾ije <see cref="DefaultCommandType"/>.
 		/// </summary>
-		/// <param name="cmdText">text SQL pøíkazu</param>
-		/// <returns>první øádek prvního resultsetu ve formì <see cref="Havit.Data.DataRecord"/></returns>
+		/// <param name="cmdText">text SQL pÅ™Ã­kazu</param>
+		/// <returns>prvnÃ­ Å™Ã¡dek prvnÃ­ho resultsetu ve formÄ› <see cref="Havit.Data.DataRecord"/></returns>
 		public static DataRecord ExecuteDataRecord(string cmdText)
 		{
 			return DbConnector.Default.ExecuteDataRecord(cmdText);
@@ -363,13 +363,13 @@ namespace Havit.Data.SqlClient
 		#region ExecuteScalar
 
 		/// <summary>
-		/// Donastaví a vykoná SqlCommand a vrátí první sloupec prvního øádku jeho resultsetu.
+		/// DonastavÃ­ a vykonÃ¡ SqlCommand a vrÃ¡tÃ­ prvnÃ­ sloupec prvnÃ­ho Å™Ã¡dku jeho resultsetu.
 		/// </summary>
 		/// <example>
 		/// int result = (int)ExecuteScalar(cmd);
 		/// </example>
-		/// <param name="cmd">pøíkaz (nemusí mít nastaveno Connection)</param>
-		/// <returns>první sloupec prvního øádku resultsetu</returns>
+		/// <param name="cmd">pÅ™Ã­kaz (nemusÃ­ mÃ­t nastaveno Connection)</param>
+		/// <returns>prvnÃ­ sloupec prvnÃ­ho Å™Ã¡dku resultsetu</returns>
 		public static object ExecuteScalar(SqlCommand cmd)
 		{
 			return DbConnector.Default.ExecuteScalar(cmd);
@@ -377,12 +377,12 @@ namespace Havit.Data.SqlClient
 
 
 		/// <summary>
-		/// Vytvoøí ze zadanıch parametrù SqlCommand, vykoná ho a vrátí první sloupec
-		/// prvního øádku jeho resultsetu.
+		/// VytvoÅ™Ã­ ze zadanÃ½ch parametrÅ¯ SqlCommand, vykonÃ¡ ho a vrÃ¡tÃ­ prvnÃ­ sloupec
+		/// prvnÃ­ho Å™Ã¡dku jeho resultsetu.
 		/// </summary>
-		/// <param name="cmdText">text SQL pøíkazu</param>
-		/// <param name="cmdType">typ pøíkazu</param>
-		/// <returns>první sloupec prvního øádku resultsetu</returns>
+		/// <param name="cmdText">text SQL pÅ™Ã­kazu</param>
+		/// <param name="cmdType">typ pÅ™Ã­kazu</param>
+		/// <returns>prvnÃ­ sloupec prvnÃ­ho Å™Ã¡dku resultsetu</returns>
 		public static object ExecuteScalar(string cmdText, CommandType cmdType)
 		{
 			return DbConnector.Default.ExecuteScalar(cmdText, cmdType);
@@ -390,11 +390,11 @@ namespace Havit.Data.SqlClient
 
 
 		/// <summary>
-		/// Vytvoøí SqlCommand, nastaví mu DefaultCommandType, vykoná ho a vrátí
-		/// první sloupec prvního øádku jeho resultsetu.
+		/// VytvoÅ™Ã­ SqlCommand, nastavÃ­ mu DefaultCommandType, vykonÃ¡ ho a vrÃ¡tÃ­
+		/// prvnÃ­ sloupec prvnÃ­ho Å™Ã¡dku jeho resultsetu.
 		/// </summary>
-		/// <param name="cmdText">text SQL pøíkazu</param>
-		/// <returns>první sloupec prvního øádku resultsetu</returns>
+		/// <param name="cmdText">text SQL pÅ™Ã­kazu</param>
+		/// <returns>prvnÃ­ sloupec prvnÃ­ho Å™Ã¡dku resultsetu</returns>
 		public static object ExecuteScalar(string cmdText)
 		{
 			return DbConnector.Default.ExecuteScalar(cmdText);
@@ -404,11 +404,11 @@ namespace Havit.Data.SqlClient
 
 		#region ExecuteTransaction
 		/// <summary>
-		/// Vykoná poadované kroky v rámci transakce.
-		/// Pokud je zadaná transakce <c>null</c>, je spuštìna a commitována nová.
-		/// Pokud zadaná transakce není <c>null</c>, jsou zadané kroky pouze vykonány.
+		/// VykonÃ¡ poÅ¾adovanÃ© kroky v rÃ¡mci transakce.
+		/// Pokud je zadanÃ¡ transakce <c>null</c>, je spuÅ¡tÄ›na a commitovÃ¡na novÃ¡.
+		/// Pokud zadanÃ¡ transakce nenÃ­ <c>null</c>, jsou zadanÃ© kroky pouze vykonÃ¡ny.
 		/// </summary>
-		/// <param name="transactionWork"><see cref="SqlTransactionDelegate"/> reprezentující s úkony, které mají bıt souèástí transakce</param>
+		/// <param name="transactionWork"><see cref="SqlTransactionDelegate"/> reprezentujÃ­cÃ­ s Ãºkony, kterÃ© majÃ­ bÃ½t souÄÃ¡stÃ­ transakce</param>
 		/// <param name="outerTransaction">transakce</param>
 		public static void ExecuteTransaction(SqlTransactionDelegate transactionWork, SqlTransaction outerTransaction)
 		{
@@ -419,10 +419,10 @@ namespace Havit.Data.SqlClient
 		}
 
 		/// <summary>
-		/// Vykoná poadované kroky v rámci transakce.
-		/// Je spuštìna a commitována nová samostatná transakce.
+		/// VykonÃ¡ poÅ¾adovanÃ© kroky v rÃ¡mci transakce.
+		/// Je spuÅ¡tÄ›na a commitovÃ¡na novÃ¡ samostatnÃ¡ transakce.
 		/// </summary>
-		/// <param name="transactionWork"><see cref="SqlTransactionDelegate"/> reprezentující s úkony, které mají bıt souèástí transakce</param>
+		/// <param name="transactionWork"><see cref="SqlTransactionDelegate"/> reprezentujÃ­cÃ­ s Ãºkony, kterÃ© majÃ­ bÃ½t souÄÃ¡stÃ­ transakce</param>
 		public static void ExecuteTransaction(SqlTransactionDelegate transactionWork)
 		{
 			DbConnector.Default.ExecuteTransaction(delegate(DbTransaction innerTransaction)

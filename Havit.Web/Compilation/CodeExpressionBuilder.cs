@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Text;
@@ -8,10 +8,10 @@ using System.Web.UI;
 namespace Havit.Web.Compilation
 {
 	/// <summary>
-	/// Prostý expression-builder pro výrazy v podobì &lt;%$ Expression: MujVyraz %&gt;.
+	/// ProstÃ½ expression-builder pro vÃ½razy v podobÄ› &lt;%$ Expression: MujVyraz %&gt;.
 	/// </summary>
 	/// <example>
-	/// Do webové aplikace zavedeme pomocí web.config:<br/>
+	/// Do webovÃ© aplikace zavedeme pomocÃ­ web.config:<br/>
 	/// <code>
 	/// &lt;compilation&gt;<br/>
 	///		&lt;expressionBuilders&gt;<br/>
@@ -19,7 +19,7 @@ namespace Havit.Web.Compilation
 	///		&lt;/expressionBuilders&gt;<br/>
 	///	&lt;/compilation&gt;<br/>
 	/// </code>
-	/// Ve stránce používáme již jako klasický expression:<br/>
+	/// Ve strÃ¡nce pouÅ¾Ã­vÃ¡me jiÅ¾ jako klasickÃ½ expression:<br/>
 	/// <code>
 	/// &lt;asp:TextBox ID="NoveHesloTB" TextMode="Password" MaxLength="&lt;%$ Expression: Uzivatel.Properties.Password.MaximumLength %&gt;" runat="server" /&gt;<br/>
 	/// </code>
@@ -28,12 +28,12 @@ namespace Havit.Web.Compilation
 	public class CodeExpressionBuilder : ExpressionBuilder
 	{
 		/// <summary>
-		/// Vrací kód, který se použije namísto vyhodnocovaného výrazu pøi kompilaci.
+		/// VracÃ­ kÃ³d, kterÃ½ se pouÅ¾ije namÃ­sto vyhodnocovanÃ©ho vÃ½razu pÅ™i kompilaci.
 		/// </summary>
-		/// <param name="entry">objekt reprezentující informace o property, na kterou se výraz navazuje</param>
-		/// <param name="parsedData">objekt obsahující parsovaná data vrácená metodou ParseExpression</param>
+		/// <param name="entry">objekt reprezentujÃ­cÃ­ informace o property, na kterou se vÃ½raz navazuje</param>
+		/// <param name="parsedData">objekt obsahujÃ­cÃ­ parsovanÃ¡ data vrÃ¡cenÃ¡ metodou ParseExpression</param>
 		/// <param name="context">kontext</param>
-		/// <returns>CodeExpression pro pøiøezení k property</returns>
+		/// <returns>CodeExpression pro pÅ™iÅ™ezenÃ­ k property</returns>
 		public override CodeExpression GetCodeExpression(BoundPropertyEntry entry, object parsedData, ExpressionBuilderContext context)
 		{
 			return new CodeSnippetExpression(entry.Expression);

@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Collections.ObjectModel;
@@ -6,7 +6,7 @@ using System.Collections.ObjectModel;
 namespace Havit.Collections
 {
 	/// <summary>
-	/// Kolekce objektù tøídy SortItem.
+	/// Kolekce objektÅ¯ tÅ™Ã­dy SortItem.
 	/// </summary>
 	[Serializable]
 	public class SortItemCollection : Collection<SortItem>

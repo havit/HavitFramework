@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
@@ -6,8 +6,8 @@ using System.Diagnostics;
 namespace Havit
 {
 	/// <summary>
-	/// Thread-specific Scope obalující dosah platnosti urèitého objektu (transakce, identity mapy, atp.),
-	/// kterı je následnì pøístupnı pøes property <see cref="Current"/>.
+	/// Thread-specific Scope obalujÃ­cÃ­ dosah platnosti urÄitÃ©ho objektu (transakce, identity mapy, atp.),
+	/// kterÃ½ je nÃ¡slednÄ› pÅ™Ã­stupnÃ½ pÅ™es property <see cref="Current"/>.
 	/// </summary>
 	/// <example>
 	/// <code>
@@ -25,20 +25,20 @@ namespace Havit
 	/// </code>
 	/// </example>
 	/// <remarks>
-	/// Implementace vycházející z MSDN Magazine èlánku <a href="http://msdn.microsoft.com/msdnmag/issues/06/09/netmatters/default.aspx">Stephen Toub: Scope&lt;T&gt; and More</a>.
+	/// Implementace vychÃ¡zejÃ­cÃ­ z MSDN Magazine ÄlÃ¡nku <a href="http://msdn.microsoft.com/msdnmag/issues/06/09/netmatters/default.aspx">Stephen Toub: Scope&lt;T&gt; and More</a>.
 	/// </remarks>
-	/// <typeparam name="T">typ objektu, jeho scope øešíme</typeparam>
+	/// <typeparam name="T">typ objektu, jehoÅ¾ scope Å™eÅ¡Ã­me</typeparam>
 	public class Scope<T> : IDisposable
 		where T : class
 	{
 		#region private fields
 		/// <summary>
-		/// Indikuje, zda-li ji probìhl Dispose tøídy.
+		/// Indikuje, zda-li jiÅ¾ probÄ›hl Dispose tÅ™Ã­dy.
 		/// </summary>
 		private bool disposed;
 		
 		/// <summary>
-		/// Indikuje, zda-li je instance scopem vlastnìná, tj. máme-li ji na konci scope disposovat.
+		/// Indikuje, zda-li je instance scopem vlastnÄ›nÃ¡, tj. mÃ¡me-li ji na konci scope disposovat.
 		/// </summary>
 		private bool ownsInstance;
 		
@@ -48,23 +48,23 @@ namespace Havit
 		private T instance;
 		
 		/// <summary>
-		/// Nadøazenı scope v linked-listu nestovanıch scope.
+		/// NadÅ™azenÃ½ scope v linked-listu nestovanÃ½ch scope.
 		/// </summary>
 		private Scope<T> parent;
 		#endregion
 
 		#region Constructors
 		/// <summary>
-		/// Vytvoøí instanci tøídy <see cref="Scope{T}"/> kolem instance. Instance bude pøi disposingu Scope té disposována.
+		/// VytvoÅ™Ã­ instanci tÅ™Ã­dy <see cref="Scope{T}"/> kolem instance. Instance bude pÅ™i disposingu Scope tÃ©Å¾ disposovÃ¡na.
 		/// </summary>
 		/// <param name="instance">instance, kterou scope obaluje</param>
 		public Scope(T instance) : this(instance, true) { }
 
 		/// <summary>
-		/// Vytvoøí instanci tøídy <see cref="Scope{T}"/> kolem instance.
+		/// VytvoÅ™Ã­ instanci tÅ™Ã­dy <see cref="Scope{T}"/> kolem instance.
 		/// </summary>
 		/// <param name="instance">instance, kterou scope obaluje</param>
-		/// <param name="ownsInstance">indikuje, zda-li instanci vlastníme, tedy zda-li ji máme s koncem scopu disposovat</param>
+		/// <param name="ownsInstance">indikuje, zda-li instanci vlastnÃ­me, tedy zda-li ji mÃ¡me s koncem scopu disposovat</param>
 		public Scope(T instance, bool ownsInstance)
 		{
 			if (instance == null)
@@ -74,7 +74,7 @@ namespace Havit
 			this.instance = instance;
 			this.ownsInstance = ownsInstance;
 
-			// linked-list pro nestování scopes
+			// linked-list pro nestovÃ¡nÃ­ scopes
 			this.parent = head;
 			head = this;
 		}
@@ -82,10 +82,10 @@ namespace Havit
 
 		#region Dispose (IDisposable)
 		/// <summary>
-		/// Ukonèí scope a disposuje vlastnìné instance.
+		/// UkonÄÃ­ scope a disposuje vlastnÄ›nÃ© instance.
 		/// </summary>
 		/// <remarks>
-		/// ResourceWrapper pattern nepotøebujeme, protoe nemáme ádné unmanaged resources, které bychom museli jistit destructorem.
+		/// ResourceWrapper pattern nepotÅ™ebujeme, protoÅ¾e nemÃ¡me Å¾Ã¡dnÃ© unmanaged resources, kterÃ© bychom museli jistit destructorem.
 		/// </remarks>
 		public virtual void Dispose()
 		{
@@ -107,7 +107,7 @@ namespace Havit
 
 		#region private field (static)
 		/// <summary>
-		/// Aktuální konec linked-listu nestovanıch scope.
+		/// AktuÃ¡lnÃ­ konec linked-listu nestovanÃ½ch scope.
 		/// </summary>
 		[ThreadStatic]
 		private static Scope<T> head;
@@ -115,7 +115,7 @@ namespace Havit
 
 		#region Current (static)
 		/// <summary>
-		/// Aktuální instance obalovaná scopem.
+		/// AktuÃ¡lnÃ­ instance obalovanÃ¡ scopem.
 		/// </summary>
 		public static T Current
 		{

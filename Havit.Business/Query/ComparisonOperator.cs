@@ -1,11 +1,11 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Havit.Business.Query
 {
 	/// <summary>
-	/// Operátor pro porovnání hodnot.
+	/// OperÃ¡tor pro porovnÃ¡nÃ­ hodnot.
 	/// </summary>
 	[Serializable]
 	public enum ComparisonOperator
@@ -21,22 +21,22 @@ namespace Havit.Business.Query
 		NotEquals,
 		
 		/// <summary>
-		/// Menší.
+		/// MenÅ¡Ã­.
 		/// </summary>
 		Lower, 
 
 		/// <summary>
-		/// Menší nebo rovno.
+		/// MenÅ¡Ã­ nebo rovno.
 		/// </summary>
 		LowerOrEquals,
 		
 		/// <summary>
-		/// Vìtší.
+		/// VÄ›tÅ¡Ã­.
 		/// </summary>
 		Greater,
 		
 		/// <summary>
-		/// Vìtší nebo rovno.
+		/// VÄ›tÅ¡Ã­ nebo rovno.
 		/// </summary>
 		GreaterOrEquals
 	}

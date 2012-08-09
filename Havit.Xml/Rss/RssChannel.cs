@@ -1,9 +1,9 @@
-using System.Xml.Serialization;
+ï»¿using System.Xml.Serialization;
 
 namespace Havit.Xml.Rss
 {
 	/// <summary>
-	/// Tøída reprezentující RSS channel
+	/// TÅ™Ã­da reprezentujÃ­cÃ­ RSS channel
 	/// </summary>
 	[XmlRoot("channel")]
 	public class RssChannel
@@ -83,7 +83,7 @@ namespace Havit.Xml.Rss
 
 		/// <summary>
 		/// The language the channel is written in.
-		/// Pro èeštinu je "cs", popø. "cs-CZ".
+		/// Pro ÄeÅ¡tinu je "cs", popÅ™. "cs-CZ".
 		/// </summary>
 		/// <remarks>
 		/// This allows aggregators to group all Italian language sites, for example, on a single page.
@@ -161,7 +161,7 @@ namespace Havit.Xml.Rss
 		/// http://asg.web.cmu.edu/rfc/rfc822.html
 		/// </remarks>
 		/// <example>
-		/// Napø. "Sat, 07 Sep 2002 00:00:01 GMT"
+		/// NapÅ™. "Sat, 07 Sep 2002 00:00:01 GMT"
 		/// </example>
 		[XmlElement("pubDate")]
 		public string PubDate
@@ -194,7 +194,7 @@ namespace Havit.Xml.Rss
 
 		/// <summary>
 		/// Specify one or more categories that the channel belongs to.
-		/// Souèasná implementace umoòuje zadat pouze jednu kategorii a to ještì bez zadání domény (domain atribut).
+		/// SouÄasnÃ¡ implementace umoÅ¾Åˆuje zadat pouze jednu kategorii a to jeÅ¡tÄ› bez zadÃ¡nÃ­ domÃ©ny (domain atribut).
 		/// </summary>
 		/// <remarks>
 		/// Follows the same rules as the ITEM-level category element.
@@ -279,7 +279,7 @@ namespace Havit.Xml.Rss
 		}
 
 		/// <summary>
-		/// Kolekce jednotlivıch prvkù ITEM.
+		/// Kolekce jednotlivÃ½ch prvkÅ¯ ITEM.
 		/// </summary>
 		[XmlElement("item")]
 		public RssItemCollection Items
@@ -295,8 +295,8 @@ namespace Havit.Xml.Rss
 		#region Constructor
 
 		/// <summary>
-		/// Default constructor nutnı pro XmlSerializer.
-		/// Nutno nastavit required poloky Title, Link a Description.
+		/// Default constructor nutnÃ½ pro XmlSerializer.
+		/// Nutno nastavit required poloÅ¾ky Title, Link a Description.
 		/// </summary>
 		public RssChannel()
 		{
@@ -304,7 +304,7 @@ namespace Havit.Xml.Rss
 		}
 
 		/// <summary>
-		/// Constructor s povinnımi polokami.
+		/// Constructor s povinnÃ½mi poloÅ¾kami.
 		/// </summary>
 		public RssChannel(string title, string link, string description)
 		{

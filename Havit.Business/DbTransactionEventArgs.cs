@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Data.Common;
@@ -6,14 +6,14 @@ using System.Data.Common;
 namespace Havit.Business
 {
     /// <summary>
-    /// Argument nesoucí instanci databázové transakce.
+    /// Argument nesoucÃ­ instanci databÃ¡zovÃ© transakce.
     /// </summary>
     public class DbTransactionEventArgs: EventArgs
     {
         #region Transaction
         /// <summary>
         /// Transakce.
-		/// Pro OnBeforeSave a OnAfterSave nemùe bıt v pøípadì ActiveRecordBusinessObjectBase null, v pøípadì holého BusinessObjectBase ano.
+		/// Pro OnBeforeSave a OnAfterSave nemÅ¯Å¾e bÃ½t v pÅ™Ã­padÄ› ActiveRecordBusinessObjectBase null, v pÅ™Ã­padÄ› holÃ©ho BusinessObjectBase ano.
         /// </summary>
         public DbTransaction Transaction
         {

@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 namespace Havit.Xml.Rss
 {
 	/// <summary>
-	/// Hlavní tøída reprezentující celý RSS dokument.
+	/// HlavnÃ­ tÅ™Ã­da reprezentujÃ­cÃ­ celÃ½ RSS dokument.
 	/// RSS verze 2.0
 	/// Specifikace na http://blogs.law.harvard.edu/tech/rss
 	/// </summary>
@@ -37,7 +37,7 @@ namespace Havit.Xml.Rss
 		}
 
 		/// <summary>
-		/// Kolekce channelù ve feedu.
+		/// Kolekce channelÅ¯ ve feedu.
 		/// </summary>
 		[XmlElement("channel")]
 		public RssChannelCollection Channels
@@ -53,7 +53,7 @@ namespace Havit.Xml.Rss
 		#region Constructor
 		
 		/// <summary>
-		/// Vytvoøí novou instanci RSS feedu.
+		/// VytvoÅ™Ã­ novou instanci RSS feedu.
 		/// </summary>
 		public RssFeed()
 		{
@@ -66,7 +66,7 @@ namespace Havit.Xml.Rss
 		#region Seralization to XML
 
 		/// <summary>
-		/// Vrátí RSS feed jako XmlDocument
+		/// VrÃ¡tÃ­ RSS feed jako XmlDocument
 		/// </summary>
 		/// <returns>RSS feed jako XmlDocument</returns>
 		public XmlDocument SerializeToXmlDocument()
@@ -81,7 +81,7 @@ namespace Havit.Xml.Rss
 			xmlDocument.Load(new StringReader(writer.ToString()));
 			writer.Close();
 
-			// Vymazání prázdných elementù
+			// VymazÃ¡nÃ­ prÃ¡zdnÃ½ch elementÅ¯
 			foreach(XmlNode node in xmlDocument.SelectNodes("//*[.='']"))
 			{
 				node.ParentNode.RemoveChild(node);
@@ -91,7 +91,7 @@ namespace Havit.Xml.Rss
 		}
 
 		/// <summary>
-		/// Vrátí RSS feed jako String s XML dokumentem
+		/// VrÃ¡tÃ­ RSS feed jako String s XML dokumentem
 		/// </summary>
 		/// <returns>RSS feed jako String</returns>
 		public override string ToString()

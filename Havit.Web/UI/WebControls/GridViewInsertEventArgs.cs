@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel;
@@ -6,12 +6,12 @@ using System.ComponentModel;
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
-	/// Parametry ud·losti vloûenÌ z·znamu do GridView.
+	/// Parametry ud√°losti vlo≈æen√≠ z√°znamu do GridView.
 	/// </summary>
 	public class GridViewInsertEventArgs : CancelEventArgs
 	{
 		/// <summary>
-		/// VracÌ index ¯·dku GridView, v kterÈm se odehr·v· Insert.
+		/// Vrac√≠ index ≈ô√°dku GridView, v kter√©m se odehr√°v√° Insert.
 		/// </summary>
 		public int RowIndex
 		{
@@ -23,9 +23,9 @@ namespace Havit.Web.UI.WebControls
 		private int _rowIndex;
 
 		/// <summary>
-		/// Vytvo¯Ì instanci.
+		/// Vytvo≈ô√≠ instanci.
 		/// </summary>
-		/// <param name="rowIndex">index ¯·dku GridView, v kterÈm se odehr·v· Insert</param>
+		/// <param name="rowIndex">index ≈ô√°dku GridView, v kter√©m se odehr√°v√° Insert</param>
 		public GridViewInsertEventArgs(int rowIndex)
 			: base(false)
 		{

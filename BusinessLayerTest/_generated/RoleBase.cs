@@ -31,6 +31,18 @@ namespace Havit.BusinessLayerTest
 	/// <summary>
 	/// Uživatelská role. Určuje oprávnění v systému. [cached, read-only]
 	/// </summary>
+	/// <remarks>
+	/// <code>
+	/// CREATE TABLE [dbo].[Role](
+	/// 	[RoleID] [int] NOT NULL,
+	/// 	[Symbol] [varchar](50) COLLATE Czech_CI_AS NULL,
+	///  CONSTRAINT [PK_Role] PRIMARY KEY CLUSTERED 
+	/// (
+	/// 	[RoleID] ASC
+	/// )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+	/// ) ON [PRIMARY]
+	/// </code>
+	/// </remarks>
 	[System.Diagnostics.Contracts.ContractVerification(false)]
 	public abstract class RoleBase : ActiveRecordBusinessObjectBase
 	{
@@ -236,7 +248,7 @@ namespace Havit.BusinessLayerTest
 		
 		#region Enum members
 		/// <summary>
-		/// ZaporneID
+		/// ZaporneID [-1]
 		/// </summary>
 		public static Role ZaporneID
 		{
@@ -249,7 +261,7 @@ namespace Havit.BusinessLayerTest
 		}
 		
 		/// <summary>
-		/// NuloveID
+		/// NuloveID [0]
 		/// </summary>
 		public static Role NuloveID
 		{
@@ -262,7 +274,7 @@ namespace Havit.BusinessLayerTest
 		}
 		
 		/// <summary>
-		/// Administrator
+		/// Administrator [1]
 		/// </summary>
 		public static Role Administrator
 		{
@@ -275,7 +287,7 @@ namespace Havit.BusinessLayerTest
 		}
 		
 		/// <summary>
-		/// Editor
+		/// Editor [2]
 		/// </summary>
 		public static Role Editor
 		{
@@ -288,7 +300,7 @@ namespace Havit.BusinessLayerTest
 		}
 		
 		/// <summary>
-		/// Publisher
+		/// Publisher [3]
 		/// </summary>
 		public static Role Publisher
 		{
@@ -301,7 +313,7 @@ namespace Havit.BusinessLayerTest
 		}
 		
 		/// <summary>
-		/// Operator
+		/// Operator [4]
 		/// </summary>
 		public static Role Operator
 		{
@@ -322,39 +334,39 @@ namespace Havit.BusinessLayerTest
 		public static class EnumIDs
 		{
 			/// <summary>
-			/// ZaporneID
+			/// ZaporneID [-1]
 			/// </summary>
 			public const int ZaporneID = -1;
 			
 			/// <summary>
-			/// NuloveID
+			/// NuloveID [0]
 			/// </summary>
 			public const int NuloveID = 0;
 			
 			/// <summary>
-			/// Administrator
+			/// Administrator [1]
 			/// </summary>
 			public const int Administrator = 1;
 			
 			/// <summary>
-			/// Editor
+			/// Editor [2]
 			/// </summary>
 			public const int Editor = 2;
 			
 			/// <summary>
-			/// Publisher
+			/// Publisher [3]
 			/// </summary>
 			public const int Publisher = 3;
 			
 			/// <summary>
-			/// Operator
+			/// Operator [4]
 			/// </summary>
 			public const int Operator = 4;
 			
 		}
 		#endregion
 		
-		#region GetFirst, GetList
+		#region GetFirst, GetList, GetAll
 		/// <summary>
 		/// Vrátí první nalezený objekt typu Role dle parametrů v queryParams.
 		/// Pokud není žádný objekt nalezen, vrací null.

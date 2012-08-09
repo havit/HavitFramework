@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI.WebControls;
@@ -6,15 +6,15 @@ using System.Web.UI.WebControls;
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
-	/// Rozšíøená verze <see cref="System.Web.UI.WebControls.ButtonField"/> (základní rozšíøení spoleèné pro GridView i jiná pouití fieldu).
-	/// Pro pouití v <see cref="GridViewExt"/> a odvozenıch (napø. Havit.Web.UI.WebControls.EnterpriseGridView).
-	/// je doporuèeno pouít bohatšího potomka <see cref="GridViewCommandField"/>.
+	/// RozÅ¡Ã­Å™enÃ¡ verze <see cref="System.Web.UI.WebControls.ButtonField"/> (zÃ¡kladnÃ­ rozÅ¡Ã­Å™enÃ­ spoleÄnÃ© pro GridView i jinÃ¡ pouÅ¾itÃ­ fieldu).
+	/// Pro pouÅ¾itÃ­ v <see cref="GridViewExt"/> a odvozenÃ½ch (napÅ™. Havit.Web.UI.WebControls.EnterpriseGridView).
+	/// je doporuÄeno pouÅ¾Ã­t bohatÅ¡Ã­ho potomka <see cref="GridViewCommandField"/>.
 	/// </summary>
 	public class CommandFieldExt : CommandField, IIdentifiableField
 	{
 		#region ID (IIdentifiableField Members)
 		/// <summary>
-		/// Identifikátor fieldu na kterı se lze odkazovat pomocí <see cref="GridViewExt.FindColumn(string)"/>.
+		/// IdentifikÃ¡tor fieldu na kterÃ½ se lze odkazovat pomocÃ­ <see cref="GridViewExt.FindColumn(string)"/>.
 		/// </summary>
 		public string ID
 		{

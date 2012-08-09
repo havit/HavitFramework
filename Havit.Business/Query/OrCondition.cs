@@ -1,18 +1,18 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Havit.Business.Query
 {
 	/// <summary>
-	/// Kompozitní podmínka. Vısledek je pravdivı, je-li pravdivá alespoò jedna èlenská podmínka.
+	/// KompozitnÃ­ podmÃ­nka. VÃ½sledek je pravdivÃ½, je-li pravdivÃ¡ alespoÅˆ jedna ÄlenskÃ¡ podmÃ­nka.
 	/// </summary>
 	[Serializable]
 	public class OrCondition: CompositeCondition
 	{
         #region Constructors
         /// <summary>
-        /// Vytvoøí kompozitní podmínku. Lze inicializovat sadou èlenskıch podmínek.
+        /// VytvoÅ™Ã­ kompozitnÃ­ podmÃ­nku. Lze inicializovat sadou ÄlenskÃ½ch podmÃ­nek.
         /// </summary>		
         public OrCondition(params Condition[] conditions)
             : base("OR", conditions)
@@ -22,7 +22,7 @@ namespace Havit.Business.Query
 
         #region Create (static)
         /// <summary>
-        /// Vytvoøí kompozitní podmínku. Lze inicializovat sadou èlenskıch podmínek.
+        /// VytvoÅ™Ã­ kompozitnÃ­ podmÃ­nku. Lze inicializovat sadou ÄlenskÃ½ch podmÃ­nek.
         /// </summary>
         public static OrCondition Create(params Condition[] conditions)
         {

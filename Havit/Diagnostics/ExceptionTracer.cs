@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
@@ -7,10 +7,10 @@ using System.Windows.Forms;
 namespace Havit.Diagnostics
 {
 	/// <summary>
-	/// Tøída zajišující posílání vıjimek do trace prostøednictvím TraceSource.
-	/// Mimo explicitního volání lze tøídu pøihlásit k odbìru neošetøenıch vıjimek, vèetnì WinForms.
+	/// TÅ™Ã­da zajiÅ¡Å¥ujÃ­cÃ­ posÃ­lÃ¡nÃ­ vÃ½jimek do trace prostÅ™ednictvÃ­m TraceSource.
+	/// Mimo explicitnÃ­ho volÃ¡nÃ­ lze tÅ™Ã­du pÅ™ihlÃ¡sit k odbÄ›ru neoÅ¡etÅ™enÃ½ch vÃ½jimek, vÄetnÄ› WinForms.
 	/// <example>
-	/// Pøíklad pouití v ConsoleApplication:
+	/// PÅ™Ã­klad pouÅ¾itÃ­ v ConsoleApplication:
 	/// <code>
 	/// namespace ExceptionLogging
 	/// {
@@ -20,14 +20,14 @@ namespace Havit.Diagnostics
 	///			{
 	///				ExceptionTracer.Default.SubscribeToUnhandledExceptions(false);
 	///
-	///				ExceptionTracer.Default.TraceException(new ArgumentNullException("param", "Chybááá!"));
+	///				ExceptionTracer.Default.TraceException(new ArgumentNullException("param", "ChybÃ¡Ã¡Ã¡!"));
 	///
 	///				throw new InvalidOperationException("Chybka!");
 	///			}
 	///		}
 	/// }
 	/// </code>
-	/// Pøíklad pouití ve WindowsApplication:
+	/// PÅ™Ã­klad pouÅ¾itÃ­ ve WindowsApplication:
 	/// <code>
 	///	static void Main()
 	///	{
@@ -38,7 +38,7 @@ namespace Havit.Diagnostics
 	///		Application.Run(new Form1());
 	///	}
 	/// </code>
-	/// Pøíklad konfigurace App.config:
+	/// PÅ™Ã­klad konfigurace App.config:
 	/// <code>
 	/// &lt;configuration&gt;
 	///		&lt;system.diagnostics&gt;
@@ -68,7 +68,7 @@ namespace Havit.Diagnostics
 
 		#region TraceSourceName
 		/// <summary>
-		/// Jméno TraceSource, pøes kterı se budou vıjimky emitovat.
+		/// JmÃ©no TraceSource, pÅ™es kterÃ½ se budou vÃ½jimky emitovat.
 		/// </summary>
 		public string TraceSourceName
 		{
@@ -86,9 +86,9 @@ namespace Havit.Diagnostics
 
 		#region constructor
 		/// <summary>
-		/// Vytvoøí instanci ExceptionTraceru, kterı bude svùj vıstup smìøovat pøes TraceSource se zadanım jménem.
+		/// VytvoÅ™Ã­ instanci ExceptionTraceru, kterÃ½ bude svÅ¯j vÃ½stup smÄ›Å™ovat pÅ™es TraceSource se zadanÃ½m jmÃ©nem.
 		/// </summary>
-		/// <param name="traceSourceName">jméno TraceSource, pøes kterı se budou vıjimky emitovat</param>
+		/// <param name="traceSourceName">jmÃ©no TraceSource, pÅ™es kterÃ½ se budou vÃ½jimky emitovat</param>
 		public ExceptionTracer(string traceSourceName)
 		{
 			this._traceSourceName = traceSourceName;
@@ -97,7 +97,7 @@ namespace Havit.Diagnostics
 
 		#region SubscribeToUnhandledExceptions
 		/// <summary>
-		/// Pøihlásí ExceptionTracer k odbìru všech neobslouenıch vıjimek (event AppDomain.CurrentDomain.UnhandledException).
+		/// PÅ™ihlÃ¡sÃ­ ExceptionTracer k odbÄ›ru vÅ¡ech neobslouÅ¾enÃ½ch vÃ½jimek (event AppDomain.CurrentDomain.UnhandledException).
 		/// </summary>
 		public void SubscribeToUnhandledExceptions(bool includeWindowsFormsThreadExceptions)
 		{
@@ -110,7 +110,7 @@ namespace Havit.Diagnostics
 		}
 
 		/// <summary>
-		/// Obsluha události AppDomain.CurrentDomain.UnhandledException.
+		/// Obsluha udÃ¡losti AppDomain.CurrentDomain.UnhandledException.
 		/// </summary>
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="e">The <see cref="System.UnhandledExceptionEventArgs"/> instance containing the event data.</param>
@@ -125,7 +125,7 @@ namespace Havit.Diagnostics
 
 		#region SubscribeToWindowsFormsThreadExceptions
 		/// <summary>
-		/// Pøihlásí ExceptionTracer k odbìru všech neobslouenıch vıjimek WinForm (event Application.ThreadException).
+		/// PÅ™ihlÃ¡sÃ­ ExceptionTracer k odbÄ›ru vÅ¡ech neobslouÅ¾enÃ½ch vÃ½jimek WinForm (event Application.ThreadException).
 		/// </summary>
 		public void SubscribeToWindowsFormsThreadExceptions()
 		{
@@ -133,7 +133,7 @@ namespace Havit.Diagnostics
 		}
 
 		/// <summary>
-		/// Obsluha události Application.ThreadException.
+		/// Obsluha udÃ¡losti Application.ThreadException.
 		/// </summary>
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="e">The <see cref="System.Threading.ThreadExceptionEventArgs"/> instance containing the event data.</param>
@@ -141,7 +141,7 @@ namespace Havit.Diagnostics
 		{
 			TraceException(e.Exception, TraceEventType.Critical);
 
-			// pùvodní implementace obsluhy vıjimky
+			// pÅ¯vodnÃ­ implementace obsluhy vÃ½jimky
 			using (ThreadExceptionDialog excptDlg = new ThreadExceptionDialog(e.Exception))
 			{
 				DialogResult result = excptDlg.ShowDialog();
@@ -155,11 +155,11 @@ namespace Havit.Diagnostics
 
 		#region TraceException
 		/// <summary>
-		/// Pošle do trace zadanou vıjimku.
+		/// PoÅ¡le do trace zadanou vÃ½jimku.
 		/// </summary>
-		/// <param name="exception">vıjimka k zaznamenání</param>
-		/// <param name="eventType">typ události, pod kterım se má vıjimka zaznamenat</param>
-		/// <param name="eventId">ID eventu, pod kterım se má vıjimka zaznamenat</param>
+		/// <param name="exception">vÃ½jimka k zaznamenÃ¡nÃ­</param>
+		/// <param name="eventType">typ udÃ¡losti, pod kterÃ½m se mÃ¡ vÃ½jimka zaznamenat</param>
+		/// <param name="eventId">ID eventu, pod kterÃ½m se mÃ¡ vÃ½jimka zaznamenat</param>
 		public void TraceException(Exception exception, TraceEventType eventType, int eventId)
 		{
 			if (exception == null)
@@ -174,10 +174,10 @@ namespace Havit.Diagnostics
 		}
 
 		/// <summary>
-		/// Pošle do trace zadanou vıjimku.
+		/// PoÅ¡le do trace zadanou vÃ½jimku.
 		/// </summary>
-		/// <param name="exception">vıjimka k zaznamenání</param>
-		/// <param name="eventType">typ události, pod kterım se má vıjimka zaznamenat</param>
+		/// <param name="exception">vÃ½jimka k zaznamenÃ¡nÃ­</param>
+		/// <param name="eventType">typ udÃ¡losti, pod kterÃ½m se mÃ¡ vÃ½jimka zaznamenat</param>
 		public void TraceException(Exception exception, TraceEventType eventType)
 		{
 			TraceException(exception, eventType, traceExceptionMethodDefaultEventId);
@@ -185,9 +185,9 @@ namespace Havit.Diagnostics
 
 
 		/// <summary>
-		/// Pošle do trace zadanou vıjimku.
+		/// PoÅ¡le do trace zadanou vÃ½jimku.
 		/// </summary>
-		/// <param name="exception">vıjimka k zaznamenání</param>
+		/// <param name="exception">vÃ½jimka k zaznamenÃ¡nÃ­</param>
 		public void TraceException(Exception exception)
 		{
 			TraceException(exception, traceExceptionMethodDefaultEventType, traceExceptionMethodDefaultEventId);
@@ -196,22 +196,22 @@ namespace Havit.Diagnostics
 
 		#region FormatException (private)
 		/// <summary>
-		/// Naformátuje vıjimku pro zápis do trace.
+		/// NaformÃ¡tuje vÃ½jimku pro zÃ¡pis do trace.
 		/// </summary>
-		/// <param name="exception">vıjimka</param>
-		/// <returns>textovı vıstup, kterı se pošle do trace (informace o vıjimce)</returns>
+		/// <param name="exception">vÃ½jimka</param>
+		/// <returns>textovÃ½ vÃ½stup, kterÃ½ se poÅ¡le do trace (informace o vÃ½jimce)</returns>
 		private string FormatException(Exception exception)
 		{
-			// do budoucna je moné rozšíøit objektovı model o ExceptionTraceFormatter, atp.
+			// do budoucna je moÅ¾nÃ© rozÅ¡Ã­Å™it objektovÃ½ model o ExceptionTraceFormatter, atp.
 			return exception.ToString();
 		}
 		#endregion
 
 		#region RunUsingTraceSource (private)
 		/// <summary>
-		/// Vykoná akci pomocí TraceSource pouívaného ExceptionListenerem.
+		/// VykonÃ¡ akci pomocÃ­ TraceSource pouÅ¾Ã­vanÃ©ho ExceptionListenerem.
 		/// </summary>
-		/// <param name="action">akce k vykonání (delegát)</param>
+		/// <param name="action">akce k vykonÃ¡nÃ­ (delegÃ¡t)</param>
 		private void RunUsingTraceSource(Action<TraceSource> action)
 		{
 			Debug.Assert(action != null);
@@ -229,14 +229,14 @@ namespace Havit.Diagnostics
 
 		#region DefaultTraceSourceName (const)
 		/// <summary>
-		/// Název vıchozího TraceSource, pøes kterı jsou vıjimky emitovány.
+		/// NÃ¡zev vÃ½chozÃ­ho TraceSource, pÅ™es kterÃ½ jsou vÃ½jimky emitovÃ¡ny.
 		/// </summary>
 		public const string DefaultTraceSourceName = "Exceptions";
 		#endregion
 
 		#region Default (static singleton)
 		/// <summary>
-		/// Vıchozí ExceptionTracer smìøující vıstup pøes TraceSource s DefaultTraceSourceName.
+		/// VÃ½chozÃ­ ExceptionTracer smÄ›Å™ujÃ­cÃ­ vÃ½stup pÅ™es TraceSource s DefaultTraceSourceName.
 		/// </summary>
 		public static ExceptionTracer Default
 		{

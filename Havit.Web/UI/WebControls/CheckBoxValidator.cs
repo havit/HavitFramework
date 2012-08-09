@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.ComponentModel;
 using System.Collections.Generic;
 using System.Text;
@@ -9,13 +9,13 @@ using System.Web.UI.WebControls;
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
-	/// Validátor, který øeší povinnost zaškrtnutí (eventuelnì odškrtnutí - viz vlastnost ValidCheckedState) CheckBoxu.
+	/// ValidÃ¡tor, kterÃ½ Å™eÅ¡Ã­ povinnost zaÅ¡krtnutÃ­ (eventuelnÄ› odÅ¡krtnutÃ­ - viz vlastnost ValidCheckedState) CheckBoxu.
 	/// </summary>
     public class CheckBoxValidator : BaseValidator
 	{
 		#region ValidCheckedState
 		/// <summary>
-		/// Udává validní hodnotu - zaškrtnutý [default] nebo odškrtnutý.
+		/// UdÃ¡vÃ¡ validnÃ­ hodnotu - zaÅ¡krtnutÃ½ [default] nebo odÅ¡krtnutÃ½.
 		/// </summary>
 		public bool ValidCheckedState
     	{
@@ -32,7 +32,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region CheckBoxToValidate
 		/// <summary>
-		/// CheckBox, který se bude validovat, získán z ControlToValidate.
+		/// CheckBox, kterÃ½ se bude validovat, zÃ­skÃ¡n z ControlToValidate.
 		/// </summary>
 		protected CheckBox CheckBoxToValidate
     	{
@@ -51,18 +51,18 @@ namespace Havit.Web.UI.WebControls
 
 		#region ControlPropertiesValid
 		/// <summary>
-		/// Zkontroluje, zda je validátor nastaven správnì, jinak vyhodí vyjímku.
+		/// Zkontroluje, zda je validÃ¡tor nastaven sprÃ¡vnÄ›, jinak vyhodÃ­ vyjÃ­mku.
 		/// </summary>
 		protected override bool ControlPropertiesValid()
     	{
     		if (String.IsNullOrEmpty(ControlToValidate))
     		{
-    			throw new HttpException(string.Format("Vlastnost ControlToValidate controlu '{0}' nesmí být prázdná.", this.ID));
+    			throw new HttpException(string.Format("Vlastnost ControlToValidate controlu '{0}' nesmÃ­ bÃ½t prÃ¡zdnÃ¡.", this.ID));
     		}
 
     		if (this.CheckBoxToValidate == null)
     		{
-    			throw new HttpException(string.Format("CheckBoxValidator mùže validovat pouze controly typu CheckBox."));
+    			throw new HttpException(string.Format("CheckBoxValidator mÅ¯Å¾e validovat pouze controly typu CheckBox."));
     		}
 
     		return true;
@@ -71,7 +71,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region EvaluateIsValid
 		/// <summary>
-		/// Vyhodnotí validátor
+		/// VyhodnotÃ­ validÃ¡tor
 		/// </summary>
 		protected override bool EvaluateIsValid()
     	{
@@ -81,7 +81,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region AddAttributesToRender
 		/// <summary>
-		/// Pøidá renderované atributy potøebné pro klientskou validaci
+		/// PÅ™idÃ¡ renderovanÃ© atributy potÅ™ebnÃ© pro klientskou validaci
 		/// </summary>
 		protected override void AddAttributesToRender(HtmlTextWriter writer)
     	{

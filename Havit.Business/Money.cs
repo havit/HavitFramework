@@ -1,11 +1,11 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Havit.Business
 {
 	/// <summary>
-	/// Tøída reprezentující penìní èástky s mìnou.
+	/// TÅ™Ã­da reprezentujÃ­cÃ­ penÄ›Å¾nÃ­ ÄÃ¡stky s mÄ›nou.
 	/// </summary>
 	[Serializable]
 	public class Money<TCurrency>
@@ -13,8 +13,8 @@ namespace Havit.Business
 	{		
 		#region Amount
 		/// <summary>
-		/// Èástka v jednotkách mìny. Udává se hodnota v základní
-		/// jednotce a zlomky mìny (napø. haléøe) se zadávají za desetinou teèkou (napø.
+		/// ÄŒÃ¡stka v jednotkÃ¡ch mÄ›ny. UdÃ¡vÃ¡ se hodnota v zÃ¡kladnÃ­
+		/// jednotce a zlomky mÄ›ny (napÅ™. halÃ©Å™e) se zadÃ¡vajÃ­ za desetinou teÄkou (napÅ™.
 		/// 57.30).
 		/// </summary>
 		public decimal? Amount
@@ -36,7 +36,7 @@ namespace Havit.Business
 
 		#region Currency
 		/// <summary>
-		/// Mìna èástky.
+		/// MÄ›na ÄÃ¡stky.
 		/// </summary>
 		public TCurrency Currency
 		{
@@ -59,14 +59,14 @@ namespace Havit.Business
 
 		#region Constructors
 		/// <summary>
-		/// Inicializuje tøídu money s prázdními hodnotami (Amount i Currency jsou null).
+		/// Inicializuje tÅ™Ã­du money s prÃ¡zdnÃ­mi hodnotami (Amount i Currency jsou null).
 		/// </summary>
 		public Money(): this(null, null)
 		{
 		}
 
 		/// <summary>
-		/// Inicializuje tøídu money zadanımi hodnotami.
+		/// Inicializuje tÅ™Ã­du money zadanÃ½mi hodnotami.
 		/// </summary>
 		/// <param name="amount"></param>
 		/// <param name="currency"></param>
@@ -77,7 +77,7 @@ namespace Havit.Business
 		}
 		#endregion
 
-		#region Equals, operátory == a !=
+		#region Equals, operÃ¡tory == a !=
 		public virtual bool Equals(Money<TCurrency> money)
 		{
 			if ((money == null) || (this.GetType() != money.GetType()))
@@ -109,7 +109,7 @@ namespace Havit.Business
 
 		#region GetHashCode
 		/// <summary>
-		/// HashCode je sloen jako XOR hash kódù amount a currency, pokud tyto hodnoty nejsou null.
+		/// HashCode je sloÅ¾en jako XOR hash kÃ³dÅ¯ amount a currency, pokud tyto hodnoty nejsou null.
 		/// </summary>
 		public override int GetHashCode()
 		{
@@ -131,14 +131,14 @@ namespace Havit.Business
 
 		#region AssertSameCurrencies
 		/// <summary>
-		/// Porovná mìny zadané v parametrech. Pokud se liší, je vyhozena vıjimka.
+		/// PorovnÃ¡ mÄ›ny zadanÃ© v parametrech. Pokud se liÅ¡Ã­, je vyhozena vÃ½jimka.
 		/// </summary>
 		protected static void AssertSameCurrencies(TCurrency currency1, TCurrency currency2)
 		{
 			if ((currency1 is BusinessObjectBase) && (currency2 is BusinessObjectBase))
 			{
-				// pokud jde o businessObjekty, pak porovnáme jako business objekty (mùe jít o rùzné instance stejné mìny (napø. objekty z rùznıch identity map)
-				// radìji bych pouil pøetypování (BusinessObjectBase)currencyX, ale compiler ho z mì neznámého dùvodu odmítá
+				// pokud jde o businessObjekty, pak porovnÃ¡me jako business objekty (mÅ¯Å¾e jÃ­t o rÅ¯znÃ© instance stejnÃ© mÄ›ny (napÅ™. objekty z rÅ¯znÃ½ch identity map)
+				// radÄ›ji bych pouÅ¾il pÅ™etypovÃ¡nÃ­ (BusinessObjectBase)currencyX, ale compiler ho z mÄ› neznÃ¡mÃ©ho dÅ¯vodu odmÃ­tÃ¡
 				BusinessObjectBase businessObjectCurrency1 = currency1 as BusinessObjectBase;
 				BusinessObjectBase businessObjectCurrency2 = currency2 as BusinessObjectBase;
 
@@ -159,7 +159,7 @@ namespace Havit.Business
 
 		#region AssertNotNull
 		/// <summary>
-		/// Vyvolá vıjimku, pokud má parametr hodnotu null.
+		/// VyvolÃ¡ vÃ½jimku, pokud mÃ¡ parametr hodnotu null.
 		/// </summary>
 		private static void AssertNotNull(object value, string parameterName)
 		{
@@ -170,9 +170,9 @@ namespace Havit.Business
 		}
 		#endregion
 
-		#region Operátory porovnání <, >, <=, >=
+		#region OperÃ¡tory porovnÃ¡nÃ­ <, >, <=, >=
 		/// <summary>
-		/// Porovná se èástka. Pokud se neshoduje mìna, operace vyvolá vıjimku.
+		/// PorovnÃ¡ se ÄÃ¡stka. Pokud se neshoduje mÄ›na, operace vyvolÃ¡ vÃ½jimku.
 		/// </summary>
 		public static bool operator >(Money<TCurrency> money1, Money<TCurrency> money2)
 		{
@@ -181,7 +181,7 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Porovná se èástka. Pokud se neshoduje mìna, operace vyvolá vıjimku.
+		/// PorovnÃ¡ se ÄÃ¡stka. Pokud se neshoduje mÄ›na, operace vyvolÃ¡ vÃ½jimku.
 		/// </summary>
 		public static bool operator <(Money<TCurrency> money1, Money<TCurrency> money2)
 		{
@@ -190,7 +190,7 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Porovná se èástka. Pokud se neshoduje mìna, operace vyvolá vıjimku.
+		/// PorovnÃ¡ se ÄÃ¡stka. Pokud se neshoduje mÄ›na, operace vyvolÃ¡ vÃ½jimku.
 		/// </summary>
 		public static bool operator >=(Money<TCurrency> money1, Money<TCurrency> money2)
 		{
@@ -198,7 +198,7 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Porovná se èástka. Pokud se neshoduje mìna, operace vyvolá vıjimku.
+		/// PorovnÃ¡ se ÄÃ¡stka. Pokud se neshoduje mÄ›na, operace vyvolÃ¡ vÃ½jimku.
 		/// </summary>
 		public static bool operator <=(Money<TCurrency> money1, Money<TCurrency> money2)
 		{
@@ -206,9 +206,9 @@ namespace Havit.Business
 		}
 		#endregion
 
-		#region Operátory +, -, *, /
+		#region OperÃ¡tory +, -, *, /
 		/// <summary>
-		/// Seète dvì hodnoty Money. Pokud se neshoduje mìna, operace vyvolá vıjimku.
+		/// SeÄte dvÄ› hodnoty Money. Pokud se neshoduje mÄ›na, operace vyvolÃ¡ vÃ½jimku.
 		/// </summary>
 		public static Money<TCurrency> operator +(Money<TCurrency> money1, Money<TCurrency> money2)
 		{
@@ -216,7 +216,7 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Odeète dvì hodnoty Money. Pokud se neshoduje mìna, operace vyvolá vıjimku.
+		/// OdeÄte dvÄ› hodnoty Money. Pokud se neshoduje mÄ›na, operace vyvolÃ¡ vÃ½jimku.
 		/// </summary>
 		/// <returns></returns>
 		public static Money<TCurrency> operator -(Money<TCurrency> money1, Money<TCurrency> money2)
@@ -225,7 +225,7 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Vynásobí hodnotu Money konstantou typu decimal.
+		/// VynÃ¡sobÃ­ hodnotu Money konstantou typu decimal.
 		/// </summary>
 		public static Money<TCurrency> operator *(Money<TCurrency> money, decimal multiplicand)
 		{
@@ -233,7 +233,7 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Vynásobí hodnotu Money konstantou typu int.
+		/// VynÃ¡sobÃ­ hodnotu Money konstantou typu int.
 		/// </summary>
 		public static Money<TCurrency> operator *(Money<TCurrency> money, int multiplicand)
 		{
@@ -242,7 +242,7 @@ namespace Havit.Business
 		
 		
 		/// <summary>
-		/// Vydìlí hodnotu Money konstantou typu decimal.
+		/// VydÄ›lÃ­ hodnotu Money konstantou typu decimal.
 		/// </summary>
 		public static Money<TCurrency> operator /(Money<TCurrency> money, decimal multiplicand)
 		{
@@ -250,7 +250,7 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Vydìlí hodnotu Money konstantou typu int.
+		/// VydÄ›lÃ­ hodnotu Money konstantou typu int.
 		/// </summary>
 		public static Money<TCurrency> operator /(Money<TCurrency> money, int multiplicand)
 		{
@@ -258,7 +258,7 @@ namespace Havit.Business
 		}
 		
 		/// <summary>
-		/// Vypoète podíl èástek. Napø. pro vıpoèet pomìru èástek, mare, apod.
+		/// VypoÄte podÃ­l ÄÃ¡stek. NapÅ™. pro vÃ½poÄet pomÄ›ru ÄÃ¡stek, marÅ¾e, apod.
 		/// </summary>
 		public static decimal operator /(Money<TCurrency> dividend, Money<TCurrency> divisor)
 		{
@@ -269,7 +269,7 @@ namespace Havit.Business
 
 		#region SumMoney
 		/// <summary>
-		/// Seète dvì hodnoty Money. Pokud se neshoduje mìna, operace vyvolá vıjimku.	
+		/// SeÄte dvÄ› hodnoty Money. Pokud se neshoduje mÄ›na, operace vyvolÃ¡ vÃ½jimku.	
 		/// </summary>
 		public static TResult SumMoney<TResult>(Money<TCurrency> money1, Money<TCurrency> money2)
 			where TResult : Money<TCurrency>, new()
@@ -289,7 +289,7 @@ namespace Havit.Business
 
 		#region SubtractMoney
 		/// <summary>
-		/// Odeète mìny (odèítá se money2 od money1). Pokud se neshoduje mìna, operace vyvolá vıjimku.
+		/// OdeÄte mÄ›ny (odÄÃ­tÃ¡ se money2 od money1). Pokud se neshoduje mÄ›na, operace vyvolÃ¡ vÃ½jimku.
 		/// </summary>
 		public static TResult SubtractMoney<TResult>(Money<TCurrency> money1, Money<TCurrency> money2)
 			where TResult : Money<TCurrency>, new()
@@ -309,7 +309,7 @@ namespace Havit.Business
 
 		#region MultipleMoney
 		/// <summary>
-		/// Vynásobí èástku konstantou.
+		/// VynÃ¡sobÃ­ ÄÃ¡stku konstantou.
 		/// </summary>
 		public static TResult MultipleMoney<TResult>(Money<TCurrency> money, decimal multiplicand)
 			where TResult : Money<TCurrency>, new()
@@ -326,7 +326,7 @@ namespace Havit.Business
 
 		#region DivideMoney
 		/// <summary>
-		/// Vydìlí èástku konstantou.
+		/// VydÄ›lÃ­ ÄÃ¡stku konstantou.
 		/// </summary>
 		public static TResult DivideMoney<TResult>(Money<TCurrency> money, decimal divisor)
 			where TResult : Money<TCurrency>, new()
@@ -341,7 +341,7 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Vypoète podíl èástek. Napø. pro vıpoèet pomìru èástek, mare, apod.
+		/// VypoÄte podÃ­l ÄÃ¡stek. NapÅ™. pro vÃ½poÄet pomÄ›ru ÄÃ¡stek, marÅ¾e, apod.
 		/// </summary>
 		public static decimal DivideMoney(Money<TCurrency> dividend, Money<TCurrency> divisor)			
 		{

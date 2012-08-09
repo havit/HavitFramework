@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 using System.Collections.Generic;
 using System.Text;
 using System.Data.Common;
@@ -6,7 +6,7 @@ using System.Data.Common;
 namespace Havit.Business
 {
 	/// <summary>
-	/// Argumenty ud·losti p¯ed uloûenÌm objektu.
+	/// Argumenty ud√°losti p≈ôed ulo≈æen√≠m objektu.
 	/// </summary>
 	public class BeforeSaveEventArgs: DbTransactionEventArgs
 	{

@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.ComponentModel;
@@ -8,18 +8,18 @@ using Havit.Reflection;
 namespace Havit.Web.UI.HtmlControls
 {
 	/// <summary>
-	/// Rozšíøení .NET controlu HtmlForm.
+	/// RozÅ¡Ã­Å™enÃ­ .NET controlu HtmlForm.
 	/// </summary>
 	public class HtmlFormExt : System.Web.UI.HtmlControls.HtmlForm
 	{
 		#region Data members
 		/// <summary>
-		/// Vrátí nebo nastaví cílové URL formuláøe. Atribut Action formuláøe.
-		/// Pokud není explicitnì nastaveno, vrací automaticky Microsoft implementaci (vèetnì QueryStringu).
+		/// VrÃ¡tÃ­ nebo nastavÃ­ cÃ­lovÃ© URL formulÃ¡Å™e. Atribut Action formulÃ¡Å™e.
+		/// Pokud nenÃ­ explicitnÄ› nastaveno, vracÃ­ automaticky Microsoft implementaci (vÄetnÄ› QueryStringu).
 		/// </summary>
-		/// <remarks>Nedìlá se ResolveUrl.</remarks>
+		/// <remarks>NedÄ›lÃ¡ se ResolveUrl.</remarks>
 		[
-			Description("Vrátí nebo nastaví cílové URL formuláøe. Atribut Action formuláøe."),
+			Description("VrÃ¡tÃ­ nebo nastavÃ­ cÃ­lovÃ© URL formulÃ¡Å™e. Atribut Action formulÃ¡Å™e."),
 			Category("Behavior"),
 			DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden),
 		]
@@ -42,7 +42,7 @@ namespace Havit.Web.UI.HtmlControls
 
 		#region RenderAttributes
 		/// <summary>
-		/// Overriden. Zajišuje vlastní renderování atributu Action
+		/// Overriden. ZajiÅ¡Å¥uje vlastnÃ­ renderovÃ¡nÃ­ atributu Action
 		/// </summary>
 		/// <param name="writer"></param>
 		protected override void RenderAttributes(System.Web.UI.HtmlTextWriter writer) 
@@ -73,20 +73,20 @@ namespace Havit.Web.UI.HtmlControls
 				writer.WriteAttribute("id", this.ClientID);
 			}
 			
-			// nelze volat base.RenderAttributes(), take
-			// voláno z HtmlContainerControl
+			// nelze volat base.RenderAttributes(), takÅ¾e
+			// volÃ¡no z HtmlContainerControl
 			this.ViewState.Remove("innerhtml");
 
-			// voláno v HtmlControl
+			// volÃ¡no v HtmlControl
 			this.Attributes.Render(writer);
 		}
 		#endregion
 
 		#region GetBaseActionAttribute, Page_ClientOnSubmitEvent
 		/// <summary>
-		/// Pomocí reflexe vrátí pùvodní private base.GetActionAttribute()
+		/// PomocÃ­ reflexe vrÃ¡tÃ­ pÅ¯vodnÃ­ private base.GetActionAttribute()
 		/// </summary>
-		/// <returns>Microsoft implementace action atributu formuláøe</returns>
+		/// <returns>Microsoft implementace action atributu formulÃ¡Å™e</returns>
 		private string GetBaseActionAttribute() 
 		{
 			Type formType = typeof(System.Web.UI.HtmlControls.HtmlForm);
@@ -96,7 +96,7 @@ namespace Havit.Web.UI.HtmlControls
 		}
 
 		/// <summary>
-		/// Pomocí reflexe vrátí internal ClientOnSubmitEvent vlastnost Page
+		/// PomocÃ­ reflexe vrÃ¡tÃ­ internal ClientOnSubmitEvent vlastnost Page
 		/// </summary>
 		private string Page_ClientOnSubmitEvent 
 		{

@@ -1,18 +1,18 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Havit.Business.Query
 {
 	/// <summary>
-	/// Vytváøí podmínky, které nic netestují.
-	/// Nyní je taková podmínka reprezentována hodnotou null.
+	/// VytvÃ¡Å™Ã­ podmÃ­nky, kterÃ© nic netestujÃ­.
+	/// NynÃ­ je takovÃ¡ podmÃ­nka reprezentovÃ¡na hodnotou null.
 	/// </summary>
 	public static class EmptyCondition
 	{
 		#region Create
 		/// <summary>
-		/// Vytvoøí podmínku reprezentující prázdnou podmínku (nic není testováno). Nyní vrací null.
+		/// VytvoÅ™Ã­ podmÃ­nku reprezentujÃ­cÃ­ prÃ¡zdnou podmÃ­nku (nic nenÃ­ testovÃ¡no). NynÃ­ vracÃ­ null.
 		/// </summary>
 		/// <returns></returns>
 		public static Condition Create()

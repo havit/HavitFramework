@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Globalization;
 using System.Web;
 using System.Web.UI;
@@ -9,7 +9,7 @@ using System.Threading;
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
-	/// NumericBox slouí k zadání èísla.
+	/// NumericBox slouÅ¾Ã­ k zadÃ¡nÃ­ ÄÃ­sla.
 	/// </summary>
 	[Themeable(true)]
 	[ValidationProperty("NumberText")]	
@@ -29,7 +29,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region AutoPostBack
 		/// <summary>
-		/// Udává, zda má po zmìnì hodnoty v UI dojít k postbacku.
+		/// UdÃ¡vÃ¡, zda mÃ¡ po zmÄ›nÄ› hodnoty v UI dojÃ­t k postbacku.
 		/// </summary>
 		public bool AutoPostBack
 		{
@@ -40,8 +40,8 @@ namespace Havit.Web.UI.WebControls
 
 		#region Enabled
 		/// <summary>
-		/// Udává, zda je control pro zadání èísla povolen.
-		/// Pokud je zakázán, není moné v UI zadávat hodnotu.
+		/// UdÃ¡vÃ¡, zda je control pro zadÃ¡nÃ­ ÄÃ­sla povolen.
+		/// Pokud je zakÃ¡zÃ¡n, nenÃ­ moÅ¾nÃ© v UI zadÃ¡vat hodnotu.
 		/// </summary>
 		public bool Enabled
 		{
@@ -52,8 +52,8 @@ namespace Havit.Web.UI.WebControls
 
 		#region Decimals
 		/// <summary>
-		/// Nastavuje poèet desetinnıch míst, které lze v UI zadat. Na tento poèet desetinnıch míst se èíslo formátuje pro zobrazení.
-		/// Vıchozí hodnota je 0.
+		/// Nastavuje poÄet desetinnÃ½ch mÃ­st, kterÃ© lze v UI zadat. Na tento poÄet desetinnÃ½ch mÃ­st se ÄÃ­slo formÃ¡tuje pro zobrazenÃ­.
+		/// VÃ½chozÃ­ hodnota je 0.
 		/// </summary>
 		public int Decimals
 		{
@@ -65,8 +65,8 @@ namespace Havit.Web.UI.WebControls
 
 		#region AllowNegativeNumber
 		/// <summary>
-		/// Udává, zda je povoleno zadávat v UI záporná èísla (tj. znak "-").
-		/// Vıchozí hodnota je false.
+		/// UdÃ¡vÃ¡, zda je povoleno zadÃ¡vat v UI zÃ¡pornÃ¡ ÄÃ­sla (tj. znak "-").
+		/// VÃ½chozÃ­ hodnota je false.
 		/// </summary>
 		public bool AllowNegativeNumber
 		{
@@ -78,8 +78,8 @@ namespace Havit.Web.UI.WebControls
 
 		#region ZeroAsEmpty
 		/// <summary>
-		/// Zobrazí editovací okno jako prázdné, pokud je v nastavena hodnota nula a naopak (prázdná hodnota je vracena jako nula).
-		/// Vıchozí hodnota je false.
+		/// ZobrazÃ­ editovacÃ­ okno jako prÃ¡zdnÃ©, pokud je v nastavena hodnota nula a naopak (prÃ¡zdnÃ¡ hodnota je vracena jako nula).
+		/// VÃ½chozÃ­ hodnota je false.
 		/// </summary>
 		public bool ZeroAsEmpty
 		{
@@ -90,7 +90,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region ReadOnly
 		/// <summary>
-		/// Udává, zda lze hodnotu v textovém políèku editovat.
+		/// UdÃ¡vÃ¡, zda lze hodnotu v textovÃ©m polÃ­Äku editovat.
 		/// </summary>
 		public bool ReadOnly
 		{
@@ -107,7 +107,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region KeyBlockingClientScriptEnabled
 		/// <summary>
-		/// Udává, zda se pro zapouzdøenı textbox pouije javascript, kterı brání vloení nepovolenıch znakù. Vıchozí hodnota je true.
+		/// UdÃ¡vÃ¡, zda se pro zapouzdÅ™enÃ½ textbox pouÅ¾ije javascript, kterÃ½ brÃ¡nÃ­ vloÅ¾enÃ­ nepovolenÃ½ch znakÅ¯. VÃ½chozÃ­ hodnota je true.
 		/// </summary>
 		public bool KeyBlockingClientScriptEnabled
 		{
@@ -127,7 +127,7 @@ namespace Havit.Web.UI.WebControls
 		#region Appereance properties
 		#region Style
 		/// <summary>
-		/// Stylování ValueTextBoxu.
+		/// StylovÃ¡nÃ­ ValueTextBoxu.
 		/// </summary>
 		public Style ValueBoxStyle
 		{
@@ -158,7 +158,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region MaxLength
 		/// <summary>
-		/// Maximální délka <strong>textu</strong> zapsatelná do NumericBoxu.
+		/// MaximÃ¡lnÃ­ dÃ©lka <strong>textu</strong> zapsatelnÃ¡ do NumericBoxu.
 		/// </summary>
 		public int MaxLength
 		{
@@ -172,8 +172,8 @@ namespace Havit.Web.UI.WebControls
 
 		#region Value
 		/// <summary>
-		/// Vrací zadané èíslo. Není-li zadán ádnı text, vrací null (pokud je ZeroAsEmpty, vrací nulu).
-		/// Je-li zadáno neplatné èíslo, vyhodí vıjimku.
+		/// VracÃ­ zadanÃ© ÄÃ­slo. NenÃ­-li zadÃ¡n Å¾Ã¡dnÃ½ text, vracÃ­ null (pokud je ZeroAsEmpty, vracÃ­ nulu).
+		/// Je-li zadÃ¡no neplatnÃ© ÄÃ­slo, vyhodÃ­ vÃ½jimku.
 		/// </summary>
 		[Themeable(false)]
 		public decimal? Value
@@ -203,8 +203,8 @@ namespace Havit.Web.UI.WebControls
 
 		#region ValueAsInt
 		/// <summary>
-		/// Vrací zadané èíslo jako Int32. Není-li zadán ádnı text, vrací null (pokud je ZeroAsEmpty, vrací nulu).
-		/// Je-li zadáno neplatné èíslo, vyhodí vıjimku.
+		/// VracÃ­ zadanÃ© ÄÃ­slo jako Int32. NenÃ­-li zadÃ¡n Å¾Ã¡dnÃ½ text, vracÃ­ null (pokud je ZeroAsEmpty, vracÃ­ nulu).
+		/// Je-li zadÃ¡no neplatnÃ© ÄÃ­slo, vyhodÃ­ vÃ½jimku.
 		/// </summary>
 		public int? ValueAsInt
 		{
@@ -222,7 +222,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region IsValid
 		/// <summary>
-		/// Vrací true, pokud obsahuje platné èíslo (tj. prázdnou hodnotu NEBO "validní" datum).
+		/// VracÃ­ true, pokud obsahuje platnÃ© ÄÃ­slo (tj. prÃ¡zdnou hodnotu NEBO "validnÃ­" datum).
 		/// </summary>
 		public bool IsValid
 		{
@@ -235,7 +235,7 @@ namespace Havit.Web.UI.WebControls
 					return true;
 				}
 
-				// pokud nemùeme èíslo pøevést na decimal, je to špatnì
+				// pokud nemÅ¯Å¾eme ÄÃ­slo pÅ™evÃ©st na decimal, je to Å¡patnÄ›
 				Decimal resultDecimal;
 				return Decimal.TryParse(numberText, NumberStyles.Number, Thread.CurrentThread.CurrentCulture.NumberFormat, out resultDecimal);
 			}
@@ -244,8 +244,8 @@ namespace Havit.Web.UI.WebControls
 
 		#region NumberText
 		/// <summary>
-		/// Hodnota zadaná v textovém políèku oøezanou o whitespaces (i z prostøedka textu, nikoliv prostı trim).
-		/// Vlastnost není urèena pro zpracování, slouí pro validátory a pro parsování hodnoty na èíslo.
+		/// Hodnota zadanÃ¡ v textovÃ©m polÃ­Äku oÅ™ezanou o whitespaces (i z prostÅ™edka textu, nikoliv prostÃ½ trim).
+		/// Vlastnost nenÃ­ urÄena pro zpracovÃ¡nÃ­, slouÅ¾Ã­ pro validÃ¡tory a pro parsovÃ¡nÃ­ hodnoty na ÄÃ­slo.
 		/// </summary>
 		public string NumberText
 		{
@@ -259,19 +259,19 @@ namespace Havit.Web.UI.WebControls
 
 		#region ValueChanged
 		/// <summary>
-		/// Událost je vyvolána, kdykoliv uivatel zmìní editovanou hodnotu, resp. kdykoliv se po uivatelovì zásahu zmìní hodnota Value.
-		/// (programová zmìna Value nevyvolá událost ValueChanged).
-		/// Událost je vyvolána v situacích:
+		/// UdÃ¡lost je vyvolÃ¡na, kdykoliv uÅ¾ivatel zmÄ›nÃ­ editovanou hodnotu, resp. kdykoliv se po uÅ¾ivatelovÄ› zÃ¡sahu zmÄ›nÃ­ hodnota Value.
+		/// (programovÃ¡ zmÄ›na Value nevyvolÃ¡ udÃ¡lost ValueChanged).
+		/// UdÃ¡lost je vyvolÃ¡na v situacÃ­ch:
 		/// <list>
-		///		<item>hodnota 1 &lt;--^gt; hodnota 2 (napø. "1" na "2")</item> 
-		///		<item>hodnota 1 &lt;--^gt; chybná hodnota (napø. "1" na "xx")</item> 
-		///		<item>hodnota 1 &lt;--^gt; ádná hodnota (napø. "" na "xx")</item> 
+		///		<item>hodnota 1 &lt;--^gt; hodnota 2 (napÅ™. "1" na "2")</item> 
+		///		<item>hodnota 1 &lt;--^gt; chybnÃ¡ hodnota (napÅ™. "1" na "xx")</item> 
+		///		<item>hodnota 1 &lt;--^gt; Å¾Ã¡dnÃ¡ hodnota (napÅ™. "" na "xx")</item> 
 		/// </list>
-		/// Událost NENÍ vyvolána pøi zmìnì formátu hodnoty, napø.
+		/// UdÃ¡lost NENÃ vyvolÃ¡na pÅ™i zmÄ›nÄ› formÃ¡tu hodnoty, napÅ™.
 		/// <list>
-		///		<item>Zmìna formátu data: "1" na "01")</item> 
-		///		<item>Èásteèná (neúplná) korekce chyby (napø. "xx1" na "x1")</item> 
-		///		<item>Úprava prázdné hodnoty (napø. "" na "(mezera)" )</item>
+		///		<item>ZmÄ›na formÃ¡tu data: "1" na "01")</item> 
+		///		<item>ÄŒÃ¡steÄnÃ¡ (neÃºplnÃ¡) korekce chyby (napÅ™. "xx1" na "x1")</item> 
+		///		<item>Ãšprava prÃ¡zdnÃ© hodnoty (napÅ™. "" na "(mezera)" )</item>
 		/// </list>
 		/// </summary>
 		public event EventHandler ValueChanged
@@ -324,7 +324,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region CausesValidation
 		/// <summary>
-		/// Urèuje, zda dochází k validaci pøi postbacku zpùsobenım tímto controlem (autopostback).
+		/// UrÄuje, zda dochÃ¡zÃ­ k validaci pÅ™i postbacku zpÅ¯sobenÃ½m tÃ­mto controlem (autopostback).
 		/// </summary>
 		public bool CausesValidation
 		{
@@ -427,7 +427,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region RegisterScripts
 		/// <summary>
-		/// Registruje klientské skripty omezující vstup z klávesnice.
+		/// Registruje klientskÃ© skripty omezujÃ­cÃ­ vstup z klÃ¡vesnice.
 		/// </summary>
 		private void RegisterScripts()
 		{
@@ -445,9 +445,9 @@ namespace Havit.Web.UI.WebControls
 
 			// !window.event && e.ctrlKey && ... ( ... charCode == 86 || charCode == 118) ... podpora Ctrl-a|x|c|v ve Firefoxu
 			// ((charCode >= 48) && (charCode <= 57)) ... znaky 0-9
-			// (charCode < 31) .. speciální symboly (Home, End, Enter, Backspace, apod.)
-			// (allowNegativeNumber && (charCode == 45)) ... znaménko mínus, je-li povolena záporná èísla
-			// ((decimals > 0) && ... ) ... desetinnı oddìlovaè, jsou-li desetinná místa povolena a zároveò ještì desetinnı oddìlovaè není uveden
+			// (charCode < 31) .. speciÃ¡lnÃ­ symboly (Home, End, Enter, Backspace, apod.)
+			// (allowNegativeNumber && (charCode == 45)) ... znamÃ©nko mÃ­nus, je-li povolena zÃ¡pornÃ¡ ÄÃ­sla
+			// ((decimals > 0) && ... ) ... desetinnÃ½ oddÄ›lovaÄ, jsou-li desetinnÃ¡ mÃ­sta povolena a zÃ¡roveÅˆ jeÅ¡tÄ› desetinnÃ½ oddÄ›lovaÄ nenÃ­ uveden
 			string javaScript =
 @"function HavitNumericBox_KeyPress(e, allowNegativeNumber, decimals)
 {
@@ -495,9 +495,9 @@ function HavitNumericBox_Focus(e)
 		#region ClientID
 		/// <summary>
 		/// ClientID (overriden).
-		/// Vrací ClientID obsaeného TextBoxu pro zadávání hodnoty.
-		/// To øeší klientské validátory, které natrvdo pøedpokládají, e validovanı control (podle ClientID)
-		/// obsahuje klientskou vlastnost "value". Tímto klientskému validátoru místo DateTimeBoxu podstrèíme nested TextBox.
+		/// VracÃ­ ClientID obsaÅ¾enÃ©ho TextBoxu pro zadÃ¡vÃ¡nÃ­ hodnoty.
+		/// To Å™eÅ¡Ã­ klientskÃ© validÃ¡tory, kterÃ© natrvdo pÅ™edpoklÃ¡dajÃ­, Å¾e validovanÃ½ control (podle ClientID)
+		/// obsahuje klientskou vlastnost "value". TÃ­mto klientskÃ©mu validÃ¡toru mÃ­sto DateTimeBoxu podstrÄÃ­me nested TextBox.
 		/// </summary>
 		public override string ClientID
 		{
@@ -510,8 +510,8 @@ function HavitNumericBox_Focus(e)
 
 		#region ValueTextBox_TextChanged
 		/// <summary>
-		/// Obsluha zmìny textu v nested controlu.
-		/// Ovìøuje, zda došlo ke zmìnì hodnoty a pokud ano, vyvolá prostøednictvím metody OnValueChanged událost ValueChanged.
+		/// Obsluha zmÄ›ny textu v nested controlu.
+		/// OvÄ›Å™uje, zda doÅ¡lo ke zmÄ›nÄ› hodnoty a pokud ano, vyvolÃ¡ prostÅ™ednictvÃ­m metody OnValueChanged udÃ¡lost ValueChanged.
 		/// </summary>
 		private void ValueTextBox_TextChanged(object sender, EventArgs e)
 		{
@@ -524,8 +524,8 @@ function HavitNumericBox_Focus(e)
 
 		#region GetValueMemento
 		/// <summary>
-		/// Metoda vrací editovanou hodnotu jako stav.
-		/// Slouí k detekci, zda došlo ke zmìnì hodnoty mezi postbacky.
+		/// Metoda vracÃ­ editovanou hodnotu jako stav.
+		/// SlouÅ¾Ã­ k detekci, zda doÅ¡lo ke zmÄ›nÄ› hodnoty mezi postbacky.
 		/// </summary>
 		private object GetValueMemento()
 		{
@@ -542,7 +542,7 @@ function HavitNumericBox_Focus(e)
 
 		#region OnValueChanged
 		/// <summary>
-		/// Vyvolává událost ValueChanged. Více viz ValueChanged.
+		/// VyvolÃ¡vÃ¡ udÃ¡lost ValueChanged. VÃ­ce viz ValueChanged.
 		/// </summary>
 		private void OnValueChanged(EventArgs eventArgs)
 		{

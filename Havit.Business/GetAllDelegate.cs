@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 using System.Collections.Generic;
 using System.Text;
 using System.Collections;
@@ -6,8 +6,8 @@ using System.Collections;
 namespace Havit.Business
 {
 	/// <summary>
-	/// Deleg·t na metodu GetAll.
+	/// Deleg√°t na metodu GetAll.
 	/// </summary>
-	/// <returns>VracÌ vöechny (nesmazanÈ) objekty danÈ t¯Ìdy.</returns>
+	/// <returns>Vrac√≠ v≈°echny (nesmazan√©) objekty dan√© t≈ô√≠dy.</returns>
 	public delegate ICollection GetAllDelegate();
 }

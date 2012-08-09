@@ -1,13 +1,13 @@
-using System;
+Ôªøusing System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Havit.Business
 {
 	/// <summary>
-	/// Deleg·t na metodu GetObject.
+	/// Deleg√°t na metodu GetObject.
 	/// </summary>
-	/// <param name="objectID">ID objektu, kter˝ se m· metodou vr·tit.</param>
-	/// <returns>Business objekt na z·kladÏ ID.</returns>
+	/// <param name="objectID">ID objektu, kter√Ω se m√° metodou vr√°tit.</param>
+	/// <returns>Business objekt na z√°kladƒõ ID.</returns>
 	public delegate BusinessObjectBase GetObjectDelegate(int objectID);
 }

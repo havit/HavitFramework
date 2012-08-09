@@ -1,11 +1,11 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
-	/// Styl zobrazení kalendáøe. Urèuje, jaké styly jsou automaticky pøipojeny.
+	/// Styl zobrazenÃ­ kalendÃ¡Å™e. UrÄuje, jakÃ© styly jsou automaticky pÅ™ipojeny.
 	/// </summary>
 	public enum DynarchCalendarSkin
 	{

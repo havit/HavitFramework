@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,9 +8,9 @@ namespace Havit
 	/// Interface pro typovou konverzi.
 	/// </summary>
 	/// <remarks>
-	/// Pouíváno napø. v BL pro konverzi mezi DB typem a BL typem property.
+	/// PouÅ¾Ã­vÃ¡no napÅ™. v BL pro konverzi mezi DB typem a BL typem property.
 	/// </remarks>
-	/// <typeparam name="T">Typ, pro kterı je type-converter urèen.</typeparam>
+	/// <typeparam name="T">Typ, pro kterÃ½ je type-converter urÄen.</typeparam>
 	public interface ITypeConverter<T>
 	{
 		/// <summary>

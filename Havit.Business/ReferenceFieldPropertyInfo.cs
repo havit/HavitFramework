@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using Havit.Business;
@@ -7,8 +7,8 @@ using System.Data;
 namespace Havit.Business
 {
 	/// <summary>
-	/// Reprezentuje sloupec v databázi,
-	/// kterı je referencí na jinı typ (je cizím klíèem do jiné tabulky).
+	/// Reprezentuje sloupec v databÃ¡zi,
+	/// kterÃ½ je referencÃ­ na jinÃ½ typ (je cizÃ­m klÃ­Äem do jinÃ© tabulky).
 	/// </summary>
 	[Serializable]
 	public class ReferenceFieldPropertyInfo : FieldPropertyInfo
@@ -17,15 +17,15 @@ namespace Havit.Business
 		/// <summary>
 		/// Inicializuje instanci sloupce.
 		/// </summary>
-		/// <param name="owner">Nadøazenı objectInfo.</param>
-		/// <param name="propertyName">Název property.</param>
-		/// <param name="fieldName">Název sloupce v databázy.</param>
-		/// <param name="isPrimaryKey">Indikuje, zda je sloupec primárním klíèem</param>
+		/// <param name="owner">NadÅ™azenÃ½ objectInfo.</param>
+		/// <param name="propertyName">NÃ¡zev property.</param>
+		/// <param name="fieldName">NÃ¡zev sloupce v databÃ¡zy.</param>
+		/// <param name="isPrimaryKey">Indikuje, zda je sloupec primÃ¡rnÃ­m klÃ­Äem</param>
 		/// <param name="nullable">Indukuje, zda je povolena hodnota null.</param>
-		/// <param name="fieldType">Typ databázového sloupce.</param>
-		/// <param name="maximumLength">Maximální délka dat databázového sloupce.</param>		
-		/// <param name="targetType">Typ, jen property nese.</param>
-		/// <param name="targetObjectInfo">ObjectInfo na typ, jen property nese.</param>
+		/// <param name="fieldType">Typ databÃ¡zovÃ©ho sloupce.</param>
+		/// <param name="maximumLength">MaximÃ¡lnÃ­ dÃ©lka dat databÃ¡zovÃ©ho sloupce.</param>		
+		/// <param name="targetType">Typ, jenÅ¾ property nese.</param>
+		/// <param name="targetObjectInfo">ObjectInfo na typ, jenÅ¾ property nese.</param>
 		public void Initialize(ObjectInfo owner, string propertyName, string fieldName, bool isPrimaryKey, SqlDbType fieldType, bool nullable, int maximumLength, Type targetType, ObjectInfo targetObjectInfo)
 		{
 			Initialize(owner, propertyName, fieldName, isPrimaryKey, fieldType, nullable, maximumLength);
@@ -36,7 +36,7 @@ namespace Havit.Business
 
 		#region TargetType
 		/// <summary>
-		/// Typ, jen property nese.
+		/// Typ, jenÅ¾ property nese.
 		/// </summary>
 		public Type TargetType
 		{
@@ -47,7 +47,7 @@ namespace Havit.Business
 
 		#region TargetObjectInfo
 		/// <summary>
-		/// Delegát na metodu vracející objekt na základì ID.
+		/// DelegÃ¡t na metodu vracejÃ­cÃ­ objekt na zÃ¡kladÄ› ID.
 		/// </summary>
 		public ObjectInfo TargetObjectInfo
 		{

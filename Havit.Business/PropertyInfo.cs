@@ -1,11 +1,11 @@
-using System;
+Ôªøusing System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Havit.Business
 {
 	/// <summary>
-	/// B·zov· t¯Ìda pro vöechny property-info objektu.
+	/// B√°zov√° t≈ô√≠da pro v≈°echny property-info objektu.
 	/// </summary>
 	public abstract class PropertyInfo
 	{
@@ -13,8 +13,8 @@ namespace Havit.Business
 		/// <summary>
 		/// Inicializuje instanci.
 		/// </summary>
-		/// <param name="owner">ObjectInfo vlastnÌcÌ property.</param>
-		/// <param name="propertyName">N·zev vlastnosti.</param>
+		/// <param name="owner">ObjectInfo vlastn√≠c√≠ property.</param>
+		/// <param name="propertyName">N√°zev vlastnosti.</param>
 		protected virtual void Initialize(ObjectInfo owner, string propertyName)
 		{
 			this.owner = owner;
@@ -29,7 +29,7 @@ namespace Havit.Business
 
 		#region Owner
 		/// <summary>
-		/// T¯Ìda, kterÈ property n·leûÌ.
+		/// T≈ô√≠da, kter√© property n√°le≈æ√≠.
 		/// </summary>
 		public ObjectInfo Owner
 		{
@@ -40,7 +40,7 @@ namespace Havit.Business
 
 		#region PropertyName
 		/// <summary>
-		/// N·zev property reprezentovanÈ instancÌ.
+		/// N√°zev property reprezentovan√© instanc√≠.
 		/// </summary>
 		public string PropertyName
 		{
@@ -51,13 +51,13 @@ namespace Havit.Business
 
 		#region CheckInitialization
 		/// <summary>
-		/// OvÏ¯Ì, ûe byla instance inicializov·na. Pokud ne, vyhodÌ v˝jimku.
+		/// Ovƒõ≈ô√≠, ≈æe byla instance inicializov√°na. Pokud ne, vyhod√≠ v√Ωjimku.
 		/// </summary>
 		protected void CheckInitialization()
 		{
 			if (!isInitialized)
 			{
-				throw new InvalidOperationException("Instance nebyla inicializov·na.");
+				throw new InvalidOperationException("Instance nebyla inicializov√°na.");
 			}
 		}
 		#endregion

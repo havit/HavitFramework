@@ -1,9 +1,9 @@
-using System.Xml.Serialization;
+ï»¿using System.Xml.Serialization;
 
 namespace Havit.Xml.Rss
 {
 	/// <summary>
-	/// Tøída reprezentující RSS prvek "item".
+	/// TÅ™Ã­da reprezentujÃ­cÃ­ RSS prvek "item".
 	/// </summary>
 	[XmlRoot("item")]
 	public class RssItem
@@ -91,7 +91,7 @@ namespace Havit.Xml.Rss
 
 		/// <summary>
 		/// Includes the item in one or more categories.
-		/// Souèasná implementace umoòuje zadání pouze jedné kategorie.
+		/// SouÄasnÃ¡ implementace umoÅ¾Åˆuje zadÃ¡nÃ­ pouze jednÃ© kategorie.
 		/// </summary>
 		[XmlElement("category")]
 		public string Category
@@ -167,14 +167,14 @@ namespace Havit.Xml.Rss
 		/// Nutno nastavit Title, Link a Description !!!
 		/// </summary>
 		/// <remarks>
-		/// Nutno zachovat kvùli XmlSerializeru, kterı vyaduje pøítomnost default constructoru.
+		/// Nutno zachovat kvÅ¯li XmlSerializeru, kterÃ½ vyÅ¾aduje pÅ™Ã­tomnost default constructoru.
 		/// </remarks>
 		public RssItem()
 		{
 		}
 
 		/// <summary>
-		/// Vytvoøí RSS item s povinnımi polokami
+		/// VytvoÅ™Ã­ RSS item s povinnÃ½mi poloÅ¾kami
 		/// </summary>
 		public RssItem(string title, string link, string description)
 		{

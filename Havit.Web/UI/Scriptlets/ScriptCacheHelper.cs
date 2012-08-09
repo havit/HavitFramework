@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web;
@@ -6,15 +6,15 @@ using System.Web;
 namespace Havit.Web.UI.Scriptlets
 {
 	/// <summary>
-	/// Cache skriptù. Umoòuje sdílet skripty mezi instancemi skriptletu. Napø. pro skriptlet v øádcích repeateru, apod.
+	/// Cache skriptÅ¯. UmoÅ¾Åˆuje sdÃ­let skripty mezi instancemi skriptletu. NapÅ™. pro skriptlet v Å™Ã¡dcÃ­ch repeateru, apod.
 	/// </summary>
 	internal static class ScriptCacheHelper
 	{
 		#region FunctionCache (private)
 		/// <summary>
-		/// Cache pro klientské skripty. Klíèem je skript a parametry funkce, hodnotou je název funkce,
-		/// ve které je skript registrován.
-		/// Cache je uloena v HttpContextu.
+		/// Cache pro klientskÃ© skripty. KlÃ­Äem je skript a parametry funkce, hodnotou je nÃ¡zev funkce,
+		/// ve kterÃ© je skript registrovÃ¡n.
+		/// Cache je uloÅ¾ena v HttpContextu.
 		/// </summary>
 		private static Dictionary<string, string> FunctionCache
 		{
@@ -24,8 +24,8 @@ namespace Havit.Web.UI.Scriptlets
 
 				if (result == null)
 				{
-					// pokud cache ještì není, vytvoøíme ji a vrátíme
-					// ádné zámky (lock { ... }) nejsou potøeba, jsme stále v jednom HttpContextu
+					// pokud cache jeÅ¡tÄ› nenÃ­, vytvoÅ™Ã­me ji a vrÃ¡tÃ­me
+					// Å¾Ã¡dnÃ© zÃ¡mky (lock { ... }) nejsou potÅ™eba, jsme stÃ¡le v jednom HttpContextu
 					result = new Dictionary<string, string>();
 					HttpContext.Current.Items[typeof(ScriptCacheHelper)] = result;
 				}
@@ -37,11 +37,11 @@ namespace Havit.Web.UI.Scriptlets
 
 		#region AddFunctionToCache
 		/// <summary>
-		/// Pøidá kód s parametry (klíè) do cache pod zadanı název funkce (hodnota).
+		/// PÅ™idÃ¡ kÃ³d s parametry (klÃ­Ä) do cache pod zadanÃ½ nÃ¡zev funkce (hodnota).
 		/// </summary>
-		/// <param name="functionName">Název funkce, ve které je skript registrován.</param>
-		/// <param name="functionParameters">Názvy parametrù funkce.</param>
-		/// <param name="functionCode">Kód funkce.</param>
+		/// <param name="functionName">NÃ¡zev funkce, ve kterÃ© je skript registrovÃ¡n.</param>
+		/// <param name="functionParameters">NÃ¡zvy parametrÅ¯ funkce.</param>
+		/// <param name="functionCode">KÃ³d funkce.</param>
 		public static void AddFunctionToCache(string functionName, string[] functionParameters, string functionCode)
 		{
 			FunctionCache.Add(GetCacheKey(functionParameters, functionCode), functionName);
@@ -50,11 +50,11 @@ namespace Havit.Web.UI.Scriptlets
 
 		#region GetFunctionNameFromCache
 		/// <summary>
-		/// Vyhledá v cache a vrátí název funkce, se stejnımi parametry a kódem skriptu.
-		/// Pokud není název funkce nalezen, vrací null.
+		/// VyhledÃ¡ v cache a vrÃ¡tÃ­ nÃ¡zev funkce, se stejnÃ½mi parametry a kÃ³dem skriptu.
+		/// Pokud nenÃ­ nÃ¡zev funkce nalezen, vracÃ­ null.
 		/// </summary>
-		/// <param name="functionParameters">Názvy parametrù funkce.</param>
-		/// <param name="functionCode">Kód funkce.</param>
+		/// <param name="functionParameters">NÃ¡zvy parametrÅ¯ funkce.</param>
+		/// <param name="functionCode">KÃ³d funkce.</param>
 		public static string GetFunctionNameFromCache(string[] functionParameters, string functionCode)
 		{
 			string result;
@@ -71,7 +71,7 @@ namespace Havit.Web.UI.Scriptlets
 
 		#region GetCacheKey (private)
 		/// <summary>
-		/// Vrátí klíè do cache z parametrù.
+		/// VrÃ¡tÃ­ klÃ­Ä do cache z parametrÅ¯.
 		/// </summary>
 		private static string GetCacheKey(string[] parameters, string code)
 		{

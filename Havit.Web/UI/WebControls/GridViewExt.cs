@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI.WebControls;
@@ -12,17 +12,17 @@ using Havit.Collections;
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
-	/// GridView implementující hightlighting, sorting a vıchozí obsluhu událostí editace, stránkování, ...
+	/// GridView implementujÃ­cÃ­ hightlighting, sorting a vÃ½chozÃ­ obsluhu udÃ¡lostÃ­ editace, strÃ¡nkovÃ¡nÃ­, ...
 	/// </summary>
 	/// <remarks>
-	/// Funkènost <b>Sorting</b> ukládá nastavení øazení dle uivatele a pøípadnì zajišuje automatické øazení pomocí GenericPropertyCompareru.<br/>
-	/// Funkènost <b>Inserting</b> umoòuje pouití Insert-øádku pro pøidávání novıch poloek.<br/>
+	/// FunkÄnost <b>Sorting</b> uklÃ¡dÃ¡ nastavenÃ­ Å™azenÃ­ dle uÅ¾ivatele a pÅ™Ã­padnÄ› zajiÅ¡Å¥uje automatickÃ© Å™azenÃ­ pomocÃ­ GenericPropertyCompareru.<br/>
+	/// FunkÄnost <b>Inserting</b> umoÅ¾Åˆuje pouÅ¾itÃ­ Insert-Å™Ã¡dku pro pÅ™idÃ¡vÃ¡nÃ­ novÃ½ch poloÅ¾ek.<br/>
 	/// </remarks>
 	public class GridViewExt : HighlightingGridView, ICommandFieldStyle
 	{
 		#region GetInsertRowDataItem (delegate)
 		/// <summary>
-		/// Metoda, která vrací data-item nového Insert øádku. Obvykle pøednastaveno default hodnotami.
+		/// Metoda, kterÃ¡ vracÃ­ data-item novÃ©ho Insert Å™Ã¡dku. Obvykle pÅ™ednastaveno default hodnotami.
 		/// </summary>
 		public GetInsertRowDataItemDelegate GetInsertRowDataItem
 		{
@@ -40,11 +40,11 @@ namespace Havit.Web.UI.WebControls
 
 		#region AllowInserting
 		/// <summary>
-		/// Indikuje, zda-li je povoleno pøidávání novıch poloek øádkem Insert.
+		/// Indikuje, zda-li je povoleno pÅ™idÃ¡vÃ¡nÃ­ novÃ½ch poloÅ¾ek Å™Ã¡dkem Insert.
 		/// </summary>
 		/// <remarks>
-		/// Spolu s AllowInserting je potøeba nastavit delegáta <see cref="GetInsertRowDataItemDelegate" />
-		/// pro získávání vıchozích dat pro novou poloku. Dále lze nastavit pozici pomocí <see cref="InsertRowPosition"/>.
+		/// Spolu s AllowInserting je potÅ™eba nastavit delegÃ¡ta <see cref="GetInsertRowDataItemDelegate" />
+		/// pro zÃ­skÃ¡vÃ¡nÃ­ vÃ½chozÃ­ch dat pro novou poloÅ¾ku. DÃ¡le lze nastavit pozici pomocÃ­ <see cref="InsertRowPosition"/>.
 		/// </remarks>
 		[Browsable(true), DefaultValue("true"), Category("Behavior")]
 		public bool AllowInserting
@@ -63,7 +63,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region InsertPosition
 		/// <summary>
-		/// Indikuje, zda-li je povoleno pøidávání novıch poloek.
+		/// Indikuje, zda-li je povoleno pÅ™idÃ¡vÃ¡nÃ­ novÃ½ch poloÅ¾ek.
 		/// </summary>
 		public GridViewInsertRowPosition InsertRowPosition
 		{
@@ -81,10 +81,10 @@ namespace Havit.Web.UI.WebControls
 
 		#region InsertRowDataSourceIndex
 		/// <summary>
-		/// Pozice øádku pro insert.
+		/// Pozice Å™Ã¡dku pro insert.
 		/// </summary>
 		/// <remarks>
-		///  Nutno ukládat do viewstate kvùli zpìtné rekonstrukci øádkù bez data-bindingu. Jinak nechodí správnì eventy.
+		///  Nutno uklÃ¡dat do viewstate kvÅ¯li zpÄ›tnÃ© rekonstrukci Å™Ã¡dkÅ¯ bez data-bindingu. Jinak nechodÃ­ sprÃ¡vnÄ› eventy.
 		/// </remarks>
 		protected int InsertRowDataSourceIndex
 		{
@@ -102,7 +102,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region AutoSort
 		/// <summary>
-		/// Nastavuje, zda má pøi databindingu dojít k seøazení poloek podle nastavení.
+		/// Nastavuje, zda mÃ¡ pÅ™i databindingu dojÃ­t k seÅ™azenÃ­ poloÅ¾ek podle nastavenÃ­.
 		/// </summary>
 		public bool AutoSort
 		{
@@ -113,8 +113,8 @@ namespace Havit.Web.UI.WebControls
 
 		#region DefaultSortExpression
 		/// <summary>
-		/// Vıchozí øazení, které se pouije, pokud je povoleno automatické øazení nastavením vlastnosti AutoSort 
-		/// a uivatel dosu ádné øazení nezvolil.
+		/// VÃ½chozÃ­ Å™azenÃ­, kterÃ© se pouÅ¾ije, pokud je povoleno automatickÃ© Å™azenÃ­ nastavenÃ­m vlastnosti AutoSort 
+		/// a uÅ¾ivatel dosuÅ¾ Å¾Ã¡dnÃ© Å™azenÃ­ nezvolil.
 		/// </summary>
 		public string DefaultSortExpression
 		{
@@ -125,7 +125,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region SortExpressions
 		/// <summary>
-		/// Zajišuje práci se seznamem poloek, podle kterıch se øadí.
+		/// ZajiÅ¡Å¥uje prÃ¡ci se seznamem poloÅ¾ek, podle kterÃ½ch se Å™adÃ­.
 		/// </summary>
 		public SortExpressions SortExpressions
 		{
@@ -139,7 +139,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region AutoDataBind
 		/// <summary>
-		/// Nastavuje automatickı databind na GridView.		
+		/// Nastavuje automatickÃ½ databind na GridView.		
 		/// </summary>
 		public bool AutoDataBind
 		{
@@ -156,7 +156,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region CommandFieldStyle
 		/// <summary>
-		/// Skinovatelné vlastnosti, které se mají pøedat CommandFieldu.
+		/// SkinovatelnÃ© vlastnosti, kterÃ© se majÃ­ pÅ™edat CommandFieldu.
 		/// </summary>
 		[Category("Styles")]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
@@ -182,7 +182,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region RequiresDataBinding (new), SetRequiresDatabinding
 		/// <summary>
-		/// Zpøístupòuje pro ètení chránìnou vlastnost RequiresDataBinding.
+		/// ZpÅ™Ã­stupÅˆuje pro ÄtenÃ­ chrÃ¡nÄ›nou vlastnost RequiresDataBinding.
 		/// </summary>
 		public new bool RequiresDataBinding
 		{
@@ -197,7 +197,7 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// Nastaví RequiresDataBinding na true.
+		/// NastavÃ­ RequiresDataBinding na true.
 		/// </summary>
 		public void SetRequiresDatabinding()
 		{
@@ -207,10 +207,10 @@ namespace Havit.Web.UI.WebControls
 
 		#region Events - RowInserting, RowInserted, RowCustomizingCommandButton
 		/// <summary>
-		/// Událost, která se volá pøi vloení nového øádku (kliknutí na tlaèítko Insert).
+		/// UdÃ¡lost, kterÃ¡ se volÃ¡ pÅ™i vloÅ¾enÃ­ novÃ©ho Å™Ã¡dku (kliknutÃ­ na tlaÄÃ­tko Insert).
 		/// </summary>
 		/// <remarks>
-		/// Obsluha události má vyzvednout data a zaloit novı záznam.
+		/// Obsluha udÃ¡losti mÃ¡ vyzvednout data a zaloÅ¾it novÃ½ zÃ¡znam.
 		/// </remarks>
 		[Category("Action")]
 		public event GridViewInsertEventHandler RowInserting
@@ -220,7 +220,7 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// Událost, která se volá po vloení nového øádku (po události RowInserting).
+		/// UdÃ¡lost, kterÃ¡ se volÃ¡ po vloÅ¾enÃ­ novÃ©ho Å™Ã¡dku (po udÃ¡losti RowInserting).
 		/// </summary>
 		[Category("Action")]
 		public event GridViewInsertedEventHandler RowInserted
@@ -230,7 +230,7 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// Událost, která se volá pøi customizaci command-buttonu øádku (implementováno v <see cref="GridViewCommandField"/>).
+		/// UdÃ¡lost, kterÃ¡ se volÃ¡ pÅ™i customizaci command-buttonu Å™Ã¡dku (implementovÃ¡no v <see cref="GridViewCommandField"/>).
 		/// </summary>
 		[Category("Action")]
 		public event GridViewRowCustomizingCommandButtonEventHandler RowCustomizingCommandButton
@@ -247,7 +247,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region AllPagesShowing
 		/// <summary>
-		/// Událost, která se volá pøi obsluze kliknutí na tlaèítko "All Pages" (tlaèítko, vypínající stránkování). Dává monost zrušit akci.
+		/// UdÃ¡lost, kterÃ¡ se volÃ¡ pÅ™i obsluze kliknutÃ­ na tlaÄÃ­tko "All Pages" (tlaÄÃ­tko, vypÃ­najÃ­cÃ­ strÃ¡nkovÃ¡nÃ­). DÃ¡vÃ¡ moÅ¾nost zruÅ¡it akci.
 		/// </summary>
 		[Category("Action")]
 		public event CancelEventHandler AllPagesShowing
@@ -259,7 +259,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region AllPagesShown
 		/// <summary>
-		/// Událost oznamující obslouení kliknutí na tlaèítko "All Pages" (tlaèítko, vypínající stránkování).
+		/// UdÃ¡lost oznamujÃ­cÃ­ obslouÅ¾enÃ­ kliknutÃ­ na tlaÄÃ­tko "All Pages" (tlaÄÃ­tko, vypÃ­najÃ­cÃ­ strÃ¡nkovÃ¡nÃ­).
 		/// </summary>
 		[Category("Action")]
 		public event EventHandler AllPagesShown
@@ -278,7 +278,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region InsertIndex
 		/// <summary>
-		/// Index øádku (RowIndex) vkládaného prvku. Pokud nejsme v insert módu, je -1.
+		/// Index Å™Ã¡dku (RowIndex) vklÃ¡danÃ©ho prvku. Pokud nejsme v insert mÃ³du, je -1.
 		/// </summary>
 		public int InsertIndex
 		{
@@ -291,14 +291,14 @@ namespace Havit.Web.UI.WebControls
 
 		#region insertRowIndex (private)
 		/// <summary>
-		/// Skuteènı index InsertRow na stránce.
+		/// SkuteÄnÃ½ index InsertRow na strÃ¡nce.
 		/// </summary>
 		private int insertRowIndex = -1;
 		#endregion
 
 		#region Constructor
 		/// <summary>
-		/// Vytvoøí instanci GridViewExt. Nastavuje defaultnì AutoGenerateColumns na false.
+		/// VytvoÅ™Ã­ instanci GridViewExt. Nastavuje defaultnÄ› AutoGenerateColumns na false.
 		/// </summary>
 		public GridViewExt()
 		{
@@ -314,9 +314,9 @@ namespace Havit.Web.UI.WebControls
 		{
 			base.OnInit(e);
 
-			// Pokud dojde k vyvolání události, kterı nemá obsluhu, je vyvolána vıjimka.
-			// Protoe ale nìkteré záleitosti øešíme sami, nastavíme "prázdné" obsluhy událostí
-			// (nasmìrujeme je do èerné díry).			
+			// Pokud dojde k vyvolÃ¡nÃ­ udÃ¡losti, kterÃ½ nemÃ¡ obsluhu, je vyvolÃ¡na vÃ½jimka.
+			// ProtoÅ¾e ale nÄ›kterÃ© zÃ¡leÅ¾itosti Å™eÅ¡Ã­me sami, nastavÃ­me "prÃ¡zdnÃ©" obsluhy udÃ¡lostÃ­
+			// (nasmÄ›rujeme je do ÄernÃ© dÃ­ry).			
 			this.PageIndexChanging += new GridViewPageEventHandler(GridViewExt_EventBlackHole);
 			this.RowCancelingEdit += new GridViewCancelEditEventHandler(GridViewExt_EventBlackHole);
 			this.RowDeleting += new GridViewDeleteEventHandler(GridViewExt_EventBlackHole);
@@ -331,17 +331,17 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-		#region GetKeyValue - Hledání klíèe poloky
+		#region GetKeyValue - HledÃ¡nÃ­ klÃ­Äe poloÅ¾ky
 		/// <summary>
-		/// Nalezne hodnotu klíèe poloky, ve kterém se nachází control.
+		/// Nalezne hodnotu klÃ­Äe poloÅ¾ky, ve kterÃ©m se nachÃ¡zÃ­ control.
 		/// </summary>
-		/// <param name="control">Control. Hledá se øádek, ve kterém se GridViewRow nalézá a DataKey øádku.</param>
-		/// <returns>Vrací hodnotu klíèe.</returns>
+		/// <param name="control">Control. HledÃ¡ se Å™Ã¡dek, ve kterÃ©m se GridViewRow nalÃ©zÃ¡ a DataKey Å™Ã¡dku.</param>
+		/// <returns>VracÃ­ hodnotu klÃ­Äe.</returns>
 		public DataKey GetRowKey(Control control)
 		{
 			if (DataKeyNames.Length == 0)
 			{
-				throw new InvalidOperationException("Není nastavena property DataKeyNames, nelze pracovat s klíèi.");
+				throw new InvalidOperationException("NenÃ­ nastavena property DataKeyNames, nelze pracovat s klÃ­Äi.");
 			}
 
 			GridViewRow row = GetRow(control);			
@@ -349,15 +349,15 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// Nalezne hodnotu klíèe poloky na základì události.
+		/// Nalezne hodnotu klÃ­Äe poloÅ¾ky na zÃ¡kladÄ› udÃ¡losti.
 		/// </summary>
-		/// <param name="e">Událost, ke které v gridu došlo.</param>
-		/// <returns>Vrací hodnotu klíèe daného øádku.</returns>
+		/// <param name="e">UdÃ¡lost, ke kterÃ© v gridu doÅ¡lo.</param>
+		/// <returns>VracÃ­ hodnotu klÃ­Äe danÃ©ho Å™Ã¡dku.</returns>
 		public DataKey GetRowKey(GridViewCommandEventArgs e)
 		{
 			if (DataKeyNames.Length == 0)
 			{
-				throw new InvalidOperationException("Není nastavena property DataKeyNames, nelze pracovat s klíèi.");
+				throw new InvalidOperationException("NenÃ­ nastavena property DataKeyNames, nelze pracovat s klÃ­Äi.");
 			}
 
 			if ((string)e.CommandArgument != String.Empty)
@@ -371,19 +371,19 @@ namespace Havit.Web.UI.WebControls
 				return GetRowKey((Control)e.CommandSource);
 			}
 
-			throw new ArgumentException("Událost neobsahuje data, z kterıch by se dal klíè urèit.");
+			throw new ArgumentException("UdÃ¡lost neobsahuje data, z kterÃ½ch by se dal klÃ­Ä urÄit.");
 		}
 
 		/// <summary>
-		/// Nalezne hodnotu klíèe poloky na základì indexu øádku v gridu.
+		/// Nalezne hodnotu klÃ­Äe poloÅ¾ky na zÃ¡kladÄ› indexu Å™Ã¡dku v gridu.
 		/// </summary>
-		/// <param name="rowIndex">index øádku</param>
-		/// <returns>Vrací hodnotu klíèe daného øádku.</returns>
+		/// <param name="rowIndex">index Å™Ã¡dku</param>
+		/// <returns>VracÃ­ hodnotu klÃ­Äe danÃ©ho Å™Ã¡dku.</returns>
 		public DataKey GetRowKey(int rowIndex)
 		{
 			if (DataKeyNames.Length == 0)
 			{
-				throw new InvalidOperationException("Není nastavena property DataKeyNames, nelze pracovat s klíèi.");
+				throw new InvalidOperationException("NenÃ­ nastavena property DataKeyNames, nelze pracovat s klÃ­Äi.");
 			}
 
 			return this.DataKeys[rowIndex];
@@ -392,16 +392,16 @@ namespace Havit.Web.UI.WebControls
 
 		#region GetRow
 		/// <summary>
-		/// Najde GridViewRow obsahující danı control.
-		/// Pokud není Control v GridView, vyvolá vıjimku.
+		/// Najde GridViewRow obsahujÃ­cÃ­ danÃ½ control.
+		/// Pokud nenÃ­ Control v GridView, vyvolÃ¡ vÃ½jimku.
 		/// </summary>
-		/// <param name="control">Control, na základì nìho se hledá GridViewRow.</param>
-		/// <returns>Nalezenı GridViewRow.</returns>
+		/// <param name="control">Control, na zÃ¡kladÄ› nÄ›hoÅ¾ se hledÃ¡ GridViewRow.</param>
+		/// <returns>NalezenÃ½ GridViewRow.</returns>
 		public GridViewRow GetRow(Control control)
 		{
 			if ((control == null) || (control.Parent == null))
 			{
-				throw new ArgumentException("Nepodaøilo dohledat pøíslušnı GridViewRow.", "control");
+				throw new ArgumentException("NepodaÅ™ilo dohledat pÅ™Ã­sluÅ¡nÃ½ GridViewRow.", "control");
 			}
 
 			if ((control is GridViewRow) && (control.Parent.Parent == this))
@@ -413,12 +413,12 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-		#region FindColumn - Hledání sloupcù
+		#region FindColumn - HledÃ¡nÃ­ sloupcÅ¯
 		/// <summary>
-		/// Vyhledá sloupec (field) podle id. Vyhledává jen sloupce implementující rozhraní IEnterpriseField.
+		/// VyhledÃ¡ sloupec (field) podle id. VyhledÃ¡vÃ¡ jen sloupce implementujÃ­cÃ­ rozhranÃ­ IEnterpriseField.
 		/// </summary>
-		/// <param name="id">ID, podle kterého se sloupec vyhledává.</param>
-		/// <returns>Nalezenı sloupec nebo null, pokud není nalezen.</returns>
+		/// <param name="id">ID, podle kterÃ©ho se sloupec vyhledÃ¡vÃ¡.</param>
+		/// <returns>NalezenÃ½ sloupec nebo null, pokud nenÃ­ nalezen.</returns>
 		public DataControlField FindColumn(string id)
 		{
 			foreach (DataControlField field in Columns)
@@ -432,9 +432,9 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-		#region LoadViewState, SaveViewState - Naèítání a ukládání ViewState (sorting, CommandFieldStyle)
+		#region LoadViewState, SaveViewState - NaÄÃ­tÃ¡nÃ­ a uklÃ¡dÃ¡nÃ­ ViewState (sorting, CommandFieldStyle)
 		/// <summary>
-		/// Zajistí uloení ViewState. Je pøidáno uloení property Sorting.
+		/// ZajistÃ­ uloÅ¾enÃ­ ViewState. Je pÅ™idÃ¡no uloÅ¾enÃ­ property Sorting.
 		/// </summary>
 		protected override object SaveViewState()
 		{
@@ -447,7 +447,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region TrackViewState
 		/// <summary>
-		/// Spouští sledování ViewState.
+		/// SpouÅ¡tÃ­ sledovÃ¡nÃ­ ViewState.
 		/// </summary>
 		protected override void TrackViewState()
 		{
@@ -458,7 +458,7 @@ namespace Havit.Web.UI.WebControls
 
 
 		/// <summary>
-		/// Zajistí naètení ViewState. Je pøidáno naètení property Sorting.
+		/// ZajistÃ­ naÄtenÃ­ ViewState. Je pÅ™idÃ¡no naÄtenÃ­ property Sorting.
 		/// </summary>
 		protected override void LoadViewState(object savedState)
 		{
@@ -479,11 +479,11 @@ namespace Havit.Web.UI.WebControls
 
 		#region PerformDataBinding (override - Insert)
 		/// <summary>
-		/// Zajišuje data-binding dat na GridView.
+		/// ZajiÅ¡Å¥uje data-binding dat na GridView.
 		/// </summary>
 		/// <remarks>
-		/// Pro reim Sorting zajišuje pøi AutoSort sesortìní.
-		/// Pro reim Inserting zajišuje správu novıch øádek, popø. vkládání fake-øádek pøi stránkování.
+		/// Pro reÅ¾im Sorting zajiÅ¡Å¥uje pÅ™i AutoSort sesortÄ›nÃ­.
+		/// Pro reÅ¾im Inserting zajiÅ¡Å¥uje sprÃ¡vu novÃ½ch Å™Ã¡dek, popÅ™. vklÃ¡dÃ¡nÃ­ fake-Å™Ã¡dek pÅ™i strÃ¡nkovÃ¡nÃ­.
 		/// </remarks>
 		/// <param name="data">data</param>
 		protected override void PerformDataBinding(IEnumerable data)
@@ -494,8 +494,8 @@ namespace Havit.Web.UI.WebControls
 			{
 				if ((SortExpressions.SortItems.Count == 0) && !String.IsNullOrEmpty(DefaultSortExpression))
 				{
-					// sorting je nutné zmìnit na základì DefaultSortExpression,
-					// kdybychom jej nezmìnili, tak první kliknutí shodné s DefaultSortExpression nic neudìlá
+					// sorting je nutnÃ© zmÄ›nit na zÃ¡kladÄ› DefaultSortExpression,
+					// kdybychom jej nezmÄ›nili, tak prvnÃ­ kliknutÃ­ shodnÃ© s DefaultSortExpression nic neudÄ›lÃ¡
 					_sortExpressions.AddSortExpression(DefaultSortExpression);
 				}
 
@@ -516,7 +516,7 @@ namespace Havit.Web.UI.WebControls
 				{
 					if (GetInsertRowDataItem == null)
 					{
-						throw new InvalidOperationException("Pøi AllowInserting musíte nastavit GetInsertRowData.");
+						throw new InvalidOperationException("PÅ™i AllowInserting musÃ­te nastavit GetInsertRowData.");
 					}
 
 					object insertRowDataItem = GetInsertRowDataItem();
@@ -529,15 +529,15 @@ namespace Havit.Web.UI.WebControls
 						}
 						int pageCount = itemsCount / this.PageSize;
 
-						// pokud by InsertingRow mìlo zbıt samotné na poslední stránce, pak snííme poèet stránek (mùe se stát po smazání poslední poloky)
+						// pokud by InsertingRow mÄ›lo zbÃ½t samotnÃ© na poslednÃ­ strÃ¡nce, pak snÃ­Å¾Ã­me poÄet strÃ¡nek (mÅ¯Å¾e se stÃ¡t po smazÃ¡nÃ­ poslednÃ­ poloÅ¾ky)
 						if ((this.PageIndex > 0) && ((this.PageSize - 1) * (this.PageIndex)) == insertingData.Count)
 						{
 							this.PageIndex--;
 						}
 
-						// pokud nìkdo binduje nová data a zùstala mu nastavená stránka nìkam mimo rozsah (zapomnìl pøestránkovat)
-						// tak tomu trochu pomùeme a tento zjevnı problém vyøešíme u tady pøestránkováním na 1. stránku
-						// problém se projevoval tøeba tak, e kdy jsem byl na 5. stránce a dal hledání (nová menší data)
+						// pokud nÄ›kdo binduje novÃ¡ data a zÅ¯stala mu nastavenÃ¡ strÃ¡nka nÄ›kam mimo rozsah (zapomnÄ›l pÅ™estrÃ¡nkovat)
+						// tak tomu trochu pomÅ¯Å¾eme a tento zjevnÃ½ problÃ©m vyÅ™eÅ¡Ã­me uÅ¾ tady pÅ™estrÃ¡nkovÃ¡nÃ­m na 1. strÃ¡nku
+						// problÃ©m se projevoval tÅ™eba tak, Å¾e kdyÅ¾ jsem byl na 5. strÃ¡nce a dal hledÃ¡nÃ­ (novÃ¡ menÅ¡Ã­ data)
 						if (pageCount < (this.PageIndex + 1))
 						{
 							this.PageIndex = 0;
@@ -584,7 +584,7 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-		#region CreateRow (override - Insert, øešení THEAD, apod.)
+		#region CreateRow (override - Insert, Å™eÅ¡enÃ­ THEAD, apod.)
 		/// <summary>
 		/// CreateRow.
 		/// </summary>
@@ -592,7 +592,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			GridViewRow row = base.CreateRow(rowIndex, dataSourceIndex, rowType, rowState);
 
-			// Øádek s novım objektem pøepínáme do stavu Insert, co zajistí zvolení EditItemTemplate a správné chování CommandFieldu.
+			// Å˜Ã¡dek s novÃ½m objektem pÅ™epÃ­nÃ¡me do stavu Insert, coÅ¾ zajistÃ­ zvolenÃ­ EditItemTemplate a sprÃ¡vnÃ© chovÃ¡nÃ­ CommandFieldu.
 			if ((rowType == DataControlRowType.DataRow)
 				&& (AllowInserting)
 				&& (dataSourceIndex == InsertRowDataSourceIndex))
@@ -601,7 +601,7 @@ namespace Havit.Web.UI.WebControls
 				row.RowState = DataControlRowState.Insert;
 			}
 
-			// abychom mìli na stránce vdy stejnı poèet øádek, tak u insertingu pøi editaci skrıváme poslední øádek
+			// abychom mÄ›li na strÃ¡nce vÅ¾dy stejnÃ½ poÄet Å™Ã¡dek, tak u insertingu pÅ™i editaci skrÃ½vÃ¡me poslednÃ­ Å™Ã¡dek
 			if ((AllowInserting) && (insertRowIndex < 0) && (AllowPaging) && (rowIndex == (this.PageSize - 1)))
 			{
 				row.Visible = false;
@@ -618,12 +618,12 @@ namespace Havit.Web.UI.WebControls
 
 		#region OnRowCommand (override - Insert)
 		/// <summary>
-		/// Metoda, která spouští událost RowCommand.
+		/// Metoda, kterÃ¡ spouÅ¡tÃ­ udÃ¡lost RowCommand.
 		/// </summary>
 		/// <remarks>
-		/// Implementace cachytává a obsluhuje pøíkaz Insert.
+		/// Implementace cachytÃ¡vÃ¡ a obsluhuje pÅ™Ã­kaz Insert.
 		/// </remarks>
-		/// <param name="e">argumenty události</param>
+		/// <param name="e">argumenty udÃ¡losti</param>
 		protected override void OnRowCommand(GridViewCommandEventArgs e)
 		{
 			base.OnRowCommand(e);
@@ -651,10 +651,10 @@ namespace Havit.Web.UI.WebControls
 
 		#region HandleInsert
 		/// <summary>
-		/// Metoda, která øídí logiku pøíkazu Insert.
+		/// Metoda, kterÃ¡ Å™Ã­dÃ­ logiku pÅ™Ã­kazu Insert.
 		/// </summary>
-		/// <param name="rowIndex">index øádku, kde insert probíhá</param>
-		/// <param name="causesValidation">pøíznak, zda-li má probíhat validace</param>
+		/// <param name="rowIndex">index Å™Ã¡dku, kde insert probÃ­hÃ¡</param>
+		/// <param name="causesValidation">pÅ™Ã­znak, zda-li mÃ¡ probÃ­hat validace</param>
 		protected virtual void HandleInsert(int rowIndex, bool causesValidation)
 		{
 			if ((!causesValidation || (this.Page == null)) || this.Page.IsValid)
@@ -678,10 +678,10 @@ namespace Havit.Web.UI.WebControls
 
 		#region OnRowEditing
 		/// <summary>
-		/// Spouští událost RowEditing.
+		/// SpouÅ¡tÃ­ udÃ¡lost RowEditing.
 		/// </summary>
-		/// <remarks>Implementace zajišuje nastavení edit-øádku.</remarks>
-		/// <param name="e">argumenty události</param>
+		/// <remarks>Implementace zajiÅ¡Å¥uje nastavenÃ­ edit-Å™Ã¡dku.</remarks>
+		/// <param name="e">argumenty udÃ¡losti</param>
 		protected override void OnRowEditing(GridViewEditEventArgs e)
 		{
 			base.OnRowEditing(e);
@@ -701,9 +701,9 @@ namespace Havit.Web.UI.WebControls
 
 		#region OnRowUpdating
 		/// <summary>
-		/// Vıchozí chování RowUpdating - pokud není zvoleno e.Cancel, pak vypne editaci øádku.
+		/// VÃ½chozÃ­ chovÃ¡nÃ­ RowUpdating - pokud nenÃ­ zvoleno e.Cancel, pak vypne editaci Å™Ã¡dku.
 		/// </summary>
-		/// <param name="e">argumenty události</param>
+		/// <param name="e">argumenty udÃ¡losti</param>
 		protected override void OnRowUpdating(GridViewUpdateEventArgs e)
 		{
 			base.OnRowUpdating(e);
@@ -718,9 +718,9 @@ namespace Havit.Web.UI.WebControls
 
 		#region OnRowCancelingEdit
 		/// <summary>
-		/// Vıchozí chování RowUpdating - pokud není zvoleno e.Cancel, pak vypne editaci øádku.
+		/// VÃ½chozÃ­ chovÃ¡nÃ­ RowUpdating - pokud nenÃ­ zvoleno e.Cancel, pak vypne editaci Å™Ã¡dku.
 		/// </summary>
-		/// <param name="e">argumenty události</param>
+		/// <param name="e">argumenty udÃ¡losti</param>
 		protected override void OnRowCancelingEdit(GridViewCancelEditEventArgs e)
 		{
 			base.OnRowCancelingEdit(e);
@@ -734,9 +734,9 @@ namespace Havit.Web.UI.WebControls
 
 		#region OnPageIndexChanging
 		/// <summary>
-		/// Vıchozí chování události OnPageIndexChanging Pokud není stránkování stornováno, zmìníme stránku na cílovou.
+		/// VÃ½chozÃ­ chovÃ¡nÃ­ udÃ¡losti OnPageIndexChanging Pokud nenÃ­ strÃ¡nkovÃ¡nÃ­ stornovÃ¡no, zmÄ›nÃ­me strÃ¡nku na cÃ­lovou.
 		/// </summary>
-		/// <param name="e">argumenty události</param>
+		/// <param name="e">argumenty udÃ¡losti</param>
 		protected override void OnPageIndexChanging(GridViewPageEventArgs e)
 		{
 			base.OnPageIndexChanging(e);
@@ -751,12 +751,12 @@ namespace Havit.Web.UI.WebControls
 
 		#region OnRowDeleting
 		/// <summary>
-		/// Spouští událost RowDeleting.
+		/// SpouÅ¡tÃ­ udÃ¡lost RowDeleting.
 		/// </summary>
 		/// <remarks>
-		/// Implementace vypíná editaci.
+		/// Implementace vypÃ­nÃ¡ editaci.
 		/// </remarks>
-		/// <param name="e">argumenty události</param>
+		/// <param name="e">argumenty udÃ¡losti</param>
 		protected override void OnRowDeleting(GridViewDeleteEventArgs e)
 		{
 			base.OnRowDeleting(e);
@@ -771,9 +771,9 @@ namespace Havit.Web.UI.WebControls
 
 		#region OnRowInserting, OnRowInserted
 		/// <summary>
-		/// Spouští událost RowInserting.
+		/// SpouÅ¡tÃ­ udÃ¡lost RowInserting.
 		/// </summary>
-		/// <param name="e">argumenty události</param>
+		/// <param name="e">argumenty udÃ¡losti</param>
 		protected virtual void OnRowInserting(GridViewInsertEventArgs e)
 		{
 			GridViewInsertEventHandler h = (GridViewInsertEventHandler)base.Events[eventItemInserting];
@@ -784,9 +784,9 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// Spouští událost RowInserted.
+		/// SpouÅ¡tÃ­ udÃ¡lost RowInserted.
 		/// </summary>
-		/// <param name="e">argumenty události</param>
+		/// <param name="e">argumenty udÃ¡losti</param>
 		protected virtual void OnRowInserted(GridViewInsertedEventArgs e)
 		{
 			GridViewInsertedEventHandler h = (GridViewInsertedEventHandler)base.Events[eventItemInserted];
@@ -799,9 +799,9 @@ namespace Havit.Web.UI.WebControls
 
 		#region	OnSorting
 		/// <summary>
-		/// Pøi poadavku na øazení si zapamatujeme, jak chtìl uivatel øadit a nastavíme RequiresDataBinding na true.
+		/// PÅ™i poÅ¾adavku na Å™azenÃ­ si zapamatujeme, jak chtÄ›l uÅ¾ivatel Å™adit a nastavÃ­me RequiresDataBinding na true.
 		/// </summary>
-		/// <param name="e">argumenty události</param>
+		/// <param name="e">argumenty udÃ¡losti</param>
 		protected override void OnSorting(GridViewSortEventArgs e)
 		{
 			base.OnSorting(e);
@@ -816,9 +816,9 @@ namespace Havit.Web.UI.WebControls
 
 		#region OnSorted
 		/// <summary>
-		/// Po setøídìní podle sloupce zajistí u vícestránkovıch gridù návrat na první stránku
+		/// Po setÅ™Ã­dÄ›nÃ­ podle sloupce zajistÃ­ u vÃ­cestrÃ¡nkovÃ½ch gridÅ¯ nÃ¡vrat na prvnÃ­ strÃ¡nku
 		/// </summary>
-		/// <param name="e">argumenty události</param>
+		/// <param name="e">argumenty udÃ¡losti</param>
 		protected override void OnSorted(EventArgs e)
 		{
 			base.OnSorted(e);
@@ -829,7 +829,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region OnPreRender
 		/// <summary>
-		/// Zajistíme DataBinding, pokud mají vlastnosti AutoDataBind a RequiresDataBinding hodnotu true.
+		/// ZajistÃ­me DataBinding, pokud majÃ­ vlastnosti AutoDataBind a RequiresDataBinding hodnotu true.
 		/// </summary>
 		protected override void OnPreRender(EventArgs e)
 		{
@@ -844,9 +844,9 @@ namespace Havit.Web.UI.WebControls
 
 		#region OnRowCustomizingCommandButton
 		/// <summary>
-		/// Spouští událost <see cref="RowCustomizingCommandButton"/>.
+		/// SpouÅ¡tÃ­ udÃ¡lost <see cref="RowCustomizingCommandButton"/>.
 		/// </summary>
-		/// <param name="e">argumenty události</param>
+		/// <param name="e">argumenty udÃ¡losti</param>
 		protected internal virtual void OnRowCustomizingCommandButton(GridViewRowCustomizingCommandButtonEventArgs e)
 		{
 			GridViewRowCustomizingCommandButtonEventHandler h = (GridViewRowCustomizingCommandButtonEventHandler)base.Events[eventRowCustomizingCommandButton];
@@ -859,7 +859,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region PagerSettingsShowAllPagesButton
 		/// <summary>
-		/// Povoluje/zakazuje zobrazení tlaèítka pro vypnutí stránkování.
+		/// Povoluje/zakazuje zobrazenÃ­ tlaÄÃ­tka pro vypnutÃ­ strÃ¡nkovÃ¡nÃ­.
 		/// </summary>
 		public bool PagerSettingsShowAllPagesButton
 		{
@@ -876,7 +876,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region PagerSettingsAllPagesButtonText
 		/// <summary>
-		/// Text tlaèítka pro vypnutí stránkování. Pokud je nastaveno PagerSettingsAllPagesButtonImageUrl, má toto pøednost a tlaèítko bude obrázkové.
+		/// Text tlaÄÃ­tka pro vypnutÃ­ strÃ¡nkovÃ¡nÃ­. Pokud je nastaveno PagerSettingsAllPagesButtonImageUrl, mÃ¡ toto pÅ™ednost a tlaÄÃ­tko bude obrÃ¡zkovÃ©.
 		/// </summary>
 		public string PagerSettingsAllPagesButtonText
 		{
@@ -893,7 +893,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region PagerSettingsAllPagesButtonImageUrl
 		/// <summary>
-		/// ImageUrl tlaèítka pro vypnutí stránkování. Má pøednost pøed PagerSettingsAllPagesButtonText.
+		/// ImageUrl tlaÄÃ­tka pro vypnutÃ­ strÃ¡nkovÃ¡nÃ­. MÃ¡ pÅ™ednost pÅ™ed PagerSettingsAllPagesButtonText.
 		/// </summary>
 		public string PagerSettingsAllPagesButtonImageUrl
 		{
@@ -912,10 +912,10 @@ namespace Havit.Web.UI.WebControls
 		protected override void InitializePager(GridViewRow row, int columnSpan, PagedDataSource pagedDataSource)
 		{
 			base.InitializePager(row, columnSpan, pagedDataSource);
-			// pokud je pouita vıchozí šablona a je povoleno tlaèítko pro vypnutí stránkování, pøidáme jej
+			// pokud je pouÅ¾ita vÃ½chozÃ­ Å¡ablona a je povoleno tlaÄÃ­tko pro vypnutÃ­ strÃ¡nkovÃ¡nÃ­, pÅ™idÃ¡me jej
 			if ((this.PagerTemplate == null) && (this.PagerSettingsShowAllPagesButton))
 			{
-				// najdeme øádek tabulky, do které budeme pøidávat "All Pages Button".
+				// najdeme Å™Ã¡dek tabulky, do kterÃ© budeme pÅ™idÃ¡vat "All Pages Button".
 				TableRow row2 = null;
 				if ((row.Controls.Count == 1) && (row.Controls[0].Controls.Count == 1) && (row.Controls[0].Controls[0].Controls.Count == 1)) ;
 				{
@@ -981,7 +981,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region OnAllPagesShowing, OnAllPagesShown
 		/// <summary>
-		/// Obsluha událost pøi obsluze kliknutí na tlaèítko "All Pages" (tlaèítko, vypínající stránkování). Dává monost zrušit akci.
+		/// Obsluha udÃ¡lost pÅ™i obsluze kliknutÃ­ na tlaÄÃ­tko "All Pages" (tlaÄÃ­tko, vypÃ­najÃ­cÃ­ strÃ¡nkovÃ¡nÃ­). DÃ¡vÃ¡ moÅ¾nost zruÅ¡it akci.
 		/// </summary>
 		protected virtual void OnAllPagesShowing(CancelEventArgs cancelEventArgs)
 		{
@@ -993,7 +993,7 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// Obsluha události oznamující obslouení kliknutí na tlaèítko "All Pages" (tlaèítko, vypínající stránkování).
+		/// Obsluha udÃ¡losti oznamujÃ­cÃ­ obslouÅ¾enÃ­ kliknutÃ­ na tlaÄÃ­tko "All Pages" (tlaÄÃ­tko, vypÃ­najÃ­cÃ­ strÃ¡nkovÃ¡nÃ­).
 		/// </summary>
 		protected virtual void OnAllPagesShown(EventArgs eventArgs)
 		{
@@ -1008,29 +1008,29 @@ namespace Havit.Web.UI.WebControls
 	}
 
 	/// <summary>
-	/// Reprezentuje metodu, která obsluhuje událost RowInserting controlu GridViewExt.
+	/// Reprezentuje metodu, kterÃ¡ obsluhuje udÃ¡lost RowInserting controlu GridViewExt.
 	/// </summary>
-	/// <param name="sender">odesílatel události (GridView)</param>
-	/// <param name="e">argumenty události</param>
+	/// <param name="sender">odesÃ­latel udÃ¡losti (GridView)</param>
+	/// <param name="e">argumenty udÃ¡losti</param>
 	public delegate void GridViewInsertEventHandler(object sender, GridViewInsertEventArgs e);
 
 	/// <summary>
-	/// Reprezentuje metodu, která obsluhuje událost RowInserted controlu GridViewExt.
+	/// Reprezentuje metodu, kterÃ¡ obsluhuje udÃ¡lost RowInserted controlu GridViewExt.
 	/// </summary>
-	/// <param name="sender">odesílatel události (GridView)</param>
-	/// <param name="e">argumenty události</param>
+	/// <param name="sender">odesÃ­latel udÃ¡losti (GridView)</param>
+	/// <param name="e">argumenty udÃ¡losti</param>
 	public delegate void GridViewInsertedEventHandler(object sender, GridViewInsertedEventArgs e);
 
 	/// <summary>
-	/// Reprezentuje metodu, která obsluhuje událost <see cref="GridViewExt.RowCustomizingCommandButton"/>.
+	/// Reprezentuje metodu, kterÃ¡ obsluhuje udÃ¡lost <see cref="GridViewExt.RowCustomizingCommandButton"/>.
 	/// </summary>
-	/// <param name="sender">odesílatel události (GridView)</param>
-	/// <param name="e">argumenty události</param>
+	/// <param name="sender">odesÃ­latel udÃ¡losti (GridView)</param>
+	/// <param name="e">argumenty udÃ¡losti</param>
 	public delegate void GridViewRowCustomizingCommandButtonEventHandler(object sender, GridViewRowCustomizingCommandButtonEventArgs e);
 
 
 	/// <summary>
-	/// Delegát k metodì pro získávání data-item pro novı Insert øádek GridView.
+	/// DelegÃ¡t k metodÄ› pro zÃ­skÃ¡vÃ¡nÃ­ data-item pro novÃ½ Insert Å™Ã¡dek GridView.
 	/// </summary>
 	/// <returns></returns>
 	public delegate object GetInsertRowDataItemDelegate();

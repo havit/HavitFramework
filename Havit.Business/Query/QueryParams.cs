@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Data.Common;
@@ -9,16 +9,16 @@ using System.Diagnostics.Contracts;
 namespace Havit.Business.Query
 {
 	/// <summary>
-	/// Objektová struktura SQL dotazu.
-	/// Obsahuje seznam properties, které se mají z databáze získat, seznam podmínek fitrující záznamy
-	/// a øazení v jakém se mají záznamy (objekty) získat.
+	/// ObjektovÃ¡ struktura SQL dotazu.
+	/// Obsahuje seznam properties, kterÃ© se majÃ­ z databÃ¡ze zÃ­skat, seznam podmÃ­nek fitrujÃ­cÃ­ zÃ¡znamy
+	/// a Å™azenÃ­ v jakÃ©m se majÃ­ zÃ¡znamy (objekty) zÃ­skat.
 	/// </summary>
 	[Serializable]	
 	public class QueryParams
 	{
 		#region Parametry dotazu
 		/// <summary>
-		/// Instance tøídy ObjectInfo nesoucí informace o tom, z jaké tabulky se bude dotaz dotazovat.
+		/// Instance tÅ™Ã­dy ObjectInfo nesoucÃ­ informace o tom, z jakÃ© tabulky se bude dotaz dotazovat.
 		/// </summary>
 		public ObjectInfo ObjectInfo
 		{
@@ -28,7 +28,7 @@ namespace Havit.Business.Query
 		private ObjectInfo objectInfo;
 
 		/// <summary>
-		/// Maximální poèet záznamù, kterı se vrací z databáze - (SELECT TOP n ...).
+		/// MaximÃ¡lnÃ­ poÄet zÃ¡znamÅ¯, kterÃ½ se vracÃ­ z databÃ¡ze - (SELECT TOP n ...).
 		/// </summary>
 		public int? TopRecords
 		{
@@ -38,8 +38,8 @@ namespace Havit.Business.Query
 		private int? topRecords;
 
 		/// <summary>
-		/// Udává, zda se mají vracet i záznamy oznaèené za smazané.
-		/// Vıchozí hodnota je false, smazané záznamy se nevrací.
+		/// UdÃ¡vÃ¡, zda se majÃ­ vracet i zÃ¡znamy oznaÄenÃ© za smazanÃ©.
+		/// VÃ½chozÃ­ hodnota je false, smazanÃ© zÃ¡znamy se nevracÃ­.
 		/// </summary>
 		public bool IncludeDeleted
 		{
@@ -49,7 +49,7 @@ namespace Havit.Business.Query
 		private bool includeDeleted = false;
 
 		/// <summary>
-		/// Seznam sloupcù, které jsou vısledkem dotazu (SELECT sloupec1, sloupec2...).
+		/// Seznam sloupcÅ¯, kterÃ© jsou vÃ½sledkem dotazu (SELECT sloupec1, sloupec2...).
 		/// </summary>
 		public PropertyInfoCollection Properties
 		{
@@ -62,7 +62,7 @@ namespace Havit.Business.Query
 		private PropertyInfoCollection properties = new PropertyInfoCollection();
 
 		/// <summary>
-		/// Podmínky dotazu (WHERE ...).
+		/// PodmÃ­nky dotazu (WHERE ...).
 		/// </summary>
 		public ConditionList Conditions
 		{
@@ -75,7 +75,7 @@ namespace Havit.Business.Query
 		private AndCondition conditions = new AndCondition();
 
 		/// <summary>
-		/// Poøadí záznamù (ORDER BY ...).
+		/// PoÅ™adÃ­ zÃ¡znamÅ¯ (ORDER BY ...).
 		/// </summary>
 		public OrderByCollection OrderBy
 		{
@@ -90,8 +90,8 @@ namespace Havit.Business.Query
 
 		#region GetDataLoadPower
 		/// <summary>
-		/// Podle kolekce properties urèí reim záznamù, které budou vráceny.
-		/// Pro prázdnou kolekci vrací FullLoad, pro kolekci o jednom prvku, kterı je primárním klíèem, vrací Ghost. Jinak vrací PartialLoad.
+		/// Podle kolekce properties urÄÃ­ reÅ¾im zÃ¡znamÅ¯, kterÃ© budou vrÃ¡ceny.
+		/// Pro prÃ¡zdnou kolekci vracÃ­ FullLoad, pro kolekci o jednom prvku, kterÃ½ je primÃ¡rnÃ­m klÃ­Äem, vracÃ­ Ghost. Jinak vracÃ­ PartialLoad.
 		/// </summary>		
 		public DataLoadPower GetDataLoadPower()
 		{
@@ -115,8 +115,8 @@ namespace Havit.Business.Query
 
 		#region PrepareCommand
 		/// <summary>
-		/// Vytvoøí dotaz, nastaví jej do commandu.
-		/// Pøidá parametry.
+		/// VytvoÅ™Ã­ dotaz, nastavÃ­ jej do commandu.
+		/// PÅ™idÃ¡ parametry.
 		/// </summary>
 		/// <param name="command"></param>
 		public void PrepareCommand(DbCommand command)
@@ -150,17 +150,17 @@ namespace Havit.Business.Query
 
 		#region OnBeforePrepareCommand, OnAfterPrepareCommand
 		/// <summary>
-		/// Slouí k pøípravì objektu pøed zaèátkem skládání databázového dotazu.
+		/// SlouÅ¾Ã­ k pÅ™Ã­pravÄ› objektu pÅ™ed zaÄÃ¡tkem sklÃ¡dÃ¡nÃ­ databÃ¡zovÃ©ho dotazu.
 		/// </summary>
 		public virtual void OnBeforePrepareCommand()
 		{
 		}
 
 		/// <summary>
-		/// Slouí k dokonèení skládání databázového dotazu.
-		/// Voláno po poskládání databázového dotazu, naskládání parametrù do commandu,
-		/// ale PØED nastavením property command.CommandText. Je tak mono databázovı
-		/// dotaz upravit na poslední chvíli.
+		/// SlouÅ¾Ã­ k dokonÄenÃ­ sklÃ¡dÃ¡nÃ­ databÃ¡zovÃ©ho dotazu.
+		/// VolÃ¡no po posklÃ¡dÃ¡nÃ­ databÃ¡zovÃ©ho dotazu, nasklÃ¡dÃ¡nÃ­ parametrÅ¯ do commandu,
+		/// ale PÅ˜ED nastavenÃ­m property command.CommandText. Je tak moÅ¾no databÃ¡zovÃ½
+		/// dotaz upravit na poslednÃ­ chvÃ­li.
 		/// </summary>
 		public virtual void OnAfterPrepareCommand(DbCommand command, StringBuilder commandBuilder)
 		{
@@ -169,7 +169,7 @@ namespace Havit.Business.Query
 
 		#region SQL Statement builder
 		/// <summary>
-		/// Vrátí sekci SQL dotazu SELECT.
+		/// VrÃ¡tÃ­ sekci SQL dotazu SELECT.
 		/// </summary>
 		protected virtual string GetSelectStatement(DbCommand command)
 		{
@@ -184,7 +184,7 @@ namespace Havit.Business.Query
 		}
 
 		/// <summary>
-		/// Vrátí seznam sloupcù, které se z databáze získávají.
+		/// VrÃ¡tÃ­ seznam sloupcÅ¯, kterÃ© se z databÃ¡ze zÃ­skÃ¡vajÃ­.
 		/// </summary>
 		protected virtual string GetSelectFieldsStatement(DbCommand command)
 		{
@@ -203,7 +203,7 @@ namespace Havit.Business.Query
 
 				if (queryProperties[i] is IFieldsBuilder)
 				{
-#warning Pøepracovat tak, aby kadá property obecnì mohl emitovat fieldy, které potøebuje ke své inicializaci.
+#warning PÅ™epracovat tak, aby kaÅ¾dÃ¡ property obecnÄ› mohl emitovat fieldy, kterÃ© potÅ™ebuje ke svÃ© inicializaci.
 					fieldsBuilder.Append(((IFieldsBuilder)queryProperties[i]).GetSelectFieldStatement(command));
 				}
 			}
@@ -211,7 +211,7 @@ namespace Havit.Business.Query
 		}
 
 		/// <summary>
-		/// Vrátí sekci SQL dotazu FROM.
+		/// VrÃ¡tÃ­ sekci SQL dotazu FROM.
 		/// </summary>
 		protected virtual string GetFromStatement(DbCommand command)
 		{
@@ -226,7 +226,7 @@ namespace Havit.Business.Query
 		}
 
 		/// <summary>
-		/// Vrátí sekci SQL dotazu WHERE.
+		/// VrÃ¡tÃ­ sekci SQL dotazu WHERE.
 		/// </summary>
 		public virtual string GetWhereStatement(DbCommand command)
 		{
@@ -255,7 +255,7 @@ namespace Havit.Business.Query
 		}
 
 		/// <summary>
-		/// Vrátí sekci SQL dotazu ORDER BY.
+		/// VrÃ¡tÃ­ sekci SQL dotazu ORDER BY.
 		/// </summary>
 		protected virtual string GetOrderByStatement(DbCommand command)
 		{
@@ -269,7 +269,7 @@ namespace Havit.Business.Query
 				if (i > 0)
 					orderByBuilder.Append(", ");
 
-#warning není moc OOP
+#warning nenÃ­ moc OOP
 				orderByBuilder.Append(orderBy[i].Expression);
 				if (orderBy[i].Direction == Havit.Collections.SortDirection.Descending)
 					orderByBuilder.Append(" DESC");
@@ -279,7 +279,7 @@ namespace Havit.Business.Query
 		#endregion
 
 		/// <summary>
-		/// Vrátí sekci SQL dotazu OPTION - pouito na OPTION (RECOMPILE).
+		/// VrÃ¡tÃ­ sekci SQL dotazu OPTION - pouÅ¾ito na OPTION (RECOMPILE).
 		/// OPTION (RECOMPILE): workaround pro http://connect.microsoft.com/SQLServer/feedback/ViewFeedback.aspx?FeedbackID=256717
 		/// </summary>
 		protected virtual string GetOptionStatementStatement(DbCommand command)

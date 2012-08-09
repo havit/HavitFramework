@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
@@ -9,7 +9,7 @@ using System.Web.UI.HtmlControls;
 namespace Havit.Web.UI.Scriptlets
 {
 	/// <summary>
-	/// Control extender, který umí pracovat s Repeaterem.
+	/// Control extender, kterÃ½ umÃ­ pracovat s Repeaterem.
 	/// </summary>
     public class RepeaterControlExtender: IControlExtender
     {
@@ -19,7 +19,7 @@ namespace Havit.Web.UI.Scriptlets
 
 		#region Constructors
 		/// <summary>
-		/// Vytvoøí extender s danou prioritou.
+		/// VytvoÅ™Ã­ extender s danou prioritou.
 		/// </summary>
 		/// <param name="priority">Priorita extenderu.</param>
 		public RepeaterControlExtender(int priority)

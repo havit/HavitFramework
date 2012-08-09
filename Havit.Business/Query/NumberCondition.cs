@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using Havit.Business;
@@ -6,13 +6,13 @@ using Havit.Business;
 namespace Havit.Business.Query
 {
 	/// <summary>
-	/// Vytváøí podmínky testující èíselné hodnoty.
+	/// VytvÃ¡Å™Ã­ podmÃ­nky testujÃ­cÃ­ ÄÃ­selnÃ© hodnoty.
 	/// </summary>
 	public static class NumberCondition
 	{
 		#region CreateEquals
 		/// <summary>
-		/// Vytvoøí podmínku testující rovnost hodnoty.
+		/// VytvoÅ™Ã­ podmÃ­nku testujÃ­cÃ­ rovnost hodnoty.
 		/// </summary>
 		public static Condition CreateEquals(IOperand operand, int value)
 		{
@@ -20,7 +20,7 @@ namespace Havit.Business.Query
 		}
 
 		/// <summary>
-		/// Vytvoøí podmínku testující rovnost hodnoty.
+		/// VytvoÅ™Ã­ podmÃ­nku testujÃ­cÃ­ rovnost hodnoty.
 		/// </summary>
 		public static Condition CreateEquals(IOperand operand, decimal value)
 		{
@@ -28,7 +28,7 @@ namespace Havit.Business.Query
 		}
 
 		/// <summary>
-		/// Vytvoøí podmínku testující rovnost hodnoty operandù.
+		/// VytvoÅ™Ã­ podmÃ­nku testujÃ­cÃ­ rovnost hodnoty operandÅ¯.
 		/// </summary>
 		public static Condition CreateEquals(IOperand operand1, IOperand operand2)
 		{
@@ -38,7 +38,7 @@ namespace Havit.Business.Query
 
 		#region Create
 		/// <summary>
-		/// Vytvoøí podmínku testující hodnoty pomocí zadaného operátoru.
+		/// VytvoÅ™Ã­ podmÃ­nku testujÃ­cÃ­ hodnoty pomocÃ­ zadanÃ©ho operÃ¡toru.
 		/// </summary>
 		public static Condition Create(IOperand operand, ComparisonOperator comparisonOperator, int value)
 		{
@@ -46,7 +46,7 @@ namespace Havit.Business.Query
 		}
 
 		/// <summary>
-		/// Vytvoøí podmínku testující hodnoty pomocí zadaného operátoru.
+		/// VytvoÅ™Ã­ podmÃ­nku testujÃ­cÃ­ hodnoty pomocÃ­ zadanÃ©ho operÃ¡toru.
 		/// </summary>
 		public static Condition Create(IOperand operand, ComparisonOperator comparisonOperator, decimal value)
 		{
@@ -54,7 +54,7 @@ namespace Havit.Business.Query
 		}
 
 		/// <summary>
-		/// Vytvoøí podmínku testující hodnoty pomocí zadaného operátoru.
+		/// VytvoÅ™Ã­ podmÃ­nku testujÃ­cÃ­ hodnoty pomocÃ­ zadanÃ©ho operÃ¡toru.
 		/// </summary>
 		public static Condition Create(IOperand operand1, ComparisonOperator comparisonOperator, IOperand operand2)
 		{

@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI.WebControls;
@@ -10,13 +10,13 @@ using System.Reflection;
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
-	/// Sloupec pro heterogenní seznamy.
+	/// Sloupec pro heterogennÃ­ seznamy.
 	/// </summary>
 	public class BoundFieldExt : System.Web.UI.WebControls.BoundField, IIdentifiableField
 	{
 		#region ID (IIdentifiableField Members)
 		/// <summary>
-		/// Identifikátor fieldu na kterı se lze odkazovat pomocí <see cref="GridViewExt.FindColumn(string)"/>.
+		/// IdentifikÃ¡tor fieldu na kterÃ½ se lze odkazovat pomocÃ­ <see cref="GridViewExt.FindColumn(string)"/>.
 		/// </summary>
 		public string ID
 		{
@@ -38,20 +38,20 @@ namespace Havit.Web.UI.WebControls
 
 		#region Properties
 		/// <summary>
-		/// Css tøída vygenerované buòky.	
-		/// Zamıšleno napø. pro omezení šírky sloupce.
+		/// Css tÅ™Ã­da vygenerovanÃ© buÅˆky.	
+		/// ZamÃ½Å¡leno napÅ™. pro omezenÃ­ Å¡Ã­rky sloupce.
 		/// Viz	<see cref="InitializeDataCell(System.Web.UI.WebControls.DataControlFieldCell, System.Web.UI.WebControls.DataControlRowState)" />.
 		/// </summary>
 		internal string CellCssClass
 		{
-#warning nevhodná implementace, pøedìlat na ContentStyle typu Style (pouívá se na pøidávání vnitøního obalového divu)
+#warning nevhodnÃ¡ implementace, pÅ™edÄ›lat na ContentStyle typu Style (pouÅ¾Ã­vÃ¡ se na pÅ™idÃ¡vÃ¡nÃ­ vnitÅ™nÃ­ho obalovÃ©ho divu)
 			get { return (string)(ViewState["CellCssClass"] ?? String.Empty); }
 			set { ViewState["CellCssClass"] = value; }
 		}
 
 		/// <summary>
-		/// Pokud se metodì GetValue nepodaøí získat hodnotu z dat, pouije se tato hodnota, pokud není null.
-		/// Rozlišuje se null a prázdnı øetìzec.
+		/// Pokud se metodÄ› GetValue nepodaÅ™Ã­ zÃ­skat hodnotu z dat, pouÅ¾ije se tato hodnota, pokud nenÃ­ null.
+		/// RozliÅ¡uje se null a prÃ¡zdnÃ½ Å™etÄ›zec.
 		/// Viz metody GetNotFoundDataItem a GetValue.
 		/// </summary>
 		public string EmptyText
@@ -69,7 +69,7 @@ namespace Havit.Web.UI.WebControls
 		/// Gets or sets the string that specifies the display format for the value of the field.
 		/// </summary>
 		/// <remarks>
-		/// Nastavením se pøepne vıchozí hodnota HtmlEncode na false.
+		/// NastavenÃ­m se pÅ™epne vÃ½chozÃ­ hodnota HtmlEncode na false.
 		/// </remarks>
 		public override string DataFormatString
 		{
@@ -81,7 +81,7 @@ namespace Havit.Web.UI.WebControls
 			{
 				base.DataFormatString = value;
 				
-				// pokud není explicitnì nastaveno HtmlEncode, pak ho vypneme
+				// pokud nenÃ­ explicitnÄ› nastaveno HtmlEncode, pak ho vypneme
 				if (ViewState["HtmlEncode"] == null)
 				{
 					this.HtmlEncode = false;
@@ -90,11 +90,11 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-		#region CreateField - override, v potomcích rovnì nutnı override.
+		#region CreateField - override, v potomcÃ­ch rovnÄ›Å¾ nutnÃ½ override.
 		/// <summary>
-		/// Vyadováno implementací Fieldu v .NETu. V potomcích nutno pøepsat.
+		/// VyÅ¾adovÃ¡no implementacÃ­ Fieldu v .NETu. V potomcÃ­ch nutno pÅ™epsat.
 		/// </summary>
-		/// <returns>Instance této tøídy.</returns>
+		/// <returns>Instance tÃ©to tÅ™Ã­dy.</returns>
 		protected override DataControlField CreateField()
 		{
 			return new Havit.Web.UI.WebControls.BoundFieldExt();
@@ -106,9 +106,9 @@ namespace Havit.Web.UI.WebControls
 		private static readonly char[] indexExprStartChars = new char[] { '[', '(' };
 
 		/// <summary>
-		/// Získá hodnotu pro zobrazení na základì datového zdroje a DataFieldu.
+		/// ZÃ­skÃ¡ hodnotu pro zobrazenÃ­ na zÃ¡kladÄ› datovÃ©ho zdroje a DataFieldu.
 		/// </summary>
-		/// <param name="controlContainer">Control container (øádek GridView), kterému se získává hodnota.</param>
+		/// <param name="controlContainer">Control container (Å™Ã¡dek GridView), kterÃ©mu se zÃ­skÃ¡vÃ¡ hodnota.</param>
 		/// <returns></returns>
 		protected override object GetValue(Control controlContainer)
 		{
@@ -121,7 +121,7 @@ namespace Havit.Web.UI.WebControls
 				return GetDesignTimeValue();
 
 			if (dataItem == null)
-				throw new Exception("Nepodaøilo se získat objekt s daty.");
+				throw new Exception("NepodaÅ™ilo se zÃ­skat objekt s daty.");
 
 			if (DataField == ThisExpression)
 				return dataItem;
@@ -135,9 +135,9 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		///// <summary>
-		///// Získá hodnotu pro zobrazení z pøedaného objektu a dataField.
+		///// ZÃ­skÃ¡ hodnotu pro zobrazenÃ­ z pÅ™edanÃ©ho objektu a dataField.
 		///// </summary>
-		///// <param name="dataItem">Poloka dat z DataSource</param>
+		///// <param name="dataItem">PoloÅ¾ka dat z DataSource</param>
 		///// <param name="dataField">DataField</param>
 		///// <returns></returns>
 		//protected object GetValue(object dataItem, string dataField)
@@ -171,13 +171,13 @@ namespace Havit.Web.UI.WebControls
 		//}
 
 		/// <summary>
-		/// Formátuje hodnotu k zobrazení.
+		/// FormÃ¡tuje hodnotu k zobrazenÃ­.
 		/// </summary>
 		/// <param name="value">Data</param>
-		/// <returns>Text k zobrazení.</returns>
+		/// <returns>Text k zobrazenÃ­.</returns>
 		public virtual string FormatDataValue(object value)
 		{
-			// v tento okamik je zde jako plán k pøepsání (override)
+			// v tento okamÅ¾ik je zde jako plÃ¡n k pÅ™epsÃ¡nÃ­ (override)
 
 			//if (NumberFormatter.IsNumber(value))
 			//    return NumberFormatter.Format((IFormattable)value, DataFormatString);
@@ -186,9 +186,9 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// Metoda je volána, pokud se metodì GetValue nepodaøí získat hodnotu.
-		/// Není-li EmptyText rovno null, vrací se hodnota Empty text. 
-		/// Jinak je vyhozena vıjimka MissingMemberException.
+		/// Metoda je volÃ¡na, pokud se metodÄ› GetValue nepodaÅ™Ã­ zÃ­skat hodnotu.
+		/// NenÃ­-li EmptyText rovno null, vracÃ­ se hodnota Empty text. 
+		/// Jinak je vyhozena vÃ½jimka MissingMemberException.
 		/// </summary>
 		protected virtual object GetNotFoundDataItem()
 		{
@@ -197,14 +197,14 @@ namespace Havit.Web.UI.WebControls
 				return EmptyText;
 			}
 
-			throw new MissingMemberException(String.Format("Nepodaøilo se vyhodnotit DataField \"{0}\".", DataField));
+			throw new MissingMemberException(String.Format("NepodaÅ™ilo se vyhodnotit DataField \"{0}\".", DataField));
 		}
 		#endregion
 
 		#region InitializeDataCell, InitializeDataCellContent
 		/// <summary>
-		/// Pokud není CellCssClass prázdné, generuje se do buòky tabulky &lt;div="CellCssClass"&gt;...&lt;/div&gt;.
-		/// Jinak se pouije normálnì samotná buòka tabulky.
+		/// Pokud nenÃ­ CellCssClass prÃ¡zdnÃ©, generuje se do buÅˆky tabulky &lt;div="CellCssClass"&gt;...&lt;/div&gt;.
+		/// Jinak se pouÅ¾ije normÃ¡lnÄ› samotnÃ¡ buÅˆka tabulky.
 		/// </summary>
 		/// <param name="cell"></param>
 		/// <param name="rowState"></param>
@@ -224,9 +224,9 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// Inicializuje obsah buòky daty.
+		/// Inicializuje obsah buÅˆky daty.
 		/// </summary>
-		/// <param name="control">Control, do kterého se má obsah inicializovat.</param>
+		/// <param name="control">Control, do kterÃ©ho se mÃ¡ obsah inicializovat.</param>
 		/// <param name="rowState">RowState.</param>
 		protected virtual void InitializeDataCellContent(Control control, DataControlRowState rowState)
 		{			

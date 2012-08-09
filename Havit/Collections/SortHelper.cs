@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Collections;
@@ -6,18 +6,18 @@ using System.Collections;
 namespace Havit.Collections
 {
 	/// <summary>
-	/// Pomocná tøída pro øazení.
+	/// PomocnÃ¡ tÅ™Ã­da pro Å™azenÃ­.
 	/// </summary>
 	public static class SortHelper
 	{
 		#region PropertySort
 		/// <summary>
-		/// Vrátí data seøazená podle properties v sortItemCollection.
-		/// Pokud je sortItemCollection prázdná kolekce, vrací parametr data.
+		/// VrÃ¡tÃ­ data seÅ™azenÃ¡ podle properties v sortItemCollection.
+		/// Pokud je sortItemCollection prÃ¡zdnÃ¡ kolekce, vracÃ­ parametr data.
 		/// </summary>
-		/// <param name="data">Data k seøazení.</param>
-		/// <param name="sortItemCollection">Instrukce, jak seøadit.</param>
-		/// <returns>Seøazená data.</returns>
+		/// <param name="data">Data k seÅ™azenÃ­.</param>
+		/// <param name="sortItemCollection">Instrukce, jak seÅ™adit.</param>
+		/// <returns>SeÅ™azenÃ¡ data.</returns>
 		public static IEnumerable PropertySort(IEnumerable data, SortItemCollection sortItemCollection)
 		{
 			if (sortItemCollection.Count == 0)
@@ -25,24 +25,24 @@ namespace Havit.Collections
 				return data;
 			}
 
-			// pøekopírujeme data do jiné struktury
+			// pÅ™ekopÃ­rujeme data do jinÃ© struktury
 			List<object> dataList = new List<object>();
 			foreach (object o in data)
 			{
 				dataList.Add(o);
 			}
-			// seøedíme data
+			// seÅ™edÃ­me data
 			dataList.Sort(new GenericPropertyComparer<object>(sortItemCollection));
-			// provedeme databinding na seøazenıch datech
+			// provedeme databinding na seÅ™azenÃ½ch datech
 			return dataList;
 		}
 
 		/// <summary>
-		/// Vrátí data seøazená podle property.
+		/// VrÃ¡tÃ­ data seÅ™azenÃ¡ podle property.
 		/// </summary>
-		/// <param name="data">Data k seøazení.</param>
-		/// <param name="property">Property, podle které se øadí.</param>
-		/// <returns>Seøazená data.</returns>
+		/// <param name="data">Data k seÅ™azenÃ­.</param>
+		/// <param name="property">Property, podle kterÃ© se Å™adÃ­.</param>
+		/// <returns>SeÅ™azenÃ¡ data.</returns>
 		public static IEnumerable PropertySort(IEnumerable data, string property)
 		{
 			SortItemCollection sortItemCollection = new SortItemCollection();

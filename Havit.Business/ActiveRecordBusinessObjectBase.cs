@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Data.Common;
@@ -9,21 +9,21 @@ using System.Data.SqlClient;
 namespace Havit.Business
 {
 	/// <summary>
-	/// Bázová tøída pro všechny business-objekty, která definuje jejich základní chování (Layer Supertype),
-	/// zejména ve vztahu k databázi jako Active Record [Fowler].
+	/// BÃ¡zovÃ¡ tÅ™Ã­da pro vÅ¡echny business-objekty, kterÃ¡ definuje jejich zÃ¡kladnÃ­ chovÃ¡nÃ­ (Layer Supertype),
+	/// zejmÃ©na ve vztahu k databÃ¡zi jako Active Record [Fowler].
 	/// </summary>
 	/// <remarks>
-	/// Tøída je základem pro všechny business-objekty a implementuje základní pattern pro komunikaci s databází.
-	/// Naèítání z databáze je implementováno jako Lazy Load, kdy je objekt nejprve vytvoøen prázdnı jako Ghost se svım ID a teprve
-	/// pøi první potøebì je iniciováno jeho úplné naètení z DB.<br/>
-	/// Prostøednictvím constructoru BusinessObjectBase(DataRecord record) lze vytvoøit i neúplnì naètenou instanci objektu,
-	/// samotná funkènost však není øešena a kadı si musí sám ohlídat, aby bylo naèteno vše, co je potøeba.
+	/// TÅ™Ã­da je zÃ¡kladem pro vÅ¡echny business-objekty a implementuje zÃ¡kladnÃ­ pattern pro komunikaci s databÃ¡zÃ­.
+	/// NaÄÃ­tÃ¡nÃ­ z databÃ¡ze je implementovÃ¡no jako Lazy Load, kdy je objekt nejprve vytvoÅ™en prÃ¡zdnÃ½ jako Ghost se svÃ½m ID a teprve
+	/// pÅ™i prvnÃ­ potÅ™ebÄ› je iniciovÃ¡no jeho ÃºplnÃ© naÄtenÃ­ z DB.<br/>
+	/// ProstÅ™ednictvÃ­m constructoru BusinessObjectBase(DataRecord record) lze vytvoÅ™it i neÃºplnÄ› naÄtenou instanci objektu,
+	/// samotnÃ¡ funkÄnost vÅ¡ak nenÃ­ Å™eÅ¡ena a kaÅ¾dÃ½ si musÃ­ sÃ¡m ohlÃ­dat, aby bylo naÄteno vÅ¡e, co je potÅ™eba.
 	/// </remarks>
 	public abstract class ActiveRecordBusinessObjectBase : BusinessObjectBase
 	{
 		#region Constructors
 		/// <summary>
-		/// Konstruktor pro novı objekt (bez perzistence v databázi).
+		/// Konstruktor pro novÃ½ objekt (bez perzistence v databÃ¡zi).
 		/// </summary>
 		protected ActiveRecordBusinessObjectBase()
 			: base()
@@ -31,9 +31,9 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Konstruktor pro objekt s obrazem v databázi (perzistentní).
+		/// Konstruktor pro objekt s obrazem v databÃ¡zi (perzistentnÃ­).
 		/// </summary>
-		/// <param name="id">primární klíè objektu</param>
+		/// <param name="id">primÃ¡rnÃ­ klÃ­Ä objektu</param>
 		protected ActiveRecordBusinessObjectBase(int id)
 			: base(id)
 		{
@@ -44,12 +44,12 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Konstruktor pro objekt s obrazen v databázi, kterım dojde rovnou k naètení dat z <see cref="Havit.Data.DataRecord"/>.
-		/// Základní cesta vytvoøení partially-loaded instance.
-		/// Pokud se inicializuje Ghost nebo FullLoad objekt, je pøidán do IdentityMapy, pokud existuje.
+		/// Konstruktor pro objekt s obrazen v databÃ¡zi, kterÃ½m dojde rovnou k naÄtenÃ­ dat z <see cref="Havit.Data.DataRecord"/>.
+		/// ZÃ¡kladnÃ­ cesta vytvoÅ™enÃ­ partially-loaded instance.
+		/// Pokud se inicializuje Ghost nebo FullLoad objekt, je pÅ™idÃ¡n do IdentityMapy, pokud existuje.
 		/// </summary>
-		/// <param name="id">ID naèítaného objektu</param>
-		/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu naètenımi z databáze</param>
+		/// <param name="id">ID naÄÃ­tanÃ©ho objektu</param>
+		/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu naÄtenÃ½mi z databÃ¡ze</param>
 		protected ActiveRecordBusinessObjectBase(int id, DataRecord record)
 			: base(
 			id,	// ID
@@ -62,7 +62,7 @@ namespace Havit.Business
 				throw new ArgumentNullException("record");
 			}
 
-			/* nahradil implementaèní constructor base(...)
+			/* nahradil implementaÄnÃ­ constructor base(...)
 						this.IsNew = false;
 						this.IsLoaded = false;
 			*/
@@ -84,10 +84,10 @@ namespace Havit.Business
 
 		#region Load logika
 		/// <summary>
-		/// Nastaví objektu hodnoty z DataRecordu.
-		/// Pokud je objekt ji naèten, vyhodí vıjimku.
+		/// NastavÃ­ objektu hodnoty z DataRecordu.
+		/// Pokud je objekt jiÅ¾ naÄten, vyhodÃ­ vÃ½jimku.
 		/// </summary>
-		/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu naètenımi z databáze.</param>
+		/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu naÄtenÃ½mi z databÃ¡ze.</param>
 		public void Load(DataRecord record)
 		{
 			if (record == null)
@@ -97,7 +97,7 @@ namespace Havit.Business
 
 			if (this.IsLoaded)
 			{
-				throw new InvalidOperationException("Nelze nastavit objektu hodnoty z DataRecordu, pokud objekt není ghostem.");
+				throw new InvalidOperationException("Nelze nastavit objektu hodnoty z DataRecordu, pokud objekt nenÃ­ ghostem.");
 			}
 			Load_ParseDataRecord(record);
 
@@ -109,12 +109,12 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Vıkonná èást nahrání objektu z perzistentního uloištì.
+		/// VÃ½konnÃ¡ ÄÃ¡st nahrÃ¡nÃ­ objektu z perzistentnÃ­ho uloÅ¾iÅ¡tÄ›.
 		/// </summary>
 		/// <remarks>
-		/// Naète objekt z databáze do <see cref="DataRecord"/> a parsuje získanı <see cref="DataRecord"/> do objektu.
+		/// NaÄte objekt z databÃ¡ze do <see cref="DataRecord"/> a parsuje zÃ­skanÃ½ <see cref="DataRecord"/> do objektu.
 		/// </remarks>
-		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má bıt objekt naèten; null, pokud bez transakce</param>
+		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rÃ¡mci kterÃ© mÃ¡ bÃ½t objekt naÄten; null, pokud bez transakce</param>
 		protected override sealed bool TryLoad_Perform(DbTransaction transaction)
 		{
 			DataRecord record = Load_GetDataRecord(transaction);
@@ -128,17 +128,17 @@ namespace Havit.Business
 			return true;
 		}
 		/// <summary>
-		/// Implementace metody naète DataRecord objektu z databáze.
+		/// Implementace metody naÄte DataRecord objektu z databÃ¡ze.
 		/// </summary>
-		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má bıt objekt naèten; null, pokud bez transakce</param>
-		/// <returns><see cref="Havit.Data.DataRecord"/> s daty objektu naètenımi z databáze; null, pokud nenalezeno</returns>
+		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rÃ¡mci kterÃ© mÃ¡ bÃ½t objekt naÄten; null, pokud bez transakce</param>
+		/// <returns><see cref="Havit.Data.DataRecord"/> s daty objektu naÄtenÃ½mi z databÃ¡ze; null, pokud nenalezeno</returns>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member")]
 		protected abstract DataRecord Load_GetDataRecord(DbTransaction transaction);
 
 		/// <summary>
-		/// Implemetace metody naplní hodnoty objektu z DataRecordu.
+		/// Implemetace metody naplnÃ­ hodnoty objektu z DataRecordu.
 		/// </summary>
-		/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu naètenımi z databáze; null, pokud nenalezeno</param>
+		/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu naÄtenÃ½mi z databÃ¡ze; null, pokud nenalezeno</param>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member")]
 		protected abstract void Load_ParseDataRecord(DataRecord record);
 		#endregion
@@ -147,47 +147,47 @@ namespace Havit.Business
 		private WeakReference lastSaveTransaction;
 
 		/// <summary>
-		/// Uloí objekt do databáze, s pouitím transakce. Novı objekt je vloen INSERT, existující objekt je aktualizován UPDATE.
+		/// UloÅ¾Ã­ objekt do databÃ¡ze, s pouÅ¾itÃ­m transakce. NovÃ½ objekt je vloÅ¾en INSERT, existujÃ­cÃ­ objekt je aktualizovÃ¡n UPDATE.
 		/// </summary>
 		/// <remarks>
-		/// Metoda neprovede uloení objektu, pokud není nahrán (!IsLoaded), není toti ani co ukládat,
-		/// data nemohla bıt zmìnìna, kdy nebyla ani jednou pouita.<br/>
-		/// Metoda také neprovede uloení, pokud objekt nebyl zmìnìn a souèasnì nejde o novı objekt (!IsDirty &amp;&amp; !IsNew)
+		/// Metoda neprovede uloÅ¾enÃ­ objektu, pokud nenÃ­ nahrÃ¡n (!IsLoaded), nenÃ­ totiÅ¾ ani co uklÃ¡dat,
+		/// data nemohla bÃ½t zmÄ›nÄ›na, kdyÅ¾ nebyla ani jednou pouÅ¾ita.<br/>
+		/// Metoda takÃ© neprovede uloÅ¾enÃ­, pokud objekt nebyl zmÄ›nÄ›n a souÄasnÄ› nejde o novÃ½ objekt (!IsDirty &amp;&amp; !IsNew)
 		/// </remarks>
-		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má bıt objekt uloen; null, pokud bez transakce</param>
+		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rÃ¡mci kterÃ© mÃ¡ bÃ½t objekt uloÅ¾en; null, pokud bez transakce</param>
 		public override sealed void Save(DbTransaction transaction)
 		{
-			// vynucení transakce nad celou Save() operací (BusinessObjectBase ji pouze oèekává, ale nevynucuje).
+			// vynucenÃ­ transakce nad celou Save() operacÃ­ (BusinessObjectBase ji pouze oÄekÃ¡vÃ¡, ale nevynucuje).
 			DbConnector.Default.ExecuteTransaction(delegate(DbTransaction myTransaction)
 				{
 
-					// nechceme dvojí Save v rámci jedné transakce, proto si transakci ukládáme jako scope sejvu a v rámci stejného scope vykopneme Save
-					// ovšem pokud jsme dirty, tak budeme pokraèovat ukládáním
+					// nechceme dvojÃ­ Save v rÃ¡mci jednÃ© transakce, proto si transakci uklÃ¡dÃ¡me jako scope sejvu a v rÃ¡mci stejnÃ©ho scope vykopneme Save
+					// ovÅ¡em pokud jsme dirty, tak budeme pokraÄovat uklÃ¡dÃ¡nÃ­m
 					if (!IsDirty && (lastSaveTransaction != null) && (object.ReferenceEquals(lastSaveTransaction.Target, myTransaction)))
 					{
 						return;
 					}
 					lastSaveTransaction = new WeakReference(myTransaction);
 
-					// Øeší cyklické ukládání, kdy mne ukládá existující objekt díky cyklu.
-					// Pøeze mne ji Save jednou prošel (já jsem ho nejspíš inicioval), proto jsem IsSaving
-					// Save se na mne dostal podruhé, tzn. nìkdo mì potøebuje.
-					// a pokud jsem tedy novı, nutnì je vyadován MinimalInsert
-					// Neøeší zøejmì situaci, e ten kdo mì ukládá, by mì nemusel potøebovat a mohl se uloit
-					// sám dvoufázovì.
+					// Å˜eÅ¡Ã­ cyklickÃ© uklÃ¡dÃ¡nÃ­, kdy mne uklÃ¡dÃ¡ existujÃ­cÃ­ objekt dÃ­ky cyklu.
+					// PÅ™eze mne jiÅ¾ Save jednou proÅ¡el (jÃ¡ jsem ho nejspÃ­Å¡ inicioval), proto jsem IsSaving
+					// Save se na mne dostal podruhÃ©, tzn. nÄ›kdo mÄ› potÅ™ebuje.
+					// a pokud jsem tedy novÃ½, nutnÄ› je vyÅ¾adovÃ¡n MinimalInsert
+					// NeÅ™eÅ¡Ã­ zÅ™ejmÄ› situaci, Å¾e ten kdo mÄ› uklÃ¡dÃ¡, by mÄ› nemusel potÅ™ebovat a mohl se uloÅ¾it
+					// sÃ¡m dvoufÃ¡zovÄ›.
 					if (this.IsNew && this.IsSaving)
 					{
-						// jsem New, ukládám se a zase jsem cyklem došel sám na sebe
-						// nezbıvá, ne se zkusit uloit.
+						// jsem New, uklÃ¡dÃ¡m se a zase jsem cyklem doÅ¡el sÃ¡m na sebe
+						// nezbÃ½vÃ¡, neÅ¾ se zkusit uloÅ¾it.
 						this.Save_MinimalInsert(myTransaction);
 					}
 
-					Save_BaseInTransaction(myTransaction); // base.Save(myTransaction) hlásí warning
+					Save_BaseInTransaction(myTransaction); // base.Save(myTransaction) hlÃ¡sÃ­ warning
 				}, transaction);
 		}
 
 		/// <summary>
-		/// Voláno z metody Save - øeší warning pøi kompilaci pøi volání base.Save(...) z anonymní metody.
+		/// VolÃ¡no z metody Save - Å™eÅ¡Ã­ warning pÅ™i kompilaci pÅ™i volÃ¡nÃ­ base.Save(...) z anonymnÃ­ metody.
 		/// </summary>
 		private void Save_BaseInTransaction(DbTransaction myTransaction)
 		{
@@ -195,26 +195,26 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Vıkonná èást uloení objektu do perzistentního uloištì.
+		/// VÃ½konnÃ¡ ÄÃ¡st uloÅ¾enÃ­ objektu do perzistentnÃ­ho uloÅ¾iÅ¡tÄ›.
 		/// </summary>
 		/// <remarks>
-		/// Pokud je objekt novı, volá Save_Insert_SaveRequiredForFullInsert a Insert, jinak Update.
+		/// Pokud je objekt novÃ½, volÃ¡ Save_Insert_SaveRequiredForFullInsert a Insert, jinak Update.
 		/// </remarks>
-		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má bıt objekt uloen; null, pokud bez transakce</param>
+		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rÃ¡mci kterÃ© mÃ¡ bÃ½t objekt uloÅ¾en; null, pokud bez transakce</param>
 		protected override sealed void Save_Perform(DbTransaction transaction)
 		{
-			// transakce je zajištìna v override Save(DbTransaction), zde není potøeba zakládat další
+			// transakce je zajiÅ¡tÄ›na v override Save(DbTransaction), zde nenÃ­ potÅ™eba zaklÃ¡dat dalÅ¡Ã­
 			
 			if (IsNew)
 			{
 				Save_Insert_InsertRequiredForFullInsert(transaction);
 			}
 
-			// nesluèovat do jedné podmínky, InsertRequiredForFullInsert mùe zavolat mùj MinimalInsert a pak u nejsem New
+			// nesluÄovat do jednÃ© podmÃ­nky, InsertRequiredForFullInsert mÅ¯Å¾e zavolat mÅ¯j MinimalInsert a pak uÅ¾ nejsem New
 
 			if (IsNew && IsDeleted)
 			{
-				throw new InvalidOperationException("Novı objekt nemùe bıt smazán.");
+				throw new InvalidOperationException("NovÃ½ objekt nemÅ¯Å¾e bÃ½t smazÃ¡n.");
 			}
 
 			Save_SaveMembers(transaction);
@@ -241,9 +241,9 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Ukládá member-objekty.
+		/// UklÃ¡dÃ¡ member-objekty.
 		/// </summary>
-		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které mají bıt member-objekty uloeny; null, pokud bez transakce</param>
+		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rÃ¡mci kterÃ© majÃ­ bÃ½t member-objekty uloÅ¾eny; null, pokud bez transakce</param>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member")]
 		protected virtual void Save_SaveMembers(DbTransaction transaction)
 		{
@@ -251,9 +251,9 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Ukládá member-kolekce objektu.
+		/// UklÃ¡dÃ¡ member-kolekce objektu.
 		/// </summary>
-		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které mají bıt member-kolekce uloeny; null, pokud bez transakce</param>
+		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rÃ¡mci kterÃ© majÃ­ bÃ½t member-kolekce uloÅ¾eny; null, pokud bez transakce</param>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member")]
 		protected virtual void Save_SaveCollections(DbTransaction transaction)
 		{
@@ -261,16 +261,16 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Implementace metody vloí novı objekt do databáze a nastaví novì pøidìlené ID (primární klíè).
+		/// Implementace metody vloÅ¾Ã­ novÃ½ objekt do databÃ¡ze a nastavÃ­ novÄ› pÅ™idÄ›lenÃ© ID (primÃ¡rnÃ­ klÃ­Ä).
 		/// </summary>
-		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má bıt objekt uloen; null, pokud bez transakce</param>
+		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rÃ¡mci kterÃ© mÃ¡ bÃ½t objekt uloÅ¾en; null, pokud bez transakce</param>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member")]
 		protected abstract void Save_FullInsert(DbTransaction transaction);
 
 		/// <summary>
-		/// Implementace metody vloí jen not-null vlastnosti objektu do databáze a nastaví novì pøidìlené ID (primární klíè).
+		/// Implementace metody vloÅ¾Ã­ jen not-null vlastnosti objektu do databÃ¡ze a nastavÃ­ novÄ› pÅ™idÄ›lenÃ© ID (primÃ¡rnÃ­ klÃ­Ä).
 		/// </summary>
-		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má bıt objekt uloen; null, pokud bez transakce</param>
+		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rÃ¡mci kterÃ© mÃ¡ bÃ½t objekt uloÅ¾en; null, pokud bez transakce</param>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member")]
 		public virtual void Save_MinimalInsert(DbTransaction transaction)
 		{
@@ -279,16 +279,16 @@ namespace Havit.Business
 
 
 		/// <summary>
-		/// Implementace metody aktualizuje data objektu v databázi.
+		/// Implementace metody aktualizuje data objektu v databÃ¡zi.
 		/// </summary>
-		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má bıt objekt uloen; null, pokud bez transakce</param>
+		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rÃ¡mci kterÃ© mÃ¡ bÃ½t objekt uloÅ¾en; null, pokud bez transakce</param>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member")]
 		protected abstract void Save_Update(DbTransaction transaction);
 
 		/// <summary>
-		/// Ukládá hodnoty potøebné pro provedení plného insertu.
+		/// UklÃ¡dÃ¡ hodnoty potÅ™ebnÃ© pro provedenÃ­ plnÃ©ho insertu.
 		/// </summary>
-		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má bıt objekt uloen; null, pokud bez transakce</param>
+		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rÃ¡mci kterÃ© mÃ¡ bÃ½t objekt uloÅ¾en; null, pokud bez transakce</param>
 		protected virtual void Save_Insert_InsertRequiredForFullInsert(DbTransaction transaction)
 		{
 			Save_Insert_InsertRequiredForMinimalInsert(transaction);
@@ -296,21 +296,21 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Ukládá hodnoty potøebné pro provedení minimálního insertu. Volá Save_Insert_SaveRequiredForMinimalInsert.
+		/// UklÃ¡dÃ¡ hodnoty potÅ™ebnÃ© pro provedenÃ­ minimÃ¡lnÃ­ho insertu. VolÃ¡ Save_Insert_SaveRequiredForMinimalInsert.
 		/// </summary>
-		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má bıt objekt uloen; null, pokud bez transakce</param>
+		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rÃ¡mci kterÃ© mÃ¡ bÃ½t objekt uloÅ¾en; null, pokud bez transakce</param>
 		protected virtual void Save_Insert_InsertRequiredForMinimalInsert(DbTransaction transaction)
 		{
 			if (IsMinimalInserting)
 			{
-				throw new InvalidOperationException("Pøi ukládání objektù se vyskytla neøešitelná cyklická závislost stylu 'Co vzniklo první: zrno nebo klas?'");
+				throw new InvalidOperationException("PÅ™i uklÃ¡dÃ¡nÃ­ objektÅ¯ se vyskytla neÅ™eÅ¡itelnÃ¡ cyklickÃ¡ zÃ¡vislost stylu 'Co vzniklo prvnÃ­: zrno nebo klas?'");
 			}
 
 			IsMinimalInserting = true;
 		}
 
 		/// <summary>
-		/// Identifikuje, zda probíhá Save_Insert_InsertRequiredForMinimalInsert (nesmí se zacyklit).
+		/// Identifikuje, zda probÃ­hÃ¡ Save_Insert_InsertRequiredForMinimalInsert (nesmÃ­ se zacyklit).
 		/// </summary>
 		protected bool IsMinimalInserting
 		{

@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using Havit.Collections;
@@ -6,14 +6,14 @@ using Havit.Collections;
 namespace Havit.Business.Query
 {
 	/// <summary>
-	/// Reprezentuje položku øazení.
+	/// Reprezentuje poloÅ¾ku Å™azenÃ­.
 	/// </summary>
 	[Serializable]
 	public class FieldPropertySortItem: SortItem
 	{
 		#region Constructor (obsolete)
 		/// <summary>
-		/// Vytvoøí nenastavenou položku øazení podle.
+		/// VytvoÅ™Ã­ nenastavenou poloÅ¾ku Å™azenÃ­ podle.
 		/// </summary>
 		[Obsolete]
 		public FieldPropertySortItem()
@@ -25,7 +25,7 @@ namespace Havit.Business.Query
 
 		#region Constructors
 		/// <summary>
-		/// Vytvoøí položku øazení podle sloupce, vzestupné poøadí.
+		/// VytvoÅ™Ã­ poloÅ¾ku Å™azenÃ­ podle sloupce, vzestupnÃ© poÅ™adÃ­.
 		/// </summary>
 		public FieldPropertySortItem(FieldPropertyInfo property)
 			: this(property, SortDirection.Ascending)
@@ -33,7 +33,7 @@ namespace Havit.Business.Query
 		}
 		
 		/// <summary>
-		/// Vytvoøí položku øazení podle sloupce a daného poøadí.
+		/// VytvoÅ™Ã­ poloÅ¾ku Å™azenÃ­ podle sloupce a danÃ©ho poÅ™adÃ­.
 		/// </summary>
 		public FieldPropertySortItem(FieldPropertyInfo property, SortDirection direction)
 			: base(property.FieldName, direction)

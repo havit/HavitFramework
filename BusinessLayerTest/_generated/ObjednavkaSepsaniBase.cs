@@ -28,6 +28,21 @@ using Havit.Data.SqlTypes;
 
 namespace Havit.BusinessLayerTest
 {
+	/// <remarks>
+	/// <code>
+	/// CREATE TABLE [dbo].[ObjednavkaSepsani](
+	/// 	[ObjednavkaSepsaniID] [int] IDENTITY(1,1) NOT NULL,
+	/// 	[StornoKomunikaceID] [int] NULL,
+	///  CONSTRAINT [PK_ObjednavkaSepsani] PRIMARY KEY CLUSTERED 
+	/// (
+	/// 	[ObjednavkaSepsaniID] ASC
+	/// )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+	/// ) ON [PRIMARY]
+	/// ALTER TABLE [dbo].[ObjednavkaSepsani]  WITH CHECK ADD  CONSTRAINT [FK_ObjednavkaSepsani_Komunikace] FOREIGN KEY([StornoKomunikaceID])
+	/// REFERENCES [Komunikace] ([KomunikaceID])
+	/// ALTER TABLE [dbo].[ObjednavkaSepsani] CHECK CONSTRAINT [FK_ObjednavkaSepsani_Komunikace]
+	/// </code>
+	/// </remarks>
 	[System.Diagnostics.Contracts.ContractVerification(false)]
 	public abstract class ObjednavkaSepsaniBase : ActiveRecordBusinessObjectBase
 	{
@@ -340,7 +355,7 @@ namespace Havit.BusinessLayerTest
 		
 		#endregion
 		
-		#region GetFirst, GetList
+		#region GetFirst, GetList, GetAll
 		/// <summary>
 		/// Vrátí první nalezený objekt typu ObjednavkaSepsani dle parametrů v queryParams.
 		/// Pokud není žádný objekt nalezen, vrací null.

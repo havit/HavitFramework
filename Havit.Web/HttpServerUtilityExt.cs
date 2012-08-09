@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Web;
 using System.Web.Caching;
@@ -6,13 +6,13 @@ using System.Web.Caching;
 namespace Havit.Web
 {
 	/// <summary>
-	/// Poskytuje další pomocné metody pro ovládání webového serveru.
+	/// Poskytuje dalÅ¡Ã­ pomocnÃ© metody pro ovlÃ¡dÃ¡nÃ­ webovÃ©ho serveru.
 	/// </summary>
 	public sealed class HttpServerUtilityExt
 	{
 		#region ClearCache
 		/// <summary>
-		/// Vyèistí cache webové aplikace.
+		/// VyÄistÃ­ cache webovÃ© aplikace.
 		/// </summary>
 		public static void ClearCache()
 		{
@@ -115,7 +115,7 @@ namespace Havit.Web
 
 		#region private constructor
 		/// <summary>
-		/// private constructor zabraòuje vytvoøení instance tøídy
+		/// private constructor zabraÅˆuje vytvoÅ™enÃ­ instance tÅ™Ã­dy
 		/// </summary>
 		private HttpServerUtilityExt() {}
 		#endregion

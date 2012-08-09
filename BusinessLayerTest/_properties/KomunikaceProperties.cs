@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Globalization;
@@ -21,7 +21,7 @@ using Havit.Business.Query;
 namespace Havit.BusinessLayerTest
 {
 	/// <summary>
-	/// Objektová reprezentace metadat vlastností typu Komunikace.
+	/// ObjektovĂˇ reprezentace metadat vlastnostĂ­ typu Komunikace.
 	/// </summary>
 	public class KomunikaceProperties : KomunikacePropertiesBase
 	{

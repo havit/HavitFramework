@@ -1,21 +1,21 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Havit.Collections
 {
 	/// <summary>
-	/// Urèuje smìr øazení.
+	/// UrÄuje smÄ›r Å™azenÃ­.
 	/// </summary>
 	public enum SortDirection
 	{
 		/// <summary>
-		/// Vyestupné.
+		/// VyestupnÃ©.
 		/// </summary>
 		Ascending,
 
 		/// <summary>
-		/// Sestupné.
+		/// SestupnÃ©.
 		/// </summary>
 		Descending
 	}

@@ -1,21 +1,21 @@
-using System;
+ï»¿using System;
 using System.Text.RegularExpressions;
 using Havit.Text.RegularExpressions;
 
 namespace Havit
 {
 	/// <summary>
-	/// Matematické funkce, konstanty a rùzné další pomùcky.
-	/// Tøída poskytuje statické metody a konstanty, je neinstanèní.
+	/// MatematickÃ© funkce, konstanty a rÅ¯znÃ© dalÅ¡Ã­ pomÅ¯cky.
+	/// TÅ™Ã­da poskytuje statickÃ© metody a konstanty, je neinstanÄnÃ­.
 	/// </summary>
 	public static class MathExt
 	{
 		#region IsEven, IsOdd
 		/// <summary>
-		/// Vrátí true, je-li zadané èíslo sudé.
+		/// VrÃ¡tÃ­ true, je-li zadanÃ© ÄÃ­slo sudÃ©.
 		/// </summary>
-		/// <param name="d">èíslo</param>
-		/// <returns>true, je-li èíslo sudé</returns>
+		/// <param name="d">ÄÃ­slo</param>
+		/// <returns>true, je-li ÄÃ­slo sudÃ©</returns>
 		public static bool IsEven(double d)
 		{
 			return ((d % 2) == 0);
@@ -23,10 +23,10 @@ namespace Havit
 
 
 		/// <summary>
-		/// Vrátí true, je-li zadané èíslo liché.
+		/// VrÃ¡tÃ­ true, je-li zadanÃ© ÄÃ­slo lichÃ©.
 		/// </summary>
-		/// <param name="d">èíslo</param>
-		/// <returns>true, je-li èíslo liché</returns>
+		/// <param name="d">ÄÃ­slo</param>
+		/// <returns>true, je-li ÄÃ­slo lichÃ©</returns>
 		public static bool IsOdd(double d)
 		{
 			return !IsEven(d);
@@ -35,14 +35,14 @@ namespace Havit
 
 		#region IsInteger
 		/// <summary>
-		/// Ovìøí, zda-li je zadanı textovı øetìzec celım èíslem.
+		/// OvÄ›Å™Ã­, zda-li je zadanÃ½ textovÃ½ Å™etÄ›zec celÃ½m ÄÃ­slem.
 		/// </summary>
 		/// <remarks>
-		/// Ovìøuje se vùèi regulárnímu vırazu <see cref="Havit.Text.RegularExpressions.RegexPatterns.Integer"/>.<br/>
-		/// Pokud je text null, vrátí false.
+		/// OvÄ›Å™uje se vÅ¯Äi regulÃ¡rnÃ­mu vÃ½razu <see cref="Havit.Text.RegularExpressions.RegexPatterns.Integer"/>.<br/>
+		/// Pokud je text null, vrÃ¡tÃ­ false.
 		/// </remarks>
-		/// <param name="text">ovìøovanı textovı øetìzec</param>
-		/// <returns>true, je-li text celım èíslem; jinak false</returns>
+		/// <param name="text">ovÄ›Å™ovanÃ½ textovÃ½ Å™etÄ›zec</param>
+		/// <returns>true, je-li text celÃ½m ÄÃ­slem; jinak false</returns>
 		public static bool IsInteger(string text)
 		{
 			return ((text != null) && Regex.IsMatch(text, RegexPatterns.Integer));
@@ -51,66 +51,66 @@ namespace Havit
 
 		#region RoundToMultiple, CeilingToMultiple, FloorToMultiple
 		/// <summary>
-		/// Zaokrouhlí (aritmeticky) èíslo na nejbliší násobek (multiple) jiného èísla.
+		/// ZaokrouhlÃ­ (aritmeticky) ÄÃ­slo na nejbliÅ¾Å¡Ã­ nÃ¡sobek (multiple) jinÃ©ho ÄÃ­sla.
 		/// </summary>
-		/// <param name="d">èíslo k zaohrouhlení</param>
-		/// <param name="multiple">èíslo, na jeho násobek se má zaokrouhlit (multiple)</param>
-		/// <returns>èíslo zaokrouhlené (aritmeticky) na nejblií násobek (multiple)</returns>
+		/// <param name="d">ÄÃ­slo k zaohrouhlenÃ­</param>
+		/// <param name="multiple">ÄÃ­slo, na jehoÅ¾ nÃ¡sobek se mÃ¡ zaokrouhlit (multiple)</param>
+		/// <returns>ÄÃ­slo zaokrouhlenÃ© (aritmeticky) na nejbliÅ¾Ã­ nÃ¡sobek (multiple)</returns>
 		public static double RoundToMultiple(double d, double multiple)
 		{
 			return Math.Round(d / multiple) * multiple;
 		}
 
 		/// <summary>
-		/// Zaokrouhlí (aritmeticky) èíslo na nejbliší násobek (multiple) jiného èísla.
+		/// ZaokrouhlÃ­ (aritmeticky) ÄÃ­slo na nejbliÅ¾Å¡Ã­ nÃ¡sobek (multiple) jinÃ©ho ÄÃ­sla.
 		/// </summary>
-		/// <param name="d">èíslo k zaohrouhlení</param>
-		/// <param name="multiple">èíslo, na jeho násobek se má zaokrouhlit (multiple)</param>
-		/// <returns>èíslo zaokrouhlené (aritmeticky) na nejblií násobek (multiple)</returns>
+		/// <param name="d">ÄÃ­slo k zaohrouhlenÃ­</param>
+		/// <param name="multiple">ÄÃ­slo, na jehoÅ¾ nÃ¡sobek se mÃ¡ zaokrouhlit (multiple)</param>
+		/// <returns>ÄÃ­slo zaokrouhlenÃ© (aritmeticky) na nejbliÅ¾Ã­ nÃ¡sobek (multiple)</returns>
 		public static int RoundToMultiple(double d, int multiple)
 		{
 			return (int)Math.Round(d / multiple) * multiple;
 		}
 
 		/// <summary>
-		/// Zaokrouhlí èíslo na nejbliší vyšší násobek (multiple) jiného èísla.
+		/// ZaokrouhlÃ­ ÄÃ­slo na nejbliÅ¾Å¡Ã­ vyÅ¡Å¡Ã­ nÃ¡sobek (multiple) jinÃ©ho ÄÃ­sla.
 		/// </summary>
-		/// <param name="d">èíslo k zaohrouhlení</param>
-		/// <param name="multiple">èíslo, na jeho násobek se má zaokrouhlit (multiple)</param>
-		/// <returns>èíslo zaokrouhlené na nejblií vyšší násobek (multiple)</returns>
+		/// <param name="d">ÄÃ­slo k zaohrouhlenÃ­</param>
+		/// <param name="multiple">ÄÃ­slo, na jehoÅ¾ nÃ¡sobek se mÃ¡ zaokrouhlit (multiple)</param>
+		/// <returns>ÄÃ­slo zaokrouhlenÃ© na nejbliÅ¾Ã­ vyÅ¡Å¡Ã­ nÃ¡sobek (multiple)</returns>
 		public static double CeilingToMultiple(double d, double multiple)
 		{
 			return Math.Ceiling(d / multiple) * multiple;
 		}
 
 		/// <summary>
-		/// Zaokrouhlí èíslo na nejbliší vyšší násobek (multiple) jiného èísla.
+		/// ZaokrouhlÃ­ ÄÃ­slo na nejbliÅ¾Å¡Ã­ vyÅ¡Å¡Ã­ nÃ¡sobek (multiple) jinÃ©ho ÄÃ­sla.
 		/// </summary>
-		/// <param name="d">èíslo k zaohrouhlení</param>
-		/// <param name="multiple">èíslo, na jeho násobek se má zaokrouhlit (multiple)</param>
-		/// <returns>èíslo zaokrouhlené na nejblií vyšší násobek (multiple)</returns>
+		/// <param name="d">ÄÃ­slo k zaohrouhlenÃ­</param>
+		/// <param name="multiple">ÄÃ­slo, na jehoÅ¾ nÃ¡sobek se mÃ¡ zaokrouhlit (multiple)</param>
+		/// <returns>ÄÃ­slo zaokrouhlenÃ© na nejbliÅ¾Ã­ vyÅ¡Å¡Ã­ nÃ¡sobek (multiple)</returns>
 		public static int CeilingToMultiple(double d, int multiple)
 		{
 			return (int)Math.Ceiling(d / multiple) * multiple;
 		}
 
 		/// <summary>
-		/// Zaokrouhlí èíslo na nejbliší niší násobek (multiple) jiného èísla.
+		/// ZaokrouhlÃ­ ÄÃ­slo na nejbliÅ¾Å¡Ã­ niÅ¾Å¡Ã­ nÃ¡sobek (multiple) jinÃ©ho ÄÃ­sla.
 		/// </summary>
-		/// <param name="d">èíslo k zaohrouhlení</param>
-		/// <param name="multiple">èíslo, na jeho násobek se má zaokrouhlit (multiple)</param>
-		/// <returns>èíslo zaokrouhlené na nejblií niší násobek (multiple)</returns>
+		/// <param name="d">ÄÃ­slo k zaohrouhlenÃ­</param>
+		/// <param name="multiple">ÄÃ­slo, na jehoÅ¾ nÃ¡sobek se mÃ¡ zaokrouhlit (multiple)</param>
+		/// <returns>ÄÃ­slo zaokrouhlenÃ© na nejbliÅ¾Ã­ niÅ¾Å¡Ã­ nÃ¡sobek (multiple)</returns>
 		public static double FloorToMultiple(double d, double multiple)
 		{
 			return Math.Floor(d / multiple) * multiple;
 		}
 
 		/// <summary>
-		/// Zaokrouhlí èíslo na nejbliší niší násobek (multiple) jiného èísla.
+		/// ZaokrouhlÃ­ ÄÃ­slo na nejbliÅ¾Å¡Ã­ niÅ¾Å¡Ã­ nÃ¡sobek (multiple) jinÃ©ho ÄÃ­sla.
 		/// </summary>
-		/// <param name="d">èíslo k zaohrouhlení</param>
-		/// <param name="multiple">èíslo, na jeho násobek se má zaokrouhlit (multiple)</param>
-		/// <returns>èíslo zaokrouhlené na nejblií niší násobek (multiple)</returns>
+		/// <param name="d">ÄÃ­slo k zaohrouhlenÃ­</param>
+		/// <param name="multiple">ÄÃ­slo, na jehoÅ¾ nÃ¡sobek se mÃ¡ zaokrouhlit (multiple)</param>
+		/// <returns>ÄÃ­slo zaokrouhlenÃ© na nejbliÅ¾Ã­ niÅ¾Å¡Ã­ nÃ¡sobek (multiple)</returns>
 		public static int FloorToMultiple(double d, int multiple)
 		{
 			return (int)Math.Floor(d / multiple) * multiple;
@@ -119,10 +119,10 @@ namespace Havit
 
 		#region Max(params), Min(params)
 		/// <summary>
-		/// Vrátí nejvìtší ze zadanıch èísel.
+		/// VrÃ¡tÃ­ nejvÄ›tÅ¡Ã­ ze zadanÃ½ch ÄÃ­sel.
 		/// </summary>
-		/// <param name="values">èísla k porovnání</param>
-		/// <returns>nejvìtší z values</returns>
+		/// <param name="values">ÄÃ­sla k porovnÃ¡nÃ­</param>
+		/// <returns>nejvÄ›tÅ¡Ã­ z values</returns>
 		public static int Max(params int[] values)
 		{
 			int result = values[0];
@@ -138,10 +138,10 @@ namespace Havit
 		}
 
 		/// <summary>
-		/// Vrátí nejvìtší ze zadanıch èísel.
+		/// VrÃ¡tÃ­ nejvÄ›tÅ¡Ã­ ze zadanÃ½ch ÄÃ­sel.
 		/// </summary>
-		/// <param name="values">èísla k porovnání</param>
-		/// <returns>nejvìtší z values</returns>
+		/// <param name="values">ÄÃ­sla k porovnÃ¡nÃ­</param>
+		/// <returns>nejvÄ›tÅ¡Ã­ z values</returns>
 		public static double Max(params double[] values)
 		{
 			double result = values[0];
@@ -154,10 +154,10 @@ namespace Havit
 		}
 
 		/// <summary>
-		/// Vrátí nejvìtší ze zadanıch èísel.
+		/// VrÃ¡tÃ­ nejvÄ›tÅ¡Ã­ ze zadanÃ½ch ÄÃ­sel.
 		/// </summary>
-		/// <param name="values">èísla k porovnání</param>
-		/// <returns>nejvìtší z values</returns>
+		/// <param name="values">ÄÃ­sla k porovnÃ¡nÃ­</param>
+		/// <returns>nejvÄ›tÅ¡Ã­ z values</returns>
 		public static float Max(params float[] values)
 		{
 			float result = values[0];
@@ -170,10 +170,10 @@ namespace Havit
 		}
 
 		/// <summary>
-		/// Vrátí nejvìtší ze zadanıch èísel.
+		/// VrÃ¡tÃ­ nejvÄ›tÅ¡Ã­ ze zadanÃ½ch ÄÃ­sel.
 		/// </summary>
-		/// <param name="values">èísla k porovnání</param>
-		/// <returns>nejvìtší z values</returns>
+		/// <param name="values">ÄÃ­sla k porovnÃ¡nÃ­</param>
+		/// <returns>nejvÄ›tÅ¡Ã­ z values</returns>
 		public static decimal Max(params decimal[] values)
 		{
 			decimal result = values[0];
@@ -186,10 +186,10 @@ namespace Havit
 		}
 
 		/// <summary>
-		/// Vrátí nejvìtší ze zadanıch èísel.
+		/// VrÃ¡tÃ­ nejvÄ›tÅ¡Ã­ ze zadanÃ½ch ÄÃ­sel.
 		/// </summary>
-		/// <param name="values">èísla k porovnání</param>
-		/// <returns>nejvìtší z values</returns>
+		/// <param name="values">ÄÃ­sla k porovnÃ¡nÃ­</param>
+		/// <returns>nejvÄ›tÅ¡Ã­ z values</returns>
 		public static byte Max(params byte[] values)
 		{
 			byte result = values[0];
@@ -205,10 +205,10 @@ namespace Havit
 		}
 
 		/// <summary>
-		/// Vrátí nejvìtší ze zadanıch èísel.
+		/// VrÃ¡tÃ­ nejvÄ›tÅ¡Ã­ ze zadanÃ½ch ÄÃ­sel.
 		/// </summary>
-		/// <param name="values">èísla k porovnání</param>
-		/// <returns>nejvìtší z values</returns>
+		/// <param name="values">ÄÃ­sla k porovnÃ¡nÃ­</param>
+		/// <returns>nejvÄ›tÅ¡Ã­ z values</returns>
 		public static int Min(params int[] values)
 		{
 			int result = values[0];
@@ -224,10 +224,10 @@ namespace Havit
 		}
 
 		/// <summary>
-		/// Vrátí nejvìtší ze zadanıch èísel.
+		/// VrÃ¡tÃ­ nejvÄ›tÅ¡Ã­ ze zadanÃ½ch ÄÃ­sel.
 		/// </summary>
-		/// <param name="values">èísla k porovnání</param>
-		/// <returns>nejvìtší z values</returns>
+		/// <param name="values">ÄÃ­sla k porovnÃ¡nÃ­</param>
+		/// <returns>nejvÄ›tÅ¡Ã­ z values</returns>
 		public static double Min(params double[] values)
 		{
 			double result = values[0];
@@ -240,10 +240,10 @@ namespace Havit
 		}
 
 		/// <summary>
-		/// Vrátí nejvìtší ze zadanıch èísel.
+		/// VrÃ¡tÃ­ nejvÄ›tÅ¡Ã­ ze zadanÃ½ch ÄÃ­sel.
 		/// </summary>
-		/// <param name="values">èísla k porovnání</param>
-		/// <returns>nejvìtší z values</returns>
+		/// <param name="values">ÄÃ­sla k porovnÃ¡nÃ­</param>
+		/// <returns>nejvÄ›tÅ¡Ã­ z values</returns>
 		public static float Min(params float[] values)
 		{
 			float result = values[0];
@@ -256,10 +256,10 @@ namespace Havit
 		}
 
 		/// <summary>
-		/// Vrátí nejvìtší ze zadanıch èísel.
+		/// VrÃ¡tÃ­ nejvÄ›tÅ¡Ã­ ze zadanÃ½ch ÄÃ­sel.
 		/// </summary>
-		/// <param name="values">èísla k porovnání</param>
-		/// <returns>nejvìtší z values</returns>
+		/// <param name="values">ÄÃ­sla k porovnÃ¡nÃ­</param>
+		/// <returns>nejvÄ›tÅ¡Ã­ z values</returns>
 		public static decimal Min(params decimal[] values)
 		{
 			decimal result = values[0];
@@ -272,10 +272,10 @@ namespace Havit
 		}
 
 		/// <summary>
-		/// Vrátí nejvìtší ze zadanıch èísel.
+		/// VrÃ¡tÃ­ nejvÄ›tÅ¡Ã­ ze zadanÃ½ch ÄÃ­sel.
 		/// </summary>
-		/// <param name="values">èísla k porovnání</param>
-		/// <returns>nejvìtší z values</returns>
+		/// <param name="values">ÄÃ­sla k porovnÃ¡nÃ­</param>
+		/// <returns>nejvÄ›tÅ¡Ã­ z values</returns>
 		public static byte Min(params byte[] values)
 		{
 			byte result = values[0];

@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
@@ -7,9 +7,9 @@ using System.Web;
 namespace Havit.Web.UI.Scriptlets
 {
     /// <summary>
-    /// Control extender pro jednoduché Controly (WebControls).
-    /// Extender tvoøí skript jen tak, e najde pøíslušnı element
-    /// ve stránce a pouije jej jako hodnotu parametru.    
+    /// Control extender pro jednoduchÃ© Controly (WebControls).
+    /// Extender tvoÅ™Ã­ skript jen tak, Å¾e najde pÅ™Ã­sluÅ¡nÃ½ element
+    /// ve strÃ¡nce a pouÅ¾ije jej jako hodnotu parametru.    
     /// </summary>
     public class SimpleControlExtender : IControlExtender
     {
@@ -21,11 +21,11 @@ namespace Havit.Web.UI.Scriptlets
 		
 		#region Constructors
 		/// <summary>
-		/// Vytvoøí extender pro danı typ s danou prioritou.
+		/// VytvoÅ™Ã­ extender pro danÃ½ typ s danou prioritou.
 		/// </summary>
-		/// <param name="controlType">Typ, kterı bude tato instance umìt øešit.</param>
-		/// <param name="priority">Priorita, s jakou jej bude øešit.</param>
-		/// <param name="changeEvents">Události, na které je potøeba se navázat pokud má bıt klientskı skript vyvolán v pøípadì zmìny. Null znamená, e pro tento typ controlu nejsou changeEvents podporovány.</param>
+		/// <param name="controlType">Typ, kterÃ½ bude tato instance umÄ›t Å™eÅ¡it.</param>
+		/// <param name="priority">Priorita, s jakou jej bude Å™eÅ¡it.</param>
+		/// <param name="changeEvents">UdÃ¡losti, na kterÃ© je potÅ™eba se navÃ¡zat pokud mÃ¡ bÃ½t klientskÃ½ skript vyvolÃ¡n v pÅ™Ã­padÄ› zmÄ›ny. Null znamenÃ¡, Å¾e pro tento typ controlu nejsou changeEvents podporovÃ¡ny.</param>
 		public SimpleControlExtender(Type controlType, int priority, string[] changeEvents)
 		{
 			this.controlType = controlType;
@@ -46,7 +46,7 @@ namespace Havit.Web.UI.Scriptlets
 		/// <include file='IControlExtender.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetInitializeClientSideValueScript")]/*' />
 		public void GetInitializeClientSideValueScript(string parameterPrefix, IScriptletParameter parameter, Control control, ScriptBuilder scriptBuilder)
         {
-            // vytvoøíme objekt
+            // vytvoÅ™Ã­me objekt
 			scriptBuilder.AppendFormat("{0}.{1} = document.getElementById(\"{2}\");\n", parameterPrefix, parameter.Name, control.ClientID);
         }
 		#endregion
@@ -71,19 +71,19 @@ namespace Havit.Web.UI.Scriptlets
 		#region GetEventsScript
 		private void GetEventsScript(BrowserHelper.GetAttachDetachEventScriptEventHandler getEventScript, string parameterPrefix, IScriptletParameter parameter, Control control, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder)
 		{
-			// pokud se má volat klienskı skript pøi zmìnì hodnoty prvku
+			// pokud se mÃ¡ volat klienskÃ½ skript pÅ™i zmÄ›nÄ› hodnoty prvku
 			if (((ControlParameter)parameter).StartOnChange)
 			{
-				// ovìøíme, zda jsou nastaveny události (prázdé pole staèí)
+				// ovÄ›Å™Ã­me, zda jsou nastaveny udÃ¡losti (prÃ¡zdÃ© pole staÄÃ­)
 				if (changeEvents == null)
 				{
-					throw new HttpException("Parametr pøikazuje spuštìní pøi zmìnì controlu, u extenderu však není uvedena ádná událost ke které bychom se mìli navázat.");
+					throw new HttpException("Parametr pÅ™ikazuje spuÅ¡tÄ›nÃ­ pÅ™i zmÄ›nÄ› controlu, u extenderu vÅ¡ak nenÃ­ uvedena Å¾Ã¡dnÃ¡ udÃ¡lost ke kterÃ© bychom se mÄ›li navÃ¡zat.");
 				}
 
-				// pro všechny událost
+				// pro vÅ¡echny udÃ¡lost
 				foreach (string eventName in changeEvents)
 				{
-					// vytvoøíme skript, kterı danou událost naváe k elementu
+					// vytvoÅ™Ã­me skript, kterÃ½ danou udÃ¡lost navÃ¡Å¾e k elementu
 					scriptBuilder.AppendLine(getEventScript.Invoke(
 						String.Format("{0}.{1}", parameterPrefix, parameter.Name),
 						eventName,

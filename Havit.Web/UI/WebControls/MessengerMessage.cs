@@ -1,18 +1,18 @@
-using System;
+Ôªøusing System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Havit.Web.UI.WebControls
 {
     /// <summary>
-    /// Zpr·va do messengera.
+    /// Zpr√°va do messengera.
     /// </summary>
     [Serializable]
     public class MessengerMessage
     {
         #region Text
         /// <summary>
-        /// Text zpr·vy.
+        /// Text zpr√°vy.
         /// </summary>
         public string Text
         {
@@ -30,7 +30,7 @@ namespace Havit.Web.UI.WebControls
 
         #region MessageType
         /// <summary>
-        /// Typ zpr·vy.
+        /// Typ zpr√°vy.
         /// </summary>
         public MessageType MessageType
         {
@@ -48,7 +48,7 @@ namespace Havit.Web.UI.WebControls
 
         #region Constructors
         /// <summary>
-        /// Vytvo¯Ì instanci zpr·vy a nastavÌ typ zpr·vy na Information.
+        /// Vytvo≈ô√≠ instanci zpr√°vy a nastav√≠ typ zpr√°vy na Information.
         /// </summary>
         public MessengerMessage()
         {
@@ -57,15 +57,15 @@ namespace Havit.Web.UI.WebControls
         }
 
         /// <summary>
-        /// Vytvo¯Ì instanci zpr·vy.
+        /// Vytvo≈ô√≠ instanci zpr√°vy.
         /// </summary>
-        /// <param name="text">text zpr·vy</param>
-        /// <param name="messageType">typ zpr·vy</param>
+        /// <param name="text">text zpr√°vy</param>
+        /// <param name="messageType">typ zpr√°vy</param>
         public MessengerMessage(string text, MessageType messageType)
         {
             if (String.IsNullOrEmpty(text))
             {
-                throw new ArgumentException("Parametr nesmÌ b˝t null ani String.Empty", "messageType");
+                throw new ArgumentException("Parametr nesm√≠ b√Ωt null ani String.Empty", "messageType");
             }
             this._messageType = messageType;
             this._text = text;

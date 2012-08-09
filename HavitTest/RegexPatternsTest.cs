@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 using System.Text;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -41,13 +41,13 @@ namespace HavitTest
 		public void IsWildcardMatchTest()
 		{
 			Assert.IsTrue(RegexPatterns.IsWildcardMatch("kolo", "kolo"));
-			Assert.IsTrue(RegexPatterns.IsWildcardMatch("kolo", "kolotoË"));
+			Assert.IsTrue(RegexPatterns.IsWildcardMatch("kolo", "kolotoƒç"));
 			Assert.IsFalse(RegexPatterns.IsWildcardMatch("kolo", "okolo"));
 
 			Assert.IsTrue(RegexPatterns.IsWildcardMatch("k*o", "kolo"));
 			Assert.IsTrue(RegexPatterns.IsWildcardMatch("k*lo", "kolo"));
 			Assert.IsTrue(RegexPatterns.IsWildcardMatch("k*olo", "kolo"));
-			Assert.IsFalse(RegexPatterns.IsWildcardMatch("k*o", "kolotoË"));
+			Assert.IsFalse(RegexPatterns.IsWildcardMatch("k*o", "kolotoƒç"));
 			Assert.IsFalse(RegexPatterns.IsWildcardMatch("k*o", "okolo"));
 
 			Assert.IsTrue(RegexPatterns.IsWildcardMatch("k.lo", "k.lo"));

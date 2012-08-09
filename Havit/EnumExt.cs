@@ -1,32 +1,32 @@
-using System;
+ï»¿using System;
 
 namespace Havit
 {
 	/// <summary>
-	/// Poskytuje metody tıkající se základního vıètového typu System.Enum.
+	/// Poskytuje metody tÃ½kajÃ­cÃ­ se zÃ¡kladnÃ­ho vÃ½ÄtovÃ©ho typu System.Enum.
 	/// </summary>
 	/// <remarks>
-	/// Tøída samostná není potomkem System.Enum, protoe ze System.Enum nelze dìdit.
+	/// TÅ™Ã­da samostnÃ¡ nenÃ­ potomkem System.Enum, protoÅ¾e ze System.Enum nelze dÄ›dit.
 	/// </remarks>
 	public static class EnumExt
 	{
 		/// <summary>
-		/// Vrátí hodnotu atributu [Description("...")] urèité hodnoty zadaného vıètového typu.
+		/// VrÃ¡tÃ­ hodnotu atributu [Description("...")] urÄitÃ© hodnoty zadanÃ©ho vÃ½ÄtovÃ©ho typu.
 		/// </summary>
-		/// <param name="enumType">vıètovı typ</param>
-		/// <param name="hodnota">hodnota, její Description chceme</param>
+		/// <param name="enumType">vÃ½ÄtovÃ½ typ</param>
+		/// <param name="hodnota">hodnota, jejÃ­Å¾ Description chceme</param>
 		/// <returns>hodnota atributu [Description("...")]</returns>
-		/// <remarks>Není-li atribut Description definován, vrátí prázdnı øetìzec.</remarks>
+		/// <remarks>NenÃ­-li atribut Description definovÃ¡n, vrÃ¡tÃ­ prÃ¡zdnÃ½ Å™etÄ›zec.</remarks>
 		/// <example>
 		///	<code>
 		/// using System.ComponentModel;<br/>
 		/// <br/>
 		/// public enum Barvy<br/>
 		/// {<br/>
-		///		[Description("èervená")]<br/>
+		///		[Description("ÄervenÃ¡")]<br/>
 		///		Cervena,<br/>
 		///	<br/>
-		///		[Description("modrá")]<br/>
+		///		[Description("modrÃ¡")]<br/>
 		///		Modra<br/>
 		///	}<br/>
 		///	</code>
@@ -47,7 +47,7 @@ namespace Havit
 			}
 			catch(Exception)
 			{
-				// chybí description
+				// chybÃ­ description
 			}
 
 			return strRet;

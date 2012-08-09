@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Data;
 using System.Configuration;
 using System.Web;
@@ -11,14 +11,14 @@ using System.Web.UI.HtmlControls;
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
-	/// Tøída Highlighting drí data pro zvıraznìní vybrané poloky podle hodnoty klíèe.
+	/// TÅ™Ã­da Highlighting drÅ¾Ã­ data pro zvÃ½raznÄ›nÃ­ vybranÃ© poloÅ¾ky podle hodnoty klÃ­Äe.
 	/// </summary>
 	[Serializable]
 	public class Highlighting
 	{
 		/// <summary>
-		/// Hodnota "klíèe" poloky, která má bıt zvıraznìna.
-		/// Nastavuje pøíznak AutoPageChangeEnabled.
+		/// Hodnota "klÃ­Äe" poloÅ¾ky, kterÃ¡ mÃ¡ bÃ½t zvÃ½raznÄ›na.
+		/// Nastavuje pÅ™Ã­znak AutoPageChangeEnabled.
 		/// </summary>
 		public object HighlightValue
 		{
@@ -35,7 +35,7 @@ namespace Havit.Web.UI.WebControls
 		private object highlightValue;
 
 		/// <summary>
-		/// Poloka dat, její hodnota se porovnává s HighlightValue.
+		/// PoloÅ¾ka dat, jejÃ­Å¾ hodnota se porovnÃ¡vÃ¡ s HighlightValue.
 		/// </summary>
 		public string DataField
 		{
@@ -51,7 +51,7 @@ namespace Havit.Web.UI.WebControls
 		private string dataField;
 
 		/// <summary>
-		/// Pøíznak, zda mùe dojít ke zmìnì stránky pro zvıraznìní poloky.
+		/// PÅ™Ã­znak, zda mÅ¯Å¾e dojÃ­t ke zmÄ›nÄ› strÃ¡nky pro zvÃ½raznÄ›nÃ­ poloÅ¾ky.
 		/// </summary>
 		public bool AutoPageChangeEnabled
 		{
@@ -67,10 +67,10 @@ namespace Havit.Web.UI.WebControls
 		bool autoPageChangeEnabled = true;
 
 		/// <summary>
-		/// Pøíznak, zda mùe dojít je moná zmìna stránky.
-		/// Pøíznak je automaticky nastaven pøi nastavení hodnoty HighlightValue
-		/// a je po databindingu automaticky vypnut. Tím je zajištìno pøepnutí stránky pouze pøi prvním zobrazení stránky
-		/// po nastavení HiglightValue. Dále se stránka nepøepíná a uivatel mùe v klidu stránkovat.
+		/// PÅ™Ã­znak, zda mÅ¯Å¾e dojÃ­t je moÅ¾nÃ¡ zmÄ›na strÃ¡nky.
+		/// PÅ™Ã­znak je automaticky nastaven pÅ™i nastavenÃ­ hodnoty HighlightValue
+		/// a je po databindingu automaticky vypnut. TÃ­m je zajiÅ¡tÄ›no pÅ™epnutÃ­ strÃ¡nky pouze pÅ™i prvnÃ­m zobrazenÃ­ strÃ¡nky
+		/// po nastavenÃ­ HiglightValue. DÃ¡le se strÃ¡nka nepÅ™epÃ­nÃ¡ a uÅ¾ivatel mÅ¯Å¾e v klidu strÃ¡nkovat.
 		/// </summary>
 		internal bool PageChangeEnabled
 		{

@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI.WebControls;
@@ -9,14 +9,14 @@ using System.Diagnostics;
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
-	/// Vylepšenı command-field urèenı pro pouití s GridViewExt.
+	/// VylepÅ¡enÃ½ command-field urÄenÃ½ pro pouÅ¾itÃ­ s GridViewExt.
 	/// </summary>
 	/// <remarks>
-	/// GridViewCommandField lze skinovat, pokud rodièovskı GridView implementuje rozhraní <see cref="ICommandFieldStyle"/>,
-	/// co implementuje napøíklad <see cref="GridViewExt"/>.
+	/// GridViewCommandField lze skinovat, pokud rodiÄovskÃ½ GridView implementuje rozhranÃ­ <see cref="ICommandFieldStyle"/>,
+	/// coÅ¾ implementuje napÅ™Ã­klad <see cref="GridViewExt"/>.
 	/// </remarks>
 	/// <example>
-	/// Skinovat lze pomocí:
+	/// Skinovat lze pomocÃ­:
 	/// <code>
 	/// &lt;havit:GridViewExt ... &gt;
 	///     &lt;CommandFieldStyle ButtonType=&quot;Image&quot; ... /&gt;
@@ -27,7 +27,7 @@ namespace Havit.Web.UI.WebControls
 	{
 		#region DeleteConfirmationText
 		/// <summary>
-		/// Text, na kterı se má ptát jscript:confirm() pøed smazáním záznamu. Pokud je prázdnı, na nic se neptá.
+		/// Text, na kterÃ½ se mÃ¡ ptÃ¡t jscript:confirm() pÅ™ed smazÃ¡nÃ­m zÃ¡znamu. Pokud je prÃ¡zdnÃ½, na nic se neptÃ¡.
 		/// </summary>
 		public string DeleteConfirmationText
 		{
@@ -49,11 +49,11 @@ namespace Havit.Web.UI.WebControls
 
 		#region Initialize
 		/// <summary>
-		/// Inicializuje field (volá se jednou z GridView.CreateChildControls()).
+		/// Inicializuje field (volÃ¡ se jednou z GridView.CreateChildControls()).
 		/// </summary>
-		/// <param name="sortingEnabled">indikuje, zda-li je povolenı sorting</param>
+		/// <param name="sortingEnabled">indikuje, zda-li je povolenÃ½ sorting</param>
 		/// <param name="control">parent control (GridView)</param>
-		/// <returns>false (vdy)</returns>
+		/// <returns>false (vÅ¾dy)</returns>
 		public override bool Initialize(bool sortingEnabled, System.Web.UI.Control control)
 		{
 			if (control is ICommandFieldStyle)
@@ -67,7 +67,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region InitializeCell
 		/// <summary>
-		/// Inicializuje buòku.
+		/// Inicializuje buÅˆku.
 		/// </summary>
 		public override void InitializeCell(
 			DataControlFieldCell cell,
@@ -77,7 +77,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			if (cellType != DataControlCellType.DataCell)
 			{
-				// Header a Footer øeší korektnì ButtonFieldBase, pøedek CommandFieldu
+				// Header a Footer Å™eÅ¡Ã­ korektnÄ› ButtonFieldBase, pÅ™edek CommandFieldu
 				base.InitializeCell(cell, cellType, rowState, rowIndex);
 			}
 			else
@@ -98,7 +98,7 @@ namespace Havit.Web.UI.WebControls
 					{
 						if (((rowState & DataControlRowState.Edit) != DataControlRowState.Normal) && showEditButton)
 						{
-							// stejné jako CommandField
+							// stejnÃ© jako CommandField
 							this.AddButtonToCell(cell, "Update", this.UpdateText, causesValidation, validationGroup, rowIndex, this.UpdateImageUrl);
 							if (showCancelButton)
 							{
@@ -243,7 +243,7 @@ namespace Havit.Web.UI.WebControls
 
 
 
-			/* Customizace jednotlivıch øádek */
+			/* Customizace jednotlivÃ½ch Å™Ã¡dek */
 			Control buttonControl = (Control)control;
 			buttonControl.DataBinding += new EventHandler(buttonControl_DataBinding);
 
@@ -282,17 +282,17 @@ namespace Havit.Web.UI.WebControls
 			GridViewExt gridViewExt = childTable.Parent as GridViewExt;
 			if (gridViewExt == null)
 			{
-				// je pouito mimo GridViewExt, nedìláme nic
+				// je pouÅ¾ito mimo GridViewExt, nedÄ›lÃ¡me nic
 				return;
 			}
 
-			// pøipravíme argumenty
+			// pÅ™ipravÃ­me argumenty
 			GridViewRowCustomizingCommandButtonEventArgs args = new GridViewRowCustomizingCommandButtonEventArgs(
 				buttonControl.CommandName,
 				row.RowIndex,
 				row.DataItem);
 
-			// JK: Tohle není úplnì OK! Pozor na schování v nadøazeném controlu bìhem databindingu!
+			// JK: Tohle nenÃ­ ÃºplnÄ› OK! Pozor na schovÃ¡nÃ­ v nadÅ™azenÃ©m controlu bÄ›hem databindingu!
 			args.Visible = control.Visible;
 
 			if (sender is LinkButton)
@@ -311,10 +311,10 @@ namespace Havit.Web.UI.WebControls
 				args.Enabled = button.Enabled;
 			}
 
-			// zavoláme obsluhu události
+			// zavolÃ¡me obsluhu udÃ¡losti
 			gridViewExt.OnRowCustomizingCommandButton(args);
 
-			// nastavíme vısledek z argumentù do buttonu
+			// nastavÃ­me vÃ½sledek z argumentÅ¯ do buttonu
 
 			control.Visible = args.Visible;
 			
@@ -348,16 +348,16 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Aplikuje CommandFieldStyle na field.
 		/// </summary>
-		/// <param name="style">styl k aplikování</param>
-		/// <param name="theme">reim Theme (pøepsat vše) zapnut</param>
-		/// <param name="styleSheetTheme">reim StyleSheetTheme (lokální nastavení mají prioritu) zapnut</param>
+		/// <param name="style">styl k aplikovÃ¡nÃ­</param>
+		/// <param name="theme">reÅ¾im Theme (pÅ™epsat vÅ¡e) zapnut</param>
+		/// <param name="styleSheetTheme">reÅ¾im StyleSheetTheme (lokÃ¡lnÃ­ nastavenÃ­ majÃ­ prioritu) zapnut</param>
 		private void ApplyStyle(CommandFieldStyle style, bool theme, bool styleSheetTheme)
 		{
 			if (style != null)
 			{
 				if (styleSheetTheme)
 				{
-					// pokud sami nastaveni nejsme (ViewState je nepouitı), pak volíme styl
+					// pokud sami nastaveni nejsme (ViewState je nepouÅ¾itÃ½), pak volÃ­me styl
 
 					if (ViewState["AccessibleHeaderText"] == null)
 					{
@@ -495,7 +495,7 @@ namespace Havit.Web.UI.WebControls
 
 				if (theme)
 				{
-					// pokud je nastaven skin, pak volíme vdy styl
+					// pokud je nastaven skin, pak volÃ­me vÅ¾dy styl
 
 					if (style.ViewState["AccessibleHeaderText"] != null)
 					{

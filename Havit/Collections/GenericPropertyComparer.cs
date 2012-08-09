@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
@@ -6,9 +6,9 @@ using System.Web.UI;
 namespace Havit.Collections
 {
 	/// <summary>
-	/// Porovnává hodnoty vlastností dvou objektù. Názvy vlastností jsou dodány, porovnávají se v dodaném poøadí.
-	/// Názvy vlastností mohou bıt sloené: napø. "Kniha.Autor.Prijmeni".
-	/// Property musí implementovat IComparable.
+	/// PorovnÃ¡vÃ¡ hodnoty vlastnostÃ­ dvou objektÅ¯. NÃ¡zvy vlastnostÃ­ jsou dodÃ¡ny, porovnÃ¡vajÃ­ se v dodanÃ©m poÅ™adÃ­.
+	/// NÃ¡zvy vlastnostÃ­ mohou bÃ½t sloÅ¾enÃ©: napÅ™. "Kniha.Autor.Prijmeni".
+	/// Property musÃ­ implementovat IComparable.
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
 	public class GenericPropertyComparer<T> : IComparer<T>
@@ -19,10 +19,10 @@ namespace Havit.Collections
 
 		#region Constructors
 		/// <summary>
-		/// Vytvoøí instanci compareru pro øazení dle dané property.
+		/// VytvoÅ™Ã­ instanci compareru pro Å™azenÃ­ dle danÃ© property.
 		/// </summary>
-		/// <param name="sortPropertyName">název property, podle které se má øadit</param>
-		/// <param name="ascending">true, má-li se øadit vzestupnì, false, pokud sestupnì</param>
+		/// <param name="sortPropertyName">nÃ¡zev property, podle kterÃ© se mÃ¡ Å™adit</param>
+		/// <param name="ascending">true, mÃ¡-li se Å™adit vzestupnÄ›, false, pokud sestupnÄ›</param>
 		[Obsolete]
 		public GenericPropertyComparer(String sortPropertyName, bool ascending)
 			: this(new SortItem(sortPropertyName, ascending ? SortDirection.Ascending : SortDirection.Descending))
@@ -30,17 +30,17 @@ namespace Havit.Collections
 		}
 
 		/// <summary>
-		/// Vytvoøí instanci compareru pro øazení dle dané property.
+		/// VytvoÅ™Ã­ instanci compareru pro Å™azenÃ­ dle danÃ© property.
 		/// </summary>
-		/// <param name="sortItem">Urèuje parametr øazení.</param>
+		/// <param name="sortItem">UrÄuje parametr Å™azenÃ­.</param>
 		public GenericPropertyComparer(SortItem sortItem): this( new SortItem[] { sortItem })
 		{
 		}
 
 		/// <summary>
-		/// Vytvoøí instanci compareru pro øazení dle kolekce vlastností.
+		/// VytvoÅ™Ã­ instanci compareru pro Å™azenÃ­ dle kolekce vlastnostÃ­.
 		/// </summary>
-		/// <param name="sortItems">Urèuje parametry øazení.</param>
+		/// <param name="sortItems">UrÄuje parametry Å™azenÃ­.</param>
 		public GenericPropertyComparer(IList<SortItem> sortItems)
 		{
 			this.sortItems = sortItems;
@@ -54,18 +54,18 @@ namespace Havit.Collections
 		}
 
 		/// <summary>
-		/// Porovná vlastnosti instancí dvou objektù. Porovnávají se index-té vlastnosti uvedené ve fieldu sortItemCollection.
+		/// PorovnÃ¡ vlastnosti instancÃ­ dvou objektÅ¯. PorovnÃ¡vajÃ­ se index-tÃ© vlastnosti uvedenÃ© ve fieldu sortItemCollection.
 		/// </summary>
-		/// <param name="x">První porovnávanı objekt.</param>
-		/// <param name="y">Druhı porovnávanı objekt.</param>
-		/// <param name="index">Index porovnávané vlastnosti.</param>
+		/// <param name="x">PrvnÃ­ porovnÃ¡vanÃ½ objekt.</param>
+		/// <param name="y">DruhÃ½ porovnÃ¡vanÃ½ objekt.</param>
+		/// <param name="index">Index porovnÃ¡vanÃ© vlastnosti.</param>
 		/// <returns>-1, 0, 1 - jako Compare(T, T)</returns>
 		protected int Compare(object x, object y, int index)
 		{
 			if (index >= sortItems.Count)
 				return 0;
 
-			/* napsáno trochu komplikovanìji - pro pøehlednost */
+			/* napsÃ¡no trochu komplikovanÄ›ji - pro pÅ™ehlednost */
 			IComparable value1;
 			IComparable value2;
 			if (sortItems[index].Direction == SortDirection.Ascending)
@@ -106,8 +106,8 @@ namespace Havit.Collections
 		}
 
 		/// <summary>
-		/// Vrátí hodnot index-té property objektu.
-		/// Pokud je hodnota této property DBNull.Value, vrací null.
+		/// VrÃ¡tÃ­ hodnot index-tÃ© property objektu.
+		/// Pokud je hodnota tÃ©to property DBNull.Value, vracÃ­ null.
 		/// </summary>
 		private object GetValue(object obj, int index)
 		{

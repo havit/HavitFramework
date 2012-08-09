@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
@@ -9,8 +9,8 @@ using System.Web.UI.WebControls;
 namespace Havit.Web.UI.Scriptlets
 {
 	/// <summary>
-	/// Pøedstavuje klientskı skript - funkci, která je vyvolána pøi zmìnì vstupních
-	/// parametrù <see cref="Scriptlet">Scriptletu</see> nebo pøi naètìní stránky èi callbacku (pokud je povoleno).
+	/// PÅ™edstavuje klientskÃ½ skript - funkci, kterÃ¡ je vyvolÃ¡na pÅ™i zmÄ›nÄ› vstupnÃ­ch
+	/// parametrÅ¯ <see cref="Scriptlet">Scriptletu</see> nebo pÅ™i naÄtÄ›nÃ­ strÃ¡nky Äi callbacku (pokud je povoleno).
 	/// </summary>
 	//[DefaultProperty("Script")]
 	[ParseChildren(true, "Script")]
@@ -21,7 +21,7 @@ namespace Havit.Web.UI.Scriptlets
 
 		#region Script
 		/// <summary>
-		/// Klientskı skript. Okolo skriptu je vytvoøena obálka a pøípadnì je spuštìn po naètení stránky èi callbacku.
+		/// KlientskÃ½ skript. Okolo skriptu je vytvoÅ™ena obÃ¡lka a pÅ™Ã­padnÄ› je spuÅ¡tÄ›n po naÄtenÃ­ strÃ¡nky Äi callbacku.
 		/// </summary>
 		[PersistenceMode(PersistenceMode.InnerDefaultProperty)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
@@ -34,10 +34,10 @@ namespace Havit.Web.UI.Scriptlets
 
 		#region StartOnLoad
 		/// <summary>
-		/// Udává, zda má po naètení stránky dojít k automatickému spuštìní skriptu. Vıchozí hodnota je <c>false</c>.
+		/// UdÃ¡vÃ¡, zda mÃ¡ po naÄtenÃ­ strÃ¡nky dojÃ­t k automatickÃ©mu spuÅ¡tÄ›nÃ­ skriptu. VÃ½chozÃ­ hodnota je <c>false</c>.
 		/// </summary>				
 		/// <remarks>
-		/// Nemá vliv na zpracování stránky pøi asynchronním postbacku (callbacku). K tomu slouí vlastnost <see cref="StartOnAjaxCallback">StartOnAjaxCallback</see>.
+		/// NemÃ¡ vliv na zpracovÃ¡nÃ­ strÃ¡nky pÅ™i asynchronnÃ­m postbacku (callbacku). K tomu slouÅ¾Ã­ vlastnost <see cref="StartOnAjaxCallback">StartOnAjaxCallback</see>.
 		/// </remarks>
 		public bool StartOnLoad
 		{
@@ -48,7 +48,7 @@ namespace Havit.Web.UI.Scriptlets
 
 		#region StartOnAjaxCallback
 		/// <summary>
-		/// Udává, zda má po dojít k automatickému spuštìní skriptu po asynchronním postbacku (ajax callback). Vıchozí hodnota je <b>false</b>.
+		/// UdÃ¡vÃ¡, zda mÃ¡ po dojÃ­t k automatickÃ©mu spuÅ¡tÄ›nÃ­ skriptu po asynchronnÃ­m postbacku (ajax callback). VÃ½chozÃ­ hodnota je <b>false</b>.
 		/// </summary>
 		public bool StartOnAjaxCallback
 		{
@@ -61,7 +61,7 @@ namespace Havit.Web.UI.Scriptlets
 
 		#region GetAutoStart
 		/// <summary>
-		/// Vrací true, pokud má bıt renderován skript pro automatické spuštìní funkce scriptletu.
+		/// VracÃ­ true, pokud mÃ¡ bÃ½t renderovÃ¡n skript pro automatickÃ© spuÅ¡tÄ›nÃ­ funkce scriptletu.
 		/// </summary>
 		/// <returns></returns>
 		public bool GetAutoStart()
@@ -79,7 +79,7 @@ namespace Havit.Web.UI.Scriptlets
 
 		#region GetClientSideFunctionCode
 		/// <summary>
-		/// Vrátí kód pro hlavní funkci skriptletu.
+		/// VrÃ¡tÃ­ kÃ³d pro hlavnÃ­ funkci skriptletu.
 		/// </summary>
 		public virtual string GetClientSideFunctionCode()
 		{
@@ -91,9 +91,9 @@ namespace Havit.Web.UI.Scriptlets
 
 		#region GetSubstitutedScript (protected)
 		/// <summary>
-		/// Vrátí pøipravenı klientskı skript. Provede nad skriptem substituce.
+		/// VrÃ¡tÃ­ pÅ™ipravenÃ½ klientskÃ½ skript. Provede nad skriptem substituce.
 		/// </summary>
-		/// <returns>Klientskı skript pøipravenı k vytvoøení obálky a registraci.</returns>
+		/// <returns>KlientskÃ½ skript pÅ™ipravenÃ½ k vytvoÅ™enÃ­ obÃ¡lky a registraci.</returns>
 		protected virtual string GetSubstitutedScript()
 		{
 			ClientScriptSubstituingEventArgs eventArgs = new ClientScriptSubstituingEventArgs(Script);
@@ -104,7 +104,7 @@ namespace Havit.Web.UI.Scriptlets
 
 		#region ClientScriptSubstituingEventArgs (protected)
 		/// <summary>
-		/// Obslouí událost ClientScriptSubstituing.
+		/// ObslouÅ¾Ã­ udÃ¡lost ClientScriptSubstituing.
 		/// </summary>
 		protected virtual void OnClientScriptSubstituing(ClientScriptSubstituingEventArgs eventArgs)
 		{
@@ -117,7 +117,7 @@ namespace Havit.Web.UI.Scriptlets
 
 		#region ClientScriptSubstituing
 		/// <summary>
-		/// Událost pro provedení substituce v klietském skriptu.
+		/// UdÃ¡lost pro provedenÃ­ substituce v klietskÃ©m skriptu.
 		/// </summary>
 		public event ClientScriptSubstituingEventHandler ClientScriptSubstituing
 		{

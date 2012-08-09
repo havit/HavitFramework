@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Collections;
@@ -12,14 +12,14 @@ namespace Havit.Business
 	{
 		#region private fields
 		/// <summary>
-		/// Hashtable obsahující hashtable pro kadı typ.
+		/// Hashtable obsahujÃ­cÃ­ hashtable pro kaÅ¾dÃ½ typ.
 		/// </summary>
 		private Hashtable types;
 		#endregion
 
 		#region Constructors
 		/// <summary>
-		/// Vytvoøí instanci tøídy <see cref="IdentityMap"/>.
+		/// VytvoÅ™Ã­ instanci tÅ™Ã­dy <see cref="IdentityMap"/>.
 		/// </summary>
 		public IdentityMap()
 		{
@@ -29,7 +29,7 @@ namespace Havit.Business
 
 		#region Store
 		/// <summary>
-		/// Uloí business-objekt do identity-map.
+		/// UloÅ¾Ã­ business-objekt do identity-map.
 		/// </summary>
 		/// <param name="businessObject">business objekt</param>
 		public void Store(BusinessObjectBase businessObject)
@@ -41,7 +41,7 @@ namespace Havit.Business
 
 			if (businessObject.IsNew)
 			{
-				throw new ArgumentException("businessObject ukládanı do IdentityMap nesmí bıt novı.", "businessObject");
+				throw new ArgumentException("businessObject uklÃ¡danÃ½ do IdentityMap nesmÃ­ bÃ½t novÃ½.", "businessObject");
 			}
 
 			Type businessObjectType = businessObject.GetType();
@@ -59,7 +59,7 @@ namespace Havit.Business
 				{
 					if (!Object.ReferenceEquals(temp.Target, businessObject))
 					{
-						throw new InvalidOperationException("V IdentityMap je ji jiná instance tohoto objektu.");
+						throw new InvalidOperationException("V IdentityMap je jiÅ¾ jinÃ¡ instance tohoto objektu.");
 					}
 				}
 				else
@@ -76,12 +76,12 @@ namespace Havit.Business
 
 		#region TryGet<T>
 		/// <summary>
-		/// Naète business-objekt z identity-map.
+		/// NaÄte business-objekt z identity-map.
 		/// </summary>
 		/// <typeparam name="T">typ business objektu</typeparam>
 		/// <param name="id">ID business objektu</param>
-		/// <param name="target">cíl, kam má bıt business-objekt naèten</param>
-		/// <returns><c>true</c>, pokud se podaøilo naèíst; <c>false</c>, pokud objekt v identity-map není (target pak obsahuje <c>null</c>)</returns>
+		/// <param name="target">cÃ­l, kam mÃ¡ bÃ½t business-objekt naÄten</param>
+		/// <returns><c>true</c>, pokud se podaÅ™ilo naÄÃ­st; <c>false</c>, pokud objekt v identity-map nenÃ­ (target pak obsahuje <c>null</c>)</returns>
 		public bool TryGet<T>(int id, out T target)
 			where T : BusinessObjectBase
 		{
@@ -103,11 +103,11 @@ namespace Havit.Business
 
 		#region Get<T>
 		/// <summary>
-		/// Vrátí business-objekt z identity-map.
+		/// VrÃ¡tÃ­ business-objekt z identity-map.
 		/// </summary>
 		/// <typeparam name="T">typ business objektu</typeparam>
 		/// <param name="id">ID business objektu</param>
-		/// <returns>business-objekt z identity-map; <c>null</c>, pokud v ní není</returns>
+		/// <returns>business-objekt z identity-map; <c>null</c>, pokud v nÃ­ nenÃ­</returns>
 		public T Get<T>(int id)
 			where T : BusinessObjectBase
 		{

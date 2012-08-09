@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
@@ -8,16 +8,16 @@ using System.IO;
 namespace Havit.Data.SqlTypes
 {
 	/// <summary>
-	/// Aggregate k UDT SqlInt32Array, kter˝ zajiöùuje p¯evod tabulky hodnot na pole.
+	/// Aggregate k UDT SqlInt32Array, kter√Ω zaji≈°≈•uje p≈ôevod tabulky hodnot na pole.
 	/// </summary>
 	/// <example>
-	/// Vytvo¯enÌ agreg·tu typu:<br/>
+	/// Vytvo≈ôen√≠ agreg√°tu typu:<br/>
 	/// <code>
 	/// CREATE AGGREGATE [dbo].IntArrayAggregate<br/>
 	/// RETURNS IntArray<br/>
 	/// EXTERNAL NAME [Havit.Data.SqlServer].[Havit.Data.SqlTypes.SqlInt32ArrayAggregate]<br/>
 	/// </code>
-	/// PouûitÌ agreg·tu pro vytvo¯enÌ pole hodnot:<br/>
+	/// Pou≈æit√≠ agreg√°tu pro vytvo≈ôen√≠ pole hodnot:<br/>
 	/// <code>
 	/// SELECT IntArrayAggreagate(ItemID) AS Items FROM dbo.Item WHERE ...<br/>
 	/// </code>
@@ -35,14 +35,14 @@ namespace Havit.Data.SqlTypes
 	{
 		#region private value holder
 		/// <summary>
-		/// Uchov·v· meziv˝sledek.
+		/// Uchov√°v√° meziv√Ωsledek.
 		/// </summary>
 		private SqlInt32Array array;
 		#endregion
 
 		#region Init
 		/// <summary>
-		/// Inicializace agreg·toru.
+		/// Inicializace agreg√°toru.
 		/// </summary>
 		public void Init()
 		{
@@ -52,9 +52,9 @@ namespace Havit.Data.SqlTypes
 
 		#region Accumulate
 		/// <summary>
-		/// P¯id· dalöÌ hodnotu do agregace.
+		/// P≈ôid√° dal≈°√≠ hodnotu do agregace.
 		/// </summary>
-		/// <param name="value">p¯id·van· hodnota</param>
+		/// <param name="value">p≈ôid√°van√° hodnota</param>
 		public void Accumulate(SqlInt32 value)
 		{
 			if (!value.IsNull)
@@ -66,9 +66,9 @@ namespace Havit.Data.SqlTypes
 
 		#region Merge
 		/// <summary>
-		/// SpojÌ dva agreg·ty v jeden
+		/// Spoj√≠ dva agreg√°ty v jeden
 		/// </summary>
-		/// <param name="group">druh· agregace</param>
+		/// <param name="group">druh√° agregace</param>
 		public void Merge(SqlInt32ArrayAggregate group)
 		{
 			if (group != null)
@@ -80,7 +80,7 @@ namespace Havit.Data.SqlTypes
 
 		#region Terminate
 		/// <summary>
-		/// Vr·tÌ v˝sledek agregace.
+		/// Vr√°t√≠ v√Ωsledek agregace.
 		/// </summary>
 		public SqlInt32Array Terminate()
 		{

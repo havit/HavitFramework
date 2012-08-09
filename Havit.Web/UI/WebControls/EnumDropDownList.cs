@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI.WebControls;
@@ -7,7 +7,7 @@ using System.Web.UI;
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
-	/// DropDownList pro práci s vıètovım datovım typem enum
+	/// DropDownList pro prÃ¡ci s vÃ½ÄtovÃ½m datovÃ½m typem enum
 	/// </summary>
 	public class EnumDropDownList : DropDownListExt
 	{
@@ -15,7 +15,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region EnumType
 		/// <summary>
-		/// Typ enum, kterı obsluhujeme.
+		/// Typ enum, kterÃ½ obsluhujeme.
 		/// </summary>
 		public Type EnumType
 		{
@@ -27,7 +27,7 @@ namespace Havit.Web.UI.WebControls
 			{
 				if (!value.IsEnum)
 				{
-					throw new ArgumentException("Parametr musí bıt vıètovım typem.");
+					throw new ArgumentException("Parametr musÃ­ bÃ½t vÃ½ÄtovÃ½m typem.");
 				}
 				_enumType = value;
 
@@ -38,7 +38,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region SelectedEnumValue
 		/// <summary>
-		/// Hodnota typu enum, která je nastavena DropDownListu
+		/// Hodnota typu enum, kterÃ¡ je nastavena DropDownListu
 		/// </summary>
 		public object SelectedEnumValue
 		{
@@ -46,14 +46,14 @@ namespace Havit.Web.UI.WebControls
 			{
 				if (isDataBinding)
 				{
-					// pokud jsme v databindingu, odloíme nastavení hodnoty, protoe ještì nemusíme mít DataSource ani data v Items.
+					// pokud jsme v databindingu, odloÅ¾Ã­me nastavenÃ­ hodnoty, protoÅ¾e jeÅ¡tÄ› nemusÃ­me mÃ­t DataSource ani data v Items.
 					delayedSetSelectedEnumValueNeeded = true;
 					delayedSetSelectedEnumValue = value;
 					return;
 				}
 				if (value == null)
 				{
-					EnsureAutoDataBind(); // jinak následnı databinding zlikviduje vybranou hodnotu
+					EnsureAutoDataBind(); // jinak nÃ¡slednÃ½ databinding zlikviduje vybranou hodnotu
 					// pokud nastavujeme null, zajistime, aby existoval prazdny radek a vybereme jej
 					EnsureEmptyItem();
 					SelectedIndex = 0;
@@ -62,7 +62,7 @@ namespace Havit.Web.UI.WebControls
 				{
 					if (value.GetType() != EnumType)
 					{
-						throw new ArgumentException("Hodnota není typu EnumType.", "value");
+						throw new ArgumentException("Hodnota nenÃ­ typu EnumType.", "value");
 					}
 					EnsureAutoDataBind();
 					SelectedIndex = Items.IndexOf(Items.FindByValue(((Enum)value).ToString(EnumValueFormatString)));
@@ -78,7 +78,7 @@ namespace Havit.Web.UI.WebControls
 				{
 					if (this.EnumType == null)
 					{
-						throw new InvalidOperationException("Není nastavena vlastnost EnumType.");
+						throw new InvalidOperationException("NenÃ­ nastavena vlastnost EnumType.");
 					}
 					return Enum.Parse(this.EnumType, this.SelectedValue);
 				}
@@ -88,7 +88,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region Nullable, NullableText
 		/// <summary>
-		/// Udává, zda má bıt na vıbìr prázdná hodnota. Vıchozí hodnota je true.
+		/// UdÃ¡vÃ¡, zda mÃ¡ bÃ½t na vÃ½bÄ›r prÃ¡zdnÃ¡ hodnota. VÃ½chozÃ­ hodnota je true.
 		/// </summary>
 		public bool Nullable
 		{
@@ -103,7 +103,7 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// Udává text prázdné hodnoty. Vıchozí hodnota je "---".
+		/// UdÃ¡vÃ¡ text prÃ¡zdnÃ© hodnoty. VÃ½chozÃ­ hodnota je "---".
 		/// </summary>
 		public string NullableText
 		{
@@ -120,10 +120,10 @@ namespace Havit.Web.UI.WebControls
 
 		#region DataTextFormatString
 		/// <summary>
-		/// Format-string pro Text itemù. Lze skinovat a pouít syntaxi $resources. Jako data jsou poskytnuta {0} = dataItem, {1} = EnumType.Name, {2} = EnumType.Namespace.
+		/// Format-string pro Text itemÅ¯. Lze skinovat a pouÅ¾Ã­t syntaxi $resources. Jako data jsou poskytnuta {0} = dataItem, {1} = EnumType.Name, {2} = EnumType.Namespace.
 		/// </summary>
 		/// <remarks>
-		/// Hidujeme kvùli povolení skinování.
+		/// Hidujeme kvÅ¯li povolenÃ­ skinovÃ¡nÃ­.
 		/// </remarks>
 		[Themeable(true)]
 		public new string DataTextFormatString
@@ -153,7 +153,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region EnsureAutoDataBind (protected)
 		/// <summary>
-		/// Zajistí nabindování dat.
+		/// ZajistÃ­ nabindovÃ¡nÃ­ dat.
 		/// </summary>
 		private void EnsureAutoDataBind()
 		{
@@ -166,7 +166,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region DataBind
 		/// <summary>
-		/// Provádí databinding a øeší odloené nastavení SelectedObject.
+		/// ProvÃ¡dÃ­ databinding a Å™eÅ¡Ã­ odloÅ¾enÃ© nastavenÃ­ SelectedObject.
 		/// </summary>
 		public override void DataBind()
 		{
@@ -185,7 +185,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region Private properties
 		/// <summary>
-		/// Indikuje, zda ji došlo k navázání dat.
+		/// Indikuje, zda jiÅ¾ doÅ¡lo k navÃ¡zÃ¡nÃ­ dat.
 		/// </summary>
 		private bool DataBindPerformed
 		{
@@ -200,40 +200,40 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// Indikuje právì porobíhající databinding.
+		/// Indikuje prÃ¡vÄ› porobÃ­hajÃ­cÃ­ databinding.
 		/// </summary>
 		private bool isDataBinding = false;
 
 		/// <summary>
-		/// Objekt, kterı má bıt nastaven jako vybranı, ale jeho nastavení bylo odloeno.
+		/// Objekt, kterÃ½ mÃ¡ bÃ½t nastaven jako vybranÃ½, ale jeho nastavenÃ­ bylo odloÅ¾eno.
 		/// </summary>
 		/// <remarks>
-		/// Pokud nastavujeme SelectedObject bìhem DataBindingu (ve stránce pomocí &lt;%# ... %&gt;),
-		/// odloí se nastavení hodnoty a na konec DataBindingu. To protoe v okamiku nastavování SelectedObject 
-		/// nemusí bıt v Items ještì data.
+		/// Pokud nastavujeme SelectedObject bÄ›hem DataBindingu (ve strÃ¡nce pomocÃ­ &lt;%# ... %&gt;),
+		/// odloÅ¾Ã­ se nastavenÃ­ hodnoty aÅ¾ na konec DataBindingu. To protoÅ¾e v okamÅ¾iku nastavovÃ¡nÃ­ SelectedObject 
+		/// nemusÃ­ bÃ½t v Items jeÅ¡tÄ› data.
 		/// </remarks>
 		private object delayedSetSelectedEnumValue = null;
 
 		/// <summary>
-		/// Udává, zda máme nastaven objekt pro odloené nastavení vybraného objektu.
+		/// UdÃ¡vÃ¡, zda mÃ¡me nastaven objekt pro odloÅ¾enÃ© nastavenÃ­ vybranÃ©ho objektu.
 		/// </summary>
 		/// <remarks>
-		/// Pokud nastavujeme SelectedObject bìhem DataBindingu (ve stránce pomocí &lt;%# ... %&gt;),
-		/// odloí se nastavení hodnoty a na konec DataBindingu. To protoe v okamiku nastavování SelectedObject 
-		/// nemusí bıt v Items ještì data. 
+		/// Pokud nastavujeme SelectedObject bÄ›hem DataBindingu (ve strÃ¡nce pomocÃ­ &lt;%# ... %&gt;),
+		/// odloÅ¾Ã­ se nastavenÃ­ hodnoty aÅ¾ na konec DataBindingu. To protoÅ¾e v okamÅ¾iku nastavovÃ¡nÃ­ SelectedObject 
+		/// nemusÃ­ bÃ½t v Items jeÅ¡tÄ› data. 
 		/// </remarks>
 		private bool delayedSetSelectedEnumValueNeeded = false;
 		#endregion
 
 		#region DataBindAll (private)
 		/// <summary>
-		/// Naváe na DropDownList všechny hodnoty enumu.
+		/// NavÃ¡Å¾e na DropDownList vÅ¡echny hodnoty enumu.
 		/// </summary>
 		private void DataBindAll()
 		{
 			if (this.EnumType == null)
 			{
-				throw new InvalidOperationException("Není nastavena vlastnost EnumType");
+				throw new InvalidOperationException("NenÃ­ nastavena vlastnost EnumType");
 			}
 			PerformDataBinding(Enum.GetValues(this.EnumType));
 		}
@@ -241,7 +241,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region PerformDataBinding (override)
 		/// <summary>
-		/// Zajistí, aby byl po databindingu doplnìn øádek pro vıbìr prázdné hodnoty.
+		/// ZajistÃ­, aby byl po databindingu doplnÄ›n Å™Ã¡dek pro vÃ½bÄ›r prÃ¡zdnÃ© hodnoty.
 		/// </summary>
 		/// <param name="dataSource"></param>
 		protected override void PerformDataBinding(System.Collections.IEnumerable dataSource)
@@ -262,7 +262,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region CreateItem (override)
 		/// <summary>
-		/// Vytvoøí ListItem, souèást PerformDataBindingu.
+		/// VytvoÅ™Ã­ ListItem, souÄÃ¡st PerformDataBindingu.
 		/// </summary>
 		/// <param name="dataItem">The data item.</param>
 		/// <returns></returns>
@@ -288,7 +288,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region EnsureEmptyItem (private)
 		/// <summary>
-		/// Pøidá na zaèátek seznamu øádek pro vıbìr prázdné hodnoty, pokud tam ji není.
+		/// PÅ™idÃ¡ na zaÄÃ¡tek seznamu Å™Ã¡dek pro vÃ½bÄ›r prÃ¡zdnÃ© hodnoty, pokud tam jiÅ¾ nenÃ­.
 		/// </summary>
 		public void EnsureEmptyItem()
 		{

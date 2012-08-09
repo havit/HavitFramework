@@ -1,22 +1,22 @@
-using System;
+ï»¿using System;
 using System.Reflection;
 
 namespace Havit.Reflection
 {
 	/// <summary>
-	/// Tøída se statickımi metodami pro jednoduché operace reflexe.
+	/// TÅ™Ã­da se statickÃ½mi metodami pro jednoduchÃ© operace reflexe.
 	/// </summary>
 	public static class Reflector
 	{
 		#region GetPropertyValue
 		/// <summary>
-		/// Získá hodnotu property, i kdyby byla oznaèená jako protected, internal, nebo private.
-		/// Vlastnost je hledána jen na zadaném typu (targetType).
+		/// ZÃ­skÃ¡ hodnotu property, i kdyby byla oznaÄenÃ¡ jako protected, internal, nebo private.
+		/// Vlastnost je hledÃ¡na jen na zadanÃ©m typu (targetType).
 		/// </summary>
-		/// <param name="target">Objekt, z kterého má bıt property získána.</param>
-		/// <param name="targetType">Typ z kterého má bıt property získána (mùe bıt i rodièovskım typem targetu).</param>
-		/// <param name="propertyName">Jméno property.</param>
-		/// <returns>Hodnota property, nebo null, není-li nalezena.</returns>
+		/// <param name="target">Objekt, z kterÃ©ho mÃ¡ bÃ½t property zÃ­skÃ¡na.</param>
+		/// <param name="targetType">Typ z kterÃ©ho mÃ¡ bÃ½t property zÃ­skÃ¡na (mÅ¯Å¾e bÃ½t i rodiÄovskÃ½m typem targetu).</param>
+		/// <param name="propertyName">JmÃ©no property.</param>
+		/// <returns>Hodnota property, nebo null, nenÃ­-li nalezena.</returns>
 		public static object GetPropertyValue(Object target, Type targetType, String propertyName) 
 		{
 			return GetPropertyValue(
@@ -28,11 +28,11 @@ namespace Havit.Reflection
 		}
 
 		/// <summary>
-		/// Získá hodnotu property, i kdyby byla oznaèená jako protected, internal, nebo private.
+		/// ZÃ­skÃ¡ hodnotu property, i kdyby byla oznaÄenÃ¡ jako protected, internal, nebo private.
 		/// </summary>
-		/// <param name="target">Objekt, z kterého má bıt property získána.</param>
-		/// <param name="propertyName">Jméno property.</param>
-		/// <returns>Hodnota property, nebo null, není-li nalezena.</returns>
+		/// <param name="target">Objekt, z kterÃ©ho mÃ¡ bÃ½t property zÃ­skÃ¡na.</param>
+		/// <param name="propertyName">JmÃ©no property.</param>
+		/// <returns>Hodnota property, nebo null, nenÃ­-li nalezena.</returns>
 		public static object GetPropertyValue(Object target, String propertyName)
 		{
 			return GetPropertyValue(
@@ -59,12 +59,12 @@ namespace Havit.Reflection
 
 		#region SetPropertyValue
 		/// <summary>
-		/// Nastaví hodnotu property, i kdyby byla oznaèená jako protected, internal, nebo private.
-		/// Pokud se nepodaøí vlastnost nalézt, vyvolá vıjimku InvalidOperationException.
+		/// NastavÃ­ hodnotu property, i kdyby byla oznaÄenÃ¡ jako protected, internal, nebo private.
+		/// Pokud se nepodaÅ™Ã­ vlastnost nalÃ©zt, vyvolÃ¡ vÃ½jimku InvalidOperationException.
 		/// </summary>
-		/// <param name="target">Objekt, z kterého má bıt property získána.</param>
-		/// <param name="targetType">Typ z kterého má bıt property získána (mùe bıt i rodièovskım typem targetu).</param>
-		/// <param name="propertyName">Jméno property.</param>
+		/// <param name="target">Objekt, z kterÃ©ho mÃ¡ bÃ½t property zÃ­skÃ¡na.</param>
+		/// <param name="targetType">Typ z kterÃ©ho mÃ¡ bÃ½t property zÃ­skÃ¡na (mÅ¯Å¾e bÃ½t i rodiÄovskÃ½m typem targetu).</param>
+		/// <param name="propertyName">JmÃ©no property.</param>
 		public static void SetPropertyValue(Object target, Type targetType, String propertyName, object value)
 		{
 			SetPropertyValue(
@@ -77,12 +77,12 @@ namespace Havit.Reflection
 		}
 
 		/// <summary>
-		/// Nastaví hodnotu property, i kdyby byla oznaèená jako protected, internal, nebo private.
-		/// Vlastnost je hledána jen na zadaném typu (targetType).
-		/// Pokud se nepodaøí vlastnost nalézt, vyvolá vıjimku InvalidOperationException.
+		/// NastavÃ­ hodnotu property, i kdyby byla oznaÄenÃ¡ jako protected, internal, nebo private.
+		/// Vlastnost je hledÃ¡na jen na zadanÃ©m typu (targetType).
+		/// Pokud se nepodaÅ™Ã­ vlastnost nalÃ©zt, vyvolÃ¡ vÃ½jimku InvalidOperationException.
 		/// </summary>
-		/// <param name="target">Objekt, z kterého má bıt property získána.</param>
-		/// <param name="propertyName">Jméno property.</param>
+		/// <param name="target">Objekt, z kterÃ©ho mÃ¡ bÃ½t property zÃ­skÃ¡na.</param>
+		/// <param name="propertyName">JmÃ©no property.</param>
 		public static void SetPropertyValue(Object target, String propertyName, object value)
 		{
 			SetPropertyValue(
@@ -99,7 +99,7 @@ namespace Havit.Reflection
 			PropertyInfo property = targetType.GetProperty(propertyName, bindingFlags);
 			if (property == null)
 			{
-				throw new InvalidOperationException(String.Format("Vlastnost {0} nebyla v tøídì {1} nalezena.", propertyName, targetType.FullName));
+				throw new InvalidOperationException(String.Format("Vlastnost {0} nebyla v tÅ™Ã­dÄ› {1} nalezena.", propertyName, targetType.FullName));
 			}
 			property.SetValue(target, value, null);
 		}

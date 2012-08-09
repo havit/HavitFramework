@@ -1,12 +1,12 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Havit.Web.UI
 {
 	/// <summary>
-	/// Tøída CommandNames obsahuje sdílené názvy pøíkazù (CommandNames).
-	/// Sdílí se mezi prvky vyvolávající událost pøíkazu (potomci GridViewImageButton)
+	/// TÅ™Ã­da CommandNames obsahuje sdÃ­lenÃ© nÃ¡zvy pÅ™Ã­kazÅ¯ (CommandNames).
+	/// SdÃ­lÃ­ se mezi prvky vyvolÃ¡vajÃ­cÃ­ udÃ¡lost pÅ™Ã­kazu (potomci GridViewImageButton)
 	/// a EnterpriseGridView.
 	/// </summary>
 	public static class CommandNames

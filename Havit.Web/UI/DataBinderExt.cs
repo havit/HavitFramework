@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
@@ -6,19 +6,19 @@ using System.Web.UI;
 namespace Havit.Web.UI
 {
 	/// <summary>
-	/// Rozšiøující funkènost analogická k <see cref="System.Web.UI.DataBinder"/>.
+	/// RozÅ¡iÅ™ujÃ­cÃ­ funkÄnost analogickÃ¡ k <see cref="System.Web.UI.DataBinder"/>.
 	/// </summary>
 	/// <remarks>
-	/// Pouívá se napø. pro resolvování BoundFieldExt.DataField, DropDownListExt.DataTextField, ...
+	/// PouÅ¾Ã­vÃ¡ se napÅ™. pro resolvovÃ¡nÃ­ BoundFieldExt.DataField, DropDownListExt.DataTextField, ...
 	/// </remarks>
 	public static class DataBinderExt
 	{
 		/// <summary>
-		/// Získá hodnotu pro zobrazení z pøedaného objektu a dataField.
+		/// ZÃ­skÃ¡ hodnotu pro zobrazenÃ­ z pÅ™edanÃ©ho objektu a dataField.
 		/// </summary>
-		/// <param name="dataItem">Poloka dat z DataSource</param>
+		/// <param name="dataItem">PoloÅ¾ka dat z DataSource</param>
 		/// <param name="dataField">DataField</param>
-		/// <returns>hodnota, pokud se ji podaøilo získat; jinak <c>null</c> nebo DBNull.Value</returns>
+		/// <returns>hodnota, pokud se ji podaÅ™ilo zÃ­skat; jinak <c>null</c> nebo DBNull.Value</returns>
 		public static object GetValue(object dataItem, string dataField)
 		{
 			string[] expressionParts = dataField.Split('.');
@@ -56,12 +56,12 @@ namespace Havit.Web.UI
 		private static readonly char[] indexExprStartChars = new char[] { '[', '(' };
 
 		/// <summary>
-		/// Získá hodnotu pro zobrazení z pøedaného objektu a dataField a zformtátuje ji.
+		/// ZÃ­skÃ¡ hodnotu pro zobrazenÃ­ z pÅ™edanÃ©ho objektu a dataField a zformtÃ¡tuje ji.
 		/// </summary>
-		/// <param name="dataItem">Poloka dat z DataSource</param>
+		/// <param name="dataItem">PoloÅ¾ka dat z DataSource</param>
 		/// <param name="dataField">DataField</param>
-		/// <param name="format">formátovací øetìzec</param>
-		/// <returns>hodnota, pokud se ji podaøilo získat a zformátovat; jinak <c>String.Empty</c></returns>
+		/// <param name="format">formÃ¡tovacÃ­ Å™etÄ›zec</param>
+		/// <returns>hodnota, pokud se ji podaÅ™ilo zÃ­skat a zformÃ¡tovat; jinak <c>String.Empty</c></returns>
 		public static string GetValue(object dataItem, string dataField, string format)
 		{
 			object propertyValue = GetValue(dataItem, dataField);

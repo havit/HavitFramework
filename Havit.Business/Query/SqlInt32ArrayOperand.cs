@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 using System.Collections.Generic;
 using System.Text;
 using System.Data.Common;
@@ -9,7 +9,7 @@ using Havit.Data.SqlTypes;
 namespace Havit.Business.Query
 {
 	/// <summary>
-	/// SqlInt32Array jako operand datab·zovÈho dotazu.
+	/// SqlInt32Array jako operand datab√°zov√©ho dotazu.
 	/// </summary>
 	[Serializable]
 	public sealed class SqlInt32ArrayOperand : IOperand
@@ -23,7 +23,7 @@ namespace Havit.Business.Query
 
 		#region Constructor
 		/// <summary>
-		/// Vytvo¯Ì instanci t¯Ìdy SqlInt32ArrayOperand.
+		/// Vytvo≈ô√≠ instanci t≈ô√≠dy SqlInt32ArrayOperand.
 		/// </summary>
 		private SqlInt32ArrayOperand(int[] value)
 		{
@@ -36,7 +36,7 @@ namespace Havit.Business.Query
 		{
 			if (!(command is SqlCommand))
 			{
-				throw new ArgumentException("Typ SqlInt32ArrayOperand p¯edpokl·d· SqlCommand.");	
+				throw new ArgumentException("Typ SqlInt32ArrayOperand p≈ôedpokl√°d√° SqlCommand.");	
 			}
 
 			SqlCommand sqlCommand = command as SqlCommand;
@@ -62,7 +62,7 @@ namespace Havit.Business.Query
 
 		#region Create
 		/// <summary>
-		/// Vytvo¯Ì operand z pole integer˘.
+		/// Vytvo≈ô√≠ operand z pole integer≈Ø.
 		/// </summary>
 		public static IOperand Create(int[] ids)
 		{

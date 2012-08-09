@@ -31,6 +31,35 @@ namespace Havit.BusinessLayerTest
 	/// <summary>
 	/// Uživatel.
 	/// </summary>
+	/// <remarks>
+	/// <code>
+	/// CREATE TABLE [dbo].[Uzivatel](
+	/// 	[UzivatelID] [int] IDENTITY(1,1) NOT NULL,
+	/// 	[Username] [varchar](50) COLLATE Czech_CI_AS NOT NULL,
+	/// 	[Password] [nvarchar](30) COLLATE Czech_CI_AS NOT NULL,
+	/// 	[DisplayAs] [nvarchar](50) COLLATE Czech_CI_AS NOT NULL,
+	/// 	[Email] [nvarchar](100) COLLATE Czech_CI_AS NOT NULL,
+	/// 	[Disabled] [bit] NOT NULL,
+	/// 	[LockedTime] [smalldatetime] NULL,
+	/// 	[LoginLast] [smalldatetime] NULL,
+	/// 	[LoginCount] [int] NOT NULL,
+	/// 	[Created] [smalldatetime] NOT NULL,
+	/// 	[Deleted] [bit] NOT NULL,
+	///  CONSTRAINT [PK_Uzivatel] PRIMARY KEY CLUSTERED 
+	/// (
+	/// 	[UzivatelID] ASC
+	/// )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY],
+	///  CONSTRAINT [IX_Uzivatel_Username] UNIQUE NONCLUSTERED 
+	/// (
+	/// 	[Username] ASC
+	/// )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+	/// ) ON [PRIMARY]
+	/// ALTER TABLE [dbo].[Uzivatel] ADD  CONSTRAINT [DF_Uzivatel_Disabled]  DEFAULT ((0)) FOR [Disabled]
+	/// ALTER TABLE [dbo].[Uzivatel] ADD  CONSTRAINT [DF_Uzivatel_LoginCount]  DEFAULT ((0)) FOR [LoginCount]
+	/// ALTER TABLE [dbo].[Uzivatel] ADD  CONSTRAINT [DF_Uzivatel_Created]  DEFAULT (getdate()) FOR [Created]
+	/// ALTER TABLE [dbo].[Uzivatel] ADD  CONSTRAINT [DF_Uzivatel_Enabled]  DEFAULT ((0)) FOR [Deleted]
+	/// </code>
+	/// </remarks>
 	[System.Diagnostics.Contracts.ContractVerification(false)]
 	public abstract class UzivatelBase : ActiveRecordBusinessObjectBase
 	{
@@ -1036,7 +1065,7 @@ namespace Havit.BusinessLayerTest
 		
 		#endregion
 		
-		#region GetFirst, GetList
+		#region GetFirst, GetList, GetAll
 		/// <summary>
 		/// Vrátí první nalezený objekt typu Uzivatel dle parametrů v queryParams.
 		/// Pokud není žádný objekt nalezen, vrací null.

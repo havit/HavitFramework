@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
@@ -10,7 +10,7 @@ namespace Havit.Web.UI.Scriptlets
 {
     /// <summary>
 	/// Control builder pro <see cref="Scriptlet">Scriptlet</see>.
-	/// Omezuje chybné použití controlu <see cref="Scriptlet">Scriptlet</see>.
+	/// Omezuje chybnÃ© pouÅ¾itÃ­ controlu <see cref="Scriptlet">Scriptlet</see>.
     /// </summary>
     internal class NoLiteralContolBuilder : ControlBuilder
     {
@@ -26,7 +26,7 @@ namespace Havit.Web.UI.Scriptlets
 		{
 			if (s.Trim().Length > 0)
 			{
-				throw new HttpException("Textový literál je na nepovoleném místì.");
+				throw new HttpException("TextovÃ½ literÃ¡l je na nepovolenÃ©m mÃ­stÄ›.");
 			}
 		}
 		#endregion        

@@ -1,22 +1,22 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Havit.Business
 {
 	/// <summary>
-	/// Kolekce objektù tøídy IProperty.
+	/// Kolekce objektÅ¯ tÅ™Ã­dy IProperty.
 	/// </summary>
 	public class CollectionPropertyInfo : PropertyInfo, IFieldsBuilder
 	{
 		#region Initialize
 		/// <summary>
-		/// Vytvoøí instanci CollectionProperty.
+		/// VytvoÅ™Ã­ instanci CollectionProperty.
 		/// </summary>
-		/// <param name="owner">Nadøazený objectInfo.</param>
-		/// <param name="propertyName">Název property.</param>
-		/// <param name="itemType">Typ prvkù kolekce.</param>
-		/// <param name="collectionSelectFieldStatement">Èást SQL dotazu pro vytažení hodnoty daného sloupce.</param>
+		/// <param name="owner">NadÅ™azenÃ½ objectInfo.</param>
+		/// <param name="propertyName">NÃ¡zev property.</param>
+		/// <param name="itemType">Typ prvkÅ¯ kolekce.</param>
+		/// <param name="collectionSelectFieldStatement">ÄŒÃ¡st SQL dotazu pro vytaÅ¾enÃ­ hodnoty danÃ©ho sloupce.</param>
 		public void Initialize(ObjectInfo owner, string propertyName, Type itemType, string collectionSelectFieldStatement)
 		{
 			Initialize(owner, propertyName);
@@ -27,7 +27,7 @@ namespace Havit.Business
 
 		#region ItemType
 		/// <summary>
-		/// Typ prvkù kolekce.
+		/// Typ prvkÅ¯ kolekce.
 		/// </summary>
 		public Type ItemType
 		{
@@ -42,7 +42,7 @@ namespace Havit.Business
 
 		#region CollectionSelectFieldStatement
 		/// <summary>
-		/// Èást SQL dotazu pro vytažení hodnoty daného sloupce.
+		/// ÄŒÃ¡st SQL dotazu pro vytaÅ¾enÃ­ hodnoty danÃ©ho sloupce.
 		/// </summary>
 		public string CollectionSelectFieldStatement
 		{
@@ -57,7 +57,7 @@ namespace Havit.Business
 
 		#region GetSelectFieldStatement
 		/// <summary>
-		/// Vrátí øetìzec pro vytažení daného sloupce z databáze.
+		/// VrÃ¡tÃ­ Å™etÄ›zec pro vytaÅ¾enÃ­ danÃ©ho sloupce z databÃ¡ze.
 		/// </summary>
 		public string GetSelectFieldStatement(System.Data.Common.DbCommand command)
 		{

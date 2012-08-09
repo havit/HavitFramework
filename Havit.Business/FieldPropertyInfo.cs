@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Data;
@@ -8,8 +8,8 @@ using Havit.Business.Query;
 namespace Havit.Business
 {
 	/// <summary>
-	/// Reprezentuje sloupec v databázi,
-	/// nese informace o daném sloupci a jeho vazbu na objektovou strukturu.
+	/// Reprezentuje sloupec v databÃ¡zi,
+	/// nese informace o danÃ©m sloupci a jeho vazbu na objektovou strukturu.
 	/// </summary>
 	[Serializable]
 	public class FieldPropertyInfo : PropertyInfo, IFieldsBuilder, IOperand
@@ -18,13 +18,13 @@ namespace Havit.Business
 		/// <summary>
 		/// Inicializuje instanci sloupce.
 		/// </summary>
-		/// <param name="owner">Nadøazenı objectInfo.</param>
-		/// <param name="propertyName">Název property.</param>
-		/// <param name="fieldName">Název sloupce v databázy.</param>
-		/// <param name="isPrimaryKey">Indikuje, zda je sloupec primárním klíèem</param>
+		/// <param name="owner">NadÅ™azenÃ½ objectInfo.</param>
+		/// <param name="propertyName">NÃ¡zev property.</param>
+		/// <param name="fieldName">NÃ¡zev sloupce v databÃ¡zy.</param>
+		/// <param name="isPrimaryKey">Indikuje, zda je sloupec primÃ¡rnÃ­m klÃ­Äem</param>
 		/// <param name="nullable">Indukuje, zda je povolena hodnota null.</param>
-		/// <param name="fieldType">Typ databázového sloupce.</param>
-		/// <param name="maximumLength">Maximální délka dat databázového sloupce.</param>		
+		/// <param name="fieldType">Typ databÃ¡zovÃ©ho sloupce.</param>
+		/// <param name="maximumLength">MaximÃ¡lnÃ­ dÃ©lka dat databÃ¡zovÃ©ho sloupce.</param>		
 		public void Initialize(ObjectInfo owner, string propertyName, string fieldName, bool isPrimaryKey, SqlDbType fieldType, bool nullable, int maximumLength)
 		{
 			Initialize(owner, propertyName);
@@ -38,7 +38,7 @@ namespace Havit.Business
 
 		#region FieldName
 		/// <summary>
-		/// Název sloupce v databázi.
+		/// NÃ¡zev sloupce v databÃ¡zi.
 		/// </summary>
 		public string FieldName
 		{
@@ -53,7 +53,7 @@ namespace Havit.Business
 
 		#region Nullable
 		/// <summary>
-		/// Udává, zda je moné uloit null hodnotu.
+		/// UdÃ¡vÃ¡, zda je moÅ¾nÃ© uloÅ¾it null hodnotu.
 		/// </summary>
 		public bool Nullable
 		{
@@ -68,7 +68,7 @@ namespace Havit.Business
 
 		#region FieldType
 		/// <summary>
-		/// Typ sloupce v databázi.
+		/// Typ sloupce v databÃ¡zi.
 		/// </summary>
 		public SqlDbType FieldType
 		{
@@ -83,7 +83,7 @@ namespace Havit.Business
 
 		#region IsPrimaryKey
 		/// <summary>
-		/// Udává, zda je sloupec primárním klíèem.
+		/// UdÃ¡vÃ¡, zda je sloupec primÃ¡rnÃ­m klÃ­Äem.
 		/// </summary>
 		public bool IsPrimaryKey
 		{
@@ -98,7 +98,7 @@ namespace Havit.Business
 
 		#region MaximumLength
 		/// <summary>
-		/// Maximální délka øetìzce (u typù varchar, nvarchar, apod.), pøípadnì velikost datového typu (u typù 
+		/// MaximÃ¡lnÃ­ dÃ©lka Å™etÄ›zce (u typÅ¯ varchar, nvarchar, apod.), pÅ™Ã­padnÄ› velikost datovÃ©ho typu (u typÅ¯ 
 		/// </summary>
 		public int MaximumLength
 		{
@@ -114,7 +114,7 @@ namespace Havit.Business
 
 		#region GetSelectFieldStatement
 		/// <summary>
-		/// Vrátí øetìzec pro vytaení daného sloupce z databáze.
+		/// VrÃ¡tÃ­ Å™etÄ›zec pro vytaÅ¾enÃ­ danÃ©ho sloupce z databÃ¡ze.
 		/// </summary>
 		public virtual string GetSelectFieldStatement(DbCommand command)
 		{

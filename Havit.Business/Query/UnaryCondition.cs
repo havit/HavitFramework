@@ -1,23 +1,23 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Havit.Business.Query
 {
 	/// <summary>
-	/// Tøída reprezentující podmínku o jednom operandu.
+	/// TÅ™Ã­da reprezentujÃ­cÃ­ podmÃ­nku o jednom operandu.
 	/// </summary>
 	[Serializable]
 	public class UnaryCondition : Condition
 	{
 		#region Patterns
 		/// <summary>
-		/// Vzor pro podmínku IS NULL.
+		/// Vzor pro podmÃ­nku IS NULL.
 		/// </summary>
 		public const string IsNullPattern = "({0} IS NULL)";
 
 		/// <summary>
-		/// Vzor pro podmínku IS NOT NULL.
+		/// Vzor pro podmÃ­nku IS NOT NULL.
 		/// </summary>
 		public const string IsNotNullPattern = "({0} IS NOT NULL)";
 		#endregion
@@ -34,8 +34,8 @@ namespace Havit.Business.Query
 		private IOperand _operand1;
 
 		/// <summary>
-		/// Vzor podmínky SQL dotazu.
-		/// Následnì je formátován operandem (v potomcích operandy).
+		/// Vzor podmÃ­nky SQL dotazu.
+		/// NÃ¡slednÄ› je formÃ¡tovÃ¡n operandem (v potomcÃ­ch operandy).
 		/// </summary>
 		public string ConditionPattern
 		{
@@ -47,7 +47,7 @@ namespace Havit.Business.Query
 
 		#region Constructor
 		/// <summary>
-		/// Vytvoøí instanci unární podmínky.
+		/// VytvoÅ™Ã­ instanci unÃ¡rnÃ­ podmÃ­nky.
 		/// </summary>
 		/// <param name="conditionPattern"></param>
 		/// <param name="operand"></param>
@@ -70,7 +70,7 @@ namespace Havit.Business.Query
 
 		#region GetWhereStatement
 		/// <summary>
-		/// Pøidá èást SQL pøíkaz pro sekci WHERE.
+		/// PÅ™idÃ¡ ÄÃ¡st SQL pÅ™Ã­kaz pro sekci WHERE.
 		/// </summary>
 		/// <param name="command"></param>
 		/// <param name="whereBuilder"></param>
@@ -93,8 +93,8 @@ namespace Havit.Business.Query
 
 		#region IsEmptyCondition
 		/// <summary>
-		/// Udává, zda je podmínka prázdná.
-		/// Vrací vdy false.
+		/// UdÃ¡vÃ¡, zda je podmÃ­nka prÃ¡zdnÃ¡.
+		/// VracÃ­ vÅ¾dy false.
 		/// </summary>
 		public override bool IsEmptyCondition()
 		{

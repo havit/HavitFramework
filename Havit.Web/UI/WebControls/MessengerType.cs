@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,17 +6,17 @@ namespace Havit.Web.UI.WebControls
 {
     #region MessageType (enum)
     /// <summary>
-    /// Typ zprávy Messengeru.
+    /// Typ zprÃ¡vy Messengeru.
     /// </summary>
     public enum MessageType
     {
         /// <summary>
-        /// Informace, potvrzení operace.
+        /// Informace, potvrzenÃ­ operace.
         /// </summary>
         Information = 0,
 
         /// <summary>
-        /// Varování, napø. upozornìní na další nutné kroky k dokonèení operace.
+        /// VarovÃ¡nÃ­, napÅ™. upozornÄ›nÃ­ na dalÅ¡Ã­ nutnÃ© kroky k dokonÄenÃ­ operace.
         /// </summary>
         Warning = 1,
 

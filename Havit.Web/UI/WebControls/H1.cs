@@ -1,15 +1,15 @@
-using System;
+ï»¿using System;
 using System.Web.UI;
 
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
-	/// Reprezentuje label, kterı se renderuje jako HTML tag H1.
+	/// Reprezentuje label, kterÃ½ se renderuje jako HTML tag H1.
 	/// </summary>
 	public class H1 : System.Web.UI.WebControls.Label
 	{
 		/// <summary>
-		/// Vrací HtmlTextWriterTag.H1 zajišující správné renderování.
+		/// VracÃ­ HtmlTextWriterTag.H1 zajiÅ¡Å¥ujÃ­cÃ­ sprÃ¡vnÃ© renderovÃ¡nÃ­.
 		/// </summary>
 		protected override HtmlTextWriterTag TagKey
 		{

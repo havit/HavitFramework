@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel;
@@ -9,7 +9,7 @@ using System.Web.UI.WebControls;
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
-	/// Zapouzdøení pro skinování CommandFieldu, uloištì hodnot.
+	/// ZapouzdÅ™enÃ­ pro skinovÃ¡nÃ­ CommandFieldu, uloÅ¾iÅ¡tÄ› hodnot.
 	/// </summary>
 	public class CommandFieldStyle : IStateManager
 	{
@@ -202,7 +202,7 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// Text, na kterı se má ptát jscript:confirm() pøed smazáním záznamu. Pokud je prázdnı, na nic se neptá.
+		/// Text, na kterÃ½ se mÃ¡ ptÃ¡t jscript:confirm() pÅ™ed smazÃ¡nÃ­m zÃ¡znamu. Pokud je prÃ¡zdnÃ½, na nic se neptÃ¡.
 		/// </summary>
 		[Category("Appearance")]
 		[Localizable(true)]
@@ -902,7 +902,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region ViewState
 		/// <summary>
-		/// ViewState pro ukládání hodnot.
+		/// ViewState pro uklÃ¡dÃ¡nÃ­ hodnot.
 		/// </summary>
 		internal StateBag ViewState
 		{
@@ -916,14 +916,14 @@ namespace Havit.Web.UI.WebControls
 
 		#region PropertyChanged (event)
 		/// <summary>
-		/// Událost, která se zavolá pøi zmìnì nìkteré property.
+		/// UdÃ¡lost, kterÃ¡ se zavolÃ¡ pÅ™i zmÄ›nÄ› nÄ›kterÃ© property.
 		/// </summary>
 		public event EventHandler PropertyChanged;
 		#endregion
 
 		#region Constructor
 		/// <summary>
-		/// Vytvoøí instanci.
+		/// VytvoÅ™Ã­ instanci.
 		/// </summary>
 		public CommandFieldStyle()
 		{
@@ -933,7 +933,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region OnPropertyChanged 
 		/// <summary>
-		/// Zajišuje spuštìní události <see cref="PropertyChanged"/>.
+		/// ZajiÅ¡Å¥uje spuÅ¡tÄ›nÃ­ udÃ¡losti <see cref="PropertyChanged"/>.
 		/// </summary>
 		protected void OnPropertyChanged()
 		{
@@ -976,7 +976,7 @@ namespace Havit.Web.UI.WebControls
 					((IStateManager)this.FooterStyle).LoadViewState(objArray[3]);
 				}
 
-				// tohle není v .NET Frameworku !?
+				// tohle nenÃ­ v .NET Frameworku !?
 				if (objArray[4] != null)
 				{
 					((IStateManager)this.ControlStyle).LoadViewState(objArray[4]);

@@ -1,19 +1,19 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Havit.Business
 {
 	/// <summary>
-	/// Pøedek generického typu <see cref="PropertyHolder{T}"/>. 
-	/// Potøebujeme kolekci PropertyHolderù a kolekci generických typù nelze udìlat.
+	/// PÅ™edek generickÃ©ho typu <see cref="PropertyHolder{T}"/>. 
+	/// PotÅ™ebujeme kolekci PropertyHolderÅ¯ a kolekci generickÃ½ch typÅ¯ nelze udÄ›lat.
 	/// </summary>
 	[Serializable]
 	public abstract class PropertyHolderBase
 	{
 		#region Owner
 		/// <summary>
-		/// Objekt, kterému property patøí.
+		/// Objekt, kterÃ©mu property patÅ™Ã­.
 		/// </summary>
 		protected BusinessObjectBase Owner
 		{
@@ -24,7 +24,7 @@ namespace Havit.Business
 
 		#region IsDirty
 		/// <summary>
-		/// Indikuje, zda došlo ke zmìnì hodnoty.
+		/// Indikuje, zda doÅ¡lo ke zmÄ›nÄ› hodnoty.
 		/// </summary>
 		public bool IsDirty
 		{
@@ -62,23 +62,23 @@ namespace Havit.Business
 
 		#region CheckInitialization
 		/// <summary>
-		/// Pokud nebyla hodnota PropertyHolderu nastavena, vyhodí InvalidOperationException.
-		/// Pokud byla hodnota PropertyHolderu nastavena, neudìlá nic (projde).
+		/// Pokud nebyla hodnota PropertyHolderu nastavena, vyhodÃ­ InvalidOperationException.
+		/// Pokud byla hodnota PropertyHolderu nastavena, neudÄ›lÃ¡ nic (projde).
 		/// </summary>
 		protected void CheckInitialization()
 		{
 			if (!_isInitialized)
 			{
-				throw new InvalidOperationException("Hodnota nebyla inicializována.");
+				throw new InvalidOperationException("Hodnota nebyla inicializovÃ¡na.");
 			}
 		}
 		#endregion
 
 		#region Constructors
 		/// <summary>
-		/// Založí instanci PropertyHolderu.
+		/// ZaloÅ¾Ã­ instanci PropertyHolderu.
 		/// </summary>
-		/// <param name="owner">objekt, kterému PropertyHolder patøí</param>
+		/// <param name="owner">objekt, kterÃ©mu PropertyHolder patÅ™Ã­</param>
 		protected PropertyHolderBase(BusinessObjectBase owner)
 		{
 			if (owner == null)

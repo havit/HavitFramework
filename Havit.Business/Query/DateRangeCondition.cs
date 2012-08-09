@@ -1,17 +1,17 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Havit.Business.Query
 {
 	/// <summary>
-	/// Vytváøí podmínky testující rozsah datumù.
+	/// VytvÃ¡Å™Ã­ podmÃ­nky testujÃ­cÃ­ rozsah datumÅ¯.
 	/// </summary>
 	public static class DateRangeCondition
 	{
 		#region Create
 		/// <summary>
-		/// Vytvoøí podmínku testující, zda je datum v intervalu datumù.
+		/// VytvoÅ™Ã­ podmÃ­nku testujÃ­cÃ­, zda je datum v intervalu datumÅ¯.
 		/// </summary>
 		public static Condition Create(IOperand operand, DateTime? date1, DateTime? date2)
 		{
@@ -40,10 +40,10 @@ namespace Havit.Business.Query
 
 		#region CreateDays
 		/// <summary>
-		/// Vytvoøí podmínku testující, zda je den data (datumu) v intervalu dnù datumù.
-		/// Zajišuje, aby hodnota operandu byla vìtší nebo rovna datu date1 a aby byla menší ne pùlnoc konce date2.
-		/// Jinımi slovy: Argumenty moho obsahovat datum a èas, ale testuje se jen datum bez èasu. Potom 
-		/// je zajišováno: DATUM(date1) &lt;= DATUM(operand) &lt; DATUM(date2).
+		/// VytvoÅ™Ã­ podmÃ­nku testujÃ­cÃ­, zda je den data (datumu) v intervalu dnÅ¯ datumÅ¯.
+		/// ZajiÅ¡Å¥uje, aby hodnota operandu byla vÄ›tÅ¡Ã­ nebo rovna datu date1 a aby byla menÅ¡Ã­ neÅ¾ pÅ¯lnoc konce date2.
+		/// JinÃ½mi slovy: Argumenty moho obsahovat datum a Äas, ale testuje se jen datum bez Äasu. Potom 
+		/// je zajiÅ¡Å¥ovÃ¡no: DATUM(date1) &lt;= DATUM(operand) &lt; DATUM(date2).
 		/// </summary>
 		public static Condition CreateDays(IOperand operand, DateTime? date1, DateTime? date2)
 		{

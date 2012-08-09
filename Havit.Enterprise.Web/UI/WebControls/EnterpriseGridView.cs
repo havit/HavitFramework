@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
@@ -8,18 +8,18 @@ namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
 	/// EnterprisGridView poskytuje:
-	/// - hledání klíèe øádku, ve kterém došlo k události
-	/// - hledání sloupce (IEnterpriseField) na základì ID sloupce
-	/// - stránkování
-	/// - zveøejòuje vlastnost RequiresDataBinding
-	/// - automatickı databinding pøi prvním naètení stránky nebo nastavení RequiresDataBinding na true (podmínìno vlastností AutoDataBind)
-	/// - pøechod na stránku 0 pøi zmìnì øazení
+	/// - hledÃ¡nÃ­ klÃ­Äe Å™Ã¡dku, ve kterÃ©m doÅ¡lo k udÃ¡losti
+	/// - hledÃ¡nÃ­ sloupce (IEnterpriseField) na zÃ¡kladÄ› ID sloupce
+	/// - strÃ¡nkovÃ¡nÃ­
+	/// - zveÅ™ejÅˆuje vlastnost RequiresDataBinding
+	/// - automatickÃ½ databinding pÅ™i prvnÃ­m naÄtenÃ­ strÃ¡nky nebo nastavenÃ­ RequiresDataBinding na true (podmÃ­nÄ›no vlastnostÃ­ AutoDataBind)
+	/// - pÅ™echod na strÃ¡nku 0 pÅ™i zmÄ›nÄ› Å™azenÃ­
 	/// </summary>
 	public class EnterpriseGridView : GridViewExt
 	{
 		#region Constructor
 		/// <summary>
-		/// Vytvoøí instanci EnterpriseGridView. Nastavuje defaultní DataKeyNames na ID.
+		/// VytvoÅ™Ã­ instanci EnterpriseGridView. Nastavuje defaultnÃ­ DataKeyNames na ID.
 		/// </summary>
 		public EnterpriseGridView()
 		{
@@ -27,42 +27,42 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-		#region GetRowID - Hledání klíèe poloky
+		#region GetRowID - HledÃ¡nÃ­ klÃ­Äe poloÅ¾ky
 		/// <summary>
-		/// Nalezne hodnotu ID klíèe poloky, ve kterém se nachází control.
+		/// Nalezne hodnotu ID klÃ­Äe poloÅ¾ky, ve kterÃ©m se nachÃ¡zÃ­ control.
 		/// </summary>
-		/// <param name="control">Control. Hledá se øádek, ve kterém se GridViewRow nalézá a DataKey øádku.</param>
-		/// <returns>Vrací hodnotu klíèe.</returns>
+		/// <param name="control">Control. HledÃ¡ se Å™Ã¡dek, ve kterÃ©m se GridViewRow nalÃ©zÃ¡ a DataKey Å™Ã¡dku.</param>
+		/// <returns>VracÃ­ hodnotu klÃ­Äe.</returns>
 		public int GetRowID(Control control)
 		{
 			return (int)GetRowKey(control).Value;
 		}
 
 		/// <summary>
-		/// Nalezne hodnotu ID klíèe poloky na základì události.
+		/// Nalezne hodnotu ID klÃ­Äe poloÅ¾ky na zÃ¡kladÄ› udÃ¡losti.
 		/// </summary>
-		/// <param name="e">Událost, ke které v gridu došlo.</param>
-		/// <returns>Vrací hodnotu klíèe daného øádku.</returns>
+		/// <param name="e">UdÃ¡lost, ke kterÃ© v gridu doÅ¡lo.</param>
+		/// <returns>VracÃ­ hodnotu klÃ­Äe danÃ©ho Å™Ã¡dku.</returns>
 		public int GetRowID(GridViewCommandEventArgs e)
 		{
 			return (int)GetRowKey(e).Value;
 		}
 
 		/// <summary>
-		/// Nalezne hodnotu ID klíèe poloky na základì indexu øádku v gridu.
+		/// Nalezne hodnotu ID klÃ­Äe poloÅ¾ky na zÃ¡kladÄ› indexu Å™Ã¡dku v gridu.
 		/// </summary>
-		/// <param name="rowIndex">index øádku</param>
-		/// <returns>Vrací hodnotu klíèe daného øádku.</returns>
+		/// <param name="rowIndex">index Å™Ã¡dku</param>
+		/// <returns>VracÃ­ hodnotu klÃ­Äe danÃ©ho Å™Ã¡dku.</returns>
 		public int GetRowID(int rowIndex)
 		{
 			return (int)GetRowKey(rowIndex).Value;
 		}
 		#endregion
 
-		//region Zrušení DataSourceID (Naše øazení jej nepodporuje.)
+		//region ZruÅ¡enÃ­ DataSourceID (NaÅ¡e Å™azenÃ­ jej nepodporuje.)
 		///// <summary>
-		///// Zrušíme monost nastavení DataSourceID. Pøi pokusu nastavit not-null hodnotu
-		///// dojde k vyvolání vıjimky.
+		///// ZruÅ¡Ã­me moÅ¾nost nastavenÃ­ DataSourceID. PÅ™i pokusu nastavit not-null hodnotu
+		///// dojde k vyvolÃ¡nÃ­ vÃ½jimky.
 		///// </summary>
 		//public override string DataSourceID
 		//{

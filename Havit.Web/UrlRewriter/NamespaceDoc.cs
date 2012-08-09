@@ -1,13 +1,13 @@
-#if NDOC
+ï»¿#if NDOC
 namespace Havit.Web.UrlRewriter
 {
 	/// <summary>
-	/// UrlRewriter zajišuje url-rewriting na základì RegEx pravidel definovanıch ve web.config.<br/>
-	/// Vychází z MSDN èlánku <a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dnaspp/html/urlrewriting.asp" target="_blank">URL Rewriting in ASP.NET</a>,
-	/// kde je podrobnì rozvedena metodika, moné zpùsoby pouití i jejich vıhody/nevıhody.<br/>
+	/// UrlRewriter zajiÅ¡Å¥uje url-rewriting na zÃ¡kladÄ› RegEx pravidel definovanÃ½ch ve web.config.<br/>
+	/// VychÃ¡zÃ­ z MSDN ÄlÃ¡nku <a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dnaspp/html/urlrewriting.asp" target="_blank">URL Rewriting in ASP.NET</a>,
+	/// kde je podrobnÄ› rozvedena metodika, moÅ¾nÃ© zpÅ¯soby pouÅ¾itÃ­ i jejich vÃ½hody/nevÃ½hody.<br/>
 	/// <br/>
-	/// Veškeré nasazení UrlRewriteru probíhá pøes web.config, viz pøíklad.
-	/// Nasazení mùe vypadat napøíklad takto:
+	/// VeÅ¡kerÃ© nasazenÃ­ UrlRewriteru probÃ­hÃ¡ pÅ™es web.config, viz pÅ™Ã­klad.
+	/// NasazenÃ­ mÅ¯Å¾e vypadat napÅ™Ã­klad takto:
 	/// The structure in the Web.config file is as follows:
 	/// <code>
 	/// &lt;configuration&gt;
@@ -54,7 +54,7 @@ namespace Havit.Web.UrlRewriter
 	/// </summary>
 	public class NamespaceDoc
 	{
-		// speciální tøída pro NDoc tvoøící help k namespace, a která se díky #if nekompiluje
+		// speciÃ¡lnÃ­ tÅ™Ã­da pro NDoc tvoÅ™Ã­cÃ­ help k namespace, a kterÃ¡ se dÃ­ky #if nekompiluje
 	}
 }
 #endif

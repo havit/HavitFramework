@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,13 +6,13 @@ using System.Text;
 namespace Havit.Business.Query
 {
 	/// <summary>
-	/// Vytváøí podmínky testující datumy.
+	/// VytvÃ¡Å™Ã­ podmÃ­nky testujÃ­cÃ­ datumy.
 	/// </summary>
 	public static class DateCondition
 	{
 		#region CreateEquals
 		/// <summary>
-		/// Vytvoøí podmínku testující rovnost datumù. Jeli datum roven null, testuje se na IS NULL.
+		/// VytvoÅ™Ã­ podmÃ­nku testujÃ­cÃ­ rovnost datumÅ¯. Jeli datum roven null, testuje se na IS NULL.
 		/// </summary>
 		public static Condition CreateEquals(IOperand operand, DateTime? dateTime)
 		{
@@ -27,7 +27,7 @@ namespace Havit.Business.Query
 		} 
 
 		/// <summary>
-		/// Vytvoøí podmínku testující rovnost datumù.
+		/// VytvoÅ™Ã­ podmÃ­nku testujÃ­cÃ­ rovnost datumÅ¯.
 		/// </summary>
 		public static Condition CreateEquals(IOperand operand, DateTime dateTime)
 		{
@@ -35,7 +35,7 @@ namespace Havit.Business.Query
 		} 
 
 		/// <summary>
-		/// Vytvoøí podmínku testující rovnost dvou operandù.
+		/// VytvoÅ™Ã­ podmÃ­nku testujÃ­cÃ­ rovnost dvou operandÅ¯.
 		/// </summary>
 		public static Condition CreateEquals(IOperand operand1, IOperand operand2)
 		{
@@ -45,7 +45,7 @@ namespace Havit.Business.Query
 
 		#region Create
 		/// <summary>
-		/// Vytvoøí podmínku testující hodnoty pomocí zadaného operátoru.
+		/// VytvoÅ™Ã­ podmÃ­nku testujÃ­cÃ­ hodnoty pomocÃ­ zadanÃ©ho operÃ¡toru.
 		/// </summary>
 		public static Condition Create(IOperand operand, ComparisonOperator comparisonOperator, DateTime value)
 		{
@@ -53,7 +53,7 @@ namespace Havit.Business.Query
 		} 
 
 		/// <summary>
-		/// Vytvoøí podmínku testující hodnoty operandù.
+		/// VytvoÅ™Ã­ podmÃ­nku testujÃ­cÃ­ hodnoty operandÅ¯.
 		/// </summary>
 		public static Condition Create(IOperand operand1, ComparisonOperator comparisonOperator, IOperand operand2)
 		{

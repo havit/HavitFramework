@@ -138,7 +138,7 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public void LoadAll(DbTransaction transaction)
 		{
-			if (this.Count == 0)
+			if ((!LoadAllRequired) || (this.Count == 0))
 			{
 				return;
 			}
@@ -183,6 +183,8 @@ namespace Havit.BusinessLayerTest
 					}
 				}
 			}
+			
+			LoadAllRequired = false;
 		}
 		#endregion
 		

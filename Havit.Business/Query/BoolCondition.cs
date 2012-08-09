@@ -1,17 +1,17 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Havit.Business.Query
 {
 	/// <summary>
-	/// Vytváøí podmínku testující logickou hodnotu.
+	/// VytvÃ¡Å™Ã­ podmÃ­nku testujÃ­cÃ­ logickou hodnotu.
 	/// </summary>	
 	public static class BoolCondition
 	{
 		#region CreateEquals
 		/// <summary>
-		/// Vytvoøí podmínku pro vlastnost rovnou dané hodnotì.
+		/// VytvoÅ™Ã­ podmÃ­nku pro vlastnost rovnou danÃ© hodnotÄ›.
 		/// Je-li hodnota value null, testuje se operand na null (IS NULL).
 		/// </summary>
 		public static Condition CreateEquals(IOperand operand, bool? value)
@@ -27,7 +27,7 @@ namespace Havit.Business.Query
 		} 
 
 		/// <summary>
-		/// Vytvoøí podmínku porovnávající hodnoty dvou operandù na rovnost.
+		/// VytvoÅ™Ã­ podmÃ­nku porovnÃ¡vajÃ­cÃ­ hodnoty dvou operandÅ¯ na rovnost.
 		/// </summary>
 		public static Condition CreateEquals(IOperand operand1, IOperand operand2)
 		{
@@ -37,8 +37,8 @@ namespace Havit.Business.Query
 
 		#region CreateNotEquals
 		/// <summary>
-		/// Vytvoøí podmínku porovnávající hodnoty dvou operandù na nerovnost.
-		/// Hodnota null není ádnım zpùsobem zpracovávána, tj. pokud alespoò jeden operand má hodnotu null, není ve vısledku dotazu.
+		/// VytvoÅ™Ã­ podmÃ­nku porovnÃ¡vajÃ­cÃ­ hodnoty dvou operandÅ¯ na nerovnost.
+		/// Hodnota null nenÃ­ Å¾Ã¡dnÃ½m zpÅ¯sobem zpracovÃ¡vÃ¡na, tj. pokud alespoÅˆ jeden operand mÃ¡ hodnotu null, nenÃ­ ve vÃ½sledku dotazu.
 		/// </summary>
 		public static Condition CreateNotEquals(IOperand operand1, IOperand operand2)
 		{
@@ -48,7 +48,7 @@ namespace Havit.Business.Query
 
 		#region CreateTrue
 		/// <summary>
-		/// Vytvoøí podmínku testující vlastnost na hodnotu true.
+		/// VytvoÅ™Ã­ podmÃ­nku testujÃ­cÃ­ vlastnost na hodnotu true.
 		/// </summary>
 		public static Condition CreateTrue(IOperand operand)
 		{
@@ -58,7 +58,7 @@ namespace Havit.Business.Query
 
 		#region CreateFalse
 		/// <summary>
-		/// Vytvoøí podmínku testující vlastnost na hodnotu false.
+		/// VytvoÅ™Ã­ podmÃ­nku testujÃ­cÃ­ vlastnost na hodnotu false.
 		/// </summary>
 		public static Condition CreateFalse(IOperand operand)
 		{

@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Data.Common;
@@ -9,14 +9,14 @@ using System.Diagnostics.Contracts;
 namespace Havit.Data
 {
 	/// <summary>
-	/// Tøída usnadòující práci s databázemi. Nástupce <see cref="Havit.Data.SqlClient.SqlDataAccess"/>.
+	/// TÅ™Ã­da usnadÅˆujÃ­cÃ­ prÃ¡ci s databÃ¡zemi. NÃ¡stupce <see cref="Havit.Data.SqlClient.SqlDataAccess"/>.
 	/// </summary>
 	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1706:ShortAcronymsShouldBeUppercase")]
 	public class DbConnector
 	{
 		#region ConnectionString
 		/// <summary>
-		/// Vrátí connection-string, kterı spolu s <see cref="DbConnector.ProviderFactory"/> urèuje parametry DbConnectoru.
+		/// VrÃ¡tÃ­ connection-string, kterÃ½ spolu s <see cref="DbConnector.ProviderFactory"/> urÄuje parametry DbConnectoru.
 		/// </summary>
 		public string ConnectionString
 		{
@@ -32,7 +32,7 @@ namespace Havit.Data
 
 		#region ProviderFactory
 		/// <summary>
-		/// Vrátí <see cref="DbProviderFactory"/>, která spolu s <see cref="DbConnector.ConnectionString"/>em urèuje parametry DbConnectoru.
+		/// VrÃ¡tÃ­ <see cref="DbProviderFactory"/>, kterÃ¡ spolu s <see cref="DbConnector.ConnectionString"/>em urÄuje parametry DbConnectoru.
 		/// </summary>
 		public DbProviderFactory ProviderFactory
 		{
@@ -47,13 +47,13 @@ namespace Havit.Data
 
 		#region Constructors
 		/// <summary>
-		/// Inicializuje instanci tøídy <see cref="DbConnector"/>.
+		/// Inicializuje instanci tÅ™Ã­dy <see cref="DbConnector"/>.
 		/// </summary>
 		/// <param name="connectionString">connection-string</param>
 		/// <param name="providerFactory">DbProviderFactory</param>
 		public DbConnector(string connectionString, DbProviderFactory providerFactory)
 		{
-			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(connectionString), "Parametr connectionString nesmí bıt null ani String.Empty.");
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(connectionString), "Parametr connectionString nesmÃ­ bÃ½t null ani String.Empty.");
 			Contract.Requires<ArgumentNullException>(providerFactory != null, "providerFactory");
 
 			this._connectionString = connectionString;
@@ -61,27 +61,27 @@ namespace Havit.Data
 		}
 
 		/// <summary>
-		/// Inicializuje instanci tøídy <see cref="DbConnector"/>.
+		/// Inicializuje instanci tÅ™Ã­dy <see cref="DbConnector"/>.
 		/// </summary>
 		/// <param name="connectionString">Connection-string</param>
 		/// <param name="providerInvariantName">Invariant name of a provider.</param>
 		public DbConnector(string connectionString, string providerInvariantName)
 		{
-			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(connectionString), "Parametr connectionString nesmí bıt null ani String.Empty.");
-			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(providerInvariantName), "Parametr providerInvariantName nesmí bıt null ani String.Empty.");
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(connectionString), "Parametr connectionString nesmÃ­ bÃ½t null ani String.Empty.");
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(providerInvariantName), "Parametr providerInvariantName nesmÃ­ bÃ½t null ani String.Empty.");
 
 			this._connectionString = connectionString;
 			this._providerFactory = DbProviderFactories.GetFactory(providerInvariantName);
 		}
 
 		/// <summary>
-		/// Inicializuje instanci tøídy <see cref="DbConnector"/>.
+		/// Inicializuje instanci tÅ™Ã­dy <see cref="DbConnector"/>.
 		/// </summary>
-		/// <param name="connectionStringSettings">Nastavení <see cref="ConnectionStringSettings"/> naètené z .config souboru. Napø. získané pøes ConfigurationManager.ConnectionStrings["ConnectionStringName"].</param>
+		/// <param name="connectionStringSettings">NastavenÃ­ <see cref="ConnectionStringSettings"/> naÄtenÃ© z .config souboru. NapÅ™. zÃ­skanÃ© pÅ™es ConfigurationManager.ConnectionStrings["ConnectionStringName"].</param>
 		public DbConnector(ConnectionStringSettings connectionStringSettings)
 		{
 			Contract.Requires<ArgumentNullException>(connectionStringSettings != null, "connectionStringSettings");
-			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(connectionStringSettings.ConnectionString), "Parametr connectionStringSettings nemá nastavenu vlastnost ConnectionString.");
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(connectionStringSettings.ConnectionString), "Parametr connectionStringSettings nemÃ¡ nastavenu vlastnost ConnectionString.");
 
 			this._connectionString = connectionStringSettings.ConnectionString;
 			if (String.IsNullOrEmpty(connectionStringSettings.ProviderName))
@@ -99,14 +99,14 @@ namespace Havit.Data
 
 		#region private CreateCommand, SetCommandDefaults
 		/// <summary>
-		/// Vytvoøí DbCommand dle zadanıch parametrù. Nenastavuje spojení ani jiné vlastnosti.
+		/// VytvoÅ™Ã­ DbCommand dle zadanÃ½ch parametrÅ¯. Nenastavuje spojenÃ­ ani jinÃ© vlastnosti.
 		/// </summary>
-		/// <param name="commandText">SQL text pøíkazu</param>
-		/// <param name="commandType">typ pøíkazu <see cref="CommandType"/></param>
+		/// <param name="commandText">SQL text pÅ™Ã­kazu</param>
+		/// <param name="commandType">typ pÅ™Ã­kazu <see cref="CommandType"/></param>
 		private DbCommand CreateCommand(string commandText, CommandType commandType)
 		{
-			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Argument commandText nesmí bıt null ani String.Empty."); 
-			// CommandType nemùe bıt null a není potøeba ho kontrolovat
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Argument commandText nesmÃ­ bÃ½t null ani String.Empty."); 
+			// CommandType nemÅ¯Å¾e bÃ½t null a nenÃ­ potÅ™eba ho kontrolovat
 
 			DbCommand cmd = this.ProviderFactory.CreateCommand();
 			cmd.CommandText = commandText;
@@ -116,12 +116,12 @@ namespace Havit.Data
 		}
 
 		/// <summary>
-		/// Nastaví pøíkazu default parametry (zatím pouze Connection), nejsou-li nastaveny.
+		/// NastavÃ­ pÅ™Ã­kazu default parametry (zatÃ­m pouze Connection), nejsou-li nastaveny.
 		/// </summary>
 		/// <remarks>
-		/// Pokud jsme v transakci, pak zde sjednotíme Connection (nechápu, proè to nedìlá sám .NET Framework).
+		/// Pokud jsme v transakci, pak zde sjednotÃ­me Connection (nechÃ¡pu, proÄ to nedÄ›lÃ¡ sÃ¡m .NET Framework).
 		/// </remarks>
-		/// <param name="command"><see cref="DbCommand"/> k nastavení</param>
+		/// <param name="command"><see cref="DbCommand"/> k nastavenÃ­</param>
 		private void SetCommandDefaults(DbCommand command)
 		{
 			Contract.Requires<ArgumentNullException>(command != null, "command");
@@ -140,9 +140,9 @@ namespace Havit.Data
 
 		#region GetConnection
 		/// <summary>
-		/// Vrátí novou instanci provider-specific potomka <see cref="DbConnection"/> a pokud to poadujeme, tak ji rovnou otevøe.
+		/// VrÃ¡tÃ­ novou instanci provider-specific potomka <see cref="DbConnection"/> a pokud to poÅ¾adujeme, tak ji rovnou otevÅ™e.
 		/// </summary>
-		/// <param name="openConnection"><c>true</c>, má-li se nová SqlConnection rovnou otevøít</param>
+		/// <param name="openConnection"><c>true</c>, mÃ¡-li se novÃ¡ SqlConnection rovnou otevÅ™Ã­t</param>
 		public DbConnection GetConnection(bool openConnection)
 		{
 			Contract.Ensures(Contract.Result<DbConnection>() != null);
@@ -158,8 +158,8 @@ namespace Havit.Data
 
 
 		/// <summary>
-		/// Vrátí novou instanci provider-specific potomka <see cref="DbConnection"/>.
-		/// Connection není otevøena.
+		/// VrÃ¡tÃ­ novou instanci provider-specific potomka <see cref="DbConnection"/>.
+		/// Connection nenÃ­ otevÅ™ena.
 		/// </summary>
 		public DbConnection GetConnection()
 		{
@@ -169,16 +169,16 @@ namespace Havit.Data
 
 		#region ExecuteNonQuery
 		/// <summary>
-		/// Vykoná <see cref="DbCommand"/> a vrátí poèet dotèenıch øádek.
-		/// Nejobecnìjší metoda, kterou pouívají ostatní overloady.
+		/// VykonÃ¡ <see cref="DbCommand"/> a vrÃ¡tÃ­ poÄet dotÄenÃ½ch Å™Ã¡dek.
+		/// NejobecnÄ›jÅ¡Ã­ metoda, kterou pouÅ¾Ã­vajÃ­ ostatnÃ­ overloady.
 		/// </summary>
 		/// <remarks>
-		/// Není-li Connection pøíkazu nastaveno, pouije imlicitní.
-		/// Není-li Connection dosud otevøeno, otevøe ho, vykoná pøíkaz a zavøe.
-		/// Nemá-li poèet dotèenıch øádek smysl, vrací -1.
+		/// NenÃ­-li Connection pÅ™Ã­kazu nastaveno, pouÅ¾ije imlicitnÃ­.
+		/// NenÃ­-li Connection dosud otevÅ™eno, otevÅ™e ho, vykonÃ¡ pÅ™Ã­kaz a zavÅ™e.
+		/// NemÃ¡-li poÄet dotÄenÃ½ch Å™Ã¡dek smysl, vracÃ­ -1.
 		/// </remarks>
-		/// <param name="command"><see cref="DbCommand"/>, kterı má bıt vykonán</param>
-		/// <returns>poèet dotèenıch øádek</returns>
+		/// <param name="command"><see cref="DbCommand"/>, kterÃ½ mÃ¡ bÃ½t vykonÃ¡n</param>
+		/// <returns>poÄet dotÄenÃ½ch Å™Ã¡dek</returns>
 		public int ExecuteNonQuery(DbCommand command)
 		{
 			Contract.Requires<ArgumentNullException>(command != null, "command");
@@ -213,42 +213,42 @@ namespace Havit.Data
 
 
 		/// <summary>
-		/// Vykoná zadanı pøíkaz urèeného typu bez parametrù. Vrátí poèet dotèenıch øádek.
+		/// VykonÃ¡ zadanÃ½ pÅ™Ã­kaz urÄenÃ©ho typu bez parametrÅ¯. VrÃ¡tÃ­ poÄet dotÄenÃ½ch Å™Ã¡dek.
 		/// </summary>
-		/// <param name="commandText">SQL pøíkaz</param>
-		/// <param name="commandType"><see cref="CommandType"/> pøíkazu</param>
-		/// <returns>poèet dotèenıch øádek</returns>
+		/// <param name="commandText">SQL pÅ™Ã­kaz</param>
+		/// <param name="commandType"><see cref="CommandType"/> pÅ™Ã­kazu</param>
+		/// <returns>poÄet dotÄenÃ½ch Å™Ã¡dek</returns>
 		public int ExecuteNonQuery(string commandText, CommandType commandType)
 		{
-			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmí bıt null ani String.Empty");
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmÃ­ bÃ½t null ani String.Empty");
 			return ExecuteNonQuery(CreateCommand(commandText, commandType));
 		}
 
 
 		/// <summary>
-		/// Vykoná zadanı pøíkaz bez parametrù. Vrátí poèet dotèenıch øádek.
+		/// VykonÃ¡ zadanÃ½ pÅ™Ã­kaz bez parametrÅ¯. VrÃ¡tÃ­ poÄet dotÄenÃ½ch Å™Ã¡dek.
 		/// </summary>
 		/// <remarks>
-		/// Jako <see cref="CommandType"/> pouívá <see cref="CommandType.Text"/>.
+		/// Jako <see cref="CommandType"/> pouÅ¾Ã­vÃ¡ <see cref="CommandType.Text"/>.
 		/// </remarks>
-		/// <param name="commandText">SQL pøíkaz</param>
-		/// <returns>poèet dotèenıch øádek</returns>
+		/// <param name="commandText">SQL pÅ™Ã­kaz</param>
+		/// <returns>poÄet dotÄenÃ½ch Å™Ã¡dek</returns>
 		public int ExecuteNonQuery(string commandText)
 		{
-			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmí bıt null ani String.Empty");
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmÃ­ bÃ½t null ani String.Empty");
 			return ExecuteNonQuery(commandText, CommandType.Text);
 		}
 		#endregion
 
 		#region ExecuteDataSet
 		/// <summary>
-		/// Vykoná <see cref="DbCommand"/> a vrátí resultset ve formì <see cref="DataSet"/>u.
+		/// VykonÃ¡ <see cref="DbCommand"/> a vrÃ¡tÃ­ resultset ve formÄ› <see cref="DataSet"/>u.
 		/// </summary>
 		/// <remarks>
-		/// Je-li cmd.Connection otevøeno, nechá ho otevøené. Není-li, otevøe si ho a zase zavøe.
+		/// Je-li cmd.Connection otevÅ™eno, nechÃ¡ ho otevÅ™enÃ©. NenÃ­-li, otevÅ™e si ho a zase zavÅ™e.
 		/// </remarks>
-		/// <param name="command">DbCommand k vykonání</param>
-		/// <returns>resultset pøíkazu ve formì <see cref="DataSet"/>u</returns>
+		/// <param name="command">DbCommand k vykonÃ¡nÃ­</param>
+		/// <returns>resultset pÅ™Ã­kazu ve formÄ› <see cref="DataSet"/>u</returns>
 		public DataSet ExecuteDataSet(DbCommand command)
 		{
 			Contract.Requires<ArgumentNullException>(command != null, "command");
@@ -269,26 +269,26 @@ namespace Havit.Data
 
 
 		/// <summary>
-		/// Vykoná pøíkaz commandText daného commandType a vrátí resultset ve formì <see cref="DataSet"/>u.
+		/// VykonÃ¡ pÅ™Ã­kaz commandText danÃ©ho commandType a vrÃ¡tÃ­ resultset ve formÄ› <see cref="DataSet"/>u.
 		/// </summary>
-		/// <param name="commandText">SQL pøíkaz</param>
-		/// <param name="commandType">typ pøíkazu</param>
-		/// <returns>resultset pøíkazu ve formì <see cref="DataSet"/>u</returns>
+		/// <param name="commandText">SQL pÅ™Ã­kaz</param>
+		/// <param name="commandType">typ pÅ™Ã­kazu</param>
+		/// <returns>resultset pÅ™Ã­kazu ve formÄ› <see cref="DataSet"/>u</returns>
 		public DataSet ExecuteDataSet(string commandText, CommandType commandType)
 		{
-			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmí bıt null ani String.Empty");
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmÃ­ bÃ½t null ani String.Empty");
 			return ExecuteDataSet(CreateCommand(commandText, commandType));
 		}
 
 
 		/// <summary>
-		/// Vykoná SQL pøíkaz cmdText typu <see cref="CommandType.Text"/> a vrátí resultset ve formì <see cref="DataSet"/>u.
+		/// VykonÃ¡ SQL pÅ™Ã­kaz cmdText typu <see cref="CommandType.Text"/> a vrÃ¡tÃ­ resultset ve formÄ› <see cref="DataSet"/>u.
 		/// </summary>
-		/// <param name="commandText">textovı SQL pøíkaz</param>
-		/// <returns>resultset pøíkazu ve formì <see cref="DataSet"/>u</returns>
+		/// <param name="commandText">textovÃ½ SQL pÅ™Ã­kaz</param>
+		/// <returns>resultset pÅ™Ã­kazu ve formÄ› <see cref="DataSet"/>u</returns>
 		public DataSet ExecuteDataSet(string commandText)
 		{
-			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmí bıt null ani String.Empty");
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmÃ­ bÃ½t null ani String.Empty");
 			return ExecuteDataSet(commandText, CommandType.Text);
 		}
 
@@ -296,13 +296,13 @@ namespace Havit.Data
 
 		#region ExecuteDataTable
 		/// <summary>
-		/// Vykoná <see cref="DbCommand"/> a vrátí první resultset ve formì <see cref="System.Data.DataTable"/>.
+		/// VykonÃ¡ <see cref="DbCommand"/> a vrÃ¡tÃ­ prvnÃ­ resultset ve formÄ› <see cref="System.Data.DataTable"/>.
 		/// </summary>
 		/// <remarks>
-		/// Je-li cmd.Connection otevøeno, nechá ho otevøené. Není-li, otevøe si ho a zase zavøe.
+		/// Je-li cmd.Connection otevÅ™eno, nechÃ¡ ho otevÅ™enÃ©. NenÃ­-li, otevÅ™e si ho a zase zavÅ™e.
 		/// </remarks>
-		/// <param name="command"><see cref="DbCommand"/> k vykonání</param>
-		/// <returns>první resultset pøíkazu ve formì <see cref="System.Data.DataTable"/></returns>
+		/// <param name="command"><see cref="DbCommand"/> k vykonÃ¡nÃ­</param>
+		/// <returns>prvnÃ­ resultset pÅ™Ã­kazu ve formÄ› <see cref="System.Data.DataTable"/></returns>
 		public DataTable ExecuteDataTable(DbCommand command)
 		{
 			Contract.Requires<ArgumentNullException>(command != null, "command");
@@ -323,37 +323,37 @@ namespace Havit.Data
 
 
 		/// <summary>
-		/// Vykoná pøíkaz commandText typu commandType a vrátí první tabulku resultsetu ve formì <see cref="System.Data.DataTable"/>.
+		/// VykonÃ¡ pÅ™Ã­kaz commandText typu commandType a vrÃ¡tÃ­ prvnÃ­ tabulku resultsetu ve formÄ› <see cref="System.Data.DataTable"/>.
 		/// </summary>
-		/// <param name="commandText">SQL pøíkaz</param>
-		/// <param name="commandType">typ pøíkazu</param>
-		/// <returns>první tabulka resultsetu vykonaného pøíkazu ve formì <see cref="System.Data.DataTable"/></returns>
+		/// <param name="commandText">SQL pÅ™Ã­kaz</param>
+		/// <param name="commandType">typ pÅ™Ã­kazu</param>
+		/// <returns>prvnÃ­ tabulka resultsetu vykonanÃ©ho pÅ™Ã­kazu ve formÄ› <see cref="System.Data.DataTable"/></returns>
 		public DataTable ExecuteDataTable(string commandText, CommandType commandType)
 		{
-			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmí bıt null ani String.Empty");
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmÃ­ bÃ½t null ani String.Empty");
 			return ExecuteDataTable(CreateCommand(commandText, commandType));
 		}
 
 
 		/// <summary>
-		/// Vykoná pøíkaz commandText typu <see cref="CommandType.Text"/> a vrátí první tabulku resultsetu ve formì <see cref="System.Data.DataTable"/>.
+		/// VykonÃ¡ pÅ™Ã­kaz commandText typu <see cref="CommandType.Text"/> a vrÃ¡tÃ­ prvnÃ­ tabulku resultsetu ve formÄ› <see cref="System.Data.DataTable"/>.
 		/// </summary>
-		/// <param name="commandText">textovı SQL pøíkaz</param>
-		/// <returns>první tabulka resultsetu vykonaného pøíkazu ve formì <see cref="System.Data.DataTable"/></returns>
+		/// <param name="commandText">textovÃ½ SQL pÅ™Ã­kaz</param>
+		/// <returns>prvnÃ­ tabulka resultsetu vykonanÃ©ho pÅ™Ã­kazu ve formÄ› <see cref="System.Data.DataTable"/></returns>
 		public DataTable ExecuteDataTable(string commandText)
 		{
-			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmí bıt null ani String.Empty");
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmÃ­ bÃ½t null ani String.Empty");
 			return ExecuteDataTable(commandText, CommandType.Text);
 		}
 		#endregion
 
 		#region ExecuteReader
 		/// <summary>
-		/// Donastaví a vykoná <see cref="DbCommand"/> pomocí <see cref="CommandBehavior"/> a vrátí vıslednı resultset ve formì <see cref="DbDataReader"/>u.
+		/// DonastavÃ­ a vykonÃ¡ <see cref="DbCommand"/> pomocÃ­ <see cref="CommandBehavior"/> a vrÃ¡tÃ­ vÃ½slednÃ½ resultset ve formÄ› <see cref="DbDataReader"/>u.
 		/// </summary>
-		/// <param name="command">pøíkaz (nemusí mít nastaveno Connection)</param>
-		/// <param name="behavior">poadované "chování"</param>
-		/// <returns>resultset vykonaného pøíkazu jako <see cref="DbDataReader"/></returns>
+		/// <param name="command">pÅ™Ã­kaz (nemusÃ­ mÃ­t nastaveno Connection)</param>
+		/// <param name="behavior">poÅ¾adovanÃ© "chovÃ¡nÃ­"</param>
+		/// <returns>resultset vykonanÃ©ho pÅ™Ã­kazu jako <see cref="DbDataReader"/></returns>
 		public DbDataReader ExecuteReader(DbCommand command, CommandBehavior behavior)
 		{
 			Contract.Requires<ArgumentNullException>(command != null, "command");
@@ -373,12 +373,12 @@ namespace Havit.Data
 			{
 				if (mustCloseConnection)
 				{
-					// otevøeme-li si spojení sami, postaráme se i o jeho zavøení
+					// otevÅ™eme-li si spojenÃ­ sami, postarÃ¡me se i o jeho zavÅ™enÃ­
 					reader = command.ExecuteReader(behavior | CommandBehavior.CloseConnection);
 				}
 				else
 				{
-					// spojení bylo ji otevøeno, tak ho tak necháme, a se stará nadøazená aplikace
+					// spojenÃ­ bylo jiÅ¾ otevÅ™eno, tak ho tak nechÃ¡me, aÅ¥ se starÃ¡ nadÅ™azenÃ¡ aplikace
 					reader = command.ExecuteReader(behavior);
 				}
 			}
@@ -396,10 +396,10 @@ namespace Havit.Data
 
 
 		/// <summary>
-		/// Donastaví a vykoná <see cref="DbCommand"/> a vrátí vıslednı resultset ve formì <see cref="DbDataReader"/>u.
+		/// DonastavÃ­ a vykonÃ¡ <see cref="DbCommand"/> a vrÃ¡tÃ­ vÃ½slednÃ½ resultset ve formÄ› <see cref="DbDataReader"/>u.
 		/// </summary>
-		/// <param name="command">pøíkaz (nemusí mít nastaveno Connection)</param>
-		/// <returns>resultset vykonaného pøíkazu jako <see cref="DbDataReader"/></returns>
+		/// <param name="command">pÅ™Ã­kaz (nemusÃ­ mÃ­t nastaveno Connection)</param>
+		/// <returns>resultset vykonanÃ©ho pÅ™Ã­kazu jako <see cref="DbDataReader"/></returns>
 		public DbDataReader ExecuteReader(DbCommand command)
 		{
 			Contract.Requires<ArgumentNullException>(command != null, "command");
@@ -408,40 +408,40 @@ namespace Havit.Data
 
 
 		/// <summary>
-		/// Vytvoøí, nastaví a vykoná <see cref="DbCommand"/> dle zadanıch parametrù a vrátí vıslednı resultset ve formì <see cref="DbDataReader"/>u.
+		/// VytvoÅ™Ã­, nastavÃ­ a vykonÃ¡ <see cref="DbCommand"/> dle zadanÃ½ch parametrÅ¯ a vrÃ¡tÃ­ vÃ½slednÃ½ resultset ve formÄ› <see cref="DbDataReader"/>u.
 		/// </summary>
-		/// <param name="commandText">text SQL pøíkazu</param>
-		/// <param name="commandType">typ pøíkazu <see cref="CommandType"/></param>
-		/// <returns>resultset ve formì <see cref="DbDataReader"/>u</returns>
+		/// <param name="commandText">text SQL pÅ™Ã­kazu</param>
+		/// <param name="commandType">typ pÅ™Ã­kazu <see cref="CommandType"/></param>
+		/// <returns>resultset ve formÄ› <see cref="DbDataReader"/>u</returns>
 		public DbDataReader ExecuteReader(string commandText, CommandType commandType)
 		{
-			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmí bıt null ani String.Empty");
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmÃ­ bÃ½t null ani String.Empty");
 			return ExecuteReader(CreateCommand(commandText, commandType));
 		}
 
 
 		/// <summary>
-		/// Vytvoøí, nastaví a vykoná <see cref="DbCommand"/> dle zadaného SQL pøíkazu typu <see cref="CommandType.Text"/>
-		/// a vrátí vıslednı resultset ve formì <see cref="DbDataReader"/>u.
+		/// VytvoÅ™Ã­, nastavÃ­ a vykonÃ¡ <see cref="DbCommand"/> dle zadanÃ©ho SQL pÅ™Ã­kazu typu <see cref="CommandType.Text"/>
+		/// a vrÃ¡tÃ­ vÃ½slednÃ½ resultset ve formÄ› <see cref="DbDataReader"/>u.
 		/// </summary>
-		/// <param name="commandText">text SQL pøíkazu</param>
-		/// <returns>resultset ve formì <see cref="DbDataReader"/>u</returns>
+		/// <param name="commandText">text SQL pÅ™Ã­kazu</param>
+		/// <returns>resultset ve formÄ› <see cref="DbDataReader"/>u</returns>
 		public DbDataReader ExecuteReader(string commandText)
 		{
-			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmí bıt null ani String.Empty");
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmÃ­ bÃ½t null ani String.Empty");
 			return ExecuteReader(commandText, CommandType.Text);
 		}
 		#endregion
 
 		#region ExecuteDataRecord
 		/// <summary>
-		/// Donastaví a vykoná <see cref="DbCommand"/> pomocí <see cref="CommandBehavior"/> a vrátí první øádek první tabulky resultsetu
-		/// ve formì <see cref="Havit.Data.DataRecord"/>. Pokud neexistuje, vrátí <c>null</c>.
+		/// DonastavÃ­ a vykonÃ¡ <see cref="DbCommand"/> pomocÃ­ <see cref="CommandBehavior"/> a vrÃ¡tÃ­ prvnÃ­ Å™Ã¡dek prvnÃ­ tabulky resultsetu
+		/// ve formÄ› <see cref="Havit.Data.DataRecord"/>. Pokud neexistuje, vrÃ¡tÃ­ <c>null</c>.
 		/// </summary>
-		/// <param name="command">pøíkaz (nemusí mít nastaveno Connection)</param>
-		/// <param name="behavior">poadované "chování"</param>
-		/// <param name="dataLoadPower"><see cref="DataLoadPower"/>, která se má pouít pro <see cref="DataRecord"/></param>
-		/// <returns>první øádek první tabulky resultsetu ve formì <see cref="Havit.Data.DataRecord"/></returns>
+		/// <param name="command">pÅ™Ã­kaz (nemusÃ­ mÃ­t nastaveno Connection)</param>
+		/// <param name="behavior">poÅ¾adovanÃ© "chovÃ¡nÃ­"</param>
+		/// <param name="dataLoadPower"><see cref="DataLoadPower"/>, kterÃ¡ se mÃ¡ pouÅ¾Ã­t pro <see cref="DataRecord"/></param>
+		/// <returns>prvnÃ­ Å™Ã¡dek prvnÃ­ tabulky resultsetu ve formÄ› <see cref="Havit.Data.DataRecord"/></returns>
 		public DataRecord ExecuteDataRecord(DbCommand command, CommandBehavior behavior, DataLoadPower dataLoadPower)
 		{
 			Contract.Requires<ArgumentNullException>(command != null, "command");
@@ -456,15 +456,15 @@ namespace Havit.Data
 		}
 
 		/// <summary>
-		/// Donastaví a vykoná <see cref="DbCommand"/> pomocí <see cref="CommandBehavior"/> a vrátí první øádek první tabulky resultsetu
-		/// ve formì <see cref="Havit.Data.DataRecord"/>. Pokud neexistuje, vrátí <c>null</c>.
+		/// DonastavÃ­ a vykonÃ¡ <see cref="DbCommand"/> pomocÃ­ <see cref="CommandBehavior"/> a vrÃ¡tÃ­ prvnÃ­ Å™Ã¡dek prvnÃ­ tabulky resultsetu
+		/// ve formÄ› <see cref="Havit.Data.DataRecord"/>. Pokud neexistuje, vrÃ¡tÃ­ <c>null</c>.
 		/// </summary>
 		/// <remarks>
-		/// <see cref="DataLoadPower"/> vısledného <see cref="DataRecord"/>u nastaví na <see cref="DataLoadPower.FullLoad"/>.
+		/// <see cref="DataLoadPower"/> vÃ½slednÃ©ho <see cref="DataRecord"/>u nastavÃ­ na <see cref="DataLoadPower.FullLoad"/>.
 		/// </remarks>
-		/// <param name="command">pøíkaz (nemusí mít nastaveno Connection)</param>
-		/// <param name="behavior">poadované "chování"</param>
-		/// <returns>první øádek první tabulky resultsetu ve formì <see cref="Havit.Data.DataRecord"/></returns>
+		/// <param name="command">pÅ™Ã­kaz (nemusÃ­ mÃ­t nastaveno Connection)</param>
+		/// <param name="behavior">poÅ¾adovanÃ© "chovÃ¡nÃ­"</param>
+		/// <returns>prvnÃ­ Å™Ã¡dek prvnÃ­ tabulky resultsetu ve formÄ› <see cref="Havit.Data.DataRecord"/></returns>
 		public DataRecord ExecuteDataRecord(DbCommand command, CommandBehavior behavior)
 		{
 			Contract.Requires<ArgumentNullException>(command != null, "command");
@@ -480,14 +480,14 @@ namespace Havit.Data
 
 
 		/// <summary>
-		/// Donastaví a vykoná <see cref="DbCommand"/> a vrátí první øádek první tabulky resultsetu
-		/// ve formì <see cref="Havit.Data.DataRecord"/>. Pokud neexistuje, vrátí <c>null</c>.
+		/// DonastavÃ­ a vykonÃ¡ <see cref="DbCommand"/> a vrÃ¡tÃ­ prvnÃ­ Å™Ã¡dek prvnÃ­ tabulky resultsetu
+		/// ve formÄ› <see cref="Havit.Data.DataRecord"/>. Pokud neexistuje, vrÃ¡tÃ­ <c>null</c>.
 		/// </summary>
 		/// <remarks>
-		/// <see cref="DataLoadPower"/> vısledného <see cref="DataRecord"/>u nastaví na <see cref="DataLoadPower.FullLoad"/>.
+		/// <see cref="DataLoadPower"/> vÃ½slednÃ©ho <see cref="DataRecord"/>u nastavÃ­ na <see cref="DataLoadPower.FullLoad"/>.
 		/// </remarks>
-		/// <param command="cmd">pøíkaz (nemusí mít nastaveno Connection)</param>
-		/// <returns>první øádek první tabulky resultsetu ve formì <see cref="Havit.Data.DataRecord"/></returns>
+		/// <param command="cmd">pÅ™Ã­kaz (nemusÃ­ mÃ­t nastaveno Connection)</param>
+		/// <returns>prvnÃ­ Å™Ã¡dek prvnÃ­ tabulky resultsetu ve formÄ› <see cref="Havit.Data.DataRecord"/></returns>
 		public DataRecord ExecuteDataRecord(DbCommand command)
 		{
 			Contract.Requires<ArgumentNullException>(command != null, "command");
@@ -496,34 +496,34 @@ namespace Havit.Data
 
 
 		/// <summary>
-		/// Vytvoøí <see cref="DbCommand"/> dle zadanıch parametrù, donasataví ho a vrátí první øádek první tabulky resultsetu
-		/// ve formì <see cref="Havit.Data.DataRecord"/>. Pokud neexistuje, vrátí <c>null</c>.
+		/// VytvoÅ™Ã­ <see cref="DbCommand"/> dle zadanÃ½ch parametrÅ¯, donasatavÃ­ ho a vrÃ¡tÃ­ prvnÃ­ Å™Ã¡dek prvnÃ­ tabulky resultsetu
+		/// ve formÄ› <see cref="Havit.Data.DataRecord"/>. Pokud neexistuje, vrÃ¡tÃ­ <c>null</c>.
 		/// </summary>
 		/// <remarks>
-		/// <see cref="DataLoadPower"/> vısledného <see cref="DataRecord"/>u nastaví na <see cref="DataLoadPower.FullLoad"/>.
+		/// <see cref="DataLoadPower"/> vÃ½slednÃ©ho <see cref="DataRecord"/>u nastavÃ­ na <see cref="DataLoadPower.FullLoad"/>.
 		/// </remarks>
-		/// <param name="commandText">text SQL pøíkazu</param>
-		/// <param name="commandType"><see cref="CommandType"/> SQL pøíkazu</param>
-		/// <returns>první øádek první tabulky resultsetu ve formì <see cref="Havit.Data.DataRecord"/></returns>
+		/// <param name="commandText">text SQL pÅ™Ã­kazu</param>
+		/// <param name="commandType"><see cref="CommandType"/> SQL pÅ™Ã­kazu</param>
+		/// <returns>prvnÃ­ Å™Ã¡dek prvnÃ­ tabulky resultsetu ve formÄ› <see cref="Havit.Data.DataRecord"/></returns>
 		public DataRecord ExecuteDataRecord(string commandText, CommandType commandType)
 		{
-			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmí bıt null ani String.Empty");
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmÃ­ bÃ½t null ani String.Empty");
 			return ExecuteDataRecord(CreateCommand(commandText, commandType));
 		}
 
 
 		/// <summary>
-		/// Vytvoøí, nastaví a vykoná <see cref="DbCommand"/> dle zadaného SQL pøíkazu
-		/// a vrátí první øádek první tabulky resultsetu ve formì <see cref="Havit.Data.DataRecord"/>. Pokud neexistuje, vrátí <c>null</c>.
+		/// VytvoÅ™Ã­, nastavÃ­ a vykonÃ¡ <see cref="DbCommand"/> dle zadanÃ©ho SQL pÅ™Ã­kazu
+		/// a vrÃ¡tÃ­ prvnÃ­ Å™Ã¡dek prvnÃ­ tabulky resultsetu ve formÄ› <see cref="Havit.Data.DataRecord"/>. Pokud neexistuje, vrÃ¡tÃ­ <c>null</c>.
 		/// </summary>
 		/// <remarks>
-		/// <see cref="DataLoadPower"/> vısledného <see cref="DataRecord"/>u nastaví na <see cref="DataLoadPower.FullLoad"/>.
+		/// <see cref="DataLoadPower"/> vÃ½slednÃ©ho <see cref="DataRecord"/>u nastavÃ­ na <see cref="DataLoadPower.FullLoad"/>.
 		/// </remarks>
-		/// <param name="commandText">text SQL pøíkazu</param>
-		/// <returns>první øádek první tabulky resultsetu ve formì <see cref="Havit.Data.DataRecord"/></returns>
+		/// <param name="commandText">text SQL pÅ™Ã­kazu</param>
+		/// <returns>prvnÃ­ Å™Ã¡dek prvnÃ­ tabulky resultsetu ve formÄ› <see cref="Havit.Data.DataRecord"/></returns>
 		public DataRecord ExecuteDataRecord(string commandText)
 		{
-			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmí bıt null ani String.Empty");
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmÃ­ bÃ½t null ani String.Empty");
 			return ExecuteDataRecord(commandText, CommandType.Text);
 		}
 		#endregion
@@ -531,13 +531,13 @@ namespace Havit.Data
 		#region ExecuteScalar
 
 		/// <summary>
-		/// Donastaví a vykoná <see cref="DbCommand"/> a vrátí první sloupec prvního øádku první tabulky jeho resultsetu.
+		/// DonastavÃ­ a vykonÃ¡ <see cref="DbCommand"/> a vrÃ¡tÃ­ prvnÃ­ sloupec prvnÃ­ho Å™Ã¡dku prvnÃ­ tabulky jeho resultsetu.
 		/// </summary>
 		/// <example>
 		/// int result = (int)ExecuteScalar(cmd);
 		/// </example>
-		/// <param name="command">pøíkaz (nemusí mít nastaveno Connection)</param>
-		/// <returns>první sloupec prvního øádku první tabulky resultsetu</returns>
+		/// <param name="command">pÅ™Ã­kaz (nemusÃ­ mÃ­t nastaveno Connection)</param>
+		/// <returns>prvnÃ­ sloupec prvnÃ­ho Å™Ã¡dku prvnÃ­ tabulky resultsetu</returns>
 		public object ExecuteScalar(DbCommand command)
 		{
 			Contract.Requires<ArgumentNullException>(command != null, "command");
@@ -573,28 +573,28 @@ namespace Havit.Data
 
 
 		/// <summary>
-		/// Vytvoøí ze zadanıch parametrù <see cref="DbCommand"/>, nastaví, vykoná ho a vrátí první sloupec
-		/// prvního øádku první tabulky jeho resultsetu.
+		/// VytvoÅ™Ã­ ze zadanÃ½ch parametrÅ¯ <see cref="DbCommand"/>, nastavÃ­, vykonÃ¡ ho a vrÃ¡tÃ­ prvnÃ­ sloupec
+		/// prvnÃ­ho Å™Ã¡dku prvnÃ­ tabulky jeho resultsetu.
 		/// </summary>
-		/// <param name="commandText">text SQL pøíkazu</param>
-		/// <param name="commandType">typ pøíkazu</param>
-		/// <returns>první sloupec prvního øádku první tabulky resultsetu</returns>
+		/// <param name="commandText">text SQL pÅ™Ã­kazu</param>
+		/// <param name="commandType">typ pÅ™Ã­kazu</param>
+		/// <returns>prvnÃ­ sloupec prvnÃ­ho Å™Ã¡dku prvnÃ­ tabulky resultsetu</returns>
 		public object ExecuteScalar(string commandText, CommandType commandType)
 		{
-			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmí bıt null ani String.Empty");
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmÃ­ bÃ½t null ani String.Empty");
 			return ExecuteScalar(CreateCommand(commandText, commandType));
 		}
 
 
 		/// <summary>
-		/// Vytvoøí <see cref="DbCommand"/> typu <see cref="CommandType.Text"/>, vykoná ho a vrátí
-		/// první sloupec prvního øádku první tabulky jeho resultsetu.
+		/// VytvoÅ™Ã­ <see cref="DbCommand"/> typu <see cref="CommandType.Text"/>, vykonÃ¡ ho a vrÃ¡tÃ­
+		/// prvnÃ­ sloupec prvnÃ­ho Å™Ã¡dku prvnÃ­ tabulky jeho resultsetu.
 		/// </summary>
-		/// <param name="commandText">text SQL pøíkazu typu <see cref="CommandType.Text"/></param>
-		/// <returns>první sloupec prvního øádku resultsetu</returns>
+		/// <param name="commandText">text SQL pÅ™Ã­kazu typu <see cref="CommandType.Text"/></param>
+		/// <returns>prvnÃ­ sloupec prvnÃ­ho Å™Ã¡dku resultsetu</returns>
 		public object ExecuteScalar(string commandText)
 		{
-			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmí bıt null ani String.Empty");
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmÃ­ bÃ½t null ani String.Empty");
 			return ExecuteScalar(CreateCommand(commandText, CommandType.Text));
 		}
 
@@ -602,14 +602,14 @@ namespace Havit.Data
 
 		#region ExecuteTransaction
 		/// <summary>
-		/// Vykoná poadované kroky v rámci transakce.
-		/// Pokud je outerTransaction <c>null</c>, je spuštìna a commitována nová.
-		/// Pokud je outerTransaction zadáno, jsou poadované kroky v rámci ní pouze vykonány, pokud se shoduje IsolationLevel.
-		/// Pokud se IsolationLevel neshoduje, zaloí se nová nested-transakce s poadovanım IsolationLevelem.
+		/// VykonÃ¡ poÅ¾adovanÃ© kroky v rÃ¡mci transakce.
+		/// Pokud je outerTransaction <c>null</c>, je spuÅ¡tÄ›na a commitovÃ¡na novÃ¡.
+		/// Pokud je outerTransaction zadÃ¡no, jsou poÅ¾adovanÃ© kroky v rÃ¡mci nÃ­ pouze vykonÃ¡ny, pokud se shoduje IsolationLevel.
+		/// Pokud se IsolationLevel neshoduje, zaloÅ¾Ã­ se novÃ¡ nested-transakce s poÅ¾adovanÃ½m IsolationLevelem.
 		/// </summary>
-		/// <param name="transactionWork"><see cref="DbTransactionDelegate"/> reprezentující s úkony, které mají bıt souèástí transakce</param>
-		/// <param name="outerTransaction">vnìjší transakce, pokud existuje; jinak <c>null</c></param>
-		/// <param name="isolationLevel">poadovanı <see cref="IsolationLevel"/> transakce; pokud je <see cref="IsolationLevel.Unspecified"/>, pouije se outerTransaction, pokud je definována, nebo zaloí nová transakce s defaultním isolation-levelem</param>
+		/// <param name="transactionWork"><see cref="DbTransactionDelegate"/> reprezentujÃ­cÃ­ s Ãºkony, kterÃ© majÃ­ bÃ½t souÄÃ¡stÃ­ transakce</param>
+		/// <param name="outerTransaction">vnÄ›jÅ¡Ã­ transakce, pokud existuje; jinak <c>null</c></param>
+		/// <param name="isolationLevel">poÅ¾adovanÃ½ <see cref="IsolationLevel"/> transakce; pokud je <see cref="IsolationLevel.Unspecified"/>, pouÅ¾ije se outerTransaction, pokud je definovÃ¡na, nebo zaloÅ¾Ã­ novÃ¡ transakce s defaultnÃ­m isolation-levelem</param>
 		public void ExecuteTransaction(DbTransactionDelegate transactionWork, DbTransaction outerTransaction, IsolationLevel isolationLevel)
 		{
 			Contract.Requires<ArgumentNullException>(transactionWork != null, "transactionWork");
@@ -622,7 +622,7 @@ namespace Havit.Data
 
 			if (outerTransaction == null)
 			{
-				// otevøení spojení, pokud není ji otevøeno
+				// otevÅ™enÃ­ spojenÃ­, pokud nenÃ­ jiÅ¾ otevÅ™eno
 				connection = this.GetConnection();
 				connection.Open();
 				mustCloseConnection = true;
@@ -652,7 +652,7 @@ namespace Havit.Data
 
 				if (mustCommitOrRollbackTransaction)
 				{
-					// commit chceme jen v pøípadì, e jsme sami transakci zaloili (a u úplnì novou, nebo nested)
+					// commit chceme jen v pÅ™Ã­padÄ›, Å¾e jsme sami transakci zaloÅ¾ili (aÅ¥ uÅ¾ ÃºplnÄ› novou, nebo nested)
 					currentTransaction.Commit();
 				}
 			}
@@ -662,14 +662,14 @@ namespace Havit.Data
 				{
 					if (mustCommitOrRollbackTransaction)
 					{
-						// rollback chceme taky jen v pøípadì, e jsme sami transakci zaloili (a u úplnì novou, nebo nested)
-						// pøípadné vnìjší transakce shodí naše vıjimka
+						// rollback chceme taky jen v pÅ™Ã­padÄ›, Å¾e jsme sami transakci zaloÅ¾ili (aÅ¥ uÅ¾ ÃºplnÄ› novou, nebo nested)
+						// pÅ™Ã­padnÃ© vnÄ›jÅ¡Ã­ transakce shodÃ­ naÅ¡e vÃ½jimka
 						currentTransaction.Rollback();
 					}
 				}
 				catch
 				{
-					// NOOP: chceme vyhodit vìcnou vıjimku, ne problém s rollbackem
+					// NOOP: chceme vyhodit vÄ›cnou vÃ½jimku, ne problÃ©m s rollbackem
 				}
 				throw;
 			}
@@ -677,23 +677,23 @@ namespace Havit.Data
 			{
 				if (mustCloseConnection)
 				{
-					// uzavøení spojení, pokud jsme iniciátory transakce
+					// uzavÅ™enÃ­ spojenÃ­, pokud jsme iniciÃ¡tory transakce
 					connection.Close();
 				}
 			}
 		}
 
 		/// <summary>
-		/// Vykoná poadované kroky v rámci transakce.
-		/// Pokud je outerTransaction <c>null</c>, je spuštìna a commitována nová.
-		/// Pokud je outerTransaction zadáno, jsou poadované kroky v rámci ní pouze vykonány.
+		/// VykonÃ¡ poÅ¾adovanÃ© kroky v rÃ¡mci transakce.
+		/// Pokud je outerTransaction <c>null</c>, je spuÅ¡tÄ›na a commitovÃ¡na novÃ¡.
+		/// Pokud je outerTransaction zadÃ¡no, jsou poÅ¾adovanÃ© kroky v rÃ¡mci nÃ­ pouze vykonÃ¡ny.
 		/// </summary>
 		/// <remarks>
-		/// Pokud je outerTransaction <c>null</c>, pak zaloí novou transakci s danım IsolationLevelem.
-		/// Pokud je outerTransakce zadána, pak se pro zadanı transactionWork pouije zadanı IsolationLevel a pak ho vrátí na pùvodní hodnotu.
+		/// Pokud je outerTransaction <c>null</c>, pak zaloÅ¾Ã­ novou transakci s danÃ½m IsolationLevelem.
+		/// Pokud je outerTransakce zadÃ¡na, pak se pro zadanÃ½ transactionWork pouÅ¾ije zadanÃ½ IsolationLevel a pak ho vrÃ¡tÃ­ na pÅ¯vodnÃ­ hodnotu.
 		/// </remarks>
-		/// <param name="transactionWork"><see cref="DbTransactionDelegate"/> reprezentující s úkony, které mají bıt souèástí transakce</param>
-		/// <param name="outerTransaction">vnìjší transakce, pokud existuje; jinak <c>null</c></param>
+		/// <param name="transactionWork"><see cref="DbTransactionDelegate"/> reprezentujÃ­cÃ­ s Ãºkony, kterÃ© majÃ­ bÃ½t souÄÃ¡stÃ­ transakce</param>
+		/// <param name="outerTransaction">vnÄ›jÅ¡Ã­ transakce, pokud existuje; jinak <c>null</c></param>
 		public void ExecuteTransaction(DbTransactionDelegate transactionWork, DbTransaction outerTransaction)
 		{
 			Contract.Requires<ArgumentNullException>(transactionWork != null, "transactionWork");			
@@ -701,10 +701,10 @@ namespace Havit.Data
 		}
 
 		/// <summary>
-		/// Vykoná poadované kroky v rámci transakce s danım isolation-levelem.
+		/// VykonÃ¡ poÅ¾adovanÃ© kroky v rÃ¡mci transakce s danÃ½m isolation-levelem.
 		/// </summary>
-		/// <param name="transactionWork"><see cref="DbTransactionDelegate"/> reprezentující s úkony, které mají bıt souèástí transakce</param>
-		/// <param name="isolationLevel">poadovanı <see cref="IsolationLevel"/> transakce</param>
+		/// <param name="transactionWork"><see cref="DbTransactionDelegate"/> reprezentujÃ­cÃ­ s Ãºkony, kterÃ© majÃ­ bÃ½t souÄÃ¡stÃ­ transakce</param>
+		/// <param name="isolationLevel">poÅ¾adovanÃ½ <see cref="IsolationLevel"/> transakce</param>
 		public void ExecuteTransaction(DbTransactionDelegate transactionWork, IsolationLevel isolationLevel)
 		{
 			Contract.Requires<ArgumentNullException>(transactionWork != null, "transactionWork");
@@ -713,10 +713,10 @@ namespace Havit.Data
 
 
 		/// <summary>
-		/// Vykoná poadované kroky v rámci transakce.
-		/// Je spuštìna a commitována nová samostatná transakce.
+		/// VykonÃ¡ poÅ¾adovanÃ© kroky v rÃ¡mci transakce.
+		/// Je spuÅ¡tÄ›na a commitovÃ¡na novÃ¡ samostatnÃ¡ transakce.
 		/// </summary>
-		/// <param name="transactionWork"><see cref="DbTransactionDelegate"/> reprezentující s úkony, které mají bıt souèástí transakce</param>
+		/// <param name="transactionWork"><see cref="DbTransactionDelegate"/> reprezentujÃ­cÃ­ s Ãºkony, kterÃ© majÃ­ bÃ½t souÄÃ¡stÃ­ transakce</param>
 		public void ExecuteTransaction(DbTransactionDelegate transactionWork)
 		{
 			Contract.Requires<ArgumentNullException>(transactionWork != null, "transactionWork");
@@ -728,11 +728,11 @@ namespace Havit.Data
 
 		#region Default (static)
 		/// <summary>
-		/// Defaultní <see cref="DbConnector"/>. Pokud není nastaven ruènì, pak se vytvoøí pøi prvním pøístupu z defaultního connection-stringu naèteného z .config souboru.
-		/// Nastavením na null mohu pro pøíští pøístup vynutit opìtovnou inicializaci z .config souboru.
+		/// DefaultnÃ­ <see cref="DbConnector"/>. Pokud nenÃ­ nastaven ruÄnÄ›, pak se vytvoÅ™Ã­ pÅ™i prvnÃ­m pÅ™Ã­stupu z defaultnÃ­ho connection-stringu naÄtenÃ©ho z .config souboru.
+		/// NastavenÃ­m na null mohu pro pÅ™Ã­Å¡tÃ­ pÅ™Ã­stup vynutit opÄ›tovnou inicializaci z .config souboru.
 		/// </summary>
 		/// <example>
-		/// Buï <b>DefaultConnectionString</b> z konfiguraèní sekce &lt;connectionStrings&gt;:
+		/// BuÄ <b>DefaultConnectionString</b> z konfiguraÄnÃ­ sekce &lt;connectionStrings&gt;:
 		/// <code>
 		/// &lt;configuration&gt;
 		///		&lt;connectionStrings&gt;
@@ -743,7 +743,7 @@ namespace Havit.Data
 		///		&lt;/connectionStrings&gt;
 		///	&lt;/configuration&gt;
 		/// </code>
-		/// a nebo po staru <b>ConnectionString</b> z konfiguraèní sekce &lt;appStrings&gt;:
+		/// a nebo po staru <b>ConnectionString</b> z konfiguraÄnÃ­ sekce &lt;appStrings&gt;:
 		/// <code>
 		/// &lt;configuration&gt;
 		///		&lt;appSettings&gt;
@@ -772,7 +772,7 @@ namespace Havit.Data
 		private static DbConnector _default;
 
 		/// <summary>
-		/// Vrátí <see cref="DbConnection"/> inicializovanı defaulty z .config souboru.
+		/// VrÃ¡tÃ­ <see cref="DbConnection"/> inicializovanÃ½ defaulty z .config souboru.
 		/// </summary>
 		/// <remarks>Viz vlastnost <see cref="DbConnector.Default"/>.</remarks>
 		private static DbConnector GetDbConnectorFromDefaultConfig()
@@ -789,7 +789,7 @@ namespace Havit.Data
 				string appSettingsConnectionString = ConfigurationManager.AppSettings["ConnectionString"];
 				if (String.IsNullOrEmpty(appSettingsConnectionString))
 				{
-					throw new InvalidOperationException("Z konfiguraèního souboru se nepodaøilo naèíst defaultní parametry pøipojení k databázi.");
+					throw new InvalidOperationException("Z konfiguraÄnÃ­ho souboru se nepodaÅ™ilo naÄÃ­st defaultnÃ­ parametry pÅ™ipojenÃ­ k databÃ¡zi.");
 				}
 				return new DbConnector(appSettingsConnectionString, "System.Data.SqlClient");
 			}

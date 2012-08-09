@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
@@ -9,7 +9,7 @@ using System.Web.UI.WebControls;
 namespace Havit.Web.UI.Scriptlets
 {
     /// <summary>
-    /// Pøedek pro tvorbu klientskıch parametrù.
+    /// PÅ™edek pro tvorbu klientskÃ½ch parametrÅ¯.
     /// </summary>
 	[ControlBuilder(typeof(NoLiteralContolBuilder))]
 	public abstract class ParameterBase : ScriptletNestedControl, IScriptletParameter
@@ -34,33 +34,33 @@ namespace Havit.Web.UI.Scriptlets
 
 		#region CheckNameProperty
 		/// <summary>
-		/// Testuje nastavení hodnoty property Name.
-		/// Pokud není hodnota nastavena, je vyhozena vıjimka.
+		/// Testuje nastavenÃ­ hodnoty property Name.
+		/// Pokud nenÃ­ hodnota nastavena, je vyhozena vÃ½jimka.
 		/// </summary>
 		protected virtual void CheckNameProperty()
 		{
 			if (String.IsNullOrEmpty(Name))
 			{
-				throw new ArgumentException("Property Name není nastavena.");
+				throw new ArgumentException("Property Name nenÃ­ nastavena.");
 			}
 		}
 		#endregion
 
 		#region AddedControl
 		/// <summary>
-		/// Zavoláno, kdy je do kolekce Controls pøidán Control.
-		/// Zajišuje, aby nebyl pøidán control neimplementující 
+		/// ZavolÃ¡no, kdyÅ¾ je do kolekce Controls pÅ™idÃ¡n Control.
+		/// ZajiÅ¡Å¥uje, aby nebyl pÅ™idÃ¡n control neimplementujÃ­cÃ­ 
 		/// IScriptletParameter.
 		/// </summary>
-		/// <param name="control">Pøidávanı control.</param>
-		/// <param name="index">Pozice v kolekci controlù, kam je control pøidáván.</param>
+		/// <param name="control">PÅ™idÃ¡vanÃ½ control.</param>
+		/// <param name="index">Pozice v kolekci controlÅ¯, kam je control pÅ™idÃ¡vÃ¡n.</param>
 		protected override void AddedControl(Control control, int index)
 		{
 			base.AddedControl(control, index);
 
 			if (!(control is IScriptletParameter))
 			{
-				throw new ArgumentException(String.Format("Do parametru scriptletu je vkládán nepodporovanı control {0}.", control));
+				throw new ArgumentException(String.Format("Do parametru scriptletu je vklÃ¡dÃ¡n nepodporovanÃ½ control {0}.", control));
 			}
 		}
 		#endregion

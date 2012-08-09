@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Runtime.Serialization;
@@ -8,14 +8,14 @@ using System.Security.Permissions;
 namespace Havit.Business
 {
 	/// <summary>
-	/// Vıjimka reprezentující porušení business pravidla.
+	/// VÃ½jimka reprezentujÃ­cÃ­ poruÅ¡enÃ­ business pravidla.
 	/// </summary>
 	[Serializable]
 	public class ConstraintViolationException: Exception, ISerializable
 	{
 		#region BusinessObject
 		/// <summary>
-		/// BusinessObject, ve kterém došlo k porušení pravidla.
+		/// BusinessObject, ve kterÃ©m doÅ¡lo k poruÅ¡enÃ­ pravidla.
 		/// </summary>
 		public BusinessObjectBase BusinessObject
 		{
@@ -26,7 +26,7 @@ namespace Havit.Business
 
 		#region Constructors
 		/// <summary>
-		/// Vytvoøí instanci vıjimky
+		/// VytvoÅ™Ã­ instanci vÃ½jimky
 		/// </summary>
 		public ConstraintViolationException()
 			: base()
@@ -34,21 +34,21 @@ namespace Havit.Business
 		}
 		
 		/// <summary>
-		/// Vytvoøí instanci vıjimky.
+		/// VytvoÅ™Ã­ instanci vÃ½jimky.
 		/// </summary>
-		/// <param name="businessObject">Business object, ve kterém došlo k porušení pravidla.</param>
-		/// <param name="message">Popis vıjimky.</param>
+		/// <param name="businessObject">Business object, ve kterÃ©m doÅ¡lo k poruÅ¡enÃ­ pravidla.</param>
+		/// <param name="message">Popis vÃ½jimky.</param>
 		public ConstraintViolationException(BusinessObjectBase businessObject, string message)
 			: this(businessObject, message, null)
 		{
 		}
 
 		/// <summary>
-		/// Vytvoøí instanci vıjimky.
+		/// VytvoÅ™Ã­ instanci vÃ½jimky.
 		/// </summary>
-		/// <param name="businessObject">Business object, ve kterém došlo k porušení pravidla.</param>
-		/// <param name="message">Popis vıjimky.</param>
-		/// <param name="innerException">Vnoøená vıjimka.</param>
+		/// <param name="businessObject">Business object, ve kterÃ©m doÅ¡lo k poruÅ¡enÃ­ pravidla.</param>
+		/// <param name="message">Popis vÃ½jimky.</param>
+		/// <param name="innerException">VnoÅ™enÃ¡ vÃ½jimka.</param>
 		public ConstraintViolationException(BusinessObjectBase businessObject, string message, Exception innerException)
 			: base(message, innerException)
 		{
@@ -56,28 +56,28 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Vytvoøí instanci vıjimky.
+		/// VytvoÅ™Ã­ instanci vÃ½jimky.
 		/// </summary>
-		/// <param name="message">Popis vıjimky.</param>
+		/// <param name="message">Popis vÃ½jimky.</param>
 		public ConstraintViolationException(string message)
 			: base(message)
 		{
 		}
 
 		/// <summary>
-		/// Vytvoøí instanci vıjimky.
+		/// VytvoÅ™Ã­ instanci vÃ½jimky.
 		/// </summary>
-		/// <param name="message">Popis vıjimky.</param>
-		/// <param name="innerException">Vnoøená vıjimka.</param>
+		/// <param name="message">Popis vÃ½jimky.</param>
+		/// <param name="innerException">VnoÅ™enÃ¡ vÃ½jimka.</param>
 		public ConstraintViolationException(string message, Exception innerException)
 			: base(message, innerException)
 		{
 		}
 
 		/// <summary>
-		/// Vytvoøí instanci vıjimky deserializací.
+		/// VytvoÅ™Ã­ instanci vÃ½jimky deserializacÃ­.
 		/// </summary>
-		/// <param name="info">data vıjimky</param>
+		/// <param name="info">data vÃ½jimky</param>
 		/// <param name="context">context serializace</param>
 		protected ConstraintViolationException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
 			: base(info, context)
@@ -93,9 +93,9 @@ namespace Havit.Business
 
 		#region ISerializable
 		/// <summary>
-		/// Vrátí data pro serializaci vıjimky.
+		/// VrÃ¡tÃ­ data pro serializaci vÃ½jimky.
 		/// </summary>
-		/// <param name="info">data vıjimky</param>
+		/// <param name="info">data vÃ½jimky</param>
 		/// <param name="context">context serializace</param>
 		[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
 		public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)

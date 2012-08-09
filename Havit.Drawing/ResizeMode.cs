@@ -1,27 +1,27 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Havit.Drawing
 {
 	/// <summary>
-	/// Reimy pro ImageExt.Resize()
+	/// ReÅ¾imy pro ImageExt.Resize()
 	/// </summary>
 	public enum ResizeMode
 	{
 		/// <summary>
-		/// Upraví rozmìry obrázku tak, aby se jeho vnìjší obrys vešel do poadovanıch rozmìrù. Pomìr stran zachová.
+		/// UpravÃ­ rozmÄ›ry obrÃ¡zku tak, aby se jeho vnÄ›jÅ¡Ã­ obrys veÅ¡el do poÅ¾adovanÃ½ch rozmÄ›rÅ¯. PomÄ›r stran zachovÃ¡.
 		/// </summary>
 		PreserveAspectRatioFitBox = 1,
 
 		/// <summary>
-		/// Pokud je obrázek vìtší ne poadované rozmìry, je redukován tak, aby se jeho vnìjší rozmìr vešel do poadovaného boxu.
-		/// Pomìr stran je zachován. Pokud je obrázek menší, není zvìtšen, ale zùstává nezmìnìn.
+		/// Pokud je obrÃ¡zek vÄ›tÅ¡Ã­ neÅ¾ poÅ¾adovanÃ© rozmÄ›ry, je redukovÃ¡n tak, aby se jeho vnÄ›jÅ¡Ã­ rozmÄ›r veÅ¡el do poÅ¾adovanÃ©ho boxu.
+		/// PomÄ›r stran je zachovÃ¡n. Pokud je obrÃ¡zek menÅ¡Ã­, nenÃ­ zvÄ›tÅ¡en, ale zÅ¯stÃ¡vÃ¡ nezmÄ›nÄ›n.
 		/// </summary>
 		PreserveAspectRatioFitBoxReduceOnly = 2,
 
 		/// <summary>
-		/// Obrázek se upraví na pøesnì poadované rozmìry. V pøípadì potøeby je natáhnut, nemusí bıt zachován pomìr stran.
+		/// ObrÃ¡zek se upravÃ­ na pÅ™esnÄ› poÅ¾adovanÃ© rozmÄ›ry. V pÅ™Ã­padÄ› potÅ™eby je natÃ¡hnut, nemusÃ­ bÃ½t zachovÃ¡n pomÄ›r stran.
 		/// </summary>
 		AdjustToBox = 3
 	}

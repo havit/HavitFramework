@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI.WebControls;
@@ -8,13 +8,13 @@ using System.Web;
 namespace Havit.Web.UI.Scriptlets
 {
     /// <summary>
-	/// Výchozí implementace <see cref="IControlExtenderRepository">IControlExtenderRepository</see>.
+	/// VÃ½chozÃ­ implementace <see cref="IControlExtenderRepository">IControlExtenderRepository</see>.
     /// </summary>
     public class ControlExtenderRepository : List<IControlExtender>, IControlExtenderRepository
 	{
 		#region Default (static)
 		/// <summary>
-		/// Výchozí seznam control extenderù.
+		/// VÃ½chozÃ­ seznam control extenderÅ¯.
 		/// </summary>
 		public static ControlExtenderRepository Default
 		{
@@ -50,11 +50,11 @@ namespace Havit.Web.UI.Scriptlets
 
 		#region FindControlExtender
 		/// <summary>
-		/// Nalezne pro control extender, který bude control zpracovávat.
-		/// Pokud není žádný vhodný extender nalezen, je vyhozena výjimka HttpException.
+		/// Nalezne pro control extender, kterÃ½ bude control zpracovÃ¡vat.
+		/// Pokud nenÃ­ Å¾Ã¡dnÃ½ vhodnÃ½ extender nalezen, je vyhozena vÃ½jimka HttpException.
 		/// </summary>
-		/// <param name="control">Control ke zpracování.</param>
-		/// <returns>Nalezený control extender.</returns>
+		/// <param name="control">Control ke zpracovÃ¡nÃ­.</param>
+		/// <returns>NalezenÃ½ control extender.</returns>
 		public IControlExtender FindControlExtender(Control control)
 		{
 			int bestExtenderPriority = Int32.MinValue;

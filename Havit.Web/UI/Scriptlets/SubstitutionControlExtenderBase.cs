@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
@@ -6,17 +6,17 @@ using System.Web.UI;
 namespace Havit.Web.UI.Scriptlets
 {
 	/// <summary>
-	/// ControlExtender urèenı ke tvorbì potomkù, kteøí provádìjí substituci za jinı control.
-	/// Napø. pokud je potøeba substituovat UserControl za nìkterı vnoøenı control.
+	/// ControlExtender urÄenÃ½ ke tvorbÄ› potomkÅ¯, kteÅ™Ã­ provÃ¡dÄ›jÃ­ substituci za jinÃ½ control.
+	/// NapÅ™. pokud je potÅ™eba substituovat UserControl za nÄ›kterÃ½ vnoÅ™enÃ½ control.
 	/// </summary>
 	public abstract class SubstitutionControlExtenderBase: IControlExtender
 	{
 		#region GetPriority
 		/// <summary>
-		/// Vrací priotitu vhodnosti extenderu pro zpracování controlu.
-		/// Pokud extender není vhodnı pro zpracování controlu, vrací null.
+		/// VracÃ­ priotitu vhodnosti extenderu pro zpracovÃ¡nÃ­ controlu.
+		/// Pokud extender nenÃ­ vhodnÃ½ pro zpracovÃ¡nÃ­ controlu, vracÃ­ null.
 		/// </summary>
-		/// <param name="control">Ovìøovanı control.</param>
+		/// <param name="control">OvÄ›Å™ovanÃ½ control.</param>
 		/// <returns>Priorita.</returns>
 		public int? GetPriority(Control control)
 		{
@@ -26,11 +26,11 @@ namespace Havit.Web.UI.Scriptlets
 		
 		#region IControlExtender Members
 		/// <summary>
-		/// Vytvoøí klientskı parametr pro pøedanı control.
+		/// VytvoÅ™Ã­ klientskÃ½ parametr pro pÅ™edanÃ½ control.
 		/// </summary>
-		/// <param name="parameterPrefix">Název objektu na klientské stranì.</param>
-		/// <param name="parameter">Parametr pøedávající øízení extenderu.</param>
-		/// <param name="control">Control ke zpracování.</param>
+		/// <param name="parameterPrefix">NÃ¡zev objektu na klientskÃ© stranÄ›.</param>
+		/// <param name="parameter">Parametr pÅ™edÃ¡vajÃ­cÃ­ Å™Ã­zenÃ­ extenderu.</param>
+		/// <param name="control">Control ke zpracovÃ¡nÃ­.</param>
 		/// <param name="scriptBuilder">Script builder.</param>
 		public void GetInitializeClientSideValueScript(string parameterPrefix, IScriptletParameter parameter, System.Web.UI.Control control, ScriptBuilder scriptBuilder)
 		{
@@ -55,8 +55,8 @@ namespace Havit.Web.UI.Scriptlets
 
 		#region GetPriorityValue (virtual)
 		/// <summary>
-		/// Vrátí hodnotu priority ControlExtenderu, která se pouije, pokud je 
-		/// ControlExtender pouitelnı pro zpracování controlu.
+		/// VrÃ¡tÃ­ hodnotu priority ControlExtenderu, kterÃ¡ se pouÅ¾ije, pokud je 
+		/// ControlExtender pouÅ¾itelnÃ½ pro zpracovÃ¡nÃ­ controlu.
 		/// </summary>
 		protected virtual int GetPriorityValue
 		{
@@ -69,14 +69,14 @@ namespace Havit.Web.UI.Scriptlets
 
 		#region GetSubstitutedControl (abstract)
 		/// <summary>
-		/// Vrací substituovanı control.
+		/// VracÃ­ substituovanÃ½ control.
 		/// </summary>
 		protected abstract Control GetSubstitutedControl(Control control);
 		#endregion
 
 		#region GetSupportedControlType (abstract)
 		/// <summary>
-		/// Vrací typ, kterı je tøídou podporován k substituci.
+		/// VracÃ­ typ, kterÃ½ je tÅ™Ã­dou podporovÃ¡n k substituci.
 		/// </summary>
 		protected abstract Type GetSupportedControlType();
 		#endregion

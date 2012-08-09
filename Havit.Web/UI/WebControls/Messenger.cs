@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web;
@@ -6,13 +6,13 @@ using System.Web;
 namespace Havit.Web.UI.WebControls
 {
     /// <summary>
-    /// Messenger - tøída pro sbìr zpráv (informaèních zpráv, upozornìnní a chybovıch zpráv) k zobrazení v uivatelském rozhraní.
+    /// Messenger - tÅ™Ã­da pro sbÄ›r zprÃ¡v (informaÄnÃ­ch zprÃ¡v, upozornÄ›nnÃ­ a chybovÃ½ch zprÃ¡v) k zobrazenÃ­ v uÅ¾ivatelskÃ©m rozhranÃ­.
     /// </summary>
     public class Messenger
     {
         #region Messages (private)
         /// <summary>
-        /// Zprávy k zobrazení.
+        /// ZprÃ¡vy k zobrazenÃ­.
         /// </summary>
         public List<MessengerMessage> Messages
         {
@@ -38,9 +38,9 @@ namespace Havit.Web.UI.WebControls
 
         #region AddMessage
         /// <summary>
-        /// Pøidá zprávu
+        /// PÅ™idÃ¡ zprÃ¡vu
         /// </summary>
-        /// <param name="format">formátovací øetìzec pro String.Format()</param>
+        /// <param name="format">formÃ¡tovacÃ­ Å™etÄ›zec pro String.Format()</param>
         /// <param name="args">argumenty pro String.Format()</param>
         public void AddMessage(MessengerMessage message)
         {
@@ -48,24 +48,24 @@ namespace Havit.Web.UI.WebControls
         }
 
         /// <summary>
-        /// Pøidá zprávu
+        /// PÅ™idÃ¡ zprÃ¡vu
         /// </summary>
-        /// <param name="messageType">typ zprávy (information, error, ...)</param>
-        /// <param name="text">text zprávy</param>
+        /// <param name="messageType">typ zprÃ¡vy (information, error, ...)</param>
+        /// <param name="text">text zprÃ¡vy</param>
         public void AddMessage(MessageType messageType, string text)
         {
             if (String.IsNullOrEmpty(text))
             {
-                throw new ArgumentException("Parametr nesmí bıt null ani String.Empty", "text");
+                throw new ArgumentException("Parametr nesmÃ­ bÃ½t null ani String.Empty", "text");
             }
             AddMessage(new MessengerMessage(text, messageType));
         }
 
         /// <summary>
-        /// Pøidá zprávu pomocí String.Format();
+        /// PÅ™idÃ¡ zprÃ¡vu pomocÃ­ String.Format();
         /// </summary>
-        /// <param name="messageType">typ zprávy (information, error, ...)</param>
-        /// <param name="format">formátovací øetìzec pro String.Format()</param>
+        /// <param name="messageType">typ zprÃ¡vy (information, error, ...)</param>
+        /// <param name="format">formÃ¡tovacÃ­ Å™etÄ›zec pro String.Format()</param>
         /// <param name="args">argumenty pro String.Format()</param>
         public void AddMessage(MessageType messageType, string format, params object[] args)
         {
@@ -73,9 +73,9 @@ namespace Havit.Web.UI.WebControls
         }
 
         /// <summary>
-        /// Pøidá zprávu typu Information pomocí String.Format();
+        /// PÅ™idÃ¡ zprÃ¡vu typu Information pomocÃ­ String.Format();
         /// </summary>
-        /// <param name="format">formátovací øetìzec pro String.Format()</param>
+        /// <param name="format">formÃ¡tovacÃ­ Å™etÄ›zec pro String.Format()</param>
         /// <param name="args">argumenty pro String.Format()</param>
         public void AddMessage(string format, params object[] args)
         {
@@ -83,9 +83,9 @@ namespace Havit.Web.UI.WebControls
         }
 
         /// <summary>
-        /// Prosté pøidání zprávy typu Information.
+        /// ProstÃ© pÅ™idÃ¡nÃ­ zprÃ¡vy typu Information.
         /// </summary>
-        /// <param name="message">zpráva</param>
+        /// <param name="message">zprÃ¡va</param>
         public void AddMessage(string message)
         {
             AddMessage(MessageType.Information, message);
@@ -94,20 +94,20 @@ namespace Havit.Web.UI.WebControls
 
         #region AddGlobalResourceMessage
         /// <summary>
-        /// Pøidá zprávu z App_GlobalResources.
+        /// PÅ™idÃ¡ zprÃ¡vu z App_GlobalResources.
         /// </summary>
-        /// <param name="classKey">název global-resource souboru</param>
-        /// <param name="resourceKey">klíè resourcu</param>
+        /// <param name="classKey">nÃ¡zev global-resource souboru</param>
+        /// <param name="resourceKey">klÃ­Ä resourcu</param>
         public void AddGlobalResourceMessage(MessageType messageType, string classKey, string resourceKey)
         {
             AddMessage(messageType, (string)HttpContext.GetGlobalResourceObject(classKey, resourceKey));
         }
 
         /// <summary>
-        /// Pøidá zprávu z App_GlobalResources typu Information.
+        /// PÅ™idÃ¡ zprÃ¡vu z App_GlobalResources typu Information.
         /// </summary>
-        /// <param name="classKey">název global-resource souboru</param>
-        /// <param name="resourceKey">klíè resourcu</param>
+        /// <param name="classKey">nÃ¡zev global-resource souboru</param>
+        /// <param name="resourceKey">klÃ­Ä resourcu</param>
         public void AddGlobalResourceMessage(string classKey, string resourceKey)
         {
             AddGlobalResourceMessage(MessageType.Information, classKey, resourceKey);
@@ -116,7 +116,7 @@ namespace Havit.Web.UI.WebControls
 
         #region Clear
         /// <summary>
-        /// Vyèistí kolekci zpráv.
+        /// VyÄistÃ­ kolekci zprÃ¡v.
         /// </summary>
         public void Clear()
         {
@@ -126,7 +126,7 @@ namespace Havit.Web.UI.WebControls
 
         #region Default
         /// <summary>
-        /// Vıchozí instance messengera.
+        /// VÃ½chozÃ­ instance messengera.
         /// </summary>
         public static Messenger Default
         {

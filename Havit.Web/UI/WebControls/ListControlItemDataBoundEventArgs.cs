@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI.WebControls;
@@ -6,12 +6,12 @@ using System.Web.UI.WebControls;
 namespace Havit.Web.UI.WebControls
 {
     /// <summary>
-    /// Argumenty ud·losti oznamujÌcÌ nabidnov·nÌ hodnoty do seznamovÈho prvku (DropDownList, CheckBoxList, EnumDropDownList, apod.)
+    /// Argumenty ud√°losti oznamuj√≠c√≠ nabidnov√°n√≠ hodnoty do seznamov√©ho prvku (DropDownList, CheckBoxList, EnumDropDownList, apod.)
     /// </summary>
 	public class ListControlItemDataBoundEventArgs : EventArgs
 	{
 		/// <summary>
-		/// Prvek, kterÈho se ud·lost t˝k·.
+		/// Prvek, kter√©ho se ud√°lost t√Ωk√°.
 		/// </summary>
 		public ListItem Item
 		{
@@ -23,7 +23,7 @@ namespace Havit.Web.UI.WebControls
 		private ListItem _item;
 
 		/// <summary>
-		/// Data, na jejich z·kladÏ prvek vzniknul.
+		/// Data, na jejich z√°kladƒõ prvek vzniknul.
 		/// </summary>
 		public object DataItem
 		{
@@ -39,9 +39,9 @@ namespace Havit.Web.UI.WebControls
 		private object _dataItem;
 
 		/// <summary>
-		/// Vytvo¯Ì instanci.
+		/// Vytvo≈ô√≠ instanci.
 		/// </summary>
-		/// <param name="item">Prvek, kterÈho se ud·lost t˝k·.</param>
+		/// <param name="item">Prvek, kter√©ho se ud√°lost t√Ωk√°.</param>
 		public ListControlItemDataBoundEventArgs(ListItem item, object dataItem)
 		{
 			this._item = item;

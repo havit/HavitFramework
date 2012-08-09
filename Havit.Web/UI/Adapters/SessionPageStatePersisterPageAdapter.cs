@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI.Adapters;
@@ -7,8 +7,8 @@ using System.Web.UI;
 namespace Havit.Web.UI.Adapters
 {
 	/// <summary>
-	/// <see cref="PageAdapter"/>, který jako <see cref="PageStatePersister"/> v metodì <see cref="GetStatePersister()"/>
-	/// vrací <see cref="SessionPageStatePersister"/>.
+	/// <see cref="PageAdapter"/>, kterÃ½ jako <see cref="PageStatePersister"/> v metodÄ› <see cref="GetStatePersister()"/>
+	/// vracÃ­ <see cref="SessionPageStatePersister"/>.
 	/// </summary>
 	public class SessionPageStatePersisterPageAdapter : PageAdapter
 	{

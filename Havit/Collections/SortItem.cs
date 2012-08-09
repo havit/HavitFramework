@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel;
@@ -6,21 +6,21 @@ using System.ComponentModel;
 namespace Havit.Collections
 {
 	/// <summary>
-	/// Reprezentuje položku øazení.
+	/// Reprezentuje poloÅ¾ku Å™azenÃ­.
 	/// </summary>
 	[Serializable]	
 	public class SortItem
 	{
 		#region Constructors
 		/// <summary>
-		/// Vytvoøí prázdnou instanci poøadí.
+		/// VytvoÅ™Ã­ prÃ¡zdnou instanci poÅ™adÃ­.
 		/// </summary>
 		public SortItem()
 		{
 		}
 
 		/// <summary>
-		/// Vytvoøí položku øazení podle expression a smìru øazení.
+		/// VytvoÅ™Ã­ poloÅ¾ku Å™azenÃ­ podle expression a smÄ›ru Å™azenÃ­.
 		/// </summary>
 		public SortItem(string expression, SortDirection direction)
 			: this()
@@ -32,7 +32,7 @@ namespace Havit.Collections
 
 		#region Properties
 		/// <summary>
-		/// Výraz, dle kterého se øadí.
+		/// VÃ½raz, dle kterÃ©ho se Å™adÃ­.
 		/// </summary>
 		public virtual string Expression
 		{
@@ -42,7 +42,7 @@ namespace Havit.Collections
 		private string expression;
 
 		/// <summary>
-		/// Smìr øazení.
+		/// SmÄ›r Å™azenÃ­.
 		/// </summary>
 		public virtual SortDirection Direction
 		{

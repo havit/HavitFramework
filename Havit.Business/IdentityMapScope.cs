@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -11,7 +11,7 @@ namespace Havit.Business
 	{
 		#region Constructor
 		/// <summary>
-		/// Vytvoøí <see cref="IdentityMapScope"/> obalující novou <see cref="IdentityMap"/>.
+		/// VytvoÅ™Ã­ <see cref="IdentityMapScope"/> obalujÃ­cÃ­ novou <see cref="IdentityMap"/>.
 		/// </summary>
 		public IdentityMapScope()
 			: base(new IdentityMap(), true)

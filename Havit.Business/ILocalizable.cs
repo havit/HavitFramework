@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Collections;
@@ -6,12 +6,12 @@ using System.Collections;
 namespace Havit.Business
 {
 	/// <summary>
-	/// Rozhraní oznaèující lokalizovanı objekt.
+	/// RozhranÃ­ oznaÄujÃ­cÃ­ lokalizovanÃ½ objekt.
 	/// </summary>
 	public interface ILocalizable
 	{
 		/// <summary>
-		/// Vytvoøí poloku lokalizace pro danı jazyk.
+		/// VytvoÅ™Ã­ poloÅ¾ku lokalizace pro danÃ½ jazyk.
 		/// </summary>
 		BusinessObjectBase CreateLocalization(ILanguage language);
 

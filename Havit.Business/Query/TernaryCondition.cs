@@ -1,18 +1,18 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Havit.Business.Query
 {
 	/// <summary>
-	/// Tøída reprezentující podmínku o tøech operandech.
+	/// TÅ™Ã­da reprezentujÃ­cÃ­ podmÃ­nku o tÅ™ech operandech.
 	/// </summary>
 	[Serializable]
 	public class TernaryCondition : BinaryCondition
 	{
 		#region Protected fields
 		/// <summary>
-		/// Tøetí operand.
+		/// TÅ™etÃ­ operand.
 		/// </summary>
 		public IOperand Operand3
 		{
@@ -24,7 +24,7 @@ namespace Havit.Business.Query
 
 		#region Constructor
 		/// <summary>
-		/// Vytvoøí instanci ternární podmínky.
+		/// VytvoÅ™Ã­ instanci ternÃ¡rnÃ­ podmÃ­nky.
 		/// </summary>
 		public TernaryCondition(string conditionPattern, IOperand operand1, IOperand operand2, IOperand operand3):
 			base(conditionPattern, operand1, operand2)
@@ -40,7 +40,7 @@ namespace Havit.Business.Query
 
 		#region GetWhereStatement
 		/// <summary>
-		/// Pøidá èást SQL pøíkaz pro sekci WHERE.
+		/// PÅ™idÃ¡ ÄÃ¡st SQL pÅ™Ã­kaz pro sekci WHERE.
 		/// </summary>
 		/// <param name="command"></param>
 		/// <param name="whereBuilder"></param>

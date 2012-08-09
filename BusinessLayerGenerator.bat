@@ -1,2 +1,2 @@
-\\dev\Library\BusinessLayerGenerator\BusinessLayerGenerator.exe -sqlserver:topol -database:HavitTest -outputpath:./BusinessLayerTest -namespace:Havit.BusinessLayerTest
+\\topol.havit.local\Library\BusinessLayerGenerator\BusinessLayerGenerator.exe -sqlserver:sqldev.havit.local -database:HavitTest -outputpath:./BusinessLayerTest -namespace:Havit.BusinessLayerTest
 pause

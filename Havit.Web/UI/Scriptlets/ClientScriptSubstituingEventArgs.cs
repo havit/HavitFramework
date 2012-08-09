@@ -1,11 +1,11 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Havit.Web.UI.Scriptlets
 {
 	/// <summary>
-	/// Argumenty události ScriptSubstituing.
+	/// Argumenty udÃ¡losti ScriptSubstituing.
 	/// </summary>
 	public class ClientScriptSubstituingEventArgs: EventArgs
 	{
@@ -13,7 +13,7 @@ namespace Havit.Web.UI.Scriptlets
 		/// <summary>
 		/// Konstuktor.
 		/// </summary>
-		/// <param name="clientScript">Klientský skript k substituci.</param>
+		/// <param name="clientScript">KlientskÃ½ skript k substituci.</param>
 		public ClientScriptSubstituingEventArgs(string clientScript)
 		{
 			this.clientScript = clientScript;
@@ -22,7 +22,7 @@ namespace Havit.Web.UI.Scriptlets
 
 		#region ClientScript
 		/// <summary>
-		/// Klientský skript k substituci.
+		/// KlientskÃ½ skript k substituci.
 		/// </summary>
 		public string ClientScript
 		{

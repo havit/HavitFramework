@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
@@ -6,7 +6,7 @@ using System.Web.UI;
 namespace Havit.Web.UI.Scriptlets
 {
 	/// <summary>
-	/// Èistì formální tøída zpøístupòující Scriptlet pro prvky vkládané do Scritletu.
+	/// ÄŒistÄ› formÃ¡lnÃ­ tÅ™Ã­da zpÅ™Ã­stupÅˆujÃ­cÃ­ Scriptlet pro prvky vklÃ¡danÃ© do Scritletu.
 	/// </summary>
 	public abstract class ScriptletNestedControl: Control
 	{
@@ -23,7 +23,7 @@ namespace Havit.Web.UI.Scriptlets
 				
 				if (!(Parent is Scriptlet))
 				{
-					throw new InvalidOperationException("Scriptlet nebyl nalezen - control se nachází na neznámém místì ve stromu controlù.");
+					throw new InvalidOperationException("Scriptlet nebyl nalezen - control se nachÃ¡zÃ­ na neznÃ¡mÃ©m mÃ­stÄ› ve stromu controlÅ¯.");
 				}
 				
 				return (Scriptlet)Parent;

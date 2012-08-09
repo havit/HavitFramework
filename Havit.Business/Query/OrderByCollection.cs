@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 using System.Collections.Generic;
 using System.Text;
 using Havit.Collections;
@@ -6,15 +6,15 @@ using Havit.Collections;
 namespace Havit.Business.Query
 {
 	/// <summary>
-	/// Kolekce poloûek SortItem.
-	/// UrËeno pro poloûky ORDER BY skl·daËe SQL dotazu (QueryParameters).
+	/// Kolekce polo≈æek SortItem.
+	/// Urƒçeno pro polo≈æky ORDER BY skl√°daƒçe SQL dotazu (QueryParameters).
 	/// </summary>
 	[Serializable]
 	public class OrderByCollection: Havit.Collections.SortItemCollection
 	{
 		#region Add
 		/// <summary>
-		/// P¯id· na konec kolekce poloûku pro vzestupnÈ ¯azenÌ.
+		/// P≈ôid√° na konec kolekce polo≈æku pro vzestupn√© ≈ôazen√≠.
 		/// </summary>
 		public void Add(FieldPropertyInfo propertyInfo)
 		{
@@ -22,7 +22,7 @@ namespace Havit.Business.Query
 		}
 
 		/// <summary>
-		/// P¯id· na konec kolekce poloûku pro ¯azenÌ.
+		/// P≈ôid√° na konec kolekce polo≈æku pro ≈ôazen√≠.
 		/// </summary>
 		public void Add(FieldPropertyInfo propertyInfo, SortDirection direction)
 		{
@@ -32,7 +32,7 @@ namespace Havit.Business.Query
 
 		#region Insert
 		/// <summary>
-		/// P¯id· do kolekce poloûku pro vzestunÈ ¯azenÌ.
+		/// P≈ôid√° do kolekce polo≈æku pro vzestun√© ≈ôazen√≠.
 		/// </summary>
 		public void Insert(int index, FieldPropertyInfo propertyInfo)
 		{
@@ -40,7 +40,7 @@ namespace Havit.Business.Query
 		}
 
 		/// <summary>
-		/// P¯id· do kolekce poloûku pro ¯azenÌ.
+		/// P≈ôid√° do kolekce polo≈æku pro ≈ôazen√≠.
 		/// </summary>
 		public void Insert(int index, FieldPropertyInfo propertyInfo, SortDirection direction)
 		{

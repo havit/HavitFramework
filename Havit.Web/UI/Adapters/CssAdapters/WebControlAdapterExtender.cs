@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 using System.Data;
 using System.Collections;
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ using System.Web.UI.HtmlControls;
 namespace Havit.Web.UI.Adapters.CssAdapters
 {
     /// <summary>
-	/// Pomocn· t¯Ìda pro CSS Friendly Control Adapters. 
+	/// Pomocn√° t≈ô√≠da pro CSS Friendly Control Adapters. 
     /// </summary>
 	/// <remarks>
 	/// ASP.NET 2.0 CSS Friendly Control Adapters 1.0, http://www.asp.net/CSSAdapters/, This version was last updated on 20 November 2006.

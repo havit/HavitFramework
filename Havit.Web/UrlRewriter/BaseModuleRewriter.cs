@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 using System.Web;
 
 namespace Havit.Web.UrlRewriter
@@ -23,7 +23,7 @@ namespace Havit.Web.UrlRewriter
 		}
 
 		/// <summary>
-		/// Pr·zdn· implementace, vyûadov·no IHttpModule.
+		/// Pr√°zdn√° implementace, vy≈æadov√°no IHttpModule.
 		/// </summary>
 		public virtual void Dispose() {}
 

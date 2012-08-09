@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -7,19 +7,19 @@ using System.ComponentModel;
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
-	/// Collapser je ovládací prvek, kterı zajišuje funkènost collapse/expand pro libovolnı jinı element stránky.
+	/// Collapser je ovlÃ¡dacÃ­ prvek, kterÃ½ zajiÅ¡Å¥uje funkÄnost collapse/expand pro libovolnÃ½ jinÃ½ element strÃ¡nky.
 	/// </summary>
 	/// <example>
-	/// Jednoduchı Collapser:
+	/// JednoduchÃ½ Collapser:
 	/// <code>
 	///	&lt;havit:Collapser
-	///		Text="První monost zadání textu"
+	///		Text="PrvnÃ­ moÅ¾nost zadÃ¡nÃ­ textu"
 	///		ContentElement="CollapseDiv"
 	///		CssClass="normal"
 	///		CssClassExpanded="expanded"
 	///		CssClassCollapsed="collapsed"
 	///		Runat="server"
-	///	&gt;Text je moné zadat i jako inner-text&lt;/havit:Collapser&gt;
+	///	&gt;Text je moÅ¾nÃ© zadat i jako inner-text&lt;/havit:Collapser&gt;
 	///	
 	///	&lt;div id="CollapseDiv"&gt;
 	///		Od:
@@ -32,7 +32,7 @@ namespace Havit.Web.UI.WebControls
 	{
 		#region Properties
 		/// <summary>
-		/// Text ovládací prvku.
+		/// Text ovlÃ¡dacÃ­ prvku.
 		/// </summary>
 		public string Text
 		{
@@ -52,10 +52,10 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// CssClass pro ovládací prvek ve stavu expanded.
+		/// CssClass pro ovlÃ¡dacÃ­ prvek ve stavu expanded.
 		/// </summary>
 		/// <remarks>
-		/// Pomocí stylu mùeme napøíklad nastavit obrázek pozadí na mínus [-].
+		/// PomocÃ­ stylu mÅ¯Å¾eme napÅ™Ã­klad nastavit obrÃ¡zek pozadÃ­ na mÃ­nus [-].
 		/// </remarks>
 		public string CssClassExpanded
 		{
@@ -75,10 +75,10 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// CssClass pro ovládací prvek ve stavu collapsed.
+		/// CssClass pro ovlÃ¡dacÃ­ prvek ve stavu collapsed.
 		/// </summary>
 		/// <remarks>
-		/// Pomocí stylu mùeme napøíklad nastavit obrázek pozadí na mínus [-].
+		/// PomocÃ­ stylu mÅ¯Å¾eme napÅ™Ã­klad nastavit obrÃ¡zek pozadÃ­ na mÃ­nus [-].
 		/// </remarks>
 		public string CssClassCollapsed
 		{
@@ -98,11 +98,11 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// Odkaz (ID) na element, která má bıt expandována/collapsována.<br/>
+		/// Odkaz (ID) na element, kterÃ¡ mÃ¡ bÃ½t expandovÃ¡na/collapsovÃ¡na.<br/>
 		/// </summary>
 		/// <remarks>
-		/// Nejprve se zkouší, jestli neexistuje control s tímto ID.
-		/// Pokud ano, pouije se jeho ClientID, pokud ne, pouije se pøímo ContentElement.
+		/// Nejprve se zkouÅ¡Ã­, jestli neexistuje control s tÃ­mto ID.
+		/// Pokud ano, pouÅ¾ije se jeho ClientID, pokud ne, pouÅ¾ije se pÅ™Ã­mo ContentElement.
 		/// </remarks>
 		public string ContentElement
 		{
@@ -122,7 +122,7 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// Indikuje, zda-li má bıt <see cref="ContentElement"/> zobrazen sbalenı/rozbalenı.<br/>
+		/// Indikuje, zda-li mÃ¡ bÃ½t <see cref="ContentElement"/> zobrazen sbalenÃ½/rozbalenÃ½.<br/>
 		/// </summary>
 		public bool Collapsed
 		{
@@ -144,7 +144,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region private properties
 		/// <summary>
-		/// Úplná CssClass pro stav Collapsed
+		/// ÃšplnÃ¡ CssClass pro stav Collapsed
 		/// </summary>
 		private string cssClassCollapsedFull
 		{
@@ -155,7 +155,7 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// Úplná CssClass pro stav Expanded
+		/// ÃšplnÃ¡ CssClass pro stav Expanded
 		/// </summary>
 		private string cssClassExpandedFull
 		{
@@ -168,7 +168,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region Constructor
 		/// <summary>
-		/// Vytvoøí instanci controlu.
+		/// VytvoÅ™Ã­ instanci controlu.
 		/// </summary>
 		public Collapser()
 			: base(HtmlTextWriterTag.Span)
@@ -178,14 +178,14 @@ namespace Havit.Web.UI.WebControls
 
 		#region AddParsedSubObject
 		/// <summary>
-		/// Zajišuje pronesení inner-textu controlu do property <see cref="Text"/>.
+		/// ZajiÅ¡Å¥uje pronesenÃ­ inner-textu controlu do property <see cref="Text"/>.
 		/// </summary>
 		/// <param name="obj"></param>
 		protected override void AddParsedSubObject(object obj)
 		{
 			if (!(obj is LiteralControl))
 			{
-				throw new HttpException("Potomek musí bıt Literal.");
+				throw new HttpException("Potomek musÃ­ bÃ½t Literal.");
 			}
 			this.Text = ((LiteralControl)obj).Text;
 		}
@@ -193,7 +193,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region OnPreRender
 		/// <summary>
-		/// Voláno pøed renderováním.
+		/// VolÃ¡no pÅ™ed renderovÃ¡nÃ­m.
 		/// </summary>
 		protected override void OnPreRender(EventArgs e)
 		{
@@ -207,11 +207,11 @@ namespace Havit.Web.UI.WebControls
 
 		#region AddAttributesToRender
 		/// <summary>
-		/// Doplní Attributes o hodnoty z properties.
+		/// DoplnÃ­ Attributes o hodnoty z properties.
 		/// </summary>
 		protected override void AddAttributesToRender(HtmlTextWriter writer)
 		{
-			// nastavení stylù
+			// nastavenÃ­ stylÅ¯
 			if (this.Collapsed)
 			{
 				this.ControlStyle.CssClass = this.cssClassCollapsedFull;
@@ -221,7 +221,7 @@ namespace Havit.Web.UI.WebControls
 				this.ControlStyle.CssClass = this.cssClassExpandedFull;
 			}
 
-			// zajištìní povinného renderování atributu ID
+			// zajiÅ¡tÄ›nÃ­ povinnÃ©ho renderovÃ¡nÃ­ atributu ID
 			if (this.ID == null)
 			{
 				writer.AddAttribute(HtmlTextWriterAttribute.Id, this.ClientID);
@@ -279,7 +279,7 @@ namespace Havit.Web.UI.WebControls
 
 			if (this.Collapsed)
 			{
-				Page.ClientScript.RegisterStartupScript(this.GetType(), clientScriptKey + ResolveID(this.ContentElement),  // zajistí jediné volání pro element
+				Page.ClientScript.RegisterStartupScript(this.GetType(), clientScriptKey + ResolveID(this.ContentElement),  // zajistÃ­ jedinÃ© volÃ¡nÃ­ pro element
 					"<script type=\"text/javascript\" language=\"JScript\">" + toggleCall + "</script>\n");
 			}
 		}
@@ -287,10 +287,10 @@ namespace Havit.Web.UI.WebControls
 
 		#region ResolveID
 		/// <summary>
-		/// Pokud ID patøí controlu, pak vrátí jeho ClientID, jinak vrátí zpìt pùvodní ID.
+		/// Pokud ID patÅ™Ã­ controlu, pak vrÃ¡tÃ­ jeho ClientID, jinak vrÃ¡tÃ­ zpÄ›t pÅ¯vodnÃ­ ID.
 		/// </summary>
-		/// <param name="id">ID k resolvování</param>
-		/// <returns>cílové ID</returns>
+		/// <param name="id">ID k resolvovÃ¡nÃ­</param>
+		/// <returns>cÃ­lovÃ© ID</returns>
 		protected virtual string ResolveID(string id)
 		{
 			Control ctrl = this.NamingContainer.FindControl(id);

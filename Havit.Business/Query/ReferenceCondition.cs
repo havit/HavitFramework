@@ -1,24 +1,24 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Havit.Business.Query
 {
 	/// <summary>
-	/// Vytváøí podmínku testující referenèní hodnotu (cizí klíè).
+	/// VytvÃ¡Å™Ã­ podmÃ­nku testujÃ­cÃ­ referenÄnÃ­ hodnotu (cizÃ­ klÃ­Ä).
 	/// </summary>
 	public static class ReferenceCondition
 	{
 		#region CreateEquals
 		/// <summary>
-		/// Vytvoøí podmínku na rovnost reference.
+		/// VytvoÅ™Ã­ podmÃ­nku na rovnost reference.
 		/// </summary>
 		public static Condition CreateEquals(IOperand operand, int? id)
 		{
 
 			if (id == BusinessObjectBase.NoID)
 			{
-				throw new ArgumentException("ID objektu nesmí mít hodnotu BusinessObjectBase.NoID.", "id");
+				throw new ArgumentException("ID objektu nesmÃ­ mÃ­t hodnotu BusinessObjectBase.NoID.", "id");
 			}
 
 			if (id == null)
@@ -32,7 +32,7 @@ namespace Havit.Business.Query
 		}
 
 		/// <summary>
-		/// Vytvoøí podmínku na rovnost reference.
+		/// VytvoÅ™Ã­ podmÃ­nku na rovnost reference.
 		/// </summary>
 		public static Condition CreateEquals(IOperand operand, BusinessObjectBase businessObject)
 		{
@@ -43,14 +43,14 @@ namespace Havit.Business.Query
 
 			if (businessObject.IsNew)
 			{
-				throw new ArgumentException("Nelze vyhledávat podle nového neuloeného objektu.", "businessObject");
+				throw new ArgumentException("Nelze vyhledÃ¡vat podle novÃ©ho neuloÅ¾enÃ©ho objektu.", "businessObject");
 			}
 
 			return CreateEquals(operand, businessObject.ID);
 		}
 
 		/// <summary>
-		/// Vytvoøí podmínku na rovnost reference.
+		/// VytvoÅ™Ã­ podmÃ­nku na rovnost reference.
 		/// </summary>
 		public static Condition CreateEquals(IOperand operand1, IOperand operand2)
 		{
@@ -61,14 +61,14 @@ namespace Havit.Business.Query
 
 		#region CreateNotEquals
 		/// <summary>
-		/// Vytvoøí podmínku na nerovnost reference.
+		/// VytvoÅ™Ã­ podmÃ­nku na nerovnost reference.
 		/// </summary>
 		public static Condition CreateNotEquals(IOperand operand, int? id)
 		{
 
 			if (id == BusinessObjectBase.NoID)
 			{
-				throw new ArgumentException("ID objektu nesmí mít hodnotu BusinessObjectBase.NoID.", "id");
+				throw new ArgumentException("ID objektu nesmÃ­ mÃ­t hodnotu BusinessObjectBase.NoID.", "id");
 			}
 
 			if (id == null)
@@ -82,7 +82,7 @@ namespace Havit.Business.Query
 		}
 
 		/// <summary>
-		/// Vytvoøí podmínku na nerovnost reference.
+		/// VytvoÅ™Ã­ podmÃ­nku na nerovnost reference.
 		/// </summary>
 		public static Condition CreateNotEquals(IOperand operand, BusinessObjectBase businessObject)
 		{
@@ -93,14 +93,14 @@ namespace Havit.Business.Query
 
 			if (businessObject.IsNew)
 			{
-				throw new ArgumentException("Nelze vyhledávat podle nového neuloeného objektu.", "businessObject");
+				throw new ArgumentException("Nelze vyhledÃ¡vat podle novÃ©ho neuloÅ¾enÃ©ho objektu.", "businessObject");
 			}
 
 			return CreateNotEquals(operand, businessObject.ID);
 		}
 
 		/// <summary>
-		/// Vytvoøí podmínku na nerovnost reference.
+		/// VytvoÅ™Ã­ podmÃ­nku na nerovnost reference.
 		/// </summary>
 		public static Condition CreateNotEquals(IOperand operand1, IOperand operand2)
 		{
@@ -111,7 +111,7 @@ namespace Havit.Business.Query
 
 		#region CreateIn
 		/// <summary>
-		/// Vytvoøí podmínku existence hodnoty v poli ID objektù.
+		/// VytvoÅ™Ã­ podmÃ­nku existence hodnoty v poli ID objektÅ¯.
 		/// </summary>
 		public static Condition CreateIn(IOperand operand, int[] ids)
 		{
@@ -119,12 +119,12 @@ namespace Havit.Business.Query
 		}
 
 		/// <summary>
-		/// Vytvoøí podmínku existence hodnoty v poli ID objektù.
+		/// VytvoÅ™Ã­ podmÃ­nku existence hodnoty v poli ID objektÅ¯.
 		/// </summary>
-		/// <param name="operand">Testovanı operand.</param>
-		/// <param name="ids">Seznam hodnot. Ovìøue se, e hodnota operandu je mezi tìmito hodnotami.</param>
-		/// <param name="mode">Zpùsob tvoøení dotazu.</param>
-		/// <returns>Podmínka testující existenci hodnoty v poli ID objektù.</returns>
+		/// <param name="operand">TestovanÃ½ operand.</param>
+		/// <param name="ids">Seznam hodnot. OvÄ›Å™ue se, Å¾e hodnota operandu je mezi tÄ›mito hodnotami.</param>
+		/// <param name="mode">ZpÅ¯sob tvoÅ™enÃ­ dotazu.</param>
+		/// <returns>PodmÃ­nka testujÃ­cÃ­ existenci hodnoty v poli ID objektÅ¯.</returns>
 		public static Condition CreateIn(IOperand operand, int[] ids, MatchListMode mode)
 		{
 			switch (mode)
@@ -166,14 +166,14 @@ namespace Havit.Business.Query
 						return new UnaryCondition(condition, operand);
 					}
 				default:
-					throw new InvalidOperationException("Neznámá hodnota MatchListMode.");
+					throw new InvalidOperationException("NeznÃ¡mÃ¡ hodnota MatchListMode.");
 			}
 		}
 		#endregion
 
 		#region CreateNotIn
 		/// <summary>
-		/// Vytvoøí podmínku neexistence hodnoty v poli ID objektù.
+		/// VytvoÅ™Ã­ podmÃ­nku neexistence hodnoty v poli ID objektÅ¯.
 		/// </summary>
 		public static Condition CreateNotIn(IOperand operand, int[] ids)
 		{
@@ -181,12 +181,12 @@ namespace Havit.Business.Query
 		}
 
 		/// <summary>
-		/// Vytvoøí podmínku neexistence hodnoty v poli ID objektù.
+		/// VytvoÅ™Ã­ podmÃ­nku neexistence hodnoty v poli ID objektÅ¯.
 		/// </summary>
-		/// <param name="operand">Testovanı operand.</param>
-		/// <param name="ids">Seznam hodnot. Ovìøue se, e hodnota operandu není mezi tìmito hodnotami.</param>
-		/// <param name="mode">Zpùsob tvoøení dotazu.</param>
-		/// <returns>Podmínka testující neexistenci hodnoty v poli ID objektù.</returns>
+		/// <param name="operand">TestovanÃ½ operand.</param>
+		/// <param name="ids">Seznam hodnot. OvÄ›Å™ue se, Å¾e hodnota operandu nenÃ­ mezi tÄ›mito hodnotami.</param>
+		/// <param name="mode">ZpÅ¯sob tvoÅ™enÃ­ dotazu.</param>
+		/// <returns>PodmÃ­nka testujÃ­cÃ­ neexistenci hodnoty v poli ID objektÅ¯.</returns>
 		public static Condition CreateNotIn(IOperand operand, int[] ids, MatchListMode mode)
 		{
 			switch (mode)
@@ -228,7 +228,7 @@ namespace Havit.Business.Query
 						return new UnaryCondition(condition, operand);
 					}
 				default:
-					throw new InvalidOperationException("Neznámá hodnota MatchListMode.");
+					throw new InvalidOperationException("NeznÃ¡mÃ¡ hodnota MatchListMode.");
 			}
 		}
 		#endregion

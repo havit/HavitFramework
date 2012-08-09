@@ -1,16 +1,16 @@
-using System;
+ï»¿using System;
 using System.Collections;
 
 namespace Havit.Business
 {
 	/// <summary>
-	/// Dictionary pro klíè <see cref="System.DateTime"/> a hodnoty <see cref="DateInfo"/>.
+	/// Dictionary pro klÃ­Ä <see cref="System.DateTime"/> a hodnoty <see cref="DateInfo"/>.
 	/// </summary>
 	public class DateInfoDictionary : DictionaryBase
 	{
 		#region Constructor
 		/// <summary>
-		/// Vytvoøí prázdnou instanci <see cref="DateInfoDictionary"/>
+		/// VytvoÅ™Ã­ prÃ¡zdnou instanci <see cref="DateInfoDictionary"/>
 		/// </summary>
 		public DateInfoDictionary()
 		{
@@ -19,7 +19,7 @@ namespace Havit.Business
 
 		#region Indexer
 		/// <summary>
-		/// Indexer pøes klíèe <see cref="System.DateTime"/>.
+		/// Indexer pÅ™es klÃ­Äe <see cref="System.DateTime"/>.
 		/// </summary>
 		public DateInfo this[DateTime key]
 		{
@@ -36,10 +36,10 @@ namespace Havit.Business
 
 		#region Add
 		/// <summary>
-		/// Pøidá <see cref="DateInfo"/> do slovníku.<br/>
-		/// Klíèem je <see cref="DateInfo.Date"/>.
+		/// PÅ™idÃ¡ <see cref="DateInfo"/> do slovnÃ­ku.<br/>
+		/// KlÃ­Äem je <see cref="DateInfo.Date"/>.
 		/// </summary>
-		/// <param name="value">Prvek, kterı má bıt pøidán do slovníku.</param>
+		/// <param name="value">Prvek, kterÃ½ mÃ¡ bÃ½t pÅ™idÃ¡n do slovnÃ­ku.</param>
 		public void Add(DateInfo value)
 		{
 			if (value == null)
@@ -53,9 +53,9 @@ namespace Havit.Business
 
 		#region Constains
 		/// <summary>
-		/// Zjistí, zda-li je ve slovníku poadovanı den.
+		/// ZjistÃ­, zda-li je ve slovnÃ­ku poÅ¾adovanÃ½ den.
 		/// </summary>
-		/// <param name="key">zjišovanı den</param>
+		/// <param name="key">zjiÅ¡Å¥ovanÃ½ den</param>
 		public bool Contains(DateTime key)
 		{
 			return Dictionary.Contains(key);

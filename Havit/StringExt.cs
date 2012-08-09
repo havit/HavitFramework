@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Text;
 using System.Globalization;
 using System.Text.RegularExpressions;
@@ -6,8 +6,8 @@ using System.Text.RegularExpressions;
 namespace Havit
 {
 	/// <summary>
-	/// Rozšiøující funkce pro práci s textovımi øetìzci <see cref="System.String"/>.
-	/// Tøída poskytuje statické metody a konstanty, je neinstanèní.
+	/// RozÅ¡iÅ™ujÃ­cÃ­ funkce pro prÃ¡ci s textovÃ½mi Å™etÄ›zci <see cref="System.String"/>.
+	/// TÅ™Ã­da poskytuje statickÃ© metody a konstanty, je neinstanÄnÃ­.
 	/// </summary>
 	public static class StringExt
 	{
@@ -22,7 +22,7 @@ namespace Havit
 		{
 			if (length < 0)
 			{
-				throw new ArgumentException("Argument length nesmí bıt menší ne 0.", "length");
+				throw new ArgumentException("Argument length nesmÃ­ bÃ½t menÅ¡Ã­ neÅ¾ 0.", "length");
 			}
 			if ((length == 0) || (str == null))
 			{
@@ -45,7 +45,7 @@ namespace Havit
 		{
 			if (length < 0)
 			{
-				throw new ArgumentException("Argument length nesmí bıt menší ne 0.", "length");
+				throw new ArgumentException("Argument length nesmÃ­ bÃ½t menÅ¡Ã­ neÅ¾ 0.", "length");
 			}
 			if ((length == 0) || (str == null))
 			{
@@ -62,10 +62,10 @@ namespace Havit
 
 		#region OdeberDiakritiku
 		/// <summary>
-		/// Odebere diakritiku z textu, tj. pøevede na text bez diakritiky.
+		/// Odebere diakritiku z textu, tj. pÅ™evede na text bez diakritiky.
 		/// </summary>
-		/// <remarks>Odebírá veškerou diakritiku všech národních znakù obecnì.</remarks>
-		/// <param name="text">Text, kterému má bıt diakritika odebrána.</param>
+		/// <remarks>OdebÃ­rÃ¡ veÅ¡kerou diakritiku vÅ¡ech nÃ¡rodnÃ­ch znakÅ¯ obecnÄ›.</remarks>
+		/// <param name="text">Text, kterÃ©mu mÃ¡ bÃ½t diakritika odebrÃ¡na.</param>
 		/// <returns>text bez diakritiky</returns>
 		public static string OdeberDiakritiku(string text)
 		{
@@ -84,8 +84,8 @@ namespace Havit
 			return sb.ToString();
 
 			/*
-			 * pùvodní implementace pro .NET Framework 1.1
-			const string s		= "áÁéÉíÍıİìÌóÓšŠèÈøØòÒùÙúÚïÏäÄëËiIöÖüÜåÅ";
+			 * pÅ¯vodnÃ­ implementace pro .NET Framework 1.1
+			const string s		= "Ã¡ÃÃ©Ã‰Ã­ÃÃ½ÃÄ›ÄšÃ³Ã“Å¡Å ÄÄŒÅ™Å˜Å¾Å½ÅˆÅ‡Å¯Å®ÃºÃšÅ¥Å¤ÄÄÃ¤Ã„Ã«Ã‹iIÃ¶Ã–Ã¼ÃœÄºÄ¹";
 			const string bez	= "aAeEiIyYeEoOsScCrRzZnNuUuUtTdDaAeEiIoOuUlL";
   
 			for (int i=0; i <= s.Length-1; i++)
@@ -99,11 +99,11 @@ namespace Havit
 
 		#region IntToHex
 		/// <summary>
-		/// Vrátí char-reprezentaci (0..9, A..F) šestnáctkové èíslice (0-15).
+		/// VrÃ¡tÃ­ char-reprezentaci (0..9, A..F) Å¡estnÃ¡ctkovÃ© ÄÃ­slice (0-15).
 		/// </summary>
-		/// <remarks>Z dùvodu rychlosti neprovádí kontrolu rozsahu a pøevede napø. i èíslici 16 jako G.</remarks>
-		/// <param name="cislice">Èíslice (0..15)</param>
-		/// <returns>char-reprezentace (0..9, A..F) šestnáctkové èíslice (0-15).</returns>
+		/// <remarks>Z dÅ¯vodu rychlosti neprovÃ¡dÃ­ kontrolu rozsahu a pÅ™evede napÅ™. i ÄÃ­slici 16 jako G.</remarks>
+		/// <param name="cislice">ÄŒÃ­slice (0..15)</param>
+		/// <returns>char-reprezentace (0..9, A..F) Å¡estnÃ¡ctkovÃ© ÄÃ­slice (0-15).</returns>
 		public static char IntToHex(int cislice)
 		{
 			if (cislice <= 9)
@@ -116,15 +116,15 @@ namespace Havit
 
 		#region NormalizeForUrl
 		/// <summary>
-		/// Normalizuje textovı øetìzec do podoby pouitelné v URL adrese (pro SEO).
-		/// 1) Pøevede na malá písmena.
+		/// Normalizuje textovÃ½ Å™etÄ›zec do podoby pouÅ¾itelnÃ© v URL adrese (pro SEO).
+		/// 1) PÅ™evede na malÃ¡ pÃ­smena.
 		/// 2) Odebere diakritiku.
-		/// 3) vše mimo písmen a èíslic nahradí za pomlèku (vèetnì whitespace). 
-		/// 4) potom vícenásobné pomlèky slouèí v jednu. 
-		/// 5) odebere pøípadné pomèky na zaèátku a konci øetìzce. 
+		/// 3) vÅ¡e mimo pÃ­smen a ÄÃ­slic nahradÃ­ za pomlÄku (vÄetnÄ› whitespace). 
+		/// 4) potom vÃ­cenÃ¡sobnÃ© pomlÄky slouÄÃ­ v jednu. 
+		/// 5) odebere pÅ™Ã­padnÃ© pomÄky na zaÄÃ¡tku a konci Å™etÄ›zce. 
 		/// </summary>
-		/// <param name="text">vstupní text</param>
-		/// <returns>normalizovanı text pro URL (SEO)</returns>
+		/// <param name="text">vstupnÃ­ text</param>
+		/// <returns>normalizovanÃ½ text pro URL (SEO)</returns>
 		public static string NormalizeForUrl(string text)
 		{
 			text = text.ToLower();

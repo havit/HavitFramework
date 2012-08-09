@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Collections.ObjectModel;
@@ -6,13 +6,13 @@ using System.Collections.ObjectModel;
 namespace Havit.Business.Query
 {
 	/// <summary>
-	/// Seznam podmínek, kterı nemùe obsahovat prázdnou podmínku.
+	/// Seznam podmÃ­nek, kterÃ½ nemÅ¯Å¾e obsahovat prÃ¡zdnou podmÃ­nku.
 	/// </summary>
 	public class ConditionList: Collection<Condition>
 	{
 		#region InsertItem
 		/// <summary>
-		/// Pøedefinování metody pro vkládání podmínek. Není moné vloit null (hodnota null je ignorována a není pøidána do kolekce.
+		/// PÅ™edefinovÃ¡nÃ­ metody pro vklÃ¡dÃ¡nÃ­ podmÃ­nek. NenÃ­ moÅ¾nÃ© vloÅ¾it null (hodnota null je ignorovÃ¡na a nenÃ­ pÅ™idÃ¡na do kolekce.
 		/// </summary>
 		/// <param name="index"></param>
 		/// <param name="item"></param>

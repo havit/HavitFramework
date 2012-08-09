@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.Configuration;
@@ -10,10 +10,10 @@ using System.Security.Principal;
 namespace Havit.Web.Security
 {
 	/// <summary>
-	/// Poskytuje statické metody pro snadnou implementaci FormAuthentication, kdy jsou do role ukládány do ticketu jako userData.
+	/// Poskytuje statickÃ© metody pro snadnou implementaci FormAuthentication, kdy jsou do role uklÃ¡dÃ¡ny do ticketu jako userData.
 	/// </summary>
 	/// <remarks>
-	/// Implementováno vıhradnì pro cookies-authentizaci. Nepodporuje cookieless!
+	/// ImplementovÃ¡no vÃ½hradnÄ› pro cookies-authentizaci. Nepodporuje cookieless!
 	/// </remarks>
 	public static class FormsRolesAuthentication
 	{
@@ -22,7 +22,7 @@ namespace Havit.Web.Security
 		/// Timeout pro authentication-ticket (web.config: system.web/authentication/forms/timeout).
 		/// </summary>
 		/// <remarks>
-		/// Jako jedna z mála konfiguraèních parametrù není pøístupné pøes <see cref="System.Web.Security.FormsAuthentication"/>.
+		/// Jako jedna z mÃ¡la konfiguraÄnÃ­ch parametrÅ¯ nenÃ­ pÅ™Ã­stupnÃ© pÅ™es <see cref="System.Web.Security.FormsAuthentication"/>.
 		/// </remarks>
 		public static int Timeout
 		{
@@ -31,7 +31,7 @@ namespace Havit.Web.Security
 				if (_timeout == null)
 				{
 					AuthenticationSection authenticationSection = (AuthenticationSection)ConfigurationManager.GetSection("system.web/authentication");
-					_timeout = (int)authenticationSection.Forms.Timeout.TotalMinutes; // pokud není konfigurováno, vrací default
+					_timeout = (int)authenticationSection.Forms.Timeout.TotalMinutes; // pokud nenÃ­ konfigurovÃ¡no, vracÃ­ default
 				}
 				return (int)_timeout;
 			}
@@ -41,11 +41,11 @@ namespace Havit.Web.Security
 
 		#region ApplyAuthenticationTicket
 		/// <summary>
-		/// Aplikuje autentizaèní ticket, tj. vytáhne z nìj informace o pøihlášeném uivateli
-		/// a jeho rolích a naplní jimi objekt User.
+		/// Aplikuje autentizaÄnÃ­ ticket, tj. vytÃ¡hne z nÄ›j informace o pÅ™ihlÃ¡Å¡enÃ©m uÅ¾ivateli
+		/// a jeho rolÃ­ch a naplnÃ­ jimi objekt User.
 		/// </summary>
 		/// <remarks>
-		/// Vytáhne z authentication-ticketu role, vytvoøí z nìj identity, spojí to v principal a ten nastaví jako aktuálního uivatele.
+		/// VytÃ¡hne z authentication-ticketu role, vytvoÅ™Ã­ z nÄ›j identity, spojÃ­ to v principal a ten nastavÃ­ jako aktuÃ¡lnÃ­ho uÅ¾ivatele.
 		/// </remarks>
 		/// <exception cref="ArgumentNullException">pokud je <c>ticket</c> null</exception>
 		/// <param name="ticket">authentication-ticket</param>
@@ -78,11 +78,11 @@ namespace Havit.Web.Security
 		}
 
 		/// <summary>
-		/// Aplikuje pøípadnı autentizaèní ticket, tj. vytáhne z nìj informace o pøihlášeném uivateli
-		/// a jeho rolích a naplní jimi objekt User.
+		/// Aplikuje pÅ™Ã­padnÃ½ autentizaÄnÃ­ ticket, tj. vytÃ¡hne z nÄ›j informace o pÅ™ihlÃ¡Å¡enÃ©m uÅ¾ivateli
+		/// a jeho rolÃ­ch a naplnÃ­ jimi objekt User.
 		/// </summary>
 		/// <remarks>
-		/// Autentizaèní ticket se pokouší zjistit ve formì cookie a decryptovat. V pøípadì nalezení ho aplikuje.
+		/// AutentizaÄnÃ­ ticket se pokouÅ¡Ã­ zjistit ve formÄ› cookie a decryptovat. V pÅ™Ã­padÄ› nalezenÃ­ ho aplikuje.
 		/// </remarks>
 		public static void ApplyAuthenticationTicket()
 		{
@@ -103,13 +103,13 @@ namespace Havit.Web.Security
 
 		#region GetAuthTicket
 		/// <summary>
-		/// Vytvoøí autentizaèní ticket pro forms-authentication s ukládáním rolí do userData.
+		/// VytvoÅ™Ã­ autentizaÄnÃ­ ticket pro forms-authentication s uklÃ¡dÃ¡nÃ­m rolÃ­ do userData.
 		/// </summary>
-		/// <param name="username">pøihlašovací jméno uivatele</param>
-		/// <param name="roles">role, které uivateli pøísluší</param>
-		/// <param name="createPersistent"><c>true</c>, pokud se má bıt ticket persistentní; jinak <c>false</c></param>
-		/// <param name="cookiePath">cookie-path pro autentizaèní ticket</param>
-		/// <returns>autentizaèní ticket na základì pøedanıch argumentù</returns>
+		/// <param name="username">pÅ™ihlaÅ¡ovacÃ­ jmÃ©no uÅ¾ivatele</param>
+		/// <param name="roles">role, kterÃ© uÅ¾ivateli pÅ™Ã­sluÅ¡Ã­</param>
+		/// <param name="createPersistent"><c>true</c>, pokud se mÃ¡ bÃ½t ticket persistentnÃ­; jinak <c>false</c></param>
+		/// <param name="cookiePath">cookie-path pro autentizaÄnÃ­ ticket</param>
+		/// <returns>autentizaÄnÃ­ ticket na zÃ¡kladÄ› pÅ™edanÃ½ch argumentÅ¯</returns>
 		public static FormsAuthenticationTicket GetAuthTicket(string username, string[] roles, bool createPersistent, string cookiePath)
 		{
 			FormsAuthenticationTicket authTicket;
@@ -120,7 +120,7 @@ namespace Havit.Web.Security
 				userData = String.Join(",", roles);
 			}
 
-			// .NET FW 2.0 obsahuje bug, kdy do persistentního ticketu nastavuje platnost jako nepersistentní
+			// .NET FW 2.0 obsahuje bug, kdy do persistentnÃ­ho ticketu nastavuje platnost jako nepersistentnÃ­
 			if (createPersistent)
 			{
 				authTicket = new FormsAuthenticationTicket(
@@ -149,12 +149,12 @@ namespace Havit.Web.Security
 
 		#region GetAuthCookie
 		/// <summary>
-		/// Vytvoøí authentizaèní cookie pro forms-authentication s ukládáním rolí do userData.
+		/// VytvoÅ™Ã­ authentizaÄnÃ­ cookie pro forms-authentication s uklÃ¡dÃ¡nÃ­m rolÃ­ do userData.
 		/// </summary>
-		/// <param name="username">pøihlašovací jméno uivatele</param>
-		/// <param name="roles">role, které uivateli pøísluší</param>
-		/// <param name="createPersistentCookie"><c>true</c>, pokud se má vytvoøit trvalá cookie, která pøeije session browseru; jinak <c>false</c></param>
-		/// <param name="cookiePath">cookie-path pro autentizaèní ticket</param>
+		/// <param name="username">pÅ™ihlaÅ¡ovacÃ­ jmÃ©no uÅ¾ivatele</param>
+		/// <param name="roles">role, kterÃ© uÅ¾ivateli pÅ™Ã­sluÅ¡Ã­</param>
+		/// <param name="createPersistentCookie"><c>true</c>, pokud se mÃ¡ vytvoÅ™it trvalÃ¡ cookie, kterÃ¡ pÅ™eÅ¾ije session browseru; jinak <c>false</c></param>
+		/// <param name="cookiePath">cookie-path pro autentizaÄnÃ­ ticket</param>
 		/// <returns></returns>
 		public static HttpCookie GetAuthCookie(string username, string[] roles, bool createPersistentCookie, string cookiePath)
 		{
@@ -201,14 +201,14 @@ namespace Havit.Web.Security
 
 		#region RedirectFromLoginPage
 		/// <summary>
-		/// Redirektuje autentizovaného uivatele zpìt na pùvodní URL (nebo default URL).
-		/// Souèástí response je autentizaèní cookie s pøíslušnım autentizaèním ticketem.
+		/// Redirektuje autentizovanÃ©ho uÅ¾ivatele zpÄ›t na pÅ¯vodnÃ­ URL (nebo default URL).
+		/// SouÄÃ¡stÃ­ response je autentizaÄnÃ­ cookie s pÅ™Ã­sluÅ¡nÃ½m autentizaÄnÃ­m ticketem.
 		/// </summary>
-		/// <param name="username">pøihlašovací jméno uivatele</param>
-		/// <param name="roles">role, které uivateli pøísluší</param>
-		/// <param name="createPersistentCookie"><c>true</c>, pokud se má vytvoøit trvalá cookie, která pøeije session browseru; jinak <c>false</c></param>
-		/// <param name="cookiePath">cookie-path pro autentizaèní ticket</param>
-		/// <param name="redirectUrl">URL, na které má bıt provedeno pøesmìrování</param>
+		/// <param name="username">pÅ™ihlaÅ¡ovacÃ­ jmÃ©no uÅ¾ivatele</param>
+		/// <param name="roles">role, kterÃ© uÅ¾ivateli pÅ™Ã­sluÅ¡Ã­</param>
+		/// <param name="createPersistentCookie"><c>true</c>, pokud se mÃ¡ vytvoÅ™it trvalÃ¡ cookie, kterÃ¡ pÅ™eÅ¾ije session browseru; jinak <c>false</c></param>
+		/// <param name="cookiePath">cookie-path pro autentizaÄnÃ­ ticket</param>
+		/// <param name="redirectUrl">URL, na kterÃ© mÃ¡ bÃ½t provedeno pÅ™esmÄ›rovÃ¡nÃ­</param>
 		public static void RedirectFromLoginPage(string username, string[] roles, bool createPersistentCookie, string cookiePath, string redirectUrl)
 		{
 			if (username != null)
@@ -230,23 +230,23 @@ namespace Havit.Web.Security
 		}
 
 		/// <summary>
-		/// Redirektuje autentizovaného uivatele zpìt na pùvodní URL (nebo default URL).
-		/// Souèástí response je autentizaèní cookie s pøíslušnım autentizaèním ticketem.
+		/// Redirektuje autentizovanÃ©ho uÅ¾ivatele zpÄ›t na pÅ¯vodnÃ­ URL (nebo default URL).
+		/// SouÄÃ¡stÃ­ response je autentizaÄnÃ­ cookie s pÅ™Ã­sluÅ¡nÃ½m autentizaÄnÃ­m ticketem.
 		/// </summary>
-		/// <param name="username">pøihlašovací jméno uivatele</param>
-		/// <param name="roles">role, které uivateli pøísluší</param>
-		/// <param name="createPersistentCookie"><c>true</c>, pokud se má vytvoøit trvalá cookie, která pøeije session browseru; jinak <c>false</c></param>
+		/// <param name="username">pÅ™ihlaÅ¡ovacÃ­ jmÃ©no uÅ¾ivatele</param>
+		/// <param name="roles">role, kterÃ© uÅ¾ivateli pÅ™Ã­sluÅ¡Ã­</param>
+		/// <param name="createPersistentCookie"><c>true</c>, pokud se mÃ¡ vytvoÅ™it trvalÃ¡ cookie, kterÃ¡ pÅ™eÅ¾ije session browseru; jinak <c>false</c></param>
 		public static void RedirectFromLoginPage(string username, string[] roles, bool createPersistentCookie)
 		{
 			RedirectFromLoginPage(username, roles, createPersistentCookie, null, null);
 		}
 
 		/// <summary>
-		/// Redirektuje autentizovaného uivatele zpìt na pùvodní URL (nebo default URL).
-		/// Souèástí response je autentizaèní cookie s pøíslušnım autentizaèním ticketem, bez persistence.
+		/// Redirektuje autentizovanÃ©ho uÅ¾ivatele zpÄ›t na pÅ¯vodnÃ­ URL (nebo default URL).
+		/// SouÄÃ¡stÃ­ response je autentizaÄnÃ­ cookie s pÅ™Ã­sluÅ¡nÃ½m autentizaÄnÃ­m ticketem, bez persistence.
 		/// </summary>
-		/// <param name="username">pøihlašovací jméno uivatele</param>
-		/// <param name="roles">role, které uivateli pøísluší</param>
+		/// <param name="username">pÅ™ihlaÅ¡ovacÃ­ jmÃ©no uÅ¾ivatele</param>
+		/// <param name="roles">role, kterÃ© uÅ¾ivateli pÅ™Ã­sluÅ¡Ã­</param>
 		public static void RedirectFromLoginPage(string username, string[] roles)
 		{
 			RedirectFromLoginPage(username, roles, false, null, null);
@@ -255,13 +255,13 @@ namespace Havit.Web.Security
 
 		#region AddAuthCookie
 		/// <summary>
-		/// Pøidá do Response autentizaèní cookie s pøíslušnım autentizaèním ticketem.
+		/// PÅ™idÃ¡ do Response autentizaÄnÃ­ cookie s pÅ™Ã­sluÅ¡nÃ½m autentizaÄnÃ­m ticketem.
 		/// </summary>
-		/// <param name="username">pøihlašovací jméno uivatele</param>
-		/// <param name="roles">role, které uivateli pøísluší</param>
-		/// <param name="createPersistentCookie"><c>true</c>, pokud se má vytvoøit trvalá cookie, která pøeije session browseru; jinak <c>false</c></param>
-		/// <param name="cookiePath">cookie-path pro autentizaèní ticket</param>
-		/// <returns>autnetizaèní cookie, která byla vytvoøena a pøidána do Response</returns>
+		/// <param name="username">pÅ™ihlaÅ¡ovacÃ­ jmÃ©no uÅ¾ivatele</param>
+		/// <param name="roles">role, kterÃ© uÅ¾ivateli pÅ™Ã­sluÅ¡Ã­</param>
+		/// <param name="createPersistentCookie"><c>true</c>, pokud se mÃ¡ vytvoÅ™it trvalÃ¡ cookie, kterÃ¡ pÅ™eÅ¾ije session browseru; jinak <c>false</c></param>
+		/// <param name="cookiePath">cookie-path pro autentizaÄnÃ­ ticket</param>
+		/// <returns>autnetizaÄnÃ­ cookie, kterÃ¡ byla vytvoÅ™ena a pÅ™idÃ¡na do Response</returns>
 		public static HttpCookie AddAuthCookie(string username, string[] roles, bool createPersistentCookie, string cookiePath)
 		{
 			if (username != null)
@@ -281,23 +281,23 @@ namespace Havit.Web.Security
 		}
 
 		/// <summary>
-		/// Pøidá do Response autentizaèní cookie s pøíslušnım autentizaèním ticketem. Cookie není persistentní.
+		/// PÅ™idÃ¡ do Response autentizaÄnÃ­ cookie s pÅ™Ã­sluÅ¡nÃ½m autentizaÄnÃ­m ticketem. Cookie nenÃ­ persistentnÃ­.
 		/// </summary>
-		/// <param name="username">pøihlašovací jméno uivatele</param>
-		/// <param name="roles">role, které uivateli pøísluší</param>
-		/// <returns>autentizaèní cookie, která byla vytvoøena a pøidána do Response</returns>
+		/// <param name="username">pÅ™ihlaÅ¡ovacÃ­ jmÃ©no uÅ¾ivatele</param>
+		/// <param name="roles">role, kterÃ© uÅ¾ivateli pÅ™Ã­sluÅ¡Ã­</param>
+		/// <returns>autentizaÄnÃ­ cookie, kterÃ¡ byla vytvoÅ™ena a pÅ™idÃ¡na do Response</returns>
 		public static HttpCookie AddAuthCookie(string username, string[] roles)
 		{
 			return AddAuthCookie(username, roles, false, null);
 		}
 
 		/// <summary>
-		/// Pøidá do Response autentizaèní cookie s pøíslušnım autentizaèním ticketem.
+		/// PÅ™idÃ¡ do Response autentizaÄnÃ­ cookie s pÅ™Ã­sluÅ¡nÃ½m autentizaÄnÃ­m ticketem.
 		/// </summary>
-		/// <param name="username">pøihlašovací jméno uivatele</param>
-		/// <param name="roles">role, které uivateli pøísluší</param>
-		/// <param name="createPersistentCookie"><c>true</c>, pokud se má vytvoøit trvalá cookie, která pøeije session browseru; jinak <c>false</c></param>
-		/// <returns>autnetizaèní cookie, která byla vytvoøena a pøidána do Response</returns>
+		/// <param name="username">pÅ™ihlaÅ¡ovacÃ­ jmÃ©no uÅ¾ivatele</param>
+		/// <param name="roles">role, kterÃ© uÅ¾ivateli pÅ™Ã­sluÅ¡Ã­</param>
+		/// <param name="createPersistentCookie"><c>true</c>, pokud se mÃ¡ vytvoÅ™it trvalÃ¡ cookie, kterÃ¡ pÅ™eÅ¾ije session browseru; jinak <c>false</c></param>
+		/// <returns>autnetizaÄnÃ­ cookie, kterÃ¡ byla vytvoÅ™ena a pÅ™idÃ¡na do Response</returns>
 		public static HttpCookie AddAuthCookie(string username, string[] roles, bool createPersistentCookie)
 		{
 			return AddAuthCookie(username, roles, createPersistentCookie, null);

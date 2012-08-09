@@ -1,27 +1,27 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Havit.Data
 {
 	/// <summary>
-	/// Rozsah dat v datovém zdroji.
+	/// Rozsah dat v datovÃ©m zdroji.
 	/// </summary>
 	public enum DataLoadPower
 	{
 
 		/// <summary>
-		/// Datovı zdroj obsahuje jen informace pro zaloení ghosta (primární klíè).
+		/// DatovÃ½ zdroj obsahuje jen informace pro zaloÅ¾enÃ­ ghosta (primÃ¡rnÃ­ klÃ­Ä).
 		/// </summary>
 		Ghost = 0,
 
 		/// <summary>
-		/// Datovı zdroj obsahuje kompletní øádek dat (všechny moné sloupce).
+		/// DatovÃ½ zdroj obsahuje kompletnÃ­ Å™Ã¡dek dat (vÅ¡echny moÅ¾nÃ© sloupce).
 		/// </summary>
 		FullLoad = 1,
 
 		/// <summary>
-		/// Datovı zdroj obsahuje nekompletní øádek dat.
+		/// DatovÃ½ zdroj obsahuje nekompletnÃ­ Å™Ã¡dek dat.
 		/// </summary>
 		PartialLoad = 2
 	}

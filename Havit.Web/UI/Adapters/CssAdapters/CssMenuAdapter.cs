@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.IO;
 using System.Web;
 using System.Web.Configuration;
@@ -13,7 +13,7 @@ using System.Web.UI.HtmlControls;
 namespace Havit.Web.UI.Adapters.CssAdapters
 {
 	/// <summary>
-	/// MenuAdapter z CSS Friendly Control Adapters. Renderuje Menu pomocí HTML elementù ol, li, CSS stylù a JScriptu.
+	/// MenuAdapter z CSS Friendly Control Adapters. Renderuje Menu pomocÃ­ HTML elementÅ¯ ol, li, CSS stylÅ¯ a JScriptu.
 	/// </summary>
 	/// <remarks>
 	/// ASP.NET 2.0 CSS Friendly Control Adapters 1.0, http://www.asp.net/CSSAdapters/, This version was last updated on 20 November 2006.

@@ -1,21 +1,21 @@
-using System;
+Ôªøusing System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Havit.Data.SqlTypes
 {
     /// <summary>
-    /// Reprezentuje pomocnÈ hodnoty pro datab·zov˝ typ smalldatetime.
+    /// Reprezentuje pomocn√© hodnoty pro datab√°zov√Ω typ smalldatetime.
     /// </summary>
     public class SqlSmallDateTime
     {
         /// <summary>
-        /// Minim·lnÌ hodnota pouûiteln· pro datab·zov˝ typ smalldatetime.
+        /// Minim√°ln√≠ hodnota pou≈æiteln√° pro datab√°zov√Ω typ smalldatetime.
         /// </summary>
         public static readonly SqlSmallDateTime MinValue = new SqlSmallDateTime(new DateTime(1900, 1, 1));
 
         /// <summary>
-        /// Maxim·lnÌ hodnota pouûiteln· pro datab·zov˝ typ smalldatetime.
+        /// Maxim√°ln√≠ hodnota pou≈æiteln√° pro datab√°zov√Ω typ smalldatetime.
         /// </summary>
         public static readonly SqlSmallDateTime MaxValue = new SqlSmallDateTime(new DateTime(2079, 6, 6, 23, 59, 00));
 
@@ -28,7 +28,7 @@ namespace Havit.Data.SqlTypes
 
         #region Value
         /// <summary>
-        /// Hodnota reprezentovan· jako DateTime.
+        /// Hodnota reprezentovan√° jako DateTime.
         /// </summary>
         public DateTime Value
         {

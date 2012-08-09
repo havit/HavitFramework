@@ -1,12 +1,12 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
-	/// Interface, kterı implementují controly, kdy chtìjí bıt nositelem skinovatelnıch properties pro CommandField.
-	/// Implementuje napø. <see cref="GridViewExt"/>, aby pøes GridView mohl bıt skinován jeho CommandField.
+	/// Interface, kterÃ½ implementujÃ­ controly, kdyÅ¾ chtÄ›jÃ­ bÃ½t nositelem skinovatelnÃ½ch properties pro CommandField.
+	/// Implementuje napÅ™. <see cref="GridViewExt"/>, aby pÅ™es GridView mohl bÃ½t skinovÃ¡n jeho CommandField.
 	/// </summary>
 	public interface ICommandFieldStyle
 	{

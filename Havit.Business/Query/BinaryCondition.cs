@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Globalization;
@@ -6,31 +6,31 @@ using System.Globalization;
 namespace Havit.Business.Query
 {
 	/// <summary>
-	/// Tøída reprezentující podmínku o dvou operandech.
+	/// TÅ™Ã­da reprezentujÃ­cÃ­ podmÃ­nku o dvou operandech.
 	/// </summary>
 	[Serializable]
 	public class BinaryCondition : UnaryCondition
 	{
 		#region Patterns
 		/// <summary>
-		/// Vzor pro podmínku LIKE.
+		/// Vzor pro podmÃ­nku LIKE.
 		/// </summary>
 		public const string LikePattern = "({0} LIKE {1})";
 
 		/// <summary>
-		/// Vzor pro podmínku rovnosti.
+		/// Vzor pro podmÃ­nku rovnosti.
 		/// </summary>
 		public const string EqualsPattern = "({0} = {1})";
 
 		/// <summary>
-		/// Vzor pro podmínku nerovnosti.
+		/// Vzor pro podmÃ­nku nerovnosti.
 		/// </summary>
 		public const string NotEqualsPattern = "({0} <> {1})";
 		#endregion
 
 		#region Operand2
 		/// <summary>
-		/// Druhı operand.
+		/// DruhÃ½ operand.
 		/// </summary>
 		protected IOperand Operand2
 		{
@@ -42,7 +42,7 @@ namespace Havit.Business.Query
 
 		#region Constructors
 		/// <summary>
-		/// Vytvoøí binární (dvojoperandovou) podmínku.
+		/// VytvoÅ™Ã­ binÃ¡rnÃ­ (dvojoperandovou) podmÃ­nku.
 		/// </summary>
 		public BinaryCondition(string conditionPattern, IOperand operand1, IOperand operand2) 
 			: base(conditionPattern, operand1)
@@ -54,7 +54,7 @@ namespace Havit.Business.Query
 		}
 
 		/// <summary>
-		/// Vytvoøí binární (dvojoperandovou) podmínku.
+		/// VytvoÅ™Ã­ binÃ¡rnÃ­ (dvojoperandovou) podmÃ­nku.
 		/// </summary>
 		public BinaryCondition(IOperand operand1, string conditionPattern, IOperand operand2)
 			: this(conditionPattern, operand1, operand2)
@@ -64,7 +64,7 @@ namespace Havit.Business.Query
 
 		#region GetWhereStatement
 		/// <summary>
-		/// Pøidá èást SQL pøíkaz pro sekci WHERE
+		/// PÅ™idÃ¡ ÄÃ¡st SQL pÅ™Ã­kaz pro sekci WHERE
 		/// </summary>
 		/// <param name="command"></param>
 		/// <param name="whereBuilder"></param>
@@ -86,7 +86,7 @@ namespace Havit.Business.Query
 
 		#region GetComparisonPattern
 		/// <summary>
-		/// Vrátí vzor podmínky pro bìné porovnání dvou hodnot (vrací napø. "({0} = {1})").
+		/// VrÃ¡tÃ­ vzor podmÃ­nky pro bÄ›Å¾nÃ© porovnÃ¡nÃ­ dvou hodnot (vracÃ­ napÅ™. "({0} = {1})").
 		/// </summary>
 		public static string GetComparisonPattern(ComparisonOperator comparisonOperator)
 		{

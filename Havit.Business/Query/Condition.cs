@@ -1,25 +1,25 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Havit.Business.Query
 {
 	/// <summary>
-	/// Interface podmínky dotazu.
+	/// Interface podmÃ­nky dotazu.
 	/// </summary>
 	[Serializable]
 	public abstract class Condition
 	{
 		#region GetWhereStatement
 		/// <summary>
-		/// Pøidá èást SQL pøíkaz pro sekci WHERE. Je VELMI doporuèeno, aby byla podmínka pøidána vèetnì závorek.
+		/// PÅ™idÃ¡ ÄÃ¡st SQL pÅ™Ã­kaz pro sekci WHERE. Je VELMI doporuÄeno, aby byla podmÃ­nka pÅ™idÃ¡na vÄetnÄ› zÃ¡vorek.
 		/// </summary>
 		public abstract void GetWhereStatement(System.Data.Common.DbCommand command, StringBuilder whereBuilder); 
 		#endregion
 
 		#region IsEmptyCondition
 		/// <summary>
-		/// Udává, zda podmínka reprezentuje prázdnou podmínku, která nebude renderována (napø. prázdná AndCondition).
+		/// UdÃ¡vÃ¡, zda podmÃ­nka reprezentuje prÃ¡zdnou podmÃ­nku, kterÃ¡ nebude renderovÃ¡na (napÅ™. prÃ¡zdnÃ¡ AndCondition).
 		/// </summary>
 		public abstract bool IsEmptyCondition(); 
 		#endregion

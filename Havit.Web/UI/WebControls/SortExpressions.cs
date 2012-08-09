@@ -1,18 +1,18 @@
-using System;
+ï»¿using System;
 using Havit.Collections;
 using System.Web;
 
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
-	/// Tøída SortExpressions zajišuje práci s øazením poloek.
+	/// TÅ™Ã­da SortExpressions zajiÅ¡Å¥uje prÃ¡ci s Å™azenÃ­m poloÅ¾ek.
 	/// </summary>
 	/// 
 	[Serializable]
 	public class SortExpressions
 	{
 		/// <summary>
-		/// Poloky øazení.
+		/// PoloÅ¾ky Å™azenÃ­.
 		/// </summary>
 		public SortItemCollection SortItems
 		{
@@ -24,7 +24,7 @@ namespace Havit.Web.UI.WebControls
 		private SortItemCollection sortItems = new SortItemCollection();
 
 		/// <summary>
-		/// Vyprázdní seznam poloek øazení.
+		/// VyprÃ¡zdnÃ­ seznam poloÅ¾ek Å™azenÃ­.
 		/// </summary>
 		public void ClearSelection()
 		{
@@ -32,7 +32,7 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// Vyhledá index poloky v seznamu poloek øazení. Bere se ohled jen na Expression.
+		/// VyhledÃ¡ index poloÅ¾ky v seznamu poloÅ¾ek Å™azenÃ­. Bere se ohled jen na Expression.
 		/// </summary>
 		protected int IndexOf(string expression)
 		{
@@ -47,7 +47,7 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// Odstraní poloku øazení ze seznamu, pokud existuje.
+		/// OdstranÃ­ poloÅ¾ku Å™azenÃ­ ze seznamu, pokud existuje.
 		/// </summary>
 		/// <param name="expression"></param>
 		protected void RemoveExpression(string expression)
@@ -60,12 +60,12 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// Rozebere sortExpression a pøidá poloky øazení na první místo.
-		/// Pokud poloky poøadí ji jsou na zaèátku seznamu, je jim otoèen smìr øazení.
+		/// Rozebere sortExpression a pÅ™idÃ¡ poloÅ¾ky Å™azenÃ­ na prvnÃ­ mÃ­sto.
+		/// Pokud poloÅ¾ky poÅ™adÃ­ jiÅ¾ jsou na zaÄÃ¡tku seznamu, je jim otoÄen smÄ›r Å™azenÃ­.
 		/// </summary>
 		/// <param name="sortExpression">
-		/// Vıraz pro øazení. Seznam oddìlenı èárkami. Sestupnı smìr se vyjádøí doplnìním mezery a DESC.<br/>
-		/// Napø. "Nazev", "Prijmeni, Jmeno", "Vek DESC", "Vek desc".
+		/// VÃ½raz pro Å™azenÃ­. Seznam oddÄ›lenÃ½ ÄÃ¡rkami. SestupnÃ½ smÄ›r se vyjÃ¡dÅ™Ã­ doplnÄ›nÃ­m mezery a DESC.<br/>
+		/// NapÅ™. "Nazev", "Prijmeni, Jmeno", "Vek DESC", "Vek desc".
 		/// </param>
 		public void AddSortExpression(string sortExpression)
 		{
@@ -73,7 +73,7 @@ namespace Havit.Web.UI.WebControls
 
 			if (expressions.Length == 0)
 			{
-				// pokud nic nepøidáváme, konèíme.
+				// pokud nic nepÅ™idÃ¡vÃ¡me, konÄÃ­me.
 				return;
 			}
 
@@ -83,19 +83,19 @@ namespace Havit.Web.UI.WebControls
 				string trimmedExpression = expressions[i].Trim();
 				if (trimmedExpression.ToLower().EndsWith(" desc"))
 				{
-					// pokud máme øedit sestupnì, vytvoøíme poloku pro sestupné øazení
+					// pokud mÃ¡me Å™edit sestupnÄ›, vytvoÅ™Ã­me poloÅ¾ku pro sestupnÃ© Å™azenÃ­
 					newItems.Add(new SortItem(trimmedExpression.Substring(0, trimmedExpression.Length - 5), SortDirection.Descending));
 				}
 				else
 				{
-					// jinak vytvoøíme poloku pro vzestupné øazení.
+					// jinak vytvoÅ™Ã­me poloÅ¾ku pro vzestupnÃ© Å™azenÃ­.
 					newItems.Add(new SortItem(trimmedExpression, SortDirection.Ascending));
 				}
 			}
 
 			if (StartsWith(newItems))
 			{
-				// pokud u poloky v seznamu jsou a jsou na zaèátku, otoèíme jim smìr øazení.				
+				// pokud uÅ¾ poloÅ¾ky v seznamu jsou a jsou na zaÄÃ¡tku, otoÄÃ­me jim smÄ›r Å™azenÃ­.				
 				for (int i = 0; i < newItems.Count; i++)
 				{
 					sortItems[i].Direction = (sortItems[i].Direction == SortDirection.Ascending) ? SortDirection.Descending : SortDirection.Ascending;
@@ -103,7 +103,7 @@ namespace Havit.Web.UI.WebControls
 			}
 			else
 			{
-				// jinak je pøidáme na zaèátek seznamu (jsou-li v seznamu dále, vyhodíme je a dáme na zaèátek)
+				// jinak je pÅ™idÃ¡me na zaÄÃ¡tek seznamu (jsou-li v seznamu dÃ¡le, vyhodÃ­me je a dÃ¡me na zaÄÃ¡tek)
 				for (int i = 0; i < newItems.Count; i++)
 				{
 					RemoveExpression(newItems[i].Expression);
@@ -113,9 +113,9 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// Vrací true, pokud kolekce zaèíná stejnımi polokami, jako jsou zde uvedené.
-		/// Na smìr øazení se bere ohled v tom smyslu, e smìr øazení všech stávající poloek musí bıt stejnı 
-		/// jako smìr øazení novıch poloek nebo musí bıt smìr øazení na všech polokách opaènı.
+		/// VracÃ­ true, pokud kolekce zaÄÃ­nÃ¡ stejnÃ½mi poloÅ¾kami, jako jsou zde uvedenÃ©.
+		/// Na smÄ›r Å™azenÃ­ se bere ohled v tom smyslu, Å¾e smÄ›r Å™azenÃ­ vÅ¡ech stÃ¡vajÃ­cÃ­ poloÅ¾ek musÃ­ bÃ½t stejnÃ½ 
+		/// jako smÄ›r Å™azenÃ­ novÃ½ch poloÅ¾ek nebo musÃ­ bÃ½t smÄ›r Å™azenÃ­ na vÅ¡ech poloÅ¾kÃ¡ch opaÄnÃ½.
 		/// </summary>
 		protected bool StartsWith(SortItemCollection referencingItems)
 		{
@@ -133,8 +133,8 @@ namespace Havit.Web.UI.WebControls
 
 			for (int i = 0; i < referencingItems.Count; i++)
 			{
-				if ((referencingItems[i].Expression != sortItems[i].Expression) // nejsou stejné expression
-				 || ((referencingItems[i].Direction == sortItems[i].Direction) ^ sameDirection)) // nebo není stejnı smìr øazení
+				if ((referencingItems[i].Expression != sortItems[i].Expression) // nejsou stejnÃ© expression
+				 || ((referencingItems[i].Direction == sortItems[i].Direction) ^ sameDirection)) // nebo nenÃ­ stejnÃ½ smÄ›r Å™azenÃ­
 				{
 					return false;
 				}
@@ -145,27 +145,27 @@ namespace Havit.Web.UI.WebControls
 
 
 		///// <summary>
-		///// Pøidá poloky øazení do seznamu na první pozice (první poloka kolekce bude na zaèátku).
-		///// Pokud ji poloky v seznamu existují na prvních pozicích zmìní smìr øazení.
-		///// Pokud existuje na jiné pozici, odstraní poloku ze seznamu
-		///// a vloí ji na první pozici (tj. zvıší se "priorita" a øadí se vzestupnì.
+		///// PÅ™idÃ¡ poloÅ¾ky Å™azenÃ­ do seznamu na prvnÃ­ pozice (prvnÃ­ poloÅ¾ka kolekce bude na zaÄÃ¡tku).
+		///// Pokud jiÅ¾ poloÅ¾ky v seznamu existujÃ­ na prvnÃ­ch pozicÃ­ch zmÄ›nÃ­ smÄ›r Å™azenÃ­.
+		///// Pokud existuje na jinÃ© pozici, odstranÃ­ poloÅ¾ku ze seznamu
+		///// a vloÅ¾Ã­ ji na prvnÃ­ pozici (tj. zvÃ½Å¡Ã­ se "priorita" a Å™adÃ­ se vzestupnÄ›.
 		///// </summary>
 		//public void Add(string[] expression)
 		//{
-		//    // øadíme vzestupnì
+		//    // Å™adÃ­me vzestupnÄ›
 		//    SortDirection newDirection = SortDirection.Ascending;
 
 		//    if (SortItems.Count >= expression.Length)
 		//    {
-		//        // øadíme sestupnì, ale dále to vìtšinou zpìt zmìníme
+		//        // Å™adÃ­me sestupnÄ›, ale dÃ¡le to vÄ›tÅ¡inou zpÄ›t zmÄ›nÃ­me
 		//        newDirection = SortDirection.Descending;
 
-		//        // projdeme všechny poloky
+		//        // projdeme vÅ¡echny poloÅ¾ky
 		//        for (int i = 0; i < expression.Length; i++)
 		//        {
-		//            // a testujeme, jestli jsou na zaèátku seznamu a øazené vzestupnì
-		//            // pokud ano, nedìláme nic (zùstane sestupné øazení
-		//            // pokud ne, zmìníme øazení a konèíme test
+		//            // a testujeme, jestli jsou na zaÄÃ¡tku seznamu a Å™azenÃ© vzestupnÄ›
+		//            // pokud ano, nedÄ›lÃ¡me nic (zÅ¯stane sestupnÃ© Å™azenÃ­
+		//            // pokud ne, zmÄ›nÃ­me Å™azenÃ­ a konÄÃ­me test
 		//            if (expression[i] != SortItems[i].Expression || SortItems[i].Direction != SortDirection.Ascending)
 		//            {
 		//                newDirection = SortDirection.Ascending;
@@ -174,14 +174,14 @@ namespace Havit.Web.UI.WebControls
 		//        }
 		//    }
 
-		//    // pøidáme postupnì poloky øazení (odzadu, protoe poslední pøidaná bude mít nejvyšší prioritu)
+		//    // pÅ™idÃ¡me postupnÄ› poloÅ¾ky Å™azenÃ­ (odzadu, protoÅ¾e poslednÃ­ pÅ™idanÃ¡ bude mÃ­t nejvyÅ¡Å¡Ã­ prioritu)
 		//    for (int i = expression.Length - 1; i >= 0; i--)
 		//        Add(expression[i], newDirection);
 		//}
 
 		///// <summary>
-		///// Pøidá poloku øazení do seznamu na první pozici. 
-		///// Pokud ji v seznamu existuje, je pùvodní poloka odstranìna.
+		///// PÅ™idÃ¡ poloÅ¾ku Å™azenÃ­ do seznamu na prvnÃ­ pozici. 
+		///// Pokud jiÅ¾ v seznamu existuje, je pÅ¯vodnÃ­ poloÅ¾ka odstranÄ›na.
 		///// </summary>
 		///// <param name="expression"></param>
 		///// <param name="sortDirection"></param>
@@ -192,7 +192,7 @@ namespace Havit.Web.UI.WebControls
 		//}
 
 		///// <summary>
-		///// Prozkoumá expression od uivatele a rozebere ji na jednotlivé poloky øazení.
+		///// ProzkoumÃ¡ expression od uÅ¾ivatele a rozebere ji na jednotlivÃ© poloÅ¾ky Å™azenÃ­.
 		///// </summary>
 		//public static string[] ParseSortExpression(string expression)
 		//{

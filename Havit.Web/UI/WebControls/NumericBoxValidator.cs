@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI.WebControls;
@@ -7,13 +7,13 @@ using System.Web.UI;
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
-	/// Valid·tor hodnoty controlu NumericBox.
+	/// Valid√°tor hodnoty controlu NumericBox.
 	/// </summary>
 	public class NumericBoxValidator: BaseValidator
 	{
 		#region MinValue
 		/// <summary>
-		/// Minim·lnÌ hodnota, kter· je povaûov·na za platnou hodnotu.
+		/// Minim√°ln√≠ hodnota, kter√° je pova≈æov√°na za platnou hodnotu.
 		/// </summary>
 		public decimal? MinValue
 		{
@@ -24,7 +24,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region MaxValue
 		/// <summary>
-		/// Maxim·lnÌ hodnota, kter· je povaûov·na za platnou hodnotu.
+		/// Maxim√°ln√≠ hodnota, kter√° je pova≈æov√°na za platnou hodnotu.
 		/// </summary>
 		public decimal? MaxValue
 		{
@@ -35,7 +35,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region EvaluateIsValid (overriden)
 		/// <summary>
-		/// Testuje platnost ËÌsla.
+		/// Testuje platnost ƒç√≠sla.
 		/// </summary>
 		protected override bool EvaluateIsValid()
 		{			
@@ -48,18 +48,18 @@ namespace Havit.Web.UI.WebControls
 
 			if (!(control is NumericBox))
 			{
-				throw new ArgumentException("ControlToValidate nenÌ NumericBox.", "ControlToValidate");
+				throw new ArgumentException("ControlToValidate nen√≠ NumericBox.", "ControlToValidate");
 			}
 
 			NumericBox numericBox = (NumericBox)control;
 
-			// pr·zdn· hodnota je OK
+			// pr√°zdn√° hodnota je OK
 			if (numericBox.NumberText == String.Empty)
 			{
 				return true;
 			}
 
-			// zept·me se, zda je ËÌslo v˘bec ËÌslem a tudÌû, jestli smime ö·hnout na vlastnost Value		
+			// zept√°me se, zda je ƒç√≠slo v≈Øbec ƒç√≠slem a tud√≠≈æ, jestli smime ≈°√°hnout na vlastnost Value		
 			if (!numericBox.IsValid)
 			{
 				return false;
@@ -72,25 +72,25 @@ namespace Havit.Web.UI.WebControls
 				return true;
 			}
 
-			// otestujeme z·porn· ËÌsla
+			// otestujeme z√°porn√° ƒç√≠sla
 			if (!numericBox.AllowNegativeNumber && (numericValue < 0))
 			{
 				return false;
 			}
 
-			// testujeme minim·lnÌ hodnotu
+			// testujeme minim√°ln√≠ hodnotu
 			if ((MinValue != null) && (numericValue < MinValue.Value))
 			{
 				return false;
 			}
 
-			// testujeme maxim·lnÌ hodnotu
+			// testujeme maxim√°ln√≠ hodnotu
 			if ((MaxValue != null) && (numericValue > MaxValue.Value))
 			{
 				return false;
 			}
 
-			// otestujeme desetinn· mÌsta
+			// otestujeme desetinn√° m√≠sta
 			decimal tempValue = numericValue.Value;
 			decimal tmpDecimals = numericBox.Decimals;
 			while (tmpDecimals > 0)
@@ -98,7 +98,7 @@ namespace Havit.Web.UI.WebControls
 				tempValue *= 10;
 				tmpDecimals -= 1;
 			}			
-			if (Math.Abs(tempValue) != Math.Floor(Math.Abs(tempValue))) // je vÌce desetinn˝m mÌst
+			if (Math.Abs(tempValue) != Math.Floor(Math.Abs(tempValue))) // je v√≠ce desetinn√Ωm m√≠st
 			{
 				return false;
 			}

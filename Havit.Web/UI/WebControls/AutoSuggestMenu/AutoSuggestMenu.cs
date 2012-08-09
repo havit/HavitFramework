@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Text;
 using System.Collections;
 using System.IO;
@@ -114,8 +114,8 @@ namespace Havit.Web.UI.WebControls
         }
 
 		/// <summary>
-		/// Kontext, v jakém je AutoSuggestMenu pouito.
-		/// Pøedává se webové slubì, která vrací poloky pro nápovìdu, aby bylo mono se pøizpùsobit kontextu (omezit vıbìr, atp.).
+		/// Kontext, v jakÃ©m je AutoSuggestMenu pouÅ¾ito.
+		/// PÅ™edÃ¡vÃ¡ se webovÃ© sluÅ¾bÄ›, kterÃ¡ vracÃ­ poloÅ¾ky pro nÃ¡povÄ›du, aby bylo moÅ¾no se pÅ™izpÅ¯sobit kontextu (omezit vÃ½bÄ›r, atp.).
 		/// </summary>
 		public string Context
 		{
@@ -211,7 +211,7 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 
 		/// <summary>
-		/// Cesta k webové slubì, která má bıt pøilinkována.
+		/// Cesta k webovÃ© sluÅ¾bÄ›, kterÃ¡ mÃ¡ bÃ½t pÅ™ilinkovÃ¡na.
 		/// </summary>
 		public string ServicePath
 		{
@@ -427,7 +427,7 @@ namespace Havit.Web.UI.WebControls
 
 			//writer.WriteLine("menu.resourcesDir=\"" + GetAbsoluteResourcesDir() + "\";");
 			string resourceName = "Havit.Web.UI.WebControls.AutoSuggestMenu.Blank.html";
-			writer.WriteLine("menu.blankPage=\"" + Page.ClientScript.GetWebResourceUrl(typeof(AutoSuggestMenu), resourceName) + "\";");  // RH, místo resourcesDir
+			writer.WriteLine("menu.blankPage=\"" + Page.ClientScript.GetWebResourceUrl(typeof(AutoSuggestMenu), resourceName) + "\";");  // RH, mÃ­sto resourcesDir
 
 			switch (Mode)
 			{
@@ -529,7 +529,7 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// Vytvoøí do head odkaz na CSS menu.
+		/// VytvoÅ™Ã­ do head odkaz na CSS menu.
 		/// </summary>
 		public static void RegisterStylesheets(Page page)
 		{

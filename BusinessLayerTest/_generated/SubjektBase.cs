@@ -31,6 +31,25 @@ namespace Havit.BusinessLayerTest
 	/// <summary>
 	/// Subjekt.
 	/// </summary>
+	/// <remarks>
+	/// <code>
+	/// CREATE TABLE [dbo].[Subjekt](
+	/// 	[SubjektID] [int] IDENTITY(1,1) NOT NULL,
+	/// 	[Nazev] [nvarchar](50) COLLATE Czech_CI_AS NULL,
+	/// 	[UzivatelID] [int] NULL,
+	/// 	[Created] [smalldatetime] NOT NULL,
+	/// 	[Deleted] [smalldatetime] NULL,
+	///  CONSTRAINT [PK_Subjekt] PRIMARY KEY CLUSTERED 
+	/// (
+	/// 	[SubjektID] ASC
+	/// )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+	/// ) ON [PRIMARY]
+	/// ALTER TABLE [dbo].[Subjekt]  WITH CHECK ADD  CONSTRAINT [FK_Subjekt_Uzivatel] FOREIGN KEY([UzivatelID])
+	/// REFERENCES [Uzivatel] ([UzivatelID])
+	/// ALTER TABLE [dbo].[Subjekt] CHECK CONSTRAINT [FK_Subjekt_Uzivatel]
+	/// ALTER TABLE [dbo].[Subjekt] ADD  CONSTRAINT [DF_Subjekt_Created]  DEFAULT (getdate()) FOR [Created]
+	/// </code>
+	/// </remarks>
 	[System.Diagnostics.Contracts.ContractVerification(false)]
 	public abstract class SubjektBase : ActiveRecordBusinessObjectBase
 	{
@@ -506,7 +525,7 @@ namespace Havit.BusinessLayerTest
 			bool dirtyCollectionExists = false;
 			if (_KomunikacePropertyHolder.IsDirty && (_loadedKomunikaceValues != null))
 			{
-				Havit.BusinessLayerTest.KomunikaceCollection _komunikaceToRemove = new Havit.BusinessLayerTest.KomunikaceCollection(_loadedKomunikaceValues.Except(_KomunikacePropertyHolder.Value)).FindAll(item => !item.IsDeleted && (!item.IsLoaded || (item.Subjekt == this)));
+				Havit.BusinessLayerTest.KomunikaceCollection _komunikaceToRemove = new Havit.BusinessLayerTest.KomunikaceCollection(_loadedKomunikaceValues.Except(_KomunikacePropertyHolder.Value).Where(item => !item.IsDeleted && (!item.IsLoaded || (item.Subjekt == this))));
 				if (_komunikaceToRemove.Count > 0)
 				{
 					dirtyCollectionExists = true;
@@ -580,7 +599,7 @@ namespace Havit.BusinessLayerTest
 		
 		#endregion
 		
-		#region GetFirst, GetList
+		#region GetFirst, GetList, GetAll
 		/// <summary>
 		/// Vrátí první nalezený objekt typu Subjekt dle parametrů v queryParams.
 		/// Pokud není žádný objekt nalezen, vrací null.

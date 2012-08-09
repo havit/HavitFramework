@@ -1,11 +1,11 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Havit.Business
 {
 	/// <summary>
-	/// Interface oznaèující tøídu reprezentující jazyk.
+	/// Interface oznaÄujÃ­cÃ­ tÅ™Ã­du reprezentujÃ­cÃ­ jazyk.
 	/// </summary>
 	public interface ILanguage
 	{

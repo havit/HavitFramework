@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Collections.Specialized;
@@ -8,16 +8,16 @@ using System.Web;
 namespace Havit.Web
 {
 	/// <summary>
-	/// Pomocník pro sestavení QueryStringu.
+	/// PomocnÃ­k pro sestavenÃ­ QueryStringu.
 	/// </summary>
 	public class QueryStringBuilder : NameValueCollection
 	{
 		#region ctor
 		/// <summary>
-		/// Vytvoøí instanci.
+		/// VytvoÅ™Ã­ instanci.
 		/// </summary>
 		/// <remarks>
-		/// Pouívá se StringComparer.OrdinalIgnoreCase po vzoru System.Web.HttpValueCollection.
+		/// PouÅ¾Ã­vÃ¡ se StringComparer.OrdinalIgnoreCase po vzoru System.Web.HttpValueCollection.
 		/// </remarks>
 		public QueryStringBuilder()
 			: base(StringComparer.OrdinalIgnoreCase)
@@ -27,17 +27,17 @@ namespace Havit.Web
 
 		#region Add
 		/// <summary>
-		/// Pøidá hodnotu do QueryStringu. Pokud ji hodnota existuje, potom pøidá další a QueryString bude obsahovat hodnot více.
-		/// Pokud chcete nastavit hodnoty bez monosti duplicit, pouijte metodu Set().
+		/// PÅ™idÃ¡ hodnotu do QueryStringu. Pokud jiÅ¾ hodnota existuje, potom pÅ™idÃ¡ dalÅ¡Ã­ a QueryString bude obsahovat hodnot vÃ­ce.
+		/// Pokud chcete nastavit hodnoty bez moÅ¾nosti duplicit, pouÅ¾ijte metodu Set().
 		/// </summary>
 		/// <exception cref="ArgumentException">pokud je argument name null nebo String.Empty</exception>
-		/// <param name="name">název hodnoty</param>
+		/// <param name="name">nÃ¡zev hodnoty</param>
 		/// <param name="value">hodnota</param>
 		public override void Add(string name, string value)
 		{
 			if (String.IsNullOrEmpty(name))
 			{
-				throw new ArgumentException("Argument nesmí bıt null ani String.Empty.", "name");
+				throw new ArgumentException("Argument nesmÃ­ bÃ½t null ani String.Empty.", "name");
 			}
 
 			base.Add(name, value);
@@ -46,17 +46,17 @@ namespace Havit.Web
 
 		#region Set
 		/// <summary>
-		/// Nastaví hodnotu do QueryStringu. Pokud ji hodnota existuje, potom ji pøenastaví na novou hodnotu.
-		/// Pokud hodnota neexistuje, zaloí ji. Pokud chcete pøidávat hodnoty s monosti duplicit, pouijte metodu Add().
+		/// NastavÃ­ hodnotu do QueryStringu. Pokud jiÅ¾ hodnota existuje, potom ji pÅ™enastavÃ­ na novou hodnotu.
+		/// Pokud hodnota neexistuje, zaloÅ¾Ã­ ji. Pokud chcete pÅ™idÃ¡vat hodnoty s moÅ¾nosti duplicit, pouÅ¾ijte metodu Add().
 		/// </summary>
 		/// <exception cref="ArgumentException">pokud je argument name null nebo String.Empty</exception>
-		/// <param name="name">název hodnoty</param>
+		/// <param name="name">nÃ¡zev hodnoty</param>
 		/// <param name="value">hodnota</param>
 		public override void Set(string name, string value)
 		{
 			if (String.IsNullOrEmpty(name))
 			{
-				throw new ArgumentException("Argument nesmí bıt null ani String.Empty.", "name");
+				throw new ArgumentException("Argument nesmÃ­ bÃ½t null ani String.Empty.", "name");
 			}
 
 			base.Set(name, value);
@@ -65,10 +65,10 @@ namespace Havit.Web
 
 		#region ToString
 		/// <summary>
-		/// Pøevede na QueryString, neobsahuje úvodní ? (otazník).
+		/// PÅ™evede na QueryString, neobsahuje ÃºvodnÃ­ ? (otaznÃ­k).
 		/// </summary>
-		/// <param name="urlEncoded">indikuje, zda-li má bıt vıstup (názvy i hodnoty) UrlEncoded</param>
-		/// <returns>QueryString bez úvodního ? (otazníku)</returns>
+		/// <param name="urlEncoded">indikuje, zda-li mÃ¡ bÃ½t vÃ½stup (nÃ¡zvy i hodnoty) UrlEncoded</param>
+		/// <returns>QueryString bez ÃºvodnÃ­ho ? (otaznÃ­ku)</returns>
 		public virtual string ToString(bool urlEncoded)
 		{
 			int count = this.Count;
@@ -128,9 +128,9 @@ namespace Havit.Web
 		}
 
 		/// <summary>
-		/// Pøevede na url-encoded QueryString bez úvodního ? (otazníku).
+		/// PÅ™evede na url-encoded QueryString bez ÃºvodnÃ­ho ? (otaznÃ­ku).
 		/// </summary>
-		/// <returns>url-encoded QueryString bez úvodního ? (otazníku)</returns>
+		/// <returns>url-encoded QueryString bez ÃºvodnÃ­ho ? (otaznÃ­ku)</returns>
 		public override string ToString()
 		{
 			return this.ToString(true);
@@ -139,10 +139,10 @@ namespace Havit.Web
 
 		#region GetUrlWithQueryString
 		/// <summary>
-		/// Sestaví URL s QueryStringem na základì zadaného URL (které ji mùe nìjakı QueryString obsahovat).
-		/// Pokud chcete získat samotnı QueryString, pouijte metodu ToString().
+		/// SestavÃ­ URL s QueryStringem na zÃ¡kladÄ› zadanÃ©ho URL (kterÃ© jiÅ¾ mÅ¯Å¾e nÄ›jakÃ½ QueryString obsahovat).
+		/// Pokud chcete zÃ­skat samotnÃ½ QueryString, pouÅ¾ijte metodu ToString().
 		/// </summary>
-		/// <param name="url">vstupní URL (které ji mùe nìjakı QueryString obsahovat)</param>
+		/// <param name="url">vstupnÃ­ URL (kterÃ© jiÅ¾ mÅ¯Å¾e nÄ›jakÃ½ QueryString obsahovat)</param>
 		/// <returns>URL s QueryStringem</returns>
 		public string GetUrlWithQueryString(string url)
 		{
@@ -169,10 +169,10 @@ namespace Havit.Web
 
 		#region FillFromString
 		/// <summary>
-		/// Naète data z queryStringu. Dosavadní data v instanci se nemaou, pouze se provádí Add() novıch.
+		/// NaÄte data z queryStringu. DosavadnÃ­ data v instanci se nemaÅ¾ou, pouze se provÃ¡dÃ­ Add() novÃ½ch.
 		/// </summary>
-		/// <param name="queryString">queryString z kterého se mají data pøevzít</param>
-		/// <param name="urlEncoded">indikuje, zda-li je queryString url-encoded a má bıt dekódován</param>
+		/// <param name="queryString">queryString z kterÃ©ho se majÃ­ data pÅ™evzÃ­t</param>
+		/// <param name="urlEncoded">indikuje, zda-li je queryString url-encoded a mÃ¡ bÃ½t dekÃ³dovÃ¡n</param>
 		public void FillFromString(string queryString, bool urlEncoded)
 		{
 			int length = (queryString != null) ? queryString.Length : 0;  
@@ -222,9 +222,9 @@ namespace Havit.Web
 		}
 
 		/// <summary>
-		/// Naète data z queryStringu, provádí url-decoding. Dosavadní data v instanci se nemaou, pouze se provádí Add() novıch.
+		/// NaÄte data z queryStringu, provÃ¡dÃ­ url-decoding. DosavadnÃ­ data v instanci se nemaÅ¾ou, pouze se provÃ¡dÃ­ Add() novÃ½ch.
 		/// </summary>
-		/// <param name="queryString">queryString z kterého se mají data pøevzít</param>
+		/// <param name="queryString">queryString z kterÃ©ho se majÃ­ data pÅ™evzÃ­t</param>
 		public void FillFromString(string queryString)
 		{
 			this.FillFromString(queryString, true);
@@ -235,11 +235,11 @@ namespace Havit.Web
 
 		#region Parse (static)
 		/// <summary>
-		/// Rozparsuje vstupní queryString a vrátí ho jako QueryStringBuilder.
+		/// Rozparsuje vstupnÃ­ queryString a vrÃ¡tÃ­ ho jako QueryStringBuilder.
 		/// </summary>
-		/// <param name="queryString">queryString z kterého se mají data pøevzít</param>
-		/// <param name="urlEncoded">indikuje, zda-li je queryString url-encoded a má bıt dekódován</param>
-		/// <returns>QueryStringBuilder s rozparsovanımi daty vstupního queryStringu</returns>
+		/// <param name="queryString">queryString z kterÃ©ho se majÃ­ data pÅ™evzÃ­t</param>
+		/// <param name="urlEncoded">indikuje, zda-li je queryString url-encoded a mÃ¡ bÃ½t dekÃ³dovÃ¡n</param>
+		/// <returns>QueryStringBuilder s rozparsovanÃ½mi daty vstupnÃ­ho queryStringu</returns>
 		public static QueryStringBuilder Parse(string queryString, bool urlEncoded)
 		{
 			QueryStringBuilder qsb = new QueryStringBuilder();
@@ -248,10 +248,10 @@ namespace Havit.Web
 		}
 
 		/// <summary>
-		/// Rozparsuje vstupní queryString a vrátí ho jako QueryStringBuilder. Provádí url-decoding.
+		/// Rozparsuje vstupnÃ­ queryString a vrÃ¡tÃ­ ho jako QueryStringBuilder. ProvÃ¡dÃ­ url-decoding.
 		/// </summary>
-		/// <param name="queryString">queryString z kterého se mají data pøevzít</param>
-		/// <returns>QueryStringBuilder s rozparsovanımi daty vstupního queryStringu</returns>
+		/// <param name="queryString">queryString z kterÃ©ho se majÃ­ data pÅ™evzÃ­t</param>
+		/// <returns>QueryStringBuilder s rozparsovanÃ½mi daty vstupnÃ­ho queryStringu</returns>
 		public static QueryStringBuilder Parse(string queryString)
 		{
 			return Parse(queryString, true);

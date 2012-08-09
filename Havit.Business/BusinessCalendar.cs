@@ -1,35 +1,35 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 
 namespace Havit.Business
 {
 	/// <summary>
-	/// Tøída poskytující funkènost pro práci s pracovním kalendáøem,
-	/// pracovními dny, svátky, atp.
+	/// TÅ™Ã­da poskytujÃ­cÃ­ funkÄnost pro prÃ¡ci s pracovnÃ­m kalendÃ¡Å™em,
+	/// pracovnÃ­mi dny, svÃ¡tky, atp.
 	/// </summary>
 	/// <remarks>
-	/// Pracovním dnem (business day) je den, kterı není sobotou, nedìlí ani svátkem.<br/>
-	/// Tøída se instancializuje se sadou vıznamnıch dnù (zpravidla svátkù), nebo bez svátkù (pracovním
-	/// dnem je pak den, kterı není sobotou ani nedìlí).<br/>
-	/// Jako svátky (holiday) lze samozøejmì pøedat i rùzné dovolené apod.<br/>
+	/// PracovnÃ­m dnem (business day) je den, kterÃ½ nenÃ­ sobotou, nedÄ›lÃ­ ani svÃ¡tkem.<br/>
+	/// TÅ™Ã­da se instancializuje se sadou vÃ½znamnÃ½ch dnÅ¯ (zpravidla svÃ¡tkÅ¯), nebo bez svÃ¡tkÅ¯ (pracovnÃ­m
+	/// dnem je pak den, kterÃ½ nenÃ­ sobotou ani nedÄ›lÃ­).<br/>
+	/// Jako svÃ¡tky (holiday) lze samozÅ™ejmÄ› pÅ™edat i rÅ¯znÃ© dovolenÃ© apod.<br/>
 	/// <br/>
-	/// Jednou vytvoøenou instanci tøídy lze s vıhodou opakovanì pouívat.
+	/// Jednou vytvoÅ™enou instanci tÅ™Ã­dy lze s vÃ½hodou opakovanÄ› pouÅ¾Ã­vat.
 	/// </remarks>
 	public class BusinessCalendar
 	{
 		#region dates (private)
 		/// <summary>
-		/// Interní seznam vıznamnıch dnù, tj. dnù, které se liší od bìného pracovního dne (napø. svátkù, atp.).<br/>
-		/// Klíè je DateTime, hodnota je DateInfo.
+		/// InternÃ­ seznam vÃ½znamnÃ½ch dnÅ¯, tj. dnÅ¯, kterÃ© se liÅ¡Ã­ od bÄ›Å¾nÃ©ho pracovnÃ­ho dne (napÅ™. svÃ¡tkÅ¯, atp.).<br/>
+		/// KlÃ­Ä je DateTime, hodnota je DateInfo.
 		/// </summary>
 		private readonly IDictionary<DateTime, IDateInfo> dates = null;
 		#endregion
 
 		#region Constructors
 		/// <summary>
-		/// Vytvoøí instanci <see cref="BusinessCalendar"/> bez vıznamnıch dnù.<br/>
-		/// Pracovními dny budou všechny dny mimo víkendù, dokud nebudou pøidány nìjaké svátky.
+		/// VytvoÅ™Ã­ instanci <see cref="BusinessCalendar"/> bez vÃ½znamnÃ½ch dnÅ¯.<br/>
+		/// PracovnÃ­mi dny budou vÅ¡echny dny mimo vÃ­kendÅ¯, dokud nebudou pÅ™idÃ¡ny nÄ›jakÃ© svÃ¡tky.
 		/// </summary>
 		public BusinessCalendar()
 		{
@@ -37,19 +37,19 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Vytvoøí instanci <see cref="BusinessCalendar"/>.<br/>
+		/// VytvoÅ™Ã­ instanci <see cref="BusinessCalendar"/>.<br/>
 		/// </summary>
-		/// <param name="dateInfoDictionary">dictionary s informacemi o vıznamnıch dnech</param>
+		/// <param name="dateInfoDictionary">dictionary s informacemi o vÃ½znamnÃ½ch dnech</param>
 		public BusinessCalendar(IDictionary<DateTime, IDateInfo> dateInfoDictionary)
 		{
 			this.dates = dateInfoDictionary;
 		}
 
 		/// <summary>
-		/// Vytvoøí instanci <see cref="BusinessCalendar"/>.<br/>
-		/// Svátky jsou pøedány v poli <see cref="System.DateTime"/>.
+		/// VytvoÅ™Ã­ instanci <see cref="BusinessCalendar"/>.<br/>
+		/// SvÃ¡tky jsou pÅ™edÃ¡ny v poli <see cref="System.DateTime"/>.
 		/// </summary>
-		/// <param name="holidays">pole svátkù <see cref="System.DateTime"/></param>
+		/// <param name="holidays">pole svÃ¡tkÅ¯ <see cref="System.DateTime"/></param>
 		public BusinessCalendar(DateTime[] holidays)
 		{
 			this.dates = new Dictionary<DateTime, IDateInfo>();
@@ -64,10 +64,10 @@ namespace Havit.Business
 
 		#region FillDates
 		/// <summary>
-		/// Pøidá do nastavení <see cref="BusinessCalendar"/> vıznamné dny. Pokud ji nìkterı den v kalendáøi existuje, pøepíše ho. 
+		/// PÅ™idÃ¡ do nastavenÃ­ <see cref="BusinessCalendar"/> vÃ½znamnÃ© dny. Pokud jiÅ¾ nÄ›kterÃ½ den v kalendÃ¡Å™i existuje, pÅ™epÃ­Å¡e ho. 
 		/// </summary>
-		/// <typeparam name="T">typ vıznamnıch dnù (musí implementovat rozhraní <see cref="IDateInfo"/>)</typeparam>
-		/// <param name="dateInfos">kolekce vıznamnıch dnù</param>
+		/// <typeparam name="T">typ vÃ½znamnÃ½ch dnÅ¯ (musÃ­ implementovat rozhranÃ­ <see cref="IDateInfo"/>)</typeparam>
+		/// <param name="dateInfos">kolekce vÃ½znamnÃ½ch dnÅ¯</param>
 		public void FillDates<T>(IEnumerable<T> dateInfos)
 			where T : IDateInfo
 		{
@@ -80,11 +80,11 @@ namespace Havit.Business
 
 		#region GetNextBusinessDay, GetPreviousBusinessDay
 		/// <summary>
-		/// Urèí následující pracovní den.
+		/// UrÄÃ­ nÃ¡sledujÃ­cÃ­ pracovnÃ­ den.
 		/// </summary>
-		/// <param name="time"><see cref="System.DateTime"/>, ke kterému má bıt následující pracovní den urèen.</param>
-		/// <returns><see cref="System.DateTime"/>, kterı je následujícím pracovním dnem.</returns>
-		/// <remarks>Èasovı údaj zùstane nedotèen.</remarks>
+		/// <param name="time"><see cref="System.DateTime"/>, ke kterÃ©mu mÃ¡ bÃ½t nÃ¡sledujÃ­cÃ­ pracovnÃ­ den urÄen.</param>
+		/// <returns><see cref="System.DateTime"/>, kterÃ½ je nÃ¡sledujÃ­cÃ­m pracovnÃ­m dnem.</returns>
+		/// <remarks>ÄŒasovÃ½ Ãºdaj zÅ¯stane nedotÄen.</remarks>
 		public DateTime GetNextBusinessDay(DateTime time)
 		{
 			do
@@ -97,11 +97,11 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Urèí pøedchozí pracovní den.
+		/// UrÄÃ­ pÅ™edchozÃ­ pracovnÃ­ den.
 		/// </summary>
-		/// <param name="time"><see cref="System.DateTime"/>, ke kterému má bıt pøedchozí pracovní den urèen.</param>
-		/// <returns><see cref="System.DateTime"/>, kterı je pøedchozím pracovním dnem.</returns>
-		/// <remarks>Èasovı údaj zùstane nedotèen.</remarks>
+		/// <param name="time"><see cref="System.DateTime"/>, ke kterÃ©mu mÃ¡ bÃ½t pÅ™edchozÃ­ pracovnÃ­ den urÄen.</param>
+		/// <returns><see cref="System.DateTime"/>, kterÃ½ je pÅ™edchozÃ­m pracovnÃ­m dnem.</returns>
+		/// <remarks>ÄŒasovÃ½ Ãºdaj zÅ¯stane nedotÄen.</remarks>
 		public DateTime GetPreviousBusinessDay(DateTime time)
 		{
 			do
@@ -116,12 +116,12 @@ namespace Havit.Business
 
 		#region AddBusinessDays
 		/// <summary>
-		/// Urèí den, kterı je x-tım následujícím pracovním dnem po dni zadaném.
+		/// UrÄÃ­ den, kterÃ½ je x-tÃ½m nÃ¡sledujÃ­cÃ­m pracovnÃ­m dnem po dni zadanÃ©m.
 		/// </summary>
-		/// <param name="time"><see cref="System.DateTime"/>, od kterého se urèovanı den odvíjí.</param>
-		/// <param name="businessDays">kolikátı pracovní den má bıt urèen</param>
-		/// <returns><see cref="System.DateTime"/>, kterı je x-tım následujícím pracovním dnem po dni zadaném.</returns>
-		/// <remarks>Èasovı údaj zùstane nedotèen.</remarks>
+		/// <param name="time"><see cref="System.DateTime"/>, od kterÃ©ho se urÄovanÃ½ den odvÃ­jÃ­.</param>
+		/// <param name="businessDays">kolikÃ¡tÃ½ pracovnÃ­ den mÃ¡ bÃ½t urÄen</param>
+		/// <returns><see cref="System.DateTime"/>, kterÃ½ je x-tÃ½m nÃ¡sledujÃ­cÃ­m pracovnÃ­m dnem po dni zadanÃ©m.</returns>
+		/// <remarks>ÄŒasovÃ½ Ãºdaj zÅ¯stane nedotÄen.</remarks>
 		public DateTime AddBusinessDays(DateTime time, int businessDays)
 		{
 			if (businessDays >= 0)
@@ -144,10 +144,10 @@ namespace Havit.Business
 
 		#region IsBusinessDay
 		/// <summary>
-		/// Urèí, zda-li je zadanı den dnem pracovním.
+		/// UrÄÃ­, zda-li je zadanÃ½ den dnem pracovnÃ­m.
 		/// </summary>
-		/// <param name="time"><see cref="DateTime"/>, u kterého chceme vlastnosti zjistit</param>
-		/// <returns><b>false</b>, pokud je <see cref="DateTime"/> víkendem nebo svátkem; jinak <b>true</b></returns>
+		/// <param name="time"><see cref="DateTime"/>, u kterÃ©ho chceme vlastnosti zjistit</param>
+		/// <returns><b>false</b>, pokud je <see cref="DateTime"/> vÃ­kendem nebo svÃ¡tkem; jinak <b>true</b></returns>
 		public virtual bool IsBusinessDay(DateTime time)
 		{
 			if (IsWeekend(time) || IsHoliday(time))
@@ -160,10 +160,10 @@ namespace Havit.Business
 
 		#region IsHoliday
 		/// <summary>
-		/// Zjistí, zda-li je <see cref="System.DateTime"/> svátkem (dovolenou, ...).
+		/// ZjistÃ­, zda-li je <see cref="System.DateTime"/> svÃ¡tkem (dovolenou, ...).
 		/// </summary>
-		/// <param name="time"><see cref="System.DateTime"/>, u kterého má bıt vlastnost zjištìna</param>
-		/// <returns><b>true</b>, pokud je den v seznamu svátkù, s nimi byl <see cref="BusinessCalendar"/> instanciován; jinak <b>false</b></returns>
+		/// <param name="time"><see cref="System.DateTime"/>, u kterÃ©ho mÃ¡ bÃ½t vlastnost zjiÅ¡tÄ›na</param>
+		/// <returns><b>true</b>, pokud je den v seznamu svÃ¡tkÅ¯, s nimiÅ¾ byl <see cref="BusinessCalendar"/> instanciovÃ¡n; jinak <b>false</b></returns>
 		public virtual bool IsHoliday(DateTime time)
 		{
 			if (dates == null)
@@ -182,10 +182,10 @@ namespace Havit.Business
 
 		#region IsWeekend
 		/// <summary>
-		/// Urèí, zda-li je zadanı den sobotou nebo nedìlí.
+		/// UrÄÃ­, zda-li je zadanÃ½ den sobotou nebo nedÄ›lÃ­.
 		/// </summary>
-		/// <param name="time"><see cref="System.DateTime"/>, u kterého urèujeme</param>
-		/// <returns><b>true</b>, pokud je zadanı <see cref="System.DateTime"/> sobota nebo nedìle; jinak <b>false</b></returns>
+		/// <param name="time"><see cref="System.DateTime"/>, u kterÃ©ho urÄujeme</param>
+		/// <returns><b>true</b>, pokud je zadanÃ½ <see cref="System.DateTime"/> sobota nebo nedÄ›le; jinak <b>false</b></returns>
 		public virtual bool IsWeekend(DateTime time)
 		{
 			DayOfWeek dayOfWeek = time.DayOfWeek;
@@ -199,15 +199,15 @@ namespace Havit.Business
 
 		#region CountBusinessDays
 		/// <summary>
-		/// Spoèítá poèet pracovních dní mezi dvìma daty. 
+		/// SpoÄÃ­tÃ¡ poÄet pracovnÃ­ch dnÃ­ mezi dvÄ›ma daty. 
 		/// </summary>
-		/// <param name="startDate">poèáteèní datum</param>
-		/// <param name="endDate">koncové datum</param>
-		/// <param name="options">Options pro poèítání dnù.</param>
-		/// <returns>poèet pracovních dnù mezi poèáteèním a koncovım datem (v závislosti na <c>options</c>)</returns>
+		/// <param name="startDate">poÄÃ¡teÄnÃ­ datum</param>
+		/// <param name="endDate">koncovÃ© datum</param>
+		/// <param name="options">Options pro poÄÃ­tÃ¡nÃ­ dnÅ¯.</param>
+		/// <returns>poÄet pracovnÃ­ch dnÅ¯ mezi poÄÃ¡teÄnÃ­m a koncovÃ½m datem (v zÃ¡vislosti na <c>options</c>)</returns>
 		public int CountBusinessDays(DateTime startDate, DateTime endDate, CountBusinessDaysOptions options)
 		{
-			// pokud jsou data obrácenì, vrátíme zápornı vısledek sama sebe v opaèném poøadí dat
+			// pokud jsou data obrÃ¡cenÄ›, vrÃ¡tÃ­me zÃ¡pornÃ½ vÃ½sledek sama sebe v opaÄnÃ©m poÅ™adÃ­ dat
 			if (startDate > endDate)
 			{
 				return -CountBusinessDays(endDate, startDate, options);
@@ -216,7 +216,7 @@ namespace Havit.Business
 			int counter = 0;
 			DateTime currentDate = startDate;
 
-			// procházíme všecha data a pøed endDate 
+			// prochÃ¡zÃ­me vÅ¡echa data aÅ¾ pÅ™ed endDate 
 			while (currentDate.Date < endDate.Date)
 			{
 				if (this.IsBusinessDay(currentDate))
@@ -226,7 +226,7 @@ namespace Havit.Business
 				currentDate = currentDate.AddDays(1);
 			}
 
-			// pokud chceme zohlednit endDate pak ho zapoèteme (pokud je pracovní)
+			// pokud chceme zohlednit endDate pak ho zapoÄteme (pokud je pracovnÃ­)
 			if ((options == CountBusinessDaysOptions.IncludeEndDate) && (this.IsBusinessDay(endDate)))
 			{
 				counter++;

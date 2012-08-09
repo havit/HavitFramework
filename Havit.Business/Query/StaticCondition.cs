@@ -1,11 +1,11 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Havit.Business.Query
 {
 	/// <summary>
-	/// Podmínka, která je vdy vyhodnocena stejnì.
+	/// PodmÃ­nka, kterÃ¡ je vÅ¾dy vyhodnocena stejnÄ›.
 	/// </summary>
 	internal class StaticCondition: Condition
 	{
@@ -47,7 +47,7 @@ namespace Havit.Business.Query
 
 		#region CreateTrue (static)
 		/// <summary>
-		/// Vytváøí instanci podmínky, která je vdy true.
+		/// VytvÃ¡Å™Ã­ instanci podmÃ­nky, kterÃ¡ je vÅ¾dy true.
 		/// </summary>
 		internal static Condition CreateTrue()
 		{
@@ -57,7 +57,7 @@ namespace Havit.Business.Query
 
 		#region CreateFalse (static)
 		/// <summary>
-		/// Vytváøí instanci podmínky, která je vdy false.
+		/// VytvÃ¡Å™Ã­ instanci podmÃ­nky, kterÃ¡ je vÅ¾dy false.
 		/// </summary>
 		internal static Condition CreateFalse()
 		{

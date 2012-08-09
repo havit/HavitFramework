@@ -1,12 +1,12 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Havit.Business
 {
 	/// <summary>
-	/// Delegát na metodu CreateObject bez perametrù.
+	/// DelegÃ¡t na metodu CreateObject bez perametrÅ¯.
 	/// </summary>
-	/// <returns>Nový business objekt.</returns>
+	/// <returns>NovÃ½ business objekt.</returns>
 	public delegate BusinessObjectBase CreateObjectDelegate();
 }

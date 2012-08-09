@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 namespace Havit.Business.Query
 {
 	/// <summary>
-	/// Kompozitní podmínka. Vısledek je pravdivı, jsou-li pravdivé všechny èlenské podmínky.
+	/// KompozitnÃ­ podmÃ­nka. VÃ½sledek je pravdivÃ½, jsou-li pravdivÃ© vÅ¡echny ÄlenskÃ© podmÃ­nky.
 	/// </summary>
 	[ComVisible(false)]
 	[Serializable]
@@ -14,7 +14,7 @@ namespace Havit.Business.Query
 	{
 		#region Constructors
 		/// <summary>
-		/// Vytvoøí kompozitní podmínku. Lze inicializovat sadou èlenskıch podmínek.
+		/// VytvoÅ™Ã­ kompozitnÃ­ podmÃ­nku. Lze inicializovat sadou ÄlenskÃ½ch podmÃ­nek.
 		/// </summary>		
 		public AndCondition(params Condition[] conditions)
 			: base("AND", conditions)
@@ -24,7 +24,7 @@ namespace Havit.Business.Query
 
         #region Create (static)
         /// <summary>
-        /// Vytvoøí kompozitní podmínku. Lze inicializovat sadou èlenskıch podmínek.
+        /// VytvoÅ™Ã­ kompozitnÃ­ podmÃ­nku. Lze inicializovat sadou ÄlenskÃ½ch podmÃ­nek.
         /// </summary>
         public static AndCondition Create(params Condition[] conditions)
         {

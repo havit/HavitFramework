@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI.WebControls;
@@ -7,14 +7,14 @@ using System.Diagnostics;
 namespace Havit.Web.UI.WebControls
 {
     /// <summary>
-    /// Zobrazuje zprávy Messengera.
+    /// Zobrazuje zprÃ¡vy Messengera.
     /// </summary>
     public class MessengerControl: Literal
     {
         #region Messenger
         /// <summary>
-        /// Messenger pouitı pro zprávy k zobrazení.
-        /// Není-li nastaven, vrací Messenger.Default.
+        /// Messenger pouÅ¾itÃ½ pro zprÃ¡vy k zobrazenÃ­.
+        /// NenÃ­-li nastaven, vracÃ­ Messenger.Default.
         /// </summary>
         public Messenger Messenger
         {
@@ -32,7 +32,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region ShowMessageBox
 		/// <summary>
-		/// Indikuje, zda se budou zprávy messengeru zobrazovat v message boxu (alert).
+		/// Indikuje, zda se budou zprÃ¡vy messengeru zobrazovat v message boxu (alert).
 		/// </summary>
 		public bool ShowMessageBox
 		{
@@ -43,7 +43,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region ShowSummary
 		/// <summary>
-		/// Indikuje, zda se budou zprávy messengeru renderovat do stránky.
+		/// Indikuje, zda se budou zprÃ¡vy messengeru renderovat do strÃ¡nky.
 		/// </summary>
 		public bool ShowSummary
 		{
@@ -77,7 +77,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region GetSummaryHtml, AddMessageHtml
 		/// <summary>
-        /// Vrátí obsah messengeru (HTML kód) pøipravenı k vyrenderování do stránky.
+        /// VrÃ¡tÃ­ obsah messengeru (HTML kÃ³d) pÅ™ipravenÃ½ k vyrenderovÃ¡nÃ­ do strÃ¡nky.
         /// </summary>
 		protected virtual string GetSummaryHtml()
         {
@@ -100,7 +100,7 @@ namespace Havit.Web.UI.WebControls
         }
 
         /// <summary>
-        /// Vrátí text zprávy messengeru (HTML kód) pøipravenı k vyrenderování do stránky.
+        /// VrÃ¡tÃ­ text zprÃ¡vy messengeru (HTML kÃ³d) pÅ™ipravenÃ½ k vyrenderovÃ¡nÃ­ do strÃ¡nky.
         /// </summary>
         protected virtual void AddMessageSummaryHtml(MessengerMessage message, StringBuilder sb)
         {
@@ -120,7 +120,7 @@ namespace Havit.Web.UI.WebControls
                     messageCssClass = "tmessageerror";
                     break;
                 default:
-                    throw new InvalidOperationException("Neznámı typ zprávy.");
+                    throw new InvalidOperationException("NeznÃ¡mÃ½ typ zprÃ¡vy.");
             }
 
             sb.Append("<div class=\"");
@@ -137,7 +137,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region GetMessageBoxText, AddMessageAlertText
 		/// <summary>
-		/// Vrátí obsah messengeru (text) pøipravenı k zobrazení v message boxu (alert).
+		/// VrÃ¡tÃ­ obsah messengeru (text) pÅ™ipravenÃ½ k zobrazenÃ­ v message boxu (alert).
 		/// </summary>
 		protected virtual string GetMessageBoxText()
 		{
@@ -154,7 +154,7 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// Vrátí text zprávy messengeru pøipravenı k zobrazení v message boxu (alert).
+		/// VrÃ¡tÃ­ text zprÃ¡vy messengeru pÅ™ipravenÃ½ k zobrazenÃ­ v message boxu (alert).
 		/// </summary>
 		protected virtual void AddMessageBoxText(MessengerMessage message, StringBuilder sb)
 		{

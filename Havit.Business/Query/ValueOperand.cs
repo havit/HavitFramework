@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Data;
@@ -7,7 +7,7 @@ using System.Data.Common;
 namespace Havit.Business.Query
 {
 	/// <summary>
-	/// Konstanta jako operand databázového dotazu.
+	/// Konstanta jako operand databÃ¡zovÃ©ho dotazu.
 	/// </summary>
 	[Serializable]
 	public sealed class ValueOperand: IOperand
@@ -19,14 +19,14 @@ namespace Havit.Business.Query
 		object value;
 
 		/// <summary>
-		/// Databázovı typ nesenı ValueOperandem.
+		/// DatabÃ¡zovÃ½ typ nesenÃ½ ValueOperandem.
 		/// </summary>
 		DbType dbType;
 		#endregion
 
 		#region Constructor
 		/// <summary>
-		/// Vytvoøí instanci tøídy ValueOperand.
+		/// VytvoÅ™Ã­ instanci tÅ™Ã­dy ValueOperand.
 		/// </summary>
 		public ValueOperand(object value, DbType dbType)
 		{
@@ -59,7 +59,7 @@ namespace Havit.Business.Query
 
 		#region Create - Boolean
 		/// <summary>
-		/// Vytvoøí operand z logické hodnoty.
+		/// VytvoÅ™Ã­ operand z logickÃ© hodnoty.
 		/// </summary>
 		public static IOperand Create(bool value)
 		{
@@ -69,7 +69,7 @@ namespace Havit.Business.Query
 
 		#region Create - DateTime
 		/// <summary>
-		/// Vytvoøí operand z DateTime.
+		/// VytvoÅ™Ã­ operand z DateTime.
 		/// </summary>
 		public static IOperand Create(DateTime value)
 		{
@@ -79,7 +79,7 @@ namespace Havit.Business.Query
 
 		#region Create - Int16, Int32, Int64
 		/// <summary>
-		/// Vytvoøí operand z celého èísla.
+		/// VytvoÅ™Ã­ operand z celÃ©ho ÄÃ­sla.
 		/// </summary>
 		public static IOperand Create(Int16 value)
 		{
@@ -87,7 +87,7 @@ namespace Havit.Business.Query
 		}
 
 		/// <summary>
-		/// Vytvoøí operand z celého èísla.
+		/// VytvoÅ™Ã­ operand z celÃ©ho ÄÃ­sla.
 		/// </summary>
 		public static IOperand Create(Int32 value)
 		{
@@ -95,7 +95,7 @@ namespace Havit.Business.Query
 		}
 
 		/// <summary>
-		/// Vytvoøí operand z celého èísla.
+		/// VytvoÅ™Ã­ operand z celÃ©ho ÄÃ­sla.
 		/// </summary>
 		public static IOperand Create(Int64 value)
 		{
@@ -105,7 +105,7 @@ namespace Havit.Business.Query
 
 		#region Create - Single, Double, Decimal
 		/// <summary>
-		/// Vytvoøí operand z èísla.
+		/// VytvoÅ™Ã­ operand z ÄÃ­sla.
 		/// </summary>
 		public static IOperand Create(Single value)
 		{
@@ -113,7 +113,7 @@ namespace Havit.Business.Query
 		}
 
 		/// <summary>
-		/// Vytvoøí operand z èísla.
+		/// VytvoÅ™Ã­ operand z ÄÃ­sla.
 		/// </summary>
 		public static IOperand Create(Double value)
 		{
@@ -121,7 +121,7 @@ namespace Havit.Business.Query
 		}
 
 		/// <summary>
-		/// Vytvoøí operand z èísla.
+		/// VytvoÅ™Ã­ operand z ÄÃ­sla.
 		/// </summary>
 		public static IOperand Create(decimal value)
 		{
@@ -131,7 +131,7 @@ namespace Havit.Business.Query
 
 		#region Create - GUID
 		/// <summary>
-		/// Vytvoøí operand z GUIDu.
+		/// VytvoÅ™Ã­ operand z GUIDu.
 		/// </summary>
 		public static IOperand Create(Guid value)
 		{
@@ -141,7 +141,7 @@ namespace Havit.Business.Query
 
 		#region Create - String
 		/// <summary>
-		/// Vytvoøí operand z øetìzce.
+		/// VytvoÅ™Ã­ operand z Å™etÄ›zce.
 		/// </summary>
 		public static IOperand Create(string value)
 		{

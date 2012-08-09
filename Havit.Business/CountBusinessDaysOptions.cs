@@ -1,21 +1,21 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Havit.Business
 {
 	/// <summary>
-	/// Options pro volání metody <see cref="BusinessCalendar.CountBusinessDays"/>.
+	/// Options pro volÃ¡nÃ­ metody <see cref="BusinessCalendar.CountBusinessDays"/>.
 	/// </summary>
 	public enum CountBusinessDaysOptions
 	{
 		/// <summary>
-		/// Zahrne do poètu dnù i koncové datum (od pondìlí do pátku bude 5 pracovních dnù).
+		/// Zahrne do poÄtu dnÅ¯ i koncovÃ© datum (od pondÄ›lÃ­ do pÃ¡tku bude 5 pracovnÃ­ch dnÅ¯).
 		/// </summary>
 		IncludeEndDate = 0,
 
 		/// <summary>
-		/// Vylouèí z poètu pracovních dnù koncové datum (standardní rozdíl dvou dat; pokud jsou shodná, rozdíl je 0).
+		/// VylouÄÃ­ z poÄtu pracovnÃ­ch dnÅ¯ koncovÃ© datum (standardnÃ­ rozdÃ­l dvou dat; pokud jsou shodnÃ¡, rozdÃ­l je 0).
 		/// </summary>
 		ExcludeEndDate = 1
 	}

@@ -1,17 +1,17 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Havit.Business.Query
 {
 	/// <summary>
-	/// Pomocník pro práci s vıètem ComparisonOperator.
+	/// PomocnÃ­k pro prÃ¡ci s vÃ½Ätem ComparisonOperator.
 	/// </summary>
 	public static class ComparisonOperatorHelper
 	{
 		#region GetOperatorText
 		/// <summary>
-		/// Pøevede comparison operátor na øetìzec, napø. Equals na "=", NotEquals na "&lt;&gt;", apod.
+		/// PÅ™evede comparison operÃ¡tor na Å™etÄ›zec, napÅ™. Equals na "=", NotEquals na "&lt;&gt;", apod.
 		/// </summary>
 		public static string GetOperatorText(ComparisonOperator comparsionOperator)
 		{
@@ -30,7 +30,7 @@ namespace Havit.Business.Query
 				case ComparisonOperator.LowerOrEquals:
 					return "<=";
 				default:
-					throw new ArgumentException("Neznámá hodnota ComparisonOperator.", "comparsionOperator");
+					throw new ArgumentException("NeznÃ¡mÃ¡ hodnota ComparisonOperator.", "comparsionOperator");
 			}
 		} 
 		#endregion

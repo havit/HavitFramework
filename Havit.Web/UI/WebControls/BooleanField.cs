@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI.WebControls;
@@ -10,13 +10,13 @@ using System.Reflection;
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
-	/// Sloupec pro zobrazenÌ boolean hodnoty.
+	/// Sloupec pro zobrazen√≠ boolean hodnoty.
 	/// </summary>
 	public class BooleanField : BoundFieldExt
 	{
 		#region Properties
 		/// <summary>
-		/// Text zobrazen˝, pokud je hodnota true.
+		/// Text zobrazen√Ω, pokud je hodnota true.
 		/// </summary>
 		public string TrueText
 		{
@@ -31,7 +31,7 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// Text zobrazen˝, pokud je hodnota false.
+		/// Text zobrazen√Ω, pokud je hodnota false.
 		/// </summary>
 		public string FalseText
 		{
@@ -49,10 +49,10 @@ namespace Havit.Web.UI.WebControls
 		#region FormatDataValue
 
 		/// <summary>
-		/// ZajistÌ transformaci boolean hodnoty na text s pouûitÌm vlastnostÌ TrueText, FalseText.
+		/// Zajist√≠ transformaci boolean hodnoty na text s pou≈æit√≠m vlastnost√≠ TrueText, FalseText.
 		/// </summary>
-		/// <param name="value">Hodnota ke zform·tov·nÌ.</param>
-		/// <returns>Text k zobrazenÌ.</returns>
+		/// <param name="value">Hodnota ke zform√°tov√°n√≠.</param>
+		/// <returns>Text k zobrazen√≠.</returns>
 		public override string FormatDataValue(object value)
 		{
 			if (value != null)

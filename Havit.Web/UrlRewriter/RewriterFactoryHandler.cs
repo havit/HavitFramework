@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 using System.IO;
 using System.Web.UI;
 using System.Web;
@@ -72,7 +72,7 @@ namespace Havit.Web.UrlRewriter
 		}
 
 		/// <summary>
-		/// Pr·zdn· implementace, je vöak vyûadov·na IHttpHandlerFactory.
+		/// Pr√°zdn√° implementace, je v≈°ak vy≈æadov√°na IHttpHandlerFactory.
 		/// </summary>
 		/// <param name="handler">handler</param>
 		public virtual void ReleaseHandler(IHttpHandler handler)

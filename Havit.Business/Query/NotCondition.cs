@@ -1,18 +1,18 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Havit.Business.Query
 {
     /// <summary>
-    /// Podmínka, která neguje vnitøní (kompozitní) podmínky.
+    /// PodmÃ­nka, kterÃ¡ neguje vnitÅ™nÃ­ (kompozitnÃ­) podmÃ­nky.
     /// </summary>
     [Serializable]
     public class NotCondition : Condition
     {
         #region Conditions
         /// <summary>
-        /// Podmínky, které jsou negovány. Mezi podmínkami je operátor AND.
+        /// PodmÃ­nky, kterÃ© jsou negovÃ¡ny. Mezi podmÃ­nkami je operÃ¡tor AND.
         /// </summary>
         public ConditionList Conditions
         {
@@ -26,7 +26,7 @@ namespace Havit.Business.Query
 
         #region Constructors
         /// <summary>
-        /// Vytvoøí instanci podmínky NotCondition a pøípadnì ji inicializuje zadanımi vnitøními podmínkami.
+        /// VytvoÅ™Ã­ instanci podmÃ­nky NotCondition a pÅ™Ã­padnÄ› ji inicializuje zadanÃ½mi vnitÅ™nÃ­mi podmÃ­nkami.
         /// </summary>
         public NotCondition(params Condition[] conditions)
         {
@@ -43,7 +43,7 @@ namespace Havit.Business.Query
 
         #region GetWhereStatement
         /// <summary>
-        /// Pøidá èást SQL pøíkaz pro sekci WHERE.
+        /// PÅ™idÃ¡ ÄÃ¡st SQL pÅ™Ã­kaz pro sekci WHERE.
         /// </summary>
         public override void GetWhereStatement(System.Data.Common.DbCommand command, StringBuilder whereBuilder)
         {
@@ -60,7 +60,7 @@ namespace Havit.Business.Query
 
         #region IsEmptyCondition
         /// <summary>
-        /// Udává, zda podmínka reprezentuje prázdnou podmínku, která nebude renderována.
+        /// UdÃ¡vÃ¡, zda podmÃ­nka reprezentuje prÃ¡zdnou podmÃ­nku, kterÃ¡ nebude renderovÃ¡na.
         /// </summary>
         public override bool IsEmptyCondition()
         {
@@ -70,7 +70,7 @@ namespace Havit.Business.Query
 
         #region Create (static)
         /// <summary>
-        /// Vytvoøí instanci podmínky NotCondition a pøípadnì ji inicializuje zadanımi vnitøními podmínkami.
+        /// VytvoÅ™Ã­ instanci podmÃ­nky NotCondition a pÅ™Ã­padnÄ› ji inicializuje zadanÃ½mi vnitÅ™nÃ­mi podmÃ­nkami.
         /// </summary>
         public static NotCondition Create(params Condition[] conditions)
         {

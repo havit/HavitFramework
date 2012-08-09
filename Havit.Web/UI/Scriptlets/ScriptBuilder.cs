@@ -1,13 +1,13 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Havit.Web.UI.Scriptlets
 {
     /// <summary>
-    /// Jednoduchı skládaè øetìzce. 
-    /// Vnitønì pouívá StringBuilder, na rozdíl od nìj umoòuje text
-    /// jen pøidávat, neumoòuje jej modifikovat.
+    /// JednoduchÃ½ sklÃ¡daÄ Å™etÄ›zce. 
+    /// VnitÅ™nÄ› pouÅ¾Ã­vÃ¡ StringBuilder, na rozdÃ­l od nÄ›j umoÅ¾Åˆuje text
+    /// jen pÅ™idÃ¡vat, neumoÅ¾Åˆuje jej modifikovat.
     /// </summary>
 	public class ScriptBuilder
 	{
@@ -17,18 +17,18 @@ namespace Havit.Web.UI.Scriptlets
 
 		#region Append, AppendLine, AppendFormat
 		/// <summary>
-		/// Pøipojí øetìzec na konec textu.
+		/// PÅ™ipojÃ­ Å™etÄ›zec na konec textu.
 		/// </summary>
-		/// <param name="value">Pøidávaná hodnota.</param>
+		/// <param name="value">PÅ™idÃ¡vanÃ¡ hodnota.</param>
 		public void Append(string value)
 		{
 			builder.Append(value);
 		}
 		
 		/// <summary>
-		/// Pøipojí øetìzec na konec textu a vloí symbol konce øádku (Environment.NewLine).
+		/// PÅ™ipojÃ­ Å™etÄ›zec na konec textu a vloÅ¾Ã­ symbol konce Å™Ã¡dku (Environment.NewLine).
 		/// </summary>
-		/// <param name="value">Pøidávaná hodnota.</param>
+		/// <param name="value">PÅ™idÃ¡vanÃ¡ hodnota.</param>
 		public void AppendLine(string value)
 		{
 			this.Append(value);
@@ -36,20 +36,20 @@ namespace Havit.Web.UI.Scriptlets
 		}
 
 		/// <summary>
-		/// Po zformátování pøipojí øetìzec na konec textu.
+		/// Po zformÃ¡tovÃ¡nÃ­ pÅ™ipojÃ­ Å™etÄ›zec na konec textu.
 		/// </summary>
-		/// <param name="value">Šablona pøidávané hodnota.</param>
-		/// <param name="parameters">Parametry šablony.</param>
+		/// <param name="value">Å ablona pÅ™idÃ¡vanÃ© hodnota.</param>
+		/// <param name="parameters">Parametry Å¡ablony.</param>
 		public void AppendFormat(string value, params object[] parameters)
 		{
 			builder.AppendFormat(value, parameters);
 		}
 		
 		/// <summary>
-		/// Po zformátování pøipojí øetìzec na konec textu a doplní jej symbolem pro konec øádky.
+		/// Po zformÃ¡tovÃ¡nÃ­ pÅ™ipojÃ­ Å™etÄ›zec na konec textu a doplnÃ­ jej symbolem pro konec Å™Ã¡dky.
 		/// </summary>
-		/// <param name="value">Šablona pøidávané hodnota.</param>
-		/// <param name="parameters">Parametry šablony.</param>
+		/// <param name="value">Å ablona pÅ™idÃ¡vanÃ© hodnota.</param>
+		/// <param name="parameters">Parametry Å¡ablony.</param>
 		public void AppendLineFormat(string value, params object[] parameters)
 		{
 			this.AppendFormat(value, parameters);
@@ -59,7 +59,7 @@ namespace Havit.Web.UI.Scriptlets
 
 		#region IsEmpty
 		/// <summary>
-		/// Vrací true, ScriptBuilder neobsahuje ádnı text. Jinak false.
+		/// VracÃ­ true, ScriptBuilder neobsahuje Å¾Ã¡dnÃ½ text. Jinak false.
 		/// </summary>
 		public bool IsEmpty
 		{
@@ -72,9 +72,9 @@ namespace Havit.Web.UI.Scriptlets
 
 		#region ToString
 		/// <summary>
-        /// Vrátí sloenı text.
+        /// VrÃ¡tÃ­ sloÅ¾enÃ½ text.
         /// </summary>
-        /// <returns>Sloenı text.</returns>
+        /// <returns>SloÅ¾enÃ½ text.</returns>
 		public override string ToString()
 		{
 			return builder.ToString();

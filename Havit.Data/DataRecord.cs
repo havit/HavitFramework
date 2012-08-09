@@ -1,24 +1,24 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Data;
 
 namespace Havit.Data
 {
 	/// <summary>
-	/// DataRecord usnadòuje naèítání dat objektu z databáze.
-	/// Zejména vhodnı je pro situace, kdy je moné i èásteèné naèítání.
+	/// DataRecord usnadÅˆuje naÄÃ­tÃ¡nÃ­ dat objektu z databÃ¡ze.
+	/// ZejmÃ©na vhodnÃ½ je pro situace, kdy je moÅ¾nÃ© i ÄÃ¡steÄnÃ© naÄÃ­tÃ¡nÃ­.
 	/// </summary>
 	/// <remarks>
-	/// DataRecord pracuje tak, e v constructoru zkopíruje celı datovı záznam do slovníku Dictionary&lt;field, value&gt;.
-	/// V jednotlivıch Loadech pak u jenom naèítá data ze slovníku.<br/>
-	/// Datovı zdroj je tedy potøeba pouze v okamiku volání constructoru a následnì ho mùeme zlikvidovat.<br/>
-	/// Stejnìtak je vhodné pouít na všechny loady jeden DataRecord a pøedávat si ho mezi objekty.
+	/// DataRecord pracuje tak, Å¾e v constructoru zkopÃ­ruje celÃ½ datovÃ½ zÃ¡znam do slovnÃ­ku Dictionary&lt;field, value&gt;.
+	/// V jednotlivÃ½ch Loadech pak uÅ¾ jenom naÄÃ­tÃ¡ data ze slovnÃ­ku.<br/>
+	/// DatovÃ½ zdroj je tedy potÅ™eba pouze v okamÅ¾iku volÃ¡nÃ­ constructoru a nÃ¡slednÄ› ho mÅ¯Å¾eme zlikvidovat.<br/>
+	/// StejnÄ›tak je vhodnÃ© pouÅ¾Ã­t na vÅ¡echny loady jeden DataRecord a pÅ™edÃ¡vat si ho mezi objekty.
 	/// </remarks>
 	public class DataRecord
 	{
 		#region Properties
 		/// <summary>
-		/// Indikuje, zda-li je poadována 100% úspìšnost pro naèítání poloek (true), nebo zda-li se mají neúspìchy ignorovat.
+		/// Indikuje, zda-li je poÅ¾adovÃ¡na 100% ÃºspÄ›Å¡nost pro naÄÃ­tÃ¡nÃ­ poloÅ¾ek (true), nebo zda-li se majÃ­ neÃºspÄ›chy ignorovat.
 		/// </summary>
 		public bool FullLoad
 		{
@@ -29,7 +29,7 @@ namespace Havit.Data
 		//private bool fullLoad;
 
 		/// <summary>
-		/// Indikuje mnoství dat, které jsou uloeny v DataRecordu vùèi všem monım sloupcùm øádkù.
+		/// Indikuje mnoÅ¾stvÃ­ dat, kterÃ© jsou uloÅ¾eny v DataRecordu vÅ¯Äi vÅ¡em moÅ¾nÃ½m sloupcÅ¯m Å™Ã¡dkÅ¯.
 		/// </summary>
 		public DataLoadPower DataLoadPower
 		{
@@ -42,22 +42,22 @@ namespace Havit.Data
 
 		#region private data fields
 		/// <summary>
-		/// Data z databáze.
+		/// Data z databÃ¡ze.
 		/// </summary>
 		private Dictionary<string, object> dataDictionary;
 		#endregion
 
 		#region Constructors
 		/// <summary>
-		/// Vytvoøí instanci DataRecordu a naète do ní data z <see cref="System.Data.DataRow"/>.
+		/// VytvoÅ™Ã­ instanci DataRecordu a naÄte do nÃ­ data z <see cref="System.Data.DataRow"/>.
 		/// </summary>
-		/// <param name="row">datovı zdroj typu DataRow</param>
-		/// <param name="dataLoadPower">Rozsah dat v datovém zdroji.</param>
+		/// <param name="row">datovÃ½ zdroj typu DataRow</param>
+		/// <param name="dataLoadPower">Rozsah dat v datovÃ©m zdroji.</param>
 		public DataRecord(DataRow row, DataLoadPower dataLoadPower)
 		{
 			this.dataLoadPower = dataLoadPower;
 
-			// zkopíruje data do dataDictionary
+			// zkopÃ­ruje data do dataDictionary
 			this.dataDictionary = new Dictionary<string, object>(row.Table.Columns.Count);
 			for (int i = 0; i < row.Table.Columns.Count; i++)
 			{
@@ -69,35 +69,35 @@ namespace Havit.Data
 		}
 
 		/// <summary>
-		/// Vytvoøí instanci DataRecordu a naète do ní data z <see cref="System.Data.DataRow"/>.
+		/// VytvoÅ™Ã­ instanci DataRecordu a naÄte do nÃ­ data z <see cref="System.Data.DataRow"/>.
 		/// </summary>
-		/// <param name="row">datovı zdroj typu DataRow</param>
-		/// <param name="fullLoad">true, má-li bıt pøi nenalezení parametru vyvolána vıjimka</param>
+		/// <param name="row">datovÃ½ zdroj typu DataRow</param>
+		/// <param name="fullLoad">true, mÃ¡-li bÃ½t pÅ™i nenalezenÃ­ parametru vyvolÃ¡na vÃ½jimka</param>
 		[Obsolete]
 		public DataRecord(DataRow row, bool fullLoad): this(row, fullLoad ? DataLoadPower.FullLoad : DataLoadPower.PartialLoad)
 		{
 		}
 
 		/// <summary>
-		/// Vytvoøí instanci DataRecordu a naète do ní data z <see cref="System.Data.DataRow"/>.
+		/// VytvoÅ™Ã­ instanci DataRecordu a naÄte do nÃ­ data z <see cref="System.Data.DataRow"/>.
 		/// </summary>
-		/// <param name="row">datovı zdroj typu <see cref="System.Data.DataRow"/></param>
+		/// <param name="row">datovÃ½ zdroj typu <see cref="System.Data.DataRow"/></param>
 		[Obsolete]
 		public DataRecord(DataRow row): this(row, true)
 		{
 		}
 
 		/// <summary>
-		/// Vytvoøí instanci DataRecordu a naète do ní data z <see cref="System.Data.IDataRecord"/>
-		/// (napø. <see cref="System.Data.SqlClient.SqlDataReader"/>).
+		/// VytvoÅ™Ã­ instanci DataRecordu a naÄte do nÃ­ data z <see cref="System.Data.IDataRecord"/>
+		/// (napÅ™. <see cref="System.Data.SqlClient.SqlDataReader"/>).
 		/// </summary>
-		/// <param name="record">datovı zdroj <see cref="System.Data.IDataRecord"/> (napø. <see cref="System.Data.SqlClient.SqlDataReader"/>)</param>
-		/// <param name="dataLoadPower">Rozsah dat v datovém zdroji.</param>
+		/// <param name="record">datovÃ½ zdroj <see cref="System.Data.IDataRecord"/> (napÅ™. <see cref="System.Data.SqlClient.SqlDataReader"/>)</param>
+		/// <param name="dataLoadPower">Rozsah dat v datovÃ©m zdroji.</param>
 		public DataRecord(IDataRecord record, DataLoadPower dataLoadPower)
 		{
 			this.dataLoadPower = dataLoadPower;
 
-			// zkopíruje data do dataDictionary
+			// zkopÃ­ruje data do dataDictionary
 			this.dataDictionary = new Dictionary<string, object>(record.FieldCount);
 			for (int i = 0; i < record.FieldCount; i++)
 			{
@@ -109,21 +109,21 @@ namespace Havit.Data
 		}
 
 		/// <summary>
-		/// Vytvoøí instanci DataRecordu a naète do ní data z <see cref="System.Data.IDataRecord"/>
-		/// (napø. <see cref="System.Data.SqlClient.SqlDataReader"/>).
+		/// VytvoÅ™Ã­ instanci DataRecordu a naÄte do nÃ­ data z <see cref="System.Data.IDataRecord"/>
+		/// (napÅ™. <see cref="System.Data.SqlClient.SqlDataReader"/>).
 		/// </summary>
-		/// <param name="record">datovı zdroj <see cref="System.Data.IDataRecord"/> (napø. <see cref="System.Data.SqlClient.SqlDataReader"/>)</param>
-		/// <param name="fullLoad">true, má-li bıt pøi nenalezení parametru vyvolána vıjimka</param>
+		/// <param name="record">datovÃ½ zdroj <see cref="System.Data.IDataRecord"/> (napÅ™. <see cref="System.Data.SqlClient.SqlDataReader"/>)</param>
+		/// <param name="fullLoad">true, mÃ¡-li bÃ½t pÅ™i nenalezenÃ­ parametru vyvolÃ¡na vÃ½jimka</param>
 		[Obsolete]
 		public DataRecord(IDataRecord record, bool fullLoad): this(record, fullLoad ? DataLoadPower.FullLoad : DataLoadPower.PartialLoad)
 		{
 		}
 
 		/// <summary>
-		/// Vytvoøí instanci DataRecordu a naète do ní data z <see cref="System.Data.IDataRecord"/>
-		/// (napø. <see cref="System.Data.SqlClient.SqlDataReader"/>).
+		/// VytvoÅ™Ã­ instanci DataRecordu a naÄte do nÃ­ data z <see cref="System.Data.IDataRecord"/>
+		/// (napÅ™. <see cref="System.Data.SqlClient.SqlDataReader"/>).
 		/// </summary>
-		/// <param name="record">datovı zdroj <see cref="System.Data.IDataRecord"/> (napø. <see cref="System.Data.SqlClient.SqlDataReader"/>)</param>
+		/// <param name="record">datovÃ½ zdroj <see cref="System.Data.IDataRecord"/> (napÅ™. <see cref="System.Data.SqlClient.SqlDataReader"/>)</param>
 		[Obsolete]
 		public DataRecord(IDataRecord record): this(record, true)
 		{			
@@ -132,7 +132,7 @@ namespace Havit.Data
 
 		#region Indexer
 		/// <summary>
-		/// Indexer pro získání k prvku pomocí názvu pole.
+		/// Indexer pro zÃ­skÃ¡nÃ­ k prvku pomocÃ­ nÃ¡zvu pole.
 		/// </summary>
 		/// <param name="field">pole, sloupec</param>
 		/// <returns>hodnota</returns>
@@ -147,16 +147,16 @@ namespace Havit.Data
 
 		#region Get<T>, TryGet<T>, Load<T>
 		/// <summary>
-		/// Naète parametr zadaného generického typu T.
+		/// NaÄte parametr zadanÃ©ho generickÃ©ho typu T.
 		/// </summary>
-		/// <param name="fieldName">jméno parametru</param>
-		/// <param name="target">cíl, kam má bıt parametr uloen</param>
+		/// <param name="fieldName">jmÃ©no parametru</param>
+		/// <param name="target">cÃ­l, kam mÃ¡ bÃ½t parametr uloÅ¾en</param>
 		/// <returns>
-		/// <c>true</c>, pokud byla naètena hodnota;<br/>
-		/// <c>false</c>, pokud field v data recordu není a vlastnost <see cref="FullLoad"/> je <c>false</c> (target je pak nastaven na <c>default(T)</c>);<br/>
+		/// <c>true</c>, pokud byla naÄtena hodnota;<br/>
+		/// <c>false</c>, pokud field v data recordu nenÃ­ a vlastnost <see cref="FullLoad"/> je <c>false</c> (target je pak nastaven na <c>default(T)</c>);<br/>
 		/// </returns>
-		/// <exception cref="ArgumentException">pokud field v data recordu není a vlastnost <see cref="FullLoad"/> je <c>true</c></exception>
-		/// <exception cref="InvalidCastException">pokud nelze pøevést field na vıstupní typ, nebo pokud je field <see cref="DBNull"/> a vıstupní typ nemá <c>null</c></exception>
+		/// <exception cref="ArgumentException">pokud field v data recordu nenÃ­ a vlastnost <see cref="FullLoad"/> je <c>true</c></exception>
+		/// <exception cref="InvalidCastException">pokud nelze pÅ™evÃ©st field na vÃ½stupnÃ­ typ, nebo pokud je field <see cref="DBNull"/> a vÃ½stupnÃ­ typ nemÃ¡ <c>null</c></exception>
 		public bool TryGet<T>(string fieldName, out T target)
 		{
 			target = default(T);
@@ -167,7 +167,7 @@ namespace Havit.Data
 				{
 					if (default(T) != null)
 					{
-						throw new InvalidCastException("Hodnota NULL nelze pøevést na ValueType.");
+						throw new InvalidCastException("Hodnota NULL nelze pÅ™evÃ©st na ValueType.");
 					}
 					target = default(T); // null
 				}
@@ -183,7 +183,7 @@ namespace Havit.Data
 						{
 							try
 							{
-								target = (T)Convert.ChangeType(value, typeof(T));	 // poslední pokus napø. pro konverzi decimal -> double
+								target = (T)Convert.ChangeType(value, typeof(T));	 // poslednÃ­ pokus napÅ™. pro konverzi decimal -> double
 							}
 							catch (InvalidCastException e)
 							{
@@ -197,7 +197,7 @@ namespace Havit.Data
 			}
 			else if (dataLoadPower == DataLoadPower.FullLoad)
 			{
-				throw new ArgumentException("Parametr poadovaného jména nebyl v DataRecordu nalezen.", fieldName);
+				throw new ArgumentException("Parametr poÅ¾adovanÃ©ho jmÃ©na nebyl v DataRecordu nalezen.", fieldName);
 			}
 			else
 			{
@@ -207,19 +207,19 @@ namespace Havit.Data
 		}
 
 		/// <summary>
-		/// Vrátí parametr zadaného generického typu.
+		/// VrÃ¡tÃ­ parametr zadanÃ©ho generickÃ©ho typu.
 		/// </summary>
 		/// <remarks>
-		/// Mimo castingu se pokouší i o konverzi typu pomocí IConvertible.
+		/// Mimo castingu se pokouÅ¡Ã­ i o konverzi typu pomocÃ­ IConvertible.
 		/// </remarks>
-		/// <param name="fieldName">jméno parametru</param>
+		/// <param name="fieldName">jmÃ©no parametru</param>
 		/// <returns>
-		/// vrátí hodnotu typu T;<br/>
-		/// pokud parametr neexistuje a není <see cref="FullLoad"/>, pak vrací <c>default(T)</c>, ve FullLoad hází vıjimku ArgumentException;<br/>
-		/// pokud má parametr hodnotu NULL, pak vrací <c>null</c> pro referenèní typy, pro hodnotové typy hází vıjimku InvalidCastException<br/>
+		/// vrÃ¡tÃ­ hodnotu typu T;<br/>
+		/// pokud parametr neexistuje a nenÃ­ <see cref="FullLoad"/>, pak vracÃ­ <c>default(T)</c>, ve FullLoad hÃ¡zÃ­ vÃ½jimku ArgumentException;<br/>
+		/// pokud mÃ¡ parametr hodnotu NULL, pak vracÃ­ <c>null</c> pro referenÄnÃ­ typy, pro hodnotovÃ© typy hÃ¡zÃ­ vÃ½jimku InvalidCastException<br/>
 		/// </returns>
-		/// <exception cref="ArgumentException">pokud field v data recordu není a vlastnost <see cref="FullLoad"/> je <c>true</c></exception>
-		/// <exception cref="InvalidCastException">pokud nelze pøevést field na vıstupní typ, nebo pokud je field <see cref="DBNull"/> a vıstupní typ nemá <c>null</c></exception>
+		/// <exception cref="ArgumentException">pokud field v data recordu nenÃ­ a vlastnost <see cref="FullLoad"/> je <c>true</c></exception>
+		/// <exception cref="InvalidCastException">pokud nelze pÅ™evÃ©st field na vÃ½stupnÃ­ typ, nebo pokud je field <see cref="DBNull"/> a vÃ½stupnÃ­ typ nemÃ¡ <c>null</c></exception>
 		public T Get<T>(string fieldName)
 		{
 			T target;
@@ -228,22 +228,22 @@ namespace Havit.Data
 		}
 
 		/// <summary>
-		/// Naète parametr zadaného generického typu T.
+		/// NaÄte parametr zadanÃ©ho generickÃ©ho typu T.
 		/// </summary>
 		/// <remarks>
-		/// Narozdíl od <see cref="TryGet{T}(string, out T)"/> neindikuje pøítomnost fieldu v data recordu, nıbr je-li field roven <see cref="DBNull"/>.<br/>
-		/// Pokud je field <see cref="DBNull"/>, pak parametr <c>target</c> nezmìní
+		/// NarozdÃ­l od <see cref="TryGet{T}(string, out T)"/> neindikuje pÅ™Ã­tomnost fieldu v data recordu, nÃ½brÅ¾ je-li field roven <see cref="DBNull"/>.<br/>
+		/// Pokud je field <see cref="DBNull"/>, pak parametr <c>target</c> nezmÄ›nÃ­
 		/// </remarks>
-		/// <param name="fieldName">jméno parametru</param>
-		/// <param name="target">cíl, kam má bıt parametr uloen</param>
+		/// <param name="fieldName">jmÃ©no parametru</param>
+		/// <param name="target">cÃ­l, kam mÃ¡ bÃ½t parametr uloÅ¾en</param>
 		/// <returns>
-		/// <c>false</c>, pokud má field hodnotu <see cref="DBNull"/>;<br/>
+		/// <c>false</c>, pokud mÃ¡ field hodnotu <see cref="DBNull"/>;<br/>
 		/// <c>false</c>, pokud nebyl field nalezen a <see cref="FullLoad"/> je <c>false</c>;
-		/// <c>true</c>, pokud byla naètena hodnota
+		/// <c>true</c>, pokud byla naÄtena hodnota
 		/// </returns>
 		/// <exception cref="ArgumentException">pokud nebyl field nalezen a <see cref="FullLoad"/> je <c>true</c></exception>
-		/// <exception cref="InvalidCastException">pokud nelze pøevést field na vıstupní typ</exception>
-		[Obsolete("Metoda Load<T>() je obsolete, pouijte TryGet<T>().")]
+		/// <exception cref="InvalidCastException">pokud nelze pÅ™evÃ©st field na vÃ½stupnÃ­ typ</exception>
+		[Obsolete("Metoda Load<T>() je obsolete, pouÅ¾ijte TryGet<T>().")]
 		public bool Load<T>(string fieldName, ref T target)
 		{
 			object value;
@@ -251,7 +251,7 @@ namespace Havit.Data
 			{
 				if (value == DBNull.Value)
 				{
-					// nemìníme hodnotu target
+					// nemÄ›nÃ­me hodnotu target
 					return false;
 				}
 				else
@@ -267,7 +267,7 @@ namespace Havit.Data
 						{
 							try
 							{
-								target = (T)Convert.ChangeType(value, typeof(T));	 // poslední pokus napø. pro konverzi decimal -> double
+								target = (T)Convert.ChangeType(value, typeof(T));	 // poslednÃ­ pokus napÅ™. pro konverzi decimal -> double
 								return true;
 							}
 							catch (InvalidCastException e)
@@ -280,7 +280,7 @@ namespace Havit.Data
 			}
 			else if (dataLoadPower == DataLoadPower.FullLoad)
 			{
-				throw new ArgumentException("Parametr ve vstupních datech nebyl nalezen", fieldName);
+				throw new ArgumentException("Parametr ve vstupnÃ­ch datech nebyl nalezen", fieldName);
 			}
 			return false;
 		}
@@ -288,22 +288,22 @@ namespace Havit.Data
 
 		#region LoadObject, GetObject
 		/// <summary>
-		/// Naète parametr typu Object.
+		/// NaÄte parametr typu Object.
 		/// </summary>
-		/// <param name="fieldName">jméno parametru</param>
-		/// <param name="target">cíl, kam má bıt parametr uloen</param>
-		/// <returns>false, pokud má parametr hodnotu NULL; true, pokud byla naètena hodnota</returns>
-		[Obsolete("Metoda LoadObject() je obsolete, pouijte TryGet<object>().")]
+		/// <param name="fieldName">jmÃ©no parametru</param>
+		/// <param name="target">cÃ­l, kam mÃ¡ bÃ½t parametr uloÅ¾en</param>
+		/// <returns>false, pokud mÃ¡ parametr hodnotu NULL; true, pokud byla naÄtena hodnota</returns>
+		[Obsolete("Metoda LoadObject() je obsolete, pouÅ¾ijte TryGet<object>().")]
 		public bool LoadObject(string fieldName, ref object target)
 		{
 			return Load<object>(fieldName, ref target);
 		}
 
 		/// <summary>
-		/// Vrátí parametr typu Object.
+		/// VrÃ¡tÃ­ parametr typu Object.
 		/// </summary>
-		/// <param name="fieldName">jméno parametru</param>
-		/// <returns>null, pokud má parametr hodnotu NULL, nebo neexistuje; jinak hodnota typu Object</returns>
+		/// <param name="fieldName">jmÃ©no parametru</param>
+		/// <returns>null, pokud mÃ¡ parametr hodnotu NULL, nebo neexistuje; jinak hodnota typu Object</returns>
 		public object GetObject(string fieldName)
 		{
 			return Get<object>(fieldName);
@@ -312,22 +312,22 @@ namespace Havit.Data
 
 		#region LoadString, GetString
 		/// <summary>
-		/// Naète parametr typu string.
+		/// NaÄte parametr typu string.
 		/// </summary>
-		/// <param name="fieldName">jméno parametru</param>
-		/// <param name="target">cíl, kam má bıt parametr uloen</param>
-		/// <returns>false, pokud má parametr hodnotu NULL; true, pokud byla naètena hodnota</returns>
-		[Obsolete("Metoda LoadString() je obsolete, pouijte TryGet<string>().")]
+		/// <param name="fieldName">jmÃ©no parametru</param>
+		/// <param name="target">cÃ­l, kam mÃ¡ bÃ½t parametr uloÅ¾en</param>
+		/// <returns>false, pokud mÃ¡ parametr hodnotu NULL; true, pokud byla naÄtena hodnota</returns>
+		[Obsolete("Metoda LoadString() je obsolete, pouÅ¾ijte TryGet<string>().")]
 		public bool LoadString(string fieldName, ref string target)
 		{
 			return Load<string>(fieldName, ref target);
 		}
 
 		/// <summary>
-		/// Vrátí parametr typu String.
+		/// VrÃ¡tÃ­ parametr typu String.
 		/// </summary>
-		/// <param name="fieldName">jméno parametru</param>
-		/// <returns>null, pokud má parametr hodnotu NULL, nebo neexistuje; jinak hodnota typu String</returns>
+		/// <param name="fieldName">jmÃ©no parametru</param>
+		/// <returns>null, pokud mÃ¡ parametr hodnotu NULL, nebo neexistuje; jinak hodnota typu String</returns>
 		public string GetString(string fieldName)
 		{
 			return Get<string>(fieldName);
@@ -336,22 +336,22 @@ namespace Havit.Data
 
 		#region LoadInt32, GetNullableInt32
 		/// <summary>
-		/// Naète parametr typu Int32.
+		/// NaÄte parametr typu Int32.
 		/// </summary>
-		/// <param name="fieldName">jméno parametru</param>
-		/// <param name="target">cíl, kam má bıt parametr uloen</param>
-		/// <returns>false, pokud má parametr hodnotu NULL; true, pokud byla naètena hodnota</returns>
-		[Obsolete("Metoda LoadInt32() je obsolete, pouijte TryGet<int>().")]
+		/// <param name="fieldName">jmÃ©no parametru</param>
+		/// <param name="target">cÃ­l, kam mÃ¡ bÃ½t parametr uloÅ¾en</param>
+		/// <returns>false, pokud mÃ¡ parametr hodnotu NULL; true, pokud byla naÄtena hodnota</returns>
+		[Obsolete("Metoda LoadInt32() je obsolete, pouÅ¾ijte TryGet<int>().")]
 		public bool LoadInt32(string fieldName, ref Int32 target)
 		{
 			return Load<Int32>(fieldName, ref target);
 		}
 
 		/// <summary>
-		/// Vrátí parametr typu Int32?.
+		/// VrÃ¡tÃ­ parametr typu Int32?.
 		/// </summary>
-		/// <param name="fieldName">jméno parametru</param>
-		/// <returns>null, pokud má parametr hodnotu NULL, nebo neexistuje; jinak hodnota typu Int32</returns>
+		/// <param name="fieldName">jmÃ©no parametru</param>
+		/// <returns>null, pokud mÃ¡ parametr hodnotu NULL, nebo neexistuje; jinak hodnota typu Int32</returns>
 		public Int32? GetNullableInt32(string fieldName)
 		{
 			return Get<Int32?>(fieldName);
@@ -360,22 +360,22 @@ namespace Havit.Data
 
 		#region LoadDouble, GetNullableDouble
 		/// <summary>
-		/// Naète parametr typu Double.
+		/// NaÄte parametr typu Double.
 		/// </summary>
-		/// <param name="fieldName">jméno parametru</param>
-		/// <param name="target">cíl, kam má bıt parametr uloen</param>
-		/// <returns>false, pokud má parametr hodnotu NULL; true, pokud byla naètena hodnota</returns>
-		[Obsolete("Metoda LoadDouble() je obsolete, pouijte TryGet<double>().")]
+		/// <param name="fieldName">jmÃ©no parametru</param>
+		/// <param name="target">cÃ­l, kam mÃ¡ bÃ½t parametr uloÅ¾en</param>
+		/// <returns>false, pokud mÃ¡ parametr hodnotu NULL; true, pokud byla naÄtena hodnota</returns>
+		[Obsolete("Metoda LoadDouble() je obsolete, pouÅ¾ijte TryGet<double>().")]
 		public bool LoadDouble(string fieldName, ref double target)
 		{
 			return Load<double>(fieldName, ref target);
 		}
 
 		/// <summary>
-		/// Vrátí parametr typu Double?.
+		/// VrÃ¡tÃ­ parametr typu Double?.
 		/// </summary>
-		/// <param name="fieldName">jméno parametru</param>
-		/// <returns>null, pokud má parametr hodnotu NULL, nebo neexistuje; jinak hodnota typu Double</returns>
+		/// <param name="fieldName">jmÃ©no parametru</param>
+		/// <returns>null, pokud mÃ¡ parametr hodnotu NULL, nebo neexistuje; jinak hodnota typu Double</returns>
 		public double? GetNullableDouble(string fieldName)
 		{
 			return Get<double?>(fieldName);
@@ -385,22 +385,22 @@ namespace Havit.Data
 
 		#region LoadBoolean, GetNullableBoolean
 		/// <summary>
-		/// Naète parametr typu Boolean.
+		/// NaÄte parametr typu Boolean.
 		/// </summary>
-		/// <param name="fieldName">jméno parametru</param>
-		/// <param name="target">cíl, kam má bıt parametr uloen</param>
-		/// <returns>false, pokud má parametr hodnotu NULL; true, pokud byla naètena hodnota</returns>
-		[Obsolete("Metoda LoadBoolean() je obsolete, pouijte TryGet<bool>().")]
+		/// <param name="fieldName">jmÃ©no parametru</param>
+		/// <param name="target">cÃ­l, kam mÃ¡ bÃ½t parametr uloÅ¾en</param>
+		/// <returns>false, pokud mÃ¡ parametr hodnotu NULL; true, pokud byla naÄtena hodnota</returns>
+		[Obsolete("Metoda LoadBoolean() je obsolete, pouÅ¾ijte TryGet<bool>().")]
 		public bool LoadBoolean(string fieldName, ref bool target)
 		{
 			return Load<Boolean>(fieldName, ref target);
 		}
 
 		/// <summary>
-		/// Vrátí parametr typu bool?.
+		/// VrÃ¡tÃ­ parametr typu bool?.
 		/// </summary>
-		/// <param name="fieldName">jméno parametru</param>
-		/// <returns>null, pokud má parametr hodnotu NULL, nebo neexistuje; jinak hodnota typu Boolean</returns>
+		/// <param name="fieldName">jmÃ©no parametru</param>
+		/// <returns>null, pokud mÃ¡ parametr hodnotu NULL, nebo neexistuje; jinak hodnota typu Boolean</returns>
 		public bool? GetNullableBoolean(string fieldName)
 		{
 			return Get<bool?>(fieldName);
@@ -409,22 +409,22 @@ namespace Havit.Data
 
 		#region LoadDateTime, GetNullableDateTime
 		/// <summary>
-		/// Naète parametr typu DateTime.
+		/// NaÄte parametr typu DateTime.
 		/// </summary>
-		/// <param name="fieldName">jméno parametru</param>
-		/// <param name="target">cíl, kam má bıt parametr uloen</param>
-		/// <returns>false, pokud má parametr hodnotu NULL; true, pokud byla naètena hodnota</returns>
-		[Obsolete("Metoda LoadDateTime() je obsolete, pouijte TryGet<DateTime>().")]
+		/// <param name="fieldName">jmÃ©no parametru</param>
+		/// <param name="target">cÃ­l, kam mÃ¡ bÃ½t parametr uloÅ¾en</param>
+		/// <returns>false, pokud mÃ¡ parametr hodnotu NULL; true, pokud byla naÄtena hodnota</returns>
+		[Obsolete("Metoda LoadDateTime() je obsolete, pouÅ¾ijte TryGet<DateTime>().")]
 		public bool LoadDateTime(string fieldName, ref DateTime target)
 		{
 			return Load<DateTime>(fieldName, ref target);
 		}
 
 		/// <summary>
-		/// Vrátí parametr typu DateTime?.
+		/// VrÃ¡tÃ­ parametr typu DateTime?.
 		/// </summary>
-		/// <param name="fieldName">jméno parametru</param>
-		/// <returns>null, pokud má parametr hodnotu NULL, nebo neexistuje; jinak hodnota typu DateTime</returns>
+		/// <param name="fieldName">jmÃ©no parametru</param>
+		/// <returns>null, pokud mÃ¡ parametr hodnotu NULL, nebo neexistuje; jinak hodnota typu DateTime</returns>
 		public DateTime? GetNullableDateTime(string fieldName)
 		{
 			return Get<DateTime?>(fieldName);

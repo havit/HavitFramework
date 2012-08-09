@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Security.Cryptography;
@@ -6,16 +6,16 @@ using System.Security.Cryptography;
 namespace Havit.Security
 {
 	/// <summary>
-	/// Generátor hesel.
+	/// GenerÃ¡tor hesel.
 	/// </summary>
 	/// <remarks>
-	/// Vychází pùvodnì z http://www.codeproject.com/csharp/pwdgen.asp
+	/// VychÃ¡zÃ­ pÅ¯vodnÄ› z http://www.codeproject.com/csharp/pwdgen.asp
 	/// </remarks>
 	public class PasswordGenerator
 	{
 		#region MinimumLength
 		/// <summary>
-		/// Minimální délka hesla. Default 6.
+		/// MinimÃ¡lnÃ­ dÃ©lka hesla. Default 6.
 		/// </summary>
 		public int MinimumLength
 		{
@@ -30,7 +30,7 @@ namespace Havit.Security
 
 		#region MaximumLength
 		/// <summary>
-		/// Maximální délka hesla. Default 10.
+		/// MaximÃ¡lnÃ­ dÃ©lka hesla. Default 10.
 		/// </summary>
 		public int MaximumLength
 		{
@@ -45,7 +45,7 @@ namespace Havit.Security
 
 		#region PasswordCharacterSet
 		/// <summary>
-		/// Sada znakù, z ní se mají vybírat znaky pro generované heslo.
+		/// Sada znakÅ¯, z nÃ­Å¾ se majÃ­ vybÃ­rat znaky pro generovanÃ© heslo.
 		/// </summary>
 		public PasswordCharacterSet PasswordCharacterSet
 		{
@@ -61,7 +61,7 @@ namespace Havit.Security
 
 		#region GetCharacterArrayUpperBound
 		/// <summary>
-		/// Vrátí horní index pole znakù, do kterého se smí provádìt vıbìr pro generované heslo.
+		/// VrÃ¡tÃ­ hornÃ­ index pole znakÅ¯, do kterÃ©ho se smÃ­ provÃ¡dÄ›t vÃ½bÄ›r pro generovanÃ© heslo.
 		/// </summary>
 		private int GetCharacterArrayUpperBound()
 		{
@@ -89,7 +89,7 @@ namespace Havit.Security
 
 		#region AllowRepeatingCharacters
 		/// <summary>
-		/// Indikuje, zda-li se smí v heslu opakovat znaky. Zda-li mùe bıt nìkterı znak v heslu vícekrát. Default <c>true</c>.
+		/// Indikuje, zda-li se smÃ­ v heslu opakovat znaky. Zda-li mÅ¯Å¾e bÃ½t nÄ›kterÃ½ znak v heslu vÃ­cekrÃ¡t. Default <c>true</c>.
 		/// </summary>
 		public bool AllowRepeatingCharacters
 		{
@@ -101,7 +101,7 @@ namespace Havit.Security
 
 		#region AllowConsecutiveCharacters
 		/// <summary>
-		/// Indikuje, zda-li smí heslo obsahovat shluky stejnıch znakù. Default <c>false</c>.
+		/// Indikuje, zda-li smÃ­ heslo obsahovat shluky stejnÃ½ch znakÅ¯. Default <c>false</c>.
 		/// </summary>
 		public bool AllowConsecutiveCharacters
 		{
@@ -113,7 +113,7 @@ namespace Havit.Security
 
 		#region Exclusions
 		/// <summary>
-		/// Øetìzec znakù, které nechceme mít v heslu.
+		/// Å˜etÄ›zec znakÅ¯, kterÃ© nechceme mÃ­t v heslu.
 		/// </summary>
 		public string Exclusions
 		{
@@ -133,7 +133,7 @@ namespace Havit.Security
 
 		#region Constructor
 		/// <summary>
-		/// Vytvoøí instanci PasswordGeneratoru a nastaví vıchozí hodnoty pro sloitost generovaného hesla.
+		/// VytvoÅ™Ã­ instanci PasswordGeneratoru a nastavÃ­ vÃ½chozÃ­ hodnoty pro sloÅ¾itost generovanÃ©ho hesla.
 		/// </summary>
 		public PasswordGenerator()
 		{
@@ -150,10 +150,10 @@ namespace Havit.Security
 
 		#region GetCryptographicRandomNumber (protected)
 		/// <summary>
-		/// Vygeneruje náhodné èíslo pomocí crypto-API.
+		/// Vygeneruje nÃ¡hodnÃ© ÄÃ­slo pomocÃ­ crypto-API.
 		/// </summary>
-		/// <param name="lBound">dolní mez</param>
-		/// <param name="uBound">horní mez</param>
+		/// <param name="lBound">dolnÃ­ mez</param>
+		/// <param name="uBound">hornÃ­ mez</param>
 		protected int GetCryptographicRandomNumber(int lBound, int uBound)
 		{
 			// Assumes lBound >= 0 && lBound < uBound
@@ -180,7 +180,7 @@ namespace Havit.Security
 
 		#region GetRandomCharacter (protected)
 		/// <summary>
-		/// Vrátí náhodnı znak.
+		/// VrÃ¡tÃ­ nÃ¡hodnÃ½ znak.
 		/// </summary>
 		protected char GetRandomCharacter()
 		{
@@ -196,9 +196,9 @@ namespace Havit.Security
 
 		#region Generate
 		/// <summary>
-		/// Vygeneruje heslo sloitosti dle nastaveného generátoru.
+		/// Vygeneruje heslo sloÅ¾itosti dle nastavenÃ©ho generÃ¡toru.
 		/// </summary>
-		/// <returns>vygenerované heslo</returns>
+		/// <returns>vygenerovanÃ© heslo</returns>
 		public string Generate()
 		{
 			ValidateSettings();
@@ -216,8 +216,8 @@ namespace Havit.Security
 
 			if ((!AllowRepeatingCharacters) && (passwordLength > passwordCharArrayUpperBound + 1))
 			{
-				// Pokud má bıt heslo vìtší, ne je monı poèet znakù, pak ho musíme zkrátit.
-				// Minimální délku u zajišuje ValidateSettings();
+				// Pokud mÃ¡ bÃ½t heslo vÄ›tÅ¡Ã­, neÅ¾ je moÅ¾nÃ½ poÄet znakÅ¯, pak ho musÃ­me zkrÃ¡tit.
+				// MinimÃ¡lnÃ­ dÃ©lku uÅ¾ zajiÅ¡Å¥uje ValidateSettings();
 				passwordLength = passwordCharArrayUpperBound + 1;
 			}
 
@@ -278,7 +278,7 @@ namespace Havit.Security
 
 		#region ValidateSettings
 		/// <summary>
-		/// Kontroluje nastavení generátoru a vyhazuje pøípadné vıjimky.
+		/// Kontroluje nastavenÃ­ generÃ¡toru a vyhazuje pÅ™Ã­padnÃ© vÃ½jimky.
 		/// </summary>
 		private void ValidateSettings()
 		{
@@ -289,7 +289,7 @@ namespace Havit.Security
 
 			if ((!AllowRepeatingCharacters) && (this.MinimumLength > passwordCharArrayUpperBound + 1))
 			{
-				throw new InvalidOperationException("Není dostatek znakù pro vygenerování hesla poadované délky.");
+				throw new InvalidOperationException("NenÃ­ dostatek znakÅ¯ pro vygenerovÃ¡nÃ­ hesla poÅ¾adovanÃ© dÃ©lky.");
 			}
 		}
 		#endregion
@@ -301,14 +301,14 @@ namespace Havit.Security
 
 		#region Generate (static)
 		/// <summary>
-		/// Vygeneruje heslo sloitosti dle poadovanıch parametrù.
+		/// Vygeneruje heslo sloÅ¾itosti dle poÅ¾adovanÃ½ch parametrÅ¯.
 		/// </summary>
-		/// <param name="minimumLength">minimální délka hesla</param>
-		/// <param name="maximumLength">maximální délka hesla</param>
-		/// <param name="passwordCharacterSet">Sada znakù, z ní se mají vybírat znaky pro generované heslo.</param>
-		/// <param name="allowRepeatingCharacters">Indikuje, zda-li se smí v heslu opakovat znaky. Zda-li mùe bıt nìkterı znak v heslu vícekrát.</param>
-		/// <param name="allowConsecutiveCharacters">Indikuje, zda-li smí heslo obsahovat shluky stejnıch znakù.</param>
-		/// <returns>vygenerované heslo odpovídající vstupním poadavkùm</returns>
+		/// <param name="minimumLength">minimÃ¡lnÃ­ dÃ©lka hesla</param>
+		/// <param name="maximumLength">maximÃ¡lnÃ­ dÃ©lka hesla</param>
+		/// <param name="passwordCharacterSet">Sada znakÅ¯, z nÃ­Å¾ se majÃ­ vybÃ­rat znaky pro generovanÃ© heslo.</param>
+		/// <param name="allowRepeatingCharacters">Indikuje, zda-li se smÃ­ v heslu opakovat znaky. Zda-li mÅ¯Å¾e bÃ½t nÄ›kterÃ½ znak v heslu vÃ­cekrÃ¡t.</param>
+		/// <param name="allowConsecutiveCharacters">Indikuje, zda-li smÃ­ heslo obsahovat shluky stejnÃ½ch znakÅ¯.</param>
+		/// <returns>vygenerovanÃ© heslo odpovÃ­dajÃ­cÃ­ vstupnÃ­m poÅ¾adavkÅ¯m</returns>
 		public static string Generate(int minimumLength, int maximumLength, PasswordCharacterSet passwordCharacterSet, bool allowRepeatingCharacters, bool allowConsecutiveCharacters)
 		{
 			PasswordGenerator passwordGenerator = new PasswordGenerator();
@@ -322,12 +322,12 @@ namespace Havit.Security
 		}
 
 		/// <summary>
-		/// Vygeneruje heslo sloitosti dle poadovanıch parametrù.
+		/// Vygeneruje heslo sloÅ¾itosti dle poÅ¾adovanÃ½ch parametrÅ¯.
 		/// </summary>
-		/// <param name="minimumLength">minimální délka hesla</param>
-		/// <param name="maximumLength">maximální délka hesla</param>
-		/// <param name="passwordCharacterSet">Sada znakù, z ní se mají vybírat znaky pro generované heslo.</param>
-		/// <returns>vygenerované heslo odpovídající vstupním poadavkùm</returns>
+		/// <param name="minimumLength">minimÃ¡lnÃ­ dÃ©lka hesla</param>
+		/// <param name="maximumLength">maximÃ¡lnÃ­ dÃ©lka hesla</param>
+		/// <param name="passwordCharacterSet">Sada znakÅ¯, z nÃ­Å¾ se majÃ­ vybÃ­rat znaky pro generovanÃ© heslo.</param>
+		/// <returns>vygenerovanÃ© heslo odpovÃ­dajÃ­cÃ­ vstupnÃ­m poÅ¾adavkÅ¯m</returns>
 		public static string Generate(int minimumLength, int maximumLength, PasswordCharacterSet passwordCharacterSet)
 		{
 			PasswordGenerator passwordGenerator = new PasswordGenerator();
@@ -339,11 +339,11 @@ namespace Havit.Security
 		}
 
 		/// <summary>
-		/// Vygeneruje heslo sloitosti dle poadovanıch parametrù.
+		/// Vygeneruje heslo sloÅ¾itosti dle poÅ¾adovanÃ½ch parametrÅ¯.
 		/// </summary>
-		/// <param name="length"> délka hesla</param>
-		/// <param name="passwordCharacterSet">Sada znakù, z ní se mají vybírat znaky pro generované heslo.</param>
-		/// <returns>vygenerované heslo odpovídající vstupním poadavkùm</returns>
+		/// <param name="length"> dÃ©lka hesla</param>
+		/// <param name="passwordCharacterSet">Sada znakÅ¯, z nÃ­Å¾ se majÃ­ vybÃ­rat znaky pro generovanÃ© heslo.</param>
+		/// <returns>vygenerovanÃ© heslo odpovÃ­dajÃ­cÃ­ vstupnÃ­m poÅ¾adavkÅ¯m</returns>
 		public static string Generate(int length, PasswordCharacterSet passwordCharacterSet)
 		{
 			PasswordGenerator passwordGenerator = new PasswordGenerator();

@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Text;
 using System.Web;
 using Havit;
@@ -9,23 +9,23 @@ using System.Resources;
 namespace Havit.Web
 {
 	/// <summary>
-	/// Poskytuje další pomocné metody pro kódování a dekódování textu pro pouití na webu.
+	/// Poskytuje dalÅ¡Ã­ pomocnÃ© metody pro kÃ³dovÃ¡nÃ­ a dekÃ³dovÃ¡nÃ­ textu pro pouÅ¾itÃ­ na webu.
 	/// </summary>
 	public static class HttpUtilityExt
 	{
 		#region HtmlEncode
 		/// <summary>
 		/// Zkonvertuje string do HTML-encoded podoby.
-		/// Oproti standardnímu <see cref="System.Web.HttpUtility.HtmlEncode(string)"/> mùe encodovat všechny non-ASCII znaky
-		/// a hlavnì umoòuje pomocí options øídit poadovanou vıslednou podobu. Lze napøíklad pouít rozšíøenou sadu HTML-entit,
-		/// popøípadì úplnì vylouèit pøevod ne-ASCII znakù na podobu &amp;#1234;.
+		/// Oproti standardnÃ­mu <see cref="System.Web.HttpUtility.HtmlEncode(string)"/> mÅ¯Å¾e encodovat vÅ¡echny non-ASCII znaky
+		/// a hlavnÄ› umoÅ¾Åˆuje pomocÃ­ options Å™Ã­dit poÅ¾adovanou vÃ½slednou podobu. Lze napÅ™Ã­klad pouÅ¾Ã­t rozÅ¡Ã­Å™enou sadu HTML-entit,
+		/// popÅ™Ã­padÄ› ÃºplnÄ› vylouÄit pÅ™evod ne-ASCII znakÅ¯ na podobu &amp;#1234;.
 		/// </summary>
-		/// <param name="unicodeText">pøevádìnı string v Unicode</param>
+		/// <param name="unicodeText">pÅ™evÃ¡dÄ›nÃ½ string v Unicode</param>
 		/// <param name="options">options volby konverze</param>
 		/// <returns>HTML-encoded string dle options</returns>
 		public static string HtmlEncode(string unicodeText, HtmlEncodeOptions options)
 		{
-			// TODO: Doplnit switch o další extended entities
+			// TODO: Doplnit switch o dalÅ¡Ã­ extended entities
 			int unicodeValue;
 			StringBuilder result = new StringBuilder();
 
@@ -67,7 +67,7 @@ namespace Havit.Web
 						}
 						else
 							goto default;
-					case '€':
+					case 'â‚¬':
 						if (opExtendedHtmlEntities)
 						{
 							result.Append("&euro;");
@@ -75,7 +75,7 @@ namespace Havit.Web
 						}
 						else
 							goto default;
-					case '©':
+					case 'Â©':
 						if (opExtendedHtmlEntities)
 						{
 							result.Append("&copy;");
@@ -83,7 +83,7 @@ namespace Havit.Web
 						}
 						else
 							goto default;
-					case '®':
+					case 'Â®':
 						if (opExtendedHtmlEntities)
 						{
 							result.Append("&reg;");
@@ -91,7 +91,7 @@ namespace Havit.Web
 						}
 						else
 							goto default;
-					case '™': // trade-mark
+					case 'â„¢': // trade-mark
 						if (opExtendedHtmlEntities)
 						{
 							result.Append("&trade;");
@@ -118,14 +118,14 @@ namespace Havit.Web
 		}
 
 		/// <summary>
-		/// Zkonvertuje string do HTML-encoded podoby s pouitím vıchozích options.
-		/// Oproti standardnímu <see cref="System.Web.HttpUtility.HtmlEncode(string)"/> encoduje všechny non-ASCII znaky.
+		/// Zkonvertuje string do HTML-encoded podoby s pouÅ¾itÃ­m vÃ½chozÃ­ch options.
+		/// Oproti standardnÃ­mu <see cref="System.Web.HttpUtility.HtmlEncode(string)"/> encoduje vÅ¡echny non-ASCII znaky.
 		/// </summary>
 		/// <remarks>
-		/// Pro podrobné øízení voleb konverze je nutno pouít overload s options, takto je pouito <see cref="HtmlEncodeOptions.None"/>,
-		/// tj. pouze pìt standardních XML entit (&amp;gt;; &amp;lt;, &amp;amp;, &amp;quot;, &amp;apos;)
+		/// Pro podrobnÃ© Å™Ã­zenÃ­ voleb konverze je nutno pouÅ¾Ã­t overload s options, takto je pouÅ¾ito <see cref="HtmlEncodeOptions.None"/>,
+		/// tj. pouze pÄ›t standardnÃ­ch XML entit (&amp;gt;; &amp;lt;, &amp;amp;, &amp;quot;, &amp;apos;)
 		/// </remarks>
-		/// <param name="unicodeText">pøevádìnı string v Unicode</param>
+		/// <param name="unicodeText">pÅ™evÃ¡dÄ›nÃ½ string v Unicode</param>
 		/// <returns>HTML-encoded string</returns>
 		public static string HtmlEncode(string unicodeText)
 		{
@@ -135,13 +135,13 @@ namespace Havit.Web
 
 		#region UrlEncodeSpaces
 		/// <summary>
-		/// Encoduje øetìzec tak, e vymìní mezery za %20.
+		/// Encoduje Å™etÄ›zec tak, Å¾e vymÄ›nÃ­ mezery za %20.
 		/// </summary>
 		/// <remarks>
-		/// Public pøepis internal metody System.Web.HttpUtility.UrlEncodeSpaces.
+		/// Public pÅ™epis internal metody System.Web.HttpUtility.UrlEncodeSpaces.
 		/// </remarks>
-		/// <param name="str">Text k encodování</param>
-		/// <returns>Øetìzec, kde jsou mezery vymìnìny za %20.</returns>
+		/// <param name="str">Text k encodovÃ¡nÃ­</param>
+		/// <returns>Å˜etÄ›zec, kde jsou mezery vymÄ›nÄ›ny za %20.</returns>
 		public static string UrlEncodeSpaces(string str)
 		{
 			if ((str != null) && (str.IndexOf(' ') >= 0))
@@ -154,15 +154,15 @@ namespace Havit.Web
 
 		#region UrlEncodeNonAscii, UrlEncodeBytesToBytesNonAscii
 		/// <summary>
-		/// Encoduje všechny non-ACSII znaky v zadaném øetìzci pro bezpeènı pøenos v URL.
-		/// Lze pouít na ji sestavenı QueryString, nezlikviduje toti &amp;, =, atp.
+		/// Encoduje vÅ¡echny non-ACSII znaky v zadanÃ©m Å™etÄ›zci pro bezpeÄnÃ½ pÅ™enos v URL.
+		/// Lze pouÅ¾Ã­t na jiÅ¾ sestavenÃ½ QueryString, nezlikviduje totiÅ¾ &amp;, =, atp.
 		/// </summary>
 		/// <remarks>
-		/// Public pøepis internal metody System.Web.HttpUtility.UrlEncodeNonAcsii.
+		/// Public pÅ™epis internal metody System.Web.HttpUtility.UrlEncodeNonAcsii.
 		/// </remarks>
-		/// <param name="str">Text k encodování.</param>
+		/// <param name="str">Text k encodovÃ¡nÃ­.</param>
 		/// <param name="e">Encoding textu</param>
-		/// <returns>Text encodovanı pro pouití v URL.</returns>
+		/// <returns>Text encodovanÃ½ pro pouÅ¾itÃ­ v URL.</returns>
 		public static string UrlEncodeNonAscii(string str, Encoding e)
 		{
 			if ((str == null) || (str.Length == 0))
@@ -179,14 +179,14 @@ namespace Havit.Web
 		}
 
 		/// <summary>
-		/// Encoduje všechny non-ACSII znaky v zadaném poli bytù pro bezpeènı pøenos v URL.
-		/// Lze pouít na ji sestavenı QueryString, nezlikviduje toti &amp;, =, atp.
+		/// Encoduje vÅ¡echny non-ACSII znaky v zadanÃ©m poli bytÅ¯ pro bezpeÄnÃ½ pÅ™enos v URL.
+		/// Lze pouÅ¾Ã­t na jiÅ¾ sestavenÃ½ QueryString, nezlikviduje totiÅ¾ &amp;, =, atp.
 		/// </summary>
 		/// <remarks>
-		/// Public pøepis internal metody System.Web.HttpUtility.UrlEncodeBytesToBytesInternalNonAscii.
+		/// Public pÅ™epis internal metody System.Web.HttpUtility.UrlEncodeBytesToBytesInternalNonAscii.
 		/// </remarks>
-		/// <param name="bytes">vstupní text</param>
-		/// <returns>Text encodovanı pro pouití v URL.</returns>
+		/// <param name="bytes">vstupnÃ­ text</param>
+		/// <returns>Text encodovanÃ½ pro pouÅ¾itÃ­ v URL.</returns>
 		public static byte[] UrlEncodeBytesToBytesNonAscii(byte[] bytes)
 		{
 			int count = bytes.Length;
@@ -224,14 +224,14 @@ namespace Havit.Web
 
 		#region UrlEncodePathWithQueryString
 		/// <summary>
-		/// Encoduje všechny non-ACSII znaky v zadaném poli bytù pro bezpeènı pøenos v URL.
-		/// Lze pouít na ji sestavenı QueryString, nezlikviduje toti &amp;, =, atp.
+		/// Encoduje vÅ¡echny non-ACSII znaky v zadanÃ©m poli bytÅ¯ pro bezpeÄnÃ½ pÅ™enos v URL.
+		/// Lze pouÅ¾Ã­t na jiÅ¾ sestavenÃ½ QueryString, nezlikviduje totiÅ¾ &amp;, =, atp.
 		/// </summary>
 		/// <remarks>
-		/// Public pøepis internal metody System.Web.HttpUtility.UrlEncodeBytesToBytesInternalNonAscii.
+		/// Public pÅ™epis internal metody System.Web.HttpUtility.UrlEncodeBytesToBytesInternalNonAscii.
 		/// </remarks>
-		/// <param name="urlWithQueryString">vstupní text</param>
-		/// <returns>Text encodovanı pro pouití v URL.</returns>
+		/// <param name="urlWithQueryString">vstupnÃ­ text</param>
+		/// <returns>Text encodovanÃ½ pro pouÅ¾itÃ­ v URL.</returns>
 		public static string UrlEncodePathWithQueryString(string urlWithQueryString)
 		{
 			if ((HttpContext.Current == null)
@@ -256,14 +256,14 @@ namespace Havit.Web
 
 		#region GetResourceString
 		/// <summary>
-		/// Vrátí resource-øetìzec (lokalizaci) resolvovanou ze standardizované podoby resource odkazu pouívané napø. ve web.sitemap, skinech, menu, atp.
+		/// VrÃ¡tÃ­ resource-Å™etÄ›zec (lokalizaci) resolvovanou ze standardizovanÃ© podoby resource odkazu pouÅ¾Ã­vanÃ© napÅ™. ve web.sitemap, skinech, menu, atp.
 		/// </summary>
 		/// <example>
 		/// $resources: MyGlobalResources, MyResourceKey, My default value<br/>
 		/// $resources: MyGlobalResources, MyResourceKey<br/>
 		/// </example>
-		/// <param name="resourceExpression">resource odkaz dle pøíkladù</param>
-		/// <returns>resolvovanı lokalizaèní øetìzec</returns>
+		/// <param name="resourceExpression">resource odkaz dle pÅ™Ã­kladÅ¯</param>
+		/// <returns>resolvovanÃ½ lokalizaÄnÃ­ Å™etÄ›zec</returns>
 		public static string GetResourceString(string resourceExpression)
 		{
 			if ((resourceExpression != null)
@@ -273,14 +273,14 @@ namespace Havit.Web
 				string resourceOdkaz = resourceExpression.Substring(11);
 				if (resourceOdkaz.Length == 0)
 				{
-					throw new InvalidOperationException("Resource odkaz nesmí bıt prázdnı.");
+					throw new InvalidOperationException("Resource odkaz nesmÃ­ bÃ½t prÃ¡zdnÃ½.");
 				}
 				string resourceClassKey = null;
 				string resourceKey = null;
 				int length = resourceOdkaz.IndexOf(',');
 				if (length == -1)
 				{
-					throw new InvalidOperationException("Resource odkaz není platnı");
+					throw new InvalidOperationException("Resource odkaz nenÃ­ platnÃ½");
 				}
 				resourceClassKey = resourceOdkaz.Substring(0, length);
 				resourceKey = resourceOdkaz.Substring(length + 1);
@@ -316,10 +316,10 @@ namespace Havit.Web
 
 		#region GetApplicationRootUri
 		/// <summary>
-		/// Vrátí Uri rootu webové aplikace vytvoøené na základì aktuálního requestu!
-		/// (WebSite mùe poslouchat pro více hostnames a nikde není øeèeno, kterı je primární.)
+		/// VrÃ¡tÃ­ Uri rootu webovÃ© aplikace vytvoÅ™enÃ© na zÃ¡kladÄ› aktuÃ¡lnÃ­ho requestu!
+		/// (WebSite mÅ¯Å¾e poslouchat pro vÃ­ce hostnames a nikde nenÃ­ Å™eÄeno, kterÃ½ je primÃ¡rnÃ­.)
 		/// </summary>
-		/// <returns>Uri rootu webové aplikace vytvoøená na základì aktuálního requestu</returns>
+		/// <returns>Uri rootu webovÃ© aplikace vytvoÅ™enÃ¡ na zÃ¡kladÄ› aktuÃ¡lnÃ­ho requestu</returns>
 		public static Uri GetApplicationRootUri()
 		{
 			HttpContext context = HttpContext.Current;
@@ -343,14 +343,14 @@ namespace Havit.Web
 
 	#region HtmlEncodeOptions (enum)
 	/// <summary>
-	/// Poskytuje mnoinu hodnot k nastavení voleb metody <see cref="Havit.Web.HttpUtilityExt.HtmlEncode(string, HtmlEncodeOptions)"/>
+	/// Poskytuje mnoÅ¾inu hodnot k nastavenÃ­ voleb metody <see cref="Havit.Web.HttpUtilityExt.HtmlEncode(string, HtmlEncodeOptions)"/>
 	/// </summary>
 	[Flags]
 	public enum HtmlEncodeOptions
 	{
 		/// <summary>
-		/// Oznaèuje, e nemají bıt nastaveny ádné options, pouije se default postup.
-		/// Default postup pøevede pouze ètyøi základní entity
+		/// OznaÄuje, Å¾e nemajÃ­ bÃ½t nastaveny Å¾Ã¡dnÃ© options, pouÅ¾ije se default postup.
+		/// Default postup pÅ™evede pouze ÄtyÅ™i zÃ¡kladnÃ­ entity
 		/// <list type="bullet">
 		///		<item>&lt; --- &amp;lt;</item>
 		///		<item>&gt; --- &amp;gt;</item>
@@ -361,22 +361,22 @@ namespace Havit.Web
 		None = 0,
 
 		/// <summary>
-		/// Pøi konverzi budou ignorovány znaky mimo ASCII hodnoty, nebudou tedy tvoøeny èíselné entity typu &amp;#123;.
+		/// PÅ™i konverzi budou ignorovÃ¡ny znaky mimo ASCII hodnoty, nebudou tedy tvoÅ™eny ÄÃ­selnÃ© entity typu &amp;#123;.
 		/// </summary>
 		IgnoreNonASCIICharacters = 1,
 
 		/// <summary>
-		/// Pøi konverzi bude pouita rozšíøená sada HTML-entit, které by se jinak pøevedly na èíselné entity.
-		/// Napø. bude pouito &amp;copy;, &amp;nbsp;, &amp;sect;, atp. 
+		/// PÅ™i konverzi bude pouÅ¾ita rozÅ¡Ã­Å™enÃ¡ sada HTML-entit, kterÃ© by se jinak pÅ™evedly na ÄÃ­selnÃ© entity.
+		/// NapÅ™. bude pouÅ¾ito &amp;copy;, &amp;nbsp;, &amp;sect;, atp. 
 		/// </summary>
 		ExtendedHtmlEntities = 2,
 
 		/// <summary>
-		/// Pøi konverzi pøevede apostrofy na &amp;apos; entitu.
-		/// POZOR! &amp;apos; není standardní HTML entita a tøeba IE ji v HTML reimu nepozná!!!
+		/// PÅ™i konverzi pÅ™evede apostrofy na &amp;apos; entitu.
+		/// POZOR! &amp;apos; nenÃ­ standardnÃ­ HTML entita a tÅ™eba IE ji v HTML reÅ¾imu nepoznÃ¡!!!
 		/// </summary>
 		/// <remarks>
-		/// V kombinaci se základním <see cref="HtmlEncodeOptions.None"/> dostaneme sadu pìti built-in XML entit:
+		/// V kombinaci se zÃ¡kladnÃ­m <see cref="HtmlEncodeOptions.None"/> dostaneme sadu pÄ›ti built-in XML entit:
 		/// <list type="bullet">
 		///		<item>&lt; --- &amp;lt;</item>
 		///		<item>&gt; --- &amp;gt;</item>

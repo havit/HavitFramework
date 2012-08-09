@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
@@ -9,7 +9,7 @@ using System.Web.UI.HtmlControls;
 namespace Havit.Web.UI.Scriptlets
 {
 	/// <summary>
-	/// Interface pro substituce v klientském skriptu scriptletu.
+	/// Interface pro substituce v klientskÃ©m skriptu scriptletu.
 	/// </summary>
     public interface IScriptSubstitution
     {
@@ -17,8 +17,8 @@ namespace Havit.Web.UI.Scriptlets
 		/// <summary>
 		/// Substituje ve skriptu.
 		/// </summary>
-		/// <param name="script">Skript, ve kterém má dojít k substituci.</param>
-		/// <returns>Substituovaný skript.</returns>
+		/// <param name="script">Skript, ve kterÃ©m mÃ¡ dojÃ­t k substituci.</param>
+		/// <returns>SubstituovanÃ½ skript.</returns>
         string Substitute(string script);
 		#endregion
 	}

@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Collections.ObjectModel;
@@ -6,23 +6,23 @@ using System.Collections.ObjectModel;
 namespace Havit.Business
 {
 	/// <summary>
-	/// Kolekce objektù PropertyInfo.<br/>
-	/// Pøi opakovaném pøidání property do kolekce se nic nestane (tj. 
-	/// property nebude do kolekce pøidána podruhé a nedojde k chybì).
+	/// Kolekce objektÅ¯ PropertyInfo.<br/>
+	/// PÅ™i opakovanÃ©m pÅ™idÃ¡nÃ­ property do kolekce se nic nestane (tj. 
+	/// property nebude do kolekce pÅ™idÃ¡na podruhÃ© a nedojde k chybÄ›).
 	/// </summary>
 	[Serializable]
 	public class PropertyInfoCollection : Collection<PropertyInfo>
 	{
 		#region Constructors
 		/// <summary>
-		/// Vyvoøí prázdnou kolekci.
+		/// VyvoÅ™Ã­ prÃ¡zdnou kolekci.
 		/// </summary>
 		public PropertyInfoCollection()
 		{
 		}
 
 		/// <summary>
-		/// Vytvoøí kolekci a vloží do ní zadané objekty PropertyInfo.
+		/// VytvoÅ™Ã­ kolekci a vloÅ¾Ã­ do nÃ­ zadanÃ© objekty PropertyInfo.
 		/// </summary>
 		public PropertyInfoCollection(params PropertyInfo[] properties)
 			: this()
@@ -34,7 +34,7 @@ namespace Havit.Business
 
 		#region InsertItem
 		/// <summary>
-		/// Pøidá prvek do kolekce, pokud v kolekci již není.
+		/// PÅ™idÃ¡ prvek do kolekce, pokud v kolekci jiÅ¾ nenÃ­.
 		/// </summary>
 		protected override void InsertItem(int index, PropertyInfo item)
 		{

@@ -1,23 +1,23 @@
-using System;
+ï»¿using System;
 using System.Text.RegularExpressions;
 
 namespace Havit.Text.RegularExpressions
 {
 	/// <summary>
-	/// Typické vyhledávací vzory pro regulární vırazy.
+	/// TypickÃ© vyhledÃ¡vacÃ­ vzory pro regulÃ¡rnÃ­ vÃ½razy.
 	/// </summary>
 	public sealed class RegexPatterns
 	{
 		/// <summary>
-		/// Pattern pro kontrolu bìného e-mailu:
+		/// Pattern pro kontrolu bÄ›Å¾nÃ©ho e-mailu:
 		/// <list type="bullet">
-		///		<item>povoleny jsou pouze znaky anglické abecedy, teèky, podtrítka, pomlèky a plus</item>
-		///		<item>dva rùzné symboly nesmí následovat po sobì, stejné (s vıjimkou teèky) mohou [test--test@test.com] projde, [test..test@test.com] neprojde</item>
-		///		<item>nesmí zaèínat symbolem</item>
-		///		<item>TLD musí mít 2-6 znakù (.museum)</item>
-		///		<item>v doménì smí bıt teèky a pomlèky, ale nesmí následovat</item>
-		///		<item>nepøíjímá IP adresy</item>
-		///		<item>nepøijímá rozšíøenı syntax typu [Petr Novak &lt;novak@test.com&gt;]</item>
+		///		<item>povoleny jsou pouze znaky anglickÃ© abecedy, teÄky, podtrÅ¾Ã­tka, pomlÄky a plus</item>
+		///		<item>dva rÅ¯znÃ© symboly nesmÃ­ nÃ¡sledovat po sobÄ›, stejnÃ© (s vÃ½jimkou teÄky) mohou [test--test@test.com] projde, [test..test@test.com] neprojde</item>
+		///		<item>nesmÃ­ zaÄÃ­nat symbolem</item>
+		///		<item>TLD musÃ­ mÃ­t 2-6 znakÅ¯ (.museum)</item>
+		///		<item>v domÃ©nÄ› smÃ­ bÃ½t teÄky a pomlÄky, ale nesmÃ­ nÃ¡sledovat</item>
+		///		<item>nepÅ™Ã­jÃ­mÃ¡ IP adresy</item>
+		///		<item>nepÅ™ijÃ­mÃ¡ rozÅ¡Ã­Å™enÃ½ syntax typu [Petr Novak &lt;novak@test.com&gt;]</item>
 		/// </list>
 		/// </summary>
 		/// <remarks>
@@ -30,14 +30,14 @@ namespace Havit.Text.RegularExpressions
 										+ @"@((\w+\-+)|(\w+\.))*\w{1,63}\.[a-zA-Z]{2,6}$";
 		
 		/// <summary>
-		/// Pattern pro kontrolu identifikátorù.
-		/// Identifikátor musí zaèínat písmenem nebo podtrítkem, nesledovat mohou i èíslice.
+		/// Pattern pro kontrolu identifikÃ¡torÅ¯.
+		/// IdentifikÃ¡tor musÃ­ zaÄÃ­nat pÃ­smenem nebo podtrÅ¾Ã­tkem, nesledovat mohou i ÄÃ­slice.
 		/// </summary>
 		public const string Identifier = @"^[a-zA-Z_]{1}[a-zA-Z0-9_]+$";
 
 		/// <summary>
-		/// Pattern pro kontrolu èasu. 24-hodinnovı formát, odìlovaè dvojteèka, nepovinné vteøiny. Napø. 23:59:00.
-		/// Nepøijímá 24:00.
+		/// Pattern pro kontrolu Äasu. 24-hodinnovÃ½ formÃ¡t, odÄ›lovaÄ dvojteÄka, nepovinnÃ© vteÅ™iny. NapÅ™. 23:59:00.
+		/// NepÅ™ijÃ­mÃ¡ 24:00.
 		/// </summary>
 		public const string Time24h = @"^(20|21|22|23|[01]\d|\d)(([:][0-5]\d){1,2})$";
 
@@ -50,31 +50,31 @@ namespace Havit.Text.RegularExpressions
 										+ @"(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$";
 
 		/// <summary>
-		/// Pattern pro ovìøení celıch èísel.
+		/// Pattern pro ovÄ›Å™enÃ­ celÃ½ch ÄÃ­sel.
 		/// </summary>
 		/// <remarks>
-		/// Pøijímá: [1], [+15], [0], [-10], [+0]<br/>
-		/// Odmítá: [1.0], [abc], [+], [1,15]
+		/// PÅ™ijÃ­mÃ¡: [1], [+15], [0], [-10], [+0]<br/>
+		/// OdmÃ­tÃ¡: [1.0], [abc], [+], [1,15]
 		/// </remarks>
 		public const string Integer = @"^[-+]?\d+$";
 
 		#region private constructor
 		/// <summary>
-		/// private constructor k zabránìní instanciace statické tøídy.
+		/// private constructor k zabrÃ¡nÄ›nÃ­ instanciace statickÃ© tÅ™Ã­dy.
 		/// </summary>
 		private RegexPatterns() {}
 		#endregion
 
 		#region GetWildcardRegex, IsWildcardMatch
 		/// <summary>
-		/// Vrátí regulární vıraz pro hledání v textu.
-		/// Více o myšlence wildcardù je uvedeno u metody <see cref="CreateWildcards">TextCondition.CreateWildcards</see>.
+		/// VrÃ¡tÃ­ regulÃ¡rnÃ­ vÃ½raz pro hledÃ¡nÃ­ v textu.
+		/// VÃ­ce o myÅ¡lence wildcardÅ¯ je uvedeno u metody <see cref="CreateWildcards">TextCondition.CreateWildcards</see>.
 		/// </summary>
-		/// <param name="text">Text, kterı má bıt hledán a pro kterı se tvoøí regulární vıraz.</param>
+		/// <param name="text">Text, kterÃ½ mÃ¡ bÃ½t hledÃ¡n a pro kterÃ½ se tvoÅ™Ã­ regulÃ¡rnÃ­ vÃ½raz.</param>
 		public static Regex GetWildcardRegex(string text)
 		{
 			string regexPattern = text;
-			regexPattern = regexPattern.Replace("\\", "\\\\"); // zdvojíme zpìtná lomítka
+			regexPattern = regexPattern.Replace("\\", "\\\\"); // zdvojÃ­me zpÄ›tnÃ¡ lomÃ­tka
 			regexPattern = regexPattern.Replace("^", "\\^");
 			regexPattern = regexPattern.Replace("$", "\\$");
 			regexPattern = regexPattern.Replace("+", "\\+");
@@ -88,12 +88,12 @@ namespace Havit.Text.RegularExpressions
 			regexPattern = regexPattern.Replace("]", "\\]");
 			regexPattern = regexPattern.Replace("?", "\\?");
 
-			// hvìzdièka je pro nás zvláštní symbol
+			// hvÄ›zdiÄka je pro nÃ¡s zvlÃ¡Å¡tnÃ­ symbol
 			regexPattern = regexPattern.Replace("*", "(.*)");
-			// hledáme od zaèátku
+			// hledÃ¡me od zaÄÃ¡tku
 			regexPattern = "^" + regexPattern;
-			// pokud je hvìzdièka, pak hledáme "pøesnou" shodu
-			// pokud hvezdièka není, chceme, aby se hledání chovalo, jako by byla hvìzdièka na konci, slovy regulárních vırazù pak netøeba $ na konci.
+			// pokud je hvÄ›zdiÄka, pak hledÃ¡me "pÅ™esnou" shodu
+			// pokud hvezdiÄka nenÃ­, chceme, aby se hledÃ¡nÃ­ chovalo, jako by byla hvÄ›zdiÄka na konci, slovy regulÃ¡rnÃ­ch vÃ½razÅ¯ pak netÅ™eba $ na konci.
 			if (text.Contains("*"))
 			{
 				regexPattern += "$";
@@ -102,10 +102,10 @@ namespace Havit.Text.RegularExpressions
 		} 
 
 		/// <summary>
-		/// Vrátí true, pokud textToBeSearched obsahuje hledanı vzorek wildcardExpressionToSearch (s logikou wildcards - uvedena u metody <see cref="CreateWildcards">CreateWildcards</see>).
+		/// VrÃ¡tÃ­ true, pokud textToBeSearched obsahuje hledanÃ½ vzorek wildcardExpressionToSearch (s logikou wildcards - uvedena u metody <see cref="CreateWildcards">CreateWildcards</see>).
 		/// </summary>
-		/// <param name="wildcardExpressionToSearch">Vzorek, kterı je vyhledáván.</param>
-		/// <param name="textToBeSearched">Text, kterı je prohledáván.</param>
+		/// <param name="wildcardExpressionToSearch">Vzorek, kterÃ½ je vyhledÃ¡vÃ¡n.</param>
+		/// <param name="textToBeSearched">Text, kterÃ½ je prohledÃ¡vÃ¡n.</param>
 		/// <returns></returns>
 		public static bool IsWildcardMatch(string wildcardExpressionToSearch, string textToBeSearched)
 		{

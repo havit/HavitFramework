@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Data;
 using System.Configuration;
 using System.Web;
@@ -12,14 +12,14 @@ using System.Collections;
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
-	/// GridView, kterı automaticky zvırazòuje poloku na základì hodnoty urèité 
-	/// property dat. Zvıraznìní je provedeno nastavením hodnoty SelectedIndex.
+	/// GridView, kterÃ½ automaticky zvÃ½razÅˆuje poloÅ¾ku na zÃ¡kladÄ› hodnoty urÄitÃ© 
+	/// property dat. ZvÃ½raznÄ›nÃ­ je provedeno nastavenÃ­m hodnoty SelectedIndex.
 	/// </summary>
 	public abstract class HighlightingGridView : GridView
 	{
 		#region Properties
 		/// <summary>
-		/// Vlastnosti pro zvıraznìní øádku.
+		/// Vlastnosti pro zvÃ½raznÄ›nÃ­ Å™Ã¡dku.
 		/// </summary>
 		public Highlighting Hightlighting
 		{
@@ -35,11 +35,11 @@ namespace Havit.Web.UI.WebControls
 
 		#region SaveViewState, LoadViewState
 		/// <summary>
-		/// Zajistí uloení ViewState. Je pøidáno uloení property Hightlighting.
+		/// ZajistÃ­ uloÅ¾enÃ­ ViewState. Je pÅ™idÃ¡no uloÅ¾enÃ­ property Hightlighting.
 		/// </summary>
 		protected override object SaveViewState()
 		{
-			// Rozšíøí ViewState o objekt Highlighting.
+			// RozÅ¡Ã­Å™Ã­ ViewState o objekt Highlighting.
 			Pair viewStateData = new Pair();
 			viewStateData.First = base.SaveViewState();
 			viewStateData.Second = hightlighting;
@@ -47,11 +47,11 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// Zajistí naètení ViewState. Je pøidáno naètení property Hightlighting.
+		/// ZajistÃ­ naÄtenÃ­ ViewState. Je pÅ™idÃ¡no naÄtenÃ­ property Hightlighting.
 		/// </summary>
 		protected override void LoadViewState(object savedState)
 		{
-			// Naète rozšíøenı (viz SaveViewState) ViewState.
+			// NaÄte rozÅ¡Ã­Å™enÃ½ (viz SaveViewState) ViewState.
 			Pair viewStateData = (Pair)savedState;
 			base.LoadViewState(viewStateData.First);
 			if (viewStateData.Second != null)
@@ -59,20 +59,20 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-		#region Zvıraznìní øádku
+		#region ZvÃ½raznÄ›nÃ­ Å™Ã¡dku
 		/// <summary>
-		/// Zajistí zvıraznìní øádku.
+		/// ZajistÃ­ zvÃ½raznÄ›nÃ­ Å™Ã¡dku.
 		/// </summary>
 		protected override void PerformDataBinding(IEnumerable data)
 		{
-			// Nastaví SelectionIndex.
+			// NastavÃ­ SelectionIndex.
 			HighlightRow(data);
 			base.PerformDataBinding(data);
 		}
 
 		/// <summary>
-		/// Prohledá data, pokud najde hodnotu rovnou HighlightValue, 
-		/// vybere danou poloku.
+		/// ProhledÃ¡ data, pokud najde hodnotu rovnou HighlightValue, 
+		/// vybere danou poloÅ¾ku.
 		/// </summary>
 		/// <param name="data"></param>
 		protected virtual void HighlightRow(IEnumerable data)
@@ -96,13 +96,13 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// Vybere poloku s danım indexem. Je-li hodnota pøíznaku AutoPageChangeEnabled
-		/// true, provede pøestránkování, pokud je potøeba a nastaví hodnotu pøíznaku
-		/// na false, aby nedocházelo k neádoucí zmìnì stránky pøi zmìnì stránky z 
-		/// uivatelskéro rozhraní a následného databindingu.
-		/// Hodnota indexu rovna -1 zruší zvıraznìní poloky.
+		/// Vybere poloÅ¾ku s danÃ½m indexem. Je-li hodnota pÅ™Ã­znaku AutoPageChangeEnabled
+		/// true, provede pÅ™estrÃ¡nkovÃ¡nÃ­, pokud je potÅ™eba a nastavÃ­ hodnotu pÅ™Ã­znaku
+		/// na false, aby nedochÃ¡zelo k neÅ¾Ã¡doucÃ­ zmÄ›nÄ› strÃ¡nky pÅ™i zmÄ›nÄ› strÃ¡nky z 
+		/// uÅ¾ivatelskÃ©ro rozhranÃ­ a nÃ¡slednÃ©ho databindingu.
+		/// Hodnota indexu rovna -1 zruÅ¡Ã­ zvÃ½raznÄ›nÃ­ poloÅ¾ky.
 		/// </summary>
-		/// <param name="index">Index poloky. Poèítáno od nuly.</param>
+		/// <param name="index">Index poloÅ¾ky. PoÄÃ­tÃ¡no od nuly.</param>
 		protected virtual void HighlightIndex(int index)
 		{
 			if (index >= 0)

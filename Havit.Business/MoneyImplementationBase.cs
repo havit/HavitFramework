@@ -1,20 +1,20 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Havit.Business
 {
 	/// <summary>
-	/// Tøída reprezentující èástku a mìnu.
-	/// Tøída je urèena ke zdìdìní, potomkem by mìla bıt projektová tøída Money.
+	/// TÅ™Ã­da reprezentujÃ­cÃ­ ÄÃ¡stku a mÄ›nu.
+	/// TÅ™Ã­da je urÄena ke zdÄ›dÄ›nÃ­, potomkem by mÄ›la bÃ½t projektovÃ¡ tÅ™Ã­da Money.
 	/// </summary>
 	public abstract class MoneyImplementationBase<TCurrency, TResult>: Money<TCurrency>
 		where TCurrency: class
 		where TResult : MoneyImplementationBase<TCurrency, TResult>, new()
 	{
-		#region Operátory +, -, *, /
+		#region OperÃ¡tory +, -, *, /
 		/// <summary>
-		/// Seète dvì hodnoty Money. Pokud se neshoduje mìna, operace vyvolá vıjimku.
+		/// SeÄte dvÄ› hodnoty Money. Pokud se neshoduje mÄ›na, operace vyvolÃ¡ vÃ½jimku.
 		/// </summary>
 		public static TResult operator +(MoneyImplementationBase<TCurrency, TResult> money1, MoneyImplementationBase<TCurrency, TResult> money2)
 		{
@@ -22,7 +22,7 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Odeète dvì hodnoty Money. Pokud se neshoduje mìna, operace vyvolá vıjimku.
+		/// OdeÄte dvÄ› hodnoty Money. Pokud se neshoduje mÄ›na, operace vyvolÃ¡ vÃ½jimku.
 		/// </summary>
 		/// <returns></returns>
 		public static TResult operator -(MoneyImplementationBase<TCurrency, TResult> money1, MoneyImplementationBase<TCurrency, TResult> money2)
@@ -31,7 +31,7 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Vynásobí hodnotu Money konstantou typu decimal.
+		/// VynÃ¡sobÃ­ hodnotu Money konstantou typu decimal.
 		/// </summary>
 		public static TResult operator *(MoneyImplementationBase<TCurrency, TResult> money, decimal multiplicand)
 		{
@@ -39,7 +39,7 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Vynásobí hodnotu Money konstantou typu int.
+		/// VynÃ¡sobÃ­ hodnotu Money konstantou typu int.
 		/// </summary>
 		public static TResult operator *(MoneyImplementationBase<TCurrency, TResult> money, int multiplicand)
 		{
@@ -48,7 +48,7 @@ namespace Havit.Business
 
 
 		/// <summary>
-		/// Vydìlí hodnotu Money konstantou typu decimal.
+		/// VydÄ›lÃ­ hodnotu Money konstantou typu decimal.
 		/// </summary>
 		public static TResult operator /(MoneyImplementationBase<TCurrency, TResult> money, decimal multiplicand)
 		{
@@ -56,7 +56,7 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Vydìlí hodnotu Money konstantou typu int.
+		/// VydÄ›lÃ­ hodnotu Money konstantou typu int.
 		/// </summary>
 		public static TResult operator /(MoneyImplementationBase<TCurrency, TResult> money, int multiplicand)
 		{
@@ -64,7 +64,7 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Vypoète podíl èástek. Napø. pro vıpoèet pomìru èástek, mare, apod.
+		/// VypoÄte podÃ­l ÄÃ¡stek. NapÅ™. pro vÃ½poÄet pomÄ›ru ÄÃ¡stek, marÅ¾e, apod.
 		/// </summary>	
 		public static decimal operator /(MoneyImplementationBase<TCurrency, TResult> dividend, MoneyImplementationBase<TCurrency, TResult> divisor)
 		{
@@ -75,7 +75,7 @@ namespace Havit.Business
 
 		#region Constructors
 		/// <summary>
-		/// Inicializuje tøídu money s prázdními hodnotami (Amount i Currency jsou null).
+		/// Inicializuje tÅ™Ã­du money s prÃ¡zdnÃ­mi hodnotami (Amount i Currency jsou null).
 		/// </summary>
 		public MoneyImplementationBase()
 			: base()
@@ -83,7 +83,7 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Inicializuje tøídu money zadanımi hodnotami.
+		/// Inicializuje tÅ™Ã­du money zadanÃ½mi hodnotami.
 		/// </summary>
 		public MoneyImplementationBase(decimal? amount, TCurrency currency)
 			: base(amount, currency)

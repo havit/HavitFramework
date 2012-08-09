@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
@@ -9,16 +9,16 @@ using System.Web.UI.HtmlControls;
 namespace Havit.Web.UI.Scriptlets
 {
     /// <summary>
-    /// Repository extenderù. 
+    /// Repository extenderÅ¯. 
     /// </summary>
     public interface IControlExtenderRepository
     {
 		#region FindControlExtender
         /// <summary>
-        /// Vrací extender, který má Control zpracovávat.
+        /// VracÃ­ extender, kterÃ½ mÃ¡ Control zpracovÃ¡vat.
         /// </summary>
-        /// <param name="control">Control, který bude zpracováván.</param>
-        /// <returns>Nalezený extender.</returns>
+        /// <param name="control">Control, kterÃ½ bude zpracovÃ¡vÃ¡n.</param>
+        /// <returns>NalezenÃ½ extender.</returns>
         IControlExtender FindControlExtender(Control control);
 		#endregion
 	}

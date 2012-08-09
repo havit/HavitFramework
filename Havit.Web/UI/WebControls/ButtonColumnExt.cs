@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.ComponentModel;
 using System.Web;
 using System.Web.UI;
@@ -8,17 +8,17 @@ using System.Web.UI.WebControls;
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
-	/// Rozšíøená <see cref="System.Web.UI.WebControls.ButtonColumn"/> k <see cref="System.Web.UI.WebControls.DataGrid"/>u,
-	/// napø. o confirmation, zapínání/vypínání validace, atp.
+	/// RozÅ¡Ã­Å™enÃ¡ <see cref="System.Web.UI.WebControls.ButtonColumn"/> k <see cref="System.Web.UI.WebControls.DataGrid"/>u,
+	/// napÅ™. o confirmation, zapÃ­nÃ¡nÃ­/vypÃ­nÃ¡nÃ­ validace, atp.
 	/// </summary>
 	public class ButtonColumnExt : System.Web.UI.WebControls.ButtonColumn
 	{
-		#region Data Members (abecednì)
+		#region Data Members (abecednÄ›)
 		/// <summary>
-		/// Vrátí/nastaví statickı text, kterı se má zobrazovat do confirmation dialogu pøi kliknutí tlaèítka.
+		/// VrÃ¡tÃ­/nastavÃ­ statickÃ½ text, kterÃ½ se mÃ¡ zobrazovat do confirmation dialogu pÅ™i kliknutÃ­ tlaÄÃ­tka.
 		/// </summary>
 		/// <remarks>
-		/// Pro dynamickı text lze pouít té <see cref="ConfirmationDataField"/> a <see cref="ConfirmationDataFormatString"/>.
+		/// Pro dynamickÃ½ text lze pouÅ¾Ã­t tÃ©Å¾ <see cref="ConfirmationDataField"/> a <see cref="ConfirmationDataFormatString"/>.
 		/// </remarks>
 		public string ConfirmationText
 		{
@@ -39,10 +39,10 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// Vrátí/nastaví název pole z DataSource, které má bıt nabindovaná do confirmation dialogu.
+		/// VrÃ¡tÃ­/nastavÃ­ nÃ¡zev pole z DataSource, kterÃ© mÃ¡ bÃ½t nabindovanÃ¡ do confirmation dialogu.
 		/// </summary>
 		/// <remarks>
-		/// Formátování se nastavuje pomocí <see cref="ConfirmationDataFormatString"/>.
+		/// FormÃ¡tovÃ¡nÃ­ se nastavuje pomocÃ­ <see cref="ConfirmationDataFormatString"/>.
 		/// </remarks>
 		public string ConfirmationDataField
 		{
@@ -63,11 +63,11 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// Vrátí/nastaví FormatString dat bindovanıch do confirmation dialogu.
+		/// VrÃ¡tÃ­/nastavÃ­ FormatString dat bindovanÃ½ch do confirmation dialogu.
 		/// </summary>
 		/// <remarks>
-		/// Formátuje <see cref="ConfirmationDataField"/>.
-		/// Pokud chceme zobrazit pouze statickı text, pouije se <see cref="ConfirmationText"/>.
+		/// FormÃ¡tuje <see cref="ConfirmationDataField"/>.
+		/// Pokud chceme zobrazit pouze statickÃ½ text, pouÅ¾ije se <see cref="ConfirmationText"/>.
 		/// </remarks>
 		/// <value>Default je <see cref="String.Empty"/>.</value>
 		public string ConfirmationDataFormatString
@@ -101,14 +101,14 @@ namespace Havit.Web.UI.WebControls
 		{
 			base.InitializeCell (cell, columnIndex, itemType);
 
-			// v headeru a footeru tlaèítko není !!!
+			// v headeru a footeru tlaÄÃ­tko nenÃ­ !!!
 			if ((itemType != ListItemType.Header) && (itemType != ListItemType.Footer))
 			{
-				// button je podle SDK vdy nultı control
+				// button je podle SDK vÅ¾dy nultÃ½ control
 				WebControl button = (WebControl)cell.Controls[0];
 
-				// DataBinding se musí dìlat v DataBinding události, protoe nyní nemáme pøístup k Item prvku (datùm)
-				// tam si doøešíme tøeba ConfirmationDialog
+				// DataBinding se musÃ­ dÄ›lat v DataBinding udÃ¡losti, protoÅ¾e nynÃ­ nemÃ¡me pÅ™Ã­stup k Item prvku (datÅ¯m)
+				// tam si doÅ™eÅ¡Ã­me tÅ™eba ConfirmationDialog
 				button.DataBinding += new EventHandler(this.OnDataBindColumn);
 			}
 		}
@@ -118,17 +118,17 @@ namespace Havit.Web.UI.WebControls
 		private PropertyDescriptor _confirmationFieldDescriptor;
 
 		/// <summary>
-		/// Zajistí navázání dat na tlaèítko.
+		/// ZajistÃ­ navÃ¡zÃ¡nÃ­ dat na tlaÄÃ­tko.
 		/// </summary>
 		/// <param name="sender">sender.Namingcontainer je <see cref="DataGridItem"/></param>
-		/// <param name="e">prázdné</param>
+		/// <param name="e">prÃ¡zdnÃ©</param>
 		private void OnDataBindColumn(object sender, EventArgs e)
 		{
 			WebControl control = (WebControl)sender;
 			DataGridItem item = (DataGridItem)control.NamingContainer;
 			object dataItem = item.DataItem;
 
-			// nastavení Confirmation (inspirováno nastavováním pole Text z Reflectoru)
+			// nastavenÃ­ Confirmation (inspirovÃ¡no nastavovÃ¡nÃ­m pole Text z Reflectoru)
 			string confirmationText = this.ConfirmationText;
 			if (this.ConfirmationDataField.Length > 0)
 			{

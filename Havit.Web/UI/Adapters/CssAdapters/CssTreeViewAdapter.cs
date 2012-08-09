@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Specialized;
 using System.Configuration;
 using System.Data;
@@ -17,7 +17,7 @@ using System.Reflection;
 namespace Havit.Web.UI.Adapters.CssAdapters
 {
 	/// <summary>
-	/// TreeViewAdapter z CSS Friendly Control Adapters. Renderuje TreeView pomocí HTML elementù ul, li, CSS stylù a JScriptu.
+	/// TreeViewAdapter z CSS Friendly Control Adapters. Renderuje TreeView pomocÃ­ HTML elementÅ¯ ul, li, CSS stylÅ¯ a JScriptu.
 	/// </summary>
 	/// <remarks>
 	/// ASP.NET 2.0 CSS Friendly Control Adapters 1.0, http://www.asp.net/CSSAdapters/, This version was last updated on 20 November 2006.
@@ -194,7 +194,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 
 			Page.ClientScript.RegisterClientScriptResource(typeof(CssTreeViewAdapter), "Havit.Web.UI.Adapters.CssAdapters.CssTreeViewAdapter.js");
 
-			// pùvodní kód originálního CssAdaptéru
+			// pÅ¯vodnÃ­ kÃ³d originÃ¡lnÃ­ho CssAdaptÃ©ru
 			//string folderPath = WebConfigurationManager.AppSettings.Get("CSSFriendly-JavaScript-Path");
 			//if (String.IsNullOrEmpty(folderPath))
 			//{

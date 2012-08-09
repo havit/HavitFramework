@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
@@ -10,13 +10,13 @@ using System.Collections.Generic;
 namespace Havit.Web.UI.Scriptlets
 {
 	/// <summary>
-	/// Repository substitucí.
+	/// Repository substitucÃ­.
 	/// </summary>
     public class ScriptSubstitutionRepository : List<IScriptSubstitution>, IScriptSubstitution
     {
 		#region Default (static)
 		/// <summary>
-		/// Výchozí substituce. Použita, pokud není scriptletu nastaveno jinak.
+		/// VÃ½chozÃ­ substituce. PouÅ¾ita, pokud nenÃ­ scriptletu nastaveno jinak.
 		/// </summary>
 		public static ScriptSubstitutionRepository Default
 		{
@@ -37,11 +37,11 @@ namespace Havit.Web.UI.Scriptlets
 
 		#region Substitute
 		/// <summary>
-		/// Provede substituci tím zpùsobem, že zavolá postupnì substituce
-		/// na všech instancích v repository.
+		/// Provede substituci tÃ­m zpÅ¯sobem, Å¾e zavolÃ¡ postupnÄ› substituce
+		/// na vÅ¡ech instancÃ­ch v repository.
 		/// </summary>
-		/// <param name="script">Skript, ve kterém má dojít k substituci.</param>
-		/// <returns>Substituovaný skript.</returns>
+		/// <param name="script">Skript, ve kterÃ©m mÃ¡ dojÃ­t k substituci.</param>
+		/// <returns>SubstituovanÃ½ skript.</returns>
 		public string Substitute(string script)
         {
             string result = script;

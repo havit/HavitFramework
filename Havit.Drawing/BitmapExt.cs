@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Drawing;
 using System.IO;
 using System.Drawing.Imaging;
@@ -6,27 +6,27 @@ using System.Drawing.Imaging;
 namespace Havit.Drawing
 {
 	/// <summary>
-	/// Tøída s metodami pro rychlou práci s obrázky.
+	/// TÅ™Ã­da s metodami pro rychlou prÃ¡ci s obrÃ¡zky.
 	/// </summary>
 	public static class BitmapExt
 	{
 		#region RotateFlip
 		/// <summary>
-		/// Metoda rotuje a/nebo pøeklápí obrázek.
+		/// Metoda rotuje a/nebo pÅ™eklÃ¡pÃ­ obrÃ¡zek.
 		/// </summary>
-		/// <param name="sourceFilename">Zdrojovı obrázek.</param>
-		/// <param name="destinationFilename">Cílovı obrázek.</param>
-		/// <param name="rotateFlipType"><see cref="System.Drawing.RotateFlipType"/> urèující smìr otoèení a/nebo pøeklopení.</param>
+		/// <param name="sourceFilename">ZdrojovÃ½ obrÃ¡zek.</param>
+		/// <param name="destinationFilename">CÃ­lovÃ½ obrÃ¡zek.</param>
+		/// <param name="rotateFlipType"><see cref="System.Drawing.RotateFlipType"/> urÄujÃ­cÃ­ smÄ›r otoÄenÃ­ a/nebo pÅ™eklopenÃ­.</param>
 		public static void RotateFlip(string sourceFilename, string destinationFilename, RotateFlipType rotateFlipType)
 		{
 			if (String.Compare(sourceFilename, destinationFilename, true) == 0)
 			{
-				// pro stejnı zdroj a cíl musíme pouít modifikovanou verzi
+				// pro stejnÃ½ zdroj a cÃ­l musÃ­me pouÅ¾Ã­t modifikovanou verzi
 				RotateFlip(sourceFilename, rotateFlipType);
 			}
 			else
 			{
-				// pro rùzné názvy souborù je rychlejší toto
+				// pro rÅ¯znÃ© nÃ¡zvy souborÅ¯ je rychlejÅ¡Ã­ toto
 				using (Image image = Image.FromFile(sourceFilename))
 				{
 					image.RotateFlip(rotateFlipType);
@@ -36,20 +36,20 @@ namespace Havit.Drawing
 		}
 
 		/// <summary>
-		/// Metoda rotuje a/nebo pøeklápí obrázek.
+		/// Metoda rotuje a/nebo pÅ™eklÃ¡pÃ­ obrÃ¡zek.
 		/// </summary>
 		/// <remarks>
-		/// Tato varianta implementace obchází nemonost zápisu do otevøeného obrázku jeho vykopírováním,
-		/// uzavøením a uloením. Je proto o malinko pomalejší ne vytvoøení cílového obrázku do vedlejšího souboru.
+		/// Tato varianta implementace obchÃ¡zÃ­ nemoÅ¾nost zÃ¡pisu do otevÅ™enÃ©ho obrÃ¡zku jeho vykopÃ­rovÃ¡nÃ­m,
+		/// uzavÅ™enÃ­m a uloÅ¾enÃ­m. Je proto o malinko pomalejÅ¡Ã­ neÅ¾ vytvoÅ™enÃ­ cÃ­lovÃ©ho obrÃ¡zku do vedlejÅ¡Ã­ho souboru.
 		/// </remarks>
-		/// <param name="filename">obrázek</param>
-		/// <param name="rotateFlipType"><see cref="System.Drawing.RotateFlipType"/> urèující smìr otoèení a/nebo pøeklopení.</param>
+		/// <param name="filename">obrÃ¡zek</param>
+		/// <param name="rotateFlipType"><see cref="System.Drawing.RotateFlipType"/> urÄujÃ­cÃ­ smÄ›r otoÄenÃ­ a/nebo pÅ™eklopenÃ­.</param>
 		public static void RotateFlip(string filename, RotateFlipType rotateFlipType)
 		{
 			Bitmap imageCopy;
 			using (Image image = Image.FromFile(filename))
 			{
-				// zkopírujeme obrázek do nové bitmapy
+				// zkopÃ­rujeme obrÃ¡zek do novÃ© bitmapy
 				imageCopy = new Bitmap(image);
 			}
 			imageCopy.RotateFlip(rotateFlipType);
@@ -60,18 +60,18 @@ namespace Havit.Drawing
 
 		#region Resize
 		/// <summary>
-		/// Zmìní rozmìry obrázku.
+		/// ZmÄ›nÃ­ rozmÄ›ry obrÃ¡zku.
 		/// </summary>
 		/// <remarks>
-		/// Jako vedlejší efekt lze zmìnit i formát obrázku, pokud zvolíme jinou cílovou pøíponu.
+		/// Jako vedlejÅ¡Ã­ efekt lze zmÄ›nit i formÃ¡t obrÃ¡zku, pokud zvolÃ­me jinou cÃ­lovou pÅ™Ã­ponu.
 		/// </remarks>
-		/// <param name="sourceFilename">zdrojovı obrázek (název souboru vèetnì cesty)</param>
-		/// <param name="destinationFilename">cílovı obrázek (název souboru vèetnì cesty)</param>
-		/// <param name="width">cílová šíøka</param>
-		/// <param name="height">cílová vıška</param>
-		/// <param name="resizeMode"><see cref="ResizeMode"/> monost urèující reim</param>
-		/// <param name="quality">kvalita pøevodu a vısledného obrázku 0-100</param>
-		/// <returns><see cref="Size"/> s rozmìry vısledného obrázku</returns>
+		/// <param name="sourceFilename">zdrojovÃ½ obrÃ¡zek (nÃ¡zev souboru vÄetnÄ› cesty)</param>
+		/// <param name="destinationFilename">cÃ­lovÃ½ obrÃ¡zek (nÃ¡zev souboru vÄetnÄ› cesty)</param>
+		/// <param name="width">cÃ­lovÃ¡ Å¡Ã­Å™ka</param>
+		/// <param name="height">cÃ­lovÃ¡ vÃ½Å¡ka</param>
+		/// <param name="resizeMode"><see cref="ResizeMode"/> moÅ¾nost urÄujÃ­cÃ­ reÅ¾im</param>
+		/// <param name="quality">kvalita pÅ™evodu a vÃ½slednÃ©ho obrÃ¡zku 0-100</param>
+		/// <returns><see cref="Size"/> s rozmÄ›ry vÃ½slednÃ©ho obrÃ¡zku</returns>
 		public static Size Resize(
 			string sourceFilename,
 			string destinationFilename,
@@ -84,7 +84,7 @@ namespace Havit.Drawing
 			Bitmap originalBitmap;
 			using (Image image = Image.FromFile(sourceFilename))
 			{
-				// naèteme si obrázek do bitmapy, abychom mohli zavøít soubor
+				// naÄteme si obrÃ¡zek do bitmapy, abychom mohli zavÅ™Ã­t soubor
 				originalBitmap = new Bitmap(image);
 			}
 
@@ -121,12 +121,12 @@ namespace Havit.Drawing
 
 						if (String.Compare(Path.GetFullPath(destinationFilename), Path.GetFullPath(sourceFilename), true) == 0)
 						{
-							// soubor je v poøádku
+							// soubor je v poÅ™Ã¡dku
 							return destinationSize;
 						}
 						else if (String.Compare(Path.GetExtension(sourceFilename), Path.GetExtension(destinationFilename), true) == 0)
 						{
-							// zrychlující zkratka - nic se nemìní, typ souboru stejnı, take jenom zkopírujem
+							// zrychlujÃ­cÃ­ zkratka - nic se nemÄ›nÃ­, typ souboru stejnÃ½, takÅ¾e jenom zkopÃ­rujem
 							File.Copy(sourceFilename, destinationFilename);
 							return destinationSize;
 						}
@@ -134,11 +134,11 @@ namespace Havit.Drawing
 					break;
 
 				case ResizeMode.AdjustToBox:
-					// nastavení vyhovuje
+					// nastavenÃ­ vyhovuje
 					break;
 
 				default:
-					throw new ArgumentException("Nerozpoznanı ResizeMode", "resizeMode");
+					throw new ArgumentException("NerozpoznanÃ½ ResizeMode", "resizeMode");
 			}
 
 			using (Bitmap destinationBitmap = new Bitmap(destinationSize.Width, destinationSize.Height))
@@ -189,46 +189,46 @@ namespace Havit.Drawing
 		}
 
 		/// <summary>
-		/// Zmìní rozmìry obrázku.
+		/// ZmÄ›nÃ­ rozmÄ›ry obrÃ¡zku.
 		/// </summary>
 		/// <remarks>
-		/// Jako vedlejší efekt lze zmìnit i formát obrázku, pokud zvolíme jinou cílovou pøíponu.
+		/// Jako vedlejÅ¡Ã­ efekt lze zmÄ›nit i formÃ¡t obrÃ¡zku, pokud zvolÃ­me jinou cÃ­lovou pÅ™Ã­ponu.
 		/// </remarks>
-		/// <param name="filename">obrázek (název souboru vèetnì cesty)</param>
-		/// <param name="width">cílová šíøka</param>
-		/// <param name="height">cílová vıška</param>
-		/// <param name="resizeMode"><see cref="ResizeMode"/> monost urèující reim</param>
-		/// <param name="quality">kvalita pøevodu a vısledného obrázku 0-100</param>
-		/// <returns><see cref="Size"/> s rozmìry vısledného obrázku</returns>
+		/// <param name="filename">obrÃ¡zek (nÃ¡zev souboru vÄetnÄ› cesty)</param>
+		/// <param name="width">cÃ­lovÃ¡ Å¡Ã­Å™ka</param>
+		/// <param name="height">cÃ­lovÃ¡ vÃ½Å¡ka</param>
+		/// <param name="resizeMode"><see cref="ResizeMode"/> moÅ¾nost urÄujÃ­cÃ­ reÅ¾im</param>
+		/// <param name="quality">kvalita pÅ™evodu a vÃ½slednÃ©ho obrÃ¡zku 0-100</param>
+		/// <returns><see cref="Size"/> s rozmÄ›ry vÃ½slednÃ©ho obrÃ¡zku</returns>
 		public static Size Resize(string filename, int width, int height, ResizeMode resizeMode, int quality)
 		{
 			return Resize(filename, filename, width, height, resizeMode, quality);
 		}
 
 		/// <summary>
-		/// Zmìní rozmìry obrázku.
-		/// Pozor, pouívá default-quality 75.
+		/// ZmÄ›nÃ­ rozmÄ›ry obrÃ¡zku.
+		/// Pozor, pouÅ¾Ã­vÃ¡ default-quality 75.
 		/// </summary>
-		/// <param name="sourceFilename">zdrojovı obrázek (název souboru vèetnì cesty)</param>
-		/// <param name="destinationFilename">cílovı obrázek (název souboru vèetnì cesty)</param>
-		/// <param name="width">cílová šíøka</param>
-		/// <param name="height">cílová vıška</param>
-		/// <param name="resizeMode"><see cref="ResizeMode"/> monost urèující reim</param>
-		/// <returns><see cref="Size"/> s rozmìry vısledného obrázku</returns>
+		/// <param name="sourceFilename">zdrojovÃ½ obrÃ¡zek (nÃ¡zev souboru vÄetnÄ› cesty)</param>
+		/// <param name="destinationFilename">cÃ­lovÃ½ obrÃ¡zek (nÃ¡zev souboru vÄetnÄ› cesty)</param>
+		/// <param name="width">cÃ­lovÃ¡ Å¡Ã­Å™ka</param>
+		/// <param name="height">cÃ­lovÃ¡ vÃ½Å¡ka</param>
+		/// <param name="resizeMode"><see cref="ResizeMode"/> moÅ¾nost urÄujÃ­cÃ­ reÅ¾im</param>
+		/// <returns><see cref="Size"/> s rozmÄ›ry vÃ½slednÃ©ho obrÃ¡zku</returns>
 		public static Size Resize(string sourceFilename, string destinationFilename, int width, int height, ResizeMode resizeMode)
 		{
 			return Resize(sourceFilename, destinationFilename, width, height, resizeMode, 75);
 		}
 
 		/// <summary>
-		/// Zmìní rozmìry obrázku.
-		/// Pozor, pouívá default-quality 75.
+		/// ZmÄ›nÃ­ rozmÄ›ry obrÃ¡zku.
+		/// Pozor, pouÅ¾Ã­vÃ¡ default-quality 75.
 		/// </summary>
-		/// <param name="filename">obrázek (název souboru vèetnì cesty)</param>
-		/// <param name="width">cílová šíøka</param>
-		/// <param name="height">cílová vıška</param>
-		/// <param name="resizeMode"><see cref="ResizeMode"/> monost urèující reim</param>
-		/// <returns><see cref="Size"/> s rozmìry vısledného obrázku</returns>
+		/// <param name="filename">obrÃ¡zek (nÃ¡zev souboru vÄetnÄ› cesty)</param>
+		/// <param name="width">cÃ­lovÃ¡ Å¡Ã­Å™ka</param>
+		/// <param name="height">cÃ­lovÃ¡ vÃ½Å¡ka</param>
+		/// <param name="resizeMode"><see cref="ResizeMode"/> moÅ¾nost urÄujÃ­cÃ­ reÅ¾im</param>
+		/// <returns><see cref="Size"/> s rozmÄ›ry vÃ½slednÃ©ho obrÃ¡zku</returns>
 		public static Size Resize(string filename, int width, int height, ResizeMode resizeMode)
 		{
 			return Resize(filename, filename, width, height, resizeMode, 75);

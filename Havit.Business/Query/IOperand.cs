@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Data.Common;
@@ -7,17 +7,17 @@ namespace Havit.Business.Query
 {
 	/// <summary>
 	/// Interface pro operandy SQL dotazu.
-	/// Operandem mùe bıt vıraz, databázovı sloupec, sklalární hodnota...
+	/// Operandem mÅ¯Å¾e bÃ½t vÃ½raz, databÃ¡zovÃ½ sloupec, sklalÃ¡rnÃ­ hodnota...
 	/// </summary>
 	public interface IOperand
 	{
 		#region GetCommandValue
 		/// <summary>
-		/// Vrací øetìzec, kterı reprezentuje hodnotu operandu v SQL dotazu.
-		/// Mùe pøidávat databázové parametry do commandu.
+		/// VracÃ­ Å™etÄ›zec, kterÃ½ reprezentuje hodnotu operandu v SQL dotazu.
+		/// MÅ¯Å¾e pÅ™idÃ¡vat databÃ¡zovÃ© parametry do commandu.
 		/// </summary>
-		/// <param name="command">Databázovı pøíkaz. Je moné do nìj pøidávat databázové parametry.</param>
-		/// <returns>Øetìzec reprezentující hodnotu operandu v SQL dotazu.</returns>
+		/// <param name="command">DatabÃ¡zovÃ½ pÅ™Ã­kaz. Je moÅ¾nÃ© do nÄ›j pÅ™idÃ¡vat databÃ¡zovÃ© parametry.</param>
+		/// <returns>Å˜etÄ›zec reprezentujÃ­cÃ­ hodnotu operandu v SQL dotazu.</returns>
 		string GetCommandValue(DbCommand command); 
 		#endregion
 	}

@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
-	/// Pøepis tøídy Microsoft .NET Frameworku. Potøeba pro GridViewCommandField.
+	/// PÅ™epis tÅ™Ã­dy Microsoft .NET Frameworku. PotÅ™eba pro GridViewCommandField.
 	/// </summary>
 	[SupportsEventValidation]
 	internal sealed class DataControlImageButtonExt : ImageButton
@@ -33,7 +33,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			if (getPostBackOptionsDisabled)
 			{
-				// brutální oprava dvojího vyvolání event (dva requesty na server) na image buttonech
+				// brutÃ¡lnÃ­ oprava dvojÃ­ho vyvolÃ¡nÃ­ event (dva requesty na server) na image buttonech
 				// viz AddAttributesToRender
 				return null;
 			}
@@ -83,10 +83,10 @@ namespace Havit.Web.UI.WebControls
 		private bool getPostBackOptionsDisabled = false;
 		protected override void AddAttributesToRender(HtmlTextWriter writer)
 		{
-			// brutální oprava dvojího vyvolání event (dva requesty na server) na image buttonech
+			// brutÃ¡lnÃ­ oprava dvojÃ­ho vyvolÃ¡nÃ­ event (dva requesty na server) na image buttonech
 			// <input type="image" src="image.gif" onclick="javascript:__doPostBack('GridView1','Delete$0')" />
-			// První request vznikne z type="image",
-			// druhý request vznikne z __doPostBack.
+			// PrvnÃ­ request vznikne z type="image",
+			// druhÃ½ request vznikne z __doPostBack.
 			if (base.IsEnabled)
 			{
 				string onClick = Attributes["onclick"];

@@ -1,17 +1,17 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
-	/// Argumenty události <see cref="GridViewExt.RowCustomizingCommandButton"/>.
+	/// Argumenty udÃ¡losti <see cref="GridViewExt.RowCustomizingCommandButton"/>.
 	/// </summary>
 	public class GridViewRowCustomizingCommandButtonEventArgs : EventArgs
 	{
 		#region CommandName
 		/// <summary>
-		/// Vrátí CommandName tlaèítka.
+		/// VrÃ¡tÃ­ CommandName tlaÄÃ­tka.
 		/// </summary>
 		public string CommandName
 		{
@@ -25,7 +25,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region Visible
 		/// <summary>
-		/// Vlastnost Visible tlaèítka.
+		/// Vlastnost Visible tlaÄÃ­tka.
 		/// </summary>
 		public bool Visible
 		{
@@ -43,7 +43,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region Enabled
 		/// <summary>
-		/// Vlastnosti Enabled tlaèítka.
+		/// Vlastnosti Enabled tlaÄÃ­tka.
 		/// </summary>
 		public bool Enabled
 		{
@@ -61,7 +61,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region RowIndex
 		/// <summary>
-		/// Index øádku, kterého se událost tıká.
+		/// Index Å™Ã¡dku, kterÃ©ho se udÃ¡lost tÃ½kÃ¡.
 		/// </summary>
 		public int RowIndex
 		{
@@ -75,7 +75,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region DataItem
 		/// <summary>
-		/// DataItem øádku, kterého se událost tıká.
+		/// DataItem Å™Ã¡dku, kterÃ©ho se udÃ¡lost tÃ½kÃ¡.
 		/// </summary>
 		public object DataItem
 		{
@@ -89,11 +89,11 @@ namespace Havit.Web.UI.WebControls
 
 		#region GridViewRowCustomizingCommandButtonEventArgs
 		/// <summary>
-		/// Vytvoøí instanci tøídy <see cref="GridViewRowCustomizingCommandButtonEventArgs"/>.
+		/// VytvoÅ™Ã­ instanci tÅ™Ã­dy <see cref="GridViewRowCustomizingCommandButtonEventArgs"/>.
 		/// </summary>
-		/// <param name="commandName">CommandName obsluhovaného buttonu.</param>
-		/// <param name="rowIndex">Index øádku.</param>
-		/// <param name="dataItem">Datovı objekt øádku.</param>
+		/// <param name="commandName">CommandName obsluhovanÃ©ho buttonu.</param>
+		/// <param name="rowIndex">Index Å™Ã¡dku.</param>
+		/// <param name="dataItem">DatovÃ½ objekt Å™Ã¡dku.</param>
 		public GridViewRowCustomizingCommandButtonEventArgs(string commandName, int rowIndex, object dataItem)
 		{
 			this._commandName = commandName;

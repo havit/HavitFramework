@@ -1,25 +1,25 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Havit.Business
 {
 	/// <summary>
-	/// Reprezentuje informace o objektu (tøídì).
+	/// Reprezentuje informace o objektu (tÅ™Ã­dÄ›).
 	/// </summary>
 	public class ObjectInfo
 	{
 		#region Initialize
 		/// <summary>
-		/// Nastaví instanci tøídy.
+		/// NastavÃ­ instanci tÅ™Ã­dy.
 		/// </summary>
-		/// <param name="dbSchema">Název schémata databázové tabulky.</param>
-		/// <param name="dbTable">Název databázové tabulky.</param>
-		/// <param name="readOnly">Urèuje, zda je tøída jen ke ètení.</param>
-		/// <param name="getObjectMethod">Delegát na metodu vracející objekt tøídy na základì ID.</param>
-		/// <param name="getAllMethod">Delegát na metodu vracející všechny (nesmazané) objekty tøídy.</param>
-		/// <param name="deletedProperty">FieldPropertyInfo, která identifikuje pøíznakem smazané záznamy.</param>
-		/// <param name="properties">Kolekce všech vlastností objektu.</param>
+		/// <param name="dbSchema">NÃ¡zev schÃ©mata databÃ¡zovÃ© tabulky.</param>
+		/// <param name="dbTable">NÃ¡zev databÃ¡zovÃ© tabulky.</param>
+		/// <param name="readOnly">UrÄuje, zda je tÅ™Ã­da jen ke ÄtenÃ­.</param>
+		/// <param name="getObjectMethod">DelegÃ¡t na metodu vracejÃ­cÃ­ objekt tÅ™Ã­dy na zÃ¡kladÄ› ID.</param>
+		/// <param name="getAllMethod">DelegÃ¡t na metodu vracejÃ­cÃ­ vÅ¡echny (nesmazanÃ©) objekty tÅ™Ã­dy.</param>
+		/// <param name="deletedProperty">FieldPropertyInfo, kterÃ¡ identifikuje pÅ™Ã­znakem smazanÃ© zÃ¡znamy.</param>
+		/// <param name="properties">Kolekce vÅ¡ech vlastnostÃ­ objektu.</param>
 		public void Initialize(
 			string dbSchema,
 			string dbTable,
@@ -50,7 +50,7 @@ namespace Havit.Business
 
 		#region ReadOnly
 		/// <summary>
-		/// Indikuje, zda je objekt urèen jen ke ètení.
+		/// Indikuje, zda je objekt urÄen jen ke ÄtenÃ­.
 		/// </summary>
 		public bool ReadOnly
 		{
@@ -65,7 +65,7 @@ namespace Havit.Business
 
 		#region DbSchema
 		/// <summary>
-		/// Název schématu databázové tabulky.
+		/// NÃ¡zev schÃ©matu databÃ¡zovÃ© tabulky.
 		/// </summary>
 		public string DbSchema
 		{
@@ -80,7 +80,7 @@ namespace Havit.Business
 
 		#region DbTable
 		/// <summary>
-		/// Název databázové tabulky.
+		/// NÃ¡zev databÃ¡zovÃ© tabulky.
 		/// </summary>
 		public string DbTable
 		{
@@ -95,7 +95,7 @@ namespace Havit.Business
 
 		#region ClassName
 		/// <summary>
-		/// Název tøídy dle databázové tabulky. Bez namespace.
+		/// NÃ¡zev tÅ™Ã­dy dle databÃ¡zovÃ© tabulky. Bez namespace.
 		/// </summary>
 		public string ClassName
 		{
@@ -110,7 +110,7 @@ namespace Havit.Business
 
 		#region Namespace
 		/// <summary>
-		/// Namespace tøídy dle databázové tabulky. Bez názvu samotné tøídy.
+		/// Namespace tÅ™Ã­dy dle databÃ¡zovÃ© tabulky. Bez nÃ¡zvu samotnÃ© tÅ™Ã­dy.
 		/// </summary>
 		public string Namespace
 		{
@@ -125,7 +125,7 @@ namespace Havit.Business
 
 		#region Properties
 		/// <summary>
-		/// Property ve tøídì.
+		/// Property ve tÅ™Ã­dÄ›.
 		/// </summary>
 		public PropertyInfoCollection Properties
 		{
@@ -140,7 +140,7 @@ namespace Havit.Business
 
 		#region DeletedProperty
 		/// <summary>
-		/// Property, která oznaèuje smazané záznamy.
+		/// Property, kterÃ¡ oznaÄuje smazanÃ© zÃ¡znamy.
 		/// </summary>
 		public FieldPropertyInfo DeletedProperty
 		{
@@ -155,7 +155,7 @@ namespace Havit.Business
 
 		#region CreateObjectMethod
 		/// <summary>
-		/// Delegát metody (bez parametrù) vracující novı objekt.
+		/// DelegÃ¡t metody (bez parametrÅ¯) vracujÃ­cÃ­ novÃ½ objekt.
 		/// </summary>
 		public CreateObjectDelegate CreateObjectMethod
 		{
@@ -170,7 +170,7 @@ namespace Havit.Business
 
 		#region GetObjectMethod
 		/// <summary>
-		/// Delegát metody vracující instanci objektu.
+		/// DelegÃ¡t metody vracujÃ­cÃ­ instanci objektu.
 		/// </summary>
 		public GetObjectDelegate GetObjectMethod
 		{
@@ -185,7 +185,7 @@ namespace Havit.Business
 
 		#region GetAllMethod
 		/// <summary>
-		/// Metoda vracející seznam všech instancí.
+		/// Metoda vracejÃ­cÃ­ seznam vÅ¡ech instancÃ­.
 		/// </summary>
 		public GetAllDelegate GetAllMethod
 		{
@@ -200,13 +200,13 @@ namespace Havit.Business
 
 		#region CheckInitialization
 		/// <summary>
-		/// Ovìøí, e byla instance inicializována. Pokud ne, vyhodí vıjimku.
+		/// OvÄ›Å™Ã­, Å¾e byla instance inicializovÃ¡na. Pokud ne, vyhodÃ­ vÃ½jimku.
 		/// </summary>
 		protected void CheckInitialization()
 		{
 			if (!isInitialized)
 			{
-				throw new InvalidOperationException("Instance nebyla inicializována.");
+				throw new InvalidOperationException("Instance nebyla inicializovÃ¡na.");
 			}
 		} 
 		#endregion

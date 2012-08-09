@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 using System.Collections.Generic;
 using System.Text;
 using System.Data.Common;
@@ -6,13 +6,13 @@ using System.Data.Common;
 namespace Havit.Business
 {
 	/// <summary>
-	/// Argumenty ud·losti po uloûenÌ objektu.
+	/// Argumenty ud√°losti po ulo≈æen√≠ objektu.
 	/// </summary>
 	public class AfterSaveEventArgs: DbTransactionEventArgs
 	{
 		#region WasNew
 		/// <summary>
-		/// Indikuje, zda byl objekt p¯ed uloûenÌm nov˝.
+		/// Indikuje, zda byl objekt p≈ôed ulo≈æen√≠m nov√Ω.
 		/// </summary>
 		public bool WasNew
 		{

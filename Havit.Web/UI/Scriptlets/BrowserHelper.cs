@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
@@ -9,14 +9,14 @@ using System.Web.UI.HtmlControls;
 namespace Havit.Web.UI.Scriptlets
 {
     /// <summary>
-    /// Pomocník pro identifikaci prohlíeèe a pøípravu browser-specific skriptù.
+    /// PomocnÃ­k pro identifikaci prohlÃ­Å¾eÄe a pÅ™Ã­pravu browser-specific skriptÅ¯.
     /// </summary>
     internal static class BrowserHelper
     {
 		#region IsInternetExplorer
 		/// <summary>
-		/// Vrací <c>true</c>, pokud byl aktuální <see cref="System.Web.HttpRequest">HttpRequest</see> pochází z Internet Exploreru 
-		/// (nebo shodnì se identifikujícího browseru).
+		/// VracÃ­ <c>true</c>, pokud byl aktuÃ¡lnÃ­ <see cref="System.Web.HttpRequest">HttpRequest</see> pochÃ¡zÃ­ z Internet Exploreru 
+		/// (nebo shodnÄ› se identifikujÃ­cÃ­ho browseru).
 		/// </summary>
 		public static bool IsInternetExplorer
 		{
@@ -29,18 +29,18 @@ namespace Havit.Web.UI.Scriptlets
 
 		#region GetAttachEventScript
 		/// <summary>
-		/// Vrátí pøíkaz pro pøipojení události k objektu.
-		/// Detekuji IE, kterı pøipojuje události jinak ne ostatní prohlíeèe.
+		/// VrÃ¡tÃ­ pÅ™Ã­kaz pro pÅ™ipojenÃ­ udÃ¡losti k objektu.
+		/// Detekuji IE, kterÃ½ pÅ™ipojuje udÃ¡losti jinak neÅ¾ ostatnÃ­ prohlÃ­Å¾eÄe.
 		/// </summary>
-		/// <param name="attachingObject">Objekt, ke kterému je pøipojována událost.</param>
-		/// <param name="eventName">Název události vèetnì "on", napøíklad "onchange", "onclick", atp.</param>
-		/// <param name="functionDelegateName">Delegát, kterı je pøipojován.</param>
-		/// <returns>Pøíkaz pøipojující událost k objektu.</returns>
+		/// <param name="attachingObject">Objekt, ke kterÃ©mu je pÅ™ipojovÃ¡na udÃ¡lost.</param>
+		/// <param name="eventName">NÃ¡zev udÃ¡losti vÄetnÄ› "on", napÅ™Ã­klad "onchange", "onclick", atp.</param>
+		/// <param name="functionDelegateName">DelegÃ¡t, kterÃ½ je pÅ™ipojovÃ¡n.</param>
+		/// <returns>PÅ™Ã­kaz pÅ™ipojujÃ­cÃ­ udÃ¡lost k objektu.</returns>
 		public static string GetAttachEventScript(string attachingObject, string eventName, string functionDelegateName)
 		{
 			if (functionDelegateName.Contains("("))
 			{
-				throw new ArgumentException("Je nutné pøedat identifikátor promìnné nesoucí hodnotu delegáta.", "functionDelegateName");
+				throw new ArgumentException("Je nutnÃ© pÅ™edat identifikÃ¡tor promÄ›nnÃ© nesoucÃ­ hodnotu delegÃ¡ta.", "functionDelegateName");
 				//function = String.Format("new Function(\'{0}\')", function);
 			}
 
@@ -57,18 +57,18 @@ namespace Havit.Web.UI.Scriptlets
 
 		#region GetDetachEventScript
 		/// <summary>
-		/// Vrátí pøíkaz pro odpojení události od objektu.
-		/// Detekuji IE, kterı odpojuje události jinak ne ostatní prohlíeèe.
+		/// VrÃ¡tÃ­ pÅ™Ã­kaz pro odpojenÃ­ udÃ¡losti od objektu.
+		/// Detekuji IE, kterÃ½ odpojuje udÃ¡losti jinak neÅ¾ ostatnÃ­ prohlÃ­Å¾eÄe.
 		/// </summary>
-		/// <param name="detachingObject">Objekt, od kterého je odpojována událost.</param>
-		/// <param name="eventName">Název události vè "on", napø "onchange", "onclick".</param>
-		/// <param name="functionDelegateName">Delegát, kterı je pøipojován.</param>
-		/// <returns>Pøíkaz odpojující událost od objektu.</returns>
+		/// <param name="detachingObject">Objekt, od kterÃ©ho je odpojovÃ¡na udÃ¡lost.</param>
+		/// <param name="eventName">NÃ¡zev udÃ¡losti vÄ "on", napÅ™ "onchange", "onclick".</param>
+		/// <param name="functionDelegateName">DelegÃ¡t, kterÃ½ je pÅ™ipojovÃ¡n.</param>
+		/// <returns>PÅ™Ã­kaz odpojujÃ­cÃ­ udÃ¡lost od objektu.</returns>
 		public static string GetDetachEventScript(string detachingObject, string eventName, string functionDelegateName)
 		{
 			if (functionDelegateName.Contains("("))
 			{
-				throw new ArgumentException("Je nutné pøedat identifikátor promìnné nesoucí hodnotu delegáta.", "functionDelegateName");
+				throw new ArgumentException("Je nutnÃ© pÅ™edat identifikÃ¡tor promÄ›nnÃ© nesoucÃ­ hodnotu delegÃ¡ta.", "functionDelegateName");
 				//				function = String.Format("new Function(\'{0}\')", function);
 			}
 
@@ -85,12 +85,12 @@ namespace Havit.Web.UI.Scriptlets
 
 		#region GetAttachDetachEventScriptEventHandler (internal)
 		/// <summary>
-		/// Delegát funkcí GetAttachEventScript a GetDetachEventScript.
+		/// DelegÃ¡t funkcÃ­ GetAttachEventScript a GetDetachEventScript.
 		/// </summary>
-		/// <param name="manipulatingObject">Cílovı objekt pro navázání/odvázání události.</param>
-		/// <param name="eventName">Název události vèetnì "on", napøíklad "onchange", "onclick", atp.</param>
-		/// <param name="functionDelegateName">Delegát, kterı je pøipojován.</param>
-		/// <returns>Pøíkaz pøipojující událost k objektu.</returns>
+		/// <param name="manipulatingObject">CÃ­lovÃ½ objekt pro navÃ¡zÃ¡nÃ­/odvÃ¡zÃ¡nÃ­ udÃ¡losti.</param>
+		/// <param name="eventName">NÃ¡zev udÃ¡losti vÄetnÄ› "on", napÅ™Ã­klad "onchange", "onclick", atp.</param>
+		/// <param name="functionDelegateName">DelegÃ¡t, kterÃ½ je pÅ™ipojovÃ¡n.</param>
+		/// <returns>PÅ™Ã­kaz pÅ™ipojujÃ­cÃ­ udÃ¡lost k objektu.</returns>
 		internal delegate string GetAttachDetachEventScriptEventHandler(string manipulatingObject, string eventName, string functionDelegateName);
 		#endregion
 

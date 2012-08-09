@@ -1,13 +1,13 @@
-using System;
+Ôªøusing System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Havit.Business
 {
 	/// <summary>
-	/// T¯Ìda pro objekt, kter˝ nese kolekci property BusinessObjectu.
+	/// T≈ô√≠da pro objekt, kter√Ω nese kolekci property BusinessObjectu.
 	/// </summary>
-	/// <typeparam name="CollectionType">typ kolekce, jÌû je CollectionPropertyHolder nosiËem</typeparam>
+	/// <typeparam name="CollectionType">typ kolekce, j√≠≈æ je CollectionPropertyHolder nosiƒçem</typeparam>
 	/// <typeparam name="BusinessObjectType">typ prvku kolekce</typeparam>
 	[Serializable]
 	public class CollectionPropertyHolder<CollectionType, BusinessObjectType>: PropertyHolderBase
@@ -16,9 +16,9 @@ namespace Havit.Business
 	{
 		#region Constructors
 		/// <summary>
-		/// ZaloûÌ instanci CollectionPropertyHolderu.
+		/// Zalo≈æ√≠ instanci CollectionPropertyHolderu.
 		/// </summary>
-		/// <param name="owner">objekt, kterÈmu CollectionPropertyHolder pat¯Ì</param>
+		/// <param name="owner">objekt, kter√©mu CollectionPropertyHolder pat≈ô√≠</param>
 		public CollectionPropertyHolder(BusinessObjectBase owner)
 			: base(owner)
 		{
@@ -42,13 +42,13 @@ namespace Havit.Business
 
 		#region Initialize
 		/// <summary>
-		/// Inicializuje obsaûenou kolekci.
+		/// Inicializuje obsa≈æenou kolekci.
 		/// </summary>
 		public void Initialize()
 		{
 			if (_value == null)
 			{
-				// prvnÌ inicializace
+				// prvn√≠ inicializace
 				_value = new CollectionType();
 				_value.AllowDuplicates = false;
 				IsInitialized = true;

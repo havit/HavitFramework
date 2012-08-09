@@ -1,73 +1,73 @@
-using System;
+ï»¿using System;
 using System.Collections;
 
 namespace Havit.Xml.Rss
 {
 	/// <summary>
-	/// Kolekce RssChannel prvkù.
+	/// Kolekce RssChannel prvkÅ¯.
 	/// </summary>
 	public class RssChannelCollection : CollectionBase
 	{
 		/// <summary>
-		/// Pøidá novı kanál do kolekce
+		/// PÅ™idÃ¡ novÃ½ kanÃ¡l do kolekce
 		/// </summary>
-		/// <param name="channel">kanál k pøidání</param>
+		/// <param name="channel">kanÃ¡l k pÅ™idÃ¡nÃ­</param>
 		public virtual void Add(RssChannel channel)
 		{
 			this.List.Add(channel);
 		}
 
 		/// <summary>
-		/// Zkopíruje kanály do array, na pozici index
+		/// ZkopÃ­ruje kanÃ¡ly do array, na pozici index
 		/// </summary>
-		/// <param name="array">cílové pole</param>
-		/// <param name="index">pozice v cílovém poli</param>
+		/// <param name="array">cÃ­lovÃ© pole</param>
+		/// <param name="index">pozice v cÃ­lovÃ©m poli</param>
 		public void CopyTo(RssChannel[] array, int index)
 		{
 			((ICollection)this).CopyTo(array, index);
 		}
 
 		/// <summary>
-		/// Vloí na urèené místo v kolekci kanál.
+		/// VloÅ¾Ã­ na urÄenÃ© mÃ­sto v kolekci kanÃ¡l.
 		/// </summary>
 		/// <param name="index">pozice</param>
-		/// <param name="value">kanál</param>
+		/// <param name="value">kanÃ¡l</param>
 		public void Insert(int index, RssChannel value) 
 		{
 			((IList)this).Insert(index, value);
 		}        
 
 		/// <summary>
-		/// Vyhledá pozici kanálu v kolekci
+		/// VyhledÃ¡ pozici kanÃ¡lu v kolekci
 		/// </summary>
-		/// <param name="value">kanák</param>
-		/// <returns>pozice kanálu v kolekci</returns>
+		/// <param name="value">kanÃ¡k</param>
+		/// <returns>pozice kanÃ¡lu v kolekci</returns>
 		public int IndexOf(RssChannel value) 
 		{
 			return ((IList)this).IndexOf(value);
 		}
 
 		/// <summary>
-		/// Odstraní kanál z kolekce.
+		/// OdstranÃ­ kanÃ¡l z kolekce.
 		/// </summary>
-		/// <param name="value">kanál k odstranìní</param>
+		/// <param name="value">kanÃ¡l k odstranÄ›nÃ­</param>
 		public void Remove(RssChannel value) 
 		{
 			((IList)this).Remove( value);
 		}
 
 		/// <summary>
-		/// Zjistí, zda-li se kanál nachází v kolekci
+		/// ZjistÃ­, zda-li se kanÃ¡l nachÃ¡zÃ­ v kolekci
 		/// </summary>
-		/// <param name="value">kanál</param>
-		/// <returns>true, pokud ji kanál v kolekci existuje, jinak false</returns>
+		/// <param name="value">kanÃ¡l</param>
+		/// <returns>true, pokud jiÅ¾ kanÃ¡l v kolekci existuje, jinak false</returns>
 		public bool Contains(RssChannel value) 
 		{
 			return ((IList)this).Contains( value);
 		}
 
 		/// <summary>
-		/// Indexer zpøístupòující kanál na dané pozici kolekce.
+		/// Indexer zpÅ™Ã­stupÅˆujÃ­cÃ­ kanÃ¡l na danÃ© pozici kolekce.
 		/// </summary>
 		public virtual RssChannel this[int index]
 		{

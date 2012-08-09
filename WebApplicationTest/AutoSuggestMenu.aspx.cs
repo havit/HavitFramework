@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Configuration;
 using System.Collections;
@@ -23,7 +23,7 @@ namespace WebApplicationTest
 		{
 			base.OnInit(e);
 			ShowDialogButton.Click += new EventHandler(ShowDialogButton_Click);
-			SubjektASM.Context = "Testovac�\"' '' \"\"kontext";
+			SubjektASM.Context = "Testovací\"' '' \"\"kontext";
 		}
 
 		void ShowDialogButton_Click(object sender, EventArgs e)

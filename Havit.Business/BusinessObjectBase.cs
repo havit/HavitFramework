@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using Havit.Data;
@@ -9,19 +9,19 @@ using System.Diagnostics;
 namespace Havit.Business
 {
 	/// <summary>
-	/// Bázová tøída pro všechny business-objekty, která definuje jejich základní chování, zejména ve vztahu k databázi (Layer Supertype).
+	/// BÃ¡zovÃ¡ tÅ™Ã­da pro vÅ¡echny business-objekty, kterÃ¡ definuje jejich zÃ¡kladnÃ­ chovÃ¡nÃ­, zejmÃ©na ve vztahu k databÃ¡zi (Layer Supertype).
 	/// </summary>
 	/// <remarks>
-	/// Tøída je základem pro všechny business-objekty a implementuje základní pattern pro komunikaci s perzistentními uloišti.
-	/// Naèítání je implementováno jako lazy-load, kdy je objekt nejprve vytvoøen prázdnı jako ghost se svım ID a teprve
-	/// pøi první potøebì je iniciováno jeho úplné naètení.<br/>
+	/// TÅ™Ã­da je zÃ¡kladem pro vÅ¡echny business-objekty a implementuje zÃ¡kladnÃ­ pattern pro komunikaci s perzistentnÃ­mi uloÅ¾iÅ¡ti.
+	/// NaÄÃ­tÃ¡nÃ­ je implementovÃ¡no jako lazy-load, kdy je objekt nejprve vytvoÅ™en prÃ¡zdnÃ½ jako ghost se svÃ½m ID a teprve
+	/// pÅ™i prvnÃ­ potÅ™ebÄ› je iniciovÃ¡no jeho ÃºplnÃ© naÄtenÃ­.<br/>
 	/// </remarks>
 	[DebuggerDisplay("{GetType().FullName,nq} (ID={IsNew ? \"New\" : ID.ToString(),nq}, IsLoaded={IsLoaded,nq}, IsDirty={IsDirty,nq})")]
 	public abstract class BusinessObjectBase
 	{
 		#region Consts
 		/// <summary>
-		/// Hodnota, kterou má ID objektu neuloeného v databázi (bez perzistence).
+		/// Hodnota, kterou mÃ¡ ID objektu neuloÅ¾enÃ©ho v databÃ¡zi (bez perzistence).
 		/// </summary>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1706:ShortAcronymsShouldBeUppercase", MessageId = "Member")]
 		public const int NoID = Int32.MinValue;
@@ -29,7 +29,7 @@ namespace Havit.Business
 
 		#region Property - ID
 		/// <summary>
-		/// Primární klíè objektu.
+		/// PrimÃ¡rnÃ­ klÃ­Ä objektu.
 		/// </summary>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1706:ShortAcronymsShouldBeUppercase", MessageId = "Member")]
 		public int ID
@@ -42,8 +42,8 @@ namespace Havit.Business
 
 		#region Properties - Stav objektu (IsDirty, IsLoaded, IsNew, IsDeleted)
 		/// <summary>
-		/// Indikuje, zda-li byla data objektu zmìnìna oproti datùm v databázi.
-		/// Pøi nastavení na false zruší pøíznak zmìn všem PropertyHolderùm.
+		/// Indikuje, zda-li byla data objektu zmÄ›nÄ›na oproti datÅ¯m v databÃ¡zi.
+		/// PÅ™i nastavenÃ­ na false zruÅ¡Ã­ pÅ™Ã­znak zmÄ›n vÅ¡em PropertyHolderÅ¯m.
 		/// </summary>
 		public bool IsDirty
 		{
@@ -59,8 +59,8 @@ namespace Havit.Business
 		private bool _isDirty;
 
 		/// <summary>
-		/// Indikuje, zda-li byla data objektu naètena z databáze,
-		/// resp. zda-li je potøeba objekt nahrávat z databáze.
+		/// Indikuje, zda-li byla data objektu naÄtena z databÃ¡ze,
+		/// resp. zda-li je potÅ™eba objekt nahrÃ¡vat z databÃ¡ze.
 		/// </summary>
 		public bool IsLoaded
 		{
@@ -70,8 +70,8 @@ namespace Havit.Business
 		private bool _isLoaded;
 
 		/// <summary>
-		/// Indikuje, zda-li jde o novı objekt bez perzistence, kterı nebyl dosud uloen do databáze.
-		/// Èeká na INSERT.
+		/// Indikuje, zda-li jde o novÃ½ objekt bez perzistence, kterÃ½ nebyl dosud uloÅ¾en do databÃ¡ze.
+		/// ÄŒekÃ¡ na INSERT.
 		/// </summary>
 		public bool IsNew
 		{
@@ -81,7 +81,7 @@ namespace Havit.Business
 		private bool _isNew;
 
 		/// <summary>
-		/// Indikuje, zda-li je objekt smazán z databáze, pøípadnì je v ní oznaèen jako smazanı.
+		/// Indikuje, zda-li je objekt smazÃ¡n z databÃ¡ze, pÅ™Ã­padnÄ› je v nÃ­ oznaÄen jako smazanÃ½.
 		/// </summary>
 		public bool IsDeleted
 		{
@@ -91,7 +91,7 @@ namespace Havit.Business
 		private bool _isDeleted;
 
 		/// <summary>
-		/// Indikuje, zda-li je objekt zrovna ukládán (hlídá cyklické reference pøi ukládání).
+		/// Indikuje, zda-li je objekt zrovna uklÃ¡dÃ¡n (hlÃ­dÃ¡ cyklickÃ© reference pÅ™i uklÃ¡dÃ¡nÃ­).
 		/// </summary>
 		protected internal bool IsSaving
 		{
@@ -103,10 +103,10 @@ namespace Havit.Business
 
 		#region PropertyHolders
 		/// <summary>
-		/// Kolekce referencí na jednotlivé property-holder objekty.
+		/// Kolekce referencÃ­ na jednotlivÃ© property-holder objekty.
 		/// </summary>
 		/// <remarks>
-		/// Kolekce je urèena pro hromadné operace s property-holdery. Jednotlivé property si reference na své property-holdery udrují v private fieldu.
+		/// Kolekce je urÄena pro hromadnÃ© operace s property-holdery. JednotlivÃ© property si reference na svÃ© property-holdery udrÅ¾ujÃ­ v private fieldu.
 		/// </remarks>
 		internal protected List<PropertyHolderBase> PropertyHolders
 		{
@@ -120,12 +120,12 @@ namespace Havit.Business
 
 		#region Constructors
 		/// <summary>
-		/// Implementaèní konstruktor.
+		/// ImplementaÄnÃ­ konstruktor.
 		/// </summary>
 		/// <param name="id">ID objektu (PK)</param>
-		/// <param name="isNew">indikuje novı objekt</param>
-		/// <param name="isDirty">indikuje objekt zmìnìnı vùèi perzistentnímu uloišti</param>
-		/// <param name="isLoaded">indikuje naètenı objekt</param>
+		/// <param name="isNew">indikuje novÃ½ objekt</param>
+		/// <param name="isDirty">indikuje objekt zmÄ›nÄ›nÃ½ vÅ¯Äi perzistentnÃ­mu uloÅ¾iÅ¡ti</param>
+		/// <param name="isLoaded">indikuje naÄtenÃ½ objekt</param>
 		protected internal BusinessObjectBase(int id, bool isNew, bool isDirty, bool isLoaded)
 		{
 			this._id = id;
@@ -137,7 +137,7 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Konstruktor pro novı objekt (bez perzistence v databázi).
+		/// Konstruktor pro novÃ½ objekt (bez perzistence v databÃ¡zi).
 		/// </summary>
 		protected BusinessObjectBase()
 			: this(
@@ -158,9 +158,9 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Konstruktor pro objekt s obrazem v databázi (perzistentní).
+		/// Konstruktor pro objekt s obrazem v databÃ¡zi (perzistentnÃ­).
 		/// </summary>
-		/// <param name="id">primární klíè objektu</param>
+		/// <param name="id">primÃ¡rnÃ­ klÃ­Ä objektu</param>
 		protected BusinessObjectBase(int id)
 			: this(
 			id,		// ID
@@ -170,7 +170,7 @@ namespace Havit.Business
 		{
 			if (id == NoID)
 			{
-				throw new InvalidOperationException("Nelze vytvoøit objekt, kterı by nebyl novı a mìl NoID.");
+				throw new InvalidOperationException("Nelze vytvoÅ™it objekt, kterÃ½ by nebyl novÃ½ a mÄ›l NoID.");
 			}
 
 			/*
@@ -184,28 +184,28 @@ namespace Havit.Business
 		#endregion
 
 		#region Load logika
-		// zámek pro naèítání objektù
+		// zÃ¡mek pro naÄÃ­tÃ¡nÃ­ objektÅ¯
 		private object loadLock = new object();
 
 		/// <summary>
-		/// Nahraje objekt z perzistentního uloištì.
+		/// Nahraje objekt z perzistentnÃ­ho uloÅ¾iÅ¡tÄ›.
 		/// </summary>
 		/// <remarks>
-		/// Pozor, pokud je ji objekt naèten a není urèena transakce (null), znovu se nenahrává.
-		/// Pokud je transakce urèena, naète se znovu.
-		/// Pokud se naètení podaøí (nebo není naèítání tøeba, tj. není urèena transakce a objekt je ji naèten), vrací true. Jinak (napø. v pøípadì neexistence dat pro objekt) vrací false.
+		/// Pozor, pokud je jiÅ¾ objekt naÄten a nenÃ­ urÄena transakce (null), znovu se nenahrÃ¡vÃ¡.
+		/// Pokud je transakce urÄena, naÄte se znovu.
+		/// Pokud se naÄtenÃ­ podaÅ™Ã­ (nebo nenÃ­ naÄÃ­tÃ¡nÃ­ tÅ™eba, tj. nenÃ­ urÄena transakce a objekt je jiÅ¾ naÄten), vracÃ­ true. Jinak (napÅ™. v pÅ™Ã­padÄ› neexistence dat pro objekt) vracÃ­ false.
 		/// </remarks>
-		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má bıt objekt naèten; null, pokud bez transakce</param>
+		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rÃ¡mci kterÃ© mÃ¡ bÃ½t objekt naÄten; null, pokud bez transakce</param>
 		public bool TryLoad(DbTransaction transaction)
 		{
 			if (this.IsLoaded && (transaction == null))
 			{
-				// pokud je ji objekt naèten, nenaèítáme ho znovu
+				// pokud je jiÅ¾ objekt naÄten, nenaÄÃ­tÃ¡me ho znovu
 				return true;
 			}
 
-			// naèítání se zamyká kvùli cachovanım readonly objektùm
-			// tam je sdílena instance, která by mohla bıt naèítána najednou ze dvou threadù
+			// naÄÃ­tÃ¡nÃ­ se zamykÃ¡ kvÅ¯li cachovanÃ½m readonly objektÅ¯m
+			// tam je sdÃ­lena instance, kterÃ¡ by mohla bÃ½t naÄÃ­tÃ¡na najednou ze dvou threadÅ¯
 			lock (loadLock)
 			{
 				if (this.IsLoaded)
@@ -216,7 +216,7 @@ namespace Havit.Business
 				if (successful)
 				{
 					this.IsLoaded = true;
-					this.IsDirty = false; // naètenı objekt není Dirty.			
+					this.IsDirty = false; // naÄtenÃ½ objekt nenÃ­ Dirty.			
 				}
 				return successful;
 
@@ -224,29 +224,29 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Nahraje objekt z perzistentního uloištì.
+		/// Nahraje objekt z perzistentnÃ­ho uloÅ¾iÅ¡tÄ›.
 		/// </summary>
 		/// <remarks>
-		/// Pozor, pokud je ji objekt naèten a není urèena transakce (null), znovu se nenahrává.
-		/// Pokud je transakce urèena, naète se znovu.
-		/// Pokud se naètení nedaøí, je vyhozena vıjimka.
+		/// Pozor, pokud je jiÅ¾ objekt naÄten a nenÃ­ urÄena transakce (null), znovu se nenahrÃ¡vÃ¡.
+		/// Pokud je transakce urÄena, naÄte se znovu.
+		/// Pokud se naÄtenÃ­ nedaÅ™Ã­, je vyhozena vÃ½jimka.
 		/// </remarks>
-		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má bıt objekt naèten; null, pokud bez transakce</param>
+		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rÃ¡mci kterÃ© mÃ¡ bÃ½t objekt naÄten; null, pokud bez transakce</param>
 		public void Load(DbTransaction transaction)
 		{
 			if (!TryLoad(transaction))
 			{
-				// JK: Popis vıjimky není pøesnı.
-				throw new InvalidOperationException(String.Format("Pro objekt {0}.ID={1} se nepodaøilo získat data z databáze.", this.GetType().FullName, this.ID));
+				// JK: Popis vÃ½jimky nenÃ­ pÅ™esnÃ½.
+				throw new InvalidOperationException(String.Format("Pro objekt {0}.ID={1} se nepodaÅ™ilo zÃ­skat data z databÃ¡ze.", this.GetType().FullName, this.ID));
 			}
 		}
 
 		/// <summary>
-		/// Nahraje objekt z perzistentního uloištì, bez transakce.
-		/// Pokud se naètení nedaøí, je vyhozena vıjimka.
+		/// Nahraje objekt z perzistentnÃ­ho uloÅ¾iÅ¡tÄ›, bez transakce.
+		/// Pokud se naÄtenÃ­ nedaÅ™Ã­, je vyhozena vÃ½jimka.
 		/// </summary>
 		/// <remarks>
-		/// Pozor, pokud je ji objekt naèten, znovu se nenahrává.
+		/// Pozor, pokud je jiÅ¾ objekt naÄten, znovu se nenahrÃ¡vÃ¡.
 		/// </remarks>
 		public void Load()
 		{
@@ -254,11 +254,11 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Nahraje objekt z perzistentního uloištì, bez transakce.
-		/// Pokud se naètení podaøí, vrací true, jinak (napø. v pøípadì neexistence dat pro objekt) vrací false.
+		/// Nahraje objekt z perzistentnÃ­ho uloÅ¾iÅ¡tÄ›, bez transakce.
+		/// Pokud se naÄtenÃ­ podaÅ™Ã­, vracÃ­ true, jinak (napÅ™. v pÅ™Ã­padÄ› neexistence dat pro objekt) vracÃ­ false.
 		/// </summary>
 		/// <remarks>
-		/// Pozor, pokud je ji objekt naèten, znovu se nenahrává.
+		/// Pozor, pokud je jiÅ¾ objekt naÄten, znovu se nenahrÃ¡vÃ¡.
 		/// </remarks>
 		public bool TryLoad()
 		{
@@ -266,27 +266,27 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Vıkonná èást nahrání objektu z perzistentního uloištì.
+		/// VÃ½konnÃ¡ ÄÃ¡st nahrÃ¡nÃ­ objektu z perzistentnÃ­ho uloÅ¾iÅ¡tÄ›.
 		/// </summary>
-		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má bıt objekt naèten; null, pokud bez transakce</param>
-		/// <returns>True, pokud se podaøilo objekt naèíst, jinak false.</returns>
+		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rÃ¡mci kterÃ© mÃ¡ bÃ½t objekt naÄten; null, pokud bez transakce</param>
+		/// <returns>True, pokud se podaÅ™ilo objekt naÄÃ­st, jinak false.</returns>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member")]
 		protected abstract bool TryLoad_Perform(DbTransaction transaction);
 		#endregion
 
 		#region Save logika
 		/// <summary>
-		/// Uloí objekt do databáze, s pøípadnım pouitím VNÌJŠÍ transakce.
+		/// UloÅ¾Ã­ objekt do databÃ¡ze, s pÅ™Ã­padnÃ½m pouÅ¾itÃ­m VNÄšJÅ Ã transakce.
 		/// </summary>
 		/// <remarks>
-		/// Metoda neprovede uloení objektu, pokud není nahrán (!IsLoaded), není toti ani co ukládat,
-		/// data nemohla bıt zmìnìna, kdy nebyla ani jednou pouita.<br/>
-		/// Metoda také neprovede uloení, pokud objekt nebyl zmìnìn a souèasnì nejde o novı objekt (!IsDirty &amp;&amp; !IsNew).<br/>
-		/// Metoda nezakládá vlastní transakci, která by sdruovala uloení kolekcí, èlenskıch objektù a vlastních dat!!!
-		/// Pøíslušná transakce musí bıt pøedána (explicitní transakci doplòuje a ActiveRecordBusinessObjectbase).<br/>
-		/// Mazání objektù rovnì ukládá pøes tuto metodu.
+		/// Metoda neprovede uloÅ¾enÃ­ objektu, pokud nenÃ­ nahrÃ¡n (!IsLoaded), nenÃ­ totiÅ¾ ani co uklÃ¡dat,
+		/// data nemohla bÃ½t zmÄ›nÄ›na, kdyÅ¾ nebyla ani jednou pouÅ¾ita.<br/>
+		/// Metoda takÃ© neprovede uloÅ¾enÃ­, pokud objekt nebyl zmÄ›nÄ›n a souÄasnÄ› nejde o novÃ½ objekt (!IsDirty &amp;&amp; !IsNew).<br/>
+		/// Metoda nezaklÃ¡dÃ¡ vlastnÃ­ transakci, kterÃ¡ by sdruÅ¾ovala uloÅ¾enÃ­ kolekcÃ­, ÄlenskÃ½ch objektÅ¯ a vlastnÃ­ch dat!!!
+		/// PÅ™Ã­sluÅ¡nÃ¡ transakce musÃ­ bÃ½t pÅ™edÃ¡na (explicitnÃ­ transakci doplÅˆuje aÅ¾ ActiveRecordBusinessObjectbase).<br/>
+		/// MazÃ¡nÃ­ objektÅ¯ rovnÄ›Å¾ uklÃ¡dÃ¡ pÅ™es tuto metodu.
 		/// </remarks>
-		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má bıt objekt uloen; null, pokud bez transakce</param>
+		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rÃ¡mci kterÃ© mÃ¡ bÃ½t objekt uloÅ¾en; null, pokud bez transakce</param>
 		public virtual void Save(DbTransaction transaction)
 		{			
 			if (!IsLoaded || IsSaving)
@@ -294,11 +294,11 @@ namespace Havit.Business
 				return;
 			}
 
-			IsSaving = true; // øeší cyklické reference pøi ukládání objektovıch struktur
+			IsSaving = true; // Å™eÅ¡Ã­ cyklickÃ© reference pÅ™i uklÃ¡dÃ¡nÃ­ objektovÃ½ch struktur
 
 			bool wasNew = IsNew;
-			bool callBeforeAfterSave = IsDirty; // pokrıvá i situaci, kdy je objekt novı
-			if (callBeforeAfterSave) // zavoláno pro zmìnìné (a tedy i nové) objekty
+			bool callBeforeAfterSave = IsDirty; // pokrÃ½vÃ¡ i situaci, kdy je objekt novÃ½
+			if (callBeforeAfterSave) // zavolÃ¡no pro zmÄ›nÄ›nÃ© (a tedy i novÃ©) objekty
 			{
 				OnBeforeSave(new BeforeSaveEventArgs(transaction));
 			}
@@ -309,11 +309,11 @@ namespace Havit.Business
 			}
 
 			Save_Perform(transaction);
-			// Uloenı objekt není u novı, dostal i pøidìlené ID.
-			// Pro generovanı kód BL je zbyteèné, ten IsNew nastavuje i ve vygenerovanıch
-			// metodách pro MinimalInsert a FullInsert.
+			// UloÅ¾enÃ½ objekt nenÃ­ uÅ¾ novÃ½, dostal i pÅ™idÄ›lenÃ© ID.
+			// Pro generovanÃ½ kÃ³d BL je zbyteÄnÃ©, ten IsNew nastavuje i ve vygenerovanÃ½ch
+			// metodÃ¡ch pro MinimalInsert a FullInsert.
 			IsNew = false; 
-			IsDirty = false; // uloenı objekt je aktuální
+			IsDirty = false; // uloÅ¾enÃ½ objekt je aktuÃ¡lnÃ­
 
 			if (callBeforeAfterSave)
 			{
@@ -323,12 +323,12 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Uloí objekt do databáze, bez transakce. Novı objekt je vloen INSERT, existující objekt je aktualizován UPDATE.
+		/// UloÅ¾Ã­ objekt do databÃ¡ze, bez transakce. NovÃ½ objekt je vloÅ¾en INSERT, existujÃ­cÃ­ objekt je aktualizovÃ¡n UPDATE.
 		/// </summary>
 		/// <remarks>
-		/// Metoda neprovede uloení objektu, pokud není nahrán (!IsLoaded), není toti ani co ukládat,
-		/// data nemohla bıt zmìnìna, kdy nebyla ani jednou pouita.<br/>
-		/// Metoda také neprovede uloení, pokud objekt nebyl zmìnìn a souèasnì nejde o novı objekt (!IsDirty &amp;&amp; !IsNew)
+		/// Metoda neprovede uloÅ¾enÃ­ objektu, pokud nenÃ­ nahrÃ¡n (!IsLoaded), nenÃ­ totiÅ¾ ani co uklÃ¡dat,
+		/// data nemohla bÃ½t zmÄ›nÄ›na, kdyÅ¾ nebyla ani jednou pouÅ¾ita.<br/>
+		/// Metoda takÃ© neprovede uloÅ¾enÃ­, pokud objekt nebyl zmÄ›nÄ›n a souÄasnÄ› nejde o novÃ½ objekt (!IsDirty &amp;&amp; !IsNew)
 		/// </remarks>
 		public void Save()
 		{
@@ -336,16 +336,16 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Vıkonná èást uloení objektu do perzistentního uloištì.
+		/// VÃ½konnÃ¡ ÄÃ¡st uloÅ¾enÃ­ objektu do perzistentnÃ­ho uloÅ¾iÅ¡tÄ›.
 		/// </summary>
-		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má bıt objekt uloen; null, pokud bez transakce</param>
+		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rÃ¡mci kterÃ© mÃ¡ bÃ½t objekt uloÅ¾en; null, pokud bez transakce</param>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member")]
 		protected abstract void Save_Perform(DbTransaction transaction);
 
 		/// <summary>
-		/// Volá se pøed jakımkoliv uloením objektu, tj. i pøed smazáním.
-		/// V kadém spuštìní uloení grafu objektù se metoda volá právì jednou, na rozdíl od Save, kterı mùe bıt (a je) spouštìn opakovanì v pøípadì ukládání stromù objektù.
-		/// Metoda se volá pøed zavoláním validaèní metody CheckConstrains.
+		/// VolÃ¡ se pÅ™ed jakÃ½mkoliv uloÅ¾enÃ­m objektu, tj. i pÅ™ed smazÃ¡nÃ­m.
+		/// V kaÅ¾dÃ©m spuÅ¡tÄ›nÃ­ uloÅ¾enÃ­ grafu objektÅ¯ se metoda volÃ¡ prÃ¡vÄ› jednou, na rozdÃ­l od Save, kterÃ½ mÅ¯Å¾e bÃ½t (a je) spouÅ¡tÄ›n opakovanÄ› v pÅ™Ã­padÄ› uklÃ¡dÃ¡nÃ­ stromÅ¯ objektÅ¯.
+		/// Metoda se volÃ¡ pÅ™ed zavolÃ¡nÃ­m validaÄnÃ­ metody CheckConstrains.
 		/// </summary>
 		protected virtual void OnBeforeSave(BeforeSaveEventArgs transactionEventArgs)
 		{
@@ -354,9 +354,9 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Volá se po zakémkoliv uloení objektu, tj. i po smazání objektu.
-		/// V kadém spuštìní uloení grafu objektù se metoda volá právì jednou, na rozdíl od Save, kterı mùe bıt (a je) spouštìn opakovanì v pøípadì ukládání stromù objektù.
-		/// Metoda se volá po nastavení pøíznakù IsDirty, IsNew, apod.
+		/// VolÃ¡ se po zakÃ©mkoliv uloÅ¾enÃ­ objektu, tj. i po smazÃ¡nÃ­ objektu.
+		/// V kaÅ¾dÃ©m spuÅ¡tÄ›nÃ­ uloÅ¾enÃ­ grafu objektÅ¯ se metoda volÃ¡ prÃ¡vÄ› jednou, na rozdÃ­l od Save, kterÃ½ mÅ¯Å¾e bÃ½t (a je) spouÅ¡tÄ›n opakovanÄ› v pÅ™Ã­padÄ› uklÃ¡dÃ¡nÃ­ stromÅ¯ objektÅ¯.
+		/// Metoda se volÃ¡ po nastavenÃ­ pÅ™Ã­znakÅ¯ IsDirty, IsNew, apod.
 		/// </summary>        
 		protected virtual void OnAfterSave(AfterSaveEventArgs transactionEventArgs)
 		{
@@ -368,17 +368,17 @@ namespace Havit.Business
 
 		#region Delete logika
 		/// <summary>
-		/// Smae objekt, nebo ho oznaèí jako smazanı, podle zvolené logiky. Zmìnu uloí do databáze, v transakci.
+		/// SmaÅ¾e objekt, nebo ho oznaÄÃ­ jako smazanÃ½, podle zvolenÃ© logiky. ZmÄ›nu uloÅ¾Ã­ do databÃ¡ze, v transakci.
 		/// </summary>
 		/// <remarks>
-		/// Neprovede se, pokud je ji objekt smazán.
+		/// Neprovede se, pokud je jiÅ¾ objekt smazÃ¡n.
 		/// </remarks>
-		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které se smazání provede; null, pokud bez transakce</param>
+		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rÃ¡mci kterÃ© se smazÃ¡nÃ­ provede; null, pokud bez transakce</param>
 		public virtual void Delete(DbTransaction transaction)
 		{
 			if (IsNew)
 			{
-				throw new InvalidOperationException("Novı objekt nelze smazat.");
+				throw new InvalidOperationException("NovÃ½ objekt nelze smazat.");
 			}
 			
 			EnsureLoaded();
@@ -394,10 +394,10 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Smae objekt, nebo ho oznaèí jako smazanı, podle zvolené logiky. Zmìnu uloí do databáze, bez transakce.
+		/// SmaÅ¾e objekt, nebo ho oznaÄÃ­ jako smazanÃ½, podle zvolenÃ© logiky. ZmÄ›nu uloÅ¾Ã­ do databÃ¡ze, bez transakce.
 		/// </summary>
 		/// <remarks>
-		/// Neprovede se, pokud je ji objekt smazán.
+		/// Neprovede se, pokud je jiÅ¾ objekt smazÃ¡n.
 		/// </remarks>
 		public void Delete()
 		{
@@ -405,19 +405,19 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Implementace metody vymae objekt z perzistentního uloištì nebo ho oznaèí jako smazanı.
+		/// Implementace metody vymaÅ¾e objekt z perzistentnÃ­ho uloÅ¾iÅ¡tÄ› nebo ho oznaÄÃ­ jako smazanÃ½.
 		/// </summary>
-		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které se smazání provede; null, pokud bez transakce</param>
+		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rÃ¡mci kterÃ© se smazÃ¡nÃ­ provede; null, pokud bez transakce</param>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member")]
 		protected abstract void Delete_Perform(DbTransaction transaction);
 		#endregion
 
-		#region Implementaèní metody - EnsureLoaded, CheckChange
+		#region ImplementaÄnÃ­ metody - EnsureLoaded, CheckChange
 		/// <summary>
-		/// Ovìøí, jestli jsou data objektu naètena z databáze (IsLoaded). Pokud nejsou, provede jejich naètení.
+		/// OvÄ›Å™Ã­, jestli jsou data objektu naÄtena z databÃ¡ze (IsLoaded). Pokud nejsou, provede jejich naÄtenÃ­.
 		/// </summary>
 		/// <remarks>
-		/// Metoda EnsureLoaded se volá pøed kadou operací, která potøebuje data objektu. Zajištuje lazy-load.
+		/// Metoda EnsureLoaded se volÃ¡ pÅ™ed kaÅ¾dou operacÃ­, kterÃ¡ potÅ™ebuje data objektu. ZajiÅ¡tuje lazy-load.
 		/// </remarks>
 		protected void EnsureLoaded()
 		{
@@ -430,15 +430,15 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Metoda zkontroluje rovnost dvou objektù - jestlie nejsou stejné, je objekt oznaèen jako zmìnìnı (IsDirty = true).
+		/// Metoda zkontroluje rovnost dvou objektÅ¯ - jestliÅ¾e nejsou stejnÃ©, je objekt oznaÄen jako zmÄ›nÄ›nÃ½ (IsDirty = true).
 		/// </summary>
 		/// <remarks>
-		/// Metoda se pouívá zejména v set-accesorech properties, kde hlídá, jestli dochází ke zmìnì,
-		/// kterou bude potøeba uloit.
+		/// Metoda se pouÅ¾Ã­vÃ¡ zejmÃ©na v set-accesorech properties, kde hlÃ­dÃ¡, jestli dochÃ¡zÃ­ ke zmÄ›nÄ›,
+		/// kterou bude potÅ™eba uloÅ¾it.
 		/// </remarks>
-		/// <param name="currentValue">dosavadní hodnota</param>
-		/// <param name="newValue">nová hodnota</param>
-		/// <returns>false, pokud jsou hodnoty stejné; true, pokud dochází ke zmìnì</returns>
+		/// <param name="currentValue">dosavadnÃ­ hodnota</param>
+		/// <param name="newValue">novÃ¡ hodnota</param>
+		/// <returns>false, pokud jsou hodnoty stejnÃ©; true, pokud dochÃ¡zÃ­ ke zmÄ›nÄ›</returns>
 		protected bool CheckChange(object currentValue, object newValue)
 		{
 			if (!Object.Equals(currentValue, newValue))
@@ -450,12 +450,12 @@ namespace Havit.Business
 		}
 		#endregion
 
-		#region Equals, GetHashCode, operátory == a != (override)
+		#region Equals, GetHashCode, operÃ¡tory == a != (override)
 		/// <summary>
-		/// Zjistí rovnost druhého objektu s instancí. Základní implementace porovná jejich ID.
-		/// Nové objekty jsou si rovny v pøípadì identity (stejná reference).
+		/// ZjistÃ­ rovnost druhÃ©ho objektu s instancÃ­. ZÃ¡kladnÃ­ implementace porovnÃ¡ jejich ID.
+		/// NovÃ© objekty jsou si rovny v pÅ™Ã­padÄ› identity (stejnÃ¡ reference).
 		/// </summary>
-		/// <param name="obj">objekt k porovnání</param>
+		/// <param name="obj">objekt k porovnÃ¡nÃ­</param>
 		/// <returns>true, pokud jsou si rovny; jinak false</returns>
 		public virtual bool Equals(BusinessObjectBase obj)
 		{
@@ -464,13 +464,13 @@ namespace Havit.Business
 				return false;
 			}
 			
-			// nové objekty jsou si rovny pouze v pøípadì identity (stejná reference)
+			// novÃ© objekty jsou si rovny pouze v pÅ™Ã­padÄ› identity (stejnÃ¡ reference)
 			if (this.IsNew || obj.IsNew)
 			{
 				return Object.ReferenceEquals(this, obj);
 			}
 			
-			// bìné objekty jsou si rovny, pokud mají stejné ID
+			// bÄ›Å¾nÃ© objekty jsou si rovny, pokud majÃ­ stejnÃ© ID
 			if (!Object.Equals(this.ID, obj.ID))
 			{
 				return false;
@@ -479,9 +479,9 @@ namespace Havit.Business
 		}
 		
 		/// <summary>
-		/// Zjistí rovnost druhého objektu s instancí. Základní implementace porovná jejich ID.
+		/// ZjistÃ­ rovnost druhÃ©ho objektu s instancÃ­. ZÃ¡kladnÃ­ implementace porovnÃ¡ jejich ID.
 		/// </summary>
-		/// <param name="obj">objekt k porovnání</param>
+		/// <param name="obj">objekt k porovnÃ¡nÃ­</param>
 		/// <returns>true, pokud jsou si rovny; jinak false</returns>
 		public override bool Equals(object obj)
 		{
@@ -494,29 +494,29 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Operátor ==, ovìøuje rovnost ID.
+		/// OperÃ¡tor ==, ovÄ›Å™uje rovnost ID.
 		/// </summary>
-		/// <param name="objA">první objekt</param>
-		/// <param name="objB">druhı objekt</param>
-		/// <returns>true, pokud mají objekty stejné ID; jinak false</returns>
+		/// <param name="objA">prvnÃ­ objekt</param>
+		/// <param name="objB">druhÃ½ objekt</param>
+		/// <returns>true, pokud majÃ­ objekty stejnÃ© ID; jinak false</returns>
 		public static bool operator ==(BusinessObjectBase objA, BusinessObjectBase objB)
 		{
 			return Object.Equals(objA, objB);
 		}
 
 		/// <summary>
-		/// Operátor !=, ovìøuje rovnost ID.
+		/// OperÃ¡tor !=, ovÄ›Å™uje rovnost ID.
 		/// </summary>
-		/// <param name="objA">první objekt</param>
-		/// <param name="objB">druhı objekt</param>
-		/// <returns>false, pokud mají objekty stejné ID; jinak true</returns>
+		/// <param name="objA">prvnÃ­ objekt</param>
+		/// <param name="objB">druhÃ½ objekt</param>
+		/// <returns>false, pokud majÃ­ objekty stejnÃ© ID; jinak true</returns>
 		public static bool operator !=(BusinessObjectBase objA, BusinessObjectBase objB)
 		{
 			return !Object.Equals(objA, objB);
 		}
 
 		/// <summary>
-		/// Vrací ID jako HashCode.
+		/// VracÃ­ ID jako HashCode.
 		/// </summary>
 		public override int GetHashCode()
 		{
@@ -529,7 +529,7 @@ namespace Havit.Business
 		/// Kontroluje konzistenci objektu jako celku.
 		/// </summary>
 		/// <remarks>
-		/// Automaticky je voláno pøed ukládáním objektu Save(), pokud je objekt opravdu ukládán.
+		/// Automaticky je volÃ¡no pÅ™ed uklÃ¡dÃ¡nÃ­m objektu Save(), pokud je objekt opravdu uklÃ¡dÃ¡n.
 		/// </remarks>
 		protected virtual void CheckConstraints()
 		{
@@ -538,11 +538,11 @@ namespace Havit.Business
 
 		#region Init
 		/// <summary>
-		/// Inicializaèní metoda, která je volána pøi vytvoøení objektu (pøímo z konstruktorù).
-		/// Pøipravena pro override potomky.
+		/// InicializaÄnÃ­ metoda, kterÃ¡ je volÃ¡na pÅ™i vytvoÅ™enÃ­ objektu (pÅ™Ã­mo z konstruktorÅ¯).
+		/// PÅ™ipravena pro override potomky.
 		/// </summary>
 		/// <remarks>
-		/// Metoda Init() je zamıšlena mj. pro incializaci PropertyHolderù (vytvoøení instance) a kolekcí (vytvoøení instance, navázání událostí).
+		/// Metoda Init() je zamÃ½Å¡lena mj. pro incializaci PropertyHolderÅ¯ (vytvoÅ™enÃ­ instance) a kolekcÃ­ (vytvoÅ™enÃ­ instance, navÃ¡zÃ¡nÃ­ udÃ¡lostÃ­).
 		/// </remarks>
 		protected virtual void Init()
 		{
@@ -555,9 +555,9 @@ namespace Havit.Business
 		/// Zaregistruje PropertyHolder do kolekce PropertyHolders.
 		/// </summary>
 		/// <remarks>
-		/// Touto metodou se k objektu registrují sami PropertyHoldery ve svıch constructorech.
+		/// Touto metodou se k objektu registrujÃ­ sami PropertyHoldery ve svÃ½ch constructorech.
 		/// </remarks>
-		/// <param name="propertyHolder">PropertyHolder k zaregistrování</param>
+		/// <param name="propertyHolder">PropertyHolder k zaregistrovÃ¡nÃ­</param>
 		internal void RegisterPropertyHolder(PropertyHolderBase propertyHolder)
 		{
 			_propertyHolders.Add(propertyHolder);
@@ -568,11 +568,11 @@ namespace Havit.Business
 
 		#region GetNullableID (static)
 		/// <summary>
-		/// Vrátí ID objektu, nebo null, pokud je vstupní objekt null.
-		/// Urèeno pro pøehledné získávání ID, obvykle pøi pøedávání do DB.
+		/// VrÃ¡tÃ­ ID objektu, nebo null, pokud je vstupnÃ­ objekt null.
+		/// UrÄeno pro pÅ™ehlednÃ© zÃ­skÃ¡vÃ¡nÃ­ ID, obvykle pÅ™i pÅ™edÃ¡vÃ¡nÃ­ do DB.
 		/// </summary>
-		/// <param name="businessObject">objekt, jeho ID chceme</param>
-		/// <returns>ID objektu, nebo null, pokud je vstupní objekt null</returns>
+		/// <param name="businessObject">objekt, jehoÅ¾ ID chceme</param>
+		/// <returns>ID objektu, nebo null, pokud je vstupnÃ­ objekt null</returns>
 		public static int? GetNullableID(BusinessObjectBase businessObject)
 		{
 			if (businessObject == null)

@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
@@ -9,7 +9,7 @@ using System.Web.UI.HtmlControls;
 namespace Havit.Web.UI.Scriptlets
 {
 	/// <summary>
-	/// Parametr obsažený ve <see cref="Scriptlet">Scripletu</see>.
+	/// Parametr obsaÅ¾enÃ½ ve <see cref="Scriptlet">Scripletu</see>.
 	/// </summary>
 	public interface IScriptletParameter
 	{

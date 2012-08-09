@@ -1,16 +1,16 @@
-using System;
+Ôªøusing System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
-	/// Sloupec, kter˝ se umÌ identifikovat (m· ID).
+	/// Sloupec, kter√Ω se um√≠ identifikovat (m√° ID).
 	/// </summary>
 	public interface IIdentifiableField
 	{
 		/// <summary>
-		/// ID sloupce. UmoûnÌ GridView hledat sloupec podle ID.
+		/// ID sloupce. Umo≈æn√≠ GridView hledat sloupec podle ID.
 		/// </summary>
 		string ID { get; }
 	}

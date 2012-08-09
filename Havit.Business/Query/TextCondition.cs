@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -6,13 +6,13 @@ using System.Text.RegularExpressions;
 namespace Havit.Business.Query
 {
 	/// <summary>
-	/// Vytváøí podmínky testující textovı øetìzec.
+	/// VytvÃ¡Å™Ã­ podmÃ­nky testujÃ­cÃ­ textovÃ½ Å™etÄ›zec.
 	/// </summary>
 	public static class TextCondition
 	{
 		#region CreateEquals
 		/// <summary>
-		/// Vytvoøí podmínku testující øetìzec na rovnost. Citlivost na velká a malá písmena, diakritiku apod. vychází z nastavení serveru.
+		/// VytvoÅ™Ã­ podmÃ­nku testujÃ­cÃ­ Å™etÄ›zec na rovnost. Citlivost na velkÃ¡ a malÃ¡ pÃ­smena, diakritiku apod. vychÃ¡zÃ­ z nastavenÃ­ serveru.
 		/// </summary>
 		public static Condition CreateEquals(IOperand operand, string value)
 		{
@@ -20,7 +20,7 @@ namespace Havit.Business.Query
 		}
 
 		/// <summary>
-		/// Vytvoøí podmínku testující rovnost dvou operandù. Citlivost na velká a malá písmena, diakritiku apod. vychází z nastavení serveru.
+		/// VytvoÅ™Ã­ podmÃ­nku testujÃ­cÃ­ rovnost dvou operandÅ¯. Citlivost na velkÃ¡ a malÃ¡ pÃ­smena, diakritiku apod. vychÃ¡zÃ­ z nastavenÃ­ serveru.
 		/// </summary>
 		public static Condition CreateEquals(IOperand operand1, IOperand operand2)
 		{
@@ -30,7 +30,7 @@ namespace Havit.Business.Query
 
 		#region CreateLike
 		/// <summary>
-		/// Vytvoøí podmínku testující øetìzec na podobnost operátorem LIKE. Citlivost na velká a malá písmena, diakritiku apod. vychází z nastavení serveru.
+		/// VytvoÅ™Ã­ podmÃ­nku testujÃ­cÃ­ Å™etÄ›zec na podobnost operÃ¡torem LIKE. Citlivost na velkÃ¡ a malÃ¡ pÃ­smena, diakritiku apod. vychÃ¡zÃ­ z nastavenÃ­ serveru.
 		/// </summary>
 		public static Condition CreateLike(IOperand operand, string value)
 		{
@@ -40,18 +40,18 @@ namespace Havit.Business.Query
 
 		#region CreateWildcards
 		/// <summary>
-		/// Vytvoøí podmínku testující øetìzec na podobnost operátorem LIKE.
+		/// VytvoÅ™Ã­ podmÃ­nku testujÃ­cÃ­ Å™etÄ›zec na podobnost operÃ¡torem LIKE.
 		/// </summary>
 		/// <param name="operand"></param>
 		/// <param name="value">
-		/// Podporována hvìzdièková konvence takto:
-		///		- pokud parametr neobsahuje hvìzdièku, hledá se LIKE parametr%
-		///		- pokud parametr obsahuje hvìzdièku, zamìní se hvìzdièka za procento a hledá se LIKE parametr.
-		///	Pokud parametr obsahuje speciální znaky pro operátor LIKE jako procento nebo podtrítko,
-		///	jsou tyto znaky pøekódovány, take nemají funkèní vıznam.
+		/// PodporovÃ¡na hvÄ›zdiÄkovÃ¡ konvence takto:
+		///		- pokud parametr neobsahuje hvÄ›zdiÄku, hledÃ¡ se LIKE parametr%
+		///		- pokud parametr obsahuje hvÄ›zdiÄku, zamÄ›nÃ­ se hvÄ›zdiÄka za procento a hledÃ¡ se LIKE parametr.
+		///	Pokud parametr obsahuje speciÃ¡lnÃ­ znaky pro operÃ¡tor LIKE jako procento nebo podtrÅ¾Ã­tko,
+		///	jsou tyto znaky pÅ™ekÃ³dovÃ¡ny, takÅ¾e nemajÃ­ funkÄnÃ­ vÃ½znam.
 		/// </param>
 		/// <example>
-		///	Pø. Hledání vırazu "k_lo*" nenajde "kolo" ani "kolotoè" protoe _ nemá funkèní vıznam, ale najde "k_lo" i "k_lotoè".
+		///	PÅ™. HledÃ¡nÃ­ vÃ½razu "k_lo*" nenajde "kolo" ani "kolotoÄ" protoÅ¾e _ nemÃ¡ funkÄnÃ­ vÃ½znam, ale najde "k_lo" i "k_lotoÄ".
 		/// </example>
 		public static Condition CreateWildcards(IOperand operand, string value)
 		{
@@ -59,18 +59,18 @@ namespace Havit.Business.Query
 		}
 
 		/// <summary>
-		/// Vytvoøí podmínku testující øetìzec na podobnost operátorem LIKE.
+		/// VytvoÅ™Ã­ podmÃ­nku testujÃ­cÃ­ Å™etÄ›zec na podobnost operÃ¡torem LIKE.
 		/// </summary>
 		/// <param name="operand"></param>
 		/// <param name="value">
-		/// Podporována hvìzdièková konvence takto:
-		///		- pokud parametr neobsahuje hvìzdièku, hledá se pomocí LIKE parametr% nebo LIKE %parametr% podle parametru wildCardsLikeExpressionMode.
-		///		- pokud parametr obsahuje hvìzdièku, zamìní se hvìzdièka za procento a hledá se LIKE parametr.
-		///	Pokud parametr obsahuje speciální znaky pro operátor LIKE jako procento nebo podtrítko,
-		///	jsou tyto znaky pøekódovány, take nemají funkèní vıznam.
+		/// PodporovÃ¡na hvÄ›zdiÄkovÃ¡ konvence takto:
+		///		- pokud parametr neobsahuje hvÄ›zdiÄku, hledÃ¡ se pomocÃ­ LIKE parametr% nebo LIKE %parametr% podle parametru wildCardsLikeExpressionMode.
+		///		- pokud parametr obsahuje hvÄ›zdiÄku, zamÄ›nÃ­ se hvÄ›zdiÄka za procento a hledÃ¡ se LIKE parametr.
+		///	Pokud parametr obsahuje speciÃ¡lnÃ­ znaky pro operÃ¡tor LIKE jako procento nebo podtrÅ¾Ã­tko,
+		///	jsou tyto znaky pÅ™ekÃ³dovÃ¡ny, takÅ¾e nemajÃ­ funkÄnÃ­ vÃ½znam.
 		/// </param>
 		/// <example>
-		///	Pø. Hledání vırazu "k_lo*" nenajde "kolo" ani "kolotoè" protoe _ nemá funkèní vıznam, ale najde "k_lo" i "k_olotoè".
+		///	PÅ™. HledÃ¡nÃ­ vÃ½razu "k_lo*" nenajde "kolo" ani "kolotoÄ" protoÅ¾e _ nemÃ¡ funkÄnÃ­ vÃ½znam, ale najde "k_lo" i "k_olotoÄ".
 		/// </example>
 		public static Condition CreateWildcards(IOperand operand, string value, WildCardsLikeExpressionMode wildCardsLikeExpressionMode)
 		{
@@ -80,7 +80,7 @@ namespace Havit.Business.Query
 
 		#region Create
 		/// <summary>
-		/// Vytvoøí podmínku testující hodnoty pomocí zadaného operátoru.
+		/// VytvoÅ™Ã­ podmÃ­nku testujÃ­cÃ­ hodnoty pomocÃ­ zadanÃ©ho operÃ¡toru.
 		/// </summary>
 		public static Condition Create(IOperand operand, ComparisonOperator comparisonOperator, string value)
 		{
@@ -88,7 +88,7 @@ namespace Havit.Business.Query
 		}
 
 		/// <summary>
-		/// Vytvoøí podmínku testující hodnoty pomocí zadaného operátoru.
+		/// VytvoÅ™Ã­ podmÃ­nku testujÃ­cÃ­ hodnoty pomocÃ­ zadanÃ©ho operÃ¡toru.
 		/// </summary>
 		public static Condition Create(IOperand operand1, ComparisonOperator comparisonOperator, IOperand operand2)
 		{
@@ -98,7 +98,7 @@ namespace Havit.Business.Query
 
 		#region CreateIsNullOrEmpty, CreateIsNotNullOrEmpty
 		/// <summary>
-		/// Vytvoøí podmínku testující øetìzec na prázdnou hodnotu - null nebo empty.
+		/// VytvoÅ™Ã­ podmÃ­nku testujÃ­cÃ­ Å™etÄ›zec na prÃ¡zdnou hodnotu - null nebo empty.
 		/// </summary>
 		public static Condition CreateIsNullOrEmpty(IOperand operand)
 		{
@@ -109,7 +109,7 @@ namespace Havit.Business.Query
 		}
 
 		/// <summary>
-		/// Vytvoøí podmínku testující øetìzec na ne prázdnou hodnotu - ani null ani empty.
+		/// VytvoÅ™Ã­ podmÃ­nku testujÃ­cÃ­ Å™etÄ›zec na ne prÃ¡zdnou hodnotu - ani null ani empty.
 		/// </summary>
 		public static Condition CreateIsNotNullOrEmpty(IOperand operand)
 		{
@@ -122,14 +122,14 @@ namespace Havit.Business.Query
 		
 		#region GetLikeExpression, GetWildCardsLikeExpression
 		/// <summary>
-		/// Transformuje øetìzec naøetìzec, kterı je moné pouít jako hodnota k operátoru like. Tj. nahrazuje % na [%] a _ na [_].
-		/// Nepøidává % na konec, to dìlá GetWildCardsLikeExpression().
+		/// Transformuje Å™etÄ›zec naÅ™etÄ›zec, kterÃ½ je moÅ¾nÃ© pouÅ¾Ã­t jako hodnota k operÃ¡toru like. Tj. nahrazuje % na [%] a _ na [_].
+		/// NepÅ™idÃ¡vÃ¡ % na konec, to dÄ›lÃ¡ GetWildCardsLikeExpression().
 		/// </summary>
 		public static string GetLikeExpression(string text)
 		{
 			if (String.IsNullOrEmpty(text))
 			{
-				throw new ArgumentException("Argument text nesmí bıt null ani prázdnı.", "text");
+				throw new ArgumentException("Argument text nesmÃ­ bÃ½t null ani prÃ¡zdnÃ½.", "text");
 			}
 
 			string result;
@@ -139,10 +139,10 @@ namespace Havit.Business.Query
 		}
 
 		/// <summary>
-		/// Transformuje øetìzec naøetìzec, kterı je moné pouít jako hodnota k operátoru like. 
-		/// Navíc je vzat ohled na hvìzdièkovou konvenci našeho standardního UI (pokud vıraz neobsahuje wildcards, pøidá hvìzdièku na konec).
-		/// (Nahrazuje % na [%] a _ na [_] a jako poslední zamìní * za %, resp. pøidá % nakonec, pokud wildcards nebyly pouity.)
-		/// Pøíklad "*text1%text2*text3" bude transformováno na "%text1[%]text2%text3".
+		/// Transformuje Å™etÄ›zec naÅ™etÄ›zec, kterÃ½ je moÅ¾nÃ© pouÅ¾Ã­t jako hodnota k operÃ¡toru like. 
+		/// NavÃ­c je vzat ohled na hvÄ›zdiÄkovou konvenci naÅ¡eho standardnÃ­ho UI (pokud vÃ½raz neobsahuje wildcards, pÅ™idÃ¡ hvÄ›zdiÄku na konec).
+		/// (Nahrazuje % na [%] a _ na [_] a jako poslednÃ­ zamÄ›nÃ­ * za %, resp. pÅ™idÃ¡ % nakonec, pokud wildcards nebyly pouÅ¾ity.)
+		/// PÅ™Ã­klad "*text1%text2*text3" bude transformovÃ¡no na "%text1[%]text2%text3".
 		/// </summary>
 		public static string GetWildCardsLikeExpression(string text)
 		{
@@ -150,9 +150,9 @@ namespace Havit.Business.Query
 		}
 
 		/// <summary>
-		/// Transformuje øetìzec naøetìzec, kterı je moné pouít jako hodnota k operátoru like. 
-		/// Navíc je vzat ohled na hvìzdièkovou konvenci podle parametru wildCardsLikeExpressionMode (pokud nejsou pouity wildcards, doplní % na konec (StartsWith) nebo na zaèátek i na konec (Contains) ).
-		/// Pøíklad "*text1%text2*text3" bude transformováno na "%text1[%]text2%text3".
+		/// Transformuje Å™etÄ›zec naÅ™etÄ›zec, kterÃ½ je moÅ¾nÃ© pouÅ¾Ã­t jako hodnota k operÃ¡toru like. 
+		/// NavÃ­c je vzat ohled na hvÄ›zdiÄkovou konvenci podle parametru wildCardsLikeExpressionMode (pokud nejsou pouÅ¾ity wildcards, doplnÃ­ % na konec (StartsWith) nebo na zaÄÃ¡tek i na konec (Contains) ).
+		/// PÅ™Ã­klad "*text1%text2*text3" bude transformovÃ¡no na "%text1[%]text2%text3".
 		/// </summary>
 		public static string GetWildCardsLikeExpression(string text, WildCardsLikeExpressionMode wildCardsLikeExpressionMode)
 		{

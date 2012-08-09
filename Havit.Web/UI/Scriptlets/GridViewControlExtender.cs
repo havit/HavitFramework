@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
@@ -9,7 +9,7 @@ using System.Web.UI.HtmlControls;
 namespace Havit.Web.UI.Scriptlets
 {
 	/// <summary>
-	/// Control extender, kterı umí pracovat s Repeaterem.
+	/// Control extender, kterÃ½ umÃ­ pracovat s Repeaterem.
 	/// </summary>
     public class GridViewControlExtender: IControlExtender
     {
@@ -19,7 +19,7 @@ namespace Havit.Web.UI.Scriptlets
 
 		#region Constructors
 		/// <summary>
-		/// Vytvoøí extender s danou prioritou.
+		/// VytvoÅ™Ã­ extender s danou prioritou.
 		/// </summary>
 		/// <param name="priority">Priorita extenderu.</param>
 		public GridViewControlExtender(int priority)
@@ -30,11 +30,11 @@ namespace Havit.Web.UI.Scriptlets
 		
 		#region GetPriority
 		/// <summary>
-		/// Vrátí prioritu extenderu pro danı control.
-		/// Pokud je control Repeaterem, vrátí prioritu zadanou v konstruktoru,
-		/// jinak vrací null.
+		/// VrÃ¡tÃ­ prioritu extenderu pro danÃ½ control.
+		/// Pokud je control Repeaterem, vrÃ¡tÃ­ prioritu zadanou v konstruktoru,
+		/// jinak vracÃ­ null.
 		/// </summary>
-		/// <param name="control">Control, pro kterı se ovìøuje priorita.</param>
+		/// <param name="control">Control, pro kterÃ½ se ovÄ›Å™uje priorita.</param>
 		/// <returns>Priorita.</returns>
 		public int? GetPriority(Control control)
 		{
@@ -44,11 +44,11 @@ namespace Havit.Web.UI.Scriptlets
 
 		#region GetInitializeClientSideValueScript
 		/// <summary>
-		/// Vytvoøí klientskı parametr pro pøedanı control.
+		/// VytvoÅ™Ã­ klientskÃ½ parametr pro pÅ™edanÃ½ control.
 		/// </summary>
-		/// <param name="parameterPrefix">Název objektu na klientské stranì.</param>
-		/// <param name="parameter">Parametr pøedávající øízení extenderu.</param>
-		/// <param name="control">Control ke zpracování.</param>
+		/// <param name="parameterPrefix">NÃ¡zev objektu na klientskÃ© stranÄ›.</param>
+		/// <param name="parameter">Parametr pÅ™edÃ¡vajÃ­cÃ­ Å™Ã­zenÃ­ extenderu.</param>
+		/// <param name="control">Control ke zpracovÃ¡nÃ­.</param>
 		/// <param name="scriptBuilder">Script builder.</param>
 		public void GetInitializeClientSideValueScript(string parameterPrefix, IScriptletParameter parameter, Control control, ScriptBuilder scriptBuilder)
         {

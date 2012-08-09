@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Text;
 using System.Web;
 using System.Web.UI;
@@ -63,10 +63,10 @@ namespace Havit.Web.UI.WebControls
 	/// http://www.dynarch.com/projects/calendar/
 	/// </summary>
 	/// <remarks>
-	/// Properties odpovídají pøevánì vlastnostem nastavovacího objektu pouívaného v jscript:Calendar.setup()
+	/// Properties odpovÃ­dajÃ­ pÅ™evÃ¡Å¾nÄ› vlastnostem nastavovacÃ­ho objektu pouÅ¾Ã­vanÃ©ho v jscript:Calendar.setup()
 	/// </remarks>
 	/// <example>
-	/// PopUp kalendáø:
+	/// PopUp kalendÃ¡Å™:
 	/// <code>
 	/// &lt;asp:TextBox ID="OdDateTB" Text="3.3.2004" Runat="server" /&gt;
 	/// &lt;asp:Button ID="OdPickerBtn" Text="..." Runat="server" /&gt;
@@ -76,7 +76,7 @@ namespace Havit.Web.UI.WebControls
 	/// 	ShowOthers = "true"
 	/// 	Runat = "server" /&gt;
 	/// </code>
-	/// Flat kalendáø:
+	/// Flat kalendÃ¡Å™:
 	/// <code>
 	/// &lt;span id="cal"&gt;&lt;/span&gt;
 	/// &lt;havit:DynarchCalendar
@@ -89,8 +89,8 @@ namespace Havit.Web.UI.WebControls
 	{		
 		#region Static Properties
 		/// <summary>
-		/// Cesta k hlavnímu skriptu calendar[_stripped].js
-		/// Prázdná hodnota zpùsobí pouití skriptu pøes WebResource.axd.
+		/// Cesta k hlavnÃ­mu skriptu calendar[_stripped].js
+		/// PrÃ¡zdnÃ¡ hodnota zpÅ¯sobÃ­ pouÅ¾itÃ­ skriptu pÅ™es WebResource.axd.
 		/// </summary>
 		public static string MainScriptUrl
 		{
@@ -100,8 +100,8 @@ namespace Havit.Web.UI.WebControls
 		private static string mainScriptUrl = String.Empty;
 
 		/// <summary>
-		/// Cesta k vybranému jazykovému skriptu calendar-{lang}.js
-		/// Prázdná hodnota zpùsobí pouití scriptu pro èeštinu pøes WebResource.axd, vybírá se skript podle kódování.
+		/// Cesta k vybranÃ©mu jazykovÃ©mu skriptu calendar-{lang}.js
+		/// PrÃ¡zdnÃ¡ hodnota zpÅ¯sobÃ­ pouÅ¾itÃ­ scriptu pro ÄeÅ¡tinu pÅ™es WebResource.axd, vybÃ­rÃ¡ se skript podle kÃ³dovÃ¡nÃ­.
 		/// </summary>
 		public static string LanguageScriptUrl
 		{
@@ -118,7 +118,7 @@ namespace Havit.Web.UI.WebControls
 
 		/// <summary>
 		/// Cesta k setup scriptu calendar-setup[_stripped].js
-		/// Prázdná hodnota zpùsobí pouití setup skriptu pøes WebResource.axd.
+		/// PrÃ¡zdnÃ¡ hodnota zpÅ¯sobÃ­ pouÅ¾itÃ­ setup skriptu pÅ™es WebResource.axd.
 		/// </summary>
 		public static string SetupScriptUrl
 		{
@@ -128,7 +128,7 @@ namespace Havit.Web.UI.WebControls
 		private static string setupScriptUrl = String.Empty;
 
 		/// <summary>
-		/// Urèuje, jakı kaskádovı styl bude automaticky pøipojen do stránky.
+		/// UrÄuje, jakÃ½ kaskÃ¡dovÃ½ styl bude automaticky pÅ™ipojen do strÃ¡nky.
 		/// </summary>
 		public static DynarchCalendarSkin Skin
 		{
@@ -145,15 +145,15 @@ namespace Havit.Web.UI.WebControls
 		#region Constructor (static)
 		static DynarchCalendar()
 		{
-			// inicializujeme kolekci podporovanıch jazykù
-			// protoe jde o statickı konstruktor, nemusíme øešit ádné zámky
+			// inicializujeme kolekci podporovanÃ½ch jazykÅ¯
+			// protoÅ¾e jde o statickÃ½ konstruktor, nemusÃ­me Å™eÅ¡it Å¾Ã¡dnÃ© zÃ¡mky
 			supportedLanguages = new System.Collections.Generic.Dictionary<string, string>();
 			supportedLanguages.Add("af", null);
 			supportedLanguages.Add("ak", null);
 			supportedLanguages.Add("bg", null);
 			supportedLanguages.Add("br", null);
 			supportedLanguages.Add("ca", null);
-			// cs má vıjimky v kódu kvùli Win1250 + Utf8
+			// cs mÃ¡ vÃ½jimky v kÃ³du kvÅ¯li Win1250 + Utf8
 			supportedLanguages.Add("da", null);
 			supportedLanguages.Add("de", null);
 			supportedLanguages.Add("du", null);
@@ -185,13 +185,13 @@ namespace Havit.Web.UI.WebControls
 		} 
 		#endregion
 
-		#region Originální vlastnosti kalendáøe odpovídající JavaScript
+		#region OriginÃ¡lnÃ­ vlastnosti kalendÃ¡Å™e odpovÃ­dajÃ­cÃ­ JavaScript
 		/// <summary>
 		/// The ID of your input field.
 		/// </summary>
 		/// <remarks>
-		/// Pokud je zadáno ID controlu, dohledá se ClientID od controlu,
-		/// jinak je pouito pøímo.
+		/// Pokud je zadÃ¡no ID controlu, dohledÃ¡ se ClientID od controlu,
+		/// jinak je pouÅ¾ito pÅ™Ã­mo.
 		/// </remarks>
 		public string InputField
 		{
@@ -216,8 +216,8 @@ namespace Havit.Web.UI.WebControls
 		/// as an area to display the date.
 		/// </summary>
 		/// <remarks>
-		/// Pokud je zadáno ID controlu, dohledá se ClientID od controlu,
-		/// jinak je pouito pøímo.
+		/// Pokud je zadÃ¡no ID controlu, dohledÃ¡ se ClientID od controlu,
+		/// jinak je pouÅ¾ito pÅ™Ã­mo.
 		/// </remarks>
 		public string DisplayArea
 		{
@@ -242,8 +242,8 @@ namespace Havit.Web.UI.WebControls
 		/// and displays the calendar. 
 		/// </summary>
 		/// <remarks>
-		/// Pokud je zadáno ID controlu, dohledá se ClientID od controlu,
-		/// jinak je pouito pøímo.
+		/// Pokud je zadÃ¡no ID controlu, dohledÃ¡ se ClientID od controlu,
+		/// jinak je pouÅ¾ito pÅ™Ã­mo.
 		/// </remarks>
 		public string Button
 		{
@@ -271,8 +271,8 @@ namespace Havit.Web.UI.WebControls
 		/// (in this case use "focus" as the event name). 
 		/// </summary>
 		/// <remarks>
-		/// Default hodnota "click" je urèena v calendar-setup.js a zde je reprezentována
-		/// prázdnım øetìzcem (nerenderovat nastavení tohoto parametru).
+		/// Default hodnota "click" je urÄena v calendar-setup.js a zde je reprezentovÃ¡na
+		/// prÃ¡zdnÃ½m Å™etÄ›zcem (nerenderovat nastavenÃ­ tohoto parametru).
 		/// </remarks>
 		public string EventName
 		{
@@ -297,8 +297,8 @@ namespace Havit.Web.UI.WebControls
 		/// Default: "%d.%m.%Y" nastaven ve calendar-setup.js.
 		/// </summary>
 		/// <remarks>
-		/// Default hodnota je urèena v calendar-setup[_stripped].js a zde je reprezentována
-		/// prázdnım øetìzcem (nerenderovat nastavení tohoto parametru).
+		/// Default hodnota je urÄena v calendar-setup[_stripped].js a zde je reprezentovÃ¡na
+		/// prÃ¡zdnÃ½m Å™etÄ›zcem (nerenderovat nastavenÃ­ tohoto parametru).
 		/// </remarks>
 		public string InputFieldDateFormat
 		{
@@ -331,8 +331,8 @@ namespace Havit.Web.UI.WebControls
 		/// Default: "%d.%m.%Y" nastaven ve calendar-setup.js.
 		/// </summary>
 		/// <remarks>
-		/// Default hodnota je urèena v calendar-setup[_stripped].js a zde je reprezentována
-		/// prázdnım øetìzcem (nerenderovat nastavení tohoto parametru).
+		/// Default hodnota je urÄena v calendar-setup[_stripped].js a zde je reprezentovÃ¡na
+		/// prÃ¡zdnÃ½m Å™etÄ›zcem (nerenderovat nastavenÃ­ tohoto parametru).
 		/// </remarks>
 		public string DisplayAreaDateFormat
 		{
@@ -356,7 +356,7 @@ namespace Havit.Web.UI.WebControls
 		/// If true (the default) the calendar will be created in single-click mode. 
 		/// </summary>
 		/// <remarks>
-		/// Renderuje se pouze false nastavení, true je default.
+		/// Renderuje se pouze false nastavenÃ­, true je default.
 		/// </remarks>
 		public bool SingleClick
 		{
@@ -407,11 +407,11 @@ namespace Havit.Web.UI.WebControls
 		/// Specifies which day is to be displayed as the first day of week.
 		/// Possible values are 0 to 6; 0 means Sunday, 1 means Monday, ..., 6 means Saturday.
 		/// The end user can easily change this too, by clicking on the day name in the calendar header. 
-		/// Default hodnotu nastavuje language script calendar-{lang}.js, zde reprezentováno jako -1 !!!
+		/// Default hodnotu nastavuje language script calendar-{lang}.js, zde reprezentovÃ¡no jako -1 !!!
 		/// </summary>
 		/// <remarks>
-		/// Default hodnota je urèena v calendar-{lang}.js a zde je reprezentována
-		/// hodnotou -1 (nerenderovat nastavení tohoto parametru).
+		/// Default hodnota je urÄena v calendar-{lang}.js a zde je reprezentovÃ¡na
+		/// hodnotou -1 (nerenderovat nastavenÃ­ tohoto parametru).
 		/// </remarks>
 		public int FirstDay
 		{
@@ -434,7 +434,7 @@ namespace Havit.Web.UI.WebControls
 		/// If "true" then the calendar will display week numbers. 
 		/// </summary>
 		/// <remarks>
-		/// Renderuje se pouze false nastavení, true je default.
+		/// Renderuje se pouze false nastavenÃ­, true je default.
 		/// </remarks>
 		public bool WeekNumbers
 		{
@@ -516,7 +516,7 @@ namespace Havit.Web.UI.WebControls
 		/// If you want a flat calendar, pass the ID of the parent object in this property.
 		/// </summary>
 		/// <remarks>
-		/// Resolvuje se pøi renderování - pokud ID patøí controlu, nahradí se jeho ClientID.
+		/// Resolvuje se pÅ™i renderovÃ¡nÃ­ - pokud ID patÅ™Ã­ controlu, nahradÃ­ se jeho ClientID.
 		/// </remarks>
 		public string Flat
 		{
@@ -628,7 +628,7 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// This allows you to setup an initial date where the calendar will be positioned to.
 		/// If absent then the calendar will open to the today date. 
-		/// !!! POZOR: Pokud je navázáno na InputField, je brána hodnota odtamtud !!!
+		/// !!! POZOR: Pokud je navÃ¡zÃ¡no na InputField, je brÃ¡na hodnota odtamtud !!!
 		/// </summary>
 		public DateTime Date
 		{
@@ -691,7 +691,7 @@ namespace Havit.Web.UI.WebControls
 				}
 				else
 				{
-					throw new ArgumentOutOfRangeException("TimeFormat", value, "Hodnota musí bıt 12 nebo 24.");
+					throw new ArgumentOutOfRangeException("TimeFormat", value, "Hodnota musÃ­ bÃ½t 12 nebo 24.");
 				}
 			}
 		}
@@ -763,7 +763,7 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// If set to "true" then days belonging to months overlapping with the currently displayed month
 		/// will also be displayed in the calendar (but in a "faded-out" color)
-		/// Default: true. (Na rozdíl od vıchozího DC).
+		/// Default: true. (Na rozdÃ­l od vÃ½chozÃ­ho DC).
 		/// </summary>
 		public bool ShowOthers
 		{
@@ -783,7 +783,7 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-		#region Pøidané vlastnosti
+		#region PÅ™idanÃ© vlastnosti
 		/// <summary>
 		/// Enables/disables whole calendar.
 		/// </summary>
@@ -808,10 +808,10 @@ namespace Havit.Web.UI.WebControls
 
 		#region ValidateControlProperties
 		/// <summary>
-		/// Zkontroluje, zda jsou vlastnosti controlu správnì nastaveny a mohou bıt pouity.
+		/// Zkontroluje, zda jsou vlastnosti controlu sprÃ¡vnÄ› nastaveny a mohou bÃ½t pouÅ¾ity.
 		/// </summary>
 		/// <remarks>
-		/// Zejména testuje, jestli jsou nastaveny všechny povinné vlastnosti.
+		/// ZejmÃ©na testuje, jestli jsou nastaveny vÅ¡echny povinnÃ© vlastnosti.
 		/// </remarks>
 		protected virtual void ValidateControlProperties()
 		{
@@ -820,14 +820,14 @@ namespace Havit.Web.UI.WebControls
 				&& (this.Button.Length == 0)
 				&& (this.Flat.Length == 0))
 			{
-				throw new InvalidOperationException("Alespoò jedna z vlastností InputField, DisplayArea, Button nebo Flat musí bıt nastavena.");
+				throw new InvalidOperationException("AlespoÅˆ jedna z vlastnostÃ­ InputField, DisplayArea, Button nebo Flat musÃ­ bÃ½t nastavena.");
 			}
 		}
 		#endregion
 
 		#region RegisterClientScript
 		/// <summary>
-		/// Zaregistruje klientské skripty kalendáøe.
+		/// Zaregistruje klientskÃ© skripty kalendÃ¡Å™e.
 		/// </summary>
 		protected virtual void RegisterClientScript()
 		{
@@ -839,7 +839,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region RegisterMainScript
 		/// <summary>
-		/// Zaregistruje hlavní klientskı skript calendar.js.
+		/// Zaregistruje hlavnÃ­ klientskÃ½ skript calendar.js.
 		/// </summary>
 		protected virtual void RegisterMainScript()
 		{
@@ -856,15 +856,15 @@ namespace Havit.Web.UI.WebControls
 
 		#region RegisterLanguageScript
 		/// <summary>
-		/// Zaregistruje klientskı skript odpovídající jazykové mutace kalendáøe,
+		/// Zaregistruje klientskÃ½ skript odpovÃ­dajÃ­cÃ­ jazykovÃ© mutace kalendÃ¡Å™e,
 		/// tj calendar-en.js, calendar-de.js, atp.
 		/// </summary>
 		protected virtual void RegisterLanguageScript()
 		{
 			if (String.IsNullOrEmpty(LanguageScriptUrl))
 			{
-				// ovìøíme response encoding
-				// povoleno utf-8 a win-1250 pro èeštinu
+				// ovÄ›Å™Ã­me response encoding
+				// povoleno utf-8 a win-1250 pro ÄeÅ¡tinu
 				if ((HttpContext.Current.Response.ContentEncoding != Encoding.UTF8) &&
 					!((Thread.CurrentThread.CurrentUICulture.Name.Substring(0, 2) == "cs") && (HttpContext.Current.Response.ContentEncoding == Encoding.GetEncoding(1250))))
 				{
@@ -875,15 +875,15 @@ namespace Havit.Web.UI.WebControls
 				{
 					if (HttpContext.Current.Response.ContentEncoding == Encoding.UTF8)
 					{
-						// èeština UTF-8
+						// ÄeÅ¡tina UTF-8
 						ScriptManager.RegisterClientScriptResource(this, typeof(DynarchCalendar), "Havit.Web.UI.WebControls.DynarchCalendar.calendar-cs-utf8.js");
 					}
 					else
 					{						
-						// èeština Win-1250
+						// ÄeÅ¡tina Win-1250
 						
-						// POZOR! Pokud pouiji ScriptManager na soubor uloenı ve Windows-1250, nezobrazí se èeština správnì.
-						// Ovšem pokud pouiji v soubor uloenı v UTF-8 pøi ResponseEncodind Windows-150, èeština je správnì!
+						// POZOR! Pokud pouÅ¾iji ScriptManager na soubor uloÅ¾enÃ½ ve Windows-1250, nezobrazÃ­ se ÄeÅ¡tina sprÃ¡vnÄ›.
+						// OvÅ¡em pokud pouÅ¾iji v soubor uloÅ¾enÃ½ v UTF-8 pÅ™i ResponseEncodind Windows-150, ÄeÅ¡tina je sprÃ¡vnÄ›!
 
 						Page.ClientScript.RegisterClientScriptResource(typeof(DynarchCalendar), "Havit.Web.UI.WebControls.DynarchCalendar.calendar-cs-win.js");
 						//ScriptManager.RegisterClientScriptResource(this, typeof(DynarchCalendar), "Havit.Web.UI.WebControls.DynarchCalendar.calendar-cs-win.js");
@@ -905,7 +905,7 @@ namespace Havit.Web.UI.WebControls
 					}
 					else
 					{
-						// nepodporovanı jazyk, pouijeme angliètinu
+						// nepodporovanÃ½ jazyk, pouÅ¾ijeme angliÄtinu
 						ScriptManager.RegisterClientScriptResource(this, typeof(DynarchCalendar), "Havit.Web.UI.WebControls.DynarchCalendar.calendar-en.js");
 					}
 				}
@@ -919,13 +919,13 @@ namespace Havit.Web.UI.WebControls
 
 		#region RegisterSetupScript
 		/// <summary>
-		/// Zaregistruje klientskı setup-skript pro funkènost Calendar.setup, tj calendar-setup.js.		
+		/// Zaregistruje klientskÃ½ setup-skript pro funkÄnost Calendar.setup, tj calendar-setup.js.		
 		/// </summary>
 		protected virtual void RegisterSetupScript()
 		{
 			if (String.IsNullOrEmpty(SetupScriptUrl))
 			{
-				// pokud není URL skriptu zadáno, pouijeme soubor z resources
+				// pokud nenÃ­ URL skriptu zadÃ¡no, pouÅ¾ijeme soubor z resources
 				ScriptManager.RegisterClientScriptResource(this, typeof(DynarchCalendar), "Havit.Web.UI.WebControls.DynarchCalendar.calendar-setup_stripped.js");
 			}
 			else
@@ -950,7 +950,7 @@ namespace Havit.Web.UI.WebControls
 		#region OnPreRender
 		/// <summary>
 		/// Raises the PreRender event.
-		/// Zkontroluje platnost properties a zaregistruje klientské skripty kalendáøe.
+		/// Zkontroluje platnost properties a zaregistruje klientskÃ© skripty kalendÃ¡Å™e.
 		/// </summary>
 		/// <param name="e">EventArgs</param>
 		protected override void OnPreRender(EventArgs e)
@@ -968,7 +968,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region RegisterCss
 		/// <summary>
-		/// Zaregistruje css pro zobrazení kalendáøe.
+		/// Zaregistruje css pro zobrazenÃ­ kalendÃ¡Å™e.
 		/// </summary>
 		protected void RegisterCss()
 		{
@@ -978,7 +978,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region RegisterSetupScript
 		/// <summary>
-		/// Emituje script nastavení kalendáøe pøes Calendar.setup(...).
+		/// Emituje script nastavenÃ­ kalendÃ¡Å™e pÅ™es Calendar.setup(...).
 		/// </summary>
 		protected void RegisterCalendarSetupScript()
 		{
@@ -1169,10 +1169,10 @@ namespace Havit.Web.UI.WebControls
 
 		#region ResolveID
 		/// <summary>
-		/// Pokud ID patøí controlu, pak vrátí jeho ClientID, jinak vrátí zpìt pùvodní ID.
+		/// Pokud ID patÅ™Ã­ controlu, pak vrÃ¡tÃ­ jeho ClientID, jinak vrÃ¡tÃ­ zpÄ›t pÅ¯vodnÃ­ ID.
 		/// </summary>
-		/// <param name="id">ID k resolvování</param>
-		/// <returns>cílové ID</returns>
+		/// <param name="id">ID k resolvovÃ¡nÃ­</param>
+		/// <returns>cÃ­lovÃ© ID</returns>
 		protected virtual string ResolveID(string id)
 		{
 			Control ctrl = this.NamingContainer.FindControl(id);
@@ -1186,12 +1186,12 @@ namespace Havit.Web.UI.WebControls
 
 		#region TransformDatePatternToClientScript
 		/// <summary>
-		/// Transformuje .NETovı Date pattern do formátu pouíváného DynarchCalendarem.
+		/// Transformuje .NETovÃ½ Date pattern do formÃ¡tu pouÅ¾Ã­vÃ¡nÃ©ho DynarchCalendarem.
 		/// </summary>
 		/// <param name="pattern">Date pattern.</param>
-		/// <param name="dateSeparator">Øetìzec, kterı má bıt pouit jako oddìlovaè dne, mìsíce a roku.</param>
-		/// <param name="timeSeparator">Øetìzec, kterı má bıt pouit jako oddìlovaè hodin a minut.</param>
-		/// <returns>DateFormat pouívanı DynarchCalendarem.</returns>
+		/// <param name="dateSeparator">Å˜etÄ›zec, kterÃ½ mÃ¡ bÃ½t pouÅ¾it jako oddÄ›lovaÄ dne, mÄ›sÃ­ce a roku.</param>
+		/// <param name="timeSeparator">Å˜etÄ›zec, kterÃ½ mÃ¡ bÃ½t pouÅ¾it jako oddÄ›lovaÄ hodin a minut.</param>
+		/// <returns>DateFormat pouÅ¾Ã­vanÃ½ DynarchCalendarem.</returns>
 		private string TransformDatePatternToClientScript(string pattern, string dateSeparator, string timeSeparator)
 		{
 			string result = pattern;
@@ -1217,7 +1217,7 @@ namespace Havit.Web.UI.WebControls
 			result = result.Replace("gg", "");
 			result = result.Replace("z", "");
 			
-			// date: ve vısledku mohli pøibıt A, a, B, b, Y, y
+			// date: ve vÃ½sledku mohli pÅ™ibÃ½t A, a, B, b, Y, y
 
 			// time
 //			result = result.Replace("%H", "%k");
@@ -1240,9 +1240,9 @@ namespace Havit.Web.UI.WebControls
 			result = result.Replace("%t", "%P");
 			result = result.Replace("t", "%P");
 			
-			// time: ve vısledku mohli pøibıt I, k, l, M, S, P
+			// time: ve vÃ½sledku mohli pÅ™ibÃ½t I, k, l, M, S, P
 
-			// doèasné náhrady
+			// doÄasnÃ© nÃ¡hrady
 			result = result.Replace("#0#", "%d");
 			result = result.Replace("#1#", "%m");
 			result = result.Replace("#2#", "%H");
@@ -1257,8 +1257,8 @@ namespace Havit.Web.UI.WebControls
 
 		#region RegisterCssForCalendarSkin (static)
 		/// <summary>
-		/// Zaregistruje css pro zobrazení kalendáøe.
-		/// Statická metoda je urèena k øešení
+		/// Zaregistruje css pro zobrazenÃ­ kalendÃ¡Å™e.
+		/// StatickÃ¡ metoda je urÄena k Å™eÅ¡enÃ­
 		/// </summary>
 		public static void RegisterCalendarSkinStylesheets(Page page)
 		{

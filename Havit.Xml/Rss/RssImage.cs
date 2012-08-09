@@ -1,9 +1,9 @@
-using System.Xml.Serialization;
+ï»¿using System.Xml.Serialization;
 
 namespace Havit.Xml.Rss
 {
 	/// <summary>
-	/// Tøída reprezentující RSS prvek "image"
+	/// TÅ™Ã­da reprezentujÃ­cÃ­ RSS prvek "image"
 	/// </summary>
 	public class RssImage
 	{
@@ -125,15 +125,15 @@ namespace Havit.Xml.Rss
 		#region Constructor
 
 		/// <summary>
-		/// Default constructor musí být kvùli XmlSerializeru.
-		/// Nutné zadat Url, Title a Link.
+		/// Default constructor musÃ­ bÃ½t kvÅ¯li XmlSerializeru.
+		/// NutnÃ© zadat Url, Title a Link.
 		/// </summary>
 		public RssImage()
 		{
 		}
 
 		/// <summary>
-		/// Constructor s povinnými prvky elementu Image.
+		/// Constructor s povinnÃ½mi prvky elementu Image.
 		/// </summary>
 		public RssImage(string url, string title, string link)
 		{

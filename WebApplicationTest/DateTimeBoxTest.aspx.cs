@@ -41,7 +41,8 @@ namespace WebApplicationTest
 
 		private void TestGV_DataBinding(object sender, EventArgs e)
 		{
-			TestGV.DataSource = new int[] { 1, 2, 3 };
+			Random r = new Random();
+			TestGV.DataSource = System.Linq.Enumerable.Range(1, r.Next(10) + 1);
 		}
 
 		private void SecondDateTimeBoxValidator_ServerValidate(object source, ServerValidateEventArgs args)
@@ -67,6 +68,7 @@ namespace WebApplicationTest
 			base.OnLoad(e);
 			AutoPostBackOnLoadValueLabel.Text = AutoPostBackDateTimeBox.Value.ToString();
 			ChangedLabel.Text = "no";
+			TestGV.SetRequiresDatabinding();
 		}
 
 		protected override void OnLoadComplete(EventArgs e)

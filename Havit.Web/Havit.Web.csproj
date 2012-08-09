@@ -335,6 +335,7 @@
     <Compile Include="UI\WebControls\AjaxModalDialogUserControlBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="UI\UpdatePanelExt.cs" />
     <Compile Include="UI\WebControls\Wrapper.cs" />
     <Compile Include="UrlRewriter\BaseModuleRewriter.cs">
       <SubType>Code</SubType>

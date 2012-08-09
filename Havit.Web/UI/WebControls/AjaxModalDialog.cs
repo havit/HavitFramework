@@ -41,7 +41,7 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		public AjaxModalDialog()
 		{
-			_updatePanel = new UpdatePanel();
+			_updatePanel = new UpdatePanelExt();
 			_updatePanel.UpdateMode = UpdatePanelUpdateMode.Conditional;
 
 			_contentPlaceHolder = new PlaceHolder();

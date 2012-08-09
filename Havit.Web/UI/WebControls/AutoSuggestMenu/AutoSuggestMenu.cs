@@ -36,6 +36,7 @@ namespace Havit.Web.UI.WebControls
 		private int _keyPressDelay;	
 		private bool _usePaging;
         private int _pageSize;
+		private string _context;
 
         private Unit _maxHeight;
 		private string _menuItemCssClass;
@@ -99,6 +100,15 @@ namespace Havit.Web.UI.WebControls
             set { _pageSize = value; }
         }
 
+		/// <summary>
+		/// Kontext, v jakém je AutoSuggestMenu použito.
+		/// Pøedává se webové službì, která vrací položky pro nápovìdu, aby bylo možno se pøizpùsobit kontextu (omezit výbìr, atp.).
+		/// </summary>
+		public string Context
+		{
+			get { return _context; }
+			set { _context = value; }
+		}
 
         public Unit MaxHeight
         {
@@ -220,7 +230,7 @@ namespace Havit.Web.UI.WebControls
             _keyPressDelay = 300;
 
             _usePaging = true;
-            _pageSize = 10;
+            _pageSize = 10;			
       
             this.CssClass = "asmMenu";
 
@@ -266,6 +276,7 @@ namespace Havit.Web.UI.WebControls
 			_keyPressDelay			    = (int)ViewState["KeyPressDelay"];
 			_usePaging          	    = (bool)ViewState["UsePaging"];
 			_pageSize           	    = (int)ViewState["PageSize"];
+			_context					= (string)ViewState["Context"];
 
             _maxHeight                  = (Unit)ViewState["MaxHeight"];
 
@@ -298,6 +309,7 @@ namespace Havit.Web.UI.WebControls
 			ViewState["KeyPressDelay"]		    = _keyPressDelay;
 			ViewState["UsePaging"]		        = _usePaging;
 			ViewState["PageSize"]               = _pageSize;
+			ViewState["Context"]				= _context;
 
             ViewState["MaxHeight"]              = _maxHeight;
 			
@@ -382,6 +394,10 @@ namespace Havit.Web.UI.WebControls
             writer.WriteLine("menu.keyPressDelay=" + _keyPressDelay + ";");
 			writer.WriteLine("menu.usePaging=" + _usePaging.ToString().ToLower() + ";");
 			writer.WriteLine("menu.pageSize=\"" + _pageSize + "\";");
+			if (_context != null)
+			{
+				writer.WriteLine("menu.context=\"" + _context.Replace("\"", "\\\"") + "\";");
+			}
 
             if (!_maxHeight.IsEmpty)
                 writer.WriteLine("menu.maxHeight=\"" + _maxHeight.ToString() + "\";");

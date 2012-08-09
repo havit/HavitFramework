@@ -1,4 +1,4 @@
- //==============================
+//==============================
 //AutoSuggestMenu version 1.1.0
 //==============================
 
@@ -28,7 +28,8 @@ function AutoSuggestMenu()
 	self.keyPressDelay=300;
     
     self.usePaging=true;
-    self.pageSize=10;
+    self.pageSize = 10;
+    self.context = null;
     
     self.maxHeight=null;
    
@@ -465,7 +466,7 @@ function AutoSuggestMenu()
 	        throw "Handler of AutoSuggestMenu.onGetMenuItems was not specified."
 	    
 	    var value=getTextBoxValue(); 
-	    value=value.replace(/\"/, "\\\"");
+	    value=value.replace(/\"/g, "\\\"");
 		
 		switch (_refreshType)
 	    {
@@ -484,8 +485,10 @@ function AutoSuggestMenu()
 	    
 	    var func=self.onGetMenuItems + "(\"" + value + "\", " + 
 	                                                    self.usePaging + ", " +
-	                                                    _pageIndex + ", " + 
-	                                                    self.pageSize + ", self.refreshMenuItemsCallback)";
+	                                                    _pageIndex + ", " +
+	                                                    self.pageSize + ", " +
+														(self.context == null ? "null" : "'" + self.context.replace(/\'/g, "\\\'") + "'") + ", " +
+														"self.refreshMenuItemsCallback)";
 	    TRACE("AutoSuggestMenu.refreshMenuItems func=" + func);
 	    eval(func);
 	}

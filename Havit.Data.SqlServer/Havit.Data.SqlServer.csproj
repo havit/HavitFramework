@@ -38,7 +38,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <WarningLevel>4</WarningLevel>
     <DeployCode>false</DeployCode>
-    <DocumentationFile>Havit.Data.SqlServer.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\Havit.Data.SqlServer.xml</DocumentationFile>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildBinPath)\SqlServer.targets" />

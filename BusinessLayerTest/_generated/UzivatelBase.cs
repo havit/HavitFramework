@@ -801,39 +801,6 @@ namespace Havit.BusinessLayerTest
 			return (getListResult.Count == 0) ? null : getListResult[0];
 		}
 		
-		internal static UzivatelCollection GetList(SqlCommand sqlCommand)
-		{
-			return GetList(sqlCommand, false);
-		}
-		
-		private static UzivatelCollection GetList(SqlCommand sqlCommand, bool ghostsOnly)
-		{
-			if (sqlCommand == null)
-			{
-				throw new ArgumentNullException("sqlCommand");
-			}
-			
-			UzivatelCollection result = new UzivatelCollection();
-			
-			using (SqlDataReader reader = SqlDataAccess.ExecuteReader(sqlCommand))
-			{
-				while (reader.Read())
-				{
-					DataRecord dataRecord = new DataRecord(reader, false);
-					if (ghostsOnly)
-					{
-						result.Add(Uzivatel.GetObject(dataRecord.Get<int>(Uzivatel.Properties.ID.FieldName)));
-					}
-					else
-					{
-						result.Add(Uzivatel.GetObject(dataRecord));
-					}
-				}
-			}
-			
-			return result;
-		}
-		
 		/// <summary>
 		/// Vrátí objekty typu Uzivatel dle parametrů v queryParams.
 		/// </summary>
@@ -854,7 +821,28 @@ namespace Havit.BusinessLayerTest
 			}
 			
 			queryParams.PrepareCommand(sqlCommand);
-			return Uzivatel.GetList(sqlCommand, queryParams.Properties.Count == 1);
+			return Uzivatel.GetList(sqlCommand, queryParams.GetDataLoadPower());
+		}
+		
+		private static UzivatelCollection GetList(SqlCommand sqlCommand, DataLoadPower dataLoadPower)
+		{
+			if (sqlCommand == null)
+			{
+				throw new ArgumentNullException("sqlCommand");
+			}
+			
+			UzivatelCollection result = new UzivatelCollection();
+			
+			using (SqlDataReader reader = SqlDataAccess.ExecuteReader(sqlCommand))
+			{
+				while (reader.Read())
+				{
+					DataRecord dataRecord = new DataRecord(reader, dataLoadPower);
+					result.Add(Uzivatel.GetObject(dataRecord));
+				}
+			}
+			
+			return result;
 		}
 		
 		public static UzivatelCollection GetAll()

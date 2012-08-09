@@ -232,39 +232,6 @@ namespace Havit.BusinessLayerTest
 			return (getListResult.Count == 0) ? null : getListResult[0];
 		}
 		
-		internal static RoleCollection GetList(SqlCommand sqlCommand)
-		{
-			return GetList(sqlCommand, false);
-		}
-		
-		private static RoleCollection GetList(SqlCommand sqlCommand, bool ghostsOnly)
-		{
-			if (sqlCommand == null)
-			{
-				throw new ArgumentNullException("sqlCommand");
-			}
-			
-			RoleCollection result = new RoleCollection();
-			
-			using (SqlDataReader reader = SqlDataAccess.ExecuteReader(sqlCommand))
-			{
-				while (reader.Read())
-				{
-					DataRecord dataRecord = new DataRecord(reader, false);
-					if (ghostsOnly)
-					{
-						result.Add(Role.GetObject(dataRecord.Get<int>(Role.Properties.ID.FieldName)));
-					}
-					else
-					{
-						result.Add(Role.GetObject(dataRecord));
-					}
-				}
-			}
-			
-			return result;
-		}
-		
 		/// <summary>
 		/// Vrátí objekty typu Role dle parametrů v queryParams.
 		/// </summary>
@@ -285,7 +252,28 @@ namespace Havit.BusinessLayerTest
 			}
 			
 			queryParams.PrepareCommand(sqlCommand);
-			return Role.GetList(sqlCommand, queryParams.Properties.Count == 1);
+			return Role.GetList(sqlCommand, queryParams.GetDataLoadPower());
+		}
+		
+		private static RoleCollection GetList(SqlCommand sqlCommand, DataLoadPower dataLoadPower)
+		{
+			if (sqlCommand == null)
+			{
+				throw new ArgumentNullException("sqlCommand");
+			}
+			
+			RoleCollection result = new RoleCollection();
+			
+			using (SqlDataReader reader = SqlDataAccess.ExecuteReader(sqlCommand))
+			{
+				while (reader.Read())
+				{
+					DataRecord dataRecord = new DataRecord(reader, dataLoadPower);
+					result.Add(Role.GetObject(dataRecord));
+				}
+			}
+			
+			return result;
 		}
 		
 		public static object lockGetAllCacheAccess = new object();

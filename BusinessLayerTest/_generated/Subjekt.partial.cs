@@ -91,7 +91,40 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		internal static Subjekt GetObject(DataRecord dataRecord)
 		{
-			return new Subjekt(dataRecord);
+			Subjekt result = null;
+			
+			if ((IdentityMapScope.Current != null)
+				&& ((dataRecord.DataLoadPower == DataLoadPower.Ghosts)
+					|| (dataRecord.DataLoadPower == DataLoadPower.FullLoad)))
+			{
+				int id = dataRecord.Get<int>(Subjekt.Properties.ID.FieldName);
+				
+				if (IdentityMapScope.Current.TryGet<Subjekt>(id, out result))
+				{
+					if (!result.IsLoaded && (dataRecord.DataLoadPower == DataLoadPower.FullLoad))
+					{
+						result.Load(dataRecord);
+					}
+				}
+				else
+				{
+					if (dataRecord.DataLoadPower == DataLoadPower.Ghosts)
+					{
+						result = Subjekt.GetObject(id);
+					}
+					else
+					{
+						result = new Subjekt(dataRecord);
+						IdentityMapScope.Current.Store(result);
+					}
+				}
+			}
+			else
+			{
+				result = new Subjekt(dataRecord);
+			}
+			
+			return result;
 		}
 		
 		#endregion

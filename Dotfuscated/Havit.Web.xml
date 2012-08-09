@@ -2671,5 +2671,24 @@
             Identifikátor fieldu na který se lze odkazovat pomocí <see cref="M:Havit.Web.UI.WebControls.GridViewExt.FindColumn(System.String)"/>.
             </summary>
         </member>
+        <member name="T:Havit.Web.UI.Adapters.CssAdapters.WebControlAdapterExtender">
+            <summary>
+            Pomocná třída pro CSS Friendly Control Adapters.
+            </summary>
+            <remarks>
+            Převzato:
+            ASP.NET 2.0 CSS Friendly Control Adapters 1.0, this version was last updated on 20 November 2006.
+            </remarks>
+        </member>
+        <member name="T:Havit.Web.UI.Adapters.CssAdapters.CssMenuAdapter">
+            <summary>
+            MenuAdapter z CSS Friendly Control Adapters. Renderuje menu pomocí &lt;ul&gt;, &lt;li&gt;, CSS a skriptů.
+            </summary>
+            <remarks>
+            Převzato:
+            ASP.NET 2.0 CSS Friendly Control Adapters 1.0, this version was last updated on 20 November 2006.
+            Upraveno o embeded resources.
+            </remarks>
+        </member>
     </members>
 </doc>

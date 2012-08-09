@@ -92,12 +92,12 @@ namespace Havit.BusinessLayerTest
 			
 			while (reader.Read())
 			{
-				DataRecord dataRecord = new DataRecord(reader);
+				DataRecord dataRecord = new DataRecord(reader, queryParams.GetDataLoadPower());
 				int id = dataRecord.Get<int>(Subjekt.Properties.ID.FieldName);
 				
 				foreach (Subjekt ghost in this)
 				{
-					if (!ghost.IsLoaded && ghost.ID == id)
+					if (!ghost.IsLoaded && (ghost.ID == id))
 					{
 						ghost.Load(dataRecord);
 					}

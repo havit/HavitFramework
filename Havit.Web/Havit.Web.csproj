@@ -112,6 +112,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Security\FormsRolesAuthentication.cs" />
+    <Compile Include="UI\Adapters\CssAdapters\CssMenuAdapter.cs" />
+    <Compile Include="UI\Adapters\CssAdapters\WebControlAdapterExtender.cs" />
     <Compile Include="UI\Adapters\SessionPageStatePersisterPageAdapter.cs" />
     <Compile Include="UI\CommandNames.cs" />
     <Compile Include="UI\HtmlControls\HtmlFormExt.cs">
@@ -230,6 +232,14 @@
     <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-brown.css" />
     <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-green.css" />
     <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-system.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UI\Adapters\CssAdapters\CssAdaptersUtils.js" />
+    <EmbeddedResource Include="UI\Adapters\CssAdapters\CssMenuAdapter.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UI\Adapters\CssAdapters\CssAdapters-Menu-IE6.css" />
+    <EmbeddedResource Include="UI\Adapters\CssAdapters\CssAdapters-Menu.css" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

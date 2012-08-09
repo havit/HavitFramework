@@ -223,8 +223,5 @@ namespace Havit.BusinessTest
 		//}
 		//
 		#endregion
-
 	}
-
-
 }

@@ -96,7 +96,40 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		internal static Role GetObject(DataRecord dataRecord)
 		{
-			return new Role(dataRecord);
+			Role result = null;
+			
+			if ((IdentityMapScope.Current != null)
+				&& ((dataRecord.DataLoadPower == DataLoadPower.Ghosts)
+					|| (dataRecord.DataLoadPower == DataLoadPower.FullLoad)))
+			{
+				int id = dataRecord.Get<int>(Role.Properties.ID.FieldName);
+				
+				if (IdentityMapScope.Current.TryGet<Role>(id, out result))
+				{
+					if (!result.IsLoaded && (dataRecord.DataLoadPower == DataLoadPower.FullLoad))
+					{
+						result.Load(dataRecord);
+					}
+				}
+				else
+				{
+					if (dataRecord.DataLoadPower == DataLoadPower.Ghosts)
+					{
+						result = Role.GetObject(id);
+					}
+					else
+					{
+						result = new Role(dataRecord);
+						IdentityMapScope.Current.Store(result);
+					}
+				}
+			}
+			else
+			{
+				result = new Role(dataRecord);
+			}
+			
+			return result;
 		}
 		
 		#endregion

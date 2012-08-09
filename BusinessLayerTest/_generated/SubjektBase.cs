@@ -415,39 +415,6 @@ namespace Havit.BusinessLayerTest
 			return (getListResult.Count == 0) ? null : getListResult[0];
 		}
 		
-		internal static SubjektCollection GetList(SqlCommand sqlCommand)
-		{
-			return GetList(sqlCommand, false);
-		}
-		
-		private static SubjektCollection GetList(SqlCommand sqlCommand, bool ghostsOnly)
-		{
-			if (sqlCommand == null)
-			{
-				throw new ArgumentNullException("sqlCommand");
-			}
-			
-			SubjektCollection result = new SubjektCollection();
-			
-			using (SqlDataReader reader = SqlDataAccess.ExecuteReader(sqlCommand))
-			{
-				while (reader.Read())
-				{
-					DataRecord dataRecord = new DataRecord(reader, false);
-					if (ghostsOnly)
-					{
-						result.Add(Subjekt.GetObject(dataRecord.Get<int>(Subjekt.Properties.ID.FieldName)));
-					}
-					else
-					{
-						result.Add(Subjekt.GetObject(dataRecord));
-					}
-				}
-			}
-			
-			return result;
-		}
-		
 		/// <summary>
 		/// Vrátí objekty typu Subjekt dle parametrů v queryParams.
 		/// </summary>
@@ -468,7 +435,28 @@ namespace Havit.BusinessLayerTest
 			}
 			
 			queryParams.PrepareCommand(sqlCommand);
-			return Subjekt.GetList(sqlCommand, queryParams.Properties.Count == 1);
+			return Subjekt.GetList(sqlCommand, queryParams.GetDataLoadPower());
+		}
+		
+		private static SubjektCollection GetList(SqlCommand sqlCommand, DataLoadPower dataLoadPower)
+		{
+			if (sqlCommand == null)
+			{
+				throw new ArgumentNullException("sqlCommand");
+			}
+			
+			SubjektCollection result = new SubjektCollection();
+			
+			using (SqlDataReader reader = SqlDataAccess.ExecuteReader(sqlCommand))
+			{
+				while (reader.Read())
+				{
+					DataRecord dataRecord = new DataRecord(reader, dataLoadPower);
+					result.Add(Subjekt.GetObject(dataRecord));
+				}
+			}
+			
+			return result;
 		}
 		
 		public static SubjektCollection GetAll()

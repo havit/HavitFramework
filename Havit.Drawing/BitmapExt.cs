@@ -119,7 +119,12 @@ namespace Havit.Drawing
 						destinationSize.Width = originalBitmap.Width;
 						destinationSize.Height = originalBitmap.Height;
 
-						if (String.Compare(Path.GetExtension(sourceFilename), Path.GetExtension(destinationFilename), true) == 0)
+						if (String.Compare(Path.GetFullPath(destinationFilename), Path.GetFullPath(sourceFilename), true) == 0)
+						{
+							// soubor je v poøádku
+							return destinationSize;
+						}
+						else if (String.Compare(Path.GetExtension(sourceFilename), Path.GetExtension(destinationFilename), true) == 0)
 						{
 							// zrychlující zkratka - nic se nemìní, typ souboru stejný, takže jenom zkopírujem
 							File.Copy(sourceFilename, destinationFilename);

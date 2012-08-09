@@ -591,9 +591,9 @@ namespace Havit.Web.UI.WebControls
 
 			if (insertingData != null)
 			{
-				RequiresDataBinding = false; // příznak nabidnování dat nastavíme jen tehdy, když jsou data skutečně nabindována (i kdyby neobsahovala žádný záznam)
+				RequiresDataBinding = false;
+				_cuurentlyRequiresDataBinding = false;
 			}
-			_cuurentlyRequiresDataBinding = false; // příznak pro aktuální request vypneme v každém případě
 
 			if (data != null)
 			{

@@ -54,9 +54,10 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Vytvoří instanci objektu na základě dat (i částečných) načtených z databáze.
 		/// </summary>
+		/// <param name="id">RoleID (PK)</param>
 		/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu (i částečnými)</param>
-		protected RoleBase(DataRecord record)
-			: base(record)
+		protected RoleBase(int id, DataRecord record)
+			: base(id, record)
 		{
 		}
 		#endregion
@@ -124,9 +125,10 @@ namespace Havit.BusinessLayerTest
 			SqlCommand sqlCommand = new SqlCommand("SELECT RoleID, Symbol FROM dbo.Role WHERE RoleID = @RoleID");
 			sqlCommand.Transaction = (SqlTransaction)transaction;
 			
-			SqlParameter sqlParameterID = new SqlParameter("@RoleID", SqlDbType.Int);
-			sqlParameterID.Value = this.ID;
-			sqlCommand.Parameters.Add(sqlParameterID);
+			SqlParameter sqlParameterRoleID = new SqlParameter("@RoleID", SqlDbType.Int);
+			sqlParameterRoleID.Direction = ParameterDirection.Input;
+			sqlParameterRoleID.Value = this.ID;
+			sqlCommand.Parameters.Add(sqlParameterRoleID);
 			
 			result = SqlDataAccess.ExecuteDataRecord(sqlCommand);
 			

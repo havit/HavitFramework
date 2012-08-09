@@ -184,11 +184,10 @@
             Zaregistruje css pro zobrazení kalendáře.
             </summary>
         </member>
-        <member name="M:Havit.Web.UI.WebControls.DynarchCalendar.Render(System.Web.UI.HtmlTextWriter)">
+        <member name="M:Havit.Web.UI.WebControls.DynarchCalendar.RegisterCalendarSetupScript">
             <summary>
-            Vyrenderuje script nastavení kalendáře přes Calendar.setup(...).
+            Emituje script nastavení kalendáře přes Calendar.setup(...).
             </summary>
-            <param name="writer">The HtmlTextWriter object that receives the server control content.</param>
         </member>
         <member name="M:Havit.Web.UI.WebControls.DynarchCalendar.ResolveID(System.String)">
             <summary>
@@ -196,6 +195,14 @@
             </summary>
             <param name="id">ID k resolvování</param>
             <returns>cílové ID</returns>
+        </member>
+        <member name="M:Havit.Web.UI.WebControls.DynarchCalendar.TransformDatePatternToClientScript(System.String,System.String)">
+            <summary>
+            Transforms Date pattern from .NET to client side format.
+            </summary>
+            <param name="pattern"></param>
+            <param name="separator"></param>
+            <returns></returns>
         </member>
         <member name="P:Havit.Web.UI.WebControls.DynarchCalendar.MainScriptUrl">
             <summary>

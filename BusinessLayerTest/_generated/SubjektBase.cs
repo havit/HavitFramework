@@ -62,9 +62,10 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Vytvoří instanci objektu na základě dat (i částečných) načtených z databáze.
 		/// </summary>
+		/// <param name="id">SubjektID (PK)</param>
 		/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu (i částečnými)</param>
-		protected SubjektBase(DataRecord record)
-			: base(record)
+		protected SubjektBase(int id, DataRecord record)
+			: base(id, record)
 		{
 		}
 		#endregion
@@ -209,9 +210,10 @@ namespace Havit.BusinessLayerTest
 			SqlCommand sqlCommand = new SqlCommand("SELECT SubjektID, Nazev, UzivatelID, Created, Deleted FROM dbo.Subjekt WHERE SubjektID = @SubjektID");
 			sqlCommand.Transaction = (SqlTransaction)transaction;
 			
-			SqlParameter sqlParameterID = new SqlParameter("@SubjektID", SqlDbType.Int);
-			sqlParameterID.Value = this.ID;
-			sqlCommand.Parameters.Add(sqlParameterID);
+			SqlParameter sqlParameterSubjektID = new SqlParameter("@SubjektID", SqlDbType.Int);
+			sqlParameterSubjektID.Direction = ParameterDirection.Input;
+			sqlParameterSubjektID.Value = this.ID;
+			sqlCommand.Parameters.Add(sqlParameterSubjektID);
 			
 			result = SqlDataAccess.ExecuteDataRecord(sqlCommand);
 			
@@ -282,11 +284,13 @@ namespace Havit.BusinessLayerTest
 			sqlCommand.Transaction = (SqlTransaction)transaction;
 			
 			SqlParameter sqlParameterNazev = new SqlParameter("@Nazev", SqlDbType.NVarChar, 50);
+			sqlParameterNazev.Direction = ParameterDirection.Input;
 			sqlParameterNazev.Value = _NazevPropertyHolder.Value ?? String.Empty;
 			sqlCommand.Parameters.Add(sqlParameterNazev);
 			_NazevPropertyHolder.IsDirty = false;
 			
 			SqlParameter sqlParameterDeleted = new SqlParameter("@Deleted", SqlDbType.SmallDateTime);
+			sqlParameterDeleted.Direction = ParameterDirection.Input;
 			sqlParameterDeleted.Value = (_DeletedPropertyHolder.Value == null) ? DBNull.Value : (object)_DeletedPropertyHolder.Value;
 			sqlCommand.Parameters.Add(sqlParameterDeleted);
 			_DeletedPropertyHolder.IsDirty = false;
@@ -310,16 +314,19 @@ namespace Havit.BusinessLayerTest
 			sqlCommand.Transaction = (SqlTransaction)transaction;
 			
 			SqlParameter sqlParameterNazev = new SqlParameter("@Nazev", SqlDbType.NVarChar, 50);
+			sqlParameterNazev.Direction = ParameterDirection.Input;
 			sqlParameterNazev.Value = _NazevPropertyHolder.Value ?? String.Empty;
 			sqlCommand.Parameters.Add(sqlParameterNazev);
 			_NazevPropertyHolder.IsDirty = false;
 			
-			SqlParameter sqlParameterUzivatel = new SqlParameter("@UzivatelID", SqlDbType.Int);
-			sqlParameterUzivatel.Value = (_UzivatelPropertyHolder.Value == null) ? DBNull.Value : (object)_UzivatelPropertyHolder.Value.ID;
-			sqlCommand.Parameters.Add(sqlParameterUzivatel);
+			SqlParameter sqlParameterUzivatelID = new SqlParameter("@UzivatelID", SqlDbType.Int);
+			sqlParameterUzivatelID.Direction = ParameterDirection.Input;
+			sqlParameterUzivatelID.Value = (_UzivatelPropertyHolder.Value == null) ? DBNull.Value : (object)_UzivatelPropertyHolder.Value.ID;
+			sqlCommand.Parameters.Add(sqlParameterUzivatelID);
 			_UzivatelPropertyHolder.IsDirty = false;
 			
 			SqlParameter sqlParameterDeleted = new SqlParameter("@Deleted", SqlDbType.SmallDateTime);
+			sqlParameterDeleted.Direction = ParameterDirection.Input;
 			sqlParameterDeleted.Value = (_DeletedPropertyHolder.Value == null) ? DBNull.Value : (object)_DeletedPropertyHolder.Value;
 			sqlCommand.Parameters.Add(sqlParameterDeleted);
 			_DeletedPropertyHolder.IsDirty = false;
@@ -355,6 +362,7 @@ namespace Havit.BusinessLayerTest
 				commandBuilder.Append("Nazev = @Nazev");
 				
 				SqlParameter sqlParameterNazev = new SqlParameter("@Nazev", SqlDbType.NVarChar, 50);
+				sqlParameterNazev.Direction = ParameterDirection.Input;
 				sqlParameterNazev.Value = _NazevPropertyHolder.Value ?? String.Empty;
 				sqlCommand.Parameters.Add(sqlParameterNazev);
 				
@@ -369,9 +377,10 @@ namespace Havit.BusinessLayerTest
 				}
 				commandBuilder.Append("UzivatelID = @UzivatelID");
 				
-				SqlParameter sqlParameterUzivatel = new SqlParameter("@UzivatelID", SqlDbType.Int);
-				sqlParameterUzivatel.Value = (_UzivatelPropertyHolder.Value == null) ? DBNull.Value : (object)_UzivatelPropertyHolder.Value.ID;
-				sqlCommand.Parameters.Add(sqlParameterUzivatel);
+				SqlParameter sqlParameterUzivatelID = new SqlParameter("@UzivatelID", SqlDbType.Int);
+				sqlParameterUzivatelID.Direction = ParameterDirection.Input;
+				sqlParameterUzivatelID.Value = (_UzivatelPropertyHolder.Value == null) ? DBNull.Value : (object)_UzivatelPropertyHolder.Value.ID;
+				sqlCommand.Parameters.Add(sqlParameterUzivatelID);
 				
 				dirtyFieldExists = true;
 			}
@@ -385,6 +394,7 @@ namespace Havit.BusinessLayerTest
 				commandBuilder.Append("Deleted = @Deleted");
 				
 				SqlParameter sqlParameterDeleted = new SqlParameter("@Deleted", SqlDbType.SmallDateTime);
+				sqlParameterDeleted.Direction = ParameterDirection.Input;
 				sqlParameterDeleted.Value = (_DeletedPropertyHolder.Value == null) ? DBNull.Value : (object)_DeletedPropertyHolder.Value;
 				sqlCommand.Parameters.Add(sqlParameterDeleted);
 				
@@ -405,9 +415,10 @@ namespace Havit.BusinessLayerTest
 			// pokud je objekt dirty, ale žádná property není dirty (Save_MinimalInsert poukládal všechno), neukládáme
 			if (dirtyFieldExists || dirtyCollectionExists)
 			{
-				SqlParameter sqlParameterID = new SqlParameter("@SubjektID", SqlDbType.Int);
-				sqlParameterID.Value = this.ID;
-				sqlCommand.Parameters.Add(sqlParameterID);
+				SqlParameter sqlParameterSubjektID = new SqlParameter("@SubjektID", SqlDbType.Int);
+				sqlParameterSubjektID.Direction = ParameterDirection.Input;
+				sqlParameterSubjektID.Value = this.ID;
+				sqlCommand.Parameters.Add(sqlParameterSubjektID);
 				sqlCommand.CommandText = commandBuilder.ToString();
 				SqlDataAccess.ExecuteNonQuery(sqlCommand);
 			}

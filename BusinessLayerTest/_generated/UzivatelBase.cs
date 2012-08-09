@@ -62,9 +62,10 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Vytvoří instanci objektu na základě dat (i částečných) načtených z databáze.
 		/// </summary>
+		/// <param name="id">UzivatelID (PK)</param>
 		/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu (i částečnými)</param>
-		protected UzivatelBase(DataRecord record)
-			: base(record)
+		protected UzivatelBase(int id, DataRecord record)
+			: base(id, record)
 		{
 		}
 		#endregion
@@ -389,9 +390,10 @@ namespace Havit.BusinessLayerTest
 			SqlCommand sqlCommand = new SqlCommand("SELECT UzivatelID, Username, Password, DisplayAs, Email, Disabled, LockedTime, LoginLast, LoginCount, Created, Deleted, (SELECT dbo.IntArrayAggregate(innerSelect.RoleID) FROM dbo.Uzivatel_Role AS innerSelect WHERE (innerSelect.UzivatelID = @UzivatelID)) AS Role FROM dbo.Uzivatel WHERE UzivatelID = @UzivatelID");
 			sqlCommand.Transaction = (SqlTransaction)transaction;
 			
-			SqlParameter sqlParameterID = new SqlParameter("@UzivatelID", SqlDbType.Int);
-			sqlParameterID.Value = this.ID;
-			sqlCommand.Parameters.Add(sqlParameterID);
+			SqlParameter sqlParameterUzivatelID = new SqlParameter("@UzivatelID", SqlDbType.Int);
+			sqlParameterUzivatelID.Direction = ParameterDirection.Input;
+			sqlParameterUzivatelID.Value = this.ID;
+			sqlCommand.Parameters.Add(sqlParameterUzivatelID);
 			
 			result = SqlDataAccess.ExecuteDataRecord(sqlCommand);
 			
@@ -514,46 +516,55 @@ namespace Havit.BusinessLayerTest
 			sqlCommand.Transaction = (SqlTransaction)transaction;
 			
 			SqlParameter sqlParameterUsername = new SqlParameter("@Username", SqlDbType.VarChar, 50);
+			sqlParameterUsername.Direction = ParameterDirection.Input;
 			sqlParameterUsername.Value = _UsernamePropertyHolder.Value ?? String.Empty;
 			sqlCommand.Parameters.Add(sqlParameterUsername);
 			_UsernamePropertyHolder.IsDirty = false;
 			
 			SqlParameter sqlParameterPassword = new SqlParameter("@Password", SqlDbType.NVarChar, 30);
+			sqlParameterPassword.Direction = ParameterDirection.Input;
 			sqlParameterPassword.Value = _PasswordPropertyHolder.Value ?? String.Empty;
 			sqlCommand.Parameters.Add(sqlParameterPassword);
 			_PasswordPropertyHolder.IsDirty = false;
 			
 			SqlParameter sqlParameterDisplayAs = new SqlParameter("@DisplayAs", SqlDbType.NVarChar, 50);
+			sqlParameterDisplayAs.Direction = ParameterDirection.Input;
 			sqlParameterDisplayAs.Value = _DisplayAsPropertyHolder.Value ?? String.Empty;
 			sqlCommand.Parameters.Add(sqlParameterDisplayAs);
 			_DisplayAsPropertyHolder.IsDirty = false;
 			
 			SqlParameter sqlParameterEmail = new SqlParameter("@Email", SqlDbType.NVarChar, 100);
+			sqlParameterEmail.Direction = ParameterDirection.Input;
 			sqlParameterEmail.Value = _EmailPropertyHolder.Value ?? String.Empty;
 			sqlCommand.Parameters.Add(sqlParameterEmail);
 			_EmailPropertyHolder.IsDirty = false;
 			
 			SqlParameter sqlParameterDisabled = new SqlParameter("@Disabled", SqlDbType.Bit);
+			sqlParameterDisabled.Direction = ParameterDirection.Input;
 			sqlParameterDisabled.Value = _DisabledPropertyHolder.Value;
 			sqlCommand.Parameters.Add(sqlParameterDisabled);
 			_DisabledPropertyHolder.IsDirty = false;
 			
 			SqlParameter sqlParameterLockedTime = new SqlParameter("@LockedTime", SqlDbType.SmallDateTime);
+			sqlParameterLockedTime.Direction = ParameterDirection.Input;
 			sqlParameterLockedTime.Value = (_LockedTimePropertyHolder.Value == null) ? DBNull.Value : (object)_LockedTimePropertyHolder.Value;
 			sqlCommand.Parameters.Add(sqlParameterLockedTime);
 			_LockedTimePropertyHolder.IsDirty = false;
 			
 			SqlParameter sqlParameterLoginLast = new SqlParameter("@LoginLast", SqlDbType.SmallDateTime);
+			sqlParameterLoginLast.Direction = ParameterDirection.Input;
 			sqlParameterLoginLast.Value = (_LoginLastPropertyHolder.Value == null) ? DBNull.Value : (object)_LoginLastPropertyHolder.Value;
 			sqlCommand.Parameters.Add(sqlParameterLoginLast);
 			_LoginLastPropertyHolder.IsDirty = false;
 			
 			SqlParameter sqlParameterLoginCount = new SqlParameter("@LoginCount", SqlDbType.Int);
+			sqlParameterLoginCount.Direction = ParameterDirection.Input;
 			sqlParameterLoginCount.Value = _LoginCountPropertyHolder.Value;
 			sqlCommand.Parameters.Add(sqlParameterLoginCount);
 			_LoginCountPropertyHolder.IsDirty = false;
 			
 			SqlParameter sqlParameterDeleted = new SqlParameter("@Deleted", SqlDbType.Bit);
+			sqlParameterDeleted.Direction = ParameterDirection.Input;
 			sqlParameterDeleted.Value = _DeletedPropertyHolder.Value;
 			sqlCommand.Parameters.Add(sqlParameterDeleted);
 			_DeletedPropertyHolder.IsDirty = false;
@@ -577,46 +588,55 @@ namespace Havit.BusinessLayerTest
 			sqlCommand.Transaction = (SqlTransaction)transaction;
 			
 			SqlParameter sqlParameterUsername = new SqlParameter("@Username", SqlDbType.VarChar, 50);
+			sqlParameterUsername.Direction = ParameterDirection.Input;
 			sqlParameterUsername.Value = _UsernamePropertyHolder.Value ?? String.Empty;
 			sqlCommand.Parameters.Add(sqlParameterUsername);
 			_UsernamePropertyHolder.IsDirty = false;
 			
 			SqlParameter sqlParameterPassword = new SqlParameter("@Password", SqlDbType.NVarChar, 30);
+			sqlParameterPassword.Direction = ParameterDirection.Input;
 			sqlParameterPassword.Value = _PasswordPropertyHolder.Value ?? String.Empty;
 			sqlCommand.Parameters.Add(sqlParameterPassword);
 			_PasswordPropertyHolder.IsDirty = false;
 			
 			SqlParameter sqlParameterDisplayAs = new SqlParameter("@DisplayAs", SqlDbType.NVarChar, 50);
+			sqlParameterDisplayAs.Direction = ParameterDirection.Input;
 			sqlParameterDisplayAs.Value = _DisplayAsPropertyHolder.Value ?? String.Empty;
 			sqlCommand.Parameters.Add(sqlParameterDisplayAs);
 			_DisplayAsPropertyHolder.IsDirty = false;
 			
 			SqlParameter sqlParameterEmail = new SqlParameter("@Email", SqlDbType.NVarChar, 100);
+			sqlParameterEmail.Direction = ParameterDirection.Input;
 			sqlParameterEmail.Value = _EmailPropertyHolder.Value ?? String.Empty;
 			sqlCommand.Parameters.Add(sqlParameterEmail);
 			_EmailPropertyHolder.IsDirty = false;
 			
 			SqlParameter sqlParameterDisabled = new SqlParameter("@Disabled", SqlDbType.Bit);
+			sqlParameterDisabled.Direction = ParameterDirection.Input;
 			sqlParameterDisabled.Value = _DisabledPropertyHolder.Value;
 			sqlCommand.Parameters.Add(sqlParameterDisabled);
 			_DisabledPropertyHolder.IsDirty = false;
 			
 			SqlParameter sqlParameterLockedTime = new SqlParameter("@LockedTime", SqlDbType.SmallDateTime);
+			sqlParameterLockedTime.Direction = ParameterDirection.Input;
 			sqlParameterLockedTime.Value = (_LockedTimePropertyHolder.Value == null) ? DBNull.Value : (object)_LockedTimePropertyHolder.Value;
 			sqlCommand.Parameters.Add(sqlParameterLockedTime);
 			_LockedTimePropertyHolder.IsDirty = false;
 			
 			SqlParameter sqlParameterLoginLast = new SqlParameter("@LoginLast", SqlDbType.SmallDateTime);
+			sqlParameterLoginLast.Direction = ParameterDirection.Input;
 			sqlParameterLoginLast.Value = (_LoginLastPropertyHolder.Value == null) ? DBNull.Value : (object)_LoginLastPropertyHolder.Value;
 			sqlCommand.Parameters.Add(sqlParameterLoginLast);
 			_LoginLastPropertyHolder.IsDirty = false;
 			
 			SqlParameter sqlParameterLoginCount = new SqlParameter("@LoginCount", SqlDbType.Int);
+			sqlParameterLoginCount.Direction = ParameterDirection.Input;
 			sqlParameterLoginCount.Value = _LoginCountPropertyHolder.Value;
 			sqlCommand.Parameters.Add(sqlParameterLoginCount);
 			_LoginCountPropertyHolder.IsDirty = false;
 			
 			SqlParameter sqlParameterDeleted = new SqlParameter("@Deleted", SqlDbType.Bit);
+			sqlParameterDeleted.Direction = ParameterDirection.Input;
 			sqlParameterDeleted.Value = _DeletedPropertyHolder.Value;
 			sqlCommand.Parameters.Add(sqlParameterDeleted);
 			_DeletedPropertyHolder.IsDirty = false;
@@ -665,6 +685,7 @@ namespace Havit.BusinessLayerTest
 				commandBuilder.Append("Username = @Username");
 				
 				SqlParameter sqlParameterUsername = new SqlParameter("@Username", SqlDbType.VarChar, 50);
+				sqlParameterUsername.Direction = ParameterDirection.Input;
 				sqlParameterUsername.Value = _UsernamePropertyHolder.Value ?? String.Empty;
 				sqlCommand.Parameters.Add(sqlParameterUsername);
 				
@@ -680,6 +701,7 @@ namespace Havit.BusinessLayerTest
 				commandBuilder.Append("Password = @Password");
 				
 				SqlParameter sqlParameterPassword = new SqlParameter("@Password", SqlDbType.NVarChar, 30);
+				sqlParameterPassword.Direction = ParameterDirection.Input;
 				sqlParameterPassword.Value = _PasswordPropertyHolder.Value ?? String.Empty;
 				sqlCommand.Parameters.Add(sqlParameterPassword);
 				
@@ -695,6 +717,7 @@ namespace Havit.BusinessLayerTest
 				commandBuilder.Append("DisplayAs = @DisplayAs");
 				
 				SqlParameter sqlParameterDisplayAs = new SqlParameter("@DisplayAs", SqlDbType.NVarChar, 50);
+				sqlParameterDisplayAs.Direction = ParameterDirection.Input;
 				sqlParameterDisplayAs.Value = _DisplayAsPropertyHolder.Value ?? String.Empty;
 				sqlCommand.Parameters.Add(sqlParameterDisplayAs);
 				
@@ -710,6 +733,7 @@ namespace Havit.BusinessLayerTest
 				commandBuilder.Append("Email = @Email");
 				
 				SqlParameter sqlParameterEmail = new SqlParameter("@Email", SqlDbType.NVarChar, 100);
+				sqlParameterEmail.Direction = ParameterDirection.Input;
 				sqlParameterEmail.Value = _EmailPropertyHolder.Value ?? String.Empty;
 				sqlCommand.Parameters.Add(sqlParameterEmail);
 				
@@ -725,6 +749,7 @@ namespace Havit.BusinessLayerTest
 				commandBuilder.Append("Disabled = @Disabled");
 				
 				SqlParameter sqlParameterDisabled = new SqlParameter("@Disabled", SqlDbType.Bit);
+				sqlParameterDisabled.Direction = ParameterDirection.Input;
 				sqlParameterDisabled.Value = _DisabledPropertyHolder.Value;
 				sqlCommand.Parameters.Add(sqlParameterDisabled);
 				
@@ -740,6 +765,7 @@ namespace Havit.BusinessLayerTest
 				commandBuilder.Append("LockedTime = @LockedTime");
 				
 				SqlParameter sqlParameterLockedTime = new SqlParameter("@LockedTime", SqlDbType.SmallDateTime);
+				sqlParameterLockedTime.Direction = ParameterDirection.Input;
 				sqlParameterLockedTime.Value = (_LockedTimePropertyHolder.Value == null) ? DBNull.Value : (object)_LockedTimePropertyHolder.Value;
 				sqlCommand.Parameters.Add(sqlParameterLockedTime);
 				
@@ -755,6 +781,7 @@ namespace Havit.BusinessLayerTest
 				commandBuilder.Append("LoginLast = @LoginLast");
 				
 				SqlParameter sqlParameterLoginLast = new SqlParameter("@LoginLast", SqlDbType.SmallDateTime);
+				sqlParameterLoginLast.Direction = ParameterDirection.Input;
 				sqlParameterLoginLast.Value = (_LoginLastPropertyHolder.Value == null) ? DBNull.Value : (object)_LoginLastPropertyHolder.Value;
 				sqlCommand.Parameters.Add(sqlParameterLoginLast);
 				
@@ -770,6 +797,7 @@ namespace Havit.BusinessLayerTest
 				commandBuilder.Append("LoginCount = @LoginCount");
 				
 				SqlParameter sqlParameterLoginCount = new SqlParameter("@LoginCount", SqlDbType.Int);
+				sqlParameterLoginCount.Direction = ParameterDirection.Input;
 				sqlParameterLoginCount.Value = _LoginCountPropertyHolder.Value;
 				sqlCommand.Parameters.Add(sqlParameterLoginCount);
 				
@@ -785,6 +813,7 @@ namespace Havit.BusinessLayerTest
 				commandBuilder.Append("Deleted = @Deleted");
 				
 				SqlParameter sqlParameterDeleted = new SqlParameter("@Deleted", SqlDbType.Bit);
+				sqlParameterDeleted.Direction = ParameterDirection.Input;
 				sqlParameterDeleted.Value = _DeletedPropertyHolder.Value;
 				sqlCommand.Parameters.Add(sqlParameterDeleted);
 				
@@ -820,9 +849,10 @@ namespace Havit.BusinessLayerTest
 			// pokud je objekt dirty, ale žádná property není dirty (Save_MinimalInsert poukládal všechno), neukládáme
 			if (dirtyFieldExists || dirtyCollectionExists)
 			{
-				SqlParameter sqlParameterID = new SqlParameter("@UzivatelID", SqlDbType.Int);
-				sqlParameterID.Value = this.ID;
-				sqlCommand.Parameters.Add(sqlParameterID);
+				SqlParameter sqlParameterUzivatelID = new SqlParameter("@UzivatelID", SqlDbType.Int);
+				sqlParameterUzivatelID.Direction = ParameterDirection.Input;
+				sqlParameterUzivatelID.Value = this.ID;
+				sqlCommand.Parameters.Add(sqlParameterUzivatelID);
 				sqlCommand.CommandText = commandBuilder.ToString();
 				SqlDataAccess.ExecuteNonQuery(sqlCommand);
 			}

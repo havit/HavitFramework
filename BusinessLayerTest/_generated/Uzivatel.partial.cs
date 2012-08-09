@@ -45,9 +45,10 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Vytvoří instanci objektu na základě dat (i částečných) načtených z databáze.
 		/// </summary>
+		/// <param name="id">UzivatelID (PK)</param>
 		/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu (i částečnými)</param>
-		protected Uzivatel(DataRecord record)
-			: base(record)
+		protected Uzivatel(int id, DataRecord record)
+			: base(id, record)
 		{
 		}
 		#endregion
@@ -81,11 +82,6 @@ namespace Havit.BusinessLayerTest
 			
 			result = new Uzivatel(id);
 			
-			if (IdentityMapScope.Current != null)
-			{
-				IdentityMapScope.Current.Store(result);
-			}
-			
 			return result;
 		}
 		
@@ -96,12 +92,12 @@ namespace Havit.BusinessLayerTest
 		{
 			Uzivatel result = null;
 			
+			int id = dataRecord.Get<int>(Uzivatel.Properties.ID.FieldName);
+			
 			if ((IdentityMapScope.Current != null)
 				&& ((dataRecord.DataLoadPower == DataLoadPower.Ghost)
 					|| (dataRecord.DataLoadPower == DataLoadPower.FullLoad)))
 			{
-				int id = dataRecord.Get<int>(Uzivatel.Properties.ID.FieldName);
-				
 				if (IdentityMapScope.Current.TryGet<Uzivatel>(id, out result))
 				{
 					if (!result.IsLoaded && (dataRecord.DataLoadPower == DataLoadPower.FullLoad))
@@ -117,14 +113,13 @@ namespace Havit.BusinessLayerTest
 					}
 					else
 					{
-						result = new Uzivatel(dataRecord);
-						IdentityMapScope.Current.Store(result);
+						result = new Uzivatel(id, dataRecord);
 					}
 				}
 			}
 			else
 			{
-				result = new Uzivatel(dataRecord);
+				result = new Uzivatel(id, dataRecord);
 			}
 			
 			return result;

@@ -3,18 +3,55 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
+using System.Threading;
 
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar_stripped.js", "text/javascript")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-setup_stripped.js", "text/javascript")]
 
-[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-cs-utf8.js", "text/javascript")]
-[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-cs-win.js", "text/javascript")]
+#region WebResources - Languages
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-af.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-al.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-bg.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-br.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-ca.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-cs.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-da.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-de.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-du.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-el.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-en.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-es.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-fi.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-fr.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-he.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-hr.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-hu.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-it.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-jp.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-ko.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-lt.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-lv.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-nl.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-no.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-pl.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-pt.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-ro.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-ru.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-si.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-sk.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-sp.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-sv.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-tr.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-zh.js", "text/javascript")]
+#endregion
 
+#region WebResources - Styles
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-blue.css", "text/css")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-blue2.css", "text/css")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-brown.css", "text/css")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-green.css", "text/css")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-system.css", "text/css")]
+#endregion
 
 namespace Havit.Web.UI.WebControls
 {
@@ -116,7 +153,7 @@ namespace Havit.Web.UI.WebControls
 				{
 					return tmp;
 				}
-				return String.Empty;
+				return TransformDatePatternToClientScript(Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortDatePattern, Thread.CurrentThread.CurrentUICulture.DateTimeFormat.DateSeparator);
 			}
 			set
 			{
@@ -774,13 +811,30 @@ namespace Havit.Web.UI.WebControls
 		{
 			if (String.IsNullOrEmpty(LanguageScriptUrl))
 			{
-				if (HttpContext.Current.Response.ContentEncoding == Encoding.UTF8)
+				// ovìøíme responce encoding
+				// povoleno utf-8 a win-1250 pro èeštinu
+				if ((HttpContext.Current.Response.ContentEncoding != Encoding.UTF8) || ((Thread.CurrentThread.CurrentUICulture.Name.Substring(0, 2) == "cs") && (HttpContext.Current.Response.ContentEncoding != Encoding.GetEncoding(1250))))
 				{
-					Page.ClientScript.RegisterClientScriptResource(typeof(DynarchCalendar), "Havit.Web.UI.WebControls.DynarchCalendar.calendar-cs-utf8.js");
+					throw new ApplicationException("Response encoding must be UTF8 (or Windows-1250 for czech). Otherwise DynarchCalendar's javascripts won't work.");
+				}
+				
+				if ((Thread.CurrentThread.CurrentUICulture.Name.Substring(0, 2) == "cs"))
+				{
+					if (HttpContext.Current.Response.ContentEncoding != Encoding.UTF8)
+					{
+						// èeština UTF-8
+						Page.ClientScript.RegisterClientScriptResource(typeof(DynarchCalendar), "Havit.Domiphone.WebBase.WebControls.DynarchCalendar.calendar-cs-utf8.js");
+					}
+					else
+					{
+						// èeština Win-1250
+						Page.ClientScript.RegisterClientScriptResource(typeof(DynarchCalendar), "Havit.Domiphone.WebBase.WebControls.DynarchCalendar.calendar-cs-win.js");
+					}
 				}
 				else
 				{
-					Page.ClientScript.RegisterClientScriptResource(typeof(DynarchCalendar), "Havit.Web.UI.WebControls.DynarchCalendar.calendar-cs-win.js");
+					// ostatni, utf-8
+					Page.ClientScript.RegisterClientScriptResource(typeof(DynarchCalendar), "Havit.Domiphone.WebBase.WebControls.DynarchCalendar.calendar-" + Thread.CurrentThread.CurrentUICulture.Name.Substring(0, 2) + ".js");
 				}
 			}
 			else
@@ -846,6 +900,7 @@ namespace Havit.Web.UI.WebControls
 				this.ValidateControlProperties();
 				this.RegisterCss();
 				this.RegisterClientScript();
+				this.RegisterCalendarSetupScript();
 			}
 		}
 
@@ -873,195 +928,195 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-		#region Render
+		#region RegisterSetupScript
 		/// <summary>
-		/// Vyrenderuje script nastavení kalendáøe pøes Calendar.setup(...).
+		/// Emituje script nastavení kalendáøe pøes Calendar.setup(...).
 		/// </summary>
-		/// <param name="writer">The HtmlTextWriter object that receives the server control content.</param>
-		protected override void Render(HtmlTextWriter writer)
+		protected void RegisterCalendarSetupScript()
 		{
-			if (this.Enabled)
+			StringBuilder sb = new StringBuilder();
+
+			//writer.WriteLine("<script type=\"text/javascript\">");
+			//writer.Indent++;
+			sb.AppendLine("Calendar.setup({");
+			//writer.Indent++;
+
+			bool firstLine = true;
+			if (this.InputField.Length > 0)
 			{
-				writer.WriteLine("<script type=\"text/javascript\">");
-				writer.Indent++;
-				writer.WriteLine("Calendar.setup({");
-				writer.Indent++;
-
-				bool firstLine = true;
-				if (this.InputField.Length > 0)
-				{
-					if (!firstLine) writer.WriteLine(",");
-					writer.Write("inputField : \"{0}\"", this.ResolveID(this.InputField));
-					firstLine = false;
-				}
-
-				if (this.DisplayArea.Length > 0)
-				{
-					if (!firstLine) writer.WriteLine(",");
-					writer.Write("displayArea : \"{0}\"", this.ResolveID(this.DisplayArea));
-					firstLine = false;
-				}
-
-				if (this.Button.Length > 0)
-				{
-					if (!firstLine) writer.WriteLine(",");
-					writer.Write("button : \"{0}\"", this.ResolveID(this.Button));
-					firstLine = false;
-				}
-
-				if (this.EventName.Length > 0)
-				{
-					if (!firstLine) writer.WriteLine(",");
-					writer.Write("eventName : \"{0}\"", this.EventName);
-					firstLine = false;
-				}
-
-				if (this.InputFieldDateFormat.Length > 0)
-				{
-					if (!firstLine) writer.WriteLine(",");
-					writer.Write("ifFormat : \"{0}\"", this.InputFieldDateFormat);
-					firstLine = false;
-				}
-
-				if (this.DisplayAreaDateFormat.Length > 0)
-				{
-					if (!firstLine) writer.WriteLine(",");
-					writer.Write("daFormat : \"{0}\"", this.DisplayAreaDateFormat);
-					firstLine = false;
-				}
-
-				if (!this.SingleClick)
-				{
-					if (!firstLine) writer.WriteLine(",");
-					writer.Write("singleClick : false");
-					firstLine = false;
-				}
-
-				if (!String.IsNullOrEmpty(this.DateStatusFunction))
-				{
-					if (!firstLine) writer.WriteLine(",");
-					writer.Write("dateStatusFunc : {0}", this.DateStatusFunction);
-					firstLine = false;
-				}
-
-				if (this.FirstDay > 0)
-				{
-					if (!firstLine) writer.WriteLine(",");
-					writer.Write("firstDay : {0}", this.FirstDay);
-					firstLine = false;
-				}
-
-				if (!this.WeekNumbers)
-				{
-					if (!firstLine) writer.WriteLine(",");
-					writer.Write("weekNumbers : false");
-					firstLine = false;
-				}
-
-				if (this.Align.Length > 0)
-				{
-					if (!firstLine) writer.WriteLine(",");
-					writer.Write("align : \"{0}\"", this.Align);
-					firstLine = false;
-				}
-
-				if (this.Range.Length > 0)
-				{
-					if (!firstLine) writer.WriteLine(",");
-					writer.Write("range : \"{0}\"", this.Range);
-					firstLine = false;
-				}
-
-				if (this.Flat.Length > 0)
-				{
-					if (!firstLine) writer.WriteLine(",");
-					writer.Write("flat : \"{0}\"", this.ResolveID(this.Flat));
-					firstLine = false;
-				}
-
-				if (this.FlatCallback.Length > 0)
-				{
-					if (!firstLine) writer.WriteLine(",");
-					writer.Write("flatCallback : \"{0}\"", this.FlatCallback);
-					firstLine = false;
-				}
-
-				if (this.OnSelectFunction.Length > 0)
-				{
-					if (!firstLine) writer.WriteLine(",");
-					writer.Write("onSelect : \"{0}\"", this.OnSelectFunction);
-					firstLine = false;
-				}
-
-				if (this.OnCloseFunction.Length > 0)
-				{
-					if (!firstLine) writer.WriteLine(",");
-					writer.Write("onClose : \"{0}\"", this.OnCloseFunction);
-					firstLine = false;
-				}
-
-				if (this.OnUpdateFunction.Length > 0)
-				{
-					if (!firstLine) writer.WriteLine(",");
-					writer.Write("onUpdate : \"{0}\"", this.OnUpdateFunction);
-					firstLine = false;
-				}
-
-				if (this.Date != DateTime.Today)
-				{
-					if (!firstLine) writer.WriteLine(",");
-					writer.Write("date : new Date({0},{1},{2})", this.Date.Year, this.Date.Month, this.Date.Day);
-					firstLine = false;
-				}
-
-				if (this.ShowsTime)
-				{
-					if (!firstLine) writer.WriteLine(",");
-					writer.Write("showsTime : true");
-					firstLine = false;
-				}
-
-				if (this.TimeFormat == 12)
-				{
-					if (!firstLine) writer.WriteLine(",");
-					writer.Write("timeFormat : \"12\"");
-					firstLine = false;
-				}
-
-				if (!this.Electric)
-				{
-					if (!firstLine) writer.WriteLine(",");
-					writer.Write("electric : false");
-					firstLine = false;
-				}
-
-				if (this.Position.Length > 0)
-				{
-					if (!firstLine) writer.WriteLine(",");
-					writer.Write("position : \"{0}\"", this.Position);
-					firstLine = false;
-				}
-
-				if (this.CacheCalendar)
-				{
-					if (!firstLine) writer.WriteLine(",");
-					writer.Write("cache : true");
-					firstLine = false;
-				}
-
-				if (this.ShowOthers)
-				{
-					if (!firstLine) writer.WriteLine(",");
-					writer.Write("showOthers : true");
-					firstLine = false;
-				}
-
-				writer.WriteLine();
-				writer.Indent--;
-				writer.WriteLine("});");
-				writer.Indent--;
-				writer.WriteLine("</script>");
+				if (!firstLine) sb.AppendLine(",");
+				sb.AppendFormat("inputField : \"{0}\"", this.ResolveID(this.InputField));
+				firstLine = false;
 			}
+
+			if (this.DisplayArea.Length > 0)
+			{
+				if (!firstLine) sb.AppendLine(",");
+				sb.AppendFormat("displayArea : \"{0}\"", this.ResolveID(this.DisplayArea));
+				firstLine = false;
+			}
+
+			if (this.Button.Length > 0)
+			{
+				if (!firstLine) sb.AppendLine(",");
+				sb.AppendFormat("button : \"{0}\"", this.ResolveID(this.Button));
+				firstLine = false;
+			}
+
+			if (this.EventName.Length > 0)
+			{
+				if (!firstLine) sb.AppendLine(",");
+				sb.AppendFormat("eventName : \"{0}\"", this.EventName);
+				firstLine = false;
+			}
+
+			if (this.InputFieldDateFormat.Length > 0)
+			{
+				if (!firstLine) sb.AppendLine(",");
+				sb.AppendFormat("ifFormat : \"{0}\"", this.InputFieldDateFormat);
+				firstLine = false;
+			}
+
+			if (this.DisplayAreaDateFormat.Length > 0)
+			{
+				if (!firstLine) sb.AppendLine(",");
+				sb.AppendFormat("daFormat : \"{0}\"", this.DisplayAreaDateFormat);
+				firstLine = false;
+			}
+
+			if (!this.SingleClick)
+			{
+				if (!firstLine) sb.AppendLine(",");
+				sb.AppendFormat("singleClick : false");
+				firstLine = false;
+			}
+
+			if (!String.IsNullOrEmpty(this.DateStatusFunction))
+			{
+				if (!firstLine) sb.AppendLine(",");
+				sb.AppendFormat("dateStatusFunc : {0}", this.DateStatusFunction);
+				firstLine = false;
+			}
+
+			if (this.FirstDay > 0)
+			{
+				if (!firstLine) sb.AppendLine(",");
+				sb.AppendFormat("firstDay : {0}", this.FirstDay);
+				firstLine = false;
+			}
+
+			if (!this.WeekNumbers)
+			{
+				if (!firstLine) sb.AppendLine(",");
+				sb.AppendFormat("weekNumbers : false");
+				firstLine = false;
+			}
+
+			if (this.Align.Length > 0)
+			{
+				if (!firstLine) sb.AppendLine(",");
+				sb.AppendFormat("align : \"{0}\"", this.Align);
+				firstLine = false;
+			}
+
+			if (this.Range.Length > 0)
+			{
+				if (!firstLine) sb.AppendLine(",");
+				sb.AppendFormat("range : \"{0}\"", this.Range);
+				firstLine = false;
+			}
+
+			if (this.Flat.Length > 0)
+			{
+				if (!firstLine) sb.AppendLine(",");
+				sb.AppendFormat("flat : \"{0}\"", this.ResolveID(this.Flat));
+				firstLine = false;
+			}
+
+			if (this.FlatCallback.Length > 0)
+			{
+				if (!firstLine) sb.AppendLine(",");
+				sb.AppendFormat("flatCallback : \"{0}\"", this.FlatCallback);
+				firstLine = false;
+			}
+
+			if (this.OnSelectFunction.Length > 0)
+			{
+				if (!firstLine) sb.AppendLine(",");
+				sb.AppendFormat("onSelect : \"{0}\"", this.OnSelectFunction);
+				firstLine = false;
+			}
+
+			if (this.OnCloseFunction.Length > 0)
+			{
+				if (!firstLine) sb.AppendLine(",");
+				sb.AppendFormat("onClose : \"{0}\"", this.OnCloseFunction);
+				firstLine = false;
+			}
+
+			if (this.OnUpdateFunction.Length > 0)
+			{
+				if (!firstLine) sb.AppendLine(",");
+				sb.AppendFormat("onUpdate : \"{0}\"", this.OnUpdateFunction);
+				firstLine = false;
+			}
+
+			if (this.Date != DateTime.Today)
+			{
+				if (!firstLine) sb.AppendLine(",");
+				sb.AppendFormat("date : new Date({0},{1},{2})", this.Date.Year, this.Date.Month, this.Date.Day);
+				firstLine = false;
+			}
+
+			if (this.ShowsTime)
+			{
+				if (!firstLine) sb.AppendLine(",");
+				sb.AppendFormat("showsTime : true");
+				firstLine = false;
+			}
+
+			if (this.TimeFormat == 12)
+			{
+				if (!firstLine) sb.AppendLine(",");
+				sb.AppendFormat("timeFormat : \"12\"");
+				firstLine = false;
+			}
+
+			if (!this.Electric)
+			{
+				if (!firstLine) sb.AppendLine(",");
+				sb.AppendFormat("electric : false");
+				firstLine = false;
+			}
+
+			if (this.Position.Length > 0)
+			{
+				if (!firstLine) sb.AppendLine(",");
+				sb.AppendFormat("position : \"{0}\"", this.Position);
+				firstLine = false;
+			}
+
+			if (this.CacheCalendar)
+			{
+				if (!firstLine) sb.AppendLine(",");
+				sb.AppendFormat("cache : true");
+				firstLine = false;
+			}
+
+			if (this.ShowOthers)
+			{
+				if (!firstLine) sb.AppendLine(",");
+				sb.AppendFormat("showOthers : true");
+				firstLine = false;
+			}
+
+			sb.AppendLine();
+			//writer.Indent--;
+			sb.AppendLine("});");
+			//writer.Indent--;
+			//writer.WriteLine("</script>");
+
+			ScriptManager.RegisterStartupScript(this, typeof(DynarchCalendar), this.ClientID + "-Calendar.setup", sb.ToString(), true);
 		}
 		#endregion
 
@@ -1081,5 +1136,45 @@ namespace Havit.Web.UI.WebControls
 			return id;
 		}
 		#endregion
+
+		#region TransformDatePatternToClientScript
+		/// <summary>
+		/// Transforms Date pattern from .NET to client side format.
+		/// </summary>
+		/// <param name="pattern"></param>
+		/// <param name="separator"></param>
+		/// <returns></returns>
+		private string TransformDatePatternToClientScript(string pattern, string separator)
+		{
+			string result = pattern;
+
+			result = result.Replace("%", "");
+
+			result = result.Replace("dddd", "%A");
+			result = result.Replace("ddd", "%a");
+			result = result.Replace("dd", "#X#");
+			result = result.Replace("d", "%d");
+			result = result.Replace("#X#", "%d");
+
+			result = result.Replace("MMMM", "%B");
+			result = result.Replace("MMM", "%b");
+			result = result.Replace("MM", "%m");
+			result = result.Replace("M", "%m");
+
+			result = result.Replace("yyyy", "%Y");
+			result = result.Replace("yy", "%y");
+			result = result.Replace("y", "%y");
+
+			// Ignore gg, z, zz, zzz
+			result = result.Replace("gg", "");
+			result = result.Replace("z", "");
+
+			// Replace date separator
+			result = result.Replace("/", separator);
+
+			return result;
+		}
+		#endregion
+	
 	}
 }

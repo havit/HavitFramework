@@ -1397,11 +1397,10 @@
             Vytvoří instanci třídy <see cref="T:Havit.Business.IdentityMap"/>.
             </summary>
         </member>
-        <member name="M:Havit.Business.IdentityMap.Store``1(``0)">
+        <member name="M:Havit.Business.IdentityMap.Store(Havit.Business.BusinessObjectBase)">
             <summary>
             Uloží business-objekt do identity-map.
             </summary>
-            <typeparam name="T">typ business objektu</typeparam>
             <param name="businessObject">business objekt</param>
         </member>
         <member name="M:Havit.Business.IdentityMap.TryGet``1(System.Int32,``0@)">
@@ -1659,11 +1658,13 @@
             </summary>
             <param name="id">primární klíč objektu</param>
         </member>
-        <member name="M:Havit.Business.ActiveRecordBusinessObjectBase.#ctor(Havit.Data.DataRecord)">
+        <member name="M:Havit.Business.ActiveRecordBusinessObjectBase.#ctor(System.Int32,Havit.Data.DataRecord)">
             <summary>
             Konstruktor pro objekt s obrazen v databázi, kterým dojde rovnou k načtení dat z <see cref="T:Havit.Data.DataRecord"/>.
             Základní cesta vytvoření partially-loaded instance.
+            Pokud se inicializuje Ghost nebo FullLoad objekt, je přidán do IdentityMapy, pokud existuje.
             </summary>
+            <param name="id">ID načítaného objektu</param>
             <param name="record"><see cref="T:Havit.Data.DataRecord"/> s daty objektu načtenými z databáze</param>
         </member>
         <member name="M:Havit.Business.ActiveRecordBusinessObjectBase.Load(Havit.Data.DataRecord)">

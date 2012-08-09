@@ -51,16 +51,22 @@ namespace Havit.Business
 		protected ActiveRecordBusinessObjectBase(int id)
 			: base(id)
 		{
+			if (IdentityMapScope.Current != null)
+			{
+				IdentityMapScope.Current.Store(this);
+			}
 		}
 
 		/// <summary>
 		/// Konstruktor pro objekt s obrazen v databázi, kterým dojde rovnou k naètení dat z <see cref="Havit.Data.DataRecord"/>.
 		/// Základní cesta vytvoøení partially-loaded instance.
+		/// Pokud se inicializuje Ghost nebo FullLoad objekt, je pøidán do IdentityMapy, pokud existuje.
 		/// </summary>
+		/// <param name="id">ID naèítaného objektu</param>
 		/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu naètenými z databáze</param>
-		protected ActiveRecordBusinessObjectBase(DataRecord record)
+		protected ActiveRecordBusinessObjectBase(int id, DataRecord record)
 			: base(
-			NoID,	// ID
+			id,	// ID
 			false,	// IsNew
 			false,	// IsDirty
 			false)	// IsLoaded
@@ -75,6 +81,11 @@ namespace Havit.Business
 			this.IsNew = false;
 			this.IsLoaded = false;
 */
+			if ((IdentityMapScope.Current != null)
+				&& ((record.DataLoadPower == DataLoadPower.Ghost) || (record.DataLoadPower == DataLoadPower.FullLoad)))
+			{
+				IdentityMapScope.Current.Store(this);
+			}
 
 			Load(record);
 

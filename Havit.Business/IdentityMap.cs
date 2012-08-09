@@ -27,14 +27,12 @@ namespace Havit.Business
 		}
 		#endregion
 
-		#region Store<T>
+		#region Store
 		/// <summary>
 		/// Uloží business-objekt do identity-map.
 		/// </summary>
-		/// <typeparam name="T">typ business objektu</typeparam>
 		/// <param name="businessObject">business objekt</param>
-		public void Store<T>(T businessObject)
-			where T : BusinessObjectBase
+		public void Store(BusinessObjectBase businessObject)
 		{
 			if (businessObject == null)
 			{
@@ -46,11 +44,12 @@ namespace Havit.Business
 				throw new ArgumentException("businessObject ukládaný do IdentityMap nesmí být nový.", "businessObject");
 			}
 
-			Hashtable typeHashtable = types[typeof(T)] as Hashtable;
+			Type businessObjectType = businessObject.GetType();
+			Hashtable typeHashtable = types[businessObjectType] as Hashtable;
 			if (typeHashtable == null)
 			{
 				typeHashtable = new Hashtable();
-				types.Add(typeof(T), typeHashtable);
+				types.Add(businessObjectType, typeHashtable);
 			}
 
 			WeakReference temp = (WeakReference)typeHashtable[businessObject.ID];

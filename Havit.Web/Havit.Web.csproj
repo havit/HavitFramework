@@ -88,6 +88,7 @@
     <Reference Include="System.Web">
       <Name>System.Web</Name>
     </Reference>
+    <Reference Include="System.Web.Extensions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
@@ -240,6 +241,43 @@
     <EmbeddedResource Include="UI\Adapters\CssAdapters\CssMenuAdapter.css" />
     <EmbeddedResource Include="UI\Adapters\CssAdapters\CssAdaptersUtils.js" />
     <EmbeddedResource Include="UI\Adapters\CssAdapters\CssMenuAdapter.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-af.js" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-al.js" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-bg.js" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-br.js" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-ca.js" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-da.js" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-de.js" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-du.js" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-el.js" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-en.js" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-es.js" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-fi.js" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-fr.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-he.js" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-hr.js" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-hu.js" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-it.js" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-jp.js" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-ko.js" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-lt.js" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-lv.js" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-nl.js" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-no.js" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-pl.js" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-pt.js" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-ro.js" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-ru.js" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-si.js" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-sk.js" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-sp.js" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-sv.js" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-tr.js" />
+    <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-zh.js" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

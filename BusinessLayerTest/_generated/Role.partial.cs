@@ -37,9 +37,10 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Vytvoří instanci objektu na základě dat (i částečných) načtených z databáze.
 		/// </summary>
+		/// <param name="id">RoleID (PK)</param>
 		/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu (i částečnými)</param>
-		protected Role(DataRecord record)
-			: base(record)
+		protected Role(int id, DataRecord record)
+			: base(id, record)
 		{
 		}
 		#endregion
@@ -62,6 +63,7 @@ namespace Havit.BusinessLayerTest
 				return result;
 			}
 			
+			bool fromCache = true;
 			string cacheKey = String.Format(CultureInfo.InvariantCulture, "Havit.BusinessLayerTest.Role.GetObject({0})", id);
 			
 			result = (Role)HttpRuntime.Cache.Get(cacheKey);
@@ -72,7 +74,8 @@ namespace Havit.BusinessLayerTest
 					result = (Role)HttpRuntime.Cache.Get(cacheKey);
 					if (result == null)
 					{
-						result = new Role(id);
+						fromCache = true;
+result = new Role(id);
 						
 						HttpRuntime.Cache.Add(
 							cacheKey,
@@ -86,7 +89,7 @@ namespace Havit.BusinessLayerTest
 				}
 			}
 			
-			if (IdentityMapScope.Current != null)
+			if (!fromCache && (IdentityMapScope.Current != null))
 			{
 				IdentityMapScope.Current.Store(result);
 			}
@@ -101,12 +104,12 @@ namespace Havit.BusinessLayerTest
 		{
 			Role result = null;
 			
+			int id = dataRecord.Get<int>(Role.Properties.ID.FieldName);
+			
 			if ((IdentityMapScope.Current != null)
 				&& ((dataRecord.DataLoadPower == DataLoadPower.Ghost)
 					|| (dataRecord.DataLoadPower == DataLoadPower.FullLoad)))
 			{
-				int id = dataRecord.Get<int>(Role.Properties.ID.FieldName);
-				
 				if (IdentityMapScope.Current.TryGet<Role>(id, out result))
 				{
 					if (!result.IsLoaded && (dataRecord.DataLoadPower == DataLoadPower.FullLoad))
@@ -122,14 +125,13 @@ namespace Havit.BusinessLayerTest
 					}
 					else
 					{
-						result = new Role(dataRecord);
-						IdentityMapScope.Current.Store(result);
+						result = new Role(id, dataRecord);
 					}
 				}
 			}
 			else
 			{
-				result = new Role(dataRecord);
+				result = new Role(id, dataRecord);
 			}
 			
 			return result;

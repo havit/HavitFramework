@@ -36,14 +36,14 @@ namespace Havit.Business
 		private int _id;
 		#endregion
 
-		#region Properties - Stav objektu
+		#region Properties - Stav objektu (IsDirty, IsLoaded, IsNew, IsDeleted)
 		/// <summary>
 		/// Indikuje, zda-li byla data objektu zmìnìna oproti datùm v databázi.
 		/// </summary>
 		public bool IsDirty
 		{
 			get { return _isDirty; }
-			protected set { _isDirty = value; }
+			protected internal set { _isDirty = value; }
 		}
 		private bool _isDirty;
 
@@ -297,9 +297,7 @@ namespace Havit.Business
 		/// <returns>true, pokud jsou si rovny; jinak false</returns>
 		public virtual bool Equals(BusinessObjectBase obj)
 		{
-			#warning Typová kontrola porovnávání zákazníka s fakturou???
-
-			if (obj == null)
+			if ((obj == null) || (this.GetType() != obj.GetType()))
 			{
 				return false;
 			}
@@ -369,6 +367,7 @@ namespace Havit.Business
 		}
 		#endregion
 
+		#region CheckConstraints
 		/// <summary>
 		/// Kontroluje konzistenci objektu jako celku.
 		/// </summary>
@@ -377,10 +376,12 @@ namespace Havit.Business
 		/// </remarks>
 		protected virtual void CheckConstraints()
 		{
-#warning Nebylo by lepší umožnit metodu volat i explicitnì a dát ji public?
+#warning Nebylo by lepší umožnit metodu CheckConstraints() volat i explicitnì a dát ji public?
 #warning Nutno pøipravit vlastní ConstraintViolationException
 		}
+		#endregion
 
+		#region Init
 		/// <summary>
 		/// Inicializaèní metoda, která je volána pøi vytvoøení objektu (pøímo z konstruktorù).
 		/// Pøipravena pro override potomky.
@@ -392,12 +393,7 @@ namespace Havit.Business
 		{
 			// NOOP
 		}
-
-		internal void SetDirty()
-		{
-#warning K èemu je SetDirty() potøeba? Proè nestaèí set-accessor od property IsDirty?
-			this._isDirty = true;
-		}
+		#endregion
 
 		#region RegisterPropertyHolder (internal)
 		/// <summary>

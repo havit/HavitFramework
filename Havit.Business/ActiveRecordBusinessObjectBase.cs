@@ -54,7 +54,7 @@ namespace Havit.Business
 		/// Základní cesta vytvoøení partially-loaded instance.
 		/// </summary>
 		/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu naètenými z databáze</param>
-		public ActiveRecordBusinessObjectBase(DataRecord record)
+		protected ActiveRecordBusinessObjectBase(DataRecord record)
 			: base()
 		{
 			if (record == null)

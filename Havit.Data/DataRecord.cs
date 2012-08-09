@@ -147,6 +147,9 @@ namespace Havit.Data
 				{
 					try
 					{
+
+#warning Load nemá tak silnou typovou konverzi jako Get<T>()! Je potøeba sjednotit.
+
 						target = (T)dataDictionary[fieldName];
 					}
 					catch (InvalidCastException e)
@@ -195,10 +198,6 @@ namespace Havit.Data
 					{
 						return (T)value;
 					}
-					else if (value is IConvertible)
-					{
-						return (T)Convert.ChangeType(value, typeof(T));
-					}
 					else
 					{
 						try
@@ -207,6 +206,16 @@ namespace Havit.Data
 						}
 						catch (InvalidCastException e)
 						{
+							if (value is IConvertible)
+							{
+								try
+								{
+									return (T)Convert.ChangeType(value, typeof(T));	 // poslední pokus napø. pro konverzi decimal -> double
+								}
+								catch
+								{
+								}
+							}
 							throw new InvalidCastException("Specified cast is not valid, field '" + fieldName + "', type " + dataDictionary[fieldName].GetType().FullName, e);
 						}
 					}

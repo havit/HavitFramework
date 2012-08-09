@@ -100,9 +100,9 @@ namespace Havit.Web.UI.WebControls
     	{
     		base.OnPreRender(e);
 
-    		if (EnableClientScript && !this.Page.ClientScript.IsClientScriptBlockRegistered(this.GetType(), "Havit.Web.UI.WebControls.CheckBoxValidator"))
+    		if (EnableClientScript)
     		{
-    			this.Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "Havit.Web.UI.WebControls.CheckBoxValidator", validationScript);
+    			ScriptManager.RegisterClientScriptBlock(this.Page, this.GetType(), "Havit.Web.UI.WebControls.CheckBoxValidator", validationScript, true);
     		}
     	}
     	private const string validationScript = @"

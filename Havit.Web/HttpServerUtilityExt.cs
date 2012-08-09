@@ -59,7 +59,14 @@ namespace Havit.Web
 					// url looks like ~/ or ~\
 					if (appPath.Length > 1)
 					{
-						return appPath + "/" + url.Substring(2);
+						if (appPath.EndsWith("/"))
+						{
+							return appPath + url.Substring(2);
+						}
+						else
+						{
+							return appPath + "/" + url.Substring(2);
+						}
 					}
 					else
 					{

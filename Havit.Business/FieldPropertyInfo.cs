@@ -106,7 +106,7 @@ namespace Havit.Business
 		public virtual string GetSelectFieldStatement(DbCommand command)
 		{
 			CheckInitialization();
-			return fieldName;
+			return "[" + fieldName + "]";
 		}
 
 		string IOperand.GetCommandValue(DbCommand command)

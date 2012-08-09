@@ -220,7 +220,7 @@ namespace Havit.Web.UI.WebControls
 		/// </list>
 		/// Událost NENÍ vyvolána při změně formátu hodnoty, např.
 		/// <list>
-		///		<item>Změna formátu data: "1.1.2000" na "01.01.2001")</item> 
+		///		<item>Změna formátu data: "1.1.2000" na "01.01.2000")</item> 
 		///		<item>Částečná (neúplná) korekce chyby (např. "50.50.2000" na "1.50.2000")</item> 
 		///		<item>Úprava prázdné hodnoty (např. "" na "(mezera)" )</item>
 		/// </list>

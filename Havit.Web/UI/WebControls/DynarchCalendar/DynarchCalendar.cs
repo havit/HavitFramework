@@ -1159,9 +1159,11 @@ namespace Havit.Web.UI.WebControls
 			// date: ve výsledku mohli pøibýt A, a, B, b, Y, y
 
 			// time
-			result = result.Replace("%H", "%k");
+//			result = result.Replace("%H", "%k");
+			result = result.Replace("%H", "#2#");
 			result = result.Replace("HH", "#2#"); // %H
-			result = result.Replace("H", "%k");
+//			result = result.Replace("H", "%k");
+			result = result.Replace("H", "#2#");
 			result = result.Replace("hh", "%I");
 			result = result.Replace("h", "%l");
 

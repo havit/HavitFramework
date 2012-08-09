@@ -150,6 +150,11 @@ namespace Havit.Web.UI.WebControls
 		{
 			get
 			{
+				if (_propertyValueChanged)
+				{
+					return _propertyValue;
+				}
+
 				string text = valueTextBox.Text.Trim();
 				if (String.IsNullOrEmpty(text))
 				{
@@ -160,15 +165,20 @@ namespace Havit.Web.UI.WebControls
 			}
 			set
 			{
-				if (value == null || value == DateTime.MinValue)
-				{
-					valueTextBox.Text = String.Empty;
-					return;
-				}
+				_propertyValueChanged = true;
+				_propertyValue = value;
 
-				valueTextBox.Text = value.Value.ToShortDateString();
+				//if (value == null || value == DateTime.MinValue)
+				//{
+				//    valueTextBox.Text = String.Empty;
+				//    return;
+				//}
+				
+				//valueTextBox.Text = value.Value.ToShortDateString();
 			}
 		}
+		private bool _propertyValueChanged = false;
+		private DateTime? _propertyValue = null;
 		#endregion.
 
 		#region ValueText
@@ -192,7 +202,12 @@ namespace Havit.Web.UI.WebControls
 		public bool IsValid
 		{
 			get
-			{				
+			{
+				if (_propertyValueChanged)
+				{
+					return true;
+				}
+
 				string text = valueTextBox.Text.Trim();
 
 				if (text.Length == 0)
@@ -312,6 +327,23 @@ namespace Havit.Web.UI.WebControls
 		protected override void OnPreRender(EventArgs e)
 		{
 			base.OnPreRender(e);
+
+			if (_propertyValueChanged)
+			{
+				if ((_propertyValue == null) || (_propertyValue == DateTime.MinValue))
+				{
+					valueTextBox.Text = String.Empty;
+				}
+				else
+				{
+					switch (this.DateTimeMode)
+					{
+						case DateTimeMode.Date: valueTextBox.Text = _propertyValue.Value.ToShortDateString(); break;
+						case DateTimeMode.DateTime: valueTextBox.Text = _propertyValue.Value.ToString("g"); break;
+						default: throw new ApplicationException("Neznámá hodnota DateTimeMode.");
+					}
+				}
+			}
 
 			valueTextBox.Enabled = IsEnabled;
 			valueTextBox.AutoPostBack = AutoPostBack;

@@ -332,12 +332,16 @@ namespace Havit.Web.UI.Scriptlets
 				Environment.NewLine);
 
 			reused = false;
-			int hash = functionBlock.GetHashCode(); // pøedpokládáme, že pokud se liší skripty, liší se i GetHashCode. Shoda možná, nepravdìpodobná. Kdyžtak MD5 ci SHA1.
+			int currentHashValue = functionBlock.GetHashCode(); // pøedpokládáme, že pokud se liší skripty, liší se i GetHashCode. Shoda možná, nepravdìpodobná. Kdyžtak MD5 ci SHA1.
 			if (IsInAsyncPostBack && !String.IsNullOrEmpty(hashIdentifier))
 			{
 				// pokud jsme v callbacku, mùžeme zkusit reuse skriptu
 				// tj. nerenderovat jej, protože na klientu už je
-				reused = (int)ViewState[hashIdentifier] == hash;
+				object oldHashValue = ViewState[hashIdentifier];
+				if (oldHashValue != null)
+				{
+					reused = (int)oldHashValue == currentHashValue;
+				}
 			}
 
 			if (!foundInCache && !reused)
@@ -345,9 +349,9 @@ namespace Havit.Web.UI.Scriptlets
 				builder.Append(functionBlock);
 			}
 
-			if (!reused && AsyncPostBackEnabled)
+			if (AsyncPostBackEnabled)
 			{
-				ViewState[hashIdentifier] = hash;
+				ViewState[hashIdentifier] = currentHashValue;
 			}
 		}
 		#endregion

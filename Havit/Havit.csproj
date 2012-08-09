@@ -168,6 +168,8 @@
     <Compile Include="Collections\SortHelper.cs" />
     <Compile Include="Collections\SortItem.cs" />
     <Compile Include="Collections\SortItemCollection.cs" />
+    <Compile Include="DataEventArgs.cs" />
+    <Compile Include="DataEventHandler.cs" />
     <Compile Include="Diagnostics\ExceptionTracer.cs" />
     <Compile Include="Diagnostics\SmtpTraceListerner.cs" />
     <Compile Include="ITypeConverter.cs" />

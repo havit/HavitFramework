@@ -147,7 +147,7 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		public BasicModalDialog()
 		{
-			_dialogPanel = new Panel();
+			_dialogPanel = new Panel();			
 			_dialogPanel.CssClass = "webdialog";
 		}
 		#endregion
@@ -301,6 +301,10 @@ namespace Havit.Web.UI.WebControls
 			base.OnPreRender(e);
 
 			EnsureChildControls();
+
+			// šahnutím na hodnotu property se ID vygeneruje a VYRENDERUJE!
+			// My jej musíme vyrenderovat vždy, protože jinak nefungují správně klientské skripty.
+			string tmp = _dialogPanel.ClientID; 
 
 			CheckDialogSize();
 

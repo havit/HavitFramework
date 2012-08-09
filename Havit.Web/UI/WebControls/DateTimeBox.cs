@@ -227,15 +227,14 @@ namespace Havit.Web.UI.WebControls
 		{
 			get
 			{
-//				return (bool)(ViewState["IsValid"] ?? true);
-				return (bool)(_isValid ?? true);
+				return _isValid;
 			}
 		}
 		#endregion
 
 		private DateTime? _value;
-		private bool? _isValid;
-		private bool _valueSet = false;
+		private bool _isValid = true;
+		private bool _setValueCallsSetValueToNestedTextBox = false;
 
 		#endregion
 
@@ -335,13 +334,12 @@ namespace Havit.Web.UI.WebControls
 		protected override void OnInit(EventArgs e)
 		{			
 			base.OnInit(e);
-			this.Page.PreLoad += new EventHandler(Page_PreLoad);
-			this.Page.PreRender += new EventHandler(Page_PreRender);
+			this.Page.PreLoad += new EventHandler(Page_PreLoad);			
 			valueTextBox.TextChanged += new EventHandler(ValueTextBox_TextChanged);
 			EnsureChildControls();
 		}
 		#endregion
-
+		
 		#region Page_PreLoad
 		private void Page_PreLoad(object sender, EventArgs e)
 		{
@@ -351,14 +349,17 @@ namespace Havit.Web.UI.WebControls
 				// přečteme hodnotu z vnořeného textboxu
 				SetValueFromNestedTextBox();
 			}
-		} 
+		}
 		#endregion
 
-		#region Page_PreRender
-		private void Page_PreRender(object sender, EventArgs e)
+		#region OnLoad
+		protected override void OnLoad(EventArgs e)
 		{
-			// řeší problém, kdy se schovanému prvku nenastaví Value.
+			base.OnLoad(e);
+
+			// nastavíme hodnotu z předchozích kroků životního cyklu do vnořeného textboxu
 			SetValueToNestedTextBox();
+			this._setValueCallsSetValueToNestedTextBox = true;
 		} 
 		#endregion
 
@@ -669,10 +670,12 @@ function HavitDateTimeBox_Focus(e)
 		protected void SetValue(DateTime? value, bool isValid)
 		{
 			this._value = value;
-			this._isValid = isValid;
-			_valueSet = true;
-			//ViewState["Value"] = value;
-			//ViewState["IsValid"] = isValid;
+			this._isValid = isValid;		
+
+			if (this._setValueCallsSetValueToNestedTextBox)
+			{
+				SetValueToNestedTextBox();
+			}
 		}
 		#endregion
 

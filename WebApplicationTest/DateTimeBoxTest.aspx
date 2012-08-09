@@ -78,6 +78,20 @@
     <havit:DateTimeBox ID="SecondDateTimeBox" DateTimeMode="DateTime" CausesValidation="true" runat="server" />
     <asp:CustomValidator ID="SecondDateTimeBoxValidator" ControlToValidate="SecondDateTimeBox" runat="server" />
     <asp:Button ID="PostBackButton" Text="Postback" runat="server" />
+    
+    <havit:GridViewExt ID="TestGV" runat="server" AutoDataBind="true">
+		<Columns>
+			<havit:TemplateFieldExt>
+				<ItemTemplate>
+				edit...
+				</ItemTemplate>
+				<EditItemTemplate>
+					<havit:DateTimeBox ID="NestedDateTimeBox" runat="server" />
+				</EditItemTemplate>
+			</havit:TemplateFieldExt>
+			<havit:GridViewCommandField ShowEditButton="true" ShowCancelButton="true" />
+		</Columns>
+    </havit:GridViewExt>
     </form>
 </body>
 </html>

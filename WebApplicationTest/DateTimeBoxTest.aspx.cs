@@ -8,6 +8,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
+using Havit.Web.UI.WebControls;
 
 namespace WebApplicationTest
 {
@@ -25,6 +26,22 @@ namespace WebApplicationTest
 
 			VycistitButton.Click += new EventHandler(VycistitButton_Click);
 			ZobrazitButton.Click += new EventHandler(ZobrazitButton_Click);
+
+			TestGV.DataBinding += new EventHandler(TestGV_DataBinding);
+			TestGV.RowDataBound += new GridViewRowEventHandler(TestGV_RowDataBound);
+		}
+
+		void TestGV_RowDataBound(object sender, GridViewRowEventArgs e)
+		{
+			if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
+			{
+				((DateTimeBox)e.Row.FindControl("NestedDateTimeBox")).Value = DateTime.Today;
+			}
+		}
+
+		private void TestGV_DataBinding(object sender, EventArgs e)
+		{
+			TestGV.DataSource = new int[] { 1, 2, 3 };
 		}
 
 		private void SecondDateTimeBoxValidator_ServerValidate(object source, ServerValidateEventArgs args)

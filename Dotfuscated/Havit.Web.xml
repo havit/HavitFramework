@@ -599,34 +599,6 @@
             Cache je uložena v HttpContextu.
             </summary>
         </member>
-        <member name="T:Havit.Web.UI.WebControls.DatePicker">
-            <summary>
-            Tlačítko s kalendáříkem pro výběr data.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.DatePicker.AssociatedControl">
-            <summary>
-            Control, na který je DatePicker navázán.
-            Pokud není nastaven, hledá se control podle AssociatedControlID.
-            Neukládá se do ViewState a nepřežívá postback.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.DatePicker.AssociatedControlID">
-            <summary>
-            ID controlu, na který je DatePicker navázán. Použije se jen, pokud není nastavena 
-            vlastnost AssociatedControl.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.DatePicker.ShowImage">
-            <summary>
-            Udává, zda se má zobrazit ikonka. Pokud ne, naváže se DatePicker přímo na AssociatedControl.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.DatePicker.DateFormat">
-            <summary>
-            Formát data generovaný kalendáříkem. Výchozí formát je %d.%m.%Y.
-            </summary>
-        </member>
         <member name="T:Havit.Web.UI.WebControls.ButtonColumnExt">
             <summary>
             Rozšířená <see cref="T:System.Web.UI.WebControls.ButtonColumn"/> k <see cref="T:System.Web.UI.WebControls.DataGrid"/>u,
@@ -1084,31 +1056,6 @@
         <member name="P:Havit.Web.UI.WebControls.H4.TagKey">
             <summary>
             Vrací HtmlTextWriterTag.H4 zajišťující správné renderování.
-            </summary>
-        </member>
-        <member name="T:Havit.Web.UI.WebControls.DateTimeValidator">
-            <summary>
-            Kontroluje, jestli je zadany datum/cas v platnem formatu.
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.DateTimeValidator.EvaluateIsValid">
-            <summary>
-            Serverova validace - overuje, zda je validovana hodnota v platnem formatu. 
-            </summary>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.DateTimeValidator.ServerSidePattern(Havit.Web.UI.WebControls.DateTimePart)">
-            <summary>
-            Vrací masku - proti které se ověřuje platnost data/času na straně serveru.
-            </summary>
-            <param name="dateTimePart"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Havit.Web.UI.WebControls.DateTimeValidator.ClientSidePattern(Havit.Web.UI.WebControls.DateTimePart)">
-            Vrací masku - proti které se ověřuje platnost data/času na straně klienta.
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.DateTimeValidator.DateTimePart">
-            <summary>
-            Urcuje, jaky format data/casu se ocekava.
             </summary>
         </member>
         <member name="T:Havit.Web.UI.Scriptlets.ScriptBuilder">
@@ -1869,11 +1816,6 @@
             Přepis třídy Microsoft .NET Frameworku. Potřeba pro GridViewCommandField.
             </summary>
         </member>
-        <member name="T:Havit.Web.UI.WebControls.DateTimePart">
-            <summary>
-            Specifikuje formaty data/casu.
-            </summary>
-        </member>
         <member name="T:Havit.Web.UrlRewriter.RewriterUtils">
             <summary>
             Provides utility helper methods for the rewriting HttpModule and HttpHandler.
@@ -2059,22 +2001,6 @@
             <remarks>The replacement string may use grouping symbols, like $1, $2, etc.  Specifically, the
             <b>System.Text.RegularExpression.Regex</b> class's <b>Replace()</b> method is used to replace
             the match in <see cref="P:Havit.Web.UrlRewriter.Config.RewriterRule.LookFor"/> with the value in <b>SendTo</b>.</remarks>
-        </member>
-        <member name="T:Havit.Web.UI.WebControls.DateTimeBox">
-            <summary>
-            Editační box na datumy
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.DateTimeBox.DateTimePart">
-            <summary>
-            Udává, jaký typ vstupu se očekává.
-            </summary>
-        </member>
-        <member name="P:Havit.Web.UI.WebControls.DateTimeBox.DisplayDatePicker">
-            <summary>
-            Udává, zda se má použít DateTimePicker.
-            Není-li nastaveno, vrací true, pokud je DateTimePart nastaveno na Date nebo DateTime.
-            </summary>
         </member>
         <member name="T:Havit.Web.UI.Scriptlets.ControlParameter">
             <summary>

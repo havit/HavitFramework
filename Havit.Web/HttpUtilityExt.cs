@@ -288,7 +288,7 @@ namespace Havit.Web
 				int index = resourceKey.IndexOf(',');
 				if (index != -1)
 				{
-					defaultPropertyValue = resourceKey.Substring(index + 1); // default value
+					defaultPropertyValue = resourceKey.Substring(index + 1).Trim(); // default value
 					resourceKey = resourceKey.Substring(0, index);
 				}
 				else
@@ -302,7 +302,7 @@ namespace Havit.Web
 				}
 				catch (MissingManifestResourceException)
 				{
-					// NOOP
+					resourceExpression = defaultPropertyValue;
 				}
 
 				if (resourceExpression == null)

@@ -1,0 +1,83 @@
+﻿/*
+
+This file should contain SUPPLEMENTAL rules that are recognized and used only by IE.
+Similar files can be produced, as needed, for other browsers.  Whatever selectors are
+listed here should be listed in at least one other CSS file used in the current ASP.NET
+theme (thus making these supplemental).  The implementation pattern is to add new props
+to some existing rule or to override (using important) some property.
+
+*/
+
+ul.AspNet-Menu li
+{
+    float: left !important;
+    height: 1% !important;
+}
+
+ul.AspNet-Menu li a,
+ul.AspNet-Menu li span
+{
+    height: 1% !important;
+}
+
+.AspNet-Menu-Horizontal ul.AspNet-Menu li li
+{
+    float: left !important;
+}
+
+/* Undoing rules used for IE7 and other browsers. */
+
+ul.AspNet-Menu ul
+{
+    visibility: visible !important;    
+}
+
+ul.AspNet-Menu li:hover ul ul,
+ul.AspNet-Menu li.AspNet-Menu-Hover ul ul
+{
+    visibility: visible !important;    
+}
+
+ul.AspNet-Menu li:hover ul,
+ul.AspNet-Menu li li:hover ul,
+ul.AspNet-Menu li li li:hover ul,
+ul.AspNet-Menu li.AspNet-Menu-Hover ul,
+ul.AspNet-Menu li li.AspNet-Menu-Hover ul,
+ul.AspNet-Menu li li li.AspNet-Menu-Hover ul
+{
+    visibility: visible !important;    
+}
+
+/* Pre-IE7 rules used to avoid performance problems found when using the newer rules. */
+
+ul.AspNet-Menu ul
+{
+    display: none;    
+}
+
+ul.AspNet-Menu li:hover ul ul,
+ul.AspNet-Menu li:hover ul ul ul,
+ul.AspNet-Menu li.AspNet-Menu-Hover ul ul,
+ul.AspNet-Menu li.AspNet-Menu-Hover ul ul ul,
+ul.AspNet-Menu li.AspNet-Menu-Hover ul ul ul ul,
+ul.AspNet-Menu li.AspNet-Menu-Hover ul ul ul ul ul
+{
+    display: none;
+}
+
+ul.AspNet-Menu li:hover ul,
+ul.AspNet-Menu li li:hover ul,
+ul.AspNet-Menu li li li:hover ul,
+ul.AspNet-Menu li.AspNet-Menu-Hover ul,
+ul.AspNet-Menu li li.AspNet-Menu-Hover ul,
+ul.AspNet-Menu li li li.AspNet-Menu-Hover ul,
+ul.AspNet-Menu li li li li.AspNet-Menu-Hover ul,
+ul.AspNet-Menu li li li li li.AspNet-Menu-Hover ul
+{
+    display: block;
+}
+
+.AspNet-Menu-Horizontal ul.AspNet-Menu li li
+{
+    float: none;
+}

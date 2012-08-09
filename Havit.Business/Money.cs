@@ -22,7 +22,7 @@ namespace Havit.Business
 			get { return _amount; }
 			set
 			{
-				bool changed = (_amount == value);
+				bool changed = (_amount != value);
 				_amount = value;
 
 				if (changed && (ValueChanged != null))
@@ -43,7 +43,7 @@ namespace Havit.Business
 			get { return _currency; }
 			set
 			{
-				bool changed = (_currency == value);
+				bool changed = (_currency != value);
 				_currency = value;
 
 				if (changed && (ValueChanged != null))

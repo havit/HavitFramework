@@ -58,7 +58,8 @@ namespace Havit.Web.UI.WebControls
 		{
 			get
 			{
-				return (DayOfWeek)(ViewState["FirstDayOfWeek"] ?? CultureInfo.CurrentUICulture.DateTimeFormat.FirstDayOfWeek);
+				// V .NETu 4.0 je možné ptát se na DateTimeFormat i neutrální kultury, ve starších verzích .NETu to ale možné nebylo. Pro starší verze použijeme výchozí hodnotu pondělí.
+				return (DayOfWeek)(ViewState["FirstDayOfWeek"] ?? ((CultureInfo.CurrentUICulture.IsNeutralCulture && System.Environment.Version.Major < 4) ? DayOfWeek.Monday : CultureInfo.CurrentUICulture.DateTimeFormat.FirstDayOfWeek));
 			}
 			set
 			{

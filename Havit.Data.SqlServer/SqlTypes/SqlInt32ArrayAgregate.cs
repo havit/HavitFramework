@@ -29,7 +29,7 @@ namespace Havit.Data.SqlTypes
 		IsInvariantToNulls = false,
 		IsInvariantToOrder = true,
 		IsNullIfEmpty = true,
-		MaxByteSize = 8000,
+		MaxByteSize = -1,
 		Name = "IntArrayAggregate")]
 	public class SqlInt32ArrayAggregate : IBinarySerialize
 	{

@@ -134,10 +134,25 @@ namespace Havit.Business
 		/// Porovná mìny zadané v parametrech. Pokud se liší, je vyhozena výjimka.
 		/// </summary>
 		protected static void AssertSameCurrencies(TCurrency currency1, TCurrency currency2)
-		{			
-			if (currency1 != currency2)
+		{
+			if ((currency1 is BusinessObjectBase) && (currency2 is BusinessObjectBase))
 			{
-				throw new InvalidOperationException("Assertion failed: Currencies are not same.");
+				// pokud jde o businessObjekty, pak porovnáme jako business objekty (mùže jít o rùzné instance stejné mìny (napø. objekty z rùzných identity map)
+				// radìji bych použil pøetypování (BusinessObjectBase)currencyX, ale compiler ho z mì neznámého dùvodu odmítá
+				BusinessObjectBase businessObjectCurrency1 = currency1 as BusinessObjectBase;
+				BusinessObjectBase businessObjectCurrency2 = currency2 as BusinessObjectBase;
+
+				if (businessObjectCurrency1 != businessObjectCurrency2)
+				{
+					throw new InvalidOperationException("Assertion failed: Currencies are not same.");
+				}
+			}
+			else
+			{
+				if (currency1 != currency2)
+				{
+					throw new InvalidOperationException("Assertion failed: Currencies are not same.");
+				}
 			}
 		}
 		#endregion

@@ -204,6 +204,32 @@ function AutoSuggestMenu()
        	    //Update text box text	
 		    var textBox=getTextBoxCtrl();
 		    textBox.value = menuItem.label;
+		    
+		    // JIØÍ KANDA:
+		    // døíve:
+		    // textBox.value = menuItem.label;
+		    // nyní:
+			// zajistujeme vyvolani udalosti onchange, pokud je zmenen text.
+			var oldValue = textBox.value;
+			var newValue = menuItem.label;						
+			if (oldValue != newValue)
+			{
+				textBox.value = newValue;
+				if (textBox.fireEvent)
+				{
+					textBox.fireEvent("onchange");
+				}
+				else
+				{
+					if (textBox.dispatchEvent)
+					{
+						var changeEvent = document.createEvent("HTMLEvents");
+						changeEvent.initEvent("change", true, true);
+						textBox.dispatchEvent(changeEvent);
+					}
+				}
+			}
+
 		}
     }
 		

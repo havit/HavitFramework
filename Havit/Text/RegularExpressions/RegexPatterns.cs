@@ -93,9 +93,9 @@ namespace Havit.Text.RegularExpressions
 		}
 
 		/// <summary>
-		/// Vrátí pattern pro regulární výraz na základě textu.
+		/// Vrátí pattern pro regulární výraz na základě výrazu.
 		/// </summary>
-		/// <param name="text"></param>
+		/// <param name="wildcardExpression">Výraz (text), pro který se vytváří regulární výraz.</param>
 		/// <returns></returns>
 		private static string GetWildcardRegexPattern(string wildcardExpression)
 		{

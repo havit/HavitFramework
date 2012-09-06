@@ -10,8 +10,19 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class SpecialDate
 	{
+		/// <summary>
+		/// Datum.
+		/// </summary>
 		public DateTime Datum { get; private set; }
+
+		/// <summary>
+		/// Příznak zakázání výběru data.
+		/// </summary>		
 		public bool Disabled { get; private set; }
+		
+		/// <summary>
+		/// CSS class.
+		/// </summary>
 		public string CssClass { get; private set; }
 
 		/// <summary>

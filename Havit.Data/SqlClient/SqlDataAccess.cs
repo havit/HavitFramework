@@ -350,7 +350,7 @@ namespace Havit.Data.SqlClient
 		/// <summary>
 		/// Vytvoří, nastaví a vykoná SqlCommand dle zadaného SQL příkazu
 		/// a vrátí výsledný resultset ve formě <see cref="Havit.Data.DataRecord"/>.
-		/// Jako typ příkazu se použije <see cref="DefaultCommandType"/>.
+		/// Jako typ příkazu se použije DefaultCommandType.
 		/// </summary>
 		/// <param name="cmdText">text SQL příkazu</param>
 		/// <returns>první řádek prvního resultsetu ve formě <see cref="Havit.Data.DataRecord"/></returns>

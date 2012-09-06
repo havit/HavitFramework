@@ -7,10 +7,10 @@ using System.Web;
 namespace Havit.Web.UI
 {
 	public partial class FilePageStatePersister
+	{
 		/// <summary>
 		/// Strategie pro pojmenování souborů s viewstate/controlstate.
 		/// </summary>
-	{
 		public class PerUserNamingStrategy : FilePageStatePersister.IFileNamingStrategy
 		{
 			#region Private consts

@@ -1,5 +1,5 @@
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1C9D6C81-DCFD-49C6-9BEE-0E52304CFE98}"
 	ProjectSection(SolutionItems) = preProject
 		Havit.vsmdi = Havit.vsmdi
@@ -24,7 +24,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Business", "Havit.Bus
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Drawing", "Havit.Drawing\Havit.Drawing.csproj", "{0A4C075E-E474-4AD5-8377-5F7C7E3488D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Data.SqlServer", "Havit.Data.SqlServer\Havit.Data.SqlServer.csproj", "{60804BE3-2622-481A-8784-3C173C080936}"
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Havit.Data.SqlServer", "Havit.Data.SqlServer\Havit.Data.SqlServer.sqlproj", "{AB28A793-D0AC-46ED-9D48-B75B0DC4EE90}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Data", "Havit.Data\Havit.Data.csproj", "{703235E0-86C0-44F3-95BB-3D9F39886966}"
 EndProject
@@ -54,7 +54,7 @@ Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 18
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://tfs.havit.local/tfs/defaultcollection
+		SccTeamFoundationServer = http://bart.havit.local:8080/tfs/defaultcollection
 		SccLocalPath0 = .
 		SccProjectUniqueName1 = Havit.Xml\\Havit.Xml.csproj
 		SccProjectName1 = Havit.Xml
@@ -68,45 +68,45 @@ Global
 		SccProjectUniqueName4 = Havit.Drawing\\Havit.Drawing.csproj
 		SccProjectName4 = Havit.Drawing
 		SccLocalPath4 = Havit.Drawing
-		SccProjectUniqueName5 = Havit.Data.SqlServer\\Havit.Data.SqlServer.csproj
-		SccProjectName5 = Havit.Data.SqlServer
-		SccLocalPath5 = Havit.Data.SqlServer
-		SccProjectUniqueName6 = Havit.Data\\Havit.Data.csproj
-		SccProjectName6 = Havit.Data
-		SccLocalPath6 = Havit.Data
-		SccProjectUniqueName7 = Havit\\Havit.csproj
-		SccProjectName7 = Havit
-		SccLocalPath7 = Havit
-		SccProjectUniqueName8 = HavitTest\\HavitTest.csproj
-		SccProjectName8 = HavitTest
-		SccLocalPath8 = HavitTest
-		SccProjectUniqueName9 = Havit.DataTest\\Havit.DataTest.csproj
-		SccProjectName9 = Havit.DataTest
-		SccLocalPath9 = Havit.DataTest
-		SccProjectUniqueName10 = Havit.Enterprise.Web\\Havit.Enterprise.Web.csproj
-		SccProjectName10 = Havit.Enterprise.Web
-		SccLocalPath10 = Havit.Enterprise.Web
-		SccProjectUniqueName11 = Havit.BusinessTest\\Havit.BusinessTest.csproj
-		SccProjectName11 = Havit.BusinessTest
-		SccLocalPath11 = Havit.BusinessTest
-		SccProjectUniqueName12 = BusinessLayerTest\\BusinessLayerTest.csproj
-		SccProjectName12 = BusinessLayerTest
-		SccLocalPath12 = BusinessLayerTest
-		SccProjectUniqueName13 = WebApplicationTest\\WebApplicationTest.csproj
-		SccProjectName13 = WebApplicationTest
-		SccLocalPath13 = WebApplicationTest
-		SccProjectUniqueName14 = Havit.WebTest\\Havit.WebTest.csproj
-		SccProjectName14 = Havit.WebTest
-		SccLocalPath14 = Havit.WebTest
-		SccProjectUniqueName15 = Havit.PayMuzo\\Havit.PayMuzo.csproj
-		SccProjectName15 = Havit.PayMuzo
-		SccLocalPath15 = Havit.PayMuzo
-		SccProjectUniqueName16 = TracingTest\\TracingTest.csproj
-		SccProjectName16 = TracingTest
-		SccLocalPath16 = TracingTest
-		SccProjectUniqueName17 = HavitTestConsoleApplication\\HavitTestConsoleApplication.csproj
-		SccProjectName17 = HavitTestConsoleApplication
-		SccLocalPath17 = HavitTestConsoleApplication
+		SccProjectUniqueName5 = Havit.Data\\Havit.Data.csproj
+		SccProjectName5 = Havit.Data
+		SccLocalPath5 = Havit.Data
+		SccProjectUniqueName6 = Havit\\Havit.csproj
+		SccProjectName6 = Havit
+		SccLocalPath6 = Havit
+		SccProjectUniqueName7 = HavitTest\\HavitTest.csproj
+		SccProjectName7 = HavitTest
+		SccLocalPath7 = HavitTest
+		SccProjectUniqueName8 = Havit.DataTest\\Havit.DataTest.csproj
+		SccProjectName8 = Havit.DataTest
+		SccLocalPath8 = Havit.DataTest
+		SccProjectUniqueName9 = Havit.Enterprise.Web\\Havit.Enterprise.Web.csproj
+		SccProjectName9 = Havit.Enterprise.Web
+		SccLocalPath9 = Havit.Enterprise.Web
+		SccProjectUniqueName10 = Havit.BusinessTest\\Havit.BusinessTest.csproj
+		SccProjectName10 = Havit.BusinessTest
+		SccLocalPath10 = Havit.BusinessTest
+		SccProjectUniqueName11 = BusinessLayerTest\\BusinessLayerTest.csproj
+		SccProjectName11 = BusinessLayerTest
+		SccLocalPath11 = BusinessLayerTest
+		SccProjectUniqueName12 = WebApplicationTest\\WebApplicationTest.csproj
+		SccProjectName12 = WebApplicationTest
+		SccLocalPath12 = WebApplicationTest
+		SccProjectUniqueName13 = Havit.WebTest\\Havit.WebTest.csproj
+		SccProjectName13 = Havit.WebTest
+		SccLocalPath13 = Havit.WebTest
+		SccProjectUniqueName14 = Havit.PayMuzo\\Havit.PayMuzo.csproj
+		SccProjectName14 = Havit.PayMuzo
+		SccLocalPath14 = Havit.PayMuzo
+		SccProjectUniqueName15 = TracingTest\\TracingTest.csproj
+		SccProjectName15 = TracingTest
+		SccLocalPath15 = TracingTest
+		SccProjectUniqueName16 = HavitTestConsoleApplication\\HavitTestConsoleApplication.csproj
+		SccProjectName16 = HavitTestConsoleApplication
+		SccLocalPath16 = HavitTestConsoleApplication
+		SccProjectUniqueName17 = Havit.Data.SqlServer\\Havit.Data.SqlServer.sqlproj
+		SccProjectName17 = Havit.Data.SqlServer
+		SccLocalPath17 = Havit.Data.SqlServer
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Havit.vsmdi
@@ -160,16 +160,16 @@ Global
 		{0A4C075E-E474-4AD5-8377-5F7C7E3488D8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{0A4C075E-E474-4AD5-8377-5F7C7E3488D8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{0A4C075E-E474-4AD5-8377-5F7C7E3488D8}.Release|x86.ActiveCfg = Release|Any CPU
-		{60804BE3-2622-481A-8784-3C173C080936}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{60804BE3-2622-481A-8784-3C173C080936}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{60804BE3-2622-481A-8784-3C173C080936}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{60804BE3-2622-481A-8784-3C173C080936}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{60804BE3-2622-481A-8784-3C173C080936}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{60804BE3-2622-481A-8784-3C173C080936}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{60804BE3-2622-481A-8784-3C173C080936}.Release|Any CPU.Build.0 = Release|Any CPU
-		{60804BE3-2622-481A-8784-3C173C080936}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{60804BE3-2622-481A-8784-3C173C080936}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{60804BE3-2622-481A-8784-3C173C080936}.Release|x86.ActiveCfg = Release|Any CPU
+		{AB28A793-D0AC-46ED-9D48-B75B0DC4EE90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB28A793-D0AC-46ED-9D48-B75B0DC4EE90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB28A793-D0AC-46ED-9D48-B75B0DC4EE90}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{AB28A793-D0AC-46ED-9D48-B75B0DC4EE90}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{AB28A793-D0AC-46ED-9D48-B75B0DC4EE90}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AB28A793-D0AC-46ED-9D48-B75B0DC4EE90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB28A793-D0AC-46ED-9D48-B75B0DC4EE90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB28A793-D0AC-46ED-9D48-B75B0DC4EE90}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{AB28A793-D0AC-46ED-9D48-B75B0DC4EE90}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{AB28A793-D0AC-46ED-9D48-B75B0DC4EE90}.Release|x86.ActiveCfg = Release|Any CPU
 		{703235E0-86C0-44F3-95BB-3D9F39886966}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{703235E0-86C0-44F3-95BB-3D9F39886966}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{703235E0-86C0-44F3-95BB-3D9F39886966}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU

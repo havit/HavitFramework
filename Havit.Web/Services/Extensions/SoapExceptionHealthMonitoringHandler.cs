@@ -24,17 +24,8 @@ namespace Havit.Web.Services.Extensions
 				if ((message != null) && (message.Stage == SoapMessageStage.AfterSerialize))
 				{
 					if (message.Exception != null)
-					{
-						Exception exception = message.Exception;
-						if ((exception is SoapException) && (exception.InnerException != null))
-						{
-							exception = exception.InnerException;
-						}
-						if ((exception is HttpUnhandledException) && (exception.InnerException != null))
-						{
-							exception = exception.InnerException;
-						}
-						new WebRequestErrorEventExt(exception.Message, message, exception).Raise();
+					{						
+						new WebRequestErrorEventExt(message.Exception.Message, message, message.Exception, HttpContext.Current).Raise();
 					}
 				}
 			}

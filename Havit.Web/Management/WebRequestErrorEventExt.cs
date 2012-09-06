@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Web;
 using System.Web.Management;
+using System.Web.Services.Protocols;
 
 namespace Havit.Web.Management
 {
@@ -11,9 +14,180 @@ namespace Havit.Web.Management
 	/// </summary>
 	public class WebRequestErrorEventExt : WebRequestErrorEvent
 	{
+		#region Constants (private)
+		private const string ExceptionText = "(exception)";
+		#endregion
+
+		#region Private fields
+		private HttpContext _currentHttpContext;
+		#endregion
+
+		#region Constructors
+		[Obsolete]
 		public WebRequestErrorEventExt(string message, object eventSource, Exception exception)
-			: base(message, eventSource, WebEventCodes.WebExtendedBase + 999, exception)
+			: this(message, eventSource, exception, null)
 		{
 		}
+
+		public WebRequestErrorEventExt(string message, object eventSource, Exception exception, HttpContext currentHttpContext)
+			: base(message, eventSource, WebEventCodes.WebExtendedBase + 999, UnwrapException(exception))
+		{
+			this._currentHttpContext = currentHttpContext;
+		}
+		#endregion
+
+		#region UnwrapException
+		private static Exception UnwrapException(Exception exception)
+		{
+			if (((exception is SoapException) || (exception is HttpUnhandledException))
+				&& (exception.InnerException != null))
+			{
+				return exception.InnerException;
+			}
+			return exception;
+		}
+		#endregion
+
+		#region ToString
+		/// <summary>
+		/// Vrátí log události
+		/// </summary>
+		public override string ToString(bool includeAppInfo, bool includeCustomEventDetails)
+		{
+			StringBuilder sb = new StringBuilder();
+
+			// Obecné informace
+			this.FormatToString(sb, includeAppInfo);
+
+			// Process information
+			sb.AppendLine();
+			sb.AppendLine("Process information: ");
+			FormatProcessInformation(sb, this.ProcessInformation);
+
+			// Exception information
+			sb.AppendLine();
+			sb.AppendLine("Exception information: ");
+			FormatExceptionInformation(sb, this.ErrorException);
+
+			// Request information
+			sb.AppendLine();
+			sb.AppendLine("Request information: ");
+			FormatRequestInformation(sb, this.RequestInformation);
+
+			// Thread information
+			sb.AppendLine();
+			sb.AppendLine("Thread information: ");
+			FormatThreadInformation(sb, this.ThreadInformation);
+
+			return sb.ToString();
+		} 
+		#endregion
+
+		#region FormatToString
+		/// <summary>
+		/// Zapíše do StringBuilderu obecné informace o události
+		/// </summary>
+		private void FormatToString(StringBuilder sb, bool includeAppInfo)
+		{
+			sb.AppendLine("Event code: " + this.EventCode.ToString(CultureInfo.InstalledUICulture));
+			sb.AppendLine("Event message: " + this.Message);
+			sb.AppendLine("Event time: " + this.EventTime.ToString(CultureInfo.InstalledUICulture));
+			sb.AppendLine("Event time(UTC): " + this.EventTimeUtc.ToString(CultureInfo.InstalledUICulture));
+			sb.AppendLine("Event ID: " + this.EventID.ToString("N", CultureInfo.InstalledUICulture));
+			sb.Append(" Event sequence: " + this.EventSequence.ToString(CultureInfo.InstalledUICulture));
+			sb.Append(" Event occurence: " + this.EventOccurrence.ToString(CultureInfo.InstalledUICulture));
+			sb.AppendLine(" Event detail code: " + this.EventDetailCode.ToString(CultureInfo.InstalledUICulture));
+		} 
+		#endregion
+
+		#region FormatProcessInformation
+		/// <summary>
+		/// Zapíše do StringBuilderu informace o procesu
+		/// </summary>
+		private void FormatProcessInformation(StringBuilder sb, WebProcessInformation processInformation)
+		{
+			sb.AppendLine("    Process ID: " + processInformation.ProcessID.ToString(CultureInfo.InstalledUICulture));
+			sb.AppendLine("    Process name: " + processInformation.ProcessName);
+			sb.AppendLine("    Account name: " + processInformation.AccountName);
+		} 
+		#endregion
+
+		#region FormatExceptionInformation
+		/// <summary>
+		/// Zapíše do StringBuilderu informace o výjimce
+		/// </summary>
+		private void FormatExceptionInformation(StringBuilder sb, Exception exception)
+		{
+			sb.AppendLine("    Exception type: " + exception.GetType().ToString());
+			sb.AppendLine("    Exception message: " + exception.Message);
+		} 
+		#endregion
+
+		#region FormatRequestInformation
+		/// <summary>
+		/// Zapíše do StringBuilderu informace o requestu
+		/// </summary>
+		private void FormatRequestInformation(StringBuilder sb, WebRequestInformation requestInformation)
+		{
+			sb.AppendLine("    Request URL: " + requestInformation.RequestUrl);
+			sb.AppendLine("    Request path: " + requestInformation.RequestPath);
+			sb.AppendLine("    User host address: " + requestInformation.UserHostAddress);
+
+			string userName;
+			try
+			{
+				userName = requestInformation.Principal.Identity.Name;
+			}
+			catch
+			{
+				userName = ExceptionText;
+			}
+			sb.AppendLine("    User: " + userName);
+
+			string isAuthenticated;
+			try
+			{
+				isAuthenticated = requestInformation.Principal.Identity.IsAuthenticated.ToString();
+			}
+			catch
+			{
+				isAuthenticated = ExceptionText;
+			}
+			sb.AppendLine("    Is authenticated: " + isAuthenticated);
+
+			string authenticationType;
+			try
+			{
+				authenticationType = requestInformation.Principal.Identity.AuthenticationType;
+			}
+			catch
+			{
+				authenticationType = ExceptionText;
+			}
+			sb.AppendLine("    Authentication type: " + authenticationType);
+
+			sb.AppendLine("    Thread account name: " + requestInformation.ThreadAccountName);
+
+			if (_currentHttpContext != null)
+			{
+				sb.AppendLine("    Referrer: " + _currentHttpContext.Request.UrlReferrer);
+				sb.AppendLine("    User agent: " + _currentHttpContext.Request.UserAgent);
+			}
+		}
+		#endregion
+
+		#region FormatThreadInformation
+		/// <summary>
+		/// Zapíše do StringBuilderu informace o threadu
+		/// </summary>
+		private void FormatThreadInformation(StringBuilder sb, WebThreadInformation threadInformation)
+		{
+			sb.AppendLine("    Thread ID: " + threadInformation.ThreadID);
+			sb.AppendLine("    Thread account name: " + threadInformation.ThreadAccountName);
+			sb.AppendLine("    Is impersonating: " + threadInformation.IsImpersonating);
+			sb.AppendLine("    Stack trace: " + threadInformation.StackTrace);
+		} 
+		#endregion
+
 	}
 }

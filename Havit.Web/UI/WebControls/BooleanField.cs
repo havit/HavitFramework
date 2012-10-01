@@ -54,14 +54,14 @@ namespace Havit.Web.UI.WebControls
 		/// <param name="value">Hodnota ke zformátování.</param>
 		/// <returns>Text k zobrazení.</returns>
 		public override string FormatDataValue(object value)
-		{
-			if (value != null)
+		{	
+			if ((value != null) && (value is bool))
 			{
 				return (bool)value ? TrueText : FalseText;
 			}
 			else
 			{
-				return String.Empty;
+				return base.FormatDataValue(value);
 			}
 		}
 		#endregion

@@ -133,6 +133,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BooleandFieldTest.cs" />
     <Compile Include="GenericPropertyComparerTest.cs" />
     <Compile Include="MathExtTest.cs" />
     <Compile Include="PasswordGeneratorTest.cs" />
@@ -141,6 +142,10 @@
     <Compile Include="RegexPatternsTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Havit.Web\Havit.Web.csproj">
+      <Project>{52891fb3-ca20-403b-ac25-7d9ca5738b6b}</Project>
+      <Name>Havit.Web</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Havit\Havit.csproj">
       <Project>{9ACC94B9-B8FD-47C1-ABF8-0658C7673905}</Project>
       <Name>Havit</Name>

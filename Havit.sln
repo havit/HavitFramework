@@ -31,6 +31,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit", "Havit\Havit.csproj", "{9ACC94B9-B8FD-47C1-ABF8-0658C7673905}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HavitTest", "HavitTest\HavitTest.csproj", "{9F79CB68-4B61-48E2-A9E5-B545A65BAC89}"
+	ProjectSection(ProjectDependencies) = postProject
+		{52891FB3-CA20-403B-AC25-7D9CA5738B6B} = {52891FB3-CA20-403B-AC25-7D9CA5738B6B}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.DataTest", "Havit.DataTest\Havit.DataTest.csproj", "{51ED0131-D9F9-4AF4-A8E6-ADB52D43B360}"
 EndProject
@@ -54,7 +57,7 @@ Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 18
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://bart.havit.local:8080/tfs/defaultcollection
+		SccTeamFoundationServer = http://tfs.havit.local:8080/tfs/defaultcollection
 		SccLocalPath0 = .
 		SccProjectUniqueName1 = Havit.Xml\\Havit.Xml.csproj
 		SccProjectName1 = Havit.Xml

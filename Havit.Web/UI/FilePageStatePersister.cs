@@ -53,7 +53,7 @@ namespace Havit.Web.UI
 
 			using (System.IO.FileStream fileStream = System.IO.File.Open(storageFilename, System.IO.FileMode.Create))
 			{
-				System.Runtime.Serialization.Formatters.Binary.BinaryFormatter formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+				LosFormatter formatter = new LosFormatter();				
 				formatter.Serialize(fileStream, new Pair(this.ViewState, this.ControlState));
 			}
 
@@ -80,13 +80,12 @@ namespace Havit.Web.UI
 			Pair pair;
 			using (System.IO.FileStream fileStream = System.IO.File.Open(storageFilename, System.IO.FileMode.Open, FileAccess.Read, FileShare.Read | FileShare.Delete))
 			{
-				System.Runtime.Serialization.Formatters.Binary.BinaryFormatter formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+				LosFormatter formatter = new LosFormatter();
 				pair = (Pair)formatter.Deserialize(fileStream);
 			}
 			ViewState = pair.First;
 			ControlState = pair.Second;
 		}
-
 		#endregion
 
 		#region IFileNamingStrategy (interface)

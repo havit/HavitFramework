@@ -10,6 +10,6 @@ namespace Havit
 	/// </summary>
 	/// <typeparam name="T">Typ předávaného objektu.</typeparam>
 	/// <param name="sender">Volající.</param>
-	/// <param name="dataEventArgs">Argumenty události předávající datový objekt (pro jeden směr) nebo očekávající nastavení datového objektu (pro druhý směr).</param>
-	public delegate void DataEventHandler<T>(object sender, DataEventArgs<T> dataEventArgs);
+	/// <param name="e">Argumenty události předávající datový objekt.</param>
+	public delegate void DataEventHandler<T>(object sender, DataEventArgs<T> e);
 }

@@ -18,7 +18,31 @@ namespace WebApplicationTest
 
 		void DoExceptionButton_Click(object sender, EventArgs e)
 		{
-			throw new ApplicationException("Umyslna chyba.");
+			try
+			{
+				Test1();
+			}
+			catch (Exception ex)
+			{
+				throw new ApplicationException("Moje application exceptionn", ex);
+			}
+		}
+
+		private void Test1()
+		{
+			try
+			{
+				this.Test2();
+			}
+			catch (Exception e)
+			{
+				throw new InvalidCastException("Muj invalid cast exception.", e);
+			}
+		}
+
+		private void Test2()
+		{
+			throw new NullReferenceException("Moje null reference exception.");
 		}
 	}
 }

@@ -37,10 +37,17 @@ namespace WebApplicationTest
 
 
 
-		protected void Application_Error(object sender, EventArgs e)
+		#region Application_Error
+		private void Application_Error(object sender, EventArgs e)
 		{
-			
+			Exception exception = Server.GetLastError();
+			if (exception != null)
+			{
+				Havit.Web.Management.WebRequestErrorEventExt customEvent = new Havit.Web.Management.WebRequestErrorEventExt(exception.Message, this, exception, HttpContext.Current);
+				customEvent.Raise();
+			}
 		}
+		#endregion
 
 		protected void Session_End(object sender, EventArgs e)
 		{

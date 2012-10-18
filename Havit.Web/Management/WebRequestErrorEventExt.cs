@@ -24,13 +24,11 @@ namespace Havit.Web.Management
 
 		#region Constructors
 		[Obsolete]
-		public WebRequestErrorEventExt(string message, object eventSource, Exception exception)
-			: this(message, eventSource, exception, null)
+		public WebRequestErrorEventExt(string message, object eventSource, Exception exception) : this(message, eventSource, exception, null)
 		{
 		}
 
-		public WebRequestErrorEventExt(string message, object eventSource, Exception exception, HttpContext currentHttpContext)
-			: base(message, eventSource, WebEventCodes.WebExtendedBase + 999, UnwrapException(exception))
+		public WebRequestErrorEventExt(string message, object eventSource, Exception exception, HttpContext currentHttpContext) : base(message, eventSource, WebEventCodes.WebExtendedBase + 999, UnwrapException(exception))
 		{
 			this._currentHttpContext = currentHttpContext;
 		}
@@ -56,16 +54,7 @@ namespace Havit.Web.Management
 		{
 			StringBuilder sb = new StringBuilder();
 
-			// Obecné informace
-			this.FormatToString(sb, includeAppInfo);
-
-			// Process information
-			sb.AppendLine();
-			sb.AppendLine("Process information: ");
-			FormatProcessInformation(sb, this.ProcessInformation);
-
 			// Exception information
-			sb.AppendLine();
 			sb.AppendLine("Exception information: ");
 			FormatExceptionInformation(sb, this.ErrorException);
 
@@ -74,11 +63,26 @@ namespace Havit.Web.Management
 			sb.AppendLine("Request information: ");
 			FormatRequestInformation(sb, this.RequestInformation);
 
+			// Exception
+			sb.AppendLine();
+			sb.AppendLine("Exception: ");
+			FormatExceptionInformation(sb);
+
+			// Event information
+			sb.AppendLine();
+			sb.AppendLine("Event information: ");
+			this.FormatEventInformation(sb, includeAppInfo);
+
+			// Process information
+			sb.AppendLine();
+			sb.AppendLine("Process information: ");
+			FormatProcessInformation(sb, this.ProcessInformation);
+
 			// Thread information
 			sb.AppendLine();
 			sb.AppendLine("Thread information: ");
 			FormatThreadInformation(sb, this.ThreadInformation);
-
+			
 			return sb.ToString();
 		} 
 		#endregion
@@ -87,16 +91,22 @@ namespace Havit.Web.Management
 		/// <summary>
 		/// Zapíše do StringBuilderu obecné informace o události
 		/// </summary>
-		private void FormatToString(StringBuilder sb, bool includeAppInfo)
+		private void FormatEventInformation(StringBuilder sb, bool includeAppInfo)
 		{
-			sb.AppendLine("Event code: " + this.EventCode.ToString(CultureInfo.InstalledUICulture));
-			sb.AppendLine("Event message: " + this.Message);
-			sb.AppendLine("Event time: " + this.EventTime.ToString(CultureInfo.InstalledUICulture));
-			sb.AppendLine("Event time(UTC): " + this.EventTimeUtc.ToString(CultureInfo.InstalledUICulture));
-			sb.AppendLine("Event ID: " + this.EventID.ToString("N", CultureInfo.InstalledUICulture));
-			sb.Append(" Event sequence: " + this.EventSequence.ToString(CultureInfo.InstalledUICulture));
-			sb.Append(" Event occurence: " + this.EventOccurrence.ToString(CultureInfo.InstalledUICulture));
-			sb.AppendLine(" Event detail code: " + this.EventDetailCode.ToString(CultureInfo.InstalledUICulture));
+			//sb.AppendLine("    Event code: " + this.EventCode.ToString(CultureInfo.InstalledUICulture));
+			//sb.AppendLine("    Event message: " + this.Message);
+			//sb.AppendLine("    Event time: " + this.EventTime.ToString(CultureInfo.InstalledUICulture));
+			//sb.AppendLine("    Event time(UTC): " + this.EventTimeUtc.ToString(CultureInfo.InstalledUICulture));
+			//sb.AppendLine("    Event ID: " + this.EventID.ToString("N", CultureInfo.InstalledUICulture));
+			//sb.Append(" Event sequence: " + this.EventSequence.ToString(CultureInfo.InstalledUICulture));
+			//sb.Append(" Event occurence: " + this.EventOccurrence.ToString(CultureInfo.InstalledUICulture));
+			//sb.AppendLine(" Event detail code: " + this.EventDetailCode.ToString(CultureInfo.InstalledUICulture));
+
+			sb.Append("    Event ID: " + this.EventID.ToString("N", CultureInfo.InstalledUICulture));
+			sb.Append(", Event sequence: " + this.EventSequence.ToString(CultureInfo.InstalledUICulture));
+			sb.AppendLine(", Event occurence: " + this.EventOccurrence.ToString(CultureInfo.InstalledUICulture));
+			sb.AppendLine("    Event time: " + this.EventTime.ToString(CultureInfo.InstalledUICulture));
+			sb.AppendLine("    Event UTC time: " + this.EventTimeUtc.ToString(CultureInfo.InstalledUICulture));
 		} 
 		#endregion
 
@@ -120,7 +130,7 @@ namespace Havit.Web.Management
 		{
 			sb.AppendLine("    Exception type: " + exception.GetType().ToString());
 			sb.AppendLine("    Exception message: " + exception.Message);
-		} 
+		}
 		#endregion
 
 		#region FormatRequestInformation
@@ -166,8 +176,6 @@ namespace Havit.Web.Management
 			}
 			sb.AppendLine("    Authentication type: " + authenticationType);
 
-			sb.AppendLine("    Thread account name: " + requestInformation.ThreadAccountName);
-
 			if (_currentHttpContext != null)
 			{
 				sb.AppendLine("    Referrer: " + _currentHttpContext.Request.UrlReferrer);
@@ -185,9 +193,20 @@ namespace Havit.Web.Management
 			sb.AppendLine("    Thread ID: " + threadInformation.ThreadID);
 			sb.AppendLine("    Thread account name: " + threadInformation.ThreadAccountName);
 			sb.AppendLine("    Is impersonating: " + threadInformation.IsImpersonating);
-			sb.AppendLine("    Stack trace: " + threadInformation.StackTrace);
-		} 
+		}
 		#endregion
 
+		#region FormatExceptionInformation
+		/// <summary>
+		/// Zapíše do StringBuilderu informace o výjimce.
+		/// </summary>
+		private void FormatExceptionInformation(StringBuilder sb)
+		{
+			if (ErrorException != null)
+			{
+				sb.AppendLine(this.ErrorException.ToString());
+			}
+		}
+		#endregion
 	}
 }

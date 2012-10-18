@@ -8,7 +8,7 @@ namespace Havit
 	/// <summary>
 	/// Argumenty události DataEventHandler, kterými si vyvolání události a její obsluha mohou předávat data (a to jedním i druhým směrem).
 	/// </summary>
-	/// <typeparam name="T"></typeparam>
+	/// <typeparam name="T">Typ předávaných dat.</typeparam>
 	public class DataEventArgs<T> : EventArgs
 	{
 		#region Data (property)

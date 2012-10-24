@@ -20,6 +20,7 @@ namespace Havit.Web.Management
 
 		#region Private fields
 		private HttpContext _currentHttpContext;
+		private Type _currentHttpHandlerType;
 		#endregion
 
 		#region Constructors
@@ -31,6 +32,10 @@ namespace Havit.Web.Management
 		public WebRequestErrorEventExt(string message, object eventSource, Exception exception, HttpContext currentHttpContext) : base(message, eventSource, WebEventCodes.WebExtendedBase + 999, UnwrapException(exception))
 		{
 			this._currentHttpContext = currentHttpContext;
+			if ((currentHttpContext != null) && (currentHttpContext.Handler != null))
+			{
+				this._currentHttpHandlerType = currentHttpContext.Handler.GetType();
+			}
 		}
 		#endregion
 
@@ -53,6 +58,7 @@ namespace Havit.Web.Management
 		public override string ToString(bool includeAppInfo, bool includeCustomEventDetails)
 		{
 			StringBuilder sb = new StringBuilder();
+			
 
 			// Exception information
 			sb.AppendLine("Exception information: ");
@@ -67,6 +73,12 @@ namespace Havit.Web.Management
 			sb.AppendLine();
 			sb.AppendLine("Exception: ");
 			FormatExceptionInformation(sb);
+
+			// Application information
+			sb.AppendLine();
+			sb.AppendLine("Application information: ");
+			this.FormatApplicationInformation(sb);
+
 
 			// Event information
 			sb.AppendLine();
@@ -84,7 +96,8 @@ namespace Havit.Web.Management
 			FormatThreadInformation(sb, this.ThreadInformation);
 			
 			return sb.ToString();
-		} 
+		}
+
 		#endregion
 
 		#region FormatToString
@@ -180,6 +193,20 @@ namespace Havit.Web.Management
 			{
 				sb.AppendLine("    Referrer: " + _currentHttpContext.Request.UrlReferrer);
 				sb.AppendLine("    User agent: " + _currentHttpContext.Request.UserAgent);
+			}
+		}
+		#endregion
+
+		#region FormatApplicationInformation
+		/// <summary>
+		/// Zapíše informace o aplikaci
+		/// </summary>
+		/// <param name="sb"></param>
+		private void FormatApplicationInformation(StringBuilder sb)
+		{
+			if (_currentHttpHandlerType != null)
+			{
+				sb.AppendLine("    HttpHandler Assembly: " + _currentHttpHandlerType.AssemblyQualifiedName);
 			}
 		}
 		#endregion

@@ -24,12 +24,12 @@ namespace Havit.Collections
 		/// <summary>
 		/// Vrátí polohu prvku v seřazené collection.
 		/// </summary>
-		/// <param name="searchedValue">hodnota property prvku</param>
 		/// <param name="propertyName">jméno property</param>
+		/// <param name="searchedValue">hodnota property prvku</param>
 		/// <returns>poloha prvku</returns>
 		public int IndexOf(string propertyName, object searchedValue) 
 		{
-			for (int i=0; i < InnerList.Count; i++)
+			for (int i = 0; i < InnerList.Count; i++)
 			{
 				if (((IComparable)InnerList[i].GetType().GetProperty(propertyName).GetValue(InnerList[i], null)).CompareTo(searchedValue) == 0)
 				{

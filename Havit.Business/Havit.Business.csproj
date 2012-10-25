@@ -252,8 +252,8 @@
     <Compile Include="DbTransactionEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Havit.Data.SqlServer\Havit.Data.SqlServer.csproj">
-      <Project>{60804BE3-2622-481A-8784-3C173C080936}</Project>
+    <ProjectReference Include="..\Havit.Data.SqlServer\Havit.Data.SqlServer.sqlproj">
+      <Project>{ab28a793-d0ac-46ed-9d48-b75b0dc4ee90}</Project>
       <Name>Havit.Data.SqlServer</Name>
     </ProjectReference>
     <ProjectReference Include="..\Havit.Data\Havit.Data.csproj">

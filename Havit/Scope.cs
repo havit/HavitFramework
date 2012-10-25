@@ -99,7 +99,10 @@ namespace Havit
 				if (ownsInstance)
 				{
 					IDisposable disposable = instance as IDisposable;
-					if (disposable != null) disposable.Dispose();
+					if (disposable != null)
+					{
+						disposable.Dispose();
+					}
 				}
 			}
 		}

@@ -313,9 +313,6 @@ namespace Havit.Diagnostics
 		}
 		#endregion
 
- 
-
-
 		#region Write, WriteLine (override)
 		/// <summary>
 		/// When overridden in a derived class, writes the specified message to the listener you create in the derived class.

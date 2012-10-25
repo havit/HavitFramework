@@ -65,7 +65,9 @@ namespace Havit.Text.RegularExpressions
 		/// <summary>
 		/// private constructor k zabránění instanciace statické třídy.
 		/// </summary>
-		private RegexPatterns() {}
+		private RegexPatterns()
+		{
+		}
 		#endregion
 
 		#region GetWildcardRegex, IsWildcardMatch, GetWildcardRegexPattern (private)
@@ -85,7 +87,6 @@ namespace Havit.Text.RegularExpressions
 		/// </summary>
 		/// <param name="wildcardExpressionToSearch">Vzorek, který je vyhledáván.</param>
 		/// <param name="textToBeSearched">Text, který je prohledáván.</param>
-		/// <returns></returns>
 		public static bool IsWildcardMatch(string wildcardExpressionToSearch, string textToBeSearched)
 		{
 			string regexPattern = GetWildcardRegexPattern(wildcardExpressionToSearch);
@@ -96,7 +97,6 @@ namespace Havit.Text.RegularExpressions
 		/// Vrátí pattern pro regulární výraz na základě výrazu.
 		/// </summary>
 		/// <param name="wildcardExpression">Výraz (text), pro který se vytváří regulární výraz.</param>
-		/// <returns></returns>
 		private static string GetWildcardRegexPattern(string wildcardExpression)
 		{
 			string regexPattern = wildcardExpression;

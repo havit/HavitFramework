@@ -21,7 +21,6 @@ namespace Havit
 			return ((d % 2) == 0);
 		}
 
-
 		/// <summary>
 		/// Vrátí true, je-li zadané číslo liché.
 		/// </summary>

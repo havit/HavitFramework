@@ -7,9 +7,9 @@ using System.Diagnostics;
 
 namespace TracingTest
 {
-	class Program
+	internal class Program
 	{
-		static void Main(string[] args)
+		private static void Main(string[] args)
 		{
 			ExceptionTracer.Default.SubscribeToUnhandledExceptions(false);
 

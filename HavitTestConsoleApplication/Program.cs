@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using Havit.Data.SqlTypes;
@@ -14,49 +15,62 @@ namespace HavitTestConsoleApplication
 	{		
 		static void Main(string[] args)
 		{
-			//TestSplit();
-			System.Diagnostics.Stopwatch sw = new Stopwatch();
+			TestAggregateMicroCollections();
+			TestAggregateSmallCollections();
+			TestAggregateLargeCollections();
+
+			TestSplitMicro();
+			TestSplitSmall();
+			TestSplitLarge();
+			
+
+		}
+
+		private static void TestSplitMicro()
+		{
+			TestSplit(5000000, "1234567");
+		}
+
+		private static void TestSplitSmall()
+		{
+			TestSplit(1000000, "1234567|1234567|1234567|1234567|1234567");
+		}
+		
+		private static void TestSplitLarge()
+		{
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < 50000; i++)
+			{
+				if (i > 0)
+				{
+					sb.Append("|");
+				}
+				sb.Append("123467");
+			}
+
+			TestSplit(100, sb.ToString());
+		}
+
+		private static void TestAggregateMicroCollections()
+		{
+			TestAggregate(5000000, Enumerable.Repeat(1234567, 1).Select(i => (SqlInt32)i).ToArray());
+		}
+
+		private static void TestAggregateSmallCollections()
+		{
+			TestAggregate(1000000, Enumerable.Repeat(1234567, 5).Select(i => (SqlInt32)i).ToArray());
+		}
+
+		private static void TestAggregateLargeCollections()
+		{
+			TestAggregate(100, Enumerable.Repeat(1234567, 50000).Select(i => (SqlInt32)i).ToArray());
+		}
+
+		private static void TestAggregate(int repeatCount, SqlInt32[] collectionData)
+		{
+			Stopwatch sw = new Stopwatch();
 			sw.Start();
-			TestMicroCollections();
-			//TestSmallCollections();
-			//TestLargeCollections();
-			sw.Stop();
-		}
 
-		//private static void TestSplit()
-		//{
-		//	string[] s1 = null;
-		//	string[] s2 = null;
-		//	string[] s3 = null;
-		//	string[] s4 = null;
-		//	char[] separators = new char[] { '|' };
-		//	for (int i = 0; i < 1000000; i++)
-		//	{
-		//		s1 = "|1234".Split(separators, StringSplitOptions.RemoveEmptyEntries);
-		//		s2 = "|1234".Split(separators, StringSplitOptions.None);
-		//		s3 = "|1234|1234|1234|1234|1234|1234|1234|1234|1234|1234|1234|1234|1234|1234|1234".Split(separators, StringSplitOptions.RemoveEmptyEntries);
-		//		s4 = "|1234|1234|1234|1234|1234|1234|1234|1234|1234|1234|1234|1234|1234|1234|1234".Split(separators, StringSplitOptions.None);				
-		//	}
-		//	Console.WriteLine(s1.Length + s2.Length + s3.Length + s4.Length);
-		//}
-
-		private static void TestMicroCollections()
-		{
-			Test(5000000, Enumerable.Range(1, 1).Select(i => (SqlInt32)i).ToArray());
-		}
-
-		private static void TestSmallCollections()
-		{
-			Test(1000000, Enumerable.Range(1, 5).Select(i => (SqlInt32)i).ToArray());
-		}
-
-		private static void TestLargeCollections()
-		{
-			Test(100, Enumerable.Range(1, 50000).Select(i => (SqlInt32)i).ToArray());
-		}
-
-		private static void Test(int repeatCount, SqlInt32[] collectionData)
-		{
 			SqlInt32ArrayAggregate aggregate = new SqlInt32ArrayAggregate();
 
 			for (int i = 0; i < repeatCount; i++)
@@ -76,7 +90,36 @@ namespace HavitTestConsoleApplication
 					result.Write(writer);
 				}
 			}
+
+			sw.Stop();
+			Console.WriteLine(sw.ElapsedMilliseconds);
+			Console.WriteLine(sw.ElapsedMilliseconds / (decimal)repeatCount);
+			Console.WriteLine();
+
 		}
 
+		private static void TestSplit(int repeatCount, string value)
+		{
+			Stopwatch sw = new Stopwatch();
+			sw.Start();
+
+			unchecked
+			{
+				for (int i = 0; i < repeatCount; i++)
+				{
+					var stringValues = value.Split(new char[] { '|' });
+					int[] intValues = new int[stringValues.Length];
+
+					for (int j = 0; j < stringValues.Length; j++)
+					{
+						int.TryParse(stringValues[j], NumberStyles.None, NumberFormatInfo.InvariantInfo, out intValues[j]);
+					}
+				}
+			}
+			sw.Stop();
+			Console.WriteLine(sw.ElapsedMilliseconds);
+			Console.WriteLine(sw.ElapsedMilliseconds / (decimal)repeatCount);
+			Console.WriteLine();
+		}
 	}
 }

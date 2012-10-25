@@ -19,7 +19,10 @@ namespace Havit.Security
 		/// </summary>
 		public int MinimumLength
 		{
-			get { return this._mininumLength; }
+			get
+			{
+				return this._mininumLength;
+			}
 			set
 			{
 				this._mininumLength = value;
@@ -34,7 +37,10 @@ namespace Havit.Security
 		/// </summary>
 		public int MaximumLength
 		{
-			get { return this._maximumLength; }
+			get
+			{
+				return this._maximumLength;
+			}
 			set
 			{
 				this._maximumLength = value;
@@ -49,7 +55,10 @@ namespace Havit.Security
 		/// </summary>
 		public PasswordCharacterSet PasswordCharacterSet
 		{
-			get { return this._passwordCharacterSet; }
+			get
+			{
+				return this._passwordCharacterSet;
+			}
 			set
 			{
 				this._passwordCharacterSet = value;
@@ -172,7 +181,8 @@ namespace Havit.Security
 			{
 				rng.GetBytes(rndnum);
 				urndnum = System.BitConverter.ToUInt32(rndnum, 0);
-			} while (urndnum >= xcludeRndBase);
+			}
+			while (urndnum >= xcludeRndBase);
 
 			return (int)(urndnum % (uBound - lBound)) + lBound;
 		}

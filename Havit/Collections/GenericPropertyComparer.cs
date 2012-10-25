@@ -10,7 +10,7 @@ namespace Havit.Collections
 	/// Názvy vlastností mohou být složené: např. "Kniha.Autor.Prijmeni".
 	/// Property musí implementovat IComparable.
 	/// </summary>
-	/// <typeparam name="T"></typeparam>
+	/// <typeparam name="T">Typ objektu, jehož hodnoty jsou porovnávány.</typeparam>
 	public class GenericPropertyComparer<T> : IComparer<T>
 	{
 		#region Private fields
@@ -34,7 +34,7 @@ namespace Havit.Collections
 		/// Vytvoří instanci compareru pro řazení dle dané property.
 		/// </summary>
 		/// <param name="sortItem">Určuje parametr řazení.</param>
-		public GenericPropertyComparer(SortItem sortItem): this( new SortItem[] { sortItem })
+		public GenericPropertyComparer(SortItem sortItem) : this(new SortItem[] { sortItem })
 		{
 		}
 

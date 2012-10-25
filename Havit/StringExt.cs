@@ -108,9 +108,9 @@ namespace Havit
 		{
 			if (cislice <= 9)
 			{
-				return (char) ((ushort) (cislice + 0x30));
+				return (char)((ushort)(cislice + 0x30));
 			}
-			return (char) ((ushort) ((cislice - 10) + 0x61));
+			return (char)((ushort)((cislice - 10) + 0x61));
 		}
 		#endregion
 

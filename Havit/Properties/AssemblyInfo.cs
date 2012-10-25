@@ -2,11 +2,10 @@
 using System.Runtime.CompilerServices;
 using System;
 
-//
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-//
+
 [assembly: AssemblyTitle("HAVIT ClassLib")]
 [assembly: AssemblyDescription("HAVIT Framework Basic Class Library")]
 [assembly: AssemblyConfiguration("")]
@@ -15,7 +14,7 @@ using System;
 [assembly: AssemblyCopyright("Copyright HAVIT, s.r.o.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
-//
+
 // Version information for an assembly consists of the following four values:
 //
 //      Major Version
@@ -28,7 +27,6 @@ using System;
 
 [assembly: AssemblyVersion("2.0.*")]
 
-//
 // In order to sign your assembly you must specify a key to use. Refer to the 
 // Microsoft .NET Framework documentation for more information on assembly signing.
 //
@@ -52,7 +50,7 @@ using System;
 //       attribute as [assembly: AssemblyKeyFile("..\\..\\mykey.snk")]
 //   (*) Delay Signing is an advanced option - see the Microsoft .NET Framework
 //       documentation for more information on this.
-//
+
 [assembly: AssemblyDelaySign(false)]
 [assembly: AssemblyKeyFile("")]
 [assembly: AssemblyKeyName("")]

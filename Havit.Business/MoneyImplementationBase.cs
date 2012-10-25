@@ -8,8 +8,8 @@ namespace Havit.Business
 	/// Třída reprezentující částku a měnu.
 	/// Třída je určena ke zdědění, potomkem by měla být projektová třída Money.
 	/// </summary>
-	public abstract class MoneyImplementationBase<TCurrency, TResult>: Money<TCurrency>
-		where TCurrency: class
+	public abstract class MoneyImplementationBase<TCurrency, TResult> : Money<TCurrency>
+		where TCurrency : class
 		where TResult : MoneyImplementationBase<TCurrency, TResult>, new()
 	{
 		#region Operátory +, -, *, /

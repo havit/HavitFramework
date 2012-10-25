@@ -183,7 +183,6 @@ namespace Havit.Diagnostics
 			TraceException(exception, eventType, traceExceptionMethodDefaultEventId);
 		}
 
-
 		/// <summary>
 		/// Pošle do trace zadanou výjimku.
 		/// </summary>

@@ -23,8 +23,7 @@ namespace Havit.Reflection
 				target,
 				targetType,
 				propertyName,
-				BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public
-			);
+				BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
 		}
 
 		/// <summary>
@@ -39,8 +38,7 @@ namespace Havit.Reflection
 				target,
 				target.GetType(),
 				propertyName,
-				BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.FlattenHierarchy
-			);
+				BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.FlattenHierarchy);
 		}
 
 		private static object GetPropertyValue(Object target, Type targetType, String propertyName, BindingFlags bindingFlags)
@@ -73,8 +71,7 @@ namespace Havit.Reflection
 				targetType,
 				propertyName,
 				BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public,
-				value
-			);
+				value);
 		}
 
 		/// <summary>
@@ -92,8 +89,7 @@ namespace Havit.Reflection
 				target.GetType(),
 				propertyName, 
 				BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.FlattenHierarchy,
-				value
-			);
+				value);
 		}
 
 		private static void SetPropertyValue(Object target, Type targetType, String propertyName, BindingFlags bindingFlags, object value)

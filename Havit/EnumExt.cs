@@ -45,7 +45,7 @@ namespace Havit
 
 				strRet = objDescription.Description;
 			}
-			catch(Exception)
+			catch (Exception)
 			{
 				// chybí description
 			}

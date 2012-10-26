@@ -37,17 +37,17 @@ namespace WebApplicationTest
 			TestGV3.Visible = false;
 		}
 
-		void HideButton_Click(object sender, EventArgs e)
+		private void HideButton_Click(object sender, EventArgs e)
 		{
 			TestGV4.Visible = false;
 		}
 
-		void SRDBButton_Click(object sender, EventArgs e)
+		private void SRDBButton_Click(object sender, EventArgs e)
 		{
 			TestGV4.SetRequiresDatabinding();
 		}
 		
-		void TestGV_RowCustomizingCommandButton(object sender, GridViewRowCustomizingCommandButtonEventArgs e)
+		private void TestGV_RowCustomizingCommandButton(object sender, GridViewRowCustomizingCommandButtonEventArgs e)
 		{
 			if ((e.CommandName == CommandNames.Delete) && (e.RowIndex == 1))
 			{								
@@ -59,7 +59,7 @@ namespace WebApplicationTest
 			}
 		}
 
-		void TestGV_DataBinding(object sender, EventArgs e)
+		private void TestGV_DataBinding(object sender, EventArgs e)
 		{
 			((GridView)sender).DataSource = Subjekt.GetAll().ToList();
 		}

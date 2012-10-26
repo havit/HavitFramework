@@ -65,7 +65,6 @@ namespace Havit.Web.UrlRewriter
 				}
 			}
 
-
 			// if we reached this point, we didn't find a rewrite match
 			context.Trace.Write("RewriterFactoryHandler", "Exiting RewriterFactoryHandler");	// log info to the Trace object...
 			return PageParser.GetCompiledPageInstance(url, filePath, context);

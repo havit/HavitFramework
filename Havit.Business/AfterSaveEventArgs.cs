@@ -8,7 +8,7 @@ namespace Havit.Business
 	/// <summary>
 	/// Argumenty události po uložení objektu.
 	/// </summary>
-	public class AfterSaveEventArgs: DbTransactionEventArgs
+	public class AfterSaveEventArgs : DbTransactionEventArgs
 	{
 		#region WasNew
 		/// <summary>

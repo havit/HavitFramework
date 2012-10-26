@@ -19,7 +19,6 @@ using System.Collections.Generic;
 [assembly: WebResource("Havit.Web.UI.WebControls.AutoSuggestMenu.AutoSuggestMenu.css", "text/css")]
 [assembly: WebResource("Havit.Web.UI.WebControls.AutoSuggestMenu.Blank.html", "text/html")]
 
-
 namespace Havit.Web.UI.WebControls
 {
      /// <summary>Represents a control for extending TextBox with suggestions.</summary>
@@ -58,7 +57,6 @@ namespace Havit.Web.UI.WebControls
 	    //Internal
         private HiddenField _hdnSelectedValue;
 
-
 		#region Class Properties
 		public AutoSuggestMenuMode Mode
 		{
@@ -84,13 +82,11 @@ namespace Havit.Web.UI.WebControls
             set { _targetControlID = value; }
         }
 
-
         public int MinSuggestChars
         {
             get { return _minSuggestChars; }
             set { _minSuggestChars = value; }
         }
-
 
 		public int MaxSuggestChars
 		{
@@ -98,21 +94,17 @@ namespace Havit.Web.UI.WebControls
 			set	{_maxSuggestChars=value;}
 		}
 
-
 		public int KeyPressDelay
 		{
 			get	{return _keyPressDelay;}
 			set	{_keyPressDelay=value;}
 		}
 
-
-
 		public bool UsePaging
 		{
 			get	{return _usePaging;}
             set { _usePaging = value; }
 		}
-
 
         public int PageSize
         {
@@ -136,14 +128,11 @@ namespace Havit.Web.UI.WebControls
             set { _maxHeight = value; }
         }
 
-
-		
 		public string MenuItemCssClass
 		{
             get { return _menuItemCssClass; }
             set { _menuItemCssClass = value; }
 		}
-
 
 		public string SelMenuItemCssClass
 		{
@@ -151,13 +140,11 @@ namespace Havit.Web.UI.WebControls
             set { _selMenuItemCssClass = value; }
 		}
 
-
         public string NavigationLinkCssClass
         {
             get { return _navigationLinkCssClass; }
             set { _navigationLinkCssClass = value; }
         }
-
 
         public bool UpdateTextBoxOnUpDown
         {
@@ -165,20 +152,17 @@ namespace Havit.Web.UI.WebControls
             set { _updateTextBoxOnUpDown = value; }
         }
 
-        
 		public bool UseIFrame
 		{
 			get	{return _useIFrame;}
 			set	{_useIFrame=value;}
 		}
 
-
 		//public string ResourcesDir
 		//{
 		//    get	{return _resourcesDir;}
 		//    set	{_resourcesDir=value;}
 		//}
-	
 
         public bool UsePageMethods
         {
@@ -186,20 +170,17 @@ namespace Havit.Web.UI.WebControls
             set { _usePageMethods = value; }
         }
 
-
         public string OnGetSuggestions
         {
             get { return _onGetSuggestions; }
             set { _onGetSuggestions = value; }
         }
 
-
         public string OnClientTextBoxUpdate
         {
             get { return _onClientTextBoxUpdate; }
             set { _onClientTextBoxUpdate = value; }
         }
-
 
         public string SelectedValue
         {
@@ -233,8 +214,6 @@ namespace Havit.Web.UI.WebControls
 		}
 		private string _servicePath;
 
-
-        
         /// <summary>Initializes new instance of AutoSuggestMenu/// </summary>
         /// <remarks>Wire the events so the control can participate in them</remarks>
         public AutoSuggestMenu()
@@ -267,9 +246,6 @@ namespace Havit.Web.UI.WebControls
             this.Attributes["autocomplete"] = "off";
         }
 
-
-
-
         /// <summary>This member overrides <see cref="Control.CreateChildControls"/></summary>
         protected override void CreateChildControls()
         {
@@ -278,9 +254,6 @@ namespace Havit.Web.UI.WebControls
 
             Controls.Add(_hdnSelectedValue);
         }
-
-
-		
 
 		/// <summary>This member overrides <see cref="Control.LoadViewState"/></summary>
 		/// <remarks>Loads date from view-state saved in previous page into date control properties</remarks>
@@ -317,9 +290,7 @@ namespace Havit.Web.UI.WebControls
 
 			_servicePath = (string)ViewState["ServicePath"];
 		}
-		
 
-		
 		/// <summary>This member overrides <see cref="Control.SaveViewState"/></summary>
 		/// <remarks>Stores date control properties in view-state for future page</remarks>
 		protected override object SaveViewState()
@@ -356,8 +327,6 @@ namespace Havit.Web.UI.WebControls
 			return base.SaveViewState();
 		}
 
-
-
 		//internal string GetAbsoluteResourcesDir()
 		//{
 		//    string resourcesDir = _resourcesDir;
@@ -372,8 +341,6 @@ namespace Havit.Web.UI.WebControls
 
 		//    return resourcesDir;
 		//}
-
-             
 
         protected void WriteJSIncludes()
         {
@@ -394,8 +361,6 @@ namespace Havit.Web.UI.WebControls
 				ScriptManager.RegisterClientScriptResource(this, typeof(AutoSuggestMenu), "Havit.Web.UI.WebControls.AutoSuggestMenu.AutoSuggestMenuItem.js");
 			//} 
         }
-
-                
 
 		protected void WriteMenu()
 		{
@@ -478,11 +443,8 @@ namespace Havit.Web.UI.WebControls
             else
                 writer.WriteLine("XUtils.addEventListener(window, \"load\", " + funcName + ");");
 
-
             RegisterClientStartupScript("AutoSuggestMenu_" + this.UniqueID, writer.InnerWriter.ToString());
 		}
-
-
 
         protected void CheckRequiredProperties()
         {
@@ -502,8 +464,6 @@ namespace Havit.Web.UI.WebControls
 			//if (!System.IO.Directory.Exists(dir))
 			//    throw new Exception("ResourcesDir '" + _resourcesDir + "' doesn't exist");
         }
-
-
 
 		/// <summary>
 		/// Raises the <see cref="E:System.Web.UI.Control.PreRender"/> event.
@@ -529,14 +489,12 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 
-        
 		/// <summary>Renders AutoSuggestMenu to the output HTML parameter specified.</summary>
 		/// <param name="output"> The HTML writer to write out to</param>
 		protected override void Render(HtmlTextWriter output)
 		{
 			//output.WriteLine("<link href=\"" + GetAbsoluteResourcesDir() + "/AutoSuggestMenu.css\" type=\"text/css\" rel=\"stylesheet\">");
 
-			
             //base.Render(output);
             
             _hdnSelectedValue.RenderControl(output);
@@ -561,8 +519,6 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 
-        
-        
         internal static void WriteMenuItemsToJSON(List<AutoSuggestMenuItem> menuItems, int totalResults, XJsonWriter writer)
         {            
             List<string> jsonMenuItems=new List<string>();
@@ -575,19 +531,15 @@ namespace Havit.Web.UI.WebControls
                 jsonMenuItems.Add(jsonMenuItem);
             }
 
-
             writer.WriteList("menuItems", jsonMenuItems, false);
             
             //Add total results
             writer.WriteNameValue("totalResults", totalResults, true);
         }
 
-
-
         /// <summary>
         ///     Used to send data back to browser.
         /// </summary>
-        /// <param name="menuItems"></param>
         /// <returns>
         ///{"MenuItems": 
         /// [
@@ -596,7 +548,7 @@ namespace Havit.Web.UI.WebControls
         ///     {"label": "Option3", "value": "3"},
         /// ]
         ///}
-        ///</returns>
+        /// </returns>
         ///
         public static string ConvertMenuItemsToJSON(List<AutoSuggestMenuItem> menuItems, int totalResults)
         {
@@ -604,8 +556,6 @@ namespace Havit.Web.UI.WebControls
             WriteMenuItemsToJSON(menuItems, totalResults, writer);
             return writer.ToString();
         }
-
-
 
         //==========================================
         //Utility methods for registering javascript
@@ -623,7 +573,6 @@ namespace Havit.Web.UI.WebControls
             return false;
         }
 
-
         private void RegisterClientScriptInclude(string key, string url)
         {
             if (IsInPartialRendering())
@@ -635,8 +584,6 @@ namespace Havit.Web.UI.WebControls
                 this.Page.ClientScript.RegisterClientScriptInclude(key, url);
             }
         }
-
-
 
         private void RegisterClientStartupScript(string key, string script)
         {

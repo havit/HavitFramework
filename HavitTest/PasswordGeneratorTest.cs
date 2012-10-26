@@ -10,15 +10,15 @@ namespace HavitTest
 	/// <summary>
 	/// This is a test class for Havit.Security.PasswordGenerator and is intended
 	/// to contain all Havit.Security.PasswordGenerator Unit Tests
-	///</summary>
+	/// </summary>
 	[TestClass()]
 	public class PasswordGeneratorTest
 	{
 		#region GenerateTest_Length
 		/// <summary>
 		/// A test for Generate (int, int, PasswordCharacterSet, bool, bool) - length
-		///</summary>
-		[TestMethod()]
+		/// </summary>
+		[TestMethod]
 		public void GenerateTest_Length()
 		{
 			int minimumLength = 10;
@@ -39,8 +39,8 @@ namespace HavitTest
 		#region GenerateTest_TooLong
 		/// <summary>
 		/// A test for Generate (int, int, PasswordCharacterSet, bool, bool) - length
-		///</summary>
-		[TestMethod()]
+		/// </summary>
+		[TestMethod]
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void GenerateTest_TooLong()
 		{
@@ -62,7 +62,7 @@ namespace HavitTest
 		/// <summary>
 		///Gets or sets the test context which provides
 		///information about and functionality for the current test run.
-		///</summary>
+		/// </summary>
 		public TestContext TestContext
 		{
 			get
@@ -74,40 +74,6 @@ namespace HavitTest
 				testContextInstance = value;
 			}
 		}
-
-		#region Additional test attributes
-		// 
-		//You can use the following additional attributes as you write your tests:
-		//
-		//Use ClassInitialize to run code before running the first test in the class
-		//
-		//[ClassInitialize()]
-		//public static void MyClassInitialize(TestContext testContext)
-		//{
-		//}
-		//
-		//Use ClassCleanup to run code after all tests in a class have run
-		//
-		//[ClassCleanup()]
-		//public static void MyClassCleanup()
-		//{
-		//}
-		//
-		//Use TestInitialize to run code before running each test
-		//
-		//[TestInitialize()]
-		//public void MyTestInitialize()
-		//{
-		//}
-		//
-		//Use TestCleanup to run code after each test has run
-		//
-		//[TestCleanup()]
-		//public void MyTestCleanup()
-		//{
-		//}
-		//
-		#endregion
 		#endregion
 	}
 }

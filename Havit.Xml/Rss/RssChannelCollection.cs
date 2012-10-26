@@ -53,7 +53,7 @@ namespace Havit.Xml.Rss
 		/// <param name="value">kanál k odstranění</param>
 		public void Remove(RssChannel value) 
 		{
-			((IList)this).Remove( value);
+			((IList)this).Remove(value);
 		}
 
 		/// <summary>
@@ -63,7 +63,7 @@ namespace Havit.Xml.Rss
 		/// <returns>true, pokud již kanál v kolekci existuje, jinak false</returns>
 		public bool Contains(RssChannel value) 
 		{
-			return ((IList)this).Contains( value);
+			return ((IList)this).Contains(value);
 		}
 
 		/// <summary>

@@ -48,7 +48,9 @@ namespace Havit.Business.Query
 			: base(conditionPattern, operand1)
 		{
 			if (operand2 == null)
+			{
 				throw new ArgumentNullException("operand2");
+			}
 
 			Operand2 = operand2;
 		}
@@ -66,8 +68,6 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Přidá část SQL příkaz pro sekci WHERE
 		/// </summary>
-		/// <param name="command"></param>
-		/// <param name="whereBuilder"></param>
 		public override void GetWhereStatement(System.Data.Common.DbCommand command, StringBuilder whereBuilder)
 		{
 			if (command == null)

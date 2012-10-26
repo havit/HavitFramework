@@ -44,7 +44,6 @@ namespace Havit.Web.UI.HtmlControls
 		/// <summary>
 		/// Overriden. Zajišťuje vlastní renderování atributu Action
 		/// </summary>
-		/// <param name="writer"></param>
 		protected override void RenderAttributes(System.Web.UI.HtmlTextWriter writer) 
 		{
 			writer.WriteAttribute("name", this.Name);

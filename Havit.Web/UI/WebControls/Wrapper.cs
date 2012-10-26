@@ -30,7 +30,6 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-
 		#region EndHtml
 		/// <summary>
 		/// Html, které je renderováno za obsahem wrapperu.
@@ -48,7 +47,6 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-		
 		#region Render
 		protected override void Render(System.Web.UI.HtmlTextWriter writer)
 		{

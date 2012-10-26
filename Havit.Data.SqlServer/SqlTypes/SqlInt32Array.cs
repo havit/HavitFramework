@@ -97,7 +97,6 @@ namespace Havit.Data.SqlTypes
 		/// <summary>
 		/// Přidá prvek do pole.
 		/// </summary>
-		/// <param name="value"></param>
 		public void Add(SqlInt32 value)
 		{
 			if (!value.IsNull && (value.Value == Int32.MinValue))

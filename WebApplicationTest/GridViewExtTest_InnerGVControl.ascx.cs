@@ -20,22 +20,22 @@ namespace WebApplicationTest
 			InnerGV.RowDeleting += new GridViewDeleteEventHandler(InnerGV_RowDeleting);
 		}
 
-		void InnerGV_RowDeleting(object sender, GridViewDeleteEventArgs e)
+		private void InnerGV_RowDeleting(object sender, GridViewDeleteEventArgs e)
 		{
 			Trace.Write("InnerGV_RowDeleting");
 		}
 
-		void InnerGV_RowEditing(object sender, GridViewEditEventArgs e)
+		private void InnerGV_RowEditing(object sender, GridViewEditEventArgs e)
 		{
 			Trace.Write("InnerGV_RowEditing");
 		}
 
-		void InnerGV_RowInserting(object sender, Havit.Web.UI.WebControls.GridViewInsertEventArgs e)
+		private void InnerGV_RowInserting(object sender, Havit.Web.UI.WebControls.GridViewInsertEventArgs e)
 		{
 			Trace.Write("InnerGV_RowInserting");
 		}
 
-		void InnerGV_DataBinding(object sender, EventArgs e)
+		private void InnerGV_DataBinding(object sender, EventArgs e)
 		{
 			InnerGV.DataSource = Subjekt.GetAll().Take(5).ToList();
 		}

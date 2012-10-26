@@ -18,8 +18,7 @@ namespace Havit.PayMuzo.WebServiceProxies {
     using System.Web.Services.Protocols;
     using System;
     using System.Xml.Serialization;
-    
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "2.0.50727.42")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]

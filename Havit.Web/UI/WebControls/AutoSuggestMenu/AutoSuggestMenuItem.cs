@@ -2,7 +2,6 @@
 using System.Text;
 using System.Web;
 
-
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>Data structure for menu items in suggestion div</summary>
@@ -12,7 +11,6 @@ namespace Havit.Web.UI.WebControls
 		private string _value;
 		private bool _isSelectable;
 		private string _cssClass;
-
 
 		#region Class Properties
 		
@@ -28,7 +26,6 @@ namespace Havit.Web.UI.WebControls
 			set	{_value=value;}
 		}
 
-		
 		public bool IsSelectable
 		{
 			get	{return _isSelectable;}
@@ -42,8 +39,6 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-
-
 		//Constructor
 		public AutoSuggestMenuItem()
 		{
@@ -51,14 +46,12 @@ namespace Havit.Web.UI.WebControls
 			_isSelectable=true;
 		}
 
-
         public AutoSuggestMenuItem(string label, string value)
             : this()
         {
             _label = label;
             _value = value;
         }
-
 
         public string GetJSON()
         {

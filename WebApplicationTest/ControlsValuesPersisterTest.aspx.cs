@@ -18,7 +18,7 @@ namespace WebApplicationTest
 			LoadButton.Click += new EventHandler(LoadButton_Click);
 		}
 
-		void ClearButton_Click(object sender, EventArgs e)
+		private void ClearButton_Click(object sender, EventArgs e)
 		{
 			TestTextBox.Text = "";
 			TestNB.Value = null;
@@ -35,7 +35,7 @@ namespace WebApplicationTest
 			ViewState["Data"] = data;
 		}
 
-		void LoadButton_Click(object sender, EventArgs e)
+		private void LoadButton_Click(object sender, EventArgs e)
 		{
 			ControlsValuesHolder data = (ControlsValuesHolder)ViewState["Data"];
 			if (data != null)

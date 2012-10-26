@@ -475,7 +475,6 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-
 		/// <summary>
 		/// Zajistí načtení ViewState. Je přidáno načtení property Sorting.
 		/// </summary>
@@ -1149,10 +1148,8 @@ namespace Havit.Web.UI.WebControls
 	/// <param name="e">argumenty události</param>
 	public delegate void GridViewRowCustomizingCommandButtonEventHandler(object sender, GridViewRowCustomizingCommandButtonEventArgs e);
 
-
 	/// <summary>
 	/// Delegát k metodě pro získávání data-item pro nový Insert řádek GridView.
 	/// </summary>
-	/// <returns></returns>
 	public delegate object GetInsertRowDataItemDelegate();
 }

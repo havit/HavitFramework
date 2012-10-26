@@ -170,7 +170,6 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Obsluhuje událost skrytí dialogu.
 		/// </summary>
-		/// <param name="eventArgs"></param>
 		protected virtual void OnDialogHidden(EventArgs eventArgs)
 		{
 			if (DialogHidden != null)

@@ -10,18 +10,18 @@ namespace Havit.Business.Query
 	/// Konstanta jako operand databázového dotazu.
 	/// </summary>
 	[Serializable]
-	public sealed class ValueOperand: IOperand
+	public sealed class ValueOperand : IOperand
 	{	
-		#region Private fields		
+		#region Private fields
 		/// <summary>
 		/// Hodnota konstanty ValueOperandu.
 		/// </summary>
-		object value;
+		private object value;
 
 		/// <summary>
 		/// Databázový typ nesený ValueOperandem.
 		/// </summary>
-		DbType dbType;
+		private DbType dbType;
 		#endregion
 
 		#region Constructor
@@ -44,7 +44,8 @@ namespace Havit.Business.Query
 			{
 				parameterName = "@param" + (command.Parameters.Count + index).ToString();
 				index += 1;
-			} while (command.Parameters.Contains(parameterName));
+			}
+			while (command.Parameters.Contains(parameterName));
 
 			DbParameter parameter = command.CreateParameter();
 			parameter.ParameterName = parameterName;

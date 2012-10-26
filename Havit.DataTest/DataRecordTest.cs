@@ -9,8 +9,8 @@ namespace Havit.DataTest
 	/// <summary>
 	/// This is a test class for Havit.Data.DataRecord and is intended
 	/// to contain all Havit.Data.DataRecord Unit Tests
-	///</summary>
-	[TestClass()]
+	/// </summary>
+	[TestClass]
 	public class DataRecordTest
 	{
 		#region TestContext
@@ -19,7 +19,7 @@ namespace Havit.DataTest
 		/// <summary>
 		///Gets or sets the test context which provides
 		///information about and functionality for the current test run.
-		///</summary>
+		/// </summary>
 		public TestContext TestContext
 		{
 			get
@@ -33,45 +33,11 @@ namespace Havit.DataTest
 		}
 		#endregion
 
-		#region Additional test attributes
-		// 
-		//You can use the following additional attributes as you write your tests:
-		//
-		//Use ClassInitialize to run code before running the first test in the class
-		//
-		//[ClassInitialize()]
-		//public static void MyClassInitialize(TestContext testContext)
-		//{
-		//}
-		//
-		//Use ClassCleanup to run code after all tests in a class have run
-		//
-		//[ClassCleanup()]
-		//public static void MyClassCleanup()
-		//{
-		//}
-		//
-		//Use TestInitialize to run code before running each test
-		//
-		//[TestInitialize()]
-		//public void MyTestInitialize()
-		//{
-		//}
-		//
-		//Use TestCleanup to run code after each test has run
-		//
-		//[TestCleanup()]
-		//public void MyTestCleanup()
-		//{
-		//}
-		//
-		#endregion
-
 		#region TryGet
 		/// <summary>
-		///A test for TryGet&lt;&gt; (string, out T)
-		///</summary>
-		[TestMethod()]
+		/// A test for TryGet&lt;&gt; (string, out T)
+		/// </summary>
+		[TestMethod]
 		public void TryGetTest_NacteniInt()
 		{
 			DataTable table = new DataTable();
@@ -95,9 +61,9 @@ namespace Havit.DataTest
 		}
 
 		/// <summary>
-		///A test for TryGet&lt;&gt; (string, out T)
-		///</summary>
-		[TestMethod()]
+		/// A test for TryGet&lt;&gt; (string, out T)
+		/// </summary>
+		[TestMethod]
 		public void TryGetTest_NullOK()
 		{
 			DataTable table = new DataTable();
@@ -121,9 +87,9 @@ namespace Havit.DataTest
 		}
 
 		/// <summary>
-		///A test for TryGet&lt;&gt; (string, out T)
-		///</summary>
-		[TestMethod()]
+		/// A test for TryGet&lt;&gt; (string, out T)
+		/// </summary>
+		[TestMethod]
 		public void TryGetTest_PretypovaniIntNaNullableInt()
 		{
 			DataTable table = new DataTable();
@@ -147,9 +113,9 @@ namespace Havit.DataTest
 		}
 
 		/// <summary>
-		///A test for TryGet&lt;&gt; (string, out T)
-		///</summary>
-		[TestMethod()]
+		/// A test for TryGet&lt;&gt; (string, out T)
+		/// </summary>
+		[TestMethod]
 		public void TryGetTest_PretypovaniDecimalNaDouble()
 		{
 			DataTable table = new DataTable();
@@ -173,9 +139,9 @@ namespace Havit.DataTest
 		}
 
 		/// <summary>
-		///A test for TryGet&lt;&gt; (string, out T)
-		///</summary>
-		[TestMethod()]
+		/// A test for TryGet&lt;&gt; (string, out T)
+		/// </summary>
+		[TestMethod]
 		[ExpectedException(typeof(InvalidCastException))]
 		public void TryGetTest_InvalidCast()
 		{
@@ -195,9 +161,9 @@ namespace Havit.DataTest
 		}
 
 		/// <summary>
-		///A test for TryGet&lt;&gt; (string, out T)
-		///</summary>
-		[TestMethod()]
+		/// A test for TryGet&lt;&gt; (string, out T)
+		/// </summary>
+		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
 		public void TryGetTest_NenalezenoFullLoad()
 		{
@@ -216,11 +182,10 @@ namespace Havit.DataTest
 			actual = record.TryGet(fieldName, out TryGet_target);
 		}
 
-
 		/// <summary>
-		///A test for TryGet&lt;&gt; (string, out T)
-		///</summary>
-		[TestMethod()]
+		/// A test for TryGet&lt;&gt; (string, out T)
+		/// </summary>
+		[TestMethod]
 		public void TryGetTest_NenalezenoNotFullLoad()
 		{
 			DataTable table = new DataTable();
@@ -245,6 +210,5 @@ namespace Havit.DataTest
 		}
 		#endregion
 	}
-
 
 }

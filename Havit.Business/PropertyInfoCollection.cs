@@ -28,7 +28,9 @@ namespace Havit.Business
 			: this()
 		{
 			foreach (PropertyInfo propertyInfo in properties)
+			{
 				this.Add(propertyInfo);
+			}
 		} 
 		#endregion
 
@@ -39,7 +41,9 @@ namespace Havit.Business
 		protected override void InsertItem(int index, PropertyInfo item)
 		{
 			if (this.Contains(item))
+			{
 				return;
+			}
 
 			base.InsertItem(index, item);
 		} 

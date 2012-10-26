@@ -21,7 +21,7 @@ namespace WebApplicationTest
 			TestBt.Click += new EventHandler(TestBt_Click);
 		}
 
-		void TestBt_Click(object sender, EventArgs e)
+		private void TestBt_Click(object sender, EventArgs e)
 		{
 			if (TestDDL.SelectedEnumValue == null)
 			{
@@ -35,7 +35,7 @@ namespace WebApplicationTest
 			TestDDL.SelectedEnumValue = TestEnum.EnumHodnota2;
 		}
 
-		void TestDDL_ItemDataBound(object sender, Havit.Web.UI.WebControls.ListControlItemDataBoundEventArgs e)
+		private void TestDDL_ItemDataBound(object sender, Havit.Web.UI.WebControls.ListControlItemDataBoundEventArgs e)
 		{
 			TestEnum item = (TestEnum)e.DataItem;
 			// e.Item.Text = item.ToString("d");
@@ -50,7 +50,6 @@ namespace WebApplicationTest
 
 		protected GridView MainGridView;
 	}
-
 
 	public enum TestEnum
 	{

@@ -12,17 +12,17 @@ using Havit.Business;
 namespace Havit.BusinessTest
 {
 	/// <summary>
-	///This is a test class for Havit.Business.BusinessObjectBase and is intended
-	///to contain all Havit.Business.BusinessObjectBase Unit Tests
-	///</summary>
-	[TestClass()]
+	/// This is a test class for Havit.Business.BusinessObjectBase and is intended
+	/// to contain all Havit.Business.BusinessObjectBase Unit Tests
+	/// </summary>
+	[TestClass]
 	public class BusinessObjectBaseTest
 	{
 		#region EqualsTest_StejneID
 		/// <summary>
 		/// Základní test na funkčnost Equals při stejných ID.
-		///</summary>
-		[TestMethod()]
+		/// </summary>
+		[TestMethod]
 		public void EqualsTest_StejneID()
 		{
 			Role role1 = Role.GetObject(-1);
@@ -38,8 +38,8 @@ namespace Havit.BusinessTest
 		#region EqualsTest_RuzneID
 		/// <summary>
 		/// Základní test na funkčnost Equals při různých ID.
-		///</summary>
-		[TestMethod()]
+		/// </summary>
+		[TestMethod]
 		public void EqualsTest_RuzneID()
 		{
 			Role role1 = Role.GetObject(-1);
@@ -55,8 +55,8 @@ namespace Havit.BusinessTest
 		#region EqualsTest_Nove
 		/// <summary>
 		/// Základní test na funkčnost Equals na nové objekty.
-		///</summary>
-		[TestMethod()]
+		/// </summary>
+		[TestMethod]
 		public void EqualsTest_Nove()
 		{
 			Subjekt subjekt1 = Subjekt.CreateObject();
@@ -75,14 +75,13 @@ namespace Havit.BusinessTest
 		}
 		#endregion
 
-
 		#region TestContext
 		private TestContext testContextInstance;
 
 		/// <summary>
-		///Gets or sets the test context which provides
-		///information about and functionality for the current test run.
-		///</summary>
+		/// Gets or sets the test context which provides
+		/// information about and functionality for the current test run.
+		/// </summary>
 		public TestContext TestContext
 		{
 			get
@@ -95,41 +94,7 @@ namespace Havit.BusinessTest
 			}
 		}
 		#endregion
-
-		#region Additional test attributes
-		// 
-		//You can use the following additional attributes as you write your tests:
-		//
-		//Use ClassInitialize to run code before running the first test in the class
-		//
-		//[ClassInitialize()]
-		//public static void MyClassInitialize(TestContext testContext)
-		//{
-		//}
-		//
-		//Use ClassCleanup to run code after all tests in a class have run
-		//
-		//[ClassCleanup()]
-		//public static void MyClassCleanup()
-		//{
-		//}
-		//
-		//Use TestInitialize to run code before running each test
-		//
-		//[TestInitialize()]
-		//public void MyTestInitialize()
-		//{
-		//}
-		//
-		//Use TestCleanup to run code after each test has run
-		//
-		//[TestCleanup()]
-		//public void MyTestCleanup()
-		//{
-		//}
-		//
-		#endregion
-
+	
 		#region GetAllCacheClone
 		/// <summary>
 		/// Testuje, zda cachovaný GetAll vrací klon kolekce.
@@ -155,8 +120,8 @@ namespace Havit.BusinessTest
 		#region TryLoad_Existujici
 		/// <summary>
 		/// Základní test na TryLoad existujícího objektu.
-		///</summary>
-		[TestMethod()]
+		/// </summary>
+		[TestMethod]
 		public void TryLoad_Existujici()
 		{
 			Role role = Role.GetObject(0);
@@ -168,16 +133,14 @@ namespace Havit.BusinessTest
 		#region TryLoad_Neexistujici
 		/// <summary>
 		/// Základní test na funkčnost TryLoad neexistujícího objektu.
-		///</summary>
-		[TestMethod()]
+		/// </summary>
+		[TestMethod]
 		public void TryLoad_Neexistujici()
 		{
 			Role role = Role.GetObject(999);
 			Assert.IsFalse(role.TryLoad());
 		}
 		#endregion
-
-
 
 		#region Save_MultipleSaveTest
 		[TestMethod]
@@ -222,33 +185,31 @@ namespace Havit.BusinessTest
 
 		#region GetNullableID
 		/// <summary>
-		///A test for GetNullableID
-		///</summary>
-		[TestMethod()]
+		/// A test for GetNullableID
+		/// </summary>
+		[TestMethod]
 		public void GetNullableIDTest_ID()
 		{
 			BusinessObjectBase businessObject = Role.ZaporneID;
-			Nullable<int> expected = Role.ZaporneID.ID;
-			Nullable<int> actual;
+			int? expected = Role.ZaporneID.ID;
+			int? actual;
 			actual = BusinessObjectBase.GetNullableID(businessObject);
 		}
 
 		/// <summary>
-		///A test for GetNullableID
-		///</summary>
-		[TestMethod()]
+		/// A test for GetNullableID
+		/// </summary>
+		[TestMethod]
 		public void GetNullableIDTest_Null()
 		{
 			BusinessObjectBase businessObject = null;
-			Nullable<int> expected = null;
-			Nullable<int> actual;
+			int? expected = null;
+			int? actual;
 			actual = BusinessObjectBase.GetNullableID(businessObject);
 			Assert.AreEqual(expected, actual);
 		}
 		#endregion
 
-
 	}
-
 
 }

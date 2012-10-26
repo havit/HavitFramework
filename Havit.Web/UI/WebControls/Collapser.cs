@@ -180,7 +180,6 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Zajišťuje pronesení inner-textu controlu do property <see cref="Text"/>.
 		/// </summary>
-		/// <param name="obj"></param>
 		protected override void AddParsedSubObject(object obj)
 		{
 			if (!(obj is LiteralControl))
@@ -325,7 +324,6 @@ function havitCollapserExpand(collapserElementId, collapserStateElementId, conte
 				this.cssClassCollapsedFull,
 				this.cssClassExpandedFull);
 			this.Attributes.Add("onclick", toggleScript);
-
 
 			if (this.Collapsed)
 			{

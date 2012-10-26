@@ -19,7 +19,6 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 		/// <summary>
 		/// Získá typ hodnoty zadaného controlu.
 		/// </summary>		
-		/// <returns></returns>
 		Type GetValueType();
 
 		/// <summary>

@@ -187,7 +187,6 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		/// <param name="listItemCollection">prohledávaná ListItemCollection</param>
 		/// <param name="value">hledaná hodnota</param>
-		/// <returns></returns>
 		private int FindItemIndexByValue(ListItemCollection listItemCollection, string value)
 		{
 			ListItem item = listItemCollection.FindByValue(value);

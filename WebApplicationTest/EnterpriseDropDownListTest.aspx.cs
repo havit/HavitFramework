@@ -34,7 +34,7 @@ namespace WebApplicationTest
 			AutoPostBackResultLabel.Text = ((Role)AutoPostBackEDDL.SelectedObject).Symbol;
 		}
 
-		void TestGV_DataBinding(object sender, EventArgs e)
+		private void TestGV_DataBinding(object sender, EventArgs e)
 		{
 			((Havit.Web.UI.WebControls.EnterpriseGridView)sender).DataSource = Subjekt.GetAll();
 			

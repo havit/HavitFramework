@@ -74,7 +74,6 @@ namespace Havit.BusinessLayerTest
 		/// Vrátí existující objekt s daným ID.
 		/// </summary>
 		/// <param name="id">UzivatelID (PK)</param>
-		/// <returns></returns>
 		[System.Diagnostics.Contracts.ContractVerification(false)]
 		public static Uzivatel GetObject(int id)
 		{
@@ -147,7 +146,6 @@ namespace Havit.BusinessLayerTest
 		/// Vrátí kolekci obsahující objekty danými ID.
 		/// </summary>
 		/// <param name="ids">Identifikátory objektů.</param>
-		/// <returns></returns>
 		[System.Diagnostics.Contracts.ContractVerification(false)]
 		public static UzivatelCollection GetObjects(params int[] ids)
 		{

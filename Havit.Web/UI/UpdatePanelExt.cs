@@ -29,7 +29,7 @@ namespace Havit.Web.UI
 		#endregion
 
 		#region Page_PreRenderComplete
-		void Page_PreRenderComplete(object sender, EventArgs e)
+		private void Page_PreRenderComplete(object sender, EventArgs e)
 		{
 			// Zaznamenáme si, že již proběhl PreRenderComplete.
 			pagePreRenderCompleted = true;

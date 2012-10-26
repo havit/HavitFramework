@@ -58,7 +58,6 @@ namespace Havit.Web.Management
 		public override string ToString(bool includeAppInfo, bool includeCustomEventDetails)
 		{
 			StringBuilder sb = new StringBuilder();
-			
 
 			// Exception information
 			sb.AppendLine("Exception information: ");
@@ -78,7 +77,6 @@ namespace Havit.Web.Management
 			sb.AppendLine();
 			sb.AppendLine("Application information: ");
 			this.FormatApplicationInformation(sb);
-
 
 			// Event information
 			sb.AppendLine();
@@ -201,7 +199,6 @@ namespace Havit.Web.Management
 		/// <summary>
 		/// Zapíše informace o aplikaci
 		/// </summary>
-		/// <param name="sb"></param>
 		private void FormatApplicationInformation(StringBuilder sb)
 		{
 			if (_currentHttpHandlerType != null)

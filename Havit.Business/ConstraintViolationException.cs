@@ -11,7 +11,7 @@ namespace Havit.Business
 	/// Výjimka reprezentující porušení business pravidla.
 	/// </summary>
 	[Serializable]
-	public class ConstraintViolationException: Exception, ISerializable
+	public class ConstraintViolationException : Exception, ISerializable
 	{
 		#region BusinessObject
 		/// <summary>

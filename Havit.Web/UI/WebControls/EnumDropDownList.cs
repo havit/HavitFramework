@@ -243,7 +243,6 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Zajistí, aby byl po databindingu doplněn řádek pro výběr prázdné hodnoty.
 		/// </summary>
-		/// <param name="dataSource"></param>
 		protected override void PerformDataBinding(System.Collections.IEnumerable dataSource)
 		{
 			base.PerformDataBinding(dataSource);
@@ -265,7 +264,6 @@ namespace Havit.Web.UI.WebControls
 		/// Vytvoří ListItem, součást PerformDataBindingu.
 		/// </summary>
 		/// <param name="dataItem">The data item.</param>
-		/// <returns></returns>
 		protected override ListItem CreateItem(object dataItem)
 		{
 			Enum enumDataItem = (Enum)dataItem;

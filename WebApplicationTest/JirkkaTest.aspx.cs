@@ -65,7 +65,6 @@ namespace WebApplicationTest
             MyAjaxModalDialog.Height = new Unit(MyAjaxModalDialog.Height.Value + 10, UnitType.Pixel);
         }
 
-
         [WebMethod()]
         public static string GetSuggestions(string keyword, bool usePaging, int pageIndex, int pageSize)
         {

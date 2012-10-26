@@ -8,7 +8,7 @@ namespace Havit.Business
 	/// <summary>
 	/// Argumenty události před uložením objektu.
 	/// </summary>
-	public class BeforeSaveEventArgs: DbTransactionEventArgs
+	public class BeforeSaveEventArgs : DbTransactionEventArgs
 	{
 		#region Constructors
 		/// <summary>

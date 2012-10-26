@@ -78,8 +78,7 @@ namespace Havit.Drawing
 			int width,
 			int height,
 			ResizeMode resizeMode,
-			int quality
-		)
+			int quality)
 		{
 			Bitmap originalBitmap;
 			using (Image image = Image.FromFile(sourceFilename))
@@ -157,8 +156,8 @@ namespace Havit.Drawing
 				}
 
 				bool saved = false;
-				if ( (String.Compare(Path.GetExtension(destinationFilename), ".jpg", true) == 0)
-					|| (String.Compare(Path.GetExtension(destinationFilename), ".jpeg", true) == 0) )
+				if ((String.Compare(Path.GetExtension(destinationFilename), ".jpg", true) == 0)
+					|| (String.Compare(Path.GetExtension(destinationFilename), ".jpeg", true) == 0))
 				{
 					ImageCodecInfo[] encoders = ImageCodecInfo.GetImageEncoders();
 					ImageCodecInfo jpegEncoder = null;

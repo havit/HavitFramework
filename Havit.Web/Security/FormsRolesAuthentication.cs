@@ -182,7 +182,6 @@ namespace Havit.Web.Security
 		/// <param name="roles">role, které uživateli přísluší</param>
 		/// <param name="createPersistentCookie"><c>true</c>, pokud se má vytvořit trvalá cookie, která přežije session browseru; jinak <c>false</c></param>
 		/// <param name="cookiePath">cookie-path pro autentizační ticket</param>
-		/// <returns></returns>
 		public static HttpCookie GetAuthCookie(string username, string[] roles, bool createPersistentCookie, string cookiePath)
 		{
 			HttpContext context = HttpContext.Current;

@@ -203,7 +203,6 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Vrací kontejner, do kterého je instanciována šablona.
 		/// </summary>
-		/// <returns></returns>
 		protected virtual Control GetContentContainer()
 		{
 			return _dialogPanel;
@@ -245,7 +244,6 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Obsluhuje událost skrytí dialogu.
 		/// </summary>
-		/// <param name="eventArgs"></param>
 		protected virtual void OnDialogHidden(EventArgs eventArgs)
 		{
 			if (DialogHidden != null)
@@ -343,7 +341,7 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 
 		#region Page_PreRenderComplete
-		void Page_PreRenderComplete(object sender, EventArgs e)
+		private void Page_PreRenderComplete(object sender, EventArgs e)
 		{
 			// Dialog nemá být vidět a právě jej schováváme.
 			// To se může stát, že control již není ve stránce (např. byl v repeateru, který byl rebindován) 

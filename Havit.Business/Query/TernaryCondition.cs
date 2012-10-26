@@ -26,8 +26,7 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Vytvoří instanci ternární podmínky.
 		/// </summary>
-		public TernaryCondition(string conditionPattern, IOperand operand1, IOperand operand2, IOperand operand3):
-			base(conditionPattern, operand1, operand2)
+		public TernaryCondition(string conditionPattern, IOperand operand1, IOperand operand2, IOperand operand3) : base(conditionPattern, operand1, operand2)
 		{
 			if (operand3 == null)
 			{
@@ -42,8 +41,6 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Přidá část SQL příkaz pro sekci WHERE.
 		/// </summary>
-		/// <param name="command"></param>
-		/// <param name="whereBuilder"></param>
 		public override void GetWhereStatement(System.Data.Common.DbCommand command, StringBuilder whereBuilder)
 		{
 			if (command == null)

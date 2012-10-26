@@ -220,12 +220,10 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 					stylesBasic.Attributes.Add("type", "text/css");
 					Page.Header.Controls.Add(stylesBasic);
 
-
 					context.Items["Havit.Web.UI.Adapters.CssAdapters.CssTreeViewAdapter_registered"] = true;
 				}
 			}
 		}
-
 
         protected override void RenderBeginTag(HtmlTextWriter writer)
         {
@@ -402,7 +400,6 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 
             _checkboxIndex++;
         }
-
 
         private void WriteNodeLink(TreeView treeView, TreeNode item, HtmlTextWriter writer)
         {

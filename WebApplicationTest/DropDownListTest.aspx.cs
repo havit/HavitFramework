@@ -19,7 +19,7 @@ namespace WebApplicationTest
 			TestGridView.RowDataBound += new GridViewRowEventHandler(TestGridView_RowDataBound);
 		}
 
-		void PostbackButton_Click(object sender, EventArgs e)
+		private void PostbackButton_Click(object sender, EventArgs e)
 		{
 		}
 
@@ -34,7 +34,7 @@ namespace WebApplicationTest
 			}
 		}
 
-		void TestGridView_RowDataBound(object sender, GridViewRowEventArgs e)
+		private void TestGridView_RowDataBound(object sender, GridViewRowEventArgs e)
 		{
 			EnterpriseDropDownList roleDDL = (EnterpriseDropDownList)e.Row.FindControl("RoleDDL");
 			if (roleDDL != null)

@@ -18,7 +18,7 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Hodnota konstanty ValueOperandu.
 		/// </summary>
-		int[] value;
+		private int[] value;
 		#endregion
 
 		#region Constructor
@@ -47,7 +47,8 @@ namespace Havit.Business.Query
 			{
 				parameterName = "@param" + (command.Parameters.Count + index).ToString();
 				index += 1;
-			} while (command.Parameters.Contains(parameterName));
+			}
+			while (command.Parameters.Contains(parameterName));
 
 			SqlParameter parameter = new SqlParameter();
 			parameter.ParameterName = parameterName;

@@ -52,7 +52,6 @@ namespace Havit.PayMuzo
 		/// Vytvoří normalizovaná data pro ověření podpisu.
 		/// </summary>
 		/// <param name="response">odpověď z WebService</param>
-		/// <returns></returns>
 		public override PayMuzoRequestData CreateNormalizedData(Havit.PayMuzo.WebServiceProxies.Response response)
 		{
 			PayMuzoRequestData data = new PayMuzoRequestData();

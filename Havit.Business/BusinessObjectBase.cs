@@ -47,13 +47,20 @@ namespace Havit.Business
 		/// </summary>
 		public bool IsDirty
 		{
-			get { return _isDirty; }
+			get
+			{
+				return _isDirty;
+			}
 			protected internal set
 			{
 				_isDirty = value;
 				if (!value)
+				{
 					foreach (PropertyHolderBase propertyHolder in PropertyHolders)
+					{
 						propertyHolder.IsDirty = false;
+					}
+				}
 			}
 		}
 		private bool _isDirty;
@@ -139,13 +146,11 @@ namespace Havit.Business
 		/// <summary>
 		/// Konstruktor pro nový objekt (bez perzistence v databázi).
 		/// </summary>
-		protected BusinessObjectBase()
-			: this(
+		protected BusinessObjectBase() : this(
 			NoID,		// ID
 			true,		// IsNew
 			false,		// IsDirty
 			true)		// IsLoaded
-
 		{
 			/*
 			this._id = NoID;

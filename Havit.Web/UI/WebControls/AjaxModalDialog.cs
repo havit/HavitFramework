@@ -67,7 +67,6 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Vrací control, který je kontejnerem, do kterého se bude instanciovat šablona obsahu.
 		/// </summary>
-		/// <returns></returns>
 		protected override Control GetContentContainer()
 		{
 			return _contentPlaceHolder;
@@ -79,7 +78,6 @@ namespace Havit.Web.UI.WebControls
 		/// Obsluhuje událost zobrazení dialogu.
 		/// Provádí update vnořeného UpdatePanelu.
 		/// </summary>
-		/// <param name="eventArgs"></param>
 		protected override void OnDialogShown(EventArgs eventArgs)
 		{
 			base.OnDialogShown(eventArgs);
@@ -92,7 +90,6 @@ namespace Havit.Web.UI.WebControls
 		/// Obsluhuje událost skrytí dialogu.
 		/// Provádí update vnořeného UpdatePanelu.
 		/// </summary>
-		/// <param name="eventArgs"></param>
 		protected override void OnDialogHidden(EventArgs eventArgs)
 		{
 			base.OnDialogHidden(eventArgs);

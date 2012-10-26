@@ -156,7 +156,6 @@ namespace Havit.Data
 			return conn;
 		}
 
-
 		/// <summary>
 		/// Vrátí novou instanci provider-specific potomka <see cref="DbConnection"/>.
 		/// Connection není otevřena.
@@ -211,7 +210,6 @@ namespace Havit.Data
 			return result;
 		}
 
-
 		/// <summary>
 		/// Vykoná zadaný příkaz určeného typu bez parametrů. Vrátí počet dotčených řádek.
 		/// </summary>
@@ -223,7 +221,6 @@ namespace Havit.Data
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmí být null ani String.Empty");
 			return ExecuteNonQuery(CreateCommand(commandText, commandType));
 		}
-
 
 		/// <summary>
 		/// Vykoná zadaný příkaz bez parametrů. Vrátí počet dotčených řádek.
@@ -267,7 +264,6 @@ namespace Havit.Data
 			}
 		}
 
-
 		/// <summary>
 		/// Vykoná příkaz commandText daného commandType a vrátí resultset ve formě <see cref="DataSet"/>u.
 		/// </summary>
@@ -279,7 +275,6 @@ namespace Havit.Data
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmí být null ani String.Empty");
 			return ExecuteDataSet(CreateCommand(commandText, commandType));
 		}
-
 
 		/// <summary>
 		/// Vykoná SQL příkaz cmdText typu <see cref="CommandType.Text"/> a vrátí resultset ve formě <see cref="DataSet"/>u.
@@ -321,7 +316,6 @@ namespace Havit.Data
 			}
 		}
 
-
 		/// <summary>
 		/// Vykoná příkaz commandText typu commandType a vrátí první tabulku resultsetu ve formě <see cref="System.Data.DataTable"/>.
 		/// </summary>
@@ -333,7 +327,6 @@ namespace Havit.Data
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmí být null ani String.Empty");
 			return ExecuteDataTable(CreateCommand(commandText, commandType));
 		}
-
 
 		/// <summary>
 		/// Vykoná příkaz commandText typu <see cref="CommandType.Text"/> a vrátí první tabulku resultsetu ve formě <see cref="System.Data.DataTable"/>.
@@ -394,7 +387,6 @@ namespace Havit.Data
 			return reader;
 		}
 
-
 		/// <summary>
 		/// Donastaví a vykoná <see cref="DbCommand"/> a vrátí výsledný resultset ve formě <see cref="DbDataReader"/>u.
 		/// </summary>
@@ -405,7 +397,6 @@ namespace Havit.Data
 			Contract.Requires<ArgumentNullException>(command != null, "command");
 			return ExecuteReader(command, CommandBehavior.Default);
 		}
-
 
 		/// <summary>
 		/// Vytvoří, nastaví a vykoná <see cref="DbCommand"/> dle zadaných parametrů a vrátí výsledný resultset ve formě <see cref="DbDataReader"/>u.
@@ -418,7 +409,6 @@ namespace Havit.Data
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmí být null ani String.Empty");
 			return ExecuteReader(CreateCommand(commandText, commandType));
 		}
-
 
 		/// <summary>
 		/// Vytvoří, nastaví a vykoná <see cref="DbCommand"/> dle zadaného SQL příkazu typu <see cref="CommandType.Text"/>
@@ -478,7 +468,6 @@ namespace Havit.Data
 			}
 		}
 
-
 		/// <summary>
 		/// Donastaví a vykoná <see cref="DbCommand"/> a vrátí první řádek první tabulky resultsetu
 		/// ve formě <see cref="Havit.Data.DataRecord"/>. Pokud neexistuje, vrátí <c>null</c>.
@@ -486,14 +475,13 @@ namespace Havit.Data
 		/// <remarks>
 		/// <see cref="DataLoadPower"/> výsledného <see cref="DataRecord"/>u nastaví na <see cref="DataLoadPower.FullLoad"/>.
 		/// </remarks>
-		/// <param command="cmd">příkaz (nemusí mít nastaveno Connection)</param>
+		/// <param name="command">příkaz (nemusí mít nastaveno Connection)</param>
 		/// <returns>první řádek první tabulky resultsetu ve formě <see cref="Havit.Data.DataRecord"/></returns>
 		public DataRecord ExecuteDataRecord(DbCommand command)
 		{
 			Contract.Requires<ArgumentNullException>(command != null, "command");
 			return ExecuteDataRecord(command, CommandBehavior.Default);
 		}
-
 
 		/// <summary>
 		/// Vytvoří <see cref="DbCommand"/> dle zadaných parametrů, donasataví ho a vrátí první řádek první tabulky resultsetu
@@ -510,7 +498,6 @@ namespace Havit.Data
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmí být null ani String.Empty");
 			return ExecuteDataRecord(CreateCommand(commandText, commandType));
 		}
-
 
 		/// <summary>
 		/// Vytvoří, nastaví a vykoná <see cref="DbCommand"/> dle zadaného SQL příkazu
@@ -571,7 +558,6 @@ namespace Havit.Data
 			return result;
 		}
 
-
 		/// <summary>
 		/// Vytvoří ze zadaných parametrů <see cref="DbCommand"/>, nastaví, vykoná ho a vrátí první sloupec
 		/// prvního řádku první tabulky jeho resultsetu.
@@ -584,7 +570,6 @@ namespace Havit.Data
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmí být null ani String.Empty");
 			return ExecuteScalar(CreateCommand(commandText, commandType));
 		}
-
 
 		/// <summary>
 		/// Vytvoří <see cref="DbCommand"/> typu <see cref="CommandType.Text"/>, vykoná ho a vrátí
@@ -711,7 +696,6 @@ namespace Havit.Data
 			ExecuteTransaction(transactionWork, null, isolationLevel);
 		}
 
-
 		/// <summary>
 		/// Vykoná požadované kroky v rámci transakce.
 		/// Je spuštěna a commitována nová samostatná transakce.
@@ -798,4 +782,3 @@ namespace Havit.Data
 
 	}
 }
-

@@ -10,9 +10,9 @@ namespace Havit.Business
 	/// <typeparam name="CollectionType">typ kolekce, jíž je CollectionPropertyHolder nosičem</typeparam>
 	/// <typeparam name="BusinessObjectType">typ prvku kolekce</typeparam>
 	[Serializable]
-	public class CollectionPropertyHolder<CollectionType, BusinessObjectType>: PropertyHolderBase
+	public class CollectionPropertyHolder<CollectionType, BusinessObjectType> : PropertyHolderBase
 		where BusinessObjectType : BusinessObjectBase
-		where CollectionType: BusinessObjectCollection<BusinessObjectType, CollectionType>, new()		
+		where CollectionType : BusinessObjectCollection<BusinessObjectType, CollectionType>, new()		
 	{
 		#region Constructors
 		/// <summary>

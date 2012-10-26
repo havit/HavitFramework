@@ -74,7 +74,6 @@ namespace Havit.Web.UI.WebControls
 		/// Prohledá data, pokud najde hodnotu rovnou HighlightValue, 
 		/// vybere danou položku.
 		/// </summary>
-		/// <param name="data"></param>
 		protected virtual void HighlightRow(IEnumerable data)
 		{
 			if (Hightlighting.HighlightValue != null && data != null)

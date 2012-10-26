@@ -31,7 +31,7 @@ namespace WebApplicationTest
 			TestGV.RowDataBound += new GridViewRowEventHandler(TestGV_RowDataBound);
 		}
 
-		void TestGV_RowDataBound(object sender, GridViewRowEventArgs e)
+		private void TestGV_RowDataBound(object sender, GridViewRowEventArgs e)
 		{
 			if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
 			{
@@ -77,13 +77,13 @@ namespace WebApplicationTest
 			AutoPostBackOnLoadCompleteValueLabel.Text = AutoPostBackDateTimeBox.Value.ToString();
 		}
 
-		void VycistitButton_Click(object sender, EventArgs e)
+		private void VycistitButton_Click(object sender, EventArgs e)
 		{
 			DrubyDateTimeBox.Value = null;
 			DrubyDateTimeBox.Visible = false;
 		}
 
-		void ZobrazitButton_Click(object sender, EventArgs e)
+		private void ZobrazitButton_Click(object sender, EventArgs e)
 		{
 			DrubyDateTimeBox.Visible = true;
 		}

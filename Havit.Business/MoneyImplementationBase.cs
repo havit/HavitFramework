@@ -24,7 +24,6 @@ namespace Havit.Business
 		/// <summary>
 		/// Odečte dvě hodnoty Money. Pokud se neshoduje měna, operace vyvolá výjimku.
 		/// </summary>
-		/// <returns></returns>
 		public static TResult operator -(MoneyImplementationBase<TCurrency, TResult> money1, MoneyImplementationBase<TCurrency, TResult> money2)
 		{
 			return SubtractMoney<TResult>(money1, money2);
@@ -45,7 +44,6 @@ namespace Havit.Business
 		{
 			return MultipleMoney<TResult>(money, multiplicand);
 		}
-
 
 		/// <summary>
 		/// Vydělí hodnotu Money konstantou typu decimal.

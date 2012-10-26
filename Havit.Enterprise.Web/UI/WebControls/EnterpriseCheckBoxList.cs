@@ -288,7 +288,6 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Pokud jde o první načtení stránky a není nastaveno AutoDataBind, zavolá DataBindAll.
 		/// </summary>
-		/// <param name="e"></param>
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
@@ -340,7 +339,6 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Zajistí, aby byl po databindingu doplněn řádek pro výběr prázdné hodnoty.
 		/// </summary>
-		/// <param name="dataSource"></param>
 		protected override void PerformDataBinding(System.Collections.IEnumerable dataSource)
 		{
 			if (String.IsNullOrEmpty(DataTextField))
@@ -377,7 +375,6 @@ namespace Havit.Web.UI.WebControls
 		/// Pokud není, neprovede nic. Výslední kolekce objektů nastaví výběr (SelectedObjects).
 		/// Metoda je určena pro vnitřní implementaci ukládání hodnot.
 		/// </summary>
-		/// <param name="objectIDs"></param>
 		internal void SelectExistingItems(int[] objectIDs)
 		{
 			List<object> objectsList = new List<object>();

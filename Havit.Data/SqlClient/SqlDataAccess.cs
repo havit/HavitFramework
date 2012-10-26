@@ -36,7 +36,6 @@ namespace Havit.Data.SqlClient
 			}
 		}
 
-
 		/// <summary>
 		/// ConnectionString z .config souboru (web.config nebo applikace.exe.config).
 		/// </summary>
@@ -105,7 +104,6 @@ namespace Havit.Data.SqlClient
 			return conn;
 		}
 
-
 		/// <summary>
 		/// Vytvoří novou instanci SqlConnection podle z implicitního <see cref="ConnectionString"/>
 		/// a případně ji rovnou otevře.
@@ -116,7 +114,6 @@ namespace Havit.Data.SqlClient
 		{
 			return (SqlConnection)DbConnector.Default.GetConnection(open);
 		}
-
 
 		/// <summary>
 		/// Vytvoří novou instanci SqlConnection podle implicitního <see cref="ConnectionString"/>.
@@ -147,7 +144,6 @@ namespace Havit.Data.SqlClient
 			return DbConnector.Default.ExecuteNonQuery(cmd);
 		}
 
-
 		/// <summary>
 		/// Vykoná zadaný příkaz určeného typu bez parametrů. Vrátí počet dotčených řádek.
 		/// </summary>
@@ -158,7 +154,6 @@ namespace Havit.Data.SqlClient
 		{
 			return DbConnector.Default.ExecuteNonQuery(cmdText, cmdType);
 		}
-
 
 		/// <summary>
 		/// Vykoná zadaný příkaz bez parametrů. Vrátí počet dotčených řádek.
@@ -188,7 +183,6 @@ namespace Havit.Data.SqlClient
 			return DbConnector.Default.ExecuteDataSet(cmd);
 		}
 
-
 		/// <summary>
 		/// Vykoná příkaz cmdText daného cmdType proti implicitní connection
 		/// a vrátí resultset ve formě DataSetu.
@@ -200,7 +194,6 @@ namespace Havit.Data.SqlClient
 		{
 			return DbConnector.Default.ExecuteDataSet(cmdText, cmdType);
 		}
-
 
 		/// <summary>
 		/// Vykoná SQL příkaz cmdText s implicitního typu (DefaultCommandType)
@@ -229,7 +222,6 @@ namespace Havit.Data.SqlClient
 			return DbConnector.Default.ExecuteDataTable(cmd);
 		}
 
-
 		/// <summary>
 		/// Vykoná příkaz cmdText daného cmdType proti implicitní connection
 		/// a vrátí první resultset ve formě <see cref="System.Data.DataTable"/>.
@@ -241,7 +233,6 @@ namespace Havit.Data.SqlClient
 		{
 			return DbConnector.Default.ExecuteDataTable(cmdText, cmdType);
 		}
-
 
 		/// <summary>
 		/// Vykoná SQL příkaz cmdText s implicitního typu (DefaultCommandType)
@@ -270,17 +261,14 @@ namespace Havit.Data.SqlClient
 			return (SqlDataReader)DbConnector.Default.ExecuteReader(cmd, behavior);
 		}
 
-
 		/// <summary>
 		/// Donastaví a vykoná SqlCommand a vrátí výsledný resultset ve formě SqlDataReaderu.
 		/// </summary>
 		/// <param name="cmd">příkaz (nemusí mít nastaveno Connection)</param>
-		/// <returns></returns>
 		public static SqlDataReader ExecuteReader(SqlCommand cmd)
 		{
 			return (SqlDataReader)DbConnector.Default.ExecuteReader(cmd);
 		}
-
 
 		/// <summary>
 		/// Vytvoří, nastaví a vykoná SqlCommand dle zadaných parametrů a vrátí
@@ -293,7 +281,6 @@ namespace Havit.Data.SqlClient
 		{
 			return (SqlDataReader)DbConnector.Default.ExecuteReader(cmdText, cmdType);
 		}
-
 
 		/// <summary>
 		/// Vytvoří, nastaví a vykoná SqlCommand dle zadaného SQL příkazu
@@ -333,7 +320,6 @@ namespace Havit.Data.SqlClient
 			return DbConnector.Default.ExecuteDataRecord(cmd);
 		}
 
-
 		/// <summary>
 		/// Vytvoří SqlCommand dle zadaných parametrů, donasataví ho a vrátí první řádek prvního resultsetu
 		/// ve formě <see cref="Havit.Data.DataRecord"/>. Pokud neexistuje, vrátí null.
@@ -345,7 +331,6 @@ namespace Havit.Data.SqlClient
 		{
 			return DbConnector.Default.ExecuteDataRecord(cmdText, cmdType);
 		}
-
 
 		/// <summary>
 		/// Vytvoří, nastaví a vykoná SqlCommand dle zadaného SQL příkazu
@@ -375,7 +360,6 @@ namespace Havit.Data.SqlClient
 			return DbConnector.Default.ExecuteScalar(cmd);
 		}
 
-
 		/// <summary>
 		/// Vytvoří ze zadaných parametrů SqlCommand, vykoná ho a vrátí první sloupec
 		/// prvního řádku jeho resultsetu.
@@ -387,7 +371,6 @@ namespace Havit.Data.SqlClient
 		{
 			return DbConnector.Default.ExecuteScalar(cmdText, cmdType);
 		}
-
 
 		/// <summary>
 		/// Vytvoří SqlCommand, nastaví mu DefaultCommandType, vykoná ho a vrátí

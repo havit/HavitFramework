@@ -22,7 +22,6 @@ namespace HavitTestConsoleApplication
 			TestSplitMicro();
 			TestSplitSmall();
 			TestSplitLarge();
-			
 
 		}
 
@@ -87,13 +86,14 @@ namespace HavitTestConsoleApplication
 				using (MemoryStream ms = new MemoryStream())
 				using (BinaryWriter writer = new BinaryWriter(ms))
 				{
-					result.Write(writer);
+					result.Write(writer);					
 				}
+				
 			}
 
 			sw.Stop();
 			Console.WriteLine(sw.ElapsedMilliseconds);
-			Console.WriteLine(sw.ElapsedMilliseconds / (decimal)repeatCount);
+			Console.WriteLine("{0}x {1}", repeatCount, sw.ElapsedMilliseconds / (decimal)repeatCount);
 			Console.WriteLine();
 
 		}
@@ -112,14 +112,35 @@ namespace HavitTestConsoleApplication
 
 					for (int j = 0; j < stringValues.Length; j++)
 					{
-						int.TryParse(stringValues[j], NumberStyles.None, NumberFormatInfo.InvariantInfo, out intValues[j]);
+						intValues[j] = IntParseFast(stringValues[j]);
+						//int.TryParse(stringValues[j], NumberStyles.None, NumberFormatInfo.InvariantInfo, out intValues[j]);
 					}
 				}
 			}
 			sw.Stop();
 			Console.WriteLine(sw.ElapsedMilliseconds);
-			Console.WriteLine(sw.ElapsedMilliseconds / (decimal)repeatCount);
+			Console.WriteLine("{0}x {1}", repeatCount, sw.ElapsedMilliseconds / (decimal)repeatCount);
 			Console.WriteLine();
 		}
+
+		private static int IntParseFast(string value)
+		{
+			unchecked
+			{
+				
+			int result = 0;
+			bool negative = value.Length > 0 && (value[0] == '-');
+
+			for (int i = negative ? 1 : 0; i < value.Length; i++)
+			{
+				//char letter = value[i];
+				result = 10 * result + (value[i] - 48);
+			}
+
+			return negative ? -1 * result : result;
+			}
+
+		}
+
 	}
 }

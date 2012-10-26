@@ -251,7 +251,6 @@ namespace Havit.Web.UI.WebControls
 			set { ViewState["DataBindPerformed"] = value; }
 		}
 
-
 		/// <summary>
 		/// Indikuje právě porobíhající databinding.
 		/// </summary>
@@ -316,7 +315,6 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Pokud jde o první načtení stránky a není nastaveno AutoDataBind, zavolá DataBindAll.
 		/// </summary>
-		/// <param name="e"></param>
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
@@ -368,7 +366,6 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Zajistí, aby byl po databindingu doplněn řádek pro výběr prázdné hodnoty.
 		/// </summary>
-		/// <param name="dataSource"></param>
 		protected override void PerformDataBinding(System.Collections.IEnumerable dataSource)
 		{
 			if (String.IsNullOrEmpty(DataTextField))

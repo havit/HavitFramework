@@ -42,7 +42,6 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Vytvoří podmínku testující řetězec na podobnost operátorem LIKE.
 		/// </summary>
-		/// <param name="operand"></param>
 		/// <param name="value">
 		/// Podporována hvězdičková konvence takto:
 		///		- pokud parametr neobsahuje hvězdičku, hledá se LIKE parametr%
@@ -61,7 +60,6 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Vytvoří podmínku testující řetězec na podobnost operátorem LIKE.
 		/// </summary>
-		/// <param name="operand"></param>
 		/// <param name="value">
 		/// Podporována hvězdičková konvence takto:
 		///		- pokud parametr neobsahuje hvězdičku, hledá se pomocí LIKE parametr% nebo LIKE %parametr% podle parametru wildCardsLikeExpressionMode.

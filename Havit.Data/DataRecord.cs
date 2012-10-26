@@ -142,7 +142,7 @@ namespace Havit.Data
 		#region Get<T>, TryGet<T>, Load<T>
 		/// <summary>
 		/// Načte parametr zadaného generického typu T.
-		/// </summary>
+		/// </summary>		
 		/// <param name="fieldName">jméno parametru</param>
 		/// <param name="target">cíl, kam má být parametr uložen</param>
 		/// <returns>

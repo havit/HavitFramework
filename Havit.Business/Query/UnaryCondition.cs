@@ -49,8 +49,6 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Vytvoří instanci unární podmínky.
 		/// </summary>
-		/// <param name="conditionPattern"></param>
-		/// <param name="operand"></param>
 		public UnaryCondition(string conditionPattern, IOperand operand)
 		{
 			if (conditionPattern == null)
@@ -72,8 +70,6 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Přidá část SQL příkaz pro sekci WHERE.
 		/// </summary>
-		/// <param name="command"></param>
-		/// <param name="whereBuilder"></param>
 		public override void GetWhereStatement(System.Data.Common.DbCommand command, StringBuilder whereBuilder)
 		{
 			if (command == null)

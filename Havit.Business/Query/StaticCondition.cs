@@ -7,7 +7,7 @@ namespace Havit.Business.Query
 	/// <summary>
 	/// Podmínka, která je vždy vyhodnocena stejně.
 	/// </summary>
-	internal class StaticCondition: Condition
+	internal class StaticCondition : Condition
 	{
 		private const string TrueConditionText = "(0=0)";
 		private const string FalseConditionText = "(0=1)";

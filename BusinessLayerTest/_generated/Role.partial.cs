@@ -55,7 +55,6 @@ namespace Havit.BusinessLayerTest
 		/// Vrátí existující objekt s daným ID.
 		/// </summary>
 		/// <param name="id">RoleID (PK)</param>
-		/// <returns></returns>
 		[System.Diagnostics.Contracts.ContractVerification(false)]
 		public static Role GetObject(int id)
 		{
@@ -157,7 +156,6 @@ namespace Havit.BusinessLayerTest
 		/// Vrátí kolekci obsahující objekty danými ID.
 		/// </summary>
 		/// <param name="ids">Identifikátory objektů.</param>
-		/// <returns></returns>
 		[System.Diagnostics.Contracts.ContractVerification(false)]
 		public static RoleCollection GetObjects(params int[] ids)
 		{

@@ -54,7 +54,7 @@ namespace Havit.DsvCommerce.Web
 			MyAjaxModalDialog.Hide();
 		}
 
-		void CloseOpenButton_Click(object sender, EventArgs e)
+		private void CloseOpenButton_Click(object sender, EventArgs e)
 		{
 			MyAjaxModalDialog.Hide();
 			MyAjaxModalDialog.Show();

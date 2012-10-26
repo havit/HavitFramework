@@ -63,7 +63,6 @@ namespace Havit.Web.UI.WebControls
 			return DateCustomizationFunctionName; 
 		}
 
-		
 		public abstract string RenderDateStatusHandlerContent();
 	}
 }

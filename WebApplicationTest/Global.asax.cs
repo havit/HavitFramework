@@ -35,8 +35,6 @@ namespace WebApplicationTest
 
 		}
 
-
-
 		#region Application_Error
 		private void Application_Error(object sender, EventArgs e)
 		{
@@ -59,7 +57,7 @@ namespace WebApplicationTest
 
 		}
 
-		void DateTimeBox_GetDateTimeBoxCustomizationDefaults(object sender, DateTimeBoxDateCustomizationEventArgs args)
+		private void DateTimeBox_GetDateTimeBoxCustomizationDefaults(object sender, DateTimeBoxDateCustomizationEventArgs args)
 		{
 			if (specialDatesDefault == null)
 			{

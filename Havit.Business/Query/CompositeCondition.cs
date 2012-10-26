@@ -84,7 +84,7 @@ namespace Havit.Business.Query
 
 		#region IsEmptyCondition
 		/// <summary>
-		/// 
+		/// Vrací true, pokud jde o prázdnou podmínku a to i v případě, že jde například o zanořené AndCondition a OrCondition bez žádných "funkčních" podmínek.
 		/// </summary>
 		public override bool IsEmptyCondition()
 		{

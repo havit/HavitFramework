@@ -16,7 +16,7 @@ namespace WebApplicationTest
 
 		}
 
-		void DoExceptionButton_Click(object sender, EventArgs e)
+		private void DoExceptionButton_Click(object sender, EventArgs e)
 		{
 			try
 			{

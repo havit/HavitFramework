@@ -9,15 +9,15 @@ namespace HavitTest
 	/// <summary>
 	///This is a test class for Havit.MathExt and is intended
 	///to contain all Havit.MathExt Unit Tests
-	///</summary>
+	/// </summary>
 	[TestClass()]
 	public class MathExtTest
 	{
 		#region IsInteger
 		/// <summary>
-		///A test for IsInteger (string)
-		///</summary>
-		[TestMethod()]
+		/// A test for IsInteger (string)
+		/// </summary>
+		[TestMethod]
 		public void IsIntegerTest_Null()
 		{
 			string text = null;
@@ -30,11 +30,10 @@ namespace HavitTest
 			Assert.AreEqual(expected, actual, "Havit.MathExt.IsInteger did not return the expected value.");
 		}
 
-
 		/// <summary>
-		///A test for IsInteger (string)
-		///</summary>
-		[TestMethod()]
+		/// A test for IsInteger (string)
+		/// </summary>
+		[TestMethod]
 		public void IsIntegerTest_PositiveInteger()
 		{
 			string text = "156";
@@ -47,11 +46,10 @@ namespace HavitTest
 			Assert.AreEqual(expected, actual, "Havit.MathExt.IsInteger did not return the expected value.");
 		}
 
-
 		/// <summary>
-		///A test for IsInteger (string)
-		///</summary>
-		[TestMethod()]
+		/// A test for IsInteger (string)
+		/// </summary>
+		[TestMethod]
 		public void IsIntegerTest_NegativeInteger()
 		{
 			string text = "-156";
@@ -65,9 +63,9 @@ namespace HavitTest
 		}
 
 		/// <summary>
-		///A test for IsInteger (string)
-		///</summary>
-		[TestMethod()]
+		/// A test for IsInteger (string)
+		/// </summary>
+		[TestMethod]
 		public void IsIntegerTest_Empty()
 		{
 			string text = String.Empty;
@@ -81,9 +79,9 @@ namespace HavitTest
 		}
 
 		/// <summary>
-		///A test for IsInteger (string)
-		///</summary>
-		[TestMethod()]
+		/// A test for IsInteger (string)
+		/// </summary>
+		[TestMethod]
 		public void IsIntegerTest_Invalid()
 		{
 			string text = "10.";
@@ -103,7 +101,7 @@ namespace HavitTest
 		/// <summary>
 		///Gets or sets the test context which provides
 		///information about and functionality for the current test run.
-		///</summary>
+		/// </summary>
 		public TestContext TestContext
 		{
 			get
@@ -115,40 +113,6 @@ namespace HavitTest
 				testContextInstance = value;
 			}
 		}
-		#endregion
-
-		#region Additional test attributes
-		// 
-		//You can use the following additional attributes as you write your tests:
-		//
-		//Use ClassInitialize to run code before running the first test in the class
-		//
-		//[ClassInitialize()]
-		//public static void MyClassInitialize(TestContext testContext)
-		//{
-		//}
-		//
-		//Use ClassCleanup to run code after all tests in a class have run
-		//
-		//[ClassCleanup()]
-		//public static void MyClassCleanup()
-		//{
-		//}
-		//
-		//Use TestInitialize to run code before running each test
-		//
-		//[TestInitialize()]
-		//public void MyTestInitialize()
-		//{
-		//}
-		//
-		//Use TestCleanup to run code after each test has run
-		//
-		//[TestCleanup()]
-		//public void MyTestCleanup()
-		//{
-		//}
-		//
 		#endregion
 	}
 }

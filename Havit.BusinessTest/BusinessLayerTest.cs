@@ -9,17 +9,17 @@ using Havit.BusinessLayerTest;
 namespace Havit.BusinessTest
 {
 	/// <summary>
-	///This is a test class for Havit.Business.ActiveRecordBusinessObjectBase and is intended
-	///to contain all Havit.Business.ActiveRecordBusinessObjectBase Unit Tests
-	///</summary>
-	[TestClass()]
+	/// This is a test class for Havit.Business.ActiveRecordBusinessObjectBase and is intended
+	/// to contain all Havit.Business.ActiveRecordBusinessObjectBase Unit Tests
+	/// </summary>
+	[TestClass]
 	public class BusinessLayerTest
 	{
 		#region BusinessLayerTest_ZaporneID
 		/// <summary>
 		/// Základní test na funkčnost záporných ID.
-		///</summary>
-		[TestMethod()]
+		/// </summary>
+		[TestMethod]
 		public void BusinessLayerTest_ZaporneID()
 		{
 			Role role = Role.GetObject(-1);
@@ -32,8 +32,8 @@ namespace Havit.BusinessTest
 		#region BusinessLayerTest_NuloveID
 		/// <summary>
 		/// Základní test na funkčnost nulových ID.
-		///</summary>
-		[TestMethod()]
+		/// </summary>
+		[TestMethod]
 		public void BusinessLayerTest_NuloveID()
 		{
 			Role role = Role.GetObject(0);
@@ -46,8 +46,8 @@ namespace Havit.BusinessTest
 		#region BusinessLayerTest_ZakazaneNoID
 		/// <summary>
 		/// Základní test na funkčnost zakázaného NoID.
-		///</summary>
-		[TestMethod()]
+		/// </summary>
+		[TestMethod]
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void BusinessLayerTest_ZakazaneNoID()
 		{
@@ -58,8 +58,8 @@ namespace Havit.BusinessTest
 		#region BusinessLayerTest_CyclicUpdateWithInsert
 		/// <summary>
 		/// Nový objekt ukládá cyklický graf, kde sám by měl být minimal-insertován od jiného objektu, který je Update.
-		///</summary>
-		[TestMethod()]
+		/// </summary>
+		[TestMethod]
 		public void BusinessLayerTest_CyclicUpdateWithInsert()
 		{
 			Subjekt s = Subjekt.CreateObject();
@@ -87,14 +87,13 @@ namespace Havit.BusinessTest
 		}
 		#endregion
 
-
 		#region TestContext
 		private TestContext testContextInstance;
 
 		/// <summary>
-		///Gets or sets the test context which provides
-		///information about and functionality for the current test run.
-		///</summary>
+		/// Gets or sets the test context which provides
+		/// information about and functionality for the current test run.
+		/// </summary>
 		public TestContext TestContext
 		{
 			get
@@ -108,40 +107,6 @@ namespace Havit.BusinessTest
 		}
 		#endregion
 
-		#region Additional test attributes
-		// 
-		//You can use the following additional attributes as you write your tests:
-		//
-		//Use ClassInitialize to run code before running the first test in the class
-		//
-		//[ClassInitialize()]
-		//public static void MyClassInitialize(TestContext testContext)
-		//{
-		//}
-		//
-		//Use ClassCleanup to run code after all tests in a class have run
-		//
-		//[ClassCleanup()]
-		//public static void MyClassCleanup()
-		//{
-		//}
-		//
-		//Use TestInitialize to run code before running each test
-		//
-		//[TestInitialize()]
-		//public void MyTestInitialize()
-		//{
-		//}
-		//
-		//Use TestCleanup to run code after each test has run
-		//
-		//[TestCleanup()]
-		//public void MyTestCleanup()
-		//{
-		//}
-		//
-		#endregion
 	}
-
 
 }

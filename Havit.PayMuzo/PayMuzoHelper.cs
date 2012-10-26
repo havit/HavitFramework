@@ -44,9 +44,7 @@ namespace Havit.PayMuzo
 			// POZOR !!!! ZÁLEŽÍ NA POŘADÍ POLOŽEK !!! ROZHODUJÍCÍ PRO PODPIS !!!
 			// ******************************************************************
 
-
 			PayMuzoRequestData request = new PayMuzoRequestData();
-
 
 			// 1. MERCHANTNUMBER
 			if (merchantNumber <= 0ul)
@@ -65,7 +63,6 @@ namespace Havit.PayMuzo
 			}
 			request.Add("ORDERNUMBER", orderNumber.ToString(CultureInfo.InvariantCulture));
 
-			
 			// 4. AMOUNT
 			if (currency == null)
 			{
@@ -102,7 +99,6 @@ namespace Havit.PayMuzo
 			}
 			request.Add("URL", returnUrl);
 
-			
 			// 9. DESCRIPTION
 			if (!String.IsNullOrEmpty(description))
 			{
@@ -117,7 +113,6 @@ namespace Havit.PayMuzo
 				}
 				request.Add("DESCRIPTION", description);
 			}
-
 
 			// 10. MD
 			if (!String.IsNullOrEmpty(merchantData))

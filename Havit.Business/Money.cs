@@ -9,7 +9,7 @@ namespace Havit.Business
 	/// </summary>
 	[Serializable]
 	public class Money<TCurrency>
-		where TCurrency: class
+		where TCurrency : class
 	{		
 		#region Amount
 		/// <summary>
@@ -19,7 +19,10 @@ namespace Havit.Business
 		/// </summary>
 		public decimal? Amount
 		{
-			get { return _amount; }
+			get
+			{
+				return _amount;
+			}
 			set
 			{
 				bool changed = (_amount != value);
@@ -40,7 +43,10 @@ namespace Havit.Business
 		/// </summary>
 		public TCurrency Currency
 		{
-			get { return _currency; }
+			get
+			{
+				return _currency;
+			}
 			set
 			{
 				bool changed = (_currency != value);
@@ -71,8 +77,6 @@ namespace Havit.Business
 		/// <summary>
 		/// Inicializuje třídu money zadanými hodnotami.
 		/// </summary>
-		/// <param name="amount"></param>
-		/// <param name="currency"></param>
 		public Money(decimal? amount, TCurrency currency)
 		{
 			this._amount = amount;
@@ -234,7 +238,6 @@ namespace Havit.Business
 		/// <summary>
 		/// Odečte dvě hodnoty Money. Pokud se neshoduje měna, operace vyvolá výjimku.
 		/// </summary>
-		/// <returns></returns>
 		public static Money<TCurrency> operator -(Money<TCurrency> money1, Money<TCurrency> money2)
 		{
 			return SubtractMoney<Money<TCurrency>>(money1, money2);
@@ -255,8 +258,7 @@ namespace Havit.Business
 		{
 			return MultipleMoney<Money<TCurrency>>(money, multiplicand);
 		}
-		
-		
+
 		/// <summary>
 		/// Vydělí hodnotu Money konstantou typu decimal.
 		/// </summary>

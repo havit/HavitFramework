@@ -49,7 +49,6 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Odstraní položku řazení ze seznamu, pokud existuje.
 		/// </summary>
-		/// <param name="expression"></param>
 		protected void RemoveExpression(string expression)
 		{
 			int i = IndexOf(expression);
@@ -142,7 +141,6 @@ namespace Havit.Web.UI.WebControls
 
 			return true;
 		}
-
 
 		///// <summary>
 		///// Přidá položky řazení do seznamu na první pozice (první položka kolekce bude na začátku).

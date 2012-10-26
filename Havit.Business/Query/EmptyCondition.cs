@@ -14,7 +14,6 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Vytvoří podmínku reprezentující prázdnou podmínku (nic není testováno). Nyní vrací null.
 		/// </summary>
-		/// <returns></returns>
 		public static Condition Create()
 		{
 			return null;

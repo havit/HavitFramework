@@ -68,7 +68,7 @@ namespace Havit.Xml.Rss
 		/// Phrase or sentence describing the channel.
 		/// REQUIRED Element.
 		/// </summary>
-		[XmlElement("description", IsNullable=false)]
+		[XmlElement("description", IsNullable = false)]
 		public string Description
 		{
 			get

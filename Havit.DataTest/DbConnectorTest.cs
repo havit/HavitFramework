@@ -12,17 +12,17 @@ using System.Data.SqlClient;
 namespace Havit.DataTest
 {
 	/// <summary>
-	///This is a test class for Havit.Data.DbConnector and is intended
-	///to contain all Havit.Data.DbConnector Unit Tests
-	///</summary>
+	/// This is a test class for Havit.Data.DbConnector and is intended
+	/// to contain all Havit.Data.DbConnector Unit Tests
+	/// </summary>
 	[TestClass()]
 	public class DbConnectorTest
 	{
 		#region Constructors
 		/// <summary>
-		///A test for DbConnector (ConnectionStringSettings)
-		///</summary>
-		[TestMethod()]
+		/// A test for DbConnector (ConnectionStringSettings)
+		/// </summary>
+		[TestMethod]
 		public void ConstructorTest_ConnectionStringSettings()
 		{
 			ConnectionStringSettings connectionStringSettings = ConfigurationManager.ConnectionStrings["Test"];
@@ -33,9 +33,9 @@ namespace Havit.DataTest
 		}
 
 		/// <summary>
-		///A test for DbConnector (string, DbProviderFactory)
-		///</summary>
-		[TestMethod()]
+		/// A test for DbConnector (string, DbProviderFactory)
+		/// </summary>
+		[TestMethod]
 		public void ConstructorTest_string_DbProviderFactory()
 		{
 			string connectionString = "Data Source=dev;Initial Catalog=HavitTest;User Id=development;Password=development;";
@@ -48,9 +48,9 @@ namespace Havit.DataTest
 		}
 
 		/// <summary>
-		///A test for DbConnector (string, string)
-		///</summary>
-		[TestMethod()]
+		/// A test for DbConnector (string, string)
+		/// </summary>
+		[TestMethod]
 		public void ConstructorTest2_string_string()
 		{
 			string connectionString = "Data Source=dev;Initial Catalog=HavitTest;User Id=development;Password=development;";
@@ -65,9 +65,9 @@ namespace Havit.DataTest
 
 		#region Default
 		/// <summary>
-		///A test for Default
-		///</summary>
-		[TestMethod()]
+		/// A test for Default
+		/// </summary>
+		[TestMethod]
 		public void DefaultTest_get_set_get_set()
 		{
 			DbConnector previousVal = DbConnector.Default;
@@ -83,9 +83,9 @@ namespace Havit.DataTest
 		}
 
 		/// <summary>
-		///A test for Default
-		///</summary>
-		[TestMethod()]
+		/// A test for Default
+		/// </summary>
+		[TestMethod]
 		public void DefaultTest_get()
 		{
 			Assert.AreEqual(DbConnector.Default.ConnectionString, ConfigurationManager.ConnectionStrings["DefaultConnectionString"].ConnectionString);
@@ -95,9 +95,9 @@ namespace Havit.DataTest
 
 		#region ExecuteScalar
 		/// <summary>
-		///A test for ExecuteScalar (string)
-		///</summary>
-		[TestMethod()]
+		/// A test for ExecuteScalar (string)
+		/// </summary>
+		[TestMethod]
 		public void ExecuteScalarTest()
 		{
 			string commandText = "SELECT Symbol FROM dbo.Role WHERE RoleID=-1";
@@ -111,16 +111,13 @@ namespace Havit.DataTest
 		}
 		#endregion
 
-
-
-
 		#region TestContext
 		private TestContext testContextInstance;
 
 		/// <summary>
-		///Gets or sets the test context which provides
-		///information about and functionality for the current test run.
-		///</summary>
+		/// Gets or sets the test context which provides
+		/// information about and functionality for the current test run.
+		/// </summary>
 		public TestContext TestContext
 		{
 			get
@@ -132,40 +129,6 @@ namespace Havit.DataTest
 				testContextInstance = value;
 			}
 		}
-		#endregion
-
-		#region Additional test attributes
-		// 
-		//You can use the following additional attributes as you write your tests:
-		//
-		//Use ClassInitialize to run code before running the first test in the class
-		//
-		//[ClassInitialize()]
-		//public static void MyClassInitialize(TestContext testContext)
-		//{
-		//}
-		//
-		//Use ClassCleanup to run code after all tests in a class have run
-		//
-		//[ClassCleanup()]
-		//public static void MyClassCleanup()
-		//{
-		//}
-		//
-		//Use TestInitialize to run code before running each test
-		//
-		//[TestInitialize()]
-		//public void MyTestInitialize()
-		//{
-		//}
-		//
-		//Use TestCleanup to run code after each test has run
-		//
-		//[TestCleanup()]
-		//public void MyTestCleanup()
-		//{
-		//}
-		//
 		#endregion
 	}
 }

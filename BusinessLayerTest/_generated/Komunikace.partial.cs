@@ -71,7 +71,6 @@ namespace Havit.BusinessLayerTest
 		/// Vrátí existující objekt s daným ID.
 		/// </summary>
 		/// <param name="id">KomunikaceID (PK)</param>
-		/// <returns></returns>
 		[System.Diagnostics.Contracts.ContractVerification(false)]
 		public static Komunikace GetObject(int id)
 		{
@@ -144,7 +143,6 @@ namespace Havit.BusinessLayerTest
 		/// Vrátí kolekci obsahující objekty danými ID.
 		/// </summary>
 		/// <param name="ids">Identifikátory objektů.</param>
-		/// <returns></returns>
 		[System.Diagnostics.Contracts.ContractVerification(false)]
 		public static KomunikaceCollection GetObjects(params int[] ids)
 		{

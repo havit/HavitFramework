@@ -106,7 +106,6 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 		/// <summary>
 		/// Získá stav controlů a vrátí jej.		
 		/// </summary>
-		/// <returns></returns>
 		public ControlsValuesHolder RetrieveValues()
 		{
 			ControlsValuesHolder result = new ControlsValuesHolder();

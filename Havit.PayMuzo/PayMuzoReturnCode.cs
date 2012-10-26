@@ -81,7 +81,6 @@ namespace Havit.PayMuzo
 		/// <summary>
 		/// Zaregistruje return-code do interní Hashtable.
 		/// </summary>
-		/// <param name="code"></param>
 		public static void RegisterCode(PayMuzoReturnCode code)
 		{
 			Hashtable codes = (Hashtable)codeTypes[code.GetType()];

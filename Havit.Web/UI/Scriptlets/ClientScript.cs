@@ -63,7 +63,6 @@ namespace Havit.Web.UI.Scriptlets
 		/// <summary>
 		/// Vrací true, pokud má být renderován skript pro automatické spuštění funkce scriptletu.
 		/// </summary>
-		/// <returns></returns>
 		public bool GetAutoStart()
 		{
 			if (this.Scriptlet.IsInAsyncPostBack)

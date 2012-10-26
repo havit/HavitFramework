@@ -32,8 +32,8 @@ namespace Havit.Business.Query
 		/// </summary>
 		public int? TopRecords
 		{
-			get { return topRecords;}
-			set { topRecords = value;}
+			get { return topRecords; }
+			set { topRecords = value; }
 		}
 		private int? topRecords;
 
@@ -118,7 +118,6 @@ namespace Havit.Business.Query
 		/// Vytvoří dotaz, nastaví jej do commandu.
 		/// Přidá parametry.
 		/// </summary>
-		/// <param name="command"></param>
 		public void PrepareCommand(DbCommand command)
 		{
 			Contract.Requires<ArgumentNullException>(command != null, "command");
@@ -199,7 +198,9 @@ namespace Havit.Business.Query
 			for (int i = 0; i < queryProperties.Count; i++)				
 			{
 				if (i > 0)
+				{
 					fieldsBuilder.Append(", ");
+				}
 
 				if (queryProperties[i] is IFieldsBuilder)
 				{
@@ -260,19 +261,25 @@ namespace Havit.Business.Query
 		protected virtual string GetOrderByStatement(DbCommand command)
 		{
 			if (orderBy.Count == 0)
+			{
 				return String.Empty;
-			
+			}
+
 			StringBuilder orderByBuilder = new StringBuilder();
 			orderByBuilder.Append("ORDER BY ");
 			for (int i = 0; i < orderBy.Count; i++)
 			{
 				if (i > 0)
+				{
 					orderByBuilder.Append(", ");
+				}
 
 #warning není moc OOP
 				orderByBuilder.Append(orderBy[i].Expression);
 				if (orderBy[i].Direction == Havit.Collections.SortDirection.Descending)
+				{
 					orderByBuilder.Append(" DESC");
+				}
 			}
 			return orderByBuilder.ToString();
 		}

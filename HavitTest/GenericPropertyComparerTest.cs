@@ -9,12 +9,12 @@ namespace HavitTest
 {
 	/// <summary>
 	///This is a test class for GenericPropertyComparer.
-	///</summary>
+	/// </summary>
 	[TestClass()]
 	public class GenericPropertyComparerTest
 	{
 		#region GenericPropertyComparer_Null
-		[TestMethod()]
+		[TestMethod]
 		public void GenericPropertyComparer_Null()
 		{
 			var gpc = new GenericPropertyComparer<object>(new SortItem("Nazev", SortDirection.Ascending)) as IComparer<object>;
@@ -25,7 +25,7 @@ namespace HavitTest
 		#endregion
 
 		#region GenericPropertyComparer_NotNull
-		[TestMethod()]
+		[TestMethod]
 		public void GenericPropertyComparer_NotNull()
 		{
 			var gpc = new GenericPropertyComparer<object>(new SortItem("Nazev", SortDirection.Ascending)) as IComparer<object>;
@@ -36,7 +36,7 @@ namespace HavitTest
 		#endregion
 
 		#region GenericPropertyComparer_NotNull
-		[TestMethod()]
+		[TestMethod]
 		public void GenericPropertyComparer_NullAndNotNull()
 		{
 			var gpc = new GenericPropertyComparer<object>(new SortItem("Nazev", SortDirection.Ascending)) as IComparer<object>;
@@ -61,7 +61,7 @@ namespace HavitTest
 		/// <summary>
 		///Gets or sets the test context which provides
 		///information about and functionality for the current test run.
-		///</summary>
+		/// </summary>
 		public TestContext TestContext
 		{
 			get

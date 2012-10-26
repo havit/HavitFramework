@@ -122,7 +122,6 @@ namespace Havit.PayMuzo
 				throw new PayMuzoResponseException(response);
 			}
 
-
 			return response.OrderState;
 		}
 		#endregion

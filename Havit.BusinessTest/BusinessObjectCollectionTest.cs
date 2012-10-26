@@ -9,16 +9,16 @@ using Havit.BusinessLayerTest;
 namespace Havit.BusinessTest
 {
 	/// <summary>
-	///This is a test class for Havit.Business.BusinessObjectCollection&lt;T&gt; and is intended
-	///to contain all Havit.Business.BusinessObjectCollection&lt;T&gt; Unit Tests
-	///</summary>
-	[TestClass()]
+	/// This is a test class for Havit.Business.BusinessObjectCollection&lt;T&gt; and is intended
+	/// to contain all Havit.Business.BusinessObjectCollection&lt;T&gt; Unit Tests
+	/// </summary>
+	[TestClass]
 	public class BusinessObjectCollectionTest
 	{
 		/// <summary>
 		/// Testuje výchozí hodnotu AllowDuplicates.
 		/// </summary>
-		[TestMethod()]
+		[TestMethod]
 		public void AllowDuplicatesTest_Default()
 		{
 			SubjektCollection subjekty = new SubjektCollection();
@@ -29,7 +29,7 @@ namespace Havit.BusinessTest
 		/// <summary>
 		/// Testuje, zda je při zákazu duplicit ověřeno, zda kolekce již neobsahuje duplicity.
 		/// </summary>
-		[TestMethod()]
+		[TestMethod]
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void AllowDuplicatesTest_Change()
 		{
@@ -48,7 +48,7 @@ namespace Havit.BusinessTest
 		/// <summary>
 		/// Testuje zákaz duplicit - vkládání pomocí insertu.
 		/// </summary>
-		[TestMethod()]
+		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
 		public void AllowDuplicatesTest_DoNotAllow_Insert_Different_New()
 		{
@@ -66,7 +66,7 @@ namespace Havit.BusinessTest
 		/// <summary>
 		/// Testuje zákaz duplicit - vkládání pomocí indexeru.
 		/// </summary>
-		[TestMethod()]
+		[TestMethod]
 		public void AllowDuplicatesTest_Allow_Indexer_Different_New()
 		{
 			SubjektCollection subjekty = new SubjektCollection();
@@ -85,7 +85,7 @@ namespace Havit.BusinessTest
 		/// <summary>
 		/// Testuje zákaz duplicit - pomocí indexeru.
 		/// </summary>
-		[TestMethod()]
+		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
 		public void AllowDuplicatesTest_DoNotAllow_Insert_Same_Persistent()
 		{
@@ -105,7 +105,7 @@ namespace Havit.BusinessTest
 		/// <summary>
 		/// Testuje zákaz duplicit - pomocí indexeru.
 		/// </summary>
-		[TestMethod()]
+		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]		
 		public void AllowDuplicatesTest_DoNotAllow_Indexer_Different()
 		{
@@ -126,7 +126,7 @@ namespace Havit.BusinessTest
 		/// <summary>
 		/// Testuje povolení duplicit.
 		/// </summary>
-		[TestMethod()]
+		[TestMethod]
 		public void AllowDuplicatesTest_Allow_Insert_And_Indexer()
 		{
 			SubjektCollection subjekty;
@@ -148,6 +148,5 @@ namespace Havit.BusinessTest
 		}
 
 	}
-
 
 }

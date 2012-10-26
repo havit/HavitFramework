@@ -277,7 +277,6 @@ namespace Havit.Business
 			CheckConstraints();
 		}
 
-
 		/// <summary>
 		/// Implementace metody aktualizuje data objektu v databázi.
 		/// </summary>

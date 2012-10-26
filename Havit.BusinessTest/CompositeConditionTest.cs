@@ -45,8 +45,7 @@ namespace Havit.BusinessTest
 				new OrCondition(
 					EmptyCondition.Create(),
 					EmptyCondition.Create(),
-					BoolCondition.CreateTrue(Uzivatel.Properties.Disabled)
-				),
+					BoolCondition.CreateTrue(Uzivatel.Properties.Disabled)),
 				EmptyCondition.Create(),
 				EmptyCondition.Create());
 			Assert.IsFalse(andCondition.IsEmptyCondition());

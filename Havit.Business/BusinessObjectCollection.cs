@@ -56,8 +56,12 @@ namespace Havit.Business
 		/// </summary>
 		public bool AllowDuplicates
 		{
-			get { return _allowDuplicates; }
-			set {
+			get
+			{
+				return _allowDuplicates;
+			}
+			set
+			{
 				if (_allowDuplicates && !value)
 				{
 					if (CheckDuplicates())

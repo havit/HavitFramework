@@ -29,7 +29,6 @@ namespace Havit.Web.UI
 			/// <summary>
 			/// Konstruktor.
 			/// </summary>
-			/// <param name="root"></param>
 			public PerUserNamingStrategy(string root)
 			{
 				Root = root;
@@ -40,7 +39,6 @@ namespace Havit.Web.UI
 			/// <summary>
 			/// Viz IFileNamingStrategy.GetStorageSymbol.
 			/// </summary>
-			/// <returns></returns>
 			string FilePageStatePersister.IFileNamingStrategy.GetStorageSymbol()
 			{
 				return Guid.NewGuid().ToString();
@@ -51,8 +49,6 @@ namespace Havit.Web.UI
 			/// <summary>
 			/// Viz IFileNamingStrategy.GetFilename.
 			/// </summary>
-			/// <param name="symbol"></param>
-			/// <returns></returns>
 			string FilePageStatePersister.IFileNamingStrategy.GetFilename(string symbol)
 			{
 				foreach (char invalidChar in System.IO.Path.GetInvalidFileNameChars())

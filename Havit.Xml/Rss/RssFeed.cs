@@ -72,7 +72,7 @@ namespace Havit.Xml.Rss
 		public XmlDocument SerializeToXmlDocument()
 		{
 			StringWriter writer = new StringWriter(CultureInfo.CurrentCulture);
-			XmlSerializer serializer = new XmlSerializer(typeof (RssFeed));
+			XmlSerializer serializer = new XmlSerializer(typeof(RssFeed));
 			XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
 			ns.Add("", null);
 			serializer.Serialize(writer, this, ns);
@@ -82,7 +82,7 @@ namespace Havit.Xml.Rss
 			writer.Close();
 
 			// Vymazání prázdných elementů
-			foreach(XmlNode node in xmlDocument.SelectNodes("//*[.='']"))
+			foreach (XmlNode node in xmlDocument.SelectNodes("//*[.='']"))
 			{
 				node.ParentNode.RemoveChild(node);
 			}

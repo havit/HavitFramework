@@ -10,14 +10,14 @@ namespace Havit.WebTest
 	/// <summary>
 	///This is a test class for Havit.Web.QueryStringBuilder and is intended
 	///to contain all Havit.Web.QueryStringBuilder Unit Tests
-	///</summary>
+	/// </summary>
 	[TestClass()]
 	public class QueryStringBuilderTest
 	{
 		#region Add_Null
 		/// <summary>
-		///A test for Add (string, string)
-		///</summary>
+		/// A test for Add (string, string)
+		/// </summary>
 		[TestMethod(), ExpectedException(typeof(ArgumentException))]
 		public void AddTest_Null()
 		{
@@ -28,8 +28,8 @@ namespace Havit.WebTest
 
 		#region SetTest_Null
 		/// <summary>
-		///A test for Set (string, string)
-		///</summary>
+		/// A test for Set (string, string)
+		/// </summary>
 		[TestMethod(), ExpectedException(typeof(ArgumentException))]
 		public void SetTest()
 		{
@@ -40,9 +40,9 @@ namespace Havit.WebTest
 
 		#region ToStringTest_Simple
 		/// <summary>
-		///A test for ToString ()
-		///</summary>
-		[TestMethod()]
+		/// A test for ToString ()
+		/// </summary>
+		[TestMethod]
 		public void ToStringTest_Simple()
 		{
 			QueryStringBuilder target = new QueryStringBuilder();
@@ -60,9 +60,9 @@ namespace Havit.WebTest
 
 		#region ToStringTest_EncodeSpace
 		/// <summary>
-		///A test for ToString ()
-		///</summary>
-		[TestMethod()]
+		/// A test for ToString ()
+		/// </summary>
+		[TestMethod]
 		public void ToStringTest_EncodeSpace()
 		{
 			QueryStringBuilder target = new QueryStringBuilder();
@@ -79,9 +79,9 @@ namespace Havit.WebTest
 
 		#region ToStringTest_EncodeText
 		/// <summary>
-		///A test for ToString ()
-		///</summary>
-		[TestMethod()]
+		/// A test for ToString ()
+		/// </summary>
+		[TestMethod]
 		public void ToStringTest_EncodeText()
 		{
 			QueryStringBuilder target = new QueryStringBuilder();
@@ -98,9 +98,9 @@ namespace Havit.WebTest
 
 		#region ToStringTest_EncodeAmpersand
 		/// <summary>
-		///A test for ToString ()
-		///</summary>
-		[TestMethod()]
+		/// A test for ToString ()
+		/// </summary>
+		[TestMethod]
 		public void ToStringTest_EncodeAmpersand()
 		{
 			QueryStringBuilder target = new QueryStringBuilder();
@@ -117,9 +117,9 @@ namespace Havit.WebTest
 
 		#region GetUrlWithQueryStringTest_Simple
 		/// <summary>
-		///A test for GetUrlWithQueryString (string)
-		///</summary>
-		[TestMethod()]
+		/// A test for GetUrlWithQueryString (string)
+		/// </summary>
+		[TestMethod]
 		public void GetUrlWithQueryStringTest_Simple()
 		{
 			QueryStringBuilder target = new QueryStringBuilder();
@@ -138,9 +138,9 @@ namespace Havit.WebTest
 
 		#region GetUrlWithQueryStringTest_ExistingQueryString
 		/// <summary>
-		///A test for GetUrlWithQueryString (string)
-		///</summary>
-		[TestMethod()]
+		/// A test for GetUrlWithQueryString (string)
+		/// </summary>
+		[TestMethod]
 		public void GetUrlWithQueryStringTest_ExistingQueryStringSimple()
 		{
 			QueryStringBuilder target = new QueryStringBuilder();
@@ -159,9 +159,9 @@ namespace Havit.WebTest
 
 		#region GetUrlWithQueryStringTest_ExistingQueryStringWithAmpersand
 		/// <summary>
-		///A test for GetUrlWithQueryString (string)
-		///</summary>
-		[TestMethod()]
+		/// A test for GetUrlWithQueryString (string)
+		/// </summary>
+		[TestMethod]
 		public void GetUrlWithQueryStringTest_ExistingQueryStringWithAmpersand()
 		{
 			QueryStringBuilder target = new QueryStringBuilder();
@@ -180,9 +180,9 @@ namespace Havit.WebTest
 
 		#region GetUrlWithQueryStringTest_UrlWithQuestionMark
 		/// <summary>
-		///A test for GetUrlWithQueryString (string)
-		///</summary>
-		[TestMethod()]
+		/// A test for GetUrlWithQueryString (string)
+		/// </summary>
+		[TestMethod]
 		public void GetUrlWithQueryStringTest_UrlWithQuestionMark()
 		{
 			QueryStringBuilder target = new QueryStringBuilder();
@@ -201,9 +201,9 @@ namespace Havit.WebTest
 
 		#region FillFromStringTest_Simple
 		/// <summary>
-		///A test for FillFromString (string)
-		///</summary>
-		[TestMethod()]
+		/// A test for FillFromString (string)
+		/// </summary>
+		[TestMethod]
 		public void FillFromStringTest_Simple()
 		{
 			QueryStringBuilder target = new QueryStringBuilder();
@@ -221,9 +221,9 @@ namespace Havit.WebTest
 
 		#region FillFromStringTest_UrlEncoded
 		/// <summary>
-		///A test for FillFromString (string)
-		///</summary>
-		[TestMethod()]
+		/// A test for FillFromString (string)
+		/// </summary>
+		[TestMethod]
 		public void FillFromStringTest_UrlEncoded()
 		{
 			QueryStringBuilder target = new QueryStringBuilder();
@@ -238,9 +238,9 @@ namespace Havit.WebTest
 
 		#region FillFromStringTest_Ampersands
 		/// <summary>
-		///A test for FillFromString (string)
-		///</summary>
-		[TestMethod()]
+		/// A test for FillFromString (string)
+		/// </summary>
+		[TestMethod]
 		public void FillFromStringTest_Ampersands()
 		{
 			QueryStringBuilder target = new QueryStringBuilder();
@@ -258,9 +258,9 @@ namespace Havit.WebTest
 
 		#region FillFromStringTest_EmptyValue
 		/// <summary>
-		///A test for FillFromString (string)
-		///</summary>
-		[TestMethod()]
+		/// A test for FillFromString (string)
+		/// </summary>
+		[TestMethod]
 		public void FillFromStringTest_EmptyValue()
 		{
 			QueryStringBuilder target = new QueryStringBuilder();
@@ -277,9 +277,9 @@ namespace Havit.WebTest
 
 		#region FillFromStringTest_EmptyInput
 		/// <summary>
-		///A test for FillFromString (string)
-		///</summary>
-		[TestMethod()]
+		/// A test for FillFromString (string)
+		/// </summary>
+		[TestMethod]
 		public void FillFromStringTest_EmptyInput()
 		{
 			QueryStringBuilder target = new QueryStringBuilder();
@@ -295,9 +295,9 @@ namespace Havit.WebTest
 
 		#region FillFromStringTest_NullInput
 		/// <summary>
-		///A test for FillFromString (string)
-		///</summary>
-		[TestMethod()]
+		/// A test for FillFromString (string)
+		/// </summary>
+		[TestMethod]
 		public void FillFromStringTest_NullInput()
 		{
 			QueryStringBuilder target = new QueryStringBuilder();
@@ -319,7 +319,7 @@ namespace Havit.WebTest
 		/// <summary>
 		///Gets or sets the test context which provides
 		///information about and functionality for the current test run.
-		///</summary>
+		/// </summary>
 		public TestContext TestContext
 		{
 			get
@@ -332,40 +332,5 @@ namespace Havit.WebTest
 			}
 		}
 		#endregion
-
-		#region Additional test attributes
-		// 
-		//You can use the following additional attributes as you write your tests:
-		//
-		//Use ClassInitialize to run code before running the first test in the class
-		//
-		//[ClassInitialize()]
-		//public static void MyClassInitialize(TestContext testContext)
-		//{
-		//}
-		//
-		//Use ClassCleanup to run code after all tests in a class have run
-		//
-		//[ClassCleanup()]
-		//public static void MyClassCleanup()
-		//{
-		//}
-		//
-		//Use TestInitialize to run code before running each test
-		//
-		//[TestInitialize()]
-		//public void MyTestInitialize()
-		//{
-		//}
-		//
-		//Use TestCleanup to run code after each test has run
-		//
-		//[TestCleanup()]
-		//public void MyTestCleanup()
-		//{
-		//}
-		//
-		#endregion
-
 	}
 }

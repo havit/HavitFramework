@@ -8,7 +8,7 @@ namespace Havit.Business
     /// <summary>
     /// Argument nesoucí instanci databázové transakce.
     /// </summary>
-    public class DbTransactionEventArgs: EventArgs
+    public class DbTransactionEventArgs : EventArgs
     {
         #region Transaction
         /// <summary>
@@ -26,7 +26,6 @@ namespace Havit.Business
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		/// <param name="transaction"></param>
         public DbTransactionEventArgs(DbTransaction transaction)
         {
             this._transaction = transaction;

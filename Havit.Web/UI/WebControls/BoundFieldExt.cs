@@ -109,7 +109,6 @@ namespace Havit.Web.UI.WebControls
 		/// Získá hodnotu pro zobrazení na základě datového zdroje a DataFieldu.
 		/// </summary>
 		/// <param name="controlContainer">Control container (řádek GridView), kterému se získává hodnota.</param>
-		/// <returns></returns>
 		protected override object GetValue(Control controlContainer)
 		{
 			if (controlContainer == null)
@@ -206,8 +205,6 @@ namespace Havit.Web.UI.WebControls
 		/// Pokud není CellCssClass prázdné, generuje se do buňky tabulky &lt;div="CellCssClass"&gt;...&lt;/div&gt;.
 		/// Jinak se použije normálně samotná buňka tabulky.
 		/// </summary>
-		/// <param name="cell"></param>
-		/// <param name="rowState"></param>
 		protected override sealed void InitializeDataCell(System.Web.UI.WebControls.DataControlFieldCell cell, System.Web.UI.WebControls.DataControlRowState rowState)
 		{
 			if (!String.IsNullOrEmpty(CellCssClass))

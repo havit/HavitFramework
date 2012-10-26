@@ -7,7 +7,6 @@ using System.IO;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-
 namespace Havit.Web.UI.WebControls
 {
     /// <summary>Used for writing out JSON data code.</summary>
@@ -17,7 +16,6 @@ namespace Havit.Web.UI.WebControls
         #region Class Properties
         #endregion
 
-
         /// <overloads>Initializes new instance of XHtmlWriter.</overloads>
         /// <summary>Initializes new instance of XHtmlWriter.</summary>
         /// <remarks>Creates a new StringWriter object and uses that as Internal Writer</remarks>
@@ -25,13 +23,11 @@ namespace Havit.Web.UI.WebControls
         {
         }
 
-
         //Public functions
         public void WriteNameValue(string name, object value)
         {
             WriteNameValue(name, value, true);
         }
-
 
         public void WriteNameValue(string name, object value, bool formatValue)
         {
@@ -48,12 +44,10 @@ namespace Havit.Web.UI.WebControls
             this.Write("\"" + name + "\": " + valueText);
         }
 
-
         public void WriteList(string name, IList list)
         {
             WriteList(name, list, true);
         }
-
 
         public void WriteList(string name, IList list, bool formatValues)
         {
@@ -73,8 +67,6 @@ namespace Havit.Web.UI.WebControls
             string listText = this.NewLine + "[" + this.NewLine + sb.ToString() + this.NewLine + "]";
             WriteNameValue(name, listText, false);
         }
-
-
 
         private string GetValueText(object value, bool formatValue)
         {
@@ -107,7 +99,6 @@ namespace Havit.Web.UI.WebControls
 
             return valueText;
         }
-
 
         public override string ToString()
         {

@@ -97,13 +97,11 @@ namespace Havit.Web.UI
 			/// <summary>
 			/// Získá symbol. Tj. určitý klíč, na základě kterého se pak tvoří název souboru, do kterého se ukládá viewstate/controlstate.
 			/// </summary>
-			/// <returns></returns>
 			string GetStorageSymbol();
 
 			/// <summary>
 			/// Ze symbolu určí název souboru (včetně cesty), do kterého se ukládá viewstate/controlstate.
 			/// </summary>
-			/// <param name="storageSymbol"></param>
 			string GetFilename(string storageSymbol);
 		}
 		#endregion

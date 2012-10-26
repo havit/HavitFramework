@@ -8,19 +8,19 @@ using Havit.Business;
 namespace Havit.BusinessTest
 {
 	/// <summary>
-	///This is a test class for Havit.Business.IdentityMap and is intended
-	///to contain all Havit.Business.IdentityMap Unit Tests
-	///</summary>
-	[TestClass()]
+	/// This is a test class for Havit.Business.IdentityMap and is intended
+	/// to contain all Havit.Business.IdentityMap Unit Tests
+	/// </summary>
+	[TestClass]
 	public class IdentityMapTest
 	{
 		#region TestContext
 		private TestContext testContextInstance;
 
 		/// <summary>
-		///Gets or sets the test context which provides
-		///information about and functionality for the current test run.
-		///</summary>
+		/// Gets or sets the test context which provides
+		/// information about and functionality for the current test run.
+		/// </summary>
 		public TestContext TestContext
 		{
 			get
@@ -34,45 +34,11 @@ namespace Havit.BusinessTest
 		}
 		#endregion
 
-		#region Additional test attributes
-		// 
-		//You can use the following additional attributes as you write your tests:
-		//
-		//Use ClassInitialize to run code before running the first test in the class
-		//
-		//[ClassInitialize()]
-		//public static void MyClassInitialize(TestContext testContext)
-		//{
-		//}
-		//
-		//Use ClassCleanup to run code after all tests in a class have run
-		//
-		//[ClassCleanup()]
-		//public static void MyClassCleanup()
-		//{
-		//}
-		//
-		//Use TestInitialize to run code before running each test
-		//
-		//[TestInitialize()]
-		//public void MyTestInitialize()
-		//{
-		//}
-		//
-		//Use TestCleanup to run code after each test has run
-		//
-		//[TestCleanup()]
-		//public void MyTestCleanup()
-		//{
-		//}
-		//
-		#endregion
-
 		#region Store
 		/// <summary>
-		///A test for Store&lt;&gt; (T)
-		///</summary>
-		[TestMethod()]
+		/// A test for Store&lt;&gt; (T)
+		/// </summary>
+		[TestMethod]
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void StoreTest_StoreRuznychInstanci()
 		{
@@ -88,9 +54,9 @@ namespace Havit.BusinessTest
 
 		#region Get
 		/// <summary>
-		///A test for Get&lt;&gt; (int)
-		///</summary>
-		[TestMethod()]
+		/// A test for Get&lt;&gt; (int)
+		/// </summary>
+		[TestMethod]
 		public void GetTest_Exist()
 		{
 			IdentityMap target = new IdentityMap();
@@ -105,9 +71,9 @@ namespace Havit.BusinessTest
 		}
 
 		/// <summary>
-		///A test for Get&lt;&gt; (int)
-		///</summary>
-		[TestMethod()]
+		/// A test for Get&lt;&gt; (int)
+		/// </summary>
+		[TestMethod]
 		public void GetTest_NotExist()
 		{
 			IdentityMap target = new IdentityMap();
@@ -119,9 +85,9 @@ namespace Havit.BusinessTest
 
 		#region TryGet
 		/// <summary>
-		///A test for TryGet&lt;&gt; (int)
-		///</summary>
-		[TestMethod()]
+		/// A test for TryGet&lt;&gt; (int)
+		/// </summary>
+		[TestMethod]
 		public void TryGetTest_Exist()
 		{
 			IdentityMap im = new IdentityMap();
@@ -137,9 +103,9 @@ namespace Havit.BusinessTest
 		}
 
 		/// <summary>
-		///A test for TryGet&lt;&gt; (int)
-		///</summary>
-		[TestMethod()]
+		/// A test for TryGet&lt;&gt; (int)
+		/// </summary>
+		[TestMethod]
 		public void TryGetTest_NotExist()
 		{
 			IdentityMap im = new IdentityMap();
@@ -155,9 +121,9 @@ namespace Havit.BusinessTest
 		}
 
 		/// <summary>
-		///A test for TryGet&lt;&gt; (int)
-		///</summary>
-		[TestMethod()]
+		/// A test for TryGet&lt;&gt; (int)
+		/// </summary>
+		[TestMethod]
 		public void TryGetTest_GC()
 		{
 			IdentityMap im = new IdentityMap();

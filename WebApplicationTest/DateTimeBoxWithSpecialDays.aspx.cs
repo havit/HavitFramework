@@ -30,7 +30,7 @@ namespace WebApplicationTest
 		//    args.DateCustomization = specialDateCollectionDefault; 
 		//}
 
-		void SpecialDTB_GetDateTimeBoxCustomization2(object sender, DateTimeBoxDateCustomizationEventArgs args)
+		private void SpecialDTB_GetDateTimeBoxCustomization2(object sender, DateTimeBoxDateCustomizationEventArgs args)
 		{
 			if (specialDateCollection == null)
 			{
@@ -71,7 +71,6 @@ namespace WebApplicationTest
 			};
 			return specialDatesList;
 		}
-		
 
 	}
 }

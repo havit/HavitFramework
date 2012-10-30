@@ -86,7 +86,7 @@ namespace Havit.Web
 					key = HttpUtility.UrlEncode(key);
 				}
 				string keyEquals = key + "=";
-				ArrayList values = (ArrayList)base.BaseGet(i);
+				ArrayList values = (ArrayList)BaseGet(i);
 				int valuesCount = (values != null) ? values.Count : 0;
 				if (sb.Length > 0)
 				{

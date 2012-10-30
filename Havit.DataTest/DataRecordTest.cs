@@ -13,26 +13,6 @@ namespace Havit.DataTest
 	[TestClass]
 	public class DataRecordTest
 	{
-		#region TestContext
-		private TestContext testContextInstance;
-
-		/// <summary>
-		///Gets or sets the test context which provides
-		///information about and functionality for the current test run.
-		/// </summary>
-		public TestContext TestContext
-		{
-			get
-			{
-				return testContextInstance;
-			}
-			set
-			{
-				testContextInstance = value;
-			}
-		}
-		#endregion
-
 		#region TryGet
 		/// <summary>
 		/// A test for TryGet&lt;&gt; (string, out T)
@@ -44,7 +24,9 @@ namespace Havit.DataTest
 			table.Columns.Add("ColumnName", typeof(int));
 			table.Rows.Add(10);
 
+#pragma warning disable 612,618
 			DataRecord record = new DataRecord(table.Rows[0]);
+#pragma warning restore 612,618
 
 			string fieldName = "ColumnName";
 
@@ -70,7 +52,9 @@ namespace Havit.DataTest
 			table.Columns.Add("ColumnName", typeof(object));
 			table.Rows.Add(DBNull.Value);
 
+#pragma warning disable 612,618
 			DataRecord record = new DataRecord(table.Rows[0]);
+#pragma warning restore 612,618
 
 			string fieldName = "ColumnName";
 
@@ -96,7 +80,9 @@ namespace Havit.DataTest
 			table.Columns.Add("ColumnName", typeof(int));
 			table.Rows.Add(10);
 
+#pragma warning disable 612,618
 			DataRecord record = new DataRecord(table.Rows[0]);
+#pragma warning restore 612,618
 
 			string fieldName = "ColumnName";
 
@@ -122,7 +108,9 @@ namespace Havit.DataTest
 			table.Columns.Add("ColumnName", typeof(decimal));
 			table.Rows.Add(10.1M);
 
+#pragma warning disable 612,618
 			DataRecord record = new DataRecord(table.Rows[0]);
+#pragma warning restore 612,618
 
 			string fieldName = "ColumnName";
 
@@ -149,7 +137,9 @@ namespace Havit.DataTest
 			table.Columns.Add("ColumnName", typeof(int));
 			table.Rows.Add(10);
 
+#pragma warning disable 612,618
 			DataRecord record = new DataRecord(table.Rows[0]);
+#pragma warning restore 612,618
 
 			string fieldName = "ColumnName";
 
@@ -171,7 +161,9 @@ namespace Havit.DataTest
 			table.Columns.Add("ColumnName", typeof(int));
 			table.Rows.Add(10);
 
+#pragma warning disable 612,618
 			DataRecord record = new DataRecord(table.Rows[0]);
+#pragma warning restore 612,618
 
 			string fieldName = "ColumnName_Jiny";
 
@@ -192,7 +184,9 @@ namespace Havit.DataTest
 			table.Columns.Add("ColumnName", typeof(int));
 			table.Rows.Add(10);
 
+#pragma warning disable 612,618
 			DataRecord record = new DataRecord(table.Rows[0], false);
+#pragma warning restore 612,618
 //			record.FullLoad = false;
 
 			string fieldName = "ColumnName_Jiny";

@@ -48,6 +48,7 @@ namespace Havit.BusinessLayerTest
 	/// </code>
 	/// </remarks>
 	[System.Diagnostics.Contracts.ContractVerification(false)]
+	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
 	public abstract class KomunikaceBase : ActiveRecordBusinessObjectBase
 	{
 		#region Static constructor
@@ -64,27 +65,24 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Vytvoří instanci objektu jako nový prvek.
 		/// </summary>
-		protected KomunikaceBase()
-			: base()
+		protected KomunikaceBase() : base()
 		{
 		}
 		
 		/// <summary>
 		/// Vytvoří instanci existujícího objektu.
 		/// </summary>
-		/// <param name="id">KomunikaceID (PK)</param>
-		protected KomunikaceBase(int id)
-			: base(id)
+		/// <param name="id">KomunikaceID (PK).</param>
+		protected KomunikaceBase(int id) : base(id)
 		{
 		}
 		
 		/// <summary>
 		/// Vytvoří instanci objektu na základě dat (i částečných) načtených z databáze.
 		/// </summary>
-		/// <param name="id">KomunikaceID (PK)</param>
-		/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu (i částečnými)</param>
-		protected KomunikaceBase(int id, DataRecord record)
-			: base(id, record)
+		/// <param name="id">KomunikaceID (PK).</param>
+		/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu (i částečnými).</param>
+		protected KomunikaceBase(int id, DataRecord record) : base(id, record)
 		{
 		}
 		#endregion
@@ -148,6 +146,8 @@ namespace Havit.BusinessLayerTest
 				_SubjektPropertyHolder.Value = null;
 				_ObjednavkaSepsaniPropertyHolder.Value = null;
 			}
+			
+			base.Init();
 		}
 		#endregion
 		
@@ -174,14 +174,14 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Načte data objektu z DB a vrátí je ve formě DataRecordu.
 		/// </summary>
-		/// <param name="transaction">případná transakce</param>
-		/// <returns>úplná data objektu</returns>
+		/// <param name="transaction">Transakce.</param>
+		/// <returns>Úplná data objektu.</returns>
 		protected override sealed DataRecord Load_GetDataRecord(DbTransaction transaction)
 		{
 			DataRecord result;
 			
 			DbCommand dbCommand = DbConnector.Default.ProviderFactory.CreateCommand();
-			dbCommand.CommandText = "SELECT KomunikaceID, SubjektID, ObjednavkaSepsaniID FROM [dbo].[Komunikace] WHERE KomunikaceID = @KomunikaceID";
+			dbCommand.CommandText = "SELECT [KomunikaceID], [SubjektID], [ObjednavkaSepsaniID] FROM [dbo].[Komunikace] WHERE [KomunikaceID] = @KomunikaceID";
 			dbCommand.Transaction = transaction;
 			
 			DbParameter dbParameterKomunikaceID = DbConnector.Default.ProviderFactory.CreateParameter();
@@ -270,7 +270,7 @@ namespace Havit.BusinessLayerTest
 			dbCommand.Parameters.Add(dbParameterSubjektID);
 			_SubjektPropertyHolder.IsDirty = false;
 			
-			dbCommand.CommandText = "DECLARE @KomunikaceID INT; INSERT INTO [dbo].[Komunikace] (SubjektID) VALUES (@SubjektID); SELECT @KomunikaceID = SCOPE_IDENTITY(); SELECT @KomunikaceID; ";
+			dbCommand.CommandText = "DECLARE @KomunikaceID INT; INSERT INTO [dbo].[Komunikace] ([SubjektID]) VALUES (@SubjektID); SELECT @KomunikaceID = SCOPE_IDENTITY(); SELECT @KomunikaceID; ";
 			this.ID = (int)DbConnector.Default.ExecuteScalar(dbCommand);
 			this.IsNew = false; // uložený objekt není už nový, dostal i přidělené ID
 			
@@ -305,7 +305,7 @@ namespace Havit.BusinessLayerTest
 			dbCommand.Parameters.Add(dbParameterObjednavkaSepsaniID);
 			_ObjednavkaSepsaniPropertyHolder.IsDirty = false;
 			
-			dbCommand.CommandText = "DECLARE @KomunikaceID INT; INSERT INTO [dbo].[Komunikace] (SubjektID, ObjednavkaSepsaniID) VALUES (@SubjektID, @ObjednavkaSepsaniID); SELECT @KomunikaceID = SCOPE_IDENTITY(); SELECT @KomunikaceID; ";
+			dbCommand.CommandText = "DECLARE @KomunikaceID INT; INSERT INTO [dbo].[Komunikace] ([SubjektID], [ObjednavkaSepsaniID]) VALUES (@SubjektID, @ObjednavkaSepsaniID); SELECT @KomunikaceID = SCOPE_IDENTITY(); SELECT @KomunikaceID; ";
 			this.ID = (int)DbConnector.Default.ExecuteScalar(dbCommand);
 			this.IsNew = false; // uložený objekt není už nový, dostal i přidělené ID
 			
@@ -333,7 +333,7 @@ namespace Havit.BusinessLayerTest
 				{
 					commandBuilder.Append(", ");
 				}
-				commandBuilder.Append("SubjektID = @SubjektID");
+				commandBuilder.Append("[SubjektID] = @SubjektID");
 				
 				DbParameter dbParameterSubjektID = DbConnector.Default.ProviderFactory.CreateParameter();
 				dbParameterSubjektID.DbType = DbType.Int32;
@@ -351,7 +351,7 @@ namespace Havit.BusinessLayerTest
 				{
 					commandBuilder.Append(", ");
 				}
-				commandBuilder.Append("ObjednavkaSepsaniID = @ObjednavkaSepsaniID");
+				commandBuilder.Append("[ObjednavkaSepsaniID] = @ObjednavkaSepsaniID");
 				
 				DbParameter dbParameterObjednavkaSepsaniID = DbConnector.Default.ProviderFactory.CreateParameter();
 				dbParameterObjednavkaSepsaniID.DbType = DbType.Int32;
@@ -366,7 +366,7 @@ namespace Havit.BusinessLayerTest
 			if (dirtyFieldExists)
 			{
 				// objekt je sice IsDirty (volá se tato metoda), ale může být změněná jen kolekce
-				commandBuilder.Append(" WHERE KomunikaceID = @KomunikaceID; ");
+				commandBuilder.Append(" WHERE [KomunikaceID] = @KomunikaceID; ");
 			}
 			else
 			{
@@ -423,7 +423,7 @@ namespace Havit.BusinessLayerTest
 		{
 			DbCommand dbCommand = DbConnector.Default.ProviderFactory.CreateCommand();
 			dbCommand.Transaction = transaction;
-			dbCommand.CommandText = "DELETE FROM [dbo].[Komunikace] WHERE KomunikaceID = @KomunikaceID";
+			dbCommand.CommandText = "DELETE FROM [dbo].[Komunikace] WHERE [KomunikaceID] = @KomunikaceID";
 			
 			DbParameter dbParameterKomunikaceID = DbConnector.Default.ProviderFactory.CreateParameter();
 			dbParameterKomunikaceID.DbType = DbType.Int32;
@@ -512,7 +512,8 @@ namespace Havit.BusinessLayerTest
 				while (reader.Read())
 				{
 					DataRecord dataRecord = new DataRecord(reader, dataLoadPower);
-					result.Add(Komunikace.GetObject(dataRecord));
+					Komunikace komunikace = Komunikace.GetObject(dataRecord);
+					result.Add(komunikace);
 				}
 			}
 			

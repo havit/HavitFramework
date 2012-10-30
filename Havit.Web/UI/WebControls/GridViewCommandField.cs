@@ -299,7 +299,7 @@ namespace Havit.Web.UI.WebControls
 		private IButtonControl AddButtonToCell(DataControlFieldCell cell, string commandName, string buttonText, string tooltipText, bool causesValidation, string validationGroup, int rowIndex, string imageUrl)
 		{
 			IButtonControl control;			
-			IPostBackContainer container = base.Control as IPostBackContainer;
+			IPostBackContainer container = this.Control as IPostBackContainer;
 			bool flag = true;
 			switch (this.ButtonType)
 			{
@@ -360,7 +360,7 @@ namespace Havit.Web.UI.WebControls
 			
 			/* Customizace jednotlivých řádek */
 			Control buttonControl = (Control)control;
-			buttonControl.DataBinding += new EventHandler(buttonControl_DataBinding);
+			buttonControl.DataBinding += new EventHandler(this.ButtonControl_DataBinding);
 
 			cell.Controls.Add((WebControl)control);
 			return control;
@@ -368,13 +368,13 @@ namespace Havit.Web.UI.WebControls
 
 		#endregion
 
-		#region buttonControl_DataBinding (customizace command-buttonu)
+		#region ButtonControl_DataBinding (customizace command-buttonu)
 		/// <summary>
 		/// Handles the DataBinding event of the buttonControl control.
 		/// </summary>
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-		private void buttonControl_DataBinding(object sender, EventArgs e)
+		private void ButtonControl_DataBinding(object sender, EventArgs e)
 		{
 			Debug.Assert(sender != null);
 			Debug.Assert(sender is IButtonControl);

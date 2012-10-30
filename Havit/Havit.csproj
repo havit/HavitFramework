@@ -172,6 +172,9 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Collections\GenericPropertyComparer.cs" />
     <Compile Include="Collections\SortDirection.cs" />
     <Compile Include="Collections\SortHelper.cs" />

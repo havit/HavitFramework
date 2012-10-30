@@ -7,6 +7,7 @@ namespace Havit.Business
 	/// <summary>
 	/// Třída reprezentující peněžní částky s měnou.
 	/// </summary>
+	/// <typeparam name="TCurrency">Typ měny pro třídu Money.</typeparam>
 	[Serializable]
 	public class Money<TCurrency>
 		where TCurrency : class
@@ -70,7 +71,7 @@ namespace Havit.Business
 		/// <summary>
 		/// Inicializuje třídu money s prázdními hodnotami (Amount i Currency jsou null).
 		/// </summary>
-		public Money(): this(null, null)
+		public Money() : this(null, null)
 		{
 		}
 
@@ -289,6 +290,7 @@ namespace Havit.Business
 		/// <summary>
 		/// Sečte dvě hodnoty Money. Pokud se neshoduje měna, operace vyvolá výjimku.	
 		/// </summary>
+		/// <typeparam name="TResult">Cílový typ Money.</typeparam>
 		public static TResult SumMoney<TResult>(Money<TCurrency> money1, Money<TCurrency> money2)
 			where TResult : Money<TCurrency>, new()
 		{
@@ -309,6 +311,7 @@ namespace Havit.Business
 		/// <summary>
 		/// Odečte měny (odčítá se money2 od money1). Pokud se neshoduje měna, operace vyvolá výjimku.
 		/// </summary>
+		/// <typeparam name="TResult">Cílový typ Money.</typeparam>
 		public static TResult SubtractMoney<TResult>(Money<TCurrency> money1, Money<TCurrency> money2)
 			where TResult : Money<TCurrency>, new()
 		{
@@ -329,6 +332,7 @@ namespace Havit.Business
 		/// <summary>
 		/// Vynásobí částku konstantou.
 		/// </summary>
+		/// <typeparam name="TResult">Cílový typ Money.</typeparam>
 		public static TResult MultipleMoney<TResult>(Money<TCurrency> money, decimal multiplicand)
 			where TResult : Money<TCurrency>, new()
 		{
@@ -346,6 +350,7 @@ namespace Havit.Business
 		/// <summary>
 		/// Vydělí částku konstantou.
 		/// </summary>
+		/// <typeparam name="TResult">Cílový typ Money.</typeparam>
 		public static TResult DivideMoney<TResult>(Money<TCurrency> money, decimal divisor)
 			where TResult : Money<TCurrency>, new()
 		{

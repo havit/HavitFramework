@@ -194,6 +194,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Compilation\CodeExpressionBuilder.cs" />
     <Compile Include="Management\WebRequestErrorEventExt.cs" />
     <Compile Include="PageNavigator.cs" />
@@ -342,6 +345,7 @@
     </Compile>
     <Compile Include="UI\WebControls\IIdentifiableField.cs" />
     <Compile Include="UI\WebControls\SpecialDate.cs" />
+    <Compile Include="UI\WebControls\SpecialDateCustomization.cs" />
     <Compile Include="UI\WebControls\TemplateFieldExt.cs" />
     <Compile Include="UI\WebControls\AjaxModalDialog.cs" />
     <Compile Include="UI\WebControls\AjaxModalDialogUserControlBase.cs">

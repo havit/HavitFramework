@@ -11,7 +11,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 	/// <summary>
 	/// IPersisterControlExtender pro ListBox.
 	/// </summary>
-	class ListBoxPersisterControlExtender : IPersisterControlExtender
+	internal class ListBoxPersisterControlExtender : IPersisterControlExtender
 	{
 		#region GetValue
 		public object GetValue(Control control)

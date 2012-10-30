@@ -11,7 +11,7 @@ namespace Havit.Web.UI.Scriptlets
 	/// <summary>
 	/// Control extender, který umí pracovat s Repeaterem.
 	/// </summary>
-    public class GridViewControlExtender: IControlExtender
+    public class GridViewControlExtender : IControlExtender
     {
 		#region Private fields
 		private int priority;		

@@ -317,7 +317,7 @@ namespace Havit.Web.UI.WebControls
 			{
 				AutoPageIndexChangedHandler(e);
 			}
-			base.OnPageIndexChanged (e);
+			base.OnPageIndexChanged(e);
 		}
 
 		/// <summary>
@@ -342,7 +342,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			DataGridItem item = e.Item;
 
-			base.OnItemCreated (e);
+			base.OnItemCreated(e);
 
 			// vypnutí CausesValidation u Update příkazu
 			if ((e.Item.ItemIndex == this.EditItemIndex) && (item.HasControls()))
@@ -366,7 +366,7 @@ namespace Havit.Web.UI.WebControls
 			// SortImage v Headeru
 			if ((this.AllowSorting == true) && (item.ItemType == ListItemType.Header))
 			{
-				string se = this.SortExpression.ToLower().Replace("asc", "").Replace("desc", "").Replace(" ","");
+				string se = this.SortExpression.ToLower().Replace("asc", "").Replace("desc", "").Replace(" ", "");
 				int colnum = -1;
 				for (int i = 0; i < this.Columns.Count; i++)
 				{
@@ -380,7 +380,7 @@ namespace Havit.Web.UI.WebControls
 					int iasc = this.SortExpression.ToLower().IndexOf(" asc");
 					int idesc = this.SortExpression.ToLower().IndexOf(" desc");
 
-					if ( (idesc > 0) && ((iasc < 0) || (idesc < iasc)) )
+					if ((idesc > 0) && ((iasc < 0) || (idesc < iasc)))
 					{
 						if ((this.SortHeaderImageUrlDesc != null) && (this.SortHeaderImageUrlDesc.Length > 0))
 						{
@@ -421,7 +421,7 @@ namespace Havit.Web.UI.WebControls
 			{
 				AutoEditCommandHandler(e);
 			}
-			base.OnEditCommand (e);
+			base.OnEditCommand(e);
 		}
 
 		/// <summary>

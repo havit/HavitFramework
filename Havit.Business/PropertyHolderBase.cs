@@ -36,7 +36,9 @@ namespace Havit.Business
 			{
 				_isDirty = value;
 				if (_isDirty)
+				{
 					Owner.IsDirty = true;
+				}
 			}
 		}
 		private bool _isDirty = false;

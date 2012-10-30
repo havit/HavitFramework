@@ -146,7 +146,7 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Úplná CssClass pro stav Collapsed
 		/// </summary>
-		private string cssClassCollapsedFull
+		private string CssClassCollapsedFull
 		{
 			get
 			{
@@ -157,7 +157,7 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Úplná CssClass pro stav Expanded
 		/// </summary>
-		private string cssClassExpandedFull
+		private string CssClassExpandedFull
 		{
 			get
 			{
@@ -233,11 +233,11 @@ namespace Havit.Web.UI.WebControls
 			// nastavení stylů
 			if (this.Collapsed)
 			{
-				this.ControlStyle.CssClass = this.cssClassCollapsedFull;
+				this.ControlStyle.CssClass = this.CssClassCollapsedFull;
 			}
 			else
 			{
-				this.ControlStyle.CssClass = this.cssClassExpandedFull;
+				this.ControlStyle.CssClass = this.CssClassExpandedFull;
 			}
 
 			// zajištění povinného renderování atributu ID
@@ -321,8 +321,8 @@ function havitCollapserExpand(collapserElementId, collapserStateElementId, conte
 			string toggleScript = String.Format("havitCollapserToggle('{0}', '{0}State', '{1}', '{2}', '{3}');",
 				this.ClientID,
 				ResolveID(this.ContentElement),
-				this.cssClassCollapsedFull,
-				this.cssClassExpandedFull);
+				this.CssClassCollapsedFull,
+				this.CssClassExpandedFull);
 			this.Attributes.Add("onclick", toggleScript);
 
 			if (this.Collapsed)
@@ -330,7 +330,7 @@ function havitCollapserExpand(collapserElementId, collapserStateElementId, conte
 				string collapseScript = String.Format("havitCollapserCollapse('{0}', '{0}State', '{1}', '{2}');",
 					this.ClientID,
 					ResolveID(this.ContentElement),
-					this.cssClassCollapsedFull);
+					this.CssClassCollapsedFull);
 
 				ScriptManager.RegisterStartupScript(this.Page, this.GetType(), clientScriptKey + ResolveID(this.ContentElement),  // zajistí jediné volání pro element
 					collapseScript, true);

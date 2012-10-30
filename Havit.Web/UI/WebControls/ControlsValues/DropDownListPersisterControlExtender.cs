@@ -10,7 +10,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 	/// <summary>
 	/// IPersisterControlExtender pro DropDownList.
 	/// </summary>
-	public class DropDownListPersisterControlExtender: IPersisterControlExtender
+	public class DropDownListPersisterControlExtender : IPersisterControlExtender
 	{
 		#region GetValue
 		public object GetValue(System.Web.UI.Control control)

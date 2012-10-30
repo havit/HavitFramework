@@ -11,7 +11,7 @@ namespace Havit.Web.UI.Scriptlets
 	/// <summary>
 	/// Control extender, který umí pracovat s Repeaterem.
 	/// </summary>
-    public class RepeaterControlExtender: IControlExtender
+    public class RepeaterControlExtender : IControlExtender
     {
 		#region Private fields
 		private int priority;		

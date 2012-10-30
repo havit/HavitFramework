@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
+
 using Havit.Data.SqlTypes;
 
 namespace HavitTestConsoleApplication
@@ -11,28 +13,81 @@ namespace HavitTestConsoleApplication
 	using System.Diagnostics;
 	using System.IO;
 
-	class Program
+	internal class Program
 	{		
-		static void Main(string[] args)
+		private static void Main(string[] args)
 		{
-			TestAggregateMicroCollections();
-			TestAggregateSmallCollections();
-			TestAggregateLargeCollections();
+			Console.WriteLine("Aggreates writes");
 
+			//TestAggregateMicroCollections();
+			//TestAggregateSmallCollections();
+			//TestAggregateLargeCollections();
+
+			Console.WriteLine("String split + parse");
 			TestSplitMicro();
 			TestSplitSmall();
 			TestSplitLarge();
+
+			//Console.WriteLine("regex match + parse");
+			//MatchCollection matches = Regex.Matches("<ID>1234567</ID>", "[-]\\d+", RegexOptions.Singleline | RegexOptions.Compiled);
+			//TestRegexParseMicro();
+			//TestRegexParseSmall();
+			//TestRegexParseLarge();
+
+		}
+
+		private static void TestRegexParseLarge()
+		{
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < 50000; i++)
+			{
+				sb.Append("<ID>123467</ID>");
+			}
+
+			TestRegexParse(100, sb.ToString());
+		}
+
+		private static void TestRegexParseSmall()
+		{
+			TestRegexParse(1000000, "<ID>1234567</ID><ID>1234567</ID><ID>1234567</ID><ID>1234567</ID><ID>1234567</ID>");
+		}
+
+		private static void TestRegexParseMicro()
+		{
+			TestRegexParse(5000000, "<ID>1234567</ID>");
+		}
+
+		private static void TestRegexParse(int repeatCount, string value)
+		{
+			Stopwatch sw = new Stopwatch();
+			sw.Start();
+
+			for (int i = 0; i < repeatCount; i++)
+			{
+				MatchCollection matches = Regex.Matches(value, "-?\\d+", RegexOptions.Singleline | RegexOptions.Compiled);
+				int[] intValues = new int[matches.Count];
+
+				for (int j = 0; j < matches.Count; j++)
+				{
+					intValues[j] = IntParseFast1(matches[j].Value);
+				}
+			}
+
+			sw.Stop();
+			Console.WriteLine("{0} ms", sw.ElapsedMilliseconds);
+			Console.WriteLine("{0}x {1} ns", repeatCount, sw.ElapsedMilliseconds / (decimal)repeatCount * 1000);
+			Console.WriteLine();
 
 		}
 
 		private static void TestSplitMicro()
 		{
-			TestSplit(5000000, "1234567");
+			TestSplit(5000000, "1234567|");
 		}
 
 		private static void TestSplitSmall()
 		{
-			TestSplit(1000000, "1234567|1234567|1234567|1234567|1234567");
+			TestSplit(1000000, "1234567|1234567|1234567|1234567|1234567|");
 		}
 		
 		private static void TestSplitLarge()
@@ -40,11 +95,7 @@ namespace HavitTestConsoleApplication
 			StringBuilder sb = new StringBuilder();
 			for (int i = 0; i < 50000; i++)
 			{
-				if (i > 0)
-				{
-					sb.Append("|");
-				}
-				sb.Append("123467");
+				sb.Append("123467|");
 			}
 
 			TestSplit(100, sb.ToString());
@@ -92,8 +143,8 @@ namespace HavitTestConsoleApplication
 			}
 
 			sw.Stop();
-			Console.WriteLine(sw.ElapsedMilliseconds);
-			Console.WriteLine("{0}x {1}", repeatCount, sw.ElapsedMilliseconds / (decimal)repeatCount);
+			Console.WriteLine("{0} ms", sw.ElapsedMilliseconds);
+			Console.WriteLine("{0}x {1} ns", repeatCount, sw.ElapsedMilliseconds / (decimal)repeatCount * 1000);
 			Console.WriteLine();
 
 		}
@@ -103,41 +154,63 @@ namespace HavitTestConsoleApplication
 			Stopwatch sw = new Stopwatch();
 			sw.Start();
 
+			char[] separator = new char[] { '|' };
 			unchecked
 			{
 				for (int i = 0; i < repeatCount; i++)
 				{
-					var stringValues = value.Split(new char[] { '|' });
+					var stringValues = value.TrimEnd(separator).Split(separator);
 					int[] intValues = new int[stringValues.Length];
 
 					for (int j = 0; j < stringValues.Length; j++)
 					{
-						intValues[j] = IntParseFast(stringValues[j]);
+						intValues[j] = IntParseFast1(stringValues[j]);
 						//int.TryParse(stringValues[j], NumberStyles.None, NumberFormatInfo.InvariantInfo, out intValues[j]);
 					}
 				}
 			}
 			sw.Stop();
-			Console.WriteLine(sw.ElapsedMilliseconds);
-			Console.WriteLine("{0}x {1}", repeatCount, sw.ElapsedMilliseconds / (decimal)repeatCount);
+			Console.WriteLine("{0} ms", sw.ElapsedMilliseconds);
+			Console.WriteLine("{0}x {1} ns", repeatCount, sw.ElapsedMilliseconds / (decimal)repeatCount * 1000);
 			Console.WriteLine();
 		}
 
-		private static int IntParseFast(string value)
+		private static int IntParseFast1(string value)
 		{
 			unchecked
 			{
-				
-			int result = 0;
-			bool negative = value.Length > 0 && (value[0] == '-');
 
-			for (int i = negative ? 1 : 0; i < value.Length; i++)
-			{
-				//char letter = value[i];
-				result = 10 * result + (value[i] - 48);
+				int result = 0;
+				byte negative = (byte)(((value.Length > 0) && (value[0] == '-')) ? 1 : 0);
+
+				byte l = (byte)value.Length;
+				for (byte i = negative; i < l; i++)
+				{
+					//char letter = value[i];
+					result = 10 * result + (value[i] - 48);
+				}
+
+				return negative == 0 ? result : -1 * result;
 			}
 
-			return negative ? -1 * result : result;
+		}
+
+		private static int IntParseFast2(string value)
+		{
+			unchecked
+			{
+
+				int result = 0;
+				int negative = (byte)(((value.Length > 0) && (value[0] == '-')) ? 1 : 0);
+
+				int l = value.Length;
+				for (int i = negative; i < l; i++)
+				{
+					//char letter = value[i];
+					result = 10 * result + (value[i] - 48);
+				}
+
+				return negative == 0 ? result : -1 * result;
 			}
 
 		}

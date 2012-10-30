@@ -16,7 +16,7 @@ namespace Havit.BusinessTest
 	/// to contain all Havit.Business.BusinessObjectBase Unit Tests
 	/// </summary>
 	[TestClass]
-	public class BusinessObjectBaseTest
+	public class BusinessObjectBaseTest : BusinessObjectBase // abychom došáhli na protected members
 	{
 		#region EqualsTest_StejneID
 		/// <summary>
@@ -75,26 +75,6 @@ namespace Havit.BusinessTest
 		}
 		#endregion
 
-		#region TestContext
-		private TestContext testContextInstance;
-
-		/// <summary>
-		/// Gets or sets the test context which provides
-		/// information about and functionality for the current test run.
-		/// </summary>
-		public TestContext TestContext
-		{
-			get
-			{
-				return testContextInstance;
-			}
-			set
-			{
-				testContextInstance = value;
-			}
-		}
-		#endregion
-	
 		#region GetAllCacheClone
 		/// <summary>
 		/// Testuje, zda cachovaný GetAll vrací klon kolekce.
@@ -210,6 +190,38 @@ namespace Havit.BusinessTest
 		}
 		#endregion
 
+		#region FastIntParseTest
+		/// <summary>
+		/// A test for FastIntParseTest
+		/// </summary>
+		[TestMethod]
+		public void FastIntParseTest()
+		{
+			Assert.AreEqual(BusinessObjectBase.FastIntParse("0"), 0);
+			Assert.AreEqual(BusinessObjectBase.FastIntParse("1"), 1);
+			Assert.AreEqual(BusinessObjectBase.FastIntParse("-1"), -1);
+			Assert.AreEqual(BusinessObjectBase.FastIntParse("999999"), 999999);
+			Assert.AreEqual(BusinessObjectBase.FastIntParse("-999999"), -999999);
+			Assert.AreEqual(BusinessObjectBase.FastIntParse("123456789"), 123456789);
+		}
+		#endregion
+
+		#region TryLoad_Perform, Save_Perform, Delete_Perform
+		protected override bool TryLoad_Perform(DbTransaction transaction)
+		{
+			throw new NotImplementedException();
+		}
+
+		protected override void Save_Perform(DbTransaction transaction)
+		{
+			throw new NotImplementedException();
+		}
+
+		protected override void Delete_Perform(DbTransaction transaction)
+		{
+			throw new NotImplementedException();
+		}
+		#endregion
 	}
 
 }

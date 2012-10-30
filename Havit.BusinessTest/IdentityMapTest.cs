@@ -14,26 +14,6 @@ namespace Havit.BusinessTest
 	[TestClass]
 	public class IdentityMapTest
 	{
-		#region TestContext
-		private TestContext testContextInstance;
-
-		/// <summary>
-		/// Gets or sets the test context which provides
-		/// information about and functionality for the current test run.
-		/// </summary>
-		public TestContext TestContext
-		{
-			get
-			{
-				return testContextInstance;
-			}
-			set
-			{
-				testContextInstance = value;
-			}
-		}
-		#endregion
-
 		#region Store
 		/// <summary>
 		/// A test for Store&lt;&gt; (T)

@@ -41,7 +41,7 @@ namespace WebApplicationTest
 			// e.Item.Text = item.ToString("d");
 		}
 
-		protected override void  OnLoad(EventArgs e)
+		protected override void OnLoad(EventArgs e)
 {
  	 base.OnLoad(e);
 			MainGridView.DataSource = new string[] { "a", "b" };

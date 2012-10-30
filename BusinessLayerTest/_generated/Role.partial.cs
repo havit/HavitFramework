@@ -30,19 +30,21 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Vytvoří instanci existujícího objektu.
 		/// </summary>
-		/// <param name="id">RoleID (PK)</param>
-		protected Role(int id)
-			: base(id)
+		/// <param name="id">RoleID (PK).</param>
+		[System.Diagnostics.Contracts.ContractVerification(false)]
+		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
+		protected Role(int id) : base(id)
 		{
 		}
 		
 		/// <summary>
 		/// Vytvoří instanci objektu na základě dat (i částečných) načtených z databáze.
 		/// </summary>
-		/// <param name="id">RoleID (PK)</param>
-		/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu (i částečnými)</param>
-		protected Role(int id, DataRecord record)
-			: base(id, record)
+		/// <param name="id">RoleID (PK).</param>
+		/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu (i částečnými).</param>
+		[System.Diagnostics.Contracts.ContractVerification(false)]
+		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
+		protected Role(int id, DataRecord record) : base(id, record)
 		{
 		}
 		#endregion
@@ -54,8 +56,9 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Vrátí existující objekt s daným ID.
 		/// </summary>
-		/// <param name="id">RoleID (PK)</param>
+		/// <param name="id">RoleID (PK).</param>
 		[System.Diagnostics.Contracts.ContractVerification(false)]
+		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
 		public static Role GetObject(int id)
 		{
 			global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<Role>() != null);
@@ -70,7 +73,7 @@ namespace Havit.BusinessLayerTest
 			}
 			
 			bool fromCache = true;
-			string cacheKey = String.Format(CultureInfo.InvariantCulture, "Havit.BusinessLayerTest.Role.GetObject({0})", id);
+			string cacheKey = "Havit.BusinessLayerTest.Role.GetObject|ID=" + id;
 			
 			result = (Role)HttpRuntime.Cache.Get(cacheKey);
 			if (result == null)
@@ -83,7 +86,7 @@ namespace Havit.BusinessLayerTest
 						fromCache = false;
 						result = new Role(id);
 						
-						HttpRuntime.Cache.Add(
+						HttpRuntime.Cache.Insert(
 							cacheKey,
 							result,
 							null, // dependencies
@@ -107,6 +110,7 @@ namespace Havit.BusinessLayerTest
 		/// Vrátí existující objekt inicializovaný daty z DataReaderu.
 		/// </summary>
 		[System.Diagnostics.Contracts.ContractVerification(false)]
+		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
 		internal static Role GetObject(DataRecord dataRecord)
 		{
 			global::System.Diagnostics.Contracts.Contract.Requires(dataRecord != null);
@@ -150,6 +154,22 @@ namespace Havit.BusinessLayerTest
 		
 		#endregion
 		
+		#region GetObjectOrDefault (static)
+		
+		/// <summary>
+		/// Pokud je zadáno ID objektu (not-null), vrátí existující objekt s daným ID. Jinak vrací výchozí hodnotu (není-li zadána, pak vrací null).
+		/// </summary>
+		/// <param name="id">ID objektu.</param>
+		/// <param name="defaultValue">Výchozí hodnota.</param>
+		[System.Diagnostics.Contracts.ContractVerification(false)]
+		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
+		public static Role GetObjectOrDefault(int? id, Role defaultValue = null)
+		{
+			return (id != null) ? GetObject(id.Value) : defaultValue;
+		}
+		
+		#endregion
+		
 		#region GetObjects (static)
 		
 		/// <summary>
@@ -157,6 +177,7 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		/// <param name="ids">Identifikátory objektů.</param>
 		[System.Diagnostics.Contracts.ContractVerification(false)]
+		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
 		public static RoleCollection GetObjects(params int[] ids)
 		{
 			global::System.Diagnostics.Contracts.Contract.Requires(ids != null);

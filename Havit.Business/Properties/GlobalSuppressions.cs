@@ -1,4 +1,0 @@
-﻿[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1706:ShortAcronymsShouldBeUppercase", Scope = "member", Target = "Havit.Business.BusinessObjectCollection`1.FindByID(System.Int32):T", MessageId = "Member")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1805:DoNotInitializeUnnecessarily", Scope = "member", Target = "Havit.Business.BusinessObjectBase..ctor()")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1805:DoNotInitializeUnnecessarily", Scope = "member", Target = "Havit.Business.BusinessObjectBase..ctor(System.Int32)")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists", Scope = "member", Target = "Havit.Business.BusinessObjectCollection`1..ctor(System.Collections.Generic.List`1<T>)")]

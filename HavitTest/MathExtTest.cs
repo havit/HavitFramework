@@ -7,10 +7,9 @@ using System.Collections.Generic;
 namespace HavitTest
 {
 	/// <summary>
-	///This is a test class for Havit.MathExt and is intended
-	///to contain all Havit.MathExt Unit Tests
+	/// Test třídy MathExt.	
 	/// </summary>
-	[TestClass()]
+	[TestClass]
 	public class MathExtTest
 	{
 		#region IsInteger
@@ -92,26 +91,6 @@ namespace HavitTest
 			actual = Havit.MathExt.IsInteger(text);
 
 			Assert.AreEqual(expected, actual, "Havit.MathExt.IsInteger did not return the expected value.");
-		}
-		#endregion
-
-		#region TestContext
-		private TestContext testContextInstance;
-
-		/// <summary>
-		///Gets or sets the test context which provides
-		///information about and functionality for the current test run.
-		/// </summary>
-		public TestContext TestContext
-		{
-			get
-			{
-				return testContextInstance;
-			}
-			set
-			{
-				testContextInstance = value;
-			}
 		}
 		#endregion
 	}

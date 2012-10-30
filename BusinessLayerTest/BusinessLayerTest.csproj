@@ -180,7 +180,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Havit.Business\Havit.Business.csproj">
-      <Project>{81995BC1-9F25-4F46-8258-8ED1F965CABB}</Project>
+      <Project>{81995bc1-9f25-4f46-8258-8ed1f965cabb}</Project>
       <Name>Havit.Business</Name>
     </ProjectReference>
     <ProjectReference Include="..\Havit.Data.SqlServer\Havit.Data.SqlServer.sqlproj">

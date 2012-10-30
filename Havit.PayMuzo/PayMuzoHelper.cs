@@ -37,8 +37,7 @@ namespace Havit.PayMuzo
 			string returnUrl,
 			int? merchantOrderNumber,
 			string description,
-			string merchantData
-		)
+			string merchantData)
 		{
 			// ******************************************************************
 			// POZOR !!!! ZÁLEŽÍ NA POŘADÍ POLOŽEK !!! ROZHODUJÍCÍ PRO PODPIS !!!

@@ -9,7 +9,7 @@ namespace Havit.Web.UI.Scriptlets
 	/// ControlExtender určený ke tvorbě potomků, kteří provádějí substituci za jiný control.
 	/// Např. pokud je potřeba substituovat UserControl za některý vnořený control.
 	/// </summary>
-	public abstract class SubstitutionControlExtenderBase: IControlExtender
+	public abstract class SubstitutionControlExtenderBase : IControlExtender
 	{
 		#region GetPriority
 		/// <summary>
@@ -20,7 +20,7 @@ namespace Havit.Web.UI.Scriptlets
 		/// <returns>Priorita.</returns>
 		public int? GetPriority(Control control)
 		{
-			return (this.GetSupportedControlType().IsAssignableFrom(control.GetType())) ? (int?)this.GetPriorityValue: null;
+			return (this.GetSupportedControlType().IsAssignableFrom(control.GetType())) ? (int?)this.GetPriorityValue : null;
 		}
 		#endregion
 		

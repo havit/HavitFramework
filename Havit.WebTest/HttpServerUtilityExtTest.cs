@@ -6,32 +6,12 @@ namespace Havit.WebTest
 {
 
 	/// <summary>
-	///This is a test class for HttpServerUtilityExtTest and is intended
-	///to contain all HttpServerUtilityExtTest Unit Tests
+	/// This is a test class for HttpServerUtilityExtTest and is intended
+	/// to contain all HttpServerUtilityExtTest Unit Tests
 	/// </summary>
-	[TestClass()]
+	[TestClass]
 	public class HttpServerUtilityExtTest
 	{
-		#region TestContext
-		private TestContext testContextInstance;
-
-		/// <summary>
-		///Gets or sets the test context which provides
-		///information about and functionality for the current test run.
-		/// </summary>
-		public TestContext TestContext
-		{
-			get
-			{
-				return testContextInstance;
-			}
-			set
-			{
-				testContextInstance = value;
-			}
-		}
-		#endregion
-
 		#region ResolveUrlTest_Standard
 		/// <summary>
 		/// A test for ResolveUrl

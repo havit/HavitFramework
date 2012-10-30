@@ -151,11 +151,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BusinessLayerTest\BusinessLayerTest.csproj">
-      <Project>{5A35A57F-7D3D-4858-BC69-B91025CDE667}</Project>
+      <Project>{5a35a57f-7d3d-4858-bc69-b91025cde667}</Project>
       <Name>BusinessLayerTest</Name>
     </ProjectReference>
     <ProjectReference Include="..\Havit.Business\Havit.Business.csproj">
-      <Project>{81995BC1-9F25-4F46-8258-8ED1F965CABB}</Project>
+      <Project>{81995bc1-9f25-4f46-8258-8ed1f965cabb}</Project>
       <Name>Havit.Business</Name>
     </ProjectReference>
     <ProjectReference Include="..\Havit.Data.SqlServer\Havit.Data.SqlServer.sqlproj">

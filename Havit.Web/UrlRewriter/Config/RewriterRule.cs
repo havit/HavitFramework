@@ -6,7 +6,7 @@ namespace Havit.Web.UrlRewriter.Config
 	/// Represents a rewriter rule.  A rewriter rule is composed of a pattern to search for and a string to replace
 	/// the pattern with (if matched).
 	/// </summary>
-	[Serializable()]
+	[Serializable]
 	public class RewriterRule
 	{
 		// private member variables...

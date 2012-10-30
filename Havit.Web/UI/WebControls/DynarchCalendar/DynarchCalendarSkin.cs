@@ -13,22 +13,27 @@ namespace Havit.Web.UI.WebControls
 		/// None
 		/// </summary>
 		None,
+
 		/// <summary>
 		/// Blue
 		/// </summary>
 		Blue,
+
 		/// <summary>
 		/// Blue2
 		/// </summary>
 		Blue2,
+
 		/// <summary>
 		/// Brown
 		/// </summary>
 		Brown,
+
 		/// <summary>
 		/// Green
 		/// </summary>
 		Green,
+
 		/// <summary>
 		/// System
 		/// </summary>

@@ -10,19 +10,14 @@ using Havit.Business.Query;
 
 namespace WebApplicationTest
 {
-	/// <summary>
-	/// Summary description for AutoSuggestMenuService
-	/// </summary>
 	[WebService(Namespace = "http://tempuri.org/")]
 	[WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
 	[ScriptService]
 	[System.ComponentModel.ToolboxItem(false)]
-	// To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
-	// [System.Web.Script.Services.ScriptService]
 	public class AutoSuggestMenuService : System.Web.Services.WebService
 	{
 		[ScriptMethod]
-		[WebMethod()]
+		[WebMethod]
 		public string GetSuggestions(string keyword, bool usePaging, int pageIndex, int pageSize, string context)
 		{
 			if (String.IsNullOrEmpty(keyword))

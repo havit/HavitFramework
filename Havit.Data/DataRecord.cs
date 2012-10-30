@@ -142,7 +142,8 @@ namespace Havit.Data
 		#region Get<T>, TryGet<T>, Load<T>
 		/// <summary>
 		/// Načte parametr zadaného generického typu T.
-		/// </summary>		
+		/// </summary>
+		/// <typeparam name="T">Typ hodnoty.</typeparam>
 		/// <param name="fieldName">jméno parametru</param>
 		/// <param name="target">cíl, kam má být parametr uložen</param>
 		/// <returns>
@@ -203,6 +204,7 @@ namespace Havit.Data
 		/// <summary>
 		/// Vrátí parametr zadaného generického typu.
 		/// </summary>
+		/// <typeparam name="T">Typ hodnoty.</typeparam>
 		/// <remarks>
 		/// Mimo castingu se pokouší i o konverzi typu pomocí IConvertible.
 		/// </remarks>
@@ -224,6 +226,7 @@ namespace Havit.Data
 		/// <summary>
 		/// Načte parametr zadaného generického typu T.
 		/// </summary>
+		/// <typeparam name="T">Typ hodnoty.</typeparam>
 		/// <remarks>
 		/// Narozdíl od <see cref="TryGet{T}(string, out T)"/> neindikuje přítomnost fieldu v data recordu, nýbrž je-li field roven <see cref="DBNull"/>.<br/>
 		/// Pokud je field <see cref="DBNull"/>, pak parametr <c>target</c> nezmění

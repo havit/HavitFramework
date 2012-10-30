@@ -2,8 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1C9D6C81-DCFD-49C6-9BEE-0E52304CFE98}"
 	ProjectSection(SolutionItems) = preProject
-		Havit.vsmdi = Havit.vsmdi
-		localtestrun.testrunconfig = localtestrun.testrunconfig
+		CommonAssemblyInfo.cs = CommonAssemblyInfo.cs
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Styles", "Styles", "{FB153CBA-8206-4AF4-B6BF-4BD056B40187}"
@@ -49,9 +48,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.WebTest", "Havit.WebT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.PayMuzo", "Havit.PayMuzo\Havit.PayMuzo.csproj", "{23DD2985-0805-4A85-AE9F-DCF95416CF20}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TracingTest", "TracingTest\TracingTest.csproj", "{8205CE30-EB5C-42FD-927D-723500F1028B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HavitTestConsoleApplication", "HavitTestConsoleApplication\HavitTestConsoleApplication.csproj", "{9D368EE4-AE81-4B73-B617-DDA5A94410FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TracingTest", "TracingTest\TracingTest.csproj", "{8205CE30-EB5C-42FD-927D-723500F1028B}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
@@ -101,18 +100,15 @@ Global
 		SccProjectUniqueName14 = Havit.PayMuzo\\Havit.PayMuzo.csproj
 		SccProjectName14 = Havit.PayMuzo
 		SccLocalPath14 = Havit.PayMuzo
-		SccProjectUniqueName15 = TracingTest\\TracingTest.csproj
-		SccProjectName15 = TracingTest
-		SccLocalPath15 = TracingTest
-		SccProjectUniqueName16 = HavitTestConsoleApplication\\HavitTestConsoleApplication.csproj
-		SccProjectName16 = HavitTestConsoleApplication
-		SccLocalPath16 = HavitTestConsoleApplication
-		SccProjectUniqueName17 = Havit.Data.SqlServer\\Havit.Data.SqlServer.sqlproj
-		SccProjectName17 = Havit.Data.SqlServer
-		SccLocalPath17 = Havit.Data.SqlServer
-	EndGlobalSection
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = Havit.vsmdi
+		SccProjectUniqueName15 = HavitTestConsoleApplication\\HavitTestConsoleApplication.csproj
+		SccProjectName15 = HavitTestConsoleApplication
+		SccLocalPath15 = HavitTestConsoleApplication
+		SccProjectUniqueName16 = Havit.Data.SqlServer\\Havit.Data.SqlServer.sqlproj
+		SccProjectName16 = Havit.Data.SqlServer
+		SccLocalPath16 = Havit.Data.SqlServer
+		SccProjectUniqueName17 = TracingTest\\TracingTest.csproj
+		SccProjectName17 = TracingTest
+		SccLocalPath17 = TracingTest
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -267,26 +263,26 @@ Global
 		{23DD2985-0805-4A85-AE9F-DCF95416CF20}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{23DD2985-0805-4A85-AE9F-DCF95416CF20}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{23DD2985-0805-4A85-AE9F-DCF95416CF20}.Release|x86.ActiveCfg = Release|Any CPU
+		{9D368EE4-AE81-4B73-B617-DDA5A94410FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D368EE4-AE81-4B73-B617-DDA5A94410FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D368EE4-AE81-4B73-B617-DDA5A94410FF}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{9D368EE4-AE81-4B73-B617-DDA5A94410FF}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{9D368EE4-AE81-4B73-B617-DDA5A94410FF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9D368EE4-AE81-4B73-B617-DDA5A94410FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D368EE4-AE81-4B73-B617-DDA5A94410FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D368EE4-AE81-4B73-B617-DDA5A94410FF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9D368EE4-AE81-4B73-B617-DDA5A94410FF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{9D368EE4-AE81-4B73-B617-DDA5A94410FF}.Release|x86.ActiveCfg = Release|Any CPU
 		{8205CE30-EB5C-42FD-927D-723500F1028B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8205CE30-EB5C-42FD-927D-723500F1028B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8205CE30-EB5C-42FD-927D-723500F1028B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
 		{8205CE30-EB5C-42FD-927D-723500F1028B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{8205CE30-EB5C-42FD-927D-723500F1028B}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{8205CE30-EB5C-42FD-927D-723500F1028B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8205CE30-EB5C-42FD-927D-723500F1028B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8205CE30-EB5C-42FD-927D-723500F1028B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{8205CE30-EB5C-42FD-927D-723500F1028B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{8205CE30-EB5C-42FD-927D-723500F1028B}.Release|x86.ActiveCfg = Release|Any CPU
-		{9D368EE4-AE81-4B73-B617-DDA5A94410FF}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{9D368EE4-AE81-4B73-B617-DDA5A94410FF}.Debug|Any CPU.Build.0 = Debug|x86
-		{9D368EE4-AE81-4B73-B617-DDA5A94410FF}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{9D368EE4-AE81-4B73-B617-DDA5A94410FF}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{9D368EE4-AE81-4B73-B617-DDA5A94410FF}.Debug|x86.ActiveCfg = Debug|x86
-		{9D368EE4-AE81-4B73-B617-DDA5A94410FF}.Debug|x86.Build.0 = Debug|x86
-		{9D368EE4-AE81-4B73-B617-DDA5A94410FF}.Release|Any CPU.ActiveCfg = Release|x86
-		{9D368EE4-AE81-4B73-B617-DDA5A94410FF}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{9D368EE4-AE81-4B73-B617-DDA5A94410FF}.Release|Mixed Platforms.Build.0 = Release|x86
-		{9D368EE4-AE81-4B73-B617-DDA5A94410FF}.Release|x86.ActiveCfg = Release|x86
-		{9D368EE4-AE81-4B73-B617-DDA5A94410FF}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

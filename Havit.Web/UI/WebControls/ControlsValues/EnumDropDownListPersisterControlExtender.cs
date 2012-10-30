@@ -12,7 +12,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 	/// <summary>
 	/// IPersisterControlExtender pro EnumDropDownList.
 	/// </summary>
-	class EnumDropDownListPersisterControlExtender : IPersisterControlExtender
+	internal class EnumDropDownListPersisterControlExtender : IPersisterControlExtender
 	{
 		#region GetValue
 		public object GetValue(Control control)

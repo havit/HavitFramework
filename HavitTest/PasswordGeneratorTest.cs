@@ -8,10 +8,9 @@ using Havit.Security;
 namespace HavitTest
 {
 	/// <summary>
-	/// This is a test class for Havit.Security.PasswordGenerator and is intended
-	/// to contain all Havit.Security.PasswordGenerator Unit Tests
+	/// Test třídy PasswordGenerator.
 	/// </summary>
-	[TestClass()]
+	[TestClass]
 	public class PasswordGeneratorTest
 	{
 		#region GenerateTest_Length
@@ -56,24 +55,5 @@ namespace HavitTest
 		}
 		#endregion
 
-		#region Testing Infrastructure
-		private TestContext testContextInstance;
-
-		/// <summary>
-		///Gets or sets the test context which provides
-		///information about and functionality for the current test run.
-		/// </summary>
-		public TestContext TestContext
-		{
-			get
-			{
-				return testContextInstance;
-			}
-			set
-			{
-				testContextInstance = value;
-			}
-		}
-		#endregion
 	}
 }

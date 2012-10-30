@@ -64,7 +64,7 @@ namespace Havit.Web.UI.WebControls
 				autoPageChangeEnabled = value;
 			}
 		}
-		bool autoPageChangeEnabled = true;
+		private bool autoPageChangeEnabled = true;
 
 		/// <summary>
 		/// Příznak, zda může dojít je možná změna stránky.
@@ -83,7 +83,7 @@ namespace Havit.Web.UI.WebControls
 				pageChangeEnabled = value;
 			}
 		}
-		bool pageChangeEnabled = false;
+		private bool pageChangeEnabled = false;
 
 	}
 }

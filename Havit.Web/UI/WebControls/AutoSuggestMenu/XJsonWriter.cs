@@ -34,14 +34,18 @@ namespace Havit.Web.UI.WebControls
             string valueText = GetValueText(value, formatValue);
 
             //Add delimiter
-            if (this.GetStringBuilder().Length > 0)
-                this.WriteLine(", ");
+			if (this.GetStringBuilder().Length > 0)
+			{
+				this.WriteLine(", ");
+			}
 
-            //Prefix value with new line if it starts with {
-            if (valueText[0] == '{')
-                valueText = this.NewLine + valueText;
+	        //Prefix value with new line if it starts with {
+			if (valueText[0] == '{')
+			{
+				valueText = this.NewLine + valueText;
+			}
 
-            this.Write("\"" + name + "\": " + valueText);
+	        this.Write("\"" + name + "\": " + valueText);
         }
 
         public void WriteList(string name, IList list)
@@ -58,10 +62,12 @@ namespace Havit.Web.UI.WebControls
             {
                 valueText = GetValueText(item, formatValues);
 
-                if (sb.Length != 0)
-                    sb.AppendLine(", ");
+				if (sb.Length != 0)
+				{
+					sb.AppendLine(", ");
+				}
 
-                sb.Append(valueText);
+	            sb.Append(valueText);
             }
 
             string listText = this.NewLine + "[" + this.NewLine + sb.ToString() + this.NewLine + "]";

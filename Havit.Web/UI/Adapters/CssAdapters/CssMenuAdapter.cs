@@ -213,7 +213,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
                         }
                         else
                         {
-                            writer.WriteAttribute("href", Page.ClientScript.GetPostBackClientHyperlink(menu, "b" +  item.ValuePath.Replace(menu.PathSeparator.ToString(), "\\"), true));
+                            writer.WriteAttribute("href", Page.ClientScript.GetPostBackClientHyperlink(menu, "b" + item.ValuePath.Replace(menu.PathSeparator.ToString(), "\\"), true));
                         }
 
                         writer.WriteAttribute("class", GetItemClass(menu, item));
@@ -291,7 +291,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
                 }
                 else if (IsLink(item))
                 {
-                    value =  "AspNet-Menu-Link";
+                    value = "AspNet-Menu-Link";
                 }
                 string selectedStatusClass = GetSelectStatusClass(item);
                 if (!String.IsNullOrEmpty(selectedStatusClass))

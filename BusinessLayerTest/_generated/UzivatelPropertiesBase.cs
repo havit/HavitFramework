@@ -32,6 +32,7 @@ namespace Havit.BusinessLayerTest
 	/// Objektová reprezentace metadat vlastností typu Uzivatel.
 	/// </summary>
 	[System.Diagnostics.Contracts.ContractVerification(false)]
+	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
 	public class UzivatelPropertiesBase
 	{
 		/// <summary>
@@ -70,7 +71,7 @@ namespace Havit.BusinessLayerTest
 			_loginCount.Initialize(objectInfo, "LoginCount", "LoginCount", false, SqlDbType.Int, false, 4);
 			_created.Initialize(objectInfo, "Created", "Created", false, SqlDbType.SmallDateTime, false, 4);
 			_deleted.Initialize(objectInfo, "Deleted", "Deleted", false, SqlDbType.Bit, false, 1);
-			_role.Initialize(objectInfo, "Role", typeof(Havit.BusinessLayerTest.Role), "(SELECT dbo.IntArrayAggregate(_items.RoleID) FROM [dbo].[Uzivatel_Role] AS _items WHERE (_items.UzivatelID = [dbo].[Uzivatel].[UzivatelID])) AS Role");
+			_role.Initialize(objectInfo, "Role", typeof(Havit.BusinessLayerTest.Role), "(SELECT dbo.IntArrayAggregate([_items].[RoleID]) FROM [dbo].[Uzivatel_Role] AS [_items] WHERE ([_items].[UzivatelID] = [dbo].[Uzivatel].[UzivatelID])) AS [Role]");
 		}
 		
 		/// <summary>

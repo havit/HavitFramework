@@ -117,7 +117,7 @@ namespace Havit.Web
 		/// <summary>
 		/// private constructor zabraňuje vytvoření instance třídy
 		/// </summary>
-		private HttpServerUtilityExt() {}
+		private HttpServerUtilityExt() { }
 		#endregion
 	}
 }

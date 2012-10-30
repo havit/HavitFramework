@@ -38,17 +38,16 @@ namespace Havit.Web.UI.WebControls
 
         #region AddMessage
         /// <summary>
-        /// Přidá zprávu
+        /// Přidá zprávu do messengeru.
         /// </summary>
-        /// <param name="format">formátovací řetězec pro String.Format()</param>
-        /// <param name="args">argumenty pro String.Format()</param>
+		/// <param name="message">zpráva</param>
         public void AddMessage(MessengerMessage message)
         {
             Messages.Add(message);
         }
 
         /// <summary>
-        /// Přidá zprávu
+        /// Přidá zprávu do messengeru.
         /// </summary>
         /// <param name="messageType">typ zprávy (information, error, ...)</param>
         /// <param name="text">text zprávy</param>
@@ -96,7 +95,8 @@ namespace Havit.Web.UI.WebControls
         /// <summary>
         /// Přidá zprávu z App_GlobalResources.
         /// </summary>
-        /// <param name="classKey">název global-resource souboru</param>
+		/// <param name="messageType">Typ zprávy.</param>
+		/// <param name="classKey">název global-resource souboru</param>
         /// <param name="resourceKey">klíč resourcu</param>
         public void AddGlobalResourceMessage(MessageType messageType, string classKey, string resourceKey)
         {

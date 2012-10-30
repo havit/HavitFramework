@@ -31,7 +31,7 @@ namespace WebApplicationTest
 
 		private void SaveButton_Click(object sender, EventArgs e)
 		{
-			ControlsValuesHolder data =  MainControlsValuesPersister.RetrieveValues();
+			ControlsValuesHolder data = MainControlsValuesPersister.RetrieveValues();
 			ViewState["Data"] = data;
 		}
 

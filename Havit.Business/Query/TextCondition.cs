@@ -42,6 +42,7 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Vytvoří podmínku testující řetězec na podobnost operátorem LIKE.
 		/// </summary>
+		/// <param name="operand">Testovaný operand.</param>
 		/// <param name="value">
 		/// Podporována hvězdičková konvence takto:
 		///		- pokud parametr neobsahuje hvězdičku, hledá se LIKE parametr%
@@ -60,6 +61,7 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Vytvoří podmínku testující řetězec na podobnost operátorem LIKE.
 		/// </summary>
+		/// <param name="operand">Testovaný operand.</param>
 		/// <param name="value">
 		/// Podporována hvězdičková konvence takto:
 		///		- pokud parametr neobsahuje hvězdičku, hledá se pomocí LIKE parametr% nebo LIKE %parametr% podle parametru wildCardsLikeExpressionMode.
@@ -103,8 +105,7 @@ namespace Havit.Business.Query
 		{
 			return OrCondition.Create(
 				NullCondition.CreateIsNull(operand),
-				TextCondition.CreateEquals(operand, string.Empty)
-			);
+				TextCondition.CreateEquals(operand, string.Empty));
 		}
 
 		/// <summary>
@@ -114,8 +115,7 @@ namespace Havit.Business.Query
 		{
 			return AndCondition.Create(
 				NullCondition.CreateIsNotNull(operand),
-				TextCondition.Create(operand, ComparisonOperator.NotEquals, string.Empty)
-			);
+				TextCondition.Create(operand, ComparisonOperator.NotEquals, string.Empty));
 		}
 		#endregion
 		

@@ -23,7 +23,7 @@ namespace Havit.Web.UI.HtmlControls
 			Category("Behavior"),
 			DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden),
 		]
-		public virtual string Action
+		public new virtual string Action
 		{
 			get
 			{
@@ -90,7 +90,7 @@ namespace Havit.Web.UI.HtmlControls
 		{
 			Type formType = typeof(System.Web.UI.HtmlControls.HtmlForm);
 			MethodInfo actionMethod = formType.GetMethod("GetActionAttribute", BindingFlags.Instance | BindingFlags.NonPublic);
-			object result = actionMethod.Invoke(this,null);
+			object result = actionMethod.Invoke(this, null);
 			return (string)result;
 		}
 

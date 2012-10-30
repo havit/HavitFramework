@@ -7,7 +7,7 @@ using System.Web;
 
 namespace Havit.Web.UI.Scriptlets
 {
-	class ListControlExtender : IControlExtender
+	internal class ListControlExtender : IControlExtender
 	{
 		#region Private fields
 		/// <summary>
@@ -87,8 +87,7 @@ namespace Havit.Web.UI.Scriptlets
 					scriptBuilder.AppendLine(getEventScript.Invoke(
 						String.Format("{0}.{1}[{2}]", parameterPrefix, parameter.Name, i),
 						"onclick",
-						scriptletFunctionCallDelegate
-					));
+						scriptletFunctionCallDelegate));
 				}
 			}
 		}

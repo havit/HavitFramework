@@ -11,7 +11,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 	/// <summary>
 	/// IPersisterControlExtender pro RadioButtonList.
 	/// </summary>
-	class RadioButtonListPersisterControlExtender : IPersisterControlExtender
+	internal class RadioButtonListPersisterControlExtender : IPersisterControlExtender
 	{
 		#region GetValue
 		public object GetValue(Control control)

@@ -8,7 +8,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 	/// <summary>
 	/// Repository IPersisterControlExtenderu.
 	/// </summary>
-	public class PersisterControlExtenderRepository: List<IPersisterControlExtender>
+	public class PersisterControlExtenderRepository : List<IPersisterControlExtender>
 	{
 		/// <summary>
 		/// Výchozí repository. Obsahuje "standardní" IPersisterControlExtendery.

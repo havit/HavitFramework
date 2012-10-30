@@ -15,7 +15,7 @@ namespace Havit.DataTest
 	/// This is a test class for Havit.Data.DbConnector and is intended
 	/// to contain all Havit.Data.DbConnector Unit Tests
 	/// </summary>
-	[TestClass()]
+	[TestClass]
 	public class DbConnectorTest
 	{
 		#region Constructors
@@ -109,26 +109,6 @@ namespace Havit.DataTest
 
 			Assert.AreEqual(expected, actual, "Havit.Data.DbConnector.ExecuteScalar did not return the expected value.");
 		}
-		#endregion
-
-		#region TestContext
-		private TestContext testContextInstance;
-
-		/// <summary>
-		/// Gets or sets the test context which provides
-		/// information about and functionality for the current test run.
-		/// </summary>
-		public TestContext TestContext
-		{
-			get
-			{
-				return testContextInstance;
-			}
-			set
-			{
-				testContextInstance = value;
-			}
-		}
-		#endregion
+		#endregion		
 	}
 }

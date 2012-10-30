@@ -7,7 +7,7 @@ namespace Havit.Web.UI.Scriptlets
 	/// <summary>
 	/// Argumenty události ScriptSubstituing.
 	/// </summary>
-	public class ClientScriptSubstituingEventArgs: EventArgs
+	public class ClientScriptSubstituingEventArgs : EventArgs
 	{
 		#region Constructor
 		/// <summary>

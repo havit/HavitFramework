@@ -99,7 +99,7 @@ namespace Havit.Web.UI.WebControls
 		/// <param name="itemType">One of the <see cref="ListItemType"/> values.</param>
 		public override void InitializeCell(TableCell cell, int columnIndex, ListItemType itemType)
 		{
-			base.InitializeCell (cell, columnIndex, itemType);
+			base.InitializeCell(cell, columnIndex, itemType);
 
 			// v headeru a footeru tlačítko není !!!
 			if ((itemType != ListItemType.Header) && (itemType != ListItemType.Footer))

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Web;
 using System.Web.Services.Protocols;
 using System.Web.UI;
 using Havit.Web.Management;
@@ -12,7 +13,7 @@ namespace Havit.Web.UI.WebControls
 	/// Control zajišťuje funkci health monitoringu i v asychronním postbacku (což standardně v ASP.NET nefunguje, bohužel).
 	/// Řešeno obsluhou události AsyncPostBackError ScriptManageru.
 	/// </summary>
-	public class AjaxHealthMonitoring: Control
+	public class AjaxHealthMonitoring : Control
 	{
 		#region OnInit
 		protected override void OnInit(EventArgs e)
@@ -36,7 +37,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			if (e.Exception != null)
 			{
-				new WebRequestErrorEventExt(e.Exception.Message, this, e.Exception).Raise();
+				new WebRequestErrorEventExt(e.Exception.Message, this, e.Exception, HttpContext.Current).Raise();
 			}
 		}
 		#endregion

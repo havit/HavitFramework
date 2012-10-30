@@ -13,7 +13,7 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	[ParseChildren(true)]
 	[PersistChildren(false)]
-	public class BasicModalDialog: Control
+	public class BasicModalDialog : Control
 	{
 		#region Private fields
 		private Panel _dialogPanel;
@@ -54,7 +54,7 @@ namespace Havit.Web.UI.WebControls
 			set
 			{
 				_contentTemplate = value;
-				base.ChildControlsCreated = false;
+				ChildControlsCreated = false;
 			}
 		}
 		private ITemplate _contentTemplate;

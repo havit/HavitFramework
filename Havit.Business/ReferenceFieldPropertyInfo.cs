@@ -21,8 +21,8 @@ namespace Havit.Business
 		/// <param name="propertyName">Název property.</param>
 		/// <param name="fieldName">Název sloupce v databázy.</param>
 		/// <param name="isPrimaryKey">Indikuje, zda je sloupec primárním klíčem</param>
-		/// <param name="nullable">Indukuje, zda je povolena hodnota null.</param>
 		/// <param name="fieldType">Typ databázového sloupce.</param>
+		/// <param name="nullable">Indukuje, zda je povolena hodnota null.</param>
 		/// <param name="maximumLength">Maximální délka dat databázového sloupce.</param>		
 		/// <param name="targetType">Typ, jenž property nese.</param>
 		/// <param name="targetObjectInfo">ObjectInfo na typ, jenž property nese.</param>

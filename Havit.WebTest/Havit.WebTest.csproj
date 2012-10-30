@@ -146,7 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Havit.Web\Havit.Web.csproj">
-      <Project>{52891FB3-CA20-403B-AC25-7D9CA5738B6B}</Project>
+      <Project>{52891fb3-ca20-403b-ac25-7d9ca5738b6b}</Project>
       <Name>Havit.Web</Name>
     </ProjectReference>
     <ProjectReference Include="..\Havit\Havit.csproj">

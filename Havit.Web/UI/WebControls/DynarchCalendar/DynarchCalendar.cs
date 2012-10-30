@@ -1015,161 +1015,230 @@ namespace Havit.Web.UI.WebControls
 
 			if (this.DisplayArea.Length > 0)
 			{
-				if (!firstLine) sb.AppendLine(",");
+				if (!firstLine)
+				{
+					sb.AppendLine(",");
+				}
 				sb.AppendFormat("displayArea : \"{0}\"", this.ResolveID(this.DisplayArea));
 				firstLine = false;
 			}
 
 			if (this.Button.Length > 0)
 			{
-				if (!firstLine) sb.AppendLine(",");
+				if (!firstLine)
+				{
+					sb.AppendLine(",");
+				}
 				sb.AppendFormat("button : \"{0}\"", this.ResolveID(this.Button));
 				firstLine = false;
 			}
 
 			if (this.EventName.Length > 0)
 			{
-				if (!firstLine) sb.AppendLine(",");
+				if (!firstLine)
+				{
+					sb.AppendLine(",");
+				}
 				sb.AppendFormat("eventName : \"{0}\"", this.EventName);
 				firstLine = false;
 			}
 
 			if (this.InputFieldDateFormat.Length > 0)
 			{
-				if (!firstLine) sb.AppendLine(",");
+				if (!firstLine)
+				{
+					sb.AppendLine(",");
+				}
 				sb.AppendFormat("ifFormat : \"{0}\"", this.InputFieldDateFormat);
 				firstLine = false;
 			}
 
 			if (this.DisplayAreaDateFormat.Length > 0)
 			{
-				if (!firstLine) sb.AppendLine(",");
+				if (!firstLine)
+				{
+					sb.AppendLine(",");
+				}
 				sb.AppendFormat("daFormat : \"{0}\"", this.DisplayAreaDateFormat);
 				firstLine = false;
 			}
 
 			if (!this.SingleClick)
 			{
-				if (!firstLine) sb.AppendLine(",");
+				if (!firstLine)
+				{
+					sb.AppendLine(",");
+				}
 				sb.AppendFormat("singleClick : false");
 				firstLine = false;
 			}
 
 			if (!String.IsNullOrEmpty(this.DateStatusFunction))
 			{
-				if (!firstLine) sb.AppendLine(",");
+				if (!firstLine)
+				{
+					sb.AppendLine(",");
+				}
 				sb.AppendFormat("dateStatusFunc : {0}", this.DateStatusFunction);
 				firstLine = false;
 			}
 
 			if (this.FirstDay >= 0)
 			{
-				if (!firstLine) sb.AppendLine(",");
+				if (!firstLine)
+				{
+					sb.AppendLine(",");
+				}
 				sb.AppendFormat("firstDay : {0}", this.FirstDay);
 				firstLine = false;
 			}
 
 			if (!this.WeekNumbers)
 			{
-				if (!firstLine) sb.AppendLine(",");
+				if (!firstLine)
+				{
+					sb.AppendLine(",");
+				}
 				sb.AppendFormat("weekNumbers : false");
 				firstLine = false;
 			}
 
 			if (this.Align.Length > 0)
 			{
-				if (!firstLine) sb.AppendLine(",");
+				if (!firstLine)
+				{
+					sb.AppendLine(",");
+				}
 				sb.AppendFormat("align : \"{0}\"", this.Align);
 				firstLine = false;
 			}
 
 			if (this.Range.Length > 0)
 			{
-				if (!firstLine) sb.AppendLine(",");
+				if (!firstLine)
+				{
+					sb.AppendLine(",");
+				}
 				sb.AppendFormat("range : \"{0}\"", this.Range);
 				firstLine = false;
 			}
 
 			if (this.Flat.Length > 0)
 			{
-				if (!firstLine) sb.AppendLine(",");
+				if (!firstLine)
+				{
+					sb.AppendLine(",");
+				}
 				sb.AppendFormat("flat : \"{0}\"", this.ResolveID(this.Flat));
 				firstLine = false;
 			}
 
 			if (this.FlatCallback.Length > 0)
 			{
-				if (!firstLine) sb.AppendLine(",");
+				if (!firstLine)
+				{
+					sb.AppendLine(",");
+				}
 				sb.AppendFormat("flatCallback : \"{0}\"", this.FlatCallback);
 				firstLine = false;
 			}
 
 			if (this.OnSelectFunction.Length > 0)
 			{
-				if (!firstLine) sb.AppendLine(",");
+				if (!firstLine)
+				{
+					sb.AppendLine(",");
+				}
 				sb.AppendFormat("onSelect : \"{0}\"", this.OnSelectFunction);
 				firstLine = false;
 			}
 
 			if (this.OnCloseFunction.Length > 0)
 			{
-				if (!firstLine) sb.AppendLine(",");
+				if (!firstLine)
+				{
+					sb.AppendLine(",");
+				}
 				sb.AppendFormat("onClose : \"{0}\"", this.OnCloseFunction);
 				firstLine = false;
 			}
 
 			if (this.OnUpdateFunction.Length > 0)
 			{
-				if (!firstLine) sb.AppendLine(",");
+				if (!firstLine)
+				{
+					sb.AppendLine(",");
+				}
 				sb.AppendFormat("onUpdate : \"{0}\"", this.OnUpdateFunction);
 				firstLine = false;
 			}
 
 			if (this.Date != DateTime.Today)
 			{
-				if (!firstLine) sb.AppendLine(",");
+				if (!firstLine)
+				{
+					sb.AppendLine(",");
+				}
 				sb.AppendFormat("date : new Date({0},{1},{2})", this.Date.Year, this.Date.Month, this.Date.Day);
 				firstLine = false;
 			}
 
 			if (this.ShowsTime)
 			{
-				if (!firstLine) sb.AppendLine(",");
+				if (!firstLine)
+				{
+					sb.AppendLine(",");
+				}
 				sb.AppendFormat("showsTime : true");
 				firstLine = false;
 			}
 
 			if (this.TimeFormat == 12)
 			{
-				if (!firstLine) sb.AppendLine(",");
+				if (!firstLine)
+				{
+					sb.AppendLine(",");
+				}
 				sb.AppendFormat("timeFormat : \"12\"");
 				firstLine = false;
 			}
 
 			if (!this.Electric)
 			{
-				if (!firstLine) sb.AppendLine(",");
+				if (!firstLine)
+				{
+					sb.AppendLine(",");
+				}
 				sb.AppendFormat("electric : false");
 				firstLine = false;
 			}
 
 			if (this.Position.Length > 0)
 			{
-				if (!firstLine) sb.AppendLine(",");
+				if (!firstLine)
+				{
+					sb.AppendLine(",");
+				}
 				sb.AppendFormat("position : \"{0}\"", this.Position);
 				firstLine = false;
 			}
 
 			if (this.CacheCalendar)
 			{
-				if (!firstLine) sb.AppendLine(",");
+				if (!firstLine)
+				{
+					sb.AppendLine(",");
+				}
 				sb.AppendFormat("cache : true");
 				firstLine = false;
 			}
 
 			if (this.ShowOthers)
 			{
-				if (!firstLine) sb.AppendLine(",");
+				if (!firstLine)
+				{
+					sb.AppendLine(",");
+				}
 				sb.AppendFormat("showOthers : true");
 				firstLine = false;
 			}

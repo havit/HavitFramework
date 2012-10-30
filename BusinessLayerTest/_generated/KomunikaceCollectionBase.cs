@@ -32,6 +32,7 @@ namespace Havit.BusinessLayerTest
 	/// Kolekce business objektů typu Havit.BusinessLayerTest.Komunikace.
 	/// </summary>
 	[System.Diagnostics.Contracts.ContractVerification(false)]
+	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
 	public partial class KomunikaceCollectionBase : BusinessObjectCollection<Komunikace, KomunikaceCollection>
 	{
 		//------------------------------------------------------------------------------
@@ -148,7 +149,7 @@ namespace Havit.BusinessLayerTest
 			for (int i = 0; i < this.Count; i++)
 			{
 				Komunikace currentObject = this[i];
-				if (!currentObject.IsLoaded)
+				if ((currentObject != null) && (!currentObject.IsLoaded))
 				{
 					if (!ghosts.ContainsKey(currentObject.ID))
 					{

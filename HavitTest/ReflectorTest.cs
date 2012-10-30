@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace HavitTest
 {
 	/// <summary>
-	/// Summary description for ReflectorTest
+	/// Test třídy Havit.Reflection.Reflector.
 	/// </summary>
 	[TestClass]
 	public class ReflectorTest

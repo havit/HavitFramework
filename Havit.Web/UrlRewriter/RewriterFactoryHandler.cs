@@ -38,7 +38,7 @@ namespace Havit.Web.UrlRewriter
 			RewriterRuleCollection rules = RewriterConfiguration.GetConfig().Rules;
 
 			// iterate through the rules
-			for(int i = 0; i < rules.Count; i++)
+			for (int i = 0; i < rules.Count; i++)
 			{
 				// Get the pattern to look for (and resolve its URL)
 				string lookFor = "^" + HttpServerUtilityExt.ResolveUrl(context.Request.ApplicationPath, rules[i].LookFor) + "$"; 

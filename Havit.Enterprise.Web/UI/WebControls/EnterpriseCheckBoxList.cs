@@ -13,7 +13,7 @@ namespace Havit.Web.UI.WebControls
     /// <summary>
     /// EnterpriseCheckBoxList zajišťuje pohodlnější práci s CheckBoxListem, jehož položky představují business objekty.	
     /// </summary>
-	public class EnterpriseCheckBoxList: CheckBoxListExt
+	public class EnterpriseCheckBoxList : CheckBoxListExt
 	{
 		#region Constructors (static)
 		static EnterpriseCheckBoxList()
@@ -102,7 +102,9 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		public string SortExpression
 		{
+#pragma warning disable 612,618
 			get { return (string)ViewState["SortExpression"] ?? (DataTextField + ((SortDirection == Collections.SortDirection.Descending) ? " DESC" : String.Empty)); }
+#pragma warning restore 612,618
 			set { ViewState["SortExpression"] = value; }
 		}
 		#endregion
@@ -250,7 +252,7 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Indikuje právě porobíhající databinding.
 		/// </summary>
-		bool isDataBinding = false;
+		private bool isDataBinding = false;
 
 		/// <summary>
 		/// Objekt, který má být nastaven jako vybraný, ale jeho nastavení bylo odloženo.
@@ -260,7 +262,7 @@ namespace Havit.Web.UI.WebControls
 		/// odloží se nastavení hodnoty až na konec DataBindingu. To protože v okamžiku nastavování SelectedObject 
 		/// nemusí být v Items ještě data.
 		/// </remarks>
-		IEnumerable delayedSetSelectedObjects = null;
+		private IEnumerable delayedSetSelectedObjects = null;
 
 		/// <summary>
 		/// Udává, zda máme nastaven objekt pro odložené nastavení vybraného objektu.
@@ -270,7 +272,7 @@ namespace Havit.Web.UI.WebControls
 		/// odloží se nastavení hodnoty až na konec DataBindingu. To protože v okamžiku nastavování SelectedObject 
 		/// nemusí být v Items ještě data. 
 		/// </remarks>
-		bool delayedSetSelectedObjectSet = false;
+		private bool delayedSetSelectedObjectSet = false;
 
 		#endregion
 
@@ -348,9 +350,9 @@ namespace Havit.Web.UI.WebControls
 
 			if ((dataSource != null) && AutoSort)
 			{
-				if (String.IsNullOrEmpty(DataSortField))
+				if (String.IsNullOrEmpty(SortExpression))
 				{
-					throw new InvalidOperationException(String.Format("AutoSort je true, ale není nastavena hodnota vlastnosti DataSortField controlu {0}.", ID));
+					throw new InvalidOperationException(String.Format("AutoSort je true, ale není nastavena hodnota vlastnosti SortExpression controlu {0}.", ID));
 				}
 
 				SortExpressions sortExpressions = new SortExpressions();

@@ -32,6 +32,7 @@ namespace Havit.BusinessLayerTest
 	/// Kolekce business objektů typu Havit.BusinessLayerTest.Role.
 	/// </summary>
 	[System.Diagnostics.Contracts.ContractVerification(false)]
+	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
 	public partial class RoleCollectionBase : BusinessObjectCollection<Role, RoleCollection>
 	{
 		//------------------------------------------------------------------------------
@@ -148,7 +149,7 @@ namespace Havit.BusinessLayerTest
 			for (int i = 0; i < this.Count; i++)
 			{
 				Role currentObject = this[i];
-				if (!currentObject.IsLoaded)
+				if ((currentObject != null) && (!currentObject.IsLoaded))
 				{
 					if (!ghosts.ContainsKey(currentObject.ID))
 					{

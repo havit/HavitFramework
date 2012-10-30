@@ -35,9 +35,13 @@ namespace Havit.Web.UrlRewriter
 			if (context.Request.QueryString.Count > 0)
 			{
 				if (sendToUrl.IndexOf('?') != -1)
+				{
 					sendToUrl += "&" + context.Request.QueryString.ToString();
+				}
 				else
+				{
 					sendToUrl += "?" + context.Request.QueryString.ToString();
+				}
 			}
 
 			// first strip the querystring, if any

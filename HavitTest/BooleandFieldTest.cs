@@ -7,8 +7,7 @@ using Havit.Web.UI.WebControls;
 
 namespace HavitTest
 {
-
-	[TestClass()]
+	[TestClass]
 	public class BooleandFieldTest
 	{
 		[TestMethod]

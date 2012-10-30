@@ -61,6 +61,7 @@ namespace Havit.BusinessLayerTest
 	/// </code>
 	/// </remarks>
 	[System.Diagnostics.Contracts.ContractVerification(false)]
+	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
 	public abstract class UzivatelBase : ActiveRecordBusinessObjectBase
 	{
 		#region Static constructor
@@ -77,27 +78,24 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Vytvoří instanci objektu jako nový prvek.
 		/// </summary>
-		protected UzivatelBase()
-			: base()
+		protected UzivatelBase() : base()
 		{
 		}
 		
 		/// <summary>
 		/// Vytvoří instanci existujícího objektu.
 		/// </summary>
-		/// <param name="id">UzivatelID (PK)</param>
-		protected UzivatelBase(int id)
-			: base(id)
+		/// <param name="id">UzivatelID (PK).</param>
+		protected UzivatelBase(int id) : base(id)
 		{
 		}
 		
 		/// <summary>
 		/// Vytvoří instanci objektu na základě dat (i částečných) načtených z databáze.
 		/// </summary>
-		/// <param name="id">UzivatelID (PK)</param>
-		/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu (i částečnými)</param>
-		protected UzivatelBase(int id, DataRecord record)
-			: base(id, record)
+		/// <param name="id">UzivatelID (PK).</param>
+		/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu (i částečnými).</param>
+		protected UzivatelBase(int id, DataRecord record) : base(id, record)
 		{
 		}
 		#endregion
@@ -220,7 +218,7 @@ namespace Havit.BusinessLayerTest
 		protected PropertyHolder<string> _EmailPropertyHolder;
 		
 		/// <summary>
-		/// Indikuje, zda-li je uživatelský účet zablokován (nelze se přihlásit). [bit, not-null]
+		/// Indikuje, zda-li je uživatelský účet zablokován (nelze se přihlásit). [bit, not-null, default 0]
 		/// </summary>
 		public virtual bool Disabled
 		{
@@ -284,7 +282,7 @@ namespace Havit.BusinessLayerTest
 		protected PropertyHolder<DateTime?> _LoginLastPropertyHolder;
 		
 		/// <summary>
-		/// Počet úspěšných přihlášení uživatele od jeho založení. [int, not-null]
+		/// Počet úspěšných přihlášení uživatele od jeho založení. [int, not-null, default 0]
 		/// </summary>
 		public virtual int LoginCount
 		{
@@ -305,7 +303,7 @@ namespace Havit.BusinessLayerTest
 		protected PropertyHolder<int> _LoginCountPropertyHolder;
 		
 		/// <summary>
-		/// Okamžik založení objektu v DB. [smalldatetime, not-null, read-only]
+		/// Okamžik založení objektu v DB. [smalldatetime, not-null, read-only, default getdate()]
 		/// </summary>
 		public virtual DateTime Created
 		{
@@ -321,7 +319,7 @@ namespace Havit.BusinessLayerTest
 		protected PropertyHolder<DateTime> _CreatedPropertyHolder;
 		
 		/// <summary>
-		/// Indikuje smazaného uživatele. [bit, not-null]
+		/// Indikuje smazaného uživatele. [bit, not-null, default 0]
 		/// </summary>
 		public virtual bool Deleted
 		{
@@ -390,6 +388,8 @@ namespace Havit.BusinessLayerTest
 				_DeletedPropertyHolder.Value = false;
 				_RolePropertyHolder.Initialize();
 			}
+			
+			base.Init();
 		}
 		#endregion
 		
@@ -406,22 +406,22 @@ namespace Havit.BusinessLayerTest
 			
 			if (_UsernamePropertyHolder.IsDirty && (_UsernamePropertyHolder.Value != null) && (_UsernamePropertyHolder.Value.Length > 50))
 			{
-				throw new ConstraintViolationException(this, "Řetězec v \"Username\" přesáhl maximální délku 50 znaků.");
+				throw new ConstraintViolationException(this, "Vlastnost \"Username\" - řetězec přesáhl maximální délku 50 znaků.");
 			}
 			
 			if (_PasswordPropertyHolder.IsDirty && (_PasswordPropertyHolder.Value != null) && (_PasswordPropertyHolder.Value.Length > 30))
 			{
-				throw new ConstraintViolationException(this, "Řetězec v \"Password\" přesáhl maximální délku 30 znaků.");
+				throw new ConstraintViolationException(this, "Vlastnost \"Password\" - řetězec přesáhl maximální délku 30 znaků.");
 			}
 			
 			if (_DisplayAsPropertyHolder.IsDirty && (_DisplayAsPropertyHolder.Value != null) && (_DisplayAsPropertyHolder.Value.Length > 50))
 			{
-				throw new ConstraintViolationException(this, "Řetězec v \"DisplayAs\" přesáhl maximální délku 50 znaků.");
+				throw new ConstraintViolationException(this, "Vlastnost \"DisplayAs\" - řetězec přesáhl maximální délku 50 znaků.");
 			}
 			
 			if (_EmailPropertyHolder.IsDirty && (_EmailPropertyHolder.Value != null) && (_EmailPropertyHolder.Value.Length > 100))
 			{
-				throw new ConstraintViolationException(this, "Řetězec v \"Email\" přesáhl maximální délku 100 znaků.");
+				throw new ConstraintViolationException(this, "Vlastnost \"Email\" - řetězec přesáhl maximální délku 100 znaků.");
 			}
 			
 			if (_LockedTimePropertyHolder.IsDirty)
@@ -446,6 +446,14 @@ namespace Havit.BusinessLayerTest
 				}
 			}
 			
+			if (_CreatedPropertyHolder.IsDirty)
+			{
+				if ((_CreatedPropertyHolder.Value < Havit.Data.SqlTypes.SqlSmallDateTime.MinValue.Value) || (_CreatedPropertyHolder.Value > Havit.Data.SqlTypes.SqlSmallDateTime.MaxValue.Value))
+				{
+					throw new ConstraintViolationException(this, "PropertyHolder \"_CreatedPropertyHolder\" nesmí nabývat hodnoty mimo rozsah SqlSmallDateTime.MinValue-SqlSmallDateTime.MaxValue.");
+				}
+			}
+			
 		}
 		#endregion
 		
@@ -453,14 +461,14 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Načte data objektu z DB a vrátí je ve formě DataRecordu.
 		/// </summary>
-		/// <param name="transaction">případná transakce</param>
-		/// <returns>úplná data objektu</returns>
+		/// <param name="transaction">Transakce.</param>
+		/// <returns>Úplná data objektu.</returns>
 		protected override sealed DataRecord Load_GetDataRecord(DbTransaction transaction)
 		{
 			DataRecord result;
 			
 			DbCommand dbCommand = DbConnector.Default.ProviderFactory.CreateCommand();
-			dbCommand.CommandText = "SELECT UzivatelID, Username, Password, DisplayAs, Email, Disabled, LockedTime, LoginLast, LoginCount, Created, Deleted, (SELECT dbo.IntArrayAggregate(_items.RoleID) FROM [dbo].[Uzivatel_Role] AS _items WHERE (_items.UzivatelID = @UzivatelID)) AS Role FROM [dbo].[Uzivatel] WHERE UzivatelID = @UzivatelID";
+			dbCommand.CommandText = "SELECT [UzivatelID], [Username], [Password], [DisplayAs], [Email], [Disabled], [LockedTime], [LoginLast], [LoginCount], [Created], [Deleted], (SELECT dbo.IntArrayAggregate([_items].[RoleID]) FROM [dbo].[Uzivatel_Role] AS [_items] WHERE ([_items].[UzivatelID] = @UzivatelID)) AS [Role] FROM [dbo].[Uzivatel] WHERE [UzivatelID] = @UzivatelID";
 			dbCommand.Transaction = transaction;
 			
 			DbParameter dbParameterUzivatelID = DbConnector.Default.ProviderFactory.CreateParameter();
@@ -671,6 +679,14 @@ namespace Havit.BusinessLayerTest
 			dbCommand.Parameters.Add(dbParameterLoginCount);
 			_LoginCountPropertyHolder.IsDirty = false;
 			
+			DbParameter dbParameterCreated = DbConnector.Default.ProviderFactory.CreateParameter();
+			dbParameterCreated.DbType = DbType.DateTime;
+			dbParameterCreated.Direction = ParameterDirection.Input;
+			dbParameterCreated.ParameterName = "Created";
+			dbParameterCreated.Value = _CreatedPropertyHolder.Value;
+			dbCommand.Parameters.Add(dbParameterCreated);
+			_CreatedPropertyHolder.IsDirty = false;
+			
 			DbParameter dbParameterDeleted = DbConnector.Default.ProviderFactory.CreateParameter();
 			dbParameterDeleted.DbType = DbType.Boolean;
 			dbParameterDeleted.Direction = ParameterDirection.Input;
@@ -679,7 +695,7 @@ namespace Havit.BusinessLayerTest
 			dbCommand.Parameters.Add(dbParameterDeleted);
 			_DeletedPropertyHolder.IsDirty = false;
 			
-			dbCommand.CommandText = "DECLARE @UzivatelID INT; INSERT INTO [dbo].[Uzivatel] (Username, Password, DisplayAs, Email, Disabled, LockedTime, LoginLast, LoginCount, Deleted) VALUES (@Username, @Password, @DisplayAs, @Email, @Disabled, @LockedTime, @LoginLast, @LoginCount, @Deleted); SELECT @UzivatelID = SCOPE_IDENTITY(); SELECT @UzivatelID; ";
+			dbCommand.CommandText = "DECLARE @UzivatelID INT; INSERT INTO [dbo].[Uzivatel] ([Username], [Password], [DisplayAs], [Email], [Disabled], [LockedTime], [LoginLast], [LoginCount], [Created], [Deleted]) VALUES (@Username, @Password, @DisplayAs, @Email, @Disabled, @LockedTime, @LoginLast, @LoginCount, @Created, @Deleted); SELECT @UzivatelID = SCOPE_IDENTITY(); SELECT @UzivatelID; ";
 			this.ID = (int)DbConnector.Default.ExecuteScalar(dbCommand);
 			this.IsNew = false; // uložený objekt není už nový, dostal i přidělené ID
 			
@@ -766,6 +782,14 @@ namespace Havit.BusinessLayerTest
 			dbCommand.Parameters.Add(dbParameterLoginCount);
 			_LoginCountPropertyHolder.IsDirty = false;
 			
+			DbParameter dbParameterCreated = DbConnector.Default.ProviderFactory.CreateParameter();
+			dbParameterCreated.DbType = DbType.DateTime;
+			dbParameterCreated.Direction = ParameterDirection.Input;
+			dbParameterCreated.ParameterName = "Created";
+			dbParameterCreated.Value = _CreatedPropertyHolder.Value;
+			dbCommand.Parameters.Add(dbParameterCreated);
+			_CreatedPropertyHolder.IsDirty = false;
+			
 			DbParameter dbParameterDeleted = DbConnector.Default.ProviderFactory.CreateParameter();
 			dbParameterDeleted.DbType = DbType.Boolean;
 			dbParameterDeleted.Direction = ParameterDirection.Input;
@@ -787,7 +811,7 @@ namespace Havit.BusinessLayerTest
 				collectionCommandBuilder.Append("INSERT INTO [dbo].[Uzivatel_Role] (UzivatelID, RoleID) SELECT @UzivatelID AS UzivatelID, Value AS RoleID FROM dbo.IntArrayToTable(@Role) OPTION (RECOMPILE); ");
 			}
 			
-			dbCommand.CommandText = "DECLARE @UzivatelID INT; INSERT INTO [dbo].[Uzivatel] (Username, Password, DisplayAs, Email, Disabled, LockedTime, LoginLast, LoginCount, Deleted) VALUES (@Username, @Password, @DisplayAs, @Email, @Disabled, @LockedTime, @LoginLast, @LoginCount, @Deleted); SELECT @UzivatelID = SCOPE_IDENTITY(); " + collectionCommandBuilder.ToString() + "SELECT @UzivatelID; ";
+			dbCommand.CommandText = "DECLARE @UzivatelID INT; INSERT INTO [dbo].[Uzivatel] ([Username], [Password], [DisplayAs], [Email], [Disabled], [LockedTime], [LoginLast], [LoginCount], [Created], [Deleted]) VALUES (@Username, @Password, @DisplayAs, @Email, @Disabled, @LockedTime, @LoginLast, @LoginCount, @Created, @Deleted); SELECT @UzivatelID = SCOPE_IDENTITY(); " + collectionCommandBuilder.ToString() + "SELECT @UzivatelID; ";
 			this.ID = (int)DbConnector.Default.ExecuteScalar(dbCommand);
 			this.IsNew = false; // uložený objekt není už nový, dostal i přidělené ID
 			
@@ -815,7 +839,7 @@ namespace Havit.BusinessLayerTest
 				{
 					commandBuilder.Append(", ");
 				}
-				commandBuilder.Append("Username = @Username");
+				commandBuilder.Append("[Username] = @Username");
 				
 				DbParameter dbParameterUsername = DbConnector.Default.ProviderFactory.CreateParameter();
 				dbParameterUsername.DbType = DbType.AnsiString;
@@ -834,7 +858,7 @@ namespace Havit.BusinessLayerTest
 				{
 					commandBuilder.Append(", ");
 				}
-				commandBuilder.Append("Password = @Password");
+				commandBuilder.Append("[Password] = @Password");
 				
 				DbParameter dbParameterPassword = DbConnector.Default.ProviderFactory.CreateParameter();
 				dbParameterPassword.DbType = DbType.String;
@@ -853,7 +877,7 @@ namespace Havit.BusinessLayerTest
 				{
 					commandBuilder.Append(", ");
 				}
-				commandBuilder.Append("DisplayAs = @DisplayAs");
+				commandBuilder.Append("[DisplayAs] = @DisplayAs");
 				
 				DbParameter dbParameterDisplayAs = DbConnector.Default.ProviderFactory.CreateParameter();
 				dbParameterDisplayAs.DbType = DbType.String;
@@ -872,7 +896,7 @@ namespace Havit.BusinessLayerTest
 				{
 					commandBuilder.Append(", ");
 				}
-				commandBuilder.Append("Email = @Email");
+				commandBuilder.Append("[Email] = @Email");
 				
 				DbParameter dbParameterEmail = DbConnector.Default.ProviderFactory.CreateParameter();
 				dbParameterEmail.DbType = DbType.String;
@@ -891,7 +915,7 @@ namespace Havit.BusinessLayerTest
 				{
 					commandBuilder.Append(", ");
 				}
-				commandBuilder.Append("Disabled = @Disabled");
+				commandBuilder.Append("[Disabled] = @Disabled");
 				
 				DbParameter dbParameterDisabled = DbConnector.Default.ProviderFactory.CreateParameter();
 				dbParameterDisabled.DbType = DbType.Boolean;
@@ -909,7 +933,7 @@ namespace Havit.BusinessLayerTest
 				{
 					commandBuilder.Append(", ");
 				}
-				commandBuilder.Append("LockedTime = @LockedTime");
+				commandBuilder.Append("[LockedTime] = @LockedTime");
 				
 				DbParameter dbParameterLockedTime = DbConnector.Default.ProviderFactory.CreateParameter();
 				dbParameterLockedTime.DbType = DbType.DateTime;
@@ -927,7 +951,7 @@ namespace Havit.BusinessLayerTest
 				{
 					commandBuilder.Append(", ");
 				}
-				commandBuilder.Append("LoginLast = @LoginLast");
+				commandBuilder.Append("[LoginLast] = @LoginLast");
 				
 				DbParameter dbParameterLoginLast = DbConnector.Default.ProviderFactory.CreateParameter();
 				dbParameterLoginLast.DbType = DbType.DateTime;
@@ -945,7 +969,7 @@ namespace Havit.BusinessLayerTest
 				{
 					commandBuilder.Append(", ");
 				}
-				commandBuilder.Append("LoginCount = @LoginCount");
+				commandBuilder.Append("[LoginCount] = @LoginCount");
 				
 				DbParameter dbParameterLoginCount = DbConnector.Default.ProviderFactory.CreateParameter();
 				dbParameterLoginCount.DbType = DbType.Int32;
@@ -957,13 +981,31 @@ namespace Havit.BusinessLayerTest
 				dirtyFieldExists = true;
 			}
 			
+			if (_CreatedPropertyHolder.IsDirty)
+			{
+				if (dirtyFieldExists)
+				{
+					commandBuilder.Append(", ");
+				}
+				commandBuilder.Append("[Created] = @Created");
+				
+				DbParameter dbParameterCreated = DbConnector.Default.ProviderFactory.CreateParameter();
+				dbParameterCreated.DbType = DbType.DateTime;
+				dbParameterCreated.Direction = ParameterDirection.Input;
+				dbParameterCreated.ParameterName = "Created";
+				dbParameterCreated.Value = _CreatedPropertyHolder.Value;
+				dbCommand.Parameters.Add(dbParameterCreated);
+				
+				dirtyFieldExists = true;
+			}
+			
 			if (_DeletedPropertyHolder.IsDirty)
 			{
 				if (dirtyFieldExists)
 				{
 					commandBuilder.Append(", ");
 				}
-				commandBuilder.Append("Deleted = @Deleted");
+				commandBuilder.Append("[Deleted] = @Deleted");
 				
 				DbParameter dbParameterDeleted = DbConnector.Default.ProviderFactory.CreateParameter();
 				dbParameterDeleted.DbType = DbType.Boolean;
@@ -978,7 +1020,7 @@ namespace Havit.BusinessLayerTest
 			if (dirtyFieldExists)
 			{
 				// objekt je sice IsDirty (volá se tato metoda), ale může být změněná jen kolekce
-				commandBuilder.Append(" WHERE UzivatelID = @UzivatelID; ");
+				commandBuilder.Append(" WHERE [UzivatelID] = @UzivatelID; ");
 			}
 			else
 			{
@@ -989,7 +1031,7 @@ namespace Havit.BusinessLayerTest
 			if (_RolePropertyHolder.IsDirty)
 			{
 				dirtyCollectionExists = true;
-				commandBuilder.AppendFormat("DELETE FROM [dbo].[Uzivatel_Role] WHERE UzivatelID = @UzivatelID; ");
+				commandBuilder.AppendFormat("DELETE FROM [dbo].[Uzivatel_Role] WHERE [UzivatelID] = @UzivatelID; ");
 				if (_RolePropertyHolder.Value.Count > 0)
 				{
 					SqlParameter dbParameterRole = new SqlParameter("@Role", SqlDbType.Udt);
@@ -1140,7 +1182,8 @@ namespace Havit.BusinessLayerTest
 				while (reader.Read())
 				{
 					DataRecord dataRecord = new DataRecord(reader, dataLoadPower);
-					result.Add(Uzivatel.GetObject(dataRecord));
+					Uzivatel uzivatel = Uzivatel.GetObject(dataRecord);
+					result.Add(uzivatel);
 				}
 			}
 			

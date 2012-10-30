@@ -51,6 +51,7 @@ namespace Havit.BusinessLayerTest
 	/// </code>
 	/// </remarks>
 	[System.Diagnostics.Contracts.ContractVerification(false)]
+	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
 	public abstract class SubjektBase : ActiveRecordBusinessObjectBase
 	{
 		#region Static constructor
@@ -67,27 +68,24 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Vytvoří instanci objektu jako nový prvek.
 		/// </summary>
-		protected SubjektBase()
-			: base()
+		protected SubjektBase() : base()
 		{
 		}
 		
 		/// <summary>
 		/// Vytvoří instanci existujícího objektu.
 		/// </summary>
-		/// <param name="id">SubjektID (PK)</param>
-		protected SubjektBase(int id)
-			: base(id)
+		/// <param name="id">SubjektID (PK).</param>
+		protected SubjektBase(int id) : base(id)
 		{
 		}
 		
 		/// <summary>
 		/// Vytvoří instanci objektu na základě dat (i částečných) načtených z databáze.
 		/// </summary>
-		/// <param name="id">SubjektID (PK)</param>
-		/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu (i částečnými)</param>
-		protected SubjektBase(int id, DataRecord record)
-			: base(id, record)
+		/// <param name="id">SubjektID (PK).</param>
+		/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu (i částečnými).</param>
+		protected SubjektBase(int id, DataRecord record) : base(id, record)
 		{
 		}
 		#endregion
@@ -144,7 +142,7 @@ namespace Havit.BusinessLayerTest
 		protected PropertyHolder<Havit.BusinessLayerTest.Uzivatel> _UzivatelPropertyHolder;
 		
 		/// <summary>
-		/// Čas vytvoření objektu. [smalldatetime, not-null, read-only]
+		/// Čas vytvoření objektu. [smalldatetime, not-null, read-only, default getdate()]
 		/// </summary>
 		public virtual DateTime Created
 		{
@@ -218,6 +216,8 @@ namespace Havit.BusinessLayerTest
 				_DeletedPropertyHolder.Value = null;
 				_KomunikacePropertyHolder.Initialize();
 			}
+			
+			base.Init();
 		}
 		#endregion
 		
@@ -234,7 +234,15 @@ namespace Havit.BusinessLayerTest
 			
 			if (_NazevPropertyHolder.IsDirty && (_NazevPropertyHolder.Value != null) && (_NazevPropertyHolder.Value.Length > 50))
 			{
-				throw new ConstraintViolationException(this, "Řetězec v \"Nazev\" přesáhl maximální délku 50 znaků.");
+				throw new ConstraintViolationException(this, "Vlastnost \"Nazev\" - řetězec přesáhl maximální délku 50 znaků.");
+			}
+			
+			if (_CreatedPropertyHolder.IsDirty)
+			{
+				if ((_CreatedPropertyHolder.Value < Havit.Data.SqlTypes.SqlSmallDateTime.MinValue.Value) || (_CreatedPropertyHolder.Value > Havit.Data.SqlTypes.SqlSmallDateTime.MaxValue.Value))
+				{
+					throw new ConstraintViolationException(this, "PropertyHolder \"_CreatedPropertyHolder\" nesmí nabývat hodnoty mimo rozsah SqlSmallDateTime.MinValue-SqlSmallDateTime.MaxValue.");
+				}
 			}
 			
 			if (_DeletedPropertyHolder.IsDirty)
@@ -255,14 +263,14 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Načte data objektu z DB a vrátí je ve formě DataRecordu.
 		/// </summary>
-		/// <param name="transaction">případná transakce</param>
-		/// <returns>úplná data objektu</returns>
+		/// <param name="transaction">Transakce.</param>
+		/// <returns>Úplná data objektu.</returns>
 		protected override sealed DataRecord Load_GetDataRecord(DbTransaction transaction)
 		{
 			DataRecord result;
 			
 			DbCommand dbCommand = DbConnector.Default.ProviderFactory.CreateCommand();
-			dbCommand.CommandText = "SELECT SubjektID, Nazev, UzivatelID, Created, Deleted, (SELECT dbo.IntArrayAggregate(_items.KomunikaceID) FROM [dbo].[Komunikace] AS _items WHERE (_items.SubjektID = @SubjektID)) AS Komunikace FROM [dbo].[Subjekt] WHERE SubjektID = @SubjektID";
+			dbCommand.CommandText = "SELECT [SubjektID], [Nazev], [UzivatelID], [Created], [Deleted], (SELECT dbo.IntArrayAggregate([_items].[KomunikaceID]) FROM [dbo].[Komunikace] AS [_items] WHERE ([_items].[SubjektID] = @SubjektID)) AS [Komunikace] FROM [dbo].[Subjekt] WHERE [SubjektID] = @SubjektID";
 			dbCommand.Transaction = transaction;
 			
 			DbParameter dbParameterSubjektID = DbConnector.Default.ProviderFactory.CreateParameter();
@@ -383,6 +391,14 @@ namespace Havit.BusinessLayerTest
 			dbCommand.Parameters.Add(dbParameterNazev);
 			_NazevPropertyHolder.IsDirty = false;
 			
+			DbParameter dbParameterCreated = DbConnector.Default.ProviderFactory.CreateParameter();
+			dbParameterCreated.DbType = DbType.DateTime;
+			dbParameterCreated.Direction = ParameterDirection.Input;
+			dbParameterCreated.ParameterName = "Created";
+			dbParameterCreated.Value = _CreatedPropertyHolder.Value;
+			dbCommand.Parameters.Add(dbParameterCreated);
+			_CreatedPropertyHolder.IsDirty = false;
+			
 			DbParameter dbParameterDeleted = DbConnector.Default.ProviderFactory.CreateParameter();
 			dbParameterDeleted.DbType = DbType.DateTime;
 			dbParameterDeleted.Direction = ParameterDirection.Input;
@@ -391,7 +407,7 @@ namespace Havit.BusinessLayerTest
 			dbCommand.Parameters.Add(dbParameterDeleted);
 			_DeletedPropertyHolder.IsDirty = false;
 			
-			dbCommand.CommandText = "DECLARE @SubjektID INT; INSERT INTO [dbo].[Subjekt] (Nazev, Deleted) VALUES (@Nazev, @Deleted); SELECT @SubjektID = SCOPE_IDENTITY(); SELECT @SubjektID; ";
+			dbCommand.CommandText = "DECLARE @SubjektID INT; INSERT INTO [dbo].[Subjekt] ([Nazev], [Created], [Deleted]) VALUES (@Nazev, @Created, @Deleted); SELECT @SubjektID = SCOPE_IDENTITY(); SELECT @SubjektID; ";
 			this.ID = (int)DbConnector.Default.ExecuteScalar(dbCommand);
 			this.IsNew = false; // uložený objekt není už nový, dostal i přidělené ID
 			
@@ -427,6 +443,14 @@ namespace Havit.BusinessLayerTest
 			dbCommand.Parameters.Add(dbParameterUzivatelID);
 			_UzivatelPropertyHolder.IsDirty = false;
 			
+			DbParameter dbParameterCreated = DbConnector.Default.ProviderFactory.CreateParameter();
+			dbParameterCreated.DbType = DbType.DateTime;
+			dbParameterCreated.Direction = ParameterDirection.Input;
+			dbParameterCreated.ParameterName = "Created";
+			dbParameterCreated.Value = _CreatedPropertyHolder.Value;
+			dbCommand.Parameters.Add(dbParameterCreated);
+			_CreatedPropertyHolder.IsDirty = false;
+			
 			DbParameter dbParameterDeleted = DbConnector.Default.ProviderFactory.CreateParameter();
 			dbParameterDeleted.DbType = DbType.DateTime;
 			dbParameterDeleted.Direction = ParameterDirection.Input;
@@ -435,7 +459,7 @@ namespace Havit.BusinessLayerTest
 			dbCommand.Parameters.Add(dbParameterDeleted);
 			_DeletedPropertyHolder.IsDirty = false;
 			
-			dbCommand.CommandText = "DECLARE @SubjektID INT; INSERT INTO [dbo].[Subjekt] (Nazev, UzivatelID, Deleted) VALUES (@Nazev, @UzivatelID, @Deleted); SELECT @SubjektID = SCOPE_IDENTITY(); SELECT @SubjektID; ";
+			dbCommand.CommandText = "DECLARE @SubjektID INT; INSERT INTO [dbo].[Subjekt] ([Nazev], [UzivatelID], [Created], [Deleted]) VALUES (@Nazev, @UzivatelID, @Created, @Deleted); SELECT @SubjektID = SCOPE_IDENTITY(); SELECT @SubjektID; ";
 			this.ID = (int)DbConnector.Default.ExecuteScalar(dbCommand);
 			this.IsNew = false; // uložený objekt není už nový, dostal i přidělené ID
 			
@@ -463,7 +487,7 @@ namespace Havit.BusinessLayerTest
 				{
 					commandBuilder.Append(", ");
 				}
-				commandBuilder.Append("Nazev = @Nazev");
+				commandBuilder.Append("[Nazev] = @Nazev");
 				
 				DbParameter dbParameterNazev = DbConnector.Default.ProviderFactory.CreateParameter();
 				dbParameterNazev.DbType = DbType.String;
@@ -482,7 +506,7 @@ namespace Havit.BusinessLayerTest
 				{
 					commandBuilder.Append(", ");
 				}
-				commandBuilder.Append("UzivatelID = @UzivatelID");
+				commandBuilder.Append("[UzivatelID] = @UzivatelID");
 				
 				DbParameter dbParameterUzivatelID = DbConnector.Default.ProviderFactory.CreateParameter();
 				dbParameterUzivatelID.DbType = DbType.Int32;
@@ -494,13 +518,31 @@ namespace Havit.BusinessLayerTest
 				dirtyFieldExists = true;
 			}
 			
+			if (_CreatedPropertyHolder.IsDirty)
+			{
+				if (dirtyFieldExists)
+				{
+					commandBuilder.Append(", ");
+				}
+				commandBuilder.Append("[Created] = @Created");
+				
+				DbParameter dbParameterCreated = DbConnector.Default.ProviderFactory.CreateParameter();
+				dbParameterCreated.DbType = DbType.DateTime;
+				dbParameterCreated.Direction = ParameterDirection.Input;
+				dbParameterCreated.ParameterName = "Created";
+				dbParameterCreated.Value = _CreatedPropertyHolder.Value;
+				dbCommand.Parameters.Add(dbParameterCreated);
+				
+				dirtyFieldExists = true;
+			}
+			
 			if (_DeletedPropertyHolder.IsDirty)
 			{
 				if (dirtyFieldExists)
 				{
 					commandBuilder.Append(", ");
 				}
-				commandBuilder.Append("Deleted = @Deleted");
+				commandBuilder.Append("[Deleted] = @Deleted");
 				
 				DbParameter dbParameterDeleted = DbConnector.Default.ProviderFactory.CreateParameter();
 				dbParameterDeleted.DbType = DbType.DateTime;
@@ -515,7 +557,7 @@ namespace Havit.BusinessLayerTest
 			if (dirtyFieldExists)
 			{
 				// objekt je sice IsDirty (volá se tato metoda), ale může být změněná jen kolekce
-				commandBuilder.Append(" WHERE SubjektID = @SubjektID; ");
+				commandBuilder.Append(" WHERE [SubjektID] = @SubjektID; ");
 			}
 			else
 			{
@@ -530,7 +572,7 @@ namespace Havit.BusinessLayerTest
 				{
 					dirtyCollectionExists = true;
 					// OPTION (RECOMPILE): workaround pro http://connect.microsoft.com/SQLServer/feedback/ViewFeedback.aspx?FeedbackID=256717
-					commandBuilder.AppendFormat("DELETE FROM [dbo].[Komunikace] WHERE (SubjektID = @SubjektID) AND KomunikaceID IN (SELECT Value FROM dbo.IntArrayToTable(@Komunikace)) OPTION (RECOMPILE);");
+					commandBuilder.AppendFormat("DELETE FROM [dbo].[Komunikace] WHERE ([SubjektID] = @SubjektID) AND [KomunikaceID] IN (SELECT [Value] FROM dbo.IntArrayToTable(@Komunikace)) OPTION (RECOMPILE);");
 					SqlParameter dbParameterKomunikace = new SqlParameter("@Komunikace", SqlDbType.Udt);
 					dbParameterKomunikace.UdtTypeName = "IntArray";
 					dbParameterKomunikace.Value = new SqlInt32Array(_komunikaceToRemove.GetIDs());
@@ -674,7 +716,8 @@ namespace Havit.BusinessLayerTest
 				while (reader.Read())
 				{
 					DataRecord dataRecord = new DataRecord(reader, dataLoadPower);
-					result.Add(Subjekt.GetObject(dataRecord));
+					Subjekt subjekt = Subjekt.GetObject(dataRecord);
+					result.Add(subjekt);
 				}
 			}
 			

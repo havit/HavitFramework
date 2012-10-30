@@ -137,6 +137,9 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="PayMuzoException.cs" />
     <Compile Include="PayMuzoInvalidDigestException.cs" />
     <Compile Include="PayMuzoOrderState.cs" />

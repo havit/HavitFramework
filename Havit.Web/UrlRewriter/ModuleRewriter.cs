@@ -24,7 +24,7 @@ namespace Havit.Web.UrlRewriter
 			RewriterRuleCollection rules = RewriterConfiguration.GetConfig().Rules;
 
 			// iterate through each rule...
-			for(int i = 0; i < rules.Count; i++)
+			for (int i = 0; i < rules.Count; i++)
 			{
 				// get the pattern to look for, and Resolve the Url (convert ~ into the appropriate directory)
 				string lookFor = "^" + HttpServerUtilityExt.ResolveUrl(app.Context.Request.ApplicationPath, rules[i].LookFor) + "$";

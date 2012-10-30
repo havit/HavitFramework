@@ -37,6 +37,8 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Vytvoří novou instanci kolekce.
 		/// </summary>
+		[System.Diagnostics.Contracts.ContractVerification(false)]
+		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
 		public ObjednavkaSepsaniCollection() : base()
 		{
 		}
@@ -44,6 +46,8 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Vytvoří novou instanci kolekce a zkopíruje do ní prvky z předané kolekce.
 		/// </summary>
+		[System.Diagnostics.Contracts.ContractVerification(false)]
+		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
 		public ObjednavkaSepsaniCollection(IEnumerable<ObjednavkaSepsani> collection) : base(collection)
 		{
 		}

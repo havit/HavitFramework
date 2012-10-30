@@ -452,9 +452,16 @@ namespace Havit.Web.UI.WebControls
 				{
 					switch (this.DateTimeMode)
 					{
-						case DateTimeMode.Date: valueTextBox.Text = value.Value.ToShortDateString(); break;
-						case DateTimeMode.DateTime: valueTextBox.Text = value.Value.ToString("g"); break;
-						default: throw new ApplicationException("Neznámá hodnota DateTimeMode.");
+						case DateTimeMode.Date:
+							valueTextBox.Text = value.Value.ToShortDateString();
+							break;
+
+						case DateTimeMode.DateTime:
+							valueTextBox.Text = value.Value.ToString("g");
+							break;
+
+						default:
+							throw new ApplicationException("Neznámá hodnota DateTimeMode.");
 					}
 				}
 			}

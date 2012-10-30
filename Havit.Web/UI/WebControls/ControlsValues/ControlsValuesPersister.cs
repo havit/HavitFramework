@@ -12,7 +12,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 	/// Stavem se myslí zejména hodnoty zpracovávané uživateli v UI.
 	/// Základními metodami, kterými se pracuje, jsou metody ApplyValues a RetrieveValues.
 	/// </summary>
-	public class ControlsValuesPersister: Control
+	public class ControlsValuesPersister : Control
 	{
 		#region PersisterExtenders
 		/// <summary>

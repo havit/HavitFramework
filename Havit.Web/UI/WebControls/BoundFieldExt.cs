@@ -44,7 +44,6 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		internal string CellCssClass
 		{
-#warning nevhodná implementace, předělat na ContentStyle typu Style (používá se na přidávání vnitřního obalového divu)
 			get { return (string)(ViewState["CellCssClass"] ?? String.Empty); }
 			set { ViewState["CellCssClass"] = value; }
 		}
@@ -60,7 +59,10 @@ namespace Havit.Web.UI.WebControls
 			{
 				return (string)ViewState["EmptyText"];
 			}
-			set { ViewState["EmptyText"] = value; }
+			set
+			{
+				ViewState["EmptyText"] = value;
+			}
 		}
 		#endregion
 
@@ -112,18 +114,26 @@ namespace Havit.Web.UI.WebControls
 		protected override object GetValue(Control controlContainer)
 		{
 			if (controlContainer == null)
+			{
 				throw new ArgumentNullException("controlContainer");
+			}
 
 			object dataItem = DataBinder.GetDataItem(controlContainer);
 
 			if (DesignMode)
+			{
 				return GetDesignTimeValue();
+			}
 
 			if (dataItem == null)
+			{
 				throw new Exception("Nepodařilo se získat objekt s daty.");
+			}
 
 			if (DataField == ThisExpression)
+			{
 				return dataItem;
+			}
 
 			object value = DataBinderExt.GetValue(dataItem, DataField);
 			if ((value == null) || (value == DBNull.Value))

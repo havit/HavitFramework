@@ -90,19 +90,19 @@ namespace Havit.Web.UI.WebControls
 
 		public int MaxSuggestChars
 		{
-			get	{return _maxSuggestChars;}
-			set	{_maxSuggestChars=value;}
+			get	{ return _maxSuggestChars; }
+			set	{ _maxSuggestChars = value; }
 		}
 
 		public int KeyPressDelay
 		{
-			get	{return _keyPressDelay;}
-			set	{_keyPressDelay=value;}
+			get	{ return _keyPressDelay; }
+			set	{ _keyPressDelay = value; }
 		}
 
 		public bool UsePaging
 		{
-			get	{return _usePaging;}
+			get	{ return _usePaging; }
             set { _usePaging = value; }
 		}
 
@@ -116,7 +116,7 @@ namespace Havit.Web.UI.WebControls
 		/// Kontext, v jakém je AutoSuggestMenu použito.
 		/// Předává se webové službě, která vrací položky pro nápovědu, aby bylo možno se přizpůsobit kontextu (omezit výběr, atp.).
 		/// </summary>
-		public string Context
+		public new string Context
 		{
 			get { return _context; }
 			set { _context = value; }
@@ -154,8 +154,8 @@ namespace Havit.Web.UI.WebControls
 
 		public bool UseIFrame
 		{
-			get	{return _useIFrame;}
-			set	{_useIFrame=value;}
+			get	{ return _useIFrame; }
+			set	{ _useIFrame = value; }
 		}
 
 		//public string ResourcesDir
@@ -241,7 +241,7 @@ namespace Havit.Web.UI.WebControls
             _useIFrame = true;
 
             _usePageMethods = true;
-            _onGetSuggestions="GetSuggestions";
+            _onGetSuggestions = "GetSuggestions";
 
             this.Attributes["autocomplete"] = "off";
         }
@@ -249,7 +249,7 @@ namespace Havit.Web.UI.WebControls
         /// <summary>This member overrides <see cref="Control.CreateChildControls"/></summary>
         protected override void CreateChildControls()
         {
-            _hdnSelectedValue= new HiddenField();
+            _hdnSelectedValue = new HiddenField();
             _hdnSelectedValue.ID = "hdnSelectedValue";
 
             Controls.Add(_hdnSelectedValue);
@@ -364,10 +364,10 @@ namespace Havit.Web.UI.WebControls
 
 		protected void WriteMenu()
 		{
-         	HtmlTextWriter writer=new HtmlTextWriter(new System.IO.StringWriter());
+         	HtmlTextWriter writer = new HtmlTextWriter(new System.IO.StringWriter());
       
             //Javascript to associate
-            string funcName="writeMenu_" + this.ClientID;
+            string funcName = "writeMenu_" + this.ClientID;
             writer.WriteLine("function  " + funcName + "()");
             writer.WriteLine("{");
        
@@ -389,10 +389,12 @@ namespace Havit.Web.UI.WebControls
 				writer.WriteLine("menu.context=\"" + _context.Replace("\"", "\\\"") + "\";");
 			}
 
-            if (!_maxHeight.IsEmpty)
-                writer.WriteLine("menu.maxHeight=\"" + _maxHeight.ToString() + "\";");
-	
-            writer.WriteLine("menu.cssClass=\"" + this.CssClass + "\";");
+			if (!_maxHeight.IsEmpty)
+			{
+				writer.WriteLine("menu.maxHeight=\"" + _maxHeight.ToString() + "\";");
+			}
+
+			writer.WriteLine("menu.cssClass=\"" + this.CssClass + "\";");
 
 			string jsMessageOnClearText = (HttpUtilityExt.GetResourceString((_messageOnClearText ?? String.Empty)) ?? String.Empty).Replace("\"", "\\\"");
 			writer.WriteLine("menu.messageOnClearText=\"" + jsMessageOnClearText + "\";");
@@ -421,15 +423,19 @@ namespace Havit.Web.UI.WebControls
 			}
 
             string func = _onGetSuggestions;
-            if (_usePageMethods)
-                func = "PageMethods." + func;
+			if (_usePageMethods)
+			{
+				func = "PageMethods." + func;
+			}
 
-            writer.WriteLine("menu.onGetMenuItems=\"" + func + "\";");
+			writer.WriteLine("menu.onGetMenuItems=\"" + func + "\";");
 
-            if (!String.IsNullOrEmpty(_onClientTextBoxUpdate))
-                writer.WriteLine("menu.onTextBoxUpdate=\"" + _onClientTextBoxUpdate + "\";");
+			if (!String.IsNullOrEmpty(_onClientTextBoxUpdate))
+			{
+				writer.WriteLine("menu.onTextBoxUpdate=\"" + _onClientTextBoxUpdate + "\";");
+			}
 
-            writer.WriteLine("menu.render();");
+			writer.WriteLine("menu.render();");
             writer.WriteLine("}");
 
             writer.WriteLine("");
@@ -437,27 +443,37 @@ namespace Havit.Web.UI.WebControls
             //in IE 6.0 adding div to Body before </body> tag, but nested inside the <form> will throw "Operation Aborted error".
             //Since RegisterClientStartupScript adds it before </form>.  Need to call the method as soon as Body is loaded. 
 
-            if (IsInPartialRendering())
-                //Just call the method since the Body is already renderer
-                writer.WriteLine(funcName + "();");
-            else
-                writer.WriteLine("XUtils.addEventListener(window, \"load\", " + funcName + ");");
+			if (IsInPartialRendering())
+			{
+				//Just call the method since the Body is already renderer
+				writer.WriteLine(funcName + "();");
+			}
+			else
+			{
+				writer.WriteLine("XUtils.addEventListener(window, \"load\", " + funcName + ");");
+			}
 
-            RegisterClientStartupScript("AutoSuggestMenu_" + this.UniqueID, writer.InnerWriter.ToString());
+			RegisterClientStartupScript("AutoSuggestMenu_" + this.UniqueID, writer.InnerWriter.ToString());
 		}
 
         protected void CheckRequiredProperties()
         {
-            if (_targetControlID == null)
-                throw new Exception("TargetControlID property is required.");
+			if (_targetControlID == null)
+			{
+				throw new Exception("TargetControlID property is required.");
+			}
 
-            if (this.NamingContainer.FindControl(_targetControlID)==null)
-                throw new Exception("Target control with ID '" + _targetControlID + "' doesn't exist");
+	        if (this.NamingContainer.FindControl(_targetControlID) == null)
+			{
+				throw new Exception("Target control with ID '" + _targetControlID + "' doesn't exist");
+			}
 
-            if (String.IsNullOrEmpty(_onGetSuggestions))
-                throw new Exception("onGetSuggestions property is required.");
+			if (String.IsNullOrEmpty(_onGetSuggestions))
+			{
+				throw new Exception("onGetSuggestions property is required.");
+			}
 
-            //Make sure resources directory exists
+	        //Make sure resources directory exists
 			//string dir=GetAbsoluteResourcesDir();
 			//dir=this.Page.Request.MapPath(dir);
 
@@ -521,13 +537,13 @@ namespace Havit.Web.UI.WebControls
 
         internal static void WriteMenuItemsToJSON(List<AutoSuggestMenuItem> menuItems, int totalResults, XJsonWriter writer)
         {            
-            List<string> jsonMenuItems=new List<string>();
+            List<string> jsonMenuItems = new List<string>();
 
             string jsonMenuItem;
 
             foreach (AutoSuggestMenuItem menuItem in menuItems)
             {
-                jsonMenuItem=menuItem.GetJSON();
+                jsonMenuItem = menuItem.GetJSON();
                 jsonMenuItems.Add(jsonMenuItem);
             }
 
@@ -541,13 +557,13 @@ namespace Havit.Web.UI.WebControls
         ///     Used to send data back to browser.
         /// </summary>
         /// <returns>
-        ///{"MenuItems": 
-        /// [
-        ///     {"label": "Option1", "value": "1"},
-        ///     {"label": "Option2", "value": "2"},
-        ///     {"label": "Option3", "value": "3"},
-        /// ]
-        ///}
+        /// {"MenuItems": 
+        ///   [
+        ///       {"label": "Option1", "value": "1"},
+        ///       {"label": "Option2", "value": "2"},
+        ///       {"label": "Option3", "value": "3"},
+        ///   ]
+        /// }
         /// </returns>
         ///
         public static string ConvertMenuItemsToJSON(List<AutoSuggestMenuItem> menuItems, int totalResults)

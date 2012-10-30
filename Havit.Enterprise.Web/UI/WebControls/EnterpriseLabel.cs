@@ -12,7 +12,7 @@ namespace Havit.Web.UI.WebControls
 	/// b) umí renderovat hvězdičku (nebo jiný symbol) pro povinná pole (na základě IsRequired nebo ItemPropertyInfo).
 	/// </summary>
 	[Themeable(true)]
-	public class EnterpriseLabel: Label
+	public class EnterpriseLabel : Label
 	{
 		#region ItemPropertyInfo
 		/// <summary>

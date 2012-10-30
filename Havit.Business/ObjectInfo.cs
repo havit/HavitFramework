@@ -15,14 +15,14 @@ namespace Havit.Business
 		/// </summary>
 		/// <param name="dbSchema">Název schémata databázové tabulky.</param>
 		/// <param name="dbTable">Název databázové tabulky.</param>
+		/// <param name="className">Název třídy.</param>
+		/// <param name="_namespace">Název namespace třídy.</param>
 		/// <param name="readOnly">Určuje, zda je třída jen ke čtení.</param>
+		/// <param name="createObjectMethod">Delegát na metodu (bez parametrů) vytvářející instanci nového objektu. Null, pokud taková metoda neexistuje (třída je readonly nebo máowner field).</param>
 		/// <param name="getObjectMethod">Delegát na metodu vracející objekt třídy na základě ID.</param>
 		/// <param name="getAllMethod">Delegát na metodu vracející všechny (nesmazané) objekty třídy.</param>
 		/// <param name="deletedProperty">FieldPropertyInfo, která identifikuje příznakem smazané záznamy.</param>
 		/// <param name="properties">Kolekce všech vlastností objektu.</param>
-		/// <param name="className">Název třídy.</param>
-		/// <param name="_namespace">Název namespace třídy.</param>
-		/// <param name="createObjectMethod">Delegát na metodu (bez parametrů) vytvářející instanci nového objektu. Null, pokud taková metoda neexistuje (třída je readonly nebo máowner field).</param>
 		public void Initialize(
 			string dbSchema,
 			string dbTable,

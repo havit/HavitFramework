@@ -136,7 +136,7 @@ namespace Havit.Web
 		/// <summary>
 		/// Provede přesměrování s předáním adres navigace. Do historie adres navigace ja přidána adresa v parametru fromUrls.
 		/// </summary>
-		/// <param name="fromUrls">Adresa, která bude přidána do adres navigace (slouží pro návrat na aktuální stránku).</param>
+		/// <param name="fromUrl">Adresa, která bude přidána do adres navigace (slouží pro návrat na aktuální stránku).</param>
 		/// <param name="toUrl">Adresa, na kterou bude přesměrováno.</param>
 		/// <exception cref="ArgumentException">
 		/// Pokud je fromUrl null nebo prázdný řetězec.
@@ -223,7 +223,7 @@ namespace Havit.Web
 		/// <summary>
 		/// Vrátí url pro přesměrování s předáním adres navigace.
 		/// </summary>
-		/// <param name="fromUrls">Adresa, která bude přidána do adres navigace (slouží pro návrat na aktuální stránku).</param>
+		/// <param name="fromUrl">Adresa, která bude přidána do adres navigace (slouží pro návrat na aktuální stránku).</param>
 		/// <param name="toUrl">Adresa, na kterou bude přesměrováno.</param>
 		/// <exception cref="ArgumentException">
 		/// Pokud je fromUrl null nebo prázdný řetězec.
@@ -278,7 +278,7 @@ namespace Havit.Web
 		/// <summary>
 		/// Vrátí adresu pro přesměrování s předáním adres navigace.
 		/// </summary>
-		/// <param name="fromUrls">Adresa, která bude přidána do adres navigace (slouží pro návrat na aktuální stránku).</param>
+		/// <param name="fromUrl">Adresa, která bude přidána do adres navigace (slouží pro návrat na aktuální stránku).</param>
 		/// <param name="toUrl">Adresa, na kterou bude přesměrováno.</param>
 		/// <param name="passHistoryUrls">True, pokud má být přidán parametr s historií adres navigace.</param>
 		/// <returns>
@@ -305,8 +305,7 @@ namespace Havit.Web
 					toUrl, // 0
 					toUrl.Contains("?") ? "&" : "?", // 1
 					PageNavigator.UrlsQueryParameterName, // 2
-					historyParameterValue// 3						
-				);
+					historyParameterValue); // 3						
 
 				bool lengthValid = HttpServerUtilityExt.ResolveUrl(result).Length <= 2048;
 

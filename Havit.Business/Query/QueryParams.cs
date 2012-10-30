@@ -204,7 +204,6 @@ namespace Havit.Business.Query
 
 				if (queryProperties[i] is IFieldsBuilder)
 				{
-#warning Přepracovat tak, aby každá property obecně mohl emitovat fieldy, které potřebuje ke své inicializaci.
 					fieldsBuilder.Append(((IFieldsBuilder)queryProperties[i]).GetSelectFieldStatement(command));
 				}
 			}
@@ -274,7 +273,6 @@ namespace Havit.Business.Query
 					orderByBuilder.Append(", ");
 				}
 
-#warning není moc OOP
 				orderByBuilder.Append(orderBy[i].Expression);
 				if (orderBy[i].Direction == Havit.Collections.SortDirection.Descending)
 				{

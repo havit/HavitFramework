@@ -18,7 +18,7 @@ namespace WebApplicationTest
 			Special2DTB.GetDateTimeBoxCustomization += new DateTimeBox.DateTimeBoxDateCustomizationEventHandler(SpecialDTB_GetDateTimeBoxCustomization2);
 		}
 		
-		SpecialDateCustomization specialDateCollection;
+		private SpecialDateCustomization specialDateCollection;
 
 		//void SpecialDTB_GetDateTimeBoxCustomization(object sender, DateTimeBoxDateCustomizationEventArgs args)
 		//{
@@ -43,7 +43,8 @@ namespace WebApplicationTest
 		private static List<SpecialDate> GetSpecialDates()
 		{
 			List<SpecialDate> specialDatesList = new List<SpecialDate>()
-			{	new SpecialDate(new DateTime(2012, 1, 1), false, "special"), 
+			{
+				new SpecialDate(new DateTime(2012, 1, 1), false, "special"), 
 				new SpecialDate(new DateTime(2012, 2, 12), false, "special"),
 				new SpecialDate(new DateTime(2012, 4, 9), false, "special"),
 				new SpecialDate(new DateTime(2012, 5, 1), false, "special"),

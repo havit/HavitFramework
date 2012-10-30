@@ -31,7 +31,6 @@ namespace Havit.Web.UI.WebControls
 			get;
 			set;
 		}
-		private string _dateCustomizationFunctionContent;
 		#endregion
 
 		/// <summary>
@@ -41,7 +40,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			if (String.IsNullOrEmpty(DateCustomizationFunctionName))
 			{
-				lock(typeof(DateTimeBoxDateCustomization))
+				lock (typeof(DateTimeBoxDateCustomization))
 				{
 					if (String.IsNullOrEmpty(DateCustomizationFunctionName))
 					{

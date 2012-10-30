@@ -46,7 +46,7 @@ namespace Havit.Web.UrlRewriter.Config
 	///	&lt;/configuration&gt;
 	/// </code>
 	/// </remarks>
-	[Serializable()]
+	[Serializable]
 	[XmlRoot("UrlRewriterConfig")]
 	public class RewriterConfiguration
 	{

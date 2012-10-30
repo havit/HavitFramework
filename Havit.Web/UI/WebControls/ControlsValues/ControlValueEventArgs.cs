@@ -8,7 +8,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 	/// <summary>
 	/// Parametry událostí předávající Control a hodnotu
 	/// </summary>
-	public class ControlValueEventArgs: EventArgs
+	public class ControlValueEventArgs : EventArgs
 	{
 		#region Control
 		/// <summary>

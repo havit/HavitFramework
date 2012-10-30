@@ -44,6 +44,7 @@ namespace Havit.BusinessLayerTest
 	/// </code>
 	/// </remarks>
 	[System.Diagnostics.Contracts.ContractVerification(false)]
+	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
 	public abstract class RoleBase : ActiveRecordBusinessObjectBase
 	{
 		#region Static constructor
@@ -60,19 +61,17 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Vytvoří instanci existujícího objektu.
 		/// </summary>
-		/// <param name="id">RoleID (PK)</param>
-		protected RoleBase(int id)
-			: base(id)
+		/// <param name="id">RoleID (PK).</param>
+		protected RoleBase(int id) : base(id)
 		{
 		}
 		
 		/// <summary>
 		/// Vytvoří instanci objektu na základě dat (i částečných) načtených z databáze.
 		/// </summary>
-		/// <param name="id">RoleID (PK)</param>
-		/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu (i částečnými)</param>
-		protected RoleBase(int id, DataRecord record)
-			: base(id, record)
+		/// <param name="id">RoleID (PK).</param>
+		/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu (i částečnými).</param>
+		protected RoleBase(int id, DataRecord record) : base(id, record)
 		{
 		}
 		#endregion
@@ -109,6 +108,8 @@ namespace Havit.BusinessLayerTest
 			{
 				_SymbolPropertyHolder.Value = String.Empty;
 			}
+			
+			base.Init();
 		}
 		#endregion
 		
@@ -125,7 +126,7 @@ namespace Havit.BusinessLayerTest
 			
 			if (_SymbolPropertyHolder.IsDirty && (_SymbolPropertyHolder.Value != null) && (_SymbolPropertyHolder.Value.Length > 50))
 			{
-				throw new ConstraintViolationException(this, "Řetězec v \"Symbol\" přesáhl maximální délku 50 znaků.");
+				throw new ConstraintViolationException(this, "Vlastnost \"Symbol\" - řetězec přesáhl maximální délku 50 znaků.");
 			}
 			
 		}
@@ -135,14 +136,14 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Načte data objektu z DB a vrátí je ve formě DataRecordu.
 		/// </summary>
-		/// <param name="transaction">případná transakce</param>
-		/// <returns>úplná data objektu</returns>
+		/// <param name="transaction">Transakce.</param>
+		/// <returns>Úplná data objektu.</returns>
 		protected override sealed DataRecord Load_GetDataRecord(DbTransaction transaction)
 		{
 			DataRecord result;
 			
 			DbCommand dbCommand = DbConnector.Default.ProviderFactory.CreateCommand();
-			dbCommand.CommandText = "SELECT RoleID, Symbol FROM [dbo].[Role] WHERE RoleID = @RoleID";
+			dbCommand.CommandText = "SELECT [RoleID], [Symbol] FROM [dbo].[Role] WHERE [RoleID] = @RoleID";
 			dbCommand.Transaction = transaction;
 			
 			DbParameter dbParameterRoleID = DbConnector.Default.ProviderFactory.CreateParameter();
@@ -441,7 +442,8 @@ namespace Havit.BusinessLayerTest
 				while (reader.Read())
 				{
 					DataRecord dataRecord = new DataRecord(reader, dataLoadPower);
-					result.Add(Role.GetObject(dataRecord));
+					Role role = Role.GetObject(dataRecord);
+					result.Add(role);
 				}
 			}
 			
@@ -459,7 +461,7 @@ namespace Havit.BusinessLayerTest
 			
 			RoleCollection collection = null;
 			int[] ids = null;
-			string cacheKey = "Havit.BusinessLayerTest.Role.GetAll()";
+			string cacheKey = "Havit.BusinessLayerTest.Role.GetAll";
 			
 			ids = (int[])HttpRuntime.Cache.Get(cacheKey);
 			if (ids == null)
@@ -473,7 +475,7 @@ namespace Havit.BusinessLayerTest
 						collection = Role.GetList(queryParams);
 						ids = collection.GetIDs();
 						
-						HttpRuntime.Cache.Add(
+						HttpRuntime.Cache.Insert(
 							cacheKey,
 							ids,
 							null, // dependencies

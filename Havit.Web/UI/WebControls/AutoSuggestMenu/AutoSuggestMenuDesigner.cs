@@ -10,10 +10,9 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.Design;
 
-
 namespace Havit.Web.UI.WebControls
 {
-    class AutoSuggestMenuDesigner : ControlDesigner
+    internal class AutoSuggestMenuDesigner : ControlDesigner
     {
         public override String GetDesignTimeHtml()
         {

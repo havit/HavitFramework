@@ -8,17 +8,18 @@ using Havit.Web;
 namespace Havit.WebTest
 {
 	/// <summary>
-	///This is a test class for Havit.Web.QueryStringBuilder and is intended
-	///to contain all Havit.Web.QueryStringBuilder Unit Tests
+	/// This is a test class for Havit.Web.QueryStringBuilder and is intended
+	/// to contain all Havit.Web.QueryStringBuilder Unit Tests
 	/// </summary>
-	[TestClass()]
+	[TestClass]
 	public class QueryStringBuilderTest
 	{
 		#region Add_Null
 		/// <summary>
 		/// A test for Add (string, string)
 		/// </summary>
-		[TestMethod(), ExpectedException(typeof(ArgumentException))]
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
 		public void AddTest_Null()
 		{
 			QueryStringBuilder target = new QueryStringBuilder();
@@ -30,7 +31,8 @@ namespace Havit.WebTest
 		/// <summary>
 		/// A test for Set (string, string)
 		/// </summary>
-		[TestMethod(), ExpectedException(typeof(ArgumentException))]
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
 		public void SetTest()
 		{
 			QueryStringBuilder target = new QueryStringBuilder();
@@ -311,26 +313,5 @@ namespace Havit.WebTest
 		}
 		#endregion
 
-		/*****************************************************************/
-
-		#region TestContext
-		private TestContext testContextInstance;
-
-		/// <summary>
-		///Gets or sets the test context which provides
-		///information about and functionality for the current test run.
-		/// </summary>
-		public TestContext TestContext
-		{
-			get
-			{
-				return testContextInstance;
-			}
-			set
-			{
-				testContextInstance = value;
-			}
-		}
-		#endregion
 	}
 }

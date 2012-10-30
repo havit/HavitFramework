@@ -87,7 +87,7 @@ namespace Havit.Web.UI.WebControls
 			// <input type="image" src="image.gif" onclick="javascript:__doPostBack('GridView1','Delete$0')" />
 			// První request vznikne z type="image",
 			// druhý request vznikne z __doPostBack.
-			if (base.IsEnabled)
+			if (IsEnabled)
 			{
 				string onClick = Attributes["onclick"];
 				string onClientClick = this.OnClientClick;

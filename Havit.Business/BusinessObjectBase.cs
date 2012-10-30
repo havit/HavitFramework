@@ -23,7 +23,7 @@ namespace Havit.Business
 		/// <summary>
 		/// Hodnota, kterou má ID objektu neuloženého v databázi (bez perzistence).
 		/// </summary>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1706:ShortAcronymsShouldBeUppercase", MessageId = "Member")]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1706:ShortAcronymsShouldBeUppercase", MessageId = "Member", Justification = "Hodnotu ID povolujeme (a vyžadujeme).")]
 		public const int NoID = Int32.MinValue;
 		#endregion
 
@@ -31,7 +31,7 @@ namespace Havit.Business
 		/// <summary>
 		/// Primární klíč objektu.
 		/// </summary>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1706:ShortAcronymsShouldBeUppercase", MessageId = "Member")]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1706:ShortAcronymsShouldBeUppercase", MessageId = "Member", Justification = "Hodnotu ID povolujeme (a vyžadujeme).")]
 		public int ID
 		{
 			get { return _id; }
@@ -275,7 +275,7 @@ namespace Havit.Business
 		/// </summary>
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt načten; null, pokud bez transakce</param>
 		/// <returns>True, pokud se podařilo objekt načíst, jinak false.</returns>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member")]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member", Justification = "Jde o template metodu volanou z metody TryLoad.")]
 		protected abstract bool TryLoad_Perform(DbTransaction transaction);
 		#endregion
 
@@ -344,7 +344,7 @@ namespace Havit.Business
 		/// Výkonná část uložení objektu do perzistentního uložiště.
 		/// </summary>
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member")]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member", Justification = "Jde o template metodu volanou z metody Save.")]
 		protected abstract void Save_Perform(DbTransaction transaction);
 
 		/// <summary>
@@ -413,7 +413,7 @@ namespace Havit.Business
 		/// Implementace metody vymaže objekt z perzistentního uložiště nebo ho označí jako smazaný.
 		/// </summary>
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které se smazání provede; null, pokud bez transakce</param>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member")]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member", Justification = "Jde o template metodu volanou z metody Save.")]
 		protected abstract void Delete_Perform(DbTransaction transaction);
 		#endregion
 
@@ -585,6 +585,32 @@ namespace Havit.Business
 				return null;
 			}
 			return businessObject.ID;
+		}
+		#endregion
+
+		#region FastIntParse (static)
+		/// <summary>
+		/// Převede text na číslo.
+		/// Předpokládá se korektnost hodnoty, neprovádí se žádná kontrola.
+		/// Číslo musí být v "invariant formátu" - cifry bez oddělovačů, může být záporné.
+		/// </summary>
+		protected static int FastIntParse(string value)
+		{
+			unchecked
+			{
+
+				int result = 0;
+				byte negative = (byte)(((value.Length > 0) && (value[0] == '-')) ? 1 : 0);
+
+				byte l = (byte)value.Length;
+				for (byte i = negative; i < l; i++)
+				{
+					//char letter = value[i];
+					result = 10 * result + (value[i] - 48);
+				}
+
+				return negative == 0 ? result : -1 * result;
+			}
 		}
 		#endregion
 	}

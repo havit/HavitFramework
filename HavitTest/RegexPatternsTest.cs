@@ -8,9 +8,9 @@ using Havit.Text.RegularExpressions;
 namespace HavitTest
 {
 	/// <summary>
-	/// Summary description for RegexPatternsTest
+	/// Test RegexPatterns.
 	/// </summary>
-	[TestClass()]	
+	[TestClass]	
 	public class RegexPatternsTest
 	{
 		[TestMethod]

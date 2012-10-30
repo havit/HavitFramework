@@ -8,7 +8,7 @@ using Havit.BusinessLayerTest;
 namespace Havit.BusinessTest
 {
 	/// <summary>
-	/// Summary description for CompositeConditionTest
+	/// Test kompozitních podmínek.
 	/// </summary>
 	[TestClass]
 	public class CompositeConditionTest

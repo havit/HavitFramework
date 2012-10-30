@@ -11,7 +11,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 	/// <summary>
 	/// IPersisterControlExtender pro EnterpriseCheckBoxList
 	/// </summary>
-	class EnterpriseCheckBoxListPersisterControlExtender : IPersisterControlExtender
+	internal class EnterpriseCheckBoxListPersisterControlExtender : IPersisterControlExtender
 	{
 		#region GetValue
 		public object GetValue(Control control)

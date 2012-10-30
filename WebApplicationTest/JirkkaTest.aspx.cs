@@ -65,7 +65,7 @@ namespace WebApplicationTest
             MyAjaxModalDialog.Height = new Unit(MyAjaxModalDialog.Height.Value + 10, UnitType.Pixel);
         }
 
-        [WebMethod()]
+        [WebMethod]
         public static string GetSuggestions(string keyword, bool usePaging, int pageIndex, int pageSize)
         {
             QueryParams qp = new QueryParams();
@@ -94,7 +94,7 @@ namespace WebApplicationTest
 				return _currentPageStatePersister;
 			}
 		}
-		PageStatePersister _currentPageStatePersister;
+		private PageStatePersister _currentPageStatePersister;
     }
 
 }

@@ -179,6 +179,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="ActiveRecordBusinessObjectBase.cs" />
     <Compile Include="AfterSaveEventArgs.cs" />
     <Compile Include="BeforeSaveEventArgs.cs" />
@@ -198,7 +201,6 @@
     <Compile Include="Money.cs" />
     <Compile Include="MoneyImplementationBase.cs" />
     <Compile Include="ObjectInfo.cs" />
-    <Compile Include="Properties\GlobalSuppressions.cs" />
     <Compile Include="PropertyInfo.cs" />
     <Compile Include="Query\AndCondition.cs" />
     <Compile Include="Query\BinaryCondition.cs" />

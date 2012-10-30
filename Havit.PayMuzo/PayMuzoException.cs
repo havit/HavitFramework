@@ -10,28 +10,29 @@ namespace Havit.PayMuzo
 	[global::System.Serializable]
 	public class PayMuzoException : Exception
 	{
-		//
 		// For guidelines regarding the creation of new exception types, see
 		//    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/cpgenref/html/cpconerrorraisinghandlingguidelines.asp
 		// and
 		//    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dncscol/html/csharp07192001.asp
-		//
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="PayMuzoException"/> class.
 		/// </summary>
 		public PayMuzoException() { }
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="PayMuzoException"/> class.
 		/// </summary>
 		/// <param name="message">The message.</param>
 		public PayMuzoException(string message) : base(message) { }
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="PayMuzoException"/> class.
 		/// </summary>
 		/// <param name="message">The message.</param>
 		/// <param name="inner">The inner.</param>
 		public PayMuzoException(string message, Exception inner) : base(message, inner) { }
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="PayMuzoException"/> class.
 		/// </summary>

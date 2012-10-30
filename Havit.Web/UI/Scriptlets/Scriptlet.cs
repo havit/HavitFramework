@@ -146,7 +146,6 @@ namespace Havit.Web.UI.Scriptlets
 		/// Sestaví kompletní klientský skript seskládáním funkce, vytvoření objektu 
 		/// a jeho parametrů. Zaregistruje skripty do stránky
 		/// </summary>
-		/// <returns>Kompletní klientský skript.</returns>
 		private void PrepareAndRegisterClientScript()
 		{
 			if (DesignMode)
@@ -166,8 +165,7 @@ namespace Havit.Web.UI.Scriptlets
 					typeof(Scriptlet),
 					this.UniqueID,
 					builder.ToString(),
-					true
-				);
+					true);
 			}
 		}
 		#endregion

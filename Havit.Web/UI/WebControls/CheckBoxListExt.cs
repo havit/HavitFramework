@@ -11,7 +11,7 @@ namespace Havit.Web.UI.WebControls
     /// Vylepšený <see cref="System.Web.UI.WebControls.CheckBoxList"/>.
     /// Podporuje lepší zpracování hodnoty DataTextField při databindingu.
     /// </summary>
-	public class CheckBoxListExt: CheckBoxList
+	public class CheckBoxListExt : CheckBoxList
 	{
 		#region ItemDataBound (event)
 		/// <summary>
@@ -21,11 +21,11 @@ namespace Havit.Web.UI.WebControls
 		{
 			add
 			{
-				base.Events.AddHandler(eventItemDataBound, value);
+				Events.AddHandler(eventItemDataBound, value);
 			}
 			remove
 			{
-				base.Events.RemoveHandler(eventItemDataBound, value);
+				Events.RemoveHandler(eventItemDataBound, value);
 			}
 		}
 		private static readonly object eventItemDataBound = new object();
@@ -185,7 +185,7 @@ namespace Havit.Web.UI.WebControls
 		/// <param name="e">The <see cref="Havit.Web.UI.WebControls.ListControlItemDataBoundEventArgs"/> instance containing the event data.</param>
 		protected virtual void OnItemDataBound(ListControlItemDataBoundEventArgs e)
 		{
-			EventHandler<ListControlItemDataBoundEventArgs> h = (EventHandler<ListControlItemDataBoundEventArgs>)base.Events[eventItemDataBound];
+			EventHandler<ListControlItemDataBoundEventArgs> h = (EventHandler<ListControlItemDataBoundEventArgs>)Events[eventItemDataBound];
 			if (h != null)
 			{
 				h(this, e);

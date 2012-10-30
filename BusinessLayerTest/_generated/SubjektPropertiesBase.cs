@@ -32,6 +32,7 @@ namespace Havit.BusinessLayerTest
 	/// Objektová reprezentace metadat vlastností typu Subjekt.
 	/// </summary>
 	[System.Diagnostics.Contracts.ContractVerification(false)]
+	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
 	public class SubjektPropertiesBase
 	{
 		/// <summary>
@@ -58,7 +59,7 @@ namespace Havit.BusinessLayerTest
 			_uzivatel.Initialize(objectInfo, "Uzivatel", "UzivatelID", false, SqlDbType.Int, true, 4, typeof(Havit.BusinessLayerTest.Uzivatel), Havit.BusinessLayerTest.Uzivatel.ObjectInfo);
 			_created.Initialize(objectInfo, "Created", "Created", false, SqlDbType.SmallDateTime, false, 4);
 			_deleted.Initialize(objectInfo, "Deleted", "Deleted", false, SqlDbType.SmallDateTime, true, 4);
-			_komunikace.Initialize(objectInfo, "Komunikace", typeof(Havit.BusinessLayerTest.Komunikace), "(SELECT dbo.IntArrayAggregate(_items.KomunikaceID) FROM [dbo].[Komunikace] AS _items WHERE (_items.SubjektID = [dbo].[Subjekt].[SubjektID])) AS Komunikace");
+			_komunikace.Initialize(objectInfo, "Komunikace", typeof(Havit.BusinessLayerTest.Komunikace), "(SELECT dbo.IntArrayAggregate([_items].[KomunikaceID]) FROM [dbo].[Komunikace] AS [_items] WHERE ([_items].[SubjektID] = [dbo].[Subjekt].[SubjektID])) AS [Komunikace]");
 		}
 		
 		/// <summary>

@@ -11,7 +11,7 @@ namespace WebApplicationTest
 {
 	public class Global : System.Web.HttpApplication
 	{
-		SpecialDateCustomization specialDatesDefault;
+		private SpecialDateCustomization specialDatesDefault;
 
 		protected void Application_Start(object sender, EventArgs e)
 		{
@@ -62,7 +62,8 @@ namespace WebApplicationTest
 			if (specialDatesDefault == null)
 			{
 				List<SpecialDate> specialDatesList = new List<SpecialDate>()
-				{	new SpecialDate(new DateTime(2012, 1, 1), false, "special"), 
+				{
+					new SpecialDate(new DateTime(2012, 1, 1), false, "special"), 
 					new SpecialDate(new DateTime(2012, 2, 12), false, "special"),
 					new SpecialDate(new DateTime(2012, 4, 9), false, "special"),
 					new SpecialDate(new DateTime(2012, 5, 1), false, "special"),

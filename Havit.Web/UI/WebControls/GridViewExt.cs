@@ -175,7 +175,7 @@ namespace Havit.Web.UI.WebControls
 				if (this._commandFieldStyle == null)
 				{
 					this._commandFieldStyle = new CommandFieldStyle();
-					if (base.IsTrackingViewState)
+					if (IsTrackingViewState)
 					{
 						((IStateManager)this._commandFieldStyle).TrackViewState();
 					}
@@ -191,8 +191,9 @@ namespace Havit.Web.UI.WebControls
 		{
 			string originalEmptyDataText = this.EmptyDataText;
 			EmptyDataText = HttpUtilityExt.GetResourceString(EmptyDataText);
-			return base.CreateChildControls(dataSource, dataBinding);
+			int result = base.CreateChildControls(dataSource, dataBinding);
 			EmptyDataText = originalEmptyDataText;
+			return result;
 		}
 		#endregion
 
@@ -234,8 +235,8 @@ namespace Havit.Web.UI.WebControls
 		[Category("Action")]
 		public event GridViewInsertEventHandler RowInserting
 		{
-			add { base.Events.AddHandler(eventItemInserting, value); }
-			remove { base.Events.RemoveHandler(eventItemInserting, value); }
+			add { Events.AddHandler(eventItemInserting, value); }
+			remove { Events.RemoveHandler(eventItemInserting, value); }
 		}
 
 		/// <summary>
@@ -244,8 +245,8 @@ namespace Havit.Web.UI.WebControls
 		[Category("Action")]
 		public event GridViewInsertedEventHandler RowInserted
 		{
-			add { base.Events.AddHandler(eventItemInserted, value); }
-			remove { base.Events.RemoveHandler(eventItemInserted, value); }
+			add { Events.AddHandler(eventItemInserted, value); }
+			remove { Events.RemoveHandler(eventItemInserted, value); }
 		}
 
 		/// <summary>
@@ -256,11 +257,11 @@ namespace Havit.Web.UI.WebControls
 		{
 			add
 			{
-				base.Events.AddHandler(eventRowCustomizingCommandButton, value);
+				Events.AddHandler(eventRowCustomizingCommandButton, value);
 			}
 			remove
 			{
-				base.Events.RemoveHandler(eventRowCustomizingCommandButton, value);
+				Events.RemoveHandler(eventRowCustomizingCommandButton, value);
 			}
 		}
 
@@ -271,8 +272,8 @@ namespace Havit.Web.UI.WebControls
 		[Category("Action")]
 		public event CancelEventHandler AllPagesShowing
 		{
-			add { base.Events.AddHandler(eventAllPagesShowing, value); }
-			remove { base.Events.RemoveHandler(eventAllPagesShowing, value); }
+			add { Events.AddHandler(eventAllPagesShowing, value); }
+			remove { Events.RemoveHandler(eventAllPagesShowing, value); }
 		} 
 		#endregion
 
@@ -283,8 +284,8 @@ namespace Havit.Web.UI.WebControls
 		[Category("Action")]
 		public event EventHandler AllPagesShown
 		{
-			add { base.Events.AddHandler(eventAllPagesShown, value); }
-			remove { base.Events.RemoveHandler(eventAllPagesShown, value); }
+			add { Events.AddHandler(eventAllPagesShown, value); }
+			remove { Events.RemoveHandler(eventAllPagesShown, value); }
 		} 
 		#endregion
 
@@ -647,7 +648,9 @@ namespace Havit.Web.UI.WebControls
 
 			switch (row.RowType)
 			{
-				case DataControlRowType.Header: row.TableSection = TableRowSection.TableHeader; break;				
+				case DataControlRowType.Header:
+					row.TableSection = TableRowSection.TableHeader;
+					break;				
 			}
 
 			return row;
@@ -883,7 +886,7 @@ namespace Havit.Web.UI.WebControls
 		/// <param name="e">argumenty události</param>
 		protected virtual void OnRowInserting(GridViewInsertEventArgs e)
 		{
-			GridViewInsertEventHandler h = (GridViewInsertEventHandler)base.Events[eventItemInserting];
+			GridViewInsertEventHandler h = (GridViewInsertEventHandler)Events[eventItemInserting];
 			if (h != null)
 			{
 				h(this, e);
@@ -896,7 +899,7 @@ namespace Havit.Web.UI.WebControls
 		/// <param name="e">argumenty události</param>
 		protected virtual void OnRowInserted(GridViewInsertedEventArgs e)
 		{
-			GridViewInsertedEventHandler h = (GridViewInsertedEventHandler)base.Events[eventItemInserted];
+			GridViewInsertedEventHandler h = (GridViewInsertedEventHandler)Events[eventItemInserted];
 			if (h != null)
 			{
 				h(this, e);
@@ -969,7 +972,7 @@ namespace Havit.Web.UI.WebControls
 		/// <param name="e">argumenty události</param>
 		protected internal virtual void OnRowCustomizingCommandButton(GridViewRowCustomizingCommandButtonEventArgs e)
 		{
-			GridViewRowCustomizingCommandButtonEventHandler h = (GridViewRowCustomizingCommandButtonEventHandler)base.Events[eventRowCustomizingCommandButton];
+			GridViewRowCustomizingCommandButtonEventHandler h = (GridViewRowCustomizingCommandButtonEventHandler)Events[eventRowCustomizingCommandButton];
 			if (h != null)
 			{
 				h(this, e);
@@ -1105,7 +1108,7 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		protected virtual void OnAllPagesShowing(CancelEventArgs cancelEventArgs)
 		{
-			CancelEventHandler h = (CancelEventHandler)base.Events[eventAllPagesShowing];
+			CancelEventHandler h = (CancelEventHandler)Events[eventAllPagesShowing];
 			if (h != null)
 			{
 				h(this, cancelEventArgs);
@@ -1117,7 +1120,7 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		protected virtual void OnAllPagesShown(EventArgs eventArgs)
 		{
-			EventHandler h = (EventHandler)base.Events[eventAllPagesShown];
+			EventHandler h = (EventHandler)Events[eventAllPagesShown];
 			if (h != null)
 			{
 				h(this, eventArgs);

@@ -9,7 +9,7 @@ namespace Havit.Web.UI.WebControls
 	/// <summary>
 	/// Validátor hodnoty controlu NumericBox.
 	/// </summary>
-	public class NumericBoxValidator: BaseValidator
+	public class NumericBoxValidator : BaseValidator
 	{
 		#region MinValue
 		/// <summary>

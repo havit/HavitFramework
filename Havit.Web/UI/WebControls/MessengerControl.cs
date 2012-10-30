@@ -9,7 +9,7 @@ namespace Havit.Web.UI.WebControls
     /// <summary>
     /// Zobrazuje zprávy Messengera.
     /// </summary>
-    public class MessengerControl: Literal
+    public class MessengerControl : Literal
     {
         #region Messenger
         /// <summary>

@@ -87,8 +87,7 @@ namespace Havit.Web.UI.Scriptlets
 					scriptBuilder.AppendLine(getEventScript.Invoke(
 						String.Format("{0}.{1}", parameterPrefix, parameter.Name),
 						eventName,
-						scriptletFunctionCallDelegate
-					));
+						scriptletFunctionCallDelegate));
 				}
 			}	
 		} 

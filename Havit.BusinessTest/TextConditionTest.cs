@@ -9,7 +9,7 @@ using Havit.BusinessLayerTest;
 namespace Havit.BusinessTest
 {
 	/// <summary>
-	/// Summary description for TextConditionTest
+	/// Test TextCondition.
 	/// </summary>
 	[TestClass]
 	public class TextConditionTest

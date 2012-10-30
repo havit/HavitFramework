@@ -25,7 +25,7 @@ namespace Havit.Web.UrlRewriter
 		/// <summary>
 		/// Prázdná implementace, vyžadováno IHttpModule.
 		/// </summary>
-		public virtual void Dispose() {}
+		public virtual void Dispose() { }
 
 		/// <summary>
 		/// Called when the module's AuthorizeRequest event fires.

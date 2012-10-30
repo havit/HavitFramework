@@ -13,57 +13,57 @@ namespace Havit.Web.UI.WebControls
 		private string _cssClass;
 
 		#region Class Properties
-		
+
 		public string Label
 		{
-			get	{return _label;}
-			set	{_label=value;}
+			get { return _label; }
+			set { _label = value; }
 		}
 
 		public string Value
 		{
-			get	{return _value;}
-			set	{_value=value;}
+			get { return _value; }
+			set { _value = value; }
 		}
 
 		public bool IsSelectable
 		{
-			get	{return _isSelectable;}
-			set	{_isSelectable=value;}
+			get { return _isSelectable; }
+			set { _isSelectable = value; }
 		}
 
 		public string CSSClass
 		{
-			get	{return _cssClass;}
-			set	{_cssClass=value;}
+			get { return _cssClass; }
+			set { _cssClass = value; }
 		}
 		#endregion
 
 		//Constructor
 		public AutoSuggestMenuItem()
 		{
-			_cssClass=null; //By default overridable by AutoSuggestMenu.MenuItemCssClass
-			_isSelectable=true;
+			_cssClass = null; //By default overridable by AutoSuggestMenu.MenuItemCssClass
+			_isSelectable = true;
 		}
 
-        public AutoSuggestMenuItem(string label, string value)
-            : this()
-        {
-            _label = label;
-            _value = value;
-        }
+		public AutoSuggestMenuItem(string label, string value)
+			: this()
+		{
+			_label = label;
+			_value = value;
+		}
 
-        public string GetJSON()
-        {
-            XJsonWriter writer = new XJsonWriter();
+		public string GetJSON()
+		{
+			XJsonWriter writer = new XJsonWriter();
 
-            writer.WriteNameValue("label", _label);
-            writer.WriteNameValue("value", _value);
-            writer.WriteNameValue("isSelectable", _isSelectable);
-            writer.WriteNameValue("cssClass", _cssClass, true);
+			writer.WriteNameValue("label", _label);
+			writer.WriteNameValue("value", _value);
+			writer.WriteNameValue("isSelectable", _isSelectable);
+			writer.WriteNameValue("cssClass", _cssClass, true);
 
-            return writer.ToString();
-        }
+			return writer.ToString();
+		}
 	}
 
 }

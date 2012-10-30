@@ -12,7 +12,7 @@ namespace Havit.Web.UI.WebControls
     /// <summary>
     /// EnterpriseListBox zajišťuje pohodlnější práci s ListBoxem, jehož položky představují business objekty.	
     /// </summary>
-	public class EnterpriseListBox: ListBoxExt
+	public class EnterpriseListBox : ListBoxExt
 	{
 		#region ItemPropertyInfo
 		/// <summary>
@@ -228,7 +228,7 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Indikuje právě porobíhající databinding.
 		/// </summary>
-		bool isDataBinding = false;
+		private bool isDataBinding = false;
 
 		/// <summary>
 		/// Objekt, který má být nastaven jako vybraný, ale jeho nastavení bylo odloženo.
@@ -238,7 +238,7 @@ namespace Havit.Web.UI.WebControls
 		/// odloží se nastavení hodnoty až na konec DataBindingu. To protože v okamžiku nastavování SelectedObject 
 		/// nemusí být v Items ještě data.
 		/// </remarks>
-		IEnumerable delayedSetSelectedObjects = null;
+		private IEnumerable delayedSetSelectedObjects = null;
 
 		/// <summary>
 		/// Udává, zda máme nastaven objekt pro odložené nastavení vybraného objektu.
@@ -248,7 +248,7 @@ namespace Havit.Web.UI.WebControls
 		/// odloží se nastavení hodnoty až na konec DataBindingu. To protože v okamžiku nastavování SelectedObject 
 		/// nemusí být v Items ještě data. 
 		/// </remarks>
-		bool delayedSetSelectedObjectSet = false;
+		private bool delayedSetSelectedObjectSet = false;
 
 		#endregion
 

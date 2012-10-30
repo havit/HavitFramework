@@ -11,13 +11,13 @@ namespace Havit.Web.UI
 	/// Updatepanel, který napravuje vlastnost .NETu, podle které není možno odebrat ze stránky UpdatePanel a znovu jej přidat
 	/// (například databindingem), pokud je update panel uvnitř jiného UpdateOanelu s režimem Conditional.
 	/// </summary>
-	public class UpdatePanelExt: UpdatePanel
+	public class UpdatePanelExt : UpdatePanel
 	{
 		#region Private fields
 		/// <summary>
 		/// Přiznak, zda již proběhl PreRenderComplete.
 		/// </summary>
-		bool pagePreRenderCompleted = false;
+		private bool pagePreRenderCompleted = false;
 		#endregion
 
 		#region OnInit
@@ -45,8 +45,8 @@ namespace Havit.Web.UI
 				if (scriptManager != null)
 				{
 					// jako fix zavoláme metodu RegisterUpdatePanel, aby mohl korektně proběhnout OnUload, ve kterém je odregistrace controlu
-					MethodInfo methodInfo = typeof (ScriptManager).GetMethod("System.Web.UI.IScriptManagerInternal.RegisterUpdatePanel", BindingFlags.NonPublic | BindingFlags.Instance);
-					methodInfo.Invoke(scriptManager, new object[] {this});
+					MethodInfo methodInfo = typeof(ScriptManager).GetMethod("System.Web.UI.IScriptManagerInternal.RegisterUpdatePanel", BindingFlags.NonPublic | BindingFlags.Instance);
+					methodInfo.Invoke(scriptManager, new object[] { this });
 				}
 			}
 			base.OnUnload(e);

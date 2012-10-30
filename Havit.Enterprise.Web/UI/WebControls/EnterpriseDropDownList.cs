@@ -124,7 +124,9 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		public string SortExpression
 		{
+#pragma warning disable 612,618
 			get { return (string)ViewState["SortExpression"] ?? (DataSortField + ((SortDirection == Collections.SortDirection.Descending) ? " DESC" : String.Empty)); }
+#pragma warning restore 612,618
 			set { ViewState["SortExpression"] = value; }
 		}
 		#endregion
@@ -177,7 +179,9 @@ namespace Havit.Web.UI.WebControls
 			get
 			{
 				if (itemObjectInfo == null)
+				{
 					throw new InvalidOperationException("Není nastavena vlastnost ItemObjectInfo.");
+				}
 
 				return (SelectedId == null) ? null : itemObjectInfo.GetObjectMethod(SelectedId.Value);
 			}
@@ -254,7 +258,7 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Indikuje právě porobíhající databinding.
 		/// </summary>
-		bool isDataBinding = false;
+		private bool isDataBinding = false;
 
 		/// <summary>
 		/// Objekt, který má být nastaven jako vybraný, ale jeho nastavení bylo odloženo.
@@ -264,7 +268,7 @@ namespace Havit.Web.UI.WebControls
 		/// odloží se nastavení hodnoty až na konec DataBindingu. To protože v okamžiku nastavování SelectedObject 
 		/// nemusí být v Items ještě data.
 		/// </remarks>
-		BusinessObjectBase delayedSetSelectedObject = null;
+		private BusinessObjectBase delayedSetSelectedObject = null;
 
 		/// <summary>
 		/// Udává, zda máme nastaven objekt pro odložené nastavení vybraného objektu.
@@ -274,7 +278,7 @@ namespace Havit.Web.UI.WebControls
 		/// odloží se nastavení hodnoty až na konec DataBindingu. To protože v okamžiku nastavování SelectedObject 
 		/// nemusí být v Items ještě data. 
 		/// </remarks>
-		bool delayedSetSelectedObjectSet = false;
+		private bool delayedSetSelectedObjectSet = false;
 
 		#region IsNullable
 		/// <summary>

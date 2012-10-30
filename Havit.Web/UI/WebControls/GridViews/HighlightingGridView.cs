@@ -26,7 +26,9 @@ namespace Havit.Web.UI.WebControls
 			get
 			{
 				if (hightlighting == null)
+				{
 					hightlighting = new Highlighting();
+				}
 				return hightlighting;
 			}
 		}
@@ -55,7 +57,9 @@ namespace Havit.Web.UI.WebControls
 			Pair viewStateData = (Pair)savedState;
 			base.LoadViewState(viewStateData.First);
 			if (viewStateData.Second != null)
+			{
 				hightlighting = (Highlighting)viewStateData.Second;
+			}
 		}
 		#endregion
 

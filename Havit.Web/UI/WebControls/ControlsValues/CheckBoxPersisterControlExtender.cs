@@ -10,7 +10,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 	/// IPersisterControlExtender pro CheckBox.
 	/// RadioButton dědí z CheckBoxu, proto je v důsledku použito i pro zpracování hodnoty RadioButtonu.
 	/// </summary>
-	public class CheckBoxPersisterControlExtender: IPersisterControlExtender
+	public class CheckBoxPersisterControlExtender : IPersisterControlExtender
 	{
 		#region GetValue
 		public object GetValue(Control control)

@@ -10,7 +10,7 @@ namespace Havit.Web.UI.WebControls
 	/// Předek pro vlastní user controly, 
 	/// které jsou zobrazovány jako dialog prostřednictvím zapouzdřeného AjaxModalDialogu.
 	/// </summary>
-	public class AjaxModalDialogUserControlBase: UserControl
+	public class AjaxModalDialogUserControlBase : UserControl
 	{
 
 		#region MainWebModalDialog

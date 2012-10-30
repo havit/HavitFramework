@@ -44,6 +44,7 @@ namespace Havit.BusinessLayerTest
 	/// </code>
 	/// </remarks>
 	[System.Diagnostics.Contracts.ContractVerification(false)]
+	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
 	public abstract class ObjednavkaSepsaniBase : ActiveRecordBusinessObjectBase
 	{
 		#region Static constructor
@@ -60,27 +61,24 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Vytvoří instanci objektu jako nový prvek.
 		/// </summary>
-		protected ObjednavkaSepsaniBase()
-			: base()
+		protected ObjednavkaSepsaniBase() : base()
 		{
 		}
 		
 		/// <summary>
 		/// Vytvoří instanci existujícího objektu.
 		/// </summary>
-		/// <param name="id">ObjednavkaSepsaniID (PK)</param>
-		protected ObjednavkaSepsaniBase(int id)
-			: base(id)
+		/// <param name="id">ObjednavkaSepsaniID (PK).</param>
+		protected ObjednavkaSepsaniBase(int id) : base(id)
 		{
 		}
 		
 		/// <summary>
 		/// Vytvoří instanci objektu na základě dat (i částečných) načtených z databáze.
 		/// </summary>
-		/// <param name="id">ObjednavkaSepsaniID (PK)</param>
-		/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu (i částečnými)</param>
-		protected ObjednavkaSepsaniBase(int id, DataRecord record)
-			: base(id, record)
+		/// <param name="id">ObjednavkaSepsaniID (PK).</param>
+		/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu (i částečnými).</param>
+		protected ObjednavkaSepsaniBase(int id, DataRecord record) : base(id, record)
 		{
 		}
 		#endregion
@@ -121,6 +119,8 @@ namespace Havit.BusinessLayerTest
 			{
 				_StornoKomunikacePropertyHolder.Value = null;
 			}
+			
+			base.Init();
 		}
 		#endregion
 		
@@ -142,14 +142,14 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Načte data objektu z DB a vrátí je ve formě DataRecordu.
 		/// </summary>
-		/// <param name="transaction">případná transakce</param>
-		/// <returns>úplná data objektu</returns>
+		/// <param name="transaction">Transakce.</param>
+		/// <returns>Úplná data objektu.</returns>
 		protected override sealed DataRecord Load_GetDataRecord(DbTransaction transaction)
 		{
 			DataRecord result;
 			
 			DbCommand dbCommand = DbConnector.Default.ProviderFactory.CreateCommand();
-			dbCommand.CommandText = "SELECT ObjednavkaSepsaniID, StornoKomunikaceID FROM [dbo].[ObjednavkaSepsani] WHERE ObjednavkaSepsaniID = @ObjednavkaSepsaniID";
+			dbCommand.CommandText = "SELECT [ObjednavkaSepsaniID], [StornoKomunikaceID] FROM [dbo].[ObjednavkaSepsani] WHERE [ObjednavkaSepsaniID] = @ObjednavkaSepsaniID";
 			dbCommand.Transaction = transaction;
 			
 			DbParameter dbParameterObjednavkaSepsaniID = DbConnector.Default.ProviderFactory.CreateParameter();
@@ -246,7 +246,7 @@ namespace Havit.BusinessLayerTest
 			dbCommand.Parameters.Add(dbParameterStornoKomunikaceID);
 			_StornoKomunikacePropertyHolder.IsDirty = false;
 			
-			dbCommand.CommandText = "DECLARE @ObjednavkaSepsaniID INT; INSERT INTO [dbo].[ObjednavkaSepsani] (StornoKomunikaceID) VALUES (@StornoKomunikaceID); SELECT @ObjednavkaSepsaniID = SCOPE_IDENTITY(); SELECT @ObjednavkaSepsaniID; ";
+			dbCommand.CommandText = "DECLARE @ObjednavkaSepsaniID INT; INSERT INTO [dbo].[ObjednavkaSepsani] ([StornoKomunikaceID]) VALUES (@StornoKomunikaceID); SELECT @ObjednavkaSepsaniID = SCOPE_IDENTITY(); SELECT @ObjednavkaSepsaniID; ";
 			this.ID = (int)DbConnector.Default.ExecuteScalar(dbCommand);
 			this.IsNew = false; // uložený objekt není už nový, dostal i přidělené ID
 			
@@ -274,7 +274,7 @@ namespace Havit.BusinessLayerTest
 				{
 					commandBuilder.Append(", ");
 				}
-				commandBuilder.Append("StornoKomunikaceID = @StornoKomunikaceID");
+				commandBuilder.Append("[StornoKomunikaceID] = @StornoKomunikaceID");
 				
 				DbParameter dbParameterStornoKomunikaceID = DbConnector.Default.ProviderFactory.CreateParameter();
 				dbParameterStornoKomunikaceID.DbType = DbType.Int32;
@@ -289,7 +289,7 @@ namespace Havit.BusinessLayerTest
 			if (dirtyFieldExists)
 			{
 				// objekt je sice IsDirty (volá se tato metoda), ale může být změněná jen kolekce
-				commandBuilder.Append(" WHERE ObjednavkaSepsaniID = @ObjednavkaSepsaniID; ");
+				commandBuilder.Append(" WHERE [ObjednavkaSepsaniID] = @ObjednavkaSepsaniID; ");
 			}
 			else
 			{
@@ -341,7 +341,7 @@ namespace Havit.BusinessLayerTest
 		{
 			DbCommand dbCommand = DbConnector.Default.ProviderFactory.CreateCommand();
 			dbCommand.Transaction = transaction;
-			dbCommand.CommandText = "DELETE FROM [dbo].[ObjednavkaSepsani] WHERE ObjednavkaSepsaniID = @ObjednavkaSepsaniID";
+			dbCommand.CommandText = "DELETE FROM [dbo].[ObjednavkaSepsani] WHERE [ObjednavkaSepsaniID] = @ObjednavkaSepsaniID";
 			
 			DbParameter dbParameterObjednavkaSepsaniID = DbConnector.Default.ProviderFactory.CreateParameter();
 			dbParameterObjednavkaSepsaniID.DbType = DbType.Int32;
@@ -430,7 +430,8 @@ namespace Havit.BusinessLayerTest
 				while (reader.Read())
 				{
 					DataRecord dataRecord = new DataRecord(reader, dataLoadPower);
-					result.Add(ObjednavkaSepsani.GetObject(dataRecord));
+					ObjednavkaSepsani objednavkaSepsani = ObjednavkaSepsani.GetObject(dataRecord);
+					result.Add(objednavkaSepsani);
 				}
 			}
 			

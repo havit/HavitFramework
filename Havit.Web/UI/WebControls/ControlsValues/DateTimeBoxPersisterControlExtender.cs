@@ -9,7 +9,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 	/// <summary>
 	/// IPersisterControlExtender pro DateTimeBox.	
 	/// </summary>
-	public class DateTimeBoxPersisterControlExtender: IPersisterControlExtender
+	public class DateTimeBoxPersisterControlExtender : IPersisterControlExtender
 	{
 		#region GetValue
 		public object GetValue(Control control)

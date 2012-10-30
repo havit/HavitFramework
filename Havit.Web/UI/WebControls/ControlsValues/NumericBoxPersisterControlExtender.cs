@@ -9,7 +9,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 	/// <summary>
 	/// IPersisterControlExtender pro NumericBox.
 	/// </summary>
-	public class NumericBoxPersisterControlExtender: IPersisterControlExtender
+	public class NumericBoxPersisterControlExtender : IPersisterControlExtender
 	{
 		#region GetValue
 		public object GetValue(Control control)

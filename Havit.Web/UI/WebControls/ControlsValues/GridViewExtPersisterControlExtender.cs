@@ -12,7 +12,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 	/// <summary>
 	/// IPersisterControlExtender pro GridViewExt.	
 	/// </summary>	
-	class GridViewExtPersisterControlExtender : IPersisterControlExtender
+	internal class GridViewExtPersisterControlExtender : IPersisterControlExtender
 	{
 		#region GetValue
 		public object GetValue(Control control)

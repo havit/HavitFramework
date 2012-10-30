@@ -24,7 +24,7 @@ namespace Havit.Web.UrlRewriter.Config
 	/// &lt;RewriterRule&gt;
 	/// </code>
 	/// </remarks>
-	[Serializable()]
+	[Serializable]
 	public class RewriterRuleCollection : CollectionBase
 	{
 		/// <summary>

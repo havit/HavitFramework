@@ -187,6 +187,13 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 
 		#region CreateChildControls
+		/// <summary>
+		/// Creates the control hierarchy used to render the <see cref="T:System.Web.UI.WebControls.GridView"/> control using the specified data source.
+		/// </summary>
+		/// <returns>
+		/// The number of rows created.
+		/// </returns>
+		/// <param name="dataSource">An <see cref="T:System.Collections.IEnumerable"/> that contains the data source for the <see cref="T:System.Web.UI.WebControls.GridView"/> control. </param><param name="dataBinding">true to indicate that the child controls are bound to data; otherwise, false. </param><exception cref="T:System.Web.HttpException"><paramref name="dataSource"/> returns a null <see cref="T:System.Web.UI.DataSourceView"/>.-or-<paramref name="dataSource"/> does not implement the <see cref="T:System.Collections.ICollection"/> interface and cannot return a <see cref="P:System.Web.UI.DataSourceSelectArguments.TotalRowCount"/>. -or-<see cref="P:System.Web.UI.WebControls.GridView.AllowPaging"/> is true and <paramref name="dataSource"/> does not implement the <see cref="T:System.Collections.ICollection"/> interface and cannot perform data source paging.-or-<paramref name="dataSource"/> does not implement the <see cref="T:System.Collections.ICollection"/> interface and <paramref name="dataBinding"/> is set to false.</exception>
 		protected override int CreateChildControls(IEnumerable dataSource, bool dataBinding)
 		{
 			string originalEmptyDataText = this.EmptyDataText;
@@ -718,6 +725,13 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 
 		#region OnBubbleEvent
+		/// <summary>
+		/// Determines whether the event for the Web server control is passed up the page's user interface (UI) server control hierarchy.
+		/// </summary>
+		/// <returns>
+		/// true if the event has been canceled; otherwise, false.
+		/// </returns>
+		/// <param name="source">The source of the event. </param><param name="e">An <see cref="T:System.EventArgs"/> that contains event data. </param>
 		protected override bool OnBubbleEvent(object source, EventArgs e)
 		{
 			bool result = base.OnBubbleEvent(source, e);
@@ -1032,6 +1046,10 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 
 		#region InitializePager
+		/// <summary>
+		/// Initializes the pager row displayed when the paging feature is enabled.
+		/// </summary>
+		/// <param name="row">A <see cref="T:System.Web.UI.WebControls.GridViewRow"/> that represents the pager row to initialize. </param><param name="columnSpan">The number of columns the pager row should span. </param><param name="pagedDataSource">A <see cref="T:System.Web.UI.WebControls.PagedDataSource"/> that represents the data source. </param>
 		protected override void InitializePager(GridViewRow row, int columnSpan, PagedDataSource pagedDataSource)
 		{
 			base.InitializePager(row, columnSpan, pagedDataSource);

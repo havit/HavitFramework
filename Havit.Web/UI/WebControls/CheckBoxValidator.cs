@@ -96,6 +96,9 @@ namespace Havit.Web.UI.WebControls
     	#endregion
 
 		#region OnPreRender
+		/// <summary>
+		/// Registruje script validátoru.
+		/// </summary>
 		protected override void OnPreRender(EventArgs e)
     	{
     		base.OnPreRender(e);

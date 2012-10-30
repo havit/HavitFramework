@@ -132,7 +132,7 @@ namespace Havit.Web.UI.Scriptlets
 		/// <summary>
 		/// Ověří, zda jsou správně zadány parametry scriptletu (testuje, zda byl zadán ClientScript).
 		/// </summary>
-		protected /*virtual*/ void CheckControlConditions()
+		/*protected virtual*/ private void CheckControlConditions()
 		{
 			if (clientScript == null)
 			{

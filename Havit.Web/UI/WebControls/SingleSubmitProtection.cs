@@ -35,7 +35,11 @@ namespace Havit.Web.UI.WebControls
 		public const string SetProcessingDisableJavaScript = "SingleSubmit_SetProcessing_Disable();";
 
 		#region OnPreRender
-		protected override void OnPreRender(EventArgs e)
+	    /// <summary>
+	    /// Raises the <see cref="E:System.Web.UI.Control.PreRender"/> event.
+	    /// </summary>
+	    /// <param name="e">An <see cref="T:System.EventArgs"/> object that contains the event data. </param>
+	    protected override void OnPreRender(EventArgs e)
 		{
 			base.OnPreRender(e);
 

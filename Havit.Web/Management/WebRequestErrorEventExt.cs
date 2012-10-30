@@ -24,12 +24,19 @@ namespace Havit.Web.Management
 		#endregion
 
 		#region Constructors
-		[Obsolete]
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
+		[Obsolete]		
 		public WebRequestErrorEventExt(string message, object eventSource, Exception exception) : this(message, eventSource, exception, null)
 		{
 		}
 
-		public WebRequestErrorEventExt(string message, object eventSource, Exception exception, HttpContext currentHttpContext) : base(message, eventSource, WebEventCodes.WebExtendedBase + 999, UnwrapException(exception))
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
+		public WebRequestErrorEventExt(string message, object eventSource, Exception exception, HttpContext currentHttpContext)
+			: base(message, eventSource, WebEventCodes.WebExtendedBase + 999, UnwrapException(exception))
 		{
 			this._currentHttpContext = currentHttpContext;
 			if ((currentHttpContext != null) && (currentHttpContext.Handler != null))

@@ -307,11 +307,21 @@ namespace Havit.Web.UI.WebControls
 		#endregion		
 
 		#region DateTimeBoxDateCustomizationEventHandler
+		/// <summary>
+		/// Delegát pro získání customizace renderování hodnot v kalendáři.
+		/// </summary>
 		public delegate void DateTimeBoxDateCustomizationEventHandler(object sender, DateTimeBoxDateCustomizationEventArgs e);
 		#endregion
 
 		#region GetDateTimeBoxCustomization
+		/// <summary>
+		/// EventHandler pro získání customizace renderování hodnot v kalendáři.
+		/// </summary>
 		public event DateTimeBoxDateCustomizationEventHandler GetDateTimeBoxCustomization;
+		
+		/// <summary>
+		/// EventHandler pro získání výchozí customizace renderování hodnot v kalendáři.
+		/// </summary>
 		public static DateTimeBoxDateCustomizationEventHandler GetDateTimeBoxCustomizationDefault;
 		#endregion		
 
@@ -399,6 +409,10 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 
 		#region OnLoad
+		/// <summary>
+		/// Raises the <see cref="E:System.Web.UI.Control.Load"/> event.
+		/// </summary>
+		/// <param name="e">The <see cref="T:System.EventArgs"/> object that contains the event data. </param>
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);

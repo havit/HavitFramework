@@ -53,6 +53,9 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 
         #region OnPreRender
+		/// <summary>
+		/// Vyrenderuje html a/nebo script messengeru.
+		/// </summary>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

@@ -48,6 +48,10 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 
 		#region Render
+		/// <summary>
+		/// Sends server control content to a provided <see cref="T:System.Web.UI.HtmlTextWriter"/> object, which writes the content to be rendered on the client.
+		/// </summary>
+		/// <param name="writer">The <see cref="T:System.Web.UI.HtmlTextWriter"/> object that receives the server control content. </param>
 		protected override void Render(System.Web.UI.HtmlTextWriter writer)
 		{
 			writer.Write(DoAttributeReplacements(BeginHtml));

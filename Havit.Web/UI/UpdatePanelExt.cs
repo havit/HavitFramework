@@ -21,6 +21,10 @@ namespace Havit.Web.UI
 		#endregion
 
 		#region OnInit
+		/// <summary>
+		/// Raises the <see cref="E:System.Web.UI.Control.Init"/> event.
+		/// </summary>
+		/// <param name="e">An <see cref="T:System.EventArgs"/> object that contains the event data.</param><exception cref="T:System.InvalidOperationException">The <see cref="P:System.Web.UI.UpdatePanel.ContentTemplate"/> property is being defined when the <see cref="P:System.Web.UI.UpdatePanel.ContentTemplateContainer"/> property has already been created.</exception>
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
@@ -36,6 +40,10 @@ namespace Havit.Web.UI
 		}
 		#endregion
 
+		/// <summary>
+		/// Raises the base <see cref="E:System.Web.UI.Control.Unload"/> event.
+		/// </summary>
+		/// <param name="e">An <see cref="T:System.EventArgs"/> object that contains event data.</param>
 		protected override void OnUnload(EventArgs e)
 		{
 			// pokud ještě neproběhl PreRenderCompleted (tj. nejde o standardní OnUnload na konci životního cylku stránky, ale jen vyhození controlu ze stromu controlů)

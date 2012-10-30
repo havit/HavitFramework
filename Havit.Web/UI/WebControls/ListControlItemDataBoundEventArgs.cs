@@ -41,7 +41,6 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Vytvoří instanci.
 		/// </summary>
-		/// <param name="item">Prvek, kterého se událost týká.</param>
 		public ListControlItemDataBoundEventArgs(ListItem item, object dataItem)
 		{
 			this._item = item;

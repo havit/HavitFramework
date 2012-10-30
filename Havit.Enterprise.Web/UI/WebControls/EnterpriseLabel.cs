@@ -126,6 +126,9 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 
 		#region Render, RenderContents
+		/// <summary>
+		/// Renderuje enterprise label (nastavuje css class, text, atp.).
+		/// </summary>
 		protected override void Render(HtmlTextWriter writer)
 		{
 			// pokud je pole povinné, nastavíme CssClass
@@ -145,6 +148,9 @@ namespace Havit.Web.UI.WebControls
 			base.Render(writer);
 		}
 
+		/// <summary>
+		/// Renderuje obsah enterprise labelu.
+		/// </summary>
 		protected override void RenderContents(HtmlTextWriter writer)
 		{
 			base.RenderContents(writer);

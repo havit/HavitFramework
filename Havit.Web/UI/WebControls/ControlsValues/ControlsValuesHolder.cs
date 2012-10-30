@@ -24,6 +24,9 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 		#endregion
 	
 		#region Constructor
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
 		public ControlsValuesHolder()
 		{
 			_values = new Dictionary<string, object>();			

@@ -11,11 +11,17 @@ namespace Havit.Web.UI.WebControls
 	{
 		private List<SpecialDate> SpecialDates { get; set; }
 
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
 		public SpecialDateCustomization(List<SpecialDate> specialDates)
 		{
 			this.SpecialDates = specialDates;
 		}
 
+		/// <summary>
+		/// Renderuje funkci pro customizaci hodnot v kalendáøi.
+		/// </summary>
 		public override string RenderDateStatusHandlerContent()
 		{
 			StringBuilder result = new StringBuilder();

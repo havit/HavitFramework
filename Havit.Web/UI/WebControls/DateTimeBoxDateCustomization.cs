@@ -63,6 +63,9 @@ namespace Havit.Web.UI.WebControls
 		}
 		private static object _getDatesCustomizationFunctionLock = new object();
 
+		/// <summary>
+		/// Template metoda pro vyrenderování html pro customizaci hodnot v kalendáři.
+		/// </summary>
 		public abstract string RenderDateStatusHandlerContent();
 	}
 }

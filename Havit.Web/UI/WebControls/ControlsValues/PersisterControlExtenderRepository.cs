@@ -19,7 +19,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 			{
 				if (_default == null)
 				{
-					lock (typeof(PersisterControlExtenderRepository))
+					lock (_defaultLock)
 					{
 						if (_default == null)
 						{
@@ -41,6 +41,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 			}
 		}
 		private static PersisterControlExtenderRepository _default;
+		private static object _defaultLock = new object();
 
 		#region FindExtender
 		/// <summary>

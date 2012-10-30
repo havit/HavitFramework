@@ -10,7 +10,6 @@ namespace Havit.Business
 	/// Při opakovaném přidání property do kolekce se nic nestane (tj. 
 	/// property nebude do kolekce přidána podruhé a nedojde k chybě).
 	/// </summary>
-	[Serializable]
 	public class PropertyInfoCollection : Collection<PropertyInfo>
 	{
 		#region Constructors

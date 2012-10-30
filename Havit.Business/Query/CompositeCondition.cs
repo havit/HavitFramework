@@ -10,7 +10,6 @@ namespace Havit.Business.Query
 	/// <summary>
 	/// Předek kompozitních podmínek.
 	/// </summary>
-	[Serializable]
 	public abstract class CompositeCondition : Condition
 	{
 		private string operatorBetweenOperands = null;

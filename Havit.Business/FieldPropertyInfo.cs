@@ -11,7 +11,6 @@ namespace Havit.Business
 	/// Reprezentuje sloupec v databázi,
 	/// nese informace o daném sloupci a jeho vazbu na objektovou strukturu.
 	/// </summary>
-	[Serializable]
 	public class FieldPropertyInfo : PropertyInfo, IFieldsBuilder, IOperand
 	{
 		#region Initialize

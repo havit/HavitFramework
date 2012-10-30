@@ -7,7 +7,6 @@ namespace Havit.Business.Query
 	/// <summary>
 	/// Třída reprezentující podmínku o třech operandech.
 	/// </summary>
-	[Serializable]
 	public class TernaryCondition : BinaryCondition
 	{
 		#region Protected fields

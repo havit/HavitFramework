@@ -8,8 +8,6 @@ namespace Havit.Business.Query
 	/// <summary>
 	/// Kompozitní podmínka. Výsledek je pravdivý, jsou-li pravdivé všechny členské podmínky.
 	/// </summary>
-	[ComVisible(false)]
-	[Serializable]
 	public class AndCondition : CompositeCondition
 	{
 		#region Constructors

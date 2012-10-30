@@ -8,7 +8,6 @@ namespace Havit.Business.Query
 	/// <summary>
 	/// Reprezentuje položku řazení.
 	/// </summary>
-	[Serializable]
 	public class FieldPropertySortItem : SortItem
 	{
 		#region Constructor (obsolete)

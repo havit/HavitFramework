@@ -54,7 +54,7 @@ namespace Havit.Collections
 		#endregion
 
 		#region Compare methods
-		int IComparer<T>.Compare(T x, T y)
+		public int Compare(T x, T y)
 		{
 			return Compare(x, y, 0);
 		}

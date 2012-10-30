@@ -71,7 +71,6 @@
     </CodeContractsBaseLineFile>
     <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
     <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeContractsRuntimeSkipQuantifiers>False</CodeContractsRuntimeSkipQuantifiers>
     <CodeContractsEnumObligations>False</CodeContractsEnumObligations>
     <CodeContractsInferRequires>False</CodeContractsInferRequires>
@@ -87,7 +86,7 @@
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugSymbols>false</DebugSymbols>
+    <DebugSymbols>true</DebugSymbols>
     <Optimize>true</Optimize>
     <OutputPath>.\bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
@@ -118,9 +117,10 @@
     </CodeContractsBaseLineFile>
     <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
     <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeContractsContainerAnalysis>False</CodeContractsContainerAnalysis>
     <CodeContractsExtraRewriteOptions />
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <DebugType>pdbonly</DebugType>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Contracts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=736440c9b414ea16, processorArchitecture=MSIL" />

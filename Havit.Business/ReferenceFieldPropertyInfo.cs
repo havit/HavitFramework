@@ -10,7 +10,6 @@ namespace Havit.Business
 	/// Reprezentuje sloupec v databázi,
 	/// který je referencí na jiný typ (je cizím klíčem do jiné tabulky).
 	/// </summary>
-	[Serializable]
 	public class ReferenceFieldPropertyInfo : FieldPropertyInfo
 	{
 		#region Initialize

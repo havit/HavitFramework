@@ -7,7 +7,6 @@ namespace Havit.Business.Query
 	/// <summary>
 	/// Třída reprezentující podmínku o jednom operandu.
 	/// </summary>
-	[Serializable]
 	public class UnaryCondition : Condition
 	{
 		#region Patterns

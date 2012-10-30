@@ -10,6 +10,7 @@ namespace Havit.Web
 	/// <summary>
 	/// Pomocník pro sestavení QueryStringu.
 	/// </summary>
+	[Serializable]
 	public class QueryStringBuilder : NameValueCollection
 	{
 		#region ctor

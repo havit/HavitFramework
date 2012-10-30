@@ -8,6 +8,7 @@ namespace Havit.PayMuzo
 	/// <summary>
 	/// Kolekce dat pro PayMUZO request. Potomek <see cref="NameValueCollection"/> s pomocnými metodami.
 	/// </summary>
+	[Serializable]
 	public class PayMuzoRequestData : NameValueCollection
 	{
 		#region GetPipedRawData

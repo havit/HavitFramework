@@ -13,7 +13,6 @@ namespace Havit.Business.Query
 	/// Obsahuje seznam properties, které se mají z databáze získat, seznam podmínek fitrující záznamy
 	/// a řazení v jakém se mají záznamy (objekty) získat.
 	/// </summary>
-	[Serializable]	
 	public class QueryParams
 	{
 		#region Parametry dotazu

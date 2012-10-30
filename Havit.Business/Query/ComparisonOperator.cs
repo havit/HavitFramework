@@ -7,7 +7,6 @@ namespace Havit.Business.Query
 	/// <summary>
 	/// Operátor pro porovnání hodnot.
 	/// </summary>
-	[Serializable]
 	public enum ComparisonOperator
 	{
 		/// <summary>

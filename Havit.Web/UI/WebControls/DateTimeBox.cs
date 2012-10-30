@@ -307,7 +307,7 @@ namespace Havit.Web.UI.WebControls
 		#endregion		
 
 		#region DateTimeBoxDateCustomizationEventHandler
-		public delegate void DateTimeBoxDateCustomizationEventHandler(object sender, DateTimeBoxDateCustomizationEventArgs args);
+		public delegate void DateTimeBoxDateCustomizationEventHandler(object sender, DateTimeBoxDateCustomizationEventArgs e);
 		#endregion
 
 		#region GetDateTimeBoxCustomization

@@ -12,7 +12,7 @@ namespace Havit.Web.UI.Scriptlets
 	/// Scriptlet umožňuje snadnou tvorbu klientských skriptů.
 	/// </summary>
 	[ControlBuilder(typeof(NoLiteralContolBuilder))]	
-	public class Scriptlet : Control, IScriptControl
+	public sealed class Scriptlet : Control, IScriptControl
 	{
 		private readonly string[] _clientScriptScriptletFunctionParameters = new string[] { "parameters" };
 		private readonly string[] _clientScriptGetParametersFunctionParameters = new string[] { };
@@ -132,7 +132,7 @@ namespace Havit.Web.UI.Scriptlets
 		/// <summary>
 		/// Ověří, zda jsou správně zadány parametry scriptletu (testuje, zda byl zadán ClientScript).
 		/// </summary>
-		protected virtual void CheckControlConditions()
+		protected /*virtual*/ void CheckControlConditions()
 		{
 			if (clientScript == null)
 			{

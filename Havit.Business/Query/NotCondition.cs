@@ -7,7 +7,6 @@ namespace Havit.Business.Query
     /// <summary>
     /// Podmínka, která neguje vnitřní (kompozitní) podmínky.
     /// </summary>
-    [Serializable]
     public class NotCondition : Condition
     {
         #region Conditions

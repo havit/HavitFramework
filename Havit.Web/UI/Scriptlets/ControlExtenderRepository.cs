@@ -20,7 +20,7 @@ namespace Havit.Web.UI.Scriptlets
 		{
 			get
 			{
-				lock (typeof(ControlExtenderRepository))
+				lock (_defaultLock)
 				{
 					if (_default == null)
 					{
@@ -46,6 +46,7 @@ namespace Havit.Web.UI.Scriptlets
 			}
 		}
 		private static ControlExtenderRepository _default;
+		private static object _defaultLock = new object();
 		#endregion
 
 		#region FindControlExtender

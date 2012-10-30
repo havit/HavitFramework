@@ -40,7 +40,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			if (String.IsNullOrEmpty(DateCustomizationFunctionName))
 			{
-				lock (typeof(DateTimeBoxDateCustomization))
+				lock (_getDatesCustomizationFunctionLock)
 				{
 					if (String.IsNullOrEmpty(DateCustomizationFunctionName))
 					{
@@ -61,6 +61,7 @@ namespace Havit.Web.UI.WebControls
 
 			return DateCustomizationFunctionName; 
 		}
+		private static object _getDatesCustomizationFunctionLock = new object();
 
 		public abstract string RenderDateStatusHandlerContent();
 	}

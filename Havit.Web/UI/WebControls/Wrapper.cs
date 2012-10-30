@@ -11,7 +11,7 @@ namespace Havit.Web.UI.WebControls
 	/// Třída pro generování wrapujícího html okolo svého obsahu (například vnořené DIVy za účelem kulatých rohů, atp.).
 	/// </summary>
 	[Themeable(true)]
-	public class Wrapper : System.Web.UI.Control, IAttributeAccessor
+	public sealed class Wrapper : System.Web.UI.Control, IAttributeAccessor
 	{
 		#region BeginHtml
 		/// <summary>

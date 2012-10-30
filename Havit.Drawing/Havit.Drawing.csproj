@@ -74,7 +74,6 @@
     </CodeContractsBaseLineFile>
     <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
     <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeContractsRuntimeSkipQuantifiers>False</CodeContractsRuntimeSkipQuantifiers>
     <CodeContractsEnumObligations>False</CodeContractsEnumObligations>
     <CodeContractsInferRequires>False</CodeContractsInferRequires>
@@ -125,9 +124,9 @@
     <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
     <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
     <DebugSymbols>true</DebugSymbols>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeContractsContainerAnalysis>False</CodeContractsContainerAnalysis>
     <CodeContractsExtraRewriteOptions />
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -171,4 +170,12 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="TfsPublish" AfterTargets="AfterBuild" Condition="'$(PublishDirectory)' != ''">
+    <ItemGroup>
+      <FilesToCopy Include="$(OutputPath)\Havit.Drawing.dll" />
+      <FilesToCopy Include="$(OutputPath)\Havit.Drawing.pdb" />
+      <FilesToCopy Include="$(OutputPath)\Havit.Drawing.xml" />
+    </ItemGroup>
+    <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(PublishDirectory)\Framework\%(RecursiveDir)%(Filename)%(Extension)')" />
+  </Target>
 </Project>

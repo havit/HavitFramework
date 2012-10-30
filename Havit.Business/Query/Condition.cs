@@ -7,7 +7,6 @@ namespace Havit.Business.Query
 	/// <summary>
 	/// Interface podmínky dotazu.
 	/// </summary>
-	[Serializable]
 	public abstract class Condition
 	{
 		#region GetWhereStatement

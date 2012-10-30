@@ -50,8 +50,7 @@ namespace Havit.Business
 		/// </summary>
 		/// <param name="id">ID načítaného objektu</param>
 		/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu načtenými z databáze</param>
-		protected ActiveRecordBusinessObjectBase(int id, DataRecord record)
-			: base(
+		protected ActiveRecordBusinessObjectBase(int id, DataRecord record) : base(
 			id,	// ID
 			false,	// IsNew
 			false,	// IsDirty

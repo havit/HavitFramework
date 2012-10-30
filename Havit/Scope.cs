@@ -84,10 +84,18 @@ namespace Havit
 		/// <summary>
 		/// Ukončí scope a disposuje vlastněné instance.
 		/// </summary>
-		/// <remarks>
-		/// ResourceWrapper pattern nepotřebujeme, protože nemáme žádné unmanaged resources, které bychom museli jistit destructorem.
-		/// </remarks>
-		public virtual void Dispose()
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		~Scope()
+		{
+			Dispose(false);
+		}
+
+		protected virtual void Dispose(bool disposing)
 		{
 			if (!disposed)
 			{
@@ -106,6 +114,7 @@ namespace Havit
 				}
 			}
 		}
+		
 		#endregion
 
 		#region private field (thread static)

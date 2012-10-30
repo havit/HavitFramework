@@ -7,7 +7,6 @@ namespace Havit.Business.Query
 	/// <summary>
 	/// Kompozitní podmínka. Výsledek je pravdivý, je-li pravdivá alespoň jedna členská podmínka.
 	/// </summary>
-	[Serializable]
 	public class OrCondition : CompositeCondition
 	{
         #region Constructors

@@ -9,7 +9,6 @@ namespace Havit.Business.Query
 	/// Kolekce položek SortItem.
 	/// Určeno pro položky ORDER BY skládače SQL dotazu (QueryParameters).
 	/// </summary>
-	[Serializable]
 	public class OrderByCollection : Havit.Collections.SortItemCollection
 	{
 		#region Add

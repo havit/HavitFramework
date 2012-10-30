@@ -8,5 +8,5 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 	/// Delegát události předávající parametry typu ControlValueEventArgs.
 	/// Používá se pro událost oznamující nastavení hodnoty do controlu.
 	/// </summary>
-	public delegate void ControlValueSetEventHandler(object sender, ControlValueEventArgs eventArgs);
+	public delegate void ControlValueSetEventHandler(object sender, ControlValueEventArgs e);
 }

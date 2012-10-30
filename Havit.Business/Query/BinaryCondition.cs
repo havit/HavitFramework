@@ -8,7 +8,6 @@ namespace Havit.Business.Query
 	/// <summary>
 	/// Třída reprezentující podmínku o dvou operandech.
 	/// </summary>
-	[Serializable]
 	public class BinaryCondition : UnaryCondition
 	{
 		#region Patterns

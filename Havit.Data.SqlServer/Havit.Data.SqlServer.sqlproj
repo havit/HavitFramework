@@ -67,7 +67,6 @@
     <DefineConstants>
     </DefineConstants>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
@@ -81,10 +80,10 @@
     </DefineConstants>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\Havit.Data.SqlServer.xml</DocumentationFile>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
     <DefineDebug>false</DefineDebug>
     <DefineTrace>true</DefineTrace>
+    <RunSqlCodeAnalysis>False</RunSqlCodeAnalysis>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>

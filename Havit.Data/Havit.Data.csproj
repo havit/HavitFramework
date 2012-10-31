@@ -193,6 +193,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="SqlClient\SqlTransactionDelegate.cs" />
+    <Compile Include="SqlClient\SqlDataRecordExt.cs" />
+    <Compile Include="SqlServer\SqlServerPlatform.cs" />
     <Compile Include="SqlTypes\SqlSmallDateTime.cs" />
   </ItemGroup>
   <ItemGroup>

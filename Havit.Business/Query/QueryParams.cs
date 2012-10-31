@@ -6,6 +6,8 @@ using System.Globalization;
 using Havit.Data;
 using System.Diagnostics.Contracts;
 
+using Havit.Data.SqlServer;
+
 namespace Havit.Business.Query
 {
 	/// <summary>
@@ -117,7 +119,7 @@ namespace Havit.Business.Query
 		/// Vytvoří dotaz, nastaví jej do commandu.
 		/// Přidá parametry.
 		/// </summary>
-		public void PrepareCommand(DbCommand command)
+		public void PrepareCommand(DbCommand command, SqlServerPlatform sqlServerPlatform, CommandBuilderOptions commandBuilderOptions)
 		{
 			Contract.Requires<ArgumentNullException>(command != null, "command");
 
@@ -132,11 +134,11 @@ namespace Havit.Business.Query
 			commandBuilder.Append(" ");
 			//GetJoinStatement(commandBuilder, command);
 			//commandBuilder.Append(" ");
-			commandBuilder.Append(GetWhereStatement(command));
+			commandBuilder.Append(GetWhereStatement(command, sqlServerPlatform, commandBuilderOptions));
 			commandBuilder.Append(" ");
 			commandBuilder.Append(GetOrderByStatement(command));
 			commandBuilder.Append(" ");
-			commandBuilder.Append(GetOptionStatementStatement(command));
+			commandBuilder.Append(GetOptionStatementStatement(command, sqlServerPlatform, commandBuilderOptions));
 			commandBuilder.Append(";");
 
 			OnAfterPrepareCommand(command, commandBuilder);
@@ -227,7 +229,7 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Vrátí sekci SQL dotazu WHERE.
 		/// </summary>
-		public virtual string GetWhereStatement(DbCommand command)
+		public virtual string GetWhereStatement(DbCommand command, SqlServerPlatform sqlServerPlatform, CommandBuilderOptions commandBuilderOptions)
 		{
 			StringBuilder whereBuilder = new StringBuilder();
 
@@ -244,7 +246,7 @@ namespace Havit.Business.Query
 				}
 			}
 
-			conditions.GetWhereStatement(command, whereBuilder);
+			conditions.GetWhereStatement(command, whereBuilder, sqlServerPlatform, commandBuilderOptions);
 			if (whereBuilder.Length > 0)
 			{
 				whereBuilder.Insert(0, "WHERE ");
@@ -286,23 +288,23 @@ namespace Havit.Business.Query
 		/// Vrátí sekci SQL dotazu OPTION - použito na OPTION (RECOMPILE).
 		/// OPTION (RECOMPILE): workaround pro http://connect.microsoft.com/SQLServer/feedback/ViewFeedback.aspx?FeedbackID=256717
 		/// </summary>
-		protected virtual string GetOptionStatementStatement(DbCommand command)
+		protected virtual string GetOptionStatementStatement(DbCommand command, SqlServerPlatform sqlServerPlatform, CommandBuilderOptions commandBuilderOptions)
 		{
-			PropertyInfoCollection queryProperties = properties;
+			//PropertyInfoCollection queryProperties = properties;
 
-			if (queryProperties.Count == 0)
+			//if (queryProperties.Count == 0)
+			//{
+			//	queryProperties = objectInfo.Properties;
+			//}
+
+			// jen pro SQL Server 2005 a to ještě nesmí být požadováno ReferenceInAsEnumeretaion.
+			if (sqlServerPlatform == SqlServerPlatform.SqlServer2005)
 			{
-				queryProperties = objectInfo.Properties;
+				// ideálně bychom ještě otestovali, zda obsahuje podmínku s IntArray...
+				return "OPTION (RECOMPILE)";				
 			}
 
-			foreach (PropertyInfo propertyInfo in queryProperties)
-			{
-				if (propertyInfo is CollectionPropertyInfo)
-				{
-					return "OPTION (RECOMPILE)";
-				}
-			}
-			return "";			
+			return "";
 		}
 	}
 }

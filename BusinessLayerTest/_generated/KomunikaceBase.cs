@@ -19,11 +19,12 @@ using System.Threading;
 using System.Web;
 using System.Web.Caching;
 using System.Xml;
-using Havit.Collections;
 using Havit.Business;
 using Havit.Business.Query;
+using Havit.Collections;
 using Havit.Data;
 using Havit.Data.SqlClient;
+using Havit.Data.SqlServer;
 using Havit.Data.SqlTypes;
 
 namespace Havit.BusinessLayerTest
@@ -37,13 +38,13 @@ namespace Havit.BusinessLayerTest
 	///  CONSTRAINT [PK_Komunikace] PRIMARY KEY CLUSTERED 
 	/// (
 	/// 	[KomunikaceID] ASC
-	/// )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+	/// )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 	/// ) ON [PRIMARY]
-	/// ALTER TABLE [dbo].[Komunikace]  WITH CHECK ADD  CONSTRAINT [FK_Komunikace_ObjednavkaSepsani] FOREIGN KEY([ObjednavkaSepsaniID])
-	/// REFERENCES [ObjednavkaSepsani] ([ObjednavkaSepsaniID])
+	/// ALTER TABLE [dbo].[Komunikace]  WITH NOCHECK ADD  CONSTRAINT [FK_Komunikace_ObjednavkaSepsani] FOREIGN KEY([ObjednavkaSepsaniID])
+	/// REFERENCES [dbo].[ObjednavkaSepsani] ([ObjednavkaSepsaniID])
 	/// ALTER TABLE [dbo].[Komunikace] CHECK CONSTRAINT [FK_Komunikace_ObjednavkaSepsani]
-	/// ALTER TABLE [dbo].[Komunikace]  WITH CHECK ADD  CONSTRAINT [FK_Komunikace_Subjekt] FOREIGN KEY([SubjektID])
-	/// REFERENCES [Subjekt] ([SubjektID])
+	/// ALTER TABLE [dbo].[Komunikace]  WITH NOCHECK ADD  CONSTRAINT [FK_Komunikace_Subjekt] FOREIGN KEY([SubjektID])
+	/// REFERENCES [dbo].[Subjekt] ([SubjektID])
 	/// ALTER TABLE [dbo].[Komunikace] CHECK CONSTRAINT [FK_Komunikace_Subjekt]
 	/// </code>
 	/// </remarks>
@@ -492,7 +493,7 @@ namespace Havit.BusinessLayerTest
 				queryParams.Properties.Add(Komunikace.Properties.ID);
 			}
 			
-			queryParams.PrepareCommand(dbCommand);
+			queryParams.PrepareCommand(dbCommand, SqlServerPlatform.SqlServer2008, CommandBuilderOptions.None);
 			return Komunikace.GetList(dbCommand, queryParams.GetDataLoadPower());
 		}
 		

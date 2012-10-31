@@ -19,11 +19,12 @@ using System.Threading;
 using System.Web;
 using System.Web.Caching;
 using System.Xml;
-using Havit.Collections;
 using Havit.Business;
 using Havit.Business.Query;
+using Havit.Collections;
 using Havit.Data;
 using Havit.Data.SqlClient;
+using Havit.Data.SqlServer;
 using Havit.Data.SqlTypes;
 
 namespace Havit.BusinessLayerTest
@@ -36,10 +37,10 @@ namespace Havit.BusinessLayerTest
 	///  CONSTRAINT [PK_ObjednavkaSepsani] PRIMARY KEY CLUSTERED 
 	/// (
 	/// 	[ObjednavkaSepsaniID] ASC
-	/// )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+	/// )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 	/// ) ON [PRIMARY]
-	/// ALTER TABLE [dbo].[ObjednavkaSepsani]  WITH CHECK ADD  CONSTRAINT [FK_ObjednavkaSepsani_Komunikace] FOREIGN KEY([StornoKomunikaceID])
-	/// REFERENCES [Komunikace] ([KomunikaceID])
+	/// ALTER TABLE [dbo].[ObjednavkaSepsani]  WITH NOCHECK ADD  CONSTRAINT [FK_ObjednavkaSepsani_Komunikace] FOREIGN KEY([StornoKomunikaceID])
+	/// REFERENCES [dbo].[Komunikace] ([KomunikaceID])
 	/// ALTER TABLE [dbo].[ObjednavkaSepsani] CHECK CONSTRAINT [FK_ObjednavkaSepsani_Komunikace]
 	/// </code>
 	/// </remarks>
@@ -410,7 +411,7 @@ namespace Havit.BusinessLayerTest
 				queryParams.Properties.Add(ObjednavkaSepsani.Properties.ID);
 			}
 			
-			queryParams.PrepareCommand(dbCommand);
+			queryParams.PrepareCommand(dbCommand, SqlServerPlatform.SqlServer2008, CommandBuilderOptions.None);
 			return ObjednavkaSepsani.GetList(dbCommand, queryParams.GetDataLoadPower());
 		}
 		

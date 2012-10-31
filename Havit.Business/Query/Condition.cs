@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 
+using Havit.Data.SqlServer;
+
 namespace Havit.Business.Query
 {
 	/// <summary>
@@ -13,7 +15,7 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Přidá část SQL příkaz pro sekci WHERE. Je VELMI doporučeno, aby byla podmínka přidána včetně závorek.
 		/// </summary>
-		public abstract void GetWhereStatement(System.Data.Common.DbCommand command, StringBuilder whereBuilder); 
+		public abstract void GetWhereStatement(System.Data.Common.DbCommand command, StringBuilder whereBuilder, SqlServerPlatform sqlServerPlatform, CommandBuilderOptions commandBuilderOptions); 
 		#endregion
 
 		#region IsEmptyCondition

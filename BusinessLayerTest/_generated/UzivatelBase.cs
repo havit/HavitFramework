@@ -19,11 +19,12 @@ using System.Threading;
 using System.Web;
 using System.Web.Caching;
 using System.Xml;
-using Havit.Collections;
 using Havit.Business;
 using Havit.Business.Query;
+using Havit.Collections;
 using Havit.Data;
 using Havit.Data.SqlClient;
+using Havit.Data.SqlServer;
 using Havit.Data.SqlTypes;
 
 namespace Havit.BusinessLayerTest
@@ -48,11 +49,11 @@ namespace Havit.BusinessLayerTest
 	///  CONSTRAINT [PK_Uzivatel] PRIMARY KEY CLUSTERED 
 	/// (
 	/// 	[UzivatelID] ASC
-	/// )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY],
+	/// )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY],
 	///  CONSTRAINT [IX_Uzivatel_Username] UNIQUE NONCLUSTERED 
 	/// (
 	/// 	[Username] ASC
-	/// )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+	/// )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 	/// ) ON [PRIMARY]
 	/// ALTER TABLE [dbo].[Uzivatel] ADD  CONSTRAINT [DF_Uzivatel_Disabled]  DEFAULT ((0)) FOR [Disabled]
 	/// ALTER TABLE [dbo].[Uzivatel] ADD  CONSTRAINT [DF_Uzivatel_LoginCount]  DEFAULT ((0)) FOR [LoginCount]
@@ -468,7 +469,7 @@ namespace Havit.BusinessLayerTest
 			DataRecord result;
 			
 			DbCommand dbCommand = DbConnector.Default.ProviderFactory.CreateCommand();
-			dbCommand.CommandText = "SELECT [UzivatelID], [Username], [Password], [DisplayAs], [Email], [Disabled], [LockedTime], [LoginLast], [LoginCount], [Created], [Deleted], (SELECT dbo.IntArrayAggregate([_items].[RoleID]) FROM [dbo].[Uzivatel_Role] AS [_items] WHERE ([_items].[UzivatelID] = @UzivatelID)) AS [Role] FROM [dbo].[Uzivatel] WHERE [UzivatelID] = @UzivatelID";
+			dbCommand.CommandText = "SELECT [UzivatelID], [Username], [Password], [DisplayAs], [Email], [Disabled], [LockedTime], [LoginLast], [LoginCount], [Created], [Deleted], (SELECT CAST([_items].[RoleID] AS NVARCHAR(11)) + '|' FROM [dbo].[Uzivatel_Role] AS [_items] WHERE ([_items].[UzivatelID] = @UzivatelID) FOR XML PATH('')) AS [Role] FROM [dbo].[Uzivatel] WHERE [UzivatelID] = @UzivatelID";
 			dbCommand.Transaction = transaction;
 			
 			DbParameter dbParameterUzivatelID = DbConnector.Default.ProviderFactory.CreateParameter();
@@ -551,20 +552,19 @@ namespace Havit.BusinessLayerTest
 				_DeletedPropertyHolder.Value = _tempDeleted;
 			}
 			
-			SqlInt32Array _tempRole;
-			if (record.TryGet<SqlInt32Array>("Role", out _tempRole))
+			string _tempRole;
+			if (record.TryGet<string>("Role", out _tempRole))
 			{
 				_RolePropertyHolder.Initialize();
-				if ((_tempRole != null) && (!_tempRole.IsNull))
+				if (_tempRole != null)
 				{
 					_RolePropertyHolder.Value.Clear();
 					_RolePropertyHolder.Value.AllowDuplicates = true; // Z výkonových důvodů. Víme, že duplicity nepřidáme.
-					for (int i = 0; i < _tempRole.Count; i++)
+					string[] _tempRoleItems = _tempRole.Split('|');
+					int _tempRoleItemsLength = _tempRoleItems.Length - 1; // za každou (i za poslední) položkou je oddělovač
+					for (int i = 0; i < _tempRoleItemsLength; i++)
 					{
-						if (!_tempRole[i].IsNull)
-						{
-							_RolePropertyHolder.Value.Add(Havit.BusinessLayerTest.Role.GetObject(_tempRole[i].Value));
-						}
+						_RolePropertyHolder.Value.Add(Havit.BusinessLayerTest.Role.GetObject(BusinessObjectBase.FastIntParse(_tempRoleItems[i])));
 					}
 					_RolePropertyHolder.Value.AllowDuplicates = false;
 				}
@@ -802,13 +802,12 @@ namespace Havit.BusinessLayerTest
 			
 			if (_RolePropertyHolder.Value.Count > 0)
 			{
-				SqlParameter dbParameterRole = new SqlParameter("@Role", SqlDbType.Udt);
-				dbParameterRole.UdtTypeName = "IntArray";
-				dbParameterRole.Value = new SqlInt32Array(this._RolePropertyHolder.Value.GetIDs());
+				SqlParameter dbParameterRole = new SqlParameter("@Role", SqlDbType.Structured);
+				dbParameterRole.TypeName = "dbo.IntArrayTableType";
+				dbParameterRole.Value = (object)SqlDataRecordExt.CreateForIntArrayTableType(this._RolePropertyHolder.Value.GetIDs()) ?? DBNull.Value;
 				dbCommand.Parameters.Add(dbParameterRole);
 				
-				// OPTION (RECOMPILE): workaround pro http://connect.microsoft.com/SQLServer/feedback/ViewFeedback.aspx?FeedbackID=256717
-				collectionCommandBuilder.Append("INSERT INTO [dbo].[Uzivatel_Role] (UzivatelID, RoleID) SELECT @UzivatelID AS UzivatelID, Value AS RoleID FROM dbo.IntArrayToTable(@Role) OPTION (RECOMPILE); ");
+				collectionCommandBuilder.Append("INSERT INTO [dbo].[Uzivatel_Role] (UzivatelID, RoleID) SELECT @UzivatelID AS UzivatelID, Value AS RoleID FROM @Role; ");
 			}
 			
 			dbCommand.CommandText = "DECLARE @UzivatelID INT; INSERT INTO [dbo].[Uzivatel] ([Username], [Password], [DisplayAs], [Email], [Disabled], [LockedTime], [LoginLast], [LoginCount], [Created], [Deleted]) VALUES (@Username, @Password, @DisplayAs, @Email, @Disabled, @LockedTime, @LoginLast, @LoginCount, @Created, @Deleted); SELECT @UzivatelID = SCOPE_IDENTITY(); " + collectionCommandBuilder.ToString() + "SELECT @UzivatelID; ";
@@ -1034,13 +1033,12 @@ namespace Havit.BusinessLayerTest
 				commandBuilder.AppendFormat("DELETE FROM [dbo].[Uzivatel_Role] WHERE [UzivatelID] = @UzivatelID; ");
 				if (_RolePropertyHolder.Value.Count > 0)
 				{
-					SqlParameter dbParameterRole = new SqlParameter("@Role", SqlDbType.Udt);
-					dbParameterRole.UdtTypeName = "IntArray";
-					dbParameterRole.Value = new SqlInt32Array(this._RolePropertyHolder.Value.GetIDs());
+					SqlParameter dbParameterRole = new SqlParameter("@Role", SqlDbType.Structured);
+					dbParameterRole.TypeName = "dbo.IntArrayTableType";
+					dbParameterRole.Value = (object)SqlDataRecordExt.CreateForIntArrayTableType(this._RolePropertyHolder.Value.GetIDs()) ?? DBNull.Value;
 					dbCommand.Parameters.Add(dbParameterRole);
 					
-					// OPTION (RECOMPILE): workaround pro http://connect.microsoft.com/SQLServer/feedback/ViewFeedback.aspx?FeedbackID=256717
-					commandBuilder.Append("INSERT INTO [dbo].[Uzivatel_Role] (UzivatelID, RoleID) SELECT @UzivatelID AS UzivatelID, Value AS RoleID FROM dbo.IntArrayToTable(@Role) OPTION (RECOMPILE); ");
+					commandBuilder.Append("INSERT INTO [dbo].[Uzivatel_Role] (UzivatelID, RoleID) SELECT @UzivatelID AS UzivatelID, Value AS RoleID FROM @Role; ");
 				}
 			}
 			
@@ -1162,7 +1160,7 @@ namespace Havit.BusinessLayerTest
 				queryParams.Properties.Add(Uzivatel.Properties.ID);
 			}
 			
-			queryParams.PrepareCommand(dbCommand);
+			queryParams.PrepareCommand(dbCommand, SqlServerPlatform.SqlServer2008, CommandBuilderOptions.None);
 			return Uzivatel.GetList(dbCommand, queryParams.GetDataLoadPower());
 		}
 		

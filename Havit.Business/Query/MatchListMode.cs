@@ -7,6 +7,7 @@ namespace Havit.Business.Query
 	/// <summary>
 	/// Určuje způsob tvorby dotazu na více hodnot (IN, NOT IN).
 	/// </summary>
+	[Obsolete]
 	public enum MatchListMode
 	{
 		/// <summary>

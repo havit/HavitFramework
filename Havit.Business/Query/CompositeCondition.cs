@@ -5,6 +5,8 @@ using System.Collections.ObjectModel;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 
+using Havit.Data.SqlServer;
+
 namespace Havit.Business.Query
 {
 	/// <summary>
@@ -47,7 +49,7 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Poskládá členské podmínky. Mezi podmínkami (operandy) je operátor zadaný v konstruktoru.
 		/// </summary>
-		public override void GetWhereStatement(System.Data.Common.DbCommand command, StringBuilder whereBuilder)
+		public override void GetWhereStatement(System.Data.Common.DbCommand command, StringBuilder whereBuilder, SqlServerPlatform sqlServerPlatform, CommandBuilderOptions commandBuilderOptions)
 		{
 			Debug.Assert(whereBuilder != null);
 
@@ -73,7 +75,7 @@ namespace Havit.Business.Query
 					{
 						whereBuilder.AppendFormat(" {0} ", operatorBetweenOperands);
 					}
-					condition.GetWhereStatement(command, whereBuilder);
+					condition.GetWhereStatement(command, whereBuilder, sqlServerPlatform, commandBuilderOptions);
 					renderedFirst = true;
 				}
 			}

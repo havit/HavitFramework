@@ -19,11 +19,12 @@ using System.Threading;
 using System.Web;
 using System.Web.Caching;
 using System.Xml;
-using Havit.Collections;
 using Havit.Business;
 using Havit.Business.Query;
+using Havit.Collections;
 using Havit.Data;
 using Havit.Data.SqlClient;
+using Havit.Data.SqlServer;
 using Havit.Data.SqlTypes;
 
 namespace Havit.BusinessLayerTest
@@ -59,7 +60,7 @@ namespace Havit.BusinessLayerTest
 			_uzivatel.Initialize(objectInfo, "Uzivatel", "UzivatelID", false, SqlDbType.Int, true, 4, typeof(Havit.BusinessLayerTest.Uzivatel), Havit.BusinessLayerTest.Uzivatel.ObjectInfo);
 			_created.Initialize(objectInfo, "Created", "Created", false, SqlDbType.SmallDateTime, false, 4);
 			_deleted.Initialize(objectInfo, "Deleted", "Deleted", false, SqlDbType.SmallDateTime, true, 4);
-			_komunikace.Initialize(objectInfo, "Komunikace", typeof(Havit.BusinessLayerTest.Komunikace), "(SELECT dbo.IntArrayAggregate([_items].[KomunikaceID]) FROM [dbo].[Komunikace] AS [_items] WHERE ([_items].[SubjektID] = [dbo].[Subjekt].[SubjektID])) AS [Komunikace]");
+			_komunikace.Initialize(objectInfo, "Komunikace", typeof(Havit.BusinessLayerTest.Komunikace), "(SELECT CAST([_items].[KomunikaceID] AS NVARCHAR(11)) + '|' FROM [dbo].[Komunikace] AS [_items] WHERE ([_items].[SubjektID] = [dbo].[Subjekt].[SubjektID]) FOR XML PATH('')) AS [Komunikace]");
 		}
 		
 		/// <summary>

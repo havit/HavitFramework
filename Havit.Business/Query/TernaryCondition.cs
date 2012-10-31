@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 
+using Havit.Data.SqlServer;
+
 namespace Havit.Business.Query
 {
 	/// <summary>
@@ -40,7 +42,7 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Přidá část SQL příkaz pro sekci WHERE.
 		/// </summary>
-		public override void GetWhereStatement(System.Data.Common.DbCommand command, StringBuilder whereBuilder)
+		public override void GetWhereStatement(System.Data.Common.DbCommand command, StringBuilder whereBuilder, SqlServerPlatform sqlServerPlatform, CommandBuilderOptions commandBuilderOptions)
 		{
 			if (command == null)
 			{

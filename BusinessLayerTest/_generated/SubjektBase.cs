@@ -19,11 +19,12 @@ using System.Threading;
 using System.Web;
 using System.Web.Caching;
 using System.Xml;
-using Havit.Collections;
 using Havit.Business;
 using Havit.Business.Query;
+using Havit.Collections;
 using Havit.Data;
 using Havit.Data.SqlClient;
+using Havit.Data.SqlServer;
 using Havit.Data.SqlTypes;
 
 namespace Havit.BusinessLayerTest
@@ -42,12 +43,12 @@ namespace Havit.BusinessLayerTest
 	///  CONSTRAINT [PK_Subjekt] PRIMARY KEY CLUSTERED 
 	/// (
 	/// 	[SubjektID] ASC
-	/// )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+	/// )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 	/// ) ON [PRIMARY]
-	/// ALTER TABLE [dbo].[Subjekt]  WITH CHECK ADD  CONSTRAINT [FK_Subjekt_Uzivatel] FOREIGN KEY([UzivatelID])
-	/// REFERENCES [Uzivatel] ([UzivatelID])
-	/// ALTER TABLE [dbo].[Subjekt] CHECK CONSTRAINT [FK_Subjekt_Uzivatel]
 	/// ALTER TABLE [dbo].[Subjekt] ADD  CONSTRAINT [DF_Subjekt_Created]  DEFAULT (getdate()) FOR [Created]
+	/// ALTER TABLE [dbo].[Subjekt]  WITH NOCHECK ADD  CONSTRAINT [FK_Subjekt_Uzivatel] FOREIGN KEY([UzivatelID])
+	/// REFERENCES [dbo].[Uzivatel] ([UzivatelID])
+	/// ALTER TABLE [dbo].[Subjekt] CHECK CONSTRAINT [FK_Subjekt_Uzivatel]
 	/// </code>
 	/// </remarks>
 	[System.Diagnostics.Contracts.ContractVerification(false)]
@@ -270,7 +271,7 @@ namespace Havit.BusinessLayerTest
 			DataRecord result;
 			
 			DbCommand dbCommand = DbConnector.Default.ProviderFactory.CreateCommand();
-			dbCommand.CommandText = "SELECT [SubjektID], [Nazev], [UzivatelID], [Created], [Deleted], (SELECT dbo.IntArrayAggregate([_items].[KomunikaceID]) FROM [dbo].[Komunikace] AS [_items] WHERE ([_items].[SubjektID] = @SubjektID)) AS [Komunikace] FROM [dbo].[Subjekt] WHERE [SubjektID] = @SubjektID";
+			dbCommand.CommandText = "SELECT [SubjektID], [Nazev], [UzivatelID], [Created], [Deleted], (SELECT CAST([_items].[KomunikaceID] AS NVARCHAR(11)) + '|' FROM [dbo].[Komunikace] AS [_items] WHERE ([_items].[SubjektID] = @SubjektID) FOR XML PATH('')) AS [Komunikace] FROM [dbo].[Subjekt] WHERE [SubjektID] = @SubjektID";
 			dbCommand.Transaction = transaction;
 			
 			DbParameter dbParameterSubjektID = DbConnector.Default.ProviderFactory.CreateParameter();
@@ -317,20 +318,19 @@ namespace Havit.BusinessLayerTest
 				_DeletedPropertyHolder.Value = _tempDeleted;
 			}
 			
-			SqlInt32Array _tempKomunikace;
-			if (record.TryGet<SqlInt32Array>("Komunikace", out _tempKomunikace))
+			string _tempKomunikace;
+			if (record.TryGet<string>("Komunikace", out _tempKomunikace))
 			{
 				_KomunikacePropertyHolder.Initialize();
-				if ((_tempKomunikace != null) && (!_tempKomunikace.IsNull))
+				if (_tempKomunikace != null)
 				{
 					_KomunikacePropertyHolder.Value.Clear();
 					_KomunikacePropertyHolder.Value.AllowDuplicates = true; // Z výkonových důvodů. Víme, že duplicity nepřidáme.
-					for (int i = 0; i < _tempKomunikace.Count; i++)
+					string[] _tempKomunikaceItems = _tempKomunikace.Split('|');
+					int _tempKomunikaceItemsLength = _tempKomunikaceItems.Length - 1; // za každou (i za poslední) položkou je oddělovač
+					for (int i = 0; i < _tempKomunikaceItemsLength; i++)
 					{
-						if (!_tempKomunikace[i].IsNull)
-						{
-							_KomunikacePropertyHolder.Value.Add(Havit.BusinessLayerTest.Komunikace.GetObject(_tempKomunikace[i].Value));
-						}
+						_KomunikacePropertyHolder.Value.Add(Havit.BusinessLayerTest.Komunikace.GetObject(BusinessObjectBase.FastIntParse(_tempKomunikaceItems[i])));
 					}
 					_KomunikacePropertyHolder.Value.AllowDuplicates = false;
 					_loadedKomunikaceValues = new Havit.BusinessLayerTest.KomunikaceCollection(_KomunikacePropertyHolder.Value);
@@ -571,11 +571,10 @@ namespace Havit.BusinessLayerTest
 				if (_komunikaceToRemove.Count > 0)
 				{
 					dirtyCollectionExists = true;
-					// OPTION (RECOMPILE): workaround pro http://connect.microsoft.com/SQLServer/feedback/ViewFeedback.aspx?FeedbackID=256717
-					commandBuilder.AppendFormat("DELETE FROM [dbo].[Komunikace] WHERE ([SubjektID] = @SubjektID) AND [KomunikaceID] IN (SELECT [Value] FROM dbo.IntArrayToTable(@Komunikace)) OPTION (RECOMPILE);");
-					SqlParameter dbParameterKomunikace = new SqlParameter("@Komunikace", SqlDbType.Udt);
-					dbParameterKomunikace.UdtTypeName = "IntArray";
-					dbParameterKomunikace.Value = new SqlInt32Array(_komunikaceToRemove.GetIDs());
+					commandBuilder.AppendFormat("DELETE FROM [dbo].[Komunikace] WHERE ([SubjektID] = @SubjektID) AND [KomunikaceID] IN (SELECT [Value] FROM @Komunikace);");
+					SqlParameter dbParameterKomunikace = new SqlParameter("@Komunikace", SqlDbType.Structured);
+					dbParameterKomunikace.TypeName = "dbo.IntArrayTableType";
+					dbParameterKomunikace.Value = (object)SqlDataRecordExt.CreateForIntArrayTableType(_komunikaceToRemove.GetIDs()) ?? DBNull.Value;
 					dbCommand.Parameters.Add(dbParameterKomunikace);
 					_loadedKomunikaceValues = new Havit.BusinessLayerTest.KomunikaceCollection(_KomunikacePropertyHolder.Value);
 				}
@@ -696,7 +695,7 @@ namespace Havit.BusinessLayerTest
 				queryParams.Properties.Add(Subjekt.Properties.ID);
 			}
 			
-			queryParams.PrepareCommand(dbCommand);
+			queryParams.PrepareCommand(dbCommand, SqlServerPlatform.SqlServer2008, CommandBuilderOptions.None);
 			return Subjekt.GetList(dbCommand, queryParams.GetDataLoadPower());
 		}
 		

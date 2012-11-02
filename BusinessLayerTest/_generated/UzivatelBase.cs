@@ -803,8 +803,8 @@ namespace Havit.BusinessLayerTest
 			if (_RolePropertyHolder.Value.Count > 0)
 			{
 				SqlParameter dbParameterRole = new SqlParameter("@Role", SqlDbType.Structured);
-				dbParameterRole.TypeName = "dbo.IntArrayTableType";
-				dbParameterRole.Value = (object)SqlDataRecordExt.CreateForIntArrayTableType(this._RolePropertyHolder.Value.GetIDs()) ?? DBNull.Value;
+				dbParameterRole.TypeName = "dbo.IntTable";
+				dbParameterRole.Value = (object)SqlDataRecordExt.CreateIntTable(this._RolePropertyHolder.Value.GetIDs()) ?? DBNull.Value;
 				dbCommand.Parameters.Add(dbParameterRole);
 				
 				collectionCommandBuilder.Append("INSERT INTO [dbo].[Uzivatel_Role] (UzivatelID, RoleID) SELECT @UzivatelID AS UzivatelID, Value AS RoleID FROM @Role; ");
@@ -1034,8 +1034,8 @@ namespace Havit.BusinessLayerTest
 				if (_RolePropertyHolder.Value.Count > 0)
 				{
 					SqlParameter dbParameterRole = new SqlParameter("@Role", SqlDbType.Structured);
-					dbParameterRole.TypeName = "dbo.IntArrayTableType";
-					dbParameterRole.Value = (object)SqlDataRecordExt.CreateForIntArrayTableType(this._RolePropertyHolder.Value.GetIDs()) ?? DBNull.Value;
+					dbParameterRole.TypeName = "dbo.IntTable";
+					dbParameterRole.Value = (object)SqlDataRecordExt.CreateIntTable(this._RolePropertyHolder.Value.GetIDs()) ?? DBNull.Value;
 					dbCommand.Parameters.Add(dbParameterRole);
 					
 					commandBuilder.Append("INSERT INTO [dbo].[Uzivatel_Role] (UzivatelID, RoleID) SELECT @UzivatelID AS UzivatelID, Value AS RoleID FROM @Role; ");

@@ -210,7 +210,7 @@
     <Compile Include="Query\CompositeCondition.cs" />
     <Compile Include="Query\Condition.cs" />
     <Compile Include="Query\ConditionList.cs" />
-    <Compile Include="Query\IntArrayTableTypeOperand.cs" />
+    <Compile Include="Query\IntTableOperand.cs" />
     <Compile Include="Query\DateCondition.cs" />
     <Compile Include="GetAllDelegate.cs" />
     <Compile Include="Query\DateRangeCondition.cs" />

@@ -13,14 +13,14 @@ namespace Havit.Data.SqlClient
 	/// </summary>
 	public static class SqlDataRecordExt
 	{
-		#region CreateForIntArrayTableType
+		#region CreateIntTable
 		/// <summary>
 		/// Vytvoří pole SqlDataRecors pro dané pole integerů.
 		/// Pokud je ids null, vrací také null.
 		/// </summary>
 		/// <param name="ids">Parametry, pro každý je vytvořen jeden SqlDataRecord.</param>
 		/// <returns></returns>
-		public static SqlDataRecord[] CreateForIntArrayTableType(int[] ids)
+		public static SqlDataRecord[] CreateIntTable(int[] ids)
 		{
 			if (ids == null)
 			{

@@ -64,6 +64,7 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Vytvoří operand z pole integerů.
 		/// </summary>
+		[Obsolete("Používá se jen pro target platform SQL Server 2005. Pro novější nahrazeno třídou IntTableOperand.")]
 		public static IOperand Create(int[] ids)
 		{
 			return new SqlInt32ArrayOperand(ids);

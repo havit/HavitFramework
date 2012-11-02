@@ -119,7 +119,7 @@ namespace Havit.Business.Query
 		/// </summary>
 		private void GetWhereStatementForSqlServer2008(DbCommand command, StringBuilder whereBuilder)
 		{
-			IOperand idsOperand = IntArrayTableTypeOperand.Create(ids);
+			IOperand idsOperand = IntTableOperand.Create(ids);
 			whereBuilder.AppendFormat("({0} IN (SELECT [Value] FROM {1}))", operand.GetCommandValue(command), idsOperand.GetCommandValue(command));
 		}
 		#endregion

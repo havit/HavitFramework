@@ -71,20 +71,27 @@ namespace Havit.Web.UI
 		/// </summary>
 		public override void Load()
 		{
-			// načteme si symbol z hidden fieldu
-			HiddenFieldPageStatePersister hiddenFieldPageStatePersister = new HiddenFieldPageStatePersister(_page);
-			hiddenFieldPageStatePersister.Load();
-			string storageSymbol = (string) hiddenFieldPageStatePersister.ControlState;
-			string storageFilename = _fileNamingStrategy.GetFilename(storageSymbol); // ze symbolu získáme celou cestu
-
-			Pair pair;
-			using (System.IO.FileStream fileStream = System.IO.File.Open(storageFilename, System.IO.FileMode.Open, FileAccess.Read, FileShare.Read | FileShare.Delete))
+			try
 			{
-				LosFormatter formatter = new LosFormatter();
-				pair = (Pair)formatter.Deserialize(fileStream);
+				// načteme si symbol z hidden fieldu
+				HiddenFieldPageStatePersister hiddenFieldPageStatePersister = new HiddenFieldPageStatePersister(_page);
+				hiddenFieldPageStatePersister.Load();
+				string storageSymbol = (string) hiddenFieldPageStatePersister.ControlState;
+				string storageFilename = _fileNamingStrategy.GetFilename(storageSymbol); // ze symbolu získáme celou cestu
+
+				using (System.IO.FileStream fileStream = System.IO.File.Open(storageFilename, System.IO.FileMode.Open, FileAccess.Read, FileShare.Read | FileShare.Delete))
+				{
+					LosFormatter formatter = new LosFormatter();
+					Pair pair = (Pair)formatter.Deserialize(fileStream);
+
+					ViewState = pair.First;
+					ControlState = pair.Second;
+				}
 			}
-			ViewState = pair.First;
-			ControlState = pair.Second;
+			catch (Exception e)
+			{
+				throw new ViewStateLoadFailedException("Nepodařilo se načíst viewstate.", e);
+			}
 		}
 		#endregion
 

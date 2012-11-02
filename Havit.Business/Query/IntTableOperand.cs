@@ -13,7 +13,7 @@ namespace Havit.Business.Query
 	/// <summary>
 	/// IntArrayTableType jako operand databázového dotazu.
 	/// </summary>
-	public sealed class IntArrayTableTypeOperand : IOperand
+	public sealed class IntTableOperand : IOperand
 	{
 		#region Private fields
 		/// <summary>
@@ -24,9 +24,9 @@ namespace Havit.Business.Query
 
 		#region Constructor
 		/// <summary>
-		/// Vytvoří instanci třídy IntArrayTableTypeOperand.
+		/// Vytvoří instanci třídy IntTableOperand.
 		/// </summary>
-		private IntArrayTableTypeOperand(int[] value)
+		private IntTableOperand(int[] value)
 		{
 			this.value = value;
 		}
@@ -37,7 +37,7 @@ namespace Havit.Business.Query
 		{
 			if (!(command is SqlCommand))
 			{
-				throw new ArgumentException("Typ IntArrayTableTypeOperand předpokládá SqlCommand.");	
+				throw new ArgumentException("Typ IntTableOperand předpokládá SqlCommand.");	
 			}
 
 			SqlCommand sqlCommand = command as SqlCommand;
@@ -54,8 +54,8 @@ namespace Havit.Business.Query
 			SqlParameter parameter = new SqlParameter();
 			parameter.ParameterName = parameterName;
 			parameter.SqlDbType = SqlDbType.Structured;
-			parameter.TypeName = "dbo.IntArrayTableType";
-			parameter.Value = (object)SqlDataRecordExt.CreateForIntArrayTableType(this.value) ?? DBNull.Value;
+			parameter.TypeName = "dbo.IntTable";
+			parameter.Value = (object)SqlDataRecordExt.CreateIntTable(this.value) ?? DBNull.Value;
 			sqlCommand.Parameters.Add(parameter);
 
 
@@ -69,7 +69,7 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static IOperand Create(int[] ids)
 		{
-			return new IntArrayTableTypeOperand(ids);
+			return new IntTableOperand(ids);
 		}
 		#endregion
 

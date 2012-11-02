@@ -573,8 +573,8 @@ namespace Havit.BusinessLayerTest
 					dirtyCollectionExists = true;
 					commandBuilder.AppendFormat("DELETE FROM [dbo].[Komunikace] WHERE ([SubjektID] = @SubjektID) AND [KomunikaceID] IN (SELECT [Value] FROM @Komunikace);");
 					SqlParameter dbParameterKomunikace = new SqlParameter("@Komunikace", SqlDbType.Structured);
-					dbParameterKomunikace.TypeName = "dbo.IntArrayTableType";
-					dbParameterKomunikace.Value = (object)SqlDataRecordExt.CreateForIntArrayTableType(_komunikaceToRemove.GetIDs()) ?? DBNull.Value;
+					dbParameterKomunikace.TypeName = "dbo.IntTable";
+					dbParameterKomunikace.Value = (object)SqlDataRecordExt.CreateIntTable(_komunikaceToRemove.GetIDs()) ?? DBNull.Value;
 					dbCommand.Parameters.Add(dbParameterKomunikace);
 					_loadedKomunikaceValues = new Havit.BusinessLayerTest.KomunikaceCollection(_KomunikacePropertyHolder.Value);
 				}

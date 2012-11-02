@@ -220,6 +220,7 @@
     <Compile Include="UI\Adapters\SessionPageStatePersisterPageAdapter.cs" />
     <Compile Include="UI\FilePageStatePersister.cs" />
     <Compile Include="UI\PerUserNamingStrategy.cs" />
+    <Compile Include="UI\ViewStateLoadFailedException.cs" />
     <Compile Include="UI\WebControls\AjaxHealthMonitoring.cs" />
     <Compile Include="UI\WebControls\AutoSuggestMenu\AutoSuggestMenuMode.cs" />
     <Compile Include="UI\WebControls\CheckBoxListExt.cs" />

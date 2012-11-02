@@ -1,0 +1,45 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Text;
+
+using Microsoft.SqlServer.Server;
+
+namespace Havit.Data.SqlTypes
+{
+	/// <summary>
+	/// Pomocné metody pro práci s typem IntTable pro (table value parameter).
+	/// </summary>
+	public static class IntTable
+	{
+		#region GetSqlParameterValue
+		/// <summary>
+		/// Vytvoří hodnotu pro SqlParameter předávající dané pole integerů.
+		/// Pokud je ids null nebo neobsahuje žádný záznam, vrací DbNull.Value.
+		/// (Prázdné pole nelze předat (exception), takže buď se předává DbNull.Value nebo pole, které má alespoň jednu hodnotu.)
+		/// </summary>		
+		/// <param name="ids">Parametry, pro každý je vytvořen jeden SqlDataRecord.</param>
+		public static object GetSqlParameterValue(int[] ids)
+		{
+			if ((ids == null) || (ids.Length == 0))
+			{
+				return DBNull.Value;
+			}
+			else
+			{
+				int arraySize = ids.Length;
+				SqlMetaData[] sqlMetaData = new SqlMetaData[] { new SqlMetaData("Value", SqlDbType.Int) };
+				SqlDataRecord[] result = new SqlDataRecord[arraySize];
+				for (int i = 0; i < arraySize; i++)
+				{
+					SqlDataRecord item = new SqlDataRecord(sqlMetaData);
+					item.SetSqlInt32(0, ids[i]);
+					result[i] = item;
+				}
+				return result;
+			}
+		}
+		#endregion
+	}
+}

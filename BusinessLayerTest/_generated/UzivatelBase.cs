@@ -804,7 +804,7 @@ namespace Havit.BusinessLayerTest
 			{
 				SqlParameter dbParameterRole = new SqlParameter("@Role", SqlDbType.Structured);
 				dbParameterRole.TypeName = "dbo.IntTable";
-				dbParameterRole.Value = (object)SqlDataRecordExt.CreateIntTable(this._RolePropertyHolder.Value.GetIDs()) ?? DBNull.Value;
+				dbParameterRole.Value = IntTable.GetSqlParameterValue(this._RolePropertyHolder.Value.GetIDs());
 				dbCommand.Parameters.Add(dbParameterRole);
 				
 				collectionCommandBuilder.Append("INSERT INTO [dbo].[Uzivatel_Role] (UzivatelID, RoleID) SELECT @UzivatelID AS UzivatelID, Value AS RoleID FROM @Role; ");
@@ -1035,7 +1035,7 @@ namespace Havit.BusinessLayerTest
 				{
 					SqlParameter dbParameterRole = new SqlParameter("@Role", SqlDbType.Structured);
 					dbParameterRole.TypeName = "dbo.IntTable";
-					dbParameterRole.Value = (object)SqlDataRecordExt.CreateIntTable(this._RolePropertyHolder.Value.GetIDs()) ?? DBNull.Value;
+					dbParameterRole.Value = IntTable.GetSqlParameterValue(this._RolePropertyHolder.Value.GetIDs());
 					dbCommand.Parameters.Add(dbParameterRole);
 					
 					commandBuilder.Append("INSERT INTO [dbo].[Uzivatel_Role] (UzivatelID, RoleID) SELECT @UzivatelID AS UzivatelID, Value AS RoleID FROM @Role; ");

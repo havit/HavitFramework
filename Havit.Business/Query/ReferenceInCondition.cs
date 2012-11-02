@@ -80,7 +80,9 @@ namespace Havit.Business.Query
 		{
 			if (ids.Length < 2000)
 			{
+#pragma warning disable 612,618
 				IOperand idsOperand = SqlInt32ArrayOperand.Create(ids);
+#pragma warning restore 612,618
 				whereBuilder.AppendFormat("({0} IN (SELECT [Value] FROM dbo.IntArrayToTable({1})))", operand.GetCommandValue(command), idsOperand.GetCommandValue(command));
 			}
 			else
@@ -102,7 +104,9 @@ namespace Havit.Business.Query
 					int[] subarray = new int[length];
 					Array.Copy(ids, startIndex, subarray, 0, length);
 
+#pragma warning disable 612,618
 					IOperand idsOperand = SqlInt32ArrayOperand.Create(ids);
+#pragma warning restore 612,618
 					whereBuilder.AppendFormat("({0} IN (SELECT [Value] FROM dbo.IntArrayToTable({1})))", operand.GetCommandValue(command), idsOperand.GetCommandValue(command));
 
 					startIndex += length;

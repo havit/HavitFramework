@@ -55,7 +55,7 @@ namespace Havit.Business.Query
 			parameter.ParameterName = parameterName;
 			parameter.SqlDbType = SqlDbType.Structured;
 			parameter.TypeName = "dbo.IntTable";
-			parameter.Value = (object)SqlDataRecordExt.CreateIntTable(this.value) ?? DBNull.Value;
+			parameter.Value = IntTable.GetSqlParameterValue(this.value);
 			sqlCommand.Parameters.Add(parameter);
 
 

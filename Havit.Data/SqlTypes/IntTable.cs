@@ -16,15 +16,15 @@ namespace Havit.Data.SqlTypes
 		#region GetSqlParameterValue
 		/// <summary>
 		/// Vytvoří hodnotu pro SqlParameter předávající dané pole integerů.
-		/// Pokud je ids null nebo neobsahuje žádný záznam, vrací DbNull.Value.
-		/// (Prázdné pole nelze předat (exception), takže buď se předává DbNull.Value nebo pole, které má alespoň jednu hodnotu.)
+		/// Pokud je ids null nebo neobsahuje žádný záznam, vrací null.
+		/// (Prázdné pole nelze předat (exception), takže buď se předává null nebo pole, které má alespoň jednu hodnotu.)
 		/// </summary>		
 		/// <param name="ids">Parametry, pro každý je vytvořen jeden SqlDataRecord.</param>
 		public static object GetSqlParameterValue(int[] ids)
 		{
 			if ((ids == null) || (ids.Length == 0))
 			{
-				return DBNull.Value;
+				return null;
 			}
 			else
 			{

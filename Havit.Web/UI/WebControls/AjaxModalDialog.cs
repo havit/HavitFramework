@@ -42,11 +42,9 @@ namespace Havit.Web.UI.WebControls
 		public AjaxModalDialog()
 		{
 			_updatePanel = new UpdatePanelExt();
-			_updatePanel.ID = "__UP";
 			_updatePanel.UpdateMode = UpdatePanelUpdateMode.Conditional;
 
 			_contentPlaceHolder = new PlaceHolder();
-			_contentPlaceHolder.ID = "__CPH";
 		}
 		#endregion
 
@@ -56,6 +54,9 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		protected override void CreateChildControls()
 		{
+			_updatePanel.ID = this.ID + "__UP";
+			_contentPlaceHolder.ID = this.ID + "__CPH";
+
 			_updatePanel.ContentTemplateContainer.Controls.Add(_contentPlaceHolder);			
 			_basicContainer = base.GetContentContainer();
 			_basicContainer.Controls.Add(_updatePanel);

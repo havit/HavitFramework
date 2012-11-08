@@ -147,6 +147,22 @@ namespace Havit.BusinessTest
 			// nedošlo-li k výjimce, je vše ok
 		}
 
+		/// <summary>
+		/// Testuje vyvolání události při odebrání prvků z kolekce metodou RemoveRange.
+		/// </summary>
+		[TestMethod]
+		public void RemoveRange_CollectionChanged_Test()
+		{
+			bool changed = false;
+
+			SubjektCollection collection = new SubjektCollection();
+			collection.Add(Subjekt.GetObject(1));
+			collection.CollectionChanged += ((sender, args) => changed = true);
+			collection.RemoveRange(new SubjektCollection(collection));
+
+			Assert.IsTrue(changed);
+		}
+
 	}
 
 }

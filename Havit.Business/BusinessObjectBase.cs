@@ -359,7 +359,7 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Volá se po zakémkoliv uložení objektu, tj. i po smazání objektu.
+		/// Volá se po jakémkoliv uložení objektu, tj. i po smazání objektu.
 		/// V každém spuštění uložení grafu objektů se metoda volá právě jednou, na rozdíl od Save, který může být (a je) spouštěn opakovaně v případě ukládání stromů objektů.
 		/// Metoda se volá po nastavení příznaků IsDirty, IsNew, apod.
 		/// </summary>        

@@ -18,6 +18,7 @@ namespace Havit.Data.SqlTypes
 		/// Vytvoří hodnotu pro SqlParameter předávající dané pole integerů.
 		/// Pokud je ids null nebo neobsahuje žádný záznam, vrací null.
 		/// (Prázdné pole nelze předat (exception), takže buď se předává null nebo pole, které má alespoň jednu hodnotu.)
+		/// Pokud obsahuje pole integerů duplicity, jsou odstraněny (každá hodnota se posílá jen jednou).
 		/// </summary>		
 		/// <param name="ids">Parametry, pro každý je vytvořen jeden SqlDataRecord.</param>
 		public static object GetSqlParameterValue(int[] ids)
@@ -28,13 +29,14 @@ namespace Havit.Data.SqlTypes
 			}
 			else
 			{
-				int arraySize = ids.Length;
+				int[] distinctIDs = ids.Distinct().ToArray();
+				int arraySize = distinctIDs.Length;
 				SqlMetaData[] sqlMetaData = new SqlMetaData[] { new SqlMetaData("Value", SqlDbType.Int) };
 				SqlDataRecord[] result = new SqlDataRecord[arraySize];
 				for (int i = 0; i < arraySize; i++)
 				{
 					SqlDataRecord item = new SqlDataRecord(sqlMetaData);
-					item.SetSqlInt32(0, ids[i]);
+					item.SetSqlInt32(0, distinctIDs[i]);
 					result[i] = item;
 				}
 				return result;

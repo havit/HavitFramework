@@ -31,22 +31,40 @@ namespace Havit
 	public class Scope<T> : IDisposable
 		where T : class
 	{
+		#region private field (thread static)
+		/// <summary>
+		/// Aktuální konec linked-listu nestovaných scope.
+		/// </summary>
+		[ThreadStatic]
+		private static Scope<T> head;
+		#endregion
+
+		#region Current (static)
+		/// <summary>
+		/// Aktuální instance obalovaná scopem.
+		/// </summary>
+		public static T Current
+		{
+			get { return head != null ? head.instance : null; }
+		}
+		#endregion
+
 		#region private fields
 		/// <summary>
 		/// Indikuje, zda-li již proběhl Dispose třídy.
 		/// </summary>
 		private bool disposed;
-		
+
 		/// <summary>
 		/// Indikuje, zda-li je instance scopem vlastněná, tj. máme-li ji na konci scope disposovat.
 		/// </summary>
 		private bool ownsInstance;
-		
+
 		/// <summary>
 		/// Instance, kterou scope obaluje.
 		/// </summary>
 		private T instance;
-		
+
 		/// <summary>
 		/// Nadřazený scope v linked-listu nestovaných scope.
 		/// </summary>
@@ -90,11 +108,9 @@ namespace Havit
 			GC.SuppressFinalize(this);
 		}
 
-		~Scope()
-		{
-			Dispose(false);
-		}
-
+		/// <summary>
+		/// Dispose. Uvolní objekt reprezentující scope (volám metody Dispose), pokud tento scope implementuje IDisposable.
+		/// </summary>
 		protected virtual void Dispose(bool disposing)
 		{
 			if (!disposed)
@@ -114,26 +130,18 @@ namespace Havit
 				}
 			}
 		}
-		
 		#endregion
 
-		#region private field (thread static)
+		#region Desctructor
 		/// <summary>
-		/// Aktuální konec linked-listu nestovaných scope.
+		/// Destructor.
 		/// </summary>
-		[ThreadStatic]
-		private static Scope<T> head;
-		#endregion
-
-		#region Current (static)
-		/// <summary>
-		/// Aktuální instance obalovaná scopem.
-		/// </summary>
-		public static T Current
+		~Scope()
 		{
-			get { return head != null ? head.instance : null; }
+			Dispose(false);
 		}
 		#endregion
+
 	}
 
 }

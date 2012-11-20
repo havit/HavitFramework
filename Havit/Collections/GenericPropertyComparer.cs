@@ -54,6 +54,12 @@ namespace Havit.Collections
 		#endregion
 
 		#region Compare methods
+		/// <summary>
+		/// Porovná vlastnosti instancí dvou objektů.
+		/// </summary>
+		/// <param name="x">První porovnávaný objekt.</param>
+		/// <param name="y">Druhý porovnávaný objekt.</param>
+		/// <returns>-1, 0, 1 - jako Compare(T, T)</returns>
 		public int Compare(T x, T y)
 		{
 			return Compare(x, y, 0);

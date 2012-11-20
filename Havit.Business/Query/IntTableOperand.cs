@@ -58,7 +58,6 @@ namespace Havit.Business.Query
 			parameter.Value = IntTable.GetSqlParameterValue(this.value);
 			sqlCommand.Parameters.Add(parameter);
 
-
 			return parameterName;
 		}
 		#endregion

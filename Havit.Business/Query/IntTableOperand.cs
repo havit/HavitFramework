@@ -11,7 +11,7 @@ using Havit.Data.SqlTypes;
 namespace Havit.Business.Query
 {
 	/// <summary>
-	/// IntArrayTableType jako operand databázového dotazu.
+	/// IntTable jako operand databázového dotazu.
 	/// </summary>
 	public sealed class IntTableOperand : IOperand
 	{

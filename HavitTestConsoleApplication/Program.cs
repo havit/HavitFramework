@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
+using Havit.BusinessLayerTest;
 using Havit.Data.SqlTypes;
 
 namespace HavitTestConsoleApplication
@@ -17,16 +18,17 @@ namespace HavitTestConsoleApplication
 	{		
 		private static void Main(string[] args)
 		{
-			Console.WriteLine("Aggreates writes");
+			Subjekt subjekt = Subjekt.GetObject(59);
+			subjekt.Delete();						
 
 			//TestAggregateMicroCollections();
 			//TestAggregateSmallCollections();
 			//TestAggregateLargeCollections();
 
-			Console.WriteLine("String split + parse");
-			TestSplitMicro();
-			TestSplitSmall();
-			TestSplitLarge();
+			//Console.WriteLine("String split + parse");
+			//TestSplitMicro();
+			//TestSplitSmall();
+			//TestSplitLarge();
 
 			//Console.WriteLine("regex match + parse");
 			//MatchCollection matches = Regex.Matches("<ID>1234567</ID>", "[-]\\d+", RegexOptions.Singleline | RegexOptions.Compiled);

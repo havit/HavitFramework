@@ -29,6 +29,9 @@ using Havit.Data.SqlTypes;
 
 namespace Havit.BusinessLayerTest
 {
+	/// <summary>
+	/// Objednávka sepsání zápisu.
+	/// </summary>
 	/// <remarks>
 	/// <code>
 	/// CREATE TABLE [dbo].[ObjednavkaSepsani](
@@ -86,7 +89,7 @@ namespace Havit.BusinessLayerTest
 		
 		#region Properties dle sloupců databázové tabulky
 		/// <summary>
-		///  [int, nullable]
+		/// Odkaz na komunikaci, která stornuje tuto objednávku. [int, nullable]
 		/// </summary>
 		public virtual Havit.BusinessLayerTest.Komunikace StornoKomunikace
 		{

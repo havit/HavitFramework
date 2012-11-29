@@ -128,6 +128,9 @@ namespace Havit.BusinessLayerTest
 		}
 		private FieldPropertyInfo _deleted;
 		
+		/// <summary>
+		/// Komunikace subjektu.
+		/// </summary>
 		public CollectionPropertyInfo Komunikace
 		{
 			get

@@ -340,6 +340,9 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		protected PropertyHolder<bool> _DeletedPropertyHolder;
 		
+		/// <summary>
+		/// Role uživatele.
+		/// </summary>
 		public virtual Havit.BusinessLayerTest.RoleCollection Role
 		{
 			get
@@ -355,6 +358,19 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		protected CollectionPropertyHolder<Havit.BusinessLayerTest.RoleCollection, Havit.BusinessLayerTest.Role> _RolePropertyHolder;
 		
+		#endregion
+		
+		#region IsDeleted
+		/// <summary>
+		/// Indikuje, zda je nastaven příznak smazaného záznamu.
+		/// </summary>
+		public override bool IsDeleted
+		{
+			get
+			{
+				return !Deleted;
+			}
+		}
 		#endregion
 		
 		#region Init
@@ -556,9 +572,9 @@ namespace Havit.BusinessLayerTest
 			if (record.TryGet<string>("Role", out _tempRole))
 			{
 				_RolePropertyHolder.Initialize();
+				_RolePropertyHolder.Value.Clear();
 				if (_tempRole != null)
 				{
-					_RolePropertyHolder.Value.Clear();
 					_RolePropertyHolder.Value.AllowDuplicates = true; // Z výkonových důvodů. Víme, že duplicity nepřidáme.
 					string[] _tempRoleItems = _tempRole.Split('|');
 					int _tempRoleItemsLength = _tempRoleItems.Length - 1; // za každou (i za poslední) položkou je oddělovač
@@ -1091,7 +1107,10 @@ namespace Havit.BusinessLayerTest
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které se smazání provede; null, pokud bez transakce</param>
 		public override void Delete(DbTransaction transaction)
 		{
-			Deleted = true;
+			if (!Deleted)
+			{
+				Deleted = true;
+			}
 			base.Delete(transaction);
 		}
 		

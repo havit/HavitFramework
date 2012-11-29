@@ -22,6 +22,9 @@ using Havit.Data.SqlTypes;
 
 namespace Havit.BusinessLayerTest
 {
+	/// <summary>
+	/// Objednávka sepsání zápisu.
+	/// </summary>
 	public partial class ObjednavkaSepsani : ObjednavkaSepsaniBase
 	{
 		#region Constructors

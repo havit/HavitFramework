@@ -219,6 +219,9 @@ namespace Havit.BusinessLayerTest
 		}
 		private FieldPropertyInfo _deleted;
 		
+		/// <summary>
+		/// Role uživatele.
+		/// </summary>
 		public CollectionPropertyInfo Role
 		{
 			get

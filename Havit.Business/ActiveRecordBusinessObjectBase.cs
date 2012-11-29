@@ -212,7 +212,7 @@ namespace Havit.Business
 
 			// neslučovat do jedné podmínky, InsertRequiredForFullInsert může zavolat můj MinimalInsert a pak už nejsem New
 
-			if (IsNew && IsDeleted)
+			if (IsNew && IsDeleting)
 			{
 				throw new InvalidOperationException("Nový objekt nemůže být smazán.");
 			}
@@ -228,7 +228,7 @@ namespace Havit.Business
 				Save_SaveCollections(transaction);
 				if (IsDirty)
 				{
-					if (IsDeleted)
+					if (IsDeleting)
 					{
 						Delete_Perform(transaction);
 					}

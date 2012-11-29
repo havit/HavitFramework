@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
@@ -179,6 +180,9 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		protected PropertyHolder<DateTime?> _DeletedPropertyHolder;
 		
+		/// <summary>
+		/// Komunikace subjektu.
+		/// </summary>
 		public virtual Havit.BusinessLayerTest.KomunikaceCollection Komunikace
 		{
 			get
@@ -195,6 +199,19 @@ namespace Havit.BusinessLayerTest
 		protected CollectionPropertyHolder<Havit.BusinessLayerTest.KomunikaceCollection, Havit.BusinessLayerTest.Komunikace> _KomunikacePropertyHolder;
 		private Havit.BusinessLayerTest.KomunikaceCollection _loadedKomunikaceValues;
 		
+		#endregion
+		
+		#region IsDeleted
+		/// <summary>
+		/// Indikuje, zda je nastaven příznak smazaného záznamu.
+		/// </summary>
+		public override bool IsDeleted
+		{
+			get
+			{
+				return Deleted != null;
+			}
+		}
 		#endregion
 		
 		#region Init
@@ -322,9 +339,9 @@ namespace Havit.BusinessLayerTest
 			if (record.TryGet<string>("Komunikace", out _tempKomunikace))
 			{
 				_KomunikacePropertyHolder.Initialize();
+				_KomunikacePropertyHolder.Value.Clear();
 				if (_tempKomunikace != null)
 				{
-					_KomunikacePropertyHolder.Value.Clear();
 					_KomunikacePropertyHolder.Value.AllowDuplicates = true; // Z výkonových důvodů. Víme, že duplicity nepřidáme.
 					string[] _tempKomunikaceItems = _tempKomunikace.Split('|');
 					int _tempKomunikaceItemsLength = _tempKomunikaceItems.Length - 1; // za každou (i za poslední) položkou je oddělovač
@@ -372,7 +389,8 @@ namespace Havit.BusinessLayerTest
 		
 		/// <summary>
 		/// Implementace metody vloží jen not-null vlastnosti objektu do databáze a nastaví nově přidělené ID (primární klíč).
-		/// </summary>
+		/// </summary>	
+		[EditorBrowsable(EditorBrowsableState.Never)]
 		public override sealed void Save_MinimalInsert(DbTransaction transaction)
 		{
 			base.Save_MinimalInsert(transaction);
@@ -567,7 +585,7 @@ namespace Havit.BusinessLayerTest
 			bool dirtyCollectionExists = false;
 			if (_KomunikacePropertyHolder.IsDirty && (_loadedKomunikaceValues != null))
 			{
-				Havit.BusinessLayerTest.KomunikaceCollection _komunikaceToRemove = new Havit.BusinessLayerTest.KomunikaceCollection(_loadedKomunikaceValues.Except(_KomunikacePropertyHolder.Value).Where(item => !item.IsDeleted && (!item.IsLoaded || (item.Subjekt == this))));
+				Havit.BusinessLayerTest.KomunikaceCollection _komunikaceToRemove = new Havit.BusinessLayerTest.KomunikaceCollection(_loadedKomunikaceValues.Except(_KomunikacePropertyHolder.Value).Where(item => !item.IsLoaded || (!item.IsDeleted && (item.Subjekt == this))));
 				if (_komunikaceToRemove.Count > 0)
 				{
 					dirtyCollectionExists = true;
@@ -626,7 +644,10 @@ namespace Havit.BusinessLayerTest
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které se smazání provede; null, pokud bez transakce</param>
 		public override void Delete(DbTransaction transaction)
 		{
-			Deleted = System.DateTime.Now;
+			if (Deleted == null)
+			{
+				Deleted = System.DateTime.Now;
+			}
 			base.Delete(transaction);
 		}
 		

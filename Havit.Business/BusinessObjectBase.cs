@@ -88,14 +88,26 @@ namespace Havit.Business
 		private bool _isNew;
 
 		/// <summary>
-		/// Indikuje, zda-li je objekt smazán z databáze, případně je v ní označen jako smazaný.
+		/// Indikuje, zda lze objekt považovat za smazaný.
+		/// Pro objekty mazané fyzickým odstraněním záznamu je true po zavolání metody Delete.
+		/// Pro objekty mazané příznakem je true, pokud je nastaven příznak smazání (mj. po zavolání metody Delete), řešeno pomocí generovaného kódu.
 		/// </summary>
-		public bool IsDeleted
+		public virtual bool IsDeleted
 		{
-			get { return _isDeleted; }
-			protected set { _isDeleted = value; }
+			get { return _isDeleted; }			
 		}
-		private bool _isDeleted;
+
+		private bool _isDeleted = false;
+
+		/// <summary>
+		/// Indikuje, zda-li byla nad objektem zavoláma metoda Deleted.
+		/// </summary>
+		internal bool IsDeleting
+		{
+			get { return this._isDeleting; }
+			set { this._isDeleting = value; }
+		}
+		private bool _isDeleting;
 
 		/// <summary>
 		/// Indikuje, zda-li je objekt zrovna ukládán (hlídá cyklické reference při ukládání).
@@ -308,7 +320,7 @@ namespace Havit.Business
 				OnBeforeSave(new BeforeSaveEventArgs(transaction));
 			}
 
-			if (IsDirty && !IsDeleted)
+			if (IsDirty && !IsDeleting)
 			{
 				CheckConstraints();
 			}
@@ -388,14 +400,17 @@ namespace Havit.Business
 			
 			EnsureLoaded();
 
-			if (IsDeleted)
+			if (IsDeleting)
 			{
 				return;
 			}
 
 			IsDirty = true;
-			IsDeleted = true;
+			IsDeleting = true;
 			Save(transaction);
+			IsDeleting = false;
+			// nastavíme lokální proměnou, která se používá pro getter generátorem nepřepsané vlastnosti IsDeleted.
+			_isDeleted = true;
 		}
 
 		/// <summary>
@@ -406,7 +421,7 @@ namespace Havit.Business
 		/// </remarks>
 		public void Delete()
 		{
-			Delete(null);
+			Delete(null);			
 		}
 
 		/// <summary>

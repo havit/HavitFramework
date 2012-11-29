@@ -70,6 +70,9 @@ namespace Havit.BusinessLayerTest
 		}
 		private FieldPropertyInfo _id;
 		
+		/// <summary>
+		/// Subjekt, se kterým byla komunikace vedena.
+		/// </summary>
 		public ReferenceFieldPropertyInfo Subjekt
 		{
 			get
@@ -80,6 +83,9 @@ namespace Havit.BusinessLayerTest
 		}
 		private ReferenceFieldPropertyInfo _subjekt;
 		
+		/// <summary>
+		/// Objednávka vzniklá z komunikace.
+		/// </summary>
 		public ReferenceFieldPropertyInfo ObjednavkaSepsani
 		{
 			get

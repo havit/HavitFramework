@@ -29,6 +29,9 @@ using Havit.Data.SqlTypes;
 
 namespace Havit.BusinessLayerTest
 {
+	/// <summary>
+	/// Komunikace.
+	/// </summary>
 	/// <remarks>
 	/// <code>
 	/// CREATE TABLE [dbo].[Komunikace](
@@ -90,7 +93,7 @@ namespace Havit.BusinessLayerTest
 		
 		#region Properties dle sloupců databázové tabulky
 		/// <summary>
-		///  [int, not-null]
+		/// Subjekt, se kterým byla komunikace vedena. [int, not-null]
 		/// </summary>
 		public virtual Havit.BusinessLayerTest.Subjekt Subjekt
 		{
@@ -111,7 +114,7 @@ namespace Havit.BusinessLayerTest
 		protected PropertyHolder<Havit.BusinessLayerTest.Subjekt> _SubjektPropertyHolder;
 		
 		/// <summary>
-		///  [int, nullable]
+		/// Objednávka vzniklá z komunikace. [int, nullable]
 		/// </summary>
 		public virtual Havit.BusinessLayerTest.ObjednavkaSepsani ObjednavkaSepsani
 		{

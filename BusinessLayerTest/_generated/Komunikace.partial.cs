@@ -22,6 +22,9 @@ using Havit.Data.SqlTypes;
 
 namespace Havit.BusinessLayerTest
 {
+	/// <summary>
+	/// Komunikace.
+	/// </summary>
 	public partial class Komunikace : KomunikaceBase
 	{
 		#region Constructors

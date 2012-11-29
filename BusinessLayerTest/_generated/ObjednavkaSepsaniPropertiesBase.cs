@@ -68,6 +68,9 @@ namespace Havit.BusinessLayerTest
 		}
 		private FieldPropertyInfo _id;
 		
+		/// <summary>
+		/// Odkaz na komunikaci, která stornuje tuto objednávku.
+		/// </summary>
 		public ReferenceFieldPropertyInfo StornoKomunikace
 		{
 			get

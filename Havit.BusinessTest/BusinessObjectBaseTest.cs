@@ -25,13 +25,16 @@ namespace Havit.BusinessTest
 		[TestMethod]
 		public void EqualsTest_StejneID()
 		{
-			Role role1 = Role.GetObject(-1);
-			Role role2 = Role.GetObject(-1);
+			using (new IdentityMapScope())
+			{
+				Role role1 = Role.GetObject(-1);
+				Role role2 = Role.GetObject(-1);
 
-			Assert.IsTrue(role1.Equals(role2));
-			Assert.IsTrue(role2.Equals(role1));
-			Assert.IsTrue(role1 == role2);
-			Assert.IsTrue(role2 == role1);
+				Assert.IsTrue(role1.Equals(role2));
+				Assert.IsTrue(role2.Equals(role1));
+				Assert.IsTrue(role1 == role2);
+				Assert.IsTrue(role2 == role1);
+			}
 		}
 		#endregion
 
@@ -42,13 +45,16 @@ namespace Havit.BusinessTest
 		[TestMethod]
 		public void EqualsTest_RuzneID()
 		{
-			Role role1 = Role.GetObject(-1);
-			Role role2 = Role.GetObject(1);
+			using (new IdentityMapScope())
+			{
+				Role role1 = Role.GetObject(-1);
+				Role role2 = Role.GetObject(1);
 
-			Assert.IsFalse(role1.Equals(role2));
-			Assert.IsFalse(role2.Equals(role1));
-			Assert.IsFalse(role1 == role2);
-			Assert.IsFalse(role2 == role1);
+				Assert.IsFalse(role1.Equals(role2));
+				Assert.IsFalse(role2.Equals(role1));
+				Assert.IsFalse(role1 == role2);
+				Assert.IsFalse(role2 == role1);
+			}
 		}
 		#endregion
 
@@ -82,9 +88,12 @@ namespace Havit.BusinessTest
 		[TestMethod]
 		public void GetAllCacheClone()
 		{
-			RoleCollection roleCollection1 = Role.GetAll();
-			RoleCollection roleCollection2 = Role.GetAll();
-			Assert.IsTrue(roleCollection1 != roleCollection2);
+			using (new IdentityMapScope())
+			{
+				RoleCollection roleCollection1 = Role.GetAll();
+				RoleCollection roleCollection2 = Role.GetAll();
+				Assert.IsTrue(roleCollection1 != roleCollection2);
+			}
 		}
 		#endregion
 
@@ -93,7 +102,10 @@ namespace Havit.BusinessTest
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void GetObject_Neexistujici()
 		{
-			Role.GetObject(-999).Load();
+			using (new IdentityMapScope())
+			{
+				Role.GetObject(-999).Load();
+			}
 		}
 		#endregion
 
@@ -104,9 +116,12 @@ namespace Havit.BusinessTest
 		[TestMethod]
 		public void TryLoad_Existujici()
 		{
-			Role role = Role.GetObject(0);
-			Assert.IsTrue(role.TryLoad());
-			Assert.IsTrue(role.TryLoad());
+			using (new IdentityMapScope())
+			{
+				Role role = Role.GetObject(0);
+				Assert.IsTrue(role.TryLoad());
+				Assert.IsTrue(role.TryLoad());
+			}
 		}
 		#endregion
 
@@ -117,8 +132,11 @@ namespace Havit.BusinessTest
 		[TestMethod]
 		public void TryLoad_Neexistujici()
 		{
-			Role role = Role.GetObject(999);
-			Assert.IsFalse(role.TryLoad());
+			using (new IdentityMapScope())
+			{
+				Role role = Role.GetObject(999);
+				Assert.IsFalse(role.TryLoad());
+			}
 		}
 		#endregion
 
@@ -126,18 +144,22 @@ namespace Havit.BusinessTest
 		[TestMethod]
 		public void Save_SaveAndDeleteTest()
 		{
-			int originalCount = Subjekt.GetAll().Count;
-			Subjekt subjekt = Subjekt.CreateObject();
-			subjekt.Nazev = "test";
-			subjekt.Save();
-			DbConnector.Default.ExecuteTransaction(delegate(DbTransaction transaction)
-				{
-					subjekt.Nazev = "test2";
-					subjekt.Save(transaction);
-					subjekt.Delete(transaction);
-				});
-			int newCount = Subjekt.GetAll().Count;
-			Assert.AreEqual(originalCount, newCount);
+			using (new IdentityMapScope())
+			{
+				int originalCount = Subjekt.GetAll().Count;
+				Subjekt subjekt = Subjekt.CreateObject();
+				subjekt.Nazev = "test";
+				subjekt.Save();
+				DbConnector.Default.ExecuteTransaction(
+					delegate(DbTransaction transaction)
+						{
+							subjekt.Nazev = "test2";
+							subjekt.Save(transaction);
+							subjekt.Delete(transaction);
+						});
+				int newCount = Subjekt.GetAll().Count;
+				Assert.AreEqual(originalCount, newCount);
+			}
 		}
 		
 		#endregion
@@ -146,19 +168,22 @@ namespace Havit.BusinessTest
 		[TestMethod]
 		public void CheckConstraintOnDeletedObject()
 		{
-			DbConnector.Default.ExecuteTransaction(delegate(DbTransaction transaction)
+			using (new IdentityMapScope())
 			{
-				Subjekt subjekt = Subjekt.CreateObject();
-				subjekt.Save(transaction);
-				string s = "";
-				while (s.Length <= Subjekt.Properties.Nazev.MaximumLength)
+				DbConnector.Default.ExecuteTransaction(delegate(DbTransaction transaction)
 				{
-					s = s + "0";
-				}
+					Subjekt subjekt = Subjekt.CreateObject();
+					subjekt.Save(transaction);
+					string s = "";
+					while (s.Length <= Subjekt.Properties.Nazev.MaximumLength)
+					{
+						s = s + "0";
+					}
 
-				subjekt.Nazev = s;
-				subjekt.Delete(transaction);
-			});
+					subjekt.Nazev = s;
+					subjekt.Delete(transaction);
+				});
+			}
 		}
 		
 		#endregion		
@@ -170,10 +195,13 @@ namespace Havit.BusinessTest
 		[TestMethod]
 		public void GetNullableIDTest_ID()
 		{
-			BusinessObjectBase businessObject = Role.ZaporneID;
-			int? expected = Role.ZaporneID.ID;
-			int? actual;
-			actual = BusinessObjectBase.GetNullableID(businessObject);
+			using (new IdentityMapScope())
+			{
+				BusinessObjectBase businessObject = Role.ZaporneID;
+				int? expected = Role.ZaporneID.ID;
+				int? actual;
+				actual = BusinessObjectBase.GetNullableID(businessObject);
+			}
 		}
 
 		/// <summary>

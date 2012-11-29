@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.Contracts;
 using System.Text;
 using System.Data.Common;
 using Havit.Data;
@@ -26,8 +27,7 @@ namespace Havit.Business
 		/// <summary>
 		/// Konstruktor pro nový objekt (bez perzistence v databázi).
 		/// </summary>
-		protected ActiveRecordBusinessObjectBase()
-			: base()
+		protected ActiveRecordBusinessObjectBase() : base()
 		{
 		}
 
@@ -35,13 +35,11 @@ namespace Havit.Business
 		/// Konstruktor pro objekt s obrazem v databázi (perzistentní).
 		/// </summary>
 		/// <param name="id">primární klíč objektu</param>
-		protected ActiveRecordBusinessObjectBase(int id)
-			: base(id)
-		{
-			if (IdentityMapScope.Current != null)
-			{
-				IdentityMapScope.Current.Store(this);
-			}
+		protected ActiveRecordBusinessObjectBase(int id) : base(id)
+		{			
+			IdentityMap currentIdentityMap = IdentityMapScope.Current;
+			Contract.Assume(currentIdentityMap != null);
+			currentIdentityMap.Store(this);
 		}
 
 		/// <summary>
@@ -57,19 +55,17 @@ namespace Havit.Business
 			false,	// IsDirty
 			false)	// IsLoaded
 		{
-			if (record == null)
-			{
-				throw new ArgumentNullException("record");
-			}
+			Contract.Requires<ArgumentNullException>(record != null);
 
 			/* nahradil implementační constructor base(...)
 						this.IsNew = false;
 						this.IsLoaded = false;
 			*/
-			if ((IdentityMapScope.Current != null)
-				&& ((record.DataLoadPower == DataLoadPower.Ghost) || (record.DataLoadPower == DataLoadPower.FullLoad)))
+			if ((record.DataLoadPower == DataLoadPower.Ghost) || (record.DataLoadPower == DataLoadPower.FullLoad))
 			{
-				IdentityMapScope.Current.Store(this);
+				IdentityMap currentIdentityMap = IdentityMapScope.Current;
+				Contract.Assume(currentIdentityMap != null);
+				currentIdentityMap.Store(this);
 			}
 
 			Load(record);
@@ -90,15 +86,9 @@ namespace Havit.Business
 		/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu načtenými z databáze.</param>
 		public void Load(DataRecord record)
 		{
-			if (record == null)
-			{
-				throw new ArgumentNullException("record");
-			}
+			Contract.Requires<ArgumentNullException>(record != null);
+			Contract.Requires<InvalidOperationException>(!this.IsLoaded, "Nelze nastavit objektu hodnoty z DataRecordu, pokud objekt není ghostem.");
 
-			if (this.IsLoaded)
-			{
-				throw new InvalidOperationException("Nelze nastavit objektu hodnoty z DataRecordu, pokud objekt není ghostem.");
-			}
 			Load_ParseDataRecord(record);
 
 			if (record.DataLoadPower != DataLoadPower.Ghost)

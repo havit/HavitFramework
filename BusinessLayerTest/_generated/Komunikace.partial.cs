@@ -89,7 +89,8 @@ namespace Havit.BusinessLayerTest
 			Komunikace result;
 			
 			IdentityMap currentIdentityMap = IdentityMapScope.Current;
-			if ((currentIdentityMap != null) && (currentIdentityMap.TryGet<Komunikace>(id, out result)))
+			global::System.Diagnostics.Contracts.Contract.Assume(currentIdentityMap != null);
+			if (currentIdentityMap.TryGet<Komunikace>(id, out result))
 			{
 				global::System.Diagnostics.Contracts.Contract.Assume(result != null);
 				return result;
@@ -114,28 +115,12 @@ namespace Havit.BusinessLayerTest
 			
 			int id = dataRecord.Get<int>(Komunikace.Properties.ID.FieldName);
 			
-			IdentityMap currentIdentityMap = IdentityMapScope.Current;
-			if ((currentIdentityMap != null)
-				&& ((dataRecord.DataLoadPower == DataLoadPower.Ghost)
-					|| (dataRecord.DataLoadPower == DataLoadPower.FullLoad)))
+			if ((dataRecord.DataLoadPower == DataLoadPower.Ghost) || (dataRecord.DataLoadPower == DataLoadPower.FullLoad))
 			{
-				if (currentIdentityMap.TryGet<Komunikace>(id, out result))
+				result = Komunikace.GetObject(id);
+				if (!result.IsLoaded && (dataRecord.DataLoadPower == DataLoadPower.FullLoad))
 				{
-					if (!result.IsLoaded && (dataRecord.DataLoadPower == DataLoadPower.FullLoad))
-					{
-						result.Load(dataRecord);
-					}
-				}
-				else
-				{
-					if (dataRecord.DataLoadPower == DataLoadPower.Ghost)
-					{
-						result = Komunikace.GetObject(id);
-					}
-					else
-					{
-						result = new Komunikace(id, dataRecord);
-					}
+					result.Load(dataRecord);
 				}
 			}
 			else

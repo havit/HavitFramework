@@ -168,15 +168,25 @@ namespace Havit.BusinessLayerTest
 		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected override sealed void Load_ParseDataRecord(DataRecord record)
 		{
-			this.ID = record.Get<int>("RoleID");
-			
-			string _tempSymbol;
-			if (record.TryGet<string>("Symbol", out _tempSymbol))
+			if (!this.IsLoaded)
 			{
-				_SymbolPropertyHolder.Value = _tempSymbol ?? String.Empty;
+				lock (_loadParseDataRecordLock)
+				{
+					if (!this.IsLoaded)
+					{
+						this.ID = record.Get<int>("RoleID");
+						
+						string _tempSymbol;
+						if (record.TryGet<string>("Symbol", out _tempSymbol))
+						{
+							_SymbolPropertyHolder.Value = _tempSymbol ?? String.Empty;
+						}
+						
+					}
+				}
 			}
-			
 		}
+		private object _loadParseDataRecordLock = new object();
 		#endregion
 		
 		#region Save & Delete: Save_SaveMembers, Save_SaveCollections, Save_MinimalInsert, Save_FullInsert, Save_Update, Save_Insert_InsertRequiredForMinimalInsert, Save_Insert_InsertRequiredForFullInsert, Delete, Delete_Perform
@@ -501,10 +511,7 @@ namespace Havit.BusinessLayerTest
 			if (collection == null)
 			{
 				collection = new RoleCollection();
-				collection.AddRange(Array.ConvertAll<int, Role>(ids, delegate(int value)
-					{
-						return Role.GetObject(value);
-						}));
+				collection.AddRange(Role.GetObjects(ids));
 				collection.LoadAll();
 			}
 			

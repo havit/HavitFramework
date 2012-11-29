@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 
+using Havit.Business;
 using Havit.BusinessLayerTest;
 using Havit.Data.SqlTypes;
 
@@ -16,8 +19,14 @@ namespace HavitTestConsoleApplication
 	internal class Program
 	{		
 		private static void Main(string[] args)
-		{			
-			
+		{	
+			List<Thread> threads = new List<Thread>();
+			for (int i = 0; i < 20; i++)
+			{
+				threads.Add(new Thread(Thread_Start));
+			}
+			threads.ForEach(t => t.Start());
+
 			//TestAggregateMicroCollections();
 			//TestAggregateSmallCollections();
 			//TestAggregateLargeCollections();
@@ -33,6 +42,14 @@ namespace HavitTestConsoleApplication
 			//TestRegexParseSmall();
 			//TestRegexParseLarge();
 
+		}
+
+		private static void Thread_Start()
+		{
+			using (new IdentityMapScope())
+			{
+				Role.GetAll();
+			}
 		}
 
 		private static void TestRegexParseLarge()

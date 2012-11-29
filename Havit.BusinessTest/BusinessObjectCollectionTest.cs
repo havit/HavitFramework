@@ -89,17 +89,19 @@ namespace Havit.BusinessTest
 		[ExpectedException(typeof(ArgumentException))]
 		public void AllowDuplicatesTest_DoNotAllow_Insert_Same_Persistent()
 		{
-			SubjektCollection subjekty = new SubjektCollection();
-			subjekty.AllowDuplicates = false;
+			using (new IdentityMapScope())
+			{
+				SubjektCollection subjekty = new SubjektCollection();
+				subjekty.AllowDuplicates = false;
 
-			Subjekt subjekt1 = Subjekt.GetObject(1);
-			Subjekt subjekt2 = Subjekt.GetObject(1);
+				Subjekt subjekt1 = Subjekt.GetObject(1);
+				Subjekt subjekt2 = Subjekt.GetObject(1);
 
-			// přidáme dva objekty (různé instance, ale stejné business objekty)
-			subjekty.Add(subjekt1);
-			subjekty.Add(subjekt2);
-			// je-li vyhozena výjimka, je vše ok (viz atribut metody)
-
+				// přidáme dva objekty (různé instance, ale stejné business objekty)
+				subjekty.Add(subjekt1);
+				subjekty.Add(subjekt2);
+				// je-li vyhozena výjimka, je vše ok (viz atribut metody)
+			}
 		}
 
 		/// <summary>
@@ -153,14 +155,17 @@ namespace Havit.BusinessTest
 		[TestMethod]
 		public void RemoveRange_CollectionChanged_Test()
 		{
-			bool changed = false;
+			using (new IdentityMapScope())
+			{
+				bool changed = false;
 
-			SubjektCollection collection = new SubjektCollection();
-			collection.Add(Subjekt.GetObject(1));
-			collection.CollectionChanged += ((sender, args) => changed = true);
-			collection.RemoveRange(new SubjektCollection(collection));
+				SubjektCollection collection = new SubjektCollection();
+				collection.Add(Subjekt.GetObject(1));
+				collection.CollectionChanged += ((sender, args) => changed = true);
+				collection.RemoveRange(new SubjektCollection(collection));
 
-			Assert.IsTrue(changed);
+				Assert.IsTrue(changed);
+			}
 		}
 
 	}

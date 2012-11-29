@@ -233,10 +233,9 @@ namespace Havit.BusinessLayerTest
 			this.ID = (int)DbConnector.Default.ExecuteScalar(dbCommand);
 			this.IsNew = false; // uložený objekt není už nový, dostal i přidělené ID
 			
-			if (IdentityMapScope.Current != null)
-			{
-				IdentityMapScope.Current.Store(this);
-			}
+			IdentityMap currentIdentityMap = IdentityMapScope.Current;
+			global::System.Diagnostics.Contracts.Contract.Assume(currentIdentityMap != null);
+			currentIdentityMap.Store(this);
 		}
 		
 		/// <summary>
@@ -261,10 +260,9 @@ namespace Havit.BusinessLayerTest
 			this.ID = (int)DbConnector.Default.ExecuteScalar(dbCommand);
 			this.IsNew = false; // uložený objekt není už nový, dostal i přidělené ID
 			
-			if (IdentityMapScope.Current != null)
-			{
-				IdentityMapScope.Current.Store(this);
-			}
+			IdentityMap currentIdentityMap = IdentityMapScope.Current;
+			global::System.Diagnostics.Contracts.Contract.Assume(currentIdentityMap != null);
+			currentIdentityMap.Store(this);
 		}
 		
 		/// <summary>

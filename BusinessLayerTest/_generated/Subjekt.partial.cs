@@ -89,7 +89,8 @@ namespace Havit.BusinessLayerTest
 			Subjekt result;
 			
 			IdentityMap currentIdentityMap = IdentityMapScope.Current;
-			if ((currentIdentityMap != null) && (currentIdentityMap.TryGet<Subjekt>(id, out result)))
+			global::System.Diagnostics.Contracts.Contract.Assume(currentIdentityMap != null);
+			if (currentIdentityMap.TryGet<Subjekt>(id, out result))
 			{
 				global::System.Diagnostics.Contracts.Contract.Assume(result != null);
 				return result;
@@ -114,28 +115,12 @@ namespace Havit.BusinessLayerTest
 			
 			int id = dataRecord.Get<int>(Subjekt.Properties.ID.FieldName);
 			
-			IdentityMap currentIdentityMap = IdentityMapScope.Current;
-			if ((currentIdentityMap != null)
-				&& ((dataRecord.DataLoadPower == DataLoadPower.Ghost)
-					|| (dataRecord.DataLoadPower == DataLoadPower.FullLoad)))
+			if ((dataRecord.DataLoadPower == DataLoadPower.Ghost) || (dataRecord.DataLoadPower == DataLoadPower.FullLoad))
 			{
-				if (currentIdentityMap.TryGet<Subjekt>(id, out result))
+				result = Subjekt.GetObject(id);
+				if (!result.IsLoaded && (dataRecord.DataLoadPower == DataLoadPower.FullLoad))
 				{
-					if (!result.IsLoaded && (dataRecord.DataLoadPower == DataLoadPower.FullLoad))
-					{
-						result.Load(dataRecord);
-					}
-				}
-				else
-				{
-					if (dataRecord.DataLoadPower == DataLoadPower.Ghost)
-					{
-						result = Subjekt.GetObject(id);
-					}
-					else
-					{
-						result = new Subjekt(id, dataRecord);
-					}
+					result.Load(dataRecord);
 				}
 			}
 			else

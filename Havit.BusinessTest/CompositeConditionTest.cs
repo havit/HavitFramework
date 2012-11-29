@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Text;
 using System.Collections.Generic;
+
+using Havit.Business;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Havit.Business.Query;
 using Havit.BusinessLayerTest;
@@ -54,14 +57,17 @@ namespace Havit.BusinessTest
 		[TestMethod]
 		public void CompositeCondition_NestedConditionTest()
 		{
-			QueryParams queryParams = new QueryParams();
-			queryParams.Conditions.Add(
-				new AndCondition(
-					new OrCondition(
-						new AndCondition(
-							EmptyCondition.Create(),
-							EmptyCondition.Create()))));
-			Uzivatel.GetList(queryParams);
+			using (new IdentityMapScope())
+			{
+				QueryParams queryParams = new QueryParams();
+				queryParams.Conditions.Add(
+					new AndCondition(
+						new OrCondition(
+							new AndCondition(
+								EmptyCondition.Create(),
+								EmptyCondition.Create()))));
+				Uzivatel.GetList(queryParams);
+			}
 		}
 	}
 }

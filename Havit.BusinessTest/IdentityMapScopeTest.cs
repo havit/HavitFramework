@@ -35,21 +35,6 @@ namespace Havit.BusinessTest
 
 			Assert.AreSame(uzivatel1, uzivatel2);
 		}
-
-		/// <summary>
-		/// A test for IdentityMapScope ()
-		/// </summary>
-		[TestMethod]
-		public void IdentityMapScopeTest_BezIdentityMap()
-		{
-			Uzivatel uzivatel1;
-			Uzivatel uzivatel2;
-
-			uzivatel1 = Uzivatel.GetObject(1);
-			uzivatel2 = Uzivatel.GetObject(1);
-
-			Assert.AreNotSame(uzivatel1, uzivatel2);
-		}
 		#endregion
 
 		#region GetFirst/GetList

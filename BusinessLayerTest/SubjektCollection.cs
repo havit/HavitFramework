@@ -23,6 +23,5 @@ namespace Havit.BusinessLayerTest
 	/// </summary>
 	public partial class SubjektCollection : SubjektCollectionBase
 	{
-		
 	}
 }

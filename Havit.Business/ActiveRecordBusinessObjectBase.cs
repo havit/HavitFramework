@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using System.Data.Common;
 using Havit.Data;
@@ -114,6 +115,7 @@ namespace Havit.Business
 		/// Načte objekt z databáze do <see cref="DataRecord"/> a parsuje získaný <see cref="DataRecord"/> do objektu.
 		/// </remarks>
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt načten; null, pokud bez transakce</param>
+		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		protected override sealed bool TryLoad_Perform(DbTransaction transaction)
 		{
 			DataRecord record = Load_GetDataRecord(transaction);
@@ -201,6 +203,7 @@ namespace Havit.Business
 		/// Pokud je objekt nový, volá Save_Insert_SaveRequiredForFullInsert a Insert, jinak Update.
 		/// </remarks>
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
+		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		protected override sealed void Save_Perform(DbTransaction transaction)
 		{
 			// transakce je zajištěna v override Save(DbTransaction), zde není potřeba zakládat další
@@ -245,6 +248,7 @@ namespace Havit.Business
 		/// </summary>
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které mají být member-objekty uloženy; null, pokud bez transakce</param>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member", Justification = "Jde o template metodu volanou z metody Save.")]
+		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		protected virtual void Save_SaveMembers(DbTransaction transaction)
 		{
 			// NOOP
@@ -255,6 +259,7 @@ namespace Havit.Business
 		/// </summary>
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které mají být member-kolekce uloženy; null, pokud bez transakce</param>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member", Justification = "Jde o template metodu volanou z metody Save.")]
+		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		protected virtual void Save_SaveCollections(DbTransaction transaction)
 		{
 			// NOOP
@@ -265,6 +270,7 @@ namespace Havit.Business
 		/// </summary>
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member", Justification = "Jde o template metodu volanou z metody Save.")]
+		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		protected abstract void Save_FullInsert(DbTransaction transaction);
 
 		/// <summary>
@@ -272,6 +278,7 @@ namespace Havit.Business
 		/// </summary>
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member", Justification = "Jde o template metodu volanou z metody Save.")]
+		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		public virtual void Save_MinimalInsert(DbTransaction transaction)
 		{
 			CheckConstraints();
@@ -282,12 +289,14 @@ namespace Havit.Business
 		/// </summary>
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member", Justification = "Jde o template metodu volanou z metody Save.")]
+		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		protected abstract void Save_Update(DbTransaction transaction);
 
 		/// <summary>
 		/// Ukládá hodnoty potřebné pro provedení plného insertu.
 		/// </summary>
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
+		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		protected virtual void Save_Insert_InsertRequiredForFullInsert(DbTransaction transaction)
 		{
 			Save_Insert_InsertRequiredForMinimalInsert(transaction);
@@ -298,6 +307,7 @@ namespace Havit.Business
 		/// Ukládá hodnoty potřebné pro provedení minimálního insertu. Volá Save_Insert_SaveRequiredForMinimalInsert.
 		/// </summary>
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
+		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		protected virtual void Save_Insert_InsertRequiredForMinimalInsert(DbTransaction transaction)
 		{
 			if (IsMinimalInserting)
@@ -311,6 +321,7 @@ namespace Havit.Business
 		/// <summary>
 		/// Identifikuje, zda probíhá Save_Insert_InsertRequiredForMinimalInsert (nesmí se zacyklit).
 		/// </summary>
+		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		protected bool IsMinimalInserting
 		{
 			get { return isMinimalInserting; }

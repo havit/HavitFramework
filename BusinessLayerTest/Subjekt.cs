@@ -23,6 +23,6 @@ namespace Havit.BusinessLayerTest
 	/// </summary>
 	public partial class Subjekt : SubjektBase
 	{
-		
+
 	}
 }

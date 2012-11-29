@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using Havit.Data;
 using System.Data.Common;
@@ -112,6 +113,7 @@ namespace Havit.Business
 		/// <summary>
 		/// Indikuje, zda-li je objekt zrovna ukládán (hlídá cyklické reference při ukládání).
 		/// </summary>
+		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		protected internal bool IsSaving
 		{
 			get { return _isSaving; }
@@ -127,6 +129,7 @@ namespace Havit.Business
 		/// <remarks>
 		/// Kolekce je určena pro hromadné operace s property-holdery. Jednotlivé property si reference na své property-holdery udržují v private fieldu.
 		/// </remarks>
+		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		internal protected List<PropertyHolderBase> PropertyHolders
 		{
 			get
@@ -432,13 +435,14 @@ namespace Havit.Business
 		protected abstract void Delete_Perform(DbTransaction transaction);
 		#endregion
 
-		#region Implementační metody - EnsureLoaded, CheckChange
+		#region Implementační metody - EnsureLoaded
 		/// <summary>
 		/// Ověří, jestli jsou data objektu načtena z databáze (IsLoaded). Pokud nejsou, provede jejich načtení.
 		/// </summary>
 		/// <remarks>
 		/// Metoda EnsureLoaded se volá před každou operací, která potřebuje data objektu. Zajištuje lazy-load.
 		/// </remarks>
+		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		protected void EnsureLoaded()
 		{
 			if (IsLoaded || IsNew)
@@ -449,6 +453,7 @@ namespace Havit.Business
 			Load();
 		}
 
+		/*
 		/// <summary>
 		/// Metoda zkontroluje rovnost dvou objektů - jestliže nejsou stejné, je objekt označen jako změněný (IsDirty = true).
 		/// </summary>
@@ -468,6 +473,7 @@ namespace Havit.Business
 			}
 			return false;
 		}
+		 */
 		#endregion
 
 		#region Equals, GetHashCode, operátory == a != (override)

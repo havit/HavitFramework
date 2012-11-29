@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
@@ -120,6 +119,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// PropertyHolder pro vlastnost Nazev.
 		/// </summary>
+		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected PropertyHolder<string> _NazevPropertyHolder;
 		
 		/// <summary>
@@ -141,6 +141,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// PropertyHolder pro vlastnost Uzivatel.
 		/// </summary>
+		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected PropertyHolder<Havit.BusinessLayerTest.Uzivatel> _UzivatelPropertyHolder;
 		
 		/// <summary>
@@ -157,6 +158,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// PropertyHolder pro vlastnost Created.
 		/// </summary>
+		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected PropertyHolder<DateTime> _CreatedPropertyHolder;
 		
 		/// <summary>
@@ -178,6 +180,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// PropertyHolder pro vlastnost Deleted.
 		/// </summary>
+		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected PropertyHolder<DateTime?> _DeletedPropertyHolder;
 		
 		/// <summary>
@@ -196,6 +199,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// PropertyHolder pro vlastnost Komunikace.
 		/// </summary>
+		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected CollectionPropertyHolder<Havit.BusinessLayerTest.KomunikaceCollection, Havit.BusinessLayerTest.Komunikace> _KomunikacePropertyHolder;
 		private Havit.BusinessLayerTest.KomunikaceCollection _loadedKomunikaceValues;
 		
@@ -283,6 +287,7 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		/// <param name="transaction">Transakce.</param>
 		/// <returns>Úplná data objektu.</returns>
+		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected override sealed DataRecord Load_GetDataRecord(DbTransaction transaction)
 		{
 			DataRecord result;
@@ -307,6 +312,7 @@ namespace Havit.BusinessLayerTest
 		/// Vytahá data objektu z DataRecordu.
 		/// </summary>
 		/// <param name="record">DataRecord s daty objektu</param>
+		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected override sealed void Load_ParseDataRecord(DataRecord record)
 		{
 			this.ID = record.Get<int>("SubjektID");
@@ -362,6 +368,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Ukládá member-objekty.
 		/// </summary>
+		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected override sealed void Save_SaveMembers(DbTransaction transaction)
 		{
 			base.Save_SaveMembers(transaction);
@@ -376,6 +383,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Ukládá member-kolekce objektu.
 		/// </summary>
+		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected override sealed void Save_SaveCollections(DbTransaction transaction)
 		{
 			base.Save_SaveCollections(transaction);
@@ -389,8 +397,8 @@ namespace Havit.BusinessLayerTest
 		
 		/// <summary>
 		/// Implementace metody vloží jen not-null vlastnosti objektu do databáze a nastaví nově přidělené ID (primární klíč).
-		/// </summary>	
-		[EditorBrowsable(EditorBrowsableState.Never)]
+		/// </summary>
+		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)]
 		public override sealed void Save_MinimalInsert(DbTransaction transaction)
 		{
 			base.Save_MinimalInsert(transaction);
@@ -438,6 +446,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Implementace metody vloží nový objekt do databáze a nastaví nově přidělené ID (primární klíč).
 		/// </summary>
+		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected override sealed void Save_FullInsert(DbTransaction transaction)
 		{
 			DbCommand dbCommand;
@@ -490,6 +499,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Implementace metody aktualizuje data objektu v databázi.
 		/// </summary>
+		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected override sealed void Save_Update(DbTransaction transaction)
 		{
 			DbCommand dbCommand = DbConnector.Default.ProviderFactory.CreateCommand();
@@ -615,6 +625,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Ukládá hodnoty potřebné pro provedení minimálního insertu. Volá Save_Insert_SaveRequiredForMinimalInsert.
 		/// </summary>
+		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected override sealed void Save_Insert_InsertRequiredForMinimalInsert(DbTransaction transaction)
 		{
 			base.Save_Insert_InsertRequiredForMinimalInsert(transaction);
@@ -624,6 +635,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Ukládá hodnoty potřebné pro provedení plného insertu.
 		/// </summary>
+		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected override sealed void Save_Insert_InsertRequiredForFullInsert(DbTransaction transaction)
 		{
 			base.Save_Insert_InsertRequiredForFullInsert(transaction);
@@ -654,6 +666,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Metoda označí objekt jako smazaný a uloží jej.
 		/// </summary>
+		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected override sealed void Delete_Perform(DbTransaction transaction)
 		{
 			Save_Update(transaction);

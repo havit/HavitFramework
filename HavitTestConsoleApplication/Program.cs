@@ -18,9 +18,6 @@ namespace HavitTestConsoleApplication
 	{		
 		private static void Main(string[] args)
 		{
-			Subjekt subjekt = Subjekt.GetObject(59);
-			subjekt.Delete();						
-
 			//TestAggregateMicroCollections();
 			//TestAggregateSmallCollections();
 			//TestAggregateLargeCollections();

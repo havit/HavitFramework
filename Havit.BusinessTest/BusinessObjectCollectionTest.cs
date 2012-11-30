@@ -168,6 +168,18 @@ namespace Havit.BusinessTest
 			}
 		}
 
+		/// <summary>
+		/// Testuje vyvolání výjimky při odebrání prvků ze zamčené kolekce metodou Clear.
+		/// </summary>
+		[TestMethod]
+		[ExpectedException(typeof(InvalidOperationException))]
+		public void Freeze_Clear_Test()
+		{
+			SubjektCollection collection = new SubjektCollection();
+			collection.Freeze();
+			collection.Clear();
+		}
+	
 	}
 
 }

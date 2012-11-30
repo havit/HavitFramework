@@ -93,7 +93,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// PropertyHolder pro vlastnost Symbol.
 		/// </summary>
-		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)]
+		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected PropertyHolder<string> _SymbolPropertyHolder;
 		
 		#endregion
@@ -140,7 +140,7 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		/// <param name="transaction">Transakce.</param>
 		/// <returns>Úplná data objektu.</returns>
-		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)]
+		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected override sealed DataRecord Load_GetDataRecord(DbTransaction transaction)
 		{
 			DataRecord result;
@@ -165,7 +165,7 @@ namespace Havit.BusinessLayerTest
 		/// Vytahá data objektu z DataRecordu.
 		/// </summary>
 		/// <param name="record">DataRecord s daty objektu</param>
-		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)]
+		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected override sealed void Load_ParseDataRecord(DataRecord record)
 		{
 			if (!this.IsLoaded)
@@ -194,7 +194,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Ukládá member-objekty.
 		/// </summary>
-		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)]
+		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected override sealed void Save_SaveMembers(DbTransaction transaction)
 		{
 			base.Save_SaveMembers(transaction);
@@ -205,7 +205,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Ukládá member-kolekce objektu.
 		/// </summary>
-		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)]
+		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected override sealed void Save_SaveCollections(DbTransaction transaction)
 		{
 			base.Save_SaveCollections(transaction);
@@ -216,7 +216,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Implementace metody vloží jen not-null vlastnosti objektu do databáze a nastaví nově přidělené ID (primární klíč).
 		/// </summary>
-		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)]
+		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		public override sealed void Save_MinimalInsert(DbTransaction transaction)
 		{
 			throw new InvalidOperationException("Objekty třídy Havit.BusinessLayerTest.Role jsou určeny jen pro čtení.");
@@ -225,7 +225,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Implementace metody vloží nový objekt do databáze a nastaví nově přidělené ID (primární klíč).
 		/// </summary>
-		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)]
+		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected override sealed void Save_FullInsert(DbTransaction transaction)
 		{
 			throw new InvalidOperationException("Objekty třídy Havit.BusinessLayerTest.Role jsou určeny jen pro čtení.");
@@ -234,7 +234,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Implementace metody aktualizuje data objektu v databázi.
 		/// </summary>
-		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)]
+		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected override sealed void Save_Update(DbTransaction transaction)
 		{
 			throw new InvalidOperationException("Objekty třídy Havit.BusinessLayerTest.Role jsou určeny jen pro čtení.");
@@ -243,7 +243,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Ukládá hodnoty potřebné pro provedení minimálního insertu. Volá Save_Insert_SaveRequiredForMinimalInsert.
 		/// </summary>
-		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)]
+		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected override sealed void Save_Insert_InsertRequiredForMinimalInsert(DbTransaction transaction)
 		{
 			throw new InvalidOperationException("Objekty třídy Havit.BusinessLayerTest.Role jsou určeny jen pro čtení.");
@@ -252,7 +252,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Ukládá hodnoty potřebné pro provedení plného insertu.
 		/// </summary>
-		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)]
+		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected override sealed void Save_Insert_InsertRequiredForFullInsert(DbTransaction transaction)
 		{
 			throw new InvalidOperationException("Objekty třídy Havit.BusinessLayerTest.Role jsou určeny jen pro čtení.");
@@ -261,7 +261,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Objekt je typu readonly. Metoda vyhazuje výjimku InvalidOperationException.
 		/// </summary>
-		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)]
+		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected override sealed void Delete_Perform(DbTransaction transaction)
 		{
 			throw new InvalidOperationException("Objekty třídy Havit.BusinessLayerTest.Role jsou určeny jen pro čtení.");

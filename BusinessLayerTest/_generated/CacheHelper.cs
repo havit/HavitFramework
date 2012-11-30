@@ -27,20 +27,8 @@ namespace Havit.BusinessLayerTest
 	/// </summary>
 	[System.Diagnostics.Contracts.ContractVerification(false)]
 	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
-	public static class CacheHelper
+	public static partial class CacheHelper
 	{
-		#region PreloadCachedObjects
-		/// <summary>
-		/// Načte do cache všechny cachované objekty.
-		/// </summary>
-		public static void PreloadCachedObjects()
-		{
-			System.Diagnostics.Contracts.Contract.Requires(IdentityMapScope.Current != null);
-			
-			Havit.BusinessLayerTest.Role.GetAll();
-		}
-		#endregion
-		
 		#region PreloadCachedObjectsAsync
 		/// <summary>
 		/// Asynchronně načte do cache všechny cachované objekty.
@@ -57,10 +45,22 @@ namespace Havit.BusinessLayerTest
 		{
 			using (new Havit.Business.IdentityMapScope())
 			{
-				PreloadCachedObjects();
+				PreloadCachedObjectsAsyncStarting();
+				
+				try
+				{
+					Havit.BusinessLayerTest.Role.GetAll();
+				}
+				catch (SqlException)
+				{
+				}
+				
+				PreloadCachedObjectsAsyncCompleted();
 			}
 		}
 		#endregion
 		
+		static partial void PreloadCachedObjectsAsyncStarting();
+		static partial void PreloadCachedObjectsAsyncCompleted();
 	}
 }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+
 using Havit.Collections;
 using System.Data.Common;
 using Havit.Data;
@@ -19,7 +21,7 @@ namespace Havit.Business
 	/// </remarks>
 	/// <typeparam name="TItem">èlenský typ kolekce</typeparam>
 	/// <typeparam name="TCollection">typ používané business object kolekce</typeparam>
-	public class BusinessObjectCollection<TItem, TCollection> : Collection<TItem>
+	public class BusinessObjectCollection<TItem, TCollection> : Collection<TItem>, ICollection<TItem>
 		where TItem : BusinessObjectBase
 		where TCollection : BusinessObjectCollection<TItem, TCollection>, new()
 	{
@@ -47,7 +49,7 @@ namespace Havit.Business
 			}
 		}
 		#endregion
-
+		
 		#region AllowDuplicates
 		/// <summary>
 		/// Urèuje, zda je možné do kolekce vložit hodnotu, která již v kolekci je.
@@ -75,7 +77,7 @@ namespace Havit.Business
 
 		private bool _allowDuplicates = true;
 		#endregion
-
+		
 		#region InsertItem (override)
 		/// <summary>
 		/// Inserts an element into the <see cref="T:System.Collections.ObjectModel.Collection`1"></see> at the specified index.
@@ -86,16 +88,20 @@ namespace Havit.Business
 		/// <exception cref="T:System.ArgumentOutOfRangeException">index is less than zero.-or-index is greater than <see cref="P:System.Collections.ObjectModel.Collection`1.Count"></see>.</exception>
 		protected override void InsertItem(int index, TItem item)
 		{
+			ThrowIfFrozen(); 
+			
 			if ((!_allowDuplicates) && (this.Contains(item)))
 			{
 				throw new ArgumentException("Položka v kolekci již existuje (a není povoleno vkládání duplicit).");
 			}
 
 			base.InsertItem(index, item);
+
 			if ((item != null) && !item.IsLoaded)
 			{
 				LoadAllRequired = true;
 			}
+
 			OnCollectionChanged(EventArgs.Empty);
 		}
 		#endregion
@@ -108,6 +114,7 @@ namespace Havit.Business
 		/// <exception cref="T:System.ArgumentOutOfRangeException">index is less than zero.-or-index is equal to or greater than <see cref="P:System.Collections.ObjectModel.Collection`1.Count"></see>.</exception>
 		protected override void RemoveItem(int index)
 		{
+			ThrowIfFrozen();
 			base.RemoveItem(index);
 			OnCollectionChanged(EventArgs.Empty);
 		}
@@ -123,17 +130,22 @@ namespace Havit.Business
 		/// <exception cref="T:System.ArgumentOutOfRangeException">index is less than zero.-or-index is greater than <see cref="P:System.Collections.ObjectModel.Collection`1.Count"></see>.</exception>
 		protected override void SetItem(int index, TItem item)
 		{
-			// je zajištìno, že v režimu !AllowDuplicates kolekce neobsahuje duplikáty
+			ThrowIfFrozen();
+			
+			// je zajištěno, že v režimu !AllowDuplicates kolekce neobsahuje duplikáty
 			// potom mùžeme použít IndexOf na hledání výskytu (je garantováno, že prvek je v kolekci nejvýše jednou).
 			if (!_allowDuplicates && (this.IndexOf(item) != index)) 
 			{
 				throw new ArgumentException("Položka v kolekci již existuje (a není povoleno vkládání duplicit).");
 			}
+
 			base.SetItem(index, item);
+
 			if ((item != null) && !item.IsLoaded)
 			{
 				LoadAllRequired = true;
 			}
+
 			OnCollectionChanged(EventArgs.Empty);
 		}
 		#endregion
@@ -144,6 +156,7 @@ namespace Havit.Business
 		/// </summary>
 		protected override void ClearItems()
 		{
+			ThrowIfFrozen();
 			base.ClearItems();
 			LoadAllRequired = false;
 			OnCollectionChanged(EventArgs.Empty);
@@ -428,6 +441,38 @@ namespace Havit.Business
 		public virtual void SaveAll()
 		{
 			SaveAll(null);
+		}
+		#endregion
+
+		#region Freeze, ThrowIfFrozen, IsReadOnly
+		/// <summary>
+		/// Zamkne kolekci vůči změnám. Od toho okamžiku není možné změnit položky v kolekci.
+		/// </summary>
+		[EditorBrowsable(EditorBrowsableState.Advanced)]
+		public void Freeze()
+		{
+			isFrozen = true;
+		}
+
+		private bool isFrozen = false;
+		
+		/// <summary>
+		/// Pokud je nastaven příznak isFrozen, vyhodí výjimku InvalidOperationException.
+		/// </summary>
+		private void ThrowIfFrozen()
+		{
+			if (this.isFrozen)
+			{
+				throw new InvalidOperationException("Kolekce je zamčena, nelze ji modifikovat.");
+			}
+		}
+		
+		bool ICollection<TItem>.IsReadOnly
+		{
+			get
+			{
+				return isFrozen;
+			}
 		}
 		#endregion
 

@@ -9,23 +9,23 @@ using System.Threading;
 using Havit.Business;
 using Havit.BusinessLayerTest;
 using Havit.Data.SqlTypes;
+using System.Data.SqlTypes;
+using System.Diagnostics;
+using System.IO;
 
 namespace HavitTestConsoleApplication
 {
-	using System.Data.SqlTypes;
-	using System.Diagnostics;
-	using System.IO;
 
 	internal class Program
 	{		
 		private static void Main(string[] args)
 		{	
-			List<Thread> threads = new List<Thread>();
-			for (int i = 0; i < 20; i++)
-			{
-				threads.Add(new Thread(Thread_Start));
-			}
-			threads.ForEach(t => t.Start());
+			//List<Thread> threads = new List<Thread>();
+			//for (int i = 0; i < 20; i++)
+			//{
+			//	threads.Add(new Thread(Thread_Start));
+			//}
+			//threads.ForEach(t => t.Start());
 
 			//TestAggregateMicroCollections();
 			//TestAggregateSmallCollections();
@@ -44,13 +44,13 @@ namespace HavitTestConsoleApplication
 
 		}
 
-		private static void Thread_Start()
-		{
-			using (new IdentityMapScope())
-			{
-				Role.GetAll();
-			}
-		}
+		//private static void Thread_Start()
+		//{
+		//	using (new IdentityMapScope())
+		//	{
+		//		Role.GetAll();
+		//	}
+		//}
 
 		private static void TestRegexParseLarge()
 		{

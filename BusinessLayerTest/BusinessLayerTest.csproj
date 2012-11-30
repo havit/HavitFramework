@@ -147,6 +147,8 @@
     <Compile Include="SubjektCollection.cs" />
     <Compile Include="Uzivatel.cs" />
     <Compile Include="UzivatelCollection.cs" />
+    <Compile Include="_generated\CacheHelper.cs" />
+    <Compile Include="_generated\ExtensionMethods.partial.cs" />
     <Compile Include="_generated\Komunikace.partial.cs" />
     <Compile Include="_generated\KomunikaceBase.cs" />
     <Compile Include="_generated\KomunikaceCollection.partial.cs" />

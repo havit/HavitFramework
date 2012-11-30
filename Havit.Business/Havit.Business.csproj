@@ -173,6 +173,7 @@
     <Reference Include="System.Data">
       <Name>System.Data</Name>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
@@ -190,6 +191,7 @@
     <Compile Include="CollectionPropertyHolder.cs" />
     <Compile Include="CountBusinessDaysOptions.cs" />
     <Compile Include="CreateObjectDelegate.cs" />
+    <Compile Include="DbResourceProviderBase.cs" />
     <Compile Include="GetObjectDelegate.cs" />
     <Compile Include="IDateInfo.cs" />
     <Compile Include="IdentityMap.cs" />

@@ -406,23 +406,8 @@ namespace Havit.Web.UI.WebControls
 				row.DataItem);
 
 			// JK: Tohle není úplně OK! Pozor na schování v nadřazeném controlu během databindingu!
-			args.Visible = control.Visible;
-
-			if (sender is LinkButton)
-			{
-				LinkButton linkButton = (LinkButton)sender;
-				args.Enabled = linkButton.Enabled;
-			}
-			else if (sender is ImageButton)
-			{
-				ImageButton imageButton = (ImageButton)sender;
-				args.Enabled = imageButton.Enabled;
-			}
-			else if (sender is Button)
-			{
-				Button button = (Button)sender;
-				args.Enabled = button.Enabled;
-			}
+			args.Visible = true;
+			args.Enabled = true;
 
 			// zavoláme obsluhu události
 			gridViewExt.OnRowCustomizingCommandButton(args);

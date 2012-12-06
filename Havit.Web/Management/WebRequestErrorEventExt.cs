@@ -200,8 +200,28 @@ namespace Havit.Web.Management
 
 			if (_currentHttpContext != null)
 			{
-				sb.AppendLine("    Referrer: " + _currentHttpContext.Request.UrlReferrer);
-				sb.AppendLine("    User agent: " + _currentHttpContext.Request.UserAgent);				
+				string urlReferrer;
+
+				try
+				{
+					urlReferrer = _currentHttpContext.Request.UrlReferrer.ToString();
+				}
+				catch
+				{
+					urlReferrer = ExceptionText;
+				}
+				sb.AppendLine("    Referrer: " + urlReferrer);
+
+				string userAgent;
+				try
+				{
+					userAgent = _currentHttpContext.Request.UserAgent;
+				}
+				catch
+				{
+					userAgent = ExceptionText;
+				}
+				sb.AppendLine("    User agent: " + userAgent);				
 			}
 		}
 		#endregion

@@ -21,6 +21,8 @@ namespace Havit.Web.Management
 		#region Private fields
 		private HttpContext _currentHttpContext;
 		private Type _currentHttpHandlerType;
+		private CultureInfo _currentCulture;
+		private CultureInfo _currentUiCulture;
 		#endregion
 
 		#region Constructors
@@ -43,6 +45,8 @@ namespace Havit.Web.Management
 			{
 				this._currentHttpHandlerType = currentHttpContext.Handler.GetType();
 			}
+			_currentCulture = CultureInfo.CurrentCulture;
+			_currentUiCulture = CultureInfo.CurrentUICulture;
 		}
 		#endregion
 
@@ -197,7 +201,7 @@ namespace Havit.Web.Management
 			if (_currentHttpContext != null)
 			{
 				sb.AppendLine("    Referrer: " + _currentHttpContext.Request.UrlReferrer);
-				sb.AppendLine("    User agent: " + _currentHttpContext.Request.UserAgent);
+				sb.AppendLine("    User agent: " + _currentHttpContext.Request.UserAgent);				
 			}
 		}
 		#endregion
@@ -224,6 +228,8 @@ namespace Havit.Web.Management
 			sb.AppendLine("    Thread ID: " + threadInformation.ThreadID);
 			sb.AppendLine("    Thread account name: " + threadInformation.ThreadAccountName);
 			sb.AppendLine("    Is impersonating: " + threadInformation.IsImpersonating);
+			sb.AppendLine("    Culture: " + _currentCulture.Name);
+			sb.AppendLine("    UI Culture: " + _currentUiCulture.Name);
 		}
 		#endregion
 

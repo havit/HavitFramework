@@ -51,9 +51,8 @@ namespace Havit.BusinessLayerTest
 			_loginLast = new FieldPropertyInfo();
 			_loginCount = new FieldPropertyInfo();
 			_created = new FieldPropertyInfo();
-			_deleted = new FieldPropertyInfo();
 			_role = new CollectionPropertyInfo();
-			_all = new PropertyInfoCollection(_id, _username, _password, _displayAs, _email, _disabled, _lockedTime, _loginLast, _loginCount, _created, _deleted, _role);
+			_all = new PropertyInfoCollection(_id, _username, _password, _displayAs, _email, _disabled, _lockedTime, _loginLast, _loginCount, _created, _role);
 		}
 		
 		/// <summary>
@@ -71,7 +70,6 @@ namespace Havit.BusinessLayerTest
 			_loginLast.Initialize(objectInfo, "LoginLast", "LoginLast", false, SqlDbType.SmallDateTime, true, 4);
 			_loginCount.Initialize(objectInfo, "LoginCount", "LoginCount", false, SqlDbType.Int, false, 4);
 			_created.Initialize(objectInfo, "Created", "Created", false, SqlDbType.SmallDateTime, false, 4);
-			_deleted.Initialize(objectInfo, "Deleted", "Deleted", false, SqlDbType.Bit, false, 1);
 			_role.Initialize(objectInfo, "Role", typeof(Havit.BusinessLayerTest.Role), "(SELECT CAST([_items].[RoleID] AS NVARCHAR(11)) + '|' FROM [dbo].[Uzivatel_Role] AS [_items] WHERE ([_items].[UzivatelID] = [dbo].[Uzivatel].[UzivatelID]) FOR XML PATH('')) AS [Role]");
 		}
 		
@@ -205,19 +203,6 @@ namespace Havit.BusinessLayerTest
 			}
 		}
 		private FieldPropertyInfo _created;
-		
-		/// <summary>
-		/// Indikuje smazaného uživatele.
-		/// </summary>
-		public FieldPropertyInfo Deleted
-		{
-			get
-			{
-				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<FieldPropertyInfo>() != null);
-				return _deleted;
-			}
-		}
-		private FieldPropertyInfo _deleted;
 		
 		/// <summary>
 		/// Role uživatele.

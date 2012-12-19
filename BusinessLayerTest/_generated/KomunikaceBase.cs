@@ -437,7 +437,9 @@ namespace Havit.BusinessLayerTest
 		{
 			DbCommand dbCommand = DbConnector.Default.ProviderFactory.CreateCommand();
 			dbCommand.Transaction = transaction;
-			dbCommand.CommandText = "DELETE FROM [dbo].[Komunikace] WHERE [KomunikaceID] = @KomunikaceID";
+			
+			StringBuilder commandBuilder = new StringBuilder();
+			commandBuilder.AppendFormat("DELETE FROM [dbo].[Komunikace] WHERE [KomunikaceID] = @KomunikaceID");
 			
 			DbParameter dbParameterKomunikaceID = DbConnector.Default.ProviderFactory.CreateParameter();
 			dbParameterKomunikaceID.DbType = DbType.Int32;
@@ -446,6 +448,7 @@ namespace Havit.BusinessLayerTest
 			dbParameterKomunikaceID.Value = this.ID;
 			dbCommand.Parameters.Add(dbParameterKomunikaceID);
 			
+			dbCommand.CommandText = commandBuilder.ToString();
 			DbConnector.Default.ExecuteNonQuery(dbCommand);
 		}
 		

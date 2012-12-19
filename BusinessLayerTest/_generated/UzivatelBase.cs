@@ -45,7 +45,6 @@ namespace Havit.BusinessLayerTest
 	/// 	[LoginLast] [smalldatetime] NULL,
 	/// 	[LoginCount] [int] NOT NULL,
 	/// 	[Created] [smalldatetime] NOT NULL,
-	/// 	[Deleted] [bit] NOT NULL,
 	///  CONSTRAINT [PK_Uzivatel] PRIMARY KEY CLUSTERED 
 	/// (
 	/// 	[UzivatelID] ASC
@@ -58,7 +57,6 @@ namespace Havit.BusinessLayerTest
 	/// ALTER TABLE [dbo].[Uzivatel] ADD  CONSTRAINT [DF_Uzivatel_Disabled]  DEFAULT ((0)) FOR [Disabled]
 	/// ALTER TABLE [dbo].[Uzivatel] ADD  CONSTRAINT [DF_Uzivatel_LoginCount]  DEFAULT ((0)) FOR [LoginCount]
 	/// ALTER TABLE [dbo].[Uzivatel] ADD  CONSTRAINT [DF_Uzivatel_Created]  DEFAULT (getdate()) FOR [Created]
-	/// ALTER TABLE [dbo].[Uzivatel] ADD  CONSTRAINT [DF_Uzivatel_Enabled]  DEFAULT ((0)) FOR [Deleted]
 	/// </code>
 	/// </remarks>
 	[System.Diagnostics.Contracts.ContractVerification(false)]
@@ -70,7 +68,7 @@ namespace Havit.BusinessLayerTest
 		{
 			objectInfo = new ObjectInfo();
 			properties = new UzivatelProperties();
-			objectInfo.Initialize("dbo", "Uzivatel", "Uzivatel", "Havit.BusinessLayerTest", false, Uzivatel.CreateObject, Uzivatel.GetObject, Uzivatel.GetAll, properties.Deleted, properties.All);
+			objectInfo.Initialize("dbo", "Uzivatel", "Uzivatel", "Havit.BusinessLayerTest", false, Uzivatel.CreateObject, Uzivatel.GetObject, Uzivatel.GetAll, null, properties.All);
 			properties.Initialize(objectInfo);
 		}
 		#endregion
@@ -329,28 +327,6 @@ namespace Havit.BusinessLayerTest
 		protected PropertyHolder<DateTime> _CreatedPropertyHolder;
 		
 		/// <summary>
-		/// Indikuje smazaného uživatele. [bit, not-null, default 0]
-		/// </summary>
-		public virtual bool Deleted
-		{
-			get
-			{
-				EnsureLoaded();
-				return _DeletedPropertyHolder.Value;
-			}
-			protected set
-			{
-				EnsureLoaded();
-				_DeletedPropertyHolder.Value = value;
-			}
-		}
-		/// <summary>
-		/// PropertyHolder pro vlastnost Deleted.
-		/// </summary>
-		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-		protected PropertyHolder<bool> _DeletedPropertyHolder;
-		
-		/// <summary>
 		/// Role uživatele.
 		/// </summary>
 		public virtual Havit.BusinessLayerTest.RoleCollection Role
@@ -371,19 +347,6 @@ namespace Havit.BusinessLayerTest
 		
 		#endregion
 		
-		#region IsDeleted
-		/// <summary>
-		/// Indikuje, zda je nastaven příznak smazaného záznamu.
-		/// </summary>
-		public override bool IsDeleted
-		{
-			get
-			{
-				return !Deleted;
-			}
-		}
-		#endregion
-		
 		#region Init
 		/// <summary>
 		/// Inicializuje třídu (vytvoří instance PropertyHolderů).
@@ -399,7 +362,6 @@ namespace Havit.BusinessLayerTest
 			_LoginLastPropertyHolder = new PropertyHolder<DateTime?>(this);
 			_LoginCountPropertyHolder = new PropertyHolder<int>(this);
 			_CreatedPropertyHolder = new PropertyHolder<DateTime>(this);
-			_DeletedPropertyHolder = new PropertyHolder<bool>(this);
 			_RolePropertyHolder = new CollectionPropertyHolder<Havit.BusinessLayerTest.RoleCollection, Havit.BusinessLayerTest.Role>(this);
 			
 			if (IsNew)
@@ -413,7 +375,6 @@ namespace Havit.BusinessLayerTest
 				_LoginLastPropertyHolder.Value = null;
 				_LoginCountPropertyHolder.Value = 0;
 				_CreatedPropertyHolder.Value = System.DateTime.Now;
-				_DeletedPropertyHolder.Value = false;
 				_RolePropertyHolder.Initialize();
 			}
 			
@@ -497,7 +458,7 @@ namespace Havit.BusinessLayerTest
 			DataRecord result;
 			
 			DbCommand dbCommand = DbConnector.Default.ProviderFactory.CreateCommand();
-			dbCommand.CommandText = "SELECT [UzivatelID], [Username], [Password], [DisplayAs], [Email], [Disabled], [LockedTime], [LoginLast], [LoginCount], [Created], [Deleted], (SELECT CAST([_items].[RoleID] AS NVARCHAR(11)) + '|' FROM [dbo].[Uzivatel_Role] AS [_items] WHERE ([_items].[UzivatelID] = @UzivatelID) FOR XML PATH('')) AS [Role] FROM [dbo].[Uzivatel] WHERE [UzivatelID] = @UzivatelID";
+			dbCommand.CommandText = "SELECT [UzivatelID], [Username], [Password], [DisplayAs], [Email], [Disabled], [LockedTime], [LoginLast], [LoginCount], [Created], (SELECT CAST([_items].[RoleID] AS NVARCHAR(11)) + '|' FROM [dbo].[Uzivatel_Role] AS [_items] WHERE ([_items].[UzivatelID] = @UzivatelID) FOR XML PATH('')) AS [Role] FROM [dbo].[Uzivatel] WHERE [UzivatelID] = @UzivatelID";
 			dbCommand.Transaction = transaction;
 			
 			DbParameter dbParameterUzivatelID = DbConnector.Default.ProviderFactory.CreateParameter();
@@ -573,12 +534,6 @@ namespace Havit.BusinessLayerTest
 			if (record.TryGet<DateTime>("Created", out _tempCreated))
 			{
 				_CreatedPropertyHolder.Value = _tempCreated;
-			}
-			
-			bool _tempDeleted;
-			if (record.TryGet<bool>("Deleted", out _tempDeleted))
-			{
-				_DeletedPropertyHolder.Value = _tempDeleted;
 			}
 			
 			string _tempRole;
@@ -719,15 +674,7 @@ namespace Havit.BusinessLayerTest
 			dbCommand.Parameters.Add(dbParameterCreated);
 			_CreatedPropertyHolder.IsDirty = false;
 			
-			DbParameter dbParameterDeleted = DbConnector.Default.ProviderFactory.CreateParameter();
-			dbParameterDeleted.DbType = DbType.Boolean;
-			dbParameterDeleted.Direction = ParameterDirection.Input;
-			dbParameterDeleted.ParameterName = "Deleted";
-			dbParameterDeleted.Value = _DeletedPropertyHolder.Value;
-			dbCommand.Parameters.Add(dbParameterDeleted);
-			_DeletedPropertyHolder.IsDirty = false;
-			
-			dbCommand.CommandText = "DECLARE @UzivatelID INT; INSERT INTO [dbo].[Uzivatel] ([Username], [Password], [DisplayAs], [Email], [Disabled], [LockedTime], [LoginLast], [LoginCount], [Created], [Deleted]) VALUES (@Username, @Password, @DisplayAs, @Email, @Disabled, @LockedTime, @LoginLast, @LoginCount, @Created, @Deleted); SELECT @UzivatelID = SCOPE_IDENTITY(); SELECT @UzivatelID; ";
+			dbCommand.CommandText = "DECLARE @UzivatelID INT; INSERT INTO [dbo].[Uzivatel] ([Username], [Password], [DisplayAs], [Email], [Disabled], [LockedTime], [LoginLast], [LoginCount], [Created]) VALUES (@Username, @Password, @DisplayAs, @Email, @Disabled, @LockedTime, @LoginLast, @LoginCount, @Created); SELECT @UzivatelID = SCOPE_IDENTITY(); SELECT @UzivatelID; ";
 			this.ID = (int)DbConnector.Default.ExecuteScalar(dbCommand);
 			this.IsNew = false; // uložený objekt není už nový, dostal i přidělené ID
 			
@@ -822,14 +769,6 @@ namespace Havit.BusinessLayerTest
 			dbCommand.Parameters.Add(dbParameterCreated);
 			_CreatedPropertyHolder.IsDirty = false;
 			
-			DbParameter dbParameterDeleted = DbConnector.Default.ProviderFactory.CreateParameter();
-			dbParameterDeleted.DbType = DbType.Boolean;
-			dbParameterDeleted.Direction = ParameterDirection.Input;
-			dbParameterDeleted.ParameterName = "Deleted";
-			dbParameterDeleted.Value = _DeletedPropertyHolder.Value;
-			dbCommand.Parameters.Add(dbParameterDeleted);
-			_DeletedPropertyHolder.IsDirty = false;
-			
 			StringBuilder collectionCommandBuilder = new StringBuilder();
 			
 			if (_RolePropertyHolder.Value.Count > 0)
@@ -842,7 +781,7 @@ namespace Havit.BusinessLayerTest
 				collectionCommandBuilder.Append("INSERT INTO [dbo].[Uzivatel_Role] (UzivatelID, RoleID) SELECT @UzivatelID AS UzivatelID, Value AS RoleID FROM @Role; ");
 			}
 			
-			dbCommand.CommandText = "DECLARE @UzivatelID INT; INSERT INTO [dbo].[Uzivatel] ([Username], [Password], [DisplayAs], [Email], [Disabled], [LockedTime], [LoginLast], [LoginCount], [Created], [Deleted]) VALUES (@Username, @Password, @DisplayAs, @Email, @Disabled, @LockedTime, @LoginLast, @LoginCount, @Created, @Deleted); SELECT @UzivatelID = SCOPE_IDENTITY(); " + collectionCommandBuilder.ToString() + "SELECT @UzivatelID; ";
+			dbCommand.CommandText = "DECLARE @UzivatelID INT; INSERT INTO [dbo].[Uzivatel] ([Username], [Password], [DisplayAs], [Email], [Disabled], [LockedTime], [LoginLast], [LoginCount], [Created]) VALUES (@Username, @Password, @DisplayAs, @Email, @Disabled, @LockedTime, @LoginLast, @LoginCount, @Created); SELECT @UzivatelID = SCOPE_IDENTITY(); " + collectionCommandBuilder.ToString() + "SELECT @UzivatelID; ";
 			this.ID = (int)DbConnector.Default.ExecuteScalar(dbCommand);
 			this.IsNew = false; // uložený objekt není už nový, dostal i přidělené ID
 			
@@ -1030,24 +969,6 @@ namespace Havit.BusinessLayerTest
 				dirtyFieldExists = true;
 			}
 			
-			if (_DeletedPropertyHolder.IsDirty)
-			{
-				if (dirtyFieldExists)
-				{
-					commandBuilder.Append(", ");
-				}
-				commandBuilder.Append("[Deleted] = @Deleted");
-				
-				DbParameter dbParameterDeleted = DbConnector.Default.ProviderFactory.CreateParameter();
-				dbParameterDeleted.DbType = DbType.Boolean;
-				dbParameterDeleted.Direction = ParameterDirection.Input;
-				dbParameterDeleted.ParameterName = "Deleted";
-				dbParameterDeleted.Value = _DeletedPropertyHolder.Value;
-				dbCommand.Parameters.Add(dbParameterDeleted);
-				
-				dirtyFieldExists = true;
-			}
-			
 			if (dirtyFieldExists)
 			{
 				// objekt je sice IsDirty (volá se tato metoda), ale může být změněná jen kolekce
@@ -1117,28 +1038,40 @@ namespace Havit.BusinessLayerTest
 		}
 		
 		/// <summary>
-		/// Smaže objekt, nebo ho označí jako smazaný, podle zvolené logiky. Změnu uloží do databáze, v transakci.
-		/// </summary>
-		/// <remarks>
-		/// Neprovede se, pokud je již objekt smazán.
-		/// </remarks>
-		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které se smazání provede; null, pokud bez transakce</param>
-		public override void Delete(DbTransaction transaction)
-		{
-			if (!Deleted)
-			{
-				Deleted = true;
-			}
-			base.Delete(transaction);
-		}
-		
-		/// <summary>
-		/// Metoda označí objekt jako smazaný a uloží jej.
+		/// Metoda vymaže objekt z perzistentního uložiště.
 		/// </summary>
 		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected override sealed void Delete_Perform(DbTransaction transaction)
 		{
-			Save_Update(transaction);
+			DbCommand dbCommand = DbConnector.Default.ProviderFactory.CreateCommand();
+			dbCommand.Transaction = transaction;
+			
+			StringBuilder commandBuilder = new StringBuilder();
+			if (_RolePropertyHolder.IsDirty)
+			{
+				commandBuilder.AppendFormat("DELETE FROM [dbo].[Uzivatel_Role] WHERE [UzivatelID] = @UzivatelID; ");
+				if (_RolePropertyHolder.Value.Count > 0)
+				{
+					SqlParameter dbParameterRole = new SqlParameter("@Role", SqlDbType.Structured);
+					dbParameterRole.TypeName = "dbo.IntTable";
+					dbParameterRole.Value = IntTable.GetSqlParameterValue(this._RolePropertyHolder.Value.GetIDs());
+					dbCommand.Parameters.Add(dbParameterRole);
+					
+					commandBuilder.Append("INSERT INTO [dbo].[Uzivatel_Role] (UzivatelID, RoleID) SELECT @UzivatelID AS UzivatelID, Value AS RoleID FROM @Role; ");
+				}
+			}
+			
+			commandBuilder.AppendFormat("DELETE FROM [dbo].[Uzivatel] WHERE [UzivatelID] = @UzivatelID");
+			
+			DbParameter dbParameterUzivatelID = DbConnector.Default.ProviderFactory.CreateParameter();
+			dbParameterUzivatelID.DbType = DbType.Int32;
+			dbParameterUzivatelID.Direction = ParameterDirection.Input;
+			dbParameterUzivatelID.ParameterName = "UzivatelID";
+			dbParameterUzivatelID.Value = this.ID;
+			dbCommand.Parameters.Add(dbParameterUzivatelID);
+			
+			dbCommand.CommandText = commandBuilder.ToString();
+			DbConnector.Default.ExecuteNonQuery(dbCommand);
 		}
 		
 		#endregion
@@ -1227,25 +1160,14 @@ namespace Havit.BusinessLayerTest
 		}
 		
 		/// <summary>
-		/// Vrátí všechny (příznakem) nesmazané objekty typu Uzivatel.
+		/// Vrátí všechny objekty typu Uzivatel.
 		/// </summary>
 		public static UzivatelCollection GetAll()
 		{
 			global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<UzivatelCollection>() != null);
 			
-			return Uzivatel.GetAll(false);
-		}
-		
-		/// <summary>
-		/// Vrátí všechny objekty typu Uzivatel. Parametr udává, zda se mají vrátit i (příznakem) smazané záznamy.
-		/// </summary>
-		public static UzivatelCollection GetAll(bool includeDeleted)
-		{
-			global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<UzivatelCollection>() != null);
-			
 			UzivatelCollection collection = null;
 			QueryParams queryParams = new QueryParams();
-			queryParams.IncludeDeleted = includeDeleted;
 			collection = Uzivatel.GetList(queryParams);
 			return collection;
 		}

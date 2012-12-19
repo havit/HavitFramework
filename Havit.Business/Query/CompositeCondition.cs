@@ -53,7 +53,7 @@ namespace Havit.Business.Query
 		{
 			Debug.Assert(whereBuilder != null);
 
-			if (Conditions.Count == 0)
+			if (this.IsEmptyCondition())
 			{
 				return;
 			}

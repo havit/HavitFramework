@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.Contracts;
+using Havit.Diagnostics.Contracts;
 using System.Text;
 using System.Data.Common;
 using Havit.Data;
@@ -38,7 +38,7 @@ namespace Havit.Business
 		protected ActiveRecordBusinessObjectBase(int id) : base(id)
 		{			
 			IdentityMap currentIdentityMap = IdentityMapScope.Current;
-			Contract.Assume(currentIdentityMap != null);
+			Contract.Assert(currentIdentityMap != null);
 			currentIdentityMap.Store(this);
 		}
 
@@ -64,7 +64,7 @@ namespace Havit.Business
 			if ((record.DataLoadPower == DataLoadPower.Ghost) || (record.DataLoadPower == DataLoadPower.FullLoad))
 			{
 				IdentityMap currentIdentityMap = IdentityMapScope.Current;
-				Contract.Assume(currentIdentityMap != null);
+				Contract.Assert(currentIdentityMap != null);
 				currentIdentityMap.Store(this);
 			}
 

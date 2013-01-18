@@ -32,7 +32,6 @@ namespace Havit.BusinessLayerTest
 	/// <summary>
 	/// Objektová reprezentace metadat vlastností typu Subjekt.
 	/// </summary>
-	[System.Diagnostics.Contracts.ContractVerification(false)]
 	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
 	public class SubjektPropertiesBase
 	{
@@ -70,7 +69,6 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
-				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<FieldPropertyInfo>() != null);
 				return _id;
 			}
 		}
@@ -83,7 +81,6 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
-				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<FieldPropertyInfo>() != null);
 				return _nazev;
 			}
 		}
@@ -96,7 +93,6 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
-				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<ReferenceFieldPropertyInfo>() != null);
 				return _uzivatel;
 			}
 		}
@@ -109,7 +105,6 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
-				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<FieldPropertyInfo>() != null);
 				return _created;
 			}
 		}
@@ -122,7 +117,6 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
-				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<FieldPropertyInfo>() != null);
 				return _deleted;
 			}
 		}
@@ -135,7 +129,6 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
-				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<CollectionPropertyInfo>() != null);
 				return _komunikace;
 			}
 		}

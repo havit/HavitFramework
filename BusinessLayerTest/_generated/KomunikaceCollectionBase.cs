@@ -32,7 +32,6 @@ namespace Havit.BusinessLayerTest
 	/// <summary>
 	/// Kolekce business objektů typu Havit.BusinessLayerTest.Komunikace.
 	/// </summary>
-	[System.Diagnostics.Contracts.ContractVerification(false)]
 	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
 	public partial class KomunikaceCollectionBase : BusinessObjectCollection<Komunikace, KomunikaceCollection>
 	{
@@ -84,7 +83,7 @@ namespace Havit.BusinessLayerTest
 		/// Seřadí prvky kolekce dle požadované property, která implementuje IComparable.
 		/// </summary>
 		/// <remarks>
-		/// Používá <see cref="Havit.Collections.GenericPropertyComparer{T}"/>. K porovnávání podle property
+		/// Používá Havit.Collections.GenericPropertyComparer{T}. K porovnávání podle property
 		/// tedy dochází pomocí reflexe - relativně pomalu. Pokud je potřeba vyšší výkon, je potřeba použít
 		/// overload Sort(Generic Comparsion) s přímým přístupem k property.
 		/// </remarks>
@@ -102,7 +101,7 @@ namespace Havit.BusinessLayerTest
 		/// Před řazením načtě všechny prvky metodou LoadAll.
 		/// </summary>
 		/// <remarks>
-		/// Používá <see cref="Havit.Collections.GenericPropertyComparer{T}"/>. K porovnávání podle property
+		/// Používá Havit.Collections.GenericPropertyComparer{T}. K porovnávání podle property
 		/// tedy dochází pomocí reflexe - relativně pomalu. Pokud je potřeba vyšší výkon, je potřeba použít
 		/// overload Sort(Generic Comparsion) s přímým přístupem k property.
 		/// </remarks>

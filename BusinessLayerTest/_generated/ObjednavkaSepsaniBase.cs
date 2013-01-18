@@ -47,7 +47,6 @@ namespace Havit.BusinessLayerTest
 	/// ALTER TABLE [dbo].[ObjednavkaSepsani] CHECK CONSTRAINT [FK_ObjednavkaSepsani_Komunikace]
 	/// </code>
 	/// </remarks>
-	[System.Diagnostics.Contracts.ContractVerification(false)]
 	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
 	public abstract class ObjednavkaSepsaniBase : ActiveRecordBusinessObjectBase
 	{
@@ -81,7 +80,7 @@ namespace Havit.BusinessLayerTest
 		/// Vytvoří instanci objektu na základě dat (i částečných) načtených z databáze.
 		/// </summary>
 		/// <param name="id">ObjednavkaSepsaniID (PK).</param>
-		/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu (i částečnými).</param>
+		/// <param name="record">DataRecord s daty objektu (i částečnými).</param>
 		protected ObjednavkaSepsaniBase(int id, DataRecord record) : base(id, record)
 		{
 		}
@@ -234,7 +233,7 @@ namespace Havit.BusinessLayerTest
 			this.IsNew = false; // uložený objekt není už nový, dostal i přidělené ID
 			
 			IdentityMap currentIdentityMap = IdentityMapScope.Current;
-			global::System.Diagnostics.Contracts.Contract.Assume(currentIdentityMap != null);
+			global::Havit.Diagnostics.Contracts.Contract.Assert(currentIdentityMap != null, "currentIdentityMap != null");
 			currentIdentityMap.Store(this);
 		}
 		
@@ -261,7 +260,7 @@ namespace Havit.BusinessLayerTest
 			this.IsNew = false; // uložený objekt není už nový, dostal i přidělené ID
 			
 			IdentityMap currentIdentityMap = IdentityMapScope.Current;
-			global::System.Diagnostics.Contracts.Contract.Assume(currentIdentityMap != null);
+			global::Havit.Diagnostics.Contracts.Contract.Assert(currentIdentityMap != null, "currentIdentityMap != null");
 			currentIdentityMap.Store(this);
 		}
 		
@@ -378,7 +377,7 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static ObjednavkaSepsani GetFirst(QueryParams queryParams)
 		{
-			global::System.Diagnostics.Contracts.Contract.Requires(queryParams != null);
+			global::Havit.Diagnostics.Contracts.Contract.Requires(queryParams != null, "queryParams != null");
 			
 			return ObjednavkaSepsani.GetFirst(queryParams, null);
 		}
@@ -389,7 +388,7 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static ObjednavkaSepsani GetFirst(QueryParams queryParams, DbTransaction transaction)
 		{
-			global::System.Diagnostics.Contracts.Contract.Requires(queryParams != null);
+			global::Havit.Diagnostics.Contracts.Contract.Requires(queryParams != null, "queryParams != null");
 			
 			int? originalTopRecords = queryParams.TopRecords;
 			queryParams.TopRecords = 1;
@@ -403,8 +402,7 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static ObjednavkaSepsaniCollection GetList(QueryParams queryParams)
 		{
-			global::System.Diagnostics.Contracts.Contract.Requires(queryParams != null);
-			global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<ObjednavkaSepsaniCollection>() != null);
+			global::Havit.Diagnostics.Contracts.Contract.Requires(queryParams != null, "queryParams != null");
 			
 			return ObjednavkaSepsani.GetList(queryParams, null);
 		}
@@ -414,8 +412,7 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static ObjednavkaSepsaniCollection GetList(QueryParams queryParams, DbTransaction transaction)
 		{
-			global::System.Diagnostics.Contracts.Contract.Requires(queryParams != null);
-			global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<ObjednavkaSepsaniCollection>() != null);
+			global::Havit.Diagnostics.Contracts.Contract.Requires(queryParams != null, "queryParams != null");
 			
 			DbCommand dbCommand = DbConnector.Default.ProviderFactory.CreateCommand();
 			dbCommand.Transaction = transaction;
@@ -432,8 +429,6 @@ namespace Havit.BusinessLayerTest
 		
 		private static ObjednavkaSepsaniCollection GetList(DbCommand dbCommand, DataLoadPower dataLoadPower)
 		{
-			global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<ObjednavkaSepsaniCollection>() != null);
-			
 			if (dbCommand == null)
 			{
 				throw new ArgumentNullException("dbCommand");
@@ -459,8 +454,6 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static ObjednavkaSepsaniCollection GetAll()
 		{
-			global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<ObjednavkaSepsaniCollection>() != null);
-			
 			ObjednavkaSepsaniCollection collection = null;
 			QueryParams queryParams = new QueryParams();
 			collection = ObjednavkaSepsani.GetList(queryParams);
@@ -477,8 +470,6 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
-				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<ObjectInfo>() != null);
-				
 				return objectInfo;
 			}
 		}
@@ -493,8 +484,6 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
-				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<ObjednavkaSepsaniProperties>() != null);
-				
 				return properties;
 			}
 		}

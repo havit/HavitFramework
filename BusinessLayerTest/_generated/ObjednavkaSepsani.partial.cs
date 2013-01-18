@@ -31,7 +31,6 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Vytvoří instanci objektu jako nový prvek.
 		/// </summary>
-		[System.Diagnostics.Contracts.ContractVerification(false)]
 		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
 		protected ObjednavkaSepsani() : base()
 		{
@@ -41,7 +40,6 @@ namespace Havit.BusinessLayerTest
 		/// Vytvoří instanci existujícího objektu.
 		/// </summary>
 		/// <param name="id">ObjednavkaSepsaniID (PK).</param>
-		[System.Diagnostics.Contracts.ContractVerification(false)]
 		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
 		protected ObjednavkaSepsani(int id) : base(id)
 		{
@@ -51,8 +49,7 @@ namespace Havit.BusinessLayerTest
 		/// Vytvoří instanci objektu na základě dat (i částečných) načtených z databáze.
 		/// </summary>
 		/// <param name="id">ObjednavkaSepsaniID (PK).</param>
-		/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu (i částečnými).</param>
-		[System.Diagnostics.Contracts.ContractVerification(false)]
+		/// <param name="record">DataRecord s daty objektu (i částečnými).</param>
 		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
 		protected ObjednavkaSepsani(int id, DataRecord record) : base(id, record)
 		{
@@ -63,12 +60,9 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Vrátí nový objekt.
 		/// </summary>
-		[System.Diagnostics.Contracts.ContractVerification(false)]
 		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
 		public static ObjednavkaSepsani CreateObject()
 		{
-			global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<ObjednavkaSepsani>() != null);
-			
 			ObjednavkaSepsani result = new ObjednavkaSepsani();
 			return result;
 		}
@@ -80,19 +74,15 @@ namespace Havit.BusinessLayerTest
 		/// Vrátí existující objekt s daným ID.
 		/// </summary>
 		/// <param name="id">ObjednavkaSepsaniID (PK).</param>
-		[System.Diagnostics.Contracts.ContractVerification(false)]
 		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
 		public static ObjednavkaSepsani GetObject(int id)
 		{
-			global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<ObjednavkaSepsani>() != null);
-			
 			ObjednavkaSepsani result;
 			
 			IdentityMap currentIdentityMap = IdentityMapScope.Current;
-			global::System.Diagnostics.Contracts.Contract.Assume(currentIdentityMap != null);
+			global::Havit.Diagnostics.Contracts.Contract.Assert(currentIdentityMap != null, "currentIdentityMap != null");
 			if (currentIdentityMap.TryGet<ObjednavkaSepsani>(id, out result))
 			{
-				global::System.Diagnostics.Contracts.Contract.Assume(result != null);
 				return result;
 			}
 			
@@ -104,12 +94,10 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Vrátí existující objekt inicializovaný daty z DataReaderu.
 		/// </summary>
-		[System.Diagnostics.Contracts.ContractVerification(false)]
 		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
 		internal static ObjednavkaSepsani GetObject(DataRecord dataRecord)
 		{
-			global::System.Diagnostics.Contracts.Contract.Requires(dataRecord != null);
-			global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<ObjednavkaSepsani>() != null);
+			global::Havit.Diagnostics.Contracts.Contract.Requires(dataRecord != null);
 			
 			ObjednavkaSepsani result = null;
 			
@@ -140,7 +128,6 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		/// <param name="id">ID objektu.</param>
 		/// <param name="defaultValue">Výchozí hodnota.</param>
-		[System.Diagnostics.Contracts.ContractVerification(false)]
 		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
 		public static ObjednavkaSepsani GetObjectOrDefault(int? id, ObjednavkaSepsani defaultValue = null)
 		{
@@ -155,12 +142,10 @@ namespace Havit.BusinessLayerTest
 		/// Vrátí kolekci obsahující objekty danými ID.
 		/// </summary>
 		/// <param name="ids">Identifikátory objektů.</param>
-		[System.Diagnostics.Contracts.ContractVerification(false)]
 		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
 		public static ObjednavkaSepsaniCollection GetObjects(params int[] ids)
 		{
-			global::System.Diagnostics.Contracts.Contract.Requires(ids != null);
-			global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<ObjednavkaSepsaniCollection>() != null);
+			global::Havit.Diagnostics.Contracts.Contract.Requires(ids != null, "ids != null");
 			
 			return new ObjednavkaSepsaniCollection(Array.ConvertAll<int, ObjednavkaSepsani>(ids, id => ObjednavkaSepsani.GetObject(id)));
 		}

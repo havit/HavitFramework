@@ -4,7 +4,7 @@ using System.Text;
 using System.Data.Common;
 using System.Globalization;
 using Havit.Data;
-using System.Diagnostics.Contracts;
+using Havit.Diagnostics.Contracts;
 
 using Havit.Data.SqlServer;
 
@@ -56,7 +56,7 @@ namespace Havit.Business.Query
 		{
 			get
 			{
-				Contract.Ensures(Contract.Result<PropertyInfoCollection>() != null);
+				//Contract.Ensures(Contract.Result<PropertyInfoCollection>() != null);
 				return properties;
 			}
 		}
@@ -69,7 +69,7 @@ namespace Havit.Business.Query
 		{
 			get
 			{
-				Contract.Ensures(Contract.Result<ConditionList>() != null);
+				//Contract.Ensures(Contract.Result<ConditionList>() != null);
 				return conditions.Conditions;
 			}
 		}
@@ -82,7 +82,7 @@ namespace Havit.Business.Query
 		{
 			get
 			{
-				Contract.Ensures(Contract.Result<OrderByCollection>() != null);
+				//Contract.Ensures(Contract.Result<OrderByCollection>() != null);
 				return orderBy;
 			}
 		}

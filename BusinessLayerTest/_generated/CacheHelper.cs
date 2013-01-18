@@ -25,7 +25,6 @@ namespace Havit.BusinessLayerTest
 	/// <summary>
 	/// Pomocné metody pro práci s cache.
 	/// </summary>
-	[System.Diagnostics.Contracts.ContractVerification(false)]
 	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
 	public static partial class CacheHelper
 	{

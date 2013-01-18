@@ -32,7 +32,6 @@ namespace Havit.BusinessLayerTest
 	/// <summary>
 	/// Objektová reprezentace metadat vlastností typu Role.
 	/// </summary>
-	[System.Diagnostics.Contracts.ContractVerification(false)]
 	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
 	public class RolePropertiesBase
 	{
@@ -62,7 +61,6 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
-				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<FieldPropertyInfo>() != null);
 				return _id;
 			}
 		}
@@ -75,7 +73,6 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
-				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<FieldPropertyInfo>() != null);
 				return _symbol;
 			}
 		}

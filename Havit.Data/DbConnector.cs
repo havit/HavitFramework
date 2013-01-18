@@ -4,7 +4,7 @@ using System.Text;
 using System.Data.Common;
 using System.Configuration;
 using System.Data;
-using System.Diagnostics.Contracts;
+using Havit.Diagnostics.Contracts;
 
 namespace Havit.Data
 {
@@ -21,8 +21,8 @@ namespace Havit.Data
 		{
 			get
 			{
-				Contract.Ensures(Contract.Result<string>() != null);
-				Contract.Ensures(!String.IsNullOrEmpty(Contract.Result<string>()));
+				//Contract.Ensures(Contract.Result<string>() != null);
+				//Contract.Ensures(!String.IsNullOrEmpty(Contract.Result<string>()));
 				return _connectionString;
 			}
 		}
@@ -37,7 +37,7 @@ namespace Havit.Data
 		{
 			get
 			{
-				Contract.Ensures(Contract.Result<DbProviderFactory>() != null);
+				//Contract.Ensures(Contract.Result<DbProviderFactory>() != null);
 				return _providerFactory;
 			}
 		}
@@ -144,7 +144,7 @@ namespace Havit.Data
 		/// <param name="openConnection"><c>true</c>, má-li se nová SqlConnection rovnou otevřít</param>
 		public DbConnection GetConnection(bool openConnection)
 		{
-			Contract.Ensures(Contract.Result<DbConnection>() != null);
+			//Contract.Ensures(Contract.Result<DbConnection>() != null);
 
 			DbConnection conn = this.ProviderFactory.CreateConnection();
 			conn.ConnectionString = this.ConnectionString;
@@ -739,7 +739,7 @@ namespace Havit.Data
 		{
 			get
 			{
-				Contract.Ensures(Contract.Result<DbConnector>() != null);
+				//Contract.Ensures(Contract.Result<DbConnector>() != null);
 
 				if (_default == null)
 				{
@@ -760,7 +760,7 @@ namespace Havit.Data
 		/// <remarks>Viz vlastnost <see cref="DbConnector.Default"/>.</remarks>
 		private static DbConnector GetDbConnectorFromDefaultConfig()
 		{
-			Contract.Ensures(Contract.Result<DbConnector>() != null);
+			//Contract.Ensures(Contract.Result<DbConnector>() != null);
 
 			ConnectionStringSettings connectionStringSettings = ConfigurationManager.ConnectionStrings["DefaultConnectionString"];
 			if (connectionStringSettings != null)

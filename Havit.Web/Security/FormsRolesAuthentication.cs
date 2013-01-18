@@ -6,7 +6,7 @@ using System.Configuration;
 using System.Web.Security;
 using System.Web;
 using System.Security.Principal;
-using System.Diagnostics.Contracts;
+using Havit.Diagnostics.Contracts;
 
 namespace Havit.Web.Security
 {

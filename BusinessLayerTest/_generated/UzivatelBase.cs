@@ -59,7 +59,6 @@ namespace Havit.BusinessLayerTest
 	/// ALTER TABLE [dbo].[Uzivatel] ADD  CONSTRAINT [DF_Uzivatel_Created]  DEFAULT (getdate()) FOR [Created]
 	/// </code>
 	/// </remarks>
-	[System.Diagnostics.Contracts.ContractVerification(false)]
 	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
 	public abstract class UzivatelBase : ActiveRecordBusinessObjectBase
 	{
@@ -93,7 +92,7 @@ namespace Havit.BusinessLayerTest
 		/// Vytvoří instanci objektu na základě dat (i částečných) načtených z databáze.
 		/// </summary>
 		/// <param name="id">UzivatelID (PK).</param>
-		/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu (i částečnými).</param>
+		/// <param name="record">DataRecord s daty objektu (i částečnými).</param>
 		protected UzivatelBase(int id, DataRecord record) : base(id, record)
 		{
 		}
@@ -107,7 +106,6 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
-				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<string>() != null);
 				EnsureLoaded();
 				return _UsernamePropertyHolder.Value;
 			}
@@ -137,7 +135,6 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
-				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<string>() != null);
 				EnsureLoaded();
 				return _PasswordPropertyHolder.Value;
 			}
@@ -167,7 +164,6 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
-				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<string>() != null);
 				EnsureLoaded();
 				return _DisplayAsPropertyHolder.Value;
 			}
@@ -197,7 +193,6 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
-				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<string>() != null);
 				EnsureLoaded();
 				return _EmailPropertyHolder.Value;
 			}
@@ -333,8 +328,6 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
-				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<Havit.BusinessLayerTest.RoleCollection>() != null);
-				
 				EnsureLoaded();
 				return _RolePropertyHolder.Value;
 			}
@@ -679,7 +672,7 @@ namespace Havit.BusinessLayerTest
 			this.IsNew = false; // uložený objekt není už nový, dostal i přidělené ID
 			
 			IdentityMap currentIdentityMap = IdentityMapScope.Current;
-			global::System.Diagnostics.Contracts.Contract.Assume(currentIdentityMap != null);
+			global::Havit.Diagnostics.Contracts.Contract.Assert(currentIdentityMap != null, "currentIdentityMap != null");
 			currentIdentityMap.Store(this);
 		}
 		
@@ -786,7 +779,7 @@ namespace Havit.BusinessLayerTest
 			this.IsNew = false; // uložený objekt není už nový, dostal i přidělené ID
 			
 			IdentityMap currentIdentityMap = IdentityMapScope.Current;
-			global::System.Diagnostics.Contracts.Contract.Assume(currentIdentityMap != null);
+			global::Havit.Diagnostics.Contracts.Contract.Assert(currentIdentityMap != null, "currentIdentityMap != null");
 			currentIdentityMap.Store(this);
 		}
 		
@@ -1083,7 +1076,7 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static Uzivatel GetFirst(QueryParams queryParams)
 		{
-			global::System.Diagnostics.Contracts.Contract.Requires(queryParams != null);
+			global::Havit.Diagnostics.Contracts.Contract.Requires(queryParams != null, "queryParams != null");
 			
 			return Uzivatel.GetFirst(queryParams, null);
 		}
@@ -1094,7 +1087,7 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static Uzivatel GetFirst(QueryParams queryParams, DbTransaction transaction)
 		{
-			global::System.Diagnostics.Contracts.Contract.Requires(queryParams != null);
+			global::Havit.Diagnostics.Contracts.Contract.Requires(queryParams != null, "queryParams != null");
 			
 			int? originalTopRecords = queryParams.TopRecords;
 			queryParams.TopRecords = 1;
@@ -1108,8 +1101,7 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static UzivatelCollection GetList(QueryParams queryParams)
 		{
-			global::System.Diagnostics.Contracts.Contract.Requires(queryParams != null);
-			global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<UzivatelCollection>() != null);
+			global::Havit.Diagnostics.Contracts.Contract.Requires(queryParams != null, "queryParams != null");
 			
 			return Uzivatel.GetList(queryParams, null);
 		}
@@ -1119,8 +1111,7 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static UzivatelCollection GetList(QueryParams queryParams, DbTransaction transaction)
 		{
-			global::System.Diagnostics.Contracts.Contract.Requires(queryParams != null);
-			global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<UzivatelCollection>() != null);
+			global::Havit.Diagnostics.Contracts.Contract.Requires(queryParams != null, "queryParams != null");
 			
 			DbCommand dbCommand = DbConnector.Default.ProviderFactory.CreateCommand();
 			dbCommand.Transaction = transaction;
@@ -1137,8 +1128,6 @@ namespace Havit.BusinessLayerTest
 		
 		private static UzivatelCollection GetList(DbCommand dbCommand, DataLoadPower dataLoadPower)
 		{
-			global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<UzivatelCollection>() != null);
-			
 			if (dbCommand == null)
 			{
 				throw new ArgumentNullException("dbCommand");
@@ -1164,8 +1153,6 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static UzivatelCollection GetAll()
 		{
-			global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<UzivatelCollection>() != null);
-			
 			UzivatelCollection collection = null;
 			QueryParams queryParams = new QueryParams();
 			collection = Uzivatel.GetList(queryParams);
@@ -1182,8 +1169,6 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
-				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<ObjectInfo>() != null);
-				
 				return objectInfo;
 			}
 		}
@@ -1198,8 +1183,6 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
-				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<UzivatelProperties>() != null);
-				
 				return properties;
 			}
 		}

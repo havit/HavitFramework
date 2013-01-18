@@ -7,7 +7,7 @@ using Havit.Collections;
 using System.Data.Common;
 using Havit.Data;
 using System.Linq;
-using System.Diagnostics.Contracts;
+using Havit.Diagnostics.Contracts;
 
 namespace Havit.Business
 {
@@ -263,7 +263,7 @@ namespace Havit.Business
 		/// <returns>kolekce všech prvkù odpovídajících kritériu match</returns>
 		public virtual TCollection FindAll(Predicate<TItem> match)
 		{
-			Contract.Ensures(Contract.Result<TCollection>() != null);
+			//Contract.Ensures(Contract.Result<TCollection>() != null);
 			List<TItem> innerList = (List<TItem>)Items;
 			List<TItem> found = innerList.FindAll(match);
 			TCollection result = new TCollection();

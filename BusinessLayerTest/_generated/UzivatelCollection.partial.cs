@@ -38,7 +38,6 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Vytvoří novou instanci kolekce.
 		/// </summary>
-		[System.Diagnostics.Contracts.ContractVerification(false)]
 		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
 		public UzivatelCollection() : base()
 		{
@@ -47,7 +46,6 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Vytvoří novou instanci kolekce a zkopíruje do ní prvky z předané kolekce.
 		/// </summary>
-		[System.Diagnostics.Contracts.ContractVerification(false)]
 		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
 		public UzivatelCollection(IEnumerable<Uzivatel> collection) : base(collection)
 		{

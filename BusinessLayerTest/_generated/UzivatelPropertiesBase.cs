@@ -32,7 +32,6 @@ namespace Havit.BusinessLayerTest
 	/// <summary>
 	/// Objektová reprezentace metadat vlastností typu Uzivatel.
 	/// </summary>
-	[System.Diagnostics.Contracts.ContractVerification(false)]
 	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
 	public class UzivatelPropertiesBase
 	{
@@ -80,7 +79,6 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
-				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<FieldPropertyInfo>() != null);
 				return _id;
 			}
 		}
@@ -93,7 +91,6 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
-				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<FieldPropertyInfo>() != null);
 				return _username;
 			}
 		}
@@ -106,7 +103,6 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
-				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<FieldPropertyInfo>() != null);
 				return _password;
 			}
 		}
@@ -119,7 +115,6 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
-				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<FieldPropertyInfo>() != null);
 				return _displayAs;
 			}
 		}
@@ -132,7 +127,6 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
-				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<FieldPropertyInfo>() != null);
 				return _email;
 			}
 		}
@@ -145,7 +139,6 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
-				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<FieldPropertyInfo>() != null);
 				return _disabled;
 			}
 		}
@@ -159,7 +152,6 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
-				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<FieldPropertyInfo>() != null);
 				return _lockedTime;
 			}
 		}
@@ -172,7 +164,6 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
-				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<FieldPropertyInfo>() != null);
 				return _loginLast;
 			}
 		}
@@ -185,7 +176,6 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
-				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<FieldPropertyInfo>() != null);
 				return _loginCount;
 			}
 		}
@@ -198,7 +188,6 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
-				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<FieldPropertyInfo>() != null);
 				return _created;
 			}
 		}
@@ -211,7 +200,6 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
-				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<CollectionPropertyInfo>() != null);
 				return _role;
 			}
 		}

@@ -51,7 +51,6 @@ namespace Havit.BusinessLayerTest
 	/// ALTER TABLE [dbo].[Komunikace] CHECK CONSTRAINT [FK_Komunikace_Subjekt]
 	/// </code>
 	/// </remarks>
-	[System.Diagnostics.Contracts.ContractVerification(false)]
 	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
 	public abstract class KomunikaceBase : ActiveRecordBusinessObjectBase
 	{
@@ -85,7 +84,7 @@ namespace Havit.BusinessLayerTest
 		/// Vytvoří instanci objektu na základě dat (i částečných) načtených z databáze.
 		/// </summary>
 		/// <param name="id">KomunikaceID (PK).</param>
-		/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu (i částečnými).</param>
+		/// <param name="record">DataRecord s daty objektu (i částečnými).</param>
 		protected KomunikaceBase(int id, DataRecord record) : base(id, record)
 		{
 		}
@@ -286,7 +285,7 @@ namespace Havit.BusinessLayerTest
 			this.IsNew = false; // uložený objekt není už nový, dostal i přidělené ID
 			
 			IdentityMap currentIdentityMap = IdentityMapScope.Current;
-			global::System.Diagnostics.Contracts.Contract.Assume(currentIdentityMap != null);
+			global::Havit.Diagnostics.Contracts.Contract.Assert(currentIdentityMap != null, "currentIdentityMap != null");
 			currentIdentityMap.Store(this);
 		}
 		
@@ -321,7 +320,7 @@ namespace Havit.BusinessLayerTest
 			this.IsNew = false; // uložený objekt není už nový, dostal i přidělené ID
 			
 			IdentityMap currentIdentityMap = IdentityMapScope.Current;
-			global::System.Diagnostics.Contracts.Contract.Assume(currentIdentityMap != null);
+			global::Havit.Diagnostics.Contracts.Contract.Assert(currentIdentityMap != null, "currentIdentityMap != null");
 			currentIdentityMap.Store(this);
 		}
 		
@@ -461,7 +460,7 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static Komunikace GetFirst(QueryParams queryParams)
 		{
-			global::System.Diagnostics.Contracts.Contract.Requires(queryParams != null);
+			global::Havit.Diagnostics.Contracts.Contract.Requires(queryParams != null, "queryParams != null");
 			
 			return Komunikace.GetFirst(queryParams, null);
 		}
@@ -472,7 +471,7 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static Komunikace GetFirst(QueryParams queryParams, DbTransaction transaction)
 		{
-			global::System.Diagnostics.Contracts.Contract.Requires(queryParams != null);
+			global::Havit.Diagnostics.Contracts.Contract.Requires(queryParams != null, "queryParams != null");
 			
 			int? originalTopRecords = queryParams.TopRecords;
 			queryParams.TopRecords = 1;
@@ -486,8 +485,7 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static KomunikaceCollection GetList(QueryParams queryParams)
 		{
-			global::System.Diagnostics.Contracts.Contract.Requires(queryParams != null);
-			global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<KomunikaceCollection>() != null);
+			global::Havit.Diagnostics.Contracts.Contract.Requires(queryParams != null, "queryParams != null");
 			
 			return Komunikace.GetList(queryParams, null);
 		}
@@ -497,8 +495,7 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static KomunikaceCollection GetList(QueryParams queryParams, DbTransaction transaction)
 		{
-			global::System.Diagnostics.Contracts.Contract.Requires(queryParams != null);
-			global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<KomunikaceCollection>() != null);
+			global::Havit.Diagnostics.Contracts.Contract.Requires(queryParams != null, "queryParams != null");
 			
 			DbCommand dbCommand = DbConnector.Default.ProviderFactory.CreateCommand();
 			dbCommand.Transaction = transaction;
@@ -515,8 +512,6 @@ namespace Havit.BusinessLayerTest
 		
 		private static KomunikaceCollection GetList(DbCommand dbCommand, DataLoadPower dataLoadPower)
 		{
-			global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<KomunikaceCollection>() != null);
-			
 			if (dbCommand == null)
 			{
 				throw new ArgumentNullException("dbCommand");
@@ -542,8 +537,6 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static KomunikaceCollection GetAll()
 		{
-			global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<KomunikaceCollection>() != null);
-			
 			KomunikaceCollection collection = null;
 			QueryParams queryParams = new QueryParams();
 			collection = Komunikace.GetList(queryParams);
@@ -560,8 +553,6 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
-				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<ObjectInfo>() != null);
-				
 				return objectInfo;
 			}
 		}
@@ -576,8 +567,6 @@ namespace Havit.BusinessLayerTest
 		{
 			get
 			{
-				global::System.Diagnostics.Contracts.Contract.Ensures(global::System.Diagnostics.Contracts.Contract.Result<KomunikaceProperties>() != null);
-				
 				return properties;
 			}
 		}

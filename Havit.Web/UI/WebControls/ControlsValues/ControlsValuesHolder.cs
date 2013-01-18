@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 using System.Linq;
 using System.Xml;
 using System.IO;
-using System.Diagnostics.Contracts;
+using Havit.Diagnostics.Contracts;
 using System.Reflection;
 
 namespace Havit.Web.UI.WebControls.ControlsValues

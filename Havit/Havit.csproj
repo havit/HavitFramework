@@ -181,6 +181,8 @@
     <Compile Include="Collections\SortItemCollection.cs" />
     <Compile Include="DataEventArgs.cs" />
     <Compile Include="DataEventHandler.cs" />
+    <Compile Include="Diagnostics\Contracts\Contract.cs" />
+    <Compile Include="Diagnostics\Contracts\ContractException.cs" />
     <Compile Include="Diagnostics\ExceptionTracer.cs" />
     <Compile Include="Diagnostics\SmtpTraceListerner.cs" />
     <Compile Include="ITypeConverter.cs" />

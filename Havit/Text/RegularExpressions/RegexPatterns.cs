@@ -8,6 +8,7 @@ namespace Havit.Text.RegularExpressions
 	/// </summary>
 	public sealed class RegexPatterns
 	{
+		#region EmailStrict
 		/// <summary>
 		/// Pattern pro kontrolu běžného e-mailu:
 		/// <list type="bullet">
@@ -23,27 +24,27 @@ namespace Havit.Text.RegularExpressions
 		/// <remarks>
 		/// http://www.regexlib.com/REDetails.aspx?regexp_id=295
 		/// </remarks>
-		// JK: Fix defectu 2011:
-		//public const string EmailStrict = @"^(([A-Za-z0-9]+_+)|([A-Za-z0-9]+\-+)|([A-Za-z0-9]+\.+)|([A-Za-z0-9]+\++))*[A-Za-z0-9]+"
-		//                                + @"@((\w+\-+)|(\w+\.))*\w{1,63}\.[a-zA-Z]{2,6}$";
-		// JK: D7243: IDN není podporováno, potřebujeme zakázat háčky a čárky, navíc se javascript a .NET chovají jinak k symbolu "\w".
-		//public const string EmailStrict = @"^(([A-Za-z0-9]+_+)|([A-Za-z0-9]+\-+)|([A-Za-z0-9]+\.?)|([A-Za-z0-9]+\++)|([A-Za-z0-9]+'+))*[A-Za-z0-9]+"
-		//                                + @"@((\w+\-+)|(\w+\.))*\w{1,63}\.[a-zA-Z]{2,6}$";
 		public const string EmailStrict = @"^(([A-Za-z0-9]+_+)|([A-Za-z0-9]+\-+)|([A-Za-z0-9]+\.?)|([A-Za-z0-9]+\++)|([A-Za-z0-9]+'+))*[A-Za-z0-9]+"
 										+ @"@(([A-Za-z0-9]+\-+)|([A-Za-z0-9]+\.))*[A-Za-z0-9]{1,63}\.[a-zA-Z]{2,6}$";
+		#endregion
 		
+		#region Identifier
 		/// <summary>
 		/// Pattern pro kontrolu identifikátorů.
 		/// Identifikátor musí začínat písmenem nebo podtržítkem, nesledovat mohou i číslice.
 		/// </summary>
 		public const string Identifier = @"^[a-zA-Z_]{1}[a-zA-Z0-9_]+$";
+		#endregion
 
+		#region Time24h
 		/// <summary>
 		/// Pattern pro kontrolu času. 24-hodinnový formát, odělovač dvojtečka, nepovinné vteřiny. Např. 23:59:00.
 		/// Nepřijímá 24:00.
 		/// </summary>
 		public const string Time24h = @"^(20|21|22|23|[01]\d|\d)(([:][0-5]\d){1,2})$";
+		#endregion
 
+		#region IPAddress
 		/// <summary>
 		/// Pattern pro kontrolu IP adresy v4.
 		/// </summary>
@@ -51,7 +52,9 @@ namespace Havit.Text.RegularExpressions
 										+ @"(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\."
 										+ @"(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\."
 										+ @"(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$";
+		#endregion
 
+		#region Integer
 		/// <summary>
 		/// Pattern pro ověření celých čísel.
 		/// </summary>
@@ -60,8 +63,9 @@ namespace Havit.Text.RegularExpressions
 		/// Odmítá: [1.0], [abc], [+], [1,15]
 		/// </remarks>
 		public const string Integer = @"^[-+]?\d+$";
+		#endregion
 
-		#region private constructor
+		#region Private constructor
 		/// <summary>
 		/// private constructor k zabránění instanciace statické třídy.
 		/// </summary>

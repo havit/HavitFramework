@@ -67,33 +67,6 @@ namespace Havit.Security
 		}
 		private PasswordCharacterSet _passwordCharacterSet;
 		private int passwordCharArrayUpperBound;
-
-		#region GetCharacterArrayUpperBound
-		/// <summary>
-		/// Vrátí horní index pole znaků, do kterého se smí provádět výběr pro generované heslo.
-		/// </summary>
-		private int GetCharacterArrayUpperBound()
-		{
-			int upperBound = pwdCharArray.GetUpperBound(0);
-
-			switch (this.PasswordCharacterSet)
-			{
-				case PasswordCharacterSet.LowerCaseLetters:
-					upperBound = PasswordGenerator.LowerCaseLettersUpperBound;
-					break;
-				case PasswordCharacterSet.Letters:
-					upperBound = PasswordGenerator.LettersUpperBound;
-					break;
-				case PasswordCharacterSet.LettersAndDigits:
-					upperBound = PasswordGenerator.LettersAndDigitsUpperBound;
-					break;
-				case PasswordCharacterSet.LettersDigitsAndSpecialCharacters:
-					// NOOP
-					break;
-			}
-			return upperBound;
-		}
-		#endregion
 		#endregion
 
 		#region AllowRepeatingCharacters
@@ -132,7 +105,7 @@ namespace Havit.Security
 		private string _exclusions;
 		#endregion
 
-		#region private consts
+		#region Private consts
 		private const int DefaultMinimum = 6;
 		private const int DefaultMaximum = 10;
 		private const int LowerCaseLettersUpperBound = 25;
@@ -154,6 +127,33 @@ namespace Havit.Security
 			this.Exclusions = null;
 
 			rng = new RNGCryptoServiceProvider();
+		}
+		#endregion
+
+		#region GetCharacterArrayUpperBound
+		/// <summary>
+		/// Vrátí horní index pole znaků, do kterého se smí provádět výběr pro generované heslo.
+		/// </summary>
+		private int GetCharacterArrayUpperBound()
+		{
+			int upperBound = pwdCharArray.GetUpperBound(0);
+
+			switch (this.PasswordCharacterSet)
+			{
+				case PasswordCharacterSet.LowerCaseLetters:
+					upperBound = PasswordGenerator.LowerCaseLettersUpperBound;
+					break;
+				case PasswordCharacterSet.Letters:
+					upperBound = PasswordGenerator.LettersUpperBound;
+					break;
+				case PasswordCharacterSet.LettersAndDigits:
+					upperBound = PasswordGenerator.LettersAndDigitsUpperBound;
+					break;
+				case PasswordCharacterSet.LettersDigitsAndSpecialCharacters:
+					// NOOP
+					break;
+			}
+			return upperBound;
 		}
 		#endregion
 

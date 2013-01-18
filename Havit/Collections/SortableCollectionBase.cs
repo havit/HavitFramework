@@ -11,23 +11,26 @@ namespace Havit.Collections
 	[Obsolete]
 	public abstract class SortableCollectionBase : System.Collections.CollectionBase
 	{
+		#region Sort
 		/// <summary>
 		/// Seřadí prvky dle požadované property, která implementuje IComparable.
 		/// </summary>
 		/// <param name="propertyName">property, podle které se má řadit</param>
 		/// <param name="ascending">true, pokud se má řadit vzestupně, false, pokud sestupně</param>
-		public virtual void Sort(string propertyName, bool ascending) 
+		public virtual void Sort(string propertyName, bool ascending)
 		{
 			InnerList.Sort(new GenericPropertySort(propertyName, ascending));
 		}
+		#endregion
 
+		#region IndexOf
 		/// <summary>
 		/// Vrátí polohu prvku v seřazené collection.
 		/// </summary>
 		/// <param name="propertyName">jméno property</param>
 		/// <param name="searchedValue">hodnota property prvku</param>
 		/// <returns>poloha prvku</returns>
-		public int IndexOf(string propertyName, object searchedValue) 
+		public int IndexOf(string propertyName, object searchedValue)
 		{
 			for (int i = 0; i < InnerList.Count; i++)
 			{
@@ -38,26 +41,32 @@ namespace Havit.Collections
 			}
 			return -1;
 		}
+		#endregion
 
 		/// <summary>
 		/// Comparer pro řazení dle libobovolné IComparable property.
 		/// </summary>
 		internal class GenericPropertySort : System.Collections.IComparer
 		{
+			#region Private fields
 			private bool sortAscending = true;
 			private string sortPropertyName = String.Empty;
-		
+			#endregion
+
+			#region GenericPropertySort
 			/// <summary>
 			/// Vytvoří instanci compareru pro řazení dle dané property.
 			/// </summary>
 			/// <param name="sortPropertyName">název property, podle které se má řadit</param>
 			/// <param name="ascending">true, má-li se řadit vzestupně, false, pokud sestupně</param>
-			public GenericPropertySort(String sortPropertyName, bool ascending) 
+			public GenericPropertySort(String sortPropertyName, bool ascending)
 			{
 				this.sortPropertyName = sortPropertyName;
 				this.sortAscending = ascending;
 			}
+			#endregion
 
+			#region Compare
 			/// <summary>
 			/// Porovná dva objekty.
 			/// </summary>
@@ -95,6 +104,7 @@ namespace Havit.Collections
 					return ic2.CompareTo(ic1);
 				}
 			}
+			#endregion
 		}
 
 	}

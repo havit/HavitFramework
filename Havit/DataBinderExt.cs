@@ -15,6 +15,7 @@ namespace Havit
 	/// </remarks>
 	public static class DataBinderExt
 	{
+		#region GetValue
 		/// <summary>
 		/// Získá hodnotu pro zobrazení z předaného objektu a dataField.
 		/// Vyhodnocuje s ohledem na &quot;tečkovou&quot; notaci, tedy například z objektu třídy Subjekt dokáže vrátit &quot;HlavniAdresa.Ulice&quot;.
@@ -34,7 +35,7 @@ namespace Havit
 			int i = 0;
 			int lastExpressionIndex = expressionParts.Length - 1;
 			for (i = 0; i <= lastExpressionIndex; i++)
-			{				
+			{
 				if (currentValue == null)
 				{
 					return null;
@@ -54,7 +55,7 @@ namespace Havit
 					if (currentValue is ICustomTypeDescriptor)
 					{
 						// pro typu implementující ICustomTypeDescriptor (DataViewRow, atp.) nemůžeme properties cachovat
-						properties = System.ComponentModel.TypeDescriptor.GetProperties(currentValue);						
+						properties = System.ComponentModel.TypeDescriptor.GetProperties(currentValue);
 					}
 					else
 					{
@@ -117,6 +118,7 @@ namespace Havit
 				return propertyValue.ToString();
 			}
 			return String.Format(format, propertyValue);
-		}		
+		}
+		#endregion
 	}
 }

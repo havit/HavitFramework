@@ -63,8 +63,10 @@ namespace Havit.Diagnostics
 	/// </summary>
 	public class ExceptionTracer
 	{
+		#region Private consts
 		private const TraceEventType traceExceptionMethodDefaultEventType = TraceEventType.Error;
 		private const int traceExceptionMethodDefaultEventId = 0;
+		#endregion
 
 		#region TraceSourceName
 		/// <summary>
@@ -84,7 +86,43 @@ namespace Havit.Diagnostics
 		private string _traceSourceName;
 		#endregion
 
-		#region constructor
+		#region DefaultTraceSourceName (const)
+		/// <summary>
+		/// Název výchozího TraceSource, přes který jsou výjimky emitovány.
+		/// </summary>
+		public const string DefaultTraceSourceName = "Exceptions";
+		#endregion
+
+		#region Default (static singleton)
+		/// <summary>
+		/// Výchozí ExceptionTracer směřující výstup přes TraceSource s DefaultTraceSourceName.
+		/// </summary>
+		public static ExceptionTracer Default
+		{
+			get
+			{
+				if (_default == null)
+				{
+					lock (defaultLock)
+					{
+						if (_default == null)
+						{
+							_default = new ExceptionTracer(DefaultTraceSourceName);
+						}
+					}
+				}
+				return _default;
+			}
+			set
+			{
+				_default = value;
+			}
+		}
+		private static ExceptionTracer _default;
+		private static object defaultLock = new object();
+		#endregion
+
+		#region Constructor
 		/// <summary>
 		/// Vytvoří instanci ExceptionTraceru, který bude svůj výstup směřovat přes TraceSource se zadaným jménem.
 		/// </summary>
@@ -224,42 +262,5 @@ namespace Havit.Diagnostics
 		}
 		#endregion
 
-		/*********************************************************************/
-
-		#region DefaultTraceSourceName (const)
-		/// <summary>
-		/// Název výchozího TraceSource, přes který jsou výjimky emitovány.
-		/// </summary>
-		public const string DefaultTraceSourceName = "Exceptions";
-		#endregion
-
-		#region Default (static singleton)
-		/// <summary>
-		/// Výchozí ExceptionTracer směřující výstup přes TraceSource s DefaultTraceSourceName.
-		/// </summary>
-		public static ExceptionTracer Default
-		{
-			get
-			{
-				if (_default == null)
-				{
-					lock (defaultLock)
-					{
-						if (_default == null)
-						{
-							_default = new ExceptionTracer(DefaultTraceSourceName);
-						}
-					}
-				}
-				return _default;
-			}
-			set
-			{
-				_default = value;
-			}
-		}
-		private static ExceptionTracer _default;
-		private static object defaultLock = new object();
-		#endregion
 	}
 }

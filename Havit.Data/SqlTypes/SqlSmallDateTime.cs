@@ -8,19 +8,23 @@ namespace Havit.Data.SqlTypes
     /// Reprezentuje pomocné hodnoty pro databázový typ smalldatetime.
     /// </summary>
     public class SqlSmallDateTime
-    {
-        /// <summary>
+	{
+		#region MinValue
+		/// <summary>
         /// Minimální hodnota použitelná pro databázový typ smalldatetime.
         /// </summary>
         public static readonly SqlSmallDateTime MinValue = new SqlSmallDateTime(new DateTime(1900, 1, 1));
+		#endregion
 
-        /// <summary>
+		#region MaxValue
+		/// <summary>
         /// Maximální hodnota použitelná pro databázový typ smalldatetime.
         /// </summary>
         public static readonly SqlSmallDateTime MaxValue = new SqlSmallDateTime(new DateTime(2079, 6, 6, 23, 59, 00));
+		#endregion
 
-        #region Constructor
-        private SqlSmallDateTime(DateTime value)
+		#region Constructor
+		private SqlSmallDateTime(DateTime value)
         {
             _value = value;
         }

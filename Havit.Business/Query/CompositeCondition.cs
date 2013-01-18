@@ -14,7 +14,9 @@ namespace Havit.Business.Query
 	/// </summary>
 	public abstract class CompositeCondition : Condition
 	{
+		#region Private fields
 		private string operatorBetweenOperands = null;
+		#endregion
 
 		#region Conditions
 		/// <summary>
@@ -42,6 +44,23 @@ namespace Havit.Business.Query
                     this.Conditions.Add(conditions[index]);
                 }
             }
+		}
+		#endregion
+
+		#region IsEmptyCondition
+		/// <summary>
+		/// Vrací true, pokud jde o prázdnou podmínku a to i v případě, že jde například o zanořené AndCondition a OrCondition bez žádných "funkčních" podmínek.
+		/// </summary>
+		public override bool IsEmptyCondition()
+		{
+			foreach (Condition item in this.Conditions)
+			{
+				if (!item.IsEmptyCondition())
+				{
+					return false;
+				}
+			}
+			return true;
 		}
 		#endregion
 
@@ -83,21 +102,5 @@ namespace Havit.Business.Query
 		}
 		#endregion
 
-		#region IsEmptyCondition
-		/// <summary>
-		/// Vrací true, pokud jde o prázdnou podmínku a to i v případě, že jde například o zanořené AndCondition a OrCondition bez žádných "funkčních" podmínek.
-		/// </summary>
-		public override bool IsEmptyCondition()
-		{
-			foreach (Condition item in this.Conditions)
-			{
-				if (!item.IsEmptyCondition())
-				{
-					return false;
-				}
-			}
-			return true;
-		}
-		#endregion
 	}
 }

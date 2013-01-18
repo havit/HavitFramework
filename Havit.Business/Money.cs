@@ -62,10 +62,12 @@ namespace Havit.Business
 		private TCurrency _currency;
 		#endregion
 
+		#region ValueChanged
 		/// <summary>
 		/// Událost oznamujízí změnu hodnoty ve třídě Money (vyvoláno, pokud se změní částka nebo měna).
 		/// </summary>
 		public event EventHandler ValueChanged;
+		#endregion
 
 		#region Constructors
 		/// <summary>

@@ -7,6 +7,7 @@ namespace Havit.BusinessTest
 {
 	public class TestingBusinessObject : BusinessObjectBase
 	{
+		#region Constructors
 		public TestingBusinessObject()
 			: base()
 		{
@@ -16,20 +17,27 @@ namespace Havit.BusinessTest
 			: base(id)
 		{
 		}
+		#endregion
 
+		#region TryLoad_Perform
 		protected override bool TryLoad_Perform(System.Data.Common.DbTransaction transaction)
 		{
 			throw new Exception("The method or operation is not implemented.");
 		}
+		#endregion
 
+		#region Save_Perform
 		protected override void Save_Perform(System.Data.Common.DbTransaction transaction)
 		{
 			throw new Exception("The method or operation is not implemented.");
 		}
+		#endregion
 
+		#region Delete_Perform
 		protected override void Delete_Perform(System.Data.Common.DbTransaction transaction)
 		{
 			throw new Exception("The method or operation is not implemented.");
 		}
+		#endregion
 	}
 }

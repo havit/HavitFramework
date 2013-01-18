@@ -17,6 +17,7 @@ namespace Havit.BusinessTest
 	[TestClass]
 	public class TextConditionTest
 	{
+		#region CreateIsNullOrEmptyTest
 		[TestMethod]
 		public void CreateIsNullOrEmptyTest()
 		{
@@ -37,7 +38,9 @@ namespace Havit.BusinessTest
 				Assert.IsTrue(Role.GetList(qp).Count == 0);
 			}
 		}
+		#endregion
 
+		#region CreateIsNotNullOrEmptyTest
 		[TestMethod]
 		public void CreateIsNotNullOrEmptyTest()
 		{
@@ -58,5 +61,6 @@ namespace Havit.BusinessTest
 				Assert.IsTrue(Role.GetList(qp).Count > 0);
 			}
 		}
+		#endregion
 	}
 }

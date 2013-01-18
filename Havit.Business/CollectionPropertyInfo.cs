@@ -9,22 +9,6 @@ namespace Havit.Business
 	/// </summary>
 	public class CollectionPropertyInfo : PropertyInfo, IFieldsBuilder
 	{
-		#region Initialize
-		/// <summary>
-		/// Vytvoří instanci CollectionProperty.
-		/// </summary>
-		/// <param name="owner">Nadřazený objectInfo.</param>
-		/// <param name="propertyName">Název property.</param>
-		/// <param name="itemType">Typ prvků kolekce.</param>
-		/// <param name="collectionSelectFieldStatement">Část SQL dotazu pro vytažení hodnoty daného sloupce.</param>
-		public void Initialize(ObjectInfo owner, string propertyName, Type itemType, string collectionSelectFieldStatement)
-		{
-			Initialize(owner, propertyName);
-			this.itemType = itemType;
-			this.collectionSelectFieldStatement = collectionSelectFieldStatement;
-		} 
-		#endregion
-
 		#region ItemType
 		/// <summary>
 		/// Typ prvků kolekce.
@@ -37,7 +21,7 @@ namespace Havit.Business
 				return itemType;
 			}
 		}
-		private Type itemType; 
+		private Type itemType;
 		#endregion
 
 		#region CollectionSelectFieldStatement
@@ -53,6 +37,22 @@ namespace Havit.Business
 			}
 		}
 		private string collectionSelectFieldStatement; 
+		#endregion
+
+		#region Initialize
+		/// <summary>
+		/// Vytvoří instanci CollectionProperty.
+		/// </summary>
+		/// <param name="owner">Nadřazený objectInfo.</param>
+		/// <param name="propertyName">Název property.</param>
+		/// <param name="itemType">Typ prvků kolekce.</param>
+		/// <param name="collectionSelectFieldStatement">Část SQL dotazu pro vytažení hodnoty daného sloupce.</param>
+		public void Initialize(ObjectInfo owner, string propertyName, Type itemType, string collectionSelectFieldStatement)
+		{
+			Initialize(owner, propertyName);
+			this.itemType = itemType;
+			this.collectionSelectFieldStatement = collectionSelectFieldStatement;
+		}
 		#endregion
 
 		#region GetSelectFieldStatement

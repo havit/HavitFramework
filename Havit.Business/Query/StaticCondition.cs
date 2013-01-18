@@ -11,10 +11,14 @@ namespace Havit.Business.Query
 	/// </summary>
 	internal class StaticCondition : Condition
 	{
+		#region Private consts
 		private const string TrueConditionText = "(0=0)";
 		private const string FalseConditionText = "(0=1)";
+		#endregion
 
+		#region Private fields
 		private string _conditionText;
+		#endregion
 
 		#region Constructor
 		private StaticCondition(string conditionText)

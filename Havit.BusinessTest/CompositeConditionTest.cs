@@ -16,13 +16,16 @@ namespace Havit.BusinessTest
 	[TestClass]
 	public class CompositeConditionTest
 	{
+		#region AndCondition_ConstructorWithEmptyConditionsTest
 		[TestMethod]
 		public void AndCondition_ConstructorWithEmptyConditionsTest()
 		{
 			AndCondition andCondition = new AndCondition(EmptyCondition.Create(), EmptyCondition.Create());
 			Assert.AreEqual(andCondition.Conditions.Count, 0);
 		}
+		#endregion
 
+		#region AndCondition_AddEmptyConditionsTest
 		[TestMethod]
 		public void AndCondition_AddEmptyConditionsTest()
 		{
@@ -30,7 +33,9 @@ namespace Havit.BusinessTest
 			andCondition.Conditions.Add(EmptyCondition.Create());
 			Assert.AreEqual(andCondition.Conditions.Count, 0);
 		}
+		#endregion
 
+		#region CompositeCondition_IsEmptyTest
 		[TestMethod]
 		public void CompositeCondition_IsEmptyTest()
 		{
@@ -40,7 +45,9 @@ namespace Havit.BusinessTest
 				EmptyCondition.Create());
 			Assert.IsTrue(andCondition.IsEmptyCondition());
 		}
+		#endregion
 
+		#region CompositeCondition_IsNotEmptyTest
 		[TestMethod]
 		public void CompositeCondition_IsNotEmptyTest()
 		{
@@ -53,7 +60,9 @@ namespace Havit.BusinessTest
 				EmptyCondition.Create());
 			Assert.IsFalse(andCondition.IsEmptyCondition());
 		}
+		#endregion
 
+		#region CompositeCondition_NestedConditionTest
 		[TestMethod]
 		public void CompositeCondition_NestedConditionTest()
 		{
@@ -69,5 +78,6 @@ namespace Havit.BusinessTest
 				Uzivatel.GetList(queryParams);
 			}
 		}
+		#endregion
 	}
 }

@@ -5,6 +5,7 @@ using System.Data.Common;
 using System.Configuration;
 using System.Data;
 using Havit.Diagnostics.Contracts;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Havit.Data
 {
@@ -94,9 +95,7 @@ namespace Havit.Data
 		}
 		#endregion
 
-		/**********************************************************************************************************/
-
-		#region private CreateCommand, SetCommandDefaults
+		#region CreateCommand, SetCommandDefaults (private)
 		/// <summary>
 		/// Vytvoří DbCommand dle zadaných parametrů. Nenastavuje spojení ani jiné vlastnosti.
 		/// </summary>
@@ -735,6 +734,7 @@ namespace Havit.Data
 		///	&lt;/configuration&gt;
 		/// </code>
 		/// </example>
+		[SuppressMessage("Havit.StyleCop.Rules.HavitRules", "HA0002:MembersOrder", Justification = "Kód ohledně Default connectoru je pohromadě.")]
 		public static DbConnector Default
 		{
 			get

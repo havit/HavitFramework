@@ -8,6 +8,7 @@ using System.Data.Common;
 using Havit.Data;
 using System.Linq;
 using Havit.Diagnostics.Contracts;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Havit.Business
 {
@@ -466,7 +467,7 @@ namespace Havit.Business
 				throw new InvalidOperationException("Kolekce je zamčena, nelze ji modifikovat.");
 			}
 		}
-		
+		[SuppressMessage("Havit.StyleCop.Rules.HavitRules", "HA0002:MembersOrder", Justification = "Související kód ohledně readonly kolekcí je pohromadě.")]
 		bool ICollection<TItem>.IsReadOnly
 		{
 			get

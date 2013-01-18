@@ -26,6 +26,23 @@ namespace Havit.Business
 		}
 		#endregion
 
+		#region ResourceReader
+		/// <summary>
+		/// Gets an object to read resource values from a source.
+		/// Not supported in this class.
+		/// </summary>
+		/// <returns>
+		/// The <see cref="T:System.Resources.IResourceReader"/> associated with the current resource provider.
+		/// </returns>
+		public IResourceReader ResourceReader
+		{
+			get
+			{
+				throw new NotSupportedException();
+			}
+		}
+		#endregion
+
 		#region Constructors
 		/// <summary>
 		/// Initializes a new instance of the <see cref="DbResourceProviderBase"/> class.
@@ -68,6 +85,7 @@ namespace Havit.Business
 		}
 		#endregion
 
+		#region GetString
 		/// <summary>
 		/// Template method returning resource string for the resource class, resource key and culture.
 		/// Resource class can be determined by ResourceClass property (Value is never null).
@@ -76,22 +94,6 @@ namespace Havit.Business
 		/// <param name="culture">The culture identifying a localized value for the resource. Value is never null.</param>
 		/// An <see cref="T:System.String"/> that contains the resource value for the <paramref name="resourceKey"/> and <paramref name="culture"/>.
 		protected abstract string GetString(string resourceKey, CultureInfo culture);
-
-		#region ResourceReader
-		/// <summary>
-		/// Gets an object to read resource values from a source.
-		/// Not supported in this class.
-		/// </summary>
-		/// <returns>
-		/// The <see cref="T:System.Resources.IResourceReader"/> associated with the current resource provider.
-		/// </returns>
-		public IResourceReader ResourceReader
-		{
-			get
-			{
-				throw new NotSupportedException();
-			}
-		}
 		#endregion
 	}
 }

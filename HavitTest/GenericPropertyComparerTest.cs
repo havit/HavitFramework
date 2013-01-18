@@ -48,11 +48,16 @@ namespace HavitTest
 
 		private class DataTestClass
 		{
+			#region Nazev
+			public string Nazev { get; set; }
+			#endregion
+
+			#region Constructor
 			public DataTestClass(string nazev)
 			{
 				this.Nazev = nazev;
 			}
-			public string Nazev { get; set; }
+			#endregion
 		}
 	}
 }

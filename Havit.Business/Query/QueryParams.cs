@@ -284,6 +284,7 @@ namespace Havit.Business.Query
 		}
 		#endregion
 
+		#region GetOptionStatementStatement
 		/// <summary>
 		/// Vrátí sekci SQL dotazu OPTION - použito na OPTION (RECOMPILE).
 		/// OPTION (RECOMPILE): workaround pro http://connect.microsoft.com/SQLServer/feedback/ViewFeedback.aspx?FeedbackID=256717
@@ -306,5 +307,7 @@ namespace Havit.Business.Query
 
 			return "";
 		}
+		#endregion
+
 	}
 }

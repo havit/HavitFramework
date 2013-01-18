@@ -7,6 +7,7 @@ using System.Data.Common;
 using Havit.Data;
 using Havit.Data.SqlClient;
 using System.Data.SqlClient;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Havit.Business
 {
@@ -312,6 +313,7 @@ namespace Havit.Business
 		/// Identifikuje, zda probíhá Save_Insert_InsertRequiredForMinimalInsert (nesmí se zacyklit).
 		/// </summary>
 		[EditorBrowsable(EditorBrowsableState.Advanced)]
+		[SuppressMessage("Havit.StyleCop.Rules.HavitRules", "HA0002:MembersOrder", Justification = "Související kóh ohledně insertingu je pohromadě v bloku save logiky.")]
 		protected bool IsMinimalInserting
 		{
 			get { return isMinimalInserting; }

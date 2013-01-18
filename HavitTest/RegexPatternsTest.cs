@@ -13,6 +13,7 @@ namespace HavitTest
 	[TestClass]	
 	public class RegexPatternsTest
 	{
+		#region EmailStrictTest
 		[TestMethod]
 		public void EmailStrictTest()
 		{
@@ -40,12 +41,16 @@ namespace HavitTest
 			Assert.IsFalse(IsEmailAddressValid("můjmail@jiříkanda.eu"), "můjmail@jiříkanda.eu");
 			Assert.IsFalse(IsEmailAddressValid("můjmail@jiříkanda.eu"), "můjmail@jiříkanda.eu");
 		}
+		#endregion
 
+		#region IsEmailAddressValid
 		private bool IsEmailAddressValid(string emailAddress)
 		{
 			return Regex.IsMatch(emailAddress, Havit.Text.RegularExpressions.RegexPatterns.EmailStrict);
 		}
+		#endregion
 
+		#region IsWildcardMatchTest
 		[TestMethod]
 		public void IsWildcardMatchTest()
 		{
@@ -79,6 +84,7 @@ namespace HavitTest
 descriptionX</u>
 			</p>"));
 		}
+		#endregion
 
 	}
 }

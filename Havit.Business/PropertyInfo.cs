@@ -9,20 +9,6 @@ namespace Havit.Business
 	/// </summary>
 	public abstract class PropertyInfo
 	{
-		#region Initialize
-		/// <summary>
-		/// Inicializuje instanci.
-		/// </summary>
-		/// <param name="owner">ObjectInfo vlastnící property.</param>
-		/// <param name="propertyName">Název vlastnosti.</param>
-		protected virtual void Initialize(ObjectInfo owner, string propertyName)
-		{
-			this.owner = owner;
-			this.propertyName = propertyName;
-			this.isInitialized = true;
-		}
-		#endregion
-
 		#region isInitialized (private field)
 		private bool isInitialized = false;
 		#endregion
@@ -47,6 +33,20 @@ namespace Havit.Business
 			get { return propertyName; }
 		}
 		private string propertyName;
+		#endregion
+
+		#region Initialize
+		/// <summary>
+		/// Inicializuje instanci.
+		/// </summary>
+		/// <param name="owner">ObjectInfo vlastnící property.</param>
+		/// <param name="propertyName">Název vlastnosti.</param>
+		protected virtual void Initialize(ObjectInfo owner, string propertyName)
+		{
+			this.owner = owner;
+			this.propertyName = propertyName;
+			this.isInitialized = true;
+		}
 		#endregion
 
 		#region CheckInitialization

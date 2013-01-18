@@ -9,48 +9,6 @@ namespace Havit.Business
 	/// </summary>
 	public class ObjectInfo
 	{
-		#region Initialize
-		/// <summary>
-		/// Nastaví instanci třídy.
-		/// </summary>
-		/// <param name="dbSchema">Název schémata databázové tabulky.</param>
-		/// <param name="dbTable">Název databázové tabulky.</param>
-		/// <param name="className">Název třídy.</param>
-		/// <param name="_namespace">Název namespace třídy.</param>
-		/// <param name="readOnly">Určuje, zda je třída jen ke čtení.</param>
-		/// <param name="createObjectMethod">Delegát na metodu (bez parametrů) vytvářející instanci nového objektu. Null, pokud taková metoda neexistuje (třída je readonly nebo máowner field).</param>
-		/// <param name="getObjectMethod">Delegát na metodu vracející objekt třídy na základě ID.</param>
-		/// <param name="getAllMethod">Delegát na metodu vracející všechny (nesmazané) objekty třídy.</param>
-		/// <param name="deletedProperty">FieldPropertyInfo, která identifikuje příznakem smazané záznamy.</param>
-		/// <param name="properties">Kolekce všech vlastností objektu.</param>
-		public void Initialize(
-			string dbSchema,
-			string dbTable,
-			string className,
-			string _namespace,
-			bool readOnly,
-			CreateObjectDelegate createObjectMethod,
-			GetObjectDelegate getObjectMethod,
-			GetAllDelegate getAllMethod,
-			FieldPropertyInfo deletedProperty,
-			PropertyInfoCollection properties)
-		{
-			this.dbSchema = dbSchema;
-			this.dbTable = dbTable;
-			this.className = className;
-			this._namespace = _namespace;
-			this.readOnly = readOnly;
-			this.createObjectMethod = createObjectMethod;
-			this.getObjectMethod = getObjectMethod;
-			this.getAllMethod = getAllMethod;
-			this.deletedProperty = deletedProperty;
-			this.properties = properties;
-
-			this.isInitialized = true;
-		}
-		private bool isInitialized = false; 
-	#endregion
-
 		#region ReadOnly
 		/// <summary>
 		/// Indikuje, zda je objekt určen jen ke čtení.
@@ -199,6 +157,48 @@ namespace Havit.Business
 			}
 		}
 		private GetAllDelegate getAllMethod; 
+		#endregion
+
+		#region Initialize
+		/// <summary>
+		/// Nastaví instanci třídy.
+		/// </summary>
+		/// <param name="dbSchema">Název schémata databázové tabulky.</param>
+		/// <param name="dbTable">Název databázové tabulky.</param>
+		/// <param name="className">Název třídy.</param>
+		/// <param name="_namespace">Název namespace třídy.</param>
+		/// <param name="readOnly">Určuje, zda je třída jen ke čtení.</param>
+		/// <param name="createObjectMethod">Delegát na metodu (bez parametrů) vytvářející instanci nového objektu. Null, pokud taková metoda neexistuje (třída je readonly nebo máowner field).</param>
+		/// <param name="getObjectMethod">Delegát na metodu vracející objekt třídy na základě ID.</param>
+		/// <param name="getAllMethod">Delegát na metodu vracející všechny (nesmazané) objekty třídy.</param>
+		/// <param name="deletedProperty">FieldPropertyInfo, která identifikuje příznakem smazané záznamy.</param>
+		/// <param name="properties">Kolekce všech vlastností objektu.</param>
+		public void Initialize(
+			string dbSchema,
+			string dbTable,
+			string className,
+			string _namespace,
+			bool readOnly,
+			CreateObjectDelegate createObjectMethod,
+			GetObjectDelegate getObjectMethod,
+			GetAllDelegate getAllMethod,
+			FieldPropertyInfo deletedProperty,
+			PropertyInfoCollection properties)
+		{
+			this.dbSchema = dbSchema;
+			this.dbTable = dbTable;
+			this.className = className;
+			this._namespace = _namespace;
+			this.readOnly = readOnly;
+			this.createObjectMethod = createObjectMethod;
+			this.getObjectMethod = getObjectMethod;
+			this.getAllMethod = getAllMethod;
+			this.deletedProperty = deletedProperty;
+			this.properties = properties;
+
+			this.isInitialized = true;
+		}
+		private bool isInitialized = false;
 		#endregion
 
 		#region CheckInitialization

@@ -13,28 +13,6 @@ namespace Havit.Business
 	/// </summary>
 	public class FieldPropertyInfo : PropertyInfo, IFieldsBuilder, IOperand
 	{
-		#region Initialize
-		/// <summary>
-		/// Inicializuje instanci sloupce.
-		/// </summary>
-		/// <param name="owner">Nadřazený objectInfo.</param>
-		/// <param name="propertyName">Název property.</param>
-		/// <param name="fieldName">Název sloupce v databázy.</param>
-		/// <param name="isPrimaryKey">Indikuje, zda je sloupec primárním klíčem</param>
-		/// <param name="fieldType">Typ databázového sloupce.</param>
-		/// <param name="nullable">Indukuje, zda je povolena hodnota null.</param>
-		/// <param name="maximumLength">Maximální délka dat databázového sloupce.</param>		
-		public void Initialize(ObjectInfo owner, string propertyName, string fieldName, bool isPrimaryKey, SqlDbType fieldType, bool nullable, int maximumLength)
-		{
-			Initialize(owner, propertyName);
-			this.fieldName = fieldName;
-			this.nullable = nullable;
-			this.fieldType = fieldType;
-			this.isPrimaryKey = isPrimaryKey;
-			this.maximumLength = maximumLength;
-		} 
-		#endregion
-
 		#region FieldName
 		/// <summary>
 		/// Název sloupce v databázi.
@@ -109,6 +87,28 @@ namespace Havit.Business
 
 		}
 		private int maximumLength; 
+		#endregion
+
+		#region Initialize
+		/// <summary>
+		/// Inicializuje instanci sloupce.
+		/// </summary>
+		/// <param name="owner">Nadřazený objectInfo.</param>
+		/// <param name="propertyName">Název property.</param>
+		/// <param name="fieldName">Název sloupce v databázy.</param>
+		/// <param name="isPrimaryKey">Indikuje, zda je sloupec primárním klíčem</param>
+		/// <param name="fieldType">Typ databázového sloupce.</param>
+		/// <param name="nullable">Indukuje, zda je povolena hodnota null.</param>
+		/// <param name="maximumLength">Maximální délka dat databázového sloupce.</param>		
+		public void Initialize(ObjectInfo owner, string propertyName, string fieldName, bool isPrimaryKey, SqlDbType fieldType, bool nullable, int maximumLength)
+		{
+			Initialize(owner, propertyName);
+			this.fieldName = fieldName;
+			this.nullable = nullable;
+			this.fieldType = fieldType;
+			this.isPrimaryKey = isPrimaryKey;
+			this.maximumLength = maximumLength;
+		}
 		#endregion
 
 		#region GetSelectFieldStatement

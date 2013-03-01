@@ -10,6 +10,7 @@ namespace Havit.Web.UI.WebControls
     /// </summary>
 	public class ListControlItemDataBoundEventArgs : EventArgs
 	{
+		#region Item
 		/// <summary>
 		/// Prvek, kterého se událost týká.
 		/// </summary>
@@ -21,7 +22,9 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		private ListItem _item;
+		#endregion
 
+		#region DataItem
 		/// <summary>
 		/// Data, na jejich základě prvek vzniknul.
 		/// </summary>
@@ -37,7 +40,9 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		private object _dataItem;
+		#endregion
 
+		#region ListControlItemDataBoundEventArgs
 		/// <summary>
 		/// Vytvoří instanci.
 		/// </summary>
@@ -46,5 +51,6 @@ namespace Havit.Web.UI.WebControls
 			this._item = item;
 			this._dataItem = dataItem;
 		}
+		#endregion
 	}
 }

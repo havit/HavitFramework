@@ -359,6 +359,67 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region Controls
+		/// <summary>
+		/// Controls (overriden).
+		/// </summary>
+		public override ControlCollection Controls
+		{
+			get
+			{
+				EnsureChildControls();
+				return base.Controls;
+			}
+		}
+		#endregion
+
+		#region ClientID
+		/// <summary>
+		/// ClientID (overriden).
+		/// Vrací ClientID obsaženého TextBoxu pro zadávání hodnoty.
+		/// To řeší klientské validátory, které natrvdo předpokládají, že validovaný control (podle ClientID)
+		/// obsahuje klientskou vlastnost "value". Tímto klientskému validátoru místo DateTimeBoxu podstrčíme nested TextBox.
+		/// </summary>
+		public override string ClientID
+		{
+			get
+			{
+				return valueTextBox.ClientID;
+			}
+		}
+		#endregion
+
+		#region IsEnabled
+		/// <summary>
+		/// Vrací false, pokud je control sám zakázaný nebo pokud některý z parentů controlu je zakázaným WebControlem.
+		/// Jinak vrací true.
+		/// </summary>
+		protected bool IsEnabled
+		{
+			get
+			{
+				if (!Enabled)
+				{
+					return false;
+				}
+
+				Control control = this;
+				while (control != null) // projdeme od nás výše
+				{
+					if (control is WebControl) // pokud máme WebControl
+					{
+						if (!((WebControl)control).Enabled) // a WebControl je zakázaný  
+						{
+							return false; // vrátíme false
+						}
+					}
+					control = control.Parent;
+				}
+				return true;
+			}
+		}
+		#endregion
+
 		#region --------------------------------------------------------------------------------
 		#endregion
 
@@ -480,20 +541,6 @@ namespace Havit.Web.UI.WebControls
 				}
 			}
 		} 
-		#endregion
-
-		#region Controls
-		/// <summary>
-		/// Controls (overriden).
-		/// </summary>
-		public override ControlCollection Controls
-		{
-			get
-			{
-				EnsureChildControls();
-				return base.Controls;
-			}
-		}
 		#endregion
 
 		#region CreateChildControls
@@ -636,53 +683,6 @@ namespace Havit.Web.UI.WebControls
 			writer.WriteEndTag("span");
 		}
 
-		#endregion
-
-		#region ClientID
-		/// <summary>
-		/// ClientID (overriden).
-		/// Vrací ClientID obsaženého TextBoxu pro zadávání hodnoty.
-		/// To řeší klientské validátory, které natrvdo předpokládají, že validovaný control (podle ClientID)
-		/// obsahuje klientskou vlastnost "value". Tímto klientskému validátoru místo DateTimeBoxu podstrčíme nested TextBox.
-		/// </summary>
-		public override string ClientID
-		{
-			get
-			{
-				return valueTextBox.ClientID;
-			}
-		}
-		#endregion
-
-		#region IsEnabled
-		/// <summary>
-		/// Vrací false, pokud je control sám zakázaný nebo pokud některý z parentů controlu je zakázaným WebControlem.
-		/// Jinak vrací true.
-		/// </summary>
-		protected bool IsEnabled
-		{
-			get
-			{
-				if (!Enabled)
-				{
-					return false;
-				}
-
-				Control control = this;
-				while (control != null) // projdeme od nás výše
-				{
-					if (control is WebControl) // pokud máme WebControl
-					{
-						if (!((WebControl)control).Enabled) // a WebControl je zakázaný  
-						{
-							return false; // vrátíme false
-						}
-					}
-					control = control.Parent;
-				}
-				return true;
-			}
-		}
 		#endregion
 
 		#region RegisterClientScript

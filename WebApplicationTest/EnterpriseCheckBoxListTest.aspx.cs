@@ -15,7 +15,11 @@ namespace WebApplicationTest
 {
 	public partial class EnterpriseCheckBoxListTest : System.Web.UI.Page
 	{
+		#region Protected fields (controls)
 		protected EnterpriseCheckBoxList E1;
+		#endregion
+
+		#region OnLoad
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
@@ -30,8 +34,9 @@ namespace WebApplicationTest
 				// Vybere roli 1 a 3. Role 5 neexistuje.
 				//int[] abc = { 1, 3, 5 };
 				//E2.SelectExistingItems(abc);
-				
+
 			}
 		}
+		#endregion
 	}
 }

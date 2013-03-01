@@ -18,6 +18,14 @@ namespace Havit.Web.UI.WebControls
     /// </summary>
 	public class SingleSubmitProtection : WebControl
 	{
+		#region Public const
+		/// <summary>
+		/// Volání JavaScriptové funkce, která zablokuje SetProcessing na SingleSubmitPage.
+		/// Tato konstanta se může vložit např. do Button.OnClientClick.
+		/// </summary>
+		public const string SetProcessingDisableJavaScript = "SingleSubmit_SetProcessing_Disable();";
+		#endregion
+
 		#region Constructor
 		/// <summary>
 		/// Prvek je založen na elementu DIV.
@@ -28,14 +36,8 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-		/// <summary>
-		/// Volání JavaScriptové funkce, která zablokuje SetProcessing na SingleSubmitPage.
-		/// Tato konstanta se může vložit např. do Button.OnClientClick.
-		/// </summary>
-		public const string SetProcessingDisableJavaScript = "SingleSubmit_SetProcessing_Disable();";
-
 		#region OnPreRender
-	    /// <summary>
+		/// <summary>
 	    /// Raises the <see cref="E:System.Web.UI.Control.PreRender"/> event.
 	    /// </summary>
 	    /// <param name="e">An <see cref="T:System.EventArgs"/> object that contains the event data. </param>

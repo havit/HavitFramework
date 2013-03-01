@@ -202,19 +202,6 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-		#region EnsureAutoDataBind
-		/// <summary>
-		/// Zajistí nabindování dat pro režim AutoDataBind.
-		/// </summary>
-		protected void EnsureAutoDataBind()
-		{
-			if (AutoDataBind && !DataBindPerformed)
-			{
-				DataBindAll();
-			}
-		}
-		#endregion
-
 		#region Private properties
 		/// <summary>
 		/// Indikuje, zda již došlo k navázání dat.
@@ -310,6 +297,19 @@ namespace Havit.Web.UI.WebControls
 			}
 
 			PerformDataBinding(itemObjectInfo.GetAllMethod());
+		}
+		#endregion
+
+		#region EnsureAutoDataBind
+		/// <summary>
+		/// Zajistí nabindování dat pro režim AutoDataBind.
+		/// </summary>
+		protected void EnsureAutoDataBind()
+		{
+			if (AutoDataBind && !DataBindPerformed)
+			{
+				DataBindAll();
+			}
 		}
 		#endregion
 

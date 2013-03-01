@@ -9,8 +9,11 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class SpecialDateCustomization : DateTimeBoxDateCustomization
 	{
+		#region SpecialDates (private property)
 		private List<SpecialDate> SpecialDates { get; set; }
+		#endregion
 
+		#region SpecialDateCustomization
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
@@ -18,7 +21,9 @@ namespace Havit.Web.UI.WebControls
 		{
 			this.SpecialDates = specialDates;
 		}
+		#endregion
 
+		#region RenderDateStatusHandlerContent
 		/// <summary>
 		/// Renderuje funkci pro customizaci hodnot v kalendáøi.
 		/// </summary>
@@ -80,7 +85,8 @@ namespace Havit.Web.UI.WebControls
 
 			result.AppendLine("if (specialDates[y] && specialDates[y][m] && specialDates[y][m][d]) { return specialDates[y][m][d]; } else { return false; }");
 
-			return result.ToString();			
+			return result.ToString();
 		}
+		#endregion
 	}
 }

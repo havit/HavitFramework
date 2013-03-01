@@ -10,6 +10,10 @@ namespace Havit.PayMuzo
 	/// </summary>
 	public abstract class PayMuzoReturnCode
 	{
+		#region Private fields
+		private static Hashtable codeTypes = new Hashtable();
+		#endregion
+
 		#region Properties
 		/// <summary>
 		/// Český význam.
@@ -56,8 +60,6 @@ namespace Havit.PayMuzo
 			this._enText = enText;
 		}
 		#endregion
-
-		private static Hashtable codeTypes = new Hashtable();
 
 		#region FindByValue (static)
 		/// <summary>

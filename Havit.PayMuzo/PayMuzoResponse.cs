@@ -61,13 +61,15 @@ namespace Havit.PayMuzo
 		private PayMuzoRequestData _normalizedRawData;
 		#endregion
 
+		#region IsDigestUrlEncoded
 		/// <summary>
 		/// Gets a value indicating whether this instance is digest URL encoded.
 		/// </summary>
 		/// <value>
 		/// 	<c>true</c> if this instance is digest URL encoded; otherwise, <c>false</c>.
 		/// </value>
-		public abstract bool IsDigestUrlEncoded	{ get; }
+		public abstract bool IsDigestUrlEncoded { get; }
+		#endregion
 
 		#region VerifyDigest
 		/// <summary>

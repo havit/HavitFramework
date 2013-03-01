@@ -14,9 +14,11 @@ namespace Havit.Web.UI.Scriptlets
 	[ControlBuilder(typeof(NoLiteralContolBuilder))]	
 	public sealed class Scriptlet : Control, IScriptControl
 	{
+		#region Private readonly fields
 		private readonly string[] _clientScriptScriptletFunctionParameters = new string[] { "parameters" };
 		private readonly string[] _clientScriptGetParametersFunctionParameters = new string[] { };
 		private readonly string[] _clientScriptAttachDetachEventsFunctionParameters = new string[] { "data", "delegate", "handler" };
+		#endregion
 
 		#region Private fields
 		private ClientScript clientScript = null;
@@ -48,6 +50,64 @@ namespace Havit.Web.UI.Scriptlets
 			set { scriptSubstitution = value; }
 		}
 		private IScriptSubstitution scriptSubstitution;
+		#endregion
+
+		/* ScriptManager *************** */
+
+		#region IsInAsyncPostBack (internal)
+		/// <summary>
+		/// Vrací true, pokud je zpracováván asynchronní postback (callback).
+		/// </summary>
+		internal bool IsInAsyncPostBack
+		{
+			get
+			{
+				if (_isInAsyncPostBack == null)
+				{
+					ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);
+					_isInAsyncPostBack = (scriptManager != null) && scriptManager.IsInAsyncPostBack;
+				}
+				return _isInAsyncPostBack.Value;
+			}
+		}
+		private bool? _isInAsyncPostBack = null;
+		#endregion
+
+		#region IsScriptManager (internal)
+		/// <summary>
+		/// Vrací true, pokud je k dispozici ScriptManager.
+		/// </summary>
+		internal bool IsScriptManager
+		{
+			get
+			{
+				if (_isScriptManager == null)
+				{
+					_isScriptManager = ScriptManager.GetCurrent(this.Page) != null;
+				}
+				return _isScriptManager.Value;
+			}
+		}
+		private bool? _isScriptManager = null;
+		#endregion
+
+		#region AsyncPostBackEnabled (internal)
+		/// <summary>
+		/// Vrací true, pokud může dojít k asynchronnímu postbacku (callbacku).
+		/// </summary>
+		internal bool AsyncPostBackEnabled
+		{
+			get
+			{
+				if (_asyncPostBackEnabled == null)
+				{
+					ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);
+					_asyncPostBackEnabled = (scriptManager != null) && scriptManager.EnablePartialRendering && scriptManager.SupportsPartialRendering;
+				}
+				return _asyncPostBackEnabled.Value;
+			}
+		}
+		private bool? _asyncPostBackEnabled = null;
 		#endregion
 
 		/* *************** */
@@ -378,64 +438,6 @@ namespace Havit.Web.UI.Scriptlets
 			return null;
 		}
 
-		#endregion
-
-		/* ScriptManager *************** */
-
-		#region IsInAsyncPostBack (internal)
-		/// <summary>
-		/// Vrací true, pokud je zpracováván asynchronní postback (callback).
-		/// </summary>
-		internal bool IsInAsyncPostBack
-		{
-			get
-			{
-				if (_isInAsyncPostBack == null)
-				{
-					ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);
-					_isInAsyncPostBack = (scriptManager != null) && scriptManager.IsInAsyncPostBack;
-				}
-				return _isInAsyncPostBack.Value;
-			}
-		}
-		private bool? _isInAsyncPostBack = null;
-		#endregion
-
-		#region IsScriptManager (internal)
-		/// <summary>
-		/// Vrací true, pokud je k dispozici ScriptManager.
-		/// </summary>
-		internal bool IsScriptManager
-		{
-			get
-			{
-				if (_isScriptManager == null)
-				{
-					_isScriptManager = ScriptManager.GetCurrent(this.Page) != null;
-				}
-				return _isScriptManager.Value;
-			}
-		}
-		private bool? _isScriptManager = null;
-		#endregion
-
-		#region AsyncPostBackEnabled (internal)
-		/// <summary>
-		/// Vrací true, pokud může dojít k asynchronnímu postbacku (callbacku).
-		/// </summary>
-		internal bool AsyncPostBackEnabled
-		{
-			get
-			{
-				if (_asyncPostBackEnabled == null)
-				{
-					ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);
-					_asyncPostBackEnabled = (scriptManager != null) && scriptManager.EnablePartialRendering && scriptManager.SupportsPartialRendering;
-				}
-				return _asyncPostBackEnabled.Value;
-			}
-		}
-		private bool? _asyncPostBackEnabled = null;
 		#endregion
 
 	}

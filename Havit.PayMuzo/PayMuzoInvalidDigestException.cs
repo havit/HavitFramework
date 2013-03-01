@@ -15,6 +15,7 @@ namespace Havit.PayMuzo
 		// and
 		//    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dncscol/html/csharp07192001.asp
 
+		#region Constructors
 		/// <summary>
 		/// Initializes a new instance of the <see cref="PayMuzoInvalidDigestException"/> class.
 		/// </summary>
@@ -44,5 +45,7 @@ namespace Havit.PayMuzo
 		  System.Runtime.Serialization.SerializationInfo info,
 		  System.Runtime.Serialization.StreamingContext context)
 			: base(info, context) { }
+		
+		#endregion
 	}
 }

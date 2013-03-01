@@ -13,6 +13,11 @@ namespace WebApplicationTest
 {
 	public partial class EnumDropDownList_aspx : System.Web.UI.Page
 	{
+		#region Protected fields (controls)
+		protected GridView MainGridView;
+		#endregion
+
+		#region OnInit
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
@@ -20,7 +25,9 @@ namespace WebApplicationTest
 			TestDDL.ItemDataBound += new EventHandler<Havit.Web.UI.WebControls.ListControlItemDataBoundEventArgs>(TestDDL_ItemDataBound);
 			TestBt.Click += new EventHandler(TestBt_Click);
 		}
+		#endregion
 
+		#region TestBt_Click
 		private void TestBt_Click(object sender, EventArgs e)
 		{
 			if (TestDDL.SelectedEnumValue == null)
@@ -34,21 +41,25 @@ namespace WebApplicationTest
 
 			TestDDL.SelectedEnumValue = TestEnum.EnumHodnota2;
 		}
+		#endregion
 
+		#region TestDDL_ItemDataBound
 		private void TestDDL_ItemDataBound(object sender, Havit.Web.UI.WebControls.ListControlItemDataBoundEventArgs e)
 		{
 			TestEnum item = (TestEnum)e.DataItem;
 			// e.Item.Text = item.ToString("d");
 		}
+		#endregion
 
+		#region OnLoad
 		protected override void OnLoad(EventArgs e)
-{
- 	 base.OnLoad(e);
+		{
+			base.OnLoad(e);
 			MainGridView.DataSource = new string[] { "a", "b" };
 			MainGridView.DataBind();
 		}
+		#endregion
 
-		protected GridView MainGridView;
 	}
 
 	public enum TestEnum

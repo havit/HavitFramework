@@ -16,6 +16,7 @@ namespace Havit.Web.UI.WebControls
 	[Serializable]
 	public class Highlighting
 	{
+		#region HighlightValue
 		/// <summary>
 		/// Hodnota "klíče" položky, která má být zvýrazněna.
 		/// Nastavuje příznak AutoPageChangeEnabled.
@@ -33,7 +34,9 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		private object highlightValue;
+		#endregion
 
+		#region DataField
 		/// <summary>
 		/// Položka dat, jejíž hodnota se porovnává s HighlightValue.
 		/// </summary>
@@ -49,7 +52,9 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		private string dataField;
+		#endregion
 
+		#region AutoPageChangeEnabled
 		/// <summary>
 		/// Příznak, zda může dojít ke změně stránky pro zvýraznění položky.
 		/// </summary>
@@ -65,7 +70,9 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		private bool autoPageChangeEnabled = true;
+		#endregion
 
+		#region PageChangeEnabled
 		/// <summary>
 		/// Příznak, zda může dojít je možná změna stránky.
 		/// Příznak je automaticky nastaven při nastavení hodnoty HighlightValue
@@ -84,6 +91,7 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		private bool pageChangeEnabled = false;
+		#endregion
 
 	}
 }

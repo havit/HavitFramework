@@ -1030,6 +1030,17 @@ namespace Havit.Web.UI.WebControls
 		private StateBag _viewState;
 		#endregion
 
+		#region IStateManager Properties
+		bool IStateManager.IsTrackingViewState
+		{
+			get
+			{
+				return this._isTrackingViewState;
+			}
+		}
+		private bool _isTrackingViewState;
+		#endregion
+
 		#region PropertyChanged (event)
 		/// <summary>
 		/// Událost, která se zavolá při změně některé property.
@@ -1060,16 +1071,7 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-		#region IStateManager Members
-		bool IStateManager.IsTrackingViewState
-		{
-			get
-			{
-				return this._isTrackingViewState;
-			}
-		}
-		private bool _isTrackingViewState;
-
+		#region IStateManager Methods
 		void IStateManager.LoadViewState(object savedState)
 		{
 			if (savedState != null)

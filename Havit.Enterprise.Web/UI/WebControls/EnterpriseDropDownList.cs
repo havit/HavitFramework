@@ -14,14 +14,7 @@ namespace Havit.Web.UI.WebControls
 	/// EnterpriseDropDownList zajišťuje pohodlnější práci s DropDownListem, jehož prvky představují business objekty.	
 	/// </summary>
 	public class EnterpriseDropDownList : DropDownListExt
-	{
-		#region Constructors (static)
-		static EnterpriseDropDownList()
-		{
-			Havit.Web.UI.WebControls.ControlsValues.PersisterControlExtenderRepository.Default.Add(new EnterpriseDropDownListPersisterControlExtender());
-		} 
-		#endregion
-		
+	{		
 		#region ItemPropertyInfo
 		/// <summary>
 		/// ReferenceFieldPropertyInfo property, jejíž hodnota se tímto DropDownListem vybírá.
@@ -231,20 +224,7 @@ namespace Havit.Web.UI.WebControls
 			}
 		}		
 		#endregion
-
-		#region EnsureAutoDataBind
-		/// <summary>
-		/// Zajistí nabindování dat pro režit AutoDataBind.
-		/// </summary>
-		protected void EnsureAutoDataBind()
-		{
-			if (AutoDataBind && !DataBindPerformed)
-			{
-				DataBindAll();
-			}
-		}		
-		#endregion
-
+		
 		#region Private properties
 		/// <summary>
 		/// Indikuje, zda již došlo k navázání dat.
@@ -300,6 +280,16 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#endregion
+
+		#region ---------------------------------------------------------------------------------------------
+		#endregion
+	
+		#region Constructors (static)
+		static EnterpriseDropDownList()
+		{
+			Havit.Web.UI.WebControls.ControlsValues.PersisterControlExtenderRepository.Default.Add(new EnterpriseDropDownListPersisterControlExtender());
+		}
 		#endregion
 
 		#region ---------------------------------------------------------------------------------------------
@@ -364,6 +354,19 @@ namespace Havit.Web.UI.WebControls
 
 			PerformDataBinding(itemObjectInfo.GetAllMethod());
 		}		
+		#endregion
+
+		#region EnsureAutoDataBind
+		/// <summary>
+		/// Zajistí nabindování dat pro režit AutoDataBind.
+		/// </summary>
+		protected void EnsureAutoDataBind()
+		{
+			if (AutoDataBind && !DataBindPerformed)
+			{
+				DataBindAll();
+			}
+		}
 		#endregion
 
 		#region PerformDataBinding

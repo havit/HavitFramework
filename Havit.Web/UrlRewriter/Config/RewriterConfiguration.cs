@@ -50,9 +50,25 @@ namespace Havit.Web.UrlRewriter.Config
 	[XmlRoot("UrlRewriterConfig")]
 	public class RewriterConfiguration
 	{
-		// private member variables
+		#region Public Properties
+		/// <summary>
+		/// A <see cref="RewriterRuleCollection"/> instance that provides access to a set of <see cref="RewriterRule"/>s.
+		/// </summary>
+		public RewriterRuleCollection Rules
+		{
+			get
+			{
+				return rules;
+			}
+			set
+			{
+				rules = value;
+			}
+		}
 		private RewriterRuleCollection rules;			// an instance of the RewriterRuleCollection class...
+		#endregion
 
+		#region GetConfig
 		/// <summary>
 		/// GetConfig() returns an instance of the <b>RewriterConfiguration</b> class with the values populated from
 		/// the Web.config file.  It uses XML deserialization to convert the XML structure in Web.config into
@@ -73,22 +89,7 @@ namespace Havit.Web.UrlRewriter.Config
 
 			return result;
 		}
-
-		#region Public Properties
-		/// <summary>
-		/// A <see cref="RewriterRuleCollection"/> instance that provides access to a set of <see cref="RewriterRule"/>s.
-		/// </summary>
-		public RewriterRuleCollection Rules
-		{
-			get
-			{
-				return rules;
-			}
-			set
-			{
-				rules = value;
-			}
-		}
 		#endregion
+
 	}
 }

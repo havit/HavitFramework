@@ -12,17 +12,22 @@ namespace WebApplicationTest
 {
 	public partial class DropDownListTest : System.Web.UI.Page
 	{
+		#region OnInit
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
 			PostbackButton.Click += new EventHandler(PostbackButton_Click);
 			TestGridView.RowDataBound += new GridViewRowEventHandler(TestGridView_RowDataBound);
 		}
+		#endregion
 
+		#region PostbackButton_Click
 		private void PostbackButton_Click(object sender, EventArgs e)
 		{
 		}
+		#endregion
 
+		#region OnLoad
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
@@ -33,7 +38,9 @@ namespace WebApplicationTest
 				TestGridView.DataBind();
 			}
 		}
+		#endregion
 
+		#region TestGridView_RowDataBound
 		private void TestGridView_RowDataBound(object sender, GridViewRowEventArgs e)
 		{
 			EnterpriseDropDownList roleDDL = (EnterpriseDropDownList)e.Row.FindControl("RoleDDL");
@@ -43,6 +50,7 @@ namespace WebApplicationTest
 				roleDDL.DataBind();
 			}
 		}
+		#endregion
 
 	}
 }

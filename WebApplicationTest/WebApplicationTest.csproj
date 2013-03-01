@@ -293,13 +293,6 @@
     <Compile Include="GridViewExtTest_InnerGVControl.ascx.designer.cs">
       <DependentUpon>GridViewExtTest_InnerGVControl.ascx</DependentUpon>
     </Compile>
-    <Compile Include="JirkkaTest.aspx.cs">
-      <SubType>ASPXCodeBehind</SubType>
-      <DependentUpon>JirkkaTest.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="JirkkaTest.aspx.designer.cs">
-      <DependentUpon>JirkkaTest.aspx</DependentUpon>
-    </Compile>
     <Compile Include="MenuTest.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>MenuTest.aspx</DependentUpon>
@@ -447,7 +440,6 @@
     <Content Include="EnterpriseCheckBoxListTest.aspx" />
     <Content Include="EnterpriseListBoxTest.aspx" />
     <Content Include="havit.css" />
-    <Content Include="JirkkaTest.aspx" />
     <Content Include="MessengerTest.aspx" />
     <Content Include="ScriptletTest3.aspx" />
     <Content Include="SingleSubmitProtectionTest.aspx" />

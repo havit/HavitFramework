@@ -9,9 +9,6 @@ namespace Havit.Web.UrlRewriter.Config
 	[Serializable]
 	public class RewriterRule
 	{
-		// private member variables...
-		private string lookFor, sendTo;
-
 		#region Public Properties
 		/// <summary>
 		/// Gets or sets the pattern to look for.
@@ -32,6 +29,7 @@ namespace Havit.Web.UrlRewriter.Config
 				lookFor = value;
 			}
 		}
+		private string lookFor;
 
 		/// <summary>
 		/// The string to replace the pattern with, if found.
@@ -50,6 +48,7 @@ namespace Havit.Web.UrlRewriter.Config
 				sendTo = value;
 			}
 		}
+		private string sendTo;
 		#endregion
 	}
 }

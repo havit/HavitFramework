@@ -47,6 +47,10 @@ namespace Havit.Web
 		}
 		#endregion
 
+		#region Private fields
+		private HttpContext _currentContext;
+		#endregion
+
 		#region HistoryUrls
 		/// <summary>
 		/// Seznam adres historie navigace (protected)
@@ -64,8 +68,6 @@ namespace Havit.Web
 		}
         private List<string> _historyUrls;
 		#endregion
-
-		private HttpContext _currentContext;
 
 		#region Constructors
 		/// <summary>

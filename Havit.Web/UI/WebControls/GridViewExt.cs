@@ -20,12 +20,6 @@ namespace Havit.Web.UI.WebControls
 	/// </remarks>
 	public class GridViewExt : HighlightingGridView, ICommandFieldStyle
 	{
-
-		/// <summary>
-		/// Příznak, zda má dojít k databindingu ještě v tomto requestu.
-		/// Nastavováno (na true) v metodě SetRequiresDataBinding, vypínáno v metodě S
-		/// </summary>
-		private bool _cuurentlyRequiresDataBinding = false;
 		#region GetInsertRowDataItem (delegate)
 		/// <summary>
 		/// Metoda, která vrací data-item nového Insert řádku. Obvykle přednastaveno default hodnotami.
@@ -160,6 +154,20 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region InsertIndex
+		/// <summary>
+		/// Index řádku (RowIndex) vkládaného prvku. Pokud nejsme v insert módu, je -1.
+		/// </summary>
+		public int InsertIndex
+		{
+			get
+			{
+				return insertRowIndex;
+			}
+		}
+		private int insertRowIndex = -1;
+		#endregion
+
 		#region CommandFieldStyle
 		/// <summary>
 		/// Skinovatelné vlastnosti, které se mají předat CommandFieldu.
@@ -186,21 +194,66 @@ namespace Havit.Web.UI.WebControls
 		private CommandFieldStyle _commandFieldStyle;
 		#endregion
 
-		#region CreateChildControls
+		#region PagerSettingsAllPagesButtonImageUrl
 		/// <summary>
-		/// Creates the control hierarchy used to render the <see cref="T:System.Web.UI.WebControls.GridView"/> control using the specified data source.
+		/// ImageUrl tlačítka pro vypnutí stránkování. Má přednost před PagerSettingsAllPagesButtonText.
 		/// </summary>
-		/// <returns>
-		/// The number of rows created.
-		/// </returns>
-		/// <param name="dataSource">An <see cref="T:System.Collections.IEnumerable"/> that contains the data source for the <see cref="T:System.Web.UI.WebControls.GridView"/> control. </param><param name="dataBinding">true to indicate that the child controls are bound to data; otherwise, false. </param><exception cref="T:System.Web.HttpException"><paramref name="dataSource"/> returns a null <see cref="T:System.Web.UI.DataSourceView"/>.-or-<paramref name="dataSource"/> does not implement the <see cref="T:System.Collections.ICollection"/> interface and cannot return a <see cref="P:System.Web.UI.DataSourceSelectArguments.TotalRowCount"/>. -or-<see cref="P:System.Web.UI.WebControls.GridView.AllowPaging"/> is true and <paramref name="dataSource"/> does not implement the <see cref="T:System.Collections.ICollection"/> interface and cannot perform data source paging.-or-<paramref name="dataSource"/> does not implement the <see cref="T:System.Collections.ICollection"/> interface and <paramref name="dataBinding"/> is set to false.</exception>
-		protected override int CreateChildControls(IEnumerable dataSource, bool dataBinding)
+		public string PagerSettingsAllPagesButtonImageUrl
 		{
-			string originalEmptyDataText = this.EmptyDataText;
-			EmptyDataText = HttpUtilityExt.GetResourceString(EmptyDataText);
-			int result = base.CreateChildControls(dataSource, dataBinding);
-			EmptyDataText = originalEmptyDataText;
-			return result;
+			get
+			{
+				return (string)ViewState["PagerSettingsAllPagesButtonImageUrl"];
+			}
+			set
+			{
+				ViewState["PagerSettingsAllPagesButtonImageUrl"] = value;
+			}
+		}
+		#endregion
+
+		#region PagerSettingsShowAllPagesButton
+		/// <summary>
+		/// Povoluje/zakazuje zobrazení tlačítka pro vypnutí stránkování.
+		/// </summary>
+		public bool PagerSettingsShowAllPagesButton
+		{
+			get
+			{
+				return (bool)(ViewState["PagerSettingsShowAllPagesButton"] ?? false);
+			}
+			set
+			{
+				ViewState["PagerSettingsShowAllPagesButton"] = value;
+			}
+		}
+		#endregion
+
+		#region PagerSettingsAllPagesButtonText
+		/// <summary>
+		/// Text tlačítka pro vypnutí stránkování. Pokud je nastaveno PagerSettingsAllPagesButtonImageUrl, má toto přednost a tlačítko bude obrázkové.
+		/// </summary>
+		public string PagerSettingsAllPagesButtonText
+		{
+			get
+			{
+				return (string)ViewState["PagerSettingsAllPagesButtonText"] ?? "*";
+			}
+			set
+			{
+				ViewState["PagerSettingsAllPagesButtonText"] = value;
+			}
+		}
+		#endregion
+
+		#region AllPagesShowing
+		/// <summary>
+		/// Událost, která se volá při obsluze kliknutí na tlačítko "All Pages" (tlačítko, vypínající stránkování). Dává možnost zrušit akci.
+		/// </summary>
+		[Category("Action")]
+		public event CancelEventHandler AllPagesShowing
+		{
+			add { Events.AddHandler(eventAllPagesShowing, value); }
+			remove { Events.RemoveHandler(eventAllPagesShowing, value); }
 		}
 		#endregion
 
@@ -230,6 +283,13 @@ namespace Havit.Web.UI.WebControls
 			RequiresDataBinding = true;
 			_cuurentlyRequiresDataBinding = true;
 		}
+
+		/// <summary>
+		/// Příznak, zda má dojít k databindingu ještě v tomto requestu.
+		/// Nastavováno (na true) v metodě SetRequiresDataBinding, vypínáno v metodě S
+		/// </summary>
+		private bool _cuurentlyRequiresDataBinding = false;
+
 		#endregion
 
 		#region Events - RowInserting, RowInserted, RowCustomizingCommandButton
@@ -270,19 +330,7 @@ namespace Havit.Web.UI.WebControls
 			{
 				Events.RemoveHandler(eventRowCustomizingCommandButton, value);
 			}
-		}
-
-		#region AllPagesShowing
-		/// <summary>
-		/// Událost, která se volá při obsluze kliknutí na tlačítko "All Pages" (tlačítko, vypínající stránkování). Dává možnost zrušit akci.
-		/// </summary>
-		[Category("Action")]
-		public event CancelEventHandler AllPagesShowing
-		{
-			add { Events.AddHandler(eventAllPagesShowing, value); }
-			remove { Events.RemoveHandler(eventAllPagesShowing, value); }
-		} 
-		#endregion
+		}		
 
 		#region AllPagesShown
 		/// <summary>
@@ -303,24 +351,22 @@ namespace Havit.Web.UI.WebControls
 		private static readonly object eventAllPagesShown = new object();
 		#endregion
 
-		#region InsertIndex
+		#region CreateChildControls
 		/// <summary>
-		/// Index řádku (RowIndex) vkládaného prvku. Pokud nejsme v insert módu, je -1.
+		/// Creates the control hierarchy used to render the <see cref="T:System.Web.UI.WebControls.GridView"/> control using the specified data source.
 		/// </summary>
-		public int InsertIndex
+		/// <returns>
+		/// The number of rows created.
+		/// </returns>
+		/// <param name="dataSource">An <see cref="T:System.Collections.IEnumerable"/> that contains the data source for the <see cref="T:System.Web.UI.WebControls.GridView"/> control. </param><param name="dataBinding">true to indicate that the child controls are bound to data; otherwise, false. </param><exception cref="T:System.Web.HttpException"><paramref name="dataSource"/> returns a null <see cref="T:System.Web.UI.DataSourceView"/>.-or-<paramref name="dataSource"/> does not implement the <see cref="T:System.Collections.ICollection"/> interface and cannot return a <see cref="P:System.Web.UI.DataSourceSelectArguments.TotalRowCount"/>. -or-<see cref="P:System.Web.UI.WebControls.GridView.AllowPaging"/> is true and <paramref name="dataSource"/> does not implement the <see cref="T:System.Collections.ICollection"/> interface and cannot perform data source paging.-or-<paramref name="dataSource"/> does not implement the <see cref="T:System.Collections.ICollection"/> interface and <paramref name="dataBinding"/> is set to false.</exception>
+		protected override int CreateChildControls(IEnumerable dataSource, bool dataBinding)
 		{
-			get
-			{
-				return insertRowIndex;
-			}
+			string originalEmptyDataText = this.EmptyDataText;
+			EmptyDataText = HttpUtilityExt.GetResourceString(EmptyDataText);
+			int result = base.CreateChildControls(dataSource, dataBinding);
+			EmptyDataText = originalEmptyDataText;
+			return result;
 		}
-		#endregion
-
-		#region insertRowIndex (private)
-		/// <summary>
-		/// Skutečný index InsertRow na stránce.
-		/// </summary>
-		private int insertRowIndex = -1;
 		#endregion
 
 		#region Constructor
@@ -992,57 +1038,6 @@ namespace Havit.Web.UI.WebControls
 				h(this, e);
 			}
 		}
-		#endregion
-
-		#region PagerSettingsShowAllPagesButton
-		/// <summary>
-		/// Povoluje/zakazuje zobrazení tlačítka pro vypnutí stránkování.
-		/// </summary>
-		public bool PagerSettingsShowAllPagesButton
-		{
-			get
-			{
-				return (bool)(ViewState["PagerSettingsShowAllPagesButton"] ?? false);
-			}
-			set
-			{
-				ViewState["PagerSettingsShowAllPagesButton"] = value;
-			}
-		} 
-		#endregion
-
-		#region PagerSettingsAllPagesButtonText
-		/// <summary>
-		/// Text tlačítka pro vypnutí stránkování. Pokud je nastaveno PagerSettingsAllPagesButtonImageUrl, má toto přednost a tlačítko bude obrázkové.
-		/// </summary>
-		public string PagerSettingsAllPagesButtonText
-		{
-			get
-			{
-				return (string)ViewState["PagerSettingsAllPagesButtonText"] ?? "*";
-			}
-			set
-			{
-				ViewState["PagerSettingsAllPagesButtonText"] = value;
-			}
-		} 
-		#endregion
-
-		#region PagerSettingsAllPagesButtonImageUrl
-		/// <summary>
-		/// ImageUrl tlačítka pro vypnutí stránkování. Má přednost před PagerSettingsAllPagesButtonText.
-		/// </summary>
-		public string PagerSettingsAllPagesButtonImageUrl
-		{
-			get
-			{
-				return (string)ViewState["PagerSettingsAllPagesButtonImageUrl"];
-			}
-			set
-			{
-				ViewState["PagerSettingsAllPagesButtonImageUrl"] = value;
-			}
-		} 
 		#endregion
 
 		#region InitializePager

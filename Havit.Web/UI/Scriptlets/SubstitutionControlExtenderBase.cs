@@ -11,6 +11,20 @@ namespace Havit.Web.UI.Scriptlets
 	/// </summary>
 	public abstract class SubstitutionControlExtenderBase : IControlExtender
 	{
+		#region GetPriorityValue (virtual)
+		/// <summary>
+		/// Vrátí hodnotu priority ControlExtenderu, která se použije, pokud je 
+		/// ControlExtender použitelný pro zpracování controlu.
+		/// </summary>
+		protected virtual int GetPriorityValue
+		{
+			get
+			{
+				return 100;
+			}
+		}
+		#endregion
+
 		#region GetPriority
 		/// <summary>
 		/// Vrací priotitu vhodnosti extenderu pro zpracování controlu.
@@ -50,20 +64,6 @@ namespace Havit.Web.UI.Scriptlets
 		{
 			Control substitutedControl = GetSubstitutedControl(control);
 			parameter.Scriptlet.ControlExtenderRepository.FindControlExtender(substitutedControl).GetDetachEventsScript(parameterPrefix, parameter, substitutedControl, scriptletFunctionCallDelegate, scriptBuilder);
-		}
-		#endregion
-
-		#region GetPriorityValue (virtual)
-		/// <summary>
-		/// Vrátí hodnotu priority ControlExtenderu, která se použije, pokud je 
-		/// ControlExtender použitelný pro zpracování controlu.
-		/// </summary>
-		protected virtual int GetPriorityValue
-		{
-			get
-			{
-				return 100;
-			}
 		}
 		#endregion
 

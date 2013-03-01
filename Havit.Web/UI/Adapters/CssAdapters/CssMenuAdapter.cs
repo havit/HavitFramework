@@ -21,39 +21,44 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 	/// </remarks>
 	public class CssMenuAdapter : System.Web.UI.WebControls.Adapters.MenuAdapter
     {
-        private WebControlAdapterExtender _extender = null;
-        private WebControlAdapterExtender Extender
-        {
-            get
-            {
-                if (((_extender == null) && (Control != null)) ||
-                    ((_extender != null) && (Control != _extender.AdaptedControl)))
-                {
-                    _extender = new WebControlAdapterExtender(Control);
-                }
+		#region Extender
+		private WebControlAdapterExtender Extender
+		{
+			get
+			{
+				if (((_extender == null) && (Control != null)) ||
+					((_extender != null) && (Control != _extender.AdaptedControl)))
+				{
+					_extender = new WebControlAdapterExtender(Control);
+				}
 
-                System.Diagnostics.Debug.Assert(_extender != null, "CSS Friendly adapters internal error", "Null extender instance");
-                return _extender;
-            }
-        }
+				System.Diagnostics.Debug.Assert(_extender != null, "CSS Friendly adapters internal error", "Null extender instance");
+				return _extender;
+			}
+		}
+		private WebControlAdapterExtender _extender = null;
+		#endregion
 
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
+		#region OnInit
+		protected override void OnInit(EventArgs e)
+		{
+			base.OnInit(e);
 
-            if (Extender.AdapterEnabled)
-            {
-                RegisterScripts();
+			if (Extender.AdapterEnabled)
+			{
+				RegisterScripts();
 				RegisterStyles();
-            }
-        }
+			}
+		}
+		#endregion
 
-        private void RegisterScripts()
-        {
-            Extender.RegisterScripts();
+		#region RegisterScripts
+		private void RegisterScripts()
+		{
+			Extender.RegisterScripts();
 
 			Page.ClientScript.RegisterClientScriptResource(typeof(CssMenuAdapter), "Havit.Web.UI.Adapters.CssAdapters.CssMenuAdapter.js");
-			
+
 			//string folderPath = WebConfigurationManager.AppSettings.Get("CSSFriendly-JavaScript-Path");
 			//if (String.IsNullOrEmpty(folderPath))
 			//{
@@ -61,8 +66,10 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 			//}
 			//string filePath = folderPath.EndsWith("/") ? folderPath + "MenuAdapter.js" : folderPath + "/MenuAdapter.js";
 			//Page.ClientScript.RegisterClientScriptInclude(GetType(), GetType().ToString(), Page.ResolveUrl(filePath));
-        }
+		}
+		#endregion
 
+		#region RegisterStyles
 		private void RegisterStyles()
 		{
 			HttpContext context = HttpContext.Current;
@@ -92,284 +99,307 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				}
 			}
 		}
+		#endregion
 
-        protected override void RenderBeginTag(HtmlTextWriter writer)
-        {
-            if (Extender.AdapterEnabled)
-            {
-                Extender.RenderBeginTag(writer, "AspNet-Menu-" + Control.Orientation.ToString());
-            }
-            else
-            {
-                base.RenderBeginTag(writer);
-            }
-        }
+		#region RenderBeginTag
+		protected override void RenderBeginTag(HtmlTextWriter writer)
+		{
+			if (Extender.AdapterEnabled)
+			{
+				Extender.RenderBeginTag(writer, "AspNet-Menu-" + Control.Orientation.ToString());
+			}
+			else
+			{
+				base.RenderBeginTag(writer);
+			}
+		}
+		#endregion
 
-        protected override void RenderEndTag(HtmlTextWriter writer)
-        {
-            if (Extender.AdapterEnabled)
-            {
-                Extender.RenderEndTag(writer);
-            }
-            else
-            {
-                base.RenderEndTag(writer);
-            }
-        }
+		#region RenderEndTag
+		protected override void RenderEndTag(HtmlTextWriter writer)
+		{
+			if (Extender.AdapterEnabled)
+			{
+				Extender.RenderEndTag(writer);
+			}
+			else
+			{
+				base.RenderEndTag(writer);
+			}
+		}
+		#endregion
 
-        protected override void RenderContents(HtmlTextWriter writer)
-        {
-            if (Extender.AdapterEnabled)
-            {
-                writer.Indent++;
-                BuildItems(Control.Items, true, writer);
-                writer.Indent--;
-                writer.WriteLine();
-            }
-            else
-            {
-                base.RenderContents(writer);
-            }
-        }
+		#region RenderContents
+		protected override void RenderContents(HtmlTextWriter writer)
+		{
+			if (Extender.AdapterEnabled)
+			{
+				writer.Indent++;
+				BuildItems(Control.Items, true, writer);
+				writer.Indent--;
+				writer.WriteLine();
+			}
+			else
+			{
+				base.RenderContents(writer);
+			}
+		}
+		#endregion
 
-        private void BuildItems(MenuItemCollection items, bool isRoot, HtmlTextWriter writer)
-        {
-            if (items.Count > 0)
-            {
-                writer.WriteLine();
+		#region BuildItems
+		private void BuildItems(MenuItemCollection items, bool isRoot, HtmlTextWriter writer)
+		{
+			if (items.Count > 0)
+			{
+				writer.WriteLine();
 
-                writer.WriteBeginTag("ul");
-                if (isRoot)
-                {
-                    writer.WriteAttribute("class", "AspNet-Menu");
+				writer.WriteBeginTag("ul");
+				if (isRoot)
+				{
+					writer.WriteAttribute("class", "AspNet-Menu");
 					writer.WriteAttribute("disappearAfter", ((Menu)Control).DisappearAfter.ToString()); // render desapperAfter attribute
-                }
-                writer.Write(HtmlTextWriter.TagRightChar);
-                writer.Indent++;
-                               
-                foreach (MenuItem item in items)
-                {
-                    BuildItem(item, writer);
-                }
+				}
+				writer.Write(HtmlTextWriter.TagRightChar);
+				writer.Indent++;
 
-                writer.Indent--;
-                writer.WriteLine();
-                writer.WriteEndTag("ul");
-            }
-        }
+				foreach (MenuItem item in items)
+				{
+					BuildItem(item, writer);
+				}
 
-        private void BuildItem(MenuItem item, HtmlTextWriter writer)
-        {
-            Menu menu = Control as Menu;
-            if ((menu != null) && (item != null) && (writer != null))
-            {
-                writer.WriteLine();
-                writer.WriteBeginTag("li");
+				writer.Indent--;
+				writer.WriteLine();
+				writer.WriteEndTag("ul");
+			}
+		}
+		#endregion
 
-                string theClass = (item.ChildItems.Count > 0) ? "AspNet-Menu-WithChildren" : "AspNet-Menu-Leaf";
-                string selectedStatusClass = GetSelectStatusClass(item);
-                if (!String.IsNullOrEmpty(selectedStatusClass))
-                {
-                    theClass += " " + selectedStatusClass;
-                }
-                writer.WriteAttribute("class", theClass);
+		#region BuildItem
+		private void BuildItem(MenuItem item, HtmlTextWriter writer)
+		{
+			Menu menu = Control as Menu;
+			if ((menu != null) && (item != null) && (writer != null))
+			{
+				writer.WriteLine();
+				writer.WriteBeginTag("li");
 
-                writer.Write(HtmlTextWriter.TagRightChar);
-                writer.Indent++;
-                writer.WriteLine();
+				string theClass = (item.ChildItems.Count > 0) ? "AspNet-Menu-WithChildren" : "AspNet-Menu-Leaf";
+				string selectedStatusClass = GetSelectStatusClass(item);
+				if (!String.IsNullOrEmpty(selectedStatusClass))
+				{
+					theClass += " " + selectedStatusClass;
+				}
+				writer.WriteAttribute("class", theClass);
 
-                if (((item.Depth < menu.StaticDisplayLevels) && (menu.StaticItemTemplate != null)) ||
-                    ((item.Depth >= menu.StaticDisplayLevels) && (menu.DynamicItemTemplate != null)))
-                {
-                    writer.WriteBeginTag("div");
-                    writer.WriteAttribute("class", GetItemClass(menu, item));
-                    writer.Write(HtmlTextWriter.TagRightChar);
-                    writer.Indent++;
-                    writer.WriteLine();
+				writer.Write(HtmlTextWriter.TagRightChar);
+				writer.Indent++;
+				writer.WriteLine();
 
-                    MenuItemTemplateContainer container = new MenuItemTemplateContainer(menu.Items.IndexOf(item), item);
-                    if ((item.Depth < menu.StaticDisplayLevels) && (menu.StaticItemTemplate != null))
-                    {						
-                        menu.StaticItemTemplate.InstantiateIn(container);
-                    }
-                    else
-                    {
-                        menu.DynamicItemTemplate.InstantiateIn(container);
-                    }
-                    container.DataBind();
-                    container.RenderControl(writer);
+				if (((item.Depth < menu.StaticDisplayLevels) && (menu.StaticItemTemplate != null)) ||
+					((item.Depth >= menu.StaticDisplayLevels) && (menu.DynamicItemTemplate != null)))
+				{
+					writer.WriteBeginTag("div");
+					writer.WriteAttribute("class", GetItemClass(menu, item));
+					writer.Write(HtmlTextWriter.TagRightChar);
+					writer.Indent++;
+					writer.WriteLine();
 
-                    writer.Indent--;
-                    writer.WriteLine();
-                    writer.WriteEndTag("div");
-                }
-                else
-                {
-                    if (IsLink(item))
-                    {
-                        writer.WriteBeginTag("a");
-                        if (!String.IsNullOrEmpty(item.NavigateUrl))
-                        {
-                            writer.WriteAttribute("href", Page.Server.HtmlEncode(menu.ResolveClientUrl(item.NavigateUrl)));
-                        }
-                        else
-                        {
-                            writer.WriteAttribute("href", Page.ClientScript.GetPostBackClientHyperlink(menu, "b" + item.ValuePath.Replace(menu.PathSeparator.ToString(), "\\"), true));
-                        }
+					MenuItemTemplateContainer container = new MenuItemTemplateContainer(menu.Items.IndexOf(item), item);
+					if ((item.Depth < menu.StaticDisplayLevels) && (menu.StaticItemTemplate != null))
+					{
+						menu.StaticItemTemplate.InstantiateIn(container);
+					}
+					else
+					{
+						menu.DynamicItemTemplate.InstantiateIn(container);
+					}
+					container.DataBind();
+					container.RenderControl(writer);
 
-                        writer.WriteAttribute("class", GetItemClass(menu, item));
-                        WebControlAdapterExtender.WriteTargetAttribute(writer, item.Target);
+					writer.Indent--;
+					writer.WriteLine();
+					writer.WriteEndTag("div");
+				}
+				else
+				{
+					if (IsLink(item))
+					{
+						writer.WriteBeginTag("a");
+						if (!String.IsNullOrEmpty(item.NavigateUrl))
+						{
+							writer.WriteAttribute("href", Page.Server.HtmlEncode(menu.ResolveClientUrl(item.NavigateUrl)));
+						}
+						else
+						{
+							writer.WriteAttribute("href", Page.ClientScript.GetPostBackClientHyperlink(menu, "b" + item.ValuePath.Replace(menu.PathSeparator.ToString(), "\\"), true));
+						}
 
-                        if (!String.IsNullOrEmpty(item.ToolTip))
-                        {
-                            writer.WriteAttribute("title", item.ToolTip);
-                        }
-                        else if (!String.IsNullOrEmpty(menu.ToolTip))
-                        {
-                            writer.WriteAttribute("title", menu.ToolTip);
-                        }
-                        writer.Write(HtmlTextWriter.TagRightChar);
-                        writer.Indent++;
-                        writer.WriteLine();
-                    }
-                    else
-                    {
-                        writer.WriteBeginTag("span");
-                        writer.WriteAttribute("class", GetItemClass(menu, item));
-                        writer.Write(HtmlTextWriter.TagRightChar);
-                        writer.Indent++;
-                        writer.WriteLine();
-                    }
+						writer.WriteAttribute("class", GetItemClass(menu, item));
+						WebControlAdapterExtender.WriteTargetAttribute(writer, item.Target);
 
-                    if (!String.IsNullOrEmpty(item.ImageUrl))
-                    {
-                        writer.WriteBeginTag("img");
-                        writer.WriteAttribute("src", menu.ResolveClientUrl(item.ImageUrl));
-                        writer.WriteAttribute("alt", !String.IsNullOrEmpty(item.ToolTip) ? item.ToolTip : (!String.IsNullOrEmpty(menu.ToolTip) ? menu.ToolTip : item.Text));
-                        writer.Write(HtmlTextWriter.SelfClosingTagEnd);
-                    }
+						if (!String.IsNullOrEmpty(item.ToolTip))
+						{
+							writer.WriteAttribute("title", item.ToolTip);
+						}
+						else if (!String.IsNullOrEmpty(menu.ToolTip))
+						{
+							writer.WriteAttribute("title", menu.ToolTip);
+						}
+						writer.Write(HtmlTextWriter.TagRightChar);
+						writer.Indent++;
+						writer.WriteLine();
+					}
+					else
+					{
+						writer.WriteBeginTag("span");
+						writer.WriteAttribute("class", GetItemClass(menu, item));
+						writer.Write(HtmlTextWriter.TagRightChar);
+						writer.Indent++;
+						writer.WriteLine();
+					}
 
-                    writer.Write(item.Text);
+					if (!String.IsNullOrEmpty(item.ImageUrl))
+					{
+						writer.WriteBeginTag("img");
+						writer.WriteAttribute("src", menu.ResolveClientUrl(item.ImageUrl));
+						writer.WriteAttribute("alt", !String.IsNullOrEmpty(item.ToolTip) ? item.ToolTip : (!String.IsNullOrEmpty(menu.ToolTip) ? menu.ToolTip : item.Text));
+						writer.Write(HtmlTextWriter.SelfClosingTagEnd);
+					}
 
-                    if (IsLink(item))
-                    {
-                        writer.Indent--;
-                        writer.WriteEndTag("a");
-                    }
-                    else
-                    {
-                        writer.Indent--;
-                        writer.WriteEndTag("span");
-                    }
+					writer.Write(item.Text);
 
-                }
+					if (IsLink(item))
+					{
+						writer.Indent--;
+						writer.WriteEndTag("a");
+					}
+					else
+					{
+						writer.Indent--;
+						writer.WriteEndTag("span");
+					}
 
-                if ((item.ChildItems != null) && (item.ChildItems.Count > 0))
-                {
-                    BuildItems(item.ChildItems, false, writer);
-                }
+				}
 
-                writer.Indent--;
-                writer.WriteLine();
-                writer.WriteEndTag("li");
-            }
-        }
+				if ((item.ChildItems != null) && (item.ChildItems.Count > 0))
+				{
+					BuildItems(item.ChildItems, false, writer);
+				}
 
-        private bool IsLink(MenuItem item)
-        {
-            return (item != null) && item.Enabled && ((!String.IsNullOrEmpty(item.NavigateUrl)) || item.Selectable);
-        }
+				writer.Indent--;
+				writer.WriteLine();
+				writer.WriteEndTag("li");
+			}
+		}
+		#endregion
 
-        private string GetItemClass(Menu menu, MenuItem item)
-        {
-            string value = "AspNet-Menu-NonLink";
-            if (item != null)
-            {
-                if (((item.Depth < menu.StaticDisplayLevels) && (menu.StaticItemTemplate != null)) ||
-                    ((item.Depth >= menu.StaticDisplayLevels) && (menu.DynamicItemTemplate != null)))
-                {
-                    value = "AspNet-Menu-Template";
-                }
-                else if (IsLink(item))
-                {
-                    value = "AspNet-Menu-Link";
-                }
-                string selectedStatusClass = GetSelectStatusClass(item);
-                if (!String.IsNullOrEmpty(selectedStatusClass))
-                {
-                    value += " " + selectedStatusClass;
-                }
-            }
-            return value;
-        }
+		#region IsLink
+		private bool IsLink(MenuItem item)
+		{
+			return (item != null) && item.Enabled && ((!String.IsNullOrEmpty(item.NavigateUrl)) || item.Selectable);
+		}
+		#endregion
 
-        private string GetSelectStatusClass(MenuItem item)
-        {
-            string value = "";
-            if (item.Selected)
-            {
-                value += " AspNet-Menu-Selected";
-            }
-            else if (IsChildItemSelected(item))
-            {
-                value += " AspNet-Menu-ChildSelected";
-            }
-            else if (IsParentItemSelected(item))
-            {
-                value += " AspNet-Menu-ParentSelected";
-            }
-            return value;
-        }
+		#region GetItemClass
+		private string GetItemClass(Menu menu, MenuItem item)
+		{
+			string value = "AspNet-Menu-NonLink";
+			if (item != null)
+			{
+				if (((item.Depth < menu.StaticDisplayLevels) && (menu.StaticItemTemplate != null)) ||
+					((item.Depth >= menu.StaticDisplayLevels) && (menu.DynamicItemTemplate != null)))
+				{
+					value = "AspNet-Menu-Template";
+				}
+				else if (IsLink(item))
+				{
+					value = "AspNet-Menu-Link";
+				}
+				string selectedStatusClass = GetSelectStatusClass(item);
+				if (!String.IsNullOrEmpty(selectedStatusClass))
+				{
+					value += " " + selectedStatusClass;
+				}
+			}
+			return value;
+		}
+		#endregion
 
-        private bool IsChildItemSelected(MenuItem item)
-        {
-            bool bRet = false;
+		#region GetSelectStatusClass
+		private string GetSelectStatusClass(MenuItem item)
+		{
+			string value = "";
+			if (item.Selected)
+			{
+				value += " AspNet-Menu-Selected";
+			}
+			else if (IsChildItemSelected(item))
+			{
+				value += " AspNet-Menu-ChildSelected";
+			}
+			else if (IsParentItemSelected(item))
+			{
+				value += " AspNet-Menu-ParentSelected";
+			}
+			return value;
+		}
+		#endregion
 
-            if ((item != null) && (item.ChildItems != null))
-            {
-                bRet = IsChildItemSelected(item.ChildItems);
-            }
+		#region IsChildItemSelected
+		private bool IsChildItemSelected(MenuItem item)
+		{
+			bool bRet = false;
 
-            return bRet;
-        }
+			if ((item != null) && (item.ChildItems != null))
+			{
+				bRet = IsChildItemSelected(item.ChildItems);
+			}
 
-        private bool IsChildItemSelected(MenuItemCollection items)
-        {
-            bool bRet = false;
+			return bRet;
+		}
+		#endregion
 
-            if (items != null)
-            {
-                foreach (MenuItem item in items)
-                {
-                    if (item.Selected || IsChildItemSelected(item.ChildItems))
-                    {
-                        bRet = true;
-                        break;
-                    }
-                }
-            }
+		#region IsChildItemSelected
+		private bool IsChildItemSelected(MenuItemCollection items)
+		{
+			bool bRet = false;
 
-            return bRet;
-        }
+			if (items != null)
+			{
+				foreach (MenuItem item in items)
+				{
+					if (item.Selected || IsChildItemSelected(item.ChildItems))
+					{
+						bRet = true;
+						break;
+					}
+				}
+			}
 
-        private bool IsParentItemSelected(MenuItem item)
-        {
-            bool bRet = false;
+			return bRet;
+		}
+		#endregion
 
-            if ((item != null) && (item.Parent != null))
-            {
-                if (item.Parent.Selected)
-                {
-                    bRet = true;
-                }
-                else
-                {
-                    bRet = IsParentItemSelected(item.Parent);
-                }
-            }
+		#region IsParentItemSelected
+		private bool IsParentItemSelected(MenuItem item)
+		{
+			bool bRet = false;
 
-            return bRet;
-        }
+			if ((item != null) && (item.Parent != null))
+			{
+				if (item.Parent.Selected)
+				{
+					bRet = true;
+				}
+				else
+				{
+					bRet = IsParentItemSelected(item.Parent);
+				}
+			}
+
+			return bRet;
+		}
+		#endregion
     }
 }
 #pragma warning restore 1591

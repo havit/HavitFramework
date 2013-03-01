@@ -11,29 +11,35 @@ namespace WebApplicationTest
 {
 	public class Global : System.Web.HttpApplication
 	{
-		private SpecialDateCustomization specialDatesDefault;
-
+		#region Application_Start
 		protected void Application_Start(object sender, EventArgs e)
 		{
-			
+
 			DateTimeBox.GetDateTimeBoxCustomizationDefault += new DateTimeBox.DateTimeBoxDateCustomizationEventHandler(DateTimeBox_GetDateTimeBoxCustomizationDefaults);
 
 		}
+		#endregion
 
+		#region Session_Start
 		protected void Session_Start(object sender, EventArgs e)
 		{
 
 		}
+		#endregion
 
+		#region Application_BeginRequest
 		protected void Application_BeginRequest(object sender, EventArgs e)
 		{
 
 		}
+		#endregion
 
+		#region Application_AuthenticateRequest
 		protected void Application_AuthenticateRequest(object sender, EventArgs e)
 		{
 
 		}
+		#endregion
 
 		#region Application_Error
 		private void Application_Error(object sender, EventArgs e)
@@ -47,16 +53,21 @@ namespace WebApplicationTest
 		}
 		#endregion
 
+		#region Session_End
 		protected void Session_End(object sender, EventArgs e)
 		{
 
 		}
+		#endregion
 
+		#region Application_End
 		protected void Application_End(object sender, EventArgs e)
 		{
 
 		}
+		#endregion
 
+		#region DateTimeBox_GetDateTimeBoxCustomizationDefaults
 		private void DateTimeBox_GetDateTimeBoxCustomizationDefaults(object sender, DateTimeBoxDateCustomizationEventArgs args)
 		{
 			if (specialDatesDefault == null)
@@ -83,5 +94,7 @@ namespace WebApplicationTest
 			}
 			args.DateCustomization = specialDatesDefault;
 		}
+		private SpecialDateCustomization specialDatesDefault;
+		#endregion
 	}
 }

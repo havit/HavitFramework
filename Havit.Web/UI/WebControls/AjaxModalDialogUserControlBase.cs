@@ -12,7 +12,6 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class AjaxModalDialogUserControlBase : UserControl
 	{
-
 		#region MainWebModalDialog
 		/// <summary>
 		/// Zapouzdřený AjaxModalDialog.
@@ -27,49 +26,6 @@ namespace Havit.Web.UI.WebControls
 		private AjaxModalDialog _mainAjaxModalDialog;
 		#endregion
 
-		#region Constructor
-		/// <summary>
-		/// Konstruktor.
-		/// </summary>
-		public AjaxModalDialogUserControlBase()
-		{
-			_mainAjaxModalDialog = new AjaxModalDialog();
-		}
-		#endregion
-
-		#region FrameworkInitialize, AddParsedSubObject
-		/// <summary>
-		/// FrameworkInitialize.
-		/// </summary>
-		protected override void FrameworkInitialize()
-		{
-			base.FrameworkInitialize();
-			this.Controls.Add(MainAjaxModalDialog);
-		}
-
-		/// <summary>
-		/// Zajišťuje, aby se controly user controlu nevkládaly do kolece controls tohoto usercontrolu,
-		/// ale do kolekce controlů MainWebModalDialog. Nedochází tak k žádnému přehazování controls ve stromu controlů, apod.
-		/// </summary>
-		protected override void AddParsedSubObject(object obj)
-		{
-			MainAjaxModalDialog.ContentTemplateContainer.Controls.Add((Control)obj);
-		}
-		#endregion
-
-		#region OnInit
-		/// <summary>
-		/// OnInit.
-		/// </summary>
-		protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
-
-			MainAjaxModalDialog.DialogShown += new EventHandler(MainWebModalDialog_DialogShown);
-			MainAjaxModalDialog.DialogHidden += new EventHandler(MainWebModalDialog_DialogHidden);
-		}
-		#endregion
-		
 		#region DialogVisible
 		/// <summary>
 		/// Udává, zda je dialog viditelný.
@@ -115,6 +71,63 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region Triggers
+		/// <summary>
+		/// Triggery zapouzdřeného UpdatePanelu.
+		/// </summary>
+		[PersistenceMode(PersistenceMode.InnerProperty)]
+		public UpdatePanelTriggerCollection Triggers
+		{
+			get
+			{
+				return MainAjaxModalDialog.Triggers;
+			}
+		}
+		#endregion
+
+		#region Constructor
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
+		public AjaxModalDialogUserControlBase()
+		{
+			_mainAjaxModalDialog = new AjaxModalDialog();
+		}
+		#endregion
+
+		#region FrameworkInitialize, AddParsedSubObject
+		/// <summary>
+		/// FrameworkInitialize.
+		/// </summary>
+		protected override void FrameworkInitialize()
+		{
+			base.FrameworkInitialize();
+			this.Controls.Add(MainAjaxModalDialog);
+		}
+
+		/// <summary>
+		/// Zajišťuje, aby se controly user controlu nevkládaly do kolece controls tohoto usercontrolu,
+		/// ale do kolekce controlů MainWebModalDialog. Nedochází tak k žádnému přehazování controls ve stromu controlů, apod.
+		/// </summary>
+		protected override void AddParsedSubObject(object obj)
+		{
+			MainAjaxModalDialog.ContentTemplateContainer.Controls.Add((Control)obj);
+		}
+		#endregion
+
+		#region OnInit
+		/// <summary>
+		/// OnInit.
+		/// </summary>
+		protected override void OnInit(EventArgs e)
+		{
+			base.OnInit(e);
+
+			MainAjaxModalDialog.DialogShown += new EventHandler(MainWebModalDialog_DialogShown);
+			MainAjaxModalDialog.DialogHidden += new EventHandler(MainWebModalDialog_DialogHidden);
+		}
+		#endregion
+		
 		#region DialogShown, DialogHidden
 		/// <summary>
 		/// Událost oznamující zobrazení dialogu.
@@ -175,20 +188,6 @@ namespace Havit.Web.UI.WebControls
 			if (DialogHidden != null)
 			{
 				DialogHidden(this, eventArgs);
-			}
-		}
-		#endregion
-		
-		#region Triggers
-		/// <summary>
-		/// Triggery zapouzdřeného UpdatePanelu.
-		/// </summary>
-		[PersistenceMode(PersistenceMode.InnerProperty)]
-		public UpdatePanelTriggerCollection Triggers
-		{
-			get
-			{
-				return MainAjaxModalDialog.Triggers;
 			}
 		}
 		#endregion

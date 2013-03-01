@@ -29,7 +29,8 @@ namespace Havit.Web.UI.WebControls
     
 	public class AutoSuggestMenu : WebControl, INamingContainer
 	{
-        private string _targetControlID;
+		#region Private fields
+		private string _targetControlID;
 		private AutoSuggestMenuMode _mode = AutoSuggestMenuMode.Classic;
 		private string _messageOnClearText;
 		private bool _autoPostBack = false;
@@ -57,6 +58,7 @@ namespace Havit.Web.UI.WebControls
 
 	    //Internal
         private HiddenField _hdnSelectedValue;
+		#endregion
 
 		#region Class Properties
 		public AutoSuggestMenuMode Mode
@@ -199,6 +201,7 @@ namespace Havit.Web.UI.WebControls
         }
 		#endregion
 
+		#region ServicePath
 		/// <summary>
 		/// Cesta k webové službě, která má být přilinkována.
 		/// </summary>
@@ -214,119 +217,128 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		private string _servicePath;
+		#endregion
 
-        /// <summary>Initializes new instance of AutoSuggestMenu/// </summary>
-        /// <remarks>Wire the events so the control can participate in them</remarks>
-        public AutoSuggestMenu()
-        {
-            //Set Defaults
-            _minSuggestChars = 1;
-            _maxSuggestChars = 999;
-            
+		#region Constructor
+		/// <summary>Initializes new instance of AutoSuggestMenu/// </summary>
+		/// <remarks>Wire the events so the control can participate in them</remarks>
+		public AutoSuggestMenu()
+		{
+			//Set Defaults
+			_minSuggestChars = 1;
+			_maxSuggestChars = 999;
+
 			//_resourcesDir = "~/asm_includes";
 
-            //Number of milliseconds to wait before returning Suggestions div
-            //Makes control more efficient
-            _keyPressDelay = 300;
+			//Number of milliseconds to wait before returning Suggestions div
+			//Makes control more efficient
+			_keyPressDelay = 300;
 
-            _usePaging = true;
-            _pageSize = 10;			
-      
-            this.CssClass = "asmMenu";
+			_usePaging = true;
+			_pageSize = 10;
 
-            _menuItemCssClass = "asmMenuItem";
-            _selMenuItemCssClass = "asmSelMenuItem";
-            _navigationLinkCssClass = "asmNavigationLink";
+			this.CssClass = "asmMenu";
 
-            _updateTextBoxOnUpDown = true;
-            _useIFrame = true;
+			_menuItemCssClass = "asmMenuItem";
+			_selMenuItemCssClass = "asmSelMenuItem";
+			_navigationLinkCssClass = "asmNavigationLink";
 
-            _usePageMethods = true;
-            _onGetSuggestions = "GetSuggestions";
+			_updateTextBoxOnUpDown = true;
+			_useIFrame = true;
 
-            this.Attributes["autocomplete"] = "off";
-        }
+			_usePageMethods = true;
+			_onGetSuggestions = "GetSuggestions";
 
-        /// <summary>This member overrides <see cref="Control.CreateChildControls"/></summary>
-        protected override void CreateChildControls()
-        {
-            _hdnSelectedValue = new HiddenField();
-            _hdnSelectedValue.ID = "hdnSelectedValue";
+			this.Attributes["autocomplete"] = "off";
+		}
+		#endregion
 
-            Controls.Add(_hdnSelectedValue);
-        }
+		#region CreateChildControls
+		/// <summary>This member overrides <see cref="Control.CreateChildControls"/></summary>
+		protected override void CreateChildControls()
+		{
+			_hdnSelectedValue = new HiddenField();
+			_hdnSelectedValue.ID = "hdnSelectedValue";
 
+			Controls.Add(_hdnSelectedValue);
+		}
+		#endregion
+
+		#region LoadViewState
 		/// <summary>This member overrides <see cref="Control.LoadViewState"/></summary>
 		/// <remarks>Loads date from view-state saved in previous page into date control properties</remarks>
-		protected override void LoadViewState(object savedState) 
+		protected override void LoadViewState(object savedState)
 		{
 			base.LoadViewState(savedState);
-             
-            _targetControlID            = (string)ViewState["TargetControlID"];
-			_mode						= (AutoSuggestMenuMode)ViewState["Mode"];
-			_autoPostBack				= (bool)ViewState["AutoPostBack"];
-			 _minSuggestChars            = (int)ViewState["MinSuggestChars"];
-             _maxSuggestChars = (int)ViewState["MaxSuggestChars"];
-           
-			_keyPressDelay			    = (int)ViewState["KeyPressDelay"];
-			_usePaging          	    = (bool)ViewState["UsePaging"];
-			_pageSize           	    = (int)ViewState["PageSize"];
-			_context					= (string)ViewState["Context"];
 
-            _maxHeight                  = (Unit)ViewState["MaxHeight"];
+			_targetControlID = (string)ViewState["TargetControlID"];
+			_mode = (AutoSuggestMenuMode)ViewState["Mode"];
+			_autoPostBack = (bool)ViewState["AutoPostBack"];
+			_minSuggestChars = (int)ViewState["MinSuggestChars"];
+			_maxSuggestChars = (int)ViewState["MaxSuggestChars"];
 
-			_menuItemCssClass		    = (string)ViewState["MenuItemCssClass"];
-			_selMenuItemCssClass	    = (string)ViewState["SelMenuItemCssClass"];
-            _navigationLinkCssClass     = (string)ViewState["NavigationLinkCssClass"];
+			_keyPressDelay = (int)ViewState["KeyPressDelay"];
+			_usePaging = (bool)ViewState["UsePaging"];
+			_pageSize = (int)ViewState["PageSize"];
+			_context = (string)ViewState["Context"];
 
-            _updateTextBoxOnUpDown      = (bool)ViewState["UpdateTextBoxOnUpDown"];
-			_useIFrame				    = (bool)ViewState["UseIFrame"];
+			_maxHeight = (Unit)ViewState["MaxHeight"];
+
+			_menuItemCssClass = (string)ViewState["MenuItemCssClass"];
+			_selMenuItemCssClass = (string)ViewState["SelMenuItemCssClass"];
+			_navigationLinkCssClass = (string)ViewState["NavigationLinkCssClass"];
+
+			_updateTextBoxOnUpDown = (bool)ViewState["UpdateTextBoxOnUpDown"];
+			_useIFrame = (bool)ViewState["UseIFrame"];
 			//_resourcesDir			    = (string)ViewState["ResourcesDir"];
 
-            _usePageMethods             = (bool)ViewState["UsePageMethods"];
-            _onGetSuggestions           = (string)ViewState["OnGetSuggestions"];
-            _onClientTextBoxUpdate      = (string)ViewState["OnClientTextBoxUpdate"];
+			_usePageMethods = (bool)ViewState["UsePageMethods"];
+			_onGetSuggestions = (string)ViewState["OnGetSuggestions"];
+			_onClientTextBoxUpdate = (string)ViewState["OnClientTextBoxUpdate"];
 
-			_messageOnClearText			= (string)ViewState["MessageOnClearText"];
+			_messageOnClearText = (string)ViewState["MessageOnClearText"];
 
 			_servicePath = (string)ViewState["ServicePath"];
 		}
+		#endregion
 
+		#region SaveViewState
 		/// <summary>This member overrides <see cref="Control.SaveViewState"/></summary>
 		/// <remarks>Stores date control properties in view-state for future page</remarks>
 		protected override object SaveViewState()
 		{
-            ViewState["TargetControlID"]        = _targetControlID;
-			ViewState["Mode"]					= _mode;
-			ViewState["AutoPostBack"]			= _autoPostBack;
-			ViewState["MinSuggestChars"]        = _minSuggestChars;
-            ViewState["MaxSuggestChars"]        = _maxSuggestChars;
-           
-			ViewState["KeyPressDelay"]		    = _keyPressDelay;
-			ViewState["UsePaging"]		        = _usePaging;
-			ViewState["PageSize"]               = _pageSize;
-			ViewState["Context"]				= _context;
+			ViewState["TargetControlID"] = _targetControlID;
+			ViewState["Mode"] = _mode;
+			ViewState["AutoPostBack"] = _autoPostBack;
+			ViewState["MinSuggestChars"] = _minSuggestChars;
+			ViewState["MaxSuggestChars"] = _maxSuggestChars;
 
-            ViewState["MaxHeight"]              = _maxHeight;
-			
-			ViewState["MenuItemCssClass"]	    = _menuItemCssClass;
-			ViewState["SelMenuItemCssClass"]    = _selMenuItemCssClass;
-            ViewState["NavigationLinkCssClass"] = _navigationLinkCssClass;
+			ViewState["KeyPressDelay"] = _keyPressDelay;
+			ViewState["UsePaging"] = _usePaging;
+			ViewState["PageSize"] = _pageSize;
+			ViewState["Context"] = _context;
 
-            ViewState["UpdateTextBoxOnUpDown"]  = _updateTextBoxOnUpDown;
-			
-			ViewState["UseIFrame"]			    = _useIFrame;
+			ViewState["MaxHeight"] = _maxHeight;
+
+			ViewState["MenuItemCssClass"] = _menuItemCssClass;
+			ViewState["SelMenuItemCssClass"] = _selMenuItemCssClass;
+			ViewState["NavigationLinkCssClass"] = _navigationLinkCssClass;
+
+			ViewState["UpdateTextBoxOnUpDown"] = _updateTextBoxOnUpDown;
+
+			ViewState["UseIFrame"] = _useIFrame;
 			//ViewState["ResourcesDir"]		    = _resourcesDir;
 
-            ViewState["UsePageMethods"]         = _usePageMethods;
-            ViewState["OnGetSuggestions"]       = _onGetSuggestions;
-            ViewState["OnClientTextBoxUpdate"]  = _onClientTextBoxUpdate;
+			ViewState["UsePageMethods"] = _usePageMethods;
+			ViewState["OnGetSuggestions"] = _onGetSuggestions;
+			ViewState["OnClientTextBoxUpdate"] = _onClientTextBoxUpdate;
 
-			ViewState["ServicePath"]			= _servicePath;
-			ViewState["MessageOnClearText"]		= _messageOnClearText;
-			
+			ViewState["ServicePath"] = _servicePath;
+			ViewState["MessageOnClearText"] = _messageOnClearText;
+
 			return base.SaveViewState();
 		}
+		#endregion
 
 		//internal string GetAbsoluteResourcesDir()
 		//{
@@ -343,46 +355,49 @@ namespace Havit.Web.UI.WebControls
 		//    return resourcesDir;
 		//}
 
-        protected void WriteJSIncludes()
-        {
+		#region WriteJSIncludes
+		protected void WriteJSIncludes()
+		{
 			//if (!this.Page.ClientScript.IsClientScriptIncludeRegistered("AutoSuggestMenu_XUtils"))
 			//{
-				//string resourcesDir = GetAbsoluteResourcesDir();
+			//string resourcesDir = GetAbsoluteResourcesDir();
 
-				//RegisterClientScriptInclude("AutoSuggestMenu_XUtils", resourcesDir + "/XUtils.js");
-				ScriptManager.RegisterClientScriptResource(this, typeof(AutoSuggestMenu), "Havit.Web.UI.WebControls.AutoSuggestMenu.XUtils.js");
+			//RegisterClientScriptInclude("AutoSuggestMenu_XUtils", resourcesDir + "/XUtils.js");
+			ScriptManager.RegisterClientScriptResource(this, typeof(AutoSuggestMenu), "Havit.Web.UI.WebControls.AutoSuggestMenu.XUtils.js");
 
-                // RegisterClientScriptInclude("AutoSuggestMenu_Events", resourcesDir + "/Events.js");
-				ScriptManager.RegisterClientScriptResource(this, typeof(AutoSuggestMenu), "Havit.Web.UI.WebControls.AutoSuggestMenu.Events.js");
-           
-                // RegisterClientScriptInclude("AutoSuggestMenu_AutoSuggestMenu", resourcesDir + "/AutoSuggestMenu.js");
-				ScriptManager.RegisterClientScriptResource(this, typeof(AutoSuggestMenu), "Havit.Web.UI.WebControls.AutoSuggestMenu.AutoSuggestMenu.js");
-				
-				//RegisterClientScriptInclude("AutoSuggestMenu_AutoSuggestMenuItem", resourcesDir + "/AutoSuggestMenuItem.js");
-				ScriptManager.RegisterClientScriptResource(this, typeof(AutoSuggestMenu), "Havit.Web.UI.WebControls.AutoSuggestMenu.AutoSuggestMenuItem.js");
+			// RegisterClientScriptInclude("AutoSuggestMenu_Events", resourcesDir + "/Events.js");
+			ScriptManager.RegisterClientScriptResource(this, typeof(AutoSuggestMenu), "Havit.Web.UI.WebControls.AutoSuggestMenu.Events.js");
+
+			// RegisterClientScriptInclude("AutoSuggestMenu_AutoSuggestMenu", resourcesDir + "/AutoSuggestMenu.js");
+			ScriptManager.RegisterClientScriptResource(this, typeof(AutoSuggestMenu), "Havit.Web.UI.WebControls.AutoSuggestMenu.AutoSuggestMenu.js");
+
+			//RegisterClientScriptInclude("AutoSuggestMenu_AutoSuggestMenuItem", resourcesDir + "/AutoSuggestMenuItem.js");
+			ScriptManager.RegisterClientScriptResource(this, typeof(AutoSuggestMenu), "Havit.Web.UI.WebControls.AutoSuggestMenu.AutoSuggestMenuItem.js");
 			//} 
-        }
+		}
+		#endregion
 
+		#region WriteMenu
 		protected void WriteMenu()
 		{
-         	HtmlTextWriter writer = new HtmlTextWriter(new System.IO.StringWriter());
-      
-            //Javascript to associate
-            string funcName = "writeMenu_" + this.ClientID;
-            writer.WriteLine("function  " + funcName + "()");
-            writer.WriteLine("{");
-       
-            writer.WriteLine("var menu=new AutoSuggestMenu();");
+			HtmlTextWriter writer = new HtmlTextWriter(new System.IO.StringWriter());
 
-            writer.WriteLine("menu.id=\"" + this.ClientID + "\";");
+			//Javascript to associate
+			string funcName = "writeMenu_" + this.ClientID;
+			writer.WriteLine("function  " + funcName + "()");
+			writer.WriteLine("{");
 
-            string textBoxID = this.NamingContainer.FindControl(_targetControlID).ClientID;
-            writer.WriteLine("menu.textBoxID=\"" + textBoxID + "\";");
-            writer.WriteLine("menu.hiddenSelectedValueID=\"" + _hdnSelectedValue.ClientID + "\";");
+			writer.WriteLine("var menu=new AutoSuggestMenu();");
 
-            writer.WriteLine("menu.minSuggestChars=" + _minSuggestChars + ";");
+			writer.WriteLine("menu.id=\"" + this.ClientID + "\";");
+
+			string textBoxID = this.NamingContainer.FindControl(_targetControlID).ClientID;
+			writer.WriteLine("menu.textBoxID=\"" + textBoxID + "\";");
+			writer.WriteLine("menu.hiddenSelectedValueID=\"" + _hdnSelectedValue.ClientID + "\";");
+
+			writer.WriteLine("menu.minSuggestChars=" + _minSuggestChars + ";");
 			writer.WriteLine("menu.maxSuggestChars=" + _maxSuggestChars + ";");
-            writer.WriteLine("menu.keyPressDelay=" + _keyPressDelay + ";");
+			writer.WriteLine("menu.keyPressDelay=" + _keyPressDelay + ";");
 			writer.WriteLine("menu.usePaging=" + _usePaging.ToString().ToLower() + ";");
 			writer.WriteLine("menu.pageSize=\"" + _pageSize + "\";");
 			if (_context != null)
@@ -399,13 +414,13 @@ namespace Havit.Web.UI.WebControls
 
 			string jsMessageOnClearText = (HttpUtilityExt.GetResourceString((_messageOnClearText ?? String.Empty)) ?? String.Empty).Replace("\"", "\\\"");
 			writer.WriteLine("menu.messageOnClearText=\"" + jsMessageOnClearText + "\";");
-			
+
 			writer.WriteLine("menu.menuItemCssClass=\"" + _menuItemCssClass + "\";");
 			writer.WriteLine("menu.selMenuItemCssClass=\"" + _selMenuItemCssClass + "\";");
-            writer.WriteLine("menu.navigationLinkCssClass=\"" + _navigationLinkCssClass + "\";");
+			writer.WriteLine("menu.navigationLinkCssClass=\"" + _navigationLinkCssClass + "\";");
 
-            writer.WriteLine("menu.updateTextBoxOnUpDown=" + _updateTextBoxOnUpDown.ToString().ToLower() + ";");
-            writer.WriteLine("menu.useIFrame=" + _useIFrame.ToString().ToLower() + ";");
+			writer.WriteLine("menu.updateTextBoxOnUpDown=" + _updateTextBoxOnUpDown.ToString().ToLower() + ";");
+			writer.WriteLine("menu.useIFrame=" + _useIFrame.ToString().ToLower() + ";");
 
 			//writer.WriteLine("menu.resourcesDir=\"" + GetAbsoluteResourcesDir() + "\";");
 			string resourceName = "Havit.Web.UI.WebControls.AutoSuggestMenu.Blank.html";
@@ -423,7 +438,7 @@ namespace Havit.Web.UI.WebControls
 				writer.WriteLine(String.Format("menu.autoPostBackScript=\"{0}\";", Page.ClientScript.GetPostBackEventReference(this, "")));
 			}
 
-            string func = _onGetSuggestions;
+			string func = _onGetSuggestions;
 			if (_usePageMethods)
 			{
 				func = "PageMethods." + func;
@@ -437,12 +452,12 @@ namespace Havit.Web.UI.WebControls
 			}
 
 			writer.WriteLine("menu.render();");
-            writer.WriteLine("}");
+			writer.WriteLine("}");
 
-            writer.WriteLine("");
+			writer.WriteLine("");
 
-            //in IE 6.0 adding div to Body before </body> tag, but nested inside the <form> will throw "Operation Aborted error".
-            //Since RegisterClientStartupScript adds it before </form>.  Need to call the method as soon as Body is loaded. 
+			//in IE 6.0 adding div to Body before </body> tag, but nested inside the <form> will throw "Operation Aborted error".
+			//Since RegisterClientStartupScript adds it before </form>.  Need to call the method as soon as Body is loaded. 
 
 			if (IsInPartialRendering())
 			{
@@ -456,15 +471,17 @@ namespace Havit.Web.UI.WebControls
 
 			RegisterClientStartupScript("AutoSuggestMenu_" + this.UniqueID, writer.InnerWriter.ToString());
 		}
+		#endregion
 
-        protected void CheckRequiredProperties()
-        {
+		#region CheckRequiredProperties
+		protected void CheckRequiredProperties()
+		{
 			if (_targetControlID == null)
 			{
 				throw new Exception("TargetControlID property is required.");
 			}
 
-	        if (this.NamingContainer.FindControl(_targetControlID) == null)
+			if (this.NamingContainer.FindControl(_targetControlID) == null)
 			{
 				throw new Exception("Target control with ID '" + _targetControlID + "' doesn't exist");
 			}
@@ -474,30 +491,34 @@ namespace Havit.Web.UI.WebControls
 				throw new Exception("onGetSuggestions property is required.");
 			}
 
-	        //Make sure resources directory exists
+			//Make sure resources directory exists
 			//string dir=GetAbsoluteResourcesDir();
 			//dir=this.Page.Request.MapPath(dir);
 
 			//if (!System.IO.Directory.Exists(dir))
 			//    throw new Exception("ResourcesDir '" + _resourcesDir + "' doesn't exist");
-        }
+		}
+		#endregion
 
+		#region OnPreRender
 		/// <summary>
 		/// Raises the <see cref="E:System.Web.UI.Control.PreRender"/> event.
 		/// </summary>
 		/// <param name="e">An <see cref="T:System.EventArgs"/> object that contains the event data.</param>
-        protected override void OnPreRender(EventArgs e)
-        {
-            CheckRequiredProperties();
+		protected override void OnPreRender(EventArgs e)
+		{
+			CheckRequiredProperties();
 
-            base.OnPreRender(e);
+			base.OnPreRender(e);
 
 			RegisterServicePath();
-            WriteJSIncludes();
+			WriteJSIncludes();
 			RegisterStylesheets(this.Page);
 			WriteMenu();
 		}
+		#endregion
 
+		#region RegisterServicePath
 		private void RegisterServicePath()
 		{
 			if (!String.IsNullOrEmpty(this.ServicePath))
@@ -505,18 +526,22 @@ namespace Havit.Web.UI.WebControls
 				ScriptManager.GetCurrent(this.Page).Services.Add(new ServiceReference(this.ServicePath));
 			}
 		}
+		#endregion
 
+		#region Render
 		/// <summary>Renders AutoSuggestMenu to the output HTML parameter specified.</summary>
 		/// <param name="output"> The HTML writer to write out to</param>
 		protected override void Render(HtmlTextWriter output)
 		{
 			//output.WriteLine("<link href=\"" + GetAbsoluteResourcesDir() + "/AutoSuggestMenu.css\" type=\"text/css\" rel=\"stylesheet\">");
 
-            //base.Render(output);
-            
-            _hdnSelectedValue.RenderControl(output);
-		}
+			//base.Render(output);
 
+			_hdnSelectedValue.RenderControl(output);
+		}
+		#endregion
+
+		#region RegisterStylesheets
 		/// <summary>
 		/// Vytvoří do head odkaz na CSS menu.
 		/// </summary>
@@ -535,84 +560,95 @@ namespace Havit.Web.UI.WebControls
 				HttpContext.Current.Items["Havit.Web.UI.WebControls.AutoSuggestMenu.RegisterCss_registered"] = true;
 			}
 		}
+		#endregion
 
-        internal static void WriteMenuItemsToJSON(List<AutoSuggestMenuItem> menuItems, int totalResults, XJsonWriter writer)
-        {            
-            List<string> jsonMenuItems = new List<string>();
+		#region WriteMenuItemsToJSON
+		internal static void WriteMenuItemsToJSON(List<AutoSuggestMenuItem> menuItems, int totalResults, XJsonWriter writer)
+		{
+			List<string> jsonMenuItems = new List<string>();
 
-            string jsonMenuItem;
+			string jsonMenuItem;
 
-            foreach (AutoSuggestMenuItem menuItem in menuItems)
-            {
-                jsonMenuItem = menuItem.GetJSON();
-                jsonMenuItems.Add(jsonMenuItem);
-            }
+			foreach (AutoSuggestMenuItem menuItem in menuItems)
+			{
+				jsonMenuItem = menuItem.GetJSON();
+				jsonMenuItems.Add(jsonMenuItem);
+			}
 
-            writer.WriteList("menuItems", jsonMenuItems, false);
-            
-            //Add total results
-            writer.WriteNameValue("totalResults", totalResults, true);
-        }
+			writer.WriteList("menuItems", jsonMenuItems, false);
 
-        /// <summary>
-        ///     Used to send data back to browser.
-        /// </summary>
-        /// <returns>
-        /// {"MenuItems": 
-        ///   [
-        ///       {"label": "Option1", "value": "1"},
-        ///       {"label": "Option2", "value": "2"},
-        ///       {"label": "Option3", "value": "3"},
-        ///   ]
-        /// }
-        /// </returns>
-        ///
-        public static string ConvertMenuItemsToJSON(List<AutoSuggestMenuItem> menuItems, int totalResults)
-        {
-            XJsonWriter writer = new XJsonWriter();
-            WriteMenuItemsToJSON(menuItems, totalResults, writer);
-            return writer.ToString();
-        }
+			//Add total results
+			writer.WriteNameValue("totalResults", totalResults, true);
+		}
+		#endregion
+
+		#region ConvertMenuItemsToJSON
+		/// <summary>
+		///     Used to send data back to browser.
+		/// </summary>
+		/// <returns>
+		/// {"MenuItems": 
+		///   [
+		///       {"label": "Option1", "value": "1"},
+		///       {"label": "Option2", "value": "2"},
+		///       {"label": "Option3", "value": "3"},
+		///   ]
+		/// }
+		/// </returns>
+		///
+		public static string ConvertMenuItemsToJSON(List<AutoSuggestMenuItem> menuItems, int totalResults)
+		{
+			XJsonWriter writer = new XJsonWriter();
+			WriteMenuItemsToJSON(menuItems, totalResults, writer);
+			return writer.ToString();
+		}
+		#endregion
 
         //==========================================
         //Utility methods for registering javascript
         //==========================================
 
-        //Methods for handling Client Script in both scenarious - when using partial postback and when not using it
-        private bool IsInPartialRendering()
-        {
-            ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);
-            if (scriptManager != null)
-            {
-                return scriptManager.IsInAsyncPostBack;
-            }
+		#region IsInPartialRendering
+		//Methods for handling Client Script in both scenarious - when using partial postback and when not using it
+		private bool IsInPartialRendering()
+		{
+			ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);
+			if (scriptManager != null)
+			{
+				return scriptManager.IsInAsyncPostBack;
+			}
 
-            return false;
-        }
+			return false;
+		}
+		#endregion
 
-        private void RegisterClientScriptInclude(string key, string url)
-        {
-            if (IsInPartialRendering())
-            {
-                ScriptManager.RegisterClientScriptInclude(this, this.GetType(), key, url);
-            }
-            else
-            {
-                this.Page.ClientScript.RegisterClientScriptInclude(key, url);
-            }
-        }
+		#region RegisterClientScriptInclude
+		private void RegisterClientScriptInclude(string key, string url)
+		{
+			if (IsInPartialRendering())
+			{
+				ScriptManager.RegisterClientScriptInclude(this, this.GetType(), key, url);
+			}
+			else
+			{
+				this.Page.ClientScript.RegisterClientScriptInclude(key, url);
+			}
+		}
+		#endregion
 
-        private void RegisterClientStartupScript(string key, string script)
-        {
-            if (IsInPartialRendering())
-            {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), key, script, true);
-            }
-            else
-            {
-                this.Page.ClientScript.RegisterStartupScript(this.GetType(), key, script, true);
-            }
-        }
+		#region RegisterClientStartupScript
+		private void RegisterClientStartupScript(string key, string script)
+		{
+			if (IsInPartialRendering())
+			{
+				ScriptManager.RegisterStartupScript(this, this.GetType(), key, script, true);
+			}
+			else
+			{
+				this.Page.ClientScript.RegisterStartupScript(this.GetType(), key, script, true);
+			}
+		}
+		#endregion
 	}
 }
 #pragma warning restore 1591

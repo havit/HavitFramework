@@ -11,6 +11,7 @@ namespace Havit.Web.UI.WebControls
 	[Serializable]
 	public class SortExpressions
 	{
+		#region SortItems
 		/// <summary>
 		/// Položky řazení.
 		/// </summary>
@@ -22,7 +23,9 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		private SortItemCollection sortItems = new SortItemCollection();
+		#endregion
 
+		#region ClearSelection
 		/// <summary>
 		/// Vyprázdní seznam položek řazení.
 		/// </summary>
@@ -30,7 +33,9 @@ namespace Havit.Web.UI.WebControls
 		{
 			SortItems.Clear();
 		}
+		#endregion
 
+		#region IndexOf
 		/// <summary>
 		/// Vyhledá index položky v seznamu položek řazení. Bere se ohled jen na Expression.
 		/// </summary>
@@ -45,7 +50,9 @@ namespace Havit.Web.UI.WebControls
 			}
 			return -1;
 		}
+		#endregion
 
+		#region RemoveExpression
 		/// <summary>
 		/// Odstraní položku řazení ze seznamu, pokud existuje.
 		/// </summary>
@@ -57,7 +64,9 @@ namespace Havit.Web.UI.WebControls
 				SortItems.RemoveAt(i);
 			}
 		}
+		#endregion
 
+		#region AddSortExpression
 		/// <summary>
 		/// Rozebere sortExpression a přidá položky řazení na první místo.
 		/// Pokud položky pořadí již jsou na začátku seznamu, je jim otočen směr řazení.
@@ -110,7 +119,9 @@ namespace Havit.Web.UI.WebControls
 				}
 			}
 		}
+		#endregion
 
+		#region StartsWith
 		/// <summary>
 		/// Vrací true, pokud kolekce začíná stejnými položkami, jako jsou zde uvedené.
 		/// Na směr řazení se bere ohled v tom smyslu, že směr řazení všech stávající položek musí být stejný 
@@ -141,6 +152,7 @@ namespace Havit.Web.UI.WebControls
 
 			return true;
 		}
+		#endregion
 
 		///// <summary>
 		///// Přidá položky řazení do seznamu na první pozice (první položka kolekce bude na začátku).

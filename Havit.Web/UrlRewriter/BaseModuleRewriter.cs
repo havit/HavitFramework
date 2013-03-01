@@ -9,6 +9,7 @@ namespace Havit.Web.UrlRewriter
 	/// <remarks>Provides the essential base functionality for a rewriter using the HttpModule approach.</remarks>
 	public abstract class BaseModuleRewriter : IHttpModule
 	{
+		#region Init
 		/// <summary>
 		/// Executes when the module is initialized.
 		/// </summary>
@@ -17,16 +18,20 @@ namespace Havit.Web.UrlRewriter
 		/// <see cref="BaseModuleRewriter_AuthorizeRequest"/> event handler.</remarks>
 		public virtual void Init(HttpApplication app)
 		{
-            // WARNING!  This does not work with Windows authentication!
+			// WARNING!  This does not work with Windows authentication!
 			// If you are using Windows authentication, change to app.BeginRequest
 			app.AuthorizeRequest += new EventHandler(this.BaseModuleRewriter_AuthorizeRequest);
 		}
+		#endregion
 
+		#region Dispose
 		/// <summary>
 		/// Prázdná implementace, vyžadováno IHttpModule.
 		/// </summary>
 		public virtual void Dispose() { }
+		#endregion
 
+		#region BaseModuleRewriter_AuthorizeRequest
 		/// <summary>
 		/// Called when the module's AuthorizeRequest event fires.
 		/// </summary>
@@ -34,10 +39,12 @@ namespace Havit.Web.UrlRewriter
 		/// <b>RawUrl</b> and HttpApplication passed in via the <b>sender</b> parameter.</remarks>
 		protected virtual void BaseModuleRewriter_AuthorizeRequest(object sender, EventArgs e)
 		{
-			HttpApplication app = (HttpApplication) sender;
+			HttpApplication app = (HttpApplication)sender;
 			Rewrite(app.Request.Path, app);
 		}
+		#endregion
 
+		#region Rewrite
 		/// <summary>
 		/// The <b>Rewrite</b> method must be overriden.  It is where the logic for rewriting an incoming
 		/// URL is performed.
@@ -45,5 +52,6 @@ namespace Havit.Web.UrlRewriter
 		/// <param name="requestedPath">The requested path.</param>
 		/// <param name="app">The HttpApplication instance.</param>
 		protected abstract void Rewrite(string requestedPath, HttpApplication app);
+		#endregion
 	}
 }

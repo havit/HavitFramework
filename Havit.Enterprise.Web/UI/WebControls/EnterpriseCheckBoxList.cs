@@ -15,13 +15,6 @@ namespace Havit.Web.UI.WebControls
     /// </summary>
 	public class EnterpriseCheckBoxList : CheckBoxListExt
 	{
-		#region Constructors (static)
-		static EnterpriseCheckBoxList()
-		{
-			Havit.Web.UI.WebControls.ControlsValues.PersisterControlExtenderRepository.Default.Add(new EnterpriseCheckBoxListPersisterControlExtender());
-		} 
-		#endregion
-
 		#region ItemPropertyInfo
 		/// <summary>
 		/// ReferenceFieldPropertyInfo property, jejíž hodnota se tímto CheckBoxListem vybírá.
@@ -226,19 +219,6 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-		#region EnsureAutoDataBind
-		/// <summary>
-		/// Zajistí nabindování dat pro režim AutoDataBind.
-		/// </summary>
-		protected void EnsureAutoDataBind()
-		{
-			if (AutoDataBind && !DataBindPerformed)
-			{
-				DataBindAll();
-			}
-		}
-		#endregion
-
 		#region Private properties
 		/// <summary>
 		/// Indikuje, zda již došlo k navázání dat.
@@ -274,6 +254,19 @@ namespace Havit.Web.UI.WebControls
 		/// </remarks>
 		private bool delayedSetSelectedObjectSet = false;
 
+		#endregion
+
+		#region ---------------------------------------------------------------------------------------------
+		#endregion
+
+		#region Constructors (static)
+		static EnterpriseCheckBoxList()
+		{
+			Havit.Web.UI.WebControls.ControlsValues.PersisterControlExtenderRepository.Default.Add(new EnterpriseCheckBoxListPersisterControlExtender());
+		}
+		#endregion
+
+		#region ---------------------------------------------------------------------------------------------
 		#endregion
 
 		#region Constructor
@@ -334,6 +327,19 @@ namespace Havit.Web.UI.WebControls
 			}
 
 			PerformDataBinding(itemObjectInfo.GetAllMethod());
+		}
+		#endregion
+
+		#region EnsureAutoDataBind
+		/// <summary>
+		/// Zajistí nabindování dat pro režim AutoDataBind.
+		/// </summary>
+		protected void EnsureAutoDataBind()
+		{
+			if (AutoDataBind && !DataBindPerformed)
+			{
+				DataBindAll();
+			}
 		}
 		#endregion
 

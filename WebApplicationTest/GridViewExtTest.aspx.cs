@@ -17,6 +17,7 @@ namespace WebApplicationTest
 {
 	public partial class GridViewExtTest : System.Web.UI.Page
 	{
+		#region OnInit
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
@@ -36,21 +37,27 @@ namespace WebApplicationTest
 			TestGV2.Visible = false;
 			TestGV3.Visible = false;
 		}
+		#endregion
 
+		#region HideButton_Click
 		private void HideButton_Click(object sender, EventArgs e)
 		{
 			TestGV4.Visible = false;
 		}
+		#endregion
 
+		#region SRDBButton_Click
 		private void SRDBButton_Click(object sender, EventArgs e)
 		{
 			TestGV4.SetRequiresDatabinding();
 		}
-		
+		#endregion
+
+		#region TestGV_RowCustomizingCommandButton
 		private void TestGV_RowCustomizingCommandButton(object sender, GridViewRowCustomizingCommandButtonEventArgs e)
 		{
 			if ((e.CommandName == CommandNames.Delete) && (e.RowIndex == 1))
-			{								
+			{
 				e.Enabled = false;
 			}
 			if ((e.CommandName == CommandNames.Edit) && (e.RowIndex % 5 == 0))
@@ -58,15 +65,20 @@ namespace WebApplicationTest
 				e.Visible = false;
 			}
 		}
+		#endregion
 
+		#region TestGV_DataBinding
 		private void TestGV_DataBinding(object sender, EventArgs e)
 		{
 			((GridView)sender).DataSource = Subjekt.GetAll().ToList();
 		}
+		#endregion
 
+		#region TestGV1_GetInsertRowDataItem
 		private object TestGV1_GetInsertRowDataItem()
 		{
 			return Subjekt.CreateObject();
 		}
+		#endregion
 	}
 }

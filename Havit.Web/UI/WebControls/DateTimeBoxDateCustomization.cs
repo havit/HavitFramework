@@ -33,6 +33,7 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region GetDatesCustomizationFunction
 		/// <summary>
 		/// Vygeneruje funkci se special dates.
 		/// </summary>		
@@ -55,17 +56,20 @@ namespace Havit.Web.UI.WebControls
 						DateCustomizationFunctionContent = sb.ToString();
 					}
 				}
-			}			
+			}
 
 			ScriptManager.RegisterClientScriptBlock(page, typeof(DateTimeBoxDateCustomization), DateCustomizationFunctionName, DateCustomizationFunctionContent, true);
 
-			return DateCustomizationFunctionName; 
+			return DateCustomizationFunctionName;
 		}
 		private static object _getDatesCustomizationFunctionLock = new object();
+		#endregion
 
+		#region RenderDateStatusHandlerContent (abstract)
 		/// <summary>
 		/// Template metoda pro vyrenderování html pro customizaci hodnot v kalendáři.
 		/// </summary>
 		public abstract string RenderDateStatusHandlerContent();
+		#endregion
 	}
 }

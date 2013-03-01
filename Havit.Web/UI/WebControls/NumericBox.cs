@@ -339,6 +339,22 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region ClientID
+		/// <summary>
+		/// ClientID (overriden).
+		/// Vrací ClientID obsaženého TextBoxu pro zadávání hodnoty.
+		/// To řeší klientské validátory, které natrvdo předpokládají, že validovaný control (podle ClientID)
+		/// obsahuje klientskou vlastnost "value". Tímto klientskému validátoru místo DateTimeBoxu podstrčíme nested TextBox.
+		/// </summary>
+		public override string ClientID
+		{
+			get
+			{
+				return valueTextBox.ClientID;
+			}
+		}
+		#endregion
+
 		#region --------------------------------------------------------------------------------
 		#endregion
 
@@ -489,22 +505,6 @@ function HavitNumericBox_Focus(e)
 }";
 
 			ScriptManager.RegisterClientScriptBlock(this.Page, typeof(NumericBox), clientScriptBlockName, javaScript, true);
-		}
-		#endregion
-
-		#region ClientID
-		/// <summary>
-		/// ClientID (overriden).
-		/// Vrací ClientID obsaženého TextBoxu pro zadávání hodnoty.
-		/// To řeší klientské validátory, které natrvdo předpokládají, že validovaný control (podle ClientID)
-		/// obsahuje klientskou vlastnost "value". Tímto klientskému validátoru místo DateTimeBoxu podstrčíme nested TextBox.
-		/// </summary>
-		public override string ClientID
-		{
-			get
-			{
-				return valueTextBox.ClientID;
-			}
 		}
 		#endregion
 

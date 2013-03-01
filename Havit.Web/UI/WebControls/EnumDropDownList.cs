@@ -11,7 +11,51 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class EnumDropDownList : DropDownListExt
 	{
+		#region Private const fields
 		private const string EnumValueFormatString = "d";
+		#endregion
+
+		#region Private fields
+		/// <summary>
+		/// Indikuje, zda již došlo k navázání dat.
+		/// </summary>
+		private bool DataBindPerformed
+		{
+			get
+			{
+				return (bool)(ViewState["DataBindPerformed"] ?? false);
+			}
+			set
+			{
+				ViewState["DataBindPerformed"] = value;
+			}
+		}
+
+		/// <summary>
+		/// Indikuje právě porobíhající databinding.
+		/// </summary>
+		private bool isDataBinding = false;
+
+		/// <summary>
+		/// Objekt, který má být nastaven jako vybraný, ale jeho nastavení bylo odloženo.
+		/// </summary>
+		/// <remarks>
+		/// Pokud nastavujeme SelectedObject během DataBindingu (ve stránce pomocí &lt;%# ... %&gt;),
+		/// odloží se nastavení hodnoty až na konec DataBindingu. To protože v okamžiku nastavování SelectedObject 
+		/// nemusí být v Items ještě data.
+		/// </remarks>
+		private object delayedSetSelectedEnumValue = null;
+
+		/// <summary>
+		/// Udává, zda máme nastaven objekt pro odložené nastavení vybraného objektu.
+		/// </summary>
+		/// <remarks>
+		/// Pokud nastavujeme SelectedObject během DataBindingu (ve stránce pomocí &lt;%# ... %&gt;),
+		/// odloží se nastavení hodnoty až na konec DataBindingu. To protože v okamžiku nastavování SelectedObject 
+		/// nemusí být v Items ještě data. 
+		/// </remarks>
+		private bool delayedSetSelectedEnumValueNeeded = false;
+		#endregion
 
 		#region EnumType
 		/// <summary>
@@ -181,48 +225,6 @@ namespace Havit.Web.UI.WebControls
 				delayedSetSelectedEnumValue = null;
 			}
 		}
-		#endregion
-
-		#region Private properties
-		/// <summary>
-		/// Indikuje, zda již došlo k navázání dat.
-		/// </summary>
-		private bool DataBindPerformed
-		{
-			get
-			{
-				return (bool)(ViewState["DataBindPerformed"] ?? false);
-			}
-			set
-			{
-				ViewState["DataBindPerformed"] = value;
-			}
-		}
-
-		/// <summary>
-		/// Indikuje právě porobíhající databinding.
-		/// </summary>
-		private bool isDataBinding = false;
-
-		/// <summary>
-		/// Objekt, který má být nastaven jako vybraný, ale jeho nastavení bylo odloženo.
-		/// </summary>
-		/// <remarks>
-		/// Pokud nastavujeme SelectedObject během DataBindingu (ve stránce pomocí &lt;%# ... %&gt;),
-		/// odloží se nastavení hodnoty až na konec DataBindingu. To protože v okamžiku nastavování SelectedObject 
-		/// nemusí být v Items ještě data.
-		/// </remarks>
-		private object delayedSetSelectedEnumValue = null;
-
-		/// <summary>
-		/// Udává, zda máme nastaven objekt pro odložené nastavení vybraného objektu.
-		/// </summary>
-		/// <remarks>
-		/// Pokud nastavujeme SelectedObject během DataBindingu (ve stránce pomocí &lt;%# ... %&gt;),
-		/// odloží se nastavení hodnoty až na konec DataBindingu. To protože v okamžiku nastavování SelectedObject 
-		/// nemusí být v Items ještě data. 
-		/// </remarks>
-		private bool delayedSetSelectedEnumValueNeeded = false;
 		#endregion
 
 		#region DataBindAll (private)

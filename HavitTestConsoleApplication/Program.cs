@@ -15,9 +15,10 @@ namespace HavitTestConsoleApplication
 {
 
 	internal class Program
-	{		
+	{
+		#region Main
 		private static void Main(string[] args)
-		{	
+		{
 			//TestAggregateMicroCollections();
 			//TestAggregateSmallCollections();
 			//TestAggregateLargeCollections();
@@ -34,7 +35,9 @@ namespace HavitTestConsoleApplication
 			//TestRegexParseLarge();
 
 		}
+		#endregion
 
+		#region TestRegexParseLarge
 		private static void TestRegexParseLarge()
 		{
 			StringBuilder sb = new StringBuilder();
@@ -45,17 +48,23 @@ namespace HavitTestConsoleApplication
 
 			TestRegexParse(100, sb.ToString());
 		}
+		#endregion
 
+		#region TestRegexParseSmall
 		private static void TestRegexParseSmall()
 		{
 			TestRegexParse(1000000, "<ID>1234567</ID><ID>1234567</ID><ID>1234567</ID><ID>1234567</ID><ID>1234567</ID>");
 		}
+		#endregion
 
+		#region TestRegexParseMicro
 		private static void TestRegexParseMicro()
 		{
 			TestRegexParse(5000000, "<ID>1234567</ID>");
 		}
+		#endregion
 
+		#region TestRegexParse
 		private static void TestRegexParse(int repeatCount, string value)
 		{
 			Stopwatch sw = new Stopwatch();
@@ -78,17 +87,23 @@ namespace HavitTestConsoleApplication
 			Console.WriteLine();
 
 		}
+		#endregion
 
+		#region TestSplitMicro
 		private static void TestSplitMicro()
 		{
 			TestSplit(5000000, "1234567|");
 		}
+		#endregion
 
+		#region TestSplitSmall
 		private static void TestSplitSmall()
 		{
 			TestSplit(1000000, "1234567|1234567|1234567|1234567|1234567|");
 		}
-		
+		#endregion
+
+		#region TestSplitLarge
 		private static void TestSplitLarge()
 		{
 			StringBuilder sb = new StringBuilder();
@@ -99,22 +114,30 @@ namespace HavitTestConsoleApplication
 
 			TestSplit(100, sb.ToString());
 		}
+		#endregion
 
+		#region TestAggregateMicroCollections
 		private static void TestAggregateMicroCollections()
 		{
 			TestAggregate(5000000, Enumerable.Repeat(1234567, 1).Select(i => (SqlInt32)i).ToArray());
 		}
+		#endregion
 
+		#region TestAggregateSmallCollections
 		private static void TestAggregateSmallCollections()
 		{
 			TestAggregate(1000000, Enumerable.Repeat(1234567, 5).Select(i => (SqlInt32)i).ToArray());
 		}
+		#endregion
 
+		#region TestAggregateLargeCollections
 		private static void TestAggregateLargeCollections()
 		{
 			TestAggregate(100, Enumerable.Repeat(1234567, 50000).Select(i => (SqlInt32)i).ToArray());
 		}
+		#endregion
 
+		#region TestAggregate
 		private static void TestAggregate(int repeatCount, SqlInt32[] collectionData)
 		{
 			Stopwatch sw = new Stopwatch();
@@ -132,13 +155,13 @@ namespace HavitTestConsoleApplication
 				}
 
 				SqlInt32Array result = aggregate.Terminate();
-				
+
 				using (MemoryStream ms = new MemoryStream())
 				using (BinaryWriter writer = new BinaryWriter(ms))
 				{
-					result.Write(writer);					
+					result.Write(writer);
 				}
-				
+
 			}
 
 			sw.Stop();
@@ -147,7 +170,9 @@ namespace HavitTestConsoleApplication
 			Console.WriteLine();
 
 		}
+		#endregion
 
+		#region TestSplit
 		private static void TestSplit(int repeatCount, string value)
 		{
 			Stopwatch sw = new Stopwatch();
@@ -173,7 +198,9 @@ namespace HavitTestConsoleApplication
 			Console.WriteLine("{0}x {1} ns", repeatCount, sw.ElapsedMilliseconds / (decimal)repeatCount * 1000);
 			Console.WriteLine();
 		}
+		#endregion
 
+		#region IntParseFast1
 		private static int IntParseFast1(string value)
 		{
 			unchecked
@@ -193,7 +220,9 @@ namespace HavitTestConsoleApplication
 			}
 
 		}
+		#endregion
 
+		#region IntParseFast2
 		private static int IntParseFast2(string value)
 		{
 			unchecked
@@ -213,6 +242,7 @@ namespace HavitTestConsoleApplication
 			}
 
 		}
+		#endregion
 
 	}
 }

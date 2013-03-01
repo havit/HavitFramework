@@ -13,61 +13,16 @@ namespace Havit.Web.UI.WebControls
 	internal sealed class DataControlImageButtonExt : ImageButton
 	{
 		// Fields
+		
+		#region Private fields
 		private string _callbackArgument;
 		private IPostBackContainer _container;
 		private bool _enableCallback;
-
-		// Methods
-		internal DataControlImageButtonExt(IPostBackContainer container)
-		{
-			this._container = container;
-		}
-
-		internal void EnableCallback(string argument)
-		{
-			this._enableCallback = true;
-			this._callbackArgument = argument;
-		}
-
-		protected sealed override PostBackOptions GetPostBackOptions()
-		{
-			if (getPostBackOptionsDisabled)
-			{
-				// brutální oprava dvojího vyvolání event (dva requesty na server) na image buttonech
-				// viz AddAttributesToRender
-				return null;
-			}
-
-			if (this._container != null)
-			{
-				return this._container.GetPostBackOptions(this);
-			}
-			return base.GetPostBackOptions();
-		}
-
-		protected override void Render(HtmlTextWriter writer)
-		{
-			this.SetCallbackProperties();
-			base.Render(writer);
-		}
-
-		private void SetCallbackProperties()
-		{
-			if (this._enableCallback)
-			{
-				ICallbackContainer container = this._container as ICallbackContainer;
-				if (container != null)
-				{
-					string callbackScript = container.GetCallbackScript(this, this._callbackArgument);
-					if (!string.IsNullOrEmpty(callbackScript))
-					{
-						this.OnClientClick = callbackScript;
-					}
-				}
-			}
-		}
+		#endregion
 
 		// Properties
+
+		#region CausesValidation
 		public override bool CausesValidation
 		{
 			get
@@ -79,8 +34,9 @@ namespace Havit.Web.UI.WebControls
 				throw new NotSupportedException("CannotSetValidationOnDataControlButtons");
 			}
 		}
+		#endregion
 
-		private bool getPostBackOptionsDisabled = false;
+		#region AddAttributesToRender
 		protected override void AddAttributesToRender(HtmlTextWriter writer)
 		{
 			// brutální oprava dvojího vyvolání event (dva requesty na server) na image buttonech
@@ -111,7 +67,10 @@ namespace Havit.Web.UI.WebControls
 			}
 
 		}
+		private bool getPostBackOptionsDisabled = false;
+		#endregion
 
+		#region MergeScript
 		internal static string MergeScript(string firstScript, string secondScript)
 		{
 			if (String.IsNullOrEmpty(secondScript))
@@ -126,7 +85,9 @@ namespace Havit.Web.UI.WebControls
 
 			return EnsureEndWithSemiColon(firstScript) + EnsureEndWithSemiColon(secondScript);
 		}
+		#endregion
 
+		#region EnsureEndWithSemiColon
 		internal static string EnsureEndWithSemiColon(string value)
 		{
 			if (value != null)
@@ -139,7 +100,9 @@ namespace Havit.Web.UI.WebControls
 			}
 			return value;
 		}
+		#endregion
 
+		#region EnsureStartWithJavascript
 		internal static string EnsureStartWithJavascript(string value)
 		{
 			if (String.IsNullOrEmpty(value))
@@ -153,5 +116,68 @@ namespace Havit.Web.UI.WebControls
 			}
 			return "javascript:" + value;
 		}
+		#endregion
+
+		// Methods
+
+		#region DataControlImageButtonExt
+		internal DataControlImageButtonExt(IPostBackContainer container)
+		{
+			this._container = container;
+		}
+		#endregion
+
+		#region EnableCallback
+		internal void EnableCallback(string argument)
+		{
+			this._enableCallback = true;
+			this._callbackArgument = argument;
+		}
+		#endregion
+
+		#region GetPostBackOptions
+		protected sealed override PostBackOptions GetPostBackOptions()
+		{
+			if (getPostBackOptionsDisabled)
+			{
+				// brutální oprava dvojího vyvolání event (dva requesty na server) na image buttonech
+				// viz AddAttributesToRender
+				return null;
+			}
+
+			if (this._container != null)
+			{
+				return this._container.GetPostBackOptions(this);
+			}
+			return base.GetPostBackOptions();
+		}
+		#endregion
+
+		#region Render
+		protected override void Render(HtmlTextWriter writer)
+		{
+			this.SetCallbackProperties();
+			base.Render(writer);
+		}
+		#endregion
+
+		#region SetCallbackProperties
+		private void SetCallbackProperties()
+		{
+			if (this._enableCallback)
+			{
+				ICallbackContainer container = this._container as ICallbackContainer;
+				if (container != null)
+				{
+					string callbackScript = container.GetCallbackScript(this, this._callbackArgument);
+					if (!string.IsNullOrEmpty(callbackScript))
+					{
+						this.OnClientClick = callbackScript;
+					}
+				}
+			}
+		}
+		#endregion
+
 	}
 }

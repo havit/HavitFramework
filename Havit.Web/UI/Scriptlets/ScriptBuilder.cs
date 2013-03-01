@@ -15,6 +15,19 @@ namespace Havit.Web.UI.Scriptlets
 		private StringBuilder builder = new StringBuilder();
 		#endregion
 
+		#region IsEmpty
+		/// <summary>
+		/// Vrací true, ScriptBuilder neobsahuje žádný text. Jinak false.
+		/// </summary>
+		public bool IsEmpty
+		{
+			get
+			{
+				return builder.Length == 0;
+			}
+		}
+		#endregion
+
 		#region Append, AppendLine, AppendFormat
 		/// <summary>
 		/// Připojí řetězec na konec textu.
@@ -55,19 +68,6 @@ namespace Havit.Web.UI.Scriptlets
 			this.AppendFormat(value, parameters);
 			builder.Append(Environment.NewLine);
 		}
-		#endregion
-
-		#region IsEmpty
-		/// <summary>
-		/// Vrací true, ScriptBuilder neobsahuje žádný text. Jinak false.
-		/// </summary>
-		public bool IsEmpty
-		{
-			get
-			{
-				return builder.Length == 0;
-			}
-		}		
 		#endregion
 
 		#region ToString

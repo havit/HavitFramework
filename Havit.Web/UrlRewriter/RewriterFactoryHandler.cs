@@ -15,6 +15,7 @@ namespace Havit.Web.UrlRewriter
 	/// used by the <b>PageHandlerFactory</b> class).</remarks>
 	public class RewriterFactoryHandler : IHttpHandlerFactory
 	{
+		#region GetHandler
 		/// <summary>
 		/// GetHandler is executed by the ASP.NET pipeline after the associated HttpModules have run.  The job of
 		/// GetHandler is to return an instance of an HttpHandler that can process the page.
@@ -41,7 +42,7 @@ namespace Havit.Web.UrlRewriter
 			for (int i = 0; i < rules.Count; i++)
 			{
 				// Get the pattern to look for (and resolve its URL)
-				string lookFor = "^" + HttpServerUtilityExt.ResolveUrl(context.Request.ApplicationPath, rules[i].LookFor) + "$"; 
+				string lookFor = "^" + HttpServerUtilityExt.ResolveUrl(context.Request.ApplicationPath, rules[i].LookFor) + "$";
 
 				// Create a regular expression object that ignores case...
 				Regex re = new Regex(lookFor, RegexOptions.IgnoreCase);
@@ -51,7 +52,7 @@ namespace Havit.Web.UrlRewriter
 				{
 					// do any replacement needed
 					sendToUrl = HttpServerUtilityExt.ResolveUrl(context.Request.ApplicationPath, re.Replace(url, rules[i].SendTo));
-					
+
 					// log info to the Trace object...
 					context.Trace.Write("RewriterFactoryHandler", "Found match, rewriting to " + sendToUrl);
 
@@ -69,7 +70,9 @@ namespace Havit.Web.UrlRewriter
 			context.Trace.Write("RewriterFactoryHandler", "Exiting RewriterFactoryHandler");	// log info to the Trace object...
 			return PageParser.GetCompiledPageInstance(url, filePath, context);
 		}
+		#endregion
 
+		#region ReleaseHandler
 		/// <summary>
 		/// Prázdná implementace, je však vyžadována IHttpHandlerFactory.
 		/// </summary>
@@ -77,5 +80,6 @@ namespace Havit.Web.UrlRewriter
 		public virtual void ReleaseHandler(IHttpHandler handler)
 		{
 		}
+		#endregion
 	}
 }

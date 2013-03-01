@@ -10,7 +10,21 @@ namespace Havit.Web.UI.WebControls
     /// </summary>
     public class Messenger
     {
-        #region Messages (private)
+		#region Default (static)
+		/// <summary>
+		/// Výchozí instance messengera.
+		/// </summary>
+		public static Messenger Default
+		{
+			get
+			{
+				return _default;
+			}
+		}
+		private static Messenger _default = new Messenger();
+		#endregion
+		
+		#region Messages (private)
         /// <summary>
         /// Zprávy k zobrazení.
         /// </summary>
@@ -122,20 +136,6 @@ namespace Havit.Web.UI.WebControls
         {
             Messages.Clear();
         }
-        #endregion
-
-        #region Default
-        /// <summary>
-        /// Výchozí instance messengera.
-        /// </summary>
-        public static Messenger Default
-        {
-            get
-            {
-                return _default;
-            }
-        }
-        private static Messenger _default = new Messenger(); 
         #endregion
 
     }

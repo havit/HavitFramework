@@ -40,6 +40,19 @@ namespace Havit.Web.UI.HtmlControls
 		}
 		#endregion
 
+		#region Page_ClientOnSubmitEvent
+		/// <summary>
+		/// Pomocí reflexe vrátí internal ClientOnSubmitEvent vlastnost Page
+		/// </summary>
+		private string Page_ClientOnSubmitEvent
+		{
+			get
+			{
+				return (string)Reflector.GetPropertyValue(this.Page, typeof(System.Web.UI.Page), "ClientOnSubmitEvent");
+			}
+		}
+		#endregion
+
 		#region RenderAttributes
 		/// <summary>
 		/// Overriden. Zajišťuje vlastní renderování atributu Action
@@ -81,7 +94,7 @@ namespace Havit.Web.UI.HtmlControls
 		}
 		#endregion
 
-		#region GetBaseActionAttribute, Page_ClientOnSubmitEvent
+		#region GetBaseActionAttribute
 		/// <summary>
 		/// Pomocí reflexe vrátí původní private base.GetActionAttribute()
 		/// </summary>
@@ -92,17 +105,6 @@ namespace Havit.Web.UI.HtmlControls
 			MethodInfo actionMethod = formType.GetMethod("GetActionAttribute", BindingFlags.Instance | BindingFlags.NonPublic);
 			object result = actionMethod.Invoke(this, null);
 			return (string)result;
-		}
-
-		/// <summary>
-		/// Pomocí reflexe vrátí internal ClientOnSubmitEvent vlastnost Page
-		/// </summary>
-		private string Page_ClientOnSubmitEvent 
-		{
-			get 
-			{
-				return (string)Reflector.GetPropertyValue(this.Page, typeof(System.Web.UI.Page), "ClientOnSubmitEvent");
-			}
 		}
 		#endregion
 	}

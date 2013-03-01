@@ -14,6 +14,7 @@ namespace WebApplicationTest
 {
 	public partial class DateTimeBoxTest : System.Web.UI.Page
 	{
+		#region OnInit
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
@@ -30,7 +31,9 @@ namespace WebApplicationTest
 			TestGV.DataBinding += new EventHandler(TestGV_DataBinding);
 			TestGV.RowDataBound += new GridViewRowEventHandler(TestGV_RowDataBound);
 		}
+		#endregion
 
+		#region TestGV_RowDataBound
 		private void TestGV_RowDataBound(object sender, GridViewRowEventArgs e)
 		{
 			if ((e.Row.RowState & DataControlRowState.Edit) == DataControlRowState.Edit)
@@ -38,18 +41,24 @@ namespace WebApplicationTest
 				((DateTimeBox)e.Row.FindControl("NestedDateTimeBox")).Value = DateTime.Today;
 			}
 		}
+		#endregion
 
+		#region TestGV_DataBinding
 		private void TestGV_DataBinding(object sender, EventArgs e)
 		{
 			Random r = new Random();
 			TestGV.DataSource = System.Linq.Enumerable.Range(1, 5);
 		}
+		#endregion
 
+		#region SecondDateTimeBoxValidator_ServerValidate
 		private void SecondDateTimeBoxValidator_ServerValidate(object source, ServerValidateEventArgs args)
 		{
 			PostBackButton.Text = "Valid: " + SecondDateTimeBox.IsValid.ToString();
-		}	
+		}
+		#endregion	
 
+		#region AutoPostBackDateTimeBox_ValueChanged
 		private void AutoPostBackDateTimeBox_ValueChanged(object sender, EventArgs e)
 		{
 			ChangedLabel.Text = "yes";
@@ -57,12 +66,16 @@ namespace WebApplicationTest
 			{
 			}
 		}
+		#endregion
 
+		#region AutoPostBackDateTimeBoxValidator_ServerValidate
 		private void AutoPostBackDateTimeBoxValidator_ServerValidate(object source, ServerValidateEventArgs args)
 		{
 			AutoPostBackServerValidatorValueLabel.Text = AutoPostBackDateTimeBox.Value.ToString();
 		}
+		#endregion
 
+		#region OnLoad
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
@@ -70,22 +83,29 @@ namespace WebApplicationTest
 			ChangedLabel.Text = "no";
 			TestGV.SetRequiresDatabinding();
 		}
+		#endregion
 
+		#region OnLoadComplete
 		protected override void OnLoadComplete(EventArgs e)
 		{
 			base.OnLoadComplete(e);
 			AutoPostBackOnLoadCompleteValueLabel.Text = AutoPostBackDateTimeBox.Value.ToString();
 		}
+		#endregion
 
+		#region VycistitButton_Click
 		private void VycistitButton_Click(object sender, EventArgs e)
 		{
 			DrubyDateTimeBox.Value = null;
 			DrubyDateTimeBox.Visible = false;
 		}
+		#endregion
 
+		#region ZobrazitButton_Click
 		private void ZobrazitButton_Click(object sender, EventArgs e)
 		{
 			DrubyDateTimeBox.Visible = true;
 		}
+		#endregion
 	}
 }

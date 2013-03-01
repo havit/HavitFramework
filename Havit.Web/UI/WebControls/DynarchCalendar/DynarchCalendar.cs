@@ -143,50 +143,6 @@ namespace Havit.Web.UI.WebControls
 
 		#endregion
 
-		#region Constructor (static)
-		static DynarchCalendar()
-		{
-			// inicializujeme kolekci podporovaných jazyků
-			// protože jde o statický konstruktor, nemusíme řešit žádné zámky
-			supportedLanguages = new System.Collections.Generic.Dictionary<string, string>();
-			supportedLanguages.Add("af", null);
-			supportedLanguages.Add("ak", null);
-			supportedLanguages.Add("bg", null);
-			supportedLanguages.Add("br", null);
-			supportedLanguages.Add("ca", null);
-			// cs má výjimky v kódu kvůli Win1250 + Utf8
-			supportedLanguages.Add("da", null);
-			supportedLanguages.Add("de", null);
-			supportedLanguages.Add("du", null);
-			supportedLanguages.Add("el", null);
-			supportedLanguages.Add("en", null);
-			supportedLanguages.Add("es", null);
-			supportedLanguages.Add("fi", null);
-			supportedLanguages.Add("fr", null);
-			supportedLanguages.Add("he", null);
-			supportedLanguages.Add("hr", null);
-			supportedLanguages.Add("hu", null);
-			supportedLanguages.Add("it", null);
-			supportedLanguages.Add("jp", null);
-			supportedLanguages.Add("ko", null);
-			supportedLanguages.Add("lt", null);
-			supportedLanguages.Add("lv", null);
-			supportedLanguages.Add("nl", null);
-			supportedLanguages.Add("no", null);
-			supportedLanguages.Add("pl", null);
-			supportedLanguages.Add("pt", null);
-			supportedLanguages.Add("ro", null);
-			supportedLanguages.Add("ru", null);
-			supportedLanguages.Add("si", null);
-			supportedLanguages.Add("sl", null);
-			supportedLanguages.Add("sk", null);
-			supportedLanguages.Add("sp", null);
-			supportedLanguages.Add("sv", null);
-			supportedLanguages.Add("tr", null);
-			supportedLanguages.Add("zh", null);
-		} 
-		#endregion
-
 		#region Originální vlastnosti kalendáře odpovídající JavaScript
 		/// <summary>
 		/// The ID of your input field.
@@ -807,6 +763,50 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		#endregion		
+
+		#region Constructor (static)
+		static DynarchCalendar()
+		{
+			// inicializujeme kolekci podporovaných jazyků
+			// protože jde o statický konstruktor, nemusíme řešit žádné zámky
+			supportedLanguages = new System.Collections.Generic.Dictionary<string, string>();
+			supportedLanguages.Add("af", null);
+			supportedLanguages.Add("ak", null);
+			supportedLanguages.Add("bg", null);
+			supportedLanguages.Add("br", null);
+			supportedLanguages.Add("ca", null);
+			// cs má výjimky v kódu kvůli Win1250 + Utf8
+			supportedLanguages.Add("da", null);
+			supportedLanguages.Add("de", null);
+			supportedLanguages.Add("du", null);
+			supportedLanguages.Add("el", null);
+			supportedLanguages.Add("en", null);
+			supportedLanguages.Add("es", null);
+			supportedLanguages.Add("fi", null);
+			supportedLanguages.Add("fr", null);
+			supportedLanguages.Add("he", null);
+			supportedLanguages.Add("hr", null);
+			supportedLanguages.Add("hu", null);
+			supportedLanguages.Add("it", null);
+			supportedLanguages.Add("jp", null);
+			supportedLanguages.Add("ko", null);
+			supportedLanguages.Add("lt", null);
+			supportedLanguages.Add("lv", null);
+			supportedLanguages.Add("nl", null);
+			supportedLanguages.Add("no", null);
+			supportedLanguages.Add("pl", null);
+			supportedLanguages.Add("pt", null);
+			supportedLanguages.Add("ro", null);
+			supportedLanguages.Add("ru", null);
+			supportedLanguages.Add("si", null);
+			supportedLanguages.Add("sl", null);
+			supportedLanguages.Add("sk", null);
+			supportedLanguages.Add("sp", null);
+			supportedLanguages.Add("sv", null);
+			supportedLanguages.Add("tr", null);
+			supportedLanguages.Add("zh", null);
+		}
+		#endregion
 
 		#region ValidateControlProperties
 		/// <summary>

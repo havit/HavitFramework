@@ -10,6 +10,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 	/// </summary>
 	public class PersisterControlExtenderRepository : List<IPersisterControlExtender>
 	{
+		#region Default
 		/// <summary>
 		/// Výchozí repository. Obsahuje "standardní" IPersisterControlExtendery.
 		/// </summary>
@@ -33,7 +34,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 							_default.Add(new RadioButtonListPersisterControlExtender());
 							_default.Add(new EnumDropDownListPersisterControlExtender());
 							_default.Add(new CheckBoxListPersisterControlExtender());
-							_default.Add(new ListBoxPersisterControlExtender());							
+							_default.Add(new ListBoxPersisterControlExtender());
 						}
 					}
 				}
@@ -42,6 +43,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 		}
 		private static PersisterControlExtenderRepository _default;
 		private static object _defaultLock = new object();
+		#endregion
 
 		#region FindExtender
 		/// <summary>

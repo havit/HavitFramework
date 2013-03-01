@@ -16,101 +16,116 @@ namespace Havit.Web.UI.WebControls
         #region Class Properties
         #endregion
 
-        /// <overloads>Initializes new instance of XHtmlWriter.</overloads>
+		#region Constructor
+		/// <overloads>Initializes new instance of XHtmlWriter.</overloads>
         /// <summary>Initializes new instance of XHtmlWriter.</summary>
         /// <remarks>Creates a new StringWriter object and uses that as Internal Writer</remarks>
         public XJsonWriter()
         {
         }
+		#endregion
 
-        //Public functions
-        public void WriteNameValue(string name, object value)
-        {
-            WriteNameValue(name, value, true);
-        }
+		//Public functions
 
-        public void WriteNameValue(string name, object value, bool formatValue)
-        {
-            string valueText = GetValueText(value, formatValue);
+		#region WriteNameValue
+		public void WriteNameValue(string name, object value)
+		{
+			WriteNameValue(name, value, true);
+		}
+		#endregion
 
-            //Add delimiter
+		#region WriteNameValue
+		public void WriteNameValue(string name, object value, bool formatValue)
+		{
+			string valueText = GetValueText(value, formatValue);
+
+			//Add delimiter
 			if (this.GetStringBuilder().Length > 0)
 			{
 				this.WriteLine(", ");
 			}
 
-	        //Prefix value with new line if it starts with {
+			//Prefix value with new line if it starts with {
 			if (valueText[0] == '{')
 			{
 				valueText = this.NewLine + valueText;
 			}
 
-	        this.Write("\"" + name + "\": " + valueText);
-        }
+			this.Write("\"" + name + "\": " + valueText);
+		}
+		#endregion
 
-        public void WriteList(string name, IList list)
-        {
-            WriteList(name, list, true);
-        }
+		#region WriteList
+		public void WriteList(string name, IList list)
+		{
+			WriteList(name, list, true);
+		}
+		#endregion
 
-        public void WriteList(string name, IList list, bool formatValues)
-        {
-            string valueText;
-            StringBuilder sb = new StringBuilder();
+		#region WriteList
+		public void WriteList(string name, IList list, bool formatValues)
+		{
+			string valueText;
+			StringBuilder sb = new StringBuilder();
 
-            foreach (object item in list)
-            {
-                valueText = GetValueText(item, formatValues);
+			foreach (object item in list)
+			{
+				valueText = GetValueText(item, formatValues);
 
 				if (sb.Length != 0)
 				{
 					sb.AppendLine(", ");
 				}
 
-	            sb.Append(valueText);
-            }
+				sb.Append(valueText);
+			}
 
-            string listText = this.NewLine + "[" + this.NewLine + sb.ToString() + this.NewLine + "]";
-            WriteNameValue(name, listText, false);
-        }
+			string listText = this.NewLine + "[" + this.NewLine + sb.ToString() + this.NewLine + "]";
+			WriteNameValue(name, listText, false);
+		}
+		#endregion
 
-        private string GetValueText(object value, bool formatValue)
-        {
-            string valueText;
-            if (value == null)
-            {
-                valueText = "null";
-                return valueText;
-            }
+		#region GetValueText
+		private string GetValueText(object value, bool formatValue)
+		{
+			string valueText;
+			if (value == null)
+			{
+				valueText = "null";
+				return valueText;
+			}
 
-            if (!formatValue)
-            {
-                valueText = value.ToString();
-                return valueText;
-            }
+			if (!formatValue)
+			{
+				valueText = value.ToString();
+				return valueText;
+			}
 
-            if (value.GetType() == typeof(string))
-            {
-                valueText = (string)value;
+			if (value.GetType() == typeof(string))
+			{
+				valueText = (string)value;
 
-                //Escape double-quotes for strings and enclose in quotes
+				//Escape double-quotes for strings and enclose in quotes
 				// RH: Doplněno escapování zpětného lomítka 
-                valueText = "\"" + valueText.Replace(@"\", @"\\").Replace("\"", "\\\"") + "\"";
-            }
-            else
-            {
-                //Need toLower for bool. In javascript - true & false.
-                valueText = value.ToString().ToLower();
-            }
+				valueText = "\"" + valueText.Replace(@"\", @"\\").Replace("\"", "\\\"") + "\"";
+			}
+			else
+			{
+				//Need toLower for bool. In javascript - true & false.
+				valueText = value.ToString().ToLower();
+			}
 
-            return valueText;
-        }
+			return valueText;
+		}
+		#endregion
 
-        public override string ToString()
-        {
-            string result = base.ToString();
-            result = "{" + this.NewLine + result + this.NewLine + "}";
-            return result;
-        }
+		#region ToString
+		public override string ToString()
+		{
+			string result = base.ToString();
+			result = "{" + this.NewLine + result + this.NewLine + "}";
+			return result;
+		}
+		#endregion
     }
 }

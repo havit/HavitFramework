@@ -40,6 +40,7 @@ namespace Havit.Web.UI
 		}
 		#endregion
 
+		#region OnUnload
 		/// <summary>
 		/// Raises the base <see cref="E:System.Web.UI.Control.Unload"/> event.
 		/// </summary>
@@ -59,5 +60,6 @@ namespace Havit.Web.UI
 			}
 			base.OnUnload(e);
 		}
+		#endregion
 	}
 }

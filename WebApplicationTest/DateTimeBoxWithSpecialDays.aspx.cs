@@ -10,6 +10,11 @@ namespace WebApplicationTest
 {
 	public partial class DateTimeBoxWithSpecialDays : System.Web.UI.Page
 	{
+		#region Private fields
+		private SpecialDateCustomization specialDateCollection;
+		#endregion
+
+		#region OnInit
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
@@ -17,9 +22,8 @@ namespace WebApplicationTest
 			//SpecialDTB.GetDateTimeBoxCustomization += new Havit.Web.UI.WebControls.DateTimeBox.DateTimeBoxDateCustomizationEventHandler(SpecialDTB_GetDateTimeBoxCustomization);			
 			Special2DTB.GetDateTimeBoxCustomization += new DateTimeBox.DateTimeBoxDateCustomizationEventHandler(SpecialDTB_GetDateTimeBoxCustomization2);
 		}
+		#endregion
 		
-		private SpecialDateCustomization specialDateCollection;
-
 		//void SpecialDTB_GetDateTimeBoxCustomization(object sender, DateTimeBoxDateCustomizationEventArgs args)
 		//{
 		//    if (specialDateCollectionDefault == null)
@@ -28,8 +32,9 @@ namespace WebApplicationTest
 		//    }
 
 		//    args.DateCustomization = specialDateCollectionDefault; 
-		//}
+		//}		
 
+		#region SpecialDTB_GetDateTimeBoxCustomization2
 		private void SpecialDTB_GetDateTimeBoxCustomization2(object sender, DateTimeBoxDateCustomizationEventArgs args)
 		{
 			if (specialDateCollection == null)
@@ -39,7 +44,9 @@ namespace WebApplicationTest
 
 			args.DateCustomization = specialDateCollection;
 		}
+		#endregion
 
+		#region GetSpecialDates
 		private static List<SpecialDate> GetSpecialDates()
 		{
 			List<SpecialDate> specialDatesList = new List<SpecialDate>()
@@ -61,7 +68,9 @@ namespace WebApplicationTest
 			};
 			return specialDatesList;
 		}
+		#endregion
 
+		#region GetSpecialDates2
 		private static List<SpecialDate> GetSpecialDates2()
 		{
 			List<SpecialDate> specialDatesList = new List<SpecialDate>()
@@ -72,6 +81,7 @@ namespace WebApplicationTest
 			};
 			return specialDatesList;
 		}
+		#endregion
 
 	}
 }

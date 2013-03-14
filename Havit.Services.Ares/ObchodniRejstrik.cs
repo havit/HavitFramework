@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Xml.Linq;
+using System.Xml.XPath;
 
 namespace Havit.Services.Ares
 {
@@ -113,9 +114,26 @@ namespace Havit.Services.Ares
 						obchodniRejstrikResponse.DenZapisu = DateTime.ParseExact(dvElement.Value, "yyyy-MM-dd", CultureInfo.InvariantCulture);
 					}
 
-					obchodniRejstrikResponse.NazevSoudu = (string)aresResponseXDocument.Descendants(XName.Get("T", dataTypesNamespace.ToString())).FirstOrDefault();
-					obchodniRejstrikResponse.KodSoudu = (string)aresResponseXDocument.Descendants(XName.Get("K", dataTypesNamespace.ToString())).FirstOrDefault();
-					obchodniRejstrikResponse.SpisovaZnacka = (string)aresResponseXDocument.Descendants(XName.Get("OV", dataTypesNamespace.ToString())).FirstOrDefault();
+					XElement rorElement = aresResponseXDocument.Descendants(XName.Get("ROR", dataTypesNamespace.ToString())).FirstOrDefault(); // ROR - registrační organizace?
+
+					if (rorElement != null)
+					{
+						XElement szElement = rorElement.Descendants(XName.Get("SZ", dataTypesNamespace.ToString())).FirstOrDefault();
+
+						if (szElement != null)
+						{
+							XElement sdElement = rorElement.Descendants(XName.Get("SD", dataTypesNamespace.ToString())).FirstOrDefault();
+
+							if (sdElement != null)
+							{
+								obchodniRejstrikResponse.NazevSoudu = (string)sdElement.Descendants(XName.Get("T", dataTypesNamespace.ToString())).FirstOrDefault();
+								obchodniRejstrikResponse.KodSoudu = (string)sdElement.Descendants(XName.Get("K", dataTypesNamespace.ToString())).FirstOrDefault();
+							}
+
+							obchodniRejstrikResponse.SpisovaZnacka = (string)szElement.Descendants(XName.Get("OV", dataTypesNamespace.ToString())).FirstOrDefault();
+						}
+					}
+					
 					obchodniRejstrikResponse.PravniForma = (string)aresResponseXDocument.Descendants(XName.Get("NPF", dataTypesNamespace.ToString())).FirstOrDefault();
 					obchodniRejstrikResponse.StavSubjektu = (string)aresResponseXDocument.Descendants(XName.Get("SSU", dataTypesNamespace.ToString())).FirstOrDefault();
 					obchodniRejstrikResponse.SidloUlice = (string)aresResponseXDocument.Descendants(XName.Get("NU", dataTypesNamespace.ToString())).FirstOrDefault();

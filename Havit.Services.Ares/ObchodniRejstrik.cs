@@ -103,46 +103,51 @@ namespace Havit.Services.Ares
 						return obchodniRejstrikResponse;
 					}
 
-					obchodniRejstrikResponse.Ico = (string)aresResponseXDocument.Descendants(XName.Get("ICO", dataTypesNamespace.ToString())).FirstOrDefault();
-					obchodniRejstrikResponse.Dic = (string)aresResponseXDocument.Descendants(XName.Get("DIC", dataTypesNamespace.ToString())).FirstOrDefault();
-					obchodniRejstrikResponse.NazevObchodniFirmy = (string)aresResponseXDocument.Descendants(XName.Get("OF", dataTypesNamespace.ToString())).FirstOrDefault();
-					
-					XElement dvElement = aresResponseXDocument.Descendants(XName.Get("DV", dataTypesNamespace.ToString())).FirstOrDefault();
+					XElement vbasElement = aresResponseXDocument.Descendants(XName.Get("VBAS", dataTypesNamespace.ToString())).FirstOrDefault();
 
-					if (dvElement != null)
+					if (vbasElement != null)
 					{
-						obchodniRejstrikResponse.DenZapisu = DateTime.ParseExact(dvElement.Value, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-					}
+						obchodniRejstrikResponse.Ico = (string)vbasElement.Descendants(XName.Get("ICO", dataTypesNamespace.ToString())).FirstOrDefault();
+						obchodniRejstrikResponse.Dic = (string)vbasElement.Descendants(XName.Get("DIC", dataTypesNamespace.ToString())).FirstOrDefault();
+						obchodniRejstrikResponse.NazevObchodniFirmy = (string)vbasElement.Descendants(XName.Get("OF", dataTypesNamespace.ToString())).FirstOrDefault();
 
-					XElement rorElement = aresResponseXDocument.Descendants(XName.Get("ROR", dataTypesNamespace.ToString())).FirstOrDefault(); // ROR - registrační organizace?
+						XElement dvElement = vbasElement.Descendants(XName.Get("DV", dataTypesNamespace.ToString())).FirstOrDefault();
 
-					if (rorElement != null)
-					{
-						XElement szElement = rorElement.Descendants(XName.Get("SZ", dataTypesNamespace.ToString())).FirstOrDefault();
-
-						if (szElement != null)
+						if (dvElement != null)
 						{
-							XElement sdElement = rorElement.Descendants(XName.Get("SD", dataTypesNamespace.ToString())).FirstOrDefault();
-
-							if (sdElement != null)
-							{
-								obchodniRejstrikResponse.NazevSoudu = (string)sdElement.Descendants(XName.Get("T", dataTypesNamespace.ToString())).FirstOrDefault();
-								obchodniRejstrikResponse.KodSoudu = (string)sdElement.Descendants(XName.Get("K", dataTypesNamespace.ToString())).FirstOrDefault();
-							}
-
-							obchodniRejstrikResponse.SpisovaZnacka = (string)szElement.Descendants(XName.Get("OV", dataTypesNamespace.ToString())).FirstOrDefault();
+							obchodniRejstrikResponse.DenZapisu = DateTime.ParseExact(dvElement.Value, "yyyy-MM-dd", CultureInfo.InvariantCulture);
 						}
+
+						XElement rorElement = vbasElement.Descendants(XName.Get("ROR", dataTypesNamespace.ToString())).FirstOrDefault(); // ROR - registrační organizace?
+
+						if (rorElement != null)
+						{
+							XElement szElement = rorElement.Descendants(XName.Get("SZ", dataTypesNamespace.ToString())).FirstOrDefault();
+
+							if (szElement != null)
+							{
+								XElement sdElement = rorElement.Descendants(XName.Get("SD", dataTypesNamespace.ToString())).FirstOrDefault();
+
+								if (sdElement != null)
+								{
+									obchodniRejstrikResponse.NazevSoudu = (string)sdElement.Descendants(XName.Get("T", dataTypesNamespace.ToString())).FirstOrDefault();
+									obchodniRejstrikResponse.KodSoudu = (string)sdElement.Descendants(XName.Get("K", dataTypesNamespace.ToString())).FirstOrDefault();
+								}
+
+								obchodniRejstrikResponse.SpisovaZnacka = (string)szElement.Descendants(XName.Get("OV", dataTypesNamespace.ToString())).FirstOrDefault();
+							}
+						}
+
+						obchodniRejstrikResponse.PravniForma = (string)vbasElement.Descendants(XName.Get("NPF", dataTypesNamespace.ToString())).FirstOrDefault();
+						obchodniRejstrikResponse.StavSubjektu = (string)vbasElement.Descendants(XName.Get("SSU", dataTypesNamespace.ToString())).FirstOrDefault();
+						obchodniRejstrikResponse.SidloUlice = (string)vbasElement.Descendants(XName.Get("NU", dataTypesNamespace.ToString())).FirstOrDefault();
+						obchodniRejstrikResponse.SidloCisloPopisne = (string)vbasElement.Descendants(XName.Get("CD", dataTypesNamespace.ToString())).FirstOrDefault();
+						obchodniRejstrikResponse.SidloCisloOrientacni = (string)vbasElement.Descendants(XName.Get("CO", dataTypesNamespace.ToString())).FirstOrDefault();
+						obchodniRejstrikResponse.SidloMesto = (string)vbasElement.Descendants(XName.Get("N", dataTypesNamespace.ToString())).FirstOrDefault();
+						obchodniRejstrikResponse.SidloMestskaCast = (string)vbasElement.Descendants(XName.Get("NCO", dataTypesNamespace.ToString())).FirstOrDefault();
+						obchodniRejstrikResponse.SidloPsc = (string)vbasElement.Descendants(XName.Get("PSC", dataTypesNamespace.ToString())).FirstOrDefault();
+						obchodniRejstrikResponse.SidloStat = (string)vbasElement.Descendants(XName.Get("NS", dataTypesNamespace.ToString())).FirstOrDefault();
 					}
-					
-					obchodniRejstrikResponse.PravniForma = (string)aresResponseXDocument.Descendants(XName.Get("NPF", dataTypesNamespace.ToString())).FirstOrDefault();
-					obchodniRejstrikResponse.StavSubjektu = (string)aresResponseXDocument.Descendants(XName.Get("SSU", dataTypesNamespace.ToString())).FirstOrDefault();
-					obchodniRejstrikResponse.SidloUlice = (string)aresResponseXDocument.Descendants(XName.Get("NU", dataTypesNamespace.ToString())).FirstOrDefault();
-					obchodniRejstrikResponse.SidloCisloPopisne = (string)aresResponseXDocument.Descendants(XName.Get("CD", dataTypesNamespace.ToString())).FirstOrDefault();
-					obchodniRejstrikResponse.SidloCisloOrientacni = (string)aresResponseXDocument.Descendants(XName.Get("CO", dataTypesNamespace.ToString())).FirstOrDefault();
-					obchodniRejstrikResponse.SidloMesto = (string)aresResponseXDocument.Descendants(XName.Get("N", dataTypesNamespace.ToString())).FirstOrDefault();
-					obchodniRejstrikResponse.SidloMestskaCast = (string)aresResponseXDocument.Descendants(XName.Get("NCO", dataTypesNamespace.ToString())).FirstOrDefault();
-					obchodniRejstrikResponse.SidloPsc = (string)aresResponseXDocument.Descendants(XName.Get("PSC", dataTypesNamespace.ToString())).FirstOrDefault();
-					obchodniRejstrikResponse.SidloStat = (string)aresResponseXDocument.Descendants(XName.Get("NS", dataTypesNamespace.ToString())).FirstOrDefault();
 				}
 			}
 			

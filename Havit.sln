@@ -52,9 +52,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HavitTestConsoleApplication
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TracingTest", "TracingTest\TracingTest.csproj", "{8205CE30-EB5C-42FD-927D-723500F1028B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Services.Ares", "Havit.Services.Ares\Havit.Services.Ares.csproj", "{4D6E7310-F079-437C-994F-C9CABF3D764D}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 18
+		SccNumberOfProjects = 19
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://tfs.havit.local:8080/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -109,6 +111,9 @@ Global
 		SccProjectUniqueName17 = TracingTest\\TracingTest.csproj
 		SccProjectName17 = TracingTest
 		SccLocalPath17 = TracingTest
+		SccProjectUniqueName18 = Havit.Services.Ares\\Havit.Services.Ares.csproj
+		SccProjectName18 = Havit.Services.Ares
+		SccLocalPath18 = Havit.Services.Ares
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -283,6 +288,16 @@ Global
 		{8205CE30-EB5C-42FD-927D-723500F1028B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{8205CE30-EB5C-42FD-927D-723500F1028B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{8205CE30-EB5C-42FD-927D-723500F1028B}.Release|x86.ActiveCfg = Release|Any CPU
+		{4D6E7310-F079-437C-994F-C9CABF3D764D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D6E7310-F079-437C-994F-C9CABF3D764D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D6E7310-F079-437C-994F-C9CABF3D764D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{4D6E7310-F079-437C-994F-C9CABF3D764D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{4D6E7310-F079-437C-994F-C9CABF3D764D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4D6E7310-F079-437C-994F-C9CABF3D764D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D6E7310-F079-437C-994F-C9CABF3D764D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D6E7310-F079-437C-994F-C9CABF3D764D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{4D6E7310-F079-437C-994F-C9CABF3D764D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{4D6E7310-F079-437C-994F-C9CABF3D764D}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

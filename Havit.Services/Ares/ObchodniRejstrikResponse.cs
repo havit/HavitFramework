@@ -1,54 +1,49 @@
-ï»¿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
+using System;
 
 namespace Havit.Services.Ares
 {
 	/// <summary>
-	/// StrongtypovÃ¡ obÃ¡lko pro data z odpovÄ›di ze sluÅ¾by ARES - ObchodnÃ­ rejstÅ™Ã­k.
+	/// Strongtypová obálko pro data z odpovìdi ze sluby ARES - Obchodní rejstøík.
 	/// </summary>
 	public class ObchodniRejstrikResponse
 	{
 		/// <summary>
-		/// IÄŒO obchodnÃ­ firmy zapsanÃ© v OR.
+		/// IÈO obchodní firmy zapsané v OR.
 		/// </summary>
 		public string Ico { get; set; }
 
 		/// <summary>
-		/// DIÄŒ obchodnÃ­ firmy zapsanÃ© v OR.
+		/// DIÈ obchodní firmy zapsané v OR.
 		/// </summary>
 		public string Dic { get; set; }
 
 		/// <summary>
-		/// NÃ¡zev pod kterÃ½m je firma zapsanÃ¡ v OR.
+		/// Název pod kterım je firma zapsaná v OR.
 		/// </summary>
 		public string NazevObchodniFirmy { get; set; }
 
 		/// <summary>
-		/// Den zÃ¡pisu firmy do OR.
+		/// Den zápisu firmy do OR.
 		/// </summary>
 		public DateTime DenZapisu { get; set; }
 
 		/// <summary>
-		/// NÃ¡zev soudu kterÃ½m je firma registrovanÃ¡ v OR.
+		/// Název soudu kterım je firma registrovaná v OR.
 		/// </summary>
 		public string NazevSoudu { get; set; }
 
 		/// <summary>
-		/// KÃ³d soudu kterÃ½m je firma registrovanÃ¡ v OR.
+		/// Kód soudu kterım je firma registrovaná v OR.
 		/// </summary>
 		public string KodSoudu { get; set; }
 
 		/// <summary>
-		/// SpisovÃ¡ znaÄka pod kterou je firma v OR vedena (oddÃ­l + vloÅ¾ka).
+		/// Spisová znaèka pod kterou je firma v OR vedena (oddíl + vloka).
 		/// </summary>
 		public string SpisovaZnacka { get; set; }
 
 		/// <summary>
-		/// PrÃ¡vnÃ­ forma firmy.
+		/// Právní forma firmy.
 		/// </summary>
 		public string PravniForma { get; set; }
 
@@ -58,47 +53,47 @@ namespace Havit.Services.Ares
 		public string StavSubjektu { get; set; }
 
 		/// <summary>
-		/// Ulice sÃ­dla firmy.
+		/// Ulice sídla firmy.
 		/// </summary>
 		public string SidloUlice { get; set; }
 
 		/// <summary>
-		/// PopisnÃ© ÄÃ­slo sÃ­dla firmy.
+		/// Popisné èíslo sídla firmy.
 		/// </summary>
 		public string SidloCisloPopisne { get; set; }
 
 		/// <summary>
-		/// OrientaÄnÃ­ ÄÃ­slo sÃ­dla firmy.
+		/// Orientaèní èíslo sídla firmy.
 		/// </summary>
 		public string SidloCisloOrientacni { get; set; }
 
 		/// <summary>
-		/// MÄ›sto sÃ­dla firmy.
+		/// Mìsto sídla firmy.
 		/// </summary>
 		public string SidloMesto { get; set; }
 
 		/// <summary>
-		/// MÄ›stkÃ½ ÄÃ¡st sÃ­dla firmy.
+		/// Mìstkı èást sídla firmy.
 		/// </summary>
 		public string SidloMestskaCast { get; set; }
 
 		/// <summary>
-		/// PSÄŒ sÃ­dla firmy.
+		/// PSÈ sídla firmy.
 		/// </summary>
 		public string SidloPsc { get; set; }
 
 		/// <summary>
-		/// StÃ¡t sÃ­dla firmy.
+		/// Stát sídla firmy.
 		/// </summary>
 		public string SidloStat { get; set; }
 
 		/// <summary>
-		/// ChybovÃ¡ zprÃ¡va odpovÄ›di sluÅ¾by ARES.
+		/// Chybová zpráva odpovìdi sluby ARES.
 		/// </summary>
 		public string ResponseErrorMessage { get; set; }
 
 		/// <summary>
-		/// Indikuje, zda-li se vyskytla v odpovÄ›di sluÅ¾by ARES - ObchodnÃ­ rejstÅ™Ã­k  chyba.
+		/// Indikuje, zda-li se vyskytla v odpovìdi sluby ARES - Obchodní rejstøík  chyba.
 		/// </summary>
 		public bool HasError
 		{

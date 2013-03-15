@@ -52,7 +52,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HavitTestConsoleApplication
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TracingTest", "TracingTest\TracingTest.csproj", "{8205CE30-EB5C-42FD-927D-723500F1028B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Services.Ares", "Havit.Services.Ares\Havit.Services.Ares.csproj", "{4D6E7310-F079-437C-994F-C9CABF3D764D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Services", "Havit.Services.Ares\Havit.Services.csproj", "{4D6E7310-F079-437C-994F-C9CABF3D764D}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
@@ -111,7 +111,7 @@ Global
 		SccProjectUniqueName17 = TracingTest\\TracingTest.csproj
 		SccProjectName17 = TracingTest
 		SccLocalPath17 = TracingTest
-		SccProjectUniqueName18 = Havit.Services.Ares\\Havit.Services.Ares.csproj
+		SccProjectUniqueName18 = Havit.Services.Ares\\Havit.Services.csproj
 		SccProjectName18 = Havit.Services.Ares
 		SccLocalPath18 = Havit.Services.Ares
 	EndGlobalSection

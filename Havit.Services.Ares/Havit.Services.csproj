@@ -7,8 +7,8 @@
     <ProjectGuid>{4D6E7310-F079-437C-994F-C9CABF3D764D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Havit.Services.Ares</RootNamespace>
-    <AssemblyName>Havit.Services.Ares</AssemblyName>
+    <RootNamespace>Havit.Services</RootNamespace>
+    <AssemblyName>Havit.Services</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
@@ -43,8 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ObchodniRejstrik.cs" />
-    <Compile Include="ObchodniRejstrikResponse.cs" />
+    <Compile Include="Ares\ObchodniRejstrik.cs" />
+    <Compile Include="Ares\ObchodniRejstrikResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

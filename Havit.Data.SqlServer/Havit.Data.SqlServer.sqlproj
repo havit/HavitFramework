@@ -70,6 +70,7 @@
     <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
+    <DocumentationFile>bin\Debug\Havit.Data.SqlServer.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>false</DebugSymbols>

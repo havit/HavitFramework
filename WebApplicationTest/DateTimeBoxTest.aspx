@@ -108,6 +108,7 @@
 	</havit:GridViewExt>
 	</ContentTemplate>
 	</asp:UpdatePanel>
+	<asp:DropDownList runat="server"/>	
 	</form>
 </body>
 </html>

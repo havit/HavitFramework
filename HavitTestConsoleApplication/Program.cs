@@ -10,8 +10,6 @@ using Havit.Data.SqlTypes;
 using System.Data.SqlTypes;
 using System.Diagnostics;
 using System.IO;
-using Havit.BusinessLayerTest;
-using Havit.BusinessLayerTest.VnitrostatniDistribuce;
 
 namespace HavitTestConsoleApplication
 {
@@ -35,29 +33,6 @@ namespace HavitTestConsoleApplication
 			//TestRegexParseMicro();
 			//TestRegexParseSmall();
 			//TestRegexParseLarge();
-
-			TestMoney();
-		}
-
-		private static void TestMoney()
-		{
-			Stopwatch sw = new Stopwatch();
-			sw.Start();
-
-			TarifHmotnostItem thi = TarifHmotnostItem.CreateObject();
-			thi.Cena = new Money(1, null);
-			for (int i = 0; i < 1000000; i++)
-			{
-				thi.Cena.Amount += 1;
-			}
-			sw.Stop();
-			Console.WriteLine("{0} ms", sw.ElapsedMilliseconds);
-
-		}
-
-		private static void TestMoney_ValueChanged(object sender, EventArgs e)
-		{
-			throw new NotImplementedException();
 		}
 		#endregion
 

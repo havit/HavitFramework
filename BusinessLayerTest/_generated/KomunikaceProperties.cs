@@ -30,19 +30,20 @@ using Havit.Data.SqlTypes;
 namespace Havit.BusinessLayerTest
 {
 	/// <summary>
-	/// Objektová reprezentace metadat vlastností typu Role.
+	/// Objektová reprezentace metadat vlastností typu Komunikace.
 	/// </summary>
 	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
-	public class RolePropertiesBase
+	public class KomunikaceProperties
 	{
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public RolePropertiesBase()
+		public KomunikaceProperties()
 		{
 			_id = new FieldPropertyInfo();
-			_symbol = new FieldPropertyInfo();
-			_all = new PropertyInfoCollection(_id, _symbol);
+			_subjekt = new ReferenceFieldPropertyInfo();
+			_objednavkaSepsani = new ReferenceFieldPropertyInfo();
+			_all = new PropertyInfoCollection(_id, _subjekt, _objednavkaSepsani);
 		}
 		
 		/// <summary>
@@ -50,8 +51,9 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public void Initialize(ObjectInfo objectInfo)
 		{
-			_id.Initialize(objectInfo, "ID", "RoleID", true, SqlDbType.Int, false, 4);
-			_symbol.Initialize(objectInfo, "Symbol", "Symbol", false, SqlDbType.VarChar, true, 50);
+			_id.Initialize(objectInfo, "ID", "KomunikaceID", true, SqlDbType.Int, false, 4);
+			_subjekt.Initialize(objectInfo, "Subjekt", "SubjektID", false, SqlDbType.Int, false, 4, typeof(Havit.BusinessLayerTest.Subjekt), Havit.BusinessLayerTest.Subjekt.ObjectInfo);
+			_objednavkaSepsani.Initialize(objectInfo, "ObjednavkaSepsani", "ObjednavkaSepsaniID", false, SqlDbType.Int, true, 4, typeof(Havit.BusinessLayerTest.ObjednavkaSepsani), Havit.BusinessLayerTest.ObjednavkaSepsani.ObjectInfo);
 		}
 		
 		/// <summary>
@@ -67,19 +69,31 @@ namespace Havit.BusinessLayerTest
 		private FieldPropertyInfo _id;
 		
 		/// <summary>
-		/// Symbol role (název pro ASP.NET autrhorization)
+		/// Subjekt, se kterým byla komunikace vedena.
 		/// </summary>
-		public FieldPropertyInfo Symbol
+		public ReferenceFieldPropertyInfo Subjekt
 		{
 			get
 			{
-				return _symbol;
+				return _subjekt;
 			}
 		}
-		private FieldPropertyInfo _symbol;
+		private ReferenceFieldPropertyInfo _subjekt;
 		
 		/// <summary>
-		/// Všechny sloupečky typu Role.
+		/// Objednávka vzniklá z komunikace.
+		/// </summary>
+		public ReferenceFieldPropertyInfo ObjednavkaSepsani
+		{
+			get
+			{
+				return _objednavkaSepsani;
+			}
+		}
+		private ReferenceFieldPropertyInfo _objednavkaSepsani;
+		
+		/// <summary>
+		/// Všechny sloupečky typu Komunikace.
 		/// </summary>
 		public PropertyInfoCollection All
 		{

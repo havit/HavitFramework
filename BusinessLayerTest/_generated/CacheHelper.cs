@@ -55,6 +55,46 @@ namespace Havit.BusinessLayerTest
 				
 				try
 				{
+					Havit.BusinessLayerTest.Currency.GetAll();
+				}
+				catch (SqlException)
+				{
+				}
+				
+				try
+				{
+					Havit.BusinessLayerTest.Language.GetAll();
+				}
+				catch (SqlException)
+				{
+				}
+				
+				try
+				{
+					Havit.BusinessLayerTest.Resources.ResourceClass.GetAll();
+				}
+				catch (SqlException)
+				{
+				}
+				
+				try
+				{
+					Havit.BusinessLayerTest.Resources.ResourceItem.GetAll();
+				}
+				catch (SqlException)
+				{
+				}
+				
+				try
+				{
+					Havit.BusinessLayerTest.Resources.ResourceItemLocalization.GetAll();
+				}
+				catch (SqlException)
+				{
+				}
+				
+				try
+				{
 					Havit.BusinessLayerTest.Role.GetAll();
 				}
 				catch (SqlException)

@@ -30,19 +30,22 @@ using Havit.Data.SqlTypes;
 namespace Havit.BusinessLayerTest
 {
 	/// <summary>
-	/// Objektová reprezentace metadat vlastností typu ObjednavkaSepsani.
+	/// Objektová reprezentace metadat vlastností typu Currency.
 	/// </summary>
 	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
-	public class ObjednavkaSepsaniPropertiesBase
+	public class CurrencyProperties
 	{
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public ObjednavkaSepsaniPropertiesBase()
+		public CurrencyProperties()
 		{
 			_id = new FieldPropertyInfo();
-			_stornoKomunikace = new ReferenceFieldPropertyInfo();
-			_all = new PropertyInfoCollection(_id, _stornoKomunikace);
+			_nazev = new FieldPropertyInfo();
+			_zkratka = new FieldPropertyInfo();
+			_created = new FieldPropertyInfo();
+			_deleted = new FieldPropertyInfo();
+			_all = new PropertyInfoCollection(_id, _nazev, _zkratka, _created, _deleted);
 		}
 		
 		/// <summary>
@@ -50,8 +53,11 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public void Initialize(ObjectInfo objectInfo)
 		{
-			_id.Initialize(objectInfo, "ID", "ObjednavkaSepsaniID", true, SqlDbType.Int, false, 4);
-			_stornoKomunikace.Initialize(objectInfo, "StornoKomunikace", "StornoKomunikaceID", false, SqlDbType.Int, true, 4, typeof(Havit.BusinessLayerTest.Komunikace), Havit.BusinessLayerTest.Komunikace.ObjectInfo);
+			_id.Initialize(objectInfo, "ID", "CurrencyID", true, SqlDbType.Int, false, 4);
+			_nazev.Initialize(objectInfo, "Nazev", "Nazev", false, SqlDbType.NVarChar, false, 50);
+			_zkratka.Initialize(objectInfo, "Zkratka", "Zkratka", false, SqlDbType.NVarChar, false, 5);
+			_created.Initialize(objectInfo, "Created", "Created", false, SqlDbType.SmallDateTime, false, 4);
+			_deleted.Initialize(objectInfo, "Deleted", "Deleted", false, SqlDbType.SmallDateTime, true, 4);
 		}
 		
 		/// <summary>
@@ -67,19 +73,55 @@ namespace Havit.BusinessLayerTest
 		private FieldPropertyInfo _id;
 		
 		/// <summary>
-		/// Odkaz na komunikaci, která stornuje tuto objednávku.
+		/// Název měny.
 		/// </summary>
-		public ReferenceFieldPropertyInfo StornoKomunikace
+		public FieldPropertyInfo Nazev
 		{
 			get
 			{
-				return _stornoKomunikace;
+				return _nazev;
 			}
 		}
-		private ReferenceFieldPropertyInfo _stornoKomunikace;
+		private FieldPropertyInfo _nazev;
 		
 		/// <summary>
-		/// Všechny sloupečky typu ObjednavkaSepsani.
+		/// Zkratka měny, běžná, např. Kč.
+		/// </summary>
+		public FieldPropertyInfo Zkratka
+		{
+			get
+			{
+				return _zkratka;
+			}
+		}
+		private FieldPropertyInfo _zkratka;
+		
+		/// <summary>
+		/// Čas vytvoření objektu.
+		/// </summary>
+		public FieldPropertyInfo Created
+		{
+			get
+			{
+				return _created;
+			}
+		}
+		private FieldPropertyInfo _created;
+		
+		/// <summary>
+		/// Čas smazání objektu.
+		/// </summary>
+		public FieldPropertyInfo Deleted
+		{
+			get
+			{
+				return _deleted;
+			}
+		}
+		private FieldPropertyInfo _deleted;
+		
+		/// <summary>
+		/// Všechny sloupečky typu Currency.
 		/// </summary>
 		public PropertyInfoCollection All
 		{

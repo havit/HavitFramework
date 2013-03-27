@@ -27,26 +27,24 @@ using Havit.Data.SqlClient;
 using Havit.Data.SqlServer;
 using Havit.Data.SqlTypes;
 
-namespace Havit.BusinessLayerTest
+namespace Havit.BusinessLayerTest.Resources
 {
 	/// <summary>
-	/// Objektová reprezentace metadat vlastností typu Subjekt.
+	/// Objektová reprezentace metadat vlastností typu ResourceClass.
 	/// </summary>
 	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
-	public class SubjektPropertiesBase
+	public class ResourceClassProperties
 	{
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public SubjektPropertiesBase()
+		public ResourceClassProperties()
 		{
 			_id = new FieldPropertyInfo();
-			_nazev = new FieldPropertyInfo();
-			_uzivatel = new ReferenceFieldPropertyInfo();
-			_created = new FieldPropertyInfo();
+			_name = new FieldPropertyInfo();
+			_description = new FieldPropertyInfo();
 			_deleted = new FieldPropertyInfo();
-			_komunikace = new CollectionPropertyInfo();
-			_all = new PropertyInfoCollection(_id, _nazev, _uzivatel, _created, _deleted, _komunikace);
+			_all = new PropertyInfoCollection(_id, _name, _description, _deleted);
 		}
 		
 		/// <summary>
@@ -54,12 +52,10 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public void Initialize(ObjectInfo objectInfo)
 		{
-			_id.Initialize(objectInfo, "ID", "SubjektID", true, SqlDbType.Int, false, 4);
-			_nazev.Initialize(objectInfo, "Nazev", "Nazev", false, SqlDbType.NVarChar, true, 50);
-			_uzivatel.Initialize(objectInfo, "Uzivatel", "UzivatelID", false, SqlDbType.Int, true, 4, typeof(Havit.BusinessLayerTest.Uzivatel), Havit.BusinessLayerTest.Uzivatel.ObjectInfo);
-			_created.Initialize(objectInfo, "Created", "Created", false, SqlDbType.SmallDateTime, false, 4);
+			_id.Initialize(objectInfo, "ID", "ResourceClassID", true, SqlDbType.Int, false, 4);
+			_name.Initialize(objectInfo, "Name", "Name", false, SqlDbType.NVarChar, false, 100);
+			_description.Initialize(objectInfo, "Description", "Description", false, SqlDbType.NVarChar, false, 2147483647);
 			_deleted.Initialize(objectInfo, "Deleted", "Deleted", false, SqlDbType.SmallDateTime, true, 4);
-			_komunikace.Initialize(objectInfo, "Komunikace", typeof(Havit.BusinessLayerTest.Komunikace), "(SELECT CAST([_items].[KomunikaceID] AS NVARCHAR(11)) + '|' FROM [dbo].[Komunikace] AS [_items] WHERE ([_items].[SubjektID] = [dbo].[Subjekt].[SubjektID]) FOR XML PATH('')) AS [Komunikace]");
 		}
 		
 		/// <summary>
@@ -75,43 +71,31 @@ namespace Havit.BusinessLayerTest
 		private FieldPropertyInfo _id;
 		
 		/// <summary>
-		/// Název.
+		/// Název třídy (pro .NET!)
 		/// </summary>
-		public FieldPropertyInfo Nazev
+		public FieldPropertyInfo Name
 		{
 			get
 			{
-				return _nazev;
+				return _name;
 			}
 		}
-		private FieldPropertyInfo _nazev;
+		private FieldPropertyInfo _name;
 		
 		/// <summary>
-		/// Uživatel (login).
+		/// Popis pro administraci.
 		/// </summary>
-		public ReferenceFieldPropertyInfo Uzivatel
+		public FieldPropertyInfo Description
 		{
 			get
 			{
-				return _uzivatel;
+				return _description;
 			}
 		}
-		private ReferenceFieldPropertyInfo _uzivatel;
+		private FieldPropertyInfo _description;
 		
 		/// <summary>
-		/// Čas vytvoření objektu.
-		/// </summary>
-		public FieldPropertyInfo Created
-		{
-			get
-			{
-				return _created;
-			}
-		}
-		private FieldPropertyInfo _created;
-		
-		/// <summary>
-		/// Čas smazání objektu.
+		/// Datum smazání položky.
 		/// </summary>
 		public FieldPropertyInfo Deleted
 		{
@@ -123,19 +107,7 @@ namespace Havit.BusinessLayerTest
 		private FieldPropertyInfo _deleted;
 		
 		/// <summary>
-		/// Komunikace subjektu.
-		/// </summary>
-		public CollectionPropertyInfo Komunikace
-		{
-			get
-			{
-				return _komunikace;
-			}
-		}
-		private CollectionPropertyInfo _komunikace;
-		
-		/// <summary>
-		/// Všechny sloupečky typu Subjekt.
+		/// Všechny sloupečky typu ResourceClass.
 		/// </summary>
 		public PropertyInfoCollection All
 		{

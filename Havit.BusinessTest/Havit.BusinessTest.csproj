@@ -154,6 +154,7 @@
     <Compile Include="CompositeConditionTest.cs" />
     <Compile Include="IdentityMapScopeTest.cs" />
     <Compile Include="IdentityMapTest.cs" />
+    <Compile Include="MoneyTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReferenceConditionTest.cs" />
     <Compile Include="StringExtTest.cs" />

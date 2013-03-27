@@ -27,23 +27,24 @@ using Havit.Data.SqlClient;
 using Havit.Data.SqlServer;
 using Havit.Data.SqlTypes;
 
-namespace Havit.BusinessLayerTest
+namespace Havit.BusinessLayerTest.Resources
 {
 	/// <summary>
-	/// Objektová reprezentace metadat vlastností typu Komunikace.
+	/// Objektová reprezentace metadat vlastností typu ResourceItemLocalization.
 	/// </summary>
 	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
-	public class KomunikacePropertiesBase
+	public class ResourceItemLocalizationProperties
 	{
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public KomunikacePropertiesBase()
+		public ResourceItemLocalizationProperties()
 		{
 			_id = new FieldPropertyInfo();
-			_subjekt = new ReferenceFieldPropertyInfo();
-			_objednavkaSepsani = new ReferenceFieldPropertyInfo();
-			_all = new PropertyInfoCollection(_id, _subjekt, _objednavkaSepsani);
+			_resourceItem = new ReferenceFieldPropertyInfo();
+			_language = new ReferenceFieldPropertyInfo();
+			_value = new FieldPropertyInfo();
+			_all = new PropertyInfoCollection(_id, _resourceItem, _language, _value);
 		}
 		
 		/// <summary>
@@ -51,9 +52,10 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public void Initialize(ObjectInfo objectInfo)
 		{
-			_id.Initialize(objectInfo, "ID", "KomunikaceID", true, SqlDbType.Int, false, 4);
-			_subjekt.Initialize(objectInfo, "Subjekt", "SubjektID", false, SqlDbType.Int, false, 4, typeof(Havit.BusinessLayerTest.Subjekt), Havit.BusinessLayerTest.Subjekt.ObjectInfo);
-			_objednavkaSepsani.Initialize(objectInfo, "ObjednavkaSepsani", "ObjednavkaSepsaniID", false, SqlDbType.Int, true, 4, typeof(Havit.BusinessLayerTest.ObjednavkaSepsani), Havit.BusinessLayerTest.ObjednavkaSepsani.ObjectInfo);
+			_id.Initialize(objectInfo, "ID", "ResourceItemLocalizationID", true, SqlDbType.Int, false, 4);
+			_resourceItem.Initialize(objectInfo, "ResourceItem", "ResourceItemID", false, SqlDbType.Int, false, 4, typeof(Havit.BusinessLayerTest.Resources.ResourceItem), Havit.BusinessLayerTest.Resources.ResourceItem.ObjectInfo);
+			_language.Initialize(objectInfo, "Language", "LanguageID", false, SqlDbType.Int, false, 4, typeof(Havit.BusinessLayerTest.Language), Havit.BusinessLayerTest.Language.ObjectInfo);
+			_value.Initialize(objectInfo, "Value", "Value", false, SqlDbType.NVarChar, false, 2147483647);
 		}
 		
 		/// <summary>
@@ -69,31 +71,43 @@ namespace Havit.BusinessLayerTest
 		private FieldPropertyInfo _id;
 		
 		/// <summary>
-		/// Subjekt, se kterým byla komunikace vedena.
+		/// Lokalizovaný objekt.
 		/// </summary>
-		public ReferenceFieldPropertyInfo Subjekt
+		public ReferenceFieldPropertyInfo ResourceItem
 		{
 			get
 			{
-				return _subjekt;
+				return _resourceItem;
 			}
 		}
-		private ReferenceFieldPropertyInfo _subjekt;
+		private ReferenceFieldPropertyInfo _resourceItem;
 		
 		/// <summary>
-		/// Objednávka vzniklá z komunikace.
+		/// Jazyk lokalizovaných dat.
 		/// </summary>
-		public ReferenceFieldPropertyInfo ObjednavkaSepsani
+		public ReferenceFieldPropertyInfo Language
 		{
 			get
 			{
-				return _objednavkaSepsani;
+				return _language;
 			}
 		}
-		private ReferenceFieldPropertyInfo _objednavkaSepsani;
+		private ReferenceFieldPropertyInfo _language;
 		
 		/// <summary>
-		/// Všechny sloupečky typu Komunikace.
+		/// Hodnota.
+		/// </summary>
+		public FieldPropertyInfo Value
+		{
+			get
+			{
+				return _value;
+			}
+		}
+		private FieldPropertyInfo _value;
+		
+		/// <summary>
+		/// Všechny sloupečky typu ResourceItemLocalization.
 		/// </summary>
 		public PropertyInfoCollection All
 		{

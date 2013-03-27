@@ -28,6 +28,26 @@ namespace Havit.BusinessLayerTest
 	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
 	public static partial class ExtensionMethods
 	{
+		#region IEnumerable<Havit.BusinessLayerTest.CenikItemCollection>.ToCollection
+		/// <summary>
+		/// Vytvoří Havit.BusinessLayerTest.CenikItemCollection z IEnumerable&lt;Havit.BusinessLayerTest.CenikItem&gt;.
+		/// </summary>
+		public static Havit.BusinessLayerTest.CenikItemCollection ToCollection(this IEnumerable<Havit.BusinessLayerTest.CenikItem> objects)
+		{
+			return new Havit.BusinessLayerTest.CenikItemCollection(objects);
+		}
+		#endregion
+		
+		#region IEnumerable<Havit.BusinessLayerTest.CurrencyCollection>.ToCollection
+		/// <summary>
+		/// Vytvoří Havit.BusinessLayerTest.CurrencyCollection z IEnumerable&lt;Havit.BusinessLayerTest.Currency&gt;.
+		/// </summary>
+		public static Havit.BusinessLayerTest.CurrencyCollection ToCollection(this IEnumerable<Havit.BusinessLayerTest.Currency> objects)
+		{
+			return new Havit.BusinessLayerTest.CurrencyCollection(objects);
+		}
+		#endregion
+		
 		#region IEnumerable<Havit.BusinessLayerTest.KomunikaceCollection>.ToCollection
 		/// <summary>
 		/// Vytvoří Havit.BusinessLayerTest.KomunikaceCollection z IEnumerable&lt;Havit.BusinessLayerTest.Komunikace&gt;.
@@ -35,6 +55,16 @@ namespace Havit.BusinessLayerTest
 		public static Havit.BusinessLayerTest.KomunikaceCollection ToCollection(this IEnumerable<Havit.BusinessLayerTest.Komunikace> objects)
 		{
 			return new Havit.BusinessLayerTest.KomunikaceCollection(objects);
+		}
+		#endregion
+		
+		#region IEnumerable<Havit.BusinessLayerTest.LanguageCollection>.ToCollection
+		/// <summary>
+		/// Vytvoří Havit.BusinessLayerTest.LanguageCollection z IEnumerable&lt;Havit.BusinessLayerTest.Language&gt;.
+		/// </summary>
+		public static Havit.BusinessLayerTest.LanguageCollection ToCollection(this IEnumerable<Havit.BusinessLayerTest.Language> objects)
+		{
+			return new Havit.BusinessLayerTest.LanguageCollection(objects);
 		}
 		#endregion
 		

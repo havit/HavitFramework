@@ -36,6 +36,7 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -143,53 +144,380 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Komunikace.cs" />
-    <Compile Include="KomunikaceCollection.cs" />
-    <Compile Include="ObjednavkaSepsani.cs" />
-    <Compile Include="ObjednavkaSepsaniCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Role.cs" />
-    <Compile Include="RoleCollection.cs" />
-    <Compile Include="Subjekt.cs" />
-    <Compile Include="SubjektCollection.cs" />
-    <Compile Include="Uzivatel.cs" />
-    <Compile Include="UzivatelCollection.cs" />
-    <Compile Include="_generated\CacheHelper.cs" />
-    <Compile Include="_generated\ExtensionMethods.partial.cs" />
-    <Compile Include="_generated\Komunikace.partial.cs" />
-    <Compile Include="_generated\KomunikaceBase.cs" />
-    <Compile Include="_generated\KomunikaceCollection.partial.cs" />
-    <Compile Include="_generated\KomunikaceCollectionBase.cs" />
-    <Compile Include="_generated\KomunikacePropertiesBase.cs" />
-    <Compile Include="_generated\ObjednavkaSepsani.partial.cs" />
-    <Compile Include="_generated\ObjednavkaSepsaniBase.cs" />
-    <Compile Include="_generated\ObjednavkaSepsaniCollection.partial.cs" />
-    <Compile Include="_generated\ObjednavkaSepsaniCollectionBase.cs" />
-    <Compile Include="_generated\ObjednavkaSepsaniPropertiesBase.cs" />
-    <Compile Include="_generated\Role.partial.cs" />
-    <Compile Include="_generated\RoleBase.cs" />
-    <Compile Include="_generated\RoleCollection.partial.cs" />
-    <Compile Include="_generated\RoleCollectionBase.cs" />
-    <Compile Include="_generated\RolePropertiesBase.cs" />
-    <Compile Include="_generated\Subjekt.partial.cs" />
-    <Compile Include="_generated\SubjektBase.cs" />
-    <Compile Include="_generated\SubjektCollection.partial.cs" />
-    <Compile Include="_generated\SubjektCollectionBase.cs" />
-    <Compile Include="_generated\SubjektPropertiesBase.cs" />
-    <Compile Include="_generated\Uzivatel.partial.cs" />
-    <Compile Include="_generated\UzivatelBase.cs" />
-    <Compile Include="_generated\UzivatelCollection.partial.cs" />
-    <Compile Include="_generated\UzivatelCollectionBase.cs" />
-    <Compile Include="_generated\UzivatelPropertiesBase.cs" />
-    <Compile Include="_properties\KomunikaceProperties.cs" />
-    <Compile Include="_properties\ObjednavkaSepsaniProperties.cs" />
-    <Compile Include="_properties\RoleProperties.cs" />
-    <Compile Include="_properties\SubjektProperties.cs" />
-    <Compile Include="_properties\UzivatelProperties.cs" />
+    <Compile Include="_generated\CurrencyBase.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\Currency.partial.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="Currency.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\CurrencyCollectionBase.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\CurrencyCollection.partial.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="CurrencyCollection.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\CurrencyProperties.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\MoneyBase.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="Money.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\Money.partial.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\KomunikaceBase.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\Komunikace.partial.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="Komunikace.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\KomunikaceCollectionBase.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\KomunikaceCollection.partial.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="KomunikaceCollection.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\KomunikaceProperties.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\ObjednavkaSepsaniBase.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\ObjednavkaSepsani.partial.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="ObjednavkaSepsani.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\ObjednavkaSepsaniCollectionBase.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\ObjednavkaSepsaniCollection.partial.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="ObjednavkaSepsaniCollection.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\ObjednavkaSepsaniProperties.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\RoleBase.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\Role.partial.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="Role.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\RoleCollectionBase.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\RoleCollection.partial.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="RoleCollection.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\RoleProperties.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\SubjektBase.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\Subjekt.partial.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="Subjekt.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\SubjektCollectionBase.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\SubjektCollection.partial.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="SubjektCollection.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\SubjektProperties.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="VnitrostatniDistribuce\_generated\TarifHmotnostItemBase.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="VnitrostatniDistribuce\_generated\TarifHmotnostItem.partial.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="VnitrostatniDistribuce\TarifHmotnostItem.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="VnitrostatniDistribuce\_generated\TarifHmotnostItemCollectionBase.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="VnitrostatniDistribuce\_generated\TarifHmotnostItemCollection.partial.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="VnitrostatniDistribuce\TarifHmotnostItemCollection.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="VnitrostatniDistribuce\_generated\TarifHmotnostItemProperties.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\UzivatelBase.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\Uzivatel.partial.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="Uzivatel.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\UzivatelCollectionBase.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\UzivatelCollection.partial.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="UzivatelCollection.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\UzivatelProperties.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\ExtensionMethods.partial.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="VnitrostatniDistribuce\_generated\ExtensionMethods.partial.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\CacheHelper.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\CenikItemBase.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\CenikItem.partial.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="CenikItem.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\CenikItemCollectionBase.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\CenikItemCollection.partial.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="CenikItemCollection.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\CenikItemProperties.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\LanguageBase.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\Language.partial.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="Language.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\LanguageCollectionBase.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\LanguageCollection.partial.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="LanguageCollection.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="_generated\LanguageProperties.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="Resources\_generated\ResourceClassBase.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="Resources\_generated\ResourceClass.partial.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="Resources\ResourceClass.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="Resources\_generated\ResourceClassCollectionBase.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="Resources\_generated\ResourceClassCollection.partial.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="Resources\ResourceClassCollection.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="Resources\_generated\ResourceClassProperties.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="Resources\_generated\DbResources.partial.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="Resources\_generated\ResourceItemBase.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="Resources\_generated\ResourceItem.partial.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="Resources\ResourceItem.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="Resources\_generated\ResourceItemCollectionBase.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="Resources\_generated\ResourceItemCollection.partial.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="Resources\ResourceItemCollection.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="Resources\_generated\ResourceItemProperties.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="Resources\_generated\ResourceItemLocalizationBase.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="Resources\_generated\ResourceItemLocalization.partial.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="Resources\ResourceItemLocalization.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="Resources\_generated\ResourceItemLocalizationCollectionBase.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="Resources\_generated\ResourceItemLocalizationCollection.partial.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="Resources\ResourceItemLocalizationCollection.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="Resources\_generated\ResourceItemLocalizationProperties.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
+    <Compile Include="Resources\_generated\ExtensionMethods.partial.cs">
+      <SubType>Code</SubType>
+      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Havit.Business\Havit.Business.csproj">

@@ -33,12 +33,12 @@ namespace Havit.BusinessLayerTest
 	/// Objektová reprezentace metadat vlastností typu Uzivatel.
 	/// </summary>
 	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
-	public class UzivatelPropertiesBase
+	public class UzivatelProperties
 	{
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public UzivatelPropertiesBase()
+		public UzivatelProperties()
 		{
 			_id = new FieldPropertyInfo();
 			_username = new FieldPropertyInfo();

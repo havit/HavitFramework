@@ -205,7 +205,7 @@
   <Import Project="$(SHFBROOT)\SandcastleHelpFileBuilder.targets" />
   <Target Name="TfsPublish" AfterTargets="AfterBuild" Condition="'$(PublishDirectory)' != ''">
     <ItemGroup>
-      <FilesToCopy Include="doc\**\*.*" />
+      <FilesToCopy Include="$(OutputPath)\**\*.*" />
     </ItemGroup>
     <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(PublishDirectory)\Documentation\%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>

@@ -121,6 +121,10 @@
     <Content Include="app.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BusinessLayerTest\BusinessLayerTest.csproj">
+      <Project>{5a35a57f-7d3d-4858-bc69-b91025cde667}</Project>
+      <Name>BusinessLayerTest</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Havit.Business\Havit.Business.csproj">
       <Project>{81995bc1-9f25-4f46-8258-8ed1f965cabb}</Project>
       <Name>Havit.Business</Name>

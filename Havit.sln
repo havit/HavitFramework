@@ -54,15 +54,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TracingTest", "TracingTest\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Services", "Havit.Services\Havit.Services.csproj", "{2E4AE0CF-FA21-4FBC-9274-E56BC5D9494E}"
 EndProject
-Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "Sandcastle", "FrameworkDocs\Sandcastle.shfbproj", "{C1BD4BBA-35DB-43B6-B4E9-072AFAC6EBD5}"
-	ProjectSection(ProjectDependencies) = postProject
-		{28BB8E7F-089E-494E-9F11-6088C36DD4D0} = {28BB8E7F-089E-494E-9F11-6088C36DD4D0}
-		{52891FB3-CA20-403B-AC25-7D9CA5738B6B} = {52891FB3-CA20-403B-AC25-7D9CA5738B6B}
-	EndProjectSection
+Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "Sandcastle", "Sandcastle\Sandcastle.shfbproj", "{C1BD4BBA-35DB-43B6-B4E9-072AFAC6EBD5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{31446842-E0C7-433B-9D6B-51CBD5C833FD}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 19
+		SccNumberOfProjects = 20
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://tfs.havit.local:8080/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -85,6 +83,7 @@ Global
 		SccProjectName6 = Havit
 		SccLocalPath6 = Havit
 		SccProjectUniqueName7 = HavitTest\\HavitTest.csproj
+		SccProjectTopLevelParentUniqueName7 = Havit.sln
 		SccProjectName7 = HavitTest
 		SccLocalPath7 = HavitTest
 		SccProjectUniqueName8 = Havit.DataTest\\Havit.DataTest.csproj
@@ -94,12 +93,15 @@ Global
 		SccProjectName9 = Havit.Enterprise.Web
 		SccLocalPath9 = Havit.Enterprise.Web
 		SccProjectUniqueName10 = Havit.BusinessTest\\Havit.BusinessTest.csproj
+		SccProjectTopLevelParentUniqueName10 = Havit.sln
 		SccProjectName10 = Havit.BusinessTest
 		SccLocalPath10 = Havit.BusinessTest
 		SccProjectUniqueName11 = BusinessLayerTest\\BusinessLayerTest.csproj
+		SccProjectTopLevelParentUniqueName11 = Havit.sln
 		SccProjectName11 = BusinessLayerTest
 		SccLocalPath11 = BusinessLayerTest
 		SccProjectUniqueName12 = WebApplicationTest\\WebApplicationTest.csproj
+		SccProjectTopLevelParentUniqueName12 = Havit.sln
 		SccProjectName12 = WebApplicationTest
 		SccLocalPath12 = WebApplicationTest
 		SccProjectUniqueName13 = Havit.WebTest\\Havit.WebTest.csproj
@@ -109,21 +111,22 @@ Global
 		SccProjectName14 = Havit.PayMuzo
 		SccLocalPath14 = Havit.PayMuzo
 		SccProjectUniqueName15 = HavitTestConsoleApplication\\HavitTestConsoleApplication.csproj
+		SccProjectTopLevelParentUniqueName15 = Havit.sln
 		SccProjectName15 = HavitTestConsoleApplication
 		SccLocalPath15 = HavitTestConsoleApplication
 		SccProjectUniqueName16 = Havit.Data.SqlServer\\Havit.Data.SqlServer.sqlproj
 		SccProjectName16 = Havit.Data.SqlServer
 		SccLocalPath16 = Havit.Data.SqlServer
 		SccProjectUniqueName17 = TracingTest\\TracingTest.csproj
+		SccProjectTopLevelParentUniqueName17 = Havit.sln
 		SccProjectName17 = TracingTest
 		SccLocalPath17 = TracingTest
 		SccProjectUniqueName18 = Havit.Services\\Havit.Services.csproj
 		SccProjectName18 = Havit.Services
 		SccLocalPath18 = Havit.Services
+		SccProjectUniqueName19 = Sandcastle\\Sandcastle.shfbproj
 		SccProjectName19 = Sandcastle
-		SccProjectUniqueName19 = FrameworkDocs\\Sandcastle.shfbproj
-		SccLocalPath19 = .
-		SccProjectFilePathRelativizedFromConnection19 = FrameworkDocs\\
+		SccLocalPath19 = Sandcastle
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -311,7 +314,6 @@ Global
 		{C1BD4BBA-35DB-43B6-B4E9-072AFAC6EBD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C1BD4BBA-35DB-43B6-B4E9-072AFAC6EBD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1BD4BBA-35DB-43B6-B4E9-072AFAC6EBD5}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{C1BD4BBA-35DB-43B6-B4E9-072AFAC6EBD5}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{C1BD4BBA-35DB-43B6-B4E9-072AFAC6EBD5}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{C1BD4BBA-35DB-43B6-B4E9-072AFAC6EBD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1BD4BBA-35DB-43B6-B4E9-072AFAC6EBD5}.Release|Any CPU.Build.0 = Release|Any CPU
@@ -321,5 +323,13 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{28BB8E7F-089E-494E-9F11-6088C36DD4D0} = {31446842-E0C7-433B-9D6B-51CBD5C833FD}
+		{8205CE30-EB5C-42FD-927D-723500F1028B} = {31446842-E0C7-433B-9D6B-51CBD5C833FD}
+		{9D368EE4-AE81-4B73-B617-DDA5A94410FF} = {31446842-E0C7-433B-9D6B-51CBD5C833FD}
+		{9F79CB68-4B61-48E2-A9E5-B545A65BAC89} = {31446842-E0C7-433B-9D6B-51CBD5C833FD}
+		{5A35A57F-7D3D-4858-BC69-B91025CDE667} = {31446842-E0C7-433B-9D6B-51CBD5C833FD}
+		{F71BDA61-8039-4E17-B4B8-0B8B553B89DC} = {31446842-E0C7-433B-9D6B-51CBD5C833FD}
 	EndGlobalSection
 EndGlobal

@@ -203,7 +203,7 @@
   </ItemGroup>
   <!-- Import the SHFB build targets -->
   <Import Project="$(SHFBROOT)\SandcastleHelpFileBuilder.targets" />
-  <Target Name="TfsPublish" AfterTargets="AfterBuild" Condition="'$(PublishDirectory)' != ''">
+  <Target Name="TfsPublish" AfterTargets="AfterBuildHelp" Condition="'$(PublishDirectory)' != ''">
     <ItemGroup>
       <FilesToCopy Include="$(OutputPath)\**\*.*" />
     </ItemGroup>

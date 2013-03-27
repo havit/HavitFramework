@@ -30,7 +30,7 @@
     </SandcastlePath>
     <WorkingPath>
     </WorkingPath>
-    <FrameworkVersion>.NET Framework 4.5</FrameworkVersion>
+    <FrameworkVersion>.NET Framework 3.5</FrameworkVersion>
     <HelpTitle>HAVIT .NET Framework</HelpTitle>
     <CopyrightHref>http://www.havit.cz</CopyrightHref>
     <CopyrightText>HAVIT, s.r.o., All rights reserved.</CopyrightText>
@@ -43,7 +43,15 @@
     <PresentationStyle>VS2010</PresentationStyle>
     <SyntaxFilters>CSharp</SyntaxFilters>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\Havit.sln" />
+      <DocumentationSource sourceFile="..\Havit\Havit.csproj" />
+      <DocumentationSource sourceFile="..\Havit.Business\Havit.Business.csproj" />
+      <DocumentationSource sourceFile="..\Havit.Data\Havit.Data.csproj" />
+      <DocumentationSource sourceFile="..\Havit.Drawing\Havit.Drawing.csproj" />
+      <DocumentationSource sourceFile="..\Havit.Enterprise.Web\Havit.Enterprise.Web.csproj" />
+      <DocumentationSource sourceFile="..\Havit.PayMuzo\Havit.PayMuzo.csproj" />
+      <DocumentationSource sourceFile="..\Havit.Services\Havit.Services.csproj" />
+      <DocumentationSource sourceFile="..\Havit.Web\Havit.Web.csproj" />
+      <DocumentationSource sourceFile="..\Havit.Xml\Havit.Xml.csproj" />
     </DocumentationSources>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="(global)" isDocumented="True" />

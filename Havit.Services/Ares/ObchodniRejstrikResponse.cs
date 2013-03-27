@@ -97,7 +97,7 @@ namespace Havit.Services.Ares
 		/// </summary>
 		public bool HasError
 		{
-			get { return !String.IsNullOrWhiteSpace(ResponseErrorMessage); }
+			get { return !String.IsNullOrEmpty(ResponseErrorMessage); }
 
 		}
 	}

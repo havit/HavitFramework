@@ -454,9 +454,8 @@ namespace Havit.Business
 		{
 			isFrozen = true;
 		}
-
 		private bool isFrozen = false;
-		
+
 		/// <summary>
 		/// Pokud je nastaven příznak isFrozen, vyhodí výjimku InvalidOperationException.
 		/// </summary>
@@ -465,14 +464,6 @@ namespace Havit.Business
 			if (this.isFrozen)
 			{
 				throw new InvalidOperationException("Kolekce je zamčena, nelze ji modifikovat.");
-			}
-		}
-		[SuppressMessage("Havit.StyleCop.Rules.HavitRules", "HA0002:MembersOrder", Justification = "Související kód ohledně readonly kolekcí je pohromadě.")]
-		bool ICollection<TItem>.IsReadOnly
-		{
-			get
-			{
-				return isFrozen;
 			}
 		}
 		#endregion
@@ -539,5 +530,15 @@ namespace Havit.Business
 		}
 		#endregion
 
+		#region ICollection<TItem>.IsReadOnly
+		[SuppressMessage("Havit.StyleCop.Rules.HavitRules", "HA0002:MembersOrder", Justification = "Související kód ohledně readonly kolekcí je pohromadě.")]
+		bool ICollection<TItem>.IsReadOnly
+		{
+			get
+			{
+				return isFrozen;
+			}
+		}
+		#endregion
 	}
 }

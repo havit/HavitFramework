@@ -34,29 +34,6 @@ namespace Havit.Business.Query
 		}
 		#endregion
 
-		#region IOperand Members
-		string IOperand.GetCommandValue(System.Data.Common.DbCommand command)
-		{
-			string parameterName;
-			int index = 1;
-			do
-			{
-				parameterName = "@param" + (command.Parameters.Count + index).ToString();
-				index += 1;
-			}
-			while (command.Parameters.Contains(parameterName));
-
-			DbParameter parameter = command.CreateParameter();
-			parameter.ParameterName = parameterName;
-			parameter.Value = value ?? DBNull.Value;
-			parameter.DbType = dbType;
-			command.Parameters.Add(parameter);
-
-			return parameterName;
-		}
-
-		#endregion
-
 		#region Create - Boolean
 		/// <summary>
 		/// Vytvoří operand z logické hodnoty.
@@ -148,5 +125,29 @@ namespace Havit.Business.Query
 			return new ValueOperand(value, DbType.String);
 		}
 		#endregion
+
+		#region IOperand Members
+		string IOperand.GetCommandValue(System.Data.Common.DbCommand command)
+		{
+			string parameterName;
+			int index = 1;
+			do
+			{
+				parameterName = "@param" + (command.Parameters.Count + index).ToString();
+				index += 1;
+			}
+			while (command.Parameters.Contains(parameterName));
+
+			DbParameter parameter = command.CreateParameter();
+			parameter.ParameterName = parameterName;
+			parameter.Value = value ?? DBNull.Value;
+			parameter.DbType = dbType;
+			command.Parameters.Add(parameter);
+
+			return parameterName;
+		}
+
+		#endregion
+
 	}
 }

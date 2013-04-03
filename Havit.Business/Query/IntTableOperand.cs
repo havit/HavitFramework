@@ -32,12 +32,22 @@ namespace Havit.Business.Query
 		}
 		#endregion
 
+		#region Create
+		/// <summary>
+		/// Vytvoří operand z pole integerů.
+		/// </summary>
+		public static IOperand Create(int[] ids)
+		{
+			return new IntTableOperand(ids);
+		}
+		#endregion
+
 		#region IOperand Members
 		string IOperand.GetCommandValue(System.Data.Common.DbCommand command)
 		{
 			if (!(command is SqlCommand))
 			{
-				throw new ArgumentException("Typ IntTableOperand předpokládá SqlCommand.");	
+				throw new ArgumentException("Typ IntTableOperand předpokládá SqlCommand.");
 			}
 
 			SqlCommand sqlCommand = command as SqlCommand;
@@ -61,16 +71,5 @@ namespace Havit.Business.Query
 			return parameterName;
 		}
 		#endregion
-
-		#region Create
-		/// <summary>
-		/// Vytvoří operand z pole integerů.
-		/// </summary>
-		public static IOperand Create(int[] ids)
-		{
-			return new IntTableOperand(ids);
-		}
-		#endregion
-
 	}
 }

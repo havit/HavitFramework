@@ -35,33 +35,6 @@ namespace Havit.Web.UI
 			}
 			#endregion
 
-			#region GetStorageSymbol
-			/// <summary>
-			/// Viz IFileNamingStrategy.GetStorageSymbol.
-			/// </summary>
-			string FilePageStatePersister.IFileNamingStrategy.GetStorageSymbol()
-			{
-				return Guid.NewGuid().ToString();
-			}
-			#endregion
-
-			#region GetFilename
-			/// <summary>
-			/// Viz IFileNamingStrategy.GetFilename.
-			/// </summary>
-			string FilePageStatePersister.IFileNamingStrategy.GetFilename(string symbol)
-			{
-				foreach (char invalidChar in System.IO.Path.GetInvalidFileNameChars())
-				{
-					if (symbol.Contains(invalidChar))
-					{
-						throw new ArgumentException("Symbol obsahuje nepoovlený znak.");
-					}
-				}
-				return System.IO.Path.Combine(GetFolderForUserName(Root, HttpContext.Current.User.Identity.Name), symbol);
-			}
-			#endregion
-
 			#region DeleteUserFiles (static)
 			/// <summary>
 			/// Smaže soubory konkrétního uživatele.
@@ -130,6 +103,32 @@ namespace Havit.Web.UI
 				return System.IO.Path.Combine(root, String.Format(FolderNamePattern, userFolder));
 			}
 			#endregion
+
+			#region FilePageStatePersister.IFileNamingStrategy implementation
+			/// <summary>
+			/// Viz IFileNamingStrategy.GetStorageSymbol.
+			/// </summary>
+			string FilePageStatePersister.IFileNamingStrategy.GetStorageSymbol()
+			{
+				return Guid.NewGuid().ToString();
+			}
+			
+			/// <summary>
+			/// Viz IFileNamingStrategy.GetFilename.
+			/// </summary>
+			string FilePageStatePersister.IFileNamingStrategy.GetFilename(string symbol)
+			{
+				foreach (char invalidChar in System.IO.Path.GetInvalidFileNameChars())
+				{
+					if (symbol.Contains(invalidChar))
+					{
+						throw new ArgumentException("Symbol obsahuje nepoovlený znak.");
+					}
+				}
+				return System.IO.Path.Combine(GetFolderForUserName(Root, HttpContext.Current.User.Identity.Name), symbol);
+			}
+			#endregion
+
 		}
 	}
 }

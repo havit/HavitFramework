@@ -30,12 +30,23 @@ namespace Havit.Business.Query
 		}
 		#endregion
 
+		#region Create
+		/// <summary>
+		/// Vytvoří operand z pole integerů.
+		/// </summary>
+		[Obsolete("Používá se jen pro target platform SQL Server 2005. Pro novější nahrazeno třídou IntTableOperand.")]
+		public static IOperand Create(int[] ids)
+		{
+			return new SqlInt32ArrayOperand(ids);
+		}
+		#endregion
+
 		#region IOperand Members
 		string IOperand.GetCommandValue(System.Data.Common.DbCommand command)
 		{
 			if (!(command is SqlCommand))
 			{
-				throw new ArgumentException("Typ SqlInt32ArrayOperand předpokládá SqlCommand.");	
+				throw new ArgumentException("Typ SqlInt32ArrayOperand předpokládá SqlCommand.");
 			}
 
 			SqlCommand sqlCommand = command as SqlCommand;
@@ -59,17 +70,5 @@ namespace Havit.Business.Query
 			return parameterName;
 		}
 		#endregion
-
-		#region Create
-		/// <summary>
-		/// Vytvoří operand z pole integerů.
-		/// </summary>
-		[Obsolete("Používá se jen pro target platform SQL Server 2005. Pro novější nahrazeno třídou IntTableOperand.")]
-		public static IOperand Create(int[] ids)
-		{
-			return new SqlInt32ArrayOperand(ids);
-		}
-		#endregion
-
 	}
 }

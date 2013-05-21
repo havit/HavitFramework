@@ -38,6 +38,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -61,4 +62,12 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="TfsPublish" AfterTargets="AfterBuild" Condition="'$(PublishDirectory)' != ''">
+    <ItemGroup>
+      <FilesToCopy Include="$(OutputPath)\Havit.Services.dll" />
+      <FilesToCopy Include="$(OutputPath)\Havit.Services.pdb" />
+      <FilesToCopy Include="$(OutputPath)\Havit.Services.xml" />
+    </ItemGroup>
+    <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(PublishDirectory)\Framework\%(RecursiveDir)%(Filename)%(Extension)')" />
+  </Target>
 </Project>

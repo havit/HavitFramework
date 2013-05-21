@@ -11,6 +11,8 @@ using System.Data.SqlTypes;
 using System.Diagnostics;
 using System.IO;
 
+using Havit.Services.Ares;
+
 namespace HavitTestConsoleApplication
 {
 
@@ -33,6 +35,10 @@ namespace HavitTestConsoleApplication
 			//TestRegexParseMicro();
 			//TestRegexParseSmall();
 			//TestRegexParseLarge();
+			var service = new Havit.Services.Ares.AresService("73381543");
+			var response = service.GetData();
+			Console.WriteLine(response);
+
 		}
 		#endregion
 

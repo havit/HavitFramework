@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Havit.Services</RootNamespace>
     <AssemblyName>Havit.Services</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -47,8 +47,10 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Ares\ObchodniRejstrik.cs" />
-    <Compile Include="Ares\ObchodniRejstrikResponse.cs" />
+    <Compile Include="Ares\AresRegistr.cs" />
+    <Compile Include="Ares\AresException.cs" />
+    <Compile Include="Ares\AresService.cs" />
+    <Compile Include="Ares\AresData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -11,6 +11,13 @@ namespace Havit.Business.Query
 	/// </summary>
 	public class TernaryCondition : BinaryCondition
 	{
+		#region Patterns
+		/// <summary>
+		/// Vzor pro podmínku LIKE.
+		/// </summary>
+		public const string BetweenPattern = "({0} BETWEEN {1} AND {2})";
+		#endregion
+
 		#region Protected fields
 		/// <summary>
 		/// Třetí operand.

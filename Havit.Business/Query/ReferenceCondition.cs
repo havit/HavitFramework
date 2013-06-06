@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace Havit.Business.Query
 {
@@ -128,6 +129,25 @@ namespace Havit.Business.Query
 			}
 			else
 			{
+				if (Math.Abs(ids[0] - ids[ids.Length - 1]) < ids.Length)
+				{
+					List<int> sortedIds = ids.Distinct().ToList();
+					if (sortedIds.Count > 1)
+					{
+						sortedIds.Sort();
+
+						int firstId = sortedIds[0];
+						int lastId = sortedIds[sortedIds.Count - 1];
+						if ((lastId - firstId + 1) == sortedIds.Count)
+						{
+							return new TernaryCondition(TernaryCondition.BetweenPattern, operand, ValueOperand.Create(firstId), ValueOperand.Create(lastId));
+						}
+					}
+					else
+					{
+						return NumberCondition.CreateEquals(operand, sortedIds[0]);						
+					}
+				}
 				return new ReferenceInCondition(operand, ids);
 			}
 		}
@@ -165,7 +185,7 @@ namespace Havit.Business.Query
 			}
 			else
 			{
-				return new NotCondition(new ReferenceInCondition(operand, ids));
+				return new NotCondition(CreateIn(operand, ids));
 			}
 		}
 

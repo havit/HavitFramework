@@ -53,6 +53,7 @@ namespace Havit.Business.Query
 		/// <example>
 		///	Př. Hledání výrazu "k_lo*" nenajde "kolo" ani "kolotoč" protože _ nemá funkční význam, ale najde "k_lo" i "k_lotoč".
 		/// </example>
+		/// <exception cref="T:System.ArgumentException">Parametr value je null nebo prázdný.</exception>
 		public static Condition CreateWildcards(IOperand operand, string value)
 		{
 			return CreateWildcards(operand, value, WildCardsLikeExpressionMode.StartsWith);
@@ -73,6 +74,7 @@ namespace Havit.Business.Query
 		/// <example>
 		///	Př. Hledání výrazu "k_lo*" nenajde "kolo" ani "kolotoč" protože _ nemá funkční význam, ale najde "k_lo" i "k_olotoč".
 		/// </example>
+		/// <exception cref="T:System.ArgumentException">Parametr value je null nebo prázdný.</exception>
 		public static Condition CreateWildcards(IOperand operand, string value, WildCardsLikeExpressionMode wildCardsLikeExpressionMode)
 		{
 			return new BinaryCondition(BinaryCondition.LikePattern, operand, ValueOperand.Create(GetWildCardsLikeExpression(value, wildCardsLikeExpressionMode)));
@@ -124,6 +126,7 @@ namespace Havit.Business.Query
 		/// Transformuje řetězec nařetězec, který je možné použít jako hodnota k operátoru like. Tj. nahrazuje % na [%] a _ na [_].
 		/// Nepřidává % na konec, to dělá GetWildCardsLikeExpression().
 		/// </summary>
+		/// <exception cref="T:System.ArgumentException">Parametr text je null nebo prázdný.</exception>
 		public static string GetLikeExpression(string text)
 		{
 			if (String.IsNullOrEmpty(text))
@@ -143,6 +146,7 @@ namespace Havit.Business.Query
 		/// (Nahrazuje % na [%] a _ na [_] a jako poslední zamění * za %, resp. přidá % nakonec, pokud wildcards nebyly použity.)
 		/// Příklad "*text1%text2*text3" bude transformováno na "%text1[%]text2%text3".
 		/// </summary>
+		/// <exception cref="T:System.ArgumentException">Parametr text je null nebo prázdný.</exception>
 		public static string GetWildCardsLikeExpression(string text)
 		{
 			return GetWildCardsLikeExpression(text, WildCardsLikeExpressionMode.StartsWith);
@@ -153,6 +157,7 @@ namespace Havit.Business.Query
 		/// Navíc je vzat ohled na hvězdičkovou konvenci podle parametru wildCardsLikeExpressionMode (pokud nejsou použity wildcards, doplní % na konec (StartsWith) nebo na začátek i na konec (Contains) ).
 		/// Příklad "*text1%text2*text3" bude transformováno na "%text1[%]text2%text3".
 		/// </summary>
+		/// <exception cref="T:System.ArgumentException">Parametr text je null nebo prázdný.</exception>
 		public static string GetWildCardsLikeExpression(string text, WildCardsLikeExpressionMode wildCardsLikeExpressionMode)
 		{
 			string result;

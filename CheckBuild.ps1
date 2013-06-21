@@ -1,1 +1,1 @@
-&\\topol.havit.local\Library\VS2012\Build\CheckBuild.ps1 -Solution:Havit.sln -Configuration=Release -Platform:"Any CPU"
+&\\topol.havit.local\Library\VS2012\Build\CheckBuild.ps1 -Solution:Havit.sln

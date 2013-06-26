@@ -364,7 +364,7 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		public NumericBox()
 		{
-			valueTextBox = new TextBox();
+			valueTextBox = new TextBoxExt();
 			valueTextBox.ID = "ValueTextBox";
 			valueTextBox.MaxLength = 12;
 		}

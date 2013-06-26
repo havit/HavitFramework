@@ -150,6 +150,7 @@
     <Content Include="AutoSuggestMenuService.asmx" />
     <Content Include="CollapserTest.aspx" />
     <Content Include="ControlsValuesPersisterTest.aspx" />
+    <Content Include="TextBoxTest.aspx" />
     <Content Include="DateTimeBoxTest.aspx" />
     <Content Include="DateTimeBoxWithSpecialDays.aspx" />
     <Content Include="DropDownListTest.aspx" />
@@ -205,6 +206,13 @@
     </Compile>
     <Compile Include="ControlsValuesPersisterTest.aspx.designer.cs">
       <DependentUpon>ControlsValuesPersisterTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TextBoxTest.aspx.cs">
+      <DependentUpon>TextBoxTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TextBoxTest.aspx.designer.cs">
+      <DependentUpon>TextBoxTest.aspx</DependentUpon>
     </Compile>
     <Compile Include="DateTimeBoxTest.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>

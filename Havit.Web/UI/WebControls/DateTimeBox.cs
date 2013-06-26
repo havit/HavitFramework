@@ -429,7 +429,7 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		public DateTimeBox()
 		{
-			valueTextBox = new TextBox();
+			valueTextBox = new TextBoxExt();
 			valueTextBox.ID = "ValueTextBox";
 
 			seperatorLiteralControl = new LiteralControl("&nbsp;");

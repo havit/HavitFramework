@@ -145,6 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BooleandFieldTest.cs" />
+    <Compile Include="EnumerableExtTest.cs" />
     <Compile Include="GenericPropertyComparerTest.cs" />
     <Compile Include="MathExtTest.cs" />
     <Compile Include="PasswordGeneratorTest.cs" />

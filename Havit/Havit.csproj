@@ -195,7 +195,7 @@
     <Compile Include="Diagnostics\Contracts\ContractException.cs" />
     <Compile Include="Diagnostics\ExceptionTracer.cs" />
     <Compile Include="Diagnostics\SmtpTraceListerner.cs" />
-    <Compile Include="EnumerableExt.cs" />
+    <Compile Include="Linq\EnumerableExt.cs" />
     <Compile Include="ITypeConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

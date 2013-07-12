@@ -11,42 +11,8 @@ namespace Havit.Web.UI.WebControls
 	/// <summary>
 	/// FormView podporující extrakci hodnot do datového objektu, automatické stránkování.
 	/// </summary>
-	public class FormViewExt: FormView
+	public class FormViewExt : FormView
 	{
-		#region RequiresDataBinding (new), SetRequiresDatabinding
-		/// <summary>
-		/// Zpřístupňuje pro čtení chráněnou vlastnost RequiresDataBinding.
-		/// </summary>
-		public new bool RequiresDataBinding
-		{
-			get
-			{
-				return base.RequiresDataBinding;
-			}
-			protected set
-			{
-				base.RequiresDataBinding = value;
-			}
-		}
-
-		/// <summary>
-		/// Nastaví RequiresDataBinding na true.
-		/// Zajistí zavolání databindingu ještě v aktuálním requestu. Běžně v OnPreRender,
-		/// pokud je ale FormView schovaný, pak se DataBind volá z Page.PreRenderComplete.
-		/// </summary>
-		public void SetRequiresDatabinding()
-		{
-			RequiresDataBinding = true;
-			_currentlyRequiresDataBinding = true;
-		}
-
-		/// <summary>
-		/// Příznak, zda má dojít k databindingu ještě v tomto requestu.
-		/// Nastavováno (na true) v metodě SetRequiresDataBinding, vypínáno v metodě PerformDataBinding.
-		/// </summary>
-		private bool _currentlyRequiresDataBinding = false;
-		#endregion
-
 		#region AutoDataBind
 		/// <summary>
 		/// Nastavuje automatický databind na FormView.		
@@ -109,6 +75,40 @@ namespace Havit.Web.UI.WebControls
 		{
 			// NOOP
 		}
+		#endregion
+
+		#region RequiresDataBinding (new), SetRequiresDatabinding
+		/// <summary>
+		/// Zpřístupňuje pro čtení chráněnou vlastnost RequiresDataBinding.
+		/// </summary>
+		public new bool RequiresDataBinding
+		{
+			get
+			{
+				return base.RequiresDataBinding;
+			}
+			protected set
+			{
+				base.RequiresDataBinding = value;
+			}
+		}
+
+		/// <summary>
+		/// Nastaví RequiresDataBinding na true.
+		/// Zajistí zavolání databindingu ještě v aktuálním requestu. Běžně v OnPreRender,
+		/// pokud je ale FormView schovaný, pak se DataBind volá z Page.PreRenderComplete.
+		/// </summary>
+		public void SetRequiresDatabinding()
+		{
+			RequiresDataBinding = true;
+			_currentlyRequiresDataBinding = true;
+		}
+
+		/// <summary>
+		/// Příznak, zda má dojít k databindingu ještě v tomto requestu.
+		/// Nastavováno (na true) v metodě SetRequiresDataBinding, vypínáno v metodě PerformDataBinding.
+		/// </summary>
+		private bool _currentlyRequiresDataBinding = false;
 		#endregion
 
 		#region OnModeChanging

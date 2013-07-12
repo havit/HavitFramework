@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" CodeBehind="GridViewExtTest.aspx.cs" Inherits="WebApplicationTest.GridViewExtTest" StyleSheetTheme="Theme1" %>
+﻿<%@ Page Language="C#" CodeBehind="GridViewTest.aspx.cs" Inherits="WebApplicationTest.GridViewExtTest" StyleSheetTheme="Theme1" %>
 <%@ Register TagPrefix="uc" TagName="GridViewExtTest_InnerGVControl" src="GridViewExtTest_InnerGVControl.ascx"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -10,15 +10,16 @@
 <body>
     <form id="form1" runat="server">
     <div>
-		<havit:EnterpriseGridView ID="TestGV1" AllowInserting="True" InsertRowPosition="Top" AllowPaging="false" PageSize="100" PagerSettings-Position="Bottom" runat="server">
+		<havit:EnterpriseGridView ID="TestGV1" AllowInserting="True" InsertRowPosition="Top" ItemType="Havit.BusinessLayerTest.Subjekt" AllowPaging="false" PageSize="100" PagerSettings-Position="Bottom" AutoCrudOperations="true" runat="server">
 			<Columns>
 				<havit:BoundFieldExt DataField="Nazev" SortExpression="Nazev" HeaderText="Název" />
 				<havit:TemplateFieldExt SortExpression="Nazev" HeaderText="Název">
 					<ItemTemplate>
-						<%# Eval("Nazev") %>
+						<%# Item.Nazev %>
 					</ItemTemplate>
 					<EditItemTemplate>						
-						Edit: <%# Eval("Nazev") %>
+						<asp:TextBox ID="NazevTextBox" Text="<%# BindItem.HlavniAdresa.Ulice %>" runat="server" />
+						<asp:TextBox ID="xNazevTextBox" Text="<%# BindItem.Localizations.Current.Ulice %>" runat="server" />
 					</EditItemTemplate>
 				</havit:TemplateFieldExt>
 				<havit:GridViewCommandField ShowCancelButton="true" ShowDeleteButton="true" ShowInsertButton="true" ShowEditButton="true" />

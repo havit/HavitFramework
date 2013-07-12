@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Globalization;
+using System.Linq;
 using System.Text;
 using System.Web.UI.WebControls;
 using System.Web.UI;
-using System.Diagnostics;
-using System.ComponentModel;
-using System.Collections;
-using System.Globalization;
 using Havit.Collections;
+using Havit.Diagnostics.Contracts;
 
 namespace Havit.Web.UI.WebControls
 {
@@ -281,14 +283,14 @@ namespace Havit.Web.UI.WebControls
 		public void SetRequiresDatabinding()
 		{
 			RequiresDataBinding = true;
-			_cuurentlyRequiresDataBinding = true;
+			_currentlyRequiresDataBinding = true;
 		}
 
 		/// <summary>
 		/// Příznak, zda má dojít k databindingu ještě v tomto requestu.
-		/// Nastavováno (na true) v metodě SetRequiresDataBinding, vypínáno v metodě S
+		/// Nastavováno (na true) v metodě SetRequiresDataBinding, vypínáno v metodě PerformDataBinding.
 		/// </summary>
-		private bool _cuurentlyRequiresDataBinding = false;
+		private bool _currentlyRequiresDataBinding = false;
 
 		#endregion
 
@@ -647,7 +649,7 @@ namespace Havit.Web.UI.WebControls
 			if (insertingData != null)
 			{
 				RequiresDataBinding = false;
-				_cuurentlyRequiresDataBinding = false;
+				_currentlyRequiresDataBinding = false;
 			}
 
 			if (data != null)
@@ -871,6 +873,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region OnRowUpdating
 		/// <summary>
+		/// Raises the System.Web.UI.WebControls.GridView.RowUpdating event.
 		/// Výchozí chování RowUpdating - pokud není zvoleno e.Cancel, pak vypne editaci řádku.
 		/// </summary>
 		/// <param name="e">argumenty události</param>
@@ -1018,7 +1021,7 @@ namespace Havit.Web.UI.WebControls
 			// pokud je control schovaný (není visible), nevolá se jeho OnPreRender.
 			// Pokud ale byla zavolána metoda SetRequiresDatabinding, určitě chceme, aby k databindingu došlo ještě v tomto requestu.
 			// Proto se něvěsíme na Page.PreRenderComplete jako nouzové řešení.
-			if (_cuurentlyRequiresDataBinding && AutoDataBind && RequiresDataBinding)
+			if (_currentlyRequiresDataBinding && AutoDataBind && RequiresDataBinding)
 			{
 				DataBind();
 			}
@@ -1140,6 +1143,24 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		
+		#endregion
+
+		#region ExtractRowValues
+		/// <summary>
+		/// Vyzvedne z řádku GridView hodnoty, které jsou nabidnované způsobem pro two-way databinding.
+		/// Hodnoty nastaví jako vlastnosti předanému datovému objektu.
+		/// </summary>
+		/// <param name="row">Řádek gridu, jehož hodnoty jsou z UI extrahovány a nastaveny datovému objektu.</param>
+		/// <param name="dataObject">Datový objekt, jehož hodnoty jsou nastaveny.</param>
+		public void ExtractRowValues(GridViewRow row, object dataObject)
+		{
+			Contract.Requires(row != null);
+			Contract.Requires(dataObject != null);
+
+			System.Collections.Specialized.IOrderedDictionary fieldValues = new System.Collections.Specialized.OrderedDictionary();			
+			this.ExtractRowValues(fieldValues, row, false, false);
+			DataBinderExt.SetValues(dataObject, fieldValues);
+		}
 		#endregion
 	}
 

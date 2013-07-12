@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.IO;
 
 using Havit.Services.Ares;
+using System.ComponentModel;
 
 namespace HavitTestConsoleApplication
 {
@@ -35,10 +36,91 @@ namespace HavitTestConsoleApplication
 			//TestRegexParseMicro();
 			//TestRegexParseSmall();
 			//TestRegexParseLarge();
-			var service = new Havit.Services.Ares.AresService("73381543");
-			var response = service.GetData();
-			Console.WriteLine(response);
+			
+			//var service = new Havit.Services.Ares.AresService("73381543");
+			//var response = service.GetData();		
+			//Console.WriteLine(response);
 
+			TestConverter();
+
+		}
+
+		private static void TestConverter()
+		{
+			Havit.ComponentModel.UniversalTypeConverter.ConvertTo(null, typeof(int?));
+			Stopwatch sw = new Stopwatch();
+			sw.Start();
+
+			var data = new object[] { 1, (int?)1, (float)0, (float?)0, 0M, (decimal?)0M, "5", "A", "", ListSortDirection.Ascending, null };
+			var targetTypes = new Type[] { typeof(int), typeof(int?), typeof(float), typeof(float?), typeof(decimal), typeof(decimal?), typeof(string), typeof(ListSortDescription) };
+			data.Join(targetTypes, x => 1, y => 1, (x, y) => new { Value = x, TargetType = y }).Distinct().ToList().ForEach(item =>
+				{
+					Type targetType = item.TargetType;
+					if (item.TargetType.IsGenericType && item.TargetType.GetGenericTypeDefinition() == typeof(Nullable<>).GetGenericTypeDefinition())
+					{
+						targetType = Nullable.GetUnderlyingType(targetType);
+						Console.Write("{1} ({0}) --> Nullable<{2}>: ", item.Value, item.Value == null ? "null" : item.Value.GetType().Name, targetType.Name);
+					}
+					else
+					{
+						Console.Write("{1} ({0}) --> {2}: ", item.Value, item.Value == null ? "null" : item.Value.GetType().Name, targetType.Name);
+					}
+
+					try
+					{
+						if (item.Value == null)
+						{
+							Console.Write("null ");
+						}
+						else if (targetType.IsAssignableFrom(item.Value.GetType()))
+						{
+							Console.Write("assignable ");
+						}
+						else if (item.Value.GetType().IsPrimitive && targetType.IsPrimitive /* && item.Value.GetType().IsPrimitive*/)
+						{
+							Console.Write("changetype ");
+							System.Convert.ChangeType(item.Value, targetType);
+						}
+						else
+						{
+							Console.Write("converter ");
+							TypeConverter converter = TypeDescriptor.GetConverter(targetType);
+							if (converter.CanConvertFrom(item.Value.GetType()))
+							{
+								converter.ConvertFrom(item.Value);								
+							}
+							else
+							{
+								converter = TypeDescriptor.GetConverter(item.Value);
+								if (converter.CanConvertTo(targetType))
+								{
+									converter.ConvertTo(item.Value, targetType);
+								}
+								else
+								{
+									throw new ApplicationException();
+								}
+							}
+						}
+						//						System.Convert.ChangeType(item.X, item.Y.GetType());
+						Console.Write("OK");
+					}
+					catch (Exception)
+					{
+						Console.Write("exception");						
+					}
+					Console.WriteLine();
+				});
+
+			//for (int i = 0; i < 1000000; i++)
+			//{
+				
+			//	Console.WriteLine(System.Convert.ChangeType(5M, typeof(string)));
+			//	//Console.WriteLine(typeof(int).IsAssignableFrom(typeof(int)));				
+			//	TypeDescriptor.GetConverter(typeof(float)).ConvertFrom("5");
+			//}
+			sw.Stop();
+			Console.WriteLine(sw.ElapsedMilliseconds);
 		}
 		#endregion
 

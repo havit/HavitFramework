@@ -189,6 +189,10 @@
     <Compile Include="Collections\SortHelper.cs" />
     <Compile Include="Collections\SortItem.cs" />
     <Compile Include="Collections\SortItemCollection.cs" />
+    <Compile Include="ComponentModel\InvalidConversionException.cs" />
+    <Compile Include="ComponentModel\UniversalTypeConverter.ConvertingMethods.cs" />
+    <Compile Include="ComponentModel\UniversalTypeConverter.Core.cs" />
+    <Compile Include="ComponentModel\UniversalTypeConverter.cs" />
     <Compile Include="DataEventArgs.cs" />
     <Compile Include="DataEventHandler.cs" />
     <Compile Include="Diagnostics\Contracts\Contract.cs" />
@@ -239,6 +243,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ComponentModel\UniversalTypeConverter_src.zip" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

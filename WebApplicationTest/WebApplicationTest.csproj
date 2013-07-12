@@ -17,7 +17,7 @@
     <OldToolsVersion>4.0</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
     <UseIISExpress>true</UseIISExpress>
     <TargetFrameworkProfile />
@@ -28,7 +28,7 @@
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
-    <IISExpressUseClassicPipelineMode />
+    <IISExpressUseClassicPipelineMode>true</IISExpressUseClassicPipelineMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -78,6 +78,7 @@
     <CodeContractsExtraRewriteOptions />
     <CodeContractsCacheAnalysisResults>False</CodeContractsCacheAnalysisResults>
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -127,6 +128,7 @@
     <CodeContractsSuggestObjectInvariants>False</CodeContractsSuggestObjectInvariants>
     <CodeContractsCacheAnalysisResults>True</CodeContractsCacheAnalysisResults>
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -134,6 +136,7 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.Extensions" />
@@ -150,12 +153,13 @@
     <Content Include="AutoSuggestMenuService.asmx" />
     <Content Include="CollapserTest.aspx" />
     <Content Include="ControlsValuesPersisterTest.aspx" />
+    <Content Include="FormViewTest.aspx" />
     <Content Include="TextBoxTest.aspx" />
     <Content Include="DateTimeBoxTest.aspx" />
     <Content Include="DateTimeBoxWithSpecialDays.aspx" />
     <Content Include="DropDownListTest.aspx" />
     <Content Include="Global.asax" />
-    <Content Include="GridViewExtTest.aspx" />
+    <Content Include="GridViewTest.aspx" />
     <Content Include="GridViewExtTest_InnerGVControl.ascx" />
     <Content Include="HavitScripts.js" />
     <Content Include="SimpleTest.aspx" />
@@ -206,6 +210,13 @@
     </Compile>
     <Compile Include="ControlsValuesPersisterTest.aspx.designer.cs">
       <DependentUpon>ControlsValuesPersisterTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="FormViewTest.aspx.cs">
+      <DependentUpon>FormViewTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FormViewTest.aspx.designer.cs">
+      <DependentUpon>FormViewTest.aspx</DependentUpon>
     </Compile>
     <Compile Include="TextBoxTest.aspx.cs">
       <DependentUpon>TextBoxTest.aspx</DependentUpon>
@@ -287,12 +298,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="GridViewExtTest.aspx.cs">
+    <Compile Include="GridViewTest.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
-      <DependentUpon>GridViewExtTest.aspx</DependentUpon>
+      <DependentUpon>GridViewTest.aspx</DependentUpon>
     </Compile>
-    <Compile Include="GridViewExtTest.aspx.designer.cs">
-      <DependentUpon>GridViewExtTest.aspx</DependentUpon>
+    <Compile Include="GridViewTest.aspx.designer.cs">
+      <DependentUpon>GridViewTest.aspx</DependentUpon>
     </Compile>
     <Compile Include="GridViewExtTest_InnerGVControl.ascx.cs">
       <DependentUpon>GridViewExtTest_InnerGVControl.ascx</DependentUpon>
@@ -487,7 +498,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>19509</DevelopmentServerPort>
+          <DevelopmentServerPort>49644</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:19509/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

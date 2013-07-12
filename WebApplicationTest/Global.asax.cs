@@ -20,26 +20,22 @@ namespace WebApplicationTest
 		}
 		#endregion
 
-		#region Session_Start
-		protected void Session_Start(object sender, EventArgs e)
+		#region IdentityMapScope management (Application_PostAcquireRequestState, Application_PreRequestHandlerExecute, Application_EndRequest)
+		protected void Application_PostAcquireRequestState(object sender, EventArgs e)
 		{
+			this.Context.Items["IdentityMapScope"] = new Havit.Business.IdentityMapScope();
+		}
 
+		protected void Application_EndRequest(object sender, EventArgs e)
+		{
+			Havit.Business.IdentityMapScope identityMapScope = this.Context.Items["IdentityMapScope"] as Havit.Business.IdentityMapScope;
+			if (identityMapScope != null)
+			{
+				identityMapScope.Dispose();
+			}
 		}
 		#endregion
 
-		#region Application_BeginRequest
-		protected void Application_BeginRequest(object sender, EventArgs e)
-		{
-
-		}
-		#endregion
-
-		#region Application_AuthenticateRequest
-		protected void Application_AuthenticateRequest(object sender, EventArgs e)
-		{
-
-		}
-		#endregion
 
 		#region Application_Error
 		private void Application_Error(object sender, EventArgs e)
@@ -50,20 +46,6 @@ namespace WebApplicationTest
 				Havit.Web.Management.WebRequestErrorEventExt customEvent = new Havit.Web.Management.WebRequestErrorEventExt(exception.Message, this, exception, HttpContext.Current);
 				customEvent.Raise();
 			}
-		}
-		#endregion
-
-		#region Session_End
-		protected void Session_End(object sender, EventArgs e)
-		{
-
-		}
-		#endregion
-
-		#region Application_End
-		protected void Application_End(object sender, EventArgs e)
-		{
-
 		}
 		#endregion
 

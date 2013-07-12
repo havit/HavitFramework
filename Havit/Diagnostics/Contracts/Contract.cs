@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -17,6 +18,7 @@ namespace Havit.Diagnostics.Contracts
 		/// <summary>
 		/// Pokud není podmínka condition splněna (hodnota je false), vyhodí výjimku ContractException.
 		/// </summary>
+		[DebuggerStepThrough]
 		public static void Requires(bool condition, string userMessage = null)
 		{
 			if (!condition)
@@ -29,6 +31,7 @@ namespace Havit.Diagnostics.Contracts
 		/// Pokud není podmínka condition splněna (hodnota je false), vyhodí výjimku TException.
 		/// </summary>
 		/// <typeparam name="TException">Typ výjimky, která je v případě nesplnění podmínky vyhozena.</typeparam>
+		[DebuggerStepThrough]
 		public static void Requires<TException>(bool condition, string userMessage = null)
 			where TException : Exception
 		{
@@ -43,6 +46,7 @@ namespace Havit.Diagnostics.Contracts
 		/// <summary>
 		/// Pokud není podmínka condition splněna (hodnota je false), vyhodí výjimku ContractException.
 		/// </summary>
+		[DebuggerStepThrough]
 		public static void Assert(bool condition, string userMessage = null)
 		{
 			if (!condition)
@@ -53,6 +57,7 @@ namespace Havit.Diagnostics.Contracts
 		#endregion
 
 		#region ThrowException
+		[DebuggerStepThrough]
 		private static void ThrowException<TException>(string message)
 			where TException : Exception
 		{

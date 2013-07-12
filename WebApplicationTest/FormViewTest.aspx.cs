@@ -10,24 +10,30 @@ namespace WebApplicationTest
 {
 	public partial class FormViewTest : System.Web.UI.Page
 	{
+		#region OnInit
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
 			MyFormView.DataBinding += MyFormView_DataBinding;
-			MyFormView.ItemUpdating += MyFormView_ItemUpdating;			
+			MyFormView.ItemUpdating += MyFormView_ItemUpdating;
 		}
+		#endregion
 
-		void MyFormView_ItemUpdating(object sender, FormViewUpdateEventArgs e)
+		#region MyFormView_ItemUpdating
+		private void MyFormView_ItemUpdating(object sender, FormViewUpdateEventArgs e)
 		{
 			Subjekt editedSubjekt = Subjekt.GetObject(8);
 			MyFormView.ExtractValues(editedSubjekt);
 			editedSubjekt.Save();
 		}
+		#endregion
 
-		void MyFormView_DataBinding(object sender, EventArgs e)
+		#region MyFormView_DataBinding
+		private void MyFormView_DataBinding(object sender, EventArgs e)
 		{
 			MyFormView.DataSource = Subjekt.GetObject(8);
 		}
+		#endregion
 
 	}
 }

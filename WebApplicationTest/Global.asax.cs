@@ -36,7 +36,6 @@ namespace WebApplicationTest
 		}
 		#endregion
 
-
 		#region Application_Error
 		private void Application_Error(object sender, EventArgs e)
 		{

@@ -164,7 +164,7 @@ namespace Havit.Web.UI.WebControls
 				Type type = e.Row.DataItem.GetType();
 				if (dataItemTypes.Count == 0 || dataItemTypes[dataItemTypes.Count - 1].Type != type)
 				{
-					dataItemTypes.Add(new DataItemTypeEntry { Type = type, StartingRowIndex = e.Row.RowIndex});
+					dataItemTypes.Add(new DataItemTypeEntry { Type = type, StartingRowIndex = e.Row.RowIndex });
 				}
 			}
 		}

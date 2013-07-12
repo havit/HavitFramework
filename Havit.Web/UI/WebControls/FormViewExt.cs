@@ -54,29 +54,6 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-		#region OnInit
-		/// <summary>
-		/// Inicializuje FormViewExt.
-		/// </summary>
-		protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
-
-			// Pokud dojde k vyvolání události, který nemá obsluhu, je vyvolána výjimka.
-			// Protože ale některé záležitosti řešíme sami, nastavíme "prázdné" obsluhy událostí
-			// (nasměrujeme je do černé díry).			
-			this.ModeChanging += FormViewExt_EventBlackHole;
-			this.PageIndexChanging += FormViewExt_EventBlackHole;
-
-			this.Page.PreRenderComplete += new EventHandler(Page_PreRenderComplete);
-		}
-
-		private void FormViewExt_EventBlackHole(object sender, EventArgs e)
-		{
-			// NOOP
-		}
-		#endregion
-
 		#region RequiresDataBinding (new), SetRequiresDatabinding
 		/// <summary>
 		/// Zpřístupňuje pro čtení chráněnou vlastnost RequiresDataBinding.
@@ -109,6 +86,29 @@ namespace Havit.Web.UI.WebControls
 		/// Nastavováno (na true) v metodě SetRequiresDataBinding, vypínáno v metodě PerformDataBinding.
 		/// </summary>
 		private bool _currentlyRequiresDataBinding = false;
+		#endregion
+
+		#region OnInit
+		/// <summary>
+		/// Inicializuje FormViewExt.
+		/// </summary>
+		protected override void OnInit(EventArgs e)
+		{
+			base.OnInit(e);
+
+			// Pokud dojde k vyvolání události, který nemá obsluhu, je vyvolána výjimka.
+			// Protože ale některé záležitosti řešíme sami, nastavíme "prázdné" obsluhy událostí
+			// (nasměrujeme je do černé díry).			
+			this.ModeChanging += FormViewExt_EventBlackHole;
+			this.PageIndexChanging += FormViewExt_EventBlackHole;
+
+			this.Page.PreRenderComplete += new EventHandler(Page_PreRenderComplete);
+		}
+
+		private void FormViewExt_EventBlackHole(object sender, EventArgs e)
+		{
+			// NOOP
+		}
 		#endregion
 
 		#region OnModeChanging

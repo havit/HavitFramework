@@ -154,6 +154,11 @@ namespace Havit
 				throw new HttpException(String.Format("Nepodařilo se nastavit hodnotu pro výraz '{0}', typ '{1}' neobsahuje vlastnost '{2}'.", dataField, currentDataItem.GetType().FullName, expressionSet));
 			}
 
+			if (descriptor.IsReadOnly)
+			{
+				throw new HttpException(String.Format("Nepodařilo se nastavit hodnotu pro výraz '{0}', vlastnost '{2}' typu '{1}' je pouze ke čtení.", dataField, currentDataItem.GetType().FullName, expressionSet));				
+			}
+
 			object targetValue;
 			if (!Havit.ComponentModel.UniversalTypeConverter.TryConvertTo(value, descriptor.PropertyType, out targetValue))
 			{

@@ -22,16 +22,16 @@ namespace WebApplicationTest
 		#region MyFormView_ItemUpdating
 		private void MyFormView_ItemUpdating(object sender, FormViewUpdateEventArgs e)
 		{
-			Subjekt editedSubjekt = Subjekt.GetObject(8);
-			MyFormView.ExtractValues(editedSubjekt);
-			editedSubjekt.Save();
+			Uzivatel editedUzivatel = Uzivatel.GetObject(10);
+			MyFormView.ExtractValues(editedUzivatel);
+			editedUzivatel.Save();
 		}
 		#endregion
 
 		#region MyFormView_DataBinding
 		private void MyFormView_DataBinding(object sender, EventArgs e)
 		{
-			MyFormView.DataSource = Subjekt.GetObject(8);
+			MyFormView.DataSource = Uzivatel.GetObject(10);
 		}
 		#endregion
 

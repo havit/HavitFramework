@@ -10,9 +10,9 @@
     <form id="form1" runat="server">
 	<asp:ScriptManager runat="server" />
     <div>	
-		<havit:FormViewExt ID="MyFormView" ItemType="Havit.BusinessLayerTest.Subjekt" DefaultMode="Edit" RenderOuterTable="false" runat="server">
+		<havit:FormViewExt ID="MyFormView" ItemType="Havit.BusinessLayerTest.Uzivatel" DefaultMode="Edit" RenderOuterTable="false" runat="server">
 			<ItemTemplate>
-				Nazev: <%#: Item.Nazev %>
+				Nazev: <%#: Item.DisplayAs %>
 				<%--<asp:Button CommandName="New" Text="New" runat="server" />--%>
 				<asp:Button CommandName="Edit" Text="Edit" runat="server" />
 				<asp:Button CommandName="Delete" Text="Delete" runat="server" />
@@ -21,7 +21,8 @@
 				<asp:Panel ID="MyPanel" runat="server">
 					<asp:UpdatePanel RenderMode="Inline" runat="server">
 						<ContentTemplate>
-							Nazev: <asp:TextBox ID="NazevTextBox" Text="<%# BindItem.Nazev %>" runat="server" />
+							Nazev: <asp:TextBox ID="NazevTextBox" Text="<%# BindItem.DisplayAs %>" runat="server" /><br/>
+							Disabled:<asp:CheckBox ID="DisabledCheckBox" Checked="<%# BindItem.Disabled %>" runat="server"/><br/>
 						</ContentTemplate>
 					</asp:UpdatePanel>
 				</asp:Panel>

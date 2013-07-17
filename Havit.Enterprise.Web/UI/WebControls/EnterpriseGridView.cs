@@ -103,11 +103,28 @@ namespace Havit.Web.UI.WebControls
 			if ((row.RowState & DataControlRowState.Insert) == DataControlRowState.Insert)
 			{
 				object insertRowDataItem = GetInsertRowDataItem();
+				
+				if (insertRowDataItem == null)
+				{
+					throw new ApplicationException(String.Format("Událost GetInsertRowDataItem vrátila null."));					
+				}
+
+				if (!(insertRowDataItem is BusinessObjectBase))
+				{
+					throw new ApplicationException(String.Format("GetInsertRowDataItem nevrátila business objekt (potomek BusinessObjectBase), ale typ '{0}'.", insertRowDataItem.GetType().FullName));				
+				}
+
 				return (BusinessObjectBase)insertRowDataItem;
 			}
 			else
 			{
 				Type type = dataItemTypes.OrderByDescending(item => item.StartingRowIndex).First(item => item.StartingRowIndex <= row.RowIndex).Type;
+
+				if (!type.IsSubclassOf(typeof(BusinessObjectBase)))
+				{
+					throw new ApplicationException(String.Format("GridViewRow není nabindován business objektem (potomkem BusinessObjectBase), ale typem '{0}'.", type.FullName));
+				}
+
 				MethodInfo mi = type.GetMethod("GetObject", new Type[] { typeof(int) });
 				BusinessObjectBase businessObject = (BusinessObjectBase)mi.Invoke(null, new object[] { this.GetRowID(row.RowIndex) });
 				return businessObject;
@@ -149,12 +166,6 @@ namespace Havit.Web.UI.WebControls
 		protected override void OnRowDataBound(GridViewRowEventArgs e)
 		{
 			base.OnRowDataBound(e);
-
-			// Zkontrolujeme, zda jde o business objekty
-			if ((e.Row.RowType == DataControlRowType.DataRow) && !(e.Row.DataItem is BusinessObjectBase))
-			{
-				throw new InvalidOperationException("EnterpriseGridView vyžaduje jako datové prvky potomky BusinessObjectBase.");
-			}
 
 			// zapamatujeme si typy bindovaných objektů
 			// pro možnost heterogenních seznamů si pamatujeme hodnotu pro každý řádek

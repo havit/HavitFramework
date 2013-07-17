@@ -18,8 +18,7 @@
 						<%# Item.Nazev %>
 					</ItemTemplate>
 					<EditItemTemplate>						
-						<asp:TextBox ID="NazevTextBox" Text="<%# BindItem.HlavniAdresa.Ulice %>" runat="server" />
-						<asp:TextBox ID="xNazevTextBox" Text="<%# BindItem.Localizations.Current.Ulice %>" runat="server" />
+						<asp:TextBox ID="NazevTextBox" Text="<%# BindItem.Nazev %>" runat="server" />
 					</EditItemTemplate>
 				</havit:TemplateFieldExt>
 				<havit:GridViewCommandField ShowCancelButton="true" ShowDeleteButton="true" ShowInsertButton="true" ShowEditButton="true" />

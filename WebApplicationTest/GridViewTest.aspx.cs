@@ -70,6 +70,12 @@ namespace WebApplicationTest
 		#region TestGV_DataBinding
 		private void TestGV_DataBinding(object sender, EventArgs e)
 		{
+			//((GridView)sender).DataSource = new object[]
+			//									{
+			//										new { ID = 1, Nazev = "A" },
+			//										new { ID = 2, Nazev = "B" },
+			//										new { ID = 3, Nazev = "C" },
+			//									};
 			((GridView)sender).DataSource = Subjekt.GetAll().ToList();
 		}
 		#endregion

@@ -43,7 +43,7 @@ namespace Havit.Business.Query
 		/// Vytvoří podmínku testující, zda je den data (datumu) v intervalu dnů datumů.
 		/// Zajišťuje, aby hodnota operandu byla větší nebo rovna datu date1 a aby byla menší než půlnoc konce date2.
 		/// Jinými slovy: Argumenty moho obsahovat datum a čas, ale testuje se jen datum bez času. Potom 
-		/// je zajišťováno: DATUM(date1) &lt;= DATUM(operand) &lt; DATUM(date2).
+		/// je zajišťováno: DATUM(date1) &lt;= DATUM(operand) &lt;= DATUM(date2).
 		/// </summary>
 		public static Condition CreateDays(IOperand operand, DateTime? date1, DateTime? date2)
 		{

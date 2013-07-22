@@ -11,13 +11,14 @@ namespace Havit.Business
 	public interface ILocalizable
 	{
 		/// <summary>
+		/// Lokalizace.
+		/// </summary>
+		ILocalizationCollection Localizations { get; }
+	
+		/// <summary>
 		/// Vytvoří položku lokalizace pro daný jazyk.
 		/// </summary>
 		BusinessObjectBase CreateLocalization(ILanguage language);
 
-		/// <summary>
-		/// Lokalizace.
-		/// </summary>
-		ILocalizationCollection Localizations { get; }
 	}
 }

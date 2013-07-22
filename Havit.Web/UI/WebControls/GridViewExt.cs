@@ -677,9 +677,9 @@ namespace Havit.Web.UI.WebControls
 			{
 				((IStateManager)this.CommandFieldStyle).LoadViewState(viewStateData[2]);
 			}
-			if (viewStateData[2] != null)
+			if (viewStateData[3] != null)
 			{
-				((IStateManager)this.FilterStyle).LoadViewState(viewStateData[2]);
+				((IStateManager)this.FilterStyle).LoadViewState(viewStateData[3]);
 			}
 		}
 		#endregion

@@ -66,17 +66,23 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 
 		#region CopyProperties
+		/// <summary>
+		/// Copies the properties of the current System.Web.UI.WebControls.TemplateField-derived object to the specified System.Web.UI.WebControls.DataControlField object.
+		/// </summary>
 		protected override void CopyProperties(DataControlField newField)
 		{
 			base.CopyProperties(newField);
-			if (newField is TemplateFieldExt)
+			if (newField is IFilterField)
 			{
-				((TemplateFieldExt)newField).FilterStyle.CopyFrom(this.FilterStyle);
+				((IFilterField)newField).FilterStyle.CopyFrom(this.FilterStyle);
 			}
 		}
 		#endregion
 
 		#region SaveViewState, LoadViewState, TrackViewState
+		/// <summary>
+		/// Saves the changes made to the System.Web.UI.WebControls.DataControlField view state since the time the page was posted back to the server.
+		/// </summary>
 		protected override object SaveViewState()
 		{
 			return new object[]
@@ -86,6 +92,9 @@ namespace Havit.Web.UI.WebControls
 			};
 		}
 
+		/// <summary>
+		/// Restores the data source view's previously saved view state.
+		/// </summary>
 		protected override void LoadViewState(object savedState)
 		{
 			object[] saveStateData = (object[])savedState;
@@ -97,6 +106,9 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 
+		/// <summary>
+		/// Causes the System.Web.UI.WebControls.DataControlField object to track changes to its view state so they can be stored in the control's System.Web.UI.WebControls.DataControlField.ViewState property and persisted across requests for the same page.
+		/// </summary>
 		protected override void TrackViewState()
 		{
 			base.TrackViewState();

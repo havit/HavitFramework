@@ -13,6 +13,13 @@ namespace Havit.Web.UI.WebControls
 	{
 		/// <summary>
 		/// Styl pro buňku filtru.
+		/// Pokud FilterStyle není inicializován, inicializuje jej (lazy inicialization).
+		/// </summary>
+		TableItemStyle FilterStyle { get; }
+		
+		/// <summary>
+		/// Styl pro buňku filtru.
+		/// Pouze pro interní použití - tato vlastnost může vrátit null, pokud dosud FilterStyle není inicializován.
 		/// </summary>
 		TableItemStyle FilterStyleInternal { get; }
 

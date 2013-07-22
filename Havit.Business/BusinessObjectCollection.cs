@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-
-using Havit.Collections;
 using System.Data.Common;
-using Havit.Data;
-using System.Linq;
-using Havit.Diagnostics.Contracts;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Havit.Collections;
+using Havit.Data;
+using Havit.Diagnostics.Contracts;
+using Havit.Reflection;
 
 namespace Havit.Business
 {
@@ -22,7 +22,7 @@ namespace Havit.Business
 	/// </remarks>
 	/// <typeparam name="TItem">èlenský typ kolekce</typeparam>
 	/// <typeparam name="TCollection">typ používané business object kolekce</typeparam>
-	public class BusinessObjectCollection<TItem, TCollection> : Collection<TItem>, ICollection<TItem>
+	public class BusinessObjectCollection<TItem, TCollection> : Collection<TItem>, ICollection<TItem>, IDataBinderExtSetValue
 		where TItem : BusinessObjectBase
 		where TCollection : BusinessObjectCollection<TItem, TCollection>, new()
 	{
@@ -537,6 +537,37 @@ namespace Havit.Business
 			get
 			{
 				return isFrozen;
+			}
+		}
+		#endregion
+
+		/***********************************************************************/
+
+		#region IDataBinderExtSetValue.SetValue
+		void IDataBinderExtSetValue.SetValue(object value)
+		{
+			if (value == null)
+			{
+				this.Clear();				
+			}
+			else if (value is IEnumerable<BusinessObjectBase>)
+			{
+				this.Clear();
+				this.AddRange(((IEnumerable<BusinessObjectBase>)value).Cast<TItem>().ToList());
+			}
+			else if (value is IEnumerable<TItem>)
+			{
+				this.Clear();
+				this.AddRange((IEnumerable<TItem>)value);
+			}
+			else if (value is TItem)
+			{
+				this.Clear();
+				this.Add((TItem)value);
+			}
+			else
+			{
+				throw new NotSupportedException("Nepodařilo se nastavit hodnotu.");
 			}
 		}
 		#endregion

@@ -1,4 +1,5 @@
 ﻿using Havit.Diagnostics.Contracts;
+using Havit.Reflection;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -154,22 +155,42 @@ namespace Havit
 				throw new HttpException(String.Format("Nepodařilo se nastavit hodnotu pro výraz '{0}', typ '{1}' neobsahuje vlastnost '{2}'.", dataField, currentDataItem.GetType().FullName, expressionSet));
 			}
 
-			if (descriptor.IsReadOnly)
+			if (typeof(IDataBinderExtSetValue).IsAssignableFrom(descriptor.PropertyType))
 			{
-				throw new HttpException(String.Format("Nepodařilo se nastavit hodnotu pro výraz '{0}', vlastnost '{2}' typu '{1}' je pouze ke čtení.", dataField, currentDataItem.GetType().FullName, expressionSet));				
-			}
+				IDataBinderExtSetValue dataBinderExtSetValue = (IDataBinderExtSetValue)GetValue(currentDataItem, expressionSet);
+				if (dataBinderExtSetValue == null)
+				{
+					throw new HttpException(String.Format("Nepodařilo se nastavit hodnotu pro výraz '{0}', část {1} má obsahovat hodnotu IDataBinderExtSetValue, ale obsahuje hodnotu null.", dataField, expressionSet));
+				}
 
-			object targetValue;
-			if (!Havit.ComponentModel.UniversalTypeConverter.TryConvertTo(value, descriptor.PropertyType, out targetValue))
-			{
-				throw new HttpException(String.Format(value == null ? "Nepodařilo se nastavit hodnotu pro výraz '{0}', hodnotu null se nepodařilo převést na typ '{2}'." : "Nepodařilo se nastavit hodnotu pro výraz '{0}', hodnotu '{1}' typu '{2}' se nepodařilo převést na typ '{3}'.",
-					dataField, // 0
-					value == null ? null : value.ToString(), // 1
-					value == null ? null : value.GetType().FullName, // 2
-					descriptor.PropertyType.FullName)); // 3
+				try
+				{
+					dataBinderExtSetValue.SetValue(value);
+				}
+				catch (NotSupportedException)
+				{
+					throw new HttpException(String.Format("Nepodařilo se nastavit hodnotu pro výraz '{0}', IDataBinderExtSetValue nezpracoval nastavovanou hodnotu.", dataField));
+				}
 			}
-			
-			descriptor.SetValue(currentDataItem, targetValue);
+			else
+			{
+				if (descriptor.IsReadOnly)
+				{
+					throw new HttpException(String.Format("Nepodařilo se nastavit hodnotu pro výraz '{0}', vlastnost '{2}' typu '{1}' je pouze ke čtení.", dataField, currentDataItem.GetType().FullName, expressionSet));
+				}
+
+				object targetValue;
+				if (!Havit.ComponentModel.UniversalTypeConverter.TryConvertTo(value, descriptor.PropertyType, out targetValue))
+				{
+					throw new HttpException(String.Format(value == null ? "Nepodařilo se nastavit hodnotu pro výraz '{0}', hodnotu null se nepodařilo převést na typ '{2}'." : "Nepodařilo se nastavit hodnotu pro výraz '{0}', hodnotu '{1}' typu '{2}' se nepodařilo převést na typ '{3}'.",
+						dataField, // 0
+						value == null ? null : value.ToString(), // 1
+						value == null ? null : value.GetType().FullName, // 2
+						descriptor.PropertyType.FullName)); // 3
+				}
+
+				descriptor.SetValue(currentDataItem, targetValue);
+			}
 		}
 		#endregion
 

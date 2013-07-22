@@ -23,6 +23,7 @@
 						<ContentTemplate>
 							Nazev: <asp:TextBox ID="NazevTextBox" Text="<%# BindItem.DisplayAs %>" runat="server" /><br/>
 							Disabled:<asp:CheckBox ID="DisabledCheckBox" Checked="<%# BindItem.Disabled %>" runat="server"/><br/>
+							Role:<havit:EnterpriseCheckBoxList ID="RoleEChBL" ItemObjectInfo="<%$ Expression: Havit.BusinessLayerTest.Role.ObjectInfo %>" DataTextField="Symbol" AutoDataBind="True" SelectedObjects="<%# BindItem.Role %>" runat="server"/><br/>
 						</ContentTemplate>
 					</asp:UpdatePanel>
 				</asp:Panel>

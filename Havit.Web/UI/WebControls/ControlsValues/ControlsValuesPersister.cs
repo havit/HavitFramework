@@ -43,63 +43,9 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 		/// Nastaví stav controlů dle předaných hodnot.
 		/// </summary>
 		public void ApplyValues(ControlsValuesHolder dataHolder)
-		{
-			if (this.HasControls())
-			{
-				foreach (Control nestedControl in this.Controls)
-				{
-					ApplyValues(dataHolder, nestedControl);
-				}
-			}
+		{			
+			ApplyValues(dataHolder, this, this, this.PersisterExtenders, (args) => this.OnControlValueSet(args));
 		}
-
-		/// <summary>
-		/// Nastaví stav controlů dle předaných hodnot.
-		/// Controly se zpracovávají rekurzivně. Rekurze je zastavena nastavením 
-		/// hodnoty do nějakého controlu (tj. podmínkou existence hodnoty
-		/// a vhodného IPersisterControlExtenderu).
-		/// </summary>
-		/// <param name="dataHolder">Hodnoty ke zpracování.</param>
-		/// <param name="control">Nastavovaný control.</param>
-		private void ApplyValues(ControlsValuesHolder dataHolder, Control control)
-		{
-			string key = GetControlKey(control);
-			if (dataHolder.ContainsKey(key))
-			{
-				IPersisterControlExtender persisterExtender = PersisterExtenders.FindExtender(control);
-				if (persisterExtender != null)
-				{
-					object value = dataHolder.GetValue(key);
-					// nastavíme do controlu hodnotu a oznámíme nastavení (událost)
-					persisterExtender.SetValue(control, value);
-					OnControlValueSet(new ControlValueEventArgs(control, value));
-					// přerušíme rekurzi
-					return;
-				}
-			}
-
-			// nenašli jsme hodnotu a extender, tak pokračujeme rekurzivně ve stromu controlu
-			if (this.HasControls())
-			{
-				foreach (Control nestedCotrol in control.Controls)
-				{
-					ApplyValues(dataHolder, nestedCotrol);
-				}
-			}
-		} 
-		#endregion
-
-		#region OnControlValueSet
-		/// <summary>
-		/// Oznamuje nastavení hodnoty do controlu.
-		/// </summary>
-		protected virtual void OnControlValueSet(ControlValueEventArgs eventArgs)
-		{
-			if (this.ControlValueSet != null)
-			{
-				this.ControlValueSet(this, eventArgs);
-			}
-		} 
 		#endregion
 
 		#region RetrieveValues
@@ -117,54 +63,120 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 		/// Uloží stav controlů do předaného úložiště.
 		/// </summary>
 		public void RetrieveValues(ControlsValuesHolder dataHolder)
-		{
-			if (this.HasControls())
-			{
-				foreach (Control nestedControl in this.Controls)
-				{
-					RetrieveValues(dataHolder, nestedControl);
-				}
-			}
+		{			
+			RetrieveValues(dataHolder, this, this, PersisterExtenders);
 		} 
+		#endregion
 
+		#region OnControlValueSet
+		/// <summary>
+		/// Oznamuje nastavení hodnoty do controlu.
+		/// </summary>
+		protected virtual void OnControlValueSet(ControlValueEventArgs eventArgs)
+		{
+			if (this.ControlValueSet != null)
+			{
+				this.ControlValueSet(this, eventArgs);
+			}
+		}
+		#endregion
+
+		#region RetrieveValues (internal static)
 		/// <summary>
 		/// Uloží stav controlu do předaného úložiště.
 		/// Není-li pro control nalezen IPersisterControlExtender, ukládá stav rekurzivně do hloubky.
 		/// </summary>
-		protected void RetrieveValues(ControlsValuesHolder dataHolder, Control control)
+		internal static ControlsValuesHolder RetrieveValues(Control control)
 		{
-			IPersisterControlExtender persisterExtender = PersisterExtenders.FindExtender(control);
+			ControlsValuesHolder dataHolder = new ControlsValuesHolder();
+			RetrieveValues(dataHolder, control, control, PersisterControlExtenderRepository.Default);
+			return dataHolder;
+		}
+
+		private static void RetrieveValues(ControlsValuesHolder dataHolder, Control control, Control containerControl, PersisterControlExtenderRepository persisterControlExtenderRepository)
+		{			
+			IPersisterControlExtender persisterExtender = persisterControlExtenderRepository.FindExtender(control);
 			if (persisterExtender != null)
 			{
-				string key = GetControlKey(control);
+				string key = GetControlKey(control, containerControl);
 				object value = persisterExtender.GetValue(control);
 				dataHolder.SetValue(key, value);
 			}
 			else
 			{
-				if (this.HasControls())
+				if (control.HasControls())
 				{
 					foreach (Control nestedCotrol in control.Controls)
 					{
-						RetrieveValues(dataHolder, nestedCotrol);
+						RetrieveValues(dataHolder, nestedCotrol, containerControl, persisterControlExtenderRepository);
 					}
 				}
 			}
 		}
 		#endregion
 
-		#region GetControlKey, GetControlID
+		#region ApplyValues (internal static)
+		/// <summary>
+		/// Nastaví stav controlů dle předaných hodnot.
+		/// Controly se zpracovávají rekurzivně. Rekurze je zastavena nastavením 
+		/// hodnoty do nějakého controlu (tj. podmínkou existence hodnoty
+		/// a vhodného IPersisterControlExtenderu).
+		/// </summary>
+		/// <param name="dataHolder">Hodnoty ke zpracování.</param>
+		/// <param name="control">Nastavovaný control.</param>
+		internal static void ApplyValues(ControlsValuesHolder dataHolder, Control control)
+		{
+			ApplyValues(dataHolder, control, control, PersisterControlExtenderRepository.Default, null);
+		}
+
+		private static void ApplyValues(ControlsValuesHolder dataHolder, Control control, Control containerControl, PersisterControlExtenderRepository persisterControlExtenderRepository, Action<ControlValueEventArgs> callback = null)
+		{
+			IPersisterControlExtender persisterExtender = persisterControlExtenderRepository.FindExtender(control);
+			if (persisterExtender != null)
+			{
+				string key = GetControlKey(control, containerControl);
+				if (dataHolder.ContainsKey(key))
+				{
+					object value = dataHolder.GetValue(key);
+					// nastavíme do controlu hodnotu a oznámíme nastavení (callback)
+					persisterExtender.SetValue(control, value);
+					if (callback != null)
+					{
+						callback(new ControlValueEventArgs(control, value));
+					}
+				}
+				// přerušíme rekurzi
+				return;
+			}
+
+			// nenašli jsme extender, tak pokračujeme rekurzivně ve stromu controlu
+			if (control.HasControls())
+			{
+				foreach (Control nestedCotrol in control.Controls)
+				{
+					ApplyValues(dataHolder, nestedCotrol, containerControl, persisterControlExtenderRepository);
+				}
+			}
+		}
+		#endregion
+
+		#region GetControlKey, GetControlID (static)
 		/// <summary>
 		/// Vrátí klíč použitý pro uložení hodnoty pro zadaný control.
 		/// Klíč se získává složením ID controlu a nadřazených naming containerů od ControlsValuesPersisteru dolu,
 		/// oddělovačem je lomítko.
 		/// Nemá-li control ID, použije se automaticky doplněné ("ctl00"), apod.
 		/// </summary>
-		private string GetControlKey(Control control)
+		private static string GetControlKey(Control control, Control containerControl)
 		{
+			if (control == containerControl)
+			{
+				return "!";
+			}
+
 			string result = GetControlID(control);
 			control = control.Parent;
-			while (control != this)
+			while (control != containerControl)
 			{
 				if (control is INamingContainer)
 				{
@@ -180,7 +192,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 		/// Vrací ID controlu, není-li zadáno, vrací automaticky vygenerované to "ctl00", apod.
 		/// Pomocná metoda pro metodu GetControlKey.
 		/// </summary>
-		private string GetControlID(Control control)
+		private static string GetControlID(Control control)
 		{
 			string result = control.ID;
 			if (result == null)
@@ -196,7 +208,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 				}
 			}
 			return result;
-		} 
+		}
 		#endregion
 	}
 }

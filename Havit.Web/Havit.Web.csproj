@@ -232,7 +232,15 @@
     <Compile Include="UI\Adapters\SessionPageStatePersisterPageAdapter.cs" />
     <Compile Include="UI\FilePageStatePersister.cs" />
     <Compile Include="UI\PerUserNamingStrategy.cs" />
+    <Compile Include="UI\WebControls\AutoFilterControlCreatedEventArgs.cs" />
+    <Compile Include="UI\WebControls\AutoFilterDropDownList.cs" />
+    <Compile Include="UI\WebControls\AutoFilterMode.cs" />
+    <Compile Include="UI\WebControls\AutoFilterTextBox.cs" />
+    <Compile Include="UI\WebControls\GridViewDataFilteringEventHandler.cs" />
+    <Compile Include="UI\WebControls\GridViewDataFilteringEventArgs.cs" />
     <Compile Include="UI\WebControls\FormViewExt.cs" />
+    <Compile Include="UI\WebControls\IAutoFilterControl.cs" />
+    <Compile Include="UI\WebControls\IFilterField.cs" />
     <Compile Include="UI\WebControls\TextBoxExt.cs" />
     <Compile Include="UI\ViewStateLoadFailedException.cs" />
     <Compile Include="UI\WebControls\AjaxHealthMonitoring.cs" />

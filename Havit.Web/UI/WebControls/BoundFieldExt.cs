@@ -12,7 +12,7 @@ namespace Havit.Web.UI.WebControls
 	/// <summary>
 	/// Sloupec pro heterogenní seznamy.
 	/// </summary>
-	public class BoundFieldExt : System.Web.UI.WebControls.BoundField, IIdentifiableField
+	public class BoundFieldExt : System.Web.UI.WebControls.BoundField, IIdentifiableField, IFilterField
 	{
 		#region ID (IIdentifiableField Members)
 		/// <summary>
@@ -90,6 +90,65 @@ namespace Havit.Web.UI.WebControls
 				}
 			}
 		}
+		#endregion
+
+		#region FilterMode
+		/// <summary>
+		/// Režim automatického filteru.
+		/// Výchozí hodnota je None.
+		/// </summary>
+		public AutoFilterMode FilterMode
+		{
+			get
+			{
+				return (AutoFilterMode)(ViewState["FilterMode"] ?? AutoFilterMode.None);
+			}
+			set
+			{
+				ViewState["FilterMode"] = value;
+			}
+		}
+		#endregion
+
+		#region DataFilterField
+		/// <summary>
+		/// Field, který se používá ve filtru.
+		/// Pokud není nastaveno, použije se DataField.
+		/// </summary>
+		public string DataFilterField
+		{
+			get
+			{
+				return (string)(ViewState["DataFilterField"] ?? DataField);
+			}
+			set
+			{
+				ViewState["DataFilterField"] = value;
+			}
+		}
+		#endregion
+
+		#region FilterStyle
+		/// <summary>
+		/// Styl buňky filtru.
+		/// </summary>
+		[DefaultValue((string)null), PersistenceMode(PersistenceMode.InnerProperty), DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+		public TableItemStyle FilterStyle
+		{
+			get
+			{
+				if (this._filterStyle == null)
+				{
+					this._filterStyle = new TableItemStyle();
+					if (this.IsTrackingViewState)
+					{
+						((IStateManager)this._filterStyle).TrackViewState();
+					}
+				}
+				return this._filterStyle;
+			}
+		}
+		private TableItemStyle _filterStyle;
 		#endregion
 
 		#region CreateField - override, v potomcích rovněž nutný override.
@@ -246,6 +305,85 @@ namespace Havit.Web.UI.WebControls
 			};
 		}
 
+		#endregion
+
+		#region CopyProperties
+		protected override void CopyProperties(DataControlField newField)
+		{
+			base.CopyProperties(newField);
+			if (newField is TemplateFieldExt)
+			{
+				((TemplateFieldExt)newField).FilterStyle.CopyFrom(this.FilterStyle);
+			}
+		}
+		#endregion
+
+		#region SaveViewState, LoadViewState, TrackViewState
+		protected override object SaveViewState()
+		{
+			return new object[]
+			{
+				base.SaveViewState(),
+				(_filterStyle != null) ? ((IStateManager)_filterStyle).SaveViewState() : null
+			};
+		}
+
+		protected override void LoadViewState(object savedState)
+		{
+			object[] saveStateData = (object[])savedState;
+
+			base.LoadViewState(saveStateData[0]);
+			if (saveStateData[1] != null)
+			{
+				((IStateManager)this.FilterStyle).LoadViewState(saveStateData[1]);
+			}
+		}
+
+		protected override void TrackViewState()
+		{
+			base.TrackViewState();
+			if (_filterStyle != null)
+			{
+				((IStateManager)_filterStyle).TrackViewState();
+			}
+		}
+		#endregion
+
+		#region IFilterField.FilterStyleInternal
+		TableItemStyle IFilterField.FilterStyleInternal
+		{
+			get { return _filterStyle; }
+		}
+		#endregion
+
+		#region IFilterField.InitializeFilterCell
+		/// <summary>
+		/// Vloží do buňky instanci controlu automatického filtru.
+		/// </summary>
+		void IFilterField.InitializeFilterCell(DataControlFieldCell cell)
+		{
+			switch (FilterMode)
+			{
+				case AutoFilterMode.None:
+					// NOOP
+					break;
+
+				case AutoFilterMode.TextBox:
+					AutoFilterTextBox autoFilterTextBox = new AutoFilterTextBox();
+					autoFilterTextBox.DataFilterField = this.DataFilterField;
+					cell.Controls.Add(autoFilterTextBox);
+					break;
+
+				case AutoFilterMode.DropDownList:
+					AutoFilterDropDownList autoFilterDropDownList = new AutoFilterDropDownList();
+					autoFilterDropDownList.DataTextField = this.DataFilterField;
+					autoFilterDropDownList.DataTextFormatString = this.DataFormatString;
+					cell.Controls.Add(autoFilterDropDownList);
+					break;
+
+				default: throw new ApplicationException("Neznámá hodnota vlastnosti FilterMode.");
+			}
+		}
 		#endregion
 	}
 }

@@ -154,6 +154,7 @@
     <Content Include="CollapserTest.aspx" />
     <Content Include="ControlsValuesPersisterTest.aspx" />
     <Content Include="FormViewTest.aspx" />
+    <Content Include="GridViewExt-Filtr.aspx" />
     <Content Include="TextBoxTest.aspx" />
     <Content Include="DateTimeBoxTest.aspx" />
     <Content Include="DateTimeBoxWithSpecialDays.aspx" />
@@ -217,6 +218,13 @@
     </Compile>
     <Compile Include="FormViewTest.aspx.designer.cs">
       <DependentUpon>FormViewTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GridViewExt-Filtr.aspx.cs">
+      <DependentUpon>GridViewExt-Filtr.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GridViewExt-Filtr.aspx.designer.cs">
+      <DependentUpon>GridViewExt-Filtr.aspx</DependentUpon>
     </Compile>
     <Compile Include="TextBoxTest.aspx.cs">
       <DependentUpon>TextBoxTest.aspx</DependentUpon>
@@ -498,7 +506,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>49644</DevelopmentServerPort>
+          <DevelopmentServerPort>1075</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:19509/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

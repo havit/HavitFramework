@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -10,11 +11,12 @@ using System.Web.UI.WebControls;
 using System.Web.UI;
 using Havit.Collections;
 using Havit.Diagnostics.Contracts;
+using Havit.Web.UI.WebControls.ControlsValues;
 
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
-	/// GridView implementující hightlighting, sorting a výchozí obsluhu událostí editace, stránkování, ...
+	/// GridView implementující hightlighting, sorting a výchozí obsluhu událostí editace, stránkování, filtrování...
 	/// </summary>
 	/// <remarks>
 	/// Funkčnost <b>Sorting</b> ukládá nastavení řazení dle uživatele a případně zajišťuje automatické řazení pomocí GenericPropertyCompareru.<br/>
@@ -22,6 +24,13 @@ namespace Havit.Web.UI.WebControls
 	/// </remarks>
 	public class GridViewExt : HighlightingGridView, ICommandFieldStyle
 	{
+		#region autoFilterControls (private field)
+		/// <summary>
+		/// Slouží k evidenci controlů automatických filtrů.
+		/// </summary>
+		private List<IAutoFilterControl> autoFilterControls;
+		#endregion
+
 		#region GetInsertRowDataItem (delegate)
 		/// <summary>
 		/// Metoda, která vrací data-item nového Insert řádku. Obvykle přednastaveno default hodnotami.
@@ -259,6 +268,82 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region ShowFilter
+		/// <summary>
+		/// Indikuje, zda je zobrazen řádek filtru.
+		/// </summary>
+		public bool ShowFilter
+		{
+			get
+			{
+				return (bool)(ViewState["ShowFilter"] ?? false);
+			}
+			set
+			{
+				ViewState["ShowFilter"] = value;
+			}
+		}
+		#endregion
+
+		#region FilterRow
+		/// <summary>
+		/// Filtrovací řádek.
+		/// </summary>
+		public GridViewRow FilterRow
+		{
+			get
+			{
+				return _filterRow;
+			}
+		}
+		private GridViewRow _filterRow;
+		#endregion
+
+		#region FilterStyle
+		/// <summary>
+		/// Styl řádku filtru.
+		/// </summary>
+		[Category("Styles")]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+		[NotifyParentProperty(true)]
+		[PersistenceMode(PersistenceMode.InnerProperty)]
+		public virtual TableItemStyle FilterStyle
+		{
+			get
+			{
+				if (this._filterStyle == null)
+				{
+					this._filterStyle = new TableItemStyle();
+					if (IsTrackingViewState)
+					{
+						((IStateManager)this._filterStyle).TrackViewState();
+					}
+				}
+				return this._filterStyle;
+			}
+		}
+		private TableItemStyle _filterStyle;
+		#endregion
+
+		#region ShowHeaderWhenEmpty
+		/// <summary>
+		/// Gets or sets a value that indicates whether the heading of a column in the System.Web.UI.WebControls.GridView control is visible when the column has no data.
+		/// </summary>
+		public override bool ShowHeaderWhenEmpty
+		{
+			get
+			{
+				// Pro účely filtrování potřebujeme zajistit, aby se tabulka vyrendrovala i když neobsahuje po filtrování žádná data. No nejlépe zajistíme tím, že tato vlastnost vrátí true.
+				return overrideShowHeaderWhenEmptyToTrue || base.ShowHeaderWhenEmpty;
+			}
+			set
+			{
+				base.ShowHeaderWhenEmpty = value;
+			}
+		}
+		private bool overrideShowHeaderWhenEmptyToTrue = false;
+		#endregion
+
 		#region RequiresDataBinding (new), SetRequiresDatabinding
 		/// <summary>
 		/// Zpřístupňuje pro čtení chráněnou vlastnost RequiresDataBinding.
@@ -294,7 +379,9 @@ namespace Havit.Web.UI.WebControls
 
 		#endregion
 
-		#region Events - RowInserting, RowInserted, RowCustomizingCommandButton
+		#region Events - RowInserting, RowInserted, RowCustomizingCommandButton, FilterRowCreated, FilterRowDataBound, GridViewDataFiltering, AllPagesShown
+
+		#region RowInserting
 		/// <summary>
 		/// Událost, která se volá při vložení nového řádku (kliknutí na tlačítko Insert).
 		/// </summary>
@@ -307,7 +394,9 @@ namespace Havit.Web.UI.WebControls
 			add { Events.AddHandler(eventItemInserting, value); }
 			remove { Events.RemoveHandler(eventItemInserting, value); }
 		}
+		#endregion
 
+		#region RowInserted
 		/// <summary>
 		/// Událost, která se volá po vložení nového řádku (po události RowInserting).
 		/// </summary>
@@ -317,7 +406,9 @@ namespace Havit.Web.UI.WebControls
 			add { Events.AddHandler(eventItemInserted, value); }
 			remove { Events.RemoveHandler(eventItemInserted, value); }
 		}
+		#endregion
 
+		#region RowCustomizingCommandButton
 		/// <summary>
 		/// Událost, která se volá při customizaci command-buttonu řádku (implementováno v <see cref="GridViewCommandField"/>).
 		/// </summary>
@@ -332,7 +423,59 @@ namespace Havit.Web.UI.WebControls
 			{
 				Events.RemoveHandler(eventRowCustomizingCommandButton, value);
 			}
-		}		
+		}
+		#endregion
+
+		#region FilterRowCreated
+		/// <summary>
+		/// Událost je vyvolána při založení filtrovacího řádku, před vložením do stromu controlů.
+		/// </summary>
+		public event GridViewRowEventHandler FilterRowCreated
+		{
+			add
+			{
+				Events.AddHandler(eventFilterRowCreated, value);
+			}
+			remove
+			{
+				Events.RemoveHandler(eventFilterRowCreated, value);
+			}
+		}
+		#endregion
+
+		#region FilterRowDataBound
+		/// <summary>
+		/// Událost je vložena po provedení DataBindu na filtrovacím řádku.
+		/// </summary>
+		public event GridViewRowEventHandler FilterRowDataBound
+		{
+			add
+			{
+				Events.AddHandler(eventFilterRowDataBound, value);
+			}
+			remove
+			{
+				Events.RemoveHandler(eventFilterRowDataBound, value);
+			}
+		}
+		#endregion
+
+		#region FilterRowDataBound
+		/// <summary>
+		/// Událost je zaválána v případě zapnutého filtrování dat a dává k dispozici další bod pro možnost omezení množiny zobrazených dat. V případě změny zobrazených dat se očekává změna vlastnosti Data argumentů události.
+		/// </summary>
+		public event GridViewDataFilteringEventHandler GridViewDataFiltering
+		{
+			add
+			{
+				Events.AddHandler(eventGridViewDataFiltering, value);
+			}
+			remove
+			{
+				Events.RemoveHandler(eventGridViewDataFiltering, value);
+			}
+		}
+		#endregion
 
 		#region AllPagesShown
 		/// <summary>
@@ -351,26 +494,12 @@ namespace Havit.Web.UI.WebControls
 		private static readonly object eventRowCustomizingCommandButton = new object();
 		private static readonly object eventAllPagesShowing = new object();
 		private static readonly object eventAllPagesShown = new object();
-		#endregion
+		private static readonly object eventFilterRowCreated = new object();
+		private static readonly object eventFilterRowDataBound = new object();
+		private static readonly object eventGridViewDataFiltering = new object();
 
-		#region CreateChildControls
-		/// <summary>
-		/// Creates the control hierarchy used to render the <see cref="T:System.Web.UI.WebControls.GridView"/> control using the specified data source.
-		/// </summary>
-		/// <returns>
-		/// The number of rows created.
-		/// </returns>
-		/// <param name="dataSource">An <see cref="T:System.Collections.IEnumerable"/> that contains the data source for the <see cref="T:System.Web.UI.WebControls.GridView"/> control. </param><param name="dataBinding">true to indicate that the child controls are bound to data; otherwise, false. </param><exception cref="T:System.Web.HttpException"><paramref name="dataSource"/> returns a null <see cref="T:System.Web.UI.DataSourceView"/>.-or-<paramref name="dataSource"/> does not implement the <see cref="T:System.Collections.ICollection"/> interface and cannot return a <see cref="P:System.Web.UI.DataSourceSelectArguments.TotalRowCount"/>. -or-<see cref="P:System.Web.UI.WebControls.GridView.AllowPaging"/> is true and <paramref name="dataSource"/> does not implement the <see cref="T:System.Collections.ICollection"/> interface and cannot perform data source paging.-or-<paramref name="dataSource"/> does not implement the <see cref="T:System.Collections.ICollection"/> interface and <paramref name="dataBinding"/> is set to false.</exception>
-		protected override int CreateChildControls(IEnumerable dataSource, bool dataBinding)
-		{
-			string originalEmptyDataText = this.EmptyDataText;
-			EmptyDataText = HttpUtilityExt.GetResourceString(EmptyDataText);
-			int result = base.CreateChildControls(dataSource, dataBinding);
-			EmptyDataText = originalEmptyDataText;
-			return result;
-		}
 		#endregion
-
+		
 		#region Constructor
 		/// <summary>
 		/// Vytvoří instanci GridViewExt. Nastavuje defaultně AutoGenerateColumns na false.
@@ -473,7 +602,7 @@ namespace Havit.Web.UI.WebControls
 		/// <param name="control">Control, na základě něhož se hledá GridViewRow.</param>
 		/// <returns>Nalezený GridViewRow.</returns>
 		public GridViewRow GetRow(Control control)
-		{
+		{			
 			if ((control == null) || (control.Parent == null))
 			{
 				throw new ArgumentException("Nepodařilo dohledat příslušný GridViewRow.", "control");
@@ -513,11 +642,13 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		protected override object SaveViewState()
 		{
-			Triplet viewStateData = new Triplet();
-			viewStateData.First = base.SaveViewState();
-			viewStateData.Second = _sortExpressions;
-			viewStateData.Third = (this._commandFieldStyle != null) ? ((IStateManager)this._commandFieldStyle).SaveViewState() : null;
-			return viewStateData;
+			return new object[]
+			{
+				base.SaveViewState(),
+				_sortExpressions,
+				(this._commandFieldStyle != null) ? ((IStateManager)this._commandFieldStyle).SaveViewState() : null,
+				(this._filterStyle != null) ? ((IStateManager)this._filterStyle).SaveViewState() : null
+			};
 		}
 
 		#region TrackViewState
@@ -528,6 +659,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			base.TrackViewState();
 			((IStateManager)this.CommandFieldStyle).TrackViewState();
+			((IStateManager)this.FilterStyle).TrackViewState();
 		}
 		#endregion
 
@@ -536,17 +668,136 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		protected override void LoadViewState(object savedState)
 		{
-			Triplet viewStateData = savedState as Triplet;
+			object[] viewStateData = savedState as object[];
 			Debug.Assert(viewStateData != null);
 
-			base.LoadViewState(viewStateData.First);
-			if (viewStateData.Second != null)
+			base.LoadViewState(viewStateData[0]);
+			_sortExpressions = (SortExpressions)viewStateData[1];
+			if (viewStateData[2] != null)
 			{
-				_sortExpressions = (SortExpressions)viewStateData.Second;
+				((IStateManager)this.CommandFieldStyle).LoadViewState(viewStateData[2]);
 			}
-			if (viewStateData.Third != null)
+			if (viewStateData[2] != null)
 			{
-				((IStateManager)this.CommandFieldStyle).LoadViewState(viewStateData.Third);
+				((IStateManager)this.FilterStyle).LoadViewState(viewStateData[2]);
+			}
+		}
+		#endregion
+
+		#region CreateChildControls
+		/// <summary>
+		/// Creates the control hierarchy used to render the <see cref="T:System.Web.UI.WebControls.GridView"/> control using the specified data source.
+		/// </summary>
+		/// <returns>
+		/// The number of rows created.
+		/// </returns>
+		/// <param name="dataSource">An <see cref="T:System.Collections.IEnumerable"/> that contains the data source for the <see cref="T:System.Web.UI.WebControls.GridView"/> control. </param><param name="dataBinding">true to indicate that the child controls are bound to data; otherwise, false. </param><exception cref="T:System.Web.HttpException"><paramref name="dataSource"/> returns a null <see cref="T:System.Web.UI.DataSourceView"/>.-or-<paramref name="dataSource"/> does not implement the <see cref="T:System.Collections.ICollection"/> interface and cannot return a <see cref="P:System.Web.UI.DataSourceSelectArguments.TotalRowCount"/>. -or-<see cref="P:System.Web.UI.WebControls.GridView.AllowPaging"/> is true and <paramref name="dataSource"/> does not implement the <see cref="T:System.Collections.ICollection"/> interface and cannot perform data source paging.-or-<paramref name="dataSource"/> does not implement the <see cref="T:System.Collections.ICollection"/> interface and <paramref name="dataBinding"/> is set to false.</exception>
+		protected override int CreateChildControls(IEnumerable dataSource, bool dataBinding)
+		{
+			autoFilterControls = new List<IAutoFilterControl>();
+			overrideShowHeaderWhenEmptyToTrue = ShowFilter; // pokud zobrazujeme filtr, pak chceme, aby se zobrazil grid i bez dat
+
+			string originalEmptyDataText = this.EmptyDataText;
+			EmptyDataText = HttpUtilityExt.GetResourceString(EmptyDataText);
+			int result = base.CreateChildControls(dataSource, dataBinding);
+			EmptyDataText = originalEmptyDataText;
+
+			overrideShowHeaderWhenEmptyToTrue = false;
+
+			// zajistíme přidání filtrovacího řádku
+			if (ShowFilter)	
+			{				
+				this.CreateFilterChildControls(dataBinding);
+			}
+			
+			return result;
+		}
+		#endregion
+
+		#region CreateFilterChildControls
+		/// <summary>
+		/// Přidá filtrovací řádek do gridu.
+		/// </summary>
+		private void CreateFilterChildControls(bool dataBinding)
+		{			
+			if (this._fields != null)
+			{
+				Table table = (Table)this.Controls[0];
+
+				// V prvním databindu se provádí fake call PerformDataBinding (viz volání base v metode PerformDataBinding).
+				// V tom důsledku je metoda CreateChildControls/CreateFilterChildControls volána dvakrát.
+				// Abychom omezili dvojí tvorbě filtru řádku a hlavně dvojím událostem FilterRowCreater a FilterRowDataBound, zapamatujeme si hodnotu z prvního (fake) volání metody
+				// a v dalším (pravém) volání tuto hodnotu použijeme.
+
+				if ((this._filterRowCreatedInPerformDataBindingFakeCall != null) && (!_performDataBindingDataInFakeCall))
+				{
+					_filterRow = this._filterRowCreatedInPerformDataBindingFakeCall;
+					table.Rows.AddAt((this.HeaderRow != null) ? table.Rows.GetRowIndex(this.HeaderRow) + 1 : 0, _filterRow);
+					return;
+				}
+				
+				_filterRow = new GridViewRow(-1, -1, DataControlRowType.Header, DataControlRowState.Normal);
+				_filterRow.ID = "FilterRow";
+				
+				GridViewRowEventArgs e = new GridViewRowEventArgs(_filterRow);
+
+				this.InitializeFilterRow(_filterRow, this._fields);
+
+				//_filterRow.MergeStyle(FilterStyle);
+
+				OnFilterRowCreated(e);
+
+				table.Rows.AddAt((this.HeaderRow != null) ? table.Rows.GetRowIndex(this.HeaderRow) + 1 : 0, _filterRow);
+				
+				if (dataBinding)
+				{
+					_filterRow.DataItem = this._performDataBindingData;
+					_filterRow.DataBind();
+					if (_previousFilterRowData != null)
+					{
+						ControlsValuesPersister.ApplyValues(_previousFilterRowData, _filterRow);
+					}
+					OnFilterRowDataBound(e);
+				}
+
+				this._filterRowCreatedInPerformDataBindingFakeCall = _performDataBindingDataInFakeCall ? _filterRow : null;
+			}
+			else
+			{
+				_filterRow = null;
+			}
+		}
+		private GridViewRow _filterRowCreatedInPerformDataBindingFakeCall;
+		#endregion
+
+		#region InitializeRow, InitializeFilterRow
+		/// <summary>
+		/// Inicializuje řádek gridu danými fieldy. Není použito pro filtrovací řádek, ten řeší samostatná metoda InitializeFilterRow
+		/// (tato metoda používá row.RowType a row.RowState, pro filtr nemáme hodnoty enumu, které by byly použitelné).
+		/// </summary>
+		protected override void InitializeRow(GridViewRow row, DataControlField[] fields)
+		{
+			// Pro potřeby filtrovacího řádku si zde pouze zapamatováváme, s jakými fieldy je metoda volána (neřešíme, že je volána opakovaně - je vždy volána se stejnými parametry).
+			base.InitializeRow(row, fields);
+			_fields = fields;
+		}
+		private DataControlField[] _fields;
+
+		/// <summary>
+		/// Inicializuje filtrovací řádek gridu.
+		/// </summary>
+		protected virtual void InitializeFilterRow(GridViewRow row, DataControlField[] fields)
+		{
+			for (int i = 0; i < fields.Length; i++)
+			{
+				DataControlFieldCell cell = new DataControlFieldCell(fields[i]);
+
+				IFilterField filterField = fields[i] as IFilterField;
+				if (filterField != null)
+				{
+					filterField.InitializeFilterCell(cell);
+				}
+				row.Cells.Add(cell);
 			}
 		}
 		#endregion
@@ -562,8 +813,37 @@ namespace Havit.Web.UI.WebControls
 		/// <param name="data">data</param>
 		protected override void PerformDataBinding(IEnumerable data)
 		{
+			this._performDataBindingData = data; // uchováváme pro databind filtru
+
+			// FILTERING
+			IEnumerable filteredData = data;
+
+			// Pokud již máme filter row, vytáhneme si jeho hodnoty.
+			// Musíme zde, před voláním CreateChildControls, protože CreateChildControls vyhodí řádek ze stromu controlů a všem controlům v řádku se kompletně změní IDčka.
+			// Kdybychom vytáhli hodnoty až v CreateFilterChildControls, tak je vytáhneme s jinými IDčka a do nového řádku se nám je nepodaří dostat, protože nedojde ke spárování přes IDčka.
+			_previousFilterRowData = (_filterRow != null) ? ControlsValuesPersister.RetrieveValues(_filterRow) : null;
+
+			// Pokud používáme filtr, tak chceme provést filtrování dat a to včetně výchozích hodnot.
+			// Jenže filter row (i s výchozími daty) je vytvořen až po nabindování dat v CreateChildControls.
+			// Pokud chceme výchozí hodnoty získat i pro první DataBind, použijeme obezličku takovou,
+			// že si vynutíme vytvoření filtru tak, že gridview nanečisto nabindujeme prázdnou kolekcí (vytvoří se header, footer a filterRow)
+			if ((filteredData != null) && ShowFilter && (_filterRow == null))
+			{
+				_performDataBindingDataInFakeCall = true;
+				//base.PerformDataBinding(new object[] { });
+				_performDataBindingDataInFakeCall = false;
+			}
+
+			if ((filteredData != null) && ShowFilter && (_filterRow != null))
+			{
+				filteredData = this.PerformAutoFiltering(filteredData);
+				GridViewDataFilteringEventArgs e = new GridViewDataFilteringEventArgs(filteredData, _filterRow);
+				this.OnGridViewDataFiltering(e);
+				filteredData = e.Data;
+			}
+
 			// SORTING
-			IEnumerable sortedData = data;
+			IEnumerable sortedData = filteredData;
 			if ((sortedData != null) && AutoSort)
 			{
 				if ((SortExpressions.SortItems.Count == 0) && !String.IsNullOrEmpty(DefaultSortExpression))
@@ -659,6 +939,11 @@ namespace Havit.Web.UI.WebControls
 					HeaderRow.TableSection = TableRowSection.TableHeader;
 				}
 
+				if (FilterRow != null)
+				{
+					FilterRow.TableSection = TableRowSection.TableHeader;
+				}
+
 				if (FooterRow != null)
 				{
 					FooterRow.TableSection = TableRowSection.TableFooter;
@@ -676,6 +961,9 @@ namespace Havit.Web.UI.WebControls
 			}
 
 		}
+		private IEnumerable _performDataBindingData;
+		private bool _performDataBindingDataInFakeCall;
+		private ControlsValuesHolder _previousFilterRowData;
 		#endregion
 
 		#region CreateRow (override - Insert, řešení THEAD, apod.)
@@ -709,6 +997,91 @@ namespace Havit.Web.UI.WebControls
 			}
 
 			return row;
+		}
+		#endregion
+
+		#region OnRowCreated
+		/// <summary>
+		/// Vyvolá událost RowCreated.
+		/// </summary>
+		protected override void OnRowCreated(GridViewRowEventArgs e)
+		{
+			// Ve fake volání perform databinding nevyvoláváme události RowCreated (ale RowFilterCreated se vyvolává, to je účel, _filterRow je pak použit ve skutečném volání).
+			if (!_performDataBindingDataInFakeCall)
+			{
+				base.OnRowCreated(e);
+			}
+		}
+		#endregion
+
+		#region OnRowDataBound
+		/// <summary>
+		/// Vyvolá událost RowDataBound
+		/// </summary>
+		protected override void OnRowDataBound(GridViewRowEventArgs e)
+		{
+			// Ve fake volání perform databinding nevyvoláváme události RowDataBound (ale RowFilterCreated se vyvolává, to je účel, _filterRow je pak použit ve skutečném volání).
+			if (!_performDataBindingDataInFakeCall)
+			{
+				base.OnRowDataBound(e);
+			}
+		}
+		#endregion
+
+		#region OnFilterRowCreated
+		/// <summary>
+		/// Vyvolá událost FilterRowCreated.
+		/// </summary>
+		protected virtual void OnFilterRowCreated(GridViewRowEventArgs e)
+		{
+			GridViewRowEventHandler handler = (GridViewRowEventHandler)Events[eventFilterRowCreated];
+			if (handler != null)
+			{
+				handler(this, e);
+			}
+		}
+		#endregion
+
+		#region OnFilterRowDataBound
+		/// <summary>
+		/// Vyvolá událost FiltrerRowDataBound.
+		/// </summary>
+		protected virtual void OnFilterRowDataBound(GridViewRowEventArgs e)
+		{
+			GridViewRowEventHandler handler = (GridViewRowEventHandler)Events[eventFilterRowDataBound];
+			if (handler != null)
+			{
+				handler(this, e);
+			}
+		}
+		#endregion
+
+		#region OnGridViewDataFiltering
+		/// <summary>
+		/// Vyvolá událost GridViewDataFiltering.
+		/// </summary>
+		protected virtual void OnGridViewDataFiltering(GridViewDataFilteringEventArgs e)
+		{
+			GridViewDataFilteringEventHandler handler = (GridViewDataFilteringEventHandler)Events[eventGridViewDataFiltering];
+			if (handler != null)
+			{
+				handler(this, e);
+			}
+		}
+		#endregion
+
+		#region PerformAutoFiltering
+		/// <summary>
+		/// Provede filtrování dat automatickými filtry.
+		/// </summary>
+		protected virtual IEnumerable PerformAutoFiltering(IEnumerable data)
+		{
+			IEnumerable result = data;
+			foreach (IAutoFilterControl autoFilterControl in autoFilterControls)
+			{
+				result = autoFilterControl.FilterData(result);
+			}
+			return result;
 		}
 		#endregion
 
@@ -788,6 +1161,17 @@ namespace Havit.Web.UI.WebControls
 			// Insert nechceme propagovat, stejně jako se nepropaguje Update, Delete, atp.
 			// ve frameworku 2.0/3.5 se nepropaguje, ve frameworku 4.0 se propaguje
 			// framework kompilujeme pod .NET 3.5, problém se ale objeví jen v aplikaci běžící pod .NET 4.0
+
+			if (e is AutoFilterControlCreatedEventArgs)
+			{
+				IAutoFilterControl autoFilterControl = source as IAutoFilterControl;
+				if (autoFilterControl != null)
+				{
+					autoFilterControl.ValueChanged += (sender, EventArgs) => { this.SetRequiresDatabinding(); };
+					autoFilterControls.Add(autoFilterControl);
+					result = true; // ano, metoda se jmenuje onbubbleevent, ale true znamená cancel
+				}
+			}
 
 			if (!result)
 			{
@@ -1162,6 +1546,66 @@ namespace Havit.Web.UI.WebControls
 			DataBinderExt.SetValues(dataObject, fieldValues);
 		}
 		#endregion
+
+		#region Render, RenderContents
+		/// <summary>
+		/// Renders the Web server control content to the client's browser using the specified System.Web.UI.HtmlTextWriter object.
+		/// </summary>
+		protected override void Render(HtmlTextWriter writer)
+		{
+			// Zde se teprve aplikují styly na řádky - jako začátek base.Render(HtmlTextWriter), ale ještě přede zavoláním RenderContent(HtmlTextWriter).
+			// FilterRow je generován jako typ Header, takže je na něj aplikován styl pro Header. 
+			// To potlačíme tak, že styl pro header vyčistíme, a aplikujeme sami styl pro header i pro filter ručně po nastavení hodnot v předkovi.
+
+			// ViewState neřešíme, ten je již uložen.
+
+			_renderHeaderStyle = new TableItemStyle();
+			_renderHeaderStyle.MergeWith(HeaderStyle);
+			HeaderStyle.Reset();
+
+			base.Render(writer);
+
+		}
+
+		/// <summary>
+		/// Renders the contents of the control to the specified writer. This method is used primarily by control developers.
+		/// </summary>
+		protected override void RenderContents(HtmlTextWriter writer)
+		{
+			if (ShowHeader && HeaderRow != null)
+			{
+				HeaderRow.MergeStyle(this._renderHeaderStyle);
+			}
+
+			if (ShowFilter && FilterRow != null)
+			{
+				FilterRow.MergeStyle(FilterStyle);
+
+				foreach (TableCell cell in FilterRow.Cells)
+				{
+					if (cell is DataControlFieldCell)
+					{
+						DataControlFieldCell dataControlFieldCell = (DataControlFieldCell)cell;
+						DataControlField field = dataControlFieldCell.ContainingField;
+
+						if (field is IFilterField)
+						{
+							IFilterField filterField = (IFilterField)field;
+							TableItemStyle filterFieldStyle = filterField.FilterStyleInternal;
+							if (filterFieldStyle != null)
+							{
+								cell.MergeStyle(filterFieldStyle);
+							}
+						}
+					}
+				}
+			}
+
+			base.RenderContents(writer);
+		}
+		private TableItemStyle _renderHeaderStyle;
+
+		#endregion
 	}
 
 	/// <summary>
@@ -1189,4 +1633,5 @@ namespace Havit.Web.UI.WebControls
 	/// Delegát k metodě pro získávání data-item pro nový Insert řádek GridView.
 	/// </summary>
 	public delegate object GetInsertRowDataItemDelegate();
+
 }

@@ -12,6 +12,7 @@ using System.Web.UI.HtmlControls;
 using Havit.BusinessLayerTest;
 using Havit.Web.UI.WebControls;
 using Havit.Web.UI;
+using System.Collections.Generic;
 
 namespace WebApplicationTest
 {
@@ -22,10 +23,10 @@ namespace WebApplicationTest
 		{
 			base.OnInit(e);
 
-			TestGV1.DataBinding += new EventHandler(TestGV_DataBinding);
+			//TestGV1.DataBinding += new EventHandler(TestGV_DataBinding);
 			TestGV1.RowCustomizingCommandButton += new GridViewRowCustomizingCommandButtonEventHandler(TestGV_RowCustomizingCommandButton);
 			TestGV1.GetInsertRowDataItem += TestGV1_GetInsertRowDataItem;
-
+			TestGV1.RowUpdating += TestGV1_RowUpdating;
 			TestGV2.DataBinding += new EventHandler(TestGV_DataBinding);
 			TestGV3.DataBinding += new EventHandler(TestGV_DataBinding);
 			TestGV4.DataBinding += new EventHandler(TestGV_DataBinding);
@@ -37,6 +38,22 @@ namespace WebApplicationTest
 			TestGV2.Visible = false;
 			TestGV3.Visible = false;
 		}
+
+		private void TestGV1_RowUpdating(object sender, GridViewUpdateEventArgs e)
+		{
+			TestGV1.ExtractRowValues<Subjekt>(e.RowIndex);
+		}
+
+		public IEnumerable<Subjekt> TestGV1_SelectMethod()
+		{
+			return Subjekt.GetAll();
+		}
+
+		public void TestGV1_UpdateMethod()
+		{
+			
+		}
+
 		#endregion
 
 		#region HideButton_Click

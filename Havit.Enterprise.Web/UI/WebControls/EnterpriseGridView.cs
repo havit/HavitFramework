@@ -100,6 +100,11 @@ namespace Havit.Web.UI.WebControls
 		{
 			Contract.Requires(row != null);
 
+			if (dataItemTypes == null)
+			{
+				throw new InvalidOperationException("Na EntepriseGridView ještě neproběhl DataBind nebo ještě nebyl načten ViewState.");
+			}
+
 			if ((row.RowState & DataControlRowState.Insert) == DataControlRowState.Insert)
 			{
 				object insertRowDataItem = GetInsertRowDataItem();
@@ -146,16 +151,33 @@ namespace Havit.Web.UI.WebControls
 			ExtractRowValues(row, businessObject); // naplníme ho hodnotami
 			return businessObject; // vrátíme jej
 		}
+
+		/// <summary>
+		/// Extrahuje hodnoty z řádku dle rowIndexu do business objektu, který byl na řádek nabidnován.
+		/// Vrátí tento business objekt.
+		/// </summary>
+		public T ExtractRowValues<T>(int rowIndex)
+			where T : BusinessObjectBase
+		{
+			if ((rowIndex < 0) || (rowIndex >= Rows.Count))
+			{
+				throw new ArgumentOutOfRangeException("rowIndex");
+			}
+
+			GridViewRow row = Rows[rowIndex];
+			return ExtractRowValues<T>(row);
+		}
+
 		#endregion
 
-		#region OnDataBinding
+		#region PerformDataBinding
 		/// <summary>
-		/// Raises the System.Web.UI.Control.DataBinding event.
+		/// Zajišťuje data-binding dat na GridView.
 		/// </summary>
-		protected override void OnDataBinding(EventArgs e)
+		protected override void PerformDataBinding(System.Collections.IEnumerable data)
 		{
-			base.OnDataBinding(e);
-			dataItemTypes = AutoCrudOperations ? new List<DataItemTypeEntry>() : null; // vyčistíme hodnotu dataItemTypes
+			dataItemTypes = new List<DataItemTypeEntry>(); // vyčistíme hodnotu dataItemTypes
+			base.PerformDataBinding(data);
 		}
 		#endregion
 
@@ -170,7 +192,7 @@ namespace Havit.Web.UI.WebControls
 			// zapamatujeme si typy bindovaných objektů
 			// pro možnost heterogenních seznamů si pamatujeme hodnotu pro každý řádek
 			// ale uložení optimalizujeme - pokud se hodnoty neliší, nepřidáváme více položek do dataItemTypes
-			if (AutoCrudOperations && (e.Row.RowType == DataControlRowType.DataRow))
+			if (e.Row.RowType == DataControlRowType.DataRow)
 			{
 				Type type = e.Row.DataItem.GetType();
 				if (dataItemTypes.Count == 0 || dataItemTypes[dataItemTypes.Count - 1].Type != type)

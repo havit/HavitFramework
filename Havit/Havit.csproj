@@ -221,7 +221,10 @@
     <Compile Include="Reflection\Reflector.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Scope.cs" />
+    <Compile Include="Scopes\Scope.cs" />
+    <Compile Include="Scopes\ThreadScopeRepository.cs" />
+    <Compile Include="Scopes\IScopeRepository.cs" />
+    <Compile Include="Scopes\WebApplicationScopeRepository.cs" />
     <Compile Include="Security\PasswordCharacterSet.cs" />
     <Compile Include="Security\PasswordGenerator.cs" />
     <Compile Include="StringExt.cs">

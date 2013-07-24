@@ -149,12 +149,16 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="a.js" />
     <Content Include="AutoSuggestMenu.aspx" />
     <Content Include="AutoSuggestMenuService.asmx" />
     <Content Include="CollapserTest.aspx" />
     <Content Include="ControlsValuesPersisterTest.aspx" />
+    <EmbeddedResource Include="b.js" />
     <Content Include="FormViewTest.aspx" />
     <Content Include="GridViewExt-Filtr.aspx" />
+    <Content Include="IdentityMapScopeTest.aspx" />
+    <Content Include="ScriptManagerTest.aspx" />
     <Content Include="TextBoxTest.aspx" />
     <Content Include="DateTimeBoxTest.aspx" />
     <Content Include="DateTimeBoxWithSpecialDays.aspx" />
@@ -225,6 +229,20 @@
     </Compile>
     <Compile Include="GridViewExt-Filtr.aspx.designer.cs">
       <DependentUpon>GridViewExt-Filtr.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="IdentityMapScopeTest.aspx.cs">
+      <DependentUpon>IdentityMapScopeTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="IdentityMapScopeTest.aspx.designer.cs">
+      <DependentUpon>IdentityMapScopeTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ScriptManagerTest.aspx.cs">
+      <DependentUpon>ScriptManagerTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ScriptManagerTest.aspx.designer.cs">
+      <DependentUpon>ScriptManagerTest.aspx</DependentUpon>
     </Compile>
     <Compile Include="TextBoxTest.aspx.cs">
       <DependentUpon>TextBoxTest.aspx</DependentUpon>

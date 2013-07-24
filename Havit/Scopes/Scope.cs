@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
 
-namespace Havit
+namespace Havit.Scopes
 {
 	/// <summary>
 	/// Thread-specific Scope obalující dosah platnosti určitého objektu (transakce, identity mapy, atp.),
-	/// který je následně přístupný přes property <see cref="Current"/>.
+	/// který je následně přístupný přes property metodu GetCurrent (metoda určena k použití v potomcích do veřejné vlastnosti Current).
 	/// </summary>
 	/// <example>
 	/// <code>
@@ -31,21 +31,16 @@ namespace Havit
 	public class Scope<T> : IDisposable
 		where T : class
 	{
-		#region private field (thread static)
-		/// <summary>
-		/// Aktuální konec linked-listu nestovaných scope.
-		/// </summary>
-		[ThreadStatic]
-		private static Scope<T> head;
-		#endregion
-
 		#region Current (static)
 		/// <summary>
 		/// Aktuální instance obalovaná scopem.
+		/// Určeno pro použití v potomcích pro implementaci statické vlastnosti Current.
 		/// </summary>
-		public static T Current
+		/// <param name="scopeRepository">repository pro čtení scope</param>
+		protected static T GetCurrent(IScopeRepository<T> scopeRepository)
 		{
-			get { return head != null ? head.instance : null; }
+			Scope<T> scope = scopeRepository.GetCurrentScope();
+			return scope != null ? scope.instance : null;
 		}
 		#endregion
 
@@ -69,6 +64,8 @@ namespace Havit
 		/// Nadřazený scope v linked-listu nestovaných scope.
 		/// </summary>
 		private Scope<T> parent;
+
+		private IScopeRepository<T> scopeRepository;
 		#endregion
 
 		#region Constructors
@@ -76,25 +73,28 @@ namespace Havit
 		/// Vytvoří instanci třídy <see cref="Scope{T}"/> kolem instance. Instance bude při disposingu Scope též disposována.
 		/// </summary>
 		/// <param name="instance">instance, kterou scope obaluje</param>
-		public Scope(T instance) : this(instance, true) { }
+		/// <param name="scopeRepository">repository pro uložení scope</param>
+		protected Scope(T instance, IScopeRepository<T> scopeRepository) : this(instance, scopeRepository, true) { }
 
 		/// <summary>
 		/// Vytvoří instanci třídy <see cref="Scope{T}"/> kolem instance.
 		/// </summary>
 		/// <param name="instance">instance, kterou scope obaluje</param>
+		/// <param name="scopeRepository">repository pro uložení scope</param>
 		/// <param name="ownsInstance">indikuje, zda-li instanci vlastníme, tedy zda-li ji máme s koncem scopu disposovat</param>
-		public Scope(T instance, bool ownsInstance)
+		protected Scope(T instance, IScopeRepository<T> scopeRepository, bool ownsInstance)
 		{
 			if (instance == null)
 			{
 				throw new ArgumentNullException("instance");
 			}
 			this.instance = instance;
+			this.scopeRepository = scopeRepository;
 			this.ownsInstance = ownsInstance;
 
 			// linked-list pro nestování scopes
-			this.parent = head;
-			head = this;
+			this.parent = scopeRepository.GetCurrentScope();
+			scopeRepository.SetCurrentScope(this);
 		}
 		#endregion
 
@@ -117,8 +117,20 @@ namespace Havit
 			{
 				disposed = true;
 
-				Debug.Assert(this == head, "Disposed out of order.");
-				head = parent;
+				if (this != scopeRepository.GetCurrentScope())
+				{
+					Debugger.Break();
+				}
+
+				Debug.Assert(this == scopeRepository.GetCurrentScope(), "Disposed out of order.");
+				if (parent == null)
+				{
+					scopeRepository.RemoveCurrentScope();
+				}
+				else
+				{
+					scopeRepository.SetCurrentScope(parent);
+				}
 
 				if (ownsInstance)
 				{
@@ -141,7 +153,6 @@ namespace Havit
 			Dispose(false);
 		}
 		#endregion
-
 	}
 
 }

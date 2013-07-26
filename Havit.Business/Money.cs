@@ -296,11 +296,11 @@ namespace Havit.Business
 		public static TResult SumMoney<TResult>(Money<TCurrency> money1, Money<TCurrency> money2)
 			where TResult : Money<TCurrency>, new()
 		{
-			AssertSameCurrencies(money1.Currency, money2.Currency);
 			AssertNotNull(money1, "money1");
 			AssertNotNull(money1.Amount, "money1.Amount");
 			AssertNotNull(money2, "money2");
 			AssertNotNull(money2.Amount, "money2.Amount");
+			AssertSameCurrencies(money1.Currency, money2.Currency);
 
 			TResult result = new TResult();
 			result.Amount = money1.Amount + money2.Amount;
@@ -317,11 +317,11 @@ namespace Havit.Business
 		public static TResult SubtractMoney<TResult>(Money<TCurrency> money1, Money<TCurrency> money2)
 			where TResult : Money<TCurrency>, new()
 		{
-			AssertSameCurrencies(money1.Currency, money2.Currency);
 			AssertNotNull(money1, "money1");
 			AssertNotNull(money1.Amount, "money1.Amount");
 			AssertNotNull(money2, "money2");
 			AssertNotNull(money2.Amount, "money2.Amount");
+			AssertSameCurrencies(money1.Currency, money2.Currency);
 
 			TResult result = new TResult();
 			result.Amount = money1.Amount - money2.Amount;

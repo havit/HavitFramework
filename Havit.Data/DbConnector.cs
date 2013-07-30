@@ -4,8 +4,10 @@ using System.Text;
 using System.Data.Common;
 using System.Configuration;
 using System.Data;
-using Havit.Diagnostics.Contracts;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using Havit.Data.Trace;
+using Havit.Diagnostics.Contracts;
 
 namespace Havit.Data
 {
@@ -14,6 +16,10 @@ namespace Havit.Data
 	/// </summary>	
 	public class DbConnector
 	{
+		#region commandExecutionTrace (private field)
+		private TraceSource commandExecutionTrace = new TraceSource(Trace.Consts.CommandExecutionTraceSourceName, SourceLevels.All);
+		#endregion
+
 		#region ConnectionString
 		/// <summary>
 		/// Vrátí connection-string, který spolu s <see cref="DbConnector.ProviderFactory"/> určuje parametry DbConnectoru.
@@ -189,6 +195,8 @@ namespace Havit.Data
 				command.Connection.Open();
 			}
 
+			DbCommandTraceData dbCommandTraceData = DbCommandTraceData.Create(command, "ExecuteNonQuery");
+
 			int result;
 			try
 			{
@@ -204,6 +212,8 @@ namespace Havit.Data
 			{
 				command.Connection.Close();
 			}
+
+			dbCommandTraceData.Trace(this.commandExecutionTrace);	
 
 			return result;
 		}
@@ -256,8 +266,10 @@ namespace Havit.Data
 
 				DataSet ds = new DataSet();
 
+				DbCommandTraceData dbCommandTraceData = DbCommandTraceData.Create(command, "ExecuteDataSet");
 				adapter.Fill(ds);
-
+				dbCommandTraceData.Trace(this.commandExecutionTrace);
+				
 				return ds;
 			}
 		}
@@ -308,7 +320,9 @@ namespace Havit.Data
 
 				DataTable dt = new DataTable();
 
+				DbCommandTraceData dbCommandTraceData = DbCommandTraceData.Create(command, "ExecuteDataTable");
 				adapter.Fill(dt);
+				dbCommandTraceData.Trace(this.commandExecutionTrace);
 
 				return dt;
 			}
@@ -358,6 +372,7 @@ namespace Havit.Data
 				command.Connection.Open();
 			}
 
+			DbCommandTraceData dbCommandTraceData = DbCommandTraceData.Create(command, "ExecuteReader");
 			DbDataReader reader;
 
 			try
@@ -381,6 +396,8 @@ namespace Havit.Data
 				}
 				throw;
 			}
+
+			dbCommandTraceData.Trace(this.commandExecutionTrace);
 
 			return reader;
 		}
@@ -538,6 +555,8 @@ namespace Havit.Data
 
 			object result;
 
+			DbCommandTraceData dbCommandTraceData = DbCommandTraceData.Create(command, "ExecuteReader");
+			
 			try
 			{
 				result = command.ExecuteScalar();
@@ -552,6 +571,8 @@ namespace Havit.Data
 			{
 				command.Connection.Close();
 			}
+
+			dbCommandTraceData.Trace(this.commandExecutionTrace);
 
 			return result;
 		}

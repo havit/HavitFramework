@@ -67,9 +67,11 @@ Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "Sandcastle", "Sandcastle\Sa
 		{703235E0-86C0-44F3-95BB-3D9F39886966} = {703235E0-86C0-44F3-95BB-3D9F39886966}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Data.Glimpse", "Havit.Data.Glimpse\Havit.Data.Glimpse.csproj", "{C5C6607E-644A-468F-A6C2-CDCF8A1D23DC}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 20
+		SccNumberOfProjects = 21
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://tfs.havit.local:8080/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -130,6 +132,9 @@ Global
 		SccProjectUniqueName19 = Sandcastle\\Sandcastle.shfbproj
 		SccProjectName19 = Sandcastle
 		SccLocalPath19 = Sandcastle
+		SccProjectUniqueName20 = Havit.Data.Glimpse\\Havit.Data.Glimpse.csproj
+		SccProjectName20 = Havit.Data.Glimpse
+		SccLocalPath20 = Havit.Data.Glimpse
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -211,6 +216,10 @@ Global
 		{C1BD4BBA-35DB-43B6-B4E9-072AFAC6EBD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C1BD4BBA-35DB-43B6-B4E9-072AFAC6EBD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1BD4BBA-35DB-43B6-B4E9-072AFAC6EBD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5C6607E-644A-468F-A6C2-CDCF8A1D23DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5C6607E-644A-468F-A6C2-CDCF8A1D23DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5C6607E-644A-468F-A6C2-CDCF8A1D23DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5C6607E-644A-468F-A6C2-CDCF8A1D23DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

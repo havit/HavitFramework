@@ -208,6 +208,9 @@
     <Compile Include="SqlServer\SqlServerPlatform.cs" />
     <Compile Include="SqlTypes\IntTable.cs" />
     <Compile Include="SqlTypes\SqlSmallDateTime.cs" />
+    <Compile Include="Trace\Consts.cs" />
+    <Compile Include="Trace\DbCommandTraceData.cs" />
+    <Compile Include="Trace\DbParameterTraceData.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

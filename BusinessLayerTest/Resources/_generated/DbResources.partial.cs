@@ -9,8 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Data;
-using System.Data.Sql;
-using System.Data.Linq;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
@@ -82,6 +80,13 @@ namespace Havit.BusinessLayerTest.Resources
 		{
 			global::Havit.Diagnostics.Contracts.Contract.Assert(cultureInfo != null, "cultureInfo != null");
 		}
+		
+		/// <summary>
+		/// Konstruktor. Vytváří instanci pro resources v daném jazyce.
+		/// </summary>
+		public DbResources(Havit.BusinessLayerTest.Language language) : this(System.Globalization.CultureInfo.GetCultureInfo(language.Culture))
+		{
+		}
 		#endregion
 		
 		#region GetString
@@ -112,7 +117,7 @@ namespace Havit.BusinessLayerTest.Resources
 						HttpRuntime.Cache.Insert(
 							cacheKey,
 							resourceClassesData,
-							null /* dependencies */,
+							new CacheDependency(null, new string[] { Havit.BusinessLayerTest.Resources.ResourceItemLocalization.GetAnySaveCacheDependencyKey() }),
 							Cache.NoAbsoluteExpiration,
 							Cache.NoSlidingExpiration,
 							CacheItemPriority.AboveNormal,
@@ -164,21 +169,23 @@ namespace Havit.BusinessLayerTest.Resources
 			dbParameterLanguageID.Value = language.ID;
 			dbCommand.Parameters.Add(dbParameterLanguageID);
 			
-			//List<Tuple<string, string, string>> resourceClassesData = new List<Tuple<string, string, string>>();			
-			//using (DbDataReader reader = DbConnector.Default.ExecuteReader(dbCommand))
-			//{				
-			//	while (reader.Read())
-			//	{
-			//		resourceClassesData.Add(new Tuple<string, string, string>(((string)reader["ResourceClass"]).ToLowerInvariant(), ((string)reader["ResourceKey"]).ToLowerInvariant(), (string)reader["Value"]));
-			//	}
-			//}
+			List<string[]> resourceClassesData = new List<string[]>();
+			using (DbDataReader reader = DbConnector.Default.ExecuteReader(dbCommand))
+			{
+				while (reader.Read())
+				{
+					resourceClassesData.Add(new string[] {
+						((string)reader["ResourceClass"]).ToLowerInvariant(),
+						((string)reader["ResourceKey"]).ToLowerInvariant(),
+						(string)reader["Value"] });
+				}
+			}
 			
-			//return resourceClassesData
-			//	.GroupBy(item => item.Item1 /* ResourceClass */)
-			//	.ToDictionary(
-			//		item => item.Key,
-			//		item => item.ToDictionary(z => z.Item2 /* ResourceKey */ , z => z.Item3 /* Value */ ));
-			return null;
+			return resourceClassesData
+				.GroupBy(item => item[0] /* ResourceClass */)
+				.ToDictionary(
+					item => item.Key /* ResourceClass */,
+					group => group.ToDictionary(entry => entry[1] /* ResourceKey */ , entry => entry[2] /* Value */ ));
 		}
 		#endregion
 		

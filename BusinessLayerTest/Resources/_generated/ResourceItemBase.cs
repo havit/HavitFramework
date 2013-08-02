@@ -307,7 +307,7 @@ namespace Havit.BusinessLayerTest.Resources
 			result = DbConnector.Default.ExecuteDataRecord(dbCommand);
 			if (result != null)
 			{
-				AddDataRecordToCache(this.ID, result);
+				AddDataRecordToCache(result);
 			}
 			
 			return result;
@@ -486,7 +486,7 @@ namespace Havit.BusinessLayerTest.Resources
 			global::Havit.Diagnostics.Contracts.Contract.Assert(currentIdentityMap != null, "currentIdentityMap != null");
 			currentIdentityMap.Store(this);
 			
-			RemoveGetAllCacheItems();
+			InvalidateAnySaveCacheDependencyKey();
 		}
 		
 		/// <summary>
@@ -576,7 +576,7 @@ namespace Havit.BusinessLayerTest.Resources
 				{
 					dirtyCollectionExists = true;
 					commandBuilder.AppendFormat("DELETE FROM [dbo].[ResourceItemLocalization] WHERE ([ResourceItemID] = @ResourceItemID) AND [ResourceItemLocalizationID] IN (SELECT [Value] FROM @Localizations);");
-					SqlParameter dbParameterLocalizations = new SqlParameter("@Localizations", SqlDbType.Structured);
+					SqlParameter dbParameterLocalizations = new SqlParameter("Localizations", SqlDbType.Structured);
 					dbParameterLocalizations.TypeName = "dbo.IntTable";
 					dbParameterLocalizations.Value = IntTable.GetSqlParameterValue(_localizationsToRemove.GetIDs());
 					dbCommand.Parameters.Add(dbParameterLocalizations);
@@ -597,8 +597,9 @@ namespace Havit.BusinessLayerTest.Resources
 				DbConnector.Default.ExecuteNonQuery(dbCommand);
 			}
 			
-			RemoveDataRecordFromCache(this.ID);
-			RemoveGetAllCacheItems();
+			HttpRuntime.Cache.Remove(GetDataRecordCacheKey(this.ID));
+			InvalidateSaveCacheDependencyKey();
+			InvalidateAnySaveCacheDependencyKey();
 		}
 		
 		/// <summary>
@@ -642,7 +643,7 @@ namespace Havit.BusinessLayerTest.Resources
 				if (_localizationsToRemove.Count > 0)
 				{
 					commandBuilder.AppendFormat("DELETE FROM [dbo].[ResourceItemLocalization] WHERE ([ResourceItemID] = @ResourceItemID) AND [ResourceItemLocalizationID] IN (SELECT [Value] FROM @Localizations);");
-					SqlParameter dbParameterLocalizations = new SqlParameter("@Localizations", SqlDbType.Structured);
+					SqlParameter dbParameterLocalizations = new SqlParameter("Localizations", SqlDbType.Structured);
 					dbParameterLocalizations.TypeName = "dbo.IntTable";
 					dbParameterLocalizations.Value = IntTable.GetSqlParameterValue(_localizationsToRemove.GetIDs());
 					dbCommand.Parameters.Add(dbParameterLocalizations);
@@ -662,20 +663,31 @@ namespace Havit.BusinessLayerTest.Resources
 			dbCommand.CommandText = commandBuilder.ToString();
 			DbConnector.Default.ExecuteNonQuery(dbCommand);
 			
-			RemoveDataRecordFromCache(this.ID);
-			RemoveGetAllCacheItems();
+			InvalidateSaveCacheDependencyKey();
+			InvalidateAnySaveCacheDependencyKey();
 		}
 		
 		#endregion
 		
-		#region DataRecord cache access methods (static)
+		#region DataRecord cache access methods
+		
+		/// <summary>
+		/// Vrátí název klíče pro data record objektu s daným ID.
+		/// </summary>
+		private static string GetDataRecordCacheKey(int id)
+		{
+			global::Havit.Diagnostics.Contracts.Contract.Requires(id != BusinessObjectBase.NoID, "id != BusinessObjectBase.NoID");
+			
+			return "Resources.ResourceItem.DataRecords|ID=" + id.ToString();
+		}
 		
 		/// <summary>
 		/// Přidá DataRecord do cache.
 		/// </summary>
-		internal static void AddDataRecordToCache(int id, DataRecord dataRecord)
+		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+		internal void AddDataRecordToCache(DataRecord dataRecord)
 		{
-			string cacheKey = "Havit.BusinessLayerTest.Resources.ResourceItem.DataRecordsCache|ID=" + id.ToString();
+			string cacheKey = GetDataRecordCacheKey(this.ID);
 			HttpRuntime.Cache.Insert(
 				cacheKey,
 				dataRecord,
@@ -687,32 +699,59 @@ namespace Havit.BusinessLayerTest.Resources
 		}
 		
 		/// <summary>
-		/// Odstraní z cache DataRecord objektu daného ID.
-		/// </summary>
-		internal static void RemoveDataRecordFromCache(int id)
-		{
-			string cacheKey = "Havit.BusinessLayerTest.Resources.ResourceItem.DataRecordsCache|ID=" + id.ToString();
-			HttpRuntime.Cache.Remove(cacheKey);
-		}
-		
-		/// <summary>
 		/// Vyhledá v cache DataRecord pro objekt daného ID a vrátí jej. Není-li v cache nalezen, vrací null.
 		/// </summary>
+		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		internal static DataRecord GetDataRecordFromCache(int id)
 		{
-			string cacheKey = "Havit.BusinessLayerTest.Resources.ResourceItem.DataRecordsCache|ID=" + id.ToString();
-			return (DataRecord)HttpRuntime.Cache[cacheKey];
+			return (DataRecord)HttpRuntime.Cache[GetDataRecordCacheKey(id)];
 		}
 		#endregion
 		
-		#region RemoveGetAllCacheItems (static)
+		#region Cache dependencies methods
 		/// <summary>
-		/// Odstraní z cache položky používané metodou GetAll.
+		/// Vrátí klíč pro tvorbu závislostí cache na objektu. Při uložení objektu jsou závislosti invalidovány.
 		/// </summary>
-		/// Odstraní z cache položky používané metodou GetAll.
-		private static void RemoveGetAllCacheItems()
+		public string GetSaveCacheDependencyKey(bool ensureInCache = true)
 		{
-			HttpRuntime.Cache.Remove("Havit.BusinessLayerTest.Resources.ResourceItem.GetAll");
+			global::Havit.Diagnostics.Contracts.Contract.Requires(!this.IsNew, "!this.IsNew");
+			
+			string key = "Resources.ResourceItem.SaveCacheDependencyKey|ID=" + this.ID.ToString();
+			if (ensureInCache && (HttpRuntime.Cache[key] == null))
+			{
+				HttpRuntime.Cache[key] = new object();
+			}
+			return key;
+		}
+		
+		/// <summary>
+		/// Odstraní z cache závislosti na klíči CacheDependencyKey.
+		/// </summary>
+		protected void InvalidateSaveCacheDependencyKey()
+		{
+			HttpRuntime.Cache.Remove(GetSaveCacheDependencyKey(false));
+		}
+		
+		/// <summary>
+		/// Vrátí klíč pro tvorbu závislostí cache. Po uložení jakéhokoliv objektu této třídy jsou závislosti invalidovány.
+		/// </summary>
+		public static string GetAnySaveCacheDependencyKey(bool ensureInCache = true)
+		{
+			string key = "Resources.ResourceItem.AnySaveCacheDependencyKey";
+			if (ensureInCache && (HttpRuntime.Cache[key] == null))
+			{
+				HttpRuntime.Cache[key] = new object();
+			}
+			return key;
+		}
+		
+		/// <summary>
+		/// Odstraní z cache závislosti na klíči AnySaveCacheDependencyKey.
+		/// </summary>
+		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+		private static void InvalidateAnySaveCacheDependencyKey()
+		{
+			HttpRuntime.Cache.Remove(GetAnySaveCacheDependencyKey(false));
 		}
 		#endregion
 		
@@ -790,7 +829,7 @@ namespace Havit.BusinessLayerTest.Resources
 					ResourceItem resourceItem = ResourceItem.GetObject(dataRecord);
 					if (dataLoadPower == DataLoadPower.FullLoad)
 					{
-						AddDataRecordToCache(resourceItem.ID, dataRecord);
+						resourceItem.AddDataRecordToCache(dataRecord);
 					}
 					result.Add(resourceItem);
 				}
@@ -827,7 +866,7 @@ namespace Havit.BusinessLayerTest.Resources
 						HttpRuntime.Cache.Insert(
 							cacheKey,
 							ids,
-							null, // dependencies
+							new CacheDependency(null, new string[] { Havit.BusinessLayerTest.Resources.ResourceItem.GetAnySaveCacheDependencyKey() }), 
 							Cache.NoAbsoluteExpiration,
 							Cache.NoSlidingExpiration,
 							CacheItemPriority.Default,

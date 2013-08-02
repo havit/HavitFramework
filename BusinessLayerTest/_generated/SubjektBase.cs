@@ -488,6 +488,8 @@ namespace Havit.BusinessLayerTest
 			IdentityMap currentIdentityMap = IdentityMapScope.Current;
 			global::Havit.Diagnostics.Contracts.Contract.Assert(currentIdentityMap != null, "currentIdentityMap != null");
 			currentIdentityMap.Store(this);
+			
+			InvalidateAnySaveCacheDependencyKey();
 		}
 		
 		/// <summary>
@@ -594,7 +596,7 @@ namespace Havit.BusinessLayerTest
 				{
 					dirtyCollectionExists = true;
 					commandBuilder.AppendFormat("DELETE FROM [dbo].[Komunikace] WHERE ([SubjektID] = @SubjektID) AND [KomunikaceID] IN (SELECT [Value] FROM @Komunikace);");
-					SqlParameter dbParameterKomunikace = new SqlParameter("@Komunikace", SqlDbType.Structured);
+					SqlParameter dbParameterKomunikace = new SqlParameter("Komunikace", SqlDbType.Structured);
 					dbParameterKomunikace.TypeName = "dbo.IntTable";
 					dbParameterKomunikace.Value = IntTable.GetSqlParameterValue(_komunikaceToRemove.GetIDs());
 					dbCommand.Parameters.Add(dbParameterKomunikace);
@@ -614,6 +616,9 @@ namespace Havit.BusinessLayerTest
 				dbCommand.CommandText = commandBuilder.ToString();
 				DbConnector.Default.ExecuteNonQuery(dbCommand);
 			}
+			
+			InvalidateSaveCacheDependencyKey();
+			InvalidateAnySaveCacheDependencyKey();
 		}
 		
 		/// <summary>
@@ -666,6 +671,53 @@ namespace Havit.BusinessLayerTest
 			Save_Update(transaction);
 		}
 		
+		#endregion
+		
+		#region Cache dependencies methods
+		/// <summary>
+		/// Vrátí klíč pro tvorbu závislostí cache na objektu. Při uložení objektu jsou závislosti invalidovány.
+		/// </summary>
+		public string GetSaveCacheDependencyKey(bool ensureInCache = true)
+		{
+			global::Havit.Diagnostics.Contracts.Contract.Requires(!this.IsNew, "!this.IsNew");
+			
+			string key = ".Subjekt.SaveCacheDependencyKey|ID=" + this.ID.ToString();
+			if (ensureInCache && (HttpRuntime.Cache[key] == null))
+			{
+				HttpRuntime.Cache[key] = new object();
+			}
+			return key;
+		}
+		
+		/// <summary>
+		/// Odstraní z cache závislosti na klíči CacheDependencyKey.
+		/// </summary>
+		protected void InvalidateSaveCacheDependencyKey()
+		{
+			HttpRuntime.Cache.Remove(GetSaveCacheDependencyKey(false));
+		}
+		
+		/// <summary>
+		/// Vrátí klíč pro tvorbu závislostí cache. Po uložení jakéhokoliv objektu této třídy jsou závislosti invalidovány.
+		/// </summary>
+		public static string GetAnySaveCacheDependencyKey(bool ensureInCache = true)
+		{
+			string key = ".Subjekt.AnySaveCacheDependencyKey";
+			if (ensureInCache && (HttpRuntime.Cache[key] == null))
+			{
+				HttpRuntime.Cache[key] = new object();
+			}
+			return key;
+		}
+		
+		/// <summary>
+		/// Odstraní z cache závislosti na klíči AnySaveCacheDependencyKey.
+		/// </summary>
+		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+		private static void InvalidateAnySaveCacheDependencyKey()
+		{
+			HttpRuntime.Cache.Remove(GetAnySaveCacheDependencyKey(false));
+		}
 		#endregion
 		
 		#region GetFirst, GetList, GetAll

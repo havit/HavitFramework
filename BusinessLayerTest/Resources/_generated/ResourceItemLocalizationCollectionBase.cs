@@ -180,7 +180,7 @@ namespace Havit.BusinessLayerTest.Resources
 						if (!ghost.IsLoaded)
 						{
 							ghost.Load(dataRecord);
-							ResourceItemLocalization.AddDataRecordToCache(ghost.ID, dataRecord);
+							ghost.AddDataRecordToCache(dataRecord);
 						}
 					}
 				}

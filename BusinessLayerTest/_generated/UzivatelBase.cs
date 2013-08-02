@@ -766,7 +766,7 @@ namespace Havit.BusinessLayerTest
 			
 			if (_RolePropertyHolder.Value.Count > 0)
 			{
-				SqlParameter dbParameterRole = new SqlParameter("@Role", SqlDbType.Structured);
+				SqlParameter dbParameterRole = new SqlParameter("Role", SqlDbType.Structured);
 				dbParameterRole.TypeName = "dbo.IntTable";
 				dbParameterRole.Value = IntTable.GetSqlParameterValue(this._RolePropertyHolder.Value.GetIDs());
 				dbCommand.Parameters.Add(dbParameterRole);
@@ -781,6 +781,8 @@ namespace Havit.BusinessLayerTest
 			IdentityMap currentIdentityMap = IdentityMapScope.Current;
 			global::Havit.Diagnostics.Contracts.Contract.Assert(currentIdentityMap != null, "currentIdentityMap != null");
 			currentIdentityMap.Store(this);
+			
+			InvalidateAnySaveCacheDependencyKey();
 		}
 		
 		/// <summary>
@@ -979,7 +981,7 @@ namespace Havit.BusinessLayerTest
 				commandBuilder.AppendFormat("DELETE FROM [dbo].[Uzivatel_Role] WHERE [UzivatelID] = @UzivatelID; ");
 				if (_RolePropertyHolder.Value.Count > 0)
 				{
-					SqlParameter dbParameterRole = new SqlParameter("@Role", SqlDbType.Structured);
+					SqlParameter dbParameterRole = new SqlParameter("Role", SqlDbType.Structured);
 					dbParameterRole.TypeName = "dbo.IntTable";
 					dbParameterRole.Value = IntTable.GetSqlParameterValue(this._RolePropertyHolder.Value.GetIDs());
 					dbCommand.Parameters.Add(dbParameterRole);
@@ -1000,6 +1002,9 @@ namespace Havit.BusinessLayerTest
 				dbCommand.CommandText = commandBuilder.ToString();
 				DbConnector.Default.ExecuteNonQuery(dbCommand);
 			}
+			
+			InvalidateSaveCacheDependencyKey();
+			InvalidateAnySaveCacheDependencyKey();
 		}
 		
 		/// <summary>
@@ -1045,7 +1050,7 @@ namespace Havit.BusinessLayerTest
 				commandBuilder.AppendFormat("DELETE FROM [dbo].[Uzivatel_Role] WHERE [UzivatelID] = @UzivatelID; ");
 				if (_RolePropertyHolder.Value.Count > 0)
 				{
-					SqlParameter dbParameterRole = new SqlParameter("@Role", SqlDbType.Structured);
+					SqlParameter dbParameterRole = new SqlParameter("Role", SqlDbType.Structured);
 					dbParameterRole.TypeName = "dbo.IntTable";
 					dbParameterRole.Value = IntTable.GetSqlParameterValue(this._RolePropertyHolder.Value.GetIDs());
 					dbCommand.Parameters.Add(dbParameterRole);
@@ -1065,8 +1070,58 @@ namespace Havit.BusinessLayerTest
 			
 			dbCommand.CommandText = commandBuilder.ToString();
 			DbConnector.Default.ExecuteNonQuery(dbCommand);
+			
+			InvalidateSaveCacheDependencyKey();
+			InvalidateAnySaveCacheDependencyKey();
 		}
 		
+		#endregion
+		
+		#region Cache dependencies methods
+		/// <summary>
+		/// Vrátí klíč pro tvorbu závislostí cache na objektu. Při uložení objektu jsou závislosti invalidovány.
+		/// </summary>
+		public string GetSaveCacheDependencyKey(bool ensureInCache = true)
+		{
+			global::Havit.Diagnostics.Contracts.Contract.Requires(!this.IsNew, "!this.IsNew");
+			
+			string key = ".Uzivatel.SaveCacheDependencyKey|ID=" + this.ID.ToString();
+			if (ensureInCache && (HttpRuntime.Cache[key] == null))
+			{
+				HttpRuntime.Cache[key] = new object();
+			}
+			return key;
+		}
+		
+		/// <summary>
+		/// Odstraní z cache závislosti na klíči CacheDependencyKey.
+		/// </summary>
+		protected void InvalidateSaveCacheDependencyKey()
+		{
+			HttpRuntime.Cache.Remove(GetSaveCacheDependencyKey(false));
+		}
+		
+		/// <summary>
+		/// Vrátí klíč pro tvorbu závislostí cache. Po uložení jakéhokoliv objektu této třídy jsou závislosti invalidovány.
+		/// </summary>
+		public static string GetAnySaveCacheDependencyKey(bool ensureInCache = true)
+		{
+			string key = ".Uzivatel.AnySaveCacheDependencyKey";
+			if (ensureInCache && (HttpRuntime.Cache[key] == null))
+			{
+				HttpRuntime.Cache[key] = new object();
+			}
+			return key;
+		}
+		
+		/// <summary>
+		/// Odstraní z cache závislosti na klíči AnySaveCacheDependencyKey.
+		/// </summary>
+		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+		private static void InvalidateAnySaveCacheDependencyKey()
+		{
+			HttpRuntime.Cache.Remove(GetAnySaveCacheDependencyKey(false));
+		}
 		#endregion
 		
 		#region GetFirst, GetList, GetAll

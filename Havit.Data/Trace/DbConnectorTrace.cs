@@ -15,7 +15,7 @@ namespace Havit.Data.Trace
 	{
 		#region Private fields
 		private Stopwatch durationStopWatch;
-		DbCommandTraceData traceData;
+		private DbCommandTraceData traceData;
 		#endregion
 
 		#region Constructor
@@ -33,7 +33,6 @@ namespace Havit.Data.Trace
 		/// <summary>
 		/// Set command result.
 		/// </summary>
-		/// <param name="result"></param>
 		public void SetResult(object result)
 		{
 			traceData.ResultSet = true;

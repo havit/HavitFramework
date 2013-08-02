@@ -70,8 +70,6 @@ namespace Havit.Data.Glimpse.SerializationConverters
 			var section = new TabSection("Name", "Value", "Direction", "DbType");
 			foreach (DbParameterTraceData dbParameterTraceData in dbCommandTraceData.Parameters)
 			{
-				object value;
-
 				section.AddRow()
 					.Column(dbParameterTraceData.ParameterName)
 					.Column(GetDisplayValue(dbParameterTraceData.Value))

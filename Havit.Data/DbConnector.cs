@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Data.Common;
 using System.Configuration;
-using System.Data;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Data;
+using System.Data.Common;
+using System.Data.Linq;
+using System.Linq;
+using System.Text;
 using Havit.Data.Trace;
 using Havit.Diagnostics.Contracts;
 
@@ -17,7 +19,7 @@ namespace Havit.Data
 	public class DbConnector
 	{
 		#region commandExecutionTrace (private field)
-		private TraceSource commandExecutionTrace = new TraceSource(Trace.Consts.CommandExecutionTraceSourceName, SourceLevels.All);
+		private TraceSource commandExecutionTrace = new TraceSource("DbConnector Command Execution Trace", SourceLevels.All);
 		#endregion
 
 		#region ConnectionString
@@ -195,7 +197,7 @@ namespace Havit.Data
 				command.Connection.Open();
 			}
 
-			DbCommandTraceData dbCommandTraceData = DbCommandTraceData.Create(command, "ExecuteNonQuery");
+			DbConnectorTrace dbConnectorTrace = new DbConnectorTrace(command, "ExecuteNonQuery");
 
 			int result;
 			try
@@ -213,7 +215,7 @@ namespace Havit.Data
 				command.Connection.Close();
 			}
 
-			dbCommandTraceData.Trace(this.commandExecutionTrace);	
+			dbConnectorTrace.Trace(this.commandExecutionTrace);	
 
 			return result;
 		}
@@ -266,9 +268,25 @@ namespace Havit.Data
 
 				DataSet ds = new DataSet();
 
-				DbCommandTraceData dbCommandTraceData = DbCommandTraceData.Create(command, "ExecuteDataSet");
+				DbConnectorTrace dbConnectorTrace = new DbConnectorTrace(command, "ExecuteDataSet");
 				adapter.Fill(ds);
-				dbCommandTraceData.Trace(this.commandExecutionTrace);
+
+				int tablesCount = ds.Tables.Count;
+				if (tablesCount == 0)
+				{
+					dbConnectorTrace.SetResult("0 tables");
+				}
+				else
+				{
+					int recordsCount = ds.Tables.Cast<DataTable>().Sum(item => item.Rows.Count);
+					dbConnectorTrace.SetResult(String.Format("{0} table{1} with {2} record{s}",
+						tablesCount,
+						(tablesCount == 1) ? "" : "s",
+						recordsCount,
+						(recordsCount == 1) ? "" : "s"));
+				}
+				
+				dbConnectorTrace.Trace(this.commandExecutionTrace);
 				
 				return ds;
 			}
@@ -320,9 +338,14 @@ namespace Havit.Data
 
 				DataTable dt = new DataTable();
 
-				DbCommandTraceData dbCommandTraceData = DbCommandTraceData.Create(command, "ExecuteDataTable");
+				DbConnectorTrace dbConnectorTrace = new DbConnectorTrace(command, "ExecuteDataTable");
 				adapter.Fill(dt);
-				dbCommandTraceData.Trace(this.commandExecutionTrace);
+
+				int recordsCount = dt.Rows.Count;
+				dbConnectorTrace.SetResult(String.Format("{0} record{1}",
+					recordsCount,
+					(recordsCount == 1) ? "" : "s"));
+				dbConnectorTrace.Trace(this.commandExecutionTrace);
 
 				return dt;
 			}
@@ -372,7 +395,7 @@ namespace Havit.Data
 				command.Connection.Open();
 			}
 
-			DbCommandTraceData dbCommandTraceData = DbCommandTraceData.Create(command, "ExecuteReader");
+			DbConnectorTrace dbConnectorTrace = new DbConnectorTrace(command, "ExecuteReader");
 			DbDataReader reader;
 
 			try
@@ -397,9 +420,11 @@ namespace Havit.Data
 				throw;
 			}
 
-			dbCommandTraceData.Trace(this.commandExecutionTrace);
+			DbDataReader result = new TraceDbDataReader(reader, dbConnectorTrace);
 
-			return reader;
+			dbConnectorTrace.Trace(this.commandExecutionTrace);
+
+			return result;
 		}
 
 		/// <summary>
@@ -449,7 +474,7 @@ namespace Havit.Data
 		/// <returns>první řádek první tabulky resultsetu ve formě <see cref="Havit.Data.DataRecord"/></returns>
 		public DataRecord ExecuteDataRecord(DbCommand command, CommandBehavior behavior, DataLoadPower dataLoadPower)
 		{
-			Contract.Requires<ArgumentNullException>(command != null, "command");
+			Contract.Requires<ArgumentNullException>(command != null, "command");			
 			using (DbDataReader reader = ExecuteReader(command, behavior))
 			{
 				if (reader.Read())
@@ -555,7 +580,7 @@ namespace Havit.Data
 
 			object result;
 
-			DbCommandTraceData dbCommandTraceData = DbCommandTraceData.Create(command, "ExecuteReader");
+			DbConnectorTrace dbConnectorTrace = new DbConnectorTrace(command, "ExecuteReader");
 			
 			try
 			{
@@ -572,7 +597,8 @@ namespace Havit.Data
 				command.Connection.Close();
 			}
 
-			dbCommandTraceData.Trace(this.commandExecutionTrace);
+			dbConnectorTrace.SetResult(result);
+			dbConnectorTrace.Trace(this.commandExecutionTrace);
 
 			return result;
 		}

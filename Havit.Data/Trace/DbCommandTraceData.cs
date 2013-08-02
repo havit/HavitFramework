@@ -13,10 +13,6 @@ namespace Havit.Data.Trace
 	/// </summary>
 	public class DbCommandTraceData
 	{
-		#region Private fields
-		private Stopwatch durationStopWatch;
-		#endregion
-
 		#region Operation
 		/// <summary>
 		/// Command operation.
@@ -29,6 +25,13 @@ namespace Havit.Data.Trace
 		/// Command text.
 		/// </summary>
 		public string CommandText { get; private set; }
+		#endregion
+
+		#region TransactionHashCode
+		/// <summary>
+		/// Transaction hash code.
+		/// </summary>
+		public int? TransactionHashCode { get; private set; }
 		#endregion
 
 		#region Parameters
@@ -45,6 +48,20 @@ namespace Havit.Data.Trace
 		public long Duration { get; internal set; }
 		#endregion
 
+		#region ResultSet
+		/// <summary>
+		/// Command result set flag.
+		/// </summary>
+		public bool ResultSet { get; internal set; }
+		#endregion
+
+		#region Result
+		/// <summary>
+		/// Command result.
+		/// </summary>
+		public object Result { get; internal set; }
+		#endregion
+
 		#region Constructor
 		/// <summary>
 		/// Konstruktor.
@@ -52,18 +69,6 @@ namespace Havit.Data.Trace
 		private DbCommandTraceData()
 		{
 			Parameters = new List<DbParameterTraceData>();
-			durationStopWatch = Stopwatch.StartNew();
-		}
-		#endregion
-
-		#region Trace
-		/// <summary>
-		/// Set DurationProperty and traces on TraceSource.
-		/// </summary>
-		internal void Trace(System.Diagnostics.TraceSource traceSource)
-		{
-			this.Duration = durationStopWatch.ElapsedMilliseconds;
-			traceSource.TraceData(TraceEventType.Information, Consts.CommandExecutedID, this);
 		}
 		#endregion
 
@@ -76,7 +81,9 @@ namespace Havit.Data.Trace
 			DbCommandTraceData result = new DbCommandTraceData();
 			result.Operation = operation;
 			result.CommandText = dbCommand.CommandText;
+			result.TransactionHashCode = (dbCommand.Transaction == null) ? (int?)null : dbCommand.Transaction.GetHashCode();
 			result.Parameters.AddRange(dbCommand.Parameters.Cast<DbParameter>().Select(dbParameter => DbParameterTraceData.Create(dbParameter)));
+			result.ResultSet = false;
 			return result;
 		}
 		#endregion

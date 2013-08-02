@@ -24,12 +24,6 @@ namespace Havit.Data.Glimpse
         /// </remarks>
         public void Setup(IInspectorContext context)
         {
-            var traceListeners = System.Diagnostics.Trace.Listeners;
-			if (!traceListeners.OfType<DbConnectorTraceListener>().Any())
-            {
-				TraceListener listener = new DbConnectorTraceListener(context.MessageBroker);
-				traceListeners.Add(listener);
-			}
         }
     }
 }

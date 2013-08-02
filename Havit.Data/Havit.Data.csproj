@@ -186,6 +186,8 @@
     <Reference Include="System.Data">
       <Name>System.Data</Name>
     </Reference>
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
@@ -208,9 +210,10 @@
     <Compile Include="SqlServer\SqlServerPlatform.cs" />
     <Compile Include="SqlTypes\IntTable.cs" />
     <Compile Include="SqlTypes\SqlSmallDateTime.cs" />
-    <Compile Include="Trace\Consts.cs" />
+    <Compile Include="Trace\DbConnectorTrace.cs" />
     <Compile Include="Trace\DbCommandTraceData.cs" />
     <Compile Include="Trace\DbParameterTraceData.cs" />
+    <Compile Include="Trace\TraceDbDataReader.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

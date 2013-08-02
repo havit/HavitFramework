@@ -131,6 +131,12 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Glimpse.AspNet">
+      <HintPath>..\packages\Glimpse.AspNet.1.3.1\lib\net45\Glimpse.AspNet.dll</HintPath>
+    </Reference>
+    <Reference Include="Glimpse.Core">
+      <HintPath>..\packages\Glimpse.1.5.0\lib\net45\Glimpse.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -223,6 +229,7 @@
     <Compile Include="FormViewTest.aspx.designer.cs">
       <DependentUpon>FormViewTest.aspx</DependentUpon>
     </Compile>
+    <Compile Include="GlimpseSecurityPolicy.cs" />
     <Compile Include="GridViewExt-Filtr.aspx.cs">
       <DependentUpon>GridViewExt-Filtr.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -445,6 +452,10 @@
       <Project>{81995BC1-9F25-4F46-8258-8ED1F965CABB}</Project>
       <Name>Havit.Business</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Havit.Data.Glimpse\Havit.Data.Glimpse.csproj">
+      <Project>{c5c6607e-644a-468f-a6c2-cdcf8a1d23dc}</Project>
+      <Name>Havit.Data.Glimpse</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Havit.Data\Havit.Data.csproj">
       <Project>{703235E0-86C0-44F3-95BB-3D9F39886966}</Project>
       <Name>Havit.Data</Name>
@@ -503,6 +514,9 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Glossary.Designer.cs</LastGenOutput>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

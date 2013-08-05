@@ -88,7 +88,6 @@ namespace Havit.Web.UI.WebControls
 				result.Append("return false;");
 			}
 
-
 			return result.ToString();
 		}
 		#endregion

@@ -75,9 +75,9 @@ namespace WebApplicationTest
 		{
 			List<SpecialDate> specialDatesList = new List<SpecialDate>()
 			{	
-				new SpecialDate(new DateTime(2012, 5, 8), true, String.Empty),
-				new SpecialDate(new DateTime(2012, 5, 9), false, "special"),
-				new SpecialDate(new DateTime(2012, 5, 10), false, "special")				
+				new SpecialDate(new DateTime(2013, 8, 8), true, String.Empty),
+				new SpecialDate(new DateTime(2013, 8, 9), false, "special"),
+				new SpecialDate(new DateTime(2013, 8, 10), false, "special")				
 			};
 			return specialDatesList;
 		}

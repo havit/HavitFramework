@@ -81,9 +81,13 @@ namespace Havit.Web.UI.WebControls
 
 				result.Append(yearsStringBuilder.ToString());
 				result.Append("};");
+				result.AppendLine("if (specialDates[y] && specialDates[y][m] && specialDates[y][m][d]) { return specialDates[y][m][d]; } else { return false; }");
+			}
+			else
+			{
+				result.Append("return false;");
 			}
 
-			result.AppendLine("if (specialDates[y] && specialDates[y][m] && specialDates[y][m][d]) { return specialDates[y][m][d]; } else { return false; }");
 
 			return result.ToString();
 		}

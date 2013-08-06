@@ -65,5 +65,41 @@ namespace WebApplicationTest {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Havit.Web.UI.WebControls.AutoSuggestMenu SubjektASM;
+        
+        /// <summary>
+        /// MyGridView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Havit.Web.UI.WebControls.GridViewExt MyGridView;
+        
+        /// <summary>
+        /// MyTemplateField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Havit.Web.UI.WebControls.TemplateFieldExt MyTemplateField;
+        
+        /// <summary>
+        /// Subjekt3TB control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox Subjekt3TB;
+        
+        /// <summary>
+        /// Subjekt3ASM control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Havit.Web.UI.WebControls.AutoSuggestMenu Subjekt3ASM;
     }
 }

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="DateTimeBoxTest.aspx.cs" Inherits="WebApplicationTest.DateTimeBoxTest" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="DateTimeBoxTest.aspx.cs" Inherits="WebApplicationTest.DateTimeBoxTest" UnobtrusiveValidationMode="None" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" >
@@ -102,6 +102,11 @@
 				<EditItemTemplate>
 					<havit:DateTimeBox ID="NestedDateTimeBox" runat="server" />
 				</EditItemTemplate>
+			</havit:TemplateFieldExt>
+			<havit:TemplateFieldExt ID="TestGVField">
+				<ItemTemplate>
+					<havit:DateTimeBox ID="NestedDateTimeBox2" runat="server" />					
+				</ItemTemplate>
 			</havit:TemplateFieldExt>
 			<havit:GridViewCommandField ShowEditButton="true" ShowCancelButton="true" />
 		</Columns>

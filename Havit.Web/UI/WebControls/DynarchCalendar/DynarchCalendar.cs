@@ -954,7 +954,6 @@ namespace Havit.Web.UI.WebControls
 		/// Raises the PreRender event.
 		/// Zkontroluje platnost properties a zaregistruje klientské skripty kalendáře.
 		/// </summary>
-		/// <param name="e">EventArgs</param>
 		protected override void OnPreRender(EventArgs e)
 		{
 			base.OnPreRender(e);
@@ -963,23 +962,23 @@ namespace Havit.Web.UI.WebControls
 				this.ValidateControlProperties();
 				this.RegisterCss();
 				this.RegisterClientScript();
+			}
+		}
+		#endregion
 
-				//string csName = this.DateStatusFunctionName;
-				//Type csType = this.GetType();
-
-				//ClientScriptManager cs = Page.ClientScript;
-
-				//if (!cs.IsClientScriptBlockRegistered(csType, csName))
-				//{
-				//    StringBuilder sb = new StringBuilder();
-				//    sb.Append("<script type=text/javascript>");
-				//    sb.Append(this.DateStatusFunction);
-				//    sb.Append("</script>");
-				//    cs.RegisterClientScriptBlock(csType, csName, sb.ToString(), false);
-				//}
-
+		#region Render
+		/// <summary>
+		/// Emituje script pro inicializace komponenty DynarchCalendar.
+		/// </summary>
+		protected override void Render(HtmlTextWriter writer)
+		{
+			// Pokud je na GridView schován sloupec, tak schování probíhá až po OnPreRender. Proto musíme mít registraci skriptu až zde - pokud není DynarchCalendar zobrazen, neemitujeme skripty.
+			// Ale nemůžeme sem dát vše, protože na registraci pomocí RegisterClientScriptResource je pozdě (možno vyzkoušet RegisterNamedResource).
+			if (this.Enabled)
+			{
 				this.RegisterCalendarSetupScript();
 			}
+			base.Render(writer);
 		}
 		#endregion
 

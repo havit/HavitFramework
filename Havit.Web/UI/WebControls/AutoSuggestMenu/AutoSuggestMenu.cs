@@ -514,7 +514,6 @@ namespace Havit.Web.UI.WebControls
 			RegisterServicePath();
 			WriteJSIncludes();
 			RegisterStylesheets(this.Page);
-			WriteMenu();
 		}
 		#endregion
 
@@ -533,6 +532,10 @@ namespace Havit.Web.UI.WebControls
 		/// <param name="output"> The HTML writer to write out to</param>
 		protected override void Render(HtmlTextWriter output)
 		{
+			// Pokud je na GridView schován sloupec, tak schování probíhá až po OnPreRender. Proto musíme mít registraci skriptu až zde - pokud není DynarchCalendar zobrazen, neemitujeme skripty.
+			// Ale nemůžeme sem dát vše, protože na registraci pomocí RegisterClientScriptResource je pozdě (možno vyzkoušet RegisterNamedResource).
+			WriteMenu();
+
 			//output.WriteLine("<link href=\"" + GetAbsoluteResourcesDir() + "/AutoSuggestMenu.css\" type=\"text/css\" rel=\"stylesheet\">");
 
 			//base.Render(output);

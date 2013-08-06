@@ -26,6 +26,12 @@ namespace WebApplicationTest
 			SubjektLabel.Text = SubjektASM.SelectedValue;
 			TimestampLabel.Text = Convert.ToString(DateTime.Now);
 
+			MyTemplateField.Visible = false;
+			if (!Page.IsPostBack)
+			{
+				MyGridView.DataSource = new int[] { 1, 2, 3 };
+				MyGridView.DataBind();
+			}
 		}
 	}
 }

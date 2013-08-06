@@ -164,5 +164,14 @@ namespace WebApplicationTest {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Havit.Web.UI.WebControls.GridViewExt TestGV;
+        
+        /// <summary>
+        /// TestGVField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Havit.Web.UI.WebControls.TemplateFieldExt TestGVField;
     }
 }

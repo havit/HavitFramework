@@ -81,6 +81,7 @@ namespace WebApplicationTest
 			base.OnLoad(e);
 			AutoPostBackOnLoadValueLabel.Text = AutoPostBackDateTimeBox.Value.ToString();
 			ChangedLabel.Text = "no";
+			TestGVField.Visible = false;
 			TestGV.SetRequiresDatabinding();
 		}
 		#endregion

@@ -25,6 +25,7 @@ namespace Havit.Web.UrlRewriter.Config
 	/// </code>
 	/// </remarks>
 	[Serializable]
+	[Obsolete("Upgrade to ASP.NET Routing.")]
 	public class RewriterRuleCollection : CollectionBase
 	{
 		#region Add

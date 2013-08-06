@@ -7,6 +7,7 @@ namespace Havit.Web.UrlRewriter
 	/// The base class for module rewriting.  This class is abstract, and therefore must be derived from.
 	/// </summary>
 	/// <remarks>Provides the essential base functionality for a rewriter using the HttpModule approach.</remarks>
+	[Obsolete("Upgrade to ASP.NET Routing.")]
 	public abstract class BaseModuleRewriter : IHttpModule
 	{
 		#region Init

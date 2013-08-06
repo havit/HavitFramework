@@ -9,6 +9,7 @@ namespace Havit.Web.UrlRewriter.Config
 	/// <summary>
 	/// Deserializes the markup in Web.config into an instance of the <see cref="RewriterConfiguration"/> class.
 	/// </summary>
+	[Obsolete("Upgrade to ASP.NET Routing.")]
 	public class RewriterConfigSerializerSectionHandler : IConfigurationSectionHandler 
 	{
 		/// <summary>

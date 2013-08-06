@@ -13,6 +13,7 @@ namespace Havit.Web.UrlRewriter
 	/// <remarks>The RewriterFactoryHandler checks the rewriting rules, rewrites the path if needed, and then
 	/// delegates the responsibility of processing the ASP.NET page to the <b>PageParser</b> class (the same one
 	/// used by the <b>PageHandlerFactory</b> class).</remarks>
+	[Obsolete("Upgrade to ASP.NET Routing.")]
 	public class RewriterFactoryHandler : IHttpHandlerFactory
 	{
 		#region GetHandler

@@ -8,6 +8,7 @@ namespace Havit.Web.UrlRewriter
 	/// <summary>
 	/// Provides a rewriting HttpModule.
 	/// </summary>
+	[Obsolete("Upgrade to ASP.NET Routing.")]
 	public class ModuleRewriter : BaseModuleRewriter
 	{
 		/// <summary>

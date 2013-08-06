@@ -48,6 +48,7 @@ namespace Havit.Web.UrlRewriter.Config
 	/// </remarks>
 	[Serializable]
 	[XmlRoot("UrlRewriterConfig")]
+	[Obsolete("Upgrade to ASP.NET Routing.")]
 	public class RewriterConfiguration
 	{
 		#region Public Properties

@@ -7,6 +7,7 @@ namespace Havit.Web.UrlRewriter.Config
 	/// the pattern with (if matched).
 	/// </summary>
 	[Serializable]
+	[Obsolete("Upgrade to ASP.NET Routing.")]
 	public class RewriterRule
 	{
 		#region Public Properties

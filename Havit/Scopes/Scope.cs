@@ -117,11 +117,6 @@ namespace Havit.Scopes
 			{
 				disposed = true;
 
-				if (this != scopeRepository.GetCurrentScope())
-				{
-					Debugger.Break();
-				}
-
 				Debug.Assert(this == scopeRepository.GetCurrentScope(), "Disposed out of order.");
 				if (parent == null)
 				{

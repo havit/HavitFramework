@@ -11,7 +11,7 @@ namespace Havit.Web.UI.WebControls
 	/// Takový control se musí vyvoláním události (RaiseBubbleEvent) s argumentem AutoFilterControlCreatedEventArgs.Empty registrovat. jak control pro automatický databind.
 	/// Změny filtru oznamuje událostí ValueChanged, filtrování dat provádí metodou FilterData.
 	/// </summary>
-	internal interface IAutoFilterControl
+	public interface IAutoFilterControl
 	{
 		#region ValueChanged
 		/// <summary>

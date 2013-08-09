@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Havit.Glimpse</id>
-    <version>0.1.9</version>
+    <version>0.1.10</version>
     <!--<minClientVersion>2.6</minClientVersion>-->
     <title>Havit.Glimpse</title>
     <authors>Havit, s.r.o.</authors>
@@ -26,7 +26,6 @@
     <tags>Havit ASP.NET Web WebForms Glimpse diagnostics performance profiling timing</tags>
   </metadata>
   <files>
-    <file src="lib\" target="lib" />
     <file src="bin\Release\Havit.Data.Glimpse.dll" target="lib\net45" />
     <file src="tools\" target="tools" />
     <file src="content\" target="content" />

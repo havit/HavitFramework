@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Diagnostics;
 using System.Globalization;
+using System.Text;
 
 using Havit.Data.SqlServer;
+using Havit.Diagnostics.Contracts;
 
 namespace Havit.Business.Query
 {
@@ -48,10 +50,7 @@ namespace Havit.Business.Query
 		public BinaryCondition(string conditionPattern, IOperand operand1, IOperand operand2) 
 			: base(conditionPattern, operand1)
 		{
-			if (operand2 == null)
-			{
-				throw new ArgumentNullException("operand2");
-			}
+			Contract.Requires<ArgumentNullException>(operand2 != null, "operand2");
 
 			Operand2 = operand2;
 		}
@@ -71,15 +70,8 @@ namespace Havit.Business.Query
 		/// </summary>
 		public override void GetWhereStatement(System.Data.Common.DbCommand command, StringBuilder whereBuilder, SqlServerPlatform sqlServerPlatform, CommandBuilderOptions commandBuilderOptions)
 		{
-			if (command == null)
-			{
-				throw new ArgumentNullException("command");
-			}
-
-			if (whereBuilder == null)
-			{
-				throw new ArgumentNullException("whereBuilder");
-			}
+			Debug.Assert(command != null);
+			Debug.Assert(whereBuilder != null);
 
 			whereBuilder.AppendFormat(ConditionPattern, Operand1.GetCommandValue(command), Operand2.GetCommandValue(command));
 		}

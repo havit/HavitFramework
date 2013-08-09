@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 
+using Havit.Diagnostics.Contracts;
+
 namespace Havit.Business.Query
 {
 	/// <summary>
@@ -16,6 +18,8 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateEquals(IOperand operand, bool? value)
 		{
+			Contract.Requires<ArgumentNullException>(operand != null, "operand");
+
 			if (value == null)
 			{
 				return NullCondition.CreateIsNull(operand);
@@ -31,6 +35,9 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateEquals(IOperand operand1, IOperand operand2)
 		{
+			Contract.Requires<ArgumentNullException>(operand1 != null, "operand1");
+			Contract.Requires<ArgumentNullException>(operand2 != null, "operand2");
+
 			return new BinaryCondition(BinaryCondition.EqualsPattern, operand1, operand2);
 		} 
 		#endregion
@@ -42,6 +49,9 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateNotEquals(IOperand operand1, IOperand operand2)
 		{
+			Contract.Requires<ArgumentNullException>(operand1 != null, "operand1");
+			Contract.Requires<ArgumentNullException>(operand2 != null, "operand2");
+
 			return new BinaryCondition(BinaryCondition.NotEqualsPattern, operand1, operand2);
 		} 
 		#endregion
@@ -52,6 +62,8 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateTrue(IOperand operand)
 		{
+			Contract.Requires<ArgumentNullException>(operand != null, "operand");
+
 			return CreateEquals(operand, true);
 		} 
 		#endregion
@@ -62,6 +74,8 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateFalse(IOperand operand)
 		{
+			Contract.Requires<ArgumentNullException>(operand != null, "operand");
+
 			return CreateEquals(operand, false);
 		} 
 		#endregion

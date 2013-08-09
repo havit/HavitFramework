@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -9,9 +10,9 @@ using Havit.Data.SqlServer;
 namespace Havit.Business.Query
 {
 	/// <summary>
-	/// Reference condition IN - třída pro vnitřní použití frameworku, řeší podmínku IN a různé implementace na různých platformách.
+	/// Integer condition IN - třída pro vnitřní použití frameworku, řeší podmínku IN a různé implementace na různých platformách.
 	/// </summary>
-	internal class ReferenceInCondition : Condition
+	internal class InIntegersCondition : Condition
 	{
 		#region Private field
 		private IOperand operand;
@@ -22,7 +23,7 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Konstruktor
 		/// </summary>
-		internal ReferenceInCondition(IOperand operand, int[] ids)
+		internal InIntegersCondition(IOperand operand, int[] ids)
 		{
 			this.operand = operand;
 			this.ids = ids;
@@ -45,6 +46,9 @@ namespace Havit.Business.Query
 		/// </summary>
 		public override void GetWhereStatement(DbCommand command, StringBuilder whereBuilder, SqlServerPlatform sqlServerPlatform, CommandBuilderOptions commandBuilderOptions)
 		{
+			Debug.Assert(command != null);
+			Debug.Assert(whereBuilder != null);
+
 			switch (sqlServerPlatform)
 			{
 				case SqlServerPlatform.SqlServerCe35:

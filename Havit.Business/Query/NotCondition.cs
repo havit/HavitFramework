@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 using Havit.Data.SqlServer;
@@ -48,6 +49,9 @@ namespace Havit.Business.Query
         /// </summary>
 		public override void GetWhereStatement(System.Data.Common.DbCommand command, StringBuilder whereBuilder, SqlServerPlatform sqlServerPlatform, CommandBuilderOptions commandBuilderOptions)
         {
+			Debug.Assert(command != null);
+			Debug.Assert(whereBuilder != null);
+
             if (IsEmptyCondition())
             {
                 return;
@@ -76,7 +80,7 @@ namespace Havit.Business.Query
         public static NotCondition Create(params Condition[] conditions)
         {
             return new NotCondition(conditions);
-        } 
+        }
         #endregion
     }
 }

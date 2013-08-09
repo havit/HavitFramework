@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 using Havit.Data.SqlServer;
+using Havit.Diagnostics.Contracts;
 
 namespace Havit.Business.Query
 {
@@ -52,15 +54,8 @@ namespace Havit.Business.Query
 		/// </summary>
 		public UnaryCondition(string conditionPattern, IOperand operand)
 		{
-			if (conditionPattern == null)
-			{
-				throw new ArgumentNullException("conditionPattern");
-			}
-
-			if (operand == null)
-			{
-				throw new ArgumentNullException("operand");
-			}
+			Contract.Requires<ArgumentNullException>(conditionPattern != null, "conditionPattern");
+			Contract.Requires<ArgumentNullException>(operand != null, "operand");
 
 			Operand1 = operand;
 			ConditionPattern = conditionPattern;
@@ -73,15 +68,8 @@ namespace Havit.Business.Query
 		/// </summary>
 		public override void GetWhereStatement(System.Data.Common.DbCommand command, StringBuilder whereBuilder, SqlServerPlatform sqlServerPlatform, CommandBuilderOptions commandBuilderOptions)
 		{
-			if (command == null)
-			{
-				throw new ArgumentNullException("command");
-			}
-
-			if (whereBuilder == null)
-			{
-				throw new ArgumentNullException("whereBuilder");
-			}
+			Debug.Assert(command != null);
+			Debug.Assert(whereBuilder != null);
 
 			whereBuilder.AppendFormat(ConditionPattern, Operand1.GetCommandValue(command));
 		}

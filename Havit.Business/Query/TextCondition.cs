@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Havit.Diagnostics.Contracts;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -16,6 +17,8 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateEquals(IOperand operand, string value)
 		{
+			Contract.Requires<ArgumentNullException>(operand != null, "operand");
+
 			return CreateEquals(operand, ValueOperand.Create(value));
 		}
 
@@ -24,6 +27,9 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateEquals(IOperand operand1, IOperand operand2)
 		{
+			Contract.Requires<ArgumentNullException>(operand1 != null, "operand1");
+			Contract.Requires<ArgumentNullException>(operand2 != null, "operand2");
+
 			return new BinaryCondition(BinaryCondition.EqualsPattern, operand1, operand2);
 		}
 		#endregion
@@ -34,6 +40,8 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateLike(IOperand operand, string value)
 		{
+			Contract.Requires<ArgumentNullException>(operand != null, "operand");
+
 			return new BinaryCondition(BinaryCondition.LikePattern, operand, ValueOperand.Create(value));
 		}
 		#endregion
@@ -56,6 +64,8 @@ namespace Havit.Business.Query
 		/// <exception cref="T:System.ArgumentException">Parametr value je null nebo prázdný.</exception>
 		public static Condition CreateWildcards(IOperand operand, string value)
 		{
+			Contract.Requires<ArgumentNullException>(operand != null, "operand");
+
 			return CreateWildcards(operand, value, WildCardsLikeExpressionMode.StartsWith);
 		}
 
@@ -77,6 +87,8 @@ namespace Havit.Business.Query
 		/// <exception cref="T:System.ArgumentException">Parametr value je null nebo prázdný.</exception>
 		public static Condition CreateWildcards(IOperand operand, string value, WildCardsLikeExpressionMode wildCardsLikeExpressionMode)
 		{
+			Contract.Requires<ArgumentNullException>(operand != null, "operand");
+
 			return new BinaryCondition(BinaryCondition.LikePattern, operand, ValueOperand.Create(GetWildCardsLikeExpression(value, wildCardsLikeExpressionMode)));
 		}
 		#endregion
@@ -87,6 +99,8 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition Create(IOperand operand, ComparisonOperator comparisonOperator, string value)
 		{
+			Contract.Requires<ArgumentNullException>(operand != null, "operand");
+
 			return Create(operand, comparisonOperator, ValueOperand.Create(value));
 		}
 
@@ -95,6 +109,9 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition Create(IOperand operand1, ComparisonOperator comparisonOperator, IOperand operand2)
 		{
+			Contract.Requires<ArgumentNullException>(operand1 != null, "operand1");
+			Contract.Requires<ArgumentNullException>(operand2 != null, "operand2");
+
 			return new BinaryCondition(operand1, BinaryCondition.GetComparisonPattern(comparisonOperator), operand2);
 		}
 		#endregion
@@ -105,6 +122,8 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateIsNullOrEmpty(IOperand operand)
 		{
+			Contract.Requires<ArgumentNullException>(operand != null, "operand");
+
 			return OrCondition.Create(
 				NullCondition.CreateIsNull(operand),
 				TextCondition.CreateEquals(operand, string.Empty));
@@ -115,6 +134,8 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateIsNotNullOrEmpty(IOperand operand)
 		{
+			Contract.Requires<ArgumentNullException>(operand != null, "operand");
+
 			return AndCondition.Create(
 				NullCondition.CreateIsNotNull(operand),
 				TextCondition.Create(operand, ComparisonOperator.NotEquals, string.Empty));

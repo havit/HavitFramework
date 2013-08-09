@@ -267,7 +267,7 @@
     <Compile Include="Query\WildCardsLikeExpressionMode.cs" />
     <Compile Include="ReferenceFieldPropertyInfo.cs" />
     <Compile Include="DbTransactionEventArgs.cs" />
-    <Compile Include="Query\ReferenceInCondition.cs" />
+    <Compile Include="Query\InIntegersCondition.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Havit.Data.SqlServer\Havit.Data.SqlServer.sqlproj">

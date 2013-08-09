@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Data;
 using System.Data.Common;
+using System.Diagnostics;
+using System.Text;
 
 namespace Havit.Business.Query
 {
@@ -129,6 +130,8 @@ namespace Havit.Business.Query
 		#region IOperand Members
 		string IOperand.GetCommandValue(System.Data.Common.DbCommand command)
 		{
+			Debug.Assert(command != null);
+
 			string parameterName;
 			int index = 1;
 			do

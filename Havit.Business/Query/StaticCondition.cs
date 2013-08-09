@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 using Havit.Data.SqlServer;
@@ -30,15 +31,8 @@ namespace Havit.Business.Query
 		#region GetWhereStatement
 		public override void GetWhereStatement(System.Data.Common.DbCommand command, StringBuilder whereBuilder, SqlServerPlatform sqlServerPlatform, CommandBuilderOptions commandBuilderOptions)
 		{
-			if (command == null)
-			{
-				throw new ArgumentNullException("command");
-			}
-
-			if (whereBuilder == null)
-			{
-				throw new ArgumentNullException("whereBuilder");
-			}
+			Debug.Assert(command != null);
+			Debug.Assert(whereBuilder != null);
 
 			whereBuilder.Append(_conditionText);
 		}

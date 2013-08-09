@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Globalization;
-using Havit.Data;
-using Havit.Diagnostics.Contracts;
+using System.Text;
 
+using Havit.Data;
 using Havit.Data.SqlServer;
+using Havit.Diagnostics.Contracts;
 
 namespace Havit.Business.Query
 {
@@ -173,6 +174,8 @@ namespace Havit.Business.Query
 		/// </summary>
 		protected virtual string GetSelectStatement(DbCommand command)
 		{
+			Debug.Assert(command != null);
+
 			if (topRecords == null)
 			{
 				return "SELECT";
@@ -188,6 +191,8 @@ namespace Havit.Business.Query
 		/// </summary>
 		protected virtual string GetSelectFieldsStatement(DbCommand command)
 		{
+			Debug.Assert(command != null);
+
 			PropertyInfoCollection queryProperties = properties;
 
 			if (queryProperties.Count == 0)
@@ -216,7 +221,9 @@ namespace Havit.Business.Query
 		/// </summary>
 		protected virtual string GetFromStatement(DbCommand command)
 		{
-            if (String.IsNullOrEmpty(objectInfo.DbSchema))
+			Debug.Assert(command != null);
+
+			if (String.IsNullOrEmpty(objectInfo.DbSchema))
             {
                 return String.Format(CultureInfo.InvariantCulture, "FROM [{0}]", objectInfo.DbTable);
             }
@@ -231,6 +238,8 @@ namespace Havit.Business.Query
 		/// </summary>
 		public virtual string GetWhereStatement(DbCommand command, SqlServerPlatform sqlServerPlatform, CommandBuilderOptions commandBuilderOptions)
 		{
+			Debug.Assert(command != null);
+
 			StringBuilder whereBuilder = new StringBuilder();
 
 			if (!includeDeleted && objectInfo.DeletedProperty != null)
@@ -260,6 +269,8 @@ namespace Havit.Business.Query
 		/// </summary>
 		protected virtual string GetOrderByStatement(DbCommand command)
 		{
+			Debug.Assert(command != null);
+
 			if (orderBy.Count == 0)
 			{
 				return String.Empty;
@@ -291,6 +302,8 @@ namespace Havit.Business.Query
 		/// </summary>
 		protected virtual string GetOptionStatementStatement(DbCommand command, SqlServerPlatform sqlServerPlatform, CommandBuilderOptions commandBuilderOptions)
 		{
+			Debug.Assert(command != null);
+
 			//PropertyInfoCollection queryProperties = properties;
 
 			//if (queryProperties.Count == 0)

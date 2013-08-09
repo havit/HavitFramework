@@ -4,9 +4,11 @@ using System.Text;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Data;
+using System.Diagnostics;
 
 using Havit.Data.SqlClient;
 using Havit.Data.SqlTypes;
+using Havit.Diagnostics.Contracts;
 
 namespace Havit.Business.Query
 {
@@ -38,6 +40,8 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static IOperand Create(int[] ids)
 		{
+			Contract.Requires<ArgumentNullException>(ids != null, "ids");
+			
 			return new IntTableOperand(ids);
 		}
 		#endregion
@@ -45,6 +49,8 @@ namespace Havit.Business.Query
 		#region IOperand Members
 		string IOperand.GetCommandValue(System.Data.Common.DbCommand command)
 		{
+			Debug.Assert(command != null);
+
 			if (!(command is SqlCommand))
 			{
 				throw new ArgumentException("Typ IntTableOperand předpokládá SqlCommand.");

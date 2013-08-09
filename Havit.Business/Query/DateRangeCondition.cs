@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 
+using Havit.Diagnostics.Contracts;
+
 namespace Havit.Business.Query
 {
 	/// <summary>
@@ -15,6 +17,8 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition Create(IOperand operand, DateTime? date1, DateTime? date2)
 		{
+			Contract.Requires<ArgumentNullException>(operand != null, "operand");
+
 			if ((date1 == null) && (date2 == null))
 			{
 				return EmptyCondition.Create();
@@ -47,6 +51,8 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateDays(IOperand operand, DateTime? date1, DateTime? date2)
 		{
+			Contract.Requires<ArgumentNullException>(operand != null, "operand");
+
 			return Create(operand,
 				date1 == null ? null : (DateTime?)date1.Value.Date,
 				date2 == null ? null : (DateTime?)date2.Value.Date.AddDays(1));

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Collections.ObjectModel;
-using System.Runtime.InteropServices;
 using System.Diagnostics;
+using System.Text;
+using System.Runtime.InteropServices;
 
 using Havit.Data.SqlServer;
 
@@ -70,6 +70,7 @@ namespace Havit.Business.Query
 		/// </summary>
 		public override void GetWhereStatement(System.Data.Common.DbCommand command, StringBuilder whereBuilder, SqlServerPlatform sqlServerPlatform, CommandBuilderOptions commandBuilderOptions)
 		{
+			Debug.Assert(command != null);
 			Debug.Assert(whereBuilder != null);
 
 			if (this.IsEmptyCondition())

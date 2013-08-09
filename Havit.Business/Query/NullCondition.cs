@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 
+using Havit.Diagnostics.Contracts;
+
 namespace Havit.Business.Query
 {
 	/// <summary>
@@ -15,6 +17,8 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateIsNull(IOperand operand)
 		{
+			Contract.Requires<NullReferenceException>(operand != null, "operand");
+
 			return new UnaryCondition(UnaryCondition.IsNullPattern, operand);
 		} 
 		#endregion
@@ -25,6 +29,8 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateIsNotNull(IOperand operand)
 		{
+			Contract.Requires<NullReferenceException>(operand != null, "operand");
+
 			return new UnaryCondition(UnaryCondition.IsNotNullPattern, operand);
 		} 
 		#endregion

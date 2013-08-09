@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Data;
+using System.Diagnostics;
+using System.Text;
+
 using Havit.Data.SqlTypes;
 
 namespace Havit.Business.Query
@@ -44,6 +46,8 @@ namespace Havit.Business.Query
 		#region IOperand Members
 		string IOperand.GetCommandValue(System.Data.Common.DbCommand command)
 		{
+			Debug.Assert(command != null);
+
 			if (!(command is SqlCommand))
 			{
 				throw new ArgumentException("Typ SqlInt32ArrayOperand předpokládá SqlCommand.");

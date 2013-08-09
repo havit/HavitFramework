@@ -57,19 +57,18 @@ namespace Havit.Diagnostics.Contracts
 		#endregion
 
 		#region ThrowException
-		[DebuggerStepThrough]
+		[DebuggerStepThrough]		
 		private static void ThrowException<TException>(string message)
 			where TException : Exception
 		{
-			string exceptionMessage = String.IsNullOrEmpty(message) ? "Contract failed." : "Contract failed: " + message;
 			Exception resultException;
 			try
 			{
-				resultException = (Exception)Activator.CreateInstance(typeof(TException), exceptionMessage);
+				resultException = (Exception)Activator.CreateInstance(typeof(TException), message);
 			}
 			catch
 			{
-				resultException = new ContractException(exceptionMessage);
+				resultException = new ContractException(message);
 			}
 
 			throw resultException;

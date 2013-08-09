@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 
+using Havit.Diagnostics.Contracts;
+
 namespace Havit.Business.Query
 {
 	/// <summary>
@@ -37,6 +39,8 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition Create(IOperand operand, ComparisonOperator comparisonOperator, Guid value)
 		{
+			Contract.Requires<ArgumentNullException>(operand != null, "operand");
+
 			return Create(operand, comparisonOperator, ValueOperand.Create(value));
 		}
 
@@ -45,6 +49,9 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition Create(IOperand operand1, ComparisonOperator comparisonOperator, IOperand operand2)
 		{
+			Contract.Requires<ArgumentNullException>(operand1 != null, "operand1");
+			Contract.Requires<ArgumentNullException>(operand2 != null, "operand2");
+
 			return new BinaryCondition(operand1, BinaryCondition.GetComparisonPattern(comparisonOperator), operand2);
 		} 
 		#endregion

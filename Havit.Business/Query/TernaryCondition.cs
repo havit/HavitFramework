@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 using Havit.Data.SqlServer;
+using Havit.Diagnostics.Contracts;
 
 namespace Havit.Business.Query
 {
@@ -36,10 +38,7 @@ namespace Havit.Business.Query
 		/// </summary>
 		public TernaryCondition(string conditionPattern, IOperand operand1, IOperand operand2, IOperand operand3) : base(conditionPattern, operand1, operand2)
 		{
-			if (operand3 == null)
-			{
-				throw new ArgumentNullException("operand3");
-			}
+			Contract.Requires<ArgumentNullException>(operand3 != null, "operand3");
 
 			this.Operand3 = operand3;
 		}
@@ -51,15 +50,8 @@ namespace Havit.Business.Query
 		/// </summary>
 		public override void GetWhereStatement(System.Data.Common.DbCommand command, StringBuilder whereBuilder, SqlServerPlatform sqlServerPlatform, CommandBuilderOptions commandBuilderOptions)
 		{
-			if (command == null)
-			{
-				throw new ArgumentNullException("command");
-			}
-
-			if (whereBuilder == null)
-			{
-				throw new ArgumentNullException("whereBuilder");
-			}
+			Debug.Assert(command != null);
+			Debug.Assert(whereBuilder != null);
 
 			whereBuilder.AppendFormat(ConditionPattern, Operand1.GetCommandValue(command), Operand2.GetCommandValue(command), Operand3.GetCommandValue(command));
 		}

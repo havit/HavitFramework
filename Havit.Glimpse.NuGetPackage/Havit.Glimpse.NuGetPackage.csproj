@@ -73,4 +73,13 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="AfterBuild">
+    <Exec WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="nuget pack Package.nuspec -Verbosity detailed -NonInteractive -OutputDirectory $(OutputPath)" />
+  </Target>
+  <Target Name="TfsPublish" AfterTargets="AfterBuild" Condition="'$(PublishDirectory)' != ''">
+    <ItemGroup>
+      <FilesToCopy Include="$(OutputPath)\Havit.Glimpse.*.nupkg" />
+    </ItemGroup>
+    <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(PublishDirectory)\NuGet\%(RecursiveDir)%(Filename)%(Extension)')" />
+  </Target>
 </Project>

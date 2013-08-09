@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Havit.Glimpse</id>
-    <version>0.1.7</version>
+    <version>0.1.9</version>
     <!--<minClientVersion>2.6</minClientVersion>-->
     <title>Havit.Glimpse</title>
     <authors>Havit, s.r.o.</authors>

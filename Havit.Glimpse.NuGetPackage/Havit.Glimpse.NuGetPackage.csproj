@@ -74,7 +74,7 @@
   </Target>
   -->
   <Target Name="AfterBuild">
-    <Exec WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="nuget pack Package.nuspec -Verbosity detailed -NonInteractive -OutputDirectory $(OutputPath)" />
+    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="nuget pack Package.nuspec -Verbosity detailed -NonInteractive -OutputDirectory $(OutputPath)" />
   </Target>
   <Target Name="TfsPublish" AfterTargets="AfterBuild" Condition="'$(PublishDirectory)' != ''">
     <ItemGroup>

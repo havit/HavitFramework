@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+  <system.web>
+    <httpModules>
+      <add name="Glimpse" xdt:Transform="Remove" xdt:Locator="Match(name)" />
+    </httpModules>
+    <httpHandlers>
+      <add path="glimpse.axd" xdt:Transform="Remove" xdt:Locator="Match(path)"/>
+    </httpHandlers>
+  </system.web>
+  <system.webServer>
+    <modules>
+      <add name="Glimpse" xdt:Transform="Remove" xdt:Locator="Match(name)" />
+    </modules>
+    <handlers>
+      <add name="Glimpse" xdt:Transform="Remove" xdt:Locator="Match(name)" />
+    </handlers>
+  </system.webServer>
+  <glimpse xdt:Transform="Remove" />
+  <system.diagnostics>
+    <sources>
+      <source name="DbConnector Command Execution Trace">
+        <listeners>
+          <add name="GlimpseDbConnectorTraceListener"  xdt:Transform="Remove" xdt:Locator="Match(name)" />
+        </listeners>
+      </source>
+    </sources>
+  </system.diagnostics>
+</configuration>

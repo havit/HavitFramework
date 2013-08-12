@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<system.diagnostics>
+  <sources>
+    <source name="DbConnector Command Execution Trace">
+      <listeners>
+        <add name="GlimpseDbConnectorTraceListener" type="Havit.Data.Glimpse.DbConnectorTraceListener, Havit.Data.Glimpse" />
+      </listeners>
+    </source>
+  </sources>
+</system.diagnostics>

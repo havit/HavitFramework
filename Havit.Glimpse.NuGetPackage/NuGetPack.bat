@@ -1,1 +1,0 @@
-nuget pack Package.nuspec -Verbosity detailed -NonInteractive  -OutputDirectory \\topol\Library\NuGet\Packages

@@ -46,11 +46,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="content\Config\system.diagnostics.config.transform" />
     <None Include="content\Web.config.uninstall.xdt" />
     <None Include="content\Web.config.install.xdt" />
     <None Include="content\Web.Release.config.transform" />
-    <None Include="NuGetPack.bat" />
-    <None Include="Package.nuspec" />
+    <None Include="Package.nuspec">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="tools\install.ps1" />
   </ItemGroup>
   <ItemGroup>
@@ -62,9 +64,6 @@
       <Name>Havit.Data.Glimpse</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="NuGet.exe" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -74,7 +73,7 @@
   </Target>
   -->
   <Target Name="AfterBuild">
-    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="nuget pack Package.nuspec -Verbosity detailed -NonInteractive -OutputDirectory $(OutputPath)" />
+    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion)" />
   </Target>
   <Target Name="TfsPublish" AfterTargets="AfterBuild" Condition="'$(PublishDirectory)' != ''">
     <ItemGroup>

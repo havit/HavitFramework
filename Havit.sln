@@ -69,7 +69,7 @@ Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "Sandcastle", "Sandcastle\Sa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Data.Glimpse", "Havit.Data.Glimpse\Havit.Data.Glimpse.csproj", "{C5C6607E-644A-468F-A6C2-CDCF8A1D23DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Glimpse.NuGetPackage", "Havit.Glimpse.NuGetPackage\Havit.Glimpse.NuGetPackage.csproj", "{DE55617C-C11E-4093-9F57-2AEF7F636EDB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Data.Glimpse.NuGetPackage", "Havit.Data.Glimpse.NuGetPackage\Havit.Data.Glimpse.NuGetPackage.csproj", "{DE55617C-C11E-4093-9F57-2AEF7F636EDB}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
@@ -137,9 +137,9 @@ Global
 		SccProjectUniqueName20 = Havit.Data.Glimpse\\Havit.Data.Glimpse.csproj
 		SccProjectName20 = Havit.Data.Glimpse
 		SccLocalPath20 = Havit.Data.Glimpse
-		SccProjectUniqueName21 = Havit.Glimpse.NuGetPackage\\Havit.Glimpse.NuGetPackage.csproj
-		SccProjectName21 = Havit.Glimpse.NuGetPackage
-		SccLocalPath21 = Havit.Glimpse.NuGetPackage
+		SccProjectUniqueName21 = Havit.Data.Glimpse.NuGetPackage\\Havit.Data.Glimpse.NuGetPackage.csproj
+		SccProjectName21 = Havit.Data.Glimpse.NuGetPackage
+		SccLocalPath21 = Havit.Data.Glimpse.NuGetPackage
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

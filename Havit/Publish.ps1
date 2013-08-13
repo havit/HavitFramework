@@ -28,6 +28,8 @@ xcopy Framework\Havit.Xml.dll \\topol.havit.local\library\framework /y
 xcopy Framework\Havit.Xml.pdb \\topol.havit.local\library\framework /y
 xcopy Framework\Havit.Xml.xml \\topol.havit.local\library\framework /y
 
+xcopy NuGet\Havit.Data.Glimpse.*.nupkg \\topol.havit.local\Library\NuGet\packages /y
+
 #xcopy Framework\*.dll \\topol.havit.local\library\framework /y
 #xcopy Framework\*.pdb \\topol.havit.local\library\framework /y
 #xcopy Framework\*.xml \\topol.havit.local\library\framework /y

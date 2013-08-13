@@ -17,13 +17,5 @@
     </handlers>
   </system.webServer>
   <glimpse xdt:Transform="Remove" />
-  <system.diagnostics>
-    <sources>
-      <source name="DbConnector Command Execution Trace">
-        <listeners>
-          <add name="GlimpseDbConnectorTraceListener"  xdt:Transform="Remove" xdt:Locator="Match(name)" />
-        </listeners>
-      </source>
-    </sources>
-  </system.diagnostics>
+  <system.diagnostics configSource="Config\system.diagnostics.config" xdt:Transform="Replace" />
 </configuration>

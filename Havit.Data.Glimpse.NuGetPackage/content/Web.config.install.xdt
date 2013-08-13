@@ -5,14 +5,14 @@
     <trace enabled="true" mostRecent="true" writeToDiagnosticsTrace="true" xdt:Transform="Insert" />
   </system.web>
 
-  <system.diagnostics xdt:Transform="InsertIfMissing" xdt:Locator="Condition(@configSource!='Config\system.diagnostics.config')">
+  <system.diagnostics xdt:Transform="InsertIfMissing">
     <sources>
     </sources>
   </system.diagnostics>
   
   <system.diagnostics>
     <sources>
-      <source name="DbConnector Command Execution Trace" xdt:Transform="Insert" xdt:Locator="Condition(../../self::*@configSource!='Config\system.diagnostics.config')">
+      <source name="DbConnector Command Execution Trace" xdt:Transform="Insert">
         <listeners>
           <add name="GlimpseDbConnectorTraceListener" type="Havit.Data.Glimpse.DbConnectorTraceListener, Havit.Data.Glimpse" />
         </listeners>

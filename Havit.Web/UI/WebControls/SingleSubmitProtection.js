@@ -125,9 +125,9 @@ function SingleSubmit_ClearProcessing()
 }
 
 /// <summary>
-/// Zajistí, aby po dokončení async pallbacku byl zase zrušen stav IsProcessing.
+/// Zajistí, aby po dokončení async callbacku byl zase zrušen stav IsProcessing.
 /// </summary>
 function SingleSubmit_Startup()
 {	
-	Sys.WebForms.PageRequestManager.getInstance().add_pageLoaded(SingleSubmit_ClearProcessing);
+    Sys.WebForms.PageRequestManager.getInstance().add_endRequest(SingleSubmit_ClearProcessing);
 }

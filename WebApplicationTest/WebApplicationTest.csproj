@@ -161,6 +161,7 @@
     <Content Include="CollapserTest.aspx" />
     <Content Include="ControlsValuesPersisterTest.aspx" />
     <EmbeddedResource Include="b.js" />
+    <Content Include="Error.aspx" />
     <Content Include="FormViewTest.aspx" />
     <Content Include="GridViewExt-Filtr.aspx" />
     <Content Include="IdentityMapScopeTest.aspx" />
@@ -221,6 +222,13 @@
     </Compile>
     <Compile Include="ControlsValuesPersisterTest.aspx.designer.cs">
       <DependentUpon>ControlsValuesPersisterTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Error.aspx.cs">
+      <DependentUpon>Error.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Error.aspx.designer.cs">
+      <DependentUpon>Error.aspx</DependentUpon>
     </Compile>
     <Compile Include="FormViewTest.aspx.cs">
       <DependentUpon>FormViewTest.aspx</DependentUpon>

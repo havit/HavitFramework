@@ -28,10 +28,7 @@ namespace WebApplicationTest
 		#region TestButton_Click
 		private void TestButton_Click(object sender, EventArgs e)
 		{
-			Response.Clear();
-			Response.AddHeader("Content-Disposition", "attachment; filename=x.txt");
-			Response.Write("test");
-			Response.End();
+			//throw new ApplicationException();
 		}
 		#endregion
 

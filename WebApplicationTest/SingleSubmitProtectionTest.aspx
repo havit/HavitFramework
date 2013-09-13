@@ -10,15 +10,14 @@
 <body>
     <form runat="server">
     <div>
-		<asp:ScriptManager runat="server" ScriptMode="Release" />
+		<asp:ScriptManager runat="server" />
 		<havit:SingleSubmitProtection runat="server" />
 		
-		<asp:Button ID="TestButton" Text="Test" runat="server" OnClientClick="<%$ Expression: SingleSubmitProtection.SetProcessingDisableJavaScript %>" />
-		<asp:UpdatePanel runat="server" UpdateMode="Conditional">
+		<asp:UpdatePanel UpdateMode="Conditional" runat="server">
 		<Triggers>
 		</Triggers>
 		<ContentTemplate>
-			<asp:Button Text="UpdatePanel" runat="server" />
+			<asp:Button ID="TestButton" Text="Test" runat="server" />
 		</ContentTemplate>
 		</asp:UpdatePanel>
     </div>

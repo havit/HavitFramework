@@ -124,9 +124,9 @@ namespace Havit.Web.Management
 			//sb.Append(" Event occurence: " + this.EventOccurrence.ToString(CultureInfo.InstalledUICulture));
 			//sb.AppendLine(" Event detail code: " + this.EventDetailCode.ToString(CultureInfo.InstalledUICulture));
 
-			sb.Append("    Event ID: " + this.EventID.ToString("N", CultureInfo.InstalledUICulture));
-			sb.Append(", Event sequence: " + this.EventSequence.ToString(CultureInfo.InstalledUICulture));
-			sb.AppendLine(", Event occurence: " + this.EventOccurrence.ToString(CultureInfo.InstalledUICulture));
+			//sb.Append("    Event ID: " + this.EventID.ToString("N", CultureInfo.InstalledUICulture));
+			//sb.Append(", Event sequence: " + this.EventSequence.ToString(CultureInfo.InstalledUICulture));
+			//sb.AppendLine(", Event occurence: " + this.EventOccurrence.ToString(CultureInfo.InstalledUICulture));
 			sb.AppendLine("    Event time: " + this.EventTime.ToString(CultureInfo.InstalledUICulture));
 			sb.AppendLine("    Event UTC time: " + this.EventTimeUtc.ToString(CultureInfo.InstalledUICulture));
 		} 

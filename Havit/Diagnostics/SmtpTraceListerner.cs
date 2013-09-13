@@ -5,6 +5,7 @@ using System.Text;
 using System.Diagnostics;
 using System.Net.Mail;
 using System.Globalization;
+using System.Reflection;
 
 namespace Havit.Diagnostics
 {
@@ -143,71 +144,74 @@ namespace Havit.Diagnostics
 		private void SendTrace(TraceEventCache eventCache, string source, TraceEventType eventType, int id, params object[] data)
 		{
 			StringBuilder message = new StringBuilder();
+
 			foreach (object item in data)
 			{
 				if (item != null)
 				{
 					message.AppendLine(item.ToString());
+					message.AppendLine();
 				}
 			}
-			message.AppendLine();
-
-			message.Append("CommandLine: ");
-			message.AppendLine(Environment.CommandLine);
-
-			message.Append("CurrentDirectory: ");
-			message.AppendLine(Environment.CurrentDirectory);
-
-			message.Append("MachineName: ");
-			message.AppendLine(Environment.MachineName);
-
-			message.Append("UserDomainName: ");
-			message.AppendLine(Environment.UserDomainName);
-
-			message.Append(".NET Framework: ");
-			message.AppendLine(Environment.Version.ToString());
 
 			if (eventCache != null)
 			{
+				//message.AppendLine();
+				//message.AppendLine("Call stack:");
+				//message.AppendLine(eventCache.Callstack);
+				//message.AppendLine();
+
+				message.AppendLine("Event information:");
+				//foreach (object item in eventCache.LogicalOperationStack)
+				//{
+				//	if (item != null)
+				//	{
+				//		message.AppendLine(item.ToString());
+				//	}
+				//}
+				//message.AppendLine();
+
+				message.AppendLine("    Event time: " + eventCache.DateTime.ToLocalTime().ToString(CultureInfo.InstalledUICulture));
+				message.AppendLine("    Event UTC time: " + eventCache.DateTime.ToUniversalTime().ToString(CultureInfo.InstalledUICulture));
+
+				//message.Append("    ProcessId: ");
+				//message.AppendLine(eventCache.ProcessId.ToString());
+
+				//message.Append("    ThreadId: ");
+				//message.AppendLine(eventCache.ThreadId);
+
 				message.AppendLine();
-				message.AppendLine("Call stack:");
-				message.AppendLine(eventCache.Callstack);
-				message.AppendLine();
-
-				message.AppendLine("Logical operation stack:");
-				foreach (object item in eventCache.LogicalOperationStack)
-				{
-					if (item != null)
-					{
-						message.AppendLine(item.ToString());
-					}
-				}
-				message.AppendLine();
-
-				message.Append("DateTime: ");
-				message.AppendLine(eventCache.DateTime.ToString());
-
-				message.Append("Timestamp: ");
-				message.AppendLine(eventCache.Timestamp.ToString());
-
-				message.Append("ProcessId: ");
-				message.AppendLine(eventCache.ProcessId.ToString());
-
-				message.Append("ThreadId: ");
-				message.AppendLine(eventCache.ThreadId);
 			}
 
-			if (!String.IsNullOrEmpty(source))
-			{
-				message.Append("Source: ");
-				message.AppendLine(source);
-			}
+			message.AppendLine("Thread information:");
+			message.AppendLine("    Culture: " + System.Threading.Thread.CurrentThread.CurrentCulture.Name);
+			message.AppendLine("    UI Culture: " + System.Threading.Thread.CurrentThread.CurrentUICulture.Name);
+			message.AppendLine();
 
-			message.Append("EventType: ");
-			message.AppendLine(eventType.ToString("g"));
+			message.AppendLine("Application info:");
+			message.AppendLine("    Entry assembly: " + Assembly.GetEntryAssembly().FullName);
+			message.AppendLine();
 
-			message.Append("EventId: ");
-			message.AppendLine(id.ToString("g"));
+			message.AppendLine("Environment:");
+			message.AppendLine("    Command line: " + Environment.CommandLine);
+			message.AppendLine("    Current directory: " + Environment.CurrentDirectory);
+			message.AppendLine("    Machine name: " + Environment.MachineName);
+			message.AppendLine("    User domain name: " + Environment.UserDomainName);
+			message.AppendLine("    .NET Framework: " + Environment.Version.ToString());
+			message.AppendLine("    .OS Version: " + Environment.OSVersion.ToString());
+			message.AppendLine();
+			
+			//if (!String.IsNullOrEmpty(source))
+			//{
+			//	message.Append("Source: ");
+			//	message.AppendLine(source);
+			//}
+
+			//message.Append("EventType: ");
+			//message.AppendLine(eventType.ToString("g"));
+
+			//message.Append("EventId: ");
+			//message.AppendLine(id.ToString("g"));
 
 			SendMessage(message.ToString());
 		}

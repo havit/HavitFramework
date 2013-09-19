@@ -41,6 +41,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -54,7 +55,16 @@
     <Compile Include="Ares\AresException.cs" />
     <Compile Include="Ares\AresService.cs" />
     <Compile Include="Ares\AresData.cs" />
+    <Compile Include="DirectoryServices\ActiveDirectory\ActiveDirectoryProperties.cs" />
+    <Compile Include="DirectoryServices\ActiveDirectory\ActiveDirectoryServices.cs" />
+    <Compile Include="DirectoryServices\ActiveDirectory\UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Havit\Havit.csproj">
+      <Project>{9acc94b9-b8fd-47c1-abf8-0658c7673905}</Project>
+      <Name>Havit</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

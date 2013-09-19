@@ -114,8 +114,8 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 				{
 					searcher.Filter = String.Format("(&(|(objectClass=user)(objectClass=group))(|{0}))", distinguishedNames);
 					searcher.PropertiesToLoad.Add(ActiveDirectoryProperties.ObjectSid);
-					searcher.PropertiesToLoad.Add(ActiveDirectoryProperties.ObjectClass);						
-					searcher.SizeLimit = 10000;
+					searcher.PropertiesToLoad.Add(ActiveDirectoryProperties.ObjectClass);
+					searcher.SizeLimit = groupMembersIdentifiers.Count;
 					memberSearchResults = searcher.FindAll();
 				}
 
@@ -197,6 +197,7 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 				{
 					searcher.Filter = String.Format("(&(objectClass=group)(|{0}))", distinguishedNames);
 					searcher.PropertiesToLoad.Add(ActiveDirectoryProperties.ObjectSid);
+					searcher.SizeLimit = groupIdentifiers.Count;
 					groupSearchResults = searcher.FindAll();
 				}
 

@@ -1,6 +1,7 @@
 ﻿using Havit.Diagnostics.Contracts;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.DirectoryServices;
 using System.DirectoryServices.ActiveDirectory;
 using System.Linq;
@@ -49,15 +50,29 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 		/// <param name="includeGroups">When true, result contains members of type group (otherwise contains users only).</param>
 		/// <param name="traverseNestedGroups">When true, result includes members of nested groups (members of members).</param>
 		/// <exception cref="System.InvalidOperationException">Group not found.</exception>
+		/// <remarks>
+		/// Results are "cached" in instance memory, repetitive calls returns same results in zero time.
+		/// </remarks>
 		public string[] GetGroupMembers(string groupname, bool includeGroups = false, bool traverseNestedGroups = false)
 		{
 			Contract.Requires(!String.IsNullOrEmpty(groupname));
 
-			List<string> members = new List<string>();
+			// Let's look to the previous calls
+			object cacheKey = new { GroupName = groupname.ToLower(), IncludeGroups = includeGroups, TraverseNestedGroups = traverseNestedGroups };
+			List<string> members;
+			if (_getGroupsMembersCache.TryGetValue(cacheKey, out members))
+			{
+				return members.ToArray();
+			}
+
+			members = new List<string>();
 			List<string> processedGroups = new List<string>();
 			GetGroupMembersInternal(groupname, includeGroups, traverseNestedGroups, members, processedGroups);
+			_getGroupsMembersCache.Add(cacheKey, members);
+
 			return members.ToArray();
 		}
+		private Dictionary<object, List<string>> _getGroupsMembersCache = new Dictionary<object, List<string>>();
 
 		/// <summary>
 		/// Internal method for retrieving group members (used mainly for traversal groups).
@@ -89,36 +104,45 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 			}
 
 			ResultPropertyValueCollection groupMembersIdentifiers = searchResult.Properties[ActiveDirectoryProperties.Member];
-			foreach (object memberIdentifier in groupMembersIdentifiers)
+
+			if (groupMembersIdentifiers.Count > 0)
 			{
-				DirectoryEntry user = new DirectoryEntry("LDAP://" + memberIdentifier.ToString());
-
-				object[] objectClasses = (object[])user.InvokeGet(ActiveDirectoryProperties.ObjectClass);
-				bool isUser = objectClasses.Contains("user"); // todo constants
-				bool isGroup = objectClasses.Contains("group"); // todo constants
-
-				if (!isUser && !isGroup)
+				string distinguishedNames = String.Join("", groupMembersIdentifiers.OfType<string>().Select(memberIdentifier => string.Format("(distinguishedName={0})", memberIdentifier)));
+				
+				SearchResultCollection memberSearchResults;
+				using (DirectorySearcher searcher = GetDirectorySearcher(domainName))
 				{
-					continue;
+					searcher.Filter = String.Format("(&(|(objectClass=user)(objectClass=group))(|{0}))", distinguishedNames);
+					searcher.PropertiesToLoad.Add(ActiveDirectoryProperties.ObjectSid);
+					searcher.PropertiesToLoad.Add(ActiveDirectoryProperties.ObjectClass);						
+					searcher.SizeLimit = 10000;
+					memberSearchResults = searcher.FindAll();
 				}
 
-				string memberAccountName;
-				if (!TryGetAccountName(user, out memberAccountName))
+				foreach (SearchResult memberSearchResult in memberSearchResults)
 				{
-					continue;
-				}
+					bool isUser = memberSearchResult.Properties[ActiveDirectoryProperties.ObjectClass].Contains("user"); // todo constants
+					bool isGroup = memberSearchResult.Properties[ActiveDirectoryProperties.ObjectClass].Contains("group"); // todo constants
 
-				if (isUser || (includeGroups && isGroup))
-				{
-					if (!members.Contains(memberAccountName))
+					string memberAccountName;
+					byte[] sid = (byte[])memberSearchResult.Properties[ActiveDirectoryProperties.ObjectSid][0];
+					if (!TryGetAccountName(sid, out memberAccountName))
 					{
-						members.Add(memberAccountName);
+						continue;
 					}
-				}
 
-				if (isGroup && traverseNestedGroups)
-				{
-					GetGroupMembersInternal(memberAccountName, includeGroups, traverseNestedGroups /* true */, members, processedGroups);
+					if (isUser || (includeGroups && isGroup))
+					{
+						if (!members.Contains(memberAccountName))
+						{
+							members.Add(memberAccountName);
+						}
+					}
+
+					if (isGroup && traverseNestedGroups)
+					{
+						GetGroupMembersInternal(memberAccountName, includeGroups, traverseNestedGroups /* true */, members, processedGroups);
+					}
 				}
 			}
 		}
@@ -130,8 +154,21 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 		/// DOES NOT SUPPORT MULTIDOMAIN ENVIRONMENT - Only groups in the same domain as user are in the result.
 		/// </summary>
 		/// <param name="username">Username (supported both forms DOMAIN\user and user).</param>
+		/// <remarks>
+		/// Results are "cached" in instance memory, repetitive calls returns same results in zero time.
+		/// </remarks>
 		public string[] GetUserDomainMembership(string username)
 		{
+			Contract.Requires(!String.IsNullOrEmpty(username));
+			
+			List<string> result;
+
+			string cacheKey = username.ToLower();
+			if (_getGroupsMembersCache.TryGetValue(cacheKey, out result))
+			{
+				return result.ToArray();
+			}
+
 			string domainName;
 			string accountName;
 			SplitNameToDomainAndAccountName(username, out domainName, out accountName);
@@ -149,30 +186,38 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 				throw new InvalidOperationException("User not found.");
 			}
 
-			List<string> result = new List<string>();
-
+			result = new List<string>();
 			ResultPropertyValueCollection groupIdentifiers = searchResult.Properties[ActiveDirectoryProperties.MemberOf];
-			foreach (object groupIdentifier in groupIdentifiers)
+			if (groupIdentifiers.Count > 0)
 			{
-				DirectoryEntry group = new DirectoryEntry("LDAP://" + groupIdentifier.ToString());
+				string distinguishedNames = String.Join("", groupIdentifiers.OfType<string>().Select(memberIdentifier => string.Format("(distinguishedName={0})", memberIdentifier)));
 
-				object[] objectClasses = (object[])group.InvokeGet(ActiveDirectoryProperties.ObjectClass);
-				if (!objectClasses.Contains("group"))
+				SearchResultCollection groupSearchResults;
+				using (DirectorySearcher searcher = GetDirectorySearcher(domainName))
 				{
-					continue;
+					searcher.Filter = String.Format("(&(objectClass=group)(|{0}))", distinguishedNames);
+					searcher.PropertiesToLoad.Add(ActiveDirectoryProperties.ObjectSid);
+					groupSearchResults = searcher.FindAll();
 				}
 
-				string groupName;
-				if (!TryGetAccountName(group, out groupName))
+				foreach (SearchResult groupSearchResult in groupSearchResults)
 				{
-					continue;
-				}
+					string groupName;
+					byte[] sid = (byte[])groupSearchResult.Properties[ActiveDirectoryProperties.ObjectSid][0];
+					if (!TryGetAccountName(sid, out groupName))
+					{
+						continue;
+					}
 
-				result.Add(groupName);
+					result.Add(groupName);
+				}
 			}
+
+			_getGroupsMembersCache.Add(cacheKey, result);
 
 			return result.ToArray();
 		}
+		private Dictionary<string, List<string>> _getUserDomainMembershipCache = new Dictionary<string, List<string>>();
 		#endregion
 
 		#region GetUserCrossDomainMembership
@@ -183,8 +228,13 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 		/// <param name="username">Username (supported both forms DOMAIN\user and user).</param>
 		/// <param name="groups">Groups for which membership is checked.</param>
 		/// <param name="traverseNestedGroups">When true, return groups from list when user is member of nested group. Otherwise group is in result only when user is a direct member.</param>
+		/// <remarks>
+		/// Results are "cached" in instance memory, repetitive calls returns same results in zero time.
+		/// </remarks>
 		public string[] GetUserCrossDomainMembership(string username, string[] groups, bool traverseNestedGroups = false)
 		{
+			// "caching" delegated to GetGroupMembers method
+
 			List<string> result = new List<string>();
 
 			foreach (string group in groups)
@@ -217,6 +267,7 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 				searcher.Filter = string.Format("(&(objectClass=user)(samaccountname={0}))", accountName);
 				searcher.PropertiesToLoad.Add(ActiveDirectoryProperties.DisplayName);
 				searcher.PropertiesToLoad.Add(ActiveDirectoryProperties.EmailAddress);
+				searcher.PropertiesToLoad.Add(ActiveDirectoryProperties.ObjectSid);
 
 				searcher.PageSize = 1000;
 				searcher.SizeLimit = 0;
@@ -232,7 +283,8 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 			UserInfo userInfo = new UserInfo();
 
 			string accountNameTmp;
-			if (this.TryGetAccountName(searchResult.GetDirectoryEntry(), out accountNameTmp))
+			byte[] sid = (byte[])searchResult.Properties[ActiveDirectoryProperties.ObjectSid][0];
+			if (this.TryGetAccountName(sid, out accountNameTmp))
 			{
 				userInfo.AccountName = accountNameTmp;
 			}
@@ -311,14 +363,12 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 		/// Retrieves object sid and translates it to name (using NTAccount class) in HAVIT\\everyone format.
 		/// When translation succedes returns true, otherwise false.
 		/// </summary>
-		private bool TryGetAccountName(DirectoryEntry objectEntry, out string accountName)
+		private bool TryGetAccountName(byte[] sid, out string accountName)
 		{
-			object objectSid = objectEntry.InvokeGet("objectSid");
-
 			try
 			{
-				SecurityIdentifier sid = new SecurityIdentifier((byte[])objectSid, 0);
-				accountName = ((NTAccount)sid.Translate(typeof(NTAccount))).ToString();
+				SecurityIdentifier securityIdentifier = new SecurityIdentifier(sid, 0);
+				accountName = ((NTAccount)securityIdentifier.Translate(typeof(NTAccount))).ToString();
 				return true;
 			}
 			catch

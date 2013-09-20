@@ -30,9 +30,6 @@ namespace HavitTestConsoleApplication
 			{
 				Console.WriteLine(groupmember);
 			}
-	
-
-
 		}
 		#endregion
 

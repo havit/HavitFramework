@@ -112,7 +112,13 @@ function SingleSubmit_ClearProcessing()
 				// pokud jsme je progress layer sami přidali, sami jej zrušíme
 			    progressLayer.style.cursor = "auto";
 			    // nejde progressLayer odebrat okamžitě - v některých browserech zůstane zobrazen kurzor jako progress, proto odložíme
-			    window.setTimeout(_SingleSubmit_RemoveProgressLayer_Timeout.bind(this, progressLayer), 1);
+
+			    var removeProgressLayerClosureFunction = function ()
+			    {
+		            // Odebere progresslayer ze stránky.
+		            document.body.removeChild(progressLayer);
+			    };
+			    window.setTimeout(removeProgressLayerClosureFunction, 1);
             }
 			else
 			{
@@ -123,14 +129,6 @@ function SingleSubmit_ClearProcessing()
 		
 		_SingleSubmit_IsProcessing = false;
 	}
-}
-
-/// <summary>
-/// Odebere progresslayer ze stránky.
-/// </summary>
-function _SingleSubmit_RemoveProgressLayer_Timeout(progressLayer)
-{
-    document.body.removeChild(progressLayer);
 }
 
 /// <summary>

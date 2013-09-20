@@ -112,21 +112,24 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 				SearchResultCollection memberSearchResults;
 				using (DirectorySearcher searcher = GetDirectorySearcher(domainName))
 				{
-					searcher.Filter = String.Format("(&(|(objectClass=user)(objectClass=group))(|{0}))", distinguishedNames);
+					searcher.Filter = String.Format("(|{0})", distinguishedNames);
 					searcher.PropertiesToLoad.Add(ActiveDirectoryProperties.ObjectSid);
-					searcher.PropertiesToLoad.Add(ActiveDirectoryProperties.ObjectClass);
 					searcher.SizeLimit = groupMembersIdentifiers.Count;
 					memberSearchResults = searcher.FindAll();
 				}
 
 				foreach (SearchResult memberSearchResult in memberSearchResults)
 				{
-					bool isUser = memberSearchResult.Properties[ActiveDirectoryProperties.ObjectClass].Contains("user"); // todo constants
-					bool isGroup = memberSearchResult.Properties[ActiveDirectoryProperties.ObjectClass].Contains("group"); // todo constants
-
 					string memberAccountName;
 					byte[] sid = (byte[])memberSearchResult.Properties[ActiveDirectoryProperties.ObjectSid][0];
 					if (!TryGetAccountName(sid, out memberAccountName))
+					{
+						continue;
+					}
+
+					bool isUser;
+					bool isGroup;
+					if (!TryGetAccountClass(memberAccountName, out isUser, out isGroup))
 					{
 						continue;
 					}
@@ -195,7 +198,7 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 				SearchResultCollection groupSearchResults;
 				using (DirectorySearcher searcher = GetDirectorySearcher(domainName))
 				{
-					searcher.Filter = String.Format("(&(objectClass=group)(|{0}))", distinguishedNames);
+					searcher.Filter = String.Format("(|{0})", distinguishedNames);
 					searcher.PropertiesToLoad.Add(ActiveDirectoryProperties.ObjectSid);
 					searcher.SizeLimit = groupIdentifiers.Count;
 					groupSearchResults = searcher.FindAll();
@@ -210,7 +213,17 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 						continue;
 					}
 
-					result.Add(groupName);
+					bool isUser;
+					bool isGroup;
+					if (!this.TryGetAccountClass(groupName, out isUser, out isGroup))
+					{
+						continue;
+					}
+
+					if (isGroup)
+					{
+						result.Add(groupName);
+					}
 				}
 			}
 
@@ -269,10 +282,6 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 				searcher.PropertiesToLoad.Add(ActiveDirectoryProperties.DisplayName);
 				searcher.PropertiesToLoad.Add(ActiveDirectoryProperties.EmailAddress);
 				searcher.PropertiesToLoad.Add(ActiveDirectoryProperties.ObjectSid);
-
-				searcher.PageSize = 1000;
-				searcher.SizeLimit = 0;
-
 				searchResult = searcher.FindOne();
 			}
 
@@ -380,5 +389,63 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 		}
 		#endregion
 
+		#region TryGetAccountClass
+		/// <summary>
+		/// Returns account class (user, group).
+		/// </summary>
+		/// <remarks>
+		/// Results are "cached" in instance memory, repetitive calls returns same results in zero time.
+		/// </remarks>
+		private bool TryGetAccountClass(string name, out bool isUser, out bool isGroup)
+		{
+			string cacheKey = name.ToLower();
+			TryGetAccountClass_Data resultData;
+			if (!_tryGetAccountClass.TryGetValue(cacheKey, out resultData))
+			{
+				string domainName;
+				string accountName;
+				SplitNameToDomainAndAccountName(name, out domainName, out accountName);
+
+				SearchResult searchResult;
+				using (DirectorySearcher searcher = GetDirectorySearcher(domainName))
+				{
+					searcher.Filter = string.Format("(samaccountname={0})", accountName);
+					searcher.PropertiesToLoad.Add(ActiveDirectoryProperties.ObjectClass);
+					searchResult = searcher.FindOne();
+				}
+
+				if (searchResult == null)
+				{
+					resultData = new TryGetAccountClass_Data
+					{
+						IsUser = false,
+						IsGroup = false,
+						Result = false
+					};
+				}
+				else
+				{
+					resultData = new TryGetAccountClass_Data
+					{
+						IsUser = searchResult.Properties[ActiveDirectoryProperties.ObjectClass].Contains("user"),
+						IsGroup = searchResult.Properties[ActiveDirectoryProperties.ObjectClass].Contains("group"),
+						Result = true
+					};
+				}
+				_tryGetAccountClass.Add(cacheKey, resultData);
+			}
+
+			isUser = resultData.IsUser;
+			isGroup = resultData.IsGroup;
+			return resultData.Result;
+		}
+		private Dictionary<string, TryGetAccountClass_Data> _tryGetAccountClass = new Dictionary<string, TryGetAccountClass_Data>();
+		private class TryGetAccountClass_Data
+		{
+			public bool IsUser { get; set; }
+			public bool IsGroup { get; set; }
+			public bool Result { get; set; }
+		}
+		#endregion
 	}
 }

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Web.UI.WebControls;
-using System.Web.UI;
-using System.Globalization;
 using System.Diagnostics;
+using System.Globalization;
+using System.Reflection;
+using System.Text;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace Havit.Web.UI.WebControls
 {
@@ -25,6 +26,10 @@ namespace Havit.Web.UI.WebControls
 	/// </example>
 	public class GridViewCommandField : CommandFieldExt
 	{
+		#region Static fields
+		private static readonly MethodInfo _registerWebFormsScriptMethod = typeof(Page).GetMethod("RegisterWebFormsScript", BindingFlags.NonPublic | BindingFlags.Instance);
+		#endregion
+
 		#region DeleteConfirmationText
 		/// <summary>
 		/// Text, na který se má ptát jscript:confirm() před smazáním záznamu. Pokud je prázdný, na nic se neptá.
@@ -205,7 +210,8 @@ namespace Havit.Web.UI.WebControls
 						if (((rowState & DataControlRowState.Edit) != DataControlRowState.Normal) && showEditButton)
 						{
 							// stejné jako CommandField
-							this.AddButtonToCell(cell, "Update", HttpUtilityExt.GetResourceString(this.UpdateText), HttpUtilityExt.GetResourceString(this.UpdateTooltip), causesValidation, validationGroup, rowIndex, this.UpdateImageUrl);
+							Control control = (Control) this.AddButtonToCell(cell, "Update", HttpUtilityExt.GetResourceString(this.UpdateText), HttpUtilityExt.GetResourceString(this.UpdateTooltip), causesValidation, validationGroup, rowIndex, this.UpdateImageUrl);
+							control.PreRender += (sender, ea) => RegisterDefaultButton((Control)sender);
 							if (showCancelButton)
 							{
 								child = new LiteralControl("&nbsp;");
@@ -216,7 +222,8 @@ namespace Havit.Web.UI.WebControls
 						if (((rowState & DataControlRowState.Insert) != DataControlRowState.Normal) && showInsertButton)
 						{
 							// Nechceme Cancel
-							this.AddButtonToCell(cell, "Insert", HttpUtilityExt.GetResourceString(this.InsertText), HttpUtilityExt.GetResourceString(this.InsertTooltip), causesValidation, validationGroup, rowIndex, this.InsertImageUrl);
+							Control control = (Control)this.AddButtonToCell(cell, "Insert", HttpUtilityExt.GetResourceString(this.InsertText), HttpUtilityExt.GetResourceString(this.InsertTooltip), causesValidation, validationGroup, rowIndex, this.InsertImageUrl);
+							control.PreRender += (sender, ea) => RegisterDefaultButton((Control) sender);
 							/*
 							if (showCancelButton)
 							{
@@ -288,9 +295,26 @@ namespace Havit.Web.UI.WebControls
 							flag6 = false;
 						}
 						*/
-
 					}
 				}
+			}
+		}
+
+		#endregion
+
+		#region RegisterDefaultButton
+		/// <summary>
+		/// Zaregistruje button jako default button pro řádek
+		/// </summary>
+		private static void RegisterDefaultButton(Control control)
+		{
+			IAttributeAccessor attributeAccessor = control.NamingContainer as IAttributeAccessor;
+			if (attributeAccessor != null)
+			{
+				// tohle je odporné. Ale ta metoda je internal a nejrůznější controly v .NETu si ji klidně volají (jako Button, CheckBox, HtmlAnchor, .......), tak proč ne lišky. Tato metoda zajistí vložení vložení WebForms skriptů do stránky pro emulaci funčnosti DefaultButton u Panelu (který nepřímo tuto metodu používá taky - přes jinou internal)
+				_registerWebFormsScriptMethod.Invoke(control.Page, null);
+
+				attributeAccessor.SetAttribute("onkeypress", "return WebForm_FireDefaultButton(event, '" + control.ClientID + "');");
 			}
 		}
 		#endregion
@@ -298,7 +322,7 @@ namespace Havit.Web.UI.WebControls
 		#region AddButtonToCell
 		private IButtonControl AddButtonToCell(DataControlFieldCell cell, string commandName, string buttonText, string tooltipText, bool causesValidation, string validationGroup, int rowIndex, string imageUrl)
 		{
-			IButtonControl control;			
+			IButtonControl control;
 			IPostBackContainer container = this.Control as IPostBackContainer;
 			bool flag = true;
 			switch (this.ButtonType)
@@ -337,7 +361,7 @@ namespace Havit.Web.UI.WebControls
 					ImageButton imageButton;
 					if ((container != null) && !causesValidation)
 					{
-						imageButton = new DataControlImageButtonExt(container);						
+						imageButton = new DataControlImageButtonExt(container);
 						flag = false;
 					}
 					else
@@ -356,8 +380,8 @@ namespace Havit.Web.UI.WebControls
 			{
 				control.CausesValidation = causesValidation;
 			}
-			control.ValidationGroup = validationGroup;			
-			
+			control.ValidationGroup = validationGroup;
+
 			/* Customizace jednotlivých řádek */
 			Control buttonControl = (Control)control;
 			buttonControl.DataBinding += new EventHandler(this.ButtonControl_DataBinding);
@@ -379,7 +403,7 @@ namespace Havit.Web.UI.WebControls
 			Debug.Assert(sender != null);
 			Debug.Assert(sender is IButtonControl);
 			Debug.Assert((sender is LinkButton) || (sender is ImageButton) || (sender is Button));
-			
+
 			Control control = (Control)sender;
 			IButtonControl buttonControl = (IButtonControl)sender;
 
@@ -415,7 +439,7 @@ namespace Havit.Web.UI.WebControls
 			// nastavíme výsledek z argumentů do buttonu
 
 			control.Visible = args.Visible;
-			
+
 			// pokud je ZA controlem mezera (LiteralControl), chceme ji taky zobrazit/schovat
 			int index = control.Parent.Controls.IndexOf(control);
 			if ((index < control.Parent.Controls.Count - 1) && (control.Parent.Controls[index + 1] is LiteralControl))
@@ -438,7 +462,6 @@ namespace Havit.Web.UI.WebControls
 				Button button = (Button)sender;
 				button.Enabled = args.Enabled;
 			}
-			
 		}
 		#endregion
 
@@ -708,7 +731,7 @@ namespace Havit.Web.UI.WebControls
 					if (style.ViewState["SelectImageUrl"] != null)
 					{
 						this.SelectImageUrl = style.SelectImageUrl;
-					}					
+					}
 					if (style.ViewState["SelectText"] != null)
 					{
 						this.SelectText = style.SelectText;
@@ -753,7 +776,7 @@ namespace Havit.Web.UI.WebControls
 					{
 						this.Visible = style.Visible;
 					}
-					
+
 					// tooltipy
 					if (style.ViewState["CancelTooltip"] != null)
 					{
@@ -779,7 +802,6 @@ namespace Havit.Web.UI.WebControls
 					{
 						this.UpdateTooltip = style.UpdateTooltip;
 					}
-
 				}
 			}
 		}

@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Net.Mail;
 using System.Globalization;
 using System.Reflection;
+using System.Web;
 
 namespace Havit.Diagnostics
 {
@@ -144,6 +145,7 @@ namespace Havit.Diagnostics
 		private void SendTrace(TraceEventCache eventCache, string source, TraceEventType eventType, int id, params object[] data)
 		{
 			StringBuilder message = new StringBuilder();
+			DateTime now = DateTime.Now;
 
 			foreach (object item in data)
 			{
@@ -154,43 +156,37 @@ namespace Havit.Diagnostics
 				}
 			}
 
-			if (eventCache != null)
-			{
-				//message.AppendLine();
-				//message.AppendLine("Call stack:");
-				//message.AppendLine(eventCache.Callstack);
-				//message.AppendLine();
-
-				message.AppendLine("Event information:");
-				//foreach (object item in eventCache.LogicalOperationStack)
-				//{
-				//	if (item != null)
-				//	{
-				//		message.AppendLine(item.ToString());
-				//	}
-				//}
-				//message.AppendLine();
-
-				message.AppendLine("    Event time: " + eventCache.DateTime.ToLocalTime().ToString(CultureInfo.InstalledUICulture));
-				message.AppendLine("    Event UTC time: " + eventCache.DateTime.ToUniversalTime().ToString(CultureInfo.InstalledUICulture));
-
-				//message.Append("    ProcessId: ");
-				//message.AppendLine(eventCache.ProcessId.ToString());
-
-				//message.Append("    ThreadId: ");
-				//message.AppendLine(eventCache.ThreadId);
-
-				message.AppendLine();
-			}
+			message.AppendLine("Event information:");
+			message.AppendLine("    Event time: " + now.ToLocalTime().ToString(CultureInfo.InstalledUICulture));
+			message.AppendLine("    Event UTC time: " + now.ToUniversalTime().ToString(CultureInfo.InstalledUICulture));
+			message.AppendLine();
 
 			message.AppendLine("Thread information:");
 			message.AppendLine("    Culture: " + System.Threading.Thread.CurrentThread.CurrentCulture.Name);
 			message.AppendLine("    UI Culture: " + System.Threading.Thread.CurrentThread.CurrentUICulture.Name);
+			message.AppendLine("    Thread ID: " + System.Threading.Thread.CurrentThread.ManagedThreadId);
 			message.AppendLine();
 
-			message.AppendLine("Application info:");
-			message.AppendLine("    Entry assembly: " + Assembly.GetEntryAssembly().FullName);
-			message.AppendLine();
+			// pro konzolovky, ve webových aplikacích vrací null
+			// příklad: "TracingTest, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+			Assembly assembly = Assembly.GetEntryAssembly();
+
+			// pro requesty webových aplikací, v asynchronním tasku/threadu vrací HttpContext.Current null
+			if ((assembly == null) && (HttpContext.Current != null))
+			{
+				// příklad: "App_global.asax.agdxj0ym, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+				// v precompiled aplikaci bude, co čekáme
+				assembly = HttpContext.Current.ApplicationInstance.GetType().Assembly;
+			}
+
+			// pro asynchronní tasky/thready webových aplikací nevíme, jak získat assembly
+
+			if (assembly != null)
+			{
+				message.AppendLine("Application info:");
+				message.AppendLine("    Assembly: " + assembly.FullName);
+				message.AppendLine();
+			}
 
 			message.AppendLine("Environment:");
 			message.AppendLine("    Command line: " + Environment.CommandLine);
@@ -198,20 +194,7 @@ namespace Havit.Diagnostics
 			message.AppendLine("    Machine name: " + Environment.MachineName);
 			message.AppendLine("    User domain name: " + Environment.UserDomainName);
 			message.AppendLine("    .NET Framework: " + Environment.Version.ToString());
-			message.AppendLine("    .OS Version: " + Environment.OSVersion.ToString());
-			message.AppendLine();
-			
-			//if (!String.IsNullOrEmpty(source))
-			//{
-			//	message.Append("Source: ");
-			//	message.AppendLine(source);
-			//}
-
-			//message.Append("EventType: ");
-			//message.AppendLine(eventType.ToString("g"));
-
-			//message.Append("EventId: ");
-			//message.AppendLine(id.ToString("g"));
+			message.AppendLine("    OS Version: " + Environment.OSVersion.ToString());
 
 			SendMessage(message.ToString());
 		}

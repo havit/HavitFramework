@@ -166,6 +166,7 @@
     <Content Include="GridViewExt-Filtr.aspx" />
     <Content Include="IdentityMapScopeTest.aspx" />
     <Content Include="ScriptManagerTest.aspx" />
+    <Content Include="SmtpTraceListenerTest.aspx" />
     <Content Include="TextBoxTest.aspx" />
     <Content Include="DateTimeBoxTest.aspx" />
     <Content Include="DateTimeBoxWithSpecialDays.aspx" />
@@ -258,6 +259,13 @@
     </Compile>
     <Compile Include="ScriptManagerTest.aspx.designer.cs">
       <DependentUpon>ScriptManagerTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SmtpTraceListenerTest.aspx.cs">
+      <DependentUpon>SmtpTraceListenerTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SmtpTraceListenerTest.aspx.designer.cs">
+      <DependentUpon>SmtpTraceListenerTest.aspx</DependentUpon>
     </Compile>
     <Compile Include="TextBoxTest.aspx.cs">
       <DependentUpon>TextBoxTest.aspx</DependentUpon>

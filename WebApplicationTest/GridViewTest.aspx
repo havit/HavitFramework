@@ -9,6 +9,7 @@
 </head>
 <body>
     <form id="form1" runat="server">
+	<asp:ScriptManager runat="server" />
     <div>
 		<havit:EnterpriseGridView ID="TestGV1" SelectMethod="TestGV1_SelectMethod" UpdateMethod="TestGV1_UpdateMethod" AllowInserting="True" InsertRowPosition="Top" ItemType="Havit.BusinessLayerTest.Subjekt" AllowPaging="false" PageSize="100" PagerSettings-Position="Bottom" AutoCrudOperations="true" runat="server">
 			<Columns>

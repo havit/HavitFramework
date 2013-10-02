@@ -27,7 +27,7 @@ namespace Havit.Web.UI.WebControls
 	public class GridViewCommandField : CommandFieldExt
 	{
 		#region Static fields
-		private static readonly MethodInfo _registerWebFormsScriptMethod = typeof(Page).GetMethod("RegisterWebFormsScript", BindingFlags.NonPublic | BindingFlags.Instance);
+		private static readonly MethodInfo _registerWebFormsScriptMethod = typeof(Page).GetMethod("RegisterWebFormsScript", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 		#endregion
 
 		#region DeleteConfirmationText
@@ -211,7 +211,7 @@ namespace Havit.Web.UI.WebControls
 						{
 							// stejné jako CommandField
 							Control control = (Control) this.AddButtonToCell(cell, "Update", HttpUtilityExt.GetResourceString(this.UpdateText), HttpUtilityExt.GetResourceString(this.UpdateTooltip), causesValidation, validationGroup, rowIndex, this.UpdateImageUrl);
-							control.PreRender += (sender, ea) => RegisterDefaultButton((Control)sender);
+							control.PreRender += (sender, ea) => RegisterDefaultButton(control); // v tento okamžik není dostupný NamingContainer (control ještě není v řádku)
 							if (showCancelButton)
 							{
 								child = new LiteralControl("&nbsp;");
@@ -223,7 +223,7 @@ namespace Havit.Web.UI.WebControls
 						{
 							// Nechceme Cancel
 							Control control = (Control)this.AddButtonToCell(cell, "Insert", HttpUtilityExt.GetResourceString(this.InsertText), HttpUtilityExt.GetResourceString(this.InsertTooltip), causesValidation, validationGroup, rowIndex, this.InsertImageUrl);
-							control.PreRender += (sender, ea) => RegisterDefaultButton((Control) sender);
+							control.PreRender += (sender, ea) => RegisterDefaultButton(control); // v tento okamžik není dostupný NamingContainer (control ještě není v řádku)
 							/*
 							if (showCancelButton)
 							{
@@ -304,17 +304,22 @@ namespace Havit.Web.UI.WebControls
 
 		#region RegisterDefaultButton
 		/// <summary>
-		/// Zaregistruje button jako default button pro řádek
+		/// Zaregistruje button jako default button pro řádek.
 		/// </summary>
 		private static void RegisterDefaultButton(Control control)
 		{
 			IAttributeAccessor attributeAccessor = control.NamingContainer as IAttributeAccessor;
-			if (attributeAccessor != null)
+			if ((attributeAccessor != null) && (_registerWebFormsScriptMethod != null))
 			{
-				// tohle je odporné. Ale ta metoda je internal a nejrůznější controly v .NETu si ji klidně volají (jako Button, CheckBox, HtmlAnchor, .......), tak proč ne lišky. Tato metoda zajistí vložení vložení WebForms skriptů do stránky pro emulaci funčnosti DefaultButton u Panelu (který nepřímo tuto metodu používá taky - přes jinou internal)
+				// Tato metoda zajistí vložení vložení WebForms skriptů do stránky pro emulaci funčnosti DefaultButton u Panelu (který nepřímo tuto metodu používá taky - přes jinou internal)
 				_registerWebFormsScriptMethod.Invoke(control.Page, null);
 
-				attributeAccessor.SetAttribute("onkeypress", "return WebForm_FireDefaultButton(event, '" + control.ClientID + "');");
+				string firstScript = attributeAccessor.GetAttribute("onkeypressed") ?? String.Empty;
+				if (!String.IsNullOrEmpty(firstScript) && !firstScript.EndsWith(";"))
+				{
+					firstScript += ";";
+				}
+				attributeAccessor.SetAttribute("onkeypress", firstScript + "if (WebForm_FireDefaultButton) return WebForm_FireDefaultButton(event, '" + control.ClientID + "');");
 			}
 		}
 		#endregion

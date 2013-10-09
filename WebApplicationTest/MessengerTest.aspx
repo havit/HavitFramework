@@ -3,14 +3,21 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
 	<title>Untitled Page</title>
+	<link rel="stylesheet" type="text/css" href="content/toastr.css" />
 </head>
 <body>
 	<form id="form1" runat="server">
+		<asp:ScriptManager runat="server" />
 		<div>
-			<havit:MessengerControl ShowMessageBox="true" ShowSummary="true" runat="server" />
+			<havit:MessengerControl ShowMessageBox="false" ShowSummary="false" ShowToastr="true" runat="server" />
 			<asp:Button Text="PostBack" runat="server" />
-			<asp:Button ID="MessagesButton" Text="Add messages" runat="server" />
-			<input type=button value="x" onclick="window.setTimeout(function() {{ alert('hello'); }}, 10);" />
+			
+			<asp:UpdatePanel RenderMode="Inline" runat="server">
+				<ContentTemplate>
+					<asp:Button ID="MessagesButton" Text="Add messages" runat="server" />
+				</ContentTemplate>
+			</asp:UpdatePanel>
+
 		</div>
 	</form>
 </body>

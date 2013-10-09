@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Glimpse.AspNet</id>
+    <version>1.4.1</version>
+    <title>Glimpse ASP.NET</title>
+    <authors>nmolnar,  avanderhoorn</authors>
+    <owners>nmolnar,  avanderhoorn</owners>
+    <licenseUrl>http://www.opensource.org/licenses/apache2.0</licenseUrl>
+    <projectUrl>http://getglimpse.com/</projectUrl>
+    <iconUrl>http://getglimpse.com/content/glimpse100.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Glimpse is a web debugging and diagnostics tool used to gain a better understanding of whats happening inside of your ASP.NET 4.0 application. For ASP.NET MVC3 support, please NuGet Glimpse.MVC3.</description>
+    <summary>ASP.NET 4.0 web debugging and diagnostics tool.</summary>
+    <releaseNotes>Lightweight release for Asp.Net:
+ - Removed IpAddress as its not used anywhere 
+ - Fixed possible null refernce exception when access clientId
+ - Removed unused AspNet.Net35 Net35Backport</releaseNotes>
+    <tags>ASP.NET Web WebForms Glimpse</tags>
+    <dependencies>
+      <dependency id="Glimpse" version="1.6.1" />
+    </dependencies>
+  </metadata>
+</package>

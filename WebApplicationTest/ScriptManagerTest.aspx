@@ -13,11 +13,7 @@
 
     <asp:ScriptManager runat="server" />
 	
-	<asp:ScriptManagerProxy runat="server">
-		<Scripts>
-			<asp:ScriptReference/>
-		</Scripts>
-	</asp:ScriptManagerProxy>
+	<asp:ScriptManagerProxy runat="server" />
 
 
 	

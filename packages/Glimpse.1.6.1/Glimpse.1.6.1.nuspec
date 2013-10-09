@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Glimpse</id>
+    <version>1.6.1</version>
+    <title>Glimpse Core</title>
+    <authors>nmolnar,  avanderhoorn</authors>
+    <owners>nmolnar,  avanderhoorn</owners>
+    <licenseUrl>http://www.opensource.org/licenses/apache2.0</licenseUrl>
+    <projectUrl>http://getglimpse.com/</projectUrl>
+    <iconUrl>http://getglimpse.com/content/glimpse100.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Glimpse is a web debugging and diagnostics tool used to gain a better understanding of whats happening inside of your ASP.NET 4.0 application. For ASP.NET MVC3 support, please NuGet Glimpse.MVC3.</description>
+    <summary>ASP.NET 4.0 web debugging and diagnostics tool.</summary>
+    <releaseNotes>Welterweight release for Core:
+ - Switch images on Glimpse.axd page to their DataUri representations to avoid mixed content requests
+ - Switch href over from using "#" to "javascript:void(0)"
+ - Remove trailing commas in client
+ - Switch logo on the About tab over to the new logo
+ - Removed IpAddress as its not used anywhere</releaseNotes>
+    <tags>ASP.NET Web WebForms Glimpse diagnostics performance profiling timing</tags>
+  </metadata>
+</package>

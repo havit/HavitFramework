@@ -131,11 +131,13 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Glimpse.AspNet">
-      <HintPath>..\packages\Glimpse.AspNet.1.3.1\lib\net45\Glimpse.AspNet.dll</HintPath>
+    <Reference Include="Glimpse.AspNet, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Glimpse.AspNet.1.4.1\lib\net45\Glimpse.AspNet.dll</HintPath>
     </Reference>
-    <Reference Include="Glimpse.Core">
-      <HintPath>..\packages\Glimpse.1.5.0\lib\net45\Glimpse.Core.dll</HintPath>
+    <Reference Include="Glimpse.Core, Version=1.6.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Glimpse.1.6.1\lib\net45\Glimpse.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -159,6 +161,8 @@
     <Content Include="AutoSuggestMenu.aspx" />
     <Content Include="AutoSuggestMenuService.asmx" />
     <Content Include="CollapserTest.aspx" />
+    <Content Include="content\toastr.css" />
+    <Content Include="content\toastr.min.css" />
     <Content Include="ControlsValuesPersisterTest.aspx" />
     <EmbeddedResource Include="b.js" />
     <Content Include="Error.aspx" />
@@ -166,6 +170,12 @@
     <Content Include="GridViewExt-Filtr.aspx" />
     <Content Include="IdentityMapScopeTest.aspx" />
     <Content Include="ScriptManagerTest.aspx" />
+    <Content Include="content\toastr.less" />
+    <None Include="Scripts\jquery-2.0.3.intellisense.js" />
+    <Content Include="Scripts\jquery-2.0.3.js" />
+    <Content Include="Scripts\jquery-2.0.3.min.js" />
+    <Content Include="Scripts\toastr.js" />
+    <Content Include="Scripts\toastr.min.js" />
     <Content Include="SmtpTraceListenerTest.aspx" />
     <Content Include="TextBoxTest.aspx" />
     <Content Include="DateTimeBoxTest.aspx" />
@@ -180,6 +190,8 @@
     <Content Include="WebFormExceptionTest.aspx" />
     <Content Include="WebServiceExceptionTest.asmx" />
     <Content Include="WrapperTest.aspx" />
+    <Content Include="Scripts\toastr.min.js.map" />
+    <Content Include="Scripts\jquery-2.0.3.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_GlobalResources\Glossary.Designer.cs">
@@ -192,6 +204,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TestEnum.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_Start\ScriptManagerConfig.cs" />
     <Compile Include="AutoSuggestMenu.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>AutoSuggestMenu.aspx</DependentUpon>

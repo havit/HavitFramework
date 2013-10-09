@@ -14,9 +14,8 @@ namespace WebApplicationTest
 		#region Application_Start
 		protected void Application_Start(object sender, EventArgs e)
 		{
-
 			DateTimeBox.GetDateTimeBoxCustomizationDefault += new DateTimeBox.DateTimeBoxDateCustomizationEventHandler(DateTimeBox_GetDateTimeBoxCustomizationDefaults);
-
+			ScriptManagerConfig.RegisterScriptResourceMappings();
 		}
 		#endregion
 

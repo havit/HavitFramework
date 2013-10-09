@@ -233,6 +233,7 @@
     <Compile Include="UI\Adapters\SessionPageStatePersisterPageAdapter.cs" />
     <Compile Include="UI\FilePageStatePersister.cs" />
     <Compile Include="UI\PerUserNamingStrategy.cs" />
+    <Compile Include="UI\ScriptResourceMappingExt.cs" />
     <Compile Include="UI\WebControls\AutoFilterControlCreatedEventArgs.cs" />
     <Compile Include="UI\WebControls\AutoFilterDropDownList.cs" />
     <Compile Include="UI\WebControls\AutoFilterMode.cs" />

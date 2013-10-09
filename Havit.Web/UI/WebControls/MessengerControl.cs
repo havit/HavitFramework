@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Diagnostics;
 
@@ -52,6 +53,17 @@ namespace Havit.Web.UI.WebControls
 		} 
 		#endregion
 
+		#region ShowToastr
+		/// <summary>
+		/// Indikuje, zda se budou zprávy messengeru renderovat pro toastr (https://github.com/CodeSeven/toastr).
+		/// </summary>
+		public bool ShowToastr
+		{
+			get { return (bool)(ViewState["ShowToastr"] ?? false); }
+			set { ViewState["ShowToastr"] = value; }
+		}
+		#endregion
+
         #region OnPreRender
 		/// <summary>
 		/// Vyrenderuje html a/nebo script messengeru.
@@ -64,6 +76,7 @@ namespace Havit.Web.UI.WebControls
 			{
 				this.Text = this.GetSummaryHtml();
 			}
+
 			if (this.ShowMessageBox)
 			{
 				string messageBoxText = this.GetMessageBoxText();
@@ -71,7 +84,16 @@ namespace Havit.Web.UI.WebControls
 				{
 					//string script = String.Format("alert('{0}');", messageBoxText.Replace("'", "\\'"));
 					string script = String.Format("window.setTimeout(function() {{ alert('{0}'); }}, 10);", messageBoxText.Replace("'", "\\'"));
-					System.Web.UI.ScriptManager.RegisterStartupScript(this, typeof(MessengerControl), "Summary", script, true);
+					System.Web.UI.ScriptManager.RegisterStartupScript(this.Page, typeof(MessengerControl), "MessageBox", script, true);
+				}
+			}
+
+			if (this.ShowToastr)
+			{
+				string toastrScript = this.GetToastrScript();
+				if (!String.IsNullOrEmpty(toastrScript))
+				{
+					System.Web.UI.ScriptManager.RegisterStartupScript(this.Page, typeof(MessengerControl), "Toastr", toastrScript, true);
 				}
 			}
 
@@ -164,6 +186,52 @@ namespace Havit.Web.UI.WebControls
 		{
 			sb.Append(message.Text);
 			sb.Append("\\n");
+		}
+		#endregion
+
+		#region GetToastrScript, AddToastrScript
+		/// <summary>
+		/// Vrací script pro vyrenderování obsahu pro toastr.
+		/// </summary>
+		protected virtual string GetToastrScript()
+		{
+			ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, "jquery");
+			ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, "toastr");
+			if (Messenger.Messages.Count > 0)
+			{
+				StringBuilder sb = new StringBuilder();
+				foreach (MessengerMessage message in Messenger.Messages)
+				{
+					AddToastrScript(message, sb);
+				}
+				return sb.ToString();
+			}
+			return String.Empty;			
+		}
+
+		private void AddToastrScript(MessengerMessage message, StringBuilder sb)
+		{
+			string toasterMessageType;
+			switch (message.MessageType)
+			{
+				case MessageType.Information:
+					toasterMessageType = "success"; // enum má sice hodnotu information, ale používáme ve smyslu success
+					break;
+
+				case MessageType.Error:
+					toasterMessageType = "error";
+					break;
+
+				case MessageType.Warning:
+					toasterMessageType = "warning";
+					break;
+
+				default:
+					throw new ApplicationException("Neznámá hodnota MessageType.");
+			}
+
+			string toasterMessage = message.Text.Replace("'", "\\'");
+			sb.AppendFormat("toastr.{0}('{1}');", toasterMessageType, toasterMessage);
 		}
 		#endregion
 	}

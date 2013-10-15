@@ -18,7 +18,7 @@ namespace Havit
 		/// <param name="str">String expression from which the leftmost characters are returned.</param>
 		/// <param name="length">Numeric expression indicating how many characters to return. If 0, a zero-length string ("") is returned. If greater than or equal to the number of characters in Str, the entire string is returned.</param>
 		/// <returns>string containing a specified number of characters from the left side of a string</returns>
-		public static string Left(string str, int length)
+		public static string Left(this string str, int length)
 		{
 			if (length < 0)
 			{
@@ -41,7 +41,7 @@ namespace Havit
 		/// <param name="str">String expression from which the rightmost characters are returned.</param>
 		/// <param name="length">Numeric expression indicating how many characters to return. If 0, a zero-length string ("") is returned. If greater than or equal to the number of characters in <c>str</c>, the entire string is returned.</param>
 		/// <returns>string containing a specified number of characters from the right side of a string</returns>
-		public static string Right(string str, int length)
+		public static string Right(this string str, int length)
 		{
 			if (length < 0)
 			{

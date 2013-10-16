@@ -142,7 +142,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region InsertTooltip
 		/// <summary>
-		/// Tooltip tlačítko pro vložení nového záznamu.
+		/// Tooltip tlačítka pro vložení nového záznamu.
 		/// </summary>
 		public string InsertTooltip
 		{
@@ -159,10 +159,11 @@ namespace Havit.Web.UI.WebControls
 
 		#endregion
 
-		#region CssClasses (EditCssClass, CancelCssClass, SelectCssClass, UpdateCssClass, DeleteCssClass, InsertCssClass)
+		#region CssClasses (EditCssClass, EditDisabledCssClass, CancelCssClass, CancelDisabledCssClass, SelectCssClass, SelectDisabledCssClass, UpdateCssClass, UpdateDisabledCssClass, DeleteCssClass, DeleteDisabledCssClass, InsertCssClass, InsertDisabledCssClass)
+
 		#region EditCssClass
 		/// <summary>
-		/// CssClass tlačítka pro vstup do editace záznamu.
+		/// CssClass povolené tlačítka pro vstup do editace záznamu. Je-li hodnota vlastnosti EditDisabledCssClass prázdná, použije se i pro zakázané tlačítko.
 		/// </summary>
 		public string EditCssClass
 		{
@@ -177,9 +178,26 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region EditDisabledCssClass
+		/// <summary>
+		/// CssClass zakázané tlačítka pro vstup do editace záznamu. Je-li hodnota prázdná, použije se vlastnost EditCssClass i pro zakázané tlačítko.
+		/// </summary>
+		public string EditDisabledCssClass
+		{
+			get
+			{
+				return (string)(ViewState["EditDisabledCssClass"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["EditDisabledCssClass"] = value;
+			}
+		}
+		#endregion
+
 		#region CancelCssClass
 		/// <summary>
-		/// CssClass tlačítka pro zrušení editačního režimu bez úpravy záznamu (cancel).
+		/// CssClass povoleného tlačítka pro zrušení editačního režimu bez úpravy záznamu (cancel). Je-li hodnota vlastnosti CancelDisabledCssClass prázdná, použije se i pro zakázané tlačítko.
 		/// </summary>
 		public string CancelCssClass
 		{
@@ -194,9 +212,26 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region CancelDisabledCssClass
+		/// <summary>
+		/// CssClass zakázaného tlačítka pro zrušení editačního režimu bez úpravy záznamu (cancel). Je-li hodnota prázdná, použije se vlastnost CancelCssClass i pro zakázané tlačítko.
+		/// </summary>
+		public string CancelDisabledCssClass
+		{
+			get
+			{
+				return (string)(ViewState["CancelDisabledCssClass"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["CancelDisabledCssClass"] = value;
+			}
+		}
+		#endregion
+
 		#region SelectCssClass
 		/// <summary>
-		/// CssClass tlačítka pro výběr řádku.
+		/// CssClass povoleného tlačítka pro výběr řádku. Je-li hodnota vlastnosti SelectDisabledCssClass prázdná, použije se i pro zakázané tlačítko.
 		/// </summary>
 		public string SelectCssClass
 		{
@@ -211,9 +246,26 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region SelectDisabledCssClass
+		/// <summary>
+		/// CssClass zakázaného tlačítka pro výběr řádku. Je-li hodnota prázdná, použije se vlastnost SelectCssClass i pro zakázané tlačítko.
+		/// </summary>
+		public string SelectDisabledCssClass
+		{
+			get
+			{
+				return (string)(ViewState["SelectDisabledCssClass"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["SelectDisabledCssClass"] = value;
+			}
+		}
+		#endregion
+
 		#region UpdateCssClass
 		/// <summary>
-		/// CssClass  tlačítka pro potvrzení úpravy záznamu.
+		/// CssClass povoleného tlačítka pro potvrzení úpravy záznamu. Je-li hodnota vlastnosti UpdateDisabledCssClass prázdná, použije se i pro zakázané tlačítko.
 		/// </summary>
 		public string UpdateCssClass
 		{
@@ -228,9 +280,26 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region UpdateDisabledCssClass
+		/// <summary>
+		/// CssClass zakázaného tlačítka pro potvrzení úpravy záznamu. Je-li hodnota prázdná, použije se vlastnost UpdateCssClass i pro zakázané tlačítko.
+		/// </summary>
+		public string UpdateDisabledCssClass
+		{
+			get
+			{
+				return (string)(ViewState["UpdateDisabledCssClass"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["UpdateDisabledCssClass"] = value;
+			}
+		}
+		#endregion
+
 		#region DeleteCssClass
 		/// <summary>
-		/// CssClass tlačítka pro smazání záznamu.
+		/// CssClass povoleného tlačítka pro smazání záznamu. Je-li hodnota vlastnosti DeleteDisabledCssClass prázdná, použije se i pro zakázané tlačítko.
 		/// </summary>
 		public string DeleteCssClass
 		{
@@ -245,9 +314,26 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region DeleteDisabledCssClass
+		/// <summary>
+		/// CssClass zakázaného tlačítka pro smazání záznamu. Je-li hodnota prázdná, použije se vlastnost DeleteCssClass i pro zakázané tlačítko.
+		/// </summary>
+		public string DeleteDisabledCssClass
+		{
+			get
+			{
+				return (string)(ViewState["DeleteDisabledCssClass"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["DeleteDisabledCssClass"] = value;
+			}
+		}
+		#endregion
+
 		#region InsertCssClass
 		/// <summary>
-		/// CssClass tlačítko pro vložení nového záznamu.
+		/// CssClass povoleného tlačítka pro vložení nového záznamu. Je-li hodnota vlastnosti InsertDisabledCssClass prázdná, použije se i pro zakázané tlačítko.
 		/// </summary>
 		public string InsertCssClass
 		{
@@ -262,6 +348,22 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region InsertDisabledCssClass
+		/// <summary>
+		/// CssClass zakázaného tlačítka pro vložení nového záznamu. Je-li hodnota prázdná, použije se vlastnost InsertCssClass i pro zakázané tlačítko.
+		/// </summary>
+		public string InsertDisabledCssClass
+		{
+			get
+			{
+				return (string)(ViewState["InsertDisabledCssClass"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["InsertDisabledCssClass"] = value;
+			}
+		}
+		#endregion
 		#endregion
 
 		#region Initialize
@@ -316,19 +418,19 @@ namespace Havit.Web.UI.WebControls
 						if (((rowState & DataControlRowState.Edit) != DataControlRowState.Normal) && showEditButton)
 						{
 							// stejné jako CommandField
-							Control control = (Control) this.AddButtonToCell(cell, "Update", HttpUtilityExt.GetResourceString(this.UpdateText), HttpUtilityExt.GetResourceString(this.UpdateTooltip), UpdateCssClass, causesValidation, validationGroup, rowIndex, this.UpdateImageUrl);
+							Control control = (Control)this.AddButtonToCell(cell, "Update", HttpUtilityExt.GetResourceString(this.UpdateText), HttpUtilityExt.GetResourceString(this.UpdateTooltip), UpdateCssClass, UpdateDisabledCssClass, causesValidation, validationGroup, rowIndex, this.UpdateImageUrl);
 							control.PreRender += (sender, ea) => RegisterDefaultButton(control); // v tento okamžik není dostupný NamingContainer (control ještě není v řádku)
 							if (showCancelButton)
 							{
 								child = new LiteralControl("&nbsp;");
 								cell.Controls.Add(child);
-								this.AddButtonToCell(cell, "Cancel", HttpUtilityExt.GetResourceString(this.CancelText), HttpUtilityExt.GetResourceString(this.CancelTooltip), CancelCssClass, false, string.Empty, rowIndex, this.CancelImageUrl);
+								this.AddButtonToCell(cell, "Cancel", HttpUtilityExt.GetResourceString(this.CancelText), HttpUtilityExt.GetResourceString(this.CancelTooltip), CancelCssClass, CancelDisabledCssClass, false, string.Empty, rowIndex, this.CancelImageUrl);
 							}
 						}
 						if (((rowState & DataControlRowState.Insert) != DataControlRowState.Normal) && showInsertButton)
 						{
 							// Nechceme Cancel
-							Control control = (Control)this.AddButtonToCell(cell, "Insert", HttpUtilityExt.GetResourceString(this.InsertText), HttpUtilityExt.GetResourceString(this.InsertTooltip), InsertCssClass, causesValidation, validationGroup, rowIndex, this.InsertImageUrl);
+							Control control = (Control)this.AddButtonToCell(cell, "Insert", HttpUtilityExt.GetResourceString(this.InsertText), HttpUtilityExt.GetResourceString(this.InsertTooltip), InsertCssClass, InsertDisabledCssClass, causesValidation, validationGroup, rowIndex, this.InsertImageUrl);
 							control.PreRender += (sender, ea) => RegisterDefaultButton(control); // v tento okamžik není dostupný NamingContainer (control ještě není v řádku)
 							/*
 							if (showCancelButton)
@@ -344,7 +446,7 @@ namespace Havit.Web.UI.WebControls
 					{
 						if (showSelectButton)
 						{
-							this.AddButtonToCell(cell, "Select", HttpUtilityExt.GetResourceString(this.SelectText), HttpUtilityExt.GetResourceString(this.SelectTooltip), SelectCssClass, false, string.Empty, rowIndex, this.SelectImageUrl);
+							this.AddButtonToCell(cell, "Select", HttpUtilityExt.GetResourceString(this.SelectText), HttpUtilityExt.GetResourceString(this.SelectTooltip), SelectCssClass, SelectDisabledCssClass, false, string.Empty, rowIndex, this.SelectImageUrl);
 							insertSpace = false;
 						}
 						if (showEditButton)
@@ -354,7 +456,7 @@ namespace Havit.Web.UI.WebControls
 								child = new LiteralControl("&nbsp;");
 								cell.Controls.Add(child);
 							}
-							this.AddButtonToCell(cell, "Edit", HttpUtilityExt.GetResourceString(this.EditText), HttpUtilityExt.GetResourceString(this.EditTooltip), EditCssClass, false, string.Empty, rowIndex, this.EditImageUrl);
+							this.AddButtonToCell(cell, "Edit", HttpUtilityExt.GetResourceString(this.EditText), HttpUtilityExt.GetResourceString(this.EditTooltip), EditCssClass, EditDisabledCssClass, false, string.Empty, rowIndex, this.EditImageUrl);
 							insertSpace = false;
 						}
 						if (showDeleteButton)
@@ -365,7 +467,7 @@ namespace Havit.Web.UI.WebControls
 								cell.Controls.Add(child);
 							}
 
-							IButtonControl button = this.AddButtonToCell(cell, "Delete", HttpUtilityExt.GetResourceString(this.DeleteText), HttpUtilityExt.GetResourceString(this.DeleteTooltip), DeleteCssClass, false, string.Empty, rowIndex, this.DeleteImageUrl);
+							IButtonControl button = this.AddButtonToCell(cell, "Delete", HttpUtilityExt.GetResourceString(this.DeleteText), HttpUtilityExt.GetResourceString(this.DeleteTooltip), DeleteCssClass, DeleteDisabledCssClass, false, string.Empty, rowIndex, this.DeleteImageUrl);
 
 							// doplneni o DeleteConfirmText
 							string deleteConfirmationTextResolved = HttpUtilityExt.GetResourceString(DeleteConfirmationText);
@@ -418,7 +520,7 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 
 		#region AddButtonToCell
-		private IButtonControl AddButtonToCell(DataControlFieldCell cell, string commandName, string buttonText, string tooltipText, string cssClass, bool causesValidation, string validationGroup, int rowIndex, string imageUrl)
+		private IButtonControl AddButtonToCell(DataControlFieldCell cell, string commandName, string buttonText, string tooltipText, string cssClass, string cssClassDisabled, bool causesValidation, string validationGroup, int rowIndex, string imageUrl)
 		{
 			IButtonControl control;
 			IPostBackContainer container = this.Control as IPostBackContainer;
@@ -486,7 +588,7 @@ namespace Havit.Web.UI.WebControls
 
 			/* Customizace jednotlivých řádek */
 			Control buttonControl = (Control)control;
-			buttonControl.DataBinding += new EventHandler(this.ButtonControl_DataBinding);
+			buttonControl.DataBinding += (sender, eventArgs) => ButtonControl_HandleDataBinding((Control)sender, cssClassDisabled);
 
 			cell.Controls.Add((WebControl)control);
 			return control;
@@ -494,20 +596,14 @@ namespace Havit.Web.UI.WebControls
 
 		#endregion
 
-		#region ButtonControl_DataBinding (customizace command-buttonu)
-		/// <summary>
-		/// Handles the DataBinding event of the buttonControl control.
-		/// </summary>
-		/// <param name="sender">The source of the event.</param>
-		/// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-		private void ButtonControl_DataBinding(object sender, EventArgs e)
+		#region ButtonControl_HandleDataBinding (customizace command-buttonu)
+		private void ButtonControl_HandleDataBinding(Control control, string cssClassDisabled)
 		{
-			Debug.Assert(sender != null);
-			Debug.Assert(sender is IButtonControl);
-			Debug.Assert((sender is LinkButton) || (sender is ImageButton) || (sender is Button));
+			Debug.Assert(control != null);
+			Debug.Assert(control is IButtonControl);
+			Debug.Assert((control is LinkButton) || (control is ImageButton) || (control is Button));
 
-			Control control = (Control)sender;
-			IButtonControl buttonControl = (IButtonControl)sender;
+			IButtonControl buttonControl = (IButtonControl)control;
 
 			DataControlFieldCell cell = (DataControlFieldCell)control.Parent;
 			Debug.Assert(cell != null);
@@ -549,20 +645,32 @@ namespace Havit.Web.UI.WebControls
 				control.Parent.Controls[index + 1].Visible = args.Visible;
 			}
 
-			if (sender is LinkButton)
+			if (control is LinkButton)
 			{
-				LinkButton linkButton = (LinkButton)sender;
+				LinkButton linkButton = (LinkButton)control;
 				linkButton.Enabled = args.Enabled;
+				if (!args.Enabled && !String.IsNullOrEmpty(cssClassDisabled))
+				{
+					linkButton.CssClass = cssClassDisabled;
+				}
 			}
-			else if (sender is ImageButton)
+			else if (control is ImageButton)
 			{
-				ImageButton imageButton = (ImageButton)sender;
+				ImageButton imageButton = (ImageButton)control;
 				imageButton.Enabled = args.Enabled;
+				if (!args.Enabled && !String.IsNullOrEmpty(cssClassDisabled))
+				{
+					imageButton.CssClass = cssClassDisabled;
+				}
 			}
-			else if (sender is Button)
+			else if (control is Button)
 			{
-				Button button = (Button)sender;
+				Button button = (Button)control;
 				button.Enabled = args.Enabled;
+				if (!args.Enabled && !String.IsNullOrEmpty(cssClassDisabled))
+				{
+					button.CssClass = cssClassDisabled;
+				}
 			}
 		}
 		#endregion
@@ -740,6 +848,57 @@ namespace Havit.Web.UI.WebControls
 					{
 						this.UpdateTooltip = style.UpdateTooltip;
 					}
+
+					// css classes
+					if (ViewState["CancelCssClass"] == null)
+					{
+						this.CancelCssClass = style.CancelCssClass;
+					}
+					if (ViewState["CancelDisabledCssClass"] == null)
+					{
+						this.CancelDisabledCssClass = style.CancelDisabledCssClass;
+					}
+					if (ViewState["DeleteCssClass"] == null)
+					{
+						this.DeleteCssClass = style.DeleteCssClass;
+					}
+					if (ViewState["DeleteDisabledCssClass"] == null)
+					{
+						this.DeleteDisabledCssClass = style.DeleteDisabledCssClass;
+					}
+					if (ViewState["EditCssClass"] == null)
+					{
+						this.EditCssClass = style.EditCssClass;
+					}
+					if (ViewState["EditDisabledCssClass"] == null)
+					{
+						this.EditDisabledCssClass = style.EditDisabledCssClass;
+					}
+					if (ViewState["InsertCssClass"] == null)
+					{
+						this.InsertCssClass = style.InsertCssClass;
+					}
+					if (ViewState["InsertDisabledCssClass"] == null)
+					{
+						this.InsertDisabledCssClass = style.InsertDisabledCssClass;
+					}
+					if (ViewState["SelectCssClass"] == null)
+					{
+						this.SelectCssClass = style.SelectCssClass;
+					}
+					if (ViewState["SelectDisabledCssClass"] == null)
+					{
+						this.SelectDisabledCssClass = style.SelectDisabledCssClass;
+					}
+					if (ViewState["UpdateCssClass"] == null)
+					{
+						this.UpdateCssClass = style.UpdateCssClass;
+					}
+					if (ViewState["UpdateDisabledCssClass"] == null)
+					{
+						this.UpdateDisabledCssClass = style.UpdateDisabledCssClass;
+					}
+
 				}
 
 				if (theme)
@@ -903,6 +1062,56 @@ namespace Havit.Web.UI.WebControls
 					if (style.ViewState["UpdateTooltip"] != null)
 					{
 						this.UpdateTooltip = style.UpdateTooltip;
+					}
+
+					// css classes
+					if (style.ViewState["CancelCssClass"] != null)
+					{
+						this.CancelCssClass = style.CancelCssClass;
+					}
+					if (style.ViewState["CancelDisabledCssClass"] != null)
+					{
+						this.CancelDisabledCssClass = style.CancelDisabledCssClass;
+					}
+					if (style.ViewState["DeleteCssClass"] != null)
+					{
+						this.DeleteCssClass = style.DeleteCssClass;
+					}
+					if (style.ViewState["DeleteDisabledCssClass"] != null)
+					{
+						this.DeleteDisabledCssClass = style.DeleteDisabledCssClass;
+					}
+					if (style.ViewState["EditCssClass"] != null)
+					{
+						this.EditCssClass = style.EditCssClass;
+					}
+					if (style.ViewState["EditDisabledCssClass"] != null)
+					{
+						this.EditDisabledCssClass = style.EditDisabledCssClass;
+					}
+					if (style.ViewState["InsertCssClass"] != null)
+					{
+						this.InsertCssClass = style.InsertCssClass;
+					}
+					if (style.ViewState["InsertDisabledCssClass"] != null)
+					{
+						this.InsertDisabledCssClass = style.InsertDisabledCssClass;
+					}
+					if (style.ViewState["SelectCssClass"] != null)
+					{
+						this.SelectCssClass = style.SelectCssClass;
+					}
+					if (style.ViewState["SelectDisabledCssClass"] != null)
+					{
+						this.SelectDisabledCssClass = style.SelectDisabledCssClass;
+					}
+					if (style.ViewState["UpdateCssClass"] != null)
+					{
+						this.UpdateCssClass = style.UpdateCssClass;
+					}
+					if (style.ViewState["UpdateDisabledCssClass"] != null)
+					{
+						this.UpdateDisabledCssClass = style.UpdateDisabledCssClass;
 					}
 				}
 			}

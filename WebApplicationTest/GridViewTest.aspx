@@ -8,13 +8,14 @@
     <title>Untitled Page</title>
 </head>
 <style>
-	.red { color: red; }
+	.deletebtn { font-weight: bold; }
+	.deletebtn-disabled { text-decoration:line-through; }
 </style>
 <body>
     <form id="form1" runat="server">
 	<asp:ScriptManager runat="server" />
     <div>
-		<havit:EnterpriseGridView ID="TestGV1" SelectMethod="TestGV1_SelectMethod" UpdateMethod="TestGV1_UpdateMethod" AllowInserting="True" InsertRowPosition="Top" ItemType="Havit.BusinessLayerTest.Subjekt" AllowPaging="false" PageSize="100" PagerSettings-Position="Bottom" AutoCrudOperations="true" runat="server">
+		<havit:EnterpriseGridView ID="TestGV1" SkinID="SkinTest" SelectMethod="TestGV1_SelectMethod" UpdateMethod="TestGV1_UpdateMethod" AllowInserting="True" InsertRowPosition="Top" ItemType="Havit.BusinessLayerTest.Subjekt" AllowPaging="false" PageSize="100" PagerSettings-Position="Bottom" AutoCrudOperations="true" runat="server">
 			<Columns>
 				<havit:BoundFieldExt DataField="Nazev" SortExpression="Nazev" HeaderText="Název" />
 				<havit:TemplateFieldExt SortExpression="Nazev" HeaderText="Název">
@@ -25,7 +26,7 @@
 						<asp:TextBox ID="NazevTextBox" Text="<%# BindItem.Nazev %>" runat="server" />
 					</EditItemTemplate>
 				</havit:TemplateFieldExt>
-				<havit:GridViewCommandField ButtonType="Link" ShowCancelButton="true" ShowDeleteButton="true" ShowInsertButton="true" ShowEditButton="true" DeleteCssClass="red" />
+				<havit:GridViewCommandField ButtonType="Link" ShowCancelButton="true" ShowDeleteButton="true" ShowInsertButton="true" ShowEditButton="true" />
 			</Columns>
 		</havit:EnterpriseGridView>
 

@@ -903,7 +903,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region CancelTooltip
 		/// <summary>
-		/// Tooltip tlačítka pro storno.
+		/// Tooltip tlačítka pro zrušení editačního režimu bez úpravy záznamu (cancel).
 		/// </summary>
 		public string CancelTooltip
 		{
@@ -920,7 +920,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region DeleteTooltip
 		/// <summary>
-		/// Tooltip tlačítka pro smazání.
+		/// Tooltip tlačítka pro smazání záznamu.
 		/// </summary>
 		[Category("Appearance")]
 		[DefaultValue("")]
@@ -939,7 +939,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region EditTooltip
 		/// <summary>
-		/// Tooltip editačního tlačítka.
+		/// Tooltip tlačítka pro vstup do editace záznamu.
 		/// </summary>
 		[Category("Appearance")]
 		[DefaultValue("")]
@@ -958,7 +958,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region InsertTooltip
 		/// <summary>
-		/// Tooltip tlačítka pro vložení.
+		/// Tooltip tlačítka pro vložení nového záznamu.
 		/// </summary>
 		[Category("Appearance")]
 		[DefaultValue("")]
@@ -977,7 +977,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region SelectTooltip
 		/// <summary>
-		/// Tooltip tlačítka pro výběr.
+		/// Tooltip tlačítka pro výběr řádku.
 		/// </summary>
 		[Category("Appearance")]
 		[DefaultValue("")]
@@ -996,7 +996,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region UpdateTooltip
 		/// <summary>
-		/// Tooltip tlačítka pro aktualizaci.
+		/// Tooltip  tlačítka pro potvrzení úpravy záznamu.
 		/// </summary>
 		[Category("Appearance")]
 		[DefaultValue("")]
@@ -1012,6 +1012,234 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		#endregion
+		#endregion
+
+		#region CssClasses
+
+		#region CancelCssClass
+		/// <summary>
+		/// CssClass povoleného tlačítka pro zrušení editačního režimu bez úpravy záznamu (cancel). Je-li hodnota vlastnosti CancelDisabledCssClass prázdná, použije se i pro zakázané tlačítko.
+		/// </summary>
+		public string CancelCssClass
+		{
+			get
+			{
+				return (string)(ViewState["CancelCssClass"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["CancelCssClass"] = value;
+			}
+		}
+		#endregion
+
+		#region CancelDisabledCssClass
+		/// <summary>
+		/// CssClass zakázaného tlačítka pro zrušení editačního režimu bez úpravy záznamu (cancel). Je-li hodnota prázdná, použije se vlastnost CancelCssClass i pro zakázané tlačítko.
+		/// </summary>
+		public string CancelDisabledCssClass
+		{
+			get
+			{
+				return (string)(ViewState["CancelDisabledCssClass"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["CancelDisabledCssClass"] = value;
+			}
+		}
+		#endregion
+
+		#region DeleteCssClass
+		/// <summary>
+		/// CssClass povoleného tlačítka pro smazání záznamu. Je-li hodnota vlastnosti DeleteDisabledCssClass prázdná, použije se i pro zakázané tlačítko.
+		/// </summary>
+		[Category("Appearance")]
+		[DefaultValue("")]
+		public string DeleteCssClass
+		{
+			get
+			{
+				return (string)(ViewState["DeleteCssClass"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["DeleteCssClass"] = value;
+			}
+		}
+		#endregion
+
+		#region DeleteDisabledCssClass
+		/// <summary>
+		/// CssClass zakázaného tlačítka pro smazání záznamu. Je-li hodnota prázdná, použije se vlastnost DeleteCssClass i pro zakázané tlačítko.
+		/// </summary>
+		[Category("Appearance")]
+		[DefaultValue("")]
+		public string DeleteDisabledCssClass
+		{
+			get
+			{
+				return (string)(ViewState["DeleteDisabledCssClass"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["DeleteDisabledCssClass"] = value;
+			}
+		}
+		#endregion
+
+		#region EditCssClass
+		/// <summary>
+		/// CssClass povolené tlačítka pro vstup do editace záznamu. Je-li hodnota vlastnosti EditDisabledCssClass prázdná, použije se i pro zakázané tlačítko.
+		/// </summary>
+		[Category("Appearance")]
+		[DefaultValue("")]
+		public string EditCssClass
+		{
+			get
+			{
+				return (string)(ViewState["EditCssClass"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["EditCssClass"] = value;
+			}
+		}
+		#endregion
+
+		#region EditDisabledCssClass
+		/// <summary>
+		/// CssClass zakázané tlačítka pro vstup do editace záznamu. Je-li hodnota prázdná, použije se vlastnost EditCssClass i pro zakázané tlačítko.
+		/// </summary>
+		[Category("Appearance")]
+		[DefaultValue("")]
+		public string EditDisabledCssClass
+		{
+			get
+			{
+				return (string)(ViewState["EditDisabledCssClass"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["EditDisabledCssClass"] = value;
+			}
+		}
+		#endregion
+
+		#region InsertCssClass
+		/// <summary>
+		/// CssClass povoleného tlačítka pro vložení nového záznamu. Je-li hodnota vlastnosti InsertDisabledCssClass prázdná, použije se i pro zakázané tlačítko.
+		/// </summary>
+		[Category("Appearance")]
+		[DefaultValue("")]
+		public string InsertCssClass
+		{
+			get
+			{
+				return (string)(ViewState["InsertCssClass"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["InsertCssClass"] = value;
+			}
+		}
+		#endregion
+
+		#region InsertDisabledCssClass
+		/// <summary>
+		/// CssClass zakázaného tlačítka pro vložení nového záznamu. Je-li hodnota prázdná, použije se vlastnost InsertCssClass i pro zakázané tlačítko.
+		/// </summary>
+		[Category("Appearance")]
+		[DefaultValue("")]
+		public string InsertDisabledCssClass
+		{
+			get
+			{
+				return (string)(ViewState["InsertDisabledCssClass"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["InsertDisabledCssClass"] = value;
+			}
+		}
+		#endregion
+
+		#region SelectCssClass
+		/// <summary>
+		/// CssClass povoleného tlačítka pro výběr řádku. Je-li hodnota vlastnosti SelectDisabledCssClass prázdná, použije se i pro zakázané tlačítko.
+		/// </summary>
+		[Category("Appearance")]
+		[DefaultValue("")]
+		public string SelectCssClass
+		{
+			get
+			{
+				return (string)(ViewState["SelectCssClass"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["SelectCssClass"] = value;
+			}
+		}
+		#endregion
+
+		#region SelectDisabledCssClass
+		/// <summary>
+		/// CssClass zakázaného tlačítka pro výběr řádku. Je-li hodnota prázdná, použije se vlastnost SelectCssClass i pro zakázané tlačítko.
+		/// </summary>
+		[Category("Appearance")]
+		[DefaultValue("")]
+		public string SelectDisabledCssClass
+		{
+			get
+			{
+				return (string)(ViewState["SelectDisabledCssClass"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["SelectDisabledCssClass"] = value;
+			}
+		}
+		#endregion
+
+		#region UpdateCssClass
+		/// <summary>
+		/// CssClass povoleného tlačítka pro potvrzení úpravy záznamu. Je-li hodnota vlastnosti UpdateDisabledCssClass prázdná, použije se i pro zakázané tlačítko.
+		/// </summary>
+		[Category("Appearance")]
+		[DefaultValue("")]
+		public string UpdateCssClass
+		{
+			get
+			{
+				return (string)(ViewState["UpdateCssClass"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["UpdateCssClass"] = value;
+			}
+		}
+		#endregion
+
+		#region UpdateDisabledCssClass
+		/// <summary>
+		/// CssClass zakázaného tlačítka pro potvrzení úpravy záznamu. Je-li hodnota prázdná, použije se vlastnost UpdateCssClass i pro zakázané tlačítko.
+		/// </summary>
+		[Category("Appearance")]
+		[DefaultValue("")]
+		public string UpdateDisabledCssClass
+		{
+			get
+			{
+				return (string)(ViewState["UpdateDisabledCssClass"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["UpdateDisabledCssClass"] = value;
+			}
+		}
+		#endregion
+
 		#endregion
 
 		#endregion

@@ -7,6 +7,9 @@
 <head runat="server">
     <title>Untitled Page</title>
 </head>
+<style>
+	.red { color: red; }
+</style>
 <body>
     <form id="form1" runat="server">
 	<asp:ScriptManager runat="server" />
@@ -22,7 +25,7 @@
 						<asp:TextBox ID="NazevTextBox" Text="<%# BindItem.Nazev %>" runat="server" />
 					</EditItemTemplate>
 				</havit:TemplateFieldExt>
-				<havit:GridViewCommandField ShowCancelButton="true" ShowDeleteButton="true" ShowInsertButton="true" ShowEditButton="true" />
+				<havit:GridViewCommandField ButtonType="Link" ShowCancelButton="true" ShowDeleteButton="true" ShowInsertButton="true" ShowEditButton="true" DeleteCssClass="red" />
 			</Columns>
 		</havit:EnterpriseGridView>
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Globalization;
 using System.Reflection;
 using System.Text;
@@ -158,6 +159,111 @@ namespace Havit.Web.UI.WebControls
 
 		#endregion
 
+		#region CssClasses (EditCssClass, CancelCssClass, SelectCssClass, UpdateCssClass, DeleteCssClass, InsertCssClass)
+		#region EditCssClass
+		/// <summary>
+		/// CssClass tlačítka pro vstup do editace záznamu.
+		/// </summary>
+		public string EditCssClass
+		{
+			get
+			{
+				return (string)(ViewState["EditCssClass"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["EditCssClass"] = value;
+			}
+		}
+		#endregion
+
+		#region CancelCssClass
+		/// <summary>
+		/// CssClass tlačítka pro zrušení editačního režimu bez úpravy záznamu (cancel).
+		/// </summary>
+		public string CancelCssClass
+		{
+			get
+			{
+				return (string)(ViewState["CancelCssClass"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["CancelCssClass"] = value;
+			}
+		}
+		#endregion
+
+		#region SelectCssClass
+		/// <summary>
+		/// CssClass tlačítka pro výběr řádku.
+		/// </summary>
+		public string SelectCssClass
+		{
+			get
+			{
+				return (string)(ViewState["SelectCssClass"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["SelectCssClass"] = value;
+			}
+		}
+		#endregion
+
+		#region UpdateCssClass
+		/// <summary>
+		/// CssClass  tlačítka pro potvrzení úpravy záznamu.
+		/// </summary>
+		public string UpdateCssClass
+		{
+			get
+			{
+				return (string)(ViewState["UpdateCssClass"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["UpdateCssClass"] = value;
+			}
+		}
+		#endregion
+
+		#region DeleteCssClass
+		/// <summary>
+		/// CssClass tlačítka pro smazání záznamu.
+		/// </summary>
+		public string DeleteCssClass
+		{
+			get
+			{
+				return (string)(ViewState["DeleteCssClass"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["DeleteCssClass"] = value;
+			}
+		}
+		#endregion
+
+		#region InsertCssClass
+		/// <summary>
+		/// CssClass tlačítko pro vložení nového záznamu.
+		/// </summary>
+		public string InsertCssClass
+		{
+			get
+			{
+				return (string)(ViewState["InsertCssClass"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["InsertCssClass"] = value;
+			}
+		}
+		#endregion
+
+		#endregion
+
 		#region Initialize
 		/// <summary>
 		/// Inicializuje field (volá se jednou z GridView.CreateChildControls()).
@@ -210,19 +316,19 @@ namespace Havit.Web.UI.WebControls
 						if (((rowState & DataControlRowState.Edit) != DataControlRowState.Normal) && showEditButton)
 						{
 							// stejné jako CommandField
-							Control control = (Control) this.AddButtonToCell(cell, "Update", HttpUtilityExt.GetResourceString(this.UpdateText), HttpUtilityExt.GetResourceString(this.UpdateTooltip), causesValidation, validationGroup, rowIndex, this.UpdateImageUrl);
+							Control control = (Control) this.AddButtonToCell(cell, "Update", HttpUtilityExt.GetResourceString(this.UpdateText), HttpUtilityExt.GetResourceString(this.UpdateTooltip), UpdateCssClass, causesValidation, validationGroup, rowIndex, this.UpdateImageUrl);
 							control.PreRender += (sender, ea) => RegisterDefaultButton(control); // v tento okamžik není dostupný NamingContainer (control ještě není v řádku)
 							if (showCancelButton)
 							{
 								child = new LiteralControl("&nbsp;");
 								cell.Controls.Add(child);
-								this.AddButtonToCell(cell, "Cancel", HttpUtilityExt.GetResourceString(this.CancelText), HttpUtilityExt.GetResourceString(this.CancelTooltip), false, string.Empty, rowIndex, this.CancelImageUrl);
+								this.AddButtonToCell(cell, "Cancel", HttpUtilityExt.GetResourceString(this.CancelText), HttpUtilityExt.GetResourceString(this.CancelTooltip), CancelCssClass, false, string.Empty, rowIndex, this.CancelImageUrl);
 							}
 						}
 						if (((rowState & DataControlRowState.Insert) != DataControlRowState.Normal) && showInsertButton)
 						{
 							// Nechceme Cancel
-							Control control = (Control)this.AddButtonToCell(cell, "Insert", HttpUtilityExt.GetResourceString(this.InsertText), HttpUtilityExt.GetResourceString(this.InsertTooltip), causesValidation, validationGroup, rowIndex, this.InsertImageUrl);
+							Control control = (Control)this.AddButtonToCell(cell, "Insert", HttpUtilityExt.GetResourceString(this.InsertText), HttpUtilityExt.GetResourceString(this.InsertTooltip), InsertCssClass, causesValidation, validationGroup, rowIndex, this.InsertImageUrl);
 							control.PreRender += (sender, ea) => RegisterDefaultButton(control); // v tento okamžik není dostupný NamingContainer (control ještě není v řádku)
 							/*
 							if (showCancelButton)
@@ -238,7 +344,7 @@ namespace Havit.Web.UI.WebControls
 					{
 						if (showSelectButton)
 						{
-							this.AddButtonToCell(cell, "Select", HttpUtilityExt.GetResourceString(this.SelectText), HttpUtilityExt.GetResourceString(this.SelectTooltip), false, string.Empty, rowIndex, this.SelectImageUrl);
+							this.AddButtonToCell(cell, "Select", HttpUtilityExt.GetResourceString(this.SelectText), HttpUtilityExt.GetResourceString(this.SelectTooltip), SelectCssClass, false, string.Empty, rowIndex, this.SelectImageUrl);
 							insertSpace = false;
 						}
 						if (showEditButton)
@@ -248,7 +354,7 @@ namespace Havit.Web.UI.WebControls
 								child = new LiteralControl("&nbsp;");
 								cell.Controls.Add(child);
 							}
-							this.AddButtonToCell(cell, "Edit", HttpUtilityExt.GetResourceString(this.EditText), HttpUtilityExt.GetResourceString(this.EditTooltip), false, string.Empty, rowIndex, this.EditImageUrl);
+							this.AddButtonToCell(cell, "Edit", HttpUtilityExt.GetResourceString(this.EditText), HttpUtilityExt.GetResourceString(this.EditTooltip), EditCssClass, false, string.Empty, rowIndex, this.EditImageUrl);
 							insertSpace = false;
 						}
 						if (showDeleteButton)
@@ -259,7 +365,7 @@ namespace Havit.Web.UI.WebControls
 								cell.Controls.Add(child);
 							}
 
-							IButtonControl button = this.AddButtonToCell(cell, "Delete", HttpUtilityExt.GetResourceString(this.DeleteText), HttpUtilityExt.GetResourceString(this.DeleteTooltip), false, string.Empty, rowIndex, this.DeleteImageUrl);
+							IButtonControl button = this.AddButtonToCell(cell, "Delete", HttpUtilityExt.GetResourceString(this.DeleteText), HttpUtilityExt.GetResourceString(this.DeleteTooltip), DeleteCssClass, false, string.Empty, rowIndex, this.DeleteImageUrl);
 
 							// doplneni o DeleteConfirmText
 							string deleteConfirmationTextResolved = HttpUtilityExt.GetResourceString(DeleteConfirmationText);
@@ -282,19 +388,6 @@ namespace Havit.Web.UI.WebControls
 
 							insertSpace = false;
 						}
-						// U Insertu nechceme New
-						/*
-						if (showInsertButton)
-						{
-							if (!flag6)
-							{
-								child = new LiteralControl("&nbsp;");
-								cell.Controls.Add(child);
-							}
-							this.AddButtonToCell(cell, "New", this.NewText, false, string.Empty, rowIndex, this.NewImageUrl);
-							flag6 = false;
-						}
-						*/
 					}
 				}
 			}
@@ -325,7 +418,7 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 
 		#region AddButtonToCell
-		private IButtonControl AddButtonToCell(DataControlFieldCell cell, string commandName, string buttonText, string tooltipText, bool causesValidation, string validationGroup, int rowIndex, string imageUrl)
+		private IButtonControl AddButtonToCell(DataControlFieldCell cell, string commandName, string buttonText, string tooltipText, string cssClass, bool causesValidation, string validationGroup, int rowIndex, string imageUrl)
 		{
 			IButtonControl control;
 			IPostBackContainer container = this.Control as IPostBackContainer;
@@ -344,6 +437,7 @@ namespace Havit.Web.UI.WebControls
 						flag = false;
 					}
 					button.ToolTip = tooltipText;
+					button.CssClass = cssClass;
 					control = button;
 					break;
 
@@ -359,6 +453,7 @@ namespace Havit.Web.UI.WebControls
 						flag = false;
 					}
 					linkButton.ToolTip = tooltipText;
+					linkButton.CssClass = cssClass;
 					control = linkButton;
 					break;
 
@@ -375,9 +470,11 @@ namespace Havit.Web.UI.WebControls
 					}
 					imageButton.ToolTip = tooltipText;
 					imageButton.ImageUrl = imageUrl;
+					imageButton.CssClass = cssClass;
 					control = imageButton;
 					break;
 			}
+			
 			control.Text = buttonText;
 			control.CommandName = commandName;
 			control.CommandArgument = rowIndex.ToString(CultureInfo.InvariantCulture);

@@ -279,7 +279,7 @@ namespace Havit.Data
 				else
 				{
 					int recordsCount = ds.Tables.Cast<DataTable>().Sum(item => item.Rows.Count);
-					dbConnectorTrace.SetResult(String.Format("{0} table{1} with {2} record{s}",
+					dbConnectorTrace.SetResult(String.Format("{0} table{1} with {2} record{3}",
 						tablesCount,
 						(tablesCount == 1) ? "" : "s",
 						recordsCount,

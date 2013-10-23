@@ -48,6 +48,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="DbConnectorInspector.cs" />
     <Compile Include="DbConnectorTraceListener.cs" />
     <Compile Include="SerializationConverters\SqlDataRecordArrayConverter.cs" />

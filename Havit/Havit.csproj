@@ -253,7 +253,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ComponentModel\UniversalTypeConverter_src.zip" />
-    <None Include="Publish.ps1" />
+    <None Include="Publish-Framework.ps1" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
@@ -269,6 +269,6 @@
       <FilesToCopy Include="$(OutputPath)\Havit.xml" />
     </ItemGroup>
     <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(PublishDirectory)\Framework\%(RecursiveDir)%(Filename)%(Extension)')" />
-    <Copy SourceFiles="Publish.ps1" DestinationFiles="$(PublishDirectory)\Publish.ps1" />
+    <Copy SourceFiles="Publish-Framework.ps1" DestinationFiles="$(PublishDirectory)\Publish-Framework.ps1" />
   </Target>
 </Project>

@@ -43,6 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -53,6 +56,7 @@
     <None Include="Package.nuspec">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Publish-Havit.Data.Glimpse.NuGetPackage.ps1" />
     <None Include="tools\install.ps1" />
   </ItemGroup>
   <ItemGroup>
@@ -73,12 +77,13 @@
   </Target>
   -->
   <Target Name="AfterBuild">
-    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion)" />
+    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol.havit.local\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion)" />
   </Target>
   <Target Name="TfsPublish" AfterTargets="AfterBuild" Condition="'$(PublishDirectory)' != ''">
     <ItemGroup>
       <FilesToCopy Include="$(OutputPath)\Havit.Data.Glimpse.*.nupkg" />
     </ItemGroup>
     <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(PublishDirectory)\NuGet\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="Publish-Havit.Data.Glimpse.NuGetPackage.ps1" DestinationFiles="$(PublishDirectory)\Publish-Havit.Data.Glimpse.NuGetPackage.ps1" />
   </Target>
 </Project>

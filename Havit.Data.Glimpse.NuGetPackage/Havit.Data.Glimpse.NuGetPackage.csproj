@@ -77,7 +77,7 @@
   </Target>
   -->
   <Target Name="AfterBuild">
-    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol.havit.local\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion)" />
+    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion)" />
   </Target>
   <Target Name="TfsPublish" AfterTargets="AfterBuild" Condition="'$(PublishDirectory)' != ''">
     <ItemGroup>

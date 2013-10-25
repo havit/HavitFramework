@@ -158,7 +158,7 @@ namespace Havit.DataTest
 			string commandText = "SELECT Symbol FROM dbo.Role";
 
 			DbDataReader reader = DbConnector.Default.ExecuteReader(commandText);
-			while(reader.Read())
+			while (reader.Read())
 			{
 				string symbol = (string)reader["Symbol"];
 			}

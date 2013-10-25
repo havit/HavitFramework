@@ -79,7 +79,7 @@ namespace Havit.BusinessTest
 			IOperand operand = ValueOperand.Create(0);
 
 			Condition condition = ReferenceCondition.CreateIn(operand, new int[] { 1, 3, 5, 7 });
-			Assert.IsTrue(condition.GetType().Name == "ReferenceInCondition"); // interní třída
+			Assert.IsTrue(condition.GetType().Name == "InIntegersCondition"); // interní třída
 		}
 
 		/// <summary>

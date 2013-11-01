@@ -72,32 +72,39 @@ namespace Havit.Web.UI.WebControls
         {
             base.OnPreRender(e);
 
-			if (this.ShowSummary)
+			// Pokud dojde k redirectu s endRequest=false (voláno takto mj. z FormsAuthentication.RedirectFromLoginPage) před voláním této metody,
+			// potom i v takovém případě proběhne tento OnPreRender, který vyčistí zprávy messengeru. Následně však dojde k přesměrování namísto zobrazení obsahu,
+			// takže uživatel zprávy nevidí.
+			// Touto podmínkou zajistíme, aby MessengerControl nezpracovával zprávy, pokud je známo, že následně dojde k přesměrování (namísto zobrazení obsahu stránky).
+			if (!this.Page.Response.IsRequestBeingRedirected)				
 			{
-				this.Text = this.GetSummaryHtml();
-			}
-
-			if (this.ShowMessageBox)
-			{
-				string messageBoxText = this.GetMessageBoxText();
-				if (!String.IsNullOrEmpty(messageBoxText))
+				if (this.ShowSummary)
 				{
-					//string script = String.Format("alert('{0}');", messageBoxText.Replace("'", "\\'"));
-					string script = String.Format("window.setTimeout(function() {{ alert('{0}'); }}, 10);", messageBoxText.Replace("'", "\\'"));
-					System.Web.UI.ScriptManager.RegisterStartupScript(this.Page, typeof(MessengerControl), "MessageBox", script, true);
+					this.Text = this.GetSummaryHtml();
 				}
-			}
 
-			if (this.ShowToastr)
-			{
-				string toastrScript = this.GetToastrScript();
-				if (!String.IsNullOrEmpty(toastrScript))
+				if (this.ShowMessageBox)
 				{
-					System.Web.UI.ScriptManager.RegisterStartupScript(this.Page, typeof(MessengerControl), "Toastr", toastrScript, true);
+					string messageBoxText = this.GetMessageBoxText();
+					if (!String.IsNullOrEmpty(messageBoxText))
+					{
+						//string script = String.Format("alert('{0}');", messageBoxText.Replace("'", "\\'"));
+						string script = String.Format("window.setTimeout(function() {{ alert('{0}'); }}, 10);", messageBoxText.Replace("'", "\\'"));
+						System.Web.UI.ScriptManager.RegisterStartupScript(this.Page, typeof(MessengerControl), "MessageBox", script, true);
+					}
 				}
-			}
 
-            this.Messenger.Clear();
+				if (this.ShowToastr)
+				{
+					string toastrScript = this.GetToastrScript();
+					if (!String.IsNullOrEmpty(toastrScript))
+					{
+						System.Web.UI.ScriptManager.RegisterStartupScript(this.Page, typeof(MessengerControl), "Toastr", toastrScript, true);
+					}
+				}
+
+				this.Messenger.Clear();
+			}
         }
         #endregion
 

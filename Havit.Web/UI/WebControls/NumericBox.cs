@@ -206,6 +206,7 @@ namespace Havit.Web.UI.WebControls
 		/// Vrací zadané číslo jako Int32. Není-li zadán žádný text, vrací null (pokud je ZeroAsEmpty, vrací nulu).
 		/// Je-li zadáno neplatné číslo, vyhodí výjimku.
 		/// </summary>
+		[Themeable(false)]
 		public int? ValueAsInt
 		{
 			get
@@ -216,6 +217,10 @@ namespace Havit.Web.UI.WebControls
 					return null;
 				}
 				return Convert.ToInt32(currentValue.Value);
+			}
+			set
+			{
+				this.Value = value;
 			}
 		}
 		#endregion

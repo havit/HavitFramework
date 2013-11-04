@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+[assembly: WebResource("Havit.Web.UI.WebControls.TextBoxLimitMaxLength.js", "text/javascript")]
 
 namespace Havit.Web.UI.WebControls
 {
@@ -11,6 +15,28 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class TextBoxExt : System.Web.UI.WebControls.TextBox
 	{
+		#region AddAttributesToRender
+		/// <summary>
+		/// Adds HTML attributes and styles that need to be rendered to the specified HtmlTextWriterTag.
+		/// </summary>
+		protected override void AddAttributesToRender(HtmlTextWriter writer)
+		{
+			// MultiLine TextBox nerenderuje MaxLength, ačkoliv dle HTML5 jde o platný atribut k textarea (a od IE10 i funguje).
+			// Pro zajištění zpětné kompatibility (MS může doplnit renderování) se snažíme zajistit, abychom jej nevyrenderovali podruhé.
+
+			int multilineMaxLength = 0;
+
+			if ((this.TextMode == TextBoxMode.MultiLine) && (this.MaxLength > 0))
+			{
+				multilineMaxLength = this.MaxLength;
+				this.MaxLength = 0; // jsme v renderu, hodnota není ve ViewState, což je náš cíl
+				writer.AddAttribute("maxlength", multilineMaxLength.ToString());
+			}
+
+			base.AddAttributesToRender(writer);
+		}
+		#endregion		
+
 		#region Render
 		/// <summary>
 		/// Zajistí přidání atributu autocomplete="off" pro IE lt;10.
@@ -21,7 +47,7 @@ namespace Havit.Web.UI.WebControls
 			{
 				if (this.AutoPostBack)
 				{
-					this.Attributes["autocomplete"] = "off"; // hodnota se neuloží do ViewState, což je náš cíl
+					this.Attributes["autocomplete"] = "off"; // jsme v renderu, hodnota se neuloží do ViewState, což je náš cíl
 				}
 			}
 

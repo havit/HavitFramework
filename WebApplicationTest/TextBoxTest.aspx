@@ -9,10 +9,11 @@
 </head>
 <body>
 	<form id="form1" runat="server">
-		<asp:ScriptManager EnablePageMethods="true" ID="ScriptManager1" runat="server" />
+		<asp:ScriptManager EnablePageMethods="true" ID="ScriptManager1" runat="server"/>
 			<asp:TextBox ID="TextBox1" Width="150" runat="server" style="border: 1px solid black;" /><asp:Label ID="Label1" runat="server"/><asp:Button ID="PostbackButton" Text="Postback" runat="server" /><br/>
 			<asp:TextBox ID="TextBox2" Width="150" AutoPostBack="True" runat="server" style="border: 1px solid black;" /><asp:Label ID="Label2" runat="server"/> 
 			<havit:NumericBox AutoPostBack="True" ID="NB" runat="server" />
+			<asp:TextBox TextMode="MultiLine" MaxLength="25" Text="Multiline maxlegth" runat="server" />
 		</div>
 	</form>
 </body>

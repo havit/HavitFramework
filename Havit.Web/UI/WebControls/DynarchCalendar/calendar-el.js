@@ -19,6 +19,8 @@ Calendar._SDN = new Array
  "Σα",
  "Κυ");
 
+Calendar._FD = 1;
+
 Calendar._MN = new Array
 ("Ιανουάριος",
  "Φεβρουάριος",

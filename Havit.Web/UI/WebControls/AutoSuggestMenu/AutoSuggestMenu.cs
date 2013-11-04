@@ -67,6 +67,10 @@ namespace Havit.Web.UI.WebControls
 			set { _mode = value; }
 		}
 
+		/// <summary>
+		/// Zpráva zobrazená na klientské straně (javascriptovým alertem) pokud dojde k vyčištění uživatelem zadané hodnoty do textboxu při nespárování.
+		/// Zpráva může obsahovat značku #TEXT#, která je nahrazena skutečně vyčištěnou hodnotou textboxu.
+		/// </summary>
 		public string MessageOnClearText
 		{
 			get { return _messageOnClearText ?? String.Empty; }

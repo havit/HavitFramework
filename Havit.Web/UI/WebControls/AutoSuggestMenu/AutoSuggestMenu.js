@@ -670,10 +670,16 @@ function AutoSuggestMenu()
 			if (textBox != null)
 			{
 				var textBoxWasEmpty = (textBox.value == '');
+				var oldTextBoxValue = textBox.value;
 				textBox.value = '';
 				if (!textBoxWasEmpty && ((self.messageOnClearText != null) && (self.messageOnClearText != '')))
 				{
-					alert(self.messageOnClearText);
+					var message = self.messageOnClearText;
+					while (message.indexOf("#TEXT#") >= 0)
+					{
+						message = message.replace("#TEXT#", oldTextBoxValue);
+					}
+					alert(message);
 				}
 			}
 		}

@@ -17,5 +17,5 @@
     </handlers>
   </system.webServer>
   <glimpse xdt:Transform="Remove" />
-  <system.diagnostics configSource="Config\system.diagnostics.config" xdt:Transform="Replace" />
+  <system.diagnostics configSource="Config\system.diagnostics.config" xdt:Transform="Replace" />	
 </configuration>

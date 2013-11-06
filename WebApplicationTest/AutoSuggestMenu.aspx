@@ -30,7 +30,7 @@
 						MinSuggestChars="2"							
 						OnGetSuggestions="WebApplicationTest.AutoSuggestMenuService.GetSuggestions"
 						Mode="ClearTextOnNoSelection"
-						MessageOnClearText="Hodnota stornována, nedošlo ke spárování s číselníkovou hodnotou."
+						MessageOnClearText="Hodnota stornována, nedošlo ke spárování hodnoty s číselníkovou hodnotou."
 						AutoPostBack="true"
 						UsePageMethods="false"
 						runat="server"

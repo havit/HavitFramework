@@ -11,7 +11,7 @@
     <div>
 		<asp:TextBox ID="MyTB" runat="server" />
 		<asp:Button ID="CalendarBt" Text="Calendar" runat="server" />
-		<havit:DynarchCalendar Button="CalendarBt" InputField="MyTB" Visible="false" runat="server" />
+		<havit:DynarchCalendar Button="CalendarBt" InputField="MyTB" ShowsTime="True" Visible="true" runat="server" />
     </div>
     </form>
 </body>

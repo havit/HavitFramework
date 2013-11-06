@@ -6,6 +6,7 @@ using System.Web.Security;
 using System.Web.SessionState;
 using System.Web.UI;
 using Havit.Web.UI.WebControls;
+using Havit.Web.Security;
 
 namespace WebApplicationTest
 {
@@ -44,6 +45,13 @@ namespace WebApplicationTest
 				Havit.Web.Management.WebRequestErrorEventExt customEvent = new Havit.Web.Management.WebRequestErrorEventExt(exception.Message, this, exception, HttpContext.Current);
 				customEvent.Raise();
 			}
+		}
+		#endregion
+
+		#region Application_AuthenticateRequest
+		private void Application_AuthenticateRequest()
+		{
+			FormsRolesAuthentication.ApplyAuthenticationTicket();
 		}
 		#endregion
 

@@ -28,7 +28,7 @@
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
-    <IISExpressUseClassicPipelineMode>true</IISExpressUseClassicPipelineMode>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -131,13 +131,16 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Glimpse.AspNet, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Glimpse.AspNet, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Glimpse.AspNet.1.4.1\lib\net45\Glimpse.AspNet.dll</HintPath>
+      <HintPath>..\packages\Glimpse.AspNet.1.5.0\lib\net45\Glimpse.AspNet.dll</HintPath>
     </Reference>
-    <Reference Include="Glimpse.Core, Version=1.6.1.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Glimpse.Core, Version=1.7.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Glimpse.1.6.1\lib\net45\Glimpse.Core.dll</HintPath>
+      <HintPath>..\packages\Glimpse.1.7.0\lib\net45\Glimpse.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Glimpse.WebForms">
+      <HintPath>..\packages\Glimpse.WebForms.1.0.1\lib\net45\Glimpse.WebForms.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -176,6 +179,7 @@
     <Content Include="Scripts\jquery-2.0.3.min.js" />
     <Content Include="Scripts\toastr.js" />
     <Content Include="Scripts\toastr.min.js" />
+    <Content Include="SessionAndResponseRedirectTest.aspx" />
     <Content Include="SmtpTraceListenerTest.aspx" />
     <Content Include="TextBoxTest.aspx" />
     <Content Include="DateTimeBoxTest.aspx" />
@@ -186,7 +190,9 @@
     <Content Include="GridViewExtTest_InnerGVControl.ascx" />
     <Content Include="HavitScripts.js" />
     <Content Include="SimpleTest.aspx" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="WebFormExceptionTest.aspx" />
     <Content Include="WebServiceExceptionTest.asmx" />
     <Content Include="WrapperTest.aspx" />
@@ -272,6 +278,13 @@
     </Compile>
     <Compile Include="ScriptManagerTest.aspx.designer.cs">
       <DependentUpon>ScriptManagerTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SessionAndResponseRedirectTest.aspx.cs">
+      <DependentUpon>SessionAndResponseRedirectTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SessionAndResponseRedirectTest.aspx.designer.cs">
+      <DependentUpon>SessionAndResponseRedirectTest.aspx</DependentUpon>
     </Compile>
     <Compile Include="SmtpTraceListenerTest.aspx.cs">
       <DependentUpon>SmtpTraceListenerTest.aspx</DependentUpon>

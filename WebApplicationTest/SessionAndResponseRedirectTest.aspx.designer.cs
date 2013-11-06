@@ -10,7 +10,7 @@
 namespace WebApplicationTest {
     
     
-    public partial class DynarchCalendarTest {
+    public partial class SessionAndResponseRedirectTest {
         
         /// <summary>
         /// form1 control.
@@ -22,21 +22,30 @@ namespace WebApplicationTest {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// MyTB control.
+        /// CounterLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox MyTB;
+        protected global::System.Web.UI.WebControls.Label CounterLabel;
         
         /// <summary>
-        /// CalendarBt control.
+        /// TrueButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button CalendarBt;
+        protected global::System.Web.UI.WebControls.Button TrueButton;
+        
+        /// <summary>
+        /// FalseButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button FalseButton;
     }
 }

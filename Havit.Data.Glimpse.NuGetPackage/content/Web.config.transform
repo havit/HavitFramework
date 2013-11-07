@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <configuration>
 	<system.web>
-		<trace enabled="true" mostRecent="true" writeToDiagnosticsTrace="true" />
+		<trace enabled="true" mostRecent="true" writeToDiagnosticsTrace="true" pageOutput="false" />
 	</system.web>
 	<system.diagnostics>
 		<sources>

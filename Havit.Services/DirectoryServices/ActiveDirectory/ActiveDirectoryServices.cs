@@ -17,6 +17,7 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 	public class ActiveDirectoryServices
 	{
 		#region Private fields
+		private string domainController;
 		private string directoryServicesUsername;
 		private string directoryServicesPassword;
 		#endregion
@@ -25,19 +26,30 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 		/// <summary>
 		/// Creates an instance of ActiveDirectoryServices class.
 		/// </summary>
-		public ActiveDirectoryServices() : this(null, null)
+		public ActiveDirectoryServices() : this(null, null, null)
 		{
 		}
 
 		/// <summary>
 		/// Creates an instance of ActiveDirectoryServices class.
 		/// </summary>
-		/// <param name="directoryServicesUsername">Username for accessing directory services. When empty or null, username and password is not used for accesing directory services.</param>
-		/// <param name="directoryServicesPassword">Password for accessing directory services.</param>
 		public ActiveDirectoryServices(string directoryServicesUsername, string directoryServicesPassword)
 		{
 			this.directoryServicesUsername = directoryServicesUsername;
 			this.directoryServicesPassword = directoryServicesPassword;
+		}
+		
+		/// <summary>
+		/// Creates an instance of ActiveDirectoryServices class.
+		/// </summary>
+		/// <param name="directoryServicesUsername">Username for accessing directory services. When empty or null, username and password is not used for accesing directory services.</param>
+		/// <param name="directoryServicesPassword">Password for accessing directory services.</param>
+		/// <param name="domainController">Specifies which domain controller to use. When not empty, usage of this service is limited to this domain controller domain only. When empty or null, current Domain Controller will be used.</param>
+		public ActiveDirectoryServices(string directoryServicesUsername, string directoryServicesPassword, string domainController)
+		{
+			this.directoryServicesUsername = directoryServicesUsername;
+			this.directoryServicesPassword = directoryServicesPassword;
+			this.domainController = domainController;
 		}
 		#endregion
 
@@ -329,7 +341,12 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 		private DirectorySearcher GetDirectorySearcher(string domainName)
 		{
 			DirectoryContext directoryContext;
-			if (String.IsNullOrEmpty(domainName))
+
+			if (!String.IsNullOrEmpty(domainController))
+			{				
+				directoryContext = String.IsNullOrEmpty(directoryServicesUsername) ? new DirectoryContext(DirectoryContextType.DirectoryServer, domainController) : new DirectoryContext(DirectoryContextType.DirectoryServer, domainController, directoryServicesUsername, directoryServicesPassword);
+			}
+			else if (String.IsNullOrEmpty(domainName))
 			{
 				directoryContext = String.IsNullOrEmpty(directoryServicesUsername) ? new DirectoryContext(DirectoryContextType.Domain) : new DirectoryContext(DirectoryContextType.Domain, directoryServicesUsername, directoryServicesPassword);
 			}
@@ -338,11 +355,26 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 				directoryContext = String.IsNullOrEmpty(directoryServicesUsername) ? new DirectoryContext(DirectoryContextType.Domain, domainName) : new DirectoryContext(DirectoryContextType.Domain, domainName, directoryServicesUsername, directoryServicesPassword);
 			}
 
-			Domain domain = Domain.GetDomain(directoryContext);
-			DirectoryEntry directoryEntry = domain.GetDirectoryEntry();
-			DirectorySearcher searcher = new DirectorySearcher(directoryEntry);
+			using (Domain domain = Domain.GetDomain(directoryContext))
+			{				
+				if (!String.IsNullOrEmpty(domainController) && !String.IsNullOrEmpty(domainName))
+				{
+					// kontrola domény v situaci, kdy je zadán domain controller a je požadována konkrétní doména
+					// test je značně nedokonalý, porovnáváme jen textové hodnoty
+					
+					if ((domainName.Contains(".") && !String.Equals(domain.Name, domainName, StringComparison.CurrentCultureIgnoreCase)) // pokud je v požadované doméně tečka, jde o celý název domény
+						|| (!domainName.Contains(".") && !domain.Name.StartsWith(domainName + ".", StringComparison.CurrentCultureIgnoreCase))) // pokud není v požadované doméně tečka, nesprávně tvrdíme, že tímto textem musí skutečný název domény začínat
+					{
+						throw new InvalidOperationException(String.Format("Domain controller '{0}' obsluhuje doménu '{1}', nikoliv požadovanou doménu '{2}'.", domainController, domain.Name, domainName));
+					}
+				}
 
-			return searcher;
+				using (DirectoryEntry directoryEntry = domain.GetDirectoryEntry())
+				{								
+					DirectorySearcher searcher = new DirectorySearcher(directoryEntry);
+					return searcher;
+				}
+			}
 		}
 		#endregion
 

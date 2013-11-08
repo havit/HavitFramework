@@ -115,49 +115,60 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 				throw new InvalidOperationException("Group not found.");
 			}
 
-			ResultPropertyValueCollection groupMembersIdentifiers = searchResult.Properties[ActiveDirectoryProperties.Member];
+			List<SearchResult> searchResults = new List<SearchResult>();
 
+			ResultPropertyValueCollection groupMembersIdentifiers = searchResult.Properties[ActiveDirectoryProperties.Member];
 			if (groupMembersIdentifiers.Count > 0)
 			{
 				string distinguishedNames = String.Join("", groupMembersIdentifiers.OfType<string>().Select(memberIdentifier => string.Format("(distinguishedName={0})", memberIdentifier)));
 				
-				SearchResultCollection memberSearchResults;
 				using (DirectorySearcher searcher = GetDirectorySearcher(domainName))
 				{
 					searcher.Filter = String.Format("(|{0})", distinguishedNames);
 					searcher.PropertiesToLoad.Add(ActiveDirectoryProperties.ObjectSid);
 					searcher.SizeLimit = groupMembersIdentifiers.Count;
-					memberSearchResults = searcher.FindAll();
+					searchResults.AddRange(searcher.FindAll().Cast<SearchResult>());
+				}				
+			}
+
+			SecurityIdentifier groupSecurityIdentifier = (SecurityIdentifier)(new NTAccount(domainName, accountName).Translate(typeof(SecurityIdentifier)));
+			string groupSsdl = groupSecurityIdentifier.Value;
+			string groupPrimaryID = groupSsdl.Substring(groupSsdl.LastIndexOf('-') + 1);
+
+			using (DirectorySearcher searcher = GetDirectorySearcher(domainName))
+			{
+				searcher.Filter = String.Format("(primaryGroupID={0})", groupPrimaryID);
+				searcher.PropertiesToLoad.Add(ActiveDirectoryProperties.ObjectSid);
+				searchResults.AddRange(searcher.FindAll().Cast<SearchResult>());
+			}
+
+			foreach (SearchResult memberSearchResult in searchResults)
+			{
+				string memberAccountName;
+				byte[] sid = (byte[])memberSearchResult.Properties[ActiveDirectoryProperties.ObjectSid][0];
+				if (!TryGetAccountName(sid, out memberAccountName))
+				{
+					continue;
 				}
 
-				foreach (SearchResult memberSearchResult in memberSearchResults)
+				bool isUser;
+				bool isGroup;
+				if (!TryGetAccountClass(memberAccountName, out isUser, out isGroup))
 				{
-					string memberAccountName;
-					byte[] sid = (byte[])memberSearchResult.Properties[ActiveDirectoryProperties.ObjectSid][0];
-					if (!TryGetAccountName(sid, out memberAccountName))
-					{
-						continue;
-					}
+					continue;
+				}
 
-					bool isUser;
-					bool isGroup;
-					if (!TryGetAccountClass(memberAccountName, out isUser, out isGroup))
+				if (isUser || (includeGroups && isGroup))
+				{
+					if (!members.Contains(memberAccountName))
 					{
-						continue;
+						members.Add(memberAccountName);
 					}
+				}
 
-					if (isUser || (includeGroups && isGroup))
-					{
-						if (!members.Contains(memberAccountName))
-						{
-							members.Add(memberAccountName);
-						}
-					}
-
-					if (isGroup && traverseNestedGroups)
-					{
-						GetGroupMembersInternal(memberAccountName, includeGroups, traverseNestedGroups /* true */, members, processedGroups);
-					}
+				if (isGroup && traverseNestedGroups)
+				{
+					GetGroupMembersInternal(memberAccountName, includeGroups, traverseNestedGroups /* true */, members, processedGroups);
 				}
 			}
 		}
@@ -192,7 +203,9 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 			using (DirectorySearcher searcher = GetDirectorySearcher(domainName))
 			{
 				searcher.Filter = String.Format("(&(objectClass=user)(samaccountname={0}))", accountName);
+				searcher.PropertiesToLoad.Add(ActiveDirectoryProperties.ObjectSid);
 				searcher.PropertiesToLoad.Add(ActiveDirectoryProperties.MemberOf);
+				searcher.PropertiesToLoad.Add(ActiveDirectoryProperties.PrimaryGroupID);
 				searchResult = searcher.FindOne();
 			}
 
@@ -203,6 +216,9 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 
 			result = new List<string>();
 			ResultPropertyValueCollection groupIdentifiers = searchResult.Properties[ActiveDirectoryProperties.MemberOf];
+			byte[] userSid = (byte[])searchResult.Properties[ActiveDirectoryProperties.ObjectSid][0];
+			int? userPrimaryGroupID = searchResult.Properties[ActiveDirectoryProperties.PrimaryGroupID] != null ? (int?)searchResult.Properties[ActiveDirectoryProperties.PrimaryGroupID][0] : null;
+
 			if (groupIdentifiers.Count > 0)
 			{
 				string distinguishedNames = String.Join("", groupIdentifiers.OfType<string>().Select(memberIdentifier => string.Format("(distinguishedName={0})", memberIdentifier)));
@@ -219,8 +235,8 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 				foreach (SearchResult groupSearchResult in groupSearchResults)
 				{
 					string groupName;
-					byte[] sid = (byte[])groupSearchResult.Properties[ActiveDirectoryProperties.ObjectSid][0];
-					if (!TryGetAccountName(sid, out groupName))
+					byte[] groupSid = (byte[])groupSearchResult.Properties[ActiveDirectoryProperties.ObjectSid][0];
+					if (!TryGetAccountName(groupSid, out groupName))
 					{
 						continue;
 					}
@@ -239,6 +255,16 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 				}
 			}
 
+			// vyhledání dle primaryGroupID
+			if (userPrimaryGroupID != null)
+			{
+				string primaryGroup = GetPrimaryGroupForSid(domainName, userSid, userPrimaryGroupID.Value);
+				if (primaryGroup != null)
+				{
+					result.Add(primaryGroup);
+				}
+			}
+			
 			_getGroupsMembersCache.Add(cacheKey, result);
 
 			return result.ToArray();
@@ -251,7 +277,7 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 		/// Returns groups from parameter of which user is a member.
 		/// Support multidomain envinronment.
 		/// </summary>
-		/// <param name="username">Username (supported both forms DOMAIN\user and user).</param>
+		/// <param name="username">Username (supported only form DOMAIN\user).</param>
 		/// <param name="groups">Groups for which membership is checked.</param>
 		/// <param name="traverseNestedGroups">When true, return groups from list when user is member of nested group. Otherwise group is in result only when user is a direct member.</param>
 		/// <remarks>
@@ -271,7 +297,7 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 					result.Add(group);
 				}
 			}
-
+				
 			return result.ToArray();
 		}
 		#endregion
@@ -479,5 +505,30 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 			public bool Result { get; set; }
 		}
 		#endregion
+
+		#region GetPrimaryGroupForSid
+		/// <summary>
+		/// Returns primary group for user.
+		/// </summary>
+		private string GetPrimaryGroupForSid(string domainName, byte[] userSid, int userPrimaryGroupID)
+		{
+			// http://support.microsoft.com/kb/297951/en-us
+			SecurityIdentifier userSecurityIdentifier = new SecurityIdentifier(userSid, 0);
+			string userSsdl = userSecurityIdentifier.Value;
+			string primaryGroupSsdl = userSsdl.Left(userSsdl.LastIndexOf('-')) + "-" + userPrimaryGroupID.ToString();
+
+			SecurityIdentifier primaryGroupSecurityIdentifier = new SecurityIdentifier(primaryGroupSsdl);
+			byte[] primaryGroupSid = new byte[primaryGroupSecurityIdentifier.BinaryLength];
+			primaryGroupSecurityIdentifier.GetBinaryForm(primaryGroupSid, 0);
+			
+			string result;
+			if (this.TryGetAccountName(primaryGroupSid, out result))
+			{
+				return result;
+			}			
+			return null;
+		}
+		#endregion
+
 	}
 }

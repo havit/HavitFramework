@@ -46,7 +46,7 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 		//public const String LASTLOGOFF = "lastLogoff";
 		//public const String LASTLOGON = "lastLogon";
 		//public const String PWDLASTSET = "pwdLastSet";
-		//public const String PRIMARYGROUPID = "primaryGroupID";
+		public const String PrimaryGroupID = "primaryGroupID";
 		public const String ObjectSid = "objectSid";
 		//public const String ADMINCOUNT = "adminCount";
 		//public const String ACCOUNTEXPIRES = "accountExpires";

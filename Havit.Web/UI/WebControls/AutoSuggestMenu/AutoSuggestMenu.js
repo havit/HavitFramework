@@ -662,6 +662,8 @@ function AutoSuggestMenu()
 
 	self.doClearTextOnNoSelection = function ()
 	{
+		TRACE("AutoSuggestMenu.doClearTextOnNoSelection");
+		
 		var hiddenFieldElement = self.getSelectedValueHiddenField();
 
 		if ((self.clearTextOnNoSelection == true) && (hiddenFieldElement != null) && (hiddenFieldElement.value == ''))
@@ -685,8 +687,19 @@ function AutoSuggestMenu()
 		}
 	}
 
-	self.doAutoPostBack = function ()
-	{
+	self.doClearSelectionOnNoText = function () {
+		TRACE("AutoSuggestMenu.doClearSelectionOnNoText");
+		
+		var selectedValue = self.getSelectedValue();
+		
+		if ((getTextBoxValue() == '') && (selectedValue != null) && (selectedValue != '')) {
+			self.setSelectedValue(null);
+		}
+	}
+	
+	self.doAutoPostBack = function () {
+		TRACE("AutoSuggestMenu.doAutoPostBack");
+		
 		var hiddenFieldElement = self.getSelectedValueHiddenField();
 
 		if ((hiddenFieldElement != null) && (hiddenFieldElement.lastValueExtra != hiddenFieldElement.value)) {
@@ -963,8 +976,10 @@ function AutoSuggestMenu()
 
 	self.onTextBoxBlurTimer = function ()
 	{
+		TRACE("AutoSuggestMenu.onTextBoxBlurTimer");
 		self.hide();
 		self.doClearTextOnNoSelection();
+		self.doClearSelectionOnNoText(); // workaround pro vyčištění textboxu křížkem v IE
 		self.doAutoPostBack();
 	}
 	

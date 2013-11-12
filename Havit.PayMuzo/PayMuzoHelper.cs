@@ -170,7 +170,7 @@ namespace Havit.PayMuzo
 		/// </summary>
 		/// <param name="data">data k podepsání</param>
 		/// <param name="certificate">certifikát s privátním i veřejným klíčem</param>
-		/// <param name="urlEncode">indikuje, zda-li má být podpis UrlEncoded</param>
+		/// <param name="urlEncode">indikuje, zdali má být podpis UrlEncoded</param>
 		/// <returns>podpis</returns>
 		public static string CreateDigest(string data, X509Certificate2 certificate, bool urlEncode)
 		{
@@ -231,7 +231,7 @@ namespace Havit.PayMuzo
 		/// <param name="data">data, z kterých byl podpis vytvořen</param>
 		/// <param name="digest">podpis, který byl z dat vytvořen</param>
 		/// <param name="certificate">certifikát s veřejným klíčem</param>
-		/// <param name="urlEncoded">indikuje, zda-li je podpis UrlEncoded</param>
+		/// <param name="urlEncoded">indikuje, zdali je podpis UrlEncoded</param>
 		/// <returns><c>true</c>, pokud podpis odpovídá; jinak <c>false</c></returns>
 		public static bool VerifyDigest(string data, string digest, X509Certificate2 certificate, bool urlEncoded)
 		{

@@ -144,7 +144,7 @@ namespace Havit.Business
 
 		#region IsBusinessDay
 		/// <summary>
-		/// Určí, zda-li je zadaný den dnem pracovním.
+		/// Určí, zdali je zadaný den dnem pracovním.
 		/// </summary>
 		/// <param name="time"><see cref="DateTime"/>, u kterého chceme vlastnosti zjistit</param>
 		/// <returns><b>false</b>, pokud je <see cref="DateTime"/> víkendem nebo svátkem; jinak <b>true</b></returns>
@@ -160,7 +160,7 @@ namespace Havit.Business
 
 		#region IsHoliday
 		/// <summary>
-		/// Zjistí, zda-li je <see cref="System.DateTime"/> svátkem (dovolenou, ...).
+		/// Zjistí, zdali je <see cref="System.DateTime"/> svátkem (dovolenou, ...).
 		/// </summary>
 		/// <param name="time"><see cref="System.DateTime"/>, u kterého má být vlastnost zjištěna</param>
 		/// <returns><b>true</b>, pokud je den v seznamu svátků, s nimiž byl <see cref="BusinessCalendar"/> instanciován; jinak <b>false</b></returns>
@@ -182,7 +182,7 @@ namespace Havit.Business
 
 		#region IsWeekend
 		/// <summary>
-		/// Určí, zda-li je zadaný den sobotou nebo nedělí.
+		/// Určí, zdali je zadaný den sobotou nebo nedělí.
 		/// </summary>
 		/// <param name="time"><see cref="System.DateTime"/>, u kterého určujeme</param>
 		/// <returns><b>true</b>, pokud je zadaný <see cref="System.DateTime"/> sobota nebo neděle; jinak <b>false</b></returns>

@@ -67,7 +67,7 @@ namespace Havit.Xml.Rss
 
 		#region Contains
 		/// <summary>
-		/// Zjistí, zda-li je prvek v kolekci.
+		/// Zjistí, zdali je prvek v kolekci.
 		/// </summary>
 		/// <param name="value">prvek</param>
 		/// <returns>true, je-li prvek v kolekci, jinak false</returns>

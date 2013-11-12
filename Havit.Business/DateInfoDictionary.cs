@@ -53,7 +53,7 @@ namespace Havit.Business
 
 		#region Constains
 		/// <summary>
-		/// Zjistí, zda-li je ve slovníku požadovaný den.
+		/// Zjistí, zdali je ve slovníku požadovaný den.
 		/// </summary>
 		/// <param name="key">zjišťovaný den</param>
 		public bool Contains(DateTime key)

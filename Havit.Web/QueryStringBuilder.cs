@@ -68,7 +68,7 @@ namespace Havit.Web
 		/// <summary>
 		/// Převede na QueryString, neobsahuje úvodní ? (otazník).
 		/// </summary>
-		/// <param name="urlEncoded">indikuje, zda-li má být výstup (názvy i hodnoty) UrlEncoded</param>
+		/// <param name="urlEncoded">indikuje, zdali má být výstup (názvy i hodnoty) UrlEncoded</param>
 		/// <returns>QueryString bez úvodního ? (otazníku)</returns>
 		public virtual string ToString(bool urlEncoded)
 		{
@@ -173,7 +173,7 @@ namespace Havit.Web
 		/// Načte data z queryStringu. Dosavadní data v instanci se nemažou, pouze se provádí Add() nových.
 		/// </summary>
 		/// <param name="queryString">queryString z kterého se mají data převzít</param>
-		/// <param name="urlEncoded">indikuje, zda-li je queryString url-encoded a má být dekódován</param>
+		/// <param name="urlEncoded">indikuje, zdali je queryString url-encoded a má být dekódován</param>
 		public void FillFromString(string queryString, bool urlEncoded)
 		{
 			int length = (queryString != null) ? queryString.Length : 0;  
@@ -239,7 +239,7 @@ namespace Havit.Web
 		/// Rozparsuje vstupní queryString a vrátí ho jako QueryStringBuilder.
 		/// </summary>
 		/// <param name="queryString">queryString z kterého se mají data převzít</param>
-		/// <param name="urlEncoded">indikuje, zda-li je queryString url-encoded a má být dekódován</param>
+		/// <param name="urlEncoded">indikuje, zdali je queryString url-encoded a má být dekódován</param>
 		/// <returns>QueryStringBuilder s rozparsovanými daty vstupního queryStringu</returns>
 		public static QueryStringBuilder Parse(string queryString, bool urlEncoded)
 		{

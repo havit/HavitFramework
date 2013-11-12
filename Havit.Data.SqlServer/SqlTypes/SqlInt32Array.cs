@@ -283,7 +283,7 @@ namespace Havit.Data.SqlTypes
 
 		#region INullable Members
 		/// <summary>
-		/// Indikuje, zda-li je hodnota NULL.
+		/// Indikuje, zdali je hodnota NULL.
 		/// </summary>
 		public bool IsNull
 		{

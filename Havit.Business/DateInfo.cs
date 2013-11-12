@@ -18,7 +18,7 @@ namespace Havit.Business
 		private readonly DateTime _date;
 
 		/// <summary>
-		/// Indikuje, zda-li je den svátkem.
+		/// Indikuje, zdali je den svátkem.
 		/// </summary>
 		public bool IsHoliday
 		{

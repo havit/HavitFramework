@@ -370,7 +370,7 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Inicializuje field (volá se jednou z GridView.CreateChildControls()).
 		/// </summary>
-		/// <param name="sortingEnabled">indikuje, zda-li je povolený sorting</param>
+		/// <param name="sortingEnabled">indikuje, zdali je povolený sorting</param>
 		/// <param name="control">parent control (GridView)</param>
 		/// <returns>false (vždy)</returns>
 		public override bool Initialize(bool sortingEnabled, System.Web.UI.Control control)

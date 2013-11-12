@@ -46,12 +46,12 @@ namespace Havit.Scopes
 
 		#region private fields
 		/// <summary>
-		/// Indikuje, zda-li již proběhl Dispose třídy.
+		/// Indikuje, zdali již proběhl Dispose třídy.
 		/// </summary>
 		private bool disposed;
 
 		/// <summary>
-		/// Indikuje, zda-li je instance scopem vlastněná, tj. máme-li ji na konci scope disposovat.
+		/// Indikuje, zdali je instance scopem vlastněná, tj. máme-li ji na konci scope disposovat.
 		/// </summary>
 		private bool ownsInstance;
 
@@ -81,7 +81,7 @@ namespace Havit.Scopes
 		/// </summary>
 		/// <param name="instance">instance, kterou scope obaluje</param>
 		/// <param name="scopeRepository">repository pro uložení scope</param>
-		/// <param name="ownsInstance">indikuje, zda-li instanci vlastníme, tedy zda-li ji máme s koncem scopu disposovat</param>
+		/// <param name="ownsInstance">indikuje, zdali instanci vlastníme, tedy zdali ji máme s koncem scopu disposovat</param>
 		protected Scope(T instance, IScopeRepository<T> scopeRepository, bool ownsInstance)
 		{
 			if (instance == null)

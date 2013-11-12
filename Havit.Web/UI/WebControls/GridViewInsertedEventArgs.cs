@@ -11,7 +11,7 @@ namespace Havit.Web.UI.WebControls
 	{
 		#region KeepInEditMode
 		/// <summary>
-		/// Indikuje, zda-li má GridView zůstat po zpracování událost v režimu editace nového řádku.
+		/// Indikuje, zdali má GridView zůstat po zpracování událost v režimu editace nového řádku.
 		/// </summary>
 		public bool KeepInEditMode
 		{

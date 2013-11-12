@@ -68,7 +68,7 @@ namespace Havit.Xml.Rss
 
 		#region Contains
 		/// <summary>
-		/// Zjistí, zda-li se kanál nachází v kolekci
+		/// Zjistí, zdali se kanál nachází v kolekci
 		/// </summary>
 		/// <param name="value">kanál</param>
 		/// <returns>true, pokud již kanál v kolekci existuje, jinak false</returns>

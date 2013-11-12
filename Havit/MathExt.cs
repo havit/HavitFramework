@@ -34,7 +34,7 @@ namespace Havit
 
 		#region IsInteger
 		/// <summary>
-		/// Ověří, zda-li je zadaný textový řetězec celým číslem.
+		/// Ověří, zdali je zadaný textový řetězec celým číslem.
 		/// </summary>
 		/// <remarks>
 		/// Ověřuje se vůči regulárnímu výrazu <see cref="Havit.Text.RegularExpressions.RegexPatterns.Integer"/>.<br/>

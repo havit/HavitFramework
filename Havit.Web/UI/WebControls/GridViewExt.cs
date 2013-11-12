@@ -51,7 +51,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region AllowInserting
 		/// <summary>
-		/// Indikuje, zda-li je povoleno přidávání nových položek řádkem Insert.
+		/// Indikuje, zdali je povoleno přidávání nových položek řádkem Insert.
 		/// </summary>
 		/// <remarks>
 		/// Spolu s AllowInserting je potřeba nastavit delegáta <see cref="GetInsertRowDataItemDelegate" />
@@ -74,7 +74,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region InsertPosition
 		/// <summary>
-		/// Indikuje, zda-li je povoleno přidávání nových položek.
+		/// Indikuje, zdali je povoleno přidávání nových položek.
 		/// </summary>
 		public GridViewInsertRowPosition InsertRowPosition
 		{
@@ -1123,7 +1123,7 @@ namespace Havit.Web.UI.WebControls
 		/// Metoda, která řídí logiku příkazu Insert.
 		/// </summary>
 		/// <param name="rowIndex">index řádku, kde insert probíhá</param>
-		/// <param name="causesValidation">příznak, zda-li má probíhat validace</param>
+		/// <param name="causesValidation">příznak, zdali má probíhat validace</param>
 		protected virtual void HandleInsert(int rowIndex, bool causesValidation)
 		{
 			if ((!causesValidation || (this.Page == null)) || this.Page.IsValid)

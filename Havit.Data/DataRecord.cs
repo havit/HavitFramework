@@ -18,7 +18,7 @@ namespace Havit.Data
 	{
 		#region Properties
 		/// <summary>
-		/// Indikuje, zda-li je požadována 100% úspěšnost pro načítání položek (true), nebo zda-li se mají neúspěchy ignorovat.
+		/// Indikuje, zdali je požadována 100% úspěšnost pro načítání položek (true), nebo zdali se mají neúspěchy ignorovat.
 		/// </summary>
 		public bool FullLoad
 		{

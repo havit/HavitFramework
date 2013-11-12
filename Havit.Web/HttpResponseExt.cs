@@ -24,7 +24,7 @@ namespace Havit.Web
 		/// POZOR: Na rozdíl od <see cref="System.Web.HttpResponse.Redirect(string)"/> nekontroluje, jestli už nebyly odeslány klientovi hlavičky.
 		/// </remarks>
 		/// <param name="url">Cílová adresa.</param>
-		/// <param name="endResponse">Indikuje, zda-li má skončit zpracování vykonávání stránky.</param>
+		/// <param name="endResponse">Indikuje, zdali má skončit zpracování vykonávání stránky.</param>
 		public static void MovedPermanently(string url, bool endResponse)
 		{
 			if ((HttpContext.Current == null)
@@ -82,7 +82,7 @@ namespace Havit.Web
 		/// <summary>
 		/// Odešle klientovi odezvu se status kódem 410 - Gone, tj. "stránka byla zrušena bez náhrady".
 		/// </summary>
-		/// <param name="endResponse">Indikuje, zda-li má skončit zpracování vykonávání stránky.</param>
+		/// <param name="endResponse">Indikuje, zdali má skončit zpracování vykonávání stránky.</param>
 		public static void Gone(bool endResponse)
 		{
 			if ((HttpContext.Current == null)

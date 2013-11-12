@@ -122,7 +122,7 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// Indikuje, zda-li má být <see cref="ContentElement"/> zobrazen sbalený/rozbalený.<br/>
+		/// Indikuje, zdali má být <see cref="ContentElement"/> zobrazen sbalený/rozbalený.<br/>
 		/// </summary>
 		public bool Collapsed
 		{

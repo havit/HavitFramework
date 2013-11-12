@@ -43,7 +43,7 @@ namespace Havit.Business
 
 		#region Properties - Stav objektu (IsDirty, IsLoaded, IsNew, IsDeleted)
 		/// <summary>
-		/// Indikuje, zda-li byla data objektu změněna oproti datům v databázi.
+		/// Indikuje, zdali byla data objektu změněna oproti datům v databázi.
 		/// Při nastavení na false zruší příznak změn všem PropertyHolderům.
 		/// </summary>
 		public bool IsDirty
@@ -67,8 +67,8 @@ namespace Havit.Business
 		private bool _isDirty;
 
 		/// <summary>
-		/// Indikuje, zda-li byla data objektu načtena z databáze,
-		/// resp. zda-li je potřeba objekt nahrávat z databáze.
+		/// Indikuje, zdali byla data objektu načtena z databáze,
+		/// resp. zdali je potřeba objekt nahrávat z databáze.
 		/// </summary>
 		public bool IsLoaded
 		{
@@ -78,7 +78,7 @@ namespace Havit.Business
 		private bool _isLoaded;
 
 		/// <summary>
-		/// Indikuje, zda-li jde o nový objekt bez perzistence, který nebyl dosud uložen do databáze.
+		/// Indikuje, zdali jde o nový objekt bez perzistence, který nebyl dosud uložen do databáze.
 		/// Čeká na INSERT.
 		/// </summary>
 		public bool IsNew
@@ -101,7 +101,7 @@ namespace Havit.Business
 		private bool _isDeleted = false;
 
 		/// <summary>
-		/// Indikuje, zda-li byla nad objektem zavoláma metoda Deleted.
+		/// Indikuje, zdali byla nad objektem zavoláma metoda Deleted.
 		/// </summary>
 		internal bool IsDeleting
 		{
@@ -111,7 +111,7 @@ namespace Havit.Business
 		private bool _isDeleting;
 
 		/// <summary>
-		/// Indikuje, zda-li je objekt zrovna ukládán (hlídá cyklické reference při ukládání).
+		/// Indikuje, zdali je objekt zrovna ukládán (hlídá cyklické reference při ukládání).
 		/// </summary>
 		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		protected internal bool IsSaving

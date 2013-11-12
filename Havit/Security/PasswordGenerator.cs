@@ -71,7 +71,7 @@ namespace Havit.Security
 
 		#region AllowRepeatingCharacters
 		/// <summary>
-		/// Indikuje, zda-li se smí v heslu opakovat znaky. Zda-li může být některý znak v heslu vícekrát. Default <c>true</c>.
+		/// Indikuje, zdali se smí v heslu opakovat znaky. zdali může být některý znak v heslu vícekrát. Default <c>true</c>.
 		/// </summary>
 		public bool AllowRepeatingCharacters
 		{
@@ -83,7 +83,7 @@ namespace Havit.Security
 
 		#region AllowConsecutiveCharacters
 		/// <summary>
-		/// Indikuje, zda-li smí heslo obsahovat shluky stejných znaků. Default <c>false</c>.
+		/// Indikuje, zdali smí heslo obsahovat shluky stejných znaků. Default <c>false</c>.
 		/// </summary>
 		public bool AllowConsecutiveCharacters
 		{
@@ -316,8 +316,8 @@ namespace Havit.Security
 		/// <param name="minimumLength">minimální délka hesla</param>
 		/// <param name="maximumLength">maximální délka hesla</param>
 		/// <param name="passwordCharacterSet">Sada znaků, z níž se mají vybírat znaky pro generované heslo.</param>
-		/// <param name="allowRepeatingCharacters">Indikuje, zda-li se smí v heslu opakovat znaky. Zda-li může být některý znak v heslu vícekrát.</param>
-		/// <param name="allowConsecutiveCharacters">Indikuje, zda-li smí heslo obsahovat shluky stejných znaků.</param>
+		/// <param name="allowRepeatingCharacters">Indikuje, zdali se smí v heslu opakovat znaky. zdali může být některý znak v heslu vícekrát.</param>
+		/// <param name="allowConsecutiveCharacters">Indikuje, zdali smí heslo obsahovat shluky stejných znaků.</param>
 		/// <returns>vygenerované heslo odpovídající vstupním požadavkům</returns>
 		public static string Generate(int minimumLength, int maximumLength, PasswordCharacterSet passwordCharacterSet, bool allowRepeatingCharacters, bool allowConsecutiveCharacters)
 		{

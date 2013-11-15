@@ -15,6 +15,9 @@ using Havit.Data.Trace;
 
 namespace Havit.Data.Glimpse.Inspector
 {
+	/// <summary>
+	/// Writes DbConnector messages to timeline.
+	/// </summary>
 	public class DbConnectorTimelineInspector : IInspector
 	{
 		#region MessageBroker
@@ -47,7 +50,7 @@ namespace Havit.Data.Glimpse.Inspector
 
 		#region ProcessMessage
 		/// <summary>
-		/// Writes dbCommandTraceData to Timeline.
+		/// Writes dbCommandTraceData to timeline.
 		/// </summary>
 		private void ProcessMessage(DbCommandTraceData dbCommandTraceData)
 		{

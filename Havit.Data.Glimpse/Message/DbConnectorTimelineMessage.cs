@@ -8,6 +8,9 @@ using Glimpse.Core.Message;
 
 namespace Havit.Data.Glimpse.Message
 {
+	/// <summary>
+	/// DbConnector timeline message.
+	/// </summary>
 	public class DbConnectorTimelineMessage : MessageBase, ITimelineMessage
 	{
 		#region EventCategory

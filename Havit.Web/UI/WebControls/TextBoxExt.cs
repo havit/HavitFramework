@@ -5,6 +5,8 @@ using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
+using Havit.Web.UI.Scriptlets;
+
 [assembly: WebResource("Havit.Web.UI.WebControls.TextBoxLimitMaxLength.js", "text/javascript")]
 
 namespace Havit.Web.UI.WebControls
@@ -43,7 +45,7 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		protected override void Render(System.Web.UI.HtmlTextWriter writer)
 		{
-			if ((this.Page.Request.Browser.Browser == "IE") && (this.Page.Request.Browser.MajorVersion < 10))
+			if (BrowserHelper.IsInternetExplorer && (this.Page.Request.Browser.MajorVersion < 10))
 			{
 				if (this.AutoPostBack)
 				{

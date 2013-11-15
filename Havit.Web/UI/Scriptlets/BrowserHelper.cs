@@ -22,7 +22,8 @@ namespace Havit.Web.UI.Scriptlets
 		{
 			get
 			{
-				return HttpContext.Current.Request.Browser.Browser == "IE";
+				string browser = HttpContext.Current.Request.Browser.Browser;
+				return (browser == "IE") || (browser == "InternetExplorer");
 			}
 		}
 		#endregion
@@ -43,8 +44,8 @@ namespace Havit.Web.UI.Scriptlets
 				throw new ArgumentException("Je nutné předat identifikátor proměnné nesoucí hodnotu delegáta.", "functionDelegateName");
 				//function = String.Format("new Function(\'{0}\')", function);
 			}
-
-			if (IsInternetExplorer)
+			
+			if (IsInternetExplorer && HttpContext.Current.Request.Browser.MajorVersion <= 10)
 			{
 				return String.Format("{0}.attachEvent(\"{1}\", {2});", attachingObject, eventName, functionDelegateName);
 			}
@@ -72,7 +73,7 @@ namespace Havit.Web.UI.Scriptlets
 				//				function = String.Format("new Function(\'{0}\')", function);
 			}
 
-			if (IsInternetExplorer)
+			if (IsInternetExplorer && HttpContext.Current.Request.Browser.MajorVersion <= 10)
 			{
 				return String.Format("{0}.detachEvent(\"{1}\", {2});", detachingObject, eventName, functionDelegateName);
 			}

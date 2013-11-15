@@ -493,6 +493,10 @@
       <Project>{81995BC1-9F25-4F46-8258-8ED1F965CABB}</Project>
       <Name>Havit.Business</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Havit.Data.Glimpse\Havit.Data.Glimpse.csproj">
+      <Project>{c5c6607e-644a-468f-a6c2-cdcf8a1d23dc}</Project>
+      <Name>Havit.Data.Glimpse</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Havit.Data\Havit.Data.csproj">
       <Project>{703235E0-86C0-44F3-95BB-3D9F39886966}</Project>
       <Name>Havit.Data</Name>
@@ -573,7 +577,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1075</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

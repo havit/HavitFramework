@@ -8,6 +8,8 @@ using System.Data.Common;
 using System.Data.Linq;
 using System.Linq;
 using System.Text;
+using System.Threading;
+
 using Havit.Data.Trace;
 using Havit.Diagnostics.Contracts;
 
@@ -580,8 +582,7 @@ namespace Havit.Data
 
 			object result;
 
-			DbConnectorTrace dbConnectorTrace = new DbConnectorTrace(command, "ExecuteReader");
-			
+			DbConnectorTrace dbConnectorTrace = new DbConnectorTrace(command, "ExecuteScalar");
 			try
 			{
 				result = command.ExecuteScalar();

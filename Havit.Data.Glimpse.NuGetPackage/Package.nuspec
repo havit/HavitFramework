@@ -18,9 +18,9 @@
 		<copyright>Copyright HAVIT, s.r.o. 2013</copyright>
 		<dependencies>
 			<group targetFramework="net45">
-				<dependency id="Glimpse" version="1.7.0" />
-				<dependency id="Glimpse.AspNet" version="1.5.0" />
-				<dependency id="Glimpse.WebForms" version="1.0.1" />
+				<dependency id="Glimpse" version="1.8.0" />
+				<dependency id="Glimpse.AspNet" version="1.6.0" />
+				<dependency id="Glimpse.WebForms" version="1.0.2" />
 			</group>
 		</dependencies>
 		<references></references>

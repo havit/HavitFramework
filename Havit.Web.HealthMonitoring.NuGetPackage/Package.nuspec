@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Havit.Web.HealthMonitoring</id>
+    <version>1.0.1</version>
+    <!--<minClientVersion>2.6</minClientVersion>-->
+    <title>Havit.Web.HealthMonitoring</title>
+    <authors>HAVIT, s.r.o.</authors>
+    <owners>HAVIT, s.r.o.</owners>
+    <description>
+      Konfiguruje HealthMonitoring v projektu.
+    </description>
+    <language>en-US</language>
+    <!--<projectUrl>http://wiki.havit.cz/Glimpse.ashx</projectUrl>
+    <iconUrl>http://getglimpse.com/content/glimpse100.png</iconUrl>-->
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>    
+    <copyright>Copyright HAVIT, s.r.o. 2013</copyright>
+    <!--<dependencies>
+      <group targetFramework="net45">
+        <dependency id="Glimpse" version="1.6.0" />
+        <dependency id="Glimpse.AspNet" version="1.4.0" />
+      </group>
+    </dependencies>-->
+    <references></references>
+    <tags></tags>
+  </metadata>
+  <files>
+    <!--<file src="tools\" target="tools" />-->
+    <file src="content\" target="content" />
+  </files>
+</package>

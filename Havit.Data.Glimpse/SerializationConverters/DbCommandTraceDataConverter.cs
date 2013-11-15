@@ -46,10 +46,11 @@ namespace Havit.Data.Glimpse.SerializationConverters
 					.Column(GetParametersSection(dbCommandTraceData))
 					.Column(transactionId)
 					.Column(dbCommandTraceData.ResultSet ? GetDisplayValue(dbCommandTraceData.Result) : String.Empty)
-					.Column(dbCommandTraceData.Duration);
+					.Column(new TimeSpan(dbCommandTraceData.DurationTicks));
 
-				row.WarnIf(dbCommandTraceData.Duration >= 50);
-				row.ErrorIf(dbCommandTraceData.Duration >= 500);
+				long durationMs = dbCommandTraceData.DurationTicks / TimeSpan.TicksPerMillisecond;
+				row.WarnIf(durationMs >= 50);
+				row.ErrorIf(durationMs >= 500);
 			}
 
 			return section.Build();

@@ -47,7 +47,7 @@ namespace Havit.Data.Trace
 		internal void Trace(System.Diagnostics.TraceSource traceSource)
 		{
 			durationStopWatch.Stop();
-			traceData.Duration = durationStopWatch.ElapsedMilliseconds;
+			traceData.DurationTicks = durationStopWatch.ElapsedTicks;
 			traceSource.TraceData(TraceEventType.Information, 0, traceData);
 		}
 		#endregion		

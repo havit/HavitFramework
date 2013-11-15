@@ -41,11 +41,11 @@ namespace Havit.Data.Trace
 		public List<DbParameterTraceData> Parameters { get; private set; }
 		#endregion
 
-		#region Duration
+		#region DurationTicks
 		/// <summary>
-		/// Command execution duration.
+		/// Command execution duration (ticks).
 		/// </summary>
-		public long Duration { get; internal set; }
+		public long DurationTicks { get; internal set; }
 		#endregion
 
 		#region ResultSet

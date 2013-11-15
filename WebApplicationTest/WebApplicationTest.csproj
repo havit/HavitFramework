@@ -131,16 +131,15 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Glimpse.AspNet, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Glimpse.AspNet.1.5.0\lib\net45\Glimpse.AspNet.dll</HintPath>
+    <Reference Include="Glimpse.AspNet">
+      <HintPath>..\packages\Glimpse.AspNet.1.6.0\lib\net45\Glimpse.AspNet.dll</HintPath>
     </Reference>
-    <Reference Include="Glimpse.Core, Version=1.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Glimpse.Core, Version=1.8.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Glimpse.1.7.0\lib\net45\Glimpse.Core.dll</HintPath>
+      <HintPath>..\packages\Glimpse.1.8.0\lib\net45\Glimpse.Core.dll</HintPath>
     </Reference>
     <Reference Include="Glimpse.WebForms">
-      <HintPath>..\packages\Glimpse.WebForms.1.0.1\lib\net45\Glimpse.WebForms.dll</HintPath>
+      <HintPath>..\packages\Glimpse.WebForms.1.0.2\lib\net45\Glimpse.WebForms.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -493,10 +492,6 @@
     <ProjectReference Include="..\Havit.Business\Havit.Business.csproj">
       <Project>{81995BC1-9F25-4F46-8258-8ED1F965CABB}</Project>
       <Name>Havit.Business</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Havit.Data.Glimpse\Havit.Data.Glimpse.csproj">
-      <Project>{c5c6607e-644a-468f-a6c2-cdcf8a1d23dc}</Project>
-      <Name>Havit.Data.Glimpse</Name>
     </ProjectReference>
     <ProjectReference Include="..\Havit.Data\Havit.Data.csproj">
       <Project>{703235E0-86C0-44F3-95BB-3D9F39886966}</Project>

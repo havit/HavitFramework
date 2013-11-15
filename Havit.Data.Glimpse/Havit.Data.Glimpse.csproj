@@ -35,9 +35,9 @@
     <DocumentationFile>bin\Release\Havit.Data.Glimpse.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Glimpse.Core, Version=1.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Glimpse.Core, Version=1.8.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Glimpse.1.7.0\lib\net45\Glimpse.Core.dll</HintPath>
+      <HintPath>..\packages\Glimpse.1.8.0\lib\net45\Glimpse.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -53,6 +53,9 @@
     </Compile>
     <Compile Include="DbConnectorInspector.cs" />
     <Compile Include="DbConnectorTraceListener.cs" />
+    <Compile Include="Inspector\DbConnectorTimelineInspector.cs" />
+    <Compile Include="Message\DbConnectorTimelineMessage.cs" />
+    <Compile Include="Message\DbConnectorTimelineCategory.cs" />
     <Compile Include="SerializationConverters\SqlDataRecordArrayConverter.cs" />
     <Compile Include="SerializationConverters\DbCommandTraceDataConverter.cs" />
     <Compile Include="Tabs\DbConnectorTab.cs" />
@@ -67,6 +70,9 @@
       <Project>{9acc94b9-b8fd-47c1-abf8-0658c7673905}</Project>
       <Name>Havit</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

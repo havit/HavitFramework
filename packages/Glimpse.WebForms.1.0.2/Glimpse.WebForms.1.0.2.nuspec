@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Glimpse.WebForms</id>
+    <version>1.0.2</version>
+    <title>Glimpse WebForms</title>
+    <authors>nmolnar,  avanderhoorn</authors>
+    <owners>nmolnar,  avanderhoorn</owners>
+    <licenseUrl>http://www.opensource.org/licenses/apache2.0</licenseUrl>
+    <projectUrl>http://getglimpse.com/</projectUrl>
+    <iconUrl>http://getglimpse.com/content/glimpse100.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Glimpse is a web debugging and diagnostics tool used to gain a better understanding of whats happening inside of your ASP.NET 4.0 application.</description>
+    <summary>ASP.NET 4.0 web debugging and diagnostics tool.</summary>
+    <releaseNotes>Featherweight release for WebForms:
+ - Greater support for many more control ViewState's 
+ - Fixed circular reference bug that could be caused by some controls ViewState
+ - Fixed bug which could cause trace output to be rended in the page</releaseNotes>
+    <copyright />
+    <language />
+    <tags>ASP.NET Web WebForms Glimpse</tags>
+    <dependencies>
+      <dependency id="Glimpse.AspNet" version="1.6.0" />
+    </dependencies>
+  </metadata>
+</package>

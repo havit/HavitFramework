@@ -4,8 +4,6 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-using Glimpse.AspNet.AlternateType;
-
 using Havit.Web.UI.WebControls;
 
 namespace WebApplicationTest

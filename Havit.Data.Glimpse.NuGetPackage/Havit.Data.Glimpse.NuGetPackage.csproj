@@ -53,7 +53,6 @@
     <None Include="content\Config\system.diagnostics.config.transform" />
     <None Include="content\Web.config.install.xdt" />
     <None Include="content\Web.config.transform" />
-    <None Include="content\Web.Release.config.install.xdt" />
     <None Include="content\Web.Release.config.transform" />
     <None Include="Package.nuspec">
       <SubType>Designer</SubType>

@@ -945,13 +945,16 @@ function AutoSuggestMenu()
 
 	self.onTextBoxBlur = function()
 	{
-		TRACE("AutoSuggestMenu.onTextBoxBlur");
+	    TRACE("AutoSuggestMenu.onTextBoxBlur");
 
-		//Hide menu with a slight delay - in case there was a click
-		if (_cancelOnBlur)
-			focusOnTextBox();
-		else
-			_onBlurTimer = window.setTimeout(self.onTextBoxBlurTimer, 500);
+	    self.doClearSelectionOnNoText(); // workaround pro vyčištění textboxu křížkem v IE
+
+	    //Hide menu with a slight delay - in case there was a click
+	    if (_cancelOnBlur) {
+	        focusOnTextBox();
+	    } else {
+	        _onBlurTimer = window.setTimeout(self.onTextBoxBlurTimer, 500);
+	    }
 
 		_cancelOnBlur = false;
 
@@ -979,7 +982,6 @@ function AutoSuggestMenu()
 		TRACE("AutoSuggestMenu.onTextBoxBlurTimer");
 		self.hide();
 		self.doClearTextOnNoSelection();
-		self.doClearSelectionOnNoText(); // workaround pro vyčištění textboxu křížkem v IE
 		self.doAutoPostBack();
 	}
 	

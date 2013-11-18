@@ -92,7 +92,7 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 		private void GetGroupMembersInternal(string groupname, bool includeGroups, bool traverseNestedGroups, List<string> members, List<string> processedGroups)
 		{
 			// checks a) repeated group by nesting, b) group cycles
-			if (processedGroups.Contains(groupname))
+			if (processedGroups.Contains(groupname, StringComparer.CurrentCultureIgnoreCase))
 			{
 				return;
 			}
@@ -112,7 +112,7 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 			
 			if (searchResult == null)
 			{
-				throw new InvalidOperationException("Group not found.");
+				throw new GroupNotFoundException(groupname);
 			}
 
 			List<SearchResult> searchResults = new List<SearchResult>();
@@ -160,7 +160,7 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 
 				if (isUser || (includeGroups && isGroup))
 				{
-					if (!members.Contains(memberAccountName))
+					if (!members.Contains(memberAccountName, StringComparer.CurrentCultureIgnoreCase))
 					{
 						members.Add(memberAccountName);
 					}
@@ -177,6 +177,7 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 		#region GetUserMembership
 		/// <summary>
 		/// Returns users membership (groups of which is a member).
+		/// Does not support BUILTIN\\... groups.
 		/// DOES NOT SUPPORT MULTIDOMAIN ENVIRONMENT - Only groups in the same domain as user are in the result.
 		/// </summary>
 		/// <param name="username">Username (supported both forms DOMAIN\user and user).</param>
@@ -211,7 +212,7 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 
 			if (searchResult == null)
 			{
-				throw new InvalidOperationException("User not found.");
+				throw new UserNotFoundException(username);
 			}
 
 			result = new List<string>();
@@ -292,7 +293,7 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 			foreach (string group in groups)
 			{
 				List<string> groupMembers = new List<string>(GetGroupMembers(group, false, traverseNestedGroups));
-				if (groupMembers.Contains(username))
+				if (groupMembers.Contains(username, StringComparer.CurrentCultureIgnoreCase))
 				{
 					result.Add(group);
 				}
@@ -325,7 +326,7 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 
 			if (searchResult == null)
 			{
-				throw new InvalidOperationException("User not found.");
+				throw new UserNotFoundException(username);
 			}
 
 			UserInfo userInfo = new UserInfo();
@@ -435,8 +436,13 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 		{
 			try
 			{
-				SecurityIdentifier securityIdentifier = new SecurityIdentifier(sid, 0);
-				accountName = ((NTAccount)securityIdentifier.Translate(typeof(NTAccount))).ToString();
+				SecurityIdentifier securityIdentifier = new SecurityIdentifier(sid, 0);				
+				accountName = ((NTAccount)securityIdentifier.Translate(typeof(NTAccount))).ToString();				
+				if (accountName.StartsWith("BUILTIN\\")) // Pro buildin
+				{
+					Trace.Write(String.Format("Skipped accountname {0} due internal implementation.", accountName), typeof(ActiveDirectoryServices).Name);
+					return false;
+				}
 				return true;
 			}
 			catch

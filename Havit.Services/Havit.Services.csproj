@@ -57,6 +57,8 @@
     <Compile Include="Ares\AresData.cs" />
     <Compile Include="DirectoryServices\ActiveDirectory\ActiveDirectoryProperties.cs" />
     <Compile Include="DirectoryServices\ActiveDirectory\ActiveDirectoryServices.cs" />
+    <Compile Include="DirectoryServices\ActiveDirectory\UserNotFoundException.cs" />
+    <Compile Include="DirectoryServices\ActiveDirectory\GroupNotFoundException.cs" />
     <Compile Include="DirectoryServices\ActiveDirectory\UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

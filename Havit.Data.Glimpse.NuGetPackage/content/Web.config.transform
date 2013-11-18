@@ -1,17 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <configuration>
-	<system.web>
-		<trace enabled="true" mostRecent="true" writeToDiagnosticsTrace="true" pageOutput="false" />
-	</system.web>
-	<system.diagnostics>
-		<sources>
-			<source name="DbConnector Command Execution Trace">
-				<listeners>
-					<add name="GlimpseDbConnectorTraceListener" type="Havit.Data.Glimpse.DbConnectorTraceListener, Havit.Data.Glimpse" />
-				</listeners>
-			</source>
-		</sources>
-	</system.diagnostics>
+  <system.diagnostics>
+    <sources>
+      <source name="DbConnector Command Execution Trace">
+        <listeners>
+          <add name="GlimpseDbConnectorTraceListener" type="Havit.Data.Glimpse.DbConnectorTraceListener, Havit.Data.Glimpse" />
+        </listeners>
+      </source>
+    </sources>
+  </system.diagnostics>
 
-	<glimpse defaultRuntimePolicy="On" endpointBaseUri="~/Glimpse.axd" />
+  <location path="Glimpse.axd">
+    <system.web>
+      <authorization>
+        <allow users="*" />
+      </authorization>
+    </system.web>
+  </location>
+
 </configuration>

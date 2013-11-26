@@ -7,8 +7,6 @@ using System.Web.UI.WebControls;
 
 using Havit.Web.UI.Scriptlets;
 
-[assembly: WebResource("Havit.Web.UI.WebControls.TextBoxLimitMaxLength.js", "text/javascript")]
-
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>

@@ -765,15 +765,15 @@ function HavitDateTimeBox_Change(e)
 	+ @"
 	if (found)
 	{
-		if (element.fireEvent)
-		{
-			element.fireEvent('onchange');
-		}
-		else
+		if (element.dispatchEvent)
 		{
 			var evt = document.createEvent('HTMLEvents');
 			evt.initEvent('change', true, true);
 			element.dispatchEvent(evt);
+		}
+		else if (element.fireEvent)
+		{
+			element.fireEvent('onchange');
 		}
 		return false;
 	}

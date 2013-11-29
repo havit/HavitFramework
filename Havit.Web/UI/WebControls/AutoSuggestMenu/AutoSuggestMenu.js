@@ -221,18 +221,16 @@ function AutoSuggestMenu()
 			if (oldValue != newValue)
 			{
 				textBox.value = newValue;
-				if (textBox.fireEvent)
+
+				if (textBox.dispatchEvent)
+				{
+					var changeEvent = document.createEvent("HTMLEvents");
+					changeEvent.initEvent("change", true, true);
+					textBox.dispatchEvent(changeEvent);
+				}
+				else if (textBox.fireEvent)
 				{
 					textBox.fireEvent("onchange");
-				}
-				else
-				{
-					if (textBox.dispatchEvent)
-					{
-						var changeEvent = document.createEvent("HTMLEvents");
-						changeEvent.initEvent("change", true, true);
-						textBox.dispatchEvent(changeEvent);
-					}
 				}
 			}
 

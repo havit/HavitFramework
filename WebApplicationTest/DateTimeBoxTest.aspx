@@ -9,7 +9,11 @@
 <body>
 	<form id="form1" runat="server">
 		<div>
-			<asp:ScriptManager runat="server" />
+			<asp:ScriptManager runat="server">
+				<Scripts>
+					<asp:ScriptReference Name="jquery" />
+				</Scripts>
+			</asp:ScriptManager>
 			<asp:UpdatePanel runat="server">
 				<ContentTemplate>
 					<table>
@@ -93,6 +97,15 @@
 		<havit:DateTimeBox ID="SecondDateTimeBox" DateTimeMode="DateTime" CausesValidation="true" runat="server" />
 		<asp:CustomValidator ID="SecondDateTimeBoxValidator" ControlToValidate="SecondDateTimeBox" runat="server" />
 		<asp:Button ID="PostBackButton" Text="Postback" runat="server" />
+		
+<%--	<script>
+		$(document).ready(function () {
+			$("#<%= SecondDateTimeBox.ClientID %>").change(function (e) {
+				alert("change registered in jquery event handler");
+			});
+			alert("event attached");
+		});
+	</script>--%>
 
 		<asp:UpdatePanel UpdateMode="Conditional" runat="server">
 			<ContentTemplate>

@@ -1,8 +1,7 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="DateTimeBoxTest.aspx.cs" Inherits="WebApplicationTest.DateTimeBoxTest" UnobtrusiveValidationMode="None" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="DateTimeBoxTest.aspx.cs" Inherits="WebApplicationTest.DateTimeBoxTest" %>
+<!DOCTYPE html>
+<html>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 	<title>Untitled Page</title>
 </head>
@@ -20,14 +19,14 @@
 						<tr>
 							<td></td>
 							<td>
-								<havit:DateTimeBox ID="PrvniDTB" AutoPostBack="true" ValidationGroup="VG1" runat="server" />
-								<asp:CompareValidator ControlToValidate="PrvniDTB" ValidationGroup="VG1" Operator="DataTypeCheck" Type="Date" runat="server" Text="error2" />
+								<havit:DateTimeBox ID="PrvniDTB" AutoPostBack="true" CausesValidation="true" ValidationGroup="VG1" runat="server" />
+								<asp:CompareValidator ControlToValidate="PrvniDTB" ValidationGroup="VG1" Operator="DataTypeCheck" Type="Date" Text="error" runat="server" />
 							</td>
 						</tr>
 						<tr>
 							<td>DateTime</td>
 							<td>
-								<havit:DateTimeBox ID="DrubyDateTimeBox" FirstDayOfWeek="Sunday" KeyBlockingClientScriptEnabled="false" runat="server" />
+								<havit:DateTimeBox ID="DruhyDateTimeBox" FirstDayOfWeek="Sunday" KeyBlockingClientScriptEnabled="false" runat="server" />
 								<asp:Button ID="VycistitButton" Text="Vycistit a schovat" runat="server" />
 								<asp:Button ID="ZobrazitButton" Text="Zobrazit" runat="server" />
 							</td>
@@ -48,7 +47,7 @@
 						</tr>
 					</table>
 
-					<asp:Button runat="server" Text="Callback" />
+					<asp:Button Text="Callback" runat="server" />
 				</ContentTemplate>
 			</asp:UpdatePanel>
 
@@ -93,19 +92,19 @@
 
 			</table>
 		</div>
-
+		SecondDateTimeBox:
 		<havit:DateTimeBox ID="SecondDateTimeBox" DateTimeMode="DateTime" CausesValidation="true" runat="server" />
 		<asp:CustomValidator ID="SecondDateTimeBoxValidator" ControlToValidate="SecondDateTimeBox" runat="server" />
 		<asp:Button ID="PostBackButton" Text="Postback" runat="server" />
 		
-<%--	<script>
+	<script>
 		$(document).ready(function () {
 			$("#<%= SecondDateTimeBox.ClientID %>").change(function (e) {
 				alert("change registered in jquery event handler");
 			});
 			alert("event attached");
 		});
-	</script>--%>
+	</script>
 
 		<asp:UpdatePanel UpdateMode="Conditional" runat="server">
 			<ContentTemplate>

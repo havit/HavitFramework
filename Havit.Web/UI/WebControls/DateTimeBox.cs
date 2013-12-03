@@ -6,6 +6,7 @@ using Havit.Web.UI.WebControls;
 using System.Web.UI;
 using System.Threading;
 using System.Globalization;
+using Havit.Web.UI.ClientScripts;
 
 [assembly: WebResource("Havit.Web.UI.WebControls.DateTimeBox_DateTimePickerEnabled.gif", "image/gif")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DateTimeBox_DateTimePickerDisabled.gif", "image/gif")]
@@ -272,7 +273,7 @@ namespace Havit.Web.UI.WebControls
 		private DateTime? _value;
 		private bool _isValid = true;
 		private bool _setValueCallsSetValueToNestedTextBox = false;
-
+		private string _dateStatusFunction;
 		#endregion
 
 		#region ValueChanged
@@ -441,6 +442,9 @@ namespace Havit.Web.UI.WebControls
 			dateTimePickerDynarchCalendar = new DynarchCalendar();
 			dateTimePickerDynarchCalendar.ID = "DateTimePickerDynarchCalendar";
 			dateTimePickerDynarchCalendar.Electric = false;			
+			dateTimePickerDynarchCalendar.InputField = "ValueTextBox";
+			dateTimePickerDynarchCalendar.Button = "DateTimePickerImage";
+			dateTimePickerDynarchCalendar.FirstDay = (int)this.FirstDayOfWeek; // číslování enumu v .NETu sedí s předpokládanou hodnotou pro dynarchcalendar			
 		}
 		#endregion
 		
@@ -567,6 +571,44 @@ namespace Havit.Web.UI.WebControls
 		{
 			base.OnPreRender(e);
 
+			if (GetDateTimeBoxCustomization != null)
+			{
+				DateTimeBoxDateCustomizationEventArgs args = new DateTimeBoxDateCustomizationEventArgs();
+				GetDateTimeBoxCustomization(this, args);
+				if (args.DateCustomization == null)
+				{
+					throw new ArgumentException("Po obsluze události GetDateTimeBoxCustomization nesmí zůstat vlastnost DateCustomization null.");
+				}
+
+				_dateStatusFunction = args.DateCustomization.GetDatesCustomizationFunction(this.Page);
+			}
+			else if (GetDateTimeBoxCustomizationDefault != null)
+			{
+				DateTimeBoxDateCustomizationEventArgs args = new DateTimeBoxDateCustomizationEventArgs();
+				GetDateTimeBoxCustomizationDefault(this, args);
+				if (args.DateCustomization == null)
+				{
+					throw new ArgumentException("Po obsluze události GetDateTimeBoxCustomizationDefault nesmí zůstat vlastnost DateCustomization null.");
+				}
+
+				_dateStatusFunction = args.DateCustomization.GetDatesCustomizationFunction(this.Page);
+			}
+			
+			if (IsEnabled)
+			{
+				HavitFrameworkClientScriptHelper.RegisterHavitFrameworkClientScript(this.Page);
+			}
+
+			ViewState["ValueMemento"] = GetValueMemento();
+		}
+		#endregion
+
+		#region Render
+		/// <summary>
+		/// Render (overriden).
+		/// </summary>
+		protected override void Render(HtmlTextWriter writer)
+		{
 			valueTextBox.Enabled = this.IsEnabled;
 			valueTextBox.AutoPostBack = this.AutoPostBack;
 			valueTextBox.ValidationGroup = this.ValidationGroup;
@@ -605,33 +647,10 @@ namespace Havit.Web.UI.WebControls
 
 			dateTimePickerDynarchCalendar.Enabled = IsEnabled;
 			dateTimePickerDynarchCalendar.Visible = ShowDateTimePicker;
-			dateTimePickerDynarchCalendar.InputField = "ValueTextBox";
-			dateTimePickerDynarchCalendar.Button = "DateTimePickerImage";
-			dateTimePickerDynarchCalendar.FirstDay = (int)this.FirstDayOfWeek; // číslování enumu v .NETu sedí s předpokládanou hodnotou pro dynarchcalendar			
-
-			if (GetDateTimeBoxCustomization != null)
+			if (!String.IsNullOrEmpty(_dateStatusFunction))
 			{
-				DateTimeBoxDateCustomizationEventArgs args = new DateTimeBoxDateCustomizationEventArgs();
-				GetDateTimeBoxCustomization(this, args);
-				if (args.DateCustomization == null)
-				{
-					throw new ArgumentException("Po obsluze události GetDateTimeBoxCustomization nesmí zůstat vlastnost DateCustomization null.");
-				}
-
-				dateTimePickerDynarchCalendar.DateStatusFunction = args.DateCustomization.GetDatesCustomizationFunction(this.Page);
+				dateTimePickerDynarchCalendar.DateStatusFunction = _dateStatusFunction;
 			}
-			else if (GetDateTimeBoxCustomizationDefault != null)
-			{
-				DateTimeBoxDateCustomizationEventArgs args = new DateTimeBoxDateCustomizationEventArgs();
-				GetDateTimeBoxCustomizationDefault(this, args);
-				if (args.DateCustomization == null)
-				{
-					throw new ArgumentException("Po obsluze události GetDateTimeBoxCustomizationDefault nesmí zůstat vlastnost DateCustomization null.");
-				}
-
-				dateTimePickerDynarchCalendar.DateStatusFunction = args.DateCustomization.GetDatesCustomizationFunction(this.Page);
-			}
-			
 			switch (DateTimeMode)
 			{
 				case DateTimeMode.Date: 
@@ -654,28 +673,20 @@ namespace Havit.Web.UI.WebControls
 
 			if (IsEnabled)
 			{
-				RegisterClientScript();
-				if (KeyBlockingClientScriptEnabled)
+				System.Globalization.DateTimeFormatInfo dateTimeFormatInfo = CultureInfo.CurrentCulture.DateTimeFormat;
+				valueTextBox.Attributes["data-havitdatetimebox"] = "true";
+				valueTextBox.Attributes["data-havitdatetimebox-dateseparator"] = dateTimeFormatInfo.DateSeparator.Left(1);
+				if ((this.DateTimeMode == DateTimeMode.DateTime))
 				{
-					valueTextBox.Attributes.Add("onkeypress", String.Format("HavitDateTimeBox_KeyPress(event, {0});", (this.DateTimeMode == DateTimeMode.DateTime).ToString().ToLower()));
-				}
-				//if (!ReadOnly)
-				//{
-				valueTextBox.Attributes.Add("onchange", "if (!HavitDateTimeBox_Change(event)) return false;");
-				valueTextBox.Attributes.Add("onfocus", "HavitDateTimeBox_Focus(event);");
-				//}
+					valueTextBox.Attributes["data-havitdatetimebox-timeseparator"] = dateTimeFormatInfo.TimeSeparator.Left(1);
 			}
 
-			ViewState["ValueMemento"] = GetValueMemento();
+				if (!KeyBlockingClientScriptEnabled)
+				{
+					valueTextBox.Attributes["data-havitdatetimebox-suppresfilterkeys"] = "true";
+				}
 		}
-		#endregion
 
-		#region Render
-		/// <summary>
-		/// Render (overriden).
-		/// </summary>
-		protected override void Render(HtmlTextWriter writer)
-		{
 			writer.WriteBeginTag("span");
 			writer.WriteAttribute("style", "white-space: nowrap;");
 			writer.Write(">");
@@ -683,113 +694,6 @@ namespace Havit.Web.UI.WebControls
 			writer.WriteEndTag("span");
 		}
 
-		#endregion
-
-		#region RegisterClientScript
-		/// <summary>
-		/// Zaregistruje klientské skripty pro omezení vstupu z klávesnice, doplnění datumu podle masky
-		/// </summary>
-		private void RegisterClientScript()
-		{
-			// ziskat ASCII kody oddelovacu datumu a casu
-			System.Globalization.DateTimeFormatInfo dateTimeFormatInfo = CultureInfo.CurrentCulture.DateTimeFormat;
-			string dateSeparatorCode = System.Text.Encoding.ASCII.GetBytes(dateTimeFormatInfo.DateSeparator)[0].ToString();
-			string timeSeparatorCode = System.Text.Encoding.ASCII.GetBytes(dateTimeFormatInfo.TimeSeparator)[0].ToString();
-			string javaScript =
-@"function HavitDateTimeBox_KeyPress(e, allowTime)
-{
-	var charCode = (window.event) ? window.event.keyCode : e.charCode || e.keyCode;
-" + ((dateTimeFormatInfo.DateSeparator == ".") ? "	if (window.event && (charCode == 44)) { charCode = 46; e.keyCode = 46; }\r\n" : "")
-+ @"var validChar = ((charCode >= 48) && (charCode <= 57))
-		|| (charCode == " + dateSeparatorCode + @")
-		|| (charCode <= 31)
-		|| (allowTime
-			&& ((charCode == 32)
-				|| (charCode == " + timeSeparatorCode + @")))
-		|| (!window.event && e.ctrlKey && !e.altKey && !e.shiftKey && (charCode == 65 || charCode == 97 || charCode == 88 || charCode == 120 || charCode == 67 || charCode == 99 || charCode == 86 || charCode == 118));
-	if (!validChar)
-	{
-		if (window.event) { window.event.returnValue = false; } else { e.preventDefault(); }
-	}
-}
-
-function HavitDateTimeBox_Change(e)
-{
-	var element = (e && e.target) ? e.target : window.event.srcElement;
-	var datum = new Date();
-	var datumMesic = datum.getMonth() + 1;
-	var datumRok = datum.getFullYear();
-	var datumSeparator = '" + dateTimeFormatInfo.DateSeparator + @"';
-	var regDen = '([1-9]|0[1-9]|[1-2]\\d|3[01])';
-	var regDenCely = '(0[1-9]|[1-2]\\d|3[01])';
-	var regMesic = '([1-9]|0[1-9]|1[0-2])';
-	var regMesicCely = '(0[1-9]|1[0-2])';
-	var regRok = '((19|20)\\d\\d)';
-	var patterns = new Array
-					(
-							new Array(regDen + '(\\' + datumSeparator + ')?',
-										'\$1' + datumSeparator + datumMesic + datumSeparator + datumRok
-							),
-							new Array(regDen + '(\\' + datumSeparator + ')' + regMesic + '(\\' + datumSeparator + ')?',
-										'\$1' + datumSeparator + '\$3' + datumSeparator + datumRok
-							),
-							new Array(regDenCely + regMesicCely + '(\\' + datumSeparator + ')?',
-										'\$1' + datumSeparator + '\$2' + datumSeparator + datumRok
-							),
-							new Array(regDenCely + '(\\' + datumSeparator + ')?' + regMesicCely + '(\\' + datumSeparator + ')?' + regRok,
-										'\$1' + datumSeparator + '\$3' + datumSeparator + '\$5'
-							)
-					);
-	var i = 0;
-	var found = false;
-	while (i < patterns.length && !found)
-	{
-		var regPattern = new RegExp('^' + patterns[i][0] + '$');
-		var replacement = patterns[i][1];
-		var value = element.value;
-		if (regPattern.test(value)) 
-		{
-			var newValue = value.replace(regPattern, replacement);
-			element.value = newValue
-			if (value != newValue)
-			{
-				found = true;
-			}
-		}
-		i++;
-	}"
-				// před výměnou hodnoty se aplikují validátory
-	// potřebujeme zavolat druhé volání onchange, po výměně hodnoty, které validátory zase vypne
-	// musíme ale zastavit propagaci události, protože jinak by se mohl volat dvakrát postback
-	// v případě autopostbacku, proto return false
-	+ @"
-	if (found)
-	{
-		if (element.dispatchEvent)
-		{
-			var evt = document.createEvent('HTMLEvents');
-			evt.initEvent('change', true, true);
-			element.dispatchEvent(evt);
-		}
-		else if (element.fireEvent)
-		{
-			element.fireEvent('onchange');
-		}
-		return false;
-	}
-	return true;
-}
-
-function HavitDateTimeBox_Focus(e)
-{
-	var element = (e && e.target) ? e.target : window.event.srcElement;
-	if ((element != null) && element.createTextRange)
-	{
-		element.createTextRange().select();
-	}
-}";
-			ScriptManager.RegisterClientScriptBlock(this.Page, typeof(DateTimeBox), clientScriptBlockName, javaScript, true);
-		}
 		#endregion
 
 		#region ValueTextBox_TextChanged

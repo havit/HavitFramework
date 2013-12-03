@@ -231,6 +231,7 @@
     <Compile Include="UI\Adapters\CssAdapters\CssTreeViewAdapter.cs" />
     <Compile Include="UI\Adapters\CssAdapters\WebControlAdapterExtender.cs" />
     <Compile Include="UI\Adapters\SessionPageStatePersisterPageAdapter.cs" />
+    <Compile Include="UI\ClientScripts\HavitFrameworkClientScriptHelper.cs" />
     <Compile Include="UI\FilePageStatePersister.cs" />
     <Compile Include="UI\PerUserNamingStrategy.cs" />
     <Compile Include="UI\ScriptResourceMappingExt.cs" />
@@ -480,6 +481,7 @@
     <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-hu.js" />
     <EmbeddedResource Include="UI\Adapters\CssAdapters\CssTreeViewAdapter.css" />
     <EmbeddedResource Include="UI\Adapters\CssAdapters\CssTreeViewAdapter.js" />
+    <EmbeddedResource Include="UI\ClientScripts\HavitFrameworkClientScript.js" />
     <Content Include="UI\Scriptlets\IControlExtender.xml" />
     <Content Include="UI\Scriptlets\IScriptletParameter.xml" />
     <EmbeddedResource Include="UI\WebControls\SingleSubmitProtection.css" />

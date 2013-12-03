@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Text.RegularExpressions;
 using System.Threading;
+using Havit.Web.UI.ClientScripts;
 
 namespace Havit.Web.UI.WebControls
 {
@@ -420,96 +422,53 @@ namespace Havit.Web.UI.WebControls
 		{
 			base.OnPreRender(e);
 
-			valueTextBox.Enabled = this.Enabled;
-			valueTextBox.AutoPostBack = this.AutoPostBack;
-			valueTextBox.ValidationGroup = this.ValidationGroup;
-			valueTextBox.CausesValidation = this.CausesValidation;
-
-			valueTextBox.Style.Add("text-align", "right");
-
 			if (Enabled)
 			{
-				RegisterScripts();
-
-				if (KeyBlockingClientScriptEnabled)
-				{
-					valueTextBox.Attributes.Add("onkeypress", String.Format("HavitNumericBox_KeyPress(event, {0}, {1});", AllowNegativeNumber.ToString().ToLower(), Decimals));
-				}
-				valueTextBox.Attributes.Add("onchange", String.Format("HavitNumericBox_Fix(event, {0}, {1});", AllowNegativeNumber.ToString().ToLower(), Decimals));
-				if (!ReadOnly)
-				{
-					valueTextBox.Attributes.Add("onfocus", "HavitNumericBox_Focus(event);");
-				}
-			}
+				HavitFrameworkClientScriptHelper.RegisterHavitFrameworkClientScript(this.Page);
+			}				
 
 			ViewState["ValueMemento"] = GetValueMemento();
 		}		
 		#endregion
 
-		#region RegisterScripts
+		#region Render
 		/// <summary>
-		/// Registruje klientské skripty omezující vstup z klávesnice.
+		/// Sends server control content to a provided HtmlTextWriter object, which writes the content to be rendered on the client.
 		/// </summary>
-		private void RegisterScripts()
+		protected override void Render(HtmlTextWriter writer)
 		{
-			char decimalSeparator = (Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator[0]);
+			// nastavení se projeví pro Render, ale nejsou renderovány do ViewState
 
-			string thousandsSeparator = (Thread.CurrentThread.CurrentCulture.NumberFormat.NumberGroupSeparator);
-			if (String.IsNullOrEmpty(thousandsSeparator) || (thousandsSeparator[0] == (char)160))
+			valueTextBox.Enabled = this.Enabled;
+			valueTextBox.AutoPostBack = this.AutoPostBack;
+			valueTextBox.ValidationGroup = this.ValidationGroup;
+			valueTextBox.CausesValidation = this.CausesValidation;
+			valueTextBox.Style.Add("text-align", "right");
+
+			if (Enabled)
 			{
-				thousandsSeparator = " ";
+				string thousandsSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberGroupSeparator.Left(1);
+				if (String.IsNullOrEmpty(thousandsSeparator) || (thousandsSeparator[0] == (char)160))
+				{
+					thousandsSeparator = " ";
+				}
+
+				valueTextBox.Attributes["data-havitnumericbox"] = "true";
+				valueTextBox.Attributes["data-havitnumericbox-allownegative"] = this.AllowNegativeNumber.ToString().ToLower();
+				valueTextBox.Attributes["data-havitnumericbox-thousandsseparator"] = thousandsSeparator;
+				valueTextBox.Attributes["data-havitnumericbox-decimals"] = this.Decimals.ToString();
+				if (this.Decimals > 0)
+				{
+					valueTextBox.Attributes["data-havitnumericbox-decimalseparator"] = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator.Left(1);
+				}
+
+				if (!KeyBlockingClientScriptEnabled)
+				{
+					valueTextBox.Attributes["data-havitnumericbox-suppressfilterkey"] = "true";
+				}
 			}
-			else
-			{
-				thousandsSeparator = thousandsSeparator.Substring(0, 1);
-			}
 
-			// !window.event && e.ctrlKey && ... ( ... charCode == 86 || charCode == 118) ... podpora Ctrl-a|x|c|v ve Firefoxu
-			// ((charCode >= 48) && (charCode <= 57)) ... znaky 0-9
-			// (charCode < 31) .. speciální symboly (Home, End, Enter, Backspace, apod.)
-			// (allowNegativeNumber && (charCode == 45)) ... znaménko mínus, je-li povolena záporná čísla
-			// ((decimals > 0) && ... ) ... desetinný oddělovač, jsou-li desetinná místa povolena a zároveň ještě desetinný oddělovač není uveden
-			string javaScript =
-@"function HavitNumericBox_KeyPress(e, allowNegativeNumber, decimals)
-{
-	var charCode = (window.event) ? window.event.keyCode : e.charCode || e.keyCode;
-	var element = (e && e.target) ? e.target : window.event.srcElement;
-	var validKey = (charCode == " + (byte)thousandsSeparator[0] + @")
-		|| ((charCode >= 48) && (charCode <= 57)) 
-		|| (charCode <= 31)
-        || (allowNegativeNumber && (charCode == 45) && element.value.indexOf(String.fromCharCode(charCode)) == -1)
-        || ((decimals > 0) && (charCode == " + (byte)decimalSeparator + @") && element.value.indexOf(String.fromCharCode(charCode)) == -1)
-		|| (!window.event && e.ctrlKey && !e.altKey && !e.shiftKey && (charCode == 65 || charCode == 97 || charCode == 88 || charCode == 120 || charCode == 67 || charCode == 99 || charCode == 86 || charCode == 118));
-	if (!validKey)
-	{
-		if (window.event) { window.event.returnValue = false; } else { e.preventDefault(); }
-	}
-}
-
-function HavitNumericBox_Fix(e, allowNegativeNumber, decimals)
-{
-	var element = (e && e.target) ? e.target : window.event.srcElement;
-	var position;
-
-	var value = element.value;
-	position = value.indexOf('" + decimalSeparator + @"');
-	if (position >= 0)
-	{
-		value = value.substr(0, position + decimals + 1);								
-		element.value = value;
-	}
-}
-
-function HavitNumericBox_Focus(e)
-{
-	var element = (e && e.target) ? e.target : window.event.srcElement;
-	if ((element != null) && element.createTextRange)
-	{
-		element.createTextRange().select();
-	}
-}";
-
-			ScriptManager.RegisterClientScriptBlock(this.Page, typeof(NumericBox), clientScriptBlockName, javaScript, true);
+			base.Render(writer);
 		}
 		#endregion
 

@@ -163,21 +163,14 @@
     <Content Include="AutoSuggestMenu.aspx" />
     <Content Include="AutoSuggestMenuService.asmx" />
     <Content Include="CollapserTest.aspx" />
-    <Content Include="content\toastr.css" />
-    <Content Include="content\toastr.min.css" />
     <Content Include="ControlsValuesPersisterTest.aspx" />
     <EmbeddedResource Include="b.js" />
     <Content Include="Error.aspx" />
+    <Content Include="FireEventTest.aspx" />
     <Content Include="FormViewTest.aspx" />
     <Content Include="GridViewExt-Filtr.aspx" />
     <Content Include="IdentityMapScopeTest.aspx" />
     <Content Include="ScriptManagerTest.aspx" />
-    <Content Include="content\toastr.less" />
-    <None Include="Scripts\jquery-2.0.3.intellisense.js" />
-    <Content Include="Scripts\jquery-2.0.3.js" />
-    <Content Include="Scripts\jquery-2.0.3.min.js" />
-    <Content Include="Scripts\toastr.js" />
-    <Content Include="Scripts\toastr.min.js" />
     <Content Include="SessionAndResponseRedirectTest.aspx" />
     <Content Include="SmtpTraceListenerTest.aspx" />
     <Content Include="TextBoxTest.aspx" />
@@ -195,8 +188,6 @@
     <Content Include="WebFormExceptionTest.aspx" />
     <Content Include="WebServiceExceptionTest.asmx" />
     <Content Include="WrapperTest.aspx" />
-    <Content Include="Scripts\toastr.min.js.map" />
-    <Content Include="Scripts\jquery-2.0.3.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_GlobalResources\Glossary.Designer.cs">
@@ -248,6 +239,13 @@
     </Compile>
     <Compile Include="Error.aspx.designer.cs">
       <DependentUpon>Error.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="FireEventTest.aspx.cs">
+      <DependentUpon>FireEventTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FireEventTest.aspx.designer.cs">
+      <DependentUpon>FireEventTest.aspx</DependentUpon>
     </Compile>
     <Compile Include="FormViewTest.aspx.cs">
       <DependentUpon>FormViewTest.aspx</DependentUpon>
@@ -558,6 +556,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="content\" />
+    <Folder Include="Scripts\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

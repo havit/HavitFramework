@@ -47,7 +47,7 @@ namespace WebApplicationTest
 		private void TestGV_DataBinding(object sender, EventArgs e)
 		{
 			Random r = new Random();
-			TestGV.DataSource = System.Linq.Enumerable.Range(1, 5);
+			TestGV.DataSource = System.Linq.Enumerable.Range(1, 500);
 		}
 		#endregion
 
@@ -81,7 +81,7 @@ namespace WebApplicationTest
 			base.OnLoad(e);
 			AutoPostBackOnLoadValueLabel.Text = AutoPostBackDateTimeBox.Value.ToString();
 			ChangedLabel.Text = "no";
-			TestGVField.Visible = false;
+			//TestGVField.Visible = false;
 			TestGV.SetRequiresDatabinding();
 		}
 		#endregion
@@ -97,15 +97,15 @@ namespace WebApplicationTest
 		#region VycistitButton_Click
 		private void VycistitButton_Click(object sender, EventArgs e)
 		{
-			DrubyDateTimeBox.Value = null;
-			DrubyDateTimeBox.Visible = false;
+			DruhyDateTimeBox.Value = null;
+			DruhyDateTimeBox.Visible = false;
 		}
 		#endregion
 
 		#region ZobrazitButton_Click
 		private void ZobrazitButton_Click(object sender, EventArgs e)
 		{
-			DrubyDateTimeBox.Visible = true;
+			DruhyDateTimeBox.Visible = true;
 		}
 		#endregion
 	}

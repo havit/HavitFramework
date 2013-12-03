@@ -17,6 +17,7 @@
 							<td></td>
 							<td>
 								<havit:NumericBox ID="Test1NumericBox" MaxLength="4" runat="server" />								
+								<havit:NumericBoxValidator Text="error" ControlToValidate="Test1NumericBox" runat="server" />
 							</td>
 						</tr>
 						<tr>

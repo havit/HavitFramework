@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Data;
@@ -16,7 +16,6 @@ using Havit.Business;
 using Havit.Business.Query;
 using Havit.Collections;
 using Havit.Data;
-using Havit.Data.SqlClient;
 using Havit.Data.SqlServer;
 using Havit.Data.SqlTypes;
 

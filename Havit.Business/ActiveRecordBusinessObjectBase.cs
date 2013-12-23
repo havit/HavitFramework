@@ -5,7 +5,6 @@ using Havit.Diagnostics.Contracts;
 using System.Text;
 using System.Data.Common;
 using Havit.Data;
-using Havit.Data.SqlClient;
 using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
 

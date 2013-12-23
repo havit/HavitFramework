@@ -203,10 +203,6 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="SqlClient\SqlDataAccess.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="SqlClient\SqlTransactionDelegate.cs" />
     <Compile Include="SqlServer\SqlServerPlatform.cs" />
     <Compile Include="SqlTypes\IntTable.cs" />
     <Compile Include="SqlTypes\SqlSmallDateTime.cs" />

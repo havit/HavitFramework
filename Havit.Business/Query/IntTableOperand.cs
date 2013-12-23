@@ -6,7 +6,6 @@ using System.Data.SqlClient;
 using System.Data;
 using System.Diagnostics;
 
-using Havit.Data.SqlClient;
 using Havit.Data.SqlTypes;
 using Havit.Diagnostics.Contracts;
 

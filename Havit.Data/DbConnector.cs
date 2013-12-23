@@ -16,7 +16,7 @@ using Havit.Diagnostics.Contracts;
 namespace Havit.Data
 {
 	/// <summary>
-	/// Třída usnadňující práci s databázemi. Nástupce <see cref="Havit.Data.SqlClient.SqlDataAccess"/>.
+	/// Třída usnadňující práci s databázemi.
 	/// </summary>	
 	public class DbConnector
 	{

@@ -303,34 +303,6 @@
       <SubType>Code</SubType>
       <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
     </Compile>
-    <Compile Include="VnitrostatniDistribuce\_generated\TarifHmotnostItemBase.cs">
-      <SubType>Code</SubType>
-      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
-    </Compile>
-    <Compile Include="VnitrostatniDistribuce\_generated\TarifHmotnostItem.partial.cs">
-      <SubType>Code</SubType>
-      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
-    </Compile>
-    <Compile Include="VnitrostatniDistribuce\TarifHmotnostItem.cs">
-      <SubType>Code</SubType>
-      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
-    </Compile>
-    <Compile Include="VnitrostatniDistribuce\_generated\TarifHmotnostItemCollectionBase.cs">
-      <SubType>Code</SubType>
-      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
-    </Compile>
-    <Compile Include="VnitrostatniDistribuce\_generated\TarifHmotnostItemCollection.partial.cs">
-      <SubType>Code</SubType>
-      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
-    </Compile>
-    <Compile Include="VnitrostatniDistribuce\TarifHmotnostItemCollection.cs">
-      <SubType>Code</SubType>
-      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
-    </Compile>
-    <Compile Include="VnitrostatniDistribuce\_generated\TarifHmotnostItemProperties.cs">
-      <SubType>Code</SubType>
-      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
-    </Compile>
     <Compile Include="_generated\UzivatelBase.cs">
       <SubType>Code</SubType>
       <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
@@ -360,10 +332,6 @@
       <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
     </Compile>
     <Compile Include="_generated\ExtensionMethods.partial.cs">
-      <SubType>Code</SubType>
-      <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
-    </Compile>
-    <Compile Include="VnitrostatniDistribuce\_generated\ExtensionMethods.partial.cs">
       <SubType>Code</SubType>
       <HavitBusinessLayerGenerator>1</HavitBusinessLayerGenerator>
     </Compile>

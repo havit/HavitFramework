@@ -11,7 +11,6 @@ using System.Threading;
 using System.Web;
 using System.Web.Caching;
 using Havit.Data;
-using Havit.Data.SqlClient;
 using Havit.Data.SqlTypes;
 using Havit.Business;
 using Havit.Business.Query;

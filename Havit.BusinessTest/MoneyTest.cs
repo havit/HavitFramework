@@ -3,7 +3,6 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Havit.BusinessLayerTest.VnitrostatniDistribuce;
 using Havit.BusinessLayerTest;
 using Havit.Business;
 
@@ -24,12 +23,12 @@ namespace Havit.BusinessTest
 				decimal castka = 555M;
 				Currency mena = Currency.GetAll().First();
 
-				TarifHmotnostItem tarifHmotnostItem = TarifHmotnostItem.CreateObject();
-				tarifHmotnostItem.Cena.Amount = castka;
-				tarifHmotnostItem.Cena.Currency = mena;
+				CenikItem cenikItem = CenikItem.CreateObject();
+				cenikItem.Cena.Amount = castka;
+				cenikItem.Cena.Currency = mena;
 
-				Assert.AreEqual(tarifHmotnostItem.Cena.Amount, castka);
-				Assert.AreEqual(tarifHmotnostItem.Cena.Currency, mena);
+				Assert.AreEqual(cenikItem.Cena.Amount, castka);
+				Assert.AreEqual(cenikItem.Cena.Currency, mena);
 			}
 		}
 		#endregion
@@ -43,14 +42,14 @@ namespace Havit.BusinessTest
 				decimal castka = 555M;
 				Currency mena = Currency.GetAll().First();
 				
-				TarifHmotnostItem tarifHmotnostItem = TarifHmotnostItem.CreateObject();
+				CenikItem cenikItem = CenikItem.CreateObject();
 
 				Money money = new Money(castka, mena);
-				tarifHmotnostItem.Cena = money;
+				cenikItem.Cena = money;
 
-				Assert.AreEqual(tarifHmotnostItem.CenaAmount, castka);
-				Assert.AreEqual(tarifHmotnostItem.CenaCurrency, mena);
-				Assert.AreSame(money, tarifHmotnostItem.Cena);
+				Assert.AreEqual(cenikItem.CenaAmount, castka);
+				Assert.AreEqual(cenikItem.CenaCurrency, mena);
+				Assert.AreSame(money, cenikItem.Cena);
 			}
 		}
 		#endregion
@@ -66,27 +65,27 @@ namespace Havit.BusinessTest
 				Currency mena1 = Currency.GetAll().First();
 				Currency mena2 = Currency.GetAll().Skip(1).First();
 
-				TarifHmotnostItem tarifHmotnostItem = TarifHmotnostItem.CreateObject();
+				CenikItem cenikItem = CenikItem.CreateObject();
 
 				Money money = new Money(castka1, mena1);
-				tarifHmotnostItem.Cena = money;
+				cenikItem.Cena = money;
 
-				Assert.AreEqual(tarifHmotnostItem.CenaAmount, castka1);
-				Assert.AreEqual(tarifHmotnostItem.CenaCurrency, mena1);
+				Assert.AreEqual(cenikItem.CenaAmount, castka1);
+				Assert.AreEqual(cenikItem.CenaCurrency, mena1);
 
-				tarifHmotnostItem.CenaAmount = castka2;
-				tarifHmotnostItem.CenaCurrency = mena2;
+				cenikItem.CenaAmount = castka2;
+				cenikItem.CenaCurrency = mena2;
 
-				Assert.AreEqual(tarifHmotnostItem.Cena.Amount, castka2);
-				Assert.AreEqual(tarifHmotnostItem.Cena.Currency, mena2);
+				Assert.AreEqual(cenikItem.Cena.Amount, castka2);
+				Assert.AreEqual(cenikItem.Cena.Currency, mena2);
 
 				money = new Money(castka1, mena1);
-				tarifHmotnostItem.Cena = money;
+				cenikItem.Cena = money;
 
-				Assert.AreEqual(tarifHmotnostItem.CenaAmount, castka1);
-				Assert.AreEqual(tarifHmotnostItem.CenaCurrency, mena1);
+				Assert.AreEqual(cenikItem.CenaAmount, castka1);
+				Assert.AreEqual(cenikItem.CenaCurrency, mena1);
 
-				Assert.AreSame(money, tarifHmotnostItem.Cena);
+				Assert.AreSame(money, cenikItem.Cena);
 			}
 		}
 		#endregion

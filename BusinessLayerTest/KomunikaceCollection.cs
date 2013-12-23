@@ -13,7 +13,6 @@ using System.Web.Caching;
 using System.Xml;
 using Havit.Collections;
 using Havit.Data;
-using Havit.Data.SqlClient;
 using Havit.Data.SqlTypes;
 using Havit.Business;
 using Havit.Business.Query;

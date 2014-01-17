@@ -28,6 +28,17 @@ namespace Havit.Services.Ares
 
 		#endregion
 
+		#region Timeout
+		/// <summary>
+		/// Timeout (v milisekundách) jednoho requestu pøi naèítání dat z ARESu.
+		/// Pokud není hodnota nastavena, není délka requestu omezována (resp. je použito standardní nastavení .NETu).
+		/// </summary>
+		public int? Timeout
+		{
+			get; set;
+		}
+		#endregion
+
 		#region Constructor
 		/// <summary>
 		/// Konstruktor.
@@ -225,6 +236,10 @@ namespace Havit.Services.Ares
 			try
 			{
 				WebRequest aresRequest = HttpWebRequest.Create(requestUrl);
+				if (this.Timeout != null)
+				{
+					aresRequest.Timeout = this.Timeout.Value;
+				}
 				HttpWebResponse aresResponse = (HttpWebResponse)aresRequest.GetResponse();
 
 				aresResponseXDocument = XDocument.Load(new StreamReader(aresResponse.GetResponseStream()));

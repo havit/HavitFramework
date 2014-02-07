@@ -56,6 +56,21 @@ namespace Havit.Diagnostics.Contracts
 		}
 		#endregion
 
+		#region Assert
+		/// <summary>
+		/// Pokud není podmínka condition splněna (hodnota je false), vyhodí výjimku TException.
+		/// </summary>
+		/// <typeparam name="TException">Typ výjimky, která je v případě nesplnění podmínky vyhozena.</typeparam>
+		[DebuggerStepThrough]
+		public static void Assert<TException>(bool condition, string userMessage = null)
+			where TException : Exception
+		{
+			if (!condition)
+			{
+				ThrowException<TException>(userMessage);
+			}
+		}
+		#endregion
 		#region ThrowException
 		[DebuggerStepThrough]		
 		private static void ThrowException<TException>(string message)

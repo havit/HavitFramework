@@ -246,7 +246,7 @@ namespace Havit.Services.Ares
 			}
 			catch (Exception e)
 			{
-				throw new ApplicationException(String.Format("Chyba \"{0}\" pøi pokusu o získání dat ze služby ARES ({1}).", e.Message, requestUrl));
+				throw new AresLoadException(String.Format("Chyba \"{0}\" pøi pokusu o získání dat ze služby ARES ({1}).", e.Message, requestUrl));
 			}
 
 			return aresResponseXDocument;

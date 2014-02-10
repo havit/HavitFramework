@@ -51,6 +51,8 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Ares\AresExceptionBase.cs" />
+    <Compile Include="Ares\AresLoadException.cs" />
     <Compile Include="Ares\AresRegistr.cs" />
     <Compile Include="Ares\AresException.cs" />
     <Compile Include="Ares\AresService.cs" />

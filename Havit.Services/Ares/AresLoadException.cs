@@ -9,7 +9,7 @@ namespace Havit.Services.Ares
 	/// <summary>
 	/// Výjimka identifikující neúspěch při čtení dat z ARESu (ARES nedostupný, timeout, atp.).
 	/// </summary>
-	public class AresLoadException : AresExceptionBase
+	public class AresLoadException : AresBaseException
 	{
 		#region Construktor
 		/// <summary>

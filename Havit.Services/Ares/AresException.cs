@@ -8,7 +8,7 @@ namespace Havit.Services.Ares
 	/// <summary>
 	/// Výjimka identifikující chybu vrácenou z ARESu.
 	/// </summary>
-	public class AresException : AresExceptionBase
+	public class AresException : AresBaseException
 	{
 		#region Construktor
 		/// <summary>

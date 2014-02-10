@@ -9,14 +9,14 @@ namespace Havit.Services.Ares
 	/// <summary>
 	/// Předek výjimek vracených z ARESu.
 	/// </summary>
-	public abstract class AresExceptionBase : ApplicationException
+	public abstract class AresBaseException : ApplicationException
 	{
 		#region Construktor
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
 		/// <param name="message">Exception message.</param>
-		internal AresExceptionBase(string message)
+		internal AresBaseException(string message)
 			: base(message)
 		{
 

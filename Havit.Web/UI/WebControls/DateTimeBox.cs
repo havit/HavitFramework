@@ -444,7 +444,6 @@ namespace Havit.Web.UI.WebControls
 			dateTimePickerDynarchCalendar.Electric = false;			
 			dateTimePickerDynarchCalendar.InputField = "ValueTextBox";
 			dateTimePickerDynarchCalendar.Button = "DateTimePickerImage";
-			dateTimePickerDynarchCalendar.FirstDay = (int)this.FirstDayOfWeek; // číslování enumu v .NETu sedí s předpokládanou hodnotou pro dynarchcalendar			
 		}
 		#endregion
 		
@@ -647,6 +646,8 @@ namespace Havit.Web.UI.WebControls
 
 			dateTimePickerDynarchCalendar.Enabled = IsEnabled;
 			dateTimePickerDynarchCalendar.Visible = ShowDateTimePicker;
+			dateTimePickerDynarchCalendar.FirstDay = (int)this.FirstDayOfWeek; // číslování enumu v .NETu sedí s předpokládanou hodnotou pro dynarchcalendar			
+
 			if (!String.IsNullOrEmpty(_dateStatusFunction))
 			{
 				dateTimePickerDynarchCalendar.DateStatusFunction = _dateStatusFunction;

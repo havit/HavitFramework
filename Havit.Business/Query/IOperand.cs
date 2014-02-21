@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Data.Common;
+using System.Text;
+using Havit.Data.SqlServer;
 
 namespace Havit.Business.Query
 {
@@ -17,8 +18,9 @@ namespace Havit.Business.Query
 		/// Může přidávat databázové parametry do commandu.
 		/// </summary>
 		/// <param name="command">Databázový příkaz. Je možné do něj přidávat databázové parametry.</param>
+		/// <param name="sqlServerPlatform">Platforma, pro kterou je hodnota operandu vytvářena.</param>
 		/// <returns>Řetězec reprezentující hodnotu operandu v SQL dotazu.</returns>
-		string GetCommandValue(DbCommand command); 
+		string GetCommandValue(DbCommand command, SqlServerPlatform sqlServerPlatform); 
 		#endregion
 	}
 }

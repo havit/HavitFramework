@@ -60,7 +60,7 @@ namespace Havit.Business.Query
 					return;
 
 				default:
-					GetWhereStatementForSqlServer2008(command, whereBuilder);
+					GetWhereStatementForSqlServer2008(command, whereBuilder, sqlServerPlatform);
 					break;
 			}
 		}
@@ -87,7 +87,9 @@ namespace Havit.Business.Query
 #pragma warning disable 612,618
 				IOperand idsOperand = SqlInt32ArrayOperand.Create(ids);
 #pragma warning restore 612,618
-				whereBuilder.AppendFormat("({0} IN (SELECT [Value] FROM dbo.IntArrayToTable({1})))", operand.GetCommandValue(command), idsOperand.GetCommandValue(command));
+				whereBuilder.AppendFormat("({0} IN (SELECT [Value] FROM dbo.IntArrayToTable({1})))",
+					operand.GetCommandValue(command, SqlServerPlatform.SqlServer2005),
+					idsOperand.GetCommandValue(command, SqlServerPlatform.SqlServer2005));
 			}
 			else
 			{
@@ -111,7 +113,9 @@ namespace Havit.Business.Query
 #pragma warning disable 612,618
 					IOperand idsOperand = SqlInt32ArrayOperand.Create(ids);
 #pragma warning restore 612,618
-					whereBuilder.AppendFormat("({0} IN (SELECT [Value] FROM dbo.IntArrayToTable({1})))", operand.GetCommandValue(command), idsOperand.GetCommandValue(command));
+					whereBuilder.AppendFormat("({0} IN (SELECT [Value] FROM dbo.IntArrayToTable({1})))",
+						operand.GetCommandValue(command, SqlServerPlatform.SqlServer2005),
+						idsOperand.GetCommandValue(command, SqlServerPlatform.SqlServer2005));
 
 					startIndex += length;
 				}
@@ -125,10 +129,12 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Řeší variantu podmínky where pro SQL Server 2008.
 		/// </summary>
-		private void GetWhereStatementForSqlServer2008(DbCommand command, StringBuilder whereBuilder)
+		private void GetWhereStatementForSqlServer2008(DbCommand command, StringBuilder whereBuilder, SqlServerPlatform sqlServerPlatform)
 		{
 			IOperand idsOperand = IntTableOperand.Create(ids);
-			whereBuilder.AppendFormat("({0} IN (SELECT [Value] FROM {1}))", operand.GetCommandValue(command), idsOperand.GetCommandValue(command));
+			whereBuilder.AppendFormat("({0} IN (SELECT [Value] FROM {1}))",
+				operand.GetCommandValue(command, sqlServerPlatform),
+				idsOperand.GetCommandValue(command, sqlServerPlatform));
 		}
 		#endregion
 

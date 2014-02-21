@@ -71,7 +71,7 @@ namespace Havit.Business.Query
 			Debug.Assert(command != null);
 			Debug.Assert(whereBuilder != null);
 
-			whereBuilder.AppendFormat(ConditionPattern, Operand1.GetCommandValue(command));
+			whereBuilder.AppendFormat(ConditionPattern, Operand1.GetCommandValue(command, sqlServerPlatform));
 		}
 		
 		#endregion

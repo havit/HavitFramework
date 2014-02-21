@@ -53,7 +53,10 @@ namespace Havit.Business.Query
 			Debug.Assert(command != null);
 			Debug.Assert(whereBuilder != null);
 
-			whereBuilder.AppendFormat(ConditionPattern, Operand1.GetCommandValue(command), Operand2.GetCommandValue(command), Operand3.GetCommandValue(command));
+			whereBuilder.AppendFormat(ConditionPattern,
+				Operand1.GetCommandValue(command, sqlServerPlatform),
+				Operand2.GetCommandValue(command, sqlServerPlatform),
+				Operand3.GetCommandValue(command, sqlServerPlatform));
 		}
 		#endregion
 	}

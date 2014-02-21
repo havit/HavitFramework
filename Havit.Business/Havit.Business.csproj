@@ -224,6 +224,8 @@
     <Compile Include="Query\CompositeCondition.cs" />
     <Compile Include="Query\Condition.cs" />
     <Compile Include="Query\ConditionList.cs" />
+    <Compile Include="Query\DateTimeValueOperand.cs" />
+    <Compile Include="Query\GenericDbTypeValueOperand.cs" />
     <Compile Include="Query\IntTableOperand.cs" />
     <Compile Include="Query\DateCondition.cs" />
     <Compile Include="GetAllDelegate.cs" />

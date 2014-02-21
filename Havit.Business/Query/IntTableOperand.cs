@@ -5,7 +5,7 @@ using System.Data.Common;
 using System.Data.SqlClient;
 using System.Data;
 using System.Diagnostics;
-
+using Havit.Data.SqlServer;
 using Havit.Data.SqlTypes;
 using Havit.Diagnostics.Contracts;
 
@@ -46,9 +46,10 @@ namespace Havit.Business.Query
 		#endregion
 
 		#region IOperand Members
-		string IOperand.GetCommandValue(System.Data.Common.DbCommand command)
+		string IOperand.GetCommandValue(System.Data.Common.DbCommand command, SqlServerPlatform sqlServerPlatform)
 		{
 			Debug.Assert(command != null);
+			Debug.Assert(sqlServerPlatform >= SqlServerPlatform.SqlServer2008);
 
 			if (!(command is SqlCommand))
 			{
@@ -57,23 +58,14 @@ namespace Havit.Business.Query
 
 			SqlCommand sqlCommand = command as SqlCommand;
 
-			string parameterName;
-			int index = 1;
-			do
-			{
-				parameterName = "@param" + (command.Parameters.Count + index).ToString();
-				index += 1;
-			}
-			while (command.Parameters.Contains(parameterName));
-
 			SqlParameter parameter = new SqlParameter();
-			parameter.ParameterName = parameterName;
+			parameter.ParameterName = ValueOperand.GetParameterName(command);
 			parameter.SqlDbType = SqlDbType.Structured;
 			parameter.TypeName = "dbo.IntTable";
 			parameter.Value = IntTable.GetSqlParameterValue(this.value);
 			sqlCommand.Parameters.Add(parameter);
 
-			return parameterName;
+			return parameter.ParameterName;
 		}
 		#endregion
 	}

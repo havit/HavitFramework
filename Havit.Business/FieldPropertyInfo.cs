@@ -4,6 +4,7 @@ using System.Text;
 using System.Data;
 using System.Data.Common;
 using Havit.Business.Query;
+using Havit.Data.SqlServer;
 
 namespace Havit.Business
 {
@@ -123,7 +124,7 @@ namespace Havit.Business
 		#endregion
 
 		#region IOperand.GetCommandValue
-		string IOperand.GetCommandValue(DbCommand command)
+		string IOperand.GetCommandValue(DbCommand command, SqlServerPlatform sqlServerPlatform)
 		{
 			CheckInitialization();
 			return "[" + fieldName + "]";

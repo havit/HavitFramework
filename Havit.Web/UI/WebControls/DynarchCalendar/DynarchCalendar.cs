@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Specialized;
 using System.Text;
 using System.Web;
 using System.Web.UI;
@@ -1147,66 +1148,86 @@ namespace Havit.Web.UI.WebControls
 		/// <param name="dateSeparator">Řetězec, který má být použit jako oddělovač dne, měsíce a roku.</param>
 		/// <param name="timeSeparator">Řetězec, který má být použit jako oddělovač hodin a minut.</param>
 		/// <returns>DateFormat používaný DynarchCalendarem.</returns>
-		private string TransformDatePatternToClientScript(string pattern, string dateSeparator, string timeSeparator)
+		public static string TransformDatePatternToClientScript(string pattern, string dateSeparator, string timeSeparator)
 		{
-			string result = pattern;
+			// dle dokumentace http://msdn.microsoft.com/en-us/library/8kb3ddd4(v=vs.100).aspx
+			// je možné, aby v patternu byly literály - hodnoty, které bodou ve výstupu, což je uděláno uvozením do apostrofů nebo uvozovek
+			// pro transformaci do formátu pro DynarchCalendar potřebujeme
+			// 1) odstranit apostrof nebo uvozovky (zjednodušené řešení: rozsekáme pattern dle apostrofů a uvozovek do sekcí)
+			// 2) nenahrazovat text v apostrofech či uvozovkách (zjednodušení řešeno: náhradou jen sudých sekcí)
+			//
+			// Zjednodušené řešení nepostihuje (zatím jsme na to nenarazili):
+			// 1) nepodporuje uvozovky a apostrofy v patternu současně
+			// 2) neřeší transformaci textu (aby nedošlo náhodou k záměně) z textu v uvozovkách DynarchCalendarem
 
-			result = result.Replace("%", "");
+			if (pattern.Contains("\'") && pattern.Contains("\""))
+			{
+				throw new NotSupportedException(String.Format("Uvozovky a apostrofy nejsou ve podporovány ({0}).", pattern));
+			}
 
-			// date
-			result = result.Replace("dddd", "%A");
-			result = result.Replace("ddd", "%a");
-			result = result.Replace("dd", "#0#"); // %d
-			result = result.Replace("d", "#0#");
+			string[] sections = pattern.Split('\'', '\"');
+			for (var i = 0; i < sections.Length; i = i + 2)
+			{
+				string section = sections[i];
+				section = section.Replace("%", "");
 
-			result = result.Replace("MMMM", "%B");
-			result = result.Replace("MMM", "%b");
-			result = result.Replace("MM", "#1#");
-			result = result.Replace("M", "#1#");
+				// date
+				section = section.Replace("dddd", "%A");
+				section = section.Replace("ddd", "%a");
+				section = section.Replace("dd", "#0#"); // %d
+				section = section.Replace("d", "#0#");
 
-			result = result.Replace("yyyy", "%Y");
-			result = result.Replace("yy", "%y");
-			result = result.Replace("y", "%y");
+				section = section.Replace("MMMM", "%B");
+				section = section.Replace("MMM", "%b");
+				section = section.Replace("MM", "#1#");
+				section = section.Replace("M", "#1#");
 
-			// ignore gg, z, zz, zzz
-			result = result.Replace("gg", "");
-			result = result.Replace("z", "");
-			
-			// date: ve výsledku mohli přibýt A, a, B, b, Y, y
+				section = section.Replace("yyyy", "%Y");
+				section = section.Replace("yy", "%y");
+				section = section.Replace("y", "%y");
 
-			// time
-//			result = result.Replace("%H", "%k");
-			result = result.Replace("%H", "#2#");
-			result = result.Replace("HH", "#2#"); // %H
-//			result = result.Replace("H", "%k");
-			result = result.Replace("H", "#2#");
-			result = result.Replace("hh", "%I");
-			result = result.Replace("h", "%l");
+				// ignore gg, z, zz, zzz
+				section = section.Replace("gg", "");
+				section = section.Replace("z", "");
 
-			result = result.Replace("mm", "%M");
-			result = result.Replace("%m", "%M");
-			result = result.Replace("m", "%M");
+				// date: ve výsledku mohli přibýt A, a, B, b, Y, y
 
-			result = result.Replace("ss", "%S");
-			result = result.Replace("%s", "%S");
-			result = result.Replace("s", "%S");
+				// time
+//			section = section.Replace("%H", "%k");
+				section = section.Replace("%H", "#2#");
+				section = section.Replace("HH", "#2#"); // %H
+//			section = section.Replace("H", "%k");
+				section = section.Replace("H", "#2#");
+				section = section.Replace("hh", "%I");
+				section = section.Replace("h", "%l");
 
-			result = result.Replace("tt", "%P");
-			result = result.Replace("%t", "%P");
-			result = result.Replace("t", "%P");
-			
-			// time: ve výsledku mohli přibýt I, k, l, M, S, P
+				section = section.Replace("mm", "%M");
+				section = section.Replace("%m", "%M");
+				section = section.Replace("m", "%M");
 
-			// dočasné náhrady
-			result = result.Replace("#0#", "%d");
-			result = result.Replace("#1#", "%m");
-			result = result.Replace("#2#", "%H");
+				section = section.Replace("ss", "%S");
+				section = section.Replace("%s", "%S");
+				section = section.Replace("s", "%S");
 
-			// Replace date separator
-			result = result.Replace("/", dateSeparator);
-			result = result.Replace(":", timeSeparator);
+				section = section.Replace("tt", "%P");
+				section = section.Replace("%t", "%P");
+				section = section.Replace("t", "%P");
 
-			return result;
+				// time: ve výsledku mohli přibýt I, k, l, M, S, P
+
+				// dočasné náhrady
+				section = section.Replace("#0#", "%d");
+				section = section.Replace("#1#", "%m");
+				section = section.Replace("#2#", "%H");
+
+				// Replace date separator
+				section = section.Replace("/", dateSeparator);
+				section = section.Replace(":", timeSeparator);
+
+				sections[i] = section;
+			}
+
+			return String.Join("", sections);
 		}
 		#endregion
 

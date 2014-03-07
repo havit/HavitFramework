@@ -9,9 +9,11 @@ using System.Web.UI.WebControls;
 
 namespace Havit.Web.Bootstrap.UI.WebControls
 {
-    public class RadioButtonList: System.Web.UI.WebControls.RadioButtonList
+/*
+  public class RadioButtonList: System.Web.UI.WebControls.RadioButtonList
     {
-	    protected override void Render(HtmlTextWriter writer)
+		
+	  protected override void Render(HtmlTextWriter writer)
 	  {
 			Debugger.Break();
 		    base.Render(writer);
@@ -53,5 +55,5 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			base.RenderItem(itemType, repeatIndex, repeatInfo, writer);
 	    }
 		
-    }
+    }*/
 }

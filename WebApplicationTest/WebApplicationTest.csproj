@@ -159,35 +159,28 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="a.js" />
-    <Content Include="AutoSuggestMenu.aspx" />
-    <Content Include="AutoSuggestMenuService.asmx" />
-    <Content Include="CollapserTest.aspx" />
-    <Content Include="ControlsValuesPersisterTest.aspx" />
-    <EmbeddedResource Include="b.js" />
-    <Content Include="Error.aspx" />
-    <Content Include="FireEventTest.aspx" />
-    <Content Include="FormViewTest.aspx" />
-    <Content Include="GridViewExt-Filtr.aspx" />
-    <Content Include="IdentityMapScopeTest.aspx" />
-    <Content Include="ScriptManagerTest.aspx" />
-    <Content Include="SessionAndResponseRedirectTest.aspx" />
-    <Content Include="SmtpTraceListenerTest.aspx" />
-    <Content Include="TextBoxTest.aspx" />
-    <Content Include="DateTimeBoxTest.aspx" />
-    <Content Include="DateTimeBoxWithSpecialDays.aspx" />
-    <Content Include="DropDownListTest.aspx" />
+    <EmbeddedResource Include="SystemWebTests\a.js" />
+    <Content Include="HavitWebTests\AutoSuggestMenu.aspx" />
+    <Content Include="HavitWebTests\AutoSuggestMenuService.asmx" />
+    <Content Include="HavitWebTests\CollapserTest.aspx" />
+    <Content Include="HavitWebTests\ControlsValuesPersisterTest.aspx" />
+    <EmbeddedResource Include="SystemWebTests\b.js" />
+    <Content Include="HavitWebTests\FormViewTest.aspx" />
+    <Content Include="HavitWebTests\GridViewExt-Filtr.aspx" />
+    <Content Include="SystemWebTests\ScriptManagerTest.aspx" />
+    <Content Include="SystemWebTests\SmtpTraceListenerTest.aspx" />
+    <Content Include="HavitWebTests\DateTimeBoxTest.aspx" />
+    <Content Include="HavitWebTests\DateTimeBoxWithSpecialDays.aspx" />
+    <Content Include="HavitWebTests\DropDownListTest.aspx" />
     <Content Include="Global.asax" />
-    <Content Include="GridViewTest.aspx" />
-    <Content Include="GridViewExtTest_InnerGVControl.ascx" />
-    <Content Include="HavitScripts.js" />
-    <Content Include="SimpleTest.aspx" />
+    <Content Include="HavitWebTests\GridViewTest.aspx" />
+    <Content Include="HavitWebTests\GridViewExtTest_InnerGVControl.ascx" />
+    <Content Include="HavitWebTests\HavitScripts.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="WebFormExceptionTest.aspx" />
-    <Content Include="WebServiceExceptionTest.asmx" />
-    <Content Include="WrapperTest.aspx" />
+    <Content Include="SystemWebTests\WebServiceExceptionTest.asmx" />
+    <Content Include="HavitWebTests\WrapperTest.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_GlobalResources\Glossary.Designer.cs">
@@ -201,284 +194,213 @@
       <DependentUpon>TestEnum.resx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\ScriptManagerConfig.cs" />
-    <Compile Include="AutoSuggestMenu.aspx.cs">
+    <Compile Include="HavitWebTests\AutoSuggestMenu.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>AutoSuggestMenu.aspx</DependentUpon>
     </Compile>
-    <Compile Include="AutoSuggestMenu.aspx.designer.cs">
+    <Compile Include="HavitWebTests\AutoSuggestMenu.aspx.designer.cs">
       <DependentUpon>AutoSuggestMenu.aspx</DependentUpon>
     </Compile>
-    <Compile Include="AutoSuggestMenuService.asmx.cs">
+    <Compile Include="HavitWebTests\AutoSuggestMenuService.asmx.cs">
       <DependentUpon>AutoSuggestMenuService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="CheckBoxValidatorTest.aspx.cs">
+    <Compile Include="HavitWebTests\CheckBoxValidatorTest.aspx.cs">
       <DependentUpon>CheckBoxValidatorTest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="CheckBoxValidatorTest.aspx.designer.cs">
+    <Compile Include="HavitWebTests\CheckBoxValidatorTest.aspx.designer.cs">
       <DependentUpon>CheckBoxValidatorTest.aspx</DependentUpon>
     </Compile>
-    <Compile Include="CollapserTest.aspx.cs">
+    <Compile Include="HavitWebTests\CollapserTest.aspx.cs">
       <DependentUpon>CollapserTest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="CollapserTest.aspx.designer.cs">
+    <Compile Include="HavitWebTests\CollapserTest.aspx.designer.cs">
       <DependentUpon>CollapserTest.aspx</DependentUpon>
     </Compile>
-    <Compile Include="ControlsValuesPersisterTest.aspx.cs">
+    <Compile Include="HavitWebTests\ControlsValuesPersisterTest.aspx.cs">
       <DependentUpon>ControlsValuesPersisterTest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="ControlsValuesPersisterTest.aspx.designer.cs">
+    <Compile Include="HavitWebTests\ControlsValuesPersisterTest.aspx.designer.cs">
       <DependentUpon>ControlsValuesPersisterTest.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Error.aspx.cs">
-      <DependentUpon>Error.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Error.aspx.designer.cs">
-      <DependentUpon>Error.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="FireEventTest.aspx.cs">
-      <DependentUpon>FireEventTest.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="FireEventTest.aspx.designer.cs">
-      <DependentUpon>FireEventTest.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="FormViewTest.aspx.cs">
+    <Compile Include="HavitWebTests\FormViewTest.aspx.cs">
       <DependentUpon>FormViewTest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="FormViewTest.aspx.designer.cs">
+    <Compile Include="HavitWebTests\FormViewTest.aspx.designer.cs">
       <DependentUpon>FormViewTest.aspx</DependentUpon>
     </Compile>
-    <Compile Include="GlimpseSecurityPolicy.cs" />
-    <Compile Include="GridViewExt-Filtr.aspx.cs">
+    <Compile Include="HavitWebTests\GridViewExt-Filtr.aspx.cs">
       <DependentUpon>GridViewExt-Filtr.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="GridViewExt-Filtr.aspx.designer.cs">
+    <Compile Include="HavitWebTests\GridViewExt-Filtr.aspx.designer.cs">
       <DependentUpon>GridViewExt-Filtr.aspx</DependentUpon>
     </Compile>
-    <Compile Include="IdentityMapScopeTest.aspx.cs">
-      <DependentUpon>IdentityMapScopeTest.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="IdentityMapScopeTest.aspx.designer.cs">
-      <DependentUpon>IdentityMapScopeTest.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ScriptManagerTest.aspx.cs">
+    <Compile Include="SystemWebTests\ScriptManagerTest.aspx.cs">
       <DependentUpon>ScriptManagerTest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="ScriptManagerTest.aspx.designer.cs">
+    <Compile Include="SystemWebTests\ScriptManagerTest.aspx.designer.cs">
       <DependentUpon>ScriptManagerTest.aspx</DependentUpon>
     </Compile>
-    <Compile Include="SessionAndResponseRedirectTest.aspx.cs">
-      <DependentUpon>SessionAndResponseRedirectTest.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="SessionAndResponseRedirectTest.aspx.designer.cs">
-      <DependentUpon>SessionAndResponseRedirectTest.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="SmtpTraceListenerTest.aspx.cs">
+    <Compile Include="SystemWebTests\SmtpTraceListenerTest.aspx.cs">
       <DependentUpon>SmtpTraceListenerTest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="SmtpTraceListenerTest.aspx.designer.cs">
+    <Compile Include="SystemWebTests\SmtpTraceListenerTest.aspx.designer.cs">
       <DependentUpon>SmtpTraceListenerTest.aspx</DependentUpon>
     </Compile>
-    <Compile Include="TextBoxTest.aspx.cs">
-      <DependentUpon>TextBoxTest.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="TextBoxTest.aspx.designer.cs">
-      <DependentUpon>TextBoxTest.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="DateTimeBoxTest.aspx.cs">
+    <Compile Include="HavitWebTests\DateTimeBoxTest.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>DateTimeBoxTest.aspx</DependentUpon>
     </Compile>
-    <Compile Include="DateTimeBoxTest.aspx.designer.cs">
+    <Compile Include="HavitWebTests\DateTimeBoxTest.aspx.designer.cs">
       <DependentUpon>DateTimeBoxTest.aspx</DependentUpon>
     </Compile>
-    <Compile Include="DateTimeBoxWithSpecialDays.aspx.cs">
+    <Compile Include="HavitWebTests\DateTimeBoxWithSpecialDays.aspx.cs">
       <DependentUpon>DateTimeBoxWithSpecialDays.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="DateTimeBoxWithSpecialDays.aspx.designer.cs">
+    <Compile Include="HavitWebTests\DateTimeBoxWithSpecialDays.aspx.designer.cs">
       <DependentUpon>DateTimeBoxWithSpecialDays.aspx</DependentUpon>
     </Compile>
-    <Compile Include="DefaultStylesLinkerTest.aspx.cs">
-      <SubType>ASPXCodeBehind</SubType>
-      <DependentUpon>DefaultStylesLinkerTest.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="DefaultStylesLinkerTest.aspx.designer.cs">
-      <DependentUpon>DefaultStylesLinkerTest.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="DropDownListTest.aspx.cs">
+    <Compile Include="HavitWebTests\DropDownListTest.aspx.cs">
       <DependentUpon>DropDownListTest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="DropDownListTest.aspx.designer.cs">
+    <Compile Include="HavitWebTests\DropDownListTest.aspx.designer.cs">
       <DependentUpon>DropDownListTest.aspx</DependentUpon>
     </Compile>
-    <Compile Include="DynarchCalendarTest.aspx.cs">
+    <Compile Include="HavitWebTests\DynarchCalendarTest.aspx.cs">
       <DependentUpon>DynarchCalendarTest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="DynarchCalendarTest.aspx.designer.cs">
+    <Compile Include="HavitWebTests\DynarchCalendarTest.aspx.designer.cs">
       <DependentUpon>DynarchCalendarTest.aspx</DependentUpon>
     </Compile>
-    <Compile Include="EnterpriseCheckBoxListTest.aspx.cs">
+    <Compile Include="HavitEnterpriseWebTests\EnterpriseCheckBoxListTest.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>EnterpriseCheckBoxListTest.aspx</DependentUpon>
     </Compile>
-    <Compile Include="EnterpriseCheckBoxListTest.aspx.designer.cs">
+    <Compile Include="HavitEnterpriseWebTests\EnterpriseCheckBoxListTest.aspx.designer.cs">
       <DependentUpon>EnterpriseCheckBoxListTest.aspx</DependentUpon>
     </Compile>
-    <Compile Include="EnterpriseDropDownListTest.aspx.cs">
+    <Compile Include="HavitEnterpriseWebTests\EnterpriseDropDownListTest.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>EnterpriseDropDownListTest.aspx</DependentUpon>
     </Compile>
-    <Compile Include="EnterpriseDropDownListTest.aspx.designer.cs">
+    <Compile Include="HavitEnterpriseWebTests\EnterpriseDropDownListTest.aspx.designer.cs">
       <DependentUpon>EnterpriseDropDownListTest.aspx</DependentUpon>
     </Compile>
-    <Compile Include="EnterpriseListBoxTest.aspx.cs">
+    <Compile Include="HavitEnterpriseWebTests\EnterpriseListBoxTest.aspx.cs">
       <DependentUpon>EnterpriseListBoxTest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="EnterpriseListBoxTest.aspx.designer.cs">
+    <Compile Include="HavitEnterpriseWebTests\EnterpriseListBoxTest.aspx.designer.cs">
       <DependentUpon>EnterpriseListBoxTest.aspx</DependentUpon>
     </Compile>
-    <Compile Include="EnumDropDownList.aspx.cs">
+    <Compile Include="HavitWebTests\EnumDropDownList.aspx.cs">
       <DependentUpon>EnumDropDownList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="EnumDropDownList.aspx.designer.cs">
+    <Compile Include="HavitWebTests\EnumDropDownList.aspx.designer.cs">
       <DependentUpon>EnumDropDownList.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Experiments.aspx.cs">
-      <SubType>ASPXCodeBehind</SubType>
-      <DependentUpon>Experiments.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Experiments.aspx.designer.cs">
-      <DependentUpon>Experiments.aspx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="GridViewTest.aspx.cs">
+    <Compile Include="HavitWebTests\GridViewTest.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>GridViewTest.aspx</DependentUpon>
     </Compile>
-    <Compile Include="GridViewTest.aspx.designer.cs">
+    <Compile Include="HavitWebTests\GridViewTest.aspx.designer.cs">
       <DependentUpon>GridViewTest.aspx</DependentUpon>
     </Compile>
-    <Compile Include="GridViewExtTest_InnerGVControl.ascx.cs">
+    <Compile Include="HavitWebTests\GridViewExtTest_InnerGVControl.ascx.cs">
       <DependentUpon>GridViewExtTest_InnerGVControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="GridViewExtTest_InnerGVControl.ascx.designer.cs">
+    <Compile Include="HavitWebTests\GridViewExtTest_InnerGVControl.ascx.designer.cs">
       <DependentUpon>GridViewExtTest_InnerGVControl.ascx</DependentUpon>
     </Compile>
-    <Compile Include="MenuTest.aspx.cs">
+    <Compile Include="SystemWebTests\MenuTest.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>MenuTest.aspx</DependentUpon>
     </Compile>
-    <Compile Include="MenuTest.aspx.designer.cs">
+    <Compile Include="SystemWebTests\MenuTest.aspx.designer.cs">
       <DependentUpon>MenuTest.aspx</DependentUpon>
     </Compile>
-    <Compile Include="MessengerTest.aspx.cs">
+    <Compile Include="HavitWebTests\MessengerTest.aspx.cs">
       <DependentUpon>MessengerTest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="MessengerTest.aspx.designer.cs">
+    <Compile Include="HavitWebTests\MessengerTest.aspx.designer.cs">
       <DependentUpon>MessengerTest.aspx</DependentUpon>
     </Compile>
-    <Compile Include="NumericBoxTest.aspx.cs">
+    <Compile Include="HavitWebTests\NumericBoxTest.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>NumericBoxTest.aspx</DependentUpon>
     </Compile>
-    <Compile Include="NumericBoxTest.aspx.designer.cs">
+    <Compile Include="HavitWebTests\NumericBoxTest.aspx.designer.cs">
       <DependentUpon>NumericBoxTest.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScriptletAjaxTest.aspx.cs">
+    <Compile Include="HavitWebTests\ScriptletAjaxTest.aspx.cs">
       <DependentUpon>ScriptletAjaxTest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="ScriptletAjaxTest.aspx.designer.cs">
+    <Compile Include="HavitWebTests\ScriptletAjaxTest.aspx.designer.cs">
       <DependentUpon>ScriptletAjaxTest.aspx</DependentUpon>
     </Compile>
-    <Compile Include="ScriptletTest.aspx.cs">
+    <Compile Include="HavitWebTests\ScriptletTest.aspx.cs">
       <DependentUpon>ScriptletTest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="ScriptletTest.aspx.designer.cs">
+    <Compile Include="HavitWebTests\ScriptletTest.aspx.designer.cs">
       <DependentUpon>ScriptletTest.aspx</DependentUpon>
     </Compile>
-    <Compile Include="ScriptletTest2.aspx.cs">
+    <Compile Include="HavitWebTests\ScriptletTest2.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>ScriptletTest2.aspx</DependentUpon>
     </Compile>
-    <Compile Include="ScriptletTest2.aspx.designer.cs">
+    <Compile Include="HavitWebTests\ScriptletTest2.aspx.designer.cs">
       <DependentUpon>ScriptletTest2.aspx</DependentUpon>
     </Compile>
-    <Compile Include="ScriptletTest3.aspx.cs">
+    <Compile Include="HavitWebTests\ScriptletTest3.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>ScriptletTest3.aspx</DependentUpon>
     </Compile>
-    <Compile Include="ScriptletTest3.aspx.designer.cs">
+    <Compile Include="HavitWebTests\ScriptletTest3.aspx.designer.cs">
       <DependentUpon>ScriptletTest3.aspx</DependentUpon>
     </Compile>
-    <Compile Include="SimpleTest.aspx.cs">
-      <DependentUpon>SimpleTest.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="SimpleTest.aspx.designer.cs">
-      <DependentUpon>SimpleTest.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="SingleSubmitProtectionTest.aspx.cs">
+    <Compile Include="HavitWebTests\SingleSubmitProtectionTest.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>SingleSubmitProtectionTest.aspx</DependentUpon>
     </Compile>
-    <Compile Include="SingleSubmitProtectionTest.aspx.designer.cs">
+    <Compile Include="HavitWebTests\SingleSubmitProtectionTest.aspx.designer.cs">
       <DependentUpon>SingleSubmitProtectionTest.aspx</DependentUpon>
     </Compile>
-    <Compile Include="TestFolder\GetApplicationPathUri.aspx.cs">
-      <SubType>ASPXCodeBehind</SubType>
-      <DependentUpon>GetApplicationPathUri.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="TestFolder\GetApplicationPathUri.aspx.designer.cs">
-      <DependentUpon>GetApplicationPathUri.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="WebDialogsTest.aspx.cs">
+    <Compile Include="HavitWebTests\WebDialogsTest.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>WebDialogsTest.aspx</DependentUpon>
     </Compile>
-    <Compile Include="WebDialogsTest.aspx.designer.cs">
+    <Compile Include="HavitWebTests\WebDialogsTest.aspx.designer.cs">
       <SubType>Code</SubType>
       <DependentUpon>WebDialogsTest.aspx</DependentUpon>
     </Compile>
-    <Compile Include="WebFormExceptionTest.aspx.cs">
-      <DependentUpon>WebFormExceptionTest.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="WebFormExceptionTest.aspx.designer.cs">
-      <DependentUpon>WebFormExceptionTest.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="WebServiceExceptionTest.asmx.cs">
+    <Compile Include="SystemWebTests\WebServiceExceptionTest.asmx.cs">
       <DependentUpon>WebServiceExceptionTest.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="WrapperTest.aspx.cs">
+    <Compile Include="HavitWebTests\WrapperTest.aspx.cs">
       <DependentUpon>WrapperTest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="WrapperTest.aspx.designer.cs">
+    <Compile Include="HavitWebTests\WrapperTest.aspx.designer.cs">
       <DependentUpon>WrapperTest.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -503,6 +425,10 @@
       <Project>{7478BEA8-791F-47E9-ADD9-18F2D34619EA}</Project>
       <Name>Havit.Enterprise.Web</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Havit.Web.Bootstrap\Havit.Web.Bootstrap.csproj">
+      <Project>{d3275f65-1489-47da-9d39-dec9baf83562}</Project>
+      <Name>Havit.Web.Bootstrap</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Havit.Web\Havit.Web.csproj">
       <Project>{52891FB3-CA20-403B-AC25-7D9CA5738B6B}</Project>
       <Name>Havit.Web</Name>
@@ -518,28 +444,25 @@
       <LastGenOutput>TestEnum.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="DefaultStylesLinkerTest.aspx" />
-    <Content Include="EnterpriseDropDownListTest.aspx" />
-    <Content Include="EnumDropDownList.aspx" />
-    <Content Include="Experiments.aspx" />
-    <Content Include="MenuTest.aspx" />
-    <Content Include="NumericBoxTest.aspx" />
-    <Content Include="ScriptletAjaxTest.aspx" />
-    <Content Include="ScriptletTest.aspx" />
-    <Content Include="ScriptletTest2.aspx" />
+    <Content Include="HavitEnterpriseWebTests\EnterpriseDropDownListTest.aspx" />
+    <Content Include="HavitWebTests\EnumDropDownList.aspx" />
+    <Content Include="SystemWebTests\MenuTest.aspx" />
+    <Content Include="HavitWebTests\NumericBoxTest.aspx" />
+    <Content Include="HavitWebTests\ScriptletAjaxTest.aspx" />
+    <Content Include="HavitWebTests\ScriptletTest.aspx" />
+    <Content Include="HavitWebTests\ScriptletTest2.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Browsers\CssFriendlyAdapters.browser" />
-    <Content Include="CheckBoxValidatorTest.aspx" />
-    <Content Include="DynarchCalendarTest.aspx" />
-    <Content Include="EnterpriseCheckBoxListTest.aspx" />
-    <Content Include="EnterpriseListBoxTest.aspx" />
-    <Content Include="havit.css" />
-    <Content Include="MessengerTest.aspx" />
-    <Content Include="ScriptletTest3.aspx" />
-    <Content Include="SingleSubmitProtectionTest.aspx" />
-    <Content Include="TestFolder\GetApplicationPathUri.aspx" />
-    <Content Include="WebDialogsTest.aspx" />
+    <Content Include="HavitWebTests\CheckBoxValidatorTest.aspx" />
+    <Content Include="HavitWebTests\DynarchCalendarTest.aspx" />
+    <Content Include="HavitEnterpriseWebTests\EnterpriseCheckBoxListTest.aspx" />
+    <Content Include="HavitEnterpriseWebTests\EnterpriseListBoxTest.aspx" />
+    <Content Include="HavitWebTests\havit.css" />
+    <Content Include="HavitWebTests\MessengerTest.aspx" />
+    <Content Include="HavitWebTests\ScriptletTest3.aspx" />
+    <Content Include="HavitWebTests\SingleSubmitProtectionTest.aspx" />
+    <Content Include="HavitWebTests\WebDialogsTest.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Themes\Theme1\Skin1.skin" />
@@ -558,8 +481,7 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="content\" />
-    <Folder Include="Scripts\" />
+    <Folder Include="HavitWebBootstrapTests\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

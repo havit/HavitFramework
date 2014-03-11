@@ -140,6 +140,10 @@ namespace Havit.Business.Query
 			commandBuilder.Append(GetOrderByStatement(command));
 			commandBuilder.Append(" ");
 			commandBuilder.Append(GetOptionStatementStatement(command, sqlServerPlatform, commandBuilderOptions));
+			while ((commandBuilder.Length > 0 /* nicméně zde se na nulu nikdy nemůžeme dostat */) && (commandBuilder[commandBuilder.Length - 1] == ' '))
+			{
+				commandBuilder.Remove(commandBuilder.Length - 1, 1);
+			}
 			commandBuilder.Append(";");
 
 			OnAfterPrepareCommand(command, commandBuilder);
@@ -241,17 +245,20 @@ namespace Havit.Business.Query
 			Debug.Assert(command != null);
 
 			StringBuilder whereBuilder = new StringBuilder();
+			Condition deletedCondition = null;
 
 			if (!includeDeleted && objectInfo.DeletedProperty != null)
 			{
 				if (objectInfo.DeletedProperty.FieldType == System.Data.SqlDbType.Bit)
 				{
-					Conditions.Add(BoolCondition.CreateFalse(objectInfo.DeletedProperty));
+					deletedCondition = BoolCondition.CreateFalse(objectInfo.DeletedProperty);
+					Conditions.Add(deletedCondition);
 				}
 
 				if ((objectInfo.DeletedProperty.FieldType == System.Data.SqlDbType.DateTime) || (objectInfo.DeletedProperty.FieldType == System.Data.SqlDbType.SmallDateTime))
 				{
-					Conditions.Add(NullCondition.CreateIsNull(objectInfo.DeletedProperty));
+					deletedCondition = NullCondition.CreateIsNull(objectInfo.DeletedProperty);
+					Conditions.Add(deletedCondition);
 				}
 			}
 
@@ -259,6 +266,11 @@ namespace Havit.Business.Query
 			if (whereBuilder.Length > 0)
 			{
 				whereBuilder.Insert(0, "WHERE ");
+			}
+
+			if (deletedCondition != null)
+			{
+				Conditions.Remove(deletedCondition);
 			}
 						
 			return whereBuilder.ToString();

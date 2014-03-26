@@ -75,7 +75,7 @@ namespace Havit.DataTest
 		{
 			DbConnector previousVal = DbConnector.Default;
 
-			DbConnector val = new DbConnector(ConfigurationManager.ConnectionStrings["Test"]); // TODO: Assign to an appropriate value for the property
+			DbConnector val = new DbConnector(ConfigurationManager.ConnectionStrings["Test"]);
 			Havit.Data.DbConnector.Default = val;
 
 			Assert.AreEqual(val, Havit.Data.DbConnector.Default, "Havit.Data.DbConnector.Default was not set correctly.");

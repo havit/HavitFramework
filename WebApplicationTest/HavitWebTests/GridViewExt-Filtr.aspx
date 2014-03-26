@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="GridViewExt-Filtr.aspx.cs" Inherits="WebApplicationTest.HavitWebTests.GridViewExt_Filtr" %>
+﻿<%@ Page Language="C#" AutoEventWireup="false" CodeBehind="GridViewExt-Filtr.aspx.cs" Inherits="WebApplicationTest.HavitWebTests.GridViewExt_Filtr" %>
 
 <!DOCTYPE html>
 

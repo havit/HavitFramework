@@ -25,7 +25,6 @@ namespace Havit.Web
 		/// <returns>HTML-encoded string dle options</returns>
 		public static string HtmlEncode(string unicodeText, HtmlEncodeOptions options)
 		{
-			// TODO: Doplnit switch o další extended entities
 			int unicodeValue;
 			StringBuilder result = new StringBuilder();
 

@@ -13,9 +13,5 @@ namespace WebApplicationTest.SystemWebTests
 {
 	public partial class MenuTest : System.Web.UI.Page
 	{
-		protected void Page_Load(object sender, EventArgs e)
-		{
-
-		}
 	}
 }

@@ -12,7 +12,7 @@ namespace Havit.Web.UI
 	/// <summary>
 	/// Extension methods k ScriptResourceMapping.
 	/// </summary>
-	internal static class ScriptResourceMappingExt
+	public static class ScriptResourceMappingExt
 	{
 		#region EnsureScriptRegistration
 		/// <summary>
@@ -23,8 +23,8 @@ namespace Havit.Web.UI
 		/// <param name="resourceName">Jméno registrovaného scriptu.</param>
 		public static void EnsureScriptRegistration(this ScriptResourceMapping scriptResourceMapping, Page page, string resourceName)
 		{
-			Contract.Requires(scriptResourceMapping != null);
-			Contract.Requires(page != null);
+			Contract.Requires<ArgumentNullException>(scriptResourceMapping != null, "scriptResourceMapping");
+			Contract.Requires<ArgumentNullException>(page != null, "page");
 			Contract.Requires(!String.IsNullOrEmpty(resourceName));
 
 			if ((scriptResourceMapping != null)
@@ -44,17 +44,8 @@ namespace Havit.Web.UI
 		/// <summary>
 		/// Zajistí registraci ClientScriptResource pomocí ScriptResourceMappingu pro embedded resource.
 		/// </summary>
-		/// <param name="scriptResourceMapping">ScriptResourceMapping, ze kterého se právádí registrace scriptu.</param>
-		/// <param name="page">Stránka, do které se registrace skriptu provádí.</param>
-		/// <param name="type">Jméno typu pro určení, ve které assembly se embedded resource nachází.</param>
-		/// <param name="embeddedResourceName">Embedded resource name.</param>
-		public static void EnsureScriptRegistrationForEmbeddedResource(this ScriptResourceMapping scriptResourceMapping, Page page, Type type, string embeddedResourceName)
+		private static void EnsureScriptRegistrationForEmbeddedResource(this ScriptResourceMapping scriptResourceMapping, Page page, Control control, Type type, string embeddedResourceName)
 		{
-			Contract.Requires(scriptResourceMapping != null);
-			Contract.Requires(page != null);
-			Contract.Requires(type != null);
-			Contract.Requires(!String.IsNullOrEmpty(embeddedResourceName));
-
 			string resourceFullName = type.Assembly.FullName + "|" + embeddedResourceName;
 
 			if ((scriptResourceMapping != null)
@@ -63,7 +54,49 @@ namespace Havit.Web.UI
 			{
 				ScriptManager.ScriptResourceMapping.AddDefinition(resourceFullName, new ScriptResourceDefinition { Path = page.ClientScript.GetWebResourceUrl(type, embeddedResourceName) });
 			}
-			ScriptManager.RegisterNamedClientScriptResource(page, resourceFullName);
+			if (control == null)
+			{
+				ScriptManager.RegisterNamedClientScriptResource(page, resourceFullName);
+			}
+			else
+			{
+				ScriptManager.RegisterNamedClientScriptResource(control, resourceFullName);				
+			}
+		}
+
+		/// <summary>
+		/// Zajistí registraci ClientScriptResource pomocí ScriptResourceMappingu pro embedded resource.
+		/// </summary>
+		/// <param name="scriptResourceMapping">ScriptResourceMapping, ze kterého se právádí registrace scriptu.</param>
+		/// <param name="page">Stránka, ke které se registrují scripty.</param>
+		/// <param name="type">Jméno typu pro určení, ve které assembly se embedded resource nachází.</param>
+		/// <param name="embeddedResourceName">Embedded resource name.</param>
+		public static void EnsureScriptRegistrationForEmbeddedResource(this ScriptResourceMapping scriptResourceMapping, Page page, Type type, string embeddedResourceName)
+		{
+			Contract.Requires<ArgumentNullException>(scriptResourceMapping != null, "scriptResourceMapping");
+			Contract.Requires<ArgumentNullException>(page != null, "page");
+			Contract.Requires<ArgumentNullException>(type != null, "type");
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(embeddedResourceName), "Parameter embeddedResourceName cannot be an empty string.");
+
+			EnsureScriptRegistrationForEmbeddedResource(scriptResourceMapping, page, null, type, embeddedResourceName);
+		}
+
+		/// <summary>
+		/// Zajistí registraci ClientScriptResource pomocí ScriptResourceMappingu pro embedded resource.
+		/// </summary>
+		/// <param name="scriptResourceMapping">ScriptResourceMapping, ze kterého se právádí registrace scriptu.</param>
+		/// <param name="control">Control, ke kterému se registrují scripty.</param>
+		/// <param name="type">Jméno typu pro určení, ve které assembly se embedded resource nachází.</param>
+		/// <param name="embeddedResourceName">Embedded resource name.</param>
+		public static void EnsureScriptRegistrationForEmbeddedResource(this ScriptResourceMapping scriptResourceMapping, Control control, Type type, string embeddedResourceName)
+		{
+			Contract.Requires<ArgumentNullException>(scriptResourceMapping != null, "scriptResourceMapping");
+			Contract.Requires<ArgumentNullException>(control != null, "control");
+			Contract.Requires<ArgumentException>(control.Page != null, "Parameter control.Page cannot be null.");
+			Contract.Requires<ArgumentNullException>(type != null, "type");
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(embeddedResourceName), "Parameter embeddedResourceName cannot be an empty string.");
+
+			EnsureScriptRegistrationForEmbeddedResource(scriptResourceMapping, control.Page, control, type, embeddedResourceName);
 		}
 		#endregion
 

@@ -1,0 +1,18 @@
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/HavitWebBootstrapTests/Bootstrap.Master" AutoEventWireup="false" CodeBehind="SwitchButtonTest.aspx.cs" Inherits="WebApplicationTest.HavitWebBootstrapTests.SwitchButtonTest" %>
+<asp:Content ContentPlaceHolderID="MainCPH" runat="server">
+	<div>
+		<bc:SwitchButton ID="FirstSwitchButton" YesText="Ano" NoText="Ne" runat="server" />
+		<br/>
+		<asp:Label ID="FirstStateLabel" runat="server" />
+		<br/>
+		<asp:Button Text="Postback" runat="server" />
+	</div>
+
+	<asp:UpdatePanel UpdateMode="Conditional" runat="server">
+		<ContentTemplate>
+			<bc:SwitchButton ID="SecondSwitchButton" AutoPostBack="true" runat="server" />			
+			<asp:Label ID="SecondStateLabel" runat="server" />
+		</ContentTemplate>
+	</asp:UpdatePanel>
+
+</asp:Content>

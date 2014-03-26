@@ -24,8 +24,8 @@ namespace Havit.BusinessTest
 		{
 			IdentityMap target = new IdentityMap();
 
-			TestingBusinessObject businessObject1 = new TestingBusinessObject(10); // TODO: Initialize to an appropriate value
-			TestingBusinessObject businessObject2 = new TestingBusinessObject(10); // TODO: Initialize to an appropriate value
+			TestingBusinessObject businessObject1 = new TestingBusinessObject(10);
+			TestingBusinessObject businessObject2 = new TestingBusinessObject(10);
 
 			target.Store(businessObject1);
 			target.Store(businessObject2);

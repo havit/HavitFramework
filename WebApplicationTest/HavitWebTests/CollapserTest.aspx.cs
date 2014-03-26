@@ -9,9 +9,5 @@ namespace WebApplicationTest.HavitWebTests
 {
 	public partial class CollapserTest : System.Web.UI.Page
 	{
-		protected void Page_Load(object sender, EventArgs e)
-		{
-
-		}
 	}
 }

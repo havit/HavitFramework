@@ -13,9 +13,5 @@ namespace WebApplicationTest.HavitWebTests
 {
 	public partial class ScriptletTest : System.Web.UI.Page
 	{
-		protected void Page_Load(object sender, EventArgs e)
-		{
-
-		}
 	}
 }

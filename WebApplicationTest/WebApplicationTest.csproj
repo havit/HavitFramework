@@ -131,6 +131,12 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AspNet.ScriptManager.bootstrap">
+      <HintPath>..\packages\AspNet.ScriptManager.bootstrap.3.1.1\lib\net45\AspNet.ScriptManager.bootstrap.dll</HintPath>
+    </Reference>
+    <Reference Include="AspNet.ScriptManager.jQuery">
+      <HintPath>..\packages\AspNet.ScriptManager.jQuery.2.1.0\lib\net45\AspNet.ScriptManager.jQuery.dll</HintPath>
+    </Reference>
     <Reference Include="Glimpse.AspNet">
       <HintPath>..\packages\Glimpse.AspNet.1.6.0\lib\net45\Glimpse.AspNet.dll</HintPath>
     </Reference>
@@ -140,6 +146,9 @@
     </Reference>
     <Reference Include="Glimpse.WebForms">
       <HintPath>..\packages\Glimpse.WebForms.1.0.2\lib\net45\Glimpse.WebForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ScriptManager.WebForms">
+      <HintPath>..\packages\Microsoft.AspNet.ScriptManager.WebForms.5.0.0\lib\net45\Microsoft.ScriptManager.WebForms.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -160,6 +169,17 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="SystemWebTests\a.js" />
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="HavitWebBootstrapTests\SwitchButtonTest.aspx" />
+    <Content Include="HavitWebBootstrapTests\CheckBoxListTest.aspx" />
+    <Content Include="HavitWebBootstrapTests\RadioButtonListTest.aspx" />
+    <Content Include="HavitWebBootstrapTests\TabsTest.aspx" />
+    <Content Include="HavitWebBootstrapTests\TooltipTest.aspx" />
+    <Content Include="HavitWebBootstrapTests\ValidatorsTest.aspx" />
     <Content Include="HavitWebTests\AutoSuggestMenu.aspx" />
     <Content Include="HavitWebTests\AutoSuggestMenuService.asmx" />
     <Content Include="HavitWebTests\CollapserTest.aspx" />
@@ -167,6 +187,27 @@
     <EmbeddedResource Include="SystemWebTests\b.js" />
     <Content Include="HavitWebTests\FormViewTest.aspx" />
     <Content Include="HavitWebTests\GridViewExt-Filtr.aspx" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="HavitWebBootstrapTests\Bootstrap.Master" />
+    <None Include="Scripts\jquery-2.1.0.intellisense.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\jquery-2.1.0.js" />
+    <Content Include="Scripts\jquery-2.1.0.min.js" />
+    <Content Include="Scripts\WebForms\DetailsView.js" />
+    <Content Include="Scripts\WebForms\Focus.js" />
+    <Content Include="Scripts\WebForms\GridView.js" />
+    <Content Include="Scripts\WebForms\Menu.js" />
+    <Content Include="Scripts\WebForms\MenuStandards.js" />
+    <Content Include="Scripts\WebForms\SmartNav.js" />
+    <Content Include="Scripts\WebForms\TreeView.js" />
+    <Content Include="Scripts\WebForms\WebForms.js" />
+    <Content Include="Scripts\WebForms\WebParts.js" />
+    <Content Include="Scripts\WebForms\WebUIValidation.js" />
     <Content Include="SystemWebTests\ScriptManagerTest.aspx" />
     <Content Include="SystemWebTests\SmtpTraceListenerTest.aspx" />
     <Content Include="HavitWebTests\DateTimeBoxTest.aspx" />
@@ -181,6 +222,7 @@
     </Content>
     <Content Include="SystemWebTests\WebServiceExceptionTest.asmx" />
     <Content Include="HavitWebTests\WrapperTest.aspx" />
+    <Content Include="Scripts\jquery-2.1.0.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_GlobalResources\Glossary.Designer.cs">
@@ -194,6 +236,55 @@
       <DependentUpon>TestEnum.resx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\ScriptManagerConfig.cs" />
+    <Compile Include="HavitWebBootstrapTests\Bootstrap.Master.cs">
+      <DependentUpon>Bootstrap.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HavitWebBootstrapTests\Bootstrap.Master.designer.cs">
+      <DependentUpon>Bootstrap.Master</DependentUpon>
+    </Compile>
+    <Compile Include="HavitWebBootstrapTests\SwitchButtonTest.aspx.cs">
+      <DependentUpon>SwitchButtonTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HavitWebBootstrapTests\SwitchButtonTest.aspx.designer.cs">
+      <DependentUpon>SwitchButtonTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HavitWebBootstrapTests\CheckBoxListTest.aspx.cs">
+      <DependentUpon>CheckBoxListTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HavitWebBootstrapTests\CheckBoxListTest.aspx.designer.cs">
+      <DependentUpon>CheckBoxListTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HavitWebBootstrapTests\RadioButtonListTest.aspx.cs">
+      <DependentUpon>RadioButtonListTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HavitWebBootstrapTests\RadioButtonListTest.aspx.designer.cs">
+      <DependentUpon>RadioButtonListTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HavitWebBootstrapTests\TabsTest.aspx.cs">
+      <DependentUpon>TabsTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HavitWebBootstrapTests\TabsTest.aspx.designer.cs">
+      <DependentUpon>TabsTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HavitWebBootstrapTests\TooltipTest.aspx.cs">
+      <DependentUpon>TooltipTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HavitWebBootstrapTests\TooltipTest.aspx.designer.cs">
+      <DependentUpon>TooltipTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HavitWebBootstrapTests\ValidatorsTest.aspx.cs">
+      <DependentUpon>ValidatorsTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HavitWebBootstrapTests\ValidatorsTest.aspx.designer.cs">
+      <DependentUpon>ValidatorsTest.aspx</DependentUpon>
+    </Compile>
     <Compile Include="HavitWebTests\AutoSuggestMenu.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>AutoSuggestMenu.aspx</DependentUpon>
@@ -480,9 +571,7 @@
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="HavitWebBootstrapTests\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SmtpTraceListenerTest.aspx.cs" Inherits="WebApplicationTest.SystemWebTests.SmtpTraceListenerTest" %>
+﻿<%@ Page Language="C#" AutoEventWireup="false" CodeBehind="SmtpTraceListenerTest.aspx.cs" Inherits="WebApplicationTest.SystemWebTests.SmtpTraceListenerTest" %>
 
 <!DOCTYPE html>
 

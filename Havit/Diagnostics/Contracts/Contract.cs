@@ -71,6 +71,7 @@ namespace Havit.Diagnostics.Contracts
 			}
 		}
 		#endregion
+
 		#region ThrowException
 		[DebuggerStepThrough]		
 		private static void ThrowException<TException>(string message)

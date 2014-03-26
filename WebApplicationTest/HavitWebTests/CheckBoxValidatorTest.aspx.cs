@@ -8,9 +8,5 @@ namespace WebApplicationTest.HavitWebTests
 {
     public partial class CheckBoxValidatorTest : System.Web.UI.Page
     {
-        protected void Page_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }

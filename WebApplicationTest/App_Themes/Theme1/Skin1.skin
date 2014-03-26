@@ -13,3 +13,5 @@
 		DeleteCssClass="deletebtn"
 		DeleteDisabledCssClass="deletebtn-disabled" />
 </havit:EnterpriseGridView>
+
+<bc:RequiredFieldValidator TooltipPosition="Bottom" runat="server" />

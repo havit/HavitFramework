@@ -176,7 +176,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 		public static ControlsValuesHolder FromXmlDocument(XmlDocument xmlDocument)
 		{
 
-			using (XmlReader reader = XmlReader.Create(new StringReader(xmlDocument.OuterXml))) // TODO: zjednodusit, lze-li
+			using (XmlReader reader = XmlReader.Create(new StringReader(xmlDocument.OuterXml)))
 			{
 				reader.Read();
 				string version = reader.GetAttribute("version");

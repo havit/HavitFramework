@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 using System.Web.UI.WebControls;
 using Havit.Web.UI.WebControls;
@@ -32,7 +33,7 @@ namespace Havit.Web.UI.WebControls
 
 		private TextBox valueTextBox;
 		private LiteralControl seperatorLiteralControl;
-		private Image dateTimePickerImage;
+		private System.Web.UI.WebControls.Image dateTimePickerImage;
 		private DynarchCalendar dateTimePickerDynarchCalendar;
 
 		#endregion
@@ -159,6 +160,29 @@ namespace Havit.Web.UI.WebControls
 			get { return (string)(ViewState["DateTimePickerDisabledImageUrl"] ?? String.Empty); }
 			set { ViewState["DateTimePickerDisabledImageUrl"] = value; }
 		}
+		#endregion
+
+		#region ContainerStyle
+		/// <summary>
+		/// Stylování obálky html numeric boxu (SPAN).
+		/// </summary>
+		public Style ContainerStyle
+		{
+			get
+			{
+				if (_containerStyle == null)
+				{
+					_containerStyle = new DateTimeBoxNoWrapStyle();					
+					if (IsTrackingViewState)
+					{
+						((IStateManager)_containerStyle).TrackViewState();
+					}
+					
+				}
+				return _containerStyle;
+			}
+		}
+		private Style _containerStyle;
 		#endregion
 
 		#region ValueBoxStyle
@@ -436,7 +460,7 @@ namespace Havit.Web.UI.WebControls
 			seperatorLiteralControl = new LiteralControl("&nbsp;");
 			seperatorLiteralControl.ID = "SeparatorLiteralControl";
 
-			dateTimePickerImage = new Image();
+			dateTimePickerImage = new System.Web.UI.WebControls.Image();
 			dateTimePickerImage.ID = "DateTimePickerImage";
 			
 			dateTimePickerDynarchCalendar = new DynarchCalendar();
@@ -647,7 +671,7 @@ namespace Havit.Web.UI.WebControls
 			dateTimePickerDynarchCalendar.Enabled = IsEnabled;
 			dateTimePickerDynarchCalendar.Visible = ShowDateTimePicker;
 			dateTimePickerDynarchCalendar.FirstDay = (int)this.FirstDayOfWeek; // číslování enumu v .NETu sedí s předpokládanou hodnotou pro dynarchcalendar			
-
+			
 			if (!String.IsNullOrEmpty(_dateStatusFunction))
 			{
 				dateTimePickerDynarchCalendar.DateStatusFunction = _dateStatusFunction;
@@ -680,21 +704,52 @@ namespace Havit.Web.UI.WebControls
 				if ((this.DateTimeMode == DateTimeMode.DateTime))
 				{
 					valueTextBox.Attributes["data-havitdatetimebox-timeseparator"] = dateTimeFormatInfo.TimeSeparator.Left(1);
-			}
+				}
 
 				if (!KeyBlockingClientScriptEnabled)
 				{
 					valueTextBox.Attributes["data-havitdatetimebox-suppresfilterkeys"] = "true";
 				}
-		}
+			}
 
-			writer.WriteBeginTag("span");
-			writer.WriteAttribute("style", "white-space: nowrap;");
-			writer.Write(">");
+			ContainerStyle.AddAttributesToRender(writer);
+			writer.RenderBeginTag(HtmlTextWriterTag.Span);
 			base.Render(writer);
-			writer.WriteEndTag("span");
+			writer.RenderEndTag();
 		}
 
+		#endregion
+
+		#region LoadViewState, TrackViewState, SaveViewState
+		/// <summary>
+		/// Zajistí načtení ViewState vč. ContainerStyle.
+		/// </summary>
+		protected override void LoadViewState(object savedState)
+		{
+			Pair saveStatePair = (Pair)savedState;
+			base.LoadViewState(saveStatePair.First);
+			((IStateManager)ContainerStyle).LoadViewState(saveStatePair.Second);
+		}
+
+		/// <summary>
+		/// Zapne trackování změn ViewState vč. ContainerStyle.
+		/// </summary>
+		protected override void TrackViewState()
+		{
+			base.TrackViewState();
+			((IStateManager)ContainerStyle).TrackViewState();
+		}
+
+		/// <summary>
+		/// Uloží ViewState (resp. vrátí objekt s hodnotami pro uložení ViewState) vč. ContainerStyle.
+		/// </summary>
+		protected override object SaveViewState()
+		{
+			Pair result = new Pair();
+			result.First = base.SaveViewState();
+			result.Second = ((IStateManager)ContainerStyle).SaveViewState();
+			return result;
+		}
 		#endregion
 
 		#region ValueTextBox_TextChanged

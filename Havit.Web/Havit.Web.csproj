@@ -239,6 +239,9 @@
     <Compile Include="UI\WebControls\AutoFilterDropDownList.cs" />
     <Compile Include="UI\WebControls\AutoFilterMode.cs" />
     <Compile Include="UI\WebControls\AutoFilterTextBox.cs" />
+    <Compile Include="UI\WebControls\DateTimeBoxNoWrapStyle.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="UI\WebControls\GridViewDataFilteringEventHandler.cs" />
     <Compile Include="UI\WebControls\GridViewDataFilteringEventArgs.cs" />
     <Compile Include="UI\WebControls\FormViewExt.cs" />

@@ -102,7 +102,7 @@
 			$("#<%= SecondDateTimeBox.ClientID %>").change(function (e) {
 				alert("change registered in jquery event handler");
 			});
-			alert("event attached");
+			//alert("event attached");
 		});
 	</script>
 

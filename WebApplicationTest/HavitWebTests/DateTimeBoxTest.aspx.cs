@@ -2,6 +2,7 @@
 using System.Data;
 using System.Configuration;
 using System.Collections;
+using System.Drawing;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
@@ -47,7 +48,7 @@ namespace WebApplicationTest.HavitWebTests
 		private void TestGV_DataBinding(object sender, EventArgs e)
 		{
 			Random r = new Random();
-			TestGV.DataSource = System.Linq.Enumerable.Range(1, 500);
+			TestGV.DataSource = System.Linq.Enumerable.Range(1, 50);
 		}
 		#endregion
 
@@ -83,6 +84,11 @@ namespace WebApplicationTest.HavitWebTests
 			ChangedLabel.Text = "no";
 			//TestGVField.Visible = false;
 			TestGV.SetRequiresDatabinding();
+
+			if (!Page.IsPostBack)
+			{
+				PrvniDTB.ContainerStyle.BorderColor = Color.Red;
+			}
 		}
 		#endregion
 

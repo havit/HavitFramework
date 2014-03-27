@@ -242,6 +242,7 @@
     <Compile Include="UI\WebControls\DateTimeBoxNoWrapStyle.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="UI\WebControls\DateTimePickerElement.cs" />
     <Compile Include="UI\WebControls\GridViewDataFilteringEventHandler.cs" />
     <Compile Include="UI\WebControls\GridViewDataFilteringEventArgs.cs" />
     <Compile Include="UI\WebControls\FormViewExt.cs" />

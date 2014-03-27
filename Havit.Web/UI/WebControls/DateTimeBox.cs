@@ -34,6 +34,7 @@ namespace Havit.Web.UI.WebControls
 		private TextBox valueTextBox;
 		private LiteralControl seperatorLiteralControl;
 		private System.Web.UI.WebControls.Image dateTimePickerImage;
+		private WebControl dateTimePickerIcon;
 		private DynarchCalendar dateTimePickerDynarchCalendar;
 
 		#endregion
@@ -125,17 +126,40 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region DateTimePickerElement
+		/// <summary>
+		/// Určuje element, který bude použit zobrazení ikonky pro otevření kalendáře. Zajišťuje možnost použití buď obrázku nebo icony z nějakého iconsetu (glyphicons, awesome icons). Styl použité ikony (ať už obrázku nebo elementu &lt;i&gt; lze nastavit pomocí vlastnosti DateTimePickerStyle.CssClass.
+		/// Výchozí hodnota je Image.
+		/// </summary>
+		public DateTimePickerElement DateTimePickerElement
+		{
+			get { return (DateTimePickerElement)(ViewState["DateTimePickerElement"] ?? DateTimePickerElement.Image); }
+			set { ViewState["DateTimePickerElement"] = value; }
+		}
+		#endregion
+
 		#region DateTimePickerStyle
 		/// <summary>
-		/// Styl obrázku (ikonky) pro zobrazení kalendáře.
+		/// Styl obrázku nebo ikonky (dle nastavení vlastnosti DateTimePickerElement) pro zobrazení kalendáře.
 		/// </summary>
 		public Style DateTimePickerStyle
 		{
 			get
 			{
-				return dateTimePickerImage.ControlStyle;
+				if (_dateTimePickerStyle == null)
+				{
+					_dateTimePickerStyle = new DateTimeBoxNoWrapStyle();
+					if (IsTrackingViewState)
+					{
+						((IStateManager) _dateTimePickerStyle).TrackViewState();
+					}
+
+				}
+				return _dateTimePickerStyle;
 			}
 		}
+
+		private Style _dateTimePickerStyle;
 		#endregion
 
 		#region DateTimePickerEnabledImageUrl
@@ -462,12 +486,14 @@ namespace Havit.Web.UI.WebControls
 
 			dateTimePickerImage = new System.Web.UI.WebControls.Image();
 			dateTimePickerImage.ID = "DateTimePickerImage";
+
+			dateTimePickerIcon = new System.Web.UI.WebControls.WebControl(HtmlTextWriterTag.I);
+			dateTimePickerIcon.ID = "DateTimePickerIcon";			
 			
 			dateTimePickerDynarchCalendar = new DynarchCalendar();
 			dateTimePickerDynarchCalendar.ID = "DateTimePickerDynarchCalendar";
 			dateTimePickerDynarchCalendar.Electric = false;			
 			dateTimePickerDynarchCalendar.InputField = "ValueTextBox";
-			dateTimePickerDynarchCalendar.Button = "DateTimePickerImage";
 		}
 		#endregion
 		
@@ -582,6 +608,7 @@ namespace Havit.Web.UI.WebControls
 			this.Controls.Add(valueTextBox);
 			this.Controls.Add(seperatorLiteralControl);
 			this.Controls.Add(dateTimePickerImage);
+			this.Controls.Add(dateTimePickerIcon);
 			this.Controls.Add(dateTimePickerDynarchCalendar);
 		}
 		#endregion
@@ -639,7 +666,20 @@ namespace Havit.Web.UI.WebControls
 		
 			seperatorLiteralControl.Visible = ShowDateTimePicker;
 
-			dateTimePickerImage.Visible = ShowDateTimePicker;
+			dateTimePickerImage.Visible = ShowDateTimePicker && (this.DateTimePickerElement == DateTimePickerElement.Image);
+			dateTimePickerIcon.Visible = ShowDateTimePicker && (this.DateTimePickerElement == DateTimePickerElement.Icon);
+
+			if (this.DateTimePickerElement == DateTimePickerElement.Image)
+			{
+				dateTimePickerImage.ControlStyle.MergeWith(this.DateTimePickerStyle);
+				dateTimePickerDynarchCalendar.Button = "DateTimePickerImage";
+			}
+
+			if (this.DateTimePickerElement == DateTimePickerElement.Icon)
+			{
+				dateTimePickerIcon.ControlStyle.MergeWith(this.DateTimePickerStyle);
+				dateTimePickerDynarchCalendar.Button = "DateTimePickerIcon";
+			}
 
 			#region Nastavení DateTimePickerImage.ImageUrl
 			if (this.IsEnabled)
@@ -726,9 +766,10 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		protected override void LoadViewState(object savedState)
 		{
-			Pair saveStatePair = (Pair)savedState;
-			base.LoadViewState(saveStatePair.First);
-			((IStateManager)ContainerStyle).LoadViewState(saveStatePair.Second);
+			object[] saveStateValue = (object[])savedState;
+			base.LoadViewState(saveStateValue[0]);
+			((IStateManager)ContainerStyle).LoadViewState(saveStateValue[1]);
+			((IStateManager)DateTimePickerStyle).LoadViewState(saveStateValue[2]);
 		}
 
 		/// <summary>
@@ -738,6 +779,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			base.TrackViewState();
 			((IStateManager)ContainerStyle).TrackViewState();
+			((IStateManager)DateTimePickerStyle).TrackViewState();
 		}
 
 		/// <summary>
@@ -745,9 +787,12 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		protected override object SaveViewState()
 		{
-			Pair result = new Pair();
-			result.First = base.SaveViewState();
-			result.Second = ((IStateManager)ContainerStyle).SaveViewState();
+			object[] result = new object[]
+			{
+				base.SaveViewState(),
+				((IStateManager)ContainerStyle).SaveViewState(),
+				((IStateManager)DateTimePickerStyle).SaveViewState()
+			};
 			return result;
 		}
 		#endregion

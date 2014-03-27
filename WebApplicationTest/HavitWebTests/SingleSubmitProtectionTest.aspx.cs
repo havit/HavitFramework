@@ -13,6 +13,10 @@ namespace WebApplicationTest.HavitWebTests
 {
 	public partial class SingleSubmitProtectionTest : System.Web.UI.Page
 	{
+		#region Static field (counter)
+		private static int clickCounter = 0;
+		#endregion
+
 		#region Protected fields
 		protected Button TestButton;
 		#endregion
@@ -22,21 +26,23 @@ namespace WebApplicationTest.HavitWebTests
 		{
 			base.OnInit(e);
 			TestButton.Click += new EventHandler(TestButton_Click);
+			Test2Button.Click += new EventHandler(TestButton_Click);
 		}
 		#endregion
 
 		#region TestButton_Click
 		private void TestButton_Click(object sender, EventArgs e)
 		{
-			//throw new ApplicationException();
+			clickCounter += 1;
 		}
 		#endregion
 
-		#region OnLoad
-		protected override void OnLoad(EventArgs e)
+		#region OnPreRender
+		protected override void OnPreRender(EventArgs e)
 		{
-			base.OnLoad(e);
+			base.OnPreRender(e);
 			System.Threading.Thread.Sleep(1000);
+			TestButton.Text = "Clicks: " + clickCounter.ToString();
 		}
 		#endregion
 	}

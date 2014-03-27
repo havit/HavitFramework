@@ -35,7 +35,8 @@ function SingleSubmit_OnSubmit()
 		}
 		// Povolíme zakázaný SetProcessing, pokud byl zakázán.
 		// Pokud stránka obsahuje tlačítko, které nezpůsobuje SetProcessing a po jeho stisknutí neprojdou validátory,
-		// musí se napříště znovu zavolat SingleSubmit_SetProcessing_Disable.		
+		// musí se napříště znovu zavolat SingleSubmit_SetProcessing_Disable.				
+		SingleSubmit_SetProcessing_Enable();
 	}
 	return result;
 }
@@ -76,7 +77,7 @@ function SingleSubmit_SetProcessing()
 			{
 				_SingleSubmit_ProgressLayer_Created = true;
 				progressLayer = document.createElement("DIV");
-				progressLayer.id = "progress-layer";
+				progressLayer.id = "progress-layer";				
 				document.body.appendChild(progressLayer);
 			}
 			
@@ -88,10 +89,6 @@ function SingleSubmit_SetProcessing()
 			progressLayer.style.display = "block";
 			progressLayer.style.cursor = "progress";
 		}
-	}
-	else	
-	{
-		SingleSubmit_SetProcessing_Enable();
 	}
 }
 
@@ -113,13 +110,12 @@ function SingleSubmit_ClearProcessing()
 			    progressLayer.style.cursor = "auto";
 			    // nejde progressLayer odebrat okamžitě - v některých browserech zůstane zobrazen kurzor jako progress, proto odložíme
 
-			    var removeProgressLayerClosureFunction = function ()
-			    {
+			    var removeProgressLayerClosureFunction = function () {
 		            // Odebere progresslayer ze stránky.
 		            document.body.removeChild(progressLayer);
 			    };
 			    window.setTimeout(removeProgressLayerClosureFunction, 1);
-            }
+			}
 			else
 			{
 				// jinak jej prostě jen schováme
@@ -129,12 +125,4 @@ function SingleSubmit_ClearProcessing()
 		
 		_SingleSubmit_IsProcessing = false;
 	}
-}
-
-/// <summary>
-/// Zajistí, aby po dokončení async callbacku byl zase zrušen stav IsProcessing.
-/// </summary>
-function SingleSubmit_Startup()
-{	
-    Sys.WebForms.PageRequestManager.getInstance().add_endRequest(SingleSubmit_ClearProcessing);
 }

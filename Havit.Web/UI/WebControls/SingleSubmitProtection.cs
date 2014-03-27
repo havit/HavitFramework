@@ -69,13 +69,13 @@ namespace Havit.Web.UI.WebControls
 				}
 
                 // zajištění mizení progress panelu po async postbacku
-                if ((currentScriptManager != null) && (currentScriptManager.EnablePartialRendering))
+                if ((currentScriptManager != null) && currentScriptManager.EnablePartialRendering && currentScriptManager.IsInAsyncPostBack)
                 {
                     ScriptManager.RegisterStartupScript(
                         this.Page,
                         typeof(SingleSubmitProtection),
                         "SingleSubmit_Startup",
-                        "SingleSubmit_Startup();",
+						"SingleSubmit_ClearProcessing();",
                         true);
                 }
             }

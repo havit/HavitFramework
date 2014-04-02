@@ -156,6 +156,7 @@
     <Compile Include="HttpServerUtilityExtTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryStringBuilderTest.cs" />
+    <Compile Include="UrlRewriterTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Havit.Web\Havit.Web.csproj">

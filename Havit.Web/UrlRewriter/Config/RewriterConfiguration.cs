@@ -1,6 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Web;
-using System.Web.Caching;
 using System.Configuration;
 using System.Xml.Serialization;
 
@@ -49,6 +49,11 @@ namespace Havit.Web.UrlRewriter.Config
 	[Serializable]
 	[XmlRoot("UrlRewriterConfig")]
 	[Obsolete("Upgrade to ASP.NET Routing.")]
+	// Attribut Category je zde kvůli tomu, abychom řešili problém v SGEN, apod.,
+	// více viz UrlRewriterTest.RewriterConfigSerializerSectionHandlerTest.
+	// Prostě tu v tento okamžik musí být jakýkoliv další attribut, aby fungovala správně serializace/deserializace, přestože není známo, proč.
+	// Je předmětem budoucí změnu toto upravit tak, aby i v dalších situacích test prošel.
+	[Category] 
 	public class RewriterConfiguration
 	{
 		#region Public Properties
@@ -91,6 +96,5 @@ namespace Havit.Web.UrlRewriter.Config
 			return result;
 		}
 		#endregion
-
 	}
 }

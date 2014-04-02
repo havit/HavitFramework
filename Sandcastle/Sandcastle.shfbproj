@@ -196,12 +196,14 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Icons\" />
+    <Folder Include="Styles" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icons\havit-logo.png">
       <ImageId>havit-logo</ImageId>
       <AlternateText>havit-logo</AlternateText>
     </Content>
+    <Content Include="Styles\branding-en-US.css" />
   </ItemGroup>
   <!-- Import the SHFB build targets -->
   <Import Project="$(SHFBROOT)\SandcastleHelpFileBuilder.targets" />

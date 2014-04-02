@@ -200,7 +200,7 @@ namespace Havit.Web.UI.WebControls
 		
 		#region OnItemDataBound
 		/// <summary>
-		/// Raises the <see cref="E:ItemDataBound"/> event.
+		/// Raises the <see cref="ItemDataBound"/> event.
 		/// </summary>
 		/// <param name="e">The <see cref="Havit.Web.UI.WebControls.ListControlItemDataBoundEventArgs"/> instance containing the event data.</param>
 		protected virtual void OnItemDataBound(ListControlItemDataBoundEventArgs e)

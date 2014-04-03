@@ -60,9 +60,7 @@
     <None Include="Publish-Havit.Data.Glimpse.NuGetPackage.ps1" />
     <None Include="tools\install.ps1" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="lib\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Havit.Data.Glimpse\Havit.Data.Glimpse.csproj">
       <Project>{c5c6607e-644a-468f-a6c2-cdcf8a1d23dc}</Project>
@@ -77,14 +75,14 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Target Name="AfterBuild">
-    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion)" />
+  <Target Name="CreateNuGetPackage" AfterTargets="AfterBuild">
+	<Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion)" />
   </Target>
-  <Target Name="TfsPublish" AfterTargets="AfterBuild" Condition="'$(PublishDirectory)' != ''">
-    <ItemGroup>
-      <FilesToCopy Include="$(OutputPath)\Havit.Data.Glimpse.*.nupkg" />
-    </ItemGroup>
-    <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(PublishDirectory)\NuGet\%(RecursiveDir)%(Filename)%(Extension)')" />
-    <Copy SourceFiles="Publish-Havit.Data.Glimpse.NuGetPackage.ps1" DestinationFiles="$(PublishDirectory)\Publish-Havit.Data.Glimpse.NuGetPackage.ps1" />
+  <Target Name="TfsPublish" AfterTargets="AfterBuild, CreateNuGetPackage" Condition="'$(PublishDirectory)' != ''">
+	<ItemGroup>
+	  <FilesToCopy Include="$(OutputPath)\Havit.Data.Glimpse.*.nupkg" />
+	</ItemGroup>
+	<Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(PublishDirectory)\NuGet\%(RecursiveDir)%(Filename)%(Extension)')" />
+	<Copy SourceFiles="Publish-Havit.Data.Glimpse.NuGetPackage.ps1" DestinationFiles="$(PublishDirectory)\Publish-Havit.Data.Glimpse.NuGetPackage.ps1" />
   </Target>
 </Project>

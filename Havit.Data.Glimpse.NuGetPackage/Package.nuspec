@@ -15,7 +15,7 @@
 		<iconUrl>http://getglimpse.com/content/glimpse100.png</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<!--<licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>-->
-		<copyright>Copyright HAVIT, s.r.o. 2013</copyright>
+		<copyright>Copyright HAVIT, s.r.o. 204</copyright>
 		<dependencies>
 			<group targetFramework="net45">
 				<dependency id="Glimpse" version="1.8.0" />
@@ -24,7 +24,7 @@
 			</group>
 		</dependencies>
 		<references></references>
-		<tags>Havit ASP.NET Web WebForms Glimpse diagnostics performance profiling timing</tags>
+		<tags>HAVIT ASP.NET Web WebForms Glimpse diagnostics performance profiling timing</tags>
 	</metadata>
 	<files>
 		<file src="bin\Release\Havit.Data.Glimpse.dll" target="lib\net45" />

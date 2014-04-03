@@ -13,8 +13,38 @@ namespace Havit.Web.Bootstrap.UI.ClientScripts
 	/// <summary>
 	/// Helper for registering Bootstrap Client Scripts.
 	/// </summary>
-	internal static class BootstrapClientScriptHelper
+	public static class BootstrapClientScriptHelper
 	{
+		#region RegisterBootstrapScriptResourceMappingMethodName
+		/// <summary>
+		/// Used for PreApplicationStartMethod attribute in StartUp.cs.
+		/// To have hardcoded string with method name near method.
+		/// </summary>
+		internal const string RegisterBootstrapScriptResourceMappingMethodName = "RegisterBootstrapScriptResourceMapping";
+		#endregion
+
+		#region RegisterBootstrapScriptResourceMapping
+		/// <summary>
+		/// Register script map resource mapping for "bootstrap" script name.
+		/// Bootstrap script are ~/Scripts/bootstrap.min.js, for debug ~/Scripts/bootstrap.js.
+		/// CDN is not supported due version in CDN URL (we want to be able to update bootstrap without this class change).
+		/// Method called at application startup by PreApplicationStartMethod attribute in StartUp.cs.
+		/// </summary>
+		public static void RegisterBootstrapScriptResourceMapping()
+		{
+			ScriptResourceDefinition definition = new ScriptResourceDefinition
+			{
+				Path = "~/Scripts/bootstrap.min.js",
+				DebugPath = "~/Scripts/bootstrap.js",
+				//CdnPath = "http://ajax.aspnetcdn.com/ajax/bootstrap/3.1.1/bootstrap.min.js",
+				//CdnDebugPath = "http://ajax.aspnetcdn.com/ajax/bootstrap/3.1.1/bootstrap.js",
+				//CdnSupportsSecureConnection = true,
+				LoadSuccessExpression = "window.jQuery.fn.carousel"
+			};
+			ScriptManager.ScriptResourceMapping.AddDefinition("bootstrap", definition);
+		}
+		#endregion
+
 		#region RegisterBootstrapClientScript
 		/// <summary>
 		/// Register Bootstrap Client Script to the page. Uses ScriptResourceMapping.

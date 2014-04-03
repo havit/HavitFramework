@@ -1,0 +1,16 @@
+﻿
+@invalid-control-border-color: @state-danger-text;
+@invalid-tooltip-border-color: black;
+@invalid-tooltip-background-color: @state-danger-bg;
+@invalid-tooltip-text-color: @state-danger-text;
+
+.invalid {	
+	border: 1px solid @invalid-control-border-color;	
+
+	& + .tooltip > .tooltip-inner {		
+		border: 1px solid @invalid-tooltip-border-color;
+		background-color: @invalid-tooltip-background-color;
+		color: @invalid-tooltip-text-color;
+	}
+}
+

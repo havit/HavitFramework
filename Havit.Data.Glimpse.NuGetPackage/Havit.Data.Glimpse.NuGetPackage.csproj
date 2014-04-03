@@ -78,7 +78,7 @@
   <Target Name="CreateNuGetPackage" AfterTargets="AfterBuild">
 	<Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion)" />
   </Target>
-  <Target Name="TfsPublish" AfterTargets="AfterBuild, CreateNuGetPackage" Condition="'$(PublishDirectory)' != ''">
+  <Target Name="TfsPublish" AfterTargets="AfterBuild;CreateNuGetPackage" Condition="'$(PublishDirectory)' != ''">
 	<ItemGroup>
 	  <FilesToCopy Include="$(OutputPath)\Havit.Data.Glimpse.*.nupkg" />
 	</ItemGroup>

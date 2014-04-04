@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 
-namespace Havit.NewProjectTemplate.Web.App_Start
+namespace Havit.Web.Bootstrap.Tutorial
 {
 	public static class ScriptManagerConfig
 	{

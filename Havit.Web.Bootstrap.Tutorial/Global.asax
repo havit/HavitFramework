@@ -1,1 +1,1 @@
-﻿<%@ Application Codebehind="Global.asax.cs" Inherits="Havit.NewProjectTemplate.Web.Global" Language="C#" %>
+﻿<%@ Application Codebehind="Global.asax.cs" Inherits="Havit.Web.Bootstrap.Tutorial.Global" Language="C#" %>

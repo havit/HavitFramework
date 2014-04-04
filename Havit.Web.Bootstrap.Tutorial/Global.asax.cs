@@ -5,15 +5,15 @@ using System.Web;
 using System.Web.Routing;
 using System.Web.Security;
 using System.Web.SessionState;
-using Havit.NewProjectTemplate.Web.App_Start;
 
-namespace Havit.NewProjectTemplate.Web
+namespace Havit.Web.Bootstrap.Tutorial
 {
 	public class Global : System.Web.HttpApplication
 	{
 		#region Application_Start
 		private void Application_Start(object sender, EventArgs e)
 		{
+			RouteConfig.RegisterRoutes(RouteTable.Routes); // configures ASP.NET Friendly Urls
 			ScriptManagerConfig.RegisterScriptResourceMappings();
 		}
 		#endregion
@@ -30,20 +30,5 @@ namespace Havit.NewProjectTemplate.Web
 		}
 		#endregion
 
-		#region IdentityMapScope management (Application_PreRequestHandlerExecute, Application_EndRequest)
-		protected void Application_PreRequestHandlerExecute(object sender, EventArgs e)
-		{
-			this.Context.Items["IdentityMapScope"] = new Havit.Business.IdentityMapScope();
-		}
-
-		protected void Application_EndRequest(object sender, EventArgs e)
-		{
-			Havit.Business.IdentityMapScope identityMapScope = this.Context.Items["IdentityMapScope"] as Havit.Business.IdentityMapScope;
-			if (identityMapScope != null)
-			{
-				identityMapScope.Dispose();
-			}
-		}
-		#endregion
 	}
 }

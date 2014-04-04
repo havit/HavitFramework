@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <system.web>
+    <pages>
+	  <controls>
+		<add tagPrefix="bc" namespace="Havit.Web.Bootstrap.UI.WebControls" assembly="Havit.Web.Bootstrap"  />
+	  </controls>
+    </pages>
+  </system.web>
+
+</configuration>

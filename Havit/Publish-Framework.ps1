@@ -29,5 +29,6 @@ xcopy Framework\Havit.Xml.pdb \\topol.havit.local\library\framework /y
 xcopy Framework\Havit.Xml.xml \\topol.havit.local\library\framework /y
 
 xcopy Documentation \\topol.havit.local\Inetpub\havit.local\hfw\Documentation /e /y
+xcopy Havit.Web.Bootstrap.Tutorial \\topol.havit.local\Inetpub\havit.local\hfw\Havit.Web.Bootstrap.Tutorial /e /y
 
 # $null = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")

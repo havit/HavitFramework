@@ -2,9 +2,9 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("Havit.NewProjectTemplate.Web")]
+[assembly: AssemblyTitle("Havit.Web.Bootstrap.Tutorial")]
 
-namespace Havit.NewProjectTemplate.Web.Properties
+namespace Havit.Web.Bootstrap.Tutorial.Properties
 {
 	public class AssemblyInfo
 	{

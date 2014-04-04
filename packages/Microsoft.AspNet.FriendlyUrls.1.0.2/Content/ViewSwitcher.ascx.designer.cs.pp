@@ -7,9 +7,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Havit.NewProjectTemplate.Web {
+namespace $rootnamespace$ {
     
     
-    public partial class Default {
+    public partial class ViewSwitcher {
     }
 }

@@ -11,8 +11,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Havit.NewProjectTemplate.Web</RootNamespace>
-    <AssemblyName>Havit.NewProjectTemplate.Web</AssemblyName>
+    <RootNamespace>Havit.Web.Bootstrap.Tutorial</RootNamespace>
+    <AssemblyName>Havit.Web.Bootstrap.Tutorial</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -53,23 +53,8 @@
     <Reference Include="AspNet.ScriptManager.jQuery">
       <HintPath>..\packages\AspNet.ScriptManager.jQuery.2.1.0\lib\net45\AspNet.ScriptManager.jQuery.dll</HintPath>
     </Reference>
-    <Reference Include="Havit">
-      <HintPath>..\References\Havit.dll</HintPath>
-    </Reference>
-    <Reference Include="Havit.Business">
-      <HintPath>..\References\Havit.Business.dll</HintPath>
-    </Reference>
-    <Reference Include="Havit.Data">
-      <HintPath>..\References\Havit.Data.dll</HintPath>
-    </Reference>
-    <Reference Include="Havit.Enterprise.Web">
-      <HintPath>..\References\Havit.Enterprise.Web.dll</HintPath>
-    </Reference>
-    <Reference Include="Havit.Web">
-      <HintPath>..\References\Havit.Web.dll</HintPath>
-    </Reference>
-    <Reference Include="Havit.Web.Bootstrap">
-      <HintPath>..\packages\Havit.Web.Bootstrap.1.2.9649\lib\net45\Havit.Web.Bootstrap.dll</HintPath>
+    <Reference Include="Microsoft.AspNet.FriendlyUrls">
+      <HintPath>..\packages\Microsoft.AspNet.FriendlyUrls.Core.1.0.2\lib\net45\Microsoft.AspNet.FriendlyUrls.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.ScriptManager.MSAjax">
@@ -102,11 +87,27 @@
     <Content Include="Content\site.min.css">
       <DependentUpon>site.css</DependentUpon>
     </Content>
+    <Content Include="sections\controls\samples\TabsInRepeaterSample.ascx" />
+    <Content Include="sections\controls\samples\TabsAppearanceSample.ascx" />
+    <Content Include="sections\controls\samples\TabsSimpleSample.ascx" />
+    <Content Include="sections\controls\samples\RadioButtonListSample.ascx" />
+    <Content Include="sections\controls\samples\CheckBoxListSample.ascx" />
+    <Content Include="sections\controls\samples\SwitchButtonSample.ascx" />
+    <Content Include="sections\controls\samples\TooltipSample.ascx" />
+    <Content Include="sections\controls\samples\ValidatorSample.ascx" />
+    <Content Include="sections\controls\switchbutton.aspx" />
+    <Content Include="sections\controls\tooltip.aspx" />
+    <Content Include="sections\controls\checkboxlist_radiobuttonlist.aspx" />
+    <Content Include="sections\controls\tabs.aspx" />
+    <Content Include="sections\controls\_backlog.aspx" />
+    <Content Include="sections\controls\validators.aspx" />
+    <Content Include="sections\less\less.aspx" />
+    <Content Include="sections\samples\Show.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="Error.aspx" />
     <Content Include="favicon.ico" />
+    <Content Include="sections\getting-started\getting-started.aspx" />
     <Content Include="packages.config" />
-    <Content Include="Config\connectionStrings.config" />
     <Content Include="Config\mailSettings-smtp.config" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
@@ -190,28 +191,26 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="Templates\Menu.ascx" />
     <Content Include="Templates\scripts\HavitScripts.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\ScriptManagerConfig.cs" />
-    <Compile Include="Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
+    <Compile Include="sections\samples\Show.aspx.cs">
+      <DependentUpon>Show.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
+    <Compile Include="sections\samples\Show.aspx.designer.cs">
+      <DependentUpon>Show.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Error.aspx.cs">
-      <DependentUpon>Error.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Error.aspx.designer.cs">
-      <DependentUpon>Error.aspx</DependentUpon>
-    </Compile>
+    <Compile Include="sections\samples\ShowControl.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -223,21 +222,29 @@
     <Compile Include="Templates\Main.Master.designer.cs">
       <DependentUpon>Main.Master</DependentUpon>
     </Compile>
+    <Compile Include="Templates\Menu.ascx.cs">
+      <DependentUpon>Menu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\Menu.ascx.designer.cs">
+      <DependentUpon>Menu.ascx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BusinessLayer\BusinessLayer.csproj">
-      <Project>{f9da67f2-1695-4eb0-a1ac-588d9bf08dd2}</Project>
-      <Name>BusinessLayer</Name>
+    <ProjectReference Include="..\Havit.Web.Bootstrap\Havit.Web.Bootstrap.csproj">
+      <Project>{d3275f65-1489-47da-9d39-dec9baf83562}</Project>
+      <Name>Havit.Web.Bootstrap</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Services\Services.csproj">
-      <Project>{881b33de-1523-4b4e-9d70-41790c2b2783}</Project>
-      <Name>Services</Name>
+    <ProjectReference Include="..\Havit.Web\Havit.Web.csproj">
+      <Project>{52891fb3-ca20-403b-ac25-7d9ca5738b6b}</Project>
+      <Name>Havit.Web</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WebBase\WebBase.csproj">
-      <Project>{70f7832a-4a93-46af-8644-138c28978664}</Project>
-      <Name>WebBase</Name>
+    <ProjectReference Include="..\Havit\Havit.csproj">
+      <Project>{9acc94b9-b8fd-47c1-abf8-0658c7673905}</Project>
+      <Name>Havit</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -275,6 +282,6 @@
       <FilesToCopy Include="obj\Release\Package\PackageTmp\**\*.*" />
       <FilesToCopy Remove="obj\Release\Package\PackageTmp\Config\*.*" />
     </ItemGroup>
-    <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(PublishDirectory)\Web\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(PublishDirectory)\Havit.Web.Bootstrap.Tutorial\%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>
 </Project>

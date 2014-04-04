@@ -1,17 +1,19 @@
 ﻿<!DOCTYPE html>
-<%@ Master Language="C#" AutoEventWireup="false" CodeBehind="Main.master.cs" Inherits="Havit.NewProjectTemplate.Web.Templates.Main" %>
+<%@ Master Language="C#" AutoEventWireup="false" CodeBehind="Main.master.cs" Inherits="Havit.Web.Bootstrap.Tutorial.Templates.Main" %>
+<%@ Register TagPrefix="uc" TagName="Menu" Src="~/Templates/Menu.ascx" %>
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>NewTemplateName</title>
+    <title>Havit.Web.Bootstrap Tutorial</title>
 	<link href="~/Content/site.css" rel="stylesheet" runat="server" />
 	<asp:ContentPlaceHolder ID="HeadTail" runat="server" />    
 </head>
 
 <body>
     <form ID="MainForm" runat="server">
-    <div>        
+    <div>
 		<asp:ScriptManager runat="server">
 			<Scripts>
 				<asp:ScriptReference Name="jquery" /><%--For client side unobtrusive validation: jQuery must preceed WebForms.js--%>
@@ -31,7 +33,19 @@
 		</asp:ScriptManager>
 		<havit:AjaxHealthMonitoring runat="server" />
 		<havit:SingleSubmitProtection runat="server"/>
-	    <asp:ContentPlaceHolder ID="MainCPH" runat="server"/>
+		<uc:Menu runat="server" ID="Menu" />
+		
+		<asp:PlaceHolder ID="TopPH" runat="server">
+			<div class="jumbotron">
+				<div class="container">
+					<asp:ContentPlaceHolder ID="TopCPH" runat="server" />
+				</div>
+			</div>
+		</asp:PlaceHolder>
+
+		<div class="container">
+			<asp:ContentPlaceHolder ID="MainCPH" runat="server"/>
+		</div>
     </div>
     </form>
 </body>

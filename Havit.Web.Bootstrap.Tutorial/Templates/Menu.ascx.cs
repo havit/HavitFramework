@@ -5,9 +5,9 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace Havit.NewProjectTemplate.Web
+namespace Havit.Web.Bootstrap.Tutorial.Templates
 {
-	public partial class Error : System.Web.UI.Page
+	public partial class Menu : System.Web.UI.UserControl
 	{
 	}
 }

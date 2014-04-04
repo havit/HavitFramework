@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Templates/Main.Master" CodeBehind="Error.aspx.cs" Inherits="Havit.NewProjectTemplate.Web.Error" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Templates/Main.Master" %>
 
 <asp:Content ContentPlaceHolderID="MainCPH" runat="server">
 	

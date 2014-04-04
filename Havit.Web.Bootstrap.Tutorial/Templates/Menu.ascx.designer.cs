@@ -7,9 +7,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Havit.NewProjectTemplate.Web {
+namespace Havit.Web.Bootstrap.Tutorial.Templates {
     
     
-    public partial class Error {
+    public partial class Menu {
     }
 }

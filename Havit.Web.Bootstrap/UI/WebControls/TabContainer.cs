@@ -67,7 +67,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		}
 		#endregion
 
-		#region AutoPostBack
+		/*#region AutoPostBack
 		/// <summary>
 		/// Get or sets whether do postback when any active TabPanel changes.
 		/// </summary>
@@ -83,7 +83,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ViewState["AutoPostBack"] = value;
 			}
 		}
-		#endregion
+		#endregion*/
 
 		#region ActiveTabPanel
 		/// <summary>
@@ -124,7 +124,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		}
 		#endregion
 
-		#region AutoPostBack
+		#region UseAnimations
 		/// <summary>
 		/// Get or sets whether use animations when changing TabPanels.
 		/// Not used when TabPanel changed on server side.

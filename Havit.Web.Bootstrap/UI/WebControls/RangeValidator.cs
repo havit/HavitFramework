@@ -70,14 +70,13 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		}
 		#endregion
 
-		#region OnInit
+		#region Constructor
 		/// <summary>
-		/// Registers the validator on the page.
+		/// Constructor.
 		/// </summary>
-		protected override void OnInit(EventArgs e)
+		public RangeValidator()
 		{
-			base.OnInit(e);
-			ValidatorRenderExtender.OnInit(this);
+			ValidatorRenderExtender.Setup(this);
 		}
 		#endregion
 

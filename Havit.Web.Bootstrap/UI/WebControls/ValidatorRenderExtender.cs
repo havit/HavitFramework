@@ -23,7 +23,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// - Display = "None"
 		/// - SetFocusOnError = true
 		/// </summary>
-		internal static void OnInit(BaseValidator validator)
+		internal static void Setup(BaseValidator validator)
 		{			
 			validator.Display = ValidatorDisplay.None;
 			validator.SetFocusOnError = true;

@@ -16,15 +16,14 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	/// </summary>
 	public class CheckBoxList : System.Web.UI.WebControls.CheckBoxList, IRadioButtonListCheckBoxList
 	{
-		#region OnInit
+		#region Constructor
 		/// <summary>
-		/// Raises the Init event.
+		/// Constructor.
 		/// </summary>
-		protected override void OnInit(EventArgs e)
+		public CheckBoxList()
 		{
-			base.OnInit(e);
 			this.RepeatLayout = RepeatLayout.Flow;
-			this.RepeatDirection = RepeatDirection.Horizontal;
+			this.RepeatDirection = RepeatDirection.Horizontal;			
 		}
 		#endregion
 

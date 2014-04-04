@@ -7,7 +7,7 @@
 
 <asp:Content ContentPlaceHolderID="MainCPH" runat="server">
 	<h2>Installation</h2>
-	<p>Install NuGet package Havit.Bootstrap.Web from <a href="http://wiki.havit.cz/NuGet.ashx">HAVIT NuGet feed</a> into ASP.NET Web Application project.</p>
+	<p>Install NuGet package Havit.Web.Bootstrap from <a href="http://wiki.havit.cz/NuGet.ashx">HAVIT NuGet feed</a> into ASP.NET Web Application project.</p>
 
 	<h3>NuGet Package Dependencies</h3>
 	<ul>

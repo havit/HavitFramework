@@ -26,7 +26,7 @@
 	<pre><code>&lt;add tagPrefix="bc" namespace="Havit.Web.Bootstrap.UI.WebControls" assembly="Havit.Web.Bootstrap"  /&gt;</code></pre>	
 
 	<h3>Tag mapping</h3>
-	<a name="tagmapping" />
+	<a name="tagmapping"></a>
 	<p>Validator are remapped to the controls of Havit.Web.Bootstrap assembly.</p>
 	<pre><code>&lt;tagMapping&gt;
 	&lt;add tagType="System.Web.UI.WebControls.CompareValidator" mappedTagType="Havit.Web.Bootstrap.UI.WebControls.CompareValidator" /&gt;
@@ -35,5 +35,9 @@
 	&lt;add tagType="System.Web.UI.WebControls.RegularExpressionValidator" mappedTagType="Havit.Web.Bootstrap.UI.WebControls.RegularExpressionValidator" /&gt;
 	&lt;add tagType="System.Web.UI.WebControls.RequiredFieldValidator" mappedTagType="Havit.Web.Bootstrap.UI.WebControls.RequiredFieldValidator" /&gt;
 	&lt;add tagType="System.Web.UI.WebControls.ValidationSummary" mappedTagType="Havit.Web.Bootstrap.UI.WebControls.ValidationSummary" /&gt;
+	&lt;add tagType="System.Web.UI.WebControls.ValidationSummary" mappedTagType="Havit.Web.Bootstrap.UI.WebControls.ValidationSummary" /&gt;
 &lt;/tagMapping&gt;</code></pre>
+	
+	<h3>Documentation</h3>
+	<a href="http://hfw.havit.local/Documentation/?topic=html/d1ca8ee5-a49e-162c-1d4c-497651ccc0b4.htm">Havit.Web.Bootstrap.UI.WebControls documentation</a>
 </asp:Content>

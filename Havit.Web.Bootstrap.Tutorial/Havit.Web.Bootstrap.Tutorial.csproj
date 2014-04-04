@@ -81,6 +81,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\Images\screen-bootstrap.png" />
+    <Content Include="Content\Images\screen-hfw.png" />
     <Content Include="Content\site.css">
       <DependentUpon>site.less</DependentUpon>
     </Content>
@@ -184,6 +186,7 @@
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
     <Content Include="Config\healthMonitoring.config" />
     <Content Include="Scripts\jquery-2.1.0.min.map" />
+    <Content Include="signpost.aspx" />
     <Content Include="Templates\Main.Master" />
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>

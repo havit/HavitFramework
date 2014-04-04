@@ -44,10 +44,8 @@
     <WarningLevel>4</WarningLevel>
     <ExcludeGeneratedDebugSymbol>false</ExcludeGeneratedDebugSymbol>
     <PublishDatabases>false</PublishDatabases>
-    <PrecompileBeforePublish>true</PrecompileBeforePublish>
-    <UseMerge>true</UseMerge>
-    <WDPMergeOption>MergeAllOutputsToASingleAssembly</WDPMergeOption>
-    <SingleAssemblyName>Havit.NewProjectTemplate.Web.Precompiled</SingleAssemblyName>
+    <PrecompileBeforePublish>false</PrecompileBeforePublish>
+    <UseMerge>false</UseMerge>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AspNet.ScriptManager.jQuery">

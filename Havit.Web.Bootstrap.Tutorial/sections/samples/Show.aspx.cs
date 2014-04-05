@@ -29,7 +29,7 @@ namespace Havit.Web.Bootstrap.Tutorial.Section.Samples
 				controlUrl = "~/" + controlUrl + ".ascx";
 
 				// load file and remove @Control header
-				string path = Path.Combine(Request.PhysicalApplicationPath, ResolveUrl(controlUrl).TrimStart('/'));
+				string path = Server.MapPath(controlUrl);
 				string[] lines = File.ReadAllLines(path);
 				lines = lines.Where(line => !line.Contains("<%@")).ToArray();
 

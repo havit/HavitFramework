@@ -27,7 +27,7 @@
 	</bc:TabPanel>	
 </bc:TabContainer>
 
-<h3>Stacked</h3>
+<h3>Pills Stacked</h3>
 <bc:TabContainer TabMode="PillsStacked" runat="server">
 	<bc:TabPanel HeaderText="First" runat="server">
 		<ContentTemplate>First tab panel.</ContentTemplate>

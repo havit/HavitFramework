@@ -3,14 +3,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 	<title></title>
-	<link href="../Content/bootstrap.min.css" rel="stylesheet" runat="server" />
+	<link href="../Content/site.css" rel="stylesheet" runat="server" />
 </head>
 
 <body>
 	<form id="MainForm" runat="server">
 		<div>
 
-			<asp:ScriptManager runat="server">
+			<asp:ScriptManager EnablePartialRendering="true" runat="server">
 				<Scripts>
 					<asp:ScriptReference Name="jquery" />
 					<%--Framework Scripts--%>

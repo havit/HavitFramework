@@ -51,6 +51,7 @@
     </Compile>
     <Compile Include="StartUp.cs" />
     <Compile Include="UI\ClientScripts\BootstrapClientScriptHelper.cs" />
+    <Compile Include="UI\WebControls\Button.cs" />
     <Compile Include="UI\WebControls\IRadioButtonListCheckBoxList.cs" />
     <Compile Include="UI\WebControls\RadioButtonListCheckBoxListHelper.cs" />
     <Compile Include="UI\WebControls\SwitchButton.cs" />

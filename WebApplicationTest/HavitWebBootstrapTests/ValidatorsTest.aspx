@@ -36,7 +36,7 @@
 		<br />
 		<br />
 
-		<asp:Button Text="Postback" ValidationGroup="A" runat="server" />
+		<bc:Button Text="Postback" ValidationGroup="A" runat="server" />
 	</asp:Panel>
 
 	<asp:UpdatePanel runat="server">
@@ -58,7 +58,7 @@
 			<br />
 			<br />
 
-			<asp:Button Text="Postback" ValidationGroup="B" runat="server" />
+			<bc:Button Text="Postback" ValidationGroup="B" runat="server" />
 
 			<br />
 			<br />
@@ -67,7 +67,7 @@
 			<bc:ValidationSummary ValidationGroup="C" ShowMessageBox="True" runat="server" />
 			<asp:TextBox ID="TB5" runat="server" />
 			<bc:RequiredFieldValidator ControlToValidate="TB5" ErrorMessage="Zadejte hodnotu do pátého textboxu. \zpetne lomitko 'apostrof" ValidationGroup="C" EnableClientScript="false" runat="server" />
-			<asp:Button Text="Postback" ValidationGroup="C" runat="server" />
+			<bc:Button Text="Postback" ValidationGroup="C" runat="server" />
 
 		</ContentTemplate>
 	</asp:UpdatePanel>

@@ -1,0 +1,13 @@
+﻿
+<havit:EnterpriseGridView SkinID="SkinTest" runat="server">
+	<CommandFieldStyle 
+		EditTooltip="EditTooltip*"
+		SelectTooltip="SelectTooltip*"
+		InsertTooltip="InsertTooltip*"
+		CancelTooltip="CancelTooltip*"
+		DeleteTooltip="DeleteTooltip*"
+		UpdateTooltip="UpdateTooltip*"
+		DeleteCssClass="deletebtn"
+		DeleteDisabledCssClass="deletebtn-disabled" />
+</havit:EnterpriseGridView>
+

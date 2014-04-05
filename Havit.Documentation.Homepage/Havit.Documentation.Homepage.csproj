@@ -7,12 +7,12 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{ABA477E6-DEF8-4215-B5DE-612B546AD1FB}</ProjectGuid>
+    <ProjectGuid>{3BDA4E00-6F3D-4181-BA7A-3FDE62EB367F}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Havit.Web.Bootstrap.Tutorial</RootNamespace>
-    <AssemblyName>Havit.Web.Bootstrap.Tutorial</AssemblyName>
+    <RootNamespace>Havit.Documentation.Homepage</RootNamespace>
+    <AssemblyName>Havit.Documentation.Homepage</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -48,24 +48,7 @@
     <UseMerge>false</UseMerge>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AspNet.ScriptManager.jQuery">
-      <HintPath>..\packages\AspNet.ScriptManager.jQuery.2.1.0\lib\net45\AspNet.ScriptManager.jQuery.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNet.FriendlyUrls">
-      <HintPath>..\packages\Microsoft.AspNet.FriendlyUrls.Core.1.0.2\lib\net45\Microsoft.AspNet.FriendlyUrls.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.ScriptManager.MSAjax">
-      <HintPath>..\packages\Microsoft.AspNet.ScriptManager.MSAjax.5.0.0\lib\net45\Microsoft.ScriptManager.MSAjax.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.ScriptManager.WebForms">
-      <HintPath>..\packages\Microsoft.AspNet.ScriptManager.WebForms.5.0.0\lib\net45\Microsoft.ScriptManager.WebForms.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Web.DynamicData" />
-    <Reference Include="System.Web.Entity" />
-    <Reference Include="System.Web.ApplicationServices" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -73,40 +56,20 @@
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Web.Services" />
-    <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\Images\screen-bootstrap.png" />
+    <Content Include="Content\Images\screen-hfw.png" />
     <Content Include="Content\site.css">
       <DependentUpon>site.less</DependentUpon>
     </Content>
     <Content Include="Content\site.min.css">
       <DependentUpon>site.css</DependentUpon>
     </Content>
-    <Content Include="sections\controls\samples\TabsInRepeaterSample.ascx" />
-    <Content Include="sections\controls\samples\TabsAppearanceSample.ascx" />
-    <Content Include="sections\controls\samples\TabsSimpleSample.ascx" />
-    <Content Include="sections\controls\samples\RadioButtonListSample.ascx" />
-    <Content Include="sections\controls\samples\CheckBoxListSample.ascx" />
-    <Content Include="sections\controls\samples\SwitchButtonSample.ascx" />
-    <Content Include="sections\controls\samples\TooltipSample.ascx" />
-    <Content Include="sections\controls\samples\ValidatorSample.ascx" />
-    <Content Include="sections\controls\switchbutton.aspx" />
-    <Content Include="sections\controls\tooltip.aspx" />
-    <Content Include="sections\controls\checkboxlist_radiobuttonlist.aspx" />
-    <Content Include="sections\controls\tabs.aspx" />
-    <Content Include="sections\controls\_backlog.aspx" />
-    <Content Include="sections\controls\validators.aspx" />
-    <Content Include="sections\less\less.aspx" />
-    <Content Include="sections\samples\Show.aspx" />
-    <Content Include="Default.aspx" />
-    <Content Include="Error.aspx" />
     <Content Include="favicon.ico" />
-    <Content Include="sections\getting-started\getting-started.aspx" />
     <Content Include="packages.config" />
-    <Content Include="Config\mailSettings-smtp.config" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
@@ -150,8 +113,6 @@
     <Content Include="Content\bootstrap\bootstrap.less" />
     <Content Include="Content\bootstrap\badges.less" />
     <Content Include="Content\bootstrap\alerts.less" />
-    <Content Include="Content\havit.web.bootstrap\invalid.less" />
-    <Content Include="Content\havit.web.bootstrap\havit.web.bootstrap.less" />
     <Content Include="Content\site.less" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="robots.txt" />
@@ -159,38 +120,13 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-2.1.0.js" />
     <Content Include="Scripts\jquery-2.1.0.min.js" />
-    <Content Include="Scripts\WebForms\DetailsView.js" />
-    <Content Include="Scripts\WebForms\Focus.js" />
-    <Content Include="Scripts\WebForms\GridView.js" />
-    <Content Include="Scripts\WebForms\Menu.js" />
-    <Content Include="Scripts\WebForms\MenuStandards.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjax.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxApplicationServices.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxComponentModel.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxCore.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxGlobalization.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxHistory.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxNetwork.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxSerialization.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxTimer.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxWebForms.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxWebServices.js" />
-    <Content Include="Scripts\WebForms\SmartNav.js" />
-    <Content Include="Scripts\WebForms\TreeView.js" />
-    <Content Include="Scripts\WebForms\WebForms.js" />
-    <Content Include="Scripts\WebForms\WebParts.js" />
-    <Content Include="Scripts\WebForms\WebUIValidation.js" />
-    <Content Include="Config\healthMonitoring.config" />
     <Content Include="Scripts\jquery-2.1.0.min.map" />
-    <Content Include="Templates\Main.Master" />
+    <Content Include="Default.aspx" />
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Global.asax" />
-    <Content Include="Templates\Menu.ascx" />
-    <Content Include="Templates\scripts\HavitScripts.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -199,48 +135,7 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="App_Start\ScriptManagerConfig.cs" />
-    <Compile Include="sections\samples\Show.aspx.cs">
-      <DependentUpon>Show.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="sections\samples\Show.aspx.designer.cs">
-      <DependentUpon>Show.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="sections\samples\ShowControl.cs" />
-    <Compile Include="Global.asax.cs">
-      <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Templates\Main.Master.cs">
-      <DependentUpon>Main.Master</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Templates\Main.Master.designer.cs">
-      <DependentUpon>Main.Master</DependentUpon>
-    </Compile>
-    <Compile Include="Templates\Menu.ascx.cs">
-      <DependentUpon>Menu.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Templates\Menu.ascx.designer.cs">
-      <DependentUpon>Menu.ascx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Havit.Web.Bootstrap\Havit.Web.Bootstrap.csproj">
-      <Project>{d3275f65-1489-47da-9d39-dec9baf83562}</Project>
-      <Name>Havit.Web.Bootstrap</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Havit.Web\Havit.Web.csproj">
-      <Project>{52891fb3-ca20-403b-ac25-7d9ca5738b6b}</Project>
-      <Name>Havit.Web</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Havit\Havit.csproj">
-      <Project>{9acc94b9-b8fd-47c1-abf8-0658c7673905}</Project>
-      <Name>Havit</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup>
@@ -280,6 +175,6 @@
       <FilesToCopy Include="obj\Release\Package\PackageTmp\**\*.*" />
       <FilesToCopy Remove="obj\Release\Package\PackageTmp\Config\*.*" />
     </ItemGroup>
-    <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(PublishDirectory)\Havit.Web.Bootstrap.Tutorial\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(PublishDirectory)\Havit.Documentation.Homepage\%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>
 </Project>

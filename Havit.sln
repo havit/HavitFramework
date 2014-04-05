@@ -85,9 +85,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Web.Bootstrap.NuGetPa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Web.Bootstrap.Tutorial", "Havit.Web.Bootstrap.Tutorial\Havit.Web.Bootstrap.Tutorial.csproj", "{ABA477E6-DEF8-4215-B5DE-612B546AD1FB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Documentation.Homepage", "Havit.Documentation.Homepage\Havit.Documentation.Homepage.csproj", "{3BDA4E00-6F3D-4181-BA7A-3FDE62EB367F}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 25
+		SccNumberOfProjects = 26
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://tfs.havit.local:8080/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -187,6 +189,10 @@ Global
 		SccProjectTopLevelParentUniqueName24 = Havit.sln
 		SccProjectName24 = Havit.Web.Bootstrap.Tutorial
 		SccLocalPath24 = Havit.Web.Bootstrap.Tutorial
+		SccProjectUniqueName25 = Havit.Documentation.Homepage\\Havit.Documentation.Homepage.csproj
+		SccProjectTopLevelParentUniqueName25 = Havit.sln
+		SccProjectName25 = Havit.Documentation.Homepage
+		SccLocalPath25 = Havit.Documentation.Homepage
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -288,6 +294,10 @@ Global
 		{ABA477E6-DEF8-4215-B5DE-612B546AD1FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ABA477E6-DEF8-4215-B5DE-612B546AD1FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ABA477E6-DEF8-4215-B5DE-612B546AD1FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BDA4E00-6F3D-4181-BA7A-3FDE62EB367F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BDA4E00-6F3D-4181-BA7A-3FDE62EB367F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BDA4E00-6F3D-4181-BA7A-3FDE62EB367F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BDA4E00-6F3D-4181-BA7A-3FDE62EB367F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -313,6 +323,7 @@ Global
 		{51ED0131-D9F9-4AF4-A8E6-ADB52D43B360} = {6B3E283B-3E8A-4BEB-B318-49AD5265DA8F}
 		{C1BD4BBA-35DB-43B6-B4E9-072AFAC6EBD5} = {E2563E89-6F01-452B-99C8-7931CBB16D4B}
 		{ABA477E6-DEF8-4215-B5DE-612B546AD1FB} = {E2563E89-6F01-452B-99C8-7931CBB16D4B}
+		{3BDA4E00-6F3D-4181-BA7A-3FDE62EB367F} = {E2563E89-6F01-452B-99C8-7931CBB16D4B}
 		{C5C6607E-644A-468F-A6C2-CDCF8A1D23DC} = {10D8C31B-1810-4B8E-9B73-544ACA5CFC75}
 		{D3275F65-1489-47DA-9D39-DEC9BAF83562} = {10D8C31B-1810-4B8E-9B73-544ACA5CFC75}
 		{DE55617C-C11E-4093-9F57-2AEF7F636EDB} = {360CC3C7-E4F9-4169-8D98-EA507CEB0A1E}

@@ -24,7 +24,7 @@
     <div class="container">
 		<div class="text-center">
 			
-			<a href="." class="btn btn-default btn-lg"><!-- don't follow this ugly pattern -->
+			<a href="/Havit.Web.Bootstrap.Tutorial" class="btn btn-default btn-lg"><!-- don't follow this ugly pattern -->
 				<img src="Content/Images/screen-bootstrap.png" />
 				Havit.Web.Bootstrap Documentation
 			</a>

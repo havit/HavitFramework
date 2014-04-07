@@ -11,7 +11,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls.Legacy
 	/// <summary>
 	/// Extended NumericBoxValidator.
 	/// </summary>
-	public class NumericBoxValidator: Web.UI.WebControls.NumericBoxValidator, IValidatorExtension
+	public class NumericBoxValidator : Web.UI.WebControls.NumericBoxValidator, IValidatorExtension
 	{
 		#region Common validator extensions
 

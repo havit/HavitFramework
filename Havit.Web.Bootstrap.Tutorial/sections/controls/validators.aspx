@@ -8,7 +8,13 @@
 
 <asp:Content ContentPlaceHolderID="MainCPH" runat="server">
 	<h2>Mapping</h2>
-	Standard <asp:HyperLink NavigateUrl="~/sections/getting-started/getting-started#tagmapping" runat="server">Validators and ValidationSummary are remapped</asp:HyperLink> to the descendants in Havit.Web.Bootstrap.
+	<p>Standard <asp:HyperLink NavigateUrl="~/sections/getting-started/getting-started#tagmapping" runat="server">Validators and ValidationSummary are remapped by tag mapping</asp:HyperLink> to the descendants in Havit.Web.Bootstrap.</p>
+	<p>Custom legacy Validators from Havit.Web must be manualy remapped:</p>
+	<ul>
+		<li>CheckBoxValidator to Havit.Web.Bootstrap.UI.WebControls.Legacy.CheckBoxValidator</li>
+		<li>NumericBoxValidator to Havit.Web.Bootstrap.UI.WebControls.Legacy.NumericBoxValidator</li>
+	</ul>
+
 	<h2>Properties</h2>
 		<ul>
 			<ul>

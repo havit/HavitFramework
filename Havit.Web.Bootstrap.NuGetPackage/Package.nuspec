@@ -10,8 +10,9 @@
 		<description>
 			Installs Havit.Web.Bootstrap assembly and Bootstrap LESS files (via Twitter.Bootstrap.Less NuGet) to project.
 		</description>
-		<language>en-US</language>		
-		<iconUrl>http://blog.getbootstrap.com/public/ico/apple-touch-icon-144-precomposed.png</iconUrl>
+		<language>en-US</language>
+	  <projectUrl>http://hfw.havit.local/Havit.Web.Bootstrap.Tutorial</projectUrl>
+	  <iconUrl>http://blog.getbootstrap.com/public/ico/apple-touch-icon-144-precomposed.png</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<!--<licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>-->
 		<copyright>Copyright HAVIT, s.r.o. 2014</copyright>
@@ -19,6 +20,7 @@
 			<group targetFramework="net45">
 			  <dependency id="jQuery" version="1.11.0"/>
 			  <dependency id="Twitter.Bootstrap.Less" version="3.1.1" />
+			  <dependency id="Microsoft.AspNet.ScriptManager.WebForms" version="5.0.0 " />
 			</group>
 		</dependencies>
 		<references></references>

@@ -11,6 +11,8 @@
 		border: 1px solid @invalid-tooltip-border-color;
 		background-color: @invalid-tooltip-background-color;
 		color: @invalid-tooltip-text-color;
+		/* DateTimeBox is rendered in span with white-space nowrap which disables wrapping in tooltip */
+		white-space: normal;
 	}
 }
 

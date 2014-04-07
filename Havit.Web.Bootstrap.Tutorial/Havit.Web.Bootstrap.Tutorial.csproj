@@ -150,7 +150,7 @@
     <Content Include="Content\bootstrap\bootstrap.less" />
     <Content Include="Content\bootstrap\badges.less" />
     <Content Include="Content\bootstrap\alerts.less" />
-    <Content Include="Content\havit.web.bootstrap\invalid.less" />
+    <Content Include="Content\havit.web.bootstrap\validation.less" />
     <Content Include="Content\havit.web.bootstrap\havit.web.bootstrap.less" />
     <Content Include="Content\site.less" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />

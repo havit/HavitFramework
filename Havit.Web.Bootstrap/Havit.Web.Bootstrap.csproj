@@ -53,6 +53,8 @@
     <Compile Include="UI\ClientScripts\BootstrapClientScriptHelper.cs" />
     <Compile Include="UI\WebControls\Button.cs" />
     <Compile Include="UI\WebControls\IRadioButtonListCheckBoxList.cs" />
+    <Compile Include="UI\WebControls\Legacy\CheckBoxValidator.cs" />
+    <Compile Include="UI\WebControls\Legacy\NumericBoxValidator.cs" />
     <Compile Include="UI\WebControls\RadioButtonListCheckBoxListHelper.cs" />
     <Compile Include="UI\WebControls\SwitchButton.cs" />
     <Compile Include="UI\WebControls\TabPanel.cs" />

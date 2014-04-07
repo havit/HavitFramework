@@ -31,6 +31,15 @@ namespace WebApplicationTest.HavitWebBootstrapTests {
         protected global::System.Web.UI.WebControls.TextBox TB2;
         
         /// <summary>
+        /// SectionAButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Havit.Web.Bootstrap.UI.WebControls.Button SectionAButton;
+        
+        /// <summary>
         /// TB3 control.
         /// </summary>
         /// <remarks>
@@ -47,6 +56,15 @@ namespace WebApplicationTest.HavitWebBootstrapTests {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox TB4;
+        
+        /// <summary>
+        /// SectionBButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Havit.Web.Bootstrap.UI.WebControls.Button SectionBButton;
         
         /// <summary>
         /// TB5 control.

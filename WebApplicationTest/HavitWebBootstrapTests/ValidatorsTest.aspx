@@ -36,7 +36,7 @@
 		<br />
 		<br />
 
-		<bc:Button Text="Postback" ValidationGroup="A" runat="server" />
+		<bc:Button ID="SectionAButton" Text="Postback" ValidationGroup="A" runat="server" />
 	</asp:Panel>
 
 	<asp:UpdatePanel runat="server">
@@ -58,7 +58,7 @@
 			<br />
 			<br />
 
-			<bc:Button Text="Postback" ValidationGroup="B" runat="server" />
+			<bc:Button ID="SectionBButton" Text="Postback" ValidationGroup="B" runat="server" />
 
 			<br />
 			<br />

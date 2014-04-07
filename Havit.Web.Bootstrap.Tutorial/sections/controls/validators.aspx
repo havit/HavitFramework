@@ -22,7 +22,6 @@
 				<li>TooltipPosition (default TooltipPosition.Right)</li>
 				<li>ControlToValidateInvalidCssClass (default "invalid") - class name added to the input control when validation fails</li>
 				<li>Display (default value overriden to ValidatorDisplay.None) - validation text is not display in place of validator</li>
-				<li>SetFocusOnError (default value overriden to True)</li>
 			</ul>
 		</ul>
 	<h2>Behavior</h2>
@@ -38,4 +37,6 @@
 	<uc:ValidatorSample ID="ValidatorSampleUC" runat="server" />
 	<uc:ShowControl Title="Validator sample" ShowControlID="ValidatorSampleUC" runat="server" />
 
+	<h2>Known Issues</h2>	
+	<p>When SetFocusOnError is set to true, it does not work properly when used in UpdatePanel (second button with validation does not display tooltip).</p>
 </asp:Content>

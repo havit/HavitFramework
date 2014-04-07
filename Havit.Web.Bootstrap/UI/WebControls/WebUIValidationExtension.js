@@ -39,16 +39,6 @@
 			var result = WebFormsOriginals_Page_ClientValidate(validationGroup);			
 			Havit_UpdateValidatorsExtensionsUI(validationGroup); // set UI after validators evaluation
 
-			// handles situation when invalid control is focused, tooltip is displayed, validation summary is displayed resulting in page size change and tooltip remains displayed on wrong position
-			// Page_InvalidControlToBeFocused is set in ValidatorSetFocus (later call of this method has side effects so we are leave it unchanged)			
-			if (Page_InvalidControlToBeFocused != null) {
-				try {
-					Page_InvalidControlToBeFocused.blur(); // ensures next focus really works
-					Page_InvalidControlToBeFocused.focus(); // focus and display tooltip
-				} catch (e) {
-					// NOOP
-				} 
-			}
 			return result;
 		};
 
@@ -91,10 +81,11 @@
 					var tooltiptext = item.getAttribute("data-val-tt-text");
 					if ((controltovalidate != null) && (controltovalidate.length > 0)) {
 						if ((controltovalidateclass != null) && (controltovalidateclass.length > 0)) {
-							$("#" + controltovalidate).removeClass(controltovalidateclass); // remove "validation failed" class to a control to validate
+							$controlToValidate = $("#" + controltovalidate);
+							$controlToValidate.removeClass(controltovalidateclass); // remove "validation failed" class to a control to validate
 						}
-						if ((tooltiptext != null) && (tooltiptext.length > 0)) {
-							$("#" + controltovalidate).tooltip('destroy'); // destroy existing tooltip
+						if ($controlToValidate.attr("tooltipReady")) {
+							$("#" + controltovalidate).attr("tooltipReady", false).tooltip('destroy'); // destroy existing tooltip
 						}
 					}
 				}
@@ -148,12 +139,14 @@
 
 			// create tooltips from prepared array
 			failedValidatorsTooltips.forEach(function(tooltip) {
-				$("#" + tooltip.controltovalidate).tooltip({
-					'placement': tooltip.position,
-					'title': tooltip.text,
-					'trigger': 'hover focus',
-					'html': true // ensures <br /> to work
-				});
+				$("#" + tooltip.controltovalidate)
+					.attr("tooltipReady", true)
+					.tooltip({
+						'placement': tooltip.position,
+						'title': tooltip.text,
+						'trigger': 'hover focus',
+						'html': true // ensures <br /> to work
+					});
 			});
 		}
 	})(jQuery);

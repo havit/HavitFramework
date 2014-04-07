@@ -21,12 +21,11 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Sets up validator (used from constructor).
 		/// Changes validator default values to:
 		/// - Display = "None"
-		/// - SetFocusOnError = true
 		/// </summary>
 		internal static void Setup(BaseValidator validator)
 		{			
 			validator.Display = ValidatorDisplay.None;
-			validator.SetFocusOnError = true;
+			validator.SetFocusOnError = false;
 		}
 		#endregion
 

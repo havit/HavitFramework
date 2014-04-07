@@ -9,6 +9,12 @@ namespace WebApplicationTest.HavitWebBootstrapTests
 {
 	public partial class ValidatorsTest : System.Web.UI.Page
 	{
+		protected override void OnLoad(EventArgs e)
+		{
+			base.OnLoad(e);
+			Form.DefaultButton = SectionBButton.UniqueID;
+		}
+
 		protected void CustomValidator_ServerValidate(object source, ServerValidateEventArgs args)
 		{
 			args.IsValid = args.Value.StartsWith("a", StringComparison.CurrentCultureIgnoreCase);

@@ -38,6 +38,17 @@
 		Havit_Page_ClientValidate = function (validationGroup) {			
 			var result = WebFormsOriginals_Page_ClientValidate(validationGroup);			
 			Havit_UpdateValidatorsExtensionsUI(validationGroup); // set UI after validators evaluation
+
+			// handles situation when invalid control is focused, tooltip is displayed, validation summary is displayed resulting in page size change and tooltip remains displayed on wrong position
+			// Page_InvalidControlToBeFocused is set in ValidatorSetFocus (later call of this method has side effects so we are leave it unchanged)			
+			if (Page_InvalidControlToBeFocused != null) {
+				try {
+					Page_InvalidControlToBeFocused.blur(); // ensures next focus really works
+					Page_InvalidControlToBeFocused.focus(); // focus and display tooltip
+				} catch (e) {
+					// NOOP
+				} 
+			}
 			return result;
 		};
 

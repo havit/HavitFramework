@@ -5781,6 +5781,9 @@ button.close {
     display: none !important;
   }
 }
+.validation-invalid {
+  opacity: 1;
+}
 .validation-invalid + .tooltip > .tooltip-inner {
   font-size: 14px;
   border: 1px solid #f2dede;

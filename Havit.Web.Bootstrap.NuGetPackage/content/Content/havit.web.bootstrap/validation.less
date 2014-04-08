@@ -3,8 +3,11 @@
 @validation-invalid-tooltip-background-color: @state-danger-bg;
 @validation-invalid-tooltip-text-color: @state-danger-text;
 @validation-invalid-tooltip-font-size: @font-size-base;
+@validation-invalid-control-opacity: 1;
 
 .validation-invalid {
+	opacity: @invalid-control-opacity;
+
 	& + .tooltip {
 		& > .tooltip-inner {
 			font-size: @validation-invalid-tooltip-font-size;

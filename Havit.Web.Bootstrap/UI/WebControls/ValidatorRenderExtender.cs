@@ -16,6 +16,13 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	/// </summary>
 	internal static class ValidatorRenderExtender
 	{
+		#region DefaultControlToValidateInvalidCssClass (const)
+		/// <summary>
+		/// Default CssClass for control with failed validation (validators sets this css class).
+		/// </summary>
+		internal const string DefaultControlToValidateInvalidCssClass = "validation-invalid";
+		#endregion
+
 		#region Setup
 		/// <summary>
 		/// Sets up validator (used from constructor).

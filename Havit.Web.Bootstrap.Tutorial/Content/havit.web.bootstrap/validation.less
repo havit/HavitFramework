@@ -1,30 +1,34 @@
-﻿@invalid-control-border-color: @state-danger-text;
-@invalid-tooltip-border-color: @state-danger-bg;
-@invalid-tooltip-background-color: @state-danger-bg;
-@invalid-tooltip-text-color: @state-danger-text;
+﻿@validation-invalid-control-border-color: @state-danger-text;
+@validation-invalid-tooltip-border-color: @state-danger-bg;
+@validation-invalid-tooltip-background-color: @state-danger-bg;
+@validation-invalid-tooltip-text-color: @state-danger-text;
+@validation-invalid-tooltip-font-size: @font-size-base;
 
-.invalid {
+.validation-invalid {
+	& + .tooltip {
+		& > .tooltip-inner {
+			font-size: @validation-invalid-tooltip-font-size;
+			border: 1px solid @validation-invalid-tooltip-border-color;
+			background-color: @validation-invalid-tooltip-background-color;
+			color: @validation-invalid-tooltip-text-color;
+			/* DateTimeBox is rendered in span with white-space nowrap which disables wrapping in tooltip */
+			white-space: normal;
+		}
 
-         & + .tooltip {
-                 & > .tooltip-inner {
-                          font-size: @font-size-base;
-                          border: 1px solid @invalid-tooltip-border-color;
-                          background-color: @invalid-tooltip-background-color;
-                          color: @invalid-tooltip-text-color;
-                          /* DateTimeBox is rendered in span with white-space nowrap which disables wrapping in tooltip */
-                          white-space: normal;
-                 }
-                  &.right .tooltip-arrow {
-                          border-right-color: @invalid-tooltip-background-color;
-                 }
-                 &.left .tooltip-arrow {
-                          border-left-color: @invalid-tooltip-background-color;
-                 }
-                 &.top .tooltip-arrow {
-                          border-top-color: @invalid-tooltip-background-color;
-                 }
-                 &.bottom .tooltip-arrow {
-                          border-bottom-color: @invalid-tooltip-background-color;
-                 }
-         }
+		&.right .tooltip-arrow {
+			border-right-color: @validation-invalid-tooltip-background-color;
+		}
+
+		&.left .tooltip-arrow {
+			border-left-color: @validation-invalid-tooltip-background-color;
+		}
+
+		&.top .tooltip-arrow {
+			border-top-color: @validation-invalid-tooltip-background-color;
+		}
+
+		&.bottom .tooltip-arrow {
+			border-bottom-color: @validation-invalid-tooltip-background-color;
+		}
+	}
 }

@@ -56,12 +56,12 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// CssClass name which is added to ControlToValidate when validation fails. 
 		/// </summary>
-		[DefaultValue("invalid")]
+		[DefaultValue(ValidatorRenderExtender.DefaultControlToValidateInvalidCssClass)]
 		public string ControlToValidateInvalidCssClass
 		{
 			get
 			{
-				return (string)(ViewState["ControlToValidateInvalidCssClass"] ?? "invalid");
+				return (string)(ViewState["ControlToValidateInvalidCssClass"] ?? ValidatorRenderExtender.DefaultControlToValidateInvalidCssClass);
 			}
 			set
 			{

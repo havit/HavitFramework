@@ -20,7 +20,7 @@
 			<ul>
 				<li>ShowTooltip (default True)</li>
 				<li>TooltipPosition (default TooltipPosition.Right)</li>
-				<li>ControlToValidateInvalidCssClass (default "invalid") - class name added to the input control when validation fails</li>
+				<li>ControlToValidateInvalidCssClass (default "validation-invalid") - class name added to the input control when validation fails</li>
 				<li>Display (default value overriden to ValidatorDisplay.None) - validation text is not display in place of validator</li>
 			</ul>
 		</ul>

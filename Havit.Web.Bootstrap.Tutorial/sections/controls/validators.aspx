@@ -16,14 +16,15 @@
 	</ul>
 
 	<h2>Properties</h2>
+	<ul>
 		<ul>
-			<ul>
-				<li>ShowTooltip (default True)</li>
-				<li>TooltipPosition (default TooltipPosition.Right)</li>
-				<li>ControlToValidateInvalidCssClass (default "validation-invalid") - class name added to the input control when validation fails</li>
-				<li>Display (default value overriden to ValidatorDisplay.None) - validation text is not display in place of validator</li>
-			</ul>
+			<li>ShowTooltip (default True)</li>
+			<li>TooltipPosition (default TooltipPosition.Right)</li>
+			<li>ControlToValidateInvalidCssClass (default "validation-invalid") - class name added to the input control when validation fails</li>
+			<li>Display (default value overriden to ValidatorDisplay.None) - validation text is not display in place of validator</li>
 		</ul>
+	</ul>
+
 	<h2>Behavior</h2>
 	<p>Extends validators with ControlToValidate property value by adding a class to the invalid input field (ControlToValidate) and displaying validation errors as a tooltip of ControlToValidate control.</p>
 	<p>Tooltip text is first non empty string in Tooltip, Text, ErrorMessage. Tooltip is visible on control mouse over or when control has focus.</p>

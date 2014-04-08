@@ -209,6 +209,10 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="UI\WebControls\DialogUserControlBase.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\WebControls\ModalDialogBase.cs" />
     <Compile Include="Compilation\CodeExpressionBuilder.cs" />
     <Compile Include="Management\WebRequestErrorEventExt.cs" />
     <Compile Include="PageNavigator.cs" />
@@ -239,7 +243,9 @@
     <Compile Include="UI\WebControls\AutoFilterDropDownList.cs" />
     <Compile Include="UI\WebControls\AutoFilterMode.cs" />
     <Compile Include="UI\WebControls\AutoFilterTextBox.cs" />
-    <Compile Include="UI\WebControls\DateTimeBoxNoWrapStyle.cs" />
+    <Compile Include="UI\WebControls\DateTimeBoxNoWrapStyle.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="UI\WebControls\DateTimePickerElement.cs" />
     <Compile Include="UI\WebControls\GridViewDataFilteringEventHandler.cs" />
     <Compile Include="UI\WebControls\GridViewDataFilteringEventArgs.cs" />

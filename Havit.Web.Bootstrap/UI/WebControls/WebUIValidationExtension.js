@@ -11,6 +11,7 @@
 		var WebFormsOriginals_Page_ClientValidate = null; // remember original Page_ClientValidate function
 		var WebFormsOriginals_ValidatorOnChange = null; // remember original ValidatorOnChange function
 		var WebFormsOriginals_ValidatorOnLoad = null; // remember original ValidatorOnLoad function
+		var WebFormsOriginals_ValidationSummaryOnSubmit = null; // remember original ValidationSummaryOnSubmit function
 
 		// ensures javascript method replacements
 		// asynchronous request forces WebUIValidation.js to load for the second time
@@ -26,11 +27,10 @@
 				ValidatorOnChange = Havit_ValidatorOnChange;
 			}
 
-			if (ValidatorOnLoad != Havit_ValidatorOnLoad) {
-				WebFormsOriginals_ValidatorOnLoad = ValidatorOnLoad;
-				ValidatorOnLoad = Havit_ValidatorOnLoad;
+			if (ValidationSummaryOnSubmit != Havit_ValidationSummaryOnSubmit) {
+				WebFormsOriginals_ValidationSummaryOnSubmit = ValidationSummaryOnSubmit;
+				ValidationSummaryOnSubmit = Havit_ValidationSummaryOnSubmit;
 			}
-
 		};
 
 		// override (extend) Page_ClientValidate function
@@ -53,8 +53,17 @@
 		// called when form loading
 		Havit_ValidatorOnLoad = function () {
 			WebFormsOriginals_ValidatorOnLoad();
-			Havit_UpdateValidatorsExtensionsUI(null); // set UI after validators evaluation (null means all validation groups!)
+			if (WebFormsOriginals_ValidatorOnLoad_OnceOnlyEnabled) {
+				WebFormsOriginals_ValidatorOnLoad_OnceOnlyEnabled = false;
+				Havit_UpdateValidatorsExtensionsUI(null); // set UI after validators evaluation (null means all validation groups!)
+				Havit_ValidationSummary_ProcessToastr(null); // show toastr after validators evaluation (null means all validation groups!)
+			}
 		};
+
+		Havit_ValidationSummaryOnSubmit = function(validationGroup) {
+			WebFormsOriginals_ValidationSummaryOnSubmit(validationGroup);
+			Havit_ValidationSummary_ProcessToastr(validationGroup);
+		}
 
 		// extends UI by the validation result
 		Havit_UpdateValidatorsExtensionsUI = function(validationGroup) {
@@ -148,6 +157,57 @@
 						'html': true // ensures <br /> to work
 					});
 			});
+		};
+
+		Havit_ValidationSummary_ProcessToastr = function (validationGroup) {
+
+			if (typeof (Page_ValidationSummaries) == "undefined") {
+				return;
+			}
+
+			// remove previous error message
+			if (Havit_ValidationSummary_ShowToastr_Toastrs) {
+				Havit_ValidationSummary_ShowToastr_Toastrs.forEach(function(toastrItem) {
+					toastr.clear(toastrItem);
+				});
+			}
+			Havit_ValidationSummary_ShowToastr_Toastrs = new Array();
+
+			var validationSummary, summaryIndex, errorMessage;
+			for (summaryIndex = 0; summaryIndex < Page_ValidationSummaries.length; summaryIndex++) { // for all validation summaries
+				validationSummary = Page_ValidationSummaries[summaryIndex];
+
+				// which are for the validation group and should show toastr
+				if (validationSummary && validationSummary.parentNode && IsValidationGroupMatch(validationSummary, validationGroup) && (validationSummary.getAttribute("data-showtoastr") == "True")) {
+					// concatenate text for toastr message
+					errorMessage = "";
+					if (typeof (validationSummary.headertext) == "string") {
+						errorMessage += validationSummary.headertext + "<br />";
+					}
+					for (i = 0; i < Page_Validators.length; i++) {
+						if (!Page_Validators[i].isvalid && IsValidationGroupMatch(Page_Validators[i], validationSummary.validationGroup) && (typeof (Page_Validators[i].errormessage) == "string") && (Page_Validators[i].errormessage.length > 0)) {
+							errorMessage += Page_Validators[i].errormessage + "<br />";
+						}
+					}
+					Havit_ValidationSummary_ShowToastrError(errorMessage);
+				}
+			}
+		};
+
+		Havit_ValidationSummary_ShowToastrError = function(errorMessage) {
+			if (errorMessage.length > 0) {
+				var optionsOverride = {
+					closeButton: true, // display close button
+					tapToDismiss: false, // click do not close message
+					timeOut: 0, // message is visible until close button click
+				};
+
+				// create and remember toastr message
+				Havit_ValidationSummary_ShowToastr_Toastrs[Havit_ValidationSummary_ShowToastr_Toastrs.length] = toastr.error(errorMessage, null, optionsOverride);
+			}
 		}
+
+		// displayed messages
+		Havit_ValidationSummary_ShowToastr_Toastrs = new Array();
 	})(jQuery);
 }

@@ -55,9 +55,6 @@
       <HintPath>..\packages\Microsoft.AspNet.FriendlyUrls.Core.1.0.2\lib\net45\Microsoft.AspNet.FriendlyUrls.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.ScriptManager.MSAjax">
-      <HintPath>..\packages\Microsoft.AspNet.ScriptManager.MSAjax.5.0.0\lib\net45\Microsoft.ScriptManager.MSAjax.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.ScriptManager.WebForms">
       <HintPath>..\packages\Microsoft.AspNet.ScriptManager.WebForms.5.0.0\lib\net45\Microsoft.ScriptManager.WebForms.dll</HintPath>
     </Reference>
@@ -85,6 +82,10 @@
     <Content Include="Content\site.min.css">
       <DependentUpon>site.css</DependentUpon>
     </Content>
+    <Content Include="Content\toastr.css" />
+    <Content Include="Content\toastr.min.css" />
+    <Content Include="Scripts\toastr.js" />
+    <Content Include="Scripts\toastr.min.js" />
     <Content Include="sections\controls\samples\TabsInRepeaterSample.ascx" />
     <Content Include="sections\controls\samples\TabsAppearanceSample.ascx" />
     <Content Include="sections\controls\samples\TabsSimpleSample.ascx" />
@@ -97,6 +98,7 @@
     <Content Include="sections\controls\tooltip.aspx" />
     <Content Include="sections\controls\checkboxlist_radiobuttonlist.aspx" />
     <Content Include="sections\controls\tabs.aspx" />
+    <Content Include="sections\controls\validation-summary.aspx" />
     <Content Include="sections\controls\_backlog.aspx" />
     <Content Include="sections\controls\validators.aspx" />
     <Content Include="sections\less\less.aspx" />
@@ -153,6 +155,7 @@
     <Content Include="Content\havit.web.bootstrap\validation.less" />
     <Content Include="Content\havit.web.bootstrap\havit.web.bootstrap.less" />
     <Content Include="Content\site.less" />
+    <Content Include="Content\toastr.less" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="robots.txt" />
     <Content Include="Scripts\bootstrap.js" />
@@ -164,17 +167,6 @@
     <Content Include="Scripts\WebForms\GridView.js" />
     <Content Include="Scripts\WebForms\Menu.js" />
     <Content Include="Scripts\WebForms\MenuStandards.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjax.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxApplicationServices.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxComponentModel.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxCore.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxGlobalization.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxHistory.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxNetwork.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxSerialization.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxTimer.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxWebForms.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxWebServices.js" />
     <Content Include="Scripts\WebForms\SmartNav.js" />
     <Content Include="Scripts\WebForms\TreeView.js" />
     <Content Include="Scripts\WebForms\WebForms.js" />
@@ -183,6 +175,7 @@
     <Content Include="Config\healthMonitoring.config" />
     <Content Include="Scripts\jquery-2.1.0.min.map" />
     <Content Include="Templates\Main.Master" />
+    <Content Include="Scripts\toastr.min.js.map" />
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -190,7 +183,6 @@
   <ItemGroup>
     <Content Include="Global.asax" />
     <Content Include="Templates\Menu.ascx" />
-    <Content Include="Templates\scripts\HavitScripts.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

@@ -20,28 +20,24 @@ namespace Havit.Web.Bootstrap.UI.ClientScripts
 		/// Used for PreApplicationStartMethod attribute in StartUp.cs.
 		/// To have hardcoded string with method name near method.
 		/// </summary>
-		internal const string RegisterBootstrapScriptResourceMappingMethodName = "RegisterBootstrapScriptResourceMapping";
+		internal const string RegisterBootstrapScriptResourceMappingMethodName = "RegisterScriptResourceMappings";
 		#endregion
 
-		#region RegisterBootstrapScriptResourceMapping
+		#region RegisterScriptResourceMappings
 		/// <summary>
-		/// Register script map resource mapping for "bootstrap" script name.
+		/// Register script map resource mapping for "bootstrap" and "toastr" script name.
 		/// Bootstrap script are ~/Scripts/bootstrap.min.js, for debug ~/Scripts/bootstrap.js.
 		/// CDN is not supported due version in CDN URL (we want to be able to update bootstrap without this class change).
 		/// Method called at application startup by PreApplicationStartMethod attribute in StartUp.cs.
+		/// Toastr script are ~/Scripts/toastr.min.js, for debug ~/Scripts/toastr.js.
 		/// </summary>
-		public static void RegisterBootstrapScriptResourceMapping()
+		public static void RegisterScriptResourceMappings()
 		{
-			ScriptResourceDefinition definition = new ScriptResourceDefinition
-			{
-				Path = "~/Scripts/bootstrap.min.js",
-				DebugPath = "~/Scripts/bootstrap.js",
-				//CdnPath = "http://ajax.aspnetcdn.com/ajax/bootstrap/3.1.1/bootstrap.min.js",
-				//CdnDebugPath = "http://ajax.aspnetcdn.com/ajax/bootstrap/3.1.1/bootstrap.js",
-				//CdnSupportsSecureConnection = true,
-				LoadSuccessExpression = "window.jQuery.fn.carousel"
-			};
-			ScriptManager.ScriptResourceMapping.AddDefinition("bootstrap", definition);
+			ScriptResourceDefinition bootstrapDefinition = new ScriptResourceDefinition { Path = "~/Scripts/bootstrap.min.js", DebugPath = "~/Scripts/bootstrap.js" };
+			ScriptResourceDefinition toastrDefinition = new ScriptResourceDefinition { Path = "~/Scripts/toastr.min.js", DebugPath = "~/Scripts/toastr.js" };
+
+			ScriptManager.ScriptResourceMapping.AddDefinition("bootstrap", bootstrapDefinition);
+			ScriptManager.ScriptResourceMapping.AddDefinition("toastr", toastrDefinition);
 		}
 		#endregion
 

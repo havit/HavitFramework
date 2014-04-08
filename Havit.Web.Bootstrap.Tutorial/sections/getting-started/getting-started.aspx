@@ -12,6 +12,8 @@
 	<h3>NuGet Package Dependencies</h3>
 	<ul>
 		<li><a href="http://www.nuget.org/packages/jQuery/">jQuery</a></li>
+		<li><a href="http://www.nuget.org/packages/Microsoft.AspNet.ScriptManager.WebForms/">Microsoft.AspNet.ScriptManager.WebForms</a> (to re-enable client side validations)</li>
+		<li><a href="http://www.nuget.org/packages/toastr/">toastr</a></li>
 		<li><a href="http://www.nuget.org/packages/Twitter.Bootstrap.Less/">Twitter.Bootstrap.Less</a> (install LESS files into project)</li>
 	</ul>
 
@@ -36,7 +38,14 @@
 	&lt;add tagType="System.Web.UI.WebControls.RequiredFieldValidator" mappedTagType="Havit.Web.Bootstrap.UI.WebControls.RequiredFieldValidator" /&gt;
 	&lt;add tagType="System.Web.UI.WebControls.ValidationSummary" mappedTagType="Havit.Web.Bootstrap.UI.WebControls.ValidationSummary" /&gt;
 &lt;/tagMapping&gt;</code></pre>
-	
+
+	<h3>Script Resource Defitions</h3>
+	<p>There are automaticaly registred script resource definitions for:</p>
+	<ul>
+		<li>bootstrap</li>
+		<li>toastr</li>
+	</ul>
+
 	<h3>Documentation</h3>
 	<a href="http://hfw.havit.local/Documentation/?topic=html/d1ca8ee5-a49e-162c-1d4c-497651ccc0b4.htm">Havit.Web.Bootstrap.UI.WebControls documentation</a>
 </asp:Content>

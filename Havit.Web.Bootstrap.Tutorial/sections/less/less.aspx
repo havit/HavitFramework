@@ -22,6 +22,7 @@
 	<p>Generated css file must be included in project (and really is by defalt) because build copies for deployment only project files.</p>
 
 	<pre><code>@import "bootstrap/bootstrap.less";
+@import "toastr.less";
 @import "havit.web.bootstrap/havit.web.bootstrap.less";
 
 ...

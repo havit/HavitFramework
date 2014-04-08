@@ -104,8 +104,8 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		protected override void OnPreRender(EventArgs e)
 		{
-			base.OnPreRender(e);
 			_contentPlaceHolder.Visible = DialogVisible;
+			base.OnPreRender(e);
 		}
 		#endregion
 

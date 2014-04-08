@@ -10,31 +10,31 @@ namespace Havit.Web.UI.WebControls
 	/// Předek pro vlastní user controly, 
 	/// které jsou zobrazovány jako dialog prostřednictvím zapouzdřeného AjaxModalDialogu.
 	/// </summary>
-	public class AjaxModalDialogUserControlBase : UserControl
+	public abstract class AjaxModalDialogUserControlBase : DialogUserControlBase
 	{
-		#region MainWebModalDialog
-		/// <summary>
-		/// Zapouzdřený AjaxModalDialog.
-		/// </summary>
-		private AjaxModalDialog MainAjaxModalDialog
+		protected override ModalDialogBase CreateModalDialog()
+		{
+			return new AjaxModalDialog();
+		}
+
+		protected new AjaxModalDialog MainModalDialog
 		{
 			get
 			{
-				return _mainAjaxModalDialog;
+				return (AjaxModalDialog)base.MainModalDialog;
 			}
 		}
-		private AjaxModalDialog _mainAjaxModalDialog;
-		#endregion
 
-		#region DialogVisible
+		#region Triggers
 		/// <summary>
-		/// Udává, zda je dialog viditelný.
+		/// Triggery zapouzdřeného UpdatePanelu.
 		/// </summary>
-		protected bool DialogVisible
+		[PersistenceMode(PersistenceMode.InnerProperty)]
+		public UpdatePanelTriggerCollection Triggers
 		{
 			get
 			{
-				return MainAjaxModalDialog.DialogVisible;
+				return MainModalDialog.Triggers;
 			}
 		}
 		#endregion
@@ -47,11 +47,11 @@ namespace Havit.Web.UI.WebControls
 		{
 			get
 			{
-				return MainAjaxModalDialog.Width;
+				return MainModalDialog.Width;
 			}
 			set
 			{
-				MainAjaxModalDialog.Width = value;
+				MainModalDialog.Width = value;
 			}
 		}
 
@@ -62,36 +62,12 @@ namespace Havit.Web.UI.WebControls
 		{
 			get
 			{
-				return MainAjaxModalDialog.Height;
+				return MainModalDialog.Height;
 			}
 			set
 			{
-				MainAjaxModalDialog.Height = value;
+				MainModalDialog.Height = value;
 			}
-		}
-		#endregion
-
-		#region Triggers
-		/// <summary>
-		/// Triggery zapouzdřeného UpdatePanelu.
-		/// </summary>
-		[PersistenceMode(PersistenceMode.InnerProperty)]
-		public UpdatePanelTriggerCollection Triggers
-		{
-			get
-			{
-				return MainAjaxModalDialog.Triggers;
-			}
-		}
-		#endregion
-
-		#region Constructor
-		/// <summary>
-		/// Konstruktor.
-		/// </summary>
-		public AjaxModalDialogUserControlBase()
-		{
-			_mainAjaxModalDialog = new AjaxModalDialog();
 		}
 		#endregion
 
@@ -102,7 +78,7 @@ namespace Havit.Web.UI.WebControls
 		protected override void FrameworkInitialize()
 		{
 			base.FrameworkInitialize();
-			this.Controls.Add(MainAjaxModalDialog);
+			this.Controls.Add(MainModalDialog);
 		}
 
 		/// <summary>
@@ -111,85 +87,9 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		protected override void AddParsedSubObject(object obj)
 		{
-			MainAjaxModalDialog.ContentTemplateContainer.Controls.Add((Control)obj);
+			MainModalDialog.ContentTemplateContainer.Controls.Add((Control)obj);
 		}
 		#endregion
 
-		#region OnInit
-		/// <summary>
-		/// OnInit.
-		/// </summary>
-		protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
-
-			MainAjaxModalDialog.DialogShown += new EventHandler(MainWebModalDialog_DialogShown);
-			MainAjaxModalDialog.DialogHidden += new EventHandler(MainWebModalDialog_DialogHidden);
-		}
-		#endregion
-		
-		#region DialogShown, DialogHidden
-		/// <summary>
-		/// Událost oznamující zobrazení dialogu.
-		/// </summary>
-		public event EventHandler DialogShown;
-
-		/// <summary>
-		/// Událost oznamujíxí skrytí dialogu.
-		/// </summary>
-		public event EventHandler DialogHidden;
-		#endregion
-
-		#region MainWebModalDialog_DialogShown, MainWebModalDialog_DialogHidden
-		private void MainWebModalDialog_DialogShown(object sender, EventArgs e)
-		{
-			OnDialogShown(e);
-		}
-
-		private void MainWebModalDialog_DialogHidden(object sender, EventArgs e)
-		{
-			OnDialogHidden(e);
-		}
-		#endregion
-
-		#region Show, Hide, OnDialogShown, OnDialogHidden
-		/// <summary>
-		/// Zobrazí dialog.
-		/// </summary>
-		public void Show()
-		{
-			MainAjaxModalDialog.Show();
-		}
-
-		/// <summary>
-		/// Skryje dialog.
-		/// </summary>
-		public void Hide()
-		{
-			MainAjaxModalDialog.Hide();
-		}
-
-		/// <summary>
-		/// Obsluhuje událost zobrazení dialogu.
-		/// </summary>
-		protected virtual void OnDialogShown(EventArgs eventArgs)
-		{
-			if (DialogShown != null)
-			{
-				DialogShown(this, eventArgs);
-			}
-		}
-
-		/// <summary>
-		/// Obsluhuje událost skrytí dialogu.
-		/// </summary>
-		protected virtual void OnDialogHidden(EventArgs eventArgs)
-		{
-			if (DialogHidden != null)
-			{
-				DialogHidden(this, eventArgs);
-			}
-		}
-		#endregion
 	}
 }

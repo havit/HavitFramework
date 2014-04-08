@@ -25,6 +25,7 @@
 						<li><asp:HyperLink NavigateUrl="~/sections/controls/tooltip" runat="server">Tooltip</asp:HyperLink></li>
 						<li><asp:HyperLink NavigateUrl="~/sections/controls/switchbutton" runat="server">SwitchButton</asp:HyperLink></li>
 						<li><asp:HyperLink NavigateUrl="~/sections/controls/validators" runat="server">Validators</asp:HyperLink></li>
+						<li><asp:HyperLink NavigateUrl="~/sections/controls/validation-summary" runat="server">Validation Summary</asp:HyperLink></li>
 						<li class="divider"></li>
 						<li><asp:HyperLink NavigateUrl="~/sections/controls/_backlog" runat="server">Backlog</asp:HyperLink></li>
 					</ul>

@@ -64,7 +64,7 @@
 			<br />
 
 			<h1>Validation Group C</h1>
-			<bc:ValidationSummary ValidationGroup="C" ShowMessageBox="True" runat="server" />
+			<bc:ValidationSummary ValidationGroup="C" ShowMessageBox="True" ShowToastr="true" runat="server" />
 			<asp:TextBox ID="TB5" runat="server" />
 			<bc:RequiredFieldValidator ControlToValidate="TB5" ErrorMessage="Zadejte hodnotu do pátého textboxu. \zpetne lomitko 'apostrof" ValidationGroup="C" EnableClientScript="false" runat="server" />
 			<bc:Button Text="Postback" ValidationGroup="C" runat="server" />

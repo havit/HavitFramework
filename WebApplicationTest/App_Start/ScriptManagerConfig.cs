@@ -15,7 +15,7 @@ namespace WebApplicationTest
 		public static void RegisterScriptResourceMappings()
 		{
 			//ScriptManager.ScriptResourceMapping.AddDefinition("jquery", new ScriptResourceDefinition { Path = "//code.jquery.com/jquery-1.10.2.min.js" });
-			ScriptManager.ScriptResourceMapping.AddDefinition("toastr", new ScriptResourceDefinition { Path = "~/scripts/toastr.js" });
+			ScriptManager.ScriptResourceMapping.AddDefinition("toastr", new ScriptResourceDefinition { DebugPath = "~/scripts/toastr.js", Path = "~/scripts/toastr.min.js" });
 		}
 		#endregion
 	}

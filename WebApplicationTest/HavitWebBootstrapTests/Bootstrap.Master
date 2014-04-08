@@ -24,6 +24,7 @@
 					<asp:ScriptReference Name="Focus.js" Assembly="System.Web" Path="~/Scripts/WebForms/Focus.js" />
 					<%--Site Scripts--%>
 					<asp:ScriptReference Name="bootstrap" />
+					<asp:ScriptReference Name="toastr" />
 				</Scripts>
 			</asp:ScriptManager>
 

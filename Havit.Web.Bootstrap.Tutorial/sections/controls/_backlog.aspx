@@ -20,4 +20,9 @@
 		<li>GridView pagination</li>
 		<li>...</li>
 	</ul>
+	<h2>Scripts</h2>
+	<ul>
+		<li>Do not embed in assembly, distribute in NuGet</li>
+		<li>...</li>
+	</ul>
 </asp:Content>

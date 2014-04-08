@@ -219,11 +219,15 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				}
 				writer.RenderBeginTag(HtmlTextWriterTag.Li);
 
-				writer.AddAttribute(HtmlTextWriterAttribute.Href, "#" + ClientID);
-				writer.AddAttribute("data-toggle", "tab.havit");
 				if (!Enabled)
 				{
+					writer.AddAttribute(HtmlTextWriterAttribute.Href, "#");
 					writer.AddAttribute("disabled", "disabled");
+				}
+				else
+				{
+					writer.AddAttribute(HtmlTextWriterAttribute.Href, "#" + ClientID);
+					writer.AddAttribute("data-toggle", "tab.havit");
 				}
 				writer.RenderBeginTag(HtmlTextWriterTag.A);
 				
@@ -256,6 +260,19 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				+ (Active ? " active" : String.Empty))
 				.Trim();
 			base.AddAttributesToRender(writer);
+		}
+		#endregion
+
+		#region Render
+		/// <summary>
+		/// Ensures not rendering content of disabled TabPanel.
+		/// </summary>
+		protected override void Render(HtmlTextWriter writer)
+		{
+			if (Enabled)
+			{
+				base.Render(writer);
+			}
 		}
 		#endregion
 

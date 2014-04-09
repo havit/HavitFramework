@@ -126,6 +126,10 @@ namespace Havit.Business.Query
 		/// </summary>
 		private static Condition CreateRange(IOperand operand, IOperand operandFrom, IOperand operandTo)
 		{
+			Contract.Requires<ArgumentNullException>(operand != null, "operand");
+			Contract.Requires<ArgumentNullException>(operandFrom != null, "operandFrom");
+			Contract.Requires<ArgumentNullException>(operandTo != null, "operandTo");
+
 			return new TernaryCondition(TernaryCondition.BetweenPattern, operand, operandFrom, operandTo);
 		}
 		#endregion

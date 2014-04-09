@@ -17,7 +17,7 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Vzor pro podmínku LIKE.
 		/// </summary>
-		public const string BetweenPattern = "({0} BETWEEN {1} AND {2})";
+		internal const string BetweenPattern = "({0} BETWEEN {1} AND {2})";
 		#endregion
 
 		#region Protected fields

@@ -83,7 +83,7 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Vrátí vzor podmínky pro běžné porovnání dvou hodnot (vrací např. "({0} = {1})").
 		/// </summary>
-		public static string GetComparisonPattern(ComparisonOperator comparisonOperator)
+		internal static string GetComparisonPattern(ComparisonOperator comparisonOperator)
 		{
 			const string comparisonOperatorFormatPattern = "({{0}} {0} {{1}})";
 			return String.Format(CultureInfo.InvariantCulture, comparisonOperatorFormatPattern, ComparisonOperatorHelper.GetOperatorText(comparisonOperator));

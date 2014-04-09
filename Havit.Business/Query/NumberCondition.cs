@@ -100,6 +100,36 @@ namespace Havit.Business.Query
 		}
 		#endregion
 
+		#region CreateRange
+		/// <summary>
+		/// Vytvoří podmínku testující hodnotu v rozsahu od-do (včetně krajních hodnot).
+		/// </summary>
+		public static Condition CreateRange(IOperand operand, int valueFrom, int valueTo)
+		{
+			Contract.Requires<ArgumentNullException>(operand != null, "operand");
+
+			return CreateRange(operand, ValueOperand.Create(valueFrom), ValueOperand.Create(valueTo));
+		}
+
+		/// <summary>
+		/// Vytvoří podmínku testující hodnotu v rozsahu od-do (včetně krajních hodnot).
+		/// </summary>
+		public static Condition CreateRange(IOperand operand, decimal valueFrom, decimal valueTo)
+		{
+			Contract.Requires<ArgumentNullException>(operand != null, "operand");
+
+			return CreateRange(operand, ValueOperand.Create(valueFrom), ValueOperand.Create(valueTo));
+		}
+
+		/// <summary>
+		/// Vytvoří podmínku testující hodnotu v rozsahu od-do (včetně krajních hodnot).
+		/// </summary>
+		private static Condition CreateRange(IOperand operand, IOperand operandFrom, IOperand operandTo)
+		{
+			return new TernaryCondition(TernaryCondition.BetweenPattern, operand, operandFrom, operandTo);
+		}
+		#endregion
+
 		#region Create
 		/// <summary>
 		/// Vytvoří podmínku testující hodnoty pomocí zadaného operátoru.

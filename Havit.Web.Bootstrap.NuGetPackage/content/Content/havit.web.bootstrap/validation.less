@@ -6,9 +6,10 @@
 @validation-invalid-control-opacity: 1;
 
 .validation-invalid {
-	opacity: @validation-invalid-control-opacity;
 
 	& + .tooltip {
+		opacity: @validation-invalid-control-opacity;
+
 		& > .tooltip-inner {
 			font-size: @validation-invalid-tooltip-font-size;
 			border: 1px solid @validation-invalid-tooltip-border-color;

@@ -5781,7 +5781,7 @@ button.close {
     display: none !important;
   }
 }
-.validation-invalid {
+.validation-invalid + .tooltip {
   opacity: 1;
 }
 .validation-invalid + .tooltip > .tooltip-inner {

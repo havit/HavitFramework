@@ -82,8 +82,12 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 						{
 							tooltip = validator.ErrorMessage;
 						}
-						writer.AddAttribute("data-val-tt-position", validator.TooltipPosition.ToString().ToLower());
-						writer.AddAttribute("data-val-tt-text", tooltip);
+
+						if (!String.IsNullOrEmpty(tooltip))
+						{
+							writer.AddAttribute("data-val-tt-position", validator.TooltipPosition.ToString().ToLower());
+							writer.AddAttribute("data-val-tt-text", tooltip);
+						}
 					}
 				}
 			}

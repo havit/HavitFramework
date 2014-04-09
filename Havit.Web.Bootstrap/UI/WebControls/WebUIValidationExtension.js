@@ -87,7 +87,6 @@
 				if (item != null) {
 					var controltovalidate = item.controltovalidate;
 					var controltovalidateclass = item.getAttribute("data-val-ctvclass"); // control to validate class
-					var tooltiptext = item.getAttribute("data-val-tt-text");
 					if ((controltovalidate != null) && (controltovalidate.length > 0)) {
 						if ((controltovalidateclass != null) && (controltovalidateclass.length > 0)) {
 							$controlToValidate = $("#" + controltovalidate);

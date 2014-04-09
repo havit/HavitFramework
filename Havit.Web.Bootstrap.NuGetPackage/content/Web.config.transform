@@ -12,6 +12,7 @@
 		<add tagType="System.Web.UI.WebControls.RegularExpressionValidator" mappedTagType="Havit.Web.Bootstrap.UI.WebControls.RegularExpressionValidator" />
 		<add tagType="System.Web.UI.WebControls.RequiredFieldValidator" mappedTagType="Havit.Web.Bootstrap.UI.WebControls.RequiredFieldValidator" />
 		<add tagType="System.Web.UI.WebControls.ValidationSummary" mappedTagType="Havit.Web.Bootstrap.UI.WebControls.ValidationSummary" />
+		<add tagType="System.Web.UI.WebControls.Button" mappedTagType="Havit.Web.Bootstrap.UI.WebControls.Button" />
 	  </tagMapping>
     </pages>
   </system.web>

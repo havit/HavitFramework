@@ -37,6 +37,7 @@
 	&lt;add tagType="System.Web.UI.WebControls.RegularExpressionValidator" mappedTagType="Havit.Web.Bootstrap.UI.WebControls.RegularExpressionValidator" /&gt;
 	&lt;add tagType="System.Web.UI.WebControls.RequiredFieldValidator" mappedTagType="Havit.Web.Bootstrap.UI.WebControls.RequiredFieldValidator" /&gt;
 	&lt;add tagType="System.Web.UI.WebControls.ValidationSummary" mappedTagType="Havit.Web.Bootstrap.UI.WebControls.ValidationSummary" /&gt;
+	&lt;add tagType="System.Web.UI.WebControls.Button" mappedTagType="Havit.Web.Bootstrap.UI.WebControls.Button" /&gt;
 &lt;/tagMapping&gt;</code></pre>
 
 	<h3>Script Resource Defitions</h3>

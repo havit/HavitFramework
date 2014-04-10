@@ -12,7 +12,7 @@
 		var WebFormsOriginals_ValidatorOnChange = null; // remember original ValidatorOnChange function
 		var WebFormsOriginals_ValidatorOnLoad = null; // remember original ValidatorOnLoad function
 		var WebFormsOriginals_ValidationSummaryOnSubmit = null; // remember original ValidationSummaryOnSubmit function
-
+		var WebFormsOriginals_ValidatorOnLoad_OnceOnlyEnabled = false;
 		// ensures javascript method replacements
 		// asynchronous request forces WebUIValidation.js to load for the second time
 		// so we have to hook-up again (see ValidatorRenderedExtender class)
@@ -27,17 +27,24 @@
 				ValidatorOnChange = Havit_ValidatorOnChange;
 			}
 
+			if (ValidatorOnLoad != Havit_ValidatorOnLoad) {
+				WebFormsOriginals_ValidatorOnLoad = ValidatorOnLoad;
+				ValidatorOnLoad = Havit_ValidatorOnLoad;
+			}
+
 			if (ValidationSummaryOnSubmit != Havit_ValidationSummaryOnSubmit) {
 				WebFormsOriginals_ValidationSummaryOnSubmit = ValidationSummaryOnSubmit;
 				ValidationSummaryOnSubmit = Havit_ValidationSummaryOnSubmit;
 			}
+
+			WebFormsOriginals_ValidatorOnLoad_OnceOnlyEnabled = true;
 		};
 
 		// override (extend) Page_ClientValidate function
 		// called when submitting form
 		Havit_Page_ClientValidate = function (validationGroup) {			
 			var result = WebFormsOriginals_Page_ClientValidate(validationGroup);			
-			Havit_UpdateValidatorsExtensionsUI(validationGroup); // set UI after validators evaluation
+			Havit_UpdateValidatorsExtensionsUI(validationGroup, false); // set UI after validators evaluation
 
 			return result;
 		};
@@ -46,7 +53,7 @@
 		// called when changing control content
 		Havit_ValidatorOnChange = function (event) {
 			WebFormsOriginals_ValidatorOnChange(event);
-			Havit_UpdateValidatorsExtensionsUI(null); // set UI after validators evaluation (null means all validation groups!)
+			Havit_UpdateValidatorsExtensionsUI(null, false); // set UI after validators evaluation (null means all validation groups!)
 		};
 
 		// override (extend) ValidatorOnLoad function
@@ -55,18 +62,19 @@
 			WebFormsOriginals_ValidatorOnLoad();
 			if (WebFormsOriginals_ValidatorOnLoad_OnceOnlyEnabled) {
 				WebFormsOriginals_ValidatorOnLoad_OnceOnlyEnabled = false;
-				Havit_UpdateValidatorsExtensionsUI(null); // set UI after validators evaluation (null means all validation groups!)
-				Havit_ValidationSummary_ProcessToastr(null); // show toastr after validators evaluation (null means all validation groups!)
+				Havit_UpdateValidatorsExtensionsUI(null, true); // set UI after validators evaluation (null means all validation groups!)
 			}
 		};
 
-		Havit_ValidationSummaryOnSubmit = function(validationGroup) {
+		// override (extend) ValidationSummaryOnSubmit function
+		// called from Page_ClientValidate
+		Havit_ValidationSummaryOnSubmit = function (validationGroup) {
 			WebFormsOriginals_ValidationSummaryOnSubmit(validationGroup);
 			Havit_ValidationSummary_ProcessToastr(validationGroup);
 		}
 
 		// extends UI by the validation result
-		Havit_UpdateValidatorsExtensionsUI = function(validationGroup) {
+		Havit_UpdateValidatorsExtensionsUI = function(validationGroup, useAttributeDataInsteadOfIsValid) {
 			if (typeof (Page_Validators) == "undefined") {
 				return true;
 			}
@@ -78,22 +86,27 @@
 			for (var i = 0; i < Page_Validators.length; i++) {
 				var val = Page_Validators[i];
 				if (IsValidationGroupMatch(val, validationGroup)) {
-					(val.isvalid ? passedValidators : failedValidators).push(val); // set validator to array of passed or failed validations
+					var isValid = useAttributeDataInsteadOfIsValid ? (val.getAttribute("data-val-isvalid") != "False") : val.isvalid;
+					(isValid ? passedValidators : failedValidators).push(val); // set validator to array of passed or failed validations
 				}
 			}
 
 			// remove class and tooltip of passed validators
 			passedValidators.forEach(function(item) {
 				if (item != null) {
-					var controltovalidate = item.controltovalidate;
+					var validationDisplayTargetControl = item.getAttribute("data-val-validationdisplaytarget");
+					if (validationDisplayTargetControl == null) {
+						validationDisplayTargetControl = item.controltovalidate;
+					};
+
 					var controltovalidateclass = item.getAttribute("data-val-ctvclass"); // control to validate class
-					if ((controltovalidate != null) && (controltovalidate.length > 0)) {
+					if ((validationDisplayTargetControl != null) && (validationDisplayTargetControl.length > 0)) {
 						if ((controltovalidateclass != null) && (controltovalidateclass.length > 0)) {
-							$controlToValidate = $("#" + controltovalidate);
+							$controlToValidate = $("#" + validationDisplayTargetControl);
 							$controlToValidate.removeClass(controltovalidateclass); // remove "validation failed" class to a control to validate
 						}
 						if ($controlToValidate.attr("tooltipReady")) {
-							$("#" + controltovalidate).attr("tooltipReady", false).tooltip('destroy'); // destroy existing tooltip
+							$("#" + validationDisplayTargetControl).attr("tooltipReady", false).tooltip('destroy'); // destroy existing tooltip
 						}
 					}
 				}
@@ -106,14 +119,18 @@
 
 			// set styles to invalid validations
 			failedValidators.forEach(function(item) {
-				var controltovalidate = item.controltovalidate;
+				var validationDisplayTargetControl = item.getAttribute("data-val-validationdisplaytarget");
+				if (validationDisplayTargetControl == null) {
+					validationDisplayTargetControl = item.controltovalidate;
+				};
+
 				var controltovalidateclass = item.getAttribute("data-val-ctvclass");
 				var tooltipposition = item.getAttribute("data-val-tt-position");
 				var tooltiptext = item.getAttribute("data-val-tt-text");
-				if ((controltovalidate != null) && (controltovalidate.length > 0)) {
+				if ((validationDisplayTargetControl != null) && (validationDisplayTargetControl.length > 0)) {
 
 					if ((controltovalidateclass != null) && (controltovalidateclass.length > 0)) {
-						$("#" + controltovalidate).addClass(controltovalidateclass); // add "validation failed" class to a control to validate
+						$("#" + validationDisplayTargetControl).addClass(controltovalidateclass); // add "validation failed" class to a control to validate
 					}
 
 					if ((tooltiptext != null) && (tooltiptext.length > 0)) {
@@ -124,7 +141,7 @@
 						// search if there is a tooltip for a control (from another failed validator)
 						var validationTooltip = null;
 						for (var i = 0; i < failedValidatorsTooltips.length; i++) {
-							if ((failedValidatorsTooltips[i].controltovalidate == controltovalidate) && (failedValidatorsTooltips[i].position == tooltipposition)) {
+							if ((failedValidatorsTooltips[i].validationDisplayTargetControl == validationDisplayTargetControl) && (failedValidatorsTooltips[i].position == tooltipposition)) {
 								validationTooltip = failedValidatorsTooltips[i];
 								break;
 							}
@@ -136,7 +153,7 @@
 						} else {
 							// if there is not a tooltip, create it
 							failedValidatorsTooltips.push({
-								controltovalidate: controltovalidate,
+								validationDisplayTargetControl: validationDisplayTargetControl,
 								position: tooltipposition,
 								text: tooltiptext
 							});
@@ -147,7 +164,7 @@
 
 			// create tooltips from prepared array
 			failedValidatorsTooltips.forEach(function(tooltip) {
-				$("#" + tooltip.controltovalidate)
+				$("#" + tooltip.validationDisplayTargetControl)
 					.attr("tooltipReady", true)
 					.tooltip({
 						'placement': tooltip.position,

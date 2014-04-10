@@ -38,6 +38,15 @@
 	<uc:ValidatorSample ID="ValidatorSampleUC" runat="server" />
 	<uc:ShowControl Title="Validator sample" ShowControlID="ValidatorSampleUC" runat="server" />
 
+	<h2>Validating user controls</h2>	
+	<p>Usually for validtion user control, it is used CustomValidator without setting ControlToValidate property. As a result, validator can't use tooltip or add class to a control with invalid value.</p>
+	<p>To be able to set ControlToValidate to user control, this requirements must be met:</p>
+	<ol>
+		<li>User Control must have assigned <a href="http://msdn.microsoft.com/en-us/library/system.web.ui.validationpropertyattribute.aspx">ValidationProperyAttrubute</a> (required by .NET Framework)</li>
+		<li>User Control must have assigned ValidationDisplayTargetAttribute which defines control to use as a target for setting css class and tooltip.</li>
+	</ol>
+	<p>Mainly, this applies to picker controls like SubjectPicker, RolePicker, etc. where nested TextBox ID is used for ValidationDisplayTargetAttribute.</p>
+
 	<h2>Known Issues</h2>	
 	<p>When SetFocusOnError is set to true, it does not work properly when used in UpdatePanel (second button with validation does not display tooltip).</p>
 </asp:Content>

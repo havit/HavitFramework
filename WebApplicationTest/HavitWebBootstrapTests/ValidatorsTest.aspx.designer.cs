@@ -22,15 +22,6 @@ namespace WebApplicationTest.HavitWebBootstrapTests {
         protected global::System.Web.UI.WebControls.TextBox TB1;
         
         /// <summary>
-        /// TB2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TB2;
-        
-        /// <summary>
         /// SectionAButton control.
         /// </summary>
         /// <remarks>
@@ -49,15 +40,6 @@ namespace WebApplicationTest.HavitWebBootstrapTests {
         protected global::System.Web.UI.WebControls.TextBox TB3;
         
         /// <summary>
-        /// TB4 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TB4;
-        
-        /// <summary>
         /// SectionBButton control.
         /// </summary>
         /// <remarks>
@@ -74,5 +56,23 @@ namespace WebApplicationTest.HavitWebBootstrapTests {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox TB5;
+        
+        /// <summary>
+        /// ValidationTargetTestUC control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::WebApplicationTest.HavitWebBootstrapTests.Controls.ValidationTargetTest ValidationTargetTestUC;
+        
+        /// <summary>
+        /// SectionDCustomValidator control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Havit.Web.Bootstrap.UI.WebControls.CustomValidator SectionDCustomValidator;
     }
 }

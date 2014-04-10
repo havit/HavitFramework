@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Havit.Diagnostics.Contracts;
 using Havit.Web.UI;
 
 [assembly: WebResource("Havit.Web.Bootstrap.UI.WebControls.WebUIValidationExtension.js", "application/javascript")]
@@ -40,16 +43,23 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Entends OnPreRender method.
 		/// </summary>
-		internal static void OnPreRender(BaseValidator validator)
+		internal static void OnPreRender(IValidatorExtension validator)
 		{
+			BaseValidator baseValidator = (BaseValidator)validator;
+
+			if (validator.IsEnabled && validator.ShowTooltip && String.IsNullOrEmpty(validator.ControlToValidate) && HttpContext.Current.IsDebuggingEnabled)
+			{
+				throw new HttpException(String.Format("Validator '{0}' should show tooltip but ControlToValidate is not specified.", baseValidator.ID));
+			}
+
 			// ensure requirements
-			ClientScripts.BootstrapClientScriptHelper.RegisterBootstrapClientScript(validator.Page);
+			ClientScripts.BootstrapClientScriptHelper.RegisterBootstrapClientScript(baseValidator.Page);
 
 			// register Validators Extensions script
-			ScriptManager.ScriptResourceMapping.EnsureScriptRegistrationForEmbeddedResource(validator, typeof(ValidatorRenderExtender), "Havit.Web.Bootstrap.UI.WebControls.WebUIValidationExtension.js");
+			ScriptManager.ScriptResourceMapping.EnsureScriptRegistrationForEmbeddedResource(baseValidator, typeof(ValidatorRenderExtender), "Havit.Web.Bootstrap.UI.WebControls.WebUIValidationExtension.js");
 
 			// register hookup script - in every request (must be included also in asynchronnous requests!)
-			ScriptManager.RegisterStartupScript(validator, typeof(ValidatorRenderExtender), "StartUp", "$(function() { Havit_EnsureValidatorsExtensionsHookup(); });", true);
+			ScriptManager.RegisterStartupScript(baseValidator, typeof(ValidatorRenderExtender), "StartUp", "$(function() { Havit_EnsureValidatorsExtensionsHookup(); });", true);
 		}
 		#endregion
 
@@ -60,10 +70,27 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		internal static void AddAttributesToRender(IValidatorExtension validator, HtmlTextWriter writer)
 		{
 			if (validator.IsEnabled && validator.RenderUpLevel)
-			{
+			{				
 				// control to value invalid css class has meaning only when there is a control to validate
 				if (!String.IsNullOrEmpty(validator.ControlToValidate))
 				{
+					Control controlToValidate = ((Control)validator).NamingContainer.FindControl(validator.ControlToValidate);
+					// no check needed - ControlToValidate already checked
+
+					ValidationDisplayTargetAttribute validationDisplayTargetAttribute = controlToValidate.GetType().GetCustomAttributes(typeof(ValidationDisplayTargetAttribute), true).Cast<ValidationDisplayTargetAttribute>().FirstOrDefault();
+					if (validationDisplayTargetAttribute != null)
+					{
+						Control validationDisplayTarget = controlToValidate.FindControl(validationDisplayTargetAttribute.DisplayTargetControl);
+						if (validationDisplayTarget == null)
+						{
+							throw new HttpException(String.Format("Control '{0}' defined in ValidationDisplayTargetAttribute not found in control '{1}'.",
+								validationDisplayTargetAttribute.DisplayTargetControl,
+								controlToValidate.ID));
+						}
+
+						writer.AddAttribute("data-val-validationdisplaytarget", validationDisplayTarget.ClientID);
+					}
+
 					// ensure rendering control to value invalid css class
 					if (!String.IsNullOrEmpty(validator.ControlToValidateInvalidCssClass))
 					{

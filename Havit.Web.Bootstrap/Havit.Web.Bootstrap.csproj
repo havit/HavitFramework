@@ -61,6 +61,7 @@
     <Compile Include="UI\WebControls\TabContainer.cs" />
     <Compile Include="UI\WebControls\TabMode.cs" />
     <Compile Include="UI\WebControls\TabModeExtensions.cs" />
+    <Compile Include="UI\WebControls\ValidationDisplayTarget.cs" />
     <Compile Include="UI\WebControls\ValidationSummary.cs" />
     <Compile Include="UI\WebControls\RegularExpressionValidator.cs" />
     <Compile Include="UI\WebControls\RangeValidator.cs" />

@@ -180,6 +180,7 @@
       <DependentUpon>toastr.css</DependentUpon>
     </Content>
     <Content Include="HavitWebBootstrapTests\ButtonTest.aspx" />
+    <Content Include="HavitWebBootstrapTests\Controls\ValidationTargetTest.ascx" />
     <Content Include="HavitWebBootstrapTests\SwitchButtonTest.aspx" />
     <Content Include="HavitWebBootstrapTests\CheckBoxListTest.aspx" />
     <Content Include="HavitWebBootstrapTests\RadioButtonListTest.aspx" />
@@ -305,6 +306,13 @@
     </Compile>
     <Compile Include="HavitWebBootstrapTests\Bootstrap.Master.designer.cs">
       <DependentUpon>Bootstrap.Master</DependentUpon>
+    </Compile>
+    <Compile Include="HavitWebBootstrapTests\Controls\ValidationTargetTest.ascx.cs">
+      <DependentUpon>ValidationTargetTest.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HavitWebBootstrapTests\Controls\ValidationTargetTest.ascx.designer.cs">
+      <DependentUpon>ValidationTargetTest.ascx</DependentUpon>
     </Compile>
     <Compile Include="HavitWebBootstrapTests\SwitchButtonTest.aspx.cs">
       <DependentUpon>SwitchButtonTest.aspx</DependentUpon>

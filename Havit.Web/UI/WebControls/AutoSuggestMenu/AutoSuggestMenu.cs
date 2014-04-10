@@ -61,6 +61,25 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 
 		#region Class Properties
+
+		#region AutoRegisterStyleSheets
+		/// <summary>
+		/// Indikuje, zda má dojít k automatické registraci CSS v OnPreRenderu.
+		/// Výchozí hodnota je true.
+		/// </summary>
+		public bool AutoRegisterStyleSheets
+		{
+			get
+			{
+				return (bool)(ViewState["AutoRegisterStyleSheets"] ?? true);
+			}
+			set
+			{
+				ViewState["AutoRegisterStyleSheets"] = value;
+			}
+		}
+		#endregion
+
 		public AutoSuggestMenuMode Mode
 		{
 			get { return _mode; }
@@ -517,7 +536,10 @@ namespace Havit.Web.UI.WebControls
 
 			RegisterServicePath();
 			WriteJSIncludes();
-			RegisterStylesheets(this.Page);
+			if (AutoRegisterStyleSheets)
+			{
+				RegisterStylesheets(this.Page);
+			}
 		}
 		#endregion
 

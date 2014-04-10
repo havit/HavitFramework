@@ -20,9 +20,8 @@ namespace WebApplicationTest.HavitWebBootstrapTests
 		#region CustomValidator_ServerValidate
 		protected void CustomValidator_ServerValidate(object source, ServerValidateEventArgs args)
 		{
-			args.IsValid = args.Value.StartsWith("a", StringComparison.CurrentCultureIgnoreCase);
+			args.IsValid = args.Value.Equals("bla", StringComparison.CurrentCultureIgnoreCase);
 		}
 		#endregion
-
 	}
 }

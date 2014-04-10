@@ -47,7 +47,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			BaseValidator baseValidator = (BaseValidator)validator;
 
-			if (validator.IsEnabled && validator.ShowTooltip && String.IsNullOrEmpty(validator.ControlToValidate) && HttpContext.Current.IsDebuggingEnabled)
+			if (baseValidator.Enabled && validator.ShowTooltip && String.IsNullOrEmpty(validator.ControlToValidate) && HttpContext.Current.IsDebuggingEnabled)
 			{
 				throw new HttpException(String.Format("Validator '{0}' should show tooltip but ControlToValidate is not specified.", baseValidator.ID));
 			}
@@ -69,52 +69,49 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// </summary>
 		internal static void AddAttributesToRender(IValidatorExtension validator, HtmlTextWriter writer)
 		{
-			if (validator.IsEnabled && validator.RenderUpLevel)
-			{				
-				// control to value invalid css class has meaning only when there is a control to validate
-				if (!String.IsNullOrEmpty(validator.ControlToValidate))
+			// control to value invalid css class has meaning only when there is a control to validate
+			if (!String.IsNullOrEmpty(validator.ControlToValidate))
+			{
+				Control controlToValidate = ((Control)validator).NamingContainer.FindControl(validator.ControlToValidate);
+				// no check needed - ControlToValidate already checked
+
+				ValidationDisplayTargetAttribute validationDisplayTargetAttribute = controlToValidate.GetType().GetCustomAttributes(typeof(ValidationDisplayTargetAttribute), true).Cast<ValidationDisplayTargetAttribute>().FirstOrDefault();
+				if (validationDisplayTargetAttribute != null)
 				{
-					Control controlToValidate = ((Control)validator).NamingContainer.FindControl(validator.ControlToValidate);
-					// no check needed - ControlToValidate already checked
-
-					ValidationDisplayTargetAttribute validationDisplayTargetAttribute = controlToValidate.GetType().GetCustomAttributes(typeof(ValidationDisplayTargetAttribute), true).Cast<ValidationDisplayTargetAttribute>().FirstOrDefault();
-					if (validationDisplayTargetAttribute != null)
+					Control validationDisplayTarget = controlToValidate.FindControl(validationDisplayTargetAttribute.DisplayTargetControl);
+					if (validationDisplayTarget == null)
 					{
-						Control validationDisplayTarget = controlToValidate.FindControl(validationDisplayTargetAttribute.DisplayTargetControl);
-						if (validationDisplayTarget == null)
-						{
-							throw new HttpException(String.Format("Control '{0}' defined in ValidationDisplayTargetAttribute not found in control '{1}'.",
-								validationDisplayTargetAttribute.DisplayTargetControl,
-								controlToValidate.ID));
-						}
-
-						writer.AddAttribute("data-val-validationdisplaytarget", validationDisplayTarget.ClientID);
+						throw new HttpException(String.Format("Control '{0}' defined in ValidationDisplayTargetAttribute not found in control '{1}'.",
+							validationDisplayTargetAttribute.DisplayTargetControl,
+							controlToValidate.ID));
 					}
 
-					// ensure rendering control to value invalid css class
-					if (!String.IsNullOrEmpty(validator.ControlToValidateInvalidCssClass))
+					writer.AddAttribute("data-val-validationdisplaytarget", validationDisplayTarget.ClientID);
+				}
+
+				// ensure rendering control to value invalid css class
+				if (!String.IsNullOrEmpty(validator.ControlToValidateInvalidCssClass))
+				{
+					writer.AddAttribute("data-val-ctvclass", validator.ControlToValidateInvalidCssClass); // controltovalidate css class
+				}
+
+				// ensure rendering tooltip data
+				if (validator.ShowTooltip)
+				{
+					string tooltip = validator.ToolTip;
+					if (String.IsNullOrEmpty(tooltip))
 					{
-						writer.AddAttribute("data-val-ctvclass", validator.ControlToValidateInvalidCssClass); // controltovalidate css class
+						tooltip = validator.Text;
+					}
+					if (String.IsNullOrEmpty(tooltip))
+					{
+						tooltip = validator.ErrorMessage;
 					}
 
-					// ensure rendering tooltip data
-					if (validator.ShowTooltip)
+					if (!String.IsNullOrEmpty(tooltip))
 					{
-						string tooltip = validator.ToolTip;
-						if (String.IsNullOrEmpty(tooltip))
-						{
-							tooltip = validator.Text;
-						}
-						if (String.IsNullOrEmpty(tooltip))
-						{
-							tooltip = validator.ErrorMessage;
-						}
-
-						if (!String.IsNullOrEmpty(tooltip))
-						{
-							writer.AddAttribute("data-val-tt-position", validator.TooltipPosition.ToString().ToLower());
-							writer.AddAttribute("data-val-tt-text", tooltip);
-						}
+						writer.AddAttribute("data-val-tt-position", validator.TooltipPosition.ToString().ToLower());
+						writer.AddAttribute("data-val-tt-text", tooltip);
 					}
 				}
 			}

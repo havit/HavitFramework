@@ -102,24 +102,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		}
 		#endregion
 
-		#region Explicit IValidatorExtension implementation
-		/// <summary>
-		/// The effective enabled property value taking into account that a parent control maybe disabled.
-		/// </summary>
-		bool IValidatorExtension.IsEnabled
-		{
-			get { return this.IsEnabled; }
-		}
-
-		/// <summary>
-		/// Gets a value that indicates whether the client's browser supports uplevel rendering. This property is read-only.
-		/// </summary>
-		bool IValidatorExtension.RenderUpLevel
-		{
-			get { return this.RenderUplevel; }
-		}
-		#endregion
-
 		#endregion
 	}
 }

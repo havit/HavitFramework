@@ -16,7 +16,5 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		string ErrorMessage { get; }
 		bool ShowTooltip { get; }
 		TooltipPosition TooltipPosition { get; }
-		bool IsEnabled { get; }
-		bool RenderUpLevel { get; }
 	}
 }

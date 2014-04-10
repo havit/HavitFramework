@@ -28,8 +28,7 @@
 	<h2>Behavior</h2>
 	<p>Extends validators with ControlToValidate property value by adding a class to the invalid input field (ControlToValidate) and displaying validation errors as a tooltip of ControlToValidate control.</p>
 	<p>Tooltip text is first non empty string in Tooltip, Text, ErrorMessage. Tooltip is visible on control mouse over or when control has focus.</p>
-	<br/>
-	<p>ValidationSummary is rendered as <a href="http://getbootstrap.com/components/#alerts">Bootstrap Alert</a> (with danger style).</p>
+	<p>EnableClientScript property must have true value to enable described behavior.</p>
 
 	<h2>Styling</h2>
 	<p>Variables for customization are defined in validation.less file.</p>

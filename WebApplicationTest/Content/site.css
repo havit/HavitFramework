@@ -5950,3 +5950,6 @@ button.toast-close-button {
     width: 25em;
   }
 }
+.validation-invalid {
+  background: red;
+}

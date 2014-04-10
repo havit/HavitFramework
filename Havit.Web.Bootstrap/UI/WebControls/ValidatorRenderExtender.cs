@@ -59,7 +59,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			ScriptManager.ScriptResourceMapping.EnsureScriptRegistrationForEmbeddedResource(baseValidator, typeof(ValidatorRenderExtender), "Havit.Web.Bootstrap.UI.WebControls.WebUIValidationExtension.js");
 
 			// register hookup script - in every request (must be included also in asynchronnous requests!)
-			ScriptManager.RegisterStartupScript(baseValidator, typeof(ValidatorRenderExtender), "StartUp", "$(function() { Havit_EnsureValidatorsExtensionsHookup(); });", true);
+			ScriptManager.RegisterStartupScript(baseValidator, typeof(ValidatorRenderExtender), "StartUp", "$(function() { Havit_Validation_StartUp(); });", true);
 		}
 		#endregion
 

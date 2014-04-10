@@ -73,5 +73,16 @@
 	<br />
 	<br />
 
+	<h1>Validation Group E (CustomValidator)</h1>
+	<bc:ValidationSummary ValidationGroup="E" runat="server" />
+	<uc:ValidationTargetTest ID="ValidationTargetTest2UC" runat="server" />
+	<bc:CustomValidator ControlToValidate="ValidationTargetTest2UC" ErrorMessage="Hodnota musí být 'bla'."  ValidationGroup="E" OnServerValidate="CustomValidator_ServerValidate" runat="server"/>
+	<br />
+	<bc:Button Text="Postback" ValidationGroup="E" runat="server" />
+
+	<br />
+	<br />
+
+
 	<bc:Tooltip ToolTip="Tento tooltip by měl mít standardní barvu." runat="server">Normální tooltip.</bc:Tooltip>
 </asp:Content>

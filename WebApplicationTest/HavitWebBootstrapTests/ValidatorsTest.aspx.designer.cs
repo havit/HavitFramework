@@ -74,5 +74,14 @@ namespace WebApplicationTest.HavitWebBootstrapTests {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Havit.Web.Bootstrap.UI.WebControls.CustomValidator SectionDCustomValidator;
+        
+        /// <summary>
+        /// ValidationTargetTest2UC control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::WebApplicationTest.HavitWebBootstrapTests.Controls.ValidationTargetTest ValidationTargetTest2UC;
     }
 }

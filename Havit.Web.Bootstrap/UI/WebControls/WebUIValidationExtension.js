@@ -16,7 +16,7 @@
 		// ensures javascript method replacements
 		// asynchronous request forces WebUIValidation.js to load for the second time
 		// so we have to hook-up again (see ValidatorRenderedExtender class)
-		Havit_EnsureValidatorsExtensionsHookup = function() {
+		Havit_Validation_StartUp = function () {
 			if (Page_ClientValidate != Havit_Page_ClientValidate) {
 				WebFormsOriginals_Page_ClientValidate = Page_ClientValidate;
 				Page_ClientValidate = Havit_Page_ClientValidate;
@@ -37,6 +37,9 @@
 				ValidationSummaryOnSubmit = Havit_ValidationSummaryOnSubmit;
 			}
 
+			// set UI after validators evaluation (null means all validation groups!)
+			// to enable validations display after postback
+			Havit_UpdateValidatorsExtensionsUI(null, true); 
 			WebFormsOriginals_ValidatorOnLoad_OnceOnlyEnabled = true;
 		};
 
@@ -62,7 +65,9 @@
 			WebFormsOriginals_ValidatorOnLoad();
 			if (WebFormsOriginals_ValidatorOnLoad_OnceOnlyEnabled) {
 				WebFormsOriginals_ValidatorOnLoad_OnceOnlyEnabled = false;
-				Havit_UpdateValidatorsExtensionsUI(null, true); // set UI after validators evaluation (null means all validation groups!)
+				// set UI after validators evaluation (null means all validation groups!)
+				// to enable validations display after asynchronous postback
+				Havit_UpdateValidatorsExtensionsUI(null, true); 
 			}
 		};
 

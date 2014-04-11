@@ -246,6 +246,7 @@
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\Havit.Web.Bootstrap\description.txt" />
     <Content Include="Scripts\jquery-2.1.0.js" />
     <Content Include="Scripts\jquery-2.1.0.min.js" />
     <Content Include="Scripts\toastr.js" />
@@ -642,13 +643,7 @@
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="fonts\" />
-    <Folder Include="Scripts\WebForms\MSAjax\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -663,11 +658,17 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="HavitWebBootstrapJavascriptCopy" AfterTargets="AfterBuild">
+    <ItemGroup>
+      <FilesToCopy Include="..\Havit.Web.Bootstrap\Content\js\*.js" />
+    </ItemGroup>
+    <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'Scripts\Havit.Web.Bootstrap\%(RecursiveDir)%(Filename)%(Extension)')" />
+  </Target>
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1075</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

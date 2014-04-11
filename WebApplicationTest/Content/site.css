@@ -5950,6 +5950,29 @@ button.toast-close-button {
     width: 25em;
   }
 }
+.validation-invalid + .tooltip {
+  opacity: 1;
+}
+.validation-invalid + .tooltip > .tooltip-inner {
+  font-size: 14px;
+  border: 1px solid #f2dede;
+  background-color: #f2dede;
+  color: #a94442;
+  /* DateTimeBox is rendered in span with white-space nowrap which disables wrapping in tooltip */
+  white-space: normal;
+}
+.validation-invalid + .tooltip.right .tooltip-arrow {
+  border-right-color: #f2dede;
+}
+.validation-invalid + .tooltip.left .tooltip-arrow {
+  border-left-color: #f2dede;
+}
+.validation-invalid + .tooltip.top .tooltip-arrow {
+  border-top-color: #f2dede;
+}
+.validation-invalid + .tooltip.bottom .tooltip-arrow {
+  border-bottom-color: #f2dede;
+}
 .validation-invalid {
   background: red;
 }

@@ -87,10 +87,17 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="UI\WebControls\WebUIValidationExtension.js" />
+    <None Include="Content\js\WebUIValidationExtension.js" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="UI\WebControls\TabPanelExtension.js" />
+    <None Include="Content\js\TabPanelExtension.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\less\havit.web.bootstrap.less" />
+    <None Include="Content\less\validation.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\description.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

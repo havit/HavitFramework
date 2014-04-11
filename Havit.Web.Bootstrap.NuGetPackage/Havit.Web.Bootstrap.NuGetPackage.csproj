@@ -49,8 +49,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="content\Content\havit.web.bootstrap\havit.web.bootstrap.less" />
-    <None Include="content\Content\havit.web.bootstrap\validation.less" />
     <None Include="content\Web.config.transform" />
     <None Include="Package.nuspec">
       <SubType>Designer</SubType>

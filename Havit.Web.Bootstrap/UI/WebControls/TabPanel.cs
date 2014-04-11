@@ -185,22 +185,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		private TabContainer _tabContainer;
 		#endregion
 
-		#region OnPreRender
-		/// <summary>
-		/// Raises the <see langword='PreRender'/> event. This method uses event arguments to pass the event data to the control.
-		/// </summary>
-		protected override void OnPreRender(EventArgs e)
-		{
-			base.OnPreRender(e);
-
-			// ensure requirements
-			ClientScripts.BootstrapClientScriptHelper.RegisterBootstrapClientScript(Page);
-
-			// register Validators Extensions script
-			ScriptManager.ScriptResourceMapping.EnsureScriptRegistrationForEmbeddedResource(this, typeof(TabPanel), "Havit.Web.Bootstrap.UI.WebControls.TabPanelExtension.js");
-		}
-		#endregion
-
 		#region RenderHeader
 		/// <summary>
 		/// Renders TabPanel header.

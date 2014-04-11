@@ -21,7 +21,7 @@
 			  <dependency id="jQuery" version="1.11.0"/>
 			  <dependency id="Twitter.Bootstrap.Less" version="3.1.1" />
 			  <dependency id="Microsoft.AspNet.ScriptManager.WebForms" version="5.0.0 " />
-			  <dependency id="toastr" version="2.0.1 " />
+			  <dependency id="toastr" version="2.0.1" />
 			</group>
 		</dependencies>
 		<references></references>
@@ -32,6 +32,7 @@
 	  <file src="bin\Release\Havit.Web.Bootstrap.pdb" target="lib\net45" />
 	  <file src="bin\Release\Havit.Web.Bootstrap.xml" target="lib\net45" />
 	  <!--<file src="tools\" target="tools" />-->
-	  <file src="content\" target="content" />
+	  <file src="..\Havit.Web.Bootstrap\content\less\*.less" target="content\Content\havit.web.bootstrap\" />
+	  <file src="..\Havit.Web.Bootstrap\content\js\*.js" target="content\Scripts\havit.web.bootstrap\" />
 	</files>
 </package>

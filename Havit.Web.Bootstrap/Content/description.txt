@@ -1,0 +1,1 @@
+﻿File in this folder should not impact build - they are part of library and are distributed by NuGet package.

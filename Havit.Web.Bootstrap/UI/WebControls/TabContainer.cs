@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Havit.Diagnostics.Contracts;
+using Havit.Web.UI;
 
 namespace Havit.Web.Bootstrap.UI.WebControls
 {
@@ -17,7 +18,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	/// Renders only TabPanels in the Child controls (or Child of Child - Child can be nested in Repeater control, etc.).
 	/// </summary>
 	public class TabContainer : Control
-	{
+	{		
 		#region Private fields
 		/// <summary>
 		/// List of child TabPanels.
@@ -234,6 +235,12 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			{
 				ActiveTabPanel = tabPanels.FirstOrDefault(item => item.Visible && item.Enabled);
 			}
+
+			// ensure requirements
+			ClientScripts.BootstrapClientScriptHelper.RegisterBootstrapClientScript(Page);
+
+			// register Tab Extensions script
+			ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, ClientScripts.BootstrapClientScriptHelper.TabPanelExtensionScriptResourceMappingName);
 		}
 		#endregion
 

@@ -1,0 +1,4 @@
+﻿Folder for client scripts.
+Client scripts are copied by Task in csproj during build from class libraries.
+
+Framework scripts are not currently included to the project.

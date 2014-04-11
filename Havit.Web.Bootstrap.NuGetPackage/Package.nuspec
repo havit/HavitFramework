@@ -28,7 +28,9 @@
 		<tags>HAVIT ASP.NET Web WebForms Bootstrap Controls</tags>
 	</metadata>
 	<files>
-		<file src="bin\Release\Havit.Web.Bootstrap.dll" target="lib\net45" />
+	  <file src="bin\Release\Havit.Web.Bootstrap.dll" target="lib\net45" />
+	  <file src="bin\Release\Havit.Web.Bootstrap.pdb" target="lib\net45" />
+	  <file src="bin\Release\Havit.Web.Bootstrap.xml" target="lib\net45" />
 	  <!--<file src="tools\" target="tools" />-->
 	  <file src="content\" target="content" />
 	</files>

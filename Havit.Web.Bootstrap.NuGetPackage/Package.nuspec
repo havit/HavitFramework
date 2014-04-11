@@ -31,8 +31,8 @@
 	  <file src="bin\Release\Havit.Web.Bootstrap.dll" target="lib\net45" />
 	  <file src="bin\Release\Havit.Web.Bootstrap.pdb" target="lib\net45" />
 	  <file src="bin\Release\Havit.Web.Bootstrap.xml" target="lib\net45" />
-	  <!--<file src="tools\" target="tools" />-->
 	  <file src="..\Havit.Web.Bootstrap\content\less\*.less" target="content\Content\havit.web.bootstrap\" />
 	  <file src="..\Havit.Web.Bootstrap\content\js\*.js" target="content\Scripts\havit.web.bootstrap\" />
+	  <file src="content\Web.config.transform" target="content" />
 	</files>
 </package>

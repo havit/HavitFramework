@@ -1,6 +1,4 @@
-﻿<%@ Control Language="C#" %>
-
-<h3>Tabs Justified</h3>
+﻿<h3>Tabs Justified</h3>
 <p>See what happens when windows resized.</p>
 <bc:TabContainer TabMode="Tabs" Justified="true" runat="server">
 	<bc:TabPanel HeaderText="First" runat="server">

@@ -85,6 +85,15 @@ namespace WebApplicationTest.HavitWebTests {
         protected global::System.Web.UI.WebControls.Button CloseOpenButton;
         
         /// <summary>
+        /// MyCheckBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox MyCheckBox;
+        
+        /// <summary>
         /// EnlargeButton control.
         /// </summary>
         /// <remarks>

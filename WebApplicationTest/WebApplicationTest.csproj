@@ -79,6 +79,7 @@
     <CodeContractsCacheAnalysisResults>False</CodeContractsCacheAnalysisResults>
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -181,6 +182,8 @@
     </Content>
     <Content Include="HavitWebBootstrapTests\ButtonTest.aspx" />
     <Content Include="HavitWebBootstrapTests\Controls\ValidationTargetTest.ascx" />
+    <Content Include="HavitWebBootstrapTests\ModalDialogTest.aspx" />
+    <Content Include="HavitWebBootstrapTests\ModalDialogUserControlTest.ascx" />
     <Content Include="HavitWebBootstrapTests\SwitchButtonTest.aspx" />
     <Content Include="HavitWebBootstrapTests\CheckBoxListTest.aspx" />
     <Content Include="HavitWebBootstrapTests\RadioButtonListTest.aspx" />
@@ -314,6 +317,20 @@
     </Compile>
     <Compile Include="HavitWebBootstrapTests\Controls\ValidationTargetTest.ascx.designer.cs">
       <DependentUpon>ValidationTargetTest.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="HavitWebBootstrapTests\ModalDialogTest.aspx.cs">
+      <DependentUpon>ModalDialogTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HavitWebBootstrapTests\ModalDialogTest.aspx.designer.cs">
+      <DependentUpon>ModalDialogTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HavitWebBootstrapTests\ModalDialogUserControlTest.ascx.cs">
+      <DependentUpon>ModalDialogUserControlTest.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HavitWebBootstrapTests\ModalDialogUserControlTest.ascx.designer.cs">
+      <DependentUpon>ModalDialogUserControlTest.ascx</DependentUpon>
     </Compile>
     <Compile Include="HavitWebBootstrapTests\SwitchButtonTest.aspx.cs">
       <DependentUpon>SwitchButtonTest.aspx</DependentUpon>

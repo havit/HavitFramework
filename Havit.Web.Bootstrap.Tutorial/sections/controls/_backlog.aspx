@@ -9,7 +9,6 @@
 <asp:Content ContentPlaceHolderID="MainCPH" runat="server">
 	<h2>Controls</h2>
 	<ul>
-		<li>Modals/Dialogs</li>
 		<li>Menu (MenuAdapter?)</li>
 		<li>NumericBox</li>
 		<li>NumericBoxValidator</li>

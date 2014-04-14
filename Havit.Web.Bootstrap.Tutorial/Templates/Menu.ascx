@@ -21,6 +21,7 @@
 					<a href="#">Controls <b class="caret"></b></a>
 					<ul class="dropdown-menu">
 						<li><asp:HyperLink NavigateUrl="~/sections/controls/checkboxlist_radiobuttonlist" runat="server">CheckBoxList and RadioButtonList</asp:HyperLink></li>
+						<li><asp:HyperLink NavigateUrl="~/sections/controls/modaldialog" runat="server">ModalDialog</asp:HyperLink></li>
 						<li><asp:HyperLink NavigateUrl="~/sections/controls/tabs" runat="server">Tabs</asp:HyperLink></li>
 						<li><asp:HyperLink NavigateUrl="~/sections/controls/tooltip" runat="server">Tooltip</asp:HyperLink></li>
 						<li><asp:HyperLink NavigateUrl="~/sections/controls/switchbutton" runat="server">SwitchButton</asp:HyperLink></li>

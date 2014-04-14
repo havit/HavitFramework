@@ -31,7 +31,7 @@ namespace Havit.Web.Bootstrap.Tutorial.Section.Samples
 				// load file and remove @Control header
 				string path = Server.MapPath(controlUrl);
 				string[] lines = File.ReadAllLines(path);
-				lines = lines.Where(line => !line.Contains("<%@")).ToArray();
+				//lines = lines.Where(line => !line.Contains("<%@")).ToArray();
 
 				// display file content
 				string content = String.Join(Environment.NewLine, lines).Trim();

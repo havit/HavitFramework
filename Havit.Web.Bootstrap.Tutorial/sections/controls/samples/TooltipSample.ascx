@@ -1,6 +1,4 @@
-﻿<%@ Control Language="C#" %>
-
-<p>
+﻿<p>
 	Move mouse over following words:
 </p>
 <p>

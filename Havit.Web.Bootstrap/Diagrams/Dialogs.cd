@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Comment CommentText="&#xD;&#xA;Havit.Web.Bootstrap">
+    <Position X="8.01" Y="0.5" Height="0.552" Width="5.804" />
+  </Comment>
+  <Comment CommentText="&#xD;&#xA;Havit.Web">
+    <Position X="2.375" Y="0.5" Height="0.552" Width="5.45" />
+  </Comment>
+  <Class Name="Havit.Web.Bootstrap.UI.WebControls.AjaxModalDialog">
+    <Position X="10.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIBAAAAAAAIABABAAAYAFAACAAAAAAgABAEBEAAEAA=</HashCode>
+      <FileName>UI\WebControls\AjaxModalDialog.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Havit.Web.Bootstrap.UI.WebControls.AjaxModalDialogUserControlBase">
+    <Position X="12.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAAAACAAAAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\WebControls\AjaxModalDialogUserControlBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Havit.Web.UI.WebControls.ModalDialogBase" Collapsed="true">
+    <Position X="1.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Havit.Web.UI.WebControls.DialogUserControlBase" Collapsed="true">
+    <Position X="5.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Havit.Web.UI.WebControls.AjaxModalDialogUserControlBase">
+    <Position X="5.75" Y="3" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Havit.Web.UI.WebControls.AjaxModalDialog">
+    <Position X="3.75" Y="3" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Havit.Web.UI.WebControls.BasicModalDialog">
+    <Position X="1.75" Y="3" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

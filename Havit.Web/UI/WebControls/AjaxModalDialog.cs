@@ -11,7 +11,7 @@ using System.Web;
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
-	/// Dialog, který zapouzdřuje UpdatePanel.
+	/// Dialog s podporou Ajaxu. Forma je taková, že dialog zapouzdřuje UpdatePanel.
 	/// </summary>
 	public class AjaxModalDialog : BasicModalDialog
 	{
@@ -104,8 +104,8 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		protected override void OnPreRender(EventArgs e)
 		{
-			base.OnPreRender(e);
 			_contentPlaceHolder.Visible = DialogVisible;
+			base.OnPreRender(e);
 		}
 		#endregion
 

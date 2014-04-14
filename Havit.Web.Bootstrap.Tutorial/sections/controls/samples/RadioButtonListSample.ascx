@@ -1,6 +1,4 @@
-﻿<%@ Control Language="C#" %>
-
-<bc:RadioButtonList RepeatDirection="Vertical" runat="server">
+﻿<bc:RadioButtonList RepeatDirection="Vertical" runat="server">
 	<Items>
 		<asp:ListItem Selected="True" Value="1" Text="One"></asp:ListItem>
 		<asp:ListItem Value="2" Text="Two"></asp:ListItem>

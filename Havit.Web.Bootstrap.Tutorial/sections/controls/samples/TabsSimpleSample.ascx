@@ -1,6 +1,4 @@
-﻿<%@ Control Language="C#" %>
-
-<bc:TabContainer runat="server">
+﻿<bc:TabContainer runat="server">
 	
 	<bc:TabPanel HeaderText="First" runat="server">
 		<ContentTemplate>

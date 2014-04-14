@@ -88,8 +88,12 @@
     <Content Include="Content\toastr.min.css">
       <DependentUpon>toastr.css</DependentUpon>
     </Content>
+    <Content Include="Scripts\havit.web.bootstrap\TabPanelExtension.js" />
+    <Content Include="Scripts\havit.web.bootstrap\WebUIValidationExtension.js" />
     <Content Include="Scripts\toastr.js" />
     <Content Include="Scripts\toastr.min.js" />
+    <Content Include="sections\controls\samples\ModalDialogSample.ascx" />
+    <Content Include="sections\controls\samples\ModalDialogUserControlBaseSample.ascx" />
     <Content Include="sections\controls\samples\TabsInRepeaterSample.ascx" />
     <Content Include="sections\controls\samples\TabsAppearanceSample.ascx" />
     <Content Include="sections\controls\samples\TabsSimpleSample.ascx" />
@@ -98,6 +102,7 @@
     <Content Include="sections\controls\samples\SwitchButtonSample.ascx" />
     <Content Include="sections\controls\samples\TooltipSample.ascx" />
     <Content Include="sections\controls\samples\ValidatorSample.ascx" />
+    <Content Include="sections\controls\modaldialog.aspx" />
     <Content Include="sections\controls\switchbutton.aspx" />
     <Content Include="sections\controls\tooltip.aspx" />
     <Content Include="sections\controls\checkboxlist_radiobuttonlist.aspx" />
@@ -254,7 +259,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>53870</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:53870/</IISUrl>
+          <IISUrl>http://localhost:53871/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

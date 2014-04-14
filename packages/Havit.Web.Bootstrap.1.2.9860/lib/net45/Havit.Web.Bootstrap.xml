@@ -1,0 +1,772 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Havit.Web.Bootstrap</name>
+    </assembly>
+    <members>
+        <member name="T:Havit.Web.Bootstrap.UI.ClientScripts.BootstrapClientScriptHelper">
+            <summary>
+            Helper for registering Bootstrap Client Scripts.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.Bootstrap.UI.ClientScripts.BootstrapClientScriptHelper.RegisterBootstrapScriptResourceMappingMethodName">
+            <summary>
+            Used for PreApplicationStartMethod attribute in StartUp.cs.
+            To have hardcoded string with method name near method.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.Bootstrap.UI.ClientScripts.BootstrapClientScriptHelper.WebUIValidationExtensionScriptResourceMappingName">
+            <summary>
+            Script Resource Definition name for WebUIValidationExtension.js.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.Bootstrap.UI.ClientScripts.BootstrapClientScriptHelper.TabPanelExtensionScriptResourceMappingName">
+            <summary>
+            Script Resource Definition name for TabPanelExtension.js.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.ClientScripts.BootstrapClientScriptHelper.RegisterScriptResourceMappings">
+            <summary>
+            Register script map resource mapping for "bootstrap", "toastr" and other system names.
+            Bootstrap script are ~/Scripts/bootstrap.min.js, for debug ~/Scripts/bootstrap.js.
+            Toastr script are ~/Scripts/toastr.min.js, for debug ~/Scripts/toastr.js.
+            Method called at application startup by PreApplicationStartMethod attribute in StartUp.cs.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.ClientScripts.BootstrapClientScriptHelper.RegisterBootstrapClientScript(System.Web.UI.Page)">
+            <summary>
+            Register Bootstrap Client Script to the page. Uses ScriptResourceMapping.
+            Ensures registration of "jquery".
+            </summary>
+        </member>
+        <member name="T:Havit.Web.Bootstrap.UI.WebControls.Button">
+            <summary>
+            Button rendered as &lt;button type=&amp;button&amp; ... &lt;/button&gt; instead of &lt;input type=&amp;button|submit&amp; ... /&gt;.
+            Supports also child controls (ASP.NET standard button does not support child controls for Button). When child controls are used, Text property cannot be used.
+            Gives Text property support of localization.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.Button.OnPreRender(System.EventArgs)">
+            <summary>
+            Checks if there is not both Text property and child control used at one time.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.Button.RenderContents(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Add support for child control rendering, text rendering and span with IconCssClass rendering.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.Button.IconCssClass">
+            <summary>
+            Css class for icon.
+            When set Button renders &lt;span class=&amp;IconCssClass&amp;&gt;&lt;span /&gt; at the beginning of button element content (before child controls).
+            </summary>
+            <example>&lt;bc:Button IconCssClass="glyphicon glyphicon-asterisk" runat="server" /&lt;</example>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.Button.TagKey">
+            <summary>
+            Esures rendering as button element instead of input element.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.Button.UseSubmitBehavior">
+            <summary>
+            Ensures rendering type="button" instead of type="submit".
+            </summary>
+        </member>
+        <member name="T:Havit.Web.Bootstrap.UI.WebControls.Legacy.CheckBoxValidator">
+            <summary>
+            Extended CheckBoxValidator.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.Legacy.CheckBoxValidator.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.Legacy.CheckBoxValidator.AddAttributesToRender(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Adds the attributes of this control to the output stream for rendering on the client.		
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.Legacy.CheckBoxValidator.OnPreRender(System.EventArgs)">
+            <summary>
+            Checks the client brower and configures the validator for compatibility prior to rendering.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.Legacy.CheckBoxValidator.ShowTooltip">
+            <summary>
+            Shows ToolTip (or Text if ToolTip not set) as a Bootstrap ToolTip at ControlToValidate when validation fails.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.Legacy.CheckBoxValidator.TooltipPosition">
+            <summary>
+            Tooltip position.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.Legacy.CheckBoxValidator.ControlToValidateInvalidCssClass">
+            <summary>
+            CssClass name which is added to ControlToValidate when validation fails. 
+            </summary>
+        </member>
+        <member name="T:Havit.Web.Bootstrap.UI.WebControls.Legacy.NumericBoxValidator">
+            <summary>
+            Extended NumericBoxValidator.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.Legacy.NumericBoxValidator.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.Legacy.NumericBoxValidator.AddAttributesToRender(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Adds the attributes of this control to the output stream for rendering on the client.		
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.Legacy.NumericBoxValidator.OnPreRender(System.EventArgs)">
+            <summary>
+            Checks the client brower and configures the validator for compatibility prior to rendering.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.Legacy.NumericBoxValidator.ShowTooltip">
+            <summary>
+            Shows ToolTip (or Text if ToolTip not set) as a Bootstrap ToolTip at ControlToValidate when validation fails.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.Legacy.NumericBoxValidator.TooltipPosition">
+            <summary>
+            Tooltip position.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.Legacy.NumericBoxValidator.ControlToValidateInvalidCssClass">
+            <summary>
+            CssClass name which is added to ControlToValidate when validation fails. 
+            </summary>
+        </member>
+        <member name="T:Havit.Web.Bootstrap.UI.WebControls.RadioButtonListCheckBoxListHelper">
+            <summary>
+            Helper class for rendering RadioButtonList and CheckBoxList Extensions.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.RadioButtonListCheckBoxListHelper.Render(Havit.Web.Bootstrap.UI.WebControls.IRadioButtonListCheckBoxList,System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Renders control.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.RadioButtonListCheckBoxListHelper.RenderItem(Havit.Web.Bootstrap.UI.WebControls.IRadioButtonListCheckBoxList,System.Web.UI.WebControls.ListItemType,System.Int32,System.Web.UI.WebControls.RepeatInfo,System.Web.UI.HtmlTextWriter,System.Action)">
+            <summary>
+            Rendres checkboxlist/radiobuttonlist item.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.Bootstrap.UI.WebControls.SwitchButton">
+            <summary>
+            Control  with touchable selection of Yes/No value.
+            By default, the "No" choice is selected (Value is false).
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.SwitchButton.OnValueChanged(System.EventArgs)">
+            <summary>
+            Occurs when the value of the Value property changes between posts to the server.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.SwitchButton.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.SwitchButton.OnInit(System.EventArgs)">
+            <summary>
+            Raises the Init event. This notifies the control to perform any steps necessary for its creation on a page request.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.SwitchButton.CreateChildControls">
+            <summary>
+            Notifies any controls that use composition-based implementation to create any
+            child controls they contain in preperation for postback or rendering.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.SwitchButton.Render(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Outputs control content to a provided HTMLTextWriter output stream.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.SwitchButton.Value">
+            <summary>
+            Returns true if "yes" choice is selected.
+            </summary>
+        </member>
+        <member name="E:Havit.Web.Bootstrap.UI.WebControls.SwitchButton.ValueChanged">
+            <summary>
+            Occurs when the value of the Value property changes between posts to the server.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.SwitchButton.AutoPostBack">
+            <summary>
+            Gets or sets a value indicating whether an automatic postback to the server will occur whenever the user changes the selection of the list.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.SwitchButton.YesText">
+            <summary>
+            Text for "Yes" choice.
+            Supports localization pattern.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.SwitchButton.NoText">
+            <summary>
+            Text for "No" choice.
+            Supports localization pattern.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.Bootstrap.UI.WebControls.TabPanel">
+            <summary>
+            TabPanel - one item in TabContainer with its header and content.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.TabPanel.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.TabPanel.OnInit(System.EventArgs)">
+            <summary>
+            Raises the Init event. This notifies the control to perform any steps necessary for its creation on a page request.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.TabPanel.RegisterToParentTabs">
+            <summary>
+            Registers TabPanel to closest parent TabContainer.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.TabPanel.RenderHeader(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Renders TabPanel header.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.TabPanel.AddAttributesToRender(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Adds to the specified writer those HTML attributes and styles that need to be rendered.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.TabPanel.Render(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Ensures not rendering content of disabled TabPanel.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.TabPanel.RenderContents(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Renders the control content into the specified writer.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.TabPanel.OnUnload(System.EventArgs)">
+            <summary>
+            Occures when control unloads from page.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.TabPanel.ContentTemplate">
+            <summary>
+            Gets or sets the template for displaying the content of TabPanel.
+            When content template set it cannot be changed anymore.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.TabPanel.HeaderTemplate">
+            <summary>
+            Gets or sets the template for displaying the header of TabPanel.
+            If not set, HeaderText is used instead of HeaderTemplate.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.TabPanel.HeaderText">
+            <summary>
+            Header text of TabPanel. This property is ignored when HeaderTemplate is used.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.TabPanel.Active">
+            <summary>
+            Indicates whether TabPanel is active (selected).
+            Use TabContainer.ActiveTabPanel to set active container.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.TabPanel.ActiveInternal">
+            <summary>
+            Internal storege of Active property value with no logic (Active property has logic for setting ActiveTabPanel on TabContainer.)
+            </summary>
+        </member>
+        <member name="T:Havit.Web.Bootstrap.UI.WebControls.TabContainer">
+            <summary>
+            Container of tab panels.
+            Renders only TabPanels in the Child controls (or Child of Child - Child can be nested in Repeater control, etc.).
+            </summary>
+        </member>
+        <member name="F:Havit.Web.Bootstrap.UI.WebControls.TabContainer.tabPanels">
+            <summary>
+            List of child TabPanels.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.Bootstrap.UI.WebControls.TabContainer._activeTabHiddenField">
+            <summary>
+            Hidden field for reading active tab set by client.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.TabContainer.OnActiveTabPanelChanged(System.EventArgs)">
+            <summary>
+            Occurs when the value of the Value property changes between posts to the server.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.TabContainer.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.TabContainer.OnInit(System.EventArgs)">
+            <summary>
+            Raises the Init event. This notifies the control to perform any steps necessary for its creation on a page request.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.TabContainer.CreateChildControls">
+            <summary>
+            Notifies any controls that use composition-based implementation to create any child controls they contain in preperation for postback or rendering.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.TabContainer.RegisterTabPanel(Havit.Web.Bootstrap.UI.WebControls.TabPanel)">
+            <summary>
+            Used from TabPanel to register in container.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.TabContainer.UnregisterTabPanel(Havit.Web.Bootstrap.UI.WebControls.TabPanel)">
+            <summary>
+            Used from TabPanel to ungregister from container.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.TabContainer.OnPreRender(System.EventArgs)">
+            <summary>
+            Raises the <see langword='PreRender'/> event. This method uses event arguments to pass the event data to the control.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.TabContainer.Render(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Outputs control content to a provided HTMLTextWriter output stream.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.TabContainer.RenderHeader(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Renders list of tab panels (headers).
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.TabContainer.RenderContent(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Renders tab pages content.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.TabContainer.OrderTabPanelsInOrderOfAppearanceInPage">
+            <summary>
+            Order TabPanels in order of appearance in page.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.TabContainer.TabMode">
+            <summary>
+            Tab mode (tabs vs. pills).
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.TabContainer.Justified">
+            <summary>
+            Justified Tabs/Pills. 
+            Bootstrap documentation: Easily make tabs or pills equal widths of their parent at screens wider than 768px with .nav-justified. On smaller screens, the nav links are stacked.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.TabContainer.ActiveTabPanel">
+            <summary>
+            Gets or sets active TabPanel.
+            </summary>
+        </member>
+        <member name="E:Havit.Web.Bootstrap.UI.WebControls.TabContainer.ActiveTabPanelChanged">
+            <summary>
+            Occurs when TabPanel change between post to the server.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.TabContainer.UseAnimations">
+            <summary>
+            Get or sets whether use animations when changing TabPanels.
+            Not used when TabPanel changed on server side.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.Bootstrap.UI.WebControls.TabMode">
+            <summary>
+            Display mode of TabPanels in TabContainer.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.Bootstrap.UI.WebControls.TabMode.Tabs">
+            <summary>
+            Tabs.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.Bootstrap.UI.WebControls.TabMode.Pills">
+            <summary>
+            Pills.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.Bootstrap.UI.WebControls.TabMode.PillsStacked">
+            <summary>
+            Stacked pills.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.Bootstrap.UI.WebControls.ValidationDisplayTargetAttribute">
+            <summary>
+            Defines target control for assigning css class and showing tooltip when validation fails.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.ValidationDisplayTargetAttribute.#ctor(System.String)">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.ValidationDisplayTargetAttribute.DisplayTargetControl">
+            <summary>
+            Control ID to be used as a target control in user control validation.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.Bootstrap.UI.WebControls.ValidationSummary">
+            <summary>
+            Extended ValidationSummary.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.ValidationSummary.#ctor">
+            <summary>
+            Initializes ValidationSummary.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.ValidationSummary.OnPreRender(System.EventArgs)">
+            <summary>
+            Registers jquery and toastr scripts and script for displaying error message in toastr when ShowToastr is True.
+            Registers message box (alert) script with error messages when ShowMessageBox is True.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.ValidationSummary.AddAttributesToRender(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Adds attribute "data-showtoastr" when ShowToastr is True.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.ValidationSummary.RegisterShowMessageBoxScripts">
+            <summary>
+            Registers script for display validation error on client side page load.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.ValidationSummary.RegisterShowToastrScripts">
+            <summary>
+            Registers script for display validation error on client side page load.
+            Cannot be calculated on client sides because validators with has EnableClientScript set to false are not supported on the client side.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.ValidationSummary.GetValidationErrorMessages">
+            <summary>
+            Returns ErrorMessages for display in validation summary.
+            Only messages of validators with failed validation (IsValid = false) are returned.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.ValidationSummary.ShowToastr">
+            <summary>
+            Indicates whether to show error messages in toastr.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.Bootstrap.UI.WebControls.RegularExpressionValidator">
+            <summary>
+            Extended RegularExpressionValidator.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.RegularExpressionValidator.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.RegularExpressionValidator.AddAttributesToRender(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Adds the attributes of this control to the output stream for rendering on the client.		
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.RegularExpressionValidator.OnPreRender(System.EventArgs)">
+            <summary>
+            Checks the client brower and configures the validator for compatibility prior to rendering.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.RegularExpressionValidator.ShowTooltip">
+            <summary>
+            Shows ToolTip (or Text if ToolTip not set) as a Bootstrap ToolTip at ControlToValidate when validation fails.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.RegularExpressionValidator.TooltipPosition">
+            <summary>
+            Tooltip position.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.RegularExpressionValidator.ControlToValidateInvalidCssClass">
+            <summary>
+            CssClass name which is added to ControlToValidate when validation fails. 
+            </summary>
+        </member>
+        <member name="T:Havit.Web.Bootstrap.UI.WebControls.RangeValidator">
+            <summary>
+            Extended RangeValidator.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.RangeValidator.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.RangeValidator.AddAttributesToRender(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Adds the attributes of this control to the output stream for rendering on the client.		
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.RangeValidator.OnPreRender(System.EventArgs)">
+            <summary>
+            Checks the client brower and configures the validator for compatibility prior to rendering.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.RangeValidator.ShowTooltip">
+            <summary>
+            Shows ToolTip (or Text if ToolTip not set) as a Bootstrap ToolTip at ControlToValidate when validation fails.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.RangeValidator.TooltipPosition">
+            <summary>
+            Tooltip position.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.RangeValidator.ControlToValidateInvalidCssClass">
+            <summary>
+            CssClass name which is added to ControlToValidate when validation fails. 
+            </summary>
+        </member>
+        <member name="T:Havit.Web.Bootstrap.UI.WebControls.CustomValidator">
+            <summary>
+            Extended CustomValidator.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.CustomValidator.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.CustomValidator.AddAttributesToRender(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Adds the attributes of this control to the output stream for rendering on the client.		
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.CustomValidator.OnPreRender(System.EventArgs)">
+            <summary>
+            Checks the client brower and configures the validator for compatibility prior to rendering.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.CustomValidator.ShowTooltip">
+            <summary>
+            Shows ToolTip (or Text if ToolTip not set) as a Bootstrap ToolTip at ControlToValidate when validation fails.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.CustomValidator.TooltipPosition">
+            <summary>
+            Tooltip position.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.CustomValidator.ControlToValidateInvalidCssClass">
+            <summary>
+            CssClass name which is added to ControlToValidate when validation fails. 
+            </summary>
+        </member>
+        <member name="T:Havit.Web.Bootstrap.UI.WebControls.CompareValidator">
+            <summary>
+            Extended CompareValidator.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.CompareValidator.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.CompareValidator.AddAttributesToRender(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Adds the attributes of this control to the output stream for rendering on the client.		
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.CompareValidator.OnPreRender(System.EventArgs)">
+            <summary>
+            Checks the client brower and configures the validator for compatibility prior to rendering.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.CompareValidator.ShowTooltip">
+            <summary>
+            Shows ToolTip (or Text if ToolTip not set) as a Bootstrap ToolTip at ControlToValidate when validation fails.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.CompareValidator.TooltipPosition">
+            <summary>
+            Tooltip position.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.CompareValidator.ControlToValidateInvalidCssClass">
+            <summary>
+            CssClass name which is added to ControlToValidate when validation fails. 
+            </summary>
+        </member>
+        <member name="T:Havit.Web.Bootstrap.UI.WebControls.RequiredFieldValidator">
+            <summary>
+            Extended RequiredFieldValidator.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.RequiredFieldValidator.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.RequiredFieldValidator.AddAttributesToRender(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Adds the attributes of this control to the output stream for rendering on the client.		
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.RequiredFieldValidator.OnPreRender(System.EventArgs)">
+            <summary>
+            Checks the client brower and configures the validator for compatibility prior to rendering.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.RequiredFieldValidator.ShowTooltip">
+            <summary>
+            Shows ToolTip (or Text if ToolTip not set) as a Bootstrap ToolTip at ControlToValidate when validation fails.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.RequiredFieldValidator.TooltipPosition">
+            <summary>
+            Tooltip position.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.RequiredFieldValidator.ControlToValidateInvalidCssClass">
+            <summary>
+            CssClass name which is added to ControlToValidate when validation fails. 
+            </summary>
+        </member>
+        <member name="T:Havit.Web.Bootstrap.UI.WebControls.TooltipPosition">
+            <summary>
+            Positions of bootstrap tooltip.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.Bootstrap.UI.WebControls.TooltipPosition.Top">
+            <summary>
+            Top
+            </summary>
+        </member>
+        <member name="F:Havit.Web.Bootstrap.UI.WebControls.TooltipPosition.Left">
+            <summary>
+            Left
+            </summary>
+        </member>
+        <member name="F:Havit.Web.Bootstrap.UI.WebControls.TooltipPosition.Right">
+            <summary>
+            Right
+            </summary>
+        </member>
+        <member name="F:Havit.Web.Bootstrap.UI.WebControls.TooltipPosition.Bottom">
+            <summary>
+            Bottom
+            </summary>
+        </member>
+        <member name="T:Havit.Web.Bootstrap.UI.WebControls.Tooltip">
+            <summary>
+            Label with ToolTip displayed as Bootstrap tooltip.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.Tooltip.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.Tooltip.AddAttributesToRender(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Adds to the specified writer those HTML attributes and styles that need to be rendered.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.Tooltip.OnPreRender(System.EventArgs)">
+            <summary>
+            Raises the PreRender event. This method uses event arguments to pass the event data to the control.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.Tooltip.TooltipPosition">
+            <summary>
+            Tooltip position.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.Bootstrap.UI.WebControls.CheckBoxList">
+            <summary>
+            Display CheckBoxList as buttons for better Touch UI experience.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.CheckBoxList.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.CheckBoxList.OnPreRender(System.EventArgs)">
+            <summary>
+            Configures the CheckBoxList prior to rendering on the client.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.CheckBoxList.Render(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Displays the CheckBoxList on the client.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.CheckBoxList.RenderItem(System.Web.UI.WebControls.ListItemType,System.Int32,System.Web.UI.WebControls.RepeatInfo,System.Web.UI.HtmlTextWriter)">
+            <summary>
+            /// Called to render each item.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.Bootstrap.UI.WebControls.RadioButtonList">
+            <summary>
+            Display RadioButtonList as buttons for better Touch UI experience.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.RadioButtonList.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.RadioButtonList.OnPreRender(System.EventArgs)">
+            <summary>
+            Configures the RadioButtonList prior to rendering on the client.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.RadioButtonList.Render(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Displays the RadioButtonList on the client.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.RadioButtonList.RenderItem(System.Web.UI.WebControls.ListItemType,System.Int32,System.Web.UI.WebControls.RepeatInfo,System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Called to render each item.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.Bootstrap.UI.WebControls.ValidatorRenderExtender">
+            <summary>
+            Helper class for rendering Validator Extensions.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.Bootstrap.UI.WebControls.ValidatorRenderExtender.DefaultControlToValidateInvalidCssClass">
+            <summary>
+            Default CssClass for control with failed validation (validators sets this css class).
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.ValidatorRenderExtender.Setup(System.Web.UI.WebControls.BaseValidator)">
+            <summary>
+            Sets up validator (used from constructor).
+            Changes validator default values to:
+            - Display = "None"
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.ValidatorRenderExtender.OnPreRender(Havit.Web.Bootstrap.UI.WebControls.IValidatorExtension)">
+            <summary>
+            Entends OnPreRender method.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.ValidatorRenderExtender.AddAttributesToRender(Havit.Web.Bootstrap.UI.WebControls.IValidatorExtension,System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Extends AddAttributesToRender method.
+            </summary>
+        </member>
+    </members>
+</doc>

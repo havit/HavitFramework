@@ -11,7 +11,6 @@ using System.Web.UI.WebControls;
 using Havit.Diagnostics.Contracts;
 using Havit.Web.UI;
 
-[assembly: WebResource("Havit.Web.Bootstrap.UI.WebControls.WebUIValidationExtension.js", "application/javascript")]
 namespace Havit.Web.Bootstrap.UI.WebControls
 {
 	/// <summary>

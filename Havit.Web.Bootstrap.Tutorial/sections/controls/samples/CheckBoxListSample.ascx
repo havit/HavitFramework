@@ -1,6 +1,4 @@
-﻿<%@ Control Language="C#" %>
-
-<bc:CheckBoxList runat="server">
+﻿<bc:CheckBoxList runat="server">
 	<Items>
 		<asp:ListItem Value="1" Text="One"></asp:ListItem>
 		<asp:ListItem Value="2" Text="Two"></asp:ListItem>

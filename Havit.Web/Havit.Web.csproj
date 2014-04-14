@@ -243,11 +243,15 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="UI\WebControls\DateTimePickerElement.cs" />
+    <Compile Include="UI\WebControls\ModalDialogUserControlBase.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="UI\WebControls\GridViewDataFilteringEventHandler.cs" />
     <Compile Include="UI\WebControls\GridViewDataFilteringEventArgs.cs" />
     <Compile Include="UI\WebControls\FormViewExt.cs" />
     <Compile Include="UI\WebControls\IAutoFilterControl.cs" />
     <Compile Include="UI\WebControls\IFilterField.cs" />
+    <Compile Include="UI\WebControls\ModalDialogBase.cs" />
     <Compile Include="UI\WebControls\TextBoxExt.cs" />
     <Compile Include="UI\ViewStateLoadFailedException.cs" />
     <Compile Include="UI\WebControls\AjaxHealthMonitoring.cs" />

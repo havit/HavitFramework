@@ -1,0 +1,38 @@
+﻿@validation-invalid-control-border-color: @state-danger-text;
+@validation-invalid-tooltip-border-color: @state-danger-bg;
+@validation-invalid-tooltip-background-color: @state-danger-bg;
+@validation-invalid-tooltip-text-color: @state-danger-text;
+@validation-invalid-tooltip-font-size: @font-size-base;
+@validation-invalid-control-opacity: 1;
+
+.validation-invalid {
+
+	& + .tooltip {
+		opacity: @validation-invalid-control-opacity;
+
+		& > .tooltip-inner {
+			font-size: @validation-invalid-tooltip-font-size;
+			border: 1px solid @validation-invalid-tooltip-border-color;
+			background-color: @validation-invalid-tooltip-background-color;
+			color: @validation-invalid-tooltip-text-color;
+			/* DateTimeBox is rendered in span with white-space nowrap which disables wrapping in tooltip */
+			white-space: normal;
+		}
+
+		&.right .tooltip-arrow {
+			border-right-color: @validation-invalid-tooltip-background-color;
+		}
+
+		&.left .tooltip-arrow {
+			border-left-color: @validation-invalid-tooltip-background-color;
+		}
+
+		&.top .tooltip-arrow {
+			border-top-color: @validation-invalid-tooltip-background-color;
+		}
+
+		&.bottom .tooltip-arrow {
+			border-bottom-color: @validation-invalid-tooltip-background-color;
+		}
+	}
+}

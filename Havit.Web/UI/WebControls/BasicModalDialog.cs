@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web.UI;
-using System.ComponentModel;
-using System.Globalization;
 using System.Web.UI.WebControls;
+using Havit.Web.UI.ClientScripts;
 
 namespace Havit.Web.UI.WebControls
 {
@@ -13,80 +14,10 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	[ParseChildren(true)]
 	[PersistChildren(false)]
-	public class BasicModalDialog : Control
+	public class BasicModalDialog : ModalDialogBase
 	{
 		#region Private fields
 		private Panel _dialogPanel;
-		private bool _dialogCurrentlyHiding = false;
-		#endregion
-
-		#region DialogPanelClientIDMemento
-		/// <summary>
-		/// Paměť pro _dialogPanel.ClientID.
-		/// Využívá metoda RegisterHideScript (volána z Page_PreRenderComplete) pro registraci scriptu pro schování dialogu na klientské straně.
-		/// Slouží pro řešení situace, kdy potřebujeme ze stránky vyhodit control, protože již ve stránce neexistuje (byl vyhozen databindingem, atp.).
-		/// </summary>
-		public string DialogPanelClientIDMemento
-		{
-			get
-			{
-				return (string)ViewState["DialogPanelClientIDMemento"];
-			}
-			set
-			{
-				ViewState["DialogPanelClientIDMemento"] = value;
-			}
-		}
-		#endregion
-
-		#region ContentTemplate
-		/// <summary>
-		/// Šablona obsahu dialogu. Instancovaný obsah šablony je v ContentTemplateContainer (instancováno v průběhu OnInit).
-		/// </summary>
-		[TemplateInstance(TemplateInstance.Single)]
-		[PersistenceMode(PersistenceMode.InnerProperty)]
-		public virtual ITemplate ContentTemplate
-		{
-			get
-			{
-				return _contentTemplate;
-			}
-			set
-			{
-				_contentTemplate = value;
-				ChildControlsCreated = false;
-			}
-		}
-		private ITemplate _contentTemplate;
-		#endregion		
-
-		#region ContentTemplateContainer
-		/// <summary>
-		/// Instancovaný obsah dialogu.
-		/// </summary>
-		public Control ContentTemplateContainer
-		{
-			get
-			{
-				EnsureChildControls();
-				return GetContentContainer();
-			}
-		}		
-		#endregion
-
-		#region Controls
-		/// <summary>
-		/// Kolekce controlů.
-		/// Přístup k property zajistí inicializaci podstromu controlů (EnsureChildControls).
-		/// </summary>
-		public override ControlCollection Controls
-		{
-			get
-			{
-				EnsureChildControls();
-				return base.Controls;
-			}
-		}
 		#endregion
 
 		#region Width, Height, MarginLeft, MarginTop
@@ -143,23 +74,6 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-		#region DialogVisible
-		/// <summary>
-		/// Udává, zda je dialog viditelný.
-		/// </summary>
-		protected internal bool DialogVisible
-		{
-			get
-			{
-				return (bool)(ViewState["DialogVisible"] ?? false);
-			}
-			private set
-			{
-				ViewState["DialogVisible"] = value;
-			}
-		}
-		#endregion
-
 		#region Constructors
 		/// <summary>
 		/// Konstruktor.
@@ -171,97 +85,35 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-		#region OnInit
-		/// <summary>
-		/// OnInit.
-		/// </summary>
-		protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
-			EnsureChildControls();
-			this.Page.PreRenderComplete += new EventHandler(Page_PreRenderComplete);
-		}
-		#endregion
-
-		#region CreateChildControls
-		/// <summary>
-		/// Inicializuje podstrom controlů.
-		/// </summary>
-		protected override void CreateChildControls()
-		{
-			this.Controls.Clear();
-			if (this._contentTemplate != null)
-			{
-				_contentTemplate.InstantiateIn(GetContentContainer());
-			}
-			this.Controls.Add(_dialogPanel);
-			_dialogPanel.ID = this.ID + "__DP";
-		}
-		#endregion	
-
 		#region GetContentContainer
 		/// <summary>
-		/// Vrací kontejner, do kterého je instanciována šablona.
+		/// Vrací control/kontejner, do kterého je instanciována šablona obsahu.
 		/// </summary>
-		protected virtual Control GetContentContainer()
+		protected override Control GetContentContainer()
 		{
 			return _dialogPanel;
 		}
-		#endregion		
+		#endregion
 
-		#region Show, Hide, OnDialogShown, OnDialogHidden
+		#region GetDialogContainer
 		/// <summary>
-		/// Zobrazí dialog.
+		/// Vrací control/kontejner, který reprezentuje dialog jako celek. Tento control je ovládán klientskými skripty pro zobrazení a schování obsahu.
 		/// </summary>
-		public void Show()
+		protected override Control GetDialogContainer()
 		{
-			DialogVisible = true;
-			DialogPanelClientIDMemento = _dialogPanel.ClientID;
-			OnDialogShown(EventArgs.Empty);
-		}
-
-		/// <summary>
-		/// Skryje dialog.
-		/// </summary>
-		public void Hide()
-		{
-			DialogVisible = false;
-			_dialogCurrentlyHiding = true;
-			OnDialogHidden(EventArgs.Empty);
-		}
-
-		/// <summary>
-		/// Obsluhuje událost zobrazení dialogu.
-		/// </summary>
-		protected virtual void OnDialogShown(EventArgs eventArgs)
-		{
-			if (DialogShown != null)
-			{
-				DialogShown(this, eventArgs);
-			}
-		}
-
-		/// <summary>
-		/// Obsluhuje událost skrytí dialogu.
-		/// </summary>
-		protected virtual void OnDialogHidden(EventArgs eventArgs)
-		{
-			if (DialogHidden != null)
-			{
-				DialogHidden(this, eventArgs);
-			}
+			return _dialogPanel;
 		}
 		#endregion
 
-		#region GetShowScript, GetHideScript, RegisterShowScript, RegisterHideScript
+		#region GetShowScript, GetHideScript
 		/// <summary>
 		/// Vrátí skript pro zobrazení dialogu na klientské straně.
 		/// </summary>
-		public string GetShowScript()
+		protected override string GetShowScript()
 		{
 			string script = String.Format(
 				"havitSetDialogSize('{0}', '{1}', '{2}', '{3}', '{4}'); havitShowDialog('{0}');",
-				_dialogPanel.ClientID,
+				GetDialogContainer().ClientID,
 				Width.ToString(),
                 Height.ToString(),
                 MarginLeft.ToString(),
@@ -272,44 +124,10 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Vrátí skript pro skrytí dialogu na klientské straně.
 		/// </summary>
-		public string GetHideScript()
+		protected override string GetHideScript()
 		{
-			return String.Format("havitHideDialog('{0}');", DialogPanelClientIDMemento ?? _dialogPanel.ClientID);
+			return String.Format("havitHideDialog('{0}');", DialogPanelClientIDMemento ?? GetDialogContainer().ClientID);
 		}
-
-		/// <summary>
-		/// Zaregistruje skript, který zobrazí dialog na klientské straně.
-		/// </summary>
-		private void RegisterShowScript()
-		{
-			string script = String.Format(
-				"window.setTimeout(new Function(\"{0}\"), 0);",
-				GetShowScript());
-			ScriptManager.RegisterStartupScript(this.Page, typeof(BasicModalDialog), this.ClientID, script, true);
-		}
-
-		/// <summary>
-		/// Zaregistruje skript, který skryje dialog na klientské straně.
-		/// </summary>
-		private void RegisterHideScript()
-		{
-			string script = String.Format(
-				"window.setTimeout(new Function(\"{0}\"), 0);",
-				GetHideScript());
-			ScriptManager.RegisterStartupScript(this.Page, typeof(BasicModalDialog), this.ClientID, script, true);
-		}
-		#endregion
-
-		#region DialogShown, DialogHidden
-		/// <summary>
-		/// Událost oznamující zobrazení dialogu.
-		/// </summary>
-		public event EventHandler DialogShown;
-
-		/// <summary>
-		/// Událost oznamujíxí skrytí dialogu.
-		/// </summary>
-		public event EventHandler DialogHidden;
 		#endregion
 
 		#region OnPreRender
@@ -318,46 +136,20 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		protected override void OnPreRender(EventArgs e)
 		{
-			base.OnPreRender(e);
-
-			EnsureChildControls();
-
 			// šahnutím na hodnotu property se ID vygeneruje a VYRENDERUJE!
 			// My jej musíme vyrenderovat vždy, protože jinak nefungují správně klientské skripty.
-			string tmp = _dialogPanel.ClientID; 
-
+			string tmp = _dialogPanel.ClientID;
+			
 			CheckDialogSize();
+
+			ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, "jquery");
 
 			_dialogPanel.Style[HtmlTextWriterStyle.Width] = Width.ToString();
 			_dialogPanel.Style[HtmlTextWriterStyle.Height] = Height.ToString();
 			_dialogPanel.Style[HtmlTextWriterStyle.MarginLeft] = MarginLeft.ToString();
 			_dialogPanel.Style[HtmlTextWriterStyle.MarginTop] = MarginTop.ToString();
 
-			if (DialogVisible)
-			{
-				RegisterShowScript();
-			}
-		}
-		#endregion
-
-		#region Page_PreRenderComplete
-		private void Page_PreRenderComplete(object sender, EventArgs e)
-		{
-			// Dialog nemá být vidět a právě jej schováváme.
-			// To se může stát, že control již není ve stránce (např. byl v repeateru, který byl rebindován) 
-			// nebo je nadřazený element schovaný a pak se nevyvolá OnPreRender,
-			// proto zkusíme control schovat v každém případě (Page.PreRenderComplete)
-						
-			if (!DialogVisible && _dialogCurrentlyHiding)
-			{
-				ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);
-
-				// pokud jsme v callbacku, vyrenderujeme skript schovávající dialog
-				if (scriptManager != null && scriptManager.IsInAsyncPostBack)
-				{
-					RegisterHideScript();
-				}
-			}
+			base.OnPreRender(e);
 		}
 		#endregion
 

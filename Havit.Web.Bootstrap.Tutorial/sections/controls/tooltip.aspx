@@ -13,7 +13,7 @@
 	<h2>Properties</h2>
 	<ul>
 		<li>Tooltip</li>
-		<li>Position</li>
+		<li>Position (default TooltipPosition.Top)</li>
 	</ul>
 
 	<h2>Sample</h2>	

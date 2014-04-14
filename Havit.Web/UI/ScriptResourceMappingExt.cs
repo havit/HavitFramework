@@ -23,6 +23,22 @@ namespace Havit.Web.UI
 		/// <param name="resourceName">Jméno registrovaného scriptu.</param>
 		public static void EnsureScriptRegistration(this ScriptResourceMapping scriptResourceMapping, Page page, string resourceName)
 		{
+			if (!TryEnsureScriptRegistration(scriptResourceMapping, page, resourceName))
+			{
+				throw new InvalidOperationException(String.Format("Missing script resource mapping '{0}'. Please add a ScriptResourceMapping named '{0}' (case-sensitive).", resourceName));
+			}
+		}
+		#endregion
+
+		#region TryEnsureScriptRegistration
+		/// <summary>
+		/// Pokusí se zaregistrovat ClientScriptResource. Pokud neuspěje, vrací false.
+		/// </summary>
+		/// <param name="scriptResourceMapping">ScriptResourceMapping, ze kterého se právádí registrace scriptu.</param>
+		/// <param name="page">Stránka, do které se registrace skriptu provádí.</param>
+		/// <param name="resourceName">Jméno registrovaného scriptu.</param>
+		public static bool TryEnsureScriptRegistration(this ScriptResourceMapping scriptResourceMapping, Page page, string resourceName)
+		{
 			Contract.Requires<ArgumentNullException>(scriptResourceMapping != null, "scriptResourceMapping");
 			Contract.Requires<ArgumentNullException>(page != null, "page");
 			Contract.Requires(!String.IsNullOrEmpty(resourceName));
@@ -31,11 +47,12 @@ namespace Havit.Web.UI
 				&& (scriptResourceMapping.GetDefinition(resourceName, typeof(Page).Assembly) == null)
 				&& (scriptResourceMapping.GetDefinition(resourceName) == null))
 			{
-				throw new InvalidOperationException(String.Format("Missing script resource mapping '{0}'. Please add a ScriptResourceMapping named '{0}' (case-sensitive).", resourceName));
+				return false;
 			}
 			else
 			{
 				ScriptManager.RegisterNamedClientScriptResource(page, resourceName);
+				return true;
 			}
 		}
 		#endregion

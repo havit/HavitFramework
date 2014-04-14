@@ -70,7 +70,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		#region HeaderText
 		/// <summary>
 		/// Dialog header text. Used only when HeaderTemplate not used.
-		/// HeaderText is rendered in &lt;h4&gt; element.
+		/// HeaderText is rendered in &lt;h4&gt; element with css class "modal-title".
 		/// </summary>
 		public string HeaderText
 		{
@@ -239,6 +239,25 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		}
 		#endregion
 
+		#region DragMode
+		/// <summary>
+		/// Modal dialog drag mode.
+		/// Default value is ModalDialogDragMode.IfAvailable.
+		/// </summary>
+		[DefaultValue(ModalDialogDragMode.IfAvailable)]
+		public ModalDialogDragMode DragMode
+		{
+			get
+			{
+				return (ModalDialogDragMode)(ViewState["DragMode"] ?? ModalDialogDragMode.IfAvailable);
+			}
+			set
+			{
+				ViewState["DragMode"] = value;
+			}
+		}
+		#endregion
+
 		#region Constructor
 		/// <summary>
 		/// Constructor.
@@ -375,6 +394,17 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				}
 			}
 
+			ClientScripts.BootstrapClientScriptHelper.RegisterBootstrapClientScript(this.Page);
+			if (DragMode == ModalDialogDragMode.Required)
+			{
+				ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, "jquery.ui.combined");
+			}
+
+			if (DragMode == ModalDialogDragMode.IfAvailable)
+			{
+				ScriptManager.ScriptResourceMapping.TryEnsureScriptRegistration(this.Page, "jquery.ui.combined");
+			}
+
 			// if we are not able to hide whole dialogContainer, lets hide at least update panel content
 			_updatePanel.ContentTemplateContainer.Visible = DialogVisible;
 
@@ -398,12 +428,27 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				postbackScript = this.Page.ClientScript.GetPostBackEventReference(new PostBackOptions(this, "Escape", null, false, true, false, true, false, null), false);
 			}
 
-			string script = String.Format(
-				CloseOnEscapeKey
-					? "$('#{0}').on('keyup.havit.web.bootstrap', function(e) {{ if (e.which == 27) {{ {1}; }} }}).modal('show');"
-					: "$('#{0}').modal('show');",
-				GetDialogContainer().ClientID,
-				postbackScript);
+			string scriptPattern = "$('#{0}')";
+			if (CloseOnEscapeKey)
+			{
+				scriptPattern += ".on('keyup.havit.web.bootstrap', function(e) {{ if (e.which == 27) {{ {1}; }} }})";
+			}
+			scriptPattern += ".modal('show');";
+
+			if (DragMode == ModalDialogDragMode.Required)
+			{
+				scriptPattern += "$('#{0} .modal-dialog').draggable({{handle: '.modal-header'}}); }}";
+			}
+
+			if (DragMode == ModalDialogDragMode.IfAvailable)
+			{
+				scriptPattern += "if (!!window.jQuery.ui && !!window.jQuery.ui.version) {{ $('#{0} .modal-dialog').draggable({{handle: '.modal-header'}}); }}";
+			}
+
+			string script = String.Format(				
+				scriptPattern,
+				GetDialogContainer().ClientID, // 0
+				postbackScript); // 1
 			return script;
 		}
 
@@ -413,8 +458,25 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		protected override string GetHideScript()
 		{
+			string scriptPattern = "$('#{0}')";
+			if (CloseOnEscapeKey)
+			{
+				scriptPattern += ".off('keyup.havit.web.bootstrap')";
+			}
+			scriptPattern += ".modal('hide');";
+
+			if (DragMode == ModalDialogDragMode.Required)
+			{
+				scriptPattern += "$('#{0} .modal-dialog').draggable('destroy'); }}";
+			}
+
+			if (DragMode == ModalDialogDragMode.IfAvailable)
+			{
+				scriptPattern += "if (!!window.jQuery.ui && !!window.jQuery.ui.version) {{ $('#{0} .modal-dialog').draggable('destroy'); }}";
+			}
+
 			string script = String.Format(
-				"$('#{0}').off('keyup.havit.web.bootstrap').modal('hide');",
+				scriptPattern,
 				DialogPanelClientIDMemento ?? _dialogContainer.ClientID);
 			return script;
 		}

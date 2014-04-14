@@ -7,7 +7,7 @@
 </style>
 
 <bc:ModalDialog HeaderCssClass="modal-blue" runat="server">
-	<HeaderTemplate>This is a Modal Dialog</HeaderTemplate>
+	<HeaderTemplate>Drag Me!</HeaderTemplate>
 	<ContentTemplate>
 		<p>Be carefull with custom styling. This demo shows different modal appereance when used custom background color:</p>
 		<ol>

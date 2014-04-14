@@ -18,7 +18,7 @@
 		<li>TabMode - <a href="http://getbootstrap.com/components/#nav">Bootstrap Tabs &amp; Pills</a></li>
 		<li>Justified - see <a href="http://getbootstrap.com/components/#nav">Bootstrap Tabs &amp; Pills</a></li>
 		<%--<li>AutoPostBack</li>--%>
-		<li>UseAnimations</li>
+		<li>UseAnimations (default True)</li>
 		<li>ActiveTabPanel</li>
 		<li>ActiveTabPanelChanged (event)</li>
 	</ul>

@@ -8,6 +8,7 @@
 </asp:Content>
 
 <asp:Content ContentPlaceHolderID="MainCPH" runat="server">
+	
 	<h2>ModalDialogUserControlBase</h2>
 	<p>ModalDialogUserControlBase should be used as base class of ASCX which behaves like modal dialog. This ASCX should contain exactly one ModalDialog.</p>
 	<h3>Properties, Methods</h3>
@@ -23,11 +24,19 @@
 		<li>HeaderTemplate, ContentTemplate, FooterTemplate</li>
 		<li>HeaderText</li>
 		<li>CssClass, HeaderCssClass, ContentCssClass, FooterCssClass</li>
-		<li>ShowCloseButton</li>
-		<li>CloseOnEscapeKey</li>
+		<li>ShowCloseButton (default True)</li>
+		<li>CloseOnEscapeKey (default True)</li>
 		<li>Width</li>
-		<li>UseAnimations</li>
+		<li>UseAnimations (default True)</li>
 		<li>Triggers</li>
+		<li>DragMode (default ModalDialogDragMode.IfAvailable)</li>
+	</ul>
+	
+	<h4>DragMode</h4>
+	<ul>
+		<li>Required - Requires script resource definition "jquery.ui.combined" to register jQuery UI to enable dragging.</li>
+		<li>IfAvailable - If script resource definition "jquery.ui.combined" exists or if jQuery UI is registered by any other way, dragging is enabled.</li>
+		<li>No - No dragging enabled.</li>
 	</ul>
 
 	<h2>Sample</h2>

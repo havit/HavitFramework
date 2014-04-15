@@ -1,1 +1,1 @@
-﻿<%@ WebService Language="C#" CodeBehind="AutoSuggestMenuService.asmx.cs" Class="WebApplicationTest.AutoSuggestMenuService" %>
+﻿<%@ WebService Language="C#" CodeBehind="AutoSuggestMenuService.asmx.cs" Class="WebApplicationTest.HavitWebTests.AutoSuggestMenuService" %>

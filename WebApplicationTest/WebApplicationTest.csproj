@@ -170,6 +170,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="SystemWebTests\a.js" />
+    <None Include="App_Themes\WebTheme\AutoSuggestMenu.skin" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\site.css">
       <DependentUpon>site.less</DependentUpon>

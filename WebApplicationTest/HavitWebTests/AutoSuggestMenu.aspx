@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" CodeBehind="AutoSuggestMenu.aspx.cs" Inherits="WebApplicationTest.HavitWebTests.AutoSuggestMenu_aspx" %>
+﻿<%@ Page Language="C#" CodeBehind="AutoSuggestMenu.aspx.cs" StyleSheetTheme="WebTheme" Inherits="WebApplicationTest.HavitWebTests.AutoSuggestMenu_aspx" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -27,7 +27,7 @@
 						KeyPressDelay="300"
 						UsePaging="true"
 						PageSize="10"
-						MinSuggestChars="2"
+						MinSuggestChars="2"						
 						OnGetSuggestions="WebApplicationTest.HavitWebTests.AutoSuggestMenuService.GetSuggestions"
 						Mode="ClearTextOnNoSelection"
 						MessageOnClearText="Hodnota stornována, nedošlo ke spárování hodnoty s číselníkovou hodnotou."

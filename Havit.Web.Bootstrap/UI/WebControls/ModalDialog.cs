@@ -425,19 +425,18 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);
 				scriptManager.RegisterAsyncPostBackControl(this);
 
-				postbackScript = this.Page.ClientScript.GetPostBackEventReference(new PostBackOptions(this, "Escape", null, false, true, false, true, false, null), false);
+				postbackScript = this.Page.ClientScript.GetPostBackEventReference(new PostBackOptions(this, "Escape", null, false, false, false, true, false, null), false);
 			}
 
-			string scriptPattern = "$('#{0}')";
+			string scriptPattern = "$('#{0}').modal('show');";
 			if (CloseOnEscapeKey)
 			{
-				scriptPattern += ".on('keyup.havit.web.bootstrap', function(e) {{ if (e.which == 27) {{ {1}; }} }})";
+				scriptPattern += "$('body').on('keyup.havit.web.bootstrap', function(e) {{ if (e.which == 27) {{ {1}; }} }});";
 			}
-			scriptPattern += ".modal('show');";
 
 			if (DragMode == ModalDialogDragMode.Required)
 			{
-				scriptPattern += "$('#{0} .modal-dialog').draggable({{handle: '.modal-header'}}); }}";
+				scriptPattern += "$('#{0} .modal-dialog').draggable({{handle: '.modal-header'}});";
 			}
 
 			if (DragMode == ModalDialogDragMode.IfAvailable)
@@ -458,16 +457,16 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		protected override string GetHideScript()
 		{
-			string scriptPattern = "$('#{0}')";
+			string scriptPattern = "";
 			if (CloseOnEscapeKey)
 			{
-				scriptPattern += ".off('keyup.havit.web.bootstrap')";
+				scriptPattern += "$('body').off('keyup.havit.web.bootstrap');";
 			}
-			scriptPattern += ".modal('hide');";
+			scriptPattern += "$('#{0}').modal('hide');";
 
 			if (DragMode == ModalDialogDragMode.Required)
 			{
-				scriptPattern += "$('#{0} .modal-dialog').draggable('destroy'); }}";
+				scriptPattern += "$('#{0} .modal-dialog').draggable('destroy');";
 			}
 
 			if (DragMode == ModalDialogDragMode.IfAvailable)

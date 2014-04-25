@@ -44,3 +44,5 @@
 \_ReSharper.Havit
 \Sandcastle\doc
 \Sandcastle\doc
+\WebApplicationTest\Scripts\Havit.Web.Bootstrap\TabPanelExtension.js
+\WebApplicationTest\Scripts\Havit.Web.Bootstrap\WebUIValidationExtension.js

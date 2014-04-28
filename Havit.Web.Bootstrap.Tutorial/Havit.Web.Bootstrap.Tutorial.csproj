@@ -178,7 +178,6 @@
     <Content Include="sections\controls\_backlog.aspx" />
     <Content Include="sections\controls\validators.aspx" />
     <Content Include="sections\less\less.aspx" />
-    <Content Include="sections\samples\Show.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="Error.aspx" />
     <Content Include="favicon.ico" />
@@ -269,13 +268,6 @@
     </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\ScriptManagerConfig.cs" />
-    <Compile Include="sections\samples\Show.aspx.cs">
-      <DependentUpon>Show.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="sections\samples\Show.aspx.designer.cs">
-      <DependentUpon>Show.aspx</DependentUpon>
-    </Compile>
     <Compile Include="sections\samples\ShowControl.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Templates/Main.Master" %>
+
 <%@ Register TagPrefix="uc" TagName="ValidatorSample" Src="~/sections/controls/samples/ValidatorSample.ascx" %>
 
 <asp:Content ContentPlaceHolderID="TopCPH" runat="server">
@@ -8,7 +9,11 @@
 
 <asp:Content ContentPlaceHolderID="MainCPH" runat="server">
 	<h2>Mapping</h2>
-	<p>Standard <asp:HyperLink NavigateUrl="~/sections/getting-started/getting-started#tagmapping" runat="server">Validators and ValidationSummary are remapped by tag mapping</asp:HyperLink> to the descendants in Havit.Web.Bootstrap.</p>
+	<p>
+		Standard
+		<asp:HyperLink NavigateUrl="~/sections/getting-started/getting-started#tagmapping" runat="server">Validators and ValidationSummary are remapped by tag mapping</asp:HyperLink>
+		to the descendants in Havit.Web.Bootstrap.
+	</p>
 	<p>Custom legacy Validators from Havit.Web must be manualy remapped:</p>
 	<ul>
 		<li>CheckBoxValidator to Havit.Web.Bootstrap.UI.WebControls.Legacy.CheckBoxValidator</li>
@@ -33,11 +38,11 @@
 	<h2>Styling</h2>
 	<p>Variables for customization are defined in validation.less file.</p>
 
-	<h2>Sample - Required Field Validator with ValidationSummary</h2>	
+	<h2>Sample - Required Field Validator with ValidationSummary</h2>
 	<uc:ValidatorSample ID="ValidatorSampleUC" runat="server" />
 	<uc:ShowControl Title="Validator sample" ShowControlID="ValidatorSampleUC" runat="server" />
 
-	<h2>Validating user controls</h2>	
+	<h2>Validating user controls</h2>
 	<p>Usually for validtion user control, it is used CustomValidator without setting ControlToValidate property. As a result, validator can't use tooltip or add class to a control with invalid value.</p>
 	<p>To be able to set ControlToValidate to user control, this requirements must be met:</p>
 	<ol>
@@ -46,6 +51,6 @@
 	</ol>
 	<p>Mainly, this applies to picker controls like SubjectPicker, RolePicker, etc. where nested TextBox ID is used for ValidationDisplayTargetAttribute.</p>
 
-	<h2>Known Issues</h2>	
+	<h2>Known Issues</h2>
 	<p>When SetFocusOnError is set to true, it does not work properly when used in UpdatePanel (second button with validation does not display tooltip).</p>
 </asp:Content>

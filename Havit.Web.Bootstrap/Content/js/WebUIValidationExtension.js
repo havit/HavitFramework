@@ -97,7 +97,7 @@
 			}
 
 			// remove class and tooltip of passed validators
-			passedValidators.forEach(function(item) {
+			$.each(passedValidators, function (itemIndex, item) {
 				if (item != null) {
 					var validationDisplayTargetControl = item.getAttribute("data-val-validationdisplaytarget");
 					if (validationDisplayTargetControl == null) {
@@ -106,11 +106,11 @@
 
 					var controltovalidateclass = item.getAttribute("data-val-ctvclass"); // control to validate class
 					if ((validationDisplayTargetControl != null) && (validationDisplayTargetControl.length > 0)) {
-						if ($controlToValidate.attr("tooltipReady")) {
-							$("#" + validationDisplayTargetControl).attr("tooltipReady", false).tooltip('destroy'); // destroy existing tooltip
-						}
 						if ((controltovalidateclass != null) && (controltovalidateclass.length > 0)) {
 							$controlToValidate = $("#" + validationDisplayTargetControl);
+							if ($controlToValidate.attr("tooltipReady")) {
+								$("#" + validationDisplayTargetControl).attr("tooltipReady", false).tooltip('destroy'); // destroy existing tooltip
+							}
 							$controlToValidate.removeClass(controltovalidateclass); // remove "validation failed" class to a control to validate
 						}
 					}
@@ -123,7 +123,7 @@
 			var failedValidatorsTooltips = new Array(); // tooltips to create
 
 			// set styles to invalid validations
-			failedValidators.forEach(function(item) {
+			$.each(failedValidators, function (itemIndex, item) {
 				var validationDisplayTargetControl = item.getAttribute("data-val-validationdisplaytarget");
 				if (validationDisplayTargetControl == null) {
 					validationDisplayTargetControl = item.controltovalidate;
@@ -168,7 +168,7 @@
 			});
 
 			// create tooltips from prepared array
-			failedValidatorsTooltips.forEach(function(tooltip) {
+			$.each(failedValidatorsTooltips, function (tooltipIndex, tooltip) {
 				$("#" + tooltip.validationDisplayTargetControl)
 					.attr("tooltipReady", true)
 					.tooltip({
@@ -188,7 +188,7 @@
 
 			// remove previous error message
 			if (Havit_ValidationSummary_ShowToastr_Toastrs) {
-				Havit_ValidationSummary_ShowToastr_Toastrs.forEach(function(toastrItem) {
+				$.each(Havit_ValidationSummary_ShowToastr_Toastrs, function (toastrItemIndex, toastrItem) {
 					toastr.clear(toastrItem);
 				});
 			}

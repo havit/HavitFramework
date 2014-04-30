@@ -250,6 +250,7 @@
     <Content Include="HavitWebBootstrapTests\Controls\ValidationTargetTest.ascx" />
     <Content Include="HavitWebBootstrapTests\ModalDialogTest.aspx" />
     <Content Include="HavitWebBootstrapTests\ModalDialogUserControlTest.ascx" />
+    <Content Include="HavitWebBootstrapTests\PopoverTest.aspx" />
     <Content Include="HavitWebBootstrapTests\SwitchButtonTest.aspx" />
     <Content Include="HavitWebBootstrapTests\CheckBoxListTest.aspx" />
     <Content Include="HavitWebBootstrapTests\RadioButtonListTest.aspx" />
@@ -399,6 +400,13 @@
     </Compile>
     <Compile Include="HavitWebBootstrapTests\ModalDialogUserControlTest.ascx.designer.cs">
       <DependentUpon>ModalDialogUserControlTest.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="HavitWebBootstrapTests\PopoverTest.aspx.cs">
+      <DependentUpon>PopoverTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HavitWebBootstrapTests\PopoverTest.aspx.designer.cs">
+      <DependentUpon>PopoverTest.aspx</DependentUpon>
     </Compile>
     <Compile Include="HavitWebBootstrapTests\SwitchButtonTest.aspx.cs">
       <DependentUpon>SwitchButtonTest.aspx</DependentUpon>

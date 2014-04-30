@@ -106,12 +106,12 @@
 
 					var controltovalidateclass = item.getAttribute("data-val-ctvclass"); // control to validate class
 					if ((validationDisplayTargetControl != null) && (validationDisplayTargetControl.length > 0)) {
+						if ($controlToValidate.attr("tooltipReady")) {
+							$("#" + validationDisplayTargetControl).attr("tooltipReady", false).tooltip('destroy'); // destroy existing tooltip
+						}
 						if ((controltovalidateclass != null) && (controltovalidateclass.length > 0)) {
 							$controlToValidate = $("#" + validationDisplayTargetControl);
 							$controlToValidate.removeClass(controltovalidateclass); // remove "validation failed" class to a control to validate
-						}
-						if ($controlToValidate.attr("tooltipReady")) {
-							$("#" + validationDisplayTargetControl).attr("tooltipReady", false).tooltip('destroy'); // destroy existing tooltip
 						}
 					}
 				}

@@ -15,7 +15,7 @@ namespace Havit.Web.Bootstrap.Tutorial.Section.Samples
 	{
 		#region Title
 		/// <summary>
-		/// ...
+		/// Title.
 		/// </summary>
 		public string Title
 		{
@@ -41,12 +41,6 @@ namespace Havit.Web.Bootstrap.Tutorial.Section.Samples
 			{
 				ViewState["ShowControlID"] = value;
 			}
-		}
-		#endregion
-
-		#region Constructor
-		public ShowControl()
-		{
 		}
 		#endregion
 

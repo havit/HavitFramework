@@ -189,6 +189,7 @@
     </Reference>
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web">
       <Name>System.Web</Name>
     </Reference>
@@ -226,6 +227,9 @@
     </Compile>
     <Compile Include="QueryStringBuilder.cs" />
     <Compile Include="Security\FormsRolesAuthentication.cs" />
+    <Compile Include="Services\Extensions\HealthMonitoringBehaviorAttribute.cs" />
+    <Compile Include="Services\Extensions\HealthMonitoringElement.cs" />
+    <Compile Include="Services\Extensions\HealthMonitoringErrorHandler.cs" />
     <Compile Include="Services\Extensions\SoapExceptionHealthMonitoringHandler.cs" />
     <Compile Include="UI\Adapters\CssAdapters\CssMenuAdapter.cs" />
     <Compile Include="UI\Adapters\CssAdapters\CssTreeViewAdapter.cs" />

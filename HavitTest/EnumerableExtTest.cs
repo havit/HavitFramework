@@ -20,8 +20,8 @@ namespace HavitTest
 
 			var joinedData1 = data1.LeftJoin(data2, left => left, right => right, (left, right) => new { Left = left, Right = right }).ToList();
 			var joinedData2 = data1.LeftJoin(data2, left => left, right => right, (left, right) => 0).ToList();
-			Assert.AreEqual(joinedData1.Count, 14);
-			Assert.AreEqual(joinedData2.Count, 14);
+			Assert.AreEqual(14, joinedData1.Count);
+			Assert.AreEqual(14, joinedData2.Count);
 		}
 		#endregion
 		
@@ -34,8 +34,8 @@ namespace HavitTest
 
 			var joinedData1 = data1.RightJoin(data2, left => left, right => right, (left, right) => new { Left = left, Right = right }).ToList();
 			var joinedData2 = data1.RightJoin(data2, left => left, right => right, (left, right) => 0).ToList();
-			Assert.AreEqual(joinedData1.Count, 16);
-			Assert.AreEqual(joinedData2.Count, 16);
+			Assert.AreEqual(16, joinedData1.Count);
+			Assert.AreEqual(16, joinedData2.Count);
 		}
 		#endregion
 
@@ -48,10 +48,68 @@ namespace HavitTest
 
 			var joinedData1 = data1.FullOuterJoin(data2, left => left, right => right, (left, right) => new { Left = left, Right = right }).ToList();
 			var joinedData2 = data1.FullOuterJoin(data2, left => left, right => right, (left, right) => 0).ToList();
-			Assert.AreEqual(joinedData1.Count, 22); // 5ka je v obou kolekcích
-			Assert.AreEqual(joinedData2.Count, 22); // 5ka je v obou kolekcích
+			Assert.AreEqual(22, joinedData1.Count); // 5ka je v obou kolekcích
+			Assert.AreEqual(22, joinedData2.Count); // 5ka je v obou kolekcích
 		}
 		#endregion
 
+		#region SkipLastTest
+		[TestMethod]
+		public void SkipLastTest()
+		{
+			int count1 = Enumerable.Range(1, 5).SkipLast(3).Count(); //1..5
+			int count2 = Enumerable.Range(1, 5).Concat(Enumerable.Range(1, 5)).SkipLast(3).Count(); //1..5,1..5
+			int count3 = Enumerable.Range(1, 5).SkipLast(1000).Count(); //1..5
+			int count4 = Enumerable.Range(1, 5).SkipLast(0).Count(); //1..5
+			int count5 = Enumerable.Range(1, 5).SkipLast(-5).Count(); //1..5
+			int first = Enumerable.Range(1, 5).SkipLast(3).First();
+			int last = Enumerable.Range(1, 5).SkipLast(3).Last();
+
+			Assert.AreEqual(2, count1);
+			Assert.AreEqual(7, count2);
+			Assert.AreEqual(0, count3);
+			Assert.AreEqual(5, count4);
+			Assert.AreEqual(5, count5);
+			Assert.AreEqual(1, first);
+			Assert.AreEqual(2, last);
+
+			count1 = Enumerable.Range(1, 5).ToList().SkipLast(3).Count(); //1..5
+			count2 = Enumerable.Range(1, 5).ToList().Concat(Enumerable.Range(1, 5)).SkipLast(3).Count(); //1..5,1..5
+			count3 = Enumerable.Range(1, 5).ToList().SkipLast(1000).Count(); //1..5
+			count4 = Enumerable.Range(1, 5).ToList().SkipLast(0).Count(); //1..5
+			count5 = Enumerable.Range(1, 5).ToList().SkipLast(-5).Count(); //1..5
+			first = Enumerable.Range(1, 5).ToList().SkipLast(3).First();
+			last = Enumerable.Range(1, 5).ToList().SkipLast(3).Last();
+
+			Assert.AreEqual(2, count1);
+			Assert.AreEqual(7, count2);
+			Assert.AreEqual(0, count3);
+			Assert.AreEqual(5, count4);
+			Assert.AreEqual(5, count5);
+			Assert.AreEqual(1, first);
+			Assert.AreEqual(2, last);
+		}
+		#endregion
+
+		#region SkipLastWhile
+		[TestMethod]
+		public void SkipLastWhile()
+		{
+			int count1 = Enumerable.Range(1, 5).SkipLastWhile(item => item == 5).Count(); //1..5
+			int count2 = Enumerable.Range(1, 5).SkipLastWhile(item => item >= 3).Count(); //1..5
+			int count3 = Enumerable.Range(1, 5).Concat(Enumerable.Range(1, 5)).SkipLastWhile(item => item == 5).Count(); //1..5,1..5
+			int count4 = Enumerable.Range(1, 5).Concat(Enumerable.Range(1, 5)).SkipLastWhile(item => item >= 3).Count(); //1..5,1..5
+
+			int first = Enumerable.Range(1, 5).SkipLastWhile(item => item >= 3).First();
+			int last = Enumerable.Range(1, 5).SkipLastWhile(item => item >= 3).Last();
+
+			Assert.AreEqual(4, count1);
+			Assert.AreEqual(2, count2);
+			Assert.AreEqual(9, count3);
+			Assert.AreEqual(7, count4);
+			Assert.AreEqual(1, first);
+			Assert.AreEqual(2, last);
+		}
+		#endregion
 	}
 }

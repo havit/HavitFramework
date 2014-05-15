@@ -40,7 +40,7 @@
 
 	<h2>Sample - Required Field Validator with ValidationSummary</h2>
 	<uc:ValidatorSample ID="ValidatorSampleUC" runat="server" />
-	<uc:ShowControl Title="Validator sample" ShowControlID="ValidatorSampleUC" runat="server" />
+	<uc:ShowControl ShowControlID="ValidatorSampleUC" runat="server" />
 
 	<h2>Validating user controls</h2>
 	<p>Usually for validtion user control, it is used CustomValidator without setting ControlToValidate property. As a result, validator can't use tooltip or add class to a control with invalid value.</p>

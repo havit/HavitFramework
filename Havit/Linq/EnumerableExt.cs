@@ -78,5 +78,125 @@ namespace Havit.Linq
 			return _result.ToList();
 		}
 		#endregion
+
+		#region SkipLast
+
+		/// <summary>
+		/// Skip last items.
+		/// </summary>
+		public static IEnumerable<TSource> SkipLast<TSource>(this IEnumerable<TSource> source, int count)
+		{
+			if (count <= 0)
+			{
+				return source.Select(item => item);
+			}
+
+			return SkipLastInternal(source, count);
+		}
+
+		private static IEnumerable<TSource> SkipLastInternal<TSource>(IEnumerable<TSource> source, int count)
+		{
+			if (source is IList<TSource>)
+			{
+				IList<TSource> sourceList = (IList<TSource>)source;
+				int sourceItems = sourceList.Count;
+				
+				for (int i = 0; i < (sourceItems - count); i++)
+				{
+					yield return sourceList[i];
+				}
+			}
+			else
+			{
+				var sourceEnumerator = source.GetEnumerator();
+				var buffer = new TSource[count];
+				int idx;
+
+				for (idx = 0; (idx < count) && sourceEnumerator.MoveNext(); idx++)
+				{
+					buffer[idx] = sourceEnumerator.Current;
+				}
+
+				idx = 0;
+				while (sourceEnumerator.MoveNext())
+				{
+					var item = buffer[idx];
+
+					buffer[idx] = sourceEnumerator.Current;
+
+					idx = (idx + 1)%count;
+
+					yield return item;
+				}
+			}
+		}
+
+		#endregion
+
+		#region SkipLastWhile
+		/// <summary>
+		/// Skip last items.
+		/// </summary>
+		public static IEnumerable<TSource> SkipLastWhile<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+		{
+			var buffer = new List<TSource>();
+
+			foreach (var item in source)
+			{
+				if (predicate(item))
+				{
+					buffer.Add(item);
+				}
+				else
+				{
+					if (buffer.Count > 0)
+					{
+						foreach (var bufferedItem in buffer)
+						{
+							yield return bufferedItem;
+						}
+
+						buffer.Clear();
+					}
+
+					yield return item;
+				}
+			}
+		}
+		#endregion
+
+		#region SkipLastWhile
+		/// <summary>
+		/// Skip last items.
+		/// </summary>
+		public static IEnumerable<TSource> SkipLastWhile<TSource>(this IEnumerable<TSource> source, Func<TSource, int, bool> predicate)
+		{
+			var buffer = new List<TSource>();
+			var idx = 0;
+
+			foreach (var item in source)
+			{
+				if (predicate(item, idx++))
+				{
+					buffer.Add(item);
+				}
+				else
+				{
+					if (buffer.Count > 0)
+					{
+						foreach (var bufferedItem in buffer)
+						{
+							yield return bufferedItem;
+						}
+
+						buffer.Clear();
+					}
+
+					yield return item;
+				}
+			}
+		}
+		#endregion
+
 	}
 }

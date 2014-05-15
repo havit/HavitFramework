@@ -28,11 +28,11 @@
 	<p>
 		<uc:CheckBoxListSample ID="CheckBoxListSampleUC" runat="server" />
 	</p>
-	<uc:ShowControl Title="CheckBoxList Sample" ShowControlID="CheckBoxListSampleUC" runat="server" />
+	<uc:ShowControl ShowControlID="CheckBoxListSampleUC" runat="server" />
 
 	<h2>RadioButtonList Sample</h2>	
 	<p>
 		<uc:RadioButtonListSample ID="RadioButtonListSampleUC" runat="server" />
 	</p>
-	<uc:ShowControl Title="RadioButtonList Sample" ShowControlID="RadioButtonListSampleUC" runat="server" />
+	<uc:ShowControl ShowControlID="RadioButtonListSampleUC" runat="server" />
 </asp:Content>

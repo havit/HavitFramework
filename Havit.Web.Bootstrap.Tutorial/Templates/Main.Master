@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Havit.Web.Bootstrap Tutorial</title>
 	<link href="~/Content/site.css" rel="stylesheet" runat="server" />
+	<link href="../Content/SyntaxHighlighter/shCore.css" rel="stylesheet" />
 	<asp:ContentPlaceHolder ID="HeadTail" runat="server" />    
 </head>
 

@@ -30,6 +30,20 @@ namespace Havit.Web.Bootstrap.Tutorial.Section.Samples
 		}
 		#endregion
 
+		#region Filename
+		public string Filename
+		{
+			get
+			{
+				return (string)ViewState["Filename"];
+			}
+			set
+			{
+				ViewState["Filename"] = value;
+			}
+		}
+		#endregion
+
 		#region ShowControlID
 		public string ShowControlID
 		{
@@ -49,26 +63,42 @@ namespace Havit.Web.Bootstrap.Tutorial.Section.Samples
 		{
 			base.OnPreRender(e);
 
-			UserControl uc = (UserControl)NamingContainer.FindControl(ShowControlID);
-			StringBuilder html = new StringBuilder();
+			string filename;
+			if (!String.IsNullOrEmpty(ShowControlID))
+			{
+				UserControl uc = (UserControl) NamingContainer.FindControl(ShowControlID);
+				filename = uc.AppRelativeVirtualPath;
+			}
+			else
+			{
+				filename = Filename;
+			}
 
 			//unique id of the control
 			var controlID = Guid.NewGuid().ToString();
 			//unique id of the collapse block
 			var collapseID = Guid.NewGuid().ToString();
 
+			StringBuilder html = new StringBuilder();
 			html.Append("<div class=\"panel-group\" id=\"accordion" + controlID + "\">");
 			html.Append("<div class=\"panel panel-default\">");
 			html.Append("<div class=\"panel-heading\">");
 			html.Append("<h4 class=\"panel-title\">");
 			html.Append("<a data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#collapse" + collapseID + "\">");
 
-			html.Append("Show code - " + Title);
+			if (String.IsNullOrEmpty(Title))
+			{
+				html.Append("Show code");
+			}
+			else
+			{
+				html.Append(Title);				
+			}
 			html.Append("</a></h4></div>");
 			html.Append("<div id=\"collapse" + collapseID + "\" class=\"panel-collapse collapse\">");
 			html.Append("<div class=\"panel-body\">");
 
-			html.Append("<pre><code>" + RenderControlToString(uc.AppRelativeVirtualPath) + "</code></pre>");
+			html.Append("<pre><code>" + RenderFileToString(filename) + "</code></pre>");
 			html.Append("</div></div></div>");
 			html.Append("</div>");
 			Text = html.ToString();
@@ -76,17 +106,14 @@ namespace Havit.Web.Bootstrap.Tutorial.Section.Samples
 		}
 		#endregion
 
-		#region RenderControlToString
-		private string RenderControlToString(string controlUrl)
+		#region RenderFileToString
+		private string RenderFileToString(string filename)
 		{
 			// check url validity
-			Contract.Assert<InvalidOperationException>(!String.IsNullOrEmpty(controlUrl), "Control parameter not specified.");
-			Contract.Assert<InvalidOperationException>(!controlUrl.StartsWith(".") && !controlUrl.Contains("..") && !controlUrl.Contains("//") && !controlUrl.Contains("\\\\") && !controlUrl.Contains(":"), "Invalid Url.");
+			Contract.Assert<InvalidOperationException>(!String.IsNullOrEmpty(filename), "Control parameter not specified.");
+			Contract.Assert<InvalidOperationException>(!filename.StartsWith(".") && !filename.Contains("..") && !filename.Contains("//") && !filename.Contains("\\\\") && !filename.Contains(":"), "Invalid Url.");
 
-			// load file and remove @Control header
-			string path = HttpContext.Current.Server.MapPath(controlUrl);
-			string[] lines = File.ReadAllLines(path);
-			//lines = lines.Where(line => !line.Contains("<%@")).ToArray();
+			string[] lines = File.ReadAllLines(HttpContext.Current.Server.MapPath(filename));
 
 			// display file content
 			string content = String.Join(Environment.NewLine, lines).Trim();

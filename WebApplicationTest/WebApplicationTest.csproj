@@ -250,6 +250,7 @@
     <Content Include="HavitWebBootstrapTests\Controls\ValidationTargetTest.ascx" />
     <Content Include="HavitWebBootstrapTests\ModalDialogTest.aspx" />
     <Content Include="HavitWebBootstrapTests\ModalDialogUserControlTest.ascx" />
+    <Content Include="HavitWebBootstrapTests\NavbarTest.aspx" />
     <Content Include="HavitWebBootstrapTests\SwitchButtonTest.aspx" />
     <Content Include="HavitWebBootstrapTests\CheckBoxListTest.aspx" />
     <Content Include="HavitWebBootstrapTests\RadioButtonListTest.aspx" />
@@ -352,6 +353,7 @@
     <Content Include="Scripts\toastr.min.js.map">
       <DependentUpon>toastr.min.js</DependentUpon>
     </Content>
+    <Content Include="Web.sitemap" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_GlobalResources\Glossary.Designer.cs">
@@ -399,6 +401,13 @@
     </Compile>
     <Compile Include="HavitWebBootstrapTests\ModalDialogUserControlTest.ascx.designer.cs">
       <DependentUpon>ModalDialogUserControlTest.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="HavitWebBootstrapTests\NavbarTest.aspx.cs">
+      <DependentUpon>NavbarTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HavitWebBootstrapTests\NavbarTest.aspx.designer.cs">
+      <DependentUpon>NavbarTest.aspx</DependentUpon>
     </Compile>
     <Compile Include="HavitWebBootstrapTests\SwitchButtonTest.aspx.cs">
       <DependentUpon>SwitchButtonTest.aspx</DependentUpon>

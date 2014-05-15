@@ -1,0 +1,73 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Web.UI;
+
+namespace Havit.Web.Bootstrap.UI.WebControls
+{
+	/// <summary>
+	/// Navbar item - Header item.
+	/// </summary>
+	public class NavbarHeaderItem: NavbarItem
+	{
+		#region Text
+		/// <summary>
+		/// Header item text.
+		/// Supports resources pattern.
+		/// </summary>
+		public string Text
+		{
+			get
+			{
+				return (string)(ViewState["Text"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["Text"] = value;
+			}
+		}
+		#endregion
+
+		#region IsDecoration
+		/// <summary>
+		/// Returns trie - header item is decoration
+		/// </summary>
+		public override bool IsDecoration
+		{
+			get { return true; }
+		}
+		#endregion
+
+		#region Constructors
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		public NavbarHeaderItem()
+		{
+		}
+
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		public NavbarHeaderItem(string text) : this()
+		{
+			this.Text = text;
+		}
+		#endregion
+
+		#region Render
+		/// <summary>
+		/// Renders header item.
+		/// </summary>
+		public override void Render(HtmlTextWriter writer, bool showCaret, int nestingLevel)
+		{
+			writer.AddAttribute(HtmlTextWriterAttribute.Class, "dropdown-header");
+			writer.RenderBeginTag(HtmlTextWriterTag.Li);
+			writer.Write(HttpUtilityExt.GetResourceString(Text));
+			writer.RenderEndTag(); // Li
+		}
+		#endregion
+	}
+}

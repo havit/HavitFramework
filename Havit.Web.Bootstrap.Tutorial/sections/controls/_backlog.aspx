@@ -9,19 +9,13 @@
 <asp:Content ContentPlaceHolderID="MainCPH" runat="server">
 	<h2>Controls</h2>
 	<ul>
-		<li>Menu (MenuAdapter?)</li>
+		<li>GridView pagination</li>
 		<li>NumericBox</li>
 		<li>NumericBoxValidator</li>
 		<li>DateTimeBox</li>
 		<li>DateTimeBoxValidator</li>
 		<li>DateRangeBox</li>
 		<li>DateRangeBoxValidator</li>
-		<li>GridView pagination</li>
-		<li>...</li>
-	</ul>
-	<h2>Scripts</h2>
-	<ul>
-		<li>Do not embed in assembly, distribute in NuGet</li>
 		<li>...</li>
 	</ul>
 </asp:Content>

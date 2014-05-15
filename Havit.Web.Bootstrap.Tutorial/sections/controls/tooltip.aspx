@@ -18,5 +18,5 @@
 
 	<h2>Sample</h2>	
 	<uc:TooltipSample ID="TooltipSampleUC" runat="server" />
-	<uc:ShowControl Title="Tooltip Sample" ShowControlID="TooltipSampleUC" runat="server" />
+	<uc:ShowControl ShowControlID="TooltipSampleUC" runat="server" />
 </asp:Content>

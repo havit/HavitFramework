@@ -33,14 +33,14 @@
 	
 	<h2>Sample #1 - Simple Tabs</h2>
 	<uc:TabsSimpleSample id="TabsSimpleSampleUC" runat="server" />
-	<uc:ShowControl Title="Simple Tabs Sample" ShowControlID="TabsSimpleSampleUC" runat="server" />
+	<uc:ShowControl ShowControlID="TabsSimpleSampleUC" runat="server" />
 
 	<h2>Sample #2 - Tabs in Repeater</h2>
 	<uc:TabsInRepeaterSample id="TabsInRepeaterSampleUC" runat="server" />
-	<uc:ShowControl Title="Tabs in Repeater Sample" ShowControlID="TabsInRepeaterSampleUC" runat="server" />
+	<uc:ShowControl ShowControlID="TabsInRepeaterSampleUC" runat="server" />
 
 	<h2>Sample #3 - Appearance</h2>
 	<uc:TabsAppearanceSample id="TabsAppearanceSampleUC" runat="server" />
-	<uc:ShowControl Title="Tabs Appearance Sample" ShowControlID="TabsAppearanceSampleUC" runat="server" />
+	<uc:ShowControl ShowControlID="TabsAppearanceSampleUC" runat="server" />
 
 </asp:Content>

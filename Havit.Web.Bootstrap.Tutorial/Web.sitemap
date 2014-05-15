@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+    <siteMapNode url="#ROOT" title="ROOT" >
+        <siteMapNode url="~/sections/getting-started/getting-started" title="Getting started"  description="" />
+		<siteMapNode title="Controls">
+			<siteMapNode url="~/sections/controls/checkboxlist_radiobuttonlist" title="CheckBoxList and RadioButtonList" />
+			<siteMapNode url="~/sections/controls/modaldialog" title="ModalDialog" />
+			<siteMapNode url="~/sections/controls/navbar" title="Navbar" />
+			<siteMapNode url="~/sections/controls/tabs" title="Tabs" />
+			<siteMapNode url="~/sections/controls/tooltip" title="Tooltip" />
+			<siteMapNode url="~/sections/controls/switchbutton" title="SwitchButton" />
+			<siteMapNode url="~/sections/controls/validators" title="Validators" />
+			<siteMapNode url="~/sections/controls/validation-summary" title="Validation Summary" />
+			<siteMapNode title="-" />
+			<siteMapNode url="~/sections/controls/_backlog" title="Backlog" />
+		</siteMapNode>
+		<siteMapNode url="~/sections/less/less" title="LESS" />
+    </siteMapNode>
+</siteMap>

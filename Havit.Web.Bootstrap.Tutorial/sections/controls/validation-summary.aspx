@@ -28,6 +28,6 @@
 
 	<h2>Sample - Required Field Validator with ValidationSummary</h2>	
 	<uc:ValidatorSample ID="ValidatorSampleUC" runat="server" />
-	<uc:ShowControl Title="Validator sample" ShowControlID="ValidatorSampleUC" runat="server" />
+	<uc:ShowControl ShowControlID="ValidatorSampleUC" runat="server" />
 
 </asp:Content>

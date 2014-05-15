@@ -52,6 +52,8 @@
     <Compile Include="StartUp.cs" />
     <Compile Include="UI\ClientScripts\BootstrapClientScriptHelper.cs" />
     <Compile Include="UI\WebControls\Button.cs" />
+    <Compile Include="UI\WebControls\Infrastructure\LogItemType.cs" />
+    <Compile Include="UI\WebControls\Infrastructure\NavbarViewStateLogEntry.cs" />
     <Compile Include="UI\WebControls\IRadioButtonListCheckBoxList.cs" />
     <Compile Include="UI\WebControls\Legacy\CheckBoxValidator.cs" />
     <Compile Include="UI\WebControls\Legacy\NumericBoxValidator.cs" />
@@ -62,6 +64,15 @@
     </Compile>
     <Compile Include="UI\WebControls\ModalDialog_DialogControl.cs" />
     <Compile Include="UI\WebControls\ModalDialog_DialogSectionControl.cs" />
+    <Compile Include="UI\WebControls\NavbarContainerMode.cs" />
+    <Compile Include="UI\WebControls\NavbarItem.cs" />
+    <Compile Include="UI\WebControls\Navbar.cs" />
+    <Compile Include="UI\WebControls\NavbarItemCollection.cs" />
+    <Compile Include="UI\WebControls\NavbarSection.cs" />
+    <Compile Include="UI\WebControls\NavbarSectionInternal.cs" />
+    <Compile Include="UI\WebControls\NavbarHeaderItem.cs" />
+    <Compile Include="UI\WebControls\NavbarLinkItem.cs" />
+    <Compile Include="UI\WebControls\NavbarSeparatorItem.cs" />
     <Compile Include="UI\WebControls\RadioButtonListCheckBoxListHelper.cs" />
     <Compile Include="UI\WebControls\SwitchButton.cs" />
     <Compile Include="UI\WebControls\TabPanel.cs" />
@@ -107,7 +118,10 @@
   <ItemGroup>
     <Content Include="Content\description.txt" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Content\SyntaxHighlighter\" />
+    <Folder Include="Scripts\SyntaxHighlighter\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

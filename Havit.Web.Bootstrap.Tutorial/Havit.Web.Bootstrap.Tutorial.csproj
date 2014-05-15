@@ -161,6 +161,8 @@
     <Content Include="Scripts\toastr.min.js" />
     <Content Include="sections\controls\samples\ModalDialogSample.ascx" />
     <Content Include="sections\controls\samples\ModalDialogUserControlBaseSample.ascx" />
+    <Content Include="sections\controls\samples\NavbarSitemapSample.ascx" />
+    <Content Include="sections\controls\samples\NavbarBasicSample.ascx" />
     <Content Include="sections\controls\samples\TabsInRepeaterSample.ascx" />
     <Content Include="sections\controls\samples\TabsAppearanceSample.ascx" />
     <Content Include="sections\controls\samples\TabsSimpleSample.ascx" />
@@ -171,6 +173,7 @@
     <Content Include="sections\controls\samples\ValidatorSample.ascx" />
     <Content Include="sections\controls\modaldialog.aspx" />
     <Content Include="sections\controls\switchbutton.aspx" />
+    <Content Include="sections\controls\navbar.aspx" />
     <Content Include="sections\controls\tooltip.aspx" />
     <Content Include="sections\controls\checkboxlist_radiobuttonlist.aspx" />
     <Content Include="sections\controls\tabs.aspx" />
@@ -254,6 +257,7 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+    <Content Include="Web.sitemap" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
@@ -268,6 +272,7 @@
     </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\ScriptManagerConfig.cs" />
+    <Compile Include="My_Page.cs" />
     <Compile Include="sections\samples\ShowControl.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -279,13 +284,6 @@
     </Compile>
     <Compile Include="Templates\Main.Master.designer.cs">
       <DependentUpon>Main.Master</DependentUpon>
-    </Compile>
-    <Compile Include="Templates\Menu.ascx.cs">
-      <DependentUpon>Menu.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Templates\Menu.ascx.designer.cs">
-      <DependentUpon>Menu.ascx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -302,7 +300,10 @@
       <Name>Havit</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Content\SyntaxHighlighter\" />
+    <Folder Include="Scripts\SyntaxHighlighter\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

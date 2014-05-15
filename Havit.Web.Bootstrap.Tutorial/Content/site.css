@@ -1,4 +1,4 @@
-/*! normalize.css v3.0.0 | MIT License | git.io/normalize */
+﻿/*! normalize.css v3.0.0 | MIT License | git.io/normalize */
 html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
@@ -5983,4 +5983,7 @@ button.toast-close-button {
 /* menu auto open on gover */
 ul.nav li.dropdown:hover ul.dropdown-menu {
   display: block;
+}
+.hightlight {
+	background-color: yellow;
 }

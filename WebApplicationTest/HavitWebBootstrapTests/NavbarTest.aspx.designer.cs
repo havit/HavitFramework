@@ -7,63 +7,54 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Havit.Web.Bootstrap.Tutorial.Templates {
+namespace WebApplicationTest.HavitWebBootstrapTests {
     
     
-    public partial class Main {
+    public partial class NavbarTest {
         
         /// <summary>
-        /// HeadTail control.
+        /// FirstNavbar control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder HeadTail;
+        protected global::Havit.Web.Bootstrap.UI.WebControls.Navbar FirstNavbar;
         
         /// <summary>
-        /// MainForm control.
+        /// FirstNavbarLinkItem control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm MainForm;
+        protected global::Havit.Web.Bootstrap.UI.WebControls.NavbarLinkItem FirstNavbarLinkItem;
         
         /// <summary>
-        /// Menu control.
+        /// WebSiteMapDataSource control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl Menu;
+        protected global::System.Web.UI.WebControls.SiteMapDataSource WebSiteMapDataSource;
         
         /// <summary>
-        /// TopPH control.
+        /// SecondNavbar control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder TopPH;
+        protected global::Havit.Web.Bootstrap.UI.WebControls.Navbar SecondNavbar;
         
         /// <summary>
-        /// TopCPH control.
+        /// CountLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder TopCPH;
-        
-        /// <summary>
-        /// MainCPH control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder MainCPH;
+        protected global::System.Web.UI.WebControls.Label CountLabel;
     }
 }

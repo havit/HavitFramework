@@ -20,5 +20,5 @@
 
 	<h2>Sample</h2>	
 	<uc:SwitchButtonSample ID="SwitchButtonSampleUC" runat="server" />
-	<uc:ShowControl Title="SwitchButton Sample" ShowControlID="SwitchButtonSampleUC" runat="server" />
+	<uc:ShowControl ShowControlID="SwitchButtonSampleUC" runat="server" />
 </asp:Content>

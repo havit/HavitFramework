@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" enableLocalization="false" >	
+	<siteMapNode url="#" title="Root">
+
+		<siteMapNode url="#A" title="A">
+			<siteMapNode url="#A1" title="A1"/>
+			<siteMapNode title="-" roles="*" />
+			<siteMapNode title="Section Header"/>
+			<siteMapNode url="#A2" title="A2"/>
+			<siteMapNode title="-"/>
+			<siteMapNode url="#A3" title="A3"/>
+		</siteMapNode>
+		<siteMapNode url="#B" title="B" />
+		<siteMapNode url="#C" title="C" />
+		<siteMapNode url="#D" title="D" />
+
+	</siteMapNode>
+</siteMap>

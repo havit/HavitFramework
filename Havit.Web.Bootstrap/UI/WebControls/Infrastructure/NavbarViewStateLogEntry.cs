@@ -10,7 +10,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls.Infrastructure
 	/// <summary>
 	/// Used for tracking changes of NavbarItemCollection for persisting Navbar/NavbarSection items.
 	/// </summary>	
-	internal class NavbarViewStateLogEntry: IStateManager
+	internal class NavbarViewStateLogEntry : IStateManager
 	{
 		#region ViewState
 		protected StateBag ViewState

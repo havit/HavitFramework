@@ -71,7 +71,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Sets default value to CssClass.
 		/// </summary>
-		/// <param name="e"></param>
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
@@ -114,7 +113,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 					throw new HttpException("Only data items of INavigateUIData are supported for databinding.");
 				}
 				INavigateUIData navigateUIData = (INavigateUIData)menuItemData;
-
 
 				if ((level > 1) && String.IsNullOrEmpty(navigateUIData.NavigateUrl) && (navigateUIData.Name == "-"))
 				{

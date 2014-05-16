@@ -134,7 +134,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Returns true if has visible (non decoration) child item.
 		/// </summary>
-		/// <returns></returns>
 		private bool HasVisibleNonDecorationChildItem()
 		{
 			return Items.Any(item => item.IsVisible && !item.IsDecoration);

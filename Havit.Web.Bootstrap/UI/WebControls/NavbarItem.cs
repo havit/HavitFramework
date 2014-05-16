@@ -10,7 +10,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	/// <summary>
 	/// Abstract class for navbar items.
 	/// </summary>
-	public abstract class NavbarItem: IStateManager
+	public abstract class NavbarItem : IStateManager
 	{
 		#region ID
 		/// <summary>
@@ -73,6 +73,17 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		public abstract bool IsDecoration { get; }
 		#endregion
 
+		#region IsTrackingViewState
+		/// <summary>
+		/// Gets an indicator whether tracking viewstate changes is on.
+		/// </summary>
+		public bool IsTrackingViewState
+		{
+			get { return _isTrackingViewState; }
+		}
+		private bool _isTrackingViewState = false;
+		#endregion
+
 		#region IsVisible
 		/// <summary>
 		/// Returns true if item should be rendered. Includes evaluation of Visible property and VisibleFunc delegate.
@@ -98,16 +109,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		public abstract void Render(HtmlTextWriter writer, bool showCaret, int nestingLevel);
 		#endregion
 
-		#region IStateManager interface implementation
-		/// <summary>
-		/// Gets an indicator whether tracking viewstate changes is on.
-		/// </summary>
-		public bool IsTrackingViewState
-		{
-			get { return _isTrackingViewState; }
-		}
-		private bool _isTrackingViewState = false;
-
+		#region TrackViewState, SaveViewState, LoadViewState
 		/// <summary>
 		/// Switches tracking viewstate changes on.
 		/// </summary>

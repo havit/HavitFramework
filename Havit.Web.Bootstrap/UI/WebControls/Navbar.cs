@@ -144,7 +144,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		}
 		#endregion
 
-
 		#region ToggleNavigationText
 		/// <summary>
 		/// Text to be rendered as navigation toggle (&lt;span class=&amp;sr-only&amp;&gt;Toggle navigation&lt;/span&gt;). Support resources pattern. Default value is empty string.

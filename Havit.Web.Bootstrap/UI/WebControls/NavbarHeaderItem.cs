@@ -10,7 +10,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	/// <summary>
 	/// Navbar item - Header item.
 	/// </summary>
-	public class NavbarHeaderItem: NavbarItem
+	public class NavbarHeaderItem : NavbarItem
 	{
 		#region Text
 		/// <summary>

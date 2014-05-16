@@ -84,7 +84,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Ensures child controls created.
 		/// </summary>
-		/// <param name="e"></param>
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);

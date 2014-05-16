@@ -124,7 +124,7 @@ namespace Havit.Linq
 
 					buffer[idx] = sourceEnumerator.Current;
 
-					idx = (idx + 1)%count;
+					idx = (idx + 1) %  count;
 
 					yield return item;
 				}

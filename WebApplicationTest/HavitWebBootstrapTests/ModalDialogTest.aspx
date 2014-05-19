@@ -35,6 +35,15 @@
 	Ut semper. Vivamus sagittis mattis purus. Duis sem pede, aliquam nec, facilisis ut, ornare id, ipsum. Vivamus tincidunt nunc sed eros. Proin pede. Nullam imperdiet augue vel elit. Ut fermentum mi non eros vestibulum accumsan. Donec laoreet, metus at pellentesque luctus, ante lacus sollicitudin purus, ac varius lorem diam in urna. Ut suscipit sapien in felis. Vestibulum leo. Pellentesque est nunc, sollicitudin ac, imperdiet eget, convallis luctus, lectus. Ut in libero. Proin ante sem, volutpat sit amet, tincidunt sed, imperdiet sed, urna.
 	Suspendisse fringilla diam mattis risus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam consectetuer, ante eget sollicitudin pulvinar, ante tellus malesuada mi, sit amet mollis risus mauris et eros. Nullam risus erat, congue id, pulvinar ut, lacinia ac, odio. Duis a risus vitae lacus blandit ornare. Vivamus vitae sapien. Nulla facilisi. Nam eros augue, vulputate ac, placerat eu, sagittis id, lectus. Aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut enim. Phasellus quis augue rutrum orci tincidunt euismod. Cras metus velit, porta sit amet, eleifend ac, congue quis, orci. Sed eu massa vehicula sapien porttitor fringilla. Integer non purus sit amet tortor viverra imperdiet. Vivamus ipsum. Pellentesque nunc risus, pellentesque id, lacinia in, accumsan ac, orci. Fusce convallis nisl vel ante. Curabitur id tellus in massa sagittis gravida. In vulputate pretium sapien.
 	Integer urna. Nunc ac urna pulvinar purus blandit euismod. Donec in risus. Suspendisse scelerisque euismod nunc. Aenean elementum convallis ante. In rhoncus, diam ac mattis fermentum, urna sapien ornare quam, dignissim lacinia nisl libero et velit. Maecenas odio. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum nisi. Vivamus vestibulum eleifend tellus.</p>
+	
+	<style>
+		.modal-body {
+			overflow: auto;
+		}
 
+		.modal-content {
+			box-shadow: none;
+		}
+	</style>
 
 </asp:Content>

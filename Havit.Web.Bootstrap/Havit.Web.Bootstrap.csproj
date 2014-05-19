@@ -117,6 +117,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\description.txt" />
+    <None Include="Content\js\ModalExtension.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\SyntaxHighlighter\" />

@@ -395,6 +395,8 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			}
 
 			ClientScripts.BootstrapClientScriptHelper.RegisterBootstrapClientScript(this.Page);
+			ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, ClientScripts.BootstrapClientScriptHelper.ModalScriptResourceMappingName);
+
 			if (DragMode == ModalDialogDragMode.Required)
 			{
 				ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, "jquery.ui.combined");
@@ -408,7 +410,12 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			// if we are not able to hide whole dialogContainer, lets hide at least update panel content
 			_updatePanel.ContentTemplateContainer.Visible = DialogVisible;
 
-			_closeButton.Visible = ShowCloseButton;			
+			_closeButton.Visible = ShowCloseButton;
+
+			if (DialogVisible)
+			{
+				ScriptManager.RegisterStartupScript(this.Page, typeof(ModalDialog), "StartUp", "$(document).ready(function() { Havit_BootstrapExtensions_ResizeModal(); });", true);
+			}
 		}
 		#endregion
 

@@ -29,6 +29,12 @@ namespace Havit.Web.Bootstrap.UI.ClientScripts
 		/// Script Resource Definition name for TabPanelExtension.js.
 		/// </summary>
 		internal const string TabPanelExtensionScriptResourceMappingName = "Havit.Web.Bootstrap.TabPanelExtension";
+
+		/// <summary>
+		/// Script Resource Definition name for WebUIValidationExtension.js.
+		/// </summary>
+		internal const string ModalScriptResourceMappingName = "Havit.Web.Bootstrap.ModalExtension";
+
 		#endregion
 
 		#region RegisterScriptResourceMappings
@@ -45,6 +51,7 @@ namespace Havit.Web.Bootstrap.UI.ClientScripts
 
 			ScriptManager.ScriptResourceMapping.AddDefinition(WebUIValidationExtensionScriptResourceMappingName, new ScriptResourceDefinition { Path = "~/Scripts/havit.web.bootstrap/WebUIValidationExtension.js" });
 			ScriptManager.ScriptResourceMapping.AddDefinition(TabPanelExtensionScriptResourceMappingName, new ScriptResourceDefinition { Path = "~/Scripts/havit.web.bootstrap/TabPanelExtension.js" });
+			ScriptManager.ScriptResourceMapping.AddDefinition(ModalScriptResourceMappingName, new ScriptResourceDefinition { Path = "~/Scripts/havit.web.bootstrap/ModalExtension.js" });
 		}
 		#endregion
 

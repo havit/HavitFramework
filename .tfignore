@@ -46,3 +46,4 @@
 \Sandcastle\doc
 \WebApplicationTest\Scripts\Havit.Web.Bootstrap\TabPanelExtension.js
 \WebApplicationTest\Scripts\Havit.Web.Bootstrap\WebUIValidationExtension.js
+\WebApplicationTest\Scripts\Havit.Web.Bootstrap\ModalExtension.js

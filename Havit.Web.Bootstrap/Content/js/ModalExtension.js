@@ -6,7 +6,7 @@ if (!window.jQuery) {
 	(function($) {
 		Havit_BootstrapExtensions_ResizeModal = function() {
 
-			$('.modal').each(function(modalIndex, modal) {
+			$('.modal:visible').each(function(modalIndex, modal) {
 				var $modal = $(modal);
 				var $modalDialog = $modal.children(".modal-dialog");
 				var $modalContent = $modalDialog.children(".modal-content");

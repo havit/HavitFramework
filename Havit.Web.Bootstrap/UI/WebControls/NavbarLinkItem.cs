@@ -85,11 +85,47 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			get { return false; }
 		}
 		#endregion
+
+		#region Enabled
+		/// <summary>
+		/// Indicates whether the item is enabled.
+		/// Default value is true.
+		/// </summary>
+		public bool Enabled
+		{
+			get
+			{
+				return (bool)(ViewState["Enabled"] ?? true);
+			}
+			set
+			{
+				ViewState["Enabled"] = value;
+			}
+		}
+		#endregion
+
+		#region EnabledFunc
+		/// <summary>
+		/// When function returns false, item is disabled.
+		/// </summary>
+		public Func<bool> EnabledFunc { get; set; }
+		#endregion
+
+		#region IsEnabled
+		/// <summary>
+		/// Returns true if item should be rendered. Includes evaluation of Visible property and VisibleFunc delegate.
+		/// </summary>
+		protected virtual bool IsEnabled
+		{
+			get { return Enabled && ((EnabledFunc == null) || EnabledFunc()); }
+		}
+		#endregion
+
 		#region IsVisible
 		/// <summary>
 		/// Returns true if item is visible.
 		/// </summary>
-		public override bool IsVisible
+		protected internal override bool IsVisible
 		{
 			get
 			{
@@ -161,20 +197,42 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// </summary>
 		public override void Render(HtmlTextWriter writer, bool showCaret, int nestingLevel)
 		{
+			string cssClass = "";
+
 			if (Items.Count > 0)
 			{
-				writer.AddAttribute(HtmlTextWriterAttribute.Class, "dropdown");
+				cssClass += "dropdown ";
+			}
+
+			if (!Enabled)
+			{
+				cssClass += "disabled";
+			}
+
+			if (!String.IsNullOrEmpty(cssClass))
+			{
+				writer.AddAttribute(HtmlTextWriterAttribute.Class, cssClass.Trim());
 			}
 			writer.RenderBeginTag(HtmlTextWriterTag.Li);
 
-			writer.AddAttribute(HtmlTextWriterAttribute.Href, String.IsNullOrEmpty(Url) ? "#" : Url);
+			//writer.AddAttribute(HtmlTextWriterAttribute.Href, String.IsNullOrEmpty(Url) ? "#" : Url);
+
+			if (!Enabled)
+			{
+				writer.AddAttribute(HtmlTextWriterAttribute.Onclick, "return false;");
+			}
+			else
+			{
+				writer.AddAttribute(HtmlTextWriterAttribute.Href, String.IsNullOrEmpty(Url) ? "#" : Url);
+			}
+
 			if (Items.Count > 0)
 			{
 				writer.AddAttribute(HtmlTextWriterAttribute.Class, "data-toggle");
 				writer.AddAttribute("data-toggle", "dropdown");
 			}
 			writer.RenderBeginTag(HtmlTextWriterTag.A);
-			writer.Write(HttpUtilityExt.GetResourceString(Text));
+			writer.WriteEncodedText(HttpUtilityExt.GetResourceString(Text));
 
 			if (showCaret && HasVisibleNonDecorationChildItem())
 			{

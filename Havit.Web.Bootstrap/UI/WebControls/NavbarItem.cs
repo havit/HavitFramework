@@ -88,7 +88,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Returns true if item should be rendered. Includes evaluation of Visible property and VisibleFunc delegate.
 		/// </summary>
-		public virtual bool IsVisible
+		protected internal virtual bool IsVisible
 		{
 			get { return Visible && ((VisibleFunc == null) || VisibleFunc()); }
 		}

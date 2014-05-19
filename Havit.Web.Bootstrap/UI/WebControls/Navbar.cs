@@ -271,7 +271,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			{
 				writer.AddAttribute(HtmlTextWriterAttribute.Class, "sr-only");
 				writer.RenderBeginTag(HtmlTextWriterTag.Span);
-				writer.Write(toggleText);
+				writer.WriteEncodedText(toggleText);
 				writer.RenderEndTag(); // span.sr-only
 			}
 

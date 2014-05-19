@@ -65,7 +65,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			writer.AddAttribute(HtmlTextWriterAttribute.Class, "dropdown-header");
 			writer.RenderBeginTag(HtmlTextWriterTag.Li);
-			writer.Write(HttpUtilityExt.GetResourceString(Text));
+			writer.WriteEncodedText(HttpUtilityExt.GetResourceString(Text));
 			writer.RenderEndTag(); // Li
 		}
 		#endregion

@@ -205,12 +205,14 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				{
 					writer.AddAttribute(HtmlTextWriterAttribute.Href, "#");
 					writer.AddAttribute("disabled", "disabled");
+					writer.AddAttribute(HtmlTextWriterAttribute.Onclick, "return false;");
 				}
 				else
 				{
 					writer.AddAttribute(HtmlTextWriterAttribute.Href, "#" + ClientID);
 					writer.AddAttribute("data-toggle", "tab.havit");
 				}
+
 				writer.RenderBeginTag(HtmlTextWriterTag.A);
 				
 				if (_headerTemplateContainer != null)
@@ -219,7 +221,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				}
 				else
 				{
-					writer.Write(HeaderText);
+					writer.WriteEncodedText(HeaderText);
 				}
 
 				writer.RenderEndTag(); //A

@@ -1,7 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/HavitWebBootstrapTests/Bootstrap.Master" AutoEventWireup="true" CodeBehind="NavbarTest.aspx.cs" Inherits="WebApplicationTest.HavitWebBootstrapTests.NavbarTest" %>
 
 <asp:Content ContentPlaceHolderID="MainCPH" runat="server">
-	
 	<bc:Navbar ID="FirstNavbar" ToggleNavigationText="ToggleNavigationText" runat="server">
 		<BrandTemplate>
 			Navbar DEMO
@@ -10,10 +9,10 @@
 			<bc:NavbarLinkItem ID="FirstNavbarLinkItem" Text="Menu 1">
 				<Items>
 					<bc:NavbarHeaderItem Text="Header" />
-					<bc:NavbarLinkItem Text="Text1" Url="#"/>
+					<bc:NavbarLinkItem Text="Text1 &amp; &quot; &lt;" Url="#"/>
 					<bc:NavbarSeparatorItem />
 					<bc:NavbarSeparatorItem />
-					<bc:NavbarLinkItem Text="Text2" Url="#" />
+					<bc:NavbarLinkItem Enabled="false" Text="Text2" Url="#" />
 					<bc:NavbarSeparatorItem />
 				</Items>
 			</bc:NavbarLinkItem>

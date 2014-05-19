@@ -48,11 +48,15 @@
     <UseMerge>false</UseMerge>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AspNet.ScriptManager.jQuery">
-      <HintPath>..\packages\AspNet.ScriptManager.jQuery.2.1.0\lib\net45\AspNet.ScriptManager.jQuery.dll</HintPath>
+    <Reference Include="AspNet.ScriptManager.jQuery, Version=2.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\AspNet.ScriptManager.jQuery.2.1.1\lib\net45\AspNet.ScriptManager.jQuery.dll</HintPath>
     </Reference>
     <Reference Include="AspNet.ScriptManager.jQuery.UI.Combined">
       <HintPath>..\packages\AspNet.ScriptManager.jQuery.UI.Combined.1.10.4\lib\net45\AspNet.ScriptManager.jQuery.UI.Combined.dll</HintPath>
+    </Reference>
+    <Reference Include="Havit.Web.Bootstrap">
+      <HintPath>..\packages\Havit.Web.Bootstrap.1.3.506\lib\net45\Havit.Web.Bootstrap.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.FriendlyUrls">
       <HintPath>..\packages\Microsoft.AspNet.FriendlyUrls.Core.1.0.2\lib\net45\Microsoft.AspNet.FriendlyUrls.dll</HintPath>
@@ -147,14 +151,16 @@
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tooltip.min.css" />
-    <Content Include="Content\toastr.css">
-      <DependentUpon>toastr.less</DependentUpon>
-    </Content>
-    <Content Include="Content\toastr.min.css">
-      <DependentUpon>toastr.css</DependentUpon>
-    </Content>
+    <Content Include="Content\toastr.css" />
+    <Content Include="Content\toastr.min.css" />
+    <Content Include="Scripts\havit.web.bootstrap\ModalExtension.js" />
     <Content Include="Scripts\havit.web.bootstrap\TabPanelExtension.js" />
     <Content Include="Scripts\havit.web.bootstrap\WebUIValidationExtension.js" />
+    <Content Include="Content\toastr.scss" />
+    <Content Include="Content\toastr.less" />
+    <None Include="Scripts\jquery-2.1.1.intellisense.js" />
+    <Content Include="Scripts\jquery-2.1.1.js" />
+    <Content Include="Scripts\jquery-2.1.1.min.js" />
     <Content Include="Scripts\jquery-ui-1.10.4.js" />
     <Content Include="Scripts\jquery-ui-1.10.4.min.js" />
     <Content Include="Scripts\toastr.js" />
@@ -230,16 +236,12 @@
     <Content Include="Content\bootstrap\bootstrap.less" />
     <Content Include="Content\bootstrap\badges.less" />
     <Content Include="Content\bootstrap\alerts.less" />
+    <Content Include="Content\site.less" />
     <Content Include="Content\havit.web.bootstrap\validation.less" />
     <Content Include="Content\havit.web.bootstrap\havit.web.bootstrap.less" />
-    <Content Include="Content\site.less" />
-    <Content Include="Content\toastr.less" />
-    <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="robots.txt" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\jquery-2.1.0.js" />
-    <Content Include="Scripts\jquery-2.1.0.min.js" />
     <Content Include="Scripts\WebForms\DetailsView.js" />
     <Content Include="Scripts\WebForms\Focus.js" />
     <Content Include="Scripts\WebForms\GridView.js" />
@@ -251,8 +253,8 @@
     <Content Include="Scripts\WebForms\WebParts.js" />
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
     <Content Include="Config\healthMonitoring.config" />
-    <Content Include="Scripts\jquery-2.1.0.min.map" />
     <Content Include="Templates\Main.Master" />
+    <Content Include="Scripts\jquery-2.1.1.min.map" />
     <Content Include="Scripts\toastr.min.js.map" />
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -287,10 +289,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Havit.Web.Bootstrap\Havit.Web.Bootstrap.csproj">
-      <Project>{d3275f65-1489-47da-9d39-dec9baf83562}</Project>
-      <Name>Havit.Web.Bootstrap</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Havit.Web\Havit.Web.csproj">
       <Project>{52891fb3-ca20-403b-ac25-7d9ca5738b6b}</Project>
       <Name>Havit.Web</Name>

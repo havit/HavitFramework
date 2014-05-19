@@ -25,6 +25,11 @@
             Script Resource Definition name for TabPanelExtension.js.
             </summary>
         </member>
+        <member name="F:Havit.Web.Bootstrap.UI.ClientScripts.BootstrapClientScriptHelper.ModalScriptResourceMappingName">
+            <summary>
+            Script Resource Definition name for WebUIValidationExtension.js.
+            </summary>
+        </member>
         <member name="M:Havit.Web.Bootstrap.UI.ClientScripts.BootstrapClientScriptHelper.RegisterScriptResourceMappings">
             <summary>
             Register script map resource mapping for "bootstrap", "toastr" and other system names.
@@ -71,6 +76,36 @@
         <member name="P:Havit.Web.Bootstrap.UI.WebControls.Button.UseSubmitBehavior">
             <summary>
             Ensures rendering type="button" instead of type="submit".
+            </summary>
+        </member>
+        <member name="T:Havit.Web.Bootstrap.UI.WebControls.Infrastructure.NavbarViewStateLogEntry">
+            <summary>
+            Used for tracking changes of NavbarItemCollection for persisting Navbar/NavbarSection items.
+            </summary>	
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.Infrastructure.NavbarViewStateLogEntry.#ctor(System.Object)">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.Infrastructure.NavbarViewStateLogEntry.#ctor(System.Boolean,Havit.Web.Bootstrap.UI.WebControls.Infrastructure.LogItemType,System.Nullable{System.Int32},System.Type)">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.Infrastructure.NavbarViewStateLogEntry.TrackViewState">
+            <summary>
+            Switches tracking viewstate changes on.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.Infrastructure.NavbarViewStateLogEntry.SaveViewState">
+            <summary>
+            Saves viewstate.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.Infrastructure.NavbarViewStateLogEntry.LoadViewState(System.Object)">
+            <summary>
+            Loads viewstate.
             </summary>
         </member>
         <member name="T:Havit.Web.Bootstrap.UI.WebControls.Legacy.CheckBoxValidator">
@@ -141,6 +176,716 @@
         <member name="P:Havit.Web.Bootstrap.UI.WebControls.Legacy.NumericBoxValidator.ControlToValidateInvalidCssClass">
             <summary>
             CssClass name which is added to ControlToValidate when validation fails. 
+            </summary>
+        </member>
+        <member name="T:Havit.Web.Bootstrap.UI.WebControls.ModalDialog">
+            <summary>
+            Modal dialog with support of Ajax (by nested UpdatePanel). Support header, content and footer sections.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.ModalDialog.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.ModalDialog.CreateChildControls">
+            <summary>
+            Creates nested controls.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.ModalDialog.GetContentContainer">
+            <summary>
+            Returns control to which to instantiate content template.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.ModalDialog.GetDialogContainer">
+            <summary>
+            Returns control which handles dialog behavior and operations.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.ModalDialog.OnDialogShown(System.EventArgs)">
+            <summary>
+            Handles show dialog event.
+            And updates nested UpdatePanel.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.ModalDialog.OnDialogHidden(System.EventArgs)">
+            <summary>
+            Handles hide dialog event.
+            And updates nested UpdatePanel.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.ModalDialog.OnPreRender(System.EventArgs)">
+            <summary>
+            PreRender.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.ModalDialog.GetShowScript">
+            <summary>
+            Vrátí skript pro zobrazení dialogu na klientské straně.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.ModalDialog.GetHideScript">
+            <summary>
+            Vrátí skript pro skrytí dialogu na klientské straně.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.ModalDialog.HeaderTemplate">
+            <summary>
+            Dialog header template.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.ModalDialog.FooterTemplate">
+            <summary>
+            Dialog footer template.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.ModalDialog.HeaderText">
+            <summary>
+            Dialog header text. Used only when HeaderTemplate not used.
+            HeaderText is rendered in &lt;h4&gt; element with css class "modal-title".
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.ModalDialog.Triggers">
+            <summary>
+            Nested UpdatePanel's triggers.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.ModalDialog.Width">
+            <summary>
+            Šířka dialogu v pixelech.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.ModalDialog.UseAnimations">
+            <summary>
+            Get or sets whether use animations when showing and hiding dialog.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.ModalDialog.CssClass">
+            <summary>
+            Css class to be used for dialog - used in element with modal-dialog class.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.ModalDialog.HeaderCssClass">
+            <summary>
+            Css class to be used for header - used in element with modal-header class.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.ModalDialog.ContentCssClass">
+            <summary>
+            Css class to be used for content - used in element with modal-body class.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.ModalDialog.FooterCssClass">
+            <summary>
+            Css class to be used for footer - used in element with modal-footer class.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.ModalDialog.ShowCloseButton">
+            <summary>
+            Indicates whether to show close button.
+            Default value is true.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.ModalDialog.CloseOnEscapeKey">
+            <summary>
+            Indicates whether to close dialog on escape key pressed.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.ModalDialog.DragMode">
+            <summary>
+            Modal dialog drag mode.
+            Default value is ModalDialogDragMode.IfAvailable.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.Bootstrap.UI.WebControls.ModalDialog.DialogControl">
+            <summary>
+            Control for rendering dialog.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.ModalDialog.DialogControl.#ctor(Havit.Web.Bootstrap.UI.WebControls.ModalDialog)">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="T:Havit.Web.Bootstrap.UI.WebControls.ModalDialog.DialogSectionControl">
+            <summary>
+            Control for rendering control section (header, footer, content).
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.ModalDialog.DialogSectionControl.#ctor(System.Func{System.String})">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.Bootstrap.UI.WebControls.ModalDialogDragMode">
+            <summary>
+            Modal Dialog Drag Mode.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.Bootstrap.UI.WebControls.ModalDialogDragMode.Required">
+            <summary>
+            Drag mode is required.
+            Requires script resource definition "jquery.ui.combined".
+            </summary>
+        </member>
+        <member name="F:Havit.Web.Bootstrap.UI.WebControls.ModalDialogDragMode.IfAvailable">
+            <summary>
+            Drag mode is used when drag support is available.
+            Uses script resource definition "jquery.ui.combined".
+            </summary>
+        </member>
+        <member name="F:Havit.Web.Bootstrap.UI.WebControls.ModalDialogDragMode.No">
+            <summary>
+            No dragging support.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.Bootstrap.UI.WebControls.ModalDialogUserControlBase">
+            <summary>
+            User Control for dialog behavior and operation.
+            Must contain exacly one Havit.Web.Bootstrap.UI.WebControls.ModalDialog control.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.ModalDialogUserControlBase.GetModalDialogControl">
+            <summary>
+            Return nested ModalDialog handling dialog behavior and appereance.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.ModalDialogUserControlBase.ModalDialog">
+            <summary>
+            Modal dialog control handling dialog behavior and operations.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.ModalDialogUserControlBase.Triggers">
+            <summary>
+            Nested UpdatePanel's Triggers.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.Bootstrap.UI.WebControls.NavbarContainerMode">
+            <summary>
+            Mode of rendering container in Navbar.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.Bootstrap.UI.WebControls.NavbarContainerMode.Container">
+            <summary>
+            Render as "container".
+            </summary>
+        </member>
+        <member name="F:Havit.Web.Bootstrap.UI.WebControls.NavbarContainerMode.ContainerFluid">
+            <summary>
+            Render as "container-fluid".
+            </summary>
+        </member>
+        <member name="F:Havit.Web.Bootstrap.UI.WebControls.NavbarContainerMode.None">
+            <summary>
+            Do not render container.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.Bootstrap.UI.WebControls.NavbarItem">
+            <summary>
+            Abstract class for navbar items.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarItem.Render(System.Web.UI.HtmlTextWriter,System.Boolean,System.Int32)">
+            <summary>
+            Renders navbar item.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarItem.TrackViewState">
+            <summary>
+            Switches tracking viewstate changes on.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarItem.SaveViewState">
+            <summary>
+            Saves viewstate.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarItem.LoadViewState(System.Object)">
+            <summary>
+            Loads viewstate.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.NavbarItem.ID">
+            <summary>
+            Item ID.
+            (enableds to generate property in ASP.NET codebehind designer file).
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.NavbarItem.ViewState">
+            <summary>
+            ViewState for storing item state.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.NavbarItem.Visible">
+            <summary>
+            When false, item is hidden (not rendered) not rendered.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.NavbarItem.VisibleFunc">
+            <summary>
+            When function returns false, item is hidden (not rendered).
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.NavbarItem.IsDecoration">
+            <summary>
+            Returns true when item is a decoration.		
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.NavbarItem.IsTrackingViewState">
+            <summary>
+            Gets an indicator whether tracking viewstate changes is on.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.NavbarItem.IsVisible">
+            <summary>
+            Returns true if item should be rendered. Includes evaluation of Visible property and VisibleFunc delegate.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.Bootstrap.UI.WebControls.Navbar">
+            <summary>
+            Navbar control for displaying bootstrap navbar.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.Navbar.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.Navbar.OnInit(System.EventArgs)">
+            <summary>
+            Ensures child control creation.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.Navbar.CreateChildControls">
+            <summary>
+            Ensures child control creation.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.Navbar.Render(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Renders menu with brand template, menu items and right menu section.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.Navbar.MenuItems">
+            <summary>
+             Navbar items.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.Navbar.BrandTemplate">
+            <summary>
+            Brand template - template for rendering brand section of menu.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.Navbar.BrandUrl">
+            <summary>
+            Url for rendering in brand.
+            If value is empty string, element A for navbar-brand is not rendered.
+            Default value is ~/.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.Navbar.RightSectionTemplate">
+            <summary>
+            Brand template - template for rendering brand section of menu.
+            Usualy is surrounded with element a with navbar-brand class (but not when BrandUrl is an empty string).
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.Navbar.ShowCaret">
+            <summary>
+            Indicates whether render caret for submenus.
+            Default false.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.Navbar.CssClass">
+            <summary>
+            Css class for menu element.
+            Default value is &quot;navbar navbar-default&quot;.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.Navbar.ContainerMode">
+            <summary>
+            Container element mode.
+            Default value ContainerFluid.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.Navbar.ToggleNavigationText">
+            <summary>
+            Text to be rendered as navigation toggle (&lt;span class=&amp;sr-only&amp;&gt;Toggle navigation&lt;/span&gt;). Support resources pattern. Default value is empty string.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.Navbar.DataSource">
+            <summary>
+            Gets or sets the data source for menu items.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.Navbar.DataSourceID">
+            <summary>
+            Gets or sets the data source control ID for menu items.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.Bootstrap.UI.WebControls.NavbarItemCollection">
+            <summary>
+            Collection of NavbarItem (and descendants) items.
+            Implements IStateManager to be able to store collection in viewstate.
+            Implements ICollection to be used as a property type in ASPX markup code (ie. Navbar.MenuItems).
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarItemCollection.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarItemCollection.#ctor(System.Collections.Generic.IEnumerable{Havit.Web.Bootstrap.UI.WebControls.NavbarItem})">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarItemCollection.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the collection.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarItemCollection.Add(Havit.Web.Bootstrap.UI.WebControls.NavbarItem)">
+            <summary>
+            Adds item to the end of collection.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarItemCollection.Insert(System.Int32,Havit.Web.Bootstrap.UI.WebControls.NavbarItem)">
+            <summary>
+            Insert item at the index.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarItemCollection.Clear">
+            <summary>
+            Clears collection.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarItemCollection.IndexOf(Havit.Web.Bootstrap.UI.WebControls.NavbarItem)">
+            <summary>
+            Returns index of item in collection.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarItemCollection.Contains(Havit.Web.Bootstrap.UI.WebControls.NavbarItem)">
+            <summary>
+            Returns true if item is in collection.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarItemCollection.CopyTo(Havit.Web.Bootstrap.UI.WebControls.NavbarItem[],System.Int32)">
+            <summary>
+            Copies items to array.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarItemCollection.Remove(Havit.Web.Bootstrap.UI.WebControls.NavbarItem)">
+            <summary>
+            If item is in collection it is removed.
+            Returns true, if item was removed.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarItemCollection.RemoveAt(System.Int32)">
+            <summary>
+            Remove item at the index.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarItemCollection.SetDirty">
+            <summary>
+            Set all log items dirty (to be stored in viewstate) including all children.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarItemCollection.System#Collections#ICollection#CopyTo(System.Array,System.Int32)">
+            <summary>
+            Copies items to array.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarItemCollection.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the collection.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.NavbarItemCollection.Count">
+            <summary>
+            Return count of collection items.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.NavbarItemCollection.IsReadOnly">
+            <summary>
+            Always returns false.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.NavbarItemCollection.Item(System.Int32)">
+            <summary>
+            Returns item at the index.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.NavbarItemCollection.System#Collections#ICollection#SyncRoot">
+            <summary>
+            Gets an object that can be used to synchronize access to the collection.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.NavbarItemCollection.System#Collections#ICollection#IsSynchronized">
+            <summary>
+            Returns true if access to the collection is synchronized (thread safe); otherwise, false.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.Bootstrap.UI.WebControls.NavbarSection">
+            <summary>
+            Control to be used independently or (internally) in Navbar for displaying bootstrap menu items.
+            </summary>
+        </member>
+        <member name="F:Havit.Web.Bootstrap.UI.WebControls.NavbarSection._navbarSectionInternal">
+            <summary>
+            Nested NavbarSectionInternal control.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarSection.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarSection.OnInit(System.EventArgs)">
+            <summary>
+            Ensures child controls created.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarSection.CreateChildControls">
+            <summary>
+            Adds NavbarSectionInternal control to control tree.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.NavbarSection.MenuItems">
+            <summary>
+             Navbar items.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.NavbarSection.DataSource">
+            <summary>
+            Gets or sets the data source for menu items.
+            </summary>		
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.NavbarSection.DataSourceID">
+            <summary>
+            Gets or sets the data source control ID for menu items.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.NavbarSection.ShowCaret">
+            <summary>
+            Indicates whether render caret for submenus.
+            Default false.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.Bootstrap.UI.WebControls.NavbarSectionInternal">
+            <summary>
+            Internal representation of NavbarSection. Main reason is to hide WebControl API from general usage.
+            Therefore only NavbarSection control is public (and is used as a wrapper for this control).
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarSectionInternal.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarSectionInternal.OnInit(System.EventArgs)">
+            <summary>
+            Sets default value to CssClass.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarSectionInternal.PerformDataBinding">
+            <summary>
+            Creates menu items from data source.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarSectionInternal.CreateMenuItems(System.Web.UI.IHierarchicalEnumerable,System.Collections.Generic.IList{Havit.Web.Bootstrap.UI.WebControls.NavbarItem},System.Int32)">
+            <summary>
+            Create menu items from data source to menu collection. Creating is limited to two levels of nesting.
+            </summary>
+            <param name="menuDataSource">Data source for menu items.</param>
+            <param name="targetContainer">Container for menu items.</param>
+            <param name="level">Nesting level.</param>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarSectionInternal.RenderContents(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Renders menu items.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarSectionInternal.TrackViewState">
+            <summary>
+            Set tracking of viewstae for menu items.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarSectionInternal.SaveViewState">
+            <summary>
+            Adds menu items to saved state.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarSectionInternal.LoadViewState(System.Object)">
+            <summary>
+            Add loading saved state od menu items.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.NavbarSectionInternal.MenuItems">
+            <summary>
+             Navbar items.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.NavbarSectionInternal.ShowCaret">
+            <summary>
+            Indicates whether render caret for submenus.
+            Default false.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.NavbarSectionInternal.TagKey">
+            <summary>
+            Returns HtmlTextWriterTag.Ul to be used for control rendering.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.Bootstrap.UI.WebControls.NavbarHeaderItem">
+            <summary>
+            Navbar item - Header item.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarHeaderItem.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarHeaderItem.#ctor(System.String)">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarHeaderItem.Render(System.Web.UI.HtmlTextWriter,System.Boolean,System.Int32)">
+            <summary>
+            Renders header item.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.NavbarHeaderItem.Text">
+            <summary>
+            Header item text.
+            Supports resources pattern.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.NavbarHeaderItem.IsDecoration">
+            <summary>
+            Returns trie - header item is decoration
+            </summary>
+        </member>
+        <member name="T:Havit.Web.Bootstrap.UI.WebControls.NavbarLinkItem">
+            <summary>
+            Navbar item - Link item.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarLinkItem.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarLinkItem.#ctor(System.String,System.String,System.Func{System.Boolean},Havit.Web.Bootstrap.UI.WebControls.NavbarItem[])">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarLinkItem.#ctor(System.String,System.String,Havit.Web.Bootstrap.UI.WebControls.NavbarItem[])">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarLinkItem.HasVisibleNonDecorationChildItem">
+            <summary>
+            Returns true if has visible (non decoration) child item.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarLinkItem.SetDirty">
+            <summary>
+            Set child items dirty.
+            Used internally for tracking items state.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarLinkItem.Render(System.Web.UI.HtmlTextWriter,System.Boolean,System.Int32)">
+            <summary>
+            Renders menu items.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarLinkItem.RenderChildren(System.Web.UI.HtmlTextWriter,System.Boolean,System.Int32)">
+            <summary>
+            Renders child items.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarLinkItem.TrackViewState">
+            <summary>
+            Switches tracking viewstate changes on.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarLinkItem.SaveViewState">
+            <summary>
+            Saves viewstate.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarLinkItem.LoadViewState(System.Object)">
+            <summary>
+            Loads viewstate.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.NavbarLinkItem.Items">
+            <summary>
+            Child items.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.NavbarLinkItem.AutoHide">
+            <summary>
+            Enables item autohide when set to true.
+            When menu item has not any visible children (or has visible only decoration items)
+            AND items has not set Url, menu item is automatically hidden.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.NavbarLinkItem.Text">
+            <summary>
+            Header item text.
+            Supports resources pattern.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.NavbarLinkItem.Url">
+            <summary>
+            Header item url.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.NavbarLinkItem.IsDecoration">
+            <summary>
+            Returns false - menu items is not a decoration.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.NavbarLinkItem.Enabled">
+            <summary>
+            Indicates whether the item is enabled.
+            Default value is true.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.NavbarLinkItem.EnabledFunc">
+            <summary>
+            When function returns false, item is disabled.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.NavbarLinkItem.IsEnabled">
+            <summary>
+            Returns true if item should be rendered. Includes evaluation of Visible property and VisibleFunc delegate.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.NavbarLinkItem.IsVisible">
+            <summary>
+            Returns true if item is visible.
+            </summary>
+        </member>
+        <member name="T:Havit.Web.Bootstrap.UI.WebControls.NavbarSeparatorItem">
+            <summary>
+            Navbar item - separator.
+            </summary>
+        </member>
+        <member name="M:Havit.Web.Bootstrap.UI.WebControls.NavbarSeparatorItem.Render(System.Web.UI.HtmlTextWriter,System.Boolean,System.Int32)">
+            <summary>
+            Renders navbar separator.
+            </summary>
+        </member>
+        <member name="P:Havit.Web.Bootstrap.UI.WebControls.NavbarSeparatorItem.IsDecoration">
+            <summary>
+            Navbar separator is a decoration.
             </summary>
         </member>
         <member name="T:Havit.Web.Bootstrap.UI.WebControls.RadioButtonListCheckBoxListHelper">

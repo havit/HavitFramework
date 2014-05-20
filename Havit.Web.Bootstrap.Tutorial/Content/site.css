@@ -5973,6 +5973,12 @@ button.toast-close-button {
     width: 25em;
   }
 }
+.navbar-toggle {
+  border-color: #428bca;
+}
+.icon-bar {
+  background-color: #428bca;
+}
 .jumbotron {
   padding-top: 10px;
   padding-bottom: 10px;
@@ -5980,9 +5986,14 @@ button.toast-close-button {
   color: white;
   background: #428bca;
 }
-/* menu auto open on hover */
-ul.nav li.dropdown:hover ul.dropdown-menu {
-  display: block;
+@media (min-width: 768px) {
+  /* menu auto open on hover */
+  ul.nav li.dropdown:hover ul.dropdown-menu {
+    display: block;
+  }
+}
+.modal-body {
+  overflow: auto;
 }
 .hightlight {
   background: yellow;

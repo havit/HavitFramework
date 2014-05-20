@@ -18,7 +18,7 @@
 	</ul>
 	
 	<h2>ModalDialog</h2>
-	<p>Control which handles dialog appereance &amp; behavior.</p>
+	<p>Control which handles dialog appereance &amp; behavior. Dialog is set maximum height to be able to scroll the content of dialog without page scrollbar.</p>
 	<h3>Properties</h3>
 	<ul>
 		<li>HeaderTemplate, ContentTemplate, FooterTemplate</li>
@@ -38,6 +38,9 @@
 		<li>IfAvailable - If script resource definition "jquery.ui.combined" exists or if jQuery UI is registered by any other way, dragging is enabled.</li>
 		<li>No - No dragging enabled.</li>
 	</ul>
+	
+	<h3>Known issue</h3>
+	<p>Dialog size is recalculated AFTER dialog is shown. It causes a small flicker when dialog showing.</p>
 
 	<h2>Sample</h2>
 	<p><uc:ModalDialogUserControlBaseSample ID="ModalDialogUserControlBaseSampleUC" runat="server" /></p>

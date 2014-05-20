@@ -262,6 +262,7 @@
     <Content Include="HavitWebTests\CollapserTest.aspx" />
     <Content Include="HavitWebTests\ControlsValuesPersisterTest.aspx" />
     <EmbeddedResource Include="SystemWebTests\b.js" />
+    <Content Include="HavitWebTests\EditViewTest.aspx" />
     <Content Include="HavitWebTests\FormViewTest.aspx" />
     <Content Include="HavitWebTests\GridViewExt-Filtr.aspx" />
     <Content Include="HavitWebBootstrapTests\Bootstrap.Master" />
@@ -482,6 +483,13 @@
     </Compile>
     <Compile Include="HavitWebTests\ControlsValuesPersisterTest.aspx.designer.cs">
       <DependentUpon>ControlsValuesPersisterTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HavitWebTests\EditViewTest.aspx.cs">
+      <DependentUpon>EditViewTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HavitWebTests\EditViewTest.aspx.designer.cs">
+      <DependentUpon>EditViewTest.aspx</DependentUpon>
     </Compile>
     <Compile Include="HavitWebTests\FormViewTest.aspx.cs">
       <DependentUpon>FormViewTest.aspx</DependentUpon>

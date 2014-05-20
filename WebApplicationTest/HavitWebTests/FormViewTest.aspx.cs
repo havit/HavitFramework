@@ -34,6 +34,5 @@ namespace WebApplicationTest.HavitWebTests
 			MyFormView.DataSource = Uzivatel.GetObject(10);
 		}
 		#endregion
-
 	}
 }

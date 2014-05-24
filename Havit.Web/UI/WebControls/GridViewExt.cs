@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Web;
 using System.Web.UI.WebControls;
 using System.Web.UI;
 using Havit.Collections;
@@ -205,6 +206,23 @@ namespace Havit.Web.UI.WebControls
 		private CommandFieldStyle _commandFieldStyle;
 		#endregion
 
+		#region PagerRenderMode
+		/// <summary>
+		/// Pager render mode.
+		/// </summary>
+		public PagerRenderMode PagerRenderMode
+		{
+			get
+			{
+				return (PagerRenderMode)(ViewState["PagerRenderMode"] ?? PagerRenderMode.Standard);
+			}
+			set
+			{
+				ViewState["PagerRenderMode"] = value;
+			}
+		}
+		#endregion
+
 		#region PagerSettingsAllPagesButtonImageUrl
 		/// <summary>
 		/// ImageUrl tlačítka pro vypnutí stránkování. Má přednost před PagerSettingsAllPagesButtonText.
@@ -342,6 +360,23 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		private bool overrideShowHeaderWhenEmptyToTrue = false;
+		#endregion
+
+		#region FirstDisplayedPageIndex
+		/// <summary>
+		/// Pomocná vlastnost pro perzistenci stavu bootstrap pageru
+		/// </summary>
+		private int FirstDisplayedPageIndex
+		{
+			get
+			{
+				return (int)(this.ViewState["FirstDisplayedPageIndexExt"] ?? -1);
+			}
+			set
+			{
+				this.ViewState["FirstDisplayedPageIndexExt"] = value;
+			}
+		}
 		#endregion
 
 		#region RequiresDataBinding (new), SetRequiresDatabinding
@@ -1429,10 +1464,39 @@ namespace Havit.Web.UI.WebControls
 
 		#region InitializePager
 		/// <summary>
-		/// Initializes the pager row displayed when the paging feature is enabled.
+		/// Pokud je nastavena PagerTemplate nebo PagerRenderMode Standard, pouižje se vestavěný způsob generování pageru.
+		/// Pokud je PagerRenderMode BootstrapPagination, použije se způsob renderování odpovídající Pagination v bootstrapu.
 		/// </summary>
-		/// <param name="row">A <see cref="T:System.Web.UI.WebControls.GridViewRow"/> that represents the pager row to initialize. </param><param name="columnSpan">The number of columns the pager row should span. </param><param name="pagedDataSource">A <see cref="T:System.Web.UI.WebControls.PagedDataSource"/> that represents the data source. </param>
 		protected override void InitializePager(GridViewRow row, int columnSpan, PagedDataSource pagedDataSource)
+		{
+			if (PagerTemplate != null)
+			{
+				InitializeStandardPager(row, columnSpan, pagedDataSource);
+			}
+			else
+			{
+				switch (PagerRenderMode)
+				{
+					case PagerRenderMode.Standard:
+						InitializeStandardPager(row, columnSpan, pagedDataSource);
+						break;
+
+					case PagerRenderMode.BootstrapPagination:
+						this.InitializeBootstrapPagination(row, columnSpan, pagedDataSource);
+						break;
+
+					default:
+						throw new NotSupportedException("PagerRenderMode not supported.");
+				}
+			}
+		}
+		#endregion
+
+		#region InitializeStandardPager
+		/// <summary>
+		/// Vytvoří standardní pager a (pokud je to povoleno a není použito PagerTemplate) přidá do něj tlačítko pro zobrazení všech stránek.
+		/// </summary>
+		private void InitializeStandardPager(GridViewRow row, int columnSpan, PagedDataSource pagedDataSource)
 		{
 			base.InitializePager(row, columnSpan, pagedDataSource);
 			// pokud je použita výchozí šablona a je povoleno tlačítko pro vypnutí stránkování, přidáme jej
@@ -1472,9 +1536,214 @@ namespace Havit.Web.UI.WebControls
 					row2.Cells.Add(cell);
 					cell.Controls.Add(allPagesControl);
 				}
-
 			}
-		} 
+		}
+		#endregion
+
+		#region Bootstrap pagination - InitializeBootstrapPagination, CreateBootstrapNumericPagination, CreateBootstrapNextPrevPagination, AddBootstrapPagerButton
+		#region InitializeBootstrapPagination
+		/// <summary>
+		/// Vytvoří stránkování pomocí Pagionation v bootstrapu.
+		/// Tato metoda jen rozděluje práci na další metody (deleguje).
+		/// </summary>
+		private void InitializeBootstrapPagination(GridViewRow row, int columnSpan, PagedDataSource pagedDataSource)
+		{
+			TableCell cell = new TableCell();
+			if (columnSpan > 1)
+			{
+				cell.ColumnSpan = columnSpan;
+			}
+			WebControl paginationControl = new WebControl(HtmlTextWriterTag.Ul);
+			paginationControl.CssClass = "pagination";
+
+			switch (PagerSettings.Mode)
+			{
+				case PagerButtons.NextPrevious:
+					this.CreateBootstrapNextPrevPagination(paginationControl, pagedDataSource, false);
+					break;
+
+				case PagerButtons.Numeric:
+					this.CreateBootstrapNumericPagination(paginationControl, pagedDataSource, false);
+					break;
+
+				case PagerButtons.NextPreviousFirstLast:
+					this.CreateBootstrapNextPrevPagination(paginationControl, pagedDataSource, true);
+					break;
+
+				case PagerButtons.NumericFirstLast:
+					this.CreateBootstrapNumericPagination(paginationControl, pagedDataSource, true);
+					break;
+			}
+
+			if (PagerSettingsShowAllPagesButton)
+			{
+				LinkButton allPagesLinkButton = new LinkButton();
+				allPagesLinkButton.ID = "AllPagesLinkButton";
+				allPagesLinkButton.Text = HttpUtilityExt.GetResourceString(this.PagerSettingsAllPagesButtonText);
+				allPagesLinkButton.Click += new EventHandler(AllPagesLinkButton_Click);
+				allPagesLinkButton.CausesValidation = false;
+				WebControl liControl = new WebControl(HtmlTextWriterTag.Li);
+				liControl.Controls.Add(allPagesLinkButton);
+				paginationControl.Controls.Add(liControl);
+			}
+
+			cell.Controls.Add(paginationControl);
+			row.Cells.Add(cell);
+		}
+		#endregion
+
+		#region CreateBootstrapNumericPagination
+		/// <summary>
+		/// Vytvoří pagination s čísly stránek.
+		/// </summary>
+		private void CreateBootstrapNumericPagination(Control container, PagedDataSource pagedDataSource, bool addFirstLastPageButtons)
+		{
+			PagerSettings pagerSettings = this.PagerSettings;
+			#region Určení položek, které budou v pageru - vykopírováno Reflectorem.
+			int pageCount = pagedDataSource.PageCount;
+			int currentPageIndexDenormalized = pagedDataSource.CurrentPageIndex + 1;
+			int pageButtonCount = pagerSettings.PageButtonCount;
+
+			int num4 = pageButtonCount;
+			int num5 = this.FirstDisplayedPageIndex + 1;
+			if (pageCount < num4)
+			{
+				num4 = pageCount;
+			}
+			int firstVisiblePageIndexDenormalized = 1;
+			int lastVisiblePageIndexDenormalized = num4;
+			if (currentPageIndexDenormalized > lastVisiblePageIndexDenormalized)
+			{
+				int num8 = pagedDataSource.CurrentPageIndex / pageButtonCount;
+				bool flag = ((currentPageIndexDenormalized - num5) >= 0) && ((currentPageIndexDenormalized - num5) < pageButtonCount);
+				if ((num5 > 0) && flag)
+				{
+					firstVisiblePageIndexDenormalized = num5;
+				}
+				else
+				{
+					firstVisiblePageIndexDenormalized = (num8 * pageButtonCount) + 1;
+				}
+				lastVisiblePageIndexDenormalized = (firstVisiblePageIndexDenormalized + pageButtonCount) - 1;
+				if (lastVisiblePageIndexDenormalized > pageCount)
+				{
+					lastVisiblePageIndexDenormalized = pageCount;
+				}
+				if (((lastVisiblePageIndexDenormalized - firstVisiblePageIndexDenormalized) + 1) < pageButtonCount)
+				{
+					firstVisiblePageIndexDenormalized = Math.Max(1, (lastVisiblePageIndexDenormalized - pageButtonCount) + 1);
+				}
+				this.FirstDisplayedPageIndex = firstVisiblePageIndexDenormalized - 1;
+			}
+			#endregion
+
+			#region Prototyp pageru s aktuální stránkou vždy uprostřed
+			//int firstVisiblePageIndexDenormalized;
+			//int lastVisiblePageIndexDenormalized;
+			//if (pagedDataSource.PageCount <= pageButtonCount)
+			//{
+			//	firstVisiblePageIndexDenormalized = 1;
+			//	lastVisiblePageIndexDenormalized = pagedDataSource.PageCount;
+			//}
+			//else if (pagedDataSource.CurrentPageIndex <= (pageButtonCount / 2M))
+			//{
+			//	firstVisiblePageIndexDenormalized = 1;
+			//	lastVisiblePageIndexDenormalized = pageButtonCount;
+			//}
+			//else if (pagedDataSource.CurrentPageIndex > pagedDataSource.PageCount - (pageButtonCount / 2))
+			//{
+			//	firstVisiblePageIndexDenormalized = pagedDataSource.PageCount - pageButtonCount + 1;
+			//	lastVisiblePageIndexDenormalized = pagedDataSource.PageCount;
+			//}
+			//else
+			//{
+			//	firstVisiblePageIndexDenormalized = currentPageIndexDenormalized - pageButtonCount / 2;
+			//	lastVisiblePageIndexDenormalized = firstVisiblePageIndexDenormalized + pageButtonCount - 1;
+			//}
+			#endregion
+
+			if (addFirstLastPageButtons)
+			{
+				AddBootstrapPagerButton(container, pagerSettings.FirstPageText, "First", !pagedDataSource.IsFirstPage);
+			}
+
+			if (firstVisiblePageIndexDenormalized != 1)
+			{
+				AddBootstrapPagerButton(container, "...", (firstVisiblePageIndexDenormalized - 1).ToString(NumberFormatInfo.InvariantInfo));
+			}
+
+			for (int i = firstVisiblePageIndexDenormalized; i <= lastVisiblePageIndexDenormalized; i++)
+			{
+				AddBootstrapPagerButton(container, i.ToString(NumberFormatInfo.CurrentInfo), i.ToString(NumberFormatInfo.InvariantInfo), i != currentPageIndexDenormalized, i == currentPageIndexDenormalized);
+			}
+
+			if (pageCount > lastVisiblePageIndexDenormalized)
+			{
+				AddBootstrapPagerButton(container, "...", (lastVisiblePageIndexDenormalized + 1).ToString(NumberFormatInfo.InvariantInfo));
+			}
+
+			if (addFirstLastPageButtons)
+			{
+				AddBootstrapPagerButton(container, pagerSettings.LastPageText, "Last", !pagedDataSource.IsLastPage);
+			}
+		}
+		#endregion
+
+		#region CreateBootstrapNextPrevPagination
+		/// <summary>
+		/// Vytvoří pagination s navigací na předchozí/následující stránku.
+		/// </summary>
+		private void CreateBootstrapNextPrevPagination(Control container, PagedDataSource pagedDataSource, bool addFirstLastPageButtons)
+		{
+			PagerSettings pagerSettings = this.PagerSettings;
+			bool isFirstPage = pagedDataSource.IsFirstPage;
+			bool isLastPage = pagedDataSource.IsLastPage;
+			if (addFirstLastPageButtons /*&& !isLastPage*/)
+			{
+				AddBootstrapPagerButton(container, pagerSettings.FirstPageText, "First", !isFirstPage);
+			}
+			//if (!isFirstPage)
+			{
+				AddBootstrapPagerButton(container, pagerSettings.PreviousPageText, "Prev", !isFirstPage);
+			}
+
+			//if (!isLastPage)
+			{
+				AddBootstrapPagerButton(container, pagerSettings.NextPageText, "Next", !isLastPage);
+			}
+			if (addFirstLastPageButtons /*&& !isLastPage*/)
+			{
+				AddBootstrapPagerButton(container, pagerSettings.LastPageText, "Last", !isLastPage);
+			}
+		}
+		#endregion
+
+		#region AddBootstrapPagerButton
+		/// <summary>
+		/// Přidá do kontejnetu tlačítko pageru dle požadovaných parametrů.
+		/// </summary>
+		private void AddBootstrapPagerButton(Control container, string text, string commandArgument, bool enabled = true, bool active = false)
+		{
+			LinkButton pagingButton = new LinkButton();
+			pagingButton.Text = text;
+			pagingButton.CommandName = "Page";
+			pagingButton.CommandArgument = commandArgument;
+			pagingButton.Enabled = enabled;
+			pagingButton.CausesValidation = false;
+
+			WebControl liControl = new WebControl(HtmlTextWriterTag.Li);
+			if (active)
+			{
+				liControl.CssClass = "active";
+			}
+			else if (!enabled)
+			{
+				liControl.CssClass = "disabled";
+			}
+			liControl.Controls.Add(pagingButton);
+			container.Controls.Add(liControl);
+		}
+		#endregion
 		#endregion
 
 		#region AllPagesImageButton_Click, AllPagesLinkButton_Click, HandleAllPagesClicked
@@ -1527,8 +1796,8 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		
-		#endregion
-
+		#endregion		
+		
 		#region ExtractRowValues
 		/// <summary>
 		/// Vyzvedne z řádku GridView hodnoty, které jsou nabidnované způsobem pro two-way databinding.

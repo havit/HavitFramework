@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" CodeBehind="GridViewTest.aspx.cs" Inherits="WebApplicationTest.HavitWebTests.GridViewExtTest" StyleSheetTheme="Theme1" %>
+﻿<%@ Page Language="C#" CodeBehind="GridViewTest.aspx.cs" Inherits="WebApplicationTest.HavitWebTests.GridViewExtTest" %>
 <%@ Register TagPrefix="uc" TagName="GridViewExtTest_InnerGVControl" src="GridViewExtTest_InnerGVControl.ascx"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -15,7 +15,7 @@
     <form id="form1" runat="server">
 	<asp:ScriptManager runat="server" />
     <div>
-		<havit:EnterpriseGridView ID="TestGV1" SkinID="SkinTest" SelectMethod="TestGV1_SelectMethod" UpdateMethod="TestGV1_UpdateMethod" AllowInserting="True" InsertRowPosition="Top" ItemType="Havit.BusinessLayerTest.Subjekt" AllowPaging="false" PageSize="100" PagerSettings-Position="Bottom" AutoCrudOperations="true" runat="server">
+		<havit:EnterpriseGridView ID="TestGV1" SkinID="SkinTest" SelectMethod="TestGV1_SelectMethod" UpdateMethod="TestGV1_UpdateMethod" AllowInserting="True" InsertRowPosition="Top" ItemType="Havit.BusinessLayerTest.Subjekt" AllowPaging="false" PageSize="100" PagerSettings-Mode="NextPreviousFirstLast" PagerSettings-Position="Bottom" AutoCrudOperations="true" runat="server">
 			<Columns>
 				<havit:BoundFieldExt DataField="Nazev" SortExpression="Nazev" HeaderText="Název" />
 				<havit:TemplateFieldExt SortExpression="Nazev" HeaderText="Název">

@@ -257,6 +257,7 @@
     <Compile Include="UI\WebControls\IAutoFilterControl.cs" />
     <Compile Include="UI\WebControls\IFilterField.cs" />
     <Compile Include="UI\WebControls\ModalDialogBase.cs" />
+    <Compile Include="UI\WebControls\PagerRenderMode.cs" />
     <Compile Include="UI\WebControls\TextBoxExt.cs" />
     <Compile Include="UI\ViewStateLoadFailedException.cs" />
     <Compile Include="UI\WebControls\AjaxHealthMonitoring.cs" />

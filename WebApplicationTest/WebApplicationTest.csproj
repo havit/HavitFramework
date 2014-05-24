@@ -248,6 +248,7 @@
     </Content>
     <Content Include="HavitWebBootstrapTests\ButtonTest.aspx" />
     <Content Include="HavitWebBootstrapTests\Controls\ValidationTargetTest.ascx" />
+    <Content Include="HavitWebBootstrapTests\GridViewExtTest.aspx" />
     <Content Include="HavitWebBootstrapTests\ModalDialogTest.aspx" />
     <Content Include="HavitWebBootstrapTests\ModalDialogUserControlTest.ascx" />
     <Content Include="HavitWebBootstrapTests\NavbarTest.aspx" />
@@ -388,6 +389,13 @@
     </Compile>
     <Compile Include="HavitWebBootstrapTests\Controls\ValidationTargetTest.ascx.designer.cs">
       <DependentUpon>ValidationTargetTest.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="HavitWebBootstrapTests\GridViewExtTest.aspx.cs">
+      <DependentUpon>GridViewExtTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HavitWebBootstrapTests\GridViewExtTest.aspx.designer.cs">
+      <DependentUpon>GridViewExtTest.aspx</DependentUpon>
     </Compile>
     <Compile Include="HavitWebBootstrapTests\ModalDialogTest.aspx.cs">
       <DependentUpon>ModalDialogTest.aspx</DependentUpon>

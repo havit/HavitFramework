@@ -209,6 +209,7 @@ namespace Havit.Web.UI.WebControls
 		#region PagerRenderMode
 		/// <summary>
 		/// Pager render mode.
+		/// V případě, že je použita (nastavena) vlastnost PagerTemplate, hodnota se ignoruje a použije se standardní renderování.
 		/// </summary>
 		public PagerRenderMode PagerRenderMode
 		{

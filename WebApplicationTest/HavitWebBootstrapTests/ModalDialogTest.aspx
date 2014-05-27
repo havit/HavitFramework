@@ -4,8 +4,12 @@
 <asp:Content ContentPlaceHolderID="MainCPH" runat="server">
 	<uc:ModalDialogUserControlTest ID="ModalDialogUserControlTestUC" runat="server" />
 	
-	<asp:Button ID="OpenButton" Text="Open" runat="server" />	
-	
+	<asp:UpdatePanel runat="server">
+		<ContentTemplate>
+			<asp:Button ID="OpenButton" Text="Open" runat="server" />	
+		</ContentTemplate>
+	</asp:UpdatePanel>
+
 	<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean in orci quis lectus varius dapibus. Praesent arcu. Mauris ullamcorper pretium mauris. Nullam ut ligula. Aliquam orci mi, condimentum luctus, consectetuer ut, hendrerit sagittis, risus. Morbi dolor. Nulla blandit consequat lectus. Sed rutrum faucibus risus. Donec placerat. Aliquam erat volutpat. Curabitur nec lorem. Morbi volutpat euismod augue. Ut sollicitudin vestibulum elit. Fusce ut dui at eros pharetra ullamcorper. Etiam leo neque, feugiat sed, consectetuer in, aliquam id, nisl. In vitae nisl ac magna mollis adipiscing.
 	Maecenas semper, elit eget egestas laoreet, lacus lorem mattis libero, non vehicula odio metus sit amet pede. Praesent non orci vel justo mollis blandit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Phasellus tempor, sapien sit amet condimentum pellentesque, est nisi pretium sapien, nec scelerisque massa nisl sed arcu. Integer dictum commodo tortor. Etiam egestas, libero id iaculis rutrum, enim tellus vehicula justo, et sodales felis turpis non mauris. Cras vehicula auctor mauris. Vivamus ipsum elit, fringilla et, venenatis ut, sagittis in, risus. Suspendisse condimentum aliquet urna. Suspendisse sed pede ornare urna cursus commodo. Sed quis nisi ac sapien molestie convallis. Aenean vel tellus. Pellentesque lobortis massa vel velit.
 	Ut semper. Vivamus sagittis mattis purus. Duis sem pede, aliquam nec, facilisis ut, ornare id, ipsum. Vivamus tincidunt nunc sed eros. Proin pede. Nullam imperdiet augue vel elit. Ut fermentum mi non eros vestibulum accumsan. Donec laoreet, metus at pellentesque luctus, ante lacus sollicitudin purus, ac varius lorem diam in urna. Ut suscipit sapien in felis. Vestibulum leo. Pellentesque est nunc, sollicitudin ac, imperdiet eget, convallis luctus, lectus. Ut in libero. Proin ante sem, volutpat sit amet, tincidunt sed, imperdiet sed, urna.

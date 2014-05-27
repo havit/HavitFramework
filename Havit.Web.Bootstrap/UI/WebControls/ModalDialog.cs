@@ -265,7 +265,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		public ModalDialog()
 		{
 			_dialogContainer = new DialogControl(this);
-			_dialogContainer.Visible = false;
 
 			_updatePanel = new UpdatePanel();
 			_updatePanel.UpdateMode = UpdatePanelUpdateMode.Conditional;
@@ -376,23 +375,8 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			base.OnPreRender(e);
 			
-			// until first display of ModalDialog, dialogContainer is not visible
-			// then we do not hide whole dialogContainer because it is not in update panel,
-			// therefore it remains in client page event if not visible and this causes EventValidation error.
 			ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);
 			Contract.Assert<HttpException>(scriptManager != null, "ScriptManager must be registered within the form.");
-
-			if (!scriptManager.IsInAsyncPostBack)
-			{
-				_dialogContainer.Visible = DialogVisible;
-			}
-			else
-			{
-				if (DialogVisible)
-				{
-					_dialogContainer.Visible = true;
-				}
-			}
 
 			ClientScripts.BootstrapClientScriptHelper.RegisterBootstrapClientScript(this.Page);
 			ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, ClientScripts.BootstrapClientScriptHelper.ModalScriptResourceMappingName);

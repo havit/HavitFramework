@@ -7,13 +7,18 @@ if (!window.jQuery) {
 		var havit_BootstrapExtensions_TimerID = null;
 		var havit_BootstrapExtensions_ResizeModal = function() {
 
-			$('.modal:visible').each(function(modalIndex, modal) {
+			$('.modal').each(function(modalIndex, modal) {
 				var $modal = $(modal);
 				var $modalDialog = $modal.children(".modal-dialog");
 				var $modalContent = $modalDialog.children(".modal-content");
 				var $modalHeader = $modalContent.children().children(".modal-header");
 				var $modalBody = $modalContent.children().children(".modal-body");
 				var $modalFooter = $modalContent.children().children(".modal-footer");
+
+				if (($modalHeader.length == 0) && ($modalBody.length == 0)) {
+					// ModalDialog is not visible (rendered)
+					return;
+				}
 
 				var containerHeight = $modal.innerHeight();
 				var headerHeight = $modalHeader.outerHeight(true) || 0;

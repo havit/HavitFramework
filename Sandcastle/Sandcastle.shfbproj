@@ -52,7 +52,6 @@
       <DocumentationSource sourceFile="..\Havit.Services\Havit.Services.csproj" />
       <DocumentationSource sourceFile="..\Havit.Web\Havit.Web.csproj" />
       <DocumentationSource sourceFile="..\Havit.Xml\Havit.Xml.csproj" />
-      <DocumentationSource sourceFile="..\Havit.Web.Bootstrap\Havit.Web.Bootstrap.csproj" />
     </DocumentationSources>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="(global)" isDocumented="True" />

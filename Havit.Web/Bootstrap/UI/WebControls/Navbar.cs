@@ -58,7 +58,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// If value is empty string, element A for navbar-brand is not rendered.
 		/// Default value is ~/.
 		/// </summary>
-		[DefaultValue("~/")]
 		public string BrandUrl
 		{
 			get
@@ -98,7 +97,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Indicates whether render caret for submenus.
 		/// Default false.
 		/// </summary>
-		[DefaultValue(false)]
 		public bool ShowCaret
 		{
 			get { return _mainMenuSection.ShowCaret; }
@@ -111,7 +109,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Css class for menu element.
 		/// Default value is &quot;navbar navbar-default&quot;.
 		/// </summary>
-		[DefaultValue("navbar navbar-default")]
 		public string CssClass
 		{
 			get
@@ -130,7 +127,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Container element mode.
 		/// Default value ContainerFluid.
 		/// </summary>
-		[DefaultValue(NavbarContainerMode.ContainerFluid)]
 		public NavbarContainerMode ContainerMode
 		{
 			get
@@ -148,7 +144,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Text to be rendered as navigation toggle (&lt;span class=&amp;sr-only&amp;&gt;Toggle navigation&lt;/span&gt;). Support resources pattern. Default value is empty string.
 		/// </summary>
-		[DefaultValue("")]
 		public string ToggleNavigationText
 		{
 			get

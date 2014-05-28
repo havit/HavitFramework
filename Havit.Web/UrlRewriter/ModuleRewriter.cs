@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Text.RegularExpressions;
 using System.Configuration;
 using Havit.Web.UrlRewriter.Config;

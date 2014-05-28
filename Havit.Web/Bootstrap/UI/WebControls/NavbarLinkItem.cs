@@ -27,7 +27,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// When menu item has not any visible children (or has visible only decoration items)
 		/// AND items has not set Url, menu item is automatically hidden.
 		/// </summary>
-		[DefaultValue(true)]
 		public bool AutoHide
 		{
 			get

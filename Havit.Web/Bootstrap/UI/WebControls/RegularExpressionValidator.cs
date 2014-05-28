@@ -20,7 +20,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Shows ToolTip (or Text if ToolTip not set) as a Bootstrap ToolTip at ControlToValidate when validation fails.
 		/// </summary>
-		[DefaultValue(true)]
 		public bool ShowTooltip
 		{
 			get
@@ -38,7 +37,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Tooltip position.
 		/// </summary>
-		[DefaultValue(TooltipPosition.Right)]
 		public TooltipPosition TooltipPosition
 		{
 			get
@@ -56,7 +54,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// CssClass name which is added to ControlToValidate when validation fails. 
 		/// </summary>
-		[DefaultValue(ValidatorRenderExtender.DefaultControlToValidateInvalidCssClass)]
 		public string ControlToValidateInvalidCssClass
 		{
 			get

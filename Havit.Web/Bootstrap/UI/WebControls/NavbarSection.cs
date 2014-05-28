@@ -62,7 +62,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Indicates whether render caret for submenus.
 		/// Default false.
 		/// </summary>
-		[DefaultValue(false)]
 		public bool ShowCaret
 		{
 			get { return _navbarSectionInternal.ShowCaret; }

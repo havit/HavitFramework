@@ -50,49 +50,7 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="StartUp.cs" />
-    <Compile Include="UI\ClientScripts\BootstrapClientScriptHelper.cs" />
-    <Compile Include="UI\WebControls\Button.cs" />
-    <Compile Include="UI\WebControls\Infrastructure\LogItemType.cs" />
-    <Compile Include="UI\WebControls\Infrastructure\NavbarViewStateLogEntry.cs" />
-    <Compile Include="UI\WebControls\IRadioButtonListCheckBoxList.cs" />
-    <Compile Include="UI\WebControls\Legacy\CheckBoxValidator.cs" />
-    <Compile Include="UI\WebControls\Legacy\NumericBoxValidator.cs" />
-    <Compile Include="UI\WebControls\ModalDialog.cs" />
-    <Compile Include="UI\WebControls\ModalDialogDragMode.cs" />
-    <Compile Include="UI\WebControls\ModalDialogUserControlBase.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UI\WebControls\ModalDialog_DialogControl.cs" />
-    <Compile Include="UI\WebControls\ModalDialog_DialogSectionControl.cs" />
-    <Compile Include="UI\WebControls\NavbarContainerMode.cs" />
-    <Compile Include="UI\WebControls\NavbarItem.cs" />
-    <Compile Include="UI\WebControls\Navbar.cs" />
-    <Compile Include="UI\WebControls\NavbarItemCollection.cs" />
-    <Compile Include="UI\WebControls\NavbarSection.cs" />
-    <Compile Include="UI\WebControls\NavbarSectionInternal.cs" />
-    <Compile Include="UI\WebControls\NavbarHeaderItem.cs" />
-    <Compile Include="UI\WebControls\NavbarLinkItem.cs" />
-    <Compile Include="UI\WebControls\NavbarSeparatorItem.cs" />
-    <Compile Include="UI\WebControls\RadioButtonListCheckBoxListHelper.cs" />
-    <Compile Include="UI\WebControls\SwitchButton.cs" />
-    <Compile Include="UI\WebControls\TabPanel.cs" />
-    <Compile Include="UI\WebControls\TabContainer.cs" />
-    <Compile Include="UI\WebControls\TabMode.cs" />
-    <Compile Include="UI\WebControls\TabModeExtensions.cs" />
-    <Compile Include="UI\WebControls\ValidationDisplayTarget.cs" />
-    <Compile Include="UI\WebControls\ValidationSummary.cs" />
-    <Compile Include="UI\WebControls\RegularExpressionValidator.cs" />
-    <Compile Include="UI\WebControls\RangeValidator.cs" />
-    <Compile Include="UI\WebControls\CustomValidator.cs" />
-    <Compile Include="UI\WebControls\IValidatorExtension.cs" />
-    <Compile Include="UI\WebControls\CompareValidator.cs" />
-    <Compile Include="UI\WebControls\RequiredFieldValidator.cs" />
-    <Compile Include="UI\WebControls\TooltipPosition.cs" />
-    <Compile Include="UI\WebControls\Tooltip.cs" />
-    <Compile Include="UI\WebControls\CheckBoxList.cs" />
-    <Compile Include="UI\WebControls\RadioButtonList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UI\WebControls\ValidatorRenderExtender.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Havit.Web\Havit.Web.csproj">
@@ -104,25 +62,7 @@
       <Name>Havit</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Content\js\WebUIValidationExtension.js" />
-    <None Include="Diagrams\Dialogs.cd" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Content\js\TabPanelExtension.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Content\less\havit.web.bootstrap.less" />
-    <None Include="Content\less\validation.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\description.txt" />
-    <None Include="Content\js\ModalExtension.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Content\SyntaxHighlighter\" />
-    <Folder Include="Scripts\SyntaxHighlighter\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

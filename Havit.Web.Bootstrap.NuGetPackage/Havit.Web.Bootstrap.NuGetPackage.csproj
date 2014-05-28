@@ -55,12 +55,6 @@
     </None>
     <None Include="Publish-Havit.Web.Bootstrap.NuGetPackage.ps1" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Havit.Web.Bootstrap\Havit.Web.Bootstrap.csproj">
-      <Project>{d3275f65-1489-47da-9d39-dec9baf83562}</Project>
-      <Name>Havit.Web.Bootstrap</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

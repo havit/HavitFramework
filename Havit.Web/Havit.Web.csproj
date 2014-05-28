@@ -210,6 +210,49 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Bootstrap\StartUp.cs" />
+    <Compile Include="Bootstrap\UI\ClientScripts\BootstrapClientScriptHelper.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\Button.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\CheckBoxList.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\CompareValidator.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\CustomValidator.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\Infrastructure\LogItemType.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\Infrastructure\NavbarViewStateLogEntry.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\IRadioButtonListCheckBoxList.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\IValidatorExtension.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\Legacy\CheckBoxValidator.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\Legacy\NumericBoxValidator.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\ModalDialog.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\ModalDialogDragMode.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\ModalDialogUserControlBase.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Bootstrap\UI\WebControls\ModalDialog_DialogControl.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\ModalDialog_DialogSectionControl.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\Navbar.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\NavbarContainerMode.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\NavbarHeaderItem.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\NavbarItem.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\NavbarItemCollection.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\NavbarLinkItem.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\NavbarSection.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\NavbarSectionInternal.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\NavbarSeparatorItem.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\RadioButtonList.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\RadioButtonListCheckBoxListHelper.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\RangeValidator.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\RegularExpressionValidator.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\RequiredFieldValidator.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\SwitchButton.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\TabContainer.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\TabMode.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\TabModeExtensions.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\TabPanel.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\Tooltip.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\TooltipPosition.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\ValidationDisplayTarget.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\ValidationSummary.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\ValidatorRenderExtender.cs" />
     <Compile Include="Compilation\CodeExpressionBuilder.cs" />
     <Compile Include="Management\WebRequestErrorEventExt.cs" />
     <Compile Include="PageNavigator.cs" />
@@ -487,6 +530,9 @@
     <EmbeddedResource Include="UI\WebControls\AutoSuggestMenu\XUtils.js" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Bootstrap\Content\less\havit.web.bootstrap.less" />
+    <None Include="Bootstrap\Content\less\validation.less" />
+    <None Include="Bootstrap\Diagrams\Dialogs.cd" />
     <None Include="UI\Scriptlets\Scriptlet.cd" />
   </ItemGroup>
   <ItemGroup>
@@ -496,6 +542,10 @@
     <EmbeddedResource Include="UI\Adapters\CssAdapters\CssTreeViewAdapter.css" />
     <EmbeddedResource Include="UI\Adapters\CssAdapters\CssTreeViewAdapter.js" />
     <EmbeddedResource Include="UI\ClientScripts\HavitFrameworkClientScript.js" />
+    <Content Include="Bootstrap\Content\description.txt" />
+    <None Include="Bootstrap\Content\js\ModalExtension.js" />
+    <None Include="Bootstrap\Content\js\TabPanelExtension.js" />
+    <None Include="Bootstrap\Content\js\WebUIValidationExtension.js" />
     <Content Include="UI\Scriptlets\IControlExtender.xml" />
     <Content Include="UI\Scriptlets\IScriptletParameter.xml" />
     <EmbeddedResource Include="UI\WebControls\SingleSubmitProtection.css" />
@@ -517,6 +567,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Bootstrap\Scripts\SyntaxHighlighter\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

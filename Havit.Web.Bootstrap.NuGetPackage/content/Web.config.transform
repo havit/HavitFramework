@@ -3,7 +3,7 @@
   <system.web>
     <pages>
 	  <controls>
-		<add tagPrefix="bc" namespace="Havit.Web.Bootstrap.UI.WebControls" assembly="Havit.Web.Bootstrap"  />
+		<add tagPrefix="bc" namespace="Havit.Web.Bootstrap.UI.WebControls" assembly="Havit.Web"  />
 	  </controls>
 	  <tagMapping>
 		<add tagType="System.Web.UI.WebControls.CompareValidator" mappedTagType="Havit.Web.Bootstrap.UI.WebControls.CompareValidator" />

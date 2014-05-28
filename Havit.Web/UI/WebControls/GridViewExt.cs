@@ -739,7 +739,7 @@ namespace Havit.Web.UI.WebControls
 			EmptyDataText = originalEmptyDataText;
 
 			overrideShowHeaderWhenEmptyToTrue = false;
-
+			
 			// zajistíme přidání filtrovacího řádku
 			if (ShowFilter)	
 			{				

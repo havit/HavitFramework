@@ -25,7 +25,7 @@
 	<p>LESS files for styling Havit.Web.Bootstrap controls.</p>
 	<h3>Controls registration</h3>
 	<p>Controls in Havit.Web.Bootstrap assembly are registered with <strong>bc</strong> prefix.</p>
-	<pre><code>&lt;add tagPrefix="bc" namespace="Havit.Web.Bootstrap.UI.WebControls" assembly="Havit.Web.Bootstrap"  /&gt;</code></pre>	
+	<pre><code>&lt;add tagPrefix="bc" namespace="Havit.Web.Bootstrap.UI.WebControls" assembly="Havit.Web"  /&gt;</code></pre>	
 
 	<h3>Tag mapping</h3>
 	<a name="tagmapping"></a>

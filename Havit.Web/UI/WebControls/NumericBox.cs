@@ -372,8 +372,7 @@ namespace Havit.Web.UI.WebControls
 		public NumericBox()
 		{
 			valueTextBox = new TextBoxExt();
-			valueTextBox.ID = "ValueTextBox";
-			valueTextBox.MaxLength = 12;
+			valueTextBox.ID = "ValueTextBox";			
 		}
 		#endregion
 
@@ -425,8 +424,7 @@ namespace Havit.Web.UI.WebControls
 			if (Enabled)
 			{
 				HavitFrameworkClientScriptHelper.RegisterHavitFrameworkClientScript(this.Page);
-			}				
-
+			}
 			ViewState["ValueMemento"] = GetValueMemento();
 		}		
 		#endregion
@@ -444,6 +442,11 @@ namespace Havit.Web.UI.WebControls
 			valueTextBox.ValidationGroup = this.ValidationGroup;
 			valueTextBox.CausesValidation = this.CausesValidation;
 			valueTextBox.Style.Add("text-align", "right");
+
+			if (valueTextBox.MaxLength == 0)
+			{
+				valueTextBox.MaxLength = Math.Max(12, valueTextBox.Text.Length); // kdyby nějakým zázrakem byl nastaven delší text (stává se), zabráníme nemožnosti odeslat zobrazený control
+			}
 
 			if (Enabled)
 			{

@@ -153,6 +153,22 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region RegisterHideScriptFromPreRenderComplete
+		/// <summary>
+		/// Zajistí schování dialogu.
+		/// </summary>
+		protected override void RegisterHideScriptFromPreRenderComplete()
+		{
+			ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);
+
+			// pokud jsme v callbacku, vyrenderujeme skript schovávající dialog
+			if (scriptManager != null && scriptManager.IsInAsyncPostBack)
+			{
+				RegisterHideScript();
+			}
+		}
+		#endregion
+
 		#region CheckDialogSize
 		/// <summary>
 		/// Ověří správné nastavení vlastností controlu.

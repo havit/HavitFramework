@@ -438,6 +438,16 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		}
 		#endregion
 
+		#region RegisterHideScriptFromPreRenderComplete
+		/// <summary>
+		/// Ensures modal dialog is hidden.
+		/// </summary>
+		protected override void RegisterHideScriptFromPreRenderComplete()
+		{
+			RegisterHideScript();
+		}
+		#endregion
+		
 		#region GetShowScript, GetHideScript
 		/// <summary>
 		/// Vrátí skript pro zobrazení dialogu na klientské straně.
@@ -445,7 +455,11 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		protected override string GetShowScript()
 		{
-			string postbackScript = null;
+			string scriptPattern = CurrentyShowing
+				? "Havit_BootstrapExtensions_Show('#{0}', {1}, '{2}', '{3}');"
+				: "Havit_BootstrapExtensions_RemainShown('#{0}', {1}, '{2}', '{3}');";
+
+			string postbackScript = String.Empty;
 			if (CloseOnEscapeKey)
 			{
 				ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);
@@ -454,68 +468,13 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				postbackScript = this.Page.ClientScript.GetPostBackEventReference(new PostBackOptions(this, "Escape", null, false, false, false, true, false, null), false);
 			}
 
-			string scriptPattern = "$('#{0}').modal('show');";
-			if (CloseOnEscapeKey)
-			{
-				scriptPattern += "$('body').on('keyup.havit.web.bootstrap', function(e) {{ if (e.which == 27) {{ {1}; }} }});";
-			}
-
-			if (DragMode == ModalDialogDragMode.Required)
-			{
-				scriptPattern += "$('#{0} .modal-dialog').draggable({{handle: '.modal-header'}});";
-			}
-
-			if (DragMode == ModalDialogDragMode.IfAvailable)
-			{
-				scriptPattern += "if (!!window.jQuery.ui && !!window.jQuery.ui.version) {{ $('#{0} .modal-dialog').draggable({{handle: '.modal-header'}}); }}";
-			}
-
 			string script = String.Format(
 				scriptPattern,
 				GetDialogContainer().ClientID, // 0
-				postbackScript); // 1
+				CloseOnEscapeKey.ToString().ToLower(), // 1
+				postbackScript.Replace("'", "\\'"), // 2
+				DragMode.ToString()); // 3
 			return script;
-			//if (DialogVisible && ScriptManager.GetCurrent(Page).IsInAsyncPostBack && !CurrentyShowing)
-			//{
-			//	bool noScript = true;
-			//	Control parent = Parent;
-			//	while (parent != null)
-			//	{
-			//		if (parent is UpdatePanel)
-			//		{
-			//			if (((UpdatePanel)parent).IsInPartialRendering)
-			//			{
-			//				noScript = false;
-			//			}
-			//		}
-			//		parent = parent.Parent;
-			//	}
-
-			//	if (noScript)
-			//	{
-			//		return null;
-			//	}
-			//}
-
-
-			//string postbackScript = String.Empty;
-			//if (CloseOnEscapeKey)
-			//{
-			//	ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);
-			//	scriptManager.RegisterAsyncPostBackControl(this);
-
-			//	postbackScript = this.Page.ClientScript.GetPostBackEventReference(new PostBackOptions(this, "Escape", null, false, false, false, true, false, null), false);
-			//}
-
-			//string scriptPattern = "havit_BootstrapExtensions_Show('#{0}', {1}, '{2}', '{3}');";
-
-			//string script = String.Format(				
-			//	scriptPattern,
-			//	GetDialogContainer().ClientID, // 0
-			//	CloseOnEscapeKey.ToString().ToLower(), // 1
-			//	postbackScript.Replace("'", "\\'"), // 2
-			//	DragMode.ToString()); // 3
-			//return script;
 		}
 
 		/// <summary>
@@ -524,36 +483,9 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		protected override string GetHideScript()
 		{
-			string scriptPattern = "";
-			if (CloseOnEscapeKey)
-			{
-				scriptPattern += "$('body').off('keyup.havit.web.bootstrap');";
-			}
-			scriptPattern += "$('#{0}').modal('hide');";
-
-			if (DragMode == ModalDialogDragMode.Required)
-			{
-				scriptPattern += "$('#{0} .modal-dialog').draggable('destroy');";
-			}
-
-			if (DragMode == ModalDialogDragMode.IfAvailable)
-			{
-				scriptPattern += "if (!!window.jQuery.ui && !!window.jQuery.ui.version) {{ $('#{0} .modal-dialog').draggable('destroy'); }}";
-			}
-
-			string script = String.Format(
-				scriptPattern,
-				DialogPanelClientIDMemento ?? dialogContainer.ClientID);
+			string scriptPattern = "Havit_BootstrapExtensions_Hide('#{0}');";
+			string script = String.Format(scriptPattern, DialogPanelClientIDMemento ?? dialogContainer.ClientID);
 			return script;
-			//string scriptPattern = "havit_BootstrapExtensions_Hide();";
-
-			//string script = String.Format(
-			//	scriptPattern,
-			//	DialogPanelClientIDMemento ?? dialogContainer.ClientID,
-			//	CloseOnEscapeKey.ToString().ToLower(),
-			//	DragMode.ToString());
-
-			//return script;
 		}
 		#endregion
 

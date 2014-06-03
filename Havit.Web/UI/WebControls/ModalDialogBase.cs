@@ -251,7 +251,7 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Zaregistruje skript, který zobrazí dialog na klientské straně.
 		/// </summary>
-		private void RegisterShowScript()
+		protected void RegisterShowScript()
 		{
 			ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, "jquery");
 
@@ -266,7 +266,7 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Zaregistruje skript, který skryje dialog na klientské straně.
 		/// </summary>
-		private void RegisterHideScript()
+		protected void RegisterHideScript()
 		{
 			ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, "jquery");
 			string script = String.Format(
@@ -325,15 +325,18 @@ namespace Havit.Web.UI.WebControls
 						
 			if (!DialogVisible && _dialogCurrentlyHiding)
 			{
-				ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);
-
-				// pokud jsme v callbacku, vyrenderujeme skript schovávající dialog
-				if (scriptManager != null && scriptManager.IsInAsyncPostBack)
-				{
-					RegisterHideScript();
-				}
+				RegisterHideScriptFromPreRenderComplete();
+				RegisterHideScript();
 			}
 		}
+
+		#region RegisterHideScriptFromPreRenderComplete
+		/// <summary>
+		/// Zajistí schování dialogu
+		/// </summary>
+		protected abstract void RegisterHideScriptFromPreRenderComplete();
+		#endregion
+
 		#endregion
 	}
 }

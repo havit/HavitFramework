@@ -170,6 +170,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="SystemWebTests\a.js" />
+    <Content Include="App_Themes\BootstrapTheme\ModalEditor.skin" />
     <None Include="App_Themes\WebTheme\AutoSuggestMenu.skin" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\site.css">
@@ -774,11 +775,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1075</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:19509/</IISUrl>
+          <IISUrl>http://localhost:1076/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

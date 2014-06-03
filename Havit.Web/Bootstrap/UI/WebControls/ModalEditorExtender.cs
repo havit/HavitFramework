@@ -379,7 +379,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 
 			GetEditedObject(this, eventArgs);
 		}
-
 		/// <summary>
 		/// Notifies request for edited object. 
 		/// Event handler GetEditedObject must be hadnled.
@@ -398,7 +397,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				EditClosed(this, eventArgs);
 			}
 		}
-
 		/// <summary>
 		/// Notifies edit mode close (whatever reason).
 		/// </summary>
@@ -454,7 +452,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ItemCreated(this, eventArgs);
 			}
 		}
-
 		/// <summary>
 		/// Notifies item creation from nested FormView.
 		/// </summary>
@@ -472,7 +469,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ItemDataBound(this, eventArgs);
 			}
 		}
-
 		/// <summary>
 		/// Notifies item databound event from nested FormView.
 		/// </summary>

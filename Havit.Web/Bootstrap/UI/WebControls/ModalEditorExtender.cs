@@ -298,6 +298,9 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		#endregion
 
 		#region Save
+		/// <summary>
+		/// Handles save (ItemSaving, ItemSaved events).
+		/// </summary>
 		public void Save()
 		{
 			HandleItemSave();
@@ -305,6 +308,9 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		#endregion
 
 		#region CloseEditor
+		/// <summary>
+		/// Closes editor (with EditClosed event).
+		/// </summary>
 		public void CloseEditor()
 		{
 			modalDialog.Hide();
@@ -373,6 +379,10 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 
 			GetEditedObject(this, eventArgs);
 		}
+		/// <summary>
+		/// Notifies request for edited object. 
+		/// Event handler GetEditedObject must be hadnled.
+		/// </summary>
 		public event DataEventHandler<object> GetEditedObject;
 		#endregion
 
@@ -387,6 +397,9 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				EditClosed(this, eventArgs);
 			}
 		}
+		/// <summary>
+		/// Notifies edit mode close (whatever reason).
+		/// </summary>
 		public event EventHandler EditClosed;
 		#endregion
 
@@ -421,6 +434,10 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ItemSaved(this, eventArgs);
 			}
 		}
+
+		/// <summary>
+		/// Notifies item save completion.
+		/// </summary>
 		public event EventHandler ItemSaved;
 		#endregion
 
@@ -435,6 +452,9 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ItemCreated(this, eventArgs);
 			}
 		}
+		/// <summary>
+		/// Notifies item creation from nested FormView.
+		/// </summary>
 		public event EventHandler ItemCreated;
 		#endregion
 
@@ -449,6 +469,9 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ItemDataBound(this, eventArgs);
 			}
 		}
+		/// <summary>
+		/// Notifies item databound event from nested FormView.
+		/// </summary>
 		public event EventHandler ItemDataBound;
 		#endregion
 	}

@@ -241,12 +241,8 @@
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tooltip.min.css" />
-    <Content Include="Content\toastr.css">
-      <DependentUpon>toastr.less</DependentUpon>
-    </Content>
-    <Content Include="Content\toastr.min.css">
-      <DependentUpon>toastr.css</DependentUpon>
-    </Content>
+    <Content Include="Content\toastr.css" />
+    <Content Include="Content\toastr.min.css" />
     <Content Include="HavitWebBootstrapTests\ButtonTest.aspx" />
     <Content Include="HavitWebBootstrapTests\Controls\ValidationTargetTest.ascx" />
     <Content Include="HavitWebBootstrapTests\GridViewExtTest.aspx" />
@@ -315,6 +311,7 @@
     <Content Include="Content\bootstrap\badges.less" />
     <Content Include="Content\bootstrap\alerts.less" />
     <Content Include="Content\site.less" />
+    <Content Include="Content\toastr.scss" />
     <Content Include="Content\toastr.less" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -748,7 +745,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup>

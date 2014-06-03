@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Text;
 using System.Web.UI;
+using System.Web.UI.Design;
 using System.Web.UI.WebControls;
 
 namespace Havit.Web.UI.WebControls
@@ -53,7 +54,7 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-		#region Tooltipy (EditTooltip, CancelTooltip, SelectTooltip, UpdateTooltip, DeleteTooltip, InsertTooltip)
+		#region Tooltipy (EditTooltip, CancelTooltip, SelectTooltip, UpdateTooltip, DeleteTooltip, InsertTooltip, NewTooltip)
 
 		#region EditTooltip
 		/// <summary>
@@ -157,9 +158,26 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region NewTooltip
+		/// <summary>
+		/// Tooltip tlačítka pro založení nového záznamu.
+		/// </summary>
+		public string NewTooltip
+		{
+			get
+			{
+				return (string)(ViewState["NewTooltip"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["NewTooltip"] = value;
+			}
+		}
 		#endregion
 
-		#region CssClasses (EditCssClass, EditDisabledCssClass, CancelCssClass, CancelDisabledCssClass, SelectCssClass, SelectDisabledCssClass, UpdateCssClass, UpdateDisabledCssClass, DeleteCssClass, DeleteDisabledCssClass, InsertCssClass, InsertDisabledCssClass)
+		#endregion
+
+		#region CssClasses (EditCssClass, EditDisabledCssClass, CancelCssClass, CancelDisabledCssClass, SelectCssClass, SelectDisabledCssClass, UpdateCssClass, UpdateDisabledCssClass, DeleteCssClass, DeleteDisabledCssClass, InsertCssClass, InsertDisabledCssClass, NewCssClass)
 
 		#region EditCssClass
 		/// <summary>
@@ -364,6 +382,75 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		#endregion
+
+		#region NewCssClass
+		/// <summary>
+		/// CssClass tlačítka pro vložení nového záznamu.
+		/// </summary>
+		public string NewCssClass
+		{
+			get
+			{
+				return (string)(ViewState["NewCssClass"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["NewCssClass"] = value;
+			}
+		}
+		#endregion
+
+		#region NewDisabledCssClass
+		/// <summary>
+		/// CssClass zakázaného tlačítka pro vložení nového záznamu.
+		/// </summary>
+		public string NewDisabledCssClass
+		{
+			get
+			{
+				return (string)(ViewState["NewDisabledCssClass"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["NewDisabledCssClass"] = value;
+			}
+		}
+		#endregion
+
+		#endregion
+
+		#region ShowNewButtonForInsertByEditorExtender
+		/// <summary>
+		/// Indikuje, zda má být zobrazeno tlačítko NewButton pro vkládání nového záznamu externím editorem.
+		/// </summary>
+		public bool ShowNewButtonForInsertByEditorExtender
+		{
+			get
+			{
+				return (bool)(ViewState["ShowNewButtonForInsertByEditorExtender"] ?? true);
+			}
+			set
+			{
+				ViewState["ShowNewButtonForInsertByEditorExtender"] = value;
+			}
+		}
+		#endregion
+
+		#region ShowNewButton
+		/// <summary>
+		/// Indikuje, zda má být tlačítko pro pořízení nového záznamu v header buňce (určeno pro otevření dialogu s editací nového záznamu).
+		/// </summary>
+		public bool ShowNewButton
+		{
+			get
+			{
+				return (bool)(ViewState["ShowNewButton"] ?? false);
+			}
+			set
+			{
+				ViewState["ShowNewButton"] = value;
+			}
+		}
 		#endregion
 
 		#region Initialize
@@ -394,12 +481,27 @@ namespace Havit.Web.UI.WebControls
 			DataControlRowState rowState,
 			int rowIndex)
 		{
-			if (cellType != DataControlCellType.DataCell)
+			if (cellType == DataControlCellType.Header)
 			{
-				// Header a Footer řeší korektně ButtonFieldBase, předek CommandFieldu
-				base.InitializeCell(cell, cellType, rowState, rowIndex);
+				if (ShowNewButton)
+				{
+					string newText = NewText;
+					string newTooltip = NewTooltip;
+					string newCssClass = NewCssClass;
+					string newDisabledCssClass = NewDisabledCssClass;
+					string newImageUrl = NewImageUrl;
+					if (String.IsNullOrEmpty(newText) && String.IsNullOrEmpty(newTooltip) && String.IsNullOrEmpty(newCssClass) && String.IsNullOrEmpty(newDisabledCssClass) && String.IsNullOrEmpty(newImageUrl))
+					{
+						newText = InsertText;
+						newTooltip = InsertTooltip;
+						newCssClass = InsertCssClass;
+						newDisabledCssClass = InsertDisabledCssClass;
+						newImageUrl = InsertImageUrl;						
+					}
+					AddButtonToCell(cell, CommandNames.New, HttpUtilityExt.GetResourceString(newText), HttpUtilityExt.GetResourceString(newTooltip), newCssClass, newDisabledCssClass, false, String.Empty, rowIndex, newImageUrl);
+				}
 			}
-			else
+			else if (cellType == DataControlCellType.DataCell)
 			{
 				bool showEditButton = this.ShowEditButton;
 				bool showDeleteButton = this.ShowDeleteButton;
@@ -492,6 +594,10 @@ namespace Havit.Web.UI.WebControls
 						}
 					}
 				}
+			}
+			else
+			{
+				base.InitializeCell(cell, cellType, rowState, rowIndex);					
 			}
 		}
 
@@ -766,6 +872,14 @@ namespace Havit.Web.UI.WebControls
 					{
 						this.ItemStyle.CopyFrom(style.ItemStyle);
 					}
+					if (ViewState["NewCssClass"] == null)
+					{
+						this.NewCssClass = style.NewCssClass;
+					}
+					if (ViewState["NewDisabledCssClass"] == null)
+					{
+						this.NewDisabledCssClass = style.NewDisabledCssClass;
+					}
 					if (ViewState["NewImageUrl"] == null)
 					{
 						this.NewImageUrl = style.NewImageUrl;
@@ -773,6 +887,10 @@ namespace Havit.Web.UI.WebControls
 					if (ViewState["NewText"] == null)
 					{
 						this.NewText = style.NewText;
+					}
+					if (ViewState["NewTooltip"] == null)
+					{
+						this.NewTooltip = style.NewTooltip;
 					}
 					if (ViewState["SelectImageUrl"] == null)
 					{

@@ -975,6 +975,25 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region InsertTooltip
+		/// <summary>
+		/// Tooltip tlačítka pro vložení nového záznamu.
+		/// </summary>
+		[Category("Appearance")]
+		[DefaultValue("")]
+		public string NewTooltip
+		{
+			get
+			{
+				return (string)(ViewState["NewTooltip"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["NewTooltip"] = value;
+			}
+		}
+		#endregion
+
 		#region SelectTooltip
 		/// <summary>
 		/// Tooltip tlačítka pro výběr řádku.
@@ -1217,6 +1236,60 @@ namespace Havit.Web.UI.WebControls
 			set
 			{
 				ViewState["UpdateCssClass"] = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the CssClass for the New button in a CommandField field.
+		/// </summary>
+		[Category("Appearance")]
+		[Localizable(true)]
+		[DefaultValue("")]
+		public virtual string NewCssClass
+		{
+			get
+			{
+				object temp = ViewState["NewCssClass"];
+				if (temp != null)
+				{
+					return (string)temp;
+				}
+				return String.Empty;
+			}
+			set
+			{
+				if (!object.Equals(value, ViewState["NewCssClass"]))
+				{
+					ViewState["NewCssClass"] = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the CssClass for the disabed New button in a CommandField field.
+		/// </summary>
+		[Category("Appearance")]
+		[Localizable(true)]
+		[DefaultValue("")]
+		public virtual string NewDisabledCssClass
+		{
+			get
+			{
+				object temp = ViewState["NewDisabledCssClass"];
+				if (temp != null)
+				{
+					return (string)temp;
+				}
+				return String.Empty;
+			}
+			set
+			{
+				if (!object.Equals(value, ViewState["NewDisabledCssClass"]))
+				{
+					ViewState["NewDisabledCssClass"] = value;
+					OnPropertyChanged();
+				}
 			}
 		}
 		#endregion

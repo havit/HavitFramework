@@ -1,12 +1,12 @@
-﻿using Havit.Business;
-using Havit.Diagnostics.Contracts;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Havit.Business;
+using Havit.Diagnostics.Contracts;
 
 namespace Havit.Web.UI.WebControls
 {
@@ -27,7 +27,7 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		public EnterpriseGridView()
 		{
-			this.DataKeyNames = new string[] { "ID" };
+			DataKeyNames = new string[] { "ID" };
 		}
 		#endregion
 
@@ -91,7 +91,7 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-		#region GetRowBusinessObject
+		#region GetRowBusinessObject, GetInsertRowBusinessObject
 		/// <summary>
 		/// Vrátí business object nabindovaný na daný řádek.
 		/// Pokud jde o nový záznam, pak jej získá udáslostí GetInsertRowDataItem.
@@ -107,19 +107,7 @@ namespace Havit.Web.UI.WebControls
 
 			if ((row.RowState & DataControlRowState.Insert) == DataControlRowState.Insert)
 			{
-				object insertRowDataItem = GetInsertRowDataItem();
-				
-				if (insertRowDataItem == null)
-				{
-					throw new ApplicationException(String.Format("Událost GetInsertRowDataItem vrátila null."));					
-				}
-
-				if (!(insertRowDataItem is BusinessObjectBase))
-				{
-					throw new ApplicationException(String.Format("GetInsertRowDataItem nevrátila business objekt (potomek BusinessObjectBase), ale typ '{0}'.", insertRowDataItem.GetType().FullName));				
-				}
-
-				return (BusinessObjectBase)insertRowDataItem;
+				return GetInsertRowBusinessObject();
 			}
 			else
 			{
@@ -131,9 +119,32 @@ namespace Havit.Web.UI.WebControls
 				}
 
 				MethodInfo mi = type.GetMethod("GetObject", new Type[] { typeof(int) });
-				BusinessObjectBase businessObject = (BusinessObjectBase)mi.Invoke(null, new object[] { this.GetRowID(row.RowIndex) });
+				BusinessObjectBase businessObject = (BusinessObjectBase)mi.Invoke(null, new object[] { GetRowID(row.RowIndex) });
 				return businessObject;
 			}
+		}
+
+		/// <summary>
+		/// Vrací instanci pro založení/uložení nového záznamu jako business object.
+		/// </summary>
+		private BusinessObjectBase GetInsertRowBusinessObject()
+		{
+			object insertRowDataItem = GetInsertRowDataItem();
+
+			if (insertRowDataItem == null)
+			{
+				throw new ApplicationException(String.Format("Událost GetInsertRowDataItem vrátila null."));
+			}
+
+			if (!(insertRowDataItem is BusinessObjectBase))
+			{
+				throw new ApplicationException(
+					String.Format(
+						"GetInsertRowDataItem nevrátila business objekt (potomek BusinessObjectBase), ale typ '{0}'.",
+						insertRowDataItem.GetType().FullName));
+			}
+
+			return (BusinessObjectBase)insertRowDataItem;
 		}
 		#endregion
 
@@ -289,6 +300,62 @@ namespace Havit.Web.UI.WebControls
 		{
 			public Type Type { get; set; }
 			public int StartingRowIndex { get; set; }
+		}
+		#endregion
+
+		#region IEditorExtensible.RegisterEditor
+		/// <summary>
+		/// Registruje editor pro použití s GridView.
+		/// </summary>
+		public override void RegisterEditor(IEditorExtender editorExtender)
+		{
+			base.RegisterEditor(editorExtender);
+
+			editorExtender.GetEditedObject += EditorExtenderGetEditedObject;
+			if (AutoCrudOperations)
+			{
+				editorExtender.ItemSaving += EditorExtenderItemSavingAutoCrudOperations;
+			}
+		}
+		#endregion
+
+		#region EditorExtenderGetEditedObject, GetEditorExtenderEditedObject
+		/// <summary>
+		/// Vrací (nastavuje) externí editovaný objekt pro editor.
+		/// </summary>
+		private void EditorExtenderGetEditedObject(object sender, DataEventArgs<object> e)
+		{
+			e.Data = EditorExtenderGetEditedObject();
+		}
+		#endregion
+
+		#region EditorExtenderGetEditedObject
+		/// <summary>
+		/// Vrací editovaný business objekt pro externí editor.
+		/// </summary>
+		private BusinessObjectBase EditorExtenderGetEditedObject()
+		{
+			int index = EditorExtenderEditIndex;
+			if (index == -1)
+			{
+				return GetInsertRowBusinessObject();
+			}
+			return GetRowBusinessObject(Rows[index]);
+		}
+		#endregion
+
+		#region EditorExtenderItemSavingAutoCrudOperations
+		/// <summary>
+		/// Obsluha Save operace pokud je povoleno AutoCrudOperations.
+		/// </summary>
+		private void EditorExtenderItemSavingAutoCrudOperations(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			if (!e.Cancel)
+			{
+				BusinessObjectBase dataObject = EditorExtenderGetEditedObject();
+				EditorExtender.ExtractValues(dataObject);
+				dataObject.Save();
+			}
 		}
 		#endregion
 	}

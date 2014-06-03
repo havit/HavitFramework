@@ -12,8 +12,7 @@
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
     <AssemblyName>Havit.Web</AssemblyName>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>HavitFramework.snk</AssemblyOriginatorKeyFile>
     <DefaultClientScript>JScript</DefaultClientScript>
     <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
@@ -175,6 +174,9 @@
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System">
@@ -212,6 +214,8 @@
     </Compile>
     <Compile Include="Bootstrap\StartUp.cs" />
     <Compile Include="Bootstrap\UI\ClientScripts\BootstrapClientScriptHelper.cs" />
+    <Compile Include="UI\WebControls\IEditorExtender.cs" />
+    <Compile Include="UI\WebControls\IEditorExtensible.cs" />
     <Compile Include="Bootstrap\UI\WebControls\Button.cs" />
     <Compile Include="Bootstrap\UI\WebControls\CheckBoxList.cs" />
     <Compile Include="Bootstrap\UI\WebControls\CompareValidator.cs" />
@@ -291,6 +295,9 @@
     </Compile>
     <Compile Include="UI\WebControls\DateTimePickerElement.cs" />
     <Compile Include="UI\WebControls\EditView.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\ModalEditorExtender.cs" />
+    <Compile Include="UI\WebControls\GridViewNewProcessingEventArgs.cs" />
+    <Compile Include="UI\WebControls\GridViewNewProcessedEventArgs.cs" />
     <Compile Include="UI\WebControls\ModalDialogUserControlBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -533,6 +540,7 @@
     <None Include="Bootstrap\Content\less\havit.web.bootstrap.less" />
     <None Include="Bootstrap\Content\less\validation.less" />
     <None Include="Bootstrap\Diagrams\Dialogs.cd" />
+    <None Include="HavitFramework.snk" />
     <None Include="UI\Scriptlets\Scriptlet.cd" />
   </ItemGroup>
   <ItemGroup>

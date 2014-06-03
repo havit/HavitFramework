@@ -16,15 +16,15 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	/// <summary>
 	/// Modal dialog with support of Ajax (by nested UpdatePanel). Support header, content and footer sections.
 	/// </summary>
+	[Themeable(true)]
 	public partial class ModalDialog : ModalDialogBase, IPostBackEventHandler
 	{
 		#region Private fiels
-		private Control _dialogContainer;
-		private UpdatePanel _updatePanel;
-		private Control _contentContainer;
-		private Control _headerContainer;
-		private Control _footerContainer;
-		private Button _closeButton;
+		private Control dialogContainer;
+		private UpdatePanel updatePanel;
+		private Control contentContainer;
+		private H4 headerH4;
+		private Button closeButton;
 		#endregion
 
 		#region HeaderTemplate
@@ -37,15 +37,26 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			get
 			{
-				return _headerTemplate;
+				return headerTemplate;
 			}
 			set
 			{
-				_headerTemplate = value;				
+				headerTemplate = value;				
 			}
 		}
-		private ITemplate _headerTemplate;
+		private ITemplate headerTemplate;
 		#endregion		
+
+		#region HeaderTemplateContainer
+		internal Control HeaderTemplateContainer
+		{
+			get
+			{
+				return headerContainer;
+			}
+		}
+		private Control headerContainer;
+		#endregion
 
 		#region FooterTemplate
 		/// <summary>
@@ -57,15 +68,26 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			get
 			{
-				return _footerTemplate;
+				return footerTemplate;
 			}
 			set
 			{
-				_footerTemplate = value;
+				footerTemplate = value;
 			}
 		}
-		private ITemplate _footerTemplate;
+		private ITemplate footerTemplate;
 		#endregion		
+
+		#region FooterTemplateContainer
+		internal Control FooterTemplateContainer
+		{
+			get
+			{
+				return footerContainer;
+			}
+		}
+		private Control footerContainer;
+		#endregion
 
 		#region HeaderText
 		/// <summary>
@@ -94,7 +116,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			get
 			{
-				return _updatePanel.Triggers;
+				return updatePanel.Triggers;
 			}
 		}
 		#endregion
@@ -254,27 +276,31 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		}
 		#endregion
 
+		#region CurrentyShowing
+		internal bool CurrentyShowing { get; set; }
+		#endregion
+
 		#region Constructor
 		/// <summary>
 		/// Constructor.
 		/// </summary>
 		public ModalDialog()
 		{
-			_dialogContainer = new DialogControl(this);
+			dialogContainer = new DialogControl(this);
 
-			_updatePanel = new UpdatePanel();
-			_updatePanel.UpdateMode = UpdatePanelUpdateMode.Conditional;
+			updatePanel = new UpdatePanelExt();
+			updatePanel.UpdateMode = UpdatePanelUpdateMode.Conditional;
 
-			_headerContainer = new DialogSectionControl(() => ("modal-header " + HeaderCssClass).Trim());
-			_contentContainer = new DialogSectionControl(() => ("modal-body " + ContentCssClass).Trim());
-			_footerContainer = new DialogSectionControl(() => ("modal-footer " + FooterCssClass).Trim());
+			headerContainer = new DialogSectionControl(() => ("modal-header " + HeaderCssClass).Trim());
+			contentContainer = new DialogSectionControl(() => ("modal-body " + ContentCssClass).Trim());
+			footerContainer = new DialogSectionControl(() => ("modal-footer " + FooterCssClass).Trim());
 		
-			_closeButton = new Button();
-			_closeButton.CssClass = "close";
-			_closeButton.Controls.Add(new LiteralControl("&times;"));
-			_closeButton.Attributes.Add("aria-hidden", "true");
-			_closeButton.CausesValidation = false;
-			_closeButton.Click += CloseButton_Click;
+			closeButton = new Button();
+			closeButton.CssClass = "close";
+			closeButton.Controls.Add(new LiteralControl("&times;"));
+			closeButton.Attributes.Add("aria-hidden", "true");
+			closeButton.CausesValidation = false;
+			closeButton.Click += CloseButton_Click;
 		}
 		#endregion
 
@@ -288,34 +314,41 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 
 			// contentTemplate in base class
 
-			_headerContainer.Controls.Add(_closeButton);
+			headerContainer.Controls.Add(closeButton);
 
-			if (this._headerTemplate != null)
+			if (!headerContainer.HasControls())
 			{
-				_headerTemplate.InstantiateIn(_headerContainer);
+				if (headerTemplate != null)
+				{
+					headerTemplate.InstantiateIn(headerContainer);
+				}
+				else if (!String.IsNullOrEmpty(HeaderText))
+				{
+					headerH4 = new H4() { CssClass = "modal-title" };
+					headerContainer.Controls.Add(headerH4);
+				}
 			}
-			else if (!String.IsNullOrEmpty(HeaderText))
+
+			if (!footerContainer.HasControls())
 			{
-				_headerContainer.Controls.Add(new H4() { CssClass = "modal-title", Text = HeaderText });
+				if (footerTemplate != null)
+				{
+					footerTemplate.InstantiateIn(footerContainer);
+				}
 			}
 
-			if (this._footerTemplate != null)
-			{
-				_footerTemplate.InstantiateIn(_footerContainer);
-			}
+			dialogContainer.ID = this.ID + "__DC";
+			updatePanel.ID = this.ID + "__UP";
+			contentContainer.ID = this.ID + "__CC";
+			headerContainer.ID = this.ID + "__HC";
+			footerContainer.ID = this.ID + "__FC";
+			closeButton.ID = this.ID + "__CB";
 
-			_dialogContainer.ID = this.ID + "__DC";
-			_updatePanel.ID = this.ID + "__UP";
-			_contentContainer.ID = this.ID + "__CC";
-			_headerContainer.ID = this.ID + "__HC";
-			_footerContainer.ID = this.ID + "__FC";
-			_closeButton.ID = this.ID + "__CB";
+			updatePanel.ContentTemplateContainer.Controls.Add(headerContainer);
+			updatePanel.ContentTemplateContainer.Controls.Add(contentContainer);
+			updatePanel.ContentTemplateContainer.Controls.Add(footerContainer);			
 
-			_updatePanel.ContentTemplateContainer.Controls.Add(_headerContainer);
-			_updatePanel.ContentTemplateContainer.Controls.Add(_contentContainer);
-			_updatePanel.ContentTemplateContainer.Controls.Add(_footerContainer);			
-
-			_dialogContainer.Controls.Add(_updatePanel);
+			dialogContainer.Controls.Add(updatePanel);
 		}
 		#endregion
 
@@ -325,7 +358,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// </summary>
 		protected override Control GetContentContainer()
 		{
-			return _contentContainer;
+			return contentContainer;
 		}
 		#endregion
 
@@ -335,7 +368,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// </summary>
 		protected override Control GetDialogContainer()
 		{
-			return _dialogContainer;
+			return dialogContainer;
 		}
 		#endregion
 
@@ -346,11 +379,12 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// </summary>
 		protected override void OnDialogShown(EventArgs eventArgs)
 		{
+			CurrentyShowing = true;
 			base.OnDialogShown(eventArgs);
-			_updatePanel.Update();
+			updatePanel.Update();
 		}
 		#endregion
-
+		
 		#region OnDialogHidden
 		/// <summary>
 		/// Handles hide dialog event.
@@ -359,7 +393,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		protected override void OnDialogHidden(EventArgs eventArgs)
 		{
 			base.OnDialogHidden(eventArgs);
-			_updatePanel.Update();
+			updatePanel.Update();
 		}
 		#endregion
 
@@ -388,13 +422,18 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			}
 
 			// if we are not able to hide whole dialogContainer, lets hide at least update panel content
-			_updatePanel.ContentTemplateContainer.Visible = DialogVisible;
+			updatePanel.ContentTemplateContainer.Visible = DialogVisible;
 
-			_closeButton.Visible = ShowCloseButton;
+			closeButton.Visible = ShowCloseButton;
 
 			if (DialogVisible)
 			{
 				ScriptManager.RegisterStartupScript(this.Page, typeof(ModalDialog), "StartUp", "$(document).ready(function() { Havit_BootstrapExtensions_ResizeModal(); });", true);
+			}
+
+			if (headerH4 != null)
+			{
+				headerH4.Text = HeaderText;
 			}
 		}
 		#endregion
@@ -431,11 +470,52 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				scriptPattern += "if (!!window.jQuery.ui && !!window.jQuery.ui.version) {{ $('#{0} .modal-dialog').draggable({{handle: '.modal-header'}}); }}";
 			}
 
-			string script = String.Format(				
+			string script = String.Format(
 				scriptPattern,
 				GetDialogContainer().ClientID, // 0
 				postbackScript); // 1
 			return script;
+			//if (DialogVisible && ScriptManager.GetCurrent(Page).IsInAsyncPostBack && !CurrentyShowing)
+			//{
+			//	bool noScript = true;
+			//	Control parent = Parent;
+			//	while (parent != null)
+			//	{
+			//		if (parent is UpdatePanel)
+			//		{
+			//			if (((UpdatePanel)parent).IsInPartialRendering)
+			//			{
+			//				noScript = false;
+			//			}
+			//		}
+			//		parent = parent.Parent;
+			//	}
+
+			//	if (noScript)
+			//	{
+			//		return null;
+			//	}
+			//}
+
+
+			//string postbackScript = String.Empty;
+			//if (CloseOnEscapeKey)
+			//{
+			//	ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);
+			//	scriptManager.RegisterAsyncPostBackControl(this);
+
+			//	postbackScript = this.Page.ClientScript.GetPostBackEventReference(new PostBackOptions(this, "Escape", null, false, false, false, true, false, null), false);
+			//}
+
+			//string scriptPattern = "havit_BootstrapExtensions_Show('#{0}', {1}, '{2}', '{3}');";
+
+			//string script = String.Format(				
+			//	scriptPattern,
+			//	GetDialogContainer().ClientID, // 0
+			//	CloseOnEscapeKey.ToString().ToLower(), // 1
+			//	postbackScript.Replace("'", "\\'"), // 2
+			//	DragMode.ToString()); // 3
+			//return script;
 		}
 
 		/// <summary>
@@ -463,8 +543,17 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 
 			string script = String.Format(
 				scriptPattern,
-				DialogPanelClientIDMemento ?? _dialogContainer.ClientID);
+				DialogPanelClientIDMemento ?? dialogContainer.ClientID);
 			return script;
+			//string scriptPattern = "havit_BootstrapExtensions_Hide();";
+
+			//string script = String.Format(
+			//	scriptPattern,
+			//	DialogPanelClientIDMemento ?? dialogContainer.ClientID,
+			//	CloseOnEscapeKey.ToString().ToLower(),
+			//	DragMode.ToString());
+
+			//return script;
 		}
 		#endregion
 

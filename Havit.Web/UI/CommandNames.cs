@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Web.UI.WebControls;
 
 namespace Havit.Web.UI
 {
@@ -14,22 +15,22 @@ namespace Havit.Web.UI
 		/// <summary>
 		/// Cancel.
 		/// </summary>
-		public const string Cancel = "Cancel";
+		public const string Cancel = DataControlCommands.CancelCommandName;
 
 		/// <summary>
 		/// Delete.
 		/// </summary>
-		public const string Delete = "Delete";
+		public const string Delete = DataControlCommands.DeleteCommandName;
 
 		/// <summary>
 		/// Edit.
 		/// </summary>
-		public const string Edit = "Edit";
+		public const string Edit = DataControlCommands.EditCommandName;
 
 		/// <summary>
 		/// New.
 		/// </summary>
-		public const string New = "New";
+		public const string New = DataControlCommands.NewCommandName;
 
 		/// <summary>
 		/// MoveDown.
@@ -44,12 +45,12 @@ namespace Havit.Web.UI
 		/// <summary>
 		/// Update.
 		/// </summary>
-		public const string Update = "Update";
+		public const string Update = DataControlCommands.UpdateCommandName;
 
 		/// <summary>
 		/// Select.
 		/// </summary>
-		public const string Select = "Select";
+		public const string Select = DataControlCommands.SelectCommandName;
 
 		/// <summary>
 		/// Detail.
@@ -64,6 +65,16 @@ namespace Havit.Web.UI
 		/// <summary>
 		/// Insert.
 		/// </summary>
-		public const string Insert = "Insert";
+		public const string Insert = DataControlCommands.InsertCommandName;
+
+		/// <summary>
+		/// Save.
+		/// </summary>
+		public const string Save = "Save";
+
+		/// <summary>
+		/// OK.
+		/// </summary>
+		public const string OK = "OK";
 	}
 }

@@ -127,10 +127,11 @@ namespace Havit.Web.UI.WebControls
 		{
 			this.Controls.Clear();
 			Control contentContainer = GetContentContainer();
-			if (this._contentTemplate != null)
+			if (!contentContainer.HasControls() && (_contentTemplate != null))
 			{
 				_contentTemplate.InstantiateIn(contentContainer);
 			}
+
 			Control dialogContainer = GetDialogContainer();
 			if (dialogContainer != this)
 			{
@@ -253,10 +254,13 @@ namespace Havit.Web.UI.WebControls
 		private void RegisterShowScript()
 		{
 			ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, "jquery");
-			string script = String.Format(
-				"$(document).ready(function() {{ {0} }});",
-				GetShowScript());
-			ScriptManager.RegisterStartupScript(this.Page, typeof(BasicModalDialog), this.ClientID, script, true);
+
+			string showScript = GetShowScript();
+			if (!String.IsNullOrEmpty(showScript))
+			{
+				string script = String.Format("$(document).ready(function() {{ {0} }});", showScript);
+				ScriptManager.RegisterStartupScript(this.Page, typeof(BasicModalDialog), this.ClientID, script, true);
+			}
 		}
 
 		/// <summary>

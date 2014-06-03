@@ -23,7 +23,7 @@ namespace Havit.Web.UI.WebControls
 	/// Funkčnost <b>Sorting</b> ukládá nastavení řazení dle uživatele a případně zajišťuje automatické řazení pomocí GenericPropertyCompareru.<br/>
 	/// Funkčnost <b>Inserting</b> umožňuje použití Insert-řádku pro přidávání nových položek.<br/>
 	/// </remarks>
-	public class GridViewExt : HighlightingGridView, ICommandFieldStyle
+	public class GridViewExt : HighlightingGridView, ICommandFieldStyle, IEditorExtensible
 	{
 		#region autoFilterControls (private field)
 		/// <summary>
@@ -69,6 +69,20 @@ namespace Havit.Web.UI.WebControls
 			set
 			{
 				ViewState["_AllowInserting"] = value;
+			}
+		}
+		#endregion
+
+		#region IsInsertingByInsertRow
+		/// <summary>
+		/// Vrací true, pokud je použito vkládání nového záznamu inline editací.
+		/// To není povoleno, pokud je použit externí editor.
+		/// </summary>
+		protected virtual bool IsInsertingByInsertRow
+		{
+			get
+			{
+				return AllowInserting && (EditorExtender == null);
 			}
 		}
 		#endregion
@@ -178,6 +192,38 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		private int insertRowIndex = -1;
+		#endregion
+
+		#region EditorExtender
+		/// <summary>
+		/// Externí editor připojený k GridView.
+		/// Pro připojení slouží metoda RegisterExtender.
+		/// </summary>
+		public IEditorExtender EditorExtender { get; private set; }
+		#endregion
+
+		#region EditorExtenderEditIndex
+		/// <summary>
+		/// Index řádku editovaného externím editorem.
+		/// Pro insert nabývá hodnoty -1.
+		/// Pokud není režim editace externím editorem, vyhazuje výjimku.
+		/// </summary>
+		public int EditorExtenderEditIndex
+		{
+			get
+			{
+				object editorExtenderEditIndex = ViewState["EditorExtenderEditIndex"];
+				if (editorExtenderEditIndex == null)
+				{
+					throw new InvalidOperationException("EditorExtenderEditIndex not set.");
+				}
+				return (int)editorExtenderEditIndex;
+			}
+			set
+			{
+				ViewState["EditorExtenderEditIndex"] = value;
+			}
+		}
 		#endregion
 
 		#region CommandFieldStyle
@@ -444,6 +490,37 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region NewProcessing
+		/// <summary>
+		/// Událost, která se volá při začátku události pro založení nového záznamu.
+		/// </summary>
+		/// <remarks>
+		/// Obsluha události má zajistit zobrazení UI pro vložení nového záznamu.
+		/// Vzhledek k jazykové nemožnosti použití konvence Editing/Edited, Inserting/Inserted pro "New" je zde dvojice NewProcessing/NewProcessed.
+		/// </remarks>
+		[Category("Action")]
+		public event GridViewNewProcessingEventHandler NewProcessing
+		{
+			add { Events.AddHandler(eventNewProcessing, value); }
+			remove { Events.RemoveHandler(eventNewProcessing, value); }
+		}
+		#endregion
+
+		#region NewProcessed
+		/// <summary>
+		/// Událost, která se volá po události pro založení nového záznamu (po události NewProcessing).
+		/// </summary>
+		/// <remarks>
+		/// Vzhledek k jazykové nemožnosti použití konvence Editing/Edited, Inserting/Inserted pro "New" je zde dvojice NewProcessing/NewProcessed.
+		/// </remarks>
+		[Category("Action")]
+		public event GridViewNewProcessingEventHandler NewProcessed
+		{
+			add { Events.AddHandler(eventNewProcessed, value); }
+			remove { Events.RemoveHandler(eventNewProcessed, value); }
+		}
+		#endregion
+
 		#region RowCustomizingCommandButton
 		/// <summary>
 		/// Událost, která se volá při customizaci command-buttonu řádku (implementováno v <see cref="GridViewCommandField"/>).
@@ -527,6 +604,8 @@ namespace Havit.Web.UI.WebControls
 
 		private static readonly object eventItemInserting = new object();
 		private static readonly object eventItemInserted = new object();
+		private static readonly object eventNewProcessing = new object();
+		private static readonly object eventNewProcessed = new object();
 		private static readonly object eventRowCustomizingCommandButton = new object();
 		private static readonly object eventAllPagesShowing = new object();
 		private static readonly object eventAllPagesShown = new object();
@@ -902,7 +981,7 @@ namespace Havit.Web.UI.WebControls
 					insertingData.Add(item);
 				}
 				insertRowIndex = -1;
-				if (AllowInserting)
+				if (IsInsertingByInsertRow)
 				{
 					if (GetInsertRowDataItem == null)
 					{
@@ -960,6 +1039,21 @@ namespace Havit.Web.UI.WebControls
 				}
 			}
 
+			if (EditorExtender != null)
+			{
+				foreach (var column in Columns)
+				{
+					if (column is GridViewCommandField)
+					{
+						GridViewCommandField gridViewCommandField = (GridViewCommandField)column;
+						if (gridViewCommandField.ShowNewButtonForInsertByEditorExtender && gridViewCommandField.ShowInsertButton)
+						{
+							gridViewCommandField.ShowNewButton = true;
+						}
+					}
+				}
+			}
+
 			base.PerformDataBinding(insertingData);
 
 			if (insertingData != null)
@@ -1012,7 +1106,7 @@ namespace Havit.Web.UI.WebControls
 
 			// Řádek s novým objektem přepínáme do stavu Insert, což zajistí zvolení EditItemTemplate a správné chování CommandFieldu.
 			if ((rowType == DataControlRowType.DataRow)
-				&& (AllowInserting)
+				&& (IsInsertingByInsertRow)
 				&& (dataSourceIndex == InsertRowDataSourceIndex))
 			{
 				insertRowIndex = rowIndex;
@@ -1020,7 +1114,7 @@ namespace Havit.Web.UI.WebControls
 			}
 
 			// abychom měli na stránce vždy stejný počet řádek, tak u insertingu při editaci skrýváme poslední řádek
-			if ((AllowInserting) && (insertRowIndex < 0) && (AllowPaging) && (rowIndex == (this.PageSize - 1)))
+			if ((IsInsertingByInsertRow) && (insertRowIndex < 0) && (AllowPaging) && (rowIndex == (this.PageSize - 1)))
 			{
 				row.Visible = false;
 			}
@@ -1148,7 +1242,11 @@ namespace Havit.Web.UI.WebControls
 			switch (e.CommandName)
 			{
 				case DataControlCommands.InsertCommandName:
-					this.HandleInsert(Convert.ToInt32(e.CommandArgument, CultureInfo.InvariantCulture), causesValidation);
+					HandleInsert(Convert.ToInt32(e.CommandArgument, CultureInfo.InvariantCulture), causesValidation);
+					break;
+
+				case CommandNames.New:
+					HandleNew(causesValidation);
 					break;
 			}
 		}
@@ -1176,6 +1274,26 @@ namespace Havit.Web.UI.WebControls
 						this.InsertRowDataSourceIndex = -1;
 						base.RequiresDataBinding = true;
 					}
+				}
+			}
+		}
+		#endregion
+
+		#region HandleNew
+		/// <summary>
+		/// Metoda, která řídí logiku příkazu New.
+		/// </summary>
+		/// <param name="causesValidation">příznak, zdali má probíhat validace</param>
+		protected virtual void HandleNew(bool causesValidation)
+		{
+			if ((!causesValidation || (this.Page == null)) || this.Page.IsValid)
+			{
+				GridViewNewProcessingEventArgs argsNewProcessing = new GridViewNewProcessingEventArgs();
+				OnNewProcessing(argsNewProcessing);
+				if (!argsNewProcessing.Cancel)
+				{
+					GridViewNewProcessedEventArgs argsNewProcessed = new GridViewNewProcessedEventArgs();
+					OnNewProcessed(argsNewProcessed);
 				}
 			}
 		}
@@ -1241,52 +1359,64 @@ namespace Havit.Web.UI.WebControls
 			
 			if (!e.Cancel)
 			{
-				int newEditIndex = e.NewEditIndex;
-				if ((AllowInserting) && (this.InsertRowDataSourceIndex >= 0) && (this.insertRowIndex < newEditIndex))
+				if (EditorExtender != null)
 				{
-					newEditIndex = newEditIndex - 1;
+					this.EditorExtenderEditIndex = e.NewEditIndex;
+					EditorExtender.StartEditor();
+
+					e.Cancel = true;
 				}
+				else
+				{
+					int newEditIndex = e.NewEditIndex;
+					if ((IsInsertingByInsertRow) && (InsertRowDataSourceIndex >= 0) && (insertRowIndex < newEditIndex))
+					{
+						newEditIndex = newEditIndex - 1;
+					}
 
-				// .NET 4.0 má vlastní logiku, která nastavuje EditIndex po volání této metody. 
-				// My zde opravujeme nastavení NewEditIndex, čímž řešíme logiku změny při insert řádku nahoře
-				#region Komentář - HandleEdit vykopírované z .NET 3.5 a .NET 4.0
+					// .NET 4.0 má vlastní logiku, která nastavuje EditIndex po volání této metody. 
+					// My zde opravujeme nastavení NewEditIndex, čímž řešíme logiku změny při insert řádku nahoře
 
-				// ASP.NET 3.5 
+					#region Komentář - HandleEdit vykopírované z .NET 3.5 a .NET 4.0
 
-				//private void HandleEdit(int rowIndex)
-				//{
-				//    GridViewEditEventArgs e = new GridViewEditEventArgs(rowIndex);
-				//    this.OnRowEditing(e);
-				//    if (!e.Cancel)
-				//    {
-				//        if (base.IsBoundUsingDataSourceID)
-				//        {
-				//            this.EditIndex = e.NewEditIndex;
-				//        }
-				//        base.RequiresDataBinding = true;
-				//    }
-				//}
+					// ASP.NET 3.5 
 
-				// ASP.NET 4.0
-				// zde zmizela podmínka na IsBoundUsingDataSourceID
+					//private void HandleEdit(int rowIndex)
+					//{
+					//    GridViewEditEventArgs e = new GridViewEditEventArgs(rowIndex);
+					//    this.OnRowEditing(e);
+					//    if (!e.Cancel)
+					//    {
+					//        if (base.IsBoundUsingDataSourceID)
+					//        {
+					//            this.EditIndex = e.NewEditIndex;
+					//        }
+					//        base.RequiresDataBinding = true;
+					//    }
+					//}
 
-				//private void HandleEdit(int rowIndex)
-				//{
-				//    GridViewEditEventArgs e = new GridViewEditEventArgs(rowIndex);
-				//    this.OnRowEditing(e);
-				//    if (!e.Cancel)
-				//    {
-				//        this.EditIndex = e.NewEditIndex;
-				//        base.RequiresDataBinding = true;
-				//    }
-				//}
-				#endregion
+					// ASP.NET 4.0
+					// zde zmizela podmínka na IsBoundUsingDataSourceID
 
-				this.EditIndex = newEditIndex;
-				e.NewEditIndex = newEditIndex;
+					//private void HandleEdit(int rowIndex)
+					//{
+					//    GridViewEditEventArgs e = new GridViewEditEventArgs(rowIndex);
+					//    this.OnRowEditing(e);
+					//    if (!e.Cancel)
+					//    {
+					//        this.EditIndex = e.NewEditIndex;
+					//        base.RequiresDataBinding = true;
+					//    }
+					//}
 
-				SetRequiresDatabinding();
-				this.InsertRowDataSourceIndex = -1;
+					#endregion
+
+					this.EditIndex = newEditIndex;
+					e.NewEditIndex = newEditIndex;
+
+					SetRequiresDatabinding();
+					this.InsertRowDataSourceIndex = -1;
+				}
 			}
 		}
 		#endregion
@@ -1383,6 +1513,46 @@ namespace Havit.Web.UI.WebControls
 		protected virtual void OnRowInserted(GridViewInsertedEventArgs e)
 		{
 			GridViewInsertedEventHandler h = (GridViewInsertedEventHandler)Events[eventItemInserted];
+			if (h != null)
+			{
+				h(this, e);
+			}
+		}
+		#endregion
+
+		#region OnNewProcessing
+		/// <summary>
+		/// Spouští událost RowNewBeginning. Událost zahajuje začátek zakládání nového záznamu.		
+		/// </summary>
+		/// <remarks>
+		/// Vzhledek k jazykové nemožnosti použití konvence Editing/Edited, Inserting/Inserted pro "New" je zde dvojice NewProcessing/NewProcessed.
+		/// </remarks>
+		protected virtual void OnNewProcessing(GridViewNewProcessingEventArgs e)
+		{
+			GridViewNewProcessingEventHandler h = (GridViewNewProcessingEventHandler)Events[eventNewProcessing];
+			if (h != null)
+			{
+				h(this, e);
+			}
+
+			if (!e.Cancel && (EditorExtender != null))
+			{
+				EditorExtenderEditIndex = -1;
+				EditorExtender.StartEditor();
+			}
+		}
+		#endregion
+
+		#region OnNewProcessed
+		/// <summary>
+		/// Spouští událost RowNewCompleted. Událost ukončuje začátek zakládání nového záznamu. Vzhledek k jazykové nemožnosti použití konvence Editing/Edited, Inserting/Inserted pro "New" je zde dvojice NewBeginning/NewCompleted.
+		/// </summary>
+		/// <remarks>
+		/// Vzhledek k jazykové nemožnosti použití konvence Editing/Edited, Inserting/Inserted pro "New" je zde dvojice NewProcessing/NewProcessed.
+		/// </remarks>
+		protected virtual void OnNewProcessed(GridViewNewProcessedEventArgs e)
+		{
+			GridViewNewProcessedEventHandler h = (GridViewNewProcessedEventHandler)Events[eventNewProcessed];
 			if (h != null)
 			{
 				h(this, e);
@@ -1876,27 +2046,81 @@ namespace Havit.Web.UI.WebControls
 		private TableItemStyle _renderHeaderStyle;
 
 		#endregion
+
+		#region RegisterEditor
+		/// <summary>
+		/// Registruje editor pro použití s GridView.
+		/// </summary>
+		public virtual void RegisterEditor(IEditorExtender editorExtender)
+		{
+			Contract.Requires(editorExtender != null);
+
+			this.EditorExtender = editorExtender;
+			editorExtender.EditClosed += EditorExtenderEditClosed;
+			editorExtender.ItemSaved += EditorExtenderItemSaved;
+		}
+		#endregion
+
+		#region EditorExtenderEditClosed
+		/// <summary>
+		/// Ukončí režim editace externím editorem.
+		/// </summary>
+		private void EditorExtenderEditClosed(object sender, EventArgs e)
+		{
+			ViewState["EditorExtenderEditIndex"] = null;
+		}
+		#endregion
+
+		#region EditorExtenderItemSaved
+		private void EditorExtenderItemSaved(object sender, EventArgs e)
+		{
+			SetRequiresDatabinding();
+
+			if (ScriptManager.GetCurrent(this.Page).IsInAsyncPostBack)
+			{
+				Control parent = Parent;
+				while (parent != null && (!(parent is UpdatePanel)))
+				{
+					parent = parent.Parent;
+				}
+				if (parent == null)
+				{
+					throw new HttpException("GridView must be inside UpdatePanel to be able to update its content.");
+				}
+				UpdatePanel updatePanel = (UpdatePanel)parent;
+				if (updatePanel.UpdateMode == UpdatePanelUpdateMode.Conditional)
+				{
+					updatePanel.Update();
+				}
+			}
+			
+		}
+		#endregion
 	}
 
 	/// <summary>
 	/// Reprezentuje metodu, která obsluhuje událost RowInserting controlu GridViewExt.
 	/// </summary>
-	/// <param name="sender">odesílatel události (GridView)</param>
-	/// <param name="e">argumenty události</param>
 	public delegate void GridViewInsertEventHandler(object sender, GridViewInsertEventArgs e);
 
 	/// <summary>
 	/// Reprezentuje metodu, která obsluhuje událost RowInserted controlu GridViewExt.
 	/// </summary>
-	/// <param name="sender">odesílatel události (GridView)</param>
-	/// <param name="e">argumenty události</param>
 	public delegate void GridViewInsertedEventHandler(object sender, GridViewInsertedEventArgs e);
+
+	/// <summary>
+	/// Reprezentuje metodu, která obsluhuje událost NewProcessing controlu GridViewExt.
+	/// </summary>
+	public delegate void GridViewNewProcessingEventHandler(object sender, GridViewNewProcessingEventArgs e);
+
+	/// <summary>
+	/// Reprezentuje metodu, která obsluhuje událost NewProcessed controlu GridViewExt.
+	/// </summary>
+	public delegate void GridViewNewProcessedEventHandler(object sender, GridViewNewProcessedEventArgs e);
 
 	/// <summary>
 	/// Reprezentuje metodu, která obsluhuje událost <see cref="GridViewExt.RowCustomizingCommandButton"/>.
 	/// </summary>
-	/// <param name="sender">odesílatel události (GridView)</param>
-	/// <param name="e">argumenty události</param>
 	public delegate void GridViewRowCustomizingCommandButtonEventHandler(object sender, GridViewRowCustomizingCommandButtonEventArgs e);
 
 	/// <summary>

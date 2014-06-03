@@ -47,7 +47,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			ListItem item = control.Items[repeatIndex]; // item to render
 
-			string cssClass = "btn btn-default";
+			string cssClass = control.ItemCssClass ?? String.Empty;
 			if (item.Selected)
 			{
 				cssClass += " active"; // selected items must have active class (otherwise the selection is not visible in UI)

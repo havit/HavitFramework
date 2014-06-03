@@ -22,6 +22,7 @@
 	<ul>
 		<li>RepeatLayout (default value overriden to RepeatLayout.Flow and cannot be changed)</li>
 		<li>RepeatDirection (default value overriden to RepeatDirection.Horizontal)</li>
+		<li>ItemCssClass (default "btn btn-default")</li>
 	</ul>
 
 	<h2>ChechBoxList Sample</h2>	

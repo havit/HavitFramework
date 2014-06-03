@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using Havit.Diagnostics.Contracts;
 using System.Linq;
@@ -16,6 +17,25 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	/// </summary>
 	public class RadioButtonList : System.Web.UI.WebControls.RadioButtonList, IRadioButtonListCheckBoxList
 	{
+		#region ItemCssClass
+		/// <summary>
+		/// Css class for list items.
+		/// Default value is "btn btn-default".
+		/// </summary>
+		[DefaultValue("btn btn-default")]
+		public string ItemCssClass
+		{
+			get
+			{
+				return (string)(ViewState["ItemCssClass"] ?? "btn btn-default");
+			}
+			set
+			{
+				ViewState["ItemCssClass"] = value;
+			}
+		}
+		#endregion
+
 		#region Constructor
 		/// <summary>
 		/// Constructor.

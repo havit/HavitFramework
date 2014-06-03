@@ -13,7 +13,7 @@
 				<asp:ListItem Text="DEF"></asp:ListItem>
 				<asp:ListItem Text="GHI"></asp:ListItem>
 			</bc:CheckBoxList>
-			<bc:CheckBoxList ID="VerticalCheckBoxList" RepeatDirection="Vertical" runat="server">
+			<bc:CheckBoxList ID="VerticalCheckBoxList" RepeatDirection="Vertical" ItemCssClass="btn btn-primary" runat="server">
 				<asp:ListItem Value="Abc" Text="A<b>C" Selected="true"></asp:ListItem>
 				<asp:ListItem Text="DEF"></asp:ListItem>
 				<asp:ListItem Text="GHI"></asp:ListItem>

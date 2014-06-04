@@ -1,0 +1,42 @@
+﻿<asp:UpdatePanel UpdateMode="Conditional" runat="server">
+	<ContentTemplate>
+
+		<havit:EnterpriseGridView ID="MainGV" AllowInserting="true" AutoCrudOperations="true" runat="server">
+			<Columns>
+				<havit:BoundFieldExt DataField="Nazev" SortExpression="Nazev" HeaderText="Název" />
+				<havit:GridViewCommandField ShowEditButton="true" />
+			</Columns>
+		</havit:EnterpriseGridView>	
+	
+		<bc:ModalEditorExtender TargetControlID="MainGV" ItemType="..." HeaderText="Editace" runat="server">
+			<ContentTemplate>
+				<asp:TextBox ID="NazevTB" Text="<%# BindItem.Nazev %>" runat="server" />
+			</ContentTemplate>
+			<FooterTemplate> <%-- can be in skin (be careful when choosing validation group) --%>
+				<asp:Button CommandName="OK" Text="OK" runat="server" />
+				<asp:Button CommandName="Save" Text="Save" runat="server" />
+				<asp:Button CommandName="Cancel" Text="Cancel" runat="server" />
+			</FooterTemplate>
+		</bc:ModalEditorExtender>
+
+	</ContentTemplate>
+</asp:UpdatePanel>
+
+<script runat="server">
+	protected override void OnInit(EventArgs e)
+	{
+		base.OnInit(e);
+		MainGV.DataBinding += MainGV_DataBinding;
+		MainGV.GetInsertRowDataItem += MainGV_GetInsertRowDataItem;
+	}
+	
+	private void MainGV_DataBinding(object sender, EventArgs e)
+	{
+		MainGV.DataSource = ...;
+	}
+
+	private object MainGV_GetInsertRowDataItem()
+	{
+		return ...;
+	}
+</script>

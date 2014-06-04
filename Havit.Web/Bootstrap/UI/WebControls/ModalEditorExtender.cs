@@ -125,52 +125,221 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		}
 		#endregion
 
-		#region For
+		#region TargetControlID
 		/// <summary>
 		/// Control to which is editor attached.
 		/// </summary>
-		public string For
+		public string TargetControlID
 		{
 			get
 			{
-				return (string)(ViewState["For"] ?? default(string));
+				return (string)(ViewState["TargetControlID"] ?? default(string));
 			}
 			set
 			{
 				if (initPerformed)
 				{
-					throw new InvalidOperationException("Cannot set For after init was performed.");
+					throw new InvalidOperationException("Cannot set TargetControlID after init was performed.");
 				}
-				ViewState["For"] = value;
+				ViewState["TargetControlID"] = value;
 			}
 		}
 		#endregion
 
-		#region ForControl
+		#region TargetControl
 		/// <summary>
-		/// For control as IEditorExtensible.
+		/// TargetControlID control as IEditorExtensible.
 		/// </summary>
-		protected IEditorExtensible ForControl
+		private IEditorExtensible TargetControl
 		{
 			get
 			{
-				if (String.IsNullOrEmpty(For))
+				if (String.IsNullOrEmpty(TargetControlID))
 				{
-					throw new InvalidOperationException("'For' property not set.");
+					throw new InvalidOperationException("TargetControlID property not set.");
 				}
 
-				Control forControl = this.NamingContainer.FindControl(For);
+				Control forControl = this.NamingContainer.FindControl(TargetControlID);
 				if (forControl == null)
 				{
-					throw new InvalidOperationException(String.Format("Control with ID '{0}' set in 'For' property was not found.", For));
+					throw new InvalidOperationException(String.Format("Control with ID '{0}' set in TargetControlID property was not found.", TargetControlID));
 				}
 
 				if (!(forControl is IEditorExtensible))
 				{
-					throw new InvalidOperationException(String.Format("Control with ID '{0}' set in 'For' property does not implement IEditorExtensible.", For));
+					throw new InvalidOperationException(String.Format("Control with ID '{0}' set in TargetControlID property does not implement IEditorExtensible.", TargetControlID));
 				}
 
 				return (IEditorExtensible)forControl;
+			}
+		}
+		#endregion
+
+		#region Triggers
+		/// <summary>
+		/// Nested UpdatePanel's triggers.
+		/// </summary>
+		[PersistenceMode(PersistenceMode.InnerProperty)]
+		public UpdatePanelTriggerCollection Triggers
+		{
+			get
+			{
+				return modalDialog.Triggers;
+			}
+		}
+		#endregion
+
+		#region Width
+		/// <summary>
+		/// Šířka dialogu v pixelech.
+		/// </summary>
+		public Unit Width
+		{
+			get
+			{
+				return modalDialog.Width;
+			}
+			set
+			{
+				modalDialog.Width = value;
+			}
+		}
+		#endregion
+
+		#region UseAnimations
+		/// <summary>
+		/// Get or sets whether use animations when showing and hiding dialog.
+		/// </summary>
+		public bool UseAnimations
+		{
+			get
+			{
+				return modalDialog.UseAnimations;
+			}
+			set
+			{
+				modalDialog.UseAnimations = value;
+			}
+		}
+		#endregion
+
+		#region CssClass
+		/// <summary>
+		/// Css class to be used for dialog - used in element with modal-dialog class.
+		/// </summary>
+		public string CssClass
+		{
+			get
+			{
+				return modalDialog.CssClass;
+			}
+			set
+			{
+				modalDialog.CssClass = value;
+			}
+		}
+		#endregion
+
+		#region HeaderCssClass
+		/// <summary>
+		/// Css class to be used for header - used in element with modal-header class.
+		/// </summary>
+		public string HeaderCssClass
+		{
+			get
+			{
+				return modalDialog.HeaderCssClass;
+			}
+			set
+			{
+				modalDialog.HeaderCssClass = value;
+			}
+		}
+		#endregion
+
+		#region ContentCssClass
+		/// <summary>
+		/// Css class to be used for content - used in element with modal-body class.
+		/// </summary>
+		public string ContentCssClass
+		{
+			get
+			{
+				return modalDialog.ContentCssClass;
+			}
+			set
+			{
+				modalDialog.ContentCssClass = value;
+			}
+		}
+		#endregion
+
+		#region FooterCssClass
+		/// <summary>
+		/// Css class to be used for footer - used in element with modal-footer class.
+		/// </summary>
+		public string FooterCssClass
+		{
+			get
+			{
+				return modalDialog.FooterCssClass;
+			}
+			set
+			{
+				modalDialog.FooterCssClass = value;
+			}
+		}
+		#endregion
+
+		#region ShowCloseButton
+		/// <summary>
+		/// Indicates whether to show close button.
+		/// Default value is true.
+		/// </summary>
+		public bool ShowCloseButton
+		{
+			get
+			{
+				return modalDialog.ShowCloseButton;
+			}
+			set
+			{
+				modalDialog.ShowCloseButton = value;
+			}
+		}
+		#endregion
+
+		#region CloseOnEscapeKey
+		/// <summary>
+		/// Indicates whether to close dialog on escape key pressed.
+		/// </summary>
+		public bool CloseOnEscapeKey
+		{
+			get
+			{
+				return modalDialog.CloseOnEscapeKey;
+			}
+			set
+			{
+				modalDialog.CloseOnEscapeKey = value;
+			}
+		}
+		#endregion
+
+		#region DragMode
+		/// <summary>
+		/// Modal dialog drag mode.
+		/// Default value is ModalDialogDragMode.IfAvailable.
+		/// </summary>
+		public ModalDialogDragMode DragMode
+		{
+			get
+			{
+				return modalDialog.DragMode;
+			}
+			set
+			{
+				modalDialog.DragMode = value;
 			}
 		}
 		#endregion
@@ -198,7 +367,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 
 		#region OnInit
 		/// <summary>
-		/// Ensures child controls and registers editor to a "For" control.
+		/// Ensures child controls and registers editor to a TargetControlID control.
 		/// </summary>
 		protected override void OnInit(EventArgs e)
 		{
@@ -206,7 +375,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			base.OnInit(e);
 			EnsureChildControls();
 
-			ForControl.RegisterEditor(this);
+			TargetControl.RegisterEditor(this);
 		}
 		private bool initPerformed = false;
 		#endregion

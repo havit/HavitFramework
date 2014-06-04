@@ -313,16 +313,17 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			base.CreateChildControls();
 
 			// contentTemplate in base class
+			bool headerContainerHasControls = headerContainer.HasControls();
 
 			headerContainer.Controls.Add(closeButton);
 
-			if (!headerContainer.HasControls())
+			if (!headerContainerHasControls)
 			{
 				if (headerTemplate != null)
 				{
 					headerTemplate.InstantiateIn(headerContainer);
 				}
-				else if (!String.IsNullOrEmpty(HeaderText))
+				else
 				{
 					headerH4 = new H4() { CssClass = "modal-title" };
 					headerContainer.Controls.Add(headerH4);

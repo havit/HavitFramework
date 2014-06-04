@@ -66,7 +66,7 @@ namespace Havit.Web.Bootstrap.Tutorial.Section.Samples
 			string filename;
 			if (!String.IsNullOrEmpty(ShowControlID))
 			{
-				UserControl uc = (UserControl) NamingContainer.FindControl(ShowControlID);
+				UserControl uc = (UserControl)NamingContainer.FindControl(ShowControlID);
 				filename = uc.AppRelativeVirtualPath;
 			}
 			else

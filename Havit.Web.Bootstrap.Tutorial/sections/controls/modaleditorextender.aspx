@@ -14,8 +14,9 @@
 	<p>Editor extender attaches to a "For" controls and is used as item editor instead of standard control edit mode. Currently, only GridViewExt and EnterpriseGridView are supported as target controls. EnterpriseGridView with AutoCrudOperations ensures object changes persistence.</p>
 	<h3>Properties</h3>
 	<ul>
-		<li>For</li>
+		<li>TargetControlID</li>
 		<li>HeaderText, HeaderTemplate, ContentTemplate, FooterTemplate</li>
+		<li>next properties from nested <a href="modaldialog">ModalDialog</a> control</li>
 	</ul>
 
 	<h3>Methods</h3>
@@ -35,9 +36,11 @@
 	</ul>
 	
 	<h3>Event propagation</h3>
-	Events Save, OK and Cancel are handled.
+	<p>Events Save, OK and Cancel are handled.</p>
 
 	<h3>Skin support</h3>
-	FooterTemplate should be set in skin. It should use buttons with command names OK, Save, Cancel which are handled. No codebehind for buttons required.
+	<p>FooterTemplate should be set in skin. It should use buttons with command names OK, Save, Cancel which are handled (No codebehind for buttons required). Be careful when setting ValidationGroup.</p>
+
+	<uc:ShowControl Title="Show demo code" Filename="~/Sections/Controls/Samples/ModalEditorExtenderSample.txt" runat="server" />
 
 </asp:Content>

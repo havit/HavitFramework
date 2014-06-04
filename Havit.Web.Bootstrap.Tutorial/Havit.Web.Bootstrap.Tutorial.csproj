@@ -165,6 +165,7 @@
     <Content Include="Scripts\toastr.js" />
     <Content Include="Scripts\toastr.min.js" />
     <Content Include="sections\controls\modaleditorextender.aspx" />
+    <Content Include="sections\controls\samples\ModalEditorExtenderSample.txt" />
     <Content Include="sections\controls\samples\ModalDialogSample.ascx" />
     <Content Include="sections\controls\samples\ModalDialogUserControlBaseSample.ascx" />
     <Content Include="sections\controls\samples\NavbarSitemapSample.ascx" />

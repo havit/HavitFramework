@@ -48,7 +48,6 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Item type. Pro strong type databinding.
 		/// </summary>
-		[DefaultValue("")]
 		[Themeable(false)]
 		public virtual string ItemType
 		{

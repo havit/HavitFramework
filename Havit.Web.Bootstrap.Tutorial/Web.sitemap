@@ -5,6 +5,7 @@
 		<siteMapNode title="Controls">
 			<siteMapNode url="~/sections/controls/checkboxlist_radiobuttonlist" title="CheckBoxList and RadioButtonList" />
 			<siteMapNode url="~/sections/controls/modaldialog" title="ModalDialog" />
+			<siteMapNode url="~/sections/controls/modaleditorextender" title="ModalEditorExtender" />
 			<siteMapNode url="~/sections/controls/navbar" title="Navbar" />
 			<siteMapNode url="~/sections/controls/tabs" title="Tabs" />
 			<siteMapNode url="~/sections/controls/tooltip" title="Tooltip" />

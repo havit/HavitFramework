@@ -9,7 +9,7 @@
 <body>
     <form id="form1" runat="server">
 	<asp:ScriptManager runat="server" />
-    <div>	
+    <div>			
 		<havit:FormViewExt ID="MyFormView" ItemType="Havit.BusinessLayerTest.Uzivatel" DefaultMode="Edit" RenderOuterTable="false" runat="server">
 			<ItemTemplate>
 				Nazev: <%#: Item.DisplayAs %>
@@ -37,6 +37,14 @@
 			</InsertItemTemplate>--%>
 		</havit:FormViewExt>
 		<asp:Button ID="UpdateButton" Text="Update" Visible="false" runat="server" />
+		
+		<asp:FormView ID="StandardFormView" ItemType="Havit.BusinessLayerTest.Uzivatel" DefaultMode="Edit" RenderOuterTable="false" runat="server">
+			<ItemTemplate>
+				Nazev: <asp:TextBox ID="NazevTextBox" Text="<%# BindItem.Email %>" runat="server" /><br/>
+				Disabled:<asp:CheckBox ID="DisabledCheckBox" Checked="<%# BindItem.Disabled %>" runat="server"/><br/>				
+			</ItemTemplate>
+		</asp:FormView>
+
     </div>
     </form>
 </body>

@@ -20,5 +20,14 @@ namespace WebApplicationTest.HavitWebBootstrapTests {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Havit.Web.UI.WebControls.EnterpriseGridView MainGV;
+        
+        /// <summary>
+        /// ModalEditorExtender control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Havit.Web.Bootstrap.UI.WebControls.ModalEditorExtender ModalEditorExtender;
     }
 }

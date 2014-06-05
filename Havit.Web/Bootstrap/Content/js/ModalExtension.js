@@ -160,7 +160,7 @@ if (!window.jQuery) {
 			havit_BootstrapExtensions_CurrentDialog = null;
 		}
 
-		$(document).on("shown.bs.modal", "disv.modal", havit_BootstrapExtensions_ResizeModal);
+		$(document).on("shown.bs.modal", "div.modal", havit_BootstrapExtensions_ResizeModal);
 		$(document).on("hide.bs.modal", "div.modal", havit_BootstrapExtensions_ClearTimer);
 	})(jQuery);
 }

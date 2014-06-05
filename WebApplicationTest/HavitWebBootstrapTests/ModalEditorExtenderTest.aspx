@@ -14,7 +14,7 @@
 		</ContentTemplate>
 	</asp:UpdatePanel>
 	
-	<bc:ModalEditorExtender ID="ModalEditorExtender" For="MainGV" ItemType="Havit.BusinessLayerTest.Subjekt" HeaderText="Editace subjektu" runat="server">
+	<bc:ModalEditorExtender ID="ModalEditorExtender" TargetControlID="MainGV" ItemType="Havit.BusinessLayerTest.Subjekt" HeaderText="Editace subjektu" runat="server">
 		<ContentTemplate>
 			<asp:TextBox ID="NazevTB" Text="<%# BindItem.Nazev %>" runat="server" />
 		</ContentTemplate>

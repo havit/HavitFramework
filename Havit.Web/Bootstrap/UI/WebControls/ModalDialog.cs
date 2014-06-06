@@ -94,6 +94,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Dialog header text. Used only when HeaderTemplate not used.
 		/// HeaderText is rendered in &lt;h4&gt; element with css class "modal-title".
 		/// </summary>
+		[DefaultValue("")]
 		public string HeaderText
 		{
 			get
@@ -142,6 +143,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Get or sets whether use animations when showing and hiding dialog.
 		/// </summary>
+		[DefaultValue(true)]
 		public bool UseAnimations
 		{
 			get
@@ -159,6 +161,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Css class to be used for dialog - used in element with modal-dialog class.
 		/// </summary>
+		[DefaultValue("")]
 		public string CssClass
 		{
 			get
@@ -176,6 +179,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Css class to be used for header - used in element with modal-header class.
 		/// </summary>
+		[DefaultValue("")]
 		public string HeaderCssClass
 		{
 			get
@@ -193,6 +197,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Css class to be used for content - used in element with modal-body class.
 		/// </summary>
+		[DefaultValue("")]
 		public string ContentCssClass
 		{
 			get
@@ -210,6 +215,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Css class to be used for footer - used in element with modal-footer class.
 		/// </summary>
+		[DefaultValue("")]
 		public string FooterCssClass
 		{
 			get
@@ -228,6 +234,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Indicates whether to show close button.
 		/// Default value is true.
 		/// </summary>
+		[DefaultValue(true)]
 		public bool ShowCloseButton
 		{
 			get
@@ -245,6 +252,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Indicates whether to close dialog on escape key pressed.
 		/// </summary>
+		[DefaultValue(true)]
 		public bool CloseOnEscapeKey
 		{
 			get
@@ -263,6 +271,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Modal dialog drag mode.
 		/// Default value is ModalDialogDragMode.IfAvailable.
 		/// </summary>
+		[DefaultValue(ModalDialogDragMode.IfAvailable)]
 		public ModalDialogDragMode DragMode
 		{
 			get

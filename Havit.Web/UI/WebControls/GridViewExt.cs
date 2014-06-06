@@ -12,6 +12,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI;
 using Havit.Collections;
 using Havit.Diagnostics.Contracts;
+using Havit.Web.UI.ClientScripts;
 using Havit.Web.UI.WebControls.ControlsValues;
 
 namespace Havit.Web.UI.WebControls
@@ -241,7 +242,32 @@ namespace Havit.Web.UI.WebControls
 			}
 			set
 			{
+				if (IsTrackingViewState)
+				{
+					if (EditorExtenderEditIndexInternal != value)
+					{
+						_editorExtenderEditIndexInternalChanged = true;
+					}
+				}
 				ViewState["EditorExtenderEditIndex"] = value;
+			}
+		}
+		private bool _editorExtenderEditIndexInternalChanged = false;
+		#endregion
+
+		#region EditorExtenderEditCssClass
+		/// <summary>
+		/// Css třída pro aktuálně editovaný záznam v externím editoru.
+		/// </summary>
+		public string EditorExtenderEditCssClass
+		{
+			get
+			{
+				return (string)(ViewState["EditorExtenderEditCssClass"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["EditorExtenderEditCssClass"] = value;
 			}
 		}
 		#endregion
@@ -634,7 +660,14 @@ namespace Havit.Web.UI.WebControls
 		private static readonly object eventGridViewDataFiltering = new object();
 
 		#endregion
-		
+
+		#region ChildTable
+		/// <summary>
+		/// Child Table.
+		/// </summary>
+		protected Table ChildTable { get; set; }
+		#endregion
+
 		#region Constructor
 		/// <summary>
 		/// Vytvoří instanci GridViewExt. Nastavuje defaultně AutoGenerateColumns na false.
@@ -849,6 +882,18 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region CreateChildTable
+		/// <summary>
+		/// Vytvoří ChildTable.
+		/// </summary>
+		/// <returns></returns>
+		protected override Table CreateChildTable()
+		{
+			ChildTable = base.CreateChildTable();
+			return ChildTable;
+		}
+		#endregion
+
 		#region CreateFilterChildControls
 		/// <summary>
 		/// Přidá filtrovací řádek do gridu.
@@ -857,7 +902,7 @@ namespace Havit.Web.UI.WebControls
 		{			
 			if (this._fields != null)
 			{
-				Table table = (Table)this.Controls[0];
+				Table table = ChildTable;
 
 				// V prvním databindu se provádí fake call PerformDataBinding (viz volání base v metode PerformDataBinding).
 				// V tom důsledku je metoda CreateChildControls/CreateFilterChildControls volána dvakrát.
@@ -1631,6 +1676,25 @@ namespace Havit.Web.UI.WebControls
 			}
 
 			base.OnPreRender(e);
+
+			this.RegisterClientScripts();
+		}
+		#endregion
+
+		#region RegisterClientScripts
+		private void RegisterClientScripts()
+		{
+			HavitFrameworkClientScriptHelper.RegisterHavitFrameworkClientScript(this.Page); // TODO: Nezaregistruje se v asynchronním postbacku!
+			if (((this.EditorExtenderEditIndexInternal != null) || _editorExtenderEditIndexInternalChanged) && !String.IsNullOrEmpty(this.EditorExtenderEditCssClass))
+			{
+				// nemáme k dispozici Row.ClientID!
+				string script = String.Format("havitGridViewExtensions.setExternalEditorEditedRow('{0}', {1}, '{2}');",
+					this.ClientID, // 0
+					((this.EditorExtenderEditIndexInternal == null) || (this.EditorExtenderEditIndex == -1)) ? -1 : this.Rows[this.EditorExtenderEditIndex].RowIndex, // 1
+					this.EditorExtenderEditCssClass); // 2
+
+				ScriptManager.RegisterStartupScript(this.Page, typeof(GridViewExt), "SelectExternalEditorEditedRow", script, true);
+			}
 		}
 		#endregion
 
@@ -2244,7 +2308,7 @@ namespace Havit.Web.UI.WebControls
 				EditorExtenderEditIndex = EditorExtenderEditIndex + 1;
 			}
 		}
-		#endregion
+		#endregion		
 	}
 
 	/// <summary>

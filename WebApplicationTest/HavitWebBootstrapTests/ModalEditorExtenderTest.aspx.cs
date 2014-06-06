@@ -43,7 +43,7 @@ namespace WebApplicationTest.HavitWebBootstrapTests
 		#region MainGV_DataBinding
 		private void MainGV_DataBinding(object sender, EventArgs e)
 		{
-			MainGV.DataSource = Subjekt.GetAll().Take(5).ToList();
+			MainGV.DataSource = Subjekt.GetAll();
 		}
 		#endregion
 

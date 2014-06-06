@@ -272,5 +272,14 @@ var havitDateTimeBoxExtensions = {
 	
 };
 
+var havitGridViewExtensions = {
+	setExternalEditorEditedRow: function(gridviewID, rowIndex, cssClass) {
+		$('#' + gridviewID + ' > tbody > tr.' + cssClass).removeClass(cssClass);
+		if (rowIndex >= 0) {
+			$('#' + gridviewID + ' > tbody > tr:nth(' + rowIndex + ')').addClass(cssClass);
+		}
+	}
+};
+
 $(document).ready(havitDateTimeBoxExtensions.init);
 $(document).ready(havitNumericBoxExtensions.init);

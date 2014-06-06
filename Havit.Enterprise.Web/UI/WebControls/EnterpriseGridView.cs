@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Havit.Business;
@@ -352,9 +354,46 @@ namespace Havit.Web.UI.WebControls
 		{
 			if (!e.Cancel)
 			{
-				BusinessObjectBase dataObject = EditorExtenderGetEditedObject();
+				BusinessObjectBase dataObject = EditorExtenderGetEditedObject();				
 				EditorExtender.ExtractValues(dataObject);
 				dataObject.Save();
+
+				// pokud jsme zakládali nový objekt, najdeme jeho pozici v nabidnovaném gridu a vyberem již uložený objekt
+				// ochrana proti opakovanému klikání na tlačítko save v editoru
+				if (EditorExtenderEditIndex == -1)
+				{					
+					int i = 0;
+					bool found = false;
+					while (!found)
+					{
+						if (i >= PageCount)
+						{
+							throw new HttpException("Nově založený záznam nebyl nalezen v datech nabidnovaných do EnterpriseGridView.");
+						}
+
+						PageIndex = i;
+						// eliminujeme opakované volání události DataBind a tím třeba opakované vytahování dat z databáze
+						if ((DataSource != null) && (DataSource is IEnumerable))
+						{
+							PerformDataBinding((IEnumerable)DataSource);
+						}
+						else
+						{
+							DataBind();
+						}
+
+						foreach (GridViewRow row in Rows)
+						{
+							if (GetRowBusinessObject(row) == dataObject)
+							{
+								EditorExtenderEditIndex = row.RowIndex;								
+								found = true;
+								break;
+							}
+						}
+						i = i + 1;
+					}
+				}
 			}
 		}
 		#endregion

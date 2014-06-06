@@ -5,10 +5,10 @@
 	<asp:UpdatePanel UpdateMode="Conditional" runat="server">
 		<ContentTemplate>
 
-			<havit:EnterpriseGridView ID="MainGV" AllowInserting="true" AutoCrudOperations="true" AllowPaging="true" PageSize="5" runat="server">
+			<havit:EnterpriseGridView ID="MainGV" AllowInserting="true" AutoCrudOperations="true" AllowPaging="true" PageSize="5" AutoSort="true" DefaultSortExpression="Nazev" runat="server">
 				<Columns>
 					<havit:BoundFieldExt DataField="Nazev" SortExpression="Nazev" HeaderText="Název" />
-					<havit:GridViewCommandField ShowEditButton="true" ShowInsertButton="true"  />
+					<havit:GridViewCommandField ShowEditButton="true" ShowInsertButton="true" ShowDeleteButton="true"  />
 				</Columns>
 			</havit:EnterpriseGridView>	
 		</ContentTemplate>

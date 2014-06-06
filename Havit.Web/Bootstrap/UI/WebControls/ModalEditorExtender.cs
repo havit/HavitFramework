@@ -619,14 +619,16 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Handles Save command, processes item save. Returns true if item successfully saved (meaning item is not canceled).
 		/// Handles command only if if Page is valid (or not validated).
 		/// </summary>
-		private bool HandleSaveCommand(bool causesValidation)
+		private void HandleSaveCommand(bool causesValidation)
 		{
 			if ((!causesValidation || (this.Page == null)) || this.Page.IsValid)
 			{
-				return Save();
+				if (Save())
+				{
+					// potřebujeme aktualizovat zobrazená data, minimálně tlačítka Previous/Next
+					DataBind();
+				}
 			}
-
-			return false;
 		}
 		#endregion
 
@@ -637,9 +639,12 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// </summary>
 		private void HandleOKCommand(bool causesValidation)
 		{
-			if (this.HandleSaveCommand(causesValidation))
+			if ((!causesValidation || (this.Page == null)) || this.Page.IsValid)
 			{
-				this.CloseEditor();
+				if (Save())
+				{
+					this.CloseEditor();
+				}
 			}
 		}
 		#endregion

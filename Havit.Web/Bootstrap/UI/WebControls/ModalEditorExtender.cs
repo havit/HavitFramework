@@ -31,7 +31,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	[ParseChildren(true)]
 	[PersistChildren(false)]
 	[Themeable(true)]
-	public class ModalEditorExtender : DataBoundControlWithHiddenPublicMembersFromIntellisence, IEditorExtender, INamingContainer
+	public class ModalEditorExtender : DataBoundControlWithHiddenPublicMembersFromIntellisence, IEditorExtenderWithPreviousNextNavigation, INamingContainer
 	{
 		#region Private fields
 		private ModalDialog modalDialog;
@@ -402,23 +402,35 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			if (args is CommandEventArgs)
 			{
+				bool causesValidation = false;
+				IButtonControl control = source as IButtonControl;
+				if (control != null)
+				{
+					causesValidation = control.CausesValidation;
+				}
+
 				CommandEventArgs commandEventArgs = (CommandEventArgs)args;
 
 				switch (commandEventArgs.CommandName)
 				{
 					case CommandNames.Save:
-						HandleItemSave();
+						HandleSaveCommand(causesValidation);
 						return true;
 
 					case CommandNames.OK:
-						if (HandleItemSave())
-						{
-							CloseEditor();
-						}
+						HandleOKCommand(causesValidation);
 						return true;
 
 					case CommandNames.Cancel:
-						CloseEditor();
+						HandleCancelCommand(causesValidation);
+						return true;
+
+					case CommandNames.Previous:
+						HandlePreviousCommand(causesValidation);
+						return true;
+
+					case CommandNames.Next:
+						HandleNextCommand(causesValidation);
 						return true;
 				}
 			}
@@ -470,6 +482,35 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 
 			contentFormView.DataSource = data;
 			contentFormView.DataBind();
+
+			SetPreviousNextButtons();
+		}
+		#endregion
+
+		#region SetPreviousNextButtons
+		/// <summary>
+		/// Povolí zakáže tlačítka pro navigaci na další záznam.
+		/// </summary>
+		private void SetPreviousNextButtons()
+		{
+			List<WebControl> previousButtons = this.modalDialog.FooterTemplateContainer.FindControls(control => (control is IButtonControl) && ((IButtonControl)control).CommandName == CommandNames.Previous, false).OfType<WebControl>().ToList();
+			List<WebControl> nextButtons = this.modalDialog.FooterTemplateContainer.FindControls(control => (control is IButtonControl) && ((IButtonControl)control).CommandName == CommandNames.Next, false).OfType<WebControl>().ToList();
+
+			if (previousButtons.Count > 0)
+			{
+				DataEventArgs<bool> dataEventArgs = new DataEventArgs<bool>(false);
+				this.OnGetCanNavigatePrevious(dataEventArgs);
+				bool canNavigatePrevious = dataEventArgs.Data;
+				previousButtons.ForEach(button => button.Enabled = canNavigatePrevious);
+			}
+
+			if (nextButtons.Count > 0)
+			{
+				DataEventArgs<bool> dataEventArgs = new DataEventArgs<bool>(false);
+				this.OnGetCanNavigateNext(dataEventArgs);
+				bool canNavigateNext = dataEventArgs.Data;
+				nextButtons.ForEach(button => button.Enabled = canNavigateNext);
+			}
 		}
 		#endregion
 
@@ -488,9 +529,16 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Handles save (ItemSaving, ItemSaved events).
 		/// </summary>
-		public void Save()
+		public bool Save()
 		{
-			HandleItemSave();
+			CancelEventArgs itemSaving = new CancelEventArgs();
+			OnItemSaving(itemSaving);
+			if (!itemSaving.Cancel)
+			{
+				OnItemSaved(EventArgs.Empty);
+				return true;
+			}
+			return false;
 		}
 		#endregion
 
@@ -504,6 +552,38 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		}
 		#endregion
 
+		#region NavigatePrevious
+		/// <summary>
+		/// Navigates to previous record.
+		/// </summary>
+		public void NavigatePrevious()
+		{
+			CancelEventArgs previousNavigating = new CancelEventArgs();
+			OnPreviousNavigating(previousNavigating);
+			if (!previousNavigating.Cancel)
+			{
+				DataBind();
+				OnPreviousNavigated(previousNavigating);
+			}
+		}
+		#endregion
+
+		#region NavigateNext
+		/// <summary>
+		/// Navigates to next record.
+		/// </summary>
+		public void NavigateNext()
+		{
+			CancelEventArgs nextNavigating = new CancelEventArgs();
+			OnNextNavigating(nextNavigating);
+			if (!nextNavigating.Cancel)
+			{
+				DataBind();
+				OnNextNavigated(nextNavigating);
+			}
+		}
+		#endregion
+		
 		#region ModalDialogDialogHidden
 		/// <summary>
 		/// When dialog hidden, notify ebout editor close.
@@ -534,24 +614,78 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		}
 		#endregion
 
-		#region HandleItemSave
+		#region HandleSaveCommand
 		/// <summary>
-		/// Processes item save. Returns true if item successfully saved (meaning item is not canceled).
+		/// Handles Save command, processes item save. Returns true if item successfully saved (meaning item is not canceled).
+		/// Handles command only if if Page is valid (or not validated).
 		/// </summary>
-		private bool HandleItemSave()
+		private bool HandleSaveCommand(bool causesValidation)
 		{
-			CancelEventArgs itemSaving = new CancelEventArgs();
-			OnItemSaving(itemSaving);
-			if (!itemSaving.Cancel)
+			if ((!causesValidation || (this.Page == null)) || this.Page.IsValid)
 			{
-				OnItemSaved(EventArgs.Empty);
-				return true;
+				return Save();
 			}
 
 			return false;
 		}
 		#endregion
 
+		#region HandleOKCommand
+		/// <summary>
+		/// Handles OK command.
+		/// Handles command only if if Page is valid (or not validated).
+		/// </summary>
+		private void HandleOKCommand(bool causesValidation)
+		{
+			if (this.HandleSaveCommand(causesValidation))
+			{
+				this.CloseEditor();
+			}
+		}
+		#endregion
+
+		#region HandleCancelCommand
+		/// <summary>
+		/// Handle Cancel command.
+		/// Handles command only if if Page is valid (or not validated).
+		/// </summary>
+		private void HandleCancelCommand(bool causesValidation)
+		{
+			if ((!causesValidation || (this.Page == null)) || this.Page.IsValid)
+			{
+				this.CloseEditor();
+			}
+		}
+		#endregion
+
+		#region HandlePreviousCommand
+		/// <summary>
+		/// Handles Previous command.
+		/// Handles command only if if Page is valid (or not validated).
+		/// </summary>
+		private void HandlePreviousCommand(bool causesValidation)
+		{
+			if ((!causesValidation || (this.Page == null)) || this.Page.IsValid)
+			{
+				NavigatePrevious();
+			}
+		}
+		#endregion
+
+		#region HandleNextCommand
+		/// <summary>
+		/// Handles Next command.
+		/// Handles command only if if Page is valid (or not validated).
+		/// </summary>
+		private void HandleNextCommand(bool causesValidation)
+		{
+			if ((!causesValidation || (this.Page == null)) || this.Page.IsValid)
+			{
+				NavigateNext();
+			}
+		}
+		#endregion
+		
 		#region (On)GetEditedObject
 		/// <summary>
 		/// Notifies request for edited object. 
@@ -666,6 +800,80 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		public event EventHandler ItemDataBound;
 		#endregion
 
+		#region (On)PreviousNavigating
+		/// <summary>
+		/// Notifies request to navigate to previous record.
+		/// </summary>
+		protected void OnPreviousNavigating(CancelEventArgs eventArgs)
+		{
+			if (PreviousNavigating == null)
+			{
+				throw new HttpException("PreviousNavigating event must be handled.");
+			}
+			PreviousNavigating(this, eventArgs);
+		}
+
+		/// <summary>
+		/// Notifies request to navigate to previous record.
+		/// </summary>
+		public event CancelEventHandler PreviousNavigating;
+		#endregion
+
+		#region (On)PreviousNavigated
+		/// <summary>
+		/// Notifies about navigation to previous record.
+		/// </summary>
+		protected void OnPreviousNavigated(EventArgs eventArgs)
+		{
+			if (PreviousNavigated != null)
+			{
+				PreviousNavigated(this, eventArgs);
+			}
+		}
+
+		/// <summary>
+		/// Notifies about navigation to previous record.
+		/// </summary>
+		public event EventHandler PreviousNavigated;
+		#endregion
+
+		#region (On)NextNavigating
+		/// <summary>
+		/// Notifies request to navigate to next record.
+		/// </summary>
+		protected void OnNextNavigating(CancelEventArgs eventArgs)
+		{
+			if (NextNavigating == null)
+			{
+				throw new HttpException("NextNavigating event must be handled.");
+			}
+			NextNavigating(this, eventArgs);
+		}
+
+		/// <summary>
+		/// Notifies request to navigate to next record.
+		/// </summary>
+		public event CancelEventHandler NextNavigating;
+		#endregion
+
+		#region (On)NextNavigated
+		/// <summary>
+		/// Notifies about navigation to next record.
+		/// </summary>
+		protected void OnNextNavigated(EventArgs eventArgs)
+		{
+			if (NextNavigated != null)
+			{
+				NextNavigated(this, eventArgs);
+			}
+		}
+
+		/// <summary>
+		/// Notifies about navigation to next record.
+		/// </summary>
+		public event EventHandler NextNavigated;
+		#endregion
+
 		#region Render
 		/// <summary>
 		/// Ensures rendering dialog only.
@@ -674,6 +882,44 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			modalDialog.RenderControl(writer);
 		}
+		#endregion
+
+		#region (On)GetCanNavigatePrevious
+		/// <summary>
+		/// Asks if it is possible to navigate to previous item.
+		/// </summary>
+		protected void OnGetCanNavigatePrevious(DataEventArgs<bool> eventArgs)
+		{
+			if (GetCanNavigatePrevious == null)
+			{
+				throw new HttpException("GetCanNavigatePrevious event must be handled.");
+			}
+			GetCanNavigatePrevious(this, eventArgs);
+		}
+
+		/// <summary>
+		/// Asks if it is possible to navigate to previous item.
+		/// </summary>
+		public event DataEventHandler<bool> GetCanNavigatePrevious;
+		#endregion
+
+		#region (On)GetCanNavigateNext
+		/// <summary>
+		/// Asks if it is possible to navigate to next item.
+		/// </summary>
+		protected void OnGetCanNavigateNext(DataEventArgs<bool> eventArgs)
+		{
+			if (GetCanNavigateNext == null)
+			{
+				throw new HttpException("GetCanNavigateNext event must be handled.");
+			}
+			GetCanNavigateNext(this, eventArgs);
+		}
+
+		/// <summary>
+		/// Asks if it is possible to navigate to next item.
+		/// </summary>
+		public event DataEventHandler<bool> GetCanNavigateNext;
 		#endregion
 
 	}

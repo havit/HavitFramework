@@ -5,10 +5,10 @@
 	<asp:UpdatePanel UpdateMode="Conditional" runat="server">
 		<ContentTemplate>
 
-			<havit:EnterpriseGridView ID="MainGV" AllowInserting="true" AutoCrudOperations="true" runat="server">
+			<havit:EnterpriseGridView ID="MainGV" AllowInserting="true" AutoCrudOperations="true" AllowPaging="true" PageSize="5" runat="server">
 				<Columns>
 					<havit:BoundFieldExt DataField="Nazev" SortExpression="Nazev" HeaderText="Název" />
-					<havit:GridViewCommandField ShowEditButton="true"  />
+					<havit:GridViewCommandField ShowEditButton="true" ShowInsertButton="true"  />
 				</Columns>
 			</havit:EnterpriseGridView>	
 		</ContentTemplate>
@@ -22,9 +22,11 @@
 			<asp:TextBox ID="NazevTB" Text="<%# BindItem.Nazev %>" runat="server" />
 		</ContentTemplate>
 		<FooterTemplate>
-			<asp:Button CommandName="OK" Text="OK" runat="server" />
-			<asp:Button CommandName="Save" Text="Save" runat="server" />
-			<asp:Button CommandName="Cancel" Text="Cancel" runat="server" />
+			<bc:Button CommandName="OK" Text="OK" runat="server" />
+			<bc:Button CommandName="Save" Text="Save" runat="server" />
+			<bc:Button CommandName="Cancel" Text="Cancel" runat="server" />
+			<bc:Button CommandName="Next" Text="next" runat="server" />
+			<bc:Button CommandName="Previous" Text="previous" runat="server" />
 		</FooterTemplate>
 	</bc:ModalEditorExtender>
 

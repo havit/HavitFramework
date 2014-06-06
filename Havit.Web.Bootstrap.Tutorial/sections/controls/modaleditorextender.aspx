@@ -35,18 +35,20 @@
 		<li>CloseEditor</li>
 		<li>ExtractValues</li>
 		<li>Save</li>
+		<li>NavigateNext, NavigatePrevious</li>
 	</ul>
 
 	<h3>Events</h3>
 	<ul>
 		<li>ItemCreated, ItemDataBound</li>
 		<li>ItemSaving, ItemSaved</li>
+		<li>PreviousNavigating, PreviousNavigated, NextNavigating, NextNavigated</li>
 		<li>EditorClosed</li>
 		<li>GetEditedObject</li>
 	</ul>
 	
 	<h3>Event propagation</h3>
-	<p>Events Save, OK and Cancel are handled.</p>
+	<p>Events Save, OK, Cancel, Next, Previous are handled.</p>
 
 	<h3>Skin support</h3>
 	<p>FooterTemplate should be set in skin. It should use buttons with command names OK, Save, Cancel which are handled (No codebehind for buttons required). Be careful when setting ValidationGroup.</p>

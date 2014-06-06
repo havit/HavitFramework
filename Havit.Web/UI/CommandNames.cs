@@ -76,5 +76,15 @@ namespace Havit.Web.UI
 		/// OK.
 		/// </summary>
 		public const string OK = "OK";
+
+		/// <summary>
+		/// Next.
+		/// </summary>
+		public const string Next = "Next";
+
+		/// <summary>
+		/// Previous.
+		/// </summary>
+		public const string Previous = "Previous";
 	}
 }

@@ -212,12 +212,32 @@ namespace Havit.Web.UI.WebControls
 		{
 			get
 			{
-				object editorExtenderEditIndex = ViewState["EditorExtenderEditIndex"];
+				int? editorExtenderEditIndex = EditorExtenderEditIndexInternal;
 				if (editorExtenderEditIndex == null)
 				{
 					throw new InvalidOperationException("EditorExtenderEditIndex not set.");
 				}
-				return (int)editorExtenderEditIndex;
+				return editorExtenderEditIndex.Value;
+			}
+			set
+			{
+				EditorExtenderEditIndexInternal = value;
+			}
+
+		}
+		#endregion
+
+		#region EditorExtenderEditIndexInternal
+		/// <summary>
+		/// Index řádku editovaného externím editorem.
+		/// Pro insert nabývá hodnoty -1.
+		/// Pokud není režim editace externím editorem, vyhazuje výjimku.
+		/// </summary>
+		protected int? EditorExtenderEditIndexInternal
+		{
+			get
+			{
+				return (int?)ViewState["EditorExtenderEditIndex"];				
 			}
 			set
 			{
@@ -1154,6 +1174,15 @@ namespace Havit.Web.UI.WebControls
 			if (!_performDataBindingDataInFakeCall)
 			{
 				base.OnRowDataBound(e);
+
+				//if (EditorExtenderEditIndexInternal != null)
+				//{
+				//	if (e.Row.RowIndex == EditorExtenderEditIndex)
+				//	{
+				//		// TODO
+				//		e.Row.CssClass = (e.Row.CssClass + " " + "blablabla").Trim();
+				//	}
+				//}
 			}
 		}
 		#endregion
@@ -2058,6 +2087,15 @@ namespace Havit.Web.UI.WebControls
 			this.EditorExtender = editorExtender;
 			editorExtender.EditClosed += EditorExtenderEditClosed;
 			editorExtender.ItemSaved += EditorExtenderItemSaved;
+
+			if (editorExtender is IEditorExtenderWithPreviousNextNavigation)
+			{
+				IEditorExtenderWithPreviousNextNavigation editorExtenderWithPreviousNextNavigation = (IEditorExtenderWithPreviousNextNavigation)editorExtender;
+				editorExtenderWithPreviousNextNavigation.PreviousNavigating += EditorExtenderPreviousNavigating;
+				editorExtenderWithPreviousNextNavigation.NextNavigating += EditorExtenderNextNavigating;
+				editorExtenderWithPreviousNextNavigation.GetCanNavigatePrevious += EditorExtenderGetCanNavigatePrevious;
+				editorExtenderWithPreviousNextNavigation.GetCanNavigateNext += EditorExtenderGetCanNavigateNext;
+			}
 		}
 		#endregion
 
@@ -2067,7 +2105,7 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		private void EditorExtenderEditClosed(object sender, EventArgs e)
 		{
-			ViewState["EditorExtenderEditIndex"] = null;
+			EditorExtenderEditIndexInternal = null;
 		}
 		#endregion
 
@@ -2075,10 +2113,19 @@ namespace Havit.Web.UI.WebControls
 		private void EditorExtenderItemSaved(object sender, EventArgs e)
 		{
 			SetRequiresDatabinding();
+			UpdateParentUpdatePanel();
+		}
+		#endregion
 
+		#region UpdateParentUpdatePanel
+		/// <summary>
+		/// Aktualizuje nejbližší nadřazený update panel. Pokud neexistuje, je vyhozena výjimka.
+		/// </summary>
+		private void UpdateParentUpdatePanel()
+		{
 			if (ScriptManager.GetCurrent(this.Page).IsInAsyncPostBack)
 			{
-				Control parent = Parent;
+				Control parent = this.Parent;
 				while (parent != null && (!(parent is UpdatePanel)))
 				{
 					parent = parent.Parent;
@@ -2093,10 +2140,113 @@ namespace Havit.Web.UI.WebControls
 					updatePanel.Update();
 				}
 			}
-			
+		}
+		#endregion
+
+		#region CanNavigatePrevious, CanNavigateNext, EditorExtenderGetCanNavigatePrevious, EditorExtenderGetCanNavigateNext
+		/// <summary>
+		/// Vrací true, pokud lze navigovat na předchozí položku.
+		/// </summary>
+		private bool CanNavigatePrevious()
+		{
+			// buď (nejsme na prvním záznamu, tj. můžeme jít zpět o záznam) 
+			// nebo (jsme na prvním záznamu na "další" stránce, tj. můžeme jít o stránku zpět)
+			// nebo (jsme na prvním záznamu na první stránce a je povolen inserting, tj. můžeme jít na zakládání nového objektu)
+			return (EditorExtenderEditIndex > 0) || ((EditorExtenderEditIndex == 0) && ((PageIndex > 0) || AllowInserting));
+		}
+
+		/// <summary>
+		/// Vrací true, pokud lze navigovat na následující položku.
+		/// </summary>
+		private bool CanNavigateNext()
+		{
+			// buď (nejsme na poslední stránce a je povoleno stránkování, tj. můžeme jít na další stránku)
+			// nebo (jsme na poslední stránce a můžeme jít na další záznam, pro přechod z nového objektu kontrolujeme ještě, že existuje záznam, na který můžeme jít)
+			return ((PageIndex < (PageCount - 1)) && AllowPaging) || (EditorExtenderEditIndex < (Rows.Count - 1) && (Rows.Count > 0));
+		}
+
+		/// <summary>
+		/// Obsluhuje událost EditorExtenderu dotazující se na to, zda lze navigovat na předchozí položku.
+		/// </summary>
+		private void EditorExtenderGetCanNavigatePrevious(object sender, DataEventArgs<bool> e)
+		{
+			e.Data = CanNavigatePrevious();
+		}
+
+		/// <summary>
+		/// Obsluhuje událost EditorExtenderu dotazující se na to, zda lze navigovat na následující položku.
+		/// </summary>
+		private void EditorExtenderGetCanNavigateNext(object sender, DataEventArgs<bool> e)
+		{
+			e.Data = CanNavigateNext();
+		}
+		#endregion
+
+		#region EditorExtenderPreviousNavigating, EditorExtenderNextNavigating
+		/// <summary>
+		/// Zajišťuje navigaci na předchozí položku.
+		/// </summary>
+		private void EditorExtenderPreviousNavigating(object sender, CancelEventArgs e)
+		{
+			if (!CanNavigatePrevious())
+			{
+				e.Cancel = true;
+				return;
+			}
+
+			if ((EditorExtenderEditIndex == 0) && (PageIndex == 0))
+			{
+				EditorExtenderEditIndex = -1;
+			}
+			else if ((EditorExtenderEditIndex == 0) && (PageIndex > 0))
+			{
+				PageIndex = PageIndex - 1;
+				DataBind();
+				UpdateParentUpdatePanel();
+				EditorExtenderEditIndex = Rows.Count - 1;
+			}
+			else
+			{
+				EditorExtenderEditIndex = EditorExtenderEditIndex - 1;
+			}
+		}
+
+		/// <summary>
+		/// Zajišťuje navigaci na předchozí položku.
+		/// </summary>
+		private void EditorExtenderNextNavigating(object sender, CancelEventArgs e)
+		{
+			if (!CanNavigateNext())
+			{
+				e.Cancel = true;
+				return;
+			}
+
+			if (EditorExtenderEditIndex == -1)
+			{
+				if (PageIndex > 0)
+				{
+					PageIndex = 0;
+					DataBind();
+					UpdateParentUpdatePanel();
+				}
+				EditorExtenderEditIndex = 0;
+			}
+			else if (EditorExtenderEditIndex == (Rows.Count - 1))
+			{
+				PageIndex = PageIndex + 1;
+				DataBind();
+				UpdateParentUpdatePanel();
+				EditorExtenderEditIndex = 0;
+			}
+			else
+			{
+				EditorExtenderEditIndex = EditorExtenderEditIndex + 1;
+			}
 		}
 		#endregion
 	}
+
 
 	/// <summary>
 	/// Reprezentuje metodu, která obsluhuje událost RowInserting controlu GridViewExt.
@@ -2127,5 +2277,5 @@ namespace Havit.Web.UI.WebControls
 	/// Delegát k metodě pro získávání data-item pro nový Insert řádek GridView.
 	/// </summary>
 	public delegate object GetInsertRowDataItemDelegate();
-
+	
 }

@@ -13,9 +13,11 @@
 				<asp:TextBox ID="NazevTB" Text="<%# BindItem.Nazev %>" runat="server" />
 			</ContentTemplate>
 			<FooterTemplate> <%-- can be in skin (be careful when choosing validation group) --%>
-				<asp:Button SkinID="OK" CommandName="OK" Text="OK" ValidationGroup="ModalEditor" runat="server" />
-				<asp:Button SkinID="Save" CommandName="Save" Text="Save" ValidationGroup="ModalEditor" runat="server" />
-				<asp:Button SkinID="Cancel" CommandName="Cancel" Text="Cancel" ValidationGroup="ModalEditor" runat="server" />
+				<asp:Button SkinID="OK" CommandName="OK" Text="OK" ValidationGroup="ModalEditorExtender" runat="server" />
+				<asp:Button SkinID="Save" CommandName="Save" Text="Save" ValidationGroup="ModalEditorExtender" runat="server" />
+				<asp:Button SkinID="Cancel" CommandName="Cancel" Text="Cancel" CausesValidation="false" runat="server" />
+				<asp:Button SkinID="Previous" CommandName="Previous" Text="Previous" CausesValidation="false" runat="server" />
+				<asp:Button SkinID="Next" CommandName="Next" Text="Next" CausesValidation="false" runat="server" />
 			</FooterTemplate>
 		</bc:ModalEditorExtender>
 

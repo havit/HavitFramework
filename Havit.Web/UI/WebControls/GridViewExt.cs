@@ -2247,7 +2247,6 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 	}
 
-
 	/// <summary>
 	/// Reprezentuje metodu, která obsluhuje událost RowInserting controlu GridViewExt.
 	/// </summary>

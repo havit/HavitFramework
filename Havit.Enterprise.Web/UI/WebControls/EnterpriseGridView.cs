@@ -61,6 +61,53 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region MessengerUpdatedMessage, MessengerInsertedMessage, MessengerDeletedMessage
+		/// <summary>
+		/// Zpráva zobrazená v messengeru při uložení objektu. Zobrazuje se při aktualizaci objektu pomocí AutoCrud operace.
+		/// </summary>
+		public string MessengerUpdatedMessage
+		{
+			get
+			{
+				return (string)(ViewState["MessengerUpdatedMessage"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["MessengerUpdatedMessage"] = value;
+			}
+		}
+
+		/// <summary>
+		/// Zpráva zobrazená v messengeru při založení objektu. Zobrazuje se při založení objektu pomocí AutoCrud operace.
+		/// </summary>
+		public string MessengerInsertedMessage
+		{
+			get
+			{
+				return (string)(ViewState["MessengerInsertedMessage"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["MessengerInsertedMessage"] = value;
+			}
+		}
+
+		/// <summary>
+		/// Zpráva zobrazená v messengeru při smazání objektu. Zobrazuje se při smazání objektu pomocí AutoCrud operace.
+		/// </summary>
+		public string MessengerDeletedMessage
+		{
+			get
+			{
+				return (string)(ViewState["MessengerDeletedMessage"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["MessengerDeletedMessage"] = value;
+			}
+		}
+		#endregion
+
 		#region GetRowID - Hledání klíče položky
 		/// <summary>
 		/// Nalezne hodnotu ID klíče položky, ve kterém se nachází control.
@@ -231,6 +278,8 @@ namespace Havit.Web.UI.WebControls
 				Contract.Assert(row != null);
 				BusinessObjectBase updatingBusinessObject = ExtractRowValues<BusinessObjectBase>(row);
 				updatingBusinessObject.Save();
+
+				ShowMessengerMessage(MessengerUpdatedMessage);
 			}
 		}
 		#endregion
@@ -249,7 +298,9 @@ namespace Havit.Web.UI.WebControls
 				GridViewRow row = Rows[e.RowIndex];
 				Contract.Assert(row != null);
 				BusinessObjectBase insertingBusinessObject = ExtractRowValues<BusinessObjectBase>(row);
-				insertingBusinessObject.Save();			
+				insertingBusinessObject.Save();
+
+				ShowMessengerMessage(MessengerInsertedMessage);
 			}
 		}
 		#endregion
@@ -269,6 +320,19 @@ namespace Havit.Web.UI.WebControls
 				Contract.Assert(row != null);
 				BusinessObjectBase deletingBusinessObject = GetRowBusinessObject(row);
 				deletingBusinessObject.Delete();
+
+				ShowMessengerMessage(MessengerDeletedMessage);
+			}
+		}
+		#endregion
+
+		#region ShowMessengerMessage
+		private void ShowMessengerMessage(string messengerMessage)
+		{
+			string message = HttpUtilityExt.GetResourceString(messengerMessage);
+			if (!String.IsNullOrEmpty(message))
+			{
+				Messenger.Default.AddMessage(message);
 			}
 		}
 		#endregion
@@ -357,6 +421,8 @@ namespace Havit.Web.UI.WebControls
 				BusinessObjectBase dataObject = EditorExtenderGetEditedObject();				
 				EditorExtender.ExtractValues(dataObject);
 				dataObject.Save();
+
+				ShowMessengerMessage(EditorExtenderEditIndex == -1 ? MessengerInsertedMessage : MessengerUpdatedMessage);
 
 				// pokud jsme zakládali nový objekt, najdeme jeho pozici v nabidnovaném gridu a vyberem již uložený objekt
 				// ochrana proti opakovanému klikání na tlačítko save v editoru

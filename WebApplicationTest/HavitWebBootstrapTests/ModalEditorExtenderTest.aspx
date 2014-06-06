@@ -5,7 +5,7 @@
 	<asp:UpdatePanel UpdateMode="Conditional" runat="server">
 		<ContentTemplate>
 
-			<havit:EnterpriseGridView ID="MainGV" AllowInserting="true" AutoCrudOperations="true" AllowPaging="true" PageSize="5" AutoSort="true" DefaultSortExpression="Nazev" runat="server">
+			<havit:EnterpriseGridView ID="MainGV" AllowInserting="true" AutoCrudOperations="true" AllowPaging="true" PageSize="5" AutoSort="true" DefaultSortExpression="Nazev" MessengerInsertedMessage="Inserted." MessengerUpdatedMessage="Updated." MessengerDeletedMessage="Deleted." runat="server">
 				<Columns>
 					<havit:BoundFieldExt DataField="Nazev" SortExpression="Nazev" HeaderText="Název" />
 					<havit:GridViewCommandField ShowEditButton="true" ShowInsertButton="true" ShowDeleteButton="true"  />

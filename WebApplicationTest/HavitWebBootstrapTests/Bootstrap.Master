@@ -27,6 +27,12 @@
 					<asp:ScriptReference Name="toastr" />
 				</Scripts>
 			</asp:ScriptManager>
+			
+			<asp:UpdatePanel runat="server">
+				<ContentTemplate>
+					<havit:MessengerControl runat="server" />
+				</ContentTemplate>
+			</asp:UpdatePanel>
 
 			<asp:ContentPlaceHolder ID="MainCPH" runat="server" />
 		</div>

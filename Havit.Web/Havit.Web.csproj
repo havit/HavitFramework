@@ -12,7 +12,8 @@
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
     <AssemblyName>Havit.Web</AssemblyName>
-    <AssemblyOriginatorKeyFile>HavitFramework.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
     <DefaultClientScript>JScript</DefaultClientScript>
     <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
@@ -214,6 +215,7 @@
     </Compile>
     <Compile Include="Bootstrap\StartUp.cs" />
     <Compile Include="Bootstrap\UI\ClientScripts\BootstrapClientScriptHelper.cs" />
+    <Compile Include="UI\WebControls\DataBoundControlWithHiddenPublicMembersFromIntellisence.cs" />
     <Compile Include="UI\WebControls\IEditorExtender.cs" />
     <Compile Include="UI\WebControls\IEditorExtensible.cs" />
     <Compile Include="Bootstrap\UI\WebControls\Button.cs" />
@@ -540,7 +542,6 @@
     <None Include="Bootstrap\Content\less\havit.web.bootstrap.less" />
     <None Include="Bootstrap\Content\less\validation.less" />
     <None Include="Bootstrap\Diagrams\Dialogs.cd" />
-    <None Include="HavitFramework.snk" />
     <None Include="UI\Scriptlets\Scriptlet.cd" />
   </ItemGroup>
   <ItemGroup>

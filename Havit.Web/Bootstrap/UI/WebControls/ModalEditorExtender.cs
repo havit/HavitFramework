@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using System.ServiceModel;
+using System.ServiceModel.Configuration;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -21,10 +24,14 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	/// Editor extender as bootstrap modal dialog.
 	/// Dialog header and content are nested into form view to enable (one-way) databinding for dialog header and two-way databinding for dialog content.
 	/// </summary>
+	/// <remarks>
+	/// Control would like to inherit from Control class. But when we want do have intellisence in Visual Studio, we have to inherit from DataBoundControl. There is no other use of DataBoundControl (and it ancesors).
+	/// Unused members are hidden for intellisence by EditorBrowsableAttributes and DesignerSerializationVisibilityAttributes.
+	/// </remarks>
 	[ParseChildren(true)]
 	[PersistChildren(false)]
 	[Themeable(true)]
-	public class ModalEditorExtender : Control, IEditorExtender
+	public class ModalEditorExtender : DataBoundControlWithHiddenPublicMembersFromIntellisence, IEditorExtender, INamingContainer
 	{
 		#region Private fields
 		private ModalDialog modalDialog;
@@ -54,7 +61,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Editor dialog header template.
 		/// </summary>
 		[PersistenceMode(PersistenceMode.InnerProperty)]
-		[TemplateContainer(typeof(FormView), BindingDirection.TwoWay)]
+		[TemplateContainer(typeof(FormView), BindingDirection.OneWay)]
 		public ITemplate HeaderTemplate
 		{
 			get
@@ -101,26 +108,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			set
 			{
 				modalDialog.FooterTemplate = value;
-			}
-		}
-		#endregion
-
-		#region ItemType
-		/// <summary>
-		/// Item type. Pro strong type databinding.
-		/// </summary>
-		[DefaultValue("")]
-		[Themeable(false)]
-		public virtual string ItemType
-		{
-			get
-			{
-				return contentFormView.ItemType;
-			}
-			set
-			{
-				headerFormView.ItemType = value;
-				contentFormView.ItemType = value;
 			}
 		}
 		#endregion
@@ -193,7 +180,9 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Šířka dialogu v pixelech.
 		/// </summary>
-		public Unit Width
+		[EditorBrowsable(EditorBrowsableState.Always)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+		public override Unit Width
 		{
 			get
 			{
@@ -227,7 +216,9 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Css class to be used for dialog - used in element with modal-dialog class.
 		/// </summary>
-		public string CssClass
+		[EditorBrowsable(EditorBrowsableState.Always)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+		public override string CssClass
 		{
 			get
 			{
@@ -445,13 +436,40 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			DataEventArgs<object> dataEventArgs = new DataEventArgs<object>();
 			OnGetEditedObject(dataEventArgs);
 
-			headerFormView.DataSource = new object[] { dataEventArgs.Data };
+			DataBind();
+			modalDialog.Show();
+		}
+		#endregion
+
+		#region OnDataBinding
+		/// <summary>
+		/// In DataSource not set, gets the edited object via OnGetEditedObject.
+		/// </summary>
+		protected override void OnDataBinding(EventArgs e)
+		{
+			base.OnDataBinding(e);
+			if (this.DataSource == null)
+			{
+				DataEventArgs<object> dataEventArgs = new DataEventArgs<object>();
+				OnGetEditedObject(dataEventArgs);
+				this.DataSource = new object[] { dataEventArgs.Data };
+			}
+		}
+		#endregion
+
+		#region PerformDataBinding
+		/// <summary>
+		/// Binds data to dialog header and content.
+		/// </summary>
+		protected override void PerformDataBinding(IEnumerable data)
+		{
+			base.PerformDataBinding(data);
+
+			headerFormView.DataSource = data;
 			headerFormView.DataBind();
 
-			contentFormView.DataSource = new object[] { dataEventArgs.Data };
+			contentFormView.DataSource = data;
 			contentFormView.DataBind();
-
-			modalDialog.Show();
 		}
 		#endregion
 
@@ -647,5 +665,16 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// </summary>
 		public event EventHandler ItemDataBound;
 		#endregion
+
+		#region Render
+		/// <summary>
+		/// Ensures rendering dialog only.
+		/// </summary>
+		protected override void Render(HtmlTextWriter writer)
+		{
+			modalDialog.RenderControl(writer);
+		}
+		#endregion
+
 	}
 }

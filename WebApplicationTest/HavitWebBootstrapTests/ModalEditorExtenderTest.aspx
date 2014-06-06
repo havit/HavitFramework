@@ -8,13 +8,16 @@
 			<havit:EnterpriseGridView ID="MainGV" AllowInserting="true" AutoCrudOperations="true" runat="server">
 				<Columns>
 					<havit:BoundFieldExt DataField="Nazev" SortExpression="Nazev" HeaderText="Název" />
-					<havit:GridViewCommandField ShowEditButton="true" />
+					<havit:GridViewCommandField ShowEditButton="true"  />
 				</Columns>
 			</havit:EnterpriseGridView>	
 		</ContentTemplate>
 	</asp:UpdatePanel>
 	
-	<bc:ModalEditorExtender ID="ModalEditorExtender" TargetControlID="MainGV" ItemType="Havit.BusinessLayerTest.Subjekt" HeaderText="Editace subjektu" runat="server">
+	<bc:ModalEditorExtender ID="ModalEditorExtender" TargetControlID="MainGV" ItemType="Havit.BusinessLayerTest.Subjekt" runat="server">
+		<HeaderTemplate>
+			Subjekt <%# Item.Nazev %>
+		</HeaderTemplate>
 		<ContentTemplate>
 			<asp:TextBox ID="NazevTB" Text="<%# BindItem.Nazev %>" runat="server" />
 		</ContentTemplate>

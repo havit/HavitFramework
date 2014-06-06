@@ -12,6 +12,16 @@
 	<h2>ModalEditorExtender</h2>
 
 	<p>Editor extender attaches to a "For" controls and is used as item editor instead of standard control edit mode. Currently, only GridViewExt and EnterpriseGridView are supported as target controls. EnterpriseGridView with AutoCrudOperations ensures object changes persistence.</p>
+	
+	<div class="alert-info">
+		<blockquote>
+			<small>
+				ModalEditorExtender inherits from DataBoundControl class. It ensures functionality of strong type databinding with Intellisence in Visual Studio. But there is no support for properties and methods of DataBoundControls and its ancesors.
+				I.e. properties BackColor, CssClass, Height, etc. have no meaning and does not have any impact to rendered code. Unused members are hidden for intellisence by EditorBrowsableAttributes and DesignerSerializationVisibilityAttributes.
+			</small>
+		</blockquote>
+	</div>
+
 	<h3>Properties</h3>
 	<ul>
 		<li>TargetControlID</li>

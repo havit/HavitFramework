@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
@@ -423,6 +424,7 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Indikuje, zda má být zobrazeno tlačítko NewButton pro vkládání nového záznamu externím editorem.
 		/// </summary>
+		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		public bool ShowNewButtonForInsertByEditorExtender
 		{
 			get

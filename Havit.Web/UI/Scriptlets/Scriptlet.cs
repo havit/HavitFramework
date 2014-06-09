@@ -5,6 +5,7 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Havit.Web.UI.ClientScripts;
 
 namespace Havit.Web.UI.Scriptlets
 {
@@ -175,7 +176,7 @@ namespace Havit.Web.UI.Scriptlets
 		protected override void OnPreRender(EventArgs e)
 		{
 			base.OnPreRender(e);
-			
+
 			// zajistíme, aby byly k dispozici scripty AJAXu, pokud máme scriptmanager
 			ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);
 			if (scriptManager != null)
@@ -219,6 +220,8 @@ namespace Havit.Web.UI.Scriptlets
 
 			if (!builder.IsEmpty)
 			{
+				ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, "jquery");
+
 				// zaregistrujeme jej na konec stránky, aby byly controly již dostupné
 				ScriptManager.RegisterStartupScript(
 					this.Page,
@@ -267,8 +270,8 @@ namespace Havit.Web.UI.Scriptlets
 
 			if (!AsyncPostBackEnabled)
 			{
-				builder.AppendLineFormat("var {0} = new Function(\"{1}({2}());\");", handlerDelegate, clientSideScriptFunctionName, clientSideGetParametersFunctionName);
-				builder.AppendLineFormat("var {0} = new Function(\"{1}({2}(), {0}, {3});\");", attachFunctionDelegate, clientSideAttachEventsFunctionName, clientSideGetParametersFunctionName, handlerDelegate);
+				builder.AppendLineFormat("var {0} = function() {{ {1}({2}()); }};", handlerDelegate, clientSideScriptFunctionName, clientSideGetParametersFunctionName);
+				builder.AppendLineFormat("var {0} = function() {{ {1}({2}(), {0}, {3}); }};", attachFunctionDelegate, clientSideAttachEventsFunctionName, clientSideGetParametersFunctionName, handlerDelegate);
 				builder.AppendLine(BrowserHelper.GetAttachEventScript("window", "onload", attachFunctionDelegate));
 			}
 			else
@@ -280,9 +283,9 @@ namespace Havit.Web.UI.Scriptlets
 
 				if (!(IsInAsyncPostBack && clientSideScriptFunctionReused && clientSideGetParametersFunctionReused && clientSideAttachEventsFunctionReused && clientSideDetachEventsFunctionReused))
 				{
-					builder.AppendLineFormat("var {0} = new Function(\"{1}({2}());\");", handlerDelegate, clientSideScriptFunctionName, clientSideGetParametersFunctionName);
-					builder.AppendLineFormat("var {0} = new Function(\"{1}({2}(), {0}, {3});\");", attachFunctionDelegate, clientSideAttachEventsFunctionName, clientSideGetParametersFunctionName, handlerDelegate);
-					builder.AppendLineFormat("var {0} = new Function(\"{1}({2}(), {0}, {3});\");", detachFunctionDelegate, clientSideDetachEventsFunctionName, clientSideGetParametersFunctionName, handlerDelegate);
+					builder.AppendLineFormat("var {0} = function() {{ {1}({2}()); }};", handlerDelegate, clientSideScriptFunctionName, clientSideGetParametersFunctionName);
+					builder.AppendLineFormat("var {0} = function() {{ {1}({2}(), {0}, {3}); }};", attachFunctionDelegate, clientSideAttachEventsFunctionName, clientSideGetParametersFunctionName, handlerDelegate);
+					builder.AppendLineFormat("var {0} = function() {{ {1}({2}(), {0}, {3}); }};", detachFunctionDelegate, clientSideDetachEventsFunctionName, clientSideGetParametersFunctionName, handlerDelegate);
 				}
 
 				builder.AppendLineFormat("Sys.WebForms.PageRequestManager.getInstance().add_pageLoading({0});", detachFunctionDelegate);

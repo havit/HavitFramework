@@ -9,13 +9,13 @@
 <body>
     <form id="form1" runat="server">
     <div>
-		<havit:NumericBox ID="TestNumericBox" runat="server" />
+		<havit:DateTimeBox ID="TestDateTimeBox" runat="server" />
 		<asp:LinkButton ID="MyLinkButton" Text="LB" runat="server" OnClientClick="return false;" />
 		<havit:Scriptlet runat="server">		
-			<havit:ControlParameter ControlName="TestNumericBox" runat="server" StartOnChange="true" />
+			<havit:ControlParameter ControlName="TestDateTimeBox" runat="server" StartOnChange="true" />
 			<havit:ControlParameter ControlName="MyLinkButton" runat="server" StartOnChange="true" />
-			<havit:ClientScript startonload="true" runat="server">
-				alert(parameters.TestNumericBox.value);
+			<havit:ClientScript runat="server">
+				alert(parameters.TestDateTimeBox.value);
 			</havit:ClientScript>
 		</havit:Scriptlet>
     </div>

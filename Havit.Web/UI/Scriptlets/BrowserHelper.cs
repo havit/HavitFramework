@@ -44,15 +44,8 @@ namespace Havit.Web.UI.Scriptlets
 				throw new ArgumentException("Je nutné předat identifikátor proměnné nesoucí hodnotu delegáta.", "functionDelegateName");
 				//function = String.Format("new Function(\'{0}\')", function);
 			}
-			
-			if (IsInternetExplorer && HttpContext.Current.Request.Browser.MajorVersion <= 10)
-			{
-				return String.Format("{0}.attachEvent(\"{1}\", {2});", attachingObject, eventName, functionDelegateName);
-			}
-			else
-			{
-				return String.Format("{0}.addEventListener(\"{1}\", {2}, false);", attachingObject, eventName.Substring(2), functionDelegateName);
-			}
+
+			return String.Format("$({0}).on('{1}', {2});", attachingObject, eventName.Substring(2), functionDelegateName);
 		}
 		#endregion
 
@@ -73,14 +66,7 @@ namespace Havit.Web.UI.Scriptlets
 				//				function = String.Format("new Function(\'{0}\')", function);
 			}
 
-			if (IsInternetExplorer && HttpContext.Current.Request.Browser.MajorVersion <= 10)
-			{
-				return String.Format("{0}.detachEvent(\"{1}\", {2});", detachingObject, eventName, functionDelegateName);
-			}
-			else
-			{
-				return String.Format("{0}.removeEventListener(\"{1}\", {2}, false);", detachingObject, eventName.Substring(2), functionDelegateName);
-			}
+			return String.Format("$({0}).off('{1}', {2});", detachingObject, eventName.Substring(2), functionDelegateName);
 		}
 		#endregion
 

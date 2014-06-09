@@ -487,24 +487,6 @@ namespace Havit.Web.UI.WebControls
 				base.RequiresDataBinding = value;
 			}
 		}
-
-		/// <summary>
-		/// Nastaví RequiresDataBinding na true.
-		/// Zajistí zavolání databindingu ještě v aktuálním requestu. Běžně v OnPreRender,
-		/// pokud je ale GridView schovaný, pak se DataBind volá z Page.PreRenderComplete.
-		/// </summary>
-		public void SetRequiresDatabinding()
-		{
-			RequiresDataBinding = true;
-			_currentlyRequiresDataBinding = true;
-		}
-
-		/// <summary>
-		/// Příznak, zda má dojít k databindingu ještě v tomto requestu.
-		/// Nastavováno (na true) v metodě SetRequiresDataBinding, vypínáno v metodě PerformDataBinding.
-		/// </summary>
-		private bool _currentlyRequiresDataBinding = false;
-
 		#endregion
 
 		#region Events - RowInserting, RowInserted, RowCustomizingCommandButton, FilterRowCreated, FilterRowDataBound, GridViewDataFiltering, AllPagesShown
@@ -886,7 +868,6 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Vytvoří ChildTable.
 		/// </summary>
-		/// <returns></returns>
 		protected override Table CreateChildTable()
 		{
 			ChildTable = base.CreateChildTable();
@@ -1230,6 +1211,25 @@ namespace Havit.Web.UI.WebControls
 				//}
 			}
 		}
+		#endregion
+
+		#region SetRequiresDatabinding
+		/// <summary>
+		/// Nastaví RequiresDataBinding na true.
+		/// Zajistí zavolání databindingu ještě v aktuálním requestu. Běžně v OnPreRender,
+		/// pokud je ale GridView schovaný, pak se DataBind volá z Page.PreRenderComplete.
+		/// </summary>
+		public void SetRequiresDatabinding()
+		{
+			RequiresDataBinding = true;
+			_currentlyRequiresDataBinding = true;
+		}
+
+		/// <summary>
+		/// Příznak, zda má dojít k databindingu ještě v tomto requestu.
+		/// Nastavováno (na true) v metodě SetRequiresDataBinding, vypínáno v metodě PerformDataBinding.
+		/// </summary>
+		private bool _currentlyRequiresDataBinding = false;
 		#endregion
 
 		#region OnFilterRowCreated
@@ -2215,8 +2215,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			// buď (nejsme na prvním záznamu, tj. můžeme jít zpět o záznam) 
 			// nebo (jsme na prvním záznamu na "další" stránce, tj. můžeme jít o stránku zpět)
-			// nebo (jsme na prvním záznamu na první stránce a je povolen inserting, tj. můžeme jít na zakládání nového objektu)
-			return (EditorExtenderEditIndex > 0) || ((EditorExtenderEditIndex == 0) && ((PageIndex > 0) || AllowInserting));
+			return (EditorExtenderEditIndex > 0) || ((EditorExtenderEditIndex == 0) && (PageIndex > 0));
 		}
 
 		/// <summary>
@@ -2224,9 +2223,10 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		private bool CanNavigateNext()
 		{
+			// nejsme v editaci a
 			// buď (nejsme na poslední stránce a je povoleno stránkování, tj. můžeme jít na další stránku)
 			// nebo (jsme na poslední stránce a můžeme jít na další záznam, pro přechod z nového objektu kontrolujeme ještě, že existuje záznam, na který můžeme jít)
-			return ((PageIndex < (PageCount - 1)) && AllowPaging) || (EditorExtenderEditIndex < (Rows.Count - 1) && (Rows.Count > 0));
+			return (EditorExtenderEditIndex >= 0) && ((AllowPaging && (PageIndex < (PageCount - 1))) || (EditorExtenderEditIndex < (Rows.Count - 1) && (Rows.Count > 0)));
 		}
 
 		/// <summary>
@@ -2258,9 +2258,9 @@ namespace Havit.Web.UI.WebControls
 				return;
 			}
 
-			if ((EditorExtenderEditIndex == 0) && (PageIndex == 0))
+			if (EditorExtenderEditIndex > 0)
 			{
-				EditorExtenderEditIndex = -1;
+				EditorExtenderEditIndex = EditorExtenderEditIndex - 1;				
 			}
 			else if ((EditorExtenderEditIndex == 0) && (PageIndex > 0))
 			{
@@ -2268,10 +2268,6 @@ namespace Havit.Web.UI.WebControls
 				DataBind();
 				UpdateParentUpdatePanel();
 				EditorExtenderEditIndex = Rows.Count - 1;
-			}
-			else
-			{
-				EditorExtenderEditIndex = EditorExtenderEditIndex - 1;
 			}
 		}
 
@@ -2285,18 +2281,8 @@ namespace Havit.Web.UI.WebControls
 				e.Cancel = true;
 				return;
 			}
-
-			if (EditorExtenderEditIndex == -1)
-			{
-				if (PageIndex > 0)
-				{
-					PageIndex = 0;
-					DataBind();
-					UpdateParentUpdatePanel();
-				}
-				EditorExtenderEditIndex = 0;
-			}
-			else if (EditorExtenderEditIndex == (Rows.Count - 1))
+			
+			if (EditorExtenderEditIndex == (Rows.Count - 1))
 			{
 				PageIndex = PageIndex + 1;
 				DataBind();

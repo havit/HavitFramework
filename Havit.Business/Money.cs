@@ -24,15 +24,9 @@ namespace Havit.Business
 			{
 				return _amount;
 			}
-			set
+			private set
 			{
-				bool changed = (_amount != value);
 				_amount = value;
-
-				if (changed && (ValueChanged != null))
-				{
-					ValueChanged(this, EventArgs.Empty);
-				}
 			}
 		}
 		private decimal? _amount;
@@ -48,25 +42,12 @@ namespace Havit.Business
 			{
 				return _currency;
 			}
-			set
+			private set
 			{
-				bool changed = (_currency != value);
 				_currency = value;
-
-				if (changed && (ValueChanged != null))
-				{
-					ValueChanged(this, EventArgs.Empty);
-				}
 			}
 		}
 		private TCurrency _currency;
-		#endregion
-
-		#region ValueChanged
-		/// <summary>
-		/// Událost oznamujízí změnu hodnoty ve třídě Money (vyvoláno, pokud se změní částka nebo měna).
-		/// </summary>
-		public event EventHandler ValueChanged;
 		#endregion
 
 		#region Constructors

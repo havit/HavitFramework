@@ -75,7 +75,7 @@ namespace Havit.BusinessLayerTest
 			}
 			
 			bool fromCache = true;
-			string cacheKey = "Havit.BusinessLayerTest.Role.GetObject|ID=" + id;
+			string cacheKey = "Role.GetObject|ID=" + id;
 			
 			result = (Role)HttpRuntime.Cache.Get(cacheKey);
 			if (result == null)

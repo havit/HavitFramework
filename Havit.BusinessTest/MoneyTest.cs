@@ -14,25 +14,6 @@ namespace Havit.BusinessTest
 	[TestClass]
 	public class MoneyTest
 	{
-		#region TestAssigmentByParts
-		[TestMethod]
-		public void MoneyAssignmentByParts()
-		{
-			using (new IdentityMapScope())
-			{
-				decimal castka = 555M;
-				Currency mena = Currency.GetAll().First();
-
-				CenikItem cenikItem = CenikItem.CreateObject();
-				cenikItem.Cena.Amount = castka;
-				cenikItem.Cena.Currency = mena;
-
-				Assert.AreEqual(cenikItem.Cena.Amount, castka);
-				Assert.AreEqual(cenikItem.Cena.Currency, mena);
-			}
-		}
-		#endregion
-
 		#region MoneyInstanceAssignment
 		[TestMethod]
 		public void MoneyInstanceAssignment()
@@ -40,7 +21,7 @@ namespace Havit.BusinessTest
 			using (new IdentityMapScope())
 			{
 				decimal castka = 555M;
-				Currency mena = Currency.GetAll().First();
+				Currency mena = Currency.CreateObject();
 				
 				CenikItem cenikItem = CenikItem.CreateObject();
 
@@ -49,7 +30,8 @@ namespace Havit.BusinessTest
 
 				Assert.AreEqual(cenikItem.CenaAmount, castka);
 				Assert.AreEqual(cenikItem.CenaCurrency, mena);
-				Assert.AreSame(money, cenikItem.Cena);
+
+				Assert.AreSame(money, cenikItem.Cena); // podmínka není funkčně nutná, je ale výhodná z paměťových a výkonostních důvodů
 			}
 		}
 		#endregion
@@ -62,8 +44,8 @@ namespace Havit.BusinessTest
 			{
 				decimal castka1 = 1M;
 				decimal castka2 = 2M;
-				Currency mena1 = Currency.GetAll().First();
-				Currency mena2 = Currency.GetAll().Skip(1).First();
+				Currency mena1 = Currency.CreateObject();
+				Currency mena2 = Currency.CreateObject();
 
 				CenikItem cenikItem = CenikItem.CreateObject();
 
@@ -85,7 +67,7 @@ namespace Havit.BusinessTest
 				Assert.AreEqual(cenikItem.CenaAmount, castka1);
 				Assert.AreEqual(cenikItem.CenaCurrency, mena1);
 
-				Assert.AreSame(money, cenikItem.Cena);
+				Assert.AreSame(money, cenikItem.Cena); // podmínka není funkčně nutná, je ale výhodná z paměťových a výkonostních důvodů
 			}
 		}
 		#endregion

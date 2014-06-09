@@ -100,8 +100,11 @@ namespace Havit.BusinessLayerTest
 			set
 			{
 				EnsureLoaded();
+				if (value != _CenaAmountPropertyHolder.Value)
+				{
+					_cenaIsUpToDate = false;
+				}
 				_CenaAmountPropertyHolder.Value = value;
-				UpdateCenaFromUnderlyingProperties();
 			}
 		}
 		/// <summary>
@@ -123,8 +126,11 @@ namespace Havit.BusinessLayerTest
 			set
 			{
 				EnsureLoaded();
+				if (value != _CenaCurrencyPropertyHolder.Value)
+				{
+					_cenaIsUpToDate = false;
+				}
 				_CenaCurrencyPropertyHolder.Value = value;
-				UpdateCenaFromUnderlyingProperties();
 			}
 		}
 		/// <summary>
@@ -133,7 +139,6 @@ namespace Havit.BusinessLayerTest
 		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected PropertyHolder<Havit.BusinessLayerTest.Currency> _CenaCurrencyPropertyHolder;
 		
-		#region Money properties
 		/// <summary>
 		/// Cena.
 		/// </summary>
@@ -142,63 +147,32 @@ namespace Havit.BusinessLayerTest
 			get
 			{
 				EnsureLoaded();
-				if (_cena == null)
+				if (!_cenaIsUpToDate)
 				{
-					_cena = new Havit.BusinessLayerTest.Money();
-					UpdateCenaFromUnderlyingProperties();
+					_cena = new Havit.BusinessLayerTest.Money(CenaAmount, CenaCurrency);
+					_cenaIsUpToDate = true;
 				}
 				return _cena;
 			}
 			set
 			{
 				EnsureLoaded();
-				
-				if (_cena != null)
+				if (value == null)
 				{
-					_cena.ValueChanged -= Cena_ValueChanged;
+					throw new InvalidOperationException("Value is null but cannot be set to not-null CenaAmount property.");
 				}
-				
-				_cena = value ?? new Havit.BusinessLayerTest.Money();
-				_cena.ValueChanged += Cena_ValueChanged;
-				
-				decimal amount  = _cena.Amount.Value;
-				Havit.BusinessLayerTest.Currency currency = _cena.Currency;
-				
-				CenaAmount = amount;
-				CenaCurrency = currency;
+				if (value.Amount == null)
+				{
+					throw new InvalidOperationException("Amount is null but cannot be set to not-null CenaAmount property.");
+				}
+				CenaAmount = value.Amount.Value;
+				CenaCurrency = value.Currency;
+				_cena = value;
+				_cenaIsUpToDate = true;
 			}
 		}
 		private Havit.BusinessLayerTest.Money _cena;
-		
-		/// <summary>
-		/// Aktualizuje hodnotu vlastnosti Cena z vlastností pro Amount a Currency.
-		/// </summary>
-		private void UpdateCenaFromUnderlyingProperties()
-		{
-			if ((!updateCenaFromUnderlyingPropertiesSuppressed) && (_cena != null))
-			{
-				_cena.ValueChanged -= Cena_ValueChanged;
-				
-				decimal amount = _CenaAmountPropertyHolder.Value;
-				Havit.BusinessLayerTest.Currency currency = _CenaCurrencyPropertyHolder.Value;
-				
-				_cena.Amount = amount;
-				_cena.Currency = currency;
-				
-				_cena.ValueChanged += Cena_ValueChanged;
-			}
-		}
-		private bool updateCenaFromUnderlyingPropertiesSuppressed;
-		
-		private void Cena_ValueChanged(object sender, EventArgs e)
-		{
-			updateCenaFromUnderlyingPropertiesSuppressed = true;
-			CenaAmount = ((Havit.BusinessLayerTest.Money)sender).Amount.Value;
-			CenaCurrency = ((Havit.BusinessLayerTest.Money)sender).Currency;
-			updateCenaFromUnderlyingPropertiesSuppressed = false;
-		}
-		
-		#endregion
+		private bool _cenaIsUpToDate;
 		
 		#endregion
 		
@@ -532,7 +506,7 @@ namespace Havit.BusinessLayerTest
 		{
 			global::Havit.Diagnostics.Contracts.Contract.Requires(!this.IsNew, "!this.IsNew");
 			
-			string key = ".CenikItem.SaveCacheDependencyKey|ID=" + this.ID.ToString();
+			string key = "CenikItem.SaveCacheDependencyKey|ID=" + this.ID.ToString();
 			if (ensureInCache && (HttpRuntime.Cache[key] == null))
 			{
 				HttpRuntime.Cache[key] = new object();
@@ -553,7 +527,7 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static string GetAnySaveCacheDependencyKey(bool ensureInCache = true)
 		{
-			string key = ".CenikItem.AnySaveCacheDependencyKey";
+			string key = "CenikItem.AnySaveCacheDependencyKey";
 			if (ensureInCache && (HttpRuntime.Cache[key] == null))
 			{
 				HttpRuntime.Cache[key] = new object();

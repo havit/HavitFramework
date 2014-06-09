@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Data;
@@ -26,6 +26,32 @@ namespace Havit.BusinessLayerTest
 	/// </summary>
 	public partial class CenikItem : CenikItemBase
 	{
-		
+		#region CenaAmount
+		public new Decimal CenaAmount
+		{
+			get
+			{
+				return base.CenaAmount;
+			}
+			set
+			{
+				base.CenaAmount = value;
+			}
+		}
+		#endregion
+
+		#region CenaCurrency
+		public new Currency CenaCurrency
+		{
+			get
+			{
+				return base.CenaCurrency;
+			}
+			set
+			{
+				base.CenaCurrency = value;
+			}
+		}
+		#endregion
 	}
 }

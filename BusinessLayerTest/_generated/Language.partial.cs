@@ -75,7 +75,7 @@ namespace Havit.BusinessLayerTest
 			}
 			
 			bool fromCache = true;
-			string cacheKey = "Havit.BusinessLayerTest.Language.GetObject|ID=" + id;
+			string cacheKey = "Language.GetObject|ID=" + id;
 			
 			result = (Language)HttpRuntime.Cache.Get(cacheKey);
 			if (result == null)

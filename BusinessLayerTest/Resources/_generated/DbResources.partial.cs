@@ -159,7 +159,7 @@ namespace Havit.BusinessLayerTest.Resources
 			Havit.BusinessLayerTest.Language language = Havit.BusinessLayerTest.Language.GetByUICulture(cultureInfo);
 			
 			DbCommand dbCommand = DbConnector.Default.ProviderFactory.CreateCommand();
-			dbCommand.CommandText ="SELECT _rc.[Name] as ResourceClass, _ri.[ResourceKey] as ResourceKey, _ril.[Value] as Value FROM [dbo].[ResourceClass] _rc INNER JOIN [dbo].[ResourceItem] _ri ON (_rc.[ResourceClassID] = _ri.[ResourceClassID]) INNER JOIN [dbo].[ResourceItemLocalization] _ril ON (_ri.[ResourceItemID] = _ril.[ResourceItemID]) WHERE (_ril.[LanguageID] = @LanguageID) AND (_ril.Value IS NOT NULL);";
+			dbCommand.CommandText = "SELECT _rc.[Name] as ResourceClass, _ri.[ResourceKey] as ResourceKey, _ril.[Value] as Value FROM [dbo].[ResourceClass] _rc INNER JOIN [dbo].[ResourceItem] _ri ON (_rc.[ResourceClassID] = _ri.[ResourceClassID]) INNER JOIN [dbo].[ResourceItemLocalization] _ril ON (_ri.[ResourceItemID] = _ril.[ResourceItemID]) WHERE (_ril.[LanguageID] = @LanguageID) AND (_ril.Value IS NOT NULL);";
 			
 			DbParameter dbParameterLanguageID = DbConnector.Default.ProviderFactory.CreateParameter();
 			dbParameterLanguageID.DbType = DbType.Int32;

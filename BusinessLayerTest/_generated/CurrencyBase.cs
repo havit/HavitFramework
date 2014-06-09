@@ -647,7 +647,7 @@ namespace Havit.BusinessLayerTest
 		{
 			global::Havit.Diagnostics.Contracts.Contract.Requires(id != BusinessObjectBase.NoID, "id != BusinessObjectBase.NoID");
 			
-			return ".Currency.DataRecords|ID=" + id.ToString();
+			return "Currency.DataRecords|ID=" + id.ToString();
 		}
 		
 		/// <summary>
@@ -685,7 +685,7 @@ namespace Havit.BusinessLayerTest
 		{
 			global::Havit.Diagnostics.Contracts.Contract.Requires(!this.IsNew, "!this.IsNew");
 			
-			string key = ".Currency.SaveCacheDependencyKey|ID=" + this.ID.ToString();
+			string key = "Currency.SaveCacheDependencyKey|ID=" + this.ID.ToString();
 			if (ensureInCache && (HttpRuntime.Cache[key] == null))
 			{
 				HttpRuntime.Cache[key] = new object();
@@ -706,7 +706,7 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static string GetAnySaveCacheDependencyKey(bool ensureInCache = true)
 		{
-			string key = ".Currency.AnySaveCacheDependencyKey";
+			string key = "Currency.AnySaveCacheDependencyKey";
 			if (ensureInCache && (HttpRuntime.Cache[key] == null))
 			{
 				HttpRuntime.Cache[key] = new object();

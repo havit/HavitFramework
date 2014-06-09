@@ -1088,7 +1088,7 @@ namespace Havit.BusinessLayerTest
 		{
 			global::Havit.Diagnostics.Contracts.Contract.Requires(!this.IsNew, "!this.IsNew");
 			
-			string key = ".Uzivatel.SaveCacheDependencyKey|ID=" + this.ID.ToString();
+			string key = "Uzivatel.SaveCacheDependencyKey|ID=" + this.ID.ToString();
 			if (ensureInCache && (HttpRuntime.Cache[key] == null))
 			{
 				HttpRuntime.Cache[key] = new object();
@@ -1109,7 +1109,7 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static string GetAnySaveCacheDependencyKey(bool ensureInCache = true)
 		{
-			string key = ".Uzivatel.AnySaveCacheDependencyKey";
+			string key = "Uzivatel.AnySaveCacheDependencyKey";
 			if (ensureInCache && (HttpRuntime.Cache[key] == null))
 			{
 				HttpRuntime.Cache[key] = new object();

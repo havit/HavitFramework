@@ -5,6 +5,7 @@ if (!window.jQuery) {
 } else {
 	(function ($) {
 		var havit_BootstrapExtensions_TimerID = null;
+		var havit_BootstrapExtensions_HeaderTop = null;
 		var havit_BootstrapExtensions_CurrentDialog = null;
 		var havit_BootstrapExtensions_ResizeModal = function() {
 
@@ -21,12 +22,15 @@ if (!window.jQuery) {
 					return;
 				}
 
-				var containerHeight = $modal.innerHeight();
-				var headerHeight = $modalHeader.outerHeight(true) || 0;
-				var footerHeight = $modalFooter.outerHeight(true) || 0;
-				var headerTop = ($modalHeader.length > 0) ? $modalHeader.offset().top : $modalBody.offset().top;
+				if (havit_BootstrapExtensions_HeaderTop == null) {
+					var containerHeight = $modal.innerHeight();
+					var headerHeight = $modalHeader.outerHeight(true) || 0;
+					var footerHeight = $modalFooter.outerHeight(true) || 0;
+					var headerTop = ($modalHeader.length > 0) ? $modalHeader.offset().top : $modalBody.offset().top;
+					havit_BootstrapExtensions_HeaderTop = headerTop;
+				}
 
-				var bodyHeight = containerHeight - headerHeight - footerHeight - (2 * headerTop);
+				var bodyHeight = containerHeight - headerHeight - footerHeight - (2 * havit_BootstrapExtensions_HeaderTop);
 
 				var bodyHeightPx = "";
 				if (bodyHeight >= 200) { /* if less then 200 px then switch to standard behavior - scroll dialog content with page scroller */
@@ -71,6 +75,7 @@ if (!window.jQuery) {
 		havit_BootstrapExtensions_Show = function (elementSelector, closeOnEscapeKey, escapePostbackScript, dragMode, suppressAnimation) {
 			var $element = $(elementSelector);
 
+			havit_BootstrapExtensions_HeaderTop = null;
 			havit_BootstrapExtensions_ShowHideModal($element, 'show', suppressAnimation);
 
 			if (closeOnEscapeKey) {

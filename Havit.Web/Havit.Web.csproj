@@ -544,6 +544,7 @@
     <None Include="Bootstrap\Content\less\havit.web.bootstrap.less" />
     <None Include="Bootstrap\Content\less\validation.less" />
     <None Include="Bootstrap\Diagrams\Dialogs.cd" />
+    <None Include="packages.config" />
     <None Include="UI\Scriptlets\Scriptlet.cd" />
   </ItemGroup>
   <ItemGroup>
@@ -554,9 +555,9 @@
     <EmbeddedResource Include="UI\Adapters\CssAdapters\CssTreeViewAdapter.js" />
     <EmbeddedResource Include="UI\ClientScripts\HavitFrameworkClientScript.js" />
     <Content Include="Bootstrap\Content\description.txt" />
-    <None Include="Bootstrap\Content\js\ModalExtension.js" />
     <None Include="Bootstrap\Content\js\TabPanelExtension.js" />
     <None Include="Bootstrap\Content\js\WebUIValidationExtension.js" />
+    <Content Include="Bootstrap\Content\js\ModalExtension.js" />
     <Content Include="UI\Scriptlets\IControlExtender.xml" />
     <Content Include="UI\Scriptlets\IScriptletParameter.xml" />
     <EmbeddedResource Include="UI\WebControls\SingleSubmitProtection.css" />
@@ -579,7 +580,12 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <TypeScriptCompile Include="Bootstrap\Content\js\ModalExtension.ts" />
+    <TypeScriptCompile Include="Scripts\typings\bootstrap\bootstrap.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\jqueryui\jqueryui.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
@@ -587,6 +593,8 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
+  <!-- Potřebujeme typescript targets pro kompilaci *.ts do *.js -->
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Target Name="TfsPublish" AfterTargets="AfterBuild" Condition="'$(PublishDirectory)' != ''">
     <ItemGroup>
       <FilesToCopy Include="$(OutputPath)\Havit.Web.dll" />

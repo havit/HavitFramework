@@ -1,5 +1,5 @@
 ﻿if (!window.jQuery) {
-	alert('WebUIValidationExtension.js: jQuery must be loaded prior to WebUIValidationExtension.js.');
+	alert('TabPanelExtension.js: jQuery must be loaded prior to TabPanelExtension.js.');
 } else {
 	(function ($) {
 		$(document).on('click', '[data-toggle="tab.havit"]', function (e) {

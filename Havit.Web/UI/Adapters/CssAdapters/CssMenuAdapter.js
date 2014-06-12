@@ -21,10 +21,10 @@ function Hover__AspNetMenu(elementId) {
 
 	var element = document.getElementById(elementId);
     // if there is a timer for unhover this item then clear it - it is no more intended to unhover item
-    if (element.timerID != null)
+    if (element.resizingTimer != null)
     {
-		clearTimeout(element.timerID);
-		element.timerID = null;
+		clearTimeout(element.resizingTimer);
+		element.resizingTimer = null;
     }
     
     AddClass__CssFriendlyAdapters(element, hoverClass);
@@ -80,10 +80,10 @@ function Unhover__AspNetMenu(elementId) {
 	var element = document.getElementById(elementId);
 	
     // if there is a timer for unhover this item then clear it - we will unhover ourselves
-    if (element.timerID != null)
+    if (element.resizingTimer != null)
     {
-		clearTimeout(element.timerID);
-		element.timerID = null;
+		clearTimeout(element.resizingTimer);
+		element.resizingTimer = null;
     }
     
     RemoveClass__CssFriendlyAdapters(element, hoverClass);   
@@ -194,7 +194,7 @@ function SetHover__AspNetMenu() {
             
             for (var k=0; k<items.length; k++)
             {
-				items[k].timerID = null; // there is no timer on element
+				items[k].resizingTimer = null; // there is no timer on element
 				items[k].isHover = false; // the element is not hovered (for speedup)
 				items[k].disappearAfter = disappearAfter; // speedup
 
@@ -216,7 +216,7 @@ function SetHover__AspNetMenu() {
                 items[k].onmouseout = function() {
 					var element = this;
 					// on mouse out set timer to unhover item
-					element.timerID = setTimeout(new Function('UnhoverRecursive__AspNetMenu(\'' + element.id + '\');'), element.disappearAfter);
+					element.resizingTimer = setTimeout(new Function('UnhoverRecursive__AspNetMenu(\'' + element.id + '\');'), element.disappearAfter);
 				};
 				
 				// unchanged

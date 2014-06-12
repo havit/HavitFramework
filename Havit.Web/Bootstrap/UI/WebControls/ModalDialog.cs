@@ -435,10 +435,10 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 
 			closeButton.Visible = ShowCloseButton;
 
-			if (DialogVisible)
-			{
-				ScriptManager.RegisterStartupScript(this.Page, typeof(ModalDialog), "StartUp", "$(document).ready(function() { Havit_BootstrapExtensions_ResizeModal(); });", true);
-			}
+			//if (DialogVisible)
+			//{
+			//	ScriptManager.RegisterStartupScript(this.Page, typeof(ModalDialog), "StartUp", "$(document).ready(function() { Havit_BootstrapExtensions_ResizeModal(); });", true);
+			//}
 
 			if (headerH4 != null)
 			{
@@ -465,8 +465,8 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		protected override string GetShowScript()
 		{
 			string scriptPattern = CurrentyShowing
-				? "Havit_BootstrapExtensions_Show('#{0}', {1}, '{2}', '{3}');"
-				: "Havit_BootstrapExtensions_RemainShown('#{0}', {1}, '{2}', '{3}');";
+				? "Havit.Web.Bootstrap.UI.WebControls.ClientSide.ModalExtension.instance().show('#{0}', {1}, '{2}', '{3}');"
+				: "Havit.Web.Bootstrap.UI.WebControls.ClientSide.ModalExtension.instance().remainShown('#{0}', {1}, '{2}', '{3}');";
 
 			string postbackScript = String.Empty;
 			if (CloseOnEscapeKey)
@@ -492,7 +492,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		protected override string GetHideScript()
 		{
-			string scriptPattern = "Havit_BootstrapExtensions_Hide('#{0}');";
+			string scriptPattern = "Havit.Web.Bootstrap.UI.WebControls.ClientSide.ModalExtension.instance().hide('#{0}');";
 			string script = String.Format(scriptPattern, DialogPanelClientIDMemento ?? dialogContainer.ClientID);
 			return script;
 		}

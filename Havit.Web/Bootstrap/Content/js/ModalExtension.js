@@ -1,171 +1,210 @@
-﻿var Havit_BootstrapExtensions_ResizeModal = function() { };
+﻿/// <reference path="../../../scripts/typings/jquery/jquery.d.ts" />
+/// <reference path="../../../scripts/typings/jqueryui/jqueryui.d.ts" />
+/// <reference path="../../../scripts/typings/bootstrap/bootstrap.d.ts" />
+var Havit;
+(function (Havit) {
+    (function (Web) {
+        (function (Bootstrap) {
+            (function (UI) {
+                (function (WebControls) {
+                    (function (ClientSide) {
+                        var ModalExtension = (function () {
+                            function ModalExtension() {
+                            }
+                            // #region Instance (singleton)
+                            ModalExtension.instance = function () {
+                                if (this._instance == null) {
+                                    this._instance = new ModalExtension();
+                                }
+                                return this._instance;
+                            };
 
-if (!window.jQuery) {
-	alert('Modals.js: jQuery must be loaded prior to WebUIValidationExtension.js.');
-} else {
-	(function ($) {
-		var havit_BootstrapExtensions_TimerID = null;
-		var havit_BootstrapExtensions_HeaderTop = null;
-		var havit_BootstrapExtensions_CurrentDialog = null;
-		var havit_BootstrapExtensions_ResizeModal = function() {
+                            ModalExtension.prototype.show = function (modalElementSelector, closeOnEscapeKey, escapePostbackScript, dragMode) {
+                                // shows dialog
+                                // no matters how, when..., just show modal dialog
+                                this.currentModalElement = this.showInternal(modalElementSelector, closeOnEscapeKey, escapePostbackScript, dragMode, false);
+                            };
 
-			$('.modal').each(function(modalIndex, modal) {
-				var $modal = $(modal);
-				var $modalDialog = $modal.children(".modal-dialog");
-				var $modalContent = $modalDialog.children(".modal-content");
-				var $modalHeader = $modalContent.children().children(".modal-header");
-				var $modalBody = $modalContent.children().children(".modal-body");
-				var $modalFooter = $modalContent.children().children(".modal-footer");
+                            ModalExtension.prototype.remainShown = function (modalElementSelector, closeOnEscapeKey, escapePostbackScript, dragMode) {
+                                var $modalElement = $(modalElementSelector);
 
-				if (($modalHeader.length == 0) && ($modalBody.length == 0)) {
-					// ModalDialog is not visible (rendered)
-					return;
-				}
+                                if (this.currentModalElement == null) {
+                                    // when result of postback, havit_BootstrapExtensions_CurrentDialog is null (whole page refreshed)
+                                    // We have to show dialog again, but without animation.
+                                    this.currentModalElement = this.showInternal(modalElementSelector, closeOnEscapeKey, escapePostbackScript, dragMode, true);
+                                } else {
+                                    // in asynchronous postback, whole dialog can be updated (when there is a parent UpdatePanel) or just content of dialog is refreshed (no parent UpdatePanel updated)
+                                    // when no parent UpdatePanel, currentModalElement and $element are still the same instances
+                                    if ($modalElement.is(this.currentModalElement)) {
+                                        // no parent update panel, modal dialog element has not been replaced so no action required
+                                        // NOOP
+                                    } else {
+                                        // parent UpdatePanel updated, we have to hide previous dialog to remove backdrop and to show current dialog
+                                        // both actions must suppress animation (no animation required)
+                                        this.showHideModalInternal(this.currentModalElement, 'hide', true);
+                                        this.currentModalElement = this.showInternal(modalElementSelector, closeOnEscapeKey, escapePostbackScript, dragMode, true);
+                                    }
+                                }
+                            };
 
-				if (havit_BootstrapExtensions_HeaderTop == null) {
-					var containerHeight = $modal.innerHeight();
-					var headerHeight = $modalHeader.outerHeight(true) || 0;
-					var footerHeight = $modalFooter.outerHeight(true) || 0;
-					var headerTop = ($modalHeader.length > 0) ? $modalHeader.offset().top : $modalBody.offset().top;
-					havit_BootstrapExtensions_HeaderTop = headerTop;
-				}
+                            ModalExtension.prototype.hide = function (modalElementSelector) {
+                                this.stopResizingProcess();
 
-				var bodyHeight = containerHeight - headerHeight - footerHeight - (2 * havit_BootstrapExtensions_HeaderTop);
+                                var $modalElement = $(modalElementSelector);
+                                if (this.currentModalElement == null) {
+                                    // when result of postback, currentModalElement is null (whole page refreshed)
+                                    if ($modalElement.hasClass('fade')) {
+                                        // if animation enabled, we have to show modal without animation and hide it with animation
+                                        this.showHideModalInternal($modalElement, 'show', true);
+                                        this.showHideModalInternal($modalElement, 'show', true);
+                                        this.showHideModalInternal($modalElement, 'hide', false);
+                                    } else {
+                                        // it there is no animation
+                                        // NOOP
+                                    }
+                                } else {
+                                    // in asynchronous postback, whole dialog can be updated (when there is a parent UpdatePanel) or just content of dialog is refreshed (no parent UpdatePanel updated)
+                                    // when no parent UpdatePanel, currentModalElement and $element are still the same instances
+                                    if ($modalElement.is(this.currentModalElement)) {
+                                        // no parent update panel, modal dialog element has not been replaced so just hide it
+                                        this.showHideModalInternal($modalElement, 'hide', false);
+                                    } else {
+                                        // parent UpdatePanel updated, we have to hide previous dialog to remove backdrop and to show current dialog without animation and hide it
+                                        this.showHideModalInternal(this.currentModalElement, 'hide', true);
+                                        if ($modalElement.hasClass('fade')) {
+                                            this.showHideModalInternal($modalElement, 'show', true);
+                                            this.showHideModalInternal($modalElement, 'hide', false);
+                                        }
+                                    }
+                                }
 
-				var bodyHeightPx = "";
-				if (bodyHeight >= 200) { /* if less then 200 px then switch to standard behavior - scroll dialog content with page scroller */
-					var bodyHeightPx = bodyHeight + "px";
-				}
-				$modalBody.css("max-height", bodyHeightPx);
-			});
-			havit_BootstrapExtensions_TimerID = window.setTimeout(havit_BootstrapExtensions_ResizeModal, 200); // this is a workaround for setting height in transitions/animations where setting value once at shown.bs.modal fails
-		};
+                                $('body').off('keyup.havit.web.bootstrap');
 
-		havit_BootstrapExtensions_ClearTimer = function () {
-			if (havit_BootstrapExtensions_TimerID != null) {
-				window.clearTimeout(havit_BootstrapExtensions_TimerID);
-				havit_BootstrapExtensions_TimerID = null;
-			}
-		}
+                                if (!!jQuery.ui && !!jQuery.ui.version && (this.currentModalElement != null)) {
+                                    this.currentModalElement.find(".modal-dialog.ui-draggable").draggable('destroy');
+                                }
 
-		havit_BootstrapExtensions_ShowHideModal = function($element, operation, suppressAnimation) {
-			var hasFade = $element.hasClass('fade');
-			if (suppressAnimation && hasFade) {
-				$element.removeClass('fade');
-			}
+                                this.currentModalElement = null;
+                            };
 
-			// if we want to hide modal without animation, we have to remove fade class from backdrop
-			if ((operation == 'hide') && suppressAnimation) {
-				$('.modal-backdrop').removeClass('fade');
-			}
+                            ModalExtension.prototype.showInternal = function (modalElementSelector, closeOnEscapeKey, escapePostbackScript, dragMode, suppressAnimation) {
+                                var _this = this;
+                                var $modalElement = $(modalElementSelector);
 
-			$element.modal(operation);
+                                this.showHideModalInternal($modalElement, 'show', suppressAnimation);
 
-			// if we shown modal without animation, but animation support is enabled for modal, we must add fade class to backdrop
-			// show operation set fade class to backdrop if dialog supports animation
-			if ((operation == 'show') && suppressAnimation && hasFade) {
-				$('.modal-backdrop').addClass('fade');
-			}
+                                if (closeOnEscapeKey) {
+                                    $('body').on('keyup.havit.web.bootstrap', function (e) {
+                                        if (e.which == 27) {
+                                            eval(escapePostbackScript);
+                                        }
+                                    });
+                                }
 
-			if (suppressAnimation && hasFade) {
-				$element.addClass('fade');
-			}
-		}
+                                var draggableParams = { handle: '.modal-header', stop: function () {
+                                        return _this.dragStop.call(_this);
+                                    } };
+                                if (dragMode == "Required") {
+                                    $(modalElementSelector + ' .modal-dialog').draggable(draggableParams);
+                                }
 
-		havit_BootstrapExtensions_Show = function (elementSelector, closeOnEscapeKey, escapePostbackScript, dragMode, suppressAnimation) {
-			var $element = $(elementSelector);
+                                if (dragMode == "IfAvailable") {
+                                    if (!!jQuery.ui && !!jQuery.ui.version) {
+                                        $(modalElementSelector + ' .modal-dialog').draggable(draggableParams);
+                                    }
+                                }
 
-			havit_BootstrapExtensions_HeaderTop = null;
-			havit_BootstrapExtensions_ShowHideModal($element, 'show', suppressAnimation);
+                                this.startResizingProcess();
 
-			if (closeOnEscapeKey) {
-				$('body').on('keyup.havit.web.bootstrap', function(e) {
-					if (e.which == 27) {
-						eval(escapePostbackScript);
-					}
-				});
-			}
+                                return $modalElement;
+                            };
 
-			if(dragMode == "Required") {
-				$(elementSelector + ' .modal-dialog').draggable({ handle : '.modal-header' });
-			}
+                            ModalExtension.prototype.showHideModalInternal = function ($modalElement, operation, suppressAnimation) {
+                                var hasFade = $modalElement.hasClass('fade');
+                                if (suppressAnimation && hasFade) {
+                                    $modalElement.removeClass('fade');
+                                }
 
-			if (dragMode == "IfAvailable") {
-				if (!!window.jQuery.ui && !!window.jQuery.ui.version) {
-					$(elementSelector + ' .modal-dialog').draggable({ handle: '.modal-header' });
-				} 
-			}
+                                // if we want to hide modal without animation, we have to remove fade class from backdrop
+                                if ((operation == 'hide') && suppressAnimation) {
+                                    $('.modal-backdrop').removeClass('fade');
+                                }
 
-			havit_BootstrapExtensions_CurrentDialog = $element;
-		}
+                                $modalElement.modal(operation);
 
-		Havit_BootstrapExtensions_Show = function (elementSelector, closeOnEscapeKey, escapePostbackScript, dragMode) {
-			// shows dialog
-			// no matters how, when..., just show modal dialog
-			havit_BootstrapExtensions_Show(elementSelector, closeOnEscapeKey, escapePostbackScript, dragMode, false);
-		}
+                                // if we shown modal without animation, but animation support is enabled for modal, we must add fade class to backdrop
+                                // show operation set fade class to backdrop if dialog supports animation
+                                if ((operation == 'show') && suppressAnimation && hasFade) {
+                                    $('.modal-backdrop').addClass('fade');
+                                }
 
-		Havit_BootstrapExtensions_RemainShown = function (elementSelector, closeOnEscapeKey, escapePostbackScript, dragMode) {
-			var $element = $(elementSelector);
-			
-			if (havit_BootstrapExtensions_CurrentDialog == null) {
-				// when result of postback, havit_BootstrapExtensions_CurrentDialog is null (whole page refreshed)
-				// We have to show dialog again, but without animation.
-				havit_BootstrapExtensions_Show(elementSelector, closeOnEscapeKey, escapePostbackScript, dragMode, true);
-			} else {
-				// in asynchronous postback, whole dialog can be updated (when there is a parent UpdatePanel) or just content of dialog is refreshed (no parent UpdatePanel updated)
-				// when no parent UpdatePanel, havit_BootstrapExtensions_CurrentDialog and $element are still the same instances
-				if ($element.is(havit_BootstrapExtensions_CurrentDialog)) {
-					// no parent update panel, modal dialog element has not been replaced so no action required
-					// NOOP
-				} else {
-					// parent UpdatePanel updated, we have to hide previous dialog to remove backdrop and to show current dialog
-					// both actions must suppress animation (no animation required)			
-					havit_BootstrapExtensions_ShowHideModal(havit_BootstrapExtensions_CurrentDialog, 'hide', true);
-					havit_BootstrapExtensions_Show(elementSelector, closeOnEscapeKey, escapePostbackScript, dragMode, true);
-				}
-			}
-		}
+                                if (suppressAnimation && hasFade) {
+                                    $modalElement.addClass('fade');
+                                }
+                            };
 
-		Havit_BootstrapExtensions_Hide = function (elementSelector) {
-			var $element = $(elementSelector);
+                            ModalExtension.prototype.dragStop = function (event, ui) {
+                                this.stopResizingProcess();
+                            };
 
-			if (havit_BootstrapExtensions_CurrentDialog == null) {
-				// when result of postback, havit_BootstrapExtensions_CurrentDialog is null (whole page refreshed)
-				if ($element.hasClass('fade')) {
-					// if animation enabled, we have to show modal without animation and hide it with animation					
-					havit_BootstrapExtensions_ShowHideModal($element, 'show', true);
-					havit_BootstrapExtensions_ShowHideModal($element, 'hide', false);
-				} else {
-					// it there is no animation
-					// NOOP
-				}
-			} else {
-				// in asynchronous postback, whole dialog can be updated (when there is a parent UpdatePanel) or just content of dialog is refreshed (no parent UpdatePanel updated)
-				// when no parent UpdatePanel, havit_BootstrapExtensions_CurrentDialog and $element are still the same instances
-				if ($element.is(havit_BootstrapExtensions_CurrentDialog)) {
-					// no parent update panel, modal dialog element has not been replaced so just hide it
-					havit_BootstrapExtensions_ShowHideModal($element, 'hide', false);
-				} else {
-					// parent UpdatePanel updated, we have to hide previous dialog to remove backdrop and to show current dialog without animation and hide it
-					havit_BootstrapExtensions_ShowHideModal(havit_BootstrapExtensions_CurrentDialog, 'hide', true);
-					if ($element.hasClass('fade')) {
-						havit_BootstrapExtensions_ShowHideModal($element, 'show', true);
-						havit_BootstrapExtensions_ShowHideModal($element, 'hide', false);
-					}
-				}
-			}
-			
-			$('body').off('keyup.havit.web.bootstrap');
+                            ModalExtension.prototype.startResizingProcess = function () {
+                                if (this.resizingTimer == null) {
+                                    this.processResizingProcess();
+                                }
+                            };
 
-			if (!!window.jQuery.ui && !!window.jQuery.ui.version && (havit_BootstrapExtensions_CurrentDialog != null)) {
-				havit_BootstrapExtensions_CurrentDialog.find(".modal-dialog.ui-draggable").draggable('destroy');
-			}
+                            ModalExtension.prototype.stopResizingProcess = function () {
+                                if (this.resizingTimer != null) {
+                                    window.clearTimeout(this.resizingTimer);
+                                    this.resizingTimer = null;
+                                }
+                            };
 
-			havit_BootstrapExtensions_CurrentDialog = null;
-		}
+                            ModalExtension.prototype.processResizingProcess = function () {
+                                var _this = this;
+                                if (this.currentModalElement != null) {
+                                    var $modal = this.currentModalElement;
+                                    var $modalDialog = $modal.children(".modal-dialog");
+                                    var $modalContent = $modalDialog.children(".modal-content");
+                                    var $modalHeader = $modalContent.children().children(".modal-header");
+                                    var $modalBody = $modalContent.children().children(".modal-body");
+                                    var $modalFooter = $modalContent.children().children(".modal-footer");
 
-		$(document).on("shown.bs.modal", "div.modal", havit_BootstrapExtensions_ResizeModal);
-		$(document).on("hide.bs.modal", "div.modal", havit_BootstrapExtensions_ClearTimer);
-	})(jQuery);
-}
+                                    if (($modalHeader.length == 0) && ($modalBody.length == 0)) {
+                                        // ModalDialog is not visible (rendered)
+                                        return;
+                                    }
+
+                                    var containerHeight = $modal.innerHeight();
+                                    var headerHeight = $modalHeader.outerHeight(true) || 0;
+                                    var footerHeight = $modalFooter.outerHeight(true) || 0;
+                                    var headerTop = ($modalHeader.length > 0) ? $modalHeader.offset().top : $modalBody.offset().top;
+
+                                    var bodyHeight = containerHeight - headerHeight - footerHeight - (2 * headerTop);
+
+                                    var bodyHeightPx = "";
+                                    if (bodyHeight >= 200) {
+                                        bodyHeightPx = bodyHeight + "px";
+                                    }
+
+                                    $modalBody.css("max-height", bodyHeightPx);
+                                }
+
+                                this.resizingTimer = window.setTimeout(function () {
+                                    return _this.processResizingProcess.call(_this);
+                                }, 200); // this is a workaround for setting height in transitions/animations where setting value once at shown.bs.modal fails
+                            };
+                            return ModalExtension;
+                        })();
+                        ClientSide.ModalExtension = ModalExtension;
+                    })(WebControls.ClientSide || (WebControls.ClientSide = {}));
+                    var ClientSide = WebControls.ClientSide;
+                })(UI.WebControls || (UI.WebControls = {}));
+                var WebControls = UI.WebControls;
+            })(Bootstrap.UI || (Bootstrap.UI = {}));
+            var UI = Bootstrap.UI;
+        })(Web.Bootstrap || (Web.Bootstrap = {}));
+        var Bootstrap = Web.Bootstrap;
+    })(Havit.Web || (Havit.Web = {}));
+    var Web = Havit.Web;
+})(Havit || (Havit = {}));

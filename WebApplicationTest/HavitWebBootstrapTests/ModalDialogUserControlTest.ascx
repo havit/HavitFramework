@@ -15,6 +15,7 @@
 	</ContentTemplate>
 	<FooterTemplate>
 		<asp:Button ID="CloseButton" Text="Close" runat="server" />
-		<asp:Button Text="Refresh" runat="server" />
+		<asp:Button Text="Refresh Async PostBack" runat="server" />
+		<asp:Button ID="RefreshPostBackButton" Text="Refresh PostBack" runat="server" />
 	</FooterTemplate>	
 </bc:ModalDialog>

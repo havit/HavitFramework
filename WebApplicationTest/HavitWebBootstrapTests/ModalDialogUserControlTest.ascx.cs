@@ -15,6 +15,7 @@ namespace WebApplicationTest.HavitWebBootstrapTests
 		{
 			base.OnInit(e);
 			CloseButton.Click += CloseButton_Click;
+			ScriptManager.GetCurrent(this.Page).RegisterPostBackControl(RefreshPostBackButton);
 		}
 		#endregion
 
@@ -24,5 +25,6 @@ namespace WebApplicationTest.HavitWebBootstrapTests
 			Hide();
 		}
 		#endregion
+
 	}
 }

@@ -557,7 +557,6 @@
     <Content Include="Bootstrap\Content\description.txt" />
     <None Include="Bootstrap\Content\js\TabPanelExtension.js" />
     <None Include="Bootstrap\Content\js\WebUIValidationExtension.js" />
-    <Content Include="Bootstrap\Content\js\ModalExtension.js" />
     <Content Include="UI\Scriptlets\IControlExtender.xml" />
     <Content Include="UI\Scriptlets\IScriptletParameter.xml" />
     <EmbeddedResource Include="UI\WebControls\SingleSubmitProtection.css" />

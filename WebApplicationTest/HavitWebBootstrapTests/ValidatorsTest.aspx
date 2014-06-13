@@ -25,6 +25,7 @@
 		<h1>Validation Group A (More validators with the same Control to Validate)</h1>
 
 		<bc:ValidationSummary ValidationGroup="A" runat="server" />
+		<bc:ValidationSummary ValidationGroup="A" runat="server" />
 
 		<asp:TextBox ID="TB1" runat="server" />
 		<bc:RequiredFieldValidator ControlToValidate="TB1" ErrorMessage="Zadejte hodnotu do textboxu (1)." ValidationGroup="A" runat="server" />

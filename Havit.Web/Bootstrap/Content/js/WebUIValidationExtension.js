@@ -180,38 +180,40 @@
 			});
 		};
 
-		Havit_ValidationSummary_ProcessToastr = function (validationGroup) {
+		Havit_ValidationSummary_ProcessToastr = function(validationGroup) {
 
 			if (typeof (Page_ValidationSummaries) == "undefined") {
 				return;
 			}
 
-			// remove previous error message
-			if (Havit_ValidationSummary_ShowToastr_Toastrs) {
-				$.each(Havit_ValidationSummary_ShowToastr_Toastrs, function (toastrItemIndex, toastrItem) {
-					toastr.clear(toastrItem);
-				});
-			}
-			Havit_ValidationSummary_ShowToastr_Toastrs = new Array();
-
-			var validationSummary, summaryIndex, errorMessage;
-			for (summaryIndex = 0; summaryIndex < Page_ValidationSummaries.length; summaryIndex++) { // for all validation summaries
-				validationSummary = Page_ValidationSummaries[summaryIndex];
+			var showToastr = false;
+			for (var summaryIndex = 0; summaryIndex < Page_ValidationSummaries.length; summaryIndex++) { // for all validation summaries
+				var validationSummary = Page_ValidationSummaries[summaryIndex];
 
 				// which are for the validation group and should show toastr
 				if (validationSummary && validationSummary.parentNode && IsValidationGroupMatch(validationSummary, validationGroup) && (validationSummary.getAttribute("data-showtoastr") == "True")) {
-					// concatenate text for toastr message
-					errorMessage = "";
-					if (typeof (validationSummary.headertext) == "string") {
-						errorMessage += validationSummary.headertext + "<br />";
-					}
-					for (i = 0; i < Page_Validators.length; i++) {
-						if (!Page_Validators[i].isvalid && IsValidationGroupMatch(Page_Validators[i], validationSummary.validationGroup) && (typeof (Page_Validators[i].errormessage) == "string") && (Page_Validators[i].errormessage.length > 0)) {
-							errorMessage += Page_Validators[i].errormessage + "<br />";
-						}
-					}
-					Havit_ValidationSummary_ShowToastrError(errorMessage);
+					showToastr = true;
+					break;
 				}
+			}
+
+			if (showToastr) {
+				// remove previous error message
+				if (Havit_ValidationSummary_ShowToastr_Toastrs) {
+					$.each(Havit_ValidationSummary_ShowToastr_Toastrs, function(toastrItemIndex, toastrItem) {
+						toastr.clear(toastrItem);
+					});
+				}
+				Havit_ValidationSummary_ShowToastr_Toastrs = new Array();
+
+				// concatenate text for toastr message
+				var errorMessage = "";
+				for (i = 0; i < Page_Validators.length; i++) {
+					if (!Page_Validators[i].isvalid && IsValidationGroupMatch(Page_Validators[i], validationSummary.validationGroup) && (typeof (Page_Validators[i].errormessage) == "string") && (Page_Validators[i].errormessage.length > 0)) {
+						errorMessage += Page_Validators[i].errormessage + "<br />";
+					}
+				}
+				Havit_ValidationSummary_ShowToastrError(errorMessage);
 			}
 		};
 

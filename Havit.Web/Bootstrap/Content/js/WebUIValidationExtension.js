@@ -108,8 +108,8 @@
 					if ((validationDisplayTargetControl != null) && (validationDisplayTargetControl.length > 0)) {
 						if ((controltovalidateclass != null) && (controltovalidateclass.length > 0)) {
 							$controlToValidate = $("#" + validationDisplayTargetControl);
-							if ($controlToValidate.attr("tooltipReady")) {
-								$("#" + validationDisplayTargetControl).attr("tooltipReady", false).tooltip('destroy'); // destroy existing tooltip
+							if ($controlToValidate.attr("tooltipReady") == "true") {
+								$("#" + validationDisplayTargetControl).attr("tooltipReady", "false").tooltip('destroy'); // destroy existing tooltip
 							}
 							$controlToValidate.removeClass(controltovalidateclass); // remove "validation failed" class to a control to validate
 						}
@@ -170,7 +170,7 @@
 			// create tooltips from prepared array
 			$.each(failedValidatorsTooltips, function (tooltipIndex, tooltip) {
 				$("#" + tooltip.validationDisplayTargetControl)
-					.attr("tooltipReady", true)
+					.attr("tooltipReady", "true")
 					.tooltip({
 						'placement': tooltip.position,
 						'title': tooltip.text,

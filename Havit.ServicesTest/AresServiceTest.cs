@@ -9,6 +9,7 @@ namespace Havit.ServicesTest
 	[TestClass]
 	public class AresServiceTest
 	{
+		#region GetBasicDataTest
 		[TestMethod]
 		public void GetBasicDataTest()
 		{
@@ -17,7 +18,9 @@ namespace Havit.ServicesTest
 			service.Timeout = 60 * 1000; /* 60 sec */
 			service.GetData(AresRegistr.Basic);
 		}
+		#endregion
 
+		#region GetObchodniRejstrikDataTest
 		[TestMethod]
 		public void GetObchodniRejstrikDataTest()
 		{
@@ -26,5 +29,6 @@ namespace Havit.ServicesTest
 			service.Timeout = 60 * 1000; /* 60 sec */
 			service.GetData(AresRegistr.ObchodniRejstrik);
 		}
+		#endregion
 	}
 }

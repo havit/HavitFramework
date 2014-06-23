@@ -690,7 +690,38 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			}
 		}
 		#endregion
-		
+
+		#region FindControl, FindHeaderControl, FindContentControl
+		/// <summary>
+		/// Searches the for a control with the specified id.
+		/// If not found by stardard method, tries search control in modal dialog content control and header control.
+		/// </summary>
+		public override Control FindControl(string id)
+		{
+			return base.FindControl(id) ?? FindContentControl(id) ?? FindHeaderControl(id);
+		}
+
+		/// <summary>
+		/// Finds control by id in modal dialog header.
+		/// Returns null if not found.
+		/// </summary>
+		public Control FindHeaderControl(string id)
+		{
+			EnsureChildControls();
+			return headerFormView.FindControl(id);
+		}
+
+		/// <summary>
+		/// Finds control by id in modal dialog content.
+		/// Returns null if not found.
+		/// </summary>
+		public Control FindContentControl(string id)
+		{
+			EnsureChildControls();
+			return contentFormView.FindControl(id);
+		}
+		#endregion
+
 		#region (On)GetEditedObject
 		/// <summary>
 		/// Notifies request for edited object. 

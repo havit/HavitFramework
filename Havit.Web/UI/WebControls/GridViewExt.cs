@@ -1928,27 +1928,27 @@ namespace Havit.Web.UI.WebControls
 
 			if (addFirstLastPageButtons)
 			{
-				AddBootstrapPagerButton(container, pagerSettings.FirstPageText, "First", !pagedDataSource.IsFirstPage);
+				AddBootstrapPagerButton(container, pagerSettings.FirstPageText, "first", "First", !pagedDataSource.IsFirstPage);
 			}
 
 			if (firstVisiblePageIndexDenormalized != 1)
 			{
-				AddBootstrapPagerButton(container, "...", (firstVisiblePageIndexDenormalized - 1).ToString(NumberFormatInfo.InvariantInfo));
+				AddBootstrapPagerButton(container, "...", null, (firstVisiblePageIndexDenormalized - 1).ToString(NumberFormatInfo.InvariantInfo));
 			}
 
 			for (int i = firstVisiblePageIndexDenormalized; i <= lastVisiblePageIndexDenormalized; i++)
 			{
-				AddBootstrapPagerButton(container, i.ToString(NumberFormatInfo.CurrentInfo), i.ToString(NumberFormatInfo.InvariantInfo), i != currentPageIndexDenormalized, i == currentPageIndexDenormalized);
+				AddBootstrapPagerButton(container, i.ToString(NumberFormatInfo.CurrentInfo), null, i.ToString(NumberFormatInfo.InvariantInfo), i != currentPageIndexDenormalized, i == currentPageIndexDenormalized);
 			}
 
 			if (pageCount > lastVisiblePageIndexDenormalized)
 			{
-				AddBootstrapPagerButton(container, "...", (lastVisiblePageIndexDenormalized + 1).ToString(NumberFormatInfo.InvariantInfo));
+				AddBootstrapPagerButton(container, "...", null, (lastVisiblePageIndexDenormalized + 1).ToString(NumberFormatInfo.InvariantInfo));
 			}
 
 			if (addFirstLastPageButtons)
 			{
-				AddBootstrapPagerButton(container, pagerSettings.LastPageText, "Last", !pagedDataSource.IsLastPage);
+				AddBootstrapPagerButton(container, pagerSettings.LastPageText, "last", "Last", !pagedDataSource.IsLastPage);
 			}
 		}
 		#endregion
@@ -1962,22 +1962,17 @@ namespace Havit.Web.UI.WebControls
 			PagerSettings pagerSettings = this.PagerSettings;
 			bool isFirstPage = pagedDataSource.IsFirstPage;
 			bool isLastPage = pagedDataSource.IsLastPage;
-			if (addFirstLastPageButtons /*&& !isLastPage*/)
+			if (addFirstLastPageButtons)
 			{
-				AddBootstrapPagerButton(container, pagerSettings.FirstPageText, "First", !isFirstPage);
+				AddBootstrapPagerButton(container, pagerSettings.FirstPageText, "first", "First", !isFirstPage);
 			}
-			//if (!isFirstPage)
-			{
-				AddBootstrapPagerButton(container, pagerSettings.PreviousPageText, "Prev", !isFirstPage);
-			}
+			
+			AddBootstrapPagerButton(container, pagerSettings.PreviousPageText, "previous", "Prev", !isFirstPage);
+			AddBootstrapPagerButton(container, pagerSettings.NextPageText, "next", "Next", !isLastPage);
 
-			//if (!isLastPage)
+			if (addFirstLastPageButtons)
 			{
-				AddBootstrapPagerButton(container, pagerSettings.NextPageText, "Next", !isLastPage);
-			}
-			if (addFirstLastPageButtons /*&& !isLastPage*/)
-			{
-				AddBootstrapPagerButton(container, pagerSettings.LastPageText, "Last", !isLastPage);
+				AddBootstrapPagerButton(container, pagerSettings.LastPageText, "last", "Last", !isLastPage);
 			}
 		}
 		#endregion
@@ -1986,7 +1981,7 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Přidá do kontejnetu tlačítko pageru dle požadovaných parametrů.
 		/// </summary>
-		private void AddBootstrapPagerButton(Control container, string text, string commandArgument, bool enabled = true, bool active = false)
+		private void AddBootstrapPagerButton(Control container, string text, string cssClass, string commandArgument, bool enabled = true, bool active = false)
 		{
 			LinkButton pagingButton = new LinkButton();
 			pagingButton.Text = text;
@@ -1995,15 +1990,18 @@ namespace Havit.Web.UI.WebControls
 			pagingButton.Enabled = enabled;
 			pagingButton.CausesValidation = false;
 
-			WebControl liControl = new WebControl(HtmlTextWriterTag.Li);
+			string stateCssClass = "";
 			if (active)
 			{
-				liControl.CssClass = "active";
+				stateCssClass = "active";
 			}
 			else if (!enabled)
 			{
-				liControl.CssClass = "disabled";
+				stateCssClass = "disabled";
 			}
+
+			WebControl liControl = new WebControl(HtmlTextWriterTag.Li);
+			liControl.CssClass = (cssClass + " " + stateCssClass).Trim();
 			liControl.Controls.Add(pagingButton);
 			container.Controls.Add(liControl);
 		}

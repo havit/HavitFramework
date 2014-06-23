@@ -25,7 +25,9 @@ namespace HavitTest
 			Assert.IsTrue(IsEmailAddressValid("a@b.info"), "a@b.info");
 			Assert.IsTrue(IsEmailAddressValid("o'realy@havit.cz"), "o'realy@havit.cz");
 			Assert.IsTrue(IsEmailAddressValid("james@007.uk"), "james@007.uk");
-			Assert.IsTrue(IsEmailAddressValid("007@007.uk"), "james@007.uk");
+			Assert.IsTrue(IsEmailAddressValid("007@007.uk"), "007@007.uk");
+			Assert.IsTrue(IsEmailAddressValid("0-0-7@0-0-7.uk"), "0-0-7@0-0-7.uk");
+			Assert.IsTrue(IsEmailAddressValid("0+0+7@0-0-7.uk"), "0+0+7@0-0-7.uk");
 
 			Assert.IsFalse(IsEmailAddressValid("@havit.cz"), "@havit.cz");
 			Assert.IsFalse(IsEmailAddressValid("kanda@"), "kanda@");

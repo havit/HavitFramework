@@ -24,7 +24,7 @@ namespace Havit.Text.RegularExpressions
 		/// <remarks>
 		/// http://www.regexlib.com/REDetails.aspx?regexp_id=295
 		/// </remarks>
-		public const string EmailStrict = @"^(([A-Za-z0-9]+_+)|([A-Za-z0-9]+\-+)|([A-Za-z0-9]+\.?)|([A-Za-z0-9]+\++)|([A-Za-z0-9]+'+))*[A-Za-z0-9]+"
+		public const string EmailStrict = @"^(([A-Za-z0-9]+_+)|([A-Za-z0-9]+\-+)|([A-Za-z0-9]+\.)|([A-Za-z0-9]+\++)|([A-Za-z0-9]+'+))*[A-Za-z0-9]+"
 										+ @"@(([A-Za-z0-9]+\-+)|([A-Za-z0-9]+\.))*[A-Za-z0-9]{1,63}\.[a-zA-Z]{2,6}$";
 		#endregion
 		

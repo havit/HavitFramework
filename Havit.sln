@@ -85,9 +85,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Web.Bootstrap.Tutoria
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Documentation.Homepage", "Havit.Documentation.Homepage\Havit.Documentation.Homepage.csproj", "{3BDA4E00-6F3D-4181-BA7A-3FDE62EB367F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.ServicesTest", "Havit.ServicesTest\Havit.ServicesTest.csproj", "{FB68DA0B-02DA-4E05-84A7-0B6C26272EE6}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 25
+		SccNumberOfProjects = 26
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://tfs.havit.local:8080/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -187,6 +189,10 @@ Global
 		SccProjectTopLevelParentUniqueName24 = Havit.sln
 		SccProjectName24 = Havit.Documentation.Homepage
 		SccLocalPath24 = Havit.Documentation.Homepage
+		SccProjectUniqueName25 = Havit.ServicesTest\\Havit.ServicesTest.csproj
+		SccProjectTopLevelParentUniqueName25 = Havit.sln
+		SccProjectName25 = Havit.ServicesTest
+		SccLocalPath25 = Havit.ServicesTest
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -288,6 +294,10 @@ Global
 		{3BDA4E00-6F3D-4181-BA7A-3FDE62EB367F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BDA4E00-6F3D-4181-BA7A-3FDE62EB367F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BDA4E00-6F3D-4181-BA7A-3FDE62EB367F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB68DA0B-02DA-4E05-84A7-0B6C26272EE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB68DA0B-02DA-4E05-84A7-0B6C26272EE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB68DA0B-02DA-4E05-84A7-0B6C26272EE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB68DA0B-02DA-4E05-84A7-0B6C26272EE6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -300,7 +310,7 @@ Global
 		{AB28A793-D0AC-46ED-9D48-B75B0DC4EE90} = {CA5A28B1-E42B-43F3-89E0-E4972E4D67B7}
 		{703235E0-86C0-44F3-95BB-3D9F39886966} = {CA5A28B1-E42B-43F3-89E0-E4972E4D67B7}
 		{9ACC94B9-B8FD-47C1-ABF8-0658C7673905} = {CA5A28B1-E42B-43F3-89E0-E4972E4D67B7}
-		{9F79CB68-4B61-48E2-A9E5-B545A65BAC89} = {CA5A28B1-E42B-43F3-89E0-E4972E4D67B7}
+		{9F79CB68-4B61-48E2-A9E5-B545A65BAC89} = {6B3E283B-3E8A-4BEB-B318-49AD5265DA8F}
 		{51ED0131-D9F9-4AF4-A8E6-ADB52D43B360} = {6B3E283B-3E8A-4BEB-B318-49AD5265DA8F}
 		{7478BEA8-791F-47E9-ADD9-18F2D34619EA} = {CA5A28B1-E42B-43F3-89E0-E4972E4D67B7}
 		{F71BDA61-8039-4E17-B4B8-0B8B553B89DC} = {6B3E283B-3E8A-4BEB-B318-49AD5265DA8F}
@@ -317,5 +327,6 @@ Global
 		{C8155F7E-AC49-4CF6-A987-9A003B6F7825} = {360CC3C7-E4F9-4169-8D98-EA507CEB0A1E}
 		{ABA477E6-DEF8-4215-B5DE-612B546AD1FB} = {E2563E89-6F01-452B-99C8-7931CBB16D4B}
 		{3BDA4E00-6F3D-4181-BA7A-3FDE62EB367F} = {E2563E89-6F01-452B-99C8-7931CBB16D4B}
+		{FB68DA0B-02DA-4E05-84A7-0B6C26272EE6} = {6B3E283B-3E8A-4BEB-B318-49AD5265DA8F}
 	EndGlobalSection
 EndGlobal

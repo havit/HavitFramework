@@ -51,34 +51,28 @@ namespace Havit.Services.Ares
 		#endregion
 
 		#region GetData
+
 		/// <summary>
 		/// Vrací strukturovanou odpovìd z obchodního rejstøíku.
 		/// </summary>
 		public AresData GetData(AresRegistr rejstriky = AresRegistr.Basic | AresRegistr.ObchodniRejstrik)
 		{
-			try
-			{
-				AresData result = new AresData();
-				List<Task> tasks = new List<Task>();
-						
-				if (rejstriky.HasFlag(AresRegistr.Basic))
-				{
-					tasks.Add(Task.Factory.StartNew(LoadBasicData, result));
-				}
+			AresData result = new AresData();
+			List<Task> tasks = new List<Task>();
 
-				if (rejstriky.HasFlag(AresRegistr.ObchodniRejstrik))
-				{
-					tasks.Add(Task.Factory.StartNew(LoadObchodniRejstrikData, result));
-				}
-
-				Task.WaitAll(tasks.ToArray());
-				
-				return result;
-			}
-			catch (AggregateException e)
+			if (rejstriky.HasFlag(AresRegistr.Basic))
 			{
-				throw e.GetBaseException();
+				tasks.Add(Task.Factory.StartNew(LoadBasicData, result));
 			}
+
+			if (rejstriky.HasFlag(AresRegistr.ObchodniRejstrik))
+			{
+				tasks.Add(Task.Factory.StartNew(LoadObchodniRejstrikData, result));
+			}
+
+			Task.WaitAll(tasks.ToArray());
+
+			return result;
 		}
 		#endregion
 
@@ -218,9 +212,12 @@ namespace Havit.Services.Ares
 				if (soElement != null)
 				{
 					result.StatutarniOrgan = new AresData.Classes.StatutarniOrgan();
-					result.StatutarniOrgan.Text = ((string)soElement.Elements(aresDT + "T").Single()).Trim();
+					var statutartniOrganTextElement = soElement.Elements(aresDT + "T").SingleOrDefault();
+					if (statutartniOrganTextElement != null)
+					{
+						result.StatutarniOrgan.Text = ((string)statutartniOrganTextElement).Trim();
+					}
 				}
-
 			}
 		}
 		#endregion

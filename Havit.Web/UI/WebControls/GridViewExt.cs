@@ -845,7 +845,9 @@ namespace Havit.Web.UI.WebControls
 		protected override int CreateChildControls(IEnumerable dataSource, bool dataBinding)
 		{
 			autoFilterControls = new List<IAutoFilterControl>();
-			overrideShowHeaderWhenEmptyToTrue = ShowFilter; // pokud zobrazujeme filtr, pak chceme, aby se zobrazil grid i bez dat
+			// pokud zobrazujeme filtr, pak chceme, aby se zobrazil grid i bez dat
+			// stejně tak potřebujeme grid, pokud vkládáme nový záznam pomocí editor extenderu
+			overrideShowHeaderWhenEmptyToTrue = ShowFilter || (AllowInserting && (EditorExtender != null)); 
 
 			string originalEmptyDataText = this.EmptyDataText;
 			EmptyDataText = HttpUtilityExt.GetResourceString(EmptyDataText);

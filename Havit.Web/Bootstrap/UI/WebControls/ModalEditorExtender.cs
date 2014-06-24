@@ -335,6 +335,25 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		}
 		#endregion
 
+		#region ValidationGroup
+		/// <summary>
+		/// Validation Group to be automaticaly set to buttons with CommandName OK or Save.
+		/// If property value not set (neither empty string), validation group is not set to buttons.
+		/// Default value is null.
+		/// </summary>
+		public string ValidationGroup	
+		{
+			get
+			{
+				return (string)(ViewState["ValidationGroup"]);
+			}
+			set
+			{
+				ViewState["ValidationGroup"] = value;
+			}
+		}
+		#endregion
+
 		#region Constructor
 		/// <summary>
 		/// Constructor.
@@ -381,10 +400,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 
 			if (headerFormView.ItemTemplate != null)
 			{
-				//if (headerFormView.ItemTemplate is IBindableTemplate)
-				//{
-				//	throw new HttpException("Two-way databinding is not supported in Modal Editor header.");
-				//}
 				modalDialog.HeaderTemplateContainer.Controls.Add(headerFormView);
 			}
 
@@ -483,7 +498,27 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			contentFormView.DataSource = data;
 			contentFormView.DataBind();
 
+			SetValidationGroup();
 			SetPreviousNextButtons();
+		}
+		#endregion
+
+		#region SetValidationGroup
+		/// <summary>
+		/// Nastaví validační skupinu tlačítkům OK a Save.
+		/// </summary>
+		private void SetValidationGroup()
+		{
+			if (this.ValidationGroup != null)
+			{
+				Predicate<Control> isOKorSaveButton = control => (control is IButtonControl) && ((((IButtonControl)control).CommandName == CommandNames.OK) || (((IButtonControl)control).CommandName == CommandNames.Save));
+				List<IButtonControl> okSaveButtons = headerFormView.FindControls(isOKorSaveButton, false)
+					.Concat(contentFormView.FindControls(isOKorSaveButton, false))
+					.Concat(modalDialog.FooterTemplateContainer.FindControls(isOKorSaveButton, false))
+					.OfType<IButtonControl>()
+					.ToList();
+				okSaveButtons.ForEach(button => button.ValidationGroup = this.ValidationGroup);
+			}
 		}
 		#endregion
 

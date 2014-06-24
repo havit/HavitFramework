@@ -26,6 +26,7 @@
 	<ul>
 		<li>TargetControlID</li>
 		<li>HeaderText, HeaderTemplate, ContentTemplate, FooterTemplate</li>
+		<li>ValidationGroup</li>
 		<li>next properties from nested <a href="modaldialog">ModalDialog</a> control</li>
 	</ul>
 

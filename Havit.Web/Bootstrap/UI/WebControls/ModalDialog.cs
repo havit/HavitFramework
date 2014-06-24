@@ -271,6 +271,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Modal dialog drag mode.
 		/// Default value is ModalDialogDragMode.IfAvailable.
 		/// </summary>
+		[DefaultValue(ModalDialogDragMode.IfAvailable)]
 		public ModalDialogDragMode DragMode
 		{
 			get

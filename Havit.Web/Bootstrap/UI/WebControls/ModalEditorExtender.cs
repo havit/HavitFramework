@@ -367,8 +367,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			contentFormView = new FormViewExt();
 			contentFormView.DefaultMode = FormViewMode.Edit;
 			contentFormView.RenderOuterTable = false;
-			contentFormView.ItemCreated += ContentFormViewItemCreated;
-			contentFormView.DataBound += ContentFormViewDataBound;
+			contentFormView.ItemCreated += ContentFormViewItemCreated;			
 
 			modalDialog = new ModalDialog();
 			modalDialog.DialogHidden += ModalDialogDialogHidden;
@@ -489,17 +488,23 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Binds data to dialog header and content.
 		/// </summary>
 		protected override void PerformDataBinding(IEnumerable data)
-		{
-			base.PerformDataBinding(data);
+		{		
+			object[] dataArray = (data == null) ? new object[0] : data.Cast<object>().ToArray();
 
-			headerFormView.DataSource = data;
+			base.PerformDataBinding(dataArray);
+
+			headerFormView.DataSource = dataArray;
 			headerFormView.DataBind();
 
-			contentFormView.DataSource = data;
+			contentFormView.DataSource = dataArray;
 			contentFormView.DataBind();
 
 			SetValidationGroup();
 			SetPreviousNextButtons();
+
+			object dataItem = dataArray.FirstOrDefault();
+			EditorExtenderItemDataBoundEventArgs args = new EditorExtenderItemDataBoundEventArgs(dataItem);
+			OnItemDataBound(args);
 		}
 		#endregion
 
@@ -639,16 +644,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		private void ContentFormViewItemCreated(object sender, EventArgs e)
 		{
 			OnItemCreated(e);
-		}
-		#endregion
-
-		#region ContentFormViewDataBound
-		/// <summary>
-		/// Propagates Item DataBound event from nested form view.
-		/// </summary>
-		private void ContentFormViewDataBound(object sender, EventArgs e)
-		{
-			OnItemDataBound(e);
 		}
 		#endregion
 
@@ -860,7 +855,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Notifies item databound event from nested FormView.
 		/// </summary>
-		protected void OnItemDataBound(EventArgs eventArgs)
+		protected void OnItemDataBound(EditorExtenderItemDataBoundEventArgs eventArgs)
 		{
 			if (ItemDataBound != null)
 			{

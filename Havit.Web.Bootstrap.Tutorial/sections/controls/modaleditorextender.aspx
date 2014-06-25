@@ -45,7 +45,7 @@
 		<li>ItemSaving, ItemSaved</li>
 		<li>PreviousNavigating, PreviousNavigated, NextNavigating, NextNavigated</li>
 		<li>EditorClosed</li>
-		<li>GetSavedObject</li>
+		<li>GetEditedObject</li>
 	</ul>
 	
 	<h3>Event propagation</h3>

@@ -10,7 +10,7 @@ namespace Havit.Web.UI.WebControls
 	/// <summary>
 	/// Argumenty události uložení datového objektu.
 	/// </summary>
-	public class EditorExtenderItemSavedEventArgs : CancelEventArgs
+	public class EditorExtenderItemSavedEventArgs : EventArgs
 	{
 		#region SavedObject
 		/// <summary>

@@ -71,9 +71,9 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
-	  <TypeScriptTarget>ES5</TypeScriptTarget>
-	  <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
-	  <TypeScriptSourceMap>true</TypeScriptSourceMap>
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
+    <TypeScriptSourceMap>true</TypeScriptSourceMap>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -97,9 +97,9 @@
     <DebugType>pdbonly</DebugType>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <Prefer32Bit>false</Prefer32Bit>
-	  <TypeScriptTarget>ES5</TypeScriptTarget>
-	  <TypeScriptRemoveComments>true</TypeScriptRemoveComments>
-	  <TypeScriptSourceMap>false</TypeScriptSourceMap>
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptRemoveComments>true</TypeScriptRemoveComments>
+    <TypeScriptSourceMap>false</TypeScriptSourceMap>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
@@ -143,6 +143,7 @@
     <Compile Include="Bootstrap\UI\ClientScripts\BootstrapClientScriptHelper.cs" />
     <Compile Include="UI\ControlExtensions.cs" />
     <Compile Include="UI\WebControls\DataBoundControlWithHiddenPublicMembersFromIntellisence.cs" />
+    <Compile Include="UI\WebControls\EditorExtenderItemDataBound.cs" />
     <Compile Include="UI\WebControls\EditorExtenderMode.cs" />
     <Compile Include="UI\WebControls\IEditorExtenderWithPreviousNextNavigation.cs" />
     <Compile Include="UI\WebControls\IEditorExtender.cs" />

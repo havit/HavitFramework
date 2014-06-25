@@ -401,7 +401,7 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		public BusinessObjectBase GetEditorExtenderEditedObject()
 		{
-			return (this.EditorExtenderMode() == WebControls.EditorExtenderMode.Insert) ? GetInsertRowBusinessObject() : GetRowBusinessObject(Rows[EditorExtenderEditIndex]);
+			return (this.EditorExtenderMode == WebControls.EditorExtenderMode.Insert) ? GetInsertRowBusinessObject() : GetRowBusinessObject(Rows[EditorExtenderEditIndex]);
 		}
 		#endregion
 

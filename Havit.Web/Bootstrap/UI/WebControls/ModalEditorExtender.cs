@@ -43,6 +43,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Editor dialog header text.
 		/// </summary>
+		[DefaultValue("")]
 		public string HeaderText
 		{
 			get
@@ -116,6 +117,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Control to which is editor attached.
 		/// </summary>
+		[DefaultValue("")]
 		public string TargetControlID
 		{
 			get

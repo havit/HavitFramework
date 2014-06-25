@@ -837,7 +837,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 
 		#region (On)ItemCreated
 		/// <summary>
-		/// Notifies item creation from nested FormView.
+		/// Notifies item creation.
 		/// </summary>
 		protected void OnItemCreated(EventArgs eventArgs)
 		{
@@ -848,14 +848,14 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		}
 
 		/// <summary>
-		/// Notifies item creation from nested FormView.
+		/// Notifies item creation.
 		/// </summary>
 		public event EventHandler ItemCreated;
 		#endregion
 
 		#region (On)ItemDataBound
 		/// <summary>
-		/// Notifies item databound event from nested FormView.
+		/// Notifies item databound event.
 		/// </summary>
 		protected void OnItemDataBound(EditorExtenderItemDataBoundEventArgs eventArgs)
 		{
@@ -866,7 +866,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		}
 
 		/// <summary>
-		/// Notifies item databound event from nested FormView.
+		/// Notifies item databound event.
 		/// </summary>
 		public event EditorExtenderItemDataBoundEventHandler ItemDataBound;
 		#endregion

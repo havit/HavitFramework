@@ -255,6 +255,19 @@ namespace Havit.Web.UI.WebControls
 		private bool _editorExtenderEditIndexInternalChanged = false;
 		#endregion
 
+		#region EditorExtenderMode
+		/// <summary>
+		/// Vrací režim editace záznamu v externím editoru.
+		/// </summary>
+		public EditorExtenderMode EditorExtenderMode
+		{
+			get
+			{
+				return (this.EditorExtenderEditIndex == -1) ? WebControls.EditorExtenderMode.Insert : WebControls.EditorExtenderMode.Edit;
+			}
+		}
+		#endregion
+
 		#region EditorExtenderEditCssClass
 		/// <summary>
 		/// Css třída pro aktuálně editovaný záznam v externím editoru.
@@ -2174,10 +2187,14 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 
 		#region EditorExtenderItemSaved
-		private void EditorExtenderItemSaved(object sender, EventArgs e)
+		private void EditorExtenderItemSaved(object sender, EditorExtenderItemSavedEventArgs e)
 		{
-			SetRequiresDatabinding();
+			// SetRequiresDatabinding(); - nemá význam - TrySetEditorExtenderEditIndex volá DataBind
 			UpdateParentUpdatePanel();
+
+			// pokud jsme uložili objekt, najdeme jeho pozici v nabidnovaném gridu (pozice editovaného řádku se mohla změnit)
+			// zároveň je potřeba najít nově založený objekt, což je mj. ochrana proti opakovanému klikání na tlačítko save v editoru
+			TrySetEditorExtenderEditIndex(e.SavedObject);
 		}
 		#endregion
 
@@ -2204,6 +2221,72 @@ namespace Havit.Web.UI.WebControls
 					updatePanel.Update();
 				}
 			}
+		}
+		#endregion
+
+		#region TrySetEditorExtenderEditIndex
+		private bool TrySetEditorExtenderEditIndex(object dataObject)
+		{
+			int i = 0;
+			int originalPageIndex = PageIndex;
+			bool found = false;
+
+			// funkce detekující, zda je na řádek bindován dataObject
+			// pokud ano, nastavíme EditorExtenderEditIndex
+			GridViewRowEventHandler detectDataObjectInRow = (sender, args) =>
+				{
+					if ((args.Row.RowType == DataControlRowType.DataRow) && (args.Row.DataItem == dataObject))
+					{
+						EditorExtenderEditIndex = args.Row.RowIndex;
+						found = true;
+					}
+				};
+
+			while (!found)
+			{
+				if (i >= PageCount)
+				{
+					// pokud jsme objekt nenašli, vrátíme se tam, co jsme byli
+					if (originalPageIndex != PageIndex)
+					{
+						PageIndex = originalPageIndex;
+						if ((DataSource != null) && (DataSource is IEnumerable))
+						{
+							PerformDataBinding((IEnumerable)DataSource);
+						}
+						else
+						{
+							DataBind();
+						}
+					}
+					return false;
+				}
+
+				PageIndex = i;
+
+				RowDataBound += detectDataObjectInRow;
+				// eliminujeme opakované volání události DataBind a tím třeba opakované vytahování dat z databáze
+				if ((DataSource != null) && (DataSource is IEnumerable))
+				{
+					PerformDataBinding((IEnumerable)DataSource);
+				}
+				else
+				{
+					DataBind();
+				}
+				RowDataBound -= detectDataObjectInRow;
+
+				//foreach (GridViewRow row in Rows)
+				//{
+				//	if (GetRowBusinessObject(row) == dataObject)
+				//	{
+				//		EditorExtenderEditIndex = row.RowIndex;
+				//		return true;
+				//	}
+				//}
+				i = i + 1;
+			}
+			return true;
 		}
 		#endregion
 

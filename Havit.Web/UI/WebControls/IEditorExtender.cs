@@ -33,12 +33,12 @@ namespace Havit.Web.UI.WebControls
 		/// <remarks>
 		/// V obsluze události se očekává uložení editovaného záznamu.
 		/// </remarks>
-		event CancelEventHandler ItemSaving;
+		event EditorExtenderItemSavingEventHandler ItemSaving;
 
 		/// <summary>
 		/// Oznamuje uložení záznamu.
 		/// </summary>
-		event EventHandler ItemSaved;
+		event EditorExtenderItemSavedEventHandler ItemSaved;
 
 		/// <summary>
 		/// Oznamuje ukončení editace.

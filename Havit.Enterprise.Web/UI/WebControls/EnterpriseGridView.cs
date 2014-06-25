@@ -391,77 +391,37 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		private void EditorExtenderGetEditedObject(object sender, DataEventArgs<object> e)
 		{
-			e.Data = EditorExtenderGetEditedObject();
+			e.Data = GetEditorExtenderEditedObject();
 		}
 		#endregion
 
-		#region EditorExtenderGetEditedObject
+		#region GetEditorExtenderEditedObject
 		/// <summary>
 		/// Vrací editovaný business objekt pro externí editor.
 		/// </summary>
-		private BusinessObjectBase EditorExtenderGetEditedObject()
+		public BusinessObjectBase GetEditorExtenderEditedObject()
 		{
-			int index = EditorExtenderEditIndex;
-			if (index == -1)
-			{
-				return GetInsertRowBusinessObject();
-			}
-			return GetRowBusinessObject(Rows[index]);
+			return (this.EditorExtenderMode() == WebControls.EditorExtenderMode.Insert) ? GetInsertRowBusinessObject() : GetRowBusinessObject(Rows[EditorExtenderEditIndex]);
 		}
 		#endregion
 
 		#region EditorExtenderItemSavingAutoCrudOperations
+
 		/// <summary>
 		/// Obsluha Save operace pokud je povoleno AutoCrudOperations.
 		/// </summary>
-		private void EditorExtenderItemSavingAutoCrudOperations(object sender, System.ComponentModel.CancelEventArgs e)
+		private void EditorExtenderItemSavingAutoCrudOperations(object sender, EditorExtenderItemSavingEventArgs args)
 		{
-			if (!e.Cancel)
+			if (!args.Cancel)
 			{
-				BusinessObjectBase dataObject = EditorExtenderGetEditedObject();				
+				BusinessObjectBase dataObject = (BusinessObjectBase)args.EditedObject;
 				EditorExtender.ExtractValues(dataObject);
 				dataObject.Save();
 
-				ShowMessengerMessage(EditorExtenderEditIndex == -1 ? MessengerInsertedMessage : MessengerUpdatedMessage);
-
-				// pokud jsme zakládali nový objekt, najdeme jeho pozici v nabidnovaném gridu a vyberem již uložený objekt
-				// ochrana proti opakovanému klikání na tlačítko save v editoru
-				if (EditorExtenderEditIndex == -1)
-				{					
-					int i = 0;
-					bool found = false;
-					while (!found)
-					{
-						if (i >= PageCount)
-						{
-							throw new HttpException("Nově založený záznam nebyl nalezen v datech nabidnovaných do EnterpriseGridView.");
-						}
-
-						PageIndex = i;
-						// eliminujeme opakované volání události DataBind a tím třeba opakované vytahování dat z databáze
-						if ((DataSource != null) && (DataSource is IEnumerable))
-						{
-							PerformDataBinding((IEnumerable)DataSource);
-						}
-						else
-						{
-							DataBind();
-						}
-
-						foreach (GridViewRow row in Rows)
-						{
-							if (GetRowBusinessObject(row) == dataObject)
-							{
-								EditorExtenderEditIndex = row.RowIndex;								
-								found = true;
-								break;
-							}
-						}
-						i = i + 1;
-					}
-				}
+				ShowMessengerMessage((this.EditorExtenderMode == WebControls.EditorExtenderMode.Insert) ? MessengerInsertedMessage : MessengerUpdatedMessage);
 			}
 		}
 		#endregion
+		
 	}
 }

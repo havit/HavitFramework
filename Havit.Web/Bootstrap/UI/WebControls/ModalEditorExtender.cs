@@ -566,11 +566,14 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// </summary>
 		public bool Save()
 		{
-			CancelEventArgs itemSaving = new CancelEventArgs();
-			OnItemSaving(itemSaving);
-			if (!itemSaving.Cancel)
+			DataEventArgs<object> dataEventArgs = new DataEventArgs<object>();
+			OnGetEditedObject(dataEventArgs);
+
+			EditorExtenderItemSavingEventArgs extenderItemSaving = new EditorExtenderItemSavingEventArgs(dataEventArgs.Data);
+			OnItemSaving(extenderItemSaving);
+			if (!extenderItemSaving.Cancel)
 			{
-				OnItemSaved(EventArgs.Empty);
+				OnItemSaved(new EditorExtenderItemSavedEventArgs(extenderItemSaving.SavedObject ?? extenderItemSaving.EditedObject));
 				return true;
 			}
 			return false;
@@ -802,7 +805,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Notifies beginning of item save.
 		/// Event handler ItemSaving must be handled.
 		/// </summary>
-		protected void OnItemSaving(CancelEventArgs eventArgs)
+		protected void OnItemSaving(EditorExtenderItemSavingEventArgs eventArgs)
 		{
 			if (ItemSaving == null)
 			{
@@ -814,14 +817,14 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Notifies item save start.
 		/// </summary>
-		public event CancelEventHandler ItemSaving;
+		public event EditorExtenderItemSavingEventHandler ItemSaving;
 		#endregion
 
 		#region (On)ItemSaved
 		/// <summary>
 		/// Notifies item save completion.
 		/// </summary>
-		protected void OnItemSaved(EventArgs eventArgs)
+		protected void OnItemSaved(EditorExtenderItemSavedEventArgs eventArgs)
 		{
 			if (ItemSaved != null)
 			{
@@ -832,7 +835,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Notifies item save completion.
 		/// </summary>
-		public event EventHandler ItemSaved;
+		public event EditorExtenderItemSavedEventHandler ItemSaved;
 		#endregion
 
 		#region (On)ItemCreated

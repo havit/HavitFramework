@@ -868,7 +868,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Notifies item databound event from nested FormView.
 		/// </summary>
-		public event EventHandler ItemDataBound;
+		public event EditorExtenderItemDataBoundEventHandler ItemDataBound;
 		#endregion
 
 		#region (On)PreviousNavigating

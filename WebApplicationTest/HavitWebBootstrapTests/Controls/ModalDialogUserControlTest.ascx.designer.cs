@@ -31,6 +31,24 @@ namespace WebApplicationTest.HavitWebBootstrapTests {
         protected global::System.Web.UI.WebControls.CheckBox MyCheckBox;
         
         /// <summary>
+        /// ModalDialogUserControlTest2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::WebApplicationTest.HavitWebBootstrapTests.ModalDialogUserControlTest2 ModalDialogUserControlTest2;
+        
+        /// <summary>
+        /// ShowNestedButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button ShowNestedButton;
+        
+        /// <summary>
         /// CloseButton control.
         /// </summary>
         /// <remarks>

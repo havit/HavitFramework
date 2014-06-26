@@ -10,7 +10,7 @@
 	<asp:UpdatePanel UpdateMode="Conditional" runat="server">
 		<ContentTemplate>
 
-			<havit:EnterpriseGridView ID="MainGV" EditorExtenderEditCssClass="edited" AllowInserting="true" AutoCrudOperations="true" AllowPaging="true" PageSize="5" AutoSort="true" DefaultSortExpression="Nazev" MessengerInsertedMessage="Inserted." MessengerUpdatedMessage="Updated." MessengerDeletedMessage="Deleted." runat="server">
+			<havit:EnterpriseGridView ID="MainGV" EditorExtenderEditCssClass="edited" AllowInserting="true" AutoCrudOperations="true" AllowPaging="true" PageSize="5" AutoSort="true" DefaultSortExpression="Nazev" MessengerInsertedMessage="Inserted." MessengerUpdatedMessage="Updated." MessengerDeletedMessage="Deleted." PagerRenderMode="BootstrapPagination" PagerSettings-Mode="NumericFirstLast" runat="server">
 				<Columns>
 					<havit:BoundFieldExt DataField="Nazev" SortExpression="Nazev" HeaderText="Název" />
 					<havit:GridViewCommandField ShowEditButton="true" ShowInsertButton="true" ShowDeleteButton="true"  />
@@ -19,12 +19,13 @@
 		</ContentTemplate>
 	</asp:UpdatePanel>
 	
-	<bc:ModalEditorExtender ID="ModalEditorExtender" TargetControlID="MainGV" ItemType="Havit.BusinessLayerTest.Subjekt" runat="server">
+	<bc:ModalEditorExtender ID="ModalEditorExtender" TargetControlID="MainGV" ItemType="Havit.BusinessLayerTest.Subjekt" ValidationGroup="" runat="server">
 		<HeaderTemplate>
 			Subjekt <%# Item.Nazev %>
 		</HeaderTemplate>
 		<ContentTemplate>
 			<asp:TextBox ID="NazevTB" Text="<%# BindItem.Nazev %>" runat="server" />
+			<bc:Button CommandName="OK" Text="OK" runat="server" />
 		</ContentTemplate>
 		<FooterTemplate>
 			<bc:Button CommandName="OK" Text="OK" runat="server" />

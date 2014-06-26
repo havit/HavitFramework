@@ -15,7 +15,15 @@ namespace WebApplicationTest.HavitWebBootstrapTests
 		{
 			base.OnInit(e);
 			CloseButton.Click += CloseButton_Click;
+			ShowNestedButton.Click += ShowNestedButton_Click;
 			ScriptManager.GetCurrent(this.Page).RegisterPostBackControl(RefreshPostBackButton);
+		}
+		#endregion
+
+		#region ShowNestedButton_Click
+		private void ShowNestedButton_Click(object sender, EventArgs e)
+		{
+			ModalDialogUserControlTest2.Show();
 		}
 		#endregion
 

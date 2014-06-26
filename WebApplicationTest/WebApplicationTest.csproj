@@ -247,10 +247,11 @@
     <Content Include="Content\toastr.css" />
     <Content Include="Content\toastr.min.css" />
     <Content Include="HavitWebBootstrapTests\ButtonTest.aspx" />
+    <Content Include="HavitWebBootstrapTests\Controls\ModalDialogUserControlTest2.ascx" />
     <Content Include="HavitWebBootstrapTests\Controls\ValidationTargetTest.ascx" />
     <Content Include="HavitWebBootstrapTests\ModalEditorExtenderTest.aspx" />
     <Content Include="HavitWebBootstrapTests\ModalDialogTest.aspx" />
-    <Content Include="HavitWebBootstrapTests\ModalDialogUserControlTest.ascx" />
+    <Content Include="HavitWebBootstrapTests\Controls\ModalDialogUserControlTest.ascx" />
     <Content Include="HavitWebBootstrapTests\NavbarTest.aspx" />
     <Content Include="HavitWebBootstrapTests\SwitchButtonTest.aspx" />
     <Content Include="HavitWebBootstrapTests\CheckBoxListTest.aspx" />
@@ -384,6 +385,13 @@
     <Compile Include="HavitWebBootstrapTests\Bootstrap.Master.designer.cs">
       <DependentUpon>Bootstrap.Master</DependentUpon>
     </Compile>
+    <Compile Include="HavitWebBootstrapTests\Controls\ModalDialogUserControlTest2.ascx.cs">
+      <DependentUpon>ModalDialogUserControlTest2.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HavitWebBootstrapTests\Controls\ModalDialogUserControlTest2.ascx.designer.cs">
+      <DependentUpon>ModalDialogUserControlTest2.ascx</DependentUpon>
+    </Compile>
     <Compile Include="HavitWebBootstrapTests\Controls\ValidationTargetTest.ascx.cs">
       <DependentUpon>ValidationTargetTest.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -405,11 +413,11 @@
     <Compile Include="HavitWebBootstrapTests\ModalDialogTest.aspx.designer.cs">
       <DependentUpon>ModalDialogTest.aspx</DependentUpon>
     </Compile>
-    <Compile Include="HavitWebBootstrapTests\ModalDialogUserControlTest.ascx.cs">
+    <Compile Include="HavitWebBootstrapTests\Controls\ModalDialogUserControlTest.ascx.cs">
       <DependentUpon>ModalDialogUserControlTest.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="HavitWebBootstrapTests\ModalDialogUserControlTest.ascx.designer.cs">
+    <Compile Include="HavitWebBootstrapTests\Controls\ModalDialogUserControlTest.ascx.designer.cs">
       <DependentUpon>ModalDialogUserControlTest.ascx</DependentUpon>
     </Compile>
     <Compile Include="HavitWebBootstrapTests\NavbarTest.aspx.cs">

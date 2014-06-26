@@ -466,8 +466,8 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		protected override string GetShowScript()
 		{
 			string scriptPattern = CurrentyShowing
-				? "Havit.Web.Bootstrap.UI.WebControls.ClientSide.ModalExtension.instance().show('#{0}', {1}, '{2}', '{3}');"
-				: "Havit.Web.Bootstrap.UI.WebControls.ClientSide.ModalExtension.instance().remainShown('#{0}', {1}, '{2}', '{3}');";
+				? "Havit.Web.Bootstrap.UI.WebControls.ClientSide.ModalExtension.getInstance('#{0}').show({1}, '{2}', '{3}');"
+				: "Havit.Web.Bootstrap.UI.WebControls.ClientSide.ModalExtension.getInstance('#{0}').remainShown({1}, '{2}', '{3}');";
 
 			string postbackScript = String.Empty;
 			if (CloseOnEscapeKey)
@@ -493,7 +493,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		protected override string GetHideScript()
 		{
-			string scriptPattern = "Havit.Web.Bootstrap.UI.WebControls.ClientSide.ModalExtension.instance().hide('#{0}');";
+			string scriptPattern = "Havit.Web.Bootstrap.UI.WebControls.ClientSide.ModalExtension.getInstance('#{0}').hide();";
 			string script = String.Format(scriptPattern, DialogPanelClientIDMemento ?? dialogContainer.ClientID);
 			return script;
 		}

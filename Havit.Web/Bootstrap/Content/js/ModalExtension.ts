@@ -4,145 +4,174 @@
 
 module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
     export class ModalExtension {
-        private currentStateStorageKey = "Havit.Web.Bootstrap.UI.WebControls.ClientSide.ModalExtension.CurrentState";
-
-        // #region Instance (singleton)
-        public static instance(): ModalExtension {
-            if (this._instance == null) {
-                this._instance = new ModalExtension();
+        
+        // #region getInstance (static)
+        public static getInstance(modalElementSelector: string, createIfNotExists: boolean = true): ModalExtension {
+            // gets instance of modal extension for modal element
+            // selector must be in format #elementid
+            var modalExtension = <ModalExtension>$(modalElementSelector).data('ModalExtension');
+            if ((createIfNotExists) && (modalExtension == null)) {
+                modalExtension = new ModalExtension(modalElementSelector);
+                $(modalElementSelector).data('ModalExtension', modalExtension);
             }
-            return this._instance;
+            return modalExtension;
         }
-
-        private static _instance: ModalExtension;
         // #endregion
 
-        private resizingTimer: number;
-        private currentModalElement: JQuery;
-        private currentState: ModalDialogState;
+        // #region keyupListenerElementSelector (static)
+        // static field for registering which modal has currently registerek keyup event
+        private static keyupListenerElementSelector: string;
+        // #endregion
 
-        constructor() {
+        // #region ModalExtension state fields               
+        private modalElementSelector: string; // selector of modal element       
+        private $modalElement: JQuery; // JQuery object of modal element
+        private modalDialogStatePersister: ModalDialogStatePersister; // modal state persister
+
+        private closeOnEscapeKey: boolean; // true if should close on escape key (set in show and remainshown methods)
+        private escapePostbackScript: string; // postback code for close on escape key (set in show and remainshown methods)
+        private dragMode: string; // dragmode - None, IfAvailable, Required (set in show and remainshown methods)
+                
+        private resizingTimer: number; // timer for resizing dialog when window resized
+        private modalDialogState: ModalDialogState; // state of modal dialog (drag position, scroll position, etc.)
+        // #endregion
+
+        constructor(modalElementSelector: string) {
+            this.modalElementSelector = modalElementSelector;
+            this.$modalElement = $(modalElementSelector);
+
+            var storageKey = 'Havit.Web.Bootstrap.UI.WebControls.ClientSide.ModalExtension.State[' + this.modalElementSelector + ']';
+            this.modalDialogStatePersister = new ModalDialogStatePersister(storageKey);
         }
 
-        public show(modalElementSelector: string, closeOnEscapeKey: boolean, escapePostbackScript: string, dragMode: string) {
+        public show(closeOnEscapeKey: boolean, escapePostbackScript: string, dragMode: string) {
+            this.closeOnEscapeKey = closeOnEscapeKey;
+            this.escapePostbackScript = escapePostbackScript;
+            this.dragMode = dragMode;
+
+            // clean state for reused element (dialog open, close, open)
+            this.$modalElement.find('.modal-dialog')
+                .css('top', '')
+                .css('left', '');
+
             // shows dialog
             // no matters how, when..., just show modal dialog
-            this.currentState = new ModalDialogState(); // new dialog -> new style
-            ModalDialogStatePersister.trySaveState(this.currentStateStorageKey, this.currentState); // ensures that remainShow sees the same state
+            this.modalDialogState = new ModalDialogState(); // new dialog -> new style
+            this.modalDialogStatePersister.saveState(this.modalDialogState); // ensures that remainShow sees the same state
 
-            this.currentModalElement = this.showInternal(modalElementSelector, closeOnEscapeKey, escapePostbackScript, dragMode, false);
+            this.showInternal(dragMode, false);
+            this.attachKeyUpEvent();
+            this.storePreviousModalElement();
         }
 
-        public remainShown(modalElementSelector: string, closeOnEscapeKey: boolean, escapePostbackScript: string, dragMode: string) {
+        public remainShown(closeOnEscapeKey: boolean, escapePostbackScript: string, dragMode: string) {
+            this.closeOnEscapeKey = closeOnEscapeKey;
+            this.escapePostbackScript = escapePostbackScript;
+            this.dragMode = dragMode;
+
             // ensures dialog is open after postback or asynchronous postback
-            this.currentState = ModalDialogStatePersister.loadState(this.currentStateStorageKey);
-            if (this.currentState != null) {                
-                this.initializeState($(modalElementSelector));
+            this.modalDialogState = this.modalDialogStatePersister.loadState();
+            if (this.modalDialogState != null) {                
+                this.initializeState();
             } else {
-                this.currentState = new ModalDialogState();
+                this.modalDialogState = new ModalDialogState();
             }
 
-            var $modalElement = $(modalElementSelector);
-            if (this.currentModalElement == null) {
-                // when result of postback, havit_BootstrapExtensions_CurrentDialog is null (whole page refreshed)
-                // We have to show dialog again, but without animation.
-                this.currentModalElement = this.showInternal(modalElementSelector, closeOnEscapeKey, escapePostbackScript, dragMode, true);
+            if (this.wasPostBack()) {
+                // when result of postback, we have to show dialog again, but without animation
+                this.showInternal(dragMode, true);
             } else {
                 // in asynchronous postback, whole dialog can be updated (when there is a parent UpdatePanel) or just content of dialog is refreshed (no parent UpdatePanel updated)
-                // when no parent UpdatePanel, currentModalElement and $element are still the same instances
-                if ($modalElement.is(this.currentModalElement)) {
-                    // no parent update panel, modal dialog element has not been replaced so no action required
-                    // NOOP
-                } else {
+                if (this.wasModalElementUpdatedByParentUpdatePanelInAsynchronousPostback()) {
                     // parent UpdatePanel updated, we have to hide previous dialog to remove backdrop and to show current dialog
                     // both actions must suppress animation (no animation required)
-                    this.showHideModalInternal(this.currentModalElement, 'hide', true);
-                    this.currentModalElement = this.showInternal(modalElementSelector, closeOnEscapeKey, escapePostbackScript, dragMode, true);
+                    var $previousModalElement = this.getPreviousModalElement();
+                    this.showHideModalInternal($previousModalElement, 'hide', true);
+                    this.showInternal(dragMode, true);
+                } else {
+                    // no parent update panel, modal dialog element has not been replaced so no action required
+                    // NOOP
                 }
             }
+            this.attachKeyUpEvent();
+            this.storePreviousModalElement();
         }
 
-        public hide(modalElementSelector: string) {
-            ModalDialogStatePersister.deleteState(this.currentStateStorageKey);
-            this.currentState = null;
+        public hide() {
+            this.modalDialogStatePersister.deleteState();
+            this.modalDialogState = null;
 
             this.stopResizingProcess();
 
-            var $modalElement = $(modalElementSelector);
-            if (this.currentModalElement == null) {
-                // when result of postback, currentModalElement is null (whole page refreshed)
-                if ($modalElement.hasClass('fade')) {
+            var $previousModalElement = this.getPreviousModalElement();
+            if (this.wasPostBack()) {
+                // when result of postback
+                if (this.$modalElement.hasClass('fade')) {
                     // if animation enabled, we have to show modal without animation and hide it with animation					
-                    this.showHideModalInternal($modalElement, 'show', true);
-                    this.showHideModalInternal($modalElement, 'show', true);
-                    this.showHideModalInternal($modalElement, 'hide', false);
+                    this.showHideModalInternal(this.$modalElement, 'show', true);
+                    this.showHideModalInternal(this.$modalElement, 'hide', false);
                 } else {
-                    // it there is no animation
+                    // if there is no animation
                     // NOOP
                 }
             } else {
-                // in asynchronous postback, whole dialog can be updated (when there is a parent UpdatePanel) or just content of dialog is refreshed (no parent UpdatePanel updated)
-                // when no parent UpdatePanel, currentModalElement and $element are still the same instances
-                if ($modalElement.is(this.currentModalElement)) {
-                    // no parent update panel, modal dialog element has not been replaced so just hide it
-                    this.showHideModalInternal($modalElement, 'hide', false);
-                } else {
+                // in asynchronous postback, whole dialog can be updated (when there is a parent UpdatePanel) or just content of dialog is refreshed (no parent UpdatePanel updated)                
+                if (this.wasModalElementUpdatedByParentUpdatePanelInAsynchronousPostback()) {
                     // parent UpdatePanel updated, we have to hide previous dialog to remove backdrop and to show current dialog without animation and hide it
-                    this.showHideModalInternal(this.currentModalElement, 'hide', true);
-                    if ($modalElement.hasClass('fade')) {
-                        this.showHideModalInternal($modalElement, 'show', true);
-                        this.showHideModalInternal($modalElement, 'hide', false);
+                    this.showHideModalInternal($previousModalElement, 'hide', true);
+                    if (this.$modalElement.hasClass('fade')) {
+                        this.showHideModalInternal(this.$modalElement, 'show', true);
+                        this.showHideModalInternal(this.$modalElement, 'hide', false);
                     }
+                } else {
+                    // no parent update panel, modal dialog element has not been replaced so just hide it
+                    this.showHideModalInternal(this.$modalElement, 'hide', false);
                 }
             }
 
             // do not listen to keyup anymore
-            $('body').off('keyup.havit.web.bootstrap');
+            // if there is already someone other listening, do not detach event
+            if (ModalExtension.keyupListenerElementSelector == this.modalElementSelector) {
+                $('body').off('keyup.havit.web.bootstrap');
+                ModalExtension.keyupListenerElementSelector = null;
+            }
+            var parentModalExtension: ModalExtension = this.getParentModalExtension();
+            if (parentModalExtension != null) {
+                parentModalExtension.attachKeyUpEvent();
+            }
 
             // clear grad mode if it is on
-            if (!!jQuery.ui && !!jQuery.ui.version && (this.currentModalElement != null)) {
-                this.currentModalElement.find(".modal-dialog.ui-draggable").draggable('destroy');
+            if (!!jQuery.ui && !!jQuery.ui.version && ($previousModalElement != null)) {
+                $previousModalElement.find('.modal-dialog.ui-draggable').draggable('destroy');
             }
 
-            this.currentModalElement = null;
+            this.clearPreviousModalElement();
         }
 
-        private showInternal(modalElementSelector: string, closeOnEscapeKey: boolean, escapePostbackScript: string, dragMode: string, suppressAnimation: boolean) {
-            var $modalElement = $(modalElementSelector);
-
+        private showInternal(dragMode: string, suppressAnimation: boolean) {
             // show modal
-            this.showHideModalInternal($modalElement, 'show', suppressAnimation);
-
-            // listen to keyup to catch escape key
-            if (closeOnEscapeKey) {
-                $('body').on('keyup.havit.web.bootstrap', (e) => {
-                    if (e.which == 27) {
-                        eval(escapePostbackScript);
-                    }
-                });
-            }
+            this.showHideModalInternal(this.$modalElement, 'show', suppressAnimation);
 
             // switch on drag mode if enabled
             var draggableParams = { handle: ' .modal-header', drag: (e, ui) => this.drag.call(this, e, ui) };
-            if (dragMode == "Required") {
-                $modalElement.find('.modal-dialog').draggable(draggableParams);
+            if (dragMode == 'Required') {
+                this.$modalElement.find('.modal-dialog').draggable(draggableParams);
             }
 
-            if (dragMode == "IfAvailable") {
+            if (dragMode == 'IfAvailable') {
                 if (!!jQuery.ui && !!jQuery.ui.version) {
-                    $modalElement.find('.modal-dialog').draggable(draggableParams);
+                    this.$modalElement.find('.modal-dialog').draggable(draggableParams);
                 }
             }
 
-            if (this.currentState.modalPosition == null) {
+            if (this.modalDialogState.modalPosition == null) {
                 // start resizing process if modal dialog not moved
                 this.startResizingProcess();
             }
 
             // listen do scroll events to persist state between postbacks
-            $(modalElementSelector).find('.modal-body').on("scroll", () => this.bodyScroll.call(this));
-            $(modalElementSelector).on("scroll", () => this.modalScroll.call(this));
-            return $modalElement;
+            this.$modalElement.find('.modal-body').on('scroll', () => this.bodyScroll.call(this));
+            this.$modalElement.on('scroll', () => this.modalScroll.call(this));
         }
 
         private showHideModalInternal($modalElement: JQuery, operation: string, suppressAnimation: boolean) {
@@ -154,6 +183,12 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
             // if we want to hide modal without animation, we have to remove fade class from backdrop
             if ((operation == 'hide') && suppressAnimation) {
                 $('.modal-backdrop').removeClass('fade');
+            }
+
+            // when nested dialog is shown we do not create next backdrop
+            // otherwise there are multiple backdrops under all modals
+            if ((operation == 'show') && ($('.modal-backdrop').length > 0)) {
+                $modalElement.modal({ backdrop: false });
             }
 
             $modalElement.modal(operation);
@@ -169,68 +204,96 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
             }
         }
 
-        private initializeState($modalElement: JQuery) {
+        private attachKeyUpEvent() {
+            // listen to keyup to catch escape key
 
-            if (this.currentState.bodyMaxHeightPx) {
+            // register to keyup event 
+            // - when nobody is already listening or when parent node is listening
+            // - when parent is listening, this is a child, so this event is more important -> clear parents keyup event and attach out event
+            // - if we are parent of child, nothing is done
+            if ((ModalExtension.keyupListenerElementSelector == null) || (this.$modalElement.parents(ModalExtension.keyupListenerElementSelector).length > 0)) {
+                // if parent registered to event, clear registration
+                $('body').off('keyup.havit.web.bootstrap');
+                // we are listener event if we are not listening (by closeOnEscapeKey) - it helps to detect there is child modal
+                ModalExtension.keyupListenerElementSelector = this.modalElementSelector;
+                if (this.closeOnEscapeKey) {
+                    $('body').on('keyup.havit.web.bootstrap', (e) => {
+                        if (e.which == 27) {
+                            eval(this.escapePostbackScript);
+                        }
+                    });
+
+                    // we have to focus modal, otherwise Escape key does not work correctly (I do not know why).
+                    try {
+                        this.$modalElement.focus();
+                    } catch (e) {
+                        // NOOP
+                    }
+                }
+            }
+        }
+
+        private initializeState() {
+
+            if (this.modalDialogState.bodyMaxHeightPx) {
                 // restores body max-height value (height of modal body)
-                $modalElement.find(".modal-body").css("max-height", this.currentState.bodyMaxHeightPx);
+                this.$modalElement.find('.modal-body').css('max-height', this.modalDialogState.bodyMaxHeightPx);
             }
 
-            if (this.currentState.bodyScrollPosition) {
+            if (this.modalDialogState.bodyScrollPosition) {
                 // restores body scroll position (scroll position of modal body)
-                if (this.currentModalElement != null) {
+                if (this.wasPostBack() || this.wasModalElementUpdatedByParentUpdatePanelInAsynchronousPostback()) {
+                    // if postback or updated only parent UpdatePanel, dialog will be opened
+                    // updates body scroll after modal is shown
+                    this.$modalElement.one('shown.bs.modal', () => this.initializeStateBodyScroll.call(this, this.$modalElement));
+                } else {
                     // if updated only nested UpdatePanel, dialog currently opened and no shown event occures
                     // updates body scroll immadiatelly
-                    this.initializeStateBodyScroll.call(this, $modalElement);
-                } else {
-                    // if updated only parent UpdatePanel or postback, dialog will be opened
-                    // updates body scroll after modal is shown
-                    $modalElement.one("shown.bs.modal", () => this.initializeStateBodyScroll.call(this, $modalElement));
+                    this.initializeStateBodyScroll.call(this, this.$modalElement);
                 }
             }
 
-            if (this.currentState.modalScrollPosition) {
+            if (this.modalDialogState.modalScrollPosition) {
                 // restores modal scroll position (scroll position of the whole modal)
-                if (this.currentModalElement != null) {
-                    // if updated only nested UpdatePanel, dialog currently opened and no scrolling required
-                    // NOOP
-                } else {
-                    // if updated only parent UpdatePanel or postback, dialog will be opened
+                if (this.wasPostBack() || this.wasModalElementUpdatedByParentUpdatePanelInAsynchronousPostback()) {
+                    // if postback or updated only parent UpdatePanel, dialog will be opened
                     // updates modal scroll after modal is shown
-                    $modalElement.one("shown.bs.modal", () => this.initializeStateModalScroll.call(this, $modalElement));
-                }
-            }
-
-            if (this.currentState.modalPosition) {
-                // restores modal position (drag position of the whole modal)
-                if (this.currentModalElement != null) {
+                    this.$modalElement.one('shown.bs.modal', () => this.initializeStateModalScroll.call(this, this.$modalElement));
+                } else {
                     // if updated only nested UpdatePanel, dialog currently opened and no scrolling required
                     // NOOP
-                } else {
-                    // if updated only parent UpdatePanel or postback, dialog will be opened
-                    // updates modal position after modal is shown
-                    $modalElement.one("shown.bs.modal", () => this.initializeStateModalPosition.call(this, $modalElement));
                 }
             }
 
+            if (this.modalDialogState.modalPosition) {
+                // restores modal position (drag position of the whole modal)
+                if (this.wasPostBack() || this.wasModalElementUpdatedByParentUpdatePanelInAsynchronousPostback()) {
+                    // if postback or updated only parent UpdatePanel, dialog will be opened
+                    // updates modal position after modal is shown
+                    this.$modalElement.one('shown.bs.modal', () => this.initializeStateModalPosition.call(this, this.$modalElement));
+                } else {
+                    // if updated only nested UpdatePanel, dialog currently opened and no scrolling required
+                    // NOOP
+                }
+            }
         }
 
-        private initializeStateBodyScroll($modalElement: JQuery) {
-            $modalElement.find(".modal-body")
-                .scrollLeft(this.currentState.bodyScrollPosition.left)
-                .scrollTop(this.currentState.bodyScrollPosition.top);
+        private initializeStateBodyScroll() {
+            this.$modalElement.find('.modal-body')
+                .scrollLeft(this.modalDialogState.bodyScrollPosition.left)
+                .scrollTop(this.modalDialogState.bodyScrollPosition.top);
         }
 
-        private initializeStateModalScroll($modalElement: JQuery) {
-            $modalElement
-                .scrollLeft(this.currentState.modalScrollPosition.left)
-                .scrollTop(this.currentState.modalScrollPosition.top);
+        private initializeStateModalScroll() {
+            this.$modalElement
+                .scrollLeft(this.modalDialogState.modalScrollPosition.left)
+                .scrollTop(this.modalDialogState.modalScrollPosition.top);
         }
 
-        private initializeStateModalPosition($modalElement: JQuery) {
-            $modalElement.find('.modal-dialog')
-                .css("left", this.currentState.modalPosition.left + "px")
-                .css("top", this.currentState.modalPosition.top + "px");
+        private initializeStateModalPosition() {
+            this.$modalElement.find('.modal-dialog')
+                .css('left', this.modalDialogState.modalPosition.left + 'px')
+                .css('top', this.modalDialogState.modalPosition.top + 'px');
         }
 
         private drag(event: Event, ui: JQueryUI.DraggableEventUIParams) {
@@ -238,23 +301,24 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
             this.stopResizingProcess();
 
             // persist drag position
-            this.currentState.modalPosition = new Position(ui.position.left, ui.position.top);
-            ModalDialogStatePersister.trySaveState(this.currentStateStorageKey, this.currentState);
+            this.modalDialogState.modalPosition = new Position(ui.position.left, ui.position.top);
+            this.modalDialogStatePersister.saveState(this.modalDialogState);
         }
 
         private bodyScroll() {
             // persist modal body scroll position
-            var $bodyModal = this.currentModalElement.find(".modal-body");
-            this.currentState.bodyScrollPosition = new Position($bodyModal.scrollLeft(), $bodyModal.scrollTop());
-            ModalDialogStatePersister.trySaveState(this.currentStateStorageKey, this.currentState);
+            var $bodyModal = this.$modalElement.find('.modal-body');
+            this.modalDialogState.bodyScrollPosition = new Position($bodyModal.scrollLeft(), $bodyModal.scrollTop());
+            this.modalDialogStatePersister.saveState(this.modalDialogState);
         }
 
         private modalScroll() {
             // persist modal scroll position
-            this.currentState.modalScrollPosition = new Position(this.currentModalElement.scrollLeft(), this.currentModalElement.scrollTop());
-            ModalDialogStatePersister.trySaveState(this.currentStateStorageKey, this.currentState);
+            this.modalDialogState.modalScrollPosition = new Position(this.$modalElement.scrollLeft(), this.$modalElement.scrollTop());
+            this.modalDialogStatePersister.saveState(this.modalDialogState);
         }
 
+        // #region startResizingProcess, stopResizingProcess, processResizingProcess
         private startResizingProcess() {
             // starts resizing process if not already started
             if (this.resizingTimer == null) {
@@ -272,13 +336,13 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
 
         private processResizingProcess() {
             // sets modal body max-height to fit on screen
-            if (this.currentModalElement != null) {
-                var $modal = this.currentModalElement;
-                var $modalDialog = $modal.find(".modal-dialog");
-                var $modalContent = $modalDialog.find(".modal-content");
-                var $modalHeader = $modalContent.find(".modal-header");
-                var $modalBody = $modalContent.find(".modal-body");
-                var $modalFooter = $modalContent.find(".modal-footer");
+            if (this.$modalElement != null) {
+                var $modal = this.$modalElement;
+                var $modalDialog = $modal.find('.modal-dialog');
+                var $modalContent = $modalDialog.find('.modal-content');
+                var $modalHeader = $modalContent.find('.modal-header');
+                var $modalBody = $modalContent.find('.modal-body');
+                var $modalFooter = $modalContent.find('.modal-footer');
 
                 if (($modalHeader.length == 0) && ($modalBody.length == 0)) {
                     // ModalDialog is not visible (rendered)
@@ -292,23 +356,76 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
 
                 var bodyHeight = containerHeight - headerHeight - footerHeight - (2 * headerTop);
 
-                var bodyHeightPx: string = "";
+                var bodyHeightPx: string = '';
                 if (($modal.scrollTop() == 0) && (bodyHeight >= 200)) { /* if less then 200 px then switch to standard behavior - scroll dialog content with page scroller */
-                    bodyHeightPx = bodyHeight + "px";
+                    bodyHeightPx = bodyHeight + 'px';
                 }
 
-                $modalBody.css("max-height", bodyHeightPx);
-                this.currentState.bodyMaxHeightPx = bodyHeightPx;
-                ModalDialogStatePersister.trySaveState(this.currentStateStorageKey, this.currentState);
+                $modalBody.css('max-height', bodyHeightPx);
+                this.modalDialogState.bodyMaxHeightPx = bodyHeightPx;
+                this.modalDialogStatePersister.saveState(this.modalDialogState);
             }
             this.resizingTimer = window.setTimeout(() => this.processResizingProcess.call(this), 200); // this is a workaround for setting height in transitions/animations where setting value once at shown.bs.modal fails
         }
+        // #endregion
+
+        // #region getParentModalExtension
+        private getParentModalExtension(): ModalExtension {
+            // returns modal extenstion of parent modal (null if no parent modal extension found or ModalExtension does not exist)
+            var $parentModal = this.$modalElement.parent().closest(".modal");
+            if ($parentModal.length == 0) {
+                return null;
+            }
+
+            return ModalExtension.getInstance("#" + $parentModal[0].id, false);
+        }
+        // #endregion
+
+        // #region wasPostBack, wasModalElementUpdatedByParentUpdatePanelInAsynchronousPostback
+        private wasPostBack(): boolean {
+            // when postback occurred whole content of page was refreshed - there is no previous modal element
+            return this.getPreviousModalElement() == null;
+        }
+
+        private wasModalElementUpdatedByParentUpdatePanelInAsynchronousPostback(): boolean {
+            // returns true when asychronous postback in which modal element was updated
+            if (this.wasPostBack()) {
+                return false;
+            }
+
+            var $previousPostback = this.getPreviousModalElement();
+            if ($previousPostback == null) {
+                return false;
+            }
+
+            return !$previousPostback.is(this.$modalElement);
+        }
+        // #endregion
+
+        // #region storePreviousModalElement, getPreviousModalElement, clearPreviousModalElement, getPreviousModalElementKey
+        private storePreviousModalElement() {
+            $(document).data(this.getPreviousModalElementKey(), this.$modalElement);
+        }
+
+        private getPreviousModalElement(): JQuery {
+            return $(document).data(this.getPreviousModalElementKey());
+        }
+
+        private clearPreviousModalElement() {
+            $(document).data(this.getPreviousModalElementKey(), null);
+        }
+
+        private getPreviousModalElementKey() {
+            return 'Havit.Web.Bootstrap.UI.WebControls.ClientSide.ModalExtension.PreviousModalElement[' + this.modalElementSelector + ']';
+        }
+        // #endregion
+                
     }
 
     class ModalDialogState {
         public modalScrollPosition: Position = null;
         public bodyScrollPosition: Position = null;
-        public modalPosition: Position = null;        
+        public modalPosition: Position = null;
         public bodyMaxHeightPx: string = null;
 
         constructor() {            
@@ -316,12 +433,19 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
     }
 
     class ModalDialogStatePersister {
-        public static trySaveState(storageKey: string, state: ModalDialogState): boolean {
-            if (typeof (Storage) !== "undefined") {
+
+        private storageKey: string;
+
+        constructor(storageKey: string) {
+            this.storageKey = storageKey;
+        }
+
+        public saveState(state: ModalDialogState): boolean {
+            if (typeof (Storage) !== 'undefined') {
                 try {
 
                     var value = JSON.stringify(state);
-                    sessionStorage.setItem(storageKey, value);
+                    sessionStorage.setItem(this.storageKey, value);
                     return true;
                 } catch (e) {
                     // NOOP
@@ -330,10 +454,10 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
             return false;
         }
 
-        public static loadState(storageKey: string): ModalDialogState {
-            if (typeof (Storage) !== "undefined") {
+        public loadState(): ModalDialogState {
+            if (typeof (Storage) !== 'undefined') {
                 try {
-                    var value = sessionStorage.getItem(storageKey);
+                    var value = sessionStorage.getItem(this.storageKey);
                     return JSON.parse(value);
                 } catch (e) {
                     // NOOP
@@ -342,10 +466,10 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
             return null;
         }
 
-        public static deleteState(storageKey: string) {
-            if (typeof (Storage) !== "undefined") {
+        public deleteState() {
+            if (typeof (Storage) !== 'undefined') {
                 try {
-                    sessionStorage.removeItem(storageKey);
+                    sessionStorage.removeItem(this.storageKey);
                 } catch (e) {
                     // NOOP
                 }

@@ -50,7 +50,7 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
             this.dragMode = dragMode;
 
             // clean state for reused element (dialog open, close, open)
-            this.$modalElement.find('.modal-dialog')
+            this.$modalElement.children('.modal-dialog')
                 .css('top', '')
                 .css('left', '');
 
@@ -142,7 +142,7 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
 
             // clear grad mode if it is on
             if (!!jQuery.ui && !!jQuery.ui.version && ($previousModalElement != null)) {
-                $previousModalElement.find('.modal-dialog.ui-draggable').draggable('destroy');
+                $previousModalElement.children('.modal-dialog.ui-draggable').draggable('destroy');
             }
 
             this.clearPreviousModalElement();
@@ -155,12 +155,12 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
             // switch on drag mode if enabled
             var draggableParams = { handle: ' .modal-header', drag: (e, ui) => this.drag.call(this, e, ui) };
             if (dragMode == 'Required') {
-                this.$modalElement.find('.modal-dialog').draggable(draggableParams);
+                this.$modalElement.children('.modal-dialog').draggable(draggableParams);
             }
 
             if (dragMode == 'IfAvailable') {
                 if (!!jQuery.ui && !!jQuery.ui.version) {
-                    this.$modalElement.find('.modal-dialog').draggable(draggableParams);
+                    this.$modalElement.children('.modal-dialog').draggable(draggableParams);
                 }
             }
 
@@ -170,7 +170,7 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
             }
 
             // listen do scroll events to persist state between postbacks
-            this.$modalElement.find('.modal-body').on('scroll', () => this.bodyScroll.call(this));
+            this.$modalElement.children('modal-dialog').children('modal-content').children().children('.modal-body').on('scroll', () => this.bodyScroll.call(this));
             this.$modalElement.on('scroll', () => this.modalScroll.call(this));
         }
 
@@ -237,7 +237,7 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
 
             if (this.modalDialogState.bodyMaxHeightPx) {
                 // restores body max-height value (height of modal body)
-                this.$modalElement.find('.modal-body').css('max-height', this.modalDialogState.bodyMaxHeightPx);
+                this.$modalElement.children('modal-dialog').children('modal-content').children().children('.modal-body').css('max-height', this.modalDialogState.bodyMaxHeightPx);
             }
 
             if (this.modalDialogState.bodyScrollPosition) {
@@ -279,7 +279,7 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
         }
 
         private initializeStateBodyScroll() {
-            this.$modalElement.find('.modal-body')
+            this.$modalElement.children('modal-dialog').children('modal-content').children().children('.modal-body')
                 .scrollLeft(this.modalDialogState.bodyScrollPosition.left)
                 .scrollTop(this.modalDialogState.bodyScrollPosition.top);
         }
@@ -291,7 +291,7 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
         }
 
         private initializeStateModalPosition() {
-            this.$modalElement.find('.modal-dialog')
+            this.$modalElement.children('.modal-dialog')
                 .css('left', this.modalDialogState.modalPosition.left + 'px')
                 .css('top', this.modalDialogState.modalPosition.top + 'px');
         }
@@ -307,7 +307,7 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
 
         private bodyScroll() {
             // persist modal body scroll position
-            var $bodyModal = this.$modalElement.find('.modal-body');
+            var $bodyModal = this.$modalElement.children('modal-dialog').children('modal-content').children().children('.modal-body');
             this.modalDialogState.bodyScrollPosition = new Position($bodyModal.scrollLeft(), $bodyModal.scrollTop());
             this.modalDialogStatePersister.saveState(this.modalDialogState);
         }
@@ -338,11 +338,11 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
             // sets modal body max-height to fit on screen
             if (this.$modalElement != null) {
                 var $modal = this.$modalElement;
-                var $modalDialog = $modal.find('.modal-dialog');
-                var $modalContent = $modalDialog.find('.modal-content');
-                var $modalHeader = $modalContent.find('.modal-header');
-                var $modalBody = $modalContent.find('.modal-body');
-                var $modalFooter = $modalContent.find('.modal-footer');
+                var $modalDialog = $modal.children('.modal-dialog');
+                var $modalContent = $modalDialog.children('.modal-content');
+                var $modalHeader = $modalContent.children().children('.modal-header');
+                var $modalBody = $modalContent.children().children('.modal-body');
+                var $modalFooter = $modalContent.children().children('.modal-footer');
 
                 if (($modalHeader.length == 0) && ($modalBody.length == 0)) {
                     // ModalDialog is not visible (rendered)

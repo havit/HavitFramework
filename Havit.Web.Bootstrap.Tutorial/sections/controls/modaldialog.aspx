@@ -19,6 +19,7 @@
 	
 	<h2>ModalDialog</h2>
 	<p>Control which handles dialog appereance &amp; behavior. Dialog is set maximum height to be able to scroll the content of dialog without page scrollbar.</p>
+	<p>Supports dialog in dialog (ie. record editing in modal via <a href="modaleditorextender">ModalEditorExtender</a> with &quot;something&quot; picker with dialog (see known issues).</p>
 	<h3>Properties</h3>
 	<ul>
 		<li>HeaderTemplate, ContentTemplate, FooterTemplate</li>
@@ -39,8 +40,11 @@
 		<li>No - No dragging enabled.</li>
 	</ul>
 	
-	<h3>Known issue</h3>
-	<p>Dialog size is recalculated AFTER dialog is shown. It causes a small flicker when dialog showing.</p>
+	<h3>Known issues</h3>
+	<ol>
+		<li>Chrome displays <strong>nested</strong> modals inside parent modals. Add style <code>overflow: visible</code> to <code>.modal</code> css class to solve this issue.</li>
+		<li>Dialog size is recalculated <strong>after</strong> dialog is shown. It causes a small flicker when dialog showing.</li>
+	</ol>
 
 	<h2>Sample</h2>
 	<p><uc:ModalDialogUserControlBaseSample ID="ModalDialogUserControlBaseSampleUC" runat="server" /></p>

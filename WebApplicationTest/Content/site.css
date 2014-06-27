@@ -5974,6 +5974,10 @@ button.toast-close-button {
 .validation-invalid + .tooltip.bottom .tooltip-arrow {
   border-bottom-color: #f2dede;
 }
+.modal .modal {
+  overflow: visible;
+  /* otherwise Chrome displays nested modals inside parent modals */
+}
 .validation-invalid {
   background: red;
 }

@@ -91,7 +91,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				errors = errors.Select(item => item.Replace("\\", "\\\\").Replace("'", "\\'").Replace("\"", "\\\"")).ToArray();
 				string message = String.Join("\\r\\n", errors);
 				string script = String.Format("$(function() {{ window.setTimeout(function() {{ alert('{0}'); }}, 1); }});", message);
-				ScriptManager.RegisterStartupScript(this, typeof(ValidationSummary), this.ClientID + "MessageBox", script, true);
+				ScriptManager.RegisterStartupScript(this.Page, typeof(ValidationSummary), this.ClientID + "MessageBox", script, true);
 			}
 
 		}
@@ -111,7 +111,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				errors = errors.Select(item => item.Replace("\\", "\\\\").Replace("'", "\\'").Replace("\"", "\\\"")).ToArray();
 				string message = String.Join("<br />", errors);
 				string script = String.Format("$(function() {{ Havit_ValidationSummary_ShowToastrError('{0}'); }});", message);
-				ScriptManager.RegisterStartupScript(this, typeof(ValidationSummary), this.ClientID + "Toastr", script, true);
+				ScriptManager.RegisterStartupScript(this.Page, typeof(ValidationSummary), this.ClientID + "Toastr", script, true);
 			}
 		}
 		#endregion

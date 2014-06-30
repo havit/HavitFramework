@@ -164,7 +164,7 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
                 }
             }
 
-            if (this.modalDialogState.modalPosition == null) {
+            if (!this.modalDialogState.modalDragged) {
                 // start resizing process if modal dialog not moved
                 this.startResizingProcess();
             }
@@ -189,6 +189,16 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
             // otherwise there are multiple backdrops under all modals
             if ((operation == 'show') && ($('.modal-backdrop').length > 0)) {
                 $modalElement.modal({ backdrop: false });
+            }
+
+            // when dialog is closed, it is removed modal-open class from body element by hidden.bs.modal event
+            // but when there is parent modal open (checked by existence of .modal-backdrop), we need to disable removing modal-open class by suppressing hidden.bs.modal event
+            if (operation == 'hide') {
+                $modalElement.one("hidden.bs.modal", (e) => {
+                    if ($('.modal-backdrop').length > 0) {
+                        e.stopPropagation();
+                    }
+                });
             }
 
             $modalElement.modal(operation);
@@ -302,6 +312,7 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
 
             // persist drag position
             this.modalDialogState.modalPosition = new Position(ui.position.left, ui.position.top);
+            this.modalDialogState.modalDragged = true;
             this.modalDialogStatePersister.saveState(this.modalDialogState);
         }
 
@@ -424,11 +435,12 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
 
     class ModalDialogState {
         public modalScrollPosition: Position = null;
+        public modalDragged = false;
         public bodyScrollPosition: Position = null;
         public modalPosition: Position = null;
         public bodyMaxHeightPx: string = null;
 
-        constructor() {            
+        constructor() {
         }
     }
 

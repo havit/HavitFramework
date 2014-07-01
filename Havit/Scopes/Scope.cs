@@ -31,7 +31,7 @@ namespace Havit.Scopes
 	public class Scope<T> : IDisposable
 		where T : class
 	{
-		#region Current (static)
+		#region GetCurrent (static)
 		/// <summary>
 		/// Aktuální instance obalovaná scopem.
 		/// Určeno pro použití v potomcích pro implementaci statické vlastnosti Current.

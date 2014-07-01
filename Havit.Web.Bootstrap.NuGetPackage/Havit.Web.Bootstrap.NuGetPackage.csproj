@@ -49,7 +49,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="content\Web.config.transform" />
+    <None Include="content\Web.config.uninstall.xdt" />
+    <None Include="content\Web.config.install.xdt" />
     <None Include="Package.nuspec">
       <SubType>Designer</SubType>
     </None>

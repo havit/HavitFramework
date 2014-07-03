@@ -283,3 +283,23 @@ var havitGridViewExtensions = {
 
 $(document).ready(havitDateTimeBoxExtensions.init);
 $(document).ready(havitNumericBoxExtensions.init);
+
+var havitBrowserNavigationControllerExtension = {
+	startup: function(backUrl) {
+		if (window.history && window.history.replaceState) {
+			var href = window.location.href;
+			window.history.replaceState(null, document.title, href + "#!/back");
+			window.history.pushState(null, document.title, href);
+
+			$(window).off("popstate.hfw");
+			$(window).on("popstate.hfw", function() {
+				if (window.location.hash === "#!/back") {
+					window.history.replaceState(null, document.title, href);
+					window.setTimeout(function() {
+						window.location.replace((backUrl.length > 0) ? backUrl : href);
+					}, 0);
+				}
+			});
+		}
+	}
+};

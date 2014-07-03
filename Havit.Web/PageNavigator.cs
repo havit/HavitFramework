@@ -182,11 +182,7 @@ namespace Havit.Web
 				throw new InvalidOperationException("Není k dispozici Url pro návrat.");
 			}
 
-//			this.SetTransitional();
-			string url = HistoryUrls[0];
-			HistoryUrls.RemoveAt(0);
-
-			string targetUrl = GetNavigationToUrlInternal(null, url, true);
+			string targetUrl = GetNavigationBackUrl();
 			_currentContext.Response.Redirect(targetUrl);
 		}
 		#endregion
@@ -274,6 +270,28 @@ namespace Havit.Web
             return GetNavigationToUrlInternal(fromUrl, toUrl, true);
 		}
 		
+		#endregion
+
+		#region GetNavigationBackUrl
+		/// <summary>
+		/// Vrátí adresu pro přesměrování zpět. Adresa pro návrat zpět se bere z historie, ostatních adres v historie se zachovají.
+		/// </summary>
+		/// <exception cref="InvalidOperationException">
+		/// Pokud není k dispozici adresa pro návrat.
+		/// </exception> 
+		public string GetNavigationBackUrl()
+		{
+			if (!CanNavigateBack())
+			{
+				throw new InvalidOperationException("Není k dispozici Url pro návrat.");
+			}
+
+			string url = HistoryUrls[0];
+			HistoryUrls.RemoveAt(0);
+			string targetUrl = GetNavigationToUrlInternal(null, url, true);
+			HistoryUrls.Insert(0, url);
+			return targetUrl;
+		}
 		#endregion
 
 		#region GetNavigationToUrlInternal (private)
@@ -395,42 +413,6 @@ namespace Havit.Web
 			// a opet slozime adresu
 			return qsb.GetUrlWithQueryString(urlParts[0]);
 
-			//// rozebereme QS na hodnoty
-			//string[] queryStringParts = urlParts[1].Split('&');
-			//NameValueCollection parameters = new NameValueCollection();
-			//foreach (string queryStringPart in queryStringParts)
-			//{
-			//    // každý parametr přidáme do kolekce parametrů
-			//    string[] itemInfo = queryStringPart.Split('=');
-			//    parameters.Add(itemInfo[0], itemInfo[1]);
-			//}
-
-			//if (String.IsNullOrEmpty(parameters[PageNavigator.UrlsQueryParameterName]))
-			//{
-			//    // pokud není hodnota s historií adres, vracíme původní url
-			//    return url;
-			//}
-
-			//// odstraníme hodnota s historií adres
-			//parameters.Remove(PageNavigator.UrlsQueryParameterName);
-
-			//// sestavíme url a tu vrátíme
-			//StringBuilder result = new StringBuilder();
-			//foreach (string key in parameters.Keys)
-			//{
-			//    if (result.Length > 0)
-			//    {
-			//        result.Append("&");
-			//    }
-			//    result.Append(key);
-			//    result.Append("=");
-			//    result.Append(parameters[key]);
-			//}
-
-			//result.Insert(0, "?");
-			//result.Insert(0, urlParts[0]);
-
-			//return result.ToString();
 		}
 		
 		#endregion

@@ -317,6 +317,8 @@
     <Content Include="Content\site.less" />
     <Content Include="Content\toastr.scss" />
     <Content Include="Content\toastr.less" />
+    <Content Include="HavitWebTests\PageNavigator_B_Test.aspx" />
+    <Content Include="HavitWebTests\PageNavigator_A_Test.aspx" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\Havit.Web.Bootstrap\description.txt" />
@@ -521,6 +523,20 @@
     </Compile>
     <Compile Include="HavitWebTests\GridViewExt-Filtr.aspx.designer.cs">
       <DependentUpon>GridViewExt-Filtr.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HavitWebTests\PageNavigator_B_Test.aspx.cs">
+      <DependentUpon>PageNavigator_B_Test.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HavitWebTests\PageNavigator_B_Test.aspx.designer.cs">
+      <DependentUpon>PageNavigator_B_Test.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HavitWebTests\PageNavigator_A_Test.aspx.cs">
+      <DependentUpon>PageNavigator_A_Test.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HavitWebTests\PageNavigator_A_Test.aspx.designer.cs">
+      <DependentUpon>PageNavigator_A_Test.aspx</DependentUpon>
     </Compile>
     <Compile Include="SystemWebTests\ScriptManagerTest.aspx.cs">
       <DependentUpon>ScriptManagerTest.aspx</DependentUpon>

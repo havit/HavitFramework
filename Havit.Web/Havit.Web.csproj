@@ -142,6 +142,7 @@
     <Compile Include="Bootstrap\StartUp.cs" />
     <Compile Include="Bootstrap\UI\ClientScripts\BootstrapClientScriptHelper.cs" />
     <Compile Include="UI\ControlExtensions.cs" />
+    <Compile Include="UI\WebControls\BrowserNavigationController.cs" />
     <Compile Include="UI\WebControls\DataBoundControlWithHiddenPublicMembersFromIntellisence.cs" />
     <Compile Include="UI\WebControls\EditorExtenderItemDataBound.cs" />
     <Compile Include="UI\WebControls\EditorExtenderMode.cs" />

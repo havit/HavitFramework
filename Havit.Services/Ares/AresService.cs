@@ -241,7 +241,7 @@ namespace Havit.Services.Ares
 
 				aresResponseXDocument = XDocument.Load(new StreamReader(aresResponse.GetResponseStream()));
 			}
-			catch (Exception e)
+			catch (WebException e)
 			{
 				throw new AresLoadException(String.Format("Chyba \"{0}\" pøi pokusu o získání dat ze služby ARES ({1}).", e.Message, requestUrl));
 			}

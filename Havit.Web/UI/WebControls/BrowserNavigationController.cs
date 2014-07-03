@@ -12,6 +12,9 @@ namespace Havit.Web.UI.WebControls
 	/// <summary>
 	/// Control řešící provázání tlačítka zpět v prohlížeci s PageNavigatorem.
 	/// </summary>
+	/// <remarks>
+	/// Implementace vychází z http://www.thecssninja.com/javascript/stealing-history-api
+	/// </remarks>
 	public class BrowserNavigationController : Control
 	{
 		#region DefaultUrl
@@ -33,6 +36,9 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 
 		#region OnPreRender
+		/// <summary>
+		/// Zaregistruje klientský skript pro ovládání tlačítka zpět.
+		/// </summary>
 		protected override void OnPreRender(EventArgs e)
 		{
 			base.OnPreRender(e);

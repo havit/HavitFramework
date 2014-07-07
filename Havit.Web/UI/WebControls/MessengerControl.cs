@@ -64,14 +64,20 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-        #region OnPreRender
+		#region OnInit
+		protected override void OnInit(EventArgs e)
+		{
+			base.OnInit(e);
+			this.Page.PreRenderComplete += Page_PreRenderComplete;
+		}
+		#endregion
+
+		#region Page_PreRenderComplete
 		/// <summary>
 		/// Vyrenderuje html a/nebo script messengeru.
 		/// </summary>
-        protected override void OnPreRender(EventArgs e)
-        {
-            base.OnPreRender(e);
-
+		private void Page_PreRenderComplete(object sender, EventArgs e)
+		{
 			// Pokud dojde k redirectu s endRequest=false (voláno takto mj. z FormsAuthentication.RedirectFromLoginPage) před voláním této metody,
 			// potom i v takovém případě proběhne tento OnPreRender, který vyčistí zprávy messengeru. Následně však dojde k přesměrování namísto zobrazení obsahu,
 			// takže uživatel zprávy nevidí.

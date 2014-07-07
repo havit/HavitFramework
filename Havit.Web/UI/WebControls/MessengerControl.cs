@@ -65,6 +65,9 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 
 		#region OnInit
+		/// <summary>
+		/// OnInit.
+		/// </summary>
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);

@@ -41,13 +41,10 @@
 	Integer urna. Nunc ac urna pulvinar purus blandit euismod. Donec in risus. Suspendisse scelerisque euismod nunc. Aenean elementum convallis ante. In rhoncus, diam ac mattis fermentum, urna sapien ornare quam, dignissim lacinia nisl libero et velit. Maecenas odio. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum nisi. Vivamus vestibulum eleifend tellus.</p>
 	
 	<style>
-		.modal-body {
-			overflow: auto;
-		}
-
 		.modal-content {
 			box-shadow: none;
 		}
+
 	</style>
 
 </asp:Content>

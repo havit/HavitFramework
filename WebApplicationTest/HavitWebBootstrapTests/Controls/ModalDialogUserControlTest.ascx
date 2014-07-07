@@ -2,7 +2,7 @@
 <%@ Register Src="~/HavitWebBootstrapTests/Controls/ModalDialogUserControlTest2.ascx" TagPrefix="uc1" TagName="ModalDialogUserControlTest2" %>
 
 
-<bc:ModalDialog ID="MainModalDialog" HeaderText="My cool dialog!" runat="server">
+<bc:ModalDialog ID="MainModalDialog" HeaderText="My cool dialog!" Width="800px" runat="server">
 	<ContentTemplate>	
 		Hello! This is my first cool dialog.
 		<br/>

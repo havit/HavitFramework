@@ -466,8 +466,8 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		protected override string GetShowScript()
 		{
 			string scriptPattern = CurrentyShowing
-				? "Havit.Web.Bootstrap.UI.WebControls.ClientSide.ModalExtension.getInstance('#{0}').show({1}, '{2}', '{3}');"
-				: "Havit.Web.Bootstrap.UI.WebControls.ClientSide.ModalExtension.getInstance('#{0}').remainShown({1}, '{2}', '{3}');";
+				? "Havit.Web.Bootstrap.UI.WebControls.ClientSide.ModalExtension.getInstance('#{0}').show({1}, '{2}', '{3}', '{4}');"
+				: "Havit.Web.Bootstrap.UI.WebControls.ClientSide.ModalExtension.getInstance('#{0}').remainShown({1}, '{2}', '{3}', '{4}');";
 
 			string postbackScript = String.Empty;
 			if (CloseOnEscapeKey)
@@ -483,7 +483,8 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				GetDialogContainer().ClientID, // 0
 				CloseOnEscapeKey.ToString().ToLower(), // 1
 				postbackScript.Replace("'", "\\'"), // 2
-				DragMode.ToString()); // 3
+				DragMode.ToString(), // 3
+				Width.ToString()); // 4
 			return script;
 		}
 

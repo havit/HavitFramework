@@ -17,6 +17,17 @@ namespace WebApplicationTest.HavitWebBootstrapTests
 		}
 		#endregion
 
+		#region OnLoad
+		protected override void OnLoad(EventArgs e)
+		{
+			base.OnLoad(e);
+			if (!Page.IsPostBack)
+			{
+				ModalDialogUserControlTestUC.Show();
+			}
+		}
+		#endregion
+
 		#region OpenButton_Click
 		private void OpenButton_Click(object sender, EventArgs e)
 		{

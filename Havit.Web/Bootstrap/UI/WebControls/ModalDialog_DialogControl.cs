@@ -53,10 +53,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 
 				string modalDialogCssClass = ("modal-dialog " + modalDialog.CssClass).Trim();
 				writer.AddAttribute(HtmlTextWriterAttribute.Class, modalDialogCssClass);
-				if (modalDialog.Width != Unit.Empty)
-				{
-					writer.AddAttribute(HtmlTextWriterAttribute.Style, String.Format("width: {0};", modalDialog.Width.ToString()));
-				}
 				writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
 				writer.AddAttribute(HtmlTextWriterAttribute.Class, "modal-content");

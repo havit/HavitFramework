@@ -1,0 +1,34 @@
+﻿.modal .modal
+{	
+	overflow: visible; /* otherwise Chrome displays nested modals inside parent modals */
+}
+
+.modal-dialog {
+	visibility: visible; /* modal is visible by default */
+}
+
+.modal.nested > .modal-dialog {
+	visibility: hidden; /* modal is not visible when it has a child modal displayed */
+}
+
+.modal-body {
+	overflow: auto; /* when content of modal is large, show scrollbar */
+}
+
+.modal.nested > .modal-dialog > .modal-content > div > .modal-body {
+	overflow: visible; /* When it is parent modal, it is hidden. To enabled modal dragging we have to set overflow to visible - it enables showing nested modal outside of parent modal */
+}
+
+.modal.nested > .modal-dialog
+{
+	margin: 0px; /* compensation to set correct position of nested modal */
+}
+
+@media (min-width: @screen-sm-min) {
+	.modal.nested > .modal-dialog {
+		margin: 0 auto; /* compensation to set correct position of nested modal */		
+	}
+	.modal.nested > .modal-dialog > .modal-content > div > .modal-header, .modal.nested > .modal-dialog > .modal-content > div > .modal-body, .modal.nested > .modal-dialog > .modal-content > div > .modal-footer {
+		padding: 0; /* compensation to set correct position of nested modal */
+	}
+}

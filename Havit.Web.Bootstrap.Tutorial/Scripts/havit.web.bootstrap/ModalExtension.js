@@ -23,31 +23,52 @@
                                 return modalExtension;
                             };
 
-                            ModalExtension.prototype.show = function (closeOnEscapeKey, escapePostbackScript, dragMode) {
+                            ModalExtension.prototype.show = function (closeOnEscapeKey, escapePostbackScript, dragMode, width) {
                                 this.closeOnEscapeKey = closeOnEscapeKey;
                                 this.escapePostbackScript = escapePostbackScript;
                                 this.dragMode = dragMode;
+                                this.width = width;
 
-                                this.$modalElement.children('.modal-dialog').css('top', '').css('left', '');
+                                var $modalDialog = this.$modalElement.children('.modal-dialog');
+                                $modalDialog.css('width', width);
+
+                                $modalDialog.css('top', '').css('left', '');
 
                                 this.modalDialogState = new ModalDialogState();
                                 this.modalDialogStatePersister.saveState(this.modalDialogState);
+
+                                var parentModalExtension = this.getParentModalExtension();
+                                if (parentModalExtension != null) {
+                                    parentModalExtension.deactivateByChild(this);
+                                    $modalDialog.css('visibility', 'visible');
+                                }
 
                                 this.showInternal(dragMode, false);
                                 this.attachKeyUpEvent();
                                 this.storePreviousModalElement();
                             };
 
-                            ModalExtension.prototype.remainShown = function (closeOnEscapeKey, escapePostbackScript, dragMode) {
+                            ModalExtension.prototype.remainShown = function (closeOnEscapeKey, escapePostbackScript, dragMode, width) {
                                 this.closeOnEscapeKey = closeOnEscapeKey;
                                 this.escapePostbackScript = escapePostbackScript;
                                 this.dragMode = dragMode;
+                                this.width = width;
 
                                 this.modalDialogState = this.modalDialogStatePersister.loadState();
                                 if (this.modalDialogState != null) {
                                     this.initializeState();
                                 } else {
                                     this.modalDialogState = new ModalDialogState();
+                                }
+
+                                var $modalDialog = this.$modalElement.children('.modal-dialog');
+                                if (!$modalDialog.hasClass("nested")) {
+                                    $modalDialog.css('width', this.width);
+                                    var parentModalExtension = this.getParentModalExtension();
+                                    if (parentModalExtension != null) {
+                                        parentModalExtension.deactivateByChild(this);
+                                        $modalDialog.css('visibility', 'visible');
+                                    }
                                 }
 
                                 if (this.wasPostBack()) {
@@ -95,7 +116,7 @@
                                 }
                                 var parentModalExtension = this.getParentModalExtension();
                                 if (parentModalExtension != null) {
-                                    parentModalExtension.attachKeyUpEvent();
+                                    parentModalExtension.activateByChild(this);
                                 }
 
                                 if (!!jQuery.ui && !!jQuery.ui.version && ($previousModalElement != null)) {
@@ -122,11 +143,11 @@
                                     }
                                 }
 
-                                if (this.modalDialogState.modalPosition == null) {
+                                if (!this.modalDialogState.modalDragged) {
                                     this.startResizingProcess();
                                 }
 
-                                this.$modalElement.children('modal-dialog').children('modal-content').children().children('.modal-body').on('scroll', function () {
+                                this.$modalElement.children('.modal-dialog').children('.modal-content').children().children('.modal-body').on('scroll', function () {
                                     return _this.bodyScroll.call(_this);
                                 });
                                 this.$modalElement.on('scroll', function () {
@@ -148,6 +169,14 @@
                                     $modalElement.modal({ backdrop: false });
                                 }
 
+                                if (operation == 'hide') {
+                                    $modalElement.one('hidden.bs.modal', function (e) {
+                                        if ($('.modal-backdrop').length > 0) {
+                                            e.stopPropagation();
+                                        }
+                                    });
+                                }
+
                                 $modalElement.modal(operation);
 
                                 if ((operation == 'show') && suppressAnimation && hasFade) {
@@ -156,6 +185,27 @@
 
                                 if (suppressAnimation && hasFade) {
                                     $modalElement.addClass('fade');
+                                }
+                            };
+
+                            ModalExtension.prototype.deactivateByChild = function (deactivatedByModalExtension) {
+                                var $modalDialog = this.$modalElement.children('.modal-dialog');
+                                this.$modalElement.addClass('nested');
+                                $modalDialog.css('left', '0').css('top', '0');
+                                $modalDialog.css('width', deactivatedByModalExtension.width);
+                            };
+
+                            ModalExtension.prototype.activateByChild = function (deactivatedByModalExtenstion) {
+                                this.attachKeyUpEvent();
+
+                                this.$modalElement.removeClass('nested');
+
+                                var $modalDialog = this.$modalElement.children('.modal-dialog');
+                                $modalDialog.css('width', this.width);
+
+                                this.modalDialogState = this.modalDialogStatePersister.loadState();
+                                if (this.modalDialogState != null) {
+                                    this.initializeState(true);
                                 }
                             };
 
@@ -180,43 +230,56 @@
                                 }
                             };
 
-                            ModalExtension.prototype.initializeState = function () {
+                            ModalExtension.prototype.initializeState = function (force) {
                                 var _this = this;
+                                if (typeof force === "undefined") { force = false; }
                                 if (this.modalDialogState.bodyMaxHeightPx) {
-                                    this.$modalElement.children('modal-dialog').children('modal-content').children().children('.modal-body').css('max-height', this.modalDialogState.bodyMaxHeightPx);
+                                    this.$modalElement.children('.modal-dialog').children('.modal-content').children().children('.modal-body').css('max-height', this.modalDialogState.bodyMaxHeightPx);
                                 }
 
                                 if (this.modalDialogState.bodyScrollPosition) {
-                                    if (this.wasPostBack() || this.wasModalElementUpdatedByParentUpdatePanelInAsynchronousPostback()) {
-                                        this.$modalElement.one('shown.bs.modal', function () {
-                                            return _this.initializeStateBodyScroll.call(_this, _this.$modalElement);
-                                        });
+                                    if (force) {
+                                        this.initializeStateBodyScroll();
                                     } else {
-                                        this.initializeStateBodyScroll.call(this, this.$modalElement);
+                                        if (this.wasPostBack() || this.wasModalElementUpdatedByParentUpdatePanelInAsynchronousPostback()) {
+                                            this.$modalElement.one('shown.bs.modal', function () {
+                                                return _this.initializeStateBodyScroll.call(_this);
+                                            });
+                                        } else {
+                                            this.initializeStateBodyScroll();
+                                        }
                                     }
                                 }
 
                                 if (this.modalDialogState.modalScrollPosition) {
-                                    if (this.wasPostBack() || this.wasModalElementUpdatedByParentUpdatePanelInAsynchronousPostback()) {
-                                        this.$modalElement.one('shown.bs.modal', function () {
-                                            return _this.initializeStateModalScroll.call(_this, _this.$modalElement);
-                                        });
+                                    if (force) {
+                                        this.initializeStateModalScroll();
                                     } else {
+                                        if (this.wasPostBack() || this.wasModalElementUpdatedByParentUpdatePanelInAsynchronousPostback()) {
+                                            this.$modalElement.one('shown.bs.modal', function () {
+                                                return _this.initializeStateModalScroll.call(_this);
+                                            });
+                                        } else {
+                                        }
                                     }
                                 }
 
                                 if (this.modalDialogState.modalPosition) {
-                                    if (this.wasPostBack() || this.wasModalElementUpdatedByParentUpdatePanelInAsynchronousPostback()) {
-                                        this.$modalElement.one('shown.bs.modal', function () {
-                                            return _this.initializeStateModalPosition.call(_this, _this.$modalElement);
-                                        });
+                                    if (force) {
+                                        this.initializeStateModalPosition();
                                     } else {
+                                        if (this.wasPostBack() || this.wasModalElementUpdatedByParentUpdatePanelInAsynchronousPostback()) {
+                                            this.$modalElement.one('shown.bs.modal', function () {
+                                                return _this.initializeStateModalPosition.call(_this);
+                                            });
+                                        } else {
+                                        }
                                     }
                                 }
                             };
 
                             ModalExtension.prototype.initializeStateBodyScroll = function () {
-                                this.$modalElement.children('modal-dialog').children('modal-content').children().children('.modal-body').scrollLeft(this.modalDialogState.bodyScrollPosition.left).scrollTop(this.modalDialogState.bodyScrollPosition.top);
+                                this.$modalElement.children('.modal-dialog').children('.modal-content').children().children('.modal-body').scrollLeft(this.modalDialogState.bodyScrollPosition.left).scrollTop(this.modalDialogState.bodyScrollPosition.top);
                             };
 
                             ModalExtension.prototype.initializeStateModalScroll = function () {
@@ -231,11 +294,12 @@
                                 this.stopResizingProcess();
 
                                 this.modalDialogState.modalPosition = new Position(ui.position.left, ui.position.top);
+                                this.modalDialogState.modalDragged = true;
                                 this.modalDialogStatePersister.saveState(this.modalDialogState);
                             };
 
                             ModalExtension.prototype.bodyScroll = function () {
-                                var $bodyModal = this.$modalElement.children('modal-dialog').children('modal-content').children().children('.modal-body');
+                                var $bodyModal = this.$modalElement.children('.modal-dialog').children('.modal-content').children().children('.modal-body');
                                 this.modalDialogState.bodyScrollPosition = new Position($bodyModal.scrollLeft(), $bodyModal.scrollTop());
                                 this.modalDialogStatePersister.saveState(this.modalDialogState);
                             };
@@ -272,7 +336,7 @@
                                         return;
                                     }
 
-                                    var containerHeight = $modal.innerHeight();
+                                    var containerHeight = $(".modal.in").innerHeight();
                                     var headerHeight = $modalHeader.outerHeight(true) || 0;
                                     var footerHeight = $modalFooter.outerHeight(true) || 0;
                                     var headerTop = ($modalHeader.length > 0) ? $modalHeader.offset().top : $modalBody.offset().top;
@@ -294,12 +358,12 @@
                             };
 
                             ModalExtension.prototype.getParentModalExtension = function () {
-                                var $parentModal = this.$modalElement.parent().closest(".modal");
+                                var $parentModal = this.$modalElement.parent().closest('.modal');
                                 if ($parentModal.length == 0) {
                                     return null;
                                 }
 
-                                return ModalExtension.getInstance("#" + $parentModal[0].id, false);
+                                return ModalExtension.getInstance('#' + $parentModal[0].id, false);
                             };
 
                             ModalExtension.prototype.wasPostBack = function () {
@@ -341,6 +405,7 @@
                         var ModalDialogState = (function () {
                             function ModalDialogState() {
                                 this.modalScrollPosition = null;
+                                this.modalDragged = false;
                                 this.bodyScrollPosition = null;
                                 this.modalPosition = null;
                                 this.bodyMaxHeightPx = null;

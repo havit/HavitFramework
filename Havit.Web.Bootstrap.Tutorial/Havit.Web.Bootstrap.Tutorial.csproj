@@ -152,8 +152,6 @@
     <Content Include="Content\toastr.min.css" />
     <Content Include="Content\toastr.scss" />
     <Content Include="Content\toastr.less" />
-    <Content Include="Content\havit.web.bootstrap\validation.less" />
-    <Content Include="Content\havit.web.bootstrap\havit.web.bootstrap.less" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
@@ -227,6 +225,9 @@
     <Content Include="Content\bootstrap\bootstrap.less" />
     <Content Include="Content\bootstrap\badges.less" />
     <Content Include="Content\bootstrap\alerts.less" />
+    <Content Include="Content\havit.web.bootstrap\validation.less" />
+    <Content Include="Content\havit.web.bootstrap\modals.less" />
+    <Content Include="Content\havit.web.bootstrap\havit.web.bootstrap.less" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

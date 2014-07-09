@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Diagnostics;
 using Havit.Diagnostics.Contracts;
 using System.Linq;
@@ -21,6 +22,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Tooltip position.
 		/// </summary>
+		[DefaultValue(TooltipPosition.Top)]
 		public TooltipPosition TooltipPosition
 		{
 			get

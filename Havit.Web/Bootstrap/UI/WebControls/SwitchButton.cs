@@ -28,7 +28,9 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		#region Value
 		/// <summary>
 		/// Returns true if "yes" choice is selected.
+		/// Default value is false.		
 		/// </summary>
+		[DefaultValue(false)]
 		public virtual bool Value
 		{
 			get
@@ -65,6 +67,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Gets or sets a value indicating whether an automatic postback to the server will occur whenever the user changes the selection of the list.
 		/// </summary>
+		[DefaultValue(false)]
 		public virtual bool AutoPostBack
 		{
 			get { return radioButtonList.AutoPostBack; }

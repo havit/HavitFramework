@@ -24,6 +24,16 @@ namespace Havit.Web.UI.WebControls
 		/// Tato konstanta se může vložit např. do Button.OnClientClick.
 		/// </summary>
 		public const string SetProcessingDisableJavaScript = "SingleSubmit_SetProcessing_Disable();";
+
+		/// <summary>
+		/// Script pro zavolání clientside metody zajišťující blokování klientských operací ve stránce.
+		/// </summary>
+		public const string SetProcessingJavaScript = "SingleSubmit_SetProcessing();";
+
+		/// <summary>
+		/// Script pro zavolání clientside metody pro ukončení blokování klientských operací ve stránce.
+		/// </summary>
+		public const string ClearProcessingJavaScript = "SingleSubmit_ClearProcessing();";
 		#endregion
 
 		#region Constructor
@@ -75,7 +85,7 @@ namespace Havit.Web.UI.WebControls
                         this.Page,
                         typeof(SingleSubmitProtection),
                         "SingleSubmit_Startup",
-						"SingleSubmit_ClearProcessing();",
+						ClearProcessingJavaScript,
                         true);
                 }
             }

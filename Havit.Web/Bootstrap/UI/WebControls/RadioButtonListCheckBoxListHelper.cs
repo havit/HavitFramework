@@ -48,11 +48,16 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			ListItem item = control.Items[repeatIndex]; // item to render
 
 			string cssClass = control.ItemCssClass ?? String.Empty;
+			if (!String.IsNullOrEmpty(item.Attributes["class"]))
+			{
+				cssClass += " " + item.Attributes["class"];
+				item.Attributes.Remove("class");
+			}
 			if (item.Selected)
 			{
 				cssClass += " active"; // selected items must have active class (otherwise the selection is not visible in UI)
 			}
-			writer.AddAttribute(HtmlTextWriterAttribute.Class, cssClass);
+			writer.AddAttribute(HtmlTextWriterAttribute.Class, cssClass.Trim());
 			writer.RenderBeginTag(HtmlTextWriterTag.Label); // start rendering LABEL
 
 			string text = item.Text;

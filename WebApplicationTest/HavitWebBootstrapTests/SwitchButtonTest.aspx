@@ -1,5 +1,9 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/HavitWebBootstrapTests/Bootstrap.Master" AutoEventWireup="false" CodeBehind="SwitchButtonTest.aspx.cs" Inherits="WebApplicationTest.HavitWebBootstrapTests.SwitchButtonTest" %>
 <asp:Content ContentPlaceHolderID="MainCPH" runat="server">
+	<style>		
+		.no.active { background: #ffc0cb; }		
+		.yes.active { background: lightgreen; }
+	</style>
 	<div>
 		<bc:SwitchButton ID="FirstSwitchButton" YesText="Ano" NoText="Ne" runat="server" />
 		<br/>

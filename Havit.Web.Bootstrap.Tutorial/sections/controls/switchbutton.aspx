@@ -13,10 +13,14 @@
 	<h2>Properties, Events</h2>
 	<ul>
 		<li>NoText, YesText (supports $resources pattern)</li>
+		<li>NoCssClass, YesCssClass (defaults: "no", "yes")</li>
 		<li>Value (True for "Yes", False for "No")</li>
 		<li>AutoPostBack</li>
 		<li>ValueChanged (event)</li>
 	</ul>
+
+	<h2>Styling</h2>
+	<p>It is intended to style control by .yes, and .no class in cooperation with .active class and .btn-default or other .btn-* selector. See sample below.</p>
 
 	<h2>Sample</h2>	
 	<uc:SwitchButtonSample ID="SwitchButtonSampleUC" runat="server" />

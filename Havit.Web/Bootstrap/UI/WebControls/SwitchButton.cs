@@ -100,15 +100,64 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 
 		#endregion
 
+		#region YesCssClass
+		/// <summary>
+		/// CssClass for yes item.
+		/// Default value is "yes".
+		/// </summary>
+		[DefaultValue("yes")]
+		public string YesCssClass
+		{
+			get
+			{
+				return (string)(ViewState["YesCssClass"] ?? "yes");
+			}
+			set
+			{
+				ViewState["YesCssClass"] = value;
+			}
+		}
+		#endregion
+
+		#region NoCssClass
+		/// <summary>
+		/// CssClass for no item.
+		/// Default value is "no".
+		/// </summary>
+		[DefaultValue("no")]
+		public string NoCssClass
+		{
+			get
+			{
+				return (string)(ViewState["NoCssClass"] ?? "no");
+			}
+			set
+			{
+				ViewState["NoCssClass"] = value;
+			}
+		}
+		#endregion
+
 		#region Constructor
 		/// <summary>
 		/// Constructor.
 		/// </summary>
 		public SwitchButton()
 		{
+			yesItem = new ListItem("$resources: Glossary, Yes, Yes", "1") { Selected = false };
+			noItem = new ListItem("$resources: Glossary, No, No", "0") { Selected = true };
+
+			if (!String.IsNullOrEmpty(YesCssClass))
+			{
+				yesItem.Attributes["class"] = YesCssClass;
+			}
+
+			if (!String.IsNullOrEmpty(NoCssClass))
+			{
+				noItem.Attributes["class"] = NoCssClass;
+			}
+
 			radioButtonList = new RadioButtonList();
-			yesItem = new ListItem("Yes", "1") { Selected = false };
-			noItem = new ListItem("No", "0") { Selected = true };
 			radioButtonList.Items.Add(yesItem);
 			radioButtonList.Items.Add(noItem);
 			radioButtonList.SelectedIndexChanged += RadioButtonList_SelectedIndexChanged;

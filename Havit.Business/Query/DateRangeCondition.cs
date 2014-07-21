@@ -70,7 +70,7 @@ namespace Havit.Business.Query
 
 			//if (date2 != null)
 			//{
-			return DateCondition.Create(operand, ComparisonOperator.Lower, date2.Value.Date);
+			return DateCondition.Create(operand, ComparisonOperator.Lower, date2.Value.Date.AddDays(1));
 			//}
 
 		} 

@@ -75,7 +75,23 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-		#region Page_PreRenderComplete
+		#region OnPreRender
+		/// <summary>
+		/// Registrace knihoven jquery a toastru, pokud je použit toastr (PreRenderComplete je pozdě).
+		/// </summary>
+		protected override void OnPreRender(EventArgs e)
+		{
+			base.OnPreRender(e);
+
+			if (ShowToastr)
+			{
+				ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, "jquery");
+				ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, "toastr");
+			}
+		}
+		#endregion
+
+	    #region Page_PreRenderComplete
 		/// <summary>
 		/// Vyrenderuje html a/nebo script messengeru.
 		/// </summary>
@@ -211,8 +227,6 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		protected virtual string GetToastrScript()
 		{
-			ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, "jquery");
-			ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, "toastr");
 			if (Messenger.Messages.Count > 0)
 			{
 				StringBuilder sb = new StringBuilder();

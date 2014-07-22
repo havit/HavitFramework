@@ -84,8 +84,8 @@ function SingleSubmit_SetProcessing()
 			// nastavíme progress layeru velikost a pozici
 			progressLayer.style.left = "0px";
 			progressLayer.style.top = "0px";												
-			progressLayer.style.width = document.documentElement.scrollWidth + "px"; 
-			progressLayer.style.height = document.documentElement.scrollHeight + "px"; 
+			progressLayer.style.width = (document.documentElement.scrollWidth -1) + "px"; 
+			progressLayer.style.height = (document.documentElement.scrollHeight -1) + "px"; 
 			progressLayer.style.display = "block";
 			progressLayer.style.cursor = "progress";
 		}

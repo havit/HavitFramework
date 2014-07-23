@@ -485,6 +485,24 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region ContainerCssClass
+		/// <summary>
+		/// Pokud je nastaveno, generuje se okolo tabulky gridu další DIV, který má nastavenu tuto css třídu.
+		/// By default je již tabulka jedním DIVem obalena, toto přidává druhý DIV.
+		/// </summary>
+		public string ContainerCssClass
+		{
+			get
+			{
+				return (string)(ViewState["ContainerCssClass"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["ContainerCssClass"] = value;
+			}
+		}
+		#endregion
+
 		#region RequiresDataBinding (new), SetRequiresDatabinding
 		/// <summary>
 		/// Zpřístupňuje pro čtení chráněnou vlastnost RequiresDataBinding.
@@ -2147,7 +2165,18 @@ namespace Havit.Web.UI.WebControls
 				}
 			}
 
+			if (!String.IsNullOrEmpty(ContainerCssClass))
+			{
+				writer.AddAttribute(HtmlTextWriterAttribute.Class, ContainerCssClass);
+				writer.RenderBeginTag(HtmlTextWriterTag.Div);
+			}
+
 			base.RenderContents(writer);
+
+			if (!String.IsNullOrEmpty(ContainerCssClass))
+			{
+				writer.RenderEndTag();
+			}
 		}
 		private TableItemStyle _renderHeaderStyle;
 

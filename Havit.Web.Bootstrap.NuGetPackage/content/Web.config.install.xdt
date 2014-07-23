@@ -20,6 +20,10 @@
 				<add tagType="System.Web.UI.WebControls.RegularExpressionValidator" mappedTagType="Havit.Web.Bootstrap.UI.WebControls.RegularExpressionValidator" xdt:Locator="Match(tagType)" xdt:Transform="SetAttributes" />
 				<add tagType="System.Web.UI.WebControls.RequiredFieldValidator" mappedTagType="Havit.Web.Bootstrap.UI.WebControls.RequiredFieldValidator" xdt:Locator="Match(tagType)" xdt:Transform="InsertIfMissing" />
 				<add tagType="System.Web.UI.WebControls.RequiredFieldValidator" mappedTagType="Havit.Web.Bootstrap.UI.WebControls.RequiredFieldValidator" xdt:Locator="Match(tagType)" xdt:Transform="SetAttributes" />
+				<add tagType="Havit.Web.UI.WebControls.CheckBoxValidator" mappedTagType="Havit.Web.Bootstrap.UI.WebControls.Legacy.CheckBoxValidator" xdt:Locator="Match(tagType)" xdt:Transform="InsertIfMissing" />
+				<add tagType="Havit.Web.UI.WebControls.CheckBoxValidator" mappedTagType="Havit.Web.Bootstrap.UI.WebControls.Legacy.CheckBoxValidator" xdt:Locator="Match(tagType)" xdt:Transform="SetAttributes" />
+				<add tagType="Havit.Web.UI.WebControls.NumericBoxValidator" mappedTagType="Havit.Web.Bootstrap.UI.WebControls.Legacy.NumericBoxValidator" xdt:Locator="Match(tagType)" xdt:Transform="InsertIfMissing" />
+				<add tagType="Havit.Web.UI.WebControls.NumericBoxValidator" mappedTagType="Havit.Web.Bootstrap.UI.WebControls.Legacy.NumericBoxValidator" xdt:Locator="Match(tagType)" xdt:Transform="SetAttributes" />
 				<add tagType="System.Web.UI.WebControls.ValidationSummary" mappedTagType="Havit.Web.Bootstrap.UI.WebControls.ValidationSummary" xdt:Locator="Match(tagType)" xdt:Transform="InsertIfMissing" />
 				<add tagType="System.Web.UI.WebControls.ValidationSummary" mappedTagType="Havit.Web.Bootstrap.UI.WebControls.ValidationSummary" xdt:Locator="Match(tagType)" xdt:Transform="SetAttributes" />
 				<add tagType="System.Web.UI.WebControls.Button" mappedTagType="Havit.Web.Bootstrap.UI.WebControls.Button" xdt:Locator="Match(tagType)" xdt:Transform="InsertIfMissing" />

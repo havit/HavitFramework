@@ -42,8 +42,9 @@
 	
 	<h3>Known issues</h3>
 	<ol>
-		<li>Chrome displays <strong>nested</strong> modals inside parent modals. Add style <code>overflow: visible</code> to <code>.modal</code> css class to solve this issue.</li>
-		<li>Dialog size is recalculated <strong>after</strong> dialog is shown. It causes a small flicker when dialog showing.</li>
+		<li>Chrome displays <strong>nested</strong> modals inside parent modals. Style <code>overflow: visible</code> was added to the <code>.modal</code> css class to solve this issue.</li>
+		<li>Dialog size is recalculated <strong>after</strong> dialog is shown. It causes a small flicker when showing dialog.</li>
+		<li>Nested modals does not support animation.</li>
 	</ol>
 
 	<h2>Sample</h2>

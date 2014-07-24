@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30626.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common Solution Items", "Common Solution Items", "{1C9D6C81-DCFD-49C6-9BEE-0E52304CFE98}"
 	ProjectSection(SolutionItems) = preProject
@@ -86,6 +86,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Documentation.Homepage", "Havit.Documentation.Homepage\Havit.Documentation.Homepage.csproj", "{3BDA4E00-6F3D-4181-BA7A-3FDE62EB367F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.ServicesTest", "Havit.ServicesTest\Havit.ServicesTest.csproj", "{FB68DA0B-02DA-4E05-84A7-0B6C26272EE6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{BB7F4A09-695D-47EE-A13A-CE02979DC775}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution

@@ -46,3 +46,5 @@
 \Sandcastle\doc
 \WebApplicationTest\Scripts\Havit.Web.Bootstrap\*.js
 \Havit.Web\Bootstrap\Content\js\ModalExtension.js
+\packages
+!\packages\repositories.config

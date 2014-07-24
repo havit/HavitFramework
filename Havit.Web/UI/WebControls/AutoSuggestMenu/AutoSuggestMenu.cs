@@ -3,15 +3,15 @@ using System;
 using System.Text;
 using System.Collections;
 using System.IO;
-
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.ComponentModel;
 using System.Collections.Specialized;
-
 using System.Collections.Generic;
+
+using Havit.Web.UI.ClientScripts;
 
 [assembly: WebResource("Havit.Web.UI.WebControls.AutoSuggestMenu.AutoSuggestMenu.js", "text/javascript")]
 [assembly: WebResource("Havit.Web.UI.WebControls.AutoSuggestMenu.AutoSuggestMenuItem.js", "text/javascript")]
@@ -381,11 +381,14 @@ namespace Havit.Web.UI.WebControls
 		#region WriteJSIncludes
 		protected void WriteJSIncludes()
 		{
+			ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, "jquery");
+
 			//if (!this.Page.ClientScript.IsClientScriptIncludeRegistered("AutoSuggestMenu_XUtils"))
 			//{
 			//string resourcesDir = GetAbsoluteResourcesDir();
 
 			//RegisterClientScriptInclude("AutoSuggestMenu_XUtils", resourcesDir + "/XUtils.js");
+
 			ScriptManager.RegisterClientScriptResource(this, typeof(AutoSuggestMenu), "Havit.Web.UI.WebControls.AutoSuggestMenu.XUtils.js");
 
 			// RegisterClientScriptInclude("AutoSuggestMenu_Events", resourcesDir + "/Events.js");

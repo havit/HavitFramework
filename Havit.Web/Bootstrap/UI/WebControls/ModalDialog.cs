@@ -94,7 +94,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Dialog header text. Used only when HeaderTemplate not used.
 		/// HeaderText is rendered in &lt;h4&gt; element with css class "modal-title".
 		/// </summary>
-		[DefaultValue("")]
 		public string HeaderText
 		{
 			get
@@ -142,6 +141,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		#region UseAnimations
 		/// <summary>
 		/// Get or sets whether use animations when showing and hiding dialog.
+		/// Animation are not supported on nested modals.
 		/// </summary>
 		[DefaultValue(true)]
 		public bool UseAnimations

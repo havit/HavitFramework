@@ -421,16 +421,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			ClientScripts.BootstrapClientScriptHelper.RegisterBootstrapClientScript(this.Page);
 			ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, ClientScripts.BootstrapClientScriptHelper.ModalScriptResourceMappingName);
 
-			if (DragMode == ModalDialogDragMode.Required)
-			{
-				ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, "jquery.ui.combined");
-			}
-
-			if (DragMode == ModalDialogDragMode.IfAvailable)
-			{
-				ScriptManager.ScriptResourceMapping.TryEnsureScriptRegistration(this.Page, "jquery.ui.combined");
-			}
-
 			// if we are not able to hide whole dialogContainer, lets hide at least update panel content
 			updatePanel.ContentTemplateContainer.Visible = DialogVisible;
 

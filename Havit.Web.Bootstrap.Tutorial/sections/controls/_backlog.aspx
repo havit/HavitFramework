@@ -9,11 +9,10 @@
 <asp:Content ContentPlaceHolderID="MainCPH" runat="server">
 	<h2>Controls</h2>
 	<ul>
-		<li>GridView pagination</li>
 		<li>NumericBox</li>
 		<li>NumericBoxValidator</li>
-		<li>DateTimeBox</li>
-		<li>DateTimeBoxValidator</li>
+		<li>DateBox</li>
+		<li>DateBoxValidator</li>
 		<li>DateRangeBox</li>
 		<li>DateRangeBoxValidator</li>
 		<li>...</li>

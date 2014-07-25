@@ -35,8 +35,7 @@
 	
 	<h4>DragMode</h4>
 	<ul>
-		<li>Required - Requires script resource definition "jquery.ui.combined" to register jQuery UI to enable dragging.</li>
-		<li>IfAvailable - If script resource definition "jquery.ui.combined" exists or if jQuery UI is registered by any other way, dragging is enabled.</li>
+		<li>IfAvailable - if jQuery UI is loaded on client side, dragging is enabled.</li>
 		<li>No - No dragging enabled.</li>
 	</ul>
 	

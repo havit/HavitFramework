@@ -177,9 +177,10 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
 
             // switch on drag mode if enabled
             var draggableParams = { handle: ' .modal-header', drag: (e, ui) => this.drag.call(this, e, ui) };
-            if (dragMode == 'Required') {
-                this.$modalElement.children('.modal-dialog').draggable(draggableParams);
-            }
+
+            //if (dragMode == 'Required') {
+            //    this.$modalElement.children('.modal-dialog').draggable(draggableParams);
+            //}
 
             if (dragMode == 'IfAvailable') {
                 if (!!jQuery.ui && !!jQuery.ui.version) {

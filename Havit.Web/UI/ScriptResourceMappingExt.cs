@@ -50,7 +50,7 @@ namespace Havit.Web.UI
 				return false;
 			}
 			else
-			{
+			{				
 				ScriptManager.RegisterNamedClientScriptResource(page, resourceName);
 				return true;
 			}

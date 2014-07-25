@@ -49,4 +49,9 @@
 
 	<h3>Documentation</h3>
 	<a href="http://hfw.havit.local/Documentation/?topic=html/d1ca8ee5-a49e-162c-1d4c-497651ccc0b4.htm">Havit.Web.Bootstrap.UI.WebControls documentation</a>
+	
+	<h3>Known issues</h3>
+	<ul>
+		<li>When jQuery UI is used it must be loaded prior to bootstrap.</li>
+	</ul>
 </asp:Content>

@@ -12,14 +12,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	public enum ModalDialogDragMode
 	{
 		/// <summary>
-		/// Drag mode is required.
-		/// Requires script resource definition "jquery.ui.combined".
-		/// </summary>
-		Required,
-		
-		/// <summary>
-		/// Drag mode is used when drag support is available.
-		/// Uses script resource definition "jquery.ui.combined".
+		/// Drag mode is used when drag support (jQuery UI) is available on client side.
 		/// </summary>
 		IfAvailable,
 

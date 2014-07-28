@@ -32,7 +32,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Result value is automatically reset when the dialog in shown, it is set to the type T default value.
 		/// Value is persisted in ViewState (so it must be serializable).
 		/// </summary>
-		public T Result
+		public virtual T Result
 		{
 			get
 			{

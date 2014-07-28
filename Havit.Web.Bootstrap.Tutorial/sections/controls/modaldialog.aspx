@@ -16,7 +16,13 @@
 		<li>Show, Hide</li>
 		<li>DialogVisible</li>
 	</ul>
-	
+	<h2>ModalDialogUserControlBase&lt;T&gt;</h2>
+	<p>Extends ModalDialogUserControlBase by property Result of type T. When dialog is shown value is automatically set (reset) to type T default value.</p>
+	<h3>Properties, Methods</h3>
+	<ul>
+		<li>Result</li>
+	</ul>	
+
 	<h2>ModalDialog</h2>
 	<p>Control which handles dialog appereance &amp; behavior. Dialog is set maximum height to be able to scroll the content of dialog without page scrollbar.</p>
 	<p>Supports dialog in dialog (ie. record editing in modal via <a href="modaleditorextender">ModalEditorExtender</a> with &quot;something&quot; picker with dialog (see known issues).</p>

@@ -143,6 +143,9 @@
     </Compile>
     <Compile Include="Bootstrap\StartUp.cs" />
     <Compile Include="Bootstrap\UI\ClientScripts\BootstrapClientScriptHelper.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\ModalDialogUserControlBaseT.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="UI\ControlExtensions.cs" />
     <Compile Include="UI\WebControls\BrowserNavigationController.cs" />
     <Compile Include="UI\WebControls\DataBoundControlWithHiddenPublicMembersFromIntellisence.cs" />

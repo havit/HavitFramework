@@ -129,7 +129,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region SelectedIds
 		/// <summary>
-		/// Vrací ID vybrané položky. Není-li žádná položka vybraná, vrací null.
+		/// Vrací pole ID vybraných položek. Není-li žádná položka vybraná, vrací prázdné pole.
 		/// </summary>
 		public int[] SelectedIds
 		{

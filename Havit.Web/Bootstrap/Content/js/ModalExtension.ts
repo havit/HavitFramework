@@ -121,9 +121,14 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
 
         public hide() {
             this.modalDialogStatePersister.deleteState();
-            this.modalDialogState = null;
+
+            // listen no more to scroll events
+            this.$modalElement.children('.modal-dialog').children('.modal-content').children().children('.modal-body').off('scroll.havit.web.bootstrap');
+            this.$modalElement.off('scroll.havit.web.bootstrap');
 
             this.stopResizingProcess();
+
+            this.modalDialogState = null;
 
             var $previousModalElement = this.getPreviousModalElement();
             if (this.wasPostBack()) {
@@ -194,8 +199,8 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
             }
 
             // listen do scroll events to persist state between postbacks
-            this.$modalElement.children('.modal-dialog').children('.modal-content').children().children('.modal-body').on('scroll', () => this.bodyScroll.call(this));
-            this.$modalElement.on('scroll', () => this.modalScroll.call(this));
+            this.$modalElement.children('.modal-dialog').children('.modal-content').children().children('.modal-body').on('scroll.havit.web.bootstrap', (event) => this.bodyScroll.call(this, event));
+            this.$modalElement.on('scroll.havit.web.bootstrap', (event) => this.modalScroll.call(this, event));
         }
 
         private showHideModalInternal($modalElement: JQuery, operation: string, suppressAnimation: boolean) {
@@ -378,17 +383,19 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
             this.modalDialogStatePersister.saveState(this.modalDialogState);
         }
 
-        private bodyScroll() {
+        private bodyScroll(event: JQueryEventObject) {
             // persist modal body scroll position
             var $bodyModal = this.$modalElement.children('.modal-dialog').children('.modal-content').children().children('.modal-body');
             this.modalDialogState.bodyScrollPosition = new Position($bodyModal.scrollLeft(), $bodyModal.scrollTop());
             this.modalDialogStatePersister.saveState(this.modalDialogState);
+            event.stopPropagation();
         }
 
-        private modalScroll() {
+        private modalScroll(event: JQueryEventObject) {
             // persist modal scroll position
             this.modalDialogState.modalScrollPosition = new Position(this.$modalElement.scrollLeft(), this.$modalElement.scrollTop());
             this.modalDialogStatePersister.saveState(this.modalDialogState);
+            event.stopPropagation();
         }
 
         // #region startResizingProcess, stopResizingProcess, processResizingProcess
@@ -426,8 +433,9 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
                 var headerHeight = $modalHeader.outerHeight(true) || 0;
                 var footerHeight = $modalFooter.outerHeight(true) || 0;
                 var headerTop = ($modalHeader.length > 0) ? $modalHeader.offset().top : $modalBody.offset().top;
+                var documentScrollTop = $(document).scrollTop();
 
-                var bodyHeight = containerHeight - headerHeight - footerHeight - (2 * headerTop);
+                var bodyHeight = containerHeight - headerHeight - footerHeight - (2 * (headerTop - documentScrollTop));
 
                 var bodyHeightPx: string = '';
                 if (($modal.scrollTop() == 0) && (bodyHeight >= 200)) { /* if less then 200 px then switch to standard behavior - scroll dialog content with page scroller */

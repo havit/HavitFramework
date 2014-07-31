@@ -17,9 +17,10 @@
 				</Items>
 			</bc:NavbarLinkItem>
 		</MenuItems>
-		<RightSectionTemplate>
-			<li><a href="#">Přihlášený Uživatel</a></li>
-		</RightSectionTemplate>
+		<RightSectionItems>
+			<bc:NavbarLinkItem Text="Odhlásit" Url="~/" />
+			<bc:NavbarTextItem Text="Přihlášený uživatel" />
+		</RightSectionItems>
 	</bc:Navbar>
 	
 	<asp:SiteMapDataSource ID="WebSiteMapDataSource" SiteMapProvider="WebSiteMapProvider" ShowStartingNode="false" runat="server" />

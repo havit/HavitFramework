@@ -19,7 +19,7 @@
 		<li>BrandTemplate - template for brand section (see below), when not set, whole brand section is not rendered</li>
 		<li>MenuItems - menu items</li>
 		<li>ShowCaret (default False) - when true, renders caret for items with children</li>
-		<li>RightSectionTemplate - template for right menu section (see below), when not set the whole section is not rendered</li>
+		<li>RightMenuItems - right menu items</li>
 		<li>DataSource, DataSourceID - data source properties (databinding from SiteMapDataSource supported)</li>
 		<li>ToggleNavigationText (default String.Empty) - text to be used for screen readers as toggle navigation text (then not used, whole element not rendered)</li>
 	</ul>
@@ -29,6 +29,7 @@
 		<li>NavberLinkItem (Text, Url, Visible, VisibleFunc, AutoHide, Items)</li>
 		<li>NavberHeaderItem (Text, Visible, VisibleFunc)</li>
 		<li>NavberSeparatorItem (Text, Visible, VisibleFunc)</li>
+		<li>NavberTextItem (Text)</li>
 	</ul>
 
 	<h2>Rendered HTML</h2>
@@ -50,7 +51,7 @@
 				<span class="hightlight">(html for) MenuItems</span>
 			&lt;/ul&gt;
 			&lt;ul class=&quot;nav navbar-nav navbar-right&quot;&gt;
-				<span class="hightlight">RightSectionTemplate</span>	
+				<span class="hightlight">RightMenuItems</span>	
 			&lt;/ul&gt;
 		&lt;/div&gt;
 	&lt;/div&gt;

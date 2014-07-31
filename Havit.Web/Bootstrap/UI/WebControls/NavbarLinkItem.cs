@@ -77,7 +77,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 
 		#region IsDecoration
 		/// <summary>
-		/// Returns false - menu items is not a decoration.
+		/// Returns false - menu item is not a decoration.
 		/// </summary>
 		public override bool IsDecoration
 		{

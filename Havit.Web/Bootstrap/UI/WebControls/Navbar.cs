@@ -18,7 +18,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		#region Private fields - nested controls and control containers
 		private NavbarSection _mainMenuSection;
 		private Control _brandContainer;
-		private Control _rightSectionContainer;
+		private NavbarSection _rightMenuSection;
 		#endregion
 
 		#region MenuItems
@@ -71,26 +71,19 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		}
 		#endregion
 
-		#region RightSectionTemplate
+		#region RightSectionItems
 		/// <summary>
-		/// Brand template - template for rendering brand section of menu.
-		/// Usualy is surrounded with element a with navbar-brand class (but not when BrandUrl is an empty string).
+		///  Right navbar items.
 		/// </summary>
-		[TemplateInstance(TemplateInstance.Single)]
 		[PersistenceMode(PersistenceMode.InnerProperty)]
-		public virtual ITemplate RightSectionTemplate
+		public virtual NavbarItemCollection RightSectionItems
 		{
 			get
 			{
-				return _rightSectionTemplate;
-			}
-			set
-			{
-				_rightSectionTemplate = value;
+				return _rightMenuSection.MenuItems;
 			}
 		}
-		private ITemplate _rightSectionTemplate;
-		#endregion	
+		#endregion
 
 		#region ShowCaret
 		/// <summary>
@@ -184,6 +177,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		public Navbar()
 		{
 			_mainMenuSection = new NavbarSection();
+			_rightMenuSection = new NavbarSection();
 		}
 		#endregion
 
@@ -207,18 +201,12 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			base.CreateChildControls();
 
 			this.Controls.Add(_mainMenuSection);
+			this.Controls.Add(_rightMenuSection);
 
 			if (this._brandTemplate != null)
 			{
 				_brandContainer = new Control();
 				_brandTemplate.InstantiateIn(_brandContainer);
-				this.Controls.Add(_brandContainer);
-			}
-
-			if (this._rightSectionTemplate != null)
-			{
-				_rightSectionContainer = new Control();
-				_rightSectionTemplate.InstantiateIn(_rightSectionContainer);
 				this.Controls.Add(_brandContainer);
 			}
 		}
@@ -313,12 +301,12 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			_mainMenuSection.RenderControl(writer);
 
 			#region Right section
-			if (_rightSectionContainer != null)
+			if (_rightMenuSection.MenuItems.Count > 0)
 			{
 				writer.AddAttribute(HtmlTextWriterAttribute.Class, "nav navbar-nav navbar-right");
 				writer.RenderBeginTag(HtmlTextWriterTag.Ul);
 
-				_rightSectionContainer.RenderControl(writer);
+				_rightMenuSection.RenderControl(writer);
 
 				writer.RenderEndTag(); // ul
 			}

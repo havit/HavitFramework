@@ -26,6 +26,7 @@
 			<li>ShowTooltip (default True)</li>
 			<li>TooltipPosition (default TooltipPosition.Right)</li>
 			<li>ControlToValidateInvalidCssClass (default "validation-invalid") - class name added to the input control when validation fails</li>
+			<li>ControlToValidateInvalidTooltipCssClass (default "validation-tooltip") - class name added to the validator tooltip</li>
 			<li>Display (default value overriden to ValidatorDisplay.None) - validation text is not display in place of validator</li>
 		</ul>
 	</ul>
@@ -34,6 +35,7 @@
 	<p>Extends validators with ControlToValidate property value by adding a class to the invalid input field (ControlToValidate) and displaying validation errors as a tooltip of ControlToValidate control.</p>
 	<p>Tooltip text is first non empty string in Tooltip, Text, ErrorMessage. Tooltip is visible on control mouse over or when control has focus.</p>
 	<p>EnableClientScript property must have true value to enable described behavior.</p>
+	<p>Validation tooltips are displayed with container 'body' to enable use in <a href="modaldialog">modal dialog</a>. Otherwise tooltip cannot leave modal dialog and is hidden unded scrollbars.</p>
 
 	<h2>Styling</h2>
 	<p>Variables for customization are defined in validation.less file.</p>

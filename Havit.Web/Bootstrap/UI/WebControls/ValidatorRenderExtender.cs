@@ -25,6 +25,13 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		internal const string DefaultControlToValidateInvalidCssClass = "validation-invalid";
 		#endregion
 
+		#region DefaultControlToValidateInvalidCssClass (const)
+		/// <summary>
+		/// Default CssClass for validation tooltip.
+		/// </summary>
+		internal const string DefaultControlToValidateInvalidTooltipCssClass = "validation-tooltip";
+		#endregion
+
 		#region Setup
 		/// <summary>
 		/// Sets up validator (used from constructor).
@@ -91,7 +98,13 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				// ensure rendering control to value invalid css class
 				if (!String.IsNullOrEmpty(validator.ControlToValidateInvalidCssClass))
 				{
-					writer.AddAttribute("data-val-ctvclass", validator.ControlToValidateInvalidCssClass); // controltovalidate css class
+					writer.AddAttribute("data-val-ctvinvalidclass", validator.ControlToValidateInvalidCssClass); // controltovalidate css class
+				}
+
+				// ensure rendering control to value invalid css class
+				if (!String.IsNullOrEmpty(validator.ControlToValidateInvalidTooltipCssClass))
+				{
+					writer.AddAttribute("data-val-ctvinvalidtooltipclass", validator.ControlToValidateInvalidTooltipCssClass); // controltovalidate css class
 				}
 
 				// ensure rendering tooltip data

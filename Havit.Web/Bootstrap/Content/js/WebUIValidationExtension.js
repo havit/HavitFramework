@@ -104,14 +104,14 @@
 						validationDisplayTargetControl = item.controltovalidate;
 					};
 
-					var controltovalidateclass = item.getAttribute("data-val-ctvclass"); // control to validate class
+					var controltovalidateinvalidclass = item.getAttribute("data-val-ctvinvalidclass"); // control to validate class
 					if ((validationDisplayTargetControl != null) && (validationDisplayTargetControl.length > 0)) {
-						if ((controltovalidateclass != null) && (controltovalidateclass.length > 0)) {
+						if ((controltovalidateinvalidclass != null) && (controltovalidateinvalidclass.length > 0)) {
 							$controlToValidate = $("#" + validationDisplayTargetControl);
 							if ($controlToValidate.attr("tooltipReady") == "true") {
 								$("#" + validationDisplayTargetControl).attr("tooltipReady", "false").tooltip('destroy'); // destroy existing tooltip
 							}
-							$controlToValidate.removeClass(controltovalidateclass); // remove "validation failed" class to a control to validate
+							$controlToValidate.removeClass(controltovalidateinvalidclass); // remove "validation failed" class to a control to validate
 						}
 					}
 				}
@@ -129,13 +129,14 @@
 					validationDisplayTargetControl = item.controltovalidate;
 				};
 
-				var controltovalidateclass = item.getAttribute("data-val-ctvclass");
+				var controltovalidateinvalidclass = item.getAttribute("data-val-ctvinvalidclass");
+				var controltovalidateinvalidtooltipclass = item.getAttribute("data-val-ctvinvalidtooltipclass");
 				var tooltipposition = item.getAttribute("data-val-tt-position");
 				var tooltiptext = item.getAttribute("data-val-tt-text");
 				if ((validationDisplayTargetControl != null) && (validationDisplayTargetControl.length > 0)) {
 
-					if ((controltovalidateclass != null) && (controltovalidateclass.length > 0)) {
-						$("#" + validationDisplayTargetControl).addClass(controltovalidateclass); // add "validation failed" class to a control to validate
+					if ((controltovalidateinvalidclass != null) && (controltovalidateinvalidclass.length > 0)) {
+						$("#" + validationDisplayTargetControl).addClass(controltovalidateinvalidclass); // add "validation failed" class to a control to validate
 					}
 
 					if ((tooltiptext != null) && (tooltiptext.length > 0)) {
@@ -160,7 +161,8 @@
 							failedValidatorsTooltips.push({
 								validationDisplayTargetControl: validationDisplayTargetControl,
 								position: tooltipposition,
-								text: tooltiptext
+								text: tooltiptext,
+								invalidtooltipclass: controltovalidateinvalidtooltipclass
 							});
 						}
 					}
@@ -169,14 +171,21 @@
 
 			// create tooltips from prepared array
 			$.each(failedValidatorsTooltips, function (tooltipIndex, tooltip) {
+				var tooltipoptions = {
+					'placement': tooltip.position,
+					'container': 'body',
+					'title': tooltip.text,
+					'trigger': 'hover focus',
+					'html': true // ensures <br /> to work
+				};
+
+				if ((tooltip.invalidtooltipclass != null) && (tooltip.invalidtooltipclass.length > 0)) {
+					tooltipoptions.template = '<div class="tooltip #invalidtooltipclass#" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'.replace('#invalidtooltipclass#', tooltip.invalidtooltipclass);
+				}
+
 				$("#" + tooltip.validationDisplayTargetControl)
 					.attr("tooltipReady", "true")
-					.tooltip({
-						'placement': tooltip.position,
-						'title': tooltip.text,
-						'trigger': 'hover focus',
-						'html': true // ensures <br /> to work
-					});
+					.tooltip(tooltipoptions);
 			});
 		};
 

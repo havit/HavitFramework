@@ -11,6 +11,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	{
 		string ControlToValidate { get; }
 		string ControlToValidateInvalidCssClass { get; }
+		string ControlToValidateInvalidTooltipCssClass { get; }
 		string ToolTip { get; }
 		string Text { get; }
 		string ErrorMessage { get; }

@@ -67,6 +67,23 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		}
 		#endregion
 
+		#region ControlToValidateInvalidCssClass
+		/// <summary>
+		/// CssClass name which is added to a validation tooltip. 
+		/// </summary>
+		public string ControlToValidateInvalidTooltipCssClass
+		{
+			get
+			{
+				return (string)(ViewState["ControlToValidateInvalidTooltipCssClass"] ?? ValidatorRenderExtender.DefaultControlToValidateInvalidTooltipCssClass);
+			}
+			set
+			{
+				ViewState["ControlToValidateInvalidTooltipCssClass"] = value;
+			}
+		}
+		#endregion
+
 		#region Constructor
 		/// <summary>
 		/// Constructor.

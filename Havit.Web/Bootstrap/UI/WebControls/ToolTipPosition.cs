@@ -14,7 +14,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	/// <summary>
 	/// Positions of bootstrap tooltip.
 	/// </summary>
-	public enum TooltipPosition
+	public enum ToolTipPosition
 	{
 		/// <summary>
 		/// Top

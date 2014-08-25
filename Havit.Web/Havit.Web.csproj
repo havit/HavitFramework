@@ -191,8 +191,8 @@
     <Compile Include="Bootstrap\UI\WebControls\TabMode.cs" />
     <Compile Include="Bootstrap\UI\WebControls\TabModeExtensions.cs" />
     <Compile Include="Bootstrap\UI\WebControls\TabPanel.cs" />
-    <Compile Include="Bootstrap\UI\WebControls\Tooltip.cs" />
-    <Compile Include="Bootstrap\UI\WebControls\TooltipPosition.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\ToolTip.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\ToolTipPosition.cs" />
     <Compile Include="Bootstrap\UI\WebControls\ValidationDisplayTarget.cs" />
     <Compile Include="Bootstrap\UI\WebControls\ValidationSummary.cs" />
     <Compile Include="Bootstrap\UI\WebControls\ValidatorRenderExtender.cs" />

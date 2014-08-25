@@ -25,11 +25,11 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		internal const string DefaultControlToValidateInvalidCssClass = "validation-invalid";
 		#endregion
 
-		#region DefaultControlToValidateInvalidCssClass (const)
+		#region DefaultControlToValidateInvalidToolTipCssClass (const)
 		/// <summary>
 		/// Default CssClass for validation tooltip.
 		/// </summary>
-		internal const string DefaultControlToValidateInvalidTooltipCssClass = "validation-tooltip";
+		internal const string DefaultControlToValidateInvalidToolTipCssClass = "validation-tooltip";
 		#endregion
 
 		#region Setup
@@ -53,7 +53,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			BaseValidator baseValidator = (BaseValidator)validator;
 
-			if (baseValidator.Enabled && validator.ShowTooltip && String.IsNullOrEmpty(validator.ControlToValidate) && HttpContext.Current.IsDebuggingEnabled)
+			if (baseValidator.Enabled && validator.ShowToolTip && String.IsNullOrEmpty(validator.ControlToValidate) && HttpContext.Current.IsDebuggingEnabled)
 			{
 				throw new HttpException(String.Format("Validator '{0}' should show tooltip but ControlToValidate is not specified.", baseValidator.ID));
 			}
@@ -102,13 +102,13 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				}
 
 				// ensure rendering control to value invalid css class
-				if (!String.IsNullOrEmpty(validator.ControlToValidateInvalidTooltipCssClass))
+				if (!String.IsNullOrEmpty(validator.ControlToValidateInvalidToolTipCssClass))
 				{
-					writer.AddAttribute("data-val-ctvinvalidtooltipclass", validator.ControlToValidateInvalidTooltipCssClass); // controltovalidate css class
+					writer.AddAttribute("data-val-ctvinvalidtooltipclass", validator.ControlToValidateInvalidToolTipCssClass); // controltovalidate css class
 				}
 
 				// ensure rendering tooltip data
-				if (validator.ShowTooltip)
+				if (validator.ShowToolTip)
 				{
 					string tooltip = validator.ToolTip;
 					if (String.IsNullOrEmpty(tooltip))
@@ -122,7 +122,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 
 					if (!String.IsNullOrEmpty(tooltip))
 					{
-						writer.AddAttribute("data-val-tt-position", validator.TooltipPosition.ToString().ToLower());
+						writer.AddAttribute("data-val-tt-position", validator.ToolTipPosition.ToString().ToLower());
 						writer.AddAttribute("data-val-tt-text", tooltip);
 					}
 				}

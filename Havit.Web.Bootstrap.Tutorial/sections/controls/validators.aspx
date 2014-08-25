@@ -23,8 +23,8 @@
 	<h2>Properties</h2>
 	<ul>
 		<ul>
-			<li>ShowTooltip (default True)</li>
-			<li>TooltipPosition (default TooltipPosition.Right)</li>
+			<li>ShowToolTip (default True)</li>
+			<li>ToolTipPosition (default ToolTipPosition.Right)</li>
 			<li>ControlToValidateInvalidCssClass (default "validation-invalid") - class name added to the input control when validation fails</li>
 			<li>ControlToValidateInvalidTooltipCssClass (default "validation-tooltip") - class name added to the validator tooltip</li>
 			<li>Display (default value overriden to ValidatorDisplay.None) - validation text is not display in place of validator</li>

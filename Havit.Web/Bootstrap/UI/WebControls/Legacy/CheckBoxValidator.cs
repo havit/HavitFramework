@@ -15,36 +15,37 @@ namespace Havit.Web.Bootstrap.UI.WebControls.Legacy
 	{
 		#region Common validator extensions
 
-		#region ShowTooltip
+		#region ShowToolTip
 		/// <summary>
 		/// Shows ToolTip (or Text if ToolTip not set) as a Bootstrap ToolTip at ControlToValidate when validation fails.
 		/// </summary>
-		public bool ShowTooltip
+		public bool ShowToolTip
 		{
 			get
 			{
-				return (bool)(ViewState["ShowTooltip"] ?? true);
+				return (bool)(ViewState["ShowToolTip"] ?? true);
 			}
 			set
 			{
-				ViewState["ShowTooltip"] = value;
+				ViewState["ShowToolTip"] = value;
 			}
 		}
 		#endregion
 
-		#region TooltipPosition
+		#region ToolTipPosition
 		/// <summary>
-		/// Tooltip position.
+		/// ToolTip position.
 		/// </summary>
-		public TooltipPosition TooltipPosition
+		[DefaultValue(ToolTipPosition.Top)]
+		public ToolTipPosition ToolTipPosition
 		{
 			get
 			{
-				return (TooltipPosition)(ViewState["TooltipPosition"] ?? TooltipPosition.Right);
+				return (ToolTipPosition)(ViewState["ToolTipPosition"] ?? ToolTipPosition.Top);
 			}
 			set
 			{
-				ViewState["TooltipPosition"] = value;
+				ViewState["ToolTipPosition"] = value;
 			}
 		}
 		#endregion
@@ -66,19 +67,19 @@ namespace Havit.Web.Bootstrap.UI.WebControls.Legacy
 		}
 		#endregion
 
-		#region ControlToValidateInvalidCssClass
+		#region ControlToValidateInvalidToolTipCssClass
 		/// <summary>
 		/// CssClass name which is added to a validation tooltip. 
 		/// </summary>
-		public string ControlToValidateInvalidTooltipCssClass
+		public string ControlToValidateInvalidToolTipCssClass
 		{
 			get
 			{
-				return (string)(ViewState["ControlToValidateInvalidTooltipCssClass"] ?? ValidatorRenderExtender.DefaultControlToValidateInvalidTooltipCssClass);
+				return (string)(ViewState["ControlToValidateInvalidToolTipCssClass"] ?? ValidatorRenderExtender.DefaultControlToValidateInvalidToolTipCssClass);
 			}
 			set
 			{
-				ViewState["ControlToValidateInvalidTooltipCssClass"] = value;
+				ViewState["ControlToValidateInvalidToolTipCssClass"] = value;
 			}
 		}
 		#endregion

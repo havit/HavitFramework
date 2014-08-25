@@ -263,7 +263,6 @@
     <Content Include="sections\controls\checkboxlist_radiobuttonlist.aspx" />
     <Content Include="sections\controls\tabs.aspx" />
     <Content Include="sections\controls\validation-summary.aspx" />
-    <Content Include="sections\controls\_backlog.aspx" />
     <Content Include="sections\controls\validators.aspx" />
     <Content Include="sections\less\less.aspx" />
     <Content Include="Default.aspx" />

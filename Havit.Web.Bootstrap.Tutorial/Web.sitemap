@@ -12,8 +12,6 @@
 			<siteMapNode url="~/sections/controls/switchbutton" title="SwitchButton" />
 			<siteMapNode url="~/sections/controls/validators" title="Validators" />
 			<siteMapNode url="~/sections/controls/validation-summary" title="Validation Summary" />
-			<siteMapNode title="-" />
-			<siteMapNode url="~/sections/controls/_backlog" title="Backlog" />
 		</siteMapNode>
 		<siteMapNode url="~/sections/less/less" title="LESS" />
     </siteMapNode>

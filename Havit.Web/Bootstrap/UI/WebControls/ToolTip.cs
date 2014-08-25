@@ -16,22 +16,22 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	/// Label with ToolTip displayed as Bootstrap tooltip.
 	/// </summary>
 	[ParseChildren(false), PersistChildren(true)]
-	public class Tooltip : System.Web.UI.WebControls.WebControl
+	public class ToolTip : System.Web.UI.WebControls.WebControl
 	{
-		#region TooltipPosition
+		#region ToolTipPosition
 		/// <summary>
-		/// Tooltip position.
+		/// ToolTip position.
 		/// </summary>
-		[DefaultValue(TooltipPosition.Top)]
-		public TooltipPosition TooltipPosition
+		[DefaultValue(ToolTipPosition.Top)]
+		public ToolTipPosition ToolTipPosition
 		{
 			get
 			{
-				return (TooltipPosition)(ViewState["TooltipPosition"] ?? TooltipPosition.Top);
+				return (ToolTipPosition)(ViewState["ToolTipPosition"] ?? ToolTipPosition.Top);
 			}
 			set
 			{
-				ViewState["TooltipPosition"] = value;
+				ViewState["ToolTipPosition"] = value;
 			}
 		}
 		#endregion
@@ -40,7 +40,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Constructor.
 		/// </summary>
-		public Tooltip()
+		public ToolTip()
 			: base(HtmlTextWriterTag.Span)
 		{
 		}
@@ -55,7 +55,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			if (!String.IsNullOrEmpty(ToolTip))
 			{
 				writer.AddAttribute("data-toggle", "tooltip");
-				writer.AddAttribute("data-placement", TooltipPosition.ToString().ToLower());
+				writer.AddAttribute("data-placement", ToolTipPosition.ToString().ToLower());
 			}
 			base.AddAttributesToRender(writer);
 		}
@@ -68,7 +68,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		protected override void OnPreRender(EventArgs e)
 		{
 			base.OnPreRender(e);
-			ScriptManager.RegisterStartupScript(this, typeof(Tooltip), "TooltipInitialization", @"$(function() { $('[data-toggle=""tooltip""]').tooltip(); });", true);
+			ScriptManager.RegisterStartupScript(this, typeof(ToolTip), "ToolTipInitialization", @"$(function() { $('[data-toggle=""tooltip""]').tooltip(); });", true);
 		}
 		#endregion
 	}

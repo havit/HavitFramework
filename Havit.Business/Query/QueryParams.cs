@@ -138,8 +138,8 @@ namespace Havit.Business.Query
 			commandBuilder.Append(GetWhereStatement(command, sqlServerPlatform, commandBuilderOptions));
 			commandBuilder.Append(" ");
 			commandBuilder.Append(GetOrderByStatement(command));
-			commandBuilder.Append(" ");
-			commandBuilder.Append(GetOptionStatementStatement(command, sqlServerPlatform, commandBuilderOptions));
+			//commandBuilder.Append(" ");
+			//commandBuilder.Append(GetOptionStatementStatement(command, sqlServerPlatform, commandBuilderOptions));
 			while ((commandBuilder.Length > 0 /* nicméně zde se na nulu nikdy nemůžeme dostat */) && (commandBuilder[commandBuilder.Length - 1] == ' '))
 			{
 				commandBuilder.Remove(commandBuilder.Length - 1, 1);
@@ -307,32 +307,25 @@ namespace Havit.Business.Query
 		}
 		#endregion
 
-		#region GetOptionStatementStatement
-		/// <summary>
-		/// Vrátí sekci SQL dotazu OPTION - použito na OPTION (RECOMPILE).
-		/// OPTION (RECOMPILE): workaround pro http://connect.microsoft.com/SQLServer/feedback/ViewFeedback.aspx?FeedbackID=256717
-		/// </summary>
-		protected virtual string GetOptionStatementStatement(DbCommand command, SqlServerPlatform sqlServerPlatform, CommandBuilderOptions commandBuilderOptions)
-		{
-			Debug.Assert(command != null);
+		//#region GetOptionStatementStatement
+		///// <summary>
+		///// Vrátí sekci SQL dotazu OPTION - použito na OPTION (RECOMPILE).
+		///// OPTION (RECOMPILE): workaround pro http://connect.microsoft.com/SQLServer/feedback/ViewFeedback.aspx?FeedbackID=256717
+		///// </summary>
+		//protected virtual string GetOptionStatementStatement(DbCommand command, SqlServerPlatform sqlServerPlatform, CommandBuilderOptions commandBuilderOptions)
+		//{
+		//	Debug.Assert(command != null);
 
-			//PropertyInfoCollection queryProperties = properties;
+		//	// jen pro SQL Server 2005 a to ještě nesmí být požadováno ReferenceInAsEnumeretaion.
+		//	if (sqlServerPlatform == SqlServerPlatform.SqlServer2005)
+		//	{
+		//		// ideálně bychom ještě otestovali, zda obsahuje podmínku s IntArray...
+		//		return "OPTION (RECOMPILE)";
+		//	}
 
-			//if (queryProperties.Count == 0)
-			//{
-			//	queryProperties = objectInfo.Properties;
-			//}
-
-			// jen pro SQL Server 2005 a to ještě nesmí být požadováno ReferenceInAsEnumeretaion.
-			if (sqlServerPlatform == SqlServerPlatform.SqlServer2005)
-			{
-				// ideálně bychom ještě otestovali, zda obsahuje podmínku s IntArray...
-				return "OPTION (RECOMPILE)";				
-			}
-
-			return "";
-		}
-		#endregion
+		//	return "";
+		//}
+		//#endregion
 
 	}
 }

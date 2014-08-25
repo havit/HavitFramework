@@ -56,8 +56,7 @@ namespace Havit.Business.Query
 					return;
 
 				case SqlServerPlatform.SqlServer2005:
-					GetWhereStatementForSqlServer2005(command, whereBuilder);
-					return;
+					throw new NotSupportedException("Režim pro SqlServerPlatform.SqlServer2005 již není podporován.");
 
 				default:
 					GetWhereStatementForSqlServer2008(command, whereBuilder, sqlServerPlatform);
@@ -74,56 +73,7 @@ namespace Havit.Business.Query
 		{
 			whereBuilder.AppendFormat("({{0}} IN ({0})", String.Join(",", Array.ConvertAll<int, string>(ids, item => item.ToString())));
 		}
-		#endregion
-
-		#region GetWhereStatementForSqlServer2005
-		/// <summary>
-		/// Řeší variantu podmínky where pro SQL Server 2005.
-		/// </summary>
-		private void GetWhereStatementForSqlServer2005(DbCommand command, StringBuilder whereBuilder)
-		{
-			if (ids.Length < 2000)
-			{
-#pragma warning disable 612,618
-				IOperand idsOperand = SqlInt32ArrayOperand.Create(ids);
-#pragma warning restore 612,618
-				whereBuilder.AppendFormat("({0} IN (SELECT [Value] FROM dbo.IntArrayToTable({1})))",
-					operand.GetCommandValue(command, SqlServerPlatform.SqlServer2005),
-					idsOperand.GetCommandValue(command, SqlServerPlatform.SqlServer2005));
-			}
-			else
-			{
-				bool wasFirst = false;
-				int startIndex = 0;
-
-				whereBuilder.Append("(");
-
-				while (startIndex < ids.Length)
-				{
-					if (wasFirst)
-					{
-						whereBuilder.Append(" OR ");
-					}
-					wasFirst = true;
-
-					int length = Math.Min(ids.Length - startIndex, 1999);
-					int[] subarray = new int[length];
-					Array.Copy(ids, startIndex, subarray, 0, length);
-
-#pragma warning disable 612,618
-					IOperand idsOperand = SqlInt32ArrayOperand.Create(ids);
-#pragma warning restore 612,618
-					whereBuilder.AppendFormat("({0} IN (SELECT [Value] FROM dbo.IntArrayToTable({1})))",
-						operand.GetCommandValue(command, SqlServerPlatform.SqlServer2005),
-						idsOperand.GetCommandValue(command, SqlServerPlatform.SqlServer2005));
-
-					startIndex += length;
-				}
-				whereBuilder.Append(")");
-				
-			}
-		}
-		#endregion
+		#endregion		
 
 		#region GetWhereStatementForSqlServer2008
 		/// <summary>

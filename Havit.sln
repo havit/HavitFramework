@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30626.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common Solution Items", "Common Solution Items", "{1C9D6C81-DCFD-49C6-9BEE-0E52304CFE98}"
 	ProjectSection(SolutionItems) = preProject
@@ -20,8 +20,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Business", "Havit.Business\Havit.Business.csproj", "{81995BC1-9F25-4F46-8258-8ED1F965CABB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Drawing", "Havit.Drawing\Havit.Drawing.csproj", "{0A4C075E-E474-4AD5-8377-5F7C7E3488D8}"
-EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Havit.Data.SqlServer", "Havit.Data.SqlServer\Havit.Data.SqlServer.sqlproj", "{AB28A793-D0AC-46ED-9D48-B75B0DC4EE90}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Data", "Havit.Data\Havit.Data.csproj", "{703235E0-86C0-44F3-95BB-3D9F39886966}"
 EndProject
@@ -96,7 +94,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{BB7F4A
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 26
+		SccNumberOfProjects = 25
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://tfs.havit.local:8080/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -156,50 +154,46 @@ Global
 		SccProjectTopLevelParentUniqueName14 = Havit.sln
 		SccProjectName14 = HavitTestConsoleApplication
 		SccLocalPath14 = HavitTestConsoleApplication
-		SccProjectUniqueName15 = Havit.Data.SqlServer\\Havit.Data.SqlServer.sqlproj
+		SccProjectUniqueName15 = TracingTest\\TracingTest.csproj
 		SccProjectTopLevelParentUniqueName15 = Havit.sln
-		SccProjectName15 = Havit.Data.SqlServer
-		SccLocalPath15 = Havit.Data.SqlServer
-		SccProjectUniqueName16 = TracingTest\\TracingTest.csproj
+		SccProjectName15 = TracingTest
+		SccLocalPath15 = TracingTest
+		SccProjectUniqueName16 = Havit.Services\\Havit.Services.csproj
 		SccProjectTopLevelParentUniqueName16 = Havit.sln
-		SccProjectName16 = TracingTest
-		SccLocalPath16 = TracingTest
-		SccProjectUniqueName17 = Havit.Services\\Havit.Services.csproj
+		SccProjectName16 = Havit.Services
+		SccLocalPath16 = Havit.Services
+		SccProjectUniqueName17 = Sandcastle\\Sandcastle.shfbproj
 		SccProjectTopLevelParentUniqueName17 = Havit.sln
-		SccProjectName17 = Havit.Services
-		SccLocalPath17 = Havit.Services
-		SccProjectUniqueName18 = Sandcastle\\Sandcastle.shfbproj
+		SccProjectName17 = Sandcastle
+		SccLocalPath17 = Sandcastle
+		SccProjectUniqueName18 = Havit.Data.Glimpse\\Havit.Data.Glimpse.csproj
 		SccProjectTopLevelParentUniqueName18 = Havit.sln
-		SccProjectName18 = Sandcastle
-		SccLocalPath18 = Sandcastle
-		SccProjectUniqueName19 = Havit.Data.Glimpse\\Havit.Data.Glimpse.csproj
+		SccProjectName18 = Havit.Data.Glimpse
+		SccLocalPath18 = Havit.Data.Glimpse
+		SccProjectUniqueName19 = Havit.Data.Glimpse.NuGetPackage\\Havit.Data.Glimpse.NuGetPackage.csproj
 		SccProjectTopLevelParentUniqueName19 = Havit.sln
-		SccProjectName19 = Havit.Data.Glimpse
-		SccLocalPath19 = Havit.Data.Glimpse
-		SccProjectUniqueName20 = Havit.Data.Glimpse.NuGetPackage\\Havit.Data.Glimpse.NuGetPackage.csproj
+		SccProjectName19 = Havit.Data.Glimpse.NuGetPackage
+		SccLocalPath19 = Havit.Data.Glimpse.NuGetPackage
+		SccProjectUniqueName20 = Havit.BusinessTest\\Havit.BusinessTest.csproj
 		SccProjectTopLevelParentUniqueName20 = Havit.sln
-		SccProjectName20 = Havit.Data.Glimpse.NuGetPackage
-		SccLocalPath20 = Havit.Data.Glimpse.NuGetPackage
-		SccProjectUniqueName21 = Havit.BusinessTest\\Havit.BusinessTest.csproj
+		SccProjectName20 = Havit.BusinessTest
+		SccLocalPath20 = Havit.BusinessTest
+		SccProjectUniqueName21 = Havit.Web.Bootstrap.NuGetPackage\\Havit.Web.Bootstrap.NuGetPackage.csproj
 		SccProjectTopLevelParentUniqueName21 = Havit.sln
-		SccProjectName21 = Havit.BusinessTest
-		SccLocalPath21 = Havit.BusinessTest
-		SccProjectUniqueName22 = Havit.Web.Bootstrap.NuGetPackage\\Havit.Web.Bootstrap.NuGetPackage.csproj
+		SccProjectName21 = Havit.Web.Bootstrap.NuGetPackage
+		SccLocalPath21 = Havit.Web.Bootstrap.NuGetPackage
+		SccProjectUniqueName22 = Havit.Web.Bootstrap.Tutorial\\Havit.Web.Bootstrap.Tutorial.csproj
 		SccProjectTopLevelParentUniqueName22 = Havit.sln
-		SccProjectName22 = Havit.Web.Bootstrap.NuGetPackage
-		SccLocalPath22 = Havit.Web.Bootstrap.NuGetPackage
-		SccProjectUniqueName23 = Havit.Web.Bootstrap.Tutorial\\Havit.Web.Bootstrap.Tutorial.csproj
+		SccProjectName22 = Havit.Web.Bootstrap.Tutorial
+		SccLocalPath22 = Havit.Web.Bootstrap.Tutorial
+		SccProjectUniqueName23 = Havit.Documentation.Homepage\\Havit.Documentation.Homepage.csproj
 		SccProjectTopLevelParentUniqueName23 = Havit.sln
-		SccProjectName23 = Havit.Web.Bootstrap.Tutorial
-		SccLocalPath23 = Havit.Web.Bootstrap.Tutorial
-		SccProjectUniqueName24 = Havit.Documentation.Homepage\\Havit.Documentation.Homepage.csproj
+		SccProjectName23 = Havit.Documentation.Homepage
+		SccLocalPath23 = Havit.Documentation.Homepage
+		SccProjectUniqueName24 = Havit.ServicesTest\\Havit.ServicesTest.csproj
 		SccProjectTopLevelParentUniqueName24 = Havit.sln
-		SccProjectName24 = Havit.Documentation.Homepage
-		SccLocalPath24 = Havit.Documentation.Homepage
-		SccProjectUniqueName25 = Havit.ServicesTest\\Havit.ServicesTest.csproj
-		SccProjectTopLevelParentUniqueName25 = Havit.sln
-		SccProjectName25 = Havit.ServicesTest
-		SccLocalPath25 = Havit.ServicesTest
+		SccProjectName24 = Havit.ServicesTest
+		SccLocalPath24 = Havit.ServicesTest
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -222,10 +216,6 @@ Global
 		{0A4C075E-E474-4AD5-8377-5F7C7E3488D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A4C075E-E474-4AD5-8377-5F7C7E3488D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A4C075E-E474-4AD5-8377-5F7C7E3488D8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AB28A793-D0AC-46ED-9D48-B75B0DC4EE90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AB28A793-D0AC-46ED-9D48-B75B0DC4EE90}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AB28A793-D0AC-46ED-9D48-B75B0DC4EE90}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AB28A793-D0AC-46ED-9D48-B75B0DC4EE90}.Release|Any CPU.Build.0 = Release|Any CPU
 		{703235E0-86C0-44F3-95BB-3D9F39886966}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{703235E0-86C0-44F3-95BB-3D9F39886966}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{703235E0-86C0-44F3-95BB-3D9F39886966}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -314,7 +304,6 @@ Global
 		{52891FB3-CA20-403B-AC25-7D9CA5738B6B} = {CA5A28B1-E42B-43F3-89E0-E4972E4D67B7}
 		{81995BC1-9F25-4F46-8258-8ED1F965CABB} = {CA5A28B1-E42B-43F3-89E0-E4972E4D67B7}
 		{0A4C075E-E474-4AD5-8377-5F7C7E3488D8} = {CA5A28B1-E42B-43F3-89E0-E4972E4D67B7}
-		{AB28A793-D0AC-46ED-9D48-B75B0DC4EE90} = {CA5A28B1-E42B-43F3-89E0-E4972E4D67B7}
 		{703235E0-86C0-44F3-95BB-3D9F39886966} = {CA5A28B1-E42B-43F3-89E0-E4972E4D67B7}
 		{9ACC94B9-B8FD-47C1-ABF8-0658C7673905} = {CA5A28B1-E42B-43F3-89E0-E4972E4D67B7}
 		{9F79CB68-4B61-48E2-A9E5-B545A65BAC89} = {6B3E283B-3E8A-4BEB-B318-49AD5265DA8F}

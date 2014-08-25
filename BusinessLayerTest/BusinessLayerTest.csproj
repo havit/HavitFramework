@@ -493,10 +493,6 @@
       <Project>{81995bc1-9f25-4f46-8258-8ed1f965cabb}</Project>
       <Name>Havit.Business</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Havit.Data.SqlServer\Havit.Data.SqlServer.sqlproj">
-      <Project>{ab28a793-d0ac-46ed-9d48-b75b0dc4ee90}</Project>
-      <Name>Havit.Data.SqlServer</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Havit.Data\Havit.Data.csproj">
       <Project>{703235E0-86C0-44F3-95BB-3D9F39886966}</Project>
       <Name>Havit.Data</Name>

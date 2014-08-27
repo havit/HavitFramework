@@ -36,12 +36,12 @@ namespace Havit.Web.Bootstrap.UI.WebControls.Legacy
 		/// <summary>
 		/// ToolTip position.
 		/// </summary>
-		[DefaultValue(ToolTipPosition.Top)]
+		[DefaultValue(ToolTipPosition.Right)]
 		public ToolTipPosition ToolTipPosition
 		{
 			get
 			{
-				return (ToolTipPosition)(ViewState["ToolTipPosition"] ?? ToolTipPosition.Top);
+				return (ToolTipPosition)(ViewState["ToolTipPosition"] ?? ToolTipPosition.Right);
 			}
 			set
 			{

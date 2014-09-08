@@ -55,18 +55,22 @@ namespace Havit.Web.UI.WebControls
 		{
 			base.OnPreRender(e);
 
-            if (this.Enabled)
-            {
-				ScriptManager currentScriptManager = ScriptManager.GetCurrent(this.Page);
-				
-				SingleSubmitProtection.RegisterStylesheets(this.Page);
+			ScriptManager currentScriptManager = ScriptManager.GetCurrent(this.Page);
 
-                // Registruje klientské skripty pro zamezení opakovaného odeslání stránky.
-                ScriptManager.RegisterClientScriptResource(
-                    this.Page,
-                    typeof(SingleSubmitProtection),
-                    "Havit.Web.UI.WebControls.SingleSubmitProtection.js");
+			// Styly i javascript registrujeme i v případě, kdy Enabled == false. To z toho důvodu, protože ve stránkách mohou být použity
+			// klienské skripty, které vyžadují přítomnost knihovny. Například SetProcessingDisableJavaScript.
+			// Pokud by nebyl javascript zaregistrován, docházelo by k pádu takového klienského volání.
 
+			SingleSubmitProtection.RegisterStylesheets(this.Page);
+
+            // Registruje klientské skripty pro zamezení opakovaného odeslání stránky.
+            ScriptManager.RegisterClientScriptResource(
+                this.Page,
+                typeof(SingleSubmitProtection),
+                "Havit.Web.UI.WebControls.SingleSubmitProtection.js");
+
+			if (this.Enabled)
+			{
 				// zaregistruje javascript pro OnSubmit
 				// javascript se neregistruje pro async postback, protože by se skript jednotlivými callbacky přidával a přidával
 				if ((currentScriptManager == null) || (!currentScriptManager.IsInAsyncPostBack))
@@ -78,23 +82,23 @@ namespace Havit.Web.UI.WebControls
 						"if (!_SingleSubmit_IsRecursive) return SingleSubmit_OnSubmit();\n\n");
 				}
 
-                // zajištění mizení progress panelu po async postbacku
-                if ((currentScriptManager != null) && currentScriptManager.EnablePartialRendering && currentScriptManager.IsInAsyncPostBack)
-                {
-                    ScriptManager.RegisterStartupScript(
-                        this.Page,
-                        typeof(SingleSubmitProtection),
-                        "SingleSubmit_Startup",
+				// zajištění mizení progress panelu po async postbacku
+				if ((currentScriptManager != null) && currentScriptManager.EnablePartialRendering && currentScriptManager.IsInAsyncPostBack)
+				{
+					ScriptManager.RegisterStartupScript(
+						this.Page,
+						typeof(SingleSubmitProtection),
+						"SingleSubmit_Startup",
 						ClearProcessingJavaScript,
-                        true);
-                }
-            }
+						true);
+				}
+			}
 		}
-		#endregion		
+		#endregion
 
         #region RegisterStylesheets (static)
         /// <summary>
-        /// Zaregistruje css.        
+        /// Zaregistruje css.
         /// </summary>
         public static void RegisterStylesheets(Page page)
         {

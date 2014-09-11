@@ -1125,9 +1125,9 @@ namespace Havit.Web.UI.WebControls
 					if (column is GridViewCommandField)
 					{
 						GridViewCommandField gridViewCommandField = (GridViewCommandField)column;
-						if (gridViewCommandField.ShowNewButtonForInsertByEditorExtender && gridViewCommandField.ShowInsertButton)
+						if (gridViewCommandField.ShowNewButtonForInsertByEditorExtender)
 						{
-							gridViewCommandField.ShowNewButton = true;
+							gridViewCommandField.ShowNewButton = gridViewCommandField.ShowInsertButton && AllowInserting;
 						}
 					}
 				}
@@ -2193,6 +2193,8 @@ namespace Havit.Web.UI.WebControls
 			this.EditorExtender = editorExtender;
 			editorExtender.EditClosed += EditorExtenderEditClosed;
 			editorExtender.ItemSaved += EditorExtenderItemSaved;
+			editorExtender.NewProcessing += EditorExtenderNewProcessing;
+			editorExtender.GetCanCreateNew += EditorExtenderGetCanCreateNew;
 
 			if (editorExtender is IEditorExtenderWithPreviousNextNavigation)
 			{
@@ -2319,6 +2321,24 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region CanCreateNew, EditorExtenderGetCreateNew
+		/// <summary>
+		/// Vrací true, pokud lze založit nový objekt.
+		/// </summary>
+		private bool CanCreateNew()
+		{
+			return AllowInserting;
+		}
+
+		/// <summary>
+		/// Obsluhuje událost EditorExtenderu dotazující se na to, zda lze založit novou položku.
+		/// </summary>
+		private void EditorExtenderGetCanCreateNew(object sender, DataEventArgs<bool> e)
+		{
+			e.Data = CanCreateNew();
+		}
+		#endregion
+
 		#region CanNavigatePrevious, CanNavigateNext, EditorExtenderGetCanNavigatePrevious, EditorExtenderGetCanNavigateNext
 		/// <summary>
 		/// Vrací true, pokud lze navigovat na předchozí položku.
@@ -2357,6 +2377,17 @@ namespace Havit.Web.UI.WebControls
 			e.Data = CanNavigateNext();
 		}
 		#endregion
+
+		private void EditorExtenderNewProcessing(object sender, CancelEventArgs e)
+		{
+			if (!AllowInserting)
+			{
+				e.Cancel = true;
+				return;
+			}
+
+			EditorExtenderEditIndex = -1;
+		}
 
 		#region EditorExtenderPreviousNavigating, EditorExtenderNextNavigating
 		/// <summary>
@@ -2406,7 +2437,7 @@ namespace Havit.Web.UI.WebControls
 				EditorExtenderEditIndex = EditorExtenderEditIndex + 1;
 			}
 		}
-		#endregion		
+		#endregion
 	}
 
 	/// <summary>

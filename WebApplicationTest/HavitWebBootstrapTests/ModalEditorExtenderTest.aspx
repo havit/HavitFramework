@@ -31,8 +31,9 @@
 			<bc:Button CommandName="OK" Text="OK" runat="server" />
 			<bc:Button CommandName="Save" Text="Save" runat="server" />
 			<bc:Button CommandName="Cancel" Text="Cancel" runat="server" />
-			<bc:Button CommandName="Next" Text="next" runat="server" />
-			<bc:Button CommandName="Previous" Text="previous" runat="server" />
+			<bc:Button CommandName="New" Text="New" runat="server" />
+			<bc:Button CommandName="Next" Text="Next" runat="server" />
+			<bc:Button CommandName="Previous" Text="Previous" runat="server" />
 		</FooterTemplate>
 	</bc:ModalEditorExtender>
 

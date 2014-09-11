@@ -44,5 +44,20 @@ namespace Havit.Web.UI.WebControls
 		/// Oznamuje ukončení editace.
 		/// </summary>
 		event EventHandler EditClosed;
+
+		/// <summary>
+		/// Oznamuje začátek přepínání editace na nový záznam.
+		/// </summary>
+		event CancelEventHandler NewProcessing;
+
+		/// <summary>
+		/// Oznamuje ukončení přepínání editace na nový záznam.
+		/// </summary>
+		event EventHandler NewProcessed;
+
+		/// <summary>
+		/// Zjišťuje, zda je možné založit nový záznam.
+		/// </summary>
+		event DataEventHandler<bool> GetCanCreateNew;
 	}
 }

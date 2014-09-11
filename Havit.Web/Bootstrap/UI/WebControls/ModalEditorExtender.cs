@@ -339,11 +339,11 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 
 		#region ValidationGroup
 		/// <summary>
-		/// Validation Group to be automaticaly set to buttons with CommandName OK or Save.
+		/// Validation Group to be automaticaly set to buttons with CommandName Previous, Next, New, OK or Save.
 		/// If property value not set (neither empty string), validation group is not set to buttons.
 		/// Default value is null.
 		/// </summary>
-		public string ValidationGroup	
+		public string ValidationGroup
 		{
 			get
 			{
@@ -448,6 +448,10 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 					case CommandNames.Next:
 						HandleNextCommand(causesValidation);
 						return true;
+
+					case CommandNames.New:
+						HandleNewCommand(causesValidation);
+						return true;
 				}
 			}
 
@@ -490,7 +494,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Binds data to dialog header and content.
 		/// </summary>
 		protected override void PerformDataBinding(IEnumerable data)
-		{		
+		{
 			object[] dataArray = (data == null) ? new object[0] : data.Cast<object>().ToArray();
 
 			base.PerformDataBinding(dataArray);
@@ -502,6 +506,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			contentFormView.DataBind();
 
 			SetValidationGroup();
+			SetNewButtons();
 			SetPreviousNextButtons();
 
 			object dataItem = dataArray.FirstOrDefault();
@@ -518,13 +523,19 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			if (this.ValidationGroup != null)
 			{
-				Predicate<Control> isOKorSaveButton = control => (control is IButtonControl) && ((((IButtonControl)control).CommandName == CommandNames.OK) || (((IButtonControl)control).CommandName == CommandNames.Save));
-				List<IButtonControl> okSaveButtons = headerFormView.FindControls(isOKorSaveButton, false)
-					.Concat(contentFormView.FindControls(isOKorSaveButton, false))
-					.Concat(modalDialog.FooterTemplateContainer.FindControls(isOKorSaveButton, false))
+				Predicate<Control> isValidationButtonPredicate = control => ((control is IButtonControl) &&
+					((((IButtonControl)control).CommandName == CommandNames.OK)
+						|| (((IButtonControl)control).CommandName == CommandNames.Save)
+						|| (((IButtonControl)control).CommandName == CommandNames.New)
+						|| (((IButtonControl)control).CommandName == CommandNames.Previous)
+						|| (((IButtonControl)control).CommandName == CommandNames.Next)));
+
+				List<IButtonControl> validationButtons = headerFormView.FindControls(isValidationButtonPredicate, false)
+					.Concat(contentFormView.FindControls(isValidationButtonPredicate, false))
+					.Concat(modalDialog.FooterTemplateContainer.FindControls(isValidationButtonPredicate, false))
 					.OfType<IButtonControl>()
 					.ToList();
-				okSaveButtons.ForEach(button => button.ValidationGroup = this.ValidationGroup);
+				validationButtons.ForEach(button => button.ValidationGroup = this.ValidationGroup);
 			}
 		}
 		#endregion
@@ -552,6 +563,24 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				this.OnGetCanNavigateNext(dataEventArgs);
 				bool canNavigateNext = dataEventArgs.Data;
 				nextButtons.ForEach(button => button.Enabled = canNavigateNext);
+			}
+		}
+		#endregion
+
+		#region SetNewButtons
+		/// <summary>
+		/// Povolí zakáže tlačítka pro založení nové položky.
+		/// </summary>
+		private void SetNewButtons()
+		{
+			List<WebControl> newButtons = this.modalDialog.FooterTemplateContainer.FindControls(control => (control is IButtonControl) && ((IButtonControl)control).CommandName == CommandNames.New, false).OfType<WebControl>().ToList();
+
+			if (newButtons.Count > 0)
+			{
+				DataEventArgs<bool> dataEventArgs = new DataEventArgs<bool>(false);
+				this.OnGetCanCreateNew(dataEventArgs);
+				bool canCreateNewItem = dataEventArgs.Data;
+				newButtons.ForEach(button => button.Enabled = canCreateNewItem);
 			}
 		}
 		#endregion
@@ -608,7 +637,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			if (!previousNavigating.Cancel)
 			{
 				DataBind();
-				OnPreviousNavigated(previousNavigating);
+				OnPreviousNavigated(EventArgs.Empty);
 			}
 		}
 		#endregion
@@ -624,11 +653,27 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			if (!nextNavigating.Cancel)
 			{
 				DataBind();
-				OnNextNavigated(nextNavigating);
+				OnNextNavigated(EventArgs.Empty);
 			}
 		}
 		#endregion
-		
+
+		#region EditNew
+		/// <summary>
+		/// Starts editing new record.
+		/// </summary>
+		public void EditNew()
+		{
+			CancelEventArgs newProcessingEventArgs = new CancelEventArgs();
+			OnNewProcessing(newProcessingEventArgs);
+			if (!newProcessingEventArgs.Cancel)
+			{
+				DataBind();
+				OnNewProcessed(EventArgs.Empty);
+			}
+		}
+		#endregion
+
 		#region ModalDialogDialogHidden
 		/// <summary>
 		/// When dialog hidden, notify ebout editor close.
@@ -707,7 +752,10 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			if ((!causesValidation || (this.Page == null)) || this.Page.IsValid)
 			{
-				NavigatePrevious();
+				if (Save())
+				{
+					NavigatePrevious();
+				}
 			}
 		}
 		#endregion
@@ -721,7 +769,23 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			if ((!causesValidation || (this.Page == null)) || this.Page.IsValid)
 			{
-				NavigateNext();
+				if (Save())
+				{
+					NavigateNext();
+				}
+			}
+		}
+		#endregion
+
+		#region HandleNewCommand
+		private void HandleNewCommand(bool causesValidation)
+		{
+			if ((!causesValidation || (this.Page == null)) || this.Page.IsValid)
+			{
+				if (Save())
+				{
+					EditNew();
+				}
 			}
 		}
 		#endregion
@@ -871,6 +935,43 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		public event EditorExtenderItemDataBoundEventHandler ItemDataBound;
 		#endregion
 
+		#region (On)NewProcessing
+		/// <summary>
+		/// Notifies request to start editing a new record.
+		/// </summary>
+		protected void OnNewProcessing(CancelEventArgs eventArgs)
+		{
+			if (NewProcessing == null)
+			{
+				throw new HttpException("NewProcessing event must be handled.");
+			}
+			NewProcessing(this, eventArgs);
+		}
+
+		/// <summary>
+		/// Notifies request to start editing a new record.
+		/// </summary>
+		public event CancelEventHandler NewProcessing;
+		#endregion
+
+		#region (On)NewProcessed
+		/// <summary>
+		/// Notifies completion of the start editiong a new record.
+		/// </summary>
+		protected void OnNewProcessed(EventArgs eventArgs)
+		{
+			if (NewProcessed != null)
+			{
+				NewProcessed(this, eventArgs);
+			}
+		}
+
+		/// <summary>
+		/// Notifies about completion of the new record editing start.
+		/// </summary>
+		public event EventHandler NewProcessed;
+		#endregion
+
 		#region (On)PreviousNavigating
 		/// <summary>
 		/// Notifies request to navigate to previous record.
@@ -953,6 +1054,25 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			modalDialog.RenderControl(writer);
 		}
+		#endregion
+
+		#region (On)GetCanCreateNew
+		/// <summary>
+		/// Asks if it is possible to create a new record.
+		/// </summary>
+		protected void OnGetCanCreateNew(DataEventArgs<bool> eventArgs)
+		{
+			if (GetCanCreateNew == null)
+			{
+				throw new HttpException("OnGetCanCreateNew event must be handled.");
+			}
+			GetCanCreateNew(this, eventArgs);
+		}
+
+		/// <summary>
+		/// Asks if it is possible to create a new record.
+		/// </summary>
+		public event DataEventHandler<bool> GetCanCreateNew;
 		#endregion
 
 		#region (On)GetCanNavigatePrevious

@@ -2378,6 +2378,7 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region EditorExtenderNewProcessing
 		private void EditorExtenderNewProcessing(object sender, CancelEventArgs e)
 		{
 			if (!AllowInserting)
@@ -2388,6 +2389,7 @@ namespace Havit.Web.UI.WebControls
 
 			EditorExtenderEditIndex = -1;
 		}
+		#endregion
 
 		#region EditorExtenderPreviousNavigating, EditorExtenderNextNavigating
 		/// <summary>

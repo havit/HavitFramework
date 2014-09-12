@@ -178,7 +178,7 @@ namespace Havit.Web.UI.WebControls
 
 		#endregion
 
-		#region CssClasses (EditCssClass, EditDisabledCssClass, CancelCssClass, CancelDisabledCssClass, SelectCssClass, SelectDisabledCssClass, UpdateCssClass, UpdateDisabledCssClass, DeleteCssClass, DeleteDisabledCssClass, InsertCssClass, InsertDisabledCssClass, NewCssClass)
+		#region CssClasses (EditCssClass, EditDisabledCssClass, CancelCssClass, CancelDisabledCssClass, SelectCssClass, SelectDisabledCssClass, UpdateCssClass, UpdateDisabledCssClass, DeleteCssClass, DeleteDisabledCssClass, InsertCssClass, InsertDisabledCssClass, NewCssClass, NewDisabledCssClass, HeaderNewCssClass, HeaderNewDisabledCssClass)
 
 		#region EditCssClass
 		/// <summary>
@@ -414,6 +414,40 @@ namespace Havit.Web.UI.WebControls
 			set
 			{
 				ViewState["NewDisabledCssClass"] = value;
+			}
+		}
+		#endregion
+
+		#region HeaderNewCssClass
+		/// <summary>
+		/// CssClass buňky v hlavičce tabulky s tlačítkem pro vložení nového záznamu.
+		/// </summary>
+		public string HeaderNewCssClass
+		{
+			get
+			{
+				return (string)(ViewState["HeaderNewCssClass"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["HeaderNewCssClass"] = value;
+			}
+		}
+		#endregion
+
+		#region HeaderNewDisabledCssClass
+		/// <summary>
+		/// CssClass buňky v hlavičce tabulky se zakázaným tlačítkem pro vložení nového záznamu.
+		/// </summary>
+		public string HeaderNewDisabledCssClass
+		{
+			get
+			{
+				return (string)(ViewState["HeaderNewDisabledCssClass"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["HeaderNewDisabledCssClass"] = value;
 			}
 		}
 		#endregion
@@ -737,7 +771,7 @@ namespace Havit.Web.UI.WebControls
 
 			// JK: Tohle není úplně OK! Pozor na schování v nadřazeném controlu během databindingu!
 			args.Visible = true;
-			args.Enabled = true;
+			args.Enabled = gridViewExt.Enabled;
 
 			// zavoláme obsluhu události
 			gridViewExt.OnRowCustomizingCommandButton(args);
@@ -752,7 +786,7 @@ namespace Havit.Web.UI.WebControls
 			{
 				control.Parent.Controls[index + 1].Visible = args.Visible;
 			}
-
+			
 			if (control is LinkButton)
 			{
 				LinkButton linkButton = (LinkButton)control;
@@ -778,6 +812,15 @@ namespace Havit.Web.UI.WebControls
 				if (!args.Enabled && !String.IsNullOrEmpty(cssClassDisabled))
 				{
 					button.CssClass = cssClassDisabled;
+				}
+			}
+
+			if (args.CommandName == CommandNames.New)
+			{
+				TableCell headerCell = control.Parent as TableCell;
+				if (headerCell != null)
+				{
+					headerCell.CssClass = (HeaderStyle.CssClass + " " + (args.Enabled ? HeaderNewCssClass : HeaderNewDisabledCssClass)).Trim();
 				}
 			}
 		}
@@ -993,6 +1036,14 @@ namespace Havit.Web.UI.WebControls
 					if (ViewState["EditDisabledCssClass"] == null)
 					{
 						this.EditDisabledCssClass = style.EditDisabledCssClass;
+					}
+					if (ViewState["HeaderNewCssClass"] == null)
+					{
+						this.HeaderNewCssClass = style.HeaderNewCssClass;
+					}
+					if (ViewState["HeaderNewDisabledCssClass"] == null)
+					{
+						this.HeaderNewDisabledCssClass = style.HeaderNewDisabledCssClass;
 					}
 					if (ViewState["InsertCssClass"] == null)
 					{

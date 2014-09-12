@@ -26,11 +26,17 @@ namespace Havit.Web.UI.WebControls
 	/// </remarks>
 	public class GridViewExt : HighlightingGridView, ICommandFieldStyle, IEditorExtensible
 	{
-		#region autoFilterControls (private field)
+		#region Private fields
+
 		/// <summary>
 		/// Slouží k evidenci controlů automatických filtrů.
 		/// </summary>
 		private List<IAutoFilterControl> autoFilterControls;
+
+		/// <summary>
+		/// Předává CommandFields z PerformDataBinding do PrepareControlHierarchy, které nemají být vidět.
+		/// </summary>
+		private List<CommandField> commandFieldsToHide;
 		#endregion
 
 		#region GetInsertRowDataItem (delegate)
@@ -1118,17 +1124,25 @@ namespace Havit.Web.UI.WebControls
 				}
 			}
 
-			if (EditorExtender != null)
+			commandFieldsToHide = new List<CommandField>();
+			foreach (var column in Columns)
 			{
-				foreach (var column in Columns)
+				if (column is GridViewCommandField)
 				{
-					if (column is GridViewCommandField)
+					GridViewCommandField gridViewCommandField = (GridViewCommandField)column;
+					if ((EditorExtender != null) && (gridViewCommandField.ShowNewButtonForInsertByEditorExtender))
 					{
-						GridViewCommandField gridViewCommandField = (GridViewCommandField)column;
-						if (gridViewCommandField.ShowNewButtonForInsertByEditorExtender)
-						{
-							gridViewCommandField.ShowNewButton = gridViewCommandField.ShowInsertButton && AllowInserting;
-						}
+						gridViewCommandField.ShowNewButton = gridViewCommandField.ShowInsertButton && AllowInserting;
+					}
+					// Chceme schovat obsah sloupce, ovšem jen pro tentokrát,
+					// tj. chceme schovat, ale mít ho při příštím requestu nebo databindu zobrazený.
+					// To bychom rádi udělali nastavením sloupce visible na false a po databindu zpět.
+					// Jenže to nejde, protože viditelnost buněk gridu se nastavuje až v Renderu, konkrétně v PrepareControlHieararch a to tak, 
+					// že se nastavuje viditelnost buněk gridu (buňky tedy existují i pro schované sloupce).
+					if (((insertingData == null) || (insertingData.Count == 0)) && !Enabled)
+					{
+						// (alternativně místo předávání v kolekcí můžeme celou logiku přenést do metody PrepareControlHierarchy)
+						commandFieldsToHide.Add(gridViewCommandField);
 					}
 				}
 			}
@@ -1168,7 +1182,6 @@ namespace Havit.Web.UI.WebControls
 					BottomPagerRow.TableSection = TableRowSection.TableFooter;
 				}
 			}
-
 		}
 		private IEnumerable _performDataBindingData;
 		private bool _performDataBindingDataInFakeCall;
@@ -2111,7 +2124,7 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-		#region Render, RenderContents
+		#region Render, RenderContents, PrepareControlHierarchy
 		/// <summary>
 		/// Renders the Web server control content to the client's browser using the specified System.Web.UI.HtmlTextWriter object.
 		/// </summary>
@@ -2180,6 +2193,23 @@ namespace Havit.Web.UI.WebControls
 		}
 		private TableItemStyle _renderHeaderStyle;
 
+		/// <summary>
+		/// Zajistí schování GridViewCommandField pro přidání nového záznamu, pokud je grid disablován a není žádný záznam k přidání.
+		/// </summary>
+		protected override void PrepareControlHierarchy()
+		{
+			// Viz komentář v PerformDataBinding.
+			// O viewstate se nestaráme, jsme již po jeho uložení.
+			if (commandFieldsToHide != null)
+			{
+				foreach (CommandField commandField in commandFieldsToHide)
+				{
+
+					commandField.Visible = false;
+				}
+			}
+			base.PrepareControlHierarchy();
+		}
 		#endregion
 
 		#region RegisterEditor

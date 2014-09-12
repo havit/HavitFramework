@@ -1349,6 +1349,60 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		/// <summary>
+		/// Gets or sets the CssClass for the header cell with new button in a CommandField field.
+		/// </summary>
+		[Category("Appearance")]
+		[Localizable(true)]
+		[DefaultValue("")]
+		public virtual string HeaderNewCssClass
+		{
+			get
+			{
+				object temp = ViewState["HeaderNewCssClass"];
+				if (temp != null)
+				{
+					return (string)temp;
+				}
+				return String.Empty;
+			}
+			set
+			{
+				if (!object.Equals(value, ViewState["HeaderNewCssClass"]))
+				{
+					ViewState["HeaderNewCssClass"] = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the CssClass for the header cell with a disabled new button in a CommandField field.
+		/// </summary>
+		[Category("Appearance")]
+		[Localizable(true)]
+		[DefaultValue("")]
+		public virtual string HeaderNewDisabledCssClass
+		{
+			get
+			{
+				object temp = ViewState["HeaderNewDisabledCssClass"];
+				if (temp != null)
+				{
+					return (string)temp;
+				}
+				return String.Empty;
+			}
+			set
+			{
+				if (!object.Equals(value, ViewState["HeaderNewDisabledCssClass"]))
+				{
+					ViewState["HeaderNewDisabledCssClass"] = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
 		#region UpdateDisabledCssClass
 		/// <summary>
 		/// CssClass zakázaného tlačítka pro potvrzení úpravy záznamu. Je-li hodnota prázdná, použije se vlastnost UpdateCssClass i pro zakázané tlačítko.

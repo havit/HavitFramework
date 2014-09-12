@@ -765,6 +765,61 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
+		/// Indikuje, zda má být zobrazeno tlačítko NewButton pro vkládání nového záznamu externím editorem.
+		/// </summary>
+		[Category("Behavior")]
+		[DefaultValue(true)]
+		[EditorBrowsable(EditorBrowsableState.Advanced)]
+		public virtual bool ShowNewButtonForInsertByEditorExtender
+		{
+			get
+			{
+				object temp = ViewState["ShowNewButtonForInsertByEditorExtender"];
+				if (temp != null)
+				{
+					return (bool)temp;
+				}
+				return true;
+			}
+			set
+			{
+				object temp = ViewState["ShowNewButtonForInsertByEditorExtender"];
+				if ((temp == null) || (((bool)temp) != value))
+				{
+					ViewState["ShowNewButtonForInsertByEditorExtender"] = value;
+					this.OnPropertyChanged();
+				}
+			}
+		}
+
+		/// <summary>
+		/// Indikuje, zda má být zobrazeno tlačítko NewButton pro vkládání nového záznamu externím editorem.
+		/// </summary>
+		[Category("Behavior")]
+		[DefaultValue(false)]
+		public virtual bool ShowNewButton
+		{
+			get
+			{
+				object temp = ViewState["ShowNewButton"];
+				if (temp != null)
+				{
+					return (bool)temp;
+				}
+				return false;
+			}
+			set
+			{
+				object temp = ViewState["ShowNewButton"];
+				if ((temp == null) || (((bool)temp) != value))
+				{
+					ViewState["ShowNewButton"] = value;
+					this.OnPropertyChanged();
+				}
+			}
+		}
+
+		/// <summary>
 		/// Gets or sets a value indicating whether a Select button is displayed in a CommandField field.
 		/// </summary>
 		[Category("Behavior")]

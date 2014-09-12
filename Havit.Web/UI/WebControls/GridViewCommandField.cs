@@ -1137,6 +1137,14 @@ namespace Havit.Web.UI.WebControls
 					{
 						this.ShowInsertButton = style.ShowInsertButton;
 					}
+					if (style.ViewState["ShowNewButton"] != null)
+					{
+						this.ShowNewButton = style.ShowNewButton;
+					}
+					if (style.ViewState["ShowNewButtonForInsertByEditorExtender"] != null)
+					{
+						this.ShowNewButtonForInsertByEditorExtender = style.ShowNewButtonForInsertByEditorExtender;
+					}
 					if (style.ViewState["ShowSelectButton"] != null)
 					{
 						this.ShowSelectButton = style.ShowSelectButton;

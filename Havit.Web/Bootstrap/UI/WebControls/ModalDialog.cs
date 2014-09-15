@@ -41,11 +41,11 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			}
 			set
 			{
-				headerTemplate = value;				
+				headerTemplate = value;
 			}
 		}
 		private ITemplate headerTemplate;
-		#endregion		
+		#endregion
 
 		#region HeaderTemplateContainer
 		internal Control HeaderTemplateContainer
@@ -76,7 +76,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			}
 		}
 		private ITemplate footerTemplate;
-		#endregion		
+		#endregion
 
 		#region FooterTemplateContainer
 		internal Control FooterTemplateContainer
@@ -97,7 +97,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		public string HeaderText
 		{
 			get
-			{				
+			{
 				return (string)(ViewState["HeaderText"] ?? String.Empty);
 			}
 			set

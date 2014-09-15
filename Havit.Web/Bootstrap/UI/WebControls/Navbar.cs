@@ -58,6 +58,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// If value is empty string, element A for navbar-brand is not rendered.
 		/// Default value is ~/.
 		/// </summary>
+		[DefaultValue("~/")]
 		public string BrandUrl
 		{
 			get
@@ -102,6 +103,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Css class for menu element.
 		/// Default value is &quot;navbar navbar-default&quot;.
 		/// </summary>
+		[DefaultValue("navbar navbar-default")]
 		public string CssClass
 		{
 			get
@@ -120,6 +122,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Container element mode.
 		/// Default value ContainerFluid.
 		/// </summary>
+		[DefaultValue(NavbarContainerMode.ContainerFluid)]
 		public NavbarContainerMode ContainerMode
 		{
 			get

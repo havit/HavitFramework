@@ -22,6 +22,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Css class for list items.
 		/// Default value is "btn btn-default".
 		/// </summary>
+		[DefaultValue("btn btn-default")]
 		public string ItemCssClass
 		{
 			get

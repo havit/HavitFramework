@@ -52,8 +52,9 @@ namespace Havit.Web.Bootstrap.UI.WebControls.Legacy
 
 		#region ControlToValidateInvalidCssClass
 		/// <summary>
-		/// CssClass name which is added to ControlToValidate when validation fails. 
+		/// CssClass name which is added to ControlToValidate when validation fails.
 		/// </summary>
+		[DefaultValue(ValidatorRenderExtender.DefaultControlToValidateInvalidCssClass)]
 		public string ControlToValidateInvalidCssClass
 		{
 			get
@@ -69,8 +70,9 @@ namespace Havit.Web.Bootstrap.UI.WebControls.Legacy
 
 		#region ControlToValidateInvalidToolTipCssClass
 		/// <summary>
-		/// CssClass name which is added to a validation tooltip. 
+		/// CssClass name which is added to a validation tooltip.
 		/// </summary>
+		[DefaultValue(ValidatorRenderExtender.DefaultControlToValidateInvalidToolTipCssClass)]
 		public string ControlToValidateInvalidToolTipCssClass
 		{
 			get
@@ -96,7 +98,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls.Legacy
 
 		#region AddAttributesToRender
 		/// <summary>
-		/// Adds the attributes of this control to the output stream for rendering on the client.		
+		/// Adds the attributes of this control to the output stream for rendering on the client.
 		/// </summary>
 		protected override void AddAttributesToRender(HtmlTextWriter writer)
 		{

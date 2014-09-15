@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// When set Button renders &lt;span class=&amp;IconCssClass&amp;&gt;&lt;span /&gt; at the beginning of button element content (before child controls).
 		/// </summary>
 		/// <example>&lt;bc:Button IconCssClass="glyphicon glyphicon-asterisk" runat="server" /&lt;</example>
+		[DefaultValue("")]
 		public string IconCssClass
 		{
 			get

@@ -10,6 +10,7 @@
   background: Window;
   color: WindowText;
   font-family: tahoma,verdana,sans-serif;
+  z-index: 2;
 }
 .calendar TD
 {

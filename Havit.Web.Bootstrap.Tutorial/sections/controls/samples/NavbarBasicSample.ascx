@@ -15,15 +15,15 @@
 			</Items>
 		</bc:NavbarLinkItem>
 	</MenuItems>
-	<RightSectionTemplate>
-		<li><a href="#">Username here</a></li>
-	</RightSectionTemplate>
+	<RightSectionItems>
+		<bc:NavbarTextItem ID="UsernameNTI" Text="Username here" runat="server" />
+	</RightSectionItems>
 </bc:Navbar>
 
 <script runat="server">
 	protected override void OnInit(EventArgs e)
 	{
 		base.OnInit(e);
-		Item1LinkItem.VisibleFunc = () => Havit.Web.Bootstrap.Tutorial.My_Page.IsAuthorizedToAccess();
+		UsernameNTI.VisibleFunc = () => Havit.Web.Bootstrap.Tutorial.My_Page.IsAuthorizedToAccess();
 	}
 </script>

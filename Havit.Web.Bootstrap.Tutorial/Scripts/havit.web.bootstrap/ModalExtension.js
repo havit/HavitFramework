@@ -87,9 +87,13 @@
 
                             ModalExtension.prototype.hide = function () {
                                 this.modalDialogStatePersister.deleteState();
-                                this.modalDialogState = null;
+
+                                this.$modalElement.children('.modal-dialog').children('.modal-content').children().children('.modal-body').off('scroll.havit.web.bootstrap');
+                                this.$modalElement.off('scroll.havit.web.bootstrap');
 
                                 this.stopResizingProcess();
+
+                                this.modalDialogState = null;
 
                                 var $previousModalElement = this.getPreviousModalElement();
                                 if (this.wasPostBack()) {
@@ -133,9 +137,6 @@
                                 var draggableParams = { handle: ' .modal-header', drag: function (e, ui) {
                                         return _this.drag.call(_this, e, ui);
                                     } };
-                                if (dragMode == 'Required') {
-                                    this.$modalElement.children('.modal-dialog').draggable(draggableParams);
-                                }
 
                                 if (dragMode == 'IfAvailable') {
                                     if (!!jQuery.ui && !!jQuery.ui.version) {
@@ -147,11 +148,11 @@
                                     this.startResizingProcess();
                                 }
 
-                                this.$modalElement.children('.modal-dialog').children('.modal-content').children().children('.modal-body').on('scroll', function () {
-                                    return _this.bodyScroll.call(_this);
+                                this.$modalElement.children('.modal-dialog').children('.modal-content').children().children('.modal-body').on('scroll.havit.web.bootstrap', function (event) {
+                                    return _this.bodyScroll.call(_this, event);
                                 });
-                                this.$modalElement.on('scroll', function () {
-                                    return _this.modalScroll.call(_this);
+                                this.$modalElement.on('scroll.havit.web.bootstrap', function (event) {
+                                    return _this.modalScroll.call(_this, event);
                                 });
                             };
 
@@ -298,15 +299,17 @@
                                 this.modalDialogStatePersister.saveState(this.modalDialogState);
                             };
 
-                            ModalExtension.prototype.bodyScroll = function () {
+                            ModalExtension.prototype.bodyScroll = function (event) {
                                 var $bodyModal = this.$modalElement.children('.modal-dialog').children('.modal-content').children().children('.modal-body');
                                 this.modalDialogState.bodyScrollPosition = new Position($bodyModal.scrollLeft(), $bodyModal.scrollTop());
                                 this.modalDialogStatePersister.saveState(this.modalDialogState);
+                                event.stopPropagation();
                             };
 
-                            ModalExtension.prototype.modalScroll = function () {
+                            ModalExtension.prototype.modalScroll = function (event) {
                                 this.modalDialogState.modalScrollPosition = new Position(this.$modalElement.scrollLeft(), this.$modalElement.scrollTop());
                                 this.modalDialogStatePersister.saveState(this.modalDialogState);
+                                event.stopPropagation();
                             };
 
                             ModalExtension.prototype.startResizingProcess = function () {
@@ -340,8 +343,9 @@
                                     var headerHeight = $modalHeader.outerHeight(true) || 0;
                                     var footerHeight = $modalFooter.outerHeight(true) || 0;
                                     var headerTop = ($modalHeader.length > 0) ? $modalHeader.offset().top : $modalBody.offset().top;
+                                    var documentScrollTop = $(document).scrollTop();
 
-                                    var bodyHeight = containerHeight - headerHeight - footerHeight - (2 * headerTop);
+                                    var bodyHeight = containerHeight - headerHeight - footerHeight - (2 * (headerTop - documentScrollTop));
 
                                     var bodyHeightPx = '';
                                     if (($modal.scrollTop() == 0) && (bodyHeight >= 200)) {

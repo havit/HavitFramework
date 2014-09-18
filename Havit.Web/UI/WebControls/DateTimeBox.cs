@@ -148,7 +148,7 @@ namespace Havit.Web.UI.WebControls
 			{
 				if (_dateTimePickerStyle == null)
 				{
-					_dateTimePickerStyle = new DateTimeBoxNoWrapStyle();
+					_dateTimePickerStyle = new Style();
 					if (IsTrackingViewState)
 					{
 						((IStateManager) _dateTimePickerStyle).TrackViewState();
@@ -196,17 +196,34 @@ namespace Havit.Web.UI.WebControls
 			{
 				if (_containerStyle == null)
 				{
-					_containerStyle = new DateTimeBoxNoWrapStyle();					
+					_containerStyle = new DateTimeBoxStyle();
 					if (IsTrackingViewState)
 					{
 						((IStateManager)_containerStyle).TrackViewState();
 					}
-					
+				
 				}
 				return _containerStyle;
 			}
 		}
-		private Style _containerStyle;
+		private DateTimeBoxStyle _containerStyle;
+		#endregion
+
+		#region ContainerRenderMode
+		/// <summary>
+		/// Mód renderování struktury DateTimeBoxu.
+		/// </summary>
+		public DateTimeBoxContainerRenderMode ContainerRenderMode
+		{
+			get
+			{
+				return (DateTimeBoxContainerRenderMode)(ViewState["ContainerRenderMode"] ?? DateTimeBoxContainerRenderMode.Standard);
+			}
+			set
+			{
+				ViewState["ContainerRenderMode"] = value;
+			}
+		}
 		#endregion
 
 		#region ValueBoxStyle
@@ -752,12 +769,88 @@ namespace Havit.Web.UI.WebControls
 				}
 			}
 
-			ContainerStyle.AddAttributesToRender(writer);
-			writer.RenderBeginTag(HtmlTextWriterTag.Span);
+			if (ContainerRenderMode == DateTimeBoxContainerRenderMode.Standard)
+			{
+				((DateTimeBoxStyle)ContainerStyle).UseWhiteSpaceNoWrap = true;
+			}
+
+			if ((ContainerRenderMode == DateTimeBoxContainerRenderMode.BootstrapInputGroupAddOnOnLeft)
+				|| (ContainerRenderMode == DateTimeBoxContainerRenderMode.BootstrapInputGroupAddOnOnRight))
+			{
+				ContainerStyle.CssClass = (ContainerStyle.CssClass + " input-group").Trim();
+				valueTextBox.CssClass = (valueTextBox.CssClass + " form-control").Trim();
+
+				if (ContainerRenderMode == DateTimeBoxContainerRenderMode.BootstrapInputGroupAddOnOnRight)
+				{
+					dateTimePickerDynarchCalendar.Align = "Bl";
+				}
+			}
+
 			base.Render(writer);
-			writer.RenderEndTag();
+		}
+		#endregion
+
+		#region RenderChildren, RenderChildren_BootstrapInputGroupAddOnZone
+		/// <summary>
+		/// Zajišťuje renderování struktury HTML dle nastavení ContainerRenderMode.
+		/// </summary>
+		protected override void RenderChildren(HtmlTextWriter writer)
+		{
+			if (ContainerRenderMode == DateTimeBoxContainerRenderMode.Standard)
+			{
+				ContainerStyle.AddAttributesToRender(writer);
+				writer.RenderBeginTag(HtmlTextWriterTag.Span);
+				base.RenderChildren(writer);
+				writer.RenderEndTag();
+				return;
+			}
+
+			if ((ContainerRenderMode == DateTimeBoxContainerRenderMode.BootstrapInputGroupAddOnOnLeft)
+				|| (ContainerRenderMode == DateTimeBoxContainerRenderMode.BootstrapInputGroupAddOnOnRight))
+			{
+				// cílem je vyrenderovat tuto strukturu:
+				//	<div class="input-group">
+				//  <input type="text" class="form-control">
+				//  <span class="input-group-addon">...</span>
+				//</div>
+
+				// <div class="input-group">
+				ContainerStyle.AddAttributesToRender(writer);
+				writer.RenderBeginTag(HtmlTextWriterTag.Div);
+
+				switch (ContainerRenderMode)
+				{
+					case DateTimeBoxContainerRenderMode.BootstrapInputGroupAddOnOnLeft:
+						RenderChildren_BootstrapInputGroupAddOnZone(writer);
+						valueTextBox.RenderControl(writer); //<input type="text" class="form-control">
+						break;
+
+					case DateTimeBoxContainerRenderMode.BootstrapInputGroupAddOnOnRight:
+						valueTextBox.RenderControl(writer); //<input type="text" class="form-control">
+						RenderChildren_BootstrapInputGroupAddOnZone(writer);
+						break;
+
+					default:
+						throw new NotSupportedException("Sekce pro renderování Bootstrap Input Group podporuje jen BootstrapInputGroupOnLeft a BootstrapInputGroupOnRight.");
+				}
+
+				writer.RenderEndTag(); // .input-group
+
+				dateTimePickerDynarchCalendar.RenderControl(writer);
+				return;
+			}
+
+			throw new NotSupportedException("Neznámý typ DateTimeBoxContainerRenderMode.");
 		}
 
+		private void RenderChildren_BootstrapInputGroupAddOnZone(HtmlTextWriter writer)
+		{
+			writer.AddAttribute(HtmlTextWriterAttribute.Class, "input-group-addon");
+			writer.RenderBeginTag(HtmlTextWriterTag.Div);
+			dateTimePickerImage.RenderControl(writer);
+			dateTimePickerIcon.RenderControl(writer);
+			writer.RenderEndTag(); // .input-group-addon
+		}
 		#endregion
 
 		#region LoadViewState, TrackViewState, SaveViewState
@@ -836,7 +929,7 @@ namespace Havit.Web.UI.WebControls
 		protected void SetValue(DateTime? value, bool isValid)
 		{
 			this._value = value;
-			this._isValid = isValid;		
+			this._isValid = isValid;
 
 			if (this._setValueCallsSetValueToNestedTextBox)
 			{

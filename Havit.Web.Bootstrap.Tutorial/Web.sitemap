@@ -4,6 +4,7 @@
         <siteMapNode url="~/sections/getting-started/getting-started" title="Getting started"  description="" />
 		<siteMapNode title="Controls">
 			<siteMapNode url="~/sections/controls/checkboxlist_radiobuttonlist" title="CheckBoxList and RadioButtonList" />
+			<siteMapNode url="~/sections/controls/datetimebox_extensions" title="DateTimeBox (extensions)" />
 			<siteMapNode url="~/sections/controls/modaldialog" title="ModalDialog" />
 			<siteMapNode url="~/sections/controls/modaleditorextender" title="ModalEditorExtender" />
 			<siteMapNode url="~/sections/controls/navbar" title="Navbar" />

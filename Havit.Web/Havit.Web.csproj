@@ -150,6 +150,7 @@
     <Compile Include="UI\ControlExtensions.cs" />
     <Compile Include="UI\WebControls\BrowserNavigationController.cs" />
     <Compile Include="UI\WebControls\DataBoundControlWithHiddenPublicMembersFromIntellisence.cs" />
+    <Compile Include="UI\WebControls\DateTimeBoxContainerRenderMode.cs" />
     <Compile Include="UI\WebControls\EditorExtenderItemDataBound.cs" />
     <Compile Include="UI\WebControls\EditorExtenderMode.cs" />
     <Compile Include="UI\WebControls\IEditorExtenderWithPreviousNextNavigation.cs" />
@@ -229,7 +230,7 @@
     <Compile Include="UI\WebControls\AutoFilterDropDownList.cs" />
     <Compile Include="UI\WebControls\AutoFilterMode.cs" />
     <Compile Include="UI\WebControls\AutoFilterTextBox.cs" />
-    <Compile Include="UI\WebControls\DateTimeBoxNoWrapStyle.cs">
+    <Compile Include="UI\WebControls\DateTimeBoxStyle.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="UI\WebControls\DateTimePickerElement.cs" />

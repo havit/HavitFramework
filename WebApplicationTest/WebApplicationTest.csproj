@@ -250,6 +250,7 @@
     <Content Include="HavitWebBootstrapTests\ButtonTest.aspx" />
     <Content Include="HavitWebBootstrapTests\Controls\ModalDialogUserControlTest2.ascx" />
     <Content Include="HavitWebBootstrapTests\Controls\ValidationTargetTest.ascx" />
+    <Content Include="HavitWebBootstrapTests\DateTimeBoxTest.aspx" />
     <Content Include="HavitWebBootstrapTests\ModalEditorExtenderTest.aspx" />
     <Content Include="HavitWebBootstrapTests\ModalDialogTest.aspx" />
     <Content Include="HavitWebBootstrapTests\Controls\ModalDialogUserControlTest.ascx" />
@@ -431,6 +432,13 @@
     </Compile>
     <Compile Include="HavitWebBootstrapTests\Controls\ValidationTargetTest.ascx.designer.cs">
       <DependentUpon>ValidationTargetTest.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="HavitWebBootstrapTests\DateTimeBoxTest.aspx.cs">
+      <DependentUpon>DateTimeBoxTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HavitWebBootstrapTests\DateTimeBoxTest.aspx.designer.cs">
+      <DependentUpon>DateTimeBoxTest.aspx</DependentUpon>
     </Compile>
     <Compile Include="HavitWebBootstrapTests\ModalEditorExtenderTest.aspx.cs">
       <DependentUpon>ModalEditorExtenderTest.aspx</DependentUpon>

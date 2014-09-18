@@ -11,27 +11,27 @@
 	
 	<div class="alert-danger">
 		<blockquote>
-			Control names proposals are welcome!			
+			Control names proposals are welcome!
 		</blockquote>
 	</div>
 
-	<h2>Appearance</h2>	
+	<h2>Appearance</h2>
 	<p>Displays multi-choice or one-of-many choice controls using <a href="http://getbootstrap.com/javascript/#buttons">Bootstrap Button</a>.</p>
 
-	<h2>Properties</h2>	
+	<h2>Properties</h2>
 	<ul>
 		<li>RepeatLayout (default value overriden to RepeatLayout.Flow and cannot be changed)</li>
 		<li>RepeatDirection (default value overriden to RepeatDirection.Horizontal)</li>
 		<li>ItemCssClass (default "btn btn-default")</li>
 	</ul>
 
-	<h2>ChechBoxList Sample</h2>	
+	<h2>ChechBoxList Sample</h2>
 	<p>
 		<uc:CheckBoxListSample ID="CheckBoxListSampleUC" runat="server" />
 	</p>
 	<uc:ShowControl ShowControlID="CheckBoxListSampleUC" runat="server" />
 
-	<h2>RadioButtonList Sample</h2>	
+	<h2>RadioButtonList Sample</h2>
 	<p>
 		<uc:RadioButtonListSample ID="RadioButtonListSampleUC" runat="server" />
 	</p>

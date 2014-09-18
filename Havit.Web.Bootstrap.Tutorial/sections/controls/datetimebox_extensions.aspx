@@ -1,7 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Templates/Main.Master" %>
 <%@ Register Src="~/sections/controls/samples/DateTimeBoxExtensionsSample.ascx" TagPrefix="uc" TagName="DateTimeBoxExtensionsSample" %>
 
-
 <asp:Content ContentPlaceHolderID="TopCPH" runat="server">
 	<h1>DateTimeBox extensions</h1>
 	<p>DateTimeBox extensions to enable rendering and use in bootstrap based application</p>

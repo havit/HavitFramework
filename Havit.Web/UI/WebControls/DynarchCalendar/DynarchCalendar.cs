@@ -1234,7 +1234,9 @@ namespace Havit.Web.UI.WebControls
 		#region RegisterCssForCalendarSkin (static)
 		/// <summary>
 		/// Zaregistruje css pro zobrazení kalendáře.
-		/// Statická metoda je určena k řešení
+		/// Statická metoda je určena k řešení situace, kdy se kalendář ve stránce zobrazuje až v asynchronním postbacku.
+		/// Touto metodou je potřeba zaregistrovat do stránky styly, které calendář používá (pokud není nastanven Skin na DynarchCalendarSkin.None).
+		/// Pokud nejsou skripty zaregistrovány, zobrazuje se DynarchCalendar většinou jako rozsypaný/rozpadlý - tj. chybnně zobrazený.
 		/// </summary>
 		public static void RegisterCalendarSkinStylesheets(Page page)
 		{

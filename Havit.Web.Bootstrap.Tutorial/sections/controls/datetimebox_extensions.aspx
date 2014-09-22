@@ -26,7 +26,11 @@
 	It is intended to render bootstrap input group with addon.
 	<pre>&lt;div class="input-group"&gt;
 	&lt;input type="text" class="form-control" /&gt;
-	&lt;span class="input-group-addon"&gt;...(icon)...&lt;/span&gt;
+	&lt;span class="input-group-btn"&gt;
+		&lt;button class="btn btn-default" type="button"&gt;
+			...(icon)...
+		&lt;/button&gt;
+	&lt;/span&gt;
 &lt;/div&gt;</pre>
 
 	<h2>Sample</h2>

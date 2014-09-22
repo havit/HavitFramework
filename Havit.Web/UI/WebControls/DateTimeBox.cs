@@ -26,7 +26,6 @@ namespace Havit.Web.UI.WebControls
 		/// Slouží k reprezentaci chybné hodnoty v metodě GetValueMemento.
 		/// </summary>
 		private const string InvalidValueMemento = "invalid";
-		private const string clientScriptBlockName = "Havit.DsvCommerce.WebBase.UI.WebControls.DateTimeBox_Script";
 		#endregion
 
 		#region Nested controls (private)
@@ -689,14 +688,14 @@ namespace Havit.Web.UI.WebControls
 			if (this.DateTimePickerElement == DateTimePickerElement.Image)
 			{
 				dateTimePickerImage.ControlStyle.MergeWith(this.DateTimePickerStyle);
-				dateTimePickerDynarchCalendar.Button = "DateTimePickerImage";
 			}
 
 			if (this.DateTimePickerElement == DateTimePickerElement.Icon)
 			{
 				dateTimePickerIcon.ControlStyle.MergeWith(this.DateTimePickerStyle);
-				dateTimePickerDynarchCalendar.Button = "DateTimePickerIcon";
 			}
+
+			dateTimePickerDynarchCalendar.Button = this.GetDynarchCalendarButton();
 
 			#region Nastavení DateTimePickerImage.ImageUrl
 			if (this.IsEnabled)
@@ -809,9 +808,13 @@ namespace Havit.Web.UI.WebControls
 				|| (ContainerRenderMode == DateTimeBoxContainerRenderMode.BootstrapInputGroupAddOnOnRight))
 			{
 				// cílem je vyrenderovat tuto strukturu:
-				//	<div class="input-group">
-				//  <input type="text" class="form-control">
-				//  <span class="input-group-addon">...</span>
+				// <div class="input-group">
+				//   <input type="text" class="form-control">
+				//   <span class="input-group-btn">
+				//		<button id="..." class="btn btn-default" type="button">
+				//        ...
+				//      </button>
+				//  </span>
 				//</div>
 
 				// <div class="input-group">
@@ -845,11 +848,16 @@ namespace Havit.Web.UI.WebControls
 
 		private void RenderChildren_BootstrapInputGroupAddOnZone(HtmlTextWriter writer)
 		{
-			writer.AddAttribute(HtmlTextWriterAttribute.Class, "input-group-addon");
-			writer.RenderBeginTag(HtmlTextWriterTag.Div);
+			writer.AddAttribute(HtmlTextWriterAttribute.Class, "input-group-btn");
+			writer.RenderBeginTag(HtmlTextWriterTag.Span);
+			writer.AddAttribute(HtmlTextWriterAttribute.Id, this.ClientID + "_IB");
+			writer.AddAttribute(HtmlTextWriterAttribute.Class, "btn btn-default");
+			writer.AddAttribute(HtmlTextWriterAttribute.Type, "button");
+			writer.RenderBeginTag(HtmlTextWriterTag.Button);
 			dateTimePickerImage.RenderControl(writer);
 			dateTimePickerIcon.RenderControl(writer);
-			writer.RenderEndTag(); // .input-group-addon
+			writer.RenderEndTag(); // .btn.btn-default
+			writer.RenderEndTag(); // .input-group-btn
 		}
 		#endregion
 
@@ -950,5 +958,42 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		#endregion
+
+		#region GetDynarchCalendarButton
+		/// <summary>
+		/// Vrací ID controlu, který bude sloužit jako button DynarchCalendare, tj. na který contrl musí uživatel kliknout, aby se zobrazil DynarchCalendar.
+		/// </summary>
+		private string GetDynarchCalendarButton()
+		{
+			switch (ContainerRenderMode)
+			{
+				case DateTimeBoxContainerRenderMode.BootstrapInputGroupAddOnOnLeft:
+				case DateTimeBoxContainerRenderMode.BootstrapInputGroupAddOnOnRight:
+					{
+						return this.ClientID + "_IB";
+					}
+
+				case DateTimeBoxContainerRenderMode.Standard:
+					{
+						switch (DateTimePickerElement)
+						{
+							case DateTimePickerElement.Image:
+								return dateTimePickerImage.ID;
+
+							case DateTimePickerElement.Icon:
+								return dateTimePickerIcon.ID;
+
+							default: throw new NotSupportedException("Použitý DateTimePickerElement není podporován.");
+						}
+					}
+
+				default:
+					{
+						throw new NotSupportedException("Použitý ContainerRenderMode není podporován.");
+					}
+			}
+		}
+		#endregion
+
 	}
 }

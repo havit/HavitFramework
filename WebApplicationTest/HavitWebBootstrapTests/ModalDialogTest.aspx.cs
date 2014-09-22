@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
+using Havit.Web.UI.WebControls;
+
 namespace WebApplicationTest.HavitWebBootstrapTests
 {
 	public partial class ModalDialogTest : System.Web.UI.Page
@@ -14,6 +16,7 @@ namespace WebApplicationTest.HavitWebBootstrapTests
 		{
 			base.OnInit(e);
 			OpenButton.Click += OpenButton_Click;
+			DynarchCalendar.RegisterCalendarSkinStylesheets(this);
 		}
 		#endregion
 
@@ -23,7 +26,7 @@ namespace WebApplicationTest.HavitWebBootstrapTests
 			base.OnLoad(e);
 			if (!Page.IsPostBack)
 			{
-				ModalDialogUserControlTestUC.Show();
+				//ModalDialogUserControlTestUC.Show();
 			}
 		}
 		#endregion

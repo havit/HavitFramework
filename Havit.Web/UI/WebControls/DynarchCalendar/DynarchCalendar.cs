@@ -7,6 +7,8 @@ using System.Web.UI.HtmlControls;
 using System.Threading;
 using System.Diagnostics;
 
+using Havit.Web.UI.ClientScripts;
+
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar_stripped.js", "text/javascript")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-setup_stripped.js", "text/javascript")]
 
@@ -744,6 +746,7 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		protected virtual void RegisterClientScript()
 		{
+			ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, "jquery");
 			this.RegisterMainScript();
 			this.RegisterLanguageScript();
 			this.RegisterSetupScript();

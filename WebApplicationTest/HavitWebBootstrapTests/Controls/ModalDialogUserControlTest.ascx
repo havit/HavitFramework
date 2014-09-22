@@ -8,6 +8,24 @@
 		<br/>
 		<asp:CheckBox ID="MyCheckBox" runat="server" />
 		<havit:DateTimeBox runat="server"/>
+					<asp:TextBox ID="SubjektTB" Width="150" runat="server" Style="border: 1px solid black;" />
+					<havit:AutoSuggestMenu
+						ID="SubjektASM"
+						TargetControlID="SubjektTB"
+						ServicePath="~/HavitWebTests/AutoSuggestMenuService.asmx"
+						OnGetSuggestions="WebApplicationTest.HavitWebTests.AutoSuggestMenuService.GetSuggestions"
+						KeyPressDelay="300"
+						UsePaging="true"
+						PageSize="10"
+						MinSuggestChars="2"
+						Mode="ClearTextOnNoSelection"
+						MessageOnClearText="Hodnota stornována, nedošlo ke spárování hodnoty s číselníkovou hodnotou."
+						AutoPostBack="false"
+						UsePageMethods="false"
+						AutoRegisterStyleSheets="true"
+						runat="server" />
+
+
 		<uc1:ModalDialogUserControlTest2 ID="ModalDialogUserControlTest2" runat="server" />
 		<asp:Button ID="ShowNestedButton" Text="Show nested dialog" runat="server"/>
 	<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean in orci quis lectus varius dapibus. Praesent arcu. Mauris ullamcorper pretium mauris. Nullam ut ligula. Aliquam orci mi, condimentum luctus, consectetuer ut, hendrerit sagittis, risus. Morbi dolor. Nulla blandit consequat lectus. Sed rutrum faucibus risus. Donec placerat. Aliquam erat volutpat. Curabitur nec lorem. Morbi volutpat euismod augue. Ut sollicitudin vestibulum elit. Fusce ut dui at eros pharetra ullamcorper. Etiam leo neque, feugiat sed, consectetuer in, aliquam id, nisl. In vitae nisl ac magna mollis adipiscing.

@@ -33,6 +33,7 @@
 						MessageOnClearText="Hodnota stornována, nedošlo ke spárování hodnoty s číselníkovou hodnotou."
 						AutoPostBack="false"
 						UsePageMethods="false"
+						AutoRegisterStyleSheets="true"
 						runat="server" />
 					<asp:Button Text="Postback" runat="server" />
 				</div>

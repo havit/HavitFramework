@@ -17,6 +17,7 @@ namespace WebApplicationTest.HavitWebBootstrapTests
 			CloseButton.Click += CloseButton_Click;
 			ShowNestedButton.Click += ShowNestedButton_Click;
 			ScriptManager.GetCurrent(this.Page).RegisterPostBackControl(RefreshPostBackButton);
+			ScriptManager.GetCurrent(this.Page).Services.Add(new ServiceReference(SubjektASM.ServicePath));
 		}
 		#endregion
 

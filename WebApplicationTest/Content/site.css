@@ -6402,6 +6402,19 @@ button.toast-close-button {
     /* compensation to set correct position of nested modal */
   }
 }
+ul.nav > li {
+  /*&.dropdown {
+            > a {
+                font-size: 15px;
+            }
+        }*/
+}
+ul.nav > li span {
+  line-height: 20px;
+  display: block;
+  color: #777777;
+  padding: 15px 15px;
+}
 .validation-invalid {
   background: red;
 }

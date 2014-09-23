@@ -8,8 +8,8 @@
 
 	<div class="form-inline">
 		<div class="form-group">
-				<havit:DateTimeBox DateTimePickerElement="Image" ContainerRenderMode="BootstrapInputGroupAddOnOnLeft" runat="server"/>
-				<havit:DateTimeBox DateTimePickerElement="Image" ContainerRenderMode="BootstrapInputGroupAddOnOnRight" runat="server"/>
+				<havit:DateTimeBox DateTimePickerElement="Image" ContainerRenderMode="BootstrapInputGroupButtonOnLeft" runat="server"/>
+				<havit:DateTimeBox DateTimePickerElement="Image" ContainerRenderMode="BootstrapInputGroupButtonOnRight" runat="server"/>
 		</div>
 	</div>
 </asp:Content>

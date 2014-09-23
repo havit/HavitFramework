@@ -17,8 +17,8 @@
 
 	<h2>Properties</h2>
 	<ul>
-		<li>ContainerRenderMode (default: DateTimeBoxContainerRenderMode.Standard) - posible values: Standard, BootstrapInputGroupAddOnOnLeft, BootstrapInputGroupAddOnOnRight<br/>
-			When used BootstrapInputGroupAddOnOnLeft or BootstrapInputGroupAddOnOnRight classes input-group and form-control are rendered automatically.
+		<li>ContainerRenderMode (default: DateTimeBoxContainerRenderMode.Standard) - posible values: Standard, BootstrapInputGroupButtonOnLeft, BootstrapInputGroupButtonOnRight<br/>
+			When used BootstrapInputGroupButtonOnLeft or BootstrapInputGroupButtonOnRight classes input-group and form-control are rendered automatically.
 		</li>
 	</ul>
 

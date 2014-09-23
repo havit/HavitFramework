@@ -11,15 +11,15 @@ namespace Havit.Web.UI.WebControls
 		Standard,
 
 		/// <summary>
-		/// Viz BootstrapInputGroupAddOnOnRight, avšak ikonka pro vıbìr kalendáøe je nalevo.
+		/// Viz BootstrapInputGroupButtonOnRight, avšak ikonka pro vıbìr kalendáøe je nalevo.
 		/// </summary>
-		BootstrapInputGroupAddOnOnLeft,
+		BootstrapInputGroupButtonOnLeft,
 
 		/// <summary>
-		/// Zajišuje renderování struktury dle konvencí Bootstrapu pro Input Group a Input Group Addon.
-		/// Tøídy input-group, input-group-addon pro DIVy a form-control pro textbox jsou pøidány automaticky.
+		/// Zajišuje renderování struktury dle konvencí Bootstrapu pro Input Group a Input Group Button.
+		/// Tøídy input-group, input-group-btn pro DIVy a form-control pro textbox jsou pøidány automaticky.
 		/// Ikonka pro vıbìr kalendáøe je napravo.
 		/// </summary>
-		BootstrapInputGroupAddOnOnRight
+		BootstrapInputGroupButtonOnRight
 	}
 }

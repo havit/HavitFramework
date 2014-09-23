@@ -773,13 +773,13 @@ namespace Havit.Web.UI.WebControls
 				((DateTimeBoxStyle)ContainerStyle).UseWhiteSpaceNoWrap = true;
 			}
 
-			if ((ContainerRenderMode == DateTimeBoxContainerRenderMode.BootstrapInputGroupAddOnOnLeft)
-				|| (ContainerRenderMode == DateTimeBoxContainerRenderMode.BootstrapInputGroupAddOnOnRight))
+			if ((ContainerRenderMode == DateTimeBoxContainerRenderMode.BootstrapInputGroupButtonOnLeft)
+				|| (ContainerRenderMode == DateTimeBoxContainerRenderMode.BootstrapInputGroupButtonOnRight))
 			{
 				ContainerStyle.CssClass = (ContainerStyle.CssClass + " input-group").Trim();
 				valueTextBox.CssClass = (valueTextBox.CssClass + " form-control").Trim();
 
-				if (ContainerRenderMode == DateTimeBoxContainerRenderMode.BootstrapInputGroupAddOnOnRight)
+				if (ContainerRenderMode == DateTimeBoxContainerRenderMode.BootstrapInputGroupButtonOnRight)
 				{
 					dateTimePickerDynarchCalendar.Align = "Bl";
 				}
@@ -804,8 +804,8 @@ namespace Havit.Web.UI.WebControls
 				return;
 			}
 
-			if ((ContainerRenderMode == DateTimeBoxContainerRenderMode.BootstrapInputGroupAddOnOnLeft)
-				|| (ContainerRenderMode == DateTimeBoxContainerRenderMode.BootstrapInputGroupAddOnOnRight))
+			if ((ContainerRenderMode == DateTimeBoxContainerRenderMode.BootstrapInputGroupButtonOnLeft)
+				|| (ContainerRenderMode == DateTimeBoxContainerRenderMode.BootstrapInputGroupButtonOnRight))
 			{
 				// cílem je vyrenderovat tuto strukturu:
 				// <div class="input-group">
@@ -823,12 +823,12 @@ namespace Havit.Web.UI.WebControls
 
 				switch (ContainerRenderMode)
 				{
-					case DateTimeBoxContainerRenderMode.BootstrapInputGroupAddOnOnLeft:
+					case DateTimeBoxContainerRenderMode.BootstrapInputGroupButtonOnLeft:
 						RenderChildren_BootstrapInputGroupAddOnZone(writer);
 						valueTextBox.RenderControl(writer); //<input type="text" class="form-control">
 						break;
 
-					case DateTimeBoxContainerRenderMode.BootstrapInputGroupAddOnOnRight:
+					case DateTimeBoxContainerRenderMode.BootstrapInputGroupButtonOnRight:
 						valueTextBox.RenderControl(writer); //<input type="text" class="form-control">
 						RenderChildren_BootstrapInputGroupAddOnZone(writer);
 						break;
@@ -967,8 +967,8 @@ namespace Havit.Web.UI.WebControls
 		{
 			switch (ContainerRenderMode)
 			{
-				case DateTimeBoxContainerRenderMode.BootstrapInputGroupAddOnOnLeft:
-				case DateTimeBoxContainerRenderMode.BootstrapInputGroupAddOnOnRight:
+				case DateTimeBoxContainerRenderMode.BootstrapInputGroupButtonOnLeft:
+				case DateTimeBoxContainerRenderMode.BootstrapInputGroupButtonOnRight:
 					{
 						return this.ClientID + "_IB";
 					}

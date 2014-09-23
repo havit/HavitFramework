@@ -6343,29 +6343,6 @@ button.toast-close-button {
     width: 25em;
   }
 }
-.tooltip.validation-tooltip {
-  opacity: 1;
-}
-.tooltip.validation-tooltip > .tooltip-inner {
-  font-size: 14px;
-  border: 1px solid #f2dede;
-  background-color: #f2dede;
-  color: #a94442;
-  /* DateTimeBox is rendered in span with white-space nowrap which disables wrapping in tooltip */
-  white-space: normal;
-}
-.tooltip.validation-tooltip.right .tooltip-arrow {
-  border-right-color: #f2dede;
-}
-.tooltip.validation-tooltip.left .tooltip-arrow {
-  border-left-color: #f2dede;
-}
-.tooltip.validation-tooltip.top .tooltip-arrow {
-  border-top-color: #f2dede;
-}
-.tooltip.validation-tooltip.bottom .tooltip-arrow {
-  border-bottom-color: #f2dede;
-}
 .modal .modal {
   overflow: visible;
   /* otherwise Chrome displays nested modals inside parent modals */
@@ -6402,18 +6379,34 @@ button.toast-close-button {
     /* compensation to set correct position of nested modal */
   }
 }
-ul.nav > li {
-  /*&.dropdown {
-            > a {
-                font-size: 15px;
-            }
-        }*/
-}
 ul.nav > li span {
   line-height: 20px;
   display: block;
   color: #777777;
   padding: 15px 15px;
+}
+.tooltip.validation-tooltip {
+  opacity: 1;
+}
+.tooltip.validation-tooltip > .tooltip-inner {
+  font-size: 14px;
+  border: 1px solid #f2dede;
+  background-color: #f2dede;
+  color: #a94442;
+  /* DateTimeBox is rendered in span with white-space nowrap which disables wrapping in tooltip */
+  white-space: normal;
+}
+.tooltip.validation-tooltip.right .tooltip-arrow {
+  border-right-color: #f2dede;
+}
+.tooltip.validation-tooltip.left .tooltip-arrow {
+  border-left-color: #f2dede;
+}
+.tooltip.validation-tooltip.top .tooltip-arrow {
+  border-top-color: #f2dede;
+}
+.tooltip.validation-tooltip.bottom .tooltip-arrow {
+  border-bottom-color: #f2dede;
 }
 .validation-invalid {
   background: red;

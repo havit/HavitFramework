@@ -20,7 +20,6 @@ namespace Havit.Security
 		/// </summary>
 		/// <param name="saltLength">Požadovaná délka soli (výchozí délka je 8 znaků).</param>
 		/// <param name="passwordCharacterSet">Sada znaků pro výběr soli (výchozí hodnota je PasswordCharacterSet.LettersAndDigits).</param>
-		/// <returns></returns>
 		public static string CreateSalt(int saltLength = 8, PasswordCharacterSet passwordCharacterSet = PasswordCharacterSet.LettersAndDigits)
 		{
 			return PasswordGenerator.Generate(saltLength, saltLength, passwordCharacterSet, true, true);

@@ -150,6 +150,7 @@
     <Compile Include="BooleandFieldTest.cs" />
     <Compile Include="EnumerableExtTest.cs" />
     <Compile Include="GenericPropertyComparerTest.cs" />
+    <Compile Include="PasswordHashCalculatorTest.cs" />
     <Compile Include="MathExtTest.cs" />
     <Compile Include="PasswordGeneratorTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

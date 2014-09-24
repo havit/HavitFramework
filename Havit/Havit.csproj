@@ -225,7 +225,7 @@
     <Compile Include="Scopes\ThreadScopeRepository.cs" />
     <Compile Include="Scopes\IScopeRepository.cs" />
     <Compile Include="Scopes\WebApplicationScopeRepository.cs" />
-    <Compile Include="Security\PasswordHashCalculator.cs" />
+    <Compile Include="Security\PasswordHashService.cs" />
     <Compile Include="Security\PasswordCharacterSet.cs" />
     <Compile Include="Security\PasswordGenerator.cs" />
     <Compile Include="StringExt.cs">

@@ -11,7 +11,7 @@ namespace Havit.Security
 	/// <summary>
 	/// Pomocné metody práci s hashi hesel.
 	/// </summary>
-	public static class PasswordHashCalculator
+	public static class PasswordHashService
 	{
 		#region CreateSalt
 		/// <summary>
@@ -33,23 +33,37 @@ namespace Havit.Security
 		/// Výsledek  je vrácen jako text převedením každého byte hashe do řetězce reprezentující byte v šestnáctkové soustavě (ToString("X2")).
 		/// 
 		/// Metoda vrací stejný výsledek, jako T-SQL funkce HASHBYTES v následujícím příkladu. Před textovou hodnotou v T-SQL je potřeba uvést N, jinak dává jiný výsledek!
-		/// C#: HashCalculator.ComputeSHA512HashString("password", "salt")
+		/// C#: HashCalculator.ComputeSHA512HashString("plainTextPassword", "salt")
 		/// T-SQL: select HASHBYTES('SHA2_512', N'saltpassword')
 		/// 
 		/// HASH: ACDDA85B31ACA524AF221BF8BB635583167414180D55985294A64E48E82796627CCCAE6CA4A3C3B2B568478B0265FE62753C37119B899BE7E632D434C8B2A54E
 		/// 
 		/// Pozor, metoda díky použitému kódování vrací jinou hodnotu než "běžné" kalkulátory na webu, které používají UTF-8. Naší výhodou je kompatibilita s metodou HASHBYTES v T-SQL.
 		/// </summary>
-		/// <param name="password">Heslo, jehož hash chceme získat.</param>
+		/// <param name="plainTextPassword">Heslo, jehož hash chceme získat.</param>
 		/// <param name="salt">Sůl.</param>
 		/// <returns>Kalkulovaný SHA 512 ze soli a hesla, převedený do řetězce .</returns>
-		public static string ComputeSHA512HashString(string password, string salt = "")
+		public static string ComputeSHA512HashString(string plainTextPassword, string salt = "")
 		{
-			string value = salt + password;
+			string value = salt + plainTextPassword;
 
 			SHA512Managed sha = new SHA512Managed();
 			var hash = sha.ComputeHash(Encoding.Unicode.GetBytes(value));
 			return String.Join("", hash.Select(x => x.ToString("X2")));
+		}
+		#endregion
+
+		#region MatchesSHA512HashString
+		/// <summary>
+		/// Vrací true, pokud passwordHash odpovídá hashi zkalkulovanému z plainTextPasswordu s danou solí.
+		/// </summary>
+		/// <param name="plainTextPassword">Heslo, jehož hash chceme ověřit.</param>
+		/// <param name="salt">Sůl hesla, jehož hash chceme ověřit.</param>
+		/// <param name="passwordHash">Ověřovaný hash hesla.</param>
+		public static bool MatchesSHA512HashString(string plainTextPassword, string salt, string passwordHash)
+		{
+			string computedPasswordHash = ComputeSHA512HashString(plainTextPassword, salt);
+			return String.Equals(computedPasswordHash, passwordHash, StringComparison.InvariantCultureIgnoreCase);
 		}
 		#endregion
 	}

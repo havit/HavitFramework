@@ -6,8 +6,6 @@ xcopy Framework\Havit.Business.pdb \\topol.havit.local\library\framework /y
 xcopy Framework\Havit.Business.xml \\topol.havit.local\library\framework /y
 xcopy Framework\Havit.Data.dll \\topol.havit.local\library\framework /y
 xcopy Framework\Havit.Data.pdb \\topol.havit.local\library\framework /y
-xcopy Framework\Havit.Data.SqlServer.dll \\topol.havit.local\library\framework /y
-xcopy Framework\Havit.Data.SqlServer.xml \\topol.havit.local\library\framework /y
 xcopy Framework\Havit.Data.xml \\topol.havit.local\library\framework /y
 xcopy Framework\Havit.Drawing.dll \\topol.havit.local\library\framework /y
 xcopy Framework\Havit.Drawing.pdb \\topol.havit.local\library\framework /y

@@ -33,7 +33,7 @@ namespace Havit.Security
 		/// Výsledek  je vrácen jako text převedením každého byte hashe do řetězce reprezentující byte v šestnáctkové soustavě (ToString("X2")).
 		/// 
 		/// Metoda vrací stejný výsledek, jako T-SQL funkce HASHBYTES v následujícím příkladu. Před textovou hodnotou v T-SQL je potřeba uvést N, jinak dává jiný výsledek!
-		/// C#: HashCalculator.ComputeSHA512HashString("plainTextPassword", "salt")
+		/// C#: HashCalculator.ComputeSHA512HashString("password", "salt")
 		/// T-SQL: select HASHBYTES('SHA2_512', N'saltpassword')
 		/// 
 		/// HASH: ACDDA85B31ACA524AF221BF8BB635583167414180D55985294A64E48E82796627CCCAE6CA4A3C3B2B568478B0265FE62753C37119B899BE7E632D434C8B2A54E

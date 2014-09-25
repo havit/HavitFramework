@@ -53,14 +53,14 @@ namespace Havit.Security
 		}
 		#endregion
 
-		#region MatchesSHA512HashString
+		#region VerifySHA512HashString
 		/// <summary>
 		/// Vrací true, pokud passwordHash odpovídá hashi zkalkulovanému z plainTextPasswordu s danou solí.
 		/// </summary>
 		/// <param name="plainTextPassword">Heslo, jehož hash chceme ověřit.</param>
 		/// <param name="salt">Sůl hesla, jehož hash chceme ověřit.</param>
 		/// <param name="passwordHash">Ověřovaný hash hesla.</param>
-		public static bool MatchesSHA512HashString(string plainTextPassword, string salt, string passwordHash)
+		public static bool VerifySHA512HashString(string plainTextPassword, string salt, string passwordHash)
 		{
 			string computedPasswordHash = ComputeSHA512HashString(plainTextPassword, salt);
 			return String.Equals(computedPasswordHash, passwordHash, StringComparison.InvariantCultureIgnoreCase);

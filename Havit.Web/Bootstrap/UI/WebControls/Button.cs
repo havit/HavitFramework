@@ -82,6 +82,17 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		}
 		#endregion
 
+		#region AddAttributesToRender
+		/// <summary>
+		/// Ensures localization of ToolTip property (via HttpUtilityExt.GetResourceString).
+		/// </summary>
+		protected override void AddAttributesToRender(HtmlTextWriter writer)
+		{
+			ToolTip = HttpUtilityExt.GetResourceString(ToolTip); // viewstate already serialized
+			base.AddAttributesToRender(writer);
+		}
+		#endregion
+
 		#region RenderContents
 		/// <summary>
 		/// Add support for child control rendering, text rendering and span with IconCssClass rendering.
@@ -95,6 +106,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			// (input element is auto-closed and it cannot be changed easily).
 
 			string text = HttpUtilityExt.GetResourceString(Text);
+			ToolTip = HttpUtilityExt.GetResourceString(ToolTip); // viewstate already serialized
 
 			bool renderIcon = !String.IsNullOrEmpty(IconCssClass);
 			bool renderChildren = HasControls();

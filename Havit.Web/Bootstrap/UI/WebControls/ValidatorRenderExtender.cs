@@ -55,7 +55,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 
 			if (baseValidator.Enabled && validator.ShowToolTip && String.IsNullOrEmpty(validator.ControlToValidate) && HttpContext.Current.IsDebuggingEnabled)
 			{
-				throw new HttpException(String.Format("Validator '{0}' should show tooltip but ControlToValidate is not specified.", baseValidator.ID));
+				throw new HttpException(String.Format("Validator '{0}' should show tooltip but ControlToValidate is not specified. Set ControlToValidate property or disable tooltip by setting ShowTooltip property to False.", baseValidator.ID));
 			}
 
 			// ensure requirements

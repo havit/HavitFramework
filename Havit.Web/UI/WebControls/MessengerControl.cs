@@ -260,7 +260,7 @@ namespace Havit.Web.UI.WebControls
 					throw new ApplicationException("Neznámá hodnota MessageType.");
 			}
 
-			string toasterMessage = message.Text.Replace("'", "\\'");
+			string toasterMessage = message.Text.TrimEnd().Replace("'", "\\'").Replace(Environment.NewLine, "<br />");
 			sb.AppendFormat("toastr.{0}('{1}');", toasterMessageType, toasterMessage);
 		}
 		#endregion

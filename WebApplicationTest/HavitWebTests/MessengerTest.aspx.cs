@@ -22,8 +22,8 @@ namespace WebApplicationTest.HavitWebTests
 		private void MessagesButton_Click(object sender, EventArgs e)
 		{
 			Messenger.Default.AddMessage("Je právě: " + DateTime.Now.ToString("g"));
-			Messenger.Default.AddMessage(MessageType.Warning, "Není <b>už</b> pozdě?");
-			Messenger.Default.AddMessage(MessageType.Error, "Error message's testing single quotation mark.");
+			Messenger.Default.AddMessage(MessageType.Warning, "Není <b>už</b> \r\n\r\n pozdě?\r\n\r\n\r\n");
+			Messenger.Default.AddMessage(MessageType.Error, "Error message's testing single quotation mark.\r\n");
 			Messenger.Default.AddMessage(MessageType.Error, "Error message\"s testing single quotation mark.");
 			Messenger.Default.AddMessage(MessageType.Error, "Error message'\"\"'s testing single quotation mark.");
 		}

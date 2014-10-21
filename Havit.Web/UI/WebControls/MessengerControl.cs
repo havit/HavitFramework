@@ -186,7 +186,7 @@ namespace Havit.Web.UI.WebControls
             sb.Append("\">");
 
             sb.Append("<span class=\"tmessagetext\">");
-            sb.Append(message.Text.Replace("\n", "<br/>\n"));
+            sb.Append(message.Text.TrimEnd().Replace("\n", "<br/>\n").Replace("\r", ""));
             sb.Append("</span>");
 
             sb.Append("</div>");
@@ -216,7 +216,7 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		protected virtual void AddMessageBoxText(MessengerMessage message, StringBuilder sb)
 		{
-			sb.Append(message.Text);
+			sb.Append(message.Text.TrimEnd().Replace("\n", "\\n").Replace("\r", ""));
 			sb.Append("\\n");
 		}
 		#endregion
@@ -260,7 +260,7 @@ namespace Havit.Web.UI.WebControls
 					throw new ApplicationException("Neznámá hodnota MessageType.");
 			}
 
-			string toasterMessage = message.Text.TrimEnd().Replace("'", "\\'").Replace(Environment.NewLine, "<br />");
+			string toasterMessage = message.Text.TrimEnd().Replace("'", "\\'").Replace("\n", "<br />").Replace("\r", "");
 			sb.AppendFormat("toastr.{0}('{1}');", toasterMessageType, toasterMessage);
 		}
 		#endregion

@@ -9,11 +9,12 @@
 	<form id="form1" runat="server">
 		<asp:ScriptManager runat="server" />
 		<div>
-			<havit:MessengerControl ShowMessageBox="false" ShowSummary="false" ShowToastr="true" runat="server" />
-			<asp:Button Text="PostBack" runat="server" />
-			
 			<asp:UpdatePanel RenderMode="Inline" runat="server">
 				<ContentTemplate>
+					
+				<havit:MessengerControl ShowMessageBox="true" ShowSummary="true" ShowToastr="true" runat="server" />
+				<asp:Button Text="PostBack" runat="server" />
+			
 					<asp:Button ID="MessagesButton" Text="Add messages" runat="server" />
 				</ContentTemplate>
 			</asp:UpdatePanel>

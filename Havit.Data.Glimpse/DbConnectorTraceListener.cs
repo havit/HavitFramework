@@ -62,7 +62,10 @@ namespace Havit.Data.Glimpse
 				IMessageBroker iMessageBroker = MessageBroker;
 				if (iMessageBroker != null)
 				{
-					iMessageBroker.Publish((DbCommandTraceData)data);
+					lock (iMessageBroker) // viz TFS 14220 - zdá se, že metoda publish není thread safe
+					{
+						iMessageBroker.Publish((DbCommandTraceData)data);
+					}
 				}
 			}
 		}

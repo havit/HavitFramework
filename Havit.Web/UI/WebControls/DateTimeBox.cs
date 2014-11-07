@@ -70,6 +70,23 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region ShowWeekNumbers
+		/// <summary>
+		/// Indikuje, zda jsou zobrazena čísla týdnů. Vychozí hodnota je true.
+		/// </summary>
+		public bool ShowWeekNumbers
+		{
+			get
+			{
+				return (bool)(ViewState["ShowWeekNumbers"] ?? true);
+			}
+			set
+			{
+				ViewState["ShowWeekNumbers"] = value;
+			}
+		}
+		#endregion
+
 		#region Enabled
 		/// <summary>
 		/// Udává, zda je control pro výběr data/data a času povolen.
@@ -727,6 +744,7 @@ namespace Havit.Web.UI.WebControls
 			dateTimePickerDynarchCalendar.Enabled = IsEnabled;
 			dateTimePickerDynarchCalendar.Visible = ShowDateTimePicker;
 			dateTimePickerDynarchCalendar.FirstDay = (int)this.FirstDayOfWeek; // číslování enumu v .NETu sedí s předpokládanou hodnotou pro dynarchcalendar			
+			dateTimePickerDynarchCalendar.WeekNumbers = ShowWeekNumbers;
 			
 			if (!String.IsNullOrEmpty(_dateStatusFunction))
 			{

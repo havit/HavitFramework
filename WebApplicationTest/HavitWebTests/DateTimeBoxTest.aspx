@@ -20,14 +20,14 @@
 						<tr>
 							<td></td>
 							<td>
-								<havit:DateTimeBox ID="PrvniDTB" DateTimePickerElement="Icon" DateTimePickerStyle-CssClass="fa fa-calendar" AutoPostBack="true" CausesValidation="true" ValidationGroup="VG1" runat="server" />
+								<havit:DateTimeBox ID="PrvniDTB" DateTimePickerElement="Icon" DateTimePickerStyle-CssClass="fa fa-calendar" AutoPostBack="true" CausesValidation="true" ValidationGroup="VG1" runat="server" />								
 								<asp:CompareValidator ControlToValidate="PrvniDTB" ValidationGroup="VG1" Operator="DataTypeCheck" Type="Date" Text="error" runat="server" />
 							</td>
 						</tr>
 						<tr>
 							<td>DateTime</td>
 							<td>
-								<havit:DateTimeBox ID="DruhyDateTimeBox" FirstDayOfWeek="Sunday" KeyBlockingClientScriptEnabled="false" runat="server" />
+								<havit:DateTimeBox ID="DruhyDateTimeBox" ShowWeekNumbers="false" FirstDayOfWeek="Sunday" KeyBlockingClientScriptEnabled="false" runat="server" />
 								<asp:Button ID="VycistitButton" Text="Vycistit a schovat" runat="server" />
 								<asp:Button ID="ZobrazitButton" Text="Zobrazit" runat="server" />
 							</td>

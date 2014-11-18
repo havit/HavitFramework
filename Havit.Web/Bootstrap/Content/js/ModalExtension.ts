@@ -4,7 +4,7 @@
 
 module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
     export class ModalExtension {
-        
+
         // #region getInstance (static)
         public static getInstance(modalElementSelector: string, createIfNotExists: boolean = true): ModalExtension {
             // gets instance of modal extension for modal element
@@ -21,6 +21,7 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
         // #region keyupListenerElementSelector (static)
         // static field for registering which modal has currently registerek keyup event
         private static keyupListenerElementSelector: string;
+        private mouseWheelListenerAttached: boolean = false;
         // #endregion
 
         // #region ModalExtension state fields               
@@ -71,6 +72,7 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
 
             this.showInternal(dragMode, false);
             this.attachKeyUpEvent();
+            this.attachMouseWheelEvent();
             this.storePreviousModalElement();
         }
 
@@ -89,7 +91,7 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
             }
 
             var $modalDialog = this.$modalElement.children('.modal-dialog');
-            if (!$modalDialog.hasClass("nested")) {
+            if (!$modalDialog.hasClass('nested')) {
                 $modalDialog.css('width', this.width); // modal width is changed when child modal is opened
                 var parentModalExtension: ModalExtension = this.getParentModalExtension();
                 if (parentModalExtension != null) {
@@ -116,6 +118,7 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
                 }
             }
             this.attachKeyUpEvent();
+            this.attachMouseWheelEvent();
             this.storePreviousModalElement();
         }
 
@@ -156,6 +159,12 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
                 }
             }
 
+            // do not listen to mousewheel anymore
+            if (this.mouseWheelListenerAttached) {
+                this.$modalElement.off('mousewheel.havit.web.bootstrap');
+                this.mouseWheelListenerAttached = false;
+            }
+
             // do not listen to keyup anymore
             // if there is already someone other listening, do not detach event
             if (ModalExtension.keyupListenerElementSelector == this.modalElementSelector) {
@@ -165,12 +174,12 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
             var parentModalExtension: ModalExtension = this.getParentModalExtension();
             if (parentModalExtension != null) {
                 // if there is parent modal, activate it
-                parentModalExtension.activateByChild(this);                
+                parentModalExtension.activateByChild(this);
             }
 
             // clear grad mode if it is on
             if (!!jQuery.ui && !!jQuery.ui.version && ($previousModalElement != null)) {
-                $previousModalElement.children('.modal-dialog.ui-draggable').draggable('destroy');
+               $previousModalElement.children('.modal-dialog.ui-draggable').draggable('destroy');
             }
 
             this.clearPreviousModalElement();
@@ -255,6 +264,7 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
         private activateByChild(deactivatedByModalExtenstion: ModalExtension) {
             // activates parent modal when child modal is closed
             this.attachKeyUpEvent();
+            this.attachMouseWheelEvent();
 
             this.$modalElement.removeClass('nested');
 
@@ -294,6 +304,14 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
                         // NOOP
                     }
                 }
+            }
+        }
+
+        private attachMouseWheelEvent() {
+            // prevent scrolling body in Chrome by mouse wheel (causes crazy flickering)
+            if (!this.mouseWheelListenerAttached) {
+                this.$modalElement.on('mousewheel.havit.web.bootstrap', (event) => this.mouseWheel.call(this, event));
+                this.mouseWheelListenerAttached = true;
             }
         }
 
@@ -383,6 +401,11 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
             this.modalDialogStatePersister.saveState(this.modalDialogState);
         }
 
+        private mouseWheel(event: JQueryEventObject) {
+            // stop propagation (returns false) when event fired for an element in modal dialog
+            return ($(event.target).parents('.modal').length > 0);
+        }
+
         private bodyScroll(event: JQueryEventObject) {
             // persist modal body scroll position
             var $bodyModal = this.$modalElement.children('.modal-dialog').children('.modal-content').children().children('.modal-body');
@@ -429,7 +452,7 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
                     return;
                 }
 
-                var containerHeight = $(".modal.in").innerHeight(); // support for nested modals - first (parent) displayed modal is used 
+                var containerHeight = $('.modal.in').innerHeight(); // support for nested modals - first (parent) displayed modal is used 
                 var headerHeight = $modalHeader.outerHeight(true) || 0;
                 var footerHeight = $modalFooter.outerHeight(true) || 0;
                 var headerTop = ($modalHeader.length > 0) ? $modalHeader.offset().top : $modalBody.offset().top;

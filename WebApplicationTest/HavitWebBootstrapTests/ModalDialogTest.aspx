@@ -2,6 +2,7 @@
 <%@ Register Src="~/HavitWebBootstrapTests/Controls/ModalDialogUserControlTest.ascx" TagPrefix="uc" TagName="ModalDialogUserControlTest" %>
 
 <asp:Content ContentPlaceHolderID="MainCPH" runat="server">
+
 	<uc:ModalDialogUserControlTest ID="ModalDialogUserControlTestUC" runat="server" />
 	
 	<bc:Tooltip ToolTip="nejaky tooltip" runat="server">text</bc:Tooltip>

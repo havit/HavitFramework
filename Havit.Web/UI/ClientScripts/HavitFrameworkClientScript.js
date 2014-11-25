@@ -2,12 +2,22 @@
 	init: function (settings) {
 		// Initializes HAVIT numeric box extensions
 		$("body").on("click", "input[data-havitnumericbox]", havitNumericBoxExtensions.onclick); // hook click event on date time boxes
+		$("body").on("blur", "input[data-havitnumericbox]", havitNumericBoxExtensions.onblur); // hook blur event on date time boxes
 		$("body").on("change", "input[data-havitnumericbox]", havitNumericBoxExtensions.onchange); // hook click event on date time boxes
 		$("body").on("keypress", "input[data-havitnumericbox]:not([data-havitnumericbox-suppressfilterkey])", havitNumericBoxExtensions.onkeypress); // hook keypress event on date time boxes
 	},
 	
-	onclick: function() {
-		$(this).select(); // select content of textbox
+	onclick: function () {
+		var $this = $(this);
+		if ($this.data("havit-select-suppressed") == undefined) {
+			$this.select(); // select content of textbox
+			$this.data("havit-select-suppressed", true); // enable just one selection per one focus (otherwise not possible to click to certain position)
+		}
+	},
+
+	onblur: function() {
+		var $this = $(this);
+		$this.removeData("havit-select-suppressed");
 	},
 
 	onchange: function () {
@@ -65,7 +75,6 @@
 			}
 		}
 	}
-
 };
 
 var havitDateTimeBoxExtensions = {
@@ -73,14 +82,24 @@ var havitDateTimeBoxExtensions = {
 	init: function (settings) {
 		// Initializes HAVIT date time box extensions
 		$("body").on("click", "input[data-havitdatetimebox]", havitDateTimeBoxExtensions.onclick); // hook click event on date time boxes
+		$("body").on("blur", "input[data-havitdatetimebox]", havitDateTimeBoxExtensions.onblur); // hook blur event on date time boxes
 		$("body").on("change", "input[data-havitdatetimebox]", havitDateTimeBoxExtensions.onchange); // hook change event on date time boxes
 		$("body").on("keypress", "input[data-havitdatetimebox]:not([data-havitdatetimebox-suppressfilterkey])", havitDateTimeBoxExtensions.onkeypress); // hook keypress event on date time boxes
 	},
 	
-	onclick: function() {
-		$(this).select(); // select content of textbox
+	onclick: function () {
+		var $this = $(this);
+		if ($this.data("havit-select-suppressed") == undefined) {
+			$this.select(); // select content of textbox
+			$this.data("havit-select-suppressed", true); // enable just one selection per one focus (otherwise not possible to click to certain position)
+		}
 	},
-	
+
+	onblur: function () {
+		var $this = $(this);
+		$this.removeData("havit-select-suppressed");
+	},
+
 	onchange: function (e) {
 		havitDateTimeBoxExtensions.autoCompleteDate($(this), e); // autocompletes date
 	},

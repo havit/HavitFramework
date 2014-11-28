@@ -46,8 +46,8 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		public bool AutoPostBack
 		{
-			get { return (bool)(ViewState["AutoPostBack"] ?? false); }
-			set { ViewState["AutoPostBack"] = value; }
+			get { return valueTextBox.AutoPostBack; }
+			set { valueTextBox.AutoPostBack = value; }
 		}
 		#endregion
 
@@ -415,11 +415,11 @@ namespace Havit.Web.UI.WebControls
 		{
 			get
 			{
-				return (string)ViewState["ValidationGroup"] ?? String.Empty;
+				return valueTextBox.ValidationGroup;
 			}
 			set
 			{
-				ViewState["ValidationGroup"] = value;
+				valueTextBox.ValidationGroup = value;
 			}
 		}
 		#endregion
@@ -432,11 +432,11 @@ namespace Havit.Web.UI.WebControls
 		{
 			get
 			{
-				return (bool)(ViewState["CausesValidation"] ?? false);
+				return valueTextBox.CausesValidation;
 			}
 			set
 			{
-				ViewState["CausesValidation"] = value;
+				valueTextBox.CausesValidation = value;
 			}
 		}
 		#endregion
@@ -537,7 +537,7 @@ namespace Havit.Web.UI.WebControls
 		protected override void OnInit(EventArgs e)
 		{			
 			base.OnInit(e);
-			this.Page.PreLoad += new EventHandler(Page_PreLoad);			
+			this.Page.PreLoad += new EventHandler(Page_PreLoad);
 			valueTextBox.TextChanged += new EventHandler(ValueTextBox_TextChanged);
 			EnsureChildControls();
 		}
@@ -693,9 +693,6 @@ namespace Havit.Web.UI.WebControls
 		protected override void Render(HtmlTextWriter writer)
 		{
 			valueTextBox.Enabled = this.IsEnabled;
-			valueTextBox.AutoPostBack = this.AutoPostBack;
-			valueTextBox.ValidationGroup = this.ValidationGroup;
-			valueTextBox.CausesValidation = this.CausesValidation;
 		
 			seperatorLiteralControl.Visible = ShowDateTimePicker;
 

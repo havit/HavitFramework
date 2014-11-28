@@ -35,8 +35,8 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		public bool AutoPostBack
 		{
-			get { return (bool)(ViewState["AutoPostBack"] ?? false); }
-			set { ViewState["AutoPostBack"] = value; }
+			get { return valueTextBox.AutoPostBack; }
+			set { valueTextBox.AutoPostBack = value; }
 		}
 		#endregion
 
@@ -320,11 +320,11 @@ namespace Havit.Web.UI.WebControls
 		{
 			get
 			{
-				return (string)ViewState["ValidationGroup"] ?? String.Empty;
+				return valueTextBox.ValidationGroup;
 			}
 			set
 			{
-				ViewState["ValidationGroup"] = value;
+				valueTextBox.ValidationGroup = value;
 			}
 		}
 		#endregion
@@ -337,11 +337,11 @@ namespace Havit.Web.UI.WebControls
 		{
 			get
 			{
-				return (bool)(ViewState["CausesValidation"] ?? false);
+				return valueTextBox.CausesValidation;
 			}
 			set
 			{
-				ViewState["CausesValidation"] = value;
+				valueTextBox.CausesValidation = value;
 			}
 		}
 		#endregion
@@ -438,9 +438,7 @@ namespace Havit.Web.UI.WebControls
 			// nastavení se projeví pro Render, ale nejsou renderovány do ViewState
 
 			valueTextBox.Enabled = this.Enabled;
-			valueTextBox.AutoPostBack = this.AutoPostBack;
-			valueTextBox.ValidationGroup = this.ValidationGroup;
-			valueTextBox.CausesValidation = this.CausesValidation;
+
 			valueTextBox.Style.Add("text-align", "right");
 
 			if (valueTextBox.MaxLength == 0)

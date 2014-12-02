@@ -26,6 +26,7 @@ namespace WebApplicationTest.HavitWebTests
 			//TestGV1.DataBinding += new EventHandler(TestGV_DataBinding);
 			TestGV1.RowCustomizingCommandButton += new GridViewRowCustomizingCommandButtonEventHandler(TestGV_RowCustomizingCommandButton);
 			TestGV1.GetInsertRowDataItem += TestGV1_GetInsertRowDataItem;
+			TestGV1.RowDeleting+=TestGV1_RowDeleting;
 			TestGV2.DataBinding += new EventHandler(TestGV_DataBinding);
 			TestGV3.DataBinding += new EventHandler(TestGV_DataBinding);
 			TestGV4.DataBinding += new EventHandler(TestGV_DataBinding);
@@ -97,5 +98,13 @@ namespace WebApplicationTest.HavitWebTests
 			return Subjekt.CreateObject();
 		}
 		#endregion
+
+		#region TestGV1_RowDeleting
+		private void TestGV1_RowDeleting(object sender, GridViewDeleteEventArgs e)
+		{
+			Messenger.Default.AddMessage("Delete clicked");
+		}
+		#endregion
+
 	}
 }

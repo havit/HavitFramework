@@ -292,6 +292,30 @@ var havitDateTimeBoxExtensions = {
 };
 
 var havitGridViewExtensions = {
+	initializeRowClick: function (gridviewID) {
+		$('#' + gridviewID).on('click', "[data-rowclick]", havitGridViewExtensions.handleRowClick);
+	},
+
+	handleRowClick: function (e) {
+		var $element = $(e.target);
+		
+		while ($element != null) {
+			$element = $element.not(":input").not("[href]").not("[data-suppressrowclick]");
+			if ($element.length == 0) {
+				break;
+			}
+			var rowClick = $element.data("rowclick");
+			if (rowClick) {				
+				e.stopPropagation();
+				window.setTimeout(function() {
+					eval(rowClick);
+				}, 1);				
+				break;
+			}
+			$element = $element.parent();
+		};
+	},
+
 	setExternalEditorEditedRow: function(gridviewID, rowIndex, cssClass) {
 		$('#' + gridviewID + ' > tbody > tr.' + cssClass).removeClass(cssClass);
 		if (rowIndex >= 0) {

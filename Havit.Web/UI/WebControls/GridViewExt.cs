@@ -680,6 +680,60 @@ namespace Havit.Web.UI.WebControls
 
 		#endregion
 
+		#region RowClickEnabled
+		/// <summary>
+		/// Indikuje, zda je povoleno rozkliknutí celého řádku.
+		/// Výchozí hodnota je false.
+		/// </summary>
+		public bool RowClickEnabled
+		{
+			get
+			{
+				return (bool)(ViewState["RowClickEnabled"] ?? false);
+			}
+			set
+			{
+				ViewState["RowClickEnabled"] = value;
+			}
+		}
+		#endregion
+
+		#region RowClickCommandName
+		/// <summary>
+		/// CommandName, který se provede při rozkliknutí řádku.
+		/// Výchozí hodnota je Edit.
+		/// </summary>
+		public string RowClickCommandName
+		{
+			get
+			{
+				return (string)(ViewState["RowClickCommandName"] ?? CommandNames.Edit);
+			}
+			set
+			{
+				ViewState["RowClickCommandName"] = value;
+			}
+		}
+		#endregion
+
+		#region RowClickCssClass
+		/// <summary>
+		/// CssClass pro řádky, na kterých je povoleno rozkliknutí celého řádku (pomocí RowClickEnabled).
+		/// Výchozí hodnotou je prázdný text.
+		/// </summary>
+		public string RowClickCssClass
+		{
+			get
+			{
+				return (string)(ViewState["RowClickCssClass"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["RowClickCssClass"] = value;
+			}
+		}
+		#endregion
+
 		#region ChildTable
 		/// <summary>
 		/// Child Table.
@@ -1130,6 +1184,7 @@ namespace Havit.Web.UI.WebControls
 				if (column is GridViewCommandField)
 				{
 					GridViewCommandField gridViewCommandField = (GridViewCommandField)column;
+					gridViewCommandField.RowClickEnabledInGridView = this.RowClickEnabled;
 					if ((EditorExtender != null) && (gridViewCommandField.ShowNewButtonForInsertByEditorExtender))
 					{
 						gridViewCommandField.ShowNewButton = gridViewCommandField.ShowInsertButton && AllowInserting;
@@ -1245,17 +1300,42 @@ namespace Havit.Web.UI.WebControls
 			// Ve fake volání perform databinding nevyvoláváme události RowDataBound (ale RowFilterCreated se vyvolává, to je účel, _filterRow je pak použit ve skutečném volání).
 			if (!_performDataBindingDataInFakeCall)
 			{
+				if (RowClickEnabled && (e.Row.RowType == DataControlRowType.DataRow))
+				{
+					GridViewRowCustomizingCommandButtonEventArgs args = new GridViewRowCustomizingCommandButtonEventArgs(RowClickCommandName, e.Row.RowIndex, e.Row.DataItem);
+					args.Enabled = this.Enabled;
+					args.Visible = true;
+                    this.OnRowCustomizingCommandButton(args);
+					if (args.Enabled && args.Visible)
+					{
+						e.Row.Attributes["data-rowclick"] = this.Page.ClientScript.GetPostBackEventReference(new PostBackOptions(this, "RowClick$" + e.Row.RowIndex.ToString()));
+						if (!String.IsNullOrEmpty(RowClickCssClass))
+						{
+							e.Row.CssClass = (e.Row.CssClass + " " + RowClickCssClass).Trim();
+                        }
+					}
+				}
 				base.OnRowDataBound(e);
-
-				//if (EditorExtenderEditIndexInternal != null)
-				//{
-				//	if (e.Row.RowIndex == EditorExtenderEditIndex)
-				//	{
-				//		// TODO
-				//		e.Row.CssClass = (e.Row.CssClass + " " + "blablabla").Trim();
-				//	}
-				//}
 			}
+		}
+		#endregion
+
+		#region OnDataBound
+		/// <summary>
+		/// Pokud je povoleno RowClickEnabled, pak nastavením atributu data-suppressrowclick zajistí, aby nemohlo být kliknutí propagováno do nadřazeného gridu.
+		/// </summary>
+		protected override void OnDataBound(EventArgs e)
+		{
+			if (RowClickEnabled)
+			{
+				this.Attributes["data-suppressrowclick"] = "true";
+			}
+			else
+			{
+				this.Attributes.Remove("data-suppressrowclick");
+			}
+
+			base.OnDataBound(e);
 		}
 		#endregion
 
@@ -1740,6 +1820,11 @@ namespace Havit.Web.UI.WebControls
 					this.EditorExtenderEditCssClass); // 2
 
 				ScriptManager.RegisterStartupScript(this.Page, typeof(GridViewExt), "SelectExternalEditorEditedRow", script, true);
+			}
+			if (RowClickEnabled)
+			{
+				string script = String.Format("havitGridViewExtensions.initializeRowClick('{0}');", this.ClientID);
+				ScriptManager.RegisterStartupScript(this, typeof(GridViewExt), "InitializeRowClick", script, true);
 			}
 		}
 		#endregion
@@ -2470,6 +2555,24 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		#endregion
+
+		#region RaisePostBackEvent
+		/// <summary>
+		/// Rozšiřuje RaisePostBackEvent o obsluhu událostí RowClick.
+		/// </summary>
+		protected override void RaisePostBackEvent(string eventArgument)
+		{
+			base.RaisePostBackEvent(eventArgument);
+
+			if ((eventArgument != null) && (eventArgument.StartsWith("RowClick$")))
+			{
+				CommandEventArgs originalArgs = new CommandEventArgs(RowClickCommandName, eventArgument.Substring(9 /* IndexOf('$') + 1 */));
+				GridViewCommandEventArgs e = new GridViewCommandEventArgs(null, this, originalArgs);
+				OnBubbleEvent(this, e);
+			}
+		}
+		#endregion
+
 	}
 
 	/// <summary>

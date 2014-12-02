@@ -489,6 +489,13 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region RowClickEnabledInGridView
+		/// <summary>
+		/// Indikuje, zda je povoleno RowClickEnabled v nadřazeném GridView
+		/// </summary>
+		internal bool RowClickEnabledInGridView { get; set; }
+		#endregion // záměrně bez ViewState
+
 		#region Initialize
 		/// <summary>
 		/// Inicializuje field (volá se jednou z GridView.CreateChildControls()).
@@ -517,6 +524,11 @@ namespace Havit.Web.UI.WebControls
 			DataControlRowState rowState,
 			int rowIndex)
 		{
+			if (RowClickEnabledInGridView)
+			{
+				cell.Attributes["data-suppressrowclick"] = "true";
+			}
+
 			if (cellType == DataControlCellType.Header)
 			{
 				if (ShowNewButton)

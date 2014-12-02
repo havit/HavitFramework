@@ -8,14 +8,18 @@
     <title>Untitled Page</title>
 </head>
 <style>
+    .rowclick { background-color: lightcoral; }
+	.rowclick [data-suppressrowclick] { background-color: white;}
+
 	.deletebtn { font-weight: bold; }
 	.deletebtn-disabled { text-decoration:line-through; }
 </style>
 <body>
     <form id="form1" runat="server">
+	<havit:MessengerControl runat="server" />
 	<asp:ScriptManager runat="server" />
     <div>
-		<havit:EnterpriseGridView ID="TestGV1" SkinID="SkinTest" SelectMethod="TestGV1_SelectMethod" UpdateMethod="TestGV1_UpdateMethod" AllowInserting="True" InsertRowPosition="Top" ItemType="Havit.BusinessLayerTest.Subjekt" AllowPaging="false" PageSize="100" PagerSettings-Mode="NextPreviousFirstLast" PagerSettings-Position="Bottom" AutoCrudOperations="true" runat="server">
+		<havit:EnterpriseGridView ID="TestGV1" SkinID="SkinTest" SelectMethod="TestGV1_SelectMethod" UpdateMethod="TestGV1_UpdateMethod" AllowInserting="True" InsertRowPosition="Top" ItemType="Havit.BusinessLayerTest.Subjekt" AllowPaging="false" PageSize="100" PagerSettings-Mode="NextPreviousFirstLast" PagerSettings-Position="Bottom" AutoCrudOperations="true" runat="server" RowClickEnabled="true" RowClickCssClass="rowclick">
 			<Columns>
 				<havit:BoundFieldExt DataField="Nazev" SortExpression="Nazev" HeaderText="Název" />
 				<havit:TemplateFieldExt SortExpression="Nazev" HeaderText="Název">

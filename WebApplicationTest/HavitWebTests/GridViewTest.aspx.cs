@@ -26,7 +26,7 @@ namespace WebApplicationTest.HavitWebTests
 			//TestGV1.DataBinding += new EventHandler(TestGV_DataBinding);
 			TestGV1.RowCustomizingCommandButton += new GridViewRowCustomizingCommandButtonEventHandler(TestGV_RowCustomizingCommandButton);
 			TestGV1.GetInsertRowDataItem += TestGV1_GetInsertRowDataItem;
-			TestGV1.RowDeleting+=TestGV1_RowDeleting;
+			TestGV1.RowDeleting += TestGV1_RowDeleting;
 			TestGV2.DataBinding += new EventHandler(TestGV_DataBinding);
 			TestGV3.DataBinding += new EventHandler(TestGV_DataBinding);
 			TestGV4.DataBinding += new EventHandler(TestGV_DataBinding);

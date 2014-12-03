@@ -293,7 +293,8 @@ var havitDateTimeBoxExtensions = {
 
 var havitGridViewExtensions = {
 	initializeRowClick: function (gridviewID) {
-		$('#' + gridviewID).on('click', "[data-rowclick]", havitGridViewExtensions.handleRowClick);
+		$('#' + gridviewID).off('click.havit.web');
+		$('#' + gridviewID).on('click.havit.web', "[data-rowclick]", havitGridViewExtensions.handleRowClick);
 	},
 
 	handleRowClick: function (e) {

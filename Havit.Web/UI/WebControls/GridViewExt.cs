@@ -1873,10 +1873,11 @@ namespace Havit.Web.UI.WebControls
 
 				ScriptManager.RegisterStartupScript(this.Page, typeof(GridViewExt), "SelectExternalEditorEditedRow", script, true);
 			}
+
 			if (this.AllowRowClick)
 			{
 				string script = String.Format("havitGridViewExtensions.initializeRowClick('{0}');", this.ClientID);
-				ScriptManager.RegisterStartupScript(this, typeof(GridViewExt), "InitializeRowClick", script, true);
+				ScriptManager.RegisterStartupScript(this, typeof(GridViewExt), String.Format("InitializeRowClick-{0}", this.ClientID), script, true);
 			}
 		}
 		#endregion

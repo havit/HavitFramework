@@ -1347,6 +1347,7 @@ namespace Havit.Web.UI.WebControls
 				RowClick(this, eventArgs);
 			}
 		}
+
 		/// <summary>
 		/// Událost vyvolaná připadě rozkliknutí řádku.
 		/// </summary>

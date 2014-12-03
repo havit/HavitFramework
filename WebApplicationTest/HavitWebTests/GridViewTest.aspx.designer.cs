@@ -28,7 +28,16 @@ namespace WebApplicationTest.HavitWebTests {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Havit.Web.UI.WebControls.EnterpriseGridView TestGV1;
+        protected global::Havit.Web.UI.Scriptlets.EnterpriseGridView TestGV1;
+        
+        /// <summary>
+        /// NazevTextBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox NazevTextBox;
         
         /// <summary>
         /// TestGV2 control.

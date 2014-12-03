@@ -491,7 +491,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region RowClickEnabledInGridView
 		/// <summary>
-		/// Indikuje, zda je povoleno RowClickEnabled v nadřazeném GridView
+		/// Indikuje, zda je povoleno AllowRowClick v nadřazeném GridView
 		/// </summary>
 		internal bool RowClickEnabledInGridView { get; set; }
 		#endregion // záměrně bez ViewState

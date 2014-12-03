@@ -153,6 +153,7 @@
     <Compile Include="UI\WebControls\DateTimeBoxContainerRenderMode.cs" />
     <Compile Include="UI\WebControls\EditorExtenderItemDataBound.cs" />
     <Compile Include="UI\WebControls\EditorExtenderMode.cs" />
+    <Compile Include="UI\WebControls\GridViewRowClickEventArgs.cs" />
     <Compile Include="UI\WebControls\IEditorExtenderWithPreviousNextNavigation.cs" />
     <Compile Include="UI\WebControls\IEditorExtender.cs" />
     <Compile Include="UI\WebControls\IEditorExtensible.cs" />

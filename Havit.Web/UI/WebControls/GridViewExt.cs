@@ -1024,6 +1024,22 @@ namespace Havit.Web.UI.WebControls
 		private GridViewRow _filterRowCreatedInPerformDataBindingFakeCall;
 		#endregion
 
+		#region RaisePostBackEvent
+		/// <summary>
+		/// Rozšiřuje RaisePostBackEvent o obsluhu událostí RowClick.
+		/// </summary>
+		protected override void RaisePostBackEvent(string eventArgument)
+		{
+			base.RaisePostBackEvent(eventArgument);
+
+			if ((eventArgument != null) && (eventArgument.StartsWith("RowClick$")))
+			{
+				int rowIndex = int.Parse(eventArgument.Substring(9 /* "RowClick$".IndexOf('$') + 1 */));
+				HandleRowClick(rowIndex);
+			}
+		}
+		#endregion
+
 		#region InitializeRow, InitializeFilterRow
 		/// <summary>
 		/// Inicializuje řádek gridu danými fieldy. Není použito pro filtrovací řádek, ten řeší samostatná metoda InitializeFilterRow
@@ -1320,6 +1336,23 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region (On)RowClick
+		/// <summary>
+		/// Událost vyvolaná připadě rozkliknutí řádku.
+		/// </summary>
+		protected void OnRowClick(GridViewRowClickEventArgs eventArgs)
+		{
+			if (RowClick != null)
+			{
+				RowClick(this, eventArgs);
+			}
+		}
+		/// <summary>
+		/// Událost vyvolaná připadě rozkliknutí řádku.
+		/// </summary>
+		public event GridViewRowClickEventHandler RowClick;
+		#endregion
+
 		#region OnDataBound
 		/// <summary>
 		/// Pokud je povoleno RowClickEnabled, pak nastavením atributu data-suppressrowclick zajistí, aby nemohlo být kliknutí propagováno do nadřazeného gridu.
@@ -1495,6 +1528,24 @@ namespace Havit.Web.UI.WebControls
 					GridViewNewProcessedEventArgs argsNewProcessed = new GridViewNewProcessedEventArgs();
 					OnNewProcessed(argsNewProcessed);
 				}
+			}
+		}
+		#endregion
+
+		#region HandleRowClick
+		/// <summary>
+		/// Zajistí obluhu události RowClick. Tj. vyvolá událost pomocí OnRowClick a pokud není zrušená (Cancel) a zároveň je zadáno RowClickCommandName, pak se pokusí vyvolat událost dle RowClickCommandName pomocí OnBubbleEvent.
+		/// </summary>
+		private void HandleRowClick(int rowIndex)
+		{
+			GridViewRowClickEventArgs args = new GridViewRowClickEventArgs { RowIndex = rowIndex };
+			OnRowClick(args);
+
+			if (!args.Cancel && !String.IsNullOrEmpty(RowClickCommandName))
+			{
+				CommandEventArgs originalArgs = new CommandEventArgs(RowClickCommandName, rowIndex.ToString());
+				GridViewCommandEventArgs e = new GridViewCommandEventArgs(null, this, originalArgs);
+				OnBubbleEvent(this, e);
 			}
 		}
 		#endregion
@@ -2556,24 +2607,12 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-		#region RaisePostBackEvent
-		/// <summary>
-		/// Rozšiřuje RaisePostBackEvent o obsluhu událostí RowClick.
-		/// </summary>
-		protected override void RaisePostBackEvent(string eventArgument)
-		{
-			base.RaisePostBackEvent(eventArgument);
-
-			if ((eventArgument != null) && (eventArgument.StartsWith("RowClick$")))
-			{
-				CommandEventArgs originalArgs = new CommandEventArgs(RowClickCommandName, eventArgument.Substring(9 /* IndexOf('$') + 1 */));
-				GridViewCommandEventArgs e = new GridViewCommandEventArgs(null, this, originalArgs);
-				OnBubbleEvent(this, e);
-			}
-		}
-		#endregion
-
 	}
+
+	/// <summary>
+	/// Reprezentuje metodu, která obsluhuje událost RowClick controlu GridViewExt.
+	/// </summary>
+	public delegate void GridViewRowClickEventHandler(object sender, GridViewRowClickEventArgs e);
 
 	/// <summary>
 	/// Reprezentuje metodu, která obsluhuje událost RowInserting controlu GridViewExt.

@@ -12,22 +12,14 @@ namespace Havit.Web
 	{
 		#region ClearCache
 		/// <summary>
-		/// Vyčistí cache webové aplikace.
+		/// Vyčistí cache aplikace.
 		/// </summary>
 		public static void ClearCache()
 		{
-			HttpContext context = HttpContext.Current;
-			if (context == null)
+			Cache cache = HttpRuntime.Cache;
+            foreach (DictionaryEntry de in cache)
 			{
-				throw new InvalidOperationException("HttpContext.Current is null. Web server not available.");
-			}
-			if (context.Cache == null)
-			{
-				throw new InvalidOperationException("HttpContext.Current.Cache is null. Cache not available.");
-			}
-			foreach (DictionaryEntry de in context.Cache)
-			{
-				context.Cache.Remove(de.Key.ToString());
+				cache.Remove(de.Key.ToString());
 			}
 		}
 		#endregion

@@ -132,30 +132,13 @@ XUtils.isPointInDiv = function(x, y, div)
 
 XUtils.getAbsoluteLeft = function(obj)
 {
-    var left = obj.offsetLeft;
-
-    while(obj.offsetParent!=null)
-    {
-        obj=obj.offsetParent;
-        left=left + obj.offsetLeft;
-    }
-   
-    return left;
+	return $(obj).offset().left;
 }
 
 
 
-XUtils.getAbsoluteTop = function(obj)
-{
-    var top=obj.offsetTop;
-
-    while (obj.offsetParent!=null)
-    {
-        obj=obj.offsetParent;
-        top=top + obj.offsetTop;
-    }
-   
-    return top;
+XUtils.getAbsoluteTop = function(obj) {
+	return $(obj).offset().top;
 }
 
 

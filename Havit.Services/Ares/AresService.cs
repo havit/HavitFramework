@@ -56,7 +56,7 @@ namespace Havit.Services.Ares
 		/// Vrací strukturovanou odpovìd z obchodního rejstøíku.
 		/// </summary>
 		public AresData GetData(AresRegistr rejstriky = AresRegistr.Basic | AresRegistr.ObchodniRejstrik)
-		{
+		{			
 			AresData result = new AresData();
 			List<Task> tasks = new List<Task>();
 
@@ -70,7 +70,22 @@ namespace Havit.Services.Ares
 				tasks.Add(Task.Factory.StartNew(LoadObchodniRejstrikData, result));
 			}
 
-			Task.WaitAll(tasks.ToArray());
+			try
+			{
+				Task.WaitAll(tasks.ToArray());
+			}
+			catch (AggregateException exception)
+			{
+				// pokus o vybalení výjimky (chceme øešit jen jedinou)
+				if ((exception.InnerExceptions.Count > 0) && (exception.InnerExceptions[0] is AresBaseException))
+				{
+					throw exception.InnerExceptions[0];
+				}
+				else
+				{
+					throw;
+				}
+			}
 
 			return result;
 		}
@@ -230,7 +245,7 @@ namespace Havit.Services.Ares
 		{
 			XDocument aresResponseXDocument = null;
 
-			try
+            try
 			{
 				WebRequest aresRequest = HttpWebRequest.Create(requestUrl);
 				if (this.Timeout != null)

@@ -22,6 +22,15 @@ namespace WebApplicationTest.HavitWebTests {
         protected global::System.Web.UI.HtmlControls.HtmlHead Head1;
         
         /// <summary>
+        /// Link1Button control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton Link1Button;
+        
+        /// <summary>
         /// Test2Button control.
         /// </summary>
         /// <remarks>
@@ -29,5 +38,14 @@ namespace WebApplicationTest.HavitWebTests {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button Test2Button;
+        
+        /// <summary>
+        /// Link2Button control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton Link2Button;
     }
 }

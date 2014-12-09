@@ -1,4 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="false" CodeBehind="SingleSubmitProtectionTest.aspx.cs" Inherits="WebApplicationTest.HavitWebTests.SingleSubmitProtectionTest" %>
+<%@ OutputCache Duration="300" VaryByParam="*" %>
 
 <%@ Register Namespace="Havit.Web.UI.WebControls" TagPrefix="havit" Assembly="Havit.Web" %>
 
@@ -28,16 +29,17 @@
 			</asp:ScriptManager>
 			<havit:SingleSubmitProtection runat="server" />
 
+            <asp:LinkButton ID="Link1Button" Text="Go to another page" runat="server" />
 			<asp:UpdatePanel UpdateMode="Conditional" runat="server">
 				<Triggers>
 				</Triggers>
 				<ContentTemplate>
 					<asp:Button ID="TestButton" Text="Test" runat="server" />
 					<asp:Button ID="Test2Button" Text="Not protected by single submit protectection" OnClientClick="<%$ Expression: SingleSubmitProtection.SetProcessingDisableJavaScript %>" runat="server" />
+                    <asp:LinkButton ID="Link2Button" Text="Go to another page (async)" runat="server" />
 				</ContentTemplate>
 			</asp:UpdatePanel>
 		</div>
 	</form>
-
 </body>
 </html>

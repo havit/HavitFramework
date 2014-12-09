@@ -8,6 +8,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
+using System.Collections.Generic;
 
 namespace WebApplicationTest.HavitWebTests
 {
@@ -27,13 +28,22 @@ namespace WebApplicationTest.HavitWebTests
 			base.OnInit(e);
 			TestButton.Click += new EventHandler(TestButton_Click);
 			Test2Button.Click += new EventHandler(TestButton_Click);
-		}
+			Link1Button.Click += LinkButton_Click;
+			Link2Button.Click += LinkButton_Click;
+        }
 		#endregion
 
 		#region TestButton_Click
 		private void TestButton_Click(object sender, EventArgs e)
 		{
 			clickCounter += 1;
+		}
+		#endregion
+
+		#region LinkButton_Click
+		private void LinkButton_Click(object sender, EventArgs e)
+		{
+			Response.Redirect("SingleSubmitProtectionTest2.aspx");
 		}
 		#endregion
 

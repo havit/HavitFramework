@@ -88,8 +88,21 @@ function SingleSubmit_SetProcessing()
 			progressLayer.style.height = (document.documentElement.scrollHeight -1) + "px"; 
 			progressLayer.style.display = "block";
 			progressLayer.style.cursor = "progress";
+
+			// IE11: Back navigation caching - při získání stránky všetně stavu z cache potřebujeme schovat IsProcessing.
+			if (!window.attachEvent && window.addEventListener) {
+				window.addEventListener("pageshow", _SingleSubmit_PageShow);
+			}
+
 		}
 	}
+}
+
+/// <summary>
+/// Schová IsProcessing.
+/// </summary>
+function _SingleSubmit_PageShow() {
+	SingleSubmit_ClearProcessing();
 }
 
 /// <summary>
@@ -100,7 +113,7 @@ function SingleSubmit_ClearProcessing()
 	if (_SingleSubmit_IsProcessing)
 	{
 		// najdeme progress layer
-		var progressLayer = document.getElementById("progress-layer");					
+		var progressLayer = document.getElementById("progress-layer");
 		if (progressLayer != null)
 		{
 			if (_SingleSubmit_ProgressLayer_Created)
@@ -122,7 +135,11 @@ function SingleSubmit_ClearProcessing()
 				progressLayer.style.display = "none";
 			}
 		}
-		
+
+		if (!window.detachEvent && window.removeEventListener) {
+			window.removeEventListener("pageshow", _SingleSubmit_PageShow);
+		}
+
 		_SingleSubmit_IsProcessing = false;
 	}
 }

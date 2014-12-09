@@ -370,6 +370,7 @@
     <Content Include="Scripts\WebForms\WebForms.js" />
     <Content Include="Scripts\WebForms\WebParts.js" />
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
+    <Content Include="HavitWebTests\SingleSubmitProtectionTest2.aspx" />
     <Content Include="SystemWebTests\ScriptManagerTest.aspx" />
     <Content Include="SystemWebTests\SmtpTraceListenerTest.aspx" />
     <Content Include="HavitWebTests\DateTimeBoxTest.aspx" />
@@ -573,6 +574,13 @@
     </Compile>
     <Compile Include="HavitWebTests\PageNavigator_A_Test.aspx.designer.cs">
       <DependentUpon>PageNavigator_A_Test.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HavitWebTests\SingleSubmitProtectionTest2.aspx.cs">
+      <DependentUpon>SingleSubmitProtectionTest2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HavitWebTests\SingleSubmitProtectionTest2.aspx.designer.cs">
+      <DependentUpon>SingleSubmitProtectionTest2.aspx</DependentUpon>
     </Compile>
     <Compile Include="SystemWebTests\ScriptManagerTest.aspx.cs">
       <DependentUpon>ScriptManagerTest.aspx</DependentUpon>

@@ -684,7 +684,19 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Indikuje, zda je povoleno rozkliknutí celého řádku.
 		/// Výchozí hodnota je false.
+		/// 
+		/// Ve výchozím stavu není rozkliknutelný řádek, který je editován či vkládán a pokud RowClickCommandName je "Edit". Brání se tak možnosti znovu kliknout na editaci aktuálně editovaného řádku, což by molho vést je ztrátě již vepsaných údajů při lehkém ukliknutí.
+		/// Ve výchozím stavu dále není rozkliknutelný řádek, který je vybraný a pokud RowClickCommandName je "Select". Brání se tak možnosti znovu kliknout na výběr již vybraného řádku.
+		/// Výchozí chování je možné změnit nastavením hodnoty Enabled na true v obsluze události OnRowCustomizingCommandButton pro daný RowClickCommandName.
 		/// </summary>
+		/// <remarks>
+		/// Možnost rozkliknutí řádku se řídí pravidly:
+		/// <ol>
+		/// <li>AllowRowClick musí být true.</li>
+		/// <li>Grid musí být povolen.</li>
+		/// <li>Obsluha události OnRowCustomizingCommandButton nesmí vrátit ve vlastnostech Enabled ani Visible hodnotu false.</li>
+		/// </ol>
+		/// </remarks>
 		public bool AllowRowClick
 		{
 			get
@@ -1200,7 +1212,9 @@ namespace Havit.Web.UI.WebControls
 				if (column is GridViewCommandField)
 				{
 					GridViewCommandField gridViewCommandField = (GridViewCommandField)column;
-					gridViewCommandField.RowClickEnabledInGridView = this.AllowRowClick;
+					gridViewCommandField.RowClickEnabledInGridView = this.IsRowClickEnabled();
+					gridViewCommandField.RowClickCommandNameInGridView = RowClickCommandName;
+
 					if ((EditorExtender != null) && (gridViewCommandField.ShowNewButtonForInsertByEditorExtender))
 					{
 						gridViewCommandField.ShowNewButton = gridViewCommandField.ShowInsertButton && AllowInserting;
@@ -1316,10 +1330,10 @@ namespace Havit.Web.UI.WebControls
 			// Ve fake volání perform databinding nevyvoláváme události RowDataBound (ale RowFilterCreated se vyvolává, to je účel, _filterRow je pak použit ve skutečném volání).
 			if (!_performDataBindingDataInFakeCall)
 			{
-				if (this.AllowRowClick && (e.Row.RowType == DataControlRowType.DataRow))
+				if ((e.Row.RowType == DataControlRowType.DataRow) && this.IsRowClickEnabled())
 				{
 					GridViewRowCustomizingCommandButtonEventArgs args = new GridViewRowCustomizingCommandButtonEventArgs(RowClickCommandName, e.Row.RowIndex, e.Row.DataItem);
-					args.Enabled = this.Enabled;
+					args.Enabled = !((RowClickCommandName == CommandNames.Edit) && ((e.Row.RowIndex == EditIndex) || (e.Row.RowIndex == InsertIndex))) && !((RowClickCommandName == CommandNames.Select) && (e.Row.RowIndex == SelectedIndex));
 					args.Visible = true;
                     this.OnRowCustomizingCommandButton(args);
 					if (args.Enabled && args.Visible)
@@ -2215,6 +2229,16 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		
+		#endregion
+
+		#region IsRowClickEnabled
+		/// <summary>
+		/// Vrací true, pokud je povoleno kliknutí do celého řádku.
+		/// </summary>
+		protected bool IsRowClickEnabled()
+		{
+			return AllowRowClick && IsEnabled;
+		}
 		#endregion
 
 		#region OnAllPagesShowing, OnAllPagesShown

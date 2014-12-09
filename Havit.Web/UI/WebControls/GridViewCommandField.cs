@@ -496,6 +496,13 @@ namespace Havit.Web.UI.WebControls
 		internal bool RowClickEnabledInGridView { get; set; }
 		#endregion // záměrně bez ViewState
 
+		#region RowClickEnabledInGridView
+		/// <summary>
+		/// Indikuje, zda je povoleno AllowRowClick v nadřazeném GridView
+		/// </summary>
+		internal string RowClickCommandNameInGridView { get; set; }
+		#endregion // záměrně bez ViewState
+
 		#region Initialize
 		/// <summary>
 		/// Inicializuje field (volá se jednou z GridView.CreateChildControls()).
@@ -556,7 +563,10 @@ namespace Havit.Web.UI.WebControls
 				bool showInsertButton = this.ShowInsertButton;
 				bool showSelectButton = this.ShowSelectButton;
 				bool showCancelButton = this.ShowCancelButton;
-				bool insertSpace = true;
+				bool showUpdateButton = true;
+				bool showUpdateCancelButtons = showEditButton || (RowClickEnabledInGridView && (RowClickCommandNameInGridView == CommandNames.Edit));
+
+				bool insertSpace;
 				bool causesValidation = this.CausesValidation;
 				string validationGroup = this.ValidationGroup;
 
@@ -565,15 +575,22 @@ namespace Havit.Web.UI.WebControls
 					LiteralControl child;
 					if ((rowState & (DataControlRowState.Insert | DataControlRowState.Edit)) != DataControlRowState.Normal)
 					{
-						if (((rowState & DataControlRowState.Edit) != DataControlRowState.Normal) && showEditButton)
+						if (((rowState & DataControlRowState.Edit) != DataControlRowState.Normal) && showUpdateCancelButtons)
 						{
-							// stejné jako CommandField
-							Control control = (Control)this.AddButtonToCell(cell, "Update", HttpUtilityExt.GetResourceString(this.UpdateText), HttpUtilityExt.GetResourceString(this.UpdateTooltip), UpdateCssClass, UpdateDisabledCssClass, causesValidation, validationGroup, rowIndex, this.UpdateImageUrl);
-							control.PreRender += (sender, ea) => RegisterDefaultButton(control); // v tento okamžik není dostupný NamingContainer (control ještě není v řádku)
+							insertSpace = false;
+							if (showUpdateButton)
+							{ 
+								Control control = (Control)this.AddButtonToCell(cell, "Update", HttpUtilityExt.GetResourceString(this.UpdateText), HttpUtilityExt.GetResourceString(this.UpdateTooltip), UpdateCssClass, UpdateDisabledCssClass, causesValidation, validationGroup, rowIndex, this.UpdateImageUrl);
+								control.PreRender += (sender, ea) => RegisterDefaultButton(control); // v tento okamžik není dostupný NamingContainer (control ještě není v řádku)
+								insertSpace = true;
+							}
 							if (showCancelButton)
 							{
-								child = new LiteralControl("&nbsp;");
-								cell.Controls.Add(child);
+								if (insertSpace)
+								{
+									child = new LiteralControl("&nbsp;");
+									cell.Controls.Add(child);
+								}
 								this.AddButtonToCell(cell, "Cancel", HttpUtilityExt.GetResourceString(this.CancelText), HttpUtilityExt.GetResourceString(this.CancelTooltip), CancelCssClass, CancelDisabledCssClass, false, string.Empty, rowIndex, this.CancelImageUrl);
 							}
 						}
@@ -594,24 +611,25 @@ namespace Havit.Web.UI.WebControls
 					}
 					else
 					{
+						insertSpace = false;
 						if (showSelectButton)
 						{
 							this.AddButtonToCell(cell, "Select", HttpUtilityExt.GetResourceString(this.SelectText), HttpUtilityExt.GetResourceString(this.SelectTooltip), SelectCssClass, SelectDisabledCssClass, false, string.Empty, rowIndex, this.SelectImageUrl);
-							insertSpace = false;
+							insertSpace = true;
 						}
 						if (showEditButton)
 						{
-							if (!insertSpace)
+							if (insertSpace)
 							{
 								child = new LiteralControl("&nbsp;");
 								cell.Controls.Add(child);
 							}
 							this.AddButtonToCell(cell, "Edit", HttpUtilityExt.GetResourceString(this.EditText), HttpUtilityExt.GetResourceString(this.EditTooltip), EditCssClass, EditDisabledCssClass, false, string.Empty, rowIndex, this.EditImageUrl);
-							insertSpace = false;
+							insertSpace = true;
 						}
 						if (showDeleteButton)
 						{
-							if (!insertSpace)
+							if (insertSpace)
 							{
 								child = new LiteralControl("&nbsp;");
 								cell.Controls.Add(child);
@@ -637,8 +655,6 @@ namespace Havit.Web.UI.WebControls
 									((ImageButton)button).OnClientClick = String.Format("if (!confirm('{0}')) return false;", deleteConfirmationTextResolved.Replace("'", "''"));
 								}
 							}
-
-							insertSpace = false;
 						}
 					}
 				}

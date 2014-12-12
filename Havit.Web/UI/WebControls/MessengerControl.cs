@@ -7,29 +7,29 @@ using System.Diagnostics;
 
 namespace Havit.Web.UI.WebControls
 {
-    /// <summary>
-    /// Zobrazuje zprávy Messengera.
-    /// </summary>
-    public class MessengerControl : Literal
-    {
-        #region Messenger
-        /// <summary>
-        /// Messenger použitý pro zprávy k zobrazení.
-        /// Není-li nastaven, vrací Messenger.Default.
-        /// </summary>
-        public Messenger Messenger
-        {
-            get
-            {
-                return _messenger == null ? Messenger.Default : _messenger;                
-            }
-            set
-            {
-                _messenger = value;
-            }
-        }
-        private Messenger _messenger; 
-        #endregion
+	/// <summary>
+	/// Zobrazuje zprávy Messengera.
+	/// </summary>
+	public class MessengerControl : Literal
+	{
+		#region Messenger
+		/// <summary>
+		/// Messenger použitý pro zprávy k zobrazení.
+		/// Není-li nastaven, vrací Messenger.Default.
+		/// </summary>
+		public Messenger Messenger
+		{
+			get
+			{
+				return _messenger == null ? Messenger.Default : _messenger;                
+			}
+			set
+			{
+				_messenger = value;
+			}
+		}
+		private Messenger _messenger; 
+		#endregion
 
 		#region ShowMessageBox
 		/// <summary>
@@ -91,7 +91,7 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-	    #region Page_PreRenderComplete
+		#region Page_PreRenderComplete
 		/// <summary>
 		/// Vyrenderuje html a/nebo script messengeru.
 		/// </summary>
@@ -128,70 +128,70 @@ namespace Havit.Web.UI.WebControls
 					}
 				}
 
-				this.Messenger.Clear();
+				this.Messenger.ClearMessages();
 			}
-        }
-        #endregion
+		}
+		#endregion
 
 		#region GetSummaryHtml, AddMessageHtml
 		/// <summary>
-        /// Vrátí obsah messengeru (HTML kód) připravený k vyrenderování do stránky.
-        /// </summary>
+		/// Vrátí obsah messengeru (HTML kód) připravený k vyrenderování do stránky.
+		/// </summary>
 		protected virtual string GetSummaryHtml()
-        {
-            if (Messenger.Messages.Count > 0)
-            {
-                StringBuilder sb = new StringBuilder();
-                sb.AppendLine("<div class=\"tmessenger\">");
-                foreach (MessengerMessage message in Messenger.Messages)
-                {
+		{
+			if (Messenger.GetMessages().Count > 0)
+			{
+				StringBuilder sb = new StringBuilder();
+				sb.AppendLine("<div class=\"tmessenger\">");
+				foreach (MessengerMessage message in Messenger.GetMessages())
+				{
 					AddMessageSummaryHtml(message, sb);
-                }
-                sb.AppendLine("</div>");
+				}
+				sb.AppendLine("</div>");
 
-                return sb.ToString();
-            }
-            else
-            {
-                return String.Empty;
-            }
-        }
+				return sb.ToString();
+			}
+			else
+			{
+				return String.Empty;
+			}
+		}
 
-        /// <summary>
-        /// Vrátí text zprávy messengeru (HTML kód) připravený k vyrenderování do stránky.
-        /// </summary>
-        protected virtual void AddMessageSummaryHtml(MessengerMessage message, StringBuilder sb)
-        {
-            Debug.Assert(message != null);
-            Debug.Assert(sb != null);
+		/// <summary>
+		/// Vrátí text zprávy messengeru (HTML kód) připravený k vyrenderování do stránky.
+		/// </summary>
+		protected virtual void AddMessageSummaryHtml(MessengerMessage message, StringBuilder sb)
+		{
+			Debug.Assert(message != null);
+			Debug.Assert(sb != null);
 
-            string messageCssClass;
-            switch (message.MessageType)
-            {
-                case MessageType.Information:
-                    messageCssClass = "tmessageinformation";
-                    break;
-                case MessageType.Warning:
-                    messageCssClass = "tmessagewarning";
-                    break;
-                case MessageType.Error:
-                    messageCssClass = "tmessageerror";
-                    break;
-                default:
-                    throw new InvalidOperationException("Neznámý typ zprávy.");
-            }
+			string messageCssClass;
+			switch (message.MessageType)
+			{
+				case MessageType.Information:
+					messageCssClass = "tmessageinformation";
+					break;
+				case MessageType.Warning:
+					messageCssClass = "tmessagewarning";
+					break;
+				case MessageType.Error:
+					messageCssClass = "tmessageerror";
+					break;
+				default:
+					throw new InvalidOperationException("Neznámý typ zprávy.");
+			}
 
-            sb.Append("<div class=\"");
-            sb.Append(messageCssClass);
-            sb.Append("\">");
+			sb.Append("<div class=\"");
+			sb.Append(messageCssClass);
+			sb.Append("\">");
 
-            sb.Append("<span class=\"tmessagetext\">");
-            sb.Append(message.Text.TrimEnd().Replace("\n", "<br/>\n").Replace("\r", ""));
-            sb.Append("</span>");
+			sb.Append("<span class=\"tmessagetext\">");
+			sb.Append(message.Text.TrimEnd().Replace("\n", "<br/>\n").Replace("\r", ""));
+			sb.Append("</span>");
 
-            sb.Append("</div>");
-        }
-        #endregion
+			sb.Append("</div>");
+		}
+		#endregion
 
 		#region GetMessageBoxText, AddMessageAlertText
 		/// <summary>
@@ -199,10 +199,10 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		protected virtual string GetMessageBoxText()
 		{
-			if (Messenger.Messages.Count > 0)
+			if (Messenger.GetMessages().Count > 0)
 			{
 				StringBuilder sb = new StringBuilder();
-				foreach (MessengerMessage message in Messenger.Messages)
+				foreach (MessengerMessage message in Messenger.GetMessages())
 				{
 					AddMessageBoxText(message, sb);
 				}
@@ -227,10 +227,10 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		protected virtual string GetToastrScript()
 		{
-			if (Messenger.Messages.Count > 0)
+			if (Messenger.GetMessages().Count > 0)
 			{
 				StringBuilder sb = new StringBuilder();
-				foreach (MessengerMessage message in Messenger.Messages)
+				foreach (MessengerMessage message in Messenger.GetMessages())
 				{
 					AddToastrScript(message, sb);
 				}

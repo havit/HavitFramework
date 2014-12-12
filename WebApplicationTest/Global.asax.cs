@@ -17,6 +17,8 @@ namespace WebApplicationTest
 		{
 			DateTimeBox.GetDateTimeBoxCustomizationDefault += new DateTimeBox.DateTimeBoxDateCustomizationEventHandler(DateTimeBox_GetDateTimeBoxCustomizationDefaults);
 			ScriptManagerConfig.RegisterScriptResourceMappings();
+
+			Messenger.StorageType = MessengerStorageType.Session;
 		}
 		#endregion
 

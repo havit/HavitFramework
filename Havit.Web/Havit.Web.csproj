@@ -149,6 +149,7 @@
     <Compile Include="Bootstrap\UI\WebControls\NavbarTextItem.cs" />
     <Compile Include="UI\ControlExtensions.cs" />
     <Compile Include="UI\WebControls\BrowserNavigationController.cs" />
+    <Compile Include="UI\WebControls\CookiesMessenger.cs" />
     <Compile Include="UI\WebControls\DataBoundControlWithHiddenPublicMembersFromIntellisence.cs" />
     <Compile Include="UI\WebControls\DateTimeBoxContainerRenderMode.cs" />
     <Compile Include="UI\WebControls\EditorExtenderItemDataBound.cs" />
@@ -239,6 +240,7 @@
     <Compile Include="Bootstrap\UI\WebControls\ModalEditorExtender.cs" />
     <Compile Include="UI\WebControls\GridViewNewProcessingEventArgs.cs" />
     <Compile Include="UI\WebControls\GridViewNewProcessedEventArgs.cs" />
+    <Compile Include="UI\WebControls\MessengerStorageType.cs" />
     <Compile Include="UI\WebControls\ModalDialogUserControlBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -251,6 +253,7 @@
     <Compile Include="UI\WebControls\EditorExtenderItemSavedEventArgs.cs" />
     <Compile Include="UI\WebControls\EditorExtenderItemSavingEventArgs.cs" />
     <Compile Include="UI\WebControls\PagerRenderMode.cs" />
+    <Compile Include="UI\WebControls\SessionMessenger.cs" />
     <Compile Include="UI\WebControls\TextBoxExt.cs" />
     <Compile Include="UI\ViewStateLoadFailedException.cs" />
     <Compile Include="UI\WebControls\AjaxHealthMonitoring.cs" />
@@ -279,7 +282,7 @@
     <Compile Include="UI\WebControls\ListBoxExt.cs" />
     <Compile Include="UI\WebControls\MessengerControl.cs" />
     <Compile Include="UI\WebControls\MessengerMessage.cs" />
-    <Compile Include="UI\WebControls\MessengerType.cs" />
+    <Compile Include="UI\WebControls\MessageType.cs" />
     <Compile Include="UI\WebControls\BasicModalDialog.cs" />
     <Compile Include="UI\CommandNames.cs" />
     <Compile Include="UI\HtmlControls\HtmlFormExt.cs">

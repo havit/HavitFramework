@@ -12,35 +12,17 @@ namespace Havit.Web.UI.WebControls
 	public class CookieMessenger : Messenger
 	{
 		#region CookieKey
-		private const string CookieKey = "MSG";
-		#endregion
-
-		#region Messages
-		private List<MessengerMessage> Messages
-		{
-			get
-			{
-				List<MessengerMessage> _messages = GetMessagesFromCookie();
-				if (_messages == null)
-				{
-					_messages = new List<MessengerMessage>();
-					SaveMessagesToCookie(_messages);
-				}
-				return _messages;
-			}
-		}
+		private const string CookieKey = "Messenger";
 		#endregion
 
 		#region GetMessagesFromCookie
 		private List<MessengerMessage> GetMessagesFromCookie()
 		{
-			List<MessengerMessage> messages = null;
+			List<MessengerMessage> messages = new List<MessengerMessage>();
 
 			HttpCookie msgCookie = GetCurrentContext().Request.Cookies[CookieKey];
 			if ((msgCookie != null) && (msgCookie.HasKeys))
 			{
-				messages = new List<MessengerMessage>();
-
 				for (int i = 0; i < msgCookie.Values.Count; i++)
 				{
 					string[] restoredMessage = msgCookie.Values[i].Split(new char[] { '|' }, 2);
@@ -59,7 +41,7 @@ namespace Havit.Web.UI.WebControls
 			
 			if (messages == null || messages.Count == 0)
 			{
-				msgCookie.Expires = DateTime.Now.AddDays(-2);
+				msgCookie.Expires = DateTime.Now.AddYears(-1);
 				msgCookie.Value = String.Empty;
 			}
 			else
@@ -83,8 +65,7 @@ namespace Havit.Web.UI.WebControls
 		/// <param name="message">zpráva</param>
 		public override void AddMessage(MessengerMessage message)
 		{
-			Messages.Add(message);
-			List<MessengerMessage> messages = Messages;
+			List<MessengerMessage> messages = GetMessagesFromCookie();
 			messages.Add(message);
 			SaveMessagesToCookie(messages);
 		}
@@ -96,7 +77,7 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		public override List<MessengerMessage> GetMessages()
 		{
-			return Messages;
+			return GetMessagesFromCookie();
 		}
 		#endregion
 
@@ -106,9 +87,7 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		public override void ClearMessages()
 		{
-			List<MessengerMessage> messages = Messages;
-			messages.Clear();
-			SaveMessagesToCookie(messages);
+			SaveMessagesToCookie(new List<MessengerMessage>());
 		}
 		#endregion
 

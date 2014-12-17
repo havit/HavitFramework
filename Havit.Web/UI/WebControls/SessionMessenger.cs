@@ -8,7 +8,7 @@ namespace Havit.Web.UI.WebControls
 	/// <summary>
 	/// Messenger - třída pro sběr zpráv (informačních zpráv, upozorněnní a chybových zpráv) k zobrazení v uživatelském rozhraní.
 	/// </summary>
-	public class SessionMessenger : Messenger
+	internal class SessionMessenger : Messenger
 	{
 		#region SessionKey
 		private const string SessionKey = "Messenger_Messages";

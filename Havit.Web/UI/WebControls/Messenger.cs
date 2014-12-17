@@ -47,7 +47,14 @@ namespace Havit.Web.UI.WebControls
 			}
 			set
 			{
-				_messengerStorageType = value;
+				lock (_defaultLock)
+				{
+					if (_default != null)
+					{
+						throw new InvalidOperationException("Messenger.StorageType lze nastavit pouze před prvním přístupem k Messenger.Default.");
+					}
+					_messengerStorageType = value;
+				}
 			}
 
 		}

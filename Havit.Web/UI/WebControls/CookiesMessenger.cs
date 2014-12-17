@@ -9,7 +9,7 @@ namespace Havit.Web.UI.WebControls
 	/// <summary>
 	/// Messenger - třída pro sběr zpráv (informačních zpráv, upozorněnní a chybových zpráv) k zobrazení v uživatelském rozhraní.
 	/// </summary>
-	public class CookieMessenger : Messenger
+	internal class CookieMessenger : Messenger
 	{
 		#region CookieKey
 		private const string CookieKey = "Messenger";

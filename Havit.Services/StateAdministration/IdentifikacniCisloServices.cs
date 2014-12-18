@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace Havit.Services.StateAdministrationServices
+namespace Havit.Services.StateAdministration
 {
 	/// <summary>
 	/// Třída pro práci s identifikačním číslem (IČ, dříve IČO).

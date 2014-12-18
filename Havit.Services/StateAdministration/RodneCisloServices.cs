@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Services.StateAdministrationServices
+namespace Havit.Services.StateAdministration
 {
 	/// <summary>
 	/// Třída pro práci s rodným číslem.

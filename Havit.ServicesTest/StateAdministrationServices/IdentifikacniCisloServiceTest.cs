@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Havit.Services.StateAdministrationServices;
+using Havit.Services.StateAdministration;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

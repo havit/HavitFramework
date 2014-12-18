@@ -63,6 +63,8 @@
     <Compile Include="DirectoryServices\ActiveDirectory\GroupNotFoundException.cs" />
     <Compile Include="DirectoryServices\ActiveDirectory\UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StateAdministrationServices\IdentifikacniCisloServices.cs" />
+    <Compile Include="StateAdministrationServices\RodneCisloServices.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Havit\Havit.csproj">

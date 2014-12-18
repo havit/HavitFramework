@@ -55,6 +55,8 @@
   </Choose>
   <ItemGroup>
     <Compile Include="AresServiceTest.cs" />
+    <Compile Include="StateAdministrationServices\RodneCisloServiceTest.cs" />
+    <Compile Include="StateAdministrationServices\IdentifikacniCisloServiceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

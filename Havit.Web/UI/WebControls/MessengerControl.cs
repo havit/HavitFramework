@@ -128,7 +128,7 @@ namespace Havit.Web.UI.WebControls
 					}
 				}
 
-				this.Messenger.ClearMessages();
+				this.Messenger.Clear();
 			}
 		}
 		#endregion

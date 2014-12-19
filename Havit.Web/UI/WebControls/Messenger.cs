@@ -158,11 +158,11 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-		#region ClearMessages
+		#region Clear
 		/// <summary>
 		/// Vyčistí kolekci zpráv.
 		/// </summary>
-		public abstract void ClearMessages();
+		public abstract void Clear();
 		
 		#endregion
 

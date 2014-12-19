@@ -81,11 +81,11 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-		#region ClearMessages
+		#region Clear
 		/// <summary>
 		/// Vyčistí kolekci zpráv.
 		/// </summary>
-		public override void ClearMessages()
+		public override void Clear()
 		{
 			SaveMessagesToCookie(new List<MessengerMessage>());
 		}

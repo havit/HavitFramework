@@ -26,7 +26,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Renders navbar separator.
 		/// </summary>
-		public override void Render(HtmlTextWriter writer, bool showCaret, int nestingLevel)
+		public override void Render(HtmlTextWriter writer, Control container, bool showCaret, int nestingLevel)
 		{
 			writer.AddAttribute(HtmlTextWriterAttribute.Class, "divider");
 			writer.RenderBeginTag(HtmlTextWriterTag.Li);

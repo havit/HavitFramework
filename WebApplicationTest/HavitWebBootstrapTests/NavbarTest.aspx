@@ -9,7 +9,7 @@
 			<bc:NavbarLinkItem ID="FirstNavbarLinkItem" Text="Menu 1">
 				<Items>
 					<bc:NavbarHeaderItem Text="Header" />
-					<bc:NavbarLinkItem Text="Text1 &amp; &quot; &lt;" Url="#"/>
+					<bc:NavbarLinkItem Text="Text1 &amp; &quot; &lt;" Url="~/HavitWebBootstrapTests/TooltipTest.aspx"/>
 					<bc:NavbarSeparatorItem />
 					<bc:NavbarSeparatorItem />
 					<bc:NavbarLinkItem Enabled="false" Text="Text2" Url="#" />

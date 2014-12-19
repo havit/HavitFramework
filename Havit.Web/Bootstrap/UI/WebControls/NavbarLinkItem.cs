@@ -194,7 +194,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Renders menu items.
 		/// </summary>
-		public override void Render(HtmlTextWriter writer, bool showCaret, int nestingLevel)
+		public override void Render(HtmlTextWriter writer, Control container, bool showCaret, int nestingLevel)
 		{
 			string cssClass = "";
 
@@ -222,7 +222,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			}
 			else
 			{
-				writer.AddAttribute(HtmlTextWriterAttribute.Href, String.IsNullOrEmpty(Url) ? "#" : Url);
+				writer.AddAttribute(HtmlTextWriterAttribute.Href, String.IsNullOrEmpty(Url) ? "#" : container.ResolveUrl(Url));
 			}
 
 			if (Items.Count > 0)
@@ -244,7 +244,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			{
 				writer.AddAttribute(HtmlTextWriterAttribute.Class, "dropdown-menu");
 				writer.RenderBeginTag(HtmlTextWriterTag.Ul);
-				RenderChildren(writer, showCaret, nestingLevel);
+				RenderChildren(writer, container, showCaret, nestingLevel);
 				writer.RenderEndTag(); // Li
 			}
 			writer.RenderEndTag(); // Li
@@ -255,7 +255,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Renders child items.
 		/// </summary>
-		protected void RenderChildren(HtmlTextWriter writer, bool showCaret, int nestingLevel)
+		protected void RenderChildren(HtmlTextWriter writer, Control container, bool showCaret, int nestingLevel)
 		{
 			bool lastWasSeparator = false;
 
@@ -278,7 +278,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 					continue;
 				}
 
-				item.Render(writer, showCaret, nestingLevel + 1);
+				item.Render(writer, container, showCaret, nestingLevel + 1);
 				lastWasSeparator = item is NavbarSeparatorItem;
 			}
 		}

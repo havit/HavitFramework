@@ -106,7 +106,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Renders navbar item.
 		/// </summary>
-		public abstract void Render(HtmlTextWriter writer, bool showCaret, int nestingLevel);
+		public abstract void Render(HtmlTextWriter writer, Control container, bool showCaret, int nestingLevel);
 		#endregion
 
 		#region TrackViewState, SaveViewState, LoadViewState

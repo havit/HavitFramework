@@ -63,7 +63,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Renders menu items.
 		/// </summary>
-		public override void Render(HtmlTextWriter writer, bool showCaret, int nestingLevel)
+		public override void Render(HtmlTextWriter writer, Control container, bool showCaret, int nestingLevel)
 		{
 			string cssClass = "";
 

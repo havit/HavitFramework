@@ -146,7 +146,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				Contract.Assert(item is NavbarLinkItem || item is NavbarTextItem, "Only instances of NavbarLinkItem and NavbarTextItem are supported in menu root.");
 				if (item.IsVisible)
 				{
-					item.Render(writer, this.ShowCaret, 1);
+					item.Render(writer, this, this.ShowCaret, 1);
 				}
 			}
 		}

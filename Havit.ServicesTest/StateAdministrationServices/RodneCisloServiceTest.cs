@@ -15,7 +15,7 @@ namespace Havit.ServicesTest.StateAdministrationServices
 	{
 		[TestMethod]
 		public void RodneCisloValidateTest()
-		{			
+		{
             Assert.IsTrue(RodneCisloServices.Validate("7801233540")); // problematické, ale správné, viz http://phpfashion.com/jak-overit-platne-ic-a-rodne-cislo
 			Assert.IsTrue(RodneCisloServices.Validate("780123/3540")); // problematické, ale správné, viz http://phpfashion.com/jak-overit-platne-ic-a-rodne-cislo
 			Assert.IsFalse(RodneCisloServices.Validate("780123//3540")); // chybný formát
@@ -24,8 +24,8 @@ namespace Havit.ServicesTest.StateAdministrationServices
             Assert.IsTrue(RodneCisloServices.Validate("790917/3030")); 
             Assert.IsFalse(RodneCisloServices.Validate("7909173/030")); // chybný formát
             Assert.IsFalse(RodneCisloServices.Validate("79091/73030"));	// chybný formát
-			Assert.IsTrue(RodneCisloServices.Validate("9950010004")); 
-			Assert.IsTrue(RodneCisloServices.Validate("995001/0004")); 
+			//Assert.IsTrue(RodneCisloServices.Validate("9950010004")); 
+			//Assert.IsTrue(RodneCisloServices.Validate("995001/0004"));
 			Assert.IsTrue(RodneCisloServices.Validate("404040404")); // správný formát, nelze validovat
 			Assert.IsTrue(RodneCisloServices.Validate("404040/404")); // správný formát, nelze validovat
 			Assert.IsFalse(RodneCisloServices.Validate("40404/4040")); // chybný formát
@@ -48,6 +48,11 @@ namespace Havit.ServicesTest.StateAdministrationServices
 			Assert.IsFalse(RodneCisloServices.Validate("790917/2996"));
 			Assert.IsFalse(RodneCisloServices.Validate("790917/2998"));
 			Assert.IsFalse(RodneCisloServices.Validate("790917/2999"));
+
+			Assert.IsFalse(RodneCisloServices.Validate("991601/0004"));
+			Assert.IsFalse(RodneCisloServices.Validate("990132/0004"));
+			Assert.IsTrue(RodneCisloServices.Validate("000229/0002")); // přestupný rok
+			Assert.IsFalse(RodneCisloServices.Validate("990229/0002")); // nepřestupný rok
 		}
 	}
 }

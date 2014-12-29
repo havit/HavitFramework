@@ -6,20 +6,20 @@ using System.Text;
 namespace Havit.Services.DirectoryServices.ActiveDirectory
 {
 	/// <summary>
-	/// Active Directory Properties..
+	/// Active Directory Properties.
 	/// </summary>
 	internal static class ActiveDirectoryProperties
 	{
 		public const String ObjectClass = "objectClass";
 		//public const String CONTAINERNAME = "cn";
-		//public const String LASTNAME = "sn";
+		public const String LastName = "sn";
 		//public const String COUNTRYNOTATION = "c";
 		//public const String CITY = "l";
 		//public const String STATE = "st";
 		//public const String TITLE = "title";
 		//public const String POSTALCODE = "postalCode";
 		//public const String PHYSICALDELIVERYOFFICENAME = "physicalDeliveryOfficeName";
-		//public const String FIRSTNAME = "givenName";
+		public const String FirstName = "givenName";
 		//public const String MIDDLENAME = "initials";
 		public const String DistinguishedName = "distinguishedName";
 		//public const String INSTANCETYPE = "instanceType";
@@ -63,7 +63,8 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 		//public const String LASTLOGONTIMESTAMP = "lastLogonTimestamp";
 		public const String EmailAddress = "mail";
 		//public const String MANAGER = "manager";
-		//public const String MOBILE = "mobile";
+		public const String Mobile = "mobile";
+		public const String Phone = "telephoneNumber";
 		//public const String PAGER = "pager";
 		//public const String FAX = "facsimileTelephoneNumber";
 		//public const String HOMEPHONE = "homePhone";

@@ -318,9 +318,14 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 			using (DirectorySearcher searcher = GetDirectorySearcher(domainName))
 			{
 				searcher.Filter = string.Format("(&(objectClass=user)(samaccountname={0}))", accountName);
+				searcher.PropertiesToLoad.Add(ActiveDirectoryProperties.DistinguishedName);
 				searcher.PropertiesToLoad.Add(ActiveDirectoryProperties.DisplayName);
 				searcher.PropertiesToLoad.Add(ActiveDirectoryProperties.EmailAddress);
 				searcher.PropertiesToLoad.Add(ActiveDirectoryProperties.ObjectSid);
+				searcher.PropertiesToLoad.Add(ActiveDirectoryProperties.FirstName);
+				searcher.PropertiesToLoad.Add(ActiveDirectoryProperties.LastName);
+				searcher.PropertiesToLoad.Add(ActiveDirectoryProperties.Phone);
+				searcher.PropertiesToLoad.Add(ActiveDirectoryProperties.Mobile);
 				searchResult = searcher.FindOne();
 			}
 
@@ -355,6 +360,26 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 			if (searchResult.Properties.Contains(ActiveDirectoryProperties.DisplayName))
 			{
 				userInfo.DisplayName = searchResult.Properties[ActiveDirectoryProperties.DisplayName][0].ToString();
+			}
+			
+			if (searchResult.Properties.Contains(ActiveDirectoryProperties.FirstName))
+			{
+				userInfo.FirstName = searchResult.Properties[ActiveDirectoryProperties.FirstName][0].ToString();
+			}
+
+			if (searchResult.Properties.Contains(ActiveDirectoryProperties.LastName))
+			{
+				userInfo.LastName = searchResult.Properties[ActiveDirectoryProperties.LastName][0].ToString();
+			}
+
+			if (searchResult.Properties.Contains(ActiveDirectoryProperties.Phone))
+			{
+				userInfo.Phone = searchResult.Properties[ActiveDirectoryProperties.Phone][0].ToString();
+			}
+
+			if (searchResult.Properties.Contains(ActiveDirectoryProperties.Mobile))
+			{
+				userInfo.Mobile = searchResult.Properties[ActiveDirectoryProperties.Mobile][0].ToString();
 			}
 
 			return userInfo;

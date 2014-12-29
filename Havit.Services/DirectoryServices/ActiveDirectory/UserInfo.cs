@@ -47,5 +47,33 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 		/// </example>
 		public string AccountName { get; internal set; }
 		#endregion
+
+		#region FirstName
+		/// <summary>
+		/// First name (givenName).
+		/// </summary>
+		public string FirstName { get; internal set; }
+		#endregion
+
+		#region LastName
+		/// <summary>
+		/// Last name (sn).
+		/// </summary>
+		public string LastName { get; internal set; }
+		#endregion
+
+		#region Mobile
+		/// <summary>
+		/// Mobile number.
+		/// </summary>
+		public string Mobile { get; internal set; }
+		#endregion
+
+		#region Phone
+		/// <summary>
+		/// Phone number (telephoneNumber).
+		/// </summary>
+		public string Phone { get; internal set; }
+		#endregion
 	}
 }

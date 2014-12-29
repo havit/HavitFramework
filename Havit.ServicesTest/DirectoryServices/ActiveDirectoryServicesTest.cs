@@ -10,7 +10,7 @@ namespace Havit.ServicesTest.DirectoryServices
 	[TestClass]
 	public class ActiveDirectoryServicesTest
 	{
-		vinovink#region GetUserInfoTest_SearchByDomain
+		#region GetUserInfoTest_SearchByDomain
 		[TestMethod]
 		public void GetUserInfoTest_SearchByDomain()
 		{

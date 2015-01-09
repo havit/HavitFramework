@@ -325,8 +325,46 @@ var havitGridViewExtensions = {
 	}
 };
 
-$(document).ready(havitDateTimeBoxExtensions.init);
-$(document).ready(havitNumericBoxExtensions.init);
+var havitDropDownCheckBoxListExtensions = {
+	init: function () {
+		$("select[data-dropdowncheckboxlist]").each(function (index, item) {
+			var $item = $(item);
+
+			var selectAll = $item.data("dropdowncheckboxlist-showselectall") || false;
+			var allSelected = $item.data("dropdowncheckboxlist-allselectedtext") || false;
+			var placeholder = $item.data("dropdowncheckboxlist-placeholder") || '';
+			var width = $item.data("dropdowncheckboxlist-width") || ($(item).width() + 24 /* šířka checkboxu */);
+			var multiple = $item.data("dropdowncheckboxlist-itemwidth") ? true : false;
+			var multipleWidth = $item.data("dropdowncheckboxlist-itemwidth") || 0;
+			var single = $item.data("dropdowncheckboxlist-single") ? true : false;
+
+			var multipleSelectParams = {
+				selectAll: selectAll,
+				allSelected: allSelected,
+				placeholder: placeholder,
+				width: width,
+				single: single, // pozor: single zde není opakem multiple!
+				multiple: multiple,
+				multipleWidth: multipleWidth,
+
+				container: $('body'),
+				minimumCountSelected: 9999
+			}
+
+			$(item).multipleSelect(multipleSelectParams);
+		});
+	},
+
+	beforeSubmit: function () {
+		$("select[data-dropdowncheckboxlist]").each(function(index, item) {
+			var $item = $(item);
+			var multipleSelect = $item.data("multipleSelect");
+			if (multipleSelect && multipleSelect.$drop) {
+				multipleSelect.$drop.html('');
+			}
+		});
+	}
+}
 
 var havitBrowserNavigationControllerExtension = {
 	startup: function(backUrl) {
@@ -337,7 +375,7 @@ var havitBrowserNavigationControllerExtension = {
 
 			$(window).off("popstate.hfw");
 			$(window).on("popstate.hfw", function() {
-				if (window.location.hash === "#!/back") {
+				if (window.location.ha^sh === "#!/back") {
 					window.history.replaceState(null, document.title, href);
 					window.setTimeout(function() {
 						window.location.replace((backUrl.length > 0) ? backUrl : href);
@@ -347,3 +385,6 @@ var havitBrowserNavigationControllerExtension = {
 		}
 	}
 };
+
+$(document).ready(havitDateTimeBoxExtensions.init);
+$(document).ready(havitNumericBoxExtensions.init);

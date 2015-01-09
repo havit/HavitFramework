@@ -3,21 +3,21 @@
   <Class Name="Havit.Web.UI.WebControls.EnterpriseListBox" Collapsed="true">
     <Position X="8.75" Y="5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAEAIAAEAgAEBpAAAIAAAAACUAAQAQAAAAAQIAICQAA=</HashCode>
+      <HashCode>AAEAIAAEAgAEBhgAAIAAAAACUAAQAQAAAAAQIAICQAA=</HashCode>
       <FileName>UI\WebControls\EnterpriseListBox.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Havit.Web.UI.WebControls.EnterpriseCheckBoxList" Collapsed="true">
     <Position X="4.25" Y="5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAEAIAAEAgAEBpAAAIAAAAACUAAQAQAAAAAQIAICQAA=</HashCode>
+      <HashCode>AAEAIABEAgAEBhgAAIAAAAACUAAQAQAAAAAQIAICQAA=</HashCode>
       <FileName>UI\WebControls\EnterpriseCheckBoxList.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Havit.Web.UI.WebControls.EnterpriseDropDownList" Collapsed="true">
     <Position X="6.5" Y="5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAEAIAAEAgAERFAAQIAAAQACUAAQAQAAAAAUIAIKIAA=</HashCode>
+      <HashCode>AAEAIABEAgAERFAAQIAAAQACUAAQAQAAAAAUIAIKIAA=</HashCode>
       <FileName>UI\WebControls\EnterpriseDropDownList.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -52,6 +52,17 @@
     <Position X="6.5" Y="2.25" Width="1.5" />
     <TypeIdentifier />
     <Lollipop Position="1.012" Collapsed="true" />
+  </Class>
+  <Class Name="Havit.Web.UI.WebControls.EnterpriseDropDownCheckBoxList" Collapsed="true">
+    <Position X="11" Y="5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAEAIABEAgAEBhgAAIAAAAACUAAQAQAAAAAAAAICQAA=</HashCode>
+      <FileName>UI\WebControls\EnterpriseDropDownCheckBoxList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Havit.Web.UI.WebControls.DropDownCheckBoxList" Collapsed="true">
+    <Position X="11" Y="3.75" Width="2.25" />
+    <TypeIdentifier />
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

@@ -1,23 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Web.UI.WebControls;
-using Havit.Business;
-using System.Web.UI;
-using Havit.Collections;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+using Havit.Business;
+using Havit.Collections;
+using Havit.Web.UI.WebControls;
 using Havit.Web.UI.WebControls.ControlsValues;
 
 namespace Havit.Web.UI.WebControls
 {
-    /// <summary>
-    /// EnterpriseCheckBoxList zajišťuje pohodlnější práci s CheckBoxListem, jehož položky představují business objekty.	
-    /// </summary>
-	public class EnterpriseCheckBoxList : CheckBoxListExt
+	/// <summary>
+	/// EnterpriseDropDownCheckBoxList zajišťuje pohodlnější práci s DropDownCheckBoxListem, jehož prvky představují business objekty.	
+	/// </summary>
+	public class EnterpriseDropDownCheckBoxList : DropDownCheckBoxList
 	{
 		#region ItemPropertyInfo
 		/// <summary>
-		/// ReferenceFieldPropertyInfo property, jejíž hodnota se tímto CheckBoxListem vybírá.
+		/// ReferenceFieldPropertyInfo property, jejíž hodnota se tímto DropDownListem vybírá.
 		/// Nastavení této hodnoty rovněž přepíše hodnoty vlastností ItemObjectInfo a Nullable.
 		/// Hodnota této property nepřežívá postback.
 		/// </summary>
@@ -35,7 +39,6 @@ namespace Havit.Web.UI.WebControls
 				}
 				itemPropertyInfo = value;
 				itemObjectInfo = itemPropertyInfo.TargetObjectInfo;
-				//				Nullable = itemPropertyInfo.Nullable;
 			}
 		}
 		private ReferenceFieldPropertyInfo itemPropertyInfo;
@@ -63,7 +66,6 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		private ObjectInfo itemObjectInfo;
-
 		#endregion
 
 		#region AutoSort
@@ -95,35 +97,8 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		public string SortExpression
 		{
-#pragma warning disable 612,618
-			get { return (string)ViewState["SortExpression"] ?? (DataSortField + ((SortDirection == Collections.SortDirection.Descending) ? " DESC" : String.Empty)); }
-#pragma warning restore 612,618
+			get { return (string)ViewState["SortExpression"] ?? DataTextField; }
 			set { ViewState["SortExpression"] = value; }
-		}
-		#endregion
-
-		#region DataSortField
-		/// <summary>
-		/// Určuje, podle jaké property jsou řazena. Pokud není žádná hodnota nastavena použije se hodnota vlastnosti DataTextField.
-		/// </summary>
-		[Obsolete("Nahrazeno SortExpression.")]
-		public string DataSortField
-		{
-			get { return (string)(ViewState["DataSortField"] ?? DataTextField); }
-			set { ViewState["DataSortField"] = value; }
-		}
-		#endregion
-
-		#region SortDirection
-		/// <summary>
-		/// Udává směr řazení položek.
-		/// Výchozí je vzestupné řazení (Ascending).
-		/// </summary>
-		[Obsolete("Nahrazeno SortExpression.")]
-		public Havit.Collections.SortDirection SortDirection
-		{
-			get { return (Havit.Collections.SortDirection)(ViewState["SortDirection"] ?? Havit.Collections.SortDirection.Ascending); }
-			set { ViewState["SortDirection"] = value; }
 		}
 		#endregion
 
@@ -258,11 +233,11 @@ namespace Havit.Web.UI.WebControls
 
 		#region ---------------------------------------------------------------------------------------------
 		#endregion
-
+	
 		#region Constructors (static)
-		static EnterpriseCheckBoxList()
+		static EnterpriseDropDownCheckBoxList()
 		{
-			Havit.Web.UI.WebControls.ControlsValues.PersisterControlExtenderRepository.Default.Add(new EnterpriseCheckBoxListPersisterControlExtender());
+			Havit.Web.UI.WebControls.ControlsValues.PersisterControlExtenderRepository.Default.Add(new EnterpriseDropDownCheckBoxListPersisterControlExtender());
 		}
 		#endregion
 
@@ -271,12 +246,12 @@ namespace Havit.Web.UI.WebControls
 
 		#region Constructor
 		/// <summary>
-		/// Vytvoří instanci EnterpriseCheckBoxList.
+		/// Inicializuje DataValueField na "ID".
 		/// </summary>
-		public EnterpriseCheckBoxList()
+		public EnterpriseDropDownCheckBoxList()
 		{
 			DataValueField = "ID";
-		} 
+		}
 		#endregion
 
 		#region OnLoad
@@ -373,7 +348,7 @@ namespace Havit.Web.UI.WebControls
 			}
 
 			DataBindPerformed = true;
-			
+
 		}
 		#endregion
 
@@ -401,7 +376,7 @@ namespace Havit.Web.UI.WebControls
 
 			// Nastavení vybraných položek
 			SelectedObjects = objectsList.ToArray();
-		} 
+		}
 		#endregion
 	}
 }

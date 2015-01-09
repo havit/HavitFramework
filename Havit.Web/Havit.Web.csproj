@@ -152,6 +152,7 @@
     <Compile Include="UI\WebControls\CookiesMessenger.cs" />
     <Compile Include="UI\WebControls\DataBoundControlWithHiddenPublicMembersFromIntellisence.cs" />
     <Compile Include="UI\WebControls\DateTimeBoxContainerRenderMode.cs" />
+    <Compile Include="UI\WebControls\DropDownCheckBoxList.cs" />
     <Compile Include="UI\WebControls\EditorExtenderItemDataBound.cs" />
     <Compile Include="UI\WebControls\EditorExtenderMode.cs" />
     <Compile Include="UI\WebControls\GridViewRowClickEventArgs.cs" />

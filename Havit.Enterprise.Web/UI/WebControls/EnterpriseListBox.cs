@@ -91,10 +91,25 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Určuje, podle jaké property jsou řazena. Pokud není žádná hodnota nastavena použije se hodnota vlastnosti DataTextField.
 		/// </summary>
+		[Obsolete("Nahrazeno SortExpression.")]
 		public string DataSortField
 		{
 			get { return (string)(ViewState["DataSortField"] ?? DataTextField); }
 			set { ViewState["DataSortField"] = value; }
+		}
+		#endregion
+
+		#region SortExpression
+		/// <summary>
+		/// Určuje, podle jaké property jsou řazena. Pokud není žádná hodnota nastavena použije se hodnota vlastnosti DataSortField a SortDirection.
+		/// Může obsahovat více vlastností oddělených čárkou, směr řazení ASC/DESC. Má tedy význam podobný jako DefaultSortExpression u GridViewExt.
+		/// </summary>
+		public string SortExpression
+		{
+#pragma warning disable 612,618
+			get { return (string)ViewState["SortExpression"] ?? (DataSortField + ((SortDirection == Collections.SortDirection.Descending) ? " DESC" : String.Empty)); }
+#pragma warning restore 612,618
+			set { ViewState["SortExpression"] = value; }
 		}
 		#endregion
 
@@ -103,6 +118,7 @@ namespace Havit.Web.UI.WebControls
 		/// Udává směr řazení položek.
 		/// Výchozí je vzestupné řazení (Ascending).
 		/// </summary>
+		[Obsolete("Nahrazeno SortExpression.")]
 		public Havit.Collections.SortDirection SortDirection
 		{
 			get { return (Havit.Collections.SortDirection)(ViewState["SortDirection"] ?? Havit.Collections.SortDirection.Ascending); }
@@ -331,9 +347,9 @@ namespace Havit.Web.UI.WebControls
 					throw new InvalidOperationException(String.Format("AutoSort je true, ale není nastavena hodnota vlastnosti DataSortField controlu {0}.", ID));
 				}
 
-				SortItemCollection sorting = new SortItemCollection();
-				sorting.Add(new SortItem(this.DataSortField, this.SortDirection));
-				IEnumerable sortedData = SortHelper.PropertySort(dataSource, sorting);
+				SortExpressions sortExpressions = new SortExpressions();
+				sortExpressions.AddSortExpression(SortExpression);
+				IEnumerable sortedData = SortHelper.PropertySort(dataSource, sortExpressions.SortItems);
 
 				base.PerformDataBinding(sortedData);
 			}

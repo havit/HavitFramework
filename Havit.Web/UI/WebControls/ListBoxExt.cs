@@ -72,6 +72,16 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region ListBoxExt
+		/// <summary>
+		/// Konstruktor. Nastavuje výchozí režim výběru na Multiple.
+		/// </summary>
+		public ListBoxExt()
+		{
+			SelectionMode = ListSelectionMode.Multiple;
+		}
+		#endregion
+
 		#region PerformDataBinding (override)
 		/// <summary>
 		/// Binds the specified data source to the control that is derived from the <see cref="T:System.Web.UI.WebControls.ListControl"/> class.

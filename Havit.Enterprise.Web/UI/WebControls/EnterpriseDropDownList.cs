@@ -297,7 +297,7 @@ namespace Havit.Web.UI.WebControls
 
 		#region Constructor
 		/// <summary>
-		/// Inicialuze DataValueField na "ID".
+		/// Inicializuje DataValueField na "ID".
 		/// </summary>
 		public EnterpriseDropDownList()
 		{

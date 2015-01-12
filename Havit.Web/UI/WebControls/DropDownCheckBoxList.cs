@@ -20,7 +20,7 @@ namespace Havit.Web.UI.WebControls
 	/// http://wenzhixin.net.cn/p/multiple-select/docs/#constructor
 	/// https://github.com/wenzhixin/multiple-select
 	/// </summary>
-	public class DropDownCheckBoxList: ListBoxExt
+	public class DropDownCheckBoxList : ListBoxExt
 	{
 		#region ShowSelectAll
 		/// <summary>
@@ -108,7 +108,20 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region Constructor
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
+		public DropDownCheckBoxList()
+		{
+			SelectionMode = ListSelectionMode.Multiple;
+		}
+		#endregion
+
 		#region OnPreRender
+		/// <summary>
+		/// Zajišťuje validaci vlastností controlu a registraci klientských skriptů.
+		/// </summary>
 		protected override void OnPreRender(EventArgs e)
 		{
 			base.OnPreRender(e);
@@ -133,14 +146,17 @@ namespace Havit.Web.UI.WebControls
 				throw new HttpException(String.Format("Hodnota vlastnost ItemWidth controlu '{0}' musí být nastavena v pixelech.", this.ID));
 			}
 
-			if (ShowSelectAll && SelectionMode == ListSelectionMode.Single)
+			if (SelectionMode == ListSelectionMode.Single)
 			{
-				throw new HttpException(String.Format("Hodnota vlastnost ShowSelectAll controlu '{0}' je nastavena na true, což v režimu SelectionMode Signle není umožněno.", this.ID));
+				throw new HttpException(String.Format("Hodnota vlastnosti SelectionMode controlu '{0}' je nastavena na Single, což není podporováno.", this.ID));
 			}
 		}
 		#endregion
 
 		#region AddAttributesToRender
+		/// <summary>
+		/// Zajišťuje vyrenderování html atributů pro klienský skript dropdowncheckboxlistu.
+		/// </summary>
 		protected override void AddAttributesToRender(HtmlTextWriter writer)
 		{
 			Unit originalWidth = Width; // jsme v render, viewstate neřešíme

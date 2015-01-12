@@ -342,9 +342,9 @@ namespace Havit.Web.UI.WebControls
 
 			if ((dataSource != null) && AutoSort)
 			{
-				if (String.IsNullOrEmpty(DataSortField))
+				if (String.IsNullOrEmpty(SortExpression))
 				{
-					throw new InvalidOperationException(String.Format("AutoSort je true, ale není nastavena hodnota vlastnosti DataSortField controlu {0}.", ID));
+					throw new InvalidOperationException(String.Format("AutoSort je true, ale není nastavena hodnota vlastnosti SortExpression controlu {0}.", ID));
 				}
 
 				SortExpressions sortExpressions = new SortExpressions();

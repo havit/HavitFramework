@@ -46,16 +46,6 @@
 				</Items>
 			</havit:DropDownCheckBoxList>
 			
-				<havit:DropDownCheckBoxList ID="DropDownCheckBoxList" SelectionMode="Single" runat="server">
-				<Items>
-					<asp:ListItem Text="Jedna" />
-					<asp:ListItem Text="Dva" />
-					<asp:ListItem Text="Tři" />
-					<asp:ListItem Text="Čtyři" />
-					<asp:ListItem Text="Pět" />
-					<asp:ListItem Text="Šest" />
-				</Items>
-			</havit:DropDownCheckBoxList>
 		<asp:Button Text="Postback" runat="server" />
 		
 			<asp:UpdatePanel runat="server">

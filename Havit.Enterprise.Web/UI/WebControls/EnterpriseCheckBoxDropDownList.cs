@@ -17,7 +17,7 @@ namespace Havit.Web.UI.WebControls
 	/// <summary>
 	/// EnterpriseDropDownCheckBoxList zajišťuje pohodlnější práci s DropDownCheckBoxListem, jehož prvky představují business objekty.	
 	/// </summary>
-	public class EnterpriseDropDownCheckBoxList : DropDownCheckBoxList
+	public class EnterpriseCheckBoxDropDownList : CheckBoxDropDownList
 	{
 		#region ItemPropertyInfo
 		/// <summary>
@@ -235,9 +235,9 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 	
 		#region Constructors (static)
-		static EnterpriseDropDownCheckBoxList()
+		static EnterpriseCheckBoxDropDownList()
 		{
-			Havit.Web.UI.WebControls.ControlsValues.PersisterControlExtenderRepository.Default.Add(new EnterpriseDropDownCheckBoxListPersisterControlExtender());
+			Havit.Web.UI.WebControls.ControlsValues.PersisterControlExtenderRepository.Default.Add(new EnterpriseCheckBoxDropDownListPersisterControlExtender());
 		}
 		#endregion
 
@@ -248,7 +248,7 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Inicializuje DataValueField na "ID".
 		/// </summary>
-		public EnterpriseDropDownCheckBoxList()
+		public EnterpriseCheckBoxDropDownList()
 		{
 			DataValueField = "ID";
 		}

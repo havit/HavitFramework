@@ -11,12 +11,12 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 	/// <summary>
 	/// IPersisterControlExtender pro EnterpriseCheckBoxList
 	/// </summary>
-	internal class EnterpriseDropDownCheckBoxListPersisterControlExtender : IPersisterControlExtender
+	internal class EnterpriseCheckBoxDropDownListPersisterControlExtender : IPersisterControlExtender
 	{
 		#region GetValue
 		public object GetValue(Control control)
 		{
-			return ((EnterpriseDropDownCheckBoxList)control).SelectedIds;			
+			return ((EnterpriseCheckBoxDropDownList)control).SelectedIds;			
 		} 
 		#endregion
 
@@ -31,7 +31,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 		public void SetValue(Control control, object value)
 		{			
 			int[] selectedIDs = (int[])value;
-			EnterpriseDropDownCheckBoxList enterpriseCheckBoxList = (EnterpriseDropDownCheckBoxList)control;
+			EnterpriseCheckBoxDropDownList enterpriseCheckBoxList = (EnterpriseCheckBoxDropDownList)control;
 			enterpriseCheckBoxList.SelectExistingItems(selectedIDs);			
 		} 
 		#endregion
@@ -39,7 +39,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 		#region GetPriority
 		public int? GetPriority(Control control)
 		{
-			if (control is EnterpriseDropDownCheckBoxList)
+			if (control is EnterpriseCheckBoxDropDownList)
 			{
 				return 1;
 			}

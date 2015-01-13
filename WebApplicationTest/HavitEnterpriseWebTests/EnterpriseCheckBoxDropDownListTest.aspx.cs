@@ -16,7 +16,7 @@ namespace WebApplicationTest.HavitEnterpriseWebTests
 	public partial class EnterpriseDropDownCheckBoxListTest : System.Web.UI.Page
 	{
 		#region Protected fields (controls)
-		protected EnterpriseDropDownCheckBoxList E1;
+		protected EnterpriseCheckBoxDropDownList E1;
 		#endregion
 
 		#region OnLoad

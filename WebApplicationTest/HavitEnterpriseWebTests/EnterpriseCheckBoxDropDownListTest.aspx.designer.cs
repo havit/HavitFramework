@@ -28,6 +28,6 @@ namespace WebApplicationTest.HavitEnterpriseWebTests {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Havit.Web.UI.WebControls.EnterpriseDropDownCheckBoxList E2;
+        protected global::Havit.Web.UI.WebControls.EnterpriseCheckBoxDropDownList E2;
     }
 }

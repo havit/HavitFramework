@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="DropDownCheckBoxListTest.aspx.cs" Inherits="WebApplicationTest.HavitWebTests.DropDownCheckBoxListTest" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="CheckBoxDropDownListTest.aspx.cs" Inherits="WebApplicationTest.HavitWebTests.DropDownCheckBoxListTest" %>
 
 <!DOCTYPE html>
 
@@ -13,7 +13,7 @@
 		</asp:ScriptManager>
 
 		<div>
-			<havit:DropDownCheckBoxList ID="MyListBox" runat="server">
+			<havit:CheckBoxDropDownList ID="MyListBox" runat="server">
 				<Items>
 					<asp:ListItem Text="Jedna" />
 					<asp:ListItem Text="Dva" />
@@ -22,9 +22,9 @@
 					<asp:ListItem Text="Pět" />
 					<asp:ListItem Text="Šest" />
 				</Items>
-			</havit:DropDownCheckBoxList>
+			</havit:CheckBoxDropDownList>
 			
-				<havit:DropDownCheckBoxList ID="DropDownCheckBoxList1" PlaceHolder="Vyber" ShowSelectAll="true" AllSelectedText="Vybráno vše" AutoPostBack="true" Width="300px" ItemWidth="100px" runat="server">
+				<havit:CheckBoxDropDownList ID="CheckBoxDropDownList1" PlaceHolder="Vyber" ShowSelectAll="true" AllSelectedText="Vybráno vše" AutoPostBack="true" Width="300px" ItemWidth="100px" runat="server">
 				<Items>
 					<asp:ListItem Text="Jedna" />
 					<asp:ListItem Text="Dva" />
@@ -33,9 +33,9 @@
 					<asp:ListItem Text="Pět" />
 					<asp:ListItem Text="Šest" />
 				</Items>
-			</havit:DropDownCheckBoxList>
+			</havit:CheckBoxDropDownList>
 			
-				<havit:DropDownCheckBoxList ID="DropDownCheckBoxList2" Enabled="false" runat="server">
+				<havit:CheckBoxDropDownList ID="CheckBoxDropDownList2" Enabled="false" runat="server">
 				<Items>
 					<asp:ListItem Text="Jedna" />
 					<asp:ListItem Text="Dva" />
@@ -44,7 +44,7 @@
 					<asp:ListItem Text="Pět" />
 					<asp:ListItem Text="Šest" />
 				</Items>
-			</havit:DropDownCheckBoxList>
+			</havit:CheckBoxDropDownList>
 			
 		<asp:Button Text="Postback" runat="server" />
 		

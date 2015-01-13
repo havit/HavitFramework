@@ -154,10 +154,10 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UI\WebControls\ControlsValues\EnterpriseDropDownCheckBoxListPersisterControlExtender.cs" />
+    <Compile Include="UI\WebControls\ControlsValues\EnterpriseCheckBoxDropDownListPersisterControlExtender.cs" />
     <Compile Include="UI\WebControls\ControlsValues\EnterpriseCheckBoxListPersisterControlExtender.cs" />
     <Compile Include="UI\WebControls\ControlsValues\EnterpriseDropDownListPersisterControlExtender.cs" />
-    <Compile Include="UI\WebControls\EnterpriseDropDownCheckBoxList.cs" />
+    <Compile Include="UI\WebControls\EnterpriseCheckBoxDropDownList.cs" />
     <Compile Include="UI\WebControls\EnterpriseListBox.cs" />
     <Compile Include="UI\WebControls\EnterpriseCheckBoxList.cs" />
     <Compile Include="UI\WebControls\EnterpriseDropDownList.cs" />

@@ -20,7 +20,7 @@ namespace Havit.Web.UI.WebControls
 	/// http://wenzhixin.net.cn/p/multiple-select/docs/#constructor
 	/// https://github.com/wenzhixin/multiple-select
 	/// </summary>
-	public class DropDownCheckBoxList : ListBoxExt
+	public class CheckBoxDropDownList : ListBoxExt
 	{
 		#region ShowSelectAll
 		/// <summary>
@@ -112,7 +112,7 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public DropDownCheckBoxList()
+		public CheckBoxDropDownList()
 		{
 			SelectionMode = ListSelectionMode.Multiple;
 		}
@@ -130,8 +130,8 @@ namespace Havit.Web.UI.WebControls
 
 			ClientScripts.HavitFrameworkClientScriptHelper.RegisterHavitFrameworkClientScript(this.Page);
 			ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, "jquery.multipleselect");
-			ScriptManager.RegisterStartupScript(this.Page, typeof(DropDownCheckBoxList), "Startup", "havitDropDownCheckBoxListExtensions.init();", true);
-			ScriptManager.RegisterOnSubmitStatement(this.Page, typeof(DropDownCheckBoxList), "OnSubmit", "havitDropDownCheckBoxListExtensions.beforeSubmit();");
+			ScriptManager.RegisterStartupScript(this.Page, typeof(CheckBoxDropDownList), "Startup", "havitDropDownCheckBoxListExtensions.init();", true);
+			ScriptManager.RegisterOnSubmitStatement(this.Page, typeof(CheckBoxDropDownList), "OnSubmit", "havitDropDownCheckBoxListExtensions.beforeSubmit();");
 		}
 		#endregion
 

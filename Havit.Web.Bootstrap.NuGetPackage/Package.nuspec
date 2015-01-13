@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>Havit.Web.Bootstrap</id>
-		<version>1.0.0</version>
+		<version>2.0.0</version>
 		<!--<minClientVersion>2.6</minClientVersion>-->
 		<title>Havit.Web.Bootstrap</title>
 		<authors>HAVIT, s.r.o.</authors>
@@ -15,7 +15,7 @@
 		<iconUrl>http://blog.getbootstrap.com/public/ico/apple-touch-icon-144-precomposed.png</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<!--<licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>-->
-		<copyright>Copyright HAVIT, s.r.o. 2014</copyright>
+		<copyright>Copyright HAVIT, s.r.o. 2015</copyright>
 		<dependencies>
 			<group targetFramework="net45">
 				<dependency id="jQuery" version="[1.11.0,)" />

@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{DE55617C-C11E-4093-9F57-2AEF7F636EDB}</ProjectGuid>
+    <ProjectGuid>{29EE71AB-60EA-476A-8D67-02737E15EB3D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Havit.Data.Glimpse.NuGetPackage</RootNamespace>
-    <AssemblyName>Havit.Data.Glimpse.NuGetPackage</AssemblyName>
+    <RootNamespace>Havit.PayMuzo.NuGetPackage</RootNamespace>
+    <AssemblyName>Havit.PayMuzo.NuGetPackage</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
@@ -49,24 +49,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\PublishScripts\Publish-Havit.Data.Glimpse.NuGetPackage.ps1">
-      <Link>Publish-Havit.Data.Glimpse.NuGetPackage.ps1</Link>
-    </None>
-    <None Include="Config\system.diagnostics.config" />
-    <None Include="content\Config\system.diagnostics.config.transform" />
-    <None Include="content\Web.config.install.xdt" />
-    <None Include="content\Web.Release.config.transform" />
+    <ProjectReference Include="..\Havit.PayMuzo\Havit.PayMuzo.csproj">
+      <Project>{23dd2985-0805-4a85-ae9f-dcf95416cf20}</Project>
+      <Name>Havit.PayMuzo</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Package.nuspec">
       <SubType>Designer</SubType>
     </None>
-    <None Include="tools\install.ps1" />
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <ProjectReference Include="..\Havit.Data.Glimpse\Havit.Data.Glimpse.csproj">
-      <Project>{c5c6607e-644a-468f-a6c2-cdcf8a1d23dc}</Project>
-      <Name>Havit.Data.Glimpse</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -76,13 +67,13 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Target Name="CreateNuGetPackage" AfterTargets="AfterBuild">
-    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion)" />
-  </Target>
-  <Target Name="TfsPublish" AfterTargets="AfterBuild;CreateNuGetPackage" Condition="'$(PublishDirectory)' != ''">
-    <ItemGroup>
-      <FilesToCopy Include="$(OutputPath)\Havit.Data.Glimpse.*.nupkg" />
-    </ItemGroup>
-    <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(PublishDirectory)\NuGet\%(RecursiveDir)%(Filename)%(Extension)')" />
-  </Target>
+	<Target Name="CreateNuGetPackage" AfterTargets="AfterBuild">
+		<Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion)" />
+	</Target>
+	<Target Name="TfsPublish" AfterTargets="AfterBuild;CreateNuGetPackage" Condition="'$(PublishDirectory)' != ''">
+		<ItemGroup>
+			<FilesToCopy Include="$(OutputPath)\Havit.PayMuzo.*.nupkg" />
+		</ItemGroup>
+		<Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(PublishDirectory)\NuGet\%(RecursiveDir)%(Filename)%(Extension)')" />
+	</Target>
 </Project>

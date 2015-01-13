@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>Havit.PayMuzo</id>
+		<version>1.0.0</version>
+		<title>Havit.PayMuzo</title>
+		<authors>HAVIT, s.r.o.</authors>
+		<owners>HAVIT, s.r.o.</owners>
+		<description>
+			HAVIT .NET Framework Extensions - Business Class Library (Havit.PayMuzo.dll)
+		</description>
+		<language>en-US</language>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<copyright>Copyright HAVIT, s.r.o. 2015</copyright>
+		<dependencies>
+			<group targetFramework="net45">
+				<dependency id="Havit" />
+			</group>
+		</dependencies>
+		<tags>HAVIT Framework Library</tags>
+		<references>
+			<group>
+				<reference file="Havit.PayMuzo.dll" />
+			</group>
+		</references>
+	</metadata>
+	<files>
+		<file src="..\Havit.PayMuzo\bin\Release\Havit.PayMuzo.dll" target="lib\net45" />
+		<file src="..\Havit.PayMuzo\bin\Release\Havit.PayMuzo.pdb" target="lib\net45" />
+		<file src="..\Havit.PayMuzo\bin\Release\Havit.PayMuzo.xml" target="lib\net45" />
+	</files>
+</package>

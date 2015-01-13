@@ -1,21 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2E4AE0CF-FA21-4FBC-9274-E56BC5D9494E}</ProjectGuid>
+    <ProjectGuid>{E726363F-E934-4B3E-AB8A-DF4BA8FEDFDC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Havit.Services</RootNamespace>
-    <AssemblyName>Havit.Services</AssemblyName>
+    <RootNamespace>Havit.Web.NuGetPackage</RootNamespace>
+    <AssemblyName>Havit.Web.NuGetPackage</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -25,8 +24,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Havit.Services.XML</DocumentationFile>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,15 +32,13 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Havit.Services.XML</DocumentationFile>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -51,31 +46,17 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Ares\AresBaseException.cs" />
-    <Compile Include="Ares\AresLoadException.cs" />
-    <Compile Include="Ares\AresRegistr.cs" />
-    <Compile Include="Ares\AresException.cs" />
-    <Compile Include="Ares\AresService.cs" />
-    <Compile Include="Ares\AresData.cs" />
-    <Compile Include="DirectoryServices\ActiveDirectory\ActiveDirectoryProperties.cs" />
-    <Compile Include="DirectoryServices\ActiveDirectory\ActiveDirectoryServices.cs" />
-    <Compile Include="DirectoryServices\ActiveDirectory\UserNotFoundException.cs" />
-    <Compile Include="DirectoryServices\ActiveDirectory\GroupNotFoundException.cs" />
-    <Compile Include="DirectoryServices\ActiveDirectory\UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StateAdministration\IdentifikacniCisloServices.cs" />
-    <Compile Include="StateAdministration\RodneCisloServices.cs" />
-    <Compile Include="Xml\Rss\RssChannel.cs" />
-    <Compile Include="Xml\Rss\RssChannelCollection.cs" />
-    <Compile Include="Xml\Rss\RssFeed.cs" />
-    <Compile Include="Xml\Rss\RssImage.cs" />
-    <Compile Include="Xml\Rss\RssItem.cs" />
-    <Compile Include="Xml\Rss\RssItemCollection.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Havit\Havit.csproj">
-      <Project>{9acc94b9-b8fd-47c1-abf8-0658c7673905}</Project>
-      <Name>Havit</Name>
+    <None Include="Package.nuspec">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Havit.Web\Havit.Web.csproj">
+      <Project>{52891fb3-ca20-403b-ac25-7d9ca5738b6b}</Project>
+      <Name>Havit.Web</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -86,12 +67,13 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Target Name="TfsPublish" AfterTargets="AfterBuild" Condition="'$(PublishDirectory)' != ''">
+  <Target Name="CreateNuGetPackage" AfterTargets="AfterBuild">
+    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion)" />
+  </Target>
+  <Target Name="TfsPublish" AfterTargets="AfterBuild;CreateNuGetPackage" Condition="'$(PublishDirectory)' != ''">
     <ItemGroup>
-      <FilesToCopy Include="$(OutputPath)\Havit.Services.dll" />
-      <FilesToCopy Include="$(OutputPath)\Havit.Services.pdb" />
-      <FilesToCopy Include="$(OutputPath)\Havit.Services.xml" />
+      <FilesToCopy Include="$(OutputPath)\Havit.Web.*.nupkg" />
     </ItemGroup>
-    <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(PublishDirectory)\Framework\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(PublishDirectory)\NuGet\%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>
 </Project>

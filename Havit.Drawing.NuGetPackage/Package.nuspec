@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>Havit.Drawing</id>
+		<version>1.0.0</version>
+		<title>Havit.Drawing</title>
+		<authors>HAVIT, s.r.o.</authors>
+		<owners>HAVIT, s.r.o.</owners>
+		<description>
+			HAVIT .NET Framework Extensions - Drawing Class Library (Havit.Drawing.dll)
+		</description>
+		<language>en-US</language>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<copyright>Copyright HAVIT, s.r.o. 2015</copyright>
+		<tags>HAVIT Framework Library</tags>
+		<references>
+			<group>
+				<reference file="Havit.Drawing.dll" />
+			</group>
+		</references>
+	</metadata>
+	<files>
+		<file src="..\Havit.Drawing\bin\Release\Havit.Drawing.dll" target="lib\net45" />
+		<file src="..\Havit.Drawing\bin\Release\Havit.Drawing.pdb" target="lib\net45" />
+		<file src="..\Havit.Drawing\bin\Release\Havit.Drawing.xml" target="lib\net45" />
+	</files>
+</package>

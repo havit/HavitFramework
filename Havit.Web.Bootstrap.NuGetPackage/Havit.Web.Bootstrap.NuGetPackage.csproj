@@ -49,12 +49,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\PublishScripts\Publish-Havit.Web.Bootstrap.NuGetPackage.ps1">
+      <Link>Publish-Havit.Web.Bootstrap.NuGetPackage.ps1</Link>
+    </None>
     <None Include="content\Web.config.uninstall.xdt" />
     <None Include="content\Web.config.install.xdt" />
     <None Include="Package.nuspec">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Publish-Havit.Web.Bootstrap.NuGetPackage.ps1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Havit.Web\Havit.Web.csproj">
@@ -78,6 +80,5 @@
       <FilesToCopy Include="$(OutputPath)\Havit.Web.Bootstrap.*.nupkg" />
     </ItemGroup>
     <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(PublishDirectory)\NuGet\%(RecursiveDir)%(Filename)%(Extension)')" />
-    <Copy SourceFiles="Publish-Havit.Web.Bootstrap.NuGetPackage.ps1" DestinationFiles="$(PublishDirectory)\Publish-Havit.Web.Bootstrap.NuGetPackage.ps1" />
   </Target>
 </Project>

@@ -49,8 +49,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\PublishScripts\Publish-Havit.Web.Bootstrap.NuGetPackage.ps1">
-      <Link>Publish-Havit.Web.Bootstrap.NuGetPackage.ps1</Link>
+    <None Include="..\PublishScripts\Publish-Havit.Web.Bootstrap.ps1">
+      <Link>Publish-Havit.Web.Bootstrap.ps1</Link>
     </None>
     <None Include="content\Web.config.uninstall.xdt" />
     <None Include="content\Web.config.install.xdt" />

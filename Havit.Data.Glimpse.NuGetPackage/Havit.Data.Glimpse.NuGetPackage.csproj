@@ -49,8 +49,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\PublishScripts\Publish-Havit.Data.Glimpse.NuGetPackage.ps1">
-      <Link>Publish-Havit.Data.Glimpse.NuGetPackage.ps1</Link>
+    <None Include="..\PublishScripts\Publish-Havit.Data.Glimpse.ps1">
+      <Link>Publish-Havit.Data.Glimpse.ps1</Link>
     </None>
     <None Include="Config\system.diagnostics.config" />
     <None Include="content\Config\system.diagnostics.config.transform" />

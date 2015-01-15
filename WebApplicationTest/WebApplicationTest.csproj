@@ -279,6 +279,7 @@
     <Content Include="Content\toastr.less" />
     <Content Include="HavitWebTests\PageNavigator_B_Test.aspx" />
     <Content Include="HavitWebTests\PageNavigator_A_Test.aspx" />
+    <Content Include="HavitWebTests\ScriptletTest4.aspx" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\Havit.Web.Bootstrap\description.txt" />
@@ -593,6 +594,13 @@
     </Compile>
     <Compile Include="HavitWebTests\PageNavigator_A_Test.aspx.designer.cs">
       <DependentUpon>PageNavigator_A_Test.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HavitWebTests\ScriptletTest4.aspx.cs">
+      <DependentUpon>ScriptletTest4.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HavitWebTests\ScriptletTest4.aspx.designer.cs">
+      <DependentUpon>ScriptletTest4.aspx</DependentUpon>
     </Compile>
     <Compile Include="HavitWebTests\SingleSubmitProtectionTest2.aspx.cs">
       <DependentUpon>SingleSubmitProtectionTest2.aspx</DependentUpon>

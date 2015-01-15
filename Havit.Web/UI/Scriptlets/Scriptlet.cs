@@ -232,7 +232,25 @@ namespace Havit.Web.UI.Scriptlets
 			}
 		}
 		#endregion
-		
+
+		#region OnLoad
+		/// <summary>
+		/// Pokud jsme v (synchronním) postbacku, stránka se celá refreshne, přicházíme o možnost znovupoužití funkcí
+		/// </summary>
+		protected override void OnLoad(EventArgs e)
+		{
+			base.OnLoad(e);
+
+			if (!IsInAsyncPostBack)
+			{
+				ViewState["ScriptletFunctionHash"] = null;
+				ViewState["GetParametersHash"] = null;
+				ViewState["AttachEventsHash"] = null;
+				ViewState["DetachEventsHash"] = null;
+			}
+		}
+		#endregion
+
 		#region PrepareClientSideScripts (private)
 		/// <summary>
 		/// Vrátí klientský skript scriptletu.
@@ -373,11 +391,7 @@ namespace Havit.Web.UI.Scriptlets
 		/// <param name="reused">Vrací informaci, zda došlo k reuse skriptu.</param>
 		private void PrepareClientSideScripts_WriteFunctionWithReuse(ScriptBuilder builder, ref string functionName, string[] functionParameters, string functionCode, string hashIdentifier, out bool reused)
 		{
-			if (String.IsNullOrEmpty(functionCode))
-			{
-				reused = false;
-				return;
-			}
+			functionCode = functionCode.Trim();
 
 			// vezmeme jméno funkce z cache
 			string cacheFunctionName = ScriptCacheHelper.GetFunctionNameFromCache(functionParameters, functionCode);
@@ -399,7 +413,7 @@ namespace Havit.Web.UI.Scriptlets
 			string functionBlock = String.Format("function {0}({1}){3}{{{3}{2}{3}}}{3}", // stručně: function X(paramemetry) { kod } + konce řádek..
 				functionName,
 				String.Join(", ", functionParameters),
-				functionCode.Trim(),
+				functionCode,
 				Environment.NewLine);
 
 			reused = false;

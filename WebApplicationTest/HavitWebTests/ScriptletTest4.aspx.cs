@@ -13,6 +13,7 @@ namespace WebApplicationTest.HavitWebTests
 {
 	public partial class ScriptletTest4 : System.Web.UI.Page
 	{
+		#region OnInit
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
@@ -20,20 +21,25 @@ namespace WebApplicationTest.HavitWebTests
 			ShowButton.Click += ShowButton_Click;
 			HideButton.Click += HideButton_Click;
 		}
+		#endregion
 
+		#region ShowButton_Click
 		private void ShowButton_Click(object sender, EventArgs e)
 		{
 			HideButton.Visible = true;
 			ShowButton.Visible = false;
 			MyPanel.Visible = true;
 		}
+		#endregion
 
+		#region HideButton_Click
 		private void HideButton_Click(object sender, EventArgs e)
 		{
 			HideButton.Visible = false;
 			ShowButton.Visible = true;
 			MyPanel.Visible = false;
 		}
+		#endregion
 
 	}
 }

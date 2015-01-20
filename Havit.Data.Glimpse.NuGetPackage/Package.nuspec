@@ -3,7 +3,6 @@
 	<metadata>
 		<id>Havit.Data.Glimpse</id>
 		<version>1.0.0</version>
-		<!--<minClientVersion>2.6</minClientVersion>-->
 		<title>Havit.Data.Glimpse</title>
 		<authors>HAVIT, s.r.o.</authors>
 		<owners>HAVIT, s.r.o.</owners>

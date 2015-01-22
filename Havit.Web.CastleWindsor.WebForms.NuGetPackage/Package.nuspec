@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>Havit.Web.CastleWindsor.WebForms</id>
+		<version>2.0.0</version>
+		<title>Havit.Web.CastleWindsor.WebForms</title>
+		<authors>HAVIT, s.r.o.</authors>
+		<owners>HAVIT, s.r.o.</owners>
+		<description>
+			Installs Castle Windsor and WebForms extension to project.
+		</description>
+		<language>en-US</language>
+		<iconUrl>http://docs.castleproject.org/GetFile.aspx?File=/windsorLogo100px.png</iconUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<copyright>Copyright HAVIT, s.r.o. 2015</copyright>
+		<dependencies>
+			<group targetFramework="net45">
+				<dependency id="Castle.Windsor" version="[3.3.0,)" />
+			</group>
+		</dependencies>
+		<references></references>
+		<tags>HAVIT ASP.NET Web WebForms Castle Windsor IoC DI DependencyInjection</tags>
+	</metadata>
+	<files>
+		<file src="..\Havit.Web.CastleWindsor.WebForms\bin\Release\Havit.Web.CastleWindsor.WebForms.dll" target="lib\net45" />
+		<file src="..\Havit.Web.CastleWindsor.WebForms\bin\Release\Havit.Web.CastleWindsor.WebForms.pdb" target="lib\net45" />
+		<file src="..\Havit.Web.CastleWindsor.WebForms\bin\Release\Havit.Web.CastleWindsor.WebForms.xml" target="lib\net45" />
+		<file src="content\Web.config.install.xdt" target="content" />
+		<file src="content\Web.config.uninstall.xdt" target="content" />
+	</files>
+</package>

@@ -1,0 +1,14 @@
+<StyleCopSettings Version="105">
+  <Analyzers>
+    <Analyzer AnalyzerId="Havit.StyleCop.Rules.HavitRules">
+      <Rules>
+        <Rule Name="MembersInRegions">
+          <RuleSettings>
+            <BooleanProperty Name="Enabled">False</BooleanProperty>
+          </RuleSettings>
+        </Rule>
+      </Rules>
+      <AnalyzerSettings />
+    </Analyzer>
+  </Analyzers>
+</StyleCopSettings>

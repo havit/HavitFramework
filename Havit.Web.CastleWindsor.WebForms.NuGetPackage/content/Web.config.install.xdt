@@ -11,7 +11,7 @@
 		<handlers xdt:Transform="InsertIfMissing" />
 		<handlers>
 			<add name="DependencyInjectionPageHandlerFactory" verb="*" path="*.aspx" type="Havit.Web.CastleWindsor.WebForms.DependencyInjectionPageHandlerFactory, Havit.Web.CastleWindsor.WebForms, Culture=neutral" xdt:Locator="Match(name)" xdt:Transform="InsertIfMissing" />
-			<add name="DependencyInjectionPageHandlerFactory" verb="*" path="*.aspx" type="Havit.Web.CastleWindsor.WebForms.WindsorInfrastructure.DependencyInjectionPageHandlerFactory, Havit.Web.CastleWindsor.WebForms, Culture=neutral" xdt:Locator="Match(name)" xdt:Transform="SetAttributes"/>
+			<add name="DependencyInjectionPageHandlerFactory" verb="*" path="*.aspx" type="Havit.Web.CastleWindsor.WebForms.DependencyInjectionPageHandlerFactory, Havit.Web.CastleWindsor.WebForms, Culture=neutral" xdt:Locator="Match(name)" xdt:Transform="SetAttributes"/>
 		</handlers>
 	</system.webServer>
 	

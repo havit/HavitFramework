@@ -86,7 +86,9 @@ namespace Havit.Web.CastleWindsor.WebForms
 			return (
 				from field in control.GetType().GetFields(flags)
 				let type = field.FieldType
-				where typeof(UserControl).IsAssignableFrom(type) || type.FullName.StartsWith("Havit.EdenredPortal.WebBase.WebControls")
+				// UserControls jsou "vždycky" moje, začínající Havit mají reprezentovat controly, které jsou ve WebBase. Do této podmínky spadnou i controly HFW, což je relativně zbytečné
+				// možná optimalizace do budoucna je namísto "Havit." vzít jen ty, které NEJSOU z assembly Havit.Web ani System.Web. Pokud Havit.Web nezíská závislost na Castle Windsoru.
+				where typeof(UserControl).IsAssignableFrom(type) || type.FullName.StartsWith("Havit.") 
 				let userControl = field.GetValue(control) as Control
 				where userControl != null
 				select userControl

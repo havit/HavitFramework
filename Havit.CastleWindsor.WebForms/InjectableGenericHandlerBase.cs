@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 using System.Reflection;
 using System.Web;
 
-namespace Havit.Web.CastleWindsor.WebForms
+namespace Havit.CastleWindsor.WebForms
 {
 	/// <summary>
 	/// Bázová třída pro generické handlery, která si umí nainjektovat závislosty s [Inject]

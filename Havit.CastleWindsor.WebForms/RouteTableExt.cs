@@ -1,6 +1,6 @@
 ﻿using System.Web.Routing;
 
-namespace Havit.Web.CastleWindsor.WebForms
+namespace Havit.CastleWindsor.WebForms
 {
 	/// <summary>
 	/// Extension metody pro routování

@@ -5,7 +5,7 @@
 			<add name="PerRequestLifestyle" type="Castle.MicroKernel.Lifestyle.PerWebRequestLifestyleModule, Castle.Windsor" xdt:Locator="Match(name,type)" xdt:Transform="Remove" />
 		</modules>
 		<handlers>
-			<add name="DependencyInjectionPageHandlerFactory" verb="*" path="*.aspx" type="Havit.Web.CastleWindsor.WebForms.DependencyInjectionPageHandlerFactory, Havit.Web.CastleWindsor.WebForms, Culture=neutral" xdt:Locator="Match(name,verb,path,type)" xdt:Transform="Remove" />
+			<add name="DependencyInjectionPageHandlerFactory" verb="*" path="*.aspx" type="Havit.CastleWindsor.WebForms.DependencyInjectionPageHandlerFactory, Havit.CastleWindsor.WebForms, Culture=neutral" xdt:Locator="Match(name,verb,path,type)" xdt:Transform="Remove" />
 		</handlers>
 	</system.webServer>	
 </configuration>

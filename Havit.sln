@@ -105,9 +105,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Web.NuGetPackage", "H
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Enterprise.Web.NuGetPackage", "Havit.Enterprise.Web.NuGetPackage\Havit.Enterprise.Web.NuGetPackage.csproj", "{752C64FC-0D72-4EA4-9192-9F9BA3F58CD8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Web.CastleWindsor.WebForms", "Havit.Web.CastleWindsor.WebForms\Havit.Web.CastleWindsor.WebForms.csproj", "{D0FA41AE-B54A-4888-8478-35C4D0E0B60B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.CastleWindsor.WebForms", "Havit.CastleWindsor.WebForms\Havit.CastleWindsor.WebForms.csproj", "{D0FA41AE-B54A-4888-8478-35C4D0E0B60B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Web.CastleWindsor.WebForms.NuGetPackage", "Havit.Web.CastleWindsor.WebForms.NuGetPackage\Havit.Web.CastleWindsor.WebForms.NuGetPackage.csproj", "{EAF43BF6-A865-4B3C-B644-23DDE3E33E61}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.CastleWindsor.WebForms.NuGetPackage", "Havit.CastleWindsor.WebForms.NuGetPackage\Havit.CastleWindsor.WebForms.NuGetPackage.csproj", "{EAF43BF6-A865-4B3C-B644-23DDE3E33E61}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
@@ -239,11 +239,11 @@ Global
 		SccProjectTopLevelParentUniqueName31 = Havit.sln
 		SccProjectName31 = Havit.Enterprise.Web.NuGetPackage
 		SccLocalPath31 = Havit.Enterprise.Web.NuGetPackage
-		SccProjectUniqueName32 = Havit.Web.CastleWindsor.WebForms\\Havit.Web.CastleWindsor.WebForms.csproj
+		SccProjectUniqueName32 = Havit.Web.CastleWindsor.WebForms\\Havit.CastleWindsor.WebForms.csproj
 		SccProjectTopLevelParentUniqueName32 = Havit.sln
 		SccProjectName32 = Havit.Web.CastleWindsor.WebForms
 		SccLocalPath32 = Havit.Web.CastleWindsor.WebForms
-		SccProjectUniqueName33 = Havit.Web.CastleWindsor.WebForms.NuGetPackage\\Havit.Web.CastleWindsor.WebForms.NuGetPackage.csproj
+		SccProjectUniqueName33 = Havit.Web.CastleWindsor.WebForms.NuGetPackage\\Havit.CastleWindsor.WebForms.NuGetPackage.csproj
 		SccProjectTopLevelParentUniqueName33 = Havit.sln
 		SccProjectName33 = Havit.Web.CastleWindsor.WebForms.NuGetPackage
 		SccLocalPath33 = Havit.Web.CastleWindsor.WebForms.NuGetPackage

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.UI;
 
 namespace Havit.Web.UI
@@ -51,6 +52,7 @@ namespace Havit.Web.UI
 			}
 			else
 			{				
+				
 				ScriptManager.RegisterNamedClientScriptResource(page, resourceName);
 				return true;
 			}

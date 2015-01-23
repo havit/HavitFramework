@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Havit.Web.CastleWindsor.WebForms
+namespace Havit.CastleWindsor.WebForms
 {
 	/// <summary>
 	/// Marks properties that shall be injected in WebForms pages and user controls.

@@ -3,7 +3,7 @@ using System.Web;
 using System.Web.Compilation;
 using System.Web.Routing;
 
-namespace Havit.Web.CastleWindsor.WebForms
+namespace Havit.CastleWindsor.WebForms
 {
 	/// <summary>
 	/// PageRouteHandler pro normální aspx stránky s podporou Windsor Castle. Co jde přes routing, tak nejde přes PageHandlerFactory, tak proto.

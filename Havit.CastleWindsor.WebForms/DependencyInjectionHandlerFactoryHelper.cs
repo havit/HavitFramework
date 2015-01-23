@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Castle.Windsor;
 
-namespace Havit.Web.CastleWindsor.WebForms
+namespace Havit.CastleWindsor.WebForms
 {
 	/// <summary>
 	/// Pomocná třída pro resolve závislostí injektováním do existujícího objektu

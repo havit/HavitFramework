@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Web;
 using System.Web.UI;
 
-namespace Havit.Web.CastleWindsor.WebForms
+namespace Havit.CastleWindsor.WebForms
 {
 	/// <summary>
 	/// Page factory, která dokáže injektovat dependence přes Windsor

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Havit.Web.CastleWindsor.WebForms
+namespace Havit.CastleWindsor.WebForms
 {
 	/// <summary>
 	/// Controls behavior of sub-dependcies resolving by specifing specific names of implementations to resolve

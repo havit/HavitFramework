@@ -52,6 +52,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\PublishScripts\Publish-Havit.CastleWindsor.WebForms.ps1">
+      <Link>Publish-Havit.CastleWindsor.WebForms.ps1</Link>
+    </None>
     <None Include="content\Web.config.install.xdt" />
     <None Include="content\Web.config.uninstall.xdt" />
     <None Include="Package.nuspec">
@@ -71,7 +74,7 @@
   </Target>
   <Target Name="TfsPublish" AfterTargets="AfterBuild;CreateNuGetPackage" Condition="'$(PublishDirectory)' != ''">
     <ItemGroup>
-      <FilesToCopy Include="$(OutputPath)\Havit.Web.CastleWindsor.WebForms.*.nupkg" />
+      <FilesToCopy Include="$(OutputPath)\Havit.CastleWindsor.WebForms.*.nupkg" />
     </ItemGroup>
     <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(PublishDirectory)\NuGet\%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>

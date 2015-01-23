@@ -277,6 +277,7 @@
     <Content Include="Content\site.less" />
     <Content Include="Content\toastr.scss" />
     <Content Include="Content\toastr.less" />
+    <Content Include="HavitWebTests\NumericBoxInUpdatePanel.aspx" />
     <Content Include="HavitWebTests\PageNavigator_B_Test.aspx" />
     <Content Include="HavitWebTests\PageNavigator_A_Test.aspx" />
     <Content Include="HavitWebTests\ScriptletTest4.aspx" />
@@ -580,6 +581,13 @@
     </Compile>
     <Compile Include="HavitWebTests\GridViewExt-Filtr.aspx.designer.cs">
       <DependentUpon>GridViewExt-Filtr.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HavitWebTests\NumericBoxInUpdatePanel.aspx.cs">
+      <DependentUpon>NumericBoxInUpdatePanel.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HavitWebTests\NumericBoxInUpdatePanel.aspx.designer.cs">
+      <DependentUpon>NumericBoxInUpdatePanel.aspx</DependentUpon>
     </Compile>
     <Compile Include="HavitWebTests\PageNavigator_B_Test.aspx.cs">
       <DependentUpon>PageNavigator_B_Test.aspx</DependentUpon>

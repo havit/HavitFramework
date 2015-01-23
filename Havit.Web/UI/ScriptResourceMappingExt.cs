@@ -24,9 +24,19 @@ namespace Havit.Web.UI
 		/// <param name="resourceName">Jméno registrovaného scriptu.</param>
 		public static void EnsureScriptRegistration(this ScriptResourceMapping scriptResourceMapping, Page page, string resourceName)
 		{
-			if (!TryEnsureScriptRegistration(scriptResourceMapping, page, resourceName))
+			TryEnsureScriptRegistrationResult registrationScriptResult = TryEnsureScriptRegistration(scriptResourceMapping, page, resourceName);
+
+			switch (registrationScriptResult)
 			{
-				throw new InvalidOperationException(String.Format("Missing script resource mapping '{0}'. Please add a ScriptResourceMapping named '{0}' (case-sensitive).", resourceName));
+				case TryEnsureScriptRegistrationResult.MissingScriptResourceMapping:
+					throw new InvalidOperationException(String.Format("Missing script resource mapping '{0}'. Please add a ScriptResourceMapping named '{0}' (case-sensitive).", resourceName));
+
+				case TryEnsureScriptRegistrationResult.ScriptResourceMappingWhileAsyncPostback:
+					if (HttpContext.Current.IsDebuggingEnabled)
+					{
+						throw new InvalidOperationException(String.Format("Attempting to register '{0}' during asynchronous postback, which is not possible. Register script in the page or in master page.", resourceName));
+					}
+					break;
 			}
 		}
 		#endregion
@@ -38,23 +48,32 @@ namespace Havit.Web.UI
 		/// <param name="scriptResourceMapping">ScriptResourceMapping, ze kterého se právádí registrace scriptu.</param>
 		/// <param name="page">Stránka, do které se registrace skriptu provádí.</param>
 		/// <param name="resourceName">Jméno registrovaného scriptu.</param>
-		public static bool TryEnsureScriptRegistration(this ScriptResourceMapping scriptResourceMapping, Page page, string resourceName)
+		public static TryEnsureScriptRegistrationResult TryEnsureScriptRegistration(this ScriptResourceMapping scriptResourceMapping, Page page, string resourceName)
 		{
 			Contract.Requires<ArgumentNullException>(scriptResourceMapping != null, "scriptResourceMapping");
 			Contract.Requires<ArgumentNullException>(page != null, "page");
 			Contract.Requires(!String.IsNullOrEmpty(resourceName));
 
+			ScriptManager currentScriptManager = ScriptManager.GetCurrent(page);
+			bool scriptResourceExists = currentScriptManager.Scripts.Any(script => script.Name.Equals(resourceName));
+
 			if ((scriptResourceMapping != null)
 				&& (scriptResourceMapping.GetDefinition(resourceName, typeof(Page).Assembly) == null)
 				&& (scriptResourceMapping.GetDefinition(resourceName) == null))
 			{
-				return false;
+				return TryEnsureScriptRegistrationResult.MissingScriptResourceMapping;
+			}
+			else if (currentScriptManager.IsInAsyncPostBack && !scriptResourceExists)
+			{
+				return TryEnsureScriptRegistrationResult.ScriptResourceMappingWhileAsyncPostback;
 			}
 			else
-			{				
-				
-				ScriptManager.RegisterNamedClientScriptResource(page, resourceName);
-				return true;
+			{
+				if (!scriptResourceExists)
+				{
+					ScriptManager.RegisterNamedClientScriptResource(page, resourceName);
+				}
+				return TryEnsureScriptRegistrationResult.OK;
 			}
 		}
 		#endregion
@@ -67,19 +86,29 @@ namespace Havit.Web.UI
 		{
 			string resourceFullName = type.Assembly.FullName + "|" + embeddedResourceName;
 
+			ScriptManager currentScriptManager = ScriptManager.GetCurrent(page);
+			bool scriptResourceExists = currentScriptManager.Scripts.Any(script => script.Name.Equals(resourceFullName));
+
 			if ((scriptResourceMapping != null)
 				&& (scriptResourceMapping.GetDefinition(resourceFullName, typeof(Page).Assembly) == null)
 				&& (scriptResourceMapping.GetDefinition(resourceFullName) == null))
 			{
 				ScriptManager.ScriptResourceMapping.AddDefinition(resourceFullName, new ScriptResourceDefinition { Path = page.ClientScript.GetWebResourceUrl(type, embeddedResourceName) });
 			}
-			if (control == null)
+			else if (currentScriptManager.IsInAsyncPostBack && !scriptResourceExists && HttpContext.Current.IsDebuggingEnabled)
 			{
-				ScriptManager.RegisterNamedClientScriptResource(page, resourceFullName);
+				throw new InvalidOperationException(String.Format("Attempting to register embedded resource script '{0}' during asynchronous postback, which is not possible. Register script in the page or in master page.", embeddedResourceName));
 			}
 			else
 			{
-				ScriptManager.RegisterNamedClientScriptResource(control, resourceFullName);				
+				if (control == null)
+				{
+					ScriptManager.RegisterNamedClientScriptResource(page, resourceFullName);
+				}
+				else
+				{
+					ScriptManager.RegisterNamedClientScriptResource(control, resourceFullName);
+				}
 			}
 		}
 

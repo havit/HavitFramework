@@ -148,6 +148,7 @@
     </Compile>
     <Compile Include="Bootstrap\UI\WebControls\NavbarTextItem.cs" />
     <Compile Include="UI\ControlExtensions.cs" />
+    <Compile Include="UI\TryEnsureScriptRegistrationResult.cs" />
     <Compile Include="UI\WebControls\BrowserNavigationController.cs" />
     <Compile Include="UI\WebControls\CookiesMessenger.cs" />
     <Compile Include="UI\WebControls\DataBoundControlWithHiddenPublicMembersFromIntellisence.cs" />

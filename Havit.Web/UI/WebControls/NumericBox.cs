@@ -14,7 +14,7 @@ namespace Havit.Web.UI.WebControls
 	/// NumericBox slouží k zadání čísla.
 	/// </summary>
 	[Themeable(true)]
-	[ValidationProperty("NumberText")]	
+	[ValidationProperty("NumberText")]
 	public class NumericBox : Control, INamingContainer
 	{
 		#region Constants
@@ -104,7 +104,7 @@ namespace Havit.Web.UI.WebControls
 			{
 				valueTextBox.ReadOnly = value;
 			}
-		}		
+		}
 		#endregion
 
 		#region KeyBlockingClientScriptEnabled
@@ -122,7 +122,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["KeyBlockingClientScriptEnabled"] = value;
 			}
 		}
-		#endregion 
+		#endregion
 
 		#endregion
 
@@ -139,7 +139,7 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 
-		#endregion	
+		#endregion
 
 		#region ToolTip
 		/// <summary>
@@ -372,7 +372,7 @@ namespace Havit.Web.UI.WebControls
 		public NumericBox()
 		{
 			valueTextBox = new TextBoxExt();
-			valueTextBox.ID = "ValueTextBox";			
+			valueTextBox.ID = "ValueTextBox";
 		}
 		#endregion
 
@@ -426,7 +426,7 @@ namespace Havit.Web.UI.WebControls
 				HavitFrameworkClientScriptHelper.RegisterHavitFrameworkClientScript(this.Page);
 			}
 			ViewState["ValueMemento"] = GetValueMemento();
-		}		
+		}
 		#endregion
 
 		#region Render
@@ -500,7 +500,7 @@ namespace Havit.Web.UI.WebControls
 			}
 			else
 			{
-				return InvalidMemento;				
+				return InvalidMemento;
 			}
 		}
 		#endregion

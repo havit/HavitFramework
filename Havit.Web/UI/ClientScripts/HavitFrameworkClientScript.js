@@ -375,7 +375,7 @@ var havitBrowserNavigationControllerExtension = {
 
 			$(window).off("popstate.hfw");
 			$(window).on("popstate.hfw", function() {
-				if (window.location.ha^sh === "#!/back") {
+				if (window.location.hash === "#!/back") {
 					window.history.replaceState(null, document.title, href);
 					window.setTimeout(function() {
 						window.location.replace((backUrl.length > 0) ? backUrl : href);

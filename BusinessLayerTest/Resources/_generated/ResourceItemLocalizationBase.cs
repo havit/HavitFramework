@@ -689,7 +689,7 @@ namespace Havit.BusinessLayerTest.Resources
 		/// <summary>
 		/// Vrátí objekty typu ResourceItemLocalization dle parametrů v queryParams.
 		/// </summary>
-		public static ResourceItemLocalizationCollection GetList(QueryParams queryParams)
+		internal static ResourceItemLocalizationCollection GetList(QueryParams queryParams)
 		{
 			global::Havit.Diagnostics.Contracts.Contract.Requires(queryParams != null, "queryParams != null");
 			
@@ -699,7 +699,7 @@ namespace Havit.BusinessLayerTest.Resources
 		/// <summary>
 		/// Vrátí objekty typu ResourceItemLocalization dle parametrů v queryParams. Data jsou načítána v předané transakci.
 		/// </summary>
-		public static ResourceItemLocalizationCollection GetList(QueryParams queryParams, DbTransaction transaction)
+		internal static ResourceItemLocalizationCollection GetList(QueryParams queryParams, DbTransaction transaction)
 		{
 			global::Havit.Diagnostics.Contracts.Contract.Requires(queryParams != null, "queryParams != null");
 			

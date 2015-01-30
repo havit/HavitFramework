@@ -35,15 +35,15 @@ namespace Havit.BusinessLayerTest
 	/// <code>
 	/// CREATE TABLE [dbo].[Uzivatel](
 	/// 	[UzivatelID] [int] IDENTITY(1,1) NOT NULL,
-	/// 	[Username] [varchar](50) COLLATE Czech_CI_AS NOT NULL,
-	/// 	[Password] [nvarchar](30) COLLATE Czech_CI_AS NOT NULL,
-	/// 	[DisplayAs] [nvarchar](50) COLLATE Czech_CI_AS NOT NULL,
-	/// 	[Email] [nvarchar](100) COLLATE Czech_CI_AS NOT NULL,
-	/// 	[Disabled] [bit] NOT NULL,
+	/// 	[Username] [varchar](50) COLLATE Czech_CI_AS NOT NULL CONSTRAINT [DF_Uzivatel_Username]  DEFAULT (''),
+	/// 	[Password] [nvarchar](30) COLLATE Czech_CI_AS NOT NULL CONSTRAINT [DF_Uzivatel_Password]  DEFAULT (''),
+	/// 	[DisplayAs] [nvarchar](50) COLLATE Czech_CI_AS NOT NULL CONSTRAINT [DF_Uzivatel_DisplayAs]  DEFAULT (''),
+	/// 	[Email] [nvarchar](100) COLLATE Czech_CI_AS NOT NULL CONSTRAINT [DF_Uzivatel_Email]  DEFAULT (''),
+	/// 	[Disabled] [bit] NOT NULL CONSTRAINT [DF_Uzivatel_Disabled]  DEFAULT ((0)),
 	/// 	[LockedTime] [smalldatetime] NULL,
 	/// 	[LoginLast] [smalldatetime] NULL,
-	/// 	[LoginCount] [int] NOT NULL,
-	/// 	[Created] [smalldatetime] NOT NULL,
+	/// 	[LoginCount] [int] NOT NULL CONSTRAINT [DF_Uzivatel_LoginCount]  DEFAULT ((0)),
+	/// 	[Created] [smalldatetime] NOT NULL CONSTRAINT [DF_Uzivatel_Created]  DEFAULT (getdate()),
 	///  CONSTRAINT [PK_Uzivatel] PRIMARY KEY CLUSTERED 
 	/// (
 	/// 	[UzivatelID] ASC
@@ -53,13 +53,6 @@ namespace Havit.BusinessLayerTest
 	/// 	[Username] ASC
 	/// )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 	/// ) ON [PRIMARY]
-	/// ALTER TABLE [dbo].[Uzivatel] ADD  CONSTRAINT [DF_Uzivatel_Username]  DEFAULT ('') FOR [Username]
-	/// ALTER TABLE [dbo].[Uzivatel] ADD  CONSTRAINT [DF_Uzivatel_Password]  DEFAULT ('') FOR [Password]
-	/// ALTER TABLE [dbo].[Uzivatel] ADD  CONSTRAINT [DF_Uzivatel_DisplayAs]  DEFAULT ('') FOR [DisplayAs]
-	/// ALTER TABLE [dbo].[Uzivatel] ADD  CONSTRAINT [DF_Uzivatel_Email]  DEFAULT ('') FOR [Email]
-	/// ALTER TABLE [dbo].[Uzivatel] ADD  CONSTRAINT [DF_Uzivatel_Disabled]  DEFAULT ((0)) FOR [Disabled]
-	/// ALTER TABLE [dbo].[Uzivatel] ADD  CONSTRAINT [DF_Uzivatel_LoginCount]  DEFAULT ((0)) FOR [LoginCount]
-	/// ALTER TABLE [dbo].[Uzivatel] ADD  CONSTRAINT [DF_Uzivatel_Created]  DEFAULT (getdate()) FOR [Created]
 	/// </code>
 	/// </remarks>
 	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
@@ -1157,7 +1150,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Vrátí objekty typu Uzivatel dle parametrů v queryParams.
 		/// </summary>
-		public static UzivatelCollection GetList(QueryParams queryParams)
+		internal static UzivatelCollection GetList(QueryParams queryParams)
 		{
 			global::Havit.Diagnostics.Contracts.Contract.Requires(queryParams != null, "queryParams != null");
 			
@@ -1167,7 +1160,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Vrátí objekty typu Uzivatel dle parametrů v queryParams. Data jsou načítána v předané transakci.
 		/// </summary>
-		public static UzivatelCollection GetList(QueryParams queryParams, DbTransaction transaction)
+		internal static UzivatelCollection GetList(QueryParams queryParams, DbTransaction transaction)
 		{
 			global::Havit.Diagnostics.Contracts.Contract.Requires(queryParams != null, "queryParams != null");
 			

@@ -442,7 +442,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Vrátí objekty typu Language dle parametrů v queryParams.
 		/// </summary>
-		public static LanguageCollection GetList(QueryParams queryParams)
+		internal static LanguageCollection GetList(QueryParams queryParams)
 		{
 			global::Havit.Diagnostics.Contracts.Contract.Requires(queryParams != null, "queryParams != null");
 			
@@ -452,7 +452,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Vrátí objekty typu Language dle parametrů v queryParams. Data jsou načítána v předané transakci.
 		/// </summary>
-		public static LanguageCollection GetList(QueryParams queryParams, DbTransaction transaction)
+		internal static LanguageCollection GetList(QueryParams queryParams, DbTransaction transaction)
 		{
 			global::Havit.Diagnostics.Contracts.Contract.Requires(queryParams != null, "queryParams != null");
 			

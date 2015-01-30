@@ -786,7 +786,7 @@ namespace Havit.BusinessLayerTest.Resources
 		/// <summary>
 		/// Vrátí objekty typu ResourceItem dle parametrů v queryParams.
 		/// </summary>
-		public static ResourceItemCollection GetList(QueryParams queryParams)
+		internal static ResourceItemCollection GetList(QueryParams queryParams)
 		{
 			global::Havit.Diagnostics.Contracts.Contract.Requires(queryParams != null, "queryParams != null");
 			
@@ -796,7 +796,7 @@ namespace Havit.BusinessLayerTest.Resources
 		/// <summary>
 		/// Vrátí objekty typu ResourceItem dle parametrů v queryParams. Data jsou načítána v předané transakci.
 		/// </summary>
-		public static ResourceItemCollection GetList(QueryParams queryParams, DbTransaction transaction)
+		internal static ResourceItemCollection GetList(QueryParams queryParams, DbTransaction transaction)
 		{
 			global::Havit.Diagnostics.Contracts.Contract.Requires(queryParams != null, "queryParams != null");
 			

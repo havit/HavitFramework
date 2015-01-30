@@ -35,13 +35,12 @@ namespace Havit.BusinessLayerTest
 	/// <code>
 	/// CREATE TABLE [dbo].[Role](
 	/// 	[RoleID] [int] NOT NULL,
-	/// 	[Symbol] [varchar](50) COLLATE Czech_CI_AS NULL,
+	/// 	[Symbol] [varchar](50) COLLATE Czech_CI_AS NULL CONSTRAINT [DF_Role_Symbol]  DEFAULT (''),
 	///  CONSTRAINT [PK_Role] PRIMARY KEY CLUSTERED 
 	/// (
 	/// 	[RoleID] ASC
 	/// )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 	/// ) ON [PRIMARY]
-	/// ALTER TABLE [dbo].[Role] ADD  CONSTRAINT [DF_Role_Symbol]  DEFAULT ('') FOR [Symbol]
 	/// </code>
 	/// </remarks>
 	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
@@ -405,7 +404,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Vrátí objekty typu Role dle parametrů v queryParams.
 		/// </summary>
-		public static RoleCollection GetList(QueryParams queryParams)
+		internal static RoleCollection GetList(QueryParams queryParams)
 		{
 			global::Havit.Diagnostics.Contracts.Contract.Requires(queryParams != null, "queryParams != null");
 			
@@ -415,7 +414,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Vrátí objekty typu Role dle parametrů v queryParams. Data jsou načítána v předané transakci.
 		/// </summary>
-		public static RoleCollection GetList(QueryParams queryParams, DbTransaction transaction)
+		internal static RoleCollection GetList(QueryParams queryParams, DbTransaction transaction)
 		{
 			global::Havit.Diagnostics.Contracts.Contract.Requires(queryParams != null, "queryParams != null");
 			

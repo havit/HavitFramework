@@ -537,7 +537,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Vrátí objekty typu Komunikace dle parametrů v queryParams.
 		/// </summary>
-		public static KomunikaceCollection GetList(QueryParams queryParams)
+		internal static KomunikaceCollection GetList(QueryParams queryParams)
 		{
 			global::Havit.Diagnostics.Contracts.Contract.Requires(queryParams != null, "queryParams != null");
 			
@@ -547,7 +547,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Vrátí objekty typu Komunikace dle parametrů v queryParams. Data jsou načítána v předané transakci.
 		/// </summary>
-		public static KomunikaceCollection GetList(QueryParams queryParams, DbTransaction transaction)
+		internal static KomunikaceCollection GetList(QueryParams queryParams, DbTransaction transaction)
 		{
 			global::Havit.Diagnostics.Contracts.Contract.Requires(queryParams != null, "queryParams != null");
 			

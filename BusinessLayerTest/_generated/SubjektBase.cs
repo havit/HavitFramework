@@ -35,17 +35,15 @@ namespace Havit.BusinessLayerTest
 	/// <code>
 	/// CREATE TABLE [dbo].[Subjekt](
 	/// 	[SubjektID] [int] IDENTITY(1,1) NOT NULL,
-	/// 	[Nazev] [nvarchar](50) COLLATE Czech_CI_AS NULL,
+	/// 	[Nazev] [nvarchar](50) COLLATE Czech_CI_AS NULL CONSTRAINT [DF_Subjekt_Nazev]  DEFAULT (''),
 	/// 	[UzivatelID] [int] NULL,
-	/// 	[Created] [smalldatetime] NOT NULL,
+	/// 	[Created] [smalldatetime] NOT NULL CONSTRAINT [DF_Subjekt_Created]  DEFAULT (getdate()),
 	/// 	[Deleted] [smalldatetime] NULL,
 	///  CONSTRAINT [PK_Subjekt] PRIMARY KEY CLUSTERED 
 	/// (
 	/// 	[SubjektID] ASC
 	/// )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 	/// ) ON [PRIMARY]
-	/// ALTER TABLE [dbo].[Subjekt] ADD  CONSTRAINT [DF_Subjekt_Nazev]  DEFAULT ('') FOR [Nazev]
-	/// ALTER TABLE [dbo].[Subjekt] ADD  CONSTRAINT [DF_Subjekt_Created]  DEFAULT (getdate()) FOR [Created]
 	/// ALTER TABLE [dbo].[Subjekt]  WITH NOCHECK ADD  CONSTRAINT [FK_Subjekt_Uzivatel] FOREIGN KEY([UzivatelID])
 	/// REFERENCES [dbo].[Uzivatel] ([UzivatelID])
 	/// ALTER TABLE [dbo].[Subjekt] CHECK CONSTRAINT [FK_Subjekt_Uzivatel]
@@ -750,7 +748,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Vrátí objekty typu Subjekt dle parametrů v queryParams.
 		/// </summary>
-		public static SubjektCollection GetList(QueryParams queryParams)
+		internal static SubjektCollection GetList(QueryParams queryParams)
 		{
 			global::Havit.Diagnostics.Contracts.Contract.Requires(queryParams != null, "queryParams != null");
 			
@@ -760,7 +758,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Vrátí objekty typu Subjekt dle parametrů v queryParams. Data jsou načítána v předané transakci.
 		/// </summary>
-		public static SubjektCollection GetList(QueryParams queryParams, DbTransaction transaction)
+		internal static SubjektCollection GetList(QueryParams queryParams, DbTransaction transaction)
 		{
 			global::Havit.Diagnostics.Contracts.Contract.Requires(queryParams != null, "queryParams != null");
 			

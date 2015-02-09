@@ -40,12 +40,16 @@
 #
 ################################################################################
 
-\_ReSharper.Havit
-\_ReSharper.Havit
-\Sandcastle\doc
-\Sandcastle\doc
-\WebApplicationTest\Scripts\Havit.Web.Bootstrap\*.js
-\Havit.Web\Bootstrap\Content\js\ModalExtension.js
 \packages
 !\packages\repositories.config
+
+\_ReSharper.Havit
+\_ReSharper.Havit
+\Sandcastle\doc
+\Sandcastle\doc
+\Havit.Web\Bootstrap\Content\js\ModalExtension.js
 \Havit.sln.ide
+\WebApplicationTest\Scripts\Havit.Web.Bootstrap\*.js
+\WebApplicationTest\Content\Havit.Web.ClientContent\*.css
+\WebApplicationTest\Content\Havit.Web.ClientContent\*.png
+\WebApplicationTest\Scripts\Havit.Web.ClientContent\*.js

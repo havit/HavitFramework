@@ -12,7 +12,6 @@ namespace Havit.CastleWindsor.WebForms
 	/// </summary>
 	public class DependencyInjectionPageHandlerFactory : PageHandlerFactory
 	{
-
 		private ConcurrentDictionary<Type, PropertyInfo[]> cachedProperties = new ConcurrentDictionary<Type, PropertyInfo[]>();
 
 		/// <summary>
@@ -39,7 +38,7 @@ namespace Havit.CastleWindsor.WebForms
 		/// <summary>
 		/// Hooks the child control initialization.
 		/// </summary>
-		private void HookChildControlInitialization(object handler)
+		private void HookChildControlInitialization(IHttpHandler handler)
 		{
 			Page page = handler as Page;
 
@@ -56,8 +55,18 @@ namespace Havit.CastleWindsor.WebForms
 					{
 						DependencyInjectionHandlerFactoryHelper.InitializeInstance(master, cachedProperties);
 						InitializeChildControls(master);
+						master.Unload += (sender, ea) =>
+						{
+							DependencyInjectionHandlerFactoryHelper.ReleaseDependencies(handler, cachedProperties);
+						};
+
 						master = master.Master;
 					}
+				};
+
+				page.Unload += (s, e) =>
+				{
+					DependencyInjectionHandlerFactoryHelper.ReleaseDependencies(handler, cachedProperties);
 				};
 			}
 		}
@@ -73,6 +82,13 @@ namespace Havit.CastleWindsor.WebForms
 			{
 				DependencyInjectionHandlerFactoryHelper.InitializeInstance(childControl, cachedProperties);
 				InitializeChildControls(childControl);
+
+				// also hook Unload for release of resolved components/dependencies
+				Control childControlCopy = childControl; // dont use iteration variable in lambdas
+				childControl.Unload += (s, e) =>
+				{
+					DependencyInjectionHandlerFactoryHelper.ReleaseDependencies(childControlCopy, cachedProperties);
+				};
 			}
 		}
 
@@ -95,6 +111,5 @@ namespace Havit.CastleWindsor.WebForms
 				select userControl
 			).ToArray();
 		}
-
 	}
 }

@@ -10,6 +10,7 @@ namespace Havit.CastleWindsor.WebForms
 	/// </summary>
 	public abstract class InjectableGenericHandlerBase : IHttpHandler
 	{
+		private ConcurrentDictionary<Type, PropertyInfo[]> _injectablePropertyCache = new ConcurrentDictionary<Type, PropertyInfo[]>();
 
 		/// <summary>
 		/// Gets a value indicating whether another request can use the <see cref="T:System.Web.IHttpHandler"/> instance.
@@ -26,19 +27,30 @@ namespace Havit.CastleWindsor.WebForms
 		/// Enables processing of HTTP Web requests by a custom HttpHandler that implements the <see cref="T:System.Web.IHttpHandler"/> interface.
 		/// </summary>
 		/// <param name="context">An <see cref="T:System.Web.HttpContext"/> object that provides references to the intrinsic server objects (for example, Request, Response, Session, and Server) used to service HTTP requests. </param>
-		public virtual void ProcessRequest(HttpContext context)
+		public void ProcessRequest(HttpContext context)
 		{
 			ResolveDependencies();
+			DoProcessRequest(context);
+			ReleaseDependencies();
 		}
+
+		/// <summary>
+		/// Zpracuje HTTP požadadek (ekvivalent IHttpHandler.ProcessRequest) po resolve všech závislostí
+		/// </summary>
+		/// <param name="context">An <see cref="T:System.Web.HttpContext"/> object that provides references to the intrinsic server objects (for example, Request, Response, Session, and Server) used to service HTTP requests.</param>
+		protected abstract void DoProcessRequest(HttpContext context);
 
 		/// <summary>
 		/// Resolvne a injektuje všechny závislosti
 		/// </summary>
-		protected void ResolveDependencies()
+		protected virtual void ResolveDependencies()
 		{
-			ConcurrentDictionary<Type, PropertyInfo[]> cache = new ConcurrentDictionary<Type, PropertyInfo[]>();
-			DependencyInjectionHandlerFactoryHelper.InitializeInstance(this, cache);
+			DependencyInjectionHandlerFactoryHelper.InitializeInstance(this, _injectablePropertyCache);
 		}
 
+		protected virtual void ReleaseDependencies()
+		{
+			DependencyInjectionHandlerFactoryHelper.ReleaseDependencies(this, _injectablePropertyCache);
+		}
 	}
 }

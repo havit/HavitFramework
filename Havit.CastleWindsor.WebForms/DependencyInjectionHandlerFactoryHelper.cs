@@ -33,12 +33,7 @@ namespace Havit.CastleWindsor.WebForms
 		/// </summary>
 		internal static void InitializeInstance(object control, ConcurrentDictionary<Type, PropertyInfo[]> cachedProperties)
 		{
-			// get a collection of injectable properties for the type
-			PropertyInfo[] props = cachedProperties.GetOrAdd(control.GetType(), type =>
-			{
-				return type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
-					.Where(p => p.GetCustomAttributes(typeof(InjectAttribute), false).Length == 1).ToArray();
-			});
+			PropertyInfo[] props = GetInjectableProperties(control, cachedProperties);
 
 			// inject the values to properties
 			foreach (PropertyInfo prop in props)
@@ -54,6 +49,35 @@ namespace Havit.CastleWindsor.WebForms
 				catch (Exception e)
 				{
 					throw new ApplicationException("Error in resolving dependency " + prop.Name + ".", e);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Get a collection of injectable properties for the type
+		/// </summary>
+		private static PropertyInfo[] GetInjectableProperties(object control, ConcurrentDictionary<Type, PropertyInfo[]> cachedProperties)
+		{
+			PropertyInfo[] props = cachedProperties.GetOrAdd(control.GetType(), type =>
+			{
+				return type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
+					.Where(p => p.GetCustomAttributes(typeof(InjectAttribute), false).Length == 1).ToArray();
+			});
+			return props;
+		}
+
+		/// <summary>
+		/// Releases all dependencies of the instance (which is being released)
+		/// </summary>
+		internal static void ReleaseDependencies(object control, ConcurrentDictionary<Type, PropertyInfo[]> cachedProperties)
+		{
+			PropertyInfo[] props = GetInjectableProperties(control, cachedProperties);
+			foreach (PropertyInfo propertyInfo in props)
+			{
+				object dependencyInstance = propertyInfo.GetValue(control);
+				if (dependencyInstance != null)
+				{
+					_resolver.Release(dependencyInstance);
 				}
 			}
 		}

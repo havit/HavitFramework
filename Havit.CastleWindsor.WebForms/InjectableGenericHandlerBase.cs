@@ -48,6 +48,9 @@ namespace Havit.CastleWindsor.WebForms
 			DependencyInjectionHandlerFactoryHelper.InitializeInstance(this, _injectablePropertyCache);
 		}
 
+		/// <summary>
+		/// Uvolní veškeré závislé komponenty aktivované pomocí WindsorCastlu
+		/// </summary>
 		protected virtual void ReleaseDependencies()
 		{
 			DependencyInjectionHandlerFactoryHelper.ReleaseDependencies(this, _injectablePropertyCache);

@@ -53,11 +53,19 @@ namespace Havit.Web.UI.ClientScripts
 		}
 		#endregion
 
+		#region GetVersionString
+		/// <summary>
+		/// Vrací verzi z assembly pro přidání do URL.
+		/// Vzhledem k tomu, že skripty se do projetu dostávají jinými balíčky, než Havit.Web, není toto rozhodně dokonalé.
+		/// Předpokládáme zatím, že budou balíčky aktualizovány současně. Jinak bychom museli vytvořit další assembly
+		/// (Havit.Web.Bootstrap a Havit.Web.ClientContent) a registrovat scripty až v těchto assembly (bylo by rozhodně správnější).
+		/// </summary>
 		internal static string GetVersionString()
 		{
 			Assembly assembly = Assembly.GetAssembly(typeof(HavitFrameworkClientScriptHelper));
 			Version version = assembly.GetName().Version;
 			return version.ToString().Replace(".", "_");
 		}
+		#endregion
 	}
 }

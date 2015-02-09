@@ -10,6 +10,8 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
+using Havit.Web.UI.ClientScripts;
+
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
@@ -129,7 +131,7 @@ namespace Havit.Web.UI.WebControls
 			ValidateControlProperties();
 
 			ClientScripts.HavitFrameworkClientScriptHelper.RegisterHavitFrameworkClientScript(this.Page);
-			ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, "jquery.multipleselect");
+			ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, HavitFrameworkClientScriptHelper.JQueryMultipleSelectResourceMappingName);
 			ScriptManager.RegisterStartupScript(this.Page, typeof(CheckBoxDropDownList), "Startup", "havitDropDownCheckBoxListExtensions.init();", true);
 			ScriptManager.RegisterOnSubmitStatement(this.Page, typeof(CheckBoxDropDownList), "OnSubmit", "havitDropDownCheckBoxListExtensions.beforeSubmit();");
 		}

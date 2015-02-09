@@ -27,7 +27,6 @@
 					<%--Site Scripts--%>
 					<asp:ScriptReference Name="bootstrap" />
 					<asp:ScriptReference Name="toastr" />
-					<asp:ScriptReference Name="jquery.multipleselect" />
 				</Scripts>
 			</asp:ScriptManager>
 

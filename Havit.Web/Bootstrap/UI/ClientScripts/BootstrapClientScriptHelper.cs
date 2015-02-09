@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.UI;
 using Havit.Web.UI;
+using Havit.Web.UI.ClientScripts;
 
 namespace Havit.Web.Bootstrap.UI.ClientScripts
 {
@@ -14,12 +15,6 @@ namespace Havit.Web.Bootstrap.UI.ClientScripts
 	public static class BootstrapClientScriptHelper
 	{
 		#region Consts (internal)
-		/// <summary>
-		/// Used for PreApplicationStartMethod attribute in StartUp.cs.
-		/// To have hardcoded string with method name near method.
-		/// </summary>
-		internal const string RegisterBootstrapScriptResourceMappingMethodName = "RegisterScriptResourceMappings";
-
 		/// <summary>
 		/// Script Resource Definition name for WebUIValidationExtension.js.
 		/// </summary>
@@ -46,12 +41,14 @@ namespace Havit.Web.Bootstrap.UI.ClientScripts
 		/// </summary>
 		public static void RegisterScriptResourceMappings()
 		{
-			ScriptManager.ScriptResourceMapping.AddDefinition("bootstrap", new ScriptResourceDefinition { Path = "~/Scripts/bootstrap.min.js", DebugPath = "~/Scripts/bootstrap.js" });
-			ScriptManager.ScriptResourceMapping.AddDefinition("toastr", new ScriptResourceDefinition { Path = "~/Scripts/toastr.min.js", DebugPath = "~/Scripts/toastr.js" });
+			string version = HavitFrameworkClientScriptHelper.GetVersionString();
 
-			ScriptManager.ScriptResourceMapping.AddDefinition(WebUIValidationExtensionScriptResourceMappingName, new ScriptResourceDefinition { Path = "~/Scripts/havit.web.bootstrap/WebUIValidationExtension.js" });
-			ScriptManager.ScriptResourceMapping.AddDefinition(TabPanelExtensionScriptResourceMappingName, new ScriptResourceDefinition { Path = "~/Scripts/havit.web.bootstrap/TabPanelExtension.js" });
-			ScriptManager.ScriptResourceMapping.AddDefinition(ModalScriptResourceMappingName, new ScriptResourceDefinition { Path = "~/Scripts/havit.web.bootstrap/ModalExtension.js" });
+			ScriptManager.ScriptResourceMapping.AddDefinition("bootstrap", new ScriptResourceDefinition { Path = String.Format("~/Scripts/bootstrap.min.js?version={0}", version), DebugPath = String.Format("~/Scripts/bootstrap.js?version={0}", version) });
+			ScriptManager.ScriptResourceMapping.AddDefinition("toastr", new ScriptResourceDefinition { Path = String.Format("~/Scripts/toastr.min.js?version={0}", version), DebugPath = String.Format("~/Scripts/toastr.js?version={0}", version) });
+
+			ScriptManager.ScriptResourceMapping.AddDefinition(WebUIValidationExtensionScriptResourceMappingName, new ScriptResourceDefinition { Path = String.Format("~/Scripts/havit.web.bootstrap/WebUIValidationExtension.js?version={0}", version) });
+			ScriptManager.ScriptResourceMapping.AddDefinition(TabPanelExtensionScriptResourceMappingName, new ScriptResourceDefinition { Path = String.Format("~/Scripts/havit.web.bootstrap/TabPanelExtension.js?version={0}", version) });
+			ScriptManager.ScriptResourceMapping.AddDefinition(ModalScriptResourceMappingName, new ScriptResourceDefinition { Path = String.Format("~/Scripts/havit.web.bootstrap/ModalExtension.js?version={0}", version) });
 		}
 		#endregion
 

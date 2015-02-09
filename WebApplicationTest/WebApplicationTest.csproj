@@ -180,8 +180,7 @@
     <Content Include="App_Themes\BootstrapTheme\ModalEditor.skin" />
     <None Include="App_Themes\WebTheme\AutoSuggestMenu.skin" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="Content\multiple-select.css" />
-    <Content Include="Content\multiple-select.png" />
+    <Content Include="Content\Havit.Web.ClientContent\description.txt" />
     <Content Include="Content\site.css">
       <DependentUpon>site.less</DependentUpon>
     </Content>
@@ -367,11 +366,11 @@
     <Content Include="Content\bootstrap\alerts.less" />
     <Content Include="HavitCastleWindsorWebFormsTests\ReleaseOnUnloadTest.ashx" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
+    <Content Include="Scripts\Havit.Web.ClientContent\description.txt" />
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
     <Content Include="Scripts\jquery-ui-1.10.4.js" />
     <Content Include="Scripts\jquery-ui-1.10.4.min.js" />
-    <Content Include="Scripts\jquery.multiple.select.js" />
     <Content Include="Scripts\toastr.js" />
     <Content Include="Scripts\toastr.min.js">
       <DependentUpon>toastr.js</DependentUpon>
@@ -905,9 +904,14 @@
   -->
   <Target Name="HavitWebBootstrapJavascriptCopy" AfterTargets="AfterBuild">
     <ItemGroup>
-      <FilesToCopy Include="..\Havit.Web\Bootstrap\Content\js\*.js" />
+      <ClientContentJavascriptFilesToCopy Include="..\Havit.Web\Content\js\*.js" />
+      <ClientContentContentFilesToCopy Include="..\Havit.Web\Content\styles\*.css" />
+      <ClientContentContentFilesToCopy Include="..\Havit.Web\Content\styles\*.png" />
+      <BootstrapJavascriptFilesToCopy Include="..\Havit.Web\Bootstrap\Content\js\*.js" />
     </ItemGroup>
-    <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'Scripts\Havit.Web.Bootstrap\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(ClientContentJavascriptFilesToCopy)" DestinationFiles="@(ClientContentJavascriptFilesToCopy ->'Scripts\Havit.Web.ClientContent\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(ClientContentContentFilesToCopy)" DestinationFiles="@(ClientContentContentFilesToCopy ->'Content\Havit.Web.ClientContent\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(BootstrapJavascriptFilesToCopy)" DestinationFiles="@(BootstrapJavascriptFilesToCopy ->'Scripts\Havit.Web.Bootstrap\%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>
   <ProjectExtensions>
     <VisualStudio>

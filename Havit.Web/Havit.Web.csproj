@@ -141,7 +141,7 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Bootstrap\StartUp.cs" />
+    <Compile Include="StartUp.cs" />
     <Compile Include="Bootstrap\UI\ClientScripts\BootstrapClientScriptHelper.cs" />
     <Compile Include="Bootstrap\UI\WebControls\ModalDialogUserControlBaseT.cs">
       <SubType>ASPXCodeBehind</SubType>
@@ -499,10 +499,13 @@
     <EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-hu.js" />
     <EmbeddedResource Include="UI\Adapters\CssAdapters\CssTreeViewAdapter.css" />
     <EmbeddedResource Include="UI\Adapters\CssAdapters\CssTreeViewAdapter.js" />
-    <EmbeddedResource Include="UI\ClientScripts\HavitFrameworkClientScript.js" />
+    <None Include="Content\js\HavitFrameworkClientScript.js" />
     <Content Include="Bootstrap\Content\description.txt" />
     <None Include="Bootstrap\Content\js\TabPanelExtension.js" />
     <None Include="Bootstrap\Content\js\WebUIValidationExtension.js" />
+    <Content Include="Content\js\jquery.multiple.select.js" />
+    <Content Include="Content\styles\multiple-select.original.css" />
+    <Content Include="Content\styles\multiple-select.original.png" />
     <Content Include="UI\Scriptlets\IControlExtender.xml" />
     <Content Include="UI\Scriptlets\IScriptletParameter.xml" />
     <EmbeddedResource Include="UI\WebControls\SingleSubmitProtection.css" />

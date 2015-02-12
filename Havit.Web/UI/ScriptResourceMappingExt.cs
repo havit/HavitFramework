@@ -56,7 +56,7 @@ namespace Havit.Web.UI
 			Contract.Requires(!String.IsNullOrEmpty(resourceName));
 
 			ScriptManager currentScriptManager = ScriptManager.GetCurrent(page);
-			bool scriptResourceExists = currentScriptManager.Scripts.Any(script => script.Name.Equals(resourceName));
+			bool scriptResourceExists = (currentScriptManager != null) && currentScriptManager.Scripts.Any(script => script.Name.Equals(resourceName));
 
 			if ((scriptResourceMapping != null)
 				&& (scriptResourceMapping.GetDefinition(resourceName, typeof(Page).Assembly) == null)
@@ -64,10 +64,10 @@ namespace Havit.Web.UI
 			{
 				return TryEnsureScriptRegistrationResult.MissingScriptResourceMapping;
 			}
-			else if (currentScriptManager.IsInAsyncPostBack && !scriptResourceExists)
-			{
-				return TryEnsureScriptRegistrationResult.ScriptResourceMappingWhileAsyncPostback;
-			}
+			//else if ((currentScriptManager != null) && currentScriptManager.IsInAsyncPostBack && !scriptResourceExists)
+			//{
+			//	return TryEnsureScriptRegistrationResult.ScriptResourceMappingWhileAsyncPostback;
+			//}
 			else
 			{
 				if (!scriptResourceExists)
@@ -87,8 +87,8 @@ namespace Havit.Web.UI
 		{
 			string resourceFullName = type.Assembly.FullName + "|" + embeddedResourceName;
 
-			ScriptManager currentScriptManager = ScriptManager.GetCurrent(page);
-			bool scriptResourceExists = currentScriptManager.Scripts.Any(script => script.Name.Equals(resourceFullName));
+			//ScriptManager currentScriptManager = ScriptManager.GetCurrent(page);
+			//bool scriptResourceExists = (currentScriptManager != null) && currentScriptManager.Scripts.Any(script => script.Name.Equals(resourceFullName));
 
 			if ((scriptResourceMapping != null)
 				&& (scriptResourceMapping.GetDefinition(resourceFullName, typeof(Page).Assembly) == null)

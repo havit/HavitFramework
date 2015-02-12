@@ -288,6 +288,7 @@
     <Content Include="HavitWebTests\PageNavigator_B_Test.aspx" />
     <Content Include="HavitWebTests\PageNavigator_A_Test.aspx" />
     <Content Include="HavitWebTests\ScriptletTest4.aspx" />
+    <Content Include="HavitWebTests\ScriptResourceMappingTest.aspx" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\Havit.Web.Bootstrap\description.txt" />
@@ -637,6 +638,13 @@
     </Compile>
     <Compile Include="HavitWebTests\ScriptletTest4.aspx.designer.cs">
       <DependentUpon>ScriptletTest4.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HavitWebTests\ScriptResourceMappingTest.aspx.cs">
+      <DependentUpon>ScriptResourceMappingTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HavitWebTests\ScriptResourceMappingTest.aspx.designer.cs">
+      <DependentUpon>ScriptResourceMappingTest.aspx</DependentUpon>
     </Compile>
     <Compile Include="HavitWebTests\SingleSubmitProtectionTest2.aspx.cs">
       <DependentUpon>SingleSubmitProtectionTest2.aspx</DependentUpon>

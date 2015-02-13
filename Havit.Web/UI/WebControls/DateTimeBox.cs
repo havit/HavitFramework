@@ -125,10 +125,28 @@ namespace Havit.Web.UI.WebControls
 				ViewState["KeyBlockingClientScriptEnabled"] = value;
 			}
 		}
-		#endregion 
+		#endregion
+
+		#region SelectOnFocus
+		/// <summary>
+		/// Indikuje, zda se při příchodu do textboxu označí vepsaný text.
+		/// Výchozí hodnota je true.
+		/// </summary>
+		public bool SelectOnFocus
+		{
+			get
+			{
+				return (bool)(ViewState["SelectOnFocus"] ?? true);
+			}
+			set
+			{
+				ViewState["SelectOnFocus"] = value;
+			}
+		}
+		#endregion
 
 		#endregion
-		
+
 		#region Appereance properties
 
 		#region ShowDateTimePicker
@@ -780,6 +798,11 @@ namespace Havit.Web.UI.WebControls
 				if (!KeyBlockingClientScriptEnabled)
 				{
 					valueTextBox.Attributes["data-havitdatetimebox-suppresfilterkeys"] = "true";
+				}
+
+				if (SelectOnFocus)
+				{
+					valueTextBox.Attributes["data-havitdatetimebox-selectonfocus"] = "true";
 				}
 			}
 

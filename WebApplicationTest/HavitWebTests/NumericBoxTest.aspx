@@ -23,7 +23,7 @@
 						<tr>
 							<td>AllowNegativeNumber</td>
 							<td>
-								<havit:NumericBox ID="Test2NumericBox" AllowNegativeNumber="true" runat="server" />
+								<havit:NumericBox ID="Test2NumericBox" AllowNegativeNumber="true" SelectOnFocus="false" runat="server" />
 								<havit:NumericBoxValidator Text="error" ControlToValidate="Test2NumericBox" runat="server" />
 							</td>
 						</tr>

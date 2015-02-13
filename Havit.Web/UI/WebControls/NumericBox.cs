@@ -124,6 +124,24 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region SelectOnFocus
+		/// <summary>
+		/// Indikuje, zda se při příchodu do textboxu označí vepsaný text.
+		/// Výchozí hodnota je true.
+		/// </summary>
+		public bool SelectOnFocus
+		{
+			get
+			{
+				return (bool)(ViewState["SelectOnFocus"] ?? true);
+			}
+			set
+			{
+				ViewState["SelectOnFocus"] = value;
+			}
+		}
+		#endregion
+
 		#endregion
 
 		#region Appereance properties
@@ -467,6 +485,12 @@ namespace Havit.Web.UI.WebControls
 				{
 					valueTextBox.Attributes["data-havitnumericbox-suppressfilterkey"] = "true";
 				}
+
+				if (SelectOnFocus)
+				{
+					valueTextBox.Attributes["data-havitnumericbox-selectonfocus"] = "true";
+				}
+
 			}
 
 			base.Render(writer);

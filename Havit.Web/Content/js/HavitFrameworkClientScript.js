@@ -9,9 +9,11 @@
 	
 	onclick: function () {
 		var $this = $(this);
-		if ($this.data("havit-select-suppressed") == undefined) {
-			$this.select(); // select content of textbox
-			$this.data("havit-select-suppressed", true); // enable just one selection per one focus (otherwise not possible to click to certain position)
+		if ($this.data("havitnumericbox-selectonfocus")) {
+			if ($this.data("havit-select-suppressed") == undefined) {
+				$this.select(); // select content of textbox
+				$this.data("havit-select-suppressed", true); // enable just one selection per one focus (otherwise not possible to click to certain position)
+			}
 		}
 	},
 
@@ -89,9 +91,11 @@ var havitDateTimeBoxExtensions = {
 	
 	onclick: function () {
 		var $this = $(this);
-		if ($this.data("havit-select-suppressed") == undefined) {
-			$this.select(); // select content of textbox
-			$this.data("havit-select-suppressed", true); // enable just one selection per one focus (otherwise not possible to click to certain position)
+		if ($this.data("havitdatetimebox-selectonfocus")) {
+			if ($this.data("havit-select-suppressed") == undefined) {
+				$this.select(); // select content of textbox
+				$this.data("havit-select-suppressed", true); // enable just one selection per one focus (otherwise not possible to click to certain position)
+			}
 		}
 	},
 

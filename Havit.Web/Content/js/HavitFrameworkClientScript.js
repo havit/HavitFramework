@@ -9,7 +9,7 @@
 	
 	onclick: function () {
 		var $this = $(this);
-		if ($this.data("havitnumericbox-selectonfocus")) {
+		if ($this.data("havitnumericbox-selectonclick")) {
 			if ($this.data("havit-select-suppressed") == undefined) {
 				$this.select(); // select content of textbox
 				$this.data("havit-select-suppressed", true); // enable just one selection per one focus (otherwise not possible to click to certain position)
@@ -91,7 +91,7 @@ var havitDateTimeBoxExtensions = {
 	
 	onclick: function () {
 		var $this = $(this);
-		if ($this.data("havitdatetimebox-selectonfocus")) {
+		if ($this.data("havitdatetimebox-selectonclick")) {
 			if ($this.data("havit-select-suppressed") == undefined) {
 				$this.select(); // select content of textbox
 				$this.data("havit-select-suppressed", true); // enable just one selection per one focus (otherwise not possible to click to certain position)

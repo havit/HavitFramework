@@ -127,20 +127,20 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-		#region SelectOnFocus
+		#region SelectOnClick
 		/// <summary>
-		/// Indikuje, zda se při příchodu do textboxu označí vepsaný text.
+		/// Indikuje, zda se při kliknutí do textboxu označí vepsaný text.
 		/// Výchozí hodnota je true.
 		/// </summary>
-		public bool SelectOnFocus
+		public bool SelectOnClick
 		{
 			get
 			{
-				return (bool)(ViewState["SelectOnFocus"] ?? true);
+				return (bool)(ViewState["SelectOnClick"] ?? true);
 			}
 			set
 			{
-				ViewState["SelectOnFocus"] = value;
+				ViewState["SelectOnClick"] = value;
 			}
 		}
 		#endregion
@@ -800,9 +800,9 @@ namespace Havit.Web.UI.WebControls
 					valueTextBox.Attributes["data-havitdatetimebox-suppresfilterkeys"] = "true";
 				}
 
-				if (SelectOnFocus)
+				if (SelectOnClick)
 				{
-					valueTextBox.Attributes["data-havitdatetimebox-selectonfocus"] = "true";
+					valueTextBox.Attributes["data-havitdatetimebox-selectonclick"] = "true";
 				}
 			}
 

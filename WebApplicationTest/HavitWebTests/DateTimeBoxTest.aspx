@@ -27,7 +27,7 @@
 						<tr>
 							<td>DateTime</td>
 							<td>
-								<havit:DateTimeBox ID="DruhyDateTimeBox" ShowWeekNumbers="false" FirstDayOfWeek="Sunday" KeyBlockingClientScriptEnabled="false" SelectOnFocus="false" runat="server" />
+								<havit:DateTimeBox ID="DruhyDateTimeBox" ShowWeekNumbers="false" FirstDayOfWeek="Sunday" KeyBlockingClientScriptEnabled="false" SelectOnClick="false" runat="server" />
 								<asp:Button ID="VycistitButton" Text="Vycistit a schovat" runat="server" />
 								<asp:Button ID="ZobrazitButton" Text="Zobrazit" runat="server" />
 							</td>

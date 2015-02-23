@@ -388,7 +388,7 @@ var havitBrowserNavigationControllerExtension = {
 var havitAutoCompleteTextBoxExtensions = {
 	init: function () {
 		$("span[data-autocompletetextbox]").each(function (index, item) {
-			$item = $(item);
+			var $item = $(item);
 
 			var serviceurl = $item.data("serviceurl");
 			var minchars = $item.data("minchars") || 1;
@@ -406,19 +406,23 @@ var havitAutoCompleteTextBoxExtensions = {
 				onSelect: function (suggestion) { havitAutoCompleteTextBoxExtensions.onSelect(suggestion, $item) },
 				maxHeight: maxheight,
 				preserveInput: true,
+				triggerSelectOnValidInput: false,
 				type: "GET"
 			}
 
 			var textbox = $item.children("input[type='text']");
 			var hiddenfield = $item.children("input[type='hidden']");
-			textbox.autocomplete(params);
+			var $textbox = $(textbox);
 
-			$(textbox).blur(function () { havitAutoCompleteTextBoxExtensions.onBlur(textbox, hiddenfield) })
+			$item.data["selectedvalue"] = $textbox.val();
+			$textbox.blur(function () { havitAutoCompleteTextBoxExtensions.onBlur(textbox, hiddenfield, $item) })
+
+			textbox.autocomplete(params);
 		});
 	},
 
 	onSelect: function (suggestion, item) {
-		$item = $(item);
+		var $item = $(item);
 		var hiddenfield = $item.children("input[type='hidden']");
 		var textbox = $item.children("input[type='text']");
 		$(hiddenfield).val(suggestion.data);
@@ -432,7 +436,8 @@ var havitAutoCompleteTextBoxExtensions = {
 		}
 	},
 
-	onBlur: function (textbox, hiddenfield) {
+	onBlur: function (textbox, hiddenfield, item) {
+		var $item = $(item);
 		var selectedvalue = $item.data["selectedvalue"];
 		var $textbox = $(textbox);
 		var $hiddenfield = $(hiddenfield);

@@ -11,7 +11,8 @@ using System.Web.UI.WebControls;
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
-	/// Auto complete textbox
+	/// Auto complete textbox.
+	/// Používá komponentu Devbridge jQuery-Autocomplete (https://github.com/devbridge/jQuery-Autocomplete)
 	/// </summary>
 	[ValidationProperty("SelectedValue"), DefaultProperty("SelectedValue"),
 	ToolboxData("<{0}:AutoCompleteTextBox runat=server></{0}:AutoCompleteTextBox>")]

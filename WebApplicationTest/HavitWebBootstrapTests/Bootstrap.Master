@@ -5,6 +5,7 @@
 	<title></title>
 	<link href="../Content/site.css" rel="stylesheet" runat="server" />
 	<link href="../Content/multiple-select.css" rel="stylesheet" />
+	<asp:ContentPlaceHolder ID="HeaderCPH" runat="server" />
 </head>
 
 <body>

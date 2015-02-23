@@ -2,6 +2,10 @@
 
 <%@ Register Src="~/HavitWebBootstrapTests/Controls/ModalDialogUserControlTest.ascx" TagPrefix="uc" TagName="ModalDialogUserControlTest" %>
 
+<asp:Content ContentPlaceHolderID="HeaderCPH" runat="server">
+	<link rel="Stylesheet" href="/Content/Havit.Web.ClientContent/autocompletetextbox.css" type="text/css" />
+</asp:Content>
+
 <asp:Content ContentPlaceHolderID="MainCPH" runat="server">
 
 	<uc:ModalDialogUserControlTest ID="ModalDialogUserControlTestUC" runat="server" />
@@ -50,7 +54,7 @@
 
 	<havit:AutoCompleteTextBox
 		ID="Test1ACTB"
-		ServiceUrl="/HavitWebTests/AutoCompleteTextBoxService.asmx/GetSuggestions"
+		ServiceUrl="/Services/AutoCompleteTextBoxService.svc/GetSuggestions"
 		AutoPostBack="false"
 		TextBoxStyle-CssClass="form-control" MaxHeight="100"
 		runat="server" />
@@ -96,7 +100,4 @@
 			z-index: 1000000;
 		}
 	</style>
-
-	
-
 </asp:Content>

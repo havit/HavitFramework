@@ -26,6 +26,11 @@ namespace Havit.Web.UI.ClientScripts
 		/// Script Resource Definition name for jquery.multipleselect.js.
 		/// </summary>
 		internal const string JQueryMultipleSelectResourceMappingName = "Havit.Web.ClientContent.JQueryMultipleSelect";
+
+		/// <summary>
+		/// JQueryAutoComplete script.
+		/// </summary>
+		internal const string JQueryAutoCompleteResourceMappingName = "Havit.Web.ClientContent.JQueryAutoComplete";
 		#endregion
 
 		#region RegisterScriptResourceMappings
@@ -38,6 +43,7 @@ namespace Havit.Web.UI.ClientScripts
 			string version = GetVersionString();
 			ScriptManager.ScriptResourceMapping.AddDefinition(HavitFrameworkClientScriptResourceMappingName, new ScriptResourceDefinition { Path = String.Format("~/Scripts/havit.web.clientcontent/HavitFrameworkClientScript.js?version={0}", version) });
 			ScriptManager.ScriptResourceMapping.AddDefinition(JQueryMultipleSelectResourceMappingName, new ScriptResourceDefinition { Path = String.Format("~/Scripts/havit.web.clientcontent/jquery.multiple.select.js?version={0}", version) });
+			ScriptManager.ScriptResourceMapping.AddDefinition(JQueryAutoCompleteResourceMappingName, new ScriptResourceDefinition { Path = String.Format("~/Scripts/havit.web.clientcontent/jquery.autocomplete.min.js?version={0}", version) });
 		}
 		#endregion
 		

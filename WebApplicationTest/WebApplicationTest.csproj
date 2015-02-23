@@ -33,6 +33,7 @@
     <TypeScriptToolsVersion>1.0</TypeScriptToolsVersion>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -165,6 +166,9 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.Entity" />
@@ -254,6 +258,7 @@
     <Content Include="HavitCastleWindsorWebFormsTests\ReleaseOnUnloadControlTest.ascx" />
     <Content Include="HavitCastleWindsorWebFormsTests\ReleaseOnUnloadTest.aspx" />
     <Content Include="HavitEnterpriseWebTests\EnterpriseCheckBoxDropDownListTest.aspx" />
+    <Content Include="HavitWebBootstrapTests\AutoCompleteTextBox.aspx" />
     <Content Include="HavitWebBootstrapTests\ButtonTest.aspx" />
     <Content Include="HavitWebBootstrapTests\Controls\ModalDialogUserControlTest2.ascx" />
     <Content Include="HavitWebBootstrapTests\Controls\ValidationTargetTest.ascx" />
@@ -268,6 +273,7 @@
     <Content Include="HavitWebBootstrapTests\TabsTest.aspx" />
     <Content Include="HavitWebBootstrapTests\TooltipTest.aspx" />
     <Content Include="HavitWebBootstrapTests\ValidatorsTest.aspx" />
+    <Content Include="HavitWebTests\AutoCompleteTextBox.aspx" />
     <Content Include="HavitWebTests\AutoSuggestMenu.aspx" />
     <Content Include="HavitWebTests\AutoSuggestMenuService.asmx" />
     <Content Include="HavitWebTests\CollapserTest.aspx" />
@@ -387,6 +393,7 @@
     <Content Include="Scripts\WebForms\WebParts.js" />
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
     <Content Include="HavitWebTests\SingleSubmitProtectionTest2.aspx" />
+    <Content Include="Services\AutoCompleteTextBoxService.svc" />
     <Content Include="SystemWebTests\ScriptManagerTest.aspx" />
     <Content Include="SystemWebTests\SmtpTraceListenerTest.aspx" />
     <Content Include="HavitWebTests\DateTimeBoxTest.aspx" />
@@ -445,6 +452,13 @@
     </Compile>
     <Compile Include="HavitEnterpriseWebTests\EnterpriseCheckBoxDropDownListTest.aspx.designer.cs">
       <DependentUpon>EnterpriseCheckBoxDropDownListTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HavitWebBootstrapTests\AutoCompleteTextBox.aspx.cs">
+      <DependentUpon>AutoCompleteTextBox.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HavitWebBootstrapTests\AutoCompleteTextBox.aspx.designer.cs">
+      <DependentUpon>AutoCompleteTextBox.aspx</DependentUpon>
     </Compile>
     <Compile Include="HavitWebBootstrapTests\ButtonTest.aspx.cs">
       <DependentUpon>ButtonTest.aspx</DependentUpon>
@@ -551,6 +565,13 @@
     <Compile Include="HavitWebBootstrapTests\ValidatorsTest.aspx.designer.cs">
       <DependentUpon>ValidatorsTest.aspx</DependentUpon>
     </Compile>
+    <Compile Include="HavitWebTests\AutoCompleteTextBox.aspx.cs">
+      <DependentUpon>AutoCompleteTextBox.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HavitWebTests\AutoCompleteTextBox.aspx.designer.cs">
+      <DependentUpon>AutoCompleteTextBox.aspx</DependentUpon>
+    </Compile>
     <Compile Include="HavitWebTests\AutoSuggestMenu.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>AutoSuggestMenu.aspx</DependentUpon>
@@ -652,6 +673,9 @@
     </Compile>
     <Compile Include="HavitWebTests\SingleSubmitProtectionTest2.aspx.designer.cs">
       <DependentUpon>SingleSubmitProtectionTest2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Services\AutoCompleteTextBoxService.svc.cs">
+      <DependentUpon>AutoCompleteTextBoxService.svc</DependentUpon>
     </Compile>
     <Compile Include="SystemWebTests\ScriptManagerTest.aspx.cs">
       <DependentUpon>ScriptManagerTest.aspx</DependentUpon>

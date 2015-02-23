@@ -120,6 +120,7 @@
     </Reference>
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web">
       <Name>System.Web</Name>
@@ -148,6 +149,7 @@
     </Compile>
     <Compile Include="Bootstrap\UI\WebControls\NavbarTextItem.cs" />
     <Compile Include="UI\ControlExtensions.cs" />
+    <Compile Include="UI\WebControls\AutoCompleteTextBox.cs" />
     <Compile Include="UI\TryEnsureScriptRegistrationResult.cs" />
     <Compile Include="UI\WebControls\BrowserNavigationController.cs" />
     <Compile Include="UI\WebControls\CookiesMessenger.cs" />
@@ -156,6 +158,7 @@
     <Compile Include="UI\WebControls\CheckBoxDropDownList.cs" />
     <Compile Include="UI\WebControls\EditorExtenderItemDataBound.cs" />
     <Compile Include="UI\WebControls\EditorExtenderMode.cs" />
+    <Compile Include="UI\WebControls\GetSuggestionsResult.cs" />
     <Compile Include="UI\WebControls\GridViewRowClickEventArgs.cs" />
     <Compile Include="UI\WebControls\IEditorExtenderWithPreviousNextNavigation.cs" />
     <Compile Include="UI\WebControls\IEditorExtender.cs" />
@@ -256,6 +259,7 @@
     <Compile Include="UI\WebControls\EditorExtenderItemSavingEventArgs.cs" />
     <Compile Include="UI\WebControls\PagerRenderMode.cs" />
     <Compile Include="UI\WebControls\SessionMessenger.cs" />
+    <Compile Include="UI\WebControls\SuggestionItem.cs" />
     <Compile Include="UI\WebControls\TextBoxExt.cs" />
     <Compile Include="UI\ViewStateLoadFailedException.cs" />
     <Compile Include="UI\WebControls\AjaxHealthMonitoring.cs" />
@@ -504,6 +508,7 @@
     <None Include="Bootstrap\Content\js\TabPanelExtension.js" />
     <None Include="Bootstrap\Content\js\WebUIValidationExtension.js" />
     <Content Include="Content\js\jquery.multiple.select.js" />
+    <Content Include="Content\styles\autocompletetextbox.css" />
     <Content Include="Content\styles\multiple-select.original.css" />
     <Content Include="Content\styles\multiple-select.original.png" />
     <Content Include="UI\Scriptlets\IControlExtender.xml" />

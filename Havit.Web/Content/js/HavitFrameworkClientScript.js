@@ -6,7 +6,7 @@
 		$("body").on("change", "input[data-havitnumericbox]", havitNumericBoxExtensions.onchange); // hook click event on date time boxes
 		$("body").on("keypress", "input[data-havitnumericbox]:not([data-havitnumericbox-suppressfilterkey])", havitNumericBoxExtensions.onkeypress); // hook keypress event on date time boxes
 	},
-	
+
 	onclick: function () {
 		var $this = $(this);
 		if ($this.data("havitnumericbox-selectonclick")) {
@@ -17,7 +17,7 @@
 		}
 	},
 
-	onblur: function() {
+	onblur: function () {
 		var $this = $(this);
 		$this.removeData("havit-select-suppressed");
 	},
@@ -25,11 +25,11 @@
 	onchange: function () {
 		havitNumericBoxExtensions.fixDecimals($(this));
 	},
-	
+
 	onkeypress: function (e) {
 		havitNumericBoxExtensions.checkValidKey($(this), e);
 	},
-	
+
 	fixDecimals: function ($this) {
 		var decimals = $this.attr("data-havitnumericbox-decimals");
 		var decimalSeparator = $this.attr("data-havitnumericbox-decimalseparator");
@@ -44,7 +44,7 @@
 			}
 		}
 	},
-	
+
 	checkValidKey: function ($this, e) {
 		// is not called for special keys - // page up, page down, home, end, insert, delete, arrows keys (except FF)
 
@@ -80,7 +80,6 @@
 };
 
 var havitDateTimeBoxExtensions = {
-	
 	init: function (settings) {
 		// Initializes HAVIT date time box extensions
 		$("body").on("click", "input[data-havitdatetimebox]", havitDateTimeBoxExtensions.onclick); // hook click event on date time boxes
@@ -88,7 +87,7 @@ var havitDateTimeBoxExtensions = {
 		$("body").on("change", "input[data-havitdatetimebox]", havitDateTimeBoxExtensions.onchange); // hook change event on date time boxes
 		$("body").on("keypress", "input[data-havitdatetimebox]:not([data-havitdatetimebox-suppressfilterkey])", havitDateTimeBoxExtensions.onkeypress); // hook keypress event on date time boxes
 	},
-	
+
 	onclick: function () {
 		var $this = $(this);
 		if ($this.data("havitdatetimebox-selectonclick")) {
@@ -107,19 +106,18 @@ var havitDateTimeBoxExtensions = {
 	onchange: function (e) {
 		havitDateTimeBoxExtensions.autoCompleteDate($(this), e); // autocompletes date
 	},
-	
+
 	onkeypress: function (e) {
 		havitDateTimeBoxExtensions.replaceComma($(this), e); // transforms "," to "." while typing
 		havitDateTimeBoxExtensions.checkValidKey($(this), e); // checks if pressed valid key
 	},
-	
-	autoCompleteDate: function ($this, e)
-	{
+
+	autoCompleteDate: function ($this, e) {
 		var datumSeparator = $this.attr("data-havitdatetimebox-dateseparator");
 		if (!datumSeparator) {
 			return;
 		}
-		
+
 		var datum = new Date();
 		var datumMesic = datum.getMonth() + 1;
 		var datumRok = datum.getFullYear();
@@ -128,7 +126,7 @@ var havitDateTimeBoxExtensions = {
 		var regMesic = '([1-9]|0[1-9]|1[0-2])';
 		var regMesicCely = '(0[1-9]|1[0-2])';
 		var regRok = '((19|20)\\d\\d)';
-		var patterns = new Array (
+		var patterns = new Array(
 			new Array
 				(regDen + '(\\' + datumSeparator + ')?',
 				'\$1' + datumSeparator + datumMesic + datumSeparator + datumRok
@@ -146,7 +144,7 @@ var havitDateTimeBoxExtensions = {
 				'\$1' + datumSeparator + '\$3' + datumSeparator + '\$5'
 			)
 		);
-			
+
 		var i = 0;
 		var found = false;
 		while (i < patterns.length && !found) {
@@ -166,23 +164,21 @@ var havitDateTimeBoxExtensions = {
 		// před výměnou hodnoty se aplikují validátory
 		// potřebujeme zavolat druhé volání onchange, po výměně hodnoty, které validátory zase vypne
 		// musíme ale zastavit propagaci události, protože jinak by se mohl volat dvakrát postback
-		// v případě autopostbacku, proto return false		
+		// v případě autopostbacku, proto return false
 		if (found) {
 			$this.trigger("change");
 			e.preventDefault();
 		}
 	},
-	
-	replaceComma: function ($this, e)
-	{
+
+	replaceComma: function ($this, e) {
 		// zdroj: http://jsfiddle.net/EXH2k/6/
-			
+
 		var dateSeparator = $this.attr("data-havitdatetimebox-dateseparator");
-		if (e.which && dateSeparator) {				
+		if (e.which && dateSeparator) {
 			var charStr = String.fromCharCode(e.which);
 			var transformedChar = (((dateSeparator == ".") && (charStr == ",")) || ((dateSeparator != ".") && (charStr == "."))) ? dateSeparator : charStr;
 			if (transformedChar != charStr) {
-
 				var getInputSelection = function (el) {
 					var start = 0, end = 0, normalizedValue, range,
 						textInputRange, len, endRange;
@@ -226,13 +222,13 @@ var havitDateTimeBoxExtensions = {
 					return {
 						start: start,
 						end: end
-					};						
+					};
 				};
 
 				var offsetToRangeCharacterMove = function (el, offset) {
 					return offset - (el.value.slice(0, offset).split("\r\n").length - 1);
 				};
-					
+
 				var setInputSelection = function (el, startOffset, endOffset) {
 					el.focus();
 					if (typeof el.selectionStart == "number" && typeof el.selectionEnd == "number") {
@@ -259,12 +255,12 @@ var havitDateTimeBoxExtensions = {
 				setInputSelection($this[0], sel.start + 1, sel.start + 1);
 				return false;
 			}
-		}			
+		}
 	},
 
 	checkValidKey: function ($this, e) {
 		// is not called for special keys - // page up, page down, home, end, insert, delete, arrows keys (except FF)
-		
+
 		if (e.ctrlKey || e.altKey || e.metaKey) {
 			return;
 		}
@@ -276,12 +272,12 @@ var havitDateTimeBoxExtensions = {
 
 		var dateSeparator = $this.attr("data-havitdatetimebox-dateseparator");
 		var timeSeparator = $this.attr("data-havitdatetimebox-timeseparator");
-		
+
 		var charCode = e.charCode ? e.charCode : e.keyCode;
 		if (charCode) {
 			if ((charCode < 32)
 				|| ((charCode >= 48) && (charCode <= 57)) // 0-9
-				|| ((charCode == 32) || (charCode == 160)) // space					
+				|| ((charCode == 32) || (charCode == 160)) // space
 				|| (dateSeparator && (String.fromCharCode(charCode) == dateSeparator))
 				|| (timeSeparator && (String.fromCharCode(charCode) == timeSeparator))
 			) {
@@ -292,7 +288,6 @@ var havitDateTimeBoxExtensions = {
 			}
 		}
 	}
-	
 };
 
 var havitGridViewExtensions = {
@@ -303,25 +298,25 @@ var havitGridViewExtensions = {
 
 	handleRowClick: function (e) {
 		var $element = $(e.target);
-		
+
 		while ($element != null) {
 			$element = $element.not(":input").not("[href]").not("[data-suppressrowclick]");
 			if ($element.length == 0) {
 				break;
 			}
 			var rowClick = $element.data("rowclick");
-			if (rowClick) {				
+			if (rowClick) {
 				e.stopPropagation();
-				window.setTimeout(function() {
+				window.setTimeout(function () {
 					eval(rowClick);
-				}, 1);				
+				}, 1);
 				break;
 			}
 			$element = $element.parent();
 		};
 	},
 
-	setExternalEditorEditedRow: function(gridviewID, rowIndex, cssClass) {
+	setExternalEditorEditedRow: function (gridviewID, rowIndex, cssClass) {
 		$('#' + gridviewID + ' > tbody > tr.' + cssClass).removeClass(cssClass);
 		if (rowIndex >= 0) {
 			$('#' + gridviewID + ' > tbody > tr:nth(' + rowIndex + ')').addClass(cssClass);
@@ -360,7 +355,7 @@ var havitDropDownCheckBoxListExtensions = {
 	},
 
 	beforeSubmit: function () {
-		$("select[data-dropdowncheckboxlist]").each(function(index, item) {
+		$("select[data-dropdowncheckboxlist]").each(function (index, item) {
 			var $item = $(item);
 			var multipleSelect = $item.data("multipleSelect");
 			if (multipleSelect && multipleSelect.$drop) {
@@ -371,17 +366,17 @@ var havitDropDownCheckBoxListExtensions = {
 }
 
 var havitBrowserNavigationControllerExtension = {
-	startup: function(backUrl) {
+	startup: function (backUrl) {
 		if (window.history && window.history.replaceState) {
 			var href = window.location.href;
 			window.history.replaceState(null, document.title, href + "#!/back");
 			window.history.pushState(null, document.title, href);
 
 			$(window).off("popstate.hfw");
-			$(window).on("popstate.hfw", function() {
+			$(window).on("popstate.hfw", function () {
 				if (window.location.hash === "#!/back") {
 					window.history.replaceState(null, document.title, href);
-					window.setTimeout(function() {
+					window.setTimeout(function () {
 						window.location.replace((backUrl.length > 0) ? backUrl : href);
 					}, 0);
 				}
@@ -389,6 +384,72 @@ var havitBrowserNavigationControllerExtension = {
 		}
 	}
 };
+
+var havitAutoCompleteTextBoxExtensions = {
+	init: function () {
+		$("span[data-autocompletetextbox]").each(function (index, item) {
+			$item = $(item);
+
+			var serviceurl = $item.data("serviceurl");
+			var minchars = $item.data("minchars") || 1;
+			var deferrequest = $item.data("deferRequest") || 0;
+			var params = $item.data("params");
+			var autopostback = $item.data("autopostback") || false;
+			var nocache = $item.data("nocache") || false;
+			var maxheight = $item.data("maxheight") || 300;
+
+			var params = {
+				serviceUrl: serviceurl,
+				minChars: minchars,
+				deferRequestBy: deferrequest,
+				noCache: nocache,
+				onSelect: function (suggestion) { havitAutoCompleteTextBoxExtensions.onSelect(suggestion, $item) },
+				maxHeight: maxheight,
+				preserveInput: true,
+				type: "GET"
+			}
+
+			var textbox = $item.children("input[type='text']");
+			var hiddenfield = $item.children("input[type='hidden']");
+			textbox.autocomplete(params);
+
+			$(textbox).blur(function () { havitAutoCompleteTextBoxExtensions.onBlur(textbox, hiddenfield) })
+		});
+	},
+
+	onSelect: function (suggestion, item) {
+		$item = $(item);
+		var hiddenfield = $item.children("input[type='hidden']");
+		var textbox = $item.children("input[type='text']");
+		$(hiddenfield).val(suggestion.data);
+		$(textbox).val(suggestion.value);
+
+		$item.data["selecteddata"] = suggestion.data;
+		$item.data["selectedvalue"] = suggestion.value;
+
+		var postbackScript = $item.data("postbackscript");
+		if (postbackScript != undefined) {
+			eval(postbackScript);
+		}
+	},
+
+	onBlur: function (textbox, hiddenfield) {
+		var selecteddata = $item.data["selecteddata"];
+		var selectedvalue = $item.data["selectedvalue"];
+		$textbox = $(textbox);
+
+		if ($textbox.val() == '') {
+			$item.data["selecteddata"] = '';
+			$item.data["selectedvalue"] = '';
+			$(hiddenfield).val('');
+			$(textbox).val('');
+		}
+		else if ($(textbox).val() != selectedvalue) {
+			$(hiddenfield).val(selecteddata);
+			$(textbox).val(selectedvalue);
+		}
+	}
+}
 
 $(document).ready(havitDateTimeBoxExtensions.init);
 $(document).ready(havitNumericBoxExtensions.init);

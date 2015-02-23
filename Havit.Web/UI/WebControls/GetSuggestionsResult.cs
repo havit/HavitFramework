@@ -1,0 +1,59 @@
+﻿using Havit.Diagnostics.Contracts;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Havit.Web.UI.WebControls
+{
+	/// <summary>
+	/// Třída návratové hodnoty služby pro AutoCompleteTextBox
+	/// </summary>
+	[DataContract]
+	public class GetSuggestionsResult
+	{
+		#region Properties		
+		/// <summary>
+		/// Položky našeptávače.
+		/// </summary>
+		[DataMember(Name = "suggestions")]
+		public List<SuggestionItem> Suggestions { get; private set; } 
+		#endregion
+
+		#region Constructors
+		/// <summary>
+		/// Initializes a new instance of the <see cref="GetSuggestionsResult"/> class.
+		/// </summary>
+		public GetSuggestionsResult()
+		{
+			Suggestions = new List<SuggestionItem>();
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="GetSuggestionsResult"/> class.
+		/// </summary>
+		/// <param name="suggestions">Kolekce položek.</param>
+		public GetSuggestionsResult(IEnumerable<SuggestionItem> suggestions)
+		{
+			Contract.Requires(suggestions != null);
+
+			Suggestions = suggestions.ToList();
+		} 
+		#endregion
+
+		#region Fill
+		/// <summary>
+		/// Přidá položky do kolegce Suggestions.
+		/// </summary>
+		/// <param name="items">Položky které se mají přidat.</param>
+		/// <param name="valueSelector">Funkce pro výběr hodnoty prvku.</param>
+		/// <param name="textSelector">Funkce pro výběr názvu prvku.</param>
+		public void Fill<TItem>(IEnumerable<TItem> items, Func<TItem, string> valueSelector, Func<TItem, string> textSelector)
+		{
+			Suggestions.AddRange(items.Select(i => new SuggestionItem(valueSelector(i), textSelector(i))));
+		}
+		#endregion
+	}
+}

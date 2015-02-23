@@ -507,6 +507,7 @@
     <Content Include="Bootstrap\Content\description.txt" />
     <None Include="Bootstrap\Content\js\TabPanelExtension.js" />
     <None Include="Bootstrap\Content\js\WebUIValidationExtension.js" />
+    <Content Include="Content\js\jquery.autocomplete.min.js" />
     <Content Include="Content\js\jquery.multiple.select.js" />
     <Content Include="Content\styles\autocompletetextbox.css" />
     <Content Include="Content\styles\multiple-select.original.css" />

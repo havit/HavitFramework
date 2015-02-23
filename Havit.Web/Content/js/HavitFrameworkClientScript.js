@@ -424,7 +424,6 @@ var havitAutoCompleteTextBoxExtensions = {
 		$(hiddenfield).val(suggestion.data);
 		$(textbox).val(suggestion.value);
 
-		$item.data["selecteddata"] = suggestion.data;
 		$item.data["selectedvalue"] = suggestion.value;
 
 		var postbackScript = $item.data("postbackscript");
@@ -434,19 +433,13 @@ var havitAutoCompleteTextBoxExtensions = {
 	},
 
 	onBlur: function (textbox, hiddenfield) {
-		var selecteddata = $item.data["selecteddata"];
 		var selectedvalue = $item.data["selectedvalue"];
-		$textbox = $(textbox);
+		var $textbox = $(textbox);
+		var $hiddenfield = $(hiddenfield);
 
-		if ($textbox.val() == '') {
-			$item.data["selecteddata"] = '';
-			$item.data["selectedvalue"] = '';
-			$(hiddenfield).val('');
-			$(textbox).val('');
-		}
-		else if ($(textbox).val() != selectedvalue) {
-			$(hiddenfield).val(selecteddata);
-			$(textbox).val(selectedvalue);
+		if ($textbox.val() != selectedvalue) {
+			$textbox.val('');
+			$hiddenfield.val('');
 		}
 	}
 }

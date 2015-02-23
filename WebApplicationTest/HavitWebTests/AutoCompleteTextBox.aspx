@@ -6,6 +6,7 @@
 <head runat="server">
 	<title></title>
 	<link href="../Content/site.css" rel="stylesheet" runat="server" />
+	<link rel="Stylesheet" href="/Content/Havit.Web.ClientContent/autocompletetextbox.css" type="text/css" />
 </head>
 
 <body>

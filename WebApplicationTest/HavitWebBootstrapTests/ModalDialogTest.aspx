@@ -5,7 +5,7 @@
 <asp:Content ContentPlaceHolderID="MainCPH" runat="server">
 
 	<uc:ModalDialogUserControlTest ID="ModalDialogUserControlTestUC" runat="server" />
-
+	
 	<bc:ToolTip ToolTip="nejaky tooltip" runat="server">text</bc:ToolTip>
 	<p>
 		Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean in orci quis lectus varius dapibus. Praesent arcu. Mauris ullamcorper pretium mauris. Nullam ut ligula. Aliquam orci mi, condimentum luctus, consectetuer ut, hendrerit sagittis, risus. Morbi dolor. Nulla blandit consequat lectus. Sed rutrum faucibus risus. Donec placerat. Aliquam erat volutpat. Curabitur nec lorem. Morbi volutpat euismod augue. Ut sollicitudin vestibulum elit. Fusce ut dui at eros pharetra ullamcorper. Etiam leo neque, feugiat sed, consectetuer in, aliquam id, nisl. In vitae nisl ac magna mollis adipiscing.
@@ -96,4 +96,7 @@
 			z-index: 1000000;
 		}
 	</style>
+
+	
+
 </asp:Content>

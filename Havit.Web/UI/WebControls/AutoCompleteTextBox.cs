@@ -286,7 +286,8 @@ namespace Havit.Web.UI.WebControls
 		{
 			base.OnPreRender(e);
 
-			//ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, HavitFrameworkClientScriptHelper.JQueryAutoCompleteResourceMappingName);
+			HavitFrameworkClientScriptHelper.RegisterHavitFrameworkClientScript(this.Page);
+			ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, HavitFrameworkClientScriptHelper.JQueryAutoCompleteResourceMappingName);
 			ScriptManager.RegisterStartupScript(this, typeof(AutoCompleteTextBox), "InitScript", "havitAutoCompleteTextBoxExtensions.init();", true);
 		}
 		#endregion

@@ -38,18 +38,25 @@
 				</ContentTemplate>
 			</asp:UpdatePanel>
 
-			<div class="container">
+			<asp:UpdatePanel UpdateMode="Conditional" runat="server">
+				<ContentTemplate>
+					<div class="container">
+						<havit:AutoCompleteTextBox
+							ID="Test1ACTB"
+							ServiceUrl="/Services/AutoCompleteTextBoxService.svc/GetSuggestions"
+							AutoPostBack="false"
+							UseClientCache="false"
+							runat="server" />
+					</div>
+				</ContentTemplate>
+			</asp:UpdatePanel>
 
-				<havit:AutoCompleteTextBox
-					ID="Test1ACTB"
-					ServiceUrl="/Services/AutoCompleteTextBoxService.svc/GetSuggestions"
-					AutoPostBack="false"
-					UseClientCache="false"
-					runat="server" />
+			<asp:UpdatePanel UpdateMode="Conditional" runat="server">
+				<ContentTemplate>
+					<bc:Button ID="ButtonBt" Text="Text" runat="server" />
+				</ContentTemplate>
+			</asp:UpdatePanel>
 
-				<bc:Button ID="ButtonBt" Text="Text" runat="server" />
-
-			</div>
 		</div>
 	</form>
 </body>

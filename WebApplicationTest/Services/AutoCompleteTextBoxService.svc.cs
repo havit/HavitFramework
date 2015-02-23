@@ -30,7 +30,13 @@ namespace WebApplicationTest.Services
 				new KeyValuePair<string, string>("8", "Olbramovice" ),
 				new KeyValuePair<string, string>("9", "Olbramovice" ),
 				new KeyValuePair<string, string>("10", "Olbramovice" ),
-				new KeyValuePair<string, string>("11", "Olbramovice" )
+				new KeyValuePair<string, string>("11", "Test" ),
+				new KeyValuePair<string, string>("12", "TestTest" ),
+				new KeyValuePair<string, string>("13", "TestTestTest" ),
+				new KeyValuePair<string, string>("13", "Mesto" ),
+				new KeyValuePair<string, string>("14", "Město" ),
+				new KeyValuePair<string, string>("15", "Chomutov" ),
+				new KeyValuePair<string, string>("16", "Ochoz" )
 			};
 
 			GetSuggestionsResult result = new GetSuggestionsResult();

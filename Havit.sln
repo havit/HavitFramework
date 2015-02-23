@@ -111,9 +111,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.CastleWindsor.WebForm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Web.ClientContent.NuGetPackage", "Havit.Web.ClientContent.NuGetPackage\Havit.Web.ClientContent.NuGetPackage.csproj", "{95617154-810C-4E18-89A9-620F53BC7D23}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Entity.Glimpse", "Havit.Entity.Glimpse\Havit.Entity.Glimpse.csproj", "{B847560E-3FEA-419D-BFAC-D7E3544C1F70}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Entity.Glimpse.NuGetPackage", "Havit.Entity.Glimpse.NuGetPackage\Havit.Entity.Glimpse.NuGetPackage.csproj", "{2DF308E8-097B-4B02-9086-DE0E7D5A2E86}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 35
+		SccNumberOfProjects = 37
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://tfs.havit.local:8080/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -253,6 +257,14 @@ Global
 		SccProjectTopLevelParentUniqueName34 = Havit.sln
 		SccProjectName34 = Havit.Web.ClientContent.NuGetPackage
 		SccLocalPath34 = Havit.Web.ClientContent.NuGetPackage
+		SccProjectUniqueName35 = Havit.Entity.Glimpse\\Havit.Entity.Glimpse.csproj
+		SccProjectTopLevelParentUniqueName35 = Havit.sln
+		SccProjectName35 = Havit.Entity.Glimpse
+		SccLocalPath35 = Havit.Entity.Glimpse
+		SccProjectUniqueName36 = Havit.Entity.Glimpse.NuGetPackage\\Havit.Entity.Glimpse.NuGetPackage.csproj
+		SccProjectTopLevelParentUniqueName36 = Havit.sln
+		SccProjectName36 = Havit.Entity.Glimpse.NuGetPackage
+		SccLocalPath36 = Havit.Entity.Glimpse.NuGetPackage
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -394,6 +406,14 @@ Global
 		{95617154-810C-4E18-89A9-620F53BC7D23}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95617154-810C-4E18-89A9-620F53BC7D23}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95617154-810C-4E18-89A9-620F53BC7D23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B847560E-3FEA-419D-BFAC-D7E3544C1F70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B847560E-3FEA-419D-BFAC-D7E3544C1F70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B847560E-3FEA-419D-BFAC-D7E3544C1F70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B847560E-3FEA-419D-BFAC-D7E3544C1F70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DF308E8-097B-4B02-9086-DE0E7D5A2E86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DF308E8-097B-4B02-9086-DE0E7D5A2E86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DF308E8-097B-4B02-9086-DE0E7D5A2E86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DF308E8-097B-4B02-9086-DE0E7D5A2E86}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -433,5 +453,7 @@ Global
 		{D0FA41AE-B54A-4888-8478-35C4D0E0B60B} = {10D8C31B-1810-4B8E-9B73-544ACA5CFC75}
 		{EAF43BF6-A865-4B3C-B644-23DDE3E33E61} = {360CC3C7-E4F9-4169-8D98-EA507CEB0A1E}
 		{95617154-810C-4E18-89A9-620F53BC7D23} = {360CC3C7-E4F9-4169-8D98-EA507CEB0A1E}
+		{B847560E-3FEA-419D-BFAC-D7E3544C1F70} = {10D8C31B-1810-4B8E-9B73-544ACA5CFC75}
+		{2DF308E8-097B-4B02-9086-DE0E7D5A2E86} = {360CC3C7-E4F9-4169-8D98-EA507CEB0A1E}
 	EndGlobalSection
 EndGlobal

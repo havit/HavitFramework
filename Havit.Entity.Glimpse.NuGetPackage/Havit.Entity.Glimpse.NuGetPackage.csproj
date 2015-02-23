@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{DE55617C-C11E-4093-9F57-2AEF7F636EDB}</ProjectGuid>
+    <ProjectGuid>{2DF308E8-097B-4B02-9086-DE0E7D5A2E86}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Havit.Data.Glimpse.NuGetPackage</RootNamespace>
-    <AssemblyName>Havit.Data.Glimpse.NuGetPackage</AssemblyName>
+    <RootNamespace>Havit.Entity.Glimpse.NuGetPackage</RootNamespace>
+    <AssemblyName>Havit.Entity.Glimpse.NuGetPackage</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
@@ -43,15 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\CommonAssemblyInfo.cs">
-      <Link>Properties\CommonAssemblyInfo.cs</Link>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\PublishScripts\Publish-Havit.Data.Glimpse.ps1">
-      <Link>Publish-Havit.Data.Glimpse.ps1</Link>
-    </None>
     <None Include="content\Config\system.diagnostics.config.transform" />
     <None Include="content\Web.config.install.xdt" />
     <None Include="content\Web.Release.config.transform" />
@@ -60,11 +54,10 @@
     </None>
     <None Include="tools\install.ps1" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\Havit.Data.Glimpse\Havit.Data.Glimpse.csproj">
-      <Project>{c5c6607e-644a-468f-a6c2-cdcf8a1d23dc}</Project>
-      <Name>Havit.Data.Glimpse</Name>
+    <ProjectReference Include="..\Havit.Entity.Glimpse\Havit.Entity.Glimpse.csproj">
+      <Project>{b847560e-3fea-419d-bfac-d7e3544c1f70}</Project>
+      <Name>Havit.Entity.Glimpse</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -75,13 +68,13 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Target Name="CreateNuGetPackage" AfterTargets="AfterBuild">
-    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion)" />
-  </Target>
-  <Target Name="TfsPublish" AfterTargets="AfterBuild;CreateNuGetPackage" Condition="'$(PublishDirectory)' != ''">
-    <ItemGroup>
-      <FilesToCopy Include="$(OutputPath)\Havit.Data.Glimpse.*.nupkg" />
-    </ItemGroup>
-    <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(PublishDirectory)\NuGet\%(RecursiveDir)%(Filename)%(Extension)')" />
-  </Target>
+	<Target Name="CreateNuGetPackage" AfterTargets="AfterBuild">
+		<Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion)" />
+	</Target>
+	<Target Name="TfsPublish" AfterTargets="AfterBuild;CreateNuGetPackage" Condition="'$(PublishDirectory)' != ''">
+		<ItemGroup>
+			<FilesToCopy Include="$(OutputPath)\Havit.Entity.Glimpse.*.nupkg" />
+		</ItemGroup>
+		<Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(PublishDirectory)\NuGet\%(RecursiveDir)%(Filename)%(Extension)')" />
+	</Target>
 </Project>

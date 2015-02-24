@@ -183,12 +183,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Target Name="TfsPublish" AfterTargets="AfterBuild" Condition="'$(PublishDirectory)' != ''">
-    <ItemGroup>
-      <FilesToCopy Include="$(OutputPath)\Havit.Drawing.dll" />
-      <FilesToCopy Include="$(OutputPath)\Havit.Drawing.pdb" />
-      <FilesToCopy Include="$(OutputPath)\Havit.Drawing.xml" />
-    </ItemGroup>
-    <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(PublishDirectory)\Framework\%(RecursiveDir)%(Filename)%(Extension)')" />
-  </Target>
 </Project>

@@ -304,12 +304,4 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
-  <Target Name="TfsPublish" AfterTargets="AfterBuild" Condition="'$(PublishDirectory)' != ''">
-    <ItemGroup>
-      <FilesToCopy Include="$(OutputPath)\Havit.Business.dll" />
-      <FilesToCopy Include="$(OutputPath)\Havit.Business.pdb" />
-      <FilesToCopy Include="$(OutputPath)\Havit.Business.xml" />
-    </ItemGroup>
-    <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(PublishDirectory)\Framework\%(RecursiveDir)%(Filename)%(Extension)')" />
-  </Target>
 </Project>

@@ -206,12 +206,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Target Name="TfsPublish" AfterTargets="AfterBuild" Condition="'$(PublishDirectory)' != ''">
-    <ItemGroup>
-      <FilesToCopy Include="$(OutputPath)\Havit.Enterprise.Web.dll" />
-      <FilesToCopy Include="$(OutputPath)\Havit.Enterprise.Web.pdb" />
-      <FilesToCopy Include="$(OutputPath)\Havit.Enterprise.Web.xml" />
-    </ItemGroup>
-    <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(PublishDirectory)\Framework\%(RecursiveDir)%(Filename)%(Extension)')" />
-  </Target>
 </Project>

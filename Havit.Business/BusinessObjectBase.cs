@@ -122,6 +122,7 @@ namespace Havit.Business
 		private bool _isSaving = false;
 		#endregion
 
+		#region IsDisconnected
 		/// <summary>
 		/// Indikuje, zda jde o disconnected business objekt.
 		/// </summary>
@@ -134,6 +135,7 @@ namespace Havit.Business
 			}
 		}
 		private bool isDisconnected = false;
+		#endregion
 
 		#region PropertyHolders
 		/// <summary>
@@ -161,6 +163,7 @@ namespace Havit.Business
 		/// <param name="isNew">indikuje nový objekt</param>
 		/// <param name="isDirty">indikuje objekt změněný vůči perzistentnímu uložišti</param>
 		/// <param name="isLoaded">indikuje načtený objekt</param>
+		/// <param name="isDisconnected">indikuje disconnected objekt</param>
 		protected internal BusinessObjectBase(int id, bool isNew, bool isDirty, bool isLoaded, bool isDisconnected)
 		{
 			this._id = id;
@@ -196,6 +199,7 @@ namespace Havit.Business
 		/// Konstruktor pro objekt s obrazem v databázi (perzistentní).
 		/// </summary>
 		/// <param name="id">primární klíč objektu</param>
+		/// <param name="connectionMode">režim vytvářeného objektu (connected/disconnected)</param>
 		protected BusinessObjectBase(int id, ConnectionMode connectionMode)
 			: this(
 			id,		// ID

@@ -35,6 +35,7 @@ namespace Havit.Business
 		/// Konstruktor pro objekt s obrazem v databázi (perzistentní).
 		/// </summary>
 		/// <param name="id">primární klíč objektu</param>
+		/// <param name="connectionMode">režim vytvářeného objektu (connected/disconnected)</param>
 		protected ActiveRecordBusinessObjectBase(int id, ConnectionMode connectionMode = ConnectionMode.Connected) : base(id, connectionMode)
 		{			
 			IdentityMap currentIdentityMap = IdentityMapScope.Current;

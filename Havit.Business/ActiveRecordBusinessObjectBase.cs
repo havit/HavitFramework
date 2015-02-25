@@ -35,7 +35,7 @@ namespace Havit.Business
 		/// Konstruktor pro objekt s obrazem v databázi (perzistentní).
 		/// </summary>
 		/// <param name="id">primární klíč objektu</param>
-		protected ActiveRecordBusinessObjectBase(int id) : base(id)
+		protected ActiveRecordBusinessObjectBase(int id, ConnectionMode connectionMode = ConnectionMode.Connected) : base(id, connectionMode)
 		{			
 			IdentityMap currentIdentityMap = IdentityMapScope.Current;
 			Contract.Assert(currentIdentityMap != null);
@@ -53,7 +53,8 @@ namespace Havit.Business
 			id,	// ID
 			false,	// IsNew
 			false,	// IsDirty
-			false)	// IsLoaded
+			false,	// IsLoaded
+			false)  // IsOffline
 		{
 			Contract.Requires<ArgumentNullException>(record != null);
 
@@ -108,6 +109,8 @@ namespace Havit.Business
 		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		protected override sealed bool TryLoad_Perform(DbTransaction transaction)
 		{
+			Contract.Requires(!IsDisconnected, "Nelze načítat z databáze objekt, který je disconnected.");
+
 			DataRecord record = Load_GetDataRecord(transaction);
 
 			if (record == null)
@@ -221,13 +224,16 @@ namespace Havit.Business
 				Save_SaveCollections(transaction);
 				if (IsDirty)
 				{
-					if (IsDeleting)
+					if (!IsDisconnected)
 					{
-						Delete_Perform(transaction);
-					}
-					else
-					{
-						Save_Update(transaction);
+						if (IsDeleting)
+						{
+							Delete_Perform(transaction);
+						}
+						else
+						{
+							Save_Update(transaction);
+						}
 					}
 				}
 			}

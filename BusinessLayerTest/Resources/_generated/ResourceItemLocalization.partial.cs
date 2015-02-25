@@ -46,8 +46,9 @@ namespace Havit.BusinessLayerTest.Resources
 		/// Vytvoří instanci existujícího objektu.
 		/// </summary>
 		/// <param name="id">ResourceItemLocalizationID (PK).</param>
+		/// <param name="connectionMode">Režim business objektu.</param>
 		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
-		protected ResourceItemLocalization(int id) : base(id)
+		protected ResourceItemLocalization(int id, ConnectionMode connectionMode = ConnectionMode.Connected) : base(id, connectionMode)
 		{
 		}
 		
@@ -159,6 +160,17 @@ namespace Havit.BusinessLayerTest.Resources
 			return new ResourceItemLocalizationCollection(Array.ConvertAll<int, ResourceItemLocalization>(ids, id => ResourceItemLocalization.GetObject(id)));
 		}
 		
+		#endregion
+		
+		#region CreateDisconnectedObject (static)
+		/// <summary>
+		/// Vrátí nový disconnected objekt. Určeno výhradně pro účely testů.
+		/// </summary>
+		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
+		public static ResourceItemLocalization CreateDisconnectedObject(int id)
+		{
+			return new ResourceItemLocalization(id, ConnectionMode.Disconnected);
+		}
 		#endregion
 		
 		//------------------------------------------------------------------------------

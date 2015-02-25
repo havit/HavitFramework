@@ -234,6 +234,106 @@ namespace Havit.BusinessTest
 		}
 		#endregion
 
+		#region CreateDisconnectedObjectCannotBeCreatedWhenInIdentityMap
+		/// <summary>
+		/// Testuje, že není možné vytvořit instanci disconnected objektů těch objektů, které již jsou v identity mapě.
+		/// </summary>
+		[TestMethod]
+		[ExpectedException(typeof(InvalidOperationException))]
+		public void CreateDisconnectedObjectCannotBeCreatedWhenInIdentityMap()
+		{
+			using (new IdentityMapScope())
+			{
+				Subjekt.GetObject(1);
+				Subjekt.CreateDisconnectedObject(1);
+			}
+		}
+		#endregion
+
+		#region CreateDisconnectedObjectGetObjectsReturnsOfflineObject
+		/// <summary>
+		/// Testuje, že GetObject vrací z identity mapy i disconnected object.
+		/// </summary>
+		[TestMethod]
+		public void CreateDisconnectedObjectGetObjectsReturnsOfflineObject()
+		{
+			using (new IdentityMapScope())
+			{
+				var subjektCreated = Subjekt.CreateDisconnectedObject(1);
+				var subjektFromIdentityMap = Subjekt.GetObject(1);
+				Assert.AreSame(subjektCreated, subjektFromIdentityMap);
+			}
+		}
+		#endregion
+
+		#region CreateDisconnectedObjectPropertiesSetup
+		/// <summary>
+		/// Testuje a ověřuje nastavení vlastností disconnected business objektu po jeho založení.
+		/// </summary>
+		[TestMethod]
+		public void CreateDisconnectedObjectPropertiesSetup()
+		{
+			using (new IdentityMapScope())
+			{
+				Subjekt subjekt = Subjekt.CreateDisconnectedObject(1);
+				Assert.IsTrue(subjekt.IsDisconnected, "Objekt by měl být disconnected.");
+				Assert.IsFalse(subjekt.IsNew, "Objekt by neměl být označen, jako nový.");
+				Assert.IsTrue(subjekt.IsDirty, "Objekt bude označen, jako dirty - jsou mu nastaveny výchozí hodnoty.");
+				Assert.IsTrue(subjekt.IsLoaded, "Objekt by měl být považován za načtený.");
+				Assert.IsFalse(subjekt.IsDeleted, "Objekt by neměl být považován za smazaný.");
+			}
+		}
+		#endregion
+
+		#region CreateObjectPropertiesSetup
+		/// <summary>
+		/// Testuje a ověřuje nastavení vlastností business objektu po jeho založení.
+		/// </summary>
+		[TestMethod]
+		public void CreateObjectPropertiesSetup()
+		{
+			using (new IdentityMapScope())
+			{
+				Subjekt subjekt = Subjekt.CreateObject();
+				Assert.IsFalse(subjekt.IsDisconnected);
+				Assert.IsTrue(subjekt.IsNew);
+				Assert.IsTrue(subjekt.IsDirty);
+				Assert.IsTrue(subjekt.IsLoaded);
+				Assert.IsFalse(subjekt.IsDeleted);
+			}
+		}
+		#endregion
+
+		#region DisconnectedObjectDoesNotLoadFromDatabaseWithoutTransaction
+		/// <summary>
+		/// Testuje, že disconnected objekt se nenačítá z databáze (volání bez transakce).
+		/// </summary>
+		[TestMethod]
+		public void DisconnectedObjectDoesNotLoadFromDatabaseWithoutTransaction()
+		{
+			using (new IdentityMapScope())
+			{
+				Subjekt subjekt = Subjekt.CreateDisconnectedObject(-999);
+				Assert.IsTrue(subjekt.TryLoad());
+			}
+		}
+		#endregion
+
+		#region DisconnectedObjectDoesNotLoadFromDatabaseWithTransaction
+		/// <summary>
+		/// Testuje, že disconnected objekt se nenačítá z databáze (volání s transakcí).
+		/// </summary>
+		[TestMethod]
+		public void DisconnectedObjectDoesNotLoadFromDatabaseWithTransaction()
+		{
+			using (new IdentityMapScope())
+			{
+				Subjekt subjekt = Subjekt.CreateDisconnectedObject(-999);
+				DbConnector.Default.ExecuteTransaction(transaction => { Assert.IsTrue(subjekt.TryLoad(transaction)); });
+			}
+		}
+		#endregion
+
 		#region TryLoad_Perform, Save_Perform, Delete_Perform
 		protected override bool TryLoad_Perform(DbTransaction transaction)
 		{
@@ -249,7 +349,7 @@ namespace Havit.BusinessTest
 		{
 			throw new NotImplementedException();
 		}
-		#endregion
+		#endregion		
 	}
 
 }

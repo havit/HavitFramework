@@ -74,7 +74,8 @@ namespace Havit.BusinessLayerTest
 		/// Vytvoří instanci existujícího objektu.
 		/// </summary>
 		/// <param name="id">SubjektID (PK).</param>
-		protected SubjektBase(int id) : base(id)
+		/// <param name="connectionMode">Režim business objektu.</param>
+		protected SubjektBase(int id, ConnectionMode connectionMode) : base(id, connectionMode)
 		{
 		}
 		
@@ -224,7 +225,7 @@ namespace Havit.BusinessLayerTest
 			_DeletedPropertyHolder = new PropertyHolder<DateTime?>(this);
 			_KomunikacePropertyHolder = new CollectionPropertyHolder<Havit.BusinessLayerTest.KomunikaceCollection, Havit.BusinessLayerTest.Komunikace>(this);
 			
-			if (IsNew)
+			if (IsNew || IsDisconnected)
 			{
 				_NazevPropertyHolder.Value = String.Empty;
 				_UzivatelPropertyHolder.Value = null;

@@ -46,8 +46,9 @@ namespace Havit.BusinessLayerTest
 		/// Vytvoří instanci existujícího objektu.
 		/// </summary>
 		/// <param name="id">CurrencyID (PK).</param>
+		/// <param name="connectionMode">Režim business objektu.</param>
 		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
-		protected Currency(int id) : base(id)
+		protected Currency(int id, ConnectionMode connectionMode = ConnectionMode.Connected) : base(id, connectionMode)
 		{
 		}
 		
@@ -156,6 +157,17 @@ namespace Havit.BusinessLayerTest
 			return new CurrencyCollection(Array.ConvertAll<int, Currency>(ids, id => Currency.GetObject(id)));
 		}
 		
+		#endregion
+		
+		#region CreateDisconnectedObject (static)
+		/// <summary>
+		/// Vrátí nový disconnected objekt. Určeno výhradně pro účely testů.
+		/// </summary>
+		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
+		public static Currency CreateDisconnectedObject(int id)
+		{
+			return new Currency(id, ConnectionMode.Disconnected);
+		}
 		#endregion
 		
 		//------------------------------------------------------------------------------

@@ -61,7 +61,7 @@ namespace Havit.BusinessLayerTest
 		/// Vytvoří instanci existujícího objektu.
 		/// </summary>
 		/// <param name="id">RoleID (PK).</param>
-		protected RoleBase(int id) : base(id)
+		protected RoleBase(int id) : base(id, ConnectionMode.Connected)
 		{
 		}
 		
@@ -103,7 +103,7 @@ namespace Havit.BusinessLayerTest
 		{
 			_SymbolPropertyHolder = new PropertyHolder<string>(this);
 			
-			if (IsNew)
+			if (IsNew || IsDisconnected)
 			{
 				_SymbolPropertyHolder.Value = String.Empty;
 			}

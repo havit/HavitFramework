@@ -77,7 +77,8 @@ namespace Havit.BusinessLayerTest.Resources
 		/// Vytvoří instanci existujícího objektu.
 		/// </summary>
 		/// <param name="id">ResourceItemLocalizationID (PK).</param>
-		protected ResourceItemLocalizationBase(int id) : base(id)
+		/// <param name="connectionMode">Režim business objektu.</param>
+		protected ResourceItemLocalizationBase(int id, ConnectionMode connectionMode) : base(id, connectionMode)
 		{
 		}
 		
@@ -177,7 +178,7 @@ namespace Havit.BusinessLayerTest.Resources
 			_LanguagePropertyHolder = new PropertyHolder<Havit.BusinessLayerTest.Language>(this);
 			_ValuePropertyHolder = new PropertyHolder<string>(this);
 			
-			if (IsNew)
+			if (IsNew || IsDisconnected)
 			{
 				_ResourceItemPropertyHolder.Value = null;
 				_LanguagePropertyHolder.Value = null;

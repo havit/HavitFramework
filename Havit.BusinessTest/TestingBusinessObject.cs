@@ -14,7 +14,7 @@ namespace Havit.BusinessTest
 		}
 
 		public TestingBusinessObject(int id)
-			: base(id)
+			: base(id, ConnectionMode.Connected)
 		{
 		}
 		#endregion

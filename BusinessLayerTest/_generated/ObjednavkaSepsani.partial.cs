@@ -46,8 +46,9 @@ namespace Havit.BusinessLayerTest
 		/// Vytvoří instanci existujícího objektu.
 		/// </summary>
 		/// <param name="id">ObjednavkaSepsaniID (PK).</param>
+		/// <param name="connectionMode">Režim business objektu.</param>
 		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
-		protected ObjednavkaSepsani(int id) : base(id)
+		protected ObjednavkaSepsani(int id, ConnectionMode connectionMode = ConnectionMode.Connected) : base(id, connectionMode)
 		{
 		}
 		
@@ -156,6 +157,17 @@ namespace Havit.BusinessLayerTest
 			return new ObjednavkaSepsaniCollection(Array.ConvertAll<int, ObjednavkaSepsani>(ids, id => ObjednavkaSepsani.GetObject(id)));
 		}
 		
+		#endregion
+		
+		#region CreateDisconnectedObject (static)
+		/// <summary>
+		/// Vrátí nový disconnected objekt. Určeno výhradně pro účely testů.
+		/// </summary>
+		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
+		public static ObjednavkaSepsani CreateDisconnectedObject(int id)
+		{
+			return new ObjednavkaSepsani(id, ConnectionMode.Disconnected);
+		}
 		#endregion
 		
 		//------------------------------------------------------------------------------

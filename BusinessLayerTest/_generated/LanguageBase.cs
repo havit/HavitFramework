@@ -72,7 +72,7 @@ namespace Havit.BusinessLayerTest
 		/// Vytvoří instanci existujícího objektu.
 		/// </summary>
 		/// <param name="id">LanguageID (PK).</param>
-		protected LanguageBase(int id) : base(id)
+		protected LanguageBase(int id) : base(id, ConnectionMode.Connected)
 		{
 		}
 		
@@ -204,7 +204,7 @@ namespace Havit.BusinessLayerTest
 			_EditacePovolenaPropertyHolder = new PropertyHolder<bool>(this);
 			_PoradiPropertyHolder = new PropertyHolder<int>(this);
 			
-			if (IsNew)
+			if (IsNew || IsDisconnected)
 			{
 				_UICulturePropertyHolder.Value = String.Empty;
 				_CulturePropertyHolder.Value = String.Empty;

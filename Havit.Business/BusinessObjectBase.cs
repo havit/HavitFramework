@@ -122,6 +122,19 @@ namespace Havit.Business
 		private bool _isSaving = false;
 		#endregion
 
+		/// <summary>
+		/// Indikuje, zda jde o disconnected business objekt.
+		/// </summary>
+		[EditorBrowsable(EditorBrowsableState.Advanced)]
+		public bool IsDisconnected
+		{
+			get
+			{
+				return isDisconnected;
+			}
+		}
+		private bool isDisconnected = false;
+
 		#region PropertyHolders
 		/// <summary>
 		/// Kolekce referencí na jednotlivé property-holder objekty.
@@ -148,12 +161,13 @@ namespace Havit.Business
 		/// <param name="isNew">indikuje nový objekt</param>
 		/// <param name="isDirty">indikuje objekt změněný vůči perzistentnímu uložišti</param>
 		/// <param name="isLoaded">indikuje načtený objekt</param>
-		protected internal BusinessObjectBase(int id, bool isNew, bool isDirty, bool isLoaded)
+		protected internal BusinessObjectBase(int id, bool isNew, bool isDirty, bool isLoaded, bool isDisconnected)
 		{
 			this._id = id;
 			this._isNew = isNew;
 			this._isDirty = isDirty;
 			this._isLoaded = isLoaded;
+			this.isDisconnected = isDisconnected;
 
 			Init();
 		}
@@ -165,7 +179,8 @@ namespace Havit.Business
 			NoID,		// ID
 			true,		// IsNew
 			false,		// IsDirty
-			true)		// IsLoaded
+			true,		// IsLoaded
+			false)		// IsDisconnected
 		{
 			/*
 			this._id = NoID;
@@ -181,12 +196,13 @@ namespace Havit.Business
 		/// Konstruktor pro objekt s obrazem v databázi (perzistentní).
 		/// </summary>
 		/// <param name="id">primární klíč objektu</param>
-		protected BusinessObjectBase(int id)
+		protected BusinessObjectBase(int id, ConnectionMode connectionMode)
 			: this(
 			id,		// ID
 			false,	// IsNew
 			false,	// IsDirty
-			false)	// IsLoaded
+			connectionMode == ConnectionMode.Disconnected,	// IsLoaded
+			connectionMode == ConnectionMode.Disconnected)	// IsOffline
 		{
 			if (id == NoID)
 			{

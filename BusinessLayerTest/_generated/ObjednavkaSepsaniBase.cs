@@ -71,7 +71,8 @@ namespace Havit.BusinessLayerTest
 		/// Vytvoří instanci existujícího objektu.
 		/// </summary>
 		/// <param name="id">ObjednavkaSepsaniID (PK).</param>
-		protected ObjednavkaSepsaniBase(int id) : base(id)
+		/// <param name="connectionMode">Režim business objektu.</param>
+		protected ObjednavkaSepsaniBase(int id, ConnectionMode connectionMode) : base(id, connectionMode)
 		{
 		}
 		
@@ -118,7 +119,7 @@ namespace Havit.BusinessLayerTest
 		{
 			_StornoKomunikacePropertyHolder = new PropertyHolder<Havit.BusinessLayerTest.Komunikace>(this);
 			
-			if (IsNew)
+			if (IsNew || IsDisconnected)
 			{
 				_StornoKomunikacePropertyHolder.Value = null;
 			}

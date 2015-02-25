@@ -80,7 +80,8 @@ namespace Havit.BusinessLayerTest
 		/// Vytvoří instanci existujícího objektu.
 		/// </summary>
 		/// <param name="id">UzivatelID (PK).</param>
-		protected UzivatelBase(int id) : base(id)
+		/// <param name="connectionMode">Režim business objektu.</param>
+		protected UzivatelBase(int id, ConnectionMode connectionMode) : base(id, connectionMode)
 		{
 		}
 		
@@ -353,7 +354,7 @@ namespace Havit.BusinessLayerTest
 			_CreatedPropertyHolder = new PropertyHolder<DateTime>(this);
 			_RolePropertyHolder = new CollectionPropertyHolder<Havit.BusinessLayerTest.RoleCollection, Havit.BusinessLayerTest.Role>(this);
 			
-			if (IsNew)
+			if (IsNew || IsDisconnected)
 			{
 				_UsernamePropertyHolder.Value = String.Empty;
 				_PasswordPropertyHolder.Value = String.Empty;

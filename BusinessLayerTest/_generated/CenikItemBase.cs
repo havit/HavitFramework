@@ -72,7 +72,8 @@ namespace Havit.BusinessLayerTest
 		/// Vytvoří instanci existujícího objektu.
 		/// </summary>
 		/// <param name="id">CenikItemID (PK).</param>
-		protected CenikItemBase(int id) : base(id)
+		/// <param name="connectionMode">Režim business objektu.</param>
+		protected CenikItemBase(int id, ConnectionMode connectionMode) : base(id, connectionMode)
 		{
 		}
 		
@@ -185,7 +186,7 @@ namespace Havit.BusinessLayerTest
 			_CenaAmountPropertyHolder = new PropertyHolder<Decimal>(this);
 			_CenaCurrencyPropertyHolder = new PropertyHolder<Havit.BusinessLayerTest.Currency>(this);
 			
-			if (IsNew)
+			if (IsNew || IsDisconnected)
 			{
 				_CenaAmountPropertyHolder.Value = default(Decimal);
 				_CenaCurrencyPropertyHolder.Value = null;

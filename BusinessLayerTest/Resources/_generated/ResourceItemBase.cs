@@ -80,7 +80,8 @@ namespace Havit.BusinessLayerTest.Resources
 		/// Vytvoří instanci existujícího objektu.
 		/// </summary>
 		/// <param name="id">ResourceItemID (PK).</param>
-		protected ResourceItemBase(int id) : base(id)
+		/// <param name="connectionMode">Režim business objektu.</param>
+		protected ResourceItemBase(int id, ConnectionMode connectionMode) : base(id, connectionMode)
 		{
 		}
 		
@@ -236,7 +237,7 @@ namespace Havit.BusinessLayerTest.Resources
 			_DescriptionPropertyHolder = new PropertyHolder<string>(this);
 			_LocalizationsPropertyHolder = new CollectionPropertyHolder<Havit.BusinessLayerTest.Resources.ResourceItemLocalizationCollection, Havit.BusinessLayerTest.Resources.ResourceItemLocalization>(this);
 			
-			if (IsNew)
+			if (IsNew || IsDisconnected)
 			{
 				_ResourceClassPropertyHolder.Value = null;
 				_ResourceKeyPropertyHolder.Value = String.Empty;

@@ -201,6 +201,7 @@
     <Compile Include="BusinessObjectCollection.cs" />
     <Compile Include="CollectionPropertyInfo.cs" />
     <Compile Include="CollectionPropertyHolder.cs" />
+    <Compile Include="ConnectionMode.cs" />
     <Compile Include="CountBusinessDaysOptions.cs" />
     <Compile Include="CreateObjectDelegate.cs" />
     <Compile Include="DbResourceProviderBase.cs" />

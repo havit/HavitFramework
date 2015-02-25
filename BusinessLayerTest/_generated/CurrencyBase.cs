@@ -71,7 +71,8 @@ namespace Havit.BusinessLayerTest
 		/// Vytvoří instanci existujícího objektu.
 		/// </summary>
 		/// <param name="id">CurrencyID (PK).</param>
-		protected CurrencyBase(int id) : base(id)
+		/// <param name="connectionMode">Režim business objektu.</param>
+		protected CurrencyBase(int id, ConnectionMode connectionMode) : base(id, connectionMode)
 		{
 		}
 		
@@ -209,7 +210,7 @@ namespace Havit.BusinessLayerTest
 			_CreatedPropertyHolder = new PropertyHolder<DateTime>(this);
 			_DeletedPropertyHolder = new PropertyHolder<DateTime?>(this);
 			
-			if (IsNew)
+			if (IsNew || IsDisconnected)
 			{
 				_NazevPropertyHolder.Value = String.Empty;
 				_ZkratkaPropertyHolder.Value = String.Empty;

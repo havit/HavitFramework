@@ -75,7 +75,8 @@ namespace Havit.BusinessLayerTest
 		/// Vytvoří instanci existujícího objektu.
 		/// </summary>
 		/// <param name="id">KomunikaceID (PK).</param>
-		protected KomunikaceBase(int id) : base(id)
+		/// <param name="connectionMode">Režim business objektu.</param>
+		protected KomunikaceBase(int id, ConnectionMode connectionMode) : base(id, connectionMode)
 		{
 		}
 		
@@ -145,7 +146,7 @@ namespace Havit.BusinessLayerTest
 			_SubjektPropertyHolder = new PropertyHolder<Havit.BusinessLayerTest.Subjekt>(this);
 			_ObjednavkaSepsaniPropertyHolder = new PropertyHolder<Havit.BusinessLayerTest.ObjednavkaSepsani>(this);
 			
-			if (IsNew)
+			if (IsNew || IsDisconnected)
 			{
 				_SubjektPropertyHolder.Value = null;
 				_ObjednavkaSepsaniPropertyHolder.Value = null;

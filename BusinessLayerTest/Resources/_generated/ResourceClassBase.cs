@@ -72,7 +72,8 @@ namespace Havit.BusinessLayerTest.Resources
 		/// Vytvoří instanci existujícího objektu.
 		/// </summary>
 		/// <param name="id">ResourceClassID (PK).</param>
-		protected ResourceClassBase(int id) : base(id)
+		/// <param name="connectionMode">Režim business objektu.</param>
+		protected ResourceClassBase(int id, ConnectionMode connectionMode) : base(id, connectionMode)
 		{
 		}
 		
@@ -192,7 +193,7 @@ namespace Havit.BusinessLayerTest.Resources
 			_DescriptionPropertyHolder = new PropertyHolder<string>(this);
 			_DeletedPropertyHolder = new PropertyHolder<DateTime?>(this);
 			
-			if (IsNew)
+			if (IsNew || IsDisconnected)
 			{
 				_NamePropertyHolder.Value = String.Empty;
 				_DescriptionPropertyHolder.Value = String.Empty;

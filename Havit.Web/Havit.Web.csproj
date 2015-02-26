@@ -510,8 +510,6 @@
     <Content Include="Content\js\jquery.autocomplete.min.js" />
     <Content Include="Content\js\jquery.multiple.select.js" />
     <Content Include="Content\styles\autocompletetextbox.css" />
-    <Content Include="Content\styles\multiple-select.original.css" />
-    <Content Include="Content\styles\multiple-select.original.png" />
     <Content Include="UI\Scriptlets\IControlExtender.xml" />
     <Content Include="UI\Scriptlets\IScriptletParameter.xml" />
     <EmbeddedResource Include="UI\WebControls\SingleSubmitProtection.css" />

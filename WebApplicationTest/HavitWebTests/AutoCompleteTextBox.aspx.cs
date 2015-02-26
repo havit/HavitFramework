@@ -25,13 +25,15 @@ namespace WebApplicationTest.HavitWebTests
 		{
 			Messenger.Default.AddMessage("Postback");
 		}
- 		#endregion
+		#endregion
 
-		void PersisterBtn_Click(object sender, EventArgs e)
+		#region PersisterBtn_Click
+		private void PersisterBtn_Click(object sender, EventArgs e)
 		{
 			ControlsValuesHolder holder = PersisterCVP.RetrieveValues();
 
 			PersisterCVP.ApplyValues(holder);
 		}
+		#endregion
 	}
 }

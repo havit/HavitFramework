@@ -44,7 +44,7 @@
 						<havit:AutoCompleteTextBox
 							ID="Test1ACTB"
 							ServiceUrl="/Services/AutoCompleteTextBoxService.svc/GetSuggestions"
-							AutoPostBack="false"
+							AutoPostBack="true"
 							UseClientCache="false"
 							runat="server" />
 					</div>
@@ -57,6 +57,7 @@
 				</ContentTemplate>
 			</asp:UpdatePanel>
 
+			<asp:TextBox runat="server" /><asp:Button runat="server" />
 		</div>
 	</form>
 </body>

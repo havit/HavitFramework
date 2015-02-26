@@ -432,7 +432,7 @@ var havitAutoCompleteTextBoxExtensions = {
 
 		var postbackScript = $item.data("postbackscript");
 		if (postbackScript != undefined) {
-			eval(postbackScript);
+			havitAutoCompleteTextBoxExtensions.doPostback.call(window, postbackScript);
 		}
 	},
 
@@ -446,6 +446,11 @@ var havitAutoCompleteTextBoxExtensions = {
 			$textbox.val('');
 			$hiddenfield.val('');
 		}
+	},
+
+	doPostback: function (script)
+	{
+		eval(script);
 	}
 }
 

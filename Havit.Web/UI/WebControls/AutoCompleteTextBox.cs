@@ -25,7 +25,7 @@ namespace Havit.Web.UI.WebControls
 		public event EventHandler SelectedValueChanged;
 
 		/// <summary>
-		/// Raises the <see cref="E:SelectedValueChanged" /> event.
+		/// Raises theSelectedValueChanged event.
 		/// </summary>
 		protected void OnSelectedValueChanged(EventArgs e)
 		{
@@ -129,7 +129,7 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-		#region TextBoxStyle		
+		#region TextBoxStyle
 		/// <summary>
 		/// Styly vnitřního textboxu.
 		/// </summary>

@@ -182,13 +182,23 @@ namespace Havit.Business
 
 		#region IsWeekend
 		/// <summary>
-		/// Určí, zdali je zadaný den sobotou nebo nedělí.
+		/// Určí, zdali je zadaný den nepracovní sobotou nebo nedělí.
 		/// </summary>
 		/// <param name="time"><see cref="System.DateTime"/>, u kterého určujeme</param>
-		/// <returns><b>true</b>, pokud je zadaný <see cref="System.DateTime"/> sobota nebo neděle; jinak <b>false</b></returns>
+		/// <returns><b>true</b>, pokud je zadaný <see cref="System.DateTime"/> sobota nebo neděle; jinak <b>false</b>.
+        /// Pokud je sobota nebo neděle označena IsHoliday = false, je den považován za pracovní a metoda vrátí <b>false</b>.</returns>
 		public virtual bool IsWeekend(DateTime time)
 		{
-			DayOfWeek dayOfWeek = time.DayOfWeek;
+            IDateInfo dateInfo;
+            if (dates.TryGetValue(time.Date, out dateInfo))
+            {
+                // označen jako pracovní den
+                if (!dateInfo.IsHoliday)
+                {
+                    return false;
+                }
+            }
+            DayOfWeek dayOfWeek = time.DayOfWeek;
 			if ((dayOfWeek == DayOfWeek.Saturday) || (dayOfWeek == DayOfWeek.Sunday))
 			{
 				return true;

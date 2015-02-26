@@ -15,7 +15,7 @@ namespace Havit.Business
 
 		#region IsHoliday
 		/// <summary>
-		/// Indikuje, zdali je den svátkem. Pokud je hodnota false, je den považován za pracovní.
+		/// Indikuje, zdali je den svátkem.
 		/// </summary>
 		bool IsHoliday { get; } 
 		#endregion

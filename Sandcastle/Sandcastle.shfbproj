@@ -51,7 +51,6 @@
       <DocumentationSource sourceFile="..\Havit.PayMuzo\Havit.PayMuzo.csproj" />
       <DocumentationSource sourceFile="..\Havit.Services\Havit.Services.csproj" />
       <DocumentationSource sourceFile="..\Havit.Web\Havit.Web.csproj" />
-      <DocumentationSource sourceFile="..\Havit.Xml\Havit.Xml.csproj" />
     </DocumentationSources>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="(global)" isDocumented="True" />

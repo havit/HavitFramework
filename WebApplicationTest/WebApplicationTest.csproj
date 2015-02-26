@@ -184,7 +184,6 @@
     <Content Include="App_Themes\BootstrapTheme\ModalEditor.skin" />
     <None Include="App_Themes\WebTheme\AutoSuggestMenu.skin" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="Content\Havit.Web.ClientContent\autocompletetextbox.css" />
     <Content Include="Content\Havit.Web.ClientContent\checkbox-dropdown-list.css">
       <DependentUpon>checkbox-dropdown-list.less</DependentUpon>
     </Content>

@@ -58,6 +58,18 @@
 			</asp:UpdatePanel>
 
 			<asp:TextBox runat="server" /><asp:Button runat="server" />
+
+			<br /><br />
+			Persister:<br />
+			<havit:ControlsValuesPersister ID="PersisterCVP" runat="server">
+				<havit:AutoCompleteTextBox
+					ID="AutoCompleteTextBox1"
+					ServiceUrl="/Services/AutoCompleteTextBoxService.svc/GetSuggestions"
+					AutoPostBack="false"
+					UseClientCache="false"
+					runat="server" />
+			</havit:ControlsValuesPersister>
+			<asp:Button ID="PersisterBtn" Text="Persister" runat="server" />
 		</div>
 	</form>
 </body>

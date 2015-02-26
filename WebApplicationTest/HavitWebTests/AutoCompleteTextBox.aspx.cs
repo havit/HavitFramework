@@ -1,4 +1,5 @@
 ﻿using Havit.Web.UI.WebControls;
+using Havit.Web.UI.WebControls.ControlsValues;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace WebApplicationTest.HavitWebTests
 		{
 			base.OnInit(e);
 			Test1ACTB.SelectedValueChanged += Test1ACTB_ValueChanged;
+			PersisterBtn.Click += PersisterBtn_Click;
 		}
 		#endregion
 
@@ -24,5 +26,12 @@ namespace WebApplicationTest.HavitWebTests
 			Messenger.Default.AddMessage("Postback");
 		}
  		#endregion
+
+		void PersisterBtn_Click(object sender, EventArgs e)
+		{
+			ControlsValuesHolder holder = PersisterCVP.RetrieveValues();
+
+			PersisterCVP.ApplyValues(holder);
+		}
 	}
 }

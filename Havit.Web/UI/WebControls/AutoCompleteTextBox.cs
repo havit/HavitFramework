@@ -301,35 +301,5 @@ namespace Havit.Web.UI.WebControls
 			OnSelectedValueChanged(EventArgs.Empty);
 		}
 		#endregion
-
-		#region AutoCompleteTextBoxControlExtender (class)
-		/// <summary>
-		/// Extender pro použití controlu ve Scriptletu
-		/// </summary>
-		public class AutoCompleteTextBoxControlExtender : SubstitutionControlExtenderBase
-		{
-			#region GetSupportedControlType
-			/// <summary>
-			/// Vrací typ, který je třídou podporován k substituci.
-			/// </summary>
-			/// <returns></returns>
-			protected override Type GetSupportedControlType()
-			{
-				return typeof(AutoCompleteTextBox);
-			}
-			#endregion
-
-			#region GetSubstitutedControl
-			/// <summary>
-			/// Vrací substituovaný control.
-			/// </summary>
-			protected override Control GetSubstitutedControl(Control control)
-			{
-				return ((AutoCompleteTextBox)control).valueTextBox;
-			}
-			#endregion
-		}
-
-		#endregion
 	}
 }

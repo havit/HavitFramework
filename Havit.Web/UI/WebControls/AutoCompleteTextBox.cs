@@ -1,4 +1,5 @@
 ﻿using Havit.Web.UI.ClientScripts;
+using Havit.Web.UI.Scriptlets;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,6 +20,7 @@ namespace Havit.Web.UI.WebControls
 	public class AutoCompleteTextBox : Control, INamingContainer
 	{
 		#region OnValueChanged
+
 		/// <summary>
 		/// Událost nastane v okamžiku změny vybrané položky.
 		/// </summary>
@@ -260,7 +262,7 @@ namespace Havit.Web.UI.WebControls
 		public override void RenderControl(HtmlTextWriter writer)
 		{
 			writer.AddAttribute("data-autocompletetextbox", null);
-			writer.AddAttribute("data-serviceurl", ServiceUrl);
+			writer.AddAttribute("data-serviceurl", ResolveClientUrl(ServiceUrl));
 			writer.AddAttribute("data-minchars", MinSuggestedChars.ToString());
 			writer.AddAttribute("data-deferRequest", DeferRequest.ToString());
 			if (!UseClientCache)
@@ -298,6 +300,36 @@ namespace Havit.Web.UI.WebControls
 		{
 			OnSelectedValueChanged(EventArgs.Empty);
 		}
+		#endregion
+
+		#region AutoCompleteTextBoxControlExtender (class)
+		/// <summary>
+		/// Extender pro použití controlu ve Scriptletu
+		/// </summary>
+		public class AutoCompleteTextBoxControlExtender : SubstitutionControlExtenderBase
+		{
+			#region GetSupportedControlType
+			/// <summary>
+			/// Vrací typ, který je třídou podporován k substituci.
+			/// </summary>
+			/// <returns></returns>
+			protected override Type GetSupportedControlType()
+			{
+				return typeof(AutoCompleteTextBox);
+			}
+			#endregion
+
+			#region GetSubstitutedControl
+			/// <summary>
+			/// Vrací substituovaný control.
+			/// </summary>
+			protected override Control GetSubstitutedControl(Control control)
+			{
+				return ((AutoCompleteTextBox)control).valueTextBox;
+			}
+			#endregion
+		}
+
 		#endregion
 	}
 }

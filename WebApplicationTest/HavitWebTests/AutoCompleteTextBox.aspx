@@ -43,7 +43,7 @@
 					<div class="container">
 						<havit:AutoCompleteTextBox
 							ID="Test1ACTB"
-							ServiceUrl="/Services/AutoCompleteTextBoxService.svc/GetSuggestions"
+							ServiceUrl="~/Services/AutoCompleteTextBoxService.svc/GetSuggestions"
 							AutoPostBack="true"
 							UseClientCache="false"
 							runat="server" />
@@ -59,7 +59,8 @@
 
 			<asp:TextBox runat="server" /><asp:Button runat="server" />
 
-			<br /><br />
+			<br />
+			<br />
 			Persister:<br />
 			<havit:ControlsValuesPersister ID="PersisterCVP" runat="server">
 				<havit:AutoCompleteTextBox

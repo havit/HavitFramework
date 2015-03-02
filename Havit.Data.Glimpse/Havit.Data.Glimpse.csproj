@@ -87,14 +87,6 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Target Name="TfsPublish" AfterTargets="AfterBuild" Condition="'$(PublishDirectory)' != ''">
-    <ItemGroup>
-      <FilesToCopy Include="$(OutputPath)\Havit.Data.Glimpse.dll" />
-      <FilesToCopy Include="$(OutputPath)\Havit.Data.Glimpse.pdb" />
-      <FilesToCopy Include="$(OutputPath)\Havit.Data.Glimpse.xml" />
-    </ItemGroup>
-    <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(PublishDirectory)\Framework\%(RecursiveDir)%(Filename)%(Extension)')" />
-  </Target>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

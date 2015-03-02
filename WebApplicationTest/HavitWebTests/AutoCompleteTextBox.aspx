@@ -43,9 +43,10 @@
 					<div class="container">
 						<havit:AutoCompleteTextBox
 							ID="Test1ACTB"
-							ServiceUrl="~/Services/AutoCompleteTextBoxService.svc/GetSuggestions"
+							ServiceUrl="~/Services/AutoCompleteTextBoxService.svc/GetSuggestionsContext"
 							AutoPostBack="true"
 							UseClientCache="false"
+							Context="lorem ipsum dolor sit amet"
 							runat="server" />
 					</div>
 				</ContentTemplate>

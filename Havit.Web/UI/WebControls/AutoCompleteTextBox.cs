@@ -1,4 +1,5 @@
-﻿using Havit.Web.UI.ClientScripts;
+﻿using Havit.Diagnostics.Contracts;
+using Havit.Web.UI.ClientScripts;
 using Havit.Web.UI.Scriptlets;
 using System;
 using System.Collections.Generic;
@@ -62,6 +63,23 @@ namespace Havit.Web.UI.WebControls
 		{
 			get { return (string)ViewState["ServiceUrl"]; }
 			set { ViewState["ServiceUrl"] = value; }
+		}
+		#endregion
+
+		#region Context
+		/// <summary>
+		/// Kontext prvku. Předává se službě v parametru "context".
+		/// </summary>
+		public new string Context
+		{
+			get
+			{
+				return (string)ViewState["Context"];
+			}
+			set
+			{
+				ViewState["Context"] = value;
+			}
 		}
 		#endregion
 
@@ -267,11 +285,16 @@ namespace Havit.Web.UI.WebControls
 			writer.AddAttribute("data-serviceurl", ResolveClientUrl(ServiceUrl));
 			writer.AddAttribute("data-minchars", MinSuggestedChars.ToString());
 			writer.AddAttribute("data-deferRequest", DeferRequest.ToString());
+			writer.AddAttribute("data-maxheight", MaxHeight.ToString());
 			if (!UseClientCache)
 			{
 				writer.AddAttribute("data-nocache", null);
 			}
-			writer.AddAttribute("data-maxheight", MaxHeight.ToString());
+			if (!String.IsNullOrWhiteSpace(Context))
+			{
+				writer.AddAttribute("data-params", "{\"context\": \"" + Context + "\", \"query\": \"\"}");
+			}
+
 			if (AutoPostBack)
 			{
 				writer.AddAttribute("data-postbackscript", Page.ClientScript.GetPostBackEventReference(this, null));

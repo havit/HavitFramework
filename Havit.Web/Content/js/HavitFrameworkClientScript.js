@@ -397,6 +397,7 @@ var havitAutoCompleteTextBoxExtensions = {
 			var autopostback = $item.data("autopostback") || false;
 			var nocache = $item.data("nocache") || false;
 			var maxheight = $item.data("maxheight") || 300;
+			var params = $item.data("params");
 
 			var params = {
 				serviceUrl: serviceurl,
@@ -407,6 +408,7 @@ var havitAutoCompleteTextBoxExtensions = {
 				maxHeight: maxheight,
 				preserveInput: true,
 				triggerSelectOnValidInput: false,
+				params: params,
 				type: "GET"
 			}
 

@@ -23,8 +23,12 @@ namespace Havit.Business
 		/// Interní seznam významných dnů, tj. dnů, které se liší od běžného pracovního dne (např. svátků, atp.).<br/>
 		/// Klíč je DateTime, hodnota je DateInfo.
 		/// </summary>
-		private readonly IDictionary<DateTime, IDateInfo> dates = null;
-		private IIsWeekendStrategy weekendStrategy = null;
+		protected IDictionary<DateTime, IDateInfo> DateInfos { get; private set; }
+
+		/// <summary>
+		/// Strategie používaná pro zjištění, zda je daný den podle kalendáře víkendem.
+		/// </summary>
+		protected IIsWeekendStrategy IsWeekendStrategy { get; private set; }
 		#endregion
 
 		#region Constructors
@@ -35,8 +39,8 @@ namespace Havit.Business
 		/// </summary>
 		public BusinessCalendar()
 		{
-			this.dates = new Dictionary<DateTime, IDateInfo>();
-			this.weekendStrategy = BusinessCalendarWeekendStrategy.GetSaturdaySundayStrategy();
+			this.DateInfos = new Dictionary<DateTime, IDateInfo>();
+			this.IsWeekendStrategy = BusinessCalendarWeekendStrategy.GetSaturdaySundayStrategy();
 		}
 
 		/// <summary>
@@ -44,10 +48,10 @@ namespace Havit.Business
 		/// Pracovními dny budou všechny dny mimo víkendů, dokud nebudou přidány nějaké svátky.
 		/// Víkendové dny jsou určeny strategií weekendStrategy
 		/// </summary>
-		public BusinessCalendar(IIsWeekendStrategy weekendStrategy)
+		public BusinessCalendar(IIsWeekendStrategy isWeekendStrategy)
 		{
-			this.dates = new Dictionary<DateTime, IDateInfo>();
-			this.weekendStrategy = weekendStrategy;
+			this.DateInfos = new Dictionary<DateTime, IDateInfo>();
+			this.IsWeekendStrategy = isWeekendStrategy;
 		}
 		#endregion
 
@@ -62,7 +66,7 @@ namespace Havit.Business
 		{
 			foreach (T item in dateInfos)
 			{
-				dates[item.Date.Date] = item;
+				DateInfos[item.Date.Date] = item;
 			}
 		}
 		#endregion
@@ -151,13 +155,8 @@ namespace Havit.Business
 		/// </summary>
 		public virtual bool IsHoliday(DateTime date)
 		{
-			if (dates == null)
-			{
-				return false;
-			}
-
 			IDateInfo dateInfo;
-			if (dates.TryGetValue(date.Date, out dateInfo))
+			if (DateInfos.TryGetValue(date.Date, out dateInfo))
 			{
 				return dateInfo.IsHoliday;
 			}
@@ -171,7 +170,7 @@ namespace Havit.Business
 		/// </summary>
 		public virtual bool IsWeekend(DateTime time)
 		{
-			return weekendStrategy.IsWeekend(time.Date);
+			return IsWeekendStrategy.IsWeekend(time.Date);
 		}
 		#endregion
 

@@ -24,41 +24,30 @@ namespace Havit.Business
 		/// Klíč je DateTime, hodnota je DateInfo.
 		/// </summary>
 		private readonly IDictionary<DateTime, IDateInfo> dates = null;
+		private IIsWeekendStrategy weekendStrategy = null;
 		#endregion
 
 		#region Constructors
 		/// <summary>
 		/// Vytvoří instanci <see cref="BusinessCalendar"/> bez významných dnů.<br/>
 		/// Pracovními dny budou všechny dny mimo víkendů, dokud nebudou přidány nějaké svátky.
+		/// Víkendové dny jsou sobota a neděle.
 		/// </summary>
 		public BusinessCalendar()
 		{
 			this.dates = new Dictionary<DateTime, IDateInfo>();
+			this.weekendStrategy = BusinessCalendarWeekendStrategy.GetSaturdaySundayStrategy();
 		}
 
 		/// <summary>
-		/// Vytvoří instanci <see cref="BusinessCalendar"/>.<br/>
+		/// Vytvoří instanci <see cref="BusinessCalendar"/> bez významných dnů.<br/>
+		/// Pracovními dny budou všechny dny mimo víkendů, dokud nebudou přidány nějaké svátky.
+		/// Víkendové dny jsou určeny strategií weekendStrategy
 		/// </summary>
-		/// <param name="dateInfoDictionary">dictionary s informacemi o významných dnech</param>
-		public BusinessCalendar(IDictionary<DateTime, IDateInfo> dateInfoDictionary)
-		{
-			this.dates = dateInfoDictionary;
-		}
-
-		/// <summary>
-		/// Vytvoří instanci <see cref="BusinessCalendar"/>.<br/>
-		/// Svátky jsou předány v poli <see cref="System.DateTime"/>.
-		/// </summary>
-		/// <param name="holidays">pole svátků <see cref="System.DateTime"/></param>
-		public BusinessCalendar(DateTime[] holidays)
+		public BusinessCalendar(IIsWeekendStrategy weekendStrategy)
 		{
 			this.dates = new Dictionary<DateTime, IDateInfo>();
-			foreach (DateTime holiday in holidays)
-			{
-				DateInfo di = new DateInfo(holiday.Date);
-				di.SetAsHoliday();
-				this.dates.Add(holiday.Date, di);
-			}
+			this.weekendStrategy = weekendStrategy;
 		}
 		#endregion
 
@@ -144,10 +133,8 @@ namespace Havit.Business
 
 		#region IsBusinessDay
 		/// <summary>
-		/// Určí, zdali je zadaný den dnem pracovním.
+		/// Určí, zdali je zadaný den dnem pracovním. Za pracovní považujeme den, který není ani víkendem, ani svátkem.		
 		/// </summary>
-		/// <param name="time"><see cref="DateTime"/>, u kterého chceme vlastnosti zjistit</param>
-		/// <returns><b>false</b>, pokud je <see cref="DateTime"/> víkendem nebo svátkem; jinak <b>true</b></returns>
 		public virtual bool IsBusinessDay(DateTime time)
 		{
 			if (IsWeekend(time) || IsHoliday(time))
@@ -160,11 +147,9 @@ namespace Havit.Business
 
 		#region IsHoliday
 		/// <summary>
-		/// Zjistí, zdali je <see cref="System.DateTime"/> svátkem (dovolenou, ...).
+		/// Zjistí, zdali je den svátkem.
 		/// </summary>
-		/// <param name="time"><see cref="System.DateTime"/>, u kterého má být vlastnost zjištěna</param>
-		/// <returns><b>true</b>, pokud je den v seznamu svátků, s nimiž byl <see cref="BusinessCalendar"/> instanciován; jinak <b>false</b></returns>
-		public virtual bool IsHoliday(DateTime time)
+		public virtual bool IsHoliday(DateTime date)
 		{
 			if (dates == null)
 			{
@@ -172,7 +157,7 @@ namespace Havit.Business
 			}
 
 			IDateInfo dateInfo;
-			if (dates.TryGetValue(time.Date, out dateInfo))
+			if (dates.TryGetValue(date.Date, out dateInfo))
 			{
 				return dateInfo.IsHoliday;
 			}
@@ -182,18 +167,11 @@ namespace Havit.Business
 
 		#region IsWeekend
 		/// <summary>
-		/// Určí, zdali je zadaný den sobotou nebo nedělí.
+		/// Určí, zdali je zadaný den víkendem.
 		/// </summary>
-		/// <param name="time"><see cref="System.DateTime"/>, u kterého určujeme</param>
-		/// <returns><b>true</b>, pokud je zadaný <see cref="System.DateTime"/> sobota nebo neděle; jinak <b>false</b></returns>
 		public virtual bool IsWeekend(DateTime time)
 		{
-			DayOfWeek dayOfWeek = time.DayOfWeek;
-			if ((dayOfWeek == DayOfWeek.Saturday) || (dayOfWeek == DayOfWeek.Sunday))
-			{
-				return true;
-			}
-			return false;
+			return weekendStrategy.IsWeekend(time.Date);
 		}
 		#endregion
 
@@ -201,10 +179,10 @@ namespace Havit.Business
 		/// <summary>
 		/// Spočítá počet pracovních dní mezi dvěma daty. 
 		/// </summary>
-		/// <param name="startDate">počáteční datum</param>
-		/// <param name="endDate">koncové datum</param>
+		/// <param name="startDate">Počáteční datum</param>
+		/// <param name="endDate">Koncové datum</param>
 		/// <param name="options">Options pro počítání dnů.</param>
-		/// <returns>počet pracovních dnů mezi počátečním a koncovým datem (v závislosti na <c>options</c>)</returns>
+		/// <returns>Počet pracovních dnů mezi počátečním a koncovým datem (v závislosti na <c>options</c>).</returns>
 		public int CountBusinessDays(DateTime startDate, DateTime endDate, CountBusinessDaysOptions options)
 		{
 			// pokud jsou data obráceně, vrátíme záporný výsledek sama sebe v opačném pořadí dat

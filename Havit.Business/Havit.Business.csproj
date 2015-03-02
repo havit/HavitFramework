@@ -197,6 +197,9 @@
     <Compile Include="ActiveRecordBusinessObjectBase.cs" />
     <Compile Include="AfterSaveEventArgs.cs" />
     <Compile Include="BeforeSaveEventArgs.cs" />
+    <Compile Include="BusinessCalendarFridaySaturdayWeekendStrategy.cs" />
+    <Compile Include="BusinessCalendarSaturdaySundayWeekendStrategy.cs" />
+    <Compile Include="BusinessCalendarWeekendStrategy.cs" />
     <Compile Include="BusinessObjectBase.cs" />
     <Compile Include="BusinessObjectCollection.cs" />
     <Compile Include="CollectionPropertyInfo.cs" />
@@ -209,6 +212,7 @@
     <Compile Include="IDateInfo.cs" />
     <Compile Include="IdentityMap.cs" />
     <Compile Include="IdentityMapScope.cs" />
+    <Compile Include="IIsWeekendStrategy.cs" />
     <Compile Include="ILanguage.cs" />
     <Compile Include="ILocalizable.cs" />
     <Compile Include="ILocalizationCollection.cs" />

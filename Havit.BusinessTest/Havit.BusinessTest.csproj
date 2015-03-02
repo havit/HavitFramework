@@ -151,6 +151,7 @@
   <ItemGroup>
     <Compile Include="ActiveRecordBusinessObjectBase.cs" />
     <Compile Include="BusinessCalendarTest.cs" />
+    <Compile Include="BusinessCalendarWeekendStrategyTest.cs" />
     <Compile Include="BusinessLayerTest.cs" />
     <Compile Include="BusinessObjectBaseTest.cs" />
     <Compile Include="BusinessObjectCollectionTest.cs" />

@@ -67,15 +67,6 @@ namespace WebApplicationTest.HavitWebBootstrapTests {
         protected global::System.Web.UI.WebControls.Button ShowNestedButton;
         
         /// <summary>
-        /// Test1ACTB control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Havit.Web.UI.WebControls.AutoCompleteTextBox Test1ACTB;
-        
-        /// <summary>
         /// CloseButton control.
         /// </summary>
         /// <remarks>

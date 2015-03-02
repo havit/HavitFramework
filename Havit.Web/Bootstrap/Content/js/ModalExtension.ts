@@ -18,9 +18,9 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
         }
         // #endregion
 
-        // #region keyupListenerElementSelector (static)
-        // static field for registering which modal has currently registerek keyup event
-        private static keyupListenerElementSelector: string;
+        // #region keypressListenerElementSelector (static)
+        // static field for registering which modal has currently registerek keypress event
+        private static keypressListenerElementSelector: string;
         private mouseWheelListenerAttached: boolean = false;
         // #endregion
 
@@ -71,7 +71,7 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
             }
 
             this.showInternal(dragMode, false);
-            this.attachKeyUpEvent();
+            this.attachKeyPressEvent();
             this.attachMouseWheelEvent();
             this.storePreviousModalElement();
         }
@@ -117,7 +117,7 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
                     // NOOP
                 }
             }
-            this.attachKeyUpEvent();
+            this.attachKeyPressEvent();
             this.attachMouseWheelEvent();
             this.storePreviousModalElement();
         }
@@ -165,11 +165,11 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
                 this.mouseWheelListenerAttached = false;
             }
 
-            // do not listen to keyup anymore
+            // do not listen to keypress anymore
             // if there is already someone other listening, do not detach event
-            if (ModalExtension.keyupListenerElementSelector == this.modalElementSelector) {
-                $('body').off('keyup.havit.web.bootstrap');
-                ModalExtension.keyupListenerElementSelector = null;
+            if (ModalExtension.keypressListenerElementSelector == this.modalElementSelector) {
+                $('body').off('keypress.havit.web.bootstrap');
+                ModalExtension.keypressListenerElementSelector = null;
             }
             var parentModalExtension: ModalExtension = this.getParentModalExtension();
             if (parentModalExtension != null) {
@@ -263,7 +263,7 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
 
         private activateByChild(deactivatedByModalExtenstion: ModalExtension) {
             // activates parent modal when child modal is closed
-            this.attachKeyUpEvent();
+            this.attachKeyPressEvent();
             this.attachMouseWheelEvent();
 
             this.$modalElement.removeClass('nested');
@@ -278,31 +278,34 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
         }
         // #endregion
 
-        private attachKeyUpEvent() {
-            // listen to keyup to catch escape key
+        private attachKeyPressEvent() {
+            // listen to keypress to catch escape key
 
-            // register to keyup event 
+            // register to keypress event 
             // - when nobody is already listening or when parent node is listening
-            // - when parent is listening, this is a child, so this event is more important -> clear parents keyup event and attach out event
+            // - when parent is listening, this is a child, so this event is more important -> clear parents keypress event and attach out event
             // - if we are parent of child, nothing is done
-            if ((ModalExtension.keyupListenerElementSelector == null) || (this.$modalElement.parents(ModalExtension.keyupListenerElementSelector).length > 0)) {
+            if ((ModalExtension.keypressListenerElementSelector == null) || (this.$modalElement.parents(ModalExtension.keypressListenerElementSelector).length > 0)) {
                 // if parent registered to event, clear registration
-                $('body').off('keyup.havit.web.bootstrap');
+                $('body').off('keypress.havit.web.bootstrap');
                 // we are listener event if we are not listening (by closeOnEscapeKey) - it helps to detect there is child modal
-                ModalExtension.keyupListenerElementSelector = this.modalElementSelector;
-                if (this.closeOnEscapeKey) {
-                    $('body').on('keyup.havit.web.bootstrap', (e) => {
-                        if (e.which == 27) {
+                ModalExtension.keypressListenerElementSelector = this.modalElementSelector;
+                $('body').on('keypress.havit.web.bootstrap', (keypressEvent) => {
+                    if (keypressEvent.which == 13) {
+                        keypressEvent.preventDefault(); // preventing form submit (in IE the first button on page is clicked)
+                    }
+                    if (this.closeOnEscapeKey) {
+                        if (keypressEvent.which == 27) {
                             eval(this.escapePostbackScript);
                         }
-                    });
-
-                    // we have to focus modal, otherwise Escape key does not work correctly (I do not know why).
-                    try {
-                        this.$modalElement.focus();
-                    } catch (e) {
-                        // NOOP
                     }
+                });
+
+                // we have to focus modal, otherwise Escape key does not work correctly (I do not know why).
+                try {
+                    this.$modalElement.focus();
+                } catch (e) {
+                    // NOOP
                 }
             }
         }

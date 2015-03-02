@@ -7,6 +7,8 @@
 </asp:Content>
 
 <asp:Content ContentPlaceHolderID="MainCPH" runat="server">
+	
+	<asp:Button runat="server" OnClientClick="alert('click');" />
 
 	<uc:ModalDialogUserControlTest ID="ModalDialogUserControlTestUC" runat="server" />
 	

@@ -526,6 +526,19 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
             return 'Havit.Web.Bootstrap.UI.WebControls.ClientSide.ModalExtension.PreviousModalElement[' + this.modalElementSelector + ']';
         }
         // #endregion
+
+        public static suppressFireDefaultButton(event: KeyboardEvent) {
+            // In IE default button is clicked even it is outside of the dialog.
+            // To suppress firing default button click we need to suppress event propagation.
+            if (event.keyCode == 13) {
+                event.cancelBubble = true;
+                if (event.stopPropagation) {
+                    event.stopPropagation();
+                }
+                return false;
+            }
+            return true;
+        }
                 
     }
 

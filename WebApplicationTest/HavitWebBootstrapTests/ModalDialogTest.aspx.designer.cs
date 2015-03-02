@@ -13,6 +13,15 @@ namespace WebApplicationTest.HavitWebBootstrapTests {
     public partial class ModalDialogTest {
         
         /// <summary>
+        /// TestButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button TestButton;
+        
+        /// <summary>
         /// ModalDialogUserControlTestUC control.
         /// </summary>
         /// <remarks>

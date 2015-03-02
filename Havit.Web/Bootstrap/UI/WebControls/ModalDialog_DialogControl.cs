@@ -46,6 +46,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				writer.AddAttribute("role", "dialog");
 				writer.AddAttribute("data-backdrop", "static");
 				writer.AddAttribute("data-keyboard", "false");
+				writer.AddAttribute("onkeypress", "return Havit.Web.Bootstrap.UI.WebControls.ClientSide.ModalExtension.suppressFireDefaultButton(event);");
 
 				//writer.AddAttribute("aria-labelledby", "dialog");
 				//writer.AddAttribute("aria-hidden", "true");

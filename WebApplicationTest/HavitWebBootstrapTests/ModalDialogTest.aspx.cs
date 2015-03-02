@@ -16,7 +16,7 @@ namespace WebApplicationTest.HavitWebBootstrapTests
 		{
 			base.OnInit(e);
 			OpenButton.Click += OpenButton_Click;
-			DynarchCalendar.RegisterCalendarSkinStylesheets(this);
+			DynarchCalendar.RegisterCalendarSkinStylesheets(this);			
 		}
 		#endregion
 
@@ -28,6 +28,8 @@ namespace WebApplicationTest.HavitWebBootstrapTests
 			{
 				//ModalDialogUserControlTestUC.Show();
 			}
+
+			Form.DefaultButton = TestButton.UniqueID;
 		}
 		#endregion
 

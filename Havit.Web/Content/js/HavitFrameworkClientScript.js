@@ -393,23 +393,22 @@ var havitAutoCompleteTextBoxExtensions = {
 			var serviceurl = $item.data("serviceurl");
 			var minchars = $item.data("minchars") || 1;
 			var deferrequest = $item.data("deferRequest") || 0;
-			var params = $item.data("params");
 			var autopostback = $item.data("autopostback") || false;
 			var nocache = $item.data("nocache") || false;
 			var maxheight = $item.data("maxheight") || 300;
-			var params = $item.data("params");
+			var queryParams = $(item).data("params") || {};
 
-			var params = {
+			var options = {
+				type: "GET",
 				serviceUrl: serviceurl,
 				minChars: minchars,
 				deferRequestBy: deferrequest,
 				noCache: nocache,
-				onSelect: function (suggestion) { havitAutoCompleteTextBoxExtensions.onSelect(suggestion, $item) },
+				params: queryParams,
 				maxHeight: maxheight,
 				preserveInput: true,
 				triggerSelectOnValidInput: false,
-				params: params,
-				type: "GET"
+				onSelect: function (suggestion) { havitAutoCompleteTextBoxExtensions.onSelect(suggestion, $item) }
 			}
 
 			var textbox = $item.children("input[type='text']");
@@ -419,7 +418,7 @@ var havitAutoCompleteTextBoxExtensions = {
 			$item.data["selectedvalue"] = $textbox.val();
 			$textbox.blur(function () { havitAutoCompleteTextBoxExtensions.onBlur(textbox, hiddenfield, $item) })
 
-			textbox.autocomplete(params);
+			textbox.autocomplete(options);
 		});
 	},
 
@@ -450,8 +449,7 @@ var havitAutoCompleteTextBoxExtensions = {
 		}
 	},
 
-	doPostback: function (script)
-	{
+	doPostback: function (script) {
 		eval(script);
 	}
 }

@@ -20,9 +20,12 @@ namespace WebApplicationTest.HavitWebTests
 		}
 		#endregion
 
-		#region MyRegion
+		#region Test1ACTB_ValueChanged
 		private void Test1ACTB_ValueChanged(object sender, EventArgs e)
 		{
+			Random r = new Random();
+			Test1ACTB.Context = r.Next(10).ToString("n2");
+
 			Messenger.Default.AddMessage("Postback");
 		}
 		#endregion

@@ -303,7 +303,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			headerContainer = new DialogSectionControl(() => ("modal-header " + HeaderCssClass).Trim());
 			contentContainer = new DialogSectionControl(() => ("modal-body " + ContentCssClass).Trim());
 			footerContainer = new DialogSectionControl(() => ("modal-footer " + FooterCssClass).Trim());
-		
+
 			closeButton = new Button();
 			closeButton.CssClass = "close";
 			closeButton.Controls.Add(new LiteralControl("&times;"));
@@ -356,7 +356,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 
 			updatePanel.ContentTemplateContainer.Controls.Add(headerContainer);
 			updatePanel.ContentTemplateContainer.Controls.Add(contentContainer);
-			updatePanel.ContentTemplateContainer.Controls.Add(footerContainer);			
+			updatePanel.ContentTemplateContainer.Controls.Add(footerContainer);
 
 			dialogContainer.Controls.Add(updatePanel);
 		}
@@ -394,7 +394,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			updatePanel.Update();
 		}
 		#endregion
-		
+
 		#region OnDialogHidden
 		/// <summary>
 		/// Handles hide dialog event.
@@ -414,7 +414,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		protected override void OnPreRender(EventArgs e)
 		{
 			base.OnPreRender(e);
-			
+
 			ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);
 			Contract.Assert<HttpException>(scriptManager != null, "ScriptManager must be registered within the form.");
 
@@ -447,7 +447,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			RegisterHideScript();
 		}
 		#endregion
-		
+
 		#region GetShowScript, GetHideScript
 		/// <summary>
 		/// Vrátí skript pro zobrazení dialogu na klientské straně.

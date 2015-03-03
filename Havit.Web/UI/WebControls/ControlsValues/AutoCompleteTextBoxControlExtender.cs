@@ -13,19 +13,23 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 	{
 		#region GetValue
 		/// <summary>
-		/// Získá hodnotu (stav) zadaného controlu.		
+		/// Získá hodnotu (stav) zadaného controlu.
 		/// </summary>
 		public object GetValue(System.Web.UI.Control control)
 		{
 			AutoCompleteTextBox box = (AutoCompleteTextBox)control;
-			return new Tuple<string, string>(box.SelectedValue, box.SelectedText);
+			return new AutoCompleteTextBoxValues()
+			{
+				SelectedText = box.SelectedText,
+				SelectedValue = box.SelectedValue
+			};
 		}
 		#endregion
 
 		#region GetValueType
 		/// <summary>
 		/// Získá typ hodnoty zadaného controlu.
-		/// </summary>		
+		/// </summary>
 		public Type GetValueType()
 		{
 			return typeof(Tuple<string, string>);
@@ -39,16 +43,16 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 		public void SetValue(System.Web.UI.Control control, object value)
 		{
 			AutoCompleteTextBox box = (AutoCompleteTextBox)control;
-			Tuple<string, string> data = (Tuple<string, string>)value;
-			box.SelectedValue = data.Item1;
-			box.SelectedText = data.Item2;
+			AutoCompleteTextBoxValues data = (AutoCompleteTextBoxValues)value;
+			box.SelectedValue = data.SelectedValue;
+			box.SelectedText = data.SelectedText;
 		}
 		#endregion
 
 		#region GetPriority
 		/// <summary>
 		/// Vrací prioritu se kterou je tento IPersisterControlExtender použitelný
-		/// pro zpracování daného controlu. 
+		/// pro zpracování daného controlu.
 		/// Slouží k řešení situací, kdy potřebujeme předka a potomka zpracovávat jinak
 		/// (např. DropDownList a EnterpriseDropDownList - registrací na typ DDL
 		/// se automaticky chytneme i na EDDL, proto v extenderu pro EDDL použijeme

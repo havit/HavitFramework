@@ -71,7 +71,9 @@
 					UseClientCache="false"
 					runat="server" />
 			</havit:ControlsValuesPersister>
-			<asp:Button ID="PersisterBtn" Text="Persister" runat="server" />
+			<asp:Button ID="PersisterBtn" Text="Persister" runat="server" /><br />
+
+			<asp:TextBox ID="PersisterOutputTB" TextMode="MultiLine" Rows="20" Columns="100" runat="server" />
 		</div>
 	</form>
 </body>

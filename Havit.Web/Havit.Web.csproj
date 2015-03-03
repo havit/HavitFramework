@@ -153,6 +153,7 @@
     <Compile Include="UI\TryEnsureScriptRegistrationResult.cs" />
     <Compile Include="UI\WebControls\BrowserNavigationController.cs" />
     <Compile Include="UI\WebControls\ControlsValues\AutoCompleteTextBoxControlExtender.cs" />
+    <Compile Include="UI\WebControls\ControlsValues\AutoCompleteTextBoxValues.cs" />
     <Compile Include="UI\WebControls\CookiesMessenger.cs" />
     <Compile Include="UI\WebControls\DataBoundControlWithHiddenPublicMembersFromIntellisence.cs" />
     <Compile Include="UI\WebControls\DateTimeBoxContainerRenderMode.cs" />

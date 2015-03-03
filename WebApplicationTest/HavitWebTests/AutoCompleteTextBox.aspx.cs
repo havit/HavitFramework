@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Xml;
 
 namespace WebApplicationTest.HavitWebTests
 {
@@ -34,8 +35,12 @@ namespace WebApplicationTest.HavitWebTests
 		private void PersisterBtn_Click(object sender, EventArgs e)
 		{
 			ControlsValuesHolder holder = PersisterCVP.RetrieveValues();
+			XmlDocument data = holder.ToXmlDocument();
 
-			PersisterCVP.ApplyValues(holder);
+			PersisterOutputTB.Text = data.OuterXml;
+
+			ControlsValuesHolder holder2 = ControlsValuesHolder.FromXmlDocument(data);
+			PersisterCVP.ApplyValues(holder2);
 		}
 		#endregion
 	}

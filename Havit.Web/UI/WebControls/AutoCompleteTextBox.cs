@@ -193,6 +193,23 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region Enabled
+		/// <summary>
+		/// Gets or sets a value indicating whether this <see cref="AutoCompleteTextBox"/> is enabled.
+		/// </summary>
+		public bool Enabled
+		{
+			get
+			{
+				return valueTextBox.Enabled;
+			}
+			set
+			{
+				valueTextBox.Enabled = value;
+			}
+		}
+		#endregion
+
 		#region ValidationGroup
 		/// <summary>
 		/// ValidationGroup pro validaci.

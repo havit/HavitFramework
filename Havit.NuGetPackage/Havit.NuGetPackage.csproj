@@ -55,9 +55,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\PublishScripts\Publish-Framework.ps1">
-      <Link>Publish-Framework.ps1</Link>
-    </None>
     <None Include="Package.nuspec">
       <SubType>Designer</SubType>
     </None>

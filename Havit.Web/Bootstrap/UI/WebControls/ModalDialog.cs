@@ -143,7 +143,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Get or sets whether use animations when showing and hiding dialog.
 		/// Animation are not supported on nested modals.
 		/// </summary>
-		[DefaultValue(true)]
+		//[DefaultValue(true)]
 		public bool UseAnimations
 		{
 			get
@@ -161,7 +161,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Css class to be used for dialog - used in element with modal-dialog class.
 		/// </summary>
-		[DefaultValue("")]
+		//[DefaultValue("")]
 		public string CssClass
 		{
 			get

@@ -49,13 +49,13 @@ namespace WebApplicationTest.HavitWebTests {
         protected global::Havit.Web.UI.WebControls.ControlsValues.ControlsValuesPersister PersisterCVP;
         
         /// <summary>
-        /// AutoCompleteTextBox1 control.
+        /// PersisterACTB control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Havit.Web.UI.WebControls.AutoCompleteTextBox AutoCompleteTextBox1;
+        protected global::Havit.Web.UI.WebControls.AutoCompleteTextBox PersisterACTB;
         
         /// <summary>
         /// PersisterBtn control.
@@ -74,5 +74,14 @@ namespace WebApplicationTest.HavitWebTests {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox PersisterOutputTB;
+        
+        /// <summary>
+        /// SetValuesACTB control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Havit.Web.UI.WebControls.AutoCompleteTextBox SetValuesACTB;
     }
 }

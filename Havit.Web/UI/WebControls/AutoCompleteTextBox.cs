@@ -249,13 +249,13 @@ namespace Havit.Web.UI.WebControls
 		/// ClientID (overriden).
 		/// Vrací ClientID obsaženého TextBoxu pro zadávání hodnoty.
 		/// To řeší klientské validátory, které natrvdo předpokládají, že validovaný control (podle ClientID)
-		/// obsahuje klientskou vlastnost "value". Tímto klientskému validátoru místo DateTimeBoxu podstrčíme nested TextBox.
+		/// obsahuje klientskou vlastnost "value". Tímto klientskému validátoru místo AutoCompleteTextBoxu podstrčíme nested TextBox.
 		/// </summary>
 		public override string ClientID
 		{
 			get
 			{
-				return valueHiddenField.ClientID;
+				return valueTextBox.ClientID;
 			}
 		}
 		#endregion

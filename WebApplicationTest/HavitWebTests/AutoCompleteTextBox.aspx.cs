@@ -21,6 +21,16 @@ namespace WebApplicationTest.HavitWebTests
 		}
 		#endregion
 
+		#region OnLoad
+		protected override void OnLoad(EventArgs e)
+		{
+			base.OnLoad(e);
+
+			SetValuesACTB.SelectedText = "Praha";
+			SetValuesACTB.SelectedValue = "1";
+		}
+		#endregion
+
 		#region Test1ACTB_ValueChanged
 		private void Test1ACTB_ValueChanged(object sender, EventArgs e)
 		{
@@ -38,6 +48,9 @@ namespace WebApplicationTest.HavitWebTests
 			XmlDocument data = holder.ToXmlDocument();
 
 			PersisterOutputTB.Text = data.OuterXml;
+
+			PersisterACTB.SelectedText = String.Empty;
+			PersisterACTB.SelectedValue = String.Empty;
 
 			ControlsValuesHolder holder2 = ControlsValuesHolder.FromXmlDocument(data);
 			PersisterCVP.ApplyValues(holder2);

@@ -65,7 +65,7 @@
 			Persister:<br />
 			<havit:ControlsValuesPersister ID="PersisterCVP" runat="server">
 				<havit:AutoCompleteTextBox
-					ID="AutoCompleteTextBox1"
+					ID="PersisterACTB"
 					ServiceUrl="/Services/AutoCompleteTextBoxService.svc/GetSuggestions"
 					AutoPostBack="false"
 					UseClientCache="false"
@@ -74,6 +74,14 @@
 			<asp:Button ID="PersisterBtn" Text="Persister" runat="server" /><br />
 
 			<asp:TextBox ID="PersisterOutputTB" TextMode="MultiLine" Rows="20" Columns="100" runat="server" />
+			<h2>SetValues</h2>
+			<havit:AutoCompleteTextBox
+				ID="SetValuesACTB"
+				ServiceUrl="~/Services/AutoCompleteTextBoxService.svc/GetSuggestionsContext"
+				AutoPostBack="true"
+				UseClientCache="false"
+				Context="lorem ipsum dolor sit amet"
+				runat="server" />
 		</div>
 	</form>
 </body>

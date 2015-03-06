@@ -16,8 +16,10 @@ namespace Havit.Web.UI.WebControls
 	/// Auto complete textbox.
 	/// Používá komponentu Devbridge jQuery-Autocomplete (https://github.com/devbridge/jQuery-Autocomplete)
 	/// </summary>
-	[ValidationProperty("SelectedValue"), DefaultProperty("SelectedValue"),
-	ToolboxData("<{0}:AutoCompleteTextBox runat=server></{0}:AutoCompleteTextBox>")]
+	[ValidationProperty("SelectedValue")]
+	[DefaultProperty("SelectedValue")]
+	[ToolboxData("<{0}:AutoCompleteTextBox runat=server></{0}:AutoCompleteTextBox>")]
+	[Themeable(true)]
 	public class AutoCompleteTextBox : Control, INamingContainer
 	{
 		#region OnValueChanged

@@ -411,24 +411,23 @@ var havitAutoCompleteTextBoxExtensions = {
 				onSelect: function (suggestion) { havitAutoCompleteTextBoxExtensions.onSelect(suggestion, $item) }
 			}
 
-			var textbox = $item.children("input[type='text']");
-			var hiddenfield = $item.children("input[type='hidden']");
-			var $textbox = $(textbox);
+			var $textbox = $item.children("input[type='text']");
+			var $hiddenfield = $item.children("input[type='hidden']");
 
 			$item.data["selectedvalue"] = $textbox.val();
-			$textbox.blur(function () { havitAutoCompleteTextBoxExtensions.onBlur(textbox, hiddenfield, $item) })
+			$textbox.blur(function () { havitAutoCompleteTextBoxExtensions.onBlur($textbox, $hiddenfield, $item) })
 
-			textbox.autocomplete(options);
+			$textbox.autocomplete(options);
 		});
 	},
 
 	onSelect: function (suggestion, item) {
 		var $item = $(item);
-		var hiddenfield = $item.children("input[type='hidden']");
-		var textbox = $item.children("input[type='text']");
-		$(hiddenfield).val(suggestion.data);
-		$(textbox).val(suggestion.value);
+		var $hiddenfield = $item.children("input[type='hidden']");
+		var $textbox = $item.children("input[type='text']");
 
+		$hiddenfield.val(suggestion.data);
+		$textbox.val(suggestion.value);
 		$item.data["selectedvalue"] = suggestion.value;
 
 		var postbackScript = $item.data("postbackscript");

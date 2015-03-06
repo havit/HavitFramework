@@ -296,7 +296,7 @@ namespace Havit.Web.UI.WebControls
 		/// <param name="writer">The <see cref="T:System.Web.UI.HtmlTextWriter" /> object that receives the control content.</param>
 		public override void RenderControl(HtmlTextWriter writer)
 		{
-			writer.AddAttribute("class", "autoCompleteTextBox");
+			writer.AddAttribute("class", "autocomplete-textbox");
 
 			writer.AddAttribute("data-autocompletetextbox", null);
 			writer.AddAttribute("data-serviceurl", ResolveClientUrl(ServiceUrl));

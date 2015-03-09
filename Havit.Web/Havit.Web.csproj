@@ -151,6 +151,7 @@
     <Compile Include="UI\ControlExtensions.cs" />
     <Compile Include="UI\WebControls\AutoCompleteTextBox.cs" />
     <Compile Include="UI\TryEnsureScriptRegistrationResult.cs" />
+    <Compile Include="UI\WebControls\AutoCompleteTextBoxOrientation.cs" />
     <Compile Include="UI\WebControls\BrowserNavigationController.cs" />
     <Compile Include="UI\WebControls\ControlsValues\AutoCompleteTextBoxControlExtender.cs" />
     <Compile Include="UI\WebControls\ControlsValues\AutoCompleteTextBoxValues.cs" />

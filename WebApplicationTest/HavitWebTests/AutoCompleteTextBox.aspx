@@ -74,12 +74,31 @@
 			<asp:Button ID="PersisterBtn" Text="Persister" runat="server" /><br />
 
 			<asp:TextBox ID="PersisterOutputTB" TextMode="MultiLine" Rows="20" Columns="100" runat="server" />
+
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
 			<h2>SetValues</h2>
 			<havit:AutoCompleteTextBox
 				ID="SetValuesACTB"
 				ServiceUrl="~/Services/AutoCompleteTextBoxService.svc/GetSuggestionsContext"
 				AutoPostBack="true"
 				UseClientCache="false"
+				Orientation="Auto"
 				Context="lorem ipsum dolor sit amet"
 				runat="server" />
 		</div>

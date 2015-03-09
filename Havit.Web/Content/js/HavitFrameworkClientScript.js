@@ -397,6 +397,7 @@ var havitAutoCompleteTextBoxExtensions = {
 			var nocache = $item.data("nocache") || false;
 			var maxheight = $item.data("maxheight") || 300;
 			var queryParams = $(item).data("params") || {};
+			var orientation = $(item).data("orientation") || "bottom";
 
 			var options = {
 				type: "GET",
@@ -406,6 +407,7 @@ var havitAutoCompleteTextBoxExtensions = {
 				noCache: nocache,
 				params: queryParams,
 				maxHeight: maxheight,
+				orientation: orientation,
 				preserveInput: true,
 				triggerSelectOnValidInput: false,
 				onSelect: function (suggestion) { havitAutoCompleteTextBoxExtensions.onSelect(suggestion, $item) }

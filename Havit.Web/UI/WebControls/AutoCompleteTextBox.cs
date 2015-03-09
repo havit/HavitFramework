@@ -212,6 +212,23 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region Orientation
+		/// <summary>
+		/// Orientace našeptávacího dialogu. Default = bottom
+		/// </summary>
+		public AutoCompleteTextBoxOrientation Orientation
+		{
+			get
+			{
+				return (AutoCompleteTextBoxOrientation?)ViewState["Orientation"] ?? AutoCompleteTextBoxOrientation.Bottom;
+			}
+			set
+			{
+				ViewState["Orientation"] = value;
+			}
+		}
+		#endregion
+
 		#region ValidationGroup
 		/// <summary>
 		/// ValidationGroup pro validaci.
@@ -305,6 +322,7 @@ namespace Havit.Web.UI.WebControls
 			writer.AddAttribute("data-minchars", MinSuggestedChars.ToString());
 			writer.AddAttribute("data-deferRequest", DeferRequest.ToString());
 			writer.AddAttribute("data-maxheight", MaxHeight.ToString());
+			writer.AddAttribute("data-orientation", Orientation.ToString());
 			if (!UseClientCache)
 			{
 				writer.AddAttribute("data-nocache", null);

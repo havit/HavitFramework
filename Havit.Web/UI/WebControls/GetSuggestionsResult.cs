@@ -14,12 +14,12 @@ namespace Havit.Web.UI.WebControls
 	[DataContract]
 	public class GetSuggestionsResult
 	{
-		#region Properties		
+		#region Properties
 		/// <summary>
 		/// Položky našeptávače.
 		/// </summary>
 		[DataMember(Name = "suggestions")]
-		public List<SuggestionItem> Suggestions { get; private set; } 
+		public List<SuggestionItem> Suggestions { get; private set; }
 		#endregion
 
 		#region Constructors
@@ -40,7 +40,7 @@ namespace Havit.Web.UI.WebControls
 			Contract.Requires(suggestions != null);
 
 			Suggestions = suggestions.ToList();
-		} 
+		}
 		#endregion
 
 		#region Fill

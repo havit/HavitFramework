@@ -295,6 +295,17 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region ClearSelection
+		/// <summary>
+		/// Vyčistí vybranou hodnotu.
+		/// </summary>
+		public void ClearSelection()
+		{
+			SelectedText = String.Empty;
+			SelectedValue = String.Empty;
+		}
+		#endregion
+
 		#region CreateChildControls (protected)
 		/// <summary>
 		/// Called by the ASP.NET page framework to notify server controls that use composition-based implementation to create any child controls they contain in preparation for posting back or rendering.
@@ -361,6 +372,16 @@ namespace Havit.Web.UI.WebControls
 		private void ValueHiddenField_ValueChanged(object sender, EventArgs e)
 		{
 			OnSelectedValueChanged(EventArgs.Empty);
+		}
+		#endregion
+
+		#region RegisterClientScripts (static)
+		/// <summary>
+		/// Zaregistruje klienské scripty, které control vyžaduje. Nutné volat před přidáním prvku do stránky v asynchronním volání.
+		/// </summary>
+		public static void RegisterClientScripts(Page page)
+		{
+			ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(page, HavitFrameworkClientScriptHelper.JQueryAutoCompleteResourceMappingName);
 		}
 		#endregion
 	}

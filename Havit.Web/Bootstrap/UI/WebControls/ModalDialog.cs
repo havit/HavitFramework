@@ -179,7 +179,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Css class to be used for header - used in element with modal-header class.
 		/// </summary>
-		[DefaultValue("")]
+		//[DefaultValue("")]
 		public string HeaderCssClass
 		{
 			get

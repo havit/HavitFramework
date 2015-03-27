@@ -42,6 +42,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -52,6 +53,9 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Ares\AresBaseException.cs" />
+    <Compile Include="Ares\AresPrehledSubjektuItem.cs" />
+    <Compile Include="Ares\AresPrehledSubjektuResult.cs" />
+    <Compile Include="Ares\AresPrehledSubjektuService.cs" />
     <Compile Include="Ares\AresLoadException.cs" />
     <Compile Include="Ares\AresRegistr.cs" />
     <Compile Include="Ares\AresException.cs" />

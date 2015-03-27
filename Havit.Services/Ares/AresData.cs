@@ -125,7 +125,7 @@ namespace Havit.Services.Ares
 				public string Mesto { get; set; }
 
 				/// <summary>
-				/// Mìstkı èást sídla firmy.
+				/// Mìstká èást sídla firmy.
 				/// </summary>
 				public string MestskaCast { get; set; }
 

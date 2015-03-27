@@ -30,5 +30,28 @@ namespace Havit.ServicesTest
 			service.GetData(AresRegistr.ObchodniRejstrik);
 		}
 		#endregion
+
+		#region GetAresPrehledSubjektuFirmaTest
+		[TestMethod]
+		public void GetAresPrehledSubjektuFirmaTest()
+		{
+			string name = "ASSECO";
+			AresPrehledSubjektuService service = new AresPrehledSubjektuService();
+			service.Timeout = 60 * 1000; /* 60 sec */
+			service.GetData(name);
+		}
+		#endregion
+
+		#region GetAresPrehledSubjektuFyzickaOsobaTest
+		[TestMethod]
+		public void GetAresPrehledSubjektuFyzickaOsobaTest()
+		{
+			string name = "vožice";
+			string obec = "vožice";
+			AresPrehledSubjektuService service = new AresPrehledSubjektuService();
+			service.Timeout = 60 * 1000; /* 60 sec */
+			service.GetData(name, obec);
+		}
+		#endregion
 	}
 }

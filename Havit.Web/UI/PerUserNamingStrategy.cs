@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web;
+using System.Web.UI.WebControls;
 
 namespace Havit.Web.UI
 {
@@ -44,6 +45,8 @@ namespace Havit.Web.UI
 			/// </summary>
 			public static void DeleteUserFiles(string root, string username, TimeSpan? fileAge = null)
 			{
+				FilePageStatePersister.ILogService logService = new FilePageStatePersisterLogService();
+
 				DateTime now = DateTime.Now;
 
 				if (fileAge == null)
@@ -61,9 +64,11 @@ namespace Havit.Web.UI
 							try
 							{
 								System.IO.File.Delete(file);
+								logService.Log(String.Format("{0}\tDeleted", file));
 							}
 							catch (Exception) // pokud nějaký soubor nejde smazat, končíme s mazáním
 							{
+								logService.Log(String.Format("{0}\tDelete failed", file));
 								return;
 							}
 						}

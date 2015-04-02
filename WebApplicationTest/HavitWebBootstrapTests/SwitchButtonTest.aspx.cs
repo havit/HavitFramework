@@ -1,14 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Havit.Web.UI;
 
 namespace WebApplicationTest.HavitWebBootstrapTests
 {
 	public partial class SwitchButtonTest : System.Web.UI.Page
 	{
+		#region PageStatePersister
+		protected override PageStatePersister PageStatePersister
+		{
+			get
+			{
+				if (pageStatePersister == null)
+				{
+					pageStatePersister = new FilePageStatePersister(this, new FilePageStatePersister.PerUserNamingStrategy(@"\\TOPOL\Workspace\002.HFW\ViewState"));
+				}
+				return pageStatePersister;
+			}
+		}
+		private PageStatePersister pageStatePersister;
+		#endregion
+
 		#region OnInit
 		protected override void OnInit(EventArgs e)
 		{

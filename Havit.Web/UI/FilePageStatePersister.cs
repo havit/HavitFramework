@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace Havit.Web.UI
 {
@@ -15,6 +16,7 @@ namespace Havit.Web.UI
 		#region Private fields
 		private Page _page;
 		private IFileNamingStrategy _fileNamingStrategy;
+		private ILogService _logService;
 		#endregion
 
 		#region Constructors
@@ -27,6 +29,7 @@ namespace Havit.Web.UI
 		{
 			_page = page;
 			_fileNamingStrategy = fileNamingStrategy;
+			_logService = new FilePageStatePersisterLogService();
 		}
 
 		/// <summary>
@@ -53,8 +56,9 @@ namespace Havit.Web.UI
 
 			using (System.IO.FileStream fileStream = System.IO.File.Open(storageFilename, System.IO.FileMode.Create))
 			{
-				LosFormatter formatter = new LosFormatter();				
+				LosFormatter formatter = new LosFormatter();
 				formatter.Serialize(fileStream, new Pair(this.ViewState, this.ControlState));
+				_logService.Log(String.Format("{0}\tSaved", storageFilename));
 			}
 
 			// do hidden fieldu si uložíme symbol
@@ -71,14 +75,14 @@ namespace Havit.Web.UI
 		/// </summary>
 		public override void Load()
 		{
+			// načteme si symbol z hidden fieldu
+			HiddenFieldPageStatePersister hiddenFieldPageStatePersister = new HiddenFieldPageStatePersister(_page);
+			hiddenFieldPageStatePersister.Load();
+			string storageSymbol = (string) hiddenFieldPageStatePersister.ControlState;
+			string storageFilename = _fileNamingStrategy.GetFilename(storageSymbol); // ze symbolu získáme celou cestu
+
 			try
 			{
-				// načteme si symbol z hidden fieldu
-				HiddenFieldPageStatePersister hiddenFieldPageStatePersister = new HiddenFieldPageStatePersister(_page);
-				hiddenFieldPageStatePersister.Load();
-				string storageSymbol = (string) hiddenFieldPageStatePersister.ControlState;
-				string storageFilename = _fileNamingStrategy.GetFilename(storageSymbol); // ze symbolu získáme celou cestu
-
 				using (System.IO.FileStream fileStream = System.IO.File.Open(storageFilename, System.IO.FileMode.Open, FileAccess.Read, FileShare.Read | FileShare.Delete))
 				{
 					LosFormatter formatter = new LosFormatter();
@@ -87,9 +91,11 @@ namespace Havit.Web.UI
 					ViewState = pair.First;
 					ControlState = pair.Second;
 				}
+				_logService.Log(String.Format("{0}\tLoaded", storageFilename));
 			}
 			catch (Exception e)
 			{
+				_logService.Log(String.Format("{0}\tLoad failed", storageFilename));
 				throw new ViewStateLoadFailedException("Nepodařilo se načíst viewstate.", e);
 			}
 		}
@@ -113,6 +119,17 @@ namespace Havit.Web.UI
 		}
 		#endregion
 
+		#region ILogService (interface)
+		/// <summary>
+		/// Služba pro logování operací file page persisteru.
+		/// </summary>
+		internal interface ILogService
+		{
+			/// <summary>
+			/// Zapíše zprávu do logu.
+			/// </summary>
+			void Log(string message);
+		}
+		#endregion
 	}
-
 }

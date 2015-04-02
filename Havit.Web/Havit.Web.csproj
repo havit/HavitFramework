@@ -149,6 +149,7 @@
     </Compile>
     <Compile Include="Bootstrap\UI\WebControls\NavbarTextItem.cs" />
     <Compile Include="UI\ControlExtensions.cs" />
+    <Compile Include="UI\FilePageStatePersisterLogService.cs" />
     <Compile Include="UI\WebControls\AutoCompleteTextBox.cs" />
     <Compile Include="UI\TryEnsureScriptRegistrationResult.cs" />
     <Compile Include="UI\WebControls\AutoCompleteTextBoxOrientation.cs" />

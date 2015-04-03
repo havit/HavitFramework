@@ -22,6 +22,7 @@
 	</metadata>
 	<files>
 		<file src="..\Havit.Web\Content\styles\*.css" target="content\Content\havit.web.clientcontent\" />
+		<file src="..\Havit.Web\Content\styles\*.less" target="content\Content\havit.web.clientcontent\" />
 		<file src="..\Havit.Web\Content\styles\*.png" target="content\Content\havit.web.clientcontent\" />
 		<file src="..\Havit.Web\Content\js\*.js" target="content\Scripts\havit.web.clientcontent\" />
 	</files>

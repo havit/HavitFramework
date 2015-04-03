@@ -184,10 +184,6 @@
     <Content Include="App_Themes\BootstrapTheme\ModalEditor.skin" />
     <None Include="App_Themes\WebTheme\AutoSuggestMenu.skin" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="Content\Havit.Web.ClientContent\checkbox-dropdown-list.css">
-      <DependentUpon>checkbox-dropdown-list.less</DependentUpon>
-    </Content>
-    <Content Include="Content\Havit.Web.ClientContent\checkbox-dropdown-list.min.css" />
     <Content Include="Content\Havit.Web.ClientContent\chevron-down.png" />
     <Content Include="Content\Havit.Web.ClientContent\description.txt" />
     <Content Include="Content\site.css">
@@ -378,9 +374,6 @@
     <Content Include="Content\bootstrap\alerts.less" />
     <Content Include="HavitCastleWindsorWebFormsTests\ReleaseOnUnloadTest.ashx" />
     <Content Include="Content\Havit.Web.ClientContent\checkbox-dropdown-list.less" />
-    <Content Include="Content\Havit.Web.ClientContent\checkbox-dropdown-list.css.map">
-      <DependentUpon>checkbox-dropdown-list.css</DependentUpon>
-    </Content>
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\Havit.Web.ClientContent\description.txt" />
     <Content Include="Scripts\jquery-2.1.1.js" />

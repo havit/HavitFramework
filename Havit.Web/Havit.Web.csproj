@@ -498,6 +498,7 @@
     <None Include="Bootstrap\Content\less\navbar.less" />
     <None Include="Bootstrap\Content\less\validation.less" />
     <None Include="Bootstrap\Diagrams\Dialogs.cd" />
+    <Content Include="Content\styles\checkbox-dropdown-list.less" />
     <None Include="packages.config" />
     <None Include="UI\Scriptlets\Scriptlet.cd" />
   </ItemGroup>
@@ -514,6 +515,7 @@
     <Content Include="Content\js\jquery.autocomplete.min.js" />
     <Content Include="Content\js\jquery.multiple.select.js" />
     <Content Include="Content\styles\autocompletetextbox.css" />
+    <Content Include="Content\styles\checkbox-dropdown-list-chevron-down.png" />
     <Content Include="UI\Scriptlets\IControlExtender.xml" />
     <Content Include="UI\Scriptlets\IScriptletParameter.xml" />
     <EmbeddedResource Include="UI\WebControls\SingleSubmitProtection.css" />

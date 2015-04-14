@@ -20,7 +20,7 @@ namespace Havit.Web.Management
 
 		#region Private fields
 		private HttpContext _currentHttpContext;
-		private Type _currentHttpHandlerType;
+		private Type _currentApplicationInstanceType;
 		private CultureInfo _currentCulture;
 		private CultureInfo _currentUiCulture;
 		#endregion
@@ -41,9 +41,9 @@ namespace Havit.Web.Management
 			: base(message, eventSource, WebEventCodes.WebExtendedBase + 999, UnwrapException(exception))
 		{
 			this._currentHttpContext = currentHttpContext;
-			if ((currentHttpContext != null) && (currentHttpContext.Handler != null))
+			if ((currentHttpContext != null) && (currentHttpContext.ApplicationInstance != null))
 			{
-				this._currentHttpHandlerType = currentHttpContext.Handler.GetType();
+				this._currentApplicationInstanceType = currentHttpContext.ApplicationInstance.GetType();
 			}
 			_currentCulture = CultureInfo.CurrentCulture;
 			_currentUiCulture = CultureInfo.CurrentUICulture;
@@ -232,9 +232,9 @@ namespace Havit.Web.Management
 		/// </summary>
 		private void FormatApplicationInformation(StringBuilder sb)
 		{
-			if (_currentHttpHandlerType != null)
+			if (_currentApplicationInstanceType != null)
 			{
-				sb.AppendLine("    HttpHandler Assembly: " + _currentHttpHandlerType.AssemblyQualifiedName);
+				sb.AppendLine("    HttpApplication Assembly: " + _currentApplicationInstanceType.Assembly.FullName);
 			}
 		}
 		#endregion

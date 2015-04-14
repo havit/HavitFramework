@@ -396,6 +396,7 @@
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
     <Content Include="HavitWebTests\SingleSubmitProtectionTest2.aspx" />
     <Content Include="Services\AutoCompleteTextBoxService.svc" />
+    <Content Include="SystemWebTests\HealthMonitoringTest.aspx" />
     <Content Include="SystemWebTests\ScriptManagerTest.aspx" />
     <Content Include="SystemWebTests\SmtpTraceListenerTest.aspx" />
     <Content Include="HavitWebTests\DateTimeBoxTest.aspx" />
@@ -678,6 +679,13 @@
     </Compile>
     <Compile Include="Services\AutoCompleteTextBoxService.svc.cs">
       <DependentUpon>AutoCompleteTextBoxService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="SystemWebTests\HealthMonitoringTest.aspx.cs">
+      <DependentUpon>HealthMonitoringTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SystemWebTests\HealthMonitoringTest.aspx.designer.cs">
+      <DependentUpon>HealthMonitoringTest.aspx</DependentUpon>
     </Compile>
     <Compile Include="SystemWebTests\ScriptManagerTest.aspx.cs">
       <DependentUpon>ScriptManagerTest.aspx</DependentUpon>

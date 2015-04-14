@@ -221,6 +221,7 @@ namespace Havit.Services.Ares
 				result.Sidlo.MestskaCast = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "SI").Elements(aresDT + "NCO").SingleOrDefault();
 				result.Sidlo.Psc = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "SI").Elements(aresDT + "PSC").SingleOrDefault();
 				result.Sidlo.Stat = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "SI").Elements(aresDT + "NS").SingleOrDefault();
+				result.Sidlo.AdresaTextem = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "SI").Elements(aresDT + "AT").SingleOrDefault();
 
 				// statutární orgán
 				var soElement = vypisOrElement.Elements(aresDT + "SO").SingleOrDefault();

@@ -13,7 +13,7 @@ namespace Havit.ServicesTest
 		[TestMethod]
 		public void GetBasicDataTest()
 		{
-			string ico = "00569330";
+			string ico = "28186796";
 			AresService service = new AresService(ico);
 			service.Timeout = 60 * 1000; /* 60 sec */
 			service.GetData(AresRegistr.Basic);
@@ -24,7 +24,7 @@ namespace Havit.ServicesTest
 		[TestMethod]
 		public void GetObchodniRejstrikDataTest()
 		{
-			string ico = "00569330";
+			string ico = "28186796";
 			AresService service = new AresService(ico);
 			service.Timeout = 60 * 1000; /* 60 sec */
 			service.GetData(AresRegistr.ObchodniRejstrik);

@@ -138,6 +138,11 @@ namespace Havit.Services.Ares
 				/// Stát sídla firmy.
 				/// </summary>
 				public string Stat { get; set; }
+
+				/// <summary>
+				/// Adresa textovì. Mnohé adresy nejsou strukturované, ale pøedány jen jako nestrukturovaný text.
+				/// </summary>
+				public string AdresaTextem { get; set; }
 			}
 
 			/// <summary>

@@ -643,16 +643,28 @@ namespace Havit.Web.UI.WebControls
 							{
 								if (button is Button)
 								{
-									((Button)button).OnClientClick = String.Format("if (!confirm('{0}')) return false;", deleteConfirmationTextResolved.Replace("'", "''"));
+									Button buttonButton = ((Button)button);
+									if (buttonButton.Enabled)
+									{
+										buttonButton.OnClientClick = String.Format("if (!confirm('{0}')) return false;", deleteConfirmationTextResolved.Replace("'", "''"));
+									}
 								}
 								else if (button is LinkButton)
 								{
-									((LinkButton)button).OnClientClick = String.Format("if (!confirm('{0}')) return false;", deleteConfirmationTextResolved.Replace("'", "''"));
+									LinkButton linkButton = ((LinkButton)button);
+									if (linkButton.Enabled)
+									{
+										linkButton.OnClientClick = String.Format("if (!confirm('{0}')) return false;", deleteConfirmationTextResolved.Replace("'", "''"));
+									}
 								}
 								else
 								{
 									Debug.Assert(button is ImageButton);
-									((ImageButton)button).OnClientClick = String.Format("if (!confirm('{0}')) return false;", deleteConfirmationTextResolved.Replace("'", "''"));
+									ImageButton imageButton = ((ImageButton)button);
+									if (imageButton.Enabled)
+									{
+										((ImageButton)button).OnClientClick = String.Format("if (!confirm('{0}')) return false;", deleteConfirmationTextResolved.Replace("'", "''"));
+									}
 								}
 							}
 						}
@@ -823,6 +835,10 @@ namespace Havit.Web.UI.WebControls
 				{
 					linkButton.CssClass = cssClassDisabled;
 				}
+				if (!args.Enabled)
+				{
+					linkButton.ToolTip = String.Empty;
+				}
 			}
 			else if (control is ImageButton)
 			{
@@ -832,6 +848,10 @@ namespace Havit.Web.UI.WebControls
 				{
 					imageButton.CssClass = cssClassDisabled;
 				}
+				if (!args.Enabled)
+				{
+					imageButton.ToolTip = String.Empty;
+				}
 			}
 			else if (control is Button)
 			{
@@ -840,6 +860,10 @@ namespace Havit.Web.UI.WebControls
 				if (!args.Enabled && !String.IsNullOrEmpty(cssClassDisabled))
 				{
 					button.CssClass = cssClassDisabled;
+				}
+				if (!args.Enabled)
+				{
+					button.ToolTip = String.Empty;
 				}
 			}
 

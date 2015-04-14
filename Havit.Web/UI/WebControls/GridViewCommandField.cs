@@ -643,28 +643,16 @@ namespace Havit.Web.UI.WebControls
 							{
 								if (button is Button)
 								{
-									Button buttonButton = ((Button)button);
-									if (buttonButton.Enabled)
-									{
-										buttonButton.OnClientClick = String.Format("if (!confirm('{0}')) return false;", deleteConfirmationTextResolved.Replace("'", "''"));
-									}
+									((Button)button).OnClientClick = String.Format("if (!confirm('{0}')) return false;", deleteConfirmationTextResolved.Replace("'", "''"));
 								}
 								else if (button is LinkButton)
 								{
-									LinkButton linkButton = ((LinkButton)button);
-									if (linkButton.Enabled)
-									{
-										linkButton.OnClientClick = String.Format("if (!confirm('{0}')) return false;", deleteConfirmationTextResolved.Replace("'", "''"));
-									}
+									((LinkButton)button).OnClientClick = String.Format("if (!confirm('{0}')) return false;", deleteConfirmationTextResolved.Replace("'", "''"));
 								}
 								else
 								{
 									Debug.Assert(button is ImageButton);
-									ImageButton imageButton = ((ImageButton)button);
-									if (imageButton.Enabled)
-									{
-										((ImageButton)button).OnClientClick = String.Format("if (!confirm('{0}')) return false;", deleteConfirmationTextResolved.Replace("'", "''"));
-									}
+									((ImageButton)button).OnClientClick = String.Format("if (!confirm('{0}')) return false;", deleteConfirmationTextResolved.Replace("'", "''"));
 								}
 							}
 						}
@@ -819,7 +807,7 @@ namespace Havit.Web.UI.WebControls
 			// nastavíme výsledek z argumentů do buttonu
 
 			control.Visible = args.Visible;
-
+			
 			// pokud je ZA controlem mezera (LiteralControl), chceme ji taky zobrazit/schovat
 			int index = control.Parent.Controls.IndexOf(control);
 			if ((index < control.Parent.Controls.Count - 1) && (control.Parent.Controls[index + 1] is LiteralControl))
@@ -831,39 +819,51 @@ namespace Havit.Web.UI.WebControls
 			{
 				LinkButton linkButton = (LinkButton)control;
 				linkButton.Enabled = args.Enabled;
-				if (!args.Enabled && !String.IsNullOrEmpty(cssClassDisabled))
-				{
-					linkButton.CssClass = cssClassDisabled;
-				}
 				if (!args.Enabled)
 				{
 					linkButton.ToolTip = String.Empty;
+					if (args.CommandName == CommandNames.Delete)
+					{
+						linkButton.OnClientClick = String.Empty;
+					}
+					if (!String.IsNullOrEmpty(cssClassDisabled))
+					{
+						linkButton.CssClass = cssClassDisabled;
+					}
 				}
 			}
 			else if (control is ImageButton)
 			{
 				ImageButton imageButton = (ImageButton)control;
 				imageButton.Enabled = args.Enabled;
-				if (!args.Enabled && !String.IsNullOrEmpty(cssClassDisabled))
-				{
-					imageButton.CssClass = cssClassDisabled;
-				}
 				if (!args.Enabled)
 				{
 					imageButton.ToolTip = String.Empty;
+					if (args.CommandName == CommandNames.Delete)
+					{
+						imageButton.OnClientClick = String.Empty;
+					}
+					if (!String.IsNullOrEmpty(cssClassDisabled))
+					{
+						imageButton.CssClass = cssClassDisabled;
+					}
 				}
 			}
 			else if (control is Button)
 			{
 				Button button = (Button)control;
 				button.Enabled = args.Enabled;
-				if (!args.Enabled && !String.IsNullOrEmpty(cssClassDisabled))
-				{
-					button.CssClass = cssClassDisabled;
-				}
 				if (!args.Enabled)
 				{
 					button.ToolTip = String.Empty;
+					if (args.CommandName == CommandNames.Delete)
+					{
+						button.OnClientClick = String.Empty;						
+					}
+					if (!String.IsNullOrEmpty(cssClassDisabled))
+					{
+						button.CssClass = cssClassDisabled;
+					}
 				}
 			}
 

@@ -9,15 +9,19 @@ namespace WebApplicationTest.SystemWebTests
 {
 	public partial class HealthMonitoringTest : System.Web.UI.Page
 	{
+		#region OnInit
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
 			DoExceptionButton.Click += DoExceptionButton_Click;
 		}
+		#endregion
 
+		#region DoExceptionButton_Click
 		private void DoExceptionButton_Click(object sender, EventArgs e)
 		{
 			throw new ApplicationException("Zkoušíme HealtMonitoring.");
 		}
+		#endregion
 	}
 }

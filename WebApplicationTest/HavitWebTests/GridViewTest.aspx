@@ -30,7 +30,7 @@
 						<asp:TextBox ID="NazevTextBox" Text="<%# BindItem.Nazev %>" runat="server" />
 					</EditItemTemplate>
 				</havit:TemplateFieldExt>
-				<havit:GridViewCommandField ButtonType="Link" ShowCancelButton="true" ShowDeleteButton="true" ShowInsertButton="true" ShowEditButton="true" />
+				<havit:GridViewCommandField ButtonType="Link" ShowCancelButton="true" ShowDeleteButton="true" ShowInsertButton="true" ShowEditButton="true" DeleteConfirmationText="Opravdu?" />
 			</Columns>
 		</havit:EnterpriseGridView>
 

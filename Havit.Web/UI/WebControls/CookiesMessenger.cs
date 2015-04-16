@@ -38,6 +38,8 @@ namespace Havit.Web.UI.WebControls
 		private void SaveMessagesToCookie(List<MessengerMessage> messages)
 		{
 			HttpCookie msgCookie = new HttpCookie(CookieKey);
+			//přístup přes klientský skript netřeba, tj. pro security HttpOnly
+			msgCookie.HttpOnly = true;
 			
 			if (messages == null || messages.Count == 0)
 			{

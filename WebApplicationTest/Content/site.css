@@ -6350,6 +6350,8 @@ button.toast-close-button {
 .modal-dialog {
   visibility: visible;
   /* modal is visible by default */
+  max-width: 100%;
+  /* modal max-width can not be more than view-port */
 }
 .modal.nested > .modal-dialog {
   visibility: hidden;

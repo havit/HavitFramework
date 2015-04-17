@@ -432,14 +432,16 @@ var havitAutoCompleteTextBoxExtensions = {
 				orientation: orientation,
 				preserveInput: true,
 				triggerSelectOnValidInput: false,
-				onSelect: function (suggestion) { havitAutoCompleteTextBoxExtensions.onSelect(suggestion, $item) }
+				onSelect: function (suggestion) {
+					havitAutoCompleteTextBoxExtensions.onSelect(suggestion, $item);
+				}
 			}
 
 			var $textbox = $item.children("input[type='text']");
 			var $hiddenfield = $item.children("input[type='hidden']");
 
 			$item.data["selectedvalue"] = $textbox.val();
-			$textbox.blur(function () { havitAutoCompleteTextBoxExtensions.onBlur($textbox, $hiddenfield, $item) })
+			$textbox.blur(function() { havitAutoCompleteTextBoxExtensions.onBlur($textbox, $hiddenfield, $item) });
 
 			$textbox.autocomplete(options);
 		});
@@ -453,6 +455,13 @@ var havitAutoCompleteTextBoxExtensions = {
 		$hiddenfield.val(suggestion.data);
 		$textbox.val(suggestion.value);
 		$item.data["selectedvalue"] = suggestion.value;
+
+		var onselectscript = $item.data("onselectscript");
+		if (onselectscript) {
+			if (!havitAutoCompleteTextBoxExtensions.doOnSelectScript(suggestion, onselectscript)) {
+				return;
+			}
+		}
 
 		var postbackScript = $item.data("postbackscript");
 		if (postbackScript != undefined) {
@@ -470,6 +479,10 @@ var havitAutoCompleteTextBoxExtensions = {
 			$textbox.val('');
 			$hiddenfield.val('');
 		}
+	},
+
+	doOnSelectScript: function (suggestion, onselectscript) {
+		return eval(onselectscript) || true;
 	},
 
 	doPostback: function (script) {

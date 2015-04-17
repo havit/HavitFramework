@@ -263,6 +263,23 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region OnClientSelectScript
+		/// <summary>
+		/// Skript vyvolaný v případě výběru hodnoty. Pokud script vrátí false, potom neproběhne AutoPostBack.
+		/// </summary>
+		public string OnClientSelectScript
+		{
+			get
+			{
+				return (string)(ViewState["OnClientSelectScript"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["OnClientSelectScript"] = value;
+			}
+		}
+		#endregion
+
 		#region ClientID (override)
 		/// <summary>
 		/// ClientID (overriden).
@@ -334,6 +351,12 @@ namespace Havit.Web.UI.WebControls
 			writer.AddAttribute("data-deferRequest", DeferRequest.ToString());
 			writer.AddAttribute("data-maxheight", MaxHeight.ToString());
 			writer.AddAttribute("data-orientation", Orientation.ToString());
+
+			if (!String.IsNullOrEmpty(OnClientSelectScript))
+			{
+				writer.AddAttribute("data-onselectscript", OnClientSelectScript);
+			}
+
 			if (!UseClientCache)
 			{
 				writer.AddAttribute("data-nocache", null);

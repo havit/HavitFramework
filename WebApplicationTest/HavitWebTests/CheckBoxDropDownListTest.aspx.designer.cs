@@ -22,22 +22,13 @@ namespace WebApplicationTest.HavitWebTests {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// MyListBox control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-		protected global::Havit.Web.UI.WebControls.CheckBoxDropDownList MyListBox;
-        
-        /// <summary>
         /// CheckBoxDropDownList1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-		protected global::Havit.Web.UI.WebControls.CheckBoxDropDownList CheckBoxDropDownList1;
+        protected global::Havit.Web.UI.WebControls.CheckBoxDropDownList CheckBoxDropDownList1;
         
         /// <summary>
         /// CheckBoxDropDownList2 control.
@@ -47,5 +38,14 @@ namespace WebApplicationTest.HavitWebTests {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Havit.Web.UI.WebControls.CheckBoxDropDownList CheckBoxDropDownList2;
+        
+        /// <summary>
+        /// MyListBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Havit.Web.UI.WebControls.CheckBoxDropDownList MyListBox;
     }
 }

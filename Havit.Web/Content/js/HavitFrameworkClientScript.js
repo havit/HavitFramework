@@ -329,6 +329,7 @@ var havitDropDownCheckBoxListExtensions = {
 		$("select[data-dropdowncheckboxlist]").each(function (index, item) {
 			var $item = $(item);
 
+			var isOpen = $item.data("dropdowncheckboxlist-isopen") || false;
 			var selectAll = $item.data("dropdowncheckboxlist-showselectall") || false;
 			var allSelected = $item.data("dropdowncheckboxlist-allselectedtext") || false;
 			var placeholder = $item.data("dropdowncheckboxlist-placeholder") || '';
@@ -338,6 +339,7 @@ var havitDropDownCheckBoxListExtensions = {
 			var single = $item.data("dropdowncheckboxlist-single") ? true : false;
 
 			var multipleSelectParams = {
+				isOpen: isOpen,
 				selectAll: selectAll,
 				allSelected: allSelected,
 				placeholder: placeholder,
@@ -345,9 +347,29 @@ var havitDropDownCheckBoxListExtensions = {
 				single: single, // pozor: single zde není opakem multiple!
 				multiple: multiple,
 				multipleWidth: multipleWidth,
-
 				container: $('body'),
 				minimumCountSelected: 9999
+			}
+
+			var onclickscript = $item.data("dropdowncheckboxlist-onclickscript");
+			var onblurscript = $item.data("dropdowncheckboxlist-onblurscript");
+			var onopenscript = $item.data("dropdowncheckboxlist-onopenscript");
+			var onclosescript = $item.data("dropdowncheckboxlist-onclosescript");
+
+			if (onclickscript) {
+				multipleSelectParams.onClick = function(view) { eval(onclickscript); }
+			}
+
+			if (onblurscript) {
+				multipleSelectParams.onBlur = function (view) { eval(onblurscript); }
+			}
+
+			if (onopenscript) {
+				multipleSelectParams.onOpen = function (view) { eval(onopenscript); }
+			}
+
+			if (onclosescript) {
+				multipleSelectParams.onClose = function (view) { eval(onclosescript); }
 			}
 
 			$(item).multipleSelect(multipleSelectParams);

@@ -24,6 +24,10 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class CheckBoxDropDownList : ListBoxExt
 	{
+		#region Private fields
+		private bool renderIsOpen = false;
+		#endregion
+
 		#region ShowSelectAll
 		/// <summary>
 		/// Indikuje, zda má být zobrazena volba pro rychlé zvolení všech hodnot.
@@ -96,6 +100,91 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region LeaveOpenInAutoPostBack
+		/// <summary>
+		/// Pokud je true, bude po autopostbacku stále otevřen.
+		/// </summary>
+		public bool LeaveOpenInAutoPostBack
+		{
+			get
+			{
+				return (bool)(ViewState["LeaveOpenInAutoPostBack"] ?? false);
+			}
+			set
+			{
+				ViewState["LeaveOpenInAutoPostBack"] = value;
+			}
+		}
+		#endregion
+
+		#region OnClientDropDownClick
+		/// <summary>
+		/// Klientský kód pro obsluhu kliknutí na javascriptový dropdown.
+		/// </summary>
+		public string OnClientDropDownClick
+		{
+			get
+			{
+				return (string)(ViewState["OnClientDropDownClick"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["OnClientDropDownClick"] = value;
+			}
+		}
+		#endregion
+
+		#region OnClientDropDownBlur
+		/// <summary>
+		/// Klientský kód pro obsluhu opuštění javascriptového dropdownu.
+		/// </summary>
+		public string OnClientDropDownBlur
+		{
+			get
+			{
+				return (string)(ViewState["OnClientDropDownBlur"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["OnClientDropDownBlur"] = value;
+			}
+		}
+		#endregion
+
+		#region OnClientDropDownOpen
+		/// <summary>
+		/// Klientský kód pro obsluhu otevření javascriptového dropdownu.
+		/// </summary>
+		public string OnClientDropDownOpen
+		{
+			get
+			{
+				return (string)(ViewState["OnClientDropDownOpen"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["OnClientDropDownOpen"] = value;
+			}
+		}
+		#endregion
+
+		#region OnClientDropDownClose
+		/// <summary>
+		/// Klientský kód pro obsluhu uzavření javascriptového dropdownu.
+		/// </summary>
+		public string OnClientDropDownClose
+		{
+			get
+			{
+				return (string)(ViewState["OnClientDropDownClose"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["OnClientDropDownClose"] = value;
+			}
+		}
+		#endregion
+
 		#region SupportsDisabledAttribute
 		/// <summary>
 		/// Indikuje, zda je povolen atribut "disabled". Vrací vždy true (na rozdíl od výchozí hodnoty .NET Frameworku, která vrací true jen při režimu kompatibility před 4.0.
@@ -103,7 +192,7 @@ namespace Havit.Web.UI.WebControls
 		public override bool SupportsDisabledAttribute
 		{
 			get
-			{
+			{				
 				return true;
 			}
 
@@ -117,6 +206,18 @@ namespace Havit.Web.UI.WebControls
 		public CheckBoxDropDownList()
 		{
 			SelectionMode = ListSelectionMode.Multiple;
+		}
+		#endregion
+
+		#region OnSelectedIndexChanged
+		protected override void OnSelectedIndexChanged(EventArgs e)
+		{
+			base.OnSelectedIndexChanged(e);
+
+			if (AutoPostBack && LeaveOpenInAutoPostBack)
+			{
+				renderIsOpen = true;
+			}
 		}
 		#endregion
 
@@ -169,6 +270,11 @@ namespace Havit.Web.UI.WebControls
 			writer.AddAttribute("data-dropdowncheckboxlist", "true");
 			writer.AddAttribute("data-dropdowncheckboxlist-showselectall", ShowSelectAll.ToString().ToLower());
 
+			if (renderIsOpen)
+			{
+				writer.AddAttribute("data-dropdowncheckboxlist-isopen", "true");
+			}
+
 			if (!String.IsNullOrEmpty(AllSelectedText))
 			{
 				writer.AddAttribute("data-dropdowncheckboxlist-allselectedtext", HttpUtilityExt.GetResourceString(AllSelectedText));
@@ -187,6 +293,26 @@ namespace Havit.Web.UI.WebControls
 			if (ItemWidth != Unit.Empty)
 			{
 				writer.AddAttribute("data-dropdowncheckboxlist-itemwidth", ((int)ItemWidth.Value).ToString());
+			}
+
+			if (!string.IsNullOrEmpty(OnClientDropDownBlur))
+			{
+				writer.AddAttribute("data-dropdowncheckboxlist-onblurscript", OnClientDropDownBlur);
+			}
+
+			if (!string.IsNullOrEmpty(OnClientDropDownClick))
+			{
+				writer.AddAttribute("data-dropdowncheckboxlist-onclickscript", OnClientDropDownClick);
+			}
+
+			if (!string.IsNullOrEmpty(OnClientDropDownOpen))
+			{
+				writer.AddAttribute("data-dropdowncheckboxlist-onopenscript", OnClientDropDownOpen);
+			}
+
+			if (!string.IsNullOrEmpty(OnClientDropDownClose))
+			{
+				writer.AddAttribute("data-dropdowncheckboxlist-onclosescript", OnClientDropDownClose);
 			}
 
 			if (SelectionMode == ListSelectionMode.Single)

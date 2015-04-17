@@ -13,16 +13,6 @@
         </asp:ScriptManager>
 
         <div>
-            <havit:CheckBoxDropDownList ID="MyListBox" runat="server">
-                <Items>
-                    <asp:ListItem Text="Jedna" />
-                    <asp:ListItem Text="Dva" />
-                    <asp:ListItem Text="Tři" />
-                    <asp:ListItem Text="Čtyři" />
-                    <asp:ListItem Text="Pět" />
-                    <asp:ListItem Text="Šest" />
-                </Items>
-            </havit:CheckBoxDropDownList>
 
             <havit:CheckBoxDropDownList ID="CheckBoxDropDownList1" PlaceHolder="Vyber" ShowSelectAll="true" AllSelectedText="Vybráno vše" AutoPostBack="true" Width="300px" ItemWidth="100px" runat="server">
                 <Items>
@@ -51,14 +41,35 @@
             </select>
 
             <asp:Button Text="Postback" runat="server" />
+			
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+
+            <havit:CheckBoxDropDownList ID="MyListBox" AutoPostBack="True" runat="server">
+                <Items>
+                    <asp:ListItem Text="Jedna" />
+                    <asp:ListItem Text="Dva" />
+                    <asp:ListItem Text="Tři" />
+                    <asp:ListItem Text="Čtyři" />
+                    <asp:ListItem Text="Pět" />
+                    <asp:ListItem Text="Šest" />
+                </Items>
+            </havit:CheckBoxDropDownList>
 
             <asp:UpdatePanel runat="server">
                 <ContentTemplate>
+	                
                     <asp:Button Text="Async Postback" runat="server" />
                 </ContentTemplate>
             </asp:UpdatePanel>
-            <br />
-            <br />
     </form>
 </body>
 </html>

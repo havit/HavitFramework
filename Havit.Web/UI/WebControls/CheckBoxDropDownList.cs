@@ -210,6 +210,9 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 
 		#region OnSelectedIndexChanged
+		/// <summary>
+		/// Occurs when the selection from the list control changes between posts to the server.
+		/// </summary>
 		protected override void OnSelectedIndexChanged(EventArgs e)
 		{
 			base.OnSelectedIndexChanged(e);

@@ -201,7 +201,7 @@
     <Content Include="Content\bootstrap\alerts.less" />
     <Content Include="Content\havit.web.bootstrap\validation.less" />
     <Content Include="Content\havit.web.bootstrap\modals.less" />
-    <Content Include="Content\havit.web.bootstrap\havit.web.bootstrap.less" />
+    <Content Include="Content\havit.web.bootstrap\havit-web-bootstrap.less" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

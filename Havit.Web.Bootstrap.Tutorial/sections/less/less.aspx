@@ -12,7 +12,7 @@
 │   ├── bootstrap.less
 │   └── (+ other less files from Twitter.Bootstrap.Less NuGet package)
 ├── havit.web.bootstrap/
-│   ├── havit.web.bootstrap.less
+│   ├── havit-web-bootstrap.less
 │   └── (+ other less files from Havit.Web.Bootstrap NuGet package)
 └── site.less
 </code></pre>
@@ -23,14 +23,14 @@
 
 	<pre><code>@import "bootstrap/bootstrap.less";
 @import "toastr.less";
-@import "havit.web.bootstrap/havit.web.bootstrap.less";
+@import "havit.web.bootstrap/havit-web-bootstrap.less";
 
 ...
 </code></pre>
 		
 	<div class="alert-danger">
 		<blockquote>
-			Never modify bootstrap or havit.web.bootstrap LESS files (or LESS files from other dependency package) otherwise your changes will be overwritten in next NuGet package update. Use LESS variables or css class inheritance in site.less (or other less file which you have in your hands).
+			Never modify bootstrap or havit-web-bootstrap LESS files (or LESS files from other dependency package) otherwise your changes will be overwritten in next NuGet package update. Use LESS variables or css class inheritance in site.less (or other less file which you have in your hands).
 		</blockquote>
 	</div>
 

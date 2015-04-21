@@ -44,12 +44,15 @@
 						<havit:AutoCompleteTextBox
 							ID="Test1ACTB"
 							ServiceUrl="~/Services/AutoCompleteTextBoxService.svc/GetSuggestionsContext"
-							AutoPostBack="true"
 							UseClientCache="false"
 							Context="lorem ipsum dolor sit amet"
 							runat="server" />
+						<%--AutoPostBack="true"--%>
 					</div>
 				</ContentTemplate>
+				<Triggers>
+					<asp:PostBackTrigger ControlID="ButtonBt" />
+				</Triggers>
 			</asp:UpdatePanel>
 
 			<asp:UpdatePanel UpdateMode="Conditional" runat="server">

@@ -357,7 +357,7 @@ var havitDropDownCheckBoxListExtensions = {
 			var onclosescript = $item.data("dropdowncheckboxlist-onclosescript");
 
 			if (onclickscript) {
-				multipleSelectParams.onClick = function(view) { eval(onclickscript); }
+				multipleSelectParams.onClick = function (view) { eval(onclickscript); }
 			}
 
 			if (onblurscript) {
@@ -415,7 +415,6 @@ var havitAutoCompleteTextBoxExtensions = {
 			var serviceurl = $item.data("serviceurl");
 			var minchars = $item.data("minchars") || 1;
 			var deferrequest = $item.data("deferRequest") || 0;
-			var autopostback = $item.data("autopostback") || false;
 			var nocache = $item.data("nocache") || false;
 			var maxheight = $item.data("maxheight") || 300;
 			var queryParams = $(item).data("params") || {};
@@ -441,7 +440,7 @@ var havitAutoCompleteTextBoxExtensions = {
 			var $hiddenfield = $item.children("input[type='hidden']");
 
 			$item.data["selectedvalue"] = $textbox.val();
-			$textbox.blur(function() { havitAutoCompleteTextBoxExtensions.onBlur($textbox, $hiddenfield, $item) });
+			$textbox.blur(function () { havitAutoCompleteTextBoxExtensions.onBlur($textbox, $hiddenfield, $item) });
 
 			$textbox.autocomplete(options);
 		});
@@ -457,11 +456,7 @@ var havitAutoCompleteTextBoxExtensions = {
 		$item.data["selectedvalue"] = suggestion.value;
 
 		var onselectscript = $item.data("onselectscript");
-		if (onselectscript) {
-			if (!havitAutoCompleteTextBoxExtensions.doOnSelectScript(suggestion, onselectscript)) {
-				return;
-			}
-		}
+		havitAutoCompleteTextBoxExtensions.fireOnSelectScriptEvent(suggestion, onselectscript);
 
 		var postbackScript = $item.data("postbackscript");
 		if (postbackScript != undefined) {
@@ -476,8 +471,23 @@ var havitAutoCompleteTextBoxExtensions = {
 		var $hiddenfield = $(hiddenfield);
 
 		if ($textbox.val() != selectedvalue) {
-			$textbox.val('');
-			$hiddenfield.val('');
+			$textbox.val("");
+			$hiddenfield.val("");
+
+			var onselectscript = $item.data("onselectscript");
+			var suggestion = {
+				data: "",
+				value: ""
+			};
+			havitAutoCompleteTextBoxExtensions.fireOnSelectScriptEvent(suggestion, onselectscript);
+		}
+	},
+
+	fireOnSelectScriptEvent: function (suggestion, onselectscript) {
+		if (onselectscript) {
+			if (!havitAutoCompleteTextBoxExtensions.doOnSelectScript(suggestion, onselectscript)) {
+				return;
+			}
 		}
 	},
 

@@ -18,6 +18,7 @@ namespace WebApplicationTest.HavitWebTests
 			base.OnInit(e);
 			Test1ACTB.SelectedValueChanged += Test1ACTB_ValueChanged;
 			PersisterBtn.Click += PersisterBtn_Click;
+			ButtonBt.Click += ButtonBt_Click;
 		}
 		#endregion
 
@@ -38,6 +39,13 @@ namespace WebApplicationTest.HavitWebTests
 			Test1ACTB.Context = r.Next(10).ToString("n2");
 
 			Messenger.Default.AddMessage("Postback");
+		}
+		#endregion
+
+		#region ButtonBt_Click
+		private void ButtonBt_Click(object sender, EventArgs e)
+		{
+			Response.Write(Test1ACTB.SelectedText + "/" + Test1ACTB.SelectedValue);
 		}
 		#endregion
 

@@ -536,25 +536,22 @@ namespace Havit.Web.UI.WebControls
 				cell.Attributes["data-suppressrowclick"] = "true";
 			}
 
-			if (cellType == DataControlCellType.Header)
+			if ((cellType == DataControlCellType.Header) && ShowNewButton) // header řešíme jen v režimu ShowNewButton, jinak necháme výchozí chování voláním base.InitializeCell (v bloku else níže)
 			{
-				if (ShowNewButton)
+				string newText = NewText;
+				string newTooltip = NewTooltip;
+				string newCssClass = NewCssClass;
+				string newDisabledCssClass = NewDisabledCssClass;
+				string newImageUrl = NewImageUrl;
+				if (String.IsNullOrEmpty(newText) && String.IsNullOrEmpty(newTooltip) && String.IsNullOrEmpty(newCssClass) && String.IsNullOrEmpty(newDisabledCssClass) && String.IsNullOrEmpty(newImageUrl))
 				{
-					string newText = NewText;
-					string newTooltip = NewTooltip;
-					string newCssClass = NewCssClass;
-					string newDisabledCssClass = NewDisabledCssClass;
-					string newImageUrl = NewImageUrl;
-					if (String.IsNullOrEmpty(newText) && String.IsNullOrEmpty(newTooltip) && String.IsNullOrEmpty(newCssClass) && String.IsNullOrEmpty(newDisabledCssClass) && String.IsNullOrEmpty(newImageUrl))
-					{
-						newText = InsertText;
-						newTooltip = InsertTooltip;
-						newCssClass = InsertCssClass;
-						newDisabledCssClass = InsertDisabledCssClass;
-						newImageUrl = InsertImageUrl;						
-					}
-					AddButtonToCell(cell, CommandNames.New, HttpUtilityExt.GetResourceString(newText), HttpUtilityExt.GetResourceString(newTooltip), newCssClass, newDisabledCssClass, false, String.Empty, rowIndex, newImageUrl);
+					newText = InsertText;
+					newTooltip = InsertTooltip;
+					newCssClass = InsertCssClass;
+					newDisabledCssClass = InsertDisabledCssClass;
+					newImageUrl = InsertImageUrl;
 				}
+				AddButtonToCell(cell, CommandNames.New, HttpUtilityExt.GetResourceString(newText), HttpUtilityExt.GetResourceString(newTooltip), newCssClass, newDisabledCssClass, false, String.Empty, rowIndex, newImageUrl);
 			}
 			else if (cellType == DataControlCellType.DataCell)
 			{
@@ -867,14 +864,14 @@ namespace Havit.Web.UI.WebControls
 				}
 			}
 
-			if (args.CommandName == CommandNames.New)
-			{
-				TableCell headerCell = control.Parent as TableCell;
-				if (headerCell != null)
-				{
-					headerCell.CssClass = (HeaderStyle.CssClass + " " + (args.Enabled ? HeaderNewCssClass : HeaderNewDisabledCssClass)).Trim();
-				}
-			}
+			//if (args.CommandName == CommandNames.New)
+			//{
+			//	TableCell headerCell = control.Parent as TableCell;
+			//	if (headerCell != null)
+			//	{
+			//		headerCell.CssClass = (HeaderStyle.CssClass + " " + (args.Enabled ? HeaderNewCssClass : HeaderNewDisabledCssClass)).Trim();
+			//	}
+			//}
 		}
 		#endregion
 

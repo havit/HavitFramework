@@ -237,7 +237,6 @@ namespace Havit.Web.UI.WebControls
 			ClientScripts.HavitFrameworkClientScriptHelper.RegisterHavitFrameworkClientScript(this.Page);
 			ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, HavitFrameworkClientScriptHelper.JQueryMultipleSelectResourceMappingName);
 			ScriptManager.RegisterStartupScript(this.Page, typeof(CheckBoxDropDownList), "Startup", "havitDropDownCheckBoxListExtensions.init();", true);
-			ScriptManager.RegisterOnSubmitStatement(this.Page, typeof(CheckBoxDropDownList), "OnSubmit", "havitDropDownCheckBoxListExtensions.beforeSubmit();");
 		}
 		#endregion
 

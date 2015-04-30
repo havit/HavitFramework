@@ -328,6 +328,9 @@ var havitDropDownCheckBoxListExtensions = {
 	init: function () {
 		$("select[data-dropdowncheckboxlist]").each(function (index, item) {
 			var $item = $(item);
+			if ($item.data("multipleSelect")) {
+				return;
+			}
 
 			var isOpen = $item.data("dropdowncheckboxlist-isopen") || false;
 			var selectAll = $item.data("dropdowncheckboxlist-showselectall") || false;
@@ -373,16 +376,6 @@ var havitDropDownCheckBoxListExtensions = {
 			}
 
 			$(item).multipleSelect(multipleSelectParams);
-		});
-	},
-
-	beforeSubmit: function () {
-		$("select[data-dropdowncheckboxlist]").each(function (index, item) {
-			var $item = $(item);
-			var multipleSelect = $item.data("multipleSelect");
-			if (multipleSelect && multipleSelect.$drop) {
-				multipleSelect.$drop.html('');
-			}
 		});
 	}
 }

@@ -101,16 +101,35 @@ namespace Havit.Services.Ares
 
 			XNamespace aresDT = XNamespace.Get("http://wwwinfo.mfcr.cz/ares/xml_doc/schemas/ares/ares_datatypes/v_1.0.3");
 
-			// Error
-			XElement eElement = aresResponseXDocument.Root.Elements().Elements(aresDT + "E").SingleOrDefault();
-			if (eElement != null)
+			// Errors
+			IEnumerable<XElement> eElements = aresResponseXDocument.Root.Elements().Elements(aresDT + "E");
+			if ((eElements != null) && (eElements.Count() > 0))
 			{
-				if ((int)eElement.Elements(aresDT + "EK").SingleOrDefault() == 1 /* Nenalezen */)
+				bool hasError = false;
+				System.Text.StringBuilder errorMessages = new System.Text.StringBuilder();
+				foreach (XElement item in eElements)
 				{
-					return; // nehlásíme chybu ani neparsujeme data
+					if (((int)item.Elements(aresDT + "EK").SingleOrDefault() == 1 /* Nenalezen */) && ((string)item.Elements(aresDT + "ET").SingleOrDefault()).Contains("Chyba 71 - nenalezeno"))
+					{
+						// nehlásíme chybu
+						continue;
+					}
+					else
+					{
+						hasError = true;
+						errorMessages.Append(String.Format("{0}; ", (string)item.Elements(aresDT + "ET").SingleOrDefault()));
+					}
 				}
 
-				throw new AresException((string)eElement.Elements(aresDT + "ET").SingleOrDefault());
+				if (!hasError)
+				{
+					// nehlásíme chybu ani neparsujeme data - jde o prosté nenalezení záznamu
+					return;
+				}
+				else
+				{
+					throw new AresException(errorMessages.ToString());
+				}
 			}
 
 			lock (result)
@@ -151,16 +170,35 @@ namespace Havit.Services.Ares
 
 			XNamespace aresDT = XNamespace.Get("http://wwwinfo.mfcr.cz/ares/xml_doc/schemas/ares/ares_datatypes/v_1.0.3");
 
-			// Error
-			XElement eElement = aresResponseXDocument.Root.Elements().Elements(aresDT + "E").SingleOrDefault();
-			if (eElement != null)
+			// Errors
+			IEnumerable<XElement> eElements = aresResponseXDocument.Root.Elements().Elements(aresDT + "E");
+			if ((eElements != null) && (eElements.Count() > 0))
 			{
-				if ((int)eElement.Elements(aresDT + "EK").SingleOrDefault() == 1 /* Nenalezen */)
+				bool hasError = false;
+				System.Text.StringBuilder errorMessages = new System.Text.StringBuilder();
+				foreach (XElement item in eElements)
 				{
-					return; // nehlásíme chybu ani neparsujeme data
+					if (((int)item.Elements(aresDT + "EK").SingleOrDefault() == 1 /* Nenalezen */) && ((string)item.Elements(aresDT + "ET").SingleOrDefault()).Contains("Chyba 71 - nenalezeno"))
+					{
+						// nehlásíme chybu
+						continue;
+					}
+					else
+					{
+						hasError = true;
+						errorMessages.Append(String.Format("{0}; ", (string)item.Elements(aresDT + "ET").SingleOrDefault()));
+					}
 				}
 
-				throw new AresException((string)eElement.Elements(aresDT + "ET").SingleOrDefault());
+				if (!hasError)
+				{
+					// nehlásíme chybu ani neparsujeme data - jde o prosté nenalezení záznamu
+					return;
+				}
+				else
+				{
+					throw new AresException(errorMessages.ToString());
+				}
 			}
 
 			lock (result)

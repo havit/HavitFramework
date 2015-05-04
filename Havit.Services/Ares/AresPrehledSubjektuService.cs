@@ -138,7 +138,7 @@ namespace Havit.Services.Ares
 			// Výpis BASIC (element).
 			IEnumerable<XElement> vypisOrElements = aresResponse.Descendants(aresDT + "S");
 
-			if (vypisOrElements != null)
+			if ((vypisOrElements != null) && (vypisOrElements.Count() > 0))
 			{
 				foreach (XElement item in vypisOrElements)
 				{

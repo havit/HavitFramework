@@ -9,9 +9,9 @@ namespace Havit.ServicesTest
 	[TestClass]
 	public class AresServiceTest
 	{
-		#region GetBasicDataTest
+		#region GetAresBasicDataTest
 		[TestMethod]
-		public void GetBasicDataTest()
+		public void GetAresBasicDataTest()
 		{
 			string ico = "28186796";
 			AresService service = new AresService(ico);
@@ -20,9 +20,9 @@ namespace Havit.ServicesTest
 		}
 		#endregion
 
-		#region GetObchodniRejstrikDataTest
+		#region GetAresObchodniRejstrikDataTest
 		[TestMethod]
-		public void GetObchodniRejstrikDataTest()
+		public void GetAresObchodniRejstrikDataTest()
 		{
 			string ico = "28186796";
 			AresService service = new AresService(ico);

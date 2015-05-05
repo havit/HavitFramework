@@ -107,7 +107,7 @@ namespace Havit.Services.Ares
 			XNamespace aresDT = XNamespace.Get("http://wwwinfo.mfcr.cz/ares/xml_doc/schemas/ares/ares_datatypes/v_1.0.4");
 
 			// Error
-			XElement eElement = aresResponseXDocument.Root.Elements().Elements(aresDT + "Help").SingleOrDefault();
+			XElement eElement = aresResponseXDocument.Root.Elements().Elements(aresDT + "Help").FirstOrDefault();
 			if (eElement != null)
 			{
 				XElement rElement = eElement.Elements(aresDT + "R").FirstOrDefault();
@@ -143,9 +143,9 @@ namespace Havit.Services.Ares
 				foreach (XElement item in vypisOrElements)
 				{
 					AresPrehledSubjektuItem resultItem = new AresPrehledSubjektuItem();
-					resultItem.Ico = (string)item.Elements(aresDT + "ico").SingleOrDefault();
-					resultItem.Nazev = (string)item.Elements(aresDT + "ojm").SingleOrDefault();
-					resultItem.Kontakt = (string)item.Elements(aresDT + "jmn").SingleOrDefault();
+					resultItem.Ico = (string)item.Elements(aresDT + "ico").FirstOrDefault();
+					resultItem.Nazev = (string)item.Elements(aresDT + "ojm").FirstOrDefault();
+					resultItem.Kontakt = (string)item.Elements(aresDT + "jmn").FirstOrDefault();
 					result.Data.Add(resultItem);
 				}
 			}

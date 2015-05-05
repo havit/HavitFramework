@@ -864,14 +864,14 @@ namespace Havit.Web.UI.WebControls
 				}
 			}
 
-			//if (args.CommandName == CommandNames.New)
-			//{
-			//	TableCell headerCell = control.Parent as TableCell;
-			//	if (headerCell != null)
-			//	{
-			//		headerCell.CssClass = (HeaderStyle.CssClass + " " + (args.Enabled ? HeaderNewCssClass : HeaderNewDisabledCssClass)).Trim();
-			//	}
-			//}
+			if (args.CommandName == CommandNames.New)
+			{
+				TableCell headerCell = control.Parent as TableCell;
+				if (headerCell != null)
+				{
+					headerCell.CssClass = (HeaderStyle.CssClass + " " + (args.Enabled ? HeaderNewCssClass : HeaderNewDisabledCssClass)).Trim();
+				}
+			}
 		}
 		#endregion
 

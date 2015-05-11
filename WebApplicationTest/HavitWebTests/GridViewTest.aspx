@@ -29,8 +29,8 @@
 					<EditItemTemplate>						
 						<asp:TextBox ID="NazevTextBox" Text="<%# BindItem.Nazev %>" runat="server" />
 					</EditItemTemplate>
-				</havit:TemplateFieldExt>
-				<havit:GridViewCommandField ButtonType="Link" ShowCancelButton="true" ShowDeleteButton="true" ShowInsertButton="true" ShowEditButton="true" DeleteConfirmationText="Opravdu?" HeaderText="HEADER" />
+				</havit:TemplateFieldExt>								
+				<havit:GridViewCommandField ButtonType="Link" ShowCancelButton="true" ShowDeleteButton="true" ShowInsertButton="true" ShowEditButton="true" DeleteConfirmationText="Opravdu smazat {0}?" DeleteConfirmationField="Nazev" HeaderText="HEADER" />
 			</Columns>
 		</havit:EnterpriseGridView>
 

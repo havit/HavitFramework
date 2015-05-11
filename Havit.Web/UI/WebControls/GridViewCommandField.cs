@@ -35,22 +35,40 @@ namespace Havit.Web.UI.WebControls
 
 		#region DeleteConfirmationText
 		/// <summary>
-		/// Text, na který se má ptát jscript:confirm() před smazáním záznamu. Pokud je prázdný, na nic se neptá.
+		/// Text, na který se má ptát javascriptový confirm() před smazáním záznamu. Pokud je prázdný, na nic se neptá.
+		/// Pokud je nastaveno DeleteConfirmationField, pak je hodnota naformátována pomocí String.Format s hodnotou, která je získána z vlastnosti bindovaného objektu. Pokud je DeleteConfirmationField prázdný, pak není String.Format použito (pozor na možný rozdíl práce se složenými závorkami v textu).
 		/// </summary>
+		/// <example>
+		/// Pokud bindujeme seznam (například) zákazníků, pak může být DeleteConfirmationText="Opravdu si přejete smazat zákazníka {0}" a DeleteConfirmationField="Nazev".
+		/// </example>
 		public string DeleteConfirmationText
 		{
 			get
 			{
-				object tmp = ViewState["DeleteConfirmationText"];
-				if (tmp != null)
-				{
-					return (string)tmp;
-				}
-				return String.Empty;
+				return (string)ViewState["DeleteConfirmationText"] ?? String.Empty;
 			}
 			set
 			{
 				ViewState["DeleteConfirmationText"] = value;
+			}
+		}
+		#endregion
+
+		#region DeleteConfirmationField
+		/// <summary>
+		/// Vlastnost bindovaného objektu, jejíž hodnota je použita pro String.Format.
+		/// Pokud je nastaveno, pak je hodnota DeleteConfirmationText naformátována pomocí String.Format s hodnotou, která je získána z vlastnosti bindovaného objektu. Pokud je DeleteConfirmationField prázdný, pak není String.Format použito (pozor na možný rozdíl práce se složenými závorkami v textu).
+		/// 
+		/// </summary>		
+		public string DeleteConfirmationField
+		{
+			get
+			{
+				return (string)ViewState["DeleteConfirmationField"] ?? String.Empty;
+			}
+			set
+			{
+				ViewState["DeleteConfirmationField"] = value;
 			}
 		}
 		#endregion
@@ -633,25 +651,6 @@ namespace Havit.Web.UI.WebControls
 							}
 
 							IButtonControl button = this.AddButtonToCell(cell, "Delete", HttpUtilityExt.GetResourceString(this.DeleteText), HttpUtilityExt.GetResourceString(this.DeleteTooltip), DeleteCssClass, DeleteDisabledCssClass, false, string.Empty, rowIndex, this.DeleteImageUrl);
-
-							// doplneni o DeleteConfirmText
-							string deleteConfirmationTextResolved = HttpUtilityExt.GetResourceString(DeleteConfirmationText);
-							if (!String.IsNullOrEmpty(deleteConfirmationTextResolved))
-							{
-								if (button is Button)
-								{
-									((Button)button).OnClientClick = String.Format("if (!confirm('{0}')) return false;", deleteConfirmationTextResolved.Replace("'", "''"));
-								}
-								else if (button is LinkButton)
-								{
-									((LinkButton)button).OnClientClick = String.Format("if (!confirm('{0}')) return false;", deleteConfirmationTextResolved.Replace("'", "''"));
-								}
-								else
-								{
-									Debug.Assert(button is ImageButton);
-									((ImageButton)button).OnClientClick = String.Format("if (!confirm('{0}')) return false;", deleteConfirmationTextResolved.Replace("'", "''"));
-								}
-							}
 						}
 					}
 				}
@@ -860,6 +859,35 @@ namespace Havit.Web.UI.WebControls
 					if (!String.IsNullOrEmpty(cssClassDisabled))
 					{
 						button.CssClass = cssClassDisabled;
+					}
+				}
+			}
+
+			if (args.CommandName == CommandNames.Delete)
+			{
+				// doplneni o DeleteConfirmText
+				string deleteConfirmationTextResolved = HttpUtilityExt.GetResourceString(DeleteConfirmationText);
+
+				if (!String.IsNullOrEmpty(DeleteConfirmationField))
+				{
+					object deleteConfirmationValue = DataBinderExt.GetValue(row.DataItem, DeleteConfirmationField);
+					deleteConfirmationTextResolved = String.Format(deleteConfirmationTextResolved, deleteConfirmationValue);
+				}
+
+				if (!String.IsNullOrEmpty(deleteConfirmationTextResolved))
+				{
+					if (control is Button)
+					{
+						((Button)control).OnClientClick = String.Format("if (!confirm('{0}')) return false;", deleteConfirmationTextResolved.Replace("'", "''"));
+					}
+					else if (control is LinkButton)
+					{
+						((LinkButton)control).OnClientClick = String.Format("if (!confirm('{0}')) return false;", deleteConfirmationTextResolved.Replace("'", "''"));
+					}
+					else
+					{
+						Debug.Assert(control is ImageButton);
+						((ImageButton)control).OnClientClick = String.Format("if (!confirm('{0}')) return false;", deleteConfirmationTextResolved.Replace("'", "''"));
 					}
 				}
 			}

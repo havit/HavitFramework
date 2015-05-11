@@ -13,78 +13,35 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Vrátí CommandName tlačítka.
 		/// </summary>
-		public string CommandName
-		{
-			get
-			{
-				return _commandName;
-			}
-		}
-		private string _commandName;
+		public string CommandName { get; private set; }
 		#endregion
 
 		#region Visible
 		/// <summary>
 		/// Vlastnost Visible tlačítka.
 		/// </summary>
-		public bool Visible
-		{
-			get
-			{
-				return _visible;
-			}
-			set
-			{
-				_visible = value;
-			}
-		}
-		private bool _visible;
+		public bool Visible { get; set; }
 		#endregion
 
 		#region Enabled
 		/// <summary>
 		/// Vlastnosti Enabled tlačítka.
 		/// </summary>
-		public bool Enabled
-		{
-			get
-			{
-				return _enabled;
-			}
-			set
-			{
-				_enabled = value;
-			}
-		}
-		private bool _enabled;
+		public bool Enabled { get; set; }
 		#endregion
 
 		#region RowIndex
 		/// <summary>
 		/// Index řádku, kterého se událost týká.
 		/// </summary>
-		public int RowIndex
-		{
-			get
-			{
-				return _rowIndex;
-			}
-		}
-		private int _rowIndex;
+		public int RowIndex { get; private set; }
 		#endregion
 
 		#region DataItem
 		/// <summary>
 		/// DataItem řádku, kterého se událost týká.
 		/// </summary>
-		public object DataItem
-		{
-			get
-			{
-				return _dataItem;
-			}
-		}
-		private object _dataItem;
+		public object DataItem { get; private set; }
 		#endregion
 
 		#region GridViewRowCustomizingCommandButtonEventArgs
@@ -96,9 +53,9 @@ namespace Havit.Web.UI.WebControls
 		/// <param name="dataItem">Datový objekt řádku.</param>
 		public GridViewRowCustomizingCommandButtonEventArgs(string commandName, int rowIndex, object dataItem)
 		{
-			this._commandName = commandName;
-			this._rowIndex = rowIndex;
-			this._dataItem = dataItem;
+			this.CommandName = commandName;
+			this.RowIndex = rowIndex;
+			this.DataItem = dataItem;
 		}
 		#endregion
 	}

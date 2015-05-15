@@ -76,7 +76,7 @@ namespace Havit.Business
 
 		#region MaximumLength
 		/// <summary>
-		/// Maximální délka řetězce (u typů varchar, nvarchar, apod.), případně velikost datového typu (u typů 
+		/// Maximální délka řetězce (u typů varchar, nvarchar, apod.), případně velikost datového typu (u číselných typů).
 		/// </summary>
 		public int MaximumLength
 		{

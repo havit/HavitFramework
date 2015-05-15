@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/HavitWebBootstrapTests/Bootstrap.Master" AutoEventWireup="false" CodeBehind="ValidatorsTest.aspx.cs" Inherits="WebApplicationTest.HavitWebBootstrapTests.ValidatorsTest" %>
 
 <%@ Register TagPrefix="uc" TagName="ValidationTargetTest" Src="~/HavitWebBootstrapTests/Controls/ValidationTargetTest.ascx" %>
-
+<%@ Register TagPrefix="uc" namespace="WebApplicationTest.HavitWebBootstrapTests.Controls" assembly="WebApplicationTest" %>
 
 <asp:Content ContentPlaceHolderID="MainCPH" runat="server">
 	<style>
@@ -81,6 +81,15 @@
 	<br />
 	<bc:Button Text="Postback" ValidationGroup="E" runat="server" />
 
+	<br />
+	<br />
+
+	<h1>Validation Group F (Havit.Web.Bootstrap.UI.WebControls.BaseValidator)</h1>
+	<bc:ValidationSummary ValidationGroup="F" runat="server" />
+	<asp:TextBox ID="TB6" placeholder="sem by měla přijít url" runat="server" />
+	<uc:TestUriValidator ControlToValidate="TB6" ValidationGroup="F" ErrorMessage="Chybný formát url." runat="server"/>
+	<bc:Button Text="Postback" ValidationGroup="F" runat="server" />
+		
 	<br />
 	<br />
 

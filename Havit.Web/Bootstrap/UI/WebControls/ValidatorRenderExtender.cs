@@ -38,7 +38,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Changes validator default values to:
 		/// - Display = "None"
 		/// </summary>
-		internal static void Setup(BaseValidator validator)
+		internal static void Setup(System.Web.UI.WebControls.BaseValidator validator)
 		{			
 			validator.Display = ValidatorDisplay.None;
 			validator.SetFocusOnError = false;
@@ -51,7 +51,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// </summary>
 		internal static void OnPreRender(IValidatorExtension validator)
 		{
-			BaseValidator baseValidator = (BaseValidator)validator;
+			System.Web.UI.WebControls.BaseValidator baseValidator = (System.Web.UI.WebControls.BaseValidator)validator;
 
 			if (baseValidator.Enabled && validator.ShowToolTip && String.IsNullOrEmpty(validator.ControlToValidate) && HttpContext.Current.IsDebuggingEnabled)
 			{

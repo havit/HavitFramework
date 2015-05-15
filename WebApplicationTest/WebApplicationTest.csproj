@@ -484,6 +484,7 @@
     <Compile Include="HavitWebBootstrapTests\Controls\ModalDialogUserControlTest2.ascx.designer.cs">
       <DependentUpon>ModalDialogUserControlTest2.ascx</DependentUpon>
     </Compile>
+    <Compile Include="HavitWebBootstrapTests\Controls\TestUriValidator.cs" />
     <Compile Include="HavitWebBootstrapTests\Controls\ValidationTargetTest.ascx.cs">
       <DependentUpon>ValidationTargetTest.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

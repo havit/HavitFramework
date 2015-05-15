@@ -125,7 +125,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			List<string> lines = new List<string>();
 			ValidatorCollection validators = Page.GetValidators(this.ValidationGroup);
-			foreach (BaseValidator validator in validators)
+			foreach (System.Web.UI.WebControls.BaseValidator validator in validators)
 			{
 				if (!validator.IsValid && !String.IsNullOrEmpty(validator.ErrorMessage))
 				{

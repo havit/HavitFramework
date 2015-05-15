@@ -4,6 +4,7 @@ using System.Text;
 using System.Web.UI.WebControls;
 using System.Collections;
 using System.Globalization;
+using System.Web.UI;
 
 namespace Havit.Web.UI.WebControls
 {
@@ -11,6 +12,7 @@ namespace Havit.Web.UI.WebControls
     /// Vylepšený <see cref="System.Web.UI.WebControls.CheckBoxList"/>.
     /// Podporuje lepší zpracování hodnoty DataTextField při databindingu.
     /// </summary>
+	[ValidationProperty("SelectedValue")]
 	public class CheckBoxListExt : CheckBoxList
 	{
 		#region ItemDataBound (event)

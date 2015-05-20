@@ -154,6 +154,16 @@ namespace Havit.Services.Ares
 				/// Popis statutárního orgánu (obsahuje text, jakým zpùsobem orgán statutární orgán jedná).
 				/// </summary>
 				public string Text { get; set; }
+
+				/// <summary>
+				/// Køstní jméno
+				/// </summary>
+				public string KrestniJmeno { get; set; }
+
+				/// <summary>
+				/// Pøíjmení
+				/// </summary>
+				public string Prijmeni { get; set; }
 			}
 		}
 #endregion

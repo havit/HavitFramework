@@ -271,6 +271,28 @@ namespace Havit.Services.Ares
 					{
 						result.StatutarniOrgan.Text = ((string)statutartniOrganTextElement).Trim();
 					}
+					var csoElement = soElement.Element(aresDT + "CSO");
+					if (csoElement != null)
+					{
+						var cElement = csoElement.Element(aresDT + "C");
+						if (cElement != null)
+						{
+							var foElement = cElement.Element(aresDT + "FO");
+							if (foElement != null)
+							{
+								var jmenoElement = foElement.Element(aresDT + "J");
+								if (jmenoElement != null)
+								{
+									result.StatutarniOrgan.KrestniJmeno = jmenoElement.Value;
+								}
+								var prijmeniElement = foElement.Element(aresDT + "P");
+								if (prijmeniElement != null)
+								{
+									result.StatutarniOrgan.Prijmeni = prijmeniElement.Value;
+								}
+							}
+						}
+					}
 				}
 			}
 		}

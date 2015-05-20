@@ -27,7 +27,7 @@ namespace Havit.ServicesTest
 			string ico = "28186796";
 			AresService service = new AresService(ico);
 			service.Timeout = 60 * 1000; /* 60 sec */
-			service.GetData(AresRegistr.ObchodniRejstrik);
+			var data = service.GetData(AresRegistr.ObchodniRejstrik);
 		}
 		#endregion
 
@@ -63,6 +63,41 @@ namespace Havit.ServicesTest
 			AresPrehledSubjektuService service = new AresPrehledSubjektuService();
 			service.Timeout = 60 * 1000; /* 60 sec */
 			service.GetData(name, obec);
+		}
+		#endregion
+
+		#region GetStandardDataTest
+		[TestMethod]
+		public void GetStandardDataTest_Havit()
+		{
+			const string Havit = "HAVIT, s.r.o.";
+			AresStandardService service = new AresStandardService();
+			var result = service.GetData(Havit);
+			Assert.AreEqual(1, result.Data.Count);
+			Assert.IsFalse(result.PrilisMnohoVysledku);
+			Assert.AreEqual("25612697", result.Data[0].Ico);
+			Assert.AreEqual(Havit, result.Data[0].Nazev);
+		}
+
+		[TestMethod]
+		public void GetStandardDataTest_Msfest()
+		{
+			AresStandardService service = new AresStandardService();
+			var result = service.GetData("ms fest");
+			Assert.AreEqual(1, result.Data.Count);
+			Assert.IsFalse(result.PrilisMnohoVysledku);
+			Assert.AreEqual("01251554", result.Data[0].Ico);
+			Assert.AreEqual("MS Fest, o.s.", result.Data[0].Nazev);
+		}
+		#endregion
+
+		#region GetStandardDataTest_Empty
+		[TestMethod]
+		public void GetStandardDataTest_Empty()
+		{
+			AresStandardService service = new AresStandardService();
+			var result = service.GetData("weiojgwhjigwnmgerjgwrejgw"); // hledám nějaký nesmysl
+			Assert.AreEqual(0, result.Data.Count);
 		}
 		#endregion
 	}

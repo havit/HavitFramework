@@ -247,7 +247,7 @@ namespace Havit.Web.Security
 				}
 
 				AddAuthCookie(username, roles, createPersistentCookie, cookiePath);
-				context.Response.Redirect(redirectUrl, false);
+				context.Response.Redirect(redirectUrl, true);
 			}
 		}
 

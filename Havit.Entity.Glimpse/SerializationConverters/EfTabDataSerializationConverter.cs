@@ -25,13 +25,13 @@ namespace Havit.Entity.Glimpse.SerializationConverters
 					.Column(message.Operation)
 					.Column(message.CommandText)
 					.Column(GetParametersSection(message.CommandParameters))
-					.Column(message.IsAsync)
+					.Column(message.IsAsync ? "yes" : "no")
 					.Column(GetDisplayValue(message.Exception ?? message.Result))
 					.Column(message.Duration);
 
 				row.ErrorIf(message.Exception != null); // pokud je výjimka, zobrazíme řádek jako chybu
 			}
-
+			
 			return section.Build();
 		}
 		#endregion

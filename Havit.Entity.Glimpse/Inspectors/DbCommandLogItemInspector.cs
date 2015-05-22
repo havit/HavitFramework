@@ -66,6 +66,7 @@ namespace Havit.Entity.Glimpse.Inspectors
 					message.CommandParameters.Add(DbParameterData.Create(dbParameter));
 				}
 				message.Result = dbCommandLogItem.Result;
+				message.IsAsync = dbCommandLogItem.IsAsync;
 
                 message.StartTime = now - message.Duration;
 				message.Duration = new TimeSpan(dbCommandLogItem.DurationTicks);

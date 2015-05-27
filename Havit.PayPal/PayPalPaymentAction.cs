@@ -32,6 +32,9 @@ namespace Havit.PayPal
 	public sealed class PayPalPaymentActionHelper
 	{
 		#region GetPayPalPaymentActionCode
+		/// <summary>
+		/// Constructor.
+		/// </summary>
 		public static string GetPayPalPaymentActionCode(PayPalPaymentAction action)
 		{
 			switch (action)

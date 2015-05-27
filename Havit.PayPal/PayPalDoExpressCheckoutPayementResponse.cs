@@ -9,7 +9,7 @@ namespace Havit.PayPal
 {
 	/// <summary>
 	/// Třída pro strong-type reprezentaci odpovědí z PayPal po volání DoExpressCheckoutPayment API.
-	/// https://cms.paypal.com/us/cgi-bin/?&cmd=_render-content&content_ID=developer/e_howto_api_nvp_r_DoExpressCheckoutPayment
+	/// https://cms.paypal.com/us/cgi-bin/?&amp;cmd=_render-content&amp;content_ID=developer/e_howto_api_nvp_r_DoExpressCheckoutPayment
 	/// </summary>
 	public class PayPalDoExpressCheckoutPaymentResponse : PayPalResponseBase
 	{
@@ -223,11 +223,9 @@ namespace Havit.PayPal
 
 		#region ParseResponseData
 		/// <summary>
-		/// <summary>
 		/// Rozparsuje data do strong-type properties.
 		/// Poznámka: Parsuje jenom základní informace, které potřebujeme.
 		/// </summary>
-		/// <param name="rawResponseData"></param>
 		protected override void ParseResponseData(System.Collections.Specialized.NameValueCollection rawResponseData)
 		{
 			base.ParseResponseData(rawResponseData);

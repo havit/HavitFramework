@@ -13,6 +13,9 @@ namespace Havit.PayPal
 	public class PayPalResponseData : NameValueCollection
 	{
 		#region Constructor
+		/// <summary>
+		/// Contructor.
+		/// </summary>
 		public PayPalResponseData(string result)
 		{
 			Decode(result);

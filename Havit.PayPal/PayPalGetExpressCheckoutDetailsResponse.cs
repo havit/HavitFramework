@@ -9,7 +9,7 @@ namespace Havit.PayPal
 {
 	/// <summary>
 	/// Třída pro strong-type reprezentaci odpovědí z PayPal po volání GetExpressCheckoutDetails API.
-	/// https://cms.paypal.com/us/cgi-bin/?&cmd=_render-content&content_ID=developer/e_howto_api_nvp_r_GetExpressCheckoutDetails
+	/// https://cms.paypal.com/us/cgi-bin/?&amp;cmd=_render-content&amp;content_ID=developer/e_howto_api_nvp_r_GetExpressCheckoutDetails
 	/// </summary>
 	public class PayPalGetExpressCheckoutDetailsResponse : PayPalResponseBase
 	{

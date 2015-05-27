@@ -72,7 +72,7 @@ namespace Havit.PayPal
 		#region Constructors
 		/// <summary>
 		/// Initializes a new instance of the <see cref="PayPalCurrency"/> class.
-		/// https://cms.paypal.com/us/cgi-bin/?cmd=_render-content&content_ID=developer/e_howto_api_nvp_currency_codes
+		/// https://cms.paypal.com/us/cgi-bin/?cmd=_render-content&amp;content_ID=developer/e_howto_api_nvp_currency_codes
 		/// </summary> 
 		/// <param name="code">Currency Code podle ISO 4217.</param>		
 		/// <param name="numericCode">Numeric Code podle ISO 4217.</param>		

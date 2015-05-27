@@ -27,6 +27,9 @@ namespace Havit.PayPal
 	public sealed class PayPalLandingPageHelper
 	{
 		#region GetPayPalLandingPageCode
+		/// <summary>
+		/// Contructor.
+		/// </summary>
 		public static string GetPayPalLandingPageCode(PayPalLandingPage landingPage)
 		{
 			switch (landingPage)

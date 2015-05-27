@@ -41,14 +41,18 @@ namespace WebApplicationTest.HavitGlimpseEntityTest
 		#endregion
 
 		#region MyDbContext (nested class)
-		public class MyDbContext: DbContext 
+		public class MyDbContext : DbContext
 		{
+			#region Properies
 			public DbSet<MyClass> MyClasses { get; set; }
+			#endregion
 
+			#region Constructor
 			public MyDbContext() : base("HavitEntityGlimpse")
 			{
 				Database.SetInitializer<MyDbContext>(new CreateDatabaseIfNotExists<MyDbContext>());
 			}
+			#endregion
 		}
 		#endregion
 

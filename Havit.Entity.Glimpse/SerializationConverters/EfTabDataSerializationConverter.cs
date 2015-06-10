@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Data.Common;
 using Glimpse.Core.Extensibility;
 using Glimpse.Core.Tab.Assist;
 
@@ -73,6 +73,11 @@ namespace Havit.Entity.Glimpse.SerializationConverters
 			else if (data == DBNull.Value)
 			{
 				return "DBNull.Value";
+			}
+			else if (data is DbDataReader)
+			{
+				DbDataReader dbDataReader = ((DbDataReader)data);
+				return (dbDataReader.IsClosed && (dbDataReader.RecordsAffected >= 0)) ? String.Format("{0} record(s)", dbDataReader.RecordsAffected) : "unknown";
 			}
 			else
 			{

@@ -72,7 +72,7 @@ namespace Havit.Entity.Glimpse.DbCommandInterception
 
 		#region Constructor
 		public RecordCountingDbDataReader(DbDataReader dataReader, DbDataReaderResult dbDataReaderResult)
-		{
+		{			
 			this.wrappedDataReader = dataReader;
 			this.dbDataReaderResult = dbDataReaderResult;
 			this.recordsCount = 0;

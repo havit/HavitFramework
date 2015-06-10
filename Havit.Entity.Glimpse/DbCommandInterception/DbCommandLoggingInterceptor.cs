@@ -50,17 +50,11 @@ namespace Havit.Entity.Glimpse.DbCommandInterception
 		{
 			InterceptionUserData interceptionUserData = RestoreUserData(interceptionContext);
 
-			object result = interceptionContext.OriginalResult;
-			if (result != null)
-			{
-				DbDataReader dataReader = (DbDataReader)result;
-				DbDataReaderResult dataReaderResult = new DbDataReaderResult();
-				interceptionContext.Result = new RecordCountingDbDataReader(dataReader, dataReaderResult);
+			// kvůli chybě v EF, který se jinak chová k SqlDataReaderu a jinak k ostatním readerům
+			// nemůžeme DbDataReader vyměnit za náš měřící interceptor, neboť pak dojde při některých dotazech k pádu aplikace
+			// bohužel tak nemůžeme měřit počet záznamů vrácených SELECt dotazy
 
-				result = dataReaderResult;
-			}
-
-			LogOperation("ExecuteReader", command, interceptionContext.IsAsync, interceptionContext.Exception, result, interceptionUserData.Stopwatch.ElapsedTicks);
+			LogOperation("ExecuteReader", command, interceptionContext.IsAsync, interceptionContext.Exception, interceptionContext.OriginalResult, interceptionUserData.Stopwatch.ElapsedTicks);
 		}
 		#endregion
 

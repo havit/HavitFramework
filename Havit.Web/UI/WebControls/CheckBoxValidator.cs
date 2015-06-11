@@ -113,8 +113,7 @@ namespace Havit.Web.UI.WebControls
 				function CheckBoxValidatorEvaluateIsValid(val)
 				{
 					var control = document.getElementById(val.controltovalidate);
-					var attributeValue = val.getAttribute('data-val-validCheckedState');
-					var validCheckedState = Boolean(attributeValue == 'true');
+					var validCheckedState = Boolean(val.getAttribute('data-val-validCheckedState') == 'true');
 
 					return control.checked == validCheckedState;
 				}";

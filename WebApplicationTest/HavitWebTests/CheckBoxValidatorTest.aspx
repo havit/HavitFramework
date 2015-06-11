@@ -18,8 +18,8 @@
 		<br />
 		<br />
 		<div>
-			<asp:TextBox ID="TestTextBox" runat="server" />
-			<asp:RequiredFieldValidator ControlToValidate="TestTextBox" Text="Chyba" runat="server" />
+			<%--			<asp:TextBox ID="TestTextBox" runat="server" />
+			<asp:RequiredFieldValidator ControlToValidate="TestTextBox" Text="Chyba" runat="server" />--%>
 		</div>
 	</form>
 </body>

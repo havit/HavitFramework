@@ -4,7 +4,7 @@
 		<trace xdt:Transform="InsertIfMissing" />
 		<trace enabled="true" mostRecent="true" writeToDiagnosticsTrace="true" pageOutput="false" xdt:Transform="SetAttributes" />
 	</system.web>
-	<location path="Glimpse.axd" xdt:Transform="InsertIfMissing">
+	<location path="Glimpse.axd" xdt:Locator="Match(path)" xdt:Transform="InsertIfMissing">
 		<system.web>
 			<authorization>
 				<allow users="*"/>

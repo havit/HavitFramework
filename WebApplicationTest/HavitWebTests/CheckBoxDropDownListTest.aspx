@@ -53,19 +53,34 @@
 			<br/>
 			<br/>
 
-            <havit:CheckBoxDropDownList ID="MyListBox" AutoPostBack="True" runat="server">
-                <Items>
-                    <asp:ListItem Text="Jedna" />
-                    <asp:ListItem Text="Dva" />
-                    <asp:ListItem Text="Tři" />
-                    <asp:ListItem Text="Čtyři" />
-                    <asp:ListItem Text="Pět" />
-                    <asp:ListItem Text="Šest" />
-                </Items>
-            </havit:CheckBoxDropDownList>
-
-            <asp:UpdatePanel runat="server">
+					<havit:CheckBoxDropDownList ID="MyListBox" AutoPostBack="True" LeaveOpenInAutoPostBack="True" width="10em" runat="server">
+						<Items>
+							<asp:ListItem Text="Jedna" />
+							<asp:ListItem Text="Dva" />
+							<asp:ListItem Text="Tři" />
+							<asp:ListItem Text="Čtyři" />
+							<asp:ListItem Text="Pět" />
+							<asp:ListItem Text="Šest" />
+							<asp:ListItem Text="Sedm" />
+							<asp:ListItem Text="Osm" />
+							<asp:ListItem Text="Devět" />
+							<asp:ListItem Text="Deset" />
+							<asp:ListItem Text="11" />
+							<asp:ListItem Text="12" />
+							<asp:ListItem Text="13" />
+							<asp:ListItem Text="14" />
+							<asp:ListItem Text="15" />
+							<asp:ListItem Text="16" />
+							<asp:ListItem Text="17" />
+						</Items>
+					</havit:CheckBoxDropDownList>
+			
+			<asp:UpdatePanel runat="server">
+				<Triggers>
+					<asp:AsyncPostBackTrigger ControlID="MyListBox" />
+				</Triggers>
                 <ContentTemplate>
+
 	                
                     <asp:Button Text="Async Postback" runat="server" />
                 </ContentTemplate>

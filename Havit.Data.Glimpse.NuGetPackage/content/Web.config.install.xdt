@@ -1,8 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
-  <system.web>
-    <trace xdt:Transform="InsertIfMissing" />
-    <trace enabled="true" mostRecent="true" writeToDiagnosticsTrace="true" pageOutput="false" xdt:Transform="SetAttributes" />
-  </system.web>
-  <glimpse defaultRuntimePolicy="On" endpointBaseUri="~/Glimpse.axd" xdt:Transform="Replace"/>
+	<system.web>
+		<trace xdt:Transform="InsertIfMissing" />
+		<trace enabled="true" mostRecent="true" writeToDiagnosticsTrace="true" pageOutput="false" xdt:Transform="SetAttributes" />
+	</system.web>
+	<location path="Glimpse.axd" xdt:Transform="InsertIfMissing">
+		<system.web>
+			<authorization>
+				<allow users="*"/>
+			</authorization>
+		</system.web>
+	</location>
+	<glimpse defaultRuntimePolicy="On" endpointBaseUri="~/Glimpse.axd" xdt:Transform="Replace"/>
 </configuration>

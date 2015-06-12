@@ -28,15 +28,28 @@ namespace WebApplicationTest.HavitGlimpseEntityTest
 			MyDbContext myDbContext = new MyDbContext();
 			//int count = myDbContext.MyClasses.Count();
 			List<MyClass> result = myDbContext.MyClasses.OrderBy(item => item.Value).ToList();
+
+			myDbContext.MyClasses.Add(new MyClass { Value = "hello" });
+			myDbContext.SaveChanges();
 		}
 		#endregion
 
 		#region AsyncButton_Click
 		private void AsyncButton_Click(object sender, EventArgs e)
-		{
-			MyDbContext myDbContext = new MyDbContext();
+		{		
 			//RegisterAsyncTask(new PageAsyncTask(() => myDbContext.MyClasses.CountAsync()));
-			RegisterAsyncTask(new PageAsyncTask(() => myDbContext.MyClasses.OrderBy(item => item.Value).ToListAsync()));
+			//RegisterAsyncTask(new PageAsyncTask(() =>
+			//{
+			//	MyDbContext myDbContext = new MyDbContext();
+			//	myDbContext.MyClasses.OrderBy(item => item.Value).ToListAsync();
+			//}));
+
+			RegisterAsyncTask(new PageAsyncTask(() =>
+			{
+				MyDbContext myDbContext2 = new MyDbContext();
+				myDbContext2.MyClasses.Add(new MyClass { Value = "hello async" });
+				return myDbContext2.SaveChangesAsync();
+			}));
 		}
 		#endregion
 

@@ -151,6 +151,13 @@
     <Reference Include="Castle.Windsor">
       <HintPath>..\packages\Castle.Windsor.3.3.0\lib\net45\Castle.Windsor.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Glimpse.AspNet">
       <HintPath>..\packages\Glimpse.AspNet.1.9.1\lib\net45\Glimpse.AspNet.dll</HintPath>
     </Reference>
@@ -165,6 +172,7 @@
       <HintPath>..\packages\Microsoft.AspNet.ScriptManager.WebForms.5.0.0\lib\net45\Microsoft.ScriptManager.WebForms.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
@@ -185,6 +193,12 @@
     <Content Include="App_Themes\BootstrapTheme\ModalEditor.skin" />
     <None Include="App_Themes\WebTheme\AutoSuggestMenu.skin" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\Havit.Web.ClientContent\checkbox-dropdown-list.css">
+      <DependentUpon>checkbox-dropdown-list.less</DependentUpon>
+    </Content>
+    <Content Include="Content\Havit.Web.ClientContent\checkbox-dropdown-list.min.css">
+      <DependentUpon>checkbox-dropdown-list.css</DependentUpon>
+    </Content>
     <Content Include="Content\Havit.Web.ClientContent\chevron-down.png" />
     <Content Include="Content\Havit.Web.ClientContent\description.txt" />
     <Content Include="Content\site.css">
@@ -231,6 +245,7 @@
     <Content Include="HavitCastleWindsorWebFormsTests\ReleaseOnUnloadControlTest.ascx" />
     <Content Include="HavitCastleWindsorWebFormsTests\ReleaseOnUnloadTest.aspx" />
     <Content Include="HavitEnterpriseWebTests\EnterpriseCheckBoxDropDownListTest.aspx" />
+    <Content Include="HavitGlimpseEntityTest\Default.aspx" />
     <Content Include="HavitWebBootstrapTests\AutoCompleteTextBox.aspx" />
     <Content Include="HavitWebBootstrapTests\ButtonTest.aspx" />
     <Content Include="HavitWebBootstrapTests\Controls\ModalDialogUserControlTest2.ascx" />
@@ -423,6 +438,13 @@
     </Compile>
     <Compile Include="HavitEnterpriseWebTests\EnterpriseCheckBoxDropDownListTest.aspx.designer.cs">
       <DependentUpon>EnterpriseCheckBoxDropDownListTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HavitGlimpseEntityTest\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HavitGlimpseEntityTest\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="HavitWebBootstrapTests\AutoCompleteTextBox.aspx.cs">
       <DependentUpon>AutoCompleteTextBox.aspx</DependentUpon>
@@ -844,6 +866,10 @@
     <ProjectReference Include="..\Havit.Enterprise.Web\Havit.Enterprise.Web.csproj">
       <Project>{7478BEA8-791F-47E9-ADD9-18F2D34619EA}</Project>
       <Name>Havit.Enterprise.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Havit.Entity.Glimpse\Havit.Entity.Glimpse.csproj">
+      <Project>{b847560e-3fea-419d-bfac-d7e3544c1f70}</Project>
+      <Name>Havit.Entity.Glimpse</Name>
     </ProjectReference>
     <ProjectReference Include="..\Havit.Web\Havit.Web.csproj">
       <Project>{52891FB3-CA20-403B-AC25-7D9CA5738B6B}</Project>

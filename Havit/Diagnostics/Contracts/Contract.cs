@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using JetBrains.Annotations;
 
 namespace Havit.Diagnostics.Contracts
 {
@@ -19,6 +20,7 @@ namespace Havit.Diagnostics.Contracts
 		/// Pokud není podmínka condition splněna (hodnota je false), vyhodí výjimku ContractException.
 		/// </summary>
 		[DebuggerStepThrough]
+		[ContractAnnotation("condition:false => halt")]
 		public static void Requires(bool condition, string userMessage = null)
 		{
 			if (!condition)
@@ -32,6 +34,7 @@ namespace Havit.Diagnostics.Contracts
 		/// </summary>
 		/// <typeparam name="TException">Typ výjimky, která je v případě nesplnění podmínky vyhozena.</typeparam>
 		[DebuggerStepThrough]
+		[ContractAnnotation("condition:false => halt")]
 		public static void Requires<TException>(bool condition, string userMessage = null)
 			where TException : Exception
 		{
@@ -47,6 +50,7 @@ namespace Havit.Diagnostics.Contracts
 		/// Pokud není podmínka condition splněna (hodnota je false), vyhodí výjimku ContractException.
 		/// </summary>
 		[DebuggerStepThrough]
+		[ContractAnnotation("condition:false => halt")]
 		public static void Assert(bool condition, string userMessage = null)
 		{
 			if (!condition)
@@ -62,6 +66,7 @@ namespace Havit.Diagnostics.Contracts
 		/// </summary>
 		/// <typeparam name="TException">Typ výjimky, která je v případě nesplnění podmínky vyhozena.</typeparam>
 		[DebuggerStepThrough]
+		[ContractAnnotation("condition:false => halt")]
 		public static void Assert<TException>(bool condition, string userMessage = null)
 			where TException : Exception
 		{

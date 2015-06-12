@@ -202,7 +202,10 @@
     <Compile Include="Diagnostics\Contracts\ContractException.cs" />
     <Compile Include="Diagnostics\ExceptionTracer.cs" />
     <Compile Include="Diagnostics\SmtpTraceListerner.cs" />
-    <Compile Include="Linq\Expressions\ExpressionExt.cs" />
+	  <Compile Include="JetBrains.Anotations\JetBrainsAnnotations.cs">
+		  <ExcludeFromStyleCop>true</ExcludeFromStyleCop>
+	  </Compile>
+	<Compile Include="Linq\Expressions\ExpressionExt.cs" />
     <Compile Include="Linq\Expressions\ReplaceParameterVisitor.cs" />
     <Compile Include="Reflection\IDataBinderExtSetValue.cs" />
     <Compile Include="Linq\EnumerableExt.cs" />

@@ -6,8 +6,7 @@
     </httpModules>
     <httpHandlers>
       <add path="glimpse.axd" xdt:Transform="Remove" xdt:Locator="Match(path)"/>
-    </httpHandlers>
-    <trace enabled="false" xdt:Transform="Replace" />
+    </httpHandlers>    
   </system.web>
   <system.webServer>
     <modules>

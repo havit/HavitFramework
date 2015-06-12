@@ -197,5 +197,45 @@ namespace Havit.Linq
 		}
 		#endregion
 
+		#region Chunkify		
+		/// <summary>
+		/// Rozdělí data do segmentů (chunks) o maximální velikosti dle size.
+		/// Například vstupní data o 2500 záznamech při size 1000 rozdělí do třech segmentů (chunků) - 1000, 1000 a 500 záznamů.
+		/// </summary>
+		/// <param name="source">Zdrojová data.</param>
+		/// <param name="size">Velikost jednoho segmentu (chunku). Nejmenší možná hodnota he 1.</param>
+		public static IEnumerable<T[]> Chunkify<T>(this IEnumerable<T> source, int size)
+		{
+			if (source == null)
+			{
+				throw new ArgumentNullException("source");
+			}
+
+			if (size < 1)
+			{
+				throw new ArgumentOutOfRangeException("size");
+			}
+
+			using (var iter = source.GetEnumerator())
+			{
+				while (iter.MoveNext())
+				{
+					var chunk = new T[size];
+					chunk[0] = iter.Current;
+					int i;
+					for (i = 1; i < size && iter.MoveNext(); i++)
+					{
+						chunk[i] = iter.Current;
+					}
+
+					if (size != i)
+					{
+						Array.Resize(ref chunk, i);
+					}
+					yield return chunk;
+				}
+			}
+		}
+		#endregion
 	}
 }

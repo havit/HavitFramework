@@ -62,5 +62,32 @@ namespace Havit.BusinessTest
 			}
 		}
 		#endregion
+
+		#region CreateWildcardsTest
+		[TestMethod]
+		public void CreateWildcardsTest()
+		{
+			using (new IdentityMapScope())
+			{
+				QueryParams qp;
+
+				qp = new QueryParams();
+				qp.Conditions.Add(TextCondition.CreateWildcards(ValueOperand.Create("["), "["));
+				Assert.IsTrue(Role.GetList(qp).Count > 0);
+
+				qp = new QueryParams();
+				qp.Conditions.Add(TextCondition.CreateWildcards(ValueOperand.Create("]"), "]"));
+				Assert.IsTrue(Role.GetList(qp).Count > 0);
+
+				qp = new QueryParams();
+				qp.Conditions.Add(TextCondition.CreateWildcards(ValueOperand.Create("["), "]"));
+				Assert.IsTrue(Role.GetList(qp).Count == 0);
+
+				qp = new QueryParams();
+				qp.Conditions.Add(TextCondition.CreateWildcards(ValueOperand.Create("]"), "["));
+				Assert.IsTrue(Role.GetList(qp).Count == 0);
+			}
+		}
+		#endregion
 	}
 }

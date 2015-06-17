@@ -155,8 +155,9 @@ namespace Havit.Business.Query
 				throw new ArgumentException("Argument text nesmí být null ani prázdný.", "text");
 			}
 
-			string result;
-			result = text.Trim().Replace("%", "[%]");
+			string result = text.Trim();
+			result = result.Replace("[", "[[]");
+			result = result.Replace("%", "[%]");
 			result = result.Replace("_", "[_]");
 			return result;
 		}

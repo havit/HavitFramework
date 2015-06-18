@@ -248,6 +248,7 @@
     <Content Include="HavitGlimpseEntityTest\Default.aspx" />
     <Content Include="HavitWebBootstrapTests\AutoCompleteTextBox.aspx" />
     <Content Include="HavitWebBootstrapTests\ButtonTest.aspx" />
+    <Content Include="HavitWebBootstrapTests\ControlFocusPersisterTest.aspx" />
     <Content Include="HavitWebBootstrapTests\Controls\ModalDialogUserControlTest2.ascx" />
     <Content Include="HavitWebBootstrapTests\Controls\ValidationTargetTest.ascx" />
     <Content Include="HavitWebBootstrapTests\DateTimeBoxTest.aspx" />
@@ -466,6 +467,13 @@
     </Compile>
     <Compile Include="HavitWebBootstrapTests\Bootstrap.Master.designer.cs">
       <DependentUpon>Bootstrap.Master</DependentUpon>
+    </Compile>
+    <Compile Include="HavitWebBootstrapTests\ControlFocusPersisterTest.aspx.cs">
+      <DependentUpon>ControlFocusPersisterTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HavitWebBootstrapTests\ControlFocusPersisterTest.aspx.designer.cs">
+      <DependentUpon>ControlFocusPersisterTest.aspx</DependentUpon>
     </Compile>
     <Compile Include="HavitWebBootstrapTests\Controls\ModalDialogUserControlTest2.ascx.cs">
       <DependentUpon>ModalDialogUserControlTest2.ascx</DependentUpon>

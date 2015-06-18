@@ -155,6 +155,7 @@
     <Compile Include="UI\TryEnsureScriptRegistrationResult.cs" />
     <Compile Include="UI\WebControls\AutoCompleteTextBoxOrientation.cs" />
     <Compile Include="UI\WebControls\BrowserNavigationController.cs" />
+    <Compile Include="UI\WebControls\ControlFocusPersister.cs" />
     <Compile Include="UI\WebControls\ControlsValues\AutoCompleteTextBoxControlExtender.cs" />
     <Compile Include="UI\WebControls\ControlsValues\AutoCompleteTextBoxValues.cs" />
     <Compile Include="UI\WebControls\CookiesMessenger.cs" />

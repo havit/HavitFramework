@@ -493,5 +493,26 @@ var havitAutoCompleteTextBoxExtensions = {
 	}
 }
 
+var havitControlFocusPersisterExtensions = {
+	init: function() {
+		var lastFocusPersister = $("#_lastFocusPersister");
+		var lastFocusedControl = $("#" + lastFocusPersister.val());
+
+		if (lastFocusedControl != null) {
+			try { lastFocusedControl.focus(); } catch (ex) { };
+		}
+
+		$("body")
+			.off("focus.hfw", ":focusable")
+			.on("focus.hfw", ":focusable", function () {
+				var lastFocusPersister = $("#_lastFocusPersister");
+
+				if (lastFocusPersister != null) {
+					lastFocusPersister.val(this.id);
+				}
+			});
+	}	
+}
+
 $(document).ready(havitDateTimeBoxExtensions.init);
 $(document).ready(havitNumericBoxExtensions.init);

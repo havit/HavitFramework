@@ -21,6 +21,6 @@
 		<tags>HAVIT ASP.NET Test Canopy</tags>
 	</metadata>
 	<files>
-		<file src="..\Havit.Web.Canopy\bin\Release\Havit.Web.Canopy.dll" target="lib\net45" />
+		<file src="..\Havit.Test.Canopy\bin\Release\Havit.Test.Canopy.dll" target="lib\net45" />
 	</files>
 </package>

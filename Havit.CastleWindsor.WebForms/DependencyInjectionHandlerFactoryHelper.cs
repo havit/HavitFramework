@@ -43,7 +43,16 @@ namespace Havit.CastleWindsor.WebForms
 					.ToDictionary(x => x.PropertyName, x => _resolver.Resolve(x.DependencyKey, x.DependencyServiceType, null));
 				try
 				{
-					object value = resolvedSubdependencies.Count > 0 ? _resolver.Resolve(prop.PropertyType, resolvedSubdependencies) : _resolver.Resolve(prop.PropertyType);
+					object value;
+					Type enumerableType = GetEnumerableType(prop.PropertyType);
+					if (enumerableType != null)
+					{
+						value = resolvedSubdependencies.Count > 0 ? _resolver.ResolveAll(enumerableType, resolvedSubdependencies) : _resolver.ResolveAll(enumerableType);
+					}
+					else
+					{
+						value = resolvedSubdependencies.Count > 0 ? _resolver.Resolve(prop.PropertyType, resolvedSubdependencies) : _resolver.Resolve(prop.PropertyType);
+					}
 					prop.SetValue(control, value, null);
 				}
 				catch (Exception e)
@@ -81,5 +90,24 @@ namespace Havit.CastleWindsor.WebForms
 				}
 			}
 		}
+
+		/// <summary>
+		/// Gets enumerated type if interface of input type is IEnumerable&lt;TEntity&gt; or an array.
+		/// </summary>
+		private static Type GetEnumerableType(Type type)
+		{
+			if ((type != null) && type.IsGenericType && (type.GetGenericTypeDefinition() == typeof(IEnumerable<>)))
+			{
+				return type.GetGenericArguments().FirstOrDefault();
+			}
+
+			if ((type != null) && type.IsArray && type.HasElementType && (type.GetArrayRank() == 1))
+			{
+				return type.GetElementType();
+			}
+
+			return null;
+		}
+
 	}
 }

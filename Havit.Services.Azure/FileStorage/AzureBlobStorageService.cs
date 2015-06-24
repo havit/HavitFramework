@@ -4,13 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Havit.Services.FileServices;
+using Havit.Services.FileStorage;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 
-namespace Havit.Services.Azure.FileServices
+namespace Havit.Services.Azure.FileStorage
 {
-	/// <summary>
+	/// <summary>.
 	/// Úložiště souborů jako Azure Blob Storage
 	/// </summary>
 	public class AzureBlobStorageService : IFileStorageService

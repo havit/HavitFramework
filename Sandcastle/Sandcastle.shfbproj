@@ -30,7 +30,7 @@
     </SandcastlePath>
     <WorkingPath>
     </WorkingPath>
-    <FrameworkVersion>.NET Framework 4.5.2</FrameworkVersion>
+    <FrameworkVersion>.NET Framework 4.5</FrameworkVersion>
     <HelpTitle>HAVIT .NET Framework</HelpTitle>
     <CopyrightHref>http://www.havit.cz</CopyrightHref>
     <CopyrightText>HAVIT, s.r.o., All rights reserved.</CopyrightText>

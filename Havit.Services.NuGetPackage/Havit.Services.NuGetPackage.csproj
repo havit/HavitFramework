@@ -72,7 +72,7 @@
   </Target>
   <Target Name="TfsPublish" AfterTargets="AfterBuild;CreateNuGetPackage" Condition="'$(PublishDirectory)' != ''">
     <ItemGroup>
-      <FilesToCopy Include="$(OutputPath)\Havit.Services.*.nupkg" />
+      <FilesToCopy Include="$(OutputPath)\Havit.Services.1.*.nupkg" />
     </ItemGroup>
     <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(PublishDirectory)\NuGet\%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>

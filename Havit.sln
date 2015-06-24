@@ -123,9 +123,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Test.Canopy", "Havit.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Test.Canopy.NuGetPackage", "Havit.Test.Canopy.NuGetPackage\Havit.Test.Canopy.NuGetPackage.csproj", "{4F4DA1D5-AB4D-4253-AADB-DD7B7A1A6698}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Services.Azure", "Havit.Services.Azure\Havit.Services.Azure.csproj", "{7846CA68-E6B0-4943-9285-DE1D48248B84}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Services.Azure.NuGetPackage", "Havit.Services.Azure.NuGetPackage\Havit.Services.Azure.NuGetPackage.csproj", "{BC3D4E82-7527-4BB8-A256-CD65F57C1CCE}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 41
+		SccNumberOfProjects = 43
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.havit.eu/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -289,6 +293,14 @@ Global
 		SccProjectTopLevelParentUniqueName40 = Havit.sln
 		SccProjectName40 = Havit.Test.Canopy.NuGetPackage
 		SccLocalPath40 = Havit.Test.Canopy.NuGetPackage
+		SccProjectUniqueName41 = Havit.Services.Azure\\Havit.Services.Azure.csproj
+		SccProjectTopLevelParentUniqueName41 = Havit.sln
+		SccProjectName41 = Havit.Services.Azure
+		SccLocalPath41 = Havit.Services.Azure
+		SccProjectUniqueName42 = Havit.Services.Azure.NuGetPackage\\Havit.Services.Azure.NuGetPackage.csproj
+		SccProjectTopLevelParentUniqueName42 = Havit.sln
+		SccProjectName42 = Havit.Services.Azure.NuGetPackage
+		SccLocalPath42 = Havit.Services.Azure.NuGetPackage
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug win only|Any CPU = Debug win only|Any CPU
@@ -614,6 +626,22 @@ Global
 		{4F4DA1D5-AB4D-4253-AADB-DD7B7A1A6698}.DebugTemp|Any CPU.Build.0 = Debug|Any CPU
 		{4F4DA1D5-AB4D-4253-AADB-DD7B7A1A6698}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F4DA1D5-AB4D-4253-AADB-DD7B7A1A6698}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7846CA68-E6B0-4943-9285-DE1D48248B84}.Debug win only|Any CPU.ActiveCfg = Debug|Any CPU
+		{7846CA68-E6B0-4943-9285-DE1D48248B84}.Debug win only|Any CPU.Build.0 = Debug|Any CPU
+		{7846CA68-E6B0-4943-9285-DE1D48248B84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7846CA68-E6B0-4943-9285-DE1D48248B84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7846CA68-E6B0-4943-9285-DE1D48248B84}.DebugTemp|Any CPU.ActiveCfg = Debug|Any CPU
+		{7846CA68-E6B0-4943-9285-DE1D48248B84}.DebugTemp|Any CPU.Build.0 = Debug|Any CPU
+		{7846CA68-E6B0-4943-9285-DE1D48248B84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7846CA68-E6B0-4943-9285-DE1D48248B84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC3D4E82-7527-4BB8-A256-CD65F57C1CCE}.Debug win only|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC3D4E82-7527-4BB8-A256-CD65F57C1CCE}.Debug win only|Any CPU.Build.0 = Debug|Any CPU
+		{BC3D4E82-7527-4BB8-A256-CD65F57C1CCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC3D4E82-7527-4BB8-A256-CD65F57C1CCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC3D4E82-7527-4BB8-A256-CD65F57C1CCE}.DebugTemp|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC3D4E82-7527-4BB8-A256-CD65F57C1CCE}.DebugTemp|Any CPU.Build.0 = Debug|Any CPU
+		{BC3D4E82-7527-4BB8-A256-CD65F57C1CCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC3D4E82-7527-4BB8-A256-CD65F57C1CCE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -659,5 +687,7 @@ Global
 		{ADDE7DE8-95BC-40BB-BB99-401C6D2BF70B} = {360CC3C7-E4F9-4169-8D98-EA507CEB0A1E}
 		{8E9C726B-9B22-4ADC-9927-9AC574C2BBCC} = {10D8C31B-1810-4B8E-9B73-544ACA5CFC75}
 		{4F4DA1D5-AB4D-4253-AADB-DD7B7A1A6698} = {360CC3C7-E4F9-4169-8D98-EA507CEB0A1E}
+		{7846CA68-E6B0-4943-9285-DE1D48248B84} = {CA5A28B1-E42B-43F3-89E0-E4972E4D67B7}
+		{BC3D4E82-7527-4BB8-A256-CD65F57C1CCE} = {360CC3C7-E4F9-4169-8D98-EA507CEB0A1E}
 	EndGlobalSection
 EndGlobal

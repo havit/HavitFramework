@@ -30,7 +30,7 @@
     </SandcastlePath>
     <WorkingPath>
     </WorkingPath>
-    <FrameworkVersion>.NET Framework 4.5</FrameworkVersion>
+    <FrameworkVersion>.NET Framework 4.5.2</FrameworkVersion>
     <HelpTitle>HAVIT .NET Framework</HelpTitle>
     <CopyrightHref>http://www.havit.cz</CopyrightHref>
     <CopyrightText>HAVIT, s.r.o., All rights reserved.</CopyrightText>
@@ -51,6 +51,9 @@
       <DocumentationSource sourceFile="..\Havit.PayMuzo\Havit.PayMuzo.csproj" />
       <DocumentationSource sourceFile="..\Havit.Services\Havit.Services.csproj" />
       <DocumentationSource sourceFile="..\Havit.Web\Havit.Web.csproj" />
+      <DocumentationSource sourceFile="..\Havit.CastleWindsor.WebForms\Havit.CastleWindsor.WebForms.csproj" />
+      <DocumentationSource sourceFile="..\Havit.PayPal\Havit.PayPal.csproj" />
+      <DocumentationSource sourceFile="..\Havit.Services.Azure\Havit.Services.Azure.csproj" />
     </DocumentationSources>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="(global)" isDocumented="True" />

@@ -45,6 +45,9 @@ namespace Havit.Services.Azure.FileServices
 		#endregion
 
 		#region ReadToStream
+		/// <summary>
+		/// Zapíše obsah souboru z úložiště do streamu.
+		/// </summary>
 		public void ReadToStream(string fileName, Stream stream)
 		{
 			CloudBlockBlob blob = GetBlobReference(fileName);

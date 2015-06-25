@@ -156,6 +156,22 @@ namespace Havit.Services.Ares
 					result.PravniForma.Nazev = (string)npfElement;
 				}
 
+				XElement adresaElement = vypisOrElement.Elements(aresDT + "AA").FirstOrDefault();
+				if (adresaElement != null)
+				{
+					result.Sidlo = new AresData.Classes.Sidlo();
+					result.Sidlo.Ulice = (string)adresaElement.Elements(aresDT + "NU").FirstOrDefault();
+
+					result.Sidlo.CisloDoAdresy = (string)adresaElement.Elements(aresDT + "CA").FirstOrDefault();
+					result.Sidlo.CisloPopisne = (string)adresaElement.Elements(aresDT + "CD").FirstOrDefault();
+					result.Sidlo.CisloOrientacni = (string)adresaElement.Elements(aresDT + "CO").FirstOrDefault();
+
+					result.Sidlo.Mesto = (string)adresaElement.Elements(aresDT + "N").FirstOrDefault();
+					result.Sidlo.MestskaCast = (string)adresaElement.Elements(aresDT + "NCO").FirstOrDefault();
+					result.Sidlo.Psc = (string)adresaElement.Elements(aresDT + "PSC").FirstOrDefault();
+					result.Sidlo.Stat = (string)adresaElement.Elements(aresDT + "NS").FirstOrDefault();
+					result.Sidlo.AdresaTextem = (string)adresaElement.Elements(aresDT + "AT").FirstOrDefault();
+				}
 			}
 		}
 		#endregion

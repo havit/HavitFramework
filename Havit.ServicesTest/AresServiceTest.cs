@@ -13,10 +13,10 @@ namespace Havit.ServicesTest
 		[TestMethod]
 		public void GetAresBasicDataTest()
 		{
-			string ico = "28186796";
+			string ico = "28186796"; // "25612697"
 			AresService service = new AresService(ico);
 			service.Timeout = 60 * 1000; /* 60 sec */
-			service.GetData(AresRegistr.Basic);
+			AresData basicAresResult = service.GetData(AresRegistr.Basic);
 		}
 		#endregion
 

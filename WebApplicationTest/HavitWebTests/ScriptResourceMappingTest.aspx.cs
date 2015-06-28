@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 using Havit.Web.UI;
 
-namespace WebApplicationTest.HavitWebTests
+namespace Havit.WebApplicationTest.HavitWebTests
 {
 	public partial class ScriptResourceMappingTest : System.Web.UI.Page
 	{

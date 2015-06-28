@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Web;
 
-namespace WebApplicationTest.HavitCastleWindsorWebFormsTests
+namespace Havit.WebApplicationTest.HavitCastleWindsorWebFormsTests
 {
 	public class DisposableComponent : IDisposable, IDisposableComponent
 	{

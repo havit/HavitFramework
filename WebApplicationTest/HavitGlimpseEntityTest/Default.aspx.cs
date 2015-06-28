@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace WebApplicationTest.HavitGlimpseEntityTest
+namespace Havit.WebApplicationTest.HavitGlimpseEntityTest
 {
 	public partial class Default : System.Web.UI.Page
 	{

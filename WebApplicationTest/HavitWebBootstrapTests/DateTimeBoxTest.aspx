@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/HavitWebBootstrapTests/Bootstrap.Master" AutoEventWireup="true" CodeBehind="DateTimeBoxTest.aspx.cs" Inherits="WebApplicationTest.HavitWebBootstrapTests.DateTimeBoxTest" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/HavitWebBootstrapTests/Bootstrap.Master" AutoEventWireup="true" CodeBehind="DateTimeBoxTest.aspx.cs" Inherits="Havit.WebApplicationTest.HavitWebBootstrapTests.DateTimeBoxTest" %>
 
 <asp:Content ContentPlaceHolderID="MainCPH" runat="server">
 

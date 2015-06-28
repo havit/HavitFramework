@@ -10,7 +10,7 @@ namespace Havit.CastleWindsor.WebForms
 	/// </summary>
 	public abstract class InjectableGenericHandlerBase : IHttpHandler
 	{
-		private ConcurrentDictionary<Type, PropertyInfo[]> _injectablePropertyCache = new ConcurrentDictionary<Type, PropertyInfo[]>();
+		private readonly ConcurrentDictionary<Type, PropertyInfo[]> _injectablePropertyCache = new ConcurrentDictionary<Type, PropertyInfo[]>();
 
 		/// <summary>
 		/// Gets a value indicating whether another request can use the <see cref="T:System.Web.IHttpHandler"/> instance.
@@ -45,7 +45,7 @@ namespace Havit.CastleWindsor.WebForms
 		/// </summary>
 		protected virtual void ResolveDependencies()
 		{
-			DependencyInjectionHandlerFactoryHelper.InitializeInstance(this, _injectablePropertyCache);
+			DependencyInjectionWebFormsHelper.InitializeInstance(this, _injectablePropertyCache);
 		}
 
 		/// <summary>
@@ -53,7 +53,7 @@ namespace Havit.CastleWindsor.WebForms
 		/// </summary>
 		protected virtual void ReleaseDependencies()
 		{
-			DependencyInjectionHandlerFactoryHelper.ReleaseDependencies(this, _injectablePropertyCache);
+			DependencyInjectionWebFormsHelper.ReleaseDependencies(this, _injectablePropertyCache);
 		}
 	}
 }

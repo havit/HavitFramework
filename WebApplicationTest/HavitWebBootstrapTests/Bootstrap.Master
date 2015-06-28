@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<%@ Master Language="C#" AutoEventWireup="false" CodeBehind="Bootstrap.master.cs" Inherits="WebApplicationTest.HavitWebBootstrapTests.Bootstrap" %>
+<%@ Master Language="C#" AutoEventWireup="false" CodeBehind="Bootstrap.master.cs" Inherits="Havit.WebApplicationTest.HavitWebBootstrapTests.Bootstrap" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 	<title></title>

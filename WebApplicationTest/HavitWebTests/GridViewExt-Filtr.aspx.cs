@@ -7,7 +7,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace WebApplicationTest.HavitWebTests
+namespace Havit.WebApplicationTest.HavitWebTests
 {
 	public partial class GridViewExt_Filtr : System.Web.UI.Page
 	{

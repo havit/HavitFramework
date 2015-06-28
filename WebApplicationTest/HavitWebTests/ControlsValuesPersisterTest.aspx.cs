@@ -6,7 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Havit.Web.UI.WebControls.ControlsValues;
 
-namespace WebApplicationTest.HavitWebTests
+namespace Havit.WebApplicationTest.HavitWebTests
 {
 	public partial class ControlsValuesPersisterTest : System.Web.UI.Page
 	{

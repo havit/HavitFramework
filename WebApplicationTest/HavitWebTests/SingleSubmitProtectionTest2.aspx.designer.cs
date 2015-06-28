@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WebApplicationTest
+namespace Havit.WebApplicationTest
 {
 
 

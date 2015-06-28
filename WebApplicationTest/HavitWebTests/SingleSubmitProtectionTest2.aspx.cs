@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace WebApplicationTest
+namespace Havit.WebApplicationTest
 {
 	public partial class SingleSubmitProtectionTest2 : System.Web.UI.Page
 	{

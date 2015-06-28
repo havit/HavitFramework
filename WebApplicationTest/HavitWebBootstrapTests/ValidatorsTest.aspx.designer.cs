@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WebApplicationTest.HavitWebBootstrapTests {
+namespace Havit.WebApplicationTest.HavitWebBootstrapTests {
     
     
     public partial class ValidatorsTest {
@@ -64,7 +64,7 @@ namespace WebApplicationTest.HavitWebBootstrapTests {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::WebApplicationTest.HavitWebBootstrapTests.Controls.ValidationTargetTest ValidationTargetTestUC;
+        protected global::Havit.WebApplicationTest.HavitWebBootstrapTests.Controls.ValidationTargetTest ValidationTargetTestUC;
         
         /// <summary>
         /// SectionDCustomValidator control.
@@ -82,7 +82,7 @@ namespace WebApplicationTest.HavitWebBootstrapTests {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::WebApplicationTest.HavitWebBootstrapTests.Controls.ValidationTargetTest ValidationTargetTest2UC;
+        protected global::Havit.WebApplicationTest.HavitWebBootstrapTests.Controls.ValidationTargetTest ValidationTargetTest2UC;
         
         /// <summary>
         /// TB6 control.

@@ -1,22 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web;
-using System.Web.Security;
-using System.Web.SessionState;
-using System.Web.UI;
-using Havit.Web.UI.WebControls;
 using Havit.Web.Security;
-using WebApplicationTest.App_Start;
+using Havit.Web.UI.WebControls;
+using Havit.WebApplicationTest;
+using Havit.WebApplicationTest.App_Start;
 
-namespace WebApplicationTest
+namespace Havit.WebApplicationTest
 {
 	public class Global : System.Web.HttpApplication
 	{
 		#region Application_Start
 		protected void Application_Start(object sender, EventArgs e)
 		{
-			DateTimeBox.GetDateTimeBoxCustomizationDefault += new DateTimeBox.DateTimeBoxDateCustomizationEventHandler(DateTimeBox_GetDateTimeBoxCustomizationDefaults);
+			DateTimeBox.GetDateTimeBoxCustomizationDefault += new DateTimeBox.DateTimeBoxDateCustomizationEventHandler(this.DateTimeBox_GetDateTimeBoxCustomizationDefaults);
 			ScriptManagerConfig.RegisterScriptResourceMappings();
 			WindsorCastleConfig.RegisterDiContainer();
 
@@ -43,7 +40,7 @@ namespace WebApplicationTest
 		#region Application_Error
 		private void Application_Error(object sender, EventArgs e)
 		{
-			Exception exception = Server.GetLastError();
+			Exception exception = this.Server.GetLastError();
 			if (exception != null)
 			{
 				Havit.Web.Management.WebRequestErrorEventExt customEvent = new Havit.Web.Management.WebRequestErrorEventExt(exception.Message, this, exception, HttpContext.Current);
@@ -62,7 +59,7 @@ namespace WebApplicationTest
 		#region DateTimeBox_GetDateTimeBoxCustomizationDefaults
 		private void DateTimeBox_GetDateTimeBoxCustomizationDefaults(object sender, DateTimeBoxDateCustomizationEventArgs args)
 		{
-			if (specialDatesDefault == null)
+			if (this.specialDatesDefault == null)
 			{
 				List<SpecialDate> specialDatesList = new List<SpecialDate>()
 				{
@@ -82,9 +79,9 @@ namespace WebApplicationTest
 					new SpecialDate(new DateTime(2013, 1, 1), false, "special")
 				};
 
-				specialDatesDefault = new SpecialDateCustomization(specialDatesList);
+				this.specialDatesDefault = new SpecialDateCustomization(specialDatesList);
 			}
-			args.DateCustomization = specialDatesDefault;
+			args.DateCustomization = this.specialDatesDefault;
 		}
 		private SpecialDateCustomization specialDatesDefault;
 		#endregion

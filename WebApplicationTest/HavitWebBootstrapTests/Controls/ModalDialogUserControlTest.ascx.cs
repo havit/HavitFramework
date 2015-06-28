@@ -6,7 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Havit.Web.Bootstrap.UI.WebControls;
 
-namespace WebApplicationTest.HavitWebBootstrapTests
+namespace Havit.WebApplicationTest.HavitWebBootstrapTests
 {
 	public partial class ModalDialogUserControlTest : ModalDialogUserControlBase
 	{

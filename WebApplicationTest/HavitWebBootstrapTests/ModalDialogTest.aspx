@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/HavitWebBootstrapTests/Bootstrap.Master" AutoEventWireup="false" CodeBehind="ModalDialogTest.aspx.cs" Inherits="WebApplicationTest.HavitWebBootstrapTests.ModalDialogTest" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/HavitWebBootstrapTests/Bootstrap.Master" AutoEventWireup="false" CodeBehind="ModalDialogTest.aspx.cs" Inherits="Havit.WebApplicationTest.HavitWebBootstrapTests.ModalDialogTest" %>
 
 <%@ Register Src="~/HavitWebBootstrapTests/Controls/ModalDialogUserControlTest.ascx" TagPrefix="uc" TagName="ModalDialogUserControlTest" %>
 

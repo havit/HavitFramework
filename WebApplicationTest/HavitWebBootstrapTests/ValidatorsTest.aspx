@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/HavitWebBootstrapTests/Bootstrap.Master" AutoEventWireup="false" CodeBehind="ValidatorsTest.aspx.cs" Inherits="WebApplicationTest.HavitWebBootstrapTests.ValidatorsTest" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/HavitWebBootstrapTests/Bootstrap.Master" AutoEventWireup="false" CodeBehind="ValidatorsTest.aspx.cs" Inherits="Havit.WebApplicationTest.HavitWebBootstrapTests.ValidatorsTest" %>
 
 <%@ Register TagPrefix="uc" TagName="ValidationTargetTest" Src="~/HavitWebBootstrapTests/Controls/ValidationTargetTest.ascx" %>
 <%@ Register TagPrefix="uc" Namespace="WebApplicationTest.HavitWebBootstrapTests.Controls" Assembly="WebApplicationTest" %>

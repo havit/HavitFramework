@@ -56,12 +56,12 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="DependencyInjectionHandlerFactoryHelper.cs" />
+    <Compile Include="DependencyInjectionWebFormsHelper.cs" />
     <Compile Include="DependencyInjectionPageHandlerFactory.cs" />
     <Compile Include="DependencyInjectionPageRouteHandler.cs" />
     <Compile Include="InjectableGenericHandlerBase.cs" />
     <Compile Include="InjectAttribute.cs" />
-    <Compile Include="InjectOverride.cs" />
+    <Compile Include="InjectOverrideAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RouteTableExt.cs" />
   </ItemGroup>

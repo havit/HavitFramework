@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="false" CodeBehind="ControlsValuesPersisterTest.aspx.cs" Inherits="WebApplicationTest.HavitWebTests.ControlsValuesPersisterTest" %>
+﻿<%@ Page Language="C#" AutoEventWireup="false" CodeBehind="ControlsValuesPersisterTest.aspx.cs" Inherits="Havit.WebApplicationTest.HavitWebTests.ControlsValuesPersisterTest" %>
 <%@ Import Namespace="Havit.BusinessLayerTest" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

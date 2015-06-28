@@ -9,7 +9,7 @@ using System.Web.UI.WebControls;
 [assembly: WebResource("WebApplicationTest.a.js", "text/javascript")]
 [assembly: WebResource("WebApplicationTest.b.js", "text/javascript")]
 
-namespace WebApplicationTest.HavitWebTests
+namespace Havit.WebApplicationTest.HavitWebTests
 {
 	public partial class ScriptManagerTest : System.Web.UI.Page
 	{

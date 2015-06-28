@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 using Havit.Web;
 
-namespace WebApplicationTest.HavitWebTests
+namespace Havit.WebApplicationTest.HavitWebTests
 {
 	public partial class PageNavigator_A_Test : System.Web.UI.Page
 	{

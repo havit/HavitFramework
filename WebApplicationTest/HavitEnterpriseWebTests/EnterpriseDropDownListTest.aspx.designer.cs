@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WebApplicationTest.HavitEnterpriseWebTests {
+namespace Havit.WebApplicationTest.HavitEnterpriseWebTests {
     
     
     public partial class EnterpriseDropDownListTest {

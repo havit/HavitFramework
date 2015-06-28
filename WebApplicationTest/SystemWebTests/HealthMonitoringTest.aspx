@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="HealthMonitoringTest.aspx.cs" Inherits="WebApplicationTest.SystemWebTests.HealthMonitoringTest" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="HealthMonitoringTest.aspx.cs" Inherits="Havit.WebApplicationTest.SystemWebTests.HealthMonitoringTest" %>
 
 <!DOCTYPE html>
 

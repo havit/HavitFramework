@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="CheckBoxDropDownListTest.aspx.cs" Inherits="WebApplicationTest.HavitWebTests.DropDownCheckBoxListTest" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="CheckBoxDropDownListTest.aspx.cs" Inherits="Havit.WebApplicationTest.HavitWebTests.DropDownCheckBoxListTest" %>
 
 <!DOCTYPE html>
 

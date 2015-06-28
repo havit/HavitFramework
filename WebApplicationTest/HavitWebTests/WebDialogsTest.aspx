@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" CodeBehind="WebDialogsTest.aspx.cs" Inherits="WebApplicationTest.HavitWebTests.WebDialogsTestPage" Title="Untitled Page" %>
+﻿<%@ Page Language="C#" CodeBehind="WebDialogsTest.aspx.cs" Inherits="Havit.WebApplicationTest.HavitWebTests.WebDialogsTestPage" Title="Untitled Page" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 

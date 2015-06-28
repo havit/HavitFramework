@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WebApplicationTest.HavitWebBootstrapTests {
+namespace Havit.WebApplicationTest.HavitWebBootstrapTests {
     
     
     public partial class Bootstrap {

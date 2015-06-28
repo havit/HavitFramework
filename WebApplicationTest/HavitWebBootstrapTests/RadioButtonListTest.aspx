@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="Bootstrap.Master" AutoEventWireup="false" CodeBehind="RadioButtonListTest.aspx.cs" Inherits="WebApplicationTest.HavitWebBootstrapTests.RadioButtonListTest" %>
+﻿<%@ Page Language="C#" MasterPageFile="Bootstrap.Master" AutoEventWireup="false" CodeBehind="RadioButtonListTest.aspx.cs" Inherits="Havit.WebApplicationTest.HavitWebBootstrapTests.RadioButtonListTest" %>
 
 <asp:Content ContentPlaceHolderID="MainCPH" runat="server">
 

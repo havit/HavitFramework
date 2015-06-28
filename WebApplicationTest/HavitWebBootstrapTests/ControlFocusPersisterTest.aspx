@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/HavitWebBootstrapTests/Bootstrap.Master"  CodeBehind="ControlFocusPersisterTest.aspx.cs" Inherits="WebApplicationTest.HavitWebBootstrapTests.ControlFocusPersisterTest" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/HavitWebBootstrapTests/Bootstrap.Master"  CodeBehind="ControlFocusPersisterTest.aspx.cs" Inherits="Havit.WebApplicationTest.HavitWebBootstrapTests.ControlFocusPersisterTest" %>
 
 <asp:Content runat="server" ContentPlaceHolderID="MainCPH">
 	<havit:ControlFocusPersister runat="server"/>

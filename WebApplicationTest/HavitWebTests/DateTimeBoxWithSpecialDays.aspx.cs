@@ -6,7 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Havit.Web.UI.WebControls;
 
-namespace WebApplicationTest.HavitWebTests
+namespace Havit.WebApplicationTest.HavitWebTests
 {
 	public partial class DateTimeBoxWithSpecialDays : System.Web.UI.Page
 	{

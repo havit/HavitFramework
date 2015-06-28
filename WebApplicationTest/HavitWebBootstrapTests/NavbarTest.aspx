@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/HavitWebBootstrapTests/Bootstrap.Master" AutoEventWireup="true" CodeBehind="NavbarTest.aspx.cs" Inherits="WebApplicationTest.HavitWebBootstrapTests.NavbarTest" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/HavitWebBootstrapTests/Bootstrap.Master" AutoEventWireup="true" CodeBehind="NavbarTest.aspx.cs" Inherits="Havit.WebApplicationTest.HavitWebBootstrapTests.NavbarTest" %>
 
 <asp:Content ContentPlaceHolderID="MainCPH" runat="server">
 	<bc:Navbar ID="FirstNavbar" ToggleNavigationText="ToggleNavigationText" runat="server">

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="false" CodeBehind="SingleSubmitProtectionTest.aspx.cs" Inherits="WebApplicationTest.HavitWebTests.SingleSubmitProtectionTest" %>
+﻿<%@ Page Language="C#" AutoEventWireup="false" CodeBehind="SingleSubmitProtectionTest.aspx.cs" Inherits="Havit.WebApplicationTest.HavitWebTests.SingleSubmitProtectionTest" %>
 <%@ OutputCache Duration="300" VaryByParam="*" %>
 
 <%@ Register Namespace="Havit.Web.UI.WebControls" TagPrefix="havit" Assembly="Havit.Web" %>

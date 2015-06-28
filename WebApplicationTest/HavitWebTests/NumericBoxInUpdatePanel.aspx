@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="NumericBoxInUpdatePanel.aspx.cs" Inherits="WebApplicationTest.HavitWebTests.NumericBoxInUpdatePanel" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="NumericBoxInUpdatePanel.aspx.cs" Inherits="Havit.WebApplicationTest.HavitWebTests.NumericBoxInUpdatePanel" %>
 
 <!DOCTYPE html>
 

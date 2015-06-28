@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ScriptResourceMappingTest.aspx.cs" Inherits="WebApplicationTest.HavitWebTests.ScriptResourceMappingTest" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ScriptResourceMappingTest.aspx.cs" Inherits="Havit.WebApplicationTest.HavitWebTests.ScriptResourceMappingTest" %>
 
 <!DOCTYPE html>
 

@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 using Havit.Web.UI.WebControls;
 
-namespace WebApplicationTest.HavitWebBootstrapTests
+namespace Havit.WebApplicationTest.HavitWebBootstrapTests
 {
 	using Havit.BusinessLayerTest;
 

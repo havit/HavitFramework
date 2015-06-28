@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="Bootstrap.Master" CodeBehind="GridViewExtTest.aspx.cs" Inherits="WebApplicationTest.HavitWebBootstrapTests.GridViewExtTest" StyleSheetTheme="BootstrapTheme" %>
+﻿<%@ Page Language="C#" MasterPageFile="Bootstrap.Master" CodeBehind="GridViewExtTest.aspx.cs" Inherits="Havit.WebApplicationTest.HavitWebBootstrapTests.GridViewExtTest" StyleSheetTheme="BootstrapTheme" %>
 
 <asp:Content ContentPlaceHolderID="MainCPH" runat="server">
 	<style>

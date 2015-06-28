@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" CodeBehind="ModalDialogUserControlTest2.ascx.cs" Inherits="WebApplicationTest.HavitWebBootstrapTests.ModalDialogUserControlTest2" %>
+﻿<%@ Control Language="C#" CodeBehind="ModalDialogUserControlTest2.ascx.cs" Inherits="Havit.WebApplicationTest.HavitWebBootstrapTests.ModalDialogUserControlTest2" %>
 
 <bc:ModalDialog ID="MainModalDialog" Width="1000px" HeaderText="My cool dialog!" runat="server">
 	<ContentTemplate>	

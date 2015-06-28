@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebApplicationTest.HavitWebBootstrapTests.Controls
+namespace Havit.WebApplicationTest.HavitWebBootstrapTests.Controls
 {
 	public class TestUriValidator : Havit.Web.Bootstrap.UI.WebControls.BaseValidator
 	{

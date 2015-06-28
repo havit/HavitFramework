@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WebApplicationTest.HavitGlimpseEntityTest {
+namespace Havit.WebApplicationTest.HavitGlimpseEntityTest {
     
     
     public partial class Default {

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SingleSubmitProtectionTest2.aspx.cs" Inherits="WebApplicationTest.SingleSubmitProtectionTest2" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SingleSubmitProtectionTest2.aspx.cs" Inherits="Havit.WebApplicationTest.SingleSubmitProtectionTest2" %>
 
 <!DOCTYPE html>
 

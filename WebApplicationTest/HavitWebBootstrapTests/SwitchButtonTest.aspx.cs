@@ -7,7 +7,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Havit.Web.UI;
 
-namespace WebApplicationTest.HavitWebBootstrapTests
+namespace Havit.WebApplicationTest.HavitWebBootstrapTests
 {
 	public partial class SwitchButtonTest : System.Web.UI.Page
 	{

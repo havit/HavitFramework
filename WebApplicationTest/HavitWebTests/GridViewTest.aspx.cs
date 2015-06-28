@@ -14,7 +14,7 @@ using Havit.Web.UI.WebControls;
 using Havit.Web.UI;
 using System.Collections.Generic;
 
-namespace WebApplicationTest.HavitWebTests
+namespace Havit.WebApplicationTest.HavitWebTests
 {
 	public partial class GridViewExtTest : System.Web.UI.Page
 	{

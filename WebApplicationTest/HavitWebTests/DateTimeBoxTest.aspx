@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="false" CodeBehind="DateTimeBoxTest.aspx.cs" Inherits="WebApplicationTest.HavitWebTests.DateTimeBoxTest" %>
+﻿<%@ Page Language="C#" AutoEventWireup="false" CodeBehind="DateTimeBoxTest.aspx.cs" Inherits="Havit.WebApplicationTest.HavitWebTests.DateTimeBoxTest" %>
 <!DOCTYPE html>
 <html>
 

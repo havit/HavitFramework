@@ -6,7 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Havit.BusinessLayerTest;
 
-namespace WebApplicationTest.HavitWebTests
+namespace Havit.WebApplicationTest.HavitWebTests
 {
 	public partial class GridViewExtTest_InnerGVControl : System.Web.UI.UserControl
 	{

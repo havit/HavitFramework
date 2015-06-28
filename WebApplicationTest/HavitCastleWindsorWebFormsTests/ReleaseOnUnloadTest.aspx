@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ReleaseOnUnloadTest.aspx.cs" Inherits="WebApplicationTest.HavitCastleWindsorWebFormsTests.ReleaseOnUnloadTest" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ReleaseOnUnloadTest.aspx.cs" Inherits="Havit.WebApplicationTest.HavitCastleWindsorWebFormsTests.ReleaseOnUnloadTest" %>
 
 <%@ Register Src="~/HavitCastleWindsorWebFormsTests/ReleaseOnUnloadControlTest.ascx" TagPrefix="uc1" TagName="ReleaseOnUnloadControlTest" %>
 
@@ -13,7 +13,7 @@
     <form id="form1" runat="server">
     <div>
 		<uc1:ReleaseOnUnloadControlTest id="ReleaseOnUnloadControlTestUC" runat="server"  />
-	    <div><asp:Label ID="MyLabel" runat="server"/></div>
+	    Page: <div><asp:Label ID="MyLabel" runat="server"/></div>
     </div>
     </form>
 </body>

@@ -6,7 +6,7 @@ using System.Web.UI.WebControls;
 
 using Havit.Web.UI.WebControls;
 
-namespace WebApplicationTest.HavitWebTests
+namespace Havit.WebApplicationTest.HavitWebTests
 {
 	public partial class MessengerTest : System.Web.UI.Page
 	{

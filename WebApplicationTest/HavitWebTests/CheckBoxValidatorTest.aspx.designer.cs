@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WebApplicationTest.HavitWebTests {
+namespace Havit.WebApplicationTest.HavitWebTests {
     
     
     public partial class CheckBoxValidatorTest {

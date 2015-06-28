@@ -8,7 +8,7 @@ using Havit.BusinessLayerTest;
 using Havit.Web.UI.WebControls;
 using Havit.Business.Query;
 
-namespace WebApplicationTest.HavitWebTests
+namespace Havit.WebApplicationTest.HavitWebTests
 {
 	[WebService(Namespace = "http://tempuri.org/")]
 	[WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]

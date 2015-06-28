@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="Bootstrap.Master" AutoEventWireup="false" CodeBehind="CheckBoxListTest.aspx.cs" Inherits="WebApplicationTest.HavitWebBootstrapTests.CheckBoxListListTest" %>
+﻿<%@ Page Language="C#" MasterPageFile="Bootstrap.Master" AutoEventWireup="false" CodeBehind="CheckBoxListTest.aspx.cs" Inherits="Havit.WebApplicationTest.HavitWebBootstrapTests.CheckBoxListListTest" %>
 
 <asp:Content ContentPlaceHolderID="MainCPH" runat="server">
 

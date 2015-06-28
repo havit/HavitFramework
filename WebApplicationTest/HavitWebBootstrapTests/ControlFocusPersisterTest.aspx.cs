@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace WebApplicationTest.HavitWebBootstrapTests
+namespace Havit.WebApplicationTest.HavitWebBootstrapTests
 {
 	public partial class ControlFocusPersisterTest : System.Web.UI.Page
 	{

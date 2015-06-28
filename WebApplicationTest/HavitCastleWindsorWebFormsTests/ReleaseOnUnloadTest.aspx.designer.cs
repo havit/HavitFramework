@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WebApplicationTest.HavitCastleWindsorWebFormsTests {
+namespace Havit.WebApplicationTest.HavitCastleWindsorWebFormsTests {
     
     
     public partial class ReleaseOnUnloadTest {
@@ -28,7 +28,7 @@ namespace WebApplicationTest.HavitCastleWindsorWebFormsTests {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::WebApplicationTest.HavitCastleWindsorWebFormsTests.ReleaseOnUnloadControlTest ReleaseOnUnloadControlTestUC;
+        protected global::Havit.WebApplicationTest.HavitCastleWindsorWebFormsTests.ReleaseOnUnloadControlTest ReleaseOnUnloadControlTestUC;
         
         /// <summary>
         /// MyLabel control.

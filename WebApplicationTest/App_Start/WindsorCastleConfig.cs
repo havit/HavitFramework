@@ -5,9 +5,9 @@ using System.Web;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using Havit.CastleWindsor.WebForms;
-using WebApplicationTest.HavitCastleWindsorWebFormsTests;
+using Havit.WebApplicationTest.HavitCastleWindsorWebFormsTests;
 
-namespace WebApplicationTest.App_Start
+namespace Havit.WebApplicationTest.App_Start
 {
 	public class WindsorCastleConfig
 	{
@@ -16,7 +16,7 @@ namespace WebApplicationTest.App_Start
 			IWindsorContainer container = new WindsorContainer();
 			container.Register(Component.For<IDisposableComponent>().ImplementedBy<DisposableComponent>().LifestyleTransient());
 
-			DependencyInjectionHandlerFactoryHelper.SetResolver(container);
+			DependencyInjectionWebFormsHelper.SetResolver(container);
 
 		}
 	}

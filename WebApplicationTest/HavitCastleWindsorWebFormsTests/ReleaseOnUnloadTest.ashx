@@ -1,1 +1,1 @@
-﻿<%@ WebHandler Language="C#" CodeBehind="ReleaseOnUnloadTest.ashx.cs" Class="WebApplicationTest.HavitCastleWindsorWebFormsTests.ReleaseOnUnloadTest1" %>
+﻿<%@ WebHandler Language="C#" CodeBehind="ReleaseOnUnloadTest.ashx.cs" Class="Havit.WebApplicationTest.HavitCastleWindsorWebFormsTests.ReleaseOnUnloadTest1" %>

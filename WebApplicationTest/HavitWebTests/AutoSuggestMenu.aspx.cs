@@ -15,7 +15,7 @@ using Havit.BusinessLayerTest;
 using Havit.Business.Query;
 using System.Linq;
 
-namespace WebApplicationTest.HavitWebTests
+namespace Havit.WebApplicationTest.HavitWebTests
 {
 	public partial class AutoSuggestMenu_aspx : System.Web.UI.Page
 	{

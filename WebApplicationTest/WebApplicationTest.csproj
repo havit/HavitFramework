@@ -11,8 +11,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WebApplicationTest</RootNamespace>
-    <AssemblyName>WebApplicationTest</AssemblyName>
+    <RootNamespace>Havit.WebApplicationTest</RootNamespace>
+    <AssemblyName>Havit.WebApplicationTest</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>4.0</OldToolsVersion>
@@ -34,6 +34,7 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -242,6 +243,8 @@
     <Content Include="Content\themes\base\tooltip.css" />
     <Content Include="Content\toastr.css" />
     <Content Include="Content\toastr.min.css" />
+    <Content Include="HavitCastleWindsorWebFormsTests\DynamicallyLoadedControlTest.aspx" />
+    <Content Include="HavitCastleWindsorWebFormsTests\NestedUserControlWithDepedency.ascx" />
     <Content Include="HavitCastleWindsorWebFormsTests\ReleaseOnUnloadControlTest.ascx" />
     <Content Include="HavitCastleWindsorWebFormsTests\ReleaseOnUnloadTest.aspx" />
     <Content Include="HavitEnterpriseWebTests\EnterpriseCheckBoxDropDownListTest.aspx" />
@@ -415,7 +418,21 @@
     <Compile Include="App_Start\ScriptManagerConfig.cs" />
     <Compile Include="App_Start\WindsorCastleConfig.cs" />
     <Compile Include="HavitCastleWindsorWebFormsTests\DisposableComponent.cs" />
+    <Compile Include="HavitCastleWindsorWebFormsTests\DynamicallyLoadedControlTest.aspx.cs">
+      <DependentUpon>DynamicallyLoadedControlTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HavitCastleWindsorWebFormsTests\DynamicallyLoadedControlTest.aspx.designer.cs">
+      <DependentUpon>DynamicallyLoadedControlTest.aspx</DependentUpon>
+    </Compile>
     <Compile Include="HavitCastleWindsorWebFormsTests\IDisposableComponent.cs" />
+    <Compile Include="HavitCastleWindsorWebFormsTests\NestedUserControlWithDepedency.ascx.cs">
+      <DependentUpon>NestedUserControlWithDepedency.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HavitCastleWindsorWebFormsTests\NestedUserControlWithDepedency.ascx.designer.cs">
+      <DependentUpon>NestedUserControlWithDepedency.ascx</DependentUpon>
+    </Compile>
     <Compile Include="HavitCastleWindsorWebFormsTests\ReleaseOnUnloadControlTest.ascx.cs">
       <DependentUpon>ReleaseOnUnloadControlTest.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

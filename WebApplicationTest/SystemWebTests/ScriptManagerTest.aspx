@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="false" CodeBehind="ScriptManagerTest.aspx.cs" Inherits="WebApplicationTest.SystemWebTests.ScriptManagerTest" %>
+﻿<%@ Page Language="C#" AutoEventWireup="false" CodeBehind="ScriptManagerTest.aspx.cs" Inherits="Havit.WebApplicationTest.SystemWebTests.ScriptManagerTest" %>
 
 <!DOCTYPE html>
 

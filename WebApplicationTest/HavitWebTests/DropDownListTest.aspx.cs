@@ -8,7 +8,7 @@ using System.Globalization;
 using Havit.BusinessLayerTest;
 using Havit.Web.UI.WebControls;
 
-namespace WebApplicationTest.HavitWebTests
+namespace Havit.WebApplicationTest.HavitWebTests
 {
 	public partial class DropDownListTest : System.Web.UI.Page
 	{

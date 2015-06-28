@@ -1,6 +1,6 @@
 ﻿<!DOCTYPE html>
 
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AutoCompleteTextBox.aspx.cs" Inherits="WebApplicationTest.HavitWebTests.AutoCompleteTextBox" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AutoCompleteTextBox.aspx.cs" Inherits="Havit.WebApplicationTest.HavitWebTests.AutoCompleteTextBox" %>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">

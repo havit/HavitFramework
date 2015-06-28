@@ -6,7 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Havit.Web.Bootstrap.UI.WebControls;
 
-namespace WebApplicationTest.HavitWebBootstrapTests.Controls
+namespace Havit.WebApplicationTest.HavitWebBootstrapTests.Controls
 {
 	[ValidationProperty("Text")]
 	[ValidationDisplayTarget("MyTextBox")]

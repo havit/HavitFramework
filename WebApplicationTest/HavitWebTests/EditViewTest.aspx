@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="false" CodeBehind="EditViewTest.aspx.cs" Inherits="WebApplicationTest.HavitWebTests.EditViewTest" %>
+﻿<%@ Page Language="C#" AutoEventWireup="false" CodeBehind="EditViewTest.aspx.cs" Inherits="Havit.WebApplicationTest.HavitWebTests.EditViewTest" %>
 
 <!DOCTYPE html>
 

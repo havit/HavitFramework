@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WebApplicationTest.HavitWebBootstrapTests.Controls {
+namespace Havit.WebApplicationTest.HavitWebBootstrapTests.Controls {
     
     
     public partial class ValidationTargetTest {

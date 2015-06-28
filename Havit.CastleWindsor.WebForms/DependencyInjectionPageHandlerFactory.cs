@@ -12,7 +12,7 @@ namespace Havit.CastleWindsor.WebForms
 	/// </summary>
 	public class DependencyInjectionPageHandlerFactory : PageHandlerFactory
 	{
-		private ConcurrentDictionary<Type, PropertyInfo[]> cachedProperties = new ConcurrentDictionary<Type, PropertyInfo[]>();
+		private readonly ConcurrentDictionary<Type, PropertyInfo[]> cachedProperties = new ConcurrentDictionary<Type, PropertyInfo[]>();
 
 		/// <summary>
 		/// Returns an instance of the <see cref="T:System.Web.IHttpHandler" /> interface to process the requested resource.
@@ -31,7 +31,7 @@ namespace Havit.CastleWindsor.WebForms
 
 		internal void SetUpDependencyInjections(IHttpHandler handler)
 		{
-			DependencyInjectionHandlerFactoryHelper.InitializeInstance(handler, cachedProperties);
+			DependencyInjectionWebFormsHelper.InitializeInstance(handler, cachedProperties);
 			HookChildControlInitialization(handler);
 		}
 
@@ -48,16 +48,16 @@ namespace Havit.CastleWindsor.WebForms
 				// They will be when PreInit fires.
 				page.Init += (s, e) =>
 				{
-					InitializeChildControls(page);
+					DependencyInjectionWebFormsHelper.InitializeChildControls(page, this.cachedProperties);
 
 					MasterPage master = page.Master;
 					while (master != null)
 					{
-						DependencyInjectionHandlerFactoryHelper.InitializeInstance(master, cachedProperties);
-						InitializeChildControls(master);
+						DependencyInjectionWebFormsHelper.InitializeInstance(master, cachedProperties);
+						DependencyInjectionWebFormsHelper.InitializeChildControls(master, this.cachedProperties);
 						master.Unload += (sender, ea) =>
 						{
-							DependencyInjectionHandlerFactoryHelper.ReleaseDependencies(handler, cachedProperties);
+							DependencyInjectionWebFormsHelper.ReleaseDependencies(handler, cachedProperties);
 						};
 
 						master = master.Master;
@@ -66,50 +66,9 @@ namespace Havit.CastleWindsor.WebForms
 
 				page.Unload += (s, e) =>
 				{
-					DependencyInjectionHandlerFactoryHelper.ReleaseDependencies(handler, cachedProperties);
+					DependencyInjectionWebFormsHelper.ReleaseDependencies(handler, cachedProperties);
 				};
 			}
-		}
-
-		/// <summary>
-		/// Initializes the child controls.
-		/// </summary>
-		private void InitializeChildControls(Control control)
-		{
-			Control[] childControls = GetChildControls(control);
-
-			foreach (Control childControl in childControls)
-			{
-				DependencyInjectionHandlerFactoryHelper.InitializeInstance(childControl, cachedProperties);
-				InitializeChildControls(childControl);
-
-				// also hook Unload for release of resolved components/dependencies
-				Control childControlCopy = childControl; // dont use iteration variable in lambdas
-				childControl.Unload += (s, e) =>
-				{
-					DependencyInjectionHandlerFactoryHelper.ReleaseDependencies(childControlCopy, cachedProperties);
-				};
-			}
-		}
-
-		/// <summary>
-		/// Gets the child controls.
-		/// </summary>
-		private static Control[] GetChildControls(Control control)
-		{
-			BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;
-
-			// UserControls jsou vždycky "moje", začínající Havit mají reprezentovat controly, které jsou ve WebBase. Do této podmínky spadnou i controly HFW, což je relativně zbytečné
-			// možná optimalizace do budoucna je namísto "Havit." vzít jen ty, které NEJSOU z assembly Havit.Web ani System.Web. Pokud Havit.Web nezíská závislost na Castle Windsoru.
-
-			return (
-				from field in control.GetType().GetFields(flags)
-				let type = field.FieldType
-				where typeof(UserControl).IsAssignableFrom(type) || type.FullName.StartsWith("Havit.")
-				let userControl = field.GetValue(control) as Control
-				where userControl != null
-				select userControl
-			).ToArray();
 		}
 	}
 }

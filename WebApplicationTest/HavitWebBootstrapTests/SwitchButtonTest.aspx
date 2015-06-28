@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/HavitWebBootstrapTests/Bootstrap.Master" AutoEventWireup="false" CodeBehind="SwitchButtonTest.aspx.cs" Inherits="WebApplicationTest.HavitWebBootstrapTests.SwitchButtonTest" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/HavitWebBootstrapTests/Bootstrap.Master" AutoEventWireup="false" CodeBehind="SwitchButtonTest.aspx.cs" Inherits="Havit.WebApplicationTest.HavitWebBootstrapTests.SwitchButtonTest" %>
 <asp:Content ContentPlaceHolderID="MainCPH" runat="server">
 	<style>		
 		.no.active { background: #ffc0cb; }		

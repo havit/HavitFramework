@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using Havit.CastleWindsor.WebForms;
+using Havit.WebApplicationTest.HavitCastleWindsorWebFormsTests;
 
-namespace WebApplicationTest.HavitCastleWindsorWebFormsTests
+namespace Havit.WebApplicationTest.HavitCastleWindsorWebFormsTests
 {
 	public partial class ReleaseOnUnloadTest : System.Web.UI.Page
 	{
@@ -20,7 +16,7 @@ namespace WebApplicationTest.HavitCastleWindsorWebFormsTests
 		{
 			base.OnLoad(e);
 
-			MyLabel.Text = DisposableComponent.Hello();
+			MyLabel.Text = this.DisposableComponent.Hello();
 		}
 		#endregion
 	}

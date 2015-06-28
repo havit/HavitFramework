@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/HavitWebBootstrapTests/Bootstrap.Master" AutoEventWireup="false" CodeBehind="TabsTest.aspx.cs" Inherits="WebApplicationTest.HavitWebBootstrapTests.TabsTest" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/HavitWebBootstrapTests/Bootstrap.Master" AutoEventWireup="false" CodeBehind="TabsTest.aspx.cs" Inherits="Havit.WebApplicationTest.HavitWebBootstrapTests.TabsTest" %>
 
 <asp:Content ContentPlaceHolderID="MainCPH" runat="server">
 	<!-- -------------------- -->

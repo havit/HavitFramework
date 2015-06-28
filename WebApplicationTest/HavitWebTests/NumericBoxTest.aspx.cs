@@ -12,7 +12,7 @@ using System.Web.UI.HtmlControls;
 using Havit.BusinessLayerTest;
 using System.Diagnostics;
 
-namespace WebApplicationTest.HavitWebTests
+namespace Havit.WebApplicationTest.HavitWebTests
 {
 	public partial class NumericBoxTest : System.Web.UI.Page
 	{

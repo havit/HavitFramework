@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using Havit.CastleWindsor.WebForms;
 
-namespace WebApplicationTest.HavitCastleWindsorWebFormsTests
+namespace Havit.WebApplicationTest.HavitCastleWindsorWebFormsTests
 {
 	/// <summary>
 	/// Testovadlo pro korektní release závislostí ashx handleru

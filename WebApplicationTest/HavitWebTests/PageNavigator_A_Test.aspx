@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="PageNavigator_A_Test.aspx.cs" Inherits="WebApplicationTest.HavitWebTests.PageNavigator_A_Test" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="PageNavigator_A_Test.aspx.cs" Inherits="Havit.WebApplicationTest.HavitWebTests.PageNavigator_A_Test" %>
 <%@ Import Namespace="Havit.Web" %>
 
 <!DOCTYPE html>

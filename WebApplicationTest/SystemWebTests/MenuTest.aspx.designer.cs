@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WebApplicationTest.SystemWebTests {
+namespace Havit.WebApplicationTest.SystemWebTests {
     
     
     public partial class MenuTest {

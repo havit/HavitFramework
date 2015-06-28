@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WebApplicationTest.HavitWebBootstrapTests {
+namespace Havit.WebApplicationTest.HavitWebBootstrapTests {
     
     
     public partial class ModalDialogUserControlTest {
@@ -55,7 +55,7 @@ namespace WebApplicationTest.HavitWebBootstrapTests {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::WebApplicationTest.HavitWebBootstrapTests.ModalDialogUserControlTest2 ModalDialogUserControlTest2;
+        protected global::Havit.WebApplicationTest.HavitWebBootstrapTests.ModalDialogUserControlTest2 ModalDialogUserControlTest2;
         
         /// <summary>
         /// ShowNestedButton control.

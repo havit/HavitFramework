@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Async="true" CodeBehind="Default.aspx.cs" Inherits="WebApplicationTest.HavitGlimpseEntityTest.Default" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Async="true" CodeBehind="Default.aspx.cs" Inherits="Havit.WebApplicationTest.HavitGlimpseEntityTest.Default" %>
 
 <!DOCTYPE html>
 

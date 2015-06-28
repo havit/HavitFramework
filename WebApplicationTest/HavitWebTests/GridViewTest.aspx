@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" CodeBehind="GridViewTest.aspx.cs" Inherits="WebApplicationTest.HavitWebTests.GridViewExtTest" %>
+﻿<%@ Page Language="C#" CodeBehind="GridViewTest.aspx.cs" Inherits="Havit.WebApplicationTest.HavitWebTests.GridViewExtTest" %>
 <%@ Register TagPrefix="uc" TagName="GridViewExtTest_InnerGVControl" src="GridViewExtTest_InnerGVControl.ascx"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

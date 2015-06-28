@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/HavitWebBootstrapTests/Bootstrap.Master" AutoEventWireup="true" CodeBehind="AutoCompleteTextBox.aspx.cs" Inherits="WebApplicationTest.HavitWebBootstrapTests.AutoCompleteTextBox" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/HavitWebBootstrapTests/Bootstrap.Master" AutoEventWireup="true" CodeBehind="AutoCompleteTextBox.aspx.cs" Inherits="Havit.WebApplicationTest.HavitWebBootstrapTests.AutoCompleteTextBox" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainCPH" runat="server">
 

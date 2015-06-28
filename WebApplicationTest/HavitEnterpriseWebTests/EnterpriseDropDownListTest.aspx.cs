@@ -11,7 +11,7 @@ using System.Web.UI.HtmlControls;
 using Havit.BusinessLayerTest;
 using Havit.Web.UI.WebControls;
 
-namespace WebApplicationTest.HavitEnterpriseWebTests
+namespace Havit.WebApplicationTest.HavitEnterpriseWebTests
 {
 	public partial class EnterpriseDropDownListTest : System.Web.UI.Page
 	{

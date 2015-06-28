@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="false" CodeBehind="GridViewExtTest_InnerGVControl.ascx.cs" Inherits="WebApplicationTest.HavitWebTests.GridViewExtTest_InnerGVControl" %>
+﻿<%@ Control Language="C#" AutoEventWireup="false" CodeBehind="GridViewExtTest_InnerGVControl.ascx.cs" Inherits="Havit.WebApplicationTest.HavitWebTests.GridViewExtTest_InnerGVControl" %>
 
 <havit:EnterpriseGridView ID="InnerGV" AllowInserting="True" runat="server">
 	<Columns>

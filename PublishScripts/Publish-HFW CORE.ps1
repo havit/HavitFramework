@@ -7,6 +7,7 @@
 .\Publish-Havit.PayPal.ps1
 .\Publish-Havit.ps1
 .\Publish-Havit.Services.ps1
+.\Publish-Havit.Services.Azure.ps1
 .\Publish-Havit.Web.ps1
 
 .\Publish-Documentation.ps1

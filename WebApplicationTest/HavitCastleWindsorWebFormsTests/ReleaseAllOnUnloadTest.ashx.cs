@@ -8,7 +8,7 @@ using Havit.CastleWindsor.WebForms;
 namespace Havit.WebApplicationTest.HavitCastleWindsorWebFormsTests
 {
 	/// <summary>
-	/// Summary description for ReleaseAllOnUnload
+	/// Testovací handler pro release enumerace (pole) injected objetků.
 	/// </summary>
 	public class ReleaseAllOnUnloadTest : InjectableGenericHandlerBase
 	{

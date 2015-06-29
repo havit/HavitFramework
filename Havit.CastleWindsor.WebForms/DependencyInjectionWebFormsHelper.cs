@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -157,7 +158,17 @@ namespace Havit.CastleWindsor.WebForms
 			foreach (PropertyInfo propertyInfo in props)
 			{
 				object dependencyInstance = propertyInfo.GetValue(control);
-				if (dependencyInstance != null)
+				Type enumerableType = GetEnumerableType(propertyInfo.PropertyType);
+
+				if (enumerableType != null)
+				{
+					IEnumerable dependencyInstanceEnumerable = (IEnumerable)dependencyInstance;
+					foreach (var dependencyInstanceItem in dependencyInstanceEnumerable)
+					{
+						_resolver.Release(dependencyInstanceItem);
+					}
+				}
+				else if (dependencyInstance != null)
 				{
 					_resolver.Release(dependencyInstance);
 				}

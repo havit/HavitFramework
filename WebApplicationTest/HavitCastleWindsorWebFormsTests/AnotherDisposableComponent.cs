@@ -6,14 +6,14 @@ using System.Web;
 
 namespace Havit.WebApplicationTest.HavitCastleWindsorWebFormsTests
 {
-	public class DisposableComponent : IDisposable, IDisposableComponent
+	public class AnotherDisposableComponent : IDisposable, IDisposableComponent
 	{
 		#region Fields
 		private readonly Guid _instanceId;
 		#endregion
 
 		#region DisposableComponent
-		public DisposableComponent()
+		public AnotherDisposableComponent()
 		{
 			_instanceId = Guid.NewGuid();
 			Debug.WriteLine("Constructing instance " + _instanceId);

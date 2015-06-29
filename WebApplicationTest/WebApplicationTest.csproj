@@ -367,6 +367,7 @@
     <Content Include="Content\bootstrap\bootstrap.less" />
     <Content Include="Content\bootstrap\badges.less" />
     <Content Include="Content\bootstrap\alerts.less" />
+    <Content Include="HavitCastleWindsorWebFormsTests\ReleaseAllOnUnloadTest.ashx" />
     <None Include="Scripts\jquery-1.11.3.intellisense.js" />
     <Content Include="Scripts\jquery-1.11.3.js" />
     <Content Include="Scripts\jquery-1.11.3.min.js" />
@@ -417,6 +418,7 @@
     </Compile>
     <Compile Include="App_Start\ScriptManagerConfig.cs" />
     <Compile Include="App_Start\WindsorCastleConfig.cs" />
+    <Compile Include="HavitCastleWindsorWebFormsTests\AnotherDisposableComponent.cs" />
     <Compile Include="HavitCastleWindsorWebFormsTests\DisposableComponent.cs" />
     <Compile Include="HavitCastleWindsorWebFormsTests\DynamicallyLoadedControlTest.aspx.cs">
       <DependentUpon>DynamicallyLoadedControlTest.aspx</DependentUpon>
@@ -432,6 +434,9 @@
     </Compile>
     <Compile Include="HavitCastleWindsorWebFormsTests\NestedUserControlWithDepedency.ascx.designer.cs">
       <DependentUpon>NestedUserControlWithDepedency.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="HavitCastleWindsorWebFormsTests\ReleaseAllOnUnloadTest.ashx.cs">
+      <DependentUpon>ReleaseAllOnUnloadTest.ashx</DependentUpon>
     </Compile>
     <Compile Include="HavitCastleWindsorWebFormsTests\ReleaseOnUnloadControlTest.ascx.cs">
       <DependentUpon>ReleaseOnUnloadControlTest.ascx</DependentUpon>

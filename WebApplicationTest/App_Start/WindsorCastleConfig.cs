@@ -14,7 +14,10 @@ namespace Havit.WebApplicationTest.App_Start
 		public static void RegisterDiContainer()
 		{
 			IWindsorContainer container = new WindsorContainer();
-			container.Register(Component.For<IDisposableComponent>().ImplementedBy<DisposableComponent>().LifestyleTransient());
+			container.Register(
+				Component.For<IDisposableComponent>().ImplementedBy<DisposableComponent>().LifestyleTransient(),
+				Component.For<IDisposableComponent>().ImplementedBy<AnotherDisposableComponent>().LifestyleTransient()
+				);
 
 			DependencyInjectionWebFormsHelper.SetResolver(container);
 

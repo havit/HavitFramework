@@ -30,14 +30,7 @@ namespace Havit.CastleWindsor.WebForms
 
 		internal void SetUpDependencyInjections(Page page)
 		{
-			bool anyDependencyResolved = DependencyInjectionWebFormsHelper.InitializeInstance(page, cachedProperties);
-			if (anyDependencyResolved)
-			{
-				page.Unload += (us, ue) =>
-				{
-					DependencyInjectionWebFormsHelper.ReleaseDependencies(page, cachedProperties);
-				};
-			}
+			DependencyInjectionWebFormsHelper.InitializeControlInstance(page, cachedProperties);
 
 			// Child controls are not created at this point.
 			// They will be when PreInit fires.
@@ -48,16 +41,8 @@ namespace Havit.CastleWindsor.WebForms
 				MasterPage master = page.Master;
 				while (master != null)
 				{
-					bool anyMasterDependencyResolved = DependencyInjectionWebFormsHelper.InitializeInstance(master, cachedProperties);
+					DependencyInjectionWebFormsHelper.InitializeControlInstance(master, cachedProperties);
 					DependencyInjectionWebFormsHelper.InitializeChildControls(master, this.cachedProperties);
-					if (anyMasterDependencyResolved)
-					{
-						MasterPage currentMasterPage = master;
-						master.Unload += (sender, ea) =>
-						{
-							DependencyInjectionWebFormsHelper.ReleaseDependencies(currentMasterPage, cachedProperties);
-						};
-					}
 
 					master = master.Master;
 				}

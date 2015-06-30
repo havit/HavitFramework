@@ -48,7 +48,7 @@ namespace Havit.CastleWindsor.WebForms
 
 			ConcurrentDictionary<Type, PropertyInfo[]> cachedProperties = new ConcurrentDictionary<Type, PropertyInfo[]>();
 
-			InitializeControl(control, cachedProperties);
+			InitializeControlIncludingChildren(control, cachedProperties);
 		}
 
 		/// <summary>
@@ -56,20 +56,26 @@ namespace Havit.CastleWindsor.WebForms
 		/// </summary>
 		/// <param name="control">Control to be initialized.</param>
 		/// <param name="cachedProperties">Cache for control properties.</param>
-		internal static bool InitializeControl(Control control, ConcurrentDictionary<Type, PropertyInfo[]> cachedProperties)
+		internal static bool InitializeControlIncludingChildren(Control control, ConcurrentDictionary<Type, PropertyInfo[]> cachedProperties)
 		{
-			bool anyInstanceDependency = InitializeInstance(control, cachedProperties);
+			bool anyInstanceDependency = InitializeControlInstance(control, cachedProperties);
 
 			InitializeChildControls(control, cachedProperties);
 
+			return anyInstanceDependency;
+		}
+
+		/// <summary>
+		/// Initializes the controls and hooks the Unload. (doesn't care about children)
+		/// </summary>
+		internal static bool InitializeControlInstance(Control control, ConcurrentDictionary<Type, PropertyInfo[]> cachedProperties)
+		{
+			bool anyInstanceDependency = InitializeInstance(control, cachedProperties);
+
 			if (anyInstanceDependency)
 			{
-				control.Unload += (s, e) =>
-				{
-					ReleaseDependencies(control, cachedProperties);
-				};
+				control.Unload += (s, e) => { ReleaseDependencies(control, cachedProperties); };
 			}
-
 			return anyInstanceDependency;
 		}
 
@@ -83,7 +89,7 @@ namespace Havit.CastleWindsor.WebForms
 
 			foreach (Control childControl in childControls)
 			{
-				anyResolvedDependency = InitializeControl(childControl, cachedProperties) || anyResolvedDependency;
+				anyResolvedDependency = InitializeControlInstance(childControl, cachedProperties) || anyResolvedDependency;
 			}
 
 			return anyResolvedDependency;
@@ -92,21 +98,16 @@ namespace Havit.CastleWindsor.WebForms
 		/// <summary>
 		/// Gets the child controls.
 		/// </summary>
-		internal static Control[] GetChildControls(Control control)
+		private static Control[] GetChildControls(Control control)
 		{
-			BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;
-
 			// UserControls jsou vždycky "moje", začínající Havit mají reprezentovat controly, které jsou ve WebBase. Do této podmínky spadnou i controly HFW, což je relativně zbytečné
 			// možná optimalizace do budoucna je namísto "Havit." vzít jen ty, které NEJSOU z assembly Havit.Web ani System.Web. Pokud Havit.Web nezíská závislost na Castle Windsoru.
+			Func<Control, IEnumerable<Control>> getAllControls = null;
+			getAllControls = c => c.Controls.Cast<Control>().SelectMany(getAllControls).Concat(new[] { c });
 
-			return (
-						from field in control.GetType().GetFields(flags)
-						let type = field.FieldType
-						where typeof(UserControl).IsAssignableFrom(type) || type.FullName.StartsWith("Havit.")
-						let userControl = field.GetValue(control) as Control
-						where userControl != null
-						select userControl
-					).ToArray();
+			return getAllControls(control)
+				.Where(c => (c != control) && ((c is UserControl) || c.GetType().FullName.StartsWith("Havit.")))
+				.ToArray();
 		}
 
 		/// <summary>
@@ -142,7 +143,7 @@ namespace Havit.CastleWindsor.WebForms
 				}
 			}
 
-			return props.Length > 0;	
+			return props.Length > 0;
 		}
 
 		/// <summary>

@@ -30,7 +30,7 @@ namespace Havit.CastleWindsor.WebForms
 		{
 			if (_resolver != null)
 			{
-				throw new ApplicationException("Resolver je již nastaven!");
+				throw new InvalidOperationException("Resolver je již nastaven!");
 			}
 			_resolver = container;
 		}

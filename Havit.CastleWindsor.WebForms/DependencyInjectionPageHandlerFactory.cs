@@ -12,8 +12,6 @@ namespace Havit.CastleWindsor.WebForms
 	/// </summary>
 	public class DependencyInjectionPageHandlerFactory : PageHandlerFactory
 	{
-		private readonly ConcurrentDictionary<Type, PropertyInfo[]> cachedProperties = new ConcurrentDictionary<Type, PropertyInfo[]>();
-
 		/// <summary>
 		/// Returns an instance of the <see cref="T:System.Web.IHttpHandler" /> interface to process the requested resource.
 		/// </summary>
@@ -30,19 +28,19 @@ namespace Havit.CastleWindsor.WebForms
 
 		internal void SetUpDependencyInjections(Page page)
 		{
-			DependencyInjectionWebFormsHelper.InitializeControlInstance(page, cachedProperties);
+			DependencyInjectionWebFormsHelper.InitializeControlInstance(page);
 
 			// Child controls are not created at this point.
 			// They will be when PreInit fires.
 			page.Init += (s, e) =>
 			{
-				DependencyInjectionWebFormsHelper.InitializeChildControls(page, this.cachedProperties);
+				DependencyInjectionWebFormsHelper.InitializeChildControls(page);
 
 				MasterPage master = page.Master;
 				while (master != null)
 				{
-					DependencyInjectionWebFormsHelper.InitializeControlInstance(master, cachedProperties);
-					DependencyInjectionWebFormsHelper.InitializeChildControls(master, this.cachedProperties);
+					DependencyInjectionWebFormsHelper.InitializeControlInstance(master);
+					DependencyInjectionWebFormsHelper.InitializeChildControls(master);
 
 					master = master.Master;
 				}

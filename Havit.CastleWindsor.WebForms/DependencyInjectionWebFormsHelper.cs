@@ -17,6 +17,7 @@ namespace Havit.CastleWindsor.WebForms
 	{
 		#region Fields
 		private static IWindsorContainer _resolver;
+		private static readonly ConcurrentDictionary<Type, PropertyInfo[]> cachedProperties = new ConcurrentDictionary<Type, PropertyInfo[]>();
 		#endregion
 
 		/// <summary>
@@ -36,31 +37,19 @@ namespace Havit.CastleWindsor.WebForms
 		}
 
 		/// <summary>
-		/// Initializes the control (including child controls) - injects dependencies.
+		/// Initializes the control (including child controls).
 		/// </summary>
 		/// <param name="control">Control to be initialized.</param>
-		public static void InitializeControl(Control control)
+		public static bool InitializeControl(Control control)
 		{
 			if (control == null)
 			{
 				throw new ArgumentNullException("control"); // TODO: nameof(control));
 			}
 
-			ConcurrentDictionary<Type, PropertyInfo[]> cachedProperties = new ConcurrentDictionary<Type, PropertyInfo[]>();
+			bool anyInstanceDependency = InitializeControlInstance(control);
 
-			InitializeControlIncludingChildren(control, cachedProperties);
-		}
-
-		/// <summary>
-		/// Initializes the control (including child controls).
-		/// </summary>
-		/// <param name="control">Control to be initialized.</param>
-		/// <param name="cachedProperties">Cache for control properties.</param>
-		internal static bool InitializeControlIncludingChildren(Control control, ConcurrentDictionary<Type, PropertyInfo[]> cachedProperties)
-		{
-			bool anyInstanceDependency = InitializeControlInstance(control, cachedProperties);
-
-			InitializeChildControls(control, cachedProperties);
+			InitializeChildControls(control);
 
 			return anyInstanceDependency;
 		}
@@ -68,13 +57,13 @@ namespace Havit.CastleWindsor.WebForms
 		/// <summary>
 		/// Initializes the controls and hooks the Unload. (doesn't care about children)
 		/// </summary>
-		internal static bool InitializeControlInstance(Control control, ConcurrentDictionary<Type, PropertyInfo[]> cachedProperties)
+		internal static bool InitializeControlInstance(Control control)
 		{
-			bool anyInstanceDependency = InitializeInstance(control, cachedProperties);
+			bool anyInstanceDependency = InitializeInstance(control);
 
 			if (anyInstanceDependency)
 			{
-				control.Unload += (s, e) => { ReleaseDependencies(control, cachedProperties); };
+				control.Unload += (s, e) => { ReleaseDependencies(control); };
 			}
 			return anyInstanceDependency;
 		}
@@ -82,14 +71,14 @@ namespace Havit.CastleWindsor.WebForms
 		/// <summary>
 		/// Initializes child controls.
 		/// </summary>
-		internal static bool InitializeChildControls(Control control, ConcurrentDictionary<Type, PropertyInfo[]> cachedProperties)
+		internal static bool InitializeChildControls(Control control)
 		{
 			Control[] childControls = GetChildControls(control);
 			bool anyResolvedDependency = false;
 
 			foreach (Control childControl in childControls)
 			{
-				anyResolvedDependency = InitializeControlInstance(childControl, cachedProperties) || anyResolvedDependency;
+				anyResolvedDependency = InitializeControlInstance(childControl) || anyResolvedDependency;
 			}
 
 			return anyResolvedDependency;
@@ -113,9 +102,9 @@ namespace Havit.CastleWindsor.WebForms
 		/// <summary>
 		/// Initializes the instance (Only the instance itself without child controls!).
 		/// </summary>
-		internal static bool InitializeInstance(object control, ConcurrentDictionary<Type, PropertyInfo[]> cachedProperties)
+		internal static bool InitializeInstance(object control)
 		{
-			PropertyInfo[] props = GetInjectableProperties(control, cachedProperties);
+			PropertyInfo[] props = GetInjectableProperties(control);
 
 			// inject the values to properties
 			foreach (PropertyInfo prop in props)
@@ -149,7 +138,7 @@ namespace Havit.CastleWindsor.WebForms
 		/// <summary>
 		/// Get a collection of injectable properties for the control
 		/// </summary>
-		private static PropertyInfo[] GetInjectableProperties(object control, ConcurrentDictionary<Type, PropertyInfo[]> cachedProperties)
+		private static PropertyInfo[] GetInjectableProperties(object control)
 		{
 			PropertyInfo[] props = cachedProperties.GetOrAdd(control.GetType(), type =>
 			{
@@ -162,9 +151,9 @@ namespace Havit.CastleWindsor.WebForms
 		/// <summary>
 		/// Releases all dependencies of the instance (which is being released)
 		/// </summary>
-		internal static void ReleaseDependencies(object control, ConcurrentDictionary<Type, PropertyInfo[]> cachedProperties)
+		internal static void ReleaseDependencies(object control)
 		{
-			PropertyInfo[] props = GetInjectableProperties(control, cachedProperties);
+			PropertyInfo[] props = GetInjectableProperties(control);
 			foreach (PropertyInfo propertyInfo in props)
 			{
 				object dependencyInstance = propertyInfo.GetValue(control);

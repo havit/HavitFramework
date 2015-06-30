@@ -182,6 +182,8 @@ namespace Havit.CastleWindsor.WebForms
 				{
 					_resolver.Release(dependencyInstance);
 				}
+
+				propertyInfo.SetValue(control, null);
 			}
 		}
 

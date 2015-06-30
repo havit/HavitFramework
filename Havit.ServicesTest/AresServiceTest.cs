@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 using Havit.Services.Ares;
 
@@ -50,7 +51,8 @@ namespace Havit.ServicesTest
 			string name = "ASSECO";
 			AresPrehledSubjektuService service = new AresPrehledSubjektuService();
 			service.Timeout = 60 * 1000; /* 60 sec */
-			service.GetData(name);
+			AresPrehledSubjektuResult result = service.GetData(name);
+			Assert.IsTrue(result.Data.Count > 1);
 		}
 		#endregion
 
@@ -62,7 +64,8 @@ namespace Havit.ServicesTest
 			string obec = "vožice";
 			AresPrehledSubjektuService service = new AresPrehledSubjektuService();
 			service.Timeout = 60 * 1000; /* 60 sec */
-			service.GetData(name, obec);
+			AresPrehledSubjektuResult result = service.GetData(name, obec);
+			Assert.IsTrue(result.Data.Count > 10);
 		}
 		#endregion
 

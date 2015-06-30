@@ -19,7 +19,6 @@ namespace Havit.Services.Ares
 	{
 		#region Const
 		private const string AresEkonomickySubjektRequestUrl = "http://wwwinfo.mfcr.cz/cgi-bin/ares/ares_es.cgi?obch_jm={0}&obec={1}&cestina=cestina&maxpoc=200";
-		private const string AresFyzickaOsobaRequestUrl = "http://wwwinfo.mfcr.cz/cgi-bin/ares/ares_fo.cgi?jmeno={0}&obec={1}&cestina=cestina&maxpoc=200";
 		#endregion
 
 		#region Private members
@@ -46,7 +45,6 @@ namespace Havit.Services.Ares
 		#endregion
 
 		#region GetData
-
 		/// <summary>
 		/// Vrací strukturovanou odpovìd z obchodního rejstøíku.
 		/// </summary>
@@ -59,7 +57,6 @@ namespace Havit.Services.Ares
 			this.Obec = obec;
 
 			tasks.Add(Task.Factory.StartNew(LoadEkonomickySubjektData, result));
-			tasks.Add(Task.Factory.StartNew(LoadFyzickaOsobaData, result));
 
 			try
 			{
@@ -86,14 +83,6 @@ namespace Havit.Services.Ares
 		private void LoadEkonomickySubjektData(object state)
 		{
 			string requestUrl = String.Format(AresEkonomickySubjektRequestUrl, System.Web.HttpUtility.UrlEncode(Nazev, Encoding.GetEncoding("windows-1250")), System.Web.HttpUtility.UrlEncode(Obec, Encoding.GetEncoding("windows-1250")));
-			LoadData(requestUrl, state);
-		}
-		#endregion
-
-		#region LoadFyzickaOsobaData
-		private void LoadFyzickaOsobaData(object state)
-		{
-			string requestUrl = String.Format(AresFyzickaOsobaRequestUrl, Nazev, Obec);
 			LoadData(requestUrl, state);
 		}
 		#endregion
@@ -160,7 +149,7 @@ namespace Havit.Services.Ares
 		{
 			XDocument aresResponseXDocument = null;
 
-            try
+			try
 			{
 				WebRequest aresRequest = HttpWebRequest.Create(requestUrl);
 				if (this.Timeout != null)

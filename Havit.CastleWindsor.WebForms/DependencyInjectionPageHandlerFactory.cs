@@ -21,55 +21,47 @@ namespace Havit.CastleWindsor.WebForms
 		{
 			IHttpHandler handler = base.GetHandler(context, requestType, virtualPath, path);
 
-			if (handler != null)
+			if (handler is Page)
 			{
-				SetUpDependencyInjections(handler);
+				SetUpDependencyInjections((Page)handler);
 			}
-
 			return handler;
 		}
 
-		internal void SetUpDependencyInjections(IHttpHandler handler)
+		internal void SetUpDependencyInjections(Page page)
 		{
-			DependencyInjectionWebFormsHelper.InitializeInstance(handler, cachedProperties);
-			HookChildControlInitialization(handler);
-		}
-
-		/// <summary>
-		/// Hooks the child control initialization.
-		/// </summary>
-		private void HookChildControlInitialization(IHttpHandler handler)
-		{
-			Page page = handler as Page;
-
-			if (page != null)
+			bool anyDependencyResolved = DependencyInjectionWebFormsHelper.InitializeInstance(page, cachedProperties);
+			if (anyDependencyResolved)
 			{
-				// Child controls are not created at this point.
-				// They will be when PreInit fires.
-				page.Init += (s, e) =>
+				page.Unload += (us, ue) =>
 				{
-					DependencyInjectionWebFormsHelper.InitializeChildControls(page, this.cachedProperties);
+					DependencyInjectionWebFormsHelper.ReleaseDependencies(page, cachedProperties);
+				};
+			}
 
-					MasterPage master = page.Master;
-					while (master != null)
+			// Child controls are not created at this point.
+			// They will be when PreInit fires.
+			page.Init += (s, e) =>
+			{
+				DependencyInjectionWebFormsHelper.InitializeChildControls(page, this.cachedProperties);
+
+				MasterPage master = page.Master;
+				while (master != null)
+				{
+					bool anyMasterDependencyResolved = DependencyInjectionWebFormsHelper.InitializeInstance(master, cachedProperties);
+					DependencyInjectionWebFormsHelper.InitializeChildControls(master, this.cachedProperties);
+					if (anyMasterDependencyResolved)
 					{
-						DependencyInjectionWebFormsHelper.InitializeInstance(master, cachedProperties);
-						DependencyInjectionWebFormsHelper.InitializeChildControls(master, this.cachedProperties);
 						MasterPage currentMasterPage = master;
 						master.Unload += (sender, ea) =>
 						{
 							DependencyInjectionWebFormsHelper.ReleaseDependencies(currentMasterPage, cachedProperties);
 						};
-
-						master = master.Master;
 					}
-				};
 
-				page.Unload += (s, e) =>
-				{
-					DependencyInjectionWebFormsHelper.ReleaseDependencies(handler, cachedProperties);
-				};
-			}
+					master = master.Master;
+				}
+			};
 		}
 	}
 }

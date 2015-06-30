@@ -2,6 +2,7 @@
 using System.Web;
 using System.Web.Compilation;
 using System.Web.Routing;
+using System.Web.UI;
 
 namespace Havit.CastleWindsor.WebForms
 {
@@ -10,7 +11,6 @@ namespace Havit.CastleWindsor.WebForms
 	/// </summary>
 	public class DependencyInjectionPageRouteHandler : PageRouteHandler
 	{
-
 		private readonly DependencyInjectionPageHandlerFactory _pageHandlerFactory = new DependencyInjectionPageHandlerFactory();
 
 		/// <summary>
@@ -57,12 +57,15 @@ namespace Havit.CastleWindsor.WebForms
 			IHttpHandler handler = (BuildManager.CreateInstanceFromVirtualPath(virtualPath, typeof(IHttpHandler)) as IHttpHandler);
 			if (handler == null)
 			{
-				throw new ApplicationException("Chybný routing");
+				throw new InvalidOperationException("Chybný routing");
 			}
 
-			_pageHandlerFactory.SetUpDependencyInjections(handler);
+			// umíme řešit jen Page (kvůli Unloadu, který není na IHttpHandleru). Ashx se řeší samy potomkem, asmx se zatím neřeší (pokud by někdo potřeboval, je třeba udělat stejnou infrastrukturu a vyřešit release - asi v Disposing, protože nic jiného tam není, WebServiceHandler je internal)
+			if (handler is Page)
+			{
+				_pageHandlerFactory.SetUpDependencyInjections((Page)handler);
+			}
 			return handler;
 		}
-
 	}
 }

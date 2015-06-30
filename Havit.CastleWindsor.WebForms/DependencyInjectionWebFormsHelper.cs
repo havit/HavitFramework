@@ -56,30 +56,37 @@ namespace Havit.CastleWindsor.WebForms
 		/// </summary>
 		/// <param name="control">Control to be initialized.</param>
 		/// <param name="cachedProperties">Cache for control properties.</param>
-		internal static void InitializeControl(Control control, ConcurrentDictionary<Type, PropertyInfo[]> cachedProperties)
+		internal static bool InitializeControl(Control control, ConcurrentDictionary<Type, PropertyInfo[]> cachedProperties)
 		{
-			InitializeInstance(control, cachedProperties);
+			bool anyInstanceDependency = InitializeInstance(control, cachedProperties);
 
 			InitializeChildControls(control, cachedProperties);
 
-			control.Unload += (s, e) =>
+			if (anyInstanceDependency)
+			{
+				control.Unload += (s, e) =>
 				{
 					ReleaseDependencies(control, cachedProperties);
 				};
+			}
 
+			return anyInstanceDependency;
 		}
 
 		/// <summary>
 		/// Initializes child controls.
 		/// </summary>
-		internal static void InitializeChildControls(Control control, ConcurrentDictionary<Type, PropertyInfo[]> cachedProperties)
+		internal static bool InitializeChildControls(Control control, ConcurrentDictionary<Type, PropertyInfo[]> cachedProperties)
 		{
 			Control[] childControls = GetChildControls(control);
+			bool anyResolvedDependency = false;
 
 			foreach (Control childControl in childControls)
 			{
-				InitializeControl(childControl, cachedProperties);
+				anyResolvedDependency = InitializeControl(childControl, cachedProperties) || anyResolvedDependency;
 			}
+
+			return anyResolvedDependency;
 		}
 
 		/// <summary>
@@ -105,7 +112,7 @@ namespace Havit.CastleWindsor.WebForms
 		/// <summary>
 		/// Initializes the instance (Only the instance itself without child controls!).
 		/// </summary>
-		internal static void InitializeInstance(object control, ConcurrentDictionary<Type, PropertyInfo[]> cachedProperties)
+		internal static bool InitializeInstance(object control, ConcurrentDictionary<Type, PropertyInfo[]> cachedProperties)
 		{
 			PropertyInfo[] props = GetInjectableProperties(control, cachedProperties);
 
@@ -134,6 +141,8 @@ namespace Havit.CastleWindsor.WebForms
 					throw new ApplicationException("Error in resolving dependency " + prop.Name + ".", e);
 				}
 			}
+
+			return props.Length > 0;	
 		}
 
 		/// <summary>

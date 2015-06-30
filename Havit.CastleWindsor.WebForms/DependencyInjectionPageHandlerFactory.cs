@@ -55,9 +55,10 @@ namespace Havit.CastleWindsor.WebForms
 					{
 						DependencyInjectionWebFormsHelper.InitializeInstance(master, cachedProperties);
 						DependencyInjectionWebFormsHelper.InitializeChildControls(master, this.cachedProperties);
+						MasterPage currentMasterPage = master;
 						master.Unload += (sender, ea) =>
 						{
-							DependencyInjectionWebFormsHelper.ReleaseDependencies(handler, cachedProperties);
+							DependencyInjectionWebFormsHelper.ReleaseDependencies(currentMasterPage, cachedProperties);
 						};
 
 						master = master.Master;

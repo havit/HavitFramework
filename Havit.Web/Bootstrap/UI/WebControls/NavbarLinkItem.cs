@@ -103,6 +103,23 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		}
 		#endregion
 
+		#region CssClass
+		/// <summary>
+		/// Gets or sets the CSS class.
+		/// </summary>
+		public string CssClass
+		{
+			get
+			{
+				return (string)ViewState["CssClass"];
+			}
+			set
+			{
+				ViewState["CssClass"] = value;
+			}
+		}
+		#endregion
+
 		#region EnabledFunc
 		/// <summary>
 		/// When function returns false, item is disabled.
@@ -207,6 +224,8 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			{
 				cssClass += "disabled";
 			}
+
+			cssClass += CssClass;
 
 			if (!String.IsNullOrEmpty(cssClass))
 			{

@@ -222,7 +222,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 
 			if (!Enabled)
 			{
-				cssClass += "disabled";
+				cssClass += "disabled ";
 			}
 
 			cssClass += CssClass;

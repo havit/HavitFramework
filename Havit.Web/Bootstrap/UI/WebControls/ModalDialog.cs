@@ -179,7 +179,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Css class to be used for header - used in element with modal-header class.
 		/// </summary>
-		[DefaultValue("")]
+		//[DefaultValue("")]
 		public string HeaderCssClass
 		{
 			get
@@ -197,7 +197,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Css class to be used for content - used in element with modal-body class.
 		/// </summary>
-		[DefaultValue("")]
+		//[DefaultValue("")]
 		public string ContentCssClass
 		{
 			get
@@ -215,7 +215,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Css class to be used for footer - used in element with modal-footer class.
 		/// </summary>
-		[DefaultValue("")]
+		//[DefaultValue("")]
 		public string FooterCssClass
 		{
 			get
@@ -498,7 +498,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		#endregion
 
 		#region IPostBackEventHandler.RaisePostBackEvent
-		void IPostBackEventHandler.RaisePostBackEvent(string eventArgument)
+		private void IPostBackEventHandler.RaisePostBackEvent(string eventArgument)
 		{
 			if (eventArgument == "Escape")
 			{

@@ -498,7 +498,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		#endregion
 
 		#region IPostBackEventHandler.RaisePostBackEvent
-		private void IPostBackEventHandler.RaisePostBackEvent(string eventArgument)
+		void IPostBackEventHandler.RaisePostBackEvent(string eventArgument)
 		{
 			if (eventArgument == "Escape")
 			{

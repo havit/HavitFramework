@@ -161,7 +161,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Css class to be used for dialog - used in element with modal-dialog class.
 		/// </summary>
-		[DefaultValue("")]
+		//[DefaultValue("")]
 		public string CssClass
 		{
 			get

@@ -234,7 +234,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Indicates whether to show close button.
 		/// Default value is true.
 		/// </summary>
-		[DefaultValue(true)]
+		//[DefaultValue(true)]
 		public bool ShowCloseButton
 		{
 			get
@@ -252,7 +252,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Indicates whether to close dialog on escape key pressed.
 		/// </summary>
-		[DefaultValue(true)]
+		//[DefaultValue(true)]
 		public bool CloseOnEscapeKey
 		{
 			get
@@ -271,7 +271,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Modal dialog drag mode.
 		/// Default value is ModalDialogDragMode.IfAvailable.
 		/// </summary>
-		[DefaultValue(ModalDialogDragMode.IfAvailable)]
+		//[DefaultValue(ModalDialogDragMode.IfAvailable)]
 		public ModalDialogDragMode DragMode
 		{
 			get

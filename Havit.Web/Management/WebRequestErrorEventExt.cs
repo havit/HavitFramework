@@ -86,7 +86,7 @@ namespace Havit.Web.Management
 
 			// Application information
 			sb.AppendLine();
-			sb.AppendLine("Application information: ");
+			sb.AppendLine("HttpApplication information: ");
 			this.FormatApplicationInformation(sb);
 
 			// Event information
@@ -234,7 +234,9 @@ namespace Havit.Web.Management
 		{
 			if (_currentApplicationInstanceType != null)
 			{
-				sb.AppendLine("    HttpApplication Assembly: " + _currentApplicationInstanceType.Assembly.FullName);
+				sb.AppendLine("    Assembly: " + _currentApplicationInstanceType.Assembly.GetName().Name);
+				sb.AppendLine("    Assembly Version: " + _currentApplicationInstanceType.Assembly.GetName().Version.ToString());
+				sb.AppendLine("    Assembly File Version: " + System.Diagnostics.FileVersionInfo.GetVersionInfo(_currentApplicationInstanceType.Assembly.Location).FileVersion);
 			}
 		}
 		#endregion

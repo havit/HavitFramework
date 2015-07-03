@@ -68,10 +68,22 @@ namespace Havit.Web.UI.ClientScripts
 		/// </summary>
 		internal static string GetVersionString()
 		{
-			Assembly assembly = Assembly.GetAssembly(typeof(HavitFrameworkClientScriptHelper));
-			Version version = assembly.GetName().Version;
-			return version.ToString().Replace(".", "_");
+			if (_version == null)
+			{
+				lock (_versionLock)
+				{
+					if (_version == null)
+					{
+						Assembly assembly = Assembly.GetAssembly(typeof(HavitFrameworkClientScriptHelper));
+						string fileVersion = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location).FileVersion;
+						_version = fileVersion.Replace(".", "_");
+					}
+				}
+			}
+			return _version;
 		}
+		private static string _version;
+		private static object _versionLock = new object();
 		#endregion
 	}
 }

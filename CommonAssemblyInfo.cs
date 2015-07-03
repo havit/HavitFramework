@@ -6,9 +6,10 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("HAVIT .NET Framework Extensions")]
 [assembly: AssemblyCopyright("Copyright HAVIT, s.r.o.")]
 [assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]		
+[assembly: AssemblyCulture("")]
 
-[assembly: AssemblyVersion("2.0.*")]
+[assembly: AssemblyVersion("2.0.0.0")]
+[assembly: AssemblyFileVersion("2.0.0.0")]
 
 [assembly: ComVisible(false)]
 [assembly: CLSCompliant(false)]

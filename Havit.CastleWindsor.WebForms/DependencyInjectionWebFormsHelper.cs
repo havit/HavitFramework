@@ -91,8 +91,13 @@ namespace Havit.CastleWindsor.WebForms
 		{
 			// UserControls jsou vždycky "moje", začínající Havit mají reprezentovat controly, které jsou ve WebBase. Do této podmínky spadnou i controly HFW, což je relativně zbytečné
 			// možná optimalizace do budoucna je namísto "Havit." vzít jen ty, které NEJSOU z assembly Havit.Web ani System.Web. Pokud Havit.Web nezíská závislost na Castle Windsoru.
+			// Potřebuju vždy kontrolovat HasControls, protože procházení kolekce Controls před LoadViewState rozbije načtení viewstate u databindovaných controls ( http://forums.asp.net/t/1043999.aspx?GridView+losing+viewState+if+controls+collection+is+accessed+in+Page_Init+event )
+
 			Func<Control, IEnumerable<Control>> getAllControls = null;
-			getAllControls = c => c.Controls.Cast<Control>().SelectMany(getAllControls).Concat(new[] { c });
+			getAllControls = c => c.Controls.Cast<Control>()
+				.Where(x => x.HasControls())
+				.SelectMany(getAllControls)
+				.Concat(new[] { c });
 
 			return getAllControls(control)
 				.Where(c => (c != control) && ((c is UserControl) || c.GetType().FullName.StartsWith("Havit.")))

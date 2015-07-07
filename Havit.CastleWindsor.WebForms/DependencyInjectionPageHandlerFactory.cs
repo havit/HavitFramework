@@ -32,8 +32,7 @@ namespace Havit.CastleWindsor.WebForms
 
 			// Child controls are not created at this point.
 			// They will be when PreInit fires.
-			// Potřebuju se chytit na Preload jakožto první událost po načtení view-state. Procházení kolekce Controls před LoadViewState rozbije načtení viewstate u databindovaných controls ( http://forums.asp.net/t/1043999.aspx?GridView+losing+viewState+if+controls+collection+is+accessed+in+Page_Init+event )
-			page.PreLoad += (s, e) =>
+			page.Init += (s, e) =>
 			{
 				DependencyInjectionWebFormsHelper.InitializeChildControls(page);
 

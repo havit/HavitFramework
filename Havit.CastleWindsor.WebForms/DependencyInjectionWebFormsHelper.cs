@@ -97,7 +97,10 @@ namespace Havit.CastleWindsor.WebForms
 			getAllControls = c => c.Controls.Cast<Control>()
 				.Where(x => x.HasControls())
 				.SelectMany(getAllControls)
-				.Concat(new[] { c });
+				.Concat(new[]
+				{
+					c
+				});
 
 			return getAllControls(control)
 				.Where(c => (c != control) && ((c is UserControl) || c.GetType().FullName.StartsWith("Havit.")))

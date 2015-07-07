@@ -159,7 +159,7 @@ namespace Havit.CastleWindsor.WebForms
 				object dependencyInstance = propertyInfo.GetValue(control);
 				Type enumerableType = GetEnumerableType(propertyInfo.PropertyType);
 
-				if (enumerableType != null)
+				if ((enumerableType != null) && (dependencyInstance != null))
 				{
 					IEnumerable dependencyInstanceEnumerable = (IEnumerable)dependencyInstance;
 					foreach (var dependencyInstanceItem in dependencyInstanceEnumerable)

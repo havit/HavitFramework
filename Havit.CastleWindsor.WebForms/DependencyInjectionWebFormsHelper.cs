@@ -38,6 +38,7 @@ namespace Havit.CastleWindsor.WebForms
 
 		/// <summary>
 		/// Initializes the control (including child controls).
+		/// Ensures releasing dependencies at OnLoad.
 		/// </summary>
 		/// <param name="control">Control to be initialized.</param>
 		public static bool InitializeControl(Control control)

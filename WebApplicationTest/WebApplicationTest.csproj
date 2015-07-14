@@ -247,6 +247,7 @@
     <Content Include="HavitCastleWindsorWebFormsTests\NestedUserControlWithDepedency.ascx" />
     <Content Include="HavitCastleWindsorWebFormsTests\ReleaseOnUnloadControlTest.ascx" />
     <Content Include="HavitCastleWindsorWebFormsTests\ReleaseOnUnloadTest.aspx" />
+    <Content Include="HavitCastleWindsorWebFormsTests\WebServiceTest.asmx" />
     <Content Include="HavitEnterpriseWebTests\EnterpriseCheckBoxDropDownListTest.aspx" />
     <Content Include="HavitGlimpseEntityTest\Default.aspx" />
     <Content Include="HavitWebBootstrapTests\AutoCompleteTextBox.aspx" />
@@ -454,6 +455,10 @@
     </Compile>
     <Compile Include="HavitCastleWindsorWebFormsTests\ReleaseOnUnloadTest.aspx.designer.cs">
       <DependentUpon>ReleaseOnUnloadTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HavitCastleWindsorWebFormsTests\WebServiceTest.asmx.cs">
+      <DependentUpon>WebServiceTest.asmx</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="HavitEnterpriseWebTests\EnterpriseCheckBoxDropDownListTest.aspx.cs">
       <DependentUpon>EnterpriseCheckBoxDropDownListTest.aspx</DependentUpon>

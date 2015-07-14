@@ -46,6 +46,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -59,6 +60,9 @@
     <Compile Include="DependencyInjectionWebFormsHelper.cs" />
     <Compile Include="DependencyInjectionPageHandlerFactory.cs" />
     <Compile Include="DependencyInjectionPageRouteHandler.cs" />
+    <Compile Include="InjectableWebServiceBase.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="InjectableGenericHandlerBase.cs" />
     <Compile Include="InjectAttribute.cs" />
     <Compile Include="InjectOverrideAttribute.cs" />

@@ -146,10 +146,28 @@ namespace Havit.CastleWindsor.WebForms
 		/// <summary>
 		/// Get a collection of injectable properties for the control
 		/// </summary>
-		private static PropertyInfo[] GetInjectableProperties(object control)
+		private static PropertyInfo[] GetInjectableProperties(object instance)
 		{
-			PropertyInfo[] props = cachedProperties.GetOrAdd(control.GetType(), type =>
+			PropertyInfo[] props = cachedProperties.GetOrAdd(instance.GetType(), type =>
 			{
+				PropertyInfo[] nonPublicInstanceProperties = type.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy)
+					.Where(p => p.GetCustomAttributes(typeof(InjectAttribute), false).Length == 1).ToArray();
+
+				if (nonPublicInstanceProperties.Length > 0)
+				{
+					throw new NotSupportedException(String.Format("InjectAttribute cannot be used on a non public property. It is used on property {0} in {1}.",
+						nonPublicInstanceProperties.First().Name, nonPublicInstanceProperties.First().DeclaringType.FullName));
+				}
+
+				PropertyInfo[] staticProperties = type.GetProperties(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy)
+					.Where(p => p.GetCustomAttributes(typeof(InjectAttribute), false).Length == 1).ToArray();
+				
+				if (staticProperties.Length > 0)
+				{
+					throw new NotSupportedException(String.Format("InjectAttribute cannot be used on a static property. It is used on property {0} in {1}.",
+						staticProperties.First().Name, staticProperties.First().DeclaringType.FullName));
+				}
+
 				return type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
 					.Where(p => p.GetCustomAttributes(typeof(InjectAttribute), false).Length == 1).ToArray();
 			});

@@ -41,18 +41,15 @@ namespace Havit.CastleWindsor.WebForms
 		/// Ensures releasing dependencies at OnLoad.
 		/// </summary>
 		/// <param name="control">Control to be initialized.</param>
-		public static bool InitializeControl(Control control)
+		public static void InitializeControl(Control control)
 		{
 			if (control == null)
 			{
 				throw new ArgumentNullException("control"); // TODO: nameof(control));
 			}
 
-			bool anyInstanceDependency = InitializeControlInstance(control);
-
+			InitializeControlInstance(control);
 			InitializeChildControls(control);
-
-			return anyInstanceDependency;
 		}
 
 		/// <summary>

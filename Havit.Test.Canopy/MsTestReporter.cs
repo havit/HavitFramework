@@ -12,7 +12,7 @@ namespace Havit.Test.Canopy
     {
 	    public void testStart(string id)
 	    {            
-		    writeOut("Test " + id);
+		    WriteOut("Test " + id);
 	    }
 
 	    public void pass()
@@ -22,15 +22,15 @@ namespace Havit.Test.Canopy
 
 	    public void fail(Exception ex, string id1, byte[] s1, string s2)
 	    {
-		    writeOut("Error: ");
-		    writeOut(ex.Message);
-		    writeOut("Stack: ");
+		    WriteOut("Error: ");
+		    WriteOut(ex.Message);
+		    WriteOut("Stack: ");
 
 		    string[] traceLines = ex.StackTrace.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
 
 		    foreach (string trace in traceLines)
 		    {
-			    writeOut(trace);
+			    WriteOut(trace);
 		    }
 			
 		    Microsoft.VisualStudio.TestTools.UnitTesting.Assert.Fail(ex.Message);
@@ -53,12 +53,12 @@ namespace Havit.Test.Canopy
 
 	    public void describe(string d)
 	    {
-		    writeOut(d);
+		    WriteOut(d);
 	    }
 
 	    public void contextStart(string context)
 	    {
-		    writeOut(String.Format("context: {0}", context));
+		    WriteOut(String.Format("context: {0}", context));
 	    }
 
 	    public void contextEnd(string obj0)
@@ -68,27 +68,27 @@ namespace Havit.Test.Canopy
 
 	    public void summary(int minutes, int seconds, int passed, int failed)
 	    {
-		    writeOut("");
-		    writeOut(System.String.Format("{0} minutes {1} seconds to execute", minutes, seconds));
+		    WriteOut("");
+		    WriteOut(System.String.Format("{0} minutes {1} seconds to execute", minutes, seconds));
             if (failed == 0)
             {
 	            Console.ForegroundColor = ConsoleColor.Green;
             }
-		    writeOut(System.String.Format("{0} passed", passed));
-		    writeOut(System.String.Format("{0} failed", failed));
+		    WriteOut(System.String.Format("{0} passed", passed));
+		    WriteOut(System.String.Format("{0} failed", failed));
 	    }
 
 	    public void write(string message)
 	    {
-		    writeOut(message);
+		    WriteOut(message);
 	    }
 
 	    public void suggestSelectors(string selector, FSharpList<string> suggestions)
 	    {
-		    writeOut(System.String.Format("Couldn't find any elements with selector '{0}', did you mean:", selector));
+		    WriteOut(System.String.Format("Couldn't find any elements with selector '{0}', did you mean:", selector));
 			foreach (string suggestion in suggestions)
 		    {
-			    writeOut("\t" + suggestion);
+			    WriteOut("\t" + suggestion);
 		    }
 	    }
 
@@ -112,7 +112,7 @@ namespace Havit.Test.Canopy
 			// NOOP
 		}
 
-	    private void writeOut(string message)
+	    private void WriteOut(string message)
 	    {
 		    System.Diagnostics.Debug.WriteLine(message);
 	    }

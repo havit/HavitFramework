@@ -88,9 +88,9 @@ namespace Havit.Entity.Glimpse.Tabs
 				{
 					r.Cell(0).WidthInPixels(115); /* Operation */
 					r.Cell(1).AsCode(CodeType.Sql).WidthInPercent(55); /* CommandText */
-					r.Cell(2); /* Parameters */;
-					r.Cell(3).WidthInPixels(25); /* Tx */;
-					r.Cell(4).WidthInPixels(70).AlignRight(); /* Result */;
+					r.Cell(2); /* Parameters */
+					r.Cell(3).WidthInPixels(25); /* Tx */
+					r.Cell(4).WidthInPixels(70).AlignRight(); /* Result */
 					r.Cell(5).WidthInPixels(70).Suffix(" ms").AlignRight().Class("mono"); /* Duration */
 				}).Build();
 			}

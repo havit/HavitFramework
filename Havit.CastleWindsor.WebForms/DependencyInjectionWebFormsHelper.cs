@@ -91,18 +91,26 @@ namespace Havit.CastleWindsor.WebForms
 			// možná optimalizace do budoucna je namísto "Havit." vzít jen ty, které NEJSOU z assembly Havit.Web ani System.Web. Pokud Havit.Web nezíská závislost na Castle Windsoru.
 			// Potřebuju vždy kontrolovat HasControls, protože procházení kolekce Controls před LoadViewState rozbije načtení viewstate u databindovaných controls ( http://forums.asp.net/t/1043999.aspx?GridView+losing+viewState+if+controls+collection+is+accessed+in+Page_Init+event )
 
-			Func<Control, IEnumerable<Control>> getAllControls = null;
-			getAllControls = c => c.Controls.Cast<Control>()
-				.Where(x => x.HasControls())
-				.SelectMany(getAllControls)
-				.Concat(new[]
-				{
-					c
-				});
-
-			return getAllControls(control)
+			return GetChildControlsRecursive(control)
 				.Where(c => (c != control) && ((c is UserControl) || c.GetType().FullName.StartsWith("Havit.")))
 				.ToArray();
+		}
+
+		private static List<Control> GetChildControlsRecursive(Control control)
+		{
+			if (control.HasControls())
+			{
+				List<Control> result = new List<Control>(control.Controls.Cast<Control>());
+				foreach (Control child in control.Controls)
+				{
+					result.AddRange(GetChildControlsRecursive(child));
+				}
+				return result;
+			}
+			else
+			{
+				return new List<Control>();
+			}
 		}
 
 		/// <summary>
@@ -159,7 +167,7 @@ namespace Havit.CastleWindsor.WebForms
 
 				PropertyInfo[] staticProperties = type.GetProperties(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy)
 					.Where(p => p.GetCustomAttributes(typeof(InjectAttribute), false).Length == 1).ToArray();
-				
+
 				if (staticProperties.Length > 0)
 				{
 					throw new NotSupportedException(String.Format("InjectAttribute cannot be used on a static property. It is used on property {0} in {1}.",

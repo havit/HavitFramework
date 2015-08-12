@@ -78,7 +78,7 @@ namespace Havit.Web.UI
 			// načteme si symbol z hidden fieldu
 			HiddenFieldPageStatePersister hiddenFieldPageStatePersister = new HiddenFieldPageStatePersister(_page);
 			hiddenFieldPageStatePersister.Load();
-			string storageSymbol = (string) hiddenFieldPageStatePersister.ControlState;
+			string storageSymbol = (string)hiddenFieldPageStatePersister.ControlState;
 			string storageFilename = _fileNamingStrategy.GetFilename(storageSymbol); // ze symbolu získáme celou cestu
 
 			try

@@ -57,7 +57,9 @@ namespace Havit.Web
 							break;
 						}
 						else
+						{
 							goto default;
+						}
 					case 0xA0: // no-break space
 						if (opExtendedHtmlEntities)
 						{
@@ -65,7 +67,9 @@ namespace Havit.Web
 							break;
 						}
 						else
-							goto default;
+						{
+						goto default;
+						}
 					case '€':
 						if (opExtendedHtmlEntities)
 						{
@@ -73,7 +77,9 @@ namespace Havit.Web
 							break;
 						}
 						else
+						{
 							goto default;
+						}
 					case '©':
 						if (opExtendedHtmlEntities)
 						{
@@ -81,7 +87,9 @@ namespace Havit.Web
 							break;
 						}
 						else
+						{
 							goto default;
+						}
 					case '®':
 						if (opExtendedHtmlEntities)
 						{
@@ -89,7 +97,9 @@ namespace Havit.Web
 							break;
 						}
 						else
+						{
 							goto default;
+						}
 					case '™': // trade-mark
 						if (opExtendedHtmlEntities)
 						{
@@ -97,7 +107,9 @@ namespace Havit.Web
 							break;
 						}
 						else
+						{
 							goto default;
+						}
 					default:
 						if (((unicodeText[i] >= ' ') && (unicodeText[i] <= 0x007E)) 
 							|| opIgnoreNonASCIICharacters)
@@ -213,8 +225,8 @@ namespace Havit.Web
 				else
 				{
 					buffer1[num3++] = 0x25;
-					buffer1[num3++] = (byte) StringExt.IntToHex((num5 >> 4) & 15);
-					buffer1[num3++] = (byte) StringExt.IntToHex(num5 & 15);
+					buffer1[num3++] = (byte)StringExt.IntToHex((num5 >> 4) & 15);
+					buffer1[num3++] = (byte)StringExt.IntToHex(num5 & 15);
 				}
 			}
 			return buffer1;

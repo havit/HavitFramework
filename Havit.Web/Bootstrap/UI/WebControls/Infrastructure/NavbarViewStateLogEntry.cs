@@ -79,7 +79,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls.Infrastructure
 			_viewstate = new StateBag();
 			if (isTrackingState)
 			{
-				((IStateManager) _viewstate).TrackViewState();
+				((IStateManager)_viewstate).TrackViewState();
 			}
 
 			this.EntryType = entryType;

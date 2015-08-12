@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Text;
 using System.Web.UI.WebControls;
@@ -185,7 +186,7 @@ namespace Havit.Web.UI.WebControls
 					_dateTimePickerStyle = new Style();
 					if (IsTrackingViewState)
 					{
-						((IStateManager) _dateTimePickerStyle).TrackViewState();
+						((IStateManager)_dateTimePickerStyle).TrackViewState();
 					}
 
 				}
@@ -403,6 +404,7 @@ namespace Havit.Web.UI.WebControls
 				_valueChanged -= value;
 			}
 		}
+		[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Privátní event nemusí začínat velkým písmenem.")]
 		private event EventHandler _valueChanged;
 		#endregion		
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Web.UI;
 
@@ -53,6 +54,7 @@ namespace Havit.Web.UI.Scriptlets
 		}
 
 		/// <include file='IControlExtender.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetAttachEventsScript")]/*' />
+		[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1604:ElementDocumentationMustHaveSummary", Justification = "Bráno z externího souboru.")]
 		public void GetAttachEventsScript(string parameterPrefix, IScriptletParameter parameter, System.Web.UI.Control control, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder)
 		{
 			Control substitutedControl = GetSubstitutedControl(control);
@@ -60,6 +62,7 @@ namespace Havit.Web.UI.Scriptlets
 		}
 
 		/// <include file='IControlExtender.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetDetachEventsScript")]/*' />
+		[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1604:ElementDocumentationMustHaveSummary", Justification = "Bráno z externího souboru.")]
 		public void GetDetachEventsScript(string parameterPrefix, IScriptletParameter parameter, System.Web.UI.Control control, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder)
 		{
 			Control substitutedControl = GetSubstitutedControl(control);

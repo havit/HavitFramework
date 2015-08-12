@@ -250,7 +250,7 @@ namespace Havit.Web.UI.WebControls
 			//if (NumberFormatter.IsNumber(value))
 			//    return NumberFormatter.Format((IFormattable)value, DataFormatString);
 			//else
-			return base.FormatDataValue(value, SupportsHtmlEncode && HtmlEncode);
+			return FormatDataValue(value, SupportsHtmlEncode && HtmlEncode);
 		}
 
 		/// <summary>

@@ -72,6 +72,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StateAdministration\IdentifikacniCisloServices.cs" />
     <Compile Include="StateAdministration\RodneCisloServices.cs" />
+    <Compile Include="TimeServices\ITimeService.cs" />
+    <Compile Include="TimeServices\TimeServiceBase.cs" />
+    <Compile Include="TimeServices\ServerTimeService.cs" />
+    <Compile Include="TimeServices\TimeZoneTimeService.cs" />
     <Compile Include="Xml\Rss\RssChannel.cs" />
     <Compile Include="Xml\Rss\RssChannelCollection.cs" />
     <Compile Include="Xml\Rss\RssFeed.cs" />
@@ -85,6 +89,7 @@
       <Name>Havit</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

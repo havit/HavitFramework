@@ -40,6 +40,8 @@
 #
 ################################################################################
 
+\*.GhostDoc.xml
+\.vs
 \packages
 !\packages\repositories.config
 

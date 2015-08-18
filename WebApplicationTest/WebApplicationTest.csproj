@@ -19,7 +19,6 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
     <UseIISExpress>true</UseIISExpress>
     <TargetFrameworkProfile />
     <SccProjectName>SAK</SccProjectName>

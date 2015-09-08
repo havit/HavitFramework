@@ -308,6 +308,25 @@ namespace Havit.Web.UI.WebControls
 		} 
 		#endregion
 
+		#region AddOnText
+		/// <summary>
+		/// AddOnText - text zobrazený v rámci DateTimeBoxu - vlevo (či vpravo) od inputu pro zadání hodnoty.
+		/// Lze použít pouze v režimech BootstrapInputGroupButtonOnLeft a BootstrapInputGroupButtonOnRight.
+		/// </summary>
+		public string AddOnText
+		{
+			get
+			{
+				return (string)(ViewState["AddOnText"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["AddOnText"] = value;
+			}
+		}
+		#endregion
+
+
 		#endregion
 
 		#region Value properties
@@ -835,6 +854,13 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		protected override void RenderChildren(HtmlTextWriter writer)
 		{
+			if (!String.IsNullOrEmpty(AddOnText)
+				&& (ContainerRenderMode != DateTimeBoxContainerRenderMode.BootstrapInputGroupButtonOnLeft)
+				&& (ContainerRenderMode != DateTimeBoxContainerRenderMode.BootstrapInputGroupButtonOnRight))
+			{
+				throw new NotSupportedException("Použití vlastnosti AddOnText je podporováno pouze v režimech BootstrapInputGroupButtonOnLeft a BootstrapInputGroupButtonOnRight.");
+			}
+
 			if (ContainerRenderMode == DateTimeBoxContainerRenderMode.Standard)
 			{
 				ContainerStyle.AddAttributesToRender(writer);
@@ -849,6 +875,7 @@ namespace Havit.Web.UI.WebControls
 			{
 				// cílem je vyrenderovat tuto strukturu:
 				// <div class="input-group">
+				//	 <span class="input-group-addon">text</span> (volitelně)
 				//   <input type="text" class="form-control">
 				//   <span class="input-group-btn">
 				//		<button id="..." class="btn btn-default" type="button">
@@ -864,13 +891,15 @@ namespace Havit.Web.UI.WebControls
 				switch (ContainerRenderMode)
 				{
 					case DateTimeBoxContainerRenderMode.BootstrapInputGroupButtonOnLeft:
-						RenderChildren_BootstrapInputGroupAddOnZone(writer);
+						RenderChildren_BootstrapInputGroupButtonZone(writer);
 						valueTextBox.RenderControl(writer); //<input type="text" class="form-control">
+						RenderChildren_BootstrapInputGroupAddOnZone(writer);
 						break;
 
 					case DateTimeBoxContainerRenderMode.BootstrapInputGroupButtonOnRight:
-						valueTextBox.RenderControl(writer); //<input type="text" class="form-control">
 						RenderChildren_BootstrapInputGroupAddOnZone(writer);
+						valueTextBox.RenderControl(writer); //<input type="text" class="form-control">
+						RenderChildren_BootstrapInputGroupButtonZone(writer);
 						break;
 
 					default:
@@ -887,6 +916,18 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		private void RenderChildren_BootstrapInputGroupAddOnZone(HtmlTextWriter writer)
+		{
+			string addOnText = HttpUtilityExt.GetResourceString(AddOnText);
+			if (!String.IsNullOrEmpty(addOnText))
+			{
+				writer.AddAttribute(HtmlTextWriterAttribute.Class, "input-group-addon");
+				writer.RenderBeginTag(HtmlTextWriterTag.Span);
+				writer.WriteEncodedText(addOnText);
+				writer.RenderEndTag(); // .input-group-addon
+			}
+		}
+
+		private void RenderChildren_BootstrapInputGroupButtonZone(HtmlTextWriter writer)
 		{
 			writer.AddAttribute(HtmlTextWriterAttribute.Class, "input-group-btn");
 			writer.RenderBeginTag(HtmlTextWriterTag.Span);

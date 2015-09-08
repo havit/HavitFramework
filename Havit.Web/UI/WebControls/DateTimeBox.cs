@@ -326,7 +326,6 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-
 		#endregion
 
 		#region Value properties

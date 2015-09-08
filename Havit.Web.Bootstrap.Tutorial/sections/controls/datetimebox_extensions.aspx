@@ -20,11 +20,15 @@
 		<li>ContainerRenderMode (default: DateTimeBoxContainerRenderMode.Standard) - posible values: Standard, BootstrapInputGroupButtonOnLeft, BootstrapInputGroupButtonOnRight<br/>
 			When used BootstrapInputGroupButtonOnLeft or BootstrapInputGroupButtonOnRight classes input-group and form-control are rendered automatically.
 		</li>
+		<li>AddOnText<br/>
+			Text to display in DateTimeBox. Supported only with BootstrapInputGroupButtonOnLeft or BootstrapInputGroupButtonOnRight and is displayed on the opposite side to input group button.
+		</li>
 	</ul>
 
 	<h2>Rendered HTML</h2>
 	It is intended to render bootstrap input group with addon.
 	<pre>&lt;div class="input-group"&gt;
+	&lt;span class="input-group-addon" /&gt;...&lt;span&gt; <i>(optional)</i>
 	&lt;input type="text" class="form-control" /&gt;
 	&lt;span class="input-group-btn"&gt;
 		&lt;button class="btn btn-default" type="button"&gt;

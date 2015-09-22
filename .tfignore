@@ -56,3 +56,5 @@
 \WebApplicationTest\Content\Havit.Web.ClientContent\*.png
 \WebApplicationTest\Scripts\Havit.Web.ClientContent\*.js
 *.sln.GhostDoc.xml
+
+node_modules

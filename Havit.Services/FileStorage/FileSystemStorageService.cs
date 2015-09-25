@@ -82,5 +82,16 @@ namespace Havit.Services.FileStorage
 			System.IO.File.Delete(System.IO.Path.Combine(storagePath, fileName));
 		}
 		#endregion
+
+		#region GetLastModifiedTimeUtc
+		/// <summary>
+		/// Vrátí čas poslední modifikace souboru v UTC timezone
+		/// </summary>
+		public DateTime? GetLastModifiedTimeUtc(string fileName)
+		{
+			return File.GetLastWriteTimeUtc(Path.Combine(storagePath, fileName));
+		}
+		#endregion
+
 	}
 }

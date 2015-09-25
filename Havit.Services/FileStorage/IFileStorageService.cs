@@ -46,5 +46,12 @@ namespace Havit.Services.FileStorage
 		/// </summary>
 		void Delete(string fileName);
 		#endregion
+
+		#region GetLastModifiedTimeUtc
+		/// <summary>
+		/// Vrátí čas poslední modifikace souboru v UTC timezone
+		/// </summary>
+		DateTime? GetLastModifiedTimeUtc(string fileName);
+		#endregion
 	}
 }

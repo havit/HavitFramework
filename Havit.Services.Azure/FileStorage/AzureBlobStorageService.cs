@@ -92,8 +92,20 @@ namespace Havit.Services.Azure.FileStorage
 		}
 		#endregion
 
+		#region GetLastModifiedTimeUtc
+
+		/// <summary>
+		/// Vrátí čas poslední modifikace souboru v UTC timezone
+		/// </summary>
+		public DateTime? GetLastModifiedTimeUtc(string fileName)
+		{
+			CloudBlockBlob blob = GetBlobReference(fileName, fromServer: true);
+			return blob.Properties.LastModified?.UtcDateTime;
+		}
+		#endregion
+
 		#region GetBlobReference
-		private CloudBlockBlob GetBlobReference(string blobName, bool createContainerWhenNotExists = false)
+		private CloudBlockBlob GetBlobReference(string blobName, bool createContainerWhenNotExists = false, bool fromServer = false)
 		{
 			CloudStorageAccount storageAccount = CloudStorageAccount.Parse(blobStorageConnectionString);
 			// Create the blob client.
@@ -104,7 +116,14 @@ namespace Havit.Services.Azure.FileStorage
 			{
 				container.CreateIfNotExists(BlobContainerPublicAccessType.Off);
 			}
-			return container.GetBlockBlobReference(blobName);
+			if (fromServer)
+			{
+				return (CloudBlockBlob)container.GetBlobReferenceFromServer(blobName);
+			}
+			else
+			{
+				return container.GetBlockBlobReference(blobName);
+			}
 		}
 		#endregion
 	}

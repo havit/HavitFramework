@@ -72,6 +72,37 @@ namespace Havit.Data.Trace
 		}
 		#endregion
 
+		#region ToString
+		/// <summary>
+		/// Returns a string that represents the current object.
+		/// </summary>
+		public override string ToString()
+		{
+			StringBuilder sb = new StringBuilder();
+			sb.AppendLine(base.ToString());
+			sb.AppendLine($"  Operation: {this.Operation}");
+			sb.AppendLine($"  Command Text: {this.CommandText}");
+				
+			if (this.Parameters.Count > 0)
+			{
+				sb.AppendLine("  Parameters:");
+				foreach (var parameter in Parameters)
+				{					
+					sb.AppendLine($"    {parameter.ParameterName}: {parameter.Value} (DbType.{parameter.DbType}, {parameter.Direction})");
+				}
+			}
+			decimal durationMs = (decimal)this.DurationTicks / (decimal)TimeSpan.TicksPerMillisecond;
+            sb.AppendLine($"  Duration: {durationMs:N2} ms");
+			
+			if (ResultSet)
+			{
+				sb.AppendLine($"  Result: {this.Result ?? "null"} ");
+			}
+
+			return sb.ToString();
+		}
+		#endregion
+
 		#region Create
 		/// <summary>
 		/// Creates an instance of DbCommandTraceData from DbCommand.
@@ -87,6 +118,5 @@ namespace Havit.Data.Trace
 			return result;
 		}
 		#endregion
-
 	}	
 }

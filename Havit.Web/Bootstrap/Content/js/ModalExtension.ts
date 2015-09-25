@@ -9,7 +9,7 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
         public static getInstance(modalElementSelector: string, createIfNotExists: boolean = true): ModalExtension {
             // gets instance of modal extension for modal element
             // selector must be in format #elementid
-            var modalExtension = <ModalExtension>$(modalElementSelector).data('ModalExtension');
+            var modalExtension = <ModalExtension>($(modalElementSelector).data('ModalExtension'));
             if ((createIfNotExists) && (modalExtension == null)) {
                 modalExtension = new ModalExtension(modalElementSelector);
                 $(modalElementSelector).data('ModalExtension', modalExtension);

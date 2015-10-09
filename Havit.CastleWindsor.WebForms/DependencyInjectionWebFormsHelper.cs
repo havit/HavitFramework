@@ -40,7 +40,6 @@ namespace Havit.CastleWindsor.WebForms
 		/// Initializes the page (including child controls and master page).
 		/// Ensures releasing dependencies at OnUnload.
 		/// </summary>
-		/// <param name="page"></param>
 		internal static void InitializePage(Page page)
 		{
 			DependencyInjectionWebFormsHelper.InitializeControlInstance(page);

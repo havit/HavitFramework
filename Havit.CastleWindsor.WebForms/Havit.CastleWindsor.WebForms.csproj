@@ -60,6 +60,9 @@
     <Compile Include="DependencyInjectionWebFormsHelper.cs" />
     <Compile Include="DependencyInjectionPageHandlerFactory.cs" />
     <Compile Include="DependencyInjectionPageRouteHandler.cs" />
+    <Compile Include="InjectablePageBase.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="InjectableWebServiceBase.cs">
       <SubType>Component</SubType>
     </Compile>

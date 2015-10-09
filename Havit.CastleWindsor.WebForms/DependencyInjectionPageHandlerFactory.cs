@@ -21,30 +21,9 @@ namespace Havit.CastleWindsor.WebForms
 
 			if (handler is Page)
 			{
-				SetUpDependencyInjections((Page)handler);
+				DependencyInjectionWebFormsHelper.InitializePage((Page)handler);
 			}
 			return handler;
-		}
-
-		internal void SetUpDependencyInjections(Page page)
-		{
-			DependencyInjectionWebFormsHelper.InitializeControlInstance(page);
-
-			// Child controls are not created at this point.
-			// They will be when PreInit fires.
-			page.Init += (s, e) =>
-			{
-				DependencyInjectionWebFormsHelper.InitializeChildControls(page);
-
-				MasterPage master = page.Master;
-				while (master != null)
-				{
-					DependencyInjectionWebFormsHelper.InitializeControlInstance(master);
-					DependencyInjectionWebFormsHelper.InitializeChildControls(master);
-
-					master = master.Master;
-				}
-			};
 		}
 	}
 }

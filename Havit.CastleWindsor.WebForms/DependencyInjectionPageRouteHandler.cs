@@ -11,8 +11,6 @@ namespace Havit.CastleWindsor.WebForms
 	/// </summary>
 	public class DependencyInjectionPageRouteHandler : PageRouteHandler
 	{
-		private readonly DependencyInjectionPageHandlerFactory _pageHandlerFactory = new DependencyInjectionPageHandlerFactory();
-
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:System.Web.Routing.PageRouteHandler"/> class.
 		/// </summary>
@@ -63,7 +61,7 @@ namespace Havit.CastleWindsor.WebForms
 			// umíme řešit jen Page (kvůli Unloadu, který není na IHttpHandleru). Ashx se řeší samy potomkem, asmx se zatím neřeší (pokud by někdo potřeboval, je třeba udělat stejnou infrastrukturu a vyřešit release - asi v Disposing, protože nic jiného tam není, WebServiceHandler je internal)
 			if (handler is Page)
 			{
-				_pageHandlerFactory.SetUpDependencyInjections((Page)handler);
+				DependencyInjectionWebFormsHelper.InitializePage((Page)handler);
 			}
 			return handler;
 		}

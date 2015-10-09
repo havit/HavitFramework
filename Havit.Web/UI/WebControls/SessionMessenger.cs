@@ -19,13 +19,13 @@ namespace Havit.Web.UI.WebControls
 		{
 			get
 			{
-				List<MessengerMessage> _messages = (List<MessengerMessage>)GetCurrentContext().Session[SessionKey];			
-				if (_messages == null)
+				List<MessengerMessage> messages = (List<MessengerMessage>)GetCurrentContext().Session[SessionKey];			
+				if (messages == null)
 				{
-					_messages = new List<MessengerMessage>();
-					GetCurrentContext().Session[SessionKey] = _messages;
+					messages = new List<MessengerMessage>();
+					GetCurrentContext().Session[SessionKey] = messages;
 				}
-				return _messages;
+				return messages;
 			}
 		}
 		#endregion

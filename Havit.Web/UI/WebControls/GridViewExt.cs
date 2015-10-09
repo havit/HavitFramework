@@ -1587,7 +1587,7 @@ namespace Havit.Web.UI.WebControls
 				IAutoFilterControl autoFilterControl = source as IAutoFilterControl;
 				if (autoFilterControl != null)
 				{
-					autoFilterControl.ValueChanged += (sender, EventArgs) => { this.SetRequiresDatabinding(); };
+					autoFilterControl.ValueChanged += (sender, eventArgs) => { this.SetRequiresDatabinding(); };
 					autoFilterControls.Add(autoFilterControl);
 					result = true; // ano, metoda se jmenuje onbubbleevent, ale true znamená cancel
 				}

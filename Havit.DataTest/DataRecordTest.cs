@@ -30,15 +30,15 @@ namespace Havit.DataTest
 
 			string fieldName = "ColumnName";
 
-			int TryGet_target;
+			int tryGetTarget;
 			int target_expected = 10;
 
 			bool expected = true;
 			bool actual;
 
-			actual = record.TryGet(fieldName, out TryGet_target);
+			actual = record.TryGet(fieldName, out tryGetTarget);
 
-			Assert.AreEqual(target_expected, TryGet_target, "target_TryGet_expected was not set correctly.");
+			Assert.AreEqual(target_expected, tryGetTarget, "target_TryGet_expected was not set correctly.");
 			Assert.AreEqual(expected, actual, "Havit.Data.DataRecord.TryGet<T> did not return the expected value.");
 		}
 
@@ -58,15 +58,15 @@ namespace Havit.DataTest
 
 			string fieldName = "ColumnName";
 
-			object TryGet_target = 10; // fake value
+			object tryGetTarget = 10; // fake value
 			object target_expected = null;
 
 			bool expected = true;
 			bool actual;
 
-			actual = record.TryGet(fieldName, out TryGet_target);
+			actual = record.TryGet(fieldName, out tryGetTarget);
 
-			Assert.AreEqual(target_expected, TryGet_target, "target_TryGet_expected was not set correctly.");
+			Assert.AreEqual(target_expected, tryGetTarget, "target_TryGet_expected was not set correctly.");
 			Assert.AreEqual(expected, actual, "Havit.Data.DataRecord.TryGet<T> did not return the expected value.");
 		}
 
@@ -86,15 +86,15 @@ namespace Havit.DataTest
 
 			string fieldName = "ColumnName";
 
-			int? TryGet_target;
+			int? tryGetTarget;
 			int? target_expected = 10;
 
 			bool expected = true;
 			bool actual;
 
-			actual = record.TryGet(fieldName, out TryGet_target);
+			actual = record.TryGet(fieldName, out tryGetTarget);
 
-			Assert.AreEqual(target_expected, TryGet_target, "target_TryGet_expected was not set correctly.");
+			Assert.AreEqual(target_expected, tryGetTarget, "target_TryGet_expected was not set correctly.");
 			Assert.AreEqual(expected, actual, "Havit.Data.DataRecord.TryGet<T> did not return the expected value.");
 		}
 
@@ -114,15 +114,15 @@ namespace Havit.DataTest
 
 			string fieldName = "ColumnName";
 
-			double TryGet_target;
+			double tryGetTarget;
 			double target_expected = 10.1;
 
 			bool expected = true;
 			bool actual;
 
-			actual = record.TryGet(fieldName, out TryGet_target);
+			actual = record.TryGet(fieldName, out tryGetTarget);
 
-			Assert.AreEqual(target_expected, TryGet_target, "target_TryGet_expected was not set correctly.");
+			Assert.AreEqual(target_expected, tryGetTarget, "target_TryGet_expected was not set correctly.");
 			Assert.AreEqual(expected, actual, "Havit.Data.DataRecord.TryGet<T> did not return the expected value.");
 		}
 
@@ -143,11 +143,11 @@ namespace Havit.DataTest
 
 			string fieldName = "ColumnName";
 
-			Exception TryGet_target; // nekompatibilní typ
+			Exception tryGetTarget; // nekompatibilní typ
 
 			bool actual;
 
-			actual = record.TryGet(fieldName, out TryGet_target);
+			actual = record.TryGet(fieldName, out tryGetTarget);
 		}
 
 		/// <summary>
@@ -167,11 +167,11 @@ namespace Havit.DataTest
 
 			string fieldName = "ColumnName_Jiny";
 
-			int? TryGet_target;
+			int? tryGetTarget;
 
 			bool actual;
 
-			actual = record.TryGet(fieldName, out TryGet_target);
+			actual = record.TryGet(fieldName, out tryGetTarget);
 		}
 
 		/// <summary>
@@ -191,15 +191,15 @@ namespace Havit.DataTest
 
 			string fieldName = "ColumnName_Jiny";
 
-			int? TryGet_target;
+			int? tryGetTarget;
 			int? target_expected = null;
 
 			bool expected = false;
 			bool actual;
 
-			actual = record.TryGet(fieldName, out TryGet_target);
+			actual = record.TryGet(fieldName, out tryGetTarget);
 
-			Assert.AreEqual(target_expected, TryGet_target, "target_TryGet_expected was not set correctly.");
+			Assert.AreEqual(target_expected, tryGetTarget, "target_TryGet_expected was not set correctly.");
 			Assert.AreEqual(expected, actual, "Havit.Data.DataRecord.TryGet<T> did not return the expected value.");
 		}
 		#endregion

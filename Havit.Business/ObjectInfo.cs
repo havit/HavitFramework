@@ -78,10 +78,10 @@ namespace Havit.Business
 			get
 			{
 				CheckInitialization();
-				return _namespace;
+				return namespaceName;
 			}
 		}
-		private string _namespace;
+		private string namespaceName;
 		#endregion
 
 		#region Properties
@@ -166,7 +166,7 @@ namespace Havit.Business
 		/// <param name="dbSchema">Název schémata databázové tabulky.</param>
 		/// <param name="dbTable">Název databázové tabulky.</param>
 		/// <param name="className">Název třídy.</param>
-		/// <param name="_namespace">Název namespace třídy.</param>
+		/// <param name="namespaceName">Název namespace třídy.</param>
 		/// <param name="readOnly">Určuje, zda je třída jen ke čtení.</param>
 		/// <param name="createObjectMethod">Delegát na metodu (bez parametrů) vytvářející instanci nového objektu. Null, pokud taková metoda neexistuje (třída je readonly nebo máowner field).</param>
 		/// <param name="getObjectMethod">Delegát na metodu vracející objekt třídy na základě ID.</param>
@@ -177,7 +177,7 @@ namespace Havit.Business
 			string dbSchema,
 			string dbTable,
 			string className,
-			string _namespace,
+			string namespaceName,
 			bool readOnly,
 			CreateObjectDelegate createObjectMethod,
 			GetObjectDelegate getObjectMethod,
@@ -188,7 +188,7 @@ namespace Havit.Business
 			this.dbSchema = dbSchema;
 			this.dbTable = dbTable;
 			this.className = className;
-			this._namespace = _namespace;
+			this.namespaceName = namespaceName;
 			this.readOnly = readOnly;
 			this.createObjectMethod = createObjectMethod;
 			this.getObjectMethod = getObjectMethod;

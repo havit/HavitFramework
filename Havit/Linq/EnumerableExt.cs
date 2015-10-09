@@ -20,14 +20,14 @@ namespace Havit.Linq
 												 Func<TRight, TKey> rightKeySelector,
 												 Func<TLeft, TRight, TResult> resultSelector)
 		{
-			IEnumerable<TResult> _result =
+			IEnumerable<TResult> result =
 				from l in leftSource
 				join r in rightSource
 				on leftKeySelector(l) equals rightKeySelector(r) into joinData
 				from right in joinData.DefaultIfEmpty()
 				select resultSelector(l, right);
 
-			return _result;
+			return result;
 		}
 		#endregion
 
@@ -41,14 +41,14 @@ namespace Havit.Linq
 												 Func<TRight, TKey> rightKeySelector,
 												 Func<TLeft, TRight, TResult> resultSelector)
 		{
-			IEnumerable<TResult> _result =
+			IEnumerable<TResult> result =
 				from r in rightSource
 				join l in leftSource
 				on rightKeySelector(r) equals leftKeySelector(l) into joinData
 				from left in joinData.DefaultIfEmpty()
 				select resultSelector(left, r);
 
-			return _result;
+			return result;
 		}
 		#endregion
 
@@ -70,12 +70,12 @@ namespace Havit.Linq
 			var keys = new HashSet<TKey>(leftLookup.Select(p => p.Key));
 			keys.UnionWith(rightLookup.Select(p => p.Key));
 
-			IEnumerable<TResult> _result = from key in keys
+			IEnumerable<TResult> result = from key in keys
 					   from xLeft in leftLookup[key].DefaultIfEmpty()
 					   from xRight in rightLookup[key].DefaultIfEmpty()
 					   select resultSelector(xLeft, xRight);
 
-			return _result.ToList();
+			return result.ToList();
 		}
 		#endregion
 

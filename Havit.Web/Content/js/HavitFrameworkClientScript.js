@@ -351,8 +351,8 @@ var havitDropDownCheckBoxListExtensions = {
 				multiple: multiple,
 				multipleWidth: multipleWidth,
 				container: $('body'),
-				minimumCountSelected: 9999
-			}
+				countSelected: false
+			};
 
 			var onclickscript = $item.data("dropdowncheckboxlist-onclickscript");
 			var onblurscript = $item.data("dropdowncheckboxlist-onblurscript");

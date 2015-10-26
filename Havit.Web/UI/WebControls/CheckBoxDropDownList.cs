@@ -45,6 +45,24 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region SelectAllText
+		/// <summary>
+		/// Text pro výběr všech hodnot. Použije se jen v případě nastavení vlastnosti ShowSelectAll na true.
+		/// Podporuje syntaxi $resources.
+		/// </summary>		
+		public string SelectAllText
+		{
+			get
+			{
+				return (string)(ViewState["SelectAllText"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["SelectAllText"] = value;
+			}
+		}
+		#endregion
+
 		#region AllSelectedText
 		/// <summary>
 		/// Text zobrazený v případě, že jsou vybrány všechny hodnoty.
@@ -271,6 +289,11 @@ namespace Havit.Web.UI.WebControls
 
 			writer.AddAttribute("data-dropdowncheckboxlist", "true");
 			writer.AddAttribute("data-dropdowncheckboxlist-showselectall", ShowSelectAll.ToString().ToLower());
+
+			if (!String.IsNullOrEmpty(SelectAllText))
+			{
+				writer.AddAttribute("data-dropdowncheckboxlist-selectalltext", HttpUtilityExt.GetResourceString(SelectAllText));
+			}
 
 			if (renderIsOpen)
 			{

@@ -14,7 +14,7 @@
 
         <div>
 
-            <havit:CheckBoxDropDownList ID="CheckBoxDropDownList1" PlaceHolder="Vyber" ShowSelectAll="true" AllSelectedText="Vybráno vše" AutoPostBack="true" Width="300px" ItemWidth="100px" runat="server">
+            <havit:CheckBoxDropDownList ID="CheckBoxDropDownList1" PlaceHolder="Vyber" ShowSelectAll="true" SelectAllText="-Vybrat vše-" AllSelectedText="Vybráno vše" AutoPostBack="true" Width="300px" ItemWidth="100px" runat="server">
                 <Items>
                     <asp:ListItem Text="Jedna" />
                     <asp:ListItem Text="Dva" />

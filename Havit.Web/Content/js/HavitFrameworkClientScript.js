@@ -334,6 +334,7 @@ var havitDropDownCheckBoxListExtensions = {
 
 			var isOpen = $item.data("dropdowncheckboxlist-isopen") || false;
 			var selectAll = $item.data("dropdowncheckboxlist-showselectall") || false;
+			var selectAllText = $item.data("dropdowncheckboxlist-selectalltext") || false;
 			var allSelected = $item.data("dropdowncheckboxlist-allselectedtext") || false;
 			var placeholder = $item.data("dropdowncheckboxlist-placeholder") || '';
 			var width = $item.data("dropdowncheckboxlist-width") || ($(item).width() + 24 /* šířka checkboxu */);
@@ -353,6 +354,11 @@ var havitDropDownCheckBoxListExtensions = {
 				container: $('body'),
 				countSelected: false
 			};
+
+			if (selectAllText) {
+				multipleSelectParams.selectAllText = selectAllText;
+				multipleSelectParams.selectAllDelimiter = ['', ''];
+			}
 
 			var onclickscript = $item.data("dropdowncheckboxlist-onclickscript");
 			var onblurscript = $item.data("dropdowncheckboxlist-onblurscript");

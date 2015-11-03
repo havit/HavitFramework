@@ -144,6 +144,7 @@ namespace Havit.BusinessTest
 		#endregion
 
 		#region CountBusinessDaysTest_Weekend
+		/// <summary>
 		/// A test for CountBusinessDays (DateTime, DateTime, CountBusinessDaysOptions)
 		/// </summary>
 		[TestMethod]

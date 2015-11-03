@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
+using Havit.Data.Extensions;
 using Havit.Data.Trace;
 using Havit.Diagnostics.Contracts;
 
@@ -159,7 +160,7 @@ namespace Havit.Data
 			conn.ConnectionString = this.ConnectionString;
 			if (openConnection)
 			{
-				conn.Open();
+				conn.OpenWithRetry();
 			}
 			return conn;
 		}
@@ -196,7 +197,7 @@ namespace Havit.Data
 			if (command.Connection.State != ConnectionState.Open)
 			{
 				mustCloseConnection = true;
-				command.Connection.Open();
+				command.Connection.OpenWithRetry();
 			}
 
 			DbConnectorTrace dbConnectorTrace = new DbConnectorTrace(command, "ExecuteNonQuery");
@@ -204,7 +205,7 @@ namespace Havit.Data
 			int result;
 			try
 			{
-				result = command.ExecuteNonQuery();
+				result = command.ExecuteNonQueryWithRetry();
 			}
 			catch
 			{
@@ -394,7 +395,7 @@ namespace Havit.Data
 			if (command.Connection.State != ConnectionState.Open)
 			{
 				mustCloseConnection = true;
-				command.Connection.Open();
+				command.Connection.OpenWithRetry();
 			}
 
 			DbConnectorTrace dbConnectorTrace = new DbConnectorTrace(command, "ExecuteReader");
@@ -405,12 +406,12 @@ namespace Havit.Data
 				if (mustCloseConnection)
 				{
 					// otevřeme-li si spojení sami, postaráme se i o jeho zavření
-					reader = command.ExecuteReader(behavior | CommandBehavior.CloseConnection);
+					reader = command.ExecuteReaderWithRetry(behavior | CommandBehavior.CloseConnection);
 				}
 				else
 				{
 					// spojení bylo již otevřeno, tak ho tak necháme, ať se stará nadřazená aplikace
-					reader = command.ExecuteReader(behavior);
+					reader = command.ExecuteReaderWithRetry(behavior);
 				}
 			}
 			catch
@@ -577,7 +578,7 @@ namespace Havit.Data
 			if (command.Connection.State != ConnectionState.Open)
 			{
 				mustCloseConnection = true;
-				command.Connection.Open();
+				command.Connection.OpenWithRetry();
 			}
 
 			object result;
@@ -585,7 +586,7 @@ namespace Havit.Data
 			DbConnectorTrace dbConnectorTrace = new DbConnectorTrace(command, "ExecuteScalar");
 			try
 			{
-				result = command.ExecuteScalar();
+				result = command.ExecuteScalarWithRetry();
 			}
 			catch
 			{
@@ -655,7 +656,7 @@ namespace Havit.Data
 			{
 				// otevření spojení, pokud není již otevřeno
 				connection = this.GetConnection();
-				connection.Open();
+				connection.OpenWithRetry();
 				mustCloseConnection = true;
 			}
 			else

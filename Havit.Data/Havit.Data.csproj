@@ -114,6 +114,13 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Extensions\DbCommandExt.cs" />
+    <Compile Include="Extensions\DbConnectionExt.cs" />
+    <Compile Include="TransientErrorHandling\IRetryPolicy.cs" />
+    <Compile Include="TransientErrorHandling\TransientErrorRetryPolicy.cs" />
+    <Compile Include="TransientErrorHandling\RetryPolicyInfo.cs" />
+    <Compile Include="TransientErrorHandling\TransientErrorHandler.cs" />
+    <Compile Include="TransientErrorHandling\SqlDatabaseTransientErrorDetectionStrategy.cs" />
     <Compile Include="DataLoadPower.cs" />
     <Compile Include="DataRecord.cs" />
     <Compile Include="DbConnector.cs" />

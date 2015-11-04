@@ -105,7 +105,7 @@ namespace Havit.Services.Ares
 					return; // nehlásíme chybu ani neparsujeme data
 				}
 
-				if (rElement != null && (((string)rElement).Contains("vede k výbìru více než") || ((string)rElement).Contains("pøesáhl nastavenou mez"))   /* Pøíliš mnoho výsledkù */)
+				if (rElement != null && (((string)rElement).Contains(" vede k výbìru ") || ((string)rElement).Contains("Upravte hlediska pro vyhled") || ((string)rElement).Contains("pøesáhl nastavenou mez"))   /* Pøíliš mnoho výsledkù */)
 				{
 					result.PrilisMnohoVysledku = true;
 					return;

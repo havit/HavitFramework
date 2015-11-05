@@ -109,8 +109,15 @@ namespace Havit.Services.Ares
 				System.Text.StringBuilder errorMessages = new System.Text.StringBuilder();
 				foreach (XElement item in eElements)
 				{
-					if (((int)item.Elements(aresDT + "EK").SingleOrDefault() == 1 /* Nenalezen */) && ((string)item.Elements(aresDT + "ET").SingleOrDefault()).Contains("Chyba 71 - nenalezeno"))
+					bool errorEK = ((int)item.Elements(aresDT + "EK").SingleOrDefault() == 1 /* Nenalezen */);
+                    if (errorEK && ((string)item.Elements(aresDT + "ET").SingleOrDefault()).Contains("Chyba 71 - nenalezeno"))
 					{
+						// nehlásíme chybu
+						continue;
+					}
+					if (errorEK && ((string)item.Elements(aresDT + "ET").SingleOrDefault()).Contains("Chyba 61 - subjekt zanikl"))
+					{
+						result.SubjektZanikl = true;
 						// nehlásíme chybu
 						continue;
 					}
@@ -145,6 +152,7 @@ namespace Havit.Services.Ares
 
 			if (vypisOrElement != null)
 			{
+				result.SubjektZanikl = false;
 				result.Ico = (string)vypisOrElement.Elements(aresDT + "ICO").FirstOrDefault();
 				result.Dic = (string)vypisOrElement.Elements(aresDT + "DIC").FirstOrDefault();
 				result.NazevObchodniFirmy = (string)vypisOrElement.Elements(aresDT + "OF").FirstOrDefault(); // obchodní firma
@@ -194,7 +202,8 @@ namespace Havit.Services.Ares
 				System.Text.StringBuilder errorMessages = new System.Text.StringBuilder();
 				foreach (XElement item in eElements)
 				{
-					if (((int)item.Elements(aresDT + "EK").SingleOrDefault() == 1 /* Nenalezen */) && ((string)item.Elements(aresDT + "ET").SingleOrDefault()).Contains("Chyba 71 - nenalezeno"))
+					bool errorEK = ((int)item.Elements(aresDT + "EK").SingleOrDefault() == 1 /* Nenalezen */);
+					if (errorEK && ((string)item.Elements(aresDT + "ET").SingleOrDefault()).Contains("Chyba 71 - nenalezeno"))
 					{
 						// nehlásíme chybu
 						continue;
@@ -230,6 +239,21 @@ namespace Havit.Services.Ares
 
 			if (vypisOrElement != null)
 			{
+
+				XElement stavElement = vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "S").Elements(aresDT + "SSU").FirstOrDefault();
+				if (stavElement != null)
+				{
+					string stavResult = (string)stavElement;
+					if (stavResult.Equals("Aktivní"))
+					{
+						result.SubjektZanikl = false;
+					}
+					else if (stavResult.Equals("Zaniklý"))
+					{
+						result.SubjektZanikl = true;
+					}
+				}
+
 				result.Ico = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "ICO").FirstOrDefault();
 				result.NazevObchodniFirmy = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "OF").FirstOrDefault(); // obchodní firma
 

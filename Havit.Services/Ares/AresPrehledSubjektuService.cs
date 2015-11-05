@@ -18,7 +18,8 @@ namespace Havit.Services.Ares
 	public class AresPrehledSubjektuService
 	{
 		#region Const
-		private const string AresEkonomickySubjektRequestUrl = "http://wwwinfo.mfcr.cz/cgi-bin/ares/ares_es.cgi?obch_jm={0}&obec={1}&cestina=cestina&maxpoc=200";
+		// http://wwwinfo.mfcr.cz/ares/ares_xml_es.html.cz
+		private const string AresEkonomickySubjektRequestUrl = "http://wwwinfo.mfcr.cz/cgi-bin/ares/ares_es.cgi?obch_jm={0}&obec={1}&cestina=cestina&maxpoc=200&filtr=1&setrid=OBCHJM";
 		#endregion
 
 		#region Private members
@@ -46,7 +47,7 @@ namespace Havit.Services.Ares
 
 		#region GetData
 		/// <summary>
-		/// Vrací strukturovanou odpovìd z obchodního rejstøíku.
+		/// Vrací strukturovanou odpovìd z obchodního rejstøíku. Pouze existující subjekty, seøazené dle obchodního jména, max. 200 výsledkù.
 		/// </summary>
 		public AresPrehledSubjektuResult GetData(string nazev, string obec = null)
 		{

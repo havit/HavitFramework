@@ -18,6 +18,19 @@ namespace Havit.ServicesTest
 			AresService service = new AresService(ico);
 			service.Timeout = 60 * 1000; /* 60 sec */
 			AresData basicAresResult = service.GetData(AresRegistr.Basic);
+			Assert.AreEqual(basicAresResult.SubjektZanikl, false);
+		}
+		#endregion
+
+		#region GetAresBasicDataSubjektZaniklTest
+		[TestMethod]
+		public void GetAresBasicDataSubjektZaniklTest()
+		{
+			string ico = "27732487"; // "25612697"
+			AresService service = new AresService(ico);
+			service.Timeout = 60 * 1000; /* 60 sec */
+			AresData basicAresResult = service.GetData(AresRegistr.Basic);
+			Assert.AreEqual(basicAresResult.SubjektZanikl, true);
 		}
 		#endregion
 
@@ -29,6 +42,19 @@ namespace Havit.ServicesTest
 			AresService service = new AresService(ico);
 			service.Timeout = 60 * 1000; /* 60 sec */
 			var data = service.GetData(AresRegistr.ObchodniRejstrik);
+			Assert.AreEqual(data.SubjektZanikl, false);
+		}
+		#endregion
+
+		#region GetAresObchodniRejstrikSubjektZaniklTest
+		[TestMethod]
+		public void GetAresObchodniRejstrikSubjektZaniklTest()
+		{
+			string ico = "27732487";
+			AresService service = new AresService(ico);
+			service.Timeout = 60 * 1000; /* 60 sec */
+			var data = service.GetData(AresRegistr.ObchodniRejstrik);
+			Assert.AreEqual(data.SubjektZanikl, true);
 		}
 		#endregion
 

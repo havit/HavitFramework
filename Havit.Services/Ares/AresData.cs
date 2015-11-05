@@ -7,6 +7,13 @@ namespace Havit.Services.Ares
 	/// </summary>
 	public class AresData
 	{
+		#region SubjektZanikl
+		/// <summary>
+		/// Udává, zda subjekt zanikl (a jeho údaje se v registru nenachází).
+		/// </summary>
+		public bool? SubjektZanikl { get; set; }
+		#endregion
+
 		#region Ico
 		/// <summary>
 		/// IÈO obchodní firmy zapsané v OR.

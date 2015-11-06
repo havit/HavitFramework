@@ -141,6 +141,7 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Bootstrap\UI\WebControls\BaseValidator.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\RetractablePanel.cs" />
     <Compile Include="StartUp.cs" />
     <Compile Include="Bootstrap\UI\ClientScripts\BootstrapClientScriptHelper.cs" />
     <Compile Include="Bootstrap\UI\WebControls\ModalDialogUserControlBaseT.cs">
@@ -498,6 +499,7 @@
     <None Include="Bootstrap\Content\less\navbar.less" />
     <None Include="Bootstrap\Content\less\validation.less" />
     <None Include="Bootstrap\Diagrams\Dialogs.cd" />
+    <Content Include="Bootstrap\Content\js\RetractablePanel.js" />
     <Content Include="Content\styles\checkbox-dropdown-list.less" />
     <None Include="packages.config" />
     <None Include="UI\Scriptlets\Scriptlet.cd" />

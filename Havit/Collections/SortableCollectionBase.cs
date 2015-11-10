@@ -49,8 +49,8 @@ namespace Havit.Collections
 		internal class GenericPropertySort : System.Collections.IComparer
 		{
 			#region Private fields
-			private bool sortAscending = true;
-			private string sortPropertyName = String.Empty;
+			private readonly bool sortAscending = true;
+			private readonly string sortPropertyName = String.Empty;
 			#endregion
 
 			#region GenericPropertySort

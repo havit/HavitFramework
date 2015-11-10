@@ -20,8 +20,8 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	public class NavbarItemCollection : IList<NavbarItem>, IStateManager, ICollection
 	{
 		#region Private fields
-		private List<NavbarItem> items; // menu items
-		private List<NavbarViewStateLogEntry> log; // logged changes are used for serializaton to viewstate
+		private readonly List<NavbarItem> items; // menu items
+		private readonly List<NavbarViewStateLogEntry> log; // logged changes are used for serializaton to viewstate
 		#endregion
 
 		#region Count

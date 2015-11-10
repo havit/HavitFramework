@@ -16,9 +16,9 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	public class Navbar : Control
 	{
 		#region Private fields - nested controls and control containers
-		private NavbarSection _mainMenuSection;
+		private readonly NavbarSection _mainMenuSection;
 		private Control _brandContainer;
-		private NavbarSection _rightMenuSection;
+		private readonly NavbarSection _rightMenuSection;
 		#endregion
 
 		#region MenuItems

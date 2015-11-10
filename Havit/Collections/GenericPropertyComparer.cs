@@ -14,8 +14,8 @@ namespace Havit.Collections
 	public class GenericPropertyComparer<T> : IComparer<T>
 	{
 		#region Private fields
-		private IList<SortItem> sortItems;
-		private Dictionary<object, IComparable>[] getValueCacheList;
+		private readonly IList<SortItem> sortItems;
+		private readonly Dictionary<object, IComparable>[] getValueCacheList;
 		#endregion
 
 		#region Constructors

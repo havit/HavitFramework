@@ -141,8 +141,8 @@ namespace Havit.Web.UI.WebControls
 		}
 		private static DynarchCalendarSkin skin = DynarchCalendarSkin.System;
 
-		private static System.Collections.Generic.Dictionary<string, string> supportedLanguages;
-		private static object supportedLanguagesLock = new object();
+		private static readonly System.Collections.Generic.Dictionary<string, string> supportedLanguages;
+		private static readonly object supportedLanguagesLock = new object();
 
 		#endregion
 

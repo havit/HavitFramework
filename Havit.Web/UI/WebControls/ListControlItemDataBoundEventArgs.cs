@@ -21,7 +21,7 @@ namespace Havit.Web.UI.WebControls
 				return this._item;
 			}
 		}
-		private ListItem _item;
+		private readonly ListItem _item;
 		#endregion
 
 		#region DataItem

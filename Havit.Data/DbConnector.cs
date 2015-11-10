@@ -22,7 +22,7 @@ namespace Havit.Data
 	public class DbConnector
 	{
 		#region commandExecutionTrace (private field)
-		private TraceSource commandExecutionTrace = new TraceSource("DbConnector Command Execution Trace", SourceLevels.All);
+		private readonly TraceSource commandExecutionTrace = new TraceSource("DbConnector Command Execution Trace", SourceLevels.All);
 		#endregion
 
 		#region ConnectionString
@@ -38,7 +38,7 @@ namespace Havit.Data
 				return _connectionString;
 			}
 		}
-		private string _connectionString;
+		private readonly string _connectionString;
 		#endregion
 
 		#region ProviderFactory
@@ -53,7 +53,7 @@ namespace Havit.Data
 				return _providerFactory;
 			}
 		}
-		private DbProviderFactory _providerFactory;
+		private readonly DbProviderFactory _providerFactory;
 		#endregion
 
 		#region Constructors

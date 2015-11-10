@@ -15,7 +15,7 @@ namespace Havit.Business
 		/// Repository pro uložení scopů IdentityMap.
 		/// Implementováno jako WebApplicationScopeRepository, prozatím bez možnosti nastavení.
 		/// </summary>
-		private static IScopeRepository<IdentityMap> repository = new WebApplicationScopeRepository<IdentityMap>();
+		private static readonly IScopeRepository<IdentityMap> repository = new WebApplicationScopeRepository<IdentityMap>();
 		#endregion
 
 		#region Current

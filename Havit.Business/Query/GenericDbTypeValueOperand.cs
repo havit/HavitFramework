@@ -16,12 +16,12 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Hodnota konstanty ValueOperandu.
 		/// </summary>
-		private object value;
+		private readonly object value;
 
 		/// <summary>
 		/// Databázový typ nesený ValueOperandem.
 		/// </summary>
-		private DbType dbType;
+		private readonly DbType dbType;
 		#endregion
 
 		#region Constructor

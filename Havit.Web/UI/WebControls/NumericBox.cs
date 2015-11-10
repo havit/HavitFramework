@@ -24,7 +24,7 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 
 		#region Nested controls
-		private TextBox valueTextBox;
+		private readonly TextBox valueTextBox;
 		#endregion
 
 		#region Behavior properties

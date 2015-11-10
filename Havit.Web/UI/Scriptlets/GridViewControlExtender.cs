@@ -15,7 +15,7 @@ namespace Havit.Web.UI.Scriptlets
     public class GridViewControlExtender : IControlExtender
     {
 		#region Private fields
-		private int priority;		
+		private readonly int priority;		
 		#endregion
 
 		#region Constructors

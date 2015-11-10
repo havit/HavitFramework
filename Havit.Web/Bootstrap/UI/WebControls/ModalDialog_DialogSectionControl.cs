@@ -20,7 +20,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		internal class DialogSectionControl : Control
 		{
 			#region Private fields
-			private Func<string> getSectionCssClass;
+			private readonly Func<string> getSectionCssClass;
 			#endregion
 
 			#region Constructor

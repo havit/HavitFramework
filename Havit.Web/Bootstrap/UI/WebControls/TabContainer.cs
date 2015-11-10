@@ -28,7 +28,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Hidden field for reading active tab set by client.
 		/// </summary>
-		private HiddenField _activeTabHiddenField;
+		private readonly HiddenField _activeTabHiddenField;
 		#endregion
 
 		#region TabMode

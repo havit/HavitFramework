@@ -12,7 +12,7 @@ namespace Havit.Web.UI.Scriptlets
 	public class ScriptBuilder
 	{
 		#region Private fields
-		private StringBuilder builder = new StringBuilder();
+		private readonly StringBuilder builder = new StringBuilder();
 		#endregion
 
 		#region IsEmpty

@@ -48,7 +48,7 @@ namespace Havit.Web
 		#endregion
 
 		#region Private fields
-		private HttpContext _currentContext;
+		private readonly HttpContext _currentContext;
 		#endregion
 
 		#region HistoryUrls

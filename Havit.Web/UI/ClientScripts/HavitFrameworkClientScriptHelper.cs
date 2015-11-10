@@ -83,7 +83,7 @@ namespace Havit.Web.UI.ClientScripts
 			return _version;
 		}
 		private static string _version;
-		private static object _versionLock = new object();
+		private static readonly object _versionLock = new object();
 		#endregion
 	}
 }

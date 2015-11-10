@@ -17,9 +17,9 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 	public class ActiveDirectoryServices
 	{
 		#region Private fields
-		private string domainController;
-		private string directoryServicesUsername;
-		private string directoryServicesPassword;
+		private readonly string domainController;
+		private readonly string directoryServicesUsername;
+		private readonly string directoryServicesPassword;
 		#endregion
 
 		#region Constructors
@@ -84,7 +84,7 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 
 			return members.ToArray();
 		}
-		private Dictionary<object, List<string>> _getGroupsMembersCache = new Dictionary<object, List<string>>();
+		private readonly Dictionary<object, List<string>> _getGroupsMembersCache = new Dictionary<object, List<string>>();
 
 		/// <summary>
 		/// Internal method for retrieving group members (used mainly for traversal groups).
@@ -270,7 +270,7 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 
 			return result.ToArray();
 		}
-		private Dictionary<string, List<string>> _getUserDomainMembershipCache = new Dictionary<string, List<string>>();
+		private readonly Dictionary<string, List<string>> _getUserDomainMembershipCache = new Dictionary<string, List<string>>();
 		#endregion
 
 		#region GetUserCrossDomainMembership
@@ -528,7 +528,7 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 			isGroup = resultData.IsGroup;
 			return resultData.Result;
 		}
-		private Dictionary<string, TryGetAccountClass_Data> _tryGetAccountClass = new Dictionary<string, TryGetAccountClass_Data>();
+		private readonly Dictionary<string, TryGetAccountClass_Data> _tryGetAccountClass = new Dictionary<string, TryGetAccountClass_Data>();
 		private class TryGetAccountClass_Data
 		{
 			public bool IsUser { get; set; }

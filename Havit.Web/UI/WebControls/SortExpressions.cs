@@ -22,7 +22,7 @@ namespace Havit.Web.UI.WebControls
 				return sortItems;
 			}
 		}
-		private SortItemCollection sortItems = new SortItemCollection();
+		private readonly SortItemCollection sortItems = new SortItemCollection();
 		#endregion
 
 		#region ClearSelection

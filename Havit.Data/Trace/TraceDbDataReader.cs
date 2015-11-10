@@ -10,8 +10,8 @@ namespace Havit.Data.Trace
 	internal class TraceDbDataReader : DbDataReader
 	{
 		#region Private fields
-		private DbDataReader wrappedDataReader;
-		private DbConnectorTrace dbConnectorTrace;
+		private readonly DbDataReader wrappedDataReader;
+		private readonly DbConnectorTrace dbConnectorTrace;
 		private int recordsCount;
 		#endregion
 

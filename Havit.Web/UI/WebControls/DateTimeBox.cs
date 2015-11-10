@@ -31,11 +31,11 @@ namespace Havit.Web.UI.WebControls
 
 		#region Nested controls (private)
 
-		private TextBox valueTextBox;
-		private LiteralControl seperatorLiteralControl;
-		private System.Web.UI.WebControls.Image dateTimePickerImage;
-		private WebControl dateTimePickerIcon;
-		private DynarchCalendar dateTimePickerDynarchCalendar;
+		private readonly TextBox valueTextBox;
+		private readonly LiteralControl seperatorLiteralControl;
+		private readonly System.Web.UI.WebControls.Image dateTimePickerImage;
+		private readonly WebControl dateTimePickerIcon;
+		private readonly DynarchCalendar dateTimePickerDynarchCalendar;
 
 		#endregion
 

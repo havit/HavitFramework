@@ -14,7 +14,7 @@ namespace Havit.Business
 		/// <summary>
 		/// Hashtable obsahující hashtable pro každý typ.
 		/// </summary>
-		private Dictionary<Type, Dictionary<int, WeakReference>> types;
+		private readonly Dictionary<Type, Dictionary<int, WeakReference>> types;
 		#endregion
 
 		#region Constructors

@@ -33,7 +33,7 @@ namespace Havit.Web.UI.Scriptlets
 			}
 		}
 		private static ScriptSubstitutionRepository _default = null;
-		private static object _defaultLock = new object();
+		private static readonly object _defaultLock = new object();
 		#endregion
 
 		#region Substitute

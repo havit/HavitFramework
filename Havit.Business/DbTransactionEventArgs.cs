@@ -19,7 +19,7 @@ namespace Havit.Business
         {
             get { return _transaction; }
         }
-        private DbTransaction _transaction; 
+        private readonly DbTransaction _transaction; 
         #endregion
 
         #region Constructors

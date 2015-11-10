@@ -12,11 +12,11 @@ namespace Havit.PayMuzo
 	public class PayMuzoWebServiceClient
 	{
 		#region private fields
-		private handleWSService webServiceProxy;
-		private X509Certificate2 merchantCertificate;
-		private X509Certificate2 payMuzoGateCertificate;
-		private ulong merchantNumber;
-		private string serviceUrl;
+		private readonly handleWSService webServiceProxy;
+		private readonly X509Certificate2 merchantCertificate;
+		private readonly X509Certificate2 payMuzoGateCertificate;
+		private readonly ulong merchantNumber;
+		private readonly string serviceUrl;
 		#endregion
 
 		#region LastResponse

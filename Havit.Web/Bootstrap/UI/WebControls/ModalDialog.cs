@@ -20,11 +20,11 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	public partial class ModalDialog : ModalDialogBase, IPostBackEventHandler
 	{
 		#region Private fiels
-		private Control dialogContainer;
-		private UpdatePanel updatePanel;
-		private Control contentContainer;
+		private readonly Control dialogContainer;
+		private readonly UpdatePanel updatePanel;
+		private readonly Control contentContainer;
 		private H4 headerH4;
-		private Button closeButton;
+		private readonly Button closeButton;
 		#endregion
 
 		#region HeaderTemplate
@@ -55,7 +55,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				return headerContainer;
 			}
 		}
-		private Control headerContainer;
+		private readonly Control headerContainer;
 		#endregion
 
 		#region FooterTemplate
@@ -86,7 +86,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				return footerContainer;
 			}
 		}
-		private Control footerContainer;
+		private readonly Control footerContainer;
 		#endregion
 
 		#region HeaderText

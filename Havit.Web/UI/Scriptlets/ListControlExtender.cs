@@ -14,12 +14,12 @@ namespace Havit.Web.UI.Scriptlets
 		/// <summary>
 		/// Priorita control extenderu.
 		/// </summary>
-		private int priority;
+		private readonly int priority;
 
 		/// <summary>
 		/// Typ, ke kterému je extender registrován.
 		/// </summary>
-		private Type controlType;				
+		private readonly Type controlType;				
 		#endregion
 
 		#region Constructor

@@ -20,7 +20,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls.Infrastructure
 				return _viewstate;
 			}
 		}
-		private StateBag _viewstate;
+		private readonly StateBag _viewstate;
 		#endregion
 
 		#region EntryType

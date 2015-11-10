@@ -17,7 +17,7 @@ namespace Havit.Entity.Glimpse.DbCommandInterception
 	internal class DbCommandLoggingInterceptor : IDbCommandInterceptor
 	{
 		#region Private fields
-		private IMessageBroker messageBroker;
+		private readonly IMessageBroker messageBroker;
 		#endregion
 
 		#region Constructor

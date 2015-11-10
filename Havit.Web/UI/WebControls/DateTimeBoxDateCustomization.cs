@@ -62,7 +62,7 @@ namespace Havit.Web.UI.WebControls
 
 			return DateCustomizationFunctionName;
 		}
-		private static object _getDatesCustomizationFunctionLock = new object();
+		private static readonly object _getDatesCustomizationFunctionLock = new object();
 		#endregion
 
 		#region RenderDateStatusHandlerContent (abstract)

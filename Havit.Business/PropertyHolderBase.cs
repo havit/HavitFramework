@@ -18,7 +18,7 @@ namespace Havit.Business
 		{
 			get { return _owner; }
 		}
-		private BusinessObjectBase _owner;
+		private readonly BusinessObjectBase _owner;
 		#endregion
 
 		#region IsDirty

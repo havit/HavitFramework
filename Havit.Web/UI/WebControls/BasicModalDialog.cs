@@ -17,7 +17,7 @@ namespace Havit.Web.UI.WebControls
 	public class BasicModalDialog : ModalDialogBase
 	{
 		#region Private fields
-		private Panel _dialogPanel;
+		private readonly Panel _dialogPanel;
 		#endregion
 
 		#region Width, Height, MarginLeft, MarginTop

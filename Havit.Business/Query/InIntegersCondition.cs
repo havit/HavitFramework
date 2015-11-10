@@ -15,8 +15,8 @@ namespace Havit.Business.Query
 	internal class InIntegersCondition : Condition
 	{
 		#region Private field
-		private IOperand operand;
-		private int[] ids;
+		private readonly IOperand operand;
+		private readonly int[] ids;
 		#endregion
 
 		#region Constructor

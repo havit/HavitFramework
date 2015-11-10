@@ -119,7 +119,7 @@ namespace Havit.Diagnostics
 			}
 		}
 		private static ExceptionTracer _default;
-		private static object defaultLock = new object();
+		private static readonly object defaultLock = new object();
 		#endregion
 
 		#region Constructor

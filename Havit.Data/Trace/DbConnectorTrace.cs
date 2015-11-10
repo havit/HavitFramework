@@ -14,8 +14,8 @@ namespace Havit.Data.Trace
 	internal class DbConnectorTrace
 	{
 		#region Private fields
-		private Stopwatch durationStopWatch;
-		private DbCommandTraceData traceData;
+		private readonly Stopwatch durationStopWatch;
+		private readonly DbCommandTraceData traceData;
 		#endregion
 
 		#region Constructor

@@ -20,12 +20,12 @@ namespace Havit.Scopes
 		/// <summary>
 		/// Úložiště scopes k HttpContextům.
 		/// </summary>
-		private ConcurrentDictionary<HttpContext, Scope<T>> _data = new ConcurrentDictionary<HttpContext, Scope<T>>();
+		private readonly ConcurrentDictionary<HttpContext, Scope<T>> _data = new ConcurrentDictionary<HttpContext, Scope<T>>();
 		
 		/// <summary>
 		/// ThreadScopeRepository pro případy scopes mimo HttpContext.
 		/// </summary>
-		private ThreadScopeRepository<T> threadScopeRepository = new ThreadScopeRepository<T>();
+		private readonly ThreadScopeRepository<T> threadScopeRepository = new ThreadScopeRepository<T>();
 		#endregion
 
 		#region GetCurrentScope

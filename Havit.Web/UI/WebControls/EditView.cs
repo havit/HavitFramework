@@ -21,7 +21,7 @@ namespace Havit.Web.UI.WebControls
 	internal class EditView /* nebo FormEdit??? */ : Control
 	{
 		#region Private fields
-		private FormViewExt formViewExt;
+		private readonly FormViewExt formViewExt;
 		#endregion
 
 		#region ContentTemplate

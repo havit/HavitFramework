@@ -24,12 +24,12 @@ namespace Havit.Business
 		/// Interní seznam významných dnů, tj. dnů, které se liší od běžného pracovního dne (např. svátků, atp.).<br/>
 		/// Klíč je DateTime, hodnota je DateInfo.
 		/// </summary>
-		private IDictionary<DateTime, IDateInfo> dateInfos;
+		private readonly IDictionary<DateTime, IDateInfo> dateInfos;
 
 		/// <summary>
 		/// Strategie používaná pro zjištění, zda je daný den podle kalendáře víkendem.
 		/// </summary>
-		private IIsWeekendStrategy isWeekendStrategy;
+		private readonly IIsWeekendStrategy isWeekendStrategy;
 		#endregion
 
 		#region Constructors

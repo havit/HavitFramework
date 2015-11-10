@@ -44,7 +44,7 @@ namespace Havit.Data
 		/// <summary>
 		/// Data z databáze.
 		/// </summary>
-		private Dictionary<string, object> dataDictionary;
+		private readonly Dictionary<string, object> dataDictionary;
 		#endregion
 
 		#region Constructors

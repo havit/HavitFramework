@@ -20,7 +20,7 @@ namespace Havit.Business.Query
 		/// <summary>
 		/// Hodnota konstanty ValueOperandu.
 		/// </summary>
-		private int[] value;
+		private readonly int[] value;
 		#endregion
 
 		#region Constructor

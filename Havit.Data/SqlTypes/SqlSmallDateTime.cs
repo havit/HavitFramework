@@ -41,7 +41,7 @@ namespace Havit.Data.SqlTypes
                 return _value;
             }
         }
-        private DateTime _value;
+        private readonly DateTime _value;
         #endregion
     }
 }

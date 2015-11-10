@@ -1437,7 +1437,7 @@ namespace Havit.Web.UI.WebControls
 				return this._viewState;
 			}
 		}
-		private StateBag _viewState;
+		private readonly StateBag _viewState;
 		#endregion
 
 		#region PropertyChanged (event)

@@ -24,7 +24,7 @@ namespace Havit.Services.Xml.Rss
 		private string ttl = "";
 		private string rating = "";
 		private RssImage image;
-		private RssItemCollection items;
+		private readonly RssItemCollection items;
 
 		/// <summary>
 		/// The name of the channel.

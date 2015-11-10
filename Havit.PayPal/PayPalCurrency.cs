@@ -56,7 +56,7 @@ namespace Havit.PayPal
 		{
 			get { return _code; }
 		}
-		private string _code;
+		private readonly string _code;
 
 		/// <summary>
 		/// Číselný kód, např. 203 pro CZK
@@ -65,7 +65,7 @@ namespace Havit.PayPal
 		{
 			get { return _numericCode; }
 		}
-		private int _numericCode;
+		private readonly int _numericCode;
 		
 		#endregion
 
@@ -89,8 +89,8 @@ namespace Havit.PayPal
 		/// <summary>
 		/// Hashtabulky s unikátními sdílenými instancemi.
 		/// </summary>		
-		private static Hashtable currencyCodes;
-		private static Hashtable numericCodes;
+		private static readonly Hashtable currencyCodes;
+		private static readonly Hashtable numericCodes;
 		#endregion
 
 		#region Static constructor

@@ -43,7 +43,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 			}
 		}
 		private static PersisterControlExtenderRepository _default;
-		private static object _defaultLock = new object();
+		private static readonly object _defaultLock = new object();
 		#endregion
 
 		#region FindExtender

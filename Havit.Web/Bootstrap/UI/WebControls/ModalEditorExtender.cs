@@ -34,9 +34,9 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	public class ModalEditorExtender : DataBoundControlWithHiddenPublicMembersFromIntellisence, IEditorExtenderWithPreviousNextNavigation, INamingContainer
 	{
 		#region Private fields
-		private ModalDialog modalDialog;
-		private FormViewExt headerFormView;
-		private FormViewExt contentFormView;
+		private readonly ModalDialog modalDialog;
+		private readonly FormViewExt headerFormView;
+		private readonly FormViewExt contentFormView;
 		#endregion
 
 		#region HeaderText

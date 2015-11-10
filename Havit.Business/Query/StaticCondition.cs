@@ -18,7 +18,7 @@ namespace Havit.Business.Query
 		#endregion
 
 		#region Private fields
-		private string _conditionText;
+		private readonly string _conditionText;
 		#endregion
 
 		#region Constructor

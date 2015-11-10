@@ -23,7 +23,7 @@ namespace Havit.Web.UI.Scriptlets
 
 		#region Private fields
 		private ClientScript clientScript = null;
-		private List<IScriptletParameter> scriptletParameters = new List<IScriptletParameter>();
+		private readonly List<IScriptletParameter> scriptletParameters = new List<IScriptletParameter>();
 		#endregion
 
 		/* Parametry Scriptletu *************** */

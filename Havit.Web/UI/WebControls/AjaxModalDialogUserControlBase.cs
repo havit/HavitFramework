@@ -20,7 +20,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			get { return _ajaxModalDialog; }
 		}
-		private AjaxModalDialog _ajaxModalDialog = new AjaxModalDialog();
+		private readonly AjaxModalDialog _ajaxModalDialog = new AjaxModalDialog();
 		#endregion
 
 		#region Triggers

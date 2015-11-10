@@ -14,9 +14,9 @@ namespace Havit.Web.UI
 	public partial class FilePageStatePersister : PageStatePersister
 	{
 		#region Private fields
-		private Page _page;
-		private IFileNamingStrategy _fileNamingStrategy;
-		private ILogService _logService;
+		private readonly Page _page;
+		private readonly IFileNamingStrategy _fileNamingStrategy;
+		private readonly ILogService _logService;
 		#endregion
 
 		#region Constructors

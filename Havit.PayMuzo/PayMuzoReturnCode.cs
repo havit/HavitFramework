@@ -11,7 +11,7 @@ namespace Havit.PayMuzo
 	public abstract class PayMuzoReturnCode
 	{
 		#region Private fields
-		private static Hashtable codeTypes = new Hashtable();
+		private static readonly Hashtable codeTypes = new Hashtable();
 		#endregion
 
 		#region Properties

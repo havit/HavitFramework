@@ -18,7 +18,7 @@ namespace Havit.Services.Xml.Rss
 		#region Fields
 
 		private string version = "";
-		private RssChannelCollection channels;
+		private readonly RssChannelCollection channels;
 
 		/// <summary>
 		/// Atribut "version", nastaven na implementovanou verzi.

@@ -42,8 +42,8 @@ namespace Havit.Web.UI.WebControls
 		#endregion
 
 		#region Fields (private)
-		private TextBox valueTextBox;
-		private HiddenField valueHiddenField;
+		private readonly TextBox valueTextBox;
+		private readonly HiddenField valueHiddenField;
 		#endregion
 
 		#region AutoPostBack

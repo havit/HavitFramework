@@ -21,7 +21,7 @@ namespace Havit.Web.UI.WebControls
 				return this._rowIndex;
 			}
 		}
-		private int _rowIndex;
+		private readonly int _rowIndex;
 		#endregion
 
 		#region Constructor

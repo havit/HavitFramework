@@ -24,7 +24,7 @@ namespace Havit.Data.Glimpse.Message
 				return _timelineCategory;
 			}
 		}
-		private static TimelineCategoryItem _timelineCategory = new TimelineCategoryItem("DbConnector", "#233D91", "#118DD5");
+		private static readonly TimelineCategoryItem _timelineCategory = new TimelineCategoryItem("DbConnector", "#233D91", "#118DD5");
 		#endregion
 	}
 

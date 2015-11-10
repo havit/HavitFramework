@@ -23,7 +23,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Nested NavbarSectionInternal control.
 		/// </summary>
-		private NavbarSectionInternal _navbarSectionInternal;
+		private readonly NavbarSectionInternal _navbarSectionInternal;
 		#endregion
 
 		#region MenuItems

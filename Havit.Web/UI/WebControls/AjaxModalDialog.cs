@@ -16,8 +16,8 @@ namespace Havit.Web.UI.WebControls
 	public class AjaxModalDialog : BasicModalDialog
 	{
 		#region Private fiels
-		private UpdatePanel _updatePanel;
-		private PlaceHolder _contentPlaceHolder;
+		private readonly UpdatePanel _updatePanel;
+		private readonly PlaceHolder _contentPlaceHolder;
 		private Control _basicContainer;
 		#endregion
 

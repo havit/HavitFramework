@@ -20,9 +20,9 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	public class SwitchButton : Control
 	{
 		#region Private fields
-		private RadioButtonList radioButtonList;
-		private ListItem yesItem;
-		private ListItem noItem;
+		private readonly RadioButtonList radioButtonList;
+		private readonly ListItem yesItem;
+		private readonly ListItem noItem;
 		#endregion
 
 		#region Value

@@ -39,7 +39,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				return _adaptedControl;
 			}
 		}
-		private WebControl _adaptedControl = null;
+		private readonly WebControl _adaptedControl = null;
 		#endregion
 
 		#region AdapterEnabled
@@ -674,8 +674,8 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 		public class ControlRestorationInfo
 		{
 			#region Private fields
-			private Control _ctrl = null;
-			private ControlCollection _coll = null;
+			private readonly Control _ctrl = null;
+			private readonly ControlCollection _coll = null;
 			#endregion
 
 			#region Control

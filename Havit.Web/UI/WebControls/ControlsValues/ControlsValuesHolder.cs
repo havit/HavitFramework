@@ -20,7 +20,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 	public class ControlsValuesHolder
 	{
 		#region Private fields
-		private Dictionary<string, object> _values; 
+		private readonly Dictionary<string, object> _values; 
 		#endregion
 	
 		#region Constructor

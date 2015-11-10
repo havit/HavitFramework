@@ -15,8 +15,8 @@ namespace Havit.Entity.Glimpse.DbCommandInterception
 	internal class RecordCountingDbDataReader : DbDataReader
 	{
 		#region Private fields
-		private DbDataReader wrappedDataReader;
-		private DbDataReaderResult dbDataReaderResult;
+		private readonly DbDataReader wrappedDataReader;
+		private readonly DbDataReaderResult dbDataReaderResult;
 		private int recordsCount;
 		#endregion
 

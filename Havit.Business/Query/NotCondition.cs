@@ -23,7 +23,7 @@ namespace Havit.Business.Query
                 return _andConditions.Conditions;
             }
         }
-        private AndCondition _andConditions; 
+        private readonly AndCondition _andConditions; 
         #endregion
 
         #region Constructors

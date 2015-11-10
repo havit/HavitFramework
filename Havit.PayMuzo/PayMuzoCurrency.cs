@@ -48,7 +48,7 @@ namespace Havit.PayMuzo
 		{
 			get { return _code; }
 		}
-		private string _code;
+		private readonly string _code;
 
 		/// <summary>
 		/// Číselný kód, např. 203 pro CZK
@@ -57,7 +57,7 @@ namespace Havit.PayMuzo
 		{
 			get { return _numericCode; }
 		}
-		private int _numericCode;
+		private readonly int _numericCode;
 
 		/// <summary>
 		/// Počet nejmenších jednotek dané měny. Např. 100 pro haléře.
@@ -66,7 +66,7 @@ namespace Havit.PayMuzo
 		{
 			get { return _smallestUnits; }
 		}
-		private int _smallestUnits;
+		private readonly int _smallestUnits;
 		#endregion
 
 		#region Constructors
@@ -90,7 +90,7 @@ namespace Havit.PayMuzo
 		/// <summary>
 		/// Hashtabulka s unikátními sdílenými instancemi.
 		/// </summary>
-		private static Hashtable currencies;
+		private static readonly Hashtable currencies;
 		#endregion
 
 		#region Static constructor

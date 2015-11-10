@@ -10,7 +10,7 @@ namespace Havit.Web.UI
 	internal class FilePageStatePersisterLogService : FilePageStatePersister.ILogService
 	{
 		#region Prifate fields
-		private TraceSource traceSource;
+		private readonly TraceSource traceSource;
 		#endregion
 
 		#region Constructor

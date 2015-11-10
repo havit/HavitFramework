@@ -32,7 +32,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		#endregion
 
 		#region Controls
-		private HiddenField hiddenField;
+		private readonly HiddenField hiddenField;
 		#endregion
 
 		#region ContentTemplate

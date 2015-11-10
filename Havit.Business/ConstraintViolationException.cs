@@ -21,7 +21,7 @@ namespace Havit.Business
 		{
 			get { return _businessObject; }
 		}
-		private BusinessObjectBase _businessObject;
+		private readonly BusinessObjectBase _businessObject;
 		#endregion
 
 		#region Constructors

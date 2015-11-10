@@ -13,7 +13,7 @@ namespace Havit.Business.Query
 	internal sealed class DateTimeValueOperand : IOperand
 	{
 		#region Private fields
-		private DateTime value;
+		private readonly DateTime value;
 		#endregion
 
 		#region Constructor

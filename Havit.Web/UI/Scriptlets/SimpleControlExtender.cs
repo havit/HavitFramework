@@ -15,9 +15,9 @@ namespace Havit.Web.UI.Scriptlets
     public class SimpleControlExtender : IControlExtender
     {
 		#region Private fields
-		private Type controlType;
-		private int priority;
-		private string[] changeEvents;
+		private readonly Type controlType;
+		private readonly int priority;
+		private readonly string[] changeEvents;
 		#endregion
 		
 		#region Constructors

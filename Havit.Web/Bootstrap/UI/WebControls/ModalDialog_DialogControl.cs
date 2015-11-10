@@ -26,7 +26,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			{
 				this.modalDialog = modalDialog;
 			}
-			private ModalDialog modalDialog;
+			private readonly ModalDialog modalDialog;
 			#endregion
 
 			#region Render

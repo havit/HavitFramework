@@ -61,7 +61,7 @@ namespace Havit.Business.Query
 				return properties;
 			}
 		}
-		private PropertyInfoCollection properties = new PropertyInfoCollection();
+		private readonly PropertyInfoCollection properties = new PropertyInfoCollection();
 
 		/// <summary>
 		/// Podmínky dotazu (WHERE ...).
@@ -74,7 +74,7 @@ namespace Havit.Business.Query
 				return conditions.Conditions;
 			}
 		}
-		private AndCondition conditions = new AndCondition();
+		private readonly AndCondition conditions = new AndCondition();
 
 		/// <summary>
 		/// Pořadí záznamů (ORDER BY ...).
@@ -87,7 +87,7 @@ namespace Havit.Business.Query
 				return orderBy;
 			}
 		}
-		private OrderByCollection orderBy = new OrderByCollection();
+		private readonly OrderByCollection orderBy = new OrderByCollection();
 		#endregion
 
 		#region GetDataLoadPower

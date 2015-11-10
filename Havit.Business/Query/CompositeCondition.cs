@@ -15,7 +15,7 @@ namespace Havit.Business.Query
 	public abstract class CompositeCondition : Condition
 	{
 		#region Private fields
-		private string operatorBetweenOperands = null;
+		private readonly string operatorBetweenOperands = null;
 		#endregion
 
 		#region Conditions
@@ -26,7 +26,7 @@ namespace Havit.Business.Query
 		{
 			get { return conditions; }
 		}
-        private ConditionList conditions;
+        private readonly ConditionList conditions;
 		#endregion
 
 		#region Constructors

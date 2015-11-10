@@ -16,7 +16,7 @@ namespace Havit.Web.UI.WebControls
 		
 		#region Private fields
 		private string _callbackArgument;
-		private IPostBackContainer _container;
+		private readonly IPostBackContainer _container;
 		private bool _enableCallback;
 		#endregion
 

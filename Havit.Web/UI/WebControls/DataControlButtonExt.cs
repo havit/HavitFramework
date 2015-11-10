@@ -14,7 +14,7 @@ namespace Havit.Web.UI.WebControls
 	{
 		// Fields
 		#region Private fields
-		private IPostBackContainer _container;
+		private readonly IPostBackContainer _container;
 		#endregion
 
 		// Properties

@@ -20,7 +20,7 @@ namespace Havit.Scopes
 		/// <summary>
 		/// DataSlot - nepojmenovaný slot, pod kterým jsou ukládány thread data.
 		/// </summary>
-		private LocalDataStoreSlot threadDataStoreSlot;
+		private readonly LocalDataStoreSlot threadDataStoreSlot;
 		#endregion
 
 		#region Constructor

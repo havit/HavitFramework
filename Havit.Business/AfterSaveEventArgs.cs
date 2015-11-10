@@ -18,7 +18,7 @@ namespace Havit.Business
 		{
 			get { return _wasNew; }
 		}
-		private bool _wasNew; 
+		private readonly bool _wasNew; 
 		#endregion
 	
 		#region Constructors

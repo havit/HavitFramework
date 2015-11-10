@@ -305,8 +305,8 @@ namespace Havit.Security
 		#endregion
 
 		#region private fields
-		private RNGCryptoServiceProvider rng;
-		private char[] pwdCharArray = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789`~!@#$%^&*()-_=+[]{}\\|;:'\",<.>/?".ToCharArray();
+		private readonly RNGCryptoServiceProvider rng;
+		private readonly char[] pwdCharArray = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789`~!@#$%^&*()-_=+[]{}\\|;:'\",<.>/?".ToCharArray();
 		#endregion
 
 		#region Generate (static)

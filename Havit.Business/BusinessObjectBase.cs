@@ -134,7 +134,7 @@ namespace Havit.Business
 				return isDisconnected;
 			}
 		}
-		private bool isDisconnected = false;
+		private readonly bool isDisconnected = false;
 		#endregion
 
 		#region PropertyHolders
@@ -152,7 +152,7 @@ namespace Havit.Business
 				return _propertyHolders;
 			}
 		}
-		private List<PropertyHolderBase> _propertyHolders = new List<PropertyHolderBase>(16);
+		private readonly List<PropertyHolderBase> _propertyHolders = new List<PropertyHolderBase>(16);
 		#endregion
 
 		#region Constructors
@@ -225,7 +225,7 @@ namespace Havit.Business
 
 		#region Load logika
 		// zámek pro načítání objektů
-		private object loadLock = new object();
+		private readonly object loadLock = new object();
 
 		/// <summary>
 		/// Nahraje objekt z perzistentního uložiště.

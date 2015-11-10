@@ -32,7 +32,7 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		private static Messenger _default;
-		private static object _defaultLock = new object();
+		private static readonly object _defaultLock = new object();
 		#endregion
 
 		#region StorageType

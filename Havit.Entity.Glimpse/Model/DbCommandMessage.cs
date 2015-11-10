@@ -60,7 +60,7 @@ namespace Havit.Entity.Glimpse.Model
 				return _commandParameters;
 			}
 		}
-		private List<DbParameterData> _commandParameters = new List<DbParameterData>();
+		private readonly List<DbParameterData> _commandParameters = new List<DbParameterData>();
 		#endregion
 
 		#region Duration

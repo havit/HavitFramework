@@ -19,10 +19,10 @@ namespace Havit.Web.Management
 		#endregion
 
 		#region Private fields
-		private HttpContext _currentHttpContext;
-		private Type _currentApplicationInstanceType;
-		private CultureInfo _currentCulture;
-		private CultureInfo _currentUiCulture;
+		private readonly HttpContext _currentHttpContext;
+		private readonly Type _currentApplicationInstanceType;
+		private readonly CultureInfo _currentCulture;
+		private readonly CultureInfo _currentUiCulture;
 		#endregion
 
 		#region Constructors

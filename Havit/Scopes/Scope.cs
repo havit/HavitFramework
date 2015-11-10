@@ -53,19 +53,19 @@ namespace Havit.Scopes
 		/// <summary>
 		/// Indikuje, zdali je instance scopem vlastněná, tj. máme-li ji na konci scope disposovat.
 		/// </summary>
-		private bool ownsInstance;
+		private readonly bool ownsInstance;
 
 		/// <summary>
 		/// Instance, kterou scope obaluje.
 		/// </summary>
-		private T instance;
+		private readonly T instance;
 
 		/// <summary>
 		/// Nadřazený scope v linked-listu nestovaných scope.
 		/// </summary>
-		private Scope<T> parent;
+		private readonly Scope<T> parent;
 
-		private IScopeRepository<T> scopeRepository;
+		private readonly IScopeRepository<T> scopeRepository;
 		#endregion
 
 		#region Constructors

@@ -219,7 +219,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 				reader.ReadEndElement();
 
 				reader.ReadStartElement("Value");
-				object value = (object)valueSerializer.Deserialize(reader);
+				object value = valueSerializer.Deserialize(reader);
 				reader.ReadEndElement();
 
 				result.SetValue(key, value);
@@ -289,7 +289,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 					}
 
 					XmlSerializer valueSerializer = new XmlSerializer(type);
-					value = (object)valueSerializer.Deserialize(reader);
+					value = valueSerializer.Deserialize(reader);
 				}
 
 				if ((reader.NodeType == XmlNodeType.EndElement) && (reader.Name == "Value")) // null hodnoty nemají uzavírací element

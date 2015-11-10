@@ -46,7 +46,7 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Styl buňky filtru.
 		/// </summary>
-		[DefaultValue((string)null), PersistenceMode(PersistenceMode.InnerProperty), DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+		[DefaultValue(null), PersistenceMode(PersistenceMode.InnerProperty), DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
 		public TableItemStyle FilterStyle
 		{
 			get

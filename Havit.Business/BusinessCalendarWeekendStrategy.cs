@@ -8,7 +8,7 @@ namespace Havit.Business
 	/// <summary>
 	/// Třída vracející strategii pro určení, které dny jsou víkendem.
 	/// </summary>
-	public class BusinessCalendarWeekendStrategy
+	public static class BusinessCalendarWeekendStrategy
 	{
 		#region GetSaturdaySundayStrategy
 		/// <summary>

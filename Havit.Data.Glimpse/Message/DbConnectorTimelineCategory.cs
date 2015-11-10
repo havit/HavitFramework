@@ -11,7 +11,7 @@ namespace Havit.Data.Glimpse.Message
 	/// <summary>
 	/// Timeline category for DbConnector.
 	/// </summary>
-	public sealed class DbConnectorTimelineCategory
+	public static class DbConnectorTimelineCategory
 	{		
 		#region TimelineCategory
 		/// <summary>

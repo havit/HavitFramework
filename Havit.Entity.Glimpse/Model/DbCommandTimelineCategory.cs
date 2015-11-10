@@ -5,7 +5,7 @@ namespace Havit.Entity.Glimpse.Model
 	/// <summary>
 	/// Timeline category for DbConnector.
 	/// </summary>
-	public sealed class DbCommandTimelineCategory
+	public static class DbCommandTimelineCategory
 	{		
 		#region TimelineCategory
 		/// <summary>

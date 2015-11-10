@@ -10,7 +10,7 @@ namespace Havit.Services.StateAdministration
 	/// <summary>
 	/// Třída pro práci s rodným číslem.
 	/// </summary>
-	public class RodneCisloServices
+	public static class RodneCisloServices
 	{
 		#region Validate
 		/// <summary>

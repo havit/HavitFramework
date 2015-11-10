@@ -9,7 +9,7 @@ using Havit.WebApplicationTest.HavitCastleWindsorWebFormsTests;
 
 namespace Havit.WebApplicationTest.App_Start
 {
-	public class WindsorCastleConfig
+	public static class WindsorCastleConfig
 	{
 		public static void RegisterDiContainer()
 		{

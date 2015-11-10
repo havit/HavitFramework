@@ -9,7 +9,7 @@ namespace Havit.Business.Query
 	/// <summary>
 	/// Vytváří podmínky testující GUID hodnoty.
 	/// </summary>
-	public class GuidCondition
+	public static class GuidCondition
 	{
 		#region CreateEquals
 		/// <summary>

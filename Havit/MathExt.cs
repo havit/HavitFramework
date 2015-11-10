@@ -79,7 +79,7 @@ namespace Havit
 		/// <returns>číslo zaokrouhlené (aritmeticky) na nejbliží násobek (multiple)</returns>
 		public static decimal RoundToMultiple(decimal d, decimal multiple)
 		{
-			return (decimal)Math.Round(d / multiple) * multiple;
+			return Math.Round(d / multiple) * multiple;
 		}
 
 		/// <summary>
@@ -112,7 +112,7 @@ namespace Havit
 		/// <returns>číslo zaokrouhlené na nejbliží vyšší násobek (multiple)</returns>
 		public static decimal CeilingToMultiple(decimal d, decimal multiple)
 		{
-			return (decimal)Math.Ceiling(d / multiple) * multiple;
+			return Math.Ceiling(d / multiple) * multiple;
 		}
 
 		/// <summary>
@@ -145,7 +145,7 @@ namespace Havit
 		/// <returns>číslo zaokrouhlené na nejbliží nižší násobek (multiple)</returns>
 		public static decimal FloorToMultiple(decimal d, decimal multiple)
 		{
-			return (decimal)Math.Floor(d / multiple) * multiple;
+			return Math.Floor(d / multiple) * multiple;
 		}
 		#endregion
 

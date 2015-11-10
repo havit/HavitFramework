@@ -186,7 +186,7 @@ namespace Havit.Web.UI.WebControls
 
 						// values vybereme ze seřazených dat
 						// výsledek je stabilní vůči řazení, vč. metody Distinct
-						values = ((IEnumerable)sortedData).Cast<object>()
+						values = sortedData.Cast<object>()
 							.Select(item => DataBinderExt.GetValue(item, this.DataFilterField))
 							.Where(item => (item != null) && (item != DBNull.Value))
 							.Select(item => (formatString == null) ? item.ToString() : String.Format(formatString, item))

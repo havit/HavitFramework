@@ -104,7 +104,7 @@ namespace Havit.PayMuzo
 				// pole smí obsahovat pouze ASCII znaku 0x20 - 0x7E
 				for (int i = 0; i < description.Length; i++)
 				{
-					int numericValue = (int)(description[i]);
+					int numericValue = description[i];
 					if ((numericValue > 0x7E) || (numericValue < 0x20))
 					{
 						throw new ArgumentException("description", "description smí obsahovat pouze ASCII znaky 0x20 - 0x7E.");
@@ -125,7 +125,7 @@ namespace Havit.PayMuzo
 				// pole smí obsahovat pouze ASCII znaku 0x20 - 0x7E
 				for (int i = 0; i < merchantData.Length; i++)
 				{
-					int numericValue = (int)(merchantData[i]);
+					int numericValue = merchantData[i];
 					if ((numericValue > 0x7E) || (numericValue < 0x20))
 					{
 						throw new ArgumentException("merchantData", "merchantData smí obsahovat pouze ASCII znaky 0x20 - 0x7E. Použijte BASE64 kódování.");

@@ -29,7 +29,7 @@ namespace Havit.PayPal
 	/// <summary>
 	/// Pomocná třída na práci s enumem PayPalPaymentAction.
 	/// </summary>
-	public sealed class PayPalPaymentActionHelper
+	public static class PayPalPaymentActionHelper
 	{
 		#region GetPayPalPaymentActionCode
 		/// <summary>

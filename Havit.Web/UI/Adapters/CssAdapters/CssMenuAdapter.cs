@@ -157,7 +157,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				if (isRoot)
 				{
 					writer.WriteAttribute("class", "AspNet-Menu");
-					writer.WriteAttribute("disappearAfter", ((Menu)Control).DisappearAfter.ToString()); // render desapperAfter attribute
+					writer.WriteAttribute("disappearAfter", Control.DisappearAfter.ToString()); // render desapperAfter attribute
 				}
 				writer.Write(HtmlTextWriter.TagRightChar);
 				writer.Indent++;

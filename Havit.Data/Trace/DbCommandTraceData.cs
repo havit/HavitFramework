@@ -91,7 +91,7 @@ namespace Havit.Data.Trace
 					sb.AppendLine($"    {parameter.ParameterName}: {parameter.Value} (DbType.{parameter.DbType}, {parameter.Direction})");
 				}
 			}
-			decimal durationMs = (decimal)this.DurationTicks / (decimal)TimeSpan.TicksPerMillisecond;
+			decimal durationMs = this.DurationTicks / (decimal)TimeSpan.TicksPerMillisecond;
             sb.AppendLine($"  Duration: {durationMs:N2} ms");
 			
 			if (ResultSet)

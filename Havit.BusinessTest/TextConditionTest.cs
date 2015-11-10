@@ -30,7 +30,7 @@ namespace Havit.BusinessTest
 				Assert.IsTrue(Role.GetList(qp).Count > 0);
 
 				qp = new QueryParams();
-				qp.Conditions.Add(TextCondition.CreateIsNullOrEmpty(ValueOperand.Create((string)null)));
+				qp.Conditions.Add(TextCondition.CreateIsNullOrEmpty(ValueOperand.Create(null)));
 				Assert.IsTrue(Role.GetList(qp).Count > 0);
 
 				qp = new QueryParams();
@@ -53,7 +53,7 @@ namespace Havit.BusinessTest
 				Assert.IsTrue(Role.GetList(qp).Count == 0);
 
 				qp = new QueryParams();
-				qp.Conditions.Add(TextCondition.CreateIsNotNullOrEmpty(ValueOperand.Create((string)null)));
+				qp.Conditions.Add(TextCondition.CreateIsNotNullOrEmpty(ValueOperand.Create(null)));
 				Assert.IsTrue(Role.GetList(qp).Count == 0);
 
 				qp = new QueryParams();

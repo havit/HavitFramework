@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 namespace TracingTest
 {
-	internal class Program
+	internal static class Program
 	{
 		private static void Main(string[] args)
 		{

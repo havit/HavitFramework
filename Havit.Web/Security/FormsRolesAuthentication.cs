@@ -152,7 +152,7 @@ namespace Havit.Web.Security
 					2,												// version
 					username,										// name
 					DateTime.Now,									// issueDate
-					DateTime.Now.AddMinutes((double)timeout.Value),	// expiration
+					DateTime.Now.AddMinutes(timeout.Value),	// expiration
 					false,											// isPersistent
 					userData,										// userData
 					cookiePath);									// cookiePath

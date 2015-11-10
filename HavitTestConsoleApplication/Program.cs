@@ -22,7 +22,7 @@ using System.DirectoryServices;
 namespace HavitTestConsoleApplication
 {
 
-	internal class Program
+	internal static class Program
 	{
 		#region Main
 		private static void Main(string[] args)

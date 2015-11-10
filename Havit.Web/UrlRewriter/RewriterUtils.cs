@@ -9,7 +9,7 @@ namespace Havit.Web.UrlRewriter
 	/// <remarks>This class is marked as internal, meaning only classes in the same assembly will be
 	/// able to access its methods.</remarks>
 	[Obsolete("Upgrade to ASP.NET Routing.")]
-	internal class RewriterUtils
+	internal static class RewriterUtils
 	{
 		#region RewriteUrl
 		/// <summary>

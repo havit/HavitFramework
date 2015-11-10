@@ -24,7 +24,7 @@ namespace Havit.PayPal
 	/// <summary>
 	/// Pomocná třída na práci s enumem PayPalLandingPage.
 	/// </summary>
-	public sealed class PayPalLandingPageHelper
+	public static class PayPalLandingPageHelper
 	{
 		#region GetPayPalLandingPageCode
 		/// <summary>

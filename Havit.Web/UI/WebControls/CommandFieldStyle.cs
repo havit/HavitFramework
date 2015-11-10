@@ -154,7 +154,7 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		[Category("Styles")]
 		[PersistenceMode(PersistenceMode.InnerProperty)]
-		[DefaultValue((string)null)]
+		[DefaultValue(null)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
 		public Style ControlStyle
 		{
@@ -340,7 +340,7 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Gets or sets the text that is displayed in the footer item of a data control field.
 		/// </summary>
-		[DefaultValue((string)null)]
+		[DefaultValue(null)]
 		[Category("Styles")]
 		[PersistenceMode(PersistenceMode.InnerProperty)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
@@ -393,7 +393,7 @@ namespace Havit.Web.UI.WebControls
 		/// Gets or sets the style of the header of the data control field.
 		/// </summary>
 		[Category("Styles")]
-		[DefaultValue((string)null)]
+		[DefaultValue(null)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
 		[PersistenceMode(PersistenceMode.InnerProperty)]
 		public TableItemStyle HeaderStyle
@@ -498,7 +498,7 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Gets the style of any text-based content displayed by a data control field.
 		/// </summary>
-		[DefaultValue((string)null)]
+		[DefaultValue(null)]
 		[PersistenceMode(PersistenceMode.InnerProperty)]
 		[Category("Styles")]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]

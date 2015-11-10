@@ -452,11 +452,9 @@ namespace Havit.Web.UI.WebControls
 			string resourceName = "Havit.Web.UI.WebControls.AutoSuggestMenu.Blank.html";
 			writer.WriteLine("menu.blankPage=\"" + Page.ClientScript.GetWebResourceUrl(typeof(AutoSuggestMenu), resourceName) + "\";");  // RH, místo resourcesDir
 
-			switch (Mode)
-			{
-				case AutoSuggestMenuMode.ClearTextOnNoSelection:
-					writer.WriteLine("menu.clearTextOnNoSelection=true;");
-					break;
+			if (Mode == AutoSuggestMenuMode.ClearTextOnNoSelection)
+			{ 
+				writer.WriteLine("menu.clearTextOnNoSelection=true;");
 			}
 
 			if (AutoPostBack)

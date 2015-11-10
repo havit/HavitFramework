@@ -24,6 +24,7 @@ namespace Havit.Data.Glimpse
         /// </remarks>
         public void Setup(IInspectorContext context)
         {
+			// NOOP
         }
     }
 }

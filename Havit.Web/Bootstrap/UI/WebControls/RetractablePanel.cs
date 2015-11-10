@@ -156,6 +156,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		#region HiddenField_ValueChanged
 		private void HiddenField_ValueChanged(object sender, EventArgs e)
 		{
+			throw new NotImplementedException();
 		}
 		#endregion
 

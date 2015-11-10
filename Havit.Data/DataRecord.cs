@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Havit.Data
 {
@@ -152,6 +153,7 @@ namespace Havit.Data
 		/// </returns>
 		/// <exception cref="ArgumentException">pokud field v data recordu není a vlastnost <see cref="FullLoad"/> je <c>true</c></exception>
 		/// <exception cref="InvalidCastException">pokud nelze převést field na výstupní typ, nebo pokud je field <see cref="DBNull"/> a výstupní typ nemá <c>null</c></exception>
+		[SuppressMessage("SonarLint", "S2955", Justification = "Zde chceme podporovat obecné typy, včetně struktur a včetně Nullable, což je struktura \"umožňující\" hodnotu null (Use a comparison to \"default(T)\" instead or add a constraint to \"T\" so that it can't be a value type.)")]
 		public bool TryGet<T>(string fieldName, out T target)
 		{
 			target = default(T);

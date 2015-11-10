@@ -23,6 +23,7 @@ namespace Havit.Web.Services.Extensions
 		/// <param name="serviceDescription">The service description.</param><param name="serviceHostBase">The service host that is currently being constructed.</param>
 		public void Validate(ServiceDescription serviceDescription, ServiceHostBase serviceHostBase)
 		{
+			// NOOP
 		}
 		#endregion
 
@@ -34,6 +35,7 @@ namespace Havit.Web.Services.Extensions
 		/// <param name="serviceDescription">The service description of the service.</param><param name="serviceHostBase">The host of the service.</param><param name="endpoints">The service endpoints.</param><param name="bindingParameters">Custom objects to which binding elements have access.</param>
 		public void AddBindingParameters(ServiceDescription serviceDescription, ServiceHostBase serviceHostBase, Collection<ServiceEndpoint> endpoints, BindingParameterCollection bindingParameters)
 		{
+			// NOOP
 		}
 
 		#endregion

@@ -107,10 +107,11 @@ namespace Havit.Web
 					{
 						using (StreamReader reader = new StreamReader(compressStream, Encoding.UTF8))
 						{
-							string line;
-							while ((line = reader.ReadLine()) != null) // přečteme řádek do proměnné line a porovnáme s hodnotou null
+							string line = reader.ReadLine();
+							while (line != null) // přečteme řádek do proměnné line a porovnáme s hodnotou null
 							{
 								HistoryUrls.Add(line);
+								line = reader.ReadLine();
 							}
 						}
 					}

@@ -40,7 +40,7 @@ namespace Havit.ComponentModel
 				return false;
 			}
 
-			if (targetType.IsAssignableFrom(value.GetType()))
+			if (targetType.IsInstanceOfType(value))
 			{
 				result = value;
 				return true;

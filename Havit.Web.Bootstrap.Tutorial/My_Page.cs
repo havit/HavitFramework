@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Havit.Web.Bootstrap.Tutorial
 {
-	public class My_Page
+	public static class My_Page
 	{
 		#region IsAuthorizedToAccess
 		public static bool IsAuthorizedToAccess()

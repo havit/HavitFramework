@@ -46,7 +46,7 @@ namespace Havit.WebApplicationTest.HavitWebTests
 
 		public void TestGV1_UpdateMethod()
 		{
-			
+			// NOOP
 		}
 
 		#endregion

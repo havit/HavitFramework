@@ -40,7 +40,7 @@ namespace Havit.Web.UI.Scriptlets
 		[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1604:ElementDocumentationMustHaveSummary", Justification = "Bráno z externího souboru.")]
 		public int? GetPriority(Control control)
 		{
-			return (this.controlType.IsAssignableFrom(control.GetType())) ? (int?)this.priority : null;
+			return (controlType.IsInstanceOfType(control)) ? (int?)this.priority : null;
 		}
 		#endregion
 

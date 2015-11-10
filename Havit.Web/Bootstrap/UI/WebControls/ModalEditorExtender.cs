@@ -452,6 +452,9 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 					case CommandNames.New:
 						HandleNewCommand(causesValidation);
 						return true;
+
+					default:
+						break;
 				}
 			}
 

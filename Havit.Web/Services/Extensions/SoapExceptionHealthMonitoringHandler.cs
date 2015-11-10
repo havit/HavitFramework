@@ -73,6 +73,7 @@ namespace Havit.Web.Services.Extensions
 		/// <param name="initializer">The <see cref="T:System.Object"/> returned from <see cref="M:System.Web.Services.Protocols.SoapExtension.GetInitializer(System.Web.Services.Protocols.LogicalMethodInfo,System.Web.Services.Protocols.SoapExtensionAttribute)"/> cached by ASP.NET. </param>
 		public override void Initialize(object initializer)
 		{
+			// NOOP
 		}
 		#endregion
 	}

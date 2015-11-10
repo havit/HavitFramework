@@ -79,8 +79,8 @@ namespace Havit.Data
 			{
 				if (ex != null)
 				{
-					SqlException sqlException;
-					if ((sqlException = ex as SqlException) != null)
+					SqlException sqlException = ex as SqlException;
+                    if (sqlException != null)
 					{
 						// Enumerate through all errors found in the exception.
 						foreach (SqlError err in sqlException.Errors)
@@ -151,6 +151,9 @@ namespace Havit.Data
 								// The instance of SQL Server you attempted to connect to does not support encryption.
 								case (int)ProcessNetLibErrorCode.EncryptionNotSupported:
 									return true;
+
+								default:
+									break;
 							}
 						}
 					}

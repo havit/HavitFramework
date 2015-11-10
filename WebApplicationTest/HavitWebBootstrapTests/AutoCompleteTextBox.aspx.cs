@@ -9,9 +9,5 @@ namespace Havit.WebApplicationTest.HavitWebBootstrapTests
 {
 	public partial class AutoCompleteTextBox : System.Web.UI.Page
 	{
-		protected void Page_Load(object sender, EventArgs e)
-		{
-
-		}
 	}
 }

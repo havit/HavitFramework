@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Collections.Specialized;
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using System.Web;
 
 namespace Havit.Web
@@ -174,6 +175,7 @@ namespace Havit.Web
 		/// </summary>
 		/// <param name="queryString">queryString z kterého se mají data převzít</param>
 		/// <param name="urlEncoded">indikuje, zdali je queryString url-encoded a má být dekódován</param>
+		[SuppressMessage("SonarLint", "S127", Justification = "Z důvodu bezpečnosti (jistoty) nechci do kódu zasáhnout. (Do not update the loop counter \"i\" within the loop body.)")]
 		public void FillFromString(string queryString, bool urlEncoded)
 		{
 			int length = (queryString != null) ? queryString.Length : 0;  

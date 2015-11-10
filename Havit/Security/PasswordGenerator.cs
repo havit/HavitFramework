@@ -152,6 +152,8 @@ namespace Havit.Security
 				case PasswordCharacterSet.LettersDigitsAndSpecialCharacters:
 					// NOOP
 					break;
+				default:
+					throw new NotSupportedException($"{PasswordCharacterSet} not supported.");
 			}
 			return upperBound;
 		}
@@ -235,10 +237,12 @@ namespace Havit.Security
 			paswordBuffer.Capacity = this.MaximumLength;
 
 			// Generate random characters
-			char lastCharacter, nextCharacter;
+			char lastCharacter;
+			char nextCharacter;
 
 			// Initial dummy character flag
-			lastCharacter = nextCharacter = '\n';
+			nextCharacter = '\n';
+			lastCharacter = nextCharacter;
 
 			for (int i = 0; i < passwordLength; i++)
 			{

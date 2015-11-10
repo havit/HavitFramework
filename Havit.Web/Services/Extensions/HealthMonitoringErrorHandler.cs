@@ -42,6 +42,7 @@ namespace Havit.Web.Services.Extensions
 			}
 			catch (Exception)
 			{
+				// NOOP
 			}
 			return false;
 		}

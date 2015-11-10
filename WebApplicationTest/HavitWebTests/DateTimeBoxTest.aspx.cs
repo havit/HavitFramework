@@ -63,9 +63,6 @@ namespace Havit.WebApplicationTest.HavitWebTests
 		private void AutoPostBackDateTimeBox_ValueChanged(object sender, EventArgs e)
 		{
 			ChangedLabel.Text = "yes";
-			if (Page.IsValid)
-			{
-			}
 		}
 		#endregion
 

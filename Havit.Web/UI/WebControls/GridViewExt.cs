@@ -1200,6 +1200,8 @@ namespace Havit.Web.UI.WebControls
 									this.InsertRowDataSourceIndex = insertingData.Count;
 								}
 								break;
+							default:
+								break;
 						}
 						insertingData.Insert(InsertRowDataSourceIndex, insertRowDataItem);
 					}
@@ -1296,11 +1298,9 @@ namespace Havit.Web.UI.WebControls
 				row.Visible = false;
 			}
 
-			switch (row.RowType)
-			{
-				case DataControlRowType.Header:
-					row.TableSection = TableRowSection.TableHeader;
-					break;				
+			if (row.RowType == DataControlRowType.Header)
+			{ 
+				row.TableSection = TableRowSection.TableHeader;
 			}
 
 			return row;
@@ -1495,6 +1495,9 @@ namespace Havit.Web.UI.WebControls
 
 				case CommandNames.New:
 					HandleNew(causesValidation);
+					break;
+
+				default:
 					break;
 			}
 		}
@@ -2035,6 +2038,9 @@ namespace Havit.Web.UI.WebControls
 				case PagerButtons.NumericFirstLast:
 					this.CreateBootstrapNumericPagination(paginationControl, pagedDataSource, true);
 					break;
+
+				default:
+					throw new NotSupportedException($"{PagerSettings.Mode} not supported.");
 			}
 
 			if (PagerSettingsShowAllPagesButton)

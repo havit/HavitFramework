@@ -16,14 +16,7 @@ namespace Havit.WebApplicationTest.HavitWebTests
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
-			PostbackButton.Click += new EventHandler(PostbackButton_Click);
 			TestGridView.RowDataBound += new GridViewRowEventHandler(TestGridView_RowDataBound);
-		}
-		#endregion
-
-		#region PostbackButton_Click
-		private void PostbackButton_Click(object sender, EventArgs e)
-		{
 		}
 		#endregion
 

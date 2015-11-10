@@ -142,7 +142,7 @@ namespace Havit
 			string expressionSet = expressionParts[expressionParts.Length - 1];
 			if (expressionSet.IndexOfAny(indexExprStartChars) >= 0)
 			{
-				throw new HttpException(String.Format("Nepodařilo se nastavit hodnotu pro výraz '{0}', v části {0} je nepodporovaný znak.", dataField, expressionSet));
+				throw new HttpException(String.Format("Nepodařilo se nastavit hodnotu pro výraz '{0}', v části {1} je nepodporovaný znak.", dataField, expressionSet));
 			}
 
 			PropertyDescriptorCollection properties = GetValueTypeProperties(currentDataItem);

@@ -35,7 +35,7 @@ namespace Havit.Web.UI.Scriptlets
 		/// <returns>Priorita.</returns>
 		public int? GetPriority(Control control)
 		{
-			return (this.GetSupportedControlType().IsAssignableFrom(control.GetType())) ? (int?)this.GetPriorityValue : null;
+			return (GetSupportedControlType().IsInstanceOfType(control)) ? (int?)this.GetPriorityValue : null;
 		}
 		#endregion
 		

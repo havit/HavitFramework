@@ -220,10 +220,10 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 		{
 			foreach (Control ctrl in coll)
 			{
-				if (typeof(RequiredFieldValidator).IsAssignableFrom(ctrl.GetType())
-					|| typeof(CompareValidator).IsAssignableFrom(ctrl.GetType())
-					|| typeof(RegularExpressionValidator).IsAssignableFrom(ctrl.GetType())
-					|| typeof(ValidationSummary).IsAssignableFrom(ctrl.GetType()))
+				if (typeof(RequiredFieldValidator).IsInstanceOfType(ctrl)
+					|| typeof(CompareValidator).IsInstanceOfType(ctrl)
+					|| typeof(RegularExpressionValidator).IsInstanceOfType(ctrl)
+					|| typeof(ValidationSummary).IsInstanceOfType(ctrl))
 				{
 					ControlRestorationInfo cri = new ControlRestorationInfo(ctrl, coll);
 					stashedControls.Add(cri);
@@ -304,6 +304,8 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				case ButtonType.Link:
 					idWithType += "LinkButton";
 					break;
+				default:
+					throw new NotSupportedException($"{type} not supported.");
 			}
 			return idWithType;
 		}
@@ -548,6 +550,8 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 					writer.WriteBeginTag("a");
 					idWithType += "LinkButton";
 					break;
+				default:
+					throw new NotSupportedException($"{buttonType} not supported.");
 			}
 
 			if (!String.IsNullOrEmpty(className))
@@ -575,6 +579,8 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 					case ButtonType.Link:
 						writer.WriteAttribute("href", javascript);
 						break;
+					default:
+						throw new NotSupportedException($"{buttonType} not supported.");
 				}
 			}
 

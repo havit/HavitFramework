@@ -71,11 +71,14 @@ namespace Havit.Services.StateAdministration
 				month -= 20;
 			}
 
-			try
+			// vyhodnocení správnosti
+
+			if ((month < 1) || (month > 12))
 			{
-				new DateTime(year, month, day);
+				return false;
 			}
-			catch (ArgumentOutOfRangeException)
+
+			if ((day < 1) || (day > DateTime.DaysInMonth(year, month)))
 			{
 				return false;
 			}

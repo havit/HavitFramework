@@ -17,10 +17,20 @@ namespace Havit.Data.Glimpse
 		#region MessageBroker
 		internal IMessageBroker MessageBroker
 		{
+			get
+			{
+				if (messageBroker == null)
+				{
 #pragma warning disable 0618
-			get { return messageBroker ?? (messageBroker = GlimpseConfiguration.GetConfiguredMessageBroker()); }
+					messageBroker = GlimpseConfiguration.GetConfiguredMessageBroker();
 #pragma warning restore 0618
-			set { messageBroker = value; }
+				}
+				return messageBroker;
+			}
+			set
+			{
+				messageBroker = value;
+			}
 		}
 		private IMessageBroker messageBroker;
 		#endregion

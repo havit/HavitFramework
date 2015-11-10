@@ -38,6 +38,9 @@ namespace Havit.Web.UI
 					//	throw new InvalidOperationException(String.Format("Attempting to register '{0}' during asynchronous postback, which is not possible. Register script in the page or in master page.", resourceName));
 					//}
 					break;
+
+				default:
+					break;
 			}
 		}
 		#endregion

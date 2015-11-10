@@ -19,7 +19,9 @@ namespace Havit.Web.UrlRewriter
 		/// <param name="sendToUrl">The URL to rewrite to.</param>
 		internal static void RewriteUrl(HttpContext context, string sendToUrl)
 		{
-			string x, y;
+			string x;
+			string y;
+
 			RewriteUrl(context, sendToUrl, out x, out y);
 		}
 
@@ -48,7 +50,7 @@ namespace Havit.Web.UrlRewriter
 			// first strip the querystring, if any
 			string queryString = String.Empty;
 			sendToUrlLessQString = sendToUrl;
-			if (sendToUrl.IndexOf('?') > 0)
+			if (sendToUrl.IndexOf('?') >= 0)
 			{
 				sendToUrlLessQString = sendToUrl.Substring(0, sendToUrl.IndexOf('?'));
 				queryString = sendToUrl.Substring(sendToUrl.IndexOf('?') + 1);

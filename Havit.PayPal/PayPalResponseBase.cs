@@ -128,7 +128,7 @@ namespace Havit.PayPal
 		/// Initializes a new instance of the PayPalRawResponse class.
 		/// </summary>
 		/// <param name="rawResponseData">The response data, raw.</param>
-		public PayPalResponseBase(NameValueCollection rawResponseData)
+		protected PayPalResponseBase(NameValueCollection rawResponseData)
 		{
 			ParseResponseData(rawResponseData);
 		}			

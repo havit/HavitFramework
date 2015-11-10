@@ -26,7 +26,7 @@ namespace Havit.Diagnostics.Contracts
 		{
 		}
 
-		private ContractException() : base()
+		private ContractException()
 		{
 		}
 

@@ -9,7 +9,6 @@ namespace Havit.BusinessTest
 	{
 		#region Constructors
 		public TestingBusinessObject()
-			: base()
 		{
 		}
 

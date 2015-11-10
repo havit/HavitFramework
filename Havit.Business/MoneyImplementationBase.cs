@@ -77,15 +77,14 @@ namespace Havit.Business
 		/// <summary>
 		/// Inicializuje třídu money s prázdními hodnotami (Amount i Currency jsou null).
 		/// </summary>
-		public MoneyImplementationBase()
-			: base()
+		protected MoneyImplementationBase()
 		{
 		}
 
 		/// <summary>
 		/// Inicializuje třídu money zadanými hodnotami.
 		/// </summary>
-		public MoneyImplementationBase(decimal? amount, TCurrency currency)
+		protected MoneyImplementationBase(decimal? amount, TCurrency currency)
 			: base(amount, currency)
 		{
 		}

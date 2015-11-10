@@ -28,8 +28,7 @@ namespace Havit.Business
 		/// <summary>
 		/// Vytvoří instanci výjimky
 		/// </summary>
-		public ConstraintViolationException()
-			: base()
+		public ConstraintViolationException()		
 		{
 		}
 		

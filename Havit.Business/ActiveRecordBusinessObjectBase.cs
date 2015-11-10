@@ -27,7 +27,7 @@ namespace Havit.Business
 		/// <summary>
 		/// Konstruktor pro nový objekt (bez perzistence v databázi).
 		/// </summary>
-		protected ActiveRecordBusinessObjectBase() : base()
+		protected ActiveRecordBusinessObjectBase()
 		{
 		}
 

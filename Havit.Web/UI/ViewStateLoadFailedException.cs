@@ -15,7 +15,7 @@ namespace Havit.Web.UI
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public ViewStateLoadFailedException() : base()
+		public ViewStateLoadFailedException()
 		{
 			
 		}

@@ -36,7 +36,7 @@ namespace Havit.PayMuzo
 		/// Inicializuje novou instanci třídy <see cref="PayMuzoWebServiceResponse"/> na základě odpovědi z WebService.
 		/// </summary>
 		/// <param name="response">odpověď z WebService</param>
-		public PayMuzoWebServiceResponse(Havit.PayMuzo.WebServiceProxies.Response response)
+		protected PayMuzoWebServiceResponse(Havit.PayMuzo.WebServiceProxies.Response response)
 		{
 			if (response == null)
 			{

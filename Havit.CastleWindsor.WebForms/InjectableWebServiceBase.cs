@@ -14,7 +14,7 @@ namespace Havit.CastleWindsor.WebForms
 		/// <summary>
 		/// Konstruktor. Zajišťuje vyhodnocení závislostí.
 		/// </summary>
-		public InjectableWebServiceBase()
+		protected InjectableWebServiceBase()
 		{
 			DependencyInjectionWebFormsHelper.InitializeInstance(this);
 		}

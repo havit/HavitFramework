@@ -48,7 +48,7 @@ namespace Havit.Business
 		/// Initializes a new instance of the <see cref="DbResourceProviderBase"/> class.
 		/// </summary>
 		/// <param name="resourceClass">Identifikátor resources třídy (cesta a název souboru pro lokální, název třídy pro globální).</param>
-		public DbResourceProviderBase(string resourceClass)
+		protected DbResourceProviderBase(string resourceClass)
 		{
 			Debug.Assert(!String.IsNullOrEmpty(resourceClass));
 

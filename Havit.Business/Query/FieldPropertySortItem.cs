@@ -16,7 +16,6 @@ namespace Havit.Business.Query
 		/// </summary>
 		[Obsolete]
 		public FieldPropertySortItem()
-			: base()
 		{
 		}
 		

@@ -15,7 +15,7 @@ namespace Havit.PayMuzo
 		/// Initializes a new instance of the <see cref="PayMuzoResponse"/> class.
 		/// </summary>
 		/// <param name="rawResponseData">The response data, raw.</param>
-		public PayMuzoRawResponse(NameValueCollection rawResponseData)
+		protected PayMuzoRawResponse(NameValueCollection rawResponseData)
 		{
 			NormalizedRawData = NormalizeData(rawResponseData);
 

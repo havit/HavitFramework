@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace Havit.Business
@@ -41,6 +42,7 @@ namespace Havit.Business
 		/// </summary>
 		/// <param name="owner">ObjectInfo vlastnící property.</param>
 		/// <param name="propertyName">Název vlastnosti.</param>
+		[SuppressMessage("SonarLint", "S1117", Justification = "Není chybou mít parametr metody stejného jména ve třídě.")]
 		protected virtual void Initialize(ObjectInfo owner, string propertyName)
 		{
 			this.owner = owner;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace Havit.Business
@@ -36,7 +37,7 @@ namespace Havit.Business
 				return collectionSelectFieldStatement;
 			}
 		}
-		private string collectionSelectFieldStatement; 
+		private string collectionSelectFieldStatement;
 		#endregion
 
 		#region Initialize
@@ -47,6 +48,7 @@ namespace Havit.Business
 		/// <param name="propertyName">Název property.</param>
 		/// <param name="itemType">Typ prvků kolekce.</param>
 		/// <param name="collectionSelectFieldStatement">Část SQL dotazu pro vytažení hodnoty daného sloupce.</param>
+		[SuppressMessage("SonarLint", "S1117", Justification = "Není chybou mít parametr metody stejného jména ve třídě.")]
 		public void Initialize(ObjectInfo owner, string propertyName, Type itemType, string collectionSelectFieldStatement)
 		{
 			Initialize(owner, propertyName);

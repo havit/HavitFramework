@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data;
 using System.Data.Common;
+using System.Diagnostics.CodeAnalysis;
 using Havit.Business.Query;
 using Havit.Data.SqlServer;
 
@@ -87,7 +88,7 @@ namespace Havit.Business
 			}
 
 		}
-		private int maximumLength; 
+		private int maximumLength;
 		#endregion
 
 		#region Initialize
@@ -101,6 +102,7 @@ namespace Havit.Business
 		/// <param name="fieldType">Typ databázového sloupce.</param>
 		/// <param name="nullable">Indukuje, zda je povolena hodnota null.</param>
 		/// <param name="maximumLength">Maximální délka dat databázového sloupce.</param>		
+		[SuppressMessage("SonarLint", "S1117", Justification = "Není chybou mít parametr metody stejného jména ve třídě.")]
 		public void Initialize(ObjectInfo owner, string propertyName, string fieldName, bool isPrimaryKey, SqlDbType fieldType, bool nullable, int maximumLength)
 		{
 			Initialize(owner, propertyName);

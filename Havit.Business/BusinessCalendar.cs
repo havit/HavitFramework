@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Havit.Business
 {
@@ -62,6 +63,7 @@ namespace Havit.Business
 		/// </summary>
 		/// <typeparam name="T">typ významných dnů (musí implementovat rozhraní <see cref="IDateInfo"/>)</typeparam>
 		/// <param name="dateInfos">kolekce významných dnů</param>
+		[SuppressMessage("SonarLint", "S1117", Justification = "Není chybou mít parametr metody stejného jména ve třídě.")]
 		public void FillDates<T>(IEnumerable<T> dateInfos)
 			where T : IDateInfo
 		{

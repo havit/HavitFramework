@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Havit.Business;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Havit.Business
 {
@@ -34,7 +35,7 @@ namespace Havit.Business
 				return targetObjectInfo;
 			}
 		}
-		private ObjectInfo targetObjectInfo; 
+		private ObjectInfo targetObjectInfo;
 		#endregion
 
 		#region Initialize
@@ -50,6 +51,7 @@ namespace Havit.Business
 		/// <param name="maximumLength">Maximální délka dat databázového sloupce.</param>		
 		/// <param name="targetType">Typ, jenž property nese.</param>
 		/// <param name="targetObjectInfo">ObjectInfo na typ, jenž property nese.</param>
+		[SuppressMessage("SonarLint", "S1117", Justification = "Není chybou mít parametr metody stejného jména ve třídě.")]
 		public void Initialize(ObjectInfo owner, string propertyName, string fieldName, bool isPrimaryKey, SqlDbType fieldType, bool nullable, int maximumLength, Type targetType, ObjectInfo targetObjectInfo)
 		{
 			Initialize(owner, propertyName, fieldName, isPrimaryKey, fieldType, nullable, maximumLength);

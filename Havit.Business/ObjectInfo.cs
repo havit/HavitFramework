@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace Havit.Business
@@ -156,7 +157,7 @@ namespace Havit.Business
 				return getAllMethod;
 			}
 		}
-		private GetAllDelegate getAllMethod; 
+		private GetAllDelegate getAllMethod;
 		#endregion
 
 		#region Initialize
@@ -173,6 +174,7 @@ namespace Havit.Business
 		/// <param name="getAllMethod">Delegát na metodu vracející všechny (nesmazané) objekty třídy.</param>
 		/// <param name="deletedProperty">FieldPropertyInfo, která identifikuje příznakem smazané záznamy.</param>
 		/// <param name="properties">Kolekce všech vlastností objektu.</param>
+		[SuppressMessage("SonarLint", "S1117", Justification = "Není chybou mít parametr metody stejného jména ve třídě.")]
 		public void Initialize(
 			string dbSchema,
 			string dbTable,

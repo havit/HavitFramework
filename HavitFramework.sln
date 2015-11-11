@@ -105,6 +105,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EF6", "EF6", "{2C3C8291-8C0
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet Packages", "NuGet Packages", "{F0ACC2CB-2866-4760-9A29-958C8E30552D}"
 EndProject
+Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "Sandcastle", "Sandcastle\Sandcastle.shfbproj", "{C1BD4BBA-35DB-43B6-B4E9-072AFAC6EBD5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Solution Items", "_Solution Items", "{2E02AA74-2EA7-454D-9D09-FF4254BD0395}"
+	ProjectSection(SolutionItems) = preProject
+		CommonAssemblyInfo.cs = CommonAssemblyInfo.cs
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		CodeGenerator|Any CPU = CodeGenerator|Any CPU
@@ -554,6 +561,16 @@ Global
 		{28BB8E7F-089E-494E-9F11-6088C36DD4D0}.DebugTemp|Any CPU.Build.0 = Debug|Any CPU
 		{28BB8E7F-089E-494E-9F11-6088C36DD4D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28BB8E7F-089E-494E-9F11-6088C36DD4D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1BD4BBA-35DB-43B6-B4E9-072AFAC6EBD5}.CodeGenerator|Any CPU.ActiveCfg = Release|Any CPU
+		{C1BD4BBA-35DB-43B6-B4E9-072AFAC6EBD5}.CodeGenerator|Any CPU.Build.0 = Release|Any CPU
+		{C1BD4BBA-35DB-43B6-B4E9-072AFAC6EBD5}.Debug win only|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1BD4BBA-35DB-43B6-B4E9-072AFAC6EBD5}.Debug win only|Any CPU.Build.0 = Debug|Any CPU
+		{C1BD4BBA-35DB-43B6-B4E9-072AFAC6EBD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1BD4BBA-35DB-43B6-B4E9-072AFAC6EBD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1BD4BBA-35DB-43B6-B4E9-072AFAC6EBD5}.DebugTemp|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1BD4BBA-35DB-43B6-B4E9-072AFAC6EBD5}.DebugTemp|Any CPU.Build.0 = Debug|Any CPU
+		{C1BD4BBA-35DB-43B6-B4E9-072AFAC6EBD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1BD4BBA-35DB-43B6-B4E9-072AFAC6EBD5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -604,9 +621,10 @@ Global
 		{8205CE30-EB5C-42FD-927D-723500F1028B} = {9D3050E0-20E0-4CE6-BCBE-CF095A71C394}
 		{28BB8E7F-089E-494E-9F11-6088C36DD4D0} = {9D3050E0-20E0-4CE6-BCBE-CF095A71C394}
 		{2C3C8291-8C00-49AC-A914-BC4B74D3DACE} = {74DCB1E0-6052-4299-8CEE-42F947F338FA}
+		{C1BD4BBA-35DB-43B6-B4E9-072AFAC6EBD5} = {379CD99B-7063-4455-BF39-ECECA819A14E}
 	EndGlobalSection
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 44
+		SccNumberOfProjects = 45
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.havit.eu/tfs/defaultcollection
 		SccProjectUniqueName0 = Havit\\Havit.csproj
@@ -873,5 +891,11 @@ Global
 		SccAuxPath43 = https://tfs.havit.eu/tfs/defaultcollection
 		SccLocalPath43 = WebApplicationTest
 		SccProvider43 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccProjectUniqueName44 = Sandcastle\\Sandcastle.shfbproj
+		SccProjectTopLevelParentUniqueName44 = HavitFramework.sln
+		SccProjectName44 = Sandcastle
+		SccAuxPath44 = https://tfs.havit.eu/tfs/defaultcollection
+		SccLocalPath44 = Sandcastle
+		SccProvider44 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 	EndGlobalSection
 EndGlobal

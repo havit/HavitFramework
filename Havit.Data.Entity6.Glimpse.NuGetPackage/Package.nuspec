@@ -21,11 +21,11 @@
 			</group>
 		</dependencies>
 		<references></references>
-		<tags>HAVIT ASP.NET Web WebForms Glimpse diagnostics performance profiling timing Entity Framework</tags>
+		<tags>HAVIT ASP.NET Web WebForms Glimpse diagnostics performance profiling timing Entity Framework EF EF6</tags>
 	</metadata>
 	<files>
-		<file src="bin\Release\Havit.Data.Entity.Glimpse.dll" target="lib\net45" />
-		<file src="bin\Release\Havit.Data.Entity.Glimpse.pdb" target="lib\net45" />
+		<file src="bin\Release\Havit.Data.Entity6.Glimpse.dll" target="lib\net45" />
+		<file src="bin\Release\Havit.Data.Entity6.Glimpse.pdb" target="lib\net45" />
 		<file src="tools\" target="tools" />
 		<file src="content\" target="content" />
 	</files>

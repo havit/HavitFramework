@@ -12,7 +12,7 @@
 		<language>en-US</language>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<copyright>Copyright HAVIT, s.r.o. 2015</copyright>
-		<tags>HAVIT Model Entity Framework</tags>
+		<tags>HAVIT Model Entity Framework EF</tags>
 	</metadata>
 	<files>
 	  <file src="bin\Release\Havit.Model.dll" target="lib\net46" />

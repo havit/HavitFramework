@@ -137,9 +137,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EF6 Implementation", "EF6 I
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Data.Entity6.Test", "Havit.Data.Entity6.Test\Havit.Data.Entity6.Test.csproj", "{09DB04EC-99A1-4341-A137-EB724D2B6B37}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Data.Entity.Glimpse", "Havit.Data.Entity.Glimpse\Havit.Data.Entity.Glimpse.csproj", "{B847560E-3FEA-419D-BFAC-D7E3544C1F70}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Data.Entity6.Glimpse", "Havit.Data.Entity.Glimpse\Havit.Data.Entity6.Glimpse.csproj", "{B847560E-3FEA-419D-BFAC-D7E3544C1F70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Entity.Glimpse.NuGetPackage", "Havit.Data.Entity.Glimpse.NuGetPackage\Havit.Entity.Glimpse.NuGetPackage.csproj", "{2DF308E8-097B-4B02-9086-DE0E7D5A2E86}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Data.Entity6.Glimpse.NuGetPackage", "Havit.Data.Entity.Glimpse.NuGetPackage\Havit.Data.Entity6.Glimpse.NuGetPackage.csproj", "{2DF308E8-097B-4B02-9086-DE0E7D5A2E86}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -828,11 +828,11 @@ Global
 		SccProjectTopLevelParentUniqueName43 = Havit.sln
 		SccProjectName43 = Havit.Data.Entity6.Test
 		SccLocalPath43 = Havit.Data.Entity6.Test
-		SccProjectUniqueName44 = Havit.Data.Entity.Glimpse\\Havit.Data.Entity.Glimpse.csproj
+		SccProjectUniqueName44 = Havit.Data.Entity.Glimpse\\Havit.Data.Entity6.Glimpse.csproj
 		SccProjectTopLevelParentUniqueName44 = Havit.sln
 		SccProjectName44 = Havit.Data.Entity.Glimpse
 		SccLocalPath44 = Havit.Data.Entity.Glimpse
-		SccProjectUniqueName45 = Havit.Data.Entity.Glimpse.NuGetPackage\\Havit.Entity.Glimpse.NuGetPackage.csproj
+		SccProjectUniqueName45 = Havit.Data.Entity.Glimpse.NuGetPackage\\Havit.Data.Entity6.Glimpse.NuGetPackage.csproj
 		SccProjectTopLevelParentUniqueName45 = Havit.sln
 		SccProjectName45 = Havit.Data.Entity.Glimpse.NuGetPackage
 		SccLocalPath45 = Havit.Data.Entity.Glimpse.NuGetPackage

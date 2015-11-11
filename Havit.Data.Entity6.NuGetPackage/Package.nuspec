@@ -20,7 +20,7 @@
 			</group>
 		</dependencies>
 		<references></references>
-		<tags>HAVIT Data Entity Framework</tags>
+		<tags>HAVIT Data Entity Framework EF EF6</tags>
 	</metadata>
 	<files>
 	  <file src="bin\Release\Havit.Data.Entity6.dll" target="lib\net46" />

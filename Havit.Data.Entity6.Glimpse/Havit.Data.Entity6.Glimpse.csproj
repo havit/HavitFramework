@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Havit.Data.Entity.Glimpse</RootNamespace>
-    <AssemblyName>Havit.Data.Entity.Glimpse</AssemblyName>
+    <AssemblyName>Havit.Data.Entity6.Glimpse</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>

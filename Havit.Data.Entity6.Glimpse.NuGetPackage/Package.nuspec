@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
-		<id>Havit.Data.Entity.Glimpse</id>
+		<id>Havit.Data.Entity6.Glimpse</id>
 		<version>1.0.0</version>
-		<title>Havit.Data.Entity.Glimpse</title>
+		<title>Havit.Data.Entity6.Glimpse</title>
 		<authors>HAVIT, s.r.o.</authors>
 		<owners>HAVIT, s.r.o.</owners>
 		<description>

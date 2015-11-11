@@ -76,7 +76,7 @@
   </Target>
   <Target Name="TfsPublish" AfterTargets="AfterBuild;CreateNuGetPackage" Condition="'$(PublishDirectory)' != ''">
     <ItemGroup>
-      <FilesToCopy Include="$(OutputPath)\Havit.Data.Entity.Glimpse.*.nupkg" />
+      <FilesToCopy Include="$(OutputPath)\Havit.Data.Entity6.Glimpse.*.nupkg" />
     </ItemGroup>
     <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(PublishDirectory)\NuGet\%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>

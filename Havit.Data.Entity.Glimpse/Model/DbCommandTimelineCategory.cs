@@ -1,6 +1,6 @@
 ﻿using Glimpse.Core.Message;
 
-namespace Havit.Entity.Glimpse.Model
+namespace Havit.Data.Entity.Glimpse.Model
 {
 	/// <summary>
 	/// Timeline category for DbConnector.

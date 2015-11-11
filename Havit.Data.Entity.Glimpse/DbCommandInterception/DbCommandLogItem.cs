@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data.Common;
 
-namespace Havit.Entity.Glimpse.DbCommandInterception
+namespace Havit.Data.Entity.Glimpse.DbCommandInterception
 {
 	/// <summary>
 	/// Informace o provedeném DbCommandu.

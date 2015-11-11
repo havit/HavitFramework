@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Entity.Glimpse.Model
+namespace Havit.Data.Entity.Glimpse.Model
 {
 	/// <summary>
 	/// Data zobrazovaná záložkou Entity Framework (EF).

@@ -5,9 +5,9 @@ using System.Data.Common;
 
 using Glimpse.Core.Message;
 
-using Havit.Entity.Glimpse.Trace;
+using Havit.Data.Entity.Glimpse.Trace;
 
-namespace Havit.Entity.Glimpse.Model
+namespace Havit.Data.Entity.Glimpse.Model
 {
 	/// <summary>
 	/// Položka záložky Entity Framework, zároveň je zobrazovaná i v timeline.

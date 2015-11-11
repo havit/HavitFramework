@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Entity.Glimpse.DbCommandInterception
+namespace Havit.Data.Entity.Glimpse.DbCommandInterception
 {
 	/// <summary>
 	/// Třída nesoucí informaci o počtu záznamů v DbDataReadu pro zobrazení v Glimpse (záložka EF).

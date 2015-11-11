@@ -13,11 +13,11 @@ using Glimpse.Core.Extensibility;
 using Glimpse.Core.Message;
 using Glimpse.Core.SerializationConverter;
 
-using Havit.Entity.Glimpse.DbCommandInterception;
-using Havit.Entity.Glimpse.Model;
-using Havit.Entity.Glimpse.Trace;
+using Havit.Data.Entity.Glimpse.DbCommandInterception;
+using Havit.Data.Entity.Glimpse.Model;
+using Havit.Data.Entity.Glimpse.Trace;
 
-namespace Havit.Entity.Glimpse.Inspectors
+namespace Havit.Data.Entity.Glimpse.Inspectors
 {
 	/// <summary>
 	/// Zpracovává položky DbCommandLogItem do DbCommandMessage.

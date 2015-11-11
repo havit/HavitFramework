@@ -8,9 +8,9 @@ using Glimpse.Core.Extensions;
 using Glimpse.Core.Extensibility;
 using Glimpse.Core.Tab.Assist;
 
-using Havit.Entity.Glimpse.Model;
+using Havit.Data.Entity.Glimpse.Model;
 
-namespace Havit.Entity.Glimpse.Tabs
+namespace Havit.Data.Entity.Glimpse.Tabs
 {
 	/// <summary>
 	/// Entity Framework (EF) tab.

@@ -55,9 +55,9 @@
     <None Include="tools\install.ps1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Havit.Entity.Glimpse\Havit.Entity.Glimpse.csproj">
+    <ProjectReference Include="..\Havit.Data.Entity.Glimpse\Havit.Data.Entity.Glimpse.csproj">
       <Project>{b847560e-3fea-419d-bfac-d7e3544c1f70}</Project>
-      <Name>Havit.Entity.Glimpse</Name>
+      <Name>Havit.Data.Entity.Glimpse</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -68,13 +68,13 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-	<Target Name="CreateNuGetPackage" AfterTargets="AfterBuild">
-		<Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion)" />
-	</Target>
-	<Target Name="TfsPublish" AfterTargets="AfterBuild;CreateNuGetPackage" Condition="'$(PublishDirectory)' != ''">
-		<ItemGroup>
-			<FilesToCopy Include="$(OutputPath)\Havit.Entity.Glimpse.*.nupkg" />
-		</ItemGroup>
-		<Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(PublishDirectory)\NuGet\%(RecursiveDir)%(Filename)%(Extension)')" />
-	</Target>
+  <Target Name="CreateNuGetPackage" AfterTargets="AfterBuild">
+    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion)" />
+  </Target>
+  <Target Name="TfsPublish" AfterTargets="AfterBuild;CreateNuGetPackage" Condition="'$(PublishDirectory)' != ''">
+    <ItemGroup>
+      <FilesToCopy Include="$(OutputPath)\Havit.Data.Entity.Glimpse.*.nupkg" />
+    </ItemGroup>
+    <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(PublishDirectory)\NuGet\%(RecursiveDir)%(Filename)%(Extension)')" />
+  </Target>
 </Project>

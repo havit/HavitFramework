@@ -4,10 +4,10 @@ using System.Data.Common;
 using Glimpse.Core.Extensibility;
 using Glimpse.Core.Tab.Assist;
 
-using Havit.Entity.Glimpse.Model;
-using Havit.Entity.Glimpse.Trace;
+using Havit.Data.Entity.Glimpse.Model;
+using Havit.Data.Entity.Glimpse.Trace;
 
-namespace Havit.Entity.Glimpse.SerializationConverters
+namespace Havit.Data.Entity.Glimpse.SerializationConverters
 {
 	/// <summary>
 	/// Formátuje DbCommandTraceData k zobrazení.

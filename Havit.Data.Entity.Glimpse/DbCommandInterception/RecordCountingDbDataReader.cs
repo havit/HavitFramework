@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Havit.Entity.Glimpse.Trace;
+using Havit.Data.Entity.Glimpse.Trace;
 
-namespace Havit.Entity.Glimpse.DbCommandInterception
+namespace Havit.Data.Entity.Glimpse.DbCommandInterception
 {
 	/// <summary>
 	/// Dekorátor k DbDataReaderu, který počítá počet záznamů.

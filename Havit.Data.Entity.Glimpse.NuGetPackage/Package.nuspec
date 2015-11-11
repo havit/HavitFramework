@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
-		<id>Havit.Entity.Glimpse</id>
+		<id>Havit.Data.Entity.Glimpse</id>
 		<version>1.0.0</version>
-		<title>Havit.Entity.Glimpse</title>
+		<title>Havit.Data.Entity.Glimpse</title>
 		<authors>HAVIT, s.r.o.</authors>
 		<owners>HAVIT, s.r.o.</owners>
 		<description>
-			Balík obalující Glimpse, knihovnu pro webový profiling, a naší extenzi Havit.Entity.Glimpse pro monitoring databázových dotazů Entity Frameworku 6.
+			Balík obalující Glimpse, knihovnu pro webový profiling, a naší extenzi Havit.Data.Entity.Glimpse pro monitoring databázových dotazů Entity Frameworku 6.
 		</description>
 		<language>en-US</language>
 		<projectUrl>http://wiki.havit.cz/Glimpse.ashx</projectUrl>
@@ -24,7 +24,8 @@
 		<tags>HAVIT ASP.NET Web WebForms Glimpse diagnostics performance profiling timing Entity Framework</tags>
 	</metadata>
 	<files>
-		<file src="bin\Release\Havit.Entity.Glimpse.dll" target="lib\net45" />
+		<file src="bin\Release\Havit.Data.Entity.Glimpse.dll" target="lib\net45" />
+		<file src="bin\Release\Havit.Data.Entity.Glimpse.pdb" target="lib\net45" />
 		<file src="tools\" target="tools" />
 		<file src="content\" target="content" />
 	</files>

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 using Glimpse.Core.Extensibility;
 
-using Havit.Entity.Glimpse.DbCommandInterception;
+using Havit.Data.Entity.Glimpse.DbCommandInterception;
 
-namespace Havit.Entity.Glimpse.SerializationConverters
+namespace Havit.Data.Entity.Glimpse.SerializationConverters
 {
 	/// <summary>
 	/// Formátuje DbDataReaderResult k zobrazení.

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Entity.Glimpse.DbCommandInterception
+namespace Havit.Data.Entity.Glimpse.DbCommandInterception
 {
 	/// <summary>
 	/// User data pro interceptor.

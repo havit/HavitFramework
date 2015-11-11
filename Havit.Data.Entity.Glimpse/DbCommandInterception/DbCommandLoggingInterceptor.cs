@@ -9,7 +9,7 @@ using System.Web.UI;
 using Glimpse.Core.Extensibility;
 using Glimpse.Core.Framework;
 
-namespace Havit.Entity.Glimpse.DbCommandInterception
+namespace Havit.Data.Entity.Glimpse.DbCommandInterception
 {
 	/// <summary>
 	/// DbCommandInterceptor oznamující Glimpse (prostřednictvím MessageBrokeru) provedené dotazy, jejich trvání a výsledky.

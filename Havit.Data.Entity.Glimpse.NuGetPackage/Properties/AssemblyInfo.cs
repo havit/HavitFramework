@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Havit.Entity.Glimpse.NuGetPackage")]
+[assembly: AssemblyTitle("Havit.Data.Entity.Glimpse.NuGetPackage")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Havit.Entity.Glimpse.NuGetPackage")]
+[assembly: AssemblyProduct("Havit.Data.Entity.Glimpse.NuGetPackage")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

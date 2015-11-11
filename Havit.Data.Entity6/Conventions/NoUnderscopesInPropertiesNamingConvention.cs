@@ -9,6 +9,9 @@ namespace Havit.Data.Entity.Conventions
 	/// </summary>
 	public class NoUnderscopesInPropertiesNamingConvention : IStoreModelConvention<EdmProperty>
 	{
+		/// <summary>
+		/// Aplikuje konvenci na model.
+		/// </summary>
 		public void Apply(EdmProperty member, DbModel model)
 		{
 			member.Name = member.Name.Replace("_", "");

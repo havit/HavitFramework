@@ -9,6 +9,9 @@ namespace Havit.Data.Entity.Conventions
 	/// </summary>
 	public class RequiredStringPropertiesConvention : IConceptualModelConvention<EdmProperty>
 	{
+		/// <summary>
+		/// Aplikuje konvenci na model.
+		/// </summary>
 		public void Apply(EdmProperty item, DbModel model)
 		{
 			if ((item.PrimitiveType != null) && (item.PrimitiveType.ClrEquivalentType == typeof(string)))

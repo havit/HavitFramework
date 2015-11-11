@@ -25,8 +25,8 @@
 		</references>
 	</metadata>
 	<files>
-		<file src="..\Havit.PayMuzo\bin\Release\Havit.PayMuzo.dll" target="lib\net45" />
-		<file src="..\Havit.PayMuzo\bin\Release\Havit.PayMuzo.pdb" target="lib\net45" />
-		<file src="..\Havit.PayMuzo\bin\Release\Havit.PayMuzo.xml" target="lib\net45" />
+		<file src="bin\Release\Havit.PayMuzo.dll" target="lib\net45" />
+		<file src="bin\Release\Havit.PayMuzo.pdb" target="lib\net45" />
+		<file src="bin\Release\Havit.PayMuzo.xml" target="lib\net45" />
 	</files>
 </package>

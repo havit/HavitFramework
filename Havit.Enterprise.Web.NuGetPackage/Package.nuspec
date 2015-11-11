@@ -27,8 +27,8 @@
 		</references>
 	</metadata>
 	<files>
-		<file src="..\Havit.Enterprise.Web\bin\Release\Havit.Enterprise.Web.dll" target="lib\net45" />
-		<file src="..\Havit.Enterprise.Web\bin\Release\Havit.Enterprise.Web.pdb" target="lib\net45" />
-		<file src="..\Havit.Enterprise.Web\bin\Release\Havit.Enterprise.Web.xml" target="lib\net45" />
+		<file src="bin\Release\Havit.Enterprise.Web.dll" target="lib\net45" />
+		<file src="bin\Release\Havit.Enterprise.Web.pdb" target="lib\net45" />
+		<file src="bin\Release\Havit.Enterprise.Web.xml" target="lib\net45" />
 	</files>
 </package>

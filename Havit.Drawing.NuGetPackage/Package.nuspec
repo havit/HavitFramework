@@ -20,8 +20,8 @@
 		</references>
 	</metadata>
 	<files>
-		<file src="..\Havit.Drawing\bin\Release\Havit.Drawing.dll" target="lib\net45" />
-		<file src="..\Havit.Drawing\bin\Release\Havit.Drawing.pdb" target="lib\net45" />
-		<file src="..\Havit.Drawing\bin\Release\Havit.Drawing.xml" target="lib\net45" />
+		<file src="bin\Release\Havit.Drawing.dll" target="lib\net45" />
+		<file src="bin\Release\Havit.Drawing.pdb" target="lib\net45" />
+		<file src="bin\Release\Havit.Drawing.xml" target="lib\net45" />
 	</files>
 </package>

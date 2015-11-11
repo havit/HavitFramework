@@ -11,6 +11,9 @@ using Havit.Data.Entity.ModelConfiguration.Configuration;
 
 namespace Havit.Data.Entity.ModelConfiguration
 {
+	/// <summary>
+	/// Extension metody k třídě EntityTypeConfiguration.
+	/// </summary>
 	public static class EntityTypeConfigurationExtensions
 	{
 		/// <summary>

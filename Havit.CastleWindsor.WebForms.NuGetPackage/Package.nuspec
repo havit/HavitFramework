@@ -22,9 +22,9 @@
 		<tags>HAVIT ASP.NET Web WebForms Castle Windsor IoC DI DependencyInjection</tags>
 	</metadata>
 	<files>
-		<file src="..\Havit.CastleWindsor.WebForms\bin\Release\Havit.CastleWindsor.WebForms.dll" target="lib\net45" />
-		<file src="..\Havit.CastleWindsor.WebForms\bin\Release\Havit.CastleWindsor.WebForms.pdb" target="lib\net45" />
-		<file src="..\Havit.CastleWindsor.WebForms\bin\Release\Havit.CastleWindsor.WebForms.xml" target="lib\net45" />
+		<file src="bin\Release\Havit.CastleWindsor.WebForms.dll" target="lib\net45" />
+		<file src="bin\Release\Havit.CastleWindsor.WebForms.pdb" target="lib\net45" />
+		<file src="bin\Release\Havit.CastleWindsor.WebForms.xml" target="lib\net45" />
 		<file src="content\Web.config.install.xdt" target="content" />
 		<file src="content\Web.config.uninstall.xdt" target="content" />
 	</files>

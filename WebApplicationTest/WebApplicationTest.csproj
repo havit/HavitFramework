@@ -836,10 +836,6 @@
       <Project>{7478BEA8-791F-47E9-ADD9-18F2D34619EA}</Project>
       <Name>Havit.Enterprise.Web</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Havit.Entity.Glimpse\Havit.Entity.Glimpse.csproj">
-      <Project>{b847560e-3fea-419d-bfac-d7e3544c1f70}</Project>
-      <Name>Havit.Entity.Glimpse</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Havit.Web\Havit.Web.csproj">
       <Project>{52891FB3-CA20-403B-AC25-7D9CA5738B6B}</Project>
       <Name>Havit.Web</Name>

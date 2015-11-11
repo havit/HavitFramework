@@ -11,6 +11,9 @@ namespace Havit.Data.Entity.Conventions
 	/// </summary>
 	public class DataTypePropertyAttributeConvention : PrimitivePropertyAttributeConfigurationConvention<DataTypeAttribute>
 	{
+		/// <summary>
+		/// Aplikuje konvenci na model.
+		/// </summary>
 		public override void Apply(ConventionPrimitivePropertyConfiguration configuration, DataTypeAttribute attribute)
 		{
 			if (attribute.DataType == DataType.Date)

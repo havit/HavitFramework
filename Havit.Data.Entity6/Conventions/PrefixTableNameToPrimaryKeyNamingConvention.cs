@@ -10,6 +10,9 @@ namespace Havit.Data.Entity.Conventions
 	/// </summary>
 	public class PrefixTableNameToPrimaryKeyNamingConvention : IStoreModelConvention<EdmProperty>
 	{
+		/// <summary>
+		/// Aplikuje konvenci na model.
+		/// </summary>
 		public void Apply(EdmProperty item, DbModel model)
 		{
 			EntityType parentEntityType = item.DeclaringType as EntityType;

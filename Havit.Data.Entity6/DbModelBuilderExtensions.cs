@@ -8,8 +8,15 @@ using Havit.Diagnostics.Contracts;
 
 namespace Havit.Data.Entity
 {
+	/// <summary>
+	/// Extension metody ke třídě DbModelBuilder.
+	/// </summary>
 	public static class DbModelBuilderExtensions
 	{
+		/// <summary>
+		/// Zaregistruje modelové třídy z předané assembly.
+		/// Registrovány jsou veřejné třídy, avšak třídy s atributem NotMappedAttribute a ComplexTypeAttribute jsou ignorovány (nejsou registrovány).
+		/// </summary>
 		public static void RegisterModelFromAssembly(this DbModelBuilder modelBuilder, Assembly assembly)
 		{
 			Contract.Requires(modelBuilder != null);

@@ -7,6 +7,9 @@
 	public class DbMigrationsConfiguration<TContext> : System.Data.Entity.Migrations.DbMigrationsConfiguration<TContext>
 		where TContext : DbContext
 	{
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
 		public DbMigrationsConfiguration()
 		{
 			AutomaticMigrationsEnabled = false;

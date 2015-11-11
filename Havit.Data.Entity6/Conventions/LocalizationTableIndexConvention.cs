@@ -14,6 +14,9 @@ namespace Havit.Data.Entity.Conventions
 	/// </summary>
 	public class LocalizationTableIndexConvention : IStoreModelConvention<EntitySet>
 	{
+		/// <summary>
+		/// Aplikuje konvenci na model.
+		/// </summary>
 		public void Apply(EntitySet entitySet, DbModel model)
 		{
 			if (!entitySet.ElementType.IsConventionSuppressed(typeof(LocalizationTableIndexConvention)))

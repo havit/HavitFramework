@@ -25,8 +25,8 @@
 		</references>
 	</metadata>
 	<files>
-		<file src="..\Havit.Services\bin\Release\Havit.Services.dll" target="lib\net45" />
-		<file src="..\Havit.Services\bin\Release\Havit.Services.pdb" target="lib\net45" />
-		<file src="..\Havit.Services\bin\Release\Havit.Services.xml" target="lib\net45" />
+		<file src="bin\Release\Havit.Services.dll" target="lib\net45" />
+		<file src="bin\Release\Havit.Services.pdb" target="lib\net45" />
+		<file src="bin\Release\Havit.Services.xml" target="lib\net45" />
 	</files>
 </package>

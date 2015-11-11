@@ -20,8 +20,8 @@
 		</references>
 	</metadata>
 	<files>
-		<file src="..\Havit\bin\Release\Havit.dll" target="lib\net45" />
-		<file src="..\Havit\bin\Release\Havit.pdb" target="lib\net45" />
-		<file src="..\Havit\bin\Release\Havit.xml" target="lib\net45" />
+		<file src="bin\Release\Havit.dll" target="lib\net45" />
+		<file src="bin\Release\Havit.pdb" target="lib\net45" />
+		<file src="bin\Release\Havit.xml" target="lib\net45" />
 	</files>
 </package>

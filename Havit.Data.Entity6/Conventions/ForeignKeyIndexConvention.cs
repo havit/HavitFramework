@@ -13,6 +13,9 @@ namespace Havit.Data.Entity.Conventions
 	/// </summary>
 	public class ForeignKeyIndexConvention : IStoreModelConvention<AssociationType>
 	{
+		/// <summary>
+		/// Aplikuje konvenci na model.
+		/// </summary>
 		public void Apply(AssociationType association, DbModel model)
 		{
 			AssociationType associantionCSpace = model.ConceptualModel.AssociationTypes.FirstOrDefault(item => (item.GetSourceEnd().Name == association.Name) || (item.GetTargetEnd().Name == association.Name));

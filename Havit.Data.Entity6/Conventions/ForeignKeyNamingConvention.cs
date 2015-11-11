@@ -10,6 +10,9 @@ namespace Havit.Data.Entity.Conventions
 	/// </summary>
 	public class ForeignKeyNamingConvention : IStoreModelConvention<AssociationType>
 	{
+		/// <summary>
+		/// Aplikuje konvenci na model.
+		/// </summary>
 		public void Apply(AssociationType association, DbModel model)
 		{
 			if (association.IsForeignKey)

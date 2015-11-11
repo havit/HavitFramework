@@ -48,6 +48,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\PublishScripts\Publish-Havit.Data.Entity6.ps1">
+      <Link>Publish-Havit.Data.Entity6.ps1</Link>
+    </None>
     <None Include="Package.nuspec">
       <SubType>Designer</SubType>
     </None>

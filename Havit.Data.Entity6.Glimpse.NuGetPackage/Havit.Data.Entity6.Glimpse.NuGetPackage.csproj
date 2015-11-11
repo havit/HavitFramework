@@ -46,6 +46,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\PublishScripts\Publish-Havit.Data.Entity6.Glimpse.ps1">
+      <Link>Publish-Havit.Data.Entity6.Glimpse.ps1</Link>
+    </None>
     <None Include="content\Config\system.diagnostics.config.transform" />
     <None Include="content\Web.config.install.xdt" />
     <None Include="content\Web.Release.config.transform" />

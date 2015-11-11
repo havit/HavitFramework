@@ -43,6 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\PublishScripts\Publish-Havit.Services.ps1">
+      <Link>Publish-Havit.Services.ps1</Link>
+    </None>
     <None Include="Package.nuspec">
       <SubType>Designer</SubType>
     </None>

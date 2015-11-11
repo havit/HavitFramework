@@ -55,6 +55,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\PublishScripts\Publish-Havit.ps1">
+      <Link>Publish-Havit.ps1</Link>
+    </None>
     <None Include="Package.nuspec">
       <SubType>Designer</SubType>
     </None>

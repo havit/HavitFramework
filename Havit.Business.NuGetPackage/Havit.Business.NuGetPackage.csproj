@@ -49,6 +49,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\PublishScripts\Publish-Havit.Business.ps1">
+      <Link>Publish-Havit.Business.ps1</Link>
+    </None>
     <None Include="Package.nuspec">
       <SubType>Designer</SubType>
     </None>
@@ -67,13 +70,13 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-	<Target Name="CreateNuGetPackage" AfterTargets="AfterBuild">
-		<Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion)" />
-	</Target>
-	<Target Name="TfsPublish" AfterTargets="AfterBuild;CreateNuGetPackage" Condition="'$(PublishDirectory)' != ''">
-		<ItemGroup>
-			<FilesToCopy Include="$(OutputPath)\Havit.Business.*.nupkg" />
-		</ItemGroup>
-		<Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(PublishDirectory)\NuGet\%(RecursiveDir)%(Filename)%(Extension)')" />
-	</Target>
+  <Target Name="CreateNuGetPackage" AfterTargets="AfterBuild">
+    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion)" />
+  </Target>
+  <Target Name="TfsPublish" AfterTargets="AfterBuild;CreateNuGetPackage" Condition="'$(PublishDirectory)' != ''">
+    <ItemGroup>
+      <FilesToCopy Include="$(OutputPath)\Havit.Business.*.nupkg" />
+    </ItemGroup>
+    <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(PublishDirectory)\NuGet\%(RecursiveDir)%(Filename)%(Extension)')" />
+  </Target>
 </Project>

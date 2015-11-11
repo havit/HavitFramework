@@ -231,7 +231,7 @@
 				var optionsOverride = {
 					closeButton: true, // display close button
 					tapToDismiss: false, // click do not close message
-					timeOut: 0, // message is visible until close button click
+					timeOut: 0 // message is visible until close button click
 				};
 
 				// create and remember toastr message

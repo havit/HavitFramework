@@ -85,15 +85,6 @@ namespace Havit.WebApplicationTest.HavitWebBootstrapTests {
         protected global::Havit.WebApplicationTest.HavitWebBootstrapTests.Controls.ValidationTargetTest ValidationTargetTest2UC;
         
         /// <summary>
-        /// TB6 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TB6;
-        
-        /// <summary>
         /// ChBL1 control.
         /// </summary>
         /// <remarks>

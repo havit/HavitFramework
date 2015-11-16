@@ -8,7 +8,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{c1bd4bba-35db-43b6-b4e9-072afac6ebd5}</ProjectGuid>
-    <SHFBSchemaVersion>1.9.9.0</SHFBSchemaVersion>
+    <SHFBSchemaVersion>2015.6.5.0</SHFBSchemaVersion>
     <!-- AssemblyName, Name, and RootNamespace are not used by SHFB but Visual
          Studio adds them anyway -->
     <AssemblyName>Documentation</AssemblyName>
@@ -30,7 +30,7 @@
     </SandcastlePath>
     <WorkingPath>
     </WorkingPath>
-    <FrameworkVersion>.NET Framework 4.5</FrameworkVersion>
+    <FrameworkVersion>.NET Framework 4.6</FrameworkVersion>
     <HelpTitle>HAVIT .NET Framework</HelpTitle>
     <CopyrightHref>http://www.havit.cz</CopyrightHref>
     <CopyrightText>HAVIT, s.r.o., All rights reserved.</CopyrightText>
@@ -47,13 +47,16 @@
       <DocumentationSource sourceFile="..\Havit.Business\Havit.Business.csproj" />
       <DocumentationSource sourceFile="..\Havit.Data\Havit.Data.csproj" />
       <DocumentationSource sourceFile="..\Havit.Drawing\Havit.Drawing.csproj" />
-      <DocumentationSource sourceFile="..\Havit.Enterprise.Web\Havit.Enterprise.Web.csproj" />
       <DocumentationSource sourceFile="..\Havit.PayMuzo\Havit.PayMuzo.csproj" />
       <DocumentationSource sourceFile="..\Havit.Services\Havit.Services.csproj" />
       <DocumentationSource sourceFile="..\Havit.Web\Havit.Web.csproj" />
       <DocumentationSource sourceFile="..\Havit.CastleWindsor.WebForms\Havit.CastleWindsor.WebForms.csproj" />
       <DocumentationSource sourceFile="..\Havit.PayPal\Havit.PayPal.csproj" />
       <DocumentationSource sourceFile="..\Havit.Services.Azure\Havit.Services.Azure.csproj" />
+      <DocumentationSource sourceFile="..\Havit.Enterprise.Web\Havit.Enterprise.Web.csproj" />
+      <DocumentationSource sourceFile="..\Havit.Model\Havit.Model.csproj" />
+      <DocumentationSource sourceFile="..\Havit.Data.Entity6\Havit.Data.Entity6.csproj" />
+      <DocumentationSource sourceFile="..\Havit.CastleWindsor.WebForms\Havit.CastleWindsor.WebForms.csproj" />
     </DocumentationSources>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="(global)" isDocumented="True" />

@@ -337,17 +337,17 @@ namespace Havit.BusinessTest
 		#region TryLoad_Perform, Save_Perform, Delete_Perform
 		protected override bool TryLoad_Perform(DbTransaction transaction)
 		{
-			throw new NotImplementedException();
+			throw new NotSupportedException();
 		}
 
 		protected override void Save_Perform(DbTransaction transaction)
 		{
-			throw new NotImplementedException();
+			throw new NotSupportedException();
 		}
 
 		protected override void Delete_Perform(DbTransaction transaction)
 		{
-			throw new NotImplementedException();
+			throw new NotSupportedException();
 		}
 		#endregion		
 	}

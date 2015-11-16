@@ -177,7 +177,6 @@ namespace Havit.PayPal
 
 		/// <summary>
 		/// Payer’s country of residence in the form of ISO standard 3166 two-character country codes. Character length and limitations: Two single-byte characters.
-		/// TODO: Udělat číselník se country codes dle ISO 3166
 		/// </summary>
 		public string CountryCode
 		{

@@ -1879,7 +1879,7 @@ namespace Havit.Web.UI.WebControls
 		#region RegisterClientScripts
 		private void RegisterClientScripts()
 		{
-			HavitFrameworkClientScriptHelper.RegisterHavitFrameworkClientScript(this.Page); // TODO: Nezaregistruje se v asynchronním postbacku!
+			HavitFrameworkClientScriptHelper.RegisterHavitFrameworkClientScript(this.Page);
 			if (((this.EditorExtenderEditIndexInternal != null) || _editorExtenderEditIndexInternalChanged) && !String.IsNullOrEmpty(this.EditorExtenderEditCssClass))
 			{
 				// nemáme k dispozici Row.ClientID!

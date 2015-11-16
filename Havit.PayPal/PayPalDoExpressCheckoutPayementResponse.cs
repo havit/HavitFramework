@@ -134,7 +134,6 @@ namespace Havit.PayPal
 
 		/// <summary>
 		/// Status platby. 
-		/// TODO: Implementovat jako typ.
 		/// </summary>
 		public string PaymentStatus
 		{
@@ -145,7 +144,6 @@ namespace Havit.PayPal
 
 		/// <summary>
 		/// Vrací PaymentReason když je PaymentStatus "pending".
-		/// TODO: Implementovat jako typ.
 		/// </summary>
 		public string PendingReason
 		{

@@ -70,7 +70,7 @@ namespace Havit.CastleWindsor.WebForms
 		{
 			if (control == null)
 			{
-				throw new ArgumentNullException("control"); // TODO: nameof(control));
+				throw new ArgumentNullException(nameof(control));
 			}
 
 			InitializeControlInstance(control);

@@ -9,7 +9,5 @@ namespace Havit.WebApplicationTest.HavitWebTests
 {
 	public partial class DropDownCheckBoxListTest : System.Web.UI.Page
 	{
-		// TODO: Vyřešit distirbuci multiple-select.css+png+js!
-		// TODO: V souvislosti s tím upravit ScriptManagerConfig.cs + Bootstrap.Master + M
 	}
 }

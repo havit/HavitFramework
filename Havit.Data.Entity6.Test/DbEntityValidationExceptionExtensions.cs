@@ -6,7 +6,7 @@ using Havit.Data.Entity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DbContext = Havit.Data.Entity.DbContext;
 
-namespace Havit.Data.Entity6.Test
+namespace Havit.Data.Entity.Test
 {
 	[TestClass]
 	public class DbEntityValidationExceptionExtensionsTest

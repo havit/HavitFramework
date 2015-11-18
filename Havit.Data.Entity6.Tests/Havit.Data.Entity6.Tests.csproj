@@ -6,8 +6,8 @@
     <ProjectGuid>{09DB04EC-99A1-4341-A137-EB724D2B6B37}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Havit.Data.Entity6.Test</RootNamespace>
-    <AssemblyName>Havit.Data.Entity6.Test</AssemblyName>
+    <RootNamespace>Havit.Data.Entity6.Tests</RootNamespace>
+    <AssemblyName>Havit.Data.Entity6.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>

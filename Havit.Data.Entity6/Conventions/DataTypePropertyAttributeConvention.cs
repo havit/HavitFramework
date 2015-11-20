@@ -22,7 +22,7 @@ namespace Havit.Data.Entity.Conventions
 			}
 			else
 			{
-				throw new NotSupportedException("DataType.{0} is not supported, the only supported value on DataTypeAttribute is DataType.Date.");
+				throw new NotSupportedException($"DataType.{attribute.DataType} is not supported, the only supported value on DataTypeAttribute is DataType.Date.");
 			}
 		}
 	}

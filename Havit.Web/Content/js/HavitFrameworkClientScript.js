@@ -412,7 +412,7 @@ var havitAutoCompleteTextBoxExtensions = {
 			var $item = $(item);
 
 			var serviceurl = $item.data("serviceurl");
-			var minchars = $item.data("minchars") || 1;
+			var minchars = ($item.data("minchars") != undefined) ? $item.data("minchars") : 1;
 			var deferrequest = $item.data("deferRequest") || 0;
 			var nocache = $item.data("nocache") || false;
 			var maxheight = $item.data("maxheight") || 300;
@@ -440,7 +440,7 @@ var havitAutoCompleteTextBoxExtensions = {
 
 			$item.data["selectedvalue"] = $textbox.val();
 			$textbox.blur(function () { havitAutoCompleteTextBoxExtensions.onBlur($textbox, $hiddenfield, $item) });
-
+			
 			$textbox.autocomplete(options);
 		});
 	},

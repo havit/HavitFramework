@@ -22,66 +22,21 @@ namespace Havit.WebApplicationTest.HavitWebTests {
         protected global::System.Web.UI.HtmlControls.HtmlForm MainForm;
         
         /// <summary>
-        /// Test1ACTB control.
+        /// TesterACTB control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Havit.Web.UI.WebControls.AutoCompleteTextBox Test1ACTB;
+        protected global::Havit.Web.UI.WebControls.AutoCompleteTextBox TesterACTB;
         
         /// <summary>
-        /// ButtonBt control.
+        /// PostbackLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Havit.Web.Bootstrap.UI.WebControls.Button ButtonBt;
-        
-        /// <summary>
-        /// PersisterCVP control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Havit.Web.UI.WebControls.ControlsValues.ControlsValuesPersister PersisterCVP;
-        
-        /// <summary>
-        /// PersisterACTB control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Havit.Web.UI.WebControls.AutoCompleteTextBox PersisterACTB;
-        
-        /// <summary>
-        /// PersisterBtn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button PersisterBtn;
-        
-        /// <summary>
-        /// PersisterOutputTB control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox PersisterOutputTB;
-        
-        /// <summary>
-        /// SetValuesACTB control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Havit.Web.UI.WebControls.AutoCompleteTextBox SetValuesACTB;
+        protected global::System.Web.UI.WebControls.Label PostbackLabel;
     }
 }

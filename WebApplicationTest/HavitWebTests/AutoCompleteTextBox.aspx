@@ -32,78 +32,27 @@
 				</Scripts>
 			</asp:ScriptManager>
 
-			<asp:UpdatePanel runat="server">
-				<ContentTemplate>
-					<havit:MessengerControl runat="server" />
-				</ContentTemplate>
-			</asp:UpdatePanel>
-
-			<asp:UpdatePanel UpdateMode="Conditional" runat="server">
-				<ContentTemplate>
-					<div class="container">
-						<havit:AutoCompleteTextBox
-							ID="Test1ACTB"
-							ServiceUrl="~/Services/AutoCompleteTextBoxService.svc/GetSuggestionsContext"
-							UseClientCache="false"
-							Context="lorem ipsum dolor sit amet"
-							runat="server" />
-						<%--AutoPostBack="true"--%>
-					</div>
-				</ContentTemplate>
-				<Triggers>
-					<asp:PostBackTrigger ControlID="ButtonBt" />
-				</Triggers>
-			</asp:UpdatePanel>
-
-			<asp:UpdatePanel UpdateMode="Conditional" runat="server">
-				<ContentTemplate>
-					<bc:Button ID="ButtonBt" Text="Text" runat="server" />
-				</ContentTemplate>
-			</asp:UpdatePanel>
-
-			<asp:TextBox runat="server" /><asp:Button runat="server" />
-
-			<br />
-			<br />
-			Persister:<br />
-			<havit:ControlsValuesPersister ID="PersisterCVP" runat="server">
-				<havit:AutoCompleteTextBox
-					ID="PersisterACTB"
-					ServiceUrl="/Services/AutoCompleteTextBoxService.svc/GetSuggestions"
-					AutoPostBack="false"
-					UseClientCache="false"
-					runat="server" />
-			</havit:ControlsValuesPersister>
-			<asp:Button ID="PersisterBtn" Text="Persister" runat="server" /><br />
-
-			<asp:TextBox ID="PersisterOutputTB" TextMode="MultiLine" Rows="20" Columns="100" runat="server" />
-
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<h2>SetValues</h2>
 			<havit:AutoCompleteTextBox
-				ID="SetValuesACTB"
+				ID="TesterACTB"
 				ServiceUrl="~/Services/AutoCompleteTextBoxService.svc/GetSuggestionsContext"
-				AutoPostBack="true"
 				UseClientCache="false"
 				Orientation="Auto"
 				Context="lorem ipsum dolor sit amet"
+				OnClientSelectScript="test();"
+				AutoPostBack="True"
 				runat="server" />
+
+			<script type="text/javascript">
+				function test() {
+					var element = $("#test");
+					var date = new Date();
+					element.text(element.text() + date.getSeconds() + "*");
+				}
+			</script>
+			
+			<span id="test"></span>
+			
+			<asp:Label id="PostbackLabel" runat="server"/>
 		</div>
 	</form>
 </body>

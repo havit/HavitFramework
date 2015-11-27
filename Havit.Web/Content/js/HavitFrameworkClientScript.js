@@ -454,6 +454,13 @@ var havitAutoCompleteTextBoxExtensions = {
 		$textbox.val(suggestion.value);
 		$item.data["selectedvalue"] = suggestion.value;
 
+		// zrušíme nastavený timer, který vznikl při onBlur textboxu
+		var timerId = $textbox.data["timerId"];
+		if (timerId != undefined) {
+			clearTimeout(timerId);
+			$textbox.data["timerId"] = undefined;
+		}
+
 		var onselectscript = $item.data("onselectscript");
 		havitAutoCompleteTextBoxExtensions.fireOnSelectScriptEvent(suggestion, onselectscript);
 
@@ -472,13 +479,17 @@ var havitAutoCompleteTextBoxExtensions = {
 		if ($textbox.val() != selectedvalue) {
 			$textbox.val("");
 			$hiddenfield.val("");
+			$item.data["selectedvalue"] = "";
 
 			var onselectscript = $item.data("onselectscript");
 			var suggestion = {
 				data: "",
 				value: ""
 			};
-			havitAutoCompleteTextBoxExtensions.fireOnSelectScriptEvent(suggestion, onselectscript);
+
+			// metoda se volá odloženě, protože může nastat volání metody onSelect při výběru myší s nabídnutých položek a v takovém případě se volání ruší
+			var timerId = setTimeout(havitAutoCompleteTextBoxExtensions.fireOnSelectScriptEvent, 60, suggestion, onselectscript);
+			$textbox.data["timerId"] = timerId;
 		}
 	},
 

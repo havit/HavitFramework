@@ -19,5 +19,4 @@
 			<havit:DateTimeBox DateTimePickerElement="Image" ContainerRenderMode="BootstrapInputGroupButtonOnRight" AddOnText="AddOn &amp; Text" runat="server"/>
 		</div>
 	</div>
-
 </asp:Content>

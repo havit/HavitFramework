@@ -719,11 +719,9 @@ namespace Havit.Web.UI.WebControls
 			{
 				HavitFrameworkClientScriptHelper.RegisterHavitFrameworkClientScript(this.Page);
 			}
-
-			ViewState["ValueMemento"] = GetValueMemento();
 		}
 		#endregion
-
+		
 		#region Render
 		/// <summary>
 		/// Render (overriden).
@@ -968,6 +966,8 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		protected override object SaveViewState()
 		{
+			ViewState["ValueMemento"] = GetValueMemento();
+
 			object[] result = new object[]
 			{
 				base.SaveViewState(),

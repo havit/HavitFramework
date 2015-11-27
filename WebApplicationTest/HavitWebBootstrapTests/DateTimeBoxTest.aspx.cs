@@ -11,5 +11,6 @@ namespace Havit.WebApplicationTest.HavitWebBootstrapTests
 {
 	public partial class DateTimeBoxTest : System.Web.UI.Page
 	{
+
 	}
 }

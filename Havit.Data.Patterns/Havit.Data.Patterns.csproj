@@ -41,14 +41,6 @@
     <OutputPath>bin\CodeGenerator\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Havit, Version=2.0.4.1679, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Havit.1.4.1679\lib\net45\Havit.dll</HintPath>
-    </Reference>
-    <Reference Include="Havit.Model, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Havit.Model.1.4.5617\lib\net46\Havit.Model.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -58,6 +50,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Attributes\FakeAttribute.cs" />
     <Compile Include="DataSeeds\ChildDataSeedConfigurationEntry.cs" />
     <Compile Include="DataSeeds\DataSeed.cs" />
@@ -95,7 +90,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\Havit.Model\Havit.Model.csproj">
+      <Project>{72a78976-6b9f-4d96-a4c9-441066e44de4}</Project>
+      <Name>Havit.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Havit\Havit.csproj">
+      <Project>{9acc94b9-b8fd-47c1-abf8-0658c7673905}</Project>
+      <Name>Havit</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

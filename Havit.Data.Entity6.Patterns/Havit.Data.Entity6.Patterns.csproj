@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{DCF67A43-0EED-4B20-85E3-F8A7AA1C22B5}</ProjectGuid>
+    <ProjectGuid>{F8682E3B-C697-4E27-BF95-D9C48FE2D693}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Havit.Data.Entity.Patterns.Windsor</RootNamespace>
-    <AssemblyName>Havit.Data.Entity6.Patterns.Windsor</AssemblyName>
+    <RootNamespace>Havit.Data.Entity.Patterns</RootNamespace>
+    <AssemblyName>Havit.Data.Entity6.Patterns</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
@@ -35,49 +35,19 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Havit.Data.Entity6.Patterns.Windsor.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\Havit.Data.Entity6.Patterns.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CodeGenerator|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\CodeGenerator\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>\\topol.havit.local\Library\VS2015\CodeAnalysis\HavitMain.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Castle.Windsor">
-      <HintPath>..\packages\Castle.Windsor.3.3.0\lib\net45\Castle.Windsor.dll</HintPath>
-    </Reference>
-    <Reference Include="Castle.Windsor.Lifestyles, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Castle.Windsor.Lifestyles.0.4.0\lib\net45\Castle.Windsor.Lifestyles.dll</HintPath>
-    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Havit, Version=2.0.4.1679, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Havit.1.4.1679\lib\net45\Havit.dll</HintPath>
-    </Reference>
-    <Reference Include="Havit.Data.Entity6, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Havit.Data.Entity6.1.4.5578\lib\net46\Havit.Data.Entity6.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Havit.Model, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Havit.Model.1.4.5617\lib\net46\Havit.Model.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -89,27 +59,65 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExtensionMethods.cs" />
-    <Compile Include="WebApplication\WebApplicationInstaller.cs" />
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="DataEntries\DbDataEntrySymbolStorage.cs" />
+    <Compile Include="DataEntries\EntryIdentification.cs" />
+    <Compile Include="DataEntries\IDataEntrySymbolStorage.cs" />
+    <Compile Include="DataLoaders\DbDataLoader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataLoaders\DbDataLoaderFor.cs" />
+    <Compile Include="DataEntries\DbDataEntries.cs" />
+    <Compile Include="DataLoaders\Fakes\FakeDbDataLoader.cs" />
+    <Compile Include="DataLoaders\Fakes\FakeDbDataLoaderFor.cs" />
+    <Compile Include="SoftDeletes\ISoftDeleteManager.cs" />
+    <Compile Include="Localizations\DbLanguageService.cs" />
+    <Compile Include="QueryServices\DbDataSource.cs" />
+    <Compile Include="QueryServices\Fakes\InternalFakeDbAsyncEnumerable.cs" />
+    <Compile Include="QueryServices\Fakes\InternalFakeDbAsyncEnumerator.cs" />
+    <Compile Include="QueryServices\Fakes\InternalFakeDbAsyncQueryProvider.cs" />
+    <Compile Include="QueryServices\Fakes\FakeDataSource.cs" />
+    <Compile Include="QueryServices\QueryBase.cs" />
+    <Compile Include="Seeds\DbDataSeedPersister.cs" />
+    <Compile Include="Seeds\SeedDataPair.cs" />
+    <Compile Include="SoftDeletes\SoftDeleteManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repositories\DbRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SoftDeletes\SoftDeleteManagerExtensions.cs" />
+    <Compile Include="UnitOfWorks\DbUnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Havit.Data.Entity.Patterns\Havit.Data.Entity.Patterns.csproj">
-      <Project>{f8682e3b-c697-4e27-bf95-d9c48fe2d693}</Project>
-      <Name>Havit.Data.Entity.Patterns</Name>
+    <None Include="App.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Havit.Data.Entity6\Havit.Data.Entity6.csproj">
+      <Project>{d7232f24-9dcc-466f-b8ab-e3248e8edcc6}</Project>
+      <Name>Havit.Data.Entity6</Name>
     </ProjectReference>
     <ProjectReference Include="..\Havit.Data.Patterns\Havit.Data.Patterns.csproj">
       <Project>{8632b9da-ecb6-4007-ab3f-9c9aece63d67}</Project>
       <Name>Havit.Data.Patterns</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Havit.Model\Havit.Model.csproj">
+      <Project>{72a78976-6b9f-4d96-a4c9-441066e44de4}</Project>
+      <Name>Havit.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Havit.Services\Havit.Services.csproj">
+      <Project>{2e4ae0cf-fa21-4fbc-9274-e56bc5d9494e}</Project>
+      <Name>Havit.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Havit\Havit.csproj">
+      <Project>{9acc94b9-b8fd-47c1-abf8-0658c7673905}</Project>
+      <Name>Havit</Name>
+    </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

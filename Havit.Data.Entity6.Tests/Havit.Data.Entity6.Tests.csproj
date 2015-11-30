@@ -6,7 +6,7 @@
     <ProjectGuid>{09DB04EC-99A1-4341-A137-EB724D2B6B37}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Havit.Data.Entity6.Tests</RootNamespace>
+    <RootNamespace>Havit.Data.Entity.Tests</RootNamespace>
     <AssemblyName>Havit.Data.Entity6.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

@@ -20,11 +20,6 @@
 			</group>
 		</dependencies>
 		<tags>HAVIT Framework Library</tags>
-		<references>
-			<group>
-				<reference file="Havit.Enterprise.Web.dll" />
-			</group>
-		</references>
 	</metadata>
 	<files>
 		<file src="bin\Release\Havit.Enterprise.Web.dll" target="lib\net45" />

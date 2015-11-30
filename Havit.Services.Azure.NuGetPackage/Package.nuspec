@@ -19,11 +19,6 @@
 			</group>
 		</dependencies>
 		<tags>HAVIT Framework Library Azure</tags>
-		<references>
-			<group>
-				<reference file="Havit.Services.Azure.dll" />
-			</group>
-		</references>
 	</metadata>
 	<files>
 		<file src="bin\Release\Havit.Services.Azure.dll" target="lib\net45" />

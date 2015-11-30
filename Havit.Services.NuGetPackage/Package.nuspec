@@ -18,11 +18,6 @@
 			</group>
 		</dependencies>
 		<tags>HAVIT Framework Library</tags>
-		<references>
-			<group>
-				<reference file="Havit.Services.dll" />
-			</group>
-		</references>
 	</metadata>
 	<files>
 		<file src="bin\Release\Havit.Services.dll" target="lib\net45" />

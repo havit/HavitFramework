@@ -14,7 +14,10 @@
 		<copyright>Copyright HAVIT, s.r.o. 2015</copyright>
 		<tags>HAVIT Model Entity Framework EF</tags>
 	</metadata>
-	<files>
+	<frameworkAssemblies>
+	  <frameworkAssembly assemblyName="System.ComponentModel.DataAnnotations" targetFramework="net46" />
+	</frameworkAssemblies>
+  <files>
 	  <file src="bin\Release\Havit.Model.dll" target="lib\net46" />
 	  <file src="bin\Release\Havit.Model.pdb" target="lib\net46" />
 	  <file src="bin\Release\Havit.Model.xml" target="lib\net46" />

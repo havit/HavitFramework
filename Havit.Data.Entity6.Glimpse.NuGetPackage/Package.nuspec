@@ -20,7 +20,6 @@
 				<dependency id="Glimpse.AspNet" version="[1.9.1,)" />
 			</group>
 		</dependencies>
-		<references></references>
 		<tags>HAVIT ASP.NET Web WebForms Glimpse diagnostics performance profiling timing Entity Framework EF EF6</tags>
 	</metadata>
 	<files>

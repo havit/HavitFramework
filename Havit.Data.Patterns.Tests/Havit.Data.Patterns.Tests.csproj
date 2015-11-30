@@ -40,10 +40,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Havit.Model, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Havit.Model.1.4.5617\lib\net46\Havit.Model.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
       <Private>True</Private>
@@ -82,9 +78,15 @@
       <Project>{8632b9da-ecb6-4007-ab3f-9c9aece63d67}</Project>
       <Name>Havit.Data.Patterns</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Havit.Model\Havit.Model.csproj">
+      <Project>{72a78976-6b9f-4d96-a4c9-441066e44de4}</Project>
+      <Name>Havit.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

@@ -56,7 +56,9 @@
       <DocumentationSource sourceFile="..\Havit.Enterprise.Web\Havit.Enterprise.Web.csproj" />
       <DocumentationSource sourceFile="..\Havit.Model\Havit.Model.csproj" />
       <DocumentationSource sourceFile="..\Havit.Data.Entity6\Havit.Data.Entity6.csproj" />
-      <DocumentationSource sourceFile="..\Havit.CastleWindsor.WebForms\Havit.CastleWindsor.WebForms.csproj" />
+      <DocumentationSource sourceFile="..\Havit.Data.Patterns\Havit.Data.Patterns.csproj" />
+      <DocumentationSource sourceFile="..\Havit.Data.Entity6.Patterns\Havit.Data.Entity6.Patterns.csproj" />
+      <DocumentationSource sourceFile="..\Havit.Data.Entity6.Patterns.Windsor\Havit.Data.Entity6.Patterns.Windsor.csproj" />
     </DocumentationSources>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="(global)" isDocumented="True" />

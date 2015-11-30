@@ -13,11 +13,6 @@
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<copyright>Copyright HAVIT, s.r.o. 2015</copyright>
 		<tags>HAVIT Framework Library</tags>
-		<references>
-			<group>
-				<reference file="Havit.Drawing.dll" />
-			</group>
-		</references>
 	</metadata>
 	<files>
 		<file src="bin\Release\Havit.Drawing.dll" target="lib\net45" />

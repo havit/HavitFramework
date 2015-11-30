@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F8682E3B-C697-4E27-BF95-D9C48FE2D693}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Havit.Data.Entity.Patterns</RootNamespace>
+    <AssemblyName>Havit.Data.Entity6.Patterns</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Havit.Data.Entity6.Patterns.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CodeGenerator|AnyCPU'">
+    <OutputPath>bin\CodeGenerator\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Havit, Version=2.0.4.1679, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Havit.1.4.1679\lib\net45\Havit.dll</HintPath>
+    </Reference>
+    <Reference Include="Havit.Data.Entity6, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Havit.Data.Entity6.1.4.5578\lib\net46\Havit.Data.Entity6.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Havit.Model, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Havit.Model.1.4.5617\lib\net46\Havit.Model.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Havit.Services">
+      <HintPath>..\packages\Havit.Services.1.4.2769\lib\net45\Havit.Services.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataEntries\DbDataEntrySymbolStorage.cs" />
+    <Compile Include="DataEntries\EntryIdentification.cs" />
+    <Compile Include="DataEntries\IDataEntrySymbolStorage.cs" />
+    <Compile Include="DataLoaders\DbDataLoader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataLoaders\DbDataLoaderFor.cs" />
+    <Compile Include="DataEntries\DbDataEntries.cs" />
+    <Compile Include="DataLoaders\Fakes\FakeDbDataLoader.cs" />
+    <Compile Include="DataLoaders\Fakes\FakeDbDataLoaderFor.cs" />
+    <Compile Include="SoftDeletes\ISoftDeleteManager.cs" />
+    <Compile Include="Localizations\DbLanguageService.cs" />
+    <Compile Include="QueryServices\DbDataSource.cs" />
+    <Compile Include="QueryServices\Fakes\InternalFakeDbAsyncEnumerable.cs" />
+    <Compile Include="QueryServices\Fakes\InternalFakeDbAsyncEnumerator.cs" />
+    <Compile Include="QueryServices\Fakes\InternalFakeDbAsyncQueryProvider.cs" />
+    <Compile Include="QueryServices\Fakes\FakeDataSource.cs" />
+    <Compile Include="QueryServices\QueryBase.cs" />
+    <Compile Include="Seeds\DbDataSeedPersister.cs" />
+    <Compile Include="Seeds\SeedDataPair.cs" />
+    <Compile Include="SoftDeletes\SoftDeleteManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repositories\DbRepository.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SoftDeletes\SoftDeleteManagerExtensions.cs" />
+    <Compile Include="UnitOfWorks\DbUnitOfWork.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Havit.Data.Patterns\Havit.Data.Patterns.csproj">
+      <Project>{8632b9da-ecb6-4007-ab3f-9c9aece63d67}</Project>
+      <Name>Havit.Data.Patterns</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

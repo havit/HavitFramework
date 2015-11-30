@@ -65,4 +65,14 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="CreateNuGetPackage" AfterTargets="AfterBuild">
+	<Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion)" />
+  </Target>
+  <Target Name="TfsPublish" AfterTargets="AfterBuild;CreateNuGetPackage" Condition="'$(PublishDirectory)' != ''">
+	<ItemGroup>
+	  <FilesToCopy Include="$(OutputPath)\Havit.Data.Entity6.Patterns.Windsor.*.nupkg" />
+	</ItemGroup>
+	<Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(PublishDirectory)\NuGet\%(RecursiveDir)%(Filename)%(Extension)')" />
+  </Target>
+
 </Project>

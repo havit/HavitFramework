@@ -141,6 +141,7 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Bootstrap\UI\WebControls\BaseValidator.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\IconPosition.cs" />
     <Compile Include="Bootstrap\UI\WebControls\RetractablePanel.cs" />
     <Compile Include="StartUp.cs" />
     <Compile Include="Bootstrap\UI\ClientScripts\BootstrapClientScriptHelper.cs" />

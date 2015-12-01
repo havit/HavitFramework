@@ -37,6 +37,18 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		}
 		#endregion
 
+		#region IconPosition
+		/// <summary>
+		/// Position of the icon (when IconCssClass is set).
+		/// Default value is Left.
+		/// </summary>
+		public IconPosition IconPosition
+		{
+			get { return (IconPosition)(ViewState["IconPosition"] ?? IconPosition.Left); }
+			set { ViewState["IconPosition"] = value; }
+		}
+		#endregion
+
 		#region TagKey
 		/// <summary>
 		/// Esures rendering as button element instead of input element.
@@ -108,15 +120,31 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			string text = HttpUtilityExt.GetResourceString(Text);
 			ToolTip = HttpUtilityExt.GetResourceString(ToolTip); // viewstate already serialized
 
-			bool renderIcon = !String.IsNullOrEmpty(IconCssClass);
 			bool renderChildren = HasControls();
 			bool renderText = !String.IsNullOrEmpty(text);
+			bool renderIconOnLeft = false;
+			bool renderIconOnRight = false;
 
-			if (renderIcon)
+			if (!String.IsNullOrEmpty(IconCssClass))
 			{
-				writer.AddAttribute(HtmlTextWriterAttribute.Class, IconCssClass);
-				writer.RenderBeginTag(HtmlTextWriterTag.Span);
-				writer.RenderEndTag();
+				switch (this.IconPosition)
+				{
+					case IconPosition.Left:
+						renderIconOnLeft = true;
+						break;
+
+					case IconPosition.Right:
+						renderIconOnRight = true;
+						break;
+
+					default:
+						throw new InvalidOperationException("Nepodporovaná hodnota vlastnosti IconPosition.");
+				}
+			}
+
+			if (renderIconOnLeft)
+			{
+				RenderIcon(writer);
 				if (renderChildren || renderText)
 				{
 					writer.Write((char)160);
@@ -132,8 +160,29 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			{
 				writer.WriteEncodedText(text);
 			}
+
+			if (renderIconOnRight)
+			{
+				if (renderChildren || renderText)
+				{
+					writer.Write((char)160);
+				}
+				RenderIcon(writer);
+			}
 		}
 		#endregion
 
+		#region RenderIcon		
+		/// <summary>
+		/// Renders the (bootstrap) icon.
+		/// By default the icon is rendered as span with css class (IconCssClass).
+		/// </summary>
+		protected void RenderIcon(HtmlTextWriter writer)
+		{
+			writer.AddAttribute(HtmlTextWriterAttribute.Class, IconCssClass);
+			writer.RenderBeginTag(HtmlTextWriterTag.Span);
+			writer.RenderEndTag();
+		}
+		#endregion
 	}
 }

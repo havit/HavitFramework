@@ -2,7 +2,6 @@
 
 <asp:Content ContentPlaceHolderID="MainCPH" runat="server">
 	<bc:Button CssClass="btn btn-default btn-lg" SkinID="Save" runat="server">abc</bc:Button>
+	<bc:Button CssClass="btn btn-default btn-lg" SkinID="Save" IconPosition="Right" runat="server">abc</bc:Button>
 	<bc:Button CssClass="btn btn-default btn-lg" SkinID="Save" runat="server"/>
-
-
 </asp:Content>

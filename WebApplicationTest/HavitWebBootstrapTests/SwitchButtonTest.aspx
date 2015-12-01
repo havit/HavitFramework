@@ -13,8 +13,13 @@
 	</div>
 
 	<asp:UpdatePanel UpdateMode="Conditional" runat="server">
+		<Triggers>
+			<asp:PostBackTrigger ControlID="SecondSwitchButton" runat="server" />
+		</Triggers>
 		<ContentTemplate>
-			<bc:SwitchButton ID="SecondSwitchButton" AutoPostBack="true" runat="server" />			
+			<bc:SwitchButton ID="SecondSwitchButton" AutoPostBack="true" CausesValidation="true" ValidationGroup="Some" runat="server" />
+			<asp:TextBox ID="SomeTextBox" runat="server" />
+			<asp:RequiredFieldValidator ControlToValidate="SomeTextBox" ValidationGroup="Some" Text="*" runat="server" />
 			<asp:Label ID="SecondStateLabel" runat="server" />
 		</ContentTemplate>
 	</asp:UpdatePanel>

@@ -17,7 +17,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	/// By default, the "No" choice is selected (Value is false).
 	/// </summary>
 	[Themeable(true)]
-	public class SwitchButton : Control
+	public class SwitchButton : Control, INamingContainer
 	{
 		#region Private fields
 		private readonly RadioButtonList radioButtonList;
@@ -72,6 +72,28 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			get { return radioButtonList.AutoPostBack; }
 			set { radioButtonList.AutoPostBack = value; }
+		}
+		#endregion
+
+		#region CausesValidation
+		/// <summary>
+		/// Gets or sets a value indicating whether validation is performed when a control that is derived from the <see cref="T:System.Web.UI.WebControls.ListControl"/> class is clicked.
+		/// </summary>
+		public bool CausesValidation
+		{
+			get { return radioButtonList.CausesValidation; }
+			set { radioButtonList.CausesValidation = value; }
+		}
+		#endregion
+
+		#region ValidationGroup
+		/// <summary>
+		/// Gets or sets the group of controls for which the control that is derived from the <see cref="T:System.Web.UI.WebControls.ListControl"/> class causes validation when it posts back to the server.
+		/// </summary>
+		public string ValidationGroup
+		{
+			get { return radioButtonList.ValidationGroup; }
+			set { radioButtonList.ValidationGroup = value; }
 		}
 		#endregion
 

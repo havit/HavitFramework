@@ -67,7 +67,7 @@ namespace Havit.Services.Ares
 		/// <summary>
 		/// Tøídy (nested classes) pro odpovìd ARES OR.
 		/// </summary>
-		public class Classes
+		public static class Classes
 		{
 			/// <summary>
 			/// Registrace do OR.

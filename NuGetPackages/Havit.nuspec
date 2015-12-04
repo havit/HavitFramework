@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>Havit</id>
+		<version>1.0.1</version>
+		<title>Havit</title>
+		<authors>HAVIT, s.r.o.</authors>
+		<owners>HAVIT, s.r.o.</owners>
+		<description>
+			HAVIT .NET Framework Extensions - Basic Class Library (Havit.dll)
+		</description>
+		<language>en-US</language>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<copyright>Copyright HAVIT, s.r.o. 2015</copyright>
+		<tags>HAVIT Framework Library</tags>
+	</metadata>
+	<files>
+		<file src="bin\Release\Havit.dll" target="lib\net45" />
+		<file src="bin\Release\Havit.pdb" target="lib\net45" />
+		<file src="bin\Release\Havit.xml" target="lib\net45" />
+	</files>
+</package>

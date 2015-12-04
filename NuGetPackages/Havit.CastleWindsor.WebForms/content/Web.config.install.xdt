@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+	<system.webServer xdt:Transform="InsertIfMissing" />
+	<system.webServer>
+		<modules xdt:Transform="InsertIfMissing" />
+		<modules>
+			<add name="PerRequestLifestyle" type="Castle.MicroKernel.Lifestyle.PerWebRequestLifestyleModule, Castle.Windsor" xdt:Locator="Match(name)" xdt:Transform="InsertIfMissing" />
+			<add name="PerRequestLifestyle" type="Castle.MicroKernel.Lifestyle.PerWebRequestLifestyleModule, Castle.Windsor" xdt:Locator="Match(name)" xdt:Transform="SetAttributes" />
+		</modules>
+		
+		<handlers xdt:Transform="InsertIfMissing" />
+		<handlers>
+			<add name="DependencyInjectionPageHandlerFactory" verb="*" path="*.aspx" type="Havit.CastleWindsor.WebForms.DependencyInjectionPageHandlerFactory, Havit.CastleWindsor.WebForms, Culture=neutral" xdt:Locator="Match(name)" xdt:Transform="InsertIfMissing" />
+			<add name="DependencyInjectionPageHandlerFactory" verb="*" path="*.aspx" type="Havit.CastleWindsor.WebForms.DependencyInjectionPageHandlerFactory, Havit.CastleWindsor.WebForms, Culture=neutral" xdt:Locator="Match(name)" xdt:Transform="SetAttributes"/>
+		</handlers>
+	</system.webServer>
+	
+</configuration>

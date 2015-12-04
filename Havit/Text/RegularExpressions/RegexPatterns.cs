@@ -6,7 +6,7 @@ namespace Havit.Text.RegularExpressions
 	/// <summary>
 	/// Typické vyhledávací vzory pro regulární výrazy.
 	/// </summary>
-	public sealed class RegexPatterns
+	public static class RegexPatterns
 	{
 		#region EmailStrict
 		/// <summary>
@@ -63,15 +63,6 @@ namespace Havit.Text.RegularExpressions
 		/// Odmítá: [1.0], [abc], [+], [1,15]
 		/// </remarks>
 		public const string Integer = @"^[-+]?\d+$";
-		#endregion
-
-		#region Private constructor
-		/// <summary>
-		/// private constructor k zabránění instanciace statické třídy.
-		/// </summary>
-		private RegexPatterns()
-		{
-		}
 		#endregion
 
 		#region GetWildcardRegex, IsWildcardMatch, GetWildcardRegexPattern (private)

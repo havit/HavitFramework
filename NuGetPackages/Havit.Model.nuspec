@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>Havit.Model</id>
+		<version>1.0.0</version>
+		<title>Havit.Model</title>
+		<authors>HAVIT, s.r.o.</authors>
+		<owners>HAVIT, s.r.o.</owners>
+		<description>
+			HAVIT Model Class Library
+		</description>
+		<language>en-US</language>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<copyright>Copyright HAVIT, s.r.o. 2015</copyright>
+		<tags>HAVIT Model Entity Framework EF</tags>
+		<frameworkAssemblies>
+		  <frameworkAssembly assemblyName="System.ComponentModel.DataAnnotations" targetFramework="net46" />
+		</frameworkAssemblies>
+	</metadata>
+	<files>
+	  <file src="bin\Release\Havit.Model.dll" target="lib\net46" />
+	  <file src="bin\Release\Havit.Model.pdb" target="lib\net46" />
+	  <file src="bin\Release\Havit.Model.xml" target="lib\net46" />
+	</files>
+</package>

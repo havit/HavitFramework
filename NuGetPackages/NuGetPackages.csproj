@@ -1,0 +1,296 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8A7118FD-C70E-4F30-9604-08EE11771E46}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NuGetPackages</RootNamespace>
+    <AssemblyName>NuGetPackages</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\PublishScripts\Publish-Havit.Business.ps1">
+      <Link>Publish-Havit.Business.ps1</Link>
+    </None>
+    <None Include="..\PublishScripts\Publish-Havit.CastleWindsor.WebForms.ps1">
+      <Link>Publish-Havit.CastleWindsor.WebForms.ps1</Link>
+    </None>
+    <None Include="..\PublishScripts\Publish-Havit.Data.Entity6.Glimpse.ps1">
+      <Link>Publish-Havit.Data.Entity6.Glimpse.ps1</Link>
+    </None>
+    <None Include="..\PublishScripts\Publish-Havit.Data.Entity6.Patterns.ps1">
+      <Link>Publish-Havit.Data.Entity6.Patterns.ps1</Link>
+    </None>
+    <None Include="..\PublishScripts\Publish-Havit.Data.Entity6.Patterns.Windsor.ps1">
+      <Link>Publish-Havit.Data.Entity6.Patterns.Windsor.ps1</Link>
+    </None>
+    <None Include="..\PublishScripts\Publish-Havit.Data.Entity6.ps1">
+      <Link>Publish-Havit.Data.Entity6.ps1</Link>
+    </None>
+    <None Include="..\PublishScripts\Publish-Havit.Data.Glimpse.ps1">
+      <Link>Publish-Havit.Data.Glimpse.ps1</Link>
+    </None>
+    <None Include="..\PublishScripts\Publish-Havit.Data.Patterns.ps1">
+      <Link>Publish-Havit.Data.Patterns.ps1</Link>
+    </None>
+    <None Include="..\PublishScripts\Publish-Havit.Data.ps1">
+      <Link>Publish-Havit.Data.ps1</Link>
+    </None>
+    <None Include="..\PublishScripts\Publish-Havit.Drawing.ps1">
+      <Link>Publish-Havit.Drawing.ps1</Link>
+    </None>
+    <None Include="..\PublishScripts\Publish-Havit.Enterprise.Web.ps1">
+      <Link>Publish-Havit.Enterprise.Web.ps1</Link>
+    </None>
+    <None Include="..\PublishScripts\Publish-Havit.Model.ps1">
+      <Link>Publish-Havit.Model.ps1</Link>
+    </None>
+    <None Include="..\PublishScripts\Publish-Havit.PayMuzo.ps1">
+      <Link>Publish-Havit.PayMuzo.ps1</Link>
+    </None>
+    <None Include="..\PublishScripts\Publish-Havit.PayPal.ps1">
+      <Link>Publish-Havit.PayPal.ps1</Link>
+    </None>
+    <None Include="..\PublishScripts\Publish-Havit.ps1">
+      <Link>Publish-Havit.ps1</Link>
+    </None>
+    <None Include="..\PublishScripts\Publish-Havit.Services.Azure.ps1">
+      <Link>Publish-Havit.Services.Azure.ps1</Link>
+    </None>
+    <None Include="..\PublishScripts\Publish-Havit.Services.ps1">
+      <Link>Publish-Havit.Services.ps1</Link>
+    </None>
+    <None Include="..\PublishScripts\Publish-Havit.Web.ClientContent.ps1">
+      <Link>Publish-Havit.Web.ClientContent.ps1</Link>
+    </None>
+    <None Include="..\PublishScripts\Publish-Havit.Web.ps1">
+      <Link>Publish-Havit.Web.ps1</Link>
+    </None>
+    <None Include="Havit.Business.nuspec">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Havit.CastleWindsor.WebForms.nuspec">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Havit.CastleWindsor.WebForms\content\Web.config.install.xdt" />
+    <None Include="Havit.CastleWindsor.WebForms\content\Web.config.uninstall.xdt" />
+    <None Include="Havit.Data.Entity6.Glimpse.nuspec">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Havit.Data.Entity6.Glimpse\content\Config\system.diagnostics.config.transform" />
+    <None Include="Havit.Data.Entity6.Glimpse\content\Web.config.install.xdt" />
+    <None Include="Havit.Data.Entity6.Glimpse\content\Web.Release.config.transform" />
+    <None Include="Havit.Data.Entity6.Glimpse\tools\install.ps1" />
+    <None Include="Havit.Data.Entity6.nuspec">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Havit.Data.Entity6.Patterns.nuspec">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Havit.Data.Entity6.Patterns.Windsor.nuspec">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Havit.Data.Glimpse.nuspec">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Havit.Data.Glimpse\content\Config\system.diagnostics.config.transform" />
+    <None Include="Havit.Data.Glimpse\content\Web.config.install.xdt" />
+    <None Include="Havit.Data.Glimpse\content\Web.Release.config.transform" />
+    <None Include="Havit.Data.Glimpse\tools\install.ps1" />
+    <None Include="Havit.Data.nuspec">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Havit.Data.Patterns.nuspec">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Havit.Drawing.nuspec">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Havit.Enterprise.Web.nuspec">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Havit.Model.nuspec">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Havit.nuspec">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Havit.PayMuzo.nuspec">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Havit.PayPal.nuspec">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Havit.Services.Azure.nuspec">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Havit.Services.nuspec">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Havit.Web.Bootstrap.nuspec">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Havit.Web.Bootstrap\content\Web.config.install.xdt" />
+    <None Include="Havit.Web.Bootstrap\content\Web.config.uninstall.xdt" />
+    <None Include="Havit.Web.ClientContent.nuspec">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Havit.Web.nuspec">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Havit.Business\Havit.Business.csproj">
+      <Project>{81995bc1-9f25-4f46-8258-8ed1f965cabb}</Project>
+      <Name>Havit.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Havit.CastleWindsor.WebForms\Havit.CastleWindsor.WebForms.csproj">
+      <Project>{d0fa41ae-b54a-4888-8478-35c4d0e0b60b}</Project>
+      <Name>Havit.CastleWindsor.WebForms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Havit.Data.Entity6.Glimpse\Havit.Data.Entity6.Glimpse.csproj">
+      <Project>{b847560e-3fea-419d-bfac-d7e3544c1f70}</Project>
+      <Name>Havit.Data.Entity6.Glimpse</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Havit.Data.Entity6.Patterns.Windsor\Havit.Data.Entity6.Patterns.Windsor.csproj">
+      <Project>{dcf67a43-0eed-4b20-85e3-f8a7aa1c22b5}</Project>
+      <Name>Havit.Data.Entity6.Patterns.Windsor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Havit.Data.Entity6.Patterns\Havit.Data.Entity6.Patterns.csproj">
+      <Project>{f8682e3b-c697-4e27-bf95-d9c48fe2d693}</Project>
+      <Name>Havit.Data.Entity6.Patterns</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Havit.Data.Entity6\Havit.Data.Entity6.csproj">
+      <Project>{d7232f24-9dcc-466f-b8ab-e3248e8edcc6}</Project>
+      <Name>Havit.Data.Entity6</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Havit.Data.Glimpse\Havit.Data.Glimpse.csproj">
+      <Project>{c5c6607e-644a-468f-a6c2-cdcf8a1d23dc}</Project>
+      <Name>Havit.Data.Glimpse</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Havit.Data.Patterns\Havit.Data.Patterns.csproj">
+      <Project>{8632b9da-ecb6-4007-ab3f-9c9aece63d67}</Project>
+      <Name>Havit.Data.Patterns</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Havit.Data\Havit.Data.csproj">
+      <Project>{703235e0-86c0-44f3-95bb-3d9f39886966}</Project>
+      <Name>Havit.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Havit.Drawing\Havit.Drawing.csproj">
+      <Project>{0a4c075e-e474-4ad5-8377-5f7c7e3488d8}</Project>
+      <Name>Havit.Drawing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Havit.Enterprise.Web\Havit.Enterprise.Web.csproj">
+      <Project>{7478bea8-791f-47e9-add9-18f2d34619ea}</Project>
+      <Name>Havit.Enterprise.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Havit.Model\Havit.Model.csproj">
+      <Project>{72a78976-6b9f-4d96-a4c9-441066e44de4}</Project>
+      <Name>Havit.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Havit.PayMuzo\Havit.PayMuzo.csproj">
+      <Project>{23dd2985-0805-4a85-ae9f-dcf95416cf20}</Project>
+      <Name>Havit.PayMuzo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Havit.PayPal\Havit.PayPal.csproj">
+      <Project>{a05aefc5-6a86-43b8-b9d2-58e557a225db}</Project>
+      <Name>Havit.PayPal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Havit.Services.Azure\Havit.Services.Azure.csproj">
+      <Project>{7846ca68-e6b0-4943-9285-de1d48248b84}</Project>
+      <Name>Havit.Services.Azure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Havit.Services\Havit.Services.csproj">
+      <Project>{2e4ae0cf-fa21-4fbc-9274-e56bc5d9494e}</Project>
+      <Name>Havit.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Havit.Web\Havit.Web.csproj">
+      <Project>{52891fb3-ca20-403b-ac25-7d9ca5738b6b}</Project>
+      <Name>Havit.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Havit\Havit.csproj">
+      <Project>{9acc94b9-b8fd-47c1-abf8-0658c7673905}</Project>
+      <Name>Havit</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <SourceGetVersion Condition="'$(SourceGetVersion)' == ''">0</SourceGetVersion>
+  </PropertyGroup>
+  <Target Name="CreateNuGetPackages" AfterTargets="AfterBuild">
+    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion) Havit.Business.nuspec" />
+    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion) Havit.CastleWindsor.WebForms.nuspec" />
+    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion) Havit.Data.Entity6.Glimpse.nuspec" />
+    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion) Havit.Data.Entity6.nuspec" />
+    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion) Havit.Data.Entity6.Patterns.nuspec" />
+    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion) Havit.Data.Entity6.Patterns.Windsor.nuspec" />
+    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion) Havit.Data.Glimpse.nuspec" />
+    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion) Havit.Data.nuspec" />
+    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion) Havit.Data.Patterns.nuspec" />
+    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion) Havit.Drawing.nuspec" />
+    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion) Havit.Enterprise.Web.nuspec" />
+    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion) Havit.Model.nuspec" />
+    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion) Havit.nuspec" />
+    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion) Havit.PayMuzo.nuspec" />
+    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion) Havit.PayPal.nuspec" />
+    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion) Havit.Services.Azure.nuspec" />
+    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion) Havit.Services.nuspec" />
+    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion) Havit.Web.Bootstrap.nuspec" />
+    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion) Havit.Web.ClientContent.nuspec" />
+    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion) Havit.Web.nuspec" />
+  </Target>
+  <Target Name="CleanNuGetPackages" BeforeTargets="Clean">
+	<ItemGroup>
+	  <FilesToDelete Include="$(OutputPath)\*.nupkg"/>
+	</ItemGroup>
+	<Delete Files="@(FilesToDelete)" />
+  </Target>
+  <Target Name="TfsPublish" AfterTargets="AfterBuild;CreateNuGetPackage" Condition="'$(PublishDirectory)' != ''">
+    <ItemGroup>
+      <FilesToCopy Include="$(OutputPath)\*.nupkg" />
+    </ItemGroup>
+    <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(PublishDirectory)\NuGet\%(RecursiveDir)%(Filename)%(Extension)')" />
+  </Target>
+</Project>

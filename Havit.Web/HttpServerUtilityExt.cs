@@ -8,7 +8,7 @@ namespace Havit.Web
 	/// <summary>
 	/// Poskytuje další pomocné metody pro ovládání webového serveru.
 	/// </summary>
-	public sealed class HttpServerUtilityExt
+	public static class HttpServerUtilityExt
 	{
 		#region ClearCache
 		/// <summary>
@@ -103,13 +103,6 @@ namespace Havit.Web
 			
 			return ResolveUrl(context.Request.ApplicationPath, url);
 		}
-		#endregion
-
-		#region private constructor
-		/// <summary>
-		/// private constructor zabraňuje vytvoření instance třídy
-		/// </summary>
-		private HttpServerUtilityExt() { }
 		#endregion
 	}
 }

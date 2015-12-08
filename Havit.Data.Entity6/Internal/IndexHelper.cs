@@ -35,7 +35,7 @@ namespace Havit.Data.Entity.Internal
 			foreach (EdmProperty property in columns)
 			{
 				order += 1;
-				AddIndexAnnotation(property, indexName, order);
+				AddIndexAnnotation(property, indexName, order, unique);
 			}
 		}
 

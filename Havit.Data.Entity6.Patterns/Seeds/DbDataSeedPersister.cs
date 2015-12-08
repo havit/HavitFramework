@@ -7,6 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Havit.Data.Patterns.DataSeeds;
+using Havit.Diagnostics.Contracts;
 using Havit.Linq;
 using Havit.Linq.Expressions;
 
@@ -33,6 +34,8 @@ namespace Havit.Data.Entity.Patterns.Seeds
 		public void Save<TEntity>(DataSeedConfiguration<TEntity> configuration)
 			where TEntity : class
 		{
+			CheckConditions(configuration);
+
 			DbSet<TEntity> dbSet = dbContext.Set<TEntity>();
 			List<SeedDataPair<TEntity>> seedDataPairs = PairWithDbData(dbSet, configuration);
 
@@ -65,13 +68,19 @@ namespace Havit.Data.Entity.Patterns.Seeds
 			}
 		}
 
+		private void CheckConditions<TEntity>(DataSeedConfiguration<TEntity> configuration)
+		{
+			Contract.Requires<ArgumentNullException>(configuration != null, nameof(configuration));
+			Contract.Requires<InvalidOperationException>((configuration.PairByExpressions != null) && (configuration.PairByExpressions.Count > 0), "Expression to pair object missing (missing Pair method call).");
+		}
+
 		/// <summary>
 		/// Provede párování předpisu seedovaných dat s existujícími objekty.
 		/// </summary>
-		private List<SeedDataPair<TEntity>> PairWithDbData<TEntity>(DbSet<TEntity> dbSet, DataSeedConfiguration<TEntity> configuration)
+		internal List<SeedDataPair<TEntity>> PairWithDbData<TEntity>(IQueryable<TEntity> dataQueryable, DataSeedConfiguration<TEntity> configuration)
 			where TEntity : class
 		{
-			return PairWithDbData_LoadChunksStrategy<TEntity>(dbSet, configuration);
+			return PairWithDbData_LoadChunksStrategy<TEntity>(dataQueryable, configuration);
 		}
 
 		/// <summary>
@@ -168,7 +177,17 @@ namespace Havit.Data.Entity.Patterns.Seeds
 					}
 				}
 
-				var dbEntity = dataQueryable.Where(whereExpression).SingleOrDefault();
+				TEntity dbEntity;
+				var pairExpression = dataQueryable.Where(whereExpression);
+
+				try
+				{
+					dbEntity = pairExpression.SingleOrDefault();
+				}
+				catch (InvalidOperationException) // The input sequence contains more than one element.
+				{
+					throw new InvalidOperationException($"More than one object found for \"{whereExpression}\".");
+				}
 
 				result.Add(new SeedDataPair<TEntity>
 				{

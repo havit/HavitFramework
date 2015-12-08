@@ -69,7 +69,9 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
       </ItemGroup>
     </Otherwise>
   </Choose>
@@ -95,6 +97,7 @@
     <Compile Include="Infrastructure\DbItemWithDeletedDataSource.cs" />
     <Compile Include="Infrastructure\FakeItemWithDeletedDataSource.cs" />
     <Compile Include="Infrastructure\DbItemWithDeletedRepository.cs" />
+    <Compile Include="Seeds\DbDataSeedPersisterTest.cs" />
     <Compile Include="SoftDeletes\SoftDeleteManagerTest.cs" />
     <Compile Include="QueryServices\Fakes\FakeDataSourceTest.cs" />
     <Compile Include="Infrastructure\TestDbContext.cs" />

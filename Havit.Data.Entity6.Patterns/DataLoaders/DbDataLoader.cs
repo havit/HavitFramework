@@ -96,6 +96,11 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 
 		#region IDataLoaderAsync implementation (LoadAsync + LoadAllAsync)
 
+		/// <summary>
+		/// Načte vlastnosti objektů, pokud ještě nejsou načteny.
+		/// </summary>
+		/// <param name="entity">Objekt, jehož vlastnosti budou načteny.</param>
+		/// <param name="propertyPath">Vlastnost, která má být načtena.</param>
 		public Task<IDataLoaderFluentAsync<TProperty>> LoadAsync<TEntity, TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> propertyPath)
 			where TEntity : class
 			where TProperty : class
@@ -103,6 +108,11 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 			return LoadInternalAsync(new TEntity[] { entity }, propertyPath);
 		}
 
+		/// <summary>
+		/// Načte vlastnosti objektů, pokud ještě nejsou načteny.
+		/// </summary>
+		/// <param name="entity">Objekt, jehož vlastnosti budou načteny.</param>
+		/// <param name="propertyPaths">Vlastnostu, které mají být načteny.</param>
 		public async Task LoadAsync<TEntity>(TEntity entity, params Expression<Func<TEntity, object>>[] propertyPaths)
 			where TEntity : class
 		{
@@ -114,13 +124,23 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 			}
 		}
 
+		/// <summary>
+		/// Načte vlastnosti objektů, pokud ještě nejsou načteny.
+		/// </summary>
+		/// <param name="entities">Objekty, jejíž vlastnosti budou načteny.</param>
+		/// <param name="propertyPath">Vlastnost, která má být načtena.</param>
 		public Task<IDataLoaderFluentAsync<TProperty>> LoadAllAsync<TEntity, TProperty>(IEnumerable<TEntity> entities, Expression<Func<TEntity, TProperty>> propertyPath)
 			where TEntity : class
 			where TProperty : class
 		{
 			return LoadInternalAsync(entities, propertyPath);
 		}
-
+		
+		/// <summary>
+		/// Načte vlastnosti objektů, pokud ještě nejsou načteny.
+		/// </summary>
+		/// <param name="entities">Objekty, jejíž vlastnosti budou načteny.</param>
+		/// <param name="propertyPaths">Vlastnostu, které mají být načteny.</param>
 		public async Task LoadAllAsync<TEntity>(IEnumerable<TEntity> entities, params Expression<Func<TEntity, object>>[] propertyPaths)
 			where TEntity : class
 		{
@@ -422,6 +442,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 		/// </summary>
 		/// <param name="propertyPath">Načítaná vlastnost.</param>
 		/// <param name="ids">Identifikátory objektů, jejichž vlastnost má být načtena.</param>
+		/// <param name="isPropertyCollection">True, pokud vlastost v propertyPath vyjadřuje kolekci.</param>
 		private IQueryable GetLoadQuery<TEntity, TProperty>(Expression<Func<TEntity, TProperty>> propertyPath, List<int> ids, bool isPropertyCollection)
 			where TEntity : class
 		{

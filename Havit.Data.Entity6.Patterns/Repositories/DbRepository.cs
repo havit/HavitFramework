@@ -117,11 +117,17 @@ namespace Havit.Data.Entity.Patterns.Repositories
 			return DbSet.WhereNotDeleted(softDeleteManager);
 		}
 
+		/// <summary>
+		/// Zajistí načtení vlastností definovaných v meodě GetLoadReferences.
+		/// </summary>
 		protected void LoadReferences(TEntity[] entities)
 		{
 			dataLoader.LoadAll(entities, GetLoadReferences().ToArray());
 		}
 
+		/// <summary>
+		/// Zajistí načtení vlastností definovaných v meodě GetLoadReferences.
+		/// </summary>
 		protected async Task LoadReferencesAsync(TEntity[] entities)
 		{	
 			await dataLoaderAsync.LoadAllAsync(entities, GetLoadReferences().ToArray());

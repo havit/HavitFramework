@@ -54,6 +54,13 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Attributes\FakeAttribute.cs" />
+    <Compile Include="DataLoaders\Fluent\DataLoaderFluentAsync.cs" />
+    <Compile Include="DataLoaders\Fluent\DataLoaderFluent.cs" />
+    <Compile Include="DataLoaders\Fluent\IDataLoaderFluent.cs" />
+    <Compile Include="DataLoaders\Fluent\IDataLoaderFluentAsync.cs" />
+    <Compile Include="DataLoaders\Fluent\TaskExtensions.cs" />
+    <Compile Include="DataLoaders\IDataLoaderAsync.cs" />
+    <Compile Include="DataLoaders\IDataLoader.cs" />
     <Compile Include="DataSeeds\ChildDataSeedConfigurationEntry.cs" />
     <Compile Include="DataSeeds\DataSeed.cs" />
     <Compile Include="DataSeeds\DataSeedConfiguration.cs" />
@@ -61,11 +68,6 @@
     <Compile Include="DataSeeds\DataSeedRunner.cs" />
     <Compile Include="Exceptions\ObjectNotFoundException.cs" />
     <Compile Include="DataEntries\IDataEntries.cs" />
-    <Compile Include="DataLoaders\TaskExtensions.cs" />
-    <Compile Include="DataLoaders\IDbDataLoaderAsync.cs" />
-    <Compile Include="DataLoaders\IDbDataLoader.cs" />
-    <Compile Include="DataLoaders\IDbDataLoaderForAsync.cs" />
-    <Compile Include="DataLoaders\IDbDataLoaderFor.cs" />
     <Compile Include="DataSeeds\IDataSeed.cs" />
     <Compile Include="DataSeeds\IDataSeedFor.cs" />
     <Compile Include="DataSeeds\IDataSeedPersister.cs" />

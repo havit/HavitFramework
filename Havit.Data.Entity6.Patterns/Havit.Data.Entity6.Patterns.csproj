@@ -65,13 +65,11 @@
     <Compile Include="DataEntries\DbDataEntrySymbolStorage.cs" />
     <Compile Include="DataEntries\EntryIdentification.cs" />
     <Compile Include="DataEntries\IDataEntrySymbolStorage.cs" />
-    <Compile Include="DataLoaders\DbDataLoader.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DataLoaders\DbDataLoaderFor.cs" />
+    <Compile Include="DataLoaders\DbDataLoader.cs" />
     <Compile Include="DataEntries\DbDataEntries.cs" />
-    <Compile Include="DataLoaders\Fakes\FakeDbDataLoader.cs" />
-    <Compile Include="DataLoaders\Fakes\FakeDbDataLoaderFor.cs" />
+    <Compile Include="DataLoaders\EnumerableExtensions.cs" />
+    <Compile Include="DataLoaders\PropertiesSequenceExpressionVisitor.cs" />
+    <Compile Include="DataLoaders\PropertyToLoad.cs" />
     <Compile Include="SoftDeletes\ISoftDeleteManager.cs" />
     <Compile Include="Localizations\DbLanguageService.cs" />
     <Compile Include="QueryServices\DbDataSource.cs" />

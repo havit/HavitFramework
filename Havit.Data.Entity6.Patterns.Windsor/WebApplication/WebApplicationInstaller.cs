@@ -65,7 +65,7 @@ namespace Havit.Data.Entity.Patterns.Windsor.WebApplication
 		/// /PRo IUnitOfWork a IUnitOfWorkAsync registruje DbUnitOfWork s lifestylem PerWebRequest/PerThread,
 		/// </description></item>
 		/// <item><description>
-		/// Pro IDbDataLoader a IDbDataLoaderAsync registruje DbDataLoader s lifestylem PerWebRequest/PerThread.
+		/// Pro IDataLoader a IDataLoaderAsync registruje DbDataLoader s lifestylem PerWebRequest/PerThread.
 		/// </description></item>
 		/// </list>
 		/// </remarks>
@@ -88,7 +88,7 @@ namespace Havit.Data.Entity.Patterns.Windsor.WebApplication
 				Component.For(typeof(IDataSourceFactory<>)).AsFactory(),
 				Component.For(typeof(IRepositoryFactory<>)).AsFactory(),
 				Component.For<IUnitOfWork, IUnitOfWorkAsync>().ImplementedBy<DbUnitOfWork>().LifeStyle.HybridPerWebRequestPerThread(),
-				Component.For<IDbDataLoader, IDbDataLoaderAsync>().ImplementedBy<DbDataLoader>().LifeStyle.HybridPerWebRequestPerThread()
+				Component.For<IDataLoader, IDataLoaderAsync>().ImplementedBy<DbDataLoader>().LifeStyle.HybridPerWebRequestPerThread()
 			);
 
 			return container;

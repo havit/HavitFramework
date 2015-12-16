@@ -5,7 +5,6 @@ using System.Data.Entity.Core;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Threading.Tasks;
-using Havit.Data.Entity.Patterns.DataLoaders.Fakes;
 using Havit.Data.Entity.Patterns.Repositories;
 using Havit.Data.Entity.Patterns.SoftDeletes;
 using Havit.Data.Entity.Patterns.Tests.Infrastructure;
@@ -29,12 +28,13 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 			Mock<IDbContext> mockDbContext = new Mock<IDbContext>();
 			mockDbContext.Setup(m => m.Set<ItemWithDeleted>()).Returns(mockDbSet.Object);
 
-			Mock<IDbDataLoaderAsync> mockDbDataLoader = new Mock<IDbDataLoaderAsync>();
+			Mock<IDataLoader> mockDbDataLoader = new Mock<IDataLoader>();
+			Mock<IDataLoaderAsync> mockDbDataLoaderAsync = new Mock<IDataLoaderAsync>();
 
 			Mock<ISoftDeleteManager> mockSoftDeleteManager = new Mock<ISoftDeleteManager>();
 			mockSoftDeleteManager.Setup(m => m.IsSoftDeleteSupported<ItemWithDeleted>()).Returns(false);
 
-			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(mockDbContext.Object, mockDbDataLoader.Object, mockSoftDeleteManager.Object);
+			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(mockDbContext.Object, mockDbDataLoader.Object, mockDbDataLoaderAsync.Object, mockSoftDeleteManager.Object);
 
 			// Act
 			repository.GetObject(1);
@@ -53,12 +53,13 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 			Mock<IDbContext> mockDbContext = new Mock<IDbContext>();
 			mockDbContext.Setup(m => m.Set<ItemWithDeleted>()).Returns(mockDbSet.Object);
 
-			Mock<IDbDataLoaderAsync> mockDbDataLoader = new Mock<IDbDataLoaderAsync>();			
+			Mock<IDataLoader> mockDbDataLoader = new Mock<IDataLoader>();
+			Mock<IDataLoaderAsync> mockDbDataLoaderAsync = new Mock<IDataLoaderAsync>();
 
 			Mock<ISoftDeleteManager> mockSoftDeleteManager = new Mock<ISoftDeleteManager>();
 			mockSoftDeleteManager.Setup(m => m.IsSoftDeleteSupported<ItemWithDeleted>()).Returns(true);
 
-			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(mockDbContext.Object, mockDbDataLoader.Object, mockSoftDeleteManager.Object);
+			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(mockDbContext.Object, mockDbDataLoader.Object, mockDbDataLoaderAsync.Object, mockSoftDeleteManager.Object);
 
 			// Act
 			ItemWithDeleted repositoryResult = repository.GetObject(1);
@@ -85,7 +86,9 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 			Mock<IDbContext> mockDbContext = new Mock<IDbContext>();
 			mockDbContext.Setup(m => m.Set<ItemWithDeleted>()).Returns(mockDbSet.Object);
 
-			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(mockDbContext.Object, new FakeDbDataLoader(), new SoftDeleteManager(new ServerTimeService()));
+			Mock<IDataLoader> mockDbDataLoader = new Mock<IDataLoader>();
+			Mock<IDataLoaderAsync> mockDbDataLoaderAsync = new Mock<IDataLoaderAsync>();
+			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(mockDbContext.Object, mockDbDataLoader.Object, mockDbDataLoaderAsync.Object, new SoftDeleteManager(new ServerTimeService()));
 
 			// Act
 			List<ItemWithDeleted> result = repository.GetAll();

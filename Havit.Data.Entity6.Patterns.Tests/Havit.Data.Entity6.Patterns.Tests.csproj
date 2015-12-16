@@ -84,6 +84,7 @@
     <Compile Include="DataEntries\DataSources\SupportedClassDataEntries.cs" />
     <Compile Include="DataEntries\DataSources\FakeSupportedClassDataSource.cs" />
     <Compile Include="DataLoader\DbDataLoaderTest.cs" />
+    <Compile Include="DataLoader\PropertiesSequenceExpressionVisitorTest.cs" />
     <Compile Include="DataLoader\Model\Child.cs" />
     <Compile Include="DataLoader\Model\DataLoaderTestDbContext.cs" />
     <Compile Include="DataLoader\Model\LoginAccount.cs" />

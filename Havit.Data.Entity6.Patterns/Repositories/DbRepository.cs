@@ -18,7 +18,8 @@ namespace Havit.Data.Entity.Patterns.Repositories
 	public abstract class DbRepository<TEntity> : IRepository<TEntity>, IRepositoryAsync<TEntity>
 		 where TEntity : class
 	{
-		private readonly IDbDataLoaderAsync dbDataLoader;
+		private readonly IDataLoader dataLoader;
+		private readonly IDataLoaderAsync dataLoaderAsync;
 		private readonly ISoftDeleteManager softDeleteManager;
 
 		private TEntity[] _all;
@@ -31,7 +32,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		protected DbRepository(IDbContext dbContext, IDbDataLoaderAsync dbDataLoader, ISoftDeleteManager softDeleteManager)
+		protected DbRepository(IDbContext dbContext, IDataLoader dataLoader, IDataLoaderAsync dataLoaderAsync, ISoftDeleteManager softDeleteManager)
 		{
 			Contract.Requires<ArgumentException>(dbContext != null);
 			Contract.Requires<ArgumentException>(softDeleteManager != null);
@@ -39,7 +40,8 @@ namespace Havit.Data.Entity.Patterns.Repositories
 			var dbSet = dbContext.Set<TEntity>();
 			Contract.Assert(dbSet != null);
 
-			this.dbDataLoader = dbDataLoader;
+			this.dataLoader = dataLoader;
+			this.dataLoaderAsync = dataLoaderAsync;
 			this.softDeleteManager = softDeleteManager;
 
 			DbSet = dbSet;
@@ -115,20 +117,14 @@ namespace Havit.Data.Entity.Patterns.Repositories
 			return DbSet.WhereNotDeleted(softDeleteManager);
 		}
 
-		private void LoadReferences(TEntity[] entities)
+		protected void LoadReferences(TEntity[] entities)
 		{
-			foreach (var expression in GetLoadReferences())
-			{
-				((IDbDataLoader)dbDataLoader).For(entities).Load(expression);
-			}
+			dataLoader.LoadAll(entities, GetLoadReferences().ToArray());
 		}
 
-		private async Task LoadReferencesAsync(TEntity[] entities)
+		protected async Task LoadReferencesAsync(TEntity[] entities)
 		{	
-            foreach (var expression in GetLoadReferences())
-            {
-	            await dbDataLoader.For(entities).LoadAsync(expression);
-            }
+			await dataLoaderAsync.LoadAllAsync(entities, GetLoadReferences().ToArray());
 		}
 
 		/// <summary>

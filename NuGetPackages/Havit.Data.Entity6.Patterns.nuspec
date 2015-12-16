@@ -14,11 +14,9 @@
 		<copyright>Copyright HAVIT, s.r.o. 2015</copyright>
 		<dependencies>
 			<group targetFramework="net46">
-			  <dependency id="EntityFramework" version="[6.1.3,7)" />
 			  <dependency id="Havit" />
 			  <dependency id="Havit.Model" />
 			  <dependency id="Havit.Services" />
-			  <dependency id="Havit.Data.Entity6" />
 			  <dependency id="Havit.Data.Patterns" />
 			</group>
 		</dependencies>

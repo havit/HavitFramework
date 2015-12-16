@@ -16,5 +16,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 		{
 			get { return CollectionItemType != null; }
 		}
+
+		public bool CollectionUnwrapped { get; set; }
 	}
 }

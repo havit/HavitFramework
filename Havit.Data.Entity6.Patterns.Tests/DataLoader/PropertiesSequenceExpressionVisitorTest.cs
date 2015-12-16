@@ -39,18 +39,21 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 			Assert.AreEqual(typeof(Master), propertiesToLoad[0].TargetType);
 			Assert.IsFalse(propertiesToLoad[0].IsCollection);
 			Assert.IsNull(propertiesToLoad[0].CollectionItemType);
+			Assert.IsFalse(propertiesToLoad[0].CollectionUnwrapped);
 
 			Assert.AreEqual(nameof(Master.Children), propertiesToLoad[1].PropertyName);
 			Assert.AreEqual(typeof(Master), propertiesToLoad[1].SourceType);
 			Assert.AreEqual(typeof(ICollection<Child>), propertiesToLoad[1].TargetType);
 			Assert.AreEqual(typeof(Child), propertiesToLoad[1].CollectionItemType);
 			Assert.IsTrue(propertiesToLoad[1].IsCollection);
+			Assert.IsTrue(propertiesToLoad[1].CollectionUnwrapped);
 
 			Assert.AreEqual(nameof(Child.Parent), propertiesToLoad[2].PropertyName);
 			Assert.AreEqual(typeof(Child), propertiesToLoad[2].SourceType);
 			Assert.AreEqual(typeof(Master), propertiesToLoad[2].TargetType);
 			Assert.IsFalse(propertiesToLoad[2].IsCollection);
 			Assert.IsNull(propertiesToLoad[2].CollectionItemType);
+			Assert.IsFalse(propertiesToLoad[2].CollectionUnwrapped);
 		}
 	}
 }

@@ -359,7 +359,7 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 
 			// Act
 
-			dataLoader.Load(master1, m => m.Children);
+			dataLoader.Load(master1, m => m.Children.Unwrap());
 			dataLoader.LoadAll(new Master[] { master1, master2 }, m => m.Children);
 
 			// Assert
@@ -384,7 +384,6 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 		}
 
 		[TestMethod]			
-		[Ignore] // testujeme zejména způsob zápisu, API - tj. zejména compile time
 		public void DbDataLoader_Load_SupportsFluentApi()
 		{
 			// Arrange

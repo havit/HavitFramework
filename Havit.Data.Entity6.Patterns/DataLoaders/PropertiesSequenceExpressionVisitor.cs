@@ -11,6 +11,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 {
 	internal class PropertiesSequenceExpressionVisitor : ExpressionVisitor
 	{
+		private bool collectionUnwrapRequired = false;
 		private string propertyPathString;
 		private List<PropertyToLoad> propertiesToLoad;
 		private readonly MethodInfo unwrapCollectionMethodInfo = typeof(EnumerableExtensions).GetMethod(nameof(EnumerableExtensions.Unwrap), BindingFlags.Static | BindingFlags.Public);
@@ -54,11 +55,16 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 				throw new NotSupportedException($"There is unsupported method call \"{node.Method.Name}\" in the expression \"{propertyPathString}\".");
 			}
 
+			collectionUnwrapRequired = true;
+
 			return base.VisitMethodCall(node);
 		}
 
 		protected override Expression VisitMember(MemberExpression node)
 		{
+			bool collectionUnwrapThisMember = this.collectionUnwrapRequired;
+			collectionUnwrapRequired = false;
+
 			Expression result = base.VisitMember(node);
 
 			if (node.NodeType == ExpressionType.MemberAccess)
@@ -73,7 +79,8 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 						SourceType = node.Member.DeclaringType,
 						PropertyName = node.Member.Name,
 						TargetType = ((PropertyInfo)node.Member).PropertyType,
-						CollectionItemType = enumerableInterfaceType.GetGenericArguments()[0]
+						CollectionItemType = enumerableInterfaceType.GetGenericArguments()[0],
+						CollectionUnwrapped = collectionUnwrapThisMember
 					});
 
 				}

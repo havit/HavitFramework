@@ -192,7 +192,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 								propertyToLoad.SourceType,
 								propertyToLoad.TargetType,
 								propertyToLoad.CollectionItemType)
-							.Invoke(this, new object[] { propertyToLoad.PropertyName, entities });
+							.Invoke(this, new object[] { propertyToLoad.PropertyName, entities, propertyToLoad.CollectionUnwrapped });
 					}
 
 					if (entities.Length == 0)
@@ -330,7 +330,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 		/// <summary>
 		/// Zajistí načtení vlastnosti, která je kolekcí. Voláno reflexí.
 		/// </summary>
-		private TPropertyItem[] LoadCollectionPropertyInternal<TEntity, TPropertyCollection, TPropertyItem>(string propertyName, TEntity[] entities)
+		private object[] LoadCollectionPropertyInternal<TEntity, TPropertyCollection, TPropertyItem>(string propertyName, TEntity[] entities, bool unwrapCollection)
 					where TEntity : class
 					where TPropertyCollection : class
 					where TPropertyItem : class
@@ -347,9 +347,14 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 			}
 
 			InsertLoadedCollectionInstancesToAlreadyLoadedCollectionInstances(entities, propertyPathLambda);
-
-			var result = entities.SelectMany(item => (IEnumerable<TPropertyItem>)propertyPathLambda(item)).ToArray();
-			return result;
+			if (unwrapCollection)
+			{
+				return entities.SelectMany(item => (IEnumerable<TPropertyItem>)propertyPathLambda(item)).ToArray();
+			}
+			else
+			{
+				return entities.Select(item => propertyPathLambda(item)).ToArray();
+			}
 		}
 
 		/// <summary>

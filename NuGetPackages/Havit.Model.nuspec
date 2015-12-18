@@ -14,7 +14,7 @@
 		<copyright>Copyright HAVIT, s.r.o. 2015</copyright>
 		<tags>HAVIT Model Entity Framework EF</tags>
 		<frameworkAssemblies>
-		  <frameworkAssembly assemblyName="System.ComponentModel.DataAnnotations" targetFramework="net46" />
+		  <frameworkAssembly assemblyName="System.ComponentModel.DataAnnotations" />
 		</frameworkAssemblies>
 	</metadata>
 	<files>

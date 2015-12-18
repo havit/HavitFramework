@@ -271,7 +271,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 		/// </summary>
 		private Expression<Func<TEntity, TProperty>> GetPropertyLambdaExpression<TEntity, TProperty>(string propertyName)
 		{
-			var parameter = Expression.Parameter(typeof(TEntity), "item");
+			ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "item");
 			return Expression.Lambda<Func<TEntity, TProperty>>(Expression.Property(parameter, propertyName), parameter);
 		}
 
@@ -378,7 +378,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 
 			InsertLoadedCollectionInstancesToAlreadyLoadedCollectionInstances(entities, propertyPathLambda);
 
-			var result = entities.SelectMany(item => (IEnumerable<TPropertyItem>)propertyPathLambda(item)).ToArray();
+			TPropertyItem[] result = entities.SelectMany(item => (IEnumerable<TPropertyItem>)propertyPathLambda(item)).ToArray();
 			return result;
 		}
 
@@ -406,7 +406,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 			Contract.Requires(ids != null);
 			Contract.Requires(ids.Count > 0);
 
-			var parameter = Expression.Parameter(typeof(TEntity), "item");
+			ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "item");
 
 			// jediný záznam - testujeme na rovnost
 			if (ids.Count == 1)
@@ -474,8 +474,8 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 		/// </summary>
 		private void InsertLoadedCollectionInstancesToAlreadyLoadedCollectionInstances<TEntity, TProperty>(TEntity[] entities, Func<TEntity, TProperty> propertyPathLambda)
 		{
-			var collectionInstances = entities.Select(item => propertyPathLambda(item)).ToArray();
-			foreach (var collectionInstance in collectionInstances)
+			TProperty[] collectionInstances = entities.Select(item => propertyPathLambda(item)).ToArray();
+			foreach (TProperty collectionInstance in collectionInstances)
 			{
 				alreadyLoadedCollectionInstances.Add(collectionInstance); // pokud již v kolekci hodnota je, tak se nic nepřidává (nespadne, jen vrátí false)
 			}

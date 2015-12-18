@@ -34,7 +34,9 @@ namespace Havit.Data.Entity
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
-			
+
+			this.Set<object>(); // Pro podporu EntityFramework.MappingAPI - podpora pro Code First funguje až po prvním zavolání Set<T>().
+
 			// EF standardně pojmenovává tabulky v databázi v množném čísle (anglicky).
 			// Chceme pojmenovat tabulky v jednotném čísle (a nemrvnit češtinu ala "Fakturas"),
 			// proto odebereme konvenci zajišťující pojmenování v množném čísle.

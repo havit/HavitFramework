@@ -24,7 +24,7 @@ namespace Havit.Data.Entity.Patterns.Windsor
 			// Terms: https://msdn.microsoft.com/en-us/library/system.type.isgenerictype.aspx
 
 			Type[] interfaces = registeredType.GetInterfaces();
-			var closedInterfaceType = interfaces.Where(itype => itype.IsGenericType && itype.GetGenericTypeDefinition() == openConstructedInterfaceType).FirstOrDefault();
+			Type closedInterfaceType = interfaces.Where(itype => itype.IsGenericType && itype.GetGenericTypeDefinition() == openConstructedInterfaceType).FirstOrDefault();
 			if (closedInterfaceType != null)
 			{
 				yield return openConstructedInterfaceType.MakeGenericType(closedInterfaceType.GenericTypeArguments);

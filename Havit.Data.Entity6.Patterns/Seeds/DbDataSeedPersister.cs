@@ -94,10 +94,10 @@ namespace Havit.Data.Entity.Patterns.Seeds
 			ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "item");
 			List<TEntity> dbEntities = new List<TEntity>();
 
-			foreach (var chunk in seedData.Chunkify(1000))
+			foreach (TEntity[] chunk in seedData.Chunkify(1000))
 			{
 				Expression<Func<TEntity, bool>> chunkWhereExpression = null;
-				foreach (var seedEntity in chunk)
+				foreach (TEntity seedEntity in chunk)
 				{
 					Expression<Func<TEntity, bool>> seedEntityWhereExpression = null;
 
@@ -107,7 +107,7 @@ namespace Havit.Data.Entity.Patterns.Seeds
 						Func<TEntity, object> lambda = pairByLambdas[i];
 
 						object value = lambda.Invoke(seedEntity);
-						var pairByConditionExpression = (Expression<Func<TEntity, bool>>)Expression.Lambda(
+						Expression<Func<TEntity, bool>> pairByConditionExpression = (Expression<Func<TEntity, bool>>)Expression.Lambda(
 							Expression.Equal(ExpressionExt.ReplaceParameter(expression.Body, expression.Parameters[0], parameter).RemoveConvert(), Expression.Constant(value)), // TODO: Expression.Constant nejde pro references
 							parameter);
 
@@ -146,11 +146,11 @@ namespace Havit.Data.Entity.Patterns.Seeds
 
 			IEnumerable<TEntity> seedData = configuration.SeedData;
 
-			var result = new List<SeedDataPair<TEntity>>();
+			List<SeedDataPair<TEntity>> result = new List<SeedDataPair<TEntity>>();
 
 			Func<TEntity, object>[] pairByLambdas = configuration.PairByExpressions.Select(item => item.Compile()).ToArray();
 
-			foreach (var seedEntity in seedData)
+			foreach (TEntity seedEntity in seedData)
 			{
 				ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "item");
 
@@ -163,7 +163,7 @@ namespace Havit.Data.Entity.Patterns.Seeds
 
 					object value = lambda.Invoke(seedEntity);
 
-					var pairByConditionExpression = (Expression<Func<TEntity, bool>>)Expression.Lambda(
+					Expression<Func<TEntity, bool>> pairByConditionExpression = (Expression<Func<TEntity, bool>>)Expression.Lambda(
 						Expression.Equal(ExpressionExt.ReplaceParameter(expression.Body, expression.Parameters[0], parameter).RemoveConvert(), Expression.Constant(value)), // TODO: Expression.Constant nejde pro references
 						parameter);
 
@@ -178,7 +178,7 @@ namespace Havit.Data.Entity.Patterns.Seeds
 				}
 
 				TEntity dbEntity;
-				var pairExpression = dataQueryable.Where(whereExpression);
+				IQueryable<TEntity> pairExpression = dataQueryable.Where(whereExpression);
 
 				try
 				{
@@ -205,7 +205,7 @@ namespace Havit.Data.Entity.Patterns.Seeds
 		private void Update<TEntity>(DataSeedConfiguration<TEntity> configuration, IEnumerable<SeedDataPair<TEntity>> pairs)
 			where TEntity : class
 		{
-			var entityTypes = ((IObjectContextAdapter)dbContext).ObjectContext.MetadataWorkspace.GetItems<EntityType>(DataSpace.OSpace).ToList(); // TODO: Duplikace kódu
+			List<EntityType> entityTypes = ((IObjectContextAdapter)dbContext).ObjectContext.MetadataWorkspace.GetItems<EntityType>(DataSpace.OSpace).ToList(); // TODO: Duplikace kódu
 			EntityType entityType = entityTypes.Single(item => typeof(TEntity) == (Type)item.GetType().GetProperty("ClrType", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).GetValue(item)); // TODO: Duplikace kódu!
 
 			List<string> properties = entityType.Properties.Except(entityType.KeyProperties.Where(item => item.StoreGeneratedPattern != StoreGeneratedPattern.None)).Select(item => item.Name).ToList();
@@ -222,9 +222,9 @@ namespace Havit.Data.Entity.Patterns.Seeds
 				updateProperties = properties.Except(entityType.KeyProperties.Select(item => item.Name)).ToList();
 			}
 
-			foreach (var pair in pairs)
+			foreach (SeedDataPair<TEntity> pair in pairs)
 			{
-				foreach (var property in (pair.IsNew ? properties : updateProperties))
+				foreach (string property in (pair.IsNew ? properties : updateProperties))
 				{
 					object value = DataBinderExt.GetValue(pair.SeedEntity, property);
 					DataBinderExt.SetValue(pair.DbEntity, property, value);

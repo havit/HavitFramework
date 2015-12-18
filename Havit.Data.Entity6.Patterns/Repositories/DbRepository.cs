@@ -37,8 +37,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 			Contract.Requires<ArgumentException>(dbContext != null);
 			Contract.Requires<ArgumentException>(softDeleteManager != null);
 
-			var dbSet = dbContext.Set<TEntity>();
-			Contract.Assert(dbSet != null);
+			DbSet<TEntity> dbSet = dbContext.Set<TEntity>();
 
 			this.dataLoader = dataLoader;
 			this.dataLoaderAsync = dataLoaderAsync;

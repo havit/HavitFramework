@@ -44,6 +44,10 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="EntityFramework.MappingAPI, Version=6.1.0.9, Culture=neutral, PublicKeyToken=7ee2e825d201459e, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.MappingAPI.6.1.0.9\lib\net45\EntityFramework.MappingAPI.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
@@ -67,6 +71,20 @@
   <ItemGroup>
     <Compile Include="DbEntityValidationExceptionExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validators\ModelValidatorTest.cs" />
+    <Compile Include="Validators\Infrastructure\Model\NavigationPropertyWithForeignKeyClass.cs" />
+    <Compile Include="Validators\Infrastructure\Model\NavigationPropertyWithoutForeignKeyClass.cs" />
+    <Compile Include="Validators\Infrastructure\Model\StringIdClass.cs" />
+    <Compile Include="Validators\Infrastructure\Model\CapitalIDClass.cs" />
+    <Compile Include="Validators\Infrastructure\Model\MaxLengthAttributeWithPositiveValueClass.cs" />
+    <Compile Include="Validators\Infrastructure\Model\WithNestedEnumOtherClass.cs" />
+    <Compile Include="Validators\Infrastructure\Model\WithNestedEnumEntryClass.cs" />
+    <Compile Include="Validators\Infrastructure\Model\WithNestedClassClass.cs" />
+    <Compile Include="Validators\Infrastructure\Model\NoMaxLengthAttributeClass.cs" />
+    <Compile Include="Validators\Infrastructure\Model\MaxLengthAttributeWithNegativeValueClass.cs" />
+    <Compile Include="Validators\Infrastructure\Model\OneCorrectKeyClass.cs" />
+    <Compile Include="Validators\Infrastructure\Model\MoreInvalidKeysClass.cs" />
+    <Compile Include="Validators\Infrastructure\ModelValidatingDbContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Havit.Data.Entity6\Havit.Data.Entity6.csproj">
@@ -75,7 +93,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <Choose>

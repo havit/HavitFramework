@@ -77,7 +77,7 @@ namespace Havit.Data.Patterns.DataSeeds
 			IEnumerable<Type> prerequisiteTypes = dataSeed.GetPrerequisiteDataSeeds();
 			if (prerequisiteTypes != null)
 			{
-				foreach (var prerequisiteType in prerequisiteTypes)
+				foreach (Type prerequisiteType in prerequisiteTypes)
 				{
 					IDataSeed prerequisitedDbSeed;
 					if (!dataSeedDictionary.TryGetValue(prerequisiteType, out prerequisitedDbSeed))

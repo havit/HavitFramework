@@ -42,14 +42,14 @@ namespace Havit.Data.Patterns.DataSeeds
 			// pokud je definována vlastnost Symbol, použijeme ji jako výchozí hodnotu pro párování
 			if (typeof(TEntity).GetProperty("Symbol", BindingFlags.Public | BindingFlags.Instance) != null)
 			{
-				var parameter = Expression.Parameter(typeof(TEntity));
+				ParameterExpression parameter = Expression.Parameter(typeof(TEntity));
 				Expression<Func<TEntity, object>> symbolExpression = (Expression<Func<TEntity, object>>)Expression.Lambda(Expression.Convert(Expression.Property(parameter, typeof(TEntity), "Symbol"), typeof(object)), parameter);
 				PairBy(symbolExpression);
 			}
 			// jinak pokud jde o ILocalization, použijeme jako výchozí párování LanguageId a ParentId
 			else if ((typeof(TEntity).GetInterfaces().Any(interfaceType => interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == typeof(ILocalization<,>))))
 			{
-				var parameter = Expression.Parameter(typeof(TEntity));
+				ParameterExpression parameter = Expression.Parameter(typeof(TEntity));
 				// TODO: ParentId, LanguageId je EF specialita, interface nic takového nepředepisuje!
 				Expression<Func<TEntity, object>> parentExpression = (Expression<Func<TEntity, object>>)Expression.Lambda(Expression.Convert(Expression.Property(parameter, typeof(TEntity), "ParentId"), typeof(object)), parameter);
 				Expression<Func<TEntity, object>> languageExpression = (Expression<Func<TEntity, object>>)Expression.Lambda(Expression.Convert(Expression.Property(parameter, typeof(TEntity), "LanguageId"), typeof(object)), parameter);
@@ -63,7 +63,7 @@ namespace Havit.Data.Patterns.DataSeeds
 			{
 				Type localizedByType = localizationType.GenericTypeArguments[0]; // typ, kterým je tento lokalizován (tj. typ prvků v kolekci Localizations).
 				
-				var parameter = Expression.Parameter(typeof(TEntity), "item");
+				ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "item");
 				// item => item.Localizations
 				LambdaExpression localizationsExpression = Expression.Lambda(Expression.Convert(Expression.Property(parameter, typeof(TEntity), "Localizations"), typeof(IEnumerable<>).MakeGenericType(localizedByType)), parameter);
 				Delegate localizationsLambda = localizationsExpression.Compile();

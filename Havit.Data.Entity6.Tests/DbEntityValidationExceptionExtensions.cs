@@ -6,7 +6,7 @@ using Havit.Data.Entity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DbContext = Havit.Data.Entity.DbContext;
 
-namespace Havit.Data.Entity.Tests
+namespace Havit.Data.Entity.Validators
 {
 	[TestClass]
 	public class DbEntityValidationExceptionExtensionsTest
@@ -35,11 +35,11 @@ namespace Havit.Data.Entity.Tests
 		public void DbEntityValidationException_FormatErrorMessage_FormatsValidationResults()
 		{
 			// arrange
-			var dbContext = new DbEntityValidationExceptionExtensionsTestDbContext();
-			var entry = dbContext.Entry(new DbEntityValidationExceptionExtensionsTestDbContext.DataClass());
+			DbEntityValidationExceptionExtensionsTestDbContext dbContext = new DbEntityValidationExceptionExtensionsTestDbContext();
+			DbEntityEntry<DbEntityValidationExceptionExtensionsTestDbContext.DataClass> entry = dbContext.Entry(new DbEntityValidationExceptionExtensionsTestDbContext.DataClass());
 
-			var error1 = new DbValidationError("Property1", "Property1 must have a value.");
-			var error2 = new DbValidationError("Property2", "Property2 must have a value.");
+			DbValidationError error1 = new DbValidationError("Property1", "Property1 must have a value.");
+			DbValidationError error2 = new DbValidationError("Property2", "Property2 must have a value.");
 			DbEntityValidationResult validationResult = new DbEntityValidationResult(entry, new[] { error1, error2 });
 			DbEntityValidationException exception = new DbEntityValidationException("", new[] { validationResult });
 
@@ -67,11 +67,11 @@ namespace Havit.Data.Entity.Tests
 		public void DbEntityValidationException_FormatErrorMessage_IgnoresMessageWhenValidationResultExists()
 		{
 			// arrange
-			var dbContext = new DbEntityValidationExceptionExtensionsTestDbContext();
-			var entry = dbContext.Entry(new DbEntityValidationExceptionExtensionsTestDbContext.DataClass());
+			DbEntityValidationExceptionExtensionsTestDbContext dbContext = new DbEntityValidationExceptionExtensionsTestDbContext();
+			DbEntityEntry<DbEntityValidationExceptionExtensionsTestDbContext.DataClass> entry = dbContext.Entry(new DbEntityValidationExceptionExtensionsTestDbContext.DataClass());
 
-			var error1 = new DbValidationError("Property1", "Property1 must have a value.");
-			var error2 = new DbValidationError("Property2", "Property2 must have a value.");
+			DbValidationError error1 = new DbValidationError("Property1", "Property1 must have a value.");
+			DbValidationError error2 = new DbValidationError("Property2", "Property2 must have a value.");
 			DbEntityValidationResult validationResult = new DbEntityValidationResult(entry, new[] { error1, error2 });
 			DbEntityValidationException exception = new DbEntityValidationException("Message.", new[] { validationResult });
 

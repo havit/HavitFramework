@@ -40,8 +40,6 @@ namespace Havit.Data.Entity.Patterns.Windsor.WebApplication
 	{
 		/// <summary>
 		/// Registruje do Windsor Castle Containeru třídy používané v Havit.Data.Patterns a Havit.Data.Entity.Patterns.
-		/// Registruje CollectionResolver jako SubResolver Windsor Castlu.
-		/// Registruje TypedFactoryFacility.
 		/// </summary>
 		/// <remarks>
 		/// Registruje:
@@ -71,13 +69,6 @@ namespace Havit.Data.Entity.Patterns.Windsor.WebApplication
 		/// </remarks>
 		public static IWindsorContainer InstallEntityPatterns(this IWindsorContainer container)
 		{
-			// umožní resolvovat i kolekce závislostí - IEnumerable<IDependency>
-			// TODO: Pokud ještě není?
-			
-			container.Kernel.Resolver.AddSubResolver(new CollectionResolver(container.Kernel));
-
-			container.AddFacility<TypedFactoryFacility>();
-	
 			// framework services & factories
 			container.Register(
 				Component.For<ISoftDeleteManager>().ImplementedBy<SoftDeleteManager>().LifestyleSingleton(),

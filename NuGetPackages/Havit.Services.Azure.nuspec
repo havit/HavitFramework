@@ -15,7 +15,7 @@
 		<dependencies>
 			<group targetFramework="net45">
 				<dependency id="Havit.Services" />
-				<dependency id="WindowsAzure.Storage" />
+				<dependency id="WindowsAzure.Storage" version="[6.2.0,)" />
 			</group>
 		</dependencies>
 		<tags>HAVIT Framework Library Azure</tags>

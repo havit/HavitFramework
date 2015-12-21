@@ -14,8 +14,8 @@
 		<copyright>Copyright HAVIT, s.r.o. 2015</copyright>
 		<dependencies>
 			<group targetFramework="net46">
-			  <dependency id="EntityFramework" />
-			  <dependency id="EntityFramework.MappingAPI" />
+			  <dependency id="EntityFramework" version="[6.1.3,7)" />
+			  <dependency id="EntityFramework.MappingAPI" version="[6.1.0.9,7)" />
 			  <dependency id="Havit" />
 			  <dependency id="Havit.Model" />
 			</group>

@@ -71,7 +71,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 		/// Pokud je true, ControlsValuesPersister rekursivně projde i child controly.
 		/// Implicitně vrací false.
 		/// </summary>
-		public bool PersistChilds(Control control)
+		public bool PersistChildren(Control control)
 		{
 			return false;
 		}

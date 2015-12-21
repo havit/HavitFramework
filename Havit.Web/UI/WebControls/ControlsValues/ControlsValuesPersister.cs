@@ -101,7 +101,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 				string key = GetControlKey(control, containerControl);
 				object value = persisterExtender.GetValue(control);				
 				dataHolder.SetValue(key, value);
-				if (!persisterExtender.PersistChilds(control))
+				if (!persisterExtender.PersistChildren(control))
 				{
 					return;
 				}
@@ -148,7 +148,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 					}
 				}
 
-				if (!persisterExtender.PersistChilds(control))
+				if (!persisterExtender.PersistChildren(control))
 				{
 					return;
 				}

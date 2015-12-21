@@ -5,6 +5,7 @@ using System.Data.Entity.Core;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Threading.Tasks;
+using Havit.Data.Entity.Patterns.DataLoaders;
 using Havit.Data.Entity.Patterns.Repositories;
 using Havit.Data.Entity.Patterns.SoftDeletes;
 using Havit.Data.Entity.Patterns.Tests.Infrastructure;
@@ -23,78 +24,275 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 		public void DbRepository_GetObject_ThrowsExceptionWhenNotFound()
 		{
 			// Arrange
-			Mock<DbSet<ItemWithDeleted>> mockDbSet = new Mock<DbSet<ItemWithDeleted>>();
-			mockDbSet.Setup(m => m.Find()).Returns((ItemWithDeleted)null);
-			Mock<IDbContext> mockDbContext = new Mock<IDbContext>();
-			mockDbContext.Setup(m => m.Set<ItemWithDeleted>()).Returns(mockDbSet.Object);
+			TestDbContext testDbContext = new TestDbContext();
+			testDbContext.Database.Initialize(true);
 
-			Mock<IDataLoader> mockDbDataLoader = new Mock<IDataLoader>();
-			Mock<IDataLoaderAsync> mockDbDataLoaderAsync = new Mock<IDataLoaderAsync>();
+			SeedData();
 
-			Mock<ISoftDeleteManager> mockSoftDeleteManager = new Mock<ISoftDeleteManager>();
-			mockSoftDeleteManager.Setup(m => m.IsSoftDeleteSupported<ItemWithDeleted>()).Returns(false);
+			int maxId = testDbContext.Set<ItemWithDeleted>().Max(item => item.Id);
 
-			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(mockDbContext.Object, mockDbDataLoader.Object, mockDbDataLoaderAsync.Object, mockSoftDeleteManager.Object);
+			var dataLoader = new DbDataLoader(testDbContext);
+			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
 			// Act
-			repository.GetObject(1);
+			repository.GetObject(maxId + 1);
 
 			// Assert by method attribute 
-
 		}
 
+		[TestMethod]
+		[ExpectedException(typeof(ObjectNotFoundException), AllowDerivedTypes = false)]
+		public async Task DbRepository_GetObjectAsync_ThrowsExceptionWhenNotFound()
+		{
+			// Arrange
+			TestDbContext testDbContext = new TestDbContext();
+			testDbContext.Database.Initialize(true);
+
+			SeedData();
+
+			int maxId = testDbContext.Set<ItemWithDeleted>().Max(item => item.Id);
+
+			var dataLoader = new DbDataLoader(testDbContext);
+			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
+
+			// Act
+			await repository.GetObjectAsync(maxId + 1);
+
+			// Assert by method attribute 
+		}
 		[TestMethod]
 		public void DbRepository_GetObject_ReturnsDeletedObjects()
 		{
 			// Arrange
-			ItemWithDeleted instanceWithDeleted = new ItemWithDeleted { Id = 1, Deleted = DateTime.Now };
-            Mock<DbSet<ItemWithDeleted>> mockDbSet = new Mock<DbSet<ItemWithDeleted>>();
-			mockDbSet.Setup(m => m.Find(1)).Returns(instanceWithDeleted);
-			Mock<IDbContext> mockDbContext = new Mock<IDbContext>();
-			mockDbContext.Setup(m => m.Set<ItemWithDeleted>()).Returns(mockDbSet.Object);
+			TestDbContext testDbContext = new TestDbContext();
+			testDbContext.Database.Initialize(true);
 
-			Mock<IDataLoader> mockDbDataLoader = new Mock<IDataLoader>();
-			Mock<IDataLoaderAsync> mockDbDataLoaderAsync = new Mock<IDataLoaderAsync>();
+			SeedData(true);
 
-			Mock<ISoftDeleteManager> mockSoftDeleteManager = new Mock<ISoftDeleteManager>();
-			mockSoftDeleteManager.Setup(m => m.IsSoftDeleteSupported<ItemWithDeleted>()).Returns(true);
+			int[] ids = testDbContext.Set<ItemWithDeleted>().Where(item => item.Deleted != null).Select(item => item.Id).ToArray();
+			Assert.AreNotEqual(0, ids.Length, "Pro test jsou potřeba data smazaná příznakem.");
 
-			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(mockDbContext.Object, mockDbDataLoader.Object, mockDbDataLoaderAsync.Object, mockSoftDeleteManager.Object);
+			var dataLoader = new DbDataLoader(testDbContext);
+			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
 			// Act
-			ItemWithDeleted repositoryResult = repository.GetObject(1);
+			ItemWithDeleted repositoryResult = repository.GetObject(ids[0]);
 
 			// Assert
-			Assert.AreSame(repositoryResult, instanceWithDeleted);
+			Assert.IsNotNull(repositoryResult);
+		}
+
+		[TestMethod]
+		public async Task DbRepository_GetObjectAsync_ReturnsDeletedObjects()
+		{
+			// Arrange
+			TestDbContext testDbContext = new TestDbContext();
+			testDbContext.Database.Initialize(true);
+
+			SeedData(true);
+
+			int[] ids = testDbContext.Set<ItemWithDeleted>().Where(item => item.Deleted != null).Select(item => item.Id).ToArray();
+			Assert.AreNotEqual(0, ids.Length, "Pro test jsou potřeba data smazaná příznakem.");
+
+			var dataLoader = new DbDataLoader(testDbContext);
+			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
+
+			// Act
+			ItemWithDeleted repositoryResult = await repository.GetObjectAsync(ids[0]);
+
+			// Assert
+			Assert.IsNotNull(repositoryResult);
 		}
 
 		[TestMethod]
 		public void DbRepository_GetAll_DoesNotReturnDeletedObjects()
 		{
 			// Arrange
-			IQueryable<ItemWithDeleted> dataQueryable = new ItemWithDeleted[]
-			{
-				new ItemWithDeleted { Id = 1, Deleted = DateTime.Now }
-			}.AsQueryable();
-			Mock<DbSet<ItemWithDeleted>> mockDbSet = new Mock<DbSet<ItemWithDeleted>>();
-			Mock<IQueryable<ItemWithDeleted>> mockDbSetQueryable = mockDbSet.As<IQueryable<ItemWithDeleted>>();
-			mockDbSetQueryable.Setup(m => m.Provider).Returns(dataQueryable.Provider);
-			mockDbSetQueryable.Setup(m => m.ElementType).Returns(dataQueryable.ElementType);
-			mockDbSetQueryable.Setup(m => m.Expression).Returns(dataQueryable.Expression);
-			mockDbSetQueryable.Setup(m => m.GetEnumerator()).Returns(dataQueryable.GetEnumerator());
+			TestDbContext testDbContext = new TestDbContext();
+			testDbContext.Database.Initialize(true);
 
-			Mock<IDbContext> mockDbContext = new Mock<IDbContext>();
-			mockDbContext.Setup(m => m.Set<ItemWithDeleted>()).Returns(mockDbSet.Object);
+			SeedData(true);
 
-			Mock<IDataLoader> mockDbDataLoader = new Mock<IDataLoader>();
-			Mock<IDataLoaderAsync> mockDbDataLoaderAsync = new Mock<IDataLoaderAsync>();
-			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(mockDbContext.Object, mockDbDataLoader.Object, mockDbDataLoaderAsync.Object, new SoftDeleteManager(new ServerTimeService()));
+			var dataLoader = new DbDataLoader(testDbContext);
+			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
 			// Act
 			List<ItemWithDeleted> result = repository.GetAll();
 
 			// Assert
 			Assert.AreEqual(0, result.Count);
+		}
+
+		[TestMethod]
+		public async Task DbRepository_GetAllAsync_DoesNotReturnDeletedObjects()
+		{
+			// Arrange
+			TestDbContext testDbContext = new TestDbContext();
+			testDbContext.Database.Initialize(true);
+
+			SeedData(true);
+
+			var dataLoader = new DbDataLoader(testDbContext);
+			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
+
+			// Act
+			List<ItemWithDeleted> result = await repository.GetAllAsync();
+
+			// Assert
+			Assert.AreEqual(0, result.Count);
+		}
+
+		[TestMethod]
+		public void DbRepository_GetObjects_ReturnsObjects()
+		{
+			// Arrange
+			TestDbContext testDbContext = new TestDbContext();
+			testDbContext.Database.Initialize(true);
+
+			SeedData();
+
+			int[] ids = testDbContext.Set<ItemWithDeleted>().Select(item => item.Id).ToArray();
+			Assert.AreNotEqual(0, ids.Length, "Pro test jsou potřeba data.");
+
+			var dataLoader = new DbDataLoader(testDbContext);
+			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
+			
+			// Act
+			List<ItemWithDeleted> result = repository.GetObjects(ids);
+
+			// Assert
+			Assert.AreEqual(ids.Length, result.Count);
+		}
+
+		[TestMethod]
+		public async Task DbRepository_GetObjectsAsync_ReturnsObjects()
+		{
+			// Arrange
+			TestDbContext testDbContext = new TestDbContext();
+			testDbContext.Database.Initialize(true);
+
+			SeedData();
+
+			int[] ids = testDbContext.Set<ItemWithDeleted>().Select(item => item.Id).ToArray();
+			Assert.AreNotEqual(0, ids.Length, "Pro test jsou potřeba data.");
+
+			var dataLoader = new DbDataLoader(testDbContext);
+			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
+
+			// Act
+			List<ItemWithDeleted> result = await repository.GetObjectsAsync(ids);
+
+			// Assert
+			Assert.AreEqual(ids.Length, result.Count);
+		}
+
+		[TestMethod]
+		public void DbRepository_GetObjects_ReturnsDeletedObjects()
+		{
+			// Arrange
+			TestDbContext testDbContext = new TestDbContext();
+			testDbContext.Database.Initialize(true);
+
+			SeedData(true);
+
+			int[] ids = testDbContext.Set<ItemWithDeleted>()
+				.Where(item => item.Deleted != null)
+				.Select(item => item.Id)
+				.ToArray();
+			Assert.AreNotEqual(0, ids.Length, "Pro test jsou potřeba data smazaná příznakem.");
+
+			var dataLoader = new DbDataLoader(testDbContext);
+			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
+
+			// Act
+			List<ItemWithDeleted> result = repository.GetObjects(ids);
+
+			// Assert
+			Assert.AreEqual(ids.Length, result.Count);
+		}
+
+		[TestMethod]
+		public async Task DbRepository_GetObjectsAsync_ReturnsDeletedObjects()
+		{
+			// Arrange
+			TestDbContext testDbContext = new TestDbContext();
+			testDbContext.Database.Initialize(true);
+
+			SeedData(true);
+
+			int[] ids = testDbContext.Set<ItemWithDeleted>()
+				.Where(item => item.Deleted != null)
+				.Select(item => item.Id)
+				.ToArray();
+			Assert.AreNotEqual(0, ids.Length, "Pro test jsou potřeba data smazaná příznakem.");
+
+			var dataLoader = new DbDataLoader(testDbContext);
+			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
+
+			// Act
+			List<ItemWithDeleted> result = await repository.GetObjectsAsync(ids);
+
+			// Assert
+			Assert.AreEqual(ids.Length, result.Count);
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ObjectNotFoundException), AllowDerivedTypes = false)]
+		public void DbRepository_GetObjects_ThrowsExceptionWhenNotFound()
+		{
+			// Arrange
+			TestDbContext testDbContext = new TestDbContext();
+			testDbContext.Database.Initialize(true);
+
+			SeedData();
+
+			int maxId = testDbContext.Set<ItemWithDeleted>().Max(item => item.Id);
+
+			var dataLoader = new DbDataLoader(testDbContext);
+			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
+
+			// Act
+			repository.GetObjects(maxId + 1, maxId + 2);
+
+			// Assert by method attribute
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ObjectNotFoundException), AllowDerivedTypes = false)]
+		public async Task DbRepository_GetObjectsAsync_ThrowsExceptionWhenNotFound()
+		{
+			// Arrange
+			TestDbContext testDbContext = new TestDbContext();
+			testDbContext.Database.Initialize(true);
+
+			SeedData();
+
+			int maxId = testDbContext.Set<ItemWithDeleted>().Max(item => item.Id);
+
+			var dataLoader = new DbDataLoader(testDbContext);
+			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
+
+			// Act
+			await repository.GetObjectsAsync(maxId + 1, maxId + 2);
+
+			// Assert by method attribute
+		}
+
+		private void SeedData(bool deleted = false)
+		{
+			using (TestDbContext testDbContext = new TestDbContext())
+			{
+				for (int i = 0; i < 3; i++)
+				{
+					ItemWithDeleted item = new ItemWithDeleted();
+					if (deleted)
+					{
+						item.Deleted = DateTime.Now;
+					}
+					testDbContext.Set<ItemWithDeleted>().Add(item);
+				}
+				testDbContext.SaveChanges();
+			}
 		}
 	}
 }

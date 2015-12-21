@@ -16,6 +16,11 @@ namespace Havit.Data.Patterns.Repositories
 		Task<TEntity> GetObjectAsync(int id);
 
 		/// <summary>
+		/// Vrací instance objektů dle Id.
+		/// </summary>
+		Task<List<TEntity>> GetObjectsAsync(params int[] ids);
+
+		/// <summary>
 		/// Vrací seznam všech (příznakem nesmazaných) objektů typu TEntity.
 		/// </summary>
 		Task<List<TEntity>> GetAllAsync();

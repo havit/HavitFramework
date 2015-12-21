@@ -15,6 +15,11 @@ namespace Havit.Data.Patterns.Repositories
 		TEntity GetObject(int id);
 
 		/// <summary>
+		/// Vrací instance objektů dle Id.
+		/// </summary>
+		List<TEntity> GetObjects(params int[] ids);
+
+		/// <summary>
 		/// Vrací seznam všech (příznakem nesmazaných) objektů typu TEntity.
 		/// </summary>
 		List<TEntity> GetAll();

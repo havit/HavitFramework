@@ -11,6 +11,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 	/// <summary>
 	/// Reprezentuje stav GridViewExt pro uložení persisterem.
 	/// </summary>
+	[Serializable]
 	public class GridViewExtValue
 	{
 		#region Constructor

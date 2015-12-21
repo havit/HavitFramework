@@ -95,23 +95,25 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 
 		private static void RetrieveValues(ControlsValuesHolder dataHolder, Control control, Control containerControl, PersisterControlExtenderRepository persisterControlExtenderRepository)
 		{			
-			IPersisterControlExtender persisterExtender = persisterControlExtenderRepository.FindExtender(control);
+			IPersisterControlExtender persisterExtender = persisterControlExtenderRepository.FindExtender(control);		
 			if (persisterExtender != null)
 			{
 				string key = GetControlKey(control, containerControl);
-				object value = persisterExtender.GetValue(control);
+				object value = persisterExtender.GetValue(control);				
 				dataHolder.SetValue(key, value);
-			}
-			else
-			{
-				if (control.HasControls())
+				if (!persisterExtender.PersistChilds(control))
 				{
-					foreach (Control nestedCotrol in control.Controls)
-					{
-						RetrieveValues(dataHolder, nestedCotrol, containerControl, persisterControlExtenderRepository);
-					}
+					return;
 				}
 			}
+					
+			if (control.HasControls())
+			{
+				foreach (Control nestedCotrol in control.Controls)
+				{
+					RetrieveValues(dataHolder, nestedCotrol, containerControl, persisterControlExtenderRepository);
+				}
+			}			
 		}
 		#endregion
 
@@ -131,7 +133,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 
 		private static void ApplyValues(ControlsValuesHolder dataHolder, Control control, Control containerControl, PersisterControlExtenderRepository persisterControlExtenderRepository, Action<ControlValueEventArgs> callback = null)
 		{
-			IPersisterControlExtender persisterExtender = persisterControlExtenderRepository.FindExtender(control);
+			IPersisterControlExtender persisterExtender = persisterControlExtenderRepository.FindExtender(control);			
 			if (persisterExtender != null)
 			{
 				string key = GetControlKey(control, containerControl);
@@ -145,8 +147,11 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 						callback(new ControlValueEventArgs(control, value));
 					}
 				}
-				// přerušíme rekurzi
-				return;
+
+				if (!persisterExtender.PersistChilds(control))
+				{
+					return;
+				}
 			}
 
 			// nenašli jsme extender, tak pokračujeme rekurzivně ve stromu controlu

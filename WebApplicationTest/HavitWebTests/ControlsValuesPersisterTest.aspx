@@ -27,11 +27,6 @@
 			</div>
 
 			<div>
-				EnterpriseCheckBoxList
-				<havit:EnterpriseCheckBoxList ID="TestEChBL" DataTextField="ID" AutoDataBind="true" ItemObjectInfo="<%$ Expression: Subjekt.ObjectInfo %>" runat="server" />
-			</div>
-
-			<div>
 				ListBox:
 				<asp:ListBox ID="TestLB" runat="server">
 					<asp:ListItem Value="0" Text="0" />
@@ -41,11 +36,6 @@
 					<asp:ListItem Value="4" Text="4" />
 					<asp:ListItem Value="5" Text="5" />
 				</asp:ListBox>
-			</div>
-
-			<div>
-				EnterpriseListBox:
-				<havit:EnterpriseListBox ID="TestELB" DataTextField="ID" AutoDataBind="true" ItemObjectInfo="<%$ Expression: Subjekt.ObjectInfo %>"  runat="server" />
 			</div>
 
 			<div>
@@ -60,6 +50,19 @@
 				</asp:RadioButtonList>
 			</div>
 		
+			<div>
+				GridViewExt
+				<havit:GridViewExt ID="TestGVE" AllowPaging="true" PagerSettings-Position="bottom" PagerSettingsShowAllPagesButton="true" PagerSettingsAllPagesButtonImageUrl="~/a/test.gif" PagerSettings-Mode="NumericFirstLast" PageSize="3" runat="server">
+					<Columns>
+						<havit:TemplateFieldExt SortExpression="Nazev" HeaderText="Název">
+							<ItemTemplate>
+								<asp:TextBox ID="NazevTextBox" Text="" runat="server" />
+							</ItemTemplate>							
+						</havit:TemplateFieldExt>
+						<havit:GridViewCommandField ShowEditButton="true" ShowDeleteButton="true" />
+					</Columns>
+				</havit:GridViewExt>
+			</div>
 		</havit:ControlsValuesPersister>
 
 		<asp:Button Text="Save" ID="SaveButton" runat="server" />

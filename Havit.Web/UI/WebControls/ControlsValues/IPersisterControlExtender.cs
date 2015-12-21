@@ -35,6 +35,12 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 		/// vyšší prioritu).
 		/// Vyšší priorita vyhravá.Není-li control extender použitelný, nechť vrací null.
 		/// </summary>
-		int? GetPriority(Control control);	
+		int? GetPriority(Control control);
+
+		/// <summary>
+		/// Pokud je true, ControlsValuesPersister se pokusí uložit i hodnoty child controlů.
+		/// Implicitně vrací false.
+		/// </summary>		
+		bool PersistChilds(Control control);
 	}
 }

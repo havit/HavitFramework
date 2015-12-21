@@ -58,15 +58,6 @@ namespace Havit.WebApplicationTest.HavitWebTests {
         protected global::System.Web.UI.WebControls.CheckBoxList TestChBL;
         
         /// <summary>
-        /// TestEChBL control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Havit.Web.UI.WebControls.EnterpriseCheckBoxList TestEChBL;
-        
-        /// <summary>
         /// TestLB control.
         /// </summary>
         /// <remarks>
@@ -76,15 +67,6 @@ namespace Havit.WebApplicationTest.HavitWebTests {
         protected global::System.Web.UI.WebControls.ListBox TestLB;
         
         /// <summary>
-        /// TestELB control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Havit.Web.UI.WebControls.EnterpriseListBox TestELB;
-        
-        /// <summary>
         /// TestRBL control.
         /// </summary>
         /// <remarks>
@@ -92,6 +74,15 @@ namespace Havit.WebApplicationTest.HavitWebTests {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButtonList TestRBL;
+        
+        /// <summary>
+        /// TestGVE control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Havit.Web.UI.WebControls.GridViewExt TestGVE;
         
         /// <summary>
         /// SaveButton control.

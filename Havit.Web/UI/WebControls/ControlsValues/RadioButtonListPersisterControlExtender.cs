@@ -43,7 +43,18 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 				return 1;
 			}
 			return null;
-		} 
-		#endregion	
+		}
+		#endregion
+
+		#region PersistChilds
+		/// <summary>
+		/// Pokud je true, ControlsValuesPersister se pokusí uložit i hodnoty child controlů.
+		/// Implicitně vrací false.
+		/// </summary>
+		public bool PersistChilds(Control control)
+		{
+			return false;
+		}
+		#endregion
 	}
 }

@@ -246,7 +246,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		}
 
 		/// <summary>
-		/// Vrací dotaz pro GetAll/GetAllAsync.
+		/// Vrací dotaz pro GetObjects/GetObjectsAsync.
 		/// </summary>
 		private IQueryable<TEntity> GetInQuery(int[] ids)
 		{
@@ -273,6 +273,9 @@ namespace Havit.Data.Entity.Patterns.Repositories
 			return DbSet.Where(expression);
 		}
 
+		/// <summary>
+		/// Vrací dotaz pro GetAll/GetAllAsync.
+		/// </summary>
 		private IQueryable<TEntity> GetGetAllQuery()
 		{
 			return DbSet.WhereNotDeleted(softDeleteManager);

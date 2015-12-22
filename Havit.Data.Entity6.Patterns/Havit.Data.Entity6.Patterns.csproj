@@ -70,6 +70,7 @@
     <Compile Include="DataLoaders\EnumerableExtensions.cs" />
     <Compile Include="DataLoaders\PropertiesSequenceExpressionVisitor.cs" />
     <Compile Include="DataLoaders\PropertyToLoad.cs" />
+    <Compile Include="Helpers\EntityHelper.cs" />
     <Compile Include="SoftDeletes\ISoftDeleteManager.cs" />
     <Compile Include="Localizations\DbLanguageService.cs" />
     <Compile Include="QueryServices\DbDataSource.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SoftDeletes\SoftDeleteManagerExtensions.cs" />
     <Compile Include="UnitOfWorks\DbUnitOfWork.cs" />
+    <Compile Include="UnitOfWorks\Changes.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

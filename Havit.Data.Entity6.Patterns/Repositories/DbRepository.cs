@@ -7,6 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
+using Havit.Data.Entity.Patterns.Helpers;
 using Havit.Data.Entity.Patterns.SoftDeletes;
 using Havit.Data.Patterns.DataLoaders;
 using Havit.Data.Patterns.Repositories;
@@ -47,7 +48,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 			this.softDeleteManager = softDeleteManager;
 
 			DbSet = dbSet;
-			dbSetLocalsDictionary = dbSet.Local.ToDictionary(item => GetEntityId(item));
+			dbSetLocalsDictionary = dbSet.Local.ToDictionary(item => EntityHelper.GetEntityId(item));
 			dbSet.Local.CollectionChanged += DbSetLocal_CollectionChanged;
 		}
 
@@ -58,7 +59,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 				case NotifyCollectionChangedAction.Add:
 					foreach (TEntity item in e.NewItems)
 					{
-						dbSetLocalsDictionary.Add(GetEntityId(item), item);
+						dbSetLocalsDictionary.Add(EntityHelper.GetEntityId(item), item);
 					}
 					break;
 
@@ -69,7 +70,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 				case NotifyCollectionChangedAction.Remove:
 					foreach (TEntity item in e.NewItems)
 					{
-						dbSetLocalsDictionary.Remove(GetEntityId(item));
+						dbSetLocalsDictionary.Remove(EntityHelper.GetEntityId(item));
 					}
 
 					break;
@@ -160,7 +161,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 
 				if (idsToLoad.Count != loadedObjects.Count)
 				{
-					int[] missingObjectIds = idsToLoad.Except(loadedObjects.Select(GetEntityId)).ToArray();
+					int[] missingObjectIds = idsToLoad.Except(loadedObjects.Select(EntityHelper.GetEntityId)).ToArray();
 					ThrowObjectNotFoundException(missingObjectIds);					
 				}
 
@@ -203,7 +204,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 
 				if (idsToLoad.Count != loadedObjects.Count)
 				{
-					int[] missingObjectIds = idsToLoad.Except(loadedObjects.Select(GetEntityId)).ToArray();
+					int[] missingObjectIds = idsToLoad.Except(loadedObjects.Select(EntityHelper.GetEntityId)).ToArray();
 					ThrowObjectNotFoundException(missingObjectIds);
 				}
 
@@ -316,11 +317,6 @@ namespace Havit.Data.Entity.Patterns.Repositories
 				: String.Format("Objects {0} with keys {1} not found.", this.GetType().Name, String.Join(", ", missingIds.Select(item => item.ToString())));
 
 			throw new ObjectNotFoundException(exceptionText);
-		}
-
-		private int GetEntityId(TEntity entity)
-		{
-			return ((dynamic)entity).Id;
 		}
 	}
 }

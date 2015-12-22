@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Havit.Data.Entity.Patterns.Helpers;
 using Havit.Data.Patterns.Localizations;
 using Havit.Data.Patterns.QueryServices;
 using Havit.Data.Patterns.Repositories;
@@ -90,7 +91,7 @@ namespace Havit.Data.Entity.Patterns.Localizations
 						IDataSource<TLanguage> languageDataSource = languageDataSourceFactory.Create();
 						try
 						{
-							languages = languageDataSource.Data.ToList().ToDictionary(item => item.UiCulture, item => ((int)((dynamic)item).Id));
+							languages = languageDataSource.Data.ToList().ToDictionary(item => item.UiCulture, item => EntityHelper.GetEntityId(item));
 						}
 						finally
 						{

@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
 using System.Threading.Tasks;
 
 namespace Havit.Data.Entity
@@ -30,6 +31,17 @@ namespace Havit.Data.Entity
 		/// <summary>
 		/// Uloží změny.
 		/// </summary>
-		Task SaveChangesAsync();		
+		Task SaveChangesAsync();
+
+		/// <summary>
+		/// Vrátí objekty v daném stavu.
+		/// </summary>
+		object[] GetObjectsInState(EntityState state);
+
+		/// <summary>
+		/// Nastaví objekt do požadovaného stavu.
+		/// </summary>
+		void SetEntityState<TEntity>(TEntity entity, EntityState entityState)
+			where TEntity : class;
 	}
 }

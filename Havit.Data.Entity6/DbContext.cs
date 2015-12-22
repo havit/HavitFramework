@@ -1,5 +1,8 @@
 ﻿using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Infrastructure;
 using System.Data.Entity.ModelConfiguration.Conventions;
+using System.Linq;
 using System.Threading.Tasks;
 using Havit.Data.Entity.Conventions;
 using ForeignKeyIndexConvention = Havit.Data.Entity.Conventions.ForeignKeyIndexConvention;
@@ -101,6 +104,23 @@ namespace Havit.Data.Entity
 		async Task IDbContext.SaveChangesAsync()
 		{
 			await this.SaveChangesAsync();
+		}
+
+		/// <summary>
+		/// Vrátí objekty v daném stavu.
+		/// </summary>		
+		public object[] GetObjectsInState(EntityState state)
+		{
+			return ((IObjectContextAdapter)this).ObjectContext.ObjectStateManager.GetObjectStateEntries(state).Select(item => item.Entity).ToArray();
+		}
+
+		/// <summary>
+		/// Nastaví objekt do požadovaného stavu.
+		/// </summary>
+		public void SetEntityState<TEntity>(TEntity entity, EntityState entityState)
+			where TEntity : class
+		{
+			this.Entry(entity).State = entityState;
 		}
 	}
 }

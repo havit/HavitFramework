@@ -24,8 +24,6 @@ using Havit.Model.Localizations;
 
 namespace Havit.Data.Entity.Patterns.Windsor.WebApplication
 {
-	// TODO: Doladit komentáře metod.
-
 	/// <summary>
 	/// Extention metody pro instalaci služeb Havit.Data.Entity a Havit.Data.Patterns.Entity do Windsor Castle Containeru.
 	/// </summary>
@@ -38,6 +36,17 @@ namespace Havit.Data.Entity.Patterns.Windsor.WebApplication
 	/// </code></example>
 	public static class Installer
 	{
+		/// <summary>
+		/// Registruje do Windsor Castle Containeru třídy používané v Havit.Data.Patterns a Havit.Data.Entity.Patterns.
+		/// Viz metoda InstallEntityPatterns&lt;TUnitOfWork&gt;.
+		/// 
+		/// Jako TUnitOfWork použije výchozí DbUnitOfWork.
+		/// </summary>
+		public static IWindsorContainer InstallEntityPatterns(this IWindsorContainer container)
+		{
+			return InstallEntityPatterns<DbUnitOfWork>(container);
+		}
+
 		/// <summary>
 		/// Registruje do Windsor Castle Containeru třídy používané v Havit.Data.Patterns a Havit.Data.Entity.Patterns.
 		/// </summary>
@@ -60,14 +69,15 @@ namespace Havit.Data.Entity.Patterns.Windsor.WebApplication
 		/// Pro IDataSeedPersister registruje DbDataSeedPersister jako transientní třídu,
 		/// </description></item>
 		/// <item><description>
-		/// /PRo IUnitOfWork a IUnitOfWorkAsync registruje DbUnitOfWork s lifestylem PerWebRequest/PerThread,
+		/// /PRo IUnitOfWork a IUnitOfWorkAsync registruje TUnitOfWork s lifestylem PerWebRequest/PerThread,
 		/// </description></item>
 		/// <item><description>
 		/// Pro IDataLoader a IDataLoaderAsync registruje DbDataLoader s lifestylem PerWebRequest/PerThread.
 		/// </description></item>
 		/// </list>
 		/// </remarks>
-		public static IWindsorContainer InstallEntityPatterns(this IWindsorContainer container)
+		public static IWindsorContainer InstallEntityPatterns<TUnitOfWork>(this IWindsorContainer container)
+			where TUnitOfWork : DbUnitOfWork
 		{
 			// framework services & factories
 			container.Register(
@@ -78,7 +88,7 @@ namespace Havit.Data.Entity.Patterns.Windsor.WebApplication
 				Component.For<IDataSeedPersister>().ImplementedBy<DbDataSeedPersister>().LifestyleTransient(),
 				Component.For(typeof(IDataSourceFactory<>)).AsFactory(),
 				Component.For(typeof(IRepositoryFactory<>)).AsFactory(),
-				Component.For<IUnitOfWork, IUnitOfWorkAsync>().ImplementedBy<DbUnitOfWork>().LifeStyle.HybridPerWebRequestPerThread(),
+				Component.For<IUnitOfWork, IUnitOfWorkAsync>().ImplementedBy<TUnitOfWork>().LifeStyle.HybridPerWebRequestPerThread(),
 				Component.For<IDataLoader, IDataLoaderAsync>().ImplementedBy<DbDataLoader>().LifeStyle.HybridPerWebRequestPerThread()
 			);
 

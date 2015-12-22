@@ -20,20 +20,32 @@ namespace Havit.Data.Patterns.Repositories
 			where TEntity : class;
 
 		/// <summary>
-		/// Zajistí vložení objeků jako nové objekty (při uložení budou vloženy).
+		/// Zajistí vložení objektů jako nové objekty (při uložení budou vloženy).
 		/// </summary>
 		void AddRangeForInsert<TEntity>(IEnumerable<TEntity> items)
 			where TEntity : class;
 
 		/// <summary>
-		/// Zajistí odstranění objeku (při uložení bude smazán).
+		/// Zajistí vložení objektu jako změněného (při uložení bude změněn).
+		/// </summary>
+		void AddForUpdate<TEntity>(TEntity item)
+			where TEntity : class;
+
+		/// <summary>
+		/// Zajistí vložení objektů jako změněné objekty (při uložení budou změněny).
+		/// </summary>
+		void AddRangeForUpdate<TEntity>(IEnumerable<TEntity> items)
+			where TEntity : class;
+
+		/// <summary>
+		/// Zajistí odstranění objektu (při uložení bude smazán).
 		/// Objekty podporující mazání příznakem budou smazány příznakem.
 		/// </summary>
 		void AddForDelete<TEntity>(TEntity item)
 			where TEntity : class;
 
 		/// <summary>
-		/// Zajistí odstranění objeků (při uložení budou smazány).
+		/// Zajistí odstranění objektů (při uložení budou smazány).
 		/// Objekty podporující mazání příznakem budou smazány příznakem.
 		/// </summary>
 		void AddRangeForDelete<TEntity>(IEnumerable<TEntity> items)

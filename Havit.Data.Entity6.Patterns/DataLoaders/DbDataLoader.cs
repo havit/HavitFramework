@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Havit.Data.Entity.Patterns.Helpers;
 using Havit.Data.Patterns.DataLoaders;
 using Havit.Data.Patterns.DataLoaders.Fluent;
 using Havit.Diagnostics.Contracts;
@@ -393,7 +394,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 				? entities.Where(item => propertyPathLambda(item) == null || !alreadyLoadedCollectionInstances.Contains(propertyPathLambda(item)))
 				: entities.Where(item => propertyPathLambda(item) == null);
 
-			return entitiesToLoadQuery.Select(entity => (int)(((dynamic)entity).Id)).Distinct().ToList();
+			return entitiesToLoadQuery.Select(entity => EntityHelper.GetEntityId(entity)).Distinct().ToList();
 		}
 
 		/// <summary>
@@ -474,11 +475,8 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 		/// </summary>
 		private void InsertLoadedCollectionInstancesToAlreadyLoadedCollectionInstances<TEntity, TProperty>(TEntity[] entities, Func<TEntity, TProperty> propertyPathLambda)
 		{
-			TProperty[] collectionInstances = entities.Select(item => propertyPathLambda(item)).ToArray();
-			foreach (TProperty collectionInstance in collectionInstances)
-			{
-				alreadyLoadedCollectionInstances.Add(collectionInstance); // pokud již v kolekci hodnota je, tak se nic nepřidává (nespadne, jen vrátí false)
-			}
+			object[] collectionInstances = entities.Select(item => (object)propertyPathLambda(item)).ToArray();
+			alreadyLoadedCollectionInstances.UnionWith(collectionInstances);
 		}
 
 	}

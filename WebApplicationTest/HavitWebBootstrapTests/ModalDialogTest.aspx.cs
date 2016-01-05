@@ -16,7 +16,16 @@ namespace Havit.WebApplicationTest.HavitWebBootstrapTests
 		{
 			base.OnInit(e);
 			OpenButton.Click += OpenButton_Click;
+			ModalDialogUserControlTestUC.SwicthDialogClick += SwicthDialogClick;
 			DynarchCalendar.RegisterCalendarSkinStylesheets(this);			
+		}
+		#endregion
+
+		#region SwicthDialogClick
+		private void SwicthDialogClick(object sender, EventArgs eventArgs)
+		{
+			ModalDialogUserControlTestUC.Hide();
+			ModalDialogUserControlTest2UC.Show();
 		}
 		#endregion
 

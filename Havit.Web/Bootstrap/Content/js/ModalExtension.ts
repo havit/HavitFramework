@@ -226,7 +226,8 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
 
             // when nested dialog is shown we do not create next backdrop
             // otherwise there are multiple backdrops under all modals
-            if ((operation == 'show') && ($('.modal-backdrop').length > 0)) {
+            var parentModalExtension: ModalExtension = this.getParentModalExtension();
+            if ((operation == 'show') && parentModalExtension != null && parentModalExtension.$modalElement.hasClass('nested')) {            
                 $modalElement.modal({ backdrop: false });
             }
 

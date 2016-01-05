@@ -67,6 +67,15 @@ namespace Havit.WebApplicationTest.HavitWebBootstrapTests {
         protected global::System.Web.UI.WebControls.Button ShowNestedButton;
         
         /// <summary>
+        /// SwitchDialogButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button SwitchDialogButton;
+        
+        /// <summary>
         /// CloseButton control.
         /// </summary>
         /// <remarks>

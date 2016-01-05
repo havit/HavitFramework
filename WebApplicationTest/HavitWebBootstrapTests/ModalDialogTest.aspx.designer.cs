@@ -31,6 +31,15 @@ namespace Havit.WebApplicationTest.HavitWebBootstrapTests {
         protected global::Havit.WebApplicationTest.HavitWebBootstrapTests.ModalDialogUserControlTest ModalDialogUserControlTestUC;
         
         /// <summary>
+        /// ModalDialogUserControlTest2UC control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Havit.WebApplicationTest.HavitWebBootstrapTests.ModalDialogUserControlTest2 ModalDialogUserControlTest2UC;
+        
+        /// <summary>
         /// OpenButton control.
         /// </summary>
         /// <remarks>

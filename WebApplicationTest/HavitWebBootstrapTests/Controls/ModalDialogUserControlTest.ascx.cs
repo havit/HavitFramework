@@ -10,14 +10,24 @@ namespace Havit.WebApplicationTest.HavitWebBootstrapTests
 {
 	public partial class ModalDialogUserControlTest : ModalDialogUserControlBase
 	{
+		public EventHandler SwicthDialogClick;
+
 		#region OnInit
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
 			CloseButton.Click += CloseButton_Click;
 			ShowNestedButton.Click += ShowNestedButton_Click;
+			SwitchDialogButton.Click += SwitchDialogButton_Click;
 			ScriptManager.GetCurrent(this.Page).RegisterPostBackControl(RefreshPostBackButton);
 			ScriptManager.GetCurrent(this.Page).Services.Add(new ServiceReference(SubjektASM.ServicePath));
+		}
+		#endregion
+
+		#region SwitchDialogButton_Click
+		private void SwitchDialogButton_Click(object sender, EventArgs e)
+		{
+			SwicthDialogClick?.Invoke(this, new EventArgs());
 		}
 		#endregion
 

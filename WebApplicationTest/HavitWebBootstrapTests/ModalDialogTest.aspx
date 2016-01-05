@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/HavitWebBootstrapTests/Bootstrap.Master" AutoEventWireup="false" CodeBehind="ModalDialogTest.aspx.cs" Inherits="Havit.WebApplicationTest.HavitWebBootstrapTests.ModalDialogTest" %>
 
 <%@ Register Src="~/HavitWebBootstrapTests/Controls/ModalDialogUserControlTest.ascx" TagPrefix="uc" TagName="ModalDialogUserControlTest" %>
+<%@ Register Src="~/HavitWebBootstrapTests/Controls/ModalDialogUserControlTest2.ascx" TagPrefix="uc" TagName="ModalDialogUserControlTest2" %>
 
 <asp:Content ContentPlaceHolderID="HeaderCPH" runat="server">
 	<link rel="Stylesheet" href="/Content/Havit.Web.ClientContent/autocompletetextbox.css" type="text/css" />
@@ -13,6 +14,7 @@
 	<asp:Panel runat="server" DefaultButton="TestButton">abcd</asp:Panel>
 
 	<uc:ModalDialogUserControlTest ID="ModalDialogUserControlTestUC" runat="server" />
+	<uc:ModalDialogUserControlTest2 ID="ModalDialogUserControlTest2UC" runat="server" />
 	
 	<bc:ToolTip ToolTip="nejaky tooltip" runat="server">text</bc:ToolTip>
 	<p>

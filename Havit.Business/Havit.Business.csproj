@@ -192,6 +192,7 @@
     <Compile Include="ReferenceFieldPropertyInfo.cs" />
     <Compile Include="DbTransactionEventArgs.cs" />
     <Compile Include="Query\InIntegersCondition.cs" />
+    <Compile Include="TestExtensions\BusinessObjectBaseExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Havit.Data\Havit.Data.csproj">

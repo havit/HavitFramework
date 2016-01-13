@@ -58,10 +58,18 @@ namespace Havit.BusinessLayerTest
 		
 		#region Constructors
 		/// <summary>
+		/// Vytvoří instanci objektu jako nový prvek.
+		/// </summary>
+		protected RoleBase(ConnectionMode connectionMode) : base(connectionMode)
+		{
+		}
+		
+		/// <summary>
 		/// Vytvoří instanci existujícího objektu.
 		/// </summary>
 		/// <param name="id">RoleID (PK).</param>
-		protected RoleBase(int id) : base(id, ConnectionMode.Connected)
+		/// <param name="connectionMode">Režim business objektu.</param>
+		protected RoleBase(int id, ConnectionMode connectionMode) : base(id, connectionMode)
 		{
 		}
 		
@@ -85,6 +93,18 @@ namespace Havit.BusinessLayerTest
 			{
 				EnsureLoaded();
 				return _SymbolPropertyHolder.Value;
+			}
+			private set
+			{
+				EnsureLoaded();
+				if (value == null)
+				{
+					_SymbolPropertyHolder.Value = String.Empty;
+				}
+				else
+				{
+					_SymbolPropertyHolder.Value = value;
+				}
 			}
 		}
 		/// <summary>
@@ -497,6 +517,26 @@ namespace Havit.BusinessLayerTest
 			return collection;
 		}
 		
+		#endregion
+		
+		#region ToString
+		/// <summary>
+		/// Returns a string that represents the current object.
+		/// </summary>
+		public override string ToString()
+		{
+			switch (this.ID)
+			{
+				case EnumIDs.ZaporneID: return "Role.ZaporneID";
+				case EnumIDs.NuloveID: return "Role.NuloveID";
+				case EnumIDs.Administrator: return "Role.Administrator";
+				case EnumIDs.Editor: return "Role.Editor";
+				case EnumIDs.Publisher: return "Role.Publisher";
+				case EnumIDs.Operator: return "Role.Operator";
+			}
+			
+			return String.Format("Role(ID={0})", this.ID);
+		}
 		#endregion
 		
 		#region ObjectInfo

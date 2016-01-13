@@ -72,7 +72,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Vytvoří instanci objektu jako nový prvek.
 		/// </summary>
-		protected UzivatelBase() : base()
+		protected UzivatelBase(ConnectionMode connectionMode) : base(connectionMode)
 		{
 		}
 		
@@ -310,6 +310,11 @@ namespace Havit.BusinessLayerTest
 			{
 				EnsureLoaded();
 				return _CreatedPropertyHolder.Value;
+			}
+			private set
+			{
+				EnsureLoaded();
+				_CreatedPropertyHolder.Value = value;
 			}
 		}
 		/// <summary>
@@ -1211,6 +1216,21 @@ namespace Havit.BusinessLayerTest
 			return collection;
 		}
 		
+		#endregion
+		
+		#region ToString
+		/// <summary>
+		/// Returns a string that represents the current object.
+		/// </summary>
+		public override string ToString()
+		{
+			if (IsNew)
+			{
+				return "Uzivatel(New)";
+			}
+			
+			return String.Format("Uzivatel(ID={0})", this.ID);
+		}
 		#endregion
 		
 		#region ObjectInfo

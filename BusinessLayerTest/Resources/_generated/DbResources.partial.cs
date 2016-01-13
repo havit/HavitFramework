@@ -192,7 +192,7 @@ namespace Havit.BusinessLayerTest.Resources
 		/// <summary>
 		/// Obsahuje třídy pro jednotlivé slovníky resources.
 		/// </summary>
-		public partial class ResourceClasses
+		public static partial class ResourceClasses
 		{
 		}
 		#endregion

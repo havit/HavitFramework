@@ -64,7 +64,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Vytvoří instanci objektu jako nový prvek.
 		/// </summary>
-		protected CenikItemBase() : base()
+		protected CenikItemBase(ConnectionMode connectionMode) : base(connectionMode)
 		{
 		}
 		
@@ -636,6 +636,21 @@ namespace Havit.BusinessLayerTest
 			return collection;
 		}
 		
+		#endregion
+		
+		#region ToString
+		/// <summary>
+		/// Returns a string that represents the current object.
+		/// </summary>
+		public override string ToString()
+		{
+			if (IsNew)
+			{
+				return "CenikItem(New)";
+			}
+			
+			return String.Format("CenikItem(ID={0})", this.ID);
+		}
 		#endregion
 		
 		#region ObjectInfo

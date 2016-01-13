@@ -63,7 +63,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Vytvoří instanci objektu jako nový prvek.
 		/// </summary>
-		protected CurrencyBase() : base()
+		protected CurrencyBase(ConnectionMode connectionMode) : base(connectionMode)
 		{
 		}
 		
@@ -154,6 +154,11 @@ namespace Havit.BusinessLayerTest
 			{
 				EnsureLoaded();
 				return _CreatedPropertyHolder.Value;
+			}
+			private set
+			{
+				EnsureLoaded();
+				_CreatedPropertyHolder.Value = value;
 			}
 		}
 		/// <summary>
@@ -858,6 +863,21 @@ namespace Havit.BusinessLayerTest
 			return collection;
 		}
 		
+		#endregion
+		
+		#region ToString
+		/// <summary>
+		/// Returns a string that represents the current object.
+		/// </summary>
+		public override string ToString()
+		{
+			if (IsNew)
+			{
+				return "Currency(New)";
+			}
+			
+			return String.Format("Currency(ID={0})", this.ID);
+		}
 		#endregion
 		
 		#region ObjectInfo

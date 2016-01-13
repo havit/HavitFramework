@@ -35,11 +35,20 @@ namespace Havit.BusinessLayerTest
 	{
 		#region Constructors
 		/// <summary>
+		/// Vytvoří instanci objektu jako nový prvek.
+		/// </summary>
+		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
+		protected Language(ConnectionMode connectionMode = ConnectionMode.Connected) : base(connectionMode)
+		{
+		}
+		
+		/// <summary>
 		/// Vytvoří instanci existujícího objektu.
 		/// </summary>
 		/// <param name="id">LanguageID (PK).</param>
+		/// <param name="connectionMode">Režim business objektu.</param>
 		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
-		protected Language(int id) : base(id)
+		protected Language(int id, ConnectionMode connectionMode = ConnectionMode.Connected) : base(id, connectionMode)
 		{
 		}
 		
@@ -167,6 +176,26 @@ namespace Havit.BusinessLayerTest
 			return new LanguageCollection(Array.ConvertAll<int, Language>(ids, id => Language.GetObject(id)));
 		}
 		
+		#endregion
+		
+		#region CreateDisconnectedObject (static)
+		/// <summary>
+		/// Vrátí nový disconnected objekt. Určeno výhradně pro účely testů.
+		/// </summary>
+		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
+		public static Language CreateDisconnectedObject()
+		{
+			return new Language(ConnectionMode.Disconnected);
+		}
+		
+		/// <summary>
+		/// Vrátí nový disconnected objekt s daným Id. Určeno výhradně pro účely testů.
+		/// </summary>
+		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
+		public static Language CreateDisconnectedObject(int id)
+		{
+			return new Language(id, ConnectionMode.Disconnected);
+		}
 		#endregion
 		
 		//------------------------------------------------------------------------------

@@ -8,7 +8,7 @@ namespace Havit.BusinessTest
 	public class TestingBusinessObject : BusinessObjectBase
 	{
 		#region Constructors
-		public TestingBusinessObject()
+		public TestingBusinessObject() : base(ConnectionMode.Connected)
 		{
 		}
 

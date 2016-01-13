@@ -69,10 +69,18 @@ namespace Havit.BusinessLayerTest
 		
 		#region Constructors
 		/// <summary>
+		/// Vytvoří instanci objektu jako nový prvek.
+		/// </summary>
+		protected LanguageBase(ConnectionMode connectionMode) : base(connectionMode)
+		{
+		}
+		
+		/// <summary>
 		/// Vytvoří instanci existujícího objektu.
 		/// </summary>
 		/// <param name="id">LanguageID (PK).</param>
-		protected LanguageBase(int id) : base(id, ConnectionMode.Connected)
+		/// <param name="connectionMode">Režim business objektu.</param>
+		protected LanguageBase(int id, ConnectionMode connectionMode) : base(id, connectionMode)
 		{
 		}
 		
@@ -97,6 +105,18 @@ namespace Havit.BusinessLayerTest
 				EnsureLoaded();
 				return _UICulturePropertyHolder.Value;
 			}
+			private set
+			{
+				EnsureLoaded();
+				if (value == null)
+				{
+					_UICulturePropertyHolder.Value = String.Empty;
+				}
+				else
+				{
+					_UICulturePropertyHolder.Value = value;
+				}
+			}
 		}
 		/// <summary>
 		/// PropertyHolder pro vlastnost UICulture.
@@ -113,6 +133,18 @@ namespace Havit.BusinessLayerTest
 			{
 				EnsureLoaded();
 				return _CulturePropertyHolder.Value;
+			}
+			private set
+			{
+				EnsureLoaded();
+				if (value == null)
+				{
+					_CulturePropertyHolder.Value = String.Empty;
+				}
+				else
+				{
+					_CulturePropertyHolder.Value = value;
+				}
 			}
 		}
 		/// <summary>
@@ -131,6 +163,18 @@ namespace Havit.BusinessLayerTest
 				EnsureLoaded();
 				return _NamePropertyHolder.Value;
 			}
+			private set
+			{
+				EnsureLoaded();
+				if (value == null)
+				{
+					_NamePropertyHolder.Value = String.Empty;
+				}
+				else
+				{
+					_NamePropertyHolder.Value = value;
+				}
+			}
 		}
 		/// <summary>
 		/// PropertyHolder pro vlastnost Name.
@@ -147,6 +191,11 @@ namespace Havit.BusinessLayerTest
 			{
 				EnsureLoaded();
 				return _AktivniPropertyHolder.Value;
+			}
+			private set
+			{
+				EnsureLoaded();
+				_AktivniPropertyHolder.Value = value;
 			}
 		}
 		/// <summary>
@@ -165,6 +214,11 @@ namespace Havit.BusinessLayerTest
 				EnsureLoaded();
 				return _EditacePovolenaPropertyHolder.Value;
 			}
+			private set
+			{
+				EnsureLoaded();
+				_EditacePovolenaPropertyHolder.Value = value;
+			}
 		}
 		/// <summary>
 		/// PropertyHolder pro vlastnost EditacePovolena.
@@ -181,6 +235,11 @@ namespace Havit.BusinessLayerTest
 			{
 				EnsureLoaded();
 				return _PoradiPropertyHolder.Value;
+			}
+			private set
+			{
+				EnsureLoaded();
+				_PoradiPropertyHolder.Value = value;
 			}
 		}
 		/// <summary>
@@ -644,6 +703,16 @@ namespace Havit.BusinessLayerTest
 		[ThreadStatic]
 		private static Language _currentLanguage;
 		
+		#endregion
+		
+		#region ToString
+		/// <summary>
+		/// Returns a string that represents the current object.
+		/// </summary>
+		public override string ToString()
+		{
+			return String.Format("Language(ID={0})", this.ID);
+		}
 		#endregion
 		
 		#region ObjectInfo

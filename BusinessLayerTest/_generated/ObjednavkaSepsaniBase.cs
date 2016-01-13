@@ -63,7 +63,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Vytvoří instanci objektu jako nový prvek.
 		/// </summary>
-		protected ObjednavkaSepsaniBase() : base()
+		protected ObjednavkaSepsaniBase(ConnectionMode connectionMode) : base(connectionMode)
 		{
 		}
 		
@@ -515,6 +515,21 @@ namespace Havit.BusinessLayerTest
 			return collection;
 		}
 		
+		#endregion
+		
+		#region ToString
+		/// <summary>
+		/// Returns a string that represents the current object.
+		/// </summary>
+		public override string ToString()
+		{
+			if (IsNew)
+			{
+				return "ObjednavkaSepsani(New)";
+			}
+			
+			return String.Format("ObjednavkaSepsani(ID={0})", this.ID);
+		}
 		#endregion
 		
 		#region ObjectInfo

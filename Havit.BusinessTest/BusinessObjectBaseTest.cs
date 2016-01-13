@@ -8,6 +8,7 @@ using Havit.BusinessLayerTest;
 using Havit.Data;
 using System.Data.Common;
 using Havit.Business;
+using Havit.Business.TestExtensions;
 
 namespace Havit.BusinessTest
 {
@@ -16,7 +17,7 @@ namespace Havit.BusinessTest
 	/// to contain all Havit.Business.BusinessObjectBase Unit Tests
 	/// </summary>
 	[TestClass]
-	public class BusinessObjectBaseTest : BusinessObjectBase // abychom došáhli na protected members
+	public class BusinessObjectBaseTest
 	{
 		#region EqualsTest_StejneID
 		/// <summary>
@@ -334,22 +335,88 @@ namespace Havit.BusinessTest
 		}
 		#endregion
 
-		#region TryLoad_Perform, Save_Perform, Delete_Perform
-		protected override bool TryLoad_Perform(DbTransaction transaction)
+		#region SetDisconnectedDisconnectsNewObject
+		[TestMethod]
+		/// <summary>
+		/// Testuje, že zavoláním metody SetDisconnected se objekt přepne do stavu disconnected objektu.
+		/// </summary>
+		public void SetDisconnectedDisconnectsNewObject()
 		{
-			throw new NotSupportedException();
+			using (new IdentityMapScope())
+			{
+				Subjekt subjekt = Subjekt.CreateObject();
+				subjekt.SetDisconnected();
+				Assert.IsTrue(subjekt.IsDisconnected);
+				Subjekt.CreateObject();
+			}
 		}
+		#endregion
 
-		protected override void Save_Perform(DbTransaction transaction)
+		#region SetDisconnectedDisconnectsGhostObject
+		[TestMethod]
+		/// <summary>
+		/// Testuje, že zavoláním metody SetDisconnected se objekt přepne do stavu disconnected objektu.
+		/// </summary>
+		public void SetDisconnectedDisconnectsGhostObject()
 		{
-			throw new NotSupportedException();
+			using (new IdentityMapScope())
+			{
+				Subjekt subjekt = Subjekt.GetObject(-999);
+				subjekt.SetDisconnected();
+				Assert.IsTrue(subjekt.IsDisconnected);
+			}
 		}
+		#endregion
 
-		protected override void Delete_Perform(DbTransaction transaction)
+		#region SetDisconnectedDisconnectsLoadedObject
+		[TestMethod]
+		/// <summary>
+		/// Testuje, že zavoláním metody SetDisconnected se objekt přepne do stavu disconnected objektu.
+		/// </summary>
+		public void SetDisconnectedDisconnectsLoadedObject()
 		{
-			throw new NotSupportedException();
+			using (new IdentityMapScope())
+			{
+				Subjekt subjekt = Subjekt.CreateObject();
+				subjekt.Save();
+				subjekt.SetDisconnected();
+				Assert.IsTrue(subjekt.IsDisconnected);
+			}
 		}
-		#endregion		
+		#endregion
+
+		#region SetPropertySetsPropertyToReadonlyObject
+		[TestMethod]
+		/// <summary>
+		/// Testuje, že zavoláním metody SetProperty se nastaví hodnota vlastnosti.
+		/// </summary>
+		public void SetPropertySetsPropertyToReadonlyObject()
+		{
+			using (new IdentityMapScope())
+			{
+				Role role = Role.CreateDisconnectedObject();
+				role.SetProperty(item => item.Symbol, "AAA");
+
+				Assert.AreEqual("AAA", role.Symbol);							
+			}
+		}
+		#endregion
+
+		#region SetPropertySetsFailsForGhosts
+		[TestMethod]
+		[ExpectedException(typeof(InvalidOperationException))]
+		/// <summary>
+		/// Testuje, že zavolání metody SetProperty není možné na Ghost objektu.
+		/// </summary>
+		public void SetPropertySetsFailsForGhosts()
+		{
+			using (new IdentityMapScope())
+			{
+				Subjekt subjekt = Subjekt.GetObject(-999);
+				subjekt.SetProperty(item => item.Nazev, "AAA");
+			}
+		}
+		#endregion
 	}
 
 }

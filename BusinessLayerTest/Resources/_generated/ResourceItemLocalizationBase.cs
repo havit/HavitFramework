@@ -69,7 +69,7 @@ namespace Havit.BusinessLayerTest.Resources
 		/// <summary>
 		/// Vytvoří instanci objektu jako nový prvek.
 		/// </summary>
-		protected ResourceItemLocalizationBase() : base()
+		protected ResourceItemLocalizationBase(ConnectionMode connectionMode) : base(connectionMode)
 		{
 		}
 		
@@ -787,6 +787,21 @@ namespace Havit.BusinessLayerTest.Resources
 			return collection;
 		}
 		
+		#endregion
+		
+		#region ToString
+		/// <summary>
+		/// Returns a string that represents the current object.
+		/// </summary>
+		public override string ToString()
+		{
+			if (IsNew)
+			{
+				return "ResourceItemLocalization(New)";
+			}
+			
+			return String.Format("ResourceItemLocalization(ID={0})", this.ID);
+		}
 		#endregion
 		
 		#region ObjectInfo

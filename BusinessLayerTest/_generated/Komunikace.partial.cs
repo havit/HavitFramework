@@ -38,7 +38,7 @@ namespace Havit.BusinessLayerTest
 		/// Vytvoří instanci objektu jako nový prvek.
 		/// </summary>
 		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
-		protected Komunikace() : base()
+		protected Komunikace(ConnectionMode connectionMode = ConnectionMode.Connected) : base(connectionMode)
 		{
 		}
 		
@@ -162,6 +162,15 @@ namespace Havit.BusinessLayerTest
 		#region CreateDisconnectedObject (static)
 		/// <summary>
 		/// Vrátí nový disconnected objekt. Určeno výhradně pro účely testů.
+		/// </summary>
+		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
+		public static Komunikace CreateDisconnectedObject()
+		{
+			return new Komunikace(ConnectionMode.Disconnected);
+		}
+		
+		/// <summary>
+		/// Vrátí nový disconnected objekt s daným Id. Určeno výhradně pro účely testů.
 		/// </summary>
 		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
 		public static Komunikace CreateDisconnectedObject(int id)

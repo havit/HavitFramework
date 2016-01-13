@@ -17,7 +17,7 @@ namespace Havit.Business
 	/// Načítání je implementováno jako lazy-load, kdy je objekt nejprve vytvořen prázdný jako ghost se svým ID a teprve
 	/// při první potřebě je iniciováno jeho úplné načtení.<br/>
 	/// </remarks>
-	[DebuggerDisplay("{GetType().FullName,nq} (ID={IsNew ? \"New\" : ID.ToString(),nq}, IsLoaded={IsLoaded,nq}, IsDirty={IsDirty,nq})")]
+	[DebuggerDisplay("{GetType().FullName,nq} (ID={IsNew ? \"New\" : ID.ToString(),nq}, IsLoaded={IsLoaded,nq}, IsDirty={IsDirty,nq}, IsDisconnected={IsDisconnected,nq})")]
 	public abstract class BusinessObjectBase
 	{
 		#region Consts
@@ -41,7 +41,7 @@ namespace Havit.Business
 		private int _id;
 		#endregion
 
-		#region Properties - Stav objektu (IsDirty, IsLoaded, IsNew, IsDeleted)
+		#region Properties - Stav objektu (IsDirty, IsLoaded, IsNew, IsDeleted, IsDisconnected)
 		/// <summary>
 		/// Indikuje, zdali byla data objektu změněna oproti datům v databázi.
 		/// Při nastavení na false zruší příznak změn všem PropertyHolderům.
@@ -120,21 +120,16 @@ namespace Havit.Business
 			set { _isSaving = value; }
 		}
 		private bool _isSaving = false;
-		#endregion
-
-		#region IsDisconnected
+		
 		/// <summary>
 		/// Indikuje, zda jde o disconnected business objekt.
 		/// </summary>
 		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		public bool IsDisconnected
 		{
-			get
-			{
-				return isDisconnected;
-			}
+			get { return _isDisconnected; }
 		}
-		private readonly bool isDisconnected = false;
+		private bool _isDisconnected = false;
 		#endregion
 
 		#region PropertyHolders
@@ -164,13 +159,13 @@ namespace Havit.Business
 		/// <param name="isDirty">indikuje objekt změněný vůči perzistentnímu uložišti</param>
 		/// <param name="isLoaded">indikuje načtený objekt</param>
 		/// <param name="isDisconnected">indikuje disconnected objekt</param>
-		protected internal BusinessObjectBase(int id, bool isNew, bool isDirty, bool isLoaded, bool isDisconnected)
+		protected BusinessObjectBase(int id, bool isNew, bool isDirty, bool isLoaded, bool isDisconnected)
 		{
 			this._id = id;
 			this._isNew = isNew;
 			this._isDirty = isDirty;
 			this._isLoaded = isLoaded;
-			this.isDisconnected = isDisconnected;
+			this._isDisconnected = isDisconnected;
 
 			Init();
 		}
@@ -178,12 +173,12 @@ namespace Havit.Business
 		/// <summary>
 		/// Konstruktor pro nový objekt (bez perzistence v databázi).
 		/// </summary>
-		protected BusinessObjectBase() : this(
+		protected BusinessObjectBase(ConnectionMode connectionMode) : this(
 			NoID,		// ID
 			true,		// IsNew
 			false,		// IsDirty
-			true,		// IsLoaded
-			false)		// IsDisconnected
+			true,       // IsLoaded
+			connectionMode == ConnectionMode.Disconnected)		// IsDisconnected
 		{
 			/*
 			this._id = NoID;
@@ -635,7 +630,7 @@ namespace Havit.Business
 		/// Předpokládá se korektnost hodnoty, neprovádí se žádná kontrola.
 		/// Číslo musí být v "invariant formátu" - cifry bez oddělovačů, může být záporné.
 		/// </summary>
-		protected static int FastIntParse(string value)
+		protected internal static int FastIntParse(string value)
 		{
 			unchecked
 			{
@@ -654,5 +649,27 @@ namespace Havit.Business
 			}
 		}
 		#endregion
+
+		/// <summary>
+		/// Přepne objekt do stavu disconnected.
+		/// Metoda je interní, aby nebyla dostupná na objektu přímo. Je pak přístupná pomocí extension metody z namespace TestExtensions.
+		/// </summary>
+		internal void SetDisconnected()
+		{
+			if (!IsDisconnected)
+			{
+				_isDisconnected = true;
+
+				if (/*!IsNew && */!IsLoaded) // nový objekt je automaticky IsLoaded = true
+				{
+					// Novému objektu proběhne již proběhl Init() včetně nastavení hodnot vlastnostem.
+					// Načtenému objektu byly hodnoty nastaveny v loadu.
+					// Takže objektu, který není nový a není ani načtený (ghost), zavoláme (znovu) Init. Nastaví se mu nové instance property holderů, ale to nevadí.
+					
+					Init(); // Nyní je již objekt ve stavu IsDisconnected.
+					_isLoaded = true;
+				}
+			}
+		}
 	}
 }

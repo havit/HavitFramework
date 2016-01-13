@@ -35,11 +35,20 @@ namespace Havit.BusinessLayerTest
 	{
 		#region Constructors
 		/// <summary>
+		/// Vytvoří instanci objektu jako nový prvek.
+		/// </summary>
+		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
+		protected Role(ConnectionMode connectionMode = ConnectionMode.Connected) : base(connectionMode)
+		{
+		}
+		
+		/// <summary>
 		/// Vytvoří instanci existujícího objektu.
 		/// </summary>
 		/// <param name="id">RoleID (PK).</param>
+		/// <param name="connectionMode">Režim business objektu.</param>
 		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
-		protected Role(int id) : base(id)
+		protected Role(int id, ConnectionMode connectionMode = ConnectionMode.Connected) : base(id, connectionMode)
 		{
 		}
 		
@@ -167,6 +176,26 @@ namespace Havit.BusinessLayerTest
 			return new RoleCollection(Array.ConvertAll<int, Role>(ids, id => Role.GetObject(id)));
 		}
 		
+		#endregion
+		
+		#region CreateDisconnectedObject (static)
+		/// <summary>
+		/// Vrátí nový disconnected objekt. Určeno výhradně pro účely testů.
+		/// </summary>
+		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
+		public static Role CreateDisconnectedObject()
+		{
+			return new Role(ConnectionMode.Disconnected);
+		}
+		
+		/// <summary>
+		/// Vrátí nový disconnected objekt s daným Id. Určeno výhradně pro účely testů.
+		/// </summary>
+		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
+		public static Role CreateDisconnectedObject(int id)
+		{
+			return new Role(id, ConnectionMode.Disconnected);
+		}
 		#endregion
 		
 		//------------------------------------------------------------------------------

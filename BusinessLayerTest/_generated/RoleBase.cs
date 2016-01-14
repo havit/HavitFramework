@@ -60,6 +60,11 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Vytvoří instanci objektu jako nový prvek.
 		/// </summary>
+		/// <summary>
+		/// Vytvoří instanci objektu jako nový prvek.
+		/// </summary>
+		/// <param name="connectionMode">Režim business objektu.</param>
+		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
 		protected RoleBase(ConnectionMode connectionMode) : base(connectionMode)
 		{
 		}

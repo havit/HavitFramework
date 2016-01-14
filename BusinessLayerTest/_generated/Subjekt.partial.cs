@@ -38,7 +38,16 @@ namespace Havit.BusinessLayerTest
 		/// Vytvoří instanci objektu jako nový prvek.
 		/// </summary>
 		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
-		protected Subjekt(ConnectionMode connectionMode = ConnectionMode.Connected) : base(connectionMode)
+		protected Subjekt() : this(ConnectionMode.Connected)
+		{
+		}
+		
+		/// <summary>
+		/// Vytvoří instanci objektu jako nový prvek.
+		/// </summary>
+		/// <param name="connectionMode">Režim business objektu.</param>
+		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
+		protected Subjekt(ConnectionMode connectionMode) : base(connectionMode)
 		{
 		}
 		

@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -11,7 +11,7 @@ using System.Xml.Linq;
 namespace Havit.Services.Ares
 {
 	/// <summary>
-	/// T¯Ìda implementujÌcÌ naËÌt·nÌ dat z obchodnÌho rejst¯Ìku (ARES).
+	/// T≈ô√≠da implementuj√≠c√≠ naƒç√≠t√°n√≠ dat z obchodn√≠ho rejst≈ô√≠ku (ARES).
 	/// </summary>
 	public class AresService
 	{
@@ -22,7 +22,7 @@ namespace Havit.Services.Ares
 
 		#region Private members
 		/// <summary>
-		/// I» subjektu, kterÈho ˙daje chceme zÌskat.
+		/// Iƒå subjektu, kter√©ho √∫daje chceme z√≠skat.
 		/// </summary>
 		private string Ico { get; set; }
 
@@ -30,8 +30,8 @@ namespace Havit.Services.Ares
 
 		#region Timeout
 		/// <summary>
-		/// Timeout (v milisekund·ch) jednoho requestu p¯i naËÌt·nÌ dat z ARESu.
-		/// Pokud nenÌ hodnota nastavena, nenÌ dÈlka requestu omezov·na (resp. je pouûito standardnÌ nastavenÌ .NETu).
+		/// Timeout (v milisekund√°ch) jednoho requestu p≈ôi naƒç√≠t√°n√≠ dat z ARESu.
+		/// Pokud nen√≠ hodnota nastavena, nen√≠ d√©lka requestu omezov√°na (resp. je pou≈æito standardn√≠ nastaven√≠ .NETu).
 		/// </summary>
 		public int? Timeout
 		{
@@ -43,7 +43,7 @@ namespace Havit.Services.Ares
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		/// <param name="ico">I»O spoleËnosti.</param>
+		/// <param name="ico">IƒåO spoleƒçnosti.</param>
 		public AresService(string ico)
 		{
 			Ico = ico;
@@ -53,7 +53,7 @@ namespace Havit.Services.Ares
 		#region GetData
 
 		/// <summary>
-		/// VracÌ strukturovanou odpovÏd z obchodnÌho rejst¯Ìku.
+		/// Vrac√≠ strukturovanou odpovƒõd z obchodn√≠ho rejst≈ô√≠ku.
 		/// </summary>
 		public AresData GetData(AresRegistr rejstriky = AresRegistr.Basic | AresRegistr.ObchodniRejstrik)
 		{			
@@ -76,7 +76,7 @@ namespace Havit.Services.Ares
 			}
 			catch (AggregateException exception)
 			{
-				// pokus o vybalenÌ v˝jimky (chceme ¯eöit jen jedinou)
+				// pokus o vybalen√≠ v√Ωjimky (chceme ≈ôe≈°it jen jedinou)
 				if ((exception.InnerExceptions.Count > 0) && (exception.InnerExceptions[0] is AresBaseException))
 				{
 					throw exception.InnerExceptions[0];
@@ -112,13 +112,13 @@ namespace Havit.Services.Ares
 					bool errorEK = ((int)item.Elements(aresDT + "EK").SingleOrDefault() == 1 /* Nenalezen */);
                     if (errorEK && ((string)item.Elements(aresDT + "ET").SingleOrDefault()).Contains("Chyba 71 - nenalezeno"))
 					{
-						// nehl·sÌme chybu
+						// nehl√°s√≠me chybu
 						continue;
 					}
 					if (errorEK && ((string)item.Elements(aresDT + "ET").SingleOrDefault()).Contains("Chyba 61 - subjekt zanikl"))
 					{
 						result.SubjektZanikl = true;
-						// nehl·sÌme chybu
+						// nehl√°s√≠me chybu
 						continue;
 					}
 					else
@@ -130,7 +130,7 @@ namespace Havit.Services.Ares
 
 				if (!hasError)
 				{
-					// nehl·sÌme chybu ani neparsujeme data - jde o prostÈ nenalezenÌ z·znamu
+					// nehl√°s√≠me chybu ani neparsujeme data - jde o prost√© nenalezen√≠ z√°znamu
 					return;
 				}
 				else
@@ -147,7 +147,7 @@ namespace Havit.Services.Ares
 
 		private void ParseBasicData(XDocument aresResponse, XNamespace aresDT, AresData result)
 		{
-		// V˝pis BASIC (element).
+		// V√Ωpis BASIC (element).
 			XElement vypisOrElement = aresResponse.Descendants(aresDT + "VBAS").FirstOrDefault();
 
 			if (vypisOrElement != null)
@@ -155,7 +155,7 @@ namespace Havit.Services.Ares
 				result.SubjektZanikl = false;
 				result.Ico = (string)vypisOrElement.Elements(aresDT + "ICO").FirstOrDefault();
 				result.Dic = (string)vypisOrElement.Elements(aresDT + "DIC").FirstOrDefault();
-				result.NazevObchodniFirmy = (string)vypisOrElement.Elements(aresDT + "OF").FirstOrDefault(); // obchodnÌ firma
+				result.NazevObchodniFirmy = (string)vypisOrElement.Elements(aresDT + "OF").FirstOrDefault(); // obchodn√≠ firma
 
 				XElement npfElement = vypisOrElement.Elements(aresDT + "PF").Elements(aresDT + "NPF").FirstOrDefault();
 				if (npfElement != null)
@@ -205,7 +205,7 @@ namespace Havit.Services.Ares
 					bool errorEK = ((int)item.Elements(aresDT + "EK").SingleOrDefault() == 1 /* Nenalezen */);
 					if (errorEK && ((string)item.Elements(aresDT + "ET").SingleOrDefault()).Contains("Chyba 71 - nenalezeno"))
 					{
-						// nehl·sÌme chybu
+						// nehl√°s√≠me chybu
 						continue;
 					}
 					else
@@ -217,7 +217,7 @@ namespace Havit.Services.Ares
 
 				if (!hasError)
 				{
-					// nehl·sÌme chybu ani neparsujeme data - jde o prostÈ nenalezenÌ z·znamu
+					// nehl√°s√≠me chybu ani neparsujeme data - jde o prost√© nenalezen√≠ z√°znamu
 					return;
 				}
 				else
@@ -234,7 +234,7 @@ namespace Havit.Services.Ares
 
 		private void ParseObchodniRejstrikData(XDocument aresResponse, XNamespace aresDT, AresData result)
 		{
-			// V˝pis OR (element).
+			// V√Ωpis OR (element).
 			XElement vypisOrElement = aresResponse.Descendants(aresDT + "Vypis_OR").FirstOrDefault();
 
 			if (vypisOrElement != null)
@@ -244,18 +244,18 @@ namespace Havit.Services.Ares
 				if (stavElement != null)
 				{
 					string stavResult = (string)stavElement;
-					if (stavResult.Equals("AktivnÌ"))
+					if (stavResult.Equals("Aktivn√≠"))
 					{
 						result.SubjektZanikl = false;
 					}
-					else if (stavResult.Equals("Zanikl˝"))
+					else if (stavResult.Equals("Zanikl√Ω"))
 					{
 						result.SubjektZanikl = true;
 					}
 				}
 
 				result.Ico = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "ICO").FirstOrDefault();
-				result.NazevObchodniFirmy = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "OF").FirstOrDefault(); // obchodnÌ firma
+				result.NazevObchodniFirmy = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "OF").FirstOrDefault(); // obchodn√≠ firma
 
 				// Registrace OR
 				XElement registraceElement = vypisOrElement.Elements(aresDT + "REG").FirstOrDefault();
@@ -301,7 +301,7 @@ namespace Havit.Services.Ares
 				result.Sidlo.Stat = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "SI").Elements(aresDT + "NS").FirstOrDefault();
 				result.Sidlo.AdresaTextem = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "SI").Elements(aresDT + "AT").FirstOrDefault();
 
-				// statut·rnÌ org·n
+				// statut√°rn√≠ org√°n
 				var soElement = vypisOrElement.Elements(aresDT + "SO").FirstOrDefault();
 				if (soElement != null)
 				{
@@ -340,7 +340,7 @@ namespace Havit.Services.Ares
 
 		#region GetAresResponseXDocument
 		/// <summary>
-		/// Odeöle dotaz do obchodnÌho rejst¯Ìku pro danÈ I» a vr·tÌ odpovÏd jako XDocument objekt.
+		/// Ode≈°le dotaz do obchodn√≠ho rejst≈ô√≠ku pro dan√© Iƒå a vr√°t√≠ odpovƒõd jako XDocument objekt.
 		/// </summary>
 		private XDocument GetAresResponseXDocument(string requestUrl)
 		{
@@ -359,7 +359,7 @@ namespace Havit.Services.Ares
 			}
 			catch (WebException e)
 			{
-				throw new AresLoadException(String.Format("Chyba \"{0}\" p¯i pokusu o zÌsk·nÌ dat ze sluûby ARES ({1}).", e.Message, requestUrl));
+				throw new AresLoadException(String.Format("Chyba \"{0}\" p≈ôi pokusu o z√≠sk√°n√≠ dat ze slu≈æby ARES ({1}).", e.Message, requestUrl));
 			}
 
 			return aresResponseXDocument;

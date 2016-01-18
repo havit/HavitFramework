@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Web;
 using System.Collections.Generic;
 using System.Globalization;
@@ -13,7 +13,7 @@ using System.Xml.Linq;
 namespace Havit.Services.Ares
 {
 	/// <summary>
-	/// Tøída implementující naèítání dat z obchodního rejstøíku (ARES).
+	/// TÅ™Ã­da implementujÃ­cÃ­ naÄÃ­tÃ¡nÃ­ dat z obchodnÃ­ho rejstÅ™Ã­ku (ARES).
 	/// </summary>
 	public class AresPrehledSubjektuService
 	{
@@ -24,20 +24,20 @@ namespace Havit.Services.Ares
 
 		#region Private members
 		/// <summary>
-		/// název subjektu, kterého údaje chceme získat.
+		/// nÃ¡zev subjektu, kterÃ©ho Ãºdaje chceme zÃ­skat.
 		/// </summary>
 		private string Nazev { get; set; }
 
 		/// <summary>
-		/// Obec/Mìsto, kde se subjekt nachází.
+		/// Obec/MÄ›sto, kde se subjekt nachÃ¡zÃ­.
 		/// </summary>
 		private string Obec { get; set; }
 		#endregion
 
 		#region Timeout
 		/// <summary>
-		/// Timeout (v milisekundách) jednoho requestu pøi naèítání dat z ARESu.
-		/// Pokud není hodnota nastavena, není délka requestu omezována (resp. je pouito standardní nastavení .NETu).
+		/// Timeout (v milisekundÃ¡ch) jednoho requestu pÅ™i naÄÃ­tÃ¡nÃ­ dat z ARESu.
+		/// Pokud nenÃ­ hodnota nastavena, nenÃ­ dÃ©lka requestu omezovÃ¡na (resp. je pouÅ¾ito standardnÃ­ nastavenÃ­ .NETu).
 		/// </summary>
 		public int? Timeout
 		{
@@ -47,7 +47,7 @@ namespace Havit.Services.Ares
 
 		#region GetData
 		/// <summary>
-		/// Vrací strukturovanou odpovìd z obchodního rejstøíku. Pouze existující subjekty, seøazené dle obchodního jména, max. 200 vısledkù.
+		/// VracÃ­ strukturovanou odpovÄ›d z obchodnÃ­ho rejstÅ™Ã­ku. Pouze existujÃ­cÃ­ subjekty, seÅ™azenÃ© dle obchodnÃ­ho jmÃ©na, max. 200 vÃ½sledkÅ¯.
 		/// </summary>
 		public AresPrehledSubjektuResult GetData(string nazev, string obec = null)
 		{
@@ -65,7 +65,7 @@ namespace Havit.Services.Ares
 			}
 			catch (AggregateException exception)
 			{
-				// pokus o vybalení vıjimky (chceme øešit jen jedinou)
+				// pokus o vybalenÃ­ vÃ½jimky (chceme Å™eÅ¡it jen jedinou)
 				if ((exception.InnerExceptions.Count > 0) && (exception.InnerExceptions[0] is AresBaseException))
 				{
 					throw exception.InnerExceptions[0];
@@ -103,10 +103,10 @@ namespace Havit.Services.Ares
 				XElement rElement = eElement.Elements(aresDT + "R").FirstOrDefault();
 				if (rElement != null && ((string)rElement).StartsWith("Nenalezen")  /* Nenalezen */)
 				{
-					return; // nehlásíme chybu ani neparsujeme data
+					return; // nehlÃ¡sÃ­me chybu ani neparsujeme data
 				}
 
-				if (rElement != null && (((string)rElement).Contains(" vede k vıbìru ") || ((string)rElement).Contains("Upravte hlediska pro vyhled") || ((string)rElement).Contains("pøesáhl nastavenou mez"))   /* Pøíliš mnoho vısledkù */)
+				if (rElement != null && (((string)rElement).Contains(" vede k vÃ½bÄ›ru ") || ((string)rElement).Contains("Upravte hlediska pro vyhled") || ((string)rElement).Contains("pÅ™esÃ¡hl nastavenou mez"))   /* PÅ™Ã­liÅ¡ mnoho vÃ½sledkÅ¯ */)
 				{
 					result.PrilisMnohoVysledku = true;
 					return;
@@ -125,7 +125,7 @@ namespace Havit.Services.Ares
 		#region ParseData
 		private void ParseData(XDocument aresResponse, XNamespace aresDT, AresPrehledSubjektuResult result)
 		{
-			// Vıpis BASIC (element).
+			// VÃ½pis BASIC (element).
 			IEnumerable<XElement> vypisOrElements = aresResponse.Descendants(aresDT + "S");
 
 			if ((vypisOrElements != null) && (vypisOrElements.Count() > 0))
@@ -144,7 +144,7 @@ namespace Havit.Services.Ares
 
 		#region GetAresResponseXDocument
 		/// <summary>
-		/// Odešle dotaz do obchodního rejstøíku pro dané IÈ a vrátí odpovìd jako XDocument objekt.
+		/// OdeÅ¡le dotaz do obchodnÃ­ho rejstÅ™Ã­ku pro danÃ© IÄŒ a vrÃ¡tÃ­ odpovÄ›d jako XDocument objekt.
 		/// </summary>
 		private XDocument GetAresResponseXDocument(string requestUrl)
 		{
@@ -163,7 +163,7 @@ namespace Havit.Services.Ares
 			}
 			catch (WebException e)
 			{
-				throw new AresLoadException(String.Format("Chyba \"{0}\" pøi pokusu o získání dat ze sluby ARES ({1}).", e.Message, requestUrl));
+				throw new AresLoadException(String.Format("Chyba \"{0}\" pÅ™i pokusu o zÃ­skÃ¡nÃ­ dat ze sluÅ¾by ARES ({1}).", e.Message, requestUrl));
 			}
 
 			return aresResponseXDocument;

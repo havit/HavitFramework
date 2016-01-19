@@ -5,11 +5,6 @@
 </style>
 <bc:CollapsiblePanel HeaderText="Collapsible panel" Collapsed="False" AutoPostBack="True" runat="server">
 	<ContentTemplate>
-		<div class="panel-body">
-			<pre>This context is in collapsible section...</pre>
-		</div>
-		<div class="panel-footer">
-			Footer of collapsible panel
-		</div>
+		<pre>This context is in collapsible section...</pre>
 	</ContentTemplate>
 </bc:CollapsiblePanel>

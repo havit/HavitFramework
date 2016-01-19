@@ -18,6 +18,18 @@
 		<li>HeaderText - The text to show in the control when the panel is collapsed.</li>
 	</ul>
 
+	<h2>Rendered HTML</h2>
+	<pre>&lt;div class=&quot;panel panel-default&quot;&gt;
+  &lt;div data-target=&quot;#{this.ClientID}&quot; data-toggle=&quot;collapse&quot; class=&quot;panel-heading&quot;&gt;
+    [Panel heading]
+  &lt;/div&gt;
+  &lt;div id=&quot;#{this.ClientID}&quot; class=&quot;collapse panel-collapse&quot;&gt;
+    &lt;div class=&quot;panel-body&quot;&gt;
+      [Panel content]
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+
 	<h2>Sample 1 - collapsible panel with 'HeaderTemplate'</h2>	
 	<uc:CollapsiblePanelSample1 ID="CollapsiblePanelSample1UC" runat="server" />
 	<uc:ShowControl ShowControlID="CollapsiblePanelSample1UC" runat="server" />

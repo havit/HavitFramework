@@ -240,11 +240,16 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// </summary>
 		private void RenderContent(HtmlTextWriter writer)
 		{
-			//<div id="#{this.ClientID}" class="collapse panel-collapse">
-			//  Panel content
-			//</div>
+			// <div id="#{this.ClientID}" class="collapse panel-collapse">
+			//   <div class="panel-body">
+			//     Panel content
+			//   </div>
+			// </ div >
 			writer.AddAttribute(HtmlTextWriterAttribute.Id, this.ClientID);
 			writer.AddAttribute(HtmlTextWriterAttribute.Class, "collapse" + (Collapsed ? String.Empty : " in") + " panel-collapse");
+			writer.RenderBeginTag(HtmlTextWriterTag.Div);
+
+			writer.AddAttribute(HtmlTextWriterAttribute.Class, "panel-body");
 			writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
 			if (_contentTemplateContainer != null)
@@ -252,6 +257,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				_contentTemplateContainer.RenderControl(writer);
 			}
 
+			writer.RenderEndTag(); // div
 			writer.RenderEndTag(); // div
 		}
 		#endregion
@@ -271,7 +277,9 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			//     Panel heading without title
 			//	 </div>
 			//   <div id="#{this.ClientID}" class="collapse panel-collapse">
-			//     Panel content
+			//     <div class="panel-body">
+			//       Panel content
+			//     </div>
 			//   </div>
 			// </div>
 

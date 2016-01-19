@@ -178,8 +178,8 @@
     <Content Include="HavitWebBootstrapTests\ModalDialogTest.aspx" />
     <Content Include="HavitWebBootstrapTests\Controls\ModalDialogUserControlTest.ascx" />
     <Content Include="HavitWebBootstrapTests\NavbarTest.aspx" />
-    <None Include="HavitWebBootstrapTests\RetractablePanelTest1.aspx" />
-    <None Include="HavitWebBootstrapTests\RetractablePanelTest2.aspx" />
+    <Content Include="HavitWebBootstrapTests\CollapsiblePanelTestPage1.aspx" />
+    <Content Include="HavitWebBootstrapTests\CollapsiblePanelTestPage2.aspx" />
     <Content Include="HavitWebBootstrapTests\SwitchButtonTest.aspx" />
     <Content Include="HavitWebBootstrapTests\CheckBoxListTest.aspx" />
     <Content Include="HavitWebBootstrapTests\RadioButtonListTest.aspx" />
@@ -473,20 +473,20 @@
     <Compile Include="HavitWebBootstrapTests\NavbarTest.aspx.designer.cs">
       <DependentUpon>NavbarTest.aspx</DependentUpon>
     </Compile>
-    <None Include="HavitWebBootstrapTests\RetractablePanelTest1.aspx.cs">
-      <DependentUpon>RetractablePanelTest1.aspx</DependentUpon>
+    <Compile Include="HavitWebBootstrapTests\CollapsiblePanelTestPage1.aspx.cs">
+      <DependentUpon>CollapsiblePanelTestPage1.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
-    </None>
-    <None Include="HavitWebBootstrapTests\RetractablePanelTest1.aspx.designer.cs">
-      <DependentUpon>RetractablePanelTest1.aspx</DependentUpon>
-    </None>
-    <None Include="HavitWebBootstrapTests\RetractablePanelTest2.aspx.cs">
-      <DependentUpon>RetractablePanelTest2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HavitWebBootstrapTests\CollapsiblePanelTestPage1.aspx.designer.cs">
+      <DependentUpon>CollapsiblePanelTestPage1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HavitWebBootstrapTests\CollapsiblePanelTestPage2.aspx.cs">
+      <DependentUpon>CollapsiblePanelTestPage2.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
-    </None>
-    <None Include="HavitWebBootstrapTests\RetractablePanelTest2.aspx.designer.cs">
-      <DependentUpon>RetractablePanelTest2.aspx</DependentUpon>
-    </None>
+    </Compile>
+    <Compile Include="HavitWebBootstrapTests\CollapsiblePanelTestPage2.aspx.designer.cs">
+      <DependentUpon>CollapsiblePanelTestPage2.aspx</DependentUpon>
+    </Compile>
     <Compile Include="HavitWebBootstrapTests\SwitchButtonTest.aspx.cs">
       <DependentUpon>SwitchButtonTest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

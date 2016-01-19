@@ -13,6 +13,7 @@
 			<siteMapNode url="~/sections/controls/switchbutton" title="SwitchButton" />
 			<siteMapNode url="~/sections/controls/validators" title="Validators" />
 			<siteMapNode url="~/sections/controls/validation-summary" title="Validation Summary" />
+			<siteMapNode url="~/sections/controls/collapsiblepanel" title="CollapsiblePanel" />
 		</siteMapNode>
 		<siteMapNode url="~/sections/less/less" title="LESS" />
     </siteMapNode>

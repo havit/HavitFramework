@@ -31,9 +31,9 @@ namespace Havit.Web.Bootstrap.UI.ClientScripts
 		internal const string ModalScriptResourceMappingName = "Havit.Web.Bootstrap.ModalExtension";
 
 		/// <summary>
-		/// Script Resource Definition name for RetractablePanel.js.
+		/// Script Resource Definition name for CollabsiblePanel.js.
 		/// </summary>
-		internal const string RetractablePanelScriptResourceMappingName = "Havit.Web.Bootstrap.RetractablePanel";
+		internal const string CollapsiblePanelScriptResourceMappingName = "Havit.Web.Bootstrap.CollapsiblePanel";
 		#endregion
 
 		#region RegisterScriptResourceMappings
@@ -53,7 +53,7 @@ namespace Havit.Web.Bootstrap.UI.ClientScripts
 			ScriptManager.ScriptResourceMapping.AddDefinition(WebUIValidationExtensionScriptResourceMappingName, new ScriptResourceDefinition { Path = String.Format("~/Scripts/havit.web.bootstrap/WebUIValidationExtension.js?version={0}", version) });
 			ScriptManager.ScriptResourceMapping.AddDefinition(TabPanelExtensionScriptResourceMappingName, new ScriptResourceDefinition { Path = String.Format("~/Scripts/havit.web.bootstrap/TabPanelExtension.js?version={0}", version) });
 			ScriptManager.ScriptResourceMapping.AddDefinition(ModalScriptResourceMappingName, new ScriptResourceDefinition { Path = String.Format("~/Scripts/havit.web.bootstrap/ModalExtension.js?version={0}", version) });
-			ScriptManager.ScriptResourceMapping.AddDefinition(RetractablePanelScriptResourceMappingName, new ScriptResourceDefinition { Path = String.Format("~/Scripts/havit.web.bootstrap/RetractablePanel.js?version={0}", version) });
+			ScriptManager.ScriptResourceMapping.AddDefinition(CollapsiblePanelScriptResourceMappingName, new ScriptResourceDefinition { Path = String.Format("~/Scripts/havit.web.bootstrap/CollapsiblePanel.js?version={0}", version) });
 		}
 		#endregion
 

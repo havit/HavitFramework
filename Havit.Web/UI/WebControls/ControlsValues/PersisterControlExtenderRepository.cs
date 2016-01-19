@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Havit.Web.Bootstrap.UI.WebControls.ControlsValues;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
@@ -36,6 +37,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 							_default.Add(new CheckBoxListPersisterControlExtender());
 							_default.Add(new ListBoxPersisterControlExtender());
 							_default.Add(new AutoCompleteTextBoxControlExtender());
+							_default.Add(new CollapsiblePanelPersisterControlExtender());
 						}
 					}
 				}

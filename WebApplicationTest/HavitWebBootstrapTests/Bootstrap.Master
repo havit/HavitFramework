@@ -11,7 +11,6 @@
 <body>
 	<form id="MainForm" runat="server">
 		<div>
-
 			<asp:ScriptManager EnablePartialRendering="true" runat="server">
 				<Scripts>
 					<asp:ScriptReference Name="jquery" />

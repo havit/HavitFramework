@@ -10,8 +10,7 @@
 namespace Havit.WebApplicationTest.HavitWebBootstrapTests {
     
     
-    public partial class CollapsiblePanelTestPage2
-	{
+    public partial class CollapsiblePanelTestPage2 {
         
         /// <summary>
         /// MainControlsValuesPersister control.
@@ -21,6 +20,15 @@ namespace Havit.WebApplicationTest.HavitWebBootstrapTests {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Havit.Web.UI.WebControls.ControlsValues.ControlsValuesPersister MainControlsValuesPersister;
+        
+        /// <summary>
+        /// CollapsiblePanel3Header control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl CollapsiblePanel3Header;
         
         /// <summary>
         /// CollapsiblePanel3 control.

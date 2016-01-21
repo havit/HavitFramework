@@ -16,6 +16,7 @@
 		<li>Collapsed - Specifies that the object is collapsed or expanded.</li>
 		<li>AutoPostBack - Gets or sets a value that indicates whether an automatic postback to the server occurs when user click to panel.</li>
 		<li>HeaderText - The text to show in the control when the panel is collapsed.</li>
+		<li>CollapsedStateChanged (event) - Occurs when collaption state is changed.</li>
 	</ul>
 
 	<h2>Rendered HTML</h2>
@@ -30,11 +31,11 @@
   &lt;/div&gt;
 &lt;/div&gt;</pre>
 
-	<h2>Sample 1 - collapsible panel with 'HeaderTemplate'</h2>	
+	<h2>Sample 1</h2>	
 	<uc:CollapsiblePanelSample1 ID="CollapsiblePanelSample1UC" runat="server" />
 	<uc:ShowControl ShowControlID="CollapsiblePanelSample1UC" runat="server" />
 
-	<h2>Sample 2 - collapsible panel without 'HeaderTemplate'</h2>	
+	<h2>Sample 2</h2>	
 	<uc:CollapsiblePanelSample2 ID="CollapsiblePanelSample2UC" runat="server" />
 	<uc:ShowControl ShowControlID="CollapsiblePanelSample2UC" runat="server" />
 </asp:Content>

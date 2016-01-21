@@ -21,6 +21,18 @@ namespace Havit.WebApplicationTest.HavitWebBootstrapTests
 			SecondSwitchButton.ValueChanged += SecondSwitchButton_ValueChanged;
 		}
 
+		protected override void OnLoad(EventArgs e)
+		{
+			base.OnLoad(e);
+
+			if (!Page.IsPostBack)
+			{
+				List<string> items = new List<string>() { "a1", "a2", "a3" };
+				TestUpdatePanelRepeater3.DataSource = items;
+				TestUpdatePanelRepeater3.DataBind();
+			}
+		}
+
 		protected void GotoBtn_Click(object sender, EventArgs e)
 		{
 			this.Response.Redirect("~/HavitWebBootstrapTests/CollapsiblePanelTestPage2.aspx");

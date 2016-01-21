@@ -43,6 +43,7 @@ namespace Havit.WebApplicationTest.HavitWebBootstrapTests
 			if (data != null)
 			{
 				MainControlsValuesPersister.ApplyValues(data);
+				CollapsiblePanel3_CollapsedStateChanged(sender, e);
 			}
 		}
 
@@ -54,6 +55,10 @@ namespace Havit.WebApplicationTest.HavitWebBootstrapTests
 		private void SecondSwitchButton_ValueChanged(object sender, EventArgs e)
 		{
 			SecondStateLabel.Text = SecondSwitchButton.Value ? SecondSwitchButton.YesText : SecondSwitchButton.NoText;
+		}
+		protected void CollapsiblePanel3_CollapsedStateChanged(object sender, EventArgs e)
+		{
+			CollapsiblePanel3Header.InnerText = $"Collapsible panel test 3 ({(CollapsiblePanel3.Collapsed ? "collapsed" : "expanded")}):";
 		}
 	}
 }

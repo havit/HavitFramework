@@ -22,6 +22,33 @@ namespace Havit.WebApplicationTest.HavitWebBootstrapTests {
         protected global::Havit.Web.UI.WebControls.ControlsValues.ControlsValuesPersister MainControlsValuesPersister;
         
         /// <summary>
+        /// TestUpdatePanelCollapsiblePanel1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Havit.Web.Bootstrap.UI.WebControls.CollapsiblePanel TestUpdatePanelCollapsiblePanel1;
+        
+        /// <summary>
+        /// CollapsiblePanel3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Havit.Web.Bootstrap.UI.WebControls.CollapsiblePanel CollapsiblePanel3;
+        
+        /// <summary>
+        /// TestUpdatePanelRepeater3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater TestUpdatePanelRepeater3;
+        
+        /// <summary>
         /// CollapsiblePanel1 control.
         /// </summary>
         /// <remarks>

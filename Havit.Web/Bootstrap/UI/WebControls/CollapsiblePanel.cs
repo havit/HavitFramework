@@ -21,11 +21,29 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	/// <summary>
 	/// CollapsiblePanel je flexibilní control, který vám umožní snadno přidávat skládací oddíly na vaše webové stránky.
 	/// </summary>
+	//
+	//INamingContainer je nutny, aby sel definovat "PostBackTrigger":
+	//<asp:UpdatePanel runat="server">
+	//<Triggers>
+	//	< asp:PostBackTrigger ControlID="TestUpdatePanelCollapsiblePanel1" />
+	//</Triggers>
+	//<ContentTemplate>
+	//	<bc:CollapsiblePanel ID="TestUpdatePanelCollapsiblePanel" AutoPostBack="True" runat="server">
+	//	...
+	//	...
+	//	...
 	[PersistChildren(false), ParseChildren(true)]
-	public class CollapsiblePanel : Control
+	public class CollapsiblePanel : Control, INamingContainer
 	{
+		#region Events
+		/// <summary>
+		/// Vyvolá se, pokud je změněn stav panelu (z collapsible na expanded a obráceně).
+		/// </summary>
+		public event EventHandler CollapsedStateChanged;
+		#endregion
+
 		#region Constants	
-		private const bool DafaultCollapsionPanelState = true;
+		private const bool DefaultCollapsionPanelState = true;
 		#endregion
 
 		#region Controls
@@ -35,7 +53,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// <summary>
 		/// Je polozka sbalena?
 		/// </summary>
-		[DefaultValue(DafaultCollapsionPanelState)]
+		[DefaultValue(DefaultCollapsionPanelState)]
 		public bool Collapsed
 		{
 			get
@@ -45,7 +63,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				{
 					return result;
 				}
-				return DafaultCollapsionPanelState;
+				return DefaultCollapsionPanelState;
 			}
 			set
 			{
@@ -176,6 +194,28 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			base.OnInit(e);
 
 			EnsureChildControls();
+
+			collapsedHiddenField.ValueChanged += CollapsedHiddenField_ValueChanged;
+		}
+		#endregion
+
+		#region OnCollapsedStateChanged
+		/// <summary>
+		/// Occurs when the value of the Value property changes between posts to the server.
+		/// </summary>
+		protected virtual void OnCollapsedStateChanged(EventArgs eventArgs)
+		{
+			if (CollapsedStateChanged != null)
+			{
+				CollapsedStateChanged(this, eventArgs);
+			}
+		}
+		#endregion
+
+		#region CollapsedHiddenField_ValueChanged
+		private void CollapsedHiddenField_ValueChanged(object sender, EventArgs e)
+		{
+			OnCollapsedStateChanged(e);
 		}
 		#endregion
 
@@ -202,8 +242,8 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				$@"Havit_CollapsiblePanel_Init(
 					""{this.ClientID}"",
 					""{collapsedHiddenField.ClientID}"",
-					""{autoPostBackScript}""					
-				);", true);		
+					""{autoPostBackScript}""
+				); ", true);		
 		}
 		#endregion
 
@@ -213,11 +253,26 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// </summary>
 		private void RenderHeader(HtmlTextWriter writer)
 		{
-			//<div data-target="#{this.ClientID}" data-toggle="collapse" class="panel-heading">
+			//<div data-target="#{this.ClientID}" data-toggle="collapse" class="panel-heading" Onclick="return false; __doPostBack()...">
 			//  Panel heading...
 			// </div>
 			writer.AddAttribute("data-target", $"#{this.ClientID}");
 			writer.AddAttribute("data-toggle", "collapse");
+
+			// Hack, aby se vyvolal partial postback v update panelu.
+			// Podminka pro vyvolani partial postbacku ne nasledujici:
+			//if (activeElement && (
+			//	(activeElement.name === eventTarget) ||
+			//	testCausesPostBack(activeElement.href) ||
+			//	testCausesPostBack(activeElement.onclick) ||
+			//	testCausesPostBack(activeElement.onchange)
+			//	))
+			// ActiveElement je prvek, na ktery se klika, v tomto pripade tento div.
+			// Name u DIV HTML elementu nelze pouzit, proto se muselo jit jinou cestou a konkretne tak, ze do onclicku se dalo
+			// return false a nasledne GetPostBackEventReference(...). "testCausesPostBack(activeElement.onclick)" je pak true,
+			// podminka vyse se vyhodnoti take jako true a je generovan partial postback.
+			writer.AddAttribute(HtmlTextWriterAttribute.Onclick, "return false; " + this.Page.ClientScript.GetPostBackEventReference(this, String.Empty) + ";");
+
 			writer.AddAttribute(HtmlTextWriterAttribute.Class, "panel-heading");
 			writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
@@ -273,7 +328,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 
 			// http://getbootstrap.com/components/#panels
 			// <div class="panel panel-default">
-			//   <div data-target="#{this.ClientID}" data-toggle="collapse" class="panel-heading">
+			//   <div data-target="#{this.ClientID}" data-toggle="collapse" class="panel-heading" Onclick="return false; __doPostBack()...">
 			//     Panel heading without title
 			//	 </div>
 			//   <div id="#{this.ClientID}" class="collapse panel-collapse">

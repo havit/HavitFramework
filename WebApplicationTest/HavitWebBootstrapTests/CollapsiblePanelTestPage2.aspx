@@ -14,22 +14,28 @@
 
 		<h1>PAGE 2</h1>
 
-		<h2>Collapsible panel test 3:</h2>
+		<asp:UpdatePanel runat="server">
+		<ContentTemplate>
 
-		<hr />
+			<h2 id="CollapsiblePanel3Header" runat="server">Collapsible panel test 3 (expanded):</h2>
 
-		<bc:CollapsiblePanel ID="CollapsiblePanel3" HeaderText="It is not showed..." Collapsed="False" AutoPostBack="True" runat="server">
-			<HeaderTemplate>
-				<h1 style="background-color: indianred">
-					<asp:Label ID="HeaderLabel" Text="Header text of the collapsible panel 3 - please click here" runat="server" />
-				</h1>
-			</HeaderTemplate>
-			<ContentTemplate>
-				<p>This context 3 is in collapsible section...</p>
-				<bc:SwitchButton ID="FirstSwitchButton" AutoPostBack="true" CausesValidation="true" ValidationGroup="Some" runat="server" />
-				<asp:Label ID="FirstStateLabel" runat="server" />
-			</ContentTemplate>
-		</bc:CollapsiblePanel>
+			<hr />
+
+			<bc:CollapsiblePanel ID="CollapsiblePanel3" HeaderText="It is not showed..." Collapsed="False" AutoPostBack="True" OnCollapsedStateChanged="CollapsiblePanel3_CollapsedStateChanged" runat="server">
+				<HeaderTemplate>
+					<h1 style="background-color: indianred">
+						<asp:Label ID="HeaderLabel" Text="Header text of the collapsible panel 3 - please click here" runat="server" />
+					</h1>
+				</HeaderTemplate>
+				<ContentTemplate>
+					<p>This context 3 is in collapsible section...</p>
+					<bc:SwitchButton ID="FirstSwitchButton" AutoPostBack="true" CausesValidation="true" ValidationGroup="Some" runat="server" />
+					<asp:Label ID="FirstStateLabel" runat="server" />
+				</ContentTemplate>
+			</bc:CollapsiblePanel>
+
+		</ContentTemplate>
+		</asp:UpdatePanel>
 
 		<hr />
 

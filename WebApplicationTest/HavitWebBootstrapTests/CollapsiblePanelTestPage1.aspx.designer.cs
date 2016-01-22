@@ -40,6 +40,15 @@ namespace Havit.WebApplicationTest.HavitWebBootstrapTests {
         protected global::Havit.Web.Bootstrap.UI.WebControls.CollapsiblePanel CollapsiblePanel3;
         
         /// <summary>
+        /// CollapsiblePanel3H1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl CollapsiblePanel3H1;
+        
+        /// <summary>
         /// TestUpdatePanelRepeater3 control.
         /// </summary>
         /// <remarks>

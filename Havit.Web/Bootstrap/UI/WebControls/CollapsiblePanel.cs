@@ -258,21 +258,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			// </div>
 			writer.AddAttribute("data-target", $"#{this.ClientID}");
 			writer.AddAttribute("data-toggle", "collapse");
-
-			// Hack, aby se vyvolal partial postback v update panelu.
-			// Podminka pro vyvolani partial postbacku ne nasledujici:
-			//if (activeElement && (
-			//	(activeElement.name === eventTarget) ||
-			//	testCausesPostBack(activeElement.href) ||
-			//	testCausesPostBack(activeElement.onclick) ||
-			//	testCausesPostBack(activeElement.onchange)
-			//	))
-			// ActiveElement je prvek, na ktery se klika, v tomto pripade tento div.
-			// Name u DIV HTML elementu nelze pouzit, proto se muselo jit jinou cestou a konkretne tak, ze do onclicku se dalo
-			// return false a nasledne GetPostBackEventReference(...). "testCausesPostBack(activeElement.onclick)" je pak true,
-			// podminka vyse se vyhodnoti take jako true a je generovan partial postback.
-			writer.AddAttribute(HtmlTextWriterAttribute.Onclick, "return false; " + this.Page.ClientScript.GetPostBackEventReference(this, String.Empty) + ";");
-
 			writer.AddAttribute(HtmlTextWriterAttribute.Class, "panel-heading");
 			writer.RenderBeginTag(HtmlTextWriterTag.Div);
 

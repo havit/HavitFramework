@@ -41,9 +41,9 @@
 
 		<asp:UpdatePanel runat="server">
 			<ContentTemplate>
-				<bc:CollapsiblePanel ID="CollapsiblePanel3" AutoPostBack="True" runat="server">
+				<bc:CollapsiblePanel ID="CollapsiblePanel3" OnCollapsedStateChanged="CollapsiblePanel3_CollapsedStateChanged" AutoPostBack="True" runat="server">
 					<HeaderTemplate>
-						HEADER
+						<h1 id="CollapsiblePanel3H1" class="panel-title" runat="server" />
 					</HeaderTemplate>
 					<ContentTemplate>
 						BODY
@@ -65,7 +65,7 @@
 				<ContentTemplate>
 					<bc:CollapsiblePanel ID="TestUpdatePanelCollapsiblePanel3" AutoPostBack="True" runat="server">
 						<HeaderTemplate>
-							HEADER
+							<h1 class="panel-title" runat="server">HEADER</h1>							
 						</HeaderTemplate>
 						<ContentTemplate>
 							BODY

@@ -39,7 +39,6 @@
 				Orientation="Auto"
 				Context="lorem ipsum dolor sit amet"
 				OnClientSelectScript="test();"
-				AutoPostBack="True"
 				runat="server" />
 
 			<script type="text/javascript">
@@ -51,8 +50,10 @@
 			</script>
 			
 			<span id="test"></span>
-			
+
+			<asp:Button ID="ConfimBt" Text="Potvrdit" runat="server"/>
 			<asp:Label id="PostbackLabel" runat="server"/>
+
 		</div>
 	</form>
 </body>

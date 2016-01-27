@@ -439,8 +439,9 @@ var havitAutoCompleteTextBoxExtensions = {
 			var $hiddenfield = $item.children("input[type='hidden']");
 
 			$item.data["selectedvalue"] = $textbox.val();
-			$textbox.blur(function () { havitAutoCompleteTextBoxExtensions.onBlur($textbox, $hiddenfield, $item) });
 			
+			$textbox.blur(function () { havitAutoCompleteTextBoxExtensions.onBlur($textbox, $hiddenfield, $item) });
+
 			$textbox.autocomplete(options);
 		});
 	},
@@ -476,20 +477,30 @@ var havitAutoCompleteTextBoxExtensions = {
 		var $textbox = $(textbox);
 		var $hiddenfield = $(hiddenfield);
 
-		if ($textbox.val() != selectedvalue) {
-			$textbox.val("");
-			$hiddenfield.val("");
-			$item.data["selectedvalue"] = "";
+		var allowInvalidSelection = $(item).data("data-allowInvalidSelection") || true;
+		var postbackScript = $item.data("postbackscript");
 
-			var onselectscript = $item.data("onselectscript");
-			var suggestion = {
-				data: "",
-				value: ""
-			};
+		if (!allowInvalidSelection) {
+			// pokud není povolený nevalidní výběr, provedeme validaci
+			if ($textbox.val() != selectedvalue) {
+				$textbox.val("");
+				$hiddenfield.val("");
+				$item.data["selectedvalue"] = "";
 
-			// metoda se volá odloženě, protože může nastat volání metody onSelect při výběru myší s nabídnutých položek a v takovém případě se volání ruší
-			var timerId = setTimeout(havitAutoCompleteTextBoxExtensions.fireOnSelectScriptEvent, 60, suggestion, onselectscript);
-			$textbox.data["timerId"] = timerId;
+				var onselectscript = $item.data("onselectscript");
+				var suggestion = {
+					data: "",
+					value: ""
+				};
+
+				// metoda se volá odloženě, protože může nastat volání metody onSelect při výběru myší s nabídnutých položek a v takovém případě se volání ruší
+				var timerId = setTimeout(havitAutoCompleteTextBoxExtensions.fireOnSelectScriptEvent, 60, suggestion, onselectscript);
+				$textbox.data["timerId"] = timerId;
+			}
+		}
+		else if (postbackScript != undefined) {
+			// pokud je povolený nevalidní výběr a je nastavený autopostback, provedeme ho
+			havitAutoCompleteTextBoxExtensions.doPostback.call(window, postbackScript);
 		}
 	},
 

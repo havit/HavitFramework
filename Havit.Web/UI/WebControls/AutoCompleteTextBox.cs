@@ -22,8 +22,10 @@ namespace Havit.Web.UI.WebControls
 	[Themeable(true)]
 	public class AutoCompleteTextBox : Control, INamingContainer
 	{
-		#region OnValueChanged
+		// TODO: vyřešit autopostback při allowInvalidSelection
+		// TODO: vyřešit název události při změně (pokud není nastavena value)
 
+		#region OnValueChanged
 		/// <summary>
 		/// Událost nastane v okamžiku změny vybrané položky.
 		/// </summary>
@@ -229,6 +231,24 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region AllowInvalidSelection
+		/// <summary>
+		/// Pokud je hodnota false (default), při opuštění textového pole, se nevalidní hodnota vymaže.
+		/// Pokud je hodnota true, nevymaže se v textovém poli nevalidní hodnota při opuštění editace. Určeno pro možnost zakládání nových položek.
+		/// </summary>
+		public bool AllowInvalidSelection
+		{
+			get
+			{
+				return (bool?)ViewState["AllowInvalidSelection"] ?? false;
+			}
+			set
+			{
+				ViewState["AllowInvalidSelection"] = value;
+			}
+		}
+		#endregion
+
 		#region ValidationGroup
 		/// <summary>
 		/// ValidationGroup pro validaci.
@@ -351,6 +371,7 @@ namespace Havit.Web.UI.WebControls
 			writer.AddAttribute("data-deferRequest", DeferRequest.ToString());
 			writer.AddAttribute("data-maxheight", MaxHeight.ToString());
 			writer.AddAttribute("data-orientation", Orientation.ToString());
+			writer.AddAttribute("data-allowInvalidSelection", AllowInvalidSelection.ToString());
 
 			if (!String.IsNullOrEmpty(OnClientSelectScript))
 			{

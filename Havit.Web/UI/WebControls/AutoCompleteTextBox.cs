@@ -22,9 +22,6 @@ namespace Havit.Web.UI.WebControls
 	[Themeable(true)]
 	public class AutoCompleteTextBox : Control, INamingContainer
 	{
-		// TODO: vyřešit autopostback při allowInvalidSelection
-		// TODO: vyřešit název události při změně (pokud není nastavena value)
-
 		#region OnValueChanged
 		/// <summary>
 		/// Událost nastane v okamžiku změny vybrané položky.
@@ -249,6 +246,40 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region ShowNoSuggestionNotice
+		/// <summary>
+		/// Udává, zda se má zobrazit v nabídkovém pruhu informace o prázdné nabídce. (nejsou nabídnuty žádné položky)
+		/// </summary>
+		public bool ShowNoSuggestionNotice
+		{
+			get
+			{
+				return (bool?)ViewState["ShowNoSuggestionNotice"] ?? false;
+			}
+			set
+			{
+				ViewState["ShowNoSuggestionNotice"] = value;
+			}
+		}
+		#endregion
+
+		#region NoSuggestionNotice
+		/// <summary>
+		/// Informace, která se zobrazí v nabídkovém pruhu v případě, že žádná položka neodpovídá zadanému řetězci. (nejsou nabídnuty žádné položky)
+		/// </summary>
+		public string NoSuggestionNotice
+		{
+			get
+			{
+				return (string)ViewState["NoSuggestionNotice"];
+			}
+			set
+			{
+				ViewState["NoSuggestionNotice"] = value;
+			}
+		}
+		#endregion
+
 		#region ValidationGroup
 		/// <summary>
 		/// ValidationGroup pro validaci.
@@ -372,6 +403,11 @@ namespace Havit.Web.UI.WebControls
 			writer.AddAttribute("data-maxheight", MaxHeight.ToString());
 			writer.AddAttribute("data-orientation", Orientation.ToString());
 			writer.AddAttribute("data-allowInvalidSelection", AllowInvalidSelection.ToString());
+			writer.AddAttribute("data-showNoSuggestionNotice", ShowNoSuggestionNotice.ToString());
+			if (ShowNoSuggestionNotice)
+			{
+				writer.AddAttribute("data-noSuggestionNotice", NoSuggestionNotice);
+			}
 
 			if (!String.IsNullOrEmpty(OnClientSelectScript))
 			{

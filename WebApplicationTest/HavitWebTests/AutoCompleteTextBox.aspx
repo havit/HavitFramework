@@ -38,9 +38,11 @@
 				UseClientCache="false"
 				Orientation="Auto"
 				Context="lorem ipsum dolor sit amet"
-				OnClientSelectScript="test();"
+				ShowNoSuggestionNotice="False"
+				NoSuggestionNotice="Nejsou data!"
 				runat="server" />
 
+			<%--OnClientSelectScript="test();"--%>
 			<script type="text/javascript">
 				function test() {
 					var element = $("#test");

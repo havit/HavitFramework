@@ -413,11 +413,13 @@ var havitAutoCompleteTextBoxExtensions = {
 
 			var serviceurl = $item.data("serviceurl");
 			var minchars = ($item.data("minchars") != undefined) ? $item.data("minchars") : 1;
-			var deferrequest = $item.data("deferRequest") || 0;
+			var deferrequest = $item.data("deferrequest") || 0;
 			var nocache = $item.data("nocache") || false;
 			var maxheight = $item.data("maxheight") || 300;
-			var queryParams = $(item).data("params") || {};
-			var orientation = $(item).data("orientation") || "bottom";
+			var queryParams = $item.data("params") || {};
+			var orientation = $item.data("orientation") || "bottom";
+			var showNoSuggestionNotice = ($item.data("shownosuggestionnotice") == "True");
+			var noSuggestionNotice = $item.data("nosuggestionnotice");
 
 			var options = {
 				type: "GET",
@@ -428,6 +430,8 @@ var havitAutoCompleteTextBoxExtensions = {
 				params: queryParams,
 				maxHeight: maxheight,
 				orientation: orientation,
+				showNoSuggestionNotice: showNoSuggestionNotice,
+				noSuggestionNotice: noSuggestionNotice,
 				preserveInput: true,
 				triggerSelectOnValidInput: false,
 				onSelect: function (suggestion) {
@@ -477,7 +481,7 @@ var havitAutoCompleteTextBoxExtensions = {
 		var $textbox = $(textbox);
 		var $hiddenfield = $(hiddenfield);
 
-		var allowInvalidSelection = $(item).data("data-allowInvalidSelection") || true;
+		var allowInvalidSelection = $(item).data("allowinvalidselection") == 'True';
 		var postbackScript = $item.data("postbackscript");
 
 		if (!allowInvalidSelection) {
@@ -488,14 +492,17 @@ var havitAutoCompleteTextBoxExtensions = {
 				$item.data["selectedvalue"] = "";
 
 				var onselectscript = $item.data("onselectscript");
-				var suggestion = {
-					data: "",
-					value: ""
-				};
 
-				// metoda se volá odloženě, protože může nastat volání metody onSelect při výběru myší s nabídnutých položek a v takovém případě se volání ruší
-				var timerId = setTimeout(havitAutoCompleteTextBoxExtensions.fireOnSelectScriptEvent, 60, suggestion, onselectscript);
-				$textbox.data["timerId"] = timerId;
+				if (onselectscript != undefined) {
+					var suggestion = {
+						data: "",
+						value: ""
+					};
+
+					// metoda se volá odloženě, protože může nastat volání metody onSelect při výběru myší s nabídnutých položek a v takovém případě se volání ruší
+					var timerId = setTimeout(havitAutoCompleteTextBoxExtensions.fireOnSelectScriptEvent, 60, suggestion, onselectscript);
+					$textbox.data["timerId"] = timerId;
+				}
 			}
 		}
 		else if (postbackScript != undefined) {

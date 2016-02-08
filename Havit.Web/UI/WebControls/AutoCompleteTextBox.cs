@@ -422,6 +422,10 @@ namespace Havit.Web.UI.WebControls
 			{
 				writer.AddAttribute("data-params", "{\"context\": \"" + Context + "\", \"query\": \"\"}");
 			}
+			if (AllowInvalidSelection)
+			{
+				writer.AddAttribute("data-selectedvalue", SelectedText);
+			}
 
 			if (AutoPostBack)
 			{

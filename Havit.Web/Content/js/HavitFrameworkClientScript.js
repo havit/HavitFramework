@@ -471,7 +471,7 @@ var havitAutoCompleteTextBoxExtensions = {
 
 		var postbackScript = $item.data("postbackscript");
 		if (postbackScript != undefined) {
-			havitAutoCompleteTextBoxExtensions.doPostback.call(window, postbackScript);
+			havitAutoCompleteTextBoxExtensions.doDefferedPostback.call(window, postbackScript);
 		}
 	},
 
@@ -504,10 +504,12 @@ var havitAutoCompleteTextBoxExtensions = {
 					$textbox.data["timerId"] = timerId;
 				}
 			}
-		}
-		else if (postbackScript != undefined) {
-			// pokud je povolený nevalidní výběr a je nastavený autopostback, provedeme ho
-			havitAutoCompleteTextBoxExtensions.doPostback.call(window, postbackScript);
+		} else {
+			if (selectedvalue != $textbox.val()) {
+				$item.data["selectedvalue"] = $textbox.val()
+				// pokud je povolený nevalidní výběr a je nastavený autopostback, provedeme ho
+				havitAutoCompleteTextBoxExtensions.doDefferedPostback.call(window, postbackScript);
+			}
 		}
 	},
 
@@ -521,6 +523,10 @@ var havitAutoCompleteTextBoxExtensions = {
 
 	doOnSelectScript: function (suggestion, onselectscript) {
 		return eval(onselectscript) || true;
+	},
+
+	doDefferedPostback: function(script) {
+		setTimeout(havitAutoCompleteTextBoxExtensions.doPostback, 60, script);
 	},
 
 	doPostback: function (script) {

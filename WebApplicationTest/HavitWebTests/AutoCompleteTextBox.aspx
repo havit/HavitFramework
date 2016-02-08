@@ -38,8 +38,10 @@
 				UseClientCache="false"
 				Orientation="Auto"
 				Context="lorem ipsum dolor sit amet"
-				ShowNoSuggestionNotice="False"
+				AllowInvalidSelection="True"
+				ShowNoSuggestionNotice="True"
 				NoSuggestionNotice="Nejsou data!"
+				AutoPostBack="True"
 				runat="server" />
 
 			<%--OnClientSelectScript="test();"--%>
@@ -54,7 +56,8 @@
 			<span id="test"></span>
 
 			<asp:Button ID="ConfimBt" Text="Potvrdit" runat="server"/>
-			<asp:Label id="PostbackLabel" runat="server"/>
+			<asp:Label id="PostbackLabel" runat="server"/><br />
+			<asp:TextBox runat="server"/>
 
 		</div>
 	</form>

@@ -404,6 +404,8 @@ namespace Havit.Web.UI.WebControls
 			writer.AddAttribute("data-orientation", Orientation.ToString());
 			writer.AddAttribute("data-allowInvalidSelection", AllowInvalidSelection.ToString());
 			writer.AddAttribute("data-showNoSuggestionNotice", ShowNoSuggestionNotice.ToString());
+			writer.AddAttribute("data-selectedvalue", SelectedText);
+
 			if (ShowNoSuggestionNotice)
 			{
 				writer.AddAttribute("data-noSuggestionNotice", NoSuggestionNotice);
@@ -421,10 +423,6 @@ namespace Havit.Web.UI.WebControls
 			if (!String.IsNullOrWhiteSpace(Context))
 			{
 				writer.AddAttribute("data-params", "{\"context\": \"" + Context + "\", \"query\": \"\"}");
-			}
-			if (AllowInvalidSelection)
-			{
-				writer.AddAttribute("data-selectedvalue", SelectedText);
 			}
 
 			if (AutoPostBack)

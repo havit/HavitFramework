@@ -442,7 +442,7 @@ var havitAutoCompleteTextBoxExtensions = {
 			var $textbox = $item.children("input[type='text']");
 			var $hiddenfield = $item.children("input[type='hidden']");
 
-			$item.data["selectedvalue"] = $textbox.val();
+			$item.data("selectedvalue", $textbox.val());
 			
 			$textbox.blur(function () { havitAutoCompleteTextBoxExtensions.onBlur($textbox, $hiddenfield, $item) });
 
@@ -457,13 +457,13 @@ var havitAutoCompleteTextBoxExtensions = {
 
 		$hiddenfield.val(suggestion.data);
 		$textbox.val(suggestion.value);
-		$item.data["selectedvalue"] = suggestion.value;
+		$item.data("selectedvalue", suggestion.value);
 
 		// zrušíme nastavený timer, který vznikl při onBlur textboxu
-		var timerId = $textbox.data["timerId"];
+		var timerId = $textbox.data("timerId");
 		if (timerId != undefined) {
 			clearTimeout(timerId);
-			$textbox.data["timerId"] = undefined;
+			$textbox.data("timerId", undefined);
 		}
 
 		var onselectscript = $item.data("onselectscript");
@@ -477,7 +477,7 @@ var havitAutoCompleteTextBoxExtensions = {
 
 	onBlur: function (textbox, hiddenfield, item) {
 		var $item = $(item);
-		var selectedvalue = $item.data["selectedvalue"];
+		var selectedvalue = $item.data("selectedvalue");
 		var $textbox = $(textbox);
 		var $hiddenfield = $(hiddenfield);
 
@@ -489,7 +489,7 @@ var havitAutoCompleteTextBoxExtensions = {
 			if ($textbox.val() != selectedvalue) {
 				$textbox.val("");
 				$hiddenfield.val("");
-				$item.data["selectedvalue"] = "";
+				$item.data("selectedvalue", "");
 
 				var onselectscript = $item.data("onselectscript");
 
@@ -501,12 +501,12 @@ var havitAutoCompleteTextBoxExtensions = {
 
 					// metoda se volá odloženě, protože může nastat volání metody onSelect při výběru myší s nabídnutých položek a v takovém případě se volání ruší
 					var timerId = setTimeout(havitAutoCompleteTextBoxExtensions.fireOnSelectScriptEvent, 60, suggestion, onselectscript);
-					$textbox.data["timerId"] = timerId;
+					$textbox.data("timerId", timerId);
 				}
 			}
 		} else {
 			if (selectedvalue != $textbox.val()) {
-				$item.data["selectedvalue"] = $textbox.val()
+				$item.data("selectedvalue", $textbox.val());
 				// pokud je povolený nevalidní výběr a je nastavený autopostback, provedeme ho
 				havitAutoCompleteTextBoxExtensions.doDefferedPostback.call(window, postbackScript);
 			}

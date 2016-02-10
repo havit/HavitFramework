@@ -500,7 +500,7 @@ var havitAutoCompleteTextBoxExtensions = {
 					};
 
 					// metoda se volá odloženě, protože může nastat volání metody onSelect při výběru myší s nabídnutých položek a v takovém případě se volání ruší
-					var timerId = setTimeout(havitAutoCompleteTextBoxExtensions.fireOnSelectScriptEvent, 60, suggestion, onselectscript);
+					var timerId = setTimeout(havitAutoCompleteTextBoxExtensions.fireOnSelectScriptEvent, 120, suggestion, onselectscript);
 					$textbox.data("timerId", timerId);
 				}
 			}
@@ -526,7 +526,7 @@ var havitAutoCompleteTextBoxExtensions = {
 	},
 
 	doDefferedPostback: function(script) {
-		setTimeout(havitAutoCompleteTextBoxExtensions.doPostback, 60, script);
+		setTimeout(havitAutoCompleteTextBoxExtensions.doPostback, 120, script);
 	},
 
 	doPostback: function (script) {

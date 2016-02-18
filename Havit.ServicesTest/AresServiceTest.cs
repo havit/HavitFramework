@@ -70,6 +70,20 @@ namespace Havit.ServicesTest
 		}
 		#endregion
 
+		#region GetBasicDataTest
+		[TestMethod]
+		public void GetBasicData_Proxy_ReadsDic_Test()
+		{
+			string ico = "25612697";
+			AresService service = new AresService(ico);
+			service.Timeout = 60 * 1000; /* 60 sec */
+			service.Proxy = new System.Net.WebProxy("http://37.35.222.186:3128/");
+
+			AresData data = service.GetData(AresRegistr.Basic);
+			Assert.AreEqual("CZ25612697", data.Dic);
+		}
+		#endregion
+
 		#region GetAresPrehledSubjektuFirmaTest
 		[TestMethod]
 		public void GetAresPrehledSubjektuFirmaTest()

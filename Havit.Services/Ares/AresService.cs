@@ -39,6 +39,16 @@ namespace Havit.Services.Ares
 		}
 		#endregion
 
+		#region Proxy
+		/// <summary>
+		/// Proxy pro provedení requestu při načítání dat z ARESu.
+		/// </summary>
+		public IWebProxy Proxy
+		{
+			get; set;
+		}
+		#endregion
+
 		#region Constructor
 		/// <summary>
 		/// Konstruktor.
@@ -353,9 +363,15 @@ namespace Havit.Services.Ares
 				{
 					aresRequest.Timeout = this.Timeout.Value;
 				}
-				HttpWebResponse aresResponse = (HttpWebResponse)aresRequest.GetResponse();
+				if (this.Proxy != null)
+				{
+					aresRequest.Proxy = this.Proxy;
+				}
 
-				aresResponseXDocument = XDocument.Load(new StreamReader(aresResponse.GetResponseStream()));
+				using (HttpWebResponse aresResponse = (HttpWebResponse)aresRequest.GetResponse())
+				{
+					aresResponseXDocument = XDocument.Load(new StreamReader(aresResponse.GetResponseStream()));
+				}
 			}
 			catch (WebException e)
 			{

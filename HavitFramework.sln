@@ -130,8 +130,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuGetPackages", "NuGetPacka
 		{703235E0-86C0-44F3-95BB-3D9F39886966} = {703235E0-86C0-44F3-95BB-3D9F39886966}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Business.Redis", "Havit.Business.Redis\Havit.Business.Redis.csproj", "{F0DBA162-A0A5-40CF-86F2-98974711F760}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -272,10 +270,6 @@ Global
 		{8A7118FD-C70E-4F30-9604-08EE11771E46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8A7118FD-C70E-4F30-9604-08EE11771E46}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A7118FD-C70E-4F30-9604-08EE11771E46}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F0DBA162-A0A5-40CF-86F2-98974711F760}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F0DBA162-A0A5-40CF-86F2-98974711F760}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F0DBA162-A0A5-40CF-86F2-98974711F760}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F0DBA162-A0A5-40CF-86F2-98974711F760}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -317,7 +311,6 @@ Global
 		{B8B21A21-51AC-4E0D-8978-6D6DCC15F7D3} = {345552D1-56B8-41F1-9513-AD2F31D2F985}
 		{DCF67A43-0EED-4B20-85E3-F8A7AA1C22B5} = {2C3C8291-8C00-49AC-A914-BC4B74D3DACE}
 		{8A7118FD-C70E-4F30-9604-08EE11771E46} = {F0ACC2CB-2866-4760-9A29-958C8E30552D}
-		{F0DBA162-A0A5-40CF-86F2-98974711F760} = {DB76A91F-9059-4EB3-9389-C86486BB0DFC}
 	EndGlobalSection
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 33

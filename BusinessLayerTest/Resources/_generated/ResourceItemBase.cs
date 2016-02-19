@@ -670,6 +670,7 @@ namespace Havit.BusinessLayerTest.Resources
 			dbCommand.CommandText = commandBuilder.ToString();
 			DbConnector.Default.ExecuteNonQuery(dbCommand);
 			
+			HttpRuntime.Cache.Remove(GetDataRecordCacheKey(this.ID));
 			InvalidateSaveCacheDependencyKey();
 			InvalidateAnySaveCacheDependencyKey();
 		}

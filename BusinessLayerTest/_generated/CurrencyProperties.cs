@@ -43,8 +43,7 @@ namespace Havit.BusinessLayerTest
 			_nazev = new FieldPropertyInfo();
 			_zkratka = new FieldPropertyInfo();
 			_created = new FieldPropertyInfo();
-			_deleted = new FieldPropertyInfo();
-			_all = new PropertyInfoCollection(_id, _nazev, _zkratka, _created, _deleted);
+			_all = new PropertyInfoCollection(_id, _nazev, _zkratka, _created);
 		}
 		
 		/// <summary>
@@ -56,7 +55,6 @@ namespace Havit.BusinessLayerTest
 			_nazev.Initialize(objectInfo, "Nazev", "Nazev", false, SqlDbType.NVarChar, false, 50);
 			_zkratka.Initialize(objectInfo, "Zkratka", "Zkratka", false, SqlDbType.NVarChar, false, 5);
 			_created.Initialize(objectInfo, "Created", "Created", false, SqlDbType.SmallDateTime, false, 4);
-			_deleted.Initialize(objectInfo, "Deleted", "Deleted", false, SqlDbType.SmallDateTime, true, 4);
 		}
 		
 		/// <summary>
@@ -106,18 +104,6 @@ namespace Havit.BusinessLayerTest
 			}
 		}
 		private FieldPropertyInfo _created;
-		
-		/// <summary>
-		/// Čas smazání objektu.
-		/// </summary>
-		public FieldPropertyInfo Deleted
-		{
-			get
-			{
-				return _deleted;
-			}
-		}
-		private FieldPropertyInfo _deleted;
 		
 		/// <summary>
 		/// Všechny sloupečky typu Currency.

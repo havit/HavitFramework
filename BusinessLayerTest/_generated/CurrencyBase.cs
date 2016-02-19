@@ -38,7 +38,6 @@ namespace Havit.BusinessLayerTest
 	/// 	[Nazev] [nvarchar](50) COLLATE Czech_CI_AS NOT NULL CONSTRAINT [DF_Currency_Nazev]  DEFAULT (''),
 	/// 	[Zkratka] [nvarchar](5) COLLATE Czech_CI_AS NOT NULL CONSTRAINT [DF_Currency_Zkratka]  DEFAULT (''),
 	/// 	[Created] [smalldatetime] NOT NULL CONSTRAINT [DF_Currency_Created]  DEFAULT (getdate()),
-	/// 	[Deleted] [smalldatetime] NULL,
 	///  CONSTRAINT [PK_Currency] PRIMARY KEY CLUSTERED 
 	/// (
 	/// 	[CurrencyID] ASC
@@ -54,7 +53,7 @@ namespace Havit.BusinessLayerTest
 		{
 			objectInfo = new ObjectInfo();
 			properties = new CurrencyProperties();
-			objectInfo.Initialize("dbo", "Currency", "Currency", "Havit.BusinessLayerTest", false, Currency.CreateObject, Currency.GetObject, Currency.GetAll, properties.Deleted, properties.All);
+			objectInfo.Initialize("dbo", "Currency", "Currency", "Havit.BusinessLayerTest", false, Currency.CreateObject, Currency.GetObject, Currency.GetAll, null, properties.All);
 			properties.Initialize(objectInfo);
 		}
 		#endregion
@@ -172,41 +171,6 @@ namespace Havit.BusinessLayerTest
 		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected PropertyHolder<DateTime> _CreatedPropertyHolder;
 		
-		/// <summary>
-		/// Čas smazání objektu. [smalldatetime, nullable]
-		/// </summary>
-		public virtual DateTime? Deleted
-		{
-			get
-			{
-				EnsureLoaded();
-				return _DeletedPropertyHolder.Value;
-			}
-			protected set
-			{
-				EnsureLoaded();
-				_DeletedPropertyHolder.Value = value;
-			}
-		}
-		/// <summary>
-		/// PropertyHolder pro vlastnost Deleted.
-		/// </summary>
-		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-		protected PropertyHolder<DateTime?> _DeletedPropertyHolder;
-		
-		#endregion
-		
-		#region IsDeleted
-		/// <summary>
-		/// Indikuje, zda je nastaven příznak smazaného záznamu.
-		/// </summary>
-		public override bool IsDeleted
-		{
-			get
-			{
-				return Deleted != null;
-			}
-		}
 		#endregion
 		
 		#region Init
@@ -218,14 +182,12 @@ namespace Havit.BusinessLayerTest
 			_NazevPropertyHolder = new PropertyHolder<string>(this);
 			_ZkratkaPropertyHolder = new PropertyHolder<string>(this);
 			_CreatedPropertyHolder = new PropertyHolder<DateTime>(this);
-			_DeletedPropertyHolder = new PropertyHolder<DateTime?>(this);
 			
 			if (IsNew || IsDisconnected)
 			{
 				_NazevPropertyHolder.Value = String.Empty;
 				_ZkratkaPropertyHolder.Value = String.Empty;
 				_CreatedPropertyHolder.Value = System.DateTime.Now;
-				_DeletedPropertyHolder.Value = null;
 			}
 			
 			base.Init();
@@ -261,17 +223,6 @@ namespace Havit.BusinessLayerTest
 				}
 			}
 			
-			if (_DeletedPropertyHolder.IsDirty)
-			{
-				if (_DeletedPropertyHolder.Value != null)
-				{
-					if ((_DeletedPropertyHolder.Value.Value < Havit.Data.SqlTypes.SqlSmallDateTime.MinValue.Value) || (_DeletedPropertyHolder.Value.Value > Havit.Data.SqlTypes.SqlSmallDateTime.MaxValue.Value))
-					{
-						throw new ConstraintViolationException(this, "Vlastnost \"Deleted\" nesmí nabývat hodnoty mimo rozsah SqlSmallDateTime.MinValue-SqlSmallDateTime.MaxValue.");
-					}
-				}
-			}
-			
 		}
 		#endregion
 		
@@ -293,7 +244,7 @@ namespace Havit.BusinessLayerTest
 			}
 			
 			DbCommand dbCommand = DbConnector.Default.ProviderFactory.CreateCommand();
-			dbCommand.CommandText = "SELECT [CurrencyID], [Nazev], [Zkratka], [Created], [Deleted] FROM [dbo].[Currency] WHERE [CurrencyID] = @CurrencyID";
+			dbCommand.CommandText = "SELECT [CurrencyID], [Nazev], [Zkratka], [Created] FROM [dbo].[Currency] WHERE [CurrencyID] = @CurrencyID";
 			dbCommand.Transaction = transaction;
 			
 			DbParameter dbParameterCurrencyID = DbConnector.Default.ProviderFactory.CreateParameter();
@@ -337,12 +288,6 @@ namespace Havit.BusinessLayerTest
 			if (record.TryGet<DateTime>("Created", out _tempCreated))
 			{
 				_CreatedPropertyHolder.Value = _tempCreated;
-			}
-			
-			DateTime? _tempDeleted;
-			if (record.TryGet<DateTime?>("Deleted", out _tempDeleted))
-			{
-				_DeletedPropertyHolder.Value = _tempDeleted;
 			}
 			
 		}
@@ -411,15 +356,7 @@ namespace Havit.BusinessLayerTest
 			dbCommand.Parameters.Add(dbParameterCreated);
 			_CreatedPropertyHolder.IsDirty = false;
 			
-			DbParameter dbParameterDeleted = DbConnector.Default.ProviderFactory.CreateParameter();
-			dbParameterDeleted.DbType = DbType.DateTime;
-			dbParameterDeleted.Direction = ParameterDirection.Input;
-			dbParameterDeleted.ParameterName = "Deleted";
-			dbParameterDeleted.Value = (_DeletedPropertyHolder.Value == null) ? DBNull.Value : (object)_DeletedPropertyHolder.Value;
-			dbCommand.Parameters.Add(dbParameterDeleted);
-			_DeletedPropertyHolder.IsDirty = false;
-			
-			dbCommand.CommandText = "DECLARE @CurrencyID INT; INSERT INTO [dbo].[Currency] ([Nazev], [Zkratka], [Created], [Deleted]) VALUES (@Nazev, @Zkratka, @Created, @Deleted); SELECT @CurrencyID = SCOPE_IDENTITY(); SELECT @CurrencyID; ";
+			dbCommand.CommandText = "DECLARE @CurrencyID INT; INSERT INTO [dbo].[Currency] ([Nazev], [Zkratka], [Created]) VALUES (@Nazev, @Zkratka, @Created); SELECT @CurrencyID = SCOPE_IDENTITY(); SELECT @CurrencyID; ";
 			this.ID = (int)DbConnector.Default.ExecuteScalar(dbCommand);
 			this.IsNew = false; // uložený objekt není už nový, dostal i přidělené ID
 			
@@ -464,15 +401,7 @@ namespace Havit.BusinessLayerTest
 			dbCommand.Parameters.Add(dbParameterCreated);
 			_CreatedPropertyHolder.IsDirty = false;
 			
-			DbParameter dbParameterDeleted = DbConnector.Default.ProviderFactory.CreateParameter();
-			dbParameterDeleted.DbType = DbType.DateTime;
-			dbParameterDeleted.Direction = ParameterDirection.Input;
-			dbParameterDeleted.ParameterName = "Deleted";
-			dbParameterDeleted.Value = (_DeletedPropertyHolder.Value == null) ? DBNull.Value : (object)_DeletedPropertyHolder.Value;
-			dbCommand.Parameters.Add(dbParameterDeleted);
-			_DeletedPropertyHolder.IsDirty = false;
-			
-			dbCommand.CommandText = "DECLARE @CurrencyID INT; INSERT INTO [dbo].[Currency] ([Nazev], [Zkratka], [Created], [Deleted]) VALUES (@Nazev, @Zkratka, @Created, @Deleted); SELECT @CurrencyID = SCOPE_IDENTITY(); SELECT @CurrencyID; ";
+			dbCommand.CommandText = "DECLARE @CurrencyID INT; INSERT INTO [dbo].[Currency] ([Nazev], [Zkratka], [Created]) VALUES (@Nazev, @Zkratka, @Created); SELECT @CurrencyID = SCOPE_IDENTITY(); SELECT @CurrencyID; ";
 			this.ID = (int)DbConnector.Default.ExecuteScalar(dbCommand);
 			this.IsNew = false; // uložený objekt není už nový, dostal i přidělené ID
 			
@@ -552,24 +481,6 @@ namespace Havit.BusinessLayerTest
 				dirtyFieldExists = true;
 			}
 			
-			if (_DeletedPropertyHolder.IsDirty)
-			{
-				if (dirtyFieldExists)
-				{
-					commandBuilder.Append(", ");
-				}
-				commandBuilder.Append("[Deleted] = @Deleted");
-				
-				DbParameter dbParameterDeleted = DbConnector.Default.ProviderFactory.CreateParameter();
-				dbParameterDeleted.DbType = DbType.DateTime;
-				dbParameterDeleted.Direction = ParameterDirection.Input;
-				dbParameterDeleted.ParameterName = "Deleted";
-				dbParameterDeleted.Value = (_DeletedPropertyHolder.Value == null) ? DBNull.Value : (object)_DeletedPropertyHolder.Value;
-				dbCommand.Parameters.Add(dbParameterDeleted);
-				
-				dirtyFieldExists = true;
-			}
-			
 			if (dirtyFieldExists)
 			{
 				// objekt je sice IsDirty (volá se tato metoda), ale může být změněná jen kolekce
@@ -620,28 +531,30 @@ namespace Havit.BusinessLayerTest
 		}
 		
 		/// <summary>
-		/// Smaže objekt, nebo ho označí jako smazaný, podle zvolené logiky. Změnu uloží do databáze, v transakci.
-		/// </summary>
-		/// <remarks>
-		/// Neprovede se, pokud je již objekt smazán.
-		/// </remarks>
-		/// <param name="transaction">Transakce DbTransaction, v rámci které se smazání provede; null, pokud bez transakce.</param>
-		public override void Delete(DbTransaction transaction)
-		{
-			if (Deleted == null)
-			{
-				Deleted = System.DateTime.Now;
-			}
-			base.Delete(transaction);
-		}
-		
-		/// <summary>
-		/// Metoda označí objekt jako smazaný a uloží jej.
+		/// Metoda vymaže objekt z perzistentního uložiště.
 		/// </summary>
 		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected override sealed void Delete_Perform(DbTransaction transaction)
 		{
-			Save_Update(transaction);
+			DbCommand dbCommand = DbConnector.Default.ProviderFactory.CreateCommand();
+			dbCommand.Transaction = transaction;
+			
+			StringBuilder commandBuilder = new StringBuilder();
+			commandBuilder.AppendFormat("DELETE FROM [dbo].[Currency] WHERE [CurrencyID] = @CurrencyID");
+			
+			DbParameter dbParameterCurrencyID = DbConnector.Default.ProviderFactory.CreateParameter();
+			dbParameterCurrencyID.DbType = DbType.Int32;
+			dbParameterCurrencyID.Direction = ParameterDirection.Input;
+			dbParameterCurrencyID.ParameterName = "CurrencyID";
+			dbParameterCurrencyID.Value = this.ID;
+			dbCommand.Parameters.Add(dbParameterCurrencyID);
+			
+			dbCommand.CommandText = commandBuilder.ToString();
+			DbConnector.Default.ExecuteNonQuery(dbCommand);
+			
+			HttpRuntime.Cache.Remove(GetDataRecordCacheKey(this.ID));
+			InvalidateSaveCacheDependencyKey();
+			InvalidateAnySaveCacheDependencyKey();
 		}
 		
 		#endregion
@@ -818,21 +731,13 @@ namespace Havit.BusinessLayerTest
 		private static object lockGetAllCacheAccess = new object();
 		
 		/// <summary>
-		/// Vrátí všechny (příznakem) nesmazané objekty typu Currency.
+		/// Vrátí všechny objekty typu Currency.
 		/// </summary>
 		public static CurrencyCollection GetAll()
 		{
-			return Currency.GetAll(false);
-		}
-		
-		/// <summary>
-		/// Vrátí všechny objekty typu Currency. Parametr udává, zda se mají vrátit i (příznakem) smazané záznamy.
-		/// </summary>
-		public static CurrencyCollection GetAll(bool includeDeleted)
-		{
 			CurrencyCollection collection = null;
 			int[] ids = null;
-			string cacheKey = "Havit.BusinessLayerTest.Currency.GetAll|includeDeleted=" + includeDeleted;
+			string cacheKey = "Havit.BusinessLayerTest.Currency.GetAll";
 			
 			ids = (int[])HttpRuntime.Cache.Get(cacheKey);
 			if (ids == null)
@@ -843,7 +748,6 @@ namespace Havit.BusinessLayerTest
 					if (ids == null)
 					{
 						QueryParams queryParams = new QueryParams();
-						queryParams.IncludeDeleted = includeDeleted;
 						collection = Currency.GetList(queryParams);
 						ids = collection.GetIDs();
 						

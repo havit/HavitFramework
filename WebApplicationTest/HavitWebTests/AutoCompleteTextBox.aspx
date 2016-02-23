@@ -41,7 +41,7 @@
 				AllowInvalidSelection="True"
 				ShowNoSuggestionNotice="True"
 				NoSuggestionNotice="Nejsou data!"
-				AutoPostBack="True"
+				AutoPostBack="True" Visible="False"
 				runat="server" />
 
 			<%--OnClientSelectScript="test();"--%>

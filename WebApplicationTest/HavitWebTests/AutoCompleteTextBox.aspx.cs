@@ -23,7 +23,12 @@ namespace Havit.WebApplicationTest.HavitWebTests
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
-			PostbackLabel.Text = TesterACTB.SelectedText;
+			PostbackLabel.Text = TesterACTB.SelectedValue;
+
+			if (!IsPostBack)
+			{
+				TesterACTB.SelectedValue = "15";
+			}
 		}
 
 		//private void TesterACTB_SelectedValueChanged(object sender, EventArgs e)

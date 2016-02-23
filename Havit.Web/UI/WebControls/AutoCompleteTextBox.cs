@@ -145,8 +145,15 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		public string SelectedValue
 		{
-			get { return valueHiddenField.Value; }
-			set { valueHiddenField.Value = value; }
+			get
+			{
+				return (string)ViewState["SelectedValue"];
+			}
+			set
+			{
+				ViewState["SelectedValue"] = value;
+				valueHiddenField.Value = value;
+			}
 		}
 		#endregion
 
@@ -453,6 +460,7 @@ namespace Havit.Web.UI.WebControls
 		#region ValueHiddenField_ValueChanged
 		private void ValueHiddenField_ValueChanged(object sender, EventArgs e)
 		{
+			SelectedValue = valueHiddenField.Value;
 			OnSelectedValueChanged(EventArgs.Empty);
 		}
 		#endregion

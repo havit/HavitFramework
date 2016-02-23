@@ -313,5 +313,24 @@ namespace Havit.WebTest
 		}
 		#endregion
 
+		#region QueryStringBuilder_GetUrlQueryString_EmptyQuery
+		/// <summary>
+		/// Test reprodukující chybu, při které se vracela URL adresa končící znakem '?' v okamžku, kdy je kolekce parametrů prázdná.
+		/// </summary>
+		[TestMethod]
+		public void QueryStringBuilder_GetUrlQueryString_EmptyQuery()
+		{
+			// Arrange
+			string url = "http://www.google.com";
+
+			QueryStringBuilder qsb = new QueryStringBuilder();
+
+			// Act
+			string result = qsb.GetUrlWithQueryString(url);
+
+			// Assert
+			Assert.AreEqual(url, result);
+		}
+		#endregion
 	}
 }

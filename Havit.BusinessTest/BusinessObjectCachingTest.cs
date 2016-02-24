@@ -256,7 +256,6 @@ namespace Havit.BusinessTest
 			Assert.IsNull(HttpRuntime.Cache[cacheKey]);
 		}
 
-
 		private void ClearCache()
 		{
 			foreach (DictionaryEntry dictionaryEntry in HttpRuntime.Cache)

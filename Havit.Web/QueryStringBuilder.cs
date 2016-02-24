@@ -165,7 +165,7 @@ namespace Havit.Web
 			{
 				url = url + "?";
 			}
-			return url + this.ToString();
+			return (url + this.ToString()).TrimEnd('?');
 		}
 		#endregion
 

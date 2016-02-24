@@ -12,40 +12,35 @@ namespace Havit.WebTest
 	/// to contain all Havit.Web.QueryStringBuilder Unit Tests
 	/// </summary>
 	[TestClass]
-	public class QueryStringBuilderTest
+	public class QueryStringBuilderTests
 	{
-		#region Add_Null
 		/// <summary>
 		/// A test for Add (string, string)
 		/// </summary>
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
-		public void AddTest_Null()
+		public void QueryStringBuilder_Add_Null_ThrowsException()
 		{
 			QueryStringBuilder target = new QueryStringBuilder();
 			target.Add(null, "cokoliv");
 		}
-		#endregion
 
-		#region SetTest_Null
 		/// <summary>
 		/// A test for Set (string, string)
 		/// </summary>
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
-		public void SetTest()
+		public void QueryStringBuilder_Set_Null_ThrowsException()
 		{
 			QueryStringBuilder target = new QueryStringBuilder();
 			target.Set(null, "cokoliv");
 		}
-		#endregion
 
-		#region ToStringTest_Simple
 		/// <summary>
 		/// A test for ToString ()
 		/// </summary>
 		[TestMethod]
-		public void ToStringTest_Simple()
+		public void QueryStringBuilder_ToString_Simple()
 		{
 			QueryStringBuilder target = new QueryStringBuilder();
 			target.Add("key1", "value1");
@@ -58,14 +53,12 @@ namespace Havit.WebTest
 
 			Assert.AreEqual(expected, actual);
 		}
-		#endregion
 
-		#region ToStringTest_EncodeSpace
 		/// <summary>
 		/// A test for ToString ()
 		/// </summary>
 		[TestMethod]
-		public void ToStringTest_EncodeSpace()
+		public void QueryStringBuilder_ToString_EncodeSpace()
 		{
 			QueryStringBuilder target = new QueryStringBuilder();
 			target.Add("key", "value with space");
@@ -77,14 +70,12 @@ namespace Havit.WebTest
 
 			Assert.AreEqual(expected, actual);
 		}
-		#endregion
 
-		#region ToStringTest_EncodeText
 		/// <summary>
 		/// A test for ToString ()
 		/// </summary>
 		[TestMethod]
-		public void ToStringTest_EncodeText()
+		public void QueryStringBuilder_ToString_EncodeText()
 		{
 			QueryStringBuilder target = new QueryStringBuilder();
 			target.Add("key", "ěščřžýáíéúů");
@@ -96,14 +87,12 @@ namespace Havit.WebTest
 
 			Assert.AreEqual(expected, actual);
 		}
-		#endregion
 
-		#region ToStringTest_EncodeAmpersand
 		/// <summary>
 		/// A test for ToString ()
 		/// </summary>
 		[TestMethod]
-		public void ToStringTest_EncodeAmpersand()
+		public void QueryStringBuilder_ToString_EncodeAmpersand()
 		{
 			QueryStringBuilder target = new QueryStringBuilder();
 			target.Add("key", "text1&text2");
@@ -115,14 +104,12 @@ namespace Havit.WebTest
 
 			Assert.AreEqual(expected, actual);
 		}
-		#endregion
 
-		#region GetUrlWithQueryStringTest_Simple
 		/// <summary>
 		/// A test for GetUrlWithQueryString (string)
 		/// </summary>
 		[TestMethod]
-		public void GetUrlWithQueryStringTest_Simple()
+		public void QueryStringBuilder_GetUrlWithQueryString_Simple()
 		{
 			QueryStringBuilder target = new QueryStringBuilder();
 			target.Add("key", "value");
@@ -136,14 +123,12 @@ namespace Havit.WebTest
 
 			Assert.AreEqual(expected, actual);
 		}
-		#endregion
 
-		#region GetUrlWithQueryStringTest_ExistingQueryString
 		/// <summary>
 		/// A test for GetUrlWithQueryString (string)
 		/// </summary>
 		[TestMethod]
-		public void GetUrlWithQueryStringTest_ExistingQueryStringSimple()
+		public void QueryStringBuilder_GetUrlWithQueryString_ExistingQueryStringSimple()
 		{
 			QueryStringBuilder target = new QueryStringBuilder();
 			target.Add("key", "value");
@@ -157,14 +142,12 @@ namespace Havit.WebTest
 
 			Assert.AreEqual(expected, actual);
 		}
-		#endregion
 
-		#region GetUrlWithQueryStringTest_ExistingQueryStringWithAmpersand
 		/// <summary>
 		/// A test for GetUrlWithQueryString (string)
 		/// </summary>
 		[TestMethod]
-		public void GetUrlWithQueryStringTest_ExistingQueryStringWithAmpersand()
+		public void QueryStringBuilder_GetUrlWithQueryString_ExistingQueryStringWithAmpersand()
 		{
 			QueryStringBuilder target = new QueryStringBuilder();
 			target.Add("key", "value");
@@ -178,14 +161,12 @@ namespace Havit.WebTest
 
 			Assert.AreEqual(expected, actual);
 		}
-		#endregion
 
-		#region GetUrlWithQueryStringTest_UrlWithQuestionMark
 		/// <summary>
 		/// A test for GetUrlWithQueryString (string)
 		/// </summary>
 		[TestMethod]
-		public void GetUrlWithQueryStringTest_UrlWithQuestionMark()
+		public void QueryStringBuilder_GetUrlWithQueryString_UrlWithQuestionMark()
 		{
 			QueryStringBuilder target = new QueryStringBuilder();
 			target.Add("key", "value");
@@ -199,14 +180,12 @@ namespace Havit.WebTest
 
 			Assert.AreEqual(expected, actual);
 		}
-		#endregion
 
-		#region FillFromStringTest_Simple
 		/// <summary>
 		/// A test for FillFromString (string)
 		/// </summary>
 		[TestMethod]
-		public void FillFromStringTest_Simple()
+		public void QueryStringBuilder_FillFromString_Simple()
 		{
 			QueryStringBuilder target = new QueryStringBuilder();
 
@@ -219,14 +198,12 @@ namespace Havit.WebTest
 			Assert.IsTrue(target.Count == 2);
 			Assert.IsTrue(target.ToString() == queryString);
 		}
-		#endregion
 
-		#region FillFromStringTest_UrlEncoded
 		/// <summary>
 		/// A test for FillFromString (string)
 		/// </summary>
 		[TestMethod]
-		public void FillFromStringTest_UrlEncoded()
+		public void QueryStringBuilder_FillFromString_UrlEncoded()
 		{
 			QueryStringBuilder target = new QueryStringBuilder();
 
@@ -236,14 +213,12 @@ namespace Havit.WebTest
 
 			Assert.IsTrue(target["key"] == "ěščřžýáíéúů");
 		}
-		#endregion
 
-		#region FillFromStringTest_Ampersands
 		/// <summary>
 		/// A test for FillFromString (string)
 		/// </summary>
 		[TestMethod]
-		public void FillFromStringTest_Ampersands()
+		public void QueryStringBuilder_FillFromString_Ampersands()
 		{
 			QueryStringBuilder target = new QueryStringBuilder();
 
@@ -256,14 +231,12 @@ namespace Havit.WebTest
 			Assert.IsTrue(target.Count == 2);
 			Assert.IsTrue(target.ToString() == "key1=value1&key2=value2");
 		}
-		#endregion
 
-		#region FillFromStringTest_EmptyValue
 		/// <summary>
 		/// A test for FillFromString (string)
 		/// </summary>
 		[TestMethod]
-		public void FillFromStringTest_EmptyValue()
+		public void QueryStringBuilder_FillFromString_EmptyValue()
 		{
 			QueryStringBuilder target = new QueryStringBuilder();
 
@@ -275,14 +248,12 @@ namespace Havit.WebTest
 			Assert.IsTrue(target.Count == 1);
 			Assert.IsTrue(target.ToString() == "key1=");
 		}
-		#endregion
 
-		#region FillFromStringTest_EmptyInput
 		/// <summary>
 		/// A test for FillFromString (string)
 		/// </summary>
 		[TestMethod]
-		public void FillFromStringTest_EmptyInput()
+		public void QueryStringBuilder_FillFromString_EmptyInput()
 		{
 			QueryStringBuilder target = new QueryStringBuilder();
 
@@ -293,14 +264,12 @@ namespace Havit.WebTest
 			Assert.IsTrue(target.Count == 0);
 			Assert.IsTrue(target.ToString() == String.Empty);
 		}
-		#endregion
 
-		#region FillFromStringTest_NullInput
 		/// <summary>
 		/// A test for FillFromString (string)
 		/// </summary>
 		[TestMethod]
-		public void FillFromStringTest_NullInput()
+		public void QueryStringBuilder_FillFromString_NullInput()
 		{
 			QueryStringBuilder target = new QueryStringBuilder();
 
@@ -311,14 +280,11 @@ namespace Havit.WebTest
 			Assert.IsTrue(target.Count == 0);
 			Assert.IsTrue(target.ToString() == String.Empty);
 		}
-		#endregion
 
-		#region QueryStringBuilder_GetUrlQueryString_EmptyQuery
 		/// <summary>
 		/// Test reprodukující chybu, při které se vracela URL adresa končící znakem '?' v okamžku, kdy je kolekce parametrů prázdná.
 		/// </summary>
 		[TestMethod]
-		[Ignore]
 		public void QueryStringBuilder_GetUrlQueryString_EmptyQuery()
 		{
 			// Arrange
@@ -332,6 +298,5 @@ namespace Havit.WebTest
 			// Assert
 			Assert.AreEqual(url, result);
 		}
-		#endregion
 	}
 }

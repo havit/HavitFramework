@@ -93,27 +93,19 @@ namespace Havit.BusinessLayerTest
 			}
 			
 			bool fromCache = true;
-			string cacheKey = "Language.GetObject|ID=" + id;
 			
-			result = (Language)HttpRuntime.Cache.Get(cacheKey);
+			result = (Language)GetBusinessObjectFromCache(id);
 			if (result == null)
 			{
 				lock (lockGetObjectCacheAccess)
 				{
-					result = (Language)HttpRuntime.Cache.Get(cacheKey);
+					result = (Language)GetBusinessObjectFromCache(id);
 					if (result == null)
 					{
 						fromCache = false;
 						result = new Language(id);
 						
-						HttpRuntime.Cache.Insert(
-							cacheKey,
-							result,
-							null, // dependencies
-							Cache.NoAbsoluteExpiration,
-							Cache.NoSlidingExpiration,
-							CacheItemPriority.Default,
-							null); // callback
+						AddBusinessObjectToCache(result);
 					}
 				}
 			}

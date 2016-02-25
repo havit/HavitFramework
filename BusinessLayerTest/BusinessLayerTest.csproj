@@ -414,6 +414,10 @@
       <Project>{703235E0-86C0-44F3-95BB-3D9F39886966}</Project>
       <Name>Havit.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Havit.Services\Havit.Services.csproj">
+      <Project>{2e4ae0cf-fa21-4fbc-9274-e56bc5d9494e}</Project>
+      <Name>Havit.Services</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Havit\Havit.csproj">
       <Project>{9ACC94B9-B8FD-47C1-ABF8-0658C7673905}</Project>
       <Name>Havit</Name>

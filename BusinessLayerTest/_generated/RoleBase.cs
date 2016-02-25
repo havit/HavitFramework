@@ -291,6 +291,78 @@ namespace Havit.BusinessLayerTest
 		
 		#endregion
 		
+		#region BusinessObject cache access methods
+		/// <summary>
+		/// Vrátí název klíče pro business object.
+		/// </summary>
+		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+		protected static string GetBusinessObjectCacheKey(int id)
+		{
+			return "Role.GetObject|ID=" + id;
+		}
+		
+		/// <summary>
+		/// Přidá business object do cache.
+		/// </summary>
+		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+		protected static void AddBusinessObjectToCache(BusinessObjectBase businessObject)
+		{
+			Havit.Services.Caching.CacheOptions options = new Havit.Services.Caching.CacheOptions
+			{
+				Priority = Havit.Services.Caching.CacheItemPriority.NotRemovable
+			};
+			Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.AddBusinessObjectToCache(typeof(Role), GetBusinessObjectCacheKey(businessObject.ID), businessObject, options);
+		}
+		
+		/// <summary>
+		/// Vyhledá v cache business object pro objekt daného ID a vrátí jej. Není-li v cache nalezen, vrací null.
+		/// </summary>
+		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+		internal static BusinessObjectBase GetBusinessObjectFromCache(int id)
+		{
+			return Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.GetBusinessObjectFromCache(typeof(Role), GetBusinessObjectCacheKey(id));
+		}
+		
+		#endregion
+		
+		#region GetAll IDs cache access methods
+		/// <summary>
+		/// Vrátí název klíče pro kolekci IDs metody GetAll.
+		/// </summary>
+		private static string GetAllIDsCacheKey()
+		{
+			return "Role.GetAll";
+		}
+		
+		/// <summary>
+		/// Vyhledá v cache pole IDs metody GetAll a vrátí jej. Není-li v cache nalezena, vrací null.
+		/// </summary>
+		private static int[] GetAllIDsFromCache()
+		{
+			return Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.GetAllIDsFromCache(typeof(Role), GetAllIDsCacheKey());
+		}
+		
+		/// <summary>
+		/// Přidá pole IDs metody GetAll do cache.
+		/// </summary>
+		private static void AddAllIDsToCache(int[] ids)
+		{
+			Havit.Services.Caching.CacheOptions options = new Havit.Services.Caching.CacheOptions
+			{
+				Priority = Havit.Services.Caching.CacheItemPriority.NotRemovable
+			};
+			Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.AddAllIDsToCache(typeof(Role), GetAllIDsCacheKey(), ids, options);
+		}
+		
+		/// <summary>
+		/// Odstraní pole IDs metody GetAll z cache.
+		/// </summary>
+		private static void RemoveAllIDsFromCache()
+		{
+			Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.RemoveAllIDsFromCache(typeof(Role), GetAllIDsCacheKey());
+		}
+		#endregion
+		
 		#region Enum members
 		/// <summary>
 		/// ZaporneID [-1]
@@ -487,28 +559,20 @@ namespace Havit.BusinessLayerTest
 		{
 			RoleCollection collection = null;
 			int[] ids = null;
-			string cacheKey = "Havit.BusinessLayerTest.Role.GetAll";
 			
-			ids = (int[])HttpRuntime.Cache.Get(cacheKey);
+			ids = GetAllIDsFromCache();
 			if (ids == null)
 			{
 				lock (lockGetAllCacheAccess)
 				{
-					ids = (int[])HttpRuntime.Cache.Get(cacheKey);
+					ids = GetAllIDsFromCache();
 					if (ids == null)
 					{
 						QueryParams queryParams = new QueryParams();
 						collection = Role.GetList(queryParams);
 						ids = collection.GetIDs();
 						
-						HttpRuntime.Cache.Insert(
-							cacheKey,
-							ids,
-							null, // dependencies
-							Cache.NoAbsoluteExpiration,
-							Cache.NoSlidingExpiration,
-							CacheItemPriority.NotRemovable,
-							null); // callback
+						AddAllIDsToCache(ids);
 					}
 				}
 			}

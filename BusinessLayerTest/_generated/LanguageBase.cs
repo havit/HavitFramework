@@ -35,23 +35,17 @@ namespace Havit.BusinessLayerTest
 	/// <code>
 	/// CREATE TABLE [dbo].[Language](
 	/// 	[LanguageID] [int] NOT NULL,
-	/// 	[UICulture] [varchar](6) COLLATE Czech_CI_AS NOT NULL,
-	/// 	[Culture] [varchar](6) COLLATE Czech_CI_AS NOT NULL,
-	/// 	[Name] [nvarchar](50) COLLATE Czech_CI_AS NULL,
-	/// 	[Aktivni] [bit] NOT NULL,
-	/// 	[EditacePovolena] [bit] NOT NULL,
-	/// 	[Poradi] [int] NOT NULL,
+	/// 	[UICulture] [varchar](6) COLLATE Czech_CI_AS NOT NULL CONSTRAINT [DF_Language_UICulture]  DEFAULT (''),
+	/// 	[Culture] [varchar](6) COLLATE Czech_CI_AS NOT NULL CONSTRAINT [DF_Language_Culture]  DEFAULT (''),
+	/// 	[Name] [nvarchar](50) COLLATE Czech_CI_AS NULL CONSTRAINT [DF_Language_Name]  DEFAULT (''),
+	/// 	[Aktivni] [bit] NOT NULL CONSTRAINT [DF_Language_Aktivni]  DEFAULT ((1)),
+	/// 	[EditacePovolena] [bit] NOT NULL CONSTRAINT [DF_Language_EditacePovolena]  DEFAULT ((1)),
+	/// 	[Poradi] [int] NOT NULL CONSTRAINT [DF_Language_Poradi]  DEFAULT ((0)),
 	///  CONSTRAINT [PK_Language] PRIMARY KEY CLUSTERED 
 	/// (
 	/// 	[LanguageID] ASC
 	/// )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 	/// ) ON [PRIMARY]
-	/// ALTER TABLE [dbo].[Language] ADD  CONSTRAINT [DF_Language_UICulture]  DEFAULT ('') FOR [UICulture]
-	/// ALTER TABLE [dbo].[Language] ADD  CONSTRAINT [DF_Language_Culture]  DEFAULT ('') FOR [Culture]
-	/// ALTER TABLE [dbo].[Language] ADD  CONSTRAINT [DF_Language_Name]  DEFAULT ('') FOR [Name]
-	/// ALTER TABLE [dbo].[Language] ADD  CONSTRAINT [DF_Language_Aktivni]  DEFAULT ((1)) FOR [Aktivni]
-	/// ALTER TABLE [dbo].[Language] ADD  CONSTRAINT [DF_Language_EditacePovolena]  DEFAULT ((1)) FOR [EditacePovolena]
-	/// ALTER TABLE [dbo].[Language] ADD  CONSTRAINT [DF_Language_Poradi]  DEFAULT ((0)) FOR [Poradi]
 	/// </code>
 	/// </remarks>
 	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
@@ -476,6 +470,70 @@ namespace Havit.BusinessLayerTest
 		
 		#endregion
 		
+		#region BusinessObject cache access methods
+		/// <summary>
+		/// Vrátí název klíče pro business object.
+		/// </summary>
+		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+		protected static string GetBusinessObjectCacheKey(int id)
+		{
+			return "Language.GetObject|ID=" + id;
+		}
+		
+		/// <summary>
+		/// Přidá business object do cache.
+		/// </summary>
+		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+		protected static void AddBusinessObjectToCache(BusinessObjectBase businessObject)
+		{
+			Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.AddBusinessObjectToCache(typeof(Language), GetBusinessObjectCacheKey(businessObject.ID), businessObject);
+		}
+		
+		/// <summary>
+		/// Vyhledá v cache business object pro objekt daného ID a vrátí jej. Není-li v cache nalezen, vrací null.
+		/// </summary>
+		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+		internal static BusinessObjectBase GetBusinessObjectFromCache(int id)
+		{
+			return Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.GetBusinessObjectFromCache(typeof(Language), GetBusinessObjectCacheKey(id));
+		}
+		
+		#endregion
+		
+		#region GetAll IDs cache access methods
+		/// <summary>
+		/// Vrátí název klíče pro kolekci IDs metody GetAll.
+		/// </summary>
+		private static string GetAllIDsCacheKey()
+		{
+			return "Language.GetAll";
+		}
+		
+		/// <summary>
+		/// Vyhledá v cache pole IDs metody GetAll a vrátí jej. Není-li v cache nalezena, vrací null.
+		/// </summary>
+		private static int[] GetAllIDsFromCache()
+		{
+			return Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.GetAllIDsFromCache(typeof(Language), GetAllIDsCacheKey());
+		}
+		
+		/// <summary>
+		/// Přidá pole IDs metody GetAll do cache.
+		/// </summary>
+		private static void AddAllIDsToCache(int[] ids)
+		{
+			Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.AddAllIDsToCache(typeof(Language), GetAllIDsCacheKey(), ids);
+		}
+		
+		/// <summary>
+		/// Odstraní pole IDs metody GetAll z cache.
+		/// </summary>
+		private static void RemoveAllIDsFromCache()
+		{
+			Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.RemoveAllIDsFromCache(typeof(Language), GetAllIDsCacheKey());
+		}
+		#endregion
+		
 		#region GetFirst, GetList, GetAll
 		/// <summary>
 		/// Vrátí první nalezený objekt typu Language dle parametrů v queryParams.
@@ -564,14 +622,13 @@ namespace Havit.BusinessLayerTest
 		{
 			LanguageCollection collection = null;
 			int[] ids = null;
-			string cacheKey = "Havit.BusinessLayerTest.Language.GetAll";
 			
-			ids = (int[])HttpRuntime.Cache.Get(cacheKey);
+			ids = GetAllIDsFromCache();
 			if (ids == null)
 			{
 				lock (lockGetAllCacheAccess)
 				{
-					ids = (int[])HttpRuntime.Cache.Get(cacheKey);
+					ids = GetAllIDsFromCache();
 					if (ids == null)
 					{
 						QueryParams queryParams = new QueryParams();
@@ -579,14 +636,7 @@ namespace Havit.BusinessLayerTest
 						collection = Language.GetList(queryParams);
 						ids = collection.GetIDs();
 						
-						HttpRuntime.Cache.Insert(
-							cacheKey,
-							ids,
-							null, // dependencies
-							Cache.NoAbsoluteExpiration,
-							Cache.NoSlidingExpiration,
-							CacheItemPriority.Default,
-							null); // callback
+						AddAllIDsToCache(ids);
 					}
 				}
 			}

@@ -42,6 +42,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -62,6 +63,12 @@
     <Compile Include="Ares\AresService.cs" />
     <Compile Include="Ares\AresData.cs" />
     <Compile Include="Ares\AresStandardService.cs" />
+    <Compile Include="Caching\CacheItemPriority.cs" />
+    <Compile Include="Caching\CacheOptions.cs" />
+    <Compile Include="Caching\HttpRuntimeCacheService.cs" />
+    <Compile Include="Caching\ICacheService.cs" />
+    <Compile Include="Caching\ObjectCacheService.cs" />
+    <Compile Include="Caching\NullCacheService.cs" />
     <Compile Include="DirectoryServices\ActiveDirectory\ActiveDirectoryProperties.cs" />
     <Compile Include="DirectoryServices\ActiveDirectory\ActiveDirectoryServices.cs" />
     <Compile Include="DirectoryServices\ActiveDirectory\UserNotFoundException.cs" />

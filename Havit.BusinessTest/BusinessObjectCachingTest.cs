@@ -11,9 +11,12 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Security;
 using Havit.Business;
+using Havit.Business.Caching;
 using Havit.Business.Query;
 using Havit.BusinessLayerTest;
+using Havit.BusinessLayerTest.Resources;
 using Havit.Data;
+using Havit.Services.Caching;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.BusinessTest
@@ -24,11 +27,16 @@ namespace Havit.BusinessTest
 		private const int CurrencyWellKnownID = 1;
 
 		private IdentityMapScope identityMapScope;
+		private ICacheService cacheService;
 
 		[TestInitialize]
 		public void TestInitialize()
 		{
-			ClearCache();
+			//cacheService = new MemoryCacheService("Havit.BusinessTest");
+			cacheService = new HttpRuntimeCacheService();
+			cacheService.Clear();
+			BusinessLayerContexts.SetBusinessLayerCacheService(new DefaultBusinessLayerCacheService(cacheService));
+
 			identityMapScope = new IdentityMapScope();
 		}
 
@@ -39,39 +47,39 @@ namespace Havit.BusinessTest
 		}
 
 		[TestMethod]
-		public void Load_SetsDataRecordToCache()
+		public void BusinessObject_Load_SetsDataRecordToCache()
 		{
 			// Arrange
 			string cacheKey = (string)(typeof(CurrencyBase).GetMethod("GetDataRecordCacheKey", BindingFlags.NonPublic | BindingFlags.Static).Invoke(null, new object[] { CurrencyWellKnownID }));
 			
 			// Precondition
-			Assert.IsNull(HttpRuntime.Cache[cacheKey]);
+			Assert.IsFalse(cacheService.Contains(cacheKey));
 
 			// Act
 			Currency.GetObject(CurrencyWellKnownID).Load();
 
 			// Assert
-			Assert.IsNotNull(HttpRuntime.Cache[cacheKey]);
+			Assert.IsTrue(cacheService.Contains(cacheKey));
 		}
 
 		[TestMethod]
-		public void GetAll_SetsAllRecordsCacheItemToCache()
+		public void BusinessObject_GetAll_SetsAllRecordsCacheItemToCache()
 		{
 			// Arrange
-			string cacheKey = "Havit.BusinessLayerTest.Currency.GetAll";
+			string cacheKey = (string)(typeof(CurrencyBase).GetMethod("GetAllIDsCacheKey", BindingFlags.NonPublic | BindingFlags.Static).Invoke(null, null));
 
 			// Precondition
-			Assert.IsNull(HttpRuntime.Cache[cacheKey]);
+			Assert.IsFalse(cacheService.Contains(cacheKey));
 
 			// Act
 			Currency.GetAll();
 
 			// Assert
-			Assert.IsNotNull(HttpRuntime.Cache[cacheKey]);
+			Assert.IsTrue(cacheService.Contains(cacheKey));
 		}
 
 		[TestMethod]
-		public void Save_RemovesDataRecordFromCache()
+		public void BusinessObject_Save_RemovesDataRecordFromCache()
 		{
 			// Arrange
 			string cacheKey = (string)(typeof(CurrencyBase).GetMethod("GetDataRecordCacheKey", BindingFlags.NonPublic | BindingFlags.Static).Invoke(null, new object[] { CurrencyWellKnownID }));
@@ -80,18 +88,18 @@ namespace Havit.BusinessTest
 			currency.Load();
 
 			// Precondition
-			Assert.IsNotNull(HttpRuntime.Cache[cacheKey]);
+			Assert.IsTrue(cacheService.Contains(cacheKey));
 
 			// Act
 			currency.Nazev = Guid.NewGuid().ToString();
 			currency.Save();
 
 			// Assert
-			Assert.IsNull(HttpRuntime.Cache[cacheKey]);
+			Assert.IsFalse(cacheService.Contains(cacheKey));
 		}
 
 		[TestMethod]
-		public void Delete_RemovesDataRecordFromCache()
+		public void BusinessObject_Delete_RemovesDataRecordFromCache()
 		{
 			// Arrange
 			Currency currency1 = Currency.CreateObject();
@@ -108,24 +116,24 @@ namespace Havit.BusinessTest
 			string cacheKey = (string)(typeof(CurrencyBase).GetMethod("GetDataRecordCacheKey", BindingFlags.NonPublic | BindingFlags.Static).Invoke(null, new object[] { currency2.ID }));
 
 			// Precondition
-			Assert.IsNotNull(HttpRuntime.Cache[cacheKey]);
+			Assert.IsTrue(cacheService.Contains(cacheKey));
 
 			// Act
 			currency2.Delete();
 
 			// Assert
-			Assert.IsNull(HttpRuntime.Cache[cacheKey]);
+			Assert.IsFalse(cacheService.Contains(cacheKey));
 		}
 
 		[TestMethod]
-		public void Save_RemovesAllRecordsCacheItemFromCache()
+		public void BusinessObject_Save_RemovesAllRecordsCacheItemFromCache()
 		{
 			// Arrange
-			string cacheKey = "Havit.BusinessLayerTest.Currency.GetAll";
+			string cacheKey = (string)(typeof(CurrencyBase).GetMethod("GetAllIDsCacheKey", BindingFlags.NonPublic | BindingFlags.Static).Invoke(null, null));
 
 			// Precondition
 			CurrencyCollection currencies = Currency.GetAll();
-			Assert.IsNotNull(HttpRuntime.Cache[cacheKey]);
+			Assert.IsTrue(cacheService.Contains(cacheKey));
 
 			// Act
 			Currency currency = currencies.First();
@@ -133,31 +141,31 @@ namespace Havit.BusinessTest
 			currency.Save();
 
 			// Assert
-			Assert.IsNull(HttpRuntime.Cache[cacheKey]);
+			Assert.IsFalse(cacheService.Contains(cacheKey));
 		}
 
 		[TestMethod]
-		public void Delete_RemovesAllRecordsCacheItemFromCache()
+		public void BusinessObject_Delete_RemovesAllRecordsCacheItemFromCache()
 		{
 			// Arrange
 			Currency currency = Currency.CreateObject();
 			currency.Save();
 
-			string cacheKey = "Havit.BusinessLayerTest.Currency.GetAll";
+			string cacheKey = (string)(typeof(CurrencyBase).GetMethod("GetAllIDsCacheKey", BindingFlags.NonPublic | BindingFlags.Static).Invoke(null, null));
 			CurrencyCollection currencies = Currency.GetAll();
 
 			// Precondition
-			Assert.IsNotNull(HttpRuntime.Cache[cacheKey]);
+			Assert.IsTrue(cacheService.Contains(cacheKey));
 
 			// Act
 			currency.Delete();
 
 			// Assert
-			Assert.IsNull(HttpRuntime.Cache[cacheKey]);
+			Assert.IsFalse(cacheService.Contains(cacheKey));
 		}
 
 		[TestMethod]
-		public void Save_ExistingObject_InvalidatesSaveCacheDependencyKey()
+		public void BusinessObject_Save_ExistingObject_InvalidatesSaveCacheDependencyKey()
 		{
 			// Arrange
 			Currency currency = Currency.GetObject(CurrencyWellKnownID);
@@ -166,18 +174,18 @@ namespace Havit.BusinessTest
 			string cacheKey = currency.GetSaveCacheDependencyKey();
 
 			// Precondition
-			Assert.IsNotNull(HttpRuntime.Cache[cacheKey]);
+			Assert.IsTrue(cacheService.Contains(cacheKey));
 
 			// Act
 			currency.Nazev = Guid.NewGuid().ToString();
 			currency.Save();
 
 			// Assert
-			Assert.IsNull(HttpRuntime.Cache[cacheKey]);
+			Assert.IsFalse(cacheService.Contains(cacheKey));
 		}
 
 		[TestMethod]
-		public void Save_ExistingObject_InvalidatesAnySaveCacheDependencyKey()
+		public void BusinessObject_Save_ExistingObject_InvalidatesAnySaveCacheDependencyKey()
 		{
 			// Arrange
 			Currency currency = Currency.GetObject(CurrencyWellKnownID);
@@ -186,18 +194,18 @@ namespace Havit.BusinessTest
 			string cacheKey = Currency.GetAnySaveCacheDependencyKey();
 
 			// Precondition
-			Assert.IsNotNull(HttpRuntime.Cache[cacheKey]);
+			Assert.IsTrue(cacheService.Contains(cacheKey));
 
 			// Act
 			currency.Nazev = Guid.NewGuid().ToString();
 			currency.Save();
 
 			// Assert
-			Assert.IsNull(HttpRuntime.Cache[cacheKey]);
+			Assert.IsFalse(cacheService.Contains(cacheKey));
 		}
 
 		[TestMethod]
-		public void Save_NewObject_InvalidatesAnySaveCacheDependencyKey()
+		public void BusinessObject_Save_NewObject_InvalidatesAnySaveCacheDependencyKey()
 		{
 			// Arrange
 			Currency currency = Currency.CreateObject();			
@@ -205,21 +213,21 @@ namespace Havit.BusinessTest
 			string cacheKey = Currency.GetAnySaveCacheDependencyKey();
 
 			// Precondition
-			Assert.IsNotNull(HttpRuntime.Cache[cacheKey]);
+			Assert.IsTrue(cacheService.Contains(cacheKey));
 
 			// Act
 			currency.Nazev = Guid.NewGuid().ToString();
 			currency.Save();
 
 			// Assert
-			Assert.IsNull(HttpRuntime.Cache[cacheKey]);
+			Assert.IsFalse(cacheService.Contains(cacheKey));
 
 			// Cleanup
 			currency.Delete();
 		}
 
 		[TestMethod]
-		public void Delete_InvalidatesSaveCacheDependencyKey()
+		public void BusinessObject_Delete_InvalidatesSaveCacheDependencyKey()
 		{
 			// Arrange
 			Currency currency = Currency.CreateObject();
@@ -228,17 +236,17 @@ namespace Havit.BusinessTest
 			string cacheKey = currency.GetSaveCacheDependencyKey();
 
 			// Precondition
-			Assert.IsNotNull(HttpRuntime.Cache[cacheKey]);
+			Assert.IsTrue(cacheService.Contains(cacheKey));
 
 			// Act
 			currency.Delete();
 
 			// Assert
-			Assert.IsNull(HttpRuntime.Cache[cacheKey]);
+			Assert.IsFalse(cacheService.Contains(cacheKey));
 		}
 
 		[TestMethod]
-		public void Delete_InvalidatesAnySaveCacheDependencyKey()
+		public void BusinessObject_Delete_InvalidatesAnySaveCacheDependencyKey()
 		{
 			// Arrange
 			Currency currency = Currency.CreateObject();
@@ -247,21 +255,29 @@ namespace Havit.BusinessTest
 			string cacheKey = Currency.GetAnySaveCacheDependencyKey();
 
 			// Precondition
-			Assert.IsNotNull(HttpRuntime.Cache[cacheKey]);
+			Assert.IsTrue(cacheService.Contains(cacheKey));
 
 			// Act
 			currency.Delete();
 
 			// Assert
-			Assert.IsNull(HttpRuntime.Cache[cacheKey]);
+			Assert.IsFalse(cacheService.Contains(cacheKey));
 		}
 
-		private void ClearCache()
+		[TestMethod]
+		public void BusinessObject_GetObject_ReadOnly_SetsObjectToCache()
 		{
-			foreach (DictionaryEntry dictionaryEntry in HttpRuntime.Cache)
-			{
-				HttpRuntime.Cache.Remove((string)dictionaryEntry.Key);
-			}
+			// Arrange
+			string cacheKey = "Role.GetObject|ID=1";
+
+			// Precondition
+			Assert.IsFalse(cacheService.Contains(cacheKey));
+
+			// Act
+			Role.GetObject(1);
+
+			// Assert
+			Assert.IsTrue(cacheService.Contains(cacheKey));
 		}
 	}
 }

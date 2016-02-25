@@ -505,7 +505,8 @@ namespace Havit.BusinessLayerTest
 				DbConnector.Default.ExecuteNonQuery(dbCommand);
 			}
 			
-			HttpRuntime.Cache.Remove(GetDataRecordCacheKey(this.ID));
+			RemoveDataRecordFromCache();
+			RemoveAllIDsFromCache();
 			InvalidateSaveCacheDependencyKey();
 			InvalidateAnySaveCacheDependencyKey();
 		}
@@ -552,7 +553,8 @@ namespace Havit.BusinessLayerTest
 			dbCommand.CommandText = commandBuilder.ToString();
 			DbConnector.Default.ExecuteNonQuery(dbCommand);
 			
-			HttpRuntime.Cache.Remove(GetDataRecordCacheKey(this.ID));
+			RemoveDataRecordFromCache();
+			RemoveAllIDsFromCache();
 			InvalidateSaveCacheDependencyKey();
 			InvalidateAnySaveCacheDependencyKey();
 		}
@@ -560,7 +562,6 @@ namespace Havit.BusinessLayerTest
 		#endregion
 		
 		#region DataRecord cache access methods
-		
 		/// <summary>
 		/// Vrátí název klíče pro data record objektu s daným ID.
 		/// </summary>
@@ -577,15 +578,7 @@ namespace Havit.BusinessLayerTest
 		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		internal void AddDataRecordToCache(DataRecord dataRecord)
 		{
-			string cacheKey = GetDataRecordCacheKey(this.ID);
-			HttpRuntime.Cache.Insert(
-				cacheKey,
-				dataRecord,
-				null, // dependencies
-				Cache.NoAbsoluteExpiration,
-				Cache.NoSlidingExpiration,
-				CacheItemPriority.Default,
-				null); // callback
+			Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.AddDataRecordToCache(typeof(Currency), GetDataRecordCacheKey(this.ID), dataRecord);
 		}
 		
 		/// <summary>
@@ -594,7 +587,49 @@ namespace Havit.BusinessLayerTest
 		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		internal static DataRecord GetDataRecordFromCache(int id)
 		{
-			return (DataRecord)HttpRuntime.Cache[GetDataRecordCacheKey(id)];
+			return Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.GetDataRecordFromCache(typeof(Currency), GetDataRecordCacheKey(id));
+		}
+		
+		/// <summary>
+		/// Odstraní DataRecord z cache.
+		/// </summary>
+		private void RemoveDataRecordFromCache()
+		{
+			Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.RemoveDataRecordFromCache(typeof(Currency), GetDataRecordCacheKey(this.ID));
+		}
+		#endregion
+		
+		#region GetAll IDs cache access methods
+		/// <summary>
+		/// Vrátí název klíče pro kolekci IDs metody GetAll.
+		/// </summary>
+		private static string GetAllIDsCacheKey()
+		{
+			return "Currency.GetAll";
+		}
+		
+		/// <summary>
+		/// Vyhledá v cache pole IDs metody GetAll a vrátí jej. Není-li v cache nalezena, vrací null.
+		/// </summary>
+		private static int[] GetAllIDsFromCache()
+		{
+			return Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.GetAllIDsFromCache(typeof(Currency), GetAllIDsCacheKey());
+		}
+		
+		/// <summary>
+		/// Přidá pole IDs metody GetAll do cache.
+		/// </summary>
+		private static void AddAllIDsToCache(int[] ids)
+		{
+			Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.AddAllIDsToCache(typeof(Currency), GetAllIDsCacheKey(), ids);
+		}
+		
+		/// <summary>
+		/// Odstraní pole IDs metody GetAll z cache.
+		/// </summary>
+		private static void RemoveAllIDsFromCache()
+		{
+			Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.RemoveAllIDsFromCache(typeof(Currency), GetAllIDsCacheKey());
 		}
 		#endregion
 		
@@ -606,20 +641,30 @@ namespace Havit.BusinessLayerTest
 		{
 			global::Havit.Diagnostics.Contracts.Contract.Requires(!this.IsNew, "!this.IsNew");
 			
-			string key = "Currency.SaveCacheDependencyKey|ID=" + this.ID.ToString();
-			if (ensureInCache && (HttpRuntime.Cache[key] == null))
+			if (!Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.SupportsCacheDependencies)
 			{
-				HttpRuntime.Cache[key] = new object();
+				throw new NotSupportedException("Použitá BusinessLayerCacheService nepodporuje cache dependenties.");
 			}
+			
+			string key = "Currency.SaveCacheDependencyKey|ID=" + this.ID.ToString();
+			
+			if (ensureInCache)
+			{
+				Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.EnsureCacheDependencyKey(typeof(Currency), key);
+			}
+			
 			return key;
 		}
 		
 		/// <summary>
 		/// Odstraní z cache závislosti na klíči CacheDependencyKey.
 		/// </summary>
-		protected void InvalidateSaveCacheDependencyKey()
+		private void InvalidateSaveCacheDependencyKey()
 		{
-			HttpRuntime.Cache.Remove(GetSaveCacheDependencyKey(false));
+			if (Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.SupportsCacheDependencies)
+			{
+				Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.InvalidateCacheDependencies(typeof(Currency), GetSaveCacheDependencyKey(false));
+			}
 		}
 		
 		/// <summary>
@@ -627,21 +672,30 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static string GetAnySaveCacheDependencyKey(bool ensureInCache = true)
 		{
-			string key = "Currency.AnySaveCacheDependencyKey";
-			if (ensureInCache && (HttpRuntime.Cache[key] == null))
+			if (!Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.SupportsCacheDependencies)
 			{
-				HttpRuntime.Cache[key] = new object();
+				throw new NotSupportedException("Použitá BusinessLayerCacheService nepodporuje cache dependenties.");
 			}
+			
+			string key = "Currency.AnySaveCacheDependencyKey";
+			
+			if (ensureInCache)
+			{
+				Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.EnsureCacheDependencyKey(typeof(Currency), key);
+			}
+			
 			return key;
 		}
 		
 		/// <summary>
 		/// Odstraní z cache závislosti na klíči AnySaveCacheDependencyKey.
 		/// </summary>
-		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		private static void InvalidateAnySaveCacheDependencyKey()
 		{
-			HttpRuntime.Cache.Remove(GetAnySaveCacheDependencyKey(false));
+			if (Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.SupportsCacheDependencies)
+			{
+				Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.InvalidateCacheDependencies(typeof(Currency), GetAnySaveCacheDependencyKey(false));
+			}
 		}
 		#endregion
 		
@@ -737,28 +791,20 @@ namespace Havit.BusinessLayerTest
 		{
 			CurrencyCollection collection = null;
 			int[] ids = null;
-			string cacheKey = "Havit.BusinessLayerTest.Currency.GetAll";
 			
-			ids = (int[])HttpRuntime.Cache.Get(cacheKey);
+			ids = GetAllIDsFromCache();
 			if (ids == null)
 			{
 				lock (lockGetAllCacheAccess)
 				{
-					ids = (int[])HttpRuntime.Cache.Get(cacheKey);
+					ids = GetAllIDsFromCache();
 					if (ids == null)
 					{
 						QueryParams queryParams = new QueryParams();
 						collection = Currency.GetList(queryParams);
 						ids = collection.GetIDs();
 						
-						HttpRuntime.Cache.Insert(
-							cacheKey,
-							ids,
-							new CacheDependency(null, new string[] { Havit.BusinessLayerTest.Currency.GetAnySaveCacheDependencyKey() }), 
-							Cache.NoAbsoluteExpiration,
-							Cache.NoSlidingExpiration,
-							CacheItemPriority.Default,
-							null); // callback
+						AddAllIDsToCache(ids);
 					}
 				}
 			}

@@ -512,20 +512,30 @@ namespace Havit.BusinessLayerTest
 		{
 			global::Havit.Diagnostics.Contracts.Contract.Requires(!this.IsNew, "!this.IsNew");
 			
-			string key = "CenikItem.SaveCacheDependencyKey|ID=" + this.ID.ToString();
-			if (ensureInCache && (HttpRuntime.Cache[key] == null))
+			if (!Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.SupportsCacheDependencies)
 			{
-				HttpRuntime.Cache[key] = new object();
+				throw new NotSupportedException("Použitá BusinessLayerCacheService nepodporuje cache dependenties.");
 			}
+			
+			string key = "CenikItem.SaveCacheDependencyKey|ID=" + this.ID.ToString();
+			
+			if (ensureInCache)
+			{
+				Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.EnsureCacheDependencyKey(typeof(CenikItem), key);
+			}
+			
 			return key;
 		}
 		
 		/// <summary>
 		/// Odstraní z cache závislosti na klíči CacheDependencyKey.
 		/// </summary>
-		protected void InvalidateSaveCacheDependencyKey()
+		private void InvalidateSaveCacheDependencyKey()
 		{
-			HttpRuntime.Cache.Remove(GetSaveCacheDependencyKey(false));
+			if (Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.SupportsCacheDependencies)
+			{
+				Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.InvalidateCacheDependencies(typeof(CenikItem), GetSaveCacheDependencyKey(false));
+			}
 		}
 		
 		/// <summary>
@@ -533,21 +543,30 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static string GetAnySaveCacheDependencyKey(bool ensureInCache = true)
 		{
-			string key = "CenikItem.AnySaveCacheDependencyKey";
-			if (ensureInCache && (HttpRuntime.Cache[key] == null))
+			if (!Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.SupportsCacheDependencies)
 			{
-				HttpRuntime.Cache[key] = new object();
+				throw new NotSupportedException("Použitá BusinessLayerCacheService nepodporuje cache dependenties.");
 			}
+			
+			string key = "CenikItem.AnySaveCacheDependencyKey";
+			
+			if (ensureInCache)
+			{
+				Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.EnsureCacheDependencyKey(typeof(CenikItem), key);
+			}
+			
 			return key;
 		}
 		
 		/// <summary>
 		/// Odstraní z cache závislosti na klíči AnySaveCacheDependencyKey.
 		/// </summary>
-		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		private static void InvalidateAnySaveCacheDependencyKey()
 		{
-			HttpRuntime.Cache.Remove(GetAnySaveCacheDependencyKey(false));
+			if (Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.SupportsCacheDependencies)
+			{
+				Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.InvalidateCacheDependencies(typeof(CenikItem), GetAnySaveCacheDependencyKey(false));
+			}
 		}
 		#endregion
 		

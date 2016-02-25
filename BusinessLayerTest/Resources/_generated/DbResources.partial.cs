@@ -188,12 +188,58 @@ namespace Havit.BusinessLayerTest.Resources
 		}
 		#endregion
 		
+		#region MainResourceClass
+		public ResourceClasses.MainResourceClass MainResourceClass
+		{
+			get
+			{
+				if (_mainResourceClass == null)
+				{
+					_mainResourceClass = new ResourceClasses.MainResourceClass(getCultureInfoMethod);
+				}
+				return _mainResourceClass;
+			}
+		}
+		private ResourceClasses.MainResourceClass _mainResourceClass;
+		#endregion
+		
 		#region ResourceClasses (nested class)
 		/// <summary>
 		/// Obsahuje třídy pro jednotlivé slovníky resources.
 		/// </summary>
 		public static partial class ResourceClasses
 		{
+			#region MainResourceClass (nested class)
+			public partial class MainResourceClass
+			{
+				#region Private fields
+				private Func<System.Globalization.CultureInfo> getCultureInfoMethod;
+				#endregion
+				
+				#region Constructor (internal)
+				internal MainResourceClass(Func<System.Globalization.CultureInfo> getCultureInfoMethod)
+				{
+					this.getCultureInfoMethod = getCultureInfoMethod;
+				}
+				#endregion
+				
+				#region MainResourceKey
+				/// <summary>
+				/// Vrací hodnotu z resources pro klíč &quot;MainResourceKey&quot;.
+				/// </summary>
+				public string MainResourceKey
+				{
+					get
+					{
+						return DbResources.GetString("MainResourceClass", "MainResourceKey", getCultureInfoMethod());
+					}
+				}
+				
+				#endregion
+				
+			}
+			#endregion
+			
 		}
 		#endregion
 		

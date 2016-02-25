@@ -93,27 +93,19 @@ namespace Havit.BusinessLayerTest
 			}
 			
 			bool fromCache = true;
-			string cacheKey = "Role.GetObject|ID=" + id;
 			
-			result = (Role)HttpRuntime.Cache.Get(cacheKey);
+			result = (Role)GetBusinessObjectFromCache(id);
 			if (result == null)
 			{
 				lock (lockGetObjectCacheAccess)
 				{
-					result = (Role)HttpRuntime.Cache.Get(cacheKey);
+					result = (Role)GetBusinessObjectFromCache(id);
 					if (result == null)
 					{
 						fromCache = false;
 						result = new Role(id);
 						
-						HttpRuntime.Cache.Insert(
-							cacheKey,
-							result,
-							null, // dependencies
-							Cache.NoAbsoluteExpiration,
-							Cache.NoSlidingExpiration,
-							CacheItemPriority.NotRemovable,
-							null); // callback
+						AddBusinessObjectToCache(result);
 					}
 				}
 			}

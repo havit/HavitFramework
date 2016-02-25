@@ -14,7 +14,8 @@
 		<copyright>Copyright HAVIT, s.r.o. 2015</copyright>
 		<dependencies>
 			<group targetFramework="net45">
-				<dependency id="Havit.Data" />
+			  <dependency id="Havit.Data" />
+			  <dependency id="Havit.Services" />
 			</group>
 		</dependencies>
 		<tags>HAVIT Framework Library</tags>

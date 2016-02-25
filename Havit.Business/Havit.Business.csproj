@@ -103,6 +103,7 @@
     <Reference Include="System.Data">
       <Name>System.Data</Name>
     </Reference>
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
@@ -118,8 +119,12 @@
     <Compile Include="BusinessCalendarFridaySaturdayWeekendStrategy.cs" />
     <Compile Include="BusinessCalendarSaturdaySundayWeekendStrategy.cs" />
     <Compile Include="BusinessCalendarWeekendStrategy.cs" />
+    <Compile Include="BusinessLayerContexts.cs" />
     <Compile Include="BusinessObjectBase.cs" />
     <Compile Include="BusinessObjectCollection.cs" />
+    <Compile Include="Caching\CacheAllIDsOnlyCacheService.cs" />
+    <Compile Include="Caching\DefaultBusinessLayerCacheService.cs" />
+    <Compile Include="Caching\IBusinessLayerCacheService.cs" />
     <Compile Include="CollectionPropertyInfo.cs" />
     <Compile Include="CollectionPropertyHolder.cs" />
     <Compile Include="ConnectionMode.cs" />
@@ -198,6 +203,10 @@
     <ProjectReference Include="..\Havit.Data\Havit.Data.csproj">
       <Project>{703235E0-86C0-44F3-95BB-3D9F39886966}</Project>
       <Name>Havit.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Havit.Services\Havit.Services.csproj">
+      <Project>{2e4ae0cf-fa21-4fbc-9274-e56bc5d9494e}</Project>
+      <Name>Havit.Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\Havit\Havit.csproj">
       <Project>{9ACC94B9-B8FD-47C1-ABF8-0658C7673905}</Project>

@@ -1,0 +1,291 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1DAACB7D-93B2-41D2-9B97-37DA3D38A89B}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Havit.Data.Entity.CodeGenerator</RootNamespace>
+    <AssemblyName>Havit.Data.Entity.CodeGenerator</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CodeGenerator|AnyCPU'">
+    <OutputPath>bin\CodeGenerator\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.MappingAPI, Version=6.1.0.9, Culture=neutral, PublicKeyToken=7ee2e825d201459e, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.MappingAPI.6.1.0.9\lib\net45\EntityFramework.MappingAPI.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Havit, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Havit.1.4.1739\lib\net45\Havit.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Havit.Data.Entity6, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Havit.Data.Entity6.1.4.6887\lib\net46\Havit.Data.Entity6.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Havit.Data.Entity6.Patterns, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Havit.Data.Entity6.Patterns.1.4.7133\lib\net46\Havit.Data.Entity6.Patterns.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Havit.Data.Patterns, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Havit.Data.Patterns.1.4.7133\lib\net46\Havit.Data.Patterns.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Havit.Model, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Havit.Model.1.4.6887\lib\net46\Havit.Model.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Havit.Services, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Havit.Services.1.4.6224\lib\net45\Havit.Services.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.Client">
+      <HintPath>..\References\Microsoft.TeamFoundation.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.VersionControl.Client">
+      <HintPath>..\References\Microsoft.TeamFoundation.VersionControl.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.VersionControl.Common">
+      <HintPath>..\References\Microsoft.TeamFoundation.VersionControl.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Actions\AutoGenerated1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AutoGenerated.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Actions\DataEntries\DbDataEntriesFileNamingService.cs" />
+    <Compile Include="Actions\DataEntries\InterfaceDataEntriesFileNamingService.cs" />
+    <Compile Include="Actions\DataEntries\Model\DataEntriesModelSource.cs" />
+    <Compile Include="Actions\DataEntries\Model\DataEntriesModel.cs" />
+    <Compile Include="Actions\DataEntries\Template\DbDataEntriesTemplate.cs">
+      <DependentUpon>DbDataEntriesTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Actions\DataEntries\Template\DbDataEntriesTemplate.partial.cs" />
+    <Compile Include="Actions\DataEntries\Template\DbDataEntriesTemplateFactory.cs" />
+    <Compile Include="Actions\DataEntries\Template\InterfaceDataEntriesTemplateFactory.cs" />
+    <Compile Include="Actions\DataEntries\Template\InterfaceDataEntriesTemplate.partial.cs" />
+    <Compile Include="Actions\DataEntries\Template\InterfaceDataEntriesTemplate.cs">
+      <DependentUpon>InterfaceDataEntriesTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Actions\DataSources\DbDataSourceFileNamingService.cs" />
+    <Compile Include="Actions\DataSources\FakeDataSourceFileNamingService.cs" />
+    <Compile Include="Actions\DataSources\InterfaceDataSourceFileNamingService.cs" />
+    <Compile Include="Actions\DataSources\Model\FakeDataSourceModelSource.cs" />
+    <Compile Include="Actions\DataSources\Model\FakeDataSourceModel.cs" />
+    <Compile Include="Actions\DataSources\Model\DbDataSourceModel.cs" />
+    <Compile Include="Actions\DataSources\Model\InterfaceDataSourceModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Actions\DataSources\Model\DbDataSourceModelSource.cs" />
+    <Compile Include="Actions\DataSources\Model\InterfaceDataSourceModelSource.cs" />
+    <Compile Include="Actions\DataSources\Template\FakeDataSourceTemplateFactory.cs" />
+    <Compile Include="Actions\DataSources\Template\FakeDataSourceTemplate.partial.cs" />
+    <Compile Include="Actions\DataSources\Template\FakeDataSourceTemplate.cs">
+      <DependentUpon>FakeDataSourceTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Actions\DataSources\Template\DbDataSourceTemplate.cs">
+      <DependentUpon>DbDataSourceTemplate.tt</DependentUpon>
+      <SubType>Code</SubType>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Actions\DataSources\Template\DbDataSourceTemplate.partial.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Actions\DataSources\Template\InterfaceDataSourceTemplate.cs">
+      <DependentUpon>InterfaceDataSourceTemplate.tt</DependentUpon>
+      <SubType>Code</SubType>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Actions\DataSources\Template\InterfaceDataSourceTemplate.partial.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Actions\DataSources\Template\DbDataSourceTemplateFactory.cs" />
+    <Compile Include="Actions\DataSources\Template\InterfaceDataSourceTemplateFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Actions\ModelMetadataClasses\MetadataClassFileNamingService.cs" />
+    <Compile Include="Actions\ModelMetadataClasses\Model\MetadataClassModelSource.cs" />
+    <Compile Include="Actions\ModelMetadataClasses\Template\MetadataClassTemplateFactory.cs" />
+    <Compile Include="Actions\QueryableExtensions\Model\QueryableExtensionsModelSource.cs" />
+    <Compile Include="Actions\QueryableExtensions\Model\QueryableExtensionsModel.cs" />
+    <Compile Include="Actions\QueryableExtensions\QueryableExtensionsFileNamingService.cs" />
+    <Compile Include="Actions\QueryableExtensions\Template\QueryableExtensionsTemplate.cs">
+      <DependentUpon>QueryableExtensionsTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Actions\QueryableExtensions\Template\QueryableExtensionsTemplate.partial.cs" />
+    <Compile Include="Actions\QueryableExtensions\Template\QueryableExtensionsTemplateFactory.cs" />
+    <Compile Include="Actions\Repositories\DbRepositoryBaseFileNamingService.cs" />
+    <Compile Include="Actions\Repositories\DbRepositoryFileNamingService.cs" />
+    <Compile Include="Actions\Repositories\InterfaceRepositoryFileNamingService.cs" />
+    <Compile Include="Actions\Repositories\Model\RepositoryModel.cs" />
+    <Compile Include="Actions\Repositories\Model\RepositoryModelSource.cs" />
+    <Compile Include="Actions\Repositories\Templates\DbRepositoryBaseTemplate.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DbRepositoryBaseTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Actions\Repositories\Templates\DbRepositoryBaseTemplate.partial.cs" />
+    <Compile Include="Actions\Repositories\Templates\DbRepositoryTemplate.partial.cs" />
+    <Compile Include="Actions\Repositories\Templates\DbRepositoryTemplate1.cs">
+      <DependentUpon>DbRepositoryTemplate.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Actions\Repositories\Templates\DbRepositoryBaseTemplateFactory.cs" />
+    <Compile Include="Actions\Repositories\Templates\InterfaceRepositoryTemplate.partial.cs" />
+    <Compile Include="Actions\Repositories\Templates\InterfaceRepositoryTemplate1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>InterfaceRepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Actions\Repositories\Templates\DbRepositoryTemplateFactory.cs" />
+    <Compile Include="Actions\Repositories\Templates\InterfaceRepositoryTemplateFactory.cs" />
+    <Compile Include="Entity\DoNothingInitializer.cs" />
+    <Compile Include="Entity\RegisteredEntity.cs" />
+    <Compile Include="Entity\RegisteredEntityEnumerator.cs" />
+    <Compile Include="Entity\RegisteredProperty.cs" />
+    <Compile Include="Services\ITemplate.cs" />
+    <Compile Include="Services\GenericGenerator.cs" />
+    <Compile Include="Actions\ModelMetadataClasses\Model\MetadataClass.cs" />
+    <Compile Include="Actions\ModelMetadataClasses\Template\MetadataClassTemplate.cs">
+      <DependentUpon>MetadataClassTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Actions\ModelMetadataClasses\Template\MetadataClassTemplate.partial.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Project.cs" />
+    <Compile Include="Services\FileNamingServiceBase.cs" />
+    <Compile Include="Services\IFileNamingService.cs" />
+    <Compile Include="Services\IModelSource.cs" />
+    <Compile Include="Services\ITemplateFactory.cs" />
+    <Compile Include="Services\SourceControlClient.cs" />
+    <Compile Include="Services\CodeWriter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Actions\AutoGenerated.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>AutoGenerated1.cs</LastGenOutput>
+    </Content>
+    <Content Include="Actions\DataEntries\Template\DbDataEntriesTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>DbDataEntriesTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>InterfaceDataEntriesTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="Actions\DataSources\Template\FakeDataSourceTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>FakeDataSourceTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="Actions\DataSources\Template\DbDataSourceTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>DbDataSourceTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="Actions\DataSources\Template\InterfaceDataSourceTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>InterfaceDataSourceTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="Actions\ModelMetadataClasses\Template\MetadataClassTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>MetadataClassTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="Actions\QueryableExtensions\Template\QueryableExtensionsTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>QueryableExtensionsTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="Actions\Repositories\Templates\DbRepositoryBaseTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>DbRepositoryBaseTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="Actions\Repositories\Templates\DbRepositoryTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>DbRepositoryTemplate1.cs</LastGenOutput>
+    </Content>
+    <Content Include="Actions\Repositories\Templates\InterfaceRepositoryTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>InterfaceRepositoryTemplate1.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

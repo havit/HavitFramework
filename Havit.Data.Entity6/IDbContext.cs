@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Threading.Tasks;
 
@@ -21,7 +22,8 @@ namespace Havit.Data.Entity
 		/// a) DbEntityEntry nelze podědit, protože má interní konstruktor.
 		/// b) DbEntityEntry.State není virtuální
 		/// </summary>
-		EntityState GetEntityState(object entity);
+		EntityState GetEntityState<TEntity>(TEntity entity)
+			where TEntity : class;
 
 		/// <summary>
 		/// Uloží změny.
@@ -32,6 +34,11 @@ namespace Havit.Data.Entity
 		/// Uloží změny.
 		/// </summary>
 		Task SaveChangesAsync();
+
+		/// <summary>
+		/// Registruje akci k provedení po save changes. Akce je provedena metodou AfterSaveChanges.
+		/// </summary>
+		void RegisterAfterSaveChangesAction(Action action);
 
 		/// <summary>
 		/// Vrátí objekty v daném stavu.

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Havit.Data.Entity.Patterns.DataLoaders;
 using Havit.Data.Entity.Patterns.Repositories;
 using Havit.Data.Entity.Patterns.SoftDeletes;
 using Havit.Data.Entity.Patterns.Tests.Infrastructure;
@@ -128,6 +130,7 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 			// Assert by method attribute
 		}
 
+		[TestMethod]
 		public void DbUnitOfWork_AddForInsert_EnsuresObjectIsRegistered()
 		{
 			// Arrange
@@ -145,6 +148,7 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 			Assert.IsTrue(changes.Inserts.Contains(language));
 		}
 
+		[TestMethod]
 		public void DbUnitOfWork_AddForUpdate_EnsuresObjectIsRegistered()
 		{
 			// Arrange
@@ -240,5 +244,25 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 				Assert.AreEqual("en-EN", language.UiCulture);
 			}
 		}
+
+		[TestMethod]
+		public void DbUnitOfWork_AddForInsert_DoNotFailDbRepositoryWhenMoreNewObjectsAdded()
+		{
+			// Arrange
+			TestDbContext dbContext = new TestDbContext();
+			var dbDataLoader = new DbDataLoader(dbContext);
+			var softDeleteManager = new SoftDeleteManager(new ServerTimeService());
+			var dbUnitOfWork = new DbUnitOfWork(dbContext, softDeleteManager);
+			var dbRepository = new DbItemWithDeletedRepository(dbContext, dbDataLoader, dbDataLoader, softDeleteManager);
+			Dictionary<int, ItemWithDeleted> dbRepositoryDbSetLocalsDictionary = dbRepository.DbSetLocalsDictionary;
+			
+			// Act
+			dbUnitOfWork.AddForInsert(new ItemWithDeleted());
+			dbUnitOfWork.AddForInsert(new ItemWithDeleted());
+
+			// Assert
+			Assert.AreEqual(0, dbRepositoryDbSetLocalsDictionary.Count);
+		}
+
 	}
 }

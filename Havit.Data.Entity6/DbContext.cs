@@ -1,4 +1,6 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.ModelConfiguration.Conventions;
@@ -14,6 +16,11 @@ namespace Havit.Data.Entity
 	/// </summary>
 	public abstract class DbContext : System.Data.Entity.DbContext, IDbContext
 	{
+		/// <summary>
+		/// Registr akcí k provedení po uložení změn.
+		/// </summary>
+		private List<Action> afterSaveChangesActions;
+
 		/// <summary>
 		/// Konstruktor. Použije "DefaultConnectionString" jako název používaného connection stringu.
 		/// </summary>
@@ -83,11 +90,70 @@ namespace Havit.Data.Entity
 		}
 		
 		/// <summary>
+		/// Saves all changes made in this context to the underlying database.
+		/// </summary>
+		public override int SaveChanges()
+		{
+			int result = base.SaveChanges();
+			AfterSaveChanges();
+			return result;
+		}
+
+		/// <summary>
+		/// Asynchronously saves all changes made in this context to the underlying database.
+		/// </summary>
+		public override async Task<int> SaveChangesAsync()
+		{
+			int result = await base.SaveChangesAsync();
+			AfterSaveChanges();
+			return result;
+		}
+
+		/// <summary>
+		/// Spuštěno po save changes.
+		/// Zajišťuje volání registrovaných after save changes akcí (viz RegisterAfterSaveChangesAction).
+		/// </summary>
+		protected internal virtual void AfterSaveChanges()
+		{
+			afterSaveChangesActions?.ForEach(item => item());
+		}
+
+		/// <summary>
+		/// Registruje akci k provedení po save changes. Akce je provedena metodou AfterSaveChanges.
+		/// </summary>
+		public void RegisterAfterSaveChangesAction(Action action)
+		{
+			if (afterSaveChangesActions == null)
+			{
+				afterSaveChangesActions = new List<Action>();
+			}
+			afterSaveChangesActions.Add(action);
+		}
+
+		/// <summary>
+		/// Vrátí objekty v daném stavu.
+		/// </summary>		
+		public object[] GetObjectsInState(EntityState state)
+		{
+			return ((IObjectContextAdapter)this).ObjectContext.ObjectStateManager.GetObjectStateEntries(state).Select(item => item.Entity).ToArray();
+		}
+
+		/// <summary>
 		/// Vrací stav entity z change trackeru.
 		/// </summary>
-		public EntityState GetEntityState(object entity)
+		public EntityState GetEntityState<TEntity>(TEntity entity)
+			where TEntity : class
 		{
 			return Entry(entity).State;
+		}
+
+		/// <summary>
+		/// Nastaví objekt do požadovaného stavu.
+		/// </summary>
+		public void SetEntityState<TEntity>(TEntity entity, EntityState entityState)
+			where TEntity : class
+		{
+			this.Entry(entity).State = entityState;
 		}
 
 		/// <summary>
@@ -101,26 +167,9 @@ namespace Havit.Data.Entity
 		/// <summary>
 		/// Uloží evidované změny.
 		/// </summary>
-		async Task IDbContext.SaveChangesAsync()
+		Task IDbContext.SaveChangesAsync()
 		{
-			await this.SaveChangesAsync();
-		}
-
-		/// <summary>
-		/// Vrátí objekty v daném stavu.
-		/// </summary>		
-		public object[] GetObjectsInState(EntityState state)
-		{
-			return ((IObjectContextAdapter)this).ObjectContext.ObjectStateManager.GetObjectStateEntries(state).Select(item => item.Entity).ToArray();
-		}
-
-		/// <summary>
-		/// Nastaví objekt do požadovaného stavu.
-		/// </summary>
-		public void SetEntityState<TEntity>(TEntity entity, EntityState entityState)
-			where TEntity : class
-		{
-			this.Entry(entity).State = entityState;
+			return this.SaveChangesAsync();
 		}
 	}
 }

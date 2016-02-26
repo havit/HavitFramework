@@ -7,6 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.Xml.XPath;
 using Havit.Data.Entity.Patterns.Helpers;
 using Havit.Data.Entity.Patterns.SoftDeletes;
 using Havit.Data.Patterns.DataLoaders;
@@ -21,12 +22,37 @@ namespace Havit.Data.Entity.Patterns.Repositories
 	public abstract class DbRepository<TEntity> : IRepository<TEntity>, IRepositoryAsync<TEntity>
 		 where TEntity : class
 	{
+		private readonly IDbContext dbContext;
 		private readonly IDataLoader dataLoader;
 		private readonly IDataLoaderAsync dataLoaderAsync;
 		private readonly ISoftDeleteManager softDeleteManager;
 
 		private TEntity[] _all;
-		private Dictionary<int, TEntity> dbSetLocalsDictionary;
+
+		internal Dictionary<int, TEntity> DbSetLocalsDictionary
+		{
+			get
+			{
+				if (_dbSetLocalsDictionary == null)
+				{
+					_dbSetLocalsDictionary = DbSet.Local.Where(EntityNotInAddedState).ToDictionary(entity => EntityHelper.GetEntityId(entity));
+				}
+				if (_additionalDbSetLocalEntities != null)
+				{
+					foreach (TEntity entity in _additionalDbSetLocalEntities)
+					{
+						if (EntityNotInAddedState(entity))
+						{
+							_dbSetLocalsDictionary.Add(EntityHelper.GetEntityId(entity), entity);
+						}
+					}
+					_additionalDbSetLocalEntities = null;
+				}
+				return _dbSetLocalsDictionary;
+			}
+		}
+		private Dictionary<int, TEntity> _dbSetLocalsDictionary;
+		private List<TEntity> _additionalDbSetLocalEntities;
 
 		/// <summary>
 		/// DbSet, nad kterým je DbRepository postaven.
@@ -43,48 +69,62 @@ namespace Havit.Data.Entity.Patterns.Repositories
 
 			DbSet<TEntity> dbSet = dbContext.Set<TEntity>();
 
+			this.dbContext = dbContext;
 			this.dataLoader = dataLoader;
 			this.dataLoaderAsync = dataLoaderAsync;
 			this.softDeleteManager = softDeleteManager;
 
 			DbSet = dbSet;
-			dbSetLocalsDictionary = dbSet.Local.ToDictionary(item => EntityHelper.GetEntityId(item));
 			dbSet.Local.CollectionChanged += DbSetLocal_CollectionChanged;
+			dbContext.RegisterAfterSaveChangesAction(() => _dbSetLocalsDictionary = null);
 		}
 
 		private void DbSetLocal_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
 		{
-			switch (e.Action)
+			// pokud jsme ještě nepotřebovali kolekci DbSetLocalsDictionary, nemusíme nic dělat - kolekce se inicializuje z aktuálních dat, až bude potřeba
+			if (_dbSetLocalsDictionary != null)
 			{
-				case NotifyCollectionChangedAction.Add:
-					foreach (TEntity item in e.NewItems)
-					{
-						dbSetLocalsDictionary.Add(EntityHelper.GetEntityId(item), item);
-					}
-					break;
+				switch (e.Action)
+				{
+					case NotifyCollectionChangedAction.Add:
+						// nemůžeme přidat nové objekty
+						// ale zde se ještě nemůžeme ptát na stav objektů, protože jinak přidání do DbSetu spadne
+						// takže si jen zaregistrujeme, že potřebujeme objekty přidat, a přidáme je, až při šahnutí na kolekci DbSetLocalsDictionary
+						if (_additionalDbSetLocalEntities == null)
+						{
+							_additionalDbSetLocalEntities = new List<TEntity>();
+						}
+						_additionalDbSetLocalEntities.AddRange(e.NewItems.Cast<TEntity>());
+						break;
 
-				case NotifyCollectionChangedAction.Move:
-					// NOOP
-					break;
+					case NotifyCollectionChangedAction.Move:
+						// NOOP
+						break;
 
-				case NotifyCollectionChangedAction.Remove:
-					foreach (TEntity item in e.NewItems)
-					{
-						dbSetLocalsDictionary.Remove(EntityHelper.GetEntityId(item));
-					}
+					case NotifyCollectionChangedAction.Remove:
+						foreach (TEntity item in e.OldItems)
+						{
+							_dbSetLocalsDictionary.Remove(EntityHelper.GetEntityId(item));
+						}
 
-					break;
+						break;
 
-				case NotifyCollectionChangedAction.Replace:
-					throw new NotSupportedException(e.Action.ToString());
+					case NotifyCollectionChangedAction.Replace:
+						throw new NotSupportedException(e.Action.ToString());
 
-				case NotifyCollectionChangedAction.Reset:
-					dbSetLocalsDictionary = new Dictionary<int, TEntity>();
-					break;
+					case NotifyCollectionChangedAction.Reset:
+						_dbSetLocalsDictionary.Clear();
+						break;
 
-				default:
-					throw new NotSupportedException(e.Action.ToString());
+					default:
+						throw new NotSupportedException(e.Action.ToString());
+				}
 			}
+		}
+
+		private bool EntityNotInAddedState(TEntity entity)
+		{
+			return dbContext.GetEntityState(entity) != EntityState.Added;
 		}
 
 		/// <summary>
@@ -94,10 +134,13 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		/// <exception cref="Havit.Data.Patterns.Exceptions.ObjectNotFoundException">Objekt s daným Id nebyl nalezen.</exception>
 		public TEntity GetObject(int id)
 		{
+			Contract.Requires<ArgumentException>(id != default(int));
+
 			TEntity result;
-			if (!this.dbSetLocalsDictionary.TryGetValue(id, out result))
+			if (!DbSetLocalsDictionary.TryGetValue(id, out result))
 			{
-				result = DbSet.Find(id); // pokud objekt není v dictionary (a tudíž v DbSetu), načteme jej
+				// TODO: Pokud je nový, nevracet jej!
+				result = DbSet.Find(id); // pokud objekt není v dictionary (a tudíž v DbSetu), načteme jej				
 				if (result == null)
 				{
 					ThrowObjectNotFoundException(id);
@@ -115,8 +158,10 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		/// <exception cref="Havit.Data.Patterns.Exceptions.ObjectNotFoundException">Objekt s daným Id nebyl nalezen.</exception>
 		public async Task<TEntity> GetObjectAsync(int id)
 		{
+			Contract.Requires<ArgumentException>(id != default(int));
+
 			TEntity result;
-			if (!this.dbSetLocalsDictionary.TryGetValue(id, out result))
+			if (!DbSetLocalsDictionary.TryGetValue(id, out result))
 			{
 				result = await DbSet.FindAsync(id); // pokud objekt není v dictionary (a tudíž v DbSetu), načteme jej
 				if (result == null)
@@ -143,8 +188,10 @@ namespace Havit.Data.Entity.Patterns.Repositories
 
 			foreach (int id in ids)
 			{
+				Contract.Assert<ArgumentException>(id != default(int));
+
 				TEntity loadedEntity;
-				if (dbSetLocalsDictionary.TryGetValue(id, out loadedEntity))
+				if (DbSetLocalsDictionary.TryGetValue(id, out loadedEntity))
 				{
 					result.Add(loadedEntity);
 				}
@@ -186,8 +233,10 @@ namespace Havit.Data.Entity.Patterns.Repositories
 
 			foreach (int id in ids)
 			{
+				Contract.Assert<ArgumentException>(id != default(int));
+
 				TEntity loadedEntity;
-				if (dbSetLocalsDictionary.TryGetValue(id, out loadedEntity))
+				if (DbSetLocalsDictionary.TryGetValue(id, out loadedEntity))
 				{
 					result.Add(loadedEntity);
 				}

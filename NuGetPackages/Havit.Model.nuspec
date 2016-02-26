@@ -18,8 +18,8 @@
 		</frameworkAssemblies>
 	</metadata>
 	<files>
-	  <file src="bin\Release\Havit.Model.dll" target="lib\net46" />
-	  <file src="bin\Release\Havit.Model.pdb" target="lib\net46" />
-	  <file src="bin\Release\Havit.Model.xml" target="lib\net46" />
+	  <file src="..\Havit.Model\bin\Release\Havit.Model.dll" target="lib\net46" />
+	  <file src="..\Havit.Model\bin\Release\Havit.Model.pdb" target="lib\net46" />
+	  <file src="..\Havit.Model\bin\Release\Havit.Model.xml" target="lib\net46" />
 	</files>
 </package>

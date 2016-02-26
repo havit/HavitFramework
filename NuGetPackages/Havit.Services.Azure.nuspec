@@ -21,8 +21,8 @@
 		<tags>HAVIT Framework Library Azure</tags>
 	</metadata>
 	<files>
-		<file src="bin\Release\Havit.Services.Azure.dll" target="lib\net45" />
-		<file src="bin\Release\Havit.Services.Azure.pdb" target="lib\net45" />
-		<file src="bin\Release\Havit.Services.Azure.xml" target="lib\net45" />
+		<file src="..\Havit.Services.Azure\bin\Release\Havit.Services.Azure.dll" target="lib\net45" />
+		<file src="..\Havit.Services.Azure\bin\Release\Havit.Services.Azure.pdb" target="lib\net45" />
+		<file src="..\Havit.Services.Azure\bin\Release\Havit.Services.Azure.xml" target="lib\net45" />
 	</files>
 </package>

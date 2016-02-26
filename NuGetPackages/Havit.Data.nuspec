@@ -20,8 +20,8 @@
 		<tags>HAVIT Framework Library</tags>
 	</metadata>
 	<files>
-		<file src="bin\Release\Havit.Data.dll" target="lib\net45" />
-		<file src="bin\Release\Havit.Data.pdb" target="lib\net45" />
-		<file src="bin\Release\Havit.Data.xml" target="lib\net45" />
+		<file src="..\Havit.Data\bin\Release\Havit.Data.dll" target="lib\net45" />
+		<file src="..\Havit.Data\bin\Release\Havit.Data.pdb" target="lib\net45" />
+		<file src="..\Havit.Data\bin\Release\Havit.Data.xml" target="lib\net45" />
 	</files>
 </package>

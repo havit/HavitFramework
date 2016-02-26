@@ -21,8 +21,8 @@
 		<tags>HAVIT Framework Library Data Patterns EF</tags>
 	</metadata>
 	<files>
-		<file src="bin\Release\Havit.Data.Patterns.dll" target="lib\net46" />
-		<file src="bin\Release\Havit.Data.Patterns.pdb" target="lib\net46" />
-		<file src="bin\Release\Havit.Data.Patterns.xml" target="lib\net46" />
+		<file src="..\Havit.Data.Patterns\bin\Release\Havit.Data.Patterns.dll" target="lib\net46" />
+		<file src="..\Havit.Data.Patterns\bin\Release\Havit.Data.Patterns.pdb" target="lib\net46" />
+		<file src="..\Havit.Data.Patterns\bin\Release\Havit.Data.Patterns.xml" target="lib\net46" />
 	</files>
 </package>

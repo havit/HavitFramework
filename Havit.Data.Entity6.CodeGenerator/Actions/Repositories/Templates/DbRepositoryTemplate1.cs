@@ -18,7 +18,7 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.Repositories.Templates
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "C:\Projekty\142.ITP\CodeGenerator\Actions\Repositories\Templates\DbRepositoryTemplate.tt"
+    #line 1 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\Repositories\Templates\DbRepositoryTemplate.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class DbRepositoryTemplate : DbRepositoryTemplateBase
     {
@@ -49,7 +49,7 @@ using Havit.Data.Patterns.DataLoaders;
 
 namespace ");
             
-            #line 19 "C:\Projekty\142.ITP\CodeGenerator\Actions\Repositories\Templates\DbRepositoryTemplate.tt"
+            #line 19 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\Repositories\Templates\DbRepositoryTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.NamespaceName));
             
             #line default
@@ -57,28 +57,28 @@ namespace ");
             this.Write("\r\n{\r\n\t[System.CodeDom.Compiler.GeneratedCode(\"Havit.Entity.CodeGenerator\", \"2.0\")" +
                     "]\r\n\tpublic partial class ");
             
-            #line 22 "C:\Projekty\142.ITP\CodeGenerator\Actions\Repositories\Templates\DbRepositoryTemplate.tt"
+            #line 22 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\Repositories\Templates\DbRepositoryTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.DbRepositoryName));
             
             #line default
             #line hidden
             this.Write(" : DbRepository<");
             
-            #line 22 "C:\Projekty\142.ITP\CodeGenerator\Actions\Repositories\Templates\DbRepositoryTemplate.tt"
+            #line 22 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\Repositories\Templates\DbRepositoryTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
             
             #line default
             #line hidden
             this.Write(">, ");
             
-            #line 22 "C:\Projekty\142.ITP\CodeGenerator\Actions\Repositories\Templates\DbRepositoryTemplate.tt"
+            #line 22 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\Repositories\Templates\DbRepositoryTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.InterfaceRepositoryName));
             
             #line default
             #line hidden
             this.Write("\r\n\t{\r\n\t\tpublic ");
             
-            #line 24 "C:\Projekty\142.ITP\CodeGenerator\Actions\Repositories\Templates\DbRepositoryTemplate.tt"
+            #line 24 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\Repositories\Templates\DbRepositoryTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.DbRepositoryName));
             
             #line default

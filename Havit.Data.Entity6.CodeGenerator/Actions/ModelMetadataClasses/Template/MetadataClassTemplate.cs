@@ -18,7 +18,7 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.ModelMetadataClasses.Template
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\Dev\142.ITP\CodeGenerator\Actions\ModelMetadataClasses\Template\MetadataClassTemplate.tt"
+    #line 1 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\ModelMetadataClasses\Template\MetadataClassTemplate.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class MetadataClassTemplate : MetadataClassTemplateBase
     {
@@ -37,7 +37,7 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.ModelMetadataClasses.Template
             this.Write("\r\n\r\nusing System;\r\nusing System.Collections.Generic;\r\nusing System.Linq;\r\nusing S" +
                     "ystem.Text;\r\nusing System.Threading.Tasks;\r\n\r\nnamespace ");
             
-            #line 14 "D:\Dev\142.ITP\CodeGenerator\Actions\ModelMetadataClasses\Template\MetadataClassTemplate.tt"
+            #line 14 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\ModelMetadataClasses\Template\MetadataClassTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.NamespaceName));
             
             #line default
@@ -45,35 +45,35 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.ModelMetadataClasses.Template
             this.Write("\r\n{\r\n\t[System.CodeDom.Compiler.GeneratedCode(\"Havit.Entity.CodeGenerator\", \"2.0\")" +
                     "]\r\n\tpublic static class ");
             
-            #line 17 "D:\Dev\142.ITP\CodeGenerator\Actions\ModelMetadataClasses\Template\MetadataClassTemplate.tt"
+            #line 17 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\ModelMetadataClasses\Template\MetadataClassTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ClassName));
             
             #line default
             #line hidden
             this.Write("\r\n\t{\r\n");
             
-            #line 19 "D:\Dev\142.ITP\CodeGenerator\Actions\ModelMetadataClasses\Template\MetadataClassTemplate.tt"
+            #line 19 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\ModelMetadataClasses\Template\MetadataClassTemplate.tt"
  foreach (var constant in Model.MaxLengthConstants) { 
             
             #line default
             #line hidden
             this.Write("\t\tpublic const int ");
             
-            #line 20 "D:\Dev\142.ITP\CodeGenerator\Actions\ModelMetadataClasses\Template\MetadataClassTemplate.tt"
+            #line 20 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\ModelMetadataClasses\Template\MetadataClassTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(constant.Name));
             
             #line default
             #line hidden
             this.Write(" = ");
             
-            #line 20 "D:\Dev\142.ITP\CodeGenerator\Actions\ModelMetadataClasses\Template\MetadataClassTemplate.tt"
+            #line 20 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\ModelMetadataClasses\Template\MetadataClassTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(constant.Value));
             
             #line default
             #line hidden
             this.Write(";\r\n");
             
-            #line 21 "D:\Dev\142.ITP\CodeGenerator\Actions\ModelMetadataClasses\Template\MetadataClassTemplate.tt"
+            #line 21 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\ModelMetadataClasses\Template\MetadataClassTemplate.tt"
  } 
             
             #line default

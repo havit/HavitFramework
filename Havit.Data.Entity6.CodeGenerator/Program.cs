@@ -40,14 +40,18 @@ namespace Havit.Data.Entity.CodeGenerator
 			DbContext dbContext = null;
 			SourceControlClient sourceControlClient = null;
 
-			string solutionDirectory = Environment.CurrentDirectory;// @"D:\Dev\002.HFW-NewProjectTemplate";
-
-			while (System.IO.Directory.GetFiles(solutionDirectory, "*.sln", SearchOption.TopDirectoryOnly).Length == 0)
+			DirectoryInfo solutionDirectory = new DirectoryInfo(Environment.CurrentDirectory);// @"D:\Dev\002.HFW-NewProjectTemplate";
+			
+			while (System.IO.Directory.GetFiles(solutionDirectory.FullName, "*.sln", SearchOption.TopDirectoryOnly).Length == 0)
 			{
-				solutionDirectory = Path.Combine(solutionDirectory, "..");
+				if (solutionDirectory.Root.FullName == solutionDirectory.FullName)
+				{
+					throw new InvalidOperationException("Solution file not found.");
+				}
+				solutionDirectory = solutionDirectory.Parent;
 			}
 
-			string[] files = System.IO.Directory.GetFiles(Path.Combine(solutionDirectory, @"Entity\bin"), "*.Entity.dll", SearchOption.AllDirectories);
+			string[] files = System.IO.Directory.GetFiles(Path.Combine(solutionDirectory.FullName, @"Entity\bin"), "*.Entity.dll", SearchOption.AllDirectories);
 			if (files.Length == 0)
 			{
 				Console.WriteLine("Nebyla nalezena assembly pro Entity.");
@@ -61,25 +65,25 @@ namespace Havit.Data.Entity.CodeGenerator
 			Type dbContextType = assembly.GetTypes().FirstOrDefault(type => !type.IsAbstract && type.GetInterfaces().Contains(typeof(Havit.Data.Entity.IDbContext)));
 			if (dbContextType == null)
 			{
-				Console.WriteLine("Nebyla nalezena třída s IDbContext.");
+				Console.WriteLine("Nebyla nalezena třída implementující IDbContext.");
 				return;
 			}
 
-			// doNothingInitializer = new DoNothingInitializer<MyDbContext>();
-			Type doNothingInitializerType = typeof(DoNothingInitializer<>).MakeGenericType(dbContextType);
-			object doNothingInitializer = Activator.CreateInstance(doNothingInitializerType);
-
-			// System.Data.Entity.Database.SetInitializer<MyDbContext>(doNothingInitializer);
-			MethodInfo setInitializerMethod = typeof(System.Data.Entity.Database).GetMethod("SetInitializer", BindingFlags.Static | BindingFlags.Public).MakeGenericMethod(dbContextType);
-			setInitializerMethod.Invoke(null, new object[] { doNothingInitializer });
-
 			Parallel.Invoke(
-				() => modelProject = new Project(Path.Combine(solutionDirectory, @"Model\Model.csproj")),
-				() => dataLayerProject = new Project(Path.Combine(solutionDirectory, @"DataLayer\DataLayer.csproj")),
-				() => sourceControlClient = SourceControlClient.GetByFolder(solutionDirectory),
+				() => modelProject = new Project(Path.Combine(solutionDirectory.FullName, @"Model\Model.csproj")),
+				() => dataLayerProject = new Project(Path.Combine(solutionDirectory.FullName, @"DataLayer\DataLayer.csproj")),
+				() => sourceControlClient = SourceControlClient.GetByFolder(solutionDirectory.FullName),
 				() =>
 				{
 					dbContext = (DbContext)Activator.CreateInstance(dbContextType);
+					
+					// doNothingInitializer = new DoNothingInitializer<MyDbContext>();
+					Type doNothingInitializerType = typeof(DoNothingInitializer<>).MakeGenericType(dbContextType);
+					object doNothingInitializer = Activator.CreateInstance(doNothingInitializerType);
+
+					// System.Data.Entity.Database.SetInitializer<MyDbContext>(doNothingInitializer);
+					MethodInfo setInitializerMethod = typeof(System.Data.Entity.Database).GetMethod("SetInitializer", BindingFlags.Static | BindingFlags.Public).MakeGenericMethod(dbContextType);
+					setInitializerMethod.Invoke(null, new object[] { doNothingInitializer });
 				});
 
 			ObjectContext objectContext = ((IObjectContextAdapter)dbContext).ObjectContext;

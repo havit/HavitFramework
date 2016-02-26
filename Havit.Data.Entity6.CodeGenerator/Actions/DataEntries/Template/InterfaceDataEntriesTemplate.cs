@@ -18,7 +18,7 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.DataEntries.Template
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\Dev\142.ITP\CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
+    #line 1 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
     public partial class InterfaceDataEntriesTemplate : InterfaceDataEntriesTemplateBase
     {
@@ -38,7 +38,7 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.DataEntries.Template
                     "ystem.Text;\r\nusing System.Threading.Tasks;\r\nusing Havit.Data.Patterns.DataEntrie" +
                     "s;\r\n\r\nnamespace ");
             
-            #line 15 "D:\Dev\142.ITP\CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
+            #line 15 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.NamespaceName));
             
             #line default
@@ -46,35 +46,35 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.DataEntries.Template
             this.Write("\r\n{\r\n\t[System.CodeDom.Compiler.GeneratedCode(\"Havit.Entity.CodeGenerator\", \"2.0\")" +
                     "]\r\n\tpublic interface ");
             
-            #line 18 "D:\Dev\142.ITP\CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
+            #line 18 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.InterfaceName));
             
             #line default
             #line hidden
             this.Write(" : IDataEntries\r\n\t{\r\n");
             
-            #line 20 "D:\Dev\142.ITP\CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
+            #line 20 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
  foreach (string entry in Model.Entries) { 
             
             #line default
             #line hidden
             this.Write("\t\t");
             
-            #line 21 "D:\Dev\142.ITP\CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
+            #line 21 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 21 "D:\Dev\142.ITP\CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
+            #line 21 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entry));
             
             #line default
             #line hidden
             this.Write(" { get; }\r\n\t\t\t\r\n");
             
-            #line 23 "D:\Dev\142.ITP\CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
+            #line 23 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
  } 
             
             #line default

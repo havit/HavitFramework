@@ -23,8 +23,8 @@
 		<tags>HAVIT Data Patterns Entity Framework EF EF6</tags>
 	</metadata>
 	<files>
-	  <file src="bin\Release\Havit.Data.Entity6.Patterns.dll" target="lib\net46" />
-	  <file src="bin\Release\Havit.Data.Entity6.Patterns.pdb" target="lib\net46" />
-	  <file src="bin\Release\Havit.Data.Entity6.Patterns.xml" target="lib\net46" />
+	  <file src="..\Havit.Data.Entity6.Patterns\bin\Release\Havit.Data.Entity6.Patterns.dll" target="lib\net46" />
+	  <file src="..\Havit.Data.Entity6.Patterns\bin\Release\Havit.Data.Entity6.Patterns.pdb" target="lib\net46" />
+	  <file src="..\Havit.Data.Entity6.Patterns\bin\Release\Havit.Data.Entity6.Patterns.xml" target="lib\net46" />
 	</files>
 </package>

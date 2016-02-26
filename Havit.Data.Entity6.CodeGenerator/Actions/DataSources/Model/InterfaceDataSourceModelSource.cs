@@ -3,6 +3,7 @@ using System.Linq;
 using Havit.Data.Entity.CodeGenerator.Entity;
 using Havit.Data.Entity.CodeGenerator.Services;
 using Havit.Data.Entity.Patterns.SoftDeletes;
+using Havit.Data.Patterns;
 
 namespace Havit.Data.Entity.CodeGenerator.Actions.DataSources.Model
 {

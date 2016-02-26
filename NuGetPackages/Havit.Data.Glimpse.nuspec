@@ -25,9 +25,9 @@
 		<tags>HAVIT ASP.NET Web WebForms Glimpse diagnostics performance profiling timing</tags>
 	</metadata>
 	<files>
-	  <file src="bin\Release\Havit.Data.Glimpse.dll" target="lib\net45" />
-	  <file src="bin\Release\Havit.Data.Glimpse.pdb" target="lib\net45" />
-	  <file src="bin\Release\Havit.Data.Glimpse.xml" target="lib\net45" />
+	  <file src="..\Havit.Data.Glimpse\bin\Release\Havit.Data.Glimpse.dll" target="lib\net45" />
+	  <file src="..\Havit.Data.Glimpse\bin\Release\Havit.Data.Glimpse.pdb" target="lib\net45" />
+	  <file src="..\Havit.Data.Glimpse\bin\Release\Havit.Data.Glimpse.xml" target="lib\net45" />
 		<file src="Havit.Data.Glimpse\tools\" target="tools" />
 		<file src="Havit.Data.Glimpse\content\" target="content" />
 	</files>

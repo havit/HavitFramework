@@ -31,8 +31,8 @@ namespace Havit.Data.Entity.Patterns.DataEntries
 
 			PropertyInfo symbolProperty = typeof(TEntity).GetProperty("Symbol");
 
-			Contract.Assert<NotSupportedException>(symbolProperty != null, String.Format("DbDataEntrySymbolStorage is not supported on type {0}.", typeof(TEntity).Name));
-			Contract.Assert<NotSupportedException>(symbolProperty.PropertyType == typeof(string), String.Format("DbDataEntrySymbolStorage is not supported on type {0}.", typeof(TEntity).Name));
+			Contract.Assert<NotSupportedException>(symbolProperty != null, String.Format("DbDataEntrySymbolStorage is not supported on type {0} - missing property 'Symbol'.", typeof(TEntity).Name));
+			Contract.Assert<NotSupportedException>(symbolProperty.PropertyType == typeof(string), String.Format("DbDataEntrySymbolStorage is not supported on type {0} - property 'Symbol' must be of type string.", typeof(TEntity).Name));
 
 			this.dataSourceFactory = dataSourceFactory;
 		}

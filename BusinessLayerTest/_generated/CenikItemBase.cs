@@ -514,7 +514,7 @@ namespace Havit.BusinessLayerTest
 			
 			if (!Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.SupportsCacheDependencies)
 			{
-				throw new NotSupportedException("Použitá BusinessLayerCacheService nepodporuje cache dependenties.");
+				throw new InvalidOperationException("Použitá BusinessLayerCacheService nepodporuje cache dependencies.");
 			}
 			
 			string key = "CenikItem.SaveCacheDependencyKey|ID=" + this.ID.ToString();
@@ -545,7 +545,7 @@ namespace Havit.BusinessLayerTest
 		{
 			if (!Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.SupportsCacheDependencies)
 			{
-				throw new NotSupportedException("Použitá BusinessLayerCacheService nepodporuje cache dependenties.");
+				throw new InvalidOperationException("Použitá BusinessLayerCacheService nepodporuje cache dependencies.");
 			}
 			
 			string key = "CenikItem.AnySaveCacheDependencyKey";

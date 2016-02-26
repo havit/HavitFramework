@@ -139,5 +139,23 @@ namespace Havit.Business.Caching
 		{
 			cacheService.Remove(cacheKey);			
 		}
+
+		/// <summary>
+		/// Přidá do cache položku, která je projekcí databázových resources pro jeden jazyk.
+		/// </summary>
+		public void AddDbResourcesDataToCache(string cacheKey, object resources, CacheOptions cacheOptions)
+		{
+			cacheService.Add(cacheKey, resources, cacheOptions);
+		}
+
+		/// <summary>
+		/// Odstraní z cache položku, která je projekcí databázových resources pro jeden jazyk.
+		/// </summary>
+		public object GetDbResourcesDataFromCache(string cacheKey)
+		{
+			object result;
+			cacheService.TryGet(cacheKey, out result);
+			return result;
+		}
 	}
 }

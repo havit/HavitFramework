@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Cache;
@@ -275,6 +276,23 @@ namespace Havit.BusinessTest
 
 			// Act
 			Role.GetObject(1);
+
+			// Assert
+			Assert.IsTrue(cacheService.Contains(cacheKey));
+		}
+
+		[TestMethod]
+		public void DbResources_GetString_SetsResourcesToCache()
+		{
+			// Arrange
+			CultureInfo cultureInfo = CultureInfo.GetCultureInfo("cs-CZ");
+			string cacheKey = (string)(typeof(DbResources).GetMethod("GetDbResourcesDataCacheKey", BindingFlags.NonPublic | BindingFlags.Static).Invoke(null, new object[] { cultureInfo }));
+
+			// Precondition
+			Assert.IsFalse(cacheService.Contains(cacheKey));
+
+			// Act
+			DbResources.GetString("MainResourceClass", "MainResourceKey", cultureInfo);
 
 			// Assert
 			Assert.IsTrue(cacheService.Contains(cacheKey));

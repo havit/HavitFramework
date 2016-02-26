@@ -71,5 +71,16 @@ namespace Havit.Business.Caching
 		/// Odstraní z cache položku, která je kolekcí ID všech objektů (cachování kolekce GetAll).
 		/// </summary>
 		void RemoveAllIDsFromCache(Type businessObjectType, string cacheKey);
+
+		/// <summary>
+		/// Přidá do cache položku, která je projekcí databázových resources pro jeden jazyk.
+		/// </summary>
+		void AddDbResourcesDataToCache(string cacheKey, object resources, CacheOptions cacheOptions);
+
+		/// <summary>
+		/// Odstraní z cache položku, která je projekcí databázových resources pro jeden jazyk.
+		/// </summary>
+		object GetDbResourcesDataFromCache(string cacheKey);
+
 	}
 }

@@ -99,9 +99,7 @@ namespace Havit.BusinessLayerTest.Resources
 		
 		private static string GetStringInternal(string resourceClass, string resourceKey, CultureInfo cultureInfo, bool isRecursion)
 		{
-			string cacheKey = String.Format("DbResources|culture=" + cultureInfo.Name);
-			
-			Dictionary<string, Dictionary<string, string>> resourceClassesData = (Dictionary<string, Dictionary<string, string>>)HttpRuntime.Cache[cacheKey];
+			Dictionary<string, Dictionary<string, string>> resourceClassesData = (Dictionary<string, Dictionary<string, string>>)GetDbResourcesDataFromCache(cultureInfo);
 			Dictionary<string, string> resourceKeysData;
 			string result = null;
 			
@@ -109,18 +107,11 @@ namespace Havit.BusinessLayerTest.Resources
 			{
 				lock(_getStringLock)
 				{
-					resourceClassesData = (Dictionary<string, Dictionary<string, string>>)HttpRuntime.Cache[cacheKey];
+					resourceClassesData = (Dictionary<string, Dictionary<string, string>>)GetDbResourcesDataFromCache(cultureInfo);
 					if (resourceClassesData == null)
 					{
 						resourceClassesData = GetResourceClassesData(cultureInfo);
-						HttpRuntime.Cache.Insert(
-							cacheKey,
-							resourceClassesData,
-							new CacheDependency(null, new string[] { Havit.BusinessLayerTest.Resources.ResourceItemLocalization.GetAnySaveCacheDependencyKey() }),
-							Cache.NoAbsoluteExpiration,
-							Cache.NoSlidingExpiration,
-							CacheItemPriority.AboveNormal,
-							null /* callback */);
+						AddDbResourcesDataToCache(cultureInfo, resourceClassesData);
 					}
 				}
 			}
@@ -240,6 +231,45 @@ namespace Havit.BusinessLayerTest.Resources
 			}
 			#endregion
 			
+		}
+		#endregion
+		
+		#region Cache resources methods
+		/// <summary>
+		/// Vrátí název klíče pro resources.
+		/// </summary>
+		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+		private static string GetDbResourcesDataCacheKey(CultureInfo cultureInfo)
+		{
+			return "DbResources|culture=" + cultureInfo.Name;
+		}
+		
+		/// <summary>
+		/// Přidá resources do cache.
+		/// </summary>
+		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+		private static void AddDbResourcesDataToCache(CultureInfo cultureInfo, object resources)
+		{
+			if (!Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.SupportsCacheDependencies)
+			{
+				throw new InvalidOperationException("Použitá BusinessLayerCacheService nepodporuje cache dependencies.");
+			}
+			
+			Havit.Services.Caching.CacheOptions options = new Havit.Services.Caching.CacheOptions
+			{
+				CacheDependencyKeys = new string[] { Havit.BusinessLayerTest.Resources.ResourceItemLocalization.GetAnySaveCacheDependencyKey() },
+				Priority = Havit.Services.Caching.CacheItemPriority.High
+			};
+			Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.AddDbResourcesDataToCache(GetDbResourcesDataCacheKey(cultureInfo), resources, options);
+		}
+		
+		/// <summary>
+		/// Vyhledá v cache resources object pro daný cultureinfo a vrátí jej. Nejsou-li v cache nalezeny, vrací null.
+		/// </summary>
+		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+		private static object GetDbResourcesDataFromCache(CultureInfo cultureInfo)
+		{
+			return Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.GetDbResourcesDataFromCache(GetDbResourcesDataCacheKey(cultureInfo));
 		}
 		#endregion
 		

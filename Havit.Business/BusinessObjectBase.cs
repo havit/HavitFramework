@@ -44,7 +44,7 @@ namespace Havit.Business
 		#region Properties - Stav objektu (IsDirty, IsLoaded, IsNew, IsDeleted, IsDisconnected)
 		/// <summary>
 		/// Indikuje, zdali byla data objektu změněna oproti datům v databázi.
-		/// Při nastavení na false zruší příznak změn všem PropertyHolderům.
+		/// Při nastavení na false zruší zavolá CleanDirty.
 		/// </summary>
 		public bool IsDirty
 		{
@@ -57,10 +57,7 @@ namespace Havit.Business
 				_isDirty = value;
 				if (!value)
 				{
-					foreach (PropertyHolderBase propertyHolder in PropertyHolders)
-					{
-						propertyHolder.IsDirty = false;
-					}
+					CleanDirty();
 				}
 			}
 		}
@@ -130,24 +127,6 @@ namespace Havit.Business
 			get { return _isDisconnected; }
 		}
 		private bool _isDisconnected = false;
-		#endregion
-
-		#region PropertyHolders
-		/// <summary>
-		/// Kolekce referencí na jednotlivé property-holder objekty.
-		/// </summary>
-		/// <remarks>
-		/// Kolekce je určena pro hromadné operace s property-holdery. Jednotlivé property si reference na své property-holdery udržují v private fieldu.
-		/// </remarks>
-		[EditorBrowsable(EditorBrowsableState.Advanced)]
-		internal protected List<PropertyHolderBase> PropertyHolders
-		{
-			get
-			{
-				return _propertyHolders;
-			}
-		}
-		private readonly List<PropertyHolderBase> _propertyHolders = new List<PropertyHolderBase>(16);
 		#endregion
 
 		#region Constructors
@@ -591,19 +570,17 @@ namespace Havit.Business
 		}
 		#endregion
 
-		#region RegisterPropertyHolder (internal)
 		/// <summary>
-		/// Zaregistruje PropertyHolder do kolekce PropertyHolders.
+		/// Metoda, která je volána při změně stavu objektu z Dirty na čisty (IsDirty: true -> false).
+		/// Připravena pro override potomky.
 		/// </summary>
 		/// <remarks>
-		/// Touto metodou se k objektu registrují sami PropertyHoldery ve svých constructorech.
+		/// Metoda CleanDirty() je zamýšlena k nastavení IsDirty=false property holderům business objektů.
 		/// </remarks>
-		/// <param name="propertyHolder">PropertyHolder k zaregistrování</param>
-		internal void RegisterPropertyHolder(PropertyHolderBase propertyHolder)
+		protected virtual void CleanDirty()
 		{
-			_propertyHolders.Add(propertyHolder);
+			// NOOP
 		}
-		#endregion
 
 		/**********************************************************************************/
 

@@ -276,6 +276,23 @@ namespace Havit.BusinessLayerTest
 		}
 		#endregion
 		
+		#region CleanDirty
+		/// <summary>
+		/// Nastaví property holderům IsDirty na false.
+		/// </summary>
+		protected override void CleanDirty()
+		{
+			base.CleanDirty();
+			
+			_UICulturePropertyHolder.IsDirty = false;
+			_CulturePropertyHolder.IsDirty = false;
+			_NamePropertyHolder.IsDirty = false;
+			_AktivniPropertyHolder.IsDirty = false;
+			_EditacePovolenaPropertyHolder.IsDirty = false;
+			_PoradiPropertyHolder.IsDirty = false;
+		}
+		#endregion
+		
 		#region CheckConstraints
 		/// <summary>
 		/// Kontroluje konzistenci objektu jako celku.

@@ -252,6 +252,21 @@ namespace Havit.BusinessLayerTest.Resources
 		}
 		#endregion
 		
+		#region CleanDirty
+		/// <summary>
+		/// Nastaví property holderům IsDirty na false.
+		/// </summary>
+		protected override void CleanDirty()
+		{
+			base.CleanDirty();
+			
+			_ResourceClassPropertyHolder.IsDirty = false;
+			_ResourceKeyPropertyHolder.IsDirty = false;
+			_DescriptionPropertyHolder.IsDirty = false;
+			_LocalizationsPropertyHolder.IsDirty = false;
+		}
+		#endregion
+		
 		#region CheckConstraints
 		/// <summary>
 		/// Kontroluje konzistenci objektu jako celku.

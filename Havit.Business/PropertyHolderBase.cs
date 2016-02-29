@@ -88,9 +88,6 @@ namespace Havit.Business
 			}
 
 			this._owner = owner;
-
-			// zaregistrujeme se majiteli do kolekce PropertyHolders
-			owner.RegisterPropertyHolder(this);
 		}
 		#endregion
 	}

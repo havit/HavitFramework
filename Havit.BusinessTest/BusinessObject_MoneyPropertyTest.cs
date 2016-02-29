@@ -12,11 +12,10 @@ namespace Havit.BusinessTest
 	/// Unit test generovaných vlastností typu Money.
 	/// </summary>
 	[TestClass]
-	public class MoneyTest
+	public class BusinessObject_MoneyPropertyTest
 	{
-		#region MoneyInstanceAssignment
 		[TestMethod]
-		public void MoneyInstanceAssignment()
+		public void BusinessObject_MoneyProperty_AmountAndCurrencyPropertiesAreSetAfterSetMoneyProperty()
 		{
 			using (new IdentityMapScope())
 			{
@@ -34,11 +33,9 @@ namespace Havit.BusinessTest
 				Assert.AreSame(money, cenikItem.Cena); // podmínka není funkčně nutná, je ale výhodná z paměťových a výkonostních důvodů
 			}
 		}
-		#endregion
 
-		#region MoneyInstanceChange
 		[TestMethod]
-		public void MoneyInstanceChange()
+		public void BusinessObject_MoneyProperty_MoneyPropertyIsSetAfterSettingAmountAndCurrencyProperties()
 		{
 			using (new IdentityMapScope())
 			{
@@ -70,7 +67,6 @@ namespace Havit.BusinessTest
 				Assert.AreSame(money, cenikItem.Cena); // podmínka není funkčně nutná, je ale výhodná z paměťových a výkonostních důvodů
 			}
 		}
-		#endregion
 
 	}
 }

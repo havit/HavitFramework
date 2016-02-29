@@ -5,6 +5,8 @@ using System;
 using System.Text;
 using System.Collections.Generic;
 using Havit.Business;
+using Havit.BusinessLayerTest;
+
 namespace Havit.BusinessTest
 {
 	/// <summary>
@@ -14,13 +16,9 @@ namespace Havit.BusinessTest
 	[TestClass]
 	public class IdentityMapTest
 	{
-		#region Store
-		/// <summary>
-		/// A test for Store&lt;&gt; (T)
-		/// </summary>
 		[TestMethod]
 		[ExpectedException(typeof(InvalidOperationException))]
-		public void StoreTest_StoreRuznychInstanci()
+		public void IdentityMap_Store()
 		{
 			IdentityMap target = new IdentityMap();
 
@@ -28,16 +26,11 @@ namespace Havit.BusinessTest
 			TestingBusinessObject businessObject2 = new TestingBusinessObject(10);
 
 			target.Store(businessObject1);
-			target.Store(businessObject2);
+			target.Store(businessObject2);			
 		}
-		#endregion
-
-		#region Get
-		/// <summary>
-		/// A test for Get&lt;&gt; (int)
-		/// </summary>
+		
 		[TestMethod]
-		public void GetTest_Exist()
+		public void IdentityMap_Get_ReturnsStoredObject()
 		{
 			IdentityMap target = new IdentityMap();
 
@@ -50,25 +43,17 @@ namespace Havit.BusinessTest
 			Assert.AreSame(actual, businessObject);
 		}
 
-		/// <summary>
-		/// A test for Get&lt;&gt; (int)
-		/// </summary>
 		[TestMethod]
-		public void GetTest_NotExist()
+		public void IdentityMap_Get_ReturnsNullForMissingObject()
 		{
 			IdentityMap target = new IdentityMap();
 			TestingBusinessObject actual = target.Get<TestingBusinessObject>(10);
-
+						
 			Assert.IsNull(actual);
 		}
-		#endregion
 
-		#region TryGet
-		/// <summary>
-		/// A test for TryGet&lt;&gt; (int)
-		/// </summary>
 		[TestMethod]
-		public void TryGetTest_Exist()
+		public void IdentityMap_TryGet_ReturnsTrueForStoredObject()
 		{
 			IdentityMap im = new IdentityMap();
 
@@ -82,11 +67,8 @@ namespace Havit.BusinessTest
 			Assert.IsTrue(result);
 		}
 
-		/// <summary>
-		/// A test for TryGet&lt;&gt; (int)
-		/// </summary>
 		[TestMethod]
-		public void TryGetTest_NotExist()
+		public void IdentityMap_TryGet_ReturnsFalseForMissingObject()
 		{
 			IdentityMap im = new IdentityMap();
 
@@ -100,11 +82,8 @@ namespace Havit.BusinessTest
 			Assert.IsFalse(result);
 		}
 
-		/// <summary>
-		/// A test for TryGet&lt;&gt; (int)
-		/// </summary>
 		[TestMethod]
-		public void TryGetTest_GC()
+		public void IdentityMap_UseOnlyWeakReferenceToAllowObjectToBeCollectedByGC()
 		{
 			IdentityMap im = new IdentityMap();
 
@@ -112,7 +91,7 @@ namespace Havit.BusinessTest
 			TestingBusinessObject target;
 
 			im.Store(businessObject);
-			businessObject = null;
+			businessObject = null; // potřeba pro možnost uvolnění GC
 			GC.Collect();
 			bool result = im.TryGet<TestingBusinessObject>(10, out target);
 
@@ -120,6 +99,39 @@ namespace Havit.BusinessTest
 			Assert.IsFalse(result);
 		}
 
-		#endregion
+		public class TestingBusinessObject : BusinessObjectBase
+		{
+			#region Constructors
+			public TestingBusinessObject() : base(ConnectionMode.Connected)
+			{
+			}
+
+			public TestingBusinessObject(int id)
+				: base(id, ConnectionMode.Connected)
+			{
+			}
+			#endregion
+
+			#region TryLoad_Perform
+			protected override bool TryLoad_Perform(System.Data.Common.DbTransaction transaction)
+			{
+				throw new Exception("The method or operation is not implemented.");
+			}
+			#endregion
+
+			#region Save_Perform
+			protected override void Save_Perform(System.Data.Common.DbTransaction transaction)
+			{
+				throw new Exception("The method or operation is not implemented.");
+			}
+			#endregion
+
+			#region Delete_Perform
+			protected override void Delete_Perform(System.Data.Common.DbTransaction transaction)
+			{
+				throw new Exception("The method or operation is not implemented.");
+			}
+			#endregion
+		}
 	}
 }

@@ -67,21 +67,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActiveRecordBusinessObjectBase.cs" />
+    <Compile Include="ActiveRecordBusinessObjectBaseTest.cs" />
     <Compile Include="BusinessCalendarTest.cs" />
-    <Compile Include="BusinessCalendarWeekendStrategyTest.cs" />
-    <Compile Include="BusinessLayerTest.cs" />
-    <Compile Include="BusinessObjectBaseTest.cs" />
-    <Compile Include="BusinessObjectCachingTest.cs" />
+    <Compile Include="BusinessCalendarWeekendStrategiesTest.cs" />
+    <Compile Include="BusinessObject_EqualityTest.cs" />
+    <Compile Include="BusinessObject_IDsTest.cs" />
+    <Compile Include="BusinessObject_Test.cs" />
+    <Compile Include="BusinessObject_CachingTest.cs" />
     <Compile Include="BusinessObjectCollectionTest.cs" />
+    <Compile Include="BusinessObject_DisconnectedObjectsTest.cs" />
+    <Compile Include="BusinessObject_PersistenceTest.cs" />
     <Compile Include="CompositeConditionTest.cs" />
-    <Compile Include="IdentityMapScopeTest.cs" />
+    <Compile Include="BusinessObject_IdentityMapTest.cs" />
     <Compile Include="IdentityMapTest.cs" />
-    <Compile Include="MoneyTest.cs" />
+    <Compile Include="BusinessObject_MoneyPropertyTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReferenceConditionTest.cs" />
-    <Compile Include="StringExtTest.cs" />
-    <Compile Include="TestingBusinessObject.cs" />
     <Compile Include="TextConditionTest.cs" />
   </ItemGroup>
   <ItemGroup>

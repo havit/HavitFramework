@@ -8,60 +8,15 @@ using Havit.Business;
 namespace Havit.BusinessTest
 {
 	/// <summary>
-	/// This is a test class for Havit.Business.BusinessCalendar and is intended
-	/// to contain all Havit.Business.BusinessCalendar Unit Tests
+	/// Testy třídy BusinessCalendar.
 	/// </summary>
 	[TestClass]
 	public class BusinessCalendarTest
 	{
-		//#region CountBusinessDaysTests
-		///// <summary>
-		///// A test for CountBusinessDays (DateTime, DateTime, CountBusinessDaysOptions)
-		///// </summary>
-		//[TestMethod]
-		//public void CountBusinessDaysTest_SingleDayHolidayIncludeEndDate()
-		//{
-		//	BusinessCalendar target = new BusinessCalendar(new DateTime[] { new DateTime(2007, 10, 08) });
-
-		//	DateTime startDate = new DateTime(2007, 10, 08);
-		//	DateTime endDate = new DateTime(2007, 10, 08);
-		//	CountBusinessDaysOptions options = CountBusinessDaysOptions.IncludeEndDate;
-
-		//	int expected = 0;
-		//	int actual;
-
-		//	actual = target.CountBusinessDays(startDate, endDate, options);
-
-		//	Assert.AreEqual(expected, actual, "Havit.Business.BusinessCalendar.CountBusinessDays did not return the expected value.");
-		//}
-
-		///// <summary>
-		///// A test for CountBusinessDays (DateTime, DateTime, CountBusinessDaysOptions)
-		///// </summary>
-		//[TestMethod]
-		//public void CountBusinessDaysTest_TwoDaysWithHolidayIncludeEndDate()
-		//{
-		//	BusinessCalendar target = new BusinessCalendar(new DateTime[] { new DateTime(2007, 10, 08) });
-
-		//	DateTime startDate = new DateTime(2007, 10, 08);
-		//	DateTime endDate = new DateTime(2007, 10, 09);
-		//	CountBusinessDaysOptions options = CountBusinessDaysOptions.IncludeEndDate;
-
-		//	int expected = 1;
-		//	int actual;
-
-		//	actual = target.CountBusinessDays(startDate, endDate, options);
-
-		//	Assert.AreEqual(expected, actual, "Havit.Business.BusinessCalendar.CountBusinessDays did not return the expected value.");
-		//}
-
-		#region CountBusinessDaysTest_NoHolidaysIncludeEndDate
-		/// <summary>
-		/// A test for CountBusinessDays (DateTime, DateTime, CountBusinessDaysOptions)
-		/// </summary>
 		[TestMethod]
-		public void CountBusinessDaysTest_NoHolidaysIncludeEndDate()
+		public void BusinessCalendar_CountBusinessDays_NoHolidaysIncludeEndDate()
 		{
+			// Arrange
 			BusinessCalendar target = new BusinessCalendar();
 
 			DateTime startDate = new DateTime(2007, 10, 08);
@@ -71,19 +26,17 @@ namespace Havit.BusinessTest
 			int expected = 2;
 			int actual;
 
+			// Act
 			actual = target.CountBusinessDays(startDate, endDate, options);
 
-			Assert.AreEqual(expected, actual, "Havit.Business.BusinessCalendar.CountBusinessDays did not return the expected value.");
+			// Assert
+			Assert.AreEqual(expected, actual);
 		}
-		#endregion
 
-		#region CountBusinessDaysTest_SingleDayNoHolidaysIncludeEndDate
-		/// <summary>
-		/// A test for CountBusinessDays (DateTime, DateTime, CountBusinessDaysOptions)
-		/// </summary>
 		[TestMethod]
-		public void CountBusinessDaysTest_SingleDayNoHolidaysIncludeEndDate()
+		public void BusinessCalendar_CountBusinessDays_SingleDayNoHolidaysIncludeEndDate()
 		{
+			// Arrange
 			BusinessCalendar target = new BusinessCalendar();
 
 			DateTime startDate = new DateTime(2007, 10, 08);
@@ -93,19 +46,17 @@ namespace Havit.BusinessTest
 			int expected = 1;
 			int actual;
 
+			// Act
 			actual = target.CountBusinessDays(startDate, endDate, options);
 
-			Assert.AreEqual(expected, actual, "Havit.Business.BusinessCalendar.CountBusinessDays did not return the expected value.");
+			// Assert
+			Assert.AreEqual(expected, actual);
 		}
-		#endregion
 
-		#region CountBusinessDaysTest_SingleDayNoHolidaysExcludeEndDate
-		/// <summary>
-		/// A test for CountBusinessDays (DateTime, DateTime, CountBusinessDaysOptions)
-		/// </summary>
 		[TestMethod]
-		public void CountBusinessDaysTest_SingleDayNoHolidaysExcludeEndDate()
+		public void BusinessCalendar_CountBusinessDays_SingleDayNoHolidaysExcludeEndDate()
 		{
+			// Arrange
 			BusinessCalendar target = new BusinessCalendar();
 
 			DateTime startDate = new DateTime(2007, 10, 08);
@@ -115,19 +66,17 @@ namespace Havit.BusinessTest
 			int expected = 0;
 			int actual;
 
+			// Act
 			actual = target.CountBusinessDays(startDate, endDate, options);
 
-			Assert.AreEqual(expected, actual, "Havit.Business.BusinessCalendar.CountBusinessDays did not return the expected value.");
+			// Assert
+			Assert.AreEqual(expected, actual);
 		}
-		#endregion
 
-		#region CountBusinessDaysTest_TwoDatesNoHolidaysExcludeEndDate
-		/// <summary>
-		/// A test for CountBusinessDays (DateTime, DateTime, CountBusinessDaysOptions)
-		/// </summary>
 		[TestMethod]
-		public void CountBusinessDaysTest_TwoDatesNoHolidaysExcludeEndDate()
+		public void BusinessCalendar_CountBusinessDays_TwoDatesNoHolidaysExcludeEndDate()
 		{
+			// Arrange
 			BusinessCalendar target = new BusinessCalendar();
 
 			DateTime startDate = new DateTime(2007, 10, 08);
@@ -137,19 +86,17 @@ namespace Havit.BusinessTest
 			int expected = 1;
 			int actual;
 
+			// Act
 			actual = target.CountBusinessDays(startDate, endDate, options);
 
-			Assert.AreEqual(expected, actual, "Havit.Business.BusinessCalendar.CountBusinessDays did not return the expected value.");
+			// Assert
+			Assert.AreEqual(expected, actual);
 		}
-		#endregion
 
-		#region CountBusinessDaysTest_Weekend
-		/// <summary>
-		/// A test for CountBusinessDays (DateTime, DateTime, CountBusinessDaysOptions)
-		/// </summary>
 		[TestMethod]
-		public void CountBusinessDaysTest_Weekend()
+		public void BusinessCalendar_CountBusinessDays_Weekend()
 		{
+			// Arrange
 			BusinessCalendar target = new BusinessCalendar();
 
 			DateTime startDate = new DateTime(2007, 10, 6);
@@ -159,19 +106,17 @@ namespace Havit.BusinessTest
 			int expected = 0;
 			int actual;
 
+			// Act
 			actual = target.CountBusinessDays(startDate, endDate, options);
-
-			Assert.AreEqual(expected, actual, "Havit.Business.BusinessCalendar.CountBusinessDays did not return the expected value.");
+			
+			// Assert
+			Assert.AreEqual(expected, actual);
 		}
-		#endregion
 
-		#region CountBusinessDaysTest_ReverseDates()
-		/// <summary>
-		/// A test for CountBusinessDays (DateTime, DateTime, CountBusinessDaysOptions)
-		/// </summary>
 		[TestMethod]
-		public void CountBusinessDaysTest_ReverseDates()
+		public void BusinessCalendar_CountBusinessDays_ReverseDates()
 		{
+			// Arrange
 			BusinessCalendar target = new BusinessCalendar();
 
 			DateTime startDate = new DateTime(2007, 10, 10);
@@ -181,15 +126,15 @@ namespace Havit.BusinessTest
 			int expected = -3;
 			int actual;
 
+			// Act
 			actual = target.CountBusinessDays(startDate, endDate, options);
 
-			Assert.AreEqual(expected, actual, "Havit.Business.BusinessCalendar.CountBusinessDays did not return the expected value.");
+			// Assert
+			Assert.AreEqual(expected, actual);
 		}
-		#endregion
 
-		#region IsWeekendTest
 		[TestMethod]
-		public void IsWeekendTest()
+		public void BusinessCalendar_IsWeekend_IsTrueOnlyForWeekends()
 		{
 			BusinessCalendar target = new BusinessCalendar();
 
@@ -201,6 +146,5 @@ namespace Havit.BusinessTest
 			Assert.IsTrue(target.IsWeekend(new DateTime(2015, 3, 7)));
 			Assert.IsTrue(target.IsWeekend(new DateTime(2015, 3, 8)));
 		}
-		#endregion
 	}
 }

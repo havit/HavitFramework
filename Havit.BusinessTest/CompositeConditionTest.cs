@@ -16,28 +16,23 @@ namespace Havit.BusinessTest
 	[TestClass]
 	public class CompositeConditionTest
 	{
-		#region AndCondition_ConstructorWithEmptyConditionsTest
 		[TestMethod]
-		public void AndCondition_ConstructorWithEmptyConditionsTest()
+		public void CompositeCondition_IsEmptyWhenInitializedWithEmptyConditions()
 		{
 			AndCondition andCondition = new AndCondition(EmptyCondition.Create(), EmptyCondition.Create());
-			Assert.AreEqual(andCondition.Conditions.Count, 0);
+			Assert.IsTrue(andCondition.IsEmptyCondition());
 		}
-		#endregion
 
-		#region AndCondition_AddEmptyConditionsTest
 		[TestMethod]
-		public void AndCondition_AddEmptyConditionsTest()
+		public void CompositeCondition_IsEmptyAfterAddingEmptyConditions()
 		{
 			AndCondition andCondition = new AndCondition();
 			andCondition.Conditions.Add(EmptyCondition.Create());
 			Assert.AreEqual(andCondition.Conditions.Count, 0);
 		}
-		#endregion
 
-		#region CompositeCondition_IsEmptyTest
 		[TestMethod]
-		public void CompositeCondition_IsEmptyTest()
+		public void CompositeCondition_IsEmptyAfterAddingEmptyCompositeCondition()
 		{
 			AndCondition andCondition = new AndCondition(
 				new OrCondition(EmptyCondition.Create(), EmptyCondition.Create()),
@@ -45,11 +40,9 @@ namespace Havit.BusinessTest
 				EmptyCondition.Create());
 			Assert.IsTrue(andCondition.IsEmptyCondition());
 		}
-		#endregion
 
-		#region CompositeCondition_IsNotEmptyTest
 		[TestMethod]
-		public void CompositeCondition_IsNotEmptyTest()
+		public void CompositeCondition_IsNotEmptyAfterAddingNotEmptyCompositeCondition()
 		{
 			AndCondition andCondition = new AndCondition(
 				new OrCondition(
@@ -60,11 +53,9 @@ namespace Havit.BusinessTest
 				EmptyCondition.Create());
 			Assert.IsFalse(andCondition.IsEmptyCondition());
 		}
-		#endregion
 
-		#region CompositeCondition_NestedConditionTest
 		[TestMethod]
-		public void CompositeCondition_NestedConditionTest()
+		public void CompositeCondition_CanCreateSqlQueryAfterAddingNonEmptyCompositeCondition()
 		{
 			using (new IdentityMapScope())
 			{
@@ -78,6 +69,5 @@ namespace Havit.BusinessTest
 				Uzivatel.GetList(queryParams);
 			}
 		}
-		#endregion
 	}
 }

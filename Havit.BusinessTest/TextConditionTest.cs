@@ -17,9 +17,8 @@ namespace Havit.BusinessTest
 	[TestClass]
 	public class TextConditionTest
 	{
-		#region CreateIsNullOrEmptyTest
 		[TestMethod]
-		public void CreateIsNullOrEmptyTest()
+		public void TextCondition_CreateIsNullOrEmpty_OnlyNullOrEmptyTextsAreReturned()
 		{
 			using (new IdentityMapScope())
 			{
@@ -38,11 +37,9 @@ namespace Havit.BusinessTest
 				Assert.IsTrue(Role.GetList(qp).Count == 0);
 			}
 		}
-		#endregion
 
-		#region CreateIsNotNullOrEmptyTest
 		[TestMethod]
-		public void CreateIsNotNullOrEmptyTest()
+		public void TextCondition_CreateIsNotNullOrEmpty_OnlyNotNullAndNotEmptyTextsAreReturned()
 		{
 			using (new IdentityMapScope())
 			{
@@ -61,11 +58,9 @@ namespace Havit.BusinessTest
 				Assert.IsTrue(Role.GetList(qp).Count > 0);
 			}
 		}
-		#endregion
 
-		#region CreateWildcardsTest
 		[TestMethod]
-		public void CreateWildcardsTest()
+		public void TextCondition_CreateWildcards_HandlesWellSquareBrackets()
 		{
 			using (new IdentityMapScope())
 			{
@@ -88,6 +83,5 @@ namespace Havit.BusinessTest
 				Assert.IsTrue(Role.GetList(qp).Count == 0);
 			}
 		}
-		#endregion
 	}
 }

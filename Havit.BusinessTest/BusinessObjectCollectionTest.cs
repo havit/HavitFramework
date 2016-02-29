@@ -8,33 +8,26 @@ using Havit.Business;
 using Havit.BusinessLayerTest;
 namespace Havit.BusinessTest
 {
-	/// <summary>
-	/// This is a test class for Havit.Business.BusinessObjectCollection&lt;T&gt; and is intended
-	/// to contain all Havit.Business.BusinessObjectCollection&lt;T&gt; Unit Tests
-	/// </summary>
 	[TestClass]
 	public class BusinessObjectCollectionTest
 	{
-		#region AllowDuplicatesTest_Default
 		/// <summary>
 		/// Testuje výchozí hodnotu AllowDuplicates.
 		/// </summary>
 		[TestMethod]
-		public void AllowDuplicatesTest_Default()
+		public void BusinessObjectCollection_AllowDuplicates_IsTrueByDefault()
 		{
 			SubjektCollection subjekty = new SubjektCollection();
 			// je AllowDuplicates zapnuto?
 			Assert.IsTrue(subjekty.AllowDuplicates);
 		}
-		#endregion
 
-		#region AllowDuplicatesTest_Change
 		/// <summary>
 		/// Testuje, zda je při zákazu duplicit ověřeno, zda kolekce již neobsahuje duplicity.
 		/// </summary>
 		[TestMethod]
 		[ExpectedException(typeof(InvalidOperationException))]
-		public void AllowDuplicatesTest_Change()
+		public void BusinessObjectCollection_AllowDuplicates_ThrowsExceptionWhenSetToFalseAndDuplicityExists()
 		{
 			SubjektCollection subjekty = new SubjektCollection();
 			Subjekt subjekt = Subjekt.CreateObject();
@@ -47,15 +40,13 @@ namespace Havit.BusinessTest
 			subjekty.AllowDuplicates = false;
 			// je-li vyhozena výjimka, je vše ok (viz atribut metody)			
 		}
-		#endregion
 
-		#region AllowDuplicatesTest_DoNotAllow_Insert_Different_New
 		/// <summary>
 		/// Testuje zákaz duplicit - vkládání pomocí insertu.
 		/// </summary>
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
-		public void AllowDuplicatesTest_DoNotAllow_Insert_Different_New()
+		public void BusinessObjectCollection_Add_ThrowsExceptionWhenAddingDuplicityAndAllowDuplicatesDisabled()
 		{
 			SubjektCollection subjekty = new SubjektCollection();
 			subjekty.AllowDuplicates = false;
@@ -67,36 +58,13 @@ namespace Havit.BusinessTest
 			subjekty.Add(subjekt);
 			// je-li vyhozena výjimka, je vše ok (viz atribut metody)
 		}
-		#endregion
 
-		#region AllowDuplicatesTest_Allow_Indexer_Different_New
-		/// <summary>
-		/// Testuje zákaz duplicit - vkládání pomocí indexeru.
-		/// </summary>
-		[TestMethod]
-		public void AllowDuplicatesTest_Allow_Indexer_Different_New()
-		{
-			SubjektCollection subjekty = new SubjektCollection();
-			subjekty.AllowDuplicates = false;
-
-			Subjekt subjekt1 = Subjekt.CreateObject();
-			Subjekt subjekt2 = Subjekt.CreateObject();
-
-			// přidáme dvakrát dva různé objekty, pak přes indexerem první nastavíme sám na sebe
-			subjekty.Add(subjekt1);
-			subjekty.Add(subjekt2);
-			subjekty[0] = subjekt1;
-			// nedošlo-li k výjimce, je vše ok
-		}
-		#endregion
-
-		#region AllowDuplicatesTest_DoNotAllow_Insert_Same_Persistent
 		/// <summary>
 		/// Testuje zákaz duplicit - pomocí indexeru.
 		/// </summary>
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
-		public void AllowDuplicatesTest_DoNotAllow_Insert_Same_Persistent()
+		public void BusinessObjectCollection_SetIndexer_ThrowsExceptionWhenAddingDuplicityAndAllowDuplicatesDisabled()
 		{
 			using (new IdentityMapScope())
 			{
@@ -112,15 +80,13 @@ namespace Havit.BusinessTest
 				// je-li vyhozena výjimka, je vše ok (viz atribut metody)
 			}
 		}
-		#endregion
 
-		#region AllowDuplicatesTest_DoNotAllow_Indexer_Different
 		/// <summary>
 		/// Testuje zákaz duplicit - pomocí indexeru.
 		/// </summary>
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
-		public void AllowDuplicatesTest_DoNotAllow_Indexer_Different()
+		public void BusinessObjectBase_SetIndexer_ThrowsExceptionWhenAddingDuplicityAndAllowDuplicatesDisabled()
 		{
 			SubjektCollection subjekty = new SubjektCollection();
 			subjekty.AllowDuplicates = false;
@@ -135,14 +101,12 @@ namespace Havit.BusinessTest
 			subjekty[1] = subjekt1;
 			// je-li vyhozena výjimka, je vše ok (viz atribut metody)			
 		}
-		#endregion
 
-		#region AllowDuplicatesTest_Allow_Insert_And_Indexer
 		/// <summary>
 		/// Testuje povolení duplicit.
 		/// </summary>
 		[TestMethod]
-		public void AllowDuplicatesTest_Allow_Insert_And_Indexer()
+		public void BusinessObjectBase_AddAndSetIndexer_AllowsAddDuplicityWhenAllowDuplicatesIsTrue()
 		{
 			SubjektCollection subjekty;
 
@@ -161,14 +125,12 @@ namespace Havit.BusinessTest
 			subjekty[1] = subjekt;
 			// nedošlo-li k výjimce, je vše ok
 		}
-		#endregion
 
-		#region RemoveRange_CollectionChanged_Test
 		/// <summary>
 		/// Testuje vyvolání události při odebrání prvků z kolekce metodou RemoveRange.
 		/// </summary>
 		[TestMethod]
-		public void RemoveRange_CollectionChanged_Test()
+		public void BusinessObjectCollection_RemoveRange_CallsCollectionChanged()
 		{
 			using (new IdentityMapScope())
 			{
@@ -182,22 +144,18 @@ namespace Havit.BusinessTest
 				Assert.IsTrue(changed);
 			}
 		}
-		#endregion
 
-		#region Freeze_Clear_Test
 		/// <summary>
 		/// Testuje vyvolání výjimky při odebrání prvků ze zamčené kolekce metodou Clear.
 		/// </summary>
 		[TestMethod]
 		[ExpectedException(typeof(InvalidOperationException))]
-		public void Freeze_Clear_Test()
+		public void BusinessObjectCollection_Clear_ThrowsExceptionOnFreezedCollection()
 		{
 			SubjektCollection collection = new SubjektCollection();
 			collection.Freeze();
 			collection.Clear();
 		}
-		#endregion
-	
 	}
 
 }

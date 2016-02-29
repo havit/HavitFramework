@@ -11,11 +11,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Havit.BusinessTest
 {
 	[TestClass]
-	public class BusinessCalendarWeekendStrategyTest
+	public class BusinessCalendarWeekendStrategiesTest
 	{
-		#region FridaySaturdayStrategyTest
 		[TestMethod]
-		public void FridaySaturdayStrategyTest()
+		public void BusinessCalendarFridaySaturdayWeekendStrategy_IsWeekend_ReturnsTrueOnlyForFridaysAndSaturdays()
 		{
 			IIsWeekendStrategy weekendStrategy = BusinessCalendarWeekendStrategy.GetFridaySaturdayStrategy();
 			Assert.IsFalse(weekendStrategy.IsWeekend(new DateTime(2015, 3, 2)));
@@ -26,11 +25,9 @@ namespace Havit.BusinessTest
 			Assert.IsTrue(weekendStrategy.IsWeekend(new DateTime(2015, 3, 7)));
 			Assert.IsFalse(weekendStrategy.IsWeekend(new DateTime(2015, 3, 8)));
 		}
-		#endregion
-
-		#region SaturdaySundayStrategyTest
+		
 		[TestMethod]
-		public void SaturdaySundayStrategyTest()
+		public void BusinessCalendarSaturdaySundayWeekendStrategy_IsWeekend_ReturnsTrueOnlyForSaturdaysAndSundays()
 		{
 			IIsWeekendStrategy weekendStrategy = BusinessCalendarWeekendStrategy.GetSaturdaySundayStrategy();
 			Assert.IsFalse(weekendStrategy.IsWeekend(new DateTime(2015, 3, 2)));
@@ -41,7 +38,6 @@ namespace Havit.BusinessTest
 			Assert.IsTrue(weekendStrategy.IsWeekend(new DateTime(2015, 3, 7)));
 			Assert.IsTrue(weekendStrategy.IsWeekend(new DateTime(2015, 3, 8)));
 		}
-		#endregion
 
 	}
 }

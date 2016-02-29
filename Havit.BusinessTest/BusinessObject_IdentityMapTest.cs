@@ -10,39 +10,11 @@ using Havit.Business.Query;
 
 namespace Havit.BusinessTest
 {
-	/// <summary>
-	/// This is a test class for Havit.Business.IdentityMapScope and is intended
-	/// to contain all Havit.Business.IdentityMapScope Unit Tests
-	/// </summary>
 	[TestClass]
-	public class IdentityMapScopeTest
+	public class BusinessObject_IdentityMapTest
 	{
-		#region Základní funkčnost
-		/// <summary>
-		/// A test for IdentityMapScope ()
-		/// </summary>
 		[TestMethod]
-		public void IdentityMapScopeTest_Zakladni()
-		{
-			Uzivatel uzivatel1;
-			Uzivatel uzivatel2;
-
-			using (IdentityMapScope ims = new IdentityMapScope())
-			{
-				uzivatel1 = Uzivatel.GetObject(1);
-				uzivatel2 = Uzivatel.GetObject(1);
-			}
-
-			Assert.AreSame(uzivatel1, uzivatel2);
-		}
-		#endregion
-
-		#region GetFirst/GetList
-		/// <summary>
-		/// Test na IM při full-load GetFirst.
-		/// </summary>
-		[TestMethod]
-		public void IdentityMapScopeTest_GetFirst_FullLoad()
+		public void BusinessObject_GetFirst_ReturnsExistingObjectFromIdentityMap()
 		{
 			using (IdentityMapScope ims = new IdentityMapScope())
 			{
@@ -55,12 +27,9 @@ namespace Havit.BusinessTest
 				Assert.AreSame(uzivatel1, uzivatel2);
 			}
 		}
-
-		/// <summary>
-		/// Test na IM při full-load GetFirst.
-		/// </summary>
+		
 		[TestMethod]
-		public void IdentityMapScopeTest_GetFirst_FullLoad_OpacnePoradi()
+		public void BusinessObject_GetFirst_StoresLoadedObjectToIdentityMap()
 		{
 			using (IdentityMapScope ims = new IdentityMapScope())
 			{
@@ -74,11 +43,8 @@ namespace Havit.BusinessTest
 			}
 		}
 
-		/// <summary>
-		/// Test na IM při ghost GetFirst.
-		/// </summary>
 		[TestMethod]
-		public void IdentityMapScopeTest_GetFirst_Ghost()
+		public void BusinessObject_GetFirst_Ghost_ReturnsExistingObjectFromIdentityMap()
 		{
 			using (IdentityMapScope ims = new IdentityMapScope())
 			{
@@ -93,11 +59,8 @@ namespace Havit.BusinessTest
 			}
 		}
 
-		/// <summary>
-		/// Test na IM při ghost GetFirst.
-		/// </summary>
 		[TestMethod]
-		public void IdentityMapScopeTest_GetFirst_Ghost_OpacnePoradi()
+		public void BusinessObject_GetFirst_Ghost_StoresLoadedObjectToIdentityMap()
 		{
 			using (IdentityMapScope ims = new IdentityMapScope())
 			{
@@ -117,7 +80,7 @@ namespace Havit.BusinessTest
 		/// Pokud je objekt načítán pouze částečně, nepatří do IdentityMap.
 		/// </summary>
 		[TestMethod]
-		public void IdentityMapScopeTest_GetFirst_PartialLoad()
+		public void BusinessObject_GetFirst_PartialLoad_DoesNotReturnObjectFromIdentityMap()
 		{
 			using (IdentityMapScope ims = new IdentityMapScope())
 			{
@@ -138,7 +101,7 @@ namespace Havit.BusinessTest
 		/// Pokud je objekt načítán pouze částečně, nepatří do IdentityMap.
 		/// </summary>
 		[TestMethod]
-		public void IdentityMapScopeTest_GetFirst_PartialLoad_OpacnePoradi()
+		public void BusinessObject_GetFirst_PartialLoad_DoesNotStoreObjectToIdentityMap()
 		{
 			using (IdentityMapScope ims = new IdentityMapScope())
 			{
@@ -153,6 +116,5 @@ namespace Havit.BusinessTest
 				Assert.AreNotSame(uzivatel1, uzivatel2);
 			}
 		}
-		#endregion
 	}
 }

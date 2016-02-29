@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Collections.Specialized;
 
 namespace Havit.Web.UI.WebControls
 {
@@ -20,7 +21,7 @@ namespace Havit.Web.UI.WebControls
 	[DefaultProperty("SelectedValue")]
 	[ToolboxData("<{0}:AutoCompleteTextBox runat=server></{0}:AutoCompleteTextBox>")]
 	[Themeable(true)]
-	public class AutoCompleteTextBox : Control, INamingContainer
+	public class AutoCompleteTextBox : Control, INamingContainer, IPostBackDataHandler
 	{
 		#region OnValueChanged
 		/// <summary>
@@ -152,7 +153,6 @@ namespace Havit.Web.UI.WebControls
 			set
 			{
 				ViewState["SelectedValue"] = value;
-				valueHiddenField.Value = value;
 			}
 		}
 		#endregion
@@ -365,8 +365,7 @@ namespace Havit.Web.UI.WebControls
 
 			valueHiddenField = new HiddenField();
 			valueHiddenField.ID = "ValueHiddenField";
-
-			valueHiddenField.ValueChanged += ValueHiddenField_ValueChanged;
+			valueHiddenField.EnableViewState = false;
 		}
 		#endregion
 
@@ -442,6 +441,19 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region OnInit
+		/// <summary>
+		/// Raises the <see cref="E:Init" /> event.
+		/// </summary>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+		protected override void OnInit(EventArgs e)
+		{
+			base.OnInit(e);
+
+			EnsureChildControls();
+		}
+		#endregion
+
 		#region OnPreRender
 		/// <summary>
 		/// Raises the <see cref="E:System.Web.UI.Control.PreRender" /> event.
@@ -451,16 +463,41 @@ namespace Havit.Web.UI.WebControls
 		{
 			base.OnPreRender(e);
 
+			Page.RegisterRequiresPostBack(this);
+
+			valueHiddenField.Value = SelectedValue;
+
 			HavitFrameworkClientScriptHelper.RegisterHavitFrameworkClientScript(this.Page);
 			ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, HavitFrameworkClientScriptHelper.JQueryAutoCompleteResourceMappingName);
 			ScriptManager.RegisterStartupScript(this, typeof(AutoCompleteTextBox), "InitScript", "havitAutoCompleteTextBoxExtensions.init();", true);
 		}
 		#endregion
 
-		#region ValueHiddenField_ValueChanged
-		private void ValueHiddenField_ValueChanged(object sender, EventArgs e)
+		#region LoadPostData
+		/// <summary>
+		/// Loads the post data.
+		/// </summary>
+		/// <param name="postDataKey">The post data key.</param>
+		/// <param name="postCollection">The post collection.</param>
+		public virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
 		{
-			SelectedValue = valueHiddenField.Value;
+			string postedValue = postCollection[valueHiddenField.UniqueID];
+			if (!SelectedValue.Equals(postedValue))
+			{
+				SelectedValue = postedValue;
+				return true;
+			}
+
+			return false;
+		}
+		#endregion
+
+		#region RaisePostDataChangedEvent
+		/// <summary>
+		/// When implemented by a class, signals the server control to notify the ASP.NET application that the state of the control has changed.
+		/// </summary>
+		public virtual void RaisePostDataChangedEvent()
+		{
 			OnSelectedValueChanged(EventArgs.Empty);
 		}
 		#endregion

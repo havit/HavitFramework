@@ -507,6 +507,7 @@ var havitAutoCompleteTextBoxExtensions = {
 		} else {
 			if (selectedvalue != $textbox.val()) {
 				$item.data("selectedvalue", $textbox.val());
+				$hiddenfield.val("");
 				// pokud je povolený nevalidní výběr a je nastavený autopostback, provedeme ho
 				havitAutoCompleteTextBoxExtensions.doDefferedPostback.call(window, postbackScript);
 			}

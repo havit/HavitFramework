@@ -12,13 +12,14 @@ namespace Havit.WebApplicationTest.HavitWebTests
 {
 	public partial class AutoCompleteTextBox : System.Web.UI.Page
 	{
-		//protected override void OnInit(EventArgs e)
-		//{
-		//	base.OnInit(e);
+		protected override void OnInit(EventArgs e)
+		{
+			base.OnInit(e);
 
-		//	TesterACTB.SelectedValueChanged += TesterACTB_SelectedValueChanged;
-		//	ConfimBt.Click += ConfimBt_Click;
-		//}
+			TesterACTB.SelectedValueChanged += TesterACTB_SelectedValueChanged;
+			HideBt.Click += HideBt_Click;
+			ShowBt.Click += ShowBt_Click;
+		}
 
 		protected override void OnLoad(EventArgs e)
 		{
@@ -31,14 +32,19 @@ namespace Havit.WebApplicationTest.HavitWebTests
 			}
 		}
 
-		//private void TesterACTB_SelectedValueChanged(object sender, EventArgs e)
-		//{
-		//	PostbackLabel.Text = TesterACTB.SelectedText;
-		//}
+		private void TesterACTB_SelectedValueChanged(object sender, EventArgs e)
+		{
+			PostbackLabel.Text = "*" + TesterACTB.SelectedText + "*";
+		}
 
-		//private void ConfimBt_Click(object sender, EventArgs e)
-		//{
-		//	PostbackLabel.Text = TesterACTB.SelectedText;
-		//}
+		private void ShowBt_Click(object sender, EventArgs e)
+		{
+			TesterACTB.Visible = true;
+		}
+
+		private void HideBt_Click(object sender, EventArgs e)
+		{
+			TesterACTB.Visible = false;
+		}
 	}
 }

@@ -41,7 +41,6 @@
 				AllowInvalidSelection="True"
 				ShowNoSuggestionNotice="True"
 				NoSuggestionNotice="Nejsou data!"
-				AutoPostBack="True" Visible="False"
 				runat="server" />
 
 			<%--OnClientSelectScript="test();"--%>
@@ -57,8 +56,9 @@
 
 			<asp:Button ID="ConfimBt" Text="Potvrdit" runat="server"/>
 			<asp:Label id="PostbackLabel" runat="server"/><br />
-			<asp:TextBox runat="server"/>
-
+			<asp:TextBox runat="server"/><br/>
+			<asp:Button id="HideBt" Text="Skrýt" runat="server"/>
+			<asp:Button id="ShowBt" Text="Zobrazit" runat="server"/>
 		</div>
 	</form>
 </body>

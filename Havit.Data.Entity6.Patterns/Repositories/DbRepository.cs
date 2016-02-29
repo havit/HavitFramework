@@ -76,7 +76,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 
 			DbSet = dbSet;
 			dbSet.Local.CollectionChanged += DbSetLocal_CollectionChanged;
-			dbContext.RegisterAfterSaveChangesAction(() => _dbSetLocalsDictionary = null);
+			dbContext.RegisterAfterSaveChangesAction(DbContext_AfterSaveChangesAction);
 		}
 
 		private void DbSetLocal_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -120,6 +120,12 @@ namespace Havit.Data.Entity.Patterns.Repositories
 						throw new NotSupportedException(e.Action.ToString());
 				}
 			}
+		}
+
+		private void DbContext_AfterSaveChangesAction()
+		{
+			_dbSetLocalsDictionary = null;
+			_additionalDbSetLocalEntities = null;
 		}
 
 		private bool EntityNotInAddedState(TEntity entity)

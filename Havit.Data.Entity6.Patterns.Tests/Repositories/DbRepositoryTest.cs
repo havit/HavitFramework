@@ -4,11 +4,13 @@ using System.Data.Entity;
 using System.Data.Entity.Core;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
+using System.Security.Policy;
 using System.Threading.Tasks;
 using Havit.Data.Entity.Patterns.DataLoaders;
 using Havit.Data.Entity.Patterns.Repositories;
 using Havit.Data.Entity.Patterns.SoftDeletes;
 using Havit.Data.Entity.Patterns.Tests.Infrastructure;
+using Havit.Data.Entity.Patterns.UnitOfWorks;
 using Havit.Data.Patterns.DataLoaders;
 using Havit.Services.TimeServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -276,6 +278,37 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 			await repository.GetObjectsAsync(maxId + 1, maxId + 2);
 
 			// Assert by method attribute
+		}
+
+		/// <summary>
+		// Bug 24218: DbRepository: Po commitu (někdy) přestane fungovat GetObject
+		/// </summary>
+		[TestMethod]
+		public void DbRepository_DbSetLocalsDictionary_IsReinitializedWithDataAfterSaveChanges()
+		{
+			// Arrange
+			TestDbContext testDbContext = new TestDbContext();
+			testDbContext.Database.Initialize(true);
+			SeedData();
+
+			DbDataLoader dataLoader = new DbDataLoader(testDbContext);
+			SoftDeleteManager softDeleteManager = new SoftDeleteManager(new ServerTimeService());
+
+			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, softDeleteManager);
+
+			Dictionary<int, ItemWithDeleted> dbSetLocalsDictionary;
+
+			// Act
+			dbSetLocalsDictionary = repository.DbSetLocalsDictionary;
+			ItemWithDeleted itemWithDeleted = testDbContext.Set<ItemWithDeleted>().First(); // načteme data do paměti jiným způsobem než přes repository
+			Assert.IsFalse(dbSetLocalsDictionary.ContainsKey(itemWithDeleted.Id)); // (nedostane se do dictionary)
+
+			testDbContext.SaveChanges();
+			// po uložení změn dojde k reinicializaci dictionary, ovšem až si na něj šahneme a uložíme do proměné, protože je vyměněna celá instance dictionary
+			dbSetLocalsDictionary = repository.DbSetLocalsDictionary; // (bug 24218 - zde aplikace spadla)
+			
+			// Assert
+			Assert.IsTrue(dbSetLocalsDictionary.ContainsKey(itemWithDeleted.Id)); // ověříme, že se ID dostalo do dictionary
 		}
 
 		private void SeedData(bool deleted = false)

@@ -15,6 +15,7 @@ namespace Havit.Business
 	public static class BusinessLayerContexts
 	{
 		#region BusinessLayerCacheService		
+
 		/// <summary>
 		/// Služba pro práci s cache v Business Layer.
 		/// </summary>
@@ -22,24 +23,40 @@ namespace Havit.Business
 		{
 			get
 			{
-				if (_businessLayerCacheService == null)
+				if (_businessLayerCacheServiceFunc != null)
 				{
-					_businessLayerCacheService = new DefaultBusinessLayerCacheService(new HttpRuntimeCacheService());
+					return _businessLayerCacheServiceFunc();
 				}
-				return _businessLayerCacheService;
+
+				// zpětná kompatibilita
+				if (_defaultBusinessLayerCacheService == null)
+				{
+					_defaultBusinessLayerCacheService = new DefaultBusinessLayerCacheService(new HttpRuntimeCacheService());
+				}
+
+				return _defaultBusinessLayerCacheService;
 			}
 		}
 
-		private static IBusinessLayerCacheService _businessLayerCacheService;
+		private static Func<IBusinessLayerCacheService> _businessLayerCacheServiceFunc;
+		private static IBusinessLayerCacheService _defaultBusinessLayerCacheService;
 
 		/// <summary>
 		/// Nastavuje služba pro práci s cache v Business Layer.
 		/// </summary>
 		public static void SetBusinessLayerCacheService(IBusinessLayerCacheService businessLayerCacheService)
 		{
-			Contract.Requires<ArgumentNullException>(businessLayerCacheService != null);
+			SetBusinessLayerCacheService(() => businessLayerCacheService);
+		}
 
-			_businessLayerCacheService = businessLayerCacheService;
+		/// <summary>
+		/// Nastavuje služba pro práci s cache v Business Layer.
+		/// </summary>
+		public static void SetBusinessLayerCacheService(Func<IBusinessLayerCacheService> businessLayerCacheServiceFunc)
+		{
+			Contract.Requires<ArgumentNullException>(businessLayerCacheServiceFunc != null);
+
+			_businessLayerCacheServiceFunc = businessLayerCacheServiceFunc;
 		}
 		#endregion
 	}

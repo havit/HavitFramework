@@ -810,7 +810,7 @@ namespace Havit.Web.UI.WebControls
 			{
 				control.Parent.Controls[index + 1].Visible = args.Visible;
 			}
-			
+
 			if (control is LinkButton)
 			{
 				LinkButton linkButton = (LinkButton)control;
@@ -818,10 +818,6 @@ namespace Havit.Web.UI.WebControls
 				if (!args.Enabled)
 				{
 					linkButton.ToolTip = String.Empty;
-					if (args.CommandName == CommandNames.Delete)
-					{
-						linkButton.OnClientClick = String.Empty;
-					}
 					if (!String.IsNullOrEmpty(cssClassDisabled))
 					{
 						linkButton.CssClass = cssClassDisabled;
@@ -835,10 +831,6 @@ namespace Havit.Web.UI.WebControls
 				if (!args.Enabled)
 				{
 					imageButton.ToolTip = String.Empty;
-					if (args.CommandName == CommandNames.Delete)
-					{
-						imageButton.OnClientClick = String.Empty;
-					}
 					if (!String.IsNullOrEmpty(cssClassDisabled))
 					{
 						imageButton.CssClass = cssClassDisabled;
@@ -852,10 +844,6 @@ namespace Havit.Web.UI.WebControls
 				if (!args.Enabled)
 				{
 					button.ToolTip = String.Empty;
-					if (args.CommandName == CommandNames.Delete)
-					{
-						button.OnClientClick = String.Empty;						
-					}
 					if (!String.IsNullOrEmpty(cssClassDisabled))
 					{
 						button.CssClass = cssClassDisabled;
@@ -866,12 +854,16 @@ namespace Havit.Web.UI.WebControls
 			if (args.CommandName == CommandNames.Delete)
 			{
 				// doplneni o DeleteConfirmText
-				string deleteConfirmationTextResolved = HttpUtilityExt.GetResourceString(DeleteConfirmationText);
-
-				if (!String.IsNullOrEmpty(DeleteConfirmationField))
+				string deleteConfirmationTextResolved = null;
+				if (args.Enabled)
 				{
-					object deleteConfirmationValue = DataBinderExt.GetValue(row.DataItem, DeleteConfirmationField);
-					deleteConfirmationTextResolved = String.Format(deleteConfirmationTextResolved, deleteConfirmationValue);
+					deleteConfirmationTextResolved = HttpUtilityExt.GetResourceString(DeleteConfirmationText);
+
+					if (!String.IsNullOrEmpty(DeleteConfirmationField))
+					{
+						object deleteConfirmationValue = DataBinderExt.GetValue(row.DataItem, DeleteConfirmationField);
+						deleteConfirmationTextResolved = String.Format(deleteConfirmationTextResolved, deleteConfirmationValue);
+					}
 				}
 
 				if (!String.IsNullOrEmpty(deleteConfirmationTextResolved))
@@ -888,6 +880,22 @@ namespace Havit.Web.UI.WebControls
 					{
 						Debug.Assert(control is ImageButton);
 						((ImageButton)control).OnClientClick = String.Format("if (!confirm('{0}')) return false;", deleteConfirmationTextResolved.Replace("'", "''"));
+					}
+				}
+				else
+				{
+					if (control is Button)
+					{
+						((Button)control).OnClientClick = "";
+					}
+					else if (control is LinkButton)
+					{
+						((LinkButton)control).OnClientClick = "";
+					}
+					else
+					{
+						Debug.Assert(control is ImageButton);
+						((ImageButton)control).OnClientClick = "";
 					}
 				}
 			}

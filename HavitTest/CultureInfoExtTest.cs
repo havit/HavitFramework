@@ -18,7 +18,7 @@ namespace HavitTest
 		public void CultureInfoExt_ExecuteMethod_ExecutesAction()
 		{
 			// arrange
-			CultureInfo cultureInfoStub = new CultureInfo("cz-CS");
+			CultureInfo cultureInfoStub = new CultureInfo("cs-CZ");
 			var mockClass = new Mock<FakeClassForCultureTest>();
 			mockClass.Setup(m => m.FakeMethod()).Verifiable();
 
@@ -33,7 +33,7 @@ namespace HavitTest
 		public void CultureInfoExt_ExecuteMethod_ExecutesFunc()
 		{
 			// arrange
-			CultureInfo cultureInfoStub = new CultureInfo("cz-CS");
+			CultureInfo cultureInfoStub = new CultureInfo("cs-CZ");
 			var mockClass = new Mock<FakeClassForCultureTest>();
 			mockClass.Setup(m => m.FakeMethodReturnsObject()).Returns(new object()).Verifiable();
 
@@ -49,7 +49,7 @@ namespace HavitTest
 		public void CultureInfoExt_ExecuteMethod_ReturnsMethodReturnParameter()
 		{
 			// arrange
-			CultureInfo cultureInfoStub = new CultureInfo("cz-CS");
+			CultureInfo cultureInfoStub = new CultureInfo("cs-CZ");
 			var mockClass = new Mock<FakeClassForCultureTest>();
 			mockClass.Setup(m => m.FakeMethodReturnsObject()).Returns(new object()).Verifiable();
 
@@ -65,7 +65,7 @@ namespace HavitTest
 		public void CultureInfoExt_ExecuteMethod_GetCurrentCultureName_ReturnsCzechCulture()
 		{
 			// arrange
-			CultureInfo cultureInfoStub = new CultureInfo("cz-CS");
+			CultureInfo cultureInfoStub = new CultureInfo("cs-CZ");
 			var mockClass = new Mock<FakeClassForCultureTest>();
 			mockClass.Setup(m => m.GetCurrentCultureName()).CallBase().Verifiable();
 
@@ -73,7 +73,7 @@ namespace HavitTest
 			string currentCultureName = cultureInfoStub.ExecuteMethod(mockClass.Object.GetCurrentCultureName);
 
 			// assert
-			Assert.AreEqual("cz-CS", currentCultureName);
+			Assert.AreEqual("cs-CZ", currentCultureName);
 		}
 
 		[TestMethod]

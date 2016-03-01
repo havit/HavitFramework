@@ -68,7 +68,7 @@
 				|| ((charCode >= 48) && (charCode <= 57)) // 0-9
 				|| (decimalSeparator && decimals && (parseInt(decimals, 10) > 0) && (String.fromCharCode(charCode) == decimalSeparator) && ($this.val().indexOf(decimalSeparator) == -1) /* decimal separator not entered */)
 				|| (thousandsSeparator && (String.fromCharCode(charCode) == thousandsSeparator))
-				|| (allowNegative && (allowNegative == "true") && (String.fromCharCode(charCode) == "-") && ($this.val().indexOf("-") == -1) /* minus not entered */)
+				|| ((allowNegative == "true") && (String.fromCharCode(charCode) == "-"))
 			) {
 				// valid character
 			} else {

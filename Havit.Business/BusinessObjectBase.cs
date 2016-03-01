@@ -198,8 +198,10 @@ namespace Havit.Business
 		#endregion
 
 		#region Load logika
+		// zámek pro inicializaci zámku pro načítání objektů
+		private static readonly object loadLockInitializerLock = new object();
 		// zámek pro načítání objektů
-		private readonly object loadLock = new object();
+		private volatile object loadLock;
 
 		/// <summary>
 		/// Nahraje objekt z perzistentního uložiště.
@@ -220,6 +222,19 @@ namespace Havit.Business
 
 			// načítání se zamyká kvůli cachovaným readonly objektům
 			// tam je sdílena instance, která by mohla být načítána najednou ze dvou threadů
+			// protože ale nechceme mít vyrobeny instance loadLocků (žerou dost zbytečně paměť), vyrobíme je až při potřebě
+			// a i toto vyrábění musíme nějak chránit - proto používáme loadLockInitializerLock
+			if (loadLock == null)
+			{
+				lock (loadLockInitializerLock)
+				{
+					if (loadLock == null)
+					{
+						loadLock = new object();
+					}
+				}
+			}
+
 			lock (loadLock)
 			{
 				if (this.IsLoaded)

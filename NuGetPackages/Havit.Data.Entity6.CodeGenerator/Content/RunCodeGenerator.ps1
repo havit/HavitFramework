@@ -15,6 +15,8 @@ else
 	if ($codeGenerator)
 	{
 		Write-Host "Running code generator ($codeGenerator)"
+		Push-Location $scriptPath
 		& $codeGenerator
+		Pop-Location
 	}
 }

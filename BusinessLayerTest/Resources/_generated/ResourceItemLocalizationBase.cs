@@ -68,9 +68,6 @@ namespace Havit.BusinessLayerTest.Resources
 		/// <summary>
 		/// Vytvoří instanci objektu jako nový prvek.
 		/// </summary>
-		/// <summary>
-		/// Vytvoří instanci objektu jako nový prvek.
-		/// </summary>
 		/// <param name="connectionMode">Režim business objektu.</param>
 		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
 		protected ResourceItemLocalizationBase(ConnectionMode connectionMode) : base(connectionMode)

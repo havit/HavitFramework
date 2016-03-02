@@ -148,7 +148,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			get
 			{
-				return (string)ViewState["SelectedValue"];
+				return (string)ViewState["SelectedValue"] ?? String.Empty;
 			}
 			set
 			{

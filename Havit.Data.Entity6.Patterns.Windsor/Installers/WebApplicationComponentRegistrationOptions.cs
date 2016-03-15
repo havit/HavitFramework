@@ -9,6 +9,9 @@ namespace Havit.Data.Entity.Patterns.Windsor.Installers
 	/// </summary>
 	public class WebApplicationComponentRegistrationOptions : ComponentRegistrationOptions
 	{
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
 		public WebApplicationComponentRegistrationOptions()
 		{
 			GeneralLifestyle = (LifestyleGroup<object> group) => group.HybridPerWebRequestPerThread();

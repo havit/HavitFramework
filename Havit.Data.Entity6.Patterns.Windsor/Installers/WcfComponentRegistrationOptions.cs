@@ -9,6 +9,9 @@ namespace Havit.Data.Entity.Patterns.Windsor.Installers
 	/// </summary>
 	public class WcfComponentRegistrationOptions : ComponentRegistrationOptions
 	{
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
 		public WcfComponentRegistrationOptions()
 		{
 			GeneralLifestyle = (LifestyleGroup<object> group) => group.PerWcfSession();

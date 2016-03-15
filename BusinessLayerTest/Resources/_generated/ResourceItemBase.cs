@@ -787,7 +787,8 @@ namespace Havit.BusinessLayerTest.Resources
 		/// <summary>
 		/// Odstraní z cache závislosti na klíči CacheDependencyKey.
 		/// </summary>
-		private void InvalidateSaveCacheDependencyKey()
+		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+		protected void InvalidateSaveCacheDependencyKey()
 		{
 			if (Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.SupportsCacheDependencies)
 			{
@@ -818,7 +819,8 @@ namespace Havit.BusinessLayerTest.Resources
 		/// <summary>
 		/// Odstraní z cache závislosti na klíči AnySaveCacheDependencyKey.
 		/// </summary>
-		private static void InvalidateAnySaveCacheDependencyKey()
+		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+		protected static void InvalidateAnySaveCacheDependencyKey()
 		{
 			if (Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.SupportsCacheDependencies)
 			{

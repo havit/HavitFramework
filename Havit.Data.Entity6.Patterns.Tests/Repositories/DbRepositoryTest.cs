@@ -281,7 +281,7 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 		}
 
 		/// <summary>
-		// Bug 24218: DbRepository: Po commitu (někdy) přestane fungovat GetObject
+		/// Bug 24218: DbRepository: Po commitu (někdy) přestane fungovat GetObject
 		/// </summary>
 		[TestMethod]
 		public void DbRepository_DbSetLocalsDictionary_IsReinitializedWithDataAfterSaveChanges()

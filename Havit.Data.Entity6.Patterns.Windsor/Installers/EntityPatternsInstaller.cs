@@ -6,7 +6,6 @@ using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using Havit.Data.Entity.Patterns.DataEntries;
 using Havit.Data.Entity.Patterns.DataLoaders;
-using Havit.Data.Entity.Patterns.Localizations;
 using Havit.Data.Entity.Patterns.QueryServices;
 using Havit.Data.Entity.Patterns.Repositories;
 using Havit.Data.Entity.Patterns.Seeds;
@@ -15,10 +14,12 @@ using Havit.Data.Patterns.Attributes;
 using Havit.Data.Patterns.DataEntries;
 using Havit.Data.Patterns.DataLoaders;
 using Havit.Data.Patterns.DataSeeds;
+using Havit.Data.Patterns.Infrastructure;
 using Havit.Data.Patterns.Localizations;
 using Havit.Data.Patterns.QueryServices;
 using Havit.Data.Patterns.Repositories;
 using Havit.Diagnostics.Contracts;
+using Havit.Model.Localizations;
 
 namespace Havit.Data.Entity.Patterns.Windsor.Installers
 {
@@ -59,10 +60,13 @@ namespace Havit.Data.Entity.Patterns.Windsor.Installers
 		/// </summary>
 		public IEntityPatternsInstaller RegisterLocalizationServices<TLanguage>()
 		{
-			Type currentLanguageServiceType = typeof(DbLanguageService<>).MakeGenericType(typeof(TLanguage));
+			Type currentLanguageServiceType = typeof(LanguageService<>).MakeGenericType(typeof(TLanguage));
 			container.Register(
 				Component.For<ILanguageService>().ImplementedBy(currentLanguageServiceType).LifestyleSingleton(),
-				Component.For<ILocalizationService>().ImplementedBy<LocalizationService>().LifestyleSingleton()
+				Component.For<ILocalizationService>().ImplementedBy<LocalizationService>().LifestyleSingleton(),
+
+				// TODO: Registrujeme jen pro ILanguage, chtělo by obecně na modelové třídy (takže toto je takový malý HACK).
+				Component.For<IEntityKeyAccessor<ILanguage, int>>().ImplementedBy<EntityKeyAccessor>().LifestyleSingleton()
 			);
 			return this;
 		}

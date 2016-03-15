@@ -1,35 +1,36 @@
-﻿using System;
+﻿using Havit.Data.Patterns.Repositories;
+using Havit.Model.Localizations;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Havit.Data.Entity.Patterns.Helpers;
-using Havit.Data.Patterns.Localizations;
-using Havit.Data.Patterns.QueryServices;
-using Havit.Data.Patterns.Repositories;
-using Havit.Model.Localizations;
+using System.Text;
+using System.Threading.Tasks;
+using Havit.Data.Patterns.DataEntries;
+using Havit.Data.Patterns.Infrastructure;
 
-namespace Havit.Data.Entity.Patterns.Localizations
+namespace Havit.Data.Patterns.Localizations
 {
 	/// <summary>
 	/// Služba vrací aktuální jazyk.
 	/// Jazykem se rozumí instance třídy modelu (implementující <see cref="ILanguage"/>).
 	/// </summary>
-	public class DbLanguageService<TLanguage> : ILanguageService
+	public class LanguageService<TLanguage> : ILanguageService
 		where TLanguage : class, ILanguage
 	{
-		private readonly IDataSourceFactory<TLanguage> languageDataSourceFactory;
 		private readonly IRepositoryFactory<TLanguage> languageRepositoryFactory;
+		private readonly IEntityKeyAccessor<TLanguage, int> entityKeyAccessor;
 
 		private volatile Dictionary<string, int> languages;
 
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		/// <param name="languageDataSourceFactory">Služba pro získání datového zdroje jazyků.</param>
 		/// <param name="languageRepositoryFactory">Služba pro získání repository jazyků.</param>
-		public DbLanguageService(IDataSourceFactory<TLanguage> languageDataSourceFactory, IRepositoryFactory<TLanguage> languageRepositoryFactory)
+		/// <param name="entityKeyAccessor">Služba pro získání identifikátoru entity.</param>
+		public LanguageService(IRepositoryFactory<TLanguage> languageRepositoryFactory, IEntityKeyAccessor<TLanguage, int> entityKeyAccessor)
 		{
-			this.languageDataSourceFactory = languageDataSourceFactory;
 			this.languageRepositoryFactory = languageRepositoryFactory;
+			this.entityKeyAccessor = entityKeyAccessor;
 		}
 
 		/// <summary>
@@ -88,14 +89,14 @@ namespace Havit.Data.Entity.Patterns.Localizations
 				{
 					if (languages == null)
 					{
-						IDataSource<TLanguage> languageDataSource = languageDataSourceFactory.Create();
+						IRepository<TLanguage> languageRepository = languageRepositoryFactory.Create();
 						try
 						{
-							languages = languageDataSource.Data.ToList().ToDictionary(item => item.UiCulture, item => EntityHelper.GetEntityId(item));
+							languages = languageRepository.GetAll().ToDictionary(item => item.UiCulture, item => entityKeyAccessor.GetEntityKey(item));
 						}
 						finally
 						{
-							languageDataSourceFactory.Release(languageDataSource);
+							languageRepositoryFactory.Release(languageRepository);
 						}
 					}
 				}

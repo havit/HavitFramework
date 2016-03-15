@@ -65,6 +65,7 @@
     <Compile Include="DataSeeds\Infrastructure\DataSeedCycleB.cs" />
     <Compile Include="DataSeeds\Infrastructure\DataSeedCycleA.cs" />
     <Compile Include="DataSeeds\Infrastructure\DataSeedDependentOnItself.cs" />
+    <Compile Include="Localizations\LanguageServiceTests.cs" />
     <Compile Include="Localizations\LocalizationServiceTest.cs" />
     <Compile Include="Localizations\Model\ILocalization.cs" />
     <Compile Include="Localizations\Model\ILocalized.cs" />

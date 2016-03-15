@@ -92,7 +92,6 @@
     <Compile Include="DataLoader\Model\Role.cs" />
     <Compile Include="Infrastructure\FakeInt32DataSource.cs" />
     <Compile Include="Infrastructure\FakeLanguageDataSource.cs" />
-    <Compile Include="Localizations\DbLanguageServiceTest.cs" />
     <Compile Include="Infrastructure\Language.cs" />
     <Compile Include="QueryServices\DbDataSourceTest.cs" />
     <Compile Include="Infrastructure\DbItemWithDeletedDataSource.cs" />

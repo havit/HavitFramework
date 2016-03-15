@@ -10,7 +10,6 @@ using Castle.Core.Internal;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.Registration.Lifestyle;
 using Castle.Windsor;
-using Havit.Data.Entity.Patterns.Localizations;
 using Havit.Data.Entity.Patterns.QueryServices;
 using Havit.Data.Entity.Patterns.Repositories;
 using Havit.Data.Entity.Patterns.Windsor.Installers;

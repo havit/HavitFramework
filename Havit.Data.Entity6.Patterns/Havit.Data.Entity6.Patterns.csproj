@@ -72,7 +72,6 @@
     <Compile Include="DataLoaders\PropertyToLoad.cs" />
     <Compile Include="Helpers\EntityHelper.cs" />
     <Compile Include="SoftDeletes\ISoftDeleteManager.cs" />
-    <Compile Include="Localizations\DbLanguageService.cs" />
     <Compile Include="QueryServices\DbDataSource.cs" />
     <Compile Include="QueryServices\Fakes\InternalFakeDbAsyncEnumerable.cs" />
     <Compile Include="QueryServices\Fakes\InternalFakeDbAsyncEnumerator.cs" />

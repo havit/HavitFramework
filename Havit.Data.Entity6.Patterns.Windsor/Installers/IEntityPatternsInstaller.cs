@@ -1,9 +1,9 @@
-using System.Reflection;
+ï»¿using System.Reflection;
 
 namespace Havit.Data.Entity.Patterns.Windsor.Installers
 {
 	/// <summary>
-	/// Installer Havit.Data.Entity.Patterns a souvisejících slueb.
+	/// Installer Havit.Data.Entity.Patterns a souvisejÃ­cÃ­ch sluÅ¾eb.
 	/// </summary>
 	public interface IEntityPatternsInstaller
 	{
@@ -12,7 +12,7 @@ namespace Havit.Data.Entity.Patterns.Windsor.Installers
 		/// <list type="bullet">
 		///		<item>
 		///			<term>IDbContext</term>
-		///			<description>Jako pøedanı TDbContext. Lifestyle je urèen dle options installeru (DbContextLifestyle).</description>
+		///			<description>Jako pÅ™edanÃ½ TDbContext. Lifestyle je urÄen dle options installeru (DbContextLifestyle).</description>
 		///		</item>
 		/// </list>
 		/// </summary>
@@ -25,7 +25,7 @@ namespace Havit.Data.Entity.Patterns.Windsor.Installers
 		///		<item>
 		///			<term>ILanguageService</term>
 		///			<description>
-		///				Jako pøedanı ILanguageService pro pøedanı TLanguage (DbLanguageService&lt;TLanguage&gt;).
+		///				Jako pÅ™edanÃ½ ILanguageService pro pÅ™edanÃ½ TLanguage (DbLanguageService&lt;TLanguage&gt;).
 		///				Lifestyle je singleton.
 		///			</description>
 		///		</item>
@@ -96,14 +96,14 @@ namespace Havit.Data.Entity.Patterns.Windsor.Installers
 		///			<term>IUnitOfWork, IUnitOfWorkAsync</term>
 		///			<description>
 		///				Registruje typ dle options installery (UnitOfWorkType).
-		///				Lifestyle je urèen dle options installeru (UnitOfWorkLifestyle).
+		///				Lifestyle je urÄen dle options installeru (UnitOfWorkLifestyle).
 		///			</description>
 		///		</item>
 		///		<item>
 		///			<term>IDataLoader, IDataLoaderAsync</term>
 		///			<description>
 		///				DbDataLoader.
-		///				Lifestyle je urèen dle options installeru (DataLoaderLifestyle).
+		///				Lifestyle je urÄen dle options installeru (DataLoaderLifestyle).
 		///			</description>
 		///		</item>
 		/// </list>
@@ -111,10 +111,10 @@ namespace Havit.Data.Entity.Patterns.Windsor.Installers
 		IEntityPatternsInstaller RegisterEntityPatterns();
 
 		/// <summary>
-		/// Registruje do windsor containeru tøídy z assembly pøedané v parametru dataLayerAssembly:
+		/// Registruje do windsor containeru tÅ™Ã­dy z assembly pÅ™edanÃ© v parametru dataLayerAssembly:
 		/// <list type="bullet">
 		///		<item>
-		///			<term>tøídy implementující IDataSeed</term>
+		///			<term>tÅ™Ã­dy implementujÃ­cÃ­ IDataSeed</term>
 		///			<description>
 		///				Registruje je pod IDataSeed.
 		///				Lifestyle transient.
@@ -123,27 +123,27 @@ namespace Havit.Data.Entity.Patterns.Windsor.Installers
 		///		<item>
 		///			<term>potomky (implementace) DbDataSource&lt;&gt;</term>
 		///			<description>
-		///				Registruje je pod IDataSource&lt;TEntity&gt; a IEntityDataSource. TEntity je skuteènı typ entity.
+		///				Registruje je pod IDataSource&lt;TEntity&gt; a IEntityDataSource. TEntity je skuteÄnÃ½ typ entity.
 		///				Lifestyle je transient.
 		///			</description>
 		///		</item>
 		///		<item>
 		///			<term>potomky (implementace) DbRepository&lt;&gt;</term>
 		///			<description>
-		///				Registruje je pod IRepository&lt;TEntity&gt; a IEntityRepository. TEntity je skuteènı typ entity.
-		///				Lifestyle je urèen dle options installeru (RepositoriesLifestyle).
+		///				Registruje je pod IRepository&lt;TEntity&gt; a IEntityRepository. TEntity je skuteÄnÃ½ typ entity.
+		///				Lifestyle je urÄen dle options installeru (RepositoriesLifestyle).
 		///			</description>
 		///		</item>
 		///		<item>
-		///			<term>implementující IDataEntries&lt;&gt;</term>
+		///			<term>implementujÃ­cÃ­ IDataEntries&lt;&gt;</term>
 		///			<description>
 		///				Registruje je pod IDataSeed.
-		///				Lifestyle je urèen dle options installeru (DataEntriesLifestyle).
+		///				Lifestyle je urÄen dle options installeru (DataEntriesLifestyle).
 		///			</description>
 		///		</item>
 		/// </list>
 		/// <remarks>
-		///		Nikdy neregistruje sluby (tøídy), které jsou dekorovány atributem FakeAttribute èi které jsou abstraktní.
+		///		Nikdy neregistruje sluÅ¾by (tÅ™Ã­dy), kterÃ© jsou dekorovÃ¡ny atributem FakeAttribute Äi kterÃ© jsou abstraktnÃ­.
 		/// </remarks>
 		/// </summary>
 		IEntityPatternsInstaller RegisterDataLayer(Assembly assembly);

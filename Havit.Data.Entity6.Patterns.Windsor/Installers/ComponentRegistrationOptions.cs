@@ -24,7 +24,7 @@ namespace Havit.Data.Entity.Patterns.Windsor.Installers
 			}
 			set
 			{
-				Contract.Assert<InvalidOperationException>(generalLifestyle != null);
+				Contract.Assert<InvalidOperationException>(value != null);
 				unitOfWorkType = value;
 			}
 		}

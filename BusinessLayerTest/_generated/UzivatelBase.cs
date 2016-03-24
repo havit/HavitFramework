@@ -36,7 +36,7 @@ namespace Havit.BusinessLayerTest
 	/// CREATE TABLE [dbo].[Uzivatel](
 	/// 	[UzivatelID] [int] IDENTITY(1,1) NOT NULL,
 	/// 	[Username] [varchar](50) COLLATE Czech_CI_AS NOT NULL CONSTRAINT [DF_Uzivatel_Username]  DEFAULT (''),
-	/// 	[Password] [nvarchar](30) COLLATE Czech_CI_AS NOT NULL CONSTRAINT [DF_Uzivatel_Password]  DEFAULT (''),
+	/// 	[Password] [nvarchar](30) COLLATE Czech_CI_AS NOT NULL CONSTRAINT [DF_Uzivatel_Password]  DEFAULT (N'DefaultS&quot;UvozovkouA''Apostrofem'),
 	/// 	[DisplayAs] [nvarchar](50) COLLATE Czech_CI_AS NOT NULL CONSTRAINT [DF_Uzivatel_DisplayAs]  DEFAULT (''),
 	/// 	[Email] [nvarchar](100) COLLATE Czech_CI_AS NOT NULL CONSTRAINT [DF_Uzivatel_Email]  DEFAULT (''),
 	/// 	[Disabled] [bit] NOT NULL CONSTRAINT [DF_Uzivatel_Disabled]  DEFAULT ((0)),
@@ -128,7 +128,7 @@ namespace Havit.BusinessLayerTest
 		protected PropertyHolder<string> _UsernamePropertyHolder;
 		
 		/// <summary>
-		/// Heslo uživatele. [nvarchar(30), not-null, default '']
+		/// Heslo uživatele. [nvarchar(30), not-null, default N'DefaultS&quot;UvozovkouA''Apostrofem']
 		/// </summary>
 		public virtual string Password
 		{
@@ -364,7 +364,7 @@ namespace Havit.BusinessLayerTest
 			if (IsNew || IsDisconnected)
 			{
 				_UsernamePropertyHolder.Value = String.Empty;
-				_PasswordPropertyHolder.Value = String.Empty;
+				_PasswordPropertyHolder.Value = "DefaultS\"UvozovkouA'Apostrofem";
 				_DisplayAsPropertyHolder.Value = String.Empty;
 				_EmailPropertyHolder.Value = String.Empty;
 				_DisabledPropertyHolder.Value = false;

@@ -5,62 +5,59 @@ using System.Text;
 using System.Diagnostics;
 using System.Net.Mail;
 using System.Globalization;
+using System.Net;
 using System.Reflection;
+using System.Threading;
 using System.Web;
 
 namespace Havit.Diagnostics
 {
 	/// <summary>
 	/// TraceListener, který výstup posílá mailem.
+	/// Konfigurace se provádí přes initializeData v kontruktoru, podporovány jsou hodnoty:
+	/// <list type="bullet">
+	///		<item>
+	///			<term>subject</term>
+	///			<description>Předmět zasílaného emailu.</description>
+	///		</item>
+	///		<item>
+	///			<term>to</term>
+	///			<description>Adresát emailu.</description>
+	///		</item>
+	///		<item>
+	///			<term>from</term>
+	///			<description>Odesílatel emailu.</description>
+	///		</item>
+	///		<item>
+	///			<term>smtpServer</term>
+	///			<description>Smtp server k odeslání zprávy.</description>
+	///		</item>
+	///		<item>
+	///			<term>smtpUsername</term>
+	///			<description>Username smtp serveru (není-li nastaveno, nepoužije se).</description>
+	///		</item>
+	///		<item>
+	///			<term>smtpPassword</term>
+	///			<description>Heslo smtp serveru.</description>
+	///		</item>
+	///		<item>
+	///			<term>smtpEnableSsl</term>
+	///			<description>Indikuje, zda se má použít SSL při připojení k smtp serveru. Výchozí hodnota je false.</description>
+	///		</item>
+	/// </list>
 	/// </summary>
 	/// <remarks>
 	/// Inspirováno implementaci System.Diagnostics.XmlWriterListener.
 	/// </remarks>
 	public class SmtpTraceListener : TraceListener
 	{
-		#region MailTo
-		/// <summary>
-		/// E-mailová adresa, na kterou se posílají zprávy.
-		/// </summary>
-		public string MailTo
-		{
-			get
-			{
-				if (_mailTo == null)
-				{
-					return "devmail@havit.cz";
-				}
-				return _mailTo;
-			}
-			set
-			{
-				_mailTo = value;
-			}
-		}
-		private string _mailTo;
-		#endregion
-
-		#region Subject
-		/// <summary>
-		/// Subject zprávy.
-		/// </summary>
-		public string Subject
-		{
-			get
-			{
-				if (_subject == null)
-				{
-					return "SmtpTraceListener";
-				}
-				return _subject;
-			}
-			set
-			{
-				_subject = value;
-			}
-		}
-		private string _subject;
-		#endregion
+		private readonly string _to;
+		private readonly string _from;
+		private readonly string _subject;
+		private readonly string _smtpServer;
+		private readonly string _smtpUsername;
+		private readonly string _smtpPassword;
+		private readonly bool? _smtpEnableSsl = false;
 
 		#region Constructors
 		/// <summary>
@@ -79,16 +76,33 @@ namespace Havit.Diagnostics
 				string[] paramValue = arg.Split('=');
 				if (paramValue.Length >= 2)
 				{
-					switch (paramValue[0].Trim().ToUpper())
+					string parameterName = paramValue[0].Trim().ToLower();
+					string parameterValue = paramValue[1].Trim();
+					switch (parameterName)
 					{
-						case "TO":
-							MailTo = paramValue[1].Trim();
+						case "from":
+							_from = parameterValue;
 							break;
-						case "SUBJECT":
-							Subject = paramValue[1].Trim();
+						case "to":
+							_to = parameterValue;
+							break;
+						case "subject":
+							_subject = parameterValue;
+							break;
+						case "smtpserver":
+							_smtpServer = parameterValue;
+							break;
+						case "smtpusername":
+							_smtpUsername = parameterValue;
+							break;
+						case "smtppassword":
+							_smtpPassword = parameterValue;
+							break;
+						case "smtpenablessl":
+							_smtpEnableSsl = Boolean.Parse(parameterValue);
 							break;
 						default:
-							throw new InvalidOperationException("Neznámý parametr konfigurace SmtpTraceListeneru v initializeData.");
+							throw new InvalidOperationException(String.Format("Neznámý parametr '{0}' konfigurace SmtpTraceListeneru v initializeData.", paramValue[0]/* nedávám paramenterName, protože jej chci zobrazit bez provedeného Trim a ToLower */));
 					}
 				}
 			}
@@ -102,18 +116,15 @@ namespace Havit.Diagnostics
 		/// <param name="message">zpráva z trace</param>
 		private void SendMessage(string message)
 		{
-			if (String.IsNullOrEmpty(this.MailTo))
+			if (String.IsNullOrEmpty(_to))
 			{
 				return;
 			}
 
 			try
 			{
-				MailMessage mailMessage = new MailMessage();
-				mailMessage.To.Add(this.MailTo);
-				mailMessage.Subject = this.Subject;
-				mailMessage.Body = message;
-				SmtpClient smtpClient = new SmtpClient();
+				MailMessage mailMessage = GetMailMessage(message);
+				SmtpClient smtpClient = GetSmtpClient();
 				smtpClient.Send(mailMessage);
 			}
 			catch
@@ -130,6 +141,56 @@ namespace Havit.Diagnostics
 			// With the Flush taken out of the Write method, I was experiencing some inconsistent behavior - i.e. exceptions thrown sometimes but not always...
 			// goofy problem perhaps someone knows why?
 			this.Flush();
+		}
+		#endregion
+
+		#region GetSmtpClient
+		/// <summary>
+		/// Vrací kompletně nakonfigurovanou instanci SmtpClient pro odeslání emailu.
+		/// </summary>
+		protected virtual SmtpClient GetSmtpClient()
+		{
+			SmtpClient smtpClient = new SmtpClient();
+			if (!String.IsNullOrEmpty(_smtpServer))
+			{
+				smtpClient.Host = _smtpServer;
+			}
+
+			if (!String.IsNullOrEmpty(_smtpUsername))
+			{
+				smtpClient.Credentials = new NetworkCredential(_smtpUsername, _smtpPassword);
+			}
+
+			smtpClient.EnableSsl = _smtpEnableSsl.GetValueOrDefault(false);
+			return smtpClient;
+		}
+		#endregion
+
+		#region GetMailMessage
+		/// <summary>
+		/// Vrací kompletně nakonfigurovanou MailMessage k odeslání.
+		/// </summary>
+		protected virtual MailMessage GetMailMessage(string message)
+		{
+			MailMessage mailMessage = new MailMessage();
+			mailMessage.BodyTransferEncoding = System.Net.Mime.TransferEncoding.SevenBit;
+
+			if (!String.IsNullOrEmpty(_to))
+			{
+				foreach (string _toAddress in _to.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries))
+				{
+					mailMessage.To.Add(_toAddress.Trim());
+				}
+			}
+
+			if (!String.IsNullOrEmpty(_from))
+			{
+				mailMessage.From = new MailAddress(_from);
+			}
+
+			mailMessage.Subject = _subject;
+			mailMessage.Body = message;
+			return mailMessage;
 		}
 		#endregion
 

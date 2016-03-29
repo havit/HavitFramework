@@ -33,7 +33,7 @@ namespace Havit.Web.Management
 		public WebRequestErrorEventExt(string message, object eventSource, Exception exception) : this(message, eventSource, exception, null)
 		{
 		}
-
+		
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
@@ -92,7 +92,7 @@ namespace Havit.Web.Management
 			// Event information
 			sb.AppendLine();
 			sb.AppendLine("Event information: ");
-			this.FormatEventInformation(sb, includeAppInfo);
+			this.FormatEventInformation(sb);
 
 			// Process information
 			sb.AppendLine();
@@ -113,20 +113,8 @@ namespace Havit.Web.Management
 		/// <summary>
 		/// Zapíše do StringBuilderu obecné informace o události
 		/// </summary>
-		private void FormatEventInformation(StringBuilder sb, bool includeAppInfo)
+		private void FormatEventInformation(StringBuilder sb)
 		{
-			//sb.AppendLine("    Event code: " + this.EventCode.ToString(CultureInfo.InstalledUICulture));
-			//sb.AppendLine("    Event message: " + this.Message);
-			//sb.AppendLine("    Event time: " + this.EventTime.ToString(CultureInfo.InstalledUICulture));
-			//sb.AppendLine("    Event time(UTC): " + this.EventTimeUtc.ToString(CultureInfo.InstalledUICulture));
-			//sb.AppendLine("    Event ID: " + this.EventID.ToString("N", CultureInfo.InstalledUICulture));
-			//sb.Append(" Event sequence: " + this.EventSequence.ToString(CultureInfo.InstalledUICulture));
-			//sb.Append(" Event occurence: " + this.EventOccurrence.ToString(CultureInfo.InstalledUICulture));
-			//sb.AppendLine(" Event detail code: " + this.EventDetailCode.ToString(CultureInfo.InstalledUICulture));
-
-			//sb.Append("    Event ID: " + this.EventID.ToString("N", CultureInfo.InstalledUICulture));
-			//sb.Append(", Event sequence: " + this.EventSequence.ToString(CultureInfo.InstalledUICulture));
-			//sb.AppendLine(", Event occurence: " + this.EventOccurrence.ToString(CultureInfo.InstalledUICulture));
 			sb.AppendLine("    Event time: " + this.EventTime.ToString(CultureInfo.InstalledUICulture));
 			sb.AppendLine("    Event UTC time: " + this.EventTimeUtc.ToString(CultureInfo.InstalledUICulture));
 		} 

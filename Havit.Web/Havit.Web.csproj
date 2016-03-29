@@ -144,6 +144,8 @@
     <Compile Include="Bootstrap\UI\WebControls\ControlsValues\CollapsiblePanelPersisterControlExtender.cs" />
     <Compile Include="Bootstrap\UI\WebControls\IconPosition.cs" />
     <Compile Include="Bootstrap\UI\WebControls\CollapsiblePanel.cs" />
+    <Compile Include="Management\ProviderUtil.cs" />
+    <Compile Include="Management\SmtpWebEventProvider.cs" />
     <Compile Include="StartUp.cs" />
     <Compile Include="Bootstrap\UI\ClientScripts\BootstrapClientScriptHelper.cs" />
     <Compile Include="Bootstrap\UI\WebControls\ModalDialogUserControlBaseT.cs">

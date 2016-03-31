@@ -29,7 +29,7 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.DataEntries.Model
 				{
 					NamespaceName = GetNamespaceName(registeredEntity.NamespaceName),
 					InterfaceName = "I" + registeredEntity.ClassName + "Entries",
-					DbClassName = "Db" + registeredEntity.ClassName + "Entries",
+					DbClassName = registeredEntity.ClassName + "Entries",
 					ModelClassFullName = registeredEntity.FullName,
 					ModelEntriesEnumerationFullName = registeredEntity.FullName + ".Entry",
 					Entries = System.Enum.GetNames(entriesEnumType).OrderBy(item => item).ToList()

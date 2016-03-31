@@ -11,13 +11,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Havit.Data.Entity.Patterns;
-using Havit.Data.Entity.Patterns.DataEntries;
+using Havit.Data.Patterns.DataEntries;
 using Havit.Data.Patterns.Repositories;
 
 namespace <#= Model.NamespaceName #>
 {
 	[System.CodeDom.Compiler.GeneratedCode("Havit.Entity.CodeGenerator", "2.0")]
-	public class <#= Model.DbClassName #> : DbDataEntries<<#= Model.ModelClassFullName #>>, <#= Model.InterfaceName #> 
+	public class <#= Model.DbClassName #> : DataEntries<<#= Model.ModelClassFullName #>>, <#= Model.InterfaceName #> 
 	{
 <# foreach (string entry in Model.Entries) { #>
 		public <#= Model.ModelClassFullName #> <#= entry #>

@@ -1,7 +1,7 @@
 ﻿using System;
 using Havit.Data.Patterns.Exceptions;
 
-namespace Havit.Data.Entity.Patterns.DataEntries
+namespace Havit.Data.Patterns.DataEntries
 {
 	/// <summary>
 	/// Zajišťuje mapování párovacích symbolů a identifikátorů objektů, resp. získání identifikátoru (primárního klíče) na základě symbolu.

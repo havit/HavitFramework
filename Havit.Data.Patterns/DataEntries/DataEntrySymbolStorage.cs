@@ -3,19 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Havit.Data.Patterns.DataEntries;
 using Havit.Data.Patterns.Exceptions;
 using Havit.Data.Patterns.QueryServices;
 using Havit.Diagnostics.Contracts;
 
-namespace Havit.Data.Entity.Patterns.DataEntries
+namespace Havit.Data.Patterns.DataEntries
 {
-	// TODO: To Havit.Patterns?
-
 	/// <summary>
 	/// Zajišťuje mapování párovacích symbolů a identifikátorů objektů, resp. získání identifikátoru (primárního klíče) na základě symbolu.
 	/// </summary>
-	public class DbDataEntrySymbolStorage<TEntity> : IDataEntrySymbolStorage<TEntity>
+	public class DataEntrySymbolStorage<TEntity> : IDataEntrySymbolStorage<TEntity>
 		where TEntity : class
 	{
 		private readonly IDataSourceFactory<TEntity> dataSourceFactory;
@@ -25,7 +22,7 @@ namespace Havit.Data.Entity.Patterns.DataEntries
 		/// Konstructor.
 		/// </summary>
 		/// <param name="dataSourceFactory">Factory pro získání a uvolnění IDataSource.</param>
-		public DbDataEntrySymbolStorage(IDataSourceFactory<TEntity> dataSourceFactory)
+		public DataEntrySymbolStorage(IDataSourceFactory<TEntity> dataSourceFactory)
 		{
 			Contract.Requires(dataSourceFactory != null);
 

@@ -4,7 +4,6 @@ using Castle.Core.Internal;
 using Castle.Facilities.TypedFactory;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
-using Havit.Data.Entity.Patterns.DataEntries;
 using Havit.Data.Entity.Patterns.DataLoaders;
 using Havit.Data.Entity.Patterns.QueryServices;
 using Havit.Data.Entity.Patterns.Repositories;
@@ -78,7 +77,7 @@ namespace Havit.Data.Entity.Patterns.Windsor.Installers
 		{
 			container.Register(
 				Component.For<ISoftDeleteManager>().ImplementedBy<SoftDeleteManager>().LifestyleSingleton(),
-				Component.For(typeof(IDataEntrySymbolStorage<>)).ImplementedBy(typeof(DbDataEntrySymbolStorage<>)).LifestyleSingleton(),
+				Component.For(typeof(IDataEntrySymbolStorage<>)).ImplementedBy(typeof(DataEntrySymbolStorage<>)).LifestyleSingleton(),
 				Component.For<ICurrentCultureService>().ImplementedBy<CurrentCultureService>().LifestyleSingleton(),
 				Component.For<IDataSeedRunner>().ImplementedBy<DataSeedRunner>().LifestyleTransient(),
 				Component.For<IDataSeedPersister>().ImplementedBy<DbDataSeedPersister>().LifestyleTransient(),

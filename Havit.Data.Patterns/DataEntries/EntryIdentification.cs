@@ -1,4 +1,4 @@
-﻿namespace Havit.Data.Entity.Patterns.DataEntries
+﻿namespace Havit.Data.Patterns.DataEntries
 {
 	internal class EntryIdentification
 	{

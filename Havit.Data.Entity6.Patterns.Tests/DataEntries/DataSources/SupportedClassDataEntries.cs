@@ -1,10 +1,10 @@
-﻿using Havit.Data.Entity.Patterns.DataEntries;
-using Havit.Data.Entity.Patterns.Tests.DataEntries.Model;
+﻿using Havit.Data.Entity.Patterns.Tests.DataEntries.Model;
+using Havit.Data.Patterns.DataEntries;
 using Havit.Data.Patterns.Repositories;
 
 namespace Havit.Data.Entity.Patterns.Tests.DataEntries.DataSources
 {
-	public class SupportedClassDataEntries : DbDataEntries<SupportedClass>
+	public class SupportedClassDataEntries : DataEntries<SupportedClass>
 	{
 		public SupportedClassDataEntries(IDataEntrySymbolStorage<SupportedClass> dataEntrySymbolStorage, IRepository<SupportedClass> repository) : base(dataEntrySymbolStorage, repository)
 		{

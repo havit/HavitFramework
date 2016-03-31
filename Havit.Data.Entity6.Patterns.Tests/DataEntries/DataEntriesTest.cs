@@ -1,15 +1,17 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Havit.Data.Entity.Patterns.DataEntries;
 using Havit.Data.Entity.Patterns.Tests.DataEntries.DataSources;
 using Havit.Data.Entity.Patterns.Tests.DataEntries.Model;
+using Havit.Data.Patterns.DataEntries;
 using Havit.Data.Patterns.Repositories;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Havit.Data.Entity.Patterns.Tests.DataEntries
 {
+	// TODO: Přesunout do Havit.Data.Patterns.Tests
+
 	[TestClass]
-	public class DbDataEntriesTest
+	public class DataEntriesTest
 	{
 		[TestMethod]		
 		[SuppressMessage("SonicLint", "S1481", Justification = "Výsledek získání hodnoty vlastnosti je potřeba nějak zpracovat, zde jej ukládáme do proměné, která úmyslně není použita.")]

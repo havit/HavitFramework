@@ -2,15 +2,13 @@
 using Havit.Data.Patterns.Repositories;
 using Havit.Diagnostics.Contracts;
 
-namespace Havit.Data.Entity.Patterns.DataEntries
+namespace Havit.Data.Patterns.DataEntries
 {
-	// TODO: To Havit.Patterns?
-
 	/// <summary>
 	/// Předek pro implementace IDataEntries pro jednotlivé entity.
 	/// </summary>
 	/// <typeparam name="TEntity">The type of the t entity.</typeparam>
-	public abstract class DbDataEntries<TEntity>
+	public abstract class DataEntries<TEntity>
 		where TEntity : class
 	{
 		private readonly IDataEntrySymbolStorage<TEntity> dataEntrySymbolStorage;
@@ -21,7 +19,7 @@ namespace Havit.Data.Entity.Patterns.DataEntries
 		/// </summary>
 		/// <param name="dataEntrySymbolStorage">Úložiště mapování párovacích symbolů a identifikátorů objektů.</param>
 		/// <param name="repository">Repository pro získání objektu dle identifikátoru.</param>
-		protected DbDataEntries(IDataEntrySymbolStorage<TEntity> dataEntrySymbolStorage, IRepository<TEntity> repository)
+		protected DataEntries(IDataEntrySymbolStorage<TEntity> dataEntrySymbolStorage, IRepository<TEntity> repository)
 		{
 			Contract.Requires(dataEntrySymbolStorage != null);
 			Contract.Requires(repository != null);

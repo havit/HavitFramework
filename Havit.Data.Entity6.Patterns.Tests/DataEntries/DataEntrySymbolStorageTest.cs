@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using Havit.Data.Entity.Patterns.DataEntries;
 using Havit.Data.Entity.Patterns.Tests.DataEntries.DataSources;
 using Havit.Data.Entity.Patterns.Tests.DataEntries.Model;
 using Havit.Data.Patterns.DataEntries;
@@ -11,8 +10,10 @@ using Moq;
 
 namespace Havit.Data.Entity.Patterns.Tests.DataEntries
 {
+	// TODO: Přesunout do Havit.Data.Patterns.Tests
+
 	[TestClass]
-	public class DbDataEntrySymbolStorageTest
+	public class DataEntrySymbolStorageTest
 	{
 		[TestMethod]
 		public void DbDataEntrySymbolStorage_GetEntryId_ReturnsId()
@@ -26,7 +27,7 @@ namespace Havit.Data.Entity.Patterns.Tests.DataEntries
 			mockDataSourceFactory.Setup(mock => mock.Create()).Returns(fakeDataSource);
 			
 			// Act
-			DbDataEntrySymbolStorage<SupportedClass> dbDataEntrySymbolStorage = new DbDataEntrySymbolStorage<SupportedClass>(mockDataSourceFactory.Object);
+			DataEntrySymbolStorage<SupportedClass> dbDataEntrySymbolStorage = new DataEntrySymbolStorage<SupportedClass>(mockDataSourceFactory.Object);
 			int id = dbDataEntrySymbolStorage.GetEntryId(SupportedClass.Entry.Second);
 
 			// Assert
@@ -41,7 +42,7 @@ namespace Havit.Data.Entity.Patterns.Tests.DataEntries
 			FakeSupportedClassDataSource fakeDataSource = new FakeSupportedClassDataSource();
 			Mock<IDataSourceFactory<SupportedClass>> mockDataSourceFactory = new Mock<IDataSourceFactory<SupportedClass>>();
 			mockDataSourceFactory.Setup(mock => mock.Create()).Returns(fakeDataSource);
-			DbDataEntrySymbolStorage<SupportedClass> dbDataEntrySymbolStorage = new DbDataEntrySymbolStorage<SupportedClass>(mockDataSourceFactory.Object);
+			DataEntrySymbolStorage<SupportedClass> dbDataEntrySymbolStorage = new DataEntrySymbolStorage<SupportedClass>(mockDataSourceFactory.Object);
 			
 			// Act
 			dbDataEntrySymbolStorage.GetEntryId(SupportedClass.Entry.First);
@@ -60,7 +61,7 @@ namespace Havit.Data.Entity.Patterns.Tests.DataEntries
 			mockDataSourceFactory.Setup(mock => mock.Create()).Returns(fakeDataSource);
 
 			// Act
-			new DbDataEntrySymbolStorage<NotSupportedClass>(mockDataSourceFactory.Object);
+			new DataEntrySymbolStorage<NotSupportedClass>(mockDataSourceFactory.Object);
 	
 			// Assert by method attribute 
 		}
@@ -74,7 +75,7 @@ namespace Havit.Data.Entity.Patterns.Tests.DataEntries
 			mockDataSourceFactory.Setup(mock => mock.Create()).Returns(fakeDataSource);
 
 			// Act
-			DbDataEntrySymbolStorage<SupportedClass> dbDataEntrySymbolStorage = new DbDataEntrySymbolStorage<SupportedClass>(mockDataSourceFactory.Object);
+			DataEntrySymbolStorage<SupportedClass> dbDataEntrySymbolStorage = new DataEntrySymbolStorage<SupportedClass>(mockDataSourceFactory.Object);
 			int id = dbDataEntrySymbolStorage.GetEntryId(SupportedClass.Entry.First);
 
 			// Assert

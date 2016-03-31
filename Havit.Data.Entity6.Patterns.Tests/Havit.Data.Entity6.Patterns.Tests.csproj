@@ -76,8 +76,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="DataEntries\DbDataEntriesTest.cs" />
-    <Compile Include="DataEntries\DbDataEntrySymbolStorageTest.cs" />
+    <Compile Include="DataEntries\DataEntriesTest.cs" />
+    <Compile Include="DataEntries\DataEntrySymbolStorageTest.cs" />
     <Compile Include="DataEntries\DataSources\FakeNotSupportedClassDataSource.cs" />
     <Compile Include="DataEntries\Model\NotSupportedClass.cs" />
     <Compile Include="DataEntries\Model\SupportedClass.cs" />

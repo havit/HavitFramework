@@ -127,7 +127,7 @@ namespace Havit.BusinessTest
 		}
 
 		[TestMethod]
-		public void BusinessObject_Save_RemovesAllRecordsCacheItemFromCache()
+		public void BusinessObject_Save_ExistingObject_RemovesAllRecordsCacheItemFromCache()
 		{
 			// Arrange
 			string cacheKey = (string)(typeof(CurrencyBase).GetMethod("GetAllIDsCacheKey", BindingFlags.NonPublic | BindingFlags.Static).Invoke(null, null));
@@ -143,6 +143,28 @@ namespace Havit.BusinessTest
 
 			// Assert
 			Assert.IsFalse(cacheService.Contains(cacheKey));
+		}
+
+		[TestMethod]
+		public void BusinessObject_Save_NewObject_RemovesAllRecordsCacheItemFromCache()
+		{
+			// Arrange
+			string cacheKey = (string)(typeof(CurrencyBase).GetMethod("GetAllIDsCacheKey", BindingFlags.NonPublic | BindingFlags.Static).Invoke(null, null));
+
+			// Precondition
+			CurrencyCollection currencies = Currency.GetAll();
+			Assert.IsTrue(cacheService.Contains(cacheKey));
+
+			// Act
+			Currency currency = Currency.CreateObject();
+			currency.Nazev = Guid.NewGuid().ToString();
+			currency.Save();
+
+			// Assert
+			Assert.IsFalse(cacheService.Contains(cacheKey));
+
+			// Clean up
+			currency.Delete();
 		}
 
 		[TestMethod]

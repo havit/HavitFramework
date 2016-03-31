@@ -431,6 +431,7 @@ namespace Havit.BusinessLayerTest.Resources
 			global::Havit.Diagnostics.Contracts.Contract.Assert(currentIdentityMap != null, "currentIdentityMap != null");
 			currentIdentityMap.Store(this);
 			
+			RemoveAllIDsFromCache();
 			InvalidateAnySaveCacheDependencyKey();
 		}
 		

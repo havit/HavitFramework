@@ -44,6 +44,7 @@
     <SyntaxFilters>CSharp</SyntaxFilters>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\Havit\Havit.csproj" />
+	  <DocumentationSource sourceFile="..\Havit.AspNet.Mvc\Havit.AspNet.Mvc.csproj" />
       <DocumentationSource sourceFile="..\Havit.Business\Havit.Business.csproj" />
       <DocumentationSource sourceFile="..\Havit.Data\Havit.Data.csproj" />
       <DocumentationSource sourceFile="..\Havit.Drawing\Havit.Drawing.csproj" />

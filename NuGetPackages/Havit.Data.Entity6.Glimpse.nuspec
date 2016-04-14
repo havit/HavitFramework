@@ -13,7 +13,7 @@
 		<projectUrl>http://wiki.havit.cz/Glimpse.ashx</projectUrl>
 		<iconUrl>http://getglimpse.com/content/glimpse100.png</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-		<copyright>Copyright HAVIT, s.r.o. 2015</copyright>
+		<copyright>Copyright HAVIT, s.r.o. 2016</copyright>
 		<dependencies>
 			<group targetFramework="net45">
 				<dependency id="Glimpse" version="[1.8.6,)" />

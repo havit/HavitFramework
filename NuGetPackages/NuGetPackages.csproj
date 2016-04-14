@@ -168,6 +168,9 @@
     <None Include="Havit.Services.nuspec">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Havit.AspNet.Mvc.nuspec">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Havit.Web.Bootstrap.nuspec">
       <SubType>Designer</SubType>
     </None>
@@ -211,7 +214,8 @@
     <SourceGetVersion Condition="'$(SourceGetVersion)' == ''">0</SourceGetVersion>
   </PropertyGroup>
   <Target Name="CreateNuGetPackages" AfterTargets="AfterBuild">
-    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion) Havit.Business.nuspec" />
+	<Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion) Havit.AspNet.Mvc.nuspec" />
+	<Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion) Havit.Business.nuspec" />
     <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion) Havit.CastleWindsor.WebForms.nuspec" />
     <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion) Havit.Data.Entity6.CodeGenerator.nuspec" />
     <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 $(OutputPath) $(SourceGetVersion) Havit.Data.Entity6.Glimpse.nuspec" />

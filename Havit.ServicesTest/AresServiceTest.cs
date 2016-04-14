@@ -116,7 +116,7 @@ namespace Havit.ServicesTest
 			Assert.AreEqual(1, result.Data.Count);
 			Assert.IsFalse(result.PrilisMnohoVysledku);
 			Assert.AreEqual("01251554", result.Data[0].Ico);
-			Assert.AreEqual("MS Fest, o.s.", result.Data[0].Nazev);
+			Assert.AreEqual("MS Fest, z.s.", result.Data[0].Nazev);
 		}
 		#endregion
 

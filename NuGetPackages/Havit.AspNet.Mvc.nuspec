@@ -20,8 +20,8 @@
 		<tags>HAVIT Framework Library</tags>
 	</metadata>
 	<files>
-		<file src="..\Havit.Web\bin\Release\Havit.AspNet.Mvc.dll" target="lib\net46" />
-		<file src="..\Havit.Web\bin\Release\Havit.AspNet.Mvc.pdb" target="lib\net46" />
-		<file src="..\Havit.Web\bin\Release\Havit.AspNet.Mvc.xml" target="lib\net46" />
+		<file src="..\Havit.AspNet.Mvc\bin\Release\Havit.AspNet.Mvc.dll" target="lib\net46" />
+		<file src="..\Havit.AspNet.Mvc\bin\Release\Havit.AspNet.Mvc.pdb" target="lib\net46" />
+		<file src="..\Havit.AspNet.Mvc\bin\Release\Havit.AspNet.Mvc.xml" target="lib\net46" />
 	</files>
 </package>

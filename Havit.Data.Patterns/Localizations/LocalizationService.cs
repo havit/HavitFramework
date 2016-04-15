@@ -48,20 +48,20 @@ namespace Havit.Data.Patterns.Localizations
 			Contract.Requires<ArgumentNullException>(language != null, "language");
 			Contract.Requires<InvalidOperationException>(entity.Localizations != null, "Localized items (entity.Localization) cannot be null.");
 
-			TLocalizationEntity result = entity.Localizations.SingleOrDefault(item => item.Language == language); // pokusíme se nalézt lokalizaci pro daný jazyk
+			TLocalizationEntity result = entity.Localizations.SingleOrDefault(item => language.Equals(item.Language)); // pokusíme se nalézt lokalizaci pro daný jazyk
 
 			// pokud jsme nic nenašli a použili jsme jazyk s culture ve formátu "cs-CZ", zkusíme hledat "cs".
 			if ((result == null) && (language.UiCulture.Length > 2))
 			{
 				language = languageService.GetLanguage(language.UiCulture.Substring(0, 2));
-				result = entity.Localizations.SingleOrDefault(item => item.Language == language);
+				result = entity.Localizations.SingleOrDefault(item => language.Equals(item.Language));
 			}
 
 			// pokud jsme pořád nic nenašli a použili jsme jazyk s culture ve formátu "cs", zkusíme hledat "".
 			if ((result == null) && (language.UiCulture.Length > 0))
 			{
 				language = languageService.GetLanguage("");
-				result = entity.Localizations.SingleOrDefault(item => item.Language == language);				
+				result = entity.Localizations.SingleOrDefault(item => language.Equals(item.Language));
 			}
 
 			return result;

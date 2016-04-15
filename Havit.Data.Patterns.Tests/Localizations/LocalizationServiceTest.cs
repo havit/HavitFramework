@@ -23,14 +23,14 @@ namespace Havit.Data.Patterns.Tests.Localizations
 			{
 				UiCulture = ""
 			};
-			
+
 			Mock<ICurrentCultureService> currentCultureServiceMock = new Mock<ICurrentCultureService>();
 			currentCultureServiceMock.Setup(m => m.GetCurrentCulture()).Returns(CultureInfo.GetCultureInfo("cs-CZ"));
 			currentCultureServiceMock.Setup(m => m.GetCurrentUICulture()).Returns(CultureInfo.GetCultureInfo("cs-CZ"));
 
 			Mock<ILanguageService> languageServiceMock = new Mock<ILanguageService>();
 			languageServiceMock.Setup(m => m.GetLanguage("cs-CZ")).Returns(language);
-			
+
 			Mock<LocalizationService> localizationServiceMock = new Mock<LocalizationService>(currentCultureServiceMock.Object, languageServiceMock.Object);
 			localizationServiceMock.CallBase = true;
 
@@ -45,7 +45,7 @@ namespace Havit.Data.Patterns.Tests.Localizations
 			// Assert
 			localizationServiceMock.Verify(m => m.GetLocalization(localizedEntity, language), Times.Once);
 			localizationServiceMock.Verify(m => m.GetLocalization(It.IsAny<LocalizedEntity>(), It.IsAny<ILanguage>()), Times.Once);
-        }
+		}
 
 		[TestMethod]
 		[ExpectedException(typeof(InvalidOperationException))]
@@ -184,5 +184,32 @@ namespace Havit.Data.Patterns.Tests.Localizations
 			Assert.AreSame(language1, localizationService.GetLocalization(entity, language4).Language);
 		}
 
+		[TestMethod]
+		public void LocalizationService_GetLocalization_LanguageInstancesWithoutIdentityMap_MatchesLanguageUsingEquality()
+		{
+			// arrange
+			const int languageId = 10;
+			var language = new Language() { Id = languageId, UiCulture = "cs-CZ", Culture = "cs-CZ" };
+			var localizedEntity = new LocalizedEntity()
+			{
+				Localizations = new List<LocalizedEntityLocalization>()
+				{
+					new LocalizedEntityLocalization() { LanguageId = 5, Language = new Language() { Id = 5, Culture = "en-GB", UiCulture = "en-GB" } },
+					new LocalizedEntityLocalization() { LanguageId = languageId, Language = language }
+				}
+
+			};
+			var languageService = new Mock<ILanguageService>();
+			languageService.Setup(s => s.GetLanguage(It.IsAny<string>())).Returns(new Language() { Id = languageId, UiCulture = "cs-CZ", Culture = "cs-CZ" });
+
+			var localizationService = new LocalizationService(new Mock<ICurrentCultureService>().Object, languageService.Object);
+
+			// act
+			var result = localizationService.GetLocalization(localizedEntity, new Language() { Id = languageId, UiCulture = "cs-CZ", Culture = "cs-CZ" });
+
+			// assert
+			Assert.IsNotNull(result);
+			Assert.AreEqual(languageId, result.Language.Id);
+		}
 	}
 }

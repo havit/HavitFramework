@@ -8,8 +8,14 @@ using System.Web.Mvc.Html;
 
 namespace Havit.AspNet.Mvc.Html
 {
+	/// <summary>
+	/// Extension metody pro renderování UI z modelu.
+	/// </summary>
 	public static class PartialExtensions
 	{
+		/// <summary>
+		/// Vyrenderuje partial view s prefixem datových memberů.
+		/// </summary>
 		public static MvcHtmlString PartialFor<TModel, TProperty>(this HtmlHelper<TModel> helper, System.Linq.Expressions.Expression<Func<TModel, TProperty>> expression, string partialViewName)
 		{
 			string name = ExpressionHelper.GetExpressionText(expression);

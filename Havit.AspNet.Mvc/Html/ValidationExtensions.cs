@@ -9,8 +9,14 @@ using System.Web.Mvc;
 
 namespace Havit.AspNet.Mvc.Html
 {
+	/// <summary>
+	/// Extension metody pro validaci.
+	/// </summary>
 	public static class ValidationExtensions
 	{
+		/// <summary>
+		/// Vyrenderuje validation summary zobrazené pomocí Toastru.
+		/// </summary>
 		public static MvcHtmlString ToastrValidationSummary(this HtmlHelper htmlHelper)
 		{
 			if (htmlHelper.ViewData.ModelState.IsValid)

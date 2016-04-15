@@ -10,7 +10,10 @@ using System.Web.Mvc;
 
 namespace Havit.AspNet.Mvc.Html
 {
-	public static class HtmlHelperExtensions
+	/// <summary>
+	/// Extension metody pro Messenger.
+	/// </summary>
+	public static class MessengerExtensions
 	{
 		/// <summary>
 		/// Render html for messenger.

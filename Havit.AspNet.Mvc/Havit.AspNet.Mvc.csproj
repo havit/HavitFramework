@@ -98,7 +98,7 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="HandleErrorHmAttribute.cs" />
-    <Compile Include="Html\HtmlHelperExtensions.cs" />
+    <Compile Include="Html\MessengerExtensions.cs" />
     <Compile Include="Html\ValidationExtensions.cs" />
     <Compile Include="Messenger\Storages\CookieMessageStorage.cs" />
     <Compile Include="Messenger\Renderers\IMessageRenderer.cs" />

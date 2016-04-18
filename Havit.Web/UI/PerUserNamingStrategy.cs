@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web;
-using System.Web.Security;
 using System.Web.UI.WebControls;
 
 namespace Havit.Web.UI
@@ -18,7 +17,6 @@ namespace Havit.Web.UI
 			#region Private consts
 			private const string FolderNamePattern = "viewstate.{0}";
 			private const string AnonymousUserFolderName = "_anonymous";
-			private const string LoginPageFolderName = "_loginpage";
 			#endregion
 
 			#region Root
@@ -28,23 +26,14 @@ namespace Havit.Web.UI
 			protected string Root { get; private set; }
 			#endregion
 
-			#region UseSpecialFolderForLoginPage
-			/// <summary>
-			/// Indikuje, zda se používá zvláštní složka pro login page (ani uživatelská, ani anonymous).
-			/// </summary>
-			protected bool UseSpecialFolderForLoginPage { get; private set; }
-			#endregion
-
 			#region PerUserNamingStrategy
 			/// <summary>
 			/// Konstruktor.
 			/// </summary>
-			public PerUserNamingStrategy(string root, bool useSpecialFolderForLoginPage = false)
+			public PerUserNamingStrategy(string root)
 			{
-				UseSpecialFolderForLoginPage = useSpecialFolderForLoginPage;
 				Root = root;
 			}
-
 			#endregion
 
 			#region DeleteUserFiles (static)
@@ -64,7 +53,7 @@ namespace Havit.Web.UI
 				{
 					fileAge = new TimeSpan(1, 0, 0, 0);
 				}
-				string folder = GetFolderForUserName(root, username, false);
+				string folder = GetFolderForUserName(root, username);
 				if (System.IO.Directory.Exists(folder))
 				{
 					string[] files = System.IO.Directory.GetFiles(folder, "*", System.IO.SearchOption.AllDirectories);
@@ -90,13 +79,12 @@ namespace Havit.Web.UI
 
 			#region DeleteOldAnonymousFiles
 			/// <summary>
-			/// Smaže soubory starší dnou dnů anonymního uživatele uživatele a souborů login page.
+			/// Smaže soubory starší dnou dnů anonymního uživatele uživatele.
 			/// V případě, že se některý soubor nepodaří smazat, je mazání ukončeno, ale není vyhozena výjimka.
 			/// </summary>
 			public static void DeleteOldAnonymousFiles(string root)
 			{
 				DeleteUserFiles(root, null, new TimeSpan(2, 0, 0, 0)); // 2 dny
-				DeleteUserFiles(root, LoginPageFolderName, new TimeSpan(2, 0, 0, 0)); // 2 dny
 			}
 			#endregion
 
@@ -104,13 +92,9 @@ namespace Havit.Web.UI
 			/// <summary>
 			/// Vrátí název SLOŽKY pro uložení viewstate pro daného uživatele.
 			/// </summary>
-			private static string GetFolderForUserName(string root, string username, bool useSpecialFolderForLoginPage)
+			private static string GetFolderForUserName(string root, string username)
 			{
-				if (useSpecialFolderForLoginPage && (HttpContext.Current != null) && (HttpContext.Current.Request.Url.AbsolutePath == new Uri(HttpContext.Current.Request.Url, FormsAuthentication.LoginUrl).AbsolutePath))
-				{
-					username = LoginPageFolderName;
-				}
-				else if (String.IsNullOrEmpty(username))
+				if (String.IsNullOrEmpty(username))
 				{
 					username = AnonymousUserFolderName;
 				}
@@ -146,7 +130,7 @@ namespace Havit.Web.UI
 						throw new ArgumentException("Symbol obsahuje nepoovlený znak.");
 					}
 				}
-				return System.IO.Path.Combine(GetFolderForUserName(Root, HttpContext.Current.User.Identity.Name, this.UseSpecialFolderForLoginPage), symbol);
+				return System.IO.Path.Combine(GetFolderForUserName(Root, HttpContext.Current.User.Identity.Name), symbol);
 			}
 			#endregion
 

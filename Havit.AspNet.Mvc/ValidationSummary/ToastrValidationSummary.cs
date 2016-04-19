@@ -37,7 +37,7 @@ namespace Havit.AspNet.Mvc.ValidationSummary
 
 			TagBuilder builder = new TagBuilder("script");
 			builder.Attributes.Add("type", "text/javascript");
-			builder.InnerHtml = "toastr.error(\"" + sb.ToString().TrimEnd() + "\");";
+			builder.InnerHtml = "toastr.error(\"" + sb.ToString().TrimEnd().Replace("'", "\\'").Replace("\n", "<br />").Replace("\r", "") + "\");";
 
 			return new MvcHtmlString(builder.ToString());
 		}

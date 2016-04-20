@@ -350,8 +350,7 @@ var havitDropDownCheckBoxListExtensions = {
 				width: width,
 				single: single, // pozor: single zde není opakem multiple!
 				multiple: multiple,
-				multipleWidth: multipleWidth,
-				container: $('body'),
+				multipleWidth: multipleWidth,			
 				countSelected: false
 			};
 

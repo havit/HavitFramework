@@ -8,7 +8,7 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader.Model
 
 		// Reference
 		public Master Parent { get; set; }
-		public int ParentId { get; set; }
+		public int? ParentId { get; set; }
 
 		public DateTime? Deleted { get; set; }
 	}

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Havit.Data.Entity.Patterns.DataLoaders;
 using Havit.Data.Entity.Patterns.Tests.DataLoader.Model;
+using Havit.Data.Patterns.DataLoaders;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.Entity.Patterns.Tests.DataLoader

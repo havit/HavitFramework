@@ -304,7 +304,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 				loadQuery.Load();
 			}
 
-			return entities.Select(item => propertyPathLambda(item)).ToArray();
+			return entities.Select(item => propertyPathLambda(item)).Where(item => item != null).ToArray();
 		}
 
 		/// <summary>
@@ -325,7 +325,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 				await loadQuery.LoadAsync();
 			}
 
-			return entities.Select(item => propertyPathLambda(item)).ToArray();
+			return entities.Select(item => propertyPathLambda(item)).Where(item => item != null).ToArray();
 		}
 
 		/// <summary>

@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Havit.Data.Patterns.DataLoaders;
 using Havit.Diagnostics.Contracts;
 
 namespace Havit.Data.Entity.Patterns.DataLoaders

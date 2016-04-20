@@ -63,7 +63,6 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="DataLoaders\DbDataLoader.cs" />
-    <Compile Include="DataLoaders\EnumerableExtensions.cs" />
     <Compile Include="DataLoaders\PropertiesSequenceExpressionVisitor.cs" />
     <Compile Include="DataLoaders\PropertyToLoad.cs" />
     <Compile Include="Helpers\EntityHelper.cs" />

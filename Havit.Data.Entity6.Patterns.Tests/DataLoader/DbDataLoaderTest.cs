@@ -400,6 +400,34 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 		}
 
 		[TestMethod]
+		public void DbDataLoader_Load_SupportsNullValuesInData()
+		{
+			// Arrange
+			DataLoaderTestDbContext dbContext1 = new DataLoaderTestDbContext();
+			dbContext1.Database.Initialize(true);
+
+			Child child1 = new Child();
+			Child child2 = new Child();
+			Master master = new Master();
+			child1.Parent = master;
+
+			dbContext1.Set<Child>().Add(child1);
+			dbContext1.Set<Child>().Add(child2);
+			dbContext1.Set<Master>().Add(master);
+
+			dbContext1.SaveChanges();
+
+			DataLoaderTestDbContext dbContext2 = new DataLoaderTestDbContext();
+			List<Child> childs = dbContext2.Set<Child>().ToList();
+
+			// Act
+			IDataLoader dataLoader = new DbDataLoader(dbContext2);
+			dataLoader.LoadAll(childs, child => child.Parent.Children);
+
+			// Assert - no exception was thrown
+		}
+
+		[TestMethod]
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void DbDataLoader_Load_ThrowsExceptionForNontrackedObjects()
 		{

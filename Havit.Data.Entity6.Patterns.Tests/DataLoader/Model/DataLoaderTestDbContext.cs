@@ -19,7 +19,7 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader.Model
 			base.OnModelCreating(modelBuilder);
 
 			// 1:N
-			modelBuilder.Entity<Master>().HasMany(master => master.Children).WithRequired(child => child.Parent);
+			modelBuilder.Entity<Master>().HasMany(master => master.Children).WithOptional(child => child.Parent);
 
 			// M:N
 			modelBuilder.Entity<LoginAccount>().HasMany(loginAccount => loginAccount.Roles).WithMany();

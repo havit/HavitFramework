@@ -58,6 +58,7 @@
     <Compile Include="DataEntries\DataEntrySymbolStorage.cs" />
     <Compile Include="DataEntries\EntryIdentification.cs" />
     <Compile Include="DataEntries\IDataEntrySymbolStorage.cs" />
+    <Compile Include="DataLoaders\EnumerableExtensions.cs" />
     <Compile Include="Infrastructure\EntityKeyAccessor.cs" />
     <Compile Include="Infrastructure\IEntityKeyAccessor.cs" />
     <Compile Include="DataLoaders\Fluent\DataLoaderFluentAsync.cs" />

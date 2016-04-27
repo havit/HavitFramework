@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Text;
 using System.Collections.Generic;
+using System.Linq;
 using Havit.Business;
 using Havit.BusinessLayerTest;
 namespace Havit.BusinessTest
@@ -156,6 +157,29 @@ namespace Havit.BusinessTest
 			collection.Freeze();
 			collection.Clear();
 		}
+
+		/// <summary>
+		/// Testuje zda clean na prázdné kolekci nenastavuje objekt dirty.
+		/// </summary>
+		[TestMethod]
+		public void BusinessObjectCollection_Clear_DoesNotSetObjectDirtyOnEmtpyCollection()
+		{
+			using (new IdentityMapScope())
+			{
+				// Arrange
+				Subjekt subjekt = Subjekt.GetAll().First(item => item.Komunikace.Count == 0);
+
+				// Precondition
+				Assert.IsFalse(subjekt.IsDirty);
+
+				// Act
+				subjekt.Komunikace.Clear();
+
+				// Assert
+				Assert.IsFalse(subjekt.IsDirty);
+			}
+		}
+
 	}
 
 }

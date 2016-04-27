@@ -158,9 +158,12 @@ namespace Havit.Business
 		protected override void ClearItems()
 		{
 			ThrowIfFrozen();
-			base.ClearItems();
-			LoadAllRequired = false;
-			OnCollectionChanged(EventArgs.Empty);
+			if (this.Count > 0)
+			{
+				base.ClearItems();
+				LoadAllRequired = false;
+				OnCollectionChanged(EventArgs.Empty);
+			}
 		}
 		#endregion
 

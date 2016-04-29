@@ -35,6 +35,17 @@
                     <asp:ListItem Text="Šest" />
                 </Items>
             </havit:CheckBoxDropDownList>
+			
+			<havit:CheckBoxDropDownList ID="CheckBoxDropDownList3" ShowFilter="true" runat="server">
+                <Items>
+                    <asp:ListItem Text="Jedna" />
+                    <asp:ListItem Text="Dva" />
+                    <asp:ListItem Text="Tři" />
+                    <asp:ListItem Text="Čtyři" />
+                    <asp:ListItem Text="Pět" />
+                    <asp:ListItem Text="Šest" />
+                </Items>
+            </havit:CheckBoxDropDownList>
 
             <select>
                 <option>Test</option>

@@ -40,6 +40,15 @@ namespace Havit.WebApplicationTest.HavitWebTests {
         protected global::Havit.Web.UI.WebControls.CheckBoxDropDownList CheckBoxDropDownList2;
         
         /// <summary>
+        /// CheckBoxDropDownList3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Havit.Web.UI.WebControls.CheckBoxDropDownList CheckBoxDropDownList3;
+        
+        /// <summary>
         /// MyListBox control.
         /// </summary>
         /// <remarks>

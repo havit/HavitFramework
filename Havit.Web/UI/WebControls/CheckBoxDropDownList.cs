@@ -135,6 +135,23 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region LeaveOpenInAutoPostBack
+		/// <summary>
+		/// Zobrazí inline filter položek checkbox listu.
+		/// </summary>
+		public bool ShowFilter
+		{
+			get
+			{
+				return (bool)(ViewState["ShowFilter"] ?? false);
+			}
+			set
+			{
+				ViewState["ShowFilter"] = value;
+			}
+		}
+		#endregion
+
 		#region OnClientDropDownClick
 		/// <summary>
 		/// Klientský kód pro obsluhu kliknutí na javascriptový dropdown.
@@ -318,6 +335,11 @@ namespace Havit.Web.UI.WebControls
 			if (ItemWidth != Unit.Empty)
 			{
 				writer.AddAttribute("data-dropdowncheckboxlist-itemwidth", ((int)ItemWidth.Value).ToString());
+			}
+
+			if (ShowFilter)
+			{
+				writer.AddAttribute("data-dropdowncheckboxlist-filter", "true");
 			}
 
 			if (!string.IsNullOrEmpty(OnClientDropDownBlur))

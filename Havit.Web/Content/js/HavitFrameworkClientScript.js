@@ -341,6 +341,7 @@ var havitDropDownCheckBoxListExtensions = {
 			var multiple = $item.data("dropdowncheckboxlist-itemwidth") ? true : false;
 			var multipleWidth = $item.data("dropdowncheckboxlist-itemwidth") || 0;
 			var single = $item.data("dropdowncheckboxlist-single") ? true : false;
+			var filter = $item.data("dropdowncheckboxlist-filter") ? true : false;
 
 			var multipleSelectParams = {
 				isOpen: isOpen,
@@ -351,7 +352,8 @@ var havitDropDownCheckBoxListExtensions = {
 				single: single, // pozor: single zde není opakem multiple!
 				multiple: multiple,
 				multipleWidth: multipleWidth,			
-				countSelected: false
+				countSelected: false,
+				filter: filter
 			};
 
 			if (selectAllText) {

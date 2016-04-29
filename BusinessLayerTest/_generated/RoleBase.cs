@@ -35,12 +35,13 @@ namespace Havit.BusinessLayerTest
 	/// <code>
 	/// CREATE TABLE [dbo].[Role](
 	/// 	[RoleID] [int] NOT NULL,
-	/// 	[Symbol] [varchar](50) COLLATE Czech_CI_AS NULL CONSTRAINT [DF_Role_Symbol]  DEFAULT (''),
+	/// 	[Symbol] [varchar](50) COLLATE Czech_CI_AS NULL,
 	///  CONSTRAINT [PK_Role] PRIMARY KEY CLUSTERED 
 	/// (
 	/// 	[RoleID] ASC
 	/// )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 	/// ) ON [PRIMARY]
+	/// ALTER TABLE [dbo].[Role] ADD  CONSTRAINT [DF_Role_Symbol]  DEFAULT ('') FOR [Symbol]
 	/// </code>
 	/// </remarks>
 	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]

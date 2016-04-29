@@ -35,15 +35,17 @@ namespace Havit.BusinessLayerTest
 	/// <code>
 	/// CREATE TABLE [dbo].[Subjekt](
 	/// 	[SubjektID] [int] IDENTITY(1,1) NOT NULL,
-	/// 	[Nazev] [nvarchar](50) COLLATE Czech_CI_AS NULL CONSTRAINT [DF_Subjekt_Nazev]  DEFAULT (''),
+	/// 	[Nazev] [nvarchar](50) COLLATE Czech_CI_AS NULL,
 	/// 	[UzivatelID] [int] NULL,
-	/// 	[Created] [smalldatetime] NOT NULL CONSTRAINT [DF_Subjekt_Created]  DEFAULT (getdate()),
+	/// 	[Created] [smalldatetime] NOT NULL,
 	/// 	[Deleted] [smalldatetime] NULL,
 	///  CONSTRAINT [PK_Subjekt] PRIMARY KEY CLUSTERED 
 	/// (
 	/// 	[SubjektID] ASC
 	/// )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 	/// ) ON [PRIMARY]
+	/// ALTER TABLE [dbo].[Subjekt] ADD  CONSTRAINT [DF_Subjekt_Nazev]  DEFAULT ('') FOR [Nazev]
+	/// ALTER TABLE [dbo].[Subjekt] ADD  CONSTRAINT [DF_Subjekt_Created]  DEFAULT (getdate()) FOR [Created]
 	/// ALTER TABLE [dbo].[Subjekt]  WITH NOCHECK ADD  CONSTRAINT [FK_Subjekt_Uzivatel] FOREIGN KEY([UzivatelID])
 	/// REFERENCES [dbo].[Uzivatel] ([UzivatelID])
 	/// ALTER TABLE [dbo].[Subjekt] CHECK CONSTRAINT [FK_Subjekt_Uzivatel]
@@ -677,6 +679,7 @@ namespace Havit.BusinessLayerTest
 		/// <param name="transaction">Transakce DbTransaction, v rámci které se smazání provede; null, pokud bez transakce.</param>
 		public override void Delete(DbTransaction transaction)
 		{
+			EnsureLoaded(transaction);
 			if (Deleted == null)
 			{
 				Deleted = System.DateTime.Now;

@@ -35,17 +35,23 @@ namespace Havit.BusinessLayerTest
 	/// <code>
 	/// CREATE TABLE [dbo].[Language](
 	/// 	[LanguageID] [int] NOT NULL,
-	/// 	[UICulture] [varchar](6) COLLATE Czech_CI_AS NOT NULL CONSTRAINT [DF_Language_UICulture]  DEFAULT (''),
-	/// 	[Culture] [varchar](6) COLLATE Czech_CI_AS NOT NULL CONSTRAINT [DF_Language_Culture]  DEFAULT (''),
-	/// 	[Name] [nvarchar](50) COLLATE Czech_CI_AS NULL CONSTRAINT [DF_Language_Name]  DEFAULT (''),
-	/// 	[Aktivni] [bit] NOT NULL CONSTRAINT [DF_Language_Aktivni]  DEFAULT ((1)),
-	/// 	[EditacePovolena] [bit] NOT NULL CONSTRAINT [DF_Language_EditacePovolena]  DEFAULT ((1)),
-	/// 	[Poradi] [int] NOT NULL CONSTRAINT [DF_Language_Poradi]  DEFAULT ((0)),
+	/// 	[UICulture] [varchar](6) COLLATE Czech_CI_AS NOT NULL,
+	/// 	[Culture] [varchar](6) COLLATE Czech_CI_AS NOT NULL,
+	/// 	[Name] [nvarchar](50) COLLATE Czech_CI_AS NULL,
+	/// 	[Aktivni] [bit] NOT NULL,
+	/// 	[EditacePovolena] [bit] NOT NULL,
+	/// 	[Poradi] [int] NOT NULL,
 	///  CONSTRAINT [PK_Language] PRIMARY KEY CLUSTERED 
 	/// (
 	/// 	[LanguageID] ASC
 	/// )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 	/// ) ON [PRIMARY]
+	/// ALTER TABLE [dbo].[Language] ADD  CONSTRAINT [DF_Language_UICulture]  DEFAULT ('') FOR [UICulture]
+	/// ALTER TABLE [dbo].[Language] ADD  CONSTRAINT [DF_Language_Culture]  DEFAULT ('') FOR [Culture]
+	/// ALTER TABLE [dbo].[Language] ADD  CONSTRAINT [DF_Language_Name]  DEFAULT ('') FOR [Name]
+	/// ALTER TABLE [dbo].[Language] ADD  CONSTRAINT [DF_Language_Aktivni]  DEFAULT ((1)) FOR [Aktivni]
+	/// ALTER TABLE [dbo].[Language] ADD  CONSTRAINT [DF_Language_EditacePovolena]  DEFAULT ((1)) FOR [EditacePovolena]
+	/// ALTER TABLE [dbo].[Language] ADD  CONSTRAINT [DF_Language_Poradi]  DEFAULT ((0)) FOR [Poradi]
 	/// </code>
 	/// </remarks>
 	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]

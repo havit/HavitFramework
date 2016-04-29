@@ -37,12 +37,13 @@ namespace Havit.BusinessLayerTest.Resources
 	/// 	[ResourceItemLocalizationID] [int] IDENTITY(1,1) NOT NULL,
 	/// 	[ResourceItemID] [int] NOT NULL,
 	/// 	[LanguageID] [int] NOT NULL,
-	/// 	[Value] [nvarchar](max) COLLATE Czech_CI_AS NOT NULL CONSTRAINT [DF_ResourceItemLocalization_Value]  DEFAULT (''),
+	/// 	[Value] [nvarchar](max) COLLATE Czech_CI_AS NOT NULL,
 	///  CONSTRAINT [PK_ResourceItemLocalization] PRIMARY KEY CLUSTERED 
 	/// (
 	/// 	[ResourceItemLocalizationID] ASC
 	/// )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 	/// ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+	/// ALTER TABLE [dbo].[ResourceItemLocalization] ADD  CONSTRAINT [DF_ResourceItemLocalization_Value]  DEFAULT ('') FOR [Value]
 	/// ALTER TABLE [dbo].[ResourceItemLocalization]  WITH NOCHECK ADD  CONSTRAINT [FK_ResourceItemLocalization_Language] FOREIGN KEY([LanguageID])
 	/// REFERENCES [dbo].[Language] ([LanguageID])
 	/// ALTER TABLE [dbo].[ResourceItemLocalization] CHECK CONSTRAINT [FK_ResourceItemLocalization_Language]

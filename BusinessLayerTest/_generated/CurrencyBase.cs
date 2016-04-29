@@ -35,14 +35,17 @@ namespace Havit.BusinessLayerTest
 	/// <code>
 	/// CREATE TABLE [dbo].[Currency](
 	/// 	[CurrencyID] [int] IDENTITY(1,1) NOT NULL,
-	/// 	[Nazev] [nvarchar](50) COLLATE Czech_CI_AS NOT NULL CONSTRAINT [DF_Currency_Nazev]  DEFAULT (''),
-	/// 	[Zkratka] [nvarchar](5) COLLATE Czech_CI_AS NOT NULL CONSTRAINT [DF_Currency_Zkratka]  DEFAULT (''),
-	/// 	[Created] [smalldatetime] NOT NULL CONSTRAINT [DF_Currency_Created]  DEFAULT (getdate()),
+	/// 	[Nazev] [nvarchar](50) COLLATE Czech_CI_AS NOT NULL,
+	/// 	[Zkratka] [nvarchar](5) COLLATE Czech_CI_AS NOT NULL,
+	/// 	[Created] [smalldatetime] NOT NULL,
 	///  CONSTRAINT [PK_Currency] PRIMARY KEY CLUSTERED 
 	/// (
 	/// 	[CurrencyID] ASC
 	/// )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 	/// ) ON [PRIMARY]
+	/// ALTER TABLE [dbo].[Currency] ADD  CONSTRAINT [DF_Currency_Nazev]  DEFAULT ('') FOR [Nazev]
+	/// ALTER TABLE [dbo].[Currency] ADD  CONSTRAINT [DF_Currency_Zkratka]  DEFAULT ('') FOR [Zkratka]
+	/// ALTER TABLE [dbo].[Currency] ADD  CONSTRAINT [DF_Currency_Created]  DEFAULT (getdate()) FOR [Created]
 	/// </code>
 	/// </remarks>
 	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]

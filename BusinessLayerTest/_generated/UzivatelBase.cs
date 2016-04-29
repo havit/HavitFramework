@@ -35,15 +35,15 @@ namespace Havit.BusinessLayerTest
 	/// <code>
 	/// CREATE TABLE [dbo].[Uzivatel](
 	/// 	[UzivatelID] [int] IDENTITY(1,1) NOT NULL,
-	/// 	[Username] [varchar](50) COLLATE Czech_CI_AS NOT NULL CONSTRAINT [DF_Uzivatel_Username]  DEFAULT (''),
-	/// 	[Password] [nvarchar](30) COLLATE Czech_CI_AS NOT NULL CONSTRAINT [DF_Uzivatel_Password]  DEFAULT (N'DefaultS&quot;UvozovkouA''Apostrofem'),
-	/// 	[DisplayAs] [nvarchar](50) COLLATE Czech_CI_AS NOT NULL CONSTRAINT [DF_Uzivatel_DisplayAs]  DEFAULT (''),
-	/// 	[Email] [nvarchar](100) COLLATE Czech_CI_AS NOT NULL CONSTRAINT [DF_Uzivatel_Email]  DEFAULT (''),
-	/// 	[Disabled] [bit] NOT NULL CONSTRAINT [DF_Uzivatel_Disabled]  DEFAULT ((0)),
+	/// 	[Username] [varchar](50) COLLATE Czech_CI_AS NOT NULL,
+	/// 	[Password] [nvarchar](30) COLLATE Czech_CI_AS NOT NULL,
+	/// 	[DisplayAs] [nvarchar](50) COLLATE Czech_CI_AS NOT NULL,
+	/// 	[Email] [nvarchar](100) COLLATE Czech_CI_AS NOT NULL,
+	/// 	[Disabled] [bit] NOT NULL,
 	/// 	[LockedTime] [smalldatetime] NULL,
 	/// 	[LoginLast] [smalldatetime] NULL,
-	/// 	[LoginCount] [int] NOT NULL CONSTRAINT [DF_Uzivatel_LoginCount]  DEFAULT ((0)),
-	/// 	[Created] [smalldatetime] NOT NULL CONSTRAINT [DF_Uzivatel_Created]  DEFAULT (getdate()),
+	/// 	[LoginCount] [int] NOT NULL,
+	/// 	[Created] [smalldatetime] NOT NULL,
 	///  CONSTRAINT [PK_Uzivatel] PRIMARY KEY CLUSTERED 
 	/// (
 	/// 	[UzivatelID] ASC
@@ -53,6 +53,13 @@ namespace Havit.BusinessLayerTest
 	/// 	[Username] ASC
 	/// )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 	/// ) ON [PRIMARY]
+	/// ALTER TABLE [dbo].[Uzivatel] ADD  CONSTRAINT [DF_Uzivatel_Username]  DEFAULT ('') FOR [Username]
+	/// ALTER TABLE [dbo].[Uzivatel] ADD  CONSTRAINT [DF_Uzivatel_Password]  DEFAULT (N'DefaultS&quot;UvozovkouA''Apostrofem') FOR [Password]
+	/// ALTER TABLE [dbo].[Uzivatel] ADD  CONSTRAINT [DF_Uzivatel_DisplayAs]  DEFAULT ('') FOR [DisplayAs]
+	/// ALTER TABLE [dbo].[Uzivatel] ADD  CONSTRAINT [DF_Uzivatel_Email]  DEFAULT ('') FOR [Email]
+	/// ALTER TABLE [dbo].[Uzivatel] ADD  CONSTRAINT [DF_Uzivatel_Disabled]  DEFAULT ((0)) FOR [Disabled]
+	/// ALTER TABLE [dbo].[Uzivatel] ADD  CONSTRAINT [DF_Uzivatel_LoginCount]  DEFAULT ((0)) FOR [LoginCount]
+	/// ALTER TABLE [dbo].[Uzivatel] ADD  CONSTRAINT [DF_Uzivatel_Created]  DEFAULT (getdate()) FOR [Created]
 	/// </code>
 	/// </remarks>
 	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]

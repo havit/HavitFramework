@@ -410,7 +410,7 @@ namespace Havit.Business
 				throw new InvalidOperationException("Nový objekt nelze smazat.");
 			}
 			
-			EnsureLoaded();
+			EnsureLoaded(transaction);
 
 			if (IsDeleting)
 			{
@@ -445,6 +445,7 @@ namespace Havit.Business
 		#endregion
 
 		#region Implementační metody - EnsureLoaded
+
 		/// <summary>
 		/// Ověří, jestli jsou data objektu načtena z databáze (IsLoaded). Pokud nejsou, provede jejich načtení.
 		/// </summary>
@@ -454,12 +455,24 @@ namespace Havit.Business
 		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		protected void EnsureLoaded()
 		{
+			EnsureLoaded(null);
+		}
+
+		/// <summary>
+		/// Ověří, jestli jsou data objektu načtena z databáze (IsLoaded). Pokud nejsou, provede jejich načtení.
+		/// </summary>
+		/// <remarks>
+		/// Metoda EnsureLoaded se volá před každou operací, která potřebuje data objektu. Zajištuje lazy-load.
+		/// </remarks>
+		[EditorBrowsable(EditorBrowsableState.Advanced)]
+		protected void EnsureLoaded(DbTransaction transaction)
+		{
 			if (IsLoaded || IsNew)
 			{
 				return;
 			}
 
-			Load();
+			Load(transaction);
 		}
 
 		/*

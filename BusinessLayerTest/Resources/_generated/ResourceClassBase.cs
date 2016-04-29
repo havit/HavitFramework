@@ -35,14 +35,16 @@ namespace Havit.BusinessLayerTest.Resources
 	/// <code>
 	/// CREATE TABLE [dbo].[ResourceClass](
 	/// 	[ResourceClassID] [int] IDENTITY(1,1) NOT NULL,
-	/// 	[Name] [nvarchar](100) COLLATE Czech_CI_AS NOT NULL CONSTRAINT [DF_ResourceClass_Name]  DEFAULT (''),
-	/// 	[Description] [nvarchar](max) COLLATE Czech_CI_AS NOT NULL CONSTRAINT [DF_ResourceClass_Description]  DEFAULT (''),
+	/// 	[Name] [nvarchar](100) COLLATE Czech_CI_AS NOT NULL,
+	/// 	[Description] [nvarchar](max) COLLATE Czech_CI_AS NOT NULL,
 	/// 	[Deleted] [smalldatetime] NULL,
 	///  CONSTRAINT [PK_ResourceClass] PRIMARY KEY CLUSTERED 
 	/// (
 	/// 	[ResourceClassID] ASC
 	/// )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 	/// ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+	/// ALTER TABLE [dbo].[ResourceClass] ADD  CONSTRAINT [DF_ResourceClass_Name]  DEFAULT ('') FOR [Name]
+	/// ALTER TABLE [dbo].[ResourceClass] ADD  CONSTRAINT [DF_ResourceClass_Description]  DEFAULT ('') FOR [Description]
 	/// </code>
 	/// </remarks>
 	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
@@ -563,6 +565,7 @@ namespace Havit.BusinessLayerTest.Resources
 		/// <param name="transaction">Transakce DbTransaction, v rámci které se smazání provede; null, pokud bez transakce.</param>
 		public override void Delete(DbTransaction transaction)
 		{
+			EnsureLoaded(transaction);
 			if (Deleted == null)
 			{
 				Deleted = System.DateTime.Now;

@@ -36,8 +36,8 @@ namespace Havit.BusinessLayerTest.Resources
 	/// CREATE TABLE [dbo].[ResourceItem](
 	/// 	[ResourceItemID] [int] IDENTITY(1,1) NOT NULL,
 	/// 	[ResourceClassID] [int] NOT NULL,
-	/// 	[ResourceKey] [varchar](100) COLLATE Czech_CI_AS NOT NULL CONSTRAINT [DF_ResourceItem_ResourceKey]  DEFAULT (''),
-	/// 	[Description] [nvarchar](200) COLLATE Czech_CI_AS NULL CONSTRAINT [DF_ResourceItem_Description]  DEFAULT (''),
+	/// 	[ResourceKey] [varchar](100) COLLATE Czech_CI_AS NOT NULL,
+	/// 	[Description] [nvarchar](200) COLLATE Czech_CI_AS NULL,
 	///  CONSTRAINT [PK_ResourceItem] PRIMARY KEY CLUSTERED 
 	/// (
 	/// 	[ResourceItemID] ASC
@@ -48,6 +48,8 @@ namespace Havit.BusinessLayerTest.Resources
 	/// 	[ResourceKey] ASC
 	/// )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 	/// ) ON [PRIMARY]
+	/// ALTER TABLE [dbo].[ResourceItem] ADD  CONSTRAINT [DF_ResourceItem_ResourceKey]  DEFAULT ('') FOR [ResourceKey]
+	/// ALTER TABLE [dbo].[ResourceItem] ADD  CONSTRAINT [DF_ResourceItem_Description]  DEFAULT ('') FOR [Description]
 	/// ALTER TABLE [dbo].[ResourceItem]  WITH NOCHECK ADD  CONSTRAINT [FK_ResourceItem_ResourceClass] FOREIGN KEY([ResourceClassID])
 	/// REFERENCES [dbo].[ResourceClass] ([ResourceClassID])
 	/// ALTER TABLE [dbo].[ResourceItem] CHECK CONSTRAINT [FK_ResourceItem_ResourceClass]

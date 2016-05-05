@@ -9,12 +9,6 @@
 
 <asp:Content ContentPlaceHolderID="MainCPH" runat="server">
 	
-	<div class="alert-danger">
-		<blockquote>
-			Control names proposals are welcome!
-		</blockquote>
-	</div>
-
 	<h2>Appearance</h2>
 	<p>Displays multi-choice or one-of-many choice controls using <a href="http://getbootstrap.com/javascript/#buttons">Bootstrap Button</a>.</p>
 

@@ -69,7 +69,15 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 
 			baseRenderItem(); // render INPUT
 
-			writer.WriteEncodedText(text); // render text to LABEL
+			if (control.HtmlEncode)
+			{
+				writer.WriteEncodedText(text); // render text to LABEL
+			}
+			else
+			{
+				writer.Write(text);
+			}
+
 			item.Text = text; // restore item text (it is not necessary to restore item value)
 			writer.RenderEndTag(); // end LABEL
 		}

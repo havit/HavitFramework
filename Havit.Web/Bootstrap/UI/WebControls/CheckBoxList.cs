@@ -36,6 +36,24 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		}
 		#endregion
 
+		#region HtmlEncode
+		/// <summary>
+		/// Indikuje, zda dochází k encode textu k zobrazení.
+		/// Výchozí hodnota je true.
+		/// </summary>
+		public bool HtmlEncode
+		{
+			get
+			{
+				return (bool)(ViewState["HtmlEncode"] ?? true);
+			}
+			set
+			{
+				ViewState["HtmlEncode"] = value;
+			}
+		}
+		#endregion
+
 		#region Constructor
 		/// <summary>
 		/// Constructor.
@@ -75,7 +93,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// </summary>
 		protected override void RenderItem(ListItemType itemType, int repeatIndex, RepeatInfo repeatInfo,
 			HtmlTextWriter writer)
-		{
+		{			
 			RadioButtonListCheckBoxListHelper.RenderItem(this, itemType, repeatIndex, repeatInfo, writer,
 				() => base.RenderItem(itemType, repeatIndex, repeatInfo, writer));
 		}

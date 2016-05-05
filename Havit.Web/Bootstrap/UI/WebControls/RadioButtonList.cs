@@ -35,6 +35,24 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		}
 		#endregion
 
+		#region HtmlEncode
+		/// <summary>
+		/// Indikuje, zda dochází k encode textu k zobrazení.
+		/// Výchozí hodnota je true.
+		/// </summary>
+		public bool HtmlEncode
+		{
+			get
+			{
+				return (bool)(ViewState["HtmlEncode"] ?? true);
+			}
+			set
+			{
+				ViewState["HtmlEncode"] = value;
+			}
+		}
+		#endregion
+		
 		#region Constructor
 		/// <summary>
 		/// Constructor.

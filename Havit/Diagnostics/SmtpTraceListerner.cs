@@ -245,7 +245,9 @@ namespace Havit.Diagnostics
 			if (assembly != null)
 			{
 				message.AppendLine("Application info:");
-				message.AppendLine("    Assembly: " + assembly.FullName);
+				message.AppendLine("    Assembly: " + assembly.GetName().Name);
+				message.AppendLine("    Assembly Version: " + assembly.GetName().Version);
+				message.AppendLine("    Assembly File Version: " + FileVersionInfo.GetVersionInfo(assembly.Location).FileVersion);
 				message.AppendLine();
 			}
 

@@ -371,8 +371,8 @@ namespace Havit.Data.Entity.Patterns.Repositories
 			Contract.Requires(missingIds.Length > 0);
 
 			string exceptionText = (missingIds.Length == 1)
-				? String.Format("Object {0} with key {1} not found.", this.GetType().Name, missingIds[0])
-				: String.Format("Objects {0} with keys {1} not found.", this.GetType().Name, String.Join(", ", missingIds.Select(item => item.ToString())));
+				? String.Format("Object {0} with key {1} not found.", typeof(TEntity).Name, missingIds[0])
+				: String.Format("Objects {0} with keys {1} not found.", typeof(TEntity).Name, String.Join(", ", missingIds.Select(item => item.ToString())));
 
 			throw new ObjectNotFoundException(exceptionText);
 		}

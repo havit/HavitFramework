@@ -25,7 +25,6 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		private readonly IDbContext dbContext;
 		private readonly IDataLoader dataLoader;
 		private readonly IDataLoaderAsync dataLoaderAsync;
-		private readonly ISoftDeleteManager softDeleteManager;
 
 		private TEntity[] _all;
 
@@ -60,6 +59,11 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		protected DbSet<TEntity> DbSet { get; private set; }
 
 		/// <summary>
+		/// SoftDeleteManager používaný repository.
+		/// </summary>
+		protected ISoftDeleteManager SoftDeleteManager { get; private set; }
+
+		/// <summary>
 		/// Konstruktor.
 		/// </summary>
 		protected DbRepository(IDbContext dbContext, IDataLoader dataLoader, IDataLoaderAsync dataLoaderAsync, ISoftDeleteManager softDeleteManager)
@@ -72,7 +76,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 			this.dbContext = dbContext;
 			this.dataLoader = dataLoader;
 			this.dataLoaderAsync = dataLoaderAsync;
-			this.softDeleteManager = softDeleteManager;
+			this.SoftDeleteManager = softDeleteManager;
 
 			DbSet = dbSet;
 			dbSet.Local.CollectionChanged += DbSetLocal_CollectionChanged;
@@ -333,7 +337,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		/// </summary>
 		private IQueryable<TEntity> GetGetAllQuery()
 		{
-			return DbSet.WhereNotDeleted(softDeleteManager);
+			return DbSet.WhereNotDeleted(SoftDeleteManager);
 		}
 
 		/// <summary>

@@ -17,8 +17,6 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 	/// </summary>
 	public class DbUnitOfWork : IUnitOfWork, IUnitOfWorkAsync
 	{
-		private readonly ISoftDeleteManager softDeleteManager;
-
 		private bool commited = false;
 
 		private List<Action> afterCommits = null;
@@ -33,13 +31,20 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 		protected IDbContext DbContext { get; private set; }
 
 		/// <summary>
+		/// SoftDeleteManager používaný v tomto Unit Of Worku.
+		/// </summary>
+		protected ISoftDeleteManager SoftDeleteManager { get; private set; }
+
+		/// <summary>
 		/// Konstruktor.
 		/// </summary>
 		public DbUnitOfWork(IDbContext dbContext, ISoftDeleteManager softDeleteManager)
 		{
-			this.softDeleteManager = softDeleteManager;
-			Contract.Assert(dbContext != null);
-			this.DbContext = dbContext;			
+			Contract.Requires(dbContext != null);
+			Contract.Requires(softDeleteManager != null);
+
+			DbContext = dbContext;
+			SoftDeleteManager = softDeleteManager;
 		}
 
 		/// <summary>
@@ -84,7 +89,7 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 		/// </summary>
 		protected internal virtual void AfterCommit()
 		{
-			afterCommits?.ForEach(item => item());
+			afterCommits?.ForEach(item => item.Invoke());
 		}
 
 		/// <summary>
@@ -132,102 +137,111 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 		/// <summary>
 		/// Zajistí vložení objektu jako nového objektu (při uložení bude vložen).
 		/// </summary>
-		public void AddForInsert<TEntity>(TEntity item)
+		public void AddForInsert<TEntity>(TEntity entity)
 			where TEntity : class
 		{
 			VerifyNotCommited();
-
-			DbContext.Set<TEntity>().Add(item);
-
-			insertRegistrations.Add(item);
+			PerformAddForInsert(entity);
 		}
 
 		/// <summary>
 		/// Zajistí vložení objektů jako nové objekty (při uložení budou vloženy).
 		/// </summary>
-		public void AddRangeForInsert<TEntity>(IEnumerable<TEntity> items)
+		public void AddRangeForInsert<TEntity>(IEnumerable<TEntity> entities)
 			where TEntity : class
 		{
 			VerifyNotCommited();
-
-			var itemsList = items.ToList();
-			DbContext.Set<TEntity>().AddRange(itemsList);
-			insertRegistrations.UnionWith(itemsList);
+			PerformAddForInsert(entities);
 		}
 
 		/// <summary>
 		/// Zajistí vložení objektu jako změněného (při uložení bude změněn).
 		/// </summary>
-		public void AddForUpdate<TEntity>(TEntity item)
+		public void AddForUpdate<TEntity>(TEntity entity)
 			where TEntity : class
 		{
 			VerifyNotCommited();
-
-			DbContext.SetEntityState(item, EntityState.Modified);
-			updateRegistrations.Add(item);
+			PerformAddForUpdate(entity);
 		}
 
 		/// <summary>
 		/// Zajistí vložení objektů jako změněné objekty (při uložení budou změněny).
 		/// </summary>
-		public void AddRangeForUpdate<TEntity>(IEnumerable<TEntity> items)
+		public void AddRangeForUpdate<TEntity>(IEnumerable<TEntity> entities)
 			where TEntity : class
 		{
 			VerifyNotCommited();
-
-			List<TEntity> itemsList = items.ToList();
-			foreach (var item in itemsList)
-			{
-				DbContext.Set<TEntity>().Attach(item);
-			}
-			updateRegistrations.UnionWith(itemsList);
+			PerformAddForUpdate(entities);
 		}
 
 		/// <summary>
 		/// Zajistí odstranění objektu (při uložení bude smazán).
 		/// Objekty podporující mazání příznakem budou smazány příznakem.
 		/// </summary>
-		public void AddForDelete<TEntity>(TEntity item)
+		public void AddForDelete<TEntity>(TEntity entity)
 			where TEntity : class
 		{
 			VerifyNotCommited();
-
-			if (softDeleteManager.IsSoftDeleteSupported<TEntity>())
-			{
-				softDeleteManager.SetDeleted(item);
-				AddForUpdate(item);
-			}
-			else
-			{
-				DbContext.Set<TEntity>().Remove(item);
-				deleteRegistrations.Add(item);
-			}
+			PerformAddForDelete(entity);
 		}
 
 		/// <summary>
 		/// Zajistí odstranění objektů (při uložení budou smazány).
 		/// Objekty podporující mazání příznakem budou smazány příznakem.
 		/// </summary>
-		public void AddRangeForDelete<TEntity>(IEnumerable<TEntity> items)
+		public void AddRangeForDelete<TEntity>(IEnumerable<TEntity> entities)
 			where TEntity : class
 		{
 			VerifyNotCommited();
+			PerformAddForDelete(entities.ToArray());
+		}
 
-			var itemsList = items.ToList();
-			if (softDeleteManager.IsSoftDeleteSupported<TEntity>())
+		/// <summary>
+		/// Zajistí vložení objektů jako nové objekty (při uložení budou vloženy).
+		/// </summary>
+		protected virtual void PerformAddForInsert<TEntity>(params TEntity[] entities)
+			where TEntity : class
+		{
+			DbContext.Set<TEntity>().AddRange(entities);
+			insertRegistrations.UnionWith(entities);
+		}
+
+		/// <summary>
+		/// Zajistí vložení objektů jako změněné objekty (při uložení budou změněny).
+		/// </summary>
+		protected virtual void PerformAddForUpdate<TEntity>(params TEntity[] entities)
+			where TEntity : class
+		{
+			foreach (var entity in entities)
 			{
-				foreach (TEntity item in itemsList)
-				{
-					softDeleteManager.SetDeleted<TEntity>(item);
+				if (DbContext.GetEntityState(entity) == EntityState.Detached)
+				{					
+					DbContext.SetEntityState(entity, EntityState.Modified);
 				}
-				AddRangeForUpdate(itemsList);
+			}
+			updateRegistrations.UnionWith(entities);
+		}
+
+		/// <summary>
+		/// Zajistí odstranění objektů (při uložení budou smazány).
+		/// Objekty podporující mazání příznakem budou smazány příznakem - bude jim nastaven příznak smazání a bude nad nimi zavoláno PerformAddForUpdate.
+		/// </summary>
+		protected virtual void PerformAddForDelete<TEntity>(params TEntity[] entities)
+			where TEntity : class
+		{
+			if (SoftDeleteManager.IsSoftDeleteSupported<TEntity>())
+			{
+				foreach (TEntity entity in entities)
+				{
+					SoftDeleteManager.SetDeleted<TEntity>(entity);
+				}
+				PerformAddForUpdate(entities);
 			}
 			else
 			{
-				DbContext.Set<TEntity>().RemoveRange(itemsList);
-				deleteRegistrations.UnionWith(itemsList);
+				DbContext.Set<TEntity>().RemoveRange(entities);
+				deleteRegistrations.UnionWith(entities);
 			}
-
 		}
 
 		/// <summary>
@@ -256,7 +270,7 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 			return DbContext.GetObjectsInState(EntityState.Added | EntityState.Modified | EntityState.Deleted).Except(insertRegistrations).Except(updateRegistrations).Except(deleteRegistrations).ToArray();
 		}
 
-		private void VerifyNotCommited()
+		protected void VerifyNotCommited()
 		{
 			if (commited)
 			{

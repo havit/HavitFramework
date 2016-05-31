@@ -22,13 +22,13 @@ namespace Havit.Data.Entity.Patterns.SoftDeletes
 		/// Nastaví na dané instanci příznak smazání, není-li dosud nastaven.
 		/// </summary>
 		/// <exception cref="NotSupportedException">Na typu TEntity není podporováno mazání příznakem.</exception>
-		void SetDeleted<TEntity>(TEntity item);
+		void SetDeleted<TEntity>(TEntity entity);
 
 		/// <summary>
 		/// Zruší příznak smazání, je-li nastaven.
 		/// </summary>
 		/// <exception cref="NotSupportedException">Na typu TEntity není podporováno mazání příznakem.</exception>
-		void SetNotDeleted<TEntity>(TEntity item);
+		void SetNotDeleted<TEntity>(TEntity entity);
 
 		/// <summary>
 		/// Vrací výraz pro filtrování objektů, které nemají nastaven příznak smazání.

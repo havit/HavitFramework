@@ -47,14 +47,14 @@ namespace Havit.Data.Entity.Patterns.SoftDeletes
 		/// Nastaví na dané instanci příznak smazání, není-li dosud nastaven.
 		/// </summary>
 		/// <exception cref="NotSupportedException">Na typu TEntity není podporováno mazání příznakem.</exception>
-		public void SetDeleted<TEntity>(TEntity item)
+		public void SetDeleted<TEntity>(TEntity entity)
 		{
 			if (!IsSoftDeleteSupported<TEntity>())
 			{
 				throw new NotSupportedException(String.Format("Soft Delete is not supported on type {0}.", typeof(TEntity).FullName));
 			}
 
-			dynamic d = item;
+			dynamic d = entity;
 			if ((DateTime?)d.Deleted == null)
 			{
 				d.Deleted = timeService.GetCurrentTime();
@@ -65,14 +65,14 @@ namespace Havit.Data.Entity.Patterns.SoftDeletes
 		/// Zruší příznak smazání, je-li nastaven.
 		/// </summary>
 		/// <exception cref="NotSupportedException">Na typu TEntity není podporováno mazání příznakem.</exception>
-		public void SetNotDeleted<TEntity>(TEntity item)
+		public void SetNotDeleted<TEntity>(TEntity entity)
 		{
 			if (!IsSoftDeleteSupported<TEntity>())
 			{
 				throw new NotSupportedException(String.Format("Soft Delete is not supported on type {0}.", typeof(TEntity).FullName));
 			}
 
-			dynamic d = item;
+			dynamic d = entity;
 			d.Deleted = null;
 		}
 

@@ -115,7 +115,7 @@ namespace Havit.Data.Entity
 		/// </summary>
 		protected internal virtual void AfterSaveChanges()
 		{
-			afterSaveChangesActions?.ForEach(item => item());
+			afterSaveChangesActions?.ForEach(item => item.Invoke());
 		}
 
 		/// <summary>

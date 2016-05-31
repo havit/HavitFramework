@@ -16,39 +16,39 @@ namespace Havit.Data.Patterns.Repositories
 		/// <summary>
 		/// Zajistí vložení objektu jako nového objektu (při uložení bude vložen).
 		/// </summary>
-		void AddForInsert<TEntity>(TEntity item)
+		void AddForInsert<TEntity>(TEntity entity)
 			where TEntity : class;
 
 		/// <summary>
 		/// Zajistí vložení objektů jako nové objekty (při uložení budou vloženy).
 		/// </summary>
-		void AddRangeForInsert<TEntity>(IEnumerable<TEntity> items)
+		void AddRangeForInsert<TEntity>(IEnumerable<TEntity> entities)
 			where TEntity : class;
 
 		/// <summary>
 		/// Zajistí vložení objektu jako změněného (při uložení bude změněn).
 		/// </summary>
-		void AddForUpdate<TEntity>(TEntity item)
+		void AddForUpdate<TEntity>(TEntity entity)
 			where TEntity : class;
 
 		/// <summary>
 		/// Zajistí vložení objektů jako změněné objekty (při uložení budou změněny).
 		/// </summary>
-		void AddRangeForUpdate<TEntity>(IEnumerable<TEntity> items)
+		void AddRangeForUpdate<TEntity>(IEnumerable<TEntity> entities)
 			where TEntity : class;
 
 		/// <summary>
 		/// Zajistí odstranění objektu (při uložení bude smazán).
 		/// Objekty podporující mazání příznakem budou smazány příznakem.
 		/// </summary>
-		void AddForDelete<TEntity>(TEntity item)
+		void AddForDelete<TEntity>(TEntity entity)
 			where TEntity : class;
 
 		/// <summary>
 		/// Zajistí odstranění objektů (při uložení budou smazány).
 		/// Objekty podporující mazání příznakem budou smazány příznakem.
 		/// </summary>
-		void AddRangeForDelete<TEntity>(IEnumerable<TEntity> items)
+		void AddRangeForDelete<TEntity>(IEnumerable<TEntity> entities)
 			where TEntity : class;
 
 		/// <summary>

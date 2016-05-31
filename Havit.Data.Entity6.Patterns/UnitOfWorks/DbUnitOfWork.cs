@@ -270,6 +270,9 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 			return DbContext.GetObjectsInState(EntityState.Added | EntityState.Modified | EntityState.Deleted).Except(insertRegistrations).Except(updateRegistrations).Except(deleteRegistrations).ToArray();
 		}
 
+		/// <summary>
+		/// Kontroluje, zda již došlo ke commitu UoW. Pokud již došlo ke commitu, vyhazuje výjimku. Jinak nic.
+		/// </summary>
 		protected void VerifyNotCommited()
 		{
 			if (commited)

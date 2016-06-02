@@ -18,6 +18,7 @@ namespace Havit.Services.Azure.FileStorage
 		#region Private fields
 		private readonly string blobStorageConnectionString;
 		private readonly string containerName;
+		private volatile bool containerAlreadyCreated = false;
 		#endregion
 
 		#region Constructor
@@ -75,7 +76,7 @@ namespace Havit.Services.Azure.FileStorage
 		/// </summary>
 		public void Save(string fileName, Stream fileContent, string contentType)
 		{
-			CloudBlockBlob blob = GetBlobReference(fileName, true);
+			CloudBlockBlob blob = GetBlobReference(fileName, createContainerWhenNotExists: true);
 			blob.Properties.ContentType = contentType;
 			blob.UploadFromStream(fileContent);
 		}
@@ -112,10 +113,13 @@ namespace Havit.Services.Azure.FileStorage
 			CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
 			// Retrieve reference to a previously created container.
 			CloudBlobContainer container = blobClient.GetContainerReference(containerName);
-			if (createContainerWhenNotExists && !container.Exists())
+
+			if (createContainerWhenNotExists && !containerAlreadyCreated)
 			{
 				container.CreateIfNotExists(BlobContainerPublicAccessType.Off);
+				containerAlreadyCreated = true;
 			}
+
 			if (fromServer)
 			{
 				return (CloudBlockBlob)container.GetBlobReferenceFromServer(blobName);

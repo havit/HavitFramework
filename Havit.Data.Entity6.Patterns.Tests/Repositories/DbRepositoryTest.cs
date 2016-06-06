@@ -296,19 +296,43 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 
 			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, softDeleteManager);
 
-			Dictionary<int, ItemWithDeleted> dbSetLocalsDictionary;
-
 			// Act
-			dbSetLocalsDictionary = repository.DbSetLocalsDictionary;
 			ItemWithDeleted itemWithDeleted = testDbContext.Set<ItemWithDeleted>().First(); // načteme data do paměti jiným způsobem než přes repository
-			Assert.IsFalse(dbSetLocalsDictionary.ContainsKey(itemWithDeleted.Id)); // (nedostane se do dictionary)
 
 			testDbContext.SaveChanges();
 			// po uložení změn dojde k reinicializaci dictionary, ovšem až si na něj šahneme a uložíme do proměné, protože je vyměněna celá instance dictionary
-			dbSetLocalsDictionary = repository.DbSetLocalsDictionary; // (bug 24218 - zde aplikace spadla)
+			Dictionary<int, ItemWithDeleted> dbSetLocalsDictionary = repository.DbSetLocalsDictionary; // (bug 24218 - zde aplikace spadla)
 			
 			// Assert
 			Assert.IsTrue(dbSetLocalsDictionary.ContainsKey(itemWithDeleted.Id)); // ověříme, že se ID dostalo do dictionary
+		}
+
+		[TestMethod]
+		public void DbRepository_DbSetLocalsDictionary_DoesNotContainNewObjects()
+		{
+			// Arrange
+			TestDbContext testDbContext = new TestDbContext();
+			testDbContext.Database.Initialize(true);
+
+			SeedData();
+
+			var dataLoader = new DbDataLoader(testDbContext);
+			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
+
+			// Act + Assert
+			var items = repository.GetAll(); // načteme objekty do identity mapy (DbSet<>.Locals).
+
+			Assert.IsTrue(items.Count > 0); // Prerequisite
+
+			Assert.AreEqual(items.Count, repository.DbSetLocalsDictionary.Count); // počet prvků v dictionary odpovídá počtu načtených prvků (viz předchozí GetAll).
+
+			testDbContext.Set<ItemWithDeleted>().Add(new ItemWithDeleted());
+
+			Assert.AreEqual(items.Count, repository.DbSetLocalsDictionary.Count); // počet prvků v dictionary se přidáním nového prvku nezměnil (před uložením)
+
+			testDbContext.SaveChanges();
+
+			Assert.AreEqual(items.Count + 1, repository.DbSetLocalsDictionary.Count); // počet prvků v dictionary se po uložení nového objektu zvýšil o jeden
 		}
 
 		private void SeedData(bool deleted = false)

@@ -36,22 +36,22 @@ namespace Havit.Data.Entity.Patterns.Repositories
 				{
 					_dbSetLocalsDictionary = DbSet.Local.Where(EntityNotInAddedState).ToDictionary(entity => EntityHelper.GetEntityId(entity));
 				}
-				if (_additionalDbSetLocalEntities != null)
-				{
-					foreach (TEntity entity in _additionalDbSetLocalEntities)
-					{
-						if (EntityNotInAddedState(entity))
-						{
-							_dbSetLocalsDictionary.Add(EntityHelper.GetEntityId(entity), entity);
-						}
-					}
-					_additionalDbSetLocalEntities = null;
-				}
+				//if (_additionalDbSetLocalEntities != null)
+				//{
+				//	foreach (TEntity entity in _additionalDbSetLocalEntities)
+				//	{
+				//		if (EntityNotInAddedState(entity))
+				//		{
+				//			_dbSetLocalsDictionary.Add(EntityHelper.GetEntityId(entity), entity);
+				//		}
+				//	}
+				//	_additionalDbSetLocalEntities = null;
+				//}
 				return _dbSetLocalsDictionary;
 			}
 		}
 		private Dictionary<int, TEntity> _dbSetLocalsDictionary;
-		private List<TEntity> _additionalDbSetLocalEntities;
+		//private List<TEntity> _additionalDbSetLocalEntities;
 
 		/// <summary>
 		/// DbSet, nad kterým je DbRepository postaven.
@@ -94,11 +94,15 @@ namespace Havit.Data.Entity.Patterns.Repositories
 						// nemůžeme přidat nové objekty
 						// ale zde se ještě nemůžeme ptát na stav objektů, protože jinak přidání do DbSetu spadne
 						// takže si jen zaregistrujeme, že potřebujeme objekty přidat, a přidáme je, až při šahnutí na kolekci DbSetLocalsDictionary
-						if (_additionalDbSetLocalEntities == null)
-						{
-							_additionalDbSetLocalEntities = new List<TEntity>();
+						//if (_additionalDbSetLocalEntities == null)
+						//{
+						//	_additionalDbSetLocalEntities = new List<TEntity>();
+						//}
+						//_additionalDbSetLocalEntities.AddRange(e.NewItems.Cast<TEntity>());
+						if (_dbSetLocalsDictionary != null)
+						{							
+							e.NewItems.Cast<TEntity>().Where(EntityNotInAddedState).ToList().ForEach(entity => _dbSetLocalsDictionary.Add(EntityHelper.GetEntityId(entity), entity));
 						}
-						_additionalDbSetLocalEntities.AddRange(e.NewItems.Cast<TEntity>());
 						break;
 
 					case NotifyCollectionChangedAction.Move:
@@ -129,12 +133,13 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		private void DbContext_AfterSaveChangesAction()
 		{
 			_dbSetLocalsDictionary = null;
-			_additionalDbSetLocalEntities = null;
+			//_additionalDbSetLocalEntities = null;
 		}
 
 		private bool EntityNotInAddedState(TEntity entity)
 		{
-			return dbContext.GetEntityState(entity) != EntityState.Added;
+			//return dbContext.GetEntityState(entity) != EntityState.Added; // toto bychom chtěli, ale je to příliš pomalé!
+			return EntityHelper.GetEntityId(entity) != default(int);
 		}
 
 		/// <summary>

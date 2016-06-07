@@ -52,11 +52,11 @@ namespace Havit.Web.UI
 			string storageSymbol = _fileNamingStrategy.GetStorageSymbol(); // získáme symbol, ten si dále zapamatujeme "do stránky"
 			string storageFilename = _fileNamingStrategy.GetFilename(storageSymbol); // ze symbolu získáme celou cestu
 
-			System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(storageFilename)); // založíme složku, pokud ještě neexistuje (jinak File.CreateText padá)
-
+			System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(storageFilename)); // založíme složku, pokud ještě neexistuje (jinak File.CreateText padá)			
+			
 			using (System.IO.FileStream fileStream = System.IO.File.Open(storageFilename, System.IO.FileMode.Create))
 			{
-				LosFormatter formatter = new LosFormatter();
+				LosFormatter formatter = new LosFormatter();				
 				formatter.Serialize(fileStream, new Pair(this.ViewState, this.ControlState));
 				_logService.Log(String.Format("{0}\tSaved", storageFilename));
 			}

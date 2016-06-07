@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Web;
 using Havit.Web.Security;
+using Havit.Web.UI;
 using Havit.Web.UI.WebControls;
 using Havit.WebApplicationTest;
 using Havit.WebApplicationTest.App_Start;
@@ -18,6 +19,8 @@ namespace Havit.WebApplicationTest
 			WindsorCastleConfig.RegisterDiContainer();
 
 			Messenger.StorageType = MessengerStorageType.Cookies;
+
+			FilePageStatePersister.PerUserNamingStrategy.DeleteOldAnonymousFiles(@"\\TOPOL\Workspace\002.HFW\ViewState");
 		}
 		#endregion
 

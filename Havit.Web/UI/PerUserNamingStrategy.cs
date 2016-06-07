@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -53,7 +54,7 @@ namespace Havit.Web.UI
 				{
 					fileAge = new TimeSpan(1, 0, 0, 0);
 				}
-				string folder = GetFolderForUserName(root, username);
+				string folder = Path.Combine(root, GetFolderForUserName(username));
 				if (System.IO.Directory.Exists(folder))
 				{
 					string[] files = System.IO.Directory.GetFiles(folder, "*", System.IO.SearchOption.AllDirectories);
@@ -90,22 +91,22 @@ namespace Havit.Web.UI
 
 			#region GetFolderForUserName (static)
 			/// <summary>
-			/// Vrátí název SLOŽKY pro uložení viewstate pro daného uživatele.
+			/// Vrátí název SLOŽKY pro uložení viewstate pro daného uživatele (ale nikoliv celou cestu).
 			/// </summary>
-			private static string GetFolderForUserName(string root, string username)
+			private static string GetFolderForUserName(string username)
 			{
 				if (String.IsNullOrEmpty(username))
 				{
 					username = AnonymousUserFolderName;
 				}
-
+								
 				string userFolder = username.ToLower();
 				foreach (char invalidChar in System.IO.Path.GetInvalidFileNameChars())
 				{
 					userFolder = userFolder.Replace(invalidChar, '_');
 				}
 
-				return System.IO.Path.Combine(root, String.Format(FolderNamePattern, userFolder));
+				return String.Format(FolderNamePattern, userFolder);
 			}
 			#endregion
 
@@ -115,7 +116,7 @@ namespace Havit.Web.UI
 			/// </summary>
 			string FilePageStatePersister.IFileNamingStrategy.GetStorageSymbol()
 			{
-				return Guid.NewGuid().ToString();
+				return Path.Combine(GetFolderForUserName(HttpContext.Current.User.Identity.Name), Guid.NewGuid().ToString());
 			}
 			
 			/// <summary>
@@ -125,12 +126,23 @@ namespace Havit.Web.UI
 			{
 				foreach (char invalidChar in System.IO.Path.GetInvalidFileNameChars())
 				{
-					if (symbol.Contains(invalidChar))
+					if ((invalidChar != '\\') && symbol.Contains(invalidChar))
 					{
-						throw new ArgumentException("Symbol obsahuje nepoovlený znak.");
+						throw new ArgumentException("Symbol obsahuje nepovolený znak."); // ale zpětné lomítko smí obsahovat
 					}
 				}
-				return System.IO.Path.Combine(GetFolderForUserName(Root, HttpContext.Current.User.Identity.Name), symbol);
+
+				if (symbol.StartsWith("."))
+				{
+					throw new ArgumentException("Symbol nesmí začínat tečkou.");
+				}
+
+				if (symbol.ToArray().Count(c => c.Equals('\\')) > 1)
+				{
+					throw new ArgumentException("Symbol nesmí obsahovat více než jedno zpětné lomítko.");
+				}
+
+				return System.IO.Path.Combine(Root, symbol);
 			}
 			#endregion
 

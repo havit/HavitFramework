@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using Havit.Data.Entity.Patterns.SoftDeletes;
 
 namespace Havit.Data.Entity.CodeGenerator.Services
 {
@@ -124,18 +126,36 @@ namespace Havit.Data.Entity.CodeGenerator.Services
 		{
 			lock (content)
 			{
+				GetUnusedGeneratedFilesElements().ForEach(element =>
+				{	
+					this.RemoveWithNextWhitespace(element);
+				});
+			}
+		}
+		#endregion
+
+		private List<XElement> GetUnusedGeneratedFilesElements()
+		{
+			lock (usedFilenames)
+			{
 				// najdeme všechny elementy Compile v ItemGroup, které mají sub-element dle CodeGeneratorIdentifier, ale nejsou v seznamu generovaných souborů
-				content.Root
+				return content.Root
 					.Elements(MSBuildNamespace + "ItemGroup")
 					.Elements(MSBuildNamespace + "Compile")
 					.Where(element =>
 						(element.Elements(MSBuildNamespace + CodeGeneratorIdentifier).Count() > 0)
 						&& !element.Attributes("Include").Any(attribute => usedFilenames.Contains(attribute.Value)))
-					.ToList()
-					.ForEach(element => this.RemoveWithNextWhitespace(element));
+					.ToList();
 			}
 		}
-		#endregion
+
+		public string[] GetUnusedGeneratedFiles()
+		{
+			lock (content)
+			{
+				return GetUnusedGeneratedFilesElements().Select(item => Path.Combine(GetProjectRootPath(), item.Attribute("Include").Value)).ToArray();
+			}
+		}
 
 		#region SaveChanges
 		public virtual void SaveChanges()

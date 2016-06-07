@@ -98,17 +98,35 @@ namespace Havit.Data.Entity.CodeGenerator
 				() => GenerateQueryExtensions(dataLayerProject, sourceControlClient, registeredEntityEnumerator)*/
 			);
 
-		    Parallel.Invoke(
+			string[] unusedDataLayerFiles = null;
+			string[] unusedModelFiles = null;
+
+			Parallel.Invoke(
 		        () =>
 		        {
-		            modelProject.RemoveUnusedGeneratedFiles();
+			        unusedModelFiles = modelProject.GetUnusedGeneratedFiles();
+					modelProject.RemoveUnusedGeneratedFiles();
 		            modelProject.SaveChanges();
 		        },
 		        () =>
 		        {
+			        unusedDataLayerFiles = dataLayerProject.GetUnusedGeneratedFiles();
 		            dataLayerProject.RemoveUnusedGeneratedFiles();
 		            dataLayerProject.SaveChanges();
 		        });
+
+			foreach (string unusedFile in unusedModelFiles.Concat(unusedDataLayerFiles))
+			{
+				sourceControlClient.PendDelete(unusedFile);
+				try
+				{
+					File.Delete(unusedFile);
+				}
+				catch
+				{
+					// NOOP
+				}
+			}
 
 			stopwatch.Stop();
 			Console.WriteLine("Completed in {0} ms.", (int)stopwatch.Elapsed.TotalMilliseconds);

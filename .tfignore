@@ -43,9 +43,6 @@
 \*.GhostDoc.xml
 \.vs
 \packages
-!\packages\repositories.config
-
-\_ReSharper.Havit
 \_ReSharper.Havit
 \Sandcastle\doc
 \Sandcastle\doc

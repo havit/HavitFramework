@@ -74,8 +74,12 @@
     <Compile Include="DirectoryServices\ActiveDirectory\UserNotFoundException.cs" />
     <Compile Include="DirectoryServices\ActiveDirectory\GroupNotFoundException.cs" />
     <Compile Include="DirectoryServices\ActiveDirectory\UserInfo.cs" />
+    <Compile Include="FileStorage\AesEncryptionOption.cs" />
+    <Compile Include="FileStorage\EncryptionOptions.cs" />
     <Compile Include="FileStorage\FileSystemStorageService.cs" />
     <Compile Include="FileStorage\IFileStorageService.cs" />
+    <Compile Include="FileStorage\NotClosingCryptoStream.cs" />
+    <Compile Include="FileStorage\FileStorageServiceBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StateAdministration\IdentifikacniCisloServices.cs" />
     <Compile Include="StateAdministration\RodneCisloServices.cs" />

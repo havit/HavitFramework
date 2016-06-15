@@ -1,11 +1,7 @@
-﻿using System;
-using System.Linq;
-
-using Havit.Services.Ares;
-
+﻿using Havit.Services.Ares;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Havit.ServicesTest
+namespace Havit.Services.Tests.Ares
 {
 	[TestClass]
 	public class AresServiceTest

@@ -1,112 +1,162 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Havit.Services.FileStorage;
+using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.CompilerServices;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace Havit.Services.Azure.FileStorage
 {
-	/// <summary>.
-	/// Úložiště souborů jako Azure Blob Storage
+	/// <summary>
+	/// Úložiště souborů jako Azure Blob Storage.
+	/// Podporuje šifrování a to jak transparentní šifrování z předka (FileStorageServiceBase), 
+	/// tak šifrování vestavěné v Azure Storage klientu (https://azure.microsoft.com/en-us/documentation/articles/storage-client-side-encryption/).
+	/// 
+	/// Pro jednoduché šifrování se používá konstruktor s encryptionOptions (EncryptionOptions),
+	/// pro šifrování pomocí Azure Storage klienta se použije kontruktor s encyptionPolicy (BlobEnctyptionPolicy).
 	/// </summary>
-	public class AzureBlobStorageService : IFileStorageService
+	public class AzureBlobStorageService : FileStorageServiceBase
 	{
-		#region Private fields
 		private readonly string blobStorageConnectionString;
 		private readonly string containerName;
-		private volatile bool containerAlreadyCreated = false;
-		#endregion
 
-		#region Constructor
+		private readonly BlobEncryptionPolicy encryptionPolicy;
+
+		private volatile bool containerAlreadyCreated = false;
+
 		/// <summary>
-		/// Konstruktor.
+		/// Konstruktor. Služba nebude šifrovat obsah.
 		/// </summary>
 		/// <param name="blobStorageConnectionString">Connection string pro připojení k Azure Blob Storage.</param>
 		/// <param name="containerName">Container v Blob Storage pro práci se soubory.</param>
-		public AzureBlobStorageService(string blobStorageConnectionString, string containerName)
+		public AzureBlobStorageService(string blobStorageConnectionString, string containerName) : this(blobStorageConnectionString, containerName, null, null)
+		{
+		}
+
+		/// <summary>
+		/// Konstruktor. Služba bude šifrovat obsah funkcionalitou vestavěnou v Azure Storage klientu.
+		/// </summary>
+		/// <param name="blobStorageConnectionString">Connection string pro připojení k Azure Blob Storage.</param>
+		/// <param name="containerName">Container v Blob Storage pro práci se soubory.</param>
+		/// <param name="encryptionPolicy">Parametry šifrování.</param>
+		public AzureBlobStorageService(string blobStorageConnectionString, string containerName, BlobEncryptionPolicy encryptionPolicy) : this(blobStorageConnectionString, containerName, encryptionPolicy, null)
+		{
+		}
+
+		/// <summary>
+		/// Konstruktor. Služba bude šifrovat obsah vlastní implementací.
+		/// </summary>
+		/// <param name="blobStorageConnectionString">Connection string pro připojení k Azure Blob Storage.</param>
+		/// <param name="containerName">Container v Blob Storage pro práci se soubory.</param>
+		/// <param name="encryptionOptions">Parametry šifrování.</param>
+		// TODO šifrování storage: public
+		internal AzureBlobStorageService(string blobStorageConnectionString, string containerName, EncryptionOptions encryptionOptions) : this(blobStorageConnectionString, containerName, null, encryptionOptions)
+		{
+		}
+
+		/// <summary>
+		/// Konstruktor. Služba bude šifrovat obsah vlastní implementací.
+		/// </summary>
+		// TODO šifrování storage: protected
+		internal AzureBlobStorageService(string blobStorageConnectionString, string containerName, BlobEncryptionPolicy encryptionPolicy, EncryptionOptions encryptionOptions) : base(encryptionOptions)
 		{
 			this.blobStorageConnectionString = blobStorageConnectionString;
 			this.containerName = containerName;
+			this.encryptionPolicy = encryptionPolicy;
 		}
-		#endregion
 
-		#region Exists
 		/// <summary>
 		/// Vrátí true, pokud uložený soubor v úložišti existuje. Jinak false.
 		/// </summary>
-		public bool Exists(string fileName)
+		public override bool Exists(string fileName)
 		{
 			CloudBlockBlob blob = GetBlobReference(fileName);
 			return blob.Exists();
 		}
-		#endregion
 
-		#region ReadToStream
 		/// <summary>
 		/// Zapíše obsah souboru z úložiště do streamu.
 		/// </summary>
-		public void ReadToStream(string fileName, Stream stream)
+		protected override void PerformReadToStream(string fileName, Stream stream)
 		{
 			CloudBlockBlob blob = GetBlobReference(fileName);
-			blob.DownloadToStream(stream);			
+			blob.DownloadToStream(stream, options: GetBlobRequestOptions());
 		}
-		#endregion
 
-		#region Read
 		/// <summary>
 		/// Vrátí stream s obsahem soubor z úložiště.
 		/// </summary>
-		public Stream Read(string fileName)
+		protected override Stream PerformRead(string fileName)
 		{
 			MemoryStream memoryStream = new MemoryStream();
-			ReadToStream(fileName, memoryStream);
+			PerformReadToStream(fileName, memoryStream);
 			memoryStream.Seek(0, SeekOrigin.Begin);
 			
 			return memoryStream;
 		}
-		#endregion
 
-		#region Save
 		/// <summary>
 		/// Uloží stream do úložiště.
 		/// </summary>
-		public void Save(string fileName, Stream fileContent, string contentType)
+		protected override void PerformSave(string fileName, Stream fileContent, string contentType)
 		{
 			CloudBlockBlob blob = GetBlobReference(fileName, createContainerWhenNotExists: true);
 			blob.Properties.ContentType = contentType;
-			blob.UploadFromStream(fileContent);
+			blob.UploadFromStream(fileContent, options: GetBlobRequestOptions());			
 		}
-		#endregion
 
-		#region Delete
 		/// <summary>
 		/// Smaže soubor v úložišti.
-		/// </summary>>
-		public void Delete(string fileName)
+		/// </summary>
+		public override void Delete(string fileName)
 		{
 			CloudBlockBlob blob = GetBlobReference(fileName);
-			blob.Delete();
+			blob.Delete();			
 		}
-		#endregion
 
-		#region GetLastModifiedTimeUtc
+		public override IEnumerable<string> EnumerateFiles(string searchPattern = null)
+		{
+			var blobNamesEnumerable = GetContainerReference(true).ListBlobs().OfType<CloudBlob>().Select(blob => blob.Name);
+			if (!String.IsNullOrEmpty(searchPattern))
+			{
+				// Operators.Like 
+				// - viz http://stackoverflow.com/questions/652037/how-do-i-check-if-a-filename-matches-a-wildcard-pattern
+				// - viz https://msdn.microsoft.com/cs-cz/library/swf8kaxw.aspx
+				blobNamesEnumerable = blobNamesEnumerable.Where(item => Operators.LikeString(item, searchPattern, CompareMethod.Text));
+			}
+			return blobNamesEnumerable;
+		}
 
 		/// <summary>
 		/// Vrátí čas poslední modifikace souboru v UTC timezone
 		/// </summary>
-		public DateTime? GetLastModifiedTimeUtc(string fileName)
+		public override DateTime? GetLastModifiedTimeUtc(string fileName)
 		{
 			CloudBlockBlob blob = GetBlobReference(fileName, fromServer: true);
 			return blob.Properties.LastModified?.UtcDateTime;
 		}
-		#endregion
 
-		#region GetBlobReference
-		private CloudBlockBlob GetBlobReference(string blobName, bool createContainerWhenNotExists = false, bool fromServer = false)
+		protected CloudBlockBlob GetBlobReference(string blobName, bool createContainerWhenNotExists = false, bool fromServer = false)
+		{
+			var container = GetContainerReference(createContainerWhenNotExists);
+
+			if (fromServer)
+			{
+				return (CloudBlockBlob)container.GetBlobReferenceFromServer(blobName);
+			}
+			else
+			{
+				return container.GetBlockBlobReference(blobName);
+			}
+		}
+
+		protected CloudBlobContainer GetContainerReference(bool createContainerWhenNotExists)
 		{
 			CloudStorageAccount storageAccount = CloudStorageAccount.Parse(blobStorageConnectionString);
 			// Create the blob client.
@@ -119,16 +169,49 @@ namespace Havit.Services.Azure.FileStorage
 				container.CreateIfNotExists(BlobContainerPublicAccessType.Off);
 				containerAlreadyCreated = true;
 			}
-
-			if (fromServer)
-			{
-				return (CloudBlockBlob)container.GetBlobReferenceFromServer(blobName);
-			}
-			else
-			{
-				return container.GetBlockBlobReference(blobName);
-			}
+			return container;
 		}
-		#endregion
+
+		protected BlobRequestOptions GetBlobRequestOptions()
+		{
+			return (this.encryptionPolicy == null) ? null : new BlobRequestOptions { EncryptionPolicy = this.encryptionPolicy };
+		}
+
+		public void EncryptAllFiles()
+		{
+			// TODO šifrování storage: Přepracovat, pokud se pustíme do chytřejšího řešení.
+			Contract.Assert(SupportsBasicEncryption);
+
+			List<CloudBlockBlob> blobs = new List<CloudBlockBlob>();
+			foreach (string filename in EnumerateFiles().ToArray())
+			{
+				CloudBlockBlob blob = GetBlobReference(filename, false, true);
+				blobs.Add(blob);
+				blob.CreateSnapshot();
+				// Save - zapíšeme s šifrováním
+				// Perform read - čteme skutečný obsah (čištý, nešifrovaný)
+				Save(filename, PerformRead(filename), blob.Properties.ContentType);
+			}
+
+			blobs.ForEach(blob => blob.Delete(DeleteSnapshotsOption.DeleteSnapshotsOnly));
+		}
+
+		public void DecryptAllFiles()
+		{
+			// TODO šifrování storage: Přepracovat, pokud se pustíme do chytřejšího řešení.
+
+			Contract.Assert(SupportsBasicEncryption);
+			List<CloudBlockBlob> blobs = new List<CloudBlockBlob>();
+			foreach (string filename in EnumerateFiles().ToArray())
+			{
+				CloudBlockBlob blob = GetBlobReference(filename, false, true);				
+				blobs.Add(blob);
+				blob.CreateSnapshot();
+				// PerformSave - zapíšeme bez šifrování
+				// Read - čteme šifrovaný obsah a dešifrujeme jej
+				PerformSave(filename, Read(filename), blob.Properties.ContentType);
+			}
+			blobs.ForEach(blob => blob.Delete(DeleteSnapshotsOption.DeleteSnapshotsOnly));
+		}
 	}
 }

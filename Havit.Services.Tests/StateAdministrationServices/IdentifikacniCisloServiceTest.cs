@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Havit.Services.StateAdministration;
-
+﻿using Havit.Services.StateAdministration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Havit.ServicesTest.StateAdministrationServices
+namespace Havit.Services.Tests.StateAdministrationServices
 {
 	[TestClass]
 	public class IdentifikacniCisloServiceTest

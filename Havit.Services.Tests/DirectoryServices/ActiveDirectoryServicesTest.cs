@@ -1,11 +1,7 @@
-﻿using System;
-using System.Linq;
-
-using Havit.Services.DirectoryServices.ActiveDirectory;
-
+﻿using Havit.Services.DirectoryServices.ActiveDirectory;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Havit.ServicesTest.DirectoryServices
+namespace Havit.Services.Tests.DirectoryServices
 {
 	[TestClass]
 	public class ActiveDirectoryServicesTest

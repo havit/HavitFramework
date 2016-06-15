@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{026046B9-4CD5-4F62-8572-52E044DB71F5}</ProjectGuid>
+    <ProjectGuid>{9B35568E-61D9-4B65-B113-44FE4525C182}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Havit.Services.Azure.Test</RootNamespace>
-    <AssemblyName>Havit.Services.Azure.Test</AssemblyName>
+    <RootNamespace>Havit.Services.Tests</RootNamespace>
+    <AssemblyName>Havit.Services.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -53,22 +53,21 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="AzureBlobStorageServiceTest.cs" />
+    <Compile Include="Ares\AresServiceTest.cs" />
+    <Compile Include="DirectoryServices\ActiveDirectoryServicesTest.cs" />
+    <Compile Include="FileStorage\FileStorageServiceTestInternals.cs" />
+    <Compile Include="FileStorage\FileSystemStorageServiceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StateAdministrationServices\IdentifikacniCisloServiceTest.cs" />
+    <Compile Include="StateAdministrationServices\RodneCisloServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="FileStorage\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Havit.Services.Azure\Havit.Services.Azure.csproj">
-      <Project>{7846ca68-e6b0-4943-9285-de1d48248b84}</Project>
-      <Name>Havit.Services.Azure</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Havit.Services\Havit.Services.csproj">
-      <Project>{2e4ae0cf-fa21-4fbc-9274-e56bc5d9494e}</Project>
+      <Project>{2E4AE0CF-FA21-4FBC-9274-E56BC5D9494E}</Project>
       <Name>Havit.Services</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

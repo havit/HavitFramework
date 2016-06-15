@@ -76,6 +76,8 @@
     <Compile Include="DbContextTest.cs" />
     <Compile Include="DbEntityValidationExceptionExtensions.cs" />
     <Compile Include="Infrastructure\EmptyDbContext.cs" />
+    <Compile Include="Infrastructure\Model\ValidatedEntity.cs" />
+    <Compile Include="Infrastructure\ValidatingDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validators\ModelValidatorTest.cs" />
     <Compile Include="Validators\Infrastructure\Model\NavigationPropertyWithForeignKeyClass.cs" />

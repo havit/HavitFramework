@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.ModelConfiguration.Conventions;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Threading.Tasks;
 using Havit.Data.Entity.Conventions;
@@ -94,7 +95,7 @@ namespace Havit.Data.Entity
 		/// </summary>
 		public override int SaveChanges()
 		{
-			int result = base.SaveChanges();
+			int result = ExecuteWithSaveChangesExceptionHandling(base.SaveChanges);			
 			AfterSaveChanges();
 			return result;
 		}
@@ -104,11 +105,25 @@ namespace Havit.Data.Entity
 		/// </summary>
 		public override async Task<int> SaveChangesAsync()
 		{
-			int result = await base.SaveChangesAsync();
+			int result = await ExecuteWithSaveChangesExceptionHandling<Task<int>>(base.SaveChangesAsync);
 			AfterSaveChanges();
 			return result;
 		}
 
+		private T ExecuteWithSaveChangesExceptionHandling<T>(Func<T> protectedAction)
+		{
+			try
+			{
+				return protectedAction.Invoke();
+			}
+			catch (DbEntityValidationException dbEntityValidationException)
+			{
+				// DbEntityValidationException je ošlivě formátovaná, tak vytvoříme novou instanci
+				// (tím neměníme typ vyhazované výjimky), nastavíme jí hezčí Message,
+				// předáme EntityValidationErrors a pro všechny případe původní výjimku vložíme do inner exception.
+				throw new DbEntityValidationException(dbEntityValidationException.FormatErrorMessage(), dbEntityValidationException.EntityValidationErrors, dbEntityValidationException);
+			}
+		}
 		/// <summary>
 		/// Spuštěno po save changes.
 		/// Zajišťuje volání registrovaných after save changes akcí (viz RegisterAfterSaveChangesAction).

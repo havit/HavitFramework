@@ -264,5 +264,23 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 			Assert.AreEqual(0, dbRepositoryDbSetLocalsDictionary.Count);
 		}
 
+		/// <summary>
+		/// Bug 26702: AddRangeForInsert vyvolává 'System.InvalidOperationException'
+		/// </summary>
+		[TestMethod]
+		public void DbUnitOfWork_AddForInsertRange_SupportsRangeOfObject()
+		{
+			// Arrange
+			TestDbContext dbContext = new TestDbContext();
+			var softDeleteManager = new SoftDeleteManager(new ServerTimeService());
+			var dbUnitOfWork = new DbUnitOfWork(dbContext, softDeleteManager);
+
+			// Act
+			dbUnitOfWork.AddRangeForInsert(new[] { new ItemWithDeleted(), new ItemWithDeleted(), new ItemWithDeleted() });
+
+			// Assert
+			// no exception is thrown
+		}
+
 	}
 }

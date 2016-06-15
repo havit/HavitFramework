@@ -151,7 +151,7 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 			where TEntity : class
 		{
 			VerifyNotCommited();
-			PerformAddForInsert(entities);
+			PerformAddForInsert<TEntity>(entities.ToArray());
 		}
 
 		/// <summary>
@@ -171,7 +171,7 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 			where TEntity : class
 		{
 			VerifyNotCommited();
-			PerformAddForUpdate(entities);
+			PerformAddForUpdate<TEntity>(entities.ToArray());
 		}
 
 		/// <summary>
@@ -193,7 +193,7 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 			where TEntity : class
 		{
 			VerifyNotCommited();
-			PerformAddForDelete(entities.ToArray());
+			PerformAddForDelete<TEntity>(entities.ToArray());
 		}
 
 		/// <summary>

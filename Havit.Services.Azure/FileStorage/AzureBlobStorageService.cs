@@ -120,6 +120,9 @@ namespace Havit.Services.Azure.FileStorage
 			blob.Delete();			
 		}
 
+		/// <summary>
+		/// Vylistuje seznam souborů v úložišti.
+		/// </summary>
 		public override IEnumerable<string> EnumerateFiles(string searchPattern = null)
 		{
 			var blobNamesEnumerable = GetContainerReference(true).ListBlobs().OfType<CloudBlob>().Select(blob => blob.Name);
@@ -142,6 +145,9 @@ namespace Havit.Services.Azure.FileStorage
 			return blob.Properties.LastModified?.UtcDateTime;
 		}
 
+		/// <summary>
+		/// Vrátí CloudBlockBlob pro daný blob v containeru používaného Azure Storage Accountu.
+		/// </summary>
 		protected CloudBlockBlob GetBlobReference(string blobName, bool createContainerWhenNotExists = false, bool fromServer = false)
 		{
 			var container = GetContainerReference(createContainerWhenNotExists);
@@ -156,6 +162,9 @@ namespace Havit.Services.Azure.FileStorage
 			}
 		}
 
+		/// <summary>
+		/// Vrátí používaný container (CloudBlobContainer) v Azure Storage Accountu.
+		/// </summary>
 		protected CloudBlobContainer GetContainerReference(bool createContainerWhenNotExists)
 		{
 			CloudStorageAccount storageAccount = CloudStorageAccount.Parse(blobStorageConnectionString);
@@ -172,12 +181,18 @@ namespace Havit.Services.Azure.FileStorage
 			return container;
 		}
 
+		/// <summary>
+		/// Vrátí BlobRequestOptions pro Azure Storage API.
+		/// </summary>
 		protected BlobRequestOptions GetBlobRequestOptions()
 		{
 			return (this.encryptionPolicy == null) ? null : new BlobRequestOptions { EncryptionPolicy = this.encryptionPolicy };
 		}
 
-		public void EncryptAllFiles()
+		/// <summary>
+		/// Zašifruje všechny soubory v úložišti.
+		/// </summary>
+		internal void EncryptAllFiles()
 		{
 			// TODO šifrování storage: Přepracovat, pokud se pustíme do chytřejšího řešení.
 			Contract.Assert(SupportsBasicEncryption);
@@ -196,7 +211,10 @@ namespace Havit.Services.Azure.FileStorage
 			blobs.ForEach(blob => blob.Delete(DeleteSnapshotsOption.DeleteSnapshotsOnly));
 		}
 
-		public void DecryptAllFiles()
+		/// <summary>
+		/// Dešifruje všechny soubory v úložišti.
+		/// </summary>
+		internal void DecryptAllFiles()
 		{
 			// TODO šifrování storage: Přepracovat, pokud se pustíme do chytřejšího řešení.
 

@@ -131,7 +131,10 @@ namespace Havit.Services.Azure.FileStorage
 				// Operators.Like 
 				// - viz http://stackoverflow.com/questions/652037/how-do-i-check-if-a-filename-matches-a-wildcard-pattern
 				// - viz https://msdn.microsoft.com/cs-cz/library/swf8kaxw.aspx
-				blobNamesEnumerable = blobNamesEnumerable.Where(item => Operators.LikeString(item, searchPattern, CompareMethod.Text));
+				string normalizedSearchPatterns = searchPattern
+					.Replace("[", "[[]") // pozor, zálěží na pořadí náhrad
+					.Replace("#", "[#]");
+				blobNamesEnumerable = blobNamesEnumerable.Where(item => Operators.LikeString(item, normalizedSearchPatterns, CompareMethod.Text));
 			}
 			return blobNamesEnumerable;
 		}

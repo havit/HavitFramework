@@ -11,12 +11,15 @@ namespace Havit.Data.Entity.CodeGenerator.Services
 		private readonly IFileNamingService<TModel> fileNamingService;
 		private readonly CodeWriter codeWriter;
 
-		public GenericGenerator(IModelSource<TModel> modelSource, ITemplateFactory<TModel> templateFactory, IFileNamingService<TModel> fileNamingService, CodeWriter codeWriter)
+		private readonly bool canOverwriteExistingFile;
+
+		public GenericGenerator(IModelSource<TModel> modelSource, ITemplateFactory<TModel> templateFactory, IFileNamingService<TModel> fileNamingService, CodeWriter codeWriter, bool canOverwriteExistingFile = true)
 		{
 			this.modelSource = modelSource;
 			this.templateFactory = templateFactory;
 			this.fileNamingService = fileNamingService;
 			this.codeWriter = codeWriter;
+			this.canOverwriteExistingFile = canOverwriteExistingFile;
 		}
 
 		public void Generate()
@@ -33,7 +36,7 @@ namespace Havit.Data.Entity.CodeGenerator.Services
 
 				string content = template.TransformText();
 				string filename = fileNamingService.GetFilename(model);
-				codeWriter.Save(filename, content);
+				codeWriter.Save(filename, content, canOverwriteExistingFile);
 			});
 		}
 	}

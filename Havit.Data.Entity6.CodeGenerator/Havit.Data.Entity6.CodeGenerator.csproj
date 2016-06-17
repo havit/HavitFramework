@@ -56,11 +56,35 @@
     <Reference Include="Microsoft.TeamFoundation.Client">
       <HintPath>..\References\Microsoft.TeamFoundation.Client.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.TeamFoundation.Common, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\Microsoft.TeamFoundation.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.Core.WebApi">
+      <HintPath>..\References\Microsoft.TeamFoundation.Core.WebApi.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.Diff">
+      <HintPath>..\References\Microsoft.TeamFoundation.Diff.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.TeamFoundation.VersionControl.Client">
       <HintPath>..\References\Microsoft.TeamFoundation.VersionControl.Client.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.TeamFoundation.VersionControl.Common">
       <HintPath>..\References\Microsoft.TeamFoundation.VersionControl.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.VersionControl.Common.Integration">
+      <HintPath>..\References\Microsoft.TeamFoundation.VersionControl.Common.Integration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Enterprise.AspNetHelper">
+      <HintPath>..\References\Microsoft.VisualStudio.Enterprise.AspNetHelper.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Services.Client, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\Microsoft.VisualStudio.Services.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Services.Common, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\Microsoft.VisualStudio.Services.Common.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
@@ -153,32 +177,48 @@
     </Compile>
     <Compile Include="Actions\QueryableExtensions\Template\QueryableExtensionsTemplate.partial.cs" />
     <Compile Include="Actions\QueryableExtensions\Template\QueryableExtensionsTemplateFactory.cs" />
-    <Compile Include="Actions\Repositories\DbRepositoryBaseFileNamingService.cs" />
+    <Compile Include="Actions\Repositories\DbRepositoryBaseGeneratedFileNamingService.cs" />
     <Compile Include="Actions\Repositories\DbRepositoryFileNamingService.cs" />
+    <Compile Include="Actions\Repositories\DbRepositoryGeneratedFileNamingService.cs" />
     <Compile Include="Actions\Repositories\InterfaceRepositoryFileNamingService.cs" />
+    <Compile Include="Actions\Repositories\InterfaceRepositoryGeneratedFileNamingService.cs" />
     <Compile Include="Actions\Repositories\Model\RepositoryModel.cs" />
     <Compile Include="Actions\Repositories\Model\RepositoryModelSource.cs" />
-    <Compile Include="Actions\Repositories\Templates\DbRepositoryBaseTemplate.cs">
+    <Compile Include="Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DbRepositoryBaseTemplate.tt</DependentUpon>
+      <DependentUpon>DbRepositoryBaseGeneratedTemplate.tt</DependentUpon>
     </Compile>
-    <Compile Include="Actions\Repositories\Templates\DbRepositoryBaseTemplate.partial.cs" />
-    <Compile Include="Actions\Repositories\Templates\DbRepositoryTemplate.partial.cs" />
-    <Compile Include="Actions\Repositories\Templates\DbRepositoryTemplate1.cs">
+    <Compile Include="Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.partial.cs" />
+    <Compile Include="Actions\Repositories\Templates\DbRepositoryTemplate.cs">
       <DependentUpon>DbRepositoryTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Actions\Repositories\Templates\DbRepositoryTemplate.partial.cs" />
+    <Compile Include="Actions\Repositories\Templates\DbRepositoryGeneratedTemplate.partial.cs" />
+    <Compile Include="Actions\Repositories\Templates\DbRepositoryGeneratedTemplate.cs">
+      <DependentUpon>DbRepositoryGeneratedTemplate.tt</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Include="Actions\Repositories\Templates\DbRepositoryBaseTemplateFactory.cs" />
-    <Compile Include="Actions\Repositories\Templates\InterfaceRepositoryTemplate.partial.cs" />
-    <Compile Include="Actions\Repositories\Templates\InterfaceRepositoryTemplate1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>InterfaceRepositoryTemplate.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplateFactory.cs" />
     <Compile Include="Actions\Repositories\Templates\DbRepositoryTemplateFactory.cs" />
+    <Compile Include="Actions\Repositories\Templates\InterfaceRepositoryTemplate.partial.cs" />
     <Compile Include="Actions\Repositories\Templates\InterfaceRepositoryTemplateFactory.cs" />
+    <Compile Include="Actions\Repositories\Templates\InterfaceRepositoryTemplate.cs">
+      <DependentUpon>InterfaceRepositoryTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Actions\Repositories\Templates\InterfaceRepositoryGeneratedTemplate.partial.cs" />
+    <Compile Include="Actions\Repositories\Templates\InterfaceRepositoryGeneratedTemplate.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>InterfaceRepositoryGeneratedTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Actions\Repositories\Templates\DbRepositoryGeneratedTemplateFactory.cs" />
+    <Compile Include="Actions\Repositories\Templates\InterfaceRepositoryGeneratedTemplateFactory.cs" />
     <Compile Include="Entity\DoNothingInitializer.cs" />
     <Compile Include="Entity\RegisteredEntity.cs" />
     <Compile Include="Entity\RegisteredEntityEnumerator.cs" />
@@ -199,8 +239,12 @@
     <Compile Include="Services\IFileNamingService.cs" />
     <Compile Include="Services\IModelSource.cs" />
     <Compile Include="Services\ITemplateFactory.cs" />
-    <Compile Include="Services\SourceControlClient.cs" />
     <Compile Include="Services\CodeWriter.cs" />
+    <Compile Include="Services\SourceControl\ISourceControlClient.cs" />
+    <Compile Include="Services\SourceControl\ISourceControlClientFactory.cs" />
+    <Compile Include="Services\SourceControl\NullSourceControlClient.cs" />
+    <Compile Include="Services\SourceControl\TfsSourceControlClient.cs" />
+    <Compile Include="Services\SourceControl\TfsSourceControlClientFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -243,17 +287,25 @@
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>QueryableExtensionsTemplate.cs</LastGenOutput>
     </Content>
-    <Content Include="Actions\Repositories\Templates\DbRepositoryBaseTemplate.tt">
+    <Content Include="Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>DbRepositoryBaseTemplate.cs</LastGenOutput>
+      <LastGenOutput>DbRepositoryBaseGeneratedTemplate.cs</LastGenOutput>
     </Content>
     <Content Include="Actions\Repositories\Templates\DbRepositoryTemplate.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>DbRepositoryTemplate1.cs</LastGenOutput>
+      <LastGenOutput>DbRepositoryTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="Actions\Repositories\Templates\DbRepositoryGeneratedTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>DbRepositoryGeneratedTemplate.cs</LastGenOutput>
     </Content>
     <Content Include="Actions\Repositories\Templates\InterfaceRepositoryTemplate.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>InterfaceRepositoryTemplate1.cs</LastGenOutput>
+      <LastGenOutput>InterfaceRepositoryTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="Actions\Repositories\Templates\InterfaceRepositoryGeneratedTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>InterfaceRepositoryGeneratedTemplate.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>

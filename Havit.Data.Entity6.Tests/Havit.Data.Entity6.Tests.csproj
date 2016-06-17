@@ -76,7 +76,10 @@
     <Compile Include="DbContextTest.cs" />
     <Compile Include="DbEntityValidationExceptionExtensions.cs" />
     <Compile Include="Infrastructure\EmptyDbContext.cs" />
+    <Compile Include="Infrastructure\Model\Child.cs" />
+    <Compile Include="Infrastructure\Model\Master.cs" />
     <Compile Include="Infrastructure\Model\ValidatedEntity.cs" />
+    <Compile Include="Infrastructure\MasterChildDbContext.cs" />
     <Compile Include="Infrastructure\ValidatingDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validators\ModelValidatorTest.cs" />

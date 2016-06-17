@@ -86,5 +86,27 @@ namespace Havit.Data.Entity.Tests
 			Assert.Fail();
 		}
 
+		[TestMethod]
+		public void DbContext_CollectionsCanHaveOnlyGetter()
+		{
+			// Arrange + Act
+			int masterId;
+			using (MasterChildDbContext dbContext = new MasterChildDbContext())
+			{
+				Master master = new Master { Children = { new Child() } };
+				dbContext.Set<Master>().Add(master);
+				dbContext.SaveChanges();
+				masterId = master.Id;
+			}
+
+			// Assert
+			using (MasterChildDbContext dbContext = new MasterChildDbContext())
+			{
+				Master master = dbContext.Set<Master>().Include("Children").Single(item => item.Id == masterId);
+				Assert.IsNotNull(master.Children);
+				Assert.AreEqual(1, master.Children.Count);
+			}
+		}
+
 	}
 }

@@ -18,9 +18,9 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.Repositories.Templates
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryTemplate.tt"
+    #line 1 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryGeneratedTemplate.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public partial class InterfaceRepositoryTemplate : InterfaceRepositoryTemplateBase
+    public partial class InterfaceRepositoryGeneratedTemplate : InterfaceRepositoryGeneratedTemplateBase
     {
 #line hidden
         /// <summary>
@@ -38,7 +38,7 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.Repositories.Templates
                     "ystem.Text;\r\nusing System.Threading.Tasks;\r\nusing Havit.Data.Patterns.Repositori" +
                     "es;\r\n\r\nnamespace ");
             
-            #line 15 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryTemplate.tt"
+            #line 15 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryGeneratedTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.NamespaceName));
             
             #line default
@@ -46,21 +46,21 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.Repositories.Templates
             this.Write("\r\n{\r\n\t[System.CodeDom.Compiler.GeneratedCode(\"Havit.Entity.CodeGenerator\", \"2.0\")" +
                     "]\r\n\tpublic partial interface ");
             
-            #line 18 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryTemplate.tt"
+            #line 18 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryGeneratedTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.InterfaceRepositoryName));
             
             #line default
             #line hidden
             this.Write(" : IRepository<");
             
-            #line 18 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryTemplate.tt"
+            #line 18 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryGeneratedTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
             
             #line default
             #line hidden
             this.Write(">, IRepositoryAsync<");
             
-            #line 18 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryTemplate.tt"
+            #line 18 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryGeneratedTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
             
             #line default
@@ -77,7 +77,7 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.Repositories.Templates
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public class InterfaceRepositoryTemplateBase
+    public class InterfaceRepositoryGeneratedTemplateBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;

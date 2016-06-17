@@ -3,7 +3,7 @@ using Havit.Data.Entity.CodeGenerator.Services;
 
 namespace Havit.Data.Entity.CodeGenerator.Actions.Repositories
 {
-	public class InterfaceRepositoryFileNamingService : FileNamingServiceBase<RepositoryModel>
+	public class InterfaceRepositoryFileNamingService : InterfaceRepositoryGeneratedFileNamingService
 	{
 		public InterfaceRepositoryFileNamingService(Project project)
 			: base(project)
@@ -11,14 +11,6 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.Repositories
 			
 		}
 
-		protected override string GetClassName(RepositoryModel model)
-		{
-			return model.InterfaceRepositoryName;
-		}
-
-		protected override string GetNamespaceName(RepositoryModel model)
-		{
-			return model.NamespaceName;
-		}
+		protected override bool UseGeneratedFolder => false;
 	}
 }

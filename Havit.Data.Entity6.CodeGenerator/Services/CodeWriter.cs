@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Text;
+using Havit.Data.Entity.CodeGenerator.Services.SourceControl;
 
 namespace Havit.Data.Entity.CodeGenerator.Services
 {
@@ -11,9 +12,9 @@ namespace Havit.Data.Entity.CodeGenerator.Services
 	public class CodeWriter
 	{
 		private readonly Project project;
-		private readonly SourceControlClient sourceControlClient;
+		private readonly ISourceControlClient sourceControlClient;
 
-		public CodeWriter(Project project, SourceControlClient sourceControlClient)
+		public CodeWriter(Project project, ISourceControlClient sourceControlClient)
 		{
 			this.project = project;
 			this.sourceControlClient = sourceControlClient;
@@ -22,7 +23,7 @@ namespace Havit.Data.Entity.CodeGenerator.Services
 		/// <summary>
 		/// Zapíšeme obsah do souboru (jen tehdy, pokud se neliší od současného obsahu souboru).
 		/// </summary>
-		public void Save(string filename, string content)
+		public void Save(string filename, string content, bool canOverwriteExistingFile = true)
 		{
 			if (!this.AlreadyExistsTheSame(filename, content) || !this.HasByteOrderMask(filename))
 			{
@@ -32,17 +33,16 @@ namespace Havit.Data.Entity.CodeGenerator.Services
 					Directory.CreateDirectory(directory);
 				}
 
-				if (!File.Exists(filename) && (sourceControlClient != null))
+				bool exists = File.Exists(filename);
+				if (canOverwriteExistingFile || !exists)
 				{
 					File.WriteAllText(filename, content, Encoding.UTF8);
-					sourceControlClient.PendAdd(filename);
-				}
-				else
-				{
-					File.WriteAllText(filename, content, Encoding.UTF8);
+					if (!exists)
+					{
+						sourceControlClient.Add(filename);
+					}
 				}
 			}
-
 			project.AddOrUpdate(filename);
 		}
 

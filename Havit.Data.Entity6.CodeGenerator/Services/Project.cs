@@ -16,37 +16,27 @@ namespace Havit.Data.Entity.CodeGenerator.Services
 		private const string CodeGeneratorIdentifier = "HavitEntityCodeGenerator";
 		#endregion
 
-		#region Private fields
 		private bool contentChanged = false;
 		private readonly XDocument content;
 		private readonly List<string> usedFilenames = new List<string>();
-		#endregion
 
-		#region Filename
 		public string Filename
 		{
 			get;
 			private set;
 		}
-		#endregion
 
-		#region Constructors
 		public Project(string filename)
 		{
 			this.Filename = filename;
 			content = XDocument.Load(filename, LoadOptions.PreserveWhitespace);
 			content.Changed += Content_Changed;
 		}
-		#endregion
 
-		#region Content_Changed
 		private void Content_Changed(object sender, XObjectChangeEventArgs e)
 		{
 			contentChanged = true;
 		}
-		#endregion
-
-		#region AddOrUpdate
 
 		public virtual void AddOrUpdate(string filename)
 		{
@@ -110,7 +100,6 @@ namespace Havit.Data.Entity.CodeGenerator.Services
 			}
 		}
 		private Dictionary<string, XElement> fileNamesWithElements;
-		#endregion
 
 		//#region Remove
 		//public virtual void Remove(string filename)
@@ -121,7 +110,6 @@ namespace Havit.Data.Entity.CodeGenerator.Services
 		//}
 		//#endregion
 
-		#region RemoveUnusedGeneratedFiles
 		public void RemoveUnusedGeneratedFiles()
 		{
 			lock (content)
@@ -132,7 +120,6 @@ namespace Havit.Data.Entity.CodeGenerator.Services
 				});
 			}
 		}
-		#endregion
 
 		private List<XElement> GetUnusedGeneratedFilesElements()
 		{
@@ -157,7 +144,6 @@ namespace Havit.Data.Entity.CodeGenerator.Services
 			}
 		}
 
-		#region SaveChanges
 		public virtual void SaveChanges()
 		{
 			if (contentChanged)
@@ -165,9 +151,7 @@ namespace Havit.Data.Entity.CodeGenerator.Services
 				content.Save(Filename);
 			}
 		}
-		#endregion
 
-		#region RemoveWithNextWhitespace
 		private void RemoveWithNextWhitespace(XElement element)
 		{
 			List<XNode> textNodes
@@ -200,7 +184,6 @@ namespace Havit.Data.Entity.CodeGenerator.Services
 			}
 			element.Remove();
 		}
-		#endregion
 
 		public string GetProjectRootNamespace()
 		{
@@ -239,7 +222,6 @@ namespace Havit.Data.Entity.CodeGenerator.Services
 			}
 		}
 
-		#region GetByFolder
 		public static Project GetByFolder(string folder)
 		{
 			var files = System.IO.Directory.GetFiles(folder, "*.csproj");
@@ -249,7 +231,6 @@ namespace Havit.Data.Entity.CodeGenerator.Services
 			}
 			return null;
 		}
-		#endregion
 
 	}
 }

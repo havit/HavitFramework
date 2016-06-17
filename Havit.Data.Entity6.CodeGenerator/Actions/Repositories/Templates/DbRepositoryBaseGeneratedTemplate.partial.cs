@@ -8,11 +8,11 @@ using Havit.Data.Entity.CodeGenerator.Services;
 
 namespace Havit.Data.Entity.CodeGenerator.Actions.Repositories.Templates
 {
-	public partial class DbRepositoryBaseTemplate : ITemplate
+	public partial class DbRepositoryBaseGeneratedTemplate : ITemplate
 	{
 		protected RepositoryModel Model { get; private set; }
 
-		public DbRepositoryBaseTemplate(RepositoryModel model)
+		public DbRepositoryBaseGeneratedTemplate(RepositoryModel model)
 		{
 			this.Model = model;
 		}

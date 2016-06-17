@@ -3,11 +3,11 @@ using Havit.Data.Entity.CodeGenerator.Services;
 
 namespace Havit.Data.Entity.CodeGenerator.Actions.Repositories.Templates
 {
-	public class DbRepositoryBaseTemplateFactory : ITemplateFactory<RepositoryModel>
+	public class DbRepositoryGeneratedTemplateFactory : ITemplateFactory<RepositoryModel>
 	{
 		public ITemplate CreateTemplate(RepositoryModel model)
 		{
-			return new DbRepositoryBaseTemplate(model);
+			return new DbRepositoryGeneratedTemplate(model);
 		}
 	}
 

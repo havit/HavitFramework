@@ -11,19 +11,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Havit.Data.Entity;
-using Havit.Data.Entity.Patterns;
 using Havit.Data.Entity.Patterns.Repositories;
+using Havit.Data.Entity.Patterns.SoftDeletes;
 using Havit.Data.Patterns.DataEntries;
 using Havit.Data.Patterns.DataLoaders;
 
 namespace <#= Model.NamespaceName #>
 {
 	[System.CodeDom.Compiler.GeneratedCode("Havit.Entity.CodeGenerator", "2.0")]
-	public abstract class <#= Model.DbRepositoryBaseName #> : DbRepository<<#= Model.ModelClassFullName #>>, <#= Model.InterfaceRepositoryName #>
+	public abstract class <#= Model.DbRepositoryBaseName #> :  DbRepository<<#= Model.ModelClassFullName #>>
 	{
-		protected <#= Model.DbRepositoryBaseName #>(IDbContext dbContext, IDbDataLoaderAsync dataLoader, ISoftDeleteManager softDeleteManager)
-			: base(dbContext, dataLoader, softDeleteManager)
+		protected <#= Model.DbRepositoryBaseName #>(IDbContext dbContext, IDataLoader dataLoader, IDataLoaderAsync dataLoaderAsync, ISoftDeleteManager softDeleteManager)
+			: base(dbContext, dataLoader, dataLoaderAsync, softDeleteManager)
 		{
 		}
+
 	}
 }

@@ -161,14 +161,14 @@ namespace Havit.Data.Entity.CodeGenerator
 		{
 			CodeWriter codeWriter = new CodeWriter(dataLayerProject, sourceControlClient);
 			var dbRepositoryModelSource = new RepositoryModelSource(registeredEntityEnumerator, modelProject, dataLayerProject, dataEntriesModelSource);
+			var dbRepositoryBaseGeneratedGenerator = new GenericGenerator<RepositoryModel>(dbRepositoryModelSource, new DbRepositoryBaseGeneratedTemplateFactory(), new DbRepositoryBaseGeneratedFileNamingService(dataLayerProject), codeWriter);
 			var interfaceRepositoryGeneratedGenerator = new GenericGenerator<RepositoryModel>(dbRepositoryModelSource, new InterfaceRepositoryGeneratedTemplateFactory(), new InterfaceRepositoryGeneratedFileNamingService(dataLayerProject), codeWriter);
 			var dbRepositoryGeneratedGenerator = new GenericGenerator<RepositoryModel>(dbRepositoryModelSource, new DbRepositoryGeneratedTemplateFactory(), new DbRepositoryGeneratedFileNamingService(dataLayerProject), codeWriter);
 			var interfaceRepositoryGenerator = new GenericGenerator<RepositoryModel>(dbRepositoryModelSource, new InterfaceRepositoryTemplateFactory(), new InterfaceRepositoryFileNamingService(dataLayerProject), codeWriter, false);
 			var dbRepositoryGenerator = new GenericGenerator<RepositoryModel>(dbRepositoryModelSource, new DbRepositoryTemplateFactory(), new DbRepositoryFileNamingService(dataLayerProject), codeWriter, false);
-			//var dbRepositoryBaseGenerator = new GenericGenerator<RepositoryModel>(dbRepositoryModelSource, new DbRepositoryBaseGeneratedTemplateFactory(), new DbRepositoryBaseGeneratedFileNamingService(dataLayerProject), codeWriter);
 			interfaceRepositoryGeneratedGenerator.Generate();
 			interfaceRepositoryGenerator.Generate();
-			//dbRepositoryBaseGeneratedGenerator.Generate();
+			dbRepositoryBaseGeneratedGenerator.Generate();
 			dbRepositoryGeneratedGenerator.Generate();
 			dbRepositoryGenerator.Generate();
 		}

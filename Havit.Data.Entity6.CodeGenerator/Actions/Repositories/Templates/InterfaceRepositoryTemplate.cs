@@ -30,16 +30,23 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.Repositories.Templates
         {
             this.Write("using System;\r\nusing System.Collections.Generic;\r\nusing System.Linq;\r\nusing Syste" +
                     "m.Text;\r\nusing System.Threading.Tasks;\r\nusing Havit.Data.Patterns.Repositories;\r" +
-                    "\n\r\nnamespace ");
+                    "\nusing ");
             
-            #line 13 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryTemplate.tt"
+            #line 12 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassNamespace));
+            
+            #line default
+            #line hidden
+            this.Write(";\r\n\r\nnamespace ");
+            
+            #line 14 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.NamespaceName));
             
             #line default
             #line hidden
             this.Write("\r\n{\r\n\tpublic partial interface ");
             
-            #line 15 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryTemplate.tt"
+            #line 16 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.InterfaceRepositoryName));
             
             #line default

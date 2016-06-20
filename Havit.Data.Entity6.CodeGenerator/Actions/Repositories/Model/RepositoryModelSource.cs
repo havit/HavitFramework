@@ -31,7 +31,9 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.Repositories.Model
 				{
 					NamespaceName = GetNamespaceName(registeredEntity.NamespaceName),
 					DbRepositoryName = "Db" + registeredEntity.ClassName + "Repository",
+					DbRepositoryBaseName = "Db" + registeredEntity.ClassName + "RepositoryBase",
 					InterfaceRepositoryName = "I" + registeredEntity.ClassName + "Repository",
+					ModelClassNamespace = registeredEntity.NamespaceName,
 					ModelClassFullName = registeredEntity.FullName,
                 }).ToList();
 		}

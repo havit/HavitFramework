@@ -42,8 +42,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Havit.Data.Entity;
-using Havit.Data.Entity.Patterns;
 using Havit.Data.Entity.Patterns.Repositories;
+using Havit.Data.Entity.Patterns.SoftDeletes;
 using Havit.Data.Patterns.DataEntries;
 using Havit.Data.Patterns.DataLoaders;
 
@@ -62,30 +62,23 @@ namespace ");
             
             #line default
             #line hidden
-            this.Write(" : DbRepository<");
+            this.Write(" :  DbRepository<");
             
             #line 22 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
             
             #line default
             #line hidden
-            this.Write(">, ");
-            
-            #line 22 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.InterfaceRepositoryName));
-            
-            #line default
-            #line hidden
-            this.Write("\r\n\t{\r\n\t\tprotected ");
+            this.Write(">\r\n\t{\r\n\t\tprotected ");
             
             #line 24 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.DbRepositoryBaseName));
             
             #line default
             #line hidden
-            this.Write("(IDbContext dbContext, IDbDataLoaderAsync dataLoader, ISoftDeleteManager softDele" +
-                    "teManager)\r\n\t\t\t: base(dbContext, dataLoader, softDeleteManager)\r\n\t\t{\r\n\t\t}\r\n\t}\r\n}" +
-                    "");
+            this.Write("(IDbContext dbContext, IDataLoader dataLoader, IDataLoaderAsync dataLoaderAsync, " +
+                    "ISoftDeleteManager softDeleteManager)\r\n\t\t\t: base(dbContext, dataLoader, dataLoad" +
+                    "erAsync, softDeleteManager)\r\n\t\t{\r\n\t\t}\r\n\r\n\t}\r\n}");
             return this.GenerationEnvironment.ToString();
         }
     }

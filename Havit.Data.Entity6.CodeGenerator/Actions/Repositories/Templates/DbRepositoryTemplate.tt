@@ -13,6 +13,7 @@ using Havit.Data.Entity.Patterns.Repositories;
 using Havit.Data.Entity.Patterns.SoftDeletes;
 using Havit.Data.Patterns.DataEntries;
 using Havit.Data.Patterns.DataLoaders;
+using <#= Model.ModelClassNamespace #>;
 
 namespace <#= Model.NamespaceName #>
 {

@@ -80,7 +80,7 @@ namespace Havit.Data
 				if (ex != null)
 				{
 					SqlException sqlException = ex as SqlException;
-                    if (sqlException != null)
+					if (sqlException != null)
 					{
 						// Enumerate through all errors found in the exception.
 						foreach (SqlError err in sqlException.Errors)
@@ -156,7 +156,19 @@ namespace Havit.Data
 									break;
 							}
 						}
+
+					// JK: Dopňujeme řešení timeout výjimky, která je způsobena infrastrukturou. Nechceme řešit timeout samotného vykonávání dotazu. 
+					// Test pomocí sqlException.Data.Contains("RoutingDestionation") není dostatečný, RoutingDestination se dostává do více výjimek.
+						
+					// System.Data.SqlClient.SqlException(0x80131904): Timeout expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+					// This failure occurred while attempting to connect to the routing destination. The duration spent while attempting to connect to the original server was -
+					// [Pre - Login] initialization = 48; handshake = 98; [Login] initialization=0; authentication=10; [Post-Login] complete=18; 					
+					if ((sqlException.Number == (int)ProcessNetLibErrorCode.Timeout) && ex.Message.Contains("This failure occurred while attempting to connect to the routing destination."))
+					{
+						return true;
 					}
+				}
+
 					// JK: TimeoutException neopakujeme
 					//else if (ex is TimeoutException)
 					//{
@@ -171,9 +183,9 @@ namespace Havit.Data
 					//		return this.IsTransient(entityException.InnerException);
 					//	}
 					//}
-			}
+				}
 
-			return false;
+				return false;
 			}
 
 			#endregion

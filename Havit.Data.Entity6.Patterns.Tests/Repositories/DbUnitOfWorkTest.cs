@@ -49,6 +49,88 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 		}
 
 		[TestMethod]
+		public void DbUnitOfWork_Commit_CanBeCalledMultipleTimes()
+		{
+			// Arrange
+			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(new TestDbContext(), new SoftDeleteManager(new ServerTimeService()));
+
+			Language language = new Language();
+			language.Culture = "";
+			language.UiCulture = "";
+
+			// Act
+			dbUnitOfWork.AddForInsert(language);
+			dbUnitOfWork.Commit();
+
+			dbUnitOfWork.Commit();
+
+			// Assert
+			// No exception was thrown.
+		}
+
+		[TestMethod]
+		public async Task DbUnitOfWork_CommitAsync_CanBeCalledMultipleTimes()
+		{
+			// Arrange
+			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(new TestDbContext(), new SoftDeleteManager(new ServerTimeService()));
+
+			Language language = new Language();
+			language.Culture = "";
+			language.UiCulture = "";
+			
+			// Act
+			dbUnitOfWork.AddForInsert(language);
+			await dbUnitOfWork.CommitAsync();
+
+			await dbUnitOfWork.CommitAsync();
+
+			// Assert
+			// No exception was thrown.
+		}
+
+		[TestMethod]
+		public void DbUnitOfWork_Commit_ClearsKnownChanges()
+		{
+			// Arrange
+			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(new TestDbContext(), new SoftDeleteManager(new ServerTimeService()));
+
+			// Act
+			Language language = new Language();
+			language.Culture = "";
+			language.UiCulture = "";
+			dbUnitOfWork.AddForInsert(language);
+			dbUnitOfWork.Commit();
+
+			Changes allKnownChanges = dbUnitOfWork.GetAllKnownChanges();
+
+			// Assert
+			Assert.AreEqual(0, allKnownChanges.Deletes.Length, "Deletes contains a registered change.");
+			Assert.AreEqual(0, allKnownChanges.Inserts.Length, "Inserts contains a registered change.");
+			Assert.AreEqual(0, allKnownChanges.Updates.Length, "Updates contains a registered change.");
+		}
+
+		[TestMethod]
+		public async Task DbUnitOfWork_CommitAsync_ClearsKnownChanges()
+		{
+			// Arrange
+			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(new TestDbContext(), new SoftDeleteManager(new ServerTimeService()));
+
+			// Act
+			Language language = new Language();
+			language.Culture = "";
+			language.UiCulture = "";
+			dbUnitOfWork.AddForInsert(language);
+			await dbUnitOfWork.CommitAsync();
+
+			Changes allKnownChanges = dbUnitOfWork.GetAllKnownChanges();
+
+			// Assert
+			Assert.AreEqual(0, allKnownChanges.Deletes.Length, "Deletes contains a registered change.");
+			Assert.AreEqual(0, allKnownChanges.Inserts.Length, "Inserts contains a registered change.");
+			Assert.AreEqual(0, allKnownChanges.Updates.Length, "Updates contains a registered change.");
+		}
+
+		[TestMethod]
 		public void DbUnitOfWork_Commit_CallsBeforeCommitAndAfterCommitInOrder()
 		{
 			// Arrange

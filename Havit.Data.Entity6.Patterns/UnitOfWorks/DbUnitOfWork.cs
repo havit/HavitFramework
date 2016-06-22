@@ -17,8 +17,6 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 	/// </summary>
 	public class DbUnitOfWork : IUnitOfWork, IUnitOfWorkAsync
 	{
-		private bool commited = false;
-
 		private List<Action> afterCommits = null;
 
 		private readonly HashSet<object> insertRegistrations = new HashSet<object>();
@@ -52,13 +50,10 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 		/// </summary>
 		public void Commit()
 		{
-			VerifyNotCommited();
-
 			BeforeCommit();
 			DbContext.SaveChanges();
+			ClearRegistrationHashSets();
 			AfterCommit();
-
-			commited = true;
 		}
 
 		/// <summary>
@@ -66,21 +61,25 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 		/// </summary>
 		public async Task CommitAsync()
 		{
-			VerifyNotCommited();
-
 			BeforeCommit();
 			await DbContext.SaveChangesAsync();
+			ClearRegistrationHashSets();
 			AfterCommit();
-
-			commited = true;
 		}
 
 		/// <summary>
-		/// Spuštěno před commitem.
-		/// </summary>
+	/// Spuštěno před commitem.
+	/// </summary>
 		protected internal virtual void BeforeCommit()
 		{
 			// NOOP
+		}
+
+		private void ClearRegistrationHashSets()
+		{
+			insertRegistrations.Clear();
+			updateRegistrations.Clear();
+			deleteRegistrations.Clear();
 		}
 
 		/// <summary>
@@ -109,8 +108,6 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 		/// </summary>
 		protected internal Changes GetRegisteredChanges()
 		{
-			VerifyNotCommited();
-
 			return new Changes
 			{
 				Inserts = insertRegistrations.ToArray(),
@@ -124,8 +121,6 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 		/// </summary>
 		protected internal Changes GetAllKnownChanges()
 		{
-			VerifyNotCommited();
-
 			return new Changes
 			{
 				Inserts = DbContext.GetObjectsInState(EntityState.Added).Union(insertRegistrations).ToArray(),
@@ -140,7 +135,6 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 		public void AddForInsert<TEntity>(TEntity entity)
 			where TEntity : class
 		{
-			VerifyNotCommited();
 			PerformAddForInsert(entity);
 		}
 
@@ -150,7 +144,6 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 		public void AddRangeForInsert<TEntity>(IEnumerable<TEntity> entities)
 			where TEntity : class
 		{
-			VerifyNotCommited();
 			PerformAddForInsert<TEntity>(entities.ToArray());
 		}
 
@@ -160,7 +153,6 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 		public void AddForUpdate<TEntity>(TEntity entity)
 			where TEntity : class
 		{
-			VerifyNotCommited();
 			PerformAddForUpdate(entity);
 		}
 
@@ -170,7 +162,6 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 		public void AddRangeForUpdate<TEntity>(IEnumerable<TEntity> entities)
 			where TEntity : class
 		{
-			VerifyNotCommited();
 			PerformAddForUpdate<TEntity>(entities.ToArray());
 		}
 
@@ -181,7 +172,6 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 		public void AddForDelete<TEntity>(TEntity entity)
 			where TEntity : class
 		{
-			VerifyNotCommited();
 			PerformAddForDelete(entity);
 		}
 
@@ -192,7 +182,6 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 		public void AddRangeForDelete<TEntity>(IEnumerable<TEntity> entities)
 			where TEntity : class
 		{
-			VerifyNotCommited();
 			PerformAddForDelete<TEntity>(entities.ToArray());
 		}
 
@@ -268,17 +257,6 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 		protected object[] GetNotRegisteredChanges()
 		{
 			return DbContext.GetObjectsInState(EntityState.Added | EntityState.Modified | EntityState.Deleted).Except(insertRegistrations).Except(updateRegistrations).Except(deleteRegistrations).ToArray();
-		}
-
-		/// <summary>
-		/// Kontroluje, zda již došlo ke commitu UoW. Pokud již došlo ke commitu, vyhazuje výjimku. Jinak nic.
-		/// </summary>
-		protected void VerifyNotCommited()
-		{
-			if (commited)
-			{
-				throw new InvalidOperationException("UnitOfWork has been already commited.");
-			}
 		}
 	}
 }

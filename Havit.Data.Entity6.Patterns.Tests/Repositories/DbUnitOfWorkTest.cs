@@ -181,38 +181,6 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(InvalidOperationException))]
-		public void DbUnitOfWork_Commit_ThrowsExceptionWhenAlreadyCommited()
-		{
-			// Arrange
-			Mock<IDbContext> mockDbContext = new Mock<IDbContext>();
-			Mock<ISoftDeleteManager> mockSoftDeleteManager = new Mock<ISoftDeleteManager>();
-			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(mockDbContext.Object, mockSoftDeleteManager.Object);
-
-			// Act
-			dbUnitOfWork.Commit();
-			dbUnitOfWork.Commit();
-
-			// Assert by method attribute
-		}
-
-		[TestMethod]
-		[ExpectedException(typeof(InvalidOperationException))]
-		public async Task DbUnitOfWork_CommitAsync_ThrowsExceptionWhenAlreadyCommited()
-		{
-			// Arrange
-			Mock<IDbContext> mockDbContext = new Mock<IDbContext>();
-			Mock<ISoftDeleteManager> mockSoftDeleteManager = new Mock<ISoftDeleteManager>();
-			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(mockDbContext.Object, mockSoftDeleteManager.Object);
-
-			// Act
-			await dbUnitOfWork.CommitAsync();
-			await dbUnitOfWork.CommitAsync();
-
-			// Assert by method attribute
-		}
-
-		[TestMethod]
 		public void DbUnitOfWork_AddForInsert_EnsuresObjectIsRegistered()
 		{
 			// Arrange

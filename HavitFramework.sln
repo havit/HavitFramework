@@ -48,6 +48,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HavitTest", "HavitTest\HavitTest.csproj", "{9F79CB68-4B61-48E2-A9E5-B545A65BAC89}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HavitTestConsoleApplication", "HavitTestConsoleApplication\HavitTestConsoleApplication.csproj", "{9D368EE4-AE81-4B73-B617-DDA5A94410FF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{28BB8E7F-089E-494E-9F11-6088C36DD4D0} = {28BB8E7F-089E-494E-9F11-6088C36DD4D0}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TracingTest", "TracingTest\TracingTest.csproj", "{8205CE30-EB5C-42FD-927D-723500F1028B}"
 EndProject

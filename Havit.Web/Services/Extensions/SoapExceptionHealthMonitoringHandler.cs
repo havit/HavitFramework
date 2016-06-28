@@ -14,68 +14,45 @@ namespace Havit.Web.Services.Extensions
 	/// Pozor, toto nefunguje (a chyby healthmonitoringu tak nejsou oznamovány),
 	/// pokud se webové služby testují v browseru!!! Pro testování nutno použít skutečného klienta webové služby (třeba service reference v konzolovce).
 	/// </summary>
-	public class SoapExceptionHealthMonitoringHandler : System.Web.Services.Protocols.SoapExtension
+	public class SoapExceptionHealthMonitoringHandler : SoapExceptionExceptionHandler
 	{
-		#region ProcessMessage
+		#region ProcessMessageException
 		/// <summary>
-		/// When overridden in a derived class, allows a SOAP extension to receive a <see cref="T:System.Web.Services.Protocols.SoapMessage"/> to process at each <see cref="T:System.Web.Services.Protocols.SoapMessageStage"/>.
+		/// Zpracovává SoapMessage, která obsahuje výjimku.
+		/// Volá ShouldRaiseEvent a pokud je vráceno true, volá RaiseEvent.
 		/// </summary>
-		/// <param name="message">The <see cref="T:System.Web.Services.Protocols.SoapMessage"/> to process. </param>
-		public override void ProcessMessage(System.Web.Services.Protocols.SoapMessage message)
+		protected override sealed void ProcessMessageException(SoapMessage message)
 		{
-			try
+			Exception exception = message.Exception.InnerException;
+			if (exception != null)
 			{
-				if ((message != null) && (message.Stage == SoapMessageStage.AfterSerialize))
+				if (ShouldRaiseEvent(exception))
 				{
-					if (message.Exception != null)
-					{						
-						new WebRequestErrorEventExt(message.Exception.Message, message, message.Exception, HttpContext.Current).Raise();
-					}
+					RaiseEvent(message, exception);
 				}
 			}
-			catch // pokud by zde nedejbože došlo k nějaké další výjimce, tak ji zamaskujeme
-			{
-				// NOOP
-			}
 		}
 		#endregion
 
-		#region GetInitializer
+		#region ShouldRaiseEvent
 		/// <summary>
-		/// When overridden in a derived class, allows a SOAP extension to initialize data specific to a class implementing an XML Web service at a one time performance cost.
+		/// Vrací true, pokud má dojít k vyvolání událost v metodě RaiseEvent.
+		/// Implementace vrací vždy true.
 		/// </summary>
-		/// <returns>
-		/// The <see cref="T:System.Object"/> that the SOAP extension initializes for caching.
-		/// </returns>
-		/// <param name="serviceType">The type of the class implementing the XML Web service to which the SOAP extension is applied. </param>
-		public override object GetInitializer(Type serviceType)
+		protected virtual bool ShouldRaiseEvent(Exception exception)
 		{
-			return null;
-		}
-
-		/// <summary>
-		/// When overridden in a derived class, allows a SOAP extension to initialize data specific to an XML Web service method using an attribute applied to the XML Web service method at a one time performance cost.
-		/// </summary>
-		/// <returns>
-		/// The <see cref="T:System.Object"/> that the SOAP extension initializes for caching.
-		/// </returns>
-		/// <param name="methodInfo">A <see cref="T:System.Web.Services.Protocols.LogicalMethodInfo"/> representing the specific function prototype for the XML Web service method to which the SOAP extension is applied. </param><param name="attribute">The <see cref="T:System.Web.Services.Protocols.SoapExtensionAttribute"/> applied to the XML Web service method. </param>
-		public override object GetInitializer(LogicalMethodInfo methodInfo, SoapExtensionAttribute attribute)
-		{
-			return null;
+			return true;
 		}
 		#endregion
 
-		#region Initialize
+		#region RaiseEvent
 		/// <summary>
-		/// When overridden in a derived class, allows a SOAP extension to initialize itself using the data cached in the <see cref="M:System.Web.Services.Protocols.SoapExtension.GetInitializer(System.Web.Services.Protocols.LogicalMethodInfo,System.Web.Services.Protocols.SoapExtensionAttribute)"/> method.
+		/// Vyvolá událost vytvořením WebRequestErrorEventExt a zavoláním Raise.
 		/// </summary>
-		/// <param name="initializer">The <see cref="T:System.Object"/> returned from <see cref="M:System.Web.Services.Protocols.SoapExtension.GetInitializer(System.Web.Services.Protocols.LogicalMethodInfo,System.Web.Services.Protocols.SoapExtensionAttribute)"/> cached by ASP.NET. </param>
-		public override void Initialize(object initializer)
+		protected virtual void RaiseEvent(SoapMessage message, Exception exception)
 		{
-			// NOOP
+			new WebRequestErrorEventExt(exception.Message, message, exception, HttpContext.Current).Raise();
 		}
 		#endregion
 	}
-
 }

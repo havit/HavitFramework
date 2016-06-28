@@ -1,1 +1,1 @@
-﻿<%@ WebService Language="C#" CodeBehind="WebServiceExceptionTest.asmx.cs" Class="WebApplicationTest.SystemWebTests.WebServiceExceptionTest" %>
+﻿<%@ WebService Language="C#" CodeBehind="WebServiceExceptionTest.asmx.cs" Class="Havit.WebApplicationTest.SystemWebTests.WebServiceExceptionTest" %>

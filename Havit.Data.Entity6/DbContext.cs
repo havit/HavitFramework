@@ -82,7 +82,7 @@ namespace Havit.Data.Entity
 			// Použijeme proto vlastní konvenci, která toto řeší (a řeší i pojmenování indexu).
 			modelBuilder.Conventions.Remove<System.Data.Entity.ModelConfiguration.Conventions.ForeignKeyIndexConvention>();
 			modelBuilder.Conventions.Add<ForeignKeyIndexConvention>();
-
+			
 			// Pro sloupce pojmenované "Symbol" automaticky vytvoří unikátní index.
 			modelBuilder.Conventions.Add<SymbolPropertyIndexConvention>();
 
@@ -171,6 +171,18 @@ namespace Havit.Data.Entity
 			this.Entry(entity).State = entityState;
 		}
 
+		public bool IsEntityReferenceLoaded<TEntity>(TEntity entity, string propertyName)
+			where TEntity : class
+		{
+			return Entry(entity).Reference(propertyName).IsLoaded;
+		}
+
+		public bool IsEntityCollectionLoaded<TEntity>(TEntity entity, string propertyName)
+			where TEntity : class
+		{
+			return Entry(entity).Collection(propertyName).IsLoaded;
+		}
+
 		/// <summary>
 		/// Uloží evidované změny.
 		/// </summary>
@@ -186,5 +198,6 @@ namespace Havit.Data.Entity
 		{
 			return this.SaveChangesAsync();
 		}
+
 	}
 }

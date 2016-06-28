@@ -21,7 +21,6 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 	public partial class DbDataLoader : IDataLoader, IDataLoaderAsync
 	{
 		private readonly IDbContext dbContext;
-		private readonly HashSet<object> alreadyLoadedCollectionInstances = new HashSet<object>();
 
 		/// <summary>
 		/// Konstructor.
@@ -296,7 +295,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 			Expression<Func<TEntity, TProperty>> propertyPath = GetPropertyLambdaExpression<TEntity, TProperty>(propertyName);
 			Func<TEntity, TProperty> propertyPathLambda = propertyPath.Compile();
 
-			List<int> ids = GetEntitiesIdsToLoadProperty(entities, propertyPathLambda, false);
+			List<int> ids = GetEntitiesIdsToLoadProperty(entities, propertyName, false);
 
 			if (ids.Count > 0)
 			{
@@ -317,7 +316,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 			Expression<Func<TEntity, TProperty>> propertyPath = GetPropertyLambdaExpression<TEntity, TProperty>(propertyName);
 			Func<TEntity, TProperty> propertyPathLambda = propertyPath.Compile();
 
-			List<int> ids = GetEntitiesIdsToLoadProperty(entities, propertyPathLambda, false);
+			List<int> ids = GetEntitiesIdsToLoadProperty(entities, propertyName, false);
 
 			if (ids.Count > 0)
 			{
@@ -339,7 +338,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 			Expression<Func<TEntity, TPropertyCollection>> propertyPath = GetPropertyLambdaExpression<TEntity, TPropertyCollection>(propertyName);
 			Func<TEntity, TPropertyCollection> propertyPathLambda = propertyPath.Compile();
 
-			List<int> ids = GetEntitiesIdsToLoadProperty(entities, propertyPathLambda, true);
+			List<int> ids = GetEntitiesIdsToLoadProperty(entities, propertyName, true);
 
 			if (ids.Count > 0)
 			{
@@ -347,7 +346,6 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 				loadQuery.Load();
 			}
 
-			InsertLoadedCollectionInstancesToAlreadyLoadedCollectionInstances(entities, propertyPathLambda);
 			if (unwrapCollection)
 			{
 				return entities.SelectMany(item => (IEnumerable<TPropertyItem>)propertyPathLambda(item)).ToArray();
@@ -369,15 +367,13 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 			Expression<Func<TEntity, TPropertyCollection>> propertyPath = GetPropertyLambdaExpression<TEntity, TPropertyCollection>(propertyName);
 			Func<TEntity, TPropertyCollection> propertyPathLambda = propertyPath.Compile();
 
-			List<int> ids = GetEntitiesIdsToLoadProperty(entities, propertyPathLambda, true);
+			List<int> ids = GetEntitiesIdsToLoadProperty(entities, propertyName, true);
 
 			if (ids.Count > 0)
 			{
 				IQueryable loadQuery = GetLoadQuery(propertyPath, ids, true);
 				await loadQuery.LoadAsync();
 			}
-
-			InsertLoadedCollectionInstancesToAlreadyLoadedCollectionInstances(entities, propertyPathLambda);
 
 			TPropertyItem[] result = entities.SelectMany(item => (IEnumerable<TPropertyItem>)propertyPathLambda(item)).ToArray();
 			return result;
@@ -386,13 +382,12 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 		/// <summary>
 		/// Vrátí seznam Id objektů, jejichž vlastnost má být načtena.
 		/// </summary>
-		private List<int> GetEntitiesIdsToLoadProperty<TEntity, TProperty>(TEntity[] entities, Func<TEntity, TProperty> propertyPathLambda, bool isPropertyCollection)
+		private List<int> GetEntitiesIdsToLoadProperty<TEntity>(TEntity[] entities, string propertyName, bool isPropertyCollection)
 			where TEntity : class
-			where TProperty : class
 		{
 			IEnumerable<TEntity> entitiesToLoadQuery = isPropertyCollection
-				? entities.Where(item => propertyPathLambda(item) == null || !alreadyLoadedCollectionInstances.Contains(propertyPathLambda(item)))
-				: entities.Where(item => propertyPathLambda(item) == null);
+				? entities.Where(item => !dbContext.IsEntityCollectionLoaded(item, propertyName))
+				: entities.Where(item => !dbContext.IsEntityReferenceLoaded(item, propertyName));
 
 			return entitiesToLoadQuery.Select(entity => EntityHelper.GetEntityId(entity)).Distinct().ToList();
 		}
@@ -469,15 +464,5 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 			}
 			return loadQuery;
 		}
-
-		/// <summary>
-		/// Vloží načtené instance kolekcí do AlreadyLoadedCollectionInstances.
-		/// </summary>
-		private void InsertLoadedCollectionInstancesToAlreadyLoadedCollectionInstances<TEntity, TProperty>(TEntity[] entities, Func<TEntity, TProperty> propertyPathLambda)
-		{
-			object[] collectionInstances = entities.Select(item => (object)propertyPathLambda(item)).ToArray();
-			alreadyLoadedCollectionInstances.UnionWith(collectionInstances);
-		}
-
 	}
 }

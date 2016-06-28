@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Infrastructure;
 using System.Threading.Tasks;
 
 namespace Havit.Data.Entity
@@ -49,6 +50,12 @@ namespace Havit.Data.Entity
 		/// Nastaví objekt do požadovaného stavu.
 		/// </summary>
 		void SetEntityState<TEntity>(TEntity entity, EntityState entityState)
+			where TEntity : class;
+
+		bool IsEntityReferenceLoaded<TEntity>(TEntity entity, string propertyName)
+			where TEntity : class;
+
+		bool IsEntityCollectionLoaded<TEntity>(TEntity entity, string propertyName)
 			where TEntity : class;
 	}
 }

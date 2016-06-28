@@ -229,6 +229,7 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 				.First();
 
 			Mock<IDbContext> mockDbContext = new Mock<IDbContext>();
+			mockDbContext.Setup(m => m.IsEntityReferenceLoaded<Child>(It.IsAny<Child>(), It.IsAny<string>())).Returns<Child, string>((entity, propertyName) => dbContext.IsEntityReferenceLoaded(entity, propertyName));
 			//mockDbContext.Setup(m => m.GetEntityState(child)).Returns(EntityState.Unchanged);
 
 			// Act
@@ -254,7 +255,7 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 			Mock<IDbContext> mockDbContext = new Mock<IDbContext>();
 			mockDbContext.Setup(m => m.Set<LoginAccount>()).Returns(dbContext.Set<LoginAccount>());
 			mockDbContext.Setup(m => m.Set<Role>()).Returns(dbContext.Set<Role>());
-			//mockDbContext.Setup(m => m.GetEntityState(loginAccount)).Returns(EntityState.Unchanged);
+			mockDbContext.Setup(m => m.IsEntityCollectionLoaded<LoginAccount>(It.IsAny<LoginAccount>(), It.IsAny<string>())).Returns<LoginAccount, string>((entity, propertyName) => dbContext.IsEntityCollectionLoaded(entity, propertyName));
 
 			// Act + Assert
 			IDataLoader dataLoader = new DbDataLoader(mockDbContext.Object);
@@ -285,6 +286,7 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 			Mock<IDbContext> mockDbContext = new Mock<IDbContext>();
 			mockDbContext.Setup(m => m.Set<Child>()).Returns(dbContext.Set<Child>());
 			mockDbContext.Setup(m => m.Set<Master>()).Returns(dbContext.Set<Master>());
+			mockDbContext.Setup(m => m.IsEntityCollectionLoaded<Master>(It.IsAny<Master>(), It.IsAny<string>())).Returns<Master, string>((entity, propertyName) => dbContext.IsEntityCollectionLoaded(entity, propertyName));
 			DataLoaders.DbDataLoader dbDataLoader = new DbDataLoader(mockDbContext.Object);
 
 			// Act + Assert

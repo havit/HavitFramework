@@ -171,12 +171,18 @@ namespace Havit.Data.Entity
 			this.Entry(entity).State = entityState;
 		}
 
+		/// <summary>
+		/// Vrací true, pokud je daná vlastnost na entitě načtena.
+		/// </summary>
 		public bool IsEntityReferenceLoaded<TEntity>(TEntity entity, string propertyName)
 			where TEntity : class
 		{
 			return Entry(entity).Reference(propertyName).IsLoaded;
 		}
 
+		/// <summary>
+		/// Vrací true, pokud je daná vlastnost (kolekce) na entitě načtena.
+		/// </summary>
 		public bool IsEntityCollectionLoaded<TEntity>(TEntity entity, string propertyName)
 			where TEntity : class
 		{

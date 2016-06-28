@@ -52,9 +52,15 @@ namespace Havit.Data.Entity
 		void SetEntityState<TEntity>(TEntity entity, EntityState entityState)
 			where TEntity : class;
 
+		/// <summary>
+		/// Vrací true, pokud je daná vlastnost na entitě načtena.
+		/// </summary>
 		bool IsEntityReferenceLoaded<TEntity>(TEntity entity, string propertyName)
 			where TEntity : class;
 
+		/// <summary>
+		/// Vrací true, pokud je daná vlastnost (kolekce) na entitě načtena.
+		/// </summary>
 		bool IsEntityCollectionLoaded<TEntity>(TEntity entity, string propertyName)
 			where TEntity : class;
 	}

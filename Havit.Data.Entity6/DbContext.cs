@@ -72,9 +72,6 @@ namespace Havit.Data.Entity
 			// Ze zvyku chceme mít pojmenovaný klíč jako "TabulkaId", proto přidáme konvenci, která toto řeší.
 			modelBuilder.Conventions.Add<PrefixTableNameToPrimaryKeyNamingConvention>();
 
-			// Vlastnosti typu string nechceme nechat mít hodnoty null, abychom nemuseli rozlišovat při dotazování řešit či rozlišovat null a prázdný text.
-			modelBuilder.Conventions.Add<RequiredStringPropertiesConvention>();
-
 			// Podpora nastavení datového typu Date pomocí atributu.
 			modelBuilder.Conventions.Add<DataTypePropertyAttributeConvention>();
 

@@ -59,6 +59,24 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		protected DbSet<TEntity> DbSet { get; private set; }
 
 		/// <summary>
+		/// Vrací data z datového zdroje jako IQueryable.
+		/// Pokud zdroj obsahuje záznamy smazané příznakem, jsou odfiltrovány (nejsou v datech).
+		/// </summary>
+		protected IQueryable<TEntity> Data
+		{
+			get { return DbSet.WhereNotDeleted(this.SoftDeleteManager); }
+		}
+
+		/// <summary>
+		/// Vrací data z datového zdroje jako IQueryable.
+		/// Pokud zdroj obsahuje záznamy smazané příznakem, jsou součástí dat.
+		/// </summary>
+		protected IQueryable<TEntity> DataWithDeleted
+		{
+			get { return DbSet.AsQueryable(); }
+		}
+
+		/// <summary>
 		/// SoftDeleteManager používaný repository.
 		/// </summary>
 		protected ISoftDeleteManager SoftDeleteManager { get; private set; }

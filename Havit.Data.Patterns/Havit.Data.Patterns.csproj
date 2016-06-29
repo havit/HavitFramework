@@ -87,7 +87,6 @@
     <Compile Include="Localizations\ILocalizationService.cs" />
     <Compile Include="Localizations\LanguageService.cs" />
     <Compile Include="Localizations\LocalizationService.cs" />
-    <Compile Include="QueryServices\IDataSourceSoftDelete.cs" />
     <Compile Include="QueryServices\IDataSourceFactory.cs" />
     <Compile Include="QueryServices\IDataSource.cs">
       <SubType>Code</SubType>

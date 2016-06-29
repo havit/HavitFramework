@@ -86,24 +86,10 @@ namespace Havit.Data.Patterns.DataEntries
 
 			IDataSource<TEntity> dataSource = dataSourceFactory.Create();
 
-			IDataSourceSoftDelete<TEntity> dataSourceSoftDelete = dataSource as IDataSourceSoftDelete<TEntity>;
-			bool originalIncludeDeleted = false;
-			
 			Dictionary<string, int> result;
 			try
 			{
-				if (dataSourceSoftDelete != null) 
-				{
-					originalIncludeDeleted = dataSourceSoftDelete.IncludeDeleted;
-					dataSourceSoftDelete.IncludeDeleted = true; // set IncludeDeleted
-				}
-
-				result = dataSource.Data.Where(whereExpression).Select(projectionExpression).ToDictionary(item => item.Symbol, item => item.Id);
-
-				if (dataSourceSoftDelete != null)
-				{
-					dataSourceSoftDelete.IncludeDeleted = originalIncludeDeleted; // return original value to IncludeDeleted 
-				}
+				result = dataSource.DataWithDeleted.Where(whereExpression).Select(projectionExpression).ToDictionary(item => item.Symbol, item => item.Id);
 			}
 			finally
 			{

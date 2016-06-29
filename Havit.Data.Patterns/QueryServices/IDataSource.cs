@@ -8,8 +8,15 @@ namespace Havit.Data.Patterns.QueryServices
 	public interface IDataSource<TSource>
 	{
 		/// <summary>
-		/// Vrací data z datového zdroje.
+		/// Vrací data z datového zdroje jako IQueryable.
+		/// Pokud zdroj obsahuje záznamy smazané příznakem, jsou odfiltrovány (nejsou v datech).
 		/// </summary>
 		IQueryable<TSource> Data { get; }
+
+		/// <summary>
+		/// Vrací data z datového zdroje jako IQueryable.
+		/// Pokud zdroj obsahuje záznamy smazané příznakem, jsou součástí dat.
+		/// </summary>
+		IQueryable<TSource> DataWithDeleted { get; }
 	}
 }

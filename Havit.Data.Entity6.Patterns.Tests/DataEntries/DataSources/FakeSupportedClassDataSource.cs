@@ -4,7 +4,7 @@ using Havit.Data.Patterns.QueryServices;
 
 namespace Havit.Data.Entity.Patterns.Tests.DataEntries.DataSources
 {
-	public class FakeSupportedClassDataSource : FakeDataSource<SupportedClass>, IDataSourceSoftDelete<SupportedClass>
+	public class FakeSupportedClassDataSource : FakeDataSource<SupportedClass>
 	{
 		public FakeSupportedClassDataSource(params SupportedClass[] data)
 			: base(data)

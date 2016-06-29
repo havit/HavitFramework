@@ -15,7 +15,7 @@ namespace Havit.Data.Entity.Patterns.Tests.QueryServices
 	public class DbDataSourceTest
 	{
 		[TestMethod]
-		public void DbDataSource_ToList_IncludesDeleted()
+		public void DbDataSource_DataWithDeleted_IncludesDeleted()
 		{
 			// Arrange
 			TestDbContext dbContext = new TestDbContext();
@@ -31,15 +31,14 @@ namespace Havit.Data.Entity.Patterns.Tests.QueryServices
 
 			// Act
 			DbDataSource<ItemWithDeleted> dataSource = new DbItemWithDeletedDataSource(dbContext, new SoftDeleteManager(new ServerTimeService()));
-			dataSource.IncludeDeleted = true;
-			List<ItemWithDeleted> result = dataSource.Data.ToList();			
+			List<ItemWithDeleted> result = dataSource.DataWithDeleted.ToList();			
 
 			// Assert
 			Assert.AreEqual(2, result.Count);
 		}
 
 		[TestMethod]
-		public void DbDataSource_ToList_ExcludesDeleted()
+		public void DbDataSource_Data_ExcludesDeleted()
 		{
 			// Arrange
 			TestDbContext dbContext = new TestDbContext();
@@ -62,7 +61,7 @@ namespace Havit.Data.Entity.Patterns.Tests.QueryServices
 		}
 
 		[TestMethod]
-		public async Task DbDataSource_ToAsyncList_ExcludesDeleted()
+		public async Task DbDataSource_DataList_ExcludesDeleted()
 		{
 			// Arrange
 			TestDbContext dbContext = new TestDbContext();
@@ -85,7 +84,7 @@ namespace Havit.Data.Entity.Patterns.Tests.QueryServices
 		}
 
 		[TestMethod]
-		public void DbDataSource_Count_ExcludesDeleted()
+		public void DbDataSource_DataCount_ExcludesDeleted()
 		{
 			// Arrange
 			TestDbContext dbContext = new TestDbContext();
@@ -108,7 +107,7 @@ namespace Havit.Data.Entity.Patterns.Tests.QueryServices
 		}
 
 		[TestMethod]
-		public async Task DbDataSource_CountAsync_ExcludesDeleted()
+		public async Task DbDataSource_DataCountAsync_ExcludesDeleted()
 		{
 			// Arrange
 			TestDbContext dbContext = new TestDbContext();
@@ -150,44 +149,15 @@ namespace Havit.Data.Entity.Patterns.Tests.QueryServices
 			int count1 = dataSource.Data.Count();
 			int count2 = dataSource.Data.Count();
 			int count3 = dataSource.Data.Count();
+			int count4 = dataSource.DataWithDeleted.Count();
+			int count5 = dataSource.DataWithDeleted.Count();
 
 			// Assert
 			Assert.AreEqual(1, count1);
 			Assert.AreEqual(1, count2);
 			Assert.AreEqual(1, count3);
-		}
-
-		[TestMethod]
-		public void DbDataSource_IsReusableWithIncludeDeletedChange()
-		{
-			// Arrange
-			TestDbContext dbContext = new TestDbContext();
-			dbContext.Database.Initialize(true);
-
-			ItemWithDeleted deletedItem = new ItemWithDeleted { Deleted = DateTime.Now };
-			ItemWithDeleted notDeletedItem = new ItemWithDeleted { Deleted = null };
-
-			dbContext.Set<ItemWithDeleted>().Add(deletedItem);
-			dbContext.Set<ItemWithDeleted>().Add(notDeletedItem);
-
-			dbContext.SaveChanges();
-
-			// Act
-			DbDataSource<ItemWithDeleted> dataSource = new DbItemWithDeletedDataSource(dbContext, new SoftDeleteManager(new ServerTimeService()));
-			dataSource.IncludeDeleted = false;
-			int count1 = dataSource.Data.Count();
-			dataSource.IncludeDeleted = true;
-			int count2 = dataSource.Data.Count();
-			dataSource.IncludeDeleted = false;
-			int count3 = dataSource.Data.Count();
-			dataSource.IncludeDeleted = true;
-			int count4 = dataSource.Data.Count();
-
-			// Assert
-			Assert.AreEqual(1, count1);
-			Assert.AreEqual(2, count2);
-			Assert.AreEqual(1, count3);
 			Assert.AreEqual(2, count4);
+			Assert.AreEqual(2, count5);
 		}
 
 		[TestMethod]

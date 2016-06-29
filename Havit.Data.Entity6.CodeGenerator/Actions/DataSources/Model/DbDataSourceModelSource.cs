@@ -25,7 +25,7 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.DataSources.Model
 				{
 					NamespaceName = GetNamespaceName(registeredEntity.NamespaceName),
 					InterfaceDataSourceFullName = "I" + registeredEntity.ClassName + "DataSource",
-					DbDataSourceClassName = "Db" + registeredEntity.ClassName + "DataSource",
+					DbDataSourceClassName = registeredEntity.ClassName + "DbDataSource",
 					ModelClassFullName = registeredEntity.FullName
 				}).ToList();
 		}

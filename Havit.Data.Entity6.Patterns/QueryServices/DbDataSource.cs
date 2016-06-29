@@ -15,7 +15,8 @@ namespace Havit.Data.Entity.Patterns.QueryServices
 		private readonly IQueryable<TEntity> dbSet;
 
 		/// <summary>
-		/// Data z datového zdroje jako IQueryable.
+		/// Vrací data z datového zdroje jako IQueryable.
+		/// Pokud zdroj obsahuje záznamy smazané příznakem, jsou odfiltrovány (nejsou v datech).
 		/// </summary>
 		public IQueryable<TEntity> Data
 		{
@@ -25,6 +26,10 @@ namespace Havit.Data.Entity.Patterns.QueryServices
 			}
 		}
 
+		/// <summary>
+		/// Vrací data z datového zdroje jako IQueryable.
+		/// Pokud zdroj obsahuje záznamy smazané příznakem, jsou součástí dat.
+		/// </summary>
 		public IQueryable<TEntity> DataWithDeleted
 		{
 			get

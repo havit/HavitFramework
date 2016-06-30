@@ -17,6 +17,7 @@ namespace Havit.Data.Entity
 		bool AutoDetectChangesEnabled { get; set; }
 
 		/// <summary>
+		/// Vrací DbSet pro danou entitu.
 		/// </summary>
 		DbSet<TEntity> Set<TEntity>()
 			where TEntity : class;
@@ -72,8 +73,5 @@ namespace Havit.Data.Entity
 		/// </summary>
 		bool IsEntityCollectionLoaded<TEntity>(TEntity entity, string propertyName)
 			where TEntity : class;
-
-
-
 	}
 }

@@ -28,6 +28,10 @@ namespace Havit.Data.Entity.Patterns.Repositories
 
 		private TEntity[] _all;
 
+		/// <summary>
+		/// Přístup k lokálním objektům v dictionary v konstatním čase.
+		/// Dictionary je vytvořena až při použití této vlastnosti, od té doby je též udržována.
+		/// </summary>
 		protected internal Dictionary<int, TEntity> DbSetLocalsDictionary
 		{
 			get

@@ -28,7 +28,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 
 		private TEntity[] _all;
 
-		internal Dictionary<int, TEntity> DbSetLocalsDictionary
+		protected internal Dictionary<int, TEntity> DbSetLocalsDictionary
 		{
 			get
 			{
@@ -36,22 +36,10 @@ namespace Havit.Data.Entity.Patterns.Repositories
 				{
 					_dbSetLocalsDictionary = DbSet.Local.Where(EntityNotInAddedState).ToDictionary(entity => EntityHelper.GetEntityId(entity));
 				}
-				//if (_additionalDbSetLocalEntities != null)
-				//{
-				//	foreach (TEntity entity in _additionalDbSetLocalEntities)
-				//	{
-				//		if (EntityNotInAddedState(entity))
-				//		{
-				//			_dbSetLocalsDictionary.Add(EntityHelper.GetEntityId(entity), entity);
-				//		}
-				//	}
-				//	_additionalDbSetLocalEntities = null;
-				//}
 				return _dbSetLocalsDictionary;
 			}
 		}
 		private Dictionary<int, TEntity> _dbSetLocalsDictionary;
-		//private List<TEntity> _additionalDbSetLocalEntities;
 
 		/// <summary>
 		/// DbSet, nad kterým je DbRepository postaven.
@@ -109,14 +97,6 @@ namespace Havit.Data.Entity.Patterns.Repositories
 				switch (e.Action)
 				{
 					case NotifyCollectionChangedAction.Add:
-						// nemůžeme přidat nové objekty
-						// ale zde se ještě nemůžeme ptát na stav objektů, protože jinak přidání do DbSetu spadne
-						// takže si jen zaregistrujeme, že potřebujeme objekty přidat, a přidáme je, až při šahnutí na kolekci DbSetLocalsDictionary
-						//if (_additionalDbSetLocalEntities == null)
-						//{
-						//	_additionalDbSetLocalEntities = new List<TEntity>();
-						//}
-						//_additionalDbSetLocalEntities.AddRange(e.NewItems.Cast<TEntity>());
 						if (_dbSetLocalsDictionary != null)
 						{							
 							e.NewItems.Cast<TEntity>().Where(EntityNotInAddedState).ToList().ForEach(entity => _dbSetLocalsDictionary.Add(EntityHelper.GetEntityId(entity), entity));
@@ -151,12 +131,10 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		private void DbContext_AfterSaveChangesAction()
 		{
 			_dbSetLocalsDictionary = null;
-			//_additionalDbSetLocalEntities = null;
 		}
 
 		private bool EntityNotInAddedState(TEntity entity)
 		{
-			//return dbContext.GetEntityState(entity) != EntityState.Added; // toto bychom chtěli, ale je to příliš pomalé!
 			return EntityHelper.GetEntityId(entity) != default(int);
 		}
 
@@ -169,15 +147,10 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		{
 			Contract.Requires<ArgumentException>(id != default(int));
 
-			TEntity result;
-			if (!DbSetLocalsDictionary.TryGetValue(id, out result))
+			TEntity result = DbSet.Find(id);
+			if (result == null)
 			{
-				// TODO: Pokud je nový, nevracet jej!
-				result = DbSet.Find(id); // pokud objekt není v dictionary (a tudíž v DbSetu), načteme jej				
-				if (result == null)
-				{
-					ThrowObjectNotFoundException(id);
-				}
+				ThrowObjectNotFoundException(id);
 			}
 
 			LoadReferences(new TEntity[] { result });
@@ -193,14 +166,10 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		{
 			Contract.Requires<ArgumentException>(id != default(int));
 
-			TEntity result;
-			if (!DbSetLocalsDictionary.TryGetValue(id, out result))
+			TEntity result = await DbSet.FindAsync(id);
+			if (result == null)
 			{
-				result = await DbSet.FindAsync(id); // pokud objekt není v dictionary (a tudíž v DbSetu), načteme jej
-				if (result == null)
-				{
-					ThrowObjectNotFoundException(id);					
-				}
+				ThrowObjectNotFoundException(id);					
 			}
 
 			await LoadReferencesAsync(new TEntity[] { result });
@@ -223,8 +192,8 @@ namespace Havit.Data.Entity.Patterns.Repositories
 			{
 				Contract.Assert<ArgumentException>(id != default(int));
 
-				TEntity loadedEntity;
-				if (DbSetLocalsDictionary.TryGetValue(id, out loadedEntity))
+				TEntity loadedEntity = DbSet.Local.FirstOrDefault(item => EntityHelper.GetEntityId(item) == id);
+				if (loadedEntity != null)
 				{
 					result.Add(loadedEntity);
 				}
@@ -268,8 +237,8 @@ namespace Havit.Data.Entity.Patterns.Repositories
 			{
 				Contract.Assert<ArgumentException>(id != default(int));
 
-				TEntity loadedEntity;
-				if (DbSetLocalsDictionary.TryGetValue(id, out loadedEntity))
+				TEntity loadedEntity = DbSet.Local.FirstOrDefault(item => EntityHelper.GetEntityId(item) == id);
+				if (loadedEntity != null)
 				{
 					result.Add(loadedEntity);
 				}
@@ -306,7 +275,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		{			
 			if (_all == null)
 			{
-				_all = GetGetAllQuery().ToArray();
+				_all = Data.ToArray();
 				LoadReferences(_all);
 			}
 			return new List<TEntity>(_all);
@@ -321,7 +290,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		{
 			if (_all == null)
 			{
-				_all = await GetGetAllQuery().ToArrayAsync();
+				_all = await Data.ToArrayAsync();
 				await LoadReferencesAsync(_all);
 			}
 			return new List<TEntity>(_all);
@@ -353,14 +322,6 @@ namespace Havit.Data.Entity.Patterns.Repositories
 					Expression.Property(parameter, typeof(TEntity), "Id")), 
 				parameter);
 			return DbSet.Where(expression);
-		}
-
-		/// <summary>
-		/// Vrací dotaz pro GetAll/GetAllAsync.
-		/// </summary>
-		private IQueryable<TEntity> GetGetAllQuery()
-		{
-			return DbSet.WhereNotDeleted(SoftDeleteManager);
 		}
 
 		/// <summary>

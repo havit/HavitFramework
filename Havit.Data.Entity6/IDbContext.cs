@@ -12,7 +12,11 @@ namespace Havit.Data.Entity
 	public interface IDbContext
 	{
 		/// <summary>
-		/// Vrací DbSet pro danou entitu.
+		/// Zpřístupňuje Configuration.AutoDetectChangesEnabled.
+		/// </summary>
+		bool AutoDetectChangesEnabled { get; set; }
+
+		/// <summary>
 		/// </summary>
 		DbSet<TEntity> Set<TEntity>()
 			where TEntity : class;
@@ -53,6 +57,11 @@ namespace Havit.Data.Entity
 			where TEntity : class;
 
 		/// <summary>
+		/// Volá DetectChanges na ChangeTrackeru.
+		/// </summary>
+		void DetectChanges();
+
+		/// <summary>
 		/// Vrací true, pokud je daná vlastnost na entitě načtena.
 		/// </summary>
 		bool IsEntityReferenceLoaded<TEntity>(TEntity entity, string propertyName)
@@ -63,5 +72,8 @@ namespace Havit.Data.Entity
 		/// </summary>
 		bool IsEntityCollectionLoaded<TEntity>(TEntity entity, string propertyName)
 			where TEntity : class;
+
+
+
 	}
 }

@@ -201,6 +201,13 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 		protected virtual void PerformAddForUpdate<TEntity>(params TEntity[] entities)
 			where TEntity : class
 		{
+			var originalAutoDetectChangesEnabled = DbContext.AutoDetectChangesEnabled;
+			DbContext.AutoDetectChangesEnabled = false;
+			if (originalAutoDetectChangesEnabled)
+			{
+				DbContext.DetectChanges();
+			}
+
 			foreach (var entity in entities)
 			{
 				if (DbContext.GetEntityState(entity) == EntityState.Detached)
@@ -209,6 +216,8 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 				}
 			}
 			updateRegistrations.UnionWith(entities);
+
+			DbContext.AutoDetectChangesEnabled = originalAutoDetectChangesEnabled;
 		}
 
 		/// <summary>

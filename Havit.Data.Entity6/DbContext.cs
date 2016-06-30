@@ -142,48 +142,14 @@ namespace Havit.Data.Entity
 			afterSaveChangesActions.Add(action);
 		}
 
+		#region IDbContext interface explicit implementation
 		/// <summary>
-		/// Vrátí objekty v daném stavu.
-		/// </summary>		
-		public object[] GetObjectsInState(EntityState state)
-		{
-			return ((IObjectContextAdapter)this).ObjectContext.ObjectStateManager.GetObjectStateEntries(state).Select(item => item.Entity).ToArray();
-		}
-
-		/// <summary>
-		/// Vrací stav entity z change trackeru.
+		/// Zpřístupňuje Configuration.AutoDetectChangesEnabled.
 		/// </summary>
-		public EntityState GetEntityState<TEntity>(TEntity entity)
-			where TEntity : class
+		bool IDbContext.AutoDetectChangesEnabled
 		{
-			return Entry(entity).State;
-		}
-
-		/// <summary>
-		/// Nastaví objekt do požadovaného stavu.
-		/// </summary>
-		public void SetEntityState<TEntity>(TEntity entity, EntityState entityState)
-			where TEntity : class
-		{
-			this.Entry(entity).State = entityState;
-		}
-
-		/// <summary>
-		/// Vrací true, pokud je daná vlastnost na entitě načtena.
-		/// </summary>
-		public bool IsEntityReferenceLoaded<TEntity>(TEntity entity, string propertyName)
-			where TEntity : class
-		{
-			return Entry(entity).Reference(propertyName).IsLoaded;
-		}
-
-		/// <summary>
-		/// Vrací true, pokud je daná vlastnost (kolekce) na entitě načtena.
-		/// </summary>
-		public bool IsEntityCollectionLoaded<TEntity>(TEntity entity, string propertyName)
-			where TEntity : class
-		{
-			return Entry(entity).Collection(propertyName).IsLoaded;
+			get { return Configuration.AutoDetectChangesEnabled; }
+			set { Configuration.AutoDetectChangesEnabled = value; }
 		}
 
 		/// <summary>
@@ -202,5 +168,54 @@ namespace Havit.Data.Entity
 			return this.SaveChangesAsync();
 		}
 
+		/// <summary>
+		/// Vrátí objekty v daném stavu.
+		/// </summary>		
+		object[] IDbContext.GetObjectsInState(EntityState state)
+		{
+			return ((IObjectContextAdapter)this).ObjectContext.ObjectStateManager.GetObjectStateEntries(state).Select(item => item.Entity).ToArray();
+		}
+
+		/// <summary>
+		/// Vrací stav entity z change trackeru.
+		/// </summary>
+		EntityState IDbContext.GetEntityState<TEntity>(TEntity entity)
+		{
+			return Entry(entity).State;
+		}
+
+		/// <summary>
+		/// Nastaví objekt do požadovaného stavu.
+		/// </summary>
+		void IDbContext.SetEntityState<TEntity>(TEntity entity, EntityState entityState)
+		{
+			this.Entry(entity).State = entityState;
+		}
+
+		/// <summary>
+		/// Volá DetectChanges na ChangeTrackeru.
+		/// </summary>
+		void IDbContext.DetectChanges()
+		{
+			this.ChangeTracker.DetectChanges();
+		}
+
+		/// <summary>
+		/// Vrací true, pokud je daná vlastnost na entitě načtena.
+		/// </summary>
+		bool IDbContext.IsEntityReferenceLoaded<TEntity>(TEntity entity, string propertyName)
+		{
+			return Entry(entity).Reference(propertyName).IsLoaded;
+		}
+
+		/// <summary>
+		/// Vrací true, pokud je daná vlastnost (kolekce) na entitě načtena.
+		/// </summary>
+		bool IDbContext.IsEntityCollectionLoaded<TEntity>(TEntity entity, string propertyName)
+		{
+			return Entry(entity).Collection(propertyName).IsLoaded;
+		}
+
+		#endregion
 	}
 }

@@ -85,7 +85,7 @@ namespace Havit.Services.FileStorage
 		/// </summary>
 		public override IEnumerable<FileInfo> EnumerateFiles(string searchPattern = null)
 		{
-			var filesEnumerable = new System.IO.DirectoryInfo(storagePath).EnumerateFiles(searchPattern ?? "*", SearchOption.TopDirectoryOnly);
+			var filesEnumerable = new System.IO.DirectoryInfo(storagePath).EnumerateFiles(String.IsNullOrEmpty(searchPattern) ? "*" : searchPattern, SearchOption.TopDirectoryOnly);
 			return filesEnumerable.Select(fileInfo => new FileInfo
 			{
 				Name = fileInfo.Name,

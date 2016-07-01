@@ -76,6 +76,7 @@
     <Compile Include="DirectoryServices\ActiveDirectory\UserInfo.cs" />
     <Compile Include="FileStorage\AesEncryptionOption.cs" />
     <Compile Include="FileStorage\EncryptionOptions.cs" />
+    <Compile Include="FileStorage\FileInfo.cs" />
     <Compile Include="FileStorage\FileSystemStorageService.cs" />
     <Compile Include="FileStorage\IFileStorageService.cs" />
     <Compile Include="FileStorage\NotClosingCryptoStream.cs" />

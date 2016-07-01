@@ -57,10 +57,10 @@ namespace Havit.Services.Tests.FileStorage
 			}
 
 			// Act
-			List<string> filenames = fileSystemStorageService.EnumerateFiles().ToList();
+			List<Havit.Services.FileStorage.FileInfo> fileInfos = fileSystemStorageService.EnumerateFiles().ToList();
 
 			// Assert 
-			Assert.IsFalse(filenames.Any(filename => filename.Contains(storagePath)));
+			Assert.IsFalse(fileInfos.Any(fileInfo => fileInfo.Name.Contains(storagePath)));
 
 			// Clean-up
 			fileSystemStorageService.Delete(testFilename);

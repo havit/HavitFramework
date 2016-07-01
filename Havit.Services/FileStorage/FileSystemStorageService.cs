@@ -83,9 +83,15 @@ namespace Havit.Services.FileStorage
 		/// <summary>
 		/// Vylistuje seznam souborů v úložišti.
 		/// </summary>
-		public override IEnumerable<string> EnumerateFiles(string searchPattern = null)
+		public override IEnumerable<FileInfo> EnumerateFiles(string searchPattern = null)
 		{
-			return System.IO.Directory.EnumerateFiles(storagePath, searchPattern ?? "*", SearchOption.TopDirectoryOnly).Select(filename => filename.Substring(storagePath.Length).TrimStart('\\'));
+			var filesEnumerable = new System.IO.DirectoryInfo(storagePath).EnumerateFiles(searchPattern ?? "*", SearchOption.TopDirectoryOnly);
+			return filesEnumerable.Select(fileInfo => new FileInfo
+			{
+				Name = fileInfo.Name,
+				LastModifiedUtc = fileInfo.LastWriteTimeUtc,
+				Size = fileInfo.Length
+			});
 		}
 
 		/// <summary>

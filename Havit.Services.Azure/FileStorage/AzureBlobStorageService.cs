@@ -10,6 +10,7 @@ using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
+using FileInfo = Havit.Services.FileStorage.FileInfo;
 
 namespace Havit.Services.Azure.FileStorage
 {
@@ -123,9 +124,9 @@ namespace Havit.Services.Azure.FileStorage
 		/// <summary>
 		/// Vylistuje seznam souborů v úložišti.
 		/// </summary>
-		public override IEnumerable<string> EnumerateFiles(string searchPattern = null)
+		public override IEnumerable<FileInfo> EnumerateFiles(string searchPattern = null)
 		{
-			var blobNamesEnumerable = GetContainerReference(true).ListBlobs().OfType<CloudBlob>().Select(blob => blob.Name);
+			var blobsEnumerable = GetContainerReference(true).ListBlobs().OfType<CloudBlob>();
 			if (!String.IsNullOrEmpty(searchPattern))
 			{
 				// Operators.Like 
@@ -134,9 +135,15 @@ namespace Havit.Services.Azure.FileStorage
 				string normalizedSearchPatterns = searchPattern
 					.Replace("[", "[[]") // pozor, zálěží na pořadí náhrad
 					.Replace("#", "[#]");
-				blobNamesEnumerable = blobNamesEnumerable.Where(item => Operators.LikeString(item, normalizedSearchPatterns, CompareMethod.Text));
+				blobsEnumerable = blobsEnumerable.Where(item => Operators.LikeString(item.Name, normalizedSearchPatterns, CompareMethod.Text));
 			}
-			return blobNamesEnumerable;
+
+			return blobsEnumerable.Select(blob => new FileInfo
+			{
+				Name = blob.Name,
+				LastModifiedUtc = blob.Properties.LastModified?.UtcDateTime ?? default(DateTime),
+				Size = blob.Properties.Length
+			});
 		}
 
 		/// <summary>
@@ -201,14 +208,14 @@ namespace Havit.Services.Azure.FileStorage
 			Contract.Assert(SupportsBasicEncryption);
 
 			List<CloudBlockBlob> blobs = new List<CloudBlockBlob>();
-			foreach (string filename in EnumerateFiles().ToArray())
+			foreach (FileInfo fileInfo in EnumerateFiles().ToArray())
 			{
-				CloudBlockBlob blob = GetBlobReference(filename, false, true);
+				CloudBlockBlob blob = GetBlobReference(fileInfo.Name, false, true);
 				blobs.Add(blob);
 				blob.CreateSnapshot();
 				// Save - zapíšeme s šifrováním
 				// Perform read - čteme skutečný obsah (čištý, nešifrovaný)
-				Save(filename, PerformRead(filename), blob.Properties.ContentType);
+				Save(fileInfo.Name, PerformRead(fileInfo.Name), blob.Properties.ContentType);
 			}
 
 			blobs.ForEach(blob => blob.Delete(DeleteSnapshotsOption.DeleteSnapshotsOnly));
@@ -223,14 +230,14 @@ namespace Havit.Services.Azure.FileStorage
 
 			Contract.Assert(SupportsBasicEncryption);
 			List<CloudBlockBlob> blobs = new List<CloudBlockBlob>();
-			foreach (string filename in EnumerateFiles().ToArray())
+			foreach (FileInfo fileInfo in EnumerateFiles().ToArray())
 			{
-				CloudBlockBlob blob = GetBlobReference(filename, false, true);				
+				CloudBlockBlob blob = GetBlobReference(fileInfo.Name, false, true);				
 				blobs.Add(blob);
 				blob.CreateSnapshot();
 				// PerformSave - zapíšeme bez šifrování
 				// Read - čteme šifrovaný obsah a dešifrujeme jej
-				PerformSave(filename, Read(filename), blob.Properties.ContentType);
+				PerformSave(fileInfo.Name, Read(fileInfo.Name), blob.Properties.ContentType);
 			}
 			blobs.ForEach(blob => blob.Delete(DeleteSnapshotsOption.DeleteSnapshotsOnly));
 		}

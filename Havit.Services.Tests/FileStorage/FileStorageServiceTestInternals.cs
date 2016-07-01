@@ -116,23 +116,29 @@ namespace Havit.Services.Tests.FileStorage
 			}
 
 			// Act + Assert
-			Assert.IsTrue(fileStorageService.EnumerateFiles().Contains(testFilename), "no mask");
-			Assert.IsTrue(fileStorageService.EnumerateFiles("*").Contains(testFilename), "*");
-			Assert.IsTrue(fileStorageService.EnumerateFiles("*.*").Contains(testFilename), "*.*");
-			Assert.IsTrue(fileStorageService.EnumerateFiles("test*").Contains(testFilename), "test*");
-			Assert.IsTrue(fileStorageService.EnumerateFiles("*123*").Contains(testFilename), "*123*");
-			Assert.IsTrue(fileStorageService.EnumerateFiles("t??t??????.t?t").Contains(testFilename), "t??t??????.t?t");
-			Assert.IsTrue(fileStorageService.EnumerateFiles("t*.txt").Contains(testFilename), "t*.txt");
-			Assert.IsTrue(fileStorageService.EnumerateFiles("t*[??.txt").Contains(testFilename), "t*[??.txt");
-			Assert.IsTrue(fileStorageService.EnumerateFiles("t*].txt").Contains(testFilename), "t*].txt");
-			Assert.IsTrue(fileStorageService.EnumerateFiles("t*#?.txt").Contains(testFilename), "t*š?.txt");
+			Assert.IsTrue(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, null, testFilename), "no mask");
+			Assert.IsTrue(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, "*", testFilename), "*");
+			Assert.IsTrue(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, "*.*", testFilename), "*.*");
+			Assert.IsTrue(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, "test*", testFilename), "test*");
+			Assert.IsTrue(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, "*123*", testFilename), "*123*");
+			Assert.IsTrue(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, "t??t??????.t?t", testFilename), "t??t??????.t?t");
+			Assert.IsTrue(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, "t*.txt", testFilename), "t*.txt");
+			Assert.IsTrue(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, "t*[??.txt", testFilename), "t*[??.txt");
+			Assert.IsTrue(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, "t*].txt", testFilename), "t*].txt");
+			Assert.IsTrue(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, "t*#?.txt", testFilename), "t*š?.txt");
 
-			Assert.IsFalse(fileStorageService.EnumerateFiles("test###*.txt").Contains(testFilename), "test###*.txt");
-			Assert.IsFalse(fileStorageService.EnumerateFiles("est*").Contains(testFilename), "est*"); // začátek
-			Assert.IsFalse(fileStorageService.EnumerateFiles("*.tx").Contains(testFilename), "*.tx"); // konec
+			Assert.IsFalse(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, "test###*.txt", testFilename), "test###*.txt");
+			Assert.IsFalse(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, "est*", testFilename), "est*"); // začátek
+			Assert.IsFalse(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, "*.tx", testFilename), "*.tx"); // konec
 
 			// Clean-up
 			fileStorageService.Delete(testFilename);
+		}
+
+		private static bool FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(IFileStorageService fileStorageService, string searchPattern, string testFilename)
+		{
+			return fileStorageService.EnumerateFiles(searchPattern).Any(fileInfo => String.Equals(fileInfo.Name, testFilename, StringComparison.InvariantCultureIgnoreCase));
+
 		}
 
 	}

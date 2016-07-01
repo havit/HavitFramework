@@ -41,7 +41,7 @@ namespace Havit.Services.FileStorage
 		/// <summary>
 		/// Vylistuje seznam souborů v úložišti.
 		/// </summary>
-		IEnumerable<string> EnumerateFiles(string pattern = null);
+		IEnumerable<FileInfo> EnumerateFiles(string pattern = null);
 
 		#region GetLastModifiedTimeUtc
 		/// <summary>

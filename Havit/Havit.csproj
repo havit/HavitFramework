@@ -155,6 +155,8 @@
     <Compile Include="StringExt.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Text\FileSizeToTextService.cs" />
+    <Compile Include="Text\IFileSizeToTextService.cs" />
     <Compile Include="Text\RegularExpressions\RegexPatterns.cs">
       <SubType>Code</SubType>
     </Compile>

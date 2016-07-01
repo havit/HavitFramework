@@ -44,63 +44,21 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.DataSources.Template
             #line default
             #line hidden
             this.Write("\r\n{\r\n\t[System.CodeDom.Compiler.GeneratedCode(\"Havit.Entity.CodeGenerator\", \"2.0\")" +
-                    "]\r\n");
+                    "]\r\n\tpublic interface ");
             
             #line 18 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\DataSources\Template\InterfaceDataSourceTemplate.tt"
- if (Model.RenderDataSourceSoftDelete) { 
-            
-            #line default
-            #line hidden
-            this.Write("\t\tpublic interface ");
-            
-            #line 19 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\DataSources\Template\InterfaceDataSourceTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.InterfaceDataSourceName));
             
             #line default
             #line hidden
             this.Write(" : IDataSource<");
             
-            #line 19 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\DataSources\Template\InterfaceDataSourceTemplate.tt"
+            #line 18 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\DataSources\Template\InterfaceDataSourceTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
             
             #line default
             #line hidden
-            this.Write(">, IDataSourceSoftDelete<");
-            
-            #line 19 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\DataSources\Template\InterfaceDataSourceTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
-            
-            #line default
-            #line hidden
-            this.Write(">\r\n");
-            
-            #line 20 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\DataSources\Template\InterfaceDataSourceTemplate.tt"
- } else { 
-            
-            #line default
-            #line hidden
-            this.Write("\t\tpublic interface ");
-            
-            #line 21 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\DataSources\Template\InterfaceDataSourceTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.InterfaceDataSourceName));
-            
-            #line default
-            #line hidden
-            this.Write(" : IDataSource<");
-            
-            #line 21 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\DataSources\Template\InterfaceDataSourceTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
-            
-            #line default
-            #line hidden
-            this.Write(">\r\n");
-            
-            #line 22 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\DataSources\Template\InterfaceDataSourceTemplate.tt"
- }  
-            
-            #line default
-            #line hidden
-            this.Write("\t\r\n\t{\r\n\t}\r\n}");
+            this.Write(">\r\n\t{\r\n\t}\r\n}");
             return this.GenerationEnvironment.ToString();
         }
     }

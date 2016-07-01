@@ -15,12 +15,7 @@ using Havit.Data.Patterns.QueryServices;
 namespace <#= Model.NamespaceName #>
 {
 	[System.CodeDom.Compiler.GeneratedCode("Havit.Entity.CodeGenerator", "2.0")]
-<# if (Model.RenderDataSourceSoftDelete) { #>
-		public interface <#= Model.InterfaceDataSourceName #> : IDataSource<<#= Model.ModelClassFullName #>>, IDataSourceSoftDelete<<#= Model.ModelClassFullName #>>
-<# } else { #>
-		public interface <#= Model.InterfaceDataSourceName #> : IDataSource<<#= Model.ModelClassFullName #>>
-<# }  #>
-	
+	public interface <#= Model.InterfaceDataSourceName #> : IDataSource<<#= Model.ModelClassFullName #>>
 	{
 	}
 }

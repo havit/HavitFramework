@@ -5,6 +5,5 @@
 		public string NamespaceName { get; set; }
 		public string InterfaceDataSourceName { get; set; }
 		public string ModelClassFullName { get; set; }
-		public bool RenderDataSourceSoftDelete { get; set; }
 	}
 }

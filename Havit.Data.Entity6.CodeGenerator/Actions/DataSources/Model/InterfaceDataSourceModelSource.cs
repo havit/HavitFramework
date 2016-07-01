@@ -29,8 +29,7 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.DataSources.Model
 				{
 					NamespaceName = GetNamespaceName(registeredEntity.NamespaceName),
 					InterfaceDataSourceName = "I" + registeredEntity.ClassName + "DataSource",
-					ModelClassFullName = registeredEntity.FullName,
-					RenderDataSourceSoftDelete = softDeleteManager.IsSoftDeleteSupported(registeredEntity.Type)
+					ModelClassFullName = registeredEntity.FullName
 				}).ToList();
 		}
 

@@ -203,10 +203,6 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 		{
 			var originalAutoDetectChangesEnabled = DbContext.AutoDetectChangesEnabled;
 			DbContext.AutoDetectChangesEnabled = false;
-			if (originalAutoDetectChangesEnabled)
-			{
-				DbContext.DetectChanges();
-			}
 
 			foreach (var entity in entities)
 			{

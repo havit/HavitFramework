@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Havit.Data.Tests.TransientErrorHandling
 {
-	internal class SqlExceptionHelper
+	internal static class SqlExceptionHelper
 	{
 		internal static SqlException CreateSqlException(int errorNumber, string message = null)
 		{

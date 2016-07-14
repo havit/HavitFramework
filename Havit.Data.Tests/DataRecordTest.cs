@@ -4,7 +4,8 @@ using System.Text;
 using System.Collections.Generic;
 using System.Data;
 using Havit.Data;
-namespace Havit.DataTest
+
+namespace Havit.Data.Tests
 {
 	/// <summary>
 	/// This is a test class for Havit.Data.DataRecord and is intended
@@ -13,12 +14,11 @@ namespace Havit.DataTest
 	[TestClass]
 	public class DataRecordTest
 	{
-		#region TryGet
 		/// <summary>
 		/// A test for TryGet&lt;&gt; (string, out T)
 		/// </summary>
 		[TestMethod]
-		public void TryGetTest_NacteniInt()
+		public void DataRecord_TryGetTest_NacteniInt()
 		{
 			DataTable table = new DataTable();
 			table.Columns.Add("ColumnName", typeof(int));
@@ -46,7 +46,7 @@ namespace Havit.DataTest
 		/// A test for TryGet&lt;&gt; (string, out T)
 		/// </summary>
 		[TestMethod]
-		public void TryGetTest_NullOK()
+		public void DataRecord_TryGetTest_NullOK()
 		{
 			DataTable table = new DataTable();
 			table.Columns.Add("ColumnName", typeof(object));
@@ -74,7 +74,7 @@ namespace Havit.DataTest
 		/// A test for TryGet&lt;&gt; (string, out T)
 		/// </summary>
 		[TestMethod]
-		public void TryGetTest_PretypovaniIntNaNullableInt()
+		public void DataRecord_TryGetTest_PretypovaniIntNaNullableInt()
 		{
 			DataTable table = new DataTable();
 			table.Columns.Add("ColumnName", typeof(int));
@@ -102,7 +102,7 @@ namespace Havit.DataTest
 		/// A test for TryGet&lt;&gt; (string, out T)
 		/// </summary>
 		[TestMethod]
-		public void TryGetTest_PretypovaniDecimalNaDouble()
+		public void DataRecord_TryGetTest_PretypovaniDecimalNaDouble()
 		{
 			DataTable table = new DataTable();
 			table.Columns.Add("ColumnName", typeof(decimal));
@@ -131,7 +131,7 @@ namespace Havit.DataTest
 		/// </summary>
 		[TestMethod]
 		[ExpectedException(typeof(InvalidCastException))]
-		public void TryGetTest_InvalidCast()
+		public void DataRecord_TryGetTest_InvalidCast()
 		{
 			DataTable table = new DataTable();
 			table.Columns.Add("ColumnName", typeof(int));
@@ -155,7 +155,7 @@ namespace Havit.DataTest
 		/// </summary>
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
-		public void TryGetTest_NenalezenoFullLoad()
+		public void DataRecord_TryGetTest_NenalezenoFullLoad()
 		{
 			DataTable table = new DataTable();
 			table.Columns.Add("ColumnName", typeof(int));
@@ -178,7 +178,7 @@ namespace Havit.DataTest
 		/// A test for TryGet&lt;&gt; (string, out T)
 		/// </summary>
 		[TestMethod]
-		public void TryGetTest_NenalezenoNotFullLoad()
+		public void DataRecord_TryGetTest_NenalezenoNotFullLoad()
 		{
 			DataTable table = new DataTable();
 			table.Columns.Add("ColumnName", typeof(int));
@@ -202,7 +202,6 @@ namespace Havit.DataTest
 			Assert.AreEqual(target_expected, tryGetTarget, "target_TryGet_expected was not set correctly.");
 			Assert.AreEqual(expected, actual, "Havit.Data.DataRecord.TryGet<T> did not return the expected value.");
 		}
-		#endregion
 	}
 
 }

@@ -15,15 +15,15 @@ namespace Havit.Data.TransientErrorHandling
 		/// <summary>
 		/// Provádí danou akci, opakování se řídí výchozí TransientErrorRetryPolicy.
 		/// </summary>
-		public static TResult ExecuteAction<TResult>(Func<TResult> action)
+		public static TResult ExecuteAction<TResult>(Func<TResult> action, Func<bool> actionShouldRetry)
 		{
-			return ExecuteAction(action, new TransientErrorRetryPolicy());
+			return ExecuteAction(action, actionShouldRetry, new TransientErrorRetryPolicy());
 		}
 
 		/// <summary>
 		/// Provádí danou akci, opakování se řídí předanou danou RetryPolicy.
 		/// </summary>
-		public static TResult ExecuteAction<TResult>(Func<TResult> action, IRetryPolicy retryPolicy)
+		public static TResult ExecuteAction<TResult>(Func<TResult> action, Func<bool> actionShouldRetry, IRetryPolicy retryPolicy)
 		{
 			int attemptNumber = 0;
 			while (true)
@@ -37,7 +37,7 @@ namespace Havit.Data.TransientErrorHandling
 				{
 					RetryPolicyInfo retryPolicyInfo = retryPolicy.GetRetryPolicyInfo(attemptNumber, exception);
 
-					if (!retryPolicyInfo.RetryAttempt)
+					if (!actionShouldRetry() || !retryPolicyInfo.RetryAttempt)
 					{
 						throw;
 					}

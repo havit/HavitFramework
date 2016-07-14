@@ -19,11 +19,14 @@ namespace Havit.Data.Extensions
 		/// </summary>
 		public static void OpenWithRetry(this DbConnection connection)
 		{
-			TransientErrorHandler.ExecuteAction<object>(() =>
-			{
-				connection.Open();
-				return null;
-			});
+			TransientErrorHandler.ExecuteAction<object>(
+				() =>
+				{
+					connection.Open();
+					return null;
+				},
+				() => true // vždy můžeme opakovat
+			);
 		}
 		#endregion
 	}

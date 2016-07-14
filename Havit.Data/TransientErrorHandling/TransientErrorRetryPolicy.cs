@@ -20,9 +20,9 @@ namespace Havit.Data.TransientErrorHandling
 
 		#region Constructors
 		/// <summary>
-		/// Konstruktor pro výchozí chování - 3 pokusy, druhý a třetí pokus jsou s odstupem 200 a 500 ms.
+		/// Konstruktor pro výchozí chování - 3 pokusy, druhý a třetí pokus jsou s odstupem 10 sekund.
 		/// </summary>
-		public TransientErrorRetryPolicy() : this(3, new int[] { 200, 500 })
+		public TransientErrorRetryPolicy() : this(3, new int[] { 10000 })
 		{
 		}
 
@@ -48,7 +48,7 @@ namespace Havit.Data.TransientErrorHandling
 		{
 			RetryPolicyInfo result = new RetryPolicyInfo
 			{
-				RetryAttempt = SqlDatabaseTransientErrorDetectionStrategy.IsTransient(exception) && (attemptNumber < maxAttempts),
+				RetryAttempt = (attemptNumber < maxAttempts) && SqlDatabaseTransientErrorDetectionStrategy.IsTransient(exception),
 				DelayBeforeRetry = delays[Math.Min(attemptNumber - 1, delays.Length - 1)]
 			};
 

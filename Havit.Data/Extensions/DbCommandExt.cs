@@ -20,7 +20,7 @@ namespace Havit.Data.Extensions
 		/// </summary>
 		public static int ExecuteNonQueryWithRetry(this DbCommand command)
 		{
-			return TransientErrorHandler.ExecuteAction(command.ExecuteNonQuery);
+			return TransientErrorHandler.ExecuteAction(command.ExecuteNonQuery, command.CanRetryCommand);
 		}
 		#endregion
 
@@ -30,7 +30,7 @@ namespace Havit.Data.Extensions
 		/// </summary>
 		public static object ExecuteScalarWithRetry(this DbCommand command)
 		{
-			return TransientErrorHandler.ExecuteAction(command.ExecuteScalar);
+			return TransientErrorHandler.ExecuteAction(command.ExecuteScalar, command.CanRetryCommand);
 		}
 		#endregion
 
@@ -40,8 +40,20 @@ namespace Havit.Data.Extensions
 		/// </summary>
 		public static DbDataReader ExecuteReaderWithRetry(this DbCommand command, CommandBehavior behavior)
 		{
-			return TransientErrorHandler.ExecuteAction(() => command.ExecuteReader(behavior));
+			return TransientErrorHandler.ExecuteAction(() => command.ExecuteReader(behavior), command.CanRetryCommand);
 		}
 		#endregion
+
+		#region CanRetryCommand
+		/// <summary>
+		/// Vrací true, pokud je možné command zopakovat.
+		/// To je možné tehdy, pokud není uzavřeno spojení.
+		/// </summary>
+		private static bool CanRetryCommand(this DbCommand command)
+		{
+			return (command.Connection.State == ConnectionState.Open); // musí být stále otevřené spojení
+		}
+		#endregion
+
 	}
 }

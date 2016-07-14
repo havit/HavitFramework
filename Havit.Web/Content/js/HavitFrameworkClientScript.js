@@ -351,7 +351,7 @@ var havitDropDownCheckBoxListExtensions = {
 				width: width,
 				single: single, // pozor: single zde není opakem multiple!
 				multiple: multiple,
-				multipleWidth: multipleWidth,			
+				multipleWidth: multipleWidth,
 				countSelected: false,
 				filter: filter
 			};
@@ -444,7 +444,7 @@ var havitAutoCompleteTextBoxExtensions = {
 			var $hiddenfield = $item.children("input[type='hidden']");
 
 			$item.data("selectedvalue", $textbox.val());
-			
+
 			$textbox.blur(function () { havitAutoCompleteTextBoxExtensions.onBlur($textbox, $hiddenfield, $item) });
 
 			$textbox.autocomplete(options);
@@ -483,6 +483,7 @@ var havitAutoCompleteTextBoxExtensions = {
 		var $hiddenfield = $(hiddenfield);
 
 		var allowInvalidSelection = $(item).data("allowinvalidselection") == 'True';
+		var nullable = $(item).data("nullable") == 'True';
 		var postbackScript = $item.data("postbackscript");
 
 		if (!allowInvalidSelection) {
@@ -503,6 +504,10 @@ var havitAutoCompleteTextBoxExtensions = {
 					// metoda se volá odloženě, protože může nastat volání metody onSelect při výběru myší s nabídnutých položek a v takovém případě se volání ruší
 					var timerId = setTimeout(havitAutoCompleteTextBoxExtensions.fireOnSelectScriptEvent, 120, suggestion, onselectscript);
 					$textbox.data("timerId", timerId);
+				}
+				//pokud došlo ke smazání hodnoty (validní) a je povolena null hodnota, provedeme postback
+				if ($textbox.val() == "" && postbackScript != undefined && nullable) {
+					havitAutoCompleteTextBoxExtensions.doDefferedPostback.call(window, postbackScript);
 				}
 			}
 		} else {
@@ -527,7 +532,7 @@ var havitAutoCompleteTextBoxExtensions = {
 		return eval(onselectscript) || true;
 	},
 
-	doDefferedPostback: function(script) {
+	doDefferedPostback: function (script) {
 		setTimeout(havitAutoCompleteTextBoxExtensions.doPostback, 120, script);
 	},
 
@@ -537,7 +542,7 @@ var havitAutoCompleteTextBoxExtensions = {
 }
 
 var havitControlFocusPersisterExtensions = {
-	init: function() {
+	init: function () {
 		var lastFocusPersister = $("#_lastFocusPersister");
 		var lastFocusedControl = $("#" + lastFocusPersister.val());
 
@@ -554,7 +559,7 @@ var havitControlFocusPersisterExtensions = {
 					lastFocusPersister.val(this.id);
 				}
 			});
-	}	
+	}
 }
 
 $(document).ready(havitDateTimeBoxExtensions.init);

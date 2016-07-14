@@ -253,6 +253,23 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		/// <summary>
+		/// Pokud je hodnota false (default), tak prázdná hodnota v textovém poli není považována za validní
+		/// Pokud je hodnota true, tak je prázdná hodnota považována za validní
+		/// </summary>
+		public bool Nullable
+		{
+			get
+			{
+				return (bool?)ViewState["Nullable"] ?? false;
+			}
+			set
+			{
+				ViewState["Nullable"] = value;
+			}
+		}
+
+
 		#region ShowNoSuggestionNotice
 		/// <summary>
 		/// Udává, zda se má zobrazit v nabídkovém pruhu informace o prázdné nabídce. (nejsou nabídnuty žádné položky)
@@ -409,6 +426,7 @@ namespace Havit.Web.UI.WebControls
 			writer.AddAttribute("data-maxheight", MaxHeight.ToString());
 			writer.AddAttribute("data-orientation", Orientation.ToString());
 			writer.AddAttribute("data-allowInvalidSelection", AllowInvalidSelection.ToString());
+			writer.AddAttribute("data-nullable", Nullable.ToString());
 			writer.AddAttribute("data-showNoSuggestionNotice", ShowNoSuggestionNotice.ToString());
 			writer.AddAttribute("data-selectedvalue", SelectedText);
 

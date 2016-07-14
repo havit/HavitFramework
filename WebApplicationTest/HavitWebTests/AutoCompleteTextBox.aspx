@@ -38,9 +38,11 @@
 				UseClientCache="false"
 				Orientation="Auto"
 				Context="lorem ipsum dolor sit amet"
-				AllowInvalidSelection="True"
+				AllowInvalidSelection="false"
+				Nullable="true"
 				ShowNoSuggestionNotice="True"
 				NoSuggestionNotice="Nejsou data!"
+				AutoPostBack="true"
 				runat="server" />
 
 			<%--OnClientSelectScript="test();"--%>

@@ -269,7 +269,6 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 
-
 		#region ShowNoSuggestionNotice
 		/// <summary>
 		/// Udává, zda se má zobrazit v nabídkovém pruhu informace o prázdné nabídce. (nejsou nabídnuty žádné položky)

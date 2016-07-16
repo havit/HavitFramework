@@ -102,10 +102,10 @@ namespace Havit.BusinessTest
 			}
 		}
 
-		[TestMethod]
 		/// <summary>
 		/// Testuje, že zavoláním metody SetDisconnected se objekt přepne do stavu disconnected objektu.
 		/// </summary>
+		[TestMethod]
 		public void BusinessObject_SetDisconnected_DisconnectsNewObject()
 		{
 			using (new IdentityMapScope())
@@ -116,10 +116,10 @@ namespace Havit.BusinessTest
 			}
 		}
 
-		[TestMethod]
 		/// <summary>
 		/// Testuje, že zavoláním metody SetDisconnected se objekt přepne do stavu disconnected objektu.
 		/// </summary>
+		[TestMethod]
 		public void BusinessObject_SetDisconnected_DisconnectsGhostObject()
 		{
 			using (new IdentityMapScope())
@@ -130,10 +130,10 @@ namespace Havit.BusinessTest
 			}
 		}
 
-		[TestMethod]
 		/// <summary>
 		/// Testuje, že zavoláním metody SetDisconnected se objekt přepne do stavu disconnected objektu.
 		/// </summary>
+		[TestMethod]
 		public void BusinessObject_SetDisconnected_DisconnectsGhostObjectDisconnectsLoadedObject()
 		{
 			using (new IdentityMapScope())
@@ -145,11 +145,11 @@ namespace Havit.BusinessTest
 			}
 		}
 
-		[TestMethod]
 		/// <summary>
 		/// Testuje, že zavoláním metody SetProperty se nastaví hodnota vlastnosti.
 		/// </summary>
-		public void BusinessObject_SetPropertyExtensionMethos_SetsPropertyToReadonlyObject()
+		[TestMethod]
+		public void BusinessObject_SetPropertyExtensionMethod_SetsPropertyToReadonlyObject()
 		{
 			using (new IdentityMapScope())
 			{
@@ -160,11 +160,29 @@ namespace Havit.BusinessTest
 			}
 		}
 
+		// BugRepro 27250
 		[TestMethod]
-		[ExpectedException(typeof(InvalidOperationException))]
+		public void BusinessObject_SetPropertyExtensionMethod_NullableProperty_SetsPropertyValue()
+		{
+			using (new IdentityMapScope())
+			{
+				// arrange
+				Subjekt subjekt = Subjekt.CreateDisconnectedObject();
+				DateTime? value = new DateTime?(new DateTime(2016, 7, 15));
+
+				// act
+				subjekt.SetProperty(item => item.Deleted, value);
+
+				// assert
+				Assert.AreEqual(value, subjekt.Deleted);
+			}
+		}
+
 		/// <summary>
 		/// Testuje, že zavolání metody SetProperty není možné na Ghost objektu.
 		/// </summary>
+		[TestMethod]
+		[ExpectedException(typeof(InvalidOperationException))]
 		public void BusinesObject_SetPropertyExtensionMethod_ThrowsExceptionForGhostObject()
 		{
 			using (new IdentityMapScope())

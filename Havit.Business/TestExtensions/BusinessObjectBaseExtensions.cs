@@ -42,7 +42,7 @@ namespace Havit.Business.TestExtensions
 			Expression propertyToAssignExpression = new ReplaceParameterVisitor(propertyPath.Parameters[0], Expression.Constant(businessObject)).Visit(propertyPath.Body);
 			Expression assignExpression = Expression.Assign(
 				propertyToAssignExpression, // kam přiřazujeme
-				Expression.Constant(value)); // co přiřazujeme
+				Expression.Constant(value, typeof(TValue))); // co přiřazujeme
 
 			var lambda = Expression.Lambda(assignExpression, null); // vyrobíme lambdu bez parametrů (jde kompilovat)
 			var compiledLambda = lambda.Compile(); // zkompilujeme

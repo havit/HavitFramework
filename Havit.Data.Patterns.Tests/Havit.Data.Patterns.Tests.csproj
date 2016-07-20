@@ -61,6 +61,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="DataEntries\DataEntriesTest.cs" />
+    <Compile Include="DataEntries\Infrastructure\SystemCodebookEntryDataEntries.cs" />
+    <Compile Include="DataEntries\Infrastructure\SystemCodebookEntry.cs" />
     <Compile Include="DataSeeds\DataSeedForTest.cs" />
     <Compile Include="DataSeeds\DataSeedRunnerTest.cs" />
     <Compile Include="DataSeeds\Infrastructure\DataSeedCycleB.cs" />
@@ -89,6 +92,9 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="NewFolder1\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

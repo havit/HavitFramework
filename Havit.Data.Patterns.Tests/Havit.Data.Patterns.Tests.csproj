@@ -61,6 +61,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="DataSeeds\DataSeedForTest.cs" />
     <Compile Include="DataSeeds\DataSeedRunnerTest.cs" />
     <Compile Include="DataSeeds\Infrastructure\DataSeedCycleB.cs" />
     <Compile Include="DataSeeds\Infrastructure\DataSeedCycleA.cs" />

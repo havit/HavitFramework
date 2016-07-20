@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Havit.Linq.Expressions;
 using Havit.Model.Localizations;
 
 namespace Havit.Data.Patterns.DataSeeds
@@ -14,6 +15,8 @@ namespace Havit.Data.Patterns.DataSeeds
 		/// Konfigurace seedování dat.
 		/// </summary>
 		public DataSeedConfiguration<TEntity> Configuration { get; private set; }
+
+		private readonly Dictionary<string, object> childDataForsRegistry = new Dictionary<string, object>();
 
 		/// <summary>
 		/// Konstuktor.
@@ -66,15 +69,14 @@ namespace Havit.Data.Patterns.DataSeeds
 				ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "item");
 				// item => item.Localizations
 				LambdaExpression localizationsExpression = Expression.Lambda(Expression.Convert(Expression.Property(parameter, typeof(TEntity), "Localizations"), typeof(IEnumerable<>).MakeGenericType(localizedByType)), parameter);
-				Delegate localizationsLambda = localizationsExpression.Compile();
 
-				// metoda AndForInternal je generická, avšak v kódu nejsme schopni generický typ získat (a obecnější typ pro přetypování jednak nelze použít a jednak by byl k ničemu)
-				// proto metodu AndForInternal zavoláme reflexí!
+				// metoda AndForAll je generická, avšak v kódu nejsme schopni generický typ získat (a obecnější typ pro přetypování jednak nelze použít a jednak by byl k ničemu)
+				// proto metodu AndForAll zavoláme reflexí!
 				// AndForInternal(item => item.Localizations, null)
-				MethodInfo andForInternalMethod = this.GetType().GetMethod("AndForInternal", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+				MethodInfo andForInternalMethod = this.GetType().GetMethod("AndForAll", BindingFlags.Public | BindingFlags.Instance);
 				andForInternalMethod.MakeGenericMethod(localizedByType).Invoke(this, new object[]
 				{
-					localizationsLambda,
+					localizationsExpression,
 					null
 				});
 				
@@ -114,85 +116,58 @@ namespace Havit.Data.Patterns.DataSeeds
 		/// <summary>
 		/// Konfiguruje seedování tak, že doplňuje "child" seedování.
 		/// </summary>
-		public IDataSeedFor<TEntity> AndFor<TReferencedEntity>(Expression<Func<TEntity, TReferencedEntity>> selector, Action<IDataSeedFor<TReferencedEntity>> data)
+		public IDataSeedFor<TEntity> AndFor<TReferencedEntity>(Expression<Func<TEntity, TReferencedEntity>> selector, Action<IDataSeedFor<TReferencedEntity>> configure)
 			where TReferencedEntity : class
 		{
-			// TODO: Umožnit reuse, pokud již záznam existuje
-			// Pamatovat si množinu přidaných children podle expression a umožnit vytáhnout z "paměti". -> nebo si držet i selector a hledat dle selectoru
-			Func<TEntity, TReferencedEntity> selectorLambda = selector.Compile();
+			AndForInternal(
+				selector,
+				() => Configuration.SeedData.Select<TEntity, TReferencedEntity>(selector.Compile()),
+				configure);
 
-			TReferencedEntity[] newData = Configuration.SeedData.Select<TEntity, TReferencedEntity>(selectorLambda).Where(item => item != null).Distinct().ToArray();
-			DataSeedFor<TReferencedEntity> dataSeedFor = new DataSeedFor<TReferencedEntity>(newData);
-			if (data != null)
-			{
-				data(dataSeedFor);
-			}
-
-			Action<IDataSeedPersister> saveAction = (IDataSeedPersister persister) => persister.Save(dataSeedFor.Configuration);
-			ChildDataSeedConfigurationEntry childEntry = new ChildDataSeedConfigurationEntry(saveAction);
-
-			if (Configuration.ChildrenSeeds == null)
-			{
-				Configuration.ChildrenSeeds = new List<ChildDataSeedConfigurationEntry>();
-			}
-			Configuration.ChildrenSeeds.Add(childEntry);
-
-			return this;
-		}
-		
-		private IDataSeedFor<TEntity> AndForInternal<TReferencedEntity>(Func<TEntity, IEnumerable<TReferencedEntity>> selectorLambda, Action<IDataSeedFor<TReferencedEntity>> configure)
-			where TReferencedEntity : class
-		{
-			// TODO: Umožnit reuse, pokud již záznam existuje
-
-			// Pamatovat si množinu přidaných children podle expression a umožnit vytáhnout z "paměti". -> nebo si držet i selector a hledat dle selectoru
-			// Umožní mít default na language a zároveň mu něco doplnit
-
-			TReferencedEntity[] newData = Configuration.SeedData.SelectMany<TEntity, TReferencedEntity>(selectorLambda).Where(item => item != null).Distinct().ToArray();
-			DataSeedFor<TReferencedEntity> dataSeedFor = new DataSeedFor<TReferencedEntity>(newData);
-			if (configure != null)
-			{
-				configure(dataSeedFor);
-			}
-
-			// TODO: Duplikovaný kód
-			Action<IDataSeedPersister> saveAction = (IDataSeedPersister persister) => persister.Save(dataSeedFor.Configuration);
-			ChildDataSeedConfigurationEntry childEntry = new ChildDataSeedConfigurationEntry(saveAction);
-
-			if (Configuration.ChildrenSeeds == null)
-			{
-				Configuration.ChildrenSeeds = new List<ChildDataSeedConfigurationEntry>();
-			}
-			Configuration.ChildrenSeeds.Add(childEntry);
-			
 			return this;
 		}
 
 		/// <summary>
 		/// Konfiguruje seedování tak, že doplňuje "child" seedování.
 		/// </summary>
-		public IDataSeedFor<TEntity> AndFor<TReferencedEntity>(Expression<Func<TEntity, ICollection<TReferencedEntity>>> selector, Action<IDataSeedFor<TReferencedEntity>> data)
+		public IDataSeedFor<TEntity> AndForAll<TReferencedEntity>(Expression<Func<TEntity, IEnumerable<TReferencedEntity>>> selector, Action<IDataSeedFor<TReferencedEntity>> configure)
 			where TReferencedEntity : class
 		{
-			return AndForInternal(selector.Compile(), data);
+			AndForInternal(
+				selector,
+				() => Configuration.SeedData.SelectMany<TEntity, TReferencedEntity>(selector.Compile()),
+				configure);
+
+			return this;
 		}
 
-		/// <summary>
-		/// Konfiguruje seedování tak, že doplňuje "child" seedování.
-		/// </summary>
-		public IDataSeedFor<TEntity> AndFor<TReferencedEntity>(Expression<Func<TEntity, IEnumerable<TReferencedEntity>>> selector, Action<IDataSeedFor<TReferencedEntity>> data)
+		private void AndForInternal<TReferencedEntity>(LambdaExpression selector, Func<IEnumerable<TReferencedEntity>> dataSelector, Action<IDataSeedFor<TReferencedEntity>> configure)
 			where TReferencedEntity : class
 		{
-			return AndForInternal(selector.Compile(), data);
-		}
+			DataSeedFor<TReferencedEntity> dataSeedFor;
+			string key = ExpressionExt.ReplaceParameter(selector, selector.Parameters[0], Expression.Parameter(typeof(TEntity), "item")).ToString();
 
-		/// <summary>
-		/// Konfiguruje seedování tak, že doplňuje "child" seedování.
-		/// </summary>
-		public IDataSeedFor<TEntity> AndFor<TReferencedEntity>(Expression<Func<TEntity, List<TReferencedEntity>>> selector, Action<IDataSeedFor<TReferencedEntity>> data)
-			where TReferencedEntity : class
-		{
-			return AndForInternal(selector.Compile(), data);
+			object tmp;
+			if (childDataForsRegistry.TryGetValue(key, out tmp))
+			{
+				dataSeedFor = (DataSeedFor<TReferencedEntity>)tmp;
+			}
+			else
+			{
+				TReferencedEntity[] newData = dataSelector().Where(item => item != null).Distinct().ToArray();
+				dataSeedFor = new DataSeedFor<TReferencedEntity>(newData);
+				childDataForsRegistry.Add(key, dataSeedFor);
+
+				ChildDataSeedConfigurationEntry childEntry = new ChildDataSeedConfigurationEntry((IDataSeedPersister persister) => persister.Save(dataSeedFor.Configuration));
+				if (Configuration.ChildrenSeeds == null)
+				{
+					Configuration.ChildrenSeeds = new List<ChildDataSeedConfigurationEntry>();
+				}
+				Configuration.ChildrenSeeds.Add(childEntry);
+			}
+
+			configure?.Invoke(dataSeedFor);
+
 		}
 
 		/// <summary>

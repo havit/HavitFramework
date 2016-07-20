@@ -23,25 +23,13 @@ namespace Havit.Data.Patterns.DataSeeds
 		/// <summary>
 		/// Konfiguruje seedování tak, že doplňuje "child" seedování.
 		/// </summary>
-		IDataSeedFor<TEntity> AndFor<TReferencedEntity>(Expression<Func<TEntity, TReferencedEntity>> selector, Action<IDataSeedFor<TReferencedEntity>> data)
+		IDataSeedFor<TEntity> AndFor<TReferencedEntity>(Expression<Func<TEntity, TReferencedEntity>> selector, Action<IDataSeedFor<TReferencedEntity>> configure)
 			where TReferencedEntity : class;
 
 		/// <summary>
 		/// Konfiguruje seedování tak, že doplňuje "child" seedování.
 		/// </summary>
-		IDataSeedFor<TEntity> AndFor<TReferencedEntity>(Expression<Func<TEntity, ICollection<TReferencedEntity>>> selector, Action<IDataSeedFor<TReferencedEntity>> data)
-			where TReferencedEntity : class;
-
-		/// <summary>
-		/// Konfiguruje seedování tak, že doplňuje "child" seedování.
-		/// </summary>
-		IDataSeedFor<TEntity> AndFor<TReferencedEntity>(Expression<Func<TEntity, IEnumerable<TReferencedEntity>>> selector, Action<IDataSeedFor<TReferencedEntity>> data)
-			where TReferencedEntity : class;
-
-		/// <summary>
-		/// Konfiguruje seedování tak, že doplňuje "child" seedování.
-		/// </summary>
-		IDataSeedFor<TEntity> AndFor<TReferencedEntity>(Expression<Func<TEntity, List<TReferencedEntity>>> selector, Action<IDataSeedFor<TReferencedEntity>> data)
+		IDataSeedFor<TEntity> AndForAll<TReferencedEntity>(Expression<Func<TEntity, IEnumerable<TReferencedEntity>>> selector, Action<IDataSeedFor<TReferencedEntity>> configure)
 			where TReferencedEntity : class;
 
 		/// <summary>

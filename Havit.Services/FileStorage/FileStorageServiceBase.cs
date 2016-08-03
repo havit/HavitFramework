@@ -18,8 +18,7 @@ namespace Havit.Services.FileStorage
 		/// <summary>
 		/// Nastavení šifrování.
 		/// </summary>
-		// TODO šifrování storage: protected
-		internal EncryptionOptions EncryptionOptions { get; private set; }
+		protected EncryptionOptions EncryptionOptions { get; private set; }
 
 		/// <summary>
 		/// Indukuje, zda je podporováno šifrování souborů.
@@ -36,8 +35,7 @@ namespace Havit.Services.FileStorage
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		// TODO šifrování storage: public, ev. sloužit s předchozím konstruktorem
-		internal FileStorageServiceBase(EncryptionOptions encryptionOptions)
+		protected FileStorageServiceBase(EncryptionOptions encryptionOptions)
 		{
 			this.EncryptionOptions = encryptionOptions;
 		}

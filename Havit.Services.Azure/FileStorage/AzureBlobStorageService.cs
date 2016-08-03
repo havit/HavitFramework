@@ -56,16 +56,14 @@ namespace Havit.Services.Azure.FileStorage
 		/// <param name="blobStorageConnectionString">Connection string pro připojení k Azure Blob Storage.</param>
 		/// <param name="containerName">Container v Blob Storage pro práci se soubory.</param>
 		/// <param name="encryptionOptions">Parametry šifrování.</param>
-		// TODO šifrování storage: public
-		internal AzureBlobStorageService(string blobStorageConnectionString, string containerName, EncryptionOptions encryptionOptions) : this(blobStorageConnectionString, containerName, null, encryptionOptions)
+		public AzureBlobStorageService(string blobStorageConnectionString, string containerName, EncryptionOptions encryptionOptions) : this(blobStorageConnectionString, containerName, null, encryptionOptions)
 		{
 		}
 
 		/// <summary>
 		/// Konstruktor. Služba bude šifrovat obsah vlastní implementací.
 		/// </summary>
-		// TODO šifrování storage: protected
-		internal AzureBlobStorageService(string blobStorageConnectionString, string containerName, BlobEncryptionPolicy encryptionPolicy, EncryptionOptions encryptionOptions) : base(encryptionOptions)
+		protected AzureBlobStorageService(string blobStorageConnectionString, string containerName, BlobEncryptionPolicy encryptionPolicy, EncryptionOptions encryptionOptions) : base(encryptionOptions)
 		{
 			this.blobStorageConnectionString = blobStorageConnectionString;
 			this.containerName = containerName;
@@ -202,44 +200,79 @@ namespace Havit.Services.Azure.FileStorage
 		/// <summary>
 		/// Zašifruje všechny soubory v úložišti.
 		/// </summary>
-		internal void EncryptAllFiles()
+		/// <remarks>
+		/// Určeno pro zašifrování souborů na Chesteru.
+		/// </remarks>
+		public void EncryptAllFiles()
 		{
-			// TODO šifrování storage: Přepracovat, pokud se pustíme do chytřejšího řešení.
 			Contract.Assert(SupportsBasicEncryption);
 
-			List<CloudBlockBlob> blobs = new List<CloudBlockBlob>();
-			foreach (FileInfo fileInfo in EnumerateFiles().ToArray())
-			{
-				CloudBlockBlob blob = GetBlobReference(fileInfo.Name, false, true);
-				blobs.Add(blob);
-				blob.CreateSnapshot();
-				// Save - zapíšeme s šifrováním
-				// Perform read - čteme skutečný obsah (čištý, nešifrovaný)
-				Save(fileInfo.Name, PerformRead(fileInfo.Name), blob.Properties.ContentType);
-			}
+			string[] filesToEncrypt = null;
+			List<string> encryptedFiles = new List<string>();
 
-			blobs.ForEach(blob => blob.Delete(DeleteSnapshotsOption.DeleteSnapshotsOnly));
+			try
+			{
+				List<CloudBlockBlob> blobs = new List<CloudBlockBlob>();
+				// ochrana pro případ přidání souboru během šifrování
+				// současné běžící přidání souboru během šifrování se neřeší
+#pragma warning disable S1121 // Assignments should not be made from within sub-expressions
+				while ((filesToEncrypt = EnumerateFiles().Select(item => item.Name).OrderBy(item => item).Except(encryptedFiles).ToArray()).Length > 0)
+#pragma warning restore S1121 // Assignments should not be made from within sub-expressions
+				{
+					foreach (string fileName in filesToEncrypt)
+					{
+						CloudBlockBlob blob = GetBlobReference(fileName, false, true);
+						blobs.Add(blob);
+						blob.CreateSnapshot();
+						// Save - zapíšeme s šifrováním
+						// Perform read - čteme skutečný obsah (čištý, nešifrovaný)
+						Save(fileName, PerformRead(fileName), blob.Properties.ContentType);
+						encryptedFiles.Add(fileName);
+					}
+				}
+
+				blobs.ForEach(blob => blob.Delete(DeleteSnapshotsOption.DeleteSnapshotsOnly));
+			}
+			catch (Exception exception)
+			{
+				throw new EncryptDecryptAllFilesException("All files encryption failed.", exception, encryptedFiles.ToArray(), filesToEncrypt);
+			}
 		}
 
 		/// <summary>
 		/// Dešifruje všechny soubory v úložišti.
 		/// </summary>
-		internal void DecryptAllFiles()
+		public void DecryptAllFiles()
 		{
-			// TODO šifrování storage: Přepracovat, pokud se pustíme do chytřejšího řešení.
-
 			Contract.Assert(SupportsBasicEncryption);
-			List<CloudBlockBlob> blobs = new List<CloudBlockBlob>();
-			foreach (FileInfo fileInfo in EnumerateFiles().ToArray())
+
+			string[] filesToDecrypt = null;
+			List<string> decryptedFiles = new List<string>();
+
+			try
 			{
-				CloudBlockBlob blob = GetBlobReference(fileInfo.Name, false, true);				
-				blobs.Add(blob);
-				blob.CreateSnapshot();
-				// PerformSave - zapíšeme bez šifrování
-				// Read - čteme šifrovaný obsah a dešifrujeme jej
-				PerformSave(fileInfo.Name, Read(fileInfo.Name), blob.Properties.ContentType);
+				List<CloudBlockBlob> blobs = new List<CloudBlockBlob>();
+#pragma warning disable S1121 // Assignments should not be made from within sub-expressions
+				while ((filesToDecrypt = EnumerateFiles().Select(item => item.Name).OrderBy(item => item).Except(decryptedFiles).ToArray()).Length > 0)
+#pragma warning restore S1121 // Assignments should not be made from within sub-expressions
+				{
+					foreach (string fileName in filesToDecrypt)
+					{
+						CloudBlockBlob blob = GetBlobReference(fileName, false, true);
+						blobs.Add(blob);
+						blob.CreateSnapshot();
+						// PerformSave - zapíšeme bez šifrování
+						// Read - čteme šifrovaný obsah a dešifrujeme jej
+						PerformSave(fileName, Read(fileName), blob.Properties.ContentType);
+						decryptedFiles.Add(fileName);
+					}
+					blobs.ForEach(blob => blob.Delete(DeleteSnapshotsOption.DeleteSnapshotsOnly));
+				}
 			}
-			blobs.ForEach(blob => blob.Delete(DeleteSnapshotsOption.DeleteSnapshotsOnly));
+			catch (Exception exception)
+			{
+				throw new EncryptDecryptAllFilesException("All files decryption failed.", exception, decryptedFiles.ToArray(), filesToDecrypt);
+			}
 		}
 	}
 }

@@ -11,8 +11,7 @@ namespace Havit.Services.FileStorage
 	/// <summary>
 	/// Parametry šifrování file storage.
 	/// </summary>
-	// TODO šifrování storage: public
-	internal abstract class EncryptionOptions
+	public abstract class EncryptionOptions
 	{
 		/// <summary>
 		/// Vrátí encryptor.

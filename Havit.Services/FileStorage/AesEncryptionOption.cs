@@ -11,8 +11,7 @@ namespace Havit.Services.FileStorage
 	/// <summary>
 	/// AES šifrování file storage.
 	/// </summary>
-	// TODO šifrování storage: public
-	internal class AesEncryptionOption : EncryptionOptions, IDisposable
+	public class AesEncryptionOption : EncryptionOptions, IDisposable
 	{
 		private readonly Aes aes;
 		

@@ -28,8 +28,7 @@ namespace Havit.Services.FileStorage
 		/// </summary>
 		/// <param name="storagePath">Cesta k "rootu" použitého úložiště ve file systému.</param>
 		/// <param name="encryptionOptions">Parametry pro šifrování storage. Nepovinné.</param>
-		// TODO šifrování storage: public
-		internal FileSystemStorageService(string storagePath, EncryptionOptions encryptionOptions) : base(encryptionOptions)
+		public FileSystemStorageService(string storagePath, EncryptionOptions encryptionOptions) : base(encryptionOptions)
 		{
 			this.storagePath = storagePath;
 		}

@@ -25,5 +25,10 @@ namespace Havit.Services.FileStorage
 		/// Size of file. In bytes.
 		/// </summary>
 		public long Size { get; set; }
+
+		/// <summary>
+		/// Content Type.
+		/// </summary>
+		public string ContentType { get; set; }
 	}
 }

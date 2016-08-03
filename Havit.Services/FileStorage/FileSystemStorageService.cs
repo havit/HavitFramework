@@ -81,6 +81,7 @@ namespace Havit.Services.FileStorage
 
 		/// <summary>
 		/// Vylistuje seznam souborů v úložišti.
+		/// ContentType položek je vždy null.
 		/// </summary>
 		public override IEnumerable<FileInfo> EnumerateFiles(string searchPattern = null)
 		{
@@ -89,7 +90,8 @@ namespace Havit.Services.FileStorage
 			{
 				Name = fileInfo.Name,
 				LastModifiedUtc = fileInfo.LastWriteTimeUtc,
-				Size = fileInfo.Length
+				Size = fileInfo.Length,
+				ContentType = null
 			});
 		}
 

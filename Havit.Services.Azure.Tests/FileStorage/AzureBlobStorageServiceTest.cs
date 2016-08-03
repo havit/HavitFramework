@@ -60,6 +60,8 @@ namespace Havit.Services.Azure.Tests.FileStorage
 			var plainStorageService = GetAzureBlobStorageService();
 			var encryptedStorageService = GetAzureBlobStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String()));
 
+			EncryptDecryptFileStorageService encryptDecryptFileStorageService = new EncryptDecryptFileStorageService();
+
 			// Act
 			// zapíšeme nešifrovaný soubor
 			using (MemoryStream ms = new MemoryStream())
@@ -74,7 +76,7 @@ namespace Havit.Services.Azure.Tests.FileStorage
 			}
 
 			// zašifrujeme všechny soubory
-			encryptedStorageService.EncryptAllFiles();
+			encryptDecryptFileStorageService.EncryptAllFiles(plainStorageService, encryptedStorageService);
 
 			// kontrola, zda je soubor zašifrovaný
 			using (MemoryStream ms = new MemoryStream())
@@ -91,7 +93,7 @@ namespace Havit.Services.Azure.Tests.FileStorage
 			}
 
 			// dešifrujeme všechny soubory
-			encryptedStorageService.DecryptAllFiles();
+			encryptDecryptFileStorageService.DecryptAllFiles(encryptedStorageService, plainStorageService);
 
 			// kontrola, zda je soubor dešifrovaný
 			using (MemoryStream ms = new MemoryStream())

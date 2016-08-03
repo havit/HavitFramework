@@ -23,7 +23,7 @@ namespace Havit.Services.FileStorage
 		/// <summary>
 		/// Indukuje, zda je podporováno šifrování souborů.
 		/// </summary>
-		protected bool SupportsBasicEncryption => EncryptionOptions != null;
+		public bool SupportsBasicEncryption => EncryptionOptions != null;
 
 		/// <summary>
 		/// Konstruktor.

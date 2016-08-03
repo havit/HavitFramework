@@ -81,7 +81,6 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="FileStorage\EncryptDecryptAllFilesException.cs" />
     <Compile Include="FileStorage\AzureBlobStorageService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

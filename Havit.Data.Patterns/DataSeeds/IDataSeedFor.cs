@@ -43,7 +43,8 @@ namespace Havit.Data.Patterns.DataSeeds
 		IDataSeedFor<TEntity> WithoutUpdate();
 
 		/// <summary>
-		/// Konfiguruje seedování tak, aby po uložení seedovaných dat došlo k provedení callbacku (zavolání metody), která je parametrem metody.
+		/// Konfiguruje seedování tak, aby po fázi uložení seedovaných dat došlo k provedení callbacku (zavolání metody), která je parametrem metody.
+		/// AfterSave je volán nad všemi seedovanými objekty, i nad těmi, které nebyly uloženy (AfterSave je označení fáze seedování, nikoliv označení události nad objektem).
 		/// </summary>
 		IDataSeedFor<TEntity> AfterSave(Action<AfterSaveDataArgs<TEntity>> callback);
 	}

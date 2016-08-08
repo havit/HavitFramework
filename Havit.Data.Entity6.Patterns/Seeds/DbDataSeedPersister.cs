@@ -38,14 +38,14 @@ namespace Havit.Data.Entity.Patterns.Seeds
 
 			DbSet<TEntity> dbSet = dbContext.Set<TEntity>();
 			List<SeedDataPair<TEntity>> seedDataPairs = PairWithDbData(dbSet, configuration);
+			List<SeedDataPair<TEntity>> seedDataPairsToUpdate = new List<SeedDataPair<TEntity>>(seedDataPairs);
 
-			// TODO: Pokud je update Enabled false, nedojde k napárování a aftersave (k čemuž dojít má, ale nejde už o aftersave)
 			if (!configuration.UpdateEnabled)
 			{
-				seedDataPairs.RemoveAll(item => item.DbEntity != null);
+				seedDataPairsToUpdate.RemoveAll(item => item.DbEntity != null);
 			}
 
-			List<SeedDataPair<TEntity>> unpairedSeedDataPairs = seedDataPairs.Where(item => item.DbEntity == null).ToList();
+			List<SeedDataPair<TEntity>> unpairedSeedDataPairs = seedDataPairsToUpdate.Where(item => item.DbEntity == null).ToList();
 			foreach (SeedDataPair<TEntity> unpairedSeedDataPair in unpairedSeedDataPairs)
 			{
 				unpairedSeedDataPair.DbEntity = (TEntity)Activator.CreateInstance(typeof(TEntity));
@@ -53,7 +53,7 @@ namespace Havit.Data.Entity.Patterns.Seeds
 			}
 			dbSet.AddRange(unpairedSeedDataPairs.Select(item => item.DbEntity));
 
-			Update(configuration, seedDataPairs);
+			Update(configuration, seedDataPairsToUpdate);
 
 			dbContext.SaveChanges();
 

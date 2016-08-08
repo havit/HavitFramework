@@ -145,7 +145,7 @@ namespace Havit.Data.Patterns.DataSeeds
 			where TReferencedEntity : class
 		{
 			DataSeedFor<TReferencedEntity> dataSeedFor;
-			string key = ExpressionExt.ReplaceParameter(selector, selector.Parameters[0], Expression.Parameter(typeof(TEntity), "item")).ToString();
+			string key = ExpressionExt.ReplaceParameter(selector, selector.Parameters[0], Expression.Parameter(typeof(TEntity), "item")).RemoveConvert().ToString();
 
 			object tmp;
 			if (childDataForsRegistry.TryGetValue(key, out tmp))
@@ -193,7 +193,8 @@ namespace Havit.Data.Patterns.DataSeeds
 		}
 
 		/// <summary>
-		/// Konfiguruje seedování tak, aby po uložení seedovaných dat došlo k provedení callbacku (zavolání metody), která je parametrem metody.
+		/// Konfiguruje seedování tak, aby po fázi uložení seedovaných dat došlo k provedení callbacku (zavolání metody), která je parametrem metody.
+		/// AfterSave je volán nad všemi seedovanými objekty, i nad těmi, které nebyly uloženy (AfterSave je označení fáze seedování, nikoliv označení události nad objektem).
 		/// </summary>
 		public IDataSeedFor<TEntity> AfterSave(Action<AfterSaveDataArgs<TEntity>> callback)
 		{

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit", "Havit\Havit.csproj", "{9ACC94B9-B8FD-47C1-ABF8-0658C7673905}"
 EndProject
@@ -42,8 +42,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Web.Bootstrap.Tutorial", "Havit.Web.Bootstrap.Tutorial\Havit.Web.Bootstrap.Tutorial.csproj", "{ABA477E6-DEF8-4215-B5DE-612B546AD1FB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.WebTest", "Havit.WebTest\Havit.WebTest.csproj", "{B234340F-59D8-4BAC-9929-7BE7A7FA70C9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HavitTest", "HavitTest\HavitTest.csproj", "{9F79CB68-4B61-48E2-A9E5-B545A65BAC89}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HavitTestConsoleApplication", "HavitTestConsoleApplication\HavitTestConsoleApplication.csproj", "{9D368EE4-AE81-4B73-B617-DDA5A94410FF}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -148,6 +146,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Services.Azure.Tests", "Havit.Services.Azure.Tests\Havit.Services.Azure.Tests.csproj", "{026046B9-4CD5-4F62-8572-52E044DB71F5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Data.Tests", "Havit.Data.Tests\Havit.Data.Tests.csproj", "{89BE7317-100F-4504-9A30-86907B65C1CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Tests", "Havit.Tests\Havit.Tests.csproj", "{70B34BD1-CE17-485E-B586-21859A8DB5DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -276,12 +276,6 @@ Global
 		{B234340F-59D8-4BAC-9929-7BE7A7FA70C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B234340F-59D8-4BAC-9929-7BE7A7FA70C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B234340F-59D8-4BAC-9929-7BE7A7FA70C9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9F79CB68-4B61-48E2-A9E5-B545A65BAC89}.CodeGenerator|Any CPU.ActiveCfg = Release|Any CPU
-		{9F79CB68-4B61-48E2-A9E5-B545A65BAC89}.CodeGenerator|Any CPU.Build.0 = Release|Any CPU
-		{9F79CB68-4B61-48E2-A9E5-B545A65BAC89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9F79CB68-4B61-48E2-A9E5-B545A65BAC89}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9F79CB68-4B61-48E2-A9E5-B545A65BAC89}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9F79CB68-4B61-48E2-A9E5-B545A65BAC89}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9D368EE4-AE81-4B73-B617-DDA5A94410FF}.CodeGenerator|Any CPU.ActiveCfg = Release|Any CPU
 		{9D368EE4-AE81-4B73-B617-DDA5A94410FF}.CodeGenerator|Any CPU.Build.0 = Release|Any CPU
 		{9D368EE4-AE81-4B73-B617-DDA5A94410FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -381,6 +375,12 @@ Global
 		{89BE7317-100F-4504-9A30-86907B65C1CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89BE7317-100F-4504-9A30-86907B65C1CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89BE7317-100F-4504-9A30-86907B65C1CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70B34BD1-CE17-485E-B586-21859A8DB5DC}.CodeGenerator|Any CPU.ActiveCfg = Release|Any CPU
+		{70B34BD1-CE17-485E-B586-21859A8DB5DC}.CodeGenerator|Any CPU.Build.0 = Release|Any CPU
+		{70B34BD1-CE17-485E-B586-21859A8DB5DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70B34BD1-CE17-485E-B586-21859A8DB5DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70B34BD1-CE17-485E-B586-21859A8DB5DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70B34BD1-CE17-485E-B586-21859A8DB5DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -406,7 +406,6 @@ Global
 		{52891FB3-CA20-403B-AC25-7D9CA5738B6B} = {DB76A91F-9059-4EB3-9389-C86486BB0DFC}
 		{ABA477E6-DEF8-4215-B5DE-612B546AD1FB} = {379CD99B-7063-4455-BF39-ECECA819A14E}
 		{B234340F-59D8-4BAC-9929-7BE7A7FA70C9} = {9D3050E0-20E0-4CE6-BCBE-CF095A71C394}
-		{9F79CB68-4B61-48E2-A9E5-B545A65BAC89} = {9D3050E0-20E0-4CE6-BCBE-CF095A71C394}
 		{9D368EE4-AE81-4B73-B617-DDA5A94410FF} = {9D3050E0-20E0-4CE6-BCBE-CF095A71C394}
 		{8205CE30-EB5C-42FD-927D-723500F1028B} = {9D3050E0-20E0-4CE6-BCBE-CF095A71C394}
 		{28BB8E7F-089E-494E-9F11-6088C36DD4D0} = {9D3050E0-20E0-4CE6-BCBE-CF095A71C394}
@@ -428,9 +427,10 @@ Global
 		{9B35568E-61D9-4B65-B113-44FE4525C182} = {3C2FD345-B555-4C43-A930-761AC2517EFD}
 		{026046B9-4CD5-4F62-8572-52E044DB71F5} = {3C2FD345-B555-4C43-A930-761AC2517EFD}
 		{89BE7317-100F-4504-9A30-86907B65C1CF} = {3C2FD345-B555-4C43-A930-761AC2517EFD}
+		{70B34BD1-CE17-485E-B586-21859A8DB5DC} = {3C2FD345-B555-4C43-A930-761AC2517EFD}
 	EndGlobalSection
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 34
+		SccNumberOfProjects = 33
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.havit.eu/tfs/defaultcollection
 		SccProjectUniqueName0 = Havit\\Havit.csproj
@@ -553,88 +553,82 @@ Global
 		SccAuxPath19 = https://tfs.havit.eu/tfs/defaultcollection
 		SccLocalPath19 = Havit.WebTest
 		SccProvider19 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName20 = HavitTest\\HavitTest.csproj
+		SccProjectUniqueName20 = HavitTestConsoleApplication\\HavitTestConsoleApplication.csproj
 		SccProjectTopLevelParentUniqueName20 = HavitFramework.sln
-		SccProjectName20 = HavitTest
+		SccProjectName20 = HavitTestConsoleApplication
 		SccAuxPath20 = https://tfs.havit.eu/tfs/defaultcollection
-		SccLocalPath20 = HavitTest
+		SccLocalPath20 = HavitTestConsoleApplication
 		SccProvider20 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName21 = HavitTestConsoleApplication\\HavitTestConsoleApplication.csproj
+		SccProjectUniqueName21 = TracingTest\\TracingTest.csproj
 		SccProjectTopLevelParentUniqueName21 = HavitFramework.sln
-		SccProjectName21 = HavitTestConsoleApplication
+		SccProjectName21 = TracingTest
 		SccAuxPath21 = https://tfs.havit.eu/tfs/defaultcollection
-		SccLocalPath21 = HavitTestConsoleApplication
+		SccLocalPath21 = TracingTest
 		SccProvider21 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName22 = TracingTest\\TracingTest.csproj
+		SccProjectUniqueName22 = WebApplicationTest\\WebApplicationTest.csproj
 		SccProjectTopLevelParentUniqueName22 = HavitFramework.sln
-		SccProjectName22 = TracingTest
+		SccProjectName22 = WebApplicationTest
 		SccAuxPath22 = https://tfs.havit.eu/tfs/defaultcollection
-		SccLocalPath22 = TracingTest
+		SccLocalPath22 = WebApplicationTest
 		SccProvider22 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName23 = WebApplicationTest\\WebApplicationTest.csproj
+		SccProjectUniqueName23 = Sandcastle\\Sandcastle.shfbproj
 		SccProjectTopLevelParentUniqueName23 = HavitFramework.sln
-		SccProjectName23 = WebApplicationTest
 		SccAuxPath23 = https://tfs.havit.eu/tfs/defaultcollection
-		SccLocalPath23 = WebApplicationTest
+		SccLocalPath23 = Sandcastle
 		SccProvider23 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName24 = Sandcastle\\Sandcastle.shfbproj
+		SccProjectUniqueName24 = Havit.Data.Entity6.Tests\\Havit.Data.Entity6.Tests.csproj
 		SccProjectTopLevelParentUniqueName24 = HavitFramework.sln
+		SccProjectName24 = Havit.Data.Entity6.Tests
 		SccAuxPath24 = https://tfs.havit.eu/tfs/defaultcollection
-		SccLocalPath24 = Sandcastle
+		SccLocalPath24 = Havit.Data.Entity6.Tests
 		SccProvider24 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName25 = Havit.Data.Entity6.Tests\\Havit.Data.Entity6.Tests.csproj
+		SccProjectUniqueName25 = Havit.Data.Patterns\\Havit.Data.Patterns.csproj
 		SccProjectTopLevelParentUniqueName25 = HavitFramework.sln
-		SccProjectName25 = Havit.Data.Entity6.Tests
+		SccProjectName25 = Havit.Data.Patterns
 		SccAuxPath25 = https://tfs.havit.eu/tfs/defaultcollection
-		SccLocalPath25 = Havit.Data.Entity6.Tests
+		SccLocalPath25 = Havit.Data.Patterns
 		SccProvider25 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName26 = Havit.Data.Patterns\\Havit.Data.Patterns.csproj
+		SccProjectUniqueName26 = Havit.Data.Patterns.Tests\\Havit.Data.Patterns.Tests.csproj
 		SccProjectTopLevelParentUniqueName26 = HavitFramework.sln
-		SccProjectName26 = Havit.Data.Patterns
+		SccProjectName26 = Havit.Data.Patterns.Tests
 		SccAuxPath26 = https://tfs.havit.eu/tfs/defaultcollection
-		SccLocalPath26 = Havit.Data.Patterns
+		SccLocalPath26 = Havit.Data.Patterns.Tests
 		SccProvider26 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName27 = Havit.Data.Patterns.Tests\\Havit.Data.Patterns.Tests.csproj
+		SccProjectUniqueName27 = Havit.Data.Entity6.Patterns\\Havit.Data.Entity6.Patterns.csproj
 		SccProjectTopLevelParentUniqueName27 = HavitFramework.sln
-		SccProjectName27 = Havit.Data.Patterns.Tests
+		SccProjectName27 = Havit.Data.Entity6.Patterns
 		SccAuxPath27 = https://tfs.havit.eu/tfs/defaultcollection
-		SccLocalPath27 = Havit.Data.Patterns.Tests
+		SccLocalPath27 = Havit.Data.Entity6.Patterns
 		SccProvider27 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName28 = Havit.Data.Entity6.Patterns\\Havit.Data.Entity6.Patterns.csproj
+		SccProjectUniqueName28 = Havit.Data.Entity6.Patterns.Tests\\Havit.Data.Entity6.Patterns.Tests.csproj
 		SccProjectTopLevelParentUniqueName28 = HavitFramework.sln
-		SccProjectName28 = Havit.Data.Entity6.Patterns
+		SccProjectName28 = Havit.Data.Entity6.Patterns.Tests
 		SccAuxPath28 = https://tfs.havit.eu/tfs/defaultcollection
-		SccLocalPath28 = Havit.Data.Entity6.Patterns
+		SccLocalPath28 = Havit.Data.Entity6.Patterns.Tests
 		SccProvider28 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName29 = Havit.Data.Entity6.Patterns.Tests\\Havit.Data.Entity6.Patterns.Tests.csproj
+		SccProjectUniqueName29 = Havit.Data.Entity6.Patterns.Windsor\\Havit.Data.Entity6.Patterns.Windsor.csproj
 		SccProjectTopLevelParentUniqueName29 = HavitFramework.sln
-		SccProjectName29 = Havit.Data.Entity6.Patterns.Tests
+		SccProjectName29 = Havit.Data.Entity6.Patterns.Windsor
 		SccAuxPath29 = https://tfs.havit.eu/tfs/defaultcollection
-		SccLocalPath29 = Havit.Data.Entity6.Patterns.Tests
+		SccLocalPath29 = Havit.Data.Entity6.Patterns.Windsor
 		SccProvider29 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName30 = Havit.Data.Entity6.Patterns.Windsor\\Havit.Data.Entity6.Patterns.Windsor.csproj
+		SccProjectUniqueName30 = Havit.Data.Entity6.CodeGenerator\\Havit.Data.Entity6.CodeGenerator.csproj
 		SccProjectTopLevelParentUniqueName30 = HavitFramework.sln
-		SccProjectName30 = Havit.Data.Entity6.Patterns.Windsor
+		SccProjectName30 = Havit.Data.Entity6.CodeGenerator
 		SccAuxPath30 = https://tfs.havit.eu/tfs/defaultcollection
-		SccLocalPath30 = Havit.Data.Entity6.Patterns.Windsor
+		SccLocalPath30 = Havit.Data.Entity6.CodeGenerator
 		SccProvider30 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName31 = Havit.Data.Entity6.CodeGenerator\\Havit.Data.Entity6.CodeGenerator.csproj
+		SccProjectUniqueName31 = Havit.AspNet.Mvc\\Havit.AspNet.Mvc.csproj
 		SccProjectTopLevelParentUniqueName31 = HavitFramework.sln
-		SccProjectName31 = Havit.Data.Entity6.CodeGenerator
+		SccProjectName31 = Havit.AspNet.Mvc
 		SccAuxPath31 = https://tfs.havit.eu/tfs/defaultcollection
-		SccLocalPath31 = Havit.Data.Entity6.CodeGenerator
+		SccLocalPath31 = Havit.AspNet.Mvc
 		SccProvider31 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName32 = Havit.AspNet.Mvc\\Havit.AspNet.Mvc.csproj
+		SccProjectUniqueName32 = Havit.AspNet.Mvc.Tests\\Havit.AspNet.Mvc.Tests.csproj
 		SccProjectTopLevelParentUniqueName32 = HavitFramework.sln
-		SccProjectName32 = Havit.AspNet.Mvc
+		SccProjectName32 = Havit.AspNet.Mvc.Tests
 		SccAuxPath32 = https://tfs.havit.eu/tfs/defaultcollection
-		SccLocalPath32 = Havit.AspNet.Mvc
+		SccLocalPath32 = Havit.AspNet.Mvc.Tests
 		SccProvider32 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName33 = Havit.AspNet.Mvc.Tests\\Havit.AspNet.Mvc.Tests.csproj
-		SccProjectTopLevelParentUniqueName33 = HavitFramework.sln
-		SccProjectName33 = Havit.AspNet.Mvc.Tests
-		SccAuxPath33 = https://tfs.havit.eu/tfs/defaultcollection
-		SccLocalPath33 = Havit.AspNet.Mvc.Tests
-		SccProvider33 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 	EndGlobalSection
 EndGlobal

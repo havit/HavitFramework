@@ -72,6 +72,12 @@ namespace Havit.Services.Tests.FileStorage
 			FileStorageServiceTestInternals.FileStorageService_EnumerateFiles_SupportsSearchPattern(GetFileSystemStorageService());
 		}
 
+		[TestMethod]
+		public void FileSystemStorageServic_Read_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
+		{
+			FileStorageServiceTestInternals.FileStorageService_Read_StopReadingFarBeforeEndDoesNotThrowCryptographicException(GetFileSystemStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+		}
+
 		private FileSystemStorageService GetFileSystemStorageService(EncryptionOptions encryptionOptions = null)
 		{
 			return new FileSystemStorageService(GetStoragePath(), encryptionOptions);

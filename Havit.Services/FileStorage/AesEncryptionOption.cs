@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Havit.Diagnostics.Contracts;
+using Havit.Services.FileStorage.Infrastructure;
 
 namespace Havit.Services.FileStorage
 {
@@ -14,7 +15,7 @@ namespace Havit.Services.FileStorage
 	public class AesEncryptionOption : EncryptionOptions, IDisposable
 	{
 		private readonly Aes aes;
-		
+
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -135,6 +136,45 @@ namespace Havit.Services.Tests.FileStorage
 			fileStorageService.Delete(testFilename);
 		}
 
+		internal static void FileStorageService_Read_StopReadingFarBeforeEndDoesNotThrowCryptographicException(FileStorageServiceBase fileStorageService)
+		{
+			Contract.Requires(fileStorageService.SupportsBasicEncryption);
+
+			// Arrange
+			string testFilename = "encryption.txt";
+			string contentLine = "abcdefghijklmnopqrśtuvwxyz";
+
+			// zapíšeme 3 řádky
+			using (MemoryStream ms = new MemoryStream())
+			{
+				using (StreamWriter sw = new StreamWriter(ms, Encoding.UTF8, 1024, true))
+				{
+					for (int i = 0; i < 1000; i++)
+					{
+						sw.WriteLine(contentLine);
+					}
+				}
+				ms.Seek(0, SeekOrigin.Begin);
+
+				fileStorageService.Save(testFilename, ms, "text/plain");
+			}
+
+			// Act
+
+			// přečteme jen jednu řádku, poté provedeme dispose
+			using (Stream stream = fileStorageService.Read(testFilename))
+			using (StreamReader reader = new StreamReader(stream))
+			{
+				reader.ReadLine();
+			}
+
+			// Assert
+			// no exception was thrown (vs. System.Security.Cryptography.CryptographicException: Výplň je neplatná a nelze ji odebrat.)
+
+			// Clean-up
+			fileStorageService.Delete(testFilename);
+
+		}
 		private static bool FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(IFileStorageService fileStorageService, string searchPattern, string testFilename)
 		{
 			return fileStorageService.EnumerateFiles(searchPattern).Any(fileInfo => String.Equals(fileInfo.Name, testFilename, StringComparison.InvariantCultureIgnoreCase));

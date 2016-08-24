@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Havit.Diagnostics.Contracts;
+using Havit.Services.FileStorage.Infrastructure;
 
 namespace Havit.Services.FileStorage
 {
@@ -57,7 +58,7 @@ namespace Havit.Services.FileStorage
 			}
 			else
 			{
-				return new CryptoStream(PerformRead(fileName), EncryptionOptions.CreateDecryptor(), CryptoStreamMode.Read);
+				return new InternalCryptoStream(PerformRead(fileName), new InternalCryptoTransform(EncryptionOptions.CreateDecryptor()), CryptoStreamMode.Read);
 			}
 		}
 
@@ -73,7 +74,9 @@ namespace Havit.Services.FileStorage
 			}
 			else
 			{
-				using (NotClosingCryptoStream decryptingStream = new NotClosingCryptoStream(stream, EncryptionOptions.CreateDecryptor(), CryptoStreamMode.Write))
+				// použití NonClosingWrappingStreamu testuje Havit.Services.Tests.FileStorage.FileStorageServiceTestInternals.FileStorageService_SavedAndReadContentsAreSame_Perform
+				using (Stream notClosingWrappingStream = new NonClosingWrappingStream(stream))
+				using (CryptoStream decryptingStream = new CryptoStream(notClosingWrappingStream, EncryptionOptions.CreateDecryptor(), CryptoStreamMode.Write))
 				{
 					PerformReadToStream(fileName, decryptingStream);
 				}
@@ -92,7 +95,7 @@ namespace Havit.Services.FileStorage
 			}
 			else
 			{
-				using (NotClosingCryptoStream encryptingStream = new NotClosingCryptoStream(fileContent, EncryptionOptions.CreateEncryptor(), CryptoStreamMode.Read))
+				using (CryptoStream encryptingStream = new CryptoStream(fileContent, EncryptionOptions.CreateEncryptor(), CryptoStreamMode.Read))
 				{			
 					PerformSave(fileName, encryptingStream, contentType);
 				}

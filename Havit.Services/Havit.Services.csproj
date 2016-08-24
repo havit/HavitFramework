@@ -80,9 +80,11 @@
     <Compile Include="FileStorage\FileInfo.cs" />
     <Compile Include="FileStorage\FileSystemStorageService.cs" />
     <Compile Include="FileStorage\IFileStorageService.cs" />
-    <Compile Include="FileStorage\NotClosingCryptoStream.cs" />
+    <Compile Include="FileStorage\Infrastructure\InternalCryptoStream.cs" />
+    <Compile Include="FileStorage\Infrastructure\NonClosingWrappingStream.cs" />
     <Compile Include="FileStorage\FileStorageServiceBase.cs" />
     <Compile Include="FileStorage\EncryptDecryptFileStorageService.cs" />
+    <Compile Include="FileStorage\Infrastructure\InternalCryptoTransform.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StateAdministration\IdentifikacniCisloServices.cs" />
     <Compile Include="StateAdministration\RodneCisloServices.cs" />

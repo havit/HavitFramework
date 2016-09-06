@@ -12,7 +12,7 @@ Calendar._DN = new Array
  "Pondelok",
  "Utorok",
  "Streda",
- "Čtvrtok",
+ "Štvrtok",
  "Piatok",
  "Sobota",
  "Neděľa");
@@ -23,7 +23,7 @@ Calendar._SDN = new Array
  "Pon",
  "Uto",
  "Str",
- "Čtv",
+ "Štv",
  "Pia",
  "Sob",
  "Ned");

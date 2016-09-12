@@ -28,7 +28,18 @@ namespace Havit.Web.UI.WebControls
 				_messenger = value;
 			}
 		}
-		private Messenger _messenger; 
+		private Messenger _messenger;
+		#endregion
+
+		#region Enabled
+		/// <summary>
+		/// Indikuje, zda se budou zprávy messengeru zobrazovat (bez ohledu na způsob) a čistit z fronty zpráv.
+		/// </summary>
+		public bool Enabled
+		{
+			get { return (bool)(ViewState["Enabled"] ?? true); }
+			set { ViewState["Enabled"] = value; }
+		}
 		#endregion
 
 		#region ShowMessageBox
@@ -83,7 +94,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			base.OnPreRender(e);
 
-			if (ShowToastr)
+			if (Enabled && ShowToastr)
 			{
 				ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, "jquery");
 				ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, "toastr");
@@ -97,38 +108,41 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		private void Page_PreRenderComplete(object sender, EventArgs e)
 		{
-			// Pokud dojde k redirectu s endRequest=false (voláno takto mj. z FormsAuthentication.RedirectFromLoginPage) před voláním této metody,
-			// potom i v takovém případě proběhne tento OnPreRender, který vyčistí zprávy messengeru. Následně však dojde k přesměrování namísto zobrazení obsahu,
-			// takže uživatel zprávy nevidí.
-			// Touto podmínkou zajistíme, aby MessengerControl nezpracovával zprávy, pokud je známo, že následně dojde k přesměrování (namísto zobrazení obsahu stránky).
-			if (!this.Page.Response.IsRequestBeingRedirected)				
+			if (this.Enabled)
 			{
-				if (this.ShowSummary)
+				// Pokud dojde k redirectu s endRequest=false (voláno takto mj. z FormsAuthentication.RedirectFromLoginPage) před voláním této metody,
+				// potom i v takovém případě proběhne tento OnPreRender, který vyčistí zprávy messengeru. Následně však dojde k přesměrování namísto zobrazení obsahu,
+				// takže uživatel zprávy nevidí.
+				// Touto podmínkou zajistíme, aby MessengerControl nezpracovával zprávy, pokud je známo, že následně dojde k přesměrování (namísto zobrazení obsahu stránky).
+				if (!this.Page.Response.IsRequestBeingRedirected)
 				{
-					this.Text = this.GetSummaryHtml();
-				}
-
-				if (this.ShowMessageBox)
-				{
-					string messageBoxText = this.GetMessageBoxText();
-					if (!String.IsNullOrEmpty(messageBoxText))
+					if (this.ShowSummary)
 					{
-						//string script = String.Format("alert('{0}');", messageBoxText.Replace("'", "\\'"));
-						string script = String.Format("window.setTimeout(function() {{ alert('{0}'); }}, 10);", messageBoxText.Replace("'", "\\'"));
-						System.Web.UI.ScriptManager.RegisterStartupScript(this.Page, typeof(MessengerControl), "MessageBox", script, true);
+						this.Text = this.GetSummaryHtml();
 					}
-				}
 
-				if (this.ShowToastr)
-				{
-					string toastrScript = this.GetToastrScript();
-					if (!String.IsNullOrEmpty(toastrScript))
+					if (this.ShowMessageBox)
 					{
-						System.Web.UI.ScriptManager.RegisterStartupScript(this.Page, typeof(MessengerControl), "Toastr", toastrScript, true);
+						string messageBoxText = this.GetMessageBoxText();
+						if (!String.IsNullOrEmpty(messageBoxText))
+						{
+							//string script = String.Format("alert('{0}');", messageBoxText.Replace("'", "\\'"));
+							string script = String.Format("window.setTimeout(function() {{ alert('{0}'); }}, 10);", messageBoxText.Replace("'", "\\'"));
+							System.Web.UI.ScriptManager.RegisterStartupScript(this.Page, typeof(MessengerControl), "MessageBox", script, true);
+						}
 					}
-				}
 
-				this.Messenger.Clear();
+					if (this.ShowToastr)
+					{
+						string toastrScript = this.GetToastrScript();
+						if (!String.IsNullOrEmpty(toastrScript))
+						{
+							System.Web.UI.ScriptManager.RegisterStartupScript(this.Page, typeof(MessengerControl), "Toastr", toastrScript, true);
+						}
+					}
+
+					this.Messenger.Clear();
+				}
 			}
 		}
 		#endregion

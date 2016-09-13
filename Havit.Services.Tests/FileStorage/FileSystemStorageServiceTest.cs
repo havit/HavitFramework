@@ -26,6 +26,13 @@ namespace Havit.Services.Tests.FileStorage
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(InvalidOperationException))]
+		public void FileSystemStorageService_SaveDoNotAcceptSeekedStream()
+		{
+			FileStorageServiceTestInternals.FileStorageService_SaveDoNotAcceptSeekedStream(GetFileSystemStorageService());
+		}
+
+		[TestMethod]
 		public void FileSystemStorageService_SavedAndReadContentsAreSame()
 		{
 			FileStorageServiceTestInternals.FileStorageService_SavedAndReadContentsAreSame_Perform(GetFileSystemStorageService());

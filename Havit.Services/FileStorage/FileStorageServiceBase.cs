@@ -89,6 +89,11 @@ namespace Havit.Services.FileStorage
 		/// </summary>
 		public void Save(string fileName, Stream fileContent, string contentType)
 		{
+			if (fileContent.Position != 0)
+			{
+				throw new InvalidOperationException("Actual position in the stream is not at the beginning.");
+			}
+
 			if (!SupportsBasicEncryption)
 			{
 				PerformSave(fileName, fileContent, contentType);

@@ -27,6 +27,13 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(InvalidOperationException))]
+		public void AzureBlobStorageService_SaveDoNotAcceptSeekedStream()
+		{
+			FileStorageServiceTestInternals.FileStorageService_SaveDoNotAcceptSeekedStream(GetAzureBlobStorageService());
+		}
+
+		[TestMethod]
 		public void AzureBlobStorageService_SavedAndReadContentsAreSame()
 		{
 			FileStorageServiceTestInternals.FileStorageService_SavedAndReadContentsAreSame_Perform(GetAzureBlobStorageService());

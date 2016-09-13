@@ -60,6 +60,15 @@ namespace Havit.Services.Tests.FileStorage
 			Assert.IsFalse(exists);
 		}
 
+		internal static void FileStorageService_SaveDoNotAcceptSeekedStream(IFileStorageService fileStorageService)
+		{
+			using (MemoryStream ms = new MemoryStream())
+			{
+				ms.WriteByte(65 /* A */);
+				fileStorageService.Save("test.txt", ms, "text/plain");
+			}
+		}
+
 		internal static void FileStorageService_SavedAndReadContentsAreSame_Perform(IFileStorageService fileStorageService)
 		{
 			// Arrange

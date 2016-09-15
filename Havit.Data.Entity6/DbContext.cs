@@ -23,6 +23,15 @@ namespace Havit.Data.Entity
 		private List<Action> afterSaveChangesActions;
 
 		/// <summary>
+		/// Zpřístupňuje Configuration.AutoDetectChangesEnabled.
+		/// </summary>
+		public bool AutoDetectChangesEnabled
+		{
+			get { return Configuration.AutoDetectChangesEnabled; }
+			set { Configuration.AutoDetectChangesEnabled = value; }
+		}
+
+		/// <summary>
 		/// Konstruktor. Použije "DefaultConnectionString" jako název používaného connection stringu.
 		/// </summary>
 		protected DbContext() : this("DefaultConnectionString")
@@ -144,15 +153,6 @@ namespace Havit.Data.Entity
 
 		#region IDbContext interface explicit implementation
 		/// <summary>
-		/// Zpřístupňuje Configuration.AutoDetectChangesEnabled.
-		/// </summary>
-		bool IDbContext.AutoDetectChangesEnabled
-		{
-			get { return Configuration.AutoDetectChangesEnabled; }
-			set { Configuration.AutoDetectChangesEnabled = value; }
-		}
-
-		/// <summary>
 		/// Uloží evidované změny.
 		/// </summary>
 		void IDbContext.SaveChanges()
@@ -173,7 +173,7 @@ namespace Havit.Data.Entity
 		/// </summary>		
 		object[] IDbContext.GetObjectsInState(EntityState state)
 		{
-			return ((IObjectContextAdapter)this).ObjectContext.ObjectStateManager.GetObjectStateEntries(state).Select(item => item.Entity).ToArray();
+			return ExecuteWithoutAutoDetectChanges(() => ((IObjectContextAdapter)this).ObjectContext.ObjectStateManager.GetObjectStateEntries(state).Select(item => item.Entity).ToArray());
 		}
 
 		/// <summary>
@@ -181,7 +181,7 @@ namespace Havit.Data.Entity
 		/// </summary>
 		EntityState IDbContext.GetEntityState<TEntity>(TEntity entity)
 		{
-			return Entry(entity).State;
+			return ExecuteWithoutAutoDetectChanges(() => Entry(entity).State);
 		}
 
 		/// <summary>
@@ -189,7 +189,27 @@ namespace Havit.Data.Entity
 		/// </summary>
 		void IDbContext.SetEntityState<TEntity>(TEntity entity, EntityState entityState)
 		{
-			this.Entry(entity).State = entityState;
+			ExecuteWithoutAutoDetectChanges(() =>
+			{
+				this.Entry(entity).State = entityState;
+				return (object)null;
+			});
+		}
+
+		/// <summary>
+		/// Vrací true, pokud je daná vlastnost na entitě načtena.
+		/// </summary>
+		bool IDbContext.IsEntityReferenceLoaded<TEntity>(TEntity entity, string propertyName)
+		{
+			return ExecuteWithoutAutoDetectChanges(() => Entry(entity).Reference(propertyName).IsLoaded);
+		}
+
+		/// <summary>
+		/// Vrací true, pokud je daná vlastnost (kolekce) na entitě načtena.
+		/// </summary>
+		bool IDbContext.IsEntityCollectionLoaded<TEntity>(TEntity entity, string propertyName)
+		{
+			return ExecuteWithoutAutoDetectChanges(() => Entry(entity).Collection(propertyName).IsLoaded);
 		}
 
 		/// <summary>
@@ -199,23 +219,29 @@ namespace Havit.Data.Entity
 		{
 			this.ChangeTracker.DetectChanges();
 		}
-
-		/// <summary>
-		/// Vrací true, pokud je daná vlastnost na entitě načtena.
-		/// </summary>
-		bool IDbContext.IsEntityReferenceLoaded<TEntity>(TEntity entity, string propertyName)
-		{
-			return Entry(entity).Reference(propertyName).IsLoaded;
-		}
-
-		/// <summary>
-		/// Vrací true, pokud je daná vlastnost (kolekce) na entitě načtena.
-		/// </summary>
-		bool IDbContext.IsEntityCollectionLoaded<TEntity>(TEntity entity, string propertyName)
-		{
-			return Entry(entity).Collection(propertyName).IsLoaded;
-		}
-
 		#endregion
+
+		/// <summary>
+		/// Provede akci s AutoDetectChangesEnabled nastaveným na false, přičemž je poté AutoDetectChangesEnabled nastaven na původní hodnotu.
+		/// </summary>
+		private TResult ExecuteWithoutAutoDetectChanges<TResult>(Func<TResult> action)
+		{
+			if (AutoDetectChangesEnabled)
+			{
+				try
+				{
+					AutoDetectChangesEnabled = false;
+					return action();
+				}
+				finally
+				{
+					AutoDetectChangesEnabled = true;
+				}
+			}
+			else
+			{
+				return action();
+			}
+		}
 	}
 }

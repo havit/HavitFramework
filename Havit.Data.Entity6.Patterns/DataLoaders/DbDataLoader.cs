@@ -167,8 +167,8 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 			{
 				// ověříme, že jsou všechny objekty sledované change trackerem (na který spoléháme)
 				Contract.Assert<InvalidOperationException>(entitiesToLoadWithoutNulls.All(item => dbContext.GetEntityState(item) != EntityState.Detached), "DbDataLoader can be used only for objects tracked by a change tracker.");
-
-				// vytáhnemep posloupnost vlastností, které budeme načítat
+				
+				// vytáhneme posloupnost vlastností, které budeme načítat
 				PropertyToLoad[] propertiesSequenceToLoad = GetPropertiesSequenceToLoad(propertyPath);
 
 				Array entities = entitiesToLoadWithoutNulls;

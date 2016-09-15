@@ -85,6 +85,7 @@
     <Compile Include="DataEntries\Model\NotSupportedClass.cs" />
     <Compile Include="DataEntries\Model\SupportedClass.cs" />
     <Compile Include="DataEntries\DataSources\FakeSupportedClassDataSource.cs" />
+    <Compile Include="DataLoader\DbDataLoaderLoadSuppressesChangeTrackerTest.cs" />
     <Compile Include="DataLoader\DbDataLoaderTest.cs" />
     <Compile Include="DataLoader\PropertiesSequenceExpressionVisitorTest.cs" />
     <Compile Include="DataLoader\Model\Child.cs" />

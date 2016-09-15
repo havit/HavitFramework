@@ -201,9 +201,7 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 		protected virtual void PerformAddForUpdate<TEntity>(params TEntity[] entities)
 			where TEntity : class
 		{
-			var originalAutoDetectChangesEnabled = DbContext.AutoDetectChangesEnabled;
-			DbContext.AutoDetectChangesEnabled = false;
-
+			// z výkonových důvodů se očekává, že volané metody GetEntityState+SetEntityState nevolají change tracker
 			foreach (var entity in entities)
 			{
 				if (DbContext.GetEntityState(entity) == EntityState.Detached)
@@ -212,8 +210,6 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 				}
 			}
 			updateRegistrations.UnionWith(entities);
-
-			DbContext.AutoDetectChangesEnabled = originalAutoDetectChangesEnabled;
 		}
 
 		/// <summary>

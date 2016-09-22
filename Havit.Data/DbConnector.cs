@@ -696,7 +696,10 @@ namespace Havit.Data
 					{
 						// rollback chceme taky jen v případě, že jsme sami transakci založili (ať už úplně novou, nebo nested)
 						// případné vnější transakce shodí naše výjimka
-						currentTransaction.Rollback();
+						if (currentTransaction.Connection.State == ConnectionState.Open)
+						{
+							currentTransaction.Rollback();
+						}
 					}
 				}
 				catch

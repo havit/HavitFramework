@@ -250,7 +250,7 @@ namespace Havit.BusinessLayerTest.Resources
 		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		private static void AddDbResourcesDataToCache(CultureInfo cultureInfo, object resources)
 		{
-			if (!Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.SupportsCacheDependencies)
+			if (!Havit.Business.BusinessLayerContext.BusinessLayerCacheService.SupportsCacheDependencies)
 			{
 				throw new InvalidOperationException("Použitá BusinessLayerCacheService nepodporuje cache dependencies.");
 			}
@@ -260,7 +260,7 @@ namespace Havit.BusinessLayerTest.Resources
 				CacheDependencyKeys = new string[] { Havit.BusinessLayerTest.Resources.ResourceItemLocalization.GetAnySaveCacheDependencyKey() },
 				Priority = Havit.Services.Caching.CacheItemPriority.High
 			};
-			Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.AddDbResourcesDataToCache(GetDbResourcesDataCacheKey(cultureInfo), resources, options);
+			Havit.Business.BusinessLayerContext.BusinessLayerCacheService.AddDbResourcesDataToCache(GetDbResourcesDataCacheKey(cultureInfo), resources, options);
 		}
 		
 		/// <summary>
@@ -269,7 +269,7 @@ namespace Havit.BusinessLayerTest.Resources
 		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		private static object GetDbResourcesDataFromCache(CultureInfo cultureInfo)
 		{
-			return Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.GetDbResourcesDataFromCache(GetDbResourcesDataCacheKey(cultureInfo));
+			return Havit.Business.BusinessLayerContext.BusinessLayerCacheService.GetDbResourcesDataFromCache(GetDbResourcesDataCacheKey(cultureInfo));
 		}
 		#endregion
 		

@@ -12,7 +12,7 @@ namespace Havit.Business
 	/// <summary>
 	/// Ambientní kontext pro Business Layer.
 	/// </summary>
-	public static class BusinessLayerContexts
+	public static class BusinessLayerContext
 	{
 		#region BusinessLayerCacheService		
 

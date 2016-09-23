@@ -601,7 +601,7 @@ namespace Havit.BusinessLayerTest.Resources
 		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		internal void AddDataRecordToCache(DataRecord dataRecord)
 		{
-			Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.AddDataRecordToCache(typeof(ResourceClass), GetDataRecordCacheKey(this.ID), dataRecord);
+			Havit.Business.BusinessLayerContext.BusinessLayerCacheService.AddDataRecordToCache(typeof(ResourceClass), GetDataRecordCacheKey(this.ID), dataRecord);
 		}
 		
 		/// <summary>
@@ -610,7 +610,7 @@ namespace Havit.BusinessLayerTest.Resources
 		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		internal static DataRecord GetDataRecordFromCache(int id)
 		{
-			return Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.GetDataRecordFromCache(typeof(ResourceClass), GetDataRecordCacheKey(id));
+			return Havit.Business.BusinessLayerContext.BusinessLayerCacheService.GetDataRecordFromCache(typeof(ResourceClass), GetDataRecordCacheKey(id));
 		}
 		
 		/// <summary>
@@ -618,7 +618,7 @@ namespace Havit.BusinessLayerTest.Resources
 		/// </summary>
 		private void RemoveDataRecordFromCache()
 		{
-			Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.RemoveDataRecordFromCache(typeof(ResourceClass), GetDataRecordCacheKey(this.ID));
+			Havit.Business.BusinessLayerContext.BusinessLayerCacheService.RemoveDataRecordFromCache(typeof(ResourceClass), GetDataRecordCacheKey(this.ID));
 		}
 		#endregion
 		
@@ -636,7 +636,7 @@ namespace Havit.BusinessLayerTest.Resources
 		/// </summary>
 		private static int[] GetAllIDsFromCache(bool includeDeleted)
 		{
-			return Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.GetAllIDsFromCache(typeof(ResourceClass), GetAllIDsCacheKey(includeDeleted));
+			return Havit.Business.BusinessLayerContext.BusinessLayerCacheService.GetAllIDsFromCache(typeof(ResourceClass), GetAllIDsCacheKey(includeDeleted));
 		}
 		
 		/// <summary>
@@ -644,7 +644,7 @@ namespace Havit.BusinessLayerTest.Resources
 		/// </summary>
 		private static void AddAllIDsToCache(int[] ids, bool includeDeleted)
 		{
-			Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.AddAllIDsToCache(typeof(ResourceClass), GetAllIDsCacheKey(includeDeleted), ids);
+			Havit.Business.BusinessLayerContext.BusinessLayerCacheService.AddAllIDsToCache(typeof(ResourceClass), GetAllIDsCacheKey(includeDeleted), ids);
 		}
 		
 		/// <summary>
@@ -652,8 +652,8 @@ namespace Havit.BusinessLayerTest.Resources
 		/// </summary>
 		private static void RemoveAllIDsFromCache()
 		{
-			Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.RemoveAllIDsFromCache(typeof(ResourceClass), GetAllIDsCacheKey(true));
-			Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.RemoveAllIDsFromCache(typeof(ResourceClass), GetAllIDsCacheKey(false));
+			Havit.Business.BusinessLayerContext.BusinessLayerCacheService.RemoveAllIDsFromCache(typeof(ResourceClass), GetAllIDsCacheKey(true));
+			Havit.Business.BusinessLayerContext.BusinessLayerCacheService.RemoveAllIDsFromCache(typeof(ResourceClass), GetAllIDsCacheKey(false));
 		}
 		#endregion
 		
@@ -665,7 +665,7 @@ namespace Havit.BusinessLayerTest.Resources
 		{
 			global::Havit.Diagnostics.Contracts.Contract.Requires(!this.IsNew, "!this.IsNew");
 			
-			if (!Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.SupportsCacheDependencies)
+			if (!Havit.Business.BusinessLayerContext.BusinessLayerCacheService.SupportsCacheDependencies)
 			{
 				throw new InvalidOperationException("Použitá BusinessLayerCacheService nepodporuje cache dependencies.");
 			}
@@ -674,7 +674,7 @@ namespace Havit.BusinessLayerTest.Resources
 			
 			if (ensureInCache)
 			{
-				Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.EnsureCacheDependencyKey(typeof(ResourceClass), key);
+				Havit.Business.BusinessLayerContext.BusinessLayerCacheService.EnsureCacheDependencyKey(typeof(ResourceClass), key);
 			}
 			
 			return key;
@@ -686,9 +686,9 @@ namespace Havit.BusinessLayerTest.Resources
 		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected void InvalidateSaveCacheDependencyKey()
 		{
-			if (Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.SupportsCacheDependencies)
+			if (Havit.Business.BusinessLayerContext.BusinessLayerCacheService.SupportsCacheDependencies)
 			{
-				Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.InvalidateCacheDependencies(typeof(ResourceClass), GetSaveCacheDependencyKey(false));
+				Havit.Business.BusinessLayerContext.BusinessLayerCacheService.InvalidateCacheDependencies(typeof(ResourceClass), GetSaveCacheDependencyKey(false));
 			}
 		}
 		
@@ -697,7 +697,7 @@ namespace Havit.BusinessLayerTest.Resources
 		/// </summary>
 		public static string GetAnySaveCacheDependencyKey(bool ensureInCache = true)
 		{
-			if (!Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.SupportsCacheDependencies)
+			if (!Havit.Business.BusinessLayerContext.BusinessLayerCacheService.SupportsCacheDependencies)
 			{
 				throw new InvalidOperationException("Použitá BusinessLayerCacheService nepodporuje cache dependencies.");
 			}
@@ -706,7 +706,7 @@ namespace Havit.BusinessLayerTest.Resources
 			
 			if (ensureInCache)
 			{
-				Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.EnsureCacheDependencyKey(typeof(ResourceClass), key);
+				Havit.Business.BusinessLayerContext.BusinessLayerCacheService.EnsureCacheDependencyKey(typeof(ResourceClass), key);
 			}
 			
 			return key;
@@ -718,9 +718,9 @@ namespace Havit.BusinessLayerTest.Resources
 		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected static void InvalidateAnySaveCacheDependencyKey()
 		{
-			if (Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.SupportsCacheDependencies)
+			if (Havit.Business.BusinessLayerContext.BusinessLayerCacheService.SupportsCacheDependencies)
 			{
-				Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.InvalidateCacheDependencies(typeof(ResourceClass), GetAnySaveCacheDependencyKey(false));
+				Havit.Business.BusinessLayerContext.BusinessLayerCacheService.InvalidateCacheDependencies(typeof(ResourceClass), GetAnySaveCacheDependencyKey(false));
 			}
 		}
 		#endregion

@@ -400,7 +400,7 @@ namespace Havit.BusinessLayerTest
 		{
 			global::Havit.Diagnostics.Contracts.Contract.Requires(!this.IsNew, "!this.IsNew");
 			
-			if (!Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.SupportsCacheDependencies)
+			if (!Havit.Business.BusinessLayerContext.BusinessLayerCacheService.SupportsCacheDependencies)
 			{
 				throw new InvalidOperationException("Použitá BusinessLayerCacheService nepodporuje cache dependencies.");
 			}
@@ -409,7 +409,7 @@ namespace Havit.BusinessLayerTest
 			
 			if (ensureInCache)
 			{
-				Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.EnsureCacheDependencyKey(typeof(ObjednavkaSepsani), key);
+				Havit.Business.BusinessLayerContext.BusinessLayerCacheService.EnsureCacheDependencyKey(typeof(ObjednavkaSepsani), key);
 			}
 			
 			return key;
@@ -421,9 +421,9 @@ namespace Havit.BusinessLayerTest
 		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected void InvalidateSaveCacheDependencyKey()
 		{
-			if (Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.SupportsCacheDependencies)
+			if (Havit.Business.BusinessLayerContext.BusinessLayerCacheService.SupportsCacheDependencies)
 			{
-				Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.InvalidateCacheDependencies(typeof(ObjednavkaSepsani), GetSaveCacheDependencyKey(false));
+				Havit.Business.BusinessLayerContext.BusinessLayerCacheService.InvalidateCacheDependencies(typeof(ObjednavkaSepsani), GetSaveCacheDependencyKey(false));
 			}
 		}
 		
@@ -432,7 +432,7 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static string GetAnySaveCacheDependencyKey(bool ensureInCache = true)
 		{
-			if (!Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.SupportsCacheDependencies)
+			if (!Havit.Business.BusinessLayerContext.BusinessLayerCacheService.SupportsCacheDependencies)
 			{
 				throw new InvalidOperationException("Použitá BusinessLayerCacheService nepodporuje cache dependencies.");
 			}
@@ -441,7 +441,7 @@ namespace Havit.BusinessLayerTest
 			
 			if (ensureInCache)
 			{
-				Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.EnsureCacheDependencyKey(typeof(ObjednavkaSepsani), key);
+				Havit.Business.BusinessLayerContext.BusinessLayerCacheService.EnsureCacheDependencyKey(typeof(ObjednavkaSepsani), key);
 			}
 			
 			return key;
@@ -453,9 +453,9 @@ namespace Havit.BusinessLayerTest
 		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected static void InvalidateAnySaveCacheDependencyKey()
 		{
-			if (Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.SupportsCacheDependencies)
+			if (Havit.Business.BusinessLayerContext.BusinessLayerCacheService.SupportsCacheDependencies)
 			{
-				Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.InvalidateCacheDependencies(typeof(ObjednavkaSepsani), GetAnySaveCacheDependencyKey(false));
+				Havit.Business.BusinessLayerContext.BusinessLayerCacheService.InvalidateCacheDependencies(typeof(ObjednavkaSepsani), GetAnySaveCacheDependencyKey(false));
 			}
 		}
 		#endregion

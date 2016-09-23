@@ -321,7 +321,7 @@ namespace Havit.BusinessLayerTest
 			{
 				Priority = Havit.Services.Caching.CacheItemPriority.NotRemovable
 			};
-			Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.AddBusinessObjectToCache(typeof(Role), GetBusinessObjectCacheKey(businessObject.ID), businessObject, options);
+			Havit.Business.BusinessLayerContext.BusinessLayerCacheService.AddBusinessObjectToCache(typeof(Role), GetBusinessObjectCacheKey(businessObject.ID), businessObject, options);
 		}
 		
 		/// <summary>
@@ -330,7 +330,7 @@ namespace Havit.BusinessLayerTest
 		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		internal static BusinessObjectBase GetBusinessObjectFromCache(int id)
 		{
-			return Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.GetBusinessObjectFromCache(typeof(Role), GetBusinessObjectCacheKey(id));
+			return Havit.Business.BusinessLayerContext.BusinessLayerCacheService.GetBusinessObjectFromCache(typeof(Role), GetBusinessObjectCacheKey(id));
 		}
 		
 		#endregion
@@ -349,7 +349,7 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		private static int[] GetAllIDsFromCache()
 		{
-			return Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.GetAllIDsFromCache(typeof(Role), GetAllIDsCacheKey());
+			return Havit.Business.BusinessLayerContext.BusinessLayerCacheService.GetAllIDsFromCache(typeof(Role), GetAllIDsCacheKey());
 		}
 		
 		/// <summary>
@@ -361,7 +361,7 @@ namespace Havit.BusinessLayerTest
 			{
 				Priority = Havit.Services.Caching.CacheItemPriority.NotRemovable
 			};
-			Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.AddAllIDsToCache(typeof(Role), GetAllIDsCacheKey(), ids, options);
+			Havit.Business.BusinessLayerContext.BusinessLayerCacheService.AddAllIDsToCache(typeof(Role), GetAllIDsCacheKey(), ids, options);
 		}
 		
 		/// <summary>
@@ -369,7 +369,7 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		private static void RemoveAllIDsFromCache()
 		{
-			Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.RemoveAllIDsFromCache(typeof(Role), GetAllIDsCacheKey());
+			Havit.Business.BusinessLayerContext.BusinessLayerCacheService.RemoveAllIDsFromCache(typeof(Role), GetAllIDsCacheKey());
 		}
 		#endregion
 		

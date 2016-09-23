@@ -119,7 +119,7 @@
     <Compile Include="BusinessCalendarFridaySaturdayWeekendStrategy.cs" />
     <Compile Include="BusinessCalendarSaturdaySundayWeekendStrategy.cs" />
     <Compile Include="BusinessCalendarWeekendStrategy.cs" />
-    <Compile Include="BusinessLayerContexts.cs" />
+    <Compile Include="BusinessLayerContext.cs" />
     <Compile Include="BusinessObjectBase.cs" />
     <Compile Include="BusinessObjectCollection.cs" />
     <Compile Include="Caching\CacheAllIDsOnlyCacheService.cs" />

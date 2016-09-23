@@ -506,7 +506,7 @@ namespace Havit.BusinessLayerTest
 		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected static void AddBusinessObjectToCache(BusinessObjectBase businessObject)
 		{
-			Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.AddBusinessObjectToCache(typeof(Language), GetBusinessObjectCacheKey(businessObject.ID), businessObject);
+			Havit.Business.BusinessLayerContext.BusinessLayerCacheService.AddBusinessObjectToCache(typeof(Language), GetBusinessObjectCacheKey(businessObject.ID), businessObject);
 		}
 		
 		/// <summary>
@@ -515,7 +515,7 @@ namespace Havit.BusinessLayerTest
 		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		internal static BusinessObjectBase GetBusinessObjectFromCache(int id)
 		{
-			return Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.GetBusinessObjectFromCache(typeof(Language), GetBusinessObjectCacheKey(id));
+			return Havit.Business.BusinessLayerContext.BusinessLayerCacheService.GetBusinessObjectFromCache(typeof(Language), GetBusinessObjectCacheKey(id));
 		}
 		
 		#endregion
@@ -534,7 +534,7 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		private static int[] GetAllIDsFromCache()
 		{
-			return Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.GetAllIDsFromCache(typeof(Language), GetAllIDsCacheKey());
+			return Havit.Business.BusinessLayerContext.BusinessLayerCacheService.GetAllIDsFromCache(typeof(Language), GetAllIDsCacheKey());
 		}
 		
 		/// <summary>
@@ -542,7 +542,7 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		private static void AddAllIDsToCache(int[] ids)
 		{
-			Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.AddAllIDsToCache(typeof(Language), GetAllIDsCacheKey(), ids);
+			Havit.Business.BusinessLayerContext.BusinessLayerCacheService.AddAllIDsToCache(typeof(Language), GetAllIDsCacheKey(), ids);
 		}
 		
 		/// <summary>
@@ -550,7 +550,7 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		private static void RemoveAllIDsFromCache()
 		{
-			Havit.Business.BusinessLayerContexts.BusinessLayerCacheService.RemoveAllIDsFromCache(typeof(Language), GetAllIDsCacheKey());
+			Havit.Business.BusinessLayerContext.BusinessLayerCacheService.RemoveAllIDsFromCache(typeof(Language), GetAllIDsCacheKey());
 		}
 		#endregion
 		

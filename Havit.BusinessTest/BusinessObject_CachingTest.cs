@@ -36,7 +36,7 @@ namespace Havit.BusinessTest
 			//cacheService = new MemoryCacheService("Havit.BusinessTest");
 			cacheService = new HttpRuntimeCacheService();
 			cacheService.Clear();
-			BusinessLayerContexts.SetBusinessLayerCacheService(new DefaultBusinessLayerCacheService(cacheService));
+			BusinessLayerContext.SetBusinessLayerCacheService(new DefaultBusinessLayerCacheService(cacheService));
 
 			identityMapScope = new IdentityMapScope();
 		}

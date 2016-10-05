@@ -1,0 +1,4 @@
+﻿<%@ Master Language="C#" MasterPageFile="~/HavitCastleWindsorWebFormsTests/Top.Master" AutoEventWireup="true" CodeBehind="Nested.master.cs" Inherits="Havit.WebApplicationTest.HavitCastleWindsorWebFormsTests.Nested" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="TopCPH" runat="server">
+	<asp:ContentPlaceHolder ID="NestedCPH" runat="server" />
+</asp:Content>

@@ -1,0 +1,15 @@
+﻿<!DOCTYPE html>
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Top.master.cs" Inherits="Havit.WebApplicationTest.HavitCastleWindsorWebFormsTests.Top" %>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+</head>
+<body>
+    <form id="MainForm" runat="server">
+    <div>
+	    <asp:ContentPlaceHolder ID="TopCPH" runat="server" />        
+    </div>
+    </form>
+</body>
+</html>

@@ -38,12 +38,20 @@ namespace Havit.Data.Entity.Patterns.Repositories
 			{
 				if (_dbSetLocalsDictionary == null)
 				{
+					if (!_dbSetLocalsDictionaryInitialized)
+					{
+						DbSet.Local.CollectionChanged += DbSetLocal_CollectionChanged;
+						dbContext.RegisterAfterSaveChangesAction(DbContext_AfterSaveChangesAction);
+						_dbSetLocalsDictionaryInitialized = true;
+					}
+
 					_dbSetLocalsDictionary = DbSet.Local.Where(EntityNotInAddedState).ToDictionary(entity => EntityHelper.GetEntityId(entity));
 				}
 				return _dbSetLocalsDictionary;
 			}
 		}
 		private Dictionary<int, TEntity> _dbSetLocalsDictionary;
+		private bool _dbSetLocalsDictionaryInitialized = false;
 
 		/// <summary>
 		/// DbSet, nad kterým je DbRepository postaven.
@@ -87,10 +95,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 			this.dataLoader = dataLoader;
 			this.dataLoaderAsync = dataLoaderAsync;
 			this.SoftDeleteManager = softDeleteManager;
-
-			DbSet = dbSet;
-			dbSet.Local.CollectionChanged += DbSetLocal_CollectionChanged;
-			dbContext.RegisterAfterSaveChangesAction(DbContext_AfterSaveChangesAction);
+			this.DbSet = dbSet;
 		}
 
 		private void DbSetLocal_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

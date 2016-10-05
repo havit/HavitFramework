@@ -8,8 +8,15 @@
 </head>
 <body>
     <form id="form1" runat="server">
-    <div>
+    <asp:ScriptManager runat="server" />
+    <havit:AjaxHealthMonitoring runat="server"/>
+    <div>	    
 		<asp:Button ID="DoExceptionButton" Text="Do Exception" runat="server"/>
+		<asp:UpdatePanel runat="server">
+			<ContentTemplate>
+				<asp:Button ID="DoException2Button" Text="Do Exception in async postback" runat="server"/>
+			</ContentTemplate>
+		</asp:UpdatePanel>
     </div>
     </form>
 </body>

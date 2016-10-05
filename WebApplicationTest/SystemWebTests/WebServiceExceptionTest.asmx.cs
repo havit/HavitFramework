@@ -14,7 +14,7 @@ namespace Havit.WebApplicationTest.SystemWebTests
 		[WebMethod]
 		public void DoException()
 		{
-			throw new ApplicationException("Umyslna chyba.");
+			throw new ApplicationException("Zkoušíme HealtMonitoring v ASMX.");
 		}
 	}
 }

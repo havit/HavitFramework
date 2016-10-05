@@ -71,9 +71,9 @@ namespace Havit.Data.Patterns.DataEntries
 		private Dictionary<string, int> GetStorageData()
 		{
 			ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "item");
-			
-			// item => item.Symbol != String.Empty
-			Expression<Func<TEntity, bool>> whereExpression = (Expression<Func<TEntity, bool>>)Expression.Lambda(Expression.NotEqual(Expression.Property(parameter, "Symbol"), Expression.Constant(String.Empty)), parameter);
+
+			// item => !String.IsNullOrEmpty(item.Symbol)
+			Expression<Func<TEntity, bool>> whereExpression = (Expression<Func<TEntity, bool>>)Expression.Lambda(Expression.Not(Expression.Call(null, typeof(String).GetMethod(nameof(String.IsNullOrEmpty)), Expression.Property(parameter, "Symbol"))), parameter);
 
 			// item => new EntryIdentification { Id = item.Id, Symbol = item.Symbol }
 			Expression<Func<TEntity, EntryIdentification>> projectionExpression = (Expression<Func<TEntity, EntryIdentification>>)Expression.Lambda(

@@ -81,5 +81,25 @@ namespace Havit.Data.Entity.Patterns.Tests.DataEntries
 			// Assert
 			Assert.AreEqual(1, id);
 		}
+
+		[TestMethod]
+		public void DbDataEntrySymbolStorage_GetEntryId_SkipsNullAndEmptySymbols()
+		{
+			// Arrange
+			FakeSupportedClassDataSource fakeDataSource = new FakeSupportedClassDataSource(
+				new SupportedClass { Id = 1, Symbol = SupportedClass.Entry.First.ToString() },				
+				new SupportedClass { Id = 2, Symbol = null },
+				new SupportedClass { Id = 3, Symbol = String.Empty });
+			Mock<IDataSourceFactory<SupportedClass>> mockDataSourceFactory = new Mock<IDataSourceFactory<SupportedClass>>();
+			mockDataSourceFactory.Setup(mock => mock.Create()).Returns(fakeDataSource);
+
+			// Act
+			DataEntrySymbolStorage<SupportedClass> dbDataEntrySymbolStorage = new DataEntrySymbolStorage<SupportedClass>(mockDataSourceFactory.Object);
+			dbDataEntrySymbolStorage.GetEntryId(SupportedClass.Entry.First);
+
+			// Assert
+			// no exception was thrown
+		}
+
 	}
 }

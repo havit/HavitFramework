@@ -15,9 +15,9 @@ namespace Havit.WebApplicationTest.HavitCastleWindsorWebFormsTests
 		[Inject]
 		public IDisposableComponent DisposableComponent { get; set; }
 
-		protected override void OnLoad(EventArgs e)
+		protected override void OnInit(EventArgs e)
 		{
-			base.OnLoad(e);
+			base.OnInit(e);
 
 			Contract.Assert(DisposableComponent != null, "Page");
 

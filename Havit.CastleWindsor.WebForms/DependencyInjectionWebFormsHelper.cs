@@ -46,7 +46,7 @@ namespace Havit.CastleWindsor.WebForms
 
 			// Child controls are not created at this point.
 			// They will be when PreInit fires.
-			page.Init += (s, e) =>
+			page.PreInit += (s, e) =>
 			{
 				DependencyInjectionWebFormsHelper.InitializeChildControls(page);
 

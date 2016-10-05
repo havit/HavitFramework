@@ -23,7 +23,6 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.Repositories.Model
 
 		public IEnumerable<RepositoryModel> GetModels()
 		{
-            // TODO: Lock + reuse
 		    IEnumerable<DataEntriesModel> dataEntriesModels = dataEntriesModelSource.GetModels();
 
 			return (from registeredEntity in registeredEntityEnumerator.GetRegisteredEntities()

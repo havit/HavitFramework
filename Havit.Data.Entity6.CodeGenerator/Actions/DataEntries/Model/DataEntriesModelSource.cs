@@ -21,7 +21,6 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.DataEntries.Model
 
 		public IEnumerable<DataEntriesModel> GetModels()
 		{
-			// TODO: Lock + reuse
 			return (from registeredEntity in registeredEntityEnumerator.GetRegisteredEntities()
 				let entriesEnumType = GetEntriesEnum(registeredEntity.Type)
 				where (entriesEnumType != null)

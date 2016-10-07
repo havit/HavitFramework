@@ -8,8 +8,8 @@
 
 		public enum Entry
 		{
-			First,
-			Second
+			First = 1,
+			Second = 2
 		}
 	}
 }

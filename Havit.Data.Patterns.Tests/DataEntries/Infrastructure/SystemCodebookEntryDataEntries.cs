@@ -9,6 +9,10 @@ namespace Havit.Data.Patterns.Tests.DataEntries.Infrastructure
 		{
 		}
 
+		public SystemCodebookEntryDataEntries(IRepository<SystemCodebookEntry> repository) : base(repository)
+		{
+		}
+
 		public SystemCodebookEntry First => GetEntry(SystemCodebookEntry.Entry.First);
 
 		public SystemCodebookEntry Second => GetEntry(SystemCodebookEntry.Entry.Second);

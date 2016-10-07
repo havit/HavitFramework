@@ -16,9 +16,10 @@ namespace Havit.Data.Patterns.Tests.DataEntries
 		public void DbDataEntries_GetEntry_UsesDataEntrySymbolStorageAndRepository()
 		{
 			// Arrange
-			Mock<IDataEntrySymbolStorage<SystemCodebookEntry>> mockDataEntrySymbolStorage = new Mock<IDataEntrySymbolStorage<SystemCodebookEntry>>();
+			Mock<IDataEntrySymbolStorage<SystemCodebookEntry>> mockDataEntrySymbolStorage = new Mock<IDataEntrySymbolStorage<SystemCodebookEntry>>(MockBehavior.Strict);
 			mockDataEntrySymbolStorage.Setup(mock => mock.GetEntryId(SystemCodebookEntry.Entry.First)).Returns(1);
-			Mock<IRepository<SystemCodebookEntry>> mockRepository = new Mock<IRepository<SystemCodebookEntry>>();			
+			Mock<IRepository<SystemCodebookEntry>> mockRepository = new Mock<IRepository<SystemCodebookEntry>>(MockBehavior.Strict);
+			mockRepository.Setup(m => m.GetObject(1)).Returns(new SystemCodebookEntry());
 			SystemCodebookEntryDataEntries supportClassDataEntries = new SystemCodebookEntryDataEntries(mockDataEntrySymbolStorage.Object, mockRepository.Object);
 
 			// Act
@@ -29,6 +30,22 @@ namespace Havit.Data.Patterns.Tests.DataEntries
 			mockDataEntrySymbolStorage.Verify(mock => mock.GetEntryId(It.IsAny<SystemCodebookEntry.Entry>()), Times.Once);
 			mockRepository.Verify(mock => mock.GetObject(1), Times.Once);
 			mockRepository.Verify(mock => mock.GetObject(It.IsAny<int>()), Times.Once);
+		}
+
+		[TestMethod]
+		public void DbDataEntries_GetEntry_GetsObjectByEnumWhenDataEntrySymbolStorageNotUsed()
+		{
+			// Arrange
+			var first = new SystemCodebookEntry();
+			Mock<IRepository<SystemCodebookEntry>> mockRepository = new Mock<IRepository<SystemCodebookEntry>>(MockBehavior.Strict);
+			mockRepository.Setup(m => m.GetObject(1)).Returns(first);
+			SystemCodebookEntryDataEntries supportClassDataEntries = new SystemCodebookEntryDataEntries(mockRepository.Object);
+
+			// Act
+			var resultGetEntry = supportClassDataEntries.GetEntry(SystemCodebookEntry.Entry.First);
+
+			// Assert
+			Assert.AreSame(first, resultGetEntry);
 		}
 	}
 }

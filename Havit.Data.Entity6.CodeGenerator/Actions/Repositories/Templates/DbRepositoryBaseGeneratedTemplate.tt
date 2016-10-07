@@ -26,5 +26,12 @@ namespace <#= Model.NamespaceName #>
 		{
 		}
 
+<# if (Model.GenerateGetObjectByEntryEnumMethod) { #>
+		public virtual <#= Model.ModelClassFullName #> GetObject(<#= Model.ModelClassFullName #>.Entry entry)
+		{
+			return GetObject((int)entry);
+		}
+
+<# } #>
 	}
 }

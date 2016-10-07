@@ -78,7 +78,35 @@ namespace ");
             #line hidden
             this.Write("(IDbContext dbContext, IDataLoader dataLoader, IDataLoaderAsync dataLoaderAsync, " +
                     "ISoftDeleteManager softDeleteManager)\r\n\t\t\t: base(dbContext, dataLoader, dataLoad" +
-                    "erAsync, softDeleteManager)\r\n\t\t{\r\n\t\t}\r\n\r\n\t}\r\n}");
+                    "erAsync, softDeleteManager)\r\n\t\t{\r\n\t\t}\r\n\r\n");
+            
+            #line 29 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt"
+ if (Model.GenerateGetObjectByEntryEnumMethod) { 
+            
+            #line default
+            #line hidden
+            this.Write("\t\tpublic virtual ");
+            
+            #line 30 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
+            
+            #line default
+            #line hidden
+            this.Write(" GetObject(");
+            
+            #line 30 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
+            
+            #line default
+            #line hidden
+            this.Write(".Entry entry)\r\n\t\t{\r\n\t\t\treturn GetObject((int)entry);\r\n\t\t}\r\n\r\n");
+            
+            #line 35 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt"
+ } 
+            
+            #line default
+            #line hidden
+            this.Write("\t}\r\n}");
             return this.GenerationEnvironment.ToString();
         }
     }

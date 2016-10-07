@@ -34,7 +34,8 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.Repositories.Model
 					InterfaceRepositoryName = "I" + registeredEntity.ClassName + "Repository",
 					ModelClassNamespace = registeredEntity.NamespaceName,
 					ModelClassFullName = registeredEntity.FullName,
-                }).ToList();
+					GenerateGetObjectByEntryEnumMethod = !registeredEntity.HasDatabaseGeneratedIdentity && registeredEntity.HasEntryEnum
+				}).ToList();
 		}
 
 	    private string GetNamespaceName(string namespaceName)

@@ -89,7 +89,7 @@ namespace Havit.Services.FileStorage
 		/// </summary>
 		public void Save(string fileName, Stream fileContent, string contentType)
 		{
-			if (fileContent.Position != 0)
+			if (fileContent.CanSeek && (fileContent.Position != 0))
 			{
 				throw new InvalidOperationException("Actual position in the stream is not at the beginning.");
 			}

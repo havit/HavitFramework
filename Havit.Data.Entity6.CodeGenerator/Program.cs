@@ -93,8 +93,8 @@ namespace Havit.Data.Entity.CodeGenerator
 
 			Parallel.Invoke(
 		        () => GenerateMetadata(modelProject, registeredEntityEnumerator, sourceControlClient),
-		        () => GenerateDataSources(dataLayerProject, sourceControlClient, objectContext, modelProject, registeredEntityEnumerator),
-		        () => GenerateDataEntries(dataLayerProject, sourceControlClient, objectContext, modelProject, registeredEntityEnumerator, dataEntriesModelSource),
+		        () => GenerateDataSources(dataLayerProject, sourceControlClient, modelProject, registeredEntityEnumerator),
+		        () => GenerateDataEntries(dataLayerProject, sourceControlClient, modelProject, registeredEntityEnumerator, dataEntriesModelSource),
 		        () => GenerateRepositories(dataLayerProject, sourceControlClient, registeredEntityEnumerator, modelProject, dataEntriesModelSource)/*,
 				() => GenerateQueryExtensions(dataLayerProject, sourceControlClient, registeredEntityEnumerator)*/
 			);
@@ -132,7 +132,7 @@ namespace Havit.Data.Entity.CodeGenerator
 			metadataGenerator.Generate();
 		}
 
-		private static void GenerateDataSources(Project dataLayerProject, ISourceControlClient sourceControlClient, ObjectContext objectContext, Project modelProject, RegisteredEntityEnumerator registeredEntityEnumerator)
+		private static void GenerateDataSources(Project dataLayerProject, ISourceControlClient sourceControlClient, Project modelProject, RegisteredEntityEnumerator registeredEntityEnumerator)
 		{
 			CodeWriter codeWriter = new CodeWriter(dataLayerProject, sourceControlClient);
 			//IFileNamingService<InterfaceDataSourceModel> namingService = new InterfaceDataSourceFileNamingService(dataLayerProject);
@@ -148,7 +148,7 @@ namespace Havit.Data.Entity.CodeGenerator
 			fakeDataSourceGenerator.Generate();
 		}
 
-		private static void GenerateDataEntries(Project dataLayerProject, ISourceControlClient sourceControlClient, ObjectContext objectContext, Project modelProject, RegisteredEntityEnumerator registeredEntityEnumerator, DataEntriesModelSource dataEntriesModelSource)
+		private static void GenerateDataEntries(Project dataLayerProject, ISourceControlClient sourceControlClient, Project modelProject, RegisteredEntityEnumerator registeredEntityEnumerator, DataEntriesModelSource dataEntriesModelSource)
 		{
 			CodeWriter codeWriter = new CodeWriter(dataLayerProject, sourceControlClient);
 			var interfaceDataEntriesGenerator = new GenericGenerator<DataEntriesModel>(dataEntriesModelSource, new InterfaceDataEntriesTemplateFactory(), new InterfaceDataEntriesFileNamingService(dataLayerProject), codeWriter);

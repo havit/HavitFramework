@@ -33,6 +33,8 @@ namespace Havit.Data.Entity.CodeGenerator.Entity
 							ClassName = entityType.Name,
 							FullName = entityType.FullName,
 							Type = type,
+							HasEntryEnum = type.GetNestedType("Entry")?.IsEnum ?? false,
+							HasDatabaseGeneratedIdentity = HasDatabaseGeneratedIdentity(entityType),
 							Properties = GetProperties(entityType, type)
 						}).ToList();
 				}
@@ -51,7 +53,7 @@ namespace Havit.Data.Entity.CodeGenerator.Entity
 							? ((PrimitiveType)property.TypeUsage.EdmType).ClrEquivalentType							
 							: null,
 					Nullable = property.Nullable,
-					MaxLength = GetMaxLength(type, property)
+					MaxLength = GetMaxLength(type, property),
 				}).ToList();
 		}
 
@@ -59,6 +61,18 @@ namespace Havit.Data.Entity.CodeGenerator.Entity
 		{
 			MaxLengthAttribute maxLengthAttribute = type.GetProperty(property.Name).GetCustomAttribute<MaxLengthAttribute>();
 			return (maxLengthAttribute != null) ? maxLengthAttribute.Length : (int?)null;
+		}
+
+		private bool HasDatabaseGeneratedIdentity(EntityType entityType)
+		{
+			EntitySet entitySet = objectContext.MetadataWorkspace
+				.GetItems<EntityContainer>(DataSpace.SSpace)
+				.First()
+				.BaseEntitySets
+				.OfType<EntitySet>()
+				.Single(item => item.Name == entityType.Name);
+
+			return entitySet.ElementType.KeyProperties.Any(item => item.IsStoreGeneratedIdentity);
 		}
 	}
 }

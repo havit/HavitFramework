@@ -29,7 +29,6 @@ namespace Havit.Services.Azure.Tests.FileStorage
 			service.EnumerateFiles().ForEach(item => service.Delete(item.Name));
 		}
 
-
 		[TestMethod]
 		public void AzureBlobStorageService_Exists_ReturnsFalseWhenNotFound()
 		{

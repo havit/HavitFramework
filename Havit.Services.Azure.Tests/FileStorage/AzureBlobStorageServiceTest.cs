@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Havit.Services.Azure.FileStorage;
 using Havit.Services.FileStorage;
@@ -55,6 +57,26 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		public void AzureBlobStorageService_EnumerateFiles_SupportsSearchPattern()
 		{
 			FileStorageServiceTestInternals.FileStorageService_EnumerateFiles_SupportsSearchPattern(GetAzureBlobStorageService());
+		}
+
+		[TestMethod]
+		public void AzureBlobStorageService_EnumerateFiles_SupportsSearchInVirtualFolders()
+		{
+			AzureBlobStorageService fileStorageService = GetAzureBlobStorageService();
+
+			// Arrange
+			string testFilename = "myfolder/test123.txt";
+			using (MemoryStream ms = new MemoryStream())
+			{
+				fileStorageService.Save(testFilename, ms, "text/plain");
+			}
+
+			// Act
+			List<Services.FileStorage.FileInfo> files = fileStorageService.EnumerateFiles("myfolder/*").ToList();
+
+			// Assert
+			Assert.AreEqual(files.Count, 1);
+			Assert.AreEqual(testFilename, files[0].Name);
 		}
 
 		[TestMethod]

@@ -124,7 +124,16 @@ namespace Havit.Services.Azure.FileStorage
 		/// </summary>
 		public override IEnumerable<FileInfo> EnumerateFiles(string searchPattern = null)
 		{
-			var blobsEnumerable = GetContainerReference(true).ListBlobs().OfType<CloudBlob>();
+			string prefix = null;
+
+			if ((searchPattern != null) && searchPattern.Contains('/'))
+			{
+				int delimiter = searchPattern.LastIndexOf('/');
+				prefix = searchPattern.Substring(0, delimiter);
+				searchPattern = searchPattern.Remove(0, delimiter + 1);
+			}
+
+			var blobsEnumerable = GetContainerReference(true).ListBlobs(prefix, true).OfType<CloudBlob>();
 			if (!String.IsNullOrEmpty(searchPattern))
 			{
 				// Operators.Like 

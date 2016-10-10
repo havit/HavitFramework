@@ -145,6 +145,47 @@ namespace Havit.Services.Tests.FileStorage
 			fileStorageService.Delete(testFilename);
 		}
 
+		internal static void FileStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder(IFileStorageService fileStorageService)
+		{
+			// Arrange
+			string testFilename = @"subfolder1\subfolder2\test123.txt";
+			using (MemoryStream ms = new MemoryStream())
+			{
+				fileStorageService.Save(testFilename, ms, "text/plain");
+			}
+
+			// Act + Assert
+			Assert.IsTrue(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, null, testFilename), "no mask"); // bez zadání cesty je soubor ve výstupu vždy
+
+			Assert.IsFalse(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, @"*", testFilename), @"*"); // soubor v podadresáři nemá být nalezen bez zadání celé cesty
+			Assert.IsFalse(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, @"*.*", testFilename), @"*.*"); // soubor v podadresáři nemá být nalezen bez zadání celé cesty
+			Assert.IsFalse(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, @"test*", testFilename), @"test*"); // soubor v podadresáři nemá být nalezen bez zadání celé cesty
+			Assert.IsFalse(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, @"subfolder1\*", testFilename), @"subfolder1\*"); // soubor v podadresáři nemá být nalezen bez zadání celé cesty
+			Assert.IsFalse(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, @"subfolder1\*.*", testFilename), @"subfolder1\*.*"); // soubor v podadresáři nemá být nalezen bez zadání celé cesty
+
+			Assert.IsFalse(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, @"subfolder1\subfolder2", testFilename), @"subfolder1\subfolder2"); // soubor v podadresáři nemá být nalezen, není maska, ale jen název složky
+			Assert.IsFalse(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, @"subfolder1\subfolder2\", testFilename), @"subfolder1\subfolder2\"); // soubor v podadresáři nemá být nalezen, není maska, ale jen název složky
+
+			Assert.IsTrue(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, @"subfolder1\subfolder2\*", testFilename), @"subfolder1\subfolder2\*"); // soubor v podadresáři má být nalezen, je zadána cesta i maska
+			Assert.IsTrue(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, @"subfolder1\subfolder2\*.*", testFilename), @"subfolder1\subfolder2\*.*"); // soubor v podadresáři má být nalezen, je zadána celá cesta i maska 
+			Assert.IsTrue(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, @"subfolder1\subfolder2\test*", testFilename), @"subfolder1\subfolder2\test*"); // soubor v podadresáři má být nalezen, je zadána celá cesta i maska
+
+			Assert.IsFalse(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, @"*\*", testFilename), @"*\*"); // soubor v podadresáři nemá být nalezen, wildcards v cestě nejsou podporovány
+			Assert.IsFalse(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, @"sub*\subfolder2\*", testFilename), @"sub*\subfolder2*\*"); // soubor v podadresáři nemá být nalezen, wildcards v cestě nejsou podporovány
+			Assert.IsFalse(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, @"subfolder1\sub*\*", testFilename), @"subfolder1\sub*\*"); // soubor v podadresáři nemá být nalezen, wildcards v cestě nejsou podporovány
+			Assert.IsFalse(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, @"subfolder1\sub*\*.*", testFilename), @"subfolder1\sub*\*.*"); // soubor v podadresáři nemá být nalezen, wildcards v cestě nejsou podporovány
+			Assert.IsFalse(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, @"subfolder1\sub*\test*", testFilename), @"subfolder1\sub*\test*"); // soubor v podadresáři nemá být nalezen, wildcards v cestě nejsou podporovány
+			Assert.IsFalse(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, @"subfolder1\sub*\test123.txt", testFilename), @"subfolder1\sub*\test*"); // soubor v podadresáři nemá být nalezen, wildcards v cestě nejsou podporovány
+
+			Assert.IsFalse(fileStorageService.EnumerateFiles(@"subfolder1").Any(), @"Folder subfolder1"); // složka samotná není nalezena
+			Assert.IsFalse(fileStorageService.EnumerateFiles(@"subfolder1\").Any(), @"Folder subfolder1\"); // složka samotná není nalezena
+			Assert.IsFalse(fileStorageService.EnumerateFiles(@"subfolder1\subfolder2").Any(), @"Folder subfolder1\subfolder2"); // složka samotná není nalezena
+			Assert.IsFalse(fileStorageService.EnumerateFiles(@"subfolder1\subfolder2\").Any(), @"Folder subfolder1\subfolder2\"); // složka samotná není nalezena
+
+			// Clean-up
+			fileStorageService.Delete(testFilename);
+		}
+
 		internal static void FileStorageService_Read_StopReadingFarBeforeEndDoesNotThrowCryptographicException(FileStorageServiceBase fileStorageService)
 		{
 			Contract.Requires(fileStorageService.SupportsBasicEncryption);

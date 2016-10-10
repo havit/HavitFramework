@@ -13,6 +13,25 @@ namespace Havit.Services.Tests.FileStorage
 	[TestClass]
 	public class FileSystemStorageServiceTest
 	{
+		[ClassInitialize]
+		public static void Initialize(TestContext testContext)
+		{
+			// testy jsou slušné, mažou po sobě
+			// ve scénáři, kdy testy procházejí, není nutno tedy čistit před každým testem, ale čistíme pouze preventivně před všemi testy
+			CleanUp();
+			Directory.CreateDirectory(GetStoragePath());
+		}
+
+		[ClassCleanup]
+		public static void CleanUp()
+		{
+			string path = GetStoragePath();
+			if (Directory.Exists(path))
+			{
+				Directory.Delete(path, true);
+			}
+		}
+
 		[TestMethod]
 		public void FileSystemStorageService_Exists_ReturnsFalseWhenNotFound()
 		{
@@ -80,19 +99,25 @@ namespace Havit.Services.Tests.FileStorage
 		}
 
 		[TestMethod]
+		public void FileSystemStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder()
+		{
+			FileStorageServiceTestInternals.FileStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder(GetFileSystemStorageService());
+		}
+
+		[TestMethod]
 		public void FileSystemStorageServic_Read_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
 		{
 			FileStorageServiceTestInternals.FileStorageService_Read_StopReadingFarBeforeEndDoesNotThrowCryptographicException(GetFileSystemStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
 		}
 
-		private FileSystemStorageService GetFileSystemStorageService(EncryptionOptions encryptionOptions = null)
+		private static FileSystemStorageService GetFileSystemStorageService(EncryptionOptions encryptionOptions = null)
 		{
 			return new FileSystemStorageService(GetStoragePath(), encryptionOptions);
 		}
 
 		private static string GetStoragePath()
 		{
-			return System.IO.Path.GetTempPath();
+			return Path.Combine(System.IO.Path.GetTempPath(), "hfwtests");
 		}
 	}
 }

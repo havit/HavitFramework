@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Castle.Core.Internal;
 using Havit.Services.Azure.FileStorage;
 using Havit.Services.FileStorage;
 using Havit.Services.Tests.FileStorage;
@@ -11,11 +12,24 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Havit.Services.Azure.Tests.FileStorage
 {
 	[TestClass]
-#if !DEBUG
-	[Ignore]
-#endif
-	public class AzureBlobStorageServiceTest		
+	public class GetAzureBlobStorageServiceTest
 	{
+		[ClassInitialize]
+		public static void Initialize(TestContext testContext)
+		{
+			// testy jsou slušné, mažou po sobě
+			// ve scénáři, kdy testy procházejí, není nutno tedy čistit před každým testem, ale čistíme pouze preventivně před všemi testy
+			CleanUp();
+		}
+
+		[ClassCleanup]
+		public static void CleanUp()
+		{
+			var service = GetAzureBlobStorageService();
+			service.EnumerateFiles().ForEach(item => service.Delete(item.Name));
+		}
+
+
 		[TestMethod]
 		public void AzureBlobStorageService_Exists_ReturnsFalseWhenNotFound()
 		{
@@ -60,23 +74,9 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		}
 
 		[TestMethod]
-		public void AzureBlobStorageService_EnumerateFiles_SupportsSearchInVirtualFolders()
+		public void AzureBlobStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder()
 		{
-			AzureBlobStorageService fileStorageService = GetAzureBlobStorageService();
-
-			// Arrange
-			string testFilename = "myfolder/test123.txt";
-			using (MemoryStream ms = new MemoryStream())
-			{
-				fileStorageService.Save(testFilename, ms, "text/plain");
-			}
-
-			// Act
-			List<Services.FileStorage.FileInfo> files = fileStorageService.EnumerateFiles("myfolder/*").ToList();
-
-			// Assert
-			Assert.AreEqual(files.Count, 1);
-			Assert.AreEqual(testFilename, files[0].Name);
+			FileStorageServiceTestInternals.FileStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder(GetAzureBlobStorageService());
 		}
 
 		[TestMethod]
@@ -145,9 +145,9 @@ namespace Havit.Services.Azure.Tests.FileStorage
 			}
 		}
 
-		private AzureBlobStorageService GetAzureBlobStorageService(string container = "tests", EncryptionOptions encryptionOptions = null)
+		private static AzureBlobStorageService GetAzureBlobStorageService(string container = "tests", EncryptionOptions encryptionOptions = null)
 		{
-			return new AzureBlobStorageService("DefaultEndpointsProtocol=https;AccountName=hfwtest;AccountKey=2WjQXR02GG2uu3xiEa9T17nExF/gJ16UYzbIZg5gMV7evaufMX/K1uv+mKwiXwkCbYnOvJjDmHW2LQM/zmrqjA==", container, (EncryptionOptions)encryptionOptions);
+			return new AzureBlobStorageService("DefaultEndpointsProtocol=https;AccountName=hfwtestsstorage;AccountKey=3yuNhy/gYB6JDZ+bljB+vNBs4DrjjgvK7ZFfCR2QrZWoy4dEuYuSAApkQ2GkmKb01U2bidXq5/SpNDFm8uflDw==;", container, (EncryptionOptions)encryptionOptions);
 		}
 	}
 }

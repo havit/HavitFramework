@@ -38,7 +38,8 @@ namespace Havit.Data.Entity.Patterns.Windsor.Installers
 		///		</item>
 		/// </list>
 		/// </summary>
-		IEntityPatternsInstaller RegisterLocalizationServices<TLanguage>();
+		IEntityPatternsInstaller RegisterLocalizationServices<TLanguage>()
+			where TLanguage : class, Havit.Model.Localizations.ILanguage;
 
 		/// <summary>
 		/// Registruje do windsor containeru:

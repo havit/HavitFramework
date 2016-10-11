@@ -58,14 +58,15 @@ namespace Havit.Data.Entity.Patterns.Windsor.Installers
 		/// Viz <see cref="IEntityPatternsInstaller"/>
 		/// </summary>
 		public IEntityPatternsInstaller RegisterLocalizationServices<TLanguage>()
+			where TLanguage : class, ILanguage
 		{
 			Type currentLanguageServiceType = typeof(LanguageService<>).MakeGenericType(typeof(TLanguage));
 			container.Register(
 				Component.For<ILanguageService>().ImplementedBy(currentLanguageServiceType).LifestyleSingleton(),
 				Component.For<ILocalizationService>().ImplementedBy<LocalizationService>().LifestyleSingleton(),
 
-				// TODO: Registrujeme jen pro ILanguage, chtělo by obecně na modelové třídy (takže toto je takový malý HACK).
-				Component.For<IEntityKeyAccessor<ILanguage, int>>().ImplementedBy<EntityKeyAccessor>().LifestyleSingleton()
+				// Registrujeme jen pro TLanguage, možná bude časem třeba pro všechny modelové třídy (pak bychom přesunuli do jiné metody v této třídě).
+				Component.For<IEntityKeyAccessor<TLanguage, int>>().ImplementedBy<EntityKeyAccessor<TLanguage>>().LifestyleSingleton()
 			);
 			return this;
 		}

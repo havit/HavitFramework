@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B8B21A21-51AC-4E0D-8978-6D6DCC15F7D3}</ProjectGuid>
+    <ProjectGuid>{107D9E43-CD83-46CE-B027-249AF5BE912B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Havit.Data.Entity.Patterns.Tests</RootNamespace>
-    <AssemblyName>Havit.Data.Entity6.Patterns.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <RootNamespace>Havit.Data.Entity6.Patterns.Windsor.Tests</RootNamespace>
+    <AssemblyName>Havit.Data.Entity6.Patterns.Windsor.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -16,13 +16,6 @@
     <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
-    <TargetFrameworkProfile />
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -41,29 +34,26 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CodeGenerator|AnyCPU'">
-    <OutputPath>bin\CodeGenerator\</OutputPath>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Castle.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <HintPath>..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Castle.Windsor, Version=3.3.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Castle.Windsor.3.3.0\lib\net45\Castle.Windsor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
-    <Reference Include="Moq, Version=4.5.21.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
-      <HintPath>..\packages\Moq.4.5.21\lib\net45\Moq.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -73,9 +63,7 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
-          <Private>False</Private>
-        </Reference>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
       </ItemGroup>
     </Otherwise>
   </Choose>
@@ -83,69 +71,38 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="DataEntries\DataEntrySymbolStorageTest.cs" />
-    <Compile Include="DataEntries\DataSources\FakeNotSupportedClassDataSource.cs" />
-    <Compile Include="DataEntries\Model\NotSupportedClass.cs" />
-    <Compile Include="DataEntries\Model\SupportedClass.cs" />
-    <Compile Include="DataEntries\DataSources\FakeSupportedClassDataSource.cs" />
-    <Compile Include="DataLoader\DbDataLoaderLoadSuppressesChangeTrackerTest.cs" />
-    <Compile Include="DataLoader\DbDataLoaderTest.cs" />
-    <Compile Include="DataLoader\PropertiesSequenceExpressionVisitorTest.cs" />
-    <Compile Include="DataLoader\Model\Child.cs" />
-    <Compile Include="DataLoader\Model\DataLoaderTestDbContext.cs" />
-    <Compile Include="DataLoader\Model\LoginAccount.cs" />
-    <Compile Include="DataLoader\Model\Master.cs" />
-    <Compile Include="DataLoader\Model\Role.cs" />
-    <Compile Include="Infrastructure\FakeInt32DataSource.cs" />
-    <Compile Include="Infrastructure\FakeLanguageDataSource.cs" />
-    <Compile Include="Infrastructure\Language.cs" />
-    <Compile Include="QueryServices\DbDataSourceTest.cs" />
-    <Compile Include="Infrastructure\DbItemWithDeletedDataSource.cs" />
-    <Compile Include="Infrastructure\FakeItemWithDeletedDataSource.cs" />
-    <Compile Include="Infrastructure\DbItemWithDeletedRepository.cs" />
-    <Compile Include="Seeds\DbDataSeedPersisterTest.cs" />
-    <Compile Include="SoftDeletes\SoftDeleteManagerTest.cs" />
-    <Compile Include="QueryServices\Fakes\FakeDataSourceTest.cs" />
-    <Compile Include="Infrastructure\TestDbContext.cs" />
-    <Compile Include="Repositories\DbRepositoryTest.cs" />
-    <Compile Include="Infrastructure\ItemWithDeleted.cs" />
-    <Compile Include="Repositories\DbUnitOfWorkTest.cs" />
+    <Compile Include="EntityPatternsInstallerTests.cs" />
+    <Compile Include="Infrastructure\DataLayer\ILanguageDataSource.cs" />
+    <Compile Include="Infrastructure\DataLayer\LanguageDataSource.cs" />
+    <Compile Include="Infrastructure\Model\Language.cs" />
+    <Compile Include="Infrastructure\Entity\TestDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Havit.Data.Entity6.Patterns.Windsor\Havit.Data.Entity6.Patterns.Windsor.csproj">
+      <Project>{dcf67a43-0eed-4b20-85e3-f8a7aa1c22b5}</Project>
+      <Name>Havit.Data.Entity6.Patterns.Windsor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Havit.Data.Entity6.Patterns\Havit.Data.Entity6.Patterns.csproj">
+      <Project>{F8682E3B-C697-4E27-BF95-D9C48FE2D693}</Project>
+      <Name>Havit.Data.Entity6.Patterns</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Havit.Data.Entity6\Havit.Data.Entity6.csproj">
-      <Project>{d7232f24-9dcc-466f-b8ab-e3248e8edcc6}</Project>
+      <Project>{D7232F24-9DCC-466F-B8AB-E3248E8EDCC6}</Project>
       <Name>Havit.Data.Entity6</Name>
     </ProjectReference>
     <ProjectReference Include="..\Havit.Data.Patterns\Havit.Data.Patterns.csproj">
-      <Project>{8632b9da-ecb6-4007-ab3f-9c9aece63d67}</Project>
+      <Project>{8632B9DA-ECB6-4007-AB3F-9C9AECE63D67}</Project>
       <Name>Havit.Data.Patterns</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Havit.Data.Entity6.Patterns\Havit.Data.Entity6.Patterns.csproj">
-      <Project>{f8682e3b-c697-4e27-bf95-d9c48fe2d693}</Project>
-      <Name>Havit.Data.Entity6.Patterns</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Havit.Model\Havit.Model.csproj">
-      <Project>{72a78976-6b9f-4d96-a4c9-441066e44de4}</Project>
+      <Project>{72A78976-6B9F-4D96-A4C9-441066E44DE4}</Project>
       <Name>Havit.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Havit.Services\Havit.Services.csproj">
-      <Project>{2e4ae0cf-fa21-4fbc-9274-e56bc5d9494e}</Project>
-      <Name>Havit.Services</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Havit\Havit.csproj">
-      <Project>{9acc94b9-b8fd-47c1-abf8-0658c7673905}</Project>
-      <Name>Havit</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Repositories\Model\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

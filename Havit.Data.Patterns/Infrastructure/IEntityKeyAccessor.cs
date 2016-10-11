@@ -6,7 +6,7 @@ namespace Havit.Data.Patterns.Infrastructure
 	/// Třída pro získávání identifikátoru modelových objektů.
 	/// </summary>
 	public interface IEntityKeyAccessor<TEntity, TEntityKey>
-		where TEntity : class, ILanguage
+		where TEntity : class
 	{
 		/// <summary>
 		/// Vrátí klíč entity.

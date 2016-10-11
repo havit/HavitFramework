@@ -149,6 +149,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Data.Tests", "Havit.D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Tests", "Havit.Tests\Havit.Tests.csproj", "{70B34BD1-CE17-485E-B586-21859A8DB5DC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Data.Entity6.Patterns.Windsor.Tests", "Havit.Data.Entity6.Patterns.Windsor.Tests\Havit.Data.Entity6.Patterns.Windsor.Tests.csproj", "{107D9E43-CD83-46CE-B027-249AF5BE912B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		CodeGenerator|Any CPU = CodeGenerator|Any CPU
@@ -381,6 +383,12 @@ Global
 		{70B34BD1-CE17-485E-B586-21859A8DB5DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{70B34BD1-CE17-485E-B586-21859A8DB5DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{70B34BD1-CE17-485E-B586-21859A8DB5DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{107D9E43-CD83-46CE-B027-249AF5BE912B}.CodeGenerator|Any CPU.ActiveCfg = Release|Any CPU
+		{107D9E43-CD83-46CE-B027-249AF5BE912B}.CodeGenerator|Any CPU.Build.0 = Release|Any CPU
+		{107D9E43-CD83-46CE-B027-249AF5BE912B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{107D9E43-CD83-46CE-B027-249AF5BE912B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{107D9E43-CD83-46CE-B027-249AF5BE912B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{107D9E43-CD83-46CE-B027-249AF5BE912B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -428,6 +436,7 @@ Global
 		{026046B9-4CD5-4F62-8572-52E044DB71F5} = {3C2FD345-B555-4C43-A930-761AC2517EFD}
 		{89BE7317-100F-4504-9A30-86907B65C1CF} = {3C2FD345-B555-4C43-A930-761AC2517EFD}
 		{70B34BD1-CE17-485E-B586-21859A8DB5DC} = {3C2FD345-B555-4C43-A930-761AC2517EFD}
+		{107D9E43-CD83-46CE-B027-249AF5BE912B} = {345552D1-56B8-41F1-9513-AD2F31D2F985}
 	EndGlobalSection
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 33

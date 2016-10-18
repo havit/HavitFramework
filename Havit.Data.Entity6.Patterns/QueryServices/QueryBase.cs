@@ -13,7 +13,6 @@ namespace Havit.Data.Entity.Patterns.QueryServices
 	/// </summary>
 	/// <typeparam name="TQueryResult">Typ, který je vracen Query.</typeparam>
 	public abstract class QueryBase<TQueryResult>
-		where TQueryResult : class
 	{
 		/// <summary>
 		/// Definuje Query.

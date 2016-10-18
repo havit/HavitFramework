@@ -101,6 +101,7 @@ namespace Havit.Services.Tests.FileStorage
 		[TestMethod]
 		public void FileSystemStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder()
 		{
+			Assert.Inconclusive("Čeká na implementaci.");
 			FileStorageServiceTestInternals.FileStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder(GetFileSystemStorageService());
 		}
 

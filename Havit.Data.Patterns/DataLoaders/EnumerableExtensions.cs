@@ -15,9 +15,10 @@ namespace Havit.Data.Patterns.DataLoaders
 		/// </example> 
 		/// </summary>
 		/// <exception cref="System.NotSupportedException">Jakékoliv volání metody.</exception>
+		[Obsolete("Use syntax of DbExtensions.Include method (see https://msdn.microsoft.com/en-us/library/gg671236(v=vs.103).aspx).", true)]
 		public static TEntity Unwrap<TEntity>(this IEnumerable<TEntity> source)
 		{
-			throw new NotSupportedException($"Method \"{nameof(Unwrap)}\" should never be executed. It is a markup method for DataLoader only.");
+			throw new NotSupportedException();
 		}
 	}
 }

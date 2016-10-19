@@ -90,12 +90,14 @@
     <Compile Include="DataEntries\DataSources\FakeSupportedClassDataSource.cs" />
     <Compile Include="DataLoader\DbDataLoaderLoadSuppressesChangeTrackerTest.cs" />
     <Compile Include="DataLoader\DbDataLoaderTest.cs" />
+    <Compile Include="DataLoader\Model\HiearchyItem.cs" />
     <Compile Include="DataLoader\PropertiesSequenceExpressionVisitorTest.cs" />
     <Compile Include="DataLoader\Model\Child.cs" />
     <Compile Include="DataLoader\Model\DataLoaderTestDbContext.cs" />
     <Compile Include="DataLoader\Model\LoginAccount.cs" />
     <Compile Include="DataLoader\Model\Master.cs" />
     <Compile Include="DataLoader\Model\Role.cs" />
+    <Compile Include="DataLoader\DbExtensionsIncludeTest.cs" />
     <Compile Include="Infrastructure\FakeInt32DataSource.cs" />
     <Compile Include="Infrastructure\FakeLanguageDataSource.cs" />
     <Compile Include="Infrastructure\Language.cs" />

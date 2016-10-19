@@ -319,12 +319,33 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 			Child child = dbContext.Child.First();
 
 			// Act
-			dbDataLoader.Load(child, c => c.Parent.Children.Unwrap().Parent);
+			dbDataLoader.Load(child, c => c.Parent.Children.Select(item => item.Parent));
 
 			// Assert
 			Assert.IsNotNull(child.Parent);
 			Assert.IsNotNull(child.Parent.Children);
 			Assert.IsTrue(child.Parent.Children.All(item => item.Parent != null));
+		}
+
+		[TestMethod]
+		public void DbDataLoader_Load_LoadsHierarchy()
+		{
+			// Arrange
+			SeedHierarchyTestData();
+
+			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+			DataLoaders.DbDataLoader dbDataLoader = new DbDataLoader(dbContext);
+
+			HiearchyItem hiearchyItem = dbContext.HiearchyItem.Where(item => item.ParentId == null).First();
+
+			// Act
+			dbDataLoader.Load(hiearchyItem, hi => hi.Children.Select(hi2 => hi2.Children.Select(hi3 => hi3.Children)));
+
+			// Assert
+			Assert.IsNotNull(hiearchyItem.Children);
+			Assert.AreEqual(3, hiearchyItem.Children.Count);
+			Assert.AreEqual(3, hiearchyItem.Children.First().Children.Count);
+			Assert.AreEqual(3, hiearchyItem.Children.First().Children.First().Children.Count);
 		}
 
 		[TestMethod]
@@ -339,7 +360,7 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 			Child child = await dbContext.Child.FirstAsync();
 
 			// Act
-			await dbDataLoader.LoadAsync(child, c => c.Parent.Children.Unwrap().Parent);
+			await dbDataLoader.LoadAsync(child, c => c.Parent.Children.Select(item => item.Parent));
 
 			// Assert
 			Assert.IsNotNull(child.Parent);
@@ -361,7 +382,7 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 
 			// Act
 
-			dataLoader.Load(master1, m => m.Children.Unwrap());
+			dataLoader.Load(master1, m => m.Children);
 			dataLoader.LoadAll(new Master[] { master1, master2 }, m => m.Children);
 
 			// Assert
@@ -381,22 +402,6 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 			// Act
 			dataLoader.Load((Child)null, c => c.Parent);
 			dataLoader.LoadAll(new Child[] { null }, c => c.Parent);
-
-			// Assert: No exception was thrown
-		}
-
-		[TestMethod]			
-		public void DbDataLoader_Load_SupportsFluentApi()
-		{
-			// Arrange
-			SeedOneToManyTestData();
-
-			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
-			IDataLoader dataLoader = new DbDataLoader(dbContext);
-
-			// Act
-			dataLoader.Load((Child)null, c => c.Parent).Load(m => m.Children.Unwrap()).Load(c => c.Parent);
-			dataLoader.Load((Master)null, m => m.Children.Unwrap()).Load(c => c.Parent).Load(m => m.Children);
 
 			// Assert: No exception was thrown
 		}
@@ -464,6 +469,7 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 					{
 						child.Deleted = DateTime.Now;
 					}
+
 					dbContext.Master.Add(master);
 					dbContext.Child.Add(child);
 				}
@@ -497,6 +503,34 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 			}
 
 			dbContext.SaveChanges();
+		}
+
+		private void SeedHierarchyTestData()
+		{
+			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+			dbContext.Database.Initialize(true);
+
+			HiearchyItem root = new HiearchyItem();
+			SeedHierarchyTestData_CreateItems(root, 0);
+
+			dbContext.HiearchyItem.Add(root);
+			dbContext.SaveChanges();
+		}
+
+		private void SeedHierarchyTestData_CreateItems(HiearchyItem root, int level)
+		{
+			if (level > 2)
+			{
+				return;
+			}
+
+			root.Children = new List<HiearchyItem>();
+			for (int i = 0; i < 3; i++)
+			{
+				HiearchyItem hi = new HiearchyItem();
+				SeedHierarchyTestData_CreateItems(hi, level + 1);
+				root.Children.Add(hi);
+			}
 		}
 	}
 }

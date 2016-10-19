@@ -12,10 +12,8 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 {
 	internal class PropertiesSequenceExpressionVisitor : ExpressionVisitor
 	{
-		private bool collectionUnwrapRequired = false;
 		private string propertyPathString;
 		private List<PropertyToLoad> propertiesToLoad;
-		private readonly MethodInfo unwrapCollectionMethodInfo = typeof(EnumerableExtensions).GetMethod(nameof(EnumerableExtensions.Unwrap), BindingFlags.Static | BindingFlags.Public);
 
 		public PropertyToLoad[] GetPropertiesToLoad<TEntity, TProperty>(Expression<Func<TEntity, TProperty>> propertyPath)
 			where TEntity : class
@@ -51,21 +49,24 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 
 		protected override Expression VisitMethodCall(MethodCallExpression node)
 		{
-			if (!node.Method.IsGenericMethod || node.Method.GetGenericMethodDefinition() != unwrapCollectionMethodInfo)
+			// podmínka vypadá "šíleně jednoduše", ale je opsána z EF (System.Data.Entity.Internal.DbHelpers.TryParsePath).
+			// viz DbExtensionsIncludeTest
+			if ((node.Method.Name == "Select") && (node.Arguments.Count == 2))
 			{
-				throw new NotSupportedException($"There is unsupported method call \"{node.Method.Name}\" in the expression \"{propertyPathString}\".");
+				Visit(node.Arguments[0]);
+				Visit(node.Arguments[1]);
+
+				// NO BASE CALL! return base.VisitMethodCall(node);
+				return node;
 			}
-
-			collectionUnwrapRequired = true;
-
-			return base.VisitMethodCall(node);
+			else
+			{
+				throw new NotSupportedException($"There is an unsupported method call \"{node.Method.Name}\" in the expression \"{propertyPathString}\".");
+			}
 		}
 
 		protected override Expression VisitMember(MemberExpression node)
 		{
-			bool collectionUnwrapThisMember = this.collectionUnwrapRequired;
-			collectionUnwrapRequired = false;
-
 			Expression result = base.VisitMember(node);
 
 			if (node.NodeType == ExpressionType.MemberAccess)
@@ -80,8 +81,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 						SourceType = node.Member.DeclaringType,
 						PropertyName = node.Member.Name,
 						TargetType = ((PropertyInfo)node.Member).PropertyType,
-						CollectionItemType = enumerableInterfaceType.GetGenericArguments()[0],
-						CollectionUnwrapped = collectionUnwrapThisMember
+						CollectionItemType = enumerableInterfaceType.GetGenericArguments()[0]
 					});
 
 				}

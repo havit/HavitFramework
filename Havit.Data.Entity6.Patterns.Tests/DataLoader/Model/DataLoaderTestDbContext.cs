@@ -8,6 +8,7 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader.Model
 		public DbSet<Child> Child { get; set; }
 		public DbSet<LoginAccount> LoginAccount { get; set; }
 		public DbSet<Role> Role { get; set; }
+		public DbSet<HiearchyItem> HiearchyItem { get; set; }
 
 		static DataLoaderTestDbContext()
 		{
@@ -23,6 +24,9 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader.Model
 
 			// M:N
 			modelBuilder.Entity<LoginAccount>().HasMany(loginAccount => loginAccount.Roles).WithMany();
+
+			// Hierarchy
+			modelBuilder.Entity<HiearchyItem>().HasMany(parent => parent.Children).WithOptional(child => child.Parent);
 		}
 	}
 }

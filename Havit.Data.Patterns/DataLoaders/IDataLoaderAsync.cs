@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Havit.Data.Patterns.DataLoaders.Fluent;
 
 namespace Havit.Data.Patterns.DataLoaders
 {
@@ -18,7 +17,7 @@ namespace Havit.Data.Patterns.DataLoaders
 		/// </summary>
 		/// <param name="entity">Objekt, jehož vlastnosti budou načteny.</param>
 		/// <param name="propertyPath">Vlastnost, která má být načtena.</param>
-		Task<IDataLoaderFluentAsync<TProperty>> LoadAsync<TEntity, TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> propertyPath)
+		Task LoadAsync<TEntity, TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> propertyPath)
 			where TEntity : class
 			where TProperty : class;
 
@@ -35,7 +34,7 @@ namespace Havit.Data.Patterns.DataLoaders
 		/// </summary>
 		/// <param name="entities">Objekty, jejíž vlastnosti budou načteny.</param>
 		/// <param name="propertyPath">Vlastnost, která má být načtena.</param>
-		Task<IDataLoaderFluentAsync<TProperty>> LoadAllAsync<TEntity, TProperty>(IEnumerable<TEntity> entities, Expression<Func<TEntity, TProperty>> propertyPath)
+		Task LoadAllAsync<TEntity, TProperty>(IEnumerable<TEntity> entities, Expression<Func<TEntity, TProperty>> propertyPath)
 			where TEntity : class
 			where TProperty : class;
 

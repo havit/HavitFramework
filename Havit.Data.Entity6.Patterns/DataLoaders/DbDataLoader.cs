@@ -8,7 +8,6 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Havit.Data.Entity.Patterns.Helpers;
 using Havit.Data.Patterns.DataLoaders;
-using Havit.Data.Patterns.DataLoaders.Fluent;
 using Havit.Diagnostics.Contracts;
 
 namespace Havit.Data.Entity.Patterns.DataLoaders
@@ -40,11 +39,11 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 		/// </summary>
 		/// <param name="entity">Objekt, jehož vlastnosti budou načteny.</param>
 		/// <param name="propertyPath">Vlastnost, která má být načtena.</param>
-		public IDataLoaderFluent<TProperty> Load<TEntity, TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> propertyPath)
+		public void Load<TEntity, TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> propertyPath)
 			where TEntity : class
 			where TProperty : class
 		{
-			return LoadInternal(new TEntity[] { entity }, propertyPath);
+			LoadInternal(new TEntity[] { entity }, propertyPath);
 		}
 
 		/// <summary>
@@ -68,11 +67,11 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 		/// </summary>
 		/// <param name="entities">Objekty, jejíž vlastnosti budou načteny.</param>
 		/// <param name="propertyPath">Vlastnost, která má být načtena.</param>
-		public IDataLoaderFluent<TProperty> LoadAll<TEntity, TProperty>(IEnumerable<TEntity> entities, Expression<Func<TEntity, TProperty>> propertyPath)
+		public void LoadAll<TEntity, TProperty>(IEnumerable<TEntity> entities, Expression<Func<TEntity, TProperty>> propertyPath)
 			where TEntity : class
 			where TProperty : class
 		{
-			return LoadInternal(entities, propertyPath);
+			LoadInternal(entities, propertyPath);
 		}
 
 		/// <summary>
@@ -101,7 +100,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 		/// </summary>
 		/// <param name="entity">Objekt, jehož vlastnosti budou načteny.</param>
 		/// <param name="propertyPath">Vlastnost, která má být načtena.</param>
-		public Task<IDataLoaderFluentAsync<TProperty>> LoadAsync<TEntity, TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> propertyPath)
+		public Task LoadAsync<TEntity, TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> propertyPath)
 			where TEntity : class
 			where TProperty : class
 		{
@@ -129,7 +128,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 		/// </summary>
 		/// <param name="entities">Objekty, jejíž vlastnosti budou načteny.</param>
 		/// <param name="propertyPath">Vlastnost, která má být načtena.</param>
-		public Task<IDataLoaderFluentAsync<TProperty>> LoadAllAsync<TEntity, TProperty>(IEnumerable<TEntity> entities, Expression<Func<TEntity, TProperty>> propertyPath)
+		public Task LoadAllAsync<TEntity, TProperty>(IEnumerable<TEntity> entities, Expression<Func<TEntity, TProperty>> propertyPath)
 			where TEntity : class
 			where TProperty : class
 		{
@@ -156,7 +155,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 		/// <summary>
 		/// Načte vlastnosti objektů, pokud ještě nejsou načteny.
 		/// </summary>
-		private IDataLoaderFluent<TProperty> LoadInternal<TEntity, TProperty>(IEnumerable<TEntity> entitiesToLoad, Expression<Func<TEntity, TProperty>> propertyPath)
+		private void LoadInternal<TEntity, TProperty>(IEnumerable<TEntity> entitiesToLoad, Expression<Func<TEntity, TProperty>> propertyPath)
 			where TEntity : class
 			where TProperty : class
 		{
@@ -192,7 +191,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 								propertyToLoad.SourceType,
 								propertyToLoad.TargetType,
 								propertyToLoad.CollectionItemType)
-							.Invoke(this, new object[] { propertyToLoad.PropertyName, entities, propertyToLoad.CollectionUnwrapped });
+							.Invoke(this, new object[] { propertyToLoad.PropertyName, entities });
 					}
 
 					if (entities.Length == 0)
@@ -200,18 +199,13 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 						break; // shortcut
 					}
 				}
-				return new DataLoaderFluent<TProperty>(this, entities.Cast<TProperty>().ToArray());
-			}
-			else
-			{
-				return new DataLoaderFluent<TProperty>(this, new TProperty[] { });
 			}
 		}
 
 		/// <summary>
 		/// Načte vlastnosti objektů, pokud ještě nejsou načteny.
 		/// </summary>
-		private async Task<IDataLoaderFluentAsync<TProperty>> LoadInternalAsync<TEntity, TProperty>(IEnumerable<TEntity> entitiesToLoad, Expression<Func<TEntity, TProperty>> propertyPath)
+		private async Task LoadInternalAsync<TEntity, TProperty>(IEnumerable<TEntity> entitiesToLoad, Expression<Func<TEntity, TProperty>> propertyPath)
 			where TEntity : class
 			where TProperty : class
 		{
@@ -257,12 +251,6 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 						break; // shortcut
 					}
 				}
-
-				return new DataLoaderFluentAsync<TProperty>(this, entities.Cast<TProperty>().ToArray());
-			}
-			else
-			{
-				return new DataLoaderFluentAsync<TProperty>(this, new TProperty[] { });
 			}
 		}
 
@@ -330,7 +318,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 		/// <summary>
 		/// Zajistí načtení vlastnosti, která je kolekcí. Voláno reflexí.
 		/// </summary>
-		private object[] LoadCollectionPropertyInternal<TEntity, TPropertyCollection, TPropertyItem>(string propertyName, TEntity[] entities, bool unwrapCollection)
+		private object[] LoadCollectionPropertyInternal<TEntity, TPropertyCollection, TPropertyItem>(string propertyName, TEntity[] entities)
 					where TEntity : class
 					where TPropertyCollection : class
 					where TPropertyItem : class
@@ -346,14 +334,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 				loadQuery.Load();
 			}
 
-			if (unwrapCollection)
-			{
-				return entities.SelectMany(item => (IEnumerable<TPropertyItem>)propertyPathLambda(item)).ToArray();
-			}
-			else
-			{
-				return entities.Select(item => propertyPathLambda(item)).ToArray();
-			}
+			return entities.SelectMany(item => (IEnumerable<TPropertyItem>)propertyPathLambda(item)).ToArray();
 		}
 
 		/// <summary>

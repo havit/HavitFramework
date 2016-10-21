@@ -38,18 +38,6 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 		/// Načte vlastnosti objektů, pokud ještě nejsou načteny.
 		/// </summary>
 		/// <param name="entity">Objekt, jehož vlastnosti budou načteny.</param>
-		/// <param name="propertyPath">Vlastnost, která má být načtena.</param>
-		public void Load<TEntity, TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> propertyPath)
-			where TEntity : class
-			where TProperty : class
-		{
-			LoadInternal(new TEntity[] { entity }, propertyPath);
-		}
-
-		/// <summary>
-		/// Načte vlastnosti objektů, pokud ještě nejsou načteny.
-		/// </summary>
-		/// <param name="entity">Objekt, jehož vlastnosti budou načteny.</param>
 		/// <param name="propertyPaths">Vlastnostu, které mají být načteny.</param>
 		public void Load<TEntity>(TEntity entity, params Expression<Func<TEntity, object>>[] propertyPaths)
 			where TEntity : class
@@ -60,18 +48,6 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 			{
 				LoadInternal(new TEntity[] { entity }, propertyPath);
 			}
-		}
-
-		/// <summary>
-		/// Načte vlastnosti objektů, pokud ještě nejsou načteny.
-		/// </summary>
-		/// <param name="entities">Objekty, jejíž vlastnosti budou načteny.</param>
-		/// <param name="propertyPath">Vlastnost, která má být načtena.</param>
-		public void LoadAll<TEntity, TProperty>(IEnumerable<TEntity> entities, Expression<Func<TEntity, TProperty>> propertyPath)
-			where TEntity : class
-			where TProperty : class
-		{
-			LoadInternal(entities, propertyPath);
 		}
 
 		/// <summary>
@@ -99,18 +75,6 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 		/// Načte vlastnosti objektů, pokud ještě nejsou načteny.
 		/// </summary>
 		/// <param name="entity">Objekt, jehož vlastnosti budou načteny.</param>
-		/// <param name="propertyPath">Vlastnost, která má být načtena.</param>
-		public Task LoadAsync<TEntity, TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> propertyPath)
-			where TEntity : class
-			where TProperty : class
-		{
-			return LoadInternalAsync(new TEntity[] { entity }, propertyPath);
-		}
-
-		/// <summary>
-		/// Načte vlastnosti objektů, pokud ještě nejsou načteny.
-		/// </summary>
-		/// <param name="entity">Objekt, jehož vlastnosti budou načteny.</param>
 		/// <param name="propertyPaths">Vlastnostu, které mají být načteny.</param>
 		public async Task LoadAsync<TEntity>(TEntity entity, params Expression<Func<TEntity, object>>[] propertyPaths)
 			where TEntity : class
@@ -121,18 +85,6 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 			{
 				await LoadInternalAsync(new TEntity[] { entity }, propertyPath);
 			}
-		}
-
-		/// <summary>
-		/// Načte vlastnosti objektů, pokud ještě nejsou načteny.
-		/// </summary>
-		/// <param name="entities">Objekty, jejíž vlastnosti budou načteny.</param>
-		/// <param name="propertyPath">Vlastnost, která má být načtena.</param>
-		public Task LoadAllAsync<TEntity, TProperty>(IEnumerable<TEntity> entities, Expression<Func<TEntity, TProperty>> propertyPath)
-			where TEntity : class
-			where TProperty : class
-		{
-			return LoadInternalAsync(entities, propertyPath);
 		}
 		
 		/// <summary>

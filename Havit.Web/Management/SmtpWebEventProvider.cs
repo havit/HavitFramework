@@ -154,6 +154,17 @@ namespace Havit.Web.Management
 		protected virtual string GetMailMessageSubject(WebBaseEvent raisedEvent)
 		{
 			string message = (raisedEvent is WebRequestErrorEventExt) ? ((WebRequestErrorEventExt)raisedEvent).ErrorException.Message : raisedEvent.Message;
+			
+			// předmět mailu nesmí obsahovat znaky \r a \n
+			if (message.Contains('\r'))
+			{
+				message = message.Left(message.IndexOf('\r'));
+			}
+			if (message.Contains('\n'))
+			{
+				message = message.Left(message.IndexOf('\n'));
+			}
+
 			string prefix = _subjectPrefix.Trim().TrimEnd(':');
 			int counter = Interlocked.Increment(ref _mailCounter);
 

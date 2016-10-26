@@ -85,6 +85,7 @@
     <Compile Include="FileStorage\FileStorageServiceBase.cs" />
     <Compile Include="FileStorage\EncryptDecryptFileStorageService.cs" />
     <Compile Include="FileStorage\Infrastructure\InternalCryptoTransform.cs" />
+    <Compile Include="IServiceFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StateAdministration\IdentifikacniCisloServices.cs" />
     <Compile Include="StateAdministration\RodneCisloServices.cs" />

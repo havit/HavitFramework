@@ -101,20 +101,6 @@ namespace Havit.Data.Entity.Tests.Validators
 		}
 
 		[TestMethod]
-		public void DbContextConventionsValidator_CheckStringMaxLengthConvention_ReportsMaxLengthAttributeWithNegativeValue()
-		{
-			// Arrange
-			ModelValidatingDbContext modelValidatingDbContext = new ModelValidatingDbContext();
-			ModelValidator modelValidator = new ModelValidator();
-
-			// Act
-			string[] errorsMoreInvalidKeysClass = modelValidator.CheckStringMaxLengthConvention(modelValidatingDbContext.Db(typeof(MaxLengthAttributeWithNegativeValueClass))).ToArray();
-
-			// Assert			
-			Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("more then zero")));
-		}
-
-		[TestMethod]
 		public void DbContextConventionsValidator_CheckStringMaxLengthConvention_DoesNotReportMissingAttributeWithPositiveValue()
 		{
 			// Arrange

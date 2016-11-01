@@ -96,7 +96,6 @@
     <Compile Include="Validators\Infrastructure\Model\WithNestedEnumEntryClass.cs" />
     <Compile Include="Validators\Infrastructure\Model\WithNestedClassClass.cs" />
     <Compile Include="Validators\Infrastructure\Model\NoMaxLengthAttributeClass.cs" />
-    <Compile Include="Validators\Infrastructure\Model\MaxLengthAttributeWithNegativeValueClass.cs" />
     <Compile Include="Validators\Infrastructure\Model\OneCorrectKeyClass.cs" />
     <Compile Include="Validators\Infrastructure\Model\MoreInvalidKeysClass.cs" />
     <Compile Include="Validators\Infrastructure\ModelValidatingDbContext.cs" />

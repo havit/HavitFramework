@@ -90,9 +90,14 @@ namespace Havit.Data.Entity.Validators
 					}
 					else
 					{
-						if (maxLengthAttribute.Length <= 0)
+						if (maxLengthAttribute.Length == 0)
 						{
-							yield return $"Class {entityMap.Type.Name} has a string property {property.PropertyName} with negative value, it is expected to be more then zero.";
+							yield return $"Class {entityMap.Type.Name} has a string property {property.PropertyName} with zero value, it is expected to be greater then 0 (or -1 as 'max allowable').";
+						}
+						// -1 == MaxAllowableLength --> NOOP
+						if (maxLengthAttribute.Length < -1) 
+						{
+							yield return $"Class {entityMap.Type.Name} has a string property {property.PropertyName} with negative value, it is expected to be greater then 0 (or -1 as 'max allowable').";
 						}
 					}
 				}

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Havit.Data.Entity.CodeGenerator.Entity;
 using Havit.Data.Entity.CodeGenerator.Services;
@@ -28,7 +29,9 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.ModelMetadataClasses.Model
 						select new MetadataClass.MaxLengthConstant
 						{
 							Name = property.PropertyName + "MaxLength",
-							Value = property.MaxLength ?? 0
+							Value = (property.MaxLength == -1)
+								? Int32.MaxValue
+								: property.MaxLength ?? 0
 						}).ToList()
 				}).ToList();
 			return result;

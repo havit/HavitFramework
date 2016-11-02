@@ -15,6 +15,22 @@ namespace Havit.Data.Patterns.Tests.DataSeeds
 	public class DataSeedForTest
 	{
 		[TestMethod]
+		public void DataSeedFor_AndForAll_LocalizationsSharesConfigurationWithDefault()
+		{
+			// Arrange
+			var dataSeedForLocalizedEntity = new DataSeedFor<LocalizedEntity>(new LocalizedEntity[] { });
+
+			// počet výchozích konfigurací (očekává se jedna)
+			int defaultChildDataForRegistryCount = dataSeedForLocalizedEntity._childDataForsRegistry.Count;
+
+			// Act			
+			dataSeedForLocalizedEntity.AndForAll(le1 => le1.Localizations, configuration => { /* NOOP */ }); // zkusíme použít konfiguraci pro lokalizace, kterou očekáváme ve výchozích konfiguracích
+
+			// Assert
+			Assert.AreEqual(defaultChildDataForRegistryCount, dataSeedForLocalizedEntity._childDataForsRegistry.Count, "Došlo k přidání další konfigurace."); // nechceme, aby Act změnil počet konfigurací
+		}
+
+		[TestMethod]
 		public void DataSeedFor_AndForAll_ReusesConfigurationForSameProperties()
 		{
 			// Arrange

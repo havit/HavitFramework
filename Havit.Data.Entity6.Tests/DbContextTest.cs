@@ -114,6 +114,8 @@ namespace Havit.Data.Entity.Tests
 		[TestMethod]
 		public void DbContext_MigrationsDoNotCreateAnotherDatabase()
 		{
+			Assert.Inconclusive();
+
 			Contract.Assert(ConfigurationManager.ConnectionStrings["Havit.Data.Entity6.Tests.TwoContructorsDbContext1"] == null, "Pro účely testu nesmí existovat connection string Havit.Data.Entity6.Tests.TwoContructorsDbContext1.");
 			Contract.Assert(ConfigurationManager.ConnectionStrings["Havit.Data.Entity6.Tests.TwoContructorsDbContext2"] == null, "Pro účely testu nesmí existovat connection string Havit.Data.Entity6.Tests.TwoContructorsDbContext2.");
 
@@ -140,8 +142,5 @@ namespace Havit.Data.Entity.Tests
 			Assert.IsFalse(defaultCreated, "Havit.Data.Entity6.Tests.TwoContructorsDbContext1 databáze založena.");
 			Assert.IsTrue(secondaryCreated, "Havit.Data.Entity6.Tests.TwoContructorsDbContext2 databáze nezaložena.");
 		}
-
-
-
 	}
 }

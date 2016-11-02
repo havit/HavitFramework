@@ -16,7 +16,9 @@ namespace Havit.Data.Patterns.DataSeeds
 		/// </summary>
 		public DataSeedConfiguration<TEntity> Configuration { get; private set; }
 
-		private readonly Dictionary<string, object> childDataForsRegistry = new Dictionary<string, object>();
+		#pragma warning disable SA1300 // Element must begin with upper-case letter
+		internal Dictionary<string, object> _childDataForsRegistry { get; private set; } = new Dictionary<string, object>();
+		#pragma warning restore SA1300 // Element must begin with upper-case letter
 
 		/// <summary>
 		/// Konstuktor.
@@ -145,10 +147,10 @@ namespace Havit.Data.Patterns.DataSeeds
 			where TReferencedEntity : class
 		{
 			DataSeedFor<TReferencedEntity> dataSeedFor;
-			string key = ExpressionExt.ReplaceParameter(selector, selector.Parameters[0], Expression.Parameter(typeof(TEntity), "item")).RemoveConvert().ToString();
+			string key = ExpressionExt.ReplaceParameter(selector.Body, selector.Parameters[0], Expression.Parameter(typeof(TEntity), "item")).RemoveConvert().ToString();
 
 			object tmp;
-			if (childDataForsRegistry.TryGetValue(key, out tmp))
+			if (_childDataForsRegistry.TryGetValue(key, out tmp))
 			{
 				dataSeedFor = (DataSeedFor<TReferencedEntity>)tmp;
 			}
@@ -156,7 +158,7 @@ namespace Havit.Data.Patterns.DataSeeds
 			{
 				TReferencedEntity[] newData = dataSelector().Where(item => item != null).Distinct().ToArray();
 				dataSeedFor = new DataSeedFor<TReferencedEntity>(newData);
-				childDataForsRegistry.Add(key, dataSeedFor);
+				_childDataForsRegistry.Add(key, dataSeedFor);
 
 				ChildDataSeedConfigurationEntry childEntry = new ChildDataSeedConfigurationEntry((IDataSeedPersister persister) => persister.Save(dataSeedFor.Configuration));
 				if (Configuration.ChildrenSeeds == null)

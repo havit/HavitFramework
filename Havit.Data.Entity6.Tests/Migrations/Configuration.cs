@@ -11,9 +11,5 @@ namespace Havit.Data.Entity.Tests.Migrations
         {
             AutomaticMigrationsEnabled = false;
         }
-
-        protected override void Seed(Havit.Data.Entity.Tests.Infrastructure.TwoContructorsDbContext context)
-        {
-        }
     }
 }

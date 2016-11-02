@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Linq;
@@ -8,6 +10,7 @@ using System.Threading.Tasks;
 using Havit.Data.Entity.Tests.Infrastructure;
 using Havit.Data.Entity.Tests.Infrastructure.Model;
 using Havit.Data.Entity.Tests.Validators.Infrastructure;
+using Havit.Diagnostics.Contracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -46,7 +49,7 @@ namespace Havit.Data.Entity.Tests
 			Assert.IsTrue(called);
 		}
 
-		[TestMethod]		
+		[TestMethod]
 		public void DbContext_SaveChanges_ThrownDbEntityValidationExceptionIsWrappedWithMessage()
 		{
 			ValidatingDbContext dbContext = new ValidatingDbContext();
@@ -107,6 +110,38 @@ namespace Havit.Data.Entity.Tests
 				Assert.AreEqual(1, master.Children.Count);
 			}
 		}
+
+		[TestMethod]
+		public void DbContext_MigrationsDoNotCreateAnotherDatabase()
+		{
+			Contract.Assert(ConfigurationManager.ConnectionStrings["Havit.Data.Entity6.Tests.TwoContructorsDbContext1"] == null, "Pro účely testu nesmí existovat connection string Havit.Data.Entity6.Tests.TwoContructorsDbContext1.");
+			Contract.Assert(ConfigurationManager.ConnectionStrings["Havit.Data.Entity6.Tests.TwoContructorsDbContext2"] == null, "Pro účely testu nesmí existovat connection string Havit.Data.Entity6.Tests.TwoContructorsDbContext2.");
+
+			// Arrange
+			TwoContructorsDbContext dbContextDefault = new TwoContructorsDbContext();
+			TwoContructorsDbContext dbContextSecondary = new TwoContructorsDbContext("Havit.Data.Entity6.Tests.TwoContructorsDbContext2");
+			System.Data.Entity.Database.SetInitializer(new MigrateDatabaseToLatestVersion<TwoContructorsDbContext, Migrations.Configuration>());
+			Contract.Assert(dbContextDefault.Database.Connection.Database == "Havit.Data.Entity6.Tests.TwoContructorsDbContext1", "Výchozí konstruktor má nastavit Havit.Data.Entity6.Tests.TwoContructorsDbContext1");
+
+			// Act
+			dbContextDefault.Database.Delete();
+
+			//System.Data.Entity.Database.SetInitializer(new MigrateDatabaseToLatestVersion<MasterChildDbContext, Migrations.Configuration>());
+			dbContextSecondary.Database.Initialize(true);
+
+			bool defaultCreated = dbContextDefault.Database.Exists();
+			bool secondaryCreated = dbContextSecondary.Database.Exists();
+
+			// Clean-up
+			dbContextDefault.Database.Delete();
+			dbContextSecondary.Database.Delete();
+
+			// Assert
+			Assert.IsFalse(defaultCreated, "Havit.Data.Entity6.Tests.TwoContructorsDbContext1 databáze založena.");
+			Assert.IsTrue(secondaryCreated, "Havit.Data.Entity6.Tests.TwoContructorsDbContext2 databáze nezaložena.");
+		}
+
+
 
 	}
 }

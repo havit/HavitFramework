@@ -16,7 +16,7 @@ namespace Havit.Data.Entity.Validators
 		{			
 			public DbSet<DataClass> DataClasses { get; set; }
 
-			public DbEntityValidationExceptionExtensionsTestDbContext() : base("Havit.Data.Entity6.Test")
+			public DbEntityValidationExceptionExtensionsTestDbContext() : base("Havit.Data.Entity6.Tests")
 			{	
 				Database.SetInitializer(new DropCreateDatabaseAlways<DbEntityValidationExceptionExtensionsTestDbContext>());
 			}

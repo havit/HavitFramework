@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 
 namespace Havit.Data.Entity.Tests.Validators.Infrastructure
 {
@@ -9,6 +10,10 @@ namespace Havit.Data.Entity.Tests.Validators.Infrastructure
 			System.Data.Entity.Database.SetInitializer(new DropCreateDatabaseAlways<ModelValidatingDbContext>());
 		}
 
+		public ModelValidatingDbContext() : base("Havit.Data.Entity6.Tests")
+		{
+		}
+
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
@@ -16,6 +21,5 @@ namespace Havit.Data.Entity.Tests.Validators.Infrastructure
 			modelBuilder.Configurations.AddFromAssembly(this.GetType().Assembly);
 			modelBuilder.RegisterModelFromAssembly(this.GetType().Assembly);
 		}
-
 	}
 }

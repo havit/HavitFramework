@@ -4,7 +4,7 @@ namespace Havit.Data.Entity.Patterns.Tests.Infrastructure
 {
 	public class TestDbContext : DbContext
 	{
-		public TestDbContext() : base("DefaultConnectionString")
+		public TestDbContext() : base("Havit.Data.Entity6.Patterns.Tests")
 		{
 			Database.SetInitializer(new DropCreateDatabaseAlways<TestDbContext>());
 		}

@@ -15,6 +15,10 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader.Model
 			Database.SetInitializer(new DropCreateDatabaseAlways<DataLoaderTestDbContext>());
 		}
 
+		public DataLoaderTestDbContext() : base("Havit.Data.Entity6.Patterns.Tests")
+		{
+		}
+
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);

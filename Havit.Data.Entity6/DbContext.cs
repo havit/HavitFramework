@@ -17,6 +17,8 @@ namespace Havit.Data.Entity
 	/// </summary>
 	public abstract class DbContext : System.Data.Entity.DbContext, IDbContext
 	{
+		public static DbContextDefaultDatabase DefaultDatabase { get; } = new DbContextDefaultDatabase();	
+
 		/// <summary>
 		/// Registr akcí k provedení po uložení změn.
 		/// </summary>
@@ -32,17 +34,29 @@ namespace Havit.Data.Entity
 		}
 
 		/// <summary>
-		/// Konstruktor. Použije "DefaultConnectionString" jako název používaného connection stringu.
+		/// Konstruktor. Použije "name=DefaultConnectionString" jako název používaného connection stringu.
 		/// </summary>
-		protected DbContext() : this("DefaultConnectionString")
+		protected DbContext() : base("name=DefaultConnectionString")
 		{
-
+			Initialize();
 		}
 
 		/// <summary>
-		/// Konstruktor.
+		/// Konstruktor. Použije se výchozí pojmenování databáze a výchozí datbázový server (voláním bezparametrického bázového konstruktoru).
 		/// </summary>
+#pragma warning disable S3253 // "base()" constructor calls should not be explicitly made // JK: Chci ho zde pro přehlednost!			
+		protected DbContext(DbContextDefaultDatabase dbContextDefaultDatabase) : base()
+#pragma warning restore S3253 // "base()" constructor calls should not be explicitly made
+		{
+			Initialize();
+		}
+
 		protected DbContext(string nameOrConnectionString) : base(nameOrConnectionString)
+		{
+			Initialize();
+		}
+
+		private void Initialize()
 		{
 			Configuration.LazyLoadingEnabled = false;
 			Configuration.ProxyCreationEnabled = false;
@@ -243,5 +257,13 @@ namespace Havit.Data.Entity
 				return action();
 			}
 		}
+
+		public sealed class DbContextDefaultDatabase
+		{
+			internal DbContextDefaultDatabase()
+			{
+			}
+		}
+		
 	}
 }

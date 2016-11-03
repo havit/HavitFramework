@@ -15,6 +15,10 @@ namespace Havit.Data.Entity.Tests.Infrastructure
 			System.Data.Entity.Database.SetInitializer(new DropCreateDatabaseAlways<MasterChildDbContext>());
 		}
 
+		public MasterChildDbContext() : base("Havit.Data.Entity6.Tests")
+		{
+		}
+
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);

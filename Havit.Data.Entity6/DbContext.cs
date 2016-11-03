@@ -17,6 +17,9 @@ namespace Havit.Data.Entity
 	/// </summary>
 	public abstract class DbContext : System.Data.Entity.DbContext, IDbContext
 	{
+		/// <summary>
+		/// Singleton pro použití v konstruktoru používající DbContextDefaultDatabase.
+		/// </summary>
 		public static DbContextDefaultDatabase DefaultDatabase { get; } = new DbContextDefaultDatabase();	
 
 		/// <summary>
@@ -34,7 +37,8 @@ namespace Havit.Data.Entity
 		}
 
 		/// <summary>
-		/// Konstruktor. Použije "name=DefaultConnectionString" jako název používaného connection stringu.
+		/// Konstruktor.
+		/// Použije "name=DefaultConnectionString" jako 'nameOrConnectionString'.
 		/// </summary>
 		protected DbContext() : base("name=DefaultConnectionString")
 		{
@@ -43,6 +47,16 @@ namespace Havit.Data.Entity
 
 		/// <summary>
 		/// Konstruktor. Použije se výchozí pojmenování databáze a výchozí datbázový server (voláním bezparametrického bázového konstruktoru).
+		/// Určeno pro použití konstruktoru tam, kde je takový třeba:
+		/// <code>
+		/// public class MyDbContext : DbContext
+		/// {
+		///		public MyDbContext() : base(DefaultDatabase)
+		/// 	{
+		/// 		// NOOP
+		/// 	}
+		/// }
+		/// </code>
 		/// </summary>
 #pragma warning disable S3253 // "base()" constructor calls should not be explicitly made // JK: Chci ho zde pro přehlednost!			
 		protected DbContext(DbContextDefaultDatabase dbContextDefaultDatabase) : base()
@@ -51,6 +65,12 @@ namespace Havit.Data.Entity
 			Initialize();
 		}
 
+		/// <summary>
+		/// Constructs a new context instance using the given string as the name or connection
+		///     string for the database to which a connection will be made. See the class remarks
+		///     for how this is used to create a connection.
+		/// </summary>
+		/// <param name="nameOrConnectionString">Either the database name or a connection string.</param>
 		protected DbContext(string nameOrConnectionString) : base(nameOrConnectionString)
 		{
 			Initialize();
@@ -258,12 +278,14 @@ namespace Havit.Data.Entity
 			}
 		}
 
+		/// <summary>
+		/// Pouze pro existenci přetížení konstruktoru DbContextu, díky kterému se použije bezparametrický konstruktor předka.
+		/// </summary>
 		public sealed class DbContextDefaultDatabase
 		{
 			internal DbContextDefaultDatabase()
 			{
 			}
 		}
-		
 	}
 }

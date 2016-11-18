@@ -1,8 +1,6 @@
-﻿using Havit.Data.Entity.CodeGenerator.Services.SourceControl;
-using Microsoft.TeamFoundation.Client;
-using Microsoft.TeamFoundation.VersionControl.Client;
+﻿using Microsoft.TeamFoundation.VersionControl.Client;
 
-namespace Havit.Data.Entity.CodeGenerator.Services
+namespace Havit.Data.Entity.CodeGenerator.Services.SourceControl
 {
 	/// <summary>
 	/// Source Control helper class working on TFS current local workspace.	

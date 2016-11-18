@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using System.Data.Common;
 
-namespace Havit.Data.Entity.Glimpse.Trace
+namespace Havit.Data.Entity.Glimpse.Model
 {
 	/// <summary>
 	/// DbParameter values.

@@ -5,7 +5,6 @@ using Glimpse.Core.Extensibility;
 using Glimpse.Core.Tab.Assist;
 
 using Havit.Data.Entity.Glimpse.Model;
-using Havit.Data.Entity.Glimpse.Trace;
 
 namespace Havit.Data.Entity.Glimpse.SerializationConverters
 {

@@ -15,7 +15,6 @@ using Glimpse.Core.SerializationConverter;
 
 using Havit.Data.Entity.Glimpse.DbCommandInterception;
 using Havit.Data.Entity.Glimpse.Model;
-using Havit.Data.Entity.Glimpse.Trace;
 
 namespace Havit.Data.Entity.Glimpse.Inspectors
 {

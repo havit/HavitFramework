@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Havit.Data.Patterns.Repositories
+namespace Havit.Data.Patterns.UnitOfWorks
 {
 	/// <summary>
 	/// Unit of Work s podporou asynchronního zpracování.

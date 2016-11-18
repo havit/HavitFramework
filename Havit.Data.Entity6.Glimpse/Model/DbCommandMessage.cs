@@ -5,8 +5,6 @@ using System.Data.Common;
 
 using Glimpse.Core.Message;
 
-using Havit.Data.Entity.Glimpse.Trace;
-
 namespace Havit.Data.Entity.Glimpse.Model
 {
 	/// <summary>

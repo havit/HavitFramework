@@ -5,8 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Havit.Data.Entity.Glimpse.Trace;
-
 namespace Havit.Data.Entity.Glimpse.DbCommandInterception
 {
 	/// <summary>

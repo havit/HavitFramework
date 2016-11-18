@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Havit.Data.Entity.Patterns.Helpers;
 using Havit.Data.Entity.Patterns.SoftDeletes;
 using Havit.Data.Patterns.Repositories;
+using Havit.Data.Patterns.UnitOfWorks;
 using Havit.Diagnostics.Contracts;
 
 namespace Havit.Data.Entity.Patterns.UnitOfWorks

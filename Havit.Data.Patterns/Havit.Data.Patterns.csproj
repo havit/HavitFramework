@@ -89,8 +89,8 @@
     <Compile Include="Repositories\IRepositoryFactory.cs" />
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Repositories\IRepositoryAsync.cs" />
-    <Compile Include="Repositories\IUnitOfWorkAsync.cs" />
-    <Compile Include="Repositories\IUnitOfWork.cs" />
+    <Compile Include="UnitOfWorks\IUnitOfWorkAsync.cs" />
+    <Compile Include="UnitOfWorks\IUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

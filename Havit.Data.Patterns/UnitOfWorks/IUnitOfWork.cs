@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Havit.Data.Patterns.Repositories
+namespace Havit.Data.Patterns.UnitOfWorks
 {
 	/// <summary>
 	/// Unit of Work.

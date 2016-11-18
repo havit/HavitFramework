@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Havit.Data.Entity.Patterns.Tests.DataLoader.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Havit.Data.Entity.Patterns.DataLoaders
+namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 {
 	[TestClass]
 	public class DbExtensionsIncludeTest

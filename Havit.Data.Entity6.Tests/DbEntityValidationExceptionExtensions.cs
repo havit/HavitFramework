@@ -1,12 +1,9 @@
-﻿using System;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
-using Havit.Data.Entity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using DbContext = Havit.Data.Entity.DbContext;
 
-namespace Havit.Data.Entity.Validators
+namespace Havit.Data.Entity.Tests
 {
 	[TestClass]
 	public class DbEntityValidationExceptionExtensionsTest

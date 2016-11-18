@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Havit.Data.Patterns.UnitOfWorks
@@ -50,5 +51,10 @@ namespace Havit.Data.Patterns.UnitOfWorks
 		/// </summary>
 		void AddRangeForDelete<TEntity>(IEnumerable<TEntity> entities)
 			where TEntity : class;
+
+		/// <summary>
+		/// Registruje akci k provedení po commitu. Akce je provedena metodou AfterCommit.
+		/// </summary>
+		void RegisterAfterCommitAction(Action action);
 	}
 }

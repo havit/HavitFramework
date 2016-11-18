@@ -371,7 +371,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 				? String.Format("Object {0} with key {1} not found.", typeof(TEntity).Name, missingIds[0])
 				: String.Format("Objects {0} with keys {1} not found.", typeof(TEntity).Name, String.Join(", ", missingIds.Select(item => item.ToString())));
 
-			throw new ObjectNotFoundException(exceptionText);
+			throw new Havit.Data.Patterns.Exceptions.ObjectNotFoundException(exceptionText);
 		}
 	}
 }

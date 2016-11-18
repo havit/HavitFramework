@@ -22,7 +22,7 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 	public class DbRepositoryTest
 	{
 		[TestMethod]
-		[ExpectedException(typeof(ObjectNotFoundException), AllowDerivedTypes = false)]
+		[ExpectedException(typeof(Havit.Data.Patterns.Exceptions.ObjectNotFoundException), AllowDerivedTypes = false)]
 		public void DbRepository_GetObject_ThrowsExceptionWhenNotFound()
 		{
 			// Arrange
@@ -43,7 +43,7 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(ObjectNotFoundException), AllowDerivedTypes = false)]
+		[ExpectedException(typeof(Havit.Data.Patterns.Exceptions.ObjectNotFoundException), AllowDerivedTypes = false)]
 		public async Task DbRepository_GetObjectAsync_ThrowsExceptionWhenNotFound()
 		{
 			// Arrange
@@ -239,7 +239,7 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(ObjectNotFoundException), AllowDerivedTypes = false)]
+		[ExpectedException(typeof(Havit.Data.Patterns.Exceptions.ObjectNotFoundException), AllowDerivedTypes = false)]
 		public void DbRepository_GetObjects_ThrowsExceptionWhenNotFound()
 		{
 			// Arrange
@@ -260,7 +260,7 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(ObjectNotFoundException), AllowDerivedTypes = false)]
+		[ExpectedException(typeof(Havit.Data.Patterns.Exceptions.ObjectNotFoundException), AllowDerivedTypes = false)]
 		public async Task DbRepository_GetObjectsAsync_ThrowsExceptionWhenNotFound()
 		{
 			// Arrange

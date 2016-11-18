@@ -12,7 +12,7 @@ namespace Havit.Data.Patterns.DataEntries
 		/// Vrací hodnotu identifikátoru (primárního klíče) na základě symbolu.		
 		/// </summary>
 		/// <param name="entry">"Symbol".</param>
-		/// <exception cref="ObjectNotFoundException">Pokud není identifikátor dle symbolu nalezen.</exception>
+		/// <exception cref="Havit.Data.Patterns.Exceptions.ObjectNotFoundException">Pokud není identifikátor dle symbolu nalezen.</exception>
 		int GetEntryId(Enum entry);
 	}
 }

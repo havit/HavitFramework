@@ -35,7 +35,7 @@ namespace Havit.Data.Entity.Patterns.Tests.DataEntries
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(ObjectNotFoundException))]
+		[ExpectedException(typeof(Havit.Data.Patterns.Exceptions.ObjectNotFoundException))]
 		public void DbDataEntrySymbolStorage_GetEntryId_ThrowsExceptionWhenNotFound()
 		{
 			// Arrange

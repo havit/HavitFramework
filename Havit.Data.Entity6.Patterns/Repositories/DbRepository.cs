@@ -336,7 +336,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		/// <summary>
 		/// Zajistí načtení vlastností definovaných v meodě GetLoadReferences.
 		/// </summary>
-		protected void LoadReferences(TEntity[] entities)
+		protected void LoadReferences(params TEntity[] entities)
 		{
 			Contract.Requires(entities != null);
 
@@ -346,7 +346,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		/// <summary>
 		/// Zajistí načtení vlastností definovaných v meodě GetLoadReferences.
 		/// </summary>
-		protected async Task LoadReferencesAsync(TEntity[] entities)
+		protected async Task LoadReferencesAsync(params TEntity[] entities)
 		{	
 			Contract.Requires(entities != null);
 

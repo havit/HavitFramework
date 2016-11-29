@@ -30,6 +30,7 @@ namespace Havit.Data.Entity.Validators
 				.Concat(CheckIdNamingConvention(entityMap))
 				.Concat(CheckStringMaxLengthConvention(entityMap))
 				.Concat(CheckNestedMembers(entityMap))
+				.Concat(CheckSymbolVsPrimaryKeyForEntries(entityMap))
 				).ToList();
 
 			return String.Join(Environment.NewLine, errors);
@@ -130,6 +131,27 @@ namespace Havit.Data.Entity.Validators
 				if (navigationProperty.ForeignKey == null)
 				{
 					yield return $"Class {entityMap.Type.Name} has a navigation property {navigationProperty.PropertyName} but no foreign key.";
+				}
+			}
+		}
+
+		internal IEnumerable<string> CheckSymbolVsPrimaryKeyForEntries(IEntityMap entityMap)
+		{
+			bool hasEntryEnum = entityMap.Type.GetNestedTypes().Any(nestedType => nestedType.IsEnum && (nestedType.Name == "Entry"));
+
+			if (hasEntryEnum)
+			{
+				bool pkWithIdentity = entityMap.Pks.Any(pk => pk.IsIdentity);
+				bool symbolExists = entityMap.Properties.Any(item => item.PropertyName == "Symbol");
+
+				if (pkWithIdentity && symbolExists)
+				{
+						yield return $"Class {entityMap.Type.Name} has Enum mapped to table with primary key with identity and column Symbol.";
+				}
+
+				if (!pkWithIdentity && !symbolExists)
+				{
+					yield return $"Class {entityMap.Type.Name} has Enum mapped to table with primary key without identity and without column Symbol.";
 				}
 			}
 		}

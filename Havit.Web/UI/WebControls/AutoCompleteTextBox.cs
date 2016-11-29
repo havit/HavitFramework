@@ -368,6 +368,17 @@ namespace Havit.Web.UI.WebControls
 				return valueTextBox.ClientID;
 			}
 		}
+
+        /// <summary>
+        /// ID hiddenfieldu, který obsahuje získanou hodnotu.
+        /// </summary>
+        public string ValueHiddenFieldClientID
+        {
+            get
+            {
+                return valueHiddenField.ClientID;
+            }
+        }
 		#endregion
 
 		#region Constructor

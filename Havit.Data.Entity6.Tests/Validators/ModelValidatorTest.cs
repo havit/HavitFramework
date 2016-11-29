@@ -192,16 +192,16 @@ namespace Havit.Data.Entity.Tests.Validators
 			ModelValidator modelValidator = new ModelValidator();
 
 			// Act
-			string[] errorsMoreInvalidKeysClass1 = modelValidator.CheckSymbolVsPrimaryKeyForEntries(modelValidatingDbContext.Db(typeof(EntryWithGeneratedPrimaryKeyAndNoSymbol))).ToArray();
-			string[] errorsMoreInvalidKeysClass2 = modelValidator.CheckSymbolVsPrimaryKeyForEntries(modelValidatingDbContext.Db(typeof(EntryWithGeneratedPrimaryKeyAndWithSymbol))).ToArray();
-			string[] errorsMoreInvalidKeysClass3 = modelValidator.CheckSymbolVsPrimaryKeyForEntries(modelValidatingDbContext.Db(typeof(EntryWithPrimaryKeyAndNoSymbol))).ToArray();
-			string[] errorsMoreInvalidKeysClass4 = modelValidator.CheckSymbolVsPrimaryKeyForEntries(modelValidatingDbContext.Db(typeof(EntryWithPrimaryKeyAndWithSymbol))).ToArray();
+			string[] errorsEntryWithGeneratedPrimaryKeyAndNoSymbol = modelValidator.CheckSymbolVsPrimaryKeyForEntries(modelValidatingDbContext.Db(typeof(EntryWithGeneratedPrimaryKeyAndNoSymbol))).ToArray();
+			string[] errorsEntryWithGeneratedPrimaryKeyAndWithSymbol = modelValidator.CheckSymbolVsPrimaryKeyForEntries(modelValidatingDbContext.Db(typeof(EntryWithGeneratedPrimaryKeyAndWithSymbol))).ToArray();
+			string[] errorsEntryWithPrimaryKeyAndNoSymbol = modelValidator.CheckSymbolVsPrimaryKeyForEntries(modelValidatingDbContext.Db(typeof(EntryWithPrimaryKeyAndNoSymbol))).ToArray();
+			string[] errorsEntryWithPrimaryKeyAndWithSymbol = modelValidator.CheckSymbolVsPrimaryKeyForEntries(modelValidatingDbContext.Db(typeof(EntryWithPrimaryKeyAndWithSymbol))).ToArray();
 
 			// Assert			
-			Assert.IsFalse(errorsMoreInvalidKeysClass1.Any());
-			Assert.IsTrue(errorsMoreInvalidKeysClass2.Any());
-			Assert.IsTrue(errorsMoreInvalidKeysClass3.Any());
-			Assert.IsFalse(errorsMoreInvalidKeysClass4.Any());
+			Assert.IsTrue(errorsEntryWithGeneratedPrimaryKeyAndNoSymbol.Any()); // obsahuje chybu (není dle čeho párovat)
+			Assert.IsFalse(errorsEntryWithGeneratedPrimaryKeyAndWithSymbol.Any()); // neobsahuje chybu
+			Assert.IsFalse(errorsEntryWithPrimaryKeyAndNoSymbol.Any()); // neobsahuje chybu
+			Assert.IsTrue(errorsEntryWithPrimaryKeyAndWithSymbol.Any()); // obsahuje chybu (duplicitní možnost párování)
 
 		}
 	}

@@ -144,14 +144,14 @@ namespace Havit.Data.Entity.Validators
 				bool pkWithIdentity = entityMap.Pks.Any(pk => pk.IsIdentity);
 				bool symbolExists = entityMap.Properties.Any(item => item.PropertyName == "Symbol");
 
-				if (pkWithIdentity && symbolExists)
+				if (pkWithIdentity && !symbolExists)
 				{
-						yield return $"Class {entityMap.Type.Name} has Enum mapped to table with primary key with identity and column Symbol.";
+					yield return $"Class {entityMap.Type.Name} has Enum mapped to table with primary key with identity and withoud column Symbol (unable to pair items).";
 				}
 
-				if (!pkWithIdentity && !symbolExists)
+				if (!pkWithIdentity && symbolExists)
 				{
-					yield return $"Class {entityMap.Type.Name} has Enum mapped to table with primary key without identity and without column Symbol.";
+					yield return $"Class {entityMap.Type.Name} has Enum mapped to table with primary key without identity and with column Symbol (ambiguous pairing fields).";
 				}
 			}
 		}

@@ -370,7 +370,7 @@ namespace Havit.Web.UI.WebControls
 		}
 
         /// <summary>
-        /// ID hiddenfieldu, který obsahuje získanou hodnotu.
+        /// ClientID hiddenfieldu, který obsahuje získanou hodnotu.
         /// </summary>
         public string ValueHiddenFieldClientID
         {

@@ -51,5 +51,36 @@ namespace Havit.Data.Patterns.Tests.Localizations
 			Assert.AreSame(language4, languageResult4);
 			Assert.AreSame(language1, languageResult5);
 		}
+
+		[TestMethod]
+		public void LanguageServiceTests_GetDefaultLanguage_ReturnsDefaultLanguage()
+		{
+			// Arrange
+			Language language1 = new Language { Id = 1, Culture = "cs-CZ", UiCulture = "" };
+			Language language2 = new Language { Id = 2, Culture = "en-US", UiCulture = "en" };
+			Language language3 = new Language { Id = 3, Culture = "en-GB", UiCulture = "en-GB" };
+			Language language4 = new Language { Id = 4, Culture = "sk-SK", UiCulture = "sk-SK" };
+
+			Mock<IRepository<Language>> mockRepository = new Mock<IRepository<Language>>();
+			mockRepository.Setup(m => m.GetObject(1)).Returns(language1);
+			mockRepository.Setup(m => m.GetObject(2)).Returns(language2);
+			mockRepository.Setup(m => m.GetObject(3)).Returns(language3);
+			mockRepository.Setup(m => m.GetObject(4)).Returns(language4);
+			mockRepository.Setup(m => m.GetAll()).Returns(new List<Language> { language1, language2, language3, language4 });
+
+			Mock<IRepositoryFactory<Language>> mockRepositoryFactory = new Mock<IRepositoryFactory<Language>>();
+			mockRepositoryFactory.Setup(m => m.Create()).Returns(mockRepository.Object);
+
+			Mock<IEntityKeyAccessor<Language, int>> dataEntryIdentifierAccessorMock = new Mock<IEntityKeyAccessor<Language, int>>();
+			dataEntryIdentifierAccessorMock.Setup(m => m.GetEntityKey(It.IsAny<Language>())).Returns<Language>(language => language.Id);
+
+			// Act
+			LanguageService<Language> dbLanguageService = new LanguageService<Language>(mockRepositoryFactory.Object, dataEntryIdentifierAccessorMock.Object);
+			ILanguage languageResult1 = dbLanguageService.GetDefaultLanguage();
+
+			// Assert
+			Assert.AreSame(language1, languageResult1);
+		}
+
 	}
 }

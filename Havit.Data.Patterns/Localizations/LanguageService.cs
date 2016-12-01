@@ -34,12 +34,20 @@ namespace Havit.Data.Patterns.Localizations
 		}
 
 		/// <summary>
-		/// Vrací akutální jazyk.
+		/// Vrací jazyk pro danou culture.
 		/// </summary>
 		public ILanguage GetLanguage(string cultureName)
 		{
 			int languageId = GetLanguageId(cultureName);
 			return GetLanguageById(languageId);
+		}
+
+		/// <summary>
+		/// Vrací výchozí jazyk (vyhledáním pro prázdnou cultureName).
+		/// </summary>
+		public virtual ILanguage GetDefaultLanguage()
+		{
+			return GetLanguage("");
 		}
 
 		/// <summary>

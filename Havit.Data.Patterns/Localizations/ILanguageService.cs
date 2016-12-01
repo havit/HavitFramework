@@ -16,7 +16,7 @@ namespace Havit.Data.Patterns.Localizations
 		/// <summary>
 		/// Vrací výchozí jazyk.
 		/// </summary>
-		ILanguage GetLanguage();
+		ILanguage GetDefaultLanguage();
 
 	}
 }

@@ -1,4 +1,4 @@
-﻿using Havit.Data.Entity.Patterns.QueryServices;
+﻿using Havit.Data.Entity.Patterns.DataSources;
 using Havit.Data.Entity.Patterns.SoftDeletes;
 
 namespace Havit.Data.Entity.Patterns.Tests.Infrastructure

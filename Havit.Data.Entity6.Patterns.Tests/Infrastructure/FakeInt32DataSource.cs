@@ -1,4 +1,4 @@
-﻿using Havit.Data.Entity.Patterns.QueryServices.Fakes;
+﻿using Havit.Data.Entity.Patterns.DataSources.Fakes;
 
 namespace Havit.Data.Entity.Patterns.Tests.Infrastructure
 {

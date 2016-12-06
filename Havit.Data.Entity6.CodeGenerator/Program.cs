@@ -47,7 +47,7 @@ namespace Havit.Data.Entity.CodeGenerator
 			{
 				if (solutionDirectory.Root.FullName == solutionDirectory.FullName)
 				{
-					throw new InvalidOperationException("Solution file not found.");
+					throw new InvalidOperationException("Solution file was not found.");
 				}
 				solutionDirectory = solutionDirectory.Parent;
 			}
@@ -55,18 +55,18 @@ namespace Havit.Data.Entity.CodeGenerator
 			string[] files = System.IO.Directory.GetFiles(Path.Combine(solutionDirectory.FullName, @"Entity\bin"), "*.Entity.dll", SearchOption.AllDirectories);
 			if (files.Length == 0)
 			{
-				Console.WriteLine("Nebyla nalezena assembly pro Entity.");
+				Console.WriteLine("Assembly *.Entity.dll was not found.");
 				return;
 			}
 
 			string file = files.Where(item => !item.EndsWith("Havit.Entity.dll")).OrderByDescending(item => System.IO.File.GetLastAccessTime(item)).First();
-			Console.WriteLine(file);
+			Console.WriteLine($"Using metadata from assembly {file}.");
 
 			Assembly assembly = Assembly.LoadFrom(file);
-			Type dbContextType = assembly.GetTypes().FirstOrDefault(type => !type.IsAbstract && type.GetInterfaces().Contains(typeof(Havit.Data.Entity.IDbContext)));
+			Type dbContextType = assembly.GetTypes().SingleOrDefault(type => !type.IsAbstract && type.GetInterfaces().Contains(typeof(Havit.Data.Entity.IDbContext)));
 			if (dbContextType == null)
 			{
-				Console.WriteLine("Nebyla nalezena třída implementující IDbContext.");
+				Console.WriteLine("No IDbContext implementation was found.");
 				return;
 			}
 
@@ -79,15 +79,19 @@ namespace Havit.Data.Entity.CodeGenerator
 					dbContext = (DbContext)Activator.CreateInstance(dbContextType);
 					
 					// doNothingInitializer = new DoNothingInitializer<MyDbContext>();
-					Type doNothingInitializerType = typeof(DoNothingInitializer<>).MakeGenericType(dbContextType);
-					object doNothingInitializer = Activator.CreateInstance(doNothingInitializerType);
+					Type nullDatabaseInitializerType = typeof(NullDatabaseInitializer<>).MakeGenericType(dbContextType);
+					object nullDatabaseInitializer = Activator.CreateInstance(nullDatabaseInitializerType);
 
 					// System.Data.Entity.Database.SetInitializer<MyDbContext>(doNothingInitializer);
 					MethodInfo setInitializerMethod = typeof(System.Data.Entity.Database).GetMethod("SetInitializer", BindingFlags.Static | BindingFlags.Public).MakeGenericMethod(dbContextType);
-					setInitializerMethod.Invoke(null, new object[] { doNothingInitializer });
+					setInitializerMethod.Invoke(null, new object[] { nullDatabaseInitializer });
 				});
 
+			Console.WriteLine($"Initializing DbContext...");
 			ObjectContext objectContext = ((IObjectContextAdapter)dbContext).ObjectContext;
+
+			Console.WriteLine($"Generating code...");
+
 			RegisteredEntityEnumerator registeredEntityEnumerator = new RegisteredEntityEnumerator(objectContext);
             var dataEntriesModelSource = new DataEntriesModelSource(registeredEntityEnumerator, modelProject, dataLayerProject);
 

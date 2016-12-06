@@ -1,4 +1,4 @@
-﻿namespace Havit.Data.Entity.Patterns.Seeds
+﻿namespace Havit.Data.Entity.Patterns.DataSeeds
 {
 	internal class SeedDataPair<TEntity>
 	{

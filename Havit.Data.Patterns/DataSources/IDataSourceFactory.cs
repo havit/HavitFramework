@@ -1,4 +1,4 @@
-﻿namespace Havit.Data.Patterns.QueryServices
+﻿namespace Havit.Data.Patterns.DataSources
 {
 	/// <summary>
 	/// Factory pro získávání a vracení datových zdrojů DataSources&lt;TEntity&gt;.

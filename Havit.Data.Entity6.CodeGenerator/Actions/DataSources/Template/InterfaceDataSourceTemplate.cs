@@ -35,8 +35,8 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.DataSources.Template
 // </auto-generated>
 //------------------------------------------------------------------------------");
             this.Write("\r\n\r\nusing System;\r\nusing System.Collections.Generic;\r\nusing System.Linq;\r\nusing S" +
-                    "ystem.Text;\r\nusing System.Threading.Tasks;\r\nusing Havit.Data.Patterns.QueryServi" +
-                    "ces;\r\n\r\nnamespace ");
+                    "ystem.Text;\r\nusing System.Threading.Tasks;\r\nusing Havit.Data.Patterns.DataSource" +
+                    "s;\r\n\r\nnamespace ");
             
             #line 15 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\DataSources\Template\InterfaceDataSourceTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.NamespaceName));

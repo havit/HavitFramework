@@ -1,9 +1,8 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Havit.Data.Entity.Patterns.SoftDeletes;
-using Havit.Data.Patterns.QueryServices;
+using Havit.Data.Patterns.DataSources;
 
-namespace Havit.Data.Entity.Patterns.QueryServices
+namespace Havit.Data.Entity.Patterns.DataSources
 {
 	/// <summary>
 	/// Poskytuje datový zdroj objektů TEntity jako IQueryable.

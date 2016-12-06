@@ -3,7 +3,7 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Havit.Data.Entity.Patterns.QueryServices.Fakes
+namespace Havit.Data.Entity.Patterns.DataSources.Fakes
 {
 	/// <summary>
 	/// Vzor: https://msdn.microsoft.com/cs-cz/data/dn314429#async

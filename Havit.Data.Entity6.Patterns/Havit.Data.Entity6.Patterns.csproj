@@ -67,14 +67,14 @@
     <Compile Include="DataLoaders\PropertyToLoad.cs" />
     <Compile Include="Helpers\EntityHelper.cs" />
     <Compile Include="SoftDeletes\ISoftDeleteManager.cs" />
-    <Compile Include="QueryServices\DbDataSource.cs" />
-    <Compile Include="QueryServices\Fakes\InternalFakeDbAsyncEnumerable.cs" />
-    <Compile Include="QueryServices\Fakes\InternalFakeDbAsyncEnumerator.cs" />
-    <Compile Include="QueryServices\Fakes\InternalFakeDbAsyncQueryProvider.cs" />
-    <Compile Include="QueryServices\Fakes\FakeDataSource.cs" />
+    <Compile Include="DataSources\DbDataSource.cs" />
+    <Compile Include="DataSources\Fakes\InternalFakeDbAsyncEnumerable.cs" />
+    <Compile Include="DataSources\Fakes\InternalFakeDbAsyncEnumerator.cs" />
+    <Compile Include="DataSources\Fakes\InternalFakeDbAsyncQueryProvider.cs" />
+    <Compile Include="DataSources\Fakes\FakeDataSource.cs" />
     <Compile Include="QueryServices\QueryBase.cs" />
-    <Compile Include="Seeds\DbDataSeedPersister.cs" />
-    <Compile Include="Seeds\SeedDataPair.cs" />
+    <Compile Include="DataSeeds\DbDataSeedPersister.cs" />
+    <Compile Include="DataSeeds\SeedDataPair.cs" />
     <Compile Include="SoftDeletes\SoftDeleteManager.cs">
       <SubType>Code</SubType>
     </Compile>

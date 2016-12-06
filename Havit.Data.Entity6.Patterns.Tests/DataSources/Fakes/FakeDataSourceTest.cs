@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
-using Havit.Data.Entity.Patterns.QueryServices.Fakes;
+using Havit.Data.Entity.Patterns.DataSources.Fakes;
 using Havit.Data.Entity.Patterns.Tests.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Havit.Data.Entity.Patterns.Tests.QueryServices.Fakes
+namespace Havit.Data.Entity.Patterns.Tests.DataSources.Fakes
 {
 	[TestClass]
 	public class FakeDataSourceTest

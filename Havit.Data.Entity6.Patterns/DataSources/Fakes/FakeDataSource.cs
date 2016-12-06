@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Havit.Data.Entity.Patterns.SoftDeletes;
-using Havit.Data.Patterns.QueryServices;
+using Havit.Data.Patterns.DataSources;
 using Havit.Diagnostics.Contracts;
 using Havit.Services.TimeServices;
 
-namespace Havit.Data.Entity.Patterns.QueryServices.Fakes
+namespace Havit.Data.Entity.Patterns.DataSources.Fakes
 {
 	/// <summary>
-	/// Fake implementace <see cref="IDataSource{TEntity}" /> pro použití v unit testech. Jako datový zdroj používá data předané v konstruktoru.
+	/// Fake implementace <see cref="IDataSource{TSource}" /> pro použití v unit testech. Jako datový zdroj používá data předané v konstruktoru.
 	/// </summary>
 	public abstract class FakeDataSource<TEntity> : IDataSource<TEntity>
 	{

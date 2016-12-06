@@ -3,8 +3,8 @@ using System.Diagnostics.CodeAnalysis;
 using Havit.Data.Entity.Patterns.Tests.DataEntries.DataSources;
 using Havit.Data.Entity.Patterns.Tests.DataEntries.Model;
 using Havit.Data.Patterns.DataEntries;
+using Havit.Data.Patterns.DataSources;
 using Havit.Data.Patterns.Exceptions;
-using Havit.Data.Patterns.QueryServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

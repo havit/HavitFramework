@@ -4,7 +4,7 @@ using System.Data.Entity.Infrastructure;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Havit.Data.Entity.Patterns.QueryServices.Fakes
+namespace Havit.Data.Entity.Patterns.DataSources.Fakes
 {
 	/// <summary>
 	/// Vzor: https://msdn.microsoft.com/cs-cz/data/dn314429#async

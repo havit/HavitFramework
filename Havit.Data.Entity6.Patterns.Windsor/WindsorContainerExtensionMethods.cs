@@ -17,7 +17,6 @@ using Havit.Data.Patterns.Attributes;
 using Havit.Data.Patterns.DataEntries;
 using Havit.Data.Patterns.DataSeeds;
 using Havit.Data.Patterns.Localizations;
-using Havit.Data.Patterns.QueryServices;
 using Havit.Data.Patterns.Repositories;
 
 namespace Havit.Data.Entity.Patterns.Windsor

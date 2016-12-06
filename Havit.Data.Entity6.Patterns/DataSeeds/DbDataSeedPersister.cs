@@ -11,7 +11,7 @@ using Havit.Diagnostics.Contracts;
 using Havit.Linq;
 using Havit.Linq.Expressions;
 
-namespace Havit.Data.Entity.Patterns.Seeds
+namespace Havit.Data.Entity.Patterns.DataSeeds
 {
 	/// <summary>
 	/// Persistence předpisu pro seedování dat.

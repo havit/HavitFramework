@@ -41,7 +41,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Havit.Data.Entity.Patterns.QueryServices.Fakes;
+using Havit.Data.Entity.Patterns.DataSources.Fakes;
 using Havit.Data.Entity.Patterns.SoftDeletes;
 using Havit.Data.Patterns.Attributes;
 

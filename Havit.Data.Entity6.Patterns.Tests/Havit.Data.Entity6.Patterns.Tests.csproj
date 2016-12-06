@@ -101,13 +101,13 @@
     <Compile Include="Infrastructure\FakeInt32DataSource.cs" />
     <Compile Include="Infrastructure\FakeLanguageDataSource.cs" />
     <Compile Include="Infrastructure\Language.cs" />
-    <Compile Include="QueryServices\DbDataSourceTest.cs" />
+    <Compile Include="DataSources\DbDataSourceTest.cs" />
     <Compile Include="Infrastructure\DbItemWithDeletedDataSource.cs" />
     <Compile Include="Infrastructure\FakeItemWithDeletedDataSource.cs" />
     <Compile Include="Infrastructure\DbItemWithDeletedRepository.cs" />
     <Compile Include="Seeds\DbDataSeedPersisterTest.cs" />
     <Compile Include="SoftDeletes\SoftDeleteManagerTest.cs" />
-    <Compile Include="QueryServices\Fakes\FakeDataSourceTest.cs" />
+    <Compile Include="DataSources\Fakes\FakeDataSourceTest.cs" />
     <Compile Include="Infrastructure\TestDbContext.cs" />
     <Compile Include="Repositories\DbRepositoryTest.cs" />
     <Compile Include="Infrastructure\ItemWithDeleted.cs" />
@@ -147,6 +147,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="QueryServices\" />
     <Folder Include="Repositories\Model\" />
   </ItemGroup>
   <Choose>

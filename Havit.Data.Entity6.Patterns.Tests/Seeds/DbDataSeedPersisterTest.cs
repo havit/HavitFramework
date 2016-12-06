@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Havit.Data.Entity.Patterns.Seeds;
+using Havit.Data.Entity.Patterns.DataSeeds;
 using Havit.Data.Entity.Patterns.Tests.Infrastructure;
 using Havit.Data.Patterns.DataSeeds;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

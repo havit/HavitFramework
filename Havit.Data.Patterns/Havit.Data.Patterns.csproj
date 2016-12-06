@@ -82,8 +82,8 @@
     <Compile Include="Localizations\ILocalizationService.cs" />
     <Compile Include="Localizations\LanguageService.cs" />
     <Compile Include="Localizations\LocalizationService.cs" />
-    <Compile Include="QueryServices\IDataSourceFactory.cs" />
-    <Compile Include="QueryServices\IDataSource.cs">
+    <Compile Include="DataSources\IDataSourceFactory.cs" />
+    <Compile Include="DataSources\IDataSource.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Repositories\IRepositoryFactory.cs" />
@@ -102,6 +102,9 @@
       <Project>{9acc94b9-b8fd-47c1-abf8-0658c7673905}</Project>
       <Name>Havit</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="QueryServices\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,15 +1,15 @@
-﻿using Havit.Diagnostics.Contracts;
-using Havit.Web.UI.ClientScripts;
-using Havit.Web.UI.Scriptlets;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Collections.Specialized;
+using Havit.Diagnostics.Contracts;
+using Havit.Web.UI.ClientScripts;
+using Havit.Web.UI.Scriptlets;
 
 namespace Havit.Web.UI.WebControls
 {
@@ -201,6 +201,17 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region PlaceHolderText
+		/// <summary>
+		/// Set text, which is shown before text is entered
+		/// </summary>
+		public string PlaceHolderText
+		{
+			get { return valueTextBox.Attributes["placeholder"]; }
+			set { valueTextBox.Attributes["placeholder"] = value; }
+		}
+		#endregion
+
 		#region Enabled
 		/// <summary>
 		/// Gets or sets a value indicating whether this <see cref="AutoCompleteTextBox"/> is enabled.
@@ -369,16 +380,16 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 
-        /// <summary>
-        /// ClientID hiddenfieldu, který obsahuje získanou hodnotu.
-        /// </summary>
-        public string ValueHiddenFieldClientID
-        {
-            get
-            {
-                return valueHiddenField.ClientID;
-            }
-        }
+		/// <summary>
+		/// ClientID hiddenfieldu, který obsahuje získanou hodnotu.
+		/// </summary>
+		public string ValueHiddenFieldClientID
+		{
+			get
+			{
+				return valueHiddenField.ClientID;
+			}
+		}
 		#endregion
 
 		#region Constructor

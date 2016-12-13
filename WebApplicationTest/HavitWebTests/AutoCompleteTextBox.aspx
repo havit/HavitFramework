@@ -41,6 +41,7 @@
 				AllowInvalidSelection="false"
 				Nullable="true"
 				ShowNoSuggestionNotice="True"
+				PlaceHolderText="Sem napište text"
 				NoSuggestionNotice="Nejsou data!"
 				AutoPostBack="true"
 				runat="server" />

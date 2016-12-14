@@ -70,8 +70,10 @@
     </Compile>
     <Compile Include="Collections\Generic\LookupTest.cs" />
     <Compile Include="CultureInfoExtTest.cs" />
+    <Compile Include="Linq\QueryableExtTest.cs" />
     <Compile Include="Linq\EnumerableExtTest.cs" />
     <Compile Include="Collections\GenericPropertyComparerTest.cs" />
+    <Compile Include="Linq\Expressions\ExpressionExtTest.cs" />
     <Compile Include="MathExtTest.cs" />
     <Compile Include="Security\PasswordGeneratorTest.cs" />
     <Compile Include="Security\PasswordHashServiceTest.cs" />

@@ -11,6 +11,7 @@ namespace Havit.Data.Patterns.DataSeeds
 	/// </summary>
 	public class DataSeedRunner : IDataSeedRunner
 	{
+		private readonly IDataSeedRunDecision dataSeedRunDecision;
 		private readonly IDataSeedPersister dataSeedPersister;
 		private readonly Dictionary<Type, IDataSeed> dataSeedDictionary;
 		private List<IDataSeed> completedDataSeeds;
@@ -19,10 +20,12 @@ namespace Havit.Data.Patterns.DataSeeds
 		/// Konstruktor.
 		/// </summary>
 		/// <param name="dataSeeds">Předpisy seedování objektů.</param>
+		/// <param name="dataSeedRunDecision">Služba vracející, zda se má dataseed spustit. Lze takto spouštění potlačit (např. pokud již bylo spuštěno).</param>
 		/// <param name="dataSeedPersister">Persister seedovaných objektů.</param>
-		public DataSeedRunner(IEnumerable<IDataSeed> dataSeeds, IDataSeedPersister dataSeedPersister)
+		public DataSeedRunner(IEnumerable<IDataSeed> dataSeeds, IDataSeedRunDecision dataSeedRunDecision, IDataSeedPersister dataSeedPersister)
 		{
 			Contract.Requires(dataSeeds != null);
+			Contract.Requires(dataSeedRunDecision != null);
 			Contract.Requires(dataSeedPersister != null);
 
 			if (dataSeeds.Select(item => item.GetType()).Distinct().Count() != dataSeeds.Count())
@@ -30,22 +33,29 @@ namespace Havit.Data.Patterns.DataSeeds
 				throw new ArgumentException("Contains dataseed type duplicity.", nameof(dataSeeds));
 			}
 
+			this.dataSeedRunDecision = dataSeedRunDecision;
 			this.dataSeedPersister = dataSeedPersister;
 			this.dataSeedDictionary = dataSeeds.ToDictionary(item => item.GetType(), item => item);
 		}
 
 		/// <summary>
-		/// Provede seedování dat dle předpisů a persistuje (uloží) je.
+		/// Pokud DataSeedRunDecision vrátí true, provede seedování dat dle předpisů a persistuje (uloží) je.
+		/// Rozhodnutí DataSeedRunDecision lze přebít zavoláním s forceRun=true, pak je seedování spuštěno vždy.
 		/// </summary>
-		public void SeedData()
+		public void SeedData(bool forceRun = false)
 		{
-			completedDataSeeds = new List<IDataSeed>();
-			Stack<IDataSeed> stack = new Stack<IDataSeed>();
-			foreach (IDataSeed dataSeed in dataSeedDictionary.Values)
+			if (forceRun || dataSeedRunDecision.ShouldSeedData())
 			{
-				SeedService(dataSeed, stack);
+				completedDataSeeds = new List<IDataSeed>();
+				Stack<IDataSeed> stack = new Stack<IDataSeed>();
+				foreach (IDataSeed dataSeed in dataSeedDictionary.Values)
+				{
+					SeedService(dataSeed, stack);
+				}
+				completedDataSeeds = null;
+
+				dataSeedRunDecision.SeedDataCompleted();
 			}
-			completedDataSeeds = null;
 		}
 
 		/// <summary>
@@ -105,5 +115,12 @@ namespace Havit.Data.Patterns.DataSeeds
 			dataSeed.SeedData(dataSeedPersister);
 		}
 
+		/// <summary>
+		/// Provede seedování dat.
+		/// </summary>
+		void IDataSeedRunner.SeedData()
+		{
+			this.SeedData();
+		}
 	}
 }

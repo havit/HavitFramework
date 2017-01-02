@@ -59,6 +59,12 @@
     <Compile Include="DataEntries\EntryIdentification.cs" />
     <Compile Include="DataEntries\IDataEntrySymbolStorage.cs" />
     <Compile Include="DataLoaders\EnumerableExtensions.cs" />
+    <Compile Include="DataSeeds\AlwaysRunDecision.cs" />
+    <Compile Include="DataSeeds\IDataSeedRunDecision.cs" />
+    <Compile Include="DataSeeds\IDataSeedRunDecisionStatePersister.cs" />
+    <Compile Include="DataSeeds\FileStorageDataSeedRunDecisionStatePersister.cs" />
+    <Compile Include="DataSeeds\OncePerVersionDataSeedRunDecisionBase.cs" />
+    <Compile Include="DataSeeds\StateDataSeedRunDecisionBase.cs" />
     <Compile Include="Infrastructure\EntityKeyAccessor.cs" />
     <Compile Include="Infrastructure\IEntityKeyAccessor.cs" />
     <Compile Include="DataLoaders\IDataLoaderAsync.cs" />
@@ -97,6 +103,10 @@
     <ProjectReference Include="..\Havit.Model\Havit.Model.csproj">
       <Project>{72a78976-6b9f-4d96-a4c9-441066e44de4}</Project>
       <Name>Havit.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Havit.Services\Havit.Services.csproj">
+      <Project>{2e4ae0cf-fa21-4fbc-9274-e56bc5d9494e}</Project>
+      <Name>Havit.Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\Havit\Havit.csproj">
       <Project>{9acc94b9-b8fd-47c1-abf8-0658c7673905}</Project>

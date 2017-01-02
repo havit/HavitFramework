@@ -68,11 +68,14 @@
     <Compile Include="DataEntries\DataEntriesTest.cs" />
     <Compile Include="DataEntries\Infrastructure\SystemCodebookEntryDataEntries.cs" />
     <Compile Include="DataEntries\Infrastructure\SystemCodebookEntry.cs" />
+    <Compile Include="DataSeeds\FileStorageDataSeedRunDecisionStatePersisterTest.cs" />
     <Compile Include="DataSeeds\DataSeedForTest.cs" />
     <Compile Include="DataSeeds\DataSeedRunnerTest.cs" />
     <Compile Include="DataSeeds\Infrastructure\DataSeedCycleB.cs" />
     <Compile Include="DataSeeds\Infrastructure\DataSeedCycleA.cs" />
     <Compile Include="DataSeeds\Infrastructure\DataSeedDependentOnItself.cs" />
+    <Compile Include="DataSeeds\Infrastructure\OncePerVersionDataSeedRunDecision.cs" />
+    <Compile Include="DataSeeds\OncePerVersionDataSeedRunDecisionTest.cs" />
     <Compile Include="Localizations\LanguageServiceTests.cs" />
     <Compile Include="Localizations\LocalizationServiceTest.cs" />
     <Compile Include="Localizations\Model\ILocalization.cs" />
@@ -90,6 +93,10 @@
     <ProjectReference Include="..\Havit.Model\Havit.Model.csproj">
       <Project>{72a78976-6b9f-4d96-a4c9-441066e44de4}</Project>
       <Name>Havit.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Havit.Services\Havit.Services.csproj">
+      <Project>{2e4ae0cf-fa21-4fbc-9274-e56bc5d9494e}</Project>
+      <Name>Havit.Services</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

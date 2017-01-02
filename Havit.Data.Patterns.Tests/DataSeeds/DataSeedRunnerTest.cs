@@ -15,7 +15,7 @@ namespace Havit.Data.Patterns.Tests.DataSeeds
 			Mock<IDataSeed> dataSeedMock = new Mock<IDataSeed>();
 			Mock<IDataSeedPersister> dataSeedPersisterMock = new Mock<IDataSeedPersister>();
 
-			DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedMock.Object }, dataSeedPersisterMock.Object);
+			DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedMock.Object }, new AlwaysRunDecision(), dataSeedPersisterMock.Object);
 			
 			// Act
 			runner.SeedData();
@@ -33,7 +33,7 @@ namespace Havit.Data.Patterns.Tests.DataSeeds
 
 			Mock<IDataSeedPersister> dataSeedPersisterMock = new Mock<IDataSeedPersister>();
 
-			DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedCycleA, dataSeedCycleB }, dataSeedPersisterMock.Object);
+			DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedCycleA, dataSeedCycleB }, new AlwaysRunDecision(), dataSeedPersisterMock.Object);
 
 			// Act
 			runner.SeedData();
@@ -49,7 +49,7 @@ namespace Havit.Data.Patterns.Tests.DataSeeds
 
 			Mock<IDataSeedPersister> dataSeedPersisterMock = new Mock<IDataSeedPersister>();
 
-			DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedDependentOnItself }, dataSeedPersisterMock.Object);
+			DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedDependentOnItself }, new AlwaysRunDecision(), dataSeedPersisterMock.Object);
 
 			// Act
 			runner.SeedData();
@@ -64,7 +64,7 @@ namespace Havit.Data.Patterns.Tests.DataSeeds
 			Mock<IDataSeed> dataSeedMock = new Mock<IDataSeed>();
 			Mock<IDataSeedPersister> dataSeedPersisterMock = new Mock<IDataSeedPersister>();
 
-			DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedMock.Object, dataSeedMock.Object }, dataSeedPersisterMock.Object);
+			DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedMock.Object, dataSeedMock.Object }, new AlwaysRunDecision(), dataSeedPersisterMock.Object);
 
 			// Act
 			runner.SeedData();
@@ -79,7 +79,7 @@ namespace Havit.Data.Patterns.Tests.DataSeeds
 			DataSeedCycleA dataSeedCycleA = new DataSeedCycleA();
 			Mock<IDataSeedPersister> dataSeedPersisterMock = new Mock<IDataSeedPersister>();
 
-			DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedCycleA }, dataSeedPersisterMock.Object);
+			DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedCycleA }, new AlwaysRunDecision(), dataSeedPersisterMock.Object);
 
 			// Act
 			runner.SeedData();

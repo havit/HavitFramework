@@ -16,6 +16,7 @@
 			<group targetFramework="net46">
 			  <dependency id="Havit" />
 			  <dependency id="Havit.Model" />
+			  <dependency id="Havit.Services" />
 			</group>
 		</dependencies>
 		<tags>HAVIT Framework Library Data Patterns EF</tags>

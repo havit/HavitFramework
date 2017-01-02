@@ -14,6 +14,9 @@ namespace Havit.Data.Patterns.DataSeeds
 	/// </summary>
 	public abstract class OncePerVersionDataSeedRunDecisionBase : StateDataSeedRunDecisionBase
 	{
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
 		protected OncePerVersionDataSeedRunDecisionBase(IDataSeedRunDecisionStatePersister dataSeedRunDecisionStatePersister) : base(dataSeedRunDecisionStatePersister)
 		{
 		}

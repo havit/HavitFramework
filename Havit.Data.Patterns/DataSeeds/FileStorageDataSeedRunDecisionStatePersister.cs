@@ -14,6 +14,11 @@ namespace Havit.Data.Patterns.DataSeeds
 
 		private readonly string filename;
 
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
+		/// <param name="fileStorageService">FileStorage použitá pro zápis stavu state persisteru.</param>
+		/// <param name="filename">Název souboru.</param>
 		public FileStorageDataSeedRunDecisionStatePersister(IFileStorageService fileStorageService, string filename = "DataSeedState.txt")
 		{
 			this.fileStorageService = fileStorageService;

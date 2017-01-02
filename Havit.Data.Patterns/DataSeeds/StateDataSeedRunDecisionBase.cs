@@ -7,6 +7,10 @@
 	{
 		private readonly IDataSeedRunDecisionStatePersister dataSeedRunDecisionStatePersister;
 
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
+		/// <param name="dataSeedRunDecisionStatePersister"></param>
 		protected StateDataSeedRunDecisionBase(IDataSeedRunDecisionStatePersister dataSeedRunDecisionStatePersister)
 		{
 			this.dataSeedRunDecisionStatePersister = dataSeedRunDecisionStatePersister;

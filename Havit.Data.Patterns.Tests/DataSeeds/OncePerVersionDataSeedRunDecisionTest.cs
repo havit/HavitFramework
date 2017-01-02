@@ -25,11 +25,11 @@ namespace Havit.Data.Patterns.Tests.DataSeeds
 			dataSeedRunDecisionStatePersisterMock.Setup(m => m.WriteCurrentState(It.IsAny<string>())).Callback((string newState) => { currentState = newState; });
 
 			// Act + Assert
-			OncePerVersionDataSeedRunDecision desicion = new OncePerVersionDataSeedRunDecision(dataSeedRunDecisionStatePersisterMock.Object);
+			OncePerVersionDataSeedRunDecision decision = new OncePerVersionDataSeedRunDecision(dataSeedRunDecisionStatePersisterMock.Object);
 
-			Assert.IsTrue(desicion.ShouldSeedData());
-			desicion.SeedDataCompleted();
-			Assert.IsFalse(desicion.ShouldSeedData());
+			Assert.IsTrue(decision.ShouldSeedData());
+			decision.SeedDataCompleted();
+			Assert.IsFalse(decision.ShouldSeedData());
 		}
 	}
 }

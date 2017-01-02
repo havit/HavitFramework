@@ -25,7 +25,7 @@ namespace Havit.Data.Patterns.Tests.DataSeeds
 			dataSeedRunDecisionStatePersisterMock.Setup(m => m.WriteCurrentState(It.IsAny<string>())).Callback((string newState) => { currentState = newState; });
 
 			// Act + Assert
-			OncePerVersionDataSeedRunDecision decision = new OncePerVersionDataSeedRunDecision(dataSeedRunDecisionStatePersisterMock.Object);
+			OncePerVersionDataSeedRunDecision decision = new OncePerVersionDataSeedRunDecision(dataSeedRunDecisionStatePersisterMock.Object, typeof(OncePerVersionDataSeedRunDecisionTest).Assembly);
 
 			Assert.IsTrue(decision.ShouldSeedData());
 			decision.SeedDataCompleted();

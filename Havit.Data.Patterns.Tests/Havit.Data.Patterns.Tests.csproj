@@ -74,7 +74,6 @@
     <Compile Include="DataSeeds\Infrastructure\DataSeedCycleB.cs" />
     <Compile Include="DataSeeds\Infrastructure\DataSeedCycleA.cs" />
     <Compile Include="DataSeeds\Infrastructure\DataSeedDependentOnItself.cs" />
-    <Compile Include="DataSeeds\Infrastructure\OncePerVersionDataSeedRunDecision.cs" />
     <Compile Include="DataSeeds\OncePerVersionDataSeedRunDecisionTest.cs" />
     <Compile Include="Localizations\LanguageServiceTests.cs" />
     <Compile Include="Localizations\LocalizationServiceTest.cs" />

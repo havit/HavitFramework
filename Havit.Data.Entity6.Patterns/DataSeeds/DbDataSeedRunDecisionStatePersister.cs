@@ -16,6 +16,9 @@ namespace Havit.Data.Entity.Patterns.DataSeeds
 	{
 		private readonly IDbContext dbContext;
 
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
 		public DbDataSeedRunDecisionStatePersister(IDbContext dbContext)
 		{
 			this.dbContext = dbContext;

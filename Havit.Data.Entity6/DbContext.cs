@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure;
+using System.Data.Entity.ModelConfiguration;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Threading.Tasks;
 using Havit.Data.Entity.Conventions;
+using Havit.Data.Entity.Model;
 using ForeignKeyIndexConvention = Havit.Data.Entity.Conventions.ForeignKeyIndexConvention;
 
 namespace Havit.Data.Entity
@@ -88,9 +91,15 @@ namespace Havit.Data.Entity
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
-
+			
 			this.Set<object>(); // Pro podporu EntityFramework.MappingAPI - podpora pro Code First funguje až po prvním zavolání Set<T>().
 
+			EntityTypeConfiguration<DataSeed> dataSeedRowEntity = modelBuilder.Entity<DataSeed>();
+			dataSeedRowEntity.ToTable("__DataSeed");
+			dataSeedRowEntity.HasKey(item => item.Id);
+			dataSeedRowEntity.Property(item => item.Id).HasColumnName("Id").HasDatabaseGeneratedOption(DatabaseGeneratedOption.None); // používáme jen Id = 1
+			dataSeedRowEntity.Property(item => item.Version).HasMaxLength(null);
+			
 			// EF standardně pojmenovává tabulky v databázi v množném čísle (anglicky).
 			// Chceme pojmenovat tabulky v jednotném čísle (a nemrvnit češtinu ala "Fakturas"),
 			// proto odebereme konvenci zajišťující pojmenování v množném čísle.

@@ -15,11 +15,11 @@ namespace Havit.Data.Patterns.DataSeeds
 		/// <summary>
 		/// Indikuje, zda má dojík se spuštění seedování dat.
 		/// </summary>
-		bool ShouldSeedData();
+		bool ShouldSeedData(IEnumerable<Type> dataSeedTypes);
 
 		/// <summary>
 		/// Metoda je zavolána po dokončení seedování dat.
 		/// </summary>
-		void SeedDataCompleted();
+		void SeedDataCompleted(IEnumerable<Type> dataSeedTypes);
 	}
 }

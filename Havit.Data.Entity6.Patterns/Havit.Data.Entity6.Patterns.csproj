@@ -65,6 +65,7 @@
     <Compile Include="DataLoaders\DbDataLoader.cs" />
     <Compile Include="DataLoaders\PropertiesSequenceExpressionVisitor.cs" />
     <Compile Include="DataLoaders\PropertyToLoad.cs" />
+    <Compile Include="DataSeeds\DbDataSeedRunDecisionStatePersister.cs" />
     <Compile Include="Helpers\EntityHelper.cs" />
     <Compile Include="SoftDeletes\ISoftDeleteManager.cs" />
     <Compile Include="DataSources\DbDataSource.cs" />

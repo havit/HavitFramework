@@ -24,8 +24,9 @@ namespace Havit.Data.Entity.CodeGenerator.Entity
 				if (registeredEntities == null)
 				{				
 					List<EntityType> entityTypes = objectContext.MetadataWorkspace.GetItems<EntityType>(DataSpace.OSpace).ToList();
-					registeredEntities = (from entityType in entityTypes
+					registeredEntities = (from entityType in entityTypes										  
 										  let type = (Type)entityType.GetType().GetProperty("ClrType", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).GetValue(entityType)
+										  where type != typeof(Model.DataSeed)
 										  orderby entityType.FullName
 						select new RegisteredEntity
 						{

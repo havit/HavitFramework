@@ -11,6 +11,7 @@ namespace Havit.Data.Patterns.DataSeeds
 	/// </summary>
 	public class DataSeedRunner : IDataSeedRunner
 	{
+		private readonly List<IDataSeed> dataSeeds;
 		private readonly IDataSeedRunDecision dataSeedRunDecision;
 		private readonly IDataSeedPersister dataSeedPersister;
 		private readonly Dictionary<Type, IDataSeed> dataSeedDictionary;
@@ -33,6 +34,7 @@ namespace Havit.Data.Patterns.DataSeeds
 				throw new ArgumentException("Contains dataseed type duplicity.", nameof(dataSeeds));
 			}
 
+			this.dataSeeds = dataSeeds.ToList();
 			this.dataSeedRunDecision = dataSeedRunDecision;
 			this.dataSeedPersister = dataSeedPersister;
 			this.dataSeedDictionary = dataSeeds.ToDictionary(item => item.GetType(), item => item);
@@ -44,7 +46,9 @@ namespace Havit.Data.Patterns.DataSeeds
 		/// </summary>
 		public void SeedData(bool forceRun = false)
 		{
-			if (forceRun || dataSeedRunDecision.ShouldSeedData())
+			List<Type> dataSeedTypes = dataSeeds.Select(item => item.GetType()).ToList();
+
+			if (forceRun || dataSeedRunDecision.ShouldSeedData(dataSeedTypes))
 			{
 				completedDataSeeds = new List<IDataSeed>();
 				Stack<IDataSeed> stack = new Stack<IDataSeed>();
@@ -54,7 +58,7 @@ namespace Havit.Data.Patterns.DataSeeds
 				}
 				completedDataSeeds = null;
 
-				dataSeedRunDecision.SeedDataCompleted();
+				dataSeedRunDecision.SeedDataCompleted(dataSeedTypes);
 			}
 		}
 

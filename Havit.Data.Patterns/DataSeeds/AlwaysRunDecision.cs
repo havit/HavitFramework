@@ -1,4 +1,7 @@
-﻿namespace Havit.Data.Patterns.DataSeeds
+﻿using System;
+using System.Collections.Generic;
+
+namespace Havit.Data.Patterns.DataSeeds
 {
 	/// <summary>
 	/// Rozhoduje, že k spuštění seedování dat má dojít vždy.
@@ -10,7 +13,7 @@
 		/// Vždy vrací true.
 		/// </summary>
 		/// <returns>True.</returns>
-		public bool ShouldSeedData()
+		public bool ShouldSeedData(IEnumerable<Type> dataSeedTypes)
 		{
 			return true;
 		}
@@ -19,7 +22,7 @@
 		/// Metoda je zavolána po dokončení seedování dat.
 		/// Nic nedělá.
 		/// </summary>
-		public void SeedDataCompleted()
+		public void SeedDataCompleted(IEnumerable<Type> dataSeedTypes)
 		{
 			// NOOP
 		}

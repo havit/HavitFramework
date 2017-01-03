@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,6 +20,7 @@ namespace Havit.Data.Entity.Model
 		/// <summary>
 		/// Naposledy spuštěná verze seedování dat.
 		/// </summary>
+		[MaxLength]
 		public string Version { get; set; }
 	}
 }

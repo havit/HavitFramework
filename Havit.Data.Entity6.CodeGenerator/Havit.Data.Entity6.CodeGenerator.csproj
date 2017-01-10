@@ -85,6 +85,7 @@
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
@@ -215,6 +216,7 @@
     </Compile>
     <Compile Include="Actions\Repositories\Templates\DbRepositoryGeneratedTemplateFactory.cs" />
     <Compile Include="Actions\Repositories\Templates\InterfaceRepositoryGeneratedTemplateFactory.cs" />
+    <Compile Include="Entity\DbContextActivator.cs" />
     <Compile Include="Entity\DoNothingInitializer.cs" />
     <Compile Include="Entity\RegisteredEntity.cs" />
     <Compile Include="Entity\RegisteredEntityEnumerator.cs" />

@@ -76,7 +76,7 @@ namespace Havit.Data.Entity.CodeGenerator
 				() => sourceControlClient = new TfsSourceControlClientFactory().Create(solutionDirectory.FullName),
 				() =>
 				{
-					dbContext = (DbContext)Activator.CreateInstance(dbContextType);
+					dbContext = new DbContextActivator().Activate(dbContextType);
 					
 					// doNothingInitializer = new DoNothingInitializer<MyDbContext>();
 					Type nullDatabaseInitializerType = typeof(NullDatabaseInitializer<>).MakeGenericType(dbContextType);

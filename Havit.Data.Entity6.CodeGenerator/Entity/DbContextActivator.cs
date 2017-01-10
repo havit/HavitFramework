@@ -16,10 +16,10 @@ namespace Havit.Data.Entity.CodeGenerator.Entity
 		public DbContext Activate(Type dbContextType)
 		{
 			// pokud existuje, spustíme metodu InitializeForCodeGenerator s parametrem connection stringu
-			MethodInfo initializeForCodeGeneratorMethod = dbContextType.GetMethod("InitializeForCodeGenerator", BindingFlags.Public | BindingFlags.Static, null, new[] { typeof(string) }, null);
-			if (initializeForCodeGeneratorMethod != null)
+			MethodInfo configureForCodeGeneratorMethod = dbContextType.GetMethod("ConfigureForCodeGenerator", BindingFlags.Public | BindingFlags.Static, null, new[] { typeof(string) }, null);
+			if (configureForCodeGeneratorMethod != null)
 			{
-				initializeForCodeGeneratorMethod.Invoke(null, new object[] { ConfigurationManager.ConnectionStrings["DefaultConnectionString"].ConnectionString });
+				configureForCodeGeneratorMethod.Invoke(null, new object[] { ConfigurationManager.ConnectionStrings["DefaultConnectionString"].ConnectionString });
 			}
 
 			// pokud je pro DbContext vytvořena a zaregistrována konfigurace přes DbConfiguration.SetConfiguration, funguje tento přístup

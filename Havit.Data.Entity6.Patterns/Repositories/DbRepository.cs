@@ -194,8 +194,8 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		{			
 			Contract.Requires(ids != null);
 
-			List<TEntity> result = new List<TEntity>();
-			List<int> idsToLoad = new List<int>();
+			HashSet<TEntity> loadedEntities = new HashSet<TEntity>();
+			HashSet<int> idsToLoad = new HashSet<int>();
 
 			foreach (int id in ids)
 			{
@@ -204,13 +204,16 @@ namespace Havit.Data.Entity.Patterns.Repositories
 				TEntity loadedEntity = DbSet.Local.FirstOrDefault(item => EntityHelper.GetEntityId(item) == id);
 				if (loadedEntity != null)
 				{
-					result.Add(loadedEntity);
+					loadedEntities.Add(loadedEntity);
 				}
 				else
 				{
 					idsToLoad.Add(id);
 				}
 			}
+
+			List<TEntity> result = new List<TEntity>(ids.Length);
+			result.AddRange(loadedEntities);
 
 			if (idsToLoad.Count > 0)
 			{
@@ -239,8 +242,8 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		{
 			Contract.Requires(ids != null);
 
-			List<TEntity> result = new List<TEntity>();
-			List<int> idsToLoad = new List<int>();
+			HashSet<TEntity> loadedEntities = new HashSet<TEntity>();
+			HashSet<int> idsToLoad = new HashSet<int>();
 
 			foreach (int id in ids)
 			{
@@ -249,13 +252,16 @@ namespace Havit.Data.Entity.Patterns.Repositories
 				TEntity loadedEntity = DbSet.Local.FirstOrDefault(item => EntityHelper.GetEntityId(item) == id);
 				if (loadedEntity != null)
 				{
-					result.Add(loadedEntity);
+					loadedEntities.Add(loadedEntity);
 				}
 				else
 				{
 					idsToLoad.Add(id);
 				}
 			}
+
+			List<TEntity> result = new List<TEntity>(ids.Length);
+			result.AddRange(loadedEntities);
 
 			if (idsToLoad.Count > 0)
 			{

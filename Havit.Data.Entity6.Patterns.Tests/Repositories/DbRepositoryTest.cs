@@ -280,6 +280,50 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 			// Assert by method attribute
 		}
 
+		[TestMethod]
+		public void DbRepository_GetObjects_AllowsDuplicateId()
+		{
+			// Arrange
+			TestDbContext testDbContext = new TestDbContext();
+			testDbContext.Database.Initialize(true);
+
+			SeedData();
+
+			int id = testDbContext.Set<ItemWithDeleted>().Select(item => item.Id).First(); // načteme jen identifikátor, nikoliv objekt!
+
+			var dataLoader = new DbDataLoader(testDbContext);
+			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
+
+			// Act
+			List<ItemWithDeleted> entities = repository.GetObjects(id, id, id); // duplicitní id (triplicitní)
+
+			// Assert
+			// no exception was thrown
+			Assert.AreEqual(1, entities.Count);
+		}
+
+		[TestMethod]
+		public async Task DbRepository_GetObjectsAsync_AllowsDuplicateId()
+		{
+			// Arrange
+			TestDbContext testDbContext = new TestDbContext();
+			testDbContext.Database.Initialize(true);
+
+			SeedData();
+
+			int id = testDbContext.Set<ItemWithDeleted>().Select(item => item.Id).First(); // načteme jen identifikátor, nikoliv objekt!
+
+			var dataLoader = new DbDataLoader(testDbContext);
+			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
+
+			// Act
+			List<ItemWithDeleted> entities = await repository.GetObjectsAsync(id, id, id); // duplicitní id (triplicitní)
+
+			// Assert
+			// no exception was thrown
+			Assert.AreEqual(1, entities.Count);
+		}
+
 		/// <summary>
 		/// Bug 24218: DbRepository: Po commitu (někdy) přestane fungovat GetObject
 		/// </summary>

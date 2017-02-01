@@ -34,8 +34,8 @@ namespace Havit.Data.Entity.Patterns.DataSeeds
 		/// </remarks>
 		public string ReadCurrentState()
 		{
-			Model.DataSeed dataSeed = dbContext.Set<Model.DataSeed>().SingleOrDefault(item => item.Id == 1);
-			return dataSeed?.Version;
+			Model.DataSeedVersion dataSeedVersion = dbContext.Set<Model.DataSeedVersion>().SingleOrDefault(item => item.Id == 1);
+			return dataSeedVersion?.Version;
 		}
 
 		/// <summary>
@@ -47,13 +47,13 @@ namespace Havit.Data.Entity.Patterns.DataSeeds
 		/// </remarks>
 		public void WriteCurrentState(string currentState)
 		{
-			Model.DataSeed dataSeed = dbContext.Set<Model.DataSeed>().SingleOrDefault(item => item.Id == 1);
-			if (dataSeed == null)
+			Model.DataSeedVersion dataSeedVersion = dbContext.Set<Model.DataSeedVersion>().SingleOrDefault(item => item.Id == 1);
+			if (dataSeedVersion == null)
 			{
-				dataSeed = new Model.DataSeed { Id = 1 };
-				dbContext.Set<Model.DataSeed>().Add(dataSeed);
+				dataSeedVersion = new Model.DataSeedVersion { Id = 1 };
+				dbContext.Set<Model.DataSeedVersion>().Add(dataSeedVersion);
 			}
-			dataSeed.Version = currentState;
+			dataSeedVersion.Version = currentState;
 			dbContext.SaveChanges();
 		}
 	}

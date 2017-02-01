@@ -87,7 +87,7 @@
     <Compile Include="ModelConfiguration\Edm\MetadataItemExtensions.cs" />
     <Compile Include="ModelConfiguration\Edm\StructuralTypeExtensions.cs" />
     <Compile Include="ModelConfiguration\EntityTypeConfigurationExtensions.cs" />
-    <Compile Include="Model\DataSeed.cs" />
+    <Compile Include="Model\DataSeedVersion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validators\ModelValidator.cs" />
   </ItemGroup>

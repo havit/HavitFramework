@@ -94,11 +94,11 @@ namespace Havit.Data.Entity
 			
 			this.Set<object>(); // Pro podporu EntityFramework.MappingAPI - podpora pro Code First funguje až po prvním zavolání Set<T>().
 
-			EntityTypeConfiguration<DataSeed> dataSeedRowEntity = modelBuilder.Entity<DataSeed>();
-			dataSeedRowEntity.ToTable("__DataSeed");
-			dataSeedRowEntity.HasKey(item => item.Id);
-			dataSeedRowEntity.Property(item => item.Id).HasColumnName("Id").HasDatabaseGeneratedOption(DatabaseGeneratedOption.None); // používáme jen Id = 1
-			dataSeedRowEntity.Property(item => item.Version);
+			EntityTypeConfiguration<DataSeedVersion> dataSeedVersionEntity = modelBuilder.Entity<DataSeedVersion>();
+			dataSeedVersionEntity.ToTable("__DataSeed");
+			dataSeedVersionEntity.HasKey(item => item.Id);
+			dataSeedVersionEntity.Property(item => item.Id).HasColumnName("Id").HasDatabaseGeneratedOption(DatabaseGeneratedOption.None); // používáme jen Id = 1
+			dataSeedVersionEntity.Property(item => item.Version);
 			
 			// EF standardně pojmenovává tabulky v databázi v množném čísle (anglicky).
 			// Chceme pojmenovat tabulky v jednotném čísle (a nemrvnit češtinu ala "Fakturas"),

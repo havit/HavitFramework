@@ -10,7 +10,7 @@ namespace Havit.Data.Entity.Model
 	/// <summary>
 	/// Informace o naposledy spuštěné verzi seedování dat.
 	/// </summary>
-	public class DataSeed
+	public class DataSeedVersion
 	{
 		/// <summary>
 		/// Identifikátor. Používá se jen s hodnotou 1.

@@ -17,7 +17,7 @@ namespace Havit.WebApplicationTest.HavitWebTests
 			base.OnInit(e);
 
 			TesterACTB.SelectedValueChanged += TesterACTB_SelectedValueChanged;
-			TesterACTB.SelectedTextChanged += TesterACTB_SelectedTextChanged;
+			TesterACTB.TextChanged += TesterACTB_TextChanged;
 			HideBt.Click += HideBt_Click;
 			ShowBt.Click += ShowBt_Click;
 		}
@@ -26,7 +26,7 @@ namespace Havit.WebApplicationTest.HavitWebTests
 		{
 			base.OnLoad(e);
 			PostbackValueLabel.Text = TesterACTB.SelectedValue;
-			PostbackTextLabel.Text = TesterACTB.SelectedText;
+			PostbackTextLabel.Text = TesterACTB.Text;
 
 			if (!IsPostBack)
 			{
@@ -39,9 +39,9 @@ namespace Havit.WebApplicationTest.HavitWebTests
 			PostbackValueLabel.Text = "*" + TesterACTB.SelectedValue + "*";
 		}
 
-		private void TesterACTB_SelectedTextChanged(object sender, EventArgs e)
+		private void TesterACTB_TextChanged(object sender, EventArgs e)
 		{
-			PostbackTextLabel.Text = "*" + TesterACTB.SelectedText + "*";
+			PostbackTextLabel.Text = "*" + TesterACTB.Text + "*";
 		}
 
 		private void ShowBt_Click(object sender, EventArgs e)

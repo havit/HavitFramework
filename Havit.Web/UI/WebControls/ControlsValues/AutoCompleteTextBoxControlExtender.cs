@@ -20,7 +20,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 			AutoCompleteTextBox box = (AutoCompleteTextBox)control;
 			return new AutoCompleteTextBoxValues()
 			{
-				SelectedText = box.SelectedText,
+				Text = box.Text,
 				SelectedValue = box.SelectedValue
 			};
 		}
@@ -45,7 +45,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 			AutoCompleteTextBox box = (AutoCompleteTextBox)control;
 			AutoCompleteTextBoxValues data = (AutoCompleteTextBoxValues)value;
 			box.SelectedValue = data.SelectedValue;
-			box.SelectedText = data.SelectedText;
+			box.Text = data.Text;
 		}
 		#endregion
 

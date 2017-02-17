@@ -23,7 +23,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 		/// <summary>
 		/// Text pro zobrazení položky.
 		/// </summary>
-		public string SelectedText
+		public string Text
 		{
 			get;
 			set;

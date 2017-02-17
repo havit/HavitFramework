@@ -23,14 +23,14 @@ namespace Havit.Web.UI.WebControls
 	[Themeable(true)]
 	public class AutoCompleteTextBox : Control, INamingContainer, IPostBackDataHandler
 	{
-		#region OnValueChanged
+		#region (On)ValueChanged
 		/// <summary>
 		/// Událost nastane v okamžiku změny vybrané položky.
 		/// </summary>
 		public event EventHandler SelectedValueChanged;
 
 		/// <summary>
-		/// Raises theSelectedValueChanged event.
+		/// Raises the SelectedValueChanged event.
 		/// </summary>
 		protected void OnSelectedValueChanged(EventArgs e)
 		{
@@ -41,10 +41,23 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region (On)TextChanged
 		/// <summary>
-		/// Událost nastane v okamžiku změny vybrané položky.
+		/// Událost nastane v okamžiku změny textu vybrané položky.
 		/// </summary>
-		public event EventHandler SelectedTextChanged;
+		public event EventHandler TextChanged;
+
+		/// <summary>
+		/// Raises the TextChanged event.
+		/// </summary>
+		protected void OnTextChanged(EventArgs e)
+		{
+			if (TextChanged != null)
+			{
+				TextChanged(this, e);
+			}
+		}
+		#endregion
 
 		#region Fields (private)
 		private readonly TextBox valueTextBox;
@@ -134,11 +147,11 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-		#region SelectedText
+		#region Text
 		/// <summary>
 		/// Vyplněný text
 		/// </summary>
-		public string SelectedText
+		public string Text
 		{
 			get { return valueTextBox.Text; }
 			set { valueTextBox.Text = value; }
@@ -418,7 +431,7 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		public void ClearSelection()
 		{
-			SelectedText = String.Empty;
+			Text = String.Empty;
 			SelectedValue = String.Empty;
 		}
 		#endregion
@@ -454,7 +467,7 @@ namespace Havit.Web.UI.WebControls
 			writer.AddAttribute("data-allowInvalidSelection", AllowInvalidSelection.ToString());
 			writer.AddAttribute("data-nullable", Nullable.ToString());
 			writer.AddAttribute("data-showNoSuggestionNotice", ShowNoSuggestionNotice.ToString());
-			writer.AddAttribute("data-selectedvalue", SelectedText);
+			writer.AddAttribute("data-selectedvalue", Text);
 
 			if (ShowNoSuggestionNotice)
 			{
@@ -541,10 +554,7 @@ namespace Havit.Web.UI.WebControls
 		#region ValueTextBox_TextChanged
 		private void ValueTextBox_TextChanged(object sender, EventArgs e)
 		{
-			if (SelectedTextChanged != null)
-			{
-				SelectedTextChanged(this, e);
-			}
+			OnTextChanged(EventArgs.Empty);
 		}
 		#endregion
 

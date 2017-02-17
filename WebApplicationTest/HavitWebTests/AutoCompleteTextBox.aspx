@@ -38,7 +38,7 @@
 				UseClientCache="false"
 				Orientation="Auto"
 				Context="lorem ipsum dolor sit amet"
-				AllowInvalidSelection="false"
+				AllowInvalidSelection="true"
 				Nullable="true"
 				ShowNoSuggestionNotice="True"
 				PlaceHolderText="Sem napište text"
@@ -58,7 +58,8 @@
 			<span id="test"></span>
 
 			<asp:Button ID="ConfimBt" Text="Potvrdit" runat="server"/>
-			<asp:Label id="PostbackLabel" runat="server"/><br />
+			<asp:Label id="PostbackValueLabel" runat="server"/><br />
+			<asp:Label id="PostbackTextLabel" runat="server"/><br />
 			<asp:TextBox runat="server"/><br/>
 			<asp:Button id="HideBt" Text="Skrýt" runat="server"/>
 			<asp:Button id="ShowBt" Text="Zobrazit" runat="server"/>

@@ -40,13 +40,22 @@ namespace Havit.WebApplicationTest.HavitWebTests {
         protected global::System.Web.UI.WebControls.Button ConfimBt;
         
         /// <summary>
-        /// PostbackLabel control.
+        /// PostbackValueLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label PostbackLabel;
+        protected global::System.Web.UI.WebControls.Label PostbackValueLabel;
+        
+        /// <summary>
+        /// PostbackTextLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label PostbackTextLabel;
         
         /// <summary>
         /// HideBt control.

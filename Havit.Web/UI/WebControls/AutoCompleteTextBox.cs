@@ -41,6 +41,11 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		/// <summary>
+		/// Událost nastane v okamžiku změny vybrané položky.
+		/// </summary>
+		public event EventHandler SelectedTextChanged;
+
 		#region Fields (private)
 		private readonly TextBox valueTextBox;
 		private readonly HiddenField valueHiddenField;
@@ -489,6 +494,8 @@ namespace Havit.Web.UI.WebControls
 		{
 			base.OnInit(e);
 
+			valueTextBox.TextChanged += ValueTextBox_TextChanged;
+
 			EnsureChildControls();
 		}
 		#endregion
@@ -528,6 +535,16 @@ namespace Havit.Web.UI.WebControls
 			}
 
 			return false;
+		}
+		#endregion
+
+		#region ValueTextBox_TextChanged
+		private void ValueTextBox_TextChanged(object sender, EventArgs e)
+		{
+			if (SelectedTextChanged != null)
+			{
+				SelectedTextChanged(this, e);
+			}
 		}
 		#endregion
 

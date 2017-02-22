@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using Havit.Web;
 
 namespace Havit.AspNet.Mvc.ValidationSummary
 {
@@ -32,12 +33,13 @@ namespace Havit.AspNet.Mvc.ValidationSummary
 
 			foreach (ModelError modelError in modelErrors)
 			{
-				sb.AppendLine(modelError.ErrorMessage);
+				string encodedMessage = HttpUtilityExt.HtmlEncode(modelError.ErrorMessage, HtmlEncodeOptions.None);
+				sb.AppendLine(encodedMessage);
 			}
 
 			TagBuilder builder = new TagBuilder("script");
 			builder.Attributes.Add("type", "text/javascript");
-			builder.InnerHtml = "toastr.error(\"" + sb.ToString().TrimEnd().Replace("'", "\\'").Replace("\n", "<br />").Replace("\r", "") + "\");";
+			builder.InnerHtml = "toastr.error(\"" + sb.ToString().TrimEnd().Replace("\n", "<br />").Replace("\r", "") + "\");";
 
 			return new MvcHtmlString(builder.ToString());
 		}

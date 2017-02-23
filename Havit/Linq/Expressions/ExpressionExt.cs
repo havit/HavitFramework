@@ -86,7 +86,7 @@ namespace Havit.Linq.Expressions
 
 			for (int i = 1; i < notNullExpressions.Count; i++)
 			{
-				result = Expression.AndAlso(result, Havit.Linq.Expressions.ExpressionExt.ReplaceParameter(expressions[i].Body, expressions[i].Parameters[0], resultParameter));
+				result = Expression.AndAlso(result, Havit.Linq.Expressions.ExpressionExt.ReplaceParameter(notNullExpressions[i].Body, notNullExpressions[i].Parameters[0], resultParameter));
 			}
 
 			return (Expression<Func<T, bool>>)Expression.Lambda(result, resultParameter);

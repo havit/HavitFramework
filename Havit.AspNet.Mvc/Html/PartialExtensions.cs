@@ -19,12 +19,21 @@ namespace Havit.AspNet.Mvc.Html
 		public static MvcHtmlString PartialFor<TModel, TProperty>(this HtmlHelper<TModel> helper, System.Linq.Expressions.Expression<Func<TModel, TProperty>> expression, string partialViewName)
 		{
 			string name = ExpressionHelper.GetExpressionText(expression);
+			return PartialFor(helper, expression, partialViewName, name);
+		}
+
+		/// <summary>
+		/// Vyrenderuje partial view se zadaným prefixem a prefixem HTML fields.
+		/// </summary>
+		public static MvcHtmlString PartialFor<TModel, TProperty>(this HtmlHelper<TModel> helper, System.Linq.Expressions.Expression<Func<TModel, TProperty>> expression, string partialViewName, string htmlPrefixField)
+		{
 			object model = ModelMetadata.FromLambdaExpression(expression, helper.ViewData).Model;
+
 			ViewDataDictionary viewData = new ViewDataDictionary(helper.ViewData)
 			{
 				TemplateInfo = new TemplateInfo
 				{
-					HtmlFieldPrefix = name
+					HtmlFieldPrefix = htmlPrefixField
 				}
 			};
 

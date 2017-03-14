@@ -185,6 +185,7 @@ namespace Havit.Data.Entity
 
 		/// <summary>
 		/// Registruje akci k provedení po save changes. Akce je provedena metodou AfterSaveChanges.
+		/// Při opakovaném volání SaveChanges není akce volána opakovaně.
 		/// </summary>
 		public void RegisterAfterSaveChangesAction(Action action)
 		{

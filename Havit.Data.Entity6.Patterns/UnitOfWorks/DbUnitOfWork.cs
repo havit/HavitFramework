@@ -95,6 +95,7 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 
 		/// <summary>
 		/// Registruje akci k provedení po commitu. Akce je provedena metodou AfterCommit.
+		/// Při opakovaném commitu již akce není volána.
 		/// </summary>
 		public void RegisterAfterCommitAction(Action action)
 		{

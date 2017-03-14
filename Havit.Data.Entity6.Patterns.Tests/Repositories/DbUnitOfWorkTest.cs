@@ -350,8 +350,6 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 
 			dbUnitOfWork.Commit();
 			Assert.AreEqual(1, counter); // nedošlo k zavolání zaregistrované akce, registrace byla zrušena
-
-
 		}
 	}
 }

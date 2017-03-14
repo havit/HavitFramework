@@ -10,6 +10,7 @@ using Havit.Data.Entity.Patterns.UnitOfWorks;
 using Havit.Services.TimeServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Diagnostics;
 
 namespace Havit.Data.Entity.Patterns.Tests.Repositories
 {
@@ -332,5 +333,25 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 			// no exception is thrown
 		}
 
+		[TestMethod]
+		public void DbUnitOfWork_AfterCommit_DoesNotRepeatEventsAfterCommit()
+		{
+			// Arrange
+			int counter = 0;
+			TestDbContext dbContext = new TestDbContext();
+			var softDeleteManager = new SoftDeleteManager(new ServerTimeService());
+			var dbUnitOfWork = new DbUnitOfWork(dbContext, softDeleteManager);
+			dbUnitOfWork.RegisterAfterCommitAction(() => counter += 1);
+			Debug.Assert(counter == 0);
+
+			// Act + Assert
+			dbUnitOfWork.Commit();
+			Assert.AreEqual(1, counter); // došlo k zavolání zaregistrované akce
+
+			dbUnitOfWork.Commit();
+			Assert.AreEqual(1, counter); // nedošlo k zavolání zaregistrované akce, registrace byla zrušena
+
+
+		}
 	}
 }

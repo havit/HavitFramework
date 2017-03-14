@@ -20,33 +20,37 @@ namespace Havit.Data.Entity.Tests
 	public class DbContextTest
 	{
 		[TestMethod]
-		public void DbContext_SaveChanges_CallsRegisteresAfterSaveChangesActions()
+		public void DbContext_SaveChanges_CallsRegisteresAfterSaveChangesActionsOnlyOnce()
 		{
 			// Arrange
 			EmptyDbContext dbContext = new EmptyDbContext();
-			bool called = false;
+			int counter = 0;
 
-			// Act
-			dbContext.RegisterAfterSaveChangesAction(() => called = true);
+			// Act + Assert
+			dbContext.RegisterAfterSaveChangesAction(() => counter += 1);
+
 			dbContext.SaveChanges();
+			Assert.AreEqual(1, counter); // došlo k zaregistrované akci
 
-			// Assert
-			Assert.IsTrue(called);
+			dbContext.SaveChanges();
+			Assert.AreEqual(1, counter); // nedošlo k zaregistrované akci, registrace zrušena
 		}
 
 		[TestMethod]
-		public async Task DbContext_SaveChangesAsync_CallsRegisteresAfterSaveChangesActions()
+		public async Task DbContext_SaveChangesAsync_CallsRegisteresAfterSaveChangesActionsOnlyOnce()
 		{
 			// Arrange
 			EmptyDbContext dbContext = new EmptyDbContext();
-			bool called = false;
+			int counter = 0;
 
-			// Act
-			dbContext.RegisterAfterSaveChangesAction(() => called = true);
+			// Act + Assert
+			dbContext.RegisterAfterSaveChangesAction(() => counter += 1);
+
 			await dbContext.SaveChangesAsync();
+			Assert.AreEqual(1, counter); // došlo k zaregistrované akci
 
-			// Assert
-			Assert.IsTrue(called);
+			await dbContext.SaveChangesAsync();
+			Assert.AreEqual(1, counter); // nedošlo k zaregistrované akci, registrace zrušena
 		}
 
 		[TestMethod]

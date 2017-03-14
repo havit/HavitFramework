@@ -90,6 +90,7 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 		protected internal virtual void AfterCommit()
 		{
 			afterCommits?.ForEach(item => item.Invoke());
+			afterCommits = null;
 		}
 
 		/// <summary>

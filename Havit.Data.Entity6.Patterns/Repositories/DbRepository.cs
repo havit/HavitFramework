@@ -38,10 +38,10 @@ namespace Havit.Data.Entity.Patterns.Repositories
 			{
 				if (_dbSetLocalsDictionary == null)
 				{
+					dbContext.RegisterAfterSaveChangesAction(DbContext_AfterSaveChangesAction);
 					if (!_dbSetLocalsDictionaryInitialized)
 					{
 						DbSet.Local.CollectionChanged += DbSetLocal_CollectionChanged;
-						dbContext.RegisterAfterSaveChangesAction(DbContext_AfterSaveChangesAction);
 						_dbSetLocalsDictionaryInitialized = true;
 					}
 

@@ -180,6 +180,7 @@ namespace Havit.Data.Entity
 		protected internal virtual void AfterSaveChanges()
 		{
 			afterSaveChangesActions?.ForEach(item => item.Invoke());
+			afterSaveChangesActions = null;
 		}
 
 		/// <summary>

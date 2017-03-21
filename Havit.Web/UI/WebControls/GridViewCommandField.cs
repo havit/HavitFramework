@@ -7,7 +7,6 @@ using System.Globalization;
 using System.Reflection;
 using System.Text;
 using System.Web.UI;
-using System.Web.UI.Design;
 using System.Web.UI.WebControls;
 
 namespace Havit.Web.UI.WebControls

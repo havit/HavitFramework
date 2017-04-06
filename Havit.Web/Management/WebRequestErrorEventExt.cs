@@ -151,6 +151,21 @@ namespace Havit.Web.Management
 		{
 			sb.AppendLine("    Request URL: " + requestInformation.RequestUrl);
 			sb.AppendLine("    Request path: " + requestInformation.RequestPath);
+
+			if (_currentHttpContext != null)
+			{
+				string httpMethod;
+				try
+				{
+					httpMethod = _currentHttpContext.Request.HttpMethod;
+				}
+				catch
+				{
+					httpMethod = ExceptionText;
+				}
+				sb.AppendLine("    Request verb: " + httpMethod);
+			}
+
 			sb.AppendLine("    User host address: " + requestInformation.UserHostAddress);
 
 			string userName;
@@ -209,7 +224,7 @@ namespace Havit.Web.Management
 				{
 					userAgent = ExceptionText;
 				}
-				sb.AppendLine("    User agent: " + userAgent);				
+				sb.AppendLine("    User agent: " + userAgent);
 			}
 		}
 		#endregion

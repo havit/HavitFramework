@@ -55,6 +55,12 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		}
 
 		[TestMethod]
+		public void AzureBlobStorageService_Save_AcceptsPathWithNewSubfolders()
+		{
+			FileStorageServiceTestInternals.FileStorageService_Save_AcceptsPathWithNewSubfolders(GetAzureBlobStorageService());
+		}
+
+		[TestMethod]
 		public void AzureBlobStorageService_SavedAndReadContentsWithEncryptionAreSame()
 		{
 			FileStorageServiceTestInternals.FileStorageService_SavedAndReadContentsAreSame_Perform(GetAzureBlobStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));

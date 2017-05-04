@@ -65,6 +65,12 @@ namespace Havit.Services.FileStorage
 		/// </summary>
 		protected override void PerformSave(string fileName, Stream fileContent, string contentType)
 		{
+			var directory = Path.GetDirectoryName(fileName);
+			if (!String.IsNullOrWhiteSpace(directory))
+			{
+				Directory.CreateDirectory(Path.Combine(storagePath, directory));
+			}
+
 			using (FileStream fileStream = File.Create(System.IO.Path.Combine(storagePath, fileName)))
 			{
 				fileContent.CopyTo(fileStream);

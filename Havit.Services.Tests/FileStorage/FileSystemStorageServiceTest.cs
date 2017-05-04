@@ -58,6 +58,12 @@ namespace Havit.Services.Tests.FileStorage
 		}
 
 		[TestMethod]
+		public void FileSystemStorageService_Save_AcceptsPathWithNewSubfolders()
+		{
+			FileStorageServiceTestInternals.FileStorageService_Save_AcceptsPathWithNewSubfolders(GetFileSystemStorageService());
+		}
+
+		[TestMethod]
 		public void FileSystemStorageService_SavedAndReadContentsWithEncryptionAreSame()
 		{
 			FileStorageServiceTestInternals.FileStorageService_SavedAndReadContentsAreSame_Perform(GetFileSystemStorageService(new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
@@ -106,7 +112,7 @@ namespace Havit.Services.Tests.FileStorage
 		}
 
 		[TestMethod]
-		public void FileSystemStorageServic_Read_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
+		public void FileSystemStorageService_Read_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
 		{
 			FileStorageServiceTestInternals.FileStorageService_Read_StopReadingFarBeforeEndDoesNotThrowCryptographicException(GetFileSystemStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
 		}

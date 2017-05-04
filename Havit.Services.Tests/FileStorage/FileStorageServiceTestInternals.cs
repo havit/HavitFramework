@@ -60,6 +60,25 @@ namespace Havit.Services.Tests.FileStorage
 			Assert.IsFalse(exists);
 		}
 
+		internal static void FileStorageService_Save_AcceptsPathWithNewSubfolders(IFileStorageService fileStorageService)
+		{
+			// Arrange
+			string folderName = Guid.NewGuid().ToString();
+			string fileName = folderName + "/" + Guid.NewGuid().ToString();
+
+			// Act
+			using (MemoryStream ms = new MemoryStream())
+			{
+				fileStorageService.Save(fileName, ms, "text/plain");
+			}
+
+			// Assert
+			Assert.IsTrue(fileStorageService.Exists(fileName));
+
+			// Clean-up
+			fileStorageService.Delete(fileName);
+		}
+
 		internal static void FileStorageService_SaveDoNotAcceptSeekedStream(IFileStorageService fileStorageService)
 		{
 			using (MemoryStream ms = new MemoryStream())

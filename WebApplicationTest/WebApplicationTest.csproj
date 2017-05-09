@@ -56,9 +56,8 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AspNet.ScriptManager.jQuery, Version=2.1.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AspNet.ScriptManager.jQuery.1.11.3\lib\net45\AspNet.ScriptManager.jQuery.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="AspNet.ScriptManager.jQuery, Version=2.2.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AspNet.ScriptManager.jQuery.2.2.4\lib\net45\AspNet.ScriptManager.jQuery.dll</HintPath>
     </Reference>
     <Reference Include="AspNet.ScriptManager.jQuery.UI.Combined, Version=1.11.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\AspNet.ScriptManager.jQuery.UI.Combined.1.11.4\lib\net45\AspNet.ScriptManager.jQuery.UI.Combined.dll</HintPath>
@@ -220,6 +219,9 @@
     <Content Include="Scripts\Havit.Web.ClientContent\description.txt" />
     <Content Include="Content\toastr.scss" />
     <Content Include="Content\toastr.less" />
+    <Content Include="HavitCastleWindsorWebFormsTests\ReleaseAllOnUnloadTest.ashx" />
+    <Content Include="HavitCastleWindsorWebFormsTests\Top.Master" />
+    <Content Include="HavitCastleWindsorWebFormsTests\Nested.master" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
@@ -253,6 +255,7 @@
     <Content Include="Content\bootstrap\mixins\size.less" />
     <Content Include="Content\bootstrap\mixins\responsive-visibility.less" />
     <Content Include="Content\bootstrap\mixins\resize.less" />
+    <Content Include="Content\bootstrap\mixins\reset-text.less" />
     <Content Include="Content\bootstrap\mixins\reset-filter.less" />
     <Content Include="Content\bootstrap\mixins\progress-bar.less" />
     <Content Include="Content\bootstrap\mixins\panels.less" />
@@ -264,8 +267,8 @@
     <Content Include="Content\bootstrap\mixins\labels.less" />
     <Content Include="Content\bootstrap\mixins\image.less" />
     <Content Include="Content\bootstrap\mixins\hide-text.less" />
-    <Content Include="Content\bootstrap\mixins\grid-framework.less" />
     <Content Include="Content\bootstrap\mixins\grid.less" />
+    <Content Include="Content\bootstrap\mixins\grid-framework.less" />
     <Content Include="Content\bootstrap\mixins\gradients.less" />
     <Content Include="Content\bootstrap\mixins\forms.less" />
     <Content Include="Content\bootstrap\mixins\clearfix.less" />
@@ -294,12 +297,9 @@
     <Content Include="Content\bootstrap\bootstrap.less" />
     <Content Include="Content\bootstrap\badges.less" />
     <Content Include="Content\bootstrap\alerts.less" />
-    <Content Include="HavitCastleWindsorWebFormsTests\ReleaseAllOnUnloadTest.ashx" />
-    <Content Include="HavitCastleWindsorWebFormsTests\Top.Master" />
-    <Content Include="HavitCastleWindsorWebFormsTests\Nested.master" />
-    <None Include="Scripts\jquery-1.11.3.intellisense.js" />
-    <Content Include="Scripts\jquery-1.11.3.js" />
-    <Content Include="Scripts\jquery-1.11.3.min.js" />
+    <None Include="Scripts\jquery-2.2.4.intellisense.js" />
+    <Content Include="Scripts\jquery-2.2.4.js" />
+    <Content Include="Scripts\jquery-2.2.4.min.js" />
     <Content Include="Scripts\jquery-ui-1.11.4.js" />
     <Content Include="Scripts\jquery-ui-1.11.4.min.js" />
     <Content Include="Scripts\toastr.js" />
@@ -332,7 +332,7 @@
     <Content Include="SystemWebTests\WebServiceExceptionTest.asmx" />
     <Content Include="HavitWebTests\WrapperTest.aspx" />
     <Content Include="Web.sitemap" />
-    <Content Include="Scripts\jquery-1.11.3.min.map" />
+    <Content Include="Scripts\jquery-2.2.4.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_GlobalResources\Glossary.Designer.cs">

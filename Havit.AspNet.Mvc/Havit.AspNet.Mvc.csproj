@@ -49,12 +49,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Havit, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Havit.1.4.1739\lib\net45\Havit.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Havit.1.6.918\lib\net45\Havit.dll</HintPath>
     </Reference>
     <Reference Include="Havit.Web, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Havit.Web.1.4.7964\lib\net45\Havit.Web.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Havit.Web.1.6.2443\lib\net45\Havit.Web.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>

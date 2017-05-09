@@ -20,7 +20,8 @@ var Havit;
                             }
                             ModalExtension.getInstance = function (modalElementSelector, createIfNotExists) {
                                 if (createIfNotExists === void 0) { createIfNotExists = true; }
-                                var modalExtension = $(modalElementSelector).data('ModalExtension');
+                                var modelExtensionData = $(modalElementSelector).data('ModalExtension');
+                                var modalExtension = modelExtensionData;
                                 if ((createIfNotExists) && (modalExtension == null)) {
                                     modalExtension = new ModalExtension(modalElementSelector);
                                     $(modalElementSelector).data('ModalExtension', modalExtension);
@@ -151,7 +152,8 @@ var Havit;
                                 if ((operation == 'hide') && suppressAnimation) {
                                     $('.modal-backdrop').removeClass('fade');
                                 }
-                                if ((operation == 'show') && ($('.modal-backdrop').length > 0)) {
+                                var parentModalExtension = this.getParentModalExtension();
+                                if ((operation == 'show') && (parentModalExtension != null) && parentModalExtension.$modalElement.hasClass('nested')) {
                                     $modalElement.modal({ backdrop: false });
                                 }
                                 if (operation == 'hide') {
@@ -260,13 +262,19 @@ var Havit;
                                 }
                             };
                             ModalExtension.prototype.initializeStateBodyScroll = function () {
-                                this.$modalElement.children('.modal-dialog').children('.modal-content').children().children('.modal-body').scrollLeft(this.modalDialogState.bodyScrollPosition.left).scrollTop(this.modalDialogState.bodyScrollPosition.top);
+                                this.$modalElement.children('.modal-dialog').children('.modal-content').children().children('.modal-body')
+                                    .scrollLeft(this.modalDialogState.bodyScrollPosition.left)
+                                    .scrollTop(this.modalDialogState.bodyScrollPosition.top);
                             };
                             ModalExtension.prototype.initializeStateModalScroll = function () {
-                                this.$modalElement.scrollLeft(this.modalDialogState.modalScrollPosition.left).scrollTop(this.modalDialogState.modalScrollPosition.top);
+                                this.$modalElement
+                                    .scrollLeft(this.modalDialogState.modalScrollPosition.left)
+                                    .scrollTop(this.modalDialogState.modalScrollPosition.top);
                             };
                             ModalExtension.prototype.initializeStateModalPosition = function () {
-                                this.$modalElement.children('.modal-dialog').css('left', this.modalDialogState.modalPosition.left + 'px').css('top', this.modalDialogState.modalPosition.top + 'px');
+                                this.$modalElement.children('.modal-dialog')
+                                    .css('left', this.modalDialogState.modalPosition.left + 'px')
+                                    .css('top', this.modalDialogState.modalPosition.top + 'px');
                             };
                             ModalExtension.prototype.drag = function (event, ui) {
                                 this.stopResizingProcess();

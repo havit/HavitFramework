@@ -26,6 +26,7 @@
     <SccProvider>SAK</SccProvider>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -80,6 +81,19 @@
     <Content Include="Content\site.less" />
     <Content Include="robots.txt" />
     <Content Include="Default.aspx" />
+    <Content Include="Content\havit.web.bootstrap\validation.less" />
+    <Content Include="Content\havit.web.bootstrap\navbar.less" />
+    <Content Include="Content\havit.web.bootstrap\modals.less" />
+    <Content Include="Content\havit.web.bootstrap\havit-web-bootstrap.less" />
+    <Content Include="Content\toastr.scss" />
+    <Content Include="Content\toastr.less" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\havit.web.bootstrap\CollapsiblePanel.js" />
+    <Content Include="Scripts\havit.web.bootstrap\ModalExtension.js" />
+    <Content Include="Scripts\havit.web.bootstrap\TabPanelExtension.js" />
+    <Content Include="Scripts\havit.web.bootstrap\WebUIValidationExtension.js" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
@@ -112,6 +126,7 @@
     <Content Include="Content\bootstrap\mixins\size.less" />
     <Content Include="Content\bootstrap\mixins\responsive-visibility.less" />
     <Content Include="Content\bootstrap\mixins\resize.less" />
+    <Content Include="Content\bootstrap\mixins\reset-text.less" />
     <Content Include="Content\bootstrap\mixins\reset-filter.less" />
     <Content Include="Content\bootstrap\mixins\progress-bar.less" />
     <Content Include="Content\bootstrap\mixins\panels.less" />
@@ -123,8 +138,8 @@
     <Content Include="Content\bootstrap\mixins\labels.less" />
     <Content Include="Content\bootstrap\mixins\image.less" />
     <Content Include="Content\bootstrap\mixins\hide-text.less" />
-    <Content Include="Content\bootstrap\mixins\grid-framework.less" />
     <Content Include="Content\bootstrap\mixins\grid.less" />
+    <Content Include="Content\bootstrap\mixins\grid-framework.less" />
     <Content Include="Content\bootstrap\mixins\gradients.less" />
     <Content Include="Content\bootstrap\mixins\forms.less" />
     <Content Include="Content\bootstrap\mixins\clearfix.less" />
@@ -153,28 +168,17 @@
     <Content Include="Content\bootstrap\bootstrap.less" />
     <Content Include="Content\bootstrap\badges.less" />
     <Content Include="Content\bootstrap\alerts.less" />
-    <Content Include="Content\toastr.less" />
-    <Content Include="Content\havit.web.bootstrap\validation.less" />
-    <Content Include="Content\havit.web.bootstrap\navbar.less" />
-    <Content Include="Content\havit.web.bootstrap\modals.less" />
-    <Content Include="Content\havit.web.bootstrap\havit-web-bootstrap.less" />
-    <None Include="Scripts\jquery-2.1.1.intellisense.js" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\havit.web.bootstrap\ModalExtension.js" />
-    <Content Include="Scripts\havit.web.bootstrap\TabPanelExtension.js" />
-    <Content Include="Scripts\havit.web.bootstrap\WebUIValidationExtension.js" />
-    <Content Include="Scripts\jquery-2.1.1.js" />
-    <Content Include="Scripts\jquery-2.1.1.min.js" />
-    <Content Include="Scripts\jquery-2.1.1.min.map" />
-    <Content Include="Scripts\toastr.js" />
-    <Content Include="Scripts\toastr.min.js" />
-    <Content Include="Scripts\toastr.min.js.map" />
+    <None Include="Scripts\jquery-2.2.4.intellisense.js" />
+    <Content Include="Scripts\jquery-2.2.4.js" />
+    <Content Include="Scripts\jquery-2.2.4.min.js" />
+    <Content Include="Scripts\jquery-2.2.4.min.map" />
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Scripts\toastr.js" />
+    <Content Include="Scripts\toastr.min.js" />
     <Content Include="Scripts\WebForms\DetailsView.js" />
     <Content Include="Scripts\WebForms\Focus.js" />
     <Content Include="Scripts\WebForms\GridView.js" />

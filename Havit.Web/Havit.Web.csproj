@@ -503,6 +503,7 @@
     <None Include="Bootstrap\Content\less\validation.less" />
     <None Include="Bootstrap\Diagrams\Dialogs.cd" />
     <Content Include="Bootstrap\Content\js\CollapsiblePanel.js" />
+    <Content Include="Bootstrap\Content\js\ModalExtension.js" />
     <Content Include="Content\styles\checkbox-dropdown-list.less" />
     <None Include="packages.config" />
     <None Include="UI\Scriptlets\Scriptlet.cd" />

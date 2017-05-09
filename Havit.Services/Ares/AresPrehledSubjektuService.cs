@@ -132,10 +132,12 @@ namespace Havit.Services.Ares
 			{
 				foreach (XElement item in vypisOrElements)
 				{
-					AresPrehledSubjektuItem resultItem = new AresPrehledSubjektuItem();
-					resultItem.Ico = (string)item.Elements(aresDT + "ico").FirstOrDefault();
-					resultItem.Nazev = (string)item.Elements(aresDT + "ojm").FirstOrDefault();
-					resultItem.Kontakt = (string)item.Elements(aresDT + "jmn").FirstOrDefault();
+					AresPrehledSubjektuItem resultItem = new AresPrehledSubjektuItem()
+					{
+						Ico = (string)item.Elements(aresDT + "ico").FirstOrDefault(),
+						Nazev = (string)item.Elements(aresDT + "ojm").FirstOrDefault(),
+						Kontakt = (string)item.Elements(aresDT + "jmn").FirstOrDefault()
+					};
 					result.Data.Add(resultItem);
 				}
 			}

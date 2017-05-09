@@ -160,25 +160,29 @@ namespace Havit.Services.Ares
 				XElement npfElement = vypisOrElement.Elements(aresDT + "PF").Elements(aresDT + "NPF").FirstOrDefault();
 				if (npfElement != null)
 				{
-					result.PravniForma = new AresData.Classes.PravniForma();
-					result.PravniForma.Nazev = (string)npfElement;
+					result.PravniForma = new AresData.Classes.PravniForma()
+					{
+						Nazev = (string)npfElement
+					};
 				}
 
 				XElement adresaElement = vypisOrElement.Elements(aresDT + "AA").FirstOrDefault();
 				if (adresaElement != null)
 				{
-					result.Sidlo = new AresData.Classes.Sidlo();
-					result.Sidlo.Ulice = (string)adresaElement.Elements(aresDT + "NU").FirstOrDefault();
+					result.Sidlo = new AresData.Classes.Sidlo()
+					{
+						Ulice = (string)adresaElement.Elements(aresDT + "NU").FirstOrDefault(),
 
-					result.Sidlo.CisloDoAdresy = (string)adresaElement.Elements(aresDT + "CA").FirstOrDefault();
-					result.Sidlo.CisloPopisne = (string)adresaElement.Elements(aresDT + "CD").FirstOrDefault();
-					result.Sidlo.CisloOrientacni = (string)adresaElement.Elements(aresDT + "CO").FirstOrDefault();
+						CisloDoAdresy = (string)adresaElement.Elements(aresDT + "CA").FirstOrDefault(),
+						CisloPopisne = (string)adresaElement.Elements(aresDT + "CD").FirstOrDefault(),
+						CisloOrientacni = (string)adresaElement.Elements(aresDT + "CO").FirstOrDefault(),
 
-					result.Sidlo.Mesto = (string)adresaElement.Elements(aresDT + "N").FirstOrDefault();
-					result.Sidlo.MestskaCast = (string)adresaElement.Elements(aresDT + "NCO").FirstOrDefault();
-					result.Sidlo.Psc = (string)adresaElement.Elements(aresDT + "PSC").FirstOrDefault();
-					result.Sidlo.Stat = (string)adresaElement.Elements(aresDT + "NS").FirstOrDefault();
-					result.Sidlo.AdresaTextem = (string)adresaElement.Elements(aresDT + "AT").FirstOrDefault();
+						Mesto = (string)adresaElement.Elements(aresDT + "N").FirstOrDefault(),
+						MestskaCast = (string)adresaElement.Elements(aresDT + "NCO").FirstOrDefault(),
+						Psc = (string)adresaElement.Elements(aresDT + "PSC").FirstOrDefault(),
+						Stat = (string)adresaElement.Elements(aresDT + "NS").FirstOrDefault(),
+						AdresaTextem = (string)adresaElement.Elements(aresDT + "AT").FirstOrDefault()
+					};
 				}
 			}
 		}
@@ -282,24 +286,28 @@ namespace Havit.Services.Ares
 				XElement npfElement = vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "PFO").Elements(aresDT + "NPF").FirstOrDefault();
 				if (npfElement != null)
 				{
-					result.PravniForma = new AresData.Classes.PravniForma();
-					result.PravniForma.Nazev = (string)npfElement;
+					result.PravniForma = new AresData.Classes.PravniForma()
+					{
+						Nazev = (string)npfElement
+					};
 				}
 
 				//obchodniRejstrikResponse.StavSubjektu = (string)vbasElement.Descendants(aresDT + "SSU").FirstOrDefault();
 
-				result.Sidlo = new AresData.Classes.Sidlo();
-				result.Sidlo.Ulice = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "SI").Elements(aresDT + "NU").FirstOrDefault();
+				result.Sidlo = new AresData.Classes.Sidlo()
+				{
+					Ulice = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "SI").Elements(aresDT + "NU").FirstOrDefault(),
 
-				result.Sidlo.CisloDoAdresy = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "SI").Elements(aresDT + "CA").FirstOrDefault();
-				result.Sidlo.CisloPopisne = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "SI").Elements(aresDT + "CD").FirstOrDefault();
-				result.Sidlo.CisloOrientacni = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "SI").Elements(aresDT + "CO").FirstOrDefault();
+					CisloDoAdresy = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "SI").Elements(aresDT + "CA").FirstOrDefault(),
+					CisloPopisne = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "SI").Elements(aresDT + "CD").FirstOrDefault(),
+					CisloOrientacni = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "SI").Elements(aresDT + "CO").FirstOrDefault(),
 
-				result.Sidlo.Mesto = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "SI").Elements(aresDT + "N").FirstOrDefault();
-				result.Sidlo.MestskaCast = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "SI").Elements(aresDT + "NCO").FirstOrDefault();
-				result.Sidlo.Psc = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "SI").Elements(aresDT + "PSC").FirstOrDefault();
-				result.Sidlo.Stat = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "SI").Elements(aresDT + "NS").FirstOrDefault();
-				result.Sidlo.AdresaTextem = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "SI").Elements(aresDT + "AT").FirstOrDefault();
+					Mesto = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "SI").Elements(aresDT + "N").FirstOrDefault(),
+					MestskaCast = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "SI").Elements(aresDT + "NCO").FirstOrDefault(),
+					Psc = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "SI").Elements(aresDT + "PSC").FirstOrDefault(),
+					Stat = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "SI").Elements(aresDT + "NS").FirstOrDefault(),
+					AdresaTextem = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "SI").Elements(aresDT + "AT").FirstOrDefault()
+				};
 
 				// statutární orgán
 				var soElement = vypisOrElement.Elements(aresDT + "SO").FirstOrDefault();

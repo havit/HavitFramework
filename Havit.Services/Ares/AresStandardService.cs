@@ -73,7 +73,7 @@ namespace Havit.Services.Ares
 			}
 			else
 			{
-				throw new AresLoadException("Pocet_zaznamu není platní číslo");
+				throw new AresLoadException("Pocet_zaznamu není platné číslo");
 			}
 		}
 

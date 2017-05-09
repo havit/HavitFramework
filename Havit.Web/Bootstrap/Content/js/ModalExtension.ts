@@ -1,6 +1,6 @@
 ﻿/// <reference path="../../../scripts/typings/jquery/jquery.d.ts" />
 /// <reference path="../../../scripts/typings/jqueryui/jqueryui.d.ts" />
-/// <reference path="../../../scripts/typings/bootstrap/bootstrap.d.ts" />
+/// <reference path="../../../scripts/typings/bootstrap/index.d.ts" />
 
 module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
     export class ModalExtension {

@@ -1,92 +1,62 @@
-function CanHaveClass__CssFriendlyAdapters(element)
-{
+function CanHaveClass__CssFriendlyAdapters(element) {
     return ((element != null) && (element.className != null));
 }
-
-function HasAnyClass__CssFriendlyAdapters(element)
-{
+function HasAnyClass__CssFriendlyAdapters(element) {
     return (CanHaveClass__CssFriendlyAdapters(element) && (element.className.length > 0));
 }
-
-function HasClass__CssFriendlyAdapters(element, specificClass)
-{
+function HasClass__CssFriendlyAdapters(element, specificClass) {
     return (HasAnyClass__CssFriendlyAdapters(element) && (element.className.indexOf(specificClass) > -1));
 }
-
-function AddClass__CssFriendlyAdapters(element, classToAdd)
-{
-    if (HasAnyClass__CssFriendlyAdapters(element))
-    {
-        if (!HasClass__CssFriendlyAdapters(element, classToAdd))
-        {
+function AddClass__CssFriendlyAdapters(element, classToAdd) {
+    if (HasAnyClass__CssFriendlyAdapters(element)) {
+        if (!HasClass__CssFriendlyAdapters(element, classToAdd)) {
             element.className = element.className + " " + classToAdd;
         }
     }
-    else if (CanHaveClass__CssFriendlyAdapters(element))
-    {
+    else if (CanHaveClass__CssFriendlyAdapters(element)) {
         element.className = classToAdd;
     }
 }
-
-function AddClassUpward__CssFriendlyAdapters(startElement, stopParentClass, classToAdd)
-{
+function AddClassUpward__CssFriendlyAdapters(startElement, stopParentClass, classToAdd) {
     var elementOrParent = startElement;
-    while ((elementOrParent != null) && (!HasClass__CssFriendlyAdapters(elementOrParent, topmostClass)))
-    {
+    while ((elementOrParent != null) && (!HasClass__CssFriendlyAdapters(elementOrParent, topmostClass))) {
         AddClass__CssFriendlyAdapters(elementOrParent, classToAdd);
         elementOrParent = elementOrParent.parentNode;
-    }    
+    }
 }
-
-function SwapClass__CssFriendlyAdapters(element, oldClass, newClass)
-{
-    if (HasAnyClass__CssFriendlyAdapters(element))
-    {
+function SwapClass__CssFriendlyAdapters(element, oldClass, newClass) {
+    if (HasAnyClass__CssFriendlyAdapters(element)) {
         element.className = element.className.replace(new RegExp(oldClass, "gi"), newClass);
     }
 }
-
-function SwapOrAddClass__CssFriendlyAdapters(element, oldClass, newClass)
-{
-    if (HasClass__CssFriendlyAdapters(element, oldClass))
-    {
+function SwapOrAddClass__CssFriendlyAdapters(element, oldClass, newClass) {
+    if (HasClass__CssFriendlyAdapters(element, oldClass)) {
         SwapClass__CssFriendlyAdapters(element, oldClass, newClass);
     }
-    else
-    {
+    else {
         AddClass__CssFriendlyAdapters(element, newClass);
     }
 }
-
-function RemoveClass__CssFriendlyAdapters(element, classToRemove)
-{
+function RemoveClass__CssFriendlyAdapters(element, classToRemove) {
     SwapClass__CssFriendlyAdapters(element, classToRemove, "");
 }
-
-function RemoveClassUpward__CssFriendlyAdapters(startElement, stopParentClass, classToRemove)
-{
+function RemoveClassUpward__CssFriendlyAdapters(startElement, stopParentClass, classToRemove) {
     var elementOrParent = startElement;
-    while ((elementOrParent != null) && (!HasClass__CssFriendlyAdapters(elementOrParent, topmostClass)))
-    {
+    while ((elementOrParent != null) && (!HasClass__CssFriendlyAdapters(elementOrParent, topmostClass))) {
         RemoveClass__CssFriendlyAdapters(elementOrParent, classToRemove);
         elementOrParent = elementOrParent.parentNode;
-    }    
+    }
 }
-
-function IsEnterKey()
-{
+function IsEnterKey() {
     var retVal = false;
     var keycode = 0;
-    if ((typeof(window.event) != "undefined") && (window.event != null))
-    {
+    if ((typeof (window.event) != "undefined") && (window.event != null)) {
         keycode = window.event.keyCode;
     }
-    else if ((typeof(e) != "undefined") && (e != null))
-    {
+    else if ((typeof (e) != "undefined") && (e != null)) {
         keycode = e.which;
     }
-    if (keycode == 13)
-    {
+    if (keycode == 13) {
         retVal = true;
     }
     return retVal;

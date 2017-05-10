@@ -46,7 +46,7 @@ namespace Havit.Services.Tests.FileStorage
 
 		[TestMethod]
 		[ExpectedException(typeof(InvalidOperationException))]
-		public void FileSystemStorageService_SaveDoNotAcceptSeekedStream()
+		public void FileSystemStorageService_SaveDoesNotAcceptSeekedStream()
 		{
 			FileStorageServiceTestInternals.FileStorageService_SaveDoNotAcceptSeekedStream(GetFileSystemStorageService());
 		}
@@ -64,16 +64,29 @@ namespace Havit.Services.Tests.FileStorage
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(InvalidOperationException))]
-		public void FileSystemStorageService_BadDirectoryTraversal_ThrowsInvalidOperationException()
+		public void FileSystemStorageService_GetFullPath_DoesNotThrowExceptionForCorrectPaths()
 		{
 			// Arrange
-			string storagePath = @"C:\A\";
-			// file outside base storagePath (directory traversal attack)
-			string testFilename = @"\..\AB\test.txt";
 
-			FileSystemStorageService fileSystemStorageService = new FileSystemStorageService(storagePath);
-			fileSystemStorageService.Exists(testFilename);
+			// Act
+			FileSystemStorageService fileSystemStorageService = new FileSystemStorageService(@"C:\");
+			fileSystemStorageService.GetFullPath(@"abc.txt");
+			fileSystemStorageService.GetFullPath(@"A\abc.txt");
+			
+			// Assert - no exception was thrown
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(InvalidOperationException))]
+		public void FileSystemStorageService_GetFullPath_ThrowsExceptionForDirectoryTraversal()
+		{
+			// Arrange
+
+			// Act
+			FileSystemStorageService fileSystemStorageService = new FileSystemStorageService(@"C:\A");
+			fileSystemStorageService.GetFullPath(@"..\AB\file.txt"); //--> C:\AB\file.txt
+
+			// Assert by methot attribute
 		}
 
 		[TestMethod]

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Havit.Diagnostics.Contracts;
 
 namespace Havit.Services.FileStorage
 {
@@ -30,6 +31,7 @@ namespace Havit.Services.FileStorage
 		/// <param name="encryptionOptions">Parametry pro šifrování storage. Nepovinné.</param>
 		public FileSystemStorageService(string storagePath, EncryptionOptions encryptionOptions) : base(encryptionOptions)
 		{
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(storagePath));
 			this.storagePath = storagePath;
 		}
 
@@ -38,7 +40,8 @@ namespace Havit.Services.FileStorage
 		/// </summary>
 		public override bool Exists(string fileName)
 		{
-			return File.Exists(CanonicalPathCombine(storagePath, fileName));
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
+			return File.Exists(GetFullPath(fileName));
 		}
 
 		/// <summary>
@@ -46,7 +49,7 @@ namespace Havit.Services.FileStorage
 		/// </summary>
 		protected override Stream PerformRead(string fileName)
 		{
-			return File.OpenRead(CanonicalPathCombine(storagePath, fileName));
+			return File.OpenRead(GetFullPath(fileName));
 		}
 
 		/// <summary>
@@ -54,7 +57,7 @@ namespace Havit.Services.FileStorage
 		/// </summary>
 		protected override void PerformReadToStream(string fileName, Stream stream)
 		{
-			using (Stream fileStream = File.OpenRead(CanonicalPathCombine(storagePath, fileName)))
+			using (Stream fileStream = File.OpenRead(GetFullPath(fileName)))
 			{
 				fileStream.CopyTo(stream);
 			}
@@ -68,10 +71,10 @@ namespace Havit.Services.FileStorage
 			var directory = Path.GetDirectoryName(fileName);
 			if (!String.IsNullOrWhiteSpace(directory))
 			{
-				Directory.CreateDirectory(CanonicalPathCombine(storagePath, directory));
+				Directory.CreateDirectory(GetFullPath(directory));
 			}
 
-			using (FileStream fileStream = File.Create(CanonicalPathCombine(storagePath, fileName)))
+			using (FileStream fileStream = File.Create(GetFullPath(fileName)))
 			{
 				fileContent.CopyTo(fileStream);
 			}
@@ -82,7 +85,8 @@ namespace Havit.Services.FileStorage
 		/// </summary>
 		public override void Delete(string fileName)
 		{
-			System.IO.File.Delete(CanonicalPathCombine(storagePath, fileName));
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
+			System.IO.File.Delete(GetFullPath(fileName));
 		}
 
 		/// <summary>
@@ -106,42 +110,38 @@ namespace Havit.Services.FileStorage
 		/// </summary>
 		public override DateTime? GetLastModifiedTimeUtc(string fileName)
 		{
-			return File.GetLastWriteTimeUtc(CanonicalPathCombine(storagePath, fileName));
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
+			return File.GetLastWriteTimeUtc(GetFullPath(fileName));
 		}
 
-		private string CanonicalPathCombine(String basePath, String fileNamePath)
+		internal string GetFullPath(String fileNamePath)
 		{
-			if (String.IsNullOrWhiteSpace(basePath) || String.IsNullOrWhiteSpace(fileNamePath))
+			String fileNameFullPath = Path.Combine(storagePath, fileNamePath);
+
+			DirectoryInfo storagePathDirectoryInfo = new System.IO.DirectoryInfo(storagePath);
+			DirectoryInfo fileNameDirectoryInfo = (new System.IO.FileInfo(fileNameFullPath)).Directory;
+
+			if (!IsPathInsideFolder(fileNameDirectoryInfo, storagePathDirectoryInfo))
 			{
-				throw new ArgumentNullException();
+				throw new InvalidOperationException("Cesta k soubor vede mimo složku úložiště.");
 			}
 
-			String canonicalFilePath = Path.Combine(basePath, fileNamePath);
-
-			// Check the composed path against Directory traversal attack
-			System.IO.DirectoryInfo baseFolderInfo = new System.IO.DirectoryInfo(basePath);
-			DirectoryInfo canonicalFilePathInfo = (new System.IO.FileInfo(canonicalFilePath)).Directory;
-
-			if (!IsPathInsideFolder(canonicalFilePathInfo, baseFolderInfo))
-			{
-				throw new InvalidOperationException("Cesta je mimo základní adresář.");
-			}
-			return canonicalFilePath;
+			return fileNameFullPath;
 		}
 
-		private bool IsPathInsideFolder(DirectoryInfo path, DirectoryInfo folder)
+		private bool IsPathInsideFolder(DirectoryInfo filePath, DirectoryInfo storageDirectory)
 		{
-			if (path.Parent == null)
+			if (filePath == null)
 			{
 				return false;
 			}
 
-			if (String.Equals(path.FullName.TrimEnd('\\'), folder.FullName.TrimEnd('\\'), StringComparison.InvariantCultureIgnoreCase))
+			if (String.Equals(filePath.FullName.TrimEnd('\\'), storageDirectory.FullName.TrimEnd('\\'), StringComparison.InvariantCultureIgnoreCase))
 			{
 				return true;
 			}
 
-			return IsPathInsideFolder(path.Parent, folder);
+			return IsPathInsideFolder(filePath.Parent, storageDirectory);
 		}
 	}
 }

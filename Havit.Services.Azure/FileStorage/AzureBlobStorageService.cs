@@ -47,7 +47,7 @@ namespace Havit.Services.Azure.FileStorage
 		/// <param name="containerName">Container v Blob Storage pro práci se soubory.</param>
 		/// <param name="encryptionPolicy">Parametry šifrování.</param>
 		public AzureBlobStorageService(string blobStorageConnectionString, string containerName, BlobEncryptionPolicy encryptionPolicy) : this(blobStorageConnectionString, containerName, encryptionPolicy, null)
-		{
+		{			
 		}
 
 		/// <summary>
@@ -57,7 +57,7 @@ namespace Havit.Services.Azure.FileStorage
 		/// <param name="containerName">Container v Blob Storage pro práci se soubory.</param>
 		/// <param name="encryptionOptions">Parametry šifrování.</param>
 		public AzureBlobStorageService(string blobStorageConnectionString, string containerName, EncryptionOptions encryptionOptions) : this(blobStorageConnectionString, containerName, null, encryptionOptions)
-		{
+		{			
 		}
 
 		/// <summary>
@@ -65,6 +65,9 @@ namespace Havit.Services.Azure.FileStorage
 		/// </summary>
 		protected AzureBlobStorageService(string blobStorageConnectionString, string containerName, BlobEncryptionPolicy encryptionPolicy, EncryptionOptions encryptionOptions) : base(encryptionOptions)
 		{
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(blobStorageConnectionString), nameof(blobStorageConnectionString));
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(containerName), nameof(containerName));
+
 			this.blobStorageConnectionString = blobStorageConnectionString;
 			this.containerName = containerName;
 			this.encryptionPolicy = encryptionPolicy;

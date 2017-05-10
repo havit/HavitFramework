@@ -52,6 +52,8 @@ namespace Havit.Services.FileStorage
 		/// </summary>
 		public Stream Read(string fileName)
 		{
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
+
 			if (!SupportsBasicEncryption)
 			{
 				return PerformRead(fileName);
@@ -68,6 +70,8 @@ namespace Havit.Services.FileStorage
 		/// </summary>
 		public void ReadToStream(string fileName, Stream stream)
 		{
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
+
 			if (!SupportsBasicEncryption)
 			{
 				PerformReadToStream(fileName, stream);
@@ -89,6 +93,8 @@ namespace Havit.Services.FileStorage
 		/// </summary>
 		public void Save(string fileName, Stream fileContent, string contentType)
 		{
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
+
 			if (fileContent.CanSeek && (fileContent.Position != 0))
 			{
 				throw new InvalidOperationException("Actual position in the stream is not at the beginning.");

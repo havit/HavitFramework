@@ -65,8 +65,8 @@ namespace Havit.Services.Azure.FileStorage
 		/// </summary>
 		protected AzureBlobStorageService(string blobStorageConnectionString, string containerName, BlobEncryptionPolicy encryptionPolicy, EncryptionOptions encryptionOptions) : base(encryptionOptions)
 		{
-			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(blobStorageConnectionString), nameof(blobStorageConnectionString));
-			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(containerName), nameof(containerName));
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(blobStorageConnectionString));
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(containerName));
 
 			this.blobStorageConnectionString = blobStorageConnectionString;
 			this.containerName = containerName;
@@ -78,6 +78,8 @@ namespace Havit.Services.Azure.FileStorage
 		/// </summary>
 		public override bool Exists(string fileName)
 		{
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
+
 			CloudBlockBlob blob = GetBlobReference(fileName);
 			return blob.Exists();
 		}
@@ -118,6 +120,8 @@ namespace Havit.Services.Azure.FileStorage
 		/// </summary>
 		public override void Delete(string fileName)
 		{
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
+
 			CloudBlockBlob blob = GetBlobReference(fileName);
 			blob.Delete();			
 		}
@@ -162,6 +166,8 @@ namespace Havit.Services.Azure.FileStorage
 		/// </summary>
 		public override DateTime? GetLastModifiedTimeUtc(string fileName)
 		{
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
+
 			CloudBlockBlob blob = GetBlobReference(fileName, fromServer: true);
 			return blob.Properties.LastModified?.UtcDateTime;
 		}

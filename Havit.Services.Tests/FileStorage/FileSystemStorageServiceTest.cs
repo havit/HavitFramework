@@ -64,9 +64,22 @@ namespace Havit.Services.Tests.FileStorage
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(InvalidOperationException))]
+		public void FileSystemStorageService_BadDirectoryTraversal_ThrowsInvalidOperationException()
+		{
+			// Arrange
+			string storagePath = @"C:\A\";
+			// file outside base storagePath (directory traversal attack)
+			string testFilename = @"\..\AB\test.txt";
+
+			FileSystemStorageService fileSystemStorageService = new FileSystemStorageService(storagePath);
+			fileSystemStorageService.Exists(testFilename);
+		}
+
+		[TestMethod]
 		public void FileSystemStorageService_SavedAndReadContentsWithEncryptionAreSame()
 		{
-			FileStorageServiceTestInternals.FileStorageService_SavedAndReadContentsAreSame_Perform(GetFileSystemStorageService(new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+			FileStorageServiceTestInternals.FileStorageService_SavedAndReadContentsAreSame_Perform(GetFileSystemStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
 		}
 
 		[TestMethod]

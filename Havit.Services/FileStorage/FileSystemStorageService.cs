@@ -38,7 +38,7 @@ namespace Havit.Services.FileStorage
 		/// </summary>
 		public override bool Exists(string fileName)
 		{
-			return File.Exists(System.IO.Path.Combine(storagePath, fileName));
+			return File.Exists(CanonicalPathCombine(storagePath, fileName));
 		}
 
 		/// <summary>
@@ -46,7 +46,7 @@ namespace Havit.Services.FileStorage
 		/// </summary>
 		protected override Stream PerformRead(string fileName)
 		{
-			return File.OpenRead(System.IO.Path.Combine(storagePath, fileName));
+			return File.OpenRead(CanonicalPathCombine(storagePath, fileName));
 		}
 
 		/// <summary>
@@ -54,7 +54,7 @@ namespace Havit.Services.FileStorage
 		/// </summary>
 		protected override void PerformReadToStream(string fileName, Stream stream)
 		{
-			using (Stream fileStream = File.OpenRead(System.IO.Path.Combine(storagePath, fileName)))
+			using (Stream fileStream = File.OpenRead(CanonicalPathCombine(storagePath, fileName)))
 			{
 				fileStream.CopyTo(stream);
 			}
@@ -68,10 +68,10 @@ namespace Havit.Services.FileStorage
 			var directory = Path.GetDirectoryName(fileName);
 			if (!String.IsNullOrWhiteSpace(directory))
 			{
-				Directory.CreateDirectory(Path.Combine(storagePath, directory));
+				Directory.CreateDirectory(CanonicalPathCombine(storagePath, directory));
 			}
 
-			using (FileStream fileStream = File.Create(System.IO.Path.Combine(storagePath, fileName)))
+			using (FileStream fileStream = File.Create(CanonicalPathCombine(storagePath, fileName)))
 			{
 				fileContent.CopyTo(fileStream);
 			}
@@ -82,7 +82,7 @@ namespace Havit.Services.FileStorage
 		/// </summary>
 		public override void Delete(string fileName)
 		{
-			System.IO.File.Delete(System.IO.Path.Combine(storagePath, fileName));
+			System.IO.File.Delete(CanonicalPathCombine(storagePath, fileName));
 		}
 
 		/// <summary>
@@ -106,7 +106,42 @@ namespace Havit.Services.FileStorage
 		/// </summary>
 		public override DateTime? GetLastModifiedTimeUtc(string fileName)
 		{
-			return File.GetLastWriteTimeUtc(Path.Combine(storagePath, fileName));
+			return File.GetLastWriteTimeUtc(CanonicalPathCombine(storagePath, fileName));
+		}
+
+		private string CanonicalPathCombine(String basePath, String fileNamePath)
+		{
+			if (String.IsNullOrWhiteSpace(basePath) || String.IsNullOrWhiteSpace(fileNamePath))
+			{
+				throw new ArgumentNullException();
+			}
+
+			String canonicalFilePath = Path.Combine(basePath, fileNamePath);
+
+			// Check the composed path against Directory traversal attack
+			System.IO.DirectoryInfo baseFolderInfo = new System.IO.DirectoryInfo(basePath);
+			DirectoryInfo canonicalFilePathInfo = (new System.IO.FileInfo(canonicalFilePath)).Directory;
+
+			if (!IsPathInsideFolder(canonicalFilePathInfo, baseFolderInfo))
+			{
+				throw new InvalidOperationException("Cesta je mimo základní adresář.");
+			}
+			return canonicalFilePath;
+		}
+
+		private bool IsPathInsideFolder(DirectoryInfo path, DirectoryInfo folder)
+		{
+			if (path.Parent == null)
+			{
+				return false;
+			}
+
+			if (String.Equals(path.FullName.TrimEnd('\\'), folder.FullName.TrimEnd('\\'), StringComparison.InvariantCultureIgnoreCase))
+			{
+				return true;
+			}
+
+			return IsPathInsideFolder(path.Parent, folder);
 		}
 	}
 }

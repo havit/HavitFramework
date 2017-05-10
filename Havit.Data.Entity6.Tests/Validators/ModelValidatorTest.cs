@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using EntityFramework.MappingAPI;
 using EntityFramework.MappingAPI.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Diagnostics.Contracts;
 using Havit.Data.Entity.Validators;
 using Havit.Data.Entity.Tests.Validators.Infrastructure;
 using Havit.Data.Entity.Tests.Validators.Infrastructure.Model;

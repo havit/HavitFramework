@@ -14,6 +14,7 @@
 		<copyright>Copyright HAVIT, s.r.o. 2016</copyright>
 		<dependencies>
 			<group targetFramework="net45">
+				<dependency id="Havit" />
 				<dependency id="Havit.Services" />
 				<dependency id="WindowsAzure.Storage" version="[6.2.0,)" />
 			</group>

@@ -79,6 +79,10 @@
       <Project>{2E4AE0CF-FA21-4FBC-9274-E56BC5D9494E}</Project>
       <Name>Havit.Services</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Havit\Havit.csproj">
+      <Project>{9acc94b9-b8fd-47c1-abf8-0658c7673905}</Project>
+      <Name>Havit</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

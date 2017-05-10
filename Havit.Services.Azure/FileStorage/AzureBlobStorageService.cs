@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -11,6 +10,7 @@ using Microsoft.VisualBasic.CompilerServices;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using FileInfo = Havit.Services.FileStorage.FileInfo;
+using Havit.Diagnostics.Contracts;
 
 namespace Havit.Services.Azure.FileStorage
 {

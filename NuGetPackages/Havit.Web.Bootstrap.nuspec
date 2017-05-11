@@ -16,7 +16,7 @@
 		<!--<licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>-->
 		<copyright>Copyright HAVIT, s.r.o. 2016</copyright>
 		<dependencies>
-			<group targetFramework="net45">
+			<group targetFramework="net46">
 				<dependency id="jQuery" version="[1.11.0,)" />
 				<dependency id="Twitter.Bootstrap.Less" version="[3.2.0.1,4)" />
 				<dependency id="Microsoft.AspNet.ScriptManager.WebForms" version="[5.0.0,)" />

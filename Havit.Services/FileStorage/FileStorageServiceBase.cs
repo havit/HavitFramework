@@ -14,7 +14,7 @@ namespace Havit.Services.FileStorage
 	/// Abstraktní předek pro implementaci úložiště souborů. 
 	/// Podporuje šifrování. Šifrování souborů je transparentní operací při čtení a zápisu.
 	/// </summary>
-	public abstract class FileStorageServiceBase : IFileStorageService
+	public abstract class FileStorageServiceBase : IFileStorageService, IFileStorageServiceAsync
 	{
 		/// <summary>
 		/// Nastavení šifrování.
@@ -47,6 +47,11 @@ namespace Havit.Services.FileStorage
 		public abstract bool Exists(string fileName);
 
 		/// <summary>
+		/// Vrátí true, pokud uložený soubor v úložišti existuje. Jinak false.
+		/// </summary>
+		public abstract Task<bool> ExistsAsync(string fileName);
+
+		/// <summary>
 		/// Vrátí stream s obsahem soubor z úložiště.
 		/// Pokud je zapnuto, provádí transparentní (de)šifrování.
 		/// </summary>
@@ -54,13 +59,31 @@ namespace Havit.Services.FileStorage
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
 
+			Stream s = PerformRead(fileName);
+			return Read_EnsureDecryption(s);
+		}
+
+		/// <summary>
+		/// Vrátí stream s obsahem soubor z úložiště.
+		/// Pokud je zapnuto, provádí transparentní (de)šifrování.
+		/// </summary>
+		public async Task<Stream> ReadAsync(string fileName)
+		{
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
+
+			Stream s = await PerformReadAsync(fileName);
+			return Read_EnsureDecryption(s);
+		}
+
+		private Stream Read_EnsureDecryption(Stream stream)
+		{
 			if (!SupportsBasicEncryption)
 			{
-				return PerformRead(fileName);
+				return stream;
 			}
 			else
 			{
-				return new InternalCryptoStream(PerformRead(fileName), new InternalCryptoTransform(EncryptionOptions.CreateDecryptor()), CryptoStreamMode.Read);
+				return new InternalCryptoStream(stream, new InternalCryptoTransform(EncryptionOptions.CreateDecryptor()), CryptoStreamMode.Read);
 			}
 		}
 
@@ -83,6 +106,29 @@ namespace Havit.Services.FileStorage
 				using (CryptoStream decryptingStream = new CryptoStream(notClosingWrappingStream, EncryptionOptions.CreateDecryptor(), CryptoStreamMode.Write))
 				{
 					PerformReadToStream(fileName, decryptingStream);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Zapíše obsah souboru z úložiště do streamu.
+		/// Pokud je zapnuto, provádí transparentní (de)šifrování, tj. do streamu jsou zapsána již dešifrovaná data.
+		/// </summary>
+		public async Task ReadToStreamAsync(string fileName, Stream stream)
+		{
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
+
+			if (!SupportsBasicEncryption)
+			{
+				await PerformReadToStreamAsync(fileName, stream);
+			}
+			else
+			{
+				// použití NonClosingWrappingStreamu testuje Havit.Services.Tests.FileStorage.FileStorageServiceTestInternals.FileStorageService_SavedAndReadContentsAreSame_Perform
+				using (Stream notClosingWrappingStream = new NonClosingWrappingStream(stream))
+				using (CryptoStream decryptingStream = new InternalCryptoStream(notClosingWrappingStream, new InternalCryptoTransform(EncryptionOptions.CreateDecryptor()), CryptoStreamMode.Write))
+				{
+					await PerformReadToStreamAsync(fileName, decryptingStream);
 				}
 			}
 		}
@@ -114,9 +160,40 @@ namespace Havit.Services.FileStorage
 		}
 
 		/// <summary>
+		/// Uloží stream do úložiště.
+		/// Pokud je zapnuto, provádí transparentní šifrování, tj. streamu (fileContent) jsou zašifrována.
+		/// </summary>
+		public async Task SaveAsync(string fileName, Stream fileContent, string contentType)
+		{
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
+
+			if (fileContent.CanSeek && (fileContent.Position != 0))
+			{
+				throw new InvalidOperationException("Actual position in the stream is not at the beginning.");
+			}
+
+			if (!SupportsBasicEncryption)
+			{
+				await PerformSaveAsync(fileName, fileContent, contentType);
+			}
+			else
+			{
+				using (CryptoStream encryptingStream = new CryptoStream(fileContent, EncryptionOptions.CreateEncryptor(), CryptoStreamMode.Read))
+				{
+					await PerformSaveAsync(fileName, encryptingStream, contentType);
+				}
+			}
+		}
+
+		/// <summary>
 		/// Smaže soubor v úložišti.
 		/// </summary>
 		public abstract void Delete(string fileName);
+
+		/// <summary>
+		/// Smaže soubor v úložišti.
+		/// </summary>
+		public abstract Task DeleteAsync(string fileName);
 
 		/// <summary>
 		/// Vylistuje seznam souborů v úložišti.
@@ -124,9 +201,19 @@ namespace Havit.Services.FileStorage
 		public abstract IEnumerable<FileInfo> EnumerateFiles(string pattern = null);
 
 		/// <summary>
-		/// Vrátí čas poslední modifikace souboru v UTC timezone
+		/// Vylistuje seznam souborů v úložišti.
+		/// </summary>
+		public abstract Task<IEnumerable<FileInfo>> EnumerateFilesAsync(string pattern = null);
+
+			/// <summary>
+		/// Vrátí čas poslední modifikace souboru v UTC timezone.
 		/// </summary>
 		public abstract DateTime? GetLastModifiedTimeUtc(string fileName);
+
+		/// <summary>
+		/// Vrátí čas poslední modifikace souboru v UTC timezone.
+		/// </summary>
+		public abstract Task<DateTime?> GetLastModifiedTimeUtcAsync(string fileName);
 
 		/// <summary>
 		/// Vrátí stream s obsahem soubor z úložiště.
@@ -134,14 +221,28 @@ namespace Havit.Services.FileStorage
 		protected abstract Stream PerformRead(string fileName);
 
 		/// <summary>
+		/// Vrátí stream s obsahem soubor z úložiště.
+		/// </summary>
+		protected abstract Task<Stream> PerformReadAsync(string fileName);
+
+		/// <summary>
 		/// Zapíše obsah souboru z úložiště do streamu.
 		/// </summary>
 		protected abstract void PerformReadToStream(string fileName, Stream stream);
+
+		/// <summary>
+		/// Zapíše obsah souboru z úložiště do streamu.
+		/// </summary>
+		protected abstract Task PerformReadToStreamAsync(string fileName, Stream stream);
 
 		/// <summary>
 		/// Uloží stream do úložiště.
 		/// </summary>
 		protected abstract void PerformSave(string fileName, Stream fileContent, string contentType);
 
+		/// <summary>
+		/// Uloží stream do úložiště.
+		/// </summary>
+		protected abstract Task PerformSaveAsync(string fileName, Stream fileContent, string contentType);
 	}
 }

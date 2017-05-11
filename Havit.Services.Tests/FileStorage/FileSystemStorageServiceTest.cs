@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Havit.Services.FileStorage;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using FileInfo = Havit.Services.FileStorage.FileInfo;
 
 namespace Havit.Services.Tests.FileStorage
 {
@@ -39,9 +40,21 @@ namespace Havit.Services.Tests.FileStorage
 		}
 
 		[TestMethod]
+		public async Task FileSystemStorageService_ExistsAsync_ReturnsFalseWhenNotFound()
+		{
+			await FileStorageServiceTestInternals.FileStorageService_ExistsAsync_ReturnsFalseWhenNotFound(GetFileSystemStorageService());
+		}
+
+		[TestMethod]
 		public void FileSystemStorageService_Exists_ReturnsTrueForExistingBlob()
 		{
 			FileStorageServiceTestInternals.FileStorageService_Exists_ReturnsTrueForExistingBlob(GetFileSystemStorageService());
+		}
+
+		[TestMethod]
+		public async Task FileSystemStorageService_ExistsAsync_ReturnsTrueForExistingBlob()
+		{
+			await FileStorageServiceTestInternals.FileStorageService_ExistsAsync_ReturnsTrueForExistingBlob(GetFileSystemStorageService());
 		}
 
 		[TestMethod]
@@ -52,9 +65,22 @@ namespace Havit.Services.Tests.FileStorage
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(InvalidOperationException))]
+		public async Task FileSystemStorageService_SaveAsyncDoesNotAcceptSeekedStream()
+		{
+			await FileStorageServiceTestInternals.FileStorageService_SaveAsyncDoNotAcceptSeekedStream(GetFileSystemStorageService());
+		}
+
+		[TestMethod]
 		public void FileSystemStorageService_SavedAndReadContentsAreSame()
 		{
 			FileStorageServiceTestInternals.FileStorageService_SavedAndReadContentsAreSame_Perform(GetFileSystemStorageService());
+		}
+
+		[TestMethod]
+		public async Task FileSystemStorageService_SavedAndReadContentsAreSame_Async()
+		{
+			await FileStorageServiceTestInternals.FileStorageService_SavedAndReadContentsAreSame_PerformAsync(GetFileSystemStorageService());
 		}
 
 		[TestMethod]
@@ -64,29 +90,9 @@ namespace Havit.Services.Tests.FileStorage
 		}
 
 		[TestMethod]
-		public void FileSystemStorageService_GetFullPath_DoesNotThrowExceptionForCorrectPaths()
+		public async Task FileSystemStorageService_SaveAsync_AcceptsPathWithNewSubfolders()
 		{
-			// Arrange
-
-			// Act
-			FileSystemStorageService fileSystemStorageService = new FileSystemStorageService(@"C:\");
-			fileSystemStorageService.GetFullPath(@"abc.txt");
-			fileSystemStorageService.GetFullPath(@"A\abc.txt");
-			
-			// Assert - no exception was thrown
-		}
-
-		[TestMethod]
-		[ExpectedException(typeof(InvalidOperationException))]
-		public void FileSystemStorageService_GetFullPath_ThrowsExceptionForDirectoryTraversal()
-		{
-			// Arrange
-
-			// Act
-			FileSystemStorageService fileSystemStorageService = new FileSystemStorageService(@"C:\A");
-			fileSystemStorageService.GetFullPath(@"..\AB\file.txt"); //--> C:\AB\file.txt
-
-			// Assert by methot attribute
+			await FileStorageServiceTestInternals.FileStorageService_SaveAsync_AcceptsPathWithNewSubfolders(GetFileSystemStorageService());
 		}
 
 		[TestMethod]
@@ -96,9 +102,21 @@ namespace Havit.Services.Tests.FileStorage
 		}
 
 		[TestMethod]
+		public async Task FileSystemStorageService_SavedAndReadContentsWithEncryptionAreSame_Async()
+		{
+			await FileStorageServiceTestInternals.FileStorageService_SavedAndReadContentsAreSame_PerformAsync(GetFileSystemStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+		}
+
+		[TestMethod]
 		public void FileSystemStorageService_DoesNotExistsAfterDelete()
 		{
 			FileStorageServiceTestInternals.FileStorageService_DoesNotExistsAfterDelete(GetFileSystemStorageService());
+		}
+
+		[TestMethod]
+		public async Task FileSystemStorageService_DoesNotExistsAfterDeleteAsync()
+		{
+			await FileStorageServiceTestInternals.FileStorageService_DoesNotExistsAfterDeleteAsync(GetFileSystemStorageService());
 		}
 
 		[TestMethod]
@@ -125,22 +143,101 @@ namespace Havit.Services.Tests.FileStorage
 		}
 
 		[TestMethod]
+		public async Task FileSystemStorageService_EnumerateFilesAsync_DoesNotContainStoragePath()
+		{
+			// Arrange
+			string storagePath = GetStoragePath();
+			FileSystemStorageService fileSystemStorageService = GetFileSystemStorageService();
+
+			string testFilename = "test.txt";
+			using (MemoryStream ms = new MemoryStream())
+			{
+				await fileSystemStorageService.SaveAsync(testFilename, ms, "text/plain");
+			}
+
+			// Act
+			List<Havit.Services.FileStorage.FileInfo> fileInfos = (await fileSystemStorageService.EnumerateFilesAsync()).ToList();
+
+			// Assert 
+			Assert.IsFalse(fileInfos.Any(fileInfo => fileInfo.Name.Contains(storagePath)));
+
+			// Clean-up
+			await fileSystemStorageService.DeleteAsync(testFilename);
+		}
+
+		[TestMethod]
 		public void FileSystemStorageService_EnumerateFiles_SupportsSearchPattern()
 		{
 			FileStorageServiceTestInternals.FileStorageService_EnumerateFiles_SupportsSearchPattern(GetFileSystemStorageService());
 		}
 
 		[TestMethod]
+		public async Task FileSystemStorageService_EnumerateFilesAsync_SupportsSearchPattern()
+		{
+			await FileStorageServiceTestInternals.FileStorageService_EnumerateFilesAsync_SupportsSearchPattern(GetFileSystemStorageService());
+		}
+
+		[TestMethod]
 		public void FileSystemStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder()
 		{
 			Assert.Inconclusive("Čeká na implementaci.");
-			FileStorageServiceTestInternals.FileStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder(GetFileSystemStorageService());
+			//FileStorageServiceTestInternals.FileStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder(GetFileSystemStorageService());
+		}
+
+		[TestMethod]
+		public void FileSystemStorageService_EnumerateFilesAsync_SupportsSearchPatternInSubfolder()
+		{
+			Assert.Inconclusive("Čeká na implementaci.");
+		}
+
+		[TestMethod]
+		public void FileSystemStorageService_EnumerateFiles_HasLastModifiedUtcAndSize()
+		{
+			FileStorageServiceTestInternals.FileStorageService_EnumerateFiles_HasLastModifiedUtcAndSize(GetFileSystemStorageService());
+		}
+
+		[TestMethod]
+		public async Task FileSystemStorageService_EnumerateFilesAsync_HasLastModifiedUtcAndSize()
+		{
+			await FileStorageServiceTestInternals.FileStorageService_EnumerateFilesAsync_HasLastModifiedUtcAndSize(GetFileSystemStorageService());
 		}
 
 		[TestMethod]
 		public void FileSystemStorageService_Read_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
 		{
 			FileStorageServiceTestInternals.FileStorageService_Read_StopReadingFarBeforeEndDoesNotThrowCryptographicException(GetFileSystemStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+		}
+
+		[TestMethod]
+		public async Task FileSystemStorageService_ReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
+		{
+			await FileStorageServiceTestInternals.FileStorageService_ReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException(GetFileSystemStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+		}
+
+		[TestMethod]
+		public void FileSystemStorageService_GetFullPath_DoesNotThrowExceptionForCorrectPaths()
+		{
+			// Arrange
+
+			// Act
+			FileSystemStorageService fileSystemStorageService = new FileSystemStorageService(@"C:\");
+			fileSystemStorageService.GetFullPath(@"abc.txt");
+			fileSystemStorageService.GetFullPath(@"A\abc.txt");
+
+			// Assert - no exception was thrown
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(InvalidOperationException))]
+		public void FileSystemStorageService_GetFullPath_ThrowsExceptionForDirectoryTraversal()
+		{
+			// Arrange
+
+			// Act
+			FileSystemStorageService fileSystemStorageService = new FileSystemStorageService(@"C:\A");
+			fileSystemStorageService.GetFullPath(@"..\AB\file.txt"); //--> C:\AB\file.txt
+
+			// Assert by methot attribute
 		}
 
 		private static FileSystemStorageService GetFileSystemStorageService(EncryptionOptions encryptionOptions = null)

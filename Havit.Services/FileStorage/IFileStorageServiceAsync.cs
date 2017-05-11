@@ -11,41 +11,41 @@ namespace Havit.Services.FileStorage
 	/// <summary>
 	/// Úložiště souborů.
 	/// </summary>
-	public interface IFileStorageService
+	public interface IFileStorageServiceAsync
 	{
 		/// <summary>
 		/// Vrátí true, pokud uložený soubor v úložišti existuje. Jinak false.
 		/// </summary>
-		bool Exists(string fileName);
+		Task<bool> ExistsAsync(string fileName);
 
 		/// <summary>
 		/// Vrátí stream s obsahem souboru z úložiště.
 		/// </summary>
-		Stream Read(string fileName);
+		Task<Stream> ReadAsync(string fileName);
 		
 		/// <summary>
 		/// Zapíše obsah souboru z úložiště do streamu.
 		/// </summary>
-		void ReadToStream(string fileName, Stream stream);
+		Task ReadToStreamAsync(string fileName, Stream stream);
 
 		/// <summary>
 		/// Uloží stream do úložiště.
 		/// </summary>
-		void Save(string fileName, Stream fileContent, string contentType);
+		Task SaveAsync(string fileName, Stream fileContent, string contentType);
 
 		/// <summary>
 		/// Smaže soubor v úložišti.
 		/// </summary>
-		void Delete(string fileName);
+		Task DeleteAsync(string fileName);
 
 		/// <summary>
 		/// Vylistuje seznam souborů v úložišti.
 		/// </summary>
-		IEnumerable<FileInfo> EnumerateFiles(string pattern = null);
+		Task<IEnumerable<FileInfo>> EnumerateFilesAsync(string pattern = null);
 
 		/// <summary>
 		/// Vrátí čas poslední modifikace souboru v UTC timezone
 		/// </summary>
-		DateTime? GetLastModifiedTimeUtc(string fileName);
+		Task<DateTime?> GetLastModifiedTimeUtcAsync(string fileName);
 	}
 }

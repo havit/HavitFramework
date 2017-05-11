@@ -12,7 +12,7 @@ namespace Havit.Services.FileStorage
 	/// <summary>
 	/// IFileStorageService s file systémem pro datové úložiště.
 	/// </summary>
-	public class FileSystemStorageService : FileStorageServiceBase, IFileStorageService
+	public class FileSystemStorageService : FileStorageServiceBase, IFileStorageService, IFileStorageServiceAsync
 	{
 		private readonly string storagePath;
 
@@ -45,6 +45,15 @@ namespace Havit.Services.FileStorage
 		}
 
 		/// <summary>
+		/// Vrátí true, pokud uložený soubor v úložišti existuje. Jinak false.
+		/// Nemá asynchronní implementaci, spouští synchronní Exists.
+		/// </summary>
+		public override Task<bool> ExistsAsync(string fileName)
+		{
+			return Task.FromResult(Exists(fileName));
+		}
+
+		/// <summary>
 		/// Vrátí stream s obsahem soubor z úložiště.
 		/// </summary>
 		protected override Stream PerformRead(string fileName)
@@ -53,13 +62,33 @@ namespace Havit.Services.FileStorage
 		}
 
 		/// <summary>
+		/// Vrátí stream s obsahem soubor z úložiště.
+		/// Nemá asynchronní implementaci, spouští synchronní PerformRead.
+		/// </summary>
+		protected override Task<Stream> PerformReadAsync(string fileName)
+		{			
+			return Task.FromResult(PerformRead(fileName));
+		}
+
+		/// <summary>
 		/// Zapíše obsah souboru z úložiště do streamu.
 		/// </summary>
 		protected override void PerformReadToStream(string fileName, Stream stream)
 		{
-			using (Stream fileStream = File.OpenRead(GetFullPath(fileName)))
+			using (Stream fileStream = PerformRead(fileName))
 			{
 				fileStream.CopyTo(stream);
+			}
+		}
+
+		/// <summary>
+		/// Zapíše obsah souboru z úložiště do streamu.
+		/// </summary>
+		protected override async Task PerformReadToStreamAsync(string fileName, Stream stream)
+		{
+			using (Stream fileStream = PerformRead(fileName))
+			{
+				await fileStream.CopyToAsync(stream);
 			}
 		}
 
@@ -68,15 +97,36 @@ namespace Havit.Services.FileStorage
 		/// </summary>
 		protected override void PerformSave(string fileName, Stream fileContent, string contentType)
 		{
-			var directory = Path.GetDirectoryName(fileName);
-			if (!String.IsNullOrWhiteSpace(directory))
-			{
-				Directory.CreateDirectory(GetFullPath(directory));
-			}
+			PerformSave_EnsureDirectory(fileName);
 
 			using (FileStream fileStream = File.Create(GetFullPath(fileName)))
 			{
 				fileContent.CopyTo(fileStream);
+			}
+		}
+
+		/// <summary>
+		/// Uloží stream do úložiště.
+		/// </summary>
+		protected override async Task PerformSaveAsync(string fileName, Stream fileContent, string contentType)
+		{		
+			PerformSave_EnsureDirectory(fileName);
+
+			using (FileStream fileStream = File.Create(GetFullPath(fileName)))
+			{
+				await fileContent.CopyToAsync(fileStream);
+			}
+		}
+
+		/// <summary>
+		/// Zajistí vytvoření cílové složky, pokud je název souboru včetně složky.
+		/// </summary>
+		private void PerformSave_EnsureDirectory(string fileName)
+		{
+			var directory = Path.GetDirectoryName(fileName);
+			if (!String.IsNullOrWhiteSpace(directory))
+			{
+				Directory.CreateDirectory(GetFullPath(directory));
 			}
 		}
 
@@ -87,6 +137,16 @@ namespace Havit.Services.FileStorage
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
 			System.IO.File.Delete(GetFullPath(fileName));
+		}
+
+		/// <summary>
+		/// Smaže soubor v úložišti.
+		/// Nemá asynchronní implementaci, spouští synchronní Exists.
+		/// </summary>
+		public override Task DeleteAsync(string fileName)
+		{
+			Delete(fileName);
+			return Task.CompletedTask;
 		}
 
 		/// <summary>
@@ -106,12 +166,31 @@ namespace Havit.Services.FileStorage
 		}
 
 		/// <summary>
+		/// Vylistuje seznam souborů v úložišti.
+		/// ContentType položek je vždy null.
+		/// Nemá asynchronní implementaci, spouští synchronní EnumerateFiles.
+		/// </summary>
+		public override Task<IEnumerable<FileInfo>> EnumerateFilesAsync(string pattern = null)
+		{
+			return Task.FromResult(EnumerateFiles(pattern));
+		}
+
+		/// <summary>
 		/// Vrátí čas poslední modifikace souboru v UTC timezone.
 		/// </summary>
 		public override DateTime? GetLastModifiedTimeUtc(string fileName)
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
 			return File.GetLastWriteTimeUtc(GetFullPath(fileName));
+		}
+
+		/// <summary>
+		/// Vrátí čas poslední modifikace souboru v UTC timezone.
+		/// Nemá asynchronní implementaci, spouští synchronní GetLastModifiedTimeUtc.
+		/// </summary>
+		public override Task<DateTime?> GetLastModifiedTimeUtcAsync(string fileName)
+		{
+			return Task.FromResult(GetLastModifiedTimeUtc(fileName));
 		}
 
 		internal string GetFullPath(String fileNamePath)

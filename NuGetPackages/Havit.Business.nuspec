@@ -13,7 +13,7 @@
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<copyright>Copyright HAVIT, s.r.o. 2016</copyright>
 		<dependencies>
-			<group targetFramework="net45">
+			<group targetFramework="net46">
 			  <dependency id="Havit.Data" version="[1.4.8716,)" />
 			  <dependency id="Havit.Services" version="[1.4.8716,)" />
 			</group>

@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Havit.Services.FileStorage;
 using Microsoft.VisualBasic;
@@ -11,6 +13,7 @@ using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using FileInfo = Havit.Services.FileStorage.FileInfo;
 using Havit.Diagnostics.Contracts;
+using Havit.Services.Azure.Storage.Blob;
 
 namespace Havit.Services.Azure.FileStorage
 {
@@ -22,7 +25,7 @@ namespace Havit.Services.Azure.FileStorage
 	/// Pro jednoduché šifrování se používá konstruktor s encryptionOptions (EncryptionOptions),
 	/// pro šifrování pomocí Azure Storage klienta se použije kontruktor s encyptionPolicy (BlobEnctyptionPolicy).
 	/// </summary>
-	public class AzureBlobStorageService : FileStorageServiceBase
+	public class AzureBlobStorageService : FileStorageServiceBase, IFileStorageService, IFileStorageServiceAsync
 	{
 		private readonly string blobStorageConnectionString;
 		private readonly string containerName;
@@ -85,6 +88,17 @@ namespace Havit.Services.Azure.FileStorage
 		}
 
 		/// <summary>
+		/// Vrátí true, pokud uložený soubor v úložišti existuje. Jinak false.
+		/// </summary>
+		public override async Task<bool> ExistsAsync(string fileName)
+		{
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
+
+			CloudBlockBlob blob = GetBlobReference(fileName);
+			return await blob.ExistsAsync();
+		}
+
+		/// <summary>
 		/// Zapíše obsah souboru z úložiště do streamu.
 		/// </summary>
 		protected override void PerformReadToStream(string fileName, Stream stream)
@@ -94,15 +108,28 @@ namespace Havit.Services.Azure.FileStorage
 		}
 
 		/// <summary>
+		/// Zapíše obsah souboru z úložiště do streamu.
+		/// </summary>
+		protected override async Task PerformReadToStreamAsync(string fileName, Stream stream)
+		{
+			CloudBlockBlob blob = GetBlobReference(fileName);
+			await blob.DownloadToStreamAsync(stream, options: GetBlobRequestOptions(), accessCondition: null, operationContext: null);
+		}
+
+		/// <summary>
 		/// Vrátí stream s obsahem soubor z úložiště.
 		/// </summary>
 		protected override Stream PerformRead(string fileName)
 		{
-			MemoryStream memoryStream = new MemoryStream();
-			PerformReadToStream(fileName, memoryStream);
-			memoryStream.Seek(0, SeekOrigin.Begin);
-			
-			return memoryStream;
+			return GetBlobReference(fileName).OpenRead(options: GetBlobRequestOptions());
+		}
+
+		/// <summary>
+		/// Vrátí stream s obsahem soubor z úložiště.
+		/// </summary>
+		protected override async Task<Stream> PerformReadAsync(string fileName)
+		{
+			return await GetBlobReference(fileName).OpenReadAsync(options: GetBlobRequestOptions(), accessCondition: null, operationContext: null);
 		}
 
 		/// <summary>
@@ -110,9 +137,20 @@ namespace Havit.Services.Azure.FileStorage
 		/// </summary>
 		protected override void PerformSave(string fileName, Stream fileContent, string contentType)
 		{
-			CloudBlockBlob blob = GetBlobReference(fileName, createContainerWhenNotExists: true);
+			EnsureContainer();
+
+			CloudBlockBlob blob = GetBlobReference(fileName);
 			blob.Properties.ContentType = contentType;
-			blob.UploadFromStream(fileContent, options: GetBlobRequestOptions());			
+			blob.UploadFromStream(fileContent, options: GetBlobRequestOptions());
+		}
+
+		protected override async Task PerformSaveAsync(string fileName, Stream fileContent, string contentType)
+		{
+			await EnsureContainerAsync();
+
+			CloudBlockBlob blob = GetBlobReference(fileName);
+			blob.Properties.ContentType = contentType;
+			await blob.UploadFromStreamAsync(fileContent, options: GetBlobRequestOptions(), accessCondition: null, operationContext: null);
 		}
 
 		/// <summary>
@@ -127,20 +165,62 @@ namespace Havit.Services.Azure.FileStorage
 		}
 
 		/// <summary>
+		/// Smaže soubor v úložišti.
+		/// </summary>
+		public override async Task DeleteAsync(string fileName)
+		{
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
+
+			CloudBlockBlob blob = GetBlobReference(fileName);
+			await blob.DeleteAsync();
+		}
+
+		/// <summary>
 		/// Vylistuje seznam souborů v úložišti.
 		/// </summary>
 		public override IEnumerable<FileInfo> EnumerateFiles(string searchPattern = null)
 		{
-			string prefix = null;
+			string prefix;
+			string newSearchPattern;
+			EnumerableFiles_GetPrefixAndSearchPattern(searchPattern, out prefix, out newSearchPattern);
+
+			EnsureContainer();
+
+			IEnumerable<IListBlobItem> listBlobItems = GetContainerReference().ListBlobs(prefix, true);
+			return EnumerateFiles_FilterAndProjectCloudBlobs(listBlobItems, newSearchPattern);
+		}
+
+		/// <summary>
+		/// Vylistuje seznam souborů v úložišti.
+		/// </summary>
+		public override async Task<IEnumerable<FileInfo>> EnumerateFilesAsync(string searchPattern = null)
+		{
+			string prefix;
+			string newSearchPattern;
+			EnumerableFiles_GetPrefixAndSearchPattern(searchPattern, out prefix, out newSearchPattern);
+
+			await EnsureContainerAsync();
+
+			List<IListBlobItem> listBlobItems = (await GetContainerReference().ListBlobsAsync(prefix, true));
+			return EnumerateFiles_FilterAndProjectCloudBlobs(listBlobItems, newSearchPattern);
+		}
+
+		private void EnumerableFiles_GetPrefixAndSearchPattern(string searchPattern, out string prefix, out string newSearchPattern)
+		{
+			prefix = null;
+			newSearchPattern = searchPattern;
 
 			if ((searchPattern != null) && searchPattern.Contains('/'))
 			{
 				int delimiter = searchPattern.LastIndexOf('/');
 				prefix = searchPattern.Substring(0, delimiter);
-				searchPattern = searchPattern.Remove(0, delimiter + 1);
+				newSearchPattern = searchPattern.Remove(0, delimiter + 1);
 			}
+		}
 
-			var blobsEnumerable = GetContainerReference(true).ListBlobs(prefix, true).OfType<CloudBlob>();
+		private IEnumerable<FileInfo> EnumerateFiles_FilterAndProjectCloudBlobs(IEnumerable<IListBlobItem> listBlobItems, string searchPattern)
+		{
+			IEnumerable<CloudBlob> cloudBlobs = listBlobItems.OfType<CloudBlob>();
 			if (!String.IsNullOrEmpty(searchPattern))
 			{
 				// Operators.Like 
@@ -149,16 +229,16 @@ namespace Havit.Services.Azure.FileStorage
 				string normalizedSearchPatterns = searchPattern
 					.Replace("[", "[[]") // pozor, zálěží na pořadí náhrad
 					.Replace("#", "[#]");
-				blobsEnumerable = blobsEnumerable.Where(item => Operators.LikeString(item.Name, normalizedSearchPatterns, CompareMethod.Text));
+				cloudBlobs = cloudBlobs.Where(item => Operators.LikeString(item.Name, normalizedSearchPatterns, CompareMethod.Text));
 			}
 
-			return blobsEnumerable.Select(blob => new FileInfo
+			return cloudBlobs.Select(blob => new FileInfo
 			{
 				Name = blob.Name,
 				LastModifiedUtc = blob.Properties.LastModified?.UtcDateTime ?? default(DateTime),
 				Size = blob.Properties.Length,
 				ContentType = blob.Properties.ContentType
-			});
+			}).ToList();
 		}
 
 		/// <summary>
@@ -168,44 +248,57 @@ namespace Havit.Services.Azure.FileStorage
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
 
-			CloudBlockBlob blob = GetBlobReference(fileName, fromServer: true);
+			CloudBlobContainer container = GetContainerReference();
+			ICloudBlob blob = container.GetBlobReferenceFromServer(fileName);
+			return blob.Properties.LastModified?.UtcDateTime;
+		}
+
+		public override async Task<DateTime?> GetLastModifiedTimeUtcAsync(string fileName)
+		{
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
+
+			CloudBlobContainer container =  GetContainerReference();
+			ICloudBlob blob = await container.GetBlobReferenceFromServerAsync(fileName);			
 			return blob.Properties.LastModified?.UtcDateTime;
 		}
 
 		/// <summary>
 		/// Vrátí CloudBlockBlob pro daný blob v containeru používaného Azure Storage Accountu.
 		/// </summary>
-		protected CloudBlockBlob GetBlobReference(string blobName, bool createContainerWhenNotExists = false, bool fromServer = false)
+		protected CloudBlockBlob GetBlobReference(string blobName)
 		{
-			var container = GetContainerReference(createContainerWhenNotExists);
-
-			if (fromServer)
-			{
-				return (CloudBlockBlob)container.GetBlobReferenceFromServer(blobName);
-			}
-			else
-			{
-				return container.GetBlockBlobReference(blobName);
-			}
+			var container = GetContainerReference();
+			return container.GetBlockBlobReference(blobName);
 		}
 
 		/// <summary>
 		/// Vrátí používaný container (CloudBlobContainer) v Azure Storage Accountu.
 		/// </summary>
-		protected CloudBlobContainer GetContainerReference(bool createContainerWhenNotExists)
+		protected CloudBlobContainer GetContainerReference()
 		{
 			CloudStorageAccount storageAccount = CloudStorageAccount.Parse(blobStorageConnectionString);
-			// Create the blob client.
 			CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-			// Retrieve reference to a previously created container.
 			CloudBlobContainer container = blobClient.GetContainerReference(containerName);
+			
+			return container;
+		}
 
-			if (createContainerWhenNotExists && !containerAlreadyCreated)
+		protected void EnsureContainer()
+		{
+			if (!containerAlreadyCreated)
 			{
-				container.CreateIfNotExists(BlobContainerPublicAccessType.Off);
+				GetContainerReference().CreateIfNotExists(BlobContainerPublicAccessType.Off);
 				containerAlreadyCreated = true;
 			}
-			return container;
+		}
+
+		protected async Task EnsureContainerAsync()
+		{
+			if (!containerAlreadyCreated)
+			{
+				await GetContainerReference().CreateIfNotExistsAsync(BlobContainerPublicAccessType.Off, options: null, operationContext: null);
+				containerAlreadyCreated = true;
+			}
 		}
 
 		/// <summary>

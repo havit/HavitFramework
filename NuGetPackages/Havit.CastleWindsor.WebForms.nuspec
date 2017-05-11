@@ -14,7 +14,7 @@
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<copyright>Copyright HAVIT, s.r.o. 2016</copyright>
 		<dependencies>
-			<group targetFramework="net45">
+			<group targetFramework="net46">
 				<dependency id="Castle.Windsor" version="[3.3.0,)" />
 			</group>
 		</dependencies>

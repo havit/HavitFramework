@@ -16,7 +16,7 @@
 		<!--<licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>-->
 		<copyright>Copyright HAVIT, s.r.o. 2016</copyright>
 		<dependencies>
-			<group targetFramework="net45">
+			<group targetFramework="net46">
 				<dependency id="Glimpse" version="[1.8.6,)" />
 				<dependency id="Glimpse.AspNet" version="[1.9.1,)" />
 				<dependency id="Glimpse.WebForms" version="[1.1.1,)" />

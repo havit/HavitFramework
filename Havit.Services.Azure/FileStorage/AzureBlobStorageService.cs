@@ -24,6 +24,7 @@ namespace Havit.Services.Azure.FileStorage
 	/// 
 	/// Pro jednoduché šifrování se používá konstruktor s encryptionOptions (EncryptionOptions),
 	/// pro šifrování pomocí Azure Storage klienta se použije kontruktor s encyptionPolicy (BlobEnctyptionPolicy).
+	/// 	
 	/// </summary>
 	public class AzureBlobStorageService : FileStorageServiceBase, IFileStorageService, IFileStorageServiceAsync
 	{
@@ -144,6 +145,9 @@ namespace Havit.Services.Azure.FileStorage
 			blob.UploadFromStream(fileContent, options: GetBlobRequestOptions());
 		}
 
+		/// <summary>
+		/// Uloží stream do úložiště.
+		/// </summary>
 		protected override async Task PerformSaveAsync(string fileName, Stream fileContent, string contentType)
 		{
 			await EnsureContainerAsync();
@@ -242,7 +246,7 @@ namespace Havit.Services.Azure.FileStorage
 		}
 
 		/// <summary>
-		/// Vrátí čas poslední modifikace souboru v UTC timezone
+		/// Vrátí čas poslední modifikace souboru v UTC timezone.
 		/// </summary>
 		public override DateTime? GetLastModifiedTimeUtc(string fileName)
 		{
@@ -253,6 +257,9 @@ namespace Havit.Services.Azure.FileStorage
 			return blob.Properties.LastModified?.UtcDateTime;
 		}
 
+		/// <summary>
+		/// Vrátí čas poslední modifikace souboru v UTC timezone.
+		/// </summary>
 		public override async Task<DateTime?> GetLastModifiedTimeUtcAsync(string fileName)
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
@@ -283,6 +290,9 @@ namespace Havit.Services.Azure.FileStorage
 			return container;
 		}
 
+		/// <summary>
+		/// Vytvoří kontejner, pokud ještě neexistuje.
+		/// </summary>
 		protected void EnsureContainer()
 		{
 			if (!containerAlreadyCreated)
@@ -292,6 +302,9 @@ namespace Havit.Services.Azure.FileStorage
 			}
 		}
 
+		/// <summary>
+		/// Vytvoří kontejner, pokud ještě neexistuje.
+		/// </summary>
 		protected async Task EnsureContainerAsync()
 		{
 			if (!containerAlreadyCreated)

@@ -10,7 +10,8 @@ using Havit.Diagnostics.Contracts;
 namespace Havit.Services.FileStorage
 {
 	/// <summary>
-	/// IFileStorageService s file systémem pro datové úložiště.
+	/// IFileStorageService a IFileStorageServiceAsync s file systémem pro datové úložiště.
+	/// Některé asynchronní metody pod pokličkou nejsou asynchronní, viz dokumentace jednotlivých metod (jejichž název končí Async).
 	/// </summary>
 	public class FileSystemStorageService : FileStorageServiceBase, IFileStorageService, IFileStorageServiceAsync
 	{

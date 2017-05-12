@@ -13,8 +13,12 @@
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<copyright>Copyright HAVIT, s.r.o. 2016</copyright>
 		<tags>HAVIT Data Patterns Entity Framework EF EF6 CodeGenerator</tags>
+		<dependencies>
+			<group targetFramework="net46">
+			</group>
+		</dependencies>
 	</metadata>
-	<files>
+  <files>
 	  <file src="..\Havit.Data.Entity6.CodeGenerator\bin\Release\**\*.*" target="tools\CodeGenerator" />
 	  <file src="Havit.Data.Entity6.CodeGenerator\Content\RunCodeGenerator.ps1" target="content" />
 	</files>

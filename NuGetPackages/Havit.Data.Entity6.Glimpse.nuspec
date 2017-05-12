@@ -23,8 +23,8 @@
 		<tags>HAVIT ASP.NET Web WebForms Glimpse diagnostics performance profiling timing Entity Framework EF EF6</tags>
 	</metadata>
 	<files>
-		<file src="..\Havit.Data.Entity6.Glimpse\bin\Release\Havit.Data.Entity6.Glimpse.dll" target="lib\net45" />
-		<file src="..\Havit.Data.Entity6.Glimpse\bin\Release\Havit.Data.Entity6.Glimpse.pdb" target="lib\net45" />
+		<file src="..\Havit.Data.Entity6.Glimpse\bin\Release\Havit.Data.Entity6.Glimpse.dll" target="lib\net46" />
+		<file src="..\Havit.Data.Entity6.Glimpse\bin\Release\Havit.Data.Entity6.Glimpse.pdb" target="lib\net46" />
 		<file src="Havit.Data.Entity6.Glimpse\tools\" target="tools" />
 		<file src="Havit.Data.Entity6.Glimpse\content\" target="content" />
 	</files>

@@ -21,8 +21,8 @@
 		<tags>HAVIT Framework Library</tags>
 	</metadata>
 	<files>
-		<file src="..\Havit.Business\bin\Release\Havit.Business.dll" target="lib\net45" />
-		<file src="..\Havit.Business\bin\Release\Havit.Business.pdb" target="lib\net45" />
-		<file src="..\Havit.Business\bin\Release\Havit.Business.xml" target="lib\net45" />
+		<file src="..\Havit.Business\bin\Release\Havit.Business.dll" target="lib\net46" />
+		<file src="..\Havit.Business\bin\Release\Havit.Business.pdb" target="lib\net46" />
+		<file src="..\Havit.Business\bin\Release\Havit.Business.xml" target="lib\net46" />
 	</files>
 </package>

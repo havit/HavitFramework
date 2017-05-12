@@ -13,7 +13,11 @@
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<copyright>Copyright HAVIT, s.r.o. 2016</copyright>
 		<tags>HAVIT Model Entity Framework EF</tags>
-		<frameworkAssemblies>
+		<dependencies>
+			<group targetFramework="net46">
+			</group>
+		</dependencies>
+	  <frameworkAssemblies>
 		  <frameworkAssembly assemblyName="System.ComponentModel.DataAnnotations" />
 		</frameworkAssemblies>
 	</metadata>

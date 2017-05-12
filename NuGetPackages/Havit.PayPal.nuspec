@@ -20,8 +20,8 @@
 		<tags>HAVIT Framework Library</tags>
 	</metadata>
 	<files>
-		<file src="..\Havit.PayPal\bin\Release\Havit.PayPal.dll" target="lib\net45" />
-		<file src="..\Havit.PayPal\bin\Release\Havit.PayPal.pdb" target="lib\net45" />
-		<file src="..\Havit.PayPal\bin\Release\Havit.PayPal.xml" target="lib\net45" />
+		<file src="..\Havit.PayPal\bin\Release\Havit.PayPal.dll" target="lib\net46" />
+		<file src="..\Havit.PayPal\bin\Release\Havit.PayPal.pdb" target="lib\net46" />
+		<file src="..\Havit.PayPal\bin\Release\Havit.PayPal.xml" target="lib\net46" />
 	</files>
 </package>

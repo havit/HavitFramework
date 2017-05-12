@@ -13,10 +13,14 @@
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<copyright>Copyright HAVIT, s.r.o. 2016</copyright>
 		<tags>HAVIT Framework Library</tags>
+		<dependencies>
+			<group targetFramework="net46">
+			</group>
+		</dependencies>
 	</metadata>
 	<files>
-		<file src="..\Havit.Drawing\bin\Release\Havit.Drawing.dll" target="lib\net45" />
-		<file src="..\Havit.Drawing\bin\Release\Havit.Drawing.pdb" target="lib\net45" />
-		<file src="..\Havit.Drawing\bin\Release\Havit.Drawing.xml" target="lib\net45" />
+		<file src="..\Havit.Drawing\bin\Release\Havit.Drawing.dll" target="lib\net46" />
+		<file src="..\Havit.Drawing\bin\Release\Havit.Drawing.pdb" target="lib\net46" />
+		<file src="..\Havit.Drawing\bin\Release\Havit.Drawing.xml" target="lib\net46" />
 	</files>
 </package>

@@ -9,6 +9,7 @@ using Havit.Services.Azure.FileStorage;
 using Havit.Services.FileStorage;
 using Havit.Services.Tests.FileStorage;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Storage.Blob;
 using FileInfo = Havit.Services.FileStorage.FileInfo;
 
 namespace Havit.Services.Azure.Tests.FileStorage
@@ -226,9 +227,28 @@ namespace Havit.Services.Azure.Tests.FileStorage
 			}
 		}
 
-		private static AzureBlobStorageService GetAzureBlobStorageService(string container = "tests", EncryptionOptions encryptionOptions = null)
+		[TestMethod]
+		public void AzureBlobStorageService_OptionsCacheControlSavesCacheControl()
 		{
-			return new AzureBlobStorageService("DefaultEndpointsProtocol=https;AccountName=hfwtestsstorage;AccountKey=3yuNhy/gYB6JDZ+bljB+vNBs4DrjjgvK7ZFfCR2QrZWoy4dEuYuSAApkQ2GkmKb01U2bidXq5/SpNDFm8uflDw==;", container, (EncryptionOptions)encryptionOptions);
+			// Arrange
+			string cacheControlValue = "public, maxage=3600";
+			AzureBlobStorageService service = GetAzureBlobStorageService(options: new AzureBlobStorageServiceOptions { CacheControl = cacheControlValue });
+
+			// Act
+			using (MemoryStream ms = new MemoryStream())
+			{
+				service.Save("test.txt", ms, "text/plain"); // uložíme prázdný soubor
+			}
+
+			// Assert
+			CloudBlockBlob cloudBlockBlob = service.GetBlobReference("test.txt");
+			cloudBlockBlob.FetchAttributes();
+			Assert.AreEqual(cacheControlValue, cloudBlockBlob.Properties.CacheControl);
+		}
+
+		private static AzureBlobStorageService GetAzureBlobStorageService(string container = "tests", AzureBlobStorageServiceOptions options = null, EncryptionOptions encryptionOptions = null)
+		{
+			return new AzureBlobStorageService("DefaultEndpointsProtocol=https;AccountName=hfwtestsstorage;AccountKey=3yuNhy/gYB6JDZ+bljB+vNBs4DrjjgvK7ZFfCR2QrZWoy4dEuYuSAApkQ2GkmKb01U2bidXq5/SpNDFm8uflDw==;", container, options, (EncryptionOptions)encryptionOptions);
 		}
 	}
 }

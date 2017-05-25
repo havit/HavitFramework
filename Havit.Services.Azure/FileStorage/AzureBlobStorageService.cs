@@ -32,6 +32,7 @@ namespace Havit.Services.Azure.FileStorage
 		private readonly string containerName;
 
 		private readonly BlobEncryptionPolicy encryptionPolicy;
+		private readonly AzureBlobStorageServiceOptions options;
 
 		private volatile bool containerAlreadyCreated = false;
 
@@ -40,7 +41,17 @@ namespace Havit.Services.Azure.FileStorage
 		/// </summary>
 		/// <param name="blobStorageConnectionString">Connection string pro připojení k Azure Blob Storage.</param>
 		/// <param name="containerName">Container v Blob Storage pro práci se soubory.</param>
-		public AzureBlobStorageService(string blobStorageConnectionString, string containerName) : this(blobStorageConnectionString, containerName, null, null)
+		public AzureBlobStorageService(string blobStorageConnectionString, string containerName) : this(blobStorageConnectionString, containerName, null, null, null)
+		{
+		}
+
+		/// <summary>
+		/// Konstruktor. Služba nebude šifrovat obsah.
+		/// </summary>
+		/// <param name="blobStorageConnectionString">Connection string pro připojení k Azure Blob Storage.</param>
+		/// <param name="containerName">Container v Blob Storage pro práci se soubory.</param>
+		/// <param name="options">Další nastavení.</param>
+		public AzureBlobStorageService(string blobStorageConnectionString, string containerName, AzureBlobStorageServiceOptions options) : this(blobStorageConnectionString, containerName, options, null, null)
 		{
 		}
 
@@ -50,7 +61,28 @@ namespace Havit.Services.Azure.FileStorage
 		/// <param name="blobStorageConnectionString">Connection string pro připojení k Azure Blob Storage.</param>
 		/// <param name="containerName">Container v Blob Storage pro práci se soubory.</param>
 		/// <param name="encryptionPolicy">Parametry šifrování.</param>
-		public AzureBlobStorageService(string blobStorageConnectionString, string containerName, BlobEncryptionPolicy encryptionPolicy) : this(blobStorageConnectionString, containerName, encryptionPolicy, null)
+		public AzureBlobStorageService(string blobStorageConnectionString, string containerName, BlobEncryptionPolicy encryptionPolicy) : this(blobStorageConnectionString, containerName, null, encryptionPolicy, null)
+		{
+		}
+
+		/// <summary>
+		/// Konstruktor. Služba bude šifrovat obsah funkcionalitou vestavěnou v Azure Storage klientu.
+		/// </summary>
+		/// <param name="blobStorageConnectionString">Connection string pro připojení k Azure Blob Storage.</param>
+		/// <param name="containerName">Container v Blob Storage pro práci se soubory.</param>
+		/// <param name="encryptionPolicy">Parametry šifrování.</param>
+		/// <param name="options">Další nastavení.</param>
+		public AzureBlobStorageService(string blobStorageConnectionString, string containerName, AzureBlobStorageServiceOptions options, BlobEncryptionPolicy encryptionPolicy) : this(blobStorageConnectionString, containerName, options, encryptionPolicy, null)
+		{
+		}
+
+		/// <summary>
+		/// Konstruktor. Služba bude šifrovat obsah vlastní implementací.
+		/// </summary>
+		/// <param name="blobStorageConnectionString">Connection string pro připojení k Azure Blob Storage.</param>
+		/// <param name="containerName">Container v Blob Storage pro práci se soubory.</param>
+		/// <param name="encryptionOptions">Parametry šifrování.</param>
+		public AzureBlobStorageService(string blobStorageConnectionString, string containerName, EncryptionOptions encryptionOptions) : this(blobStorageConnectionString, containerName, null, null, encryptionOptions)
 		{			
 		}
 
@@ -60,14 +92,15 @@ namespace Havit.Services.Azure.FileStorage
 		/// <param name="blobStorageConnectionString">Connection string pro připojení k Azure Blob Storage.</param>
 		/// <param name="containerName">Container v Blob Storage pro práci se soubory.</param>
 		/// <param name="encryptionOptions">Parametry šifrování.</param>
-		public AzureBlobStorageService(string blobStorageConnectionString, string containerName, EncryptionOptions encryptionOptions) : this(blobStorageConnectionString, containerName, null, encryptionOptions)
-		{			
+		/// <param name="options">Další nastavení.</param>
+		public AzureBlobStorageService(string blobStorageConnectionString, string containerName, AzureBlobStorageServiceOptions options, EncryptionOptions encryptionOptions) : this(blobStorageConnectionString, containerName, options, null, encryptionOptions)
+		{
 		}
 
 		/// <summary>
 		/// Konstruktor. Služba bude šifrovat obsah vlastní implementací.
 		/// </summary>
-		protected AzureBlobStorageService(string blobStorageConnectionString, string containerName, BlobEncryptionPolicy encryptionPolicy, EncryptionOptions encryptionOptions) : base(encryptionOptions)
+		protected AzureBlobStorageService(string blobStorageConnectionString, string containerName, AzureBlobStorageServiceOptions options, BlobEncryptionPolicy encryptionPolicy, EncryptionOptions encryptionOptions) : base(encryptionOptions)
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(blobStorageConnectionString));
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(containerName));
@@ -75,6 +108,7 @@ namespace Havit.Services.Azure.FileStorage
 			this.blobStorageConnectionString = blobStorageConnectionString;
 			this.containerName = containerName;
 			this.encryptionPolicy = encryptionPolicy;
+			this.options = options;
 		}
 
 		/// <summary>
@@ -142,6 +176,7 @@ namespace Havit.Services.Azure.FileStorage
 
 			CloudBlockBlob blob = GetBlobReference(fileName);
 			blob.Properties.ContentType = contentType;
+			PerformSave_SetProperties(blob);
 			blob.UploadFromStream(fileContent, options: GetBlobRequestOptions());
 		}
 
@@ -154,7 +189,16 @@ namespace Havit.Services.Azure.FileStorage
 
 			CloudBlockBlob blob = GetBlobReference(fileName);
 			blob.Properties.ContentType = contentType;
+			PerformSave_SetProperties(blob);
 			await blob.UploadFromStreamAsync(fileContent, options: GetBlobRequestOptions(), accessCondition: null, operationContext: null);
+		}
+
+		private void PerformSave_SetProperties(CloudBlockBlob blob)
+		{
+			if (!String.IsNullOrEmpty(options?.CacheControl))
+			{
+				blob.Properties.CacheControl = options.CacheControl;
+			}
 		}
 
 		/// <summary>
@@ -272,7 +316,7 @@ namespace Havit.Services.Azure.FileStorage
 		/// <summary>
 		/// Vrátí CloudBlockBlob pro daný blob v containeru používaného Azure Storage Accountu.
 		/// </summary>
-		protected CloudBlockBlob GetBlobReference(string blobName)
+		protected internal CloudBlockBlob GetBlobReference(string blobName)
 		{
 			var container = GetContainerReference();
 			return container.GetBlockBlobReference(blobName);

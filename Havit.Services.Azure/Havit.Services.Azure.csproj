@@ -76,6 +76,7 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="FileStorage\AzureBlobStorageService.cs" />
+    <Compile Include="FileStorage\AzureBlobStorageServiceOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Storage\Blob\CloudBlobContainerExtensions.cs" />
   </ItemGroup>

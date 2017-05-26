@@ -2,6 +2,7 @@
 using System.Data;
 using System.Configuration;
 using System.Collections;
+using System.Linq;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
@@ -60,7 +61,7 @@ namespace Havit.WebApplicationTest.HavitEnterpriseWebTests
 		#region TestGV_DataBinding
 		private void TestGV_DataBinding(object sender, EventArgs e)
 		{
-			((Havit.Web.UI.WebControls.EnterpriseGridView)sender).DataSource = Subjekt.GetAll();
+			((Havit.Web.UI.WebControls.EnterpriseGridView)sender).DataSource = Subjekt.GetAll().Take(3).ToList();
 
 		}
 		#endregion

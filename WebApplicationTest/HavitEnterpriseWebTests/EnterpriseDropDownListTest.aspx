@@ -18,7 +18,6 @@
 			runat="server" 
 		/> Vybrano: <asp:Label ID="AutoPostBackResultLabel" runat="server" /><br />
 		<havit:EnterpriseDropDownList 
-			SortDirection="Descending"
 			ItemObjectInfo="<%$ Expression: Role.ObjectInfo %>" 
 			AutoDataBind="true"
 			DataTextField="Symbol"		

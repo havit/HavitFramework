@@ -4,6 +4,7 @@ using System.Text;
 using System.Web.UI.WebControls;
 using System.Collections;
 using System.Globalization;
+using System.Web.UI;
 
 namespace Havit.Web.UI.WebControls
 {
@@ -72,6 +73,23 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region DataOptionGroupField
+		/// <summary>
+		/// Gets or sets the field of the data source that provides the opting group content of the list items.
+		/// </summary>
+		public string DataOptionGroupField
+		{
+			get
+			{
+				return (string)(ViewState["DataOptionGroupField"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["DataOptionGroupField"] = value;
+			}
+		}
+		#endregion
+
 		#region ListBoxExt
 		/// <summary>
 		/// Konstruktor. Nastavuje výchozí režim výběru na Multiple.
@@ -135,43 +153,8 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		protected virtual ListItem CreateItem(object dataItem)
 		{
-			bool flag = false;
-			bool flag2 = false;
-			if ((DataTextField.Length != 0) || (DataValueField.Length != 0))
-			{
-				flag = true;
-			}
-			if (DataTextFormatString.Length != 0)
-			{
-				flag2 = true;
-			}
-			ListItem item = new ListItem();
-			if (flag)
-			{
-				if (DataTextField.Length > 0)
-				{
-					item.Text = DataBinderExt.GetValue(dataItem, DataTextField, DataTextFormatString);
-				}
-				if (DataValueField.Length > 0)
-				{
-					item.Value = DataBinderExt.GetValue(dataItem, DataValueField, null);
-				}
-			}
-			else
-			{
-				if (flag2)
-				{
-					item.Text = string.Format(CultureInfo.CurrentCulture, DataTextFormatString, new object[] { dataItem });
-				}
-				else
-				{
-					item.Text = dataItem.ToString();
-				}
-				item.Value = dataItem.ToString();
-			}
-			return item;
+			return ListControlExtensions.CreateListItem(dataItem, DataTextField, DataTextFormatString, DataValueField, String.Empty /* CheckBoxList nepoužívá OptionGroups */);
 		}
-
 		/// <summary>
 		/// Implementace nahrazující internal metody ListItemCollection.FindByValueInternal()
 		/// </summary>
@@ -200,6 +183,38 @@ namespace Havit.Web.UI.WebControls
 			{
 				h(this, e);
 			}
+		}
+		#endregion
+
+		#region RenderContents
+		/// <summary>
+		/// Renderuje položky ListBoxu.
+		/// Podporuje option groups.
+		/// </summary>
+		protected override void RenderContents(HtmlTextWriter writer)
+		{
+			// no base call
+			ListControlExtensions.RenderContents(writer, this, this.Page, this.VerifyMultiSelect);
+		}
+		#endregion
+
+		#region SaveViewState
+		/// <summary>
+		/// Uloží viewstate. Persistuje Option Groups položek.
+		/// </summary>
+		protected override object SaveViewState()
+		{
+			return ListControlExtensions.SaveViewState(base.SaveViewState, this.Items);
+		}
+		#endregion
+
+		#region LoadViewState
+		/// <summary>
+		/// Načte viewstate vč. Option Groups položek.
+		/// </summary>
+		protected override void LoadViewState(object savedState)
+		{
+			ListControlExtensions.LoadViewState(savedState, base.LoadViewState, () => this.Items);
 		}
 		#endregion
 	}

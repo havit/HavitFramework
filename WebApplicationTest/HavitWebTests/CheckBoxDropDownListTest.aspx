@@ -38,12 +38,12 @@
 			
 			<havit:CheckBoxDropDownList ID="CheckBoxDropDownList3" ShowFilter="true" runat="server">
                 <Items>
-                    <asp:ListItem Text="Jedna" />
-                    <asp:ListItem Text="Dva" />
-                    <asp:ListItem Text="Tři" />
-                    <asp:ListItem Text="Čtyři" />
-                    <asp:ListItem Text="Pět" />
-                    <asp:ListItem Text="Šest" />
+                    <asp:ListItem Text="Jedna" OptionGroup="Liché" />
+	                <asp:ListItem Text="Tři" OptionGroup="Liché" />
+	                <asp:ListItem Text="Pět" OptionGroup="Liché" />
+                    <asp:ListItem Text="Dva" OptionGroup="Sudé" />
+                    <asp:ListItem Text="Čtyři" OptionGroup="Sudé" />
+                    <asp:ListItem Text="Šest" OptionGroup="Sudé" />
                 </Items>
             </havit:CheckBoxDropDownList>
 

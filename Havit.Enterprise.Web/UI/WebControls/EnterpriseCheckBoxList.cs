@@ -95,9 +95,7 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		public string SortExpression
 		{
-#pragma warning disable 612,618
-			get { return (string)ViewState["SortExpression"] ?? (DataSortField + ((SortDirection == Collections.SortDirection.Descending) ? " DESC" : String.Empty)); }
-#pragma warning restore 612,618
+			get { return (string)ViewState["SortExpression"] ?? DataTextField; }
 			set { ViewState["SortExpression"] = value; }
 		}
 		#endregion
@@ -109,8 +107,8 @@ namespace Havit.Web.UI.WebControls
 		[Obsolete("Nahrazeno SortExpression.")]
 		public string DataSortField
 		{
-			get { return (string)(ViewState["DataSortField"] ?? DataTextField); }
-			set { ViewState["DataSortField"] = value; }
+			get { throw new NotSupportedException(); }
+			set { throw new NotSupportedException(); }
 		}
 		#endregion
 
@@ -122,8 +120,8 @@ namespace Havit.Web.UI.WebControls
 		[Obsolete("Nahrazeno SortExpression.")]
 		public Havit.Collections.SortDirection SortDirection
 		{
-			get { return (Havit.Collections.SortDirection)(ViewState["SortDirection"] ?? Havit.Collections.SortDirection.Ascending); }
-			set { ViewState["SortDirection"] = value; }
+			get { throw new NotSupportedException(); }
+			set { throw new NotSupportedException(); }
 		}
 		#endregion
 

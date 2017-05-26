@@ -254,6 +254,8 @@
     <Compile Include="Bootstrap\UI\WebControls\ModalEditorExtender.cs" />
     <Compile Include="UI\WebControls\GridViewNewProcessingEventArgs.cs" />
     <Compile Include="UI\WebControls\GridViewNewProcessedEventArgs.cs" />
+    <Compile Include="UI\WebControls\ListControlExtensions.cs" />
+    <Compile Include="UI\WebControls\ListItemExtensions.cs" />
     <Compile Include="UI\WebControls\MessengerStorageType.cs" />
     <Compile Include="UI\WebControls\ModalDialogUserControlBase.cs">
       <SubType>ASPXCodeBehind</SubType>

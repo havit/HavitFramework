@@ -5,12 +5,14 @@ using System.Web.UI.WebControls;
 using System.Collections;
 using System.Web.UI;
 using System.Globalization;
+using System.Linq;
+using System.Web;
 
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
 	/// Vylepšený <see cref="DropDownList"/>.
-    /// Podporuje lepší zpracování hodnoty DataTextField při databindingu.	
+	/// Podporuje lepší zpracování hodnoty DataTextField při databindingu a rozšiřuje možnost renderování o optgroups.
 	/// </summary>
 	/// <remarks>
 	/// Known issue:
@@ -22,24 +24,22 @@ namespace Havit.Web.UI.WebControls
 	public class DropDownListExt : DropDownList
 	{
 		#region ItemDataBound (event)
+
 		/// <summary>
 		/// Událost, která se volá po vytvoření itemu a jeho data-bindingu.
 		/// </summary>
 		public event EventHandler<ListControlItemDataBoundEventArgs> ItemDataBound
 		{
-			add
-			{
-				Events.AddHandler(eventItemDataBound, value);
-			}
-			remove
-			{
-				Events.RemoveHandler(eventItemDataBound, value);
-			}
+			add { Events.AddHandler(eventItemDataBound, value); }
+			remove { Events.RemoveHandler(eventItemDataBound, value); }
 		}
+
 		private static readonly object eventItemDataBound = new object();
+
 		#endregion
 
 		#region SelectedIndex, SelectedValue (override)
+
 		private int cachedSelectedIndex = -1; // JK: Ať mi někdo z MS vysvětlí, jak má tohle fungovat. Podle mne to ani nemá logiku.
 		private string cachedSelectedValue;
 
@@ -78,9 +78,28 @@ namespace Havit.Web.UI.WebControls
 				cachedSelectedValue = value;
 			}
 		}
+
+		#endregion
+
+		#region DataOptionGroupField
+		/// <summary>
+		/// Gets or sets the field of the data source that provides the opting group content of the list items.
+		/// </summary>
+		public virtual string DataOptionGroupField
+		{
+			get
+			{
+				return (string)(ViewState["DataOptionGroupField"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["DataOptionGroupField"] = value;
+			}
+		}
 		#endregion
 
 		#region ClearSelection
+
 		/// <summary>
 		/// Zruší výběr aktuálně vybrané položky.
 		/// </summary>
@@ -90,9 +109,11 @@ namespace Havit.Web.UI.WebControls
 			this.cachedSelectedIndex = -1;
 			this.cachedSelectedValue = null;
 		}
+
 		#endregion
 
 		#region PerformDataBinding (override)
+
 		/// <summary>
 		/// Binds the specified data source to the control that is derived from the <see cref="T:System.Web.UI.WebControls.ListControl"/> class.
 		/// </summary>
@@ -139,47 +160,12 @@ namespace Havit.Web.UI.WebControls
 				this.cachedSelectedIndex = -1;
 			}
 		}
-
 		/// <summary>
 		/// Vytvoří ListItem, součást PerformDataBindingu.
 		/// </summary>
 		protected virtual ListItem CreateItem(object dataItem)
 		{
-			bool flag = false;
-			bool flag2 = false;
-			if ((DataTextField.Length != 0) || (DataValueField.Length != 0))
-			{
-				flag = true;
-			}
-			if (DataTextFormatString.Length != 0)
-			{
-				flag2 = true;
-			}
-			ListItem item = new ListItem();
-			if (flag)
-			{
-				if (DataTextField.Length > 0)
-				{
-					item.Text = DataBinderExt.GetValue(dataItem, DataTextField, DataTextFormatString);
-				}
-				if (DataValueField.Length > 0)
-				{
-					item.Value = DataBinderExt.GetValue(dataItem, DataValueField, null);
-				}
-			}
-			else
-			{
-				if (flag2)
-				{
-					item.Text = string.Format(CultureInfo.CurrentCulture, DataTextFormatString, new object[] { dataItem });
-				}
-				else
-				{
-					item.Text = dataItem.ToString();
-				}
-				item.Value = dataItem.ToString();
-			}
-			return item;
+			return ListControlExtensions.CreateListItem(dataItem, DataTextField, DataTextFormatString, DataValueField, DataOptionGroupField);
 		}
 
 		/// <summary>
@@ -196,9 +182,11 @@ namespace Havit.Web.UI.WebControls
 			}
 			return -1;
 		}
+
 		#endregion
-		
+
 		#region OnItemDataBound
+
 		/// <summary>
 		/// Raises the <see cref="ItemDataBound"/> event.
 		/// </summary>
@@ -212,6 +200,40 @@ namespace Havit.Web.UI.WebControls
 			}
 
 		}
+
 		#endregion
+
+		#region RenderContents
+		/// <summary>
+		/// Renderuje položky DropDownListu.
+		/// Podporuje option groups.
+		/// </summary>
+		protected override void RenderContents(HtmlTextWriter writer)
+		{
+			// no base call
+			ListControlExtensions.RenderContents(writer, this, this.Page, this.VerifyMultiSelect);
+		}
+		#endregion
+
+		#region SaveViewState
+		/// <summary>
+		/// Uloží viewstate. Persistuje Option Groups položek.
+		/// </summary>
+		protected override object SaveViewState()
+		{
+			return ListControlExtensions.SaveViewState(base.SaveViewState, this.Items);
+		}
+		#endregion
+
+		#region LoadViewState
+		/// <summary>
+		/// Načte viewstate vč. Option Groups položek.
+		/// </summary>
+		protected override void LoadViewState(object savedState)
+		{
+			ListControlExtensions.LoadViewState(savedState, base.LoadViewState, () => this.Items);
+		}
+		#endregion
+
 	}
 }

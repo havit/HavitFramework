@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Globalization;
+using Castle.Core.Internal;
 using Havit.BusinessLayerTest;
 using Havit.Web.UI.WebControls;
 
@@ -29,6 +30,7 @@ namespace Havit.WebApplicationTest.HavitWebTests
 			{
 				TestGridView.DataSource = new int[] { 1, 2, 3 };
 				TestGridView.DataBind();
+				SudeLicheDDL.Items.AsEnumerable().ForEach(item => item.SetOptionGroup(int.Parse(item.Value) % 2 == 0 ? "Sudé" : "Liché"));
 			}
 		}
 		#endregion

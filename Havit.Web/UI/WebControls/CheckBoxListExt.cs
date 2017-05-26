@@ -127,41 +127,7 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		protected virtual ListItem CreateItem(object dataItem)
 		{
-			bool flag = false;
-			bool flag2 = false;
-			if ((DataTextField.Length != 0) || (DataValueField.Length != 0))
-			{
-				flag = true;
-			}
-			if (DataTextFormatString.Length != 0)
-			{
-				flag2 = true;
-			}
-			ListItem item = new ListItem();
-			if (flag)
-			{
-				if (DataTextField.Length > 0)
-				{
-					item.Text = DataBinderExt.GetValue(dataItem, DataTextField, DataTextFormatString);
-				}
-				if (DataValueField.Length > 0)
-				{
-					item.Value = DataBinderExt.GetValue(dataItem, DataValueField, null);
-				}
-			}
-			else
-			{
-				if (flag2)
-				{
-					item.Text = string.Format(CultureInfo.CurrentCulture, DataTextFormatString, new object[] { dataItem });
-				}
-				else
-				{
-					item.Text = dataItem.ToString();
-				}
-				item.Value = dataItem.ToString();
-			}
-			return item;
+			return ListControlExtensions.CreateListItem(dataItem, DataTextField, DataTextFormatString, DataValueField, String.Empty /* CheckBoxList nepoužívá OptionGroups */);
 		}
 
 		/// <summary>

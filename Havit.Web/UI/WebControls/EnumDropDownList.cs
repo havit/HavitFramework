@@ -183,6 +183,24 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
+		#region DataOptionGroupField
+		/// <summary>
+		/// Na EnumDropDownList není vlastnost podporována, vyhazuje výjimku NotSupportedException.
+		/// </summary>
+		/// <exception cref="NotSupportedException">Vždy, při jakémkoliv přístupu.</exception>
+		public override string DataOptionGroupField
+		{
+			get
+			{
+				throw new NotSupportedException("EnumDropDownList nepodporuje DataOptionGroupField.");
+			}
+			set
+			{
+				throw new NotSupportedException("EnumDropDownList nepodporuje DataOptionGroupField.");
+			}
+		}
+		#endregion
+
 		#region OnLoad
 		/// <summary>
 		/// Handles the <see cref="E:System.Web.UI.Control.Load"/> event.

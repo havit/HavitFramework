@@ -92,12 +92,12 @@ namespace Havit.Web.UI.WebControls
 
 		#region SortExpression
 		/// <summary>
-		/// Určuje, podle jaké property jsou řazena. Pokud není žádná hodnota nastavena použije se hodnota vlastnosti DataSortField a SortDirection.
+		/// Určuje, podle jaké property jsou řazena. Pokud není žádná hodnota nastavena použije se hodnota vlastnosti DateTextField.
 		/// Může obsahovat více vlastností oddělených čárkou, směr řazení ASC/DESC. Má tedy význam podobný jako DefaultSortExpression u GridViewExt.
 		/// </summary>
 		public string SortExpression
 		{
-			get { return (string)ViewState["SortExpression"] ?? DataTextField; }
+			get { return (string)(ViewState["SortExpression"] ?? ((DataOptionGroupField.Length > 0) ? DataOptionGroupField + ", " + DataTextField : DataTextField)); }
 			set { ViewState["SortExpression"] = value; }
 		}
 		#endregion
@@ -186,6 +186,10 @@ namespace Havit.Web.UI.WebControls
 						ListItem newListItem = new ListItem();
 						newListItem.Text = DataBinder.Eval(businessObject, DataTextField).ToString();
 						newListItem.Value = DataBinder.Eval(businessObject, DataValueField).ToString();
+						if (DataOptionGroupField.Length > 0)
+						{
+							newListItem.SetOptionGroup(DataBinder.Eval(value, DataOptionGroupField).ToString());
+						}
 						newListItem.Selected = true;
 						Items.Add(newListItem);
 					}

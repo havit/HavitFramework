@@ -135,7 +135,7 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-		#region LeaveOpenInAutoPostBack
+		#region ShowFilter
 		/// <summary>
 		/// Zobrazí inline filter položek checkbox listu.
 		/// </summary>
@@ -148,6 +148,24 @@ namespace Havit.Web.UI.WebControls
 			set
 			{
 				ViewState["ShowFilter"] = value;
+			}
+		}
+		#endregion
+
+
+		#region NoMatchesFoundText
+		/// <summary>
+		/// Text, který se zobrazí, pokud při vyhledávání (viz ShowFilter) není nalezena žádná položka.
+		/// </summary>
+		public string NoMatchesFoundText
+		{
+			get
+			{
+				return (string)(ViewState["NoMatchesFoundText"] ?? String.Empty);
+			}
+			set
+			{
+				ViewState["NoMatchesFoundText"] = value;
 			}
 		}
 		#endregion
@@ -342,22 +360,27 @@ namespace Havit.Web.UI.WebControls
 				writer.AddAttribute("data-dropdowncheckboxlist-filter", "true");
 			}
 
-			if (!string.IsNullOrEmpty(OnClientDropDownBlur))
+			if (!String.IsNullOrEmpty(NoMatchesFoundText))
+			{
+				writer.AddAttribute("data-dropdowncheckboxlist-nomatchesfound", NoMatchesFoundText);
+			}
+
+			if (!String.IsNullOrEmpty(OnClientDropDownBlur))
 			{
 				writer.AddAttribute("data-dropdowncheckboxlist-onblurscript", OnClientDropDownBlur);
 			}
 
-			if (!string.IsNullOrEmpty(OnClientDropDownClick))
+			if (!String.IsNullOrEmpty(OnClientDropDownClick))
 			{
 				writer.AddAttribute("data-dropdowncheckboxlist-onclickscript", OnClientDropDownClick);
 			}
 
-			if (!string.IsNullOrEmpty(OnClientDropDownOpen))
+			if (!String.IsNullOrEmpty(OnClientDropDownOpen))
 			{
 				writer.AddAttribute("data-dropdowncheckboxlist-onopenscript", OnClientDropDownOpen);
 			}
 
-			if (!string.IsNullOrEmpty(OnClientDropDownClose))
+			if (!String.IsNullOrEmpty(OnClientDropDownClose))
 			{
 				writer.AddAttribute("data-dropdowncheckboxlist-onclosescript", OnClientDropDownClose);
 			}

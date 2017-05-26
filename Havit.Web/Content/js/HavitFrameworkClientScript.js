@@ -283,6 +283,8 @@ var havitDropDownCheckBoxListExtensions = {
             var multipleWidth = $item.data("dropdowncheckboxlist-itemwidth") || 0;
             var single = $item.data("dropdowncheckboxlist-single") ? true : false;
             var filter = $item.data("dropdowncheckboxlist-filter") ? true : false;
+	        var noMatchesFound = $item.data("dropdowncheckboxlist-nomatchesfound");
+
             var multipleSelectParams = {
                 isOpen: isOpen,
                 selectAll: selectAll,
@@ -295,10 +297,16 @@ var havitDropDownCheckBoxListExtensions = {
                 countSelected: false,
                 filter: filter
             };
+
             if (selectAllText) {
                 multipleSelectParams.selectAllText = selectAllText;
                 multipleSelectParams.selectAllDelimiter = ['', ''];
             }
+
+            if (noMatchesFound) {
+                multipleSelectParams.noMatchesFound = noMatchesFound;
+            }
+
             var onclickscript = $item.data("dropdowncheckboxlist-onclickscript");
             var onblurscript = $item.data("dropdowncheckboxlist-onblurscript");
             var onopenscript = $item.data("dropdowncheckboxlist-onopenscript");

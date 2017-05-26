@@ -152,7 +152,6 @@ namespace Havit.Web.UI.WebControls
 		}
 		#endregion
 
-
 		#region NoMatchesFoundText
 		/// <summary>
 		/// Text, který se zobrazí, pokud při vyhledávání (viz ShowFilter) není nalezena žádná položka.

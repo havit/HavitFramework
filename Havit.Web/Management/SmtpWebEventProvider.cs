@@ -21,12 +21,20 @@ namespace Havit.Web.Management
 	/// Konfigurace je obdobná, podporovány jsou následující hodnoty:
 	/// <list type="bullet">
 	///		<item>
+	///			<term>from</term>
+	///			<description>Odesílatem emailu.</description>
+	///		</item>
+	///		<item>
 	///			<term>to</term>
 	///			<description>Adresát emailu.</description>
 	///		</item>
 	///		<item>
-	///			<term>from</term>
-	///			<description>Odesílatem emailu.</description>
+	///			<term>cc</term>
+	///			<description>Adresát emailu v kopii.</description>
+	///		</item>
+	///		<item>
+	///			<term>bcc</term>
+	///			<description>Adresát emailu ve skryté kopii.</description>
 	///		</item>
 	///		<item>
 	///			<term>smtpServer</term>
@@ -56,6 +64,8 @@ namespace Havit.Web.Management
 	{
 		private string _from;
 		private string _to;
+		private string _cc;
+		private string _bcc;
 		private string _smtpServer;
 		private string _smtpUsername;
 		private string _smtpPassword;
@@ -71,6 +81,8 @@ namespace Havit.Web.Management
 		{
 			ProviderUtil.GetAndRemoveStringAttribute(config, "from", name, ref _from);
 			ProviderUtil.GetAndRemoveStringAttribute(config, "to", name, ref _to);
+			ProviderUtil.GetAndRemoveStringAttribute(config, "cc", name, ref _cc);
+			ProviderUtil.GetAndRemoveStringAttribute(config, "bcc", name, ref _bcc);
 			ProviderUtil.GetAndRemoveStringAttribute(config, "smtpServer", name, ref _smtpServer);
 			ProviderUtil.GetAndRemoveStringAttribute(config, "smtpUsername", name, ref _smtpUsername);
 			ProviderUtil.GetAndRemoveStringAttribute(config, "smtpPassword", name, ref _smtpPassword);			
@@ -130,22 +142,32 @@ namespace Havit.Web.Management
 			MailMessage mailMessage = new MailMessage();
 			mailMessage.BodyTransferEncoding = System.Net.Mime.TransferEncoding.SevenBit;
 
-			if (!String.IsNullOrEmpty(_to))
-			{
-				foreach (string _toAddress in _to.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries))
-				{
-					mailMessage.To.Add(_toAddress.Trim());
-				}
-			}
-
 			if (!String.IsNullOrEmpty(_from))
 			{
 				mailMessage.From = new MailAddress(_from);
 			}
 
+			GetMailMessage_AddRecipients(mailMessage.To, _to);
+			GetMailMessage_AddRecipients(mailMessage.CC, _cc);
+			GetMailMessage_AddRecipients(mailMessage.Bcc, _bcc);
+
 			mailMessage.Subject = GetMailMessageSubject(raisedEvent);
 			mailMessage.Body = GetMailMessageBody(raisedEvent);
 			return mailMessage;
+		}
+
+		/// <summary>
+		/// Přidá adresáty emailu.
+		/// </summary>
+		private void GetMailMessage_AddRecipients(MailAddressCollection mailAddressCollection, string recipients)
+		{
+			if (!String.IsNullOrEmpty(recipients))
+			{
+				foreach (string _recipientsAddress in recipients.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries))
+				{
+					mailAddressCollection.Add(_recipientsAddress.Trim());
+				}
+			}
 		}
 
 		/// <summary>

@@ -100,6 +100,7 @@ namespace Havit.Data.Entity.Tests
 			int masterId;
 			using (MasterChildDbContext dbContext = new MasterChildDbContext())
 			{
+				dbContext.Database.Initialize(true);
 				Master master = new Master { Children = { new Child() } };
 				dbContext.Set<Master>().Add(master);
 				dbContext.SaveChanges();

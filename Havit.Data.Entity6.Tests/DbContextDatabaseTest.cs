@@ -18,10 +18,11 @@ namespace Havit.Data.Entity.Tests
 		public void DbContextDatabase_SqlQueryRaw()
 		{
 			// Arrange
-			MasterChildDbContext context = new MasterChildDbContext();
+			MasterChildDbContext dbContext = new MasterChildDbContext();
+			dbContext.Database.Initialize(true);
 
 			// Act
-			DbRawSqlQuery<int> query = ((IDbContext)context).Database.SqlQueryRaw<int>("SELECT Count(MasterId) FROM dbo.Master WHERE MasterId < @p0", -5 /* nemá funkční význam, jen ukázka parametrizace */);
+			DbRawSqlQuery<int> query = ((IDbContext)dbContext).Database.SqlQueryRaw<int>("SELECT Count(MasterId) FROM dbo.Master WHERE MasterId < @p0", -5 /* nemá funkční význam, jen ukázka parametrizace */);
 			int count = query.Single();
 
 			// Assert
@@ -32,17 +33,19 @@ namespace Havit.Data.Entity.Tests
 		public void DbContextDatabase_SqlQueryEntity()
 		{
 			// Arrange
-			MasterChildDbContext context = new MasterChildDbContext();
+			MasterChildDbContext dbContext = new MasterChildDbContext();
+			dbContext.Database.Initialize(true);
+
 			Master master1 = new Master();
-			context.Set<Master>().Add(master1);
-			context.SaveChanges();
+			dbContext.Set<Master>().Add(master1);
+			dbContext.SaveChanges();
 
 			// Act
-			DbSqlQuery<Master> query = ((IDbContext)context).Database.SqlQueryEntity<Master>("SELECT MasterId as Id FROM dbo.Master WHERE MasterId = @p0", master1.Id);
+			DbSqlQuery<Master> query = ((IDbContext)dbContext).Database.SqlQueryEntity<Master>("SELECT MasterId as Id FROM dbo.Master WHERE MasterId = @p0", master1.Id);
 			Master master = query.Single();
 
 			// Assert
-			Assert.IsTrue(context.Entry(master).State == EntityState.Unchanged); // je trackovaný
+			Assert.IsTrue(dbContext.Entry(master).State == EntityState.Unchanged); // je trackovaný
 		}
 
 	}

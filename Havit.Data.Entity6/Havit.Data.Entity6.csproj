@@ -67,6 +67,8 @@
     <Compile Include="Annotations\SuppressConventionAnnotation.cs" />
     <Compile Include="Conventions\ForeignKeyIndexConvention.cs" />
     <Compile Include="Conventions\DataTypePropertyAttributeConvention.cs" />
+    <Compile Include="DbContextDatabase.cs" />
+    <Compile Include="IDbContextDatabase.cs" />
     <Compile Include="Internal\IndexHelper.cs" />
     <Compile Include="Internal\IndexNameHelper.cs" />
     <Compile Include="Conventions\NoUnderscopesInPropertiesNamingConvention.cs" />

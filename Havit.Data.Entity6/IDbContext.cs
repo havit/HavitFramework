@@ -17,6 +17,11 @@ namespace Havit.Data.Entity
 		bool AutoDetectChangesEnabled { get; set; }
 
 		/// <summary>
+		/// Vrátí objekt pro přímý přístup k databázi.
+		/// </summary>
+		IDbContextDatabase Database { get; }
+
+		/// <summary>
 		/// Vrací DbSet pro danou entitu.
 		/// </summary>
 		DbSet<TEntity> Set<TEntity>()

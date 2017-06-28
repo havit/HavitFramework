@@ -197,6 +197,23 @@ namespace Havit.Data.Entity
 		}
 
 		#region IDbContext interface explicit implementation
+
+		/// <summary>
+		/// Vrátí objekt pro přímý přístup k databázi.
+		/// </summary>
+		IDbContextDatabase IDbContext.Database
+		{
+			get
+			{
+				if (dbContextDatabase == null)
+				{
+					dbContextDatabase = new DbContextDatabase(this);
+				}
+				return dbContextDatabase;
+			}
+		}
+		private IDbContextDatabase dbContextDatabase;
+
 		/// <summary>
 		/// Uloží evidované změny.
 		/// </summary>
@@ -297,6 +314,6 @@ namespace Havit.Data.Entity
 			internal DbContextDefaultDatabase()
 			{
 			}
-		}
+		}	
 	}
 }

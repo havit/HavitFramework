@@ -78,6 +78,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="DbContextDatabaseTest.cs" />
     <Compile Include="DbContextTest.cs" />
     <Compile Include="DbEntityValidationExceptionExtensions.cs" />
     <Compile Include="Infrastructure\EmptyDbContext.cs" />

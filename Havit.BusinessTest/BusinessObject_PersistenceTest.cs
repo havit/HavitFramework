@@ -46,6 +46,79 @@ namespace Havit.BusinessTest
 		}
 
 		[TestMethod]
+		public void BusinessObject_TryLoad_WithTransaction_ReloadsObject()
+		{
+			using (new IdentityMapScope())
+			{
+				// Arrange
+				Uzivatel uzivatel = Uzivatel.CreateObject();
+				uzivatel.Username = Guid.NewGuid().ToString();
+				uzivatel.Save();
+
+				DbParameter parameter = DbConnector.Default.ProviderFactory.CreateParameter();
+				parameter.ParameterName = "@UzivatelID";
+				parameter.DbType = System.Data.DbType.Int32;
+				parameter.Direction = System.Data.ParameterDirection.Input;
+				parameter.Value = uzivatel.ID;
+
+				DbCommand cmd = DbConnector.Default.ProviderFactory.CreateCommand();
+				cmd.CommandText = "UPDATE Uzivatel SET Email = 'hfw@havit.local' WHERE UzivatelID = @UzivatelID";
+				cmd.Parameters.Add(parameter);
+
+				DbConnector.Default.ExecuteNonQuery(cmd);
+
+				// Předpoklad:
+				Assert.AreEqual(String.Empty, uzivatel.Email);
+
+				// Act
+				DbConnector.Default.ExecuteTransaction(transaction => uzivatel.TryLoad(transaction));
+
+				// Assert
+				Assert.AreEqual("hfw@havit.local", uzivatel.Email);
+				
+				// Cleanup
+				uzivatel.Delete();
+			}
+		}
+
+		[TestMethod]
+		public void BusinessObject_TryLoad_WithoutTransaction_DoesNotReloadObject()
+		{
+			using (new IdentityMapScope())
+			{
+				// Arrange
+				Uzivatel uzivatel = Uzivatel.CreateObject();
+				uzivatel.Username = Guid.NewGuid().ToString();
+				uzivatel.Save();
+
+				DbParameter parameter = DbConnector.Default.ProviderFactory.CreateParameter();
+				parameter.ParameterName = "@UzivatelID";
+				parameter.DbType = System.Data.DbType.Int32;
+				parameter.Direction = System.Data.ParameterDirection.Input;
+				parameter.Value = uzivatel.ID;
+
+				DbCommand cmd = DbConnector.Default.ProviderFactory.CreateCommand();
+				cmd.CommandText = "UPDATE Uzivatel SET Email = 'hfw@havit.local' WHERE UzivatelID = @UzivatelID";
+				cmd.Parameters.Add(parameter);
+
+				DbConnector.Default.ExecuteNonQuery(cmd);
+
+				// Předpoklad:
+				Assert.AreEqual(String.Empty, uzivatel.Email);
+
+				// Act
+				uzivatel.TryLoad();
+
+				// Assert
+				Assert.AreEqual(String.Empty, uzivatel.Email);
+
+				// Cleanup
+				uzivatel.Delete();
+			}
+		}
+
+
+		[TestMethod]
 		public void BusinessObject_Delete_DeletesObjectAlreadySavedInTheSameTransaction()
 		{
 			using (new IdentityMapScope())

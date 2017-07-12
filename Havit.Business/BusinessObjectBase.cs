@@ -204,17 +204,18 @@ namespace Havit.Business
 		private volatile object loadLock;
 
 		/// <summary>
-		/// Nahraje objekt z perzistentního uložiště.
+		/// Nahraje objekt z perzistentního uložiště (pro disconnected objekty nic nedělá).
 		/// </summary>
 		/// <remarks>
 		/// Pozor, pokud je již objekt načten a není určena transakce (null), znovu se nenahrává.
 		/// Pokud je transakce určena, načte se znovu.
 		/// Pokud se načtení podaří (nebo není načítání třeba, tj. není určena transakce a objekt je již načten), vrací true. Jinak (např. v případě neexistence dat pro objekt) vrací false.
+		/// Pro disconnected objekty vrací vždy true.
 		/// </remarks>
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt načten; null, pokud bez transakce</param>
 		public bool TryLoad(DbTransaction transaction)
 		{
-			if (this.IsLoaded && (transaction == null))
+			if ((this.IsLoaded && (transaction == null)) || IsDisconnected)
 			{
 				// pokud je již objekt načten, nenačítáme ho znovu
 				return true;
@@ -237,7 +238,7 @@ namespace Havit.Business
 
 			lock (loadLock)
 			{
-				if (this.IsLoaded)
+				if (this.IsLoaded && (transaction == null)) // sem se již disconnected nemůže dostat, nemusíme řešit
 				{
 					return true;
 				}
@@ -253,7 +254,7 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Nahraje objekt z perzistentního uložiště.
+		/// Nahraje objekt z perzistentního uložiště (pro disconnected objekty nic nedělá).
 		/// </summary>
 		/// <remarks>
 		/// Pozor, pokud je již objekt načten a není určena transakce (null), znovu se nenahrává.
@@ -271,7 +272,7 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Nahraje objekt z perzistentního uložiště, bez transakce.
+		/// Nahraje objekt z perzistentního uložiště, bez transakce (pro disconnected objekty nic nedělá).
 		/// Pokud se načtení nedaří, je vyhozena výjimka.
 		/// </summary>
 		/// <remarks>
@@ -283,8 +284,9 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Nahraje objekt z perzistentního uložiště, bez transakce.
+		/// Nahraje objekt z perzistentního uložiště, bez transakce (pro disconnected objekty nic nedělá).
 		/// Pokud se načtení podaří, vrací true, jinak (např. v případě neexistence dat pro objekt) vrací false.
+		/// Pro disconnected objekty vrací vždy true.
 		/// </summary>
 		/// <remarks>
 		/// Pozor, pokud je již objekt načten, znovu se nenahrává.

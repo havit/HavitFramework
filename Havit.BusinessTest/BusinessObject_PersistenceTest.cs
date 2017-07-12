@@ -117,7 +117,6 @@ namespace Havit.BusinessTest
 			}
 		}
 
-
 		[TestMethod]
 		public void BusinessObject_Delete_DeletesObjectAlreadySavedInTheSameTransaction()
 		{

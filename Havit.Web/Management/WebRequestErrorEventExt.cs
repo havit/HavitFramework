@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Web;
 using System.Web.Management;
@@ -82,7 +83,7 @@ namespace Havit.Web.Management
 			// Exception
 			sb.AppendLine();
 			sb.AppendLine("Exception: ");
-			FormatExceptionInformation(sb);
+			FormatException(sb, this.ErrorException);
 
 			// Application information
 			sb.AppendLine();
@@ -239,7 +240,7 @@ namespace Havit.Web.Management
 			{
 				sb.AppendLine("    Assembly: " + _currentApplicationInstanceType.Assembly.GetName().Name);
 				sb.AppendLine("    Assembly Version: " + _currentApplicationInstanceType.Assembly.GetName().Version.ToString());
-				sb.AppendLine("    Assembly File Version: " + System.Diagnostics.FileVersionInfo.GetVersionInfo(_currentApplicationInstanceType.Assembly.Location).FileVersion);
+				sb.AppendLine("    Product Version: " + System.Diagnostics.FileVersionInfo.GetVersionInfo(_currentApplicationInstanceType.Assembly.Location).ProductVersion);
 			}
 		}
 		#endregion
@@ -258,15 +259,15 @@ namespace Havit.Web.Management
 		}
 		#endregion
 
-		#region FormatExceptionInformation
+		#region FormatException
 		/// <summary>
 		/// Zapíše do StringBuilderu informace o výjimce.
 		/// </summary>
-		private void FormatExceptionInformation(StringBuilder sb)
+		private void FormatException(StringBuilder sb, Exception exception)
 		{
-			if (ErrorException != null)
+			if (exception != null)
 			{
-				sb.AppendLine(this.ErrorException.ToString());
+				sb.AppendLine(exception.ToString());
 			}
 		}
 		#endregion

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Serialization;
 
 namespace Havit.Data
 {
@@ -15,6 +16,7 @@ namespace Havit.Data
 	/// Datový zdroj je tedy potřeba pouze v okamžiku volání constructoru a následně ho můžeme zlikvidovat.<br/>
 	/// Stejnětak je vhodné použít na všechny loady jeden DataRecord a předávat si ho mezi objekty.
 	/// </remarks>
+	[Serializable]
 	public class DataRecord
 	{
 		#region Properties
@@ -27,7 +29,6 @@ namespace Havit.Data
 //			set { 
 //				fullLoad = value; }
 		}
-		//private bool fullLoad;
 
 		/// <summary>
 		/// Indikuje množství dat, které jsou uloženy v DataRecordu vůči všem možným sloupcům řádků.

@@ -4,6 +4,9 @@ using System.Text;
 using System.Collections.Generic;
 using System.Data;
 using Havit.Data;
+using Moq;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 
 namespace Havit.Data.Tests
 {
@@ -201,6 +204,44 @@ namespace Havit.Data.Tests
 
 			Assert.AreEqual(target_expected, tryGetTarget, "target_TryGet_expected was not set correctly.");
 			Assert.AreEqual(expected, actual, "Havit.Data.DataRecord.TryGet<T> did not return the expected value.");
+		}
+
+		[TestMethod]
+		public void DataRecord_IsSerializable()
+		{
+			// Arrange
+			Mock<IDataRecord> dataRecordMock = new Mock<IDataRecord>(MockBehavior.Loose);
+			dataRecordMock.Setup(m => m.FieldCount).Returns(3);
+			dataRecordMock.Setup(m => m.GetName(0)).Returns("ID");
+			dataRecordMock.Setup(m => m.GetName(1)).Returns("Name");
+			dataRecordMock.Setup(m => m.GetName(2)).Returns("Anything");
+			dataRecordMock.SetupGet(m => m[0]).Returns(256);
+			dataRecordMock.SetupGet(m => m[1]).Returns("Alice");
+			dataRecordMock.SetupGet(m => m[2]).Returns(new DateTime(2015, 4, 5));
+			DataRecord dataRecord = new DataRecord(dataRecordMock.Object, DataLoadPower.FullLoad);
+
+			// Act
+			DataRecord dataRecordDeserialized;
+
+			BinaryFormatter formater = new BinaryFormatter();
+			using (MemoryStream ms = new MemoryStream())
+			{
+				formater.Serialize(ms, dataRecord);
+				byte[] bytes = ms.ToArray();
+
+				ms.Seek(0, SeekOrigin.Begin);
+
+				dataRecordDeserialized = (DataRecord)formater.Deserialize(ms);
+			}
+
+			// Assert
+			Assert.AreNotSame(dataRecord, dataRecordDeserialized);
+			Assert.AreEqual(dataRecord.DataLoadPower, dataRecordDeserialized.DataLoadPower, "DataLoadPower");
+			Assert.AreEqual(dataRecord.FullLoad, dataRecordDeserialized.FullLoad, "FullLoad");
+			Assert.AreEqual(dataRecord["ID"], dataRecordDeserialized["ID"], "ID");
+			Assert.AreEqual(dataRecord["Name"], dataRecordDeserialized["Name"], "Name");
+			Assert.AreEqual(dataRecord["Anything"], dataRecordDeserialized["Anything"], "Anything");
+
 		}
 	}
 

@@ -125,7 +125,7 @@ namespace Havit.Data.Entity.Patterns.Windsor.Installers
 		/// </summary>
 		private static bool DoesNotHaveFakeAttribute(Type type)
 		{
-			return !type.HasAttribute<FakeAttribute>();
+			return !type.IsDefined(typeof(FakeAttribute), true);
 		}
 	}
 }

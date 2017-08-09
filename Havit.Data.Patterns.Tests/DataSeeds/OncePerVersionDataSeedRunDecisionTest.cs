@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Havit.Data.Patterns.DataSeeds;
+using Havit.Data.Patterns.DataSeeds.Profiles;
 using Havit.Data.Patterns.Tests.DataSeeds.Infrastructure;
 using Havit.Services.FileStorage;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -20,18 +21,19 @@ namespace Havit.Data.Patterns.Tests.DataSeeds
 			// Arrange
 			string currentState = String.Empty;
 
+		    IDataSeedProfile defaultProfile = new DefaultDataSeedProfile();
 			Mock<IDataSeedRunDecisionStatePersister> dataSeedRunDecisionStatePersisterMock = new Mock<IDataSeedRunDecisionStatePersister>();
-			dataSeedRunDecisionStatePersisterMock.Setup(m => m.ReadCurrentState()).Returns(() => currentState); /* lambda - nutno vyhodnotit až při volání! */
-			dataSeedRunDecisionStatePersisterMock.Setup(m => m.WriteCurrentState(It.IsAny<string>())).Callback((string newState) => { currentState = newState; });
+			dataSeedRunDecisionStatePersisterMock.Setup(m => m.ReadCurrentState(defaultProfile.ProfileName)).Returns((string profileName) => currentState); /* lambda - nutno vyhodnotit až při volání! */
+			dataSeedRunDecisionStatePersisterMock.Setup(m => m.WriteCurrentState(defaultProfile.ProfileName, It.IsAny<string>())).Callback((string profileName, string newState) => { currentState = newState; });
 
 			// Act + Assert
 			OncePerVersionDataSeedRunDecision decision = new OncePerVersionDataSeedRunDecision(dataSeedRunDecisionStatePersisterMock.Object);
 
-			List<Type> dataSeedTypes = new List<Type> { typeof(DataSeedCycleA), typeof(DataSeedCycleB), typeof(DataSeedDependentOnItself) };
+		    List<Type> dataSeedTypes = new List<Type> { typeof(DataSeedCycleA), typeof(DataSeedCycleB), typeof(DataSeedDependentOnItself) };
 
-			Assert.IsTrue(decision.ShouldSeedData(dataSeedTypes));
-			decision.SeedDataCompleted(dataSeedTypes);
-			Assert.IsFalse(decision.ShouldSeedData(dataSeedTypes));
+            Assert.IsTrue(decision.ShouldSeedData(defaultProfile, dataSeedTypes));
+			decision.SeedDataCompleted(defaultProfile, dataSeedTypes);
+			Assert.IsFalse(decision.ShouldSeedData(defaultProfile, dataSeedTypes));
 		}
 	}
 }

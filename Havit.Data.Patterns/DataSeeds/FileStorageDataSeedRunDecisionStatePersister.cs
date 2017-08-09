@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.IO.IsolatedStorage;
 using System.Text;
 using Havit.Services.FileStorage;
 
@@ -12,17 +11,13 @@ namespace Havit.Data.Patterns.DataSeeds
 	{
 		private readonly IFileStorageService fileStorageService;
 
-		private readonly string filename;
-
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
 		/// <param name="fileStorageService">FileStorage použitá pro zápis stavu state persisteru.</param>
-		/// <param name="filename">Název souboru.</param>
-		public FileStorageDataSeedRunDecisionStatePersister(IFileStorageService fileStorageService, string filename = "DataSeedState.txt")
+		public FileStorageDataSeedRunDecisionStatePersister(IFileStorageService fileStorageService)
 		{
 			this.fileStorageService = fileStorageService;
-			this.filename = filename;
 		}
 
 		/// <summary>
@@ -30,11 +25,11 @@ namespace Havit.Data.Patterns.DataSeeds
 		/// V případě nemožnosti přečíst stav (neexistence souboru, atp.) vrací null.
 		/// </summary>
 		/// <returns>Aktuální stav.</returns>
-		public string ReadCurrentState()
+		public string ReadCurrentState(string profileName)
 		{
 			try
 			{
-				using (Stream stream = fileStorageService.Read(filename))
+				using (Stream stream = fileStorageService.Read(GetFileName(profileName)))
 				using (StreamReader reader = new StreamReader(stream))
 				{
 					return reader.ReadToEnd();
@@ -49,8 +44,7 @@ namespace Havit.Data.Patterns.DataSeeds
 		/// <summary>
 		/// Zapíše aktuální stav.
 		/// </summary>
-		/// <param name="currentState">Aktuální stav k zapsání.</param>
-		public void WriteCurrentState(string currentState)
+		public void WriteCurrentState(string profileName, string currentState)
 		{
 			using (MemoryStream memoryStream = new MemoryStream())
 			{
@@ -60,9 +54,14 @@ namespace Havit.Data.Patterns.DataSeeds
 				}
 				memoryStream.Seek(0, SeekOrigin.Begin);
 
-				fileStorageService.Save(filename, memoryStream, "text/plain");
+				fileStorageService.Save(GetFileName(profileName), memoryStream, "text/plain");
 			}
 		}
+
+	    private string GetFileName(string profileName)
+	    {
+	        return "DataSeedState." + profileName + ".txt";
+	    }
 	
 	}
 }

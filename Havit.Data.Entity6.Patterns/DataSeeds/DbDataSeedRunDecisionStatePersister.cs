@@ -32,9 +32,9 @@ namespace Havit.Data.Entity.Patterns.DataSeeds
 		/// <remarks>
 		/// Stav je držen ve třídě DataSeed (tabulka __DataSeed) v záznamu s Id = 1.
 		/// </remarks>
-		public string ReadCurrentState()
+		public string ReadCurrentState(string profileName)
 		{
-			Model.DataSeedVersion dataSeedVersion = dbContext.Set<Model.DataSeedVersion>().SingleOrDefault(item => item.Id == 1);
+			Model.DataSeedVersion dataSeedVersion = dbContext.Set<Model.DataSeedVersion>().SingleOrDefault(item => item.ProfileName == profileName);
 			return dataSeedVersion?.Version;
 		}
 
@@ -45,12 +45,12 @@ namespace Havit.Data.Entity.Patterns.DataSeeds
 		/// <remarks>
 		/// Stav je držen ve třídě DataSeed (tabulka __DataSeed) v záznamu s Id = 1.
 		/// </remarks>
-		public void WriteCurrentState(string currentState)
+		public void WriteCurrentState(string profileName, string currentState)
 		{
-			Model.DataSeedVersion dataSeedVersion = dbContext.Set<Model.DataSeedVersion>().SingleOrDefault(item => item.Id == 1);
+			Model.DataSeedVersion dataSeedVersion = dbContext.Set<Model.DataSeedVersion>().SingleOrDefault(item => item.ProfileName == profileName);
 			if (dataSeedVersion == null)
 			{
-				dataSeedVersion = new Model.DataSeedVersion { Id = 1 };
+				dataSeedVersion = new Model.DataSeedVersion { ProfileName = profileName };
 				dbContext.Set<Model.DataSeedVersion>().Add(dataSeedVersion);
 			}
 			dataSeedVersion.Version = currentState;

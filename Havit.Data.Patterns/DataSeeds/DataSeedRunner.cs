@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using Havit.Data.Patterns.DataSeeds;
+using Havit.Data.Patterns.DataSeeds.Profiles;
 using Havit.Diagnostics.Contracts;
 
 namespace Havit.Data.Patterns.DataSeeds
@@ -14,63 +16,124 @@ namespace Havit.Data.Patterns.DataSeeds
 		private readonly List<IDataSeed> dataSeeds;
 		private readonly IDataSeedRunDecision dataSeedRunDecision;
 		private readonly IDataSeedPersister dataSeedPersister;
-		private readonly Dictionary<Type, IDataSeed> dataSeedDictionary;
-		private List<IDataSeed> completedDataSeeds;
 
-		/// <summary>
-		/// Konstruktor.
+	    /// <summary>
+	    /// Konstruktor.
+	    /// </summary>
+	    /// <param name="dataSeeds">Předpisy seedování objektů.</param>
+	    /// <param name="dataSeedRunDecision">Služba vracející, zda se má dataseed spustit. Lze takto spouštění potlačit (např. pokud již bylo spuštěno).</param>
+	    /// <param name="dataSeedPersister">Persister seedovaných objektů.</param>
+	    public DataSeedRunner(IEnumerable<IDataSeed> dataSeeds, IDataSeedRunDecision dataSeedRunDecision, IDataSeedPersister dataSeedPersister)
+	    {
+	        Contract.Requires(dataSeeds != null);
+	        Contract.Requires(dataSeedRunDecision != null);
+	        Contract.Requires(dataSeedPersister != null);
+
+	        this.dataSeeds = dataSeeds.ToList();
+
+	        if (this.dataSeeds.Select(item => item.GetType()).Distinct().Count() != this.dataSeeds.Count())
+	        {
+	            throw new ArgumentException("Contains dataseed type duplicity.", nameof(dataSeeds));
+	        }
+
+	        this.dataSeedRunDecision = dataSeedRunDecision;
+	        this.dataSeedPersister = dataSeedPersister;
+	    }
+
+	    /// <summary>
+		/// Provede seedování dat daného profilu.
 		/// </summary>
-		/// <param name="dataSeeds">Předpisy seedování objektů.</param>
-		/// <param name="dataSeedRunDecision">Služba vracející, zda se má dataseed spustit. Lze takto spouštění potlačit (např. pokud již bylo spuštěno).</param>
-		/// <param name="dataSeedPersister">Persister seedovaných objektů.</param>
-		public DataSeedRunner(IEnumerable<IDataSeed> dataSeeds, IDataSeedRunDecision dataSeedRunDecision, IDataSeedPersister dataSeedPersister)
-		{
-			Contract.Requires(dataSeeds != null);
-			Contract.Requires(dataSeedRunDecision != null);
-			Contract.Requires(dataSeedPersister != null);
-
-			if (dataSeeds.Select(item => item.GetType()).Distinct().Count() != dataSeeds.Count())
-			{
-				throw new ArgumentException("Contains dataseed type duplicity.", nameof(dataSeeds));
-			}
-
-			this.dataSeeds = dataSeeds.ToList();
-			this.dataSeedRunDecision = dataSeedRunDecision;
-			this.dataSeedPersister = dataSeedPersister;
-			this.dataSeedDictionary = dataSeeds.ToDictionary(item => item.GetType(), item => item);
+		public void SeedData<TDataSeedProfile>(bool forceRun = false)
+            where TDataSeedProfile : IDataSeedProfile, new()
+	    {
+            SeedData(typeof(TDataSeedProfile), forceRun);
 		}
 
-		/// <summary>
-		/// Pokud DataSeedRunDecision vrátí true, provede seedování dat dle předpisů a persistuje (uloží) je.
-		/// Rozhodnutí DataSeedRunDecision lze přebít zavoláním s forceRun=true, pak je seedování spuštěno vždy.
-		/// </summary>
-		public void SeedData(bool forceRun = false)
-		{
-			List<Type> dataSeedTypes = dataSeeds.Select(item => item.GetType()).ToList();
+        /// <summary>
+        /// Provede seedování dat daného profilu.
+        /// </summary>
+	    public void SeedData(Type dataSeedProfileType, bool forceRun = false)
+	    {
+	        SeedProfileWithPrequisites(dataSeedProfileType, forceRun, new Stack<Type>(), new List<Type>());
+	    }
 
-			if (forceRun || dataSeedRunDecision.ShouldSeedData(dataSeedTypes))
-			{
-				completedDataSeeds = new List<IDataSeed>();
-				Stack<IDataSeed> stack = new Stack<IDataSeed>();
-				foreach (IDataSeed dataSeed in dataSeedDictionary.Values)
-				{
-					SeedService(dataSeed, stack);
-				}
-				completedDataSeeds = null;
+        /// <summary>
+        /// Provede seedování profilu s prerequisitami. Řeší detekci cyklů závislostí, atp.
+        /// </summary>
+        private void SeedProfileWithPrequisites(Type profileType, bool forceRun, Stack<Type> profileTypesStack, List<Type> completedProfileTypes)
+	    {
+            // Already completed
+	        if (completedProfileTypes.Contains(profileType))
+	        {
+	            return;
+	        }
 
-				dataSeedRunDecision.SeedDataCompleted(dataSeedTypes);
-			}
-		}
+            // Cycle?
+            if (profileTypesStack.Contains(profileType))
+	        {
+	            List<Type> cycle = profileTypesStack.ToList().SkipWhile(type => type != profileType).ToList();
+	            cycle.Add(profileType);
+	            string cycleMessage = String.Join(" -> ", cycle.Select(type => type.Name));
 
-		/// <summary>
-		/// Provede seedování jednoho předpisu. V této metodě dochází zejména k vyhodnocení závislostí předpisů a detekci cyklů závislostí.
-		/// </summary>
-		/// <param name="dataSeed">Předpis k seedování.</param>
-		/// <param name="stack">Zásobník pro detekci cyklů závislostí.</param>
-		private void SeedService(IDataSeed dataSeed, Stack<IDataSeed> stack)
+	            throw new InvalidOperationException($"DataSeed profiles contains a cycle ({cycleMessage}).");
+	        }
+
+	        profileTypesStack.Push(profileType); // cycle detection
+
+	        IDataSeedProfile profile = Activator.CreateInstance(profileType) as IDataSeedProfile;
+	        if (profile == null)
+	        {
+	            throw new InvalidOperationException($"Profile type {profileType.FullName} does not implement IDataSeedProfile interface.");
+	        }
+
+            foreach (Type prerequisiteProfileType in profile.GetPrerequisiteProfiles())
+            {
+	            SeedProfileWithPrequisites(prerequisiteProfileType, forceRun, profileTypesStack, completedProfileTypes);
+	        }
+
+	        profileTypesStack.Pop(); // cycle detection
+
+            SeedProfile(profile, profileType, forceRun);
+
+	        completedProfileTypes.Add(profileType);
+        }
+
+        /// <summary>
+        /// Provede seedování jednoho profilu, již bez prerequisite.
+        /// Zda se má seedování profilu skutečně spustit rozhoduje dataSeedRunDecision.
+        /// </summary>
+	    private void SeedProfile(IDataSeedProfile profile, Type profileType, bool forceRun)
+	    {
+	        List<IDataSeed> dataSeedsInProfile = dataSeeds.Where(item => item.ProfileType == profileType).ToList();
+	        List<Type> dataSeedsInProfileTypes = dataSeedsInProfile.Select(item => item.GetType()).ToList();
+
+            if (forceRun || dataSeedRunDecision.ShouldSeedData(profile, dataSeedsInProfileTypes))
+	        {
+	            // seed profile
+	            Dictionary<Type, IDataSeed> dataSeedsInProfileByType = dataSeedsInProfile.ToDictionary(item => item.GetType(), item => item);
+	            List<IDataSeed> completedDataSeeds = new List<IDataSeed>();
+
+	            Stack<IDataSeed> dataSeedsStack = new Stack<IDataSeed>();
+	            foreach (IDataSeed dataSeed in dataSeedsInProfile)
+	            {
+	                SeedService(dataSeed, dataSeedsStack, dataSeedsInProfileByType, completedDataSeeds);
+	            }
+
+	            dataSeedRunDecision.SeedDataCompleted(profile, dataSeedsInProfileTypes);
+	        }
+	    }
+
+        /// <summary>
+        /// Provede seedování jednoho předpisu. V této metodě dochází zejména k vyhodnocení závislostí předpisů a detekci cyklů závislostí.
+        /// </summary>
+        /// <param name="dataSeed">Předpis k seedování.</param>
+        /// <param name="stack">Zásobník pro detekci cyklů závislostí.</param>
+        /// <param name="dataSeedsInProfileByType">Index dataseedů dle typu pro dohledávání závislosí. Obsahuje instance dataseedů v aktuálně seedovaném profilu.</param>
+        /// <param name="completedDataSeedsInProfile">Seznam již proběhlých dataseedů v daném profilu. Pro neopakování dataseedů, které jsou jako závislosti</param>
+        private void SeedService(IDataSeed dataSeed, Stack<IDataSeed> stack, Dictionary<Type, IDataSeed> dataSeedsInProfileByType, List<IDataSeed> completedDataSeedsInProfile)
 		{
 			// Already completed?
-			if (completedDataSeeds.Contains(dataSeed))
+			if (completedDataSeedsInProfile.Contains(dataSeed))
 			{
 				return;
 			}
@@ -94,11 +157,11 @@ namespace Havit.Data.Patterns.DataSeeds
 				foreach (Type prerequisiteType in prerequisiteTypes)
 				{
 					IDataSeed prerequisitedDbSeed;
-					if (!dataSeedDictionary.TryGetValue(prerequisiteType, out prerequisitedDbSeed))
+					if (!dataSeedsInProfileByType.TryGetValue(prerequisiteType, out prerequisitedDbSeed)) // neumožňujeme jako závislost použít předpis seedování dat z jiného profilu
 					{
 						throw new InvalidOperationException(String.Format("Prerequisite {1} for data seed {0} was not found.", dataSeed.GetType().Name, prerequisiteType.Name));
 					}
-					SeedService(prerequisitedDbSeed, stack);
+					SeedService(prerequisitedDbSeed, stack, dataSeedsInProfileByType, completedDataSeedsInProfile);
 				}
 			}
 
@@ -107,7 +170,7 @@ namespace Havit.Data.Patterns.DataSeeds
 			// Seed
 			Seed(dataSeed);
 
-			completedDataSeeds.Add(dataSeed);
+			completedDataSeedsInProfile.Add(dataSeed);
 		}
 
 		/// <summary>
@@ -122,9 +185,18 @@ namespace Havit.Data.Patterns.DataSeeds
 		/// <summary>
 		/// Provede seedování dat.
 		/// </summary>
-		void IDataSeedRunner.SeedData()
+		void IDataSeedRunner.SeedData<TDataSeedProfile>()            
 		{
-			this.SeedData();
+			this.SeedData<TDataSeedProfile>();
 		}
-	}
+
+	    /// <summary>
+	    /// Provede seedování dat.
+	    /// </summary>
+	    void IDataSeedRunner.SeedData(Type dataSeedProfileType)
+	    {
+	        this.SeedData(dataSeedProfileType);
+	    }
+
+    }
 }

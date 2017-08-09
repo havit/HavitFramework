@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Havit.Data.Patterns.DataSeeds.Profiles;
 
 namespace Havit.Data.Patterns.DataSeeds
 {
@@ -33,7 +34,8 @@ namespace Havit.Data.Patterns.DataSeeds
 	///		Seed(For(draft, final));			
 	///	}
 	///	</code> </example>
-	public abstract class DataSeed : IDataSeed
+	public abstract class DataSeed<TDataSeedProfile> : IDataSeed
+        where TDataSeedProfile : IDataSeedProfile, new() // new() nás chrání před použitím abstraktní třídy Profile, jinou funkci zde nemá, instanci nevytváříme
 	{
 		private IDataSeedPersister currentDataSeedPersister;
 
@@ -70,7 +72,18 @@ namespace Havit.Data.Patterns.DataSeeds
 			return new DataSeedFor<TEntity>(data);
 		}
 
-		/// <summary>
+	    /// <summary>
+	    /// Vrátí profil, do kterého daný předpis seedování patří.
+	    /// </summary>
+	    Type IDataSeed.ProfileType
+	    {
+	        get
+	        {
+	            return typeof(TDataSeedProfile);
+	        }
+	    }
+
+	    /// <summary>
 		/// Provede seedování dat s persistencí.
 		/// </summary>
 		void IDataSeed.SeedData(IDataSeedPersister dataSeedPersister)

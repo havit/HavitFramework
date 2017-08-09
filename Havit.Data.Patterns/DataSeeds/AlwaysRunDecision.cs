@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Havit.Data.Patterns.DataSeeds.Profiles;
 
 namespace Havit.Data.Patterns.DataSeeds
 {
@@ -13,7 +14,7 @@ namespace Havit.Data.Patterns.DataSeeds
 		/// Vždy vrací true.
 		/// </summary>
 		/// <returns>True.</returns>
-		public bool ShouldSeedData(IEnumerable<Type> dataSeedTypes)
+		public bool ShouldSeedData(IDataSeedProfile profile, List<Type> dataSeedTypes)
 		{
 			return true;
 		}
@@ -22,7 +23,7 @@ namespace Havit.Data.Patterns.DataSeeds
 		/// Metoda je zavolána po dokončení seedování dat.
 		/// Nic nedělá.
 		/// </summary>
-		public void SeedDataCompleted(IEnumerable<Type> dataSeedTypes)
+		public void SeedDataCompleted(IDataSeedProfile profile, List<Type> dataSeedTypes)
 		{
 			// NOOP
 		}

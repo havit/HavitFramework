@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Havit.Data.Patterns.DataSeeds;
+using Havit.Data.Patterns.DataSeeds.Profiles;
 using Havit.Services.FileStorage;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -17,14 +18,15 @@ namespace Havit.Data.Patterns.Tests.DataSeeds
 		{
 			// Arrange
 			string state = "ABCD";
+		    IDataSeedProfile profile = new DefaultDataSeedProfile();
 
 			// Act
 			FileStorageDataSeedRunDecisionStatePersister persister1 = new FileStorageDataSeedRunDecisionStatePersister(new FileSystemStorageService(System.IO.Path.GetTempPath()));
-			persister1.WriteCurrentState(state);
+			persister1.WriteCurrentState(profile.ProfileName, state);
 
 			// Assert
 			FileStorageDataSeedRunDecisionStatePersister persister2 = new FileStorageDataSeedRunDecisionStatePersister(new FileSystemStorageService(System.IO.Path.GetTempPath()));
-			Assert.AreEqual(state, persister2.ReadCurrentState());
+			Assert.AreEqual(state, persister2.ReadCurrentState(profile.ProfileName));
 		}
 
 		[TestMethod]
@@ -32,13 +34,14 @@ namespace Havit.Data.Patterns.Tests.DataSeeds
 		{
 			// Arrange
 			FileStorageDataSeedRunDecisionStatePersister persister = new FileStorageDataSeedRunDecisionStatePersister(new FileSystemStorageService(System.IO.Path.GetTempPath()));
+		    IDataSeedProfile profile = new DefaultDataSeedProfile();
 
-			// Act
-			persister.WriteCurrentState("ABCD");
-			persister.WriteCurrentState("A"); // zapíšeme kratší text po zápisu delšího
+            // Act
+            persister.WriteCurrentState(profile.ProfileName, "ABCD");
+			persister.WriteCurrentState(profile.ProfileName, "A"); // zapíšeme kratší text po zápisu delšího
 
 			// Assert
-			Assert.AreEqual("A", persister.ReadCurrentState());
+			Assert.AreEqual("A", persister.ReadCurrentState(profile.ProfileName));
 		}
 
 	}

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Havit.Data.Patterns.DataSeeds.Profiles;
 
 namespace Havit.Data.Patterns.DataSeeds
 {
@@ -15,11 +16,11 @@ namespace Havit.Data.Patterns.DataSeeds
 		/// <summary>
 		/// Indikuje, zda má dojík se spuštění seedování dat.
 		/// </summary>
-		bool ShouldSeedData(IEnumerable<Type> dataSeedTypes);
+		bool ShouldSeedData(IDataSeedProfile profile, List<Type> dataSeedTypes);
 
 		/// <summary>
 		/// Metoda je zavolána po dokončení seedování dat.
 		/// </summary>
-		void SeedDataCompleted(IEnumerable<Type> dataSeedTypes);
+		void SeedDataCompleted(IDataSeedProfile profile, List<Type> dataSeedTypes);
 	}
 }

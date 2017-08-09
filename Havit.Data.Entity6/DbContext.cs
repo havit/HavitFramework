@@ -96,8 +96,7 @@ namespace Havit.Data.Entity
 
 			EntityTypeConfiguration<DataSeedVersion> dataSeedVersionEntity = modelBuilder.Entity<DataSeedVersion>();
 			dataSeedVersionEntity.ToTable("__DataSeed");
-			dataSeedVersionEntity.HasKey(item => item.Id);
-			dataSeedVersionEntity.Property(item => item.Id).HasColumnName("Id").HasDatabaseGeneratedOption(DatabaseGeneratedOption.None); // používáme jen Id = 1
+			dataSeedVersionEntity.HasKey(item => item.ProfileName);
 			dataSeedVersionEntity.Property(item => item.Version);
 			
 			// EF standardně pojmenovává tabulky v databázi v množném čísle (anglicky).

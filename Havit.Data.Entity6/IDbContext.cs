@@ -78,5 +78,17 @@ namespace Havit.Data.Entity
 		/// </summary>
 		bool IsEntityCollectionLoaded<TEntity>(TEntity entity, string propertyName)
 			where TEntity : class;
-	}
+
+	    /// <summary>
+	    /// Nastaví informaci o tom, zda byla daná vlastnost dané entity načtena. Viz DbReferenceEntry.IsLoaded.
+	    /// </summary>
+	    void SetEntityReferenceLoaded<TEntity>(TEntity entity, string propertyName, bool loadedValue)
+	        where TEntity : class;
+
+        /// <summary>
+        /// Nastaví informaci o tom, zda byla daná vlastnost dané entity načtena. Viz DbCollectionEntry.IsLoaded.
+        /// </summary>
+        void SetEntityCollectionLoaded<TEntity>(TEntity entity, string propertyName, bool loadedValue)
+	        where TEntity : class;
+    }
 }

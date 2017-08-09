@@ -7,7 +7,7 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader.Model
 	{
 		public int Id { get; set; }
 		
-		public ICollection<Role> Roles { get; set; }
+		public IList<Role> Roles { get; set; }
 
 		public DateTime? Deleted { get; set; }
 	}

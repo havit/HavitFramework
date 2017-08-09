@@ -435,6 +435,146 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 		}
 
 		[TestMethod]
+		public void DbDataLoader_Load_OneToMany_OnNewObject()
+		{
+			// Arrange
+			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+
+            Child child = new Child();
+
+			dbContext.Child.Add(child);
+
+		    dbContext.Database.Log = s => throw new InvalidOperationException("Databázové operace jsou zakázány.");
+
+            // Act
+            IDataLoader dataLoader = new DbDataLoader(dbContext);
+			
+			dataLoader.Load(child, item => item.Parent);			
+
+			// Assert
+			// no exception was thrown
+		}
+
+	    [TestMethod]
+	    public async Task DbDataLoader_LoadAsync_OneToMany_OnNewObject()
+	    {
+	        // Arrange
+	        DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+
+	        Child child = new Child();
+
+	        dbContext.Child.Add(child);
+
+	        dbContext.Database.Log = s => throw new InvalidOperationException("Databázové operace jsou zakázány.");
+
+	        // Act
+	        IDataLoaderAsync dataLoader = new DbDataLoader(dbContext);
+
+	        await dataLoader.LoadAsync(child, item => item.Parent);
+
+	        // Assert
+	        // no exception was thrown
+	    }
+
+	    [TestMethod]
+	    public void DbDataLoader_Load_ManyToMany_OnNewObject_WithoutInitializedCollection()
+	    {
+	        // Arrange
+	        DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+	        LoginAccount loginAccount = new LoginAccount();
+
+	        dbContext.LoginAccount.Add(loginAccount);
+
+	        dbContext.Database.Log = s => throw new InvalidOperationException("Databázové operace jsou zakázány.");
+
+	        IDataLoader dataLoader = new DbDataLoader(dbContext);
+
+	        // Precondition            
+	        Assert.IsNull(loginAccount.Roles);
+
+	        // Act
+	        dataLoader.Load(loginAccount, item => item.Roles);
+
+	        // Assert
+	        // no exception was thrown
+	        Assert.IsNotNull(loginAccount.Roles);
+	    }
+
+	    [TestMethod]		
+	    public async Task DbDataLoader_LoadAsync_ManyToMany_OnNewObject_WithoutInitializedCollection()
+	    {
+	        // Arrange
+	        DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+	        LoginAccount loginAccount = new LoginAccount();
+
+	        dbContext.LoginAccount.Add(loginAccount);
+
+	        dbContext.Database.Log = s => throw new InvalidOperationException("Databázové operace jsou zakázány.");
+
+	        IDataLoaderAsync dataLoader = new DbDataLoader(dbContext);
+		    
+	        // Precondition            
+	        Assert.IsNull(loginAccount.Roles);
+			
+	        // Act
+	        await dataLoader.LoadAsync(loginAccount, item => item.Roles);
+
+	        // Assert
+	        // no exception was thrown
+	        Assert.IsNotNull(loginAccount.Roles);
+	    }
+
+        [TestMethod]
+	    public void DbDataLoader_Load_ManyToMany_OnNewObject_WithInitializedCollection()
+	    {
+	        // Arrange
+	        DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+	        LoginAccount loginAccount = new LoginAccount();
+            List<Role> roles = new List<Role>();
+	        loginAccount.Roles = roles;
+
+	        dbContext.LoginAccount.Add(loginAccount);
+
+            dbContext.Database.Log = s => throw new InvalidOperationException("Databázové operace jsou zakázány.");
+
+	        IDataLoader dataLoader = new DbDataLoader(dbContext);
+	
+            // Precondition            
+            Assert.IsNotNull(loginAccount.Roles);
+	
+            // Act
+            dataLoader.Load(loginAccount, item => item.Roles);
+
+            // Assert
+	        Assert.AreSame(roles, loginAccount.Roles); // instance nebyla vyměněna
+	    }
+
+        [TestMethod]
+	    public async Task DbDataLoader_LoadAsync_ManyToMany_OnNewObject_WithInitializedCollection()
+	    {
+	        // Arrange
+	        DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+	        LoginAccount loginAccount = new LoginAccount();
+	        List<Role> roles = new List<Role>();
+	        loginAccount.Roles = roles;
+
+	        dbContext.LoginAccount.Add(loginAccount);
+
+	        dbContext.Database.Log = s => throw new InvalidOperationException("Databázové operace jsou zakázány.");
+
+	        IDataLoaderAsync dataLoader = new DbDataLoader(dbContext);
+
+	        // Precondition            
+	        Assert.IsNotNull(loginAccount.Roles);
+
+	        // Act
+	        await dataLoader.LoadAsync(loginAccount, item => item.Roles);
+
+	        // Assert
+	        Assert.AreSame(roles, loginAccount.Roles); // instance nebyla vyměněna
+	    }
+
+        [TestMethod]
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void DbDataLoader_Load_ThrowsExceptionForNontrackedObjects()
 		{

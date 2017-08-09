@@ -274,10 +274,26 @@ namespace Havit.Data.Entity
 			return ExecuteWithoutAutoDetectChanges(() => Entry(entity).Collection(propertyName).IsLoaded);
 		}
 
-		/// <summary>
-		/// Volá DetectChanges na ChangeTrackeru.
-		/// </summary>
-		void IDbContext.DetectChanges()
+	    /// <summary>
+	    /// Nastaví informaci o tom, zda byla daná vlastnost dané entity načtena. Viz DbReferenceEntry.IsLoaded.
+	    /// </summary>
+	    void IDbContext.SetEntityReferenceLoaded<TEntity>(TEntity entity, string propertyName, bool loadedValue)
+	    {
+	        ExecuteWithoutAutoDetectChanges(() => Entry(entity).Reference(propertyName).IsLoaded = loadedValue);
+	    }
+
+        /// <summary>
+        /// Nastaví informaci o tom, zda byla daná vlastnost dané entity načtena. Viz DbCollectionEntry.IsLoaded.
+        /// </summary>
+        void IDbContext.SetEntityCollectionLoaded<TEntity>(TEntity entity, string propertyName, bool loadedValue)
+	    {
+	        ExecuteWithoutAutoDetectChanges(() => Entry(entity).Collection(propertyName).IsLoaded = loadedValue);
+	    }
+
+        /// <summary>
+        /// Volá DetectChanges na ChangeTrackeru.
+        /// </summary>
+        void IDbContext.DetectChanges()
 		{
 			this.ChangeTracker.DetectChanges();
 		}

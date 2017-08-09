@@ -278,6 +278,8 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 			Expression<Func<TEntity, TPropertyCollection>> propertyPath = GetPropertyLambdaExpression<TEntity, TPropertyCollection>(propertyName);
 			Func<TEntity, TPropertyCollection> propertyPathLambda = propertyPath.Compile();
 
+		    InitializeCollectionsForAddedEntities<TEntity, TPropertyCollection, TPropertyItem>(entities, propertyPathLambda, propertyName);
+
 			List<int> ids = GetEntitiesIdsToLoadProperty(entities, propertyName, true);
 
 			if (ids.Count > 0)
@@ -286,13 +288,13 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 				loadQuery.Load();
 			}
 
-			return entities.SelectMany(item => (IEnumerable<TPropertyItem>)propertyPathLambda(item)).ToArray();
+		    return entities.SelectMany(item => (IEnumerable<TPropertyItem>)propertyPathLambda(item)).ToArray();
 		}
 
-		/// <summary>
-		/// Zajistí načtení vlastnosti, která je kolekcí. Voláno reflexí.
-		/// </summary>
-		private async Task<TPropertyItem[]> LoadCollectionPropertyInternalAsync<TEntity, TPropertyCollection, TPropertyItem>(string propertyName, TEntity[] entities)
+        /// <summary>
+        /// Zajistí načtení vlastnosti, která je kolekcí. Voláno reflexí.
+        /// </summary>
+        private async Task<TPropertyItem[]> LoadCollectionPropertyInternalAsync<TEntity, TPropertyCollection, TPropertyItem>(string propertyName, TEntity[] entities)
 					where TEntity : class
 					where TPropertyCollection : class
 					where TPropertyItem : class
@@ -300,7 +302,9 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 			Expression<Func<TEntity, TPropertyCollection>> propertyPath = GetPropertyLambdaExpression<TEntity, TPropertyCollection>(propertyName);
 			Func<TEntity, TPropertyCollection> propertyPathLambda = propertyPath.Compile();
 
-			List<int> ids = GetEntitiesIdsToLoadProperty(entities, propertyName, true);
+		    InitializeCollectionsForAddedEntities<TEntity, TPropertyCollection, TPropertyItem>(entities, propertyPathLambda, propertyName);
+
+            List<int> ids = GetEntitiesIdsToLoadProperty(entities, propertyName, true);
 
 			if (ids.Count > 0)
 			{
@@ -312,20 +316,22 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 			return result;
 		}
 
-		/// <summary>
+	    /// <summary>
 		/// Vrátí seznam Id objektů, jejichž vlastnost má být načtena.
 		/// </summary>
 		private List<int> GetEntitiesIdsToLoadProperty<TEntity>(TEntity[] entities, string propertyName, bool isPropertyCollection)
 			where TEntity : class
-		{
-			IEnumerable<TEntity> entitiesToLoadQuery = isPropertyCollection
-				? entities.Where(item => !dbContext.IsEntityCollectionLoaded(item, propertyName))
-				: entities.Where(item => !dbContext.IsEntityReferenceLoaded(item, propertyName));
+	    {
+	        IEnumerable<TEntity> entitiesNotInAddedState = entities.Where(item => dbContext.GetEntityState(item) != EntityState.Added);
+
+            IEnumerable<TEntity> entitiesToLoadQuery = isPropertyCollection
+				? entitiesNotInAddedState.Where(item => !dbContext.IsEntityCollectionLoaded(item, propertyName))
+                : entitiesNotInAddedState.Where(item => !dbContext.IsEntityReferenceLoaded(item, propertyName));
 
 			return entitiesToLoadQuery.Select(entity => EntityHelper.GetEntityId(entity)).Distinct().ToList();
 		}
 
-		/// <summary>
+	    /// <summary>
 		/// Vrátí WHERE podmínku omezující množinu záznamů dle Id.
 		/// </summary>
 		/// <param name="ids">Identifikátory objektů, které mají být ve where klauzuli.</param>
@@ -371,7 +377,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 				parameter);
 		}
 
-		/// <summary>
+	    /// <summary>
 		/// Vrátí dotaz načítající vlastnosti objektů s daným identifikátorem.
 		/// </summary>
 		/// <param name="propertyPath">Načítaná vlastnost.</param>
@@ -397,5 +403,40 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 			}
 			return loadQuery;
 		}
+
+        /// <summary>
+        /// Entity, které jsou ve stavu Added nemá cenu dotazovat do databáze, protože tam ještě nejsou.
+        /// Tato metoda objektům ve stavu added inicializuje kolekce a nastavuje je jako Loaded.
+        /// </summary>
+	    private void InitializeCollectionsForAddedEntities<TEntity, TPropertyCollection, TPropertyItem>(TEntity[] entities, Func<TEntity, TPropertyCollection> propertyPathLambda, string propertyName)
+	        where TEntity : class
+	        where TPropertyCollection : class
+	        where TPropertyItem : class
+	    {
+	        List<TEntity> addedNonLoadedEntities = entities.Where(item => (dbContext.GetEntityState<TEntity>(item) == EntityState.Added) && !dbContext.IsEntityCollectionLoaded<TEntity>(item, propertyName)).ToList();
+	        List<TEntity> addedNonLoadedEntitiesWithNullEntity = addedNonLoadedEntities.Where(item => propertyPathLambda(item) == null).ToList();
+
+	        if (addedNonLoadedEntitiesWithNullEntity.Count > 0)
+	        {
+	            if (typeof(TPropertyCollection) == typeof(List<TPropertyItem>) || typeof(TPropertyCollection) == typeof(IList<TPropertyItem>))
+	            {
+	                MethodInfo setter = typeof(TEntity).GetProperty(propertyName).GetSetMethod();
+	                if (setter == null)
+	                {
+	                    throw new InvalidOperationException($"DataLoader on new objects (EntityState.Added) of type {typeof(TEntity).FullName} cannot set collection property {propertyName} while it does not have a public setter.");
+	                }
+	                foreach (var item in addedNonLoadedEntitiesWithNullEntity)
+	                {
+	                    setter.Invoke(item, new object[] { new List<TPropertyItem>() });
+	                }
+	            }
+	            else
+	            {
+	                throw new InvalidOperationException($"DataLoader on new objects (EntityState.Added) of type {typeof(TEntity).FullName} cannot set collection property {propertyName} while it is not type of List<{typeof(TPropertyItem).Name}> or IList<{typeof(TPropertyItem).Name}.");
+	            }
+	        }
+
+	        addedNonLoadedEntities.ForEach(item => dbContext.SetEntityCollectionLoaded<TEntity>(item, propertyName, true));
+	    }
 	}
 }

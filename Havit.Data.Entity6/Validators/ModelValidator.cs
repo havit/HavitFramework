@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 using EntityFramework.MappingAPI;
 using EntityFramework.MappingAPI.Extensions;
+using Havit.Data.Entity.Model;
 
 namespace Havit.Data.Entity.Validators
 {
@@ -25,13 +26,15 @@ namespace Havit.Data.Entity.Validators
 		public string Validate(DbContext dbContext)
 		{
 			IEntityMap[] entityMaps = dbContext.Db();
-
-			List<string> errors = entityMaps.SelectMany(entityMap => CheckPrimaryKey(entityMap)
-				.Concat(CheckIdNamingConvention(entityMap))
-				.Concat(CheckStringMaxLengthConvention(entityMap))
-				.Concat(CheckNestedMembers(entityMap))
-				.Concat(CheckSymbolVsPrimaryKeyForEntries(entityMap))
-				).ToList();
+			
+			List<string> errors = entityMaps.
+                Where(item => item.Type != typeof(DataSeedVersion))
+                .SelectMany(entityMap => CheckPrimaryKey(entityMap)
+				    .Concat(CheckIdNamingConvention(entityMap))
+				    .Concat(CheckStringMaxLengthConvention(entityMap))
+				    .Concat(CheckNestedMembers(entityMap))
+				    .Concat(CheckSymbolVsPrimaryKeyForEntries(entityMap))
+				    ).ToList();
 
 			return String.Join(Environment.NewLine, errors);
 		}
@@ -40,7 +43,7 @@ namespace Havit.Data.Entity.Validators
 		/// Kontroluje, zda třída obsahuje právě jeden primární klíč pojmenovaný "Id".
 		/// </summary>
 		internal IEnumerable<string> CheckPrimaryKey(IEntityMap entityMap)
-		{			
+		{
 			if (entityMap.Pks.Length > 1)
 			{
 				yield return $"Class {entityMap.Type.Name} has {entityMap.Pks.Length} key members but only one is expected.";

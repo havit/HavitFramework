@@ -444,12 +444,13 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 
 			dbContext.Child.Add(child);
 
-		    dbContext.Database.Log = s => throw new InvalidOperationException("Databázové operace jsou zakázány.");
+		    IDataLoader dataLoader = new DbDataLoader(dbContext);
 
-            // Act
-            IDataLoader dataLoader = new DbDataLoader(dbContext);
-			
-			dataLoader.Load(child, item => item.Parent);			
+            ExecuteWithDisabledDatabaseOperations(dbContext, () =>
+		    {
+		        // Act
+		        dataLoader.Load(child, item => item.Parent);
+            });
 
 			// Assert
 			// no exception was thrown
@@ -465,12 +466,13 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 
 	        dbContext.Child.Add(child);
 
-	        dbContext.Database.Log = s => throw new InvalidOperationException("Databázové operace jsou zakázány.");
+	        await ExecuteWithDisabledDatabaseOperationsAsync(dbContext, async () =>
+	        {
+	            // Act
+	            IDataLoaderAsync dataLoader = new DbDataLoader(dbContext);
 
-	        // Act
-	        IDataLoaderAsync dataLoader = new DbDataLoader(dbContext);
-
-	        await dataLoader.LoadAsync(child, item => item.Parent);
+	            await dataLoader.LoadAsync(child, item => item.Parent);
+	        });
 
 	        // Assert
 	        // no exception was thrown
@@ -485,15 +487,16 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 
 	        dbContext.LoginAccount.Add(loginAccount);
 
-	        dbContext.Database.Log = s => throw new InvalidOperationException("Databázové operace jsou zakázány.");
-
 	        IDataLoader dataLoader = new DbDataLoader(dbContext);
 
 	        // Precondition            
 	        Assert.IsNull(loginAccount.Roles);
 
 	        // Act
-	        dataLoader.Load(loginAccount, item => item.Roles);
+            ExecuteWithDisabledDatabaseOperations(dbContext, () =>
+            {
+    	        dataLoader.Load(loginAccount, item => item.Roles);
+            });
 
 	        // Assert
 	        // no exception was thrown
@@ -509,15 +512,16 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 
 	        dbContext.LoginAccount.Add(loginAccount);
 
-	        dbContext.Database.Log = s => throw new InvalidOperationException("Databázové operace jsou zakázány.");
-
 	        IDataLoaderAsync dataLoader = new DbDataLoader(dbContext);
 		    
 	        // Precondition            
 	        Assert.IsNull(loginAccount.Roles);
 			
 	        // Act
-	        await dataLoader.LoadAsync(loginAccount, item => item.Roles);
+	        await ExecuteWithDisabledDatabaseOperationsAsync(dbContext, async () =>
+	        {
+	            await dataLoader.LoadAsync(loginAccount, item => item.Roles);
+	        });
 
 	        // Assert
 	        // no exception was thrown
@@ -535,15 +539,16 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 
 	        dbContext.LoginAccount.Add(loginAccount);
 
-            dbContext.Database.Log = s => throw new InvalidOperationException("Databázové operace jsou zakázány.");
-
 	        IDataLoader dataLoader = new DbDataLoader(dbContext);
 	
             // Precondition            
             Assert.IsNotNull(loginAccount.Roles);
 	
             // Act
-            dataLoader.Load(loginAccount, item => item.Roles);
+	        ExecuteWithDisabledDatabaseOperations(dbContext, () =>
+	        {
+	            dataLoader.Load(loginAccount, item => item.Roles);
+	        });
 
             // Assert
 	        Assert.AreSame(roles, loginAccount.Roles); // instance nebyla vyměněna
@@ -560,15 +565,16 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 
 	        dbContext.LoginAccount.Add(loginAccount);
 
-	        dbContext.Database.Log = s => throw new InvalidOperationException("Databázové operace jsou zakázány.");
-
 	        IDataLoaderAsync dataLoader = new DbDataLoader(dbContext);
 
 	        // Precondition            
 	        Assert.IsNotNull(loginAccount.Roles);
 
 	        // Act
-	        await dataLoader.LoadAsync(loginAccount, item => item.Roles);
+	        await ExecuteWithDisabledDatabaseOperationsAsync(dbContext, async () =>
+	        {
+	            await dataLoader.LoadAsync(loginAccount, item => item.Roles);
+	        });
 
 	        // Assert
 	        Assert.AreSame(roles, loginAccount.Roles); // instance nebyla vyměněna
@@ -672,5 +678,36 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 				root.Children.Add(hi);
 			}
 		}
-	}
+
+	    private void ExecuteWithDisabledDatabaseOperations(DbContext dbContext, Action action)
+	    {
+	        var originalLog = dbContext.Database.Log;
+
+            try
+	        {
+                dbContext.Database.Log = s => throw new InvalidOperationException("Databázové operace jsou zakázány.");
+	            action();
+	        }
+	        finally
+            {
+                dbContext.Database.Log = originalLog;
+            }
+	    }
+
+	    private async Task ExecuteWithDisabledDatabaseOperationsAsync(DbContext dbContext, Func<Task> action)
+	    {
+	        var originalLog = dbContext.Database.Log;
+
+	        try
+	        {
+	            dbContext.Database.Log = s => throw new InvalidOperationException("Databázové operace jsou zakázány.");
+	            await action();
+	        }
+	        finally
+	        {
+	            dbContext.Database.Log = originalLog;
+	        }
+	    }
+
+    }
 }

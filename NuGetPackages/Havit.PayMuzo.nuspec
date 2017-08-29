@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>Havit.PayMuzo</id>
-		<version>1.0.0</version>
+		<version>1.7.0</version>
 		<title>Havit.PayMuzo</title>
 		<authors>HAVIT, s.r.o.</authors>
 		<owners>HAVIT, s.r.o.</owners>
@@ -14,7 +14,7 @@
 		<copyright>Copyright HAVIT, s.r.o. 2016</copyright>
 		<dependencies>
 			<group targetFramework="net46">
-				<dependency id="Havit" />
+				<dependency id="Havit" version="1.7.0" />
 			</group>
 		</dependencies>
 		<tags>HAVIT Framework Library</tags>

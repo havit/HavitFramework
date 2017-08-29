@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>Havit.Web.Bootstrap</id>
-		<version>1.0.0</version>
+		<version>1.7.0</version>
 		<title>Havit.Web.Bootstrap</title>
 		<authors>HAVIT, s.r.o.</authors>
 		<owners>HAVIT, s.r.o.</owners>
@@ -17,10 +17,10 @@
 		<copyright>Copyright HAVIT, s.r.o. 2016</copyright>
 		<dependencies>
 			<group targetFramework="net46">
-				<dependency id="jQuery" version="[1.11.0,)" />
+				<dependency id="jQuery" version="1.11.0" />
 				<dependency id="Twitter.Bootstrap.Less" version="[3.2.0.1,4)" />
-				<dependency id="Microsoft.AspNet.ScriptManager.WebForms" version="[5.0.0,)" />
-				<dependency id="toastr" version="[2.0.1,)" />
+				<dependency id="Microsoft.AspNet.ScriptManager.WebForms" version="5.0.0" />
+				<dependency id="toastr" version="2.0.1" />
 			</group>
 		</dependencies>
 		<tags>HAVIT ASP.NET Web WebForms Bootstrap Controls</tags>

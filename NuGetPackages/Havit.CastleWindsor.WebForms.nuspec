@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>Havit.CastleWindsor.WebForms</id>
-		<version>1.0.0</version>
+		<version>1.7.0</version>
 		<title>Havit.CastleWindsor.WebForms</title>
 		<authors>HAVIT, s.r.o.</authors>
 		<owners>HAVIT, s.r.o.</owners>
@@ -15,7 +15,7 @@
 		<copyright>Copyright HAVIT, s.r.o. 2016</copyright>
 		<dependencies>
 			<group targetFramework="net46">
-				<dependency id="Castle.Windsor" version="[3.3.0,)" />
+				<dependency id="Castle.Windsor" version="3.3.0" />
 			</group>
 		</dependencies>
 		<tags>HAVIT ASP.NET Web WebForms Castle Windsor IoC DI DependencyInjection</tags>

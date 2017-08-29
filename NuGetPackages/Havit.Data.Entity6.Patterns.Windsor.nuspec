@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>Havit.Data.Entity6.Patterns.Windsor</id>
-		<version>1.0.0</version>
+		<version>1.7.0</version>
 		<title>Havit.Data.Entity6.Patterns.Windsor</title>
 		<authors>HAVIT, s.r.o.</authors>
 		<owners>HAVIT, s.r.o.</owners>
@@ -14,12 +14,12 @@
 		<copyright>Copyright HAVIT, s.r.o. 2016</copyright>
 		<dependencies>
 			<group targetFramework="net46">
-			  <dependency id="Havit" />
-			  <dependency id="Havit.Model" />
-			  <dependency id="Havit.Services" />
-			  <dependency id="Havit.Data.Entity6" />
-			  <dependency id="Havit.Data.Entity6.Patterns" />
-			  <dependency id="Havit.Data.Patterns" />
+			  <dependency id="Havit" version="1.7.0" />
+			  <dependency id="Havit.Model" version="1.7.0" />
+			  <dependency id="Havit.Services" version="1.7.0" />
+			  <dependency id="Havit.Data.Entity6" version="1.7.0" />
+			  <dependency id="Havit.Data.Entity6.Patterns" version="1.7.0" />
+			  <dependency id="Havit.Data.Patterns" version="1.7.0" />
 			</group>
 		</dependencies>
 		<tags>HAVIT Data Patterns Entity Framework EF EF6</tags>

@@ -12,7 +12,7 @@
 	
 	<asp:UpdatePanel UpdateMode="Conditional" runat="server">
 		<ContentTemplate>
-			<havit:EnterpriseGridView ID="MainGV" Enabled="true" EditorExtenderEditCssClass="edited" AllowInserting="true" AutoCrudOperations="true" AllowPaging="true" PageSize="5" AutoSort="true" DefaultSortExpression="Nazev" MessengerInsertedMessage="Inserted." MessengerUpdatedMessage="Updated." MessengerDeletedMessage="Deleted." PagerRenderMode="BootstrapPagination" PagerSettings-Mode="NumericFirstLast" runat="server">
+			<havit:EnterpriseGridView ID="MainGV" Enabled="true" EditorExtenderEditCssClass="edited" AllowInserting="true" AutoCrudOperations="true" AllowPaging="true" AllowCustomPaging="true" PageSize="5" AutoSort="true" DefaultSortExpression="Nazev" MessengerInsertedMessage="Inserted." MessengerUpdatedMessage="Updated." MessengerDeletedMessage="Deleted." PagerRenderMode="BootstrapPagination" PagerSettings-Mode="NumericFirstLast" runat="server">
 				<Columns>
 					<havit:BoundFieldExt DataField="Nazev" SortExpression="Nazev" HeaderText="Název" />
 					<havit:GridViewCommandField ShowEditButton="true" ShowInsertButton="true" ShowDeleteButton="true" HeaderStyle-CssClass="headercssclass" HeaderNewCssClass="green"  />

@@ -2471,6 +2471,27 @@ namespace Havit.Web.UI.WebControls
 					}
 				};
 
+            Action seachDataItemOnPage = () =>
+            {
+                RowDataBound += detectDataObjectInRow;
+                // eliminujeme opakované volání události DataBind a tím třeba opakované vytahování dat z databáze
+                if ((DataSource != null) && (DataSource is IEnumerable))
+                {
+                    PerformDataBinding((IEnumerable)DataSource);
+                }
+                else
+                {
+                    DataBind();
+                }
+                RowDataBound -= detectDataObjectInRow;
+            };
+            
+            if (AllowCustomPaging && (VirtualItemCount > 0))
+            {
+                seachDataItemOnPage();
+                return found;
+            }
+
 			while (!found)
 			{
 				if (i >= PageCount)
@@ -2493,27 +2514,9 @@ namespace Havit.Web.UI.WebControls
 
 				PageIndex = i;
 
-				RowDataBound += detectDataObjectInRow;
-				// eliminujeme opakované volání události DataBind a tím třeba opakované vytahování dat z databáze
-				if ((DataSource != null) && (DataSource is IEnumerable))
-				{
-					PerformDataBinding((IEnumerable)DataSource);
-				}
-				else
-				{
-					DataBind();
-				}
-				RowDataBound -= detectDataObjectInRow;
+                seachDataItemOnPage();
 
-				//foreach (GridViewRow row in Rows)
-				//{
-				//	if (GetRowBusinessObject(row) == dataObject)
-				//	{
-				//		EditorExtenderEditIndex = row.RowIndex;
-				//		return true;
-				//	}
-				//}
-				i = i + 1;
+                i = i + 1;
 			}
 			return true;
 		}

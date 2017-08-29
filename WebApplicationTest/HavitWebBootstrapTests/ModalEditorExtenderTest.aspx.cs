@@ -43,12 +43,22 @@ namespace Havit.WebApplicationTest.HavitWebBootstrapTests
 		#region MainGV_DataBinding
 		private void MainGV_DataBinding(object sender, EventArgs e)
 		{
-			MainGV.DataSource = Subjekt.GetAll();
-		}
-		#endregion
+            if (mainGVDataBindingCalled)
+            {
+                throw new ApplicationException("Necheme v jednom requestu více databindingů (testujeme VirtualItemsCount a vliv na modaleditorextender)!");
+            }
+            SubjektCollection subjekty = Subjekt.GetAll().OrderBy(item => item.Nazev).ToCollection();
 
-		#region MainGV_GetInsertRowDataItem
-		private object MainGV_GetInsertRowDataItem()
+            MainGV.VirtualItemCount = subjekty.Count;
+            MainGV.DataSource = subjekty.Skip(MainGV.PageIndex * MainGV.PageSize).Take(MainGV.PageSize);
+            mainGVDataBindingCalled = true;
+
+        }
+        private bool mainGVDataBindingCalled = false;
+        #endregion
+
+        #region MainGV_GetInsertRowDataItem
+        private object MainGV_GetInsertRowDataItem()
 		{
 			return Subjekt.CreateObject();
 		}

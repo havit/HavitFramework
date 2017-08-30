@@ -16,7 +16,6 @@ namespace Havit.Data.Patterns.Exceptions
         /// </remarks>
         public ObjectNotFoundException()
         {
-
         }
 
 		/// <summary>

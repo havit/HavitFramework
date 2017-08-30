@@ -59,6 +59,7 @@
     <Compile Include="DataEntries\EntryIdentification.cs" />
     <Compile Include="DataEntries\IDataEntrySymbolStorage.cs" />
     <Compile Include="DataLoaders\EnumerableExtensions.cs" />
+    <Compile Include="DataLoaders\Fakes\FakeDataLoader.cs" />
     <Compile Include="DataSeeds\AlwaysRunDecision.cs" />
     <Compile Include="DataSeeds\IDataSeedRunDecision.cs" />
     <Compile Include="DataSeeds\IDataSeedRunDecisionStatePersister.cs" />

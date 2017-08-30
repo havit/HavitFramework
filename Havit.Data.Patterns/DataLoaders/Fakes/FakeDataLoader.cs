@@ -28,6 +28,7 @@ namespace Havit.Data.Patterns.DataLoaders.Fakes
         /// <summary>
         /// Contract: Načte vlastnosti objektů, pokud ještě nejsou načteny.        
         /// Implementace: Nic nedělá.
+        /// </summary>
         public void LoadAll<TEntity>(IEnumerable<TEntity> entities, params Expression<Func<TEntity, object>>[] propertyPaths)
             where TEntity : class
         {
@@ -37,6 +38,7 @@ namespace Havit.Data.Patterns.DataLoaders.Fakes
         /// <summary>
         /// Contract: Načte vlastnosti objektů, pokud ještě nejsou načteny.        
         /// Implementace: Nic nedělá.
+        /// </summary>
         public Task LoadAllAsync<TEntity>(IEnumerable<TEntity> entities, params Expression<Func<TEntity, object>>[] propertyPaths)
             where TEntity : class
         {
@@ -46,6 +48,7 @@ namespace Havit.Data.Patterns.DataLoaders.Fakes
         /// <summary>
         /// Contract: Načte vlastnosti objektů, pokud ještě nejsou načteny.        
         /// Implementace: Nic nedělá.
+        /// </summary>
         public Task LoadAsync<TEntity>(TEntity entity, params Expression<Func<TEntity, object>>[] propertyPaths)
             where TEntity : class
         {

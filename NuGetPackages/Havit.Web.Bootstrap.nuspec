@@ -14,7 +14,7 @@
 		<iconUrl>http://blog.getbootstrap.com/public/ico/apple-touch-icon-144-precomposed.png</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<!--<licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>-->
-		<copyright>Copyright HAVIT, s.r.o. 2016</copyright>
+		<copyright>Copyright HAVIT, s.r.o. 2017</copyright>
 		<dependencies>
 			<group targetFramework="net46">
 				<dependency id="jQuery" version="1.11.0" />

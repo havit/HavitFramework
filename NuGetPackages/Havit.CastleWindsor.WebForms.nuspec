@@ -12,7 +12,7 @@
 		<language>en-US</language>
 		<iconUrl>http://docs.castleproject.org/GetFile.aspx?File=/windsorLogo100px.png</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-		<copyright>Copyright HAVIT, s.r.o. 2016</copyright>
+		<copyright>Copyright HAVIT, s.r.o. 2017</copyright>
 		<dependencies>
 			<group targetFramework="net46">
 				<dependency id="Castle.Windsor" version="3.3.0" />

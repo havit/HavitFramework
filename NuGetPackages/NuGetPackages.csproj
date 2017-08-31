@@ -84,6 +84,9 @@
     <None Include="..\PublishScripts\Publish-Havit.Enterprise.Web.ps1">
       <Link>Publish-Havit.Enterprise.Web.ps1</Link>
     </None>
+    <None Include="..\PublishScripts\Publish-Havit.Extensions.DependencyInjection.CastleWindsor.AspNetCore.ps1">
+      <Link>Publish-Havit.Extensions.DependencyInjection.CastleWindsor.AspNetCore.ps1</Link>
+    </None>
     <None Include="..\PublishScripts\Publish-Havit.Model.ps1">
       <Link>Publish-Havit.Model.ps1</Link>
     </None>
@@ -107,6 +110,9 @@
     </None>
     <None Include="..\PublishScripts\Publish-Havit.Web.ps1">
       <Link>Publish-Havit.Web.ps1</Link>
+    </None>
+    <None Include="Havit.Extensions.DependencyInjection.CastleWindsor.AspNetCore.nuspec">
+      <SubType>Designer</SubType>
     </None>
     <None Include="Havit.Business.nuspec">
       <SubType>Designer</SubType>
@@ -188,6 +194,9 @@
     </None>
     <None Include="Havit.Data.Entity6.CodeGenerator\Content\RunCodeGenerator.ps1" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="NuGetPackages.targets" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -199,36 +208,7 @@
   <PropertyGroup>
     <SourceGetVersion Condition="'$(SourceGetVersion)' == ''">0</SourceGetVersion>
   </PropertyGroup>
-  <Target Name="CreateNuGetPackages" AfterTargets="AfterBuild">
-    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 -OutputPath $(OutputPath) -NuspecFile Havit.AspNet.Mvc.nuspec" />
-    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 -OutputPath $(OutputPath) -NuspecFile Havit.Business.nuspec" />
-    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 -OutputPath $(OutputPath) -NuspecFile Havit.CastleWindsor.WebForms.nuspec" />
-    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 -OutputPath $(OutputPath) -NuspecFile Havit.Data.Entity6.CodeGenerator.nuspec" />
-    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 -OutputPath $(OutputPath) -NuspecFile Havit.Data.Entity6.Glimpse.nuspec" />
-    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 -OutputPath $(OutputPath) -NuspecFile Havit.Data.Entity6.nuspec" />
-    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 -OutputPath $(OutputPath) -NuspecFile Havit.Data.Entity6.Patterns.nuspec" />
-    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 -OutputPath $(OutputPath) -NuspecFile Havit.Data.Entity6.Patterns.Windsor.nuspec" />
-    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 -OutputPath $(OutputPath) -NuspecFile Havit.Data.Glimpse.nuspec" />
-    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 -OutputPath $(OutputPath) -NuspecFile Havit.Data.nuspec" />
-    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 -OutputPath $(OutputPath) -NuspecFile Havit.Data.Patterns.nuspec" />
-    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 -OutputPath $(OutputPath) -NuspecFile Havit.Drawing.nuspec" />
-    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 -OutputPath $(OutputPath) -NuspecFile Havit.Enterprise.Web.nuspec" />
-    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 -OutputPath $(OutputPath) -NuspecFile Havit.Model.nuspec" />
-    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 -OutputPath $(OutputPath) -NuspecFile Havit.nuspec" />
-    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 -OutputPath $(OutputPath) -NuspecFile Havit.PayMuzo.nuspec" />
-    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 -OutputPath $(OutputPath) -NuspecFile Havit.PayPal.nuspec" />
-    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 -OutputPath $(OutputPath) -NuspecFile Havit.Services.Azure.nuspec" />
-    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 -OutputPath $(OutputPath) -NuspecFile Havit.Services.nuspec" />
-    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 -OutputPath $(OutputPath) -NuspecFile Havit.Web.Bootstrap.nuspec" />
-    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 -OutputPath $(OutputPath) -NuspecFile Havit.Web.ClientContent.nuspec" />
-    <Exec EnvironmentVariables="EnableNuGetPackageRestore=true" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 -OutputPath $(OutputPath) -NuspecFile Havit.Web.nuspec" />
-  </Target>
-  <Target Name="CleanNuGetPackages" BeforeTargets="Clean">
-    <ItemGroup>
-      <FilesToDelete Include="$(OutputPath)\*.nupkg" />
-    </ItemGroup>
-    <Delete Files="@(FilesToDelete)" />
-  </Target>
+  <!--<Import Project="NuGetPackages.targets" />-->
   <Target Name="TfsPublish" AfterTargets="AfterBuild;CreateNuGetPackage" Condition="'$(PublishDirectory)' != ''">
     <ItemGroup>
       <FilesToCopy Include="$(OutputPath)\*.nupkg" />

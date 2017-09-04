@@ -8,10 +8,10 @@ using System.Web.UI;
 
 namespace Havit.Web.Bootstrap.UI.WebControls
 {
-	/// <summary>
-	/// Bázová třída pro Havit validátory, která rozšiřuje <see cref="System.Web.UI.WebControls.BaseValidator"/> o implementaci rozhraní <see cref="IValidatorExtension"/>.
-	/// </summary>
-	public abstract class BaseValidator : System.Web.UI.WebControls.BaseValidator, IValidatorExtension
+    /// <summary>
+    /// Bázová třída pro Havit validátory, která rozšiřuje <see cref="System.Web.UI.WebControls.BaseValidator"/> o implementaci rozhraní <see cref="Havit.Web.Bootstrap.UI.WebControls.IValidatorExtension"/>.
+    /// </summary>
+    public abstract class BaseValidator : System.Web.UI.WebControls.BaseValidator, IValidatorExtension
 	{
 		#region Common validator extensions
 

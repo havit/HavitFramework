@@ -500,9 +500,9 @@ namespace Havit.Web.UI.WebControls
 
 		#region OnInit
 		/// <summary>
-		/// Raises the <see cref="E:Init" /> event.
+		/// Raises the Init event.
 		/// </summary>
-		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+		/// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);

@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>Havit.Extensions.DependencyInjection</id>
-		<version>1.7.0</version>
+		<version>1.7.1</version>
 		<title>Havit.Extensions.DependencyInjection</title>
 		<authors>HAVIT, s.r.o.</authors>
 		<owners>HAVIT, s.r.o.</owners>
@@ -15,10 +15,7 @@
 		<tags>HAVIT Framework Library</tags>
 		<dependencies>
 			<group targetFramework="netstandard2.0">
-        <dependency id="Castle.Windsor" version=".0.0" />
-        <dependency id="Havit.Extensions.DependencyInjection" version="1.7.0" />
         <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="2.0.0" />
-			  <dependency id="Microsoft.ComponentModel.TypeConverter" version="4.1.0" /> <!-- workaround pro Castle.Windsor odkazující na verzi 4.0.1, která však byla jen v preview a v release nevyšla -->
       </group>
 		</dependencies>
 	</metadata>

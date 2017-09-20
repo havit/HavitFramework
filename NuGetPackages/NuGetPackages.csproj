@@ -87,6 +87,12 @@
     <None Include="..\PublishScripts\Publish-Havit.Extensions.DependencyInjection.CastleWindsor.AspNetCore.ps1">
       <Link>Publish-Havit.Extensions.DependencyInjection.CastleWindsor.AspNetCore.ps1</Link>
     </None>
+    <None Include="..\PublishScripts\Publish-Havit.Extensions.DependencyInjection.CastleWindsor.ps1">
+      <Link>Publish-Havit.Extensions.DependencyInjection.CastleWindsor.ps1</Link>
+    </None>
+    <None Include="..\PublishScripts\Publish-Havit.Extensions.DependencyInjection.ps1">
+      <Link>Publish-Havit.Extensions.DependencyInjection.ps1</Link>
+    </None>
     <None Include="..\PublishScripts\Publish-Havit.Model.ps1">
       <Link>Publish-Havit.Model.ps1</Link>
     </None>

@@ -214,7 +214,7 @@
   <PropertyGroup>
     <SourceGetVersion Condition="'$(SourceGetVersion)' == ''">0</SourceGetVersion>
   </PropertyGroup>
-  <!--<Import Project="NuGetPackages.targets" />-->
+  <Import Project="NuGetPackages.targets" />
   <Target Name="TfsPublish" AfterTargets="AfterBuild;CreateNuGetPackage" Condition="'$(PublishDirectory)' != ''">
     <ItemGroup>
       <FilesToCopy Include="$(OutputPath)\*.nupkg" />

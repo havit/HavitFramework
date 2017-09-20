@@ -9,6 +9,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Havit.Extensions.DependencyInjection.CastleWindsor
 {
+    /// <summary>
+    /// Extension metody k IWindsorContainer.
+    /// </summary>
     public static class WindsorContainerExtensions
     {
         /// <summary>

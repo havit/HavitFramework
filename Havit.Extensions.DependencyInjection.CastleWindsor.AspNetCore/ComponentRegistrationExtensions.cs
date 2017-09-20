@@ -16,7 +16,7 @@ namespace Havit.Extensions.DependencyInjection.CastleWindsor.AspNetCore
         public static ComponentRegistration<TService> LifestylePerAspNetCoreRequest<TService>(this ComponentRegistration<TService> componentRegistration)
             where TService : class
         {
-            return componentRegistration.LifestyleCustom<MsScopedLifestyleManager>();
+            return componentRegistration.LifeStyle.PerAspNetCoreRequest();
         }
     }
 

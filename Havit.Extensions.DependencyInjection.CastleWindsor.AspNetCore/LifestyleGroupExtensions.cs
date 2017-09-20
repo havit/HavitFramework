@@ -13,7 +13,7 @@ namespace Havit.Extensions.DependencyInjection.CastleWindsor.AspNetCore
         /// <summary>
         /// Lifestype per webový request pro ASP.NET Core.
         /// </summary>
-        public static ComponentRegistration<TService> LifestylePerAspNetCoreRequest<TService>(this LifestyleGroup<TService> lifestyleGroup)
+        public static ComponentRegistration<TService> PerAspNetCoreRequest<TService>(this LifestyleGroup<TService> lifestyleGroup)
             where TService : class
         {
             return lifestyleGroup.Custom<MsScopedLifestyleManager>();

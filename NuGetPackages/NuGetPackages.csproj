@@ -117,7 +117,7 @@
     <None Include="..\PublishScripts\Publish-Havit.Web.ps1">
       <Link>Publish-Havit.Web.ps1</Link>
     </None>
-    <None Include="Havit.Extensions.DependencyInjection.nuspec">
+    <None Include="Havit.Extensions.DependencyInjection.Abstractions.nuspec">
       <SubType>Designer</SubType>
     </None>
     <None Include="Havit.Extensions.DependencyInjection.CastleWindsor.nuspec">

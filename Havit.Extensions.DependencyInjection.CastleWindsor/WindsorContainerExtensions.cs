@@ -5,6 +5,7 @@ using System.Reflection;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.Registration.Lifestyle;
 using Castle.Windsor;
+using Havit.Extensions.DependencyInjection.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Havit.Extensions.DependencyInjection.CastleWindsor

@@ -75,7 +75,6 @@ Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "Sandcastle", "Sandcastle\Sa
 		{0A4C075E-E474-4AD5-8377-5F7C7E3488D8} = {0A4C075E-E474-4AD5-8377-5F7C7E3488D8}
 		{7846CA68-E6B0-4943-9285-DE1D48248B84} = {7846CA68-E6B0-4943-9285-DE1D48248B84}
 		{72A78976-6B9F-4D96-A4C9-441066E44DE4} = {72A78976-6B9F-4D96-A4C9-441066E44DE4}
-		{47ED6580-A3A3-4146-8236-7E75BD2EFB4A} = {47ED6580-A3A3-4146-8236-7E75BD2EFB4A}
 		{23DD2985-0805-4A85-AE9F-DCF95416CF20} = {23DD2985-0805-4A85-AE9F-DCF95416CF20}
 		{7478BEA8-791F-47E9-ADD9-18F2D34619EA} = {7478BEA8-791F-47E9-ADD9-18F2D34619EA}
 		{D0FA41AE-B54A-4888-8478-35C4D0E0B60B} = {D0FA41AE-B54A-4888-8478-35C4D0E0B60B}
@@ -121,7 +120,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuGetPackages", "NuGetPacka
 		{72A78976-6B9F-4D96-A4C9-441066E44DE4} = {72A78976-6B9F-4D96-A4C9-441066E44DE4}
 		{1DAACB7D-93B2-41D2-9B97-37DA3D38A89B} = {1DAACB7D-93B2-41D2-9B97-37DA3D38A89B}
 		{C5C6607E-644A-468F-A6C2-CDCF8A1D23DC} = {C5C6607E-644A-468F-A6C2-CDCF8A1D23DC}
-		{47ED6580-A3A3-4146-8236-7E75BD2EFB4A} = {47ED6580-A3A3-4146-8236-7E75BD2EFB4A}
 		{23DD2985-0805-4A85-AE9F-DCF95416CF20} = {23DD2985-0805-4A85-AE9F-DCF95416CF20}
 		{7478BEA8-791F-47E9-ADD9-18F2D34619EA} = {7478BEA8-791F-47E9-ADD9-18F2D34619EA}
 		{D0FA41AE-B54A-4888-8478-35C4D0E0B60B} = {D0FA41AE-B54A-4888-8478-35C4D0E0B60B}
@@ -160,9 +158,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AspNetCore", "AspNetCore", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Extensions.DependencyInjection.CastleWindsor.AspNetCore", "Havit.Extensions.DependencyInjection.CastleWindsor.AspNetCore\Havit.Extensions.DependencyInjection.CastleWindsor.AspNetCore.csproj", "{8FF8712B-D6B7-44B8-8DFE-4C8A600750A3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Extensions.DependencyInjection", "Havit.Extensions.DependencyInjection\Havit.Extensions.DependencyInjection.csproj", "{47ED6580-A3A3-4146-8236-7E75BD2EFB4A}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Extensions.DependencyInjection.CastleWindsor", "Havit.Extensions.DependencyInjection.CastleWindsor\Havit.Extensions.DependencyInjection.CastleWindsor.csproj", "{B52F1B28-C119-4873-94D1-70952C80FEB6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Extensions.DependencyInjection.Abstractions", "Havit.Extensions.DependencyInjection.Abstractions\Havit.Extensions.DependencyInjection.Abstractions.csproj", "{0034E8EB-7824-4EFA-ABD4-807841E6CD87}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -408,18 +406,18 @@ Global
 		{8FF8712B-D6B7-44B8-8DFE-4C8A600750A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8FF8712B-D6B7-44B8-8DFE-4C8A600750A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8FF8712B-D6B7-44B8-8DFE-4C8A600750A3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{47ED6580-A3A3-4146-8236-7E75BD2EFB4A}.CodeGenerator|Any CPU.ActiveCfg = Debug|Any CPU
-		{47ED6580-A3A3-4146-8236-7E75BD2EFB4A}.CodeGenerator|Any CPU.Build.0 = Debug|Any CPU
-		{47ED6580-A3A3-4146-8236-7E75BD2EFB4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{47ED6580-A3A3-4146-8236-7E75BD2EFB4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{47ED6580-A3A3-4146-8236-7E75BD2EFB4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{47ED6580-A3A3-4146-8236-7E75BD2EFB4A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B52F1B28-C119-4873-94D1-70952C80FEB6}.CodeGenerator|Any CPU.ActiveCfg = Debug|Any CPU
 		{B52F1B28-C119-4873-94D1-70952C80FEB6}.CodeGenerator|Any CPU.Build.0 = Debug|Any CPU
 		{B52F1B28-C119-4873-94D1-70952C80FEB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B52F1B28-C119-4873-94D1-70952C80FEB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B52F1B28-C119-4873-94D1-70952C80FEB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B52F1B28-C119-4873-94D1-70952C80FEB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0034E8EB-7824-4EFA-ABD4-807841E6CD87}.CodeGenerator|Any CPU.ActiveCfg = Debug|Any CPU
+		{0034E8EB-7824-4EFA-ABD4-807841E6CD87}.CodeGenerator|Any CPU.Build.0 = Debug|Any CPU
+		{0034E8EB-7824-4EFA-ABD4-807841E6CD87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0034E8EB-7824-4EFA-ABD4-807841E6CD87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0034E8EB-7824-4EFA-ABD4-807841E6CD87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0034E8EB-7824-4EFA-ABD4-807841E6CD87}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -469,8 +467,8 @@ Global
 		{70B34BD1-CE17-485E-B586-21859A8DB5DC} = {3C2FD345-B555-4C43-A930-761AC2517EFD}
 		{107D9E43-CD83-46CE-B027-249AF5BE912B} = {345552D1-56B8-41F1-9513-AD2F31D2F985}
 		{8FF8712B-D6B7-44B8-8DFE-4C8A600750A3} = {97109FED-C671-49FA-8614-C63D8E5935B9}
-		{47ED6580-A3A3-4146-8236-7E75BD2EFB4A} = {97109FED-C671-49FA-8614-C63D8E5935B9}
 		{B52F1B28-C119-4873-94D1-70952C80FEB6} = {97109FED-C671-49FA-8614-C63D8E5935B9}
+		{0034E8EB-7824-4EFA-ABD4-807841E6CD87} = {97109FED-C671-49FA-8614-C63D8E5935B9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {44656523-42B6-48E3-9E6D-6F075F0E7FD0}
@@ -640,13 +638,13 @@ Global
 		SccProjectTopLevelParentUniqueName40 = HavitFramework.sln
 		SccProjectName40 = Havit.Extensions.DependencyInjection.CastleWindsor.AspNetCore
 		SccLocalPath40 = Havit.Extensions.DependencyInjection.CastleWindsor.AspNetCore
-		SccProjectUniqueName41 = Havit.Extensions.DependencyInjection\\Havit.Extensions.DependencyInjection.csproj
+		SccProjectUniqueName41 = Havit.Extensions.DependencyInjection.CastleWindsor\\Havit.Extensions.DependencyInjection.CastleWindsor.csproj
 		SccProjectTopLevelParentUniqueName41 = HavitFramework.sln
-		SccProjectName41 = Havit.Extensions.DependencyInjection
-		SccLocalPath41 = Havit.Extensions.DependencyInjection
-		SccProjectUniqueName42 = Havit.Extensions.DependencyInjection.CastleWindsor\\Havit.Extensions.DependencyInjection.CastleWindsor.csproj
+		SccProjectName41 = Havit.Extensions.DependencyInjection.CastleWindsor
+		SccLocalPath41 = Havit.Extensions.DependencyInjection.CastleWindsor
+		SccProjectUniqueName42 = Havit.Extensions.DependencyInjection.Abstractions\\Havit.Extensions.DependencyInjection.Abstractions.csproj
 		SccProjectTopLevelParentUniqueName42 = HavitFramework.sln
-		SccProjectName42 = Havit.Extensions.DependencyInjection.CastleWindsor
-		SccLocalPath42 = Havit.Extensions.DependencyInjection.CastleWindsor
+		SccProjectName42 = Havit.Extensions.DependencyInjection.Abstractions
+		SccLocalPath42 = Havit.Extensions.DependencyInjection.Abstractions
 	EndGlobalSection
 EndGlobal

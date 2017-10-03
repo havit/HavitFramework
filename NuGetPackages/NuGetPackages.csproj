@@ -48,6 +48,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\PublishScripts\Publish-Havit.ApplicationInsights.DependencyCollector.ps1">
+      <Link>Publish-Havit.ApplicationInsights.DependencyCollector.ps1</Link>
+    </None>
     <None Include="..\PublishScripts\Publish-Havit.Business.ps1">
       <Link>Publish-Havit.Business.ps1</Link>
     </None>
@@ -116,6 +119,9 @@
     </None>
     <None Include="..\PublishScripts\Publish-Havit.Web.ps1">
       <Link>Publish-Havit.Web.ps1</Link>
+    </None>
+    <None Include="Havit.ApplicationInsights.DependencyCollector.nuspec">
+      <SubType>Designer</SubType>
     </None>
     <None Include="Havit.Extensions.DependencyInjection.Abstractions.nuspec">
       <SubType>Designer</SubType>

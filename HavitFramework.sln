@@ -113,6 +113,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuGetPackages", "NuGetPacka
 		{B52F1B28-C119-4873-94D1-70952C80FEB6} = {B52F1B28-C119-4873-94D1-70952C80FEB6}
 		{8FF8712B-D6B7-44B8-8DFE-4C8A600750A3} = {8FF8712B-D6B7-44B8-8DFE-4C8A600750A3}
 		{F8682E3B-C697-4E27-BF95-D9C48FE2D693} = {F8682E3B-C697-4E27-BF95-D9C48FE2D693}
+		{61B9D33E-D395-470F-B3AC-9875D001BFB0} = {61B9D33E-D395-470F-B3AC-9875D001BFB0}
 		{DCF67A43-0EED-4B20-85E3-F8A7AA1C22B5} = {DCF67A43-0EED-4B20-85E3-F8A7AA1C22B5}
 		{0A4C075E-E474-4AD5-8377-5F7C7E3488D8} = {0A4C075E-E474-4AD5-8377-5F7C7E3488D8}
 		{7846CA68-E6B0-4943-9285-DE1D48248B84} = {7846CA68-E6B0-4943-9285-DE1D48248B84}
@@ -161,6 +162,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Extensions.DependencyInjection.CastleWindsor", "Havit.Extensions.DependencyInjection.CastleWindsor\Havit.Extensions.DependencyInjection.CastleWindsor.csproj", "{B52F1B28-C119-4873-94D1-70952C80FEB6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Extensions.DependencyInjection.Abstractions", "Havit.Extensions.DependencyInjection.Abstractions\Havit.Extensions.DependencyInjection.Abstractions.csproj", "{0034E8EB-7824-4EFA-ABD4-807841E6CD87}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.ApplicationInsights.DependencyCollector", "Havit.ApplicationInsights.DependencyCollector\Havit.ApplicationInsights.DependencyCollector.csproj", "{61B9D33E-D395-470F-B3AC-9875D001BFB0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -418,6 +421,12 @@ Global
 		{0034E8EB-7824-4EFA-ABD4-807841E6CD87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0034E8EB-7824-4EFA-ABD4-807841E6CD87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0034E8EB-7824-4EFA-ABD4-807841E6CD87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61B9D33E-D395-470F-B3AC-9875D001BFB0}.CodeGenerator|Any CPU.ActiveCfg = Debug|Any CPU
+		{61B9D33E-D395-470F-B3AC-9875D001BFB0}.CodeGenerator|Any CPU.Build.0 = Debug|Any CPU
+		{61B9D33E-D395-470F-B3AC-9875D001BFB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61B9D33E-D395-470F-B3AC-9875D001BFB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61B9D33E-D395-470F-B3AC-9875D001BFB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61B9D33E-D395-470F-B3AC-9875D001BFB0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -469,12 +478,13 @@ Global
 		{8FF8712B-D6B7-44B8-8DFE-4C8A600750A3} = {97109FED-C671-49FA-8614-C63D8E5935B9}
 		{B52F1B28-C119-4873-94D1-70952C80FEB6} = {97109FED-C671-49FA-8614-C63D8E5935B9}
 		{0034E8EB-7824-4EFA-ABD4-807841E6CD87} = {97109FED-C671-49FA-8614-C63D8E5935B9}
+		{61B9D33E-D395-470F-B3AC-9875D001BFB0} = {3D976DB4-23C7-4B7B-8646-C53DAFB813EE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {44656523-42B6-48E3-9E6D-6F075F0E7FD0}
 	EndGlobalSection
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 43
+		SccNumberOfProjects = 44
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.havit.eu/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -646,5 +656,9 @@ Global
 		SccProjectTopLevelParentUniqueName42 = HavitFramework.sln
 		SccProjectName42 = Havit.Extensions.DependencyInjection.Abstractions
 		SccLocalPath42 = Havit.Extensions.DependencyInjection.Abstractions
+		SccProjectUniqueName43 = Havit.ApplicationInsights.DependencyCollector\\Havit.ApplicationInsights.DependencyCollector.csproj
+		SccProjectTopLevelParentUniqueName43 = HavitFramework.sln
+		SccProjectName43 = Havit.ApplicationInsights.DependencyCollector
+		SccLocalPath43 = Havit.ApplicationInsights.DependencyCollector
 	EndGlobalSection
 EndGlobal

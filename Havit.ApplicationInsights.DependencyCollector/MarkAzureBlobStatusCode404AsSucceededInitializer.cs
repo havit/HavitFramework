@@ -10,7 +10,7 @@ namespace Havit.ApplicationInsights.DependencyCollector
     /// Slouží k aplikacím, které používají blob.Exists(), aby requesty s návratovou hodnotu 404 pro neexistující blob nebyly označeny jako failed (success==false).
     /// Bohužel není možné odlišit blob.Exists() od blob.DownloadToStream() apod., dojde tedy k označení všech 404 vůči Azure Blob bez ohledu na typ operace.
     /// </summary>
-    public class MarkAzureBlobStatusCode404AsSuccessInitializer : ITelemetryInitializer
+    public class MarkAzureBlobStatusCode404AsSucceededInitializer : ITelemetryInitializer
     {
         /// <summary>
         /// Initializes properties of the specified Microsoft.ApplicationInsights.Channel.ITelemetry object.

@@ -8,12 +8,12 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net46</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard2.0\Havit.ApplicationInsights.DependencyCollector.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\net46\Havit.ApplicationInsights.DependencyCollector.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

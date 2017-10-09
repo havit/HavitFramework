@@ -11,7 +11,7 @@ namespace Havit.Data.Patterns.Tests.DataSeeds.Infrastructure
     {
         public override IEnumerable<Type> GetPrerequisiteProfiles()
         {
-            yield return typeof(DefaultDataSeedProfile);
+            yield return typeof(DefaultProfile);
         }
     }
 }

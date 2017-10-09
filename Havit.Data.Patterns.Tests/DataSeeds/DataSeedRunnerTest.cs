@@ -15,14 +15,14 @@ namespace Havit.Data.Patterns.Tests.DataSeeds
 		public void DataSeedPersister_SeedData_CallsSeedDataOnAllDataSeeds()
 		{
 		    Mock<IDataSeed> dataSeedMock = new Mock<IDataSeed>();
-		    dataSeedMock.Setup(m => m.ProfileType).Returns(typeof(DefaultDataSeedProfile));
+		    dataSeedMock.Setup(m => m.ProfileType).Returns(typeof(DefaultProfile));
 
 			Mock<IDataSeedPersister> dataSeedPersisterMock = new Mock<IDataSeedPersister>();
 
 			DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedMock.Object }, new AlwaysRunDecision(), dataSeedPersisterMock.Object);
 			
 			// Act
-			runner.SeedData<DefaultDataSeedProfile>();
+			runner.SeedData<DefaultProfile>();
 
 			// Assert
 			dataSeedMock.Verify(m => m.SeedData(dataSeedPersisterMock.Object), Times.Once);
@@ -32,7 +32,7 @@ namespace Havit.Data.Patterns.Tests.DataSeeds
 	    public void DataSeedPersister_SeedData_CallsSeedDataOnPrerequisiteProfile()
 	    {
 	        Mock<IDataSeed> dataSeedMock = new Mock<IDataSeed>();
-	        dataSeedMock.Setup(m => m.ProfileType).Returns(typeof(DefaultDataSeedProfile));
+	        dataSeedMock.Setup(m => m.ProfileType).Returns(typeof(DefaultProfile));
 
 	        Mock<IDataSeedPersister> dataSeedPersisterMock = new Mock<IDataSeedPersister>();
 
@@ -57,7 +57,7 @@ namespace Havit.Data.Patterns.Tests.DataSeeds
 			DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedCycleA, dataSeedCycleB }, new AlwaysRunDecision(), dataSeedPersisterMock.Object);
 
 			// Act
-			runner.SeedData<DefaultDataSeedProfile>();
+			runner.SeedData<DefaultProfile>();
 
 			// Assert by method attribute
 		}
@@ -73,7 +73,7 @@ namespace Havit.Data.Patterns.Tests.DataSeeds
 			DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedDependentOnItself }, new AlwaysRunDecision(), dataSeedPersisterMock.Object);
 
 			// Act
-			runner.SeedData<DefaultDataSeedProfile>();
+			runner.SeedData<DefaultProfile>();
 
 			// Assert by method attribute
 		}
@@ -88,7 +88,7 @@ namespace Havit.Data.Patterns.Tests.DataSeeds
 			DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedMock.Object, dataSeedMock.Object }, new AlwaysRunDecision(), dataSeedPersisterMock.Object);
 
 			// Act
-			runner.SeedData<DefaultDataSeedProfile>();
+			runner.SeedData<DefaultProfile>();
 
 			// Assert by method attribute
 		}
@@ -103,7 +103,7 @@ namespace Havit.Data.Patterns.Tests.DataSeeds
 			DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedCycleA }, new AlwaysRunDecision(), dataSeedPersisterMock.Object);
 
 			// Act
-			runner.SeedData<DefaultDataSeedProfile>();
+			runner.SeedData<DefaultProfile>();
 
 			// Assert by method attribute
 		}

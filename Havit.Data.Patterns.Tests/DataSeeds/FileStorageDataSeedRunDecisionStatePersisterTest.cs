@@ -18,7 +18,7 @@ namespace Havit.Data.Patterns.Tests.DataSeeds
 		{
 			// Arrange
 			string state = "ABCD";
-		    IDataSeedProfile profile = new DefaultDataSeedProfile();
+		    IDataSeedProfile profile = new DefaultProfile();
 
 			// Act
 			FileStorageDataSeedRunDecisionStatePersister persister1 = new FileStorageDataSeedRunDecisionStatePersister(new FileSystemStorageService(System.IO.Path.GetTempPath()));
@@ -34,7 +34,7 @@ namespace Havit.Data.Patterns.Tests.DataSeeds
 		{
 			// Arrange
 			FileStorageDataSeedRunDecisionStatePersister persister = new FileStorageDataSeedRunDecisionStatePersister(new FileSystemStorageService(System.IO.Path.GetTempPath()));
-		    IDataSeedProfile profile = new DefaultDataSeedProfile();
+		    IDataSeedProfile profile = new DefaultProfile();
 
             // Act
             persister.WriteCurrentState(profile.ProfileName, "ABCD");

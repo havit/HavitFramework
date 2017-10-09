@@ -9,7 +9,7 @@ using Havit.Data.Patterns.DataSeeds.Profiles;
 
 namespace Havit.Data.Patterns.Tests.DataSeeds.Infrastructure
 {
-	internal class DataSeedCycleB : DataSeed<DefaultDataSeedProfile>
+	internal class DataSeedCycleB : DataSeed<DefaultProfile>
     {
 		public override void SeedData()
 		{

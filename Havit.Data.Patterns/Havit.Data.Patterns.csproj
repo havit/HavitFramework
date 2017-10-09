@@ -65,7 +65,7 @@
     <Compile Include="DataSeeds\IDataSeedRunDecisionStatePersister.cs" />
     <Compile Include="DataSeeds\FileStorageDataSeedRunDecisionStatePersister.cs" />
     <Compile Include="DataSeeds\OncePerVersionDataSeedRunDecision.cs" />
-    <Compile Include="DataSeeds\Profiles\DefaultDataSeedProfile.cs" />
+    <Compile Include="DataSeeds\Profiles\DefaultProfile.cs" />
     <Compile Include="DataSeeds\Profiles\IDataSeedProfile.cs" />
     <Compile Include="DataSeeds\Profiles\DataSeedProfile.cs" />
     <Compile Include="Infrastructure\EntityKeyAccessor.cs" />

@@ -21,7 +21,7 @@ namespace Havit.Data.Patterns.Tests.DataSeeds
 			// Arrange
 			string currentState = String.Empty;
 
-		    IDataSeedProfile defaultProfile = new DefaultDataSeedProfile();
+		    IDataSeedProfile defaultProfile = new DefaultProfile();
 			Mock<IDataSeedRunDecisionStatePersister> dataSeedRunDecisionStatePersisterMock = new Mock<IDataSeedRunDecisionStatePersister>();
 			dataSeedRunDecisionStatePersisterMock.Setup(m => m.ReadCurrentState(defaultProfile.ProfileName)).Returns((string profileName) => currentState); /* lambda - nutno vyhodnotit až při volání! */
 			dataSeedRunDecisionStatePersisterMock.Setup(m => m.WriteCurrentState(defaultProfile.ProfileName, It.IsAny<string>())).Callback((string profileName, string newState) => { currentState = newState; });

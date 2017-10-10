@@ -4,12 +4,9 @@ namespace Havit.Linq.Expressions
 {
 	internal class ReplaceParameterVisitor : ExpressionVisitor
 	{
-		#region Private fields
 		private readonly ParameterExpression fromParameter;
 		private readonly ParameterExpression toParameter;
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
@@ -18,9 +15,7 @@ namespace Havit.Linq.Expressions
 			this.fromParameter = fromParameter;
 			this.toParameter = toParameter;
 		}
-		#endregion
 
-		#region VisitParameter
 		/// <summary>
 		/// Nahradí parametr.
 		/// </summary>
@@ -28,6 +23,5 @@ namespace Havit.Linq.Expressions
 		{
 			return (node == fromParameter) ? toParameter : base.VisitParameter(node);
 		}
-		#endregion
 	}
 }

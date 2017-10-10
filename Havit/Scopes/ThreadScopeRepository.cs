@@ -16,14 +16,11 @@ namespace Havit.Scopes
 	public class ThreadScopeRepository<T> : IScopeRepository<T>
 		where T : class
 	{
-		#region Private fields
 		/// <summary>
 		/// DataSlot - nepojmenovaný slot, pod kterým jsou ukládány thread data.
 		/// </summary>
 		private readonly LocalDataStoreSlot threadDataStoreSlot;
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
@@ -32,9 +29,7 @@ namespace Havit.Scopes
 			// inicializujeme data slot
 			this.threadDataStoreSlot = Thread.AllocateDataSlot();
 		}
-		#endregion
 
-		#region GetCurrentScope
 		/// <summary>
 		/// Vrátí hodnotu aktuálního scope.
 		/// </summary>
@@ -42,9 +37,7 @@ namespace Havit.Scopes
 		{
 			return (Scope<T>)Thread.GetData(this.threadDataStoreSlot);
 		}
-		#endregion
 
-		#region SetCurrentScope
 		/// <summary>
 		/// Nastaví hodnotu aktuálního scope.
 		/// </summary>
@@ -52,9 +45,7 @@ namespace Havit.Scopes
 		{
 			Thread.SetData(this.threadDataStoreSlot, scope);
 		}
-		#endregion
 
-		#region RemoveCurrentScope
 		/// <summary>
 		/// Zruší scope.
 		/// </summary>
@@ -62,7 +53,5 @@ namespace Havit.Scopes
 		{
 			Thread.SetData(this.threadDataStoreSlot, null);
 		}
-		#endregion
-		
 	}
 }

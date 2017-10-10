@@ -11,14 +11,11 @@ namespace Havit
 	/// <typeparam name="T">Typ předávaných dat.</typeparam>
 	public class DataEventArgs<T> : EventArgs
 	{
-		#region Data (property)
 		/// <summary>
 		/// Datový objekt, který se předává mezi volajícím a volaným.
 		/// </summary>
 		public T Data { get; set; }
-		#endregion
 
-		#region Contructors
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
@@ -34,6 +31,5 @@ namespace Havit
 		{
 			this.Data = data;
 		}
-		#endregion
 	}
 }

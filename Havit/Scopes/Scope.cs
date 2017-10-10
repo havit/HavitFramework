@@ -31,7 +31,6 @@ namespace Havit.Scopes
 	public class Scope<T> : IDisposable
 		where T : class
 	{
-		#region GetCurrent (static)
 		/// <summary>
 		/// Aktuální instance obalovaná scopem.
 		/// Určeno pro použití v potomcích pro implementaci statické vlastnosti Current.
@@ -42,18 +41,16 @@ namespace Havit.Scopes
 			Scope<T> scope = scopeRepository.GetCurrentScope();
 			return scope != null ? scope.instance : null;
 		}
-		#endregion
 
-		#region private fields
 		/// <summary>
 		/// Indikuje, zdali již proběhl Dispose třídy.
 		/// </summary>
 		private bool disposed;
 
-		/// <summary>
-		/// Indikuje, zdali je instance scopem vlastněná, tj. máme-li ji na konci scope disposovat.
-		/// </summary>
-		private readonly bool ownsInstance;
+        /// <summary>
+        /// Indikuje, zdali je instance scopem vlastněná, tj. máme-li ji na konci scope disposovat.
+        /// </summary>
+        private readonly bool ownsInstance;
 
 		/// <summary>
 		/// Instance, kterou scope obaluje.
@@ -66,9 +63,7 @@ namespace Havit.Scopes
 		private readonly Scope<T> parent;
 
 		private readonly IScopeRepository<T> scopeRepository;
-		#endregion
 
-		#region Constructors
 		/// <summary>
 		/// Vytvoří instanci třídy <see cref="Scope{T}"/> kolem instance. Instance bude při disposingu Scope též disposována.
 		/// </summary>
@@ -96,9 +91,7 @@ namespace Havit.Scopes
 			this.parent = scopeRepository.GetCurrentScope();
 			scopeRepository.SetCurrentScope(this);
 		}
-		#endregion
 
-		#region Dispose (IDisposable)
 		/// <summary>
 		/// Ukončí scope a disposuje vlastněné instance.
 		/// </summary>
@@ -137,9 +130,7 @@ namespace Havit.Scopes
 				}
 			}
 		}
-		#endregion
 
-		#region Desctructor
 		/// <summary>
 		/// Destructor.
 		/// </summary>
@@ -147,7 +138,6 @@ namespace Havit.Scopes
 		{
 			Dispose(false);
 		}
-		#endregion
 	}
 
 }

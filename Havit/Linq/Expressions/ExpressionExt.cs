@@ -12,7 +12,6 @@ namespace Havit.Linq.Expressions
 	/// </summary>
 	public static class ExpressionExt
 	{
-		#region ReplaceParameter
 		/// <summary>
 		/// Vymění v expression jeden parameter druhým. Slouží například k náhradě na mujObjekt => mujObjekt.Id na item => item.Id.
 		/// </summary>
@@ -23,9 +22,7 @@ namespace Havit.Linq.Expressions
 		{
 			return new ReplaceParameterVisitor(sourceParameter, targetParameter).Visit(expression);
 		}
-		#endregion
 
-		#region RemoveConvert
 		/// <summary>
 		/// Odstraní z expression Convert, pokud je přítomen. Nahrazuje jej jen na nejvyšší úrovni.
 		/// Slouží k náhradě item => (object)item.Id na item => item.Id.
@@ -39,7 +36,6 @@ namespace Havit.Linq.Expressions
 			}
 			return expression;
 		}
-		#endregion
 
 		/// <summary>
 		/// Pokud máme lambda výraz (B b) => b.C, ale chceme expression tree aplikovat nad jiný objekt, ze kterého B teprve získáme (např. (A a) => a.B, pak pak upraví výraz do této podoby.

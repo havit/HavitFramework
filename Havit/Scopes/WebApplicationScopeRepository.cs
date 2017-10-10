@@ -16,7 +16,6 @@ namespace Havit.Scopes
 	public class WebApplicationScopeRepository<T> : IScopeRepository<T>
 		where T : class
 	{
-		#region Private fields
 		/// <summary>
 		/// Úložiště scopes k HttpContextům.
 		/// </summary>
@@ -26,9 +25,7 @@ namespace Havit.Scopes
 		/// ThreadScopeRepository pro případy scopes mimo HttpContext.
 		/// </summary>
 		private readonly ThreadScopeRepository<T> threadScopeRepository = new ThreadScopeRepository<T>();
-		#endregion
 
-		#region GetCurrentScope
 		/// <summary>
 		/// Vrátí hodnotu aktuálního scope.
 		/// </summary>
@@ -52,9 +49,7 @@ namespace Havit.Scopes
 				return threadScopeRepository.GetCurrentScope();
 			}
 		}
-		#endregion
 
-		#region SetCurrentScope
 		/// <summary>
 		/// Nastaví hodnotu aktuálního scope.
 		/// </summary>
@@ -70,9 +65,7 @@ namespace Havit.Scopes
 				threadScopeRepository.SetCurrentScope(value);
 			}
 		}
-		#endregion
 
-		#region RemoveCurrentScope
 		/// <summary>
 		/// Zruší scope.
 		/// </summary>
@@ -89,6 +82,5 @@ namespace Havit.Scopes
 				threadScopeRepository.RemoveCurrentScope();
 			}
 		}
-		#endregion
 	}
 }

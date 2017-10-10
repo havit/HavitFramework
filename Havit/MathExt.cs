@@ -10,7 +10,6 @@ namespace Havit
 	/// </summary>
 	public static class MathExt
 	{
-		#region IsEven, IsOdd
 		/// <summary>
 		/// Vrátí true, je-li zadané číslo sudé.
 		/// </summary>
@@ -30,9 +29,7 @@ namespace Havit
 		{
 			return !IsEven(d);
 		}
-		#endregion
 
-		#region IsInteger
 		/// <summary>
 		/// Ověří, zdali je zadaný textový řetězec celým číslem.
 		/// </summary>
@@ -46,9 +43,7 @@ namespace Havit
 		{
 			return ((text != null) && Regex.IsMatch(text, RegexPatterns.Integer));
 		}
-		#endregion
 
-		#region RoundToMultiple, CeilingToMultiple, FloorToMultiple
 		/// <summary>
 		/// Zaokrouhlí (aritmeticky) číslo na nejbližší násobek (multiple) jiného čísla.
 		/// </summary>
@@ -147,9 +142,7 @@ namespace Havit
 		{
 			return Math.Floor(d / multiple) * multiple;
 		}
-		#endregion
 
-		#region Max(params), Min(params)
 		/// <summary>
 		/// Vrátí největší ze zadaných čísel.
 		/// </summary>
@@ -321,6 +314,5 @@ namespace Havit
 			}
 			return result;
 		}
-		#endregion
 	}
 }

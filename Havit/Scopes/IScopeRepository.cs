@@ -13,26 +13,20 @@ namespace Havit.Scopes
 	public interface IScopeRepository<T>
 		where T : class
 	{
-		#region GetCurrentScope
 		/// <summary>
 		/// Vrátí hodnotu aktuálního scope.
 		/// </summary>
 		Scope<T> GetCurrentScope();
-		#endregion
 
-		#region SetCurrentScope
 		/// <summary>
 		/// Nastaví hodnotu aktuálního scope.
 		/// </summary>
 		void SetCurrentScope(Scope<T> scope);
-		#endregion
 
-		#region RemoveCurrentScope
 		/// <summary>
 		/// Zruší scope.
 		/// </summary>
 		void RemoveCurrentScope();
-		#endregion
 
 	}
 }

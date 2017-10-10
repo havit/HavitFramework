@@ -8,7 +8,6 @@ namespace Havit.Reflection
 	/// </summary>
 	public static class Reflector
 	{
-		#region GetPropertyValue
 		/// <summary>
 		/// Získá hodnotu property, i kdyby byla označená jako protected, internal, nebo private.
 		/// Vlastnost je hledána jen na zadaném typu (targetType).
@@ -53,9 +52,7 @@ namespace Havit.Reflection
 				return null;
 			}
 		}
-		#endregion
 
-		#region SetPropertyValue
 		/// <summary>
 		/// Nastaví hodnotu property, i kdyby byla označená jako protected, internal, nebo private.
 		/// Pokud se nepodaří vlastnost nalézt, vyvolá výjimku InvalidOperationException.
@@ -101,7 +98,5 @@ namespace Havit.Reflection
 			}
 			property.SetValue(target, value, null);
 		}
-		
-		#endregion
 	}
 }

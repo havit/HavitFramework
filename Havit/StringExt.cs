@@ -11,7 +11,6 @@ namespace Havit
 	/// </summary>
 	public static class StringExt
 	{
-		#region Left, Right
 		/// <summary>
 		/// Returns a string containing a specified number of characters from the left side of a string.
 		/// </summary>
@@ -58,9 +57,7 @@ namespace Havit
 			}
 			return str.Substring(strLength - length, length);
 		}
-		#endregion
 
-		#region OdeberDiakritiku
 		/// <summary>
 		/// Odebere diakritiku z textu, tj. převede na text bez diakritiky.
 		/// </summary>
@@ -95,9 +92,7 @@ namespace Havit
 			return text;
 			*/
 		}
-		#endregion
 
-		#region IntToHex
 		/// <summary>
 		/// Vrátí char-reprezentaci (0..9, A..F) šestnáctkové číslice (0-15).
 		/// </summary>
@@ -112,9 +107,7 @@ namespace Havit
 			}
 			return (char)((ushort)((cislice - 10) + 0x61));
 		}
-		#endregion
 
-		#region NormalizeForUrl
 		/// <summary>
 		/// Normalizuje textový řetězec do podoby použitelné v URL adrese (pro SEO).
 		/// 1) Převede na malá písmena.
@@ -135,6 +128,5 @@ namespace Havit
 
 			return text;
 		} 
-		#endregion
 	}
 }

@@ -20,11 +20,8 @@ namespace Havit
 	/// </remarks>
 	public static class DataBinderExt
 	{
-		#region Private consts (readonly) fields
 		private static readonly char[] indexExprStartChars = new char[] { '[', '(' };
-		#endregion
 
-		#region GetValue
 		/// <summary>
 		/// Získá hodnotu z předaného objektu a dataField.
 		/// Vyhodnocuje s ohledem na &quot;tečkovou&quot; notaci, tedy například z objektu třídy Subjekt dokáže vrátit &quot;HlavniAdresa.Ulice&quot;.
@@ -102,9 +99,7 @@ namespace Havit
 			}
 			return String.Format(format, propertyValue);
 		}
-		#endregion
 
-		#region SetValue
 		/// <summary>
 		/// Nastaví předanou hodnotu do předaného objektu a dataField.
 		/// Vyhodnocuje s ohledem na &quot;tečkovou&quot; notaci, tedy například objektu třídy Subjekt dokáže nastavit &quot;HlavniAdresa.Ulice&quot;.
@@ -192,9 +187,7 @@ namespace Havit
 				descriptor.SetValue(currentDataItem, targetValue);
 			}
 		}
-		#endregion
 
-		#region SetValues
 		/// <summary>
 		/// Nastaví předané hodnoty do předaného objektu.
 		/// Není zamýšleno pro použití v programátorském kódu. Voláno z frameworkových controlů.
@@ -209,9 +202,7 @@ namespace Havit
 				DataBinderExt.SetValue(dataItem, (string)item.Key, item.Value);
 			}
 		}
-		#endregion
 
-		#region GetValueTypeProperties
 		private static PropertyDescriptorCollection GetValueTypeProperties(object value)
 		{
 			System.ComponentModel.PropertyDescriptorCollection properties;
@@ -242,7 +233,5 @@ namespace Havit
 			return properties;
 		}
 		private static readonly Dictionary<Type, System.ComponentModel.PropertyDescriptorCollection> getValuePropertiesCache = new Dictionary<Type, System.ComponentModel.PropertyDescriptorCollection>();
-		#endregion
-
 	}
 }

@@ -10,7 +10,6 @@ namespace Havit.Linq
 	/// </summary>
 	public static class EnumerableExt
 	{
-		#region LeftJoin
 		/// <summary>
 		/// Left outer join.
 		/// </summary>
@@ -29,9 +28,7 @@ namespace Havit.Linq
 
 			return result;
 		}
-		#endregion
 
-		#region RightJoin
 		/// <summary>
 		/// Right outer join.
 		/// </summary>
@@ -50,9 +47,7 @@ namespace Havit.Linq
 
 			return result;
 		}
-		#endregion
 
-		#region FullOuterJoin
 		/// <summary>
 		/// Full outer join.
 		/// Na rozdíl od ostatních metod je full outer join vyhodnocen okamžitě, výsledky nejsou ovlivněny změnou 
@@ -77,9 +72,6 @@ namespace Havit.Linq
 
 			return result.ToList();
 		}
-		#endregion
-
-		#region SkipLast
 
 		/// <summary>
 		/// Skip last items.
@@ -130,9 +122,7 @@ namespace Havit.Linq
 				}
 			}
 		}
-		#endregion
 
-		#region SkipLastWhile
 		/// <summary>
 		/// Skip last items.
 		/// </summary>
@@ -162,9 +152,7 @@ namespace Havit.Linq
 				}
 			}
 		}
-		#endregion
 
-		#region SkipLastWhile
 		/// <summary>
 		/// Skip last items.
 		/// </summary>
@@ -195,9 +183,7 @@ namespace Havit.Linq
 				}
 			}
 		}
-		#endregion
 
-		#region Chunkify		
 		/// <summary>
 		/// Rozdělí data do segmentů (chunks) o maximální velikosti dle size.
 		/// Například vstupní data o 2500 záznamech při size 1000 rozdělí do třech segmentů (chunků) - 1000, 1000 a 500 záznamů.
@@ -236,6 +222,24 @@ namespace Havit.Linq
 				}
 			}
 		}
-		#endregion
-	}
+
+	    /// <summary>
+	    /// Indikuje, zda obsahuje kolekce všechny položky jiné kolekce.
+	    /// </summary>
+	    /// <param name="source">Kolekce, v níž ověřujeme existenci hodnot.</param>
+	    /// <param name="lookupItems">Hodnoty, jejichž existenci ověřujeme v kolekci.</param>
+	    /// <returns>True, pokud source obsahuje všechny prvky lookupItems.</returns>
+	    public static bool ContainsAll<T>(this IEnumerable<T> source, IEnumerable<T> lookupItems)
+	    {
+	        return !lookupItems.Except(source).Any();
+	    }
+
+        /// <summary>
+        /// Vytvoří hashset z položek kolekce.
+        /// </summary>
+        public static HashSet<TItem> ToHashSet<TItem>(this IEnumerable<TItem> source)
+	    {            
+	        return new HashSet<TItem>(source);
+	    }
+    }
 }

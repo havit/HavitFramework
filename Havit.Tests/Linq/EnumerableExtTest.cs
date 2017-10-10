@@ -100,5 +100,48 @@ namespace Havit.Tests.Linq
 			Assert.AreEqual(1, first);
 			Assert.AreEqual(2, last);
 		}
-	}
+
+        [TestMethod]
+	    public void Enumerable_ContainsAll_ReturnsTrueWhenSourceContainsAllLookupItems()
+	    {
+	        // Arrange
+	        int[] source = { 1, 2 };
+	        int[] lookupItems = { 1 };
+	        
+            // Act
+	        bool result = source.ContainsAll(lookupItems);
+	        
+            // Assert
+            Assert.IsTrue(result);
+	    }
+
+	    [TestMethod]
+	    public void Enumerable_ContainsAll_ReturnsTrueWhenSourceDoesNotContainAllLookupItems()
+	    {
+	        // Arrange
+	        int[] source = { 1 };
+	        int[] lookupItems = { 1, 2 };
+
+	        // Act
+	        bool result = source.ContainsAll(lookupItems);
+
+	        // Assert
+	        Assert.IsFalse(result);
+	    }
+
+	    [TestMethod]
+	    public void Enumerable_ContainsAll_ReturnsTrueWhenLookupItemsIsEmpty()
+	    {
+	        // Arrange
+	        int[] source = { 1 };
+	        int[] lookupItems = { };
+
+	        // Act
+	        bool result = source.ContainsAll(lookupItems);
+
+	        // Assert
+	        Assert.IsTrue(result);
+	    }
+
+    }
 }

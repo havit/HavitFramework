@@ -107,8 +107,15 @@ namespace Havit.Data.Entity.Patterns.DataSeeds
 						Func<TEntity, object> lambda = pairByLambdas[i];
 
 						object value = lambda.Invoke(seedEntity);
-						Expression<Func<TEntity, bool>> pairByConditionExpression = (Expression<Func<TEntity, bool>>)Expression.Lambda(
-							Expression.Equal(ExpressionExt.ReplaceParameter(expression.Body, expression.Parameters[0], parameter).RemoveConvert(), Expression.Constant(value)), // TODO: Expression.Constant nejde pro references
+
+				        Type expressionBodyType = expression.Body.RemoveConvert().Type;
+
+					    Expression valueExpression = ((value != null) && (value.GetType() != expressionBodyType))
+					        ? (Expression)Expression.Convert(Expression.Constant(value), expressionBodyType)
+					        : (Expression)Expression.Constant(value);
+
+                        Expression<Func<TEntity, bool>> pairByConditionExpression = (Expression<Func<TEntity, bool>>)Expression.Lambda(
+							Expression.Equal(ExpressionExt.ReplaceParameter(expression.Body, expression.Parameters[0], parameter).RemoveConvert(), valueExpression), // TODO: Expression.Constant nejde pro references
 							parameter);
 
 						if (seedEntityWhereExpression != null)
@@ -153,7 +160,7 @@ namespace Havit.Data.Entity.Patterns.DataSeeds
 			foreach (TEntity seedEntity in seedData)
 			{
 				ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "item");
-
+			    
 				Expression<Func<TEntity, bool>> whereExpression = null;
 
 				for (int i = 0; i < configuration.PairByExpressions.Count; i++)
@@ -163,8 +170,14 @@ namespace Havit.Data.Entity.Patterns.DataSeeds
 
 					object value = lambda.Invoke(seedEntity);
 
-					Expression<Func<TEntity, bool>> pairByConditionExpression = (Expression<Func<TEntity, bool>>)Expression.Lambda(
-						Expression.Equal(ExpressionExt.ReplaceParameter(expression.Body, expression.Parameters[0], parameter).RemoveConvert(), Expression.Constant(value)), // TODO: Expression.Constant nejde pro references
+				    Type expressionBodyType = expression.Body.RemoveConvert().Type;
+
+				    Expression valueExpression = ((value != null) && (value.GetType() != expressionBodyType))
+				        ? (Expression)Expression.Convert(Expression.Constant(value), expressionBodyType)
+				        : (Expression)Expression.Constant(value);
+
+                    Expression<Func<TEntity, bool>> pairByConditionExpression = (Expression<Func<TEntity, bool>>)Expression.Lambda(
+						Expression.Equal(ExpressionExt.ReplaceParameter(expression.Body, expression.Parameters[0], parameter).RemoveConvert(), valueExpression), // TODO: Expression.Constant nejde pro references
 						parameter);
 
 					if (whereExpression != null)

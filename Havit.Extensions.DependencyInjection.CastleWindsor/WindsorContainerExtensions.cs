@@ -45,7 +45,10 @@ namespace Havit.Extensions.DependencyInjection.CastleWindsor
         /// </param>
         public static void InstallByServiceAttibute(this IWindsorContainer container, Assembly assembly, string[] profiles, Func<LifestyleGroup<object>, ComponentRegistration<object>> scopedLifetimeConfigurer = null)
         {
-            Contract.Requires<ArgumentNullException>(profiles != null, nameof(profiles));
+            if (profiles == null)
+            {
+                throw new ArgumentNullException(nameof(profiles));
+            }
 
             foreach (string profile in profiles)
             {

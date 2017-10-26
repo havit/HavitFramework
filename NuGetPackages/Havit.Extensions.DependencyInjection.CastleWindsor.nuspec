@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>Havit.Extensions.DependencyInjection.CastleWindsor</id>
-		<version>1.7.1</version>
+		<version>1.7.2</version>
 		<title>Havit.Extensions.DependencyInjection.CastleWindsor</title>
 		<authors>HAVIT, s.r.o.</authors>
 		<owners>HAVIT, s.r.o.</owners>
@@ -18,7 +18,7 @@
         <dependency id="Castle.Windsor" version="4.0.0" />
         <dependency id="Castle.Core" version="4.1.0" /><!-- workaround pro Castle.Windor 4.0.0 odkazující na Castle Core 4.0.0 odkazující na System.ComponentModel.TypeConverter ve verzi 4.0.1, která však byla jen v preview a v release nevyšla. Castle.Core 4.1.0 již obsahuje korektní referenci. -->
         <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="2.0.0" />
-			  <dependency id="Havit.Extensions.DependencyInjection.Abstractions" version="1.7.1" />
+			  <dependency id="Havit.Extensions.DependencyInjection.Abstractions" version="1.7.2" />
       </group>
 		</dependencies>
 	</metadata>

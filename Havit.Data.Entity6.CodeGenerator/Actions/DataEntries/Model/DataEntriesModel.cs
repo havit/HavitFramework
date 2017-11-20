@@ -10,6 +10,12 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.DataEntries.Model
 		public string DbClassName { get; set; }
 		public string ModelClassFullName { get; set; }
 		public string ModelEntriesEnumerationFullName { get; set; }
-		public List<string> Entries { get; set; }
+		public List<Entry> Entries { get; set; }
+
+		public class Entry
+		{
+			public string PropertyName { get; set; }
+			public string FieldName => PropertyName[0].ToString().ToLower() + PropertyName.Substring(1);
+		}
 	}
 }

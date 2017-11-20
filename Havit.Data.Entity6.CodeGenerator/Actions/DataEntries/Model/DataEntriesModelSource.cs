@@ -32,7 +32,7 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.DataEntries.Model
 					DbClassName = registeredEntity.ClassName + "Entries",
 					ModelClassFullName = registeredEntity.FullName,
 					ModelEntriesEnumerationFullName = registeredEntity.FullName + ".Entry",
-					Entries = System.Enum.GetNames(entriesEnumType).OrderBy(item => item).ToList()
+					Entries = System.Enum.GetNames(entriesEnumType).OrderBy(item => item).Select(item => new DataEntriesModel.Entry { PropertyName = item }).ToList()
 				}).ToList();
 		}
 

@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.VersionControl.Client;
+using Microsoft.VisualStudio.Services.Common;
+using WindowsCredential = Microsoft.VisualStudio.Services.Common.WindowsCredential;
 
 namespace Havit.Data.Entity.CodeGenerator.Services.SourceControl
 {
@@ -55,8 +57,8 @@ namespace Havit.Data.Entity.CodeGenerator.Services.SourceControl
 		private Workspace GetWorkspace(WorkspaceInfo workspaceInfo)
 		{
 			string tfsName = workspaceInfo.ServerUri.AbsoluteUri;
-			ICredentials credentials = System.Net.CredentialCache.DefaultCredentials; //new System.Net.NetworkCredential(userName, password, domain);
-			TfsTeamProjectCollection projects = new TfsTeamProjectCollection(TfsTeamProjectCollection.GetFullyQualifiedUriForName(tfsName), credentials/*, new UICredentialsProvider()*/);
+			var credentials = new VssCredentials(new WindowsCredential(System.Net.CredentialCache.DefaultCredentials));
+			var projects = new TfsTeamProjectCollection(TfsTeamProjectCollection.GetFullyQualifiedUriForName(tfsName), credentials/*, new UICredentialsProvider()*/);
 
 			return workspaceInfo.GetWorkspace(projects);
 		}

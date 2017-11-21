@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Data.Entity;
 using System.Data.Entity.Core;
@@ -38,14 +39,15 @@ namespace Havit.Data.Entity.Patterns.Repositories
 			{
 				if (_dbSetLocalsDictionary == null)
 				{
-					dbContext.RegisterAfterSaveChangesAction(DbContext_AfterSaveChangesAction);
+					ObservableCollection<TEntity> dbSetLocal = dbContext.ExecuteWithoutAutoDetectChanges(() => DbSet.Local); // každé šahnutí na DbSet.Local způsobuje spuštění changetrackeru
 					if (!_dbSetLocalsDictionaryInitialized)
 					{
-						DbSet.Local.CollectionChanged += DbSetLocal_CollectionChanged;
+						dbSetLocal.CollectionChanged += DbSetLocal_CollectionChanged;
+						dbContext.RegisterAfterSaveChangesAction(DbContext_AfterSaveChangesAction);
 						_dbSetLocalsDictionaryInitialized = true;
 					}
 
-					_dbSetLocalsDictionary = DbSet.Local.Where(EntityNotInAddedState).ToDictionary(entity => EntityHelper.GetEntityId(entity));
+					_dbSetLocalsDictionary = dbSetLocal.Where(EntityNotInAddedState).ToDictionary(entity => EntityHelper.GetEntityId(entity));
 				}
 				return _dbSetLocalsDictionary;
 			}
@@ -156,7 +158,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		{
 			Contract.Requires<ArgumentException>(id != default(int));
 
-			TEntity result = DbSet.Find(id);
+			TEntity result = dbContext.ExecuteWithoutAutoDetectChanges(() => DbSet.Find(id));
 			if (result == null)
 			{
 				ThrowObjectNotFoundException(id);
@@ -175,7 +177,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		{
 			Contract.Requires<ArgumentException>(id != default(int));
 
-			TEntity result = await DbSet.FindAsync(id);
+			TEntity result = await dbContext.ExecuteWithoutAutoDetectChanges(() => DbSet.FindAsync(id));
 			if (result == null)
 			{
 				ThrowObjectNotFoundException(id);					
@@ -201,8 +203,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 			{
 				Contract.Assert<ArgumentException>(id != default(int));
 
-				TEntity loadedEntity = DbSet.Local.FirstOrDefault(item => EntityHelper.GetEntityId(item) == id);
-				if (loadedEntity != null)
+				if (DbSetLocalsDictionary.TryGetValue(id, out TEntity loadedEntity))
 				{
 					loadedEntities.Add(loadedEntity);
 				}
@@ -249,8 +250,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 			{
 				Contract.Assert<ArgumentException>(id != default(int));
 
-				TEntity loadedEntity = DbSet.Local.FirstOrDefault(item => EntityHelper.GetEntityId(item) == id);
-				if (loadedEntity != null)
+				if (DbSetLocalsDictionary.TryGetValue(id, out TEntity loadedEntity))
 				{
 					loadedEntities.Add(loadedEntity);
 				}

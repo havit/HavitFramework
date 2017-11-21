@@ -301,7 +301,7 @@ namespace Havit.Data.Entity
 		/// <summary>
 		/// Provede akci s AutoDetectChangesEnabled nastaveným na false, přičemž je poté AutoDetectChangesEnabled nastaven na původní hodnotu.
 		/// </summary>
-		private TResult ExecuteWithoutAutoDetectChanges<TResult>(Func<TResult> action)
+		public TResult ExecuteWithoutAutoDetectChanges<TResult>(Func<TResult> action)
 		{
 			if (AutoDetectChangesEnabled)
 			{

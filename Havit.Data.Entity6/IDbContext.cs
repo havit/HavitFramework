@@ -90,5 +90,10 @@ namespace Havit.Data.Entity
         /// </summary>
         void SetEntityCollectionLoaded<TEntity>(TEntity entity, string propertyName, bool loadedValue)
 	        where TEntity : class;
-    }
+
+		/// <summary>
+		/// Provede akci s AutoDetectChangesEnabled nastaveným na false, přičemž je poté AutoDetectChangesEnabled nastaven na původní hodnotu.
+		/// </summary>
+		TResult ExecuteWithoutAutoDetectChanges<TResult>(Func<TResult> action);
+	}
 }

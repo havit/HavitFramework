@@ -324,6 +324,94 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 			Assert.AreEqual(1, entities.Count);
 		}
 
+		[TestMethod]
+		public void DbRepository_GetObject_ReturnTrackedObject()
+		{
+			// Arrange
+			TestDbContext testDbContext = new TestDbContext();
+			testDbContext.Database.Initialize(true);
+
+			SeedData();
+
+			int id = testDbContext.Set<ItemWithDeleted>().Select(item => item.Id).First(); // načteme jen identifikátor, nikoliv objekt!
+
+			var dataLoader = new DbDataLoader(testDbContext);
+			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
+
+			// Act
+			ItemWithDeleted entity = repository.GetObject(id);
+
+			// Assert
+			// no exception was thrown
+			Assert.AreEqual(((IDbContext)testDbContext).GetEntityState(entity), EntityState.Unchanged);
+		}
+
+		[TestMethod]
+		public async Task DbRepository_GetObjectAsync_ReturnTrackedObject()
+		{
+			// Arrange
+			TestDbContext testDbContext = new TestDbContext();
+			testDbContext.Database.Initialize(true);
+
+			SeedData();
+
+			int id = testDbContext.Set<ItemWithDeleted>().Select(item => item.Id).First(); // načteme jen identifikátor, nikoliv objekt!
+
+			var dataLoader = new DbDataLoader(testDbContext);
+			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
+
+			// Act
+			ItemWithDeleted entity = await repository.GetObjectAsync(id);
+
+			// Assert
+			// no exception was thrown
+			Assert.AreEqual(((IDbContext)testDbContext).GetEntityState(entity), EntityState.Unchanged);
+		}
+
+		[TestMethod]
+		public void DbRepository_GetObjects_ReturnTrackedObject()
+		{
+			// Arrange
+			TestDbContext testDbContext = new TestDbContext();
+			testDbContext.Database.Initialize(true);
+
+			SeedData();
+
+			int id = testDbContext.Set<ItemWithDeleted>().Select(item => item.Id).First(); // načteme jen identifikátor, nikoliv objekt!
+
+			var dataLoader = new DbDataLoader(testDbContext);
+			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
+
+			// Act
+			ItemWithDeleted entity = repository.GetObjects(id).Single();
+
+			// Assert
+			// no exception was thrown
+			Assert.AreEqual(((IDbContext)testDbContext).GetEntityState(entity), EntityState.Unchanged);
+		}
+
+		[TestMethod]
+		public async Task DbRepository_GetObjectsAsync_ReturnTrackedObject()
+		{
+			// Arrange
+			TestDbContext testDbContext = new TestDbContext();
+			testDbContext.Database.Initialize(true);
+
+			SeedData();
+
+			int id = testDbContext.Set<ItemWithDeleted>().Select(item => item.Id).First(); // načteme jen identifikátor, nikoliv objekt!
+
+			var dataLoader = new DbDataLoader(testDbContext);
+			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
+
+			// Act
+			ItemWithDeleted entity = (await repository.GetObjectsAsync(id)).Single(); // duplicitní id (triplicitní)
+
+			// Assert
+			// no exception was thrown
+			Assert.AreEqual(((IDbContext)testDbContext).GetEntityState(entity), EntityState.Unchanged);
+		}
+
 		/// <summary>
 		/// Bug 24218: DbRepository: Po commitu (někdy) přestane fungovat GetObject
 		/// </summary>

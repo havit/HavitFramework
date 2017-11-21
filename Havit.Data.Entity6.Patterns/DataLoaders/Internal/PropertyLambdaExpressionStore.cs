@@ -21,7 +21,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders.Internal
 		{
 			if (storeDictionary.TryGetValue(GetStoreKey<TEntity, TProperty>(propertyName), out object dictionaryValue))
 			{
-				result = (PropertyLambdaExpression<TEntity, TProperty>) dictionaryValue;
+				result = (PropertyLambdaExpression<TEntity, TProperty>)dictionaryValue;
 				return true;
 			}
 			else

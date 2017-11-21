@@ -100,7 +100,7 @@ namespace Havit.Data.Entity.Patterns.SoftDeletes
 
 			return (Expression<Func<TEntity, bool>>)result;
 		}
-		private ConcurrentDictionary<Type, object> _getNotDeletedExpressionLambdaDictionary = new ConcurrentDictionary<Type, object>();
+		private readonly ConcurrentDictionary<Type, object> _getNotDeletedExpressionLambdaDictionary = new ConcurrentDictionary<Type, object>();
 
 		/// <summary>
 		/// Vrací zkompilovaný lambda výraz pro filtrování objektů, které nemají nastaven příznak smazání.
@@ -118,7 +118,7 @@ namespace Havit.Data.Entity.Patterns.SoftDeletes
 
 			return (Func<TEntity, bool>)result;
 		}
-		private ConcurrentDictionary<Type, object> _getNotDeletedCompiledLambdaDictionary = new ConcurrentDictionary<Type, object>();
+		private readonly ConcurrentDictionary<Type, object> _getNotDeletedCompiledLambdaDictionary = new ConcurrentDictionary<Type, object>();
 
 	}
 }

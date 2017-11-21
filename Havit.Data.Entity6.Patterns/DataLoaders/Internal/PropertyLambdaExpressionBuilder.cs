@@ -7,8 +7,14 @@ using System.Threading.Tasks;
 
 namespace Havit.Data.Entity.Patterns.DataLoaders.Internal
 {
+	/// <summary>
+	/// Konstruuje PropertyLambdaExpression.
+	/// </summary>
 	internal class PropertyLambdaExpressionBuilder : IPropertyLambdaExpressionBuilder
 	{
+		/// <summary>
+		/// Vrací PropertyLambdaExpression pro získání vlastnosti propertyName dané TEntity.
+		/// </summary>
 		public PropertyLambdaExpression<TEntity, TProperty> Build<TEntity, TProperty>(string propertyName)
 		{
 			ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "item");

@@ -7,13 +7,19 @@ using System.Threading.Tasks;
 
 namespace Havit.Data.Entity.Patterns.DataLoaders.Internal
 {
+	/// <summary>
+	/// Úložiště PropertyLambdaExpression.
+	/// </summary>
 	internal class PropertyLambdaExpressionStore : IPropertyLambdaExpressionStore
 	{
-		private ConcurrentDictionary<StoreKey, object> storyDictionary = new ConcurrentDictionary<StoreKey, object>();
+		private readonly ConcurrentDictionary<StoreKey, object> storeDictionary = new ConcurrentDictionary<StoreKey, object>();
 
+		/// <summary>
+		/// Vrací PropertyLambdaExpression, pokud v úložiští existuje.
+		/// </summary>
 		public bool TryGet<TEntity, TProperty>(string propertyName, out PropertyLambdaExpression<TEntity, TProperty> result)
 		{
-			if (storyDictionary.TryGetValue(GetStoreKey<TEntity, TProperty>(propertyName), out object dictionaryValue))
+			if (storeDictionary.TryGetValue(GetStoreKey<TEntity, TProperty>(propertyName), out object dictionaryValue))
 			{
 				result = (PropertyLambdaExpression<TEntity, TProperty>) dictionaryValue;
 				return true;
@@ -25,9 +31,12 @@ namespace Havit.Data.Entity.Patterns.DataLoaders.Internal
 			}
 		}
 
+		/// <summary>
+		/// Uloží PropertyLambdaExpression do úložiště.
+		/// </summary>
 		public void Store<TEntity, TProperty>(string propertyName, PropertyLambdaExpression<TEntity, TProperty> propertyLambdaExpression)
 		{
-			storyDictionary.TryAdd(GetStoreKey<TEntity, TProperty>(propertyName), propertyLambdaExpression);
+			storeDictionary.TryAdd(GetStoreKey<TEntity, TProperty>(propertyName), propertyLambdaExpression);
 		}
 
 		private StoreKey GetStoreKey<TEntity, TProperty>(string propertyName)
@@ -35,6 +44,9 @@ namespace Havit.Data.Entity.Patterns.DataLoaders.Internal
 			return new StoreKey(typeof(TEntity), propertyName);
 		}
 
+		/// <summary>
+		/// Reprezentuje klíč do úložiště.
+		/// </summary>
 		internal class StoreKey
 		{
 			public Type EntityType { get; }

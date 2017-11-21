@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -77,19 +78,47 @@ namespace Havit.Data.Entity.Patterns.SoftDeletes
 		}
 
 		/// <summary>
-		/// Vrací výraz pro filtrování objektů, které nemají nastaven příznak smazání.
+		/// Vrací výraz (expression tree) pro filtrování objektů, které nemají nastaven příznak smazání.
 		/// </summary>
 		/// <exception cref="NotSupportedException">Na typu TEntity není podporováno mazání příznakem.</exception>
-		public Expression<Func<TEntity, bool>> GetNotDeletedExpression<TEntity>()
+		public Expression<Func<TEntity, bool>> GetNotDeletedExpressionLambda<TEntity>()
 		{
 			if (!IsSoftDeleteSupported<TEntity>())
 			{
 				throw new NotSupportedException(String.Format("Soft Delete is not supported on type {0}.", typeof(TEntity).FullName));
 			}
+			
+			if (_getNotDeletedExpressionLambdaDictionary.TryGetValue(typeof(TEntity), out var result))
+			{
+				return (Expression<Func<TEntity, bool>>)result;
+			}
 
 			ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "o");
 			BinaryExpression equal = Expression.Equal(Expression.Property(parameter, "Deleted"), Expression.Constant(null));
-			return (Expression<Func<TEntity, bool>>)Expression.Lambda(equal, parameter);
+			result = Expression.Lambda(equal, parameter);
+			_getNotDeletedExpressionLambdaDictionary.TryAdd(typeof(TEntity), result);
+
+			return (Expression<Func<TEntity, bool>>)result;
 		}
+		private ConcurrentDictionary<Type, object> _getNotDeletedExpressionLambdaDictionary = new ConcurrentDictionary<Type, object>();
+
+		/// <summary>
+		/// Vrací zkompilovaný lambda výraz pro filtrování objektů, které nemají nastaven příznak smazání.
+		/// </summary>
+		/// <exception cref="NotSupportedException">Na typu TEntity není podporováno mazání příznakem.</exception>
+		public Func<TEntity, bool> GetNotDeletedCompiledLambda<TEntity>()
+		{
+			if (_getNotDeletedCompiledLambdaDictionary.TryGetValue(typeof(TEntity), out var result))
+			{
+				return (Func<TEntity, bool>)result;
+			}
+
+			result = GetNotDeletedExpressionLambda<TEntity>().Compile();
+			_getNotDeletedCompiledLambdaDictionary.TryAdd(typeof(TEntity), result);
+
+			return (Func<TEntity, bool>)result;
+		}
+		private ConcurrentDictionary<Type, object> _getNotDeletedCompiledLambdaDictionary = new ConcurrentDictionary<Type, object>();
+
 	}
 }

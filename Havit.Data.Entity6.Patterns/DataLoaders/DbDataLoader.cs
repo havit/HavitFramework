@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Havit.Data.Entity.Patterns.DataLoaders.Internal;
 using Havit.Data.Entity.Patterns.Helpers;
 using Havit.Data.Patterns.DataLoaders;
 using Havit.Diagnostics.Contracts;
@@ -20,16 +21,19 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 	public partial class DbDataLoader : IDataLoader, IDataLoaderAsync
 	{
 		private readonly IDbContext dbContext;
+		private readonly IPropertyLambdaExpressionManager _lambdaExpressionManager;
 
 		/// <summary>
 		/// Konstructor.
 		/// </summary>
 		/// <param name="dbContext">DbContext, pomocí něhož budou objekty načítány.</param>
-		public DbDataLoader(IDbContext dbContext)
+		/// <param name="lambdaExpressionManager">LambdaExpressionManager, pomocí něhož jsou získávány expression trees a kompilované expression trees pro lambda výrazy přístupu k vlastnostem objektů.</param>
+		public DbDataLoader(IDbContext dbContext, IPropertyLambdaExpressionManager lambdaExpressionManager)
 		{
 			Contract.Requires(dbContext != null);
 
 			this.dbContext = dbContext;
+			this._lambdaExpressionManager = lambdaExpressionManager;
 		}
 
 		#region IDataLoader implementation (Load + LoadAll)
@@ -207,15 +211,6 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 		}
 
 		/// <summary>
-		/// Vrátí expression s lambda výrazem (TEntity item) => item.PropertyName (přičemž PropertyName je typu TProperty).
-		/// </summary>
-		private Expression<Func<TEntity, TProperty>> GetPropertyLambdaExpression<TEntity, TProperty>(string propertyName)
-		{
-			ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "item");
-			return Expression.Lambda<Func<TEntity, TProperty>>(Expression.Property(parameter, propertyName), parameter);
-		}
-
-		/// <summary>
 		/// Vrátí sekvenci vlastostí v pořadí, v jakém jsou zapsány a jak budou načteny.
 		/// </summary>
 		private PropertyToLoad[] GetPropertiesSequenceToLoad<TEntity, TProperty>(Expression<Func<TEntity, TProperty>> propertyPath)
@@ -232,18 +227,17 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 			where TEntity : class
 			where TProperty : class
 		{
-			Expression<Func<TEntity, TProperty>> propertyPath = GetPropertyLambdaExpression<TEntity, TProperty>(propertyName);
-			Func<TEntity, TProperty> propertyPathLambda = propertyPath.Compile();
+			var propertyLambdaExpression = _lambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TProperty>(propertyName);
 
 			List<int> ids = GetEntitiesIdsToLoadProperty(entities, propertyName, false);
 
 			if (ids.Count > 0)
 			{
-				IQueryable loadQuery = GetLoadQuery(propertyPath, ids, false);
+				IQueryable loadQuery = GetLoadQuery(propertyLambdaExpression.LambdaExpression, ids, false);
 				loadQuery.Load();
 			}
 
-			return entities.Select(item => propertyPathLambda(item)).Where(item => item != null).ToArray();
+			return entities.Select(item => propertyLambdaExpression.LambdaCompiled(item)).Where(item => item != null).ToArray();
 		}
 
 		/// <summary>
@@ -253,18 +247,17 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 			where TEntity : class
 			where TProperty : class
 		{
-			Expression<Func<TEntity, TProperty>> propertyPath = GetPropertyLambdaExpression<TEntity, TProperty>(propertyName);
-			Func<TEntity, TProperty> propertyPathLambda = propertyPath.Compile();
+			var propertyLambdaExpression = _lambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TProperty>(propertyName);
 
 			List<int> ids = GetEntitiesIdsToLoadProperty(entities, propertyName, false);
 
 			if (ids.Count > 0)
 			{
-				IQueryable loadQuery = GetLoadQuery(propertyPath, ids, false);
+				IQueryable loadQuery = GetLoadQuery(propertyLambdaExpression.LambdaExpression, ids, false);
 				await loadQuery.LoadAsync();
 			}
 
-			return entities.Select(item => propertyPathLambda(item)).Where(item => item != null).ToArray();
+			return entities.Select(item => propertyLambdaExpression.LambdaCompiled(item)).Where(item => item != null).ToArray();
 		}
 
 		/// <summary>
@@ -275,20 +268,19 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 					where TPropertyCollection : class
 					where TPropertyItem : class
 		{
-			Expression<Func<TEntity, TPropertyCollection>> propertyPath = GetPropertyLambdaExpression<TEntity, TPropertyCollection>(propertyName);
-			Func<TEntity, TPropertyCollection> propertyPathLambda = propertyPath.Compile();
+			var propertyLambdaExpression = _lambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TPropertyCollection>(propertyName);
 
-		    InitializeCollectionsForAddedEntities<TEntity, TPropertyCollection, TPropertyItem>(entities, propertyPathLambda, propertyName);
+		    InitializeCollectionsForAddedEntities<TEntity, TPropertyCollection, TPropertyItem>(entities, propertyLambdaExpression.LambdaCompiled, propertyName);
 
 			List<int> ids = GetEntitiesIdsToLoadProperty(entities, propertyName, true);
 
 			if (ids.Count > 0)
 			{
-				IQueryable loadQuery = GetLoadQuery(propertyPath, ids, true);
+				IQueryable loadQuery = GetLoadQuery(propertyLambdaExpression.LambdaExpression, ids, true);
 				loadQuery.Load();
 			}
 
-		    return entities.SelectMany(item => (IEnumerable<TPropertyItem>)propertyPathLambda(item)).ToArray();
+		    return entities.SelectMany(item => (IEnumerable<TPropertyItem>)propertyLambdaExpression.LambdaCompiled(item)).ToArray();
 		}
 
         /// <summary>
@@ -299,20 +291,19 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 					where TPropertyCollection : class
 					where TPropertyItem : class
 		{
-			Expression<Func<TEntity, TPropertyCollection>> propertyPath = GetPropertyLambdaExpression<TEntity, TPropertyCollection>(propertyName);
-			Func<TEntity, TPropertyCollection> propertyPathLambda = propertyPath.Compile();
+			var propertyLambdaExpression = _lambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TPropertyCollection>(propertyName);
 
-		    InitializeCollectionsForAddedEntities<TEntity, TPropertyCollection, TPropertyItem>(entities, propertyPathLambda, propertyName);
+		    InitializeCollectionsForAddedEntities<TEntity, TPropertyCollection, TPropertyItem>(entities, propertyLambdaExpression.LambdaCompiled, propertyName);
 
             List<int> ids = GetEntitiesIdsToLoadProperty(entities, propertyName, true);
 
 			if (ids.Count > 0)
 			{
-				IQueryable loadQuery = GetLoadQuery(propertyPath, ids, true);
+				IQueryable loadQuery = GetLoadQuery(propertyLambdaExpression.LambdaExpression, ids, true);
 				await loadQuery.LoadAsync();
 			}
 
-			TPropertyItem[] result = entities.SelectMany(item => (IEnumerable<TPropertyItem>)propertyPathLambda(item)).ToArray();
+			TPropertyItem[] result = entities.SelectMany(item => (IEnumerable<TPropertyItem>)propertyLambdaExpression.LambdaCompiled(item)).ToArray();
 			return result;
 		}
 

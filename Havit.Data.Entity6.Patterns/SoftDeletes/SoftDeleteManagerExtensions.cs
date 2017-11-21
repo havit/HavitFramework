@@ -22,7 +22,7 @@ namespace Havit.Data.Entity.Patterns.SoftDeletes
 
 			if (softDeleteManager.IsSoftDeleteSupported<TSource>())
 			{
-				return source.Where(softDeleteManager.GetNotDeletedExpression<TSource>());
+				return source.Where(softDeleteManager.GetNotDeletedExpressionLambda<TSource>()); 
 			}
 			else
 			{
@@ -40,7 +40,7 @@ namespace Havit.Data.Entity.Patterns.SoftDeletes
 
 			if (softDeleteManager.IsSoftDeleteSupported<TSource>())
 			{
-				return source.Where(softDeleteManager.GetNotDeletedExpression<TSource>().Compile());
+				return source.Where(softDeleteManager.GetNotDeletedCompiledLambda<TSource>());
 			}
 			else
 			{

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Havit.Data.Entity.Patterns.DataLoaders;
+using Havit.Data.Entity.Patterns.DataLoaders.Internal;
 using Havit.Data.Entity.Patterns.Tests.DataLoader.Model;
 using Havit.Data.Patterns.DataLoaders;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -61,7 +62,7 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 			List<Master> masters = dbContext.Set<Master>().Include(m => m.Children).ToList();
 
 			// Act
-			IDataLoader dataLoader = new DbDataLoader(dbContext);
+			IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 			for (int i = 0; i < 10; i++)
 			{
 				// dataLoader.Load proběhne 10 (cyklus) * 1000 (počet masterů)

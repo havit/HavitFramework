@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security.Policy;
 using System.Threading.Tasks;
 using Havit.Data.Entity.Patterns.DataLoaders;
+using Havit.Data.Entity.Patterns.DataLoaders.Internal;
 using Havit.Data.Entity.Patterns.Repositories;
 using Havit.Data.Entity.Patterns.SoftDeletes;
 using Havit.Data.Entity.Patterns.Tests.Infrastructure;
@@ -33,7 +34,7 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 
 			int maxId = testDbContext.Set<ItemWithDeleted>().Max(item => item.Id);
 
-			var dataLoader = new DbDataLoader(testDbContext);
+			var dataLoader = new DbDataLoader(testDbContext, new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
 			// Act
@@ -54,7 +55,7 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 
 			int maxId = testDbContext.Set<ItemWithDeleted>().Max(item => item.Id);
 
-			var dataLoader = new DbDataLoader(testDbContext);
+			var dataLoader = new DbDataLoader(testDbContext, new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
 			// Act
@@ -74,7 +75,7 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 			int[] ids = testDbContext.Set<ItemWithDeleted>().Where(item => item.Deleted != null).Select(item => item.Id).ToArray();
 			Assert.AreNotEqual(0, ids.Length, "Pro test jsou potřeba data smazaná příznakem.");
 
-			var dataLoader = new DbDataLoader(testDbContext);
+			var dataLoader = new DbDataLoader(testDbContext, new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
 			// Act
@@ -96,7 +97,7 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 			int[] ids = testDbContext.Set<ItemWithDeleted>().Where(item => item.Deleted != null).Select(item => item.Id).ToArray();
 			Assert.AreNotEqual(0, ids.Length, "Pro test jsou potřeba data smazaná příznakem.");
 
-			var dataLoader = new DbDataLoader(testDbContext);
+			var dataLoader = new DbDataLoader(testDbContext, new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
 			// Act
@@ -115,7 +116,7 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 
 			SeedData(true);
 
-			var dataLoader = new DbDataLoader(testDbContext);
+			var dataLoader = new DbDataLoader(testDbContext, new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
 			// Act
@@ -134,7 +135,7 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 
 			SeedData(true);
 
-			var dataLoader = new DbDataLoader(testDbContext);
+			var dataLoader = new DbDataLoader(testDbContext, new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
 			// Act
@@ -156,7 +157,7 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 			int[] ids = testDbContext.Set<ItemWithDeleted>().Select(item => item.Id).ToArray();
 			Assert.AreNotEqual(0, ids.Length, "Pro test jsou potřeba data.");
 
-			var dataLoader = new DbDataLoader(testDbContext);
+			var dataLoader = new DbDataLoader(testDbContext, new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 			
 			// Act
@@ -178,7 +179,7 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 			int[] ids = testDbContext.Set<ItemWithDeleted>().Select(item => item.Id).ToArray();
 			Assert.AreNotEqual(0, ids.Length, "Pro test jsou potřeba data.");
 
-			var dataLoader = new DbDataLoader(testDbContext);
+			var dataLoader = new DbDataLoader(testDbContext, new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
 			// Act
@@ -203,7 +204,7 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 				.ToArray();
 			Assert.AreNotEqual(0, ids.Length, "Pro test jsou potřeba data smazaná příznakem.");
 
-			var dataLoader = new DbDataLoader(testDbContext);
+			var dataLoader = new DbDataLoader(testDbContext, new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
 			// Act
@@ -228,7 +229,7 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 				.ToArray();
 			Assert.AreNotEqual(0, ids.Length, "Pro test jsou potřeba data smazaná příznakem.");
 
-			var dataLoader = new DbDataLoader(testDbContext);
+			var dataLoader = new DbDataLoader(testDbContext, new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
 			// Act
@@ -250,7 +251,7 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 
 			int maxId = testDbContext.Set<ItemWithDeleted>().Max(item => item.Id);
 
-			var dataLoader = new DbDataLoader(testDbContext);
+			var dataLoader = new DbDataLoader(testDbContext, new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
 			// Act
@@ -271,7 +272,7 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 
 			int maxId = testDbContext.Set<ItemWithDeleted>().Max(item => item.Id);
 
-			var dataLoader = new DbDataLoader(testDbContext);
+			var dataLoader = new DbDataLoader(testDbContext, new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
 			// Act
@@ -291,7 +292,7 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 
 			int id = testDbContext.Set<ItemWithDeleted>().Select(item => item.Id).First(); // načteme jen identifikátor, nikoliv objekt!
 
-			var dataLoader = new DbDataLoader(testDbContext);
+			var dataLoader = new DbDataLoader(testDbContext, new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
 			// Act
@@ -313,7 +314,7 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 
 			int id = testDbContext.Set<ItemWithDeleted>().Select(item => item.Id).First(); // načteme jen identifikátor, nikoliv objekt!
 
-			var dataLoader = new DbDataLoader(testDbContext);
+			var dataLoader = new DbDataLoader(testDbContext, new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
 			// Act
@@ -335,7 +336,7 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 
 			int id = testDbContext.Set<ItemWithDeleted>().Select(item => item.Id).First(); // načteme jen identifikátor, nikoliv objekt!
 
-			var dataLoader = new DbDataLoader(testDbContext);
+			var dataLoader = new DbDataLoader(testDbContext, new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
 			// Act
@@ -357,7 +358,7 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 
 			int id = testDbContext.Set<ItemWithDeleted>().Select(item => item.Id).First(); // načteme jen identifikátor, nikoliv objekt!
 
-			var dataLoader = new DbDataLoader(testDbContext);
+			var dataLoader = new DbDataLoader(testDbContext, new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
 			// Act
@@ -379,7 +380,7 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 
 			int id = testDbContext.Set<ItemWithDeleted>().Select(item => item.Id).First(); // načteme jen identifikátor, nikoliv objekt!
 
-			var dataLoader = new DbDataLoader(testDbContext);
+			var dataLoader = new DbDataLoader(testDbContext, new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
 			// Act
@@ -401,7 +402,7 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 
 			int id = testDbContext.Set<ItemWithDeleted>().Select(item => item.Id).First(); // načteme jen identifikátor, nikoliv objekt!
 
-			var dataLoader = new DbDataLoader(testDbContext);
+			var dataLoader = new DbDataLoader(testDbContext, new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
 			// Act
@@ -423,7 +424,7 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 			testDbContext.Database.Initialize(true);
 			SeedData();
 
-			DbDataLoader dataLoader = new DbDataLoader(testDbContext);
+			DbDataLoader dataLoader = new DbDataLoader(testDbContext, new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 			SoftDeleteManager softDeleteManager = new SoftDeleteManager(new ServerTimeService());
 
 			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, softDeleteManager);
@@ -448,7 +449,7 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 
 			SeedData();
 
-			var dataLoader = new DbDataLoader(testDbContext);
+			var dataLoader = new DbDataLoader(testDbContext, new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
 			// Act + Assert

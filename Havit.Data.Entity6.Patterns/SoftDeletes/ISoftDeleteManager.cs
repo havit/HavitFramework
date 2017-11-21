@@ -31,9 +31,15 @@ namespace Havit.Data.Entity.Patterns.SoftDeletes
 		void SetNotDeleted<TEntity>(TEntity entity);
 
 		/// <summary>
-		/// Vrací výraz pro filtrování objektů, které nemají nastaven příznak smazání.
+		/// Vrací výraz (expression tree) pro filtrování objektů, které nemají nastaven příznak smazání.
 		/// </summary>
 		/// <exception cref="NotSupportedException">Na typu TEntity není podporováno mazání příznakem.</exception>
-		Expression<Func<TEntity, bool>> GetNotDeletedExpression<TEntity>();
+		Expression<Func<TEntity, bool>> GetNotDeletedExpressionLambda<TEntity>();
+
+		/// <summary>
+		/// Vrací zkompilovaný lamda výraz pro filtrování objektů, které nemají nastaven příznak smazání.
+		/// </summary>
+		/// <exception cref="NotSupportedException">Na typu TEntity není podporováno mazání příznakem.</exception>
+		Func<TEntity, bool> GetNotDeletedCompiledLambda<TEntity>();
 	}
 }

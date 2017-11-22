@@ -132,7 +132,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 				{
 					if (!propertyToLoad.IsCollection)
 					{
-						entities = (Array)this.GetType()
+						entities = (Array)typeof(DbDataLoader)
 							.GetMethod(nameof(LoadReferencePropertyInternal), BindingFlags.Instance | BindingFlags.NonPublic)
 							.MakeGenericMethod(
 								propertyToLoad.SourceType,
@@ -141,7 +141,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 					}
 					else
 					{
-						entities = (Array)this.GetType()
+						entities = (Array)typeof(DbDataLoader)
 							.GetMethod(nameof(LoadCollectionPropertyInternal), BindingFlags.Instance | BindingFlags.NonPublic)
 							.MakeGenericMethod(
 								propertyToLoad.SourceType,
@@ -182,7 +182,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 				{
 					if (!propertyToLoad.IsCollection)
 					{
-						task = (Task)this.GetType()
+						task = (Task)typeof(DbDataLoader)
 							.GetMethod(nameof(LoadReferencePropertyInternalAsync), BindingFlags.Instance | BindingFlags.NonPublic)
 							.MakeGenericMethod(
 								propertyToLoad.SourceType,
@@ -191,7 +191,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 					}
 					else
 					{
-						task = (Task)this.GetType()
+						task = (Task)typeof(DbDataLoader)
 							.GetMethod(nameof(LoadCollectionPropertyInternalAsync), BindingFlags.Instance | BindingFlags.NonPublic)
 							.MakeGenericMethod(
 								propertyToLoad.SourceType,
@@ -310,16 +310,24 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 	    /// <summary>
 		/// Vrátí seznam Id objektů, jejichž vlastnost má být načtena.
 		/// </summary>
-		private List<int> GetEntitiesIdsToLoadProperty<TEntity>(TEntity[] entities, string propertyName, bool isPropertyCollection)
+		protected virtual List<int> GetEntitiesIdsToLoadProperty<TEntity>(TEntity[] entities, string propertyName, bool isPropertyCollection)
 			where TEntity : class
 	    {
 	        IEnumerable<TEntity> entitiesNotInAddedState = entities.Where(item => dbContext.GetEntityState(item) != EntityState.Added);
-
-            IEnumerable<TEntity> entitiesToLoadQuery = isPropertyCollection
-				? entitiesNotInAddedState.Where(item => !dbContext.IsEntityCollectionLoaded(item, propertyName))
-                : entitiesNotInAddedState.Where(item => !dbContext.IsEntityReferenceLoaded(item, propertyName));
-
+		    IEnumerable<TEntity> entitiesToLoadQuery = entitiesNotInAddedState.Where(entity => !IsEntityPropertyLoaded(entity, propertyName, isPropertyCollection));			
 			return entitiesToLoadQuery.Select(entity => EntityHelper.GetEntityId(entity)).Distinct().ToList();
+		}
+
+		/// <summary>
+		/// Vrací true, pokud je vlastnost objektu již načtena.
+		/// Řídí se pomocí IDbContext.IsEntityCollectionLoaded, DbContext.IsEntityReferenceLoaded.
+		/// </summary>
+		protected virtual bool IsEntityPropertyLoaded<TEntity>(TEntity entity, string propertyName, bool isPropertyCollection)
+			where TEntity : class
+		{
+			return isPropertyCollection
+				? dbContext.IsEntityCollectionLoaded(entity, propertyName)
+				: dbContext.IsEntityReferenceLoaded(entity, propertyName);
 		}
 
 	    /// <summary>

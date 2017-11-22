@@ -47,7 +47,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders.Internal
 		/// <summary>
 		/// Reprezentuje klíč do úložiště.
 		/// </summary>
-		internal class StoreKey
+		internal sealed class StoreKey
 		{
 			public Type EntityType { get; }
 			public string PropertyName { get; }

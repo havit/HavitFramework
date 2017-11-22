@@ -103,7 +103,7 @@ namespace Havit.Data.Entity.Patterns.Windsor.Installers
 		///		<item>
 		///			<term>IDataLoader, IDataLoaderAsync</term>
 		///			<description>
-		///				DbDataLoader.
+		///				DbDataLoaderWithLoadedPropertiesMemory.
 		///				Lifestyle je určen dle options installeru (DataLoaderLifestyle).
 		///			</description>
 		///		</item>

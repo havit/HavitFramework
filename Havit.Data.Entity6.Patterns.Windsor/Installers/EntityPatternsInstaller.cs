@@ -89,7 +89,7 @@ namespace Havit.Data.Entity.Patterns.Windsor.Installers
 				Component.For(typeof(IDataSourceFactory<>)).AsFactory(),
 				Component.For(typeof(IRepositoryFactory<>)).AsFactory(),
 				Component.For(typeof(IUnitOfWork), typeof(IUnitOfWorkAsync)).ImplementedBy(componentRegistrationOptions.UnitOfWorkType).ApplyLifestyle(componentRegistrationOptions.UnitOfWorkLifestyle),
-				Component.For(typeof(IDataLoader), typeof(IDataLoaderAsync)).ImplementedBy<DbDataLoader>().ApplyLifestyle(componentRegistrationOptions.DataLoaderLifestyle),
+				Component.For(typeof(IDataLoader), typeof(IDataLoaderAsync)).ImplementedBy<DbDataLoaderWithLoadedPropertiesMemory>().ApplyLifestyle(componentRegistrationOptions.DataLoaderLifestyle),
 				Component.For<IPropertyLambdaExpressionManager>().ImplementedBy<PropertyLambdaExpressionManager>().LifestyleSingleton(),
 				Component.For<IPropertyLambdaExpressionBuilder>().ImplementedBy<PropertyLambdaExpressionBuilder>().LifestyleSingleton(),
 				Component.For<IPropertyLambdaExpressionStore>().ImplementedBy<PropertyLambdaExpressionStore>().LifestyleSingleton()

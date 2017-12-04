@@ -11,12 +11,14 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.DataEntries.Model
 		private readonly RegisteredEntityEnumerator registeredEntityEnumerator;
 		private readonly Project modelProject;
 		private readonly Project dataLayerProject;
+		private readonly CammelCaseNamingStrategy cammelCaseNamingStrategy;
 
-		public DataEntriesModelSource(RegisteredEntityEnumerator registeredEntityEnumerator, Project modelProject, Project dataLayerProject)
+		public DataEntriesModelSource(RegisteredEntityEnumerator registeredEntityEnumerator, Project modelProject, Project dataLayerProject, CammelCaseNamingStrategy cammelCaseNamingStrategy)
 		{
 			this.registeredEntityEnumerator = registeredEntityEnumerator;
 			this.modelProject = modelProject;
 			this.dataLayerProject = dataLayerProject;
+			this.cammelCaseNamingStrategy = cammelCaseNamingStrategy;
 		}
 
 		public IEnumerable<DataEntriesModel> GetModels()
@@ -32,7 +34,11 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.DataEntries.Model
 					DbClassName = registeredEntity.ClassName + "Entries",
 					ModelClassFullName = registeredEntity.FullName,
 					ModelEntriesEnumerationFullName = registeredEntity.FullName + ".Entry",
-					Entries = System.Enum.GetNames(entriesEnumType).OrderBy(item => item).Select(item => new DataEntriesModel.Entry { PropertyName = item }).ToList()
+					Entries = System.Enum.GetNames(entriesEnumType).OrderBy(item => item).Select(item => new DataEntriesModel.Entry
+					{
+						PropertyName = item,
+						FieldName = cammelCaseNamingStrategy.GetCammelCase(item)
+					}).ToList()
 				}).ToList();
 		}
 

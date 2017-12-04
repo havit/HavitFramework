@@ -71,13 +71,11 @@ namespace Havit.Data.Entity.CodeGenerator
 			}
 
 			Parallel.Invoke(
-				() => modelProject = new Project(Path.Combine(solutionDirectory.FullName, @"Model\Model.csproj")),
-				() => dataLayerProject = new Project(Path.Combine(solutionDirectory.FullName, @"DataLayer\DataLayer.csproj")),
 				() => sourceControlClient = new TfsSourceControlClientFactory().Create(solutionDirectory.FullName),
 				() =>
 				{
 					dbContext = new DbContextActivator().Activate(dbContextType);
-					
+
 					// doNothingInitializer = new DoNothingInitializer<MyDbContext>();
 					Type nullDatabaseInitializerType = typeof(NullDatabaseInitializer<>).MakeGenericType(dbContextType);
 					object nullDatabaseInitializer = Activator.CreateInstance(nullDatabaseInitializerType);
@@ -85,15 +83,19 @@ namespace Havit.Data.Entity.CodeGenerator
 					// System.Data.Entity.Database.SetInitializer<MyDbContext>(doNothingInitializer);
 					MethodInfo setInitializerMethod = typeof(System.Data.Entity.Database).GetMethod("SetInitializer", BindingFlags.Static | BindingFlags.Public).MakeGenericMethod(dbContextType);
 					setInitializerMethod.Invoke(null, new object[] { nullDatabaseInitializer });
-				});
+				},
+				() => modelProject = new Project(Path.Combine(solutionDirectory.FullName, @"Model\Model.csproj")),
+				() => dataLayerProject = new Project(Path.Combine(solutionDirectory.FullName, @"DataLayer\DataLayer.csproj"))
+			);
 
 			Console.WriteLine($"Initializing DbContext...");
 			ObjectContext objectContext = ((IObjectContextAdapter)dbContext).ObjectContext;
+			CammelCaseNamingStrategy cammelCaseNamingStrategy = new CammelCaseNamingStrategy();
 
 			Console.WriteLine($"Generating code...");
 
 			RegisteredEntityEnumerator registeredEntityEnumerator = new RegisteredEntityEnumerator(objectContext);
-            var dataEntriesModelSource = new DataEntriesModelSource(registeredEntityEnumerator, modelProject, dataLayerProject);
+            var dataEntriesModelSource = new DataEntriesModelSource(registeredEntityEnumerator, modelProject, dataLayerProject, cammelCaseNamingStrategy);
 
 			Parallel.Invoke(
 		        () => GenerateMetadata(modelProject, registeredEntityEnumerator, sourceControlClient),
@@ -121,7 +123,7 @@ namespace Havit.Data.Entity.CodeGenerator
 		        });
 
 			sourceControlClient.Delete(unusedModelFiles.Concat(unusedDataLayerFiles).ToArray());
-
+			
 			stopwatch.Stop();
 			Console.WriteLine("Completed in {0} ms.", (int)stopwatch.Elapsed.TotalMilliseconds);
 		}

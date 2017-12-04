@@ -15,7 +15,7 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.DataEntries.Model
 		public class Entry
 		{
 			public string PropertyName { get; set; }
-			public string FieldName => PropertyName[0].ToString().ToLower() + PropertyName.Substring(1);
+			public string FieldName { get; set; }
 		}
 	}
 }

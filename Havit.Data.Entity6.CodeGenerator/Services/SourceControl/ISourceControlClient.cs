@@ -13,7 +13,5 @@ namespace Havit.Data.Entity.CodeGenerator.Services.SourceControl
 		void Delete(string path);
 
 		void Delete(string[] paths);
-
-		void Rename(string source, string target);
 	}
 }

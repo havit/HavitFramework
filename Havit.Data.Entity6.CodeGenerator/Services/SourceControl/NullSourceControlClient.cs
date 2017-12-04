@@ -22,10 +22,5 @@ namespace Havit.Data.Entity.CodeGenerator.Services.SourceControl
 		{
 			// NOOP
 		}
-
-		public void Rename(string source, string target)
-		{
-			// NOOP
-		}
 	}
 }

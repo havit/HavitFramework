@@ -123,7 +123,19 @@ namespace Havit.Data.Entity.CodeGenerator
 		        });
 
 			sourceControlClient.Delete(unusedModelFiles.Concat(unusedDataLayerFiles).ToArray());
-			
+			unusedModelFiles.Concat(unusedDataLayerFiles).ToList().ForEach(item =>
+			{
+				try
+				{
+					File.SetAttributes(item, FileAttributes.Normal);
+					File.Delete(item);
+				}
+				catch
+				{
+					// NOOP
+				}
+			});
+
 			stopwatch.Stop();
 			Console.WriteLine("Completed in {0} ms.", (int)stopwatch.Elapsed.TotalMilliseconds);
 		}

@@ -10,7 +10,7 @@ namespace Havit.Data.Entity.CodeGenerator.Services
 		/// <summary>
 		/// Zdroj: https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/
 		/// </summary>
-		private HashSet<string> csharpKeywords = new HashSet<string>
+		private readonly HashSet<string> csharpKeywords = new HashSet<string>
 		{
 			"abstract",
 			"as",

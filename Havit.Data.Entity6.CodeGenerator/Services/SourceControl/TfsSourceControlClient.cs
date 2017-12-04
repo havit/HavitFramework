@@ -24,10 +24,7 @@ namespace Havit.Data.Entity.CodeGenerator.Services.SourceControl
 
 		public void Delete(string path)
 		{
-			lock (workspace)
-			{
-				workspace.PendDelete(path);
-			}
+			Delete(new string[] { path });
 		}
 
 		public void Delete(string[] paths)
@@ -36,17 +33,10 @@ namespace Havit.Data.Entity.CodeGenerator.Services.SourceControl
 			{
 				lock (workspace)
 				{
-					workspace.PendDelete(paths);
+					workspace.PendDelete(paths, RecursionType.None, LockLevel.None, false);
 				}
 			}
 		}
 
-		public void Rename(string source, string target)
-		{
-			lock (workspace)
-			{
-				workspace.PendRename(source, target);
-			}
-		}
 	}
 }

@@ -302,7 +302,7 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 		{
 			// Arrange
 			TestDbContext dbContext = new TestDbContext();
-			var dbDataLoader = new DbDataLoader(dbContext, new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
+			var dbDataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 			var softDeleteManager = new SoftDeleteManager(new ServerTimeService());
 			var dbUnitOfWork = new DbUnitOfWork(dbContext, softDeleteManager);
 			var dbRepository = new DbItemWithDeletedRepository(dbContext, dbDataLoader, dbDataLoader, softDeleteManager);

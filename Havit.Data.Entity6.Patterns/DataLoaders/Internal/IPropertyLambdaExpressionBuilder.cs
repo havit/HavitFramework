@@ -3,7 +3,7 @@
 	/// <summary>
 	/// Konstruuje PropertyLambdaExpression.
 	/// </summary>
-	internal interface IPropertyLambdaExpressionBuilder
+	public interface IPropertyLambdaExpressionBuilder
 	{
 		/// <summary>
 		/// Vrací PropertyLambdaExpression pro získání vlastnosti propertyName dané TEntity.

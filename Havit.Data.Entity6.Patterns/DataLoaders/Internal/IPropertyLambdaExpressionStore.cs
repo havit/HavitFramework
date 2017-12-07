@@ -3,7 +3,7 @@
 	/// <summary>
 	/// Úložiště PropertyLambdaExpression.
 	/// </summary>
-	internal interface IPropertyLambdaExpressionStore
+	public interface IPropertyLambdaExpressionStore
 	{
 		/// <summary>
 		/// Vrací PropertyLambdaExpression, pokud v úložiští existuje.

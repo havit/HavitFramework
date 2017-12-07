@@ -90,8 +90,9 @@
     <Compile Include="DataEntries\DataSources\FakeSupportedClassDataSource.cs" />
     <Compile Include="DataLoader\DbDataLoaderLoadSuppressesChangeTrackerTest.cs" />
     <Compile Include="DataLoader\DbDataLoaderTest.cs" />
+    <Compile Include="DataLoader\Internal\PropertyLoadSequenceResolverWithDeletedFilteringSubstitutionTest.cs" />
     <Compile Include="DataLoader\Model\HiearchyItem.cs" />
-    <Compile Include="DataLoader\PropertiesSequenceExpressionVisitorTest.cs" />
+    <Compile Include="DataLoader\Internal\PropertyLoadSequenceResolverTest.cs" />
     <Compile Include="DataLoader\Model\Child.cs" />
     <Compile Include="DataLoader\Model\DataLoaderTestDbContext.cs" />
     <Compile Include="DataLoader\Model\LoginAccount.cs" />

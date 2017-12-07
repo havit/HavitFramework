@@ -18,7 +18,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public DbDataLoaderWithLoadedPropertiesMemory(IDbContext dbContext, IPropertyLambdaExpressionManager lambdaExpressionManager) : base(dbContext, lambdaExpressionManager)
+		public DbDataLoaderWithLoadedPropertiesMemory(IDbContext dbContext, IPropertyLoadSequenceResolver propertyLoadSequenceResolver, IPropertyLambdaExpressionManager lambdaExpressionManager) : base(dbContext, propertyLoadSequenceResolver, lambdaExpressionManager)
 		{
 		}
 

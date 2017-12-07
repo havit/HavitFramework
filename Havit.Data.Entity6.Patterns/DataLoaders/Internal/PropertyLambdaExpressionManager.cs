@@ -10,7 +10,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders.Internal
 	/// <summary>
 	/// Poskytuje PropertyLambdaExpression.
 	/// </summary>
-	internal class PropertyLambdaExpressionManager : IPropertyLambdaExpressionManager
+	public class PropertyLambdaExpressionManager : IPropertyLambdaExpressionManager
 	{
 		private readonly IPropertyLambdaExpressionStore _propertyLambdaExpressionStore;
 		private readonly IPropertyLambdaExpressionBuilder _propertyLambdaExpressionBuilder;

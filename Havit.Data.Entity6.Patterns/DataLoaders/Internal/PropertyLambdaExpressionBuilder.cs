@@ -10,7 +10,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders.Internal
 	/// <summary>
 	/// Konstruuje PropertyLambdaExpression.
 	/// </summary>
-	internal class PropertyLambdaExpressionBuilder : IPropertyLambdaExpressionBuilder
+	public class PropertyLambdaExpressionBuilder : IPropertyLambdaExpressionBuilder
 	{
 		/// <summary>
 		/// Vrací PropertyLambdaExpression pro získání vlastnosti propertyName dané TEntity.

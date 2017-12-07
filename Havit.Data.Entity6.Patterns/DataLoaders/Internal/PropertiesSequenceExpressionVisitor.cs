@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Havit.Data.Patterns.DataLoaders;
 using Havit.Diagnostics.Contracts;
 
-namespace Havit.Data.Entity.Patterns.DataLoaders
+namespace Havit.Data.Entity.Patterns.DataLoaders.Internal
 {
-	internal class PropertiesSequenceExpressionVisitor : ExpressionVisitor
+	public class PropertiesSequenceExpressionVisitor : ExpressionVisitor
 	{
 		private string propertyPathString;
 		private List<PropertyToLoad> propertiesToLoad;

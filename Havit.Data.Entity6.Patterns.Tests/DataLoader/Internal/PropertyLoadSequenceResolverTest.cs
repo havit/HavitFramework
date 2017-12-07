@@ -1,23 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Havit.Data.Entity.Patterns.DataLoaders;
+using Havit.Data.Entity.Patterns.DataLoaders.Internal;
 using Havit.Data.Entity.Patterns.Tests.DataLoader.Model;
-using Havit.Data.Patterns.DataLoaders;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Havit.Data.Entity.Patterns.Tests.DataLoader
+namespace Havit.Data.Entity.Patterns.Tests.DataLoader.Internal
 {
 	[TestClass]
-	public class PropertiesSequenceExpressionVisitorTest
+	public class PropertyLoadSequenceResolverTest
 	{
 		[TestMethod]
-		public void PropertiesSequenceExpressionVisitor_GetLoadPlanItems_ReturnsSimplePropertyPaths()
+		public void PropertyLoadSequenceResolver_GetPropertiesToLoad_ReturnsSimplePropertyPaths()
 		{
-			PropertiesSequenceExpressionVisitor visitor = new PropertiesSequenceExpressionVisitor();
-			PropertyToLoad[] propertiesToLoad = visitor.GetPropertiesToLoad((Child child) => child.Parent);
+			PropertyLoadSequenceResolver resolver = new PropertyLoadSequenceResolver();
+			PropertyToLoad[] propertiesToLoad = resolver.GetPropertiesToLoad((Child child) => child.Parent);
 
 			Assert.AreEqual(1, propertiesToLoad.Length);
 
@@ -28,10 +24,10 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 		}
 
 		[TestMethod]
-		public void PropertiesSequenceExpressionVisitor_GetLoadPlanItems_ReturnsPropertyPathsWithCollection()
+		public void PropertyLoadSequenceResolver_GetPropertiesToLoad_ReturnsPropertyPathsWithCollection()
 		{
-			PropertiesSequenceExpressionVisitor visitor = new PropertiesSequenceExpressionVisitor();
-			PropertyToLoad[] propertiesToLoad = visitor.GetPropertiesToLoad((Child child) => child.Parent.Children.Select(item => item.Parent));
+			PropertyLoadSequenceResolver resolver = new PropertyLoadSequenceResolver();
+			PropertyToLoad[] propertiesToLoad = resolver.GetPropertiesToLoad((Child child) => child.Parent.Children.Select(item => item.Parent));
 
 			Assert.AreEqual(3, propertiesToLoad.Length);
 
@@ -55,10 +51,10 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 		}
 
 		[TestMethod]
-		public void PropertiesSequenceExpressionVisitor_GetLoadPlanItems_ReturnsPropertyPathsForHierarchy()
+		public void PropertyLoadSequenceResolver_GetPropertiesToLoad_ReturnsPropertyPathsForHierarchy()
 		{
-			PropertiesSequenceExpressionVisitor visitor = new PropertiesSequenceExpressionVisitor();
-			PropertyToLoad[] propertiesToLoad = visitor.GetPropertiesToLoad((HiearchyItem item) => item.Children.Select(item2 => item2.Children.Select(item3 => item3.Children)));
+			PropertyLoadSequenceResolver resolver = new PropertyLoadSequenceResolver();
+			PropertyToLoad[] propertiesToLoad = resolver.GetPropertiesToLoad((HiearchyItem item) => item.Children.Select(item2 => item2.Children.Select(item3 => item3.Children)));
 
 			Assert.AreEqual(3, propertiesToLoad.Length);
 

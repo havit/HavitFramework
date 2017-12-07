@@ -10,7 +10,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders.Internal
 	/// <summary>
 	/// Úložiště PropertyLambdaExpression.
 	/// </summary>
-	internal class PropertyLambdaExpressionStore : IPropertyLambdaExpressionStore
+	public class PropertyLambdaExpressionStore : IPropertyLambdaExpressionStore
 	{
 		private readonly ConcurrentDictionary<StoreKey, object> storeDictionary = new ConcurrentDictionary<StoreKey, object>();
 

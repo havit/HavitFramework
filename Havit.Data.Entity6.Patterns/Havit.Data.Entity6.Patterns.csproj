@@ -67,12 +67,15 @@
     <Compile Include="DataLoaders\Internal\IPropertyLambdaExpressionBuilder.cs" />
     <Compile Include="DataLoaders\Internal\IPropertyLambdaExpressionManager.cs" />
     <Compile Include="DataLoaders\Internal\IPropertyLambdaExpressionStore.cs" />
+    <Compile Include="DataLoaders\Internal\IPropertyLoadSequenceResolver.cs" />
     <Compile Include="DataLoaders\Internal\PropertyLambdaExpressionBuilder.cs" />
     <Compile Include="DataLoaders\Internal\PropertyLambdaExpressionManager.cs" />
     <Compile Include="DataLoaders\Internal\PropertyLambdaExpression.cs" />
     <Compile Include="DataLoaders\Internal\PropertyLambdaExpressionStore.cs" />
-    <Compile Include="DataLoaders\PropertiesSequenceExpressionVisitor.cs" />
-    <Compile Include="DataLoaders\PropertyToLoad.cs" />
+    <Compile Include="DataLoaders\Internal\PropertyLoadSequenceResolverWithDeletedFilteringCollectionsSubstitution.cs" />
+    <Compile Include="DataLoaders\Internal\PropertyLoadSequenceResolver.cs" />
+    <Compile Include="DataLoaders\Internal\PropertiesSequenceExpressionVisitor.cs" />
+    <Compile Include="DataLoaders\Internal\PropertyToLoad.cs" />
     <Compile Include="DataSeeds\DbDataSeedRunDecisionStatePersister.cs" />
     <Compile Include="Helpers\EntityHelper.cs" />
     <Compile Include="SoftDeletes\ISoftDeleteManager.cs" />

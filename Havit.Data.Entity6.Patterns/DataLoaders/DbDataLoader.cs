@@ -21,19 +21,22 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 	public partial class DbDataLoader : IDataLoader, IDataLoaderAsync
 	{
 		private readonly IDbContext dbContext;
-		private readonly IPropertyLambdaExpressionManager _lambdaExpressionManager;
+		private readonly IPropertyLoadSequenceResolver propertyLoadSequenceResolver;
+		private readonly IPropertyLambdaExpressionManager lambdaExpressionManager;
 
 		/// <summary>
 		/// Konstructor.
 		/// </summary>
 		/// <param name="dbContext">DbContext, pomocí něhož budou objekty načítány.</param>
+		/// <param name="propertyLoadSequenceResolver">Služba, která poskytne vlastnosti, které mají být načteny, a jejich pořadí.</param>
 		/// <param name="lambdaExpressionManager">LambdaExpressionManager, pomocí něhož jsou získávány expression trees a kompilované expression trees pro lambda výrazy přístupu k vlastnostem objektů.</param>
-		public DbDataLoader(IDbContext dbContext, IPropertyLambdaExpressionManager lambdaExpressionManager)
+		public DbDataLoader(IDbContext dbContext, IPropertyLoadSequenceResolver propertyLoadSequenceResolver, IPropertyLambdaExpressionManager lambdaExpressionManager)
 		{
 			Contract.Requires(dbContext != null);
 
 			this.dbContext = dbContext;
-			this._lambdaExpressionManager = lambdaExpressionManager;
+			this.propertyLoadSequenceResolver = propertyLoadSequenceResolver;
+			this.lambdaExpressionManager = lambdaExpressionManager;
 		}
 
 		#region IDataLoader implementation (Load + LoadAll)
@@ -124,7 +127,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 				Contract.Assert<InvalidOperationException>(entitiesToLoadWithoutNulls.All(item => dbContext.GetEntityState(item) != EntityState.Detached), "DbDataLoader can be used only for objects tracked by a change tracker.");
 				
 				// vytáhneme posloupnost vlastností, které budeme načítat
-				PropertyToLoad[] propertiesSequenceToLoad = GetPropertiesSequenceToLoad(propertyPath);
+				PropertyToLoad[] propertiesSequenceToLoad = propertyLoadSequenceResolver.GetPropertiesToLoad(propertyPath);
 
 				Array entities = entitiesToLoadWithoutNulls;
 
@@ -173,8 +176,8 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 				// ověříme, že jsou všechny objekty sledované change trackerem (na který spoléháme)
 				Contract.Assert<InvalidOperationException>(entitiesToLoadWithoutNulls.All(item => dbContext.GetEntityState(item) != EntityState.Detached), "DbDataLoader can be used only for objects tracked by a change tracker.");
 
-				// vytáhnemep posloupnost vlastností, které budeme načítat
-				PropertyToLoad[] propertiesSequenceToLoad = GetPropertiesSequenceToLoad(propertyPath);
+				// vytáhneme posloupnost vlastností, které budeme načítat
+				PropertyToLoad[] propertiesSequenceToLoad = propertyLoadSequenceResolver.GetPropertiesToLoad(propertyPath);
 
 				Array entities = entitiesToLoadWithoutNulls;
 				Task task;
@@ -211,23 +214,13 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 		}
 
 		/// <summary>
-		/// Vrátí sekvenci vlastostí v pořadí, v jakém jsou zapsány a jak budou načteny.
-		/// </summary>
-		private PropertyToLoad[] GetPropertiesSequenceToLoad<TEntity, TProperty>(Expression<Func<TEntity, TProperty>> propertyPath)
-					where TEntity : class
-		{
-			PropertiesSequenceExpressionVisitor visitor = new PropertiesSequenceExpressionVisitor();
-			return visitor.GetPropertiesToLoad(propertyPath);
-		}
-
-		/// <summary>
 		/// Zajistí načtení vlastnosti, která je referencí (není kolkecí). Voláno reflexí.
 		/// </summary>
 		private TProperty[] LoadReferencePropertyInternal<TEntity, TProperty>(string propertyName, TEntity[] entities)
 			where TEntity : class
 			where TProperty : class
 		{
-			var propertyLambdaExpression = _lambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TProperty>(propertyName);
+			var propertyLambdaExpression = lambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TProperty>(propertyName);
 
 			List<int> ids = GetEntitiesIdsToLoadProperty(entities, propertyName, false);
 
@@ -247,7 +240,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 			where TEntity : class
 			where TProperty : class
 		{
-			var propertyLambdaExpression = _lambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TProperty>(propertyName);
+			var propertyLambdaExpression = lambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TProperty>(propertyName);
 
 			List<int> ids = GetEntitiesIdsToLoadProperty(entities, propertyName, false);
 
@@ -268,7 +261,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 					where TPropertyCollection : class
 					where TPropertyItem : class
 		{
-			var propertyLambdaExpression = _lambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TPropertyCollection>(propertyName);
+			var propertyLambdaExpression = lambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TPropertyCollection>(propertyName);
 
 		    InitializeCollectionsForAddedEntities<TEntity, TPropertyCollection, TPropertyItem>(entities, propertyLambdaExpression.LambdaCompiled, propertyName);
 
@@ -291,7 +284,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 					where TPropertyCollection : class
 					where TPropertyItem : class
 		{
-			var propertyLambdaExpression = _lambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TPropertyCollection>(propertyName);
+			var propertyLambdaExpression = lambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TPropertyCollection>(propertyName);
 
 		    InitializeCollectionsForAddedEntities<TEntity, TPropertyCollection, TPropertyItem>(entities, propertyLambdaExpression.LambdaCompiled, propertyName);
 

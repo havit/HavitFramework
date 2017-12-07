@@ -6,8 +6,15 @@ using System.Reflection;
 
 namespace Havit.Data.Entity.Patterns.DataLoaders.Internal
 {
+	/// <summary>
+	/// Poskytuje seznam vlastností k načtení.
+	/// Pokud má být načtena vlastnost X, která je kolekcí, a zároveň existuje kolekce XWithDeleted, pak X substituuje touto XWithDeleted.
+	/// </summary>
 	public class PropertyLoadSequenceResolverWithDeletedFilteringCollectionsSubstitution : PropertyLoadSequenceResolver
 	{
+		/// <summary>
+		/// Vrací z expression tree seznam vlastností, které mají být DataLoaderem načteny.
+		/// </summary>
 		public override PropertyToLoad[] GetPropertiesToLoad<TEntity, TProperty>(Expression<Func<TEntity, TProperty>> propertyPath)
 		{
 			PropertyToLoad[] propertiesToLoad = base.GetPropertiesToLoad(propertyPath);

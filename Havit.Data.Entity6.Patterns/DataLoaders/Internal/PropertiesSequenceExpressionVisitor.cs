@@ -7,7 +7,7 @@ using Havit.Diagnostics.Contracts;
 
 namespace Havit.Data.Entity.Patterns.DataLoaders.Internal
 {
-	public class PropertiesSequenceExpressionVisitor : ExpressionVisitor
+	internal class PropertiesSequenceExpressionVisitor : ExpressionVisitor
 	{
 		private string propertyPathString;
 		private List<PropertyToLoad> propertiesToLoad;

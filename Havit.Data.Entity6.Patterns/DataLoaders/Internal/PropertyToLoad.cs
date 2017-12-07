@@ -2,6 +2,9 @@ using System;
 
 namespace Havit.Data.Entity.Patterns.DataLoaders.Internal
 {
+	/// <summary>
+	/// Informace o vlastnosti, která má byt DataLoaderem naètena.
+	/// </summary>
 	public class PropertyToLoad
 	{
 		/// <summary>

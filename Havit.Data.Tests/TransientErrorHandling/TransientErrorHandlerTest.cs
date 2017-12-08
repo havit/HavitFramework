@@ -49,9 +49,9 @@ namespace Havit.Data.Tests.TransientErrorHandling
 			stopwatch.Stop();
 
 			// Assert
-			Assert.AreEqual(maxAttempts, 3, "Max attempts");
-			Assert.IsTrue(stopwatch.ElapsedMilliseconds >= ((maxAttempts - 1) * delayMs), "Delay - lower limit");
-			Assert.IsTrue(stopwatch.ElapsedMilliseconds < (maxAttempts * delayMs), "Delay - upper limit");
+			Assert.AreEqual(maxAttempts, i, "Max attempts");
+			Assert.IsTrue(stopwatch.ElapsedMilliseconds >= ((maxAttempts - 1) * delayMs), $"Delay {stopwatch.ElapsedMilliseconds} - lower limit {(maxAttempts - 1) * delayMs}");
+			Assert.IsTrue(stopwatch.ElapsedMilliseconds < (maxAttempts * delayMs), $"Delay {stopwatch.ElapsedMilliseconds} - upper limit {maxAttempts * delayMs}");
 		}
 
 		[TestMethod]

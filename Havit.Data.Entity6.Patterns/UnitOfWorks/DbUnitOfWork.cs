@@ -4,12 +4,15 @@ using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Havit.Data.Entity.Patterns.Helpers;
 using Havit.Data.Entity.Patterns.SoftDeletes;
+using Havit.Data.Entity.Patterns.UnitOfWorks.BeforeCommitProcessors;
 using Havit.Data.Patterns.Repositories;
 using Havit.Data.Patterns.UnitOfWorks;
 using Havit.Diagnostics.Contracts;
+using Havit.Services;
 
 namespace Havit.Data.Entity.Patterns.UnitOfWorks
 {
@@ -18,6 +21,7 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 	/// </summary>
 	public class DbUnitOfWork : IUnitOfWork, IUnitOfWorkAsync
 	{
+		private readonly IBeforeCommitProcessorsRunner beforeCommitProcessorsRunner;
 		private List<Action> afterCommits = null;
 
 		private readonly HashSet<object> insertRegistrations = new HashSet<object>();
@@ -37,13 +41,14 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public DbUnitOfWork(IDbContext dbContext, ISoftDeleteManager softDeleteManager)
+		public DbUnitOfWork(IDbContext dbContext, ISoftDeleteManager softDeleteManager, IBeforeCommitProcessorsRunner beforeCommitProcessorsRunner)
 		{
 			Contract.Requires(dbContext != null);
 			Contract.Requires(softDeleteManager != null);
 
 			DbContext = dbContext;
 			SoftDeleteManager = softDeleteManager;
+			this.beforeCommitProcessorsRunner = beforeCommitProcessorsRunner;
 		}
 
 		/// <summary>
@@ -52,6 +57,7 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 		public void Commit()
 		{
 			BeforeCommit();
+			beforeCommitProcessorsRunner.Run(GetAllKnownChanges());
 			DbContext.SaveChanges();
 			ClearRegistrationHashSets();
 			AfterCommit();
@@ -63,14 +69,15 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 		public async Task CommitAsync()
 		{
 			BeforeCommit();
+			beforeCommitProcessorsRunner.Run(GetAllKnownChanges());
 			await DbContext.SaveChangesAsync();
 			ClearRegistrationHashSets();
 			AfterCommit();
 		}
 
 		/// <summary>
-	/// Spuštěno před commitem.
-	/// </summary>
+		/// Spuštěno před commitem.
+		/// </summary>
 		protected internal virtual void BeforeCommit()
 		{
 			// NOOP

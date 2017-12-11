@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Havit.Data.Entity.Patterns.DataLoaders;
-using Havit.Data.Entity.Patterns.Repositories;
+using Havit.Data.Entity.Patterns.DataLoaders.Internal;
 using Havit.Data.Entity.Patterns.SoftDeletes;
 using Havit.Data.Entity.Patterns.Tests.Infrastructure;
 using Havit.Data.Entity.Patterns.UnitOfWorks;
+using Havit.Data.Entity.Patterns.UnitOfWorks.BeforeCommitProcessors;
 using Havit.Services.TimeServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System.Diagnostics;
-using Havit.Data.Entity.Patterns.DataLoaders.Internal;
 
-namespace Havit.Data.Entity.Patterns.Tests.Repositories
+namespace Havit.Data.Entity.Patterns.Tests.UnitOfWorks
 {
 	[TestClass]
 	public class DbUnitOfWorkTest
@@ -24,7 +23,9 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 			// Arrange
 			Mock<IDbContext> mockDbContext = new Mock<IDbContext>();
 			Mock<ISoftDeleteManager> mockSoftDeleteManager = new Mock<ISoftDeleteManager>();
-			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(mockDbContext.Object, mockSoftDeleteManager.Object);
+			Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
+
+			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(mockDbContext.Object, mockSoftDeleteManager.Object, mockBeforeCommitProcessorsRunner.Object);
 
 			// Act
 			dbUnitOfWork.Commit();
@@ -40,7 +41,8 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 			// Arrange
 			Mock<IDbContext> mockDbContext = new Mock<IDbContext>();
 			Mock<ISoftDeleteManager> mockSoftDeleteManager = new Mock<ISoftDeleteManager>();
-			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(mockDbContext.Object, mockSoftDeleteManager.Object);
+			Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
+			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(mockDbContext.Object, mockSoftDeleteManager.Object, mockBeforeCommitProcessorsRunner.Object);
 
 			// Act
 			await dbUnitOfWork.CommitAsync();
@@ -54,7 +56,9 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 		public void DbUnitOfWork_Commit_CanBeCalledMultipleTimes()
 		{
 			// Arrange
-			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(new TestDbContext(), new SoftDeleteManager(new ServerTimeService()));
+			Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
+
+			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(new TestDbContext(), new SoftDeleteManager(new ServerTimeService()), mockBeforeCommitProcessorsRunner.Object);
 
 			Language language = new Language();
 			language.Culture = "";
@@ -74,7 +78,9 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 		public async Task DbUnitOfWork_CommitAsync_CanBeCalledMultipleTimes()
 		{
 			// Arrange
-			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(new TestDbContext(), new SoftDeleteManager(new ServerTimeService()));
+			Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
+
+			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(new TestDbContext(), new SoftDeleteManager(new ServerTimeService()), mockBeforeCommitProcessorsRunner.Object);
 
 			Language language = new Language();
 			language.Culture = "";
@@ -94,7 +100,9 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 		public void DbUnitOfWork_Commit_ClearsKnownChanges()
 		{
 			// Arrange
-			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(new TestDbContext(), new SoftDeleteManager(new ServerTimeService()));
+			Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
+
+			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(new TestDbContext(), new SoftDeleteManager(new ServerTimeService()), mockBeforeCommitProcessorsRunner.Object);
 
 			// Act
 			Language language = new Language();
@@ -115,7 +123,9 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 		public async Task DbUnitOfWork_CommitAsync_ClearsKnownChanges()
 		{
 			// Arrange
-			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(new TestDbContext(), new SoftDeleteManager(new ServerTimeService()));
+			Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
+
+			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(new TestDbContext(), new SoftDeleteManager(new ServerTimeService()), mockBeforeCommitProcessorsRunner.Object);
 
 			// Act
 			Language language = new Language();
@@ -138,7 +148,8 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 			// Arrange
 			Mock<IDbContext> mockDbContext = new Mock<IDbContext>();
 			Mock<ISoftDeleteManager> mockSoftDeleteManager = new Mock<ISoftDeleteManager>();
-			Mock<DbUnitOfWork> mockDbUnitOfWork = new Mock<DbUnitOfWork>(mockDbContext.Object, mockSoftDeleteManager.Object);
+			Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
+			Mock<DbUnitOfWork> mockDbUnitOfWork = new Mock<DbUnitOfWork>(mockDbContext.Object, mockSoftDeleteManager.Object, mockBeforeCommitProcessorsRunner.Object);
 			mockDbUnitOfWork.CallBase = true;
 
 			mockDbContext.Setup(m => m.SaveChanges()).Callback(() =>
@@ -162,7 +173,8 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 			// Arrange
 			Mock<IDbContext> mockDbContext = new Mock<IDbContext>();
 			Mock<ISoftDeleteManager> mockSoftDeleteManager = new Mock<ISoftDeleteManager>();
-			Mock<DbUnitOfWork> mockDbUnitOfWork = new Mock<DbUnitOfWork>(mockDbContext.Object, mockSoftDeleteManager.Object);
+			Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
+			Mock<DbUnitOfWork> mockDbUnitOfWork = new Mock<DbUnitOfWork>(mockDbContext.Object, mockSoftDeleteManager.Object, mockBeforeCommitProcessorsRunner.Object);
 			mockDbUnitOfWork.CallBase = true;
 
 			mockDbContext.Setup(m => m.SaveChangesAsync())
@@ -189,7 +201,9 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 			TestDbContext testDbContext = new TestDbContext();
 			testDbContext.Database.Initialize(true);
 
-			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(testDbContext, new SoftDeleteManager(new ServerTimeService()));
+			Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
+
+			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(testDbContext, new SoftDeleteManager(new ServerTimeService()), mockBeforeCommitProcessorsRunner.Object);
 			Language language = new Language();
 
 			// Act
@@ -207,7 +221,9 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 			TestDbContext testDbContext = new TestDbContext();
 			testDbContext.Database.Initialize(true);
 
-			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(testDbContext, new SoftDeleteManager(new ServerTimeService()));
+			Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
+
+			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(testDbContext, new SoftDeleteManager(new ServerTimeService()), mockBeforeCommitProcessorsRunner.Object);
 			Language language = new Language();
 
 			// Act
@@ -226,6 +242,8 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 			Assert.IsFalse(softDeleteManager.IsSoftDeleteSupported<Language>(), "Test vyžaduje objekt, který není mazán příznakem.");
 			Assert.IsTrue(softDeleteManager.IsSoftDeleteSupported<ItemWithDeleted>(), "Test vyžaduje objekt, který je mazán příznakem.");
 
+			Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
+
 			using (TestDbContext testDbContext = new TestDbContext())
 			{
 				testDbContext.Database.Initialize(true);
@@ -239,7 +257,7 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 				Language language = testDbContext.Set<Language>().Single();
 				ItemWithDeleted itemWithDeleted = testDbContext.Set<ItemWithDeleted>().Single();
 
-				DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(testDbContext, softDeleteManager);
+				DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(testDbContext, softDeleteManager, mockBeforeCommitProcessorsRunner.Object);
 
 				// Act
 				dbUnitOfWork.AddForDelete(language);
@@ -279,7 +297,9 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 			using (TestDbContext testDbContext = new TestDbContext())
 			{
 				SoftDeleteManager softDeleteManager = new SoftDeleteManager(new ServerTimeService());
-				DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(testDbContext, softDeleteManager);
+				Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
+
+				DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(testDbContext, softDeleteManager, mockBeforeCommitProcessorsRunner.Object);
 
 				// Act
 				dbUnitOfWork.AddForUpdate(language2);
@@ -304,7 +324,10 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 			TestDbContext dbContext = new TestDbContext();
 			var dbDataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 			var softDeleteManager = new SoftDeleteManager(new ServerTimeService());
-			var dbUnitOfWork = new DbUnitOfWork(dbContext, softDeleteManager);
+
+			Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
+
+			var dbUnitOfWork = new DbUnitOfWork(dbContext, softDeleteManager, mockBeforeCommitProcessorsRunner.Object);
 			var dbRepository = new DbItemWithDeletedRepository(dbContext, dbDataLoader, dbDataLoader, softDeleteManager);
 			Dictionary<int, ItemWithDeleted> dbRepositoryDbSetLocalsDictionary = dbRepository.DbSetLocalsDictionary;
 			
@@ -325,7 +348,10 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 			// Arrange
 			TestDbContext dbContext = new TestDbContext();
 			var softDeleteManager = new SoftDeleteManager(new ServerTimeService());
-			var dbUnitOfWork = new DbUnitOfWork(dbContext, softDeleteManager);
+
+			Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
+
+			var dbUnitOfWork = new DbUnitOfWork(dbContext, softDeleteManager, mockBeforeCommitProcessorsRunner.Object);
 
 			// Act
 			dbUnitOfWork.AddRangeForInsert(new[] { new ItemWithDeleted(), new ItemWithDeleted(), new ItemWithDeleted() });
@@ -341,7 +367,10 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 			int counter = 0;
 			TestDbContext dbContext = new TestDbContext();
 			var softDeleteManager = new SoftDeleteManager(new ServerTimeService());
-			var dbUnitOfWork = new DbUnitOfWork(dbContext, softDeleteManager);
+
+			Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
+
+			var dbUnitOfWork = new DbUnitOfWork(dbContext, softDeleteManager, mockBeforeCommitProcessorsRunner.Object);
 			dbUnitOfWork.RegisterAfterCommitAction(() => counter += 1);
 			Debug.Assert(counter == 0);
 

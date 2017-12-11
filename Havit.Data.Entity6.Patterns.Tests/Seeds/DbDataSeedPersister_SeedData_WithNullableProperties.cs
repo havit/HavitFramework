@@ -36,7 +36,7 @@ namespace Havit.Data.Entity.Patterns.Tests.Seeds
             public override void SeedData()
             {
                 //ItemWithNullableProperty
-                Seed(For(new Tests.ItemWithNullableProperty { NullableValue = 1 }).PairBy(item => item.NullableValue));
+                Seed(For(new ItemWithNullableProperty { NullableValue = 1 }).PairBy(item => item.NullableValue));
             }
         }
 

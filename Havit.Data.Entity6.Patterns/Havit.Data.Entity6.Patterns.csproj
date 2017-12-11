@@ -62,6 +62,8 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="UnitOfWorks\BeforeCommitProcessors\IBeforeCommitProcessorsFactory.cs" />
+    <Compile Include="UnitOfWorks\ChangeType.cs" />
     <Compile Include="DataLoaders\DbDataLoader.cs" />
     <Compile Include="DataLoaders\DbDataLoaderWithLoadedPropertiesMemory.cs" />
     <Compile Include="DataLoaders\Internal\IPropertyLambdaExpressionBuilder.cs" />
@@ -95,6 +97,10 @@
     <Compile Include="SoftDeletes\SoftDeleteManagerExtensions.cs" />
     <Compile Include="UnitOfWorks\DbUnitOfWork.cs" />
     <Compile Include="UnitOfWorks\Changes.cs" />
+    <Compile Include="UnitOfWorks\BeforeCommitProcessors\IBeforeCommitProcessorsRunner.cs" />
+    <Compile Include="UnitOfWorks\BeforeCommitProcessors\BeforeCommitProcessorsRunner.cs" />
+    <Compile Include="UnitOfWorks\BeforeCommitProcessors\IBeforeCommitProcessor.cs" />
+    <Compile Include="UnitOfWorks\BeforeCommitProcessors\SetCreatedToInsertingEntitiesBeforeCommitProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

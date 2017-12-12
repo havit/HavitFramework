@@ -12,6 +12,7 @@ using Havit.Data.Entity.Patterns.Repositories;
 using Havit.Data.Entity.Patterns.SoftDeletes;
 using Havit.Data.Entity.Patterns.UnitOfWorks;
 using Havit.Data.Entity.Patterns.UnitOfWorks.BeforeCommitProcessors;
+using Havit.Data.Entity.Patterns.UnitOfWorks.EntityValidation;
 using Havit.Data.Patterns.Attributes;
 using Havit.Data.Patterns.DataEntries;
 using Havit.Data.Patterns.DataLoaders;
@@ -98,7 +99,9 @@ namespace Havit.Data.Entity.Patterns.Windsor.Installers
 				Component.For<IPropertyLoadSequenceResolver>().ImplementedBy<PropertyLoadSequenceResolverWithDeletedFilteringCollectionsSubstitution>().LifestyleSingleton(),
 				Component.For<IBeforeCommitProcessorsRunner>().ImplementedBy<BeforeCommitProcessorsRunner>().LifestyleSingleton(),
 				Component.For<IBeforeCommitProcessorsFactory>().AsFactory().LifestyleSingleton(),
-				Component.For<IBeforeCommitProcessor<object>>().ImplementedBy<SetCreatedToInsertingEntitiesBeforeCommitProcessor>().LifestyleSingleton()
+				Component.For<IBeforeCommitProcessor<object>>().ImplementedBy<SetCreatedToInsertingEntitiesBeforeCommitProcessor>().LifestyleSingleton(),
+				Component.For<IEntityValidationRunner>().ImplementedBy<EntityValidationRunner>().LifestyleSingleton(),
+				Component.For<IEntityValidatorsFactory>().AsFactory().LifestyleSingleton()
 			);
 			return this;
 		}

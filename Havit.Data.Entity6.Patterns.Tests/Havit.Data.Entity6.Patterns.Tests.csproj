@@ -114,10 +114,11 @@
     <Compile Include="Infrastructure\TestDbContext.cs" />
     <Compile Include="Repositories\DbRepositoryTest.cs" />
     <Compile Include="Infrastructure\ItemWithDeleted.cs" />
-    <Compile Include="UnitOfWorks\BeforeCommitProcessorsRunnerTest.cs" />
+    <Compile Include="UnitOfWorks\BeforeCommitProcessors\BeforeCommitProcessorsRunnerTest.cs" />
     <Compile Include="UnitOfWorks\BeforeCommitProcessors\SetCreatedToInsertingEntitiesBeforeCommitProcessorTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitOfWorks\DbUnitOfWorkTest.cs" />
+    <Compile Include="UnitOfWorks\EntityValidation\EntityValidationRunnerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

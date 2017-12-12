@@ -62,7 +62,12 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="UnitOfWorks\EntityValidation\EntityValidationRunner.cs" />
+    <Compile Include="UnitOfWorks\EntityValidation\IEntityValidator.cs" />
+    <Compile Include="UnitOfWorks\EntityValidation\IEntityValidatorsFactory.cs" />
+    <Compile Include="UnitOfWorks\EntityValidation\IEntityValidationRunner.cs" />
     <Compile Include="UnitOfWorks\BeforeCommitProcessors\IBeforeCommitProcessorsFactory.cs" />
+    <Compile Include="UnitOfWorks\EntityValidation\ValidationFailedException.cs" />
     <Compile Include="UnitOfWorks\ChangeType.cs" />
     <Compile Include="DataLoaders\DbDataLoader.cs" />
     <Compile Include="DataLoaders\DbDataLoaderWithLoadedPropertiesMemory.cs" />

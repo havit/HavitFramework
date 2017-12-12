@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Havit.Data.Entity.Patterns.UnitOfWorks;
 using Havit.Data.Entity.Patterns.UnitOfWorks.BeforeCommitProcessors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Havit.Data.Entity.Patterns.Tests.UnitOfWorks
+namespace Havit.Data.Entity.Patterns.Tests.UnitOfWorks.BeforeCommitProcessors
 {
 	[TestClass]
 	public class BeforeCommitProcessorsRunnerTest
@@ -53,7 +49,7 @@ namespace Havit.Data.Entity.Patterns.Tests.UnitOfWorks
 			beforeCommitObjectProcessorMock.Verify(m => m.Run(ChangeType.Insert, entityInserting), Times.Once);
 			beforeCommitObjectProcessorMock.Verify(m => m.Run(ChangeType.Update, entityUpdating), Times.Once);
 			beforeCommitObjectProcessorMock.Verify(m => m.Run(ChangeType.Delete, entityDeleting), Times.Once);
-			beforeCommitObjectProcessorMock.Verify(m => m.Run(It.IsAny<ChangeType>(), It.IsAny<Entity>()), Times.Exactly(3));
+			beforeCommitObjectProcessorMock.Verify(m => m.Run(It.IsAny<ChangeType>(), It.IsAny<object>()), Times.Exactly(3));
 		}
 
 		public class Entity

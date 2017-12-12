@@ -15,7 +15,6 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks.BeforeCommitProcessors
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		/// <param name="timeService"></param>
 		public SetCreatedToInsertingEntitiesBeforeCommitProcessor(ITimeService timeService)
 		{
 			this.timeService = timeService;

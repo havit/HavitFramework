@@ -49,7 +49,7 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks.BeforeCommitProcessors
 				}
 
 				Type beforeCommitProcessorType = typeof(IBeforeCommitProcessor<>).MakeGenericType(changeGroup.Type);
-				MethodInfo runMethod = beforeCommitProcessorType.GetMethod("Run");
+				MethodInfo runMethod = beforeCommitProcessorType.GetMethod(nameof(IBeforeCommitProcessor<object>.Run));
 				foreach (var change in changeGroup.Changes)
 				{
 					supportedProcessors.ForEach(processor => runMethod.Invoke(processor, new object[] { change.Change, change.Entity }));

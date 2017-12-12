@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Havit.Data.Entity.Patterns.Helpers;
 using Havit.Data.Entity.Patterns.SoftDeletes;
 using Havit.Data.Entity.Patterns.UnitOfWorks.BeforeCommitProcessors;
+using Havit.Data.Entity.Patterns.UnitOfWorks.EntityValidation;
 using Havit.Data.Patterns.Repositories;
 using Havit.Data.Patterns.UnitOfWorks;
 using Havit.Diagnostics.Contracts;
@@ -22,6 +23,7 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 	public class DbUnitOfWork : IUnitOfWork, IUnitOfWorkAsync
 	{
 		private readonly IBeforeCommitProcessorsRunner beforeCommitProcessorsRunner;
+		private readonly IEntityValidationRunner entityValidationRunner;
 		private List<Action> afterCommits = null;
 
 		private readonly HashSet<object> insertRegistrations = new HashSet<object>();
@@ -41,7 +43,7 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public DbUnitOfWork(IDbContext dbContext, ISoftDeleteManager softDeleteManager, IBeforeCommitProcessorsRunner beforeCommitProcessorsRunner)
+		public DbUnitOfWork(IDbContext dbContext, ISoftDeleteManager softDeleteManager, IBeforeCommitProcessorsRunner beforeCommitProcessorsRunner, IEntityValidationRunner entityValidationRunner)
 		{
 			Contract.Requires(dbContext != null);
 			Contract.Requires(softDeleteManager != null);
@@ -49,6 +51,7 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 			DbContext = dbContext;
 			SoftDeleteManager = softDeleteManager;
 			this.beforeCommitProcessorsRunner = beforeCommitProcessorsRunner;
+			this.entityValidationRunner = entityValidationRunner;
 		}
 
 		/// <summary>
@@ -58,6 +61,7 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 		{
 			BeforeCommit();
 			beforeCommitProcessorsRunner.Run(GetAllKnownChanges());
+			entityValidationRunner.Validate(GetAllKnownChanges()); // práme se na změny znovu, runnery mohli seznam objektů k uložení změnit
 			DbContext.SaveChanges();
 			ClearRegistrationHashSets();
 			AfterCommit();
@@ -70,6 +74,7 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 		{
 			BeforeCommit();
 			beforeCommitProcessorsRunner.Run(GetAllKnownChanges());
+			entityValidationRunner.Validate(GetAllKnownChanges()); // práme se na změny znovu, runnery mohli seznam objektů k uložení změnit
 			await DbContext.SaveChangesAsync();
 			ClearRegistrationHashSets();
 			AfterCommit();

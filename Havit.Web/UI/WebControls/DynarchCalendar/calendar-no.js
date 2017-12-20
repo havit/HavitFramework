@@ -57,6 +57,8 @@ Calendar._TT["CLOSE"] = "Lukk";
 Calendar._TT["TODAY"] = "Idag";
 Calendar._TT["TIME_PART"] = "(Shift-)Klikk eller dra for å endre verdi";
 // date formats
+Calendar._TT["WEEKEND"] = "0,6";
 Calendar._TT["DEF_DATE_FORMAT"] = "%d.%m.%Y";
 Calendar._TT["TT_DATE_FORMAT"] = "%a, %b %e";
 Calendar._TT["WK"] = "uke";
+Calendar._TT["TIME"] = "Tid:";

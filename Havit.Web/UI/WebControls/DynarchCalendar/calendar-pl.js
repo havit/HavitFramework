@@ -47,3 +47,4 @@ Calendar._TT["TIME_PART"] = "(Shift-)Kliknij lub przeciągnij by zmienić warto�
 Calendar._TT["DEF_DATE_FORMAT"] = "%Y-%m-%d";
 Calendar._TT["TT_DATE_FORMAT"] = "%e %B, %A";
 Calendar._TT["WK"] = "ty";
+Calendar._TT["TIME"] = "Czas:";

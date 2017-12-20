@@ -42,7 +42,9 @@ Calendar._TT["SUN_FIRST"] = "Näytä sunnuntai ensimmäisenä";
 Calendar._TT["CLOSE"] = "Sulje";
 Calendar._TT["TODAY"] = "Tänään";
 Calendar._TT["TIME_PART"] = "(Shift-) Klikkaa tai liikuta muuttaaksesi aikaa";
+Calendar._TT["WEEKEND"] = "0,6";
 // date formats
 Calendar._TT["DEF_DATE_FORMAT"] = "%d.%m.%Y";
 Calendar._TT["TT_DATE_FORMAT"] = "%d.%m.%Y";
 Calendar._TT["WK"] = "Vko";
+Calendar._TT["TIME"] = "Aika:";

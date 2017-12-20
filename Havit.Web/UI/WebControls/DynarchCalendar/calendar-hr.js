@@ -7,6 +7,7 @@ Calendar._DN = new Array("Nedjelja", "Ponedjeljak", "Utorak", "Srijeda", "Četvr
 Calendar._MN = new Array("Siječanj", "Veljača", "Ožujak", "Travanj", "Svibanj", "Lipanj", "Srpanj", "Kolovoz", "Rujan", "Listopad", "Studeni", "Prosinac");
 // tooltips
 Calendar._TT = {};
+Calendar._TT["INFO"] = "O kalendaru";
 Calendar._TT["TOGGLE"] = "Promjeni dan s kojim počinje tjedan";
 Calendar._TT["PREV_YEAR"] = "Prethodna godina (dugi pritisak za meni)";
 Calendar._TT["PREV_MONTH"] = "Prethodni mjesec (dugi pritisak za meni)";
@@ -20,8 +21,10 @@ Calendar._TT["MON_FIRST"] = "Prikaži ponedjeljak kao prvi dan";
 Calendar._TT["SUN_FIRST"] = "Prikaži nedjelju kao prvi dan";
 Calendar._TT["CLOSE"] = "Zatvori";
 Calendar._TT["TODAY"] = "Danas";
+Calendar._TT["TIME_PART"] = "(Shift-)Kliknite ili povucite za promjenu vrijednosti";
 // date formats
 Calendar._TT["DEF_DATE_FORMAT"] = "dd-mm-y";
 Calendar._TT["TT_DATE_FORMAT"] = "DD, dd.mm.y";
 Calendar._TT["WK"] = "Tje";
 Calendar._TT["WEEKEND"] = "0,6";
+Calendar._TT["TIME"] = "Vrijeme:";

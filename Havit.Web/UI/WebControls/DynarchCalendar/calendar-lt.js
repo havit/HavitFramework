@@ -56,7 +56,9 @@ Calendar._TT["SUN_FIRST"] = "Pirma savaitės diena - sekmadienis";
 Calendar._TT["CLOSE"] = "Uždaryti";
 Calendar._TT["TODAY"] = "Šiandien";
 Calendar._TT["TIME_PART"] = "Spustelkite arba tempkite jei norite pakeisti";
+Calendar._TT["WEEKEND"] = "0,6";
 // date formats
 Calendar._TT["DEF_DATE_FORMAT"] = "%Y-%m-%d";
 Calendar._TT["TT_DATE_FORMAT"] = "%A, %Y-%m-%d";
 Calendar._TT["WK"] = "sav";
+Calendar._TT["TIME"] = "Laikas:";

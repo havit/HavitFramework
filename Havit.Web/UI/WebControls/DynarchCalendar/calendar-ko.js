@@ -61,7 +61,9 @@ Calendar._TT["SUN_FIRST"] = "일요일을 한 주의 시작 요일로";
 Calendar._TT["CLOSE"] = "닫기";
 Calendar._TT["TODAY"] = "오늘";
 Calendar._TT["TIME_PART"] = "(Shift-)클릭 또는 드래그 하세요";
+Calendar._TT["WEEKEND"] = "0,6";
 // date formats
 Calendar._TT["DEF_DATE_FORMAT"] = "%Y-%m-%d";
 Calendar._TT["TT_DATE_FORMAT"] = "%b/%e [%a]";
 Calendar._TT["WK"] = "주";
+Calendar._TT["TIME"] = "시각:";

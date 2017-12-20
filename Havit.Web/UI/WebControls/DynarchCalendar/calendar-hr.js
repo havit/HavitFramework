@@ -24,3 +24,4 @@ Calendar._TT["TODAY"] = "Danas";
 Calendar._TT["DEF_DATE_FORMAT"] = "dd-mm-y";
 Calendar._TT["TT_DATE_FORMAT"] = "DD, dd.mm.y";
 Calendar._TT["WK"] = "Tje";
+Calendar._TT["WEEKEND"] = "0,6";

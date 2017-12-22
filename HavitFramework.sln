@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.3
+VisualStudioVersion = 15.0.27130.2003
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit", "Havit\Havit.csproj", "{9ACC94B9-B8FD-47C1-ABF8-0658C7673905}"
 EndProject
@@ -163,7 +163,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Extensions.Dependency
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Extensions.DependencyInjection.Abstractions", "Havit.Extensions.DependencyInjection.Abstractions\Havit.Extensions.DependencyInjection.Abstractions.csproj", "{0034E8EB-7824-4EFA-ABD4-807841E6CD87}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.ApplicationInsights.DependencyCollector", "Havit.ApplicationInsights.DependencyCollector\Havit.ApplicationInsights.DependencyCollector.csproj", "{61B9D33E-D395-470F-B3AC-9875D001BFB0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.ApplicationInsights.DependencyCollector", "Havit.ApplicationInsights.DependencyCollector\Havit.ApplicationInsights.DependencyCollector.csproj", "{61B9D33E-D395-470F-B3AC-9875D001BFB0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Services.Redis", "Havit.Services.Redis\Havit.Services.Redis.csproj", "{C2608567-243E-4792-AFBF-E8D53D586C30}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -427,6 +429,12 @@ Global
 		{61B9D33E-D395-470F-B3AC-9875D001BFB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61B9D33E-D395-470F-B3AC-9875D001BFB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{61B9D33E-D395-470F-B3AC-9875D001BFB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2608567-243E-4792-AFBF-E8D53D586C30}.CodeGenerator|Any CPU.ActiveCfg = Release|Any CPU
+		{C2608567-243E-4792-AFBF-E8D53D586C30}.CodeGenerator|Any CPU.Build.0 = Release|Any CPU
+		{C2608567-243E-4792-AFBF-E8D53D586C30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2608567-243E-4792-AFBF-E8D53D586C30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2608567-243E-4792-AFBF-E8D53D586C30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2608567-243E-4792-AFBF-E8D53D586C30}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -479,12 +487,13 @@ Global
 		{B52F1B28-C119-4873-94D1-70952C80FEB6} = {97109FED-C671-49FA-8614-C63D8E5935B9}
 		{0034E8EB-7824-4EFA-ABD4-807841E6CD87} = {97109FED-C671-49FA-8614-C63D8E5935B9}
 		{61B9D33E-D395-470F-B3AC-9875D001BFB0} = {3D976DB4-23C7-4B7B-8646-C53DAFB813EE}
+		{C2608567-243E-4792-AFBF-E8D53D586C30} = {DB76A91F-9059-4EB3-9389-C86486BB0DFC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {44656523-42B6-48E3-9E6D-6F075F0E7FD0}
 	EndGlobalSection
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 44
+		SccNumberOfProjects = 45
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.havit.eu/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -660,5 +669,9 @@ Global
 		SccProjectTopLevelParentUniqueName43 = HavitFramework.sln
 		SccProjectName43 = Havit.ApplicationInsights.DependencyCollector
 		SccLocalPath43 = Havit.ApplicationInsights.DependencyCollector
+		SccProjectUniqueName44 = Havit.Services.Redis\\Havit.Services.Redis.csproj
+		SccProjectTopLevelParentUniqueName44 = HavitFramework.sln
+		SccProjectName44 = Havit.Services.Redis
+		SccLocalPath44 = Havit.Services.Redis
 	EndGlobalSection
 EndGlobal

@@ -15,7 +15,7 @@ namespace Havit.Text.RegularExpressions
 		///		<item>povoleny jsou pouze znaky anglické abecedy, tečky, podtržítka, pomlčky a plus</item>
 		///		<item>dva různé symboly nesmí následovat po sobě, stejné (s výjimkou tečky) mohou [test--test@test.com] projde, [test..test@test.com] neprojde</item>
 		///		<item>nesmí začínat symbolem</item>
-		///		<item>TLD musí mít 2-6 znaků (.museum)</item>
+		///		<item>TLD musí mít 2-20 znaků (.travelersinsurance, .northwesternmutual https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains) </item>
 		///		<item>v doméně smí být tečky a pomlčky, ale nesmí následovat</item>
 		///		<item>nepříjímá IP adresy</item>
 		///		<item>nepřijímá rozšířený syntax typu [Petr Novak &lt;novak@test.com&gt;]</item>

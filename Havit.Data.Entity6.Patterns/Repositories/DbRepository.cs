@@ -12,6 +12,7 @@ using System.Xml.XPath;
 using Havit.Data.Entity.Patterns.Helpers;
 using Havit.Data.Entity.Patterns.SoftDeletes;
 using Havit.Data.Patterns.DataLoaders;
+using Havit.Data.Patterns.DataSources;
 using Havit.Data.Patterns.Repositories;
 using Havit.Diagnostics.Contracts;
 
@@ -24,6 +25,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		 where TEntity : class
 	{
 		private readonly IDbContext dbContext;
+		private readonly IDataSource<TEntity> dataSource;
 		private readonly IDataLoader dataLoader;
 		private readonly IDataLoaderAsync dataLoaderAsync;
 
@@ -58,25 +60,24 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		/// <summary>
 		/// DbSet, nad kterým je DbRepository postaven.
 		/// </summary>
-		protected DbSet<TEntity> DbSet { get; private set; }
+		protected DbSet<TEntity> DbSet => _dbSet.Value;
+		
+		/// <summary>
+		/// Implementačně jako Lazy, aby kontruktor nevyzvedával DbSet. To umožňuje psát unit testy s mockem dbContextu bez setupu metody Set (dbContext nemusí nic umět).
+		/// </summary>
+		private readonly Lazy<DbSet<TEntity>> _dbSet;
 
 		/// <summary>
 		/// Vrací data z datového zdroje jako IQueryable.
 		/// Pokud zdroj obsahuje záznamy smazané příznakem, jsou odfiltrovány (nejsou v datech).
 		/// </summary>
-		protected IQueryable<TEntity> Data
-		{
-			get { return DbSet.WhereNotDeleted(this.SoftDeleteManager); }
-		}
+		protected IQueryable<TEntity> Data => dataSource.Data;
 
 		/// <summary>
 		/// Vrací data z datového zdroje jako IQueryable.
 		/// Pokud zdroj obsahuje záznamy smazané příznakem, jsou součástí dat.
 		/// </summary>
-		protected IQueryable<TEntity> DataWithDeleted
-		{
-			get { return DbSet.AsQueryable(); }
-		}
+		protected IQueryable<TEntity> DataWithDeleted => dataSource.DataWithDeleted;
 
 		/// <summary>
 		/// SoftDeleteManager používaný repository.
@@ -86,18 +87,18 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		protected DbRepository(IDbContext dbContext, IDataLoader dataLoader, IDataLoaderAsync dataLoaderAsync, ISoftDeleteManager softDeleteManager)
+		protected DbRepository(IDbContext dbContext, IDataSource<TEntity> dataSource, IDataLoader dataLoader, IDataLoaderAsync dataLoaderAsync, ISoftDeleteManager softDeleteManager)
 		{
 			Contract.Requires<ArgumentException>(dbContext != null);
+			Contract.Requires<ArgumentException>(dataSource != null);
 			Contract.Requires<ArgumentException>(softDeleteManager != null);
 
-			DbSet<TEntity> dbSet = dbContext.Set<TEntity>();
-
 			this.dbContext = dbContext;
+			this.dataSource = dataSource;
 			this.dataLoader = dataLoader;
 			this.dataLoaderAsync = dataLoaderAsync;
 			this.SoftDeleteManager = softDeleteManager;
-			this.DbSet = dbSet;
+			this._dbSet = new Lazy<DbSet<TEntity>>(() => dbContext.Set<TEntity>());
 		}
 
 		private void DbSetLocal_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

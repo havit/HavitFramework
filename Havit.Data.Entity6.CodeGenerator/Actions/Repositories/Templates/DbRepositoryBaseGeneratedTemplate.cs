@@ -76,9 +76,16 @@ namespace ");
             
             #line default
             #line hidden
-            this.Write("(IDbContext dbContext, IDataLoader dataLoader, IDataLoaderAsync dataLoaderAsync, " +
-                    "ISoftDeleteManager softDeleteManager)\r\n\t\t\t: base(dbContext, dataLoader, dataLoad" +
-                    "erAsync, softDeleteManager)\r\n\t\t{\r\n\t\t}\r\n\r\n");
+            this.Write("(IDbContext dbContext, ");
+            
+            #line 24 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Model.DataSourceDependencyFullName));
+            
+            #line default
+            #line hidden
+            this.Write(" dataSource, IDataLoader dataLoader, IDataLoaderAsync dataLoaderAsync, ISoftDelet" +
+                    "eManager softDeleteManager)\r\n\t\t\t: base(dbContext, dataSource, dataLoader, dataLo" +
+                    "aderAsync, softDeleteManager)\r\n\t\t{\r\n\t\t}\r\n\r\n");
             
             #line 29 "D:\Dev\002.HFW-HFW\Havit.Data.Entity6.CodeGenerator\Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt"
  if (Model.GenerateGetObjectByEntryEnumMethod) { 

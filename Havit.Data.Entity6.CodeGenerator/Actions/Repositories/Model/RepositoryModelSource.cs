@@ -34,20 +34,21 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.Repositories.Model
 					InterfaceRepositoryName = "I" + registeredEntity.ClassName + "Repository",
 					ModelClassNamespace = registeredEntity.NamespaceName,
 					ModelClassFullName = registeredEntity.FullName,
-					GenerateGetObjectByEntryEnumMethod = !registeredEntity.HasDatabaseGeneratedIdentity && registeredEntity.HasEntryEnum
+					GenerateGetObjectByEntryEnumMethod = !registeredEntity.HasDatabaseGeneratedIdentity && registeredEntity.HasEntryEnum,
+					DataSourceDependencyFullName = GetNamespaceName(registeredEntity.NamespaceName, "DataSources") + ".I" + registeredEntity.ClassName + "DataSource"
 				}).ToList();
 		}
 
-	    private string GetNamespaceName(string namespaceName)
+	    private string GetNamespaceName(string namespaceName, string typeNamespace = "Repositories")
 		{
 			string modelProjectNamespace = modelProject.GetProjectRootNamespace();
 			if (namespaceName.StartsWith(modelProjectNamespace))
 			{
-				return dataLayerProject.GetProjectRootNamespace() + ".Repositories" + namespaceName.Substring(modelProjectNamespace.Length);
+				return dataLayerProject.GetProjectRootNamespace() + "." + typeNamespace + namespaceName.Substring(modelProjectNamespace.Length);
 			}
 			else
 			{
-				return namespaceName + ".Repositories";
+				return namespaceName + "." + typeNamespace;
 			}
 		}
 	}

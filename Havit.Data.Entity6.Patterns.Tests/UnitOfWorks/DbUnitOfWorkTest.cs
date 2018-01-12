@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Havit.Data.Entity.Patterns.DataLoaders;
 using Havit.Data.Entity.Patterns.DataLoaders.Internal;
+using Havit.Data.Entity.Patterns.DataSources.Fakes;
 using Havit.Data.Entity.Patterns.SoftDeletes;
 using Havit.Data.Entity.Patterns.Tests.Infrastructure;
 using Havit.Data.Entity.Patterns.UnitOfWorks;
@@ -345,7 +346,8 @@ namespace Havit.Data.Entity.Patterns.Tests.UnitOfWorks
 			Mock<IEntityValidationRunner> mockEntityValidationRunner = new Mock<IEntityValidationRunner>();
 
 			var dbUnitOfWork = new DbUnitOfWork(dbContext, softDeleteManager, mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object);
-			var dbRepository = new DbItemWithDeletedRepository(dbContext, dbDataLoader, dbDataLoader, softDeleteManager);
+			var dataSource = new DbItemWithDeletedDataSource(dbContext, new SoftDeleteManager(new ServerTimeService()));
+			var dbRepository = new DbItemWithDeletedRepository(dbContext, dataSource, dbDataLoader, dbDataLoader, softDeleteManager);
 			Dictionary<int, ItemWithDeleted> dbRepositoryDbSetLocalsDictionary = dbRepository.DbSetLocalsDictionary;
 			
 			// Act

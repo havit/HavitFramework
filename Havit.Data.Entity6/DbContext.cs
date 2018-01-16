@@ -234,7 +234,10 @@ namespace Havit.Data.Entity
 		/// </summary>		
 		object[] IDbContext.GetObjectsInState(EntityState state)
 		{
-			return ExecuteWithoutAutoDetectChanges(() => ((IObjectContextAdapter)this).ObjectContext.ObjectStateManager.GetObjectStateEntries(state).Select(item => item.Entity).ToArray());
+			return ExecuteWithoutAutoDetectChanges(() => ((IObjectContextAdapter)this).ObjectContext.ObjectStateManager
+				.GetObjectStateEntries(state) // vrací pole abstraktních ObjectStateEntry, které má dva potomky (bohužel jsou internal)
+				.Where(item => item.Entity != null) // a protože je internal, odlišujeme EntityEntry odlišit od RelationshipEntry podle toho, zda má hodnotu ve vlastnosti Entity
+				.Select(item => item.Entity).ToArray());
 		}
 
 		/// <summary>

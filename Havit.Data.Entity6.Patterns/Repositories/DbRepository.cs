@@ -29,8 +29,6 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		private readonly IDataLoader dataLoader;
 		private readonly IDataLoaderAsync dataLoaderAsync;
 
-		private TEntity[] _all;
-
 		/// <summary>
 		/// Přístup k lokálním objektům v dictionary v konstatním čase.
 		/// Dictionary je vytvořena až při použití této vlastnosti, od té doby je též udržována.
@@ -288,11 +286,20 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		/// Objekty mají načtené vlastnosti definované v metodě GetLoadReferences. 
 		/// </summary>
 		public List<TEntity> GetAll()
-		{			
+		{
 			if (_all == null)
 			{
 				_all = Data.ToArray();
 				LoadReferences(_all);
+
+				if (!_allInitialized)
+				{
+					dbContext.RegisterAfterSaveChangesAction(() =>
+					{
+						_all = null;
+					});
+					_allInitialized = true;
+				}
 			}
 			return new List<TEntity>(_all);
 		}
@@ -308,9 +315,21 @@ namespace Havit.Data.Entity.Patterns.Repositories
 			{
 				_all = await Data.ToArrayAsync();
 				await LoadReferencesAsync(_all);
+
+				if (!_allInitialized)
+				{
+					dbContext.RegisterAfterSaveChangesAction(() =>
+					{
+						_all = null;
+					});
+					_allInitialized = true;
+				}
 			}
 			return new List<TEntity>(_all);
 		}
+
+		private TEntity[] _all;
+		private bool _allInitialized;
 
 		/// <summary>
 		/// Vrací dotaz pro GetObjects/GetObjectsAsync.

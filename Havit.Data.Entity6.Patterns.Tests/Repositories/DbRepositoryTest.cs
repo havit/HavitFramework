@@ -132,6 +132,54 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 		}
 
 		[TestMethod]
+		public void DbRepository_GetAll_ReturnsAllObjectAfterCommit()
+		{
+			// Arrange
+			TestDbContext testDbContext = new TestDbContext();
+			testDbContext.Database.Initialize(true);
+
+			var dataLoader = new DbDataLoader(testDbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
+			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
+			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, dataSource, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
+
+			// Act
+			List<ItemWithDeleted> result1 = repository.GetAll();
+			Assert.AreEqual(0, result1.Count);
+
+			testDbContext.Set<ItemWithDeleted>().Add(new ItemWithDeleted());
+			testDbContext.SaveChanges();
+
+			List<ItemWithDeleted> result2 = repository.GetAll();
+
+			// Assert
+			Assert.AreEqual(1, result2.Count);
+		}
+
+		[TestMethod]
+		public async Task  DbRepository_GetAllAsync_ReturnsAllObjectAfterCommit()
+		{
+			// Arrange
+			TestDbContext testDbContext = new TestDbContext();
+			testDbContext.Database.Initialize(true);
+
+			var dataLoader = new DbDataLoader(testDbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
+			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
+			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, dataSource, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
+
+			// Act
+			List<ItemWithDeleted> result1 = await repository.GetAllAsync();
+			Assert.AreEqual(0, result1.Count);
+			
+			testDbContext.Set<ItemWithDeleted>().Add(new ItemWithDeleted());
+			testDbContext.SaveChanges();
+
+			List<ItemWithDeleted> result2 = await repository.GetAllAsync();
+
+			// Assert
+			Assert.AreEqual(1, result2.Count);
+		}
+
+		[TestMethod]
 		public async Task DbRepository_GetAllAsync_DoesNotReturnDeletedObjects()
 		{
 			// Arrange

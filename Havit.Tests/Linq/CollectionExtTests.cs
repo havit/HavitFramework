@@ -111,7 +111,7 @@ namespace Havit.Tests.Linq
 						target.OtherProperty = source.OtherProperty.ToString();
 					},
 				removeItemAction:
-					(target) => {}
+					(target) => { }
 			);
 
 			// assert
@@ -187,7 +187,7 @@ namespace Havit.Tests.Linq
 		}
 
 		[TestMethod]
-		public void CollectionExt_UpdateFrom_DuplicateTargetKey_BothUpdated()
+		public void CollectionExt_UpdateFrom_DuplicateTargetKey_ShouldUpdateBoth()
 		{
 			// arrange
 			TargetClass targetItem1 = new TargetClass() { Id = 1, StringProperty = "FAKE_TARGET_1" };
@@ -247,7 +247,7 @@ namespace Havit.Tests.Linq
 		}
 
 		[TestMethod]
-		public void CollectionExt_UpdateFrom_NullNewItemFunc_DoesNotAddNewItems()
+		public void CollectionExt_UpdateFrom_NullNewItemFunc_ShouldNotAddNewItems()
 		{
 			// arrange
 			var targetList = new List<TargetClass>()
@@ -368,6 +368,119 @@ namespace Havit.Tests.Linq
 			Assert.AreEqual(1, targetList.Count(i => i.Id == 3));
 		}
 
+		[TestMethod]
+		public void CollectionExt_UpdateFrom_StructSource()
+		{
+			// arrange
+			TargetClass targetItem1 = new TargetClass() { Id = 1, StringProperty = "FAKE_TARGET_1" };
+			TargetClass targetItem3 = new TargetClass() { Id = 3, StringProperty = "FAKE_TARGET_3" };
+			var targetList = new List<TargetClass>()
+			{
+				targetItem1,
+				targetItem3
+			};
+			var sourceList = new List<SourceStruct>()
+			{
+				new SourceStruct() { Id = 1, StringProperty = "FAKE_SOURCE_1" },
+				new SourceStruct() { Id = 2, StringProperty = "FAKE_SOURCE_2" }
+			};
+
+			// act
+			targetList.UpdateFrom(sourceList,
+				targetKeySelector: target => target.Id,
+				sourceKeySelector: source => source.Id,
+				newItemCreateFunc:
+					source =>
+					{
+						var newItem = new TargetClass()
+						{
+							Id = source.Id,
+							StringProperty = source.StringProperty
+						};
+						return newItem;
+					},
+				updateItemAction:
+					(source, target) =>
+					{
+						target.StringProperty = source.StringProperty;
+					},
+				removeItemAction:
+					(target) => { }
+			);
+
+			// assert
+			// Item 1 updated
+			CollectionAssert.Contains(targetList, targetItem1);
+			var item1 = targetList.Single(i => i.Id == 1);
+			Assert.AreEqual("FAKE_SOURCE_1", item1.StringProperty);
+
+			// Item 3 removed
+			CollectionAssert.DoesNotContain(targetList, targetItem3);
+
+			// Item 2 added
+			Assert.AreEqual(2, targetList.Count);
+			var item2 = targetList.Single(i => i.Id == 2);
+			Assert.AreEqual("FAKE_SOURCE_2", item2.StringProperty);
+		}
+
+		[TestMethod]
+		public void CollectionExt_UpdateFrom_CompositeKey()
+		{
+			// arrange
+			TargetClass targetItem1 = new TargetClass() { Id = 1, StringProperty = "KEY_1", OtherProperty = "TARGET_1" };
+			TargetClass targetItem3 = new TargetClass() { Id = 3, StringProperty = "KEY_3", OtherProperty = "TARGET_3" };
+			var targetList = new List<TargetClass>()
+			{
+				targetItem1,
+				targetItem3
+			};
+			var sourceList = new List<SourceClass>()
+			{
+				new SourceClass() { Id = 1, StringProperty = "KEY_1", OtherProperty = 1 },
+				new SourceClass() { Id = 2, StringProperty = "KEY_2", OtherProperty = 2 }
+			};
+
+			// act
+			targetList.UpdateFrom(sourceList,
+				targetKeySelector: target => new { Id1 = target.Id, Id2 = target.StringProperty },
+				sourceKeySelector: source => new { Id1 = source.Id, Id2 = source.StringProperty },
+				newItemCreateFunc:
+					source =>
+					{
+						var newItem = new TargetClass()
+						{
+							Id = source.Id,
+							StringProperty = source.StringProperty,
+							OtherProperty = source.OtherProperty.ToString()
+						};
+						return newItem;
+					},
+				updateItemAction:
+					(source, target) =>
+					{
+						target.OtherProperty = source.OtherProperty.ToString();
+					},
+				removeItemAction:
+					(target) =>
+					{
+					}
+			);
+
+			// assert
+			// Item 1 updated
+			CollectionAssert.Contains(targetList, targetItem1);
+			var item1 = targetList.Single(i => i.Id == 1);
+			Assert.AreEqual("1", item1.OtherProperty);
+
+			// Item 3 removed
+			CollectionAssert.DoesNotContain(targetList, targetItem3);
+
+			// Item 2 added
+			Assert.AreEqual(2, targetList.Count);
+			var item2 = targetList.Single(i => i.Id == 2);
+			Assert.AreEqual("2", item2.OtherProperty);
+		}
+
 		private class SourceClass
 		{
 			public int Id { get; set; }
@@ -380,6 +493,12 @@ namespace Havit.Tests.Linq
 			public int Id { get; set; }
 			public string StringProperty { get; set; }
 			public string OtherProperty { get; set; }
+		}
+
+		private struct SourceStruct
+		{
+			public int Id { get; set; }
+			public string StringProperty { get; set; }
 		}
 	}
 }

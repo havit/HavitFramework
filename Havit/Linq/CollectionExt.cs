@@ -25,7 +25,7 @@ namespace Havit.Linq
 		/// - Klíče <c>null</c> se na sebe spárují.
 		/// </remarks>
 		/// <typeparam name="TSource">typ prvků kolekce, kterou chceme aplikovat</typeparam>
-		/// <typeparam name="TTarget">typ prvků cílové kolekce, kterou aktualizujeme</typeparam>
+		/// <typeparam name="TTarget">typ prvků cílové kolekce, kterou aktualizujeme. Musí to být třída, jinak bychom nemohli v updateItemAction nastavovat hodnoty (bylo by potřeba ref).</typeparam>
 		/// <typeparam name="TKey">typ párovacího klíče</typeparam>
 		/// <param name="target">aktualizovaná kolekce</param>
 		/// <param name="source">kolekece s hodnotami, které chceme aplikovat</param>
@@ -42,6 +42,7 @@ namespace Havit.Linq
 			Func<TSource, TTarget> newItemCreateFunc,
 			Action<TSource, TTarget> updateItemAction,
 			Action<TTarget> removeItemAction)
+			where TTarget : class
 		{
 			Contract.Requires<ArgumentNullException>(target != null);
 			Contract.Requires<ArgumentNullException>(source != null);
@@ -56,7 +57,7 @@ namespace Havit.Linq
 
 			foreach (var joinedItem in joinedCollections)
 			{
-				if (joinedItem.Target == null) // && (Source != null)
+				if (object.Equals(joinedItem.Target, default(TTarget))) // && (Source != null)
 				{
 					// new item
 					if (newItemCreateFunc != null)
@@ -65,7 +66,7 @@ namespace Havit.Linq
 						target.Add(newTargetItem);
 					}
 				}
-				else if (joinedItem.Source != null) // && (Target != null)
+				else if (!object.Equals(joinedItem.Source, default(TSource))) // && (Target != null)
 				{
 					// existing item
 					if (updateItemAction != null)

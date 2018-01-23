@@ -126,6 +126,7 @@
     <Compile Include="JetBrains.Anotations\JetBrainsAnnotations.cs">
       <ExcludeFromStyleCop>true</ExcludeFromStyleCop>
     </Compile>
+    <Compile Include="Linq\CollectionExt.cs" />
     <Compile Include="Linq\Expressions\ExpressionExt.cs" />
     <Compile Include="Linq\Expressions\ReplaceParameterVisitor.cs" />
     <Compile Include="Linq\Expressions\SubstitutionVisitor.cs" />

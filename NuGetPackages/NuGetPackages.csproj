@@ -51,6 +51,9 @@
     <None Include="..\PublishScripts\Publish-Havit.ApplicationInsights.DependencyCollector.ps1">
       <Link>Publish-Havit.ApplicationInsights.DependencyCollector.ps1</Link>
     </None>
+    <None Include="..\PublishScripts\Publish-Havit.AspNetCore.Mvc.ps1">
+      <Link>Publish-Havit.AspNetCore.Mvc.ps1</Link>
+    </None>
     <None Include="..\PublishScripts\Publish-Havit.Business.ps1">
       <Link>Publish-Havit.Business.ps1</Link>
     </None>
@@ -121,6 +124,9 @@
       <Link>Publish-Havit.Web.ps1</Link>
     </None>
     <None Include="Havit.ApplicationInsights.DependencyCollector.nuspec">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Havit.AspNetCore.Mvc.nuspec">
       <SubType>Designer</SubType>
     </None>
     <None Include="Havit.Extensions.DependencyInjection.Abstractions.nuspec">

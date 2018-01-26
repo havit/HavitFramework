@@ -99,6 +99,9 @@
     <None Include="..\PublishScripts\Publish-Havit.Extensions.DependencyInjection.CastleWindsor.ps1">
       <Link>Publish-Havit.Extensions.DependencyInjection.CastleWindsor.ps1</Link>
     </None>
+    <None Include="..\PublishScripts\Publish-Havit.GoPay.ps1">
+      <Link>Publish-Havit.GoPay.ps1</Link>
+    </None>
     <None Include="..\PublishScripts\Publish-Havit.Model.ps1">
       <Link>Publish-Havit.Model.ps1</Link>
     </None>
@@ -184,6 +187,9 @@
     <None Include="Havit.Enterprise.Web.nuspec">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Havit.GoPay.nuspec">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Havit.Model.nuspec">
       <SubType>Designer</SubType>
     </None>
@@ -219,7 +225,9 @@
     <None Include="Havit.Data.Entity6.CodeGenerator\Content\RunCodeGenerator.ps1" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="NuGetPackages.targets" />
+    <None Include="NuGetPackages.targets">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

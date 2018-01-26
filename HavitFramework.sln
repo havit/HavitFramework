@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2003
+VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit", "Havit\Havit.csproj", "{9ACC94B9-B8FD-47C1-ABF8-0658C7673905}"
 EndProject
@@ -169,6 +169,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Services.Redis", "Havit.Services.Redis\Havit.Services.Redis.csproj", "{C2608567-243E-4792-AFBF-E8D53D586C30}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.AspNetCore.Mvc", "Havit.AspNetCore.Mvc\Havit.AspNetCore.Mvc.csproj", "{85FFB71D-250D-48ED-8389-74BDF66F0201}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.GoPay", "Havit.GoPay\Havit.GoPay.csproj", "{81DC52EA-1B5D-496C-9C40-8565D42321D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.GoPay.Tests", "Havit.GoPay.Tests\Havit.GoPay.Tests.csproj", "{66A7D372-A193-4B2D-9991-64687FBDDB63}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -438,6 +442,18 @@ Global
 		{C2608567-243E-4792-AFBF-E8D53D586C30}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2608567-243E-4792-AFBF-E8D53D586C30}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C2608567-243E-4792-AFBF-E8D53D586C30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81DC52EA-1B5D-496C-9C40-8565D42321D0}.CodeGenerator|Any CPU.ActiveCfg = Release|Any CPU
+		{81DC52EA-1B5D-496C-9C40-8565D42321D0}.CodeGenerator|Any CPU.Build.0 = Release|Any CPU
+		{81DC52EA-1B5D-496C-9C40-8565D42321D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81DC52EA-1B5D-496C-9C40-8565D42321D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81DC52EA-1B5D-496C-9C40-8565D42321D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81DC52EA-1B5D-496C-9C40-8565D42321D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66A7D372-A193-4B2D-9991-64687FBDDB63}.CodeGenerator|Any CPU.ActiveCfg = Release|Any CPU
+		{66A7D372-A193-4B2D-9991-64687FBDDB63}.CodeGenerator|Any CPU.Build.0 = Release|Any CPU
+		{66A7D372-A193-4B2D-9991-64687FBDDB63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66A7D372-A193-4B2D-9991-64687FBDDB63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66A7D372-A193-4B2D-9991-64687FBDDB63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66A7D372-A193-4B2D-9991-64687FBDDB63}.Release|Any CPU.Build.0 = Release|Any CPU
 		{85FFB71D-250D-48ED-8389-74BDF66F0201}.CodeGenerator|Any CPU.ActiveCfg = Debug|Any CPU
 		{85FFB71D-250D-48ED-8389-74BDF66F0201}.CodeGenerator|Any CPU.Build.0 = Debug|Any CPU
 		{85FFB71D-250D-48ED-8389-74BDF66F0201}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -497,13 +513,15 @@ Global
 		{0034E8EB-7824-4EFA-ABD4-807841E6CD87} = {97109FED-C671-49FA-8614-C63D8E5935B9}
 		{61B9D33E-D395-470F-B3AC-9875D001BFB0} = {3D976DB4-23C7-4B7B-8646-C53DAFB813EE}
 		{C2608567-243E-4792-AFBF-E8D53D586C30} = {DB76A91F-9059-4EB3-9389-C86486BB0DFC}
+		{81DC52EA-1B5D-496C-9C40-8565D42321D0} = {DB76A91F-9059-4EB3-9389-C86486BB0DFC}
+		{66A7D372-A193-4B2D-9991-64687FBDDB63} = {3C2FD345-B555-4C43-A930-761AC2517EFD}
 		{85FFB71D-250D-48ED-8389-74BDF66F0201} = {97109FED-C671-49FA-8614-C63D8E5935B9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {44656523-42B6-48E3-9E6D-6F075F0E7FD0}
 	EndGlobalSection
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 46
+		SccNumberOfProjects = 47
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.havit.eu/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -683,6 +701,14 @@ Global
 		SccProjectTopLevelParentUniqueName44 = HavitFramework.sln
 		SccProjectName44 = Havit.Services.Redis
 		SccLocalPath44 = Havit.Services.Redis
+		SccProjectUniqueName45 = Havit.GoPay\\Havit.GoPay.csproj
+		SccProjectTopLevelParentUniqueName45 = HavitFramework.sln
+		SccProjectName45 = Havit.GoPay
+		SccLocalPath45 = Havit.GoPay
+		SccProjectUniqueName46 = Havit.GoPay.Tests\\Havit.GoPay.Tests.csproj
+		SccProjectTopLevelParentUniqueName46 = HavitFramework.sln
+		SccProjectName46 = Havit.GoPay.Tests
+		SccLocalPath46 = Havit.GoPay.Tests
 		SccProjectUniqueName45 = Havit.AspNetCore.Mvc\\Havit.AspNetCore.Mvc.csproj
 		SccProjectTopLevelParentUniqueName45 = HavitFramework.sln
 		SccProjectName45 = Havit.AspNetCore.Mvc

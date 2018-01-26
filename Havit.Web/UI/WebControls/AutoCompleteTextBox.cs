@@ -5,11 +5,15 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Havit.Diagnostics.Contracts;
 using Havit.Web.UI.ClientScripts;
 using Havit.Web.UI.Scriptlets;
+
+[assembly: WebResource("Havit.Web.UI.WebControls.AutoCompleteTextBox.css", "text/css")]
 
 namespace Havit.Web.UI.WebControls
 {
@@ -62,6 +66,7 @@ namespace Havit.Web.UI.WebControls
 		#region Fields (private)
 		private readonly TextBox valueTextBox;
 		private readonly HiddenField valueHiddenField;
+        private readonly HyperLink clearTextLink;
 		#endregion
 
 		#region AutoPostBack
@@ -408,13 +413,31 @@ namespace Havit.Web.UI.WebControls
 				return valueHiddenField.ClientID;
 			}
 		}
-		#endregion
+        #endregion
 
-		#region Constructor
-		/// <summary>
-		/// Initializes a new instance of the <see cref="AutoCompleteTextBox"/> class.
-		/// </summary>
-		public AutoCompleteTextBox()
+        #region AutoRegisterStyleSheets
+        /// <summary>
+        /// Indikuje, zda má dojít k automatické registraci CSS v OnPreRenderu.
+        /// Výchozí hodnota je true.
+        /// </summary>
+        public bool AutoRegisterStyleSheets
+        {
+            get
+            {
+                return (bool)(ViewState["AutoRegisterStyleSheets"] ?? true);
+            }
+            set
+            {
+                ViewState["AutoRegisterStyleSheets"] = value;
+            }
+        }
+        #endregion
+
+        #region Constructor
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AutoCompleteTextBox"/> class.
+        /// </summary>
+        public AutoCompleteTextBox()
 		{
 			valueTextBox = new TextBox();
 			valueTextBox.ID = "ValueTextBox";
@@ -422,7 +445,14 @@ namespace Havit.Web.UI.WebControls
 			valueHiddenField = new HiddenField();
 			valueHiddenField.ID = "ValueHiddenField";
 			valueHiddenField.EnableViewState = false;
-		}
+
+            clearTextLink = new HyperLink();
+            clearTextLink.ID = nameof(clearTextLink);
+            clearTextLink.EnableViewState = false;
+            clearTextLink.NavigateUrl = "#";
+            clearTextLink.Text = "&times;";
+            clearTextLink.Attributes.Add("data-clearText", "true");
+        }
 		#endregion
 
 		#region ClearSelection
@@ -446,7 +476,8 @@ namespace Havit.Web.UI.WebControls
 
 			Controls.Add(valueTextBox);
 			Controls.Add(valueHiddenField);
-		}
+			Controls.Add(clearTextLink);
+        }
 		#endregion
 
 		#region RenderControl
@@ -529,16 +560,41 @@ namespace Havit.Web.UI.WebControls
 			HavitFrameworkClientScriptHelper.RegisterHavitFrameworkClientScript(this.Page);
 			ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, HavitFrameworkClientScriptHelper.JQueryAutoCompleteResourceMappingName);
 			ScriptManager.RegisterStartupScript(this, typeof(AutoCompleteTextBox), "InitScript", "havitAutoCompleteTextBoxExtensions.init();", true);
-		}
-		#endregion
+            if (AutoRegisterStyleSheets)
+            {
+                RegisterStylesheets(this.Page);
+            }
+        }
+        #endregion
 
-		#region LoadPostData
-		/// <summary>
-		/// Loads the post data.
-		/// </summary>
-		/// <param name="postDataKey">The post data key.</param>
-		/// <param name="postCollection">The post collection.</param>
-		public virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
+        #region RegisterStylesheets
+        /// <summary>
+        /// Vytvoří do head odkaz na CSS menu.
+        /// </summary>
+        public static void RegisterStylesheets(Page page)
+        {
+            bool registered = (bool)(HttpContext.Current.Items["Havit.Web.UI.WebControls.AutoCompleteTextBox.RegisterCss_registered"] ?? false);
+
+            if (!registered)
+            {
+                HtmlLink htmlLink = new HtmlLink();
+                string resourceName = "Havit.Web.UI.WebControls.AutoCompleteTextBox.css";
+                htmlLink.Href = page.ClientScript.GetWebResourceUrl(typeof(AutoCompleteTextBox), resourceName);
+                htmlLink.Attributes.Add("rel", "stylesheet");
+                htmlLink.Attributes.Add("type", "text/css");
+                page.Header.Controls.Add(htmlLink);
+                HttpContext.Current.Items["Havit.Web.UI.WebControls.AutoCompleteTextBox.RegisterCss_registered"] = true;
+            }
+        }
+        #endregion
+
+        #region LoadPostData
+        /// <summary>
+        /// Loads the post data.
+        /// </summary>
+        /// <param name="postDataKey">The post data key.</param>
+        /// <param name="postCollection">The post collection.</param>
+        public virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
 		{
 			string postedValue = postCollection[valueHiddenField.UniqueID];
 			if (!SelectedValue.Equals(postedValue))

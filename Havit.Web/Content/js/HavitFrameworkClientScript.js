@@ -377,9 +377,11 @@ var havitAutoCompleteTextBoxExtensions = {
             };
             var $textbox = $item.children("input[type='text']");
             var $hiddenfield = $item.children("input[type='hidden']");
+            var $clearTextLink = $item.children("a[data-clearText]");
             $item.data("selectedvalue", $textbox.val());
             $textbox.blur(function () { havitAutoCompleteTextBoxExtensions.onBlur($textbox, $hiddenfield, $item); });
             $textbox.autocomplete(options);
+            $clearTextLink.click(function (event) { event.preventDefault(); havitAutoCompleteTextBoxExtensions.onClickClearTextLink($textbox, $hiddenfield, $item); });
         });
     },
     onSelect: function (suggestion, item) {
@@ -456,6 +458,10 @@ var havitAutoCompleteTextBoxExtensions = {
     },
     doPostback: function (script) {
         eval(script);
+    },
+    onClickClearTextLink: function ($textbox, $hiddenfield, $item) {
+        $textbox.val("");
+        havitAutoCompleteTextBoxExtensions.onBlur($textbox, $hiddenfield, $item);
     }
 };
 var havitControlFocusPersisterExtensions = {

@@ -510,6 +510,7 @@
     <EmbeddedResource Include="UI\WebControls\AutoSuggestMenu\XUtils.js" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="UI\WebControls\AutoCompleteTextBox.css" />
     <None Include="Bootstrap\Content\less\havit-web-bootstrap.less" />
     <None Include="Bootstrap\Content\less\modals.less" />
     <None Include="Bootstrap\Content\less\navbar.less" />

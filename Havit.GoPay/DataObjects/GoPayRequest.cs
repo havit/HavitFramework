@@ -8,6 +8,9 @@ using Newtonsoft.Json.Converters;
 
 namespace Havit.GoPay.DataObjects
 {
+	/// <summary>
+	/// GoPay request
+	/// </summary>
 	public sealed class GoPayRequest : GoPayRequestBase
 	{
 		/// <summary>
@@ -84,6 +87,10 @@ namespace Havit.GoPay.DataObjects
 		[JsonProperty("recurrence", NullValueHandling = NullValueHandling.Ignore)]
 		public GoPayRecurrence Recurrence { get; set; }
 
+		/// <summary>
+		/// Konstruktor
+		/// </summary>
+		/// <param name="accessToken">Přístupový token</param>
 		public GoPayRequest(string accessToken) : base(accessToken)
 		{
 		}

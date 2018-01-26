@@ -56,6 +56,13 @@ namespace Havit.GoPay
 			}
 		}
 
+		/// <summary>
+		/// Získání pøístupového tokenu
+		/// </summary>
+		/// <param name="clientId">Identifikátor klienta</param>
+		/// <param name="clientSecret">Tajný kód klienta</param>
+		/// <param name="scope">Scope</param>
+		/// <returns>GoPayResponse</returns>
 		public virtual GoPayResponse GetToken(string clientId, string clientSecret, GoPayPaymentScope scope)
 		{
 			string stringScope;
@@ -78,17 +85,35 @@ namespace Havit.GoPay
 			}));
 		}
 
+		/// <summary>
+		/// Vytvoøení platby
+		/// </summary>
+		/// <param name="request">Request</param>
+		/// <returns>GoPayResponse</returns>
 		public GoPayResponse CreatePayment(GoPayRequest request)
 		{
 			string jsonRequest = JsonConvert.SerializeObject(request);
 			return SendPost(PaymentUrl, request.AccessToken, new StringContent(jsonRequest, Encoding.UTF8, "application/json"));
 		}
 
+		/// <summary>
+		/// Získání platby
+		/// </summary>
+		/// <param name="paymentId">Identifikátor platby</param>
+		/// <param name="accessToken">Pøístupový token</param>
+		/// <returns>GoPayResponse</returns>
 		public GoPayResponse GetPayment(long paymentId, string accessToken)
 		{
 			return SendGet(String.Format(PaymentUrlWithIdFormat, paymentId), accessToken);
 		}
 
+		/// <summary>
+		/// Vrácení platby
+		/// </summary>
+		/// <param name="paymentId">Identifikátor platby</param>
+		/// <param name="amount">èástka</param>
+		/// <param name="accessToken">Pøístupový token</param>
+		/// <returns>GoPayResponse</returns>
 		public GoPayResponse RefundPayment(long paymentId, long amount, string accessToken)
 		{
 			return SendPost(String.Format(RefundPaymentUrlFormat, paymentId), accessToken, new FormUrlEncodedContent(new[]
@@ -97,32 +122,68 @@ namespace Havit.GoPay
 			}));
 		}
 
+		/// <summary>
+		/// CreateRecurrentPaymentOnDemand
+		/// </summary>
+		/// <param name="onDemandPaymentId">onDemandPaymentId</param>
+		/// <param name="request">request</param>
+		/// <returns>GoPayResponse</returns>
 		public virtual GoPayResponse CreateRecurrentPaymentOnDemand(long onDemandPaymentId, GoPayRequest request)
 		{
 			string jsonRequest = JsonConvert.SerializeObject(request);
 			return SendPost(String.Format(CreateRecurrentPaymentUrlFormat, onDemandPaymentId), request.AccessToken, new StringContent(jsonRequest, Encoding.UTF8, "application/json"));
 		}
 
+		/// <summary>
+		/// CancelRecurrentPayment
+		/// </summary>
+		/// <param name="paymentId">Identifikátor platby</param>
+		/// <param name="accessToken">Pøístupový token</param>
+		/// <returns>GoPayResponse</returns>
 		public GoPayResponse CancelRecurrentPayment(long paymentId, string accessToken)
 		{
 			return SendPost(String.Format(CancelRecurrentPaymentUrlFormat, paymentId), accessToken);
 		}
 
+		/// <summary>
+		/// CancelPreauthorizedPayment
+		/// </summary>
+		/// <param name="paymentId">Identifikátor platby</param>
+		/// <param name="accessToken">Pøístupový token</param>
+		/// <returns>GoPayResponse</returns>
 		public GoPayResponse CancelPreauthorizedPayment(long paymentId, string accessToken)
 		{
 			return SendPost(String.Format(CancelPreauthorizedPaymentUrlFormat, paymentId), accessToken);
 		}
 
+		/// <summary>
+		/// CapturePayment
+		/// </summary>
+		/// <param name="paymentId">Identifikátor platby</param>
+		/// <param name="accessToken">Pøístupový token</param>
+		/// <returns>GoPayResponse</returns>
 		public GoPayResponse CapturePayment(long paymentId, string accessToken)
 		{
 			return SendPost(String.Format(CapturePaymentUrlFormat, paymentId), accessToken);
 		}
 
+		/// <summary>
+		/// CapturePaymentAsync
+		/// </summary>
+		/// <param name="paymentId">Identifikátor platby</param>
+		/// <param name="accessToken">Pøístupový token</param>
+		/// <returns>GoPayResponse</returns>
 		public async Task<GoPayResponse> CapturePaymentAsync(long paymentId, string accessToken)
 		{
 			return await SendPostAsync(String.Format(CapturePaymentUrlFormat, paymentId), accessToken);
 		}
 
+		/// <summary>
+		/// GetAllowedPaymentMethods
+		/// </summary>
+		/// <param name="goId">goId</param>
+		/// <param name="accessToken">Pøístupový token</param>
+		/// <returns>GoPayResponse</returns>
 		public GoPayResponse GetAllowedPaymentMethods(long goId, string accessToken)
 		{
 			return SendGet(String.Format(AllowedPaymentMethodsUrlFormat, goId), accessToken);
@@ -216,6 +277,9 @@ namespace Havit.GoPay
 			return response;
 		}
 
+		/// <summary>
+		/// Dispose
+		/// </summary>
 		public void Dispose()
 		{
 			httpClient?.Dispose();

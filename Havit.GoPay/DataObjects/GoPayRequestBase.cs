@@ -15,6 +15,10 @@ namespace Havit.GoPay.DataObjects
 		[JsonIgnore]
 		public string AccessToken { get; }
 
+		/// <summary>
+		/// Nastavení access tokenu pro ovìøení autorizace požadavku
+		/// </summary>
+		/// <param name="accessToken">Access token pro ovìøení autorizace požadavku</param>
 		protected GoPayRequestBase(string accessToken)
 		{
 			Contract.Requires(!String.IsNullOrEmpty(accessToken));

@@ -31,6 +31,9 @@ namespace Havit.GoPay.DataObjects
 		[JsonProperty("amount")]
 		internal long AmountMultipliedBy100 => (long)(Amount * 100);
 
+		/// <summary>
+		/// Konstruktor
+		/// </summary>
 		public GoPayRequestItem()
 		{
 			Count = 1;

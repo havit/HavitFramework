@@ -15,7 +15,7 @@ namespace Microsoft.Extensions.DependencyInjection
 		/// <summary>
 		/// Zaregistruje služby pro exception monitoring (vč. SmtpExceptionMonitoringProcessor a HttpRequestExceptionFormatter).
 		/// </summary>
-        public static void AddExceptionMonitoring(this IServiceCollection services, IConfigurationRoot configurationRoot)
+        public static void AddExceptionMonitoring(this IServiceCollection services, IConfiguration configurationRoot)
         {
             services.Configure<SmtpExceptionMonitoringOptions>(configurationRoot.GetSection("AppSettings:SmtpExceptionMonitoring"));
             services.AddSingleton<IExceptionMonitoringService, ExceptionMonitoringService>();

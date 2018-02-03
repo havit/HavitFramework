@@ -11,7 +11,7 @@ namespace Havit.Linq
 	/// Extension metody pro IColllection&lt;T&gt;.
 	/// </summary>
 	public static class CollectionExt
-    {
+	{
 
 		/// <summary>
 		/// Sloučení kolekcí. Do existující kolekce aplikuje změny z kolekce druhé.
@@ -34,6 +34,7 @@ namespace Havit.Linq
 		/// <param name="newItemCreateFunc">funkce pro založení nového prvku cílové kolekce (pokud bude funkce <c>null</c>, chybějící prvky ignorujeme)</param>
 		/// <param name="updateItemAction">akce pro aktualizaci spárovaného prvku cílové kolekce z hodnot prvku aplikované kolekce (pokud bude akce <c>null</c>, spárované prvky neaktualizujeme)</param>
 		/// <param name="removeItemAction">akce pro odebrání prvku z aktualizované kolekce, který nebyl nalezen v aplikované kolekci (pokud bude akce <c>null</c>, přebývající prvky neodebíráme) </param>
+		/// <param name="removeItemFromCollection">indikuje, zdali má být přebývající prvek z kolekce odebrán (default <c>true</c>, pro podporu soft-deletes je možno zadat <c>false</c>)</param>
 		public static void UpdateFrom<TSource, TTarget, TKey>(
 			this ICollection<TTarget> target,
 			IEnumerable<TSource> source,
@@ -41,13 +42,15 @@ namespace Havit.Linq
 			Func<TSource, TKey> sourceKeySelector,
 			Func<TSource, TTarget> newItemCreateFunc,
 			Action<TSource, TTarget> updateItemAction,
-			Action<TTarget> removeItemAction)
+			Action<TTarget> removeItemAction,
+			bool removeItemFromCollection = true)
 			where TTarget : class
 		{
 			Contract.Requires<ArgumentNullException>(target != null);
 			Contract.Requires<ArgumentNullException>(source != null);
 			Contract.Requires<ArgumentNullException>(sourceKeySelector != null);
 			Contract.Requires<ArgumentNullException>(targetKeySelector != null);
+			Contract.Requires<InvalidOperationException>(removeItemFromCollection || (removeItemAction != null));
 
 			var joinedCollections = target.FullOuterJoin(
 				rightSource: source,
@@ -79,9 +82,11 @@ namespace Havit.Linq
 					if (removeItemAction != null)
 					{
 						removeItemAction(joinedItem.Target);
-						target.Remove(joinedItem.Target);
+						if (removeItemFromCollection)
+						{
+							target.Remove(joinedItem.Target);
+						}
 					}
-
 				}
 			}
 		}

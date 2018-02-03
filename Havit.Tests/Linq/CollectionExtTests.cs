@@ -481,6 +481,32 @@ namespace Havit.Tests.Linq
 			Assert.AreEqual("2", item2.OtherProperty);
 		}
 
+		[TestMethod]
+		public void CollectionExt_UpdateFrom_RemoveItemFromCollectionFalse()
+		{
+			// arrange
+			var targetList = new List<TargetClass>()
+			{
+				new TargetClass() { Id = 1, StringProperty = "FAKE_TARGET_1" },
+				new TargetClass() { Id = 3, StringProperty = "FAKE_TARGET_3" }
+			};
+			var sourceList = new List<SourceClass>();
+
+			// act
+			targetList.UpdateFrom(sourceList,
+				targetKeySelector: target => target.Id,
+				sourceKeySelector: source => source.Id,
+				newItemCreateFunc: source => null,
+				updateItemAction: (source, target) => {	},
+				removeItemAction: (target) => { },
+				removeItemFromCollection: false
+			);
+
+			// assert
+			Assert.AreEqual(2, targetList.Count);
+		}
+
+
 		private class SourceClass
 		{
 			public int Id { get; set; }

@@ -506,7 +506,6 @@ namespace Havit.Tests.Linq
 			Assert.AreEqual(2, targetList.Count);
 		}
 
-
 		private class SourceClass
 		{
 			public int Id { get; set; }

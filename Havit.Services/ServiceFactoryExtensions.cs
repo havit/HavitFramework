@@ -16,6 +16,8 @@ namespace Havit.Services
 		public static void ExecuteAction<TService>(this IServiceFactory<TService> serviceFactory, Action<TService> action)
 			where TService : class
 		{
+			global::Havit.Diagnostics.Contracts.Contract.Requires(serviceFactory != null);
+
 			TService service = null;
 
 			try

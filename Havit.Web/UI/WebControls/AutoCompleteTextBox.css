@@ -1,6 +1,7 @@
 ﻿.autocomplete-textbox {
     position: relative;
     display: inline-block;
+    vertical-align: middle;
 }
 
     .autocomplete-textbox input[type=text]::-ms-clear,

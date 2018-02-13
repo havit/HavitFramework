@@ -28,7 +28,7 @@ namespace Havit.Tests.Linq
 			};
 
 			// act
-			targetList.UpdateFrom(sourceList,
+			var result = targetList.UpdateFrom(sourceList,
 				targetKeySelector: target => target.Id,
 				sourceKeySelector: source => source.Id,
 				newItemCreateFunc:
@@ -39,38 +39,38 @@ namespace Havit.Tests.Linq
 							Id = source.Id,
 							StringProperty = source.StringProperty
 						};
-						// itemsAdded.Add(newItem);
-						// unitOfWork.AddForInsert(newItem);
 						return newItem;
 					},
 				updateItemAction:
 					(source, target) =>
 					{
 						target.StringProperty = source.StringProperty;
-						// itemsUpdated.Add(target);
-						// unitOfWork.AddForUpdate(target);
 					},
 				removeItemAction:
 					(target) =>
 					{
-						// itemsRemoved.Add(target);
-						// unitOfWork.AddForDelete(target);
 					}
 			);
+			// unitOfWork.AddForInsert(result.ItemsAdding);
+			// unitOfWork.AddForUpdate(result.ItemsUpdating);
+			// unitOfWork.AddForDelete(result.ItemsRemoving);
 
 			// assert
 			// Item 1 updated
 			CollectionAssert.Contains(targetList, targetItem1);
 			var item1 = targetList.Single(i => i.Id == 1);
 			Assert.AreEqual("FAKE_SOURCE_1", item1.StringProperty);
+			Assert.AreSame(targetItem1, result.ItemsUpdating.Single());
 
 			// Item 3 removed
 			CollectionAssert.DoesNotContain(targetList, targetItem3);
+			Assert.AreSame(targetItem3, result.ItemsRemoving.Single());
 
 			// Item 2 added
 			Assert.AreEqual(2, targetList.Count);
 			var item2 = targetList.Single(i => i.Id == 2);
 			Assert.AreEqual("FAKE_SOURCE_2", item2.StringProperty);
+			Assert.AreSame(item2, result.ItemsAdding.Single());
 		}
 
 		[TestMethod]
@@ -91,7 +91,7 @@ namespace Havit.Tests.Linq
 			};
 
 			// act
-			targetList.UpdateFrom(sourceList,
+			var result = targetList.UpdateFrom(sourceList,
 				targetKeySelector: target => target.StringProperty,
 				sourceKeySelector: source => source.StringProperty,
 				newItemCreateFunc:
@@ -119,14 +119,17 @@ namespace Havit.Tests.Linq
 			CollectionAssert.Contains(targetList, targetItem1);
 			var item1 = targetList.Single(i => i.StringProperty == null);
 			Assert.AreEqual("0", item1.OtherProperty);
+			Assert.AreSame(item1, result.ItemsUpdating.Single());
 
 			// Item 3 removed
 			CollectionAssert.DoesNotContain(targetList, targetItem3);
+			Assert.AreSame(targetItem3, result.ItemsRemoving.Single());
 
 			// Item 2 added
 			Assert.AreEqual(2, targetList.Count);
 			var item2 = targetList.Single(i => i.StringProperty == "SOURCE_KEY_2");
 			Assert.AreEqual("2", item2.OtherProperty);
+			Assert.AreSame(item2, result.ItemsAdding.Single());
 		}
 
 		[TestMethod]
@@ -149,7 +152,7 @@ namespace Havit.Tests.Linq
 			var itemsRemoved = new List<TargetClass>();
 
 			// act
-			targetList.UpdateFrom(sourceList,
+			var result = targetList.UpdateFrom(sourceList,
 				targetKeySelector: target => target.Id,
 				sourceKeySelector: source => source.Id,
 				newItemCreateFunc:
@@ -182,8 +185,12 @@ namespace Havit.Tests.Linq
 			var item1 = targetList.Single(i => i.Id == 1);
 			Assert.AreEqual("FAKE_SOURCE_12", item1.StringProperty);
 			Assert.AreEqual(0, itemsAdded.Count);
+			Assert.AreEqual(0, result.ItemsAdding.Count);
 			Assert.AreEqual(2, itemsUpdated.Count);
+			Assert.AreEqual(2, result.ItemsUpdating.Count);
+			Assert.AreSame(result.ItemsUpdating[0], result.ItemsUpdating[1]);
 			Assert.AreEqual(0, itemsRemoved.Count);
+			Assert.AreEqual(0, result.ItemsRemoving.Count);
 		}
 
 		[TestMethod]
@@ -207,7 +214,7 @@ namespace Havit.Tests.Linq
 			var itemsRemoved = new List<TargetClass>();
 
 			// act
-			targetList.UpdateFrom(sourceList,
+			var result = targetList.UpdateFrom(sourceList,
 				targetKeySelector: target => target.Id,
 				sourceKeySelector: source => source.Id,
 				newItemCreateFunc:
@@ -242,8 +249,13 @@ namespace Havit.Tests.Linq
 			Assert.AreEqual("FAKE_SOURCE_1", targetList[0].StringProperty);
 			Assert.AreEqual("FAKE_SOURCE_1", targetList[1].StringProperty);
 			Assert.AreEqual(0, itemsAdded.Count);
+			Assert.AreEqual(0, result.ItemsAdding.Count);
 			Assert.AreEqual(2, itemsUpdated.Count);
+			Assert.AreEqual(2, result.ItemsUpdating.Count);
+			CollectionAssert.Contains(result.ItemsUpdating, targetItem1);
+			CollectionAssert.Contains(result.ItemsUpdating, targetItem2);
 			Assert.AreEqual(0, itemsRemoved.Count);
+			Assert.AreEqual(0, result.ItemsRemoving.Count);
 		}
 
 		[TestMethod]
@@ -262,7 +274,7 @@ namespace Havit.Tests.Linq
 			};
 
 			// act
-			targetList.UpdateFrom(sourceList,
+			var result = targetList.UpdateFrom(sourceList,
 				targetKeySelector: target => target.Id,
 				sourceKeySelector: source => source.Id,
 				newItemCreateFunc: null,
@@ -280,6 +292,7 @@ namespace Havit.Tests.Linq
 			// assert
 			Assert.AreEqual(1, targetList.Count);
 			Assert.AreEqual("FAKE_SOURCE_1", targetList.Single().StringProperty);
+			Assert.AreEqual(0, result.ItemsAdding.Count);
 		}
 
 		[TestMethod]
@@ -298,7 +311,7 @@ namespace Havit.Tests.Linq
 			};
 
 			// act
-			targetList.UpdateFrom(sourceList,
+			var result = targetList.UpdateFrom(sourceList,
 				targetKeySelector: target => target.Id,
 				sourceKeySelector: source => source.Id,
 				newItemCreateFunc:
@@ -322,6 +335,7 @@ namespace Havit.Tests.Linq
 			Assert.AreEqual(2, targetList.Count);
 			Assert.AreEqual("ITEM_TO_UPDATE", targetList.Single(i => i.Id == 1).StringProperty);
 			Assert.AreEqual(1, targetList.Count(i => i.Id == 2));
+			Assert.AreEqual(0, result.ItemsUpdating.Count);
 		}
 
 		[TestMethod]
@@ -340,7 +354,7 @@ namespace Havit.Tests.Linq
 			};
 
 			// act
-			targetList.UpdateFrom(sourceList,
+			var result = targetList.UpdateFrom(sourceList,
 				targetKeySelector: target => target.Id,
 				sourceKeySelector: source => source.Id,
 				newItemCreateFunc:
@@ -366,6 +380,7 @@ namespace Havit.Tests.Linq
 			Assert.AreEqual(1, targetList.Count(i => i.Id == 1));
 			Assert.AreEqual(1, targetList.Count(i => i.Id == 2));
 			Assert.AreEqual(1, targetList.Count(i => i.Id == 3));
+			Assert.AreEqual(0, result.ItemsRemoving.Count);
 		}
 
 		[TestMethod]
@@ -386,7 +401,7 @@ namespace Havit.Tests.Linq
 			};
 
 			// act
-			targetList.UpdateFrom(sourceList,
+			var result = targetList.UpdateFrom(sourceList,
 				targetKeySelector: target => target.Id,
 				sourceKeySelector: source => source.Id,
 				newItemCreateFunc:
@@ -413,14 +428,17 @@ namespace Havit.Tests.Linq
 			CollectionAssert.Contains(targetList, targetItem1);
 			var item1 = targetList.Single(i => i.Id == 1);
 			Assert.AreEqual("FAKE_SOURCE_1", item1.StringProperty);
+			Assert.AreSame(targetItem1, result.ItemsUpdating.Single());
 
 			// Item 3 removed
 			CollectionAssert.DoesNotContain(targetList, targetItem3);
+			Assert.AreSame(targetItem3, result.ItemsRemoving.Single());
 
 			// Item 2 added
 			Assert.AreEqual(2, targetList.Count);
 			var item2 = targetList.Single(i => i.Id == 2);
 			Assert.AreEqual("FAKE_SOURCE_2", item2.StringProperty);
+			Assert.AreSame(item2, result.ItemsAdding.Single());
 		}
 
 		[TestMethod]
@@ -441,7 +459,7 @@ namespace Havit.Tests.Linq
 			};
 
 			// act
-			targetList.UpdateFrom(sourceList,
+			var result = targetList.UpdateFrom(sourceList,
 				targetKeySelector: target => new { Id1 = target.Id, Id2 = target.StringProperty },
 				sourceKeySelector: source => new { Id1 = source.Id, Id2 = source.StringProperty },
 				newItemCreateFunc:
@@ -471,14 +489,17 @@ namespace Havit.Tests.Linq
 			CollectionAssert.Contains(targetList, targetItem1);
 			var item1 = targetList.Single(i => i.Id == 1);
 			Assert.AreEqual("1", item1.OtherProperty);
+			Assert.AreSame(targetItem1, result.ItemsUpdating.Single());
 
 			// Item 3 removed
 			CollectionAssert.DoesNotContain(targetList, targetItem3);
+			Assert.AreSame(targetItem3, result.ItemsRemoving.Single());
 
 			// Item 2 added
 			Assert.AreEqual(2, targetList.Count);
 			var item2 = targetList.Single(i => i.Id == 2);
 			Assert.AreEqual("2", item2.OtherProperty);
+			Assert.AreSame(item2, result.ItemsAdding.Single());
 		}
 
 		[TestMethod]
@@ -493,7 +514,7 @@ namespace Havit.Tests.Linq
 			var sourceList = new List<SourceClass>();
 
 			// act
-			targetList.UpdateFrom(sourceList,
+			var result = targetList.UpdateFrom(sourceList,
 				targetKeySelector: target => target.Id,
 				sourceKeySelector: source => source.Id,
 				newItemCreateFunc: source => null,
@@ -504,6 +525,7 @@ namespace Havit.Tests.Linq
 
 			// assert
 			Assert.AreEqual(2, targetList.Count);
+			Assert.AreEqual(2, result.ItemsRemoving.Count);
 		}
 
 		private class SourceClass

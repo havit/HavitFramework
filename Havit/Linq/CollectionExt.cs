@@ -31,11 +31,11 @@ namespace Havit.Linq
 		/// <param name="source">kolekece s hodnotami, které chceme aplikovat</param>
 		/// <param name="targetKeySelector">selektor pro párovací klíč prvků cílové kolekce</param>
 		/// <param name="sourceKeySelector">selektor pro párovací klíč prvků zdrojové (aplikované) kolekce</param>
-		/// <param name="newItemCreateFunc">funkce pro založení nového prvku cílové kolekce (pokud bude funkce <c>null</c>, chybějící prvky ignorujeme)</param>
-		/// <param name="updateItemAction">akce pro aktualizaci spárovaného prvku cílové kolekce z hodnot prvku aplikované kolekce (pokud bude akce <c>null</c>, spárované prvky neaktualizujeme)</param>
-		/// <param name="removeItemAction">akce pro odebrání prvku z aktualizované kolekce, který nebyl nalezen v aplikované kolekci (pokud bude akce <c>null</c>, přebývající prvky neodebíráme) </param>
+		/// <param name="newItemCreateFunc">funkce pro založení nového prvku cílové kolekce (pokud bude funkce <c>null</c>, chybějící prvky ignorujeme a do <c>ItemsAdding</c> se nic nepřidá)</param>
+		/// <param name="updateItemAction">akce pro aktualizaci spárovaného prvku cílové kolekce z hodnot prvku aplikované kolekce (pokud bude akce <c>null</c>, spárované prvky neaktualizujeme a do <c>ItemsUpdating</c> se nic nepřidá)</param>
+		/// <param name="removeItemAction">akce pro odebrání prvku z aktualizované kolekce, který nebyl nalezen v aplikované kolekci (pokud bude akce <c>null</c>, přebývající prvky neodebíráme a do <c>ItemsRemoving</c> se nic nepřidá) </param>
 		/// <param name="removeItemFromCollection">indikuje, zdali má být přebývající prvek z kolekce odebrán (default <c>true</c>, pro podporu soft-deletes je možno zadat <c>false</c>)</param>
-		public static void UpdateFrom<TSource, TTarget, TKey>(
+		public static UpdateFromResult<TTarget> UpdateFrom<TSource, TTarget, TKey>(
 			this ICollection<TTarget> target,
 			IEnumerable<TSource> source,
 			Func<TTarget, TKey> targetKeySelector,
@@ -58,6 +58,8 @@ namespace Havit.Linq
 				rightKeySelector: sourceKeySelector,
 				resultSelector: (targetItem, sourceItem) => new { Target = targetItem, Source = sourceItem });
 
+			var result = new UpdateFromResult<TTarget>();
+
 			foreach (var joinedItem in joinedCollections)
 			{
 				if (object.Equals(joinedItem.Target, default(TTarget))) // && (Source != null)
@@ -67,6 +69,7 @@ namespace Havit.Linq
 					{
 						var newTargetItem = newItemCreateFunc(joinedItem.Source);
 						target.Add(newTargetItem);
+						result.ItemsAdding.Add(newTargetItem);
 					}
 				}
 				else if (!object.Equals(joinedItem.Source, default(TSource))) // && (Target != null)
@@ -75,6 +78,7 @@ namespace Havit.Linq
 					if (updateItemAction != null)
 					{
 						updateItemAction(joinedItem.Source, joinedItem.Target);
+						result.ItemsUpdating.Add(joinedItem.Target);
 					}
 				}
 				else // (Source == null) && (Target != null)
@@ -82,6 +86,7 @@ namespace Havit.Linq
 					if (removeItemAction != null)
 					{
 						removeItemAction(joinedItem.Target);
+						result.ItemsRemoving.Add(joinedItem.Target);
 						if (removeItemFromCollection)
 						{
 							target.Remove(joinedItem.Target);
@@ -89,6 +94,8 @@ namespace Havit.Linq
 					}
 				}
 			}
+
+			return result;
 		}
 	}
 }

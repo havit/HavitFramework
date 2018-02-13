@@ -131,6 +131,7 @@
     <Compile Include="Linq\Expressions\ReplaceParameterVisitor.cs" />
     <Compile Include="Linq\Expressions\SubstitutionVisitor.cs" />
     <Compile Include="Linq\QueryableExt.cs" />
+    <Compile Include="Linq\UpdateFromResult.cs" />
     <Compile Include="Reflection\IDataBinderExtSetValue.cs" />
     <Compile Include="Linq\EnumerableExt.cs" />
     <Compile Include="ITypeConverter.cs" />

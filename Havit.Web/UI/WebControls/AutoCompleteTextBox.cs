@@ -452,6 +452,7 @@ namespace Havit.Web.UI.WebControls
             clearTextLink.NavigateUrl = "#";
             clearTextLink.Text = "&times;";
             clearTextLink.Attributes.Add("data-clearText", "true");
+            clearTextLink.Attributes.Add("tabindex", "-1"); // skip the link in page navigation
         }
 		#endregion
 

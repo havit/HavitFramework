@@ -382,6 +382,12 @@ var havitAutoCompleteTextBoxExtensions = {
             $textbox.blur(function () { havitAutoCompleteTextBoxExtensions.onBlur($textbox, $hiddenfield, $item); });
             $textbox.autocomplete(options);
             $clearTextLink.click(function (event) { event.preventDefault(); havitAutoCompleteTextBoxExtensions.onClickClearTextLink($textbox, $hiddenfield, $item); });
+            $clearTextLink.css({
+                "top": (($textbox.outerHeight() - $textbox.height()) / 2) + 'px',
+                "height": $textbox.height(),
+                "font-size": $textbox.css("font-size"),
+                "color": $textbox.css("color")
+            });
         });
     },
     onSelect: function (suggestion, item) {

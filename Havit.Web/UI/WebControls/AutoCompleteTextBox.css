@@ -1,5 +1,6 @@
 ﻿.autocomplete-textbox {
     position: relative;
+    display: inline-block;
 }
 
     .autocomplete-textbox input[type=text]::-ms-clear,
@@ -12,6 +13,5 @@
     .autocomplete-textbox a[data-cleartext] {
         position: absolute;
         right: 5px;
-        top: -3px;
         text-decoration:none;
     }

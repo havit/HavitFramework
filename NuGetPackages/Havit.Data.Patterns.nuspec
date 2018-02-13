@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>Havit.Data.Patterns</id>
-		<version>1.7.0</version>
+		<version>1.7.1</version>
 		<title>Havit.Data.Patterns</title>
 		<authors>HAVIT, s.r.o.</authors>
 		<owners>HAVIT, s.r.o.</owners>

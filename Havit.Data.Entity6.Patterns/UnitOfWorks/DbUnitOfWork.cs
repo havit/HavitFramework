@@ -206,8 +206,11 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 		protected virtual void PerformAddForInsert<TEntity>(params TEntity[] entities)
 			where TEntity : class
 		{
-			DbContext.Set<TEntity>().AddRange(entities);
-			insertRegistrations.UnionWith(entities);
+			if (entities.Length > 0) // šetříme případné volání changetrackeru z AddRange
+			{
+				DbContext.Set<TEntity>().AddRange(entities);
+				insertRegistrations.UnionWith(entities);
+			}
 		}
 
 		/// <summary>
@@ -234,18 +237,21 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 		protected virtual void PerformAddForDelete<TEntity>(params TEntity[] entities)
 			where TEntity : class
 		{
-			if (SoftDeleteManager.IsSoftDeleteSupported<TEntity>())
+			if (entities.Length > 0) // šetříme případné volání changetrackeru z RemoveRange
 			{
-				foreach (TEntity entity in entities)
+				if (SoftDeleteManager.IsSoftDeleteSupported<TEntity>())
 				{
-					SoftDeleteManager.SetDeleted<TEntity>(entity);
+					foreach (TEntity entity in entities)
+					{
+						SoftDeleteManager.SetDeleted<TEntity>(entity);
+					}
+					PerformAddForUpdate(entities);
 				}
-				PerformAddForUpdate(entities);
-			}
-			else
-			{
-				DbContext.Set<TEntity>().RemoveRange(entities);
-				deleteRegistrations.UnionWith(entities);
+				else
+				{
+					DbContext.Set<TEntity>().RemoveRange(entities);
+					deleteRegistrations.UnionWith(entities);
+				}
 			}
 		}
 

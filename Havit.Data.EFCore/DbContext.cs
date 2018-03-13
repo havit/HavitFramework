@@ -98,9 +98,6 @@ namespace Havit.EntityFrameworkCore
 					IMutableNavigation parentProperty = entityType.FindNavigation("Parent");
 					IMutableNavigation languageProperty = entityType.FindNavigation("Language");
 
-					Console.WriteLine("Index here");
-					Console.WriteLine(parentProperty == null);
-					Console.WriteLine(languageProperty == null);
 					// pokud máme k dispozici vlastnosti (sloupce) LanguageId a ParentId (teoreticky mohou být v předkovi nebo nemusí vůbec existovat, protože interface ILocalization<,> je nepředepisuje, apod.)
 					if ((parentProperty != null) && (languageProperty != null))
 					{

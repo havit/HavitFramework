@@ -42,18 +42,21 @@ namespace Havit.EntityFrameworkCore
 		    base.OnModelCreating(modelBuilder);			
 			
 			CustomizeModelCreating(modelBuilder);
+		    
 		    // TODO JK: System types (dataseed)
+
 		    ApplyConventions(modelBuilder);
 
 	    }
 
 	    protected virtual void CustomizeModelCreating(ModelBuilder modelBuilder)
-	    {		    
+	    {
+			// TODO JK: Odstranit tenhle nesmysl, jakmile zapracuji conventions
 	    }
 
 	    protected virtual void ApplyConventions(ModelBuilder modelBuilder)
 	    {
-			// TODO JK: Co s touhle strukturální hrůzou?
+			// TODO JK: --> Conventions
 
 		    foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypes())
 		    {
@@ -107,7 +110,6 @@ namespace Havit.EntityFrameworkCore
 					}
 				}				    
 		    }
-
 			// TODO JK: Šlo by unikátním indexům přidat na začátek "U"?
 	    }
 

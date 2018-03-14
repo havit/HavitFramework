@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Havit.Data.Entity.Tests.Validators.Infrastructure;
 using Havit.Data.Entity.Tests.Validators.Infrastructure.Model;
 using Havit.Data.EFCore.ModelValidation;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.Entity.Tests.Validators
 {
@@ -70,7 +70,7 @@ namespace Havit.Data.Entity.Tests.Validators
 		}
 
 		[TestMethod]
-		public void CheckIdNamingConvention_DoesNotReportPascalCaseId()
+		public void ModelValidator_CheckIdNamingConvention_DoesNotReportPascalCaseId()
 		{
 			// Arrange
 			ModelValidatingDbContext modelValidatingDbContext = new ModelValidatingDbContext();

@@ -15,7 +15,7 @@ namespace Havit.Data.Entity.Patterns.Tests.Infrastructure
 
 			modelBuilder.RegisterEntityType(typeof(ItemWithDeleted));
 			modelBuilder.RegisterEntityType(typeof(ItemWithNullableProperty));
-            modelBuilder.RegisterEntityType(typeof(Language));
+			modelBuilder.RegisterEntityType(typeof(Language));
 		}
 	}
 }

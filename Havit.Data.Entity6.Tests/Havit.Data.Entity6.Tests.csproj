@@ -78,9 +78,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="DbContextDatabaseTest.cs" />
-    <Compile Include="DbContextTest.cs" />
-    <Compile Include="DbEntityValidationExceptionExtensions.cs" />
+    <Compile Include="DbContextDatabaseTests.cs" />
+    <Compile Include="DbContextTests.cs" />
+    <Compile Include="DbEntityValidationExceptionExtensionsTests.cs" />
     <Compile Include="Infrastructure\EmptyDbContext.cs" />
     <Compile Include="Infrastructure\Model\Child.cs" />
     <Compile Include="Infrastructure\Model\Master.cs" />
@@ -98,7 +98,7 @@
     <Compile Include="Validators\Infrastructure\Model\EntryWithPrimaryKeyAndNoSymbol.cs" />
     <Compile Include="Validators\Infrastructure\Model\EntryWithGeneratedPrimaryKeyAndNoSymbol.cs" />
     <Compile Include="Validators\Infrastructure\Model\EntryWithGeneratedPrimaryKeyAndWithSymbol.cs" />
-    <Compile Include="Validators\ModelValidatorTest.cs" />
+    <Compile Include="Validators\DbContextConventionsValidatorTests.cs" />
     <Compile Include="Validators\Infrastructure\Model\NavigationPropertyWithForeignKeyClass.cs" />
     <Compile Include="Validators\Infrastructure\Model\NavigationPropertyWithoutForeignKeyClass.cs" />
     <Compile Include="Validators\Infrastructure\Model\StringIdClass.cs" />

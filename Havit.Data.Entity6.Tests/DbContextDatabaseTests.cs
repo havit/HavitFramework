@@ -1,0 +1,52 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Havit.Data.Entity.Tests.Infrastructure;
+using Havit.Data.Entity.Tests.Infrastructure.Model;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace Havit.Data.Entity.Tests
+{
+	[TestClass]
+	public class DbContextDatabaseTests
+	{
+		[TestMethod]
+		public void DbContextDatabase_SqlQueryRaw()
+		{
+			// Arrange
+			MasterChildDbContext dbContext = new MasterChildDbContext();
+			dbContext.Database.Initialize(true);
+
+			// Act
+			DbRawSqlQuery<int> query = ((IDbContext)dbContext).Database.SqlQueryRaw<int>("SELECT Count(MasterId) FROM dbo.Master WHERE MasterId < @p0", -5 /* nemá funkční význam, jen ukázka parametrizace */);
+			int count = query.Single();
+
+			// Assert
+			Assert.AreEqual(0, count);
+		}
+
+		[TestMethod]
+		public void DbContextDatabase_SqlQueryEntity()
+		{
+			// Arrange
+			MasterChildDbContext dbContext = new MasterChildDbContext();
+			dbContext.Database.Initialize(true);
+
+			Master master1 = new Master();
+			dbContext.Set<Master>().Add(master1);
+			dbContext.SaveChanges();
+
+			// Act
+			DbSqlQuery<Master> query = ((IDbContext)dbContext).Database.SqlQueryEntity<Master>("SELECT MasterId as Id FROM dbo.Master WHERE MasterId = @p0", master1.Id);
+			Master master = query.Single();
+
+			// Assert
+			Assert.IsTrue(dbContext.Entry(master).State == EntityState.Unchanged); // je trackovaný
+		}
+
+	}
+}

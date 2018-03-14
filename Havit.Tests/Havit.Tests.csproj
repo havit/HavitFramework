@@ -68,22 +68,22 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Collections\Generic\LookupTest.cs" />
-    <Compile Include="CultureInfoExtTest.cs" />
+    <Compile Include="Collections\Generic\LookupTests.cs" />
+    <Compile Include="CultureInfoExtTests.cs" />
     <Compile Include="Linq\CollectionExtTests.cs" />
-    <Compile Include="Linq\QueryableExtTest.cs" />
-    <Compile Include="Linq\EnumerableExtTest.cs" />
-    <Compile Include="Collections\GenericPropertyComparerTest.cs" />
-    <Compile Include="Linq\Expressions\ExpressionExtTest.cs" />
-    <Compile Include="MathExtTest.cs" />
-    <Compile Include="Security\PasswordGeneratorTest.cs" />
-    <Compile Include="Security\PasswordHashServiceTest.cs" />
-    <Compile Include="Reflection\ReflectorTest.cs" />
-    <Compile Include="Text\RegexPatternsTest.cs" />
-    <Compile Include="StringExtTest.cs" />
+    <Compile Include="Linq\QueryableExtTests.cs" />
+    <Compile Include="Linq\EnumerableExtTests.cs" />
+    <Compile Include="Collections\GenericPropertyComparerTests.cs" />
+    <Compile Include="Linq\Expressions\ExpressionExtTests.cs" />
+    <Compile Include="MathExtTests.cs" />
+    <Compile Include="Security\PasswordGeneratorTests.cs" />
+    <Compile Include="Security\PasswordHashServiceTests.cs" />
+    <Compile Include="Reflection\ReflectorTests.cs" />
+    <Compile Include="Text\RegexPatternsTests.cs" />
+    <Compile Include="StringExtTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ComponentModel\UniversalConverterTest.cs" />
-    <Compile Include="DateTimeExtTest.cs" />
+    <Compile Include="ComponentModel\UniversalConverterTests.cs" />
+    <Compile Include="DateTimeExtTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Havit\Havit.csproj">

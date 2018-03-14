@@ -62,12 +62,12 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="DataRecordTest.cs" />
-    <Compile Include="DbConnectorTest.cs" />
+    <Compile Include="DataRecordTests.cs" />
+    <Compile Include="DbConnectorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TransientErrorHandling\SqlDatabaseTransientErrorDetectionStrategyTest.cs" />
+    <Compile Include="TransientErrorHandling\SqlDatabaseTransientErrorDetectionStrategyTests.cs" />
     <Compile Include="TransientErrorHandling\SqlExceptionHelper.cs" />
-    <Compile Include="TransientErrorHandling\TransientErrorHandlerTest.cs" />
+    <Compile Include="TransientErrorHandling\TransientErrorHandlerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -1,14 +1,13 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Web;
-using Moq;
-using Havit.AspNet.Mvc.Messenger;
+﻿using Havit.AspNet.Mvc.Messenger;
 using Havit.AspNet.Mvc.Messenger.Storages;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System.Web;
 
 namespace Havit.AspNet.Mvc.Tests.Messenger
 {
 	[TestClass]
-	public class ToastrMessengerTest
+	public class ToastrMessengerTests
 	{
 		[TestMethod]
 		public void ToastrMessenger_AddMessages()

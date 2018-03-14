@@ -71,11 +71,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BooleandFieldTest.cs" />
-    <Compile Include="HttpServerUtilityExtTest.cs" />
+    <Compile Include="BooleandFieldTests.cs" />
+    <Compile Include="HttpServerUtilityExtTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QueryStringBuilderTest.cs" />
-    <Compile Include="UrlRewriterTest.cs" />
+    <Compile Include="QueryStringBuilderTests.cs" />
+    <Compile Include="UrlRewriterTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Havit.Web\Havit.Web.csproj">

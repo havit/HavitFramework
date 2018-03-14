@@ -67,23 +67,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActiveRecordBusinessObjectBaseTest.cs" />
-    <Compile Include="BusinessCalendarTest.cs" />
-    <Compile Include="BusinessCalendarWeekendStrategiesTest.cs" />
-    <Compile Include="BusinessObject_EqualityTest.cs" />
-    <Compile Include="BusinessObject_IDsTest.cs" />
-    <Compile Include="BusinessObject_Test.cs" />
-    <Compile Include="BusinessObject_CachingTest.cs" />
-    <Compile Include="BusinessObjectCollectionTest.cs" />
-    <Compile Include="BusinessObject_DisconnectedObjectsTest.cs" />
-    <Compile Include="BusinessObject_PersistenceTest.cs" />
-    <Compile Include="CompositeConditionTest.cs" />
-    <Compile Include="BusinessObject_IdentityMapTest.cs" />
-    <Compile Include="IdentityMapTest.cs" />
-    <Compile Include="BusinessObject_MoneyPropertyTest.cs" />
+    <Compile Include="ActiveRecordBusinessObjectBaseTests.cs" />
+    <Compile Include="BusinessCalendarTests.cs" />
+    <Compile Include="BusinessCalendarWeekendStrategiesTests.cs" />
+    <Compile Include="BusinessObject_EqualityTests.cs" />
+    <Compile Include="BusinessObject_IDsTests.cs" />
+    <Compile Include="BusinessObject_Tests.cs" />
+    <Compile Include="BusinessObject_CachingTests.cs" />
+    <Compile Include="BusinessObjectCollectionTests.cs" />
+    <Compile Include="BusinessObject_DisconnectedObjectsTests.cs" />
+    <Compile Include="BusinessObject_PersistenceTests.cs" />
+    <Compile Include="CompositeConditionTests.cs" />
+    <Compile Include="BusinessObject_IdentityMapTests.cs" />
+    <Compile Include="IdentityMapTests.cs" />
+    <Compile Include="BusinessObject_MoneyPropertyTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReferenceConditionTest.cs" />
-    <Compile Include="TextConditionTest.cs" />
+    <Compile Include="ReferenceConditionTests.cs" />
+    <Compile Include="TextConditionTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BusinessLayerTest\BusinessLayerTest.csproj">

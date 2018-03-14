@@ -66,14 +66,14 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Ares\AresServiceTest.cs" />
-    <Compile Include="DirectoryServices\ActiveDirectoryServicesTest.cs" />
+    <Compile Include="Ares\AresServiceTests.cs" />
+    <Compile Include="DirectoryServices\ActiveDirectoryServicesTests.cs" />
     <Compile Include="FileStorage\FileStorageServiceTestInternals.cs" />
-    <Compile Include="FileStorage\FileSystemStorageServiceTest.cs" />
+    <Compile Include="FileStorage\FileSystemStorageServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceFactoryExtensionsTest.cs" />
-    <Compile Include="StateAdministrationServices\IdentifikacniCisloServiceTest.cs" />
-    <Compile Include="StateAdministrationServices\RodneCisloServiceTest.cs" />
+    <Compile Include="ServiceFactoryExtensionsTests.cs" />
+    <Compile Include="StateAdministrationServices\IdentifikacniCisloServiceTests.cs" />
+    <Compile Include="StateAdministrationServices\RodneCisloServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Havit.Services\Havit.Services.csproj">

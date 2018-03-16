@@ -2,9 +2,11 @@
 
 namespace Havit.Data.EFCore.Tests.ModelValidation.Infrastructure.Model
 {
-	public class StringIdClass
+	public class ZeroMaxLengthAttributeClass
 	{
-		[Key]
-		public string Id { get; set; }
+		public int Id { get; set; }
+
+		[MaxLength(0)]
+		public string Value { get; set; }
 	}
 }

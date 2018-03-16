@@ -1,4 +1,4 @@
-﻿namespace Havit.EntityFrameworkCore
+﻿namespace Havit.Data.Entity
 {
 	public interface IDbContext
 	{

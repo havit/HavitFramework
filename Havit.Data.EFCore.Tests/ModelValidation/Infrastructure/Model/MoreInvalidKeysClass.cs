@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Havit.Data.Entity.Tests.Validators.Infrastructure.Model
+﻿namespace Havit.Data.EFCore.Tests.ModelValidation.Infrastructure.Model
 {
 	public class MoreInvalidKeysClass
 	{

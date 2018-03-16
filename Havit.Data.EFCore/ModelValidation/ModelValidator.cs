@@ -4,22 +4,20 @@ using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Remotion.Linq.Parsing.Structure.IntermediateModel;
-using DbContext = Havit.EntityFrameworkCore.DbContext;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
-namespace Havit.Data.EFCore.ModelValidation
+namespace Havit.Data.Entity.ModelValidation
 {
 	/// <summary>
 	/// Kontroluje pravidla modelu.
-	/// Pro použití např. v unit testu.
+	/// Pro použití v unit testu.
 	/// </summary>
 	public class ModelValidator
 	{
 		/// <summary>
-		/// Kontroluje pravidla modelu.
+		/// Kontroluje pravidla modelu. Jsou použita výchozí pravidla.
 		/// </summary>
 		/// <returns>Vrací seznam chyb (nebo prázdný řetězec).</returns>
 		public string Validate(DbContext dbContext)
@@ -36,12 +34,13 @@ namespace Havit.Data.EFCore.ModelValidation
 			IModel model = dbContext.Model;
 
 			List<string> errors = model.GetEntityTypes()
-				.Where(entitytype => !IsSystemType(entitytype))
+				.Where(entitytype => !IsSystemEntity(entitytype))
 				.Where(entitytype => !IsManyToManyEntity(entitytype))
 				.SelectMany(entityType => CheckWhenEnabled(validationRules.CheckPrimaryKeyIsNotComposite, () => CheckPrimaryKeyIsNotComposite(entityType))
-					.Concat(CheckWhenEnabled(validationRules.CheckPrimaryKeyNamingConvention, () => CheckPrimaryKeyNamingConvention(entityType)))
+					.Concat(CheckWhenEnabled(validationRules.CheckPrimaryKeyName, () => CheckPrimaryKeyName(entityType)))
 					.Concat(CheckWhenEnabled(validationRules.CheckPrimaryKeyType, () => CheckPrimaryKeyType(entityType)))
-					.Concat(CheckWhenEnabled(validationRules.CheckIdNamingConvention, () => CheckIdNamingConvention(entityType)))
+					.Concat(CheckWhenEnabled(validationRules.CheckIdPascalCaseNamingConvention, () => CheckIdPascalCaseNamingConvention(entityType)))
+					.Concat(CheckWhenEnabled(validationRules.CheckNavigationPropertiesHaveForeignKeys, () => CheckNavigationPropertiesHaveForeignKeys(entityType)))
 					.Concat(CheckWhenEnabled(validationRules.CheckStringsHaveMaxLengths, () => CheckStringsHaveMaxLengths(entityType)))
 					.Concat(CheckWhenEnabled(validationRules.CheckSupportedNestedTypes, () => CheckSupportedNestedTypes(entityType)))
 					.Concat(CheckWhenEnabled(validationRules.CheckSymbolVsPrimaryKeyForEntries, () => CheckSymbolVsPrimaryKeyForEntries(entityType))))
@@ -50,7 +49,10 @@ namespace Havit.Data.EFCore.ModelValidation
 			return String.Join(Environment.NewLine, errors);
 		}
 
-		internal bool IsSystemType(IEntityType entityType)
+		/// <summary>
+		/// Vrací true, pokud jde o systémovou entitu, tj. entitu zaregistrovanou HFW automaticky.
+		/// </summary>
+		internal bool IsSystemEntity(IEntityType entityType)
 		{
 			// TODO JK: DataSeedVersion
 			/*.Where(item => item.ClrType != typeof(DataSeedVersion))*/
@@ -64,8 +66,8 @@ namespace Havit.Data.EFCore.ModelValidation
 		{
 			// GetProperties neobsahuje vlastnosti z nadřazených tříd, v tomto scénáři to nevadí, dědičnost pro tabulky se dvěma sloupci primárního klíče neuvažujeme
 			return (entityType.FindPrimaryKey().Properties.Count == 2) // třída má složený primární klíč ze svou vlastností
-				&& (entityType.GetProperties().Count() == 2) // třída má právě dvě (skalární) vlastnosti
-				&& entityType.GetNavigations().All(item => item.ForeignKey.Properties.All(p => p.IsKey())); // klíče všechn navigačních vlastností jsou součástí primárního klíče
+			       && (entityType.GetProperties().Count() == 2) // třída má právě dvě (skalární) vlastnosti
+			       && (entityType.GetProperties().All(item => item.IsForeignKey())); // všechny vlastnosti třídy jsou cizím klíčem
 		}
 
 		/// <summary>
@@ -90,7 +92,7 @@ namespace Havit.Data.EFCore.ModelValidation
 		/// <summary>
 		/// Kontroluje, zda je primární klíč pojmenovaný "Id".
 		/// </summary>
-		internal IEnumerable<string> CheckPrimaryKeyNamingConvention(IEntityType entityType)
+		internal IEnumerable<string> CheckPrimaryKeyName(IEntityType entityType)
 		{
 			foreach (IProperty keyProperty in entityType.FindPrimaryKey().Properties)
 			{
@@ -106,7 +108,6 @@ namespace Havit.Data.EFCore.ModelValidation
 		/// </summary>
 		internal IEnumerable<string> CheckPrimaryKeyType(IEntityType entityType)
 		{
-				// TODO JK: Opravdu chceme test na int?
 			foreach (IProperty keyProperty in entityType.FindPrimaryKey().Properties)
 			{
 				if (keyProperty.ClrType != typeof(int))
@@ -119,7 +120,7 @@ namespace Havit.Data.EFCore.ModelValidation
 		/// <summary>
 		/// Kontroluje, aby žádná vlastnost nekončila na "ID" (kapitálkami).
 		/// </summary>
-		internal IEnumerable<string> CheckIdNamingConvention(IEntityType entityType)
+		internal IEnumerable<string> CheckIdPascalCaseNamingConvention(IEntityType entityType)
 		{
 			foreach (IProperty property in entityType.GetProperties())
 			{
@@ -186,7 +187,7 @@ namespace Havit.Data.EFCore.ModelValidation
 			{
 				if (navigationProperty.ForeignKey.Properties.Any(item => item.IsShadowProperty))
 				{
-					yield return $"Class {entityType.ClrType.Name} has a navigation property {navigationProperty.Name} but no foreign key.";
+					yield return $"Class {entityType.ClrType.Name} has a navigation property {navigationProperty.Name} with no foreign key.";
 				}
 			}
 		}
@@ -196,7 +197,6 @@ namespace Havit.Data.EFCore.ModelValidation
 		/// </summary>
 		internal IEnumerable<string> CheckSymbolVsPrimaryKeyForEntries(IEntityType entityType)
 		{
-			// TODO JK: Rozhodnout o symbol jako autogenerated vs. sequence.
 			bool hasEntryEnum = entityType.ClrType.GetNestedTypes().Any(nestedType => nestedType.IsEnum && (nestedType.Name == "Entry"));
 
 			if (hasEntryEnum)

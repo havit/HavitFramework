@@ -1,9 +1,12 @@
-﻿namespace Havit.Data.EFCore.ModelValidation
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Havit.Data.Entity.ModelValidation
 {
 	/// <summary>
 	/// Pravidla, která model validator spustí.
 	/// Ve výchozím stavu jsou zapnuta všechna pravidla.
 	/// </summary>
+	[ExcludeFromCodeCoverage]
 	public class ValidationRules
 	{
 		/// <summary>
@@ -12,9 +15,9 @@
 		public bool CheckPrimaryKeyIsNotComposite { get; set; } = true;
 
 		/// <summary>
-		/// Kontroluje, zda třída obsahuje právě jeden primární klíč.
+		/// Kontroluje, zda je primární klíč pojmenovaný "Id".
 		/// </summary>
-		public bool CheckPrimaryKeyNamingConvention { get; set; } = true;
+		public bool CheckPrimaryKeyName { get; set; } = true;
 
 		/// <summary>
 		/// Kontroluje, zda je primární klíč typu System.Int32.
@@ -24,7 +27,7 @@
 		/// <summary>
 		/// Kontroluje, aby žádná vlastnost nekončila na "ID" (kapitálkami).
 		/// </summary>
-		public bool CheckIdNamingConvention { get; set; } = true;
+		public bool CheckIdPascalCaseNamingConvention { get; set; } = true;
 
 		/// <summary>
 		/// Kontroluje, zda mají všechny stringové vlastnosti uvedenu maximální délku.

@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using DbContext = Havit.EntityFrameworkCore.DbContext;
+using DbContext = Havit.Data.Entity.DbContext;
 
 namespace Havit.Data.EFCore.Tests.Infrastructure.Entity
 {
-	public class EmptyDbContext : DbContext
+	public class EmptyDbContext : Data.Entity.DbContext
 	{
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{

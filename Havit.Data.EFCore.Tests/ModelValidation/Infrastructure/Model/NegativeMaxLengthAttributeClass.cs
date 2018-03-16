@@ -2,9 +2,11 @@
 
 namespace Havit.Data.EFCore.Tests.ModelValidation.Infrastructure.Model
 {
-	public class StringIdClass
+	public class NegativeMaxLengthAttributeClass
 	{
-		[Key]
-		public string Id { get; set; }
+		public int Id { get; set; }
+
+		[MaxLength(-10)]
+		public string Value { get; set; }
 	}
 }

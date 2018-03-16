@@ -1,17 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
 
-namespace Havit.Data.EFCore
+namespace Havit.Data.Entity
 {
+	/// <summary>
+	/// Extension metody k <see cref="DbUpdateException" />.
+	/// </summary>
     public static class DbUpdateExceptionExtensions
     {
 	    /// <summary>
 	    /// Formátuje výjimkou do textu.
-	    /// Pokud má dbUpdateException InnerException, vrací sloučený dbUpdateException.Message a dbUpdateException.InnerException.Message.
-	    /// Jinak jen text výjimky (dbUpdateException.Message).
+	    /// Pokud má <see cref="DbUpdateException" /> InnerException, vrací sloučený <see cref="DbUpdateException" />.Message a <see cref="DbUpdateException" />.InnerException.Message.
+	    /// Jinak jen text výjimky (<see cref="DbUpdateException" />.Message).
 	    /// </summary>
 	    public static string FormatErrorMessage(this DbUpdateException dbUpdateException)
 	    {

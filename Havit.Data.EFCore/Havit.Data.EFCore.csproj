@@ -10,6 +10,11 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
 	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	<RootNamespace>Havit.Data.Entity</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard2.0\Havit.Data.EFCore.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

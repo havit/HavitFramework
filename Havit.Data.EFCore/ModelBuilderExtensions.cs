@@ -1,24 +1,23 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Xml;
+using Microsoft.EntityFrameworkCore;
 
-namespace Havit.Data.EFCore
+namespace Havit.Data.Entity
 {
+	/// <summary>
+	/// Extension metody k <see cref="ModelBuilder" />.
+	/// </summary>
     public static class ModelBuilderExtensions
     {
 	    /// <summary>
 	    /// Zaregistruje veřejné modelové třídy z předané assembly.
-	    /// Registrovány jsou veřejné třídy, avšak třídy s atributem NotMappedAttribute a ComplexTypeAttribute jsou ignorovány (nejsou registrovány).
+	    /// Registrovány jsou veřejné třídy, avšak třídy s atributem <see cref="NotMappedAttribute" />, <see cref="ComplexTypeAttribute" />, <see cref="OwnedAttribute" /> jsou přeskočeny (nejsou nijak registrovány, ani nastaveny jako ignorované).
 	    /// </summary>
 	    public static void RegisterModelFromAssembly(this ModelBuilder modelBuilder, Assembly assembly, string namespaceName = null)
 	    {
-		    // TODO JK: Unit test
-
 //			TODO JK: Havit -> .NET Standard
 //		    Contract.Requires(modelBuilder != null);
 //			Contract.Requires(assembly != null);
@@ -38,7 +37,10 @@ namespace Havit.Data.EFCore
 			    {
 				    // NOOP
 			    }
-// TODO JK: OwnedAttribute (a další)? + dokumentace
+			    else if (assemblyType.GetCustomAttributes<OwnedAttribute>().Any())
+			    {
+				    // NOOP
+			    }
 			    else
 			    {
 				    modelBuilder.Entity(assemblyType);
@@ -46,17 +48,16 @@ namespace Havit.Data.EFCore
 		    }			
 	    }
 
-		// TODO JK: Komentář
+		/// <summary>
+		/// Z dané assembly (a daného namespace) zaregistruje všechny konfigurace entit (třídy implementující <see cref="IEntityTypeConfiguration{T}" />).
+		/// </summary>
 	    public static void ApplyConfigurationsFromAssembly(this ModelBuilder modelBuilder, Assembly assembly, string namespaceName = null)
 	    {
-		    // TODO JK: Unit test
-
 		    MethodInfo applyConfigurationGenericMethod = typeof(ModelBuilder).GetMethod(nameof(ModelBuilder.ApplyConfiguration), BindingFlags.Instance | BindingFlags.Public);
 
 		    var applicableTypesWithConfigurations = assembly
 			    .GetTypes()
 			    .Where(type => String.IsNullOrEmpty(namespaceName) || (type.Namespace?.StartsWith(namespaceName) ?? false)) // anonymní typy v unit testech mají namespace nullový
-			    // TODO JK: type.IsPublic ?
 			    .Where(type => type.IsClass && !type.IsAbstract && !type.ContainsGenericParameters)
 			    // ke každému typu přidáme všechny interfaces, pokud interfaces nemá, nebude ve výstupu
 			    .SelectMany(type => type.GetInterfaces(), (type, iface) => new { Type = type, Interface = iface })

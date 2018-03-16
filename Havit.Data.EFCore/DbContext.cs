@@ -60,14 +60,14 @@ namespace Havit.Data.Entity
 		///			<term>SymbolPropertyIndexConvention</term>
 		///			<description><see cref="SymbolPropertyIndexConvention"/></description>
 		///		</item>
-		//TODO JK:  Odkomentovat po dodělání
-		/////		<item>
-		/////			<term>LocalizationTableIndexConvention</term>
-		/////			<description><see cref="LocalizationTableIndexConvention"/></description>
-		/////		</item>
 		/// </list>
 		/// Žádné standardní konvence nejsou odebrány.
-		/// </summary>
+		/// </summary>		
+		//TODO JK:  Odkomentovat po dodělání
+		//		<item>
+		//			<term>LocalizationTableIndexConvention</term>
+		//			<description><see cref="LocalizationTableIndexConvention"/></description>
+		//		</item>		 
 	    protected virtual void SetConventions(ConventionSet conventionSet)
 	    {
 			conventionSet.PropertyAddedConventions.Add(new DataTypeAttributeConvention());

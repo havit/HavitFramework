@@ -20,12 +20,16 @@ namespace Havit.Data.Entity
 	    /// </summary>
 	    private List<Action> afterSaveChangesActions;
 
-		/// <inheritdoc />
+		/// <summary>
+		/// Konstruktor. Viz <see cref="Microsoft.EntityFrameworkCore.DbContext()"/>.
+		/// </summary>
 		protected DbContext()
 		{
 		}
 
-		/// <inheritdoc />
+		/// <summary>
+		/// Konstruktor. Viz <see cref="Microsoft.EntityFrameworkCore.DbContext(DbContextOptions)"/>.
+		/// </summary>
 	    protected DbContext(DbContextOptions options) : base(options)
 	    {
 	    }
@@ -56,10 +60,11 @@ namespace Havit.Data.Entity
 		///			<term>SymbolPropertyIndexConvention</term>
 		///			<description><see cref="SymbolPropertyIndexConvention"/></description>
 		///		</item>
-		///		<item>
-		///			<term>LocalizationTableIndexConvention</term>
-		///			<description><see cref="LocalizationTableIndexConvention"/></description>
-		///		</item>
+		//TODO JK:  Odkomentovat po dodělání
+		/////		<item>
+		/////			<term>LocalizationTableIndexConvention</term>
+		/////			<description><see cref="LocalizationTableIndexConvention"/></description>
+		/////		</item>
 		/// </list>
 		/// Žádné standardní konvence nejsou odebrány.
 		/// </summary>
@@ -74,7 +79,7 @@ namespace Havit.Data.Entity
 			// TODO JK: Šlo by unikátním indexům přidat na začátek "U"?
 	    }
 
-	    /// <inheritdoc />
+	    /// <inheritdoc cref="SaveChanges()" />
 	    /// <remarks>
 	    /// <seealso cref="DbContext.ExecuteWithDbUpdateExceptionHandling" />
 	    /// </remarks>
@@ -85,7 +90,7 @@ namespace Havit.Data.Entity
 		    return result;
 	    }
 
-	    /// <inheritdoc />
+	    /// <inheritdoc cref="SaveChanges(bool)" />
 	    /// <remarks>
 	    /// <seealso cref="DbContext.ExecuteWithDbUpdateExceptionHandling" />
 	    /// </remarks>
@@ -96,7 +101,7 @@ namespace Havit.Data.Entity
 		    return result;		    
 	    }
 
-	    /// <inheritdoc />
+	    /// <inheritdoc cref="SaveChangesAsync(CancellationToken)" />
 	    /// <remarks>
 	    /// <seealso cref="DbContext.ExecuteWithDbUpdateExceptionHandling" />
 	    /// </remarks>
@@ -107,7 +112,7 @@ namespace Havit.Data.Entity
 		    return result;
 	    }
 
-	    /// <inheritdoc />
+	    /// <inheritdoc cref="SaveChangesAsync(bool, CancellationToken)" />
 	    /// <remarks>
 	    /// <seealso cref="DbContext.ExecuteWithDbUpdateExceptionHandling" />
 	    /// </remarks>
@@ -119,7 +124,7 @@ namespace Havit.Data.Entity
 	    }
 
 		/// <summary>
-		/// Zavolá výkonný kód (action). Pokud je věhem volání vyhozena výjimka <see cref="DbUpdateException"/>, přebalí ji do nové instance <see cref="DbUpdateException"/>, která obsahuje detailnější <see cref="DbUpdateException.Message"/>.
+		/// Zavolá výkonný kód (action). Pokud je během volání vyhozena výjimka <see cref="DbUpdateException"/>, přebalí ji do nové instance <see cref="DbUpdateException"/>, která obsahuje detailnější Message.
 		/// </summary>
 	    protected internal virtual T ExecuteWithDbUpdateExceptionHandling<T>(Func<T> action)
 	    {

@@ -11,7 +11,7 @@ namespace Havit.Data.Entity.Conventions
 	/// </summary>
     public class DataTypeAttributeConvention : PropertyAttributeConvention<DataTypeAttribute>
     {
-		/// <inheritdoc cref="PropertyAttributeConvention{T}.Apply(InternalPropertyBuilder, DataTypeAttribute, MemberInfo)"/>
+		/// <inheritdoc />
 		public override InternalPropertyBuilder Apply(InternalPropertyBuilder propertyBuilder, DataTypeAttribute attribute, MemberInfo clrMember)
 	    {
 		    if (attribute.DataType == DataType.Date)

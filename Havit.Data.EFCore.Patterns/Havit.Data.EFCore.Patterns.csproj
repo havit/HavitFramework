@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Globals">
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+	  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	  <RootNamespace>Havit.Data.Entity.Patterns</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="DataLoaders\**" />
+    <Compile Remove="DataSources\Fakes\**" />
+    <EmbeddedResource Remove="DataLoaders\**" />
+    <EmbeddedResource Remove="DataSources\Fakes\**" />
+    <None Remove="DataLoaders\**" />
+    <None Remove="DataSources\Fakes\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
+    <Compile Include="DataSources\Fakes\FakeDataSource.cs" />
+    <Compile Include="DataSources\Fakes\AsyncEnumerableQueryInternal.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Interactive.Async.Providers" Version="3.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Havit.Data.EFCore\Havit.Data.EFCore.csproj" />
+    <ProjectReference Include="..\Havit.Data.Patterns\Havit.Data.Patterns.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="SoftDeletes\SoftDeleteManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+</Project>

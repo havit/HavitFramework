@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Globals">
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+  </PropertyGroup>
+
+	<PropertyGroup>
+		<TargetFramework>net47</TargetFramework>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<RootNamespace>Havit.Data.Entity.Patterns.Tests</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.0-preview1-final" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.1.0-preview1-final" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.6.1" />
+		<PackageReference Include="Moq" Version="4.8.2" />
+		<PackageReference Include="MSTest.TestAdapter" Version="1.2.0" />
+		<PackageReference Include="MSTest.TestFramework" Version="1.2.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Havit.Data.EFCore.Patterns\Havit.Data.EFCore.Patterns.csproj" />
+	  <ProjectReference Include="..\Havit.Services\Havit.Services.csproj" />
+	  <ProjectReference Include="..\Havit\Havit.csproj" />
+	</ItemGroup>
+
+
+</Project>

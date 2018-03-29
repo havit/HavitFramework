@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
+    <Compile Include="DataSources\Fakes\AsyncEnumeratorInternal.cs" />
     <Compile Include="DataSources\Fakes\FakeDataSource.cs" />
     <Compile Include="DataSources\Fakes\AsyncEnumerableQueryInternal.cs" />
   </ItemGroup>

@@ -19,7 +19,7 @@ namespace Havit.Data.Entity.Patterns.DataSources.Fakes
  
 		IAsyncEnumerator<T> IAsyncEnumerable<T>.GetEnumerator()
 		{
-			return this.AsAsyncEnumerable().GetEnumerator();
+			return new AsyncEnumeratorInternal<T>(this.AsEnumerable().GetEnumerator());
 		}
 	}
 }

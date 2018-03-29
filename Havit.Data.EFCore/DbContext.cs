@@ -157,8 +157,8 @@ namespace Havit.Data.Entity
 	    }
 
 	    /// <summary>
-	    /// Registruje akci k jednorázovému provedení po <see cref="DbContext.SaveChanges"/>. Akce je provedena metodou <see cref="DbContext.AfterSaveChanges"/>.
-	    /// Při opakovaném volání <see cref="DbContext.SaveChanges"/> není akce volána opakovaně.
+	    /// Registruje akci k jednorázovému provedení po save changes. Akce je provedena metodou DbContext.AfterSaveChanges.
+	    /// Při opakovaném volání DbContext.SaveChanges není akce volána opakovaně.
 	    /// </summary>
 	    public void RegisterAfterSaveChangesAction(Action action)
 	    {

@@ -8,6 +8,7 @@ using Havit.Data.Entity.Patterns.DataLoaders;
 using Havit.Data.Entity.Patterns.DataLoaders.Internal;
 using Havit.Data.Entity.Patterns.DataSeeds;
 using Havit.Data.Entity.Patterns.DataSources;
+using Havit.Data.Entity.Patterns.Infrastructure;
 using Havit.Data.Entity.Patterns.Repositories;
 using Havit.Data.Entity.Patterns.SoftDeletes;
 using Havit.Data.Entity.Patterns.UnitOfWorks;

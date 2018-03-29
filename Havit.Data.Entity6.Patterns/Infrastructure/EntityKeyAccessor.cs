@@ -1,10 +1,9 @@
 ﻿using System;
+using Havit.Data.Patterns.Infrastructure;
 using Havit.Model.Localizations;
 
-namespace Havit.Data.Patterns.Infrastructure
+namespace Havit.Data.Entity.Patterns.Infrastructure
 {
-	// TODO JK: Odstranit, přesunuto (zkopírováno) do EF6.Patterns.
-
 	/// <summary>
 	/// Služba pro získávání primárního klíče modelových objektů.
 	/// </summary>

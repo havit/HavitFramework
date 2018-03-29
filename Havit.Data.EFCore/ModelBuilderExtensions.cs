@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection;
+using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 namespace Havit.Data.Entity
@@ -18,9 +19,8 @@ namespace Havit.Data.Entity
 	    /// </summary>
 	    public static void RegisterModelFromAssembly(this ModelBuilder modelBuilder, Assembly assembly, string namespaceName = null)
 	    {
-//			TODO JK: Havit -> .NET Standard
-//		    Contract.Requires(modelBuilder != null);
-//			Contract.Requires(assembly != null);
+		    Contract.Requires(modelBuilder != null);
+			Contract.Requires(assembly != null);
 
 		    List<Type> assemblyTypes = assembly.GetTypes()
 			    .Where(type => type.IsPublic && type.IsClass)

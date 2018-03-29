@@ -28,6 +28,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Havit.Model\Havit.Model.csproj" />
+    <ProjectReference Include="..\Havit\Havit.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

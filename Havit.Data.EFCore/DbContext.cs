@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
 using Havit.Data.Entity.Conventions;
+using Havit.Data.Entity.Internal;
 using Havit.Data.Entity.Metadata.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -75,7 +77,6 @@ namespace Havit.Data.Entity
 
 			// TODO JK: Dopnit po zprovoznění implementace
 			//conventionSet.PropertyAddedConventions.Add(new LocalizationTableIndexConvention());
-
 			// TODO JK: Šlo by unikátním indexům přidat na začátek "U"?
 	    }
 
@@ -146,8 +147,8 @@ namespace Havit.Data.Entity
 	    }
 
 	    /// <summary>
-	    /// Zajišťuje volání registrovaných after <see cref="DbContext.SaveChanges"/> akcí (viz <see cref="DbContext.RegisterAfterSaveChangesAction"/>).
-	    /// Spuštěno z metody SaveChanges po volání bázové <see cref="DbContext.SaveChanges"/>().
+	    /// Zajišťuje volání registrovaných after save changes akcí.
+	    /// Spuštěno z metody SaveChanges po volání bázové SaveChanges(Async).
 	    /// </summary>
 	    protected internal virtual void AfterSaveChanges()
 	    {
@@ -167,5 +168,31 @@ namespace Havit.Data.Entity
 		    }
 		    afterSaveChangesActions.Add(action);
 	    }
+
+		/// <summary>
+		/// Vrací DbSet pro danou entitu.
+		/// Pro snažší možnost mockování konzumentů DbSetu je vytvořena abstrakce do interface IDbSet&lt;TEntity&gt;.
+		/// </summary>
+	    IDbSet<TEntity> IDbContext.Set<TEntity>()
+	    {  
+		    return new DbSetInternal<TEntity>(this);
+	    }
+
+	    /// <summary>
+	    /// Uloží změny.
+	    /// </summary>
+	    void IDbContext.SaveChanges()
+	    {
+		    this.SaveChanges();
+	    }
+
+	    /// <summary>
+	    /// Uloží změny.
+	    /// </summary>
+	    Task IDbContext.SaveChangesAsync(CancellationToken cancellationToken)
+	    {
+		    return SaveChangesAsync(cancellationToken);			
+	    }
     }
+
 }

@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>Havit.Business</id>
-		<version>1.7.0</version>
+		<version>1.7.1</version>
 		<title>Havit.Business</title>
 		<authors>HAVIT, s.r.o.</authors>
 		<owners>HAVIT, s.r.o.</owners>
@@ -14,8 +14,9 @@
 		<copyright>Copyright HAVIT, s.r.o. 2018</copyright>
 		<dependencies>
 			<group targetFramework="net46">
+			  <dependency id="Havit" version="1.8.0" />
 			  <dependency id="Havit.Data" version="1.7.0" />
-			  <dependency id="Havit.Services" version="1.7.0" />
+			  <dependency id="Havit.Services" version="1.8.0" />
 			</group>
 		</dependencies>
 		<tags>HAVIT Framework Library</tags>

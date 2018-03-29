@@ -16,7 +16,7 @@ namespace Havit.Data.Entity
 	public interface IDbContext
 	{
 		/// <summary>
-		/// Creates a DbSet&lt;TEntity&gr; that can be used to query and save instances of TEntity.
+		/// Creates a DbSet&lt;TEntity&gt; that can be used to query and save instances of TEntity.
 		/// </summary>
 		/// <remarks>
 		/// Pro snažší možnost mockování konzumentů DbSetu je vytvořena abstrakce do interface IDbSet&lt;TEntity&gt;.
@@ -25,7 +25,7 @@ namespace Havit.Data.Entity
 			where TEntity : class;
 
 		/// <summary>
-		/// Gets an EntityEntry&lt;TEntity&gr; for the given entity. The entry provides access to change tracking information and operations for the entity.
+		/// Gets an EntityEntry&lt;TEntity&gt; for the given entity. The entry provides access to change tracking information and operations for the entity.
 		/// </summary>
 		EntityEntry<TEntity> Entry<TEntity>(TEntity entity)
 			where TEntity : class;

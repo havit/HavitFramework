@@ -1,131 +1,37 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Globals">
+	<SccProjectName>SAK</SccProjectName>
+	<SccProvider>SAK</SccProvider>
+	<SccAuxPath>SAK</SccAuxPath>
+	<SccLocalPath>SAK</SccLocalPath>
+  </PropertyGroup>
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8632B9DA-ECB6-4007-AB3F-9C9AECE63D67}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Havit.Data.Patterns</RootNamespace>
-    <AssemblyName>Havit.Data.Patterns</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
-    <TargetFrameworkProfile />
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
+	<TargetFrameworks>net46;netstandard2.0</TargetFrameworks>
+	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	<AssemblyName>Havit.Data.Patterns</AssemblyName>
+	<RootNamespace>Havit.Data.Patterns</RootNamespace>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net46|AnyCPU'">
+    <DocumentationFile>bin\Release\net46\Havit.Data.Patterns.xml</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Havit.Data.Patterns.XML</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CodeGenerator|AnyCPU'">
-    <OutputPath>bin\CodeGenerator\</OutputPath>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
+		<DocumentationFile>bin\Release\netstandard2.0\Havit.Data.Patterns.xml</DocumentationFile>
+	</PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+	<ProjectReference Include="..\Havit.Model\Havit.Model.csproj" />
+	<ProjectReference Include="..\Havit.Services\Havit.Services.csproj" />
+	<ProjectReference Include="..\Havit\Havit.csproj" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="..\CommonAssemblyInfo.cs">
-      <Link>Properties\CommonAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="Attributes\FakeAttribute.cs" />
-    <Compile Include="DataEntries\DataEntries.cs" />
-    <Compile Include="DataEntries\DataEntrySymbolStorage.cs" />
-    <Compile Include="DataEntries\EntryIdentification.cs" />
-    <Compile Include="DataEntries\IDataEntrySymbolStorage.cs" />
-    <Compile Include="DataLoaders\EnumerableExtensions.cs" />
-    <Compile Include="DataLoaders\Fakes\FakeDataLoader.cs" />
-    <Compile Include="DataSeeds\AlwaysRunDecision.cs" />
-    <Compile Include="DataSeeds\IDataSeedRunDecision.cs" />
-    <Compile Include="DataSeeds\IDataSeedRunDecisionStatePersister.cs" />
-    <Compile Include="DataSeeds\FileStorageDataSeedRunDecisionStatePersister.cs" />
-    <Compile Include="DataSeeds\OncePerVersionDataSeedRunDecision.cs" />
-    <Compile Include="DataSeeds\Profiles\DefaultProfile.cs" />
-    <Compile Include="DataSeeds\Profiles\IDataSeedProfile.cs" />
-    <Compile Include="DataSeeds\Profiles\DataSeedProfile.cs" />
-    <Compile Include="Infrastructure\EntityKeyAccessor.cs" />
-    <Compile Include="Infrastructure\IEntityKeyAccessor.cs" />
-    <Compile Include="DataLoaders\IDataLoaderAsync.cs" />
-    <Compile Include="DataLoaders\IDataLoader.cs" />
-    <Compile Include="DataSeeds\ChildDataSeedConfigurationEntry.cs" />
-    <Compile Include="DataSeeds\DataSeed.cs" />
-    <Compile Include="DataSeeds\DataSeedConfiguration.cs" />
-    <Compile Include="DataSeeds\DataSeedFor.cs" />
-    <Compile Include="DataSeeds\DataSeedRunner.cs" />
-    <Compile Include="Exceptions\ObjectNotFoundException.cs" />
-    <Compile Include="DataEntries\IDataEntries.cs" />
-    <Compile Include="DataSeeds\IDataSeed.cs" />
-    <Compile Include="DataSeeds\IDataSeedFor.cs" />
-    <Compile Include="DataSeeds\IDataSeedPersister.cs" />
-    <Compile Include="DataSeeds\IDataSeedRunner.cs" />
-    <Compile Include="DataSeeds\IDataSeedForPaired.cs" />
-    <Compile Include="DataSeeds\AfterSaveDataArgs.cs" />
-    <Compile Include="Localizations\CurrentCultureService.cs" />
-    <Compile Include="Localizations\ICurrentCultureService.cs" />
-    <Compile Include="Localizations\ILanguageService.cs" />
-    <Compile Include="Localizations\ILocalizationService.cs" />
-    <Compile Include="Localizations\LanguageService.cs" />
-    <Compile Include="Localizations\LocalizationService.cs" />
-    <Compile Include="DataSources\IDataSourceFactory.cs" />
-    <Compile Include="DataSources\IDataSource.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Repositories\IRepositoryFactory.cs" />
-    <Compile Include="Repositories\IRepository.cs" />
-    <Compile Include="Repositories\IRepositoryAsync.cs" />
-    <Compile Include="UnitOfWorks\IUnitOfWorkAsync.cs" />
-    <Compile Include="UnitOfWorks\IUnitOfWork.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UnitOfWorks\UnitOfWorkExt.cs" />
+	<Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
   </ItemGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\Havit.Model\Havit.Model.csproj">
-      <Project>{72a78976-6b9f-4d96-a4c9-441066e44de4}</Project>
-      <Name>Havit.Model</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Havit.Services\Havit.Services.csproj">
-      <Project>{2e4ae0cf-fa21-4fbc-9274-e56bc5d9494e}</Project>
-      <Name>Havit.Services</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Havit\Havit.csproj">
-      <Project>{9acc94b9-b8fd-47c1-abf8-0658c7673905}</Project>
-      <Name>Havit</Name>
-    </ProjectReference>
+    <PackageReference Include="Microsoft.CSharp" Version="4.4.1" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="QueryServices\" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

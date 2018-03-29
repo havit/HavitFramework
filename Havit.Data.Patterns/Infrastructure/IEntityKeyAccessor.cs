@@ -3,15 +3,20 @@
 namespace Havit.Data.Patterns.Infrastructure
 {
 	/// <summary>
-	/// Třída pro získávání identifikátoru modelových objektů.
+	/// Služba pro získávání primárního klíče modelových objektů.
 	/// </summary>
 	public interface IEntityKeyAccessor<TEntity, TEntityKey>
 		where TEntity : class
 	{
 		/// <summary>
-		/// Vrátí klíč entity.
+		/// Vrátí hodnotu primárního klíče entity.
 		/// </summary>
 		/// <param name="entity">Entita.</param>
 		TEntityKey GetEntityKey(TEntity entity);
+
+		/// <summary>
+		/// Vrátí název vlastnosti, která je primárním klíčem.
+		/// </summary>
+		string GetEntityKeyPropertyName();
 	}
 }

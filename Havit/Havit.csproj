@@ -1,197 +1,28 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Globals">
+	<SccProjectName>SAK</SccProjectName>
+	<SccProvider>SAK</SccProvider>
+	<SccAuxPath>SAK</SccAuxPath>
+	<SccLocalPath>SAK</SccLocalPath>
+  </PropertyGroup>
+
   <PropertyGroup>
-    <ProjectType>Local</ProjectType>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{9ACC94B9-B8FD-47C1-ABF8-0658C7673905}</ProjectGuid>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ApplicationIcon>
-    </ApplicationIcon>
-    <AssemblyKeyContainerName>
-    </AssemblyKeyContainerName>
-    <AssemblyName>Havit</AssemblyName>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
-    <DefaultClientScript>JScript</DefaultClientScript>
-    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
-    <DefaultTargetSchema>IE50</DefaultTargetSchema>
-    <DelaySign>false</DelaySign>
-    <OutputType>Library</OutputType>
-    <RootNamespace>Havit</RootNamespace>
-    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <StartupObject>
-    </StartupObject>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
+	<TargetFrameworks>net46;netstandard2.0</TargetFrameworks>
+	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>bin\Debug\</OutputPath>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <BaseAddress>285212672</BaseAddress>
-    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
-    <ConfigurationOverrideFile>
-    </ConfigurationOverrideFile>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DocumentationFile>bin\Debug\Havit.XML</DocumentationFile>
-    <DebugSymbols>true</DebugSymbols>
-    <FileAlignment>4096</FileAlignment>
-    <NoStdLib>false</NoStdLib>
-    <NoWarn>
-    </NoWarn>
-    <Optimize>false</Optimize>
-    <RegisterForComInterop>false</RegisterForComInterop>
-    <RemoveIntegerChecks>false</RemoveIntegerChecks>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net46|AnyCPU'">
+    <DocumentationFile>bin\Release\net46\Havit.xml</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>bin\Release\</OutputPath>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <BaseAddress>285212672</BaseAddress>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <ConfigurationOverrideFile>
-    </ConfigurationOverrideFile>
-    <DefineConstants>CONTRACTS_FULL;TRACE</DefineConstants>
-    <DocumentationFile>bin\Release\Havit.xml</DocumentationFile>
-    <DebugSymbols>true</DebugSymbols>
-    <FileAlignment>4096</FileAlignment>
-    <NoStdLib>false</NoStdLib>
-    <NoWarn>
-    </NoWarn>
-    <Optimize>true</Optimize>
-    <RegisterForComInterop>false</RegisterForComInterop>
-    <RemoveIntegerChecks>false</RemoveIntegerChecks>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <WarningLevel>4</WarningLevel>
-    <DebugType>pdbonly</DebugType>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Web" />
-    <Reference Include="System.Windows.Forms" />
+	<Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="..\CommonAssemblyInfo.cs">
-      <Link>Properties\CommonAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="Collections\GenericPropertyComparer.cs" />
-    <Compile Include="Collections\Generic\Lookup.cs" />
-    <Compile Include="Collections\SortDirection.cs" />
-    <Compile Include="Collections\SortHelper.cs" />
-    <Compile Include="Collections\SortItem.cs" />
-    <Compile Include="Collections\SortItemCollection.cs" />
-    <Compile Include="ComponentModel\InvalidConversionException.cs" />
-    <Compile Include="ComponentModel\UniversalTypeConverter.ConvertingMethods.cs" />
-    <Compile Include="ComponentModel\UniversalTypeConverter.Core.cs" />
-    <Compile Include="ComponentModel\UniversalTypeConverter.cs" />
-    <Compile Include="CultureInfoExt.cs" />
-    <Compile Include="DataEventArgs.cs" />
-    <Compile Include="DataEventHandler.cs" />
-    <Compile Include="DateTimeExt.cs" />
-    <Compile Include="Diagnostics\Contracts\Contract.cs" />
-    <Compile Include="Diagnostics\Contracts\ContractException.cs" />
-    <Compile Include="Diagnostics\ExceptionTracer.cs" />
-    <Compile Include="Diagnostics\SmtpTraceListerner.cs" />
-    <Compile Include="JetBrains.Anotations\JetBrainsAnnotations.cs">
-      <ExcludeFromStyleCop>true</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="Linq\CollectionExt.cs" />
-    <Compile Include="Linq\Expressions\ExpressionExt.cs" />
-    <Compile Include="Linq\Expressions\ReplaceParameterVisitor.cs" />
-    <Compile Include="Linq\Expressions\SubstitutionVisitor.cs" />
-    <Compile Include="Linq\QueryableExt.cs" />
-    <Compile Include="Linq\UpdateFromResult.cs" />
-    <Compile Include="Reflection\IDataBinderExtSetValue.cs" />
-    <Compile Include="Linq\EnumerableExt.cs" />
-    <Compile Include="ITypeConverter.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Collections\SortableCollectionBase.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="EnumExt.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MathExt.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DataBinderExt.cs" />
-    <Compile Include="Reflection\Reflector.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Scopes\Scope.cs" />
-    <Compile Include="Scopes\ThreadScopeRepository.cs" />
-    <Compile Include="Scopes\IScopeRepository.cs" />
-    <Compile Include="Scopes\WebApplicationScopeRepository.cs" />
-    <Compile Include="Security\PasswordHashService.cs" />
-    <Compile Include="Security\PasswordCharacterSet.cs" />
-    <Compile Include="Security\PasswordGenerator.cs" />
-    <Compile Include="StringExt.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Text\FileSizeToTextService.cs" />
-    <Compile Include="Text\IFileSizeToTextService.cs" />
-    <Compile Include="Text\RegularExpressions\RegexPatterns.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Reference Include="System.Web" Condition="'$(TargetFramework)' == 'net46'" />
+	<Reference Include="System.Windows.Forms" Condition="'$(TargetFramework)' == 'net46'" />
   </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ComponentModel\UniversalTypeConverter_src.zip" />
-  </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
+
 </Project>

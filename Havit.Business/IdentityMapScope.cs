@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Havit.Business.Scopes;
 using Havit.Scopes;
 
 namespace Havit.Business

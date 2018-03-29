@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NET46
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
@@ -9,6 +10,7 @@ namespace Havit.Diagnostics
 	/// <summary>
 	/// Třída zajišťující posílání výjimek do trace prostřednictvím TraceSource.
 	/// Mimo explicitního volání lze třídu přihlásit k odběru neošetřených výjimek, včetně WinForms.
+	/// Třída je dostupná pouze pro full .NET Framework (nikoliv pro .NET Standard 2.0).
 	/// <example>
 	/// Příklad použití v ConsoleApplication:
 	/// <code>
@@ -264,3 +266,4 @@ namespace Havit.Diagnostics
 
 	}
 }
+#endif

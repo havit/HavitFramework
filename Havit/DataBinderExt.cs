@@ -7,8 +7,6 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
-using System.Web;
-using System.Web.UI;
 
 namespace Havit
 {
@@ -64,14 +62,18 @@ namespace Havit
 					if (descriptor == null)
 					{
 						// standardní DataBinder vyhazuje HttpException, já nechci měnit typy výjimek, pro případně try/catch.
-						throw new HttpException(String.Format("Nepodařilo se vyhodnotit výraz '{0}', typ '{1}' neobsahuje vlastnost '{2}'.", dataField, currentDataItem.GetType().FullName, expression));
+						throw new InvalidOperationException(String.Format("Nepodařilo se vyhodnotit výraz '{0}', typ '{1}' neobsahuje vlastnost '{2}'.", dataField, currentDataItem.GetType().FullName, expression));
 					}
 					currentDataItem = descriptor.GetValue(currentDataItem);
 				}
 				else
 				{
+#if NET46
 					// tohle se snad nikde nepoužívá, proto neoptimalizuji
-					currentDataItem = DataBinder.GetIndexedPropertyValue(currentDataItem, expression);
+					currentDataItem = System.Web.UI.DataBinder.GetIndexedPropertyValue(currentDataItem, expression);
+#else
+					throw new InvalidOperationException(String.Format("Nepodařilo se vyhodnotit výraz '{0}', v části {1} je nepodporovaný znak.", dataField, expression));
+#endif
 				}
 			}
 
@@ -125,19 +127,19 @@ namespace Havit
 				currentDataItem = GetValue(currentDataItem, expressionGetPart);
 				if (currentDataItem == null)
 				{
-					throw new HttpException(String.Format("Nepodařilo se nastavit hodnotu pro výraz '{0}', část {1} obsahuje null.", dataField, expressionGetPart));
+					throw new InvalidOperationException(String.Format("Nepodařilo se nastavit hodnotu pro výraz '{0}', část {1} obsahuje null.", dataField, expressionGetPart));
 				}
 
 				if (currentDataItem == DBNull.Value)
 				{
-					throw new HttpException(String.Format("Nepodařilo se nastavit hodnotu pro výraz '{0}', část {1} obsahuje DBNull.Value.", dataField, expressionGetPart));
+					throw new InvalidOperationException(String.Format("Nepodařilo se nastavit hodnotu pro výraz '{0}', část {1} obsahuje DBNull.Value.", dataField, expressionGetPart));
 				}
 			}
 
 			string expressionSet = expressionParts[expressionParts.Length - 1];
 			if (expressionSet.IndexOfAny(indexExprStartChars) >= 0)
 			{
-				throw new HttpException(String.Format("Nepodařilo se nastavit hodnotu pro výraz '{0}', v části {1} je nepodporovaný znak.", dataField, expressionSet));
+				throw new InvalidOperationException(String.Format("Nepodařilo se nastavit hodnotu pro výraz '{0}', v části {1} je nepodporovaný znak.", dataField, expressionSet));
 			}
 
 			PropertyDescriptorCollection properties = GetValueTypeProperties(currentDataItem);
@@ -147,7 +149,7 @@ namespace Havit
 			if (descriptor == null)
 			{
 				// standardní DataBinder vyhazuje HttpException, já nechci měnit typy výjimek, pro případně try/catch.
-				throw new HttpException(String.Format("Nepodařilo se nastavit hodnotu pro výraz '{0}', typ '{1}' neobsahuje vlastnost '{2}'.", dataField, currentDataItem.GetType().FullName, expressionSet));
+				throw new InvalidOperationException(String.Format("Nepodařilo se nastavit hodnotu pro výraz '{0}', typ '{1}' neobsahuje vlastnost '{2}'.", dataField, currentDataItem.GetType().FullName, expressionSet));
 			}
 
 			if (typeof(IDataBinderExtSetValue).IsAssignableFrom(descriptor.PropertyType))
@@ -155,7 +157,7 @@ namespace Havit
 				IDataBinderExtSetValue dataBinderExtSetValue = (IDataBinderExtSetValue)GetValue(currentDataItem, expressionSet);
 				if (dataBinderExtSetValue == null)
 				{
-					throw new HttpException(String.Format("Nepodařilo se nastavit hodnotu pro výraz '{0}', část {1} má obsahovat hodnotu IDataBinderExtSetValue, ale obsahuje hodnotu null.", dataField, expressionSet));
+					throw new InvalidOperationException(String.Format("Nepodařilo se nastavit hodnotu pro výraz '{0}', část {1} má obsahovat hodnotu IDataBinderExtSetValue, ale obsahuje hodnotu null.", dataField, expressionSet));
 				}
 
 				try
@@ -164,20 +166,20 @@ namespace Havit
 				}
 				catch (NotSupportedException)
 				{
-					throw new HttpException(String.Format("Nepodařilo se nastavit hodnotu pro výraz '{0}', IDataBinderExtSetValue nezpracoval nastavovanou hodnotu.", dataField));
+					throw new InvalidOperationException(String.Format("Nepodařilo se nastavit hodnotu pro výraz '{0}', IDataBinderExtSetValue nezpracoval nastavovanou hodnotu.", dataField));
 				}
 			}
 			else
 			{
 				if (descriptor.IsReadOnly)
 				{
-					throw new HttpException(String.Format("Nepodařilo se nastavit hodnotu pro výraz '{0}', vlastnost '{2}' typu '{1}' je pouze ke čtení.", dataField, currentDataItem.GetType().FullName, expressionSet));
+					throw new InvalidOperationException(String.Format("Nepodařilo se nastavit hodnotu pro výraz '{0}', vlastnost '{2}' typu '{1}' je pouze ke čtení.", dataField, currentDataItem.GetType().FullName, expressionSet));
 				}
 
 				object targetValue;
 				if (!Havit.ComponentModel.UniversalTypeConverter.TryConvertTo(value, descriptor.PropertyType, out targetValue))
 				{
-					throw new HttpException(String.Format(value == null ? "Nepodařilo se nastavit hodnotu pro výraz '{0}', hodnotu null se nepodařilo převést na typ '{3}'." : "Nepodařilo se nastavit hodnotu pro výraz '{0}', hodnotu '{1}' typu '{2}' se nepodařilo převést na typ '{3}'.",
+					throw new InvalidOperationException(String.Format(value == null ? "Nepodařilo se nastavit hodnotu pro výraz '{0}', hodnotu null se nepodařilo převést na typ '{3}'." : "Nepodařilo se nastavit hodnotu pro výraz '{0}', hodnotu '{1}' typu '{2}' se nepodařilo převést na typ '{3}'.",
 						dataField, // 0
 						value == null ? null : value.ToString(), // 1
 						value == null ? null : value.GetType().FullName, // 2

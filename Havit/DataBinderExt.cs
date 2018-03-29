@@ -11,7 +11,7 @@ using System.Text;
 namespace Havit
 {
 	/// <summary>
-	/// Rozšiřující funkčnost analogická k <see cref="System.Web.UI.DataBinder"/>. Navím umožňuje hodnotu do objektu i nastavit.
+	/// Rozšiřující funkčnost analogická k System.Web.UI.DataBinder". Navím umožňuje hodnotu do objektu i nastavit.
 	/// </summary>
 	/// <remarks>
 	/// Používá se např. pro resolvování BoundFieldExt.DataField, DropDownListExt.DataTextField, ...

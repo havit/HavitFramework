@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NET46
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Caching;
@@ -7,6 +8,7 @@ namespace Havit.Services.Caching
 {
 	/// <summary>
 	/// Implementace ICacheService pomocí ObjectCache.
+	/// Třída je dostupná pouze pro full .NET Framework (nikoliv pro .NET Standard 2.0).
 	/// </summary>
 	/// <seealso cref="Havit.Services.Caching.ICacheService" />
 	public class ObjectCacheService : ICacheService
@@ -114,3 +116,4 @@ namespace Havit.Services.Caching
 		}
 	}
 }
+#endif

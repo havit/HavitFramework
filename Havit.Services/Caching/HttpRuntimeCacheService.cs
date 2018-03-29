@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NET46
+using System;
 using System.Collections;
 using System.Web;
 using System.Web.Caching;
@@ -7,6 +8,7 @@ namespace Havit.Services.Caching
 {
 	/// <summary>
 	/// Implementace ICacheService s využitím cache "HttpRuntime.Cache".
+	/// Třída je dostupná pouze pro full .NET Framework (nikoliv pro .NET Standard 2.0).
 	/// </summary>
 	/// <seealso cref="Havit.Services.Caching.ICacheService" />
 	public class HttpRuntimeCacheService : ICacheService
@@ -134,3 +136,4 @@ namespace Havit.Services.Caching
 		}
 	}
 }
+#endif

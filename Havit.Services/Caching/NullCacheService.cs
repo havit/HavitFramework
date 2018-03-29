@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.Caching;
 
 namespace Havit.Services.Caching
 {

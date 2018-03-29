@@ -1,4 +1,5 @@
-﻿using Havit.Diagnostics.Contracts;
+﻿#if NET46
+using Havit.Diagnostics.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,6 +14,7 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 {
 	/// <summary>
 	/// Active directory services.
+	/// Třída je dostupná pouze pro full .NET Framework (nikoliv pro .NET Standard 2.0).
 	/// </summary>
 	public class ActiveDirectoryServices
 	{
@@ -563,3 +565,4 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 
 	}
 }
+#endif

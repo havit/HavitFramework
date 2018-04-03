@@ -11,26 +11,30 @@
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 // ** I18N
-Calendar._DN = new Array("Pazar", "Pazartesi", "Sal�", "�ar�amba", "Per�embe", "Cuma", "Cumartesi", "Pazar");
-Calendar._MN = new Array("Ocak", "�ubat", "Mart", "Nisan", "May�s", "Haziran", "Temmuz", "A�ustos", "Eyl�l", "Ekim", "Kas�m", "Aral�k");
+Calendar._DN = new Array("Pazar", "Pazartesi", "Salı", "Çarsamba", "Persembe", "Cuma", "Cumartesi", "Pazar");
+Calendar._SDN = new Array("Paz", "Paz", "Sal", "Çar", "Per", "Cum", "Cum", "Paz");
+Calendar._FD = 1;
+Calendar._MN = new Array("Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık");
+Calendar._SMN = new Array("Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara");
 // tooltips
-Calendar._TT = {};Calendar._TT["INFO"] = "About the calendar";
-Calendar._TT["TOGGLE"] = "Haftan�n ilk g�n�n� kayd�r";
-Calendar._TT["PREV_YEAR"] = "�nceki Y�l (Men� i�in bas�l� tutunuz)";
-Calendar._TT["PREV_MONTH"] = "�nceki Ay (Men� i�in bas�l� tutunuz)";
-Calendar._TT["GO_TODAY"] = "Bug�n'e git";
-Calendar._TT["NEXT_MONTH"] = "Sonraki Ay (Men� i�in bas�l� tutunuz)";
-Calendar._TT["NEXT_YEAR"] = "Sonraki Y�l (Men� i�in bas�l� tutunuz)";
-Calendar._TT["SEL_DATE"] = "Tarih se�iniz";
-Calendar._TT["DRAG_TO_MOVE"] = "Ta��mak i�in s�r�kleyiniz";
-Calendar._TT["PART_TODAY"] = " (bug�n)";
-Calendar._TT["MON_FIRST"] = "Takvim Pazartesi g�n�nden ba�las�n";
-Calendar._TT["SUN_FIRST"] = "Takvim Pazar g�n�nden ba�las�n";
+Calendar._TT = {}; Calendar._TT["INFO"] = "About the calendar";
+Calendar._TT["TOGGLE"] = "Haftanın ilk gününü kayd�r";
+Calendar._TT["PREV_YEAR"] = "Önceki yıl (Menü için bas�l� tutunuz)";
+Calendar._TT["PREV_MONTH"] = "Önceki Ay (Menü için bas�l� tutunuz)";
+Calendar._TT["GO_TODAY"] = "Bugün'e git";
+Calendar._TT["NEXT_MONTH"] = "Sonraki Ay (Menü için bas�l� tutunuz)";
+Calendar._TT["NEXT_YEAR"] = "Sonraki Yıl (Menü için bas�l� tutunuz)";
+Calendar._TT["SEL_DATE"] = "Tarih seçiniz";
+Calendar._TT["DRAG_TO_MOVE"] = "Taşımak için sürükleyin";
+Calendar._TT["PART_TODAY"] = " (bugün)";
+Calendar._TT["MON_FIRST"] = "Takvim Pazartesi gününden ba�las�n";
+Calendar._TT["SUN_FIRST"] = "Takvim Pazar gününden ba�las�n";
 Calendar._TT["CLOSE"] = "Kapat";
-Calendar._TT["TODAY"] = "Bug�n";
+Calendar._TT["TODAY"] = "Bugün";
 Calendar._TT["WEEKEND"] = "0,6";
+Calendar._TT["DAY_FIRST"] = "İlk önce %s günü göster";
 // date formats
-Calendar._TT["DEF_DATE_FORMAT"] = "dd-mm-y";
-Calendar._TT["TT_DATE_FORMAT"] = "d MM y, DD";
+Calendar._TT["DEF_DATE_FORMAT"] = "%d-%m-%y";
+Calendar._TT["TT_DATE_FORMAT"] = "%A, %d-%m-%y";
 Calendar._TT["WK"] = "Hafta";
 Calendar._TT["TIME"] = "Zaman:";

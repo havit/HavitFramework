@@ -20,7 +20,9 @@ Calendar._DN = new Array("Sekmadienis", "Pirmadienis", "Antradienis", "Trečiadi
 // present, to be compatible with translation files that were written before
 // this feature.
 // short day names
+Calendar._DN = new Array("Sekmadienis", "Pirmadienis", "Antradienis", "Trečiadienis", "Ketvirtadienis", "Penktadienis", "Šeštadienis", "Sekmadienis")
 Calendar._SDN = new Array("Sek", "Pir", "Ant", "Tre", "Ket", "Pen", "Šeš", "Sek");
+Calendar._FD = 1;
 // full month names
 Calendar._MN = new Array("Sausis", "Vasaris", "Kovas", "Balandis", "Gegužė", "Birželis", "Liepa", "Rugpjūtis", "Rugsėjis", "Spalis", "Lapkritis", "Gruodis");
 // short month names
@@ -30,14 +32,14 @@ Calendar._TT = {};
 Calendar._TT["INFO"] = "Apie kalendorių";
 Calendar._TT["ABOUT"] =
     "DHTML Date/Time Selector\n" +
-        "(c) dynarch.com 2002-2005 / Author: Mihai Bazon\n" +
-        "Naujausią versiją rasite: http://www.dynarch.com/projects/calendar/\n" +
-        "Platinamas pagal GNU LGPL licenciją. Aplankykite http://gnu.org/licenses/lgpl.html" +
-        "\n\n" +
-        "Datos pasirinkimas:\n" +
-        "- Metų pasirinkimas: \xab, \xbb\n" +
-        "- Mėnesio pasirinkimas: " + String.fromCharCode(0x2039) + ", " + String.fromCharCode(0x203a) + "\n" +
-        "- Nuspauskite ir laikykite pelės klavišą greitesniam pasirinkimui.";
+    "(c) dynarch.com 2002-2005 / Author: Mihai Bazon\n" +
+    "Naujausią versiją rasite: http://www.dynarch.com/projects/calendar/\n" +
+    "Platinamas pagal GNU LGPL licenciją. Aplankykite http://gnu.org/licenses/lgpl.html" +
+    "\n\n" +
+    "Datos pasirinkimas:\n" +
+    "- Metų pasirinkimas: \xab, \xbb\n" +
+    "- Mėnesio pasirinkimas: " + String.fromCharCode(0x2039) + ", " + String.fromCharCode(0x203a) + "\n" +
+    "- Nuspauskite ir laikykite pelės klavišą greitesniam pasirinkimui.";
 Calendar._TT["ABOUT_TIME"] = "\n\n" +
     "Laiko pasirinkimas:\n" +
     "- Spustelkite ant valandų arba minučių - skaičius padidės vienetu.\n" +
@@ -57,6 +59,7 @@ Calendar._TT["CLOSE"] = "Uždaryti";
 Calendar._TT["TODAY"] = "Šiandien";
 Calendar._TT["TIME_PART"] = "Spustelkite arba tempkite jei norite pakeisti";
 Calendar._TT["WEEKEND"] = "0,6";
+Calendar._TT["DAY_FIRST"] = "Primasis %s";
 // date formats
 Calendar._TT["DEF_DATE_FORMAT"] = "%Y-%m-%d";
 Calendar._TT["TT_DATE_FORMAT"] = "%A, %Y-%m-%d";

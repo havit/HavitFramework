@@ -4,7 +4,10 @@
 * Public License, as long as you do not remove or alter this notice.
 */
 Calendar._DN = new Array("Nedjelja", "Ponedjeljak", "Utorak", "Srijeda", "Četvrtak", "Petak", "Subota", "Nedjelja");
+Calendar._SDN = new Array('Ne', 'Po', 'Ut', 'Sr', 'Če', 'Pe', 'Su', 'Ne');
+Calendar._FD = 1;
 Calendar._MN = new Array("Siječanj", "Veljača", "Ožujak", "Travanj", "Svibanj", "Lipanj", "Srpanj", "Kolovoz", "Rujan", "Listopad", "Studeni", "Prosinac");
+Calendar._SMN = new Array('Sijec', 'Velj', 'Ozuj', 'Trav', 'Svib', 'Lip', 'Srp', 'Kol', 'Ruj', 'List', 'Stud', 'Pros');
 // tooltips
 Calendar._TT = {};
 Calendar._TT["INFO"] = "O kalendaru";
@@ -22,9 +25,10 @@ Calendar._TT["SUN_FIRST"] = "Prikaži nedjelju kao prvi dan";
 Calendar._TT["CLOSE"] = "Zatvori";
 Calendar._TT["TODAY"] = "Danas";
 Calendar._TT["TIME_PART"] = "(Shift-)Kliknite ili povucite za promjenu vrijednosti";
+Calendar._TT["DAY_FIRST"] = "prvo pokazuju %s";
 // date formats
-Calendar._TT["DEF_DATE_FORMAT"] = "dd-mm-y";
-Calendar._TT["TT_DATE_FORMAT"] = "DD, dd.mm.y";
+Calendar._TT["DEF_DATE_FORMAT"] = "%d.%m.%Y";
+Calendar._TT["TT_DATE_FORMAT"] = "%a, %b %e";
 Calendar._TT["WK"] = "Tje";
 Calendar._TT["WEEKEND"] = "0,6";
 Calendar._TT["TIME"] = "Vrijeme:";

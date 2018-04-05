@@ -44,7 +44,7 @@ namespace Havit.WebApplicationTest.HavitWebBootstrapTests
 
 		protected void PostbackBtn_Click(object sender, EventArgs e)
 		{
-			// nothing todo
+			// NOOP
 		}
 
 		private void SaveButton_Click(object sender, EventArgs e)
@@ -74,7 +74,7 @@ namespace Havit.WebApplicationTest.HavitWebBootstrapTests
 
 		protected void CollapsiblePanel3_CollapsedStateChanged(object sender, EventArgs e)
 		{
-			// nothing todo
+			// NOOP
 		}
 	}
 }

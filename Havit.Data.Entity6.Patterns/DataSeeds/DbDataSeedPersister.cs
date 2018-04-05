@@ -115,7 +115,7 @@ namespace Havit.Data.Entity.Patterns.DataSeeds
 					        : (Expression)Expression.Constant(value);
 
                         Expression<Func<TEntity, bool>> pairByConditionExpression = (Expression<Func<TEntity, bool>>)Expression.Lambda(
-							Expression.Equal(ExpressionExt.ReplaceParameter(expression.Body, expression.Parameters[0], parameter).RemoveConvert(), valueExpression), // TODO: Expression.Constant nejde pro references
+							Expression.Equal(ExpressionExt.ReplaceParameter(expression.Body, expression.Parameters[0], parameter).RemoveConvert(), valueExpression), // Expression.Constant nejde pro references
 							parameter);
 
 						if (seedEntityWhereExpression != null)
@@ -177,7 +177,7 @@ namespace Havit.Data.Entity.Patterns.DataSeeds
 				        : (Expression)Expression.Constant(value);
 
                     Expression<Func<TEntity, bool>> pairByConditionExpression = (Expression<Func<TEntity, bool>>)Expression.Lambda(
-						Expression.Equal(ExpressionExt.ReplaceParameter(expression.Body, expression.Parameters[0], parameter).RemoveConvert(), valueExpression), // TODO: Expression.Constant nejde pro references
+						Expression.Equal(ExpressionExt.ReplaceParameter(expression.Body, expression.Parameters[0], parameter).RemoveConvert(), valueExpression), // Expression.Constant nejde pro references
 						parameter);
 
 					if (whereExpression != null)
@@ -268,7 +268,6 @@ namespace Havit.Data.Entity.Patterns.DataSeeds
 		/// <summary>
 		/// Vrátí název vlastnosti, která je reprezentována daným výrazem.
 		/// </summary>
-		// TODO: Extrahovat!
 		private string GetPropertyName(Expression item)
 		{
 			if (item is MemberExpression)

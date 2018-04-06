@@ -59,5 +59,26 @@ namespace Havit.Data.Entity.Internal
 		{
 			return dbSet.FindAsync(keyValues);
 		}
+
+		/// <summary>
+		/// Begins tracking the given entities, and any other reachable entities that are
+		/// not already being tracked, in the Microsoft.EntityFrameworkCore.EntityState.Added
+		/// state such that they will be inserted into the database when Microsoft.EntityFrameworkCore.DbContext.SaveChanges
+		/// is called.
+		/// </summary>
+		public void AddRange(TEntity[] entities)
+		{
+			dbSet.AddRange(entities);
+		}
+
+		/// <summary>
+		/// Begins tracking the given entities in the Microsoft.EntityFrameworkCore.EntityState.Deleted
+		///  state such that they will be removed from the database when Microsoft.EntityFrameworkCore.DbContext.SaveChanges
+		///  is called.
+		/// </summary>
+		public void RemoveRange(TEntity[] entities)
+		{
+			dbSet.RemoveRange(entities);
+		}
 	}
 }

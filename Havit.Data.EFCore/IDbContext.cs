@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Data.Entity;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -52,5 +52,10 @@ namespace Havit.Data.Entity
 		/// Registruje akci k provedení po save changes. Akce je provedena metodou AfterSaveChanges.
 		/// </summary>
 		void RegisterAfterSaveChangesAction(Action action);
+
+		/// <summary>
+		/// Vrátí objekty v daných stavech.
+		/// </summary>
+		object[] GetObjectsInState(params EntityState[] states);
 	}
 }

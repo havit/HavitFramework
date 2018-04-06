@@ -29,5 +29,20 @@ namespace Havit.Data.Entity
 		/// Asynchronously finds an entity with the given primary key values. If an entity with the given primary key values exists in the context, then it is returned immediately without making a request to the store. Otherwise, a request is made to the store for an entity with the given primary key values and this entity, if found, is attached to the context and returned. If no entity is found in the context or the store, then null is returned.
 		/// </summary>
 		Task<TEntity> FindAsync(params object[] keyValues);
+
+		/// <summary>
+		/// Begins tracking the given entities, and any other reachable entities that are
+		/// not already being tracked, in the Microsoft.EntityFrameworkCore.EntityState.Added
+		/// state such that they will be inserted into the database when Microsoft.EntityFrameworkCore.DbContext.SaveChanges
+		/// is called.
+		/// </summary>
+		void AddRange(TEntity[] entities);
+		
+		/// <summary>
+		/// Begins tracking the given entities in the Microsoft.EntityFrameworkCore.EntityState.Deleted
+		///  state such that they will be removed from the database when Microsoft.EntityFrameworkCore.DbContext.SaveChanges
+		///  is called.
+		/// </summary>
+		void RemoveRange(TEntity[] entities);
 	}
 }

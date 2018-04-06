@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Havit.Data.Entity.Conventions;
@@ -169,7 +170,15 @@ namespace Havit.Data.Entity
 		    afterSaveChangesActions.Add(action);
 	    }
 
-		/// <summary>
+	    /// <summary>
+	    /// Vrátí objekty v daných stavech.
+	    /// </summary>
+	    public object[] GetObjectsInState(params EntityState[] states)
+	    {
+		    return this.ChangeTracker.Entries().Where(entry => states.Contains(entry.State)).Select(item => item.Entity).ToArray();
+	    }
+
+	    /// <summary>
 		/// Vrací DbSet pro danou entitu.
 		/// Pro snažší možnost mockování konzumentů DbSetu je vytvořena abstrakce do interface IDbSet&lt;TEntity&gt;.
 		/// </summary>

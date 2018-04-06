@@ -7,8 +7,9 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Havit.Data.Entity.Patterns.DataLoaders.Internal;
-using Havit.Data.Entity.Patterns.Helpers;
+using Havit.Data.Entity.Patterns.Infrastructure;
 using Havit.Data.Patterns.DataLoaders;
+using Havit.Data.Patterns.Infrastructure;
 using Havit.Diagnostics.Contracts;
 
 namespace Havit.Data.Entity.Patterns.DataLoaders
@@ -23,7 +24,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 		private readonly IDbContext dbContext;
 		private readonly IPropertyLoadSequenceResolver propertyLoadSequenceResolver;
 		private readonly IPropertyLambdaExpressionManager lambdaExpressionManager;
-
+		
 		/// <summary>
 		/// Konstructor.
 		/// </summary>
@@ -308,7 +309,8 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 	    {
 	        IEnumerable<TEntity> entitiesNotInAddedState = entities.Where(item => dbContext.GetEntityState(item) != EntityState.Added);
 		    IEnumerable<TEntity> entitiesToLoadQuery = entitiesNotInAddedState.Where(entity => !IsEntityPropertyLoaded(entity, propertyName, isPropertyCollection));			
-			return entitiesToLoadQuery.Select(entity => EntityHelper.GetEntityId(entity)).Distinct().ToList();
+			IEntityKeyAccessor<TEntity, int> entityKeyAccessor = new EntityKeyAccessor<TEntity>();
+			return entitiesToLoadQuery.Select(entity => entityKeyAccessor.GetEntityKey(entity)).Distinct().ToList();
 		}
 
 		/// <summary>

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore;
 
-namespace Havit.Data.Entity.Patterns.Helpers
+namespace Havit.Data.Entity.Patterns.Infrastructure
 {
 	/// <summary>
 	/// Služba pro získávání primárního klíče modelových objektů.

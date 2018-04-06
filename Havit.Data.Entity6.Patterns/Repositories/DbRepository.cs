@@ -9,10 +9,11 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Xml.XPath;
-using Havit.Data.Entity.Patterns.Helpers;
+using Havit.Data.Entity.Patterns.Infrastructure;
 using Havit.Data.Entity.Patterns.SoftDeletes;
 using Havit.Data.Patterns.DataLoaders;
 using Havit.Data.Patterns.DataSources;
+using Havit.Data.Patterns.Infrastructure;
 using Havit.Data.Patterns.Repositories;
 using Havit.Diagnostics.Contracts;
 
@@ -28,6 +29,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		private readonly IDataSource<TEntity> dataSource;
 		private readonly IDataLoader dataLoader;
 		private readonly IDataLoaderAsync dataLoaderAsync;
+		private readonly IEntityKeyAccessor<TEntity, int> entityKeyAccessor = new EntityKeyAccessor<TEntity>();
 
 		/// <summary>
 		/// Přístup k lokálním objektům v dictionary v konstatním čase.
@@ -47,7 +49,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 						_dbSetLocalsDictionaryInitialized = true;
 					}
 
-					_dbSetLocalsDictionary = dbSetLocal.Where(EntityNotInAddedState).ToDictionary(entity => EntityHelper.GetEntityId(entity));
+					_dbSetLocalsDictionary = dbSetLocal.Where(EntityNotInAddedState).ToDictionary(entity => entityKeyAccessor.GetEntityKey(entity));
 				}
 				return _dbSetLocalsDictionary;
 			}
@@ -109,7 +111,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 					case NotifyCollectionChangedAction.Add:
 						if (_dbSetLocalsDictionary != null)
 						{							
-							e.NewItems.Cast<TEntity>().Where(EntityNotInAddedState).ToList().ForEach(entity => _dbSetLocalsDictionary.Add(EntityHelper.GetEntityId(entity), entity));
+							e.NewItems.Cast<TEntity>().Where(EntityNotInAddedState).ToList().ForEach(entity => _dbSetLocalsDictionary.Add(entityKeyAccessor.GetEntityKey(entity), entity));
 						}
 						break;
 
@@ -120,7 +122,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 					case NotifyCollectionChangedAction.Remove:
 						foreach (TEntity item in e.OldItems)
 						{
-							_dbSetLocalsDictionary.Remove(EntityHelper.GetEntityId(item));
+							_dbSetLocalsDictionary.Remove(entityKeyAccessor.GetEntityKey(item));
 						}
 
 						break;
@@ -145,7 +147,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 
 		private bool EntityNotInAddedState(TEntity entity)
 		{
-			return EntityHelper.GetEntityId(entity) != default(int);
+			return entityKeyAccessor.GetEntityKey(entity) != default(int);
 		}
 
 		/// <summary>
@@ -222,7 +224,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 
 				if (idsToLoad.Count != loadedObjects.Count)
 				{
-					int[] missingObjectIds = idsToLoad.Except(loadedObjects.Select(EntityHelper.GetEntityId)).ToArray();
+					int[] missingObjectIds = idsToLoad.Except(loadedObjects.Select(entityKeyAccessor.GetEntityKey)).ToArray();
 					ThrowObjectNotFoundException(missingObjectIds);					
 				}
 
@@ -269,7 +271,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 
 				if (idsToLoad.Count != loadedObjects.Count)
 				{
-					int[] missingObjectIds = idsToLoad.Except(loadedObjects.Select(EntityHelper.GetEntityId)).ToArray();
+					int[] missingObjectIds = idsToLoad.Except(loadedObjects.Select(entityKeyAccessor.GetEntityKey)).ToArray();
 					ThrowObjectNotFoundException(missingObjectIds);
 				}
 

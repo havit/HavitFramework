@@ -6,7 +6,6 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Havit.Data.Entity.Patterns.Helpers;
 using Havit.Data.Entity.Patterns.SoftDeletes;
 using Havit.Data.Entity.Patterns.UnitOfWorks.BeforeCommitProcessors;
 using Havit.Data.Entity.Patterns.UnitOfWorks.EntityValidation;

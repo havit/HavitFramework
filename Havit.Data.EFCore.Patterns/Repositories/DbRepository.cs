@@ -7,7 +7,6 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Xml.XPath;
-using Havit.Data.Entity.Patterns.Helpers;
 using Havit.Data.Entity.Patterns.SoftDeletes;
 using Havit.Data.Patterns.DataLoaders;
 using Havit.Data.Patterns.DataSources;

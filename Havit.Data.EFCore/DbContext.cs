@@ -171,11 +171,45 @@ namespace Havit.Data.Entity
 	    }
 
 	    /// <summary>
+	    /// Provede akci s AutoDetectChangesEnabled nastaveným na false, přičemž je poté AutoDetectChangesEnabled nastaven na původní hodnotu.
+	    /// </summary>
+	    private TResult ExecuteWithoutAutoDetectChanges<TResult>(Func<TResult> action)
+	    {
+		    if (ChangeTracker.AutoDetectChangesEnabled)
+		    {
+			    try
+			    {
+				    ChangeTracker.AutoDetectChangesEnabled = false;
+				    return action();
+			    }
+			    finally
+			    {
+				    ChangeTracker.AutoDetectChangesEnabled = true;
+			    }
+		    }
+		    else
+		    {
+			    return action();
+		    }
+	    }
+
+	    /// <summary>
+	    /// Vrátí objekty v daném stavu.
+	    /// </summary>
+	    public object[] GetObjectsInState(EntityState state, bool suppressDetectChanges)
+	    {
+		    return GetObjectsInStates(new EntityState[] { state }, suppressDetectChanges: suppressDetectChanges);
+	    }
+
+	    /// <summary>
 	    /// Vrátí objekty v daných stavech.
 	    /// </summary>
-	    public object[] GetObjectsInState(params EntityState[] states)
+	    public object[] GetObjectsInStates(EntityState[] states, bool suppressDetectChanges)
 	    {
-		    return this.ChangeTracker.Entries().Where(entry => states.Contains(entry.State)).Select(item => item.Entity).ToArray();
+		    Func<object[]> getObjectInStatesFunc = () => this.ChangeTracker.Entries().Where(entry => states.Contains(entry.State)).Select(item => item.Entity).ToArray();
+		    return suppressDetectChanges
+			    ? ExecuteWithoutAutoDetectChanges(getObjectInStatesFunc)
+			    : getObjectInStatesFunc();
 	    }
 
 	    /// <summary>
@@ -185,6 +219,15 @@ namespace Havit.Data.Entity
 	    IDbSet<TEntity> IDbContext.Set<TEntity>()
 	    {  
 		    return new DbSetInternal<TEntity>(this);
+	    }
+
+		/// <summary>
+		/// Vrátí stav entity v DbContextu (resp. v jeho ChangeTrackeru).
+		/// </summary>
+	    public EntityState GetEntityState<TEntity>(TEntity entity)
+			where TEntity : class
+	    {
+		    return ExecuteWithoutAutoDetectChanges(() => Entry(entity).State);
 	    }
 
 	    /// <summary>
@@ -202,6 +245,7 @@ namespace Havit.Data.Entity
 	    {
 		    return SaveChangesAsync(cancellationToken);			
 	    }
+
     }
 
 }

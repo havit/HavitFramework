@@ -133,11 +133,15 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 		/// </summary>
 		protected internal Changes GetAllKnownChanges()
 		{
+			var inserts = DbContext.GetObjectsInState(EntityState.Added, suppressDetectChanges: false).Union(insertRegistrations).ToArray();
+			var updates = DbContext.GetObjectsInState(EntityState.Modified, suppressDetectChanges: true /* pokud je zapnutý changetracker (jako že je), byl již spuštěn v rámci předchozího volání */).Union(updateRegistrations).ToArray();
+			var deletes = DbContext.GetObjectsInState(EntityState.Deleted, suppressDetectChanges: true /* pokud je zapnutý changetracker (jako že je), byl již spuštěn v rámci předchozího volání */).Union(deleteRegistrations).ToArray();
+
 			return new Changes
 			{
-				Inserts = DbContext.GetObjectsInState(EntityState.Added).Union(insertRegistrations).ToArray(),
-				Updates = DbContext.GetObjectsInState(EntityState.Modified).Union(updateRegistrations).ToArray(),
-				Deletes = DbContext.GetObjectsInState(EntityState.Deleted).Union(deleteRegistrations).ToArray()
+				Inserts = inserts,
+				Updates = updates,
+				Deletes = deletes
 			};
 		}
 
@@ -203,7 +207,7 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 		protected virtual void PerformAddForInsert<TEntity>(params TEntity[] entities)
 			where TEntity : class
 		{
-			if (entities.Length > 0) // šetříme případné volání changetrackeru z AddRange
+			if (entities.Length > 0)
 			{
 				DbContext.Set<TEntity>().AddRange(entities);
 				insertRegistrations.UnionWith(entities);
@@ -216,15 +220,17 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 		protected virtual void PerformAddForUpdate<TEntity>(params TEntity[] entities)
 			where TEntity : class
 		{
-			// z výkonových důvodů se očekává, že volané metody GetEntityState+SetEntityState nevolají change tracker
-			foreach (var entity in entities)
+			if (entities.Length > 0)
 			{
-				if (DbContext.Entry(entity).State == EntityState.Detached)
-				{					
-					DbContext.Entry(entity).State = EntityState.Modified;
-				}
+				// registrace na DbSetu pro Update označí entity za modifikované a budou uložené celé bez ohledu na to, zda se na nich skutečně něco změnilo
+				// proto implementujeme tak, že trackované entity neřešíme (a předpokládáme, že svou práci provede change tracker)
+				// netrackované entity zaregistrujeme jako změněné
+
+				// z výkonových důvodů se očekává, že volané metody GetEntityState+SetEntityState nevolají change tracker
+
+				DbContext.Set<TEntity>().UpdateRange(entities.Where(entity => DbContext.GetEntityState(entity) == EntityState.Detached).ToArray());
+				updateRegistrations.UnionWith(entities);
 			}
-			updateRegistrations.UnionWith(entities);
 		}
 
 		/// <summary>
@@ -234,7 +240,7 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 		protected virtual void PerformAddForDelete<TEntity>(params TEntity[] entities)
 			where TEntity : class
 		{
-			if (entities.Length > 0) // šetříme případné volání changetrackeru z RemoveRange
+			if (entities.Length > 0) 
 			{
 				if (SoftDeleteManager.IsSoftDeleteSupported<TEntity>())
 				{
@@ -275,7 +281,7 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 		/// </summary>
 		protected object[] GetNotRegisteredChanges()
 		{
-			return DbContext.GetObjectsInState(EntityState.Added, EntityState.Modified, EntityState.Deleted).Except(insertRegistrations).Except(updateRegistrations).Except(deleteRegistrations).ToArray();
+			return DbContext.GetObjectsInStates(new EntityState[] { EntityState.Added, EntityState.Modified, EntityState.Deleted }, suppressDetectChanges: false).Except(insertRegistrations).Except(updateRegistrations).Except(deleteRegistrations).ToArray();
 		}
 	}
 }

@@ -25,11 +25,11 @@ namespace Havit.Data.Entity
 			where TEntity : class;
 
 		/// <summary>
-		/// Gets an EntityEntry&lt;TEntity&gt; for the given entity. The entry provides access to change tracking information and operations for the entity.
+		/// Gets current entity state.
 		/// </summary>
-		EntityEntry<TEntity> Entry<TEntity>(TEntity entity)
+		EntityState GetEntityState<TEntity>(TEntity entity)
 			where TEntity : class;
-		
+
 		/// <summary>
 		/// The metadata about the shape of entities, the relationships between them, and how they map to the database.
 		/// </summary>
@@ -56,6 +56,11 @@ namespace Havit.Data.Entity
 		/// <summary>
 		/// Vrátí objekty v daných stavech.
 		/// </summary>
-		object[] GetObjectsInState(params EntityState[] states);
+		object[] GetObjectsInState(EntityState state, bool suppressDetectChanges);
+
+		/// <summary>
+		/// Vrátí objekty v daných stavech.
+		/// </summary>
+		object[] GetObjectsInStates(EntityState[] states, bool suppressDetectChanges);
 	}
 }

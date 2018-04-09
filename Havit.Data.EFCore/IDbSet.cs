@@ -37,7 +37,26 @@ namespace Havit.Data.Entity
 		/// is called.
 		/// </summary>
 		void AddRange(TEntity[] entities);
-		
+
+		/// <summary>
+		/// Begins tracking the given entities in the Microsoft.EntityFrameworkCore.EntityState.Modified
+		/// state such that they will be updated in the database when Microsoft.EntityFrameworkCore.DbContext.SaveChanges
+		/// is called.
+		/// All properties of each entity will be marked as modified. To mark only some properties
+		/// as modified, use Microsoft.EntityFrameworkCore.DbSet`1.Attach(`0) to begin tracking
+		/// each entity in the Microsoft.EntityFrameworkCore.EntityState.Unchanged state
+		/// and then use the returned Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry
+		/// to mark the desired properties as modified.
+		/// A recursive search of the navigation properties will be performed to find reachable
+		/// entities that are not already being tracked by the context. These entities will
+		/// also begin to be tracked by the context. If a reachable entity has its primary
+		/// key value set then it will be tracked in the Microsoft.EntityFrameworkCore.EntityState.Modified
+		/// state. If the primary key value is not set then it will be tracked in the Microsoft.EntityFrameworkCore.EntityState.Added
+		/// state. An entity is considered to have its primary key value set if the primary
+		/// key property is set to anything other than the CLR default for the property type.
+		/// </summary>
+		void UpdateRange(TEntity[] entities);
+
 		/// <summary>
 		/// Begins tracking the given entities in the Microsoft.EntityFrameworkCore.EntityState.Deleted
 		///  state such that they will be removed from the database when Microsoft.EntityFrameworkCore.DbContext.SaveChanges

@@ -4,6 +4,7 @@ using System.Linq;
 using Havit.Data.EFCore.Tests.ModelValidation.Infrastructure;
 using Havit.Data.EFCore.Tests.ModelValidation.Infrastructure.Model;
 using Havit.Data.Entity.ModelValidation;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.EFCore.Tests.ModelValidation
@@ -19,7 +20,7 @@ namespace Havit.Data.EFCore.Tests.ModelValidation
 			ModelValidator modelValidator = new ModelValidator();
 
 			// Act + Assert
-			Assert.IsFalse(modelValidator.IsSystemEntity(modelValidatingDbContext.Model.FindEntityType(typeof(OneCorrectKeyClass).FullName)));
+			Assert.IsFalse(modelValidator.IsSystemEntity(modelValidatingDbContext.Model.FindEntityType(typeof(OneCorrectKeyClass))));
 		}
 
 		[TestMethod]
@@ -42,9 +43,9 @@ namespace Havit.Data.EFCore.Tests.ModelValidation
 			ModelValidator modelValidator = new ModelValidator();
 
 			// Act + Assert
-			Assert.IsTrue(modelValidator.IsManyToManyEntity(modelValidatingDbContext.Model.FindEntityType(typeof(UserRoleMembership).FullName)), typeof(UserRoleMembership).Name);
-			Assert.IsFalse(modelValidator.IsManyToManyEntity(modelValidatingDbContext.Model.FindEntityType(typeof(User).FullName)), typeof(User).Name);
-			Assert.IsFalse(modelValidator.IsManyToManyEntity(modelValidatingDbContext.Model.FindEntityType(typeof(MoreInvalidKeysClass).FullName)), typeof(MoreInvalidKeysClass).Name);
+			Assert.IsTrue(modelValidator.IsManyToManyEntity(modelValidatingDbContext.Model.FindEntityType(typeof(UserRoleMembership))), typeof(UserRoleMembership).Name);
+			Assert.IsFalse(modelValidator.IsManyToManyEntity(modelValidatingDbContext.Model.FindEntityType(typeof(User))), typeof(User).Name);
+			Assert.IsFalse(modelValidator.IsManyToManyEntity(modelValidatingDbContext.Model.FindEntityType(typeof(MoreInvalidKeysClass))), typeof(MoreInvalidKeysClass).Name);
 		}
 
 		[TestMethod]
@@ -55,7 +56,7 @@ namespace Havit.Data.EFCore.Tests.ModelValidation
 			ModelValidator modelValidator = new ModelValidator();
 
 			// Act
-			string[] errorsMoreInvalidKeysClass = modelValidator.CheckPrimaryKeyName(modelValidatingDbContext.Model.FindEntityType(typeof(NonIdKeyClass).FullName)).ToArray();
+			string[] errorsMoreInvalidKeysClass = modelValidator.CheckPrimaryKeyName(modelValidatingDbContext.Model.FindEntityType(typeof(NonIdKeyClass))).ToArray();
 			
 			// Assert			
 			Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("has a primary key named")));
@@ -69,7 +70,7 @@ namespace Havit.Data.EFCore.Tests.ModelValidation
 			ModelValidator modelValidator = new ModelValidator();
 
 			// Act
-			string[] errorsMoreInvalidKeysClass = modelValidator.CheckPrimaryKeyName(modelValidatingDbContext.Model.FindEntityType(typeof(OneCorrectKeyClass).FullName)).ToArray();
+			string[] errorsMoreInvalidKeysClass = modelValidator.CheckPrimaryKeyName(modelValidatingDbContext.Model.FindEntityType(typeof(OneCorrectKeyClass))).ToArray();
 			
 			// Assert			
 			Assert.IsFalse(errorsMoreInvalidKeysClass.Any());
@@ -83,7 +84,7 @@ namespace Havit.Data.EFCore.Tests.ModelValidation
 			ModelValidator modelValidator = new ModelValidator();
 
 			// Act
-			string[] errorsMoreInvalidKeysClass = modelValidator.CheckPrimaryKeyIsNotComposite(modelValidatingDbContext.Model.FindEntityType(typeof(MoreInvalidKeysClass).FullName)).ToArray();
+			string[] errorsMoreInvalidKeysClass = modelValidator.CheckPrimaryKeyIsNotComposite(modelValidatingDbContext.Model.FindEntityType(typeof(MoreInvalidKeysClass))).ToArray();
 			
 			// Assert			
 			Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("only one is expected")));
@@ -97,7 +98,7 @@ namespace Havit.Data.EFCore.Tests.ModelValidation
 			ModelValidator modelValidator = new ModelValidator();
 
 			// Act
-			string[] errorsOneCorrectKeyClass = modelValidator.CheckPrimaryKeyIsNotComposite(modelValidatingDbContext.Model.FindEntityType(typeof(OneCorrectKeyClass).FullName)).ToArray();
+			string[] errorsOneCorrectKeyClass = modelValidator.CheckPrimaryKeyIsNotComposite(modelValidatingDbContext.Model.FindEntityType(typeof(OneCorrectKeyClass))).ToArray();
 
 			// Assert			
 			Assert.IsFalse(errorsOneCorrectKeyClass.Any());
@@ -111,7 +112,7 @@ namespace Havit.Data.EFCore.Tests.ModelValidation
 			ModelValidator modelValidator = new ModelValidator();
 
 			// Act
-			string[] errorsMoreInvalidKeysClass = modelValidator.CheckPrimaryKeyType(modelValidatingDbContext.Model.FindEntityType(typeof(StringIdClass).FullName)).ToArray();
+			string[] errorsMoreInvalidKeysClass = modelValidator.CheckPrimaryKeyType(modelValidatingDbContext.Model.FindEntityType(typeof(StringIdClass))).ToArray();
 
 			// Assert			
 			Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("type int (System.Int32) is expected")));
@@ -125,7 +126,7 @@ namespace Havit.Data.EFCore.Tests.ModelValidation
 			ModelValidator modelValidator = new ModelValidator();
 
 			// Act
-			string[] errorsMoreInvalidKeysClass = modelValidator.CheckIdPascalCaseNamingConvention(modelValidatingDbContext.Model.FindEntityType(typeof(CapitalIDClass).FullName)).ToArray();
+			string[] errorsMoreInvalidKeysClass = modelValidator.CheckIdPascalCaseNamingConvention(modelValidatingDbContext.Model.FindEntityType(typeof(CapitalIDClass))).ToArray();
 
 			// Assert			
 			Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("which ends with")));
@@ -139,7 +140,7 @@ namespace Havit.Data.EFCore.Tests.ModelValidation
 			ModelValidator modelValidator = new ModelValidator();
 
 			// Act
-			string[] errorsMoreInvalidKeysClass = modelValidator.CheckIdPascalCaseNamingConvention(modelValidatingDbContext.Model.FindEntityType(typeof(OneCorrectKeyClass).FullName)).ToArray();
+			string[] errorsMoreInvalidKeysClass = modelValidator.CheckIdPascalCaseNamingConvention(modelValidatingDbContext.Model.FindEntityType(typeof(OneCorrectKeyClass))).ToArray();
 
 			// Assert			
 			Assert.IsFalse(errorsMoreInvalidKeysClass.Any());
@@ -153,7 +154,7 @@ namespace Havit.Data.EFCore.Tests.ModelValidation
 			ModelValidator modelValidator = new ModelValidator();
 
 			// Act
-			string[] errorsMoreInvalidKeysClass = modelValidator.CheckStringsHaveMaxLengths(modelValidatingDbContext.Model.FindEntityType(typeof(NegativeMaxLengthAttributeClass).FullName)).ToArray();
+			string[] errorsMoreInvalidKeysClass = modelValidator.CheckStringsHaveMaxLengths(modelValidatingDbContext.Model.FindEntityType(typeof(NegativeMaxLengthAttributeClass))).ToArray();
 
 			// Assert			
 			Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("negative value")));
@@ -167,7 +168,7 @@ namespace Havit.Data.EFCore.Tests.ModelValidation
 			ModelValidator modelValidator = new ModelValidator();
 
 			// Act
-			string[] errorsMoreInvalidKeysClass = modelValidator.CheckStringsHaveMaxLengths(modelValidatingDbContext.Model.FindEntityType(typeof(ZeroMaxLengthAttributeClass).FullName)).ToArray();
+			string[] errorsMoreInvalidKeysClass = modelValidator.CheckStringsHaveMaxLengths(modelValidatingDbContext.Model.FindEntityType(typeof(ZeroMaxLengthAttributeClass))).ToArray();
 
 			// Assert			
 			Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("zero value")));
@@ -180,7 +181,7 @@ namespace Havit.Data.EFCore.Tests.ModelValidation
 			ModelValidator modelValidator = new ModelValidator();
 
 			// Act
-			string[] errorsMoreInvalidKeysClass = modelValidator.CheckStringsHaveMaxLengths(modelValidatingDbContext.Model.FindEntityType(typeof(NoMaxLengthAttributeClass).FullName)).ToArray();
+			string[] errorsMoreInvalidKeysClass = modelValidator.CheckStringsHaveMaxLengths(modelValidatingDbContext.Model.FindEntityType(typeof(NoMaxLengthAttributeClass))).ToArray();
 
 			// Assert			
 			Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("MaxLengthAttribute on property is expected")));
@@ -194,7 +195,7 @@ namespace Havit.Data.EFCore.Tests.ModelValidation
 			ModelValidator modelValidator = new ModelValidator();
 
 			// Act
-			string[] errorsMoreInvalidKeysClass = modelValidator.CheckStringsHaveMaxLengths(modelValidatingDbContext.Model.FindEntityType(typeof(MaxLengthAttributeWithPositiveValueClass).FullName)).ToArray();
+			string[] errorsMoreInvalidKeysClass = modelValidator.CheckStringsHaveMaxLengths(modelValidatingDbContext.Model.FindEntityType(typeof(MaxLengthAttributeWithPositiveValueClass))).ToArray();
 
 			// Assert			
 			Assert.IsFalse(errorsMoreInvalidKeysClass.Any());
@@ -208,7 +209,7 @@ namespace Havit.Data.EFCore.Tests.ModelValidation
 			ModelValidator modelValidator = new ModelValidator();
 
 			// Act
-			string[] errorsMoreInvalidKeysClass = modelValidator.CheckSupportedNestedTypes(modelValidatingDbContext.Model.FindEntityType(typeof(WithNestedClassClass).FullName)).ToArray();
+			string[] errorsMoreInvalidKeysClass = modelValidator.CheckSupportedNestedTypes(modelValidatingDbContext.Model.FindEntityType(typeof(WithNestedClassClass))).ToArray();
 
 			// Assert			
 			Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("unsupported nested type")));
@@ -222,7 +223,7 @@ namespace Havit.Data.EFCore.Tests.ModelValidation
 			ModelValidator modelValidator = new ModelValidator();
 
 			// Act
-			string[] errorsMoreInvalidKeysClass = modelValidator.CheckSupportedNestedTypes(modelValidatingDbContext.Model.FindEntityType(typeof(WithNestedEnumOtherClass).FullName)).ToArray();
+			string[] errorsMoreInvalidKeysClass = modelValidator.CheckSupportedNestedTypes(modelValidatingDbContext.Model.FindEntityType(typeof(WithNestedEnumOtherClass))).ToArray();
 
 			// Assert			
 			Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("unsupported nested type")));
@@ -236,7 +237,7 @@ namespace Havit.Data.EFCore.Tests.ModelValidation
 			ModelValidator modelValidator = new ModelValidator();
 
 			// Act
-			string[] errorsMoreInvalidKeysClass = modelValidator.CheckSupportedNestedTypes(modelValidatingDbContext.Model.FindEntityType(typeof(WithNestedEnumEntryClass).FullName)).ToArray();
+			string[] errorsMoreInvalidKeysClass = modelValidator.CheckSupportedNestedTypes(modelValidatingDbContext.Model.FindEntityType(typeof(WithNestedEnumEntryClass))).ToArray();
 
 			// Assert			
 			Assert.IsFalse(errorsMoreInvalidKeysClass.Any());
@@ -250,7 +251,7 @@ namespace Havit.Data.EFCore.Tests.ModelValidation
 			ModelValidator modelValidator = new ModelValidator();
 
 			// Act
-			string[] errorsMoreInvalidKeysClass = modelValidator.CheckNavigationPropertiesHaveForeignKeys(modelValidatingDbContext.Model.FindEntityType(typeof(NavigationPropertyWithoutForeignKeyClass).FullName)).ToArray();
+			string[] errorsMoreInvalidKeysClass = modelValidator.CheckNavigationPropertiesHaveForeignKeys(modelValidatingDbContext.Model.FindEntityType(typeof(NavigationPropertyWithoutForeignKeyClass))).ToArray();
 
 			// Assert			
 			Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("no foreign key")));
@@ -264,7 +265,7 @@ namespace Havit.Data.EFCore.Tests.ModelValidation
 			ModelValidator modelValidator = new ModelValidator();
 
 			// Act
-			string[] errorsMoreInvalidKeysClass = modelValidator.CheckNavigationPropertiesHaveForeignKeys(modelValidatingDbContext.Model.FindEntityType(typeof(NavigationPropertyWithForeignKeyClass).FullName)).ToArray();
+			string[] errorsMoreInvalidKeysClass = modelValidator.CheckNavigationPropertiesHaveForeignKeys(modelValidatingDbContext.Model.FindEntityType(typeof(NavigationPropertyWithForeignKeyClass))).ToArray();
 
 			// Assert			
 			Assert.IsFalse(errorsMoreInvalidKeysClass.Any());
@@ -278,10 +279,10 @@ namespace Havit.Data.EFCore.Tests.ModelValidation
 			ModelValidator modelValidator = new ModelValidator();
 
 			// Act
-			string[] errorsEntryWithGeneratedPrimaryKeyAndNoSymbol = modelValidator.CheckSymbolVsPrimaryKeyForEntries(modelValidatingDbContext.Model.FindEntityType(typeof(EntryWithGeneratedPrimaryKeyAndNoSymbol).FullName)).ToArray();
-			string[] errorsEntryWithGeneratedPrimaryKeyAndWithSymbol = modelValidator.CheckSymbolVsPrimaryKeyForEntries(modelValidatingDbContext.Model.FindEntityType(typeof(EntryWithGeneratedPrimaryKeyAndWithSymbol).FullName)).ToArray();
-			string[] errorsEntryWithPrimaryKeyAndNoSymbol = modelValidator.CheckSymbolVsPrimaryKeyForEntries(modelValidatingDbContext.Model.FindEntityType(typeof(EntryWithPrimaryKeyAndNoSymbol).FullName)).ToArray();
-			string[] errorsEntryWithPrimaryKeyAndWithSymbol = modelValidator.CheckSymbolVsPrimaryKeyForEntries(modelValidatingDbContext.Model.FindEntityType(typeof(EntryWithPrimaryKeyAndWithSymbol).FullName)).ToArray();
+			string[] errorsEntryWithGeneratedPrimaryKeyAndNoSymbol = modelValidator.CheckSymbolVsPrimaryKeyForEntries(modelValidatingDbContext.Model.FindEntityType(typeof(EntryWithGeneratedPrimaryKeyAndNoSymbol))).ToArray();
+			string[] errorsEntryWithGeneratedPrimaryKeyAndWithSymbol = modelValidator.CheckSymbolVsPrimaryKeyForEntries(modelValidatingDbContext.Model.FindEntityType(typeof(EntryWithGeneratedPrimaryKeyAndWithSymbol))).ToArray();
+			string[] errorsEntryWithPrimaryKeyAndNoSymbol = modelValidator.CheckSymbolVsPrimaryKeyForEntries(modelValidatingDbContext.Model.FindEntityType(typeof(EntryWithPrimaryKeyAndNoSymbol))).ToArray();
+			string[] errorsEntryWithPrimaryKeyAndWithSymbol = modelValidator.CheckSymbolVsPrimaryKeyForEntries(modelValidatingDbContext.Model.FindEntityType(typeof(EntryWithPrimaryKeyAndWithSymbol))).ToArray();
 
 			// Assert			
 			Assert.IsTrue(errorsEntryWithGeneratedPrimaryKeyAndNoSymbol.Any()); // obsahuje chybu (není dle čeho párovat)

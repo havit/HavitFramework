@@ -14,12 +14,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="DataLoaders\**" />
     <Compile Remove="DataSources\Fakes\**" />
-    <EmbeddedResource Remove="DataLoaders\**" />
     <EmbeddedResource Remove="DataSources\Fakes\**" />
-    <None Remove="DataLoaders\**" />
     <None Remove="DataSources\Fakes\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="DataLoaders\DbDataLoaderWithLoadedPropertiesMemory.cs" />
   </ItemGroup>
 
   <ItemGroup>

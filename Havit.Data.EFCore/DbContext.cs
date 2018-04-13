@@ -213,6 +213,30 @@ namespace Havit.Data.Entity
 	    }
 
 	    /// <summary>
+	    /// Vrací true, pokud je EF považuje referenci za načtenou.
+	    /// </summary>
+	    public bool IsEntityReferenceLoaded<TEntity>(TEntity entity, string propertyName)
+		    where TEntity : class
+	    {
+		    return ExecuteWithoutAutoDetectChanges(() => this.Entry(entity).Reference(propertyName).IsLoaded);
+	    }
+
+	    /// <summary>
+	    /// Vrací true, pokud je EF považuje kolekci za načtenou.
+	    /// </summary>
+	    public bool IsEntityCollectionLoaded<TEntity>(TEntity entity, string propertyName)
+		    where TEntity : class
+	    {
+		    return ExecuteWithoutAutoDetectChanges(() => this.Entry(entity).Collection(propertyName).IsLoaded);
+	    }
+
+	    //public void SetEntityCollectionLoaded<TEntity>(TEntity entity, string propertyName, bool isLoaded)
+		   // where TEntity : class
+	    //{
+		   // ExecuteWithoutAutoDetectChanges(() => this.Entry(entity).Collection(propertyName).IsLoaded = isLoaded);
+	    //}
+
+	    /// <summary>
 		/// Vrací DbSet pro danou entitu.
 		/// Pro snažší možnost mockování konzumentů DbSetu je vytvořena abstrakce do interface IDbSet&lt;TEntity&gt;.
 		/// </summary>

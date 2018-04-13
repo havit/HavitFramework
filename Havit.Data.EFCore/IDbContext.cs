@@ -25,12 +25,6 @@ namespace Havit.Data.Entity
 			where TEntity : class;
 
 		/// <summary>
-		/// Gets current entity state.
-		/// </summary>
-		EntityState GetEntityState<TEntity>(TEntity entity)
-			where TEntity : class;
-
-		/// <summary>
 		/// The metadata about the shape of entities, the relationships between them, and how they map to the database.
 		/// </summary>
 		/// <remarks>
@@ -54,6 +48,12 @@ namespace Havit.Data.Entity
 		void RegisterAfterSaveChangesAction(Action action);
 
 		/// <summary>
+		/// Vrátí aktuální stav entity.
+		/// </summary>
+		EntityState GetEntityState<TEntity>(TEntity entity)
+			where TEntity : class;
+
+		/// <summary>
 		/// Vrátí objekty v daných stavech.
 		/// </summary>
 		object[] GetObjectsInState(EntityState state, bool suppressDetectChanges);
@@ -62,5 +62,20 @@ namespace Havit.Data.Entity
 		/// Vrátí objekty v daných stavech.
 		/// </summary>
 		object[] GetObjectsInStates(EntityState[] states, bool suppressDetectChanges);
+
+		/// <summary>
+		/// Vrací true, pokud je EF považuje referenci za načtenou.
+		/// </summary>
+		bool IsEntityReferenceLoaded<TEntity>(TEntity entity, string propertyName)
+			where TEntity : class;
+	
+		/// <summary>
+		/// Vrací true, pokud je EF považuje kolekci za načtenou.
+		/// </summary>
+		bool IsEntityCollectionLoaded<TEntity>(TEntity entity, string propertyName)
+			where TEntity : class;
+
+		//void SetEntityCollectionLoaded<TEntity>(TEntity entity, string propertyName, bool isLoaded)
+		//	where TEntity : class;
 	}
 }

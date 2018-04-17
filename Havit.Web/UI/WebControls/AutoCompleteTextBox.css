@@ -1,18 +1,22 @@
 ﻿.autocomplete-textbox {
     position: relative;
-    display: inline-block;
-    vertical-align: middle;
 }
 
-    .autocomplete-textbox input[type=text]::-ms-clear,
-    .autocomplete-textbox input[type=text]::-ms-reveal {
-        display: none;
-        width: 0;
-        height: 0;
+    .autocomplete-textbox input[type=text] {
+        padding-right: 15px;
     }
+
+        .autocomplete-textbox input[type=text]::-ms-clear,
+        .autocomplete-textbox input[type=text]::-ms-reveal {
+            display: none;
+            width: 0;
+            height: 0;
+        }
 
     .autocomplete-textbox a[data-cleartext] {
         position: absolute;
+        top: 1px;
+        line-height: 1;
         right: 5px;
-        text-decoration:none;
+        text-decoration: none;
     }

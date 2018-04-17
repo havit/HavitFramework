@@ -248,7 +248,8 @@ namespace Havit.Web.UI.WebControls
 			set
 			{
 				valueTextBox.Enabled = value;
-			}
+                clearTextLink.Visible = value;
+            }
 		}
 		#endregion
 
@@ -442,7 +443,7 @@ namespace Havit.Web.UI.WebControls
 			valueTextBox = new TextBox();
 			valueTextBox.ID = "ValueTextBox";
 
-			valueHiddenField = new HiddenField();
+            valueHiddenField = new HiddenField();
 			valueHiddenField.ID = "ValueHiddenField";
 			valueHiddenField.EnableViewState = false;
 
@@ -452,7 +453,7 @@ namespace Havit.Web.UI.WebControls
             clearTextLink.NavigateUrl = "#";
             clearTextLink.Text = "&times;";
             clearTextLink.Attributes.Add("data-clearText", "true");
-            clearTextLink.Attributes.Add("tabindex", "-1"); // skip the link in page navigation
+            clearTextLink.Attributes.Add("tabindex", "-1"); // skip the link in page navigation            
         }
 		#endregion
 

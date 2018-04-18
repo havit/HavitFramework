@@ -18,7 +18,12 @@
 			  <dependency id="Havit.Model" version="1.8.0" />
 			  <dependency id="Havit.Services" version="1.8.0" />
 			  <dependency id="Microsoft.CSharp" version="4.4.1" />
-				
+			</group>
+			<group targetFramework="netstandard2.0">
+				<dependency id="Havit" version="1.8.0" />
+				<dependency id="Havit.Model" version="1.8.0" />
+				<dependency id="Havit.Services" version="1.8.0" />
+				<dependency id="Microsoft.CSharp" version="4.4.1" />
 			</group>
 		</dependencies>
 		<tags>HAVIT Framework Library Data Patterns EF</tags>

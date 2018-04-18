@@ -24,7 +24,7 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.QueryableExtensions.Model
 			yield return new QueryableExtensionsModel()
 			{
 				NamespaceName = dataLayerProject.GetProjectRootNamespace(),
-				ModelClassesFullNames = dbContext.Db().Select(item => item.FullName).ToList()
+				ModelClassesFullNames = dbContext.GetRegisteredEntities().Select(item => item.FullName).ToList()
 			};
 		}
 	}

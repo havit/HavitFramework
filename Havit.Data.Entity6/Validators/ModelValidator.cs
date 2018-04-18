@@ -9,7 +9,6 @@ using System.Linq;
 using System.Reflection;
 using Havit.Data.Entity.Mapping.Internal;
 using Havit.Data.Entity.Model;
-using MappingApiExtensions = EntityFramework.MappingAPI.Extensions.MappingApiExtensions;
 
 namespace Havit.Data.Entity.Validators
 {
@@ -25,7 +24,7 @@ namespace Havit.Data.Entity.Validators
 		/// <returns>Vrací seznam chyb (nebo prázdný řetězec).</returns>
 		public string Validate(DbContext dbContext)
 		{
-			RegisteredEntity[] entityMaps = dbContext.Db();
+			RegisteredEntity[] entityMaps = dbContext.GetRegisteredEntities();
 			
 			List<string> errors = entityMaps.
                 Where(item => item.Type != typeof(DataSeedVersion))

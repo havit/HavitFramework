@@ -28,7 +28,7 @@ namespace Havit.Data.Entity.Mapping.Internal
 		/// <summary>
 		/// It will get RegisteredEntities.
 		/// </summary>
-		public static RegisteredEntity[] Db(this DbContext ctx)
+		public static RegisteredEntity[] GetRegisteredEntities(this DbContext ctx)
 		{
 			ObjectContext objectContext = ((IObjectContextAdapter)ctx).ObjectContext;
 
@@ -40,9 +40,9 @@ namespace Havit.Data.Entity.Mapping.Internal
 		/// <summary>
 		/// It will get propriate RegisteredEntity with same type.
 		/// </summary>
-		public static RegisteredEntity Db(this DbContext ctx, Type type)
+		public static RegisteredEntity GetRegisteredEntities(this DbContext ctx, Type type)
 		{
-			return Db(ctx).FirstOrDefault(r => r.Type == type);
+			return GetRegisteredEntities(ctx).FirstOrDefault(r => r.Type == type);
 		}
 
 		/// <summary>

@@ -26,7 +26,7 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.Repositories.Model
 		{
 		    IEnumerable<DataEntriesModel> dataEntriesModels = dataEntriesModelSource.GetModels();
 
-			return (from registeredEntity in dbContext.Db()
+			return (from registeredEntity in dbContext.GetRegisteredEntities()
 					select new RepositoryModel
 				{
 					NamespaceName = GetNamespaceName(registeredEntity.NamespaceName),

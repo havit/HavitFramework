@@ -20,7 +20,7 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.ModelMetadataClasses.Model
 
 		public IEnumerable<MetadataClass> GetModels()
 		{
-			List<MetadataClass> result = (from registeredEntity in dbContext.Db()
+			List<MetadataClass> result = (from registeredEntity in dbContext.GetRegisteredEntities()
 				select new MetadataClass
 				{
 					NamespaceName = GetNamespaceName(registeredEntity.NamespaceName),

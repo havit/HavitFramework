@@ -24,7 +24,7 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.DataEntries.Model
 
 		public IEnumerable<DataEntriesModel> GetModels()
 		{
-			return (from registeredEntity in dbContext.Db()
+			return (from registeredEntity in dbContext.GetRegisteredEntities()
 				let entriesEnumType = GetEntriesEnum(registeredEntity.Type)
 				where (entriesEnumType != null)
 				select new DataEntriesModel

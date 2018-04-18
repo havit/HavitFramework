@@ -91,8 +91,6 @@ namespace Havit.Data.Entity
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
-			
-			this.Set<object>(); // Pro podporu EntityFramework.MappingAPI - podpora pro Code First funguje až po prvním zavolání Set<T>().
 
 			EntityTypeConfiguration<DataSeedVersion> dataSeedVersionEntity = modelBuilder.Entity<DataSeedVersion>();
 			dataSeedVersionEntity.ToTable("__DataSeed");

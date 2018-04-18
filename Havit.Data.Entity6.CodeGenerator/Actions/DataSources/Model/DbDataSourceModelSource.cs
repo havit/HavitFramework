@@ -21,7 +21,7 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.DataSources.Model
 
 		public IEnumerable<DbDataSourceModel> GetModels()
 		{
-			return (from registeredEntity in dbContext.Db()
+			return (from registeredEntity in dbContext.GetRegisteredEntities()
 				select new DbDataSourceModel
 				{
 					NamespaceName = GetNamespaceName(registeredEntity.NamespaceName),

@@ -11,7 +11,7 @@ namespace Havit.Tests.Linq
 	public class CollectionExtTests
 	{
 		[TestMethod]
-		public void CollectionExt_UpdateFrom_Demo()
+		public void CollectionExt_UpdateFrom_BasicFlow()
 		{
 			// arrange
 			TargetClass targetItem1 = new TargetClass() { Id = 1, StringProperty = "FAKE_TARGET_1" };
@@ -39,21 +39,21 @@ namespace Havit.Tests.Linq
 							Id = source.Id,
 							StringProperty = source.StringProperty
 						};
+						// unitOfWork.AddForInsert(result.ItemsAdding);
 						return newItem;
 					},
 				updateItemAction:
 					(source, target) =>
 					{
 						target.StringProperty = source.StringProperty;
+						// unitOfWork.AddForUpdate(result.ItemsUpdating);
 					},
 				removeItemAction:
 					(target) =>
 					{
+						// unitOfWork.AddForDelete(result.ItemsRemoving);
 					}
 			);
-			// unitOfWork.AddForInsert(result.ItemsAdding);
-			// unitOfWork.AddForUpdate(result.ItemsUpdating);
-			// unitOfWork.AddForDelete(result.ItemsRemoving);
 
 			// assert
 			// Item 1 updated
@@ -71,6 +71,43 @@ namespace Havit.Tests.Linq
 			var item2 = targetList.Single(i => i.Id == 2);
 			Assert.AreEqual("FAKE_SOURCE_2", item2.StringProperty);
 			Assert.AreSame(item2, result.ItemsAdding.Single());
+		}
+
+		[TestMethod]
+		public void CollectionExt_UpdateFrom_CreateFuncAddsToCollection_ShouldNotAddDuplicateItem()
+		{
+			// arrange
+			var targetList = new List<TargetClass>();
+			var sourceList = new List<SourceClass>()
+			{
+				new SourceClass() { Id = 1, StringProperty = "FAKE_SOURCE_1" },
+			};
+
+			// act
+			var result = targetList.UpdateFrom(sourceList,
+				targetKeySelector: target => target.Id,
+				sourceKeySelector: source => source.Id,
+				newItemCreateFunc:
+					source =>
+					{
+						var newItem = new TargetClass()
+						{
+							Id = source.Id,
+							StringProperty = source.StringProperty
+						};
+						targetList.Add(newItem); // i.e. leaked EF-fixup
+						return newItem;
+					},
+				updateItemAction: null,
+				removeItemAction: null
+			);
+
+			// assert
+			// Item 2 added
+			Assert.AreEqual(1, targetList.Count);
+			var item = targetList.Single(i => i.Id == 1);
+			Assert.AreEqual("FAKE_SOURCE_1", item.StringProperty);
+			Assert.AreSame(item, result.ItemsAdding.Single());
 		}
 
 		[TestMethod]

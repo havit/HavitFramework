@@ -89,19 +89,18 @@ namespace Havit.Data.Entity.CodeGenerator
 			);
 
 			Console.WriteLine($"Initializing DbContext...");
-			ObjectContext objectContext = ((IObjectContextAdapter)dbContext).ObjectContext;
+			//ObjectContext objectContext = ((IObjectContextAdapter)dbContext).ObjectContext; // využíval jej původní RegisteredEntityEnumerator
 			CammelCaseNamingStrategy cammelCaseNamingStrategy = new CammelCaseNamingStrategy();
 
 			Console.WriteLine($"Generating code...");
-
-			RegisteredEntityEnumerator registeredEntityEnumerator = new RegisteredEntityEnumerator(objectContext);
-            var dataEntriesModelSource = new DataEntriesModelSource(registeredEntityEnumerator, modelProject, dataLayerProject, cammelCaseNamingStrategy);
+			
+			var dataEntriesModelSource = new DataEntriesModelSource(dbContext, modelProject, dataLayerProject, cammelCaseNamingStrategy);
 
 			Parallel.Invoke(
-		        () => GenerateMetadata(modelProject, registeredEntityEnumerator, sourceControlClient),
-		        () => GenerateDataSources(dataLayerProject, sourceControlClient, modelProject, registeredEntityEnumerator),
-		        () => GenerateDataEntries(dataLayerProject, sourceControlClient, modelProject, registeredEntityEnumerator, dataEntriesModelSource),
-		        () => GenerateRepositories(dataLayerProject, sourceControlClient, registeredEntityEnumerator, modelProject, dataEntriesModelSource)/*,
+				() => GenerateMetadata(modelProject, dbContext, sourceControlClient),
+				() => GenerateDataSources(dataLayerProject, sourceControlClient, modelProject, dbContext),
+				() => GenerateDataEntries(dataLayerProject, sourceControlClient, modelProject, dbContext, dataEntriesModelSource),
+				() => GenerateRepositories(dataLayerProject, sourceControlClient, dbContext, modelProject, dataEntriesModelSource)/*,
 				() => GenerateQueryExtensions(dataLayerProject, sourceControlClient, registeredEntityEnumerator)*/
 			);
 
@@ -140,24 +139,23 @@ namespace Havit.Data.Entity.CodeGenerator
 			Console.WriteLine("Completed in {0} ms.", (int)stopwatch.Elapsed.TotalMilliseconds);
 		}
 
-		private static void GenerateMetadata(Project modelProject, RegisteredEntityEnumerator registeredEntityEnumerator, ISourceControlClient sourceControlClient)
+		private static void GenerateMetadata(Project modelProject, DbContext dbContext, ISourceControlClient sourceControlClient)
 		{
 			CodeWriter codeWriter = new CodeWriter(modelProject, sourceControlClient);
 			MetadataClassFileNamingService fileNamingService = new MetadataClassFileNamingService(modelProject);
 			MetadataClassTemplateFactory factory = new MetadataClassTemplateFactory();
-			MetadataClassModelSource modelSource = new MetadataClassModelSource(registeredEntityEnumerator, modelProject);
+			MetadataClassModelSource modelSource = new MetadataClassModelSource(dbContext, modelProject);
 			var metadataGenerator = new GenericGenerator<MetadataClass>(modelSource, factory, fileNamingService, codeWriter);
 			metadataGenerator.Generate();
 		}
 
-		private static void GenerateDataSources(Project dataLayerProject, ISourceControlClient sourceControlClient, Project modelProject, RegisteredEntityEnumerator registeredEntityEnumerator)
+		private static void GenerateDataSources(Project dataLayerProject, ISourceControlClient sourceControlClient, Project modelProject, DbContext dbContext)
 		{
 			CodeWriter codeWriter = new CodeWriter(dataLayerProject, sourceControlClient);
-			//IFileNamingService<InterfaceDataSourceModel> namingService = new InterfaceDataSourceFileNamingService(dataLayerProject);
 			SoftDeleteManager softDeleteManager = new SoftDeleteManager(new ServerTimeService());
-			IModelSource<InterfaceDataSourceModel> interfaceDataSourceModelSource = new InterfaceDataSourceModelSource(registeredEntityEnumerator, modelProject, dataLayerProject, softDeleteManager);
-			IModelSource<DbDataSourceModel> dbDataSourceModelSource = new DbDataSourceModelSource(registeredEntityEnumerator, modelProject, dataLayerProject);
-			IModelSource<FakeDataSourceModel> fakeDataSourceModelSource = new FakeDataSourceModelSource(registeredEntityEnumerator, modelProject, dataLayerProject);
+			IModelSource<InterfaceDataSourceModel> interfaceDataSourceModelSource = new InterfaceDataSourceModelSource(dbContext, modelProject, dataLayerProject, softDeleteManager);
+			IModelSource<DbDataSourceModel> dbDataSourceModelSource = new DbDataSourceModelSource(dbContext, modelProject, dataLayerProject);
+			IModelSource<FakeDataSourceModel> fakeDataSourceModelSource = new FakeDataSourceModelSource(dbContext, modelProject, dataLayerProject);
 			var interfaceDataSourceGenerator = new GenericGenerator<InterfaceDataSourceModel>(interfaceDataSourceModelSource, new InterfaceDataSourceTemplateFactory(), new InterfaceDataSourceFileNamingService(dataLayerProject), codeWriter);
 			var dbDataSourceGenerator = new GenericGenerator<DbDataSourceModel>(dbDataSourceModelSource, new DbDataSourceTemplateFactory(), new DbDataSourceFileNamingService(dataLayerProject), codeWriter);
 			var fakeDataSourceGenerator = new GenericGenerator<FakeDataSourceModel>(fakeDataSourceModelSource, new FakeDataSourceTemplateFactory(), new FakeDataSourceFileNamingService(dataLayerProject), codeWriter);
@@ -166,7 +164,7 @@ namespace Havit.Data.Entity.CodeGenerator
 			fakeDataSourceGenerator.Generate();
 		}
 
-		private static void GenerateDataEntries(Project dataLayerProject, ISourceControlClient sourceControlClient, Project modelProject, RegisteredEntityEnumerator registeredEntityEnumerator, DataEntriesModelSource dataEntriesModelSource)
+		private static void GenerateDataEntries(Project dataLayerProject, ISourceControlClient sourceControlClient, Project modelProject, DbContext dbContext, DataEntriesModelSource dataEntriesModelSource)
 		{
 			CodeWriter codeWriter = new CodeWriter(dataLayerProject, sourceControlClient);
 			var interfaceDataEntriesGenerator = new GenericGenerator<DataEntriesModel>(dataEntriesModelSource, new InterfaceDataEntriesTemplateFactory(), new InterfaceDataEntriesFileNamingService(dataLayerProject), codeWriter);
@@ -175,10 +173,10 @@ namespace Havit.Data.Entity.CodeGenerator
 			dbDataEntriesGenerator.Generate();
 		}
 
-		private static void GenerateRepositories(Project dataLayerProject, ISourceControlClient sourceControlClient, RegisteredEntityEnumerator registeredEntityEnumerator, Project modelProject, DataEntriesModelSource dataEntriesModelSource)
+		private static void GenerateRepositories(Project dataLayerProject, ISourceControlClient sourceControlClient, DbContext dbContext, Project modelProject, DataEntriesModelSource dataEntriesModelSource)
 		{
 			CodeWriter codeWriter = new CodeWriter(dataLayerProject, sourceControlClient);
-			var dbRepositoryModelSource = new RepositoryModelSource(registeredEntityEnumerator, modelProject, dataLayerProject, dataEntriesModelSource);
+			var dbRepositoryModelSource = new RepositoryModelSource(dbContext, modelProject, dataLayerProject, dataEntriesModelSource);
 			var dbRepositoryBaseGeneratedGenerator = new GenericGenerator<RepositoryModel>(dbRepositoryModelSource, new DbRepositoryBaseGeneratedTemplateFactory(), new DbRepositoryBaseGeneratedFileNamingService(dataLayerProject), codeWriter);
 			var interfaceRepositoryGeneratedGenerator = new GenericGenerator<RepositoryModel>(dbRepositoryModelSource, new InterfaceRepositoryGeneratedTemplateFactory(), new InterfaceRepositoryGeneratedFileNamingService(dataLayerProject), codeWriter);
 			var dbRepositoryGeneratedGenerator = new GenericGenerator<RepositoryModel>(dbRepositoryModelSource, new DbRepositoryGeneratedTemplateFactory(), new DbRepositoryGeneratedFileNamingService(dataLayerProject), codeWriter);
@@ -191,10 +189,10 @@ namespace Havit.Data.Entity.CodeGenerator
 			dbRepositoryGenerator.Generate();
 		}
 
-		private static void GenerateQueryExtensions(Project dataLayerProject, ISourceControlClient sourceControlClient, RegisteredEntityEnumerator registeredEntityEnumerator)
+		private static void GenerateQueryExtensions(Project dataLayerProject, ISourceControlClient sourceControlClient, DbContext dbContext)
 		{
 			CodeWriter codeWriter = new CodeWriter(dataLayerProject, sourceControlClient);
-			var queryableExtensionsModelSource = new QueryableExtensionsModelSource(registeredEntityEnumerator, dataLayerProject);
+			var queryableExtensionsModelSource = new QueryableExtensionsModelSource(dbContext, dataLayerProject);
 
 			var dbRepositoryGenerator = new GenericGenerator<QueryableExtensionsModel>(queryableExtensionsModelSource, new QueryableExtensionsTemplateFactory(), new QueryableExtensionsFileNamingService(dataLayerProject), codeWriter);
 			dbRepositoryGenerator.Generate();

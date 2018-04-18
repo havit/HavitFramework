@@ -82,6 +82,9 @@
     <Compile Include="DbModelBuilderExtensions.cs" />
     <Compile Include="Conventions\ForeignKeyNamingConvention.cs" />
     <Compile Include="Conventions\PrefixTableNameToPrimaryKeyNamingConvention.cs" />
+    <Compile Include="Mapping\MappingApiExtensions.cs" />
+    <Compile Include="Mapping\RegisteredEntity.cs" />
+    <Compile Include="Mapping\RegisteredProperty.cs" />
     <Compile Include="Migrations\DbMigrationsConfiguration.cs" />
     <Compile Include="ModelConfiguration\Configuration\PrimitivePropertyConfigurationExtensions.cs" />
     <Compile Include="ModelConfiguration\Edm\AssociationTypeExtensions.cs" />
@@ -111,9 +114,7 @@
       <Name>Havit</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Mapping\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

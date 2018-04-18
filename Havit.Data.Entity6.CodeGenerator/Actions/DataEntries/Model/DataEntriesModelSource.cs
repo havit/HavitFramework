@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using Havit.Data.Entity.CodeGenerator.Entity;
 using Havit.Data.Entity.CodeGenerator.Services;
+using Havit.Data.Entity.Mapping.Internal;
 
 namespace Havit.Data.Entity.CodeGenerator.Actions.DataEntries.Model
 {
 	public class DataEntriesModelSource : IModelSource<DataEntriesModel>
 	{
-		private readonly RegisteredEntityEnumerator registeredEntityEnumerator;
+		private readonly DbContext dbContext;
 		private readonly Project modelProject;
 		private readonly Project dataLayerProject;
 		private readonly CammelCaseNamingStrategy cammelCaseNamingStrategy;
 
-		public DataEntriesModelSource(RegisteredEntityEnumerator registeredEntityEnumerator, Project modelProject, Project dataLayerProject, CammelCaseNamingStrategy cammelCaseNamingStrategy)
+		public DataEntriesModelSource(DbContext dbContext, Project modelProject, Project dataLayerProject, CammelCaseNamingStrategy cammelCaseNamingStrategy)
 		{
-			this.registeredEntityEnumerator = registeredEntityEnumerator;
+			this.dbContext = dbContext;
 			this.modelProject = modelProject;
 			this.dataLayerProject = dataLayerProject;
 			this.cammelCaseNamingStrategy = cammelCaseNamingStrategy;
@@ -23,7 +24,7 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.DataEntries.Model
 
 		public IEnumerable<DataEntriesModel> GetModels()
 		{
-			return (from registeredEntity in registeredEntityEnumerator.GetRegisteredEntities()
+			return (from registeredEntity in dbContext.Db()
 				let entriesEnumType = GetEntriesEnum(registeredEntity.Type)
 				where (entriesEnumType != null)
 				select new DataEntriesModel

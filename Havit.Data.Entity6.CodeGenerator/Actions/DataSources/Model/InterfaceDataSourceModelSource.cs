@@ -2,6 +2,7 @@
 using System.Linq;
 using Havit.Data.Entity.CodeGenerator.Entity;
 using Havit.Data.Entity.CodeGenerator.Services;
+using Havit.Data.Entity.Mapping.Internal;
 using Havit.Data.Entity.Patterns.SoftDeletes;
 using Havit.Data.Patterns;
 
@@ -9,14 +10,14 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.DataSources.Model
 {
 	public class InterfaceDataSourceModelSource : IModelSource<InterfaceDataSourceModel>
 	{
-		private readonly RegisteredEntityEnumerator registeredEntityEnumerator;
+		private readonly DbContext dbContext;
 		private readonly Project modelProject;
 		private readonly Project dataLayerProject;
 		private readonly ISoftDeleteManager softDeleteManager;
 
-		public InterfaceDataSourceModelSource(RegisteredEntityEnumerator registeredEntityEnumerator, Project modelProject, Project dataLayerProject, ISoftDeleteManager softDeleteManager)
+		public InterfaceDataSourceModelSource(DbContext dbContext, Project modelProject, Project dataLayerProject, ISoftDeleteManager softDeleteManager)
 		{
-			this.registeredEntityEnumerator = registeredEntityEnumerator;
+			this.dbContext = dbContext;
 			this.modelProject = modelProject;
 			this.dataLayerProject = dataLayerProject;
 			this.softDeleteManager = softDeleteManager;
@@ -24,7 +25,7 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.DataSources.Model
 
 		public IEnumerable<InterfaceDataSourceModel> GetModels()
 		{
-			return (from registeredEntity in registeredEntityEnumerator.GetRegisteredEntities()
+			return (from registeredEntity in dbContext.Db()
 				select new InterfaceDataSourceModel
 				{
 					NamespaceName = GetNamespaceName(registeredEntity.NamespaceName),

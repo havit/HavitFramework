@@ -341,9 +341,6 @@
     <Compile Include="Actions\Repositories\Templates\InterfaceRepositoryGeneratedTemplateFactory.cs" />
     <Compile Include="Entity\DbContextActivator.cs" />
     <Compile Include="Entity\DoNothingInitializer.cs" />
-    <Compile Include="Entity\RegisteredEntity.cs" />
-    <Compile Include="Entity\RegisteredEntityEnumerator.cs" />
-    <Compile Include="Entity\RegisteredProperty.cs" />
     <Compile Include="Services\ITemplate.cs" />
     <Compile Include="Services\GenericGenerator.cs" />
     <Compile Include="Actions\ModelMetadataClasses\Model\MetadataClass.cs" />

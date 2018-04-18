@@ -7,9 +7,9 @@ using System.Data.Entity.Infrastructure;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using EntityFramework.MappingAPI;
-using EntityFramework.MappingAPI.Extensions;
+using Havit.Data.Entity.Mapping.Internal;
 using Havit.Data.Entity.Model;
+using MappingApiExtensions = EntityFramework.MappingAPI.Extensions.MappingApiExtensions;
 
 namespace Havit.Data.Entity.Validators
 {
@@ -25,7 +25,7 @@ namespace Havit.Data.Entity.Validators
 		/// <returns>Vrací seznam chyb (nebo prázdný řetězec).</returns>
 		public string Validate(DbContext dbContext)
 		{
-			IEntityMap[] entityMaps = dbContext.Db();
+			RegisteredEntity[] entityMaps = dbContext.Db();
 			
 			List<string> errors = entityMaps.
                 Where(item => item.Type != typeof(DataSeedVersion))
@@ -42,14 +42,14 @@ namespace Havit.Data.Entity.Validators
 		/// <summary>
 		/// Kontroluje, zda třída obsahuje právě jeden primární klíč pojmenovaný "Id".
 		/// </summary>
-		internal IEnumerable<string> CheckPrimaryKey(IEntityMap entityMap)
+		internal IEnumerable<string> CheckPrimaryKey(RegisteredEntity entityMap)
 		{
-			if (entityMap.Pks.Length > 1)
+			if (entityMap.PrimaryKeys.Count > 1)
 			{
-				yield return $"Class {entityMap.Type.Name} has {entityMap.Pks.Length} key members but only one is expected.";
+				yield return $"Class {entityMap.Type.Name} has {entityMap.PrimaryKeys.Count} key members but only one is expected.";
 			}
 
-			foreach (var keyMember in entityMap.Pks)
+			foreach (var keyMember in entityMap.PrimaryKeys)
 			{
 				if (keyMember.PropertyName != "Id")
 				{
@@ -67,7 +67,7 @@ namespace Havit.Data.Entity.Validators
 		/// <summary>
 		/// Kontroluje, že žádná vlastnost nekončí na "ID" (kapitálkami).
 		/// </summary>
-		internal IEnumerable<string> CheckIdNamingConvention(IEntityMap entityMap)
+		internal IEnumerable<string> CheckIdNamingConvention(RegisteredEntity entityMap)
 		{
 			foreach (var property in entityMap.Properties)
 			{
@@ -81,7 +81,7 @@ namespace Havit.Data.Entity.Validators
 		/// <summary>
 		/// Kontroluje, že všechny stringové vlastnosti mají uvedenu maximální délku.
 		/// </summary>
-		internal IEnumerable<string> CheckStringMaxLengthConvention(IEntityMap entityMap)
+		internal IEnumerable<string> CheckStringMaxLengthConvention(RegisteredEntity entityMap)
 		{
 			foreach (var property in entityMap.Properties)
 			{
@@ -111,7 +111,7 @@ namespace Havit.Data.Entity.Validators
 		/// <summary>
 		/// Kontroluje, že nejsou použity nested classes.
 		/// </summary>
-		internal IEnumerable<string> CheckNestedMembers(IEntityMap entityMap)
+		internal IEnumerable<string> CheckNestedMembers(RegisteredEntity entityMap)
 		{
 			Type[] nestedTypes = entityMap.Type.GetNestedTypes();
 
@@ -127,9 +127,9 @@ namespace Havit.Data.Entity.Validators
 		/// <summary>
 		/// Kontroluje, že nejsou použity nested classes.
 		/// </summary>
-		internal IEnumerable<string> CheckForeignKeyForNavigationProperties(IEntityMap entityMap)
+		internal IEnumerable<string> CheckForeignKeyForNavigationProperties(RegisteredEntity entityMap)
 		{
-			foreach (IPropertyMap navigationProperty in entityMap.Properties.Where(item => item.IsNavigationProperty))
+			foreach (RegisteredProperty navigationProperty in entityMap.Properties.Where(item => item.IsNavigationProperty))
 			{
 				if (navigationProperty.ForeignKey == null)
 				{
@@ -138,13 +138,13 @@ namespace Havit.Data.Entity.Validators
 			}
 		}
 
-		internal IEnumerable<string> CheckSymbolVsPrimaryKeyForEntries(IEntityMap entityMap)
+		internal IEnumerable<string> CheckSymbolVsPrimaryKeyForEntries(RegisteredEntity entityMap)
 		{
 			bool hasEntryEnum = entityMap.Type.GetNestedTypes().Any(nestedType => nestedType.IsEnum && (nestedType.Name == "Entry"));
 
 			if (hasEntryEnum)
 			{
-				bool pkWithIdentity = entityMap.Pks.Any(pk => pk.IsIdentity);
+				bool pkWithIdentity = entityMap.HasDatabaseGeneratedIdentity;
 				bool symbolExists = entityMap.Properties.Any(item => item.PropertyName == "Symbol");
 
 				if (pkWithIdentity && !symbolExists)

@@ -2,25 +2,26 @@
 using System.Linq;
 using Havit.Data.Entity.CodeGenerator.Entity;
 using Havit.Data.Entity.CodeGenerator.Services;
+using Havit.Data.Entity.Mapping.Internal;
 
 namespace Havit.Data.Entity.CodeGenerator.Actions.DataSources.Model
 {
 	public class FakeDataSourceModelSource : IModelSource<FakeDataSourceModel>
 	{
-		private readonly RegisteredEntityEnumerator registeredEntityEnumerator;
+		private readonly DbContext dbContext;
 		private readonly Project modelProject;
 		private readonly Project dataLayerProject;
 
-		public FakeDataSourceModelSource(RegisteredEntityEnumerator registeredEntityEnumerator, Project modelProject, Project dataLayerProject)
+		public FakeDataSourceModelSource(DbContext dbContext, Project modelProject, Project dataLayerProject)
 		{
-			this.registeredEntityEnumerator = registeredEntityEnumerator;
+			this.dbContext = dbContext;
 			this.modelProject = modelProject;
 			this.dataLayerProject = dataLayerProject;
 		}
 
 		public IEnumerable<FakeDataSourceModel> GetModels()
 		{
-			return (from registeredEntity in registeredEntityEnumerator.GetRegisteredEntities()
+			return (from registeredEntity in dbContext.Db()
 				select new FakeDataSourceModel
 				{
 					NamespaceName = GetNamespaceName(registeredEntity.NamespaceName, true),

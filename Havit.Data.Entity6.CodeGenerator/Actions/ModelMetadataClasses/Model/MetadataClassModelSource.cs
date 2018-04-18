@@ -3,23 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using Havit.Data.Entity.CodeGenerator.Entity;
 using Havit.Data.Entity.CodeGenerator.Services;
+using Havit.Data.Entity.Mapping.Internal;
 
 namespace Havit.Data.Entity.CodeGenerator.Actions.ModelMetadataClasses.Model
 {
 	public class MetadataClassModelSource : IModelSource<MetadataClass>
 	{
-		private readonly RegisteredEntityEnumerator registeredEntityEnumerator;
+		private readonly DbContext dbContext;
 		private readonly Project project;
 
-		public MetadataClassModelSource(RegisteredEntityEnumerator registeredEntityEnumerator, Project project)
+		public MetadataClassModelSource(DbContext dbContext, Project project)
 		{
-			this.registeredEntityEnumerator = registeredEntityEnumerator;
+			this.dbContext = dbContext;
 			this.project = project;
 		}
 
 		public IEnumerable<MetadataClass> GetModels()
 		{
-			List<MetadataClass> result = (from registeredEntity in registeredEntityEnumerator.GetRegisteredEntities()
+			List<MetadataClass> result = (from registeredEntity in dbContext.Db()
 				select new MetadataClass
 				{
 					NamespaceName = GetNamespaceName(registeredEntity.NamespaceName),

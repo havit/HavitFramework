@@ -1,9 +1,9 @@
-﻿using EntityFramework.MappingAPI.Extensions;
-using Havit.Data.Entity.Tests.Validators.Infrastructure;
+﻿using Havit.Data.Entity.Tests.Validators.Infrastructure;
 using Havit.Data.Entity.Tests.Validators.Infrastructure.Model;
 using Havit.Data.Entity.Validators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
+using Havit.Data.Entity.Mapping.Internal;
 
 namespace Havit.Data.Entity.Tests.Validators
 {

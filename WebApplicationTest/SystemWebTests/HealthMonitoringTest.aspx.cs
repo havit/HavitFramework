@@ -24,7 +24,7 @@ namespace Havit.WebApplicationTest.SystemWebTests
 
 		private void DoException2Button_Click(object sender, EventArgs e)
 		{
-			Contract.Requires(false, "Zkoušíme HealtMonitoring v tradičním asynchronním postbacku.");
+			Contract.Requires(false, "Zkoušíme HealtMonitoring v asynchronním postbacku.");
 		}
 	}
 }

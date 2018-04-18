@@ -12,6 +12,9 @@ using Havit.Data.Entity.ModelConfiguration.Edm;
 
 namespace Havit.Data.Entity.Mapping.Internal
 {
+	/// <summary>
+	/// It will get registered entities from the ObjectContext.
+	/// </summary>
 	public static class MappingApiExtensions
 	{
 		private static List<RegisteredEntity> registeredEntities;
@@ -22,6 +25,9 @@ namespace Havit.Data.Entity.Mapping.Internal
 			converter = new Converter();
 		}
 
+		/// <summary>
+		/// It will get RegisteredEntities.
+		/// </summary>
 		public static RegisteredEntity[] Db(this DbContext ctx)
 		{
 			ObjectContext objectContext = ((IObjectContextAdapter)ctx).ObjectContext;
@@ -31,11 +37,17 @@ namespace Havit.Data.Entity.Mapping.Internal
 			return result.ToArray();
 		}
 
+		/// <summary>
+		/// It will get propriate RegisteredEntity with same type.
+		/// </summary>
 		public static RegisteredEntity Db(this DbContext ctx, Type type)
 		{
 			return Db(ctx).FirstOrDefault(r => r.Type == type);
 		}
 
+		/// <summary>
+		/// It will get RegisteredEntities.
+		/// </summary>
 		public static List<RegisteredEntity> GetRegisteredEntities(ObjectContext objectContext)
 		{
 			lock (objectContext)

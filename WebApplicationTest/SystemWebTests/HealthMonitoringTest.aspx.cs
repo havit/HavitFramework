@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Havit.Diagnostics.Contracts;
 
 namespace Havit.WebApplicationTest.SystemWebTests
 {
@@ -18,12 +19,12 @@ namespace Havit.WebApplicationTest.SystemWebTests
 
 		private void DoExceptionButton_Click(object sender, EventArgs e)
 		{
-			throw new ApplicationException("Zkoušíme HealtMonitoring v tradičním synchronním postbacku.");
+			Contract.Requires(false, "Zkoušíme HealtMonitoring v tradičním synchronním postbacku.");
 		}
 
 		private void DoException2Button_Click(object sender, EventArgs e)
 		{
-			throw new ApplicationException("Zkoušíme HealtMonitoring v asynchronním postbacku.");
+			Contract.Requires(false, "Zkoušíme HealtMonitoring v tradičním asynchronním postbacku.");
 		}
 	}
 }

@@ -11,18 +11,17 @@ namespace Havit.Diagnostics.Contracts
 	/// </summary>
 	public sealed class ContractException : Exception
 	{
-		#region Constructors
 		/// <summary>
 		/// Konstructor.
 		/// </summary>
-		public ContractException(string message) : base(WrapMessage(message))
+		public ContractException(string message) : base(message)
 		{
 		}
 
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public ContractException(string message, Exception innerException) : base(WrapMessage(message), innerException)
+		public ContractException(string message, Exception innerException) : base(message, innerException)
 		{
 		}
 
@@ -34,24 +33,5 @@ namespace Havit.Diagnostics.Contracts
 			: base(info, context)
 		{
 		}
-		#endregion
-
-		#region WrapMessage
-		/// <summary>
-		/// Obalí zprávu textem "Contract failed".
-		/// Určeno pro volání v konstruktoru.
-		/// </summary>
-		private static string WrapMessage(string message)
-		{
-			if (String.IsNullOrEmpty(message))
-			{
-				return "Contract failed.";
-			}
-			else
-			{
-				return "Contract failed: " + message;
-			}
-		}
-		#endregion
 	}
 }

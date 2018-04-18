@@ -7,7 +7,7 @@ namespace Havit.Services.Tests.StateAdministrationServices
 	public class RodneCisloServiceTests
 	{
 		[TestMethod]
-		public void RodneCisloValidateTest()
+		public void RodneCisloServices_Validate()
 		{
             Assert.IsTrue(RodneCisloServices.Validate("7801233540")); // problematické, ale správné, viz http://phpfashion.com/jak-overit-platne-ic-a-rodne-cislo
 			Assert.IsTrue(RodneCisloServices.Validate("780123/3540")); // problematické, ale správné, viz http://phpfashion.com/jak-overit-platne-ic-a-rodne-cislo

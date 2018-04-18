@@ -7,7 +7,7 @@ namespace HavitTest
 	public class BooleandFieldTests
 	{
 		[TestMethod]
-		public void FormatDataValueTest()
+		public void BooleandField_FormatDataValue()
 		{
 			BooleanField bf = new BooleanField();
 			bf.EmptyText = "empty";

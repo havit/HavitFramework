@@ -19,7 +19,6 @@ namespace Havit.Data.Tests
 	[TestClass]
 	public class DbConnectorTests
 	{
-		#region Constructors
 		/// <summary>
 		/// A test for DbConnector (ConnectionStringSettings)
 		/// </summary>
@@ -62,13 +61,12 @@ namespace Havit.Data.Tests
 			Assert.AreEqual(target.ConnectionString, connectionString);
             Assert.AreEqual(target.ProviderFactory.GetType(), typeof(SqlClientFactory));
 		}
-		#endregion
 
 		/// <summary>
 		/// A test for Default
 		/// </summary>
 		[TestMethod]
-		public void DefaultTest_get_set_get_set()
+		public void DbConnector_Default_get_set_get_set()
 		{
 			DbConnector previousVal = DbConnector.Default;
 
@@ -86,7 +84,7 @@ namespace Havit.Data.Tests
 		/// A test for Default
 		/// </summary>
 		[TestMethod]
-		public void DefaultTest_get()
+		public void DbConnector_Default_get()
 		{
 			Assert.AreEqual(DbConnector.Default.ConnectionString, ConfigurationManager.ConnectionStrings["DefaultConnectionString"].ConnectionString);
 			Assert.AreEqual(DbConnector.Default.ProviderFactory.GetType(), typeof(SqlClientFactory));
@@ -96,7 +94,7 @@ namespace Havit.Data.Tests
 		/// A test for ExecuteScalar (string)
 		/// </summary>
 		[TestMethod]
-		public void ExecuteScalarTest()
+		public void DbConnector_ExecuteScalar()
 		{
 			string commandText = "SELECT Symbol FROM dbo.Role WHERE RoleID=-1";
 
@@ -109,7 +107,7 @@ namespace Havit.Data.Tests
 		}
 
 		[TestMethod]
-		public void ExecuteDataSetTest()
+		public void DbConnector_ExecuteDataSet()
 		{
 			string commandText = "SELECT * FROM dbo.Role";
 
@@ -120,7 +118,7 @@ namespace Havit.Data.Tests
 		}
 
 		[TestMethod]
-		public void ExecuteDataTableTest()
+		public void DbConnector_ExecuteDataTable()
 		{
 			string commandText = "SELECT Symbol FROM dbo.Role";
 
@@ -131,7 +129,7 @@ namespace Havit.Data.Tests
 		}
 
 		[TestMethod]
-		public void ExecuteNonQueryTest()
+		public void DbConnector_ExecuteNonQuery()
 		{
 			string commandText = "UPDATE dbo.Role SET Symbol='X' WHERE 0=1";
 
@@ -140,7 +138,7 @@ namespace Havit.Data.Tests
 		}
 
 		[TestMethod]
-		public void ExecuteReaderTest()
+		public void DbConnector_ExecuteReader()
 		{
 			string commandText = "SELECT Symbol FROM dbo.Role";
 
@@ -152,7 +150,7 @@ namespace Havit.Data.Tests
 		}
 
 		[TestMethod]
-		public void ExecuteDataRecordTest()
+		public void DbConnector_ExecuteDataRecord()
 		{
 			string commandText = "SELECT Symbol FROM dbo.Role WHERE RoleID=-1";
 

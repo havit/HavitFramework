@@ -7,7 +7,7 @@ namespace Havit.Services.Tests.StateAdministrationServices
 	public class IdentifikacniCisloServiceTests
 	{
 		[TestMethod]
-		public void IdentifikacniCisloValidateTest()
+		public void IdentifikacniCisloServices_Validate()
 		{
 			Assert.IsTrue(IdentifikacniCisloServices.Validate("25612697"));  // HAVIT
 			Assert.IsTrue(IdentifikacniCisloServices.Validate("73381543"));  // JK

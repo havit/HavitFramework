@@ -6,9 +6,8 @@ namespace Havit.Services.Tests.DirectoryServices
 	[TestClass]
 	public class ActiveDirectoryServicesTests
 	{
-		#region GetUserInfoTest_SearchByDomain
 		[TestMethod]
-		public void GetUserInfoTest_SearchByDomain()
+		public void ActiveDirectoryServices_GetUserInfo_SearchByDomain()
 		{
 			ActiveDirectoryServices services = new ActiveDirectoryServices();
 			Assert.IsNotNull(services.GetUserInfo("kanda"), "User 'kanda' not found.");
@@ -16,11 +15,9 @@ namespace Havit.Services.Tests.DirectoryServices
 			Assert.IsNotNull(services.GetUserInfo(@"HAVIT\kanda"), @"User 'HAVIT\kanda' not found.");
 			Assert.IsNotNull(services.GetUserInfo(@"HAVIT\KANDA"), @"User 'HAVIT\KANDA' not found.");
 		}
-		#endregion
 
-		#region GetUserInfoTest_DetailData
 		[TestMethod]
-		public void GetUserInfoTest_DetailData()
+		public void ActiveDirectoryServices_GetUserInfo_DetailData()
 		{
 			ActiveDirectoryServices services = new ActiveDirectoryServices();
 			UserInfo userInfo = services.GetUserInfo(@"HAVIT\kanda");
@@ -32,7 +29,6 @@ namespace Havit.Services.Tests.DirectoryServices
 			Assert.IsNotNull(userInfo.FirstName, "FirstName is null.");
 			Assert.IsNotNull(userInfo.LastName, "LastName is null.");
 		}
-		#endregion
 
 	}
 }

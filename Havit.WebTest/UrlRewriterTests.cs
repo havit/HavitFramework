@@ -25,7 +25,7 @@ namespace Havit.WebTest
 		/// Celé to vypadá na problém v SGEN, resp. v System.Xml.Serialization.XmlSerializerFactory či podobné třídě zajišťující serializaci.
 		/// </summary>
 		[TestMethod]		
-		public void RewriterConfigSerializerSectionHandlerTest()
+		public void UrlRewriter_RewriterConfigSerializerSectionHandler()
 		{
 			string configurationString = @"
 				<UrlRewriterConfig>

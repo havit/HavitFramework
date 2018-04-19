@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>Havit.Data.Patterns</id>
-		<version>1.8.0</version>
+		<version>1.8.2</version>
 		<title>Havit.Data.Patterns</title>
 		<authors>HAVIT, s.r.o.</authors>
 		<owners>HAVIT, s.r.o.</owners>
@@ -14,15 +14,15 @@
 		<copyright>Copyright HAVIT, s.r.o. 2018</copyright>
 		<dependencies>
 			<group targetFramework="net46">
-			  <dependency id="Havit" version="1.8.0" />
-			  <dependency id="Havit.Model" version="1.8.0" />
-			  <dependency id="Havit.Services" version="1.8.0" />
+			  <dependency id="Havit" version="1.8.2" />
+			  <dependency id="Havit.Model" version="1.8.2" />
+			  <dependency id="Havit.Services" version="1.8.2" />
 			  <dependency id="Microsoft.CSharp" version="4.4.1" />
 			</group>
 			<group targetFramework="netstandard2.0">
-				<dependency id="Havit" version="1.8.0" />
-				<dependency id="Havit.Model" version="1.8.0" />
-				<dependency id="Havit.Services" version="1.8.0" />
+				<dependency id="Havit" version="1.8.2" />
+				<dependency id="Havit.Model" version="1.8.2" />
+				<dependency id="Havit.Services" version="1.8.2" />
 				<dependency id="Microsoft.CSharp" version="4.4.1" />
 			</group>
 		</dependencies>

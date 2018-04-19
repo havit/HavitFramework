@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>Havit.Data.Entity6.CodeGenerator</id>
-		<version>1.7.7</version>
+		<version>1.7.8</version>
 		<title>Havit.Data.Entity6.CodeGenerator</title>
 		<authors>HAVIT, s.r.o.</authors>
 		<owners>HAVIT, s.r.o.</owners>
@@ -15,7 +15,7 @@
 		<tags>HAVIT Data Patterns Entity Framework EF EF6 CodeGenerator</tags>
 		<dependencies>
 			<group targetFramework="net46">
-			  <dependency id="Havit.Data.Entity6.Patterns" version="1.7.7" />
+			  <dependency id="Havit.Data.Entity6.Patterns" version="1.7.8" />
 			</group>
 		</dependencies>
 	</metadata>

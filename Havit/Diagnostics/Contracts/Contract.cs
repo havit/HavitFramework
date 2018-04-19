@@ -19,66 +19,41 @@ namespace Havit.Diagnostics.Contracts
 		/// <summary>
 		/// Pokud není podmínka condition splněna (hodnota je false), vyhodí výjimku ContractException.
 		/// </summary>
-		/// <remarks>
-		/// Vyhozená výjimka je typu ContractException. Obsahuje zprávu ve formátu:<br />
-		/// <code>
-		/// Contract failed: Message<br />
-		/// Member Name: Main<br />
-		///	Source File Path: D:\Dev\MySolution\MyProject\Program.cs<br />
-		/// Source Line Number: 123<br />
-		/// </code>
-		/// </remarks>
 		[DebuggerStepThrough]
 		[ContractAnnotation("condition:false => halt")]
-		public static void Requires(bool condition, string userMessage = null, [CallerMemberName] string memberName = null, [CallerFilePath] string sourceFilePath = null, [CallerLineNumber] int sourceLineNumber = Int32.MinValue)
+		public static void Requires(bool condition, string userMessage = null)
 		{
 			if (!condition)
 			{
-				ThrowException<ContractException>(ConstructMessage(userMessage, memberName, sourceFilePath, sourceLineNumber));
+				ThrowException<ContractException>(ConstructMessage(userMessage));
 			}
 		}
 
 		/// <summary>
 		/// Pokud není podmínka condition splněna (hodnota je false), vyhodí výjimku TException.
 		/// </summary>
-		/// <remarks>
-		/// Vyhozená výjimka obsahuje zprávu ve formátu:<br />
-		/// <code>
-		/// Contract failed: Message<br />
-		/// Member Name: Main<br />
-		///	Source File Path: D:\Dev\MySolution\MyProject\Program.cs<br />
-		/// Source Line Number: 123<br />
-		/// </code>
-		/// </remarks>
 		/// <typeparam name="TException">Typ výjimky, která je v případě nesplnění podmínky vyhozena.</typeparam>
 		[DebuggerStepThrough]
 		[ContractAnnotation("condition:false => halt")]
-		public static void Requires<TException>(bool condition, string userMessage = null, [CallerMemberName] string memberName = null, [CallerFilePath] string sourceFilePath = null, [CallerLineNumber] int sourceLineNumber = Int32.MinValue)
+		public static void Requires<TException>(bool condition, string userMessage = null)
 			where TException : Exception
 		{
 			if (!condition)
 			{
-				ThrowException<TException>(ConstructMessage(userMessage, memberName, sourceFilePath, sourceLineNumber));
+				ThrowException<TException>(ConstructMessage(userMessage));
 			}
 		}
 
 		/// <summary>
 		/// Pokud není podmínka condition splněna (hodnota je false), vyhodí výjimku ContractException.
 		/// </summary>
-		/// Vyhozená výjimka je typu ContractException. Obsahuje zprávu ve formátu:<br />
-		/// <code>
-		/// Contract failed: Message<br />
-		/// Member Name: Main<br />
-		///	Source File Path: D:\Dev\MySolution\MyProject\Program.cs<br />
-		/// Source Line Number: 123<br />
-		/// </code>
 		[DebuggerStepThrough]
 		[ContractAnnotation("condition:false => halt")]
-		public static void Assert(bool condition, string userMessage = null, [CallerMemberName] string memberName = null, [CallerFilePath] string sourceFilePath = null, [CallerLineNumber] int sourceLineNumber = Int32.MinValue)
+		public static void Assert(bool condition, string userMessage = null)
 		{
 			if (!condition)
 			{
-				ThrowException<ContractException>(ConstructMessage(userMessage, memberName, sourceFilePath, sourceLineNumber));
+				ThrowException<ContractException>(ConstructMessage(userMessage));
 			}
 		}
 
@@ -97,12 +72,12 @@ namespace Havit.Diagnostics.Contracts
 		/// <typeparam name="TException">Typ výjimky, která je v případě nesplnění podmínky vyhozena.</typeparam>
 		[DebuggerStepThrough]
 		[ContractAnnotation("condition:false => halt")]
-		public static void Assert<TException>(bool condition, string userMessage = null, [CallerMemberName] string memberName = null, [CallerFilePath] string sourceFilePath = null, [CallerLineNumber] int sourceLineNumber = Int32.MinValue)
+		public static void Assert<TException>(bool condition, string userMessage = null)
 			where TException : Exception
 		{
 			if (!condition)
 			{
-				ThrowException<TException>(ConstructMessage(userMessage, memberName, sourceFilePath, sourceLineNumber));
+				ThrowException<TException>(ConstructMessage(userMessage));
 			}
 		}
 
@@ -125,19 +100,12 @@ namespace Havit.Diagnostics.Contracts
 
 		/// <summary>
 		/// Obalí zprávu textem "Contract failed".
-		/// Určeno pro volání v konstruktoru.
 		/// </summary>
-		private static string ConstructMessage(string message, string memberName, string sourceFilePath, int sourceLineNumber)
+		private static string ConstructMessage(string message)
 		{
-			string contractFailedMessage = String.IsNullOrEmpty(message) 
+			return String.IsNullOrEmpty(message) 
 				? "Contract failed."
 				: "Contract failed: " + message;
-
-			return  $@"{contractFailedMessage}
-Member Name: {memberName}
-Source File Path: {sourceFilePath}
-Source Line Number: {sourceLineNumber}";
 		}
-
 	}
 }

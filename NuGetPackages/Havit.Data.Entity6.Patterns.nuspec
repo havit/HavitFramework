@@ -17,7 +17,7 @@
 			  <dependency id="Havit" version="1.8.0" />
 			  <dependency id="Havit.Model" version="1.8.0" />
 			  <dependency id="Havit.Services" version="1.8.0" />
-			  <dependency id="Havit.Data.Entity6" version="1.7.3" />
+			  <dependency id="Havit.Data.Entity6" version="1.7.7" />
 			  <dependency id="Havit.Data.Patterns" version="1.8.0" />
 			</group>
 		</dependencies>

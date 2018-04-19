@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>Havit.Data.Entity6.CodeGenerator</id>
-		<version>1.7.4</version>
+		<version>1.7.7</version>
 		<title>Havit.Data.Entity6.CodeGenerator</title>
 		<authors>HAVIT, s.r.o.</authors>
 		<owners>HAVIT, s.r.o.</owners>

@@ -8,7 +8,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{c1bd4bba-35db-43b6-b4e9-072afac6ebd5}</ProjectGuid>
-    <SHFBSchemaVersion>2015.6.5.0</SHFBSchemaVersion>
+    <SHFBSchemaVersion>2017.9.26.0</SHFBSchemaVersion>
     <!-- AssemblyName, Name, and RootNamespace are not used by SHFB but Visual
          Studio adds them anyway -->
     <AssemblyName>Documentation</AssemblyName>
@@ -21,7 +21,7 @@
     <ProjectSummary>
     </ProjectSummary>
     <MissingTags>None</MissingTags>
-    <VisibleItems>Attributes, InheritedMembers, InheritedFrameworkMembers, Protected, SealedProtected</VisibleItems>
+    <VisibleItems>Attributes, InheritedMembers, InheritedFrameworkMembers, Protected, SealedProtected, EditorBrowsableNever, NonBrowsable</VisibleItems>
     <HtmlHelp1xCompilerPath>
     </HtmlHelp1xCompilerPath>
     <HtmlHelp2xCompilerPath>
@@ -215,10 +215,51 @@
   </ItemGroup>
   <!-- Import the SHFB build targets -->
   <Import Project="$(SHFBROOT)\SandcastleHelpFileBuilder.targets" />
-  <Target Name="TfsPublish" AfterTargets="AfterBuildHelp" Condition="'$(PublishDirectory)' != ''">
+  <!--<Target Name="TfsPublish" AfterTargets="AfterBuildHelp" Condition="'$(PublishDirectory)' != ''">-->
+  <Target Name="TfsPublish" AfterTargets="AfterBuildHelp">
     <ItemGroup>
       <FilesToCopy Include="$(OutputPath)\**\*.*" />
     </ItemGroup>
-    <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(PublishDirectory)\Documentation\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <MakeDir Directories="$(PublishDirectory)\Documentation" />
+    <Zip Files="@(FilesToCopy)" OutputFilename="$(PublishDirectory)\Documentation\Documentation.zip" />
+    <!--<Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(PublishDirectory)\Documentation\%(RecursiveDir)%(Filename)%(Extension)')" />-->
   </Target>
+  <UsingTask TaskName="Zip" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+    <ParameterGroup>
+      <OutputFilename ParameterType="System.String" Required="true" />
+      <Files ParameterType="Microsoft.Build.Framework.ITaskItem[]" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Reference Include="System.IO.Compression" />
+      <Using Namespace="System.IO.Compression" />
+      <Code Type="Fragment" Language="cs"><![CDATA[
+      try
+      {
+        using (Stream zipStream = new FileStream(Path.GetFullPath(OutputFilename), FileMode.Create, FileAccess.Write))
+        using (ZipArchive archive = new ZipArchive(zipStream, ZipArchiveMode.Create))
+        {
+            foreach (ITaskItem fileItem in Files)
+            {
+                string filename = fileItem.ItemSpec;
+                using (Stream fileStream = new FileStream(filename, FileMode.Open, FileAccess.Read))
+				{
+					string archiveFilename = filename.StartsWith("doc\\") ? filename.Substring(4) : filename;
+					
+					using (Stream fileStreamInZip = archive.CreateEntry(archiveFilename).Open())
+					{
+						fileStream.CopyTo(fileStreamInZip);
+					}
+				}
+            }
+        }
+        return true;
+      }
+      catch (Exception ex)
+      {
+        Log.LogErrorFromException(ex);
+        return false;
+      }
+    ]]></Code>
+    </Task>
+  </UsingTask>
 </Project>

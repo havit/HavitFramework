@@ -383,7 +383,6 @@ var havitAutoCompleteTextBoxExtensions = {
             $textbox.autocomplete(options);
             $clearTextLink.click(function (event) { event.preventDefault(); havitAutoCompleteTextBoxExtensions.onClickClearTextLink($textbox, $hiddenfield, $item); });
             $clearTextLink.css({
-                "font-size": $textbox.css("font-size"),
                 "color": $textbox.css("color")
             });
         });

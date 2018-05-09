@@ -6,7 +6,8 @@
 		<title>Havit.Web.Bootstrap</title>
 		<authors>HAVIT, s.r.o.</authors>
 		<owners>HAVIT, s.r.o.</owners>
-		<description>
+    <iconUrl>https://www.gravatar.com/avatar/e59ffb10448162f0c6d6b5ae3fecd0ce?s=64</iconUrl>
+    <description>
 			Installs Havit.Web.Bootstrap assembly and Bootstrap LESS files (via Twitter.Bootstrap.Less NuGet) to project.
 		</description>
 		<language>en-US</language>

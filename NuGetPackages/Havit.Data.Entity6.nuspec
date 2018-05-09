@@ -6,7 +6,8 @@
 		<title>Havit.Data.Entity6</title>
 		<authors>HAVIT, s.r.o.</authors>
 		<owners>HAVIT, s.r.o.</owners>
-		<description>
+    <iconUrl>https://www.gravatar.com/avatar/e59ffb10448162f0c6d6b5ae3fecd0ce?s=64</iconUrl>
+    <description>
 			HAVIT Entity Framework Library
 		</description>
 		<language>en-US</language>

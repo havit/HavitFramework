@@ -5,7 +5,8 @@
 	<version>1.8.2</version>
 	<title>Havit.Services</title>
 	<authors>HAVIT, s.r.o.</authors>
-	<owners>HAVIT, s.r.o.</owners>
+  <owners>HAVIT, s.r.o.</owners>
+    <iconUrl>https://www.gravatar.com/avatar/e59ffb10448162f0c6d6b5ae3fecd0ce?s=64</iconUrl>
 	<description>
 	  HAVIT .NET Framework Extensions - Services (Havit.Services.dll)
 	</description>

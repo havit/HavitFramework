@@ -66,7 +66,9 @@ namespace Havit.ComponentModel
 		/// <returns>true if <paramref name="value"/> was converted successfully; otherwise, false.</returns>
 		public static bool TryConvertTo<T>(object value, out T result, CultureInfo culture)
 		{
-			return TryConvertTo(value, out result, culture);
+			var success = TryConvertTo(value, typeof(T), out object objectResult, culture);
+		    result = success ? (T)objectResult : default(T);
+		    return success;
 		}
 		#endregion
 
@@ -91,7 +93,7 @@ namespace Havit.ComponentModel
 		/// <returns>An Object instance of type <typeparamref name="T">T</typeparamref> whose value is equivalent to the given <paramref name="value">value</paramref>.</returns>
 		public static T ConvertTo<T>(object value, CultureInfo culture)
 		{
-			return ConvertTo<T>(value, culture);
+			return (T)ConvertTo(value, typeof(T), culture);
 		}
 		#endregion
 

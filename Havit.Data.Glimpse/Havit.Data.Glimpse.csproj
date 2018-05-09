@@ -60,7 +60,7 @@
     <Compile Include="Message\DbConnectorTimelineMessage.cs" />
     <Compile Include="Message\DbConnectorTimelineCategory.cs" />
     <Compile Include="SerializationConverters\SqlDataRecordArrayConverter.cs" />
-    <Compile Include="SerializationConverters\DbCommandTraceDataConverter.cs" />
+    <Compile Include="SerializationConverters\DbCommandTraceDataSerializationConverter.cs" />
     <Compile Include="Tabs\DbConnectorTab.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

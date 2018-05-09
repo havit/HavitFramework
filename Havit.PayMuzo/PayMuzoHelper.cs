@@ -94,7 +94,7 @@ namespace Havit.PayMuzo
 			// 8. URL
 			if (String.IsNullOrEmpty(returnUrl))
 			{
-				throw new ArgumentException("returnUrl", "returnUrl nesmí být null ani String.Empty");
+				throw new ArgumentException("returnUrl nesmí být null ani String.Empty", nameof(returnUrl));
 			}
 			request.Add("URL", returnUrl);
 
@@ -107,7 +107,7 @@ namespace Havit.PayMuzo
 					int numericValue = description[i];
 					if ((numericValue > 0x7E) || (numericValue < 0x20))
 					{
-						throw new ArgumentException("description", "description smí obsahovat pouze ASCII znaky 0x20 - 0x7E.");
+						throw new ArgumentException("description smí obsahovat pouze ASCII znaky 0x20 - 0x7E.", nameof(description));
 					}
 				}
 				request.Add("DESCRIPTION", description);
@@ -119,7 +119,7 @@ namespace Havit.PayMuzo
 				// pole smí být maximálně 30B dlouhé
 				if (merchantData.Length > 30)
 				{
-					throw new ArgumentException("merchantData", "Maximální velikost pole merchantData je 30 znaků.");
+					throw new ArgumentException("Maximální velikost pole merchantData je 30 znaků.", nameof(merchantData));
 				}
 
 				// pole smí obsahovat pouze ASCII znaku 0x20 - 0x7E
@@ -128,7 +128,7 @@ namespace Havit.PayMuzo
 					int numericValue = merchantData[i];
 					if ((numericValue > 0x7E) || (numericValue < 0x20))
 					{
-						throw new ArgumentException("merchantData", "merchantData smí obsahovat pouze ASCII znaky 0x20 - 0x7E. Použijte BASE64 kódování.");
+						throw new ArgumentException("merchantData smí obsahovat pouze ASCII znaky 0x20 - 0x7E. Použijte BASE64 kódování.", nameof(merchantData));
 					}
 				}
 				request.Add("MD", merchantData);
@@ -148,12 +148,12 @@ namespace Havit.PayMuzo
 		{
 			if (requestData == null)
 			{
-				throw new ArgumentNullException("request");
+				throw new ArgumentNullException(nameof(requestData));
 			}
 
 			if (certificate == null)
 			{
-				throw new ArgumentNullException("certificate");
+				throw new ArgumentNullException(nameof(certificate));
 			}
 
 			string rawData = requestData.GetPipedRawData();
@@ -176,11 +176,11 @@ namespace Havit.PayMuzo
 		{
 			if (certificate == null)
 			{
-				throw new ArgumentNullException("certificate");
+				throw new ArgumentNullException(nameof(certificate));
 			}
 			if (String.IsNullOrEmpty(data))
 			{
-				throw new ArgumentException("data", "Argument data nesmí být null ani String.Empty.");
+				throw new ArgumentException("Argument data nesmí být null ani String.Empty.", nameof(data));
 			}
 
 			RSACryptoServiceProvider rsa = (RSACryptoServiceProvider)certificate.PrivateKey;

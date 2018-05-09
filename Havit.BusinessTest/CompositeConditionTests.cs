@@ -28,7 +28,7 @@ namespace Havit.BusinessTest
 		{
 			AndCondition andCondition = new AndCondition();
 			andCondition.Conditions.Add(EmptyCondition.Create());
-			Assert.AreEqual(andCondition.Conditions.Count, 0);
+			Assert.AreEqual(0, andCondition.Conditions.Count);
 		}
 
 		[TestMethod]

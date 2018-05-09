@@ -11,25 +11,20 @@ namespace Havit.WebApplicationTest.HavitWebBootstrapTests
 {
 	public partial class ModalDialogTest : System.Web.UI.Page
 	{
-		#region OnInit
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
 			OpenButton.Click += OpenButton_Click;
-			ModalDialogUserControlTestUC.SwicthDialogClick += SwicthDialogClick;
+			ModalDialogUserControlTestUC.SwitchDialogClick += SwitchDialogClick;
 			DynarchCalendar.RegisterCalendarSkinStylesheets(this);			
 		}
-		#endregion
 
-		#region SwicthDialogClick
-		private void SwicthDialogClick(object sender, EventArgs eventArgs)
+		private void SwitchDialogClick(object sender, EventArgs eventArgs)
 		{
 			ModalDialogUserControlTestUC.Hide();
 			ModalDialogUserControlTest2UC.Show();
 		}
-		#endregion
 
-		#region OnLoad
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
@@ -40,13 +35,10 @@ namespace Havit.WebApplicationTest.HavitWebBootstrapTests
 
 			Form.DefaultButton = TestButton.UniqueID;
 		}
-		#endregion
 
-		#region OpenButton_Click
 		private void OpenButton_Click(object sender, EventArgs e)
 		{
 			ModalDialogUserControlTestUC.Show();
 		}
-		#endregion
 	}
 }

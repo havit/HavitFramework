@@ -38,7 +38,8 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Template pro filtr.
 		/// </summary>
-		[TemplateContainer(typeof(IDataItemContainer)), PersistenceMode(PersistenceMode.InnerProperty)]
+		[TemplateContainer(typeof(IDataItemContainer))]
+		[PersistenceMode(PersistenceMode.InnerProperty)]
 		public virtual ITemplate FilterTemplate { get; set; }
 		#endregion
 
@@ -46,7 +47,9 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// Styl buňky filtru.
 		/// </summary>
-		[DefaultValue(null), PersistenceMode(PersistenceMode.InnerProperty), DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+		[DefaultValue(null)]
+		[PersistenceMode(PersistenceMode.InnerProperty)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
 		public TableItemStyle FilterStyle
 		{
 			get

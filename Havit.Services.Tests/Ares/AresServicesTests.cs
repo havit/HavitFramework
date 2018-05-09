@@ -14,7 +14,7 @@ namespace Havit.Services.Tests.Ares
 			AresService service = new AresService(ico);
 			service.Timeout = 60 * 1000; /* 60 sec */
 			AresData basicAresResult = service.GetData(AresRegistr.Basic);
-			Assert.AreEqual(basicAresResult.SubjektZanikl, false);
+			Assert.AreEqual(false, basicAresResult.SubjektZanikl);
 		}
 
 		//[TestMethod]
@@ -25,7 +25,7 @@ namespace Havit.Services.Tests.Ares
 			AresService service = new AresService(ico);
 			service.Timeout = 60 * 1000; /* 60 sec */
 			AresData basicAresResult = service.GetData(AresRegistr.Basic);
-			Assert.AreEqual(basicAresResult.SubjektZanikl, true);
+			Assert.AreEqual(true, basicAresResult.SubjektZanikl);
 		}
 
 		//[TestMethod]
@@ -36,7 +36,7 @@ namespace Havit.Services.Tests.Ares
 			AresService service = new AresService(ico);
 			service.Timeout = 60 * 1000; /* 60 sec */
 			var data = service.GetData(AresRegistr.ObchodniRejstrik);
-			Assert.AreEqual(data.SubjektZanikl, false);
+			Assert.AreEqual(false, data.SubjektZanikl);
 		}
 
 		//[TestMethod]
@@ -47,7 +47,7 @@ namespace Havit.Services.Tests.Ares
 			AresService service = new AresService(ico);
 			service.Timeout = 60 * 1000; /* 60 sec */
 			var data = service.GetData(AresRegistr.ObchodniRejstrik);
-			Assert.AreEqual(data.SubjektZanikl, true);
+			Assert.AreEqual(true, data.SubjektZanikl);
 		}
 
 		//[TestMethod]

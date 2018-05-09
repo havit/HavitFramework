@@ -163,9 +163,9 @@ namespace Havit.Web.Management
 		{
 			if (!String.IsNullOrEmpty(recipients))
 			{
-				foreach (string _recipientsAddress in recipients.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries))
+				foreach (string recipientsAddress in recipients.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries))
 				{
-					mailAddressCollection.Add(_recipientsAddress.Trim());
+					mailAddressCollection.Add(recipientsAddress.Trim());
 				}
 			}
 		}

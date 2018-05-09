@@ -23,7 +23,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Havit.BusinessTest
 {
 	[TestClass]
-	public class BusinessObjectCachingTests
+	public class BusinessObject_CachingTests
 	{
 		private const int CurrencyWellKnownID = 1;
 

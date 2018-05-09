@@ -107,11 +107,11 @@
     </Compile>
     <Compile Include="PayPalApiCredentials.cs" />
     <Compile Include="PayPalCurrency.cs" />
-    <Compile Include="PayPalDoExpressCheckoutPayementResponse.cs" />
+    <Compile Include="PayPalDoExpressCheckoutPaymentResponse.cs" />
     <Compile Include="PayPalGetExpressCheckoutDetailsResponse.cs" />
     <Compile Include="PayPalHelper.cs" />
-    <Compile Include="PayPalLandingPage.cs" />
-    <Compile Include="PayPalPaymentAction.cs" />
+    <Compile Include="PayPalLandingPageHelper.cs" />
+    <Compile Include="PayPalPaymentActionHelper.cs" />
     <Compile Include="PayPalRequestData.cs" />
     <Compile Include="PayPalResponseBase.cs" />
     <Compile Include="PayPalResponseData.cs" />

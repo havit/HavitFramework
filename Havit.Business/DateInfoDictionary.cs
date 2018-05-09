@@ -8,15 +8,6 @@ namespace Havit.Business
 	/// </summary>
 	public class DateInfoDictionary : DictionaryBase
 	{
-		#region Constructor
-		/// <summary>
-		/// Vytvoří prázdnou instanci <see cref="DateInfoDictionary"/>
-		/// </summary>
-		public DateInfoDictionary()
-		{
-		}
-		#endregion
-
 		#region Indexer
 		/// <summary>
 		/// Indexer přes klíče <see cref="System.DateTime"/>.

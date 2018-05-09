@@ -114,7 +114,7 @@ namespace Havit.Data.Tests
 			DataSet dataSet = DbConnector.Default.ExecuteDataSet(commandText);
 
 			Assert.IsNotNull(dataSet);
-			Assert.AreEqual(dataSet.Tables.Count, 1);
+			Assert.AreEqual(1, dataSet.Tables.Count);
 		}
 
 		[TestMethod]
@@ -125,7 +125,7 @@ namespace Havit.Data.Tests
 			DataTable dataTable = DbConnector.Default.ExecuteDataTable(commandText);
 
 			Assert.IsNotNull(dataTable);
-			Assert.AreEqual(dataTable.Columns.Count, 1);
+			Assert.AreEqual(1, dataTable.Columns.Count);
 		}
 
 		[TestMethod]
@@ -134,7 +134,7 @@ namespace Havit.Data.Tests
 			string commandText = "UPDATE dbo.Role SET Symbol='X' WHERE 0=1";
 
 			int rowsAffected = DbConnector.Default.ExecuteNonQuery(commandText);
-			Assert.AreEqual(rowsAffected, 0);
+			Assert.AreEqual(0, rowsAffected);
 		}
 
 		[TestMethod]

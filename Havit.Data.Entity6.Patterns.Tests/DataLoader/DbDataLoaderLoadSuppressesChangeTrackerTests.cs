@@ -54,7 +54,8 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 		/// Timeout: Limitujeme test na 5 sekund. Při lokálním vývoji běží test BEZ changetrackeru 2 až 3 sekundy, s changetrackerem okolo 25-30 sekund.
 		/// To platí pro 1000 masterů, každý 100 childů a 10x spuštění DbDataLoader.Load pro každý master.
 		/// </summary>
-		[TestMethod, Timeout(10000)]
+		[TestMethod]
+		[Timeout(10000)]
 		public void DbDataLoaderLoadSuppressesChangeTrackerTest_Load_ShouldBeFastBySuppressingChangeTracker()
 		{
 			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();

@@ -4,10 +4,6 @@ namespace Havit.Data.Entity.Patterns.Tests.Infrastructure
 {
 	public class TestDbContext : DbContext
 	{
-		public TestDbContext()
-		{
-		}
-
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			base.OnConfiguring(optionsBuilder);

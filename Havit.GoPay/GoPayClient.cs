@@ -45,7 +45,7 @@ namespace Havit.GoPay
 
 			if (httpClient.BaseAddress == null)
 			{
-				throw new ArgumentNullException(nameof(httpClient.BaseAddress));
+				throw new InvalidOperationException("HttpClient nemá nastavenu BaseAddress.");
 			}
 
 			this.httpClient = httpClient;

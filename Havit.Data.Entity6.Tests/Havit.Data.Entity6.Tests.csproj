@@ -100,8 +100,8 @@
     <Compile Include="Validators\Infrastructure\Model\StringIdClass.cs" />
     <Compile Include="Validators\Infrastructure\Model\CapitalIDClass.cs" />
     <Compile Include="Validators\Infrastructure\Model\MaxLengthAttributeWithPositiveValueClass.cs" />
-    <Compile Include="Validators\Infrastructure\Model\WithNestedEnumOtherClass.cs" />
     <Compile Include="Validators\Infrastructure\Model\WithNestedEnumEntryClass.cs" />
+    <Compile Include="Validators\Infrastructure\Model\WithNestedEnumOtherClass.cs" />
     <Compile Include="Validators\Infrastructure\Model\WithNestedClassClass.cs" />
     <Compile Include="Validators\Infrastructure\Model\NoMaxLengthAttributeClass.cs" />
     <Compile Include="Validators\Infrastructure\Model\OneCorrectKeyClass.cs" />

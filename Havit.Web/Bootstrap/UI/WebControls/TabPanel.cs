@@ -17,7 +17,8 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	/// <summary>
 	/// TabPanel - one item in TabContainer with its header and content.
 	/// </summary>
-	[PersistChildren(false), ParseChildren(true)]
+	[PersistChildren(false)]
+	[ParseChildren(true)]
 	public class TabPanel : WebControl
 	{
 		#region ContentTemplate
@@ -25,7 +26,9 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Gets or sets the template for displaying the content of TabPanel.
 		/// When content template set it cannot be changed anymore.
 		/// </summary>
-		[Browsable(false), TemplateInstance(TemplateInstance.Single), PersistenceMode(PersistenceMode.InnerProperty)]
+		[Browsable(false)]
+		[TemplateInstance(TemplateInstance.Single)]
+		[PersistenceMode(PersistenceMode.InnerProperty)]
 		public ITemplate ContentTemplate
 		{
 			get

@@ -6,6 +6,7 @@ using Havit.Data;
 using System.Data.Common;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Havit.Business
 {
@@ -549,6 +550,7 @@ namespace Havit.Business
 		/// <param name="objA">první objekt</param>
 		/// <param name="objB">druhý objekt</param>
 		/// <returns>true, pokud mají objekty stejné ID; jinak false</returns>
+		[SuppressMessage("SonarLint", "S3875", Justification = "Z důvodu zpětné kompatibility bych operátor neodstraňoval a jeho logiku neměnil.")]
 		public static bool operator ==(BusinessObjectBase objA, BusinessObjectBase objB)
 		{
 			return Object.Equals(objA, objB);

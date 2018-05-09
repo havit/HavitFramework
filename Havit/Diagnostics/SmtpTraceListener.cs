@@ -177,9 +177,9 @@ namespace Havit.Diagnostics
 
 			if (!String.IsNullOrEmpty(_to))
 			{
-				foreach (string _toAddress in _to.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries))
+				foreach (string toAddress in _to.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries))
 				{
-					mailMessage.To.Add(_toAddress.Trim());
+					mailMessage.To.Add(toAddress.Trim());
 				}
 			}
 

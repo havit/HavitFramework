@@ -83,7 +83,7 @@ namespace Havit.Business
 		{
 			if (info == null)
 			{
-				throw new ArgumentNullException("info");
+				throw new ArgumentNullException(nameof(info));
 			}
 
 			_businessObject = (BusinessObjectBase)info.GetValue("BusinessObject", typeof(BusinessObjectBase));

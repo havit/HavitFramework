@@ -29,7 +29,7 @@ namespace Havit.AspNet.Mvc.Messenger
 		/// </summary>
 		/// <param name="message">The message.</param>
 		/// <param name="messageType">Type of the message.</param>
-		public void AddMessage(string message, MessageType messageType)
+		public void AddMessage(string message, MessageType messageType = MessageType.Success)
 		{
 			messageStorage.AddMessage(new Message { Text = message, MessageType = messageType });
 		}

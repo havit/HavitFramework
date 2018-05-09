@@ -1012,7 +1012,7 @@ namespace Havit.Web.UI.WebControls
 				{
 					sb.AppendLine(",");
 				}
-				sb.AppendFormat("weekNumbers : false");
+				sb.Append("weekNumbers : false");
 				firstLine = false;
 			}
 
@@ -1062,7 +1062,7 @@ namespace Havit.Web.UI.WebControls
 				{
 					sb.AppendLine(",");
 				}
-				sb.AppendFormat("showsTime : true");
+				sb.Append("showsTime : true");
 				firstLine = false;
 			}
 
@@ -1072,7 +1072,7 @@ namespace Havit.Web.UI.WebControls
 				{
 					sb.AppendLine(",");
 				}
-				sb.AppendFormat("timeFormat : \"12\"");
+				sb.Append("timeFormat : \"12\"");
 				firstLine = false;
 			}
 
@@ -1082,7 +1082,7 @@ namespace Havit.Web.UI.WebControls
 				{
 					sb.AppendLine(",");
 				}
-				sb.AppendFormat("electric : false");
+				sb.Append("electric : false");
 				firstLine = false;
 			}
 
@@ -1102,7 +1102,7 @@ namespace Havit.Web.UI.WebControls
 				{
 					sb.AppendLine(",");
 				}
-				sb.AppendFormat("cache : true");
+				sb.Append("cache : true");
 				firstLine = false;
 			}
 
@@ -1112,7 +1112,7 @@ namespace Havit.Web.UI.WebControls
 				{
 					sb.AppendLine(",");
 				}
-				sb.AppendFormat("showOthers : true");
+				sb.Append("showOthers : true");
 				firstLine = false;
 			}
 

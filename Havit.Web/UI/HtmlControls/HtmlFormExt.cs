@@ -18,11 +18,9 @@ namespace Havit.Web.UI.HtmlControls
 		/// Pokud není explicitně nastaveno, vrací automaticky Microsoft implementaci (včetně QueryStringu).
 		/// </summary>
 		/// <remarks>Nedělá se ResolveUrl.</remarks>
-		[
-			Description("Vrátí nebo nastaví cílové URL formuláře. Atribut Action formuláře."),
-			Category("Behavior"),
-			DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden),
-		]
+		[Description("Vrátí nebo nastaví cílové URL formuláře. Atribut Action formuláře.")]
+        [Category("Behavior")]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public new virtual string Action
 		{
 			get

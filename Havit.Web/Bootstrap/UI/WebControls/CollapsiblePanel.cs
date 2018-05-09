@@ -110,7 +110,9 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Gets or sets the template for displaying the content of CollapsiblePanel.
 		/// When content template set it cannot be changed anymore.
 		/// </summary>
-		[Browsable(false), TemplateInstance(TemplateInstance.Single), PersistenceMode(PersistenceMode.InnerProperty)]
+		[Browsable(false)]
+		[TemplateInstance(TemplateInstance.Single)]
+		[PersistenceMode(PersistenceMode.InnerProperty)]
 		public ITemplate ContentTemplate
 		{
 			get

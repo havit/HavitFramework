@@ -10,7 +10,7 @@ namespace Havit.WebApplicationTest.HavitWebBootstrapTests
 {
 	public partial class ModalDialogUserControlTest : ModalDialogUserControlBase
 	{
-		public EventHandler SwicthDialogClick;
+		public event EventHandler SwitchDialogClick;
 
 		#region OnInit
 		protected override void OnInit(EventArgs e)
@@ -27,7 +27,7 @@ namespace Havit.WebApplicationTest.HavitWebBootstrapTests
 		#region SwitchDialogButton_Click
 		private void SwitchDialogButton_Click(object sender, EventArgs e)
 		{
-			SwicthDialogClick?.Invoke(this, new EventArgs());
+			SwitchDialogClick?.Invoke(this, new EventArgs());
 		}
 		#endregion
 

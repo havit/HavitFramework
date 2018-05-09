@@ -75,7 +75,7 @@ namespace Havit.Business.Caching
 		/// <summary>
 		/// Přidá do cache položku, která je projekcí databázových resources pro jeden jazyk.
 		/// </summary>
-		void AddDbResourcesDataToCache(string cacheKey, object resources, CacheOptions cacheOptions);
+		void AddDbResourcesDataToCache(string cacheKey, object resources, CacheOptions cacheOptions = null);
 
 		/// <summary>
 		/// Odstraní z cache položku, která je projekcí databázových resources pro jeden jazyk.

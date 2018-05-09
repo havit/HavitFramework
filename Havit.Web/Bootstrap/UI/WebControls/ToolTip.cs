@@ -15,7 +15,8 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	/// <summary>
 	/// Label with ToolTip displayed as Bootstrap tooltip.
 	/// </summary>
-	[ParseChildren(false), PersistChildren(true)]
+	[ParseChildren(false)]
+	[PersistChildren(true)]
 	public class ToolTip : System.Web.UI.WebControls.WebControl
 	{
 		#region ToolTipPosition

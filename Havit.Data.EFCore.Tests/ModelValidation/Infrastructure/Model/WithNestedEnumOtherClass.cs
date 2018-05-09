@@ -1,10 +1,10 @@
 ﻿namespace Havit.Data.EFCore.Tests.ModelValidation.Infrastructure.Model
 {
-	public class WithNestedEnumEntryClass
+	public class WithNestedEnumOtherClass
 	{
 		public int Id { get; set; }
 
-		public enum Entry
+		public enum Other
 		{
 			One, Two, Three
 		}

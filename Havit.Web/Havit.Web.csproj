@@ -176,7 +176,7 @@
     <Compile Include="UI\WebControls\DataBoundControlWithHiddenPublicMembersFromIntellisence.cs" />
     <Compile Include="UI\WebControls\DateTimeBoxContainerRenderMode.cs" />
     <Compile Include="UI\WebControls\CheckBoxDropDownList.cs" />
-    <Compile Include="UI\WebControls\EditorExtenderItemDataBound.cs" />
+    <Compile Include="UI\WebControls\EditorExtenderItemDataBoundEventArgs.cs" />
     <Compile Include="UI\WebControls\EditorExtenderMode.cs" />
     <Compile Include="UI\WebControls\GetSuggestionsResult.cs" />
     <Compile Include="UI\WebControls\GridViewRowClickEventArgs.cs" />
@@ -221,7 +221,7 @@
     <Compile Include="Bootstrap\UI\WebControls\TabPanel.cs" />
     <Compile Include="Bootstrap\UI\WebControls\ToolTip.cs" />
     <Compile Include="Bootstrap\UI\WebControls\ToolTipPosition.cs" />
-    <Compile Include="Bootstrap\UI\WebControls\ValidationDisplayTarget.cs" />
+    <Compile Include="Bootstrap\UI\WebControls\ValidationDisplayTargetAttribute.cs" />
     <Compile Include="Bootstrap\UI\WebControls\ValidationSummary.cs" />
     <Compile Include="Bootstrap\UI\WebControls\ValidatorRenderExtender.cs" />
     <Compile Include="Compilation\CodeExpressionBuilder.cs" />
@@ -369,11 +369,11 @@
     <Compile Include="UI\WebControls\GridViewInsertedEventArgs.cs" />
     <Compile Include="UI\WebControls\GridViewInsertEventArgs.cs" />
     <Compile Include="UI\WebControls\GridViewInsertRowPosition.cs" />
-    <Compile Include="UI\WebControls\GridViewRenderingCommandButtonEventArgs.cs" />
+    <Compile Include="UI\WebControls\GridViewRowCustomizingCommandButtonEventArgs.cs" />
     <Compile Include="UI\WebControls\GridViews\HighlightingGridView.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI\WebControls\GridViews\Hightlighting.cs">
+    <Compile Include="UI\WebControls\GridViews\Highlighting.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UI\WebControls\HyperLinkFieldExt.cs" />

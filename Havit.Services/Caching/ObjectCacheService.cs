@@ -38,7 +38,7 @@ namespace Havit.Services.Caching
 		/// Přidá položku s daným klíčem a hodnotou do cache.
 		/// Prioritu NotRemovable respektuje, pro všechny ostatní použije Default (omezení ObjectCache).
 		/// </summary>
-		public virtual void Add(string key, object value, CacheOptions options)
+		public virtual void Add(string key, object value, CacheOptions options = null)
 		{
 			CacheItemPolicy cacheItemPolicy = null;
 

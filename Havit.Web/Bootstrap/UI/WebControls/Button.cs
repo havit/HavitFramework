@@ -14,7 +14,8 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	/// Supports also child controls (ASP.NET standard button does not support child controls for Button). When child controls are used, Text property cannot be used.
 	/// Gives Text property support of localization.
 	/// </summary>
-	[ParseChildren(false), PersistChildren(true)] // Enables child controls
+	[ParseChildren(false)]
+    [PersistChildren(true)] // Enables child controls
 	public class Button : System.Web.UI.WebControls.Button
 	{
 		#region IconCssClass

@@ -76,7 +76,7 @@ namespace Havit.Business.Caching
 		/// Přidá do cache položku, která je DataRecordem (cachování non-readonly objektů).
 		/// Tato třída nic neudělá.
 		/// </summary>
-		public void AddDataRecordToCache(Type businessObjectType, string cacheKey, DataRecord dataRecord, CacheOptions options)
+		public void AddDataRecordToCache(Type businessObjectType, string cacheKey, DataRecord dataRecord, CacheOptions options = null)
 		{
 			// NOOP
 		}
@@ -102,7 +102,7 @@ namespace Havit.Business.Caching
 		/// <summary>
 		/// Přidá do cache položku, která je kolekcí ID všech objektů (cachování kolekce GetAll).
 		/// </summary>
-		public void AddAllIDsToCache(Type businessObjectType, string cacheKey, int[] ids, CacheOptions options)
+		public void AddAllIDsToCache(Type businessObjectType, string cacheKey, int[] ids, CacheOptions options = null)
 		{
 			cacheService.Add(cacheKey, ids, options);
 		}
@@ -129,7 +129,7 @@ namespace Havit.Business.Caching
 		/// Přidá do cache položku, která je projekcí databázových resources pro jeden jazyk.
 		/// Tato třída nic neudělá.
 		/// </summary>
-		public void AddDbResourcesDataToCache(string cacheKey, object resources, CacheOptions cacheOptions)
+		public void AddDbResourcesDataToCache(string cacheKey, object resources, CacheOptions cacheOptions = null)
 		{
 			// NOOP
 		}

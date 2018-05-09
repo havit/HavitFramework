@@ -24,7 +24,7 @@ namespace Havit.Services.Caching
 		/// <summary>
 		/// Přidá položku s daným klíčem a hodnotou do cache. Tato třída nedělá nic.
 		/// </summary>
-		public void Add(string key, object value, CacheOptions options)
+		public void Add(string key, object value, CacheOptions options = null)
 		{
 			// NOOP
 		}

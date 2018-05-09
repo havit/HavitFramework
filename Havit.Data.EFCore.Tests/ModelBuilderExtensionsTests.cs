@@ -14,7 +14,7 @@ using Moq;
 namespace Havit.Data.EFCore.Tests
 {
 	[TestClass]
-	public class ModelBuilderExtensionsTest
+	public class ModelBuilderExtensionsTests
 	{
 		[TestMethod]
 		public void ModelBuilderExtensions_RegisterModelFromAssembly()
@@ -24,7 +24,7 @@ namespace Havit.Data.EFCore.Tests
 			Assert.IsNull(modelBuilder.Model.FindEntityType(typeof(ModelClass))); // ověřujeme, že vrací null (jinak je test chybně implementovaný)
 
 			// Act
-			modelBuilder.RegisterModelFromAssembly(typeof(ModelBuilderExtensionsTest).Assembly, typeof(ModelClass).Namespace);
+			modelBuilder.RegisterModelFromAssembly(typeof(ModelBuilderExtensionsTests).Assembly, typeof(ModelClass).Namespace);
 
 			// Assert
 			Assert.IsNotNull(modelBuilder.Model.FindEntityType(typeof(ModelClass)), "ModelClass is not a registered entity.");
@@ -39,7 +39,7 @@ namespace Havit.Data.EFCore.Tests
 			modelBuilderMock.Setup(m => m.ApplyConfiguration<ModelClass>(It.IsAny<IEntityTypeConfiguration<ModelClass>>())).Returns(modelBuilderMock.Object);
 
 			// Act
-			ModelBuilderExtensions.ApplyConfigurationsFromAssembly(modelBuilderMock.Object, typeof(ModelBuilderExtensionsTest).Assembly, typeof(ModelClassConfiguration).Namespace);
+			ModelBuilderExtensions.ApplyConfigurationsFromAssembly(modelBuilderMock.Object, typeof(ModelBuilderExtensionsTests).Assembly, typeof(ModelClassConfiguration).Namespace);
 			
 			// Assert
 			modelBuilderMock.Verify(m => m.ApplyConfiguration<ModelClass>(It.IsAny<IEntityTypeConfiguration<ModelClass>>()), Times.Once);

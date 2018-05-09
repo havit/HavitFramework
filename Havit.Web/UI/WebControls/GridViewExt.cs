@@ -65,7 +65,9 @@ namespace Havit.Web.UI.WebControls
 		/// Spolu s AllowInserting je potřeba nastavit delegáta <see cref="GetInsertRowDataItemDelegate" />
 		/// pro získávání výchozích dat pro novou položku. Dále lze nastavit pozici pomocí <see cref="InsertRowPosition"/>.
 		/// </remarks>
-		[Browsable(true), DefaultValue("true"), Category("Behavior")]
+		[Browsable(true)]
+		[DefaultValue("true")]
+		[Category("Behavior")]
 		public bool AllowInserting
 		{
 			get

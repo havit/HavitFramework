@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -13,6 +14,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	/// <summary>
 	/// Extends ModalDialogUserControlBase by persisting dialog Result value.
 	/// </summary>
+	[SuppressMessage("StyleCop.Analyzers", "SA1649", Justification = "Máme i negenerickou variantu (viz předek), která je v požadovaném souboru.")]
 	public class ModalDialogUserControlBase<T> : ModalDialogUserControlBase
 	{
 		#region OnDialogShown

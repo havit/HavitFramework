@@ -12,7 +12,7 @@ namespace Havit.WebApplicationTest.HavitCastleWindsorWebFormsTests
 	[System.ComponentModel.ToolboxItem(false)]
 	// To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
 	// [System.Web.Script.Services.ScriptService]
-	public class WebServiceBaseTest : InjectableWebServiceBase
+	public class WebServiceTest : InjectableWebServiceBase
 	{
 		#region DisposableComponent
 		[Inject]

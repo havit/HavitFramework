@@ -172,7 +172,7 @@
     <Compile Include="UI\WebControls\ControlFocusPersister.cs" />
     <Compile Include="UI\WebControls\ControlsValues\AutoCompleteTextBoxControlExtender.cs" />
     <Compile Include="UI\WebControls\ControlsValues\AutoCompleteTextBoxValues.cs" />
-    <Compile Include="UI\WebControls\CookiesMessenger.cs" />
+    <Compile Include="UI\WebControls\CookieMessenger.cs" />
     <Compile Include="UI\WebControls\DataBoundControlWithHiddenPublicMembersFromIntellisence.cs" />
     <Compile Include="UI\WebControls\DateTimeBoxContainerRenderMode.cs" />
     <Compile Include="UI\WebControls\CheckBoxDropDownList.cs" />
@@ -298,7 +298,7 @@
     <Compile Include="UI\WebControls\ControlsValues\DropDownListPersisterControlExtender.cs" />
     <Compile Include="UI\WebControls\ControlsValues\EnumDropDownListPersisterControlExtender.cs" />
     <Compile Include="UI\WebControls\ControlsValues\GridViewExtPersisterControlExtender.cs" />
-    <Compile Include="UI\WebControls\ControlsValues\GridViewExtValues.cs" />
+    <Compile Include="UI\WebControls\ControlsValues\GridViewExtValue.cs" />
     <Compile Include="UI\WebControls\ControlsValues\IPersisterControlExtender.cs" />
     <Compile Include="UI\WebControls\ControlsValues\ListBoxPersisterControlExtender.cs" />
     <Compile Include="UI\WebControls\ControlsValues\NumericBoxPersisterControlExtender.cs" />

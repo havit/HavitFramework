@@ -62,7 +62,7 @@ namespace Havit.Web.UI.WebControls
 
 			if (this.CheckBoxToValidate == null)
 			{
-				throw new HttpException(string.Format("CheckBoxValidator může validovat pouze controly typu CheckBox."));
+				throw new HttpException("CheckBoxValidator může validovat pouze controly typu CheckBox.");
 			}
 
 			return true;

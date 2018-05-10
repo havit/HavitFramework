@@ -56,7 +56,9 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Gets or sets the template for displaying the header of TabPanel.
 		/// If not set, HeaderText is used instead of HeaderTemplate.
 		/// </summary>
-		[Browsable(false), TemplateInstance(TemplateInstance.Single), PersistenceMode(PersistenceMode.InnerProperty)]
+		[Browsable(false)]
+		[TemplateInstance(TemplateInstance.Single)]
+		[PersistenceMode(PersistenceMode.InnerProperty)]
 		public ITemplate HeaderTemplate
 		{
 			get

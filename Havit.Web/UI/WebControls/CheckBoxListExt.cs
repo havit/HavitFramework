@@ -105,7 +105,7 @@ namespace Havit.Web.UI.WebControls
 				num = FindItemIndexByValue(this.Items, this.cachedSelectedValue);
 				if (-1 == num)
 				{
-					throw new ArgumentOutOfRangeException("value", "CheckBoxListExt neobsahuje hodnotu SelectedValue.");
+					throw new InvalidOperationException("CheckBoxListExt neobsahuje hodnotu SelectedValue.");
 				}
 				if ((this.cachedSelectedIndex != -1) && (this.cachedSelectedIndex != num))
 				{

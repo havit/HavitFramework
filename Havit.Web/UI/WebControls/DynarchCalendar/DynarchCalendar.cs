@@ -562,7 +562,7 @@ namespace Havit.Web.UI.WebControls
 				}
 				else
 				{
-					throw new ArgumentOutOfRangeException("TimeFormat", value, "Hodnota musí být 12 nebo 24.");
+					throw new InvalidOperationException("Hodnota musí být 12 nebo 24.");
 				}
 			}
 		}
@@ -982,7 +982,7 @@ namespace Havit.Web.UI.WebControls
 				{
 					sb.AppendLine(",");
 				}
-				sb.AppendFormat("singleClick : false");
+				sb.Append("singleClick : false");
 				firstLine = false;
 			}
 

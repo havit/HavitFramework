@@ -2,13 +2,17 @@
 using Havit.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
 namespace Havit.Tests.Linq
 {
 	[TestClass]
-	public class EnumerableExtTests
+    [SuppressMessage("SonarLint", "S2114", Justification = "Pravidlo pro nás není vhodné, všechny tyto vznikné duplicity v seznamech pro účely testu chceme.")]
+    // Warning S2114 Change one instance of 'Enumerable.Range(1, 5)' to a different value; This operation will probably result in an unexpected behavior.
+
+    public class EnumerableExtTests
 	{
 		[TestMethod]
 		public void EnumerableExt_LeftJoin()

@@ -23,8 +23,9 @@ using Havit.Web.UI.ClientScripts;
 namespace Havit.Web.UI.WebControls
 {
      /// <summary>Represents a control for extending TextBox with suggestions.</summary>
-    [ValidationProperty("SelectedValue"), DefaultProperty("SelectedValue"),
-    ToolboxData("<{0}:AutoSuggestMenu runat=server></{0}:AutoSuggestMenu>")]
+    [ValidationProperty("SelectedValue")]
+    [DefaultProperty("SelectedValue")]
+    [ToolboxData("<{0}:AutoSuggestMenu runat=server></{0}:AutoSuggestMenu>")]
 	public class AutoSuggestMenu : WebControl, INamingContainer
 	{
 		#region Private fields

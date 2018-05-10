@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ using Havit.Web.UI.ClientScripts;
 /// <summary>
 /// Performs application startup tasks.
 /// </summary>
+[SuppressMessage("SonarLint", "S3903", Justification = "Je to špatně, ale z důvodu zpětné kompatibility neměním.")]
 public static class StartUp
 {
 	#region Start

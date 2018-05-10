@@ -9,6 +9,7 @@ using System.Web.UI.WebControls;
 
 using Havit.Business;
 using Havit.Collections;
+using Havit.Diagnostics.Contracts;
 using Havit.Web.UI.WebControls;
 using Havit.Web.UI.WebControls.ControlsValues;
 
@@ -145,10 +146,7 @@ namespace Havit.Web.UI.WebControls
 			}
 			set
 			{
-				if (value == null)
-				{
-					throw new ArgumentNullException();
-				}
+                Contract.Requires(value != null);
 
 				if (isDataBinding)
 				{

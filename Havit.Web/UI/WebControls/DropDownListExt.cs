@@ -144,7 +144,7 @@ namespace Havit.Web.UI.WebControls
 				num = FindItemIndexByValue(this.Items, this.cachedSelectedValue);
 				if (-1 == num)
 				{
-					throw new ArgumentOutOfRangeException("value", "DropDownList neobsahuje hodnotu SelectedValue.");
+					throw new InvalidOperationException("DropDownList neobsahuje hodnotu SelectedValue.");
 				}
 				if ((this.cachedSelectedIndex != -1) && (this.cachedSelectedIndex != num))
 				{

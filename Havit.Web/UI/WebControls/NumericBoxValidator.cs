@@ -43,12 +43,12 @@ namespace Havit.Web.UI.WebControls
 
 			if (control == null)
 			{
-				throw new ArgumentException("ControlToValidate nebyl nalezen.", "ControlToValidate");
+				throw new InvalidOperationException("ControlToValidate nebyl nalezen.");
 			}
 
 			if (!(control is NumericBox))
 			{
-				throw new ArgumentException("ControlToValidate není NumericBox.", "ControlToValidate");
+				throw new InvalidOperationException("ControlToValidate není NumericBox.");
 			}
 
 			NumericBox numericBox = (NumericBox)control;

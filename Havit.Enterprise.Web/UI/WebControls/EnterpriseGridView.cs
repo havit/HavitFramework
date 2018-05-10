@@ -182,7 +182,7 @@ namespace Havit.Web.UI.WebControls
 
 			if (insertRowDataItem == null)
 			{
-				throw new ApplicationException(String.Format("Událost GetInsertRowDataItem vrátila null."));
+				throw new ApplicationException("Událost GetInsertRowDataItem vrátila null.");
 			}
 
 			if (!(insertRowDataItem is BusinessObjectBase))

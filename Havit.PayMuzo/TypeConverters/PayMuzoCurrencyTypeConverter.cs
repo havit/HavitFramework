@@ -60,8 +60,7 @@ namespace Havit.PayMuzo.TypeConverters
 				return null;
 			}
 
-			if ((value.GetType() != typeof(Int32))
-				&& (value.GetType() != typeof(Int32?)))
+			if (!(value is Int32))
 			{
 				throw new NotSupportedException(String.Format("Konverze z typu {0} není podporována.", value.GetType().FullName));
 			}

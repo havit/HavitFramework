@@ -16,17 +16,6 @@ namespace Havit.Web.UI.WebControls
         #region Class Properties
         #endregion
 
-		#region Constructor
-		/// <overloads>Initializes new instance of XHtmlWriter.</overloads>
-        /// <summary>Initializes new instance of XHtmlWriter.</summary>
-        /// <remarks>Creates a new StringWriter object and uses that as Internal Writer</remarks>
-        public XJsonWriter()
-        {
-        }
-		#endregion
-
-		//Public functions
-
 		#region WriteNameValue
 		public void WriteNameValue(string name, object value)
 		{
@@ -101,7 +90,7 @@ namespace Havit.Web.UI.WebControls
 				return valueText;
 			}
 
-			if (value.GetType() == typeof(string))
+			if (value is string)
 			{
 				valueText = (string)value;
 

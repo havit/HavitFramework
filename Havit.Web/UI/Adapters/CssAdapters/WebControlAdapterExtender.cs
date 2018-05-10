@@ -3,6 +3,7 @@ using System.Data;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Web;
 using System.Web.Configuration;
@@ -216,6 +217,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 		#endregion
 
 		#region RemoveProblemTypes
+        [SuppressMessage("SonarLint", "S2219", Justification = "Převzatý kód, nechci do něj zasahovat.")]
 		public static void RemoveProblemTypes(ControlCollection coll, List<ControlRestorationInfo> stashedControls)
 		{
 			foreach (Control ctrl in coll)

@@ -442,7 +442,7 @@ namespace Havit.Web.UI.WebControls
 		/// <summary>
 		/// EventHandler pro získání výchozí customizace renderování hodnot v kalendáři.
 		/// </summary>
-		public static DateTimeBoxDateCustomizationEventHandler GetDateTimeBoxCustomizationDefault;
+		public static event DateTimeBoxDateCustomizationEventHandler GetDateTimeBoxCustomizationDefault;
 		#endregion		
 
 		#region ValidationGroup

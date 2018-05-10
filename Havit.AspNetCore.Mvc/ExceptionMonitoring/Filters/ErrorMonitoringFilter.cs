@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc.Filters;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Havit.AspNetCore.Mvc.ExceptionMonitoring.Filters
 {
 	/// <summary>
 	/// Filtr zajišťující oznámení výjimky do mechanismu "ExceptionMonitoringu".
 	/// </summary>
+	[SuppressMessage("SonarLint", "S3376", Justification = "V ASP.NET Core MVC je toto zamýšleno jako globální filtr, pak se slovo Attribute na konci názvu nevyžaduje.")]
     public class ErrorMonitoringFilter : ExceptionFilterAttribute
     {
         private readonly IExceptionMonitoringService exceptionMonitoringService;

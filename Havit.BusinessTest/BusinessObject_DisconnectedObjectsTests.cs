@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Havit.Business;
+using Havit.Business.Query;
 using Havit.Business.TestExtensions;
 using Havit.BusinessLayerTest;
 using Havit.Data;
@@ -189,6 +191,36 @@ namespace Havit.BusinessTest
 			{
 				Subjekt subjekt = Subjekt.GetObject(-999);
 				subjekt.SetProperty(item => item.Nazev, "AAA");
+			}
+		}
+
+		/// <summary>
+		/// Testuje, že disconnected objekt není uložen.
+		/// </summary>
+		[TestMethod]
+		public void BusinesObject_Save_DoNotSaveNewDisconnectedObjects()
+		{
+			// protože se smysluplně neumím nabourat do SaveFullInsert, který potřebuheme potlačit (a který je generovaný), 
+		    // implementujeme test jako black-box test
+			using (new IdentityMapScope())
+			{
+				Subjekt subjekt = Subjekt.CreateDisconnectedObject();
+
+				using (var connection = DbConnector.Default.GetConnection(true))
+				{
+					DbTransaction dbTransaction = connection.BeginTransaction();
+
+					QueryParams qp = new QueryParams();
+					qp.Properties.Add(Subjekt.Properties.ID); // omezíme zátěž db - načteme jen ghosts
+
+					int count1 = Subjekt.GetList(qp, dbTransaction).Count;
+					subjekt.Save(dbTransaction); // Act
+					int count2 = Subjekt.GetList(qp, dbTransaction).Count;
+
+					dbTransaction.Rollback();
+
+					Assert.AreEqual(count1, count2, "Došlo k uložení objektu do databáze.");
+				}
 			}
 		}
 	}

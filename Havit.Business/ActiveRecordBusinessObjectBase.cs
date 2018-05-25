@@ -217,7 +217,10 @@ namespace Havit.Business
 			Save_SaveMembers(transaction);
 			if (IsNew)
 			{
-				Save_FullInsert(transaction);
+				if (!IsDisconnected)
+				{
+					Save_FullInsert(transaction);
+				}
 				Save_SaveCollections(transaction);
 			}
 			else

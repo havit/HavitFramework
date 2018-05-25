@@ -299,7 +299,11 @@ namespace Havit.Business
 		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		protected virtual void Save_Insert_InsertRequiredForFullInsert(DbTransaction transaction)
 		{
-			Save_Insert_InsertRequiredForMinimalInsert(transaction);
+			if (!this.IsDisconnected)
+			{
+				Save_Insert_InsertRequiredForMinimalInsert(transaction);
+			}
+
 			IsMinimalInserting = false;
 		}
 

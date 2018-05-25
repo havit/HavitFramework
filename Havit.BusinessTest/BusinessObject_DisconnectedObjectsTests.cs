@@ -223,5 +223,37 @@ namespace Havit.BusinessTest
 				}
 			}
 		}
+
+		/// <summary>
+		/// Testuje, že disconnected objekt není uložen.
+		/// </summary>
+		[TestMethod]
+		public void BusinesObject_Save_DoNotSaveNewDisconnectedMembers()
+		{
+			// protože se smysluplně neumím nabourat do SaveFullInsert, který potřebuheme potlačit (a který je generovaný), 
+			// implementujeme test jako black-box test
+			using (new IdentityMapScope())
+			{
+				CenikItem cenikItem = CenikItem.CreateDisconnectedObject();
+				cenikItem.CenaCurrency = Currency.CreateDisconnectedObject();
+				cenikItem.CenaAmount = 5;
+
+				using (var connection = DbConnector.Default.GetConnection(true))
+				{
+					DbTransaction dbTransaction = connection.BeginTransaction();
+
+					QueryParams qp = new QueryParams();
+					qp.Properties.Add(Currency.Properties.ID); // omezíme zátěž db - načteme jen ghosts
+
+					int count1 = Currency.GetList(qp, dbTransaction).Count;
+					cenikItem.Save(dbTransaction); // Act
+					int count2 = Currency.GetList(qp, dbTransaction).Count;
+
+					dbTransaction.Rollback();
+
+					Assert.AreEqual(count1, count2, "Došlo k uložení objektu do databáze.");
+				}
+			}
+		}
 	}
 }

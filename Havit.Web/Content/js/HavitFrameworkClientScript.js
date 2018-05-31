@@ -381,10 +381,21 @@ var havitAutoCompleteTextBoxExtensions = {
             $item.data("selectedvalue", $textbox.val());
             $textbox.blur(function () { havitAutoCompleteTextBoxExtensions.onBlur($textbox, $hiddenfield, $item); });
             $textbox.autocomplete(options);
-            $clearTextLink.click(function (event) { event.preventDefault(); havitAutoCompleteTextBoxExtensions.onClickClearTextLink($textbox, $hiddenfield, $item); });
+            $clearTextLink.click(function (event) {
+                event.preventDefault();
+                havitAutoCompleteTextBoxExtensions.onClickClearTextLink($textbox, $hiddenfield, $item);
+                $clearTextLink.hide();
+            });
             $clearTextLink.css({
                 "color": $textbox.css("color")
             });
+
+            if ($textbox.val() == "") {
+                $clearTextLink.hide();
+            }
+            else {
+                $clearTextLink.show();
+            }
         });
     },
     onSelect: function (suggestion, item) {
@@ -400,11 +411,19 @@ var havitAutoCompleteTextBoxExtensions = {
             clearTimeout(timerId);
             $textbox.data("timerId", undefined);
         }
+        var $clearTextLink = $item.children("a[data-clearText]");
         var onselectscript = $item.data("onselectscript");
         havitAutoCompleteTextBoxExtensions.fireOnSelectScriptEvent(suggestion, onselectscript);
         var postbackScript = $item.data("postbackscript");
         if (postbackScript != undefined) {
             havitAutoCompleteTextBoxExtensions.doDefferedPostback.call(window, postbackScript);
+        }
+
+        if (suggestion.value) {
+            $clearTextLink.show();
+        }
+        else {
+            $clearTextLink.hide();
         }
     },
     onBlur: function (textbox, hiddenfield, item) {
@@ -414,6 +433,7 @@ var havitAutoCompleteTextBoxExtensions = {
         var $hiddenfield = $(hiddenfield);
         var allowInvalidSelection = $(item).data("allowinvalidselection") == 'True';
         var nullable = $(item).data("nullable") == 'True';
+        var $clearTextLink = $item.children("a[data-clearText]");
         var postbackScript = $item.data("postbackscript");
         if (!allowInvalidSelection) {
             // pokud není povolený nevalidní výběr, provedeme validaci
@@ -435,6 +455,10 @@ var havitAutoCompleteTextBoxExtensions = {
                 if ($textbox.val() == "" && postbackScript != undefined && nullable) {
                     havitAutoCompleteTextBoxExtensions.doDefferedPostback.call(window, postbackScript);
                 }
+
+                if ($textbox.val() == "") {
+                    $clearTextLink.hide();
+                }
             }
         }
         else {
@@ -442,7 +466,16 @@ var havitAutoCompleteTextBoxExtensions = {
                 $item.data("selectedvalue", $textbox.val());
                 $hiddenfield.val("");
                 // pokud je povolený nevalidní výběr a je nastavený autopostback, provedeme ho
-                havitAutoCompleteTextBoxExtensions.doDefferedPostback.call(window, postbackScript);
+                if (postbackScript != undefined) {
+                    havitAutoCompleteTextBoxExtensions.doDefferedPostback.call(window, postbackScript);
+                }
+
+                if ($textbox.val() != "") {
+                    $clearTextLink.show();
+                }
+                else {
+                    $clearTextLink.hide();
+                }
             }
         }
     },

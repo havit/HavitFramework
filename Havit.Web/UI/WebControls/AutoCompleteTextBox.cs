@@ -56,8 +56,6 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		protected void OnTextChanged(EventArgs e)
 		{
-            clearTextLink.Visible = !string.IsNullOrEmpty(Text);
-
 			if (TextChanged != null)
 			{
 				TextChanged(this, e);
@@ -454,7 +452,6 @@ namespace Havit.Web.UI.WebControls
             clearTextLink.EnableViewState = false;
             clearTextLink.NavigateUrl = "#";
             clearTextLink.Text = "&times;";
-            clearTextLink.Visible = false; // in default we will not show clear link. We will show it only when some text is entered
             clearTextLink.Attributes.Add("data-clearText", "true");
             clearTextLink.Attributes.Add("tabindex", "-1"); // skip the link in page navigation            
         }

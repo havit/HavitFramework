@@ -89,7 +89,7 @@ namespace Havit.Data.Entity.CodeGenerator
 			);
 
 			Console.WriteLine($"Initializing DbContext...");
-			//ObjectContext objectContext = ((IObjectContextAdapter)dbContext).ObjectContext; // využíval jej původní RegisteredEntityEnumerator
+			ObjectContext objectContext = ((IObjectContextAdapter)dbContext).ObjectContext; // z nějakého důvodu je třeba, viz Bug 39328: CodeGenerator: Na 129.ECO nejde přegenerovat Data Layer
 			CammelCaseNamingStrategy cammelCaseNamingStrategy = new CammelCaseNamingStrategy();
 
 			Console.WriteLine($"Generating code...");

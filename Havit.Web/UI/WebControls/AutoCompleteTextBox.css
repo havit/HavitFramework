@@ -15,9 +15,9 @@
 
     .autocomplete-textbox a[data-cleartext] {
         position: absolute;
-        top: 1px;
+        top: -1px;
         line-height: 1;
         right: 5px;
         text-decoration: none;
-        font-size: larger;
+        font-size: large;
     }

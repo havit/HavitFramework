@@ -14,8 +14,7 @@ namespace Havit.WebApplicationTest.Services
 	[ServiceContract(Namespace = "")]
 	[AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
 	public class AutoCompleteTextBoxService
-	{
-		#region GetSuggestionsContext
+	{		
 		[WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare)]
 		public GetSuggestionsResult GetSuggestionsContext(string query, string context)
 		{
@@ -45,9 +44,7 @@ namespace Havit.WebApplicationTest.Services
 			result.Fill<KeyValuePair<string, string>>(data.Where(i => i.Value.StartsWith(query, StringComparison.InvariantCultureIgnoreCase)), i => i.Key, i => i.Value);
 			return result;
 		}
-		#endregion
 
-		#region GetSuggestions
 		[WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare)]
 		public GetSuggestionsResult GetSuggestions(string query)
 		{
@@ -76,6 +73,5 @@ namespace Havit.WebApplicationTest.Services
 			result.Fill<KeyValuePair<string, string>>(data.Where(i => i.Value.StartsWith(query, StringComparison.InvariantCultureIgnoreCase)), i => i.Key, i => i.Value);
 			return result;
 		}
-		#endregion
 	}
 }

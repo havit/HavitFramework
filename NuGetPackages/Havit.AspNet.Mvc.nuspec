@@ -1,28 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
-	<metadata>
-		<id>Havit.AspNet.Mvc</id>
-		<version>1.7.0</version>
-		<title>Havit.AspNet.Mvc</title>
-		<authors>HAVIT, s.r.o.</authors>
-		<owners>HAVIT, s.r.o.</owners>
-    <iconUrl>https://www.gravatar.com/avatar/e59ffb10448162f0c6d6b5ae3fecd0ce?s=64</iconUrl>
-    <description>
-			HAVIT .NET Framework Extensions - MVC (Havit.AspNet.Mvc.dll)
-		</description>
-		<language>en-US</language>
-		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-		<copyright>Copyright HAVIT, s.r.o. 2018</copyright>
-    <dependencies>
-			<group targetFramework="net46">
-			  <dependency id="Havit.Web" version="1.7.0" />
-			</group>
-		</dependencies>
-		<tags>HAVIT Framework Library</tags>
-	</metadata>
-	<files>
-		<file src="..\Havit.AspNet.Mvc\bin\Release\Havit.AspNet.Mvc.dll" target="lib\net46" />
-		<file src="..\Havit.AspNet.Mvc\bin\Release\Havit.AspNet.Mvc.pdb" target="lib\net46" />
-		<file src="..\Havit.AspNet.Mvc\bin\Release\Havit.AspNet.Mvc.xml" target="lib\net46" />
-	</files>
+  <metadata>
+	<id>Havit.AspNet.Mvc</id>
+	<version>1.7.0</version>
+	<title>Havit.AspNet.Mvc</title>
+	<authors>HAVIT, s.r.o.</authors>
+	<owners>HAVIT, s.r.o.</owners>
+	<iconUrl>https://www.gravatar.com/avatar/e59ffb10448162f0c6d6b5ae3fecd0ce?s=64</iconUrl>
+	<licenseUrl>https://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+	<description>
+	  HAVIT .NET Framework Extensions - MVC (Havit.AspNet.Mvc.dll)
+	</description>
+	<language>en-US</language>
+	<requireLicenseAcceptance>false</requireLicenseAcceptance>
+	<copyright>Copyright HAVIT, s.r.o. 2018</copyright>
+	<dependencies>
+	  <group targetFramework="net46">
+		<dependency id="Havit.Web" version="1.7.0" />
+	  </group>
+	</dependencies>
+	<tags>HAVIT Framework Library</tags>
+  </metadata>
+  <files>
+	<file src="..\Havit.AspNet.Mvc\bin\Release\Havit.AspNet.Mvc.dll" target="lib\net46" />
+	<file src="..\Havit.AspNet.Mvc\bin\Release\Havit.AspNet.Mvc.pdb" target="lib\net46" />
+	<file src="..\Havit.AspNet.Mvc\bin\Release\Havit.AspNet.Mvc.xml" target="lib\net46" />
+  </files>
 </package>

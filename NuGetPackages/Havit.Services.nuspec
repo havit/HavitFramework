@@ -5,8 +5,9 @@
 	<version>1.8.2</version>
 	<title>Havit.Services</title>
 	<authors>HAVIT, s.r.o.</authors>
-  <owners>HAVIT, s.r.o.</owners>
-    <iconUrl>https://www.gravatar.com/avatar/e59ffb10448162f0c6d6b5ae3fecd0ce?s=64</iconUrl>
+	<owners>HAVIT, s.r.o.</owners>
+	<iconUrl>https://www.gravatar.com/avatar/e59ffb10448162f0c6d6b5ae3fecd0ce?s=64</iconUrl>
+	<licenseUrl>https://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
 	<description>
 	  HAVIT .NET Framework Extensions - Services (Havit.Services.dll)
 	</description>
@@ -19,7 +20,7 @@
 	  </group>
 	  <group targetFramework="netstandard2.0">
 		<dependency id="Havit" version="1.8.2" />
-		<dependency id="Microsoft.Extensions.Caching.Abstractions" version="2.0.1" />		
+		<dependency id="Microsoft.Extensions.Caching.Abstractions" version="2.0.1" />
 	  </group>
 	</dependencies>
 	<tags>HAVIT Framework Library</tags>

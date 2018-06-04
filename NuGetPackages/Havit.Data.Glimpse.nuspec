@@ -1,35 +1,36 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
-	<metadata>
-		<id>Havit.Data.Glimpse</id>
-		<version>1.7.0</version>
-		<title>Havit.Data.Glimpse</title>
-		<authors>HAVIT, s.r.o.</authors>
-		<owners>HAVIT, s.r.o.</owners>
-    <iconUrl>https://www.gravatar.com/avatar/e59ffb10448162f0c6d6b5ae3fecd0ce?s=64</iconUrl>
-    <description>
-			Balík obalující Glimpse, knihovnu pro webový profiling, a naší extenzi Havit.Data.Glimpse pro monitoring SQL prostřednictvím DbConnectoru.
-		</description>
-		<language>en-US</language>
-		<projectUrl>http://wiki.havit.cz/Glimpse.ashx</projectUrl>
-		<iconUrl>http://getglimpse.com/content/glimpse100.png</iconUrl>
-		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-		<!--<licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>-->
-		<copyright>Copyright HAVIT, s.r.o. 2018</copyright>
-		<dependencies>
-			<group targetFramework="net46">
-				<dependency id="Glimpse" version="1.8.6" />
-				<dependency id="Glimpse.AspNet" version="1.9.1" />
-				<dependency id="Glimpse.WebForms" version="1.1.1" />
-			</group>
-		</dependencies>
-		<tags>HAVIT ASP.NET Web WebForms Glimpse diagnostics performance profiling timing</tags>
-	</metadata>
-	<files>
-	  <file src="..\Havit.Data.Glimpse\bin\Release\Havit.Data.Glimpse.dll" target="lib\net46" />
-	  <file src="..\Havit.Data.Glimpse\bin\Release\Havit.Data.Glimpse.pdb" target="lib\net46" />
-	  <file src="..\Havit.Data.Glimpse\bin\Release\Havit.Data.Glimpse.xml" target="lib\net46" />
-		<file src="Havit.Data.Glimpse\tools\" target="tools" />
-		<file src="Havit.Data.Glimpse\content\" target="content" />
-	</files>
+  <metadata>
+	<id>Havit.Data.Glimpse</id>
+	<version>1.7.0</version>
+	<title>Havit.Data.Glimpse</title>
+	<authors>HAVIT, s.r.o.</authors>
+	<owners>HAVIT, s.r.o.</owners>
+	<iconUrl>https://www.gravatar.com/avatar/e59ffb10448162f0c6d6b5ae3fecd0ce?s=64</iconUrl>
+	<licenseUrl>https://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+	<description>
+	  Balík obalující Glimpse, knihovnu pro webový profiling, a naší extenzi Havit.Data.Glimpse pro monitoring SQL prostřednictvím DbConnectoru.
+	</description>
+	<language>en-US</language>
+	<projectUrl>http://wiki.havit.cz/Glimpse.ashx</projectUrl>
+	<iconUrl>http://getglimpse.com/content/glimpse100.png</iconUrl>
+	<requireLicenseAcceptance>false</requireLicenseAcceptance>
+	<!--<licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>-->
+	<copyright>Copyright HAVIT, s.r.o. 2018</copyright>
+	<dependencies>
+	  <group targetFramework="net46">
+		<dependency id="Glimpse" version="1.8.6" />
+		<dependency id="Glimpse.AspNet" version="1.9.1" />
+		<dependency id="Glimpse.WebForms" version="1.1.1" />
+	  </group>
+	</dependencies>
+	<tags>HAVIT ASP.NET Web WebForms Glimpse diagnostics performance profiling timing</tags>
+  </metadata>
+  <files>
+	<file src="..\Havit.Data.Glimpse\bin\Release\Havit.Data.Glimpse.dll" target="lib\net46" />
+	<file src="..\Havit.Data.Glimpse\bin\Release\Havit.Data.Glimpse.pdb" target="lib\net46" />
+	<file src="..\Havit.Data.Glimpse\bin\Release\Havit.Data.Glimpse.xml" target="lib\net46" />
+	<file src="Havit.Data.Glimpse\tools\" target="tools" />
+	<file src="Havit.Data.Glimpse\content\" target="content" />
+  </files>
 </package>

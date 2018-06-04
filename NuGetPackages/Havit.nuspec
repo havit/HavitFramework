@@ -1,32 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
-	<metadata>
-		<id>Havit</id>
-		<version>1.8.2</version>
-		<title>Havit</title>
-		<authors>HAVIT, s.r.o.</authors>
-		<owners>HAVIT, s.r.o.</owners>
-	  <iconUrl>https://www.gravatar.com/avatar/e59ffb10448162f0c6d6b5ae3fecd0ce?s=64</iconUrl>
-    <description>
-			HAVIT .NET Framework Extensions - Basic Class Library (Havit.dll)
-		</description>
-		<language>en-US</language>
-		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-		<copyright>Copyright HAVIT, s.r.o. 2018</copyright>
-		<tags>HAVIT Framework Library</tags>
-		<dependencies>
-			<group targetFramework="net46">
-			</group>
-			<group targetFramework="netstandard2.0">
-			</group>
-		</dependencies>
-	</metadata>
-	<files>
-		<file src="..\Havit\bin\Release\net46\Havit.dll" target="lib\net46" />
-		<file src="..\Havit\bin\Release\net46\Havit.pdb" target="lib\net46" />
-		<file src="..\Havit\bin\Release\net46\Havit.xml" target="lib\net46" />
-		<file src="..\Havit\bin\Release\netstandard2.0\Havit.dll" target="lib\netstandard2.0" />
-		<file src="..\Havit\bin\Release\netstandard2.0\Havit.pdb" target="lib\netstandard2.0" />
-		<file src="..\Havit\bin\Release\netstandard2.0\Havit.xml" target="lib\netstandard2.0" />
-	</files>
+  <metadata>
+	<id>Havit</id>
+	<version>1.8.2</version>
+	<title>Havit</title>
+	<authors>HAVIT, s.r.o.</authors>
+	<owners>HAVIT, s.r.o.</owners>
+	<iconUrl>https://www.gravatar.com/avatar/e59ffb10448162f0c6d6b5ae3fecd0ce?s=64</iconUrl>
+	<licenseUrl>https://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+	<description>
+	  HAVIT .NET Framework Extensions - Basic Class Library (Havit.dll)
+	</description>
+	<language>en-US</language>
+	<requireLicenseAcceptance>false</requireLicenseAcceptance>
+	<copyright>Copyright HAVIT, s.r.o. 2018</copyright>
+	<tags>HAVIT Framework Library</tags>
+	<dependencies>
+	  <group targetFramework="net46">
+	  </group>
+	  <group targetFramework="netstandard2.0">
+	  </group>
+	</dependencies>
+  </metadata>
+  <files>
+	<file src="..\Havit\bin\Release\net46\Havit.dll" target="lib\net46" />
+	<file src="..\Havit\bin\Release\net46\Havit.pdb" target="lib\net46" />
+	<file src="..\Havit\bin\Release\net46\Havit.xml" target="lib\net46" />
+	<file src="..\Havit\bin\Release\netstandard2.0\Havit.dll" target="lib\netstandard2.0" />
+	<file src="..\Havit\bin\Release\netstandard2.0\Havit.pdb" target="lib\netstandard2.0" />
+	<file src="..\Havit\bin\Release\netstandard2.0\Havit.xml" target="lib\netstandard2.0" />
+  </files>
 </package>

@@ -1946,7 +1946,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			code.Add("QueryParams queryParams = new QueryParams();");
 			if (hasDeletedColumn)
 			{
-				code.Add(String.Format("queryParams.IncludeDeleted = includeDeleted;"));
+				code.Add("queryParams.IncludeDeleted = includeDeleted;");
 			}
 
 			string sorting = ExtendedPropertiesHelper.GetString(ExtendedPropertiesKey.FromTable(table), "GetAll_Sorting");
@@ -2273,7 +2273,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 						}
 					}
 				}
-				writer.WriteLine(String.Format("return clone;"));
+				writer.WriteLine("return clone;");
 
 				writer.WriteLine("}");
 				writer.WriteCloseRegion();

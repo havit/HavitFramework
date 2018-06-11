@@ -83,7 +83,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine();
 
 			writer.WriteCommentSummary("Inicializuje hodnoty metadat.");
-			writer.WriteLine(String.Format("public void Initialize(ObjectInfo objectInfo)"));
+			writer.WriteLine("public void Initialize(ObjectInfo objectInfo)");
 			writer.WriteLine("{");
 
 			foreach (Column column in TableHelper.GetNotIgnoredColumns(table))

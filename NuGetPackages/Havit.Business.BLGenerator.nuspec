@@ -22,6 +22,6 @@
 	</dependencies>
   </metadata>
   <files>
-	<file src="..\Havit.BusinessLayerGenerator\bin\Release\**\*.*" target="tools\BLG" />
+	<file src="..\Havit.Business.BusinessLayerGenerator\bin\Release\**\*.*" target="tools\BLG" />
   </files>
 </package>

@@ -1,19 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using Havit.Business.BusinessLayerGenerator.Csproj;
 using Havit.Business.BusinessLayerGenerator.Helpers;
 using Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions;
 using Havit.Business.BusinessLayerGenerator.Helpers.Types;
 using Havit.Business.BusinessLayerGenerator.TfsClient;
 using Havit.Business.BusinessLayerGenerator.Writers;
+using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Settings;
 using Microsoft.SqlServer.Management.Smo;
 
-namespace Havit.BusinessLayerToEntityFrameworkGenerator.Generators
+namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 {
 	public static class EntityTypeConfigurationClass
 	{

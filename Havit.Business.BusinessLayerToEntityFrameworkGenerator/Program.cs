@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Havit.Business.BusinessLayerGenerator.CommandLine.Utility;
 using Havit.Business.BusinessLayerGenerator.Csproj;
 using Havit.Business.BusinessLayerGenerator.Helpers;
 using Havit.Business.BusinessLayerGenerator.TfsClient;
+using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Settings;
 using Microsoft.SqlServer.Management.Common;
 using Microsoft.SqlServer.Management.Smo;
 
-namespace Havit.BusinessLayerToEntityFrameworkGenerator
+namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator
 {
 	internal static class Program
 	{

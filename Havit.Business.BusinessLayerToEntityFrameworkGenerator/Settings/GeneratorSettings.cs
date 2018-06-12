@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.SqlServer.Management.Smo;
-
-namespace Havit.BusinessLayerToEntityFrameworkGenerator
+﻿namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Settings
 {
 	internal static class GeneratorSettings
 	{

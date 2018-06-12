@@ -196,9 +196,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EFCore.Patterns.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Business Layer", "Business Layer", "{8B4383E1-89EA-46F4-A379-F728CA71A124}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.BusinessLayerGenerator", "Havit.BusinessLayerGenerator\Havit.BusinessLayerGenerator.csproj", "{D5B7B479-45B7-4D1F-9C72-63FBC4D21114}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Business.BusinessLayerGenerator", "Havit.Business.BusinessLayerGenerator\Havit.Business.BusinessLayerGenerator.csproj", "{D5B7B479-45B7-4D1F-9C72-63FBC4D21114}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.BusinessLayerToEntityFrameworkGenerator", "Havit.BusinessLayerToEntityFrameworkGenerator\Havit.BusinessLayerToEntityFrameworkGenerator.csproj", "{0278F1F4-03A8-4D31-A823-44FEB4C568AB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Business.BusinessLayerToEntityFrameworkGenerator", "Havit.Business.BusinessLayerToEntityFrameworkGenerator\Havit.Business.BusinessLayerToEntityFrameworkGenerator.csproj", "{0278F1F4-03A8-4D31-A823-44FEB4C568AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -694,13 +694,13 @@ Global
 		SccProjectTopLevelParentUniqueName51 = HavitFramework.sln
 		SccProjectName51 = Havit.Data.EFCore.Patterns.Tests
 		SccLocalPath51 = Havit.Data.EFCore.Patterns.Tests
-		SccProjectUniqueName52 = Havit.BusinessLayerGenerator\\Havit.BusinessLayerGenerator.csproj
+		SccProjectUniqueName52 = Havit.Business.BusinessLayerGenerator\\Havit.Business.BusinessLayerGenerator.csproj
 		SccProjectTopLevelParentUniqueName52 = HavitFramework.sln
-		SccProjectName52 = Havit.BusinessLayerGenerator
-		SccLocalPath52 = Havit.BusinessLayerGenerator
-		SccProjectUniqueName53 = Havit.BusinessLayerToEntityFrameworkGenerator\\Havit.BusinessLayerToEntityFrameworkGenerator.csproj
+		SccProjectName52 = Havit.Business.BusinessLayerGenerator
+		SccLocalPath52 = Havit.Business.BusinessLayerGenerator
+		SccProjectUniqueName53 = Havit.Business.BusinessLayerToEntityFrameworkGenerator\\Havit.Business.BusinessLayerToEntityFrameworkGenerator.csproj
 		SccProjectTopLevelParentUniqueName53 = HavitFramework.sln
-		SccProjectName53 = Havit.BusinessLayerToEntityFrameworkGenerator
-		SccLocalPath53 = Havit.BusinessLayerToEntityFrameworkGenerator
+		SccProjectName53 = Havit.Business.BusinessLayerToEntityFrameworkGenerator
+		SccLocalPath53 = Havit.Business.BusinessLayerToEntityFrameworkGenerator
 	EndGlobalSection
 EndGlobal

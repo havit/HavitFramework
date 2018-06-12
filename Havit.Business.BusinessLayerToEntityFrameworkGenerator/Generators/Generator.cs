@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Havit.Business.BusinessLayerGenerator.Csproj;
 using Havit.Business.BusinessLayerGenerator.Helpers;
 using Havit.Business.BusinessLayerGenerator.TfsClient;
 using Microsoft.SqlServer.Management.Smo;
-using Havit.BusinessLayerToEntityFrameworkGenerator.Generators;
 
-namespace Havit.BusinessLayerToEntityFrameworkGenerator.Generators
+namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 {
 	public static class Generator
 	{

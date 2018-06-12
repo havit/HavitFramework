@@ -7,8 +7,8 @@
     <ProjectGuid>{0278F1F4-03A8-4D31-A823-44FEB4C568AB}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Havit.BusinessLayerToEntityFrameworkGenerator</RootNamespace>
-    <AssemblyName>BL2EFGenerator</AssemblyName>
+    <RootNamespace>Havit.Business.BusinessLayerToEntityFrameworkGenerator</RootNamespace>
+    <AssemblyName>Havit.Business.BusinessLayerToEntityFrameworkGenerator</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -163,7 +163,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Havit.BusinessLayerGenerator\Havit.BusinessLayerGenerator.csproj">
+    <ProjectReference Include="..\Havit.Business.BusinessLayerGenerator\Havit.Business.BusinessLayerGenerator.csproj">
       <Project>{d5b7b479-45b7-4d1f-9c72-63fbc4d21114}</Project>
       <Name>Havit.BusinessLayerGenerator</Name>
     </ProjectReference>

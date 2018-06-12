@@ -1,6 +1,6 @@
 ﻿using Microsoft.SqlServer.Management.Smo;
 
-namespace Havit.BusinessLayerToEntityFrameworkGenerator.Helpers.NamingConventions
+namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Helpers.NamingConventions
 {
 	public static class NamespaceHelper
 	{

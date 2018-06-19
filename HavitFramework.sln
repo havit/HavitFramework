@@ -200,6 +200,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Business.BusinessLaye
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Business.BusinessLayerToEntityFrameworkGenerator", "Havit.Business.BusinessLayerToEntityFrameworkGenerator\Havit.Business.BusinessLayerToEntityFrameworkGenerator.csproj", "{0278F1F4-03A8-4D31-A823-44FEB4C568AB}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EFCore.CodeGenerator", "Havit.Data.EFCore.CodeGenerator\Havit.Data.EFCore.CodeGenerator.csproj", "{9D793564-5C33-401F-8897-A68F698FD0B3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -416,6 +418,10 @@ Global
 		{0278F1F4-03A8-4D31-A823-44FEB4C568AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0278F1F4-03A8-4D31-A823-44FEB4C568AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0278F1F4-03A8-4D31-A823-44FEB4C568AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D793564-5C33-401F-8897-A68F698FD0B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D793564-5C33-401F-8897-A68F698FD0B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D793564-5C33-401F-8897-A68F698FD0B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D793564-5C33-401F-8897-A68F698FD0B3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -481,12 +487,13 @@ Global
 		{E5176E66-6915-43EC-A314-9DF304332532} = {FA03CDCB-AEFC-49D1-BBAE-5F623BD5A301}
 		{D5B7B479-45B7-4D1F-9C72-63FBC4D21114} = {8B4383E1-89EA-46F4-A379-F728CA71A124}
 		{0278F1F4-03A8-4D31-A823-44FEB4C568AB} = {8B4383E1-89EA-46F4-A379-F728CA71A124}
+		{9D793564-5C33-401F-8897-A68F698FD0B3} = {E30EB2C7-ECF5-4A27-A7F0-8AE37284A60C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {44656523-42B6-48E3-9E6D-6F075F0E7FD0}
 	EndGlobalSection
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 54
+		SccNumberOfProjects = 55
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://havit.visualstudio.com/
 		SccLocalPath0 = .
@@ -702,5 +709,9 @@ Global
 		SccProjectTopLevelParentUniqueName53 = HavitFramework.sln
 		SccProjectName53 = Havit.Business.BusinessLayerToEntityFrameworkGenerator
 		SccLocalPath53 = Havit.Business.BusinessLayerToEntityFrameworkGenerator
+		SccProjectUniqueName54 = Havit.Data.EFCore.CodeGenerator\\Havit.Data.EFCore.CodeGenerator.csproj
+		SccProjectTopLevelParentUniqueName54 = HavitFramework.sln
+		SccProjectName54 = Havit.Data.EFCore.CodeGenerator
+		SccLocalPath54 = Havit.Data.EFCore.CodeGenerator
 	EndGlobalSection
 EndGlobal

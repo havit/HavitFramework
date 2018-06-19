@@ -30,7 +30,6 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.DataEntries.Model
 				where (entriesEnumType != null)
 				select new DataEntriesModel
 				{
-					//UseDataEntrySymbolStorage = registeredEntity.HasDatabaseGeneratedIdentity,
 					NamespaceName = GetNamespaceName(registeredEntity.ClrType.Namespace),
 					InterfaceName = "I" + registeredEntity.ClrType.Name + "Entries",
 					DbClassName = registeredEntity.ClrType.Name + "Entries",

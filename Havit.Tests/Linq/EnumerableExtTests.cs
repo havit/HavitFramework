@@ -15,6 +15,21 @@ namespace Havit.Tests.Linq
     public class EnumerableExtTests
 	{
 		[TestMethod]
+		public void EnumerableExt_WhereIf()
+		{
+			// Arrange
+			IEnumerable<int> numbers = new[] { 0 };
+
+			// Act
+			List<int> result1 = numbers.WhereIf(true, i => i > 0).ToList();
+			List<int> result2 = numbers.WhereIf(false, i => i > 0).ToList();
+
+			// Assert
+			Assert.AreEqual(0, result1.Count);
+			Assert.AreEqual(1, result2.Count);
+		}
+
+		[TestMethod]
 		public void EnumerableExt_LeftJoin()
 		{
 			IEnumerable<int> data1 = Enumerable.Range(1, 5).Concat(Enumerable.Range(1, 5)); // 1..5, 1..5

@@ -11,6 +11,22 @@ namespace Havit.Linq
 	public static class EnumerableExt
 	{
 		/// <summary>
+		/// Volitelně rozšíří dotaz dle source o podmínku dle predicate, pokud condition je true.
+		/// Pokud je condition false, vrátí nezměněný dotaz.
+		/// </summary>
+		/// <typeparam name="TSource">Typ objektu v source.</typeparam>
+		/// <param name="source">Rozšiřovaný dotaz.</param>
+		/// <param name="condition">Podmínka určující, zda má být dotaz rozšířen o podmínku.</param>
+		/// <param name="predicate">Podmínka, která volitelně rozšiřuje dotaz.</param>
+		/// <returns>Dotaz volitelně rozšířený o podmínku.</returns>
+		public static IEnumerable<TSource> WhereIf<TSource>(this IEnumerable<TSource> source, bool condition, Func<TSource, bool> predicate)
+		{
+			return condition
+				? source.Where(predicate)
+				: source;
+		}
+
+		/// <summary>
 		/// Left outer join.
 		/// </summary>
 		public static IEnumerable<TResult> LeftJoin<TLeft, TRight, TKey, TResult>(this IEnumerable<TLeft> leftSource,

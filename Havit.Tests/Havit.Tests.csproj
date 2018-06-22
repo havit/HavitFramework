@@ -70,6 +70,7 @@
     </Compile>
     <Compile Include="Collections\Generic\LookupTests.cs" />
     <Compile Include="CultureInfoExtTests.cs" />
+    <Compile Include="Diagnostics\Contracts\ContractTests.cs" />
     <Compile Include="Linq\CollectionExtTests.cs" />
     <Compile Include="Linq\QueryableExtTests.cs" />
     <Compile Include="Linq\EnumerableExtTests.cs" />

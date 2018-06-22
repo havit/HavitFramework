@@ -40,7 +40,7 @@ namespace Havit.Diagnostics.Contracts
 		{
 			if (!condition)
 			{
-				ThrowException<TException>(ConstructMessage(userMessage));
+				ThrowException<TException>(userMessage);
 			}
 		}
 
@@ -77,7 +77,7 @@ namespace Havit.Diagnostics.Contracts
 		{
 			if (!condition)
 			{
-				ThrowException<TException>(ConstructMessage(userMessage));
+				ThrowException<TException>(userMessage);
 			}
 		}
 

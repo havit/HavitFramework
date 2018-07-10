@@ -2,68 +2,50 @@
 {
 	public static class GeneratorSettings
 	{
-		#region OutputPath
 		/// <summary>
 		/// Cesta kam se ukládají výsledné soubory.
 		/// </summary>
-		public static string OutputPath;
-		#endregion
+		public static string OutputPath { get; set; }
 
-		#region Namespace
 		/// <summary>
 		/// Namespace generovaných tříd.
 		/// </summary>		
-		public static string Namespace;
-		#endregion
+		public static string Namespace { get; set; }
 
-		#region SqlServerName
 		/// <summary>
 		/// SqlServer, ke kterému se generátor připojuje.
 		/// </summary>
-		public static string SqlServerName;
-		#endregion
+		public static string SqlServerName { get; set; }
 
-		#region Username
 		/// <summary>
 		/// Username k sql serveru. Není-li uvedeno, použije se integrované zabezpečení.
 		/// </summary>
-		public static string Username;
-		#endregion
+		public static string Username { get; set; }
 
-		#region Password
 		/// <summary>
 		/// Heslo k sql serveru.
 		/// </summary>
-		public static string Password;
-		#endregion
+		public static string Password { get; set; }
 
-		#region DatabaseName
 		/// <summary>
 		/// Název databáze, na jejímž základě generátor vytváří kód.
 		/// </summary>
-		public static string DatabaseName;
-		#endregion
+		public static string DatabaseName { get; set; }
 
-		#region TableName
 		/// <summary>
 		/// Název tabulky, na jejímž základě generátor vytváří kód. Není-li uveden, generuje se pro všechny tabulky.
 		/// </summary>
-		public static string TableName;
-		#endregion
+		public static string TableName { get; set; }
 
-		#region Strategy
 		/// <summary>
 		/// Režim ukládání nových objektů.
 		/// </summary>
-		public static GeneratorStrategy Strategy = GeneratorStrategy.Havit;
-		#endregion
+		public static GeneratorStrategy Strategy { get; set; } = GeneratorStrategy.Havit;
 
-		#region TargetPlatform
 		/// <summary>
 		/// Cílový platformat BL.
 		/// </summary>
-		public static TargetPlatform TargetPlatform = TargetPlatform.SqlServer2008;
-		#endregion
+		public static TargetPlatform TargetPlatform { get; set; } = TargetPlatform.SqlServer2008;
 
 	}
 }

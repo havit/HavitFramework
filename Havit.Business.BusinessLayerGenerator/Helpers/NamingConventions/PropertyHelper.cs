@@ -44,12 +44,8 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions
 				// pokud extended property není
 				if (String.IsNullOrEmpty(result))
 				{
-					if (TypeHelper.IsBusinessObjectReference(column) && column.Name.StartsWith("ID_") && (GeneratorSettings.Strategy == GeneratorStrategy.WikiReality))
-					{
-						result = column.Name.Substring(3);
-					}
 					// ořízneme u cizího klíče z konce názvu sloupce ID, pokud tam je
-					else if (TypeHelper.IsBusinessObjectReference(column) && column.Name.EndsWith("ID"))
+					if (TypeHelper.IsBusinessObjectReference(column) && column.Name.EndsWith("ID"))
 					{
 						result = column.Name.Substring(0, column.Name.Length - 2);
 					}

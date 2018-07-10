@@ -1,6 +1,6 @@
 ﻿namespace Havit.Business.BusinessLayerGenerator.Settings
 {
-	internal static class GeneratorSettings
+	public static class GeneratorSettings
 	{
 		#region OutputPath
 		/// <summary>

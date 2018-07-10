@@ -11,13 +11,13 @@
 		Havit,
 
 		/// <summary>
+		/// Generuje na základě pravidel pro databáze Havit pro databáze udržované code migration.
+		/// </summary>
+		HavitCodeFirst,
+
+		/// <summary>
 		/// Generuje na základě pravidel pro databáze společnosti Exec.
 		/// </summary>
 		Exec,
-
-		/// <summary>
-		/// Generuje na základě pravidel pro databáze společnosti WikiReality.
-		/// </summary>
-		WikiReality
 	}
 }

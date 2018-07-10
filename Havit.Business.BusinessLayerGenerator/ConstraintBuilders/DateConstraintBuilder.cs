@@ -10,7 +10,7 @@ namespace Havit.Business.BusinessLayerGenerator.ConstraintBuilders
 		#region CreateConstraints
 		public static void CreateConstraints(Table table)
 		{
-			if ((GeneratorSettings.Strategy != GeneratorStrategy.Havit) && (GeneratorSettings.Strategy != GeneratorStrategy.WikiReality))
+			if (GeneratorSettings.Strategy != GeneratorStrategy.Havit)
 			{
 				return;
 			}

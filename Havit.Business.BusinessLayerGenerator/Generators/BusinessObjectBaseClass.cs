@@ -1188,7 +1188,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 					commandBuilder.AppendFormat("DECLARE @{0} INT; ", primaryKeyColumn.Name);
 				}
 
-				if ((GeneratorSettings.Strategy == GeneratorStrategy.Havit) || (GeneratorSettings.Strategy == GeneratorStrategy.WikiReality))
+				if ((GeneratorSettings.Strategy == GeneratorStrategy.Havit) || (GeneratorSettings.Strategy == GeneratorStrategy.HavitCodeFirst))
 				{
 					if (wasFirstColumn)
 					{

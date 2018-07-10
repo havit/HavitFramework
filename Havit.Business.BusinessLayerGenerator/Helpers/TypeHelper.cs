@@ -539,7 +539,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		/// </summary>
 		public static bool IsDateOnly(DataType dataType)
 		{
-			if ((GeneratorSettings.Strategy != GeneratorStrategy.Havit) && (GeneratorSettings.Strategy != GeneratorStrategy.WikiReality))
+			if ((GeneratorSettings.Strategy != GeneratorStrategy.Havit) && (GeneratorSettings.Strategy != GeneratorStrategy.HavitCodeFirst))
 			{
 				return false;
 			}

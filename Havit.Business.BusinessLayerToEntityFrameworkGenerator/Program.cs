@@ -28,10 +28,10 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator
 			}
 
 			// nastavíme GeneratorSettings na základě parametrù příkazové řádky
-			GeneratorSettings.SqlServerName = commandLineArguments["sqlserver"];
+			BusinessLayerGenerator.Settings.GeneratorSettings.SqlServerName = GeneratorSettings.SqlServerName = commandLineArguments["sqlserver"];
 			GeneratorSettings.Username = commandLineArguments["username"];
 			GeneratorSettings.Password = commandLineArguments["password"];
-			GeneratorSettings.DatabaseName = commandLineArguments["database"];
+			BusinessLayerGenerator.Settings.GeneratorSettings.DatabaseName = GeneratorSettings.DatabaseName = commandLineArguments["database"];
 			GeneratorSettings.SolutionPath = commandLineArguments["solutionpath"];
 			GeneratorSettings.Namespace = commandLineArguments["namespace"];
 
@@ -77,8 +77,8 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator
 			database.Parent.SetDefaultInitFields(true);
 
 			//database.PrefetchObjects(); // zbytecne
-			database.PrefetchObjects(typeof(Table));
-			database.PrefetchObjects(typeof(StoredProcedure));
+			//database.PrefetchObjects(typeof(Table));
+			//database.PrefetchObjects(typeof(StoredProcedure));
 
 			try
 			{

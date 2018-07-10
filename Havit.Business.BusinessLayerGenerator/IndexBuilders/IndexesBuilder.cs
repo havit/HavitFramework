@@ -17,7 +17,7 @@ namespace Havit.Business.BusinessLayerGenerator.IndexBuilders
 		/// </summary>
 		public static void CreateIndexes(Table table)
 		{
-			if ((GeneratorSettings.Strategy != GeneratorStrategy.Havit) && (GeneratorSettings.Strategy != GeneratorStrategy.WikiReality))
+			if (GeneratorSettings.Strategy != GeneratorStrategy.Havit)
 			{
 				return;
 			}

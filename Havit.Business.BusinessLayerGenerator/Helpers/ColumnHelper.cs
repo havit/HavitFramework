@@ -362,7 +362,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		#region IsForeignKeyCheckSuppressed
 		public static bool CheckForeignKeyName(Column column)
 		{
-			if (GeneratorSettings.Strategy != GeneratorStrategy.Havit)
+			if ((GeneratorSettings.Strategy != GeneratorStrategy.Havit) && (GeneratorSettings.Strategy != GeneratorStrategy.HavitCodeFirst))
 			{
 				return false;
 			}

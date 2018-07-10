@@ -47,7 +47,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 		/// </summary>
 		private static void CheckPrimaryKeyNamingRules(Table table)
 		{
-			if ((GeneratorSettings.Strategy != GeneratorStrategy.Havit) && (GeneratorSettings.Strategy != GeneratorStrategy.WikiReality))
+			if ((GeneratorSettings.Strategy != GeneratorStrategy.Havit) && (GeneratorSettings.Strategy != GeneratorStrategy.HavitCodeFirst))
 			{
 				return;
 			}
@@ -229,7 +229,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 		/// </summary>
 		private static void CheckForeignKeysNamingConvention(Table table)
 		{
-			if ((GeneratorSettings.Strategy != GeneratorStrategy.Havit) && (GeneratorSettings.Strategy != GeneratorStrategy.WikiReality))
+			if ((GeneratorSettings.Strategy != GeneratorStrategy.Havit) && (GeneratorSettings.Strategy != GeneratorStrategy.HavitCodeFirst))
 			{
 				return;
 			}

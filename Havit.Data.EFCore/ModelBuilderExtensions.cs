@@ -53,7 +53,9 @@ namespace Havit.Data.Entity
 		/// </summary>
 	    public static void ApplyConfigurationsFromAssembly(this ModelBuilder modelBuilder, Assembly assembly, string namespaceName = null)
 	    {
-		    MethodInfo applyConfigurationGenericMethod = typeof(ModelBuilder).GetMethod(nameof(ModelBuilder.ApplyConfiguration), BindingFlags.Instance | BindingFlags.Public);
+		    MethodInfo applyConfigurationGenericMethod = typeof(ModelBuilder)
+			    .GetMethods(BindingFlags.Instance | BindingFlags.Public)
+			    .FirstOrDefault(m => m.Name == nameof(ModelBuilder.ApplyConfiguration) && m.GetParameters()[0].ParameterType.GetGenericTypeDefinition() == typeof(IEntityTypeConfiguration<>));
 
 		    var applicableTypesWithConfigurations = assembly
 			    .GetTypes()

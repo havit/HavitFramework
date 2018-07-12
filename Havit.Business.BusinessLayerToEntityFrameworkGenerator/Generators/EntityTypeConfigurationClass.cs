@@ -31,10 +31,10 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 
 			if (shouldSave)
 			{
-				if (entityCsprojFile != null)
-				{
-					entityCsprojFile.Ensures(fileName);
-				}
+				//if (entityCsprojFile != null)
+				//{
+				//	entityCsprojFile.Ensures(fileName);
+				//}
 				writer.Save();
 			}
 		}

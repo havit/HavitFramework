@@ -39,19 +39,19 @@ namespace Havit.Business.BusinessLayerGenerator.Writers
 		
 		private readonly SourceControlClient sourceControlClient;
 
-		private readonly bool eliminateEmtpyLinesBeforeClosingParenthesis;
+		private readonly bool eliminateEmptyLinesBeforeClosingParenthesis;
 
 		private int emtpyLinesBeforeClosingParenthesisCounter = 0;
 
 		#endregion
 
 		#region Constructor
-		public CodeWriter(string fullPath, SourceControlClient sourceControlClient, bool eliminateEmtpyLinesBeforeClosingParenthesis = false)
+		public CodeWriter(string fullPath, SourceControlClient sourceControlClient, bool eliminateEmptyLinesBeforeClosingParenthesis = false)
 		{
 			this.fullPath = fullPath;
 			this.code = new StringBuilder(51200);
 			this.sourceControlClient = sourceControlClient;
-			this.eliminateEmtpyLinesBeforeClosingParenthesis = eliminateEmtpyLinesBeforeClosingParenthesis;
+			this.eliminateEmptyLinesBeforeClosingParenthesis = eliminateEmptyLinesBeforeClosingParenthesis;
 		    preloadFileTask = Task.Factory.StartNew(() =>
 		    {
 		        fileExists = File.Exists(this.fullPath);
@@ -79,7 +79,7 @@ namespace Havit.Business.BusinessLayerGenerator.Writers
 		/// </summary>
 		public void WriteLine(string line)
 		{
-			if (eliminateEmtpyLinesBeforeClosingParenthesis)
+			if (eliminateEmptyLinesBeforeClosingParenthesis)
 			{
 				if (String.IsNullOrEmpty(line))
 				{
@@ -221,6 +221,14 @@ namespace Havit.Business.BusinessLayerGenerator.Writers
 		public void WriteGeneratedCodeAttribute()
 		{
 			this.WriteLine("[System.CodeDom.Compiler.GeneratedCode(\"Havit.BusinessLayerGenerator\", \"1.0\")]");
+		}
+
+		public void EndPreviousStatement()
+		{
+			if (code[code.Length - Environment.NewLine.Length] != ';')
+			{
+				code.Insert(code.Length - Environment.NewLine.Length, ';');
+			}
 		}
 
 		/// <summary>

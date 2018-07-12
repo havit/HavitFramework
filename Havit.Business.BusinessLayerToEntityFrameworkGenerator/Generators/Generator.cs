@@ -22,10 +22,10 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 			{
 				ConsoleHelper.WriteLineInfo(table.Name);
 
-				if (!TableHelper.IsJoinTable(table))
+				//if (!TableHelper.IsJoinTable(table))
 				{
-					ModelClass.Generate(table, modelCsprojFile, sourceControlClient);
-					EntityTypeConfigurationClass.Generate(table, entityCsprojFile, sourceControlClient);
+					EfCore.ModelClass.Generate(table, modelCsprojFile, sourceControlClient);
+					EfCore.EntityTypeConfigurationClass.Generate(table, entityCsprojFile, sourceControlClient);
 				}
 			}
 		}

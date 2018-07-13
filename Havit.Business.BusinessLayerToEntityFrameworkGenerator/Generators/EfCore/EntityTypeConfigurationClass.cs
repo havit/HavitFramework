@@ -25,7 +25,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 			WriteNamespaceClassConstructorBegin(writer, table, false);
 
 			bool shouldSave = WriteTablePKs(writer, table);
-			shouldSave |= WriteColumnNameOverrides(writer, table);
+			shouldSave |= WriteColumnMetadata(writer, table);
 			shouldSave |= WritePrecisions(writer, table);
 			shouldSave |= WriteCollections(writer, table);
 			shouldSave |= WritePrincipals(writer, table);
@@ -271,11 +271,58 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 			return result;
 		}
 
-		private static bool WriteColumnNameOverrides(CodeWriter writer, Table table)
+		private static bool WriteColumnMetadata(CodeWriter writer, Table table)
 		{
-			bool result = false;
+			if (!TableHelper.IsJoinTable(table))
+			{
+				writer.WriteLine(String.Format("builder.Property({0} => {0}.Id)",
+					ConventionsHelper.GetCammelCase(ClassHelper.GetClassName(table))));
+				writer.Indent();
+				writer.WriteLine(String.Format(".HasColumnName(\"{0}ID\");", ClassHelper.GetClassName(table)));
+				writer.Unindent();
+				writer.WriteLine();
+			}
+
 			foreach (Column column in table.Columns)
 			{
+				//if (PropertyHelper.IsString(column) && (column.DefaultConstraint != null))
+				//{
+				//	string propertyName = PropertyHelper.GetPropertyName(column);
+				//	if (column.Name == "UICulture")
+				//	{
+				//		propertyName = "UiCulture";
+				//	}
+				//	writer.WriteLine(String.Format("builder.Property({0} => {0}.{1})",
+				//		ConventionsHelper.GetCammelCase(ClassHelper.GetClassName(table)),
+				//		propertyName));
+				//	writer.Indent();
+				//	writer.WriteLine(".HasDefaultValue(\"\");");
+				//	writer.Unindent();
+				//	writer.WriteLine();
+				//}
+
+				// Set IsRequired, but only for non-FK, non-PK columns
+				if (!TableHelper.IsJoinTable(table) && (TableHelper.GetPrimaryKey(table) != column) && !TypeHelper.IsBusinessObjectReference(column)
+				    && !column.Nullable)
+				{
+					string propertyName = PropertyHelper.GetPropertyName(column);
+					if (column.Name == "UICulture")
+					{
+						propertyName = "UiCulture";
+					}
+					else if (column.Name == "PropertyName")
+					{
+						propertyName = "Symbol";
+					}
+					writer.WriteLine(String.Format("builder.Property({0} => {0}.{1})",
+						ConventionsHelper.GetCammelCase(ClassHelper.GetClassName(table)),
+						propertyName));
+					writer.Indent();
+					writer.WriteLine(".IsRequired();");
+					writer.Unindent();
+					writer.WriteLine();
+				}
+
 				if (LocalizationHelper.IsLocalizationTable(table) && (LocalizationHelper.GetParentLocalizationColumn(table)) == column)
 				{
 					writer.WriteLine(String.Format("builder.Property({0} => {0}.ParentId)",
@@ -284,12 +331,10 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 					writer.WriteLine(String.Format(".HasColumnName(\"{0}\");", column.Name));
 					writer.Unindent();
 					writer.WriteLine();
-
-					result = true;
 				}
 			}
 
-			return result;
+			return true;
 		}
 
 		private static bool WriteTablePKs(CodeWriter writer, Table table)
@@ -302,17 +347,10 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 				writer.WriteLine(String.Format("builder.HasKey({0} => new {{ {1} }});",
 					ConventionsHelper.GetCammelCase(ClassHelper.GetClassName(table)),
 					columns));
+
+				return true;
 			}
-			else
-			{
-				writer.WriteLine(String.Format("builder.Property({0} => {0}.Id)",
-					ConventionsHelper.GetCammelCase(ClassHelper.GetClassName(table))));
-				writer.Indent();
-				writer.WriteLine(String.Format(".HasColumnName(\"{0}ID\");", ClassHelper.GetClassName(table)));
-				writer.Unindent();
-				writer.WriteLine();
-			}
-			return true;
+			return false;
 		}
 
 		#region WriteNamespaceClassConstructorEnd

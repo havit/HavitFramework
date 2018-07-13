@@ -24,13 +24,14 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 			WriteUsings(writer, table);
 			WriteNamespaceClassConstructorBegin(writer, table, false);
 
-			bool shouldSave = WritePrecisions(writer, table);
+			bool shouldSave = WriteTablePKs(writer, table);
+			shouldSave |= WriteColumnNameOverrides(writer, table);
+			shouldSave |= WritePrecisions(writer, table);
 			shouldSave |= WriteCollections(writer, table);
-			shouldSave |= WriteJoinTablePKs(writer, table);
 			shouldSave |= WritePrincipals(writer, table);
 			WriteNamespaceClassConstructorEnd(writer);
 
-			if (true)
+			if (shouldSave)
 			{
 				if (entityCsprojFile != null)
 				{
@@ -270,20 +271,47 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 			return result;
 		}
 
-		private static bool WriteJoinTablePKs(CodeWriter writer, Table table)
+		private static bool WriteColumnNameOverrides(CodeWriter writer, Table table)
 		{
-			if (!TableHelper.IsJoinTable(table))
+			bool result = false;
+			foreach (Column column in table.Columns)
 			{
-				return false;
+				if (LocalizationHelper.IsLocalizationTable(table) && (LocalizationHelper.GetParentLocalizationColumn(table)) == column)
+				{
+					writer.WriteLine(String.Format("builder.Property({0} => {0}.ParentId)",
+						ConventionsHelper.GetCammelCase(ClassHelper.GetClassName(table))));
+					writer.Indent();
+					writer.WriteLine(String.Format(".HasColumnName(\"{0}\");", column.Name));
+					writer.Unindent();
+					writer.WriteLine();
+
+					result = true;
+				}
 			}
 
-			string columns = String.Join(", ", table.Columns.Cast<Column>()
-				.Select(column => String.Format("{0}.{1}Id", ConventionsHelper.GetCammelCase(ClassHelper.GetClassName(table)), ColumnHelper.GetReferencedTable(column).Name)));
+			return result;
+		}
 
-			writer.WriteLine(String.Format("builder.HasKey({0} => new {{ {1} }});",
-				ConventionsHelper.GetCammelCase(ClassHelper.GetClassName(table)),
-				columns));
+		private static bool WriteTablePKs(CodeWriter writer, Table table)
+		{
+			if (TableHelper.IsJoinTable(table))
+			{
+				string columns = String.Join(", ", table.Columns.Cast<Column>()
+					.Select(column => String.Format("{0}.{1}Id", ConventionsHelper.GetCammelCase(ClassHelper.GetClassName(table)), ColumnHelper.GetReferencedTable(column).Name)));
 
+				writer.WriteLine(String.Format("builder.HasKey({0} => new {{ {1} }});",
+					ConventionsHelper.GetCammelCase(ClassHelper.GetClassName(table)),
+					columns));
+			}
+			else
+			{
+				writer.WriteLine(String.Format("builder.Property({0} => {0}.Id)",
+					ConventionsHelper.GetCammelCase(ClassHelper.GetClassName(table))));
+				writer.Indent();
+				writer.WriteLine(String.Format(".HasColumnName(\"{0}ID\");", ClassHelper.GetClassName(table)));
+				writer.Unindent();
+				writer.WriteLine();
+			}
 			return true;
 		}
 

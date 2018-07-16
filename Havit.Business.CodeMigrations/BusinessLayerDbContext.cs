@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using System.Reflection;
+using Havit.Business.CodeMigrations.ExtendedProperties;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -31,6 +33,8 @@ namespace Havit.Business.CodeMigrations
 			base.OnModelCreating(modelBuilder);
 
 			ApplyConventions(modelBuilder);
+
+			HandleExtendedProperties(modelBuilder.Model);
 		}
 
 		private void ApplyConventions(ModelBuilder modelBuilder)
@@ -76,6 +80,27 @@ namespace Havit.Business.CodeMigrations
 				{
 					property.Relational().DefaultValue = "";
 				}
+			}
+		}
+
+		private static void HandleExtendedProperties(IMutableModel model)
+		{
+			foreach (var entityType in model.GetEntityTypes())
+			{
+				AddExtendedPropertyAnnotations(entityType, entityType.ClrType);
+				foreach (var property in entityType.GetProperties())
+				{
+					AddExtendedPropertyAnnotations(property, property.PropertyInfo);
+				}
+			}
+		}
+
+		private static void AddExtendedPropertyAnnotations(IMutableAnnotatable annotatable, MemberInfo memberInfo)
+		{
+			var attributes = memberInfo.GetCustomAttributes(typeof(ExtendedPropertyAttribute), false).Cast<ExtendedPropertyAttribute>();
+			foreach (var attribute in attributes)
+			{
+				annotatable.AddAnnotation(ExtendedPropertiesAnnotationsHelper.BuildAnnotationName(attribute), attribute.Value);
 			}
 		}
 	}

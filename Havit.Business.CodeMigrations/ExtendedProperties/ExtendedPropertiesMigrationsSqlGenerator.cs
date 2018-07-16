@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Havit.Business.CodeMigrations
+namespace Havit.Business.CodeMigrations.ExtendedProperties
 {
 	internal class ExtendedPropertiesMigrationsSqlGenerator : SqlServerMigrationsSqlGenerator
 	{

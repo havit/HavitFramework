@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.EntityFrameworkCore.Migrations;
 using DbContext = Havit.Data.Entity.DbContext;
 
 namespace Havit.Business.CodeMigrations
@@ -15,6 +16,14 @@ namespace Havit.Business.CodeMigrations
 		public BusinessLayerDbContext(DbContextOptions options)
 			: base(options)
 		{
+		}
+
+		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		{
+			base.OnConfiguring(optionsBuilder);
+
+			optionsBuilder.ReplaceService<IMigrationsAnnotationProvider, ExtendedPropertiesMigrationsAnnotationProvider>();
+			optionsBuilder.ReplaceService<IMigrationsSqlGenerator, ExtendedPropertiesMigrationsSqlGenerator>();
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)

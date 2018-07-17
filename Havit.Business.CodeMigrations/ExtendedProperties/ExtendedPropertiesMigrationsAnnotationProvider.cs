@@ -16,13 +16,13 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 		public override IEnumerable<IAnnotation> For(IProperty property)
 		{
 			return base.For(property)
-				.Concat(property.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.AnnotationsFilter));
+				.Concat(property.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.IsExtendedPropertyAnnotation));
 		}
 
 		public override IEnumerable<IAnnotation> ForRemove(IEntityType entityType)
 		{
 			return base.ForRemove(entityType)
-				.Concat(entityType.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.AnnotationsFilter));
+				.Concat(entityType.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.IsExtendedPropertyAnnotation));
 		}
 	}
 }

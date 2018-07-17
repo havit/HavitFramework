@@ -16,7 +16,7 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 		{
 			base.Generate(operation, model, builder);
 
-			foreach (var annotation in operation.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.AnnotationsFilter))
+			foreach (var annotation in operation.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.IsExtendedPropertyAnnotation))
 			{
 				var name = ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(annotation);
 				var value = (string)annotation.Value;
@@ -24,7 +24,7 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 			}
 			foreach (var column in operation.Columns)
 			{
-				foreach (var annotation in column.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.AnnotationsFilter))
+				foreach (var annotation in column.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.IsExtendedPropertyAnnotation))
 				{
 					var name = ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(annotation);
 					var value = (string)annotation.Value;
@@ -37,7 +37,7 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 		{
 			base.Generate(operation, model, builder);
 
-			foreach (var annotation in operation.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.AnnotationsFilter))
+			foreach (var annotation in operation.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.IsExtendedPropertyAnnotation))
 			{
 				var name = ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(annotation);
 				var value = (string)annotation.Value;

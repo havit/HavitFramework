@@ -33,9 +33,9 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 			}
 		}
 
-		public static bool AnnotationsFilter(IAnnotation annotation) => annotation.Name.StartsWith(AnnotationMarker, Comparison);
+		public static bool IsExtendedPropertyAnnotation(IAnnotation annotation) => annotation.Name.StartsWith(AnnotationMarker, Comparison);
 
-		public static string ParseAnnotationName(IAnnotation annotation) => AnnotationsFilter(annotation) ? annotation.Name.Substring(AnnotationMarker.Length) : null;
+		public static string ParseAnnotationName(IAnnotation annotation) => IsExtendedPropertyAnnotation(annotation) ? annotation.Name.Substring(AnnotationMarker.Length) : null;
 
 		internal static string BuildAnnotationName(ExtendedPropertyAttribute attribute) => $"{AnnotationMarker}{attribute.Name}";
 

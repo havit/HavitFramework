@@ -36,17 +36,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 
 			WriteUsings(writer, table);
 			WriteNamespaceClassBegin(writer, modelClass, false);
-			if (TableHelper.IsJoinTable(table))
-			{
-
-			}
-			//{
-				WriteMembers(writer, modelClass);
-			//}
-			//else
-			//{
-			//	WriteJoinTableMembers(writer, table);
-			//}
+			WriteMembers(writer, modelClass);
 
 			WriteEnumClassMembers(writer, table);
 			WriteNamespaceClassEnd(writer);
@@ -163,14 +153,6 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 		#endregion
 
 		#region WriteMembers
-
-		private static void WriteJoinTableMembers(CodeWriter writer, Table table)
-		{
-
-			//writer.WriteLine(String.Format("public int {0}Id {{ get; set; }}", PropertyHelper.GetPropertyName(table.Columns[1])));
-			//writer.WriteLine(String.Format("public {0} {1} {{ get; set; }}", TypeHelper.GetPropertyTypeName(table.Columns[1]).Replace("BusinessLayer", "Model"), ColumnHelper.GetReferencedTable(table.Columns[1]).Name));
-			//writer.WriteLine();
-		}
 
 		private static void WriteMembers(CodeWriter writer, GeneratedModelClass modelClass)
 		{

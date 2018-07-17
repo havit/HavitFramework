@@ -40,7 +40,7 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 			var attributes = memberInfo.GetCustomAttributes(typeof(ExtendedPropertyAttribute), false).Cast<ExtendedPropertyAttribute>();
 			foreach (var attribute in attributes)
 			{
-				annotatable.AddAnnotation(ExtendedPropertiesAnnotationsHelper.BuildAnnotationName(attribute), attribute.Value);
+				annotatable.AddAnnotation(BuildAnnotationName(attribute), attribute.Value);
 			}
 		}
 	}

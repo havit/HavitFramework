@@ -273,15 +273,15 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 
 		private static bool WriteColumnMetadata(CodeWriter writer, Table table)
 		{
-			if (!TableHelper.IsJoinTable(table))
-			{
-				writer.WriteLine(String.Format("builder.Property({0} => {0}.Id)",
-					ConventionsHelper.GetCammelCase(ClassHelper.GetClassName(table))));
-				writer.Indent();
-				writer.WriteLine(String.Format(".HasColumnName(\"{0}ID\");", ClassHelper.GetClassName(table)));
-				writer.Unindent();
-				writer.WriteLine();
-			}
+			//if (!TableHelper.IsJoinTable(table))
+			//{
+			//	writer.WriteLine(String.Format("builder.Property({0} => {0}.Id)",
+			//		ConventionsHelper.GetCammelCase(ClassHelper.GetClassName(table))));
+			//	writer.Indent();
+			//	writer.WriteLine(String.Format(".HasColumnName(\"{0}ID\");", ClassHelper.GetClassName(table)));
+			//	writer.Unindent();
+			//	writer.WriteLine();
+			//}
 
 			foreach (Column column in table.Columns)
 			{
@@ -300,6 +300,23 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 				//	writer.Unindent();
 				//	writer.WriteLine();
 				//}
+
+				// Generate HasDefaultValueSql. For String columns, generate only if if default is not empty (we use convention for such columns)
+				if ((column.DefaultConstraint != null) && (!column.DataType.IsStringType || (column.DefaultConstraint.Text != "('')")))
+				{
+					string propertyName = PropertyHelper.GetPropertyName(column);
+					if (column.Name == "UICulture")
+					{
+						propertyName = "UiCulture";
+					}
+					writer.WriteLine(String.Format("builder.Property({0} => {0}.{1})",
+						ConventionsHelper.GetCammelCase(ClassHelper.GetClassName(table)),
+						propertyName));
+					writer.Indent();
+					writer.WriteLine($".HasDefaultValueSql(\"{column.DefaultConstraint.Text}\");");
+					writer.Unindent();
+					writer.WriteLine();
+				}
 
 				// Set IsRequired, but only for non-FK, non-PK columns
 				if (!TableHelper.IsJoinTable(table) && (TableHelper.GetPrimaryKey(table) != column) && !TypeHelper.IsBusinessObjectReference(column)

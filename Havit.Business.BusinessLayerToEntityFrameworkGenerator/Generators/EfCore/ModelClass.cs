@@ -152,12 +152,6 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 
 		private static void WriteJoinTableMembers(CodeWriter writer, Table table)
 		{
-			foreach (Column column in table.Columns)
-			{
-				writer.WriteLine(String.Format("public int {0}Id {{ get; set; }}", ColumnHelper.GetReferencedTable(column).Name));
-				writer.WriteLine(String.Format("public {0} {1} {{ get; set; }}", TypeHelper.GetPropertyTypeName(column).Replace("BusinessLayer", "Model"), ColumnHelper.GetReferencedTable(column).Name));
-				writer.WriteLine();	
-			}
 
 			//writer.WriteLine(String.Format("public int {0}Id {{ get; set; }}", PropertyHelper.GetPropertyName(table.Columns[1])));
 			//writer.WriteLine(String.Format("public {0} {1} {{ get; set; }}", TypeHelper.GetPropertyTypeName(table.Columns[1]).Replace("BusinessLayer", "Model"), ColumnHelper.GetReferencedTable(table.Columns[1]).Name));
@@ -166,8 +160,20 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 
 		private static void WriteMembers(CodeWriter writer, Table table)
 		{
-			writer.WriteLine("public int Id { get; set; }");
-			writer.WriteLine();
+			if (TableHelper.IsJoinTable(table))
+			{
+				foreach (Column column in table.Columns)
+				{
+					writer.WriteLine(String.Format("public int {0}Id {{ get; set; }}", ColumnHelper.GetReferencedTable(column).Name));
+					writer.WriteLine(String.Format("public {0} {1} {{ get; set; }}", TypeHelper.GetPropertyTypeName(column).Replace("BusinessLayer", "Model"), ColumnHelper.GetReferencedTable(column).Name));
+					writer.WriteLine();
+				}
+			}
+			else
+			{
+				writer.WriteLine("public int Id { get; set; }");
+				writer.WriteLine();
+			}
 
 			foreach (Column column in TableHelper.GetPropertyColumns(table))
 			{

@@ -23,8 +23,8 @@ namespace Havit.Business.CodeMigrations
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			base.OnConfiguring(optionsBuilder);
-
-			ReplaceServicesForExtendedProperties(optionsBuilder);
+			
+			optionsBuilder.UseSqlServerExtendedProperties();
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -33,7 +33,7 @@ namespace Havit.Business.CodeMigrations
 
 			ApplyConventions(modelBuilder);
 
-			HandleExtendedProperties(modelBuilder.Model);
+			modelBuilder.ForSqlServerExtendedProperties();
 		}
 
 		private void ApplyConventions(ModelBuilder modelBuilder)
@@ -80,33 +80,6 @@ namespace Havit.Business.CodeMigrations
 					property.Relational().DefaultValue = "";
 				}
 			}
-		}
-
-		private static void HandleExtendedProperties(IMutableModel model)
-		{
-			foreach (var entityType in model.GetEntityTypes())
-			{
-				AddExtendedPropertyAnnotations(entityType, entityType.ClrType);
-				foreach (var property in entityType.GetProperties())
-				{
-					AddExtendedPropertyAnnotations(property, property.PropertyInfo);
-				}
-			}
-		}
-
-		private static void AddExtendedPropertyAnnotations(IMutableAnnotatable annotatable, MemberInfo memberInfo)
-		{
-			var attributes = memberInfo.GetCustomAttributes(typeof(ExtendedPropertyAttribute), false).Cast<ExtendedPropertyAttribute>();
-			foreach (var attribute in attributes)
-			{
-				annotatable.AddAnnotation(ExtendedPropertiesAnnotationsHelper.BuildAnnotationName(attribute), attribute.Value);
-			}
-		}
-
-		private static void ReplaceServicesForExtendedProperties(DbContextOptionsBuilder optionsBuilder)
-		{
-			optionsBuilder.ReplaceService<IMigrationsAnnotationProvider, ExtendedPropertiesMigrationsAnnotationProvider>();
-			optionsBuilder.ReplaceService<IMigrationsSqlGenerator, ExtendedPropertiesMigrationsSqlGenerator>();
 		}
 	}
 }

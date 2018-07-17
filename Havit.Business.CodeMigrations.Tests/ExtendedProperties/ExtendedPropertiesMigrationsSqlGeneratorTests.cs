@@ -60,6 +60,25 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 				migrations[1].CommandText);
 		}
 
+		[TestMethod]
+		public void AddColumn_ColumnWithExtendedProperty()
+		{
+			var columnOperation = new AddColumnOperation()
+			{
+				Table = "TableName",
+				Name = "ColumnName",
+				ClrType = typeof(int)
+			};
+			var attr = new TestExtendedPropertyAttribute("OnColumn", "ColumnValue");
+			columnOperation.AddAnnotation(ExtendedPropertiesAnnotationsHelper.BuildAnnotationName(attr), attr.Value);
+			var migrations = Generate(new[] { columnOperation });
+
+			Assert.AreEqual(2, migrations.Count);
+			Assert.AreEqual(
+				"EXEC sys.sp_addextendedproperty @name=N'OnColumn', @value=N'ColumnValue', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'TableName', @level2type=N'COLUMN', @level2name=N'ColumnName'",
+				migrations[1].CommandText);
+		}
+
 		private class TestDbContext : BusinessLayerDbContext
 		{
 			protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

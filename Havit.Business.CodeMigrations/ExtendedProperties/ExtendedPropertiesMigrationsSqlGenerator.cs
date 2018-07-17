@@ -16,22 +16,32 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 		{
 			base.Generate(operation, model, builder);
 
-			var tableName = operation.Name;
 			foreach (var annotation in operation.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.AnnotationsFilter))
 			{
 				var name = ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(annotation);
 				var value = (string)annotation.Value;
-				AddExtendedPropertyLevel1(name, value, tableName, builder);
+				AddExtendedPropertyLevel1(name, value, operation.Name, builder);
 			}
 			foreach (var column in operation.Columns)
 			{
-				var columnName = column.Name;
 				foreach (var annotation in column.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.AnnotationsFilter))
 				{
 					var name = ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(annotation);
 					var value = (string)annotation.Value;
-					AddExtendedPropertyLevel2(name, value, tableName, columnName, builder);
+					AddExtendedPropertyLevel2(name, value, column.Table, column.Name, builder);
 				}
+			}
+		}
+
+		protected override void Generate(AddColumnOperation operation, IModel model, MigrationCommandListBuilder builder)
+		{
+			base.Generate(operation, model, builder);
+
+			foreach (var annotation in operation.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.AnnotationsFilter))
+			{
+				var name = ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(annotation);
+				var value = (string)annotation.Value;
+				AddExtendedPropertyLevel2(name, value, operation.Table, operation.Name, builder);
 			}
 		}
 
@@ -41,11 +51,6 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 		}
 
 		protected override void Generate(DropTableOperation operation, IModel model, MigrationCommandListBuilder builder)
-		{
-			base.Generate(operation, model, builder);
-		}
-
-		protected override void Generate(AddColumnOperation operation, IModel model, MigrationCommandListBuilder builder)
 		{
 			base.Generate(operation, model, builder);
 		}

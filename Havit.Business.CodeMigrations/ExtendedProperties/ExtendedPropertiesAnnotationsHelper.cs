@@ -10,8 +10,7 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 {
 	internal static class ExtendedPropertiesAnnotationsHelper
 	{
-		private const string Separator = ":";
-		private const string AnnotationPrefix = "ExtendedProperty";
+		private const string AnnotationMarker = "ExtendedProperty:";
 
 		public static void UseSqlServerExtendedProperties(this DbContextOptionsBuilder optionsBuilder)
 		{
@@ -31,10 +30,12 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 			}
 		}
 
-		public static bool AnnotationsFilter(IAnnotation annotation) => annotation.Name.StartsWith($"{AnnotationPrefix}{Separator}", StringComparison.Ordinal);
+		public static bool AnnotationsFilter(IAnnotation annotation) => annotation.Name.StartsWith(AnnotationMarker, StringComparison.Ordinal);
 
-		private static string BuildAnnotationName(ExtendedPropertyAttribute attribute) => $"{AnnotationPrefix}{Separator}{attribute.Name}";
-		
+		public static string ParseAnnotationName(IAnnotation annotation) => AnnotationsFilter(annotation) ? annotation.Name.Substring(AnnotationMarker.Length) : null;
+
+		internal static string BuildAnnotationName(ExtendedPropertyAttribute attribute) => $"{AnnotationMarker}{attribute.Name}";
+
 		private static void AddExtendedPropertyAnnotations(IMutableAnnotatable annotatable, MemberInfo memberInfo)
 		{
 			var attributes = memberInfo.GetCustomAttributes(typeof(ExtendedPropertyAttribute), false).Cast<ExtendedPropertyAttribute>();

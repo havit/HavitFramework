@@ -10,6 +10,9 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 {
 	internal static class ExtendedPropertiesAnnotationsHelper
 	{
+		internal static readonly StringComparison Comparison = StringComparison.Ordinal;
+		internal static readonly StringComparer Comparer = StringComparer.Ordinal;
+
 		private const string AnnotationMarker = "ExtendedProperty:";
 
 		public static void UseSqlServerExtendedProperties(this DbContextOptionsBuilder optionsBuilder)
@@ -30,7 +33,7 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 			}
 		}
 
-		public static bool AnnotationsFilter(IAnnotation annotation) => annotation.Name.StartsWith(AnnotationMarker, StringComparison.Ordinal);
+		public static bool AnnotationsFilter(IAnnotation annotation) => annotation.Name.StartsWith(AnnotationMarker, Comparison);
 
 		public static string ParseAnnotationName(IAnnotation annotation) => AnnotationsFilter(annotation) ? annotation.Name.Substring(AnnotationMarker.Length) : null;
 

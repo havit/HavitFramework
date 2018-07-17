@@ -79,6 +79,59 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 				migrations[1].CommandText);
 		}
 
+		[TestMethod]
+		public void AlterTable_TableWithUpdatedExtendedProperty()
+		{
+			var tableOperation = new AlterTableOperation()
+			{
+				Name = "TableName"
+			};
+			var attrOld = new TestExtendedPropertyAttribute("OnTable", "OldValue");
+			var attrNew = new TestExtendedPropertyAttribute("OnTable", "NewValue");
+			tableOperation.OldTable.AddAnnotation(ExtendedPropertiesAnnotationsHelper.BuildAnnotationName(attrOld), attrOld.Value);
+			tableOperation.AddAnnotation(ExtendedPropertiesAnnotationsHelper.BuildAnnotationName(attrNew), attrNew.Value);
+			var migrations = Generate(new[] { tableOperation });
+
+			Assert.AreEqual(1, migrations.Count);
+			Assert.AreEqual(
+				"EXEC sys.sp_updateextendedproperty @name=N'OnTable', @value=N'NewValue', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'TableName'",
+				migrations[0].CommandText);
+		}
+
+		[TestMethod]
+		public void AlterTable_TableWithRemovedExtendedProperty()
+		{
+			var tableOperation = new AlterTableOperation()
+			{
+				Name = "TableName"
+			};
+			var attrOld = new TestExtendedPropertyAttribute("OnTable", "OldValue");
+			tableOperation.OldTable.AddAnnotation(ExtendedPropertiesAnnotationsHelper.BuildAnnotationName(attrOld), attrOld.Value);
+			var migrations = Generate(new[] { tableOperation });
+
+			Assert.AreEqual(1, migrations.Count);
+			Assert.AreEqual(
+				"EXEC sys.sp_dropextendedproperty @name=N'OnTable', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'TableName'",
+				migrations[0].CommandText);
+		}
+
+		[TestMethod]
+		public void AlterTable_TableWithAddedExtendedProperty()
+		{
+			var tableOperation = new AlterTableOperation()
+			{
+				Name = "TableName"
+			};
+			var attrNew = new TestExtendedPropertyAttribute("OnTable", "NewValue");
+			tableOperation.AddAnnotation(ExtendedPropertiesAnnotationsHelper.BuildAnnotationName(attrNew), attrNew.Value);
+			var migrations = Generate(new[] { tableOperation });
+
+			Assert.AreEqual(1, migrations.Count);
+			Assert.AreEqual(
+				"EXEC sys.sp_addextendedproperty @name=N'OnTable', @value=N'NewValue', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'TableName'",
+				migrations[0].CommandText);
+		}
+
 		private class TestDbContext : BusinessLayerDbContext
 		{
 			protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

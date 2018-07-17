@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Havit.Business.CodeMigrations.Conventions
 {
-	public class RegularTablePrimaryKeysConvention
+	public static class RegularTablePrimaryKeysConvention
 	{
 		public static void Apply(ModelBuilder modelBuilder, string tableSuffix = "ID")
 		{

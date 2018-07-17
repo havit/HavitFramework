@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Havit.Business.CodeMigrations.Conventions
 {
-	public class DefaultsForStringsConvention
+	public static class DefaultsForStringsConvention
 	{
 		public static void Apply(ModelBuilder modelBuilder)
 		{

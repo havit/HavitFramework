@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Havit.Business.CodeMigrations.Conventions
 {
-	public class LocalizationTablesConvention
+	public static class LocalizationTablesConvention
 	{
 		public static void Apply(ModelBuilder modelBuilder)
 		{
@@ -19,6 +19,5 @@ namespace Havit.Business.CodeMigrations.Conventions
 				}
 			}
 		}
-
 	}
 }

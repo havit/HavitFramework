@@ -17,13 +17,13 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 		{
 			var tableOperation = new CreateTableOperation()
 			{
-				Name = "TableName"
+				Name = "TableName",
 			};
 			var columnOperation = new AddColumnOperation()
 			{
 				Table = tableOperation.Name,
 				Name = "ColumnName",
-				ClrType = typeof(int)
+				ClrType = typeof(int),
 			};
 			tableOperation.Columns.Add(columnOperation);
 			var attr = new TestExtendedPropertyAttribute("OnTable", "TableValue");
@@ -41,13 +41,13 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 		{
 			var tableOperation = new CreateTableOperation()
 			{
-				Name = "TableName"
+				Name = "TableName",
 			};
 			var columnOperation = new AddColumnOperation()
 			{
 				Table = tableOperation.Name,
 				Name = "ColumnName",
-				ClrType = typeof(int)
+				ClrType = typeof(int),
 			};
 			tableOperation.Columns.Add(columnOperation);
 			var attr = new TestExtendedPropertyAttribute("OnColumn", "ColumnValue");
@@ -67,7 +67,7 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 			{
 				Table = "TableName",
 				Name = "ColumnName",
-				ClrType = typeof(int)
+				ClrType = typeof(int),
 			};
 			var attr = new TestExtendedPropertyAttribute("OnColumn", "ColumnValue");
 			columnOperation.AddAnnotation(ExtendedPropertiesAnnotationsHelper.BuildAnnotationName(attr), attr.Value);
@@ -84,7 +84,7 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 		{
 			var tableOperation = new AlterTableOperation()
 			{
-				Name = "TableName"
+				Name = "TableName",
 			};
 			var attrOld = new TestExtendedPropertyAttribute("OnTable", "OldValue");
 			var attrNew = new TestExtendedPropertyAttribute("OnTable", "NewValue");
@@ -103,7 +103,7 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 		{
 			var tableOperation = new AlterTableOperation()
 			{
-				Name = "TableName"
+				Name = "TableName",
 			};
 			var attrOld = new TestExtendedPropertyAttribute("OnTable", "OldValue");
 			tableOperation.OldTable.AddAnnotation(ExtendedPropertiesAnnotationsHelper.BuildAnnotationName(attrOld), attrOld.Value);
@@ -120,7 +120,7 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 		{
 			var tableOperation = new AlterTableOperation()
 			{
-				Name = "TableName"
+				Name = "TableName",
 			};
 			var attrNew = new TestExtendedPropertyAttribute("OnTable", "NewValue");
 			tableOperation.AddAnnotation(ExtendedPropertiesAnnotationsHelper.BuildAnnotationName(attrNew), attrNew.Value);
@@ -130,6 +130,65 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 			Assert.AreEqual(
 				"EXEC sys.sp_addextendedproperty @name=N'OnTable', @value=N'NewValue', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'TableName'",
 				migrations[0].CommandText);
+		}
+
+		[TestMethod]
+		public void AlterColumn_ColumnWithUpdatedExtendedProperty()
+		{
+			var columnOperation = new AlterColumnOperation()
+			{
+				Table = "TableName",
+				Name = "ColumnName",
+				ClrType = typeof(int),
+			};
+			var attrOld = new TestExtendedPropertyAttribute("OnTable", "OldValue");
+			var attrNew = new TestExtendedPropertyAttribute("OnTable", "NewValue");
+			columnOperation.OldColumn.AddAnnotation(ExtendedPropertiesAnnotationsHelper.BuildAnnotationName(attrOld), attrOld.Value);
+			columnOperation.AddAnnotation(ExtendedPropertiesAnnotationsHelper.BuildAnnotationName(attrNew), attrNew.Value);
+			var migrations = Generate(new[] { columnOperation });
+
+			Assert.AreEqual(2, migrations.Count);
+			Assert.AreEqual(
+				"EXEC sys.sp_updateextendedproperty @name=N'OnTable', @value=N'NewValue', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'TableName', @level2type=N'COLUMN', @level2name=N'ColumnName'",
+				migrations[1].CommandText);
+		}
+
+		[TestMethod]
+		public void AlterColumn_ColumnWithRemovedExtendedProperty()
+		{
+			var columnOperation = new AlterColumnOperation()
+			{
+				Table = "TableName",
+				Name = "ColumnName",
+				ClrType = typeof(int),
+			};
+			var attrOld = new TestExtendedPropertyAttribute("OnTable", "OldValue");
+			columnOperation.OldColumn.AddAnnotation(ExtendedPropertiesAnnotationsHelper.BuildAnnotationName(attrOld), attrOld.Value);
+			var migrations = Generate(new[] { columnOperation });
+
+			Assert.AreEqual(2, migrations.Count);
+			Assert.AreEqual(
+				"EXEC sys.sp_dropextendedproperty @name=N'OnTable', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'TableName', @level2type=N'COLUMN', @level2name=N'ColumnName'",
+				migrations[1].CommandText);
+		}
+
+		[TestMethod]
+		public void AlterColumn_ColumnWithAddedExtendedProperty()
+		{
+			var columnOperation = new AlterColumnOperation()
+			{
+				Table = "TableName",
+				Name = "ColumnName",
+				ClrType = typeof(int),
+			};
+			var attrNew = new TestExtendedPropertyAttribute("OnTable", "NewValue");
+			columnOperation.AddAnnotation(ExtendedPropertiesAnnotationsHelper.BuildAnnotationName(attrNew), attrNew.Value);
+			var migrations = Generate(new[] { columnOperation });
+
+			Assert.AreEqual(2, migrations.Count);
+			Assert.AreEqual(
+				"EXEC sys.sp_addextendedproperty @name=N'OnTable', @value=N'NewValue', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'TableName', @level2type=N'COLUMN', @level2name=N'ColumnName'",
+				migrations[1].CommandText);
 		}
 
 		private class TestDbContext : BusinessLayerDbContext

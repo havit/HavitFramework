@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Havit.Business.BusinessLayerGenerator.Csproj;
 using Havit.Business.BusinessLayerGenerator.Helpers;
 using Havit.Business.BusinessLayerGenerator.TfsClient;
+using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata;
 using Microsoft.SqlServer.Management.Smo;
 
 namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
@@ -24,8 +25,8 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 
 				//if (!TableHelper.IsJoinTable(table))
 				{
-					EfCore.ModelClass.Generate(table, modelCsprojFile, sourceControlClient);
-					EfCore.EntityTypeConfigurationClass.Generate(table, entityCsprojFile, sourceControlClient);
+					GeneratedModelClass generatedModelClass = EfCore.ModelClass.Generate(table, modelCsprojFile, sourceControlClient);
+					EfCore.EntityTypeConfigurationClass.Generate(generatedModelClass, entityCsprojFile, sourceControlClient);
 				}
 			}
 		}

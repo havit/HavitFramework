@@ -7,6 +7,7 @@ using Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions;
 using Havit.Business.BusinessLayerGenerator.Helpers.Types;
 using Havit.Business.BusinessLayerGenerator.TfsClient;
 using Havit.Business.BusinessLayerGenerator.Writers;
+using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata;
 using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Settings;
 using Microsoft.SqlServer.Management.Smo;
 
@@ -15,16 +16,18 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 	public static class EntityTypeConfigurationClass
 	{
 		#region Generate
-		public static void Generate(Table table, CsprojFile entityCsprojFile, SourceControlClient sourceControlClient)
+		public static void Generate(GeneratedModelClass modelClass, CsprojFile entityCsprojFile, SourceControlClient sourceControlClient)
 		{
+			Table table = modelClass.Table;
+
 			string fileName = Path.Combine("Configurations", FileHelper.GetFilename(Helpers.NamingConventions.NamespaceHelper.GetNamespaceName(table, "Entity.Configurations", false), ClassHelper.GetClassName(table), ".cs", ""));
 
 			CodeWriter writer = new CodeWriter(Path.Combine(GeneratorSettings.SolutionPath, @"Entity", fileName), sourceControlClient, true);
 
 			WriteUsings(writer, table);
-			WriteNamespaceClassConstructorBegin(writer, table, false);
+			WriteNamespaceClassConstructorBegin(writer, modelClass, false);
 
-			bool shouldSave = WriteTablePKs(writer, table);
+			bool shouldSave = WriteTablePKs(writer, modelClass);
 			shouldSave |= WriteColumnMetadata(writer, table);
 			shouldSave |= WritePrecisions(writer, table);
 			shouldSave |= WriteCollections(writer, table);
@@ -70,15 +73,15 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 		#endregion
 
 		#region WriteNamespaceClassConstructorBegin
-		public static void WriteNamespaceClassConstructorBegin(CodeWriter writer, Table table, bool includeAttributes)
+		public static void WriteNamespaceClassConstructorBegin(CodeWriter writer, GeneratedModelClass modelClass, bool includeAttributes)
 		{
-			writer.WriteLine("namespace " + Helpers.NamingConventions.NamespaceHelper.GetNamespaceName(table, "Entity.Configurations"));
+			writer.WriteLine("namespace " + Helpers.NamingConventions.NamespaceHelper.GetNamespaceName(modelClass.Table, "Entity.Configurations"));
 			writer.WriteLine("{");
 
-			writer.WriteLine(String.Format("public class {0}Configuration : IEntityTypeConfiguration<{0}>", ClassHelper.GetClassName(table)));
+			writer.WriteLine(String.Format("public class {0}Configuration : IEntityTypeConfiguration<{0}>", modelClass.Name));
 			writer.WriteLine("{");
 
-			writer.WriteLine(String.Format("public void Configure(EntityTypeBuilder<{0}> builder)", ClassHelper.GetClassName(table)));
+			writer.WriteLine(String.Format("public void Configure(EntityTypeBuilder<{0}> builder)", modelClass.Name));
 			writer.WriteLine("{");
 		}
 		#endregion
@@ -354,15 +357,17 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 			return true;
 		}
 
-		private static bool WriteTablePKs(CodeWriter writer, Table table)
+		private static bool WriteTablePKs(CodeWriter writer, GeneratedModelClass modelClass)
 		{
-			if (TableHelper.IsJoinTable(table))
+			if (TableHelper.IsJoinTable(modelClass.Table))
 			{
-				string columns = String.Join(", ", table.Columns.Cast<Column>()
-					.Select(column => String.Format("{0}.{1}Id", ConventionsHelper.GetCammelCase(ClassHelper.GetClassName(table)), ColumnHelper.GetReferencedTable(column).Name)));
+				string columns = String.Join(", ", modelClass.Table.Columns.Cast<Column>()
+					.Select(column => String.Format("{0}.{1}", 
+						ConventionsHelper.GetCammelCase(modelClass.Name), 
+						modelClass.GetPrimaryKeyPartFor(column).PropertyName)));
 
 				writer.WriteLine(String.Format("builder.HasKey({0} => new {{ {1} }});",
-					ConventionsHelper.GetCammelCase(ClassHelper.GetClassName(table)),
+					ConventionsHelper.GetCammelCase(modelClass.Name),
 					columns));
 
 				return true;

@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Havit.Business.BusinessLayerGenerator.Csproj;
 using Havit.Business.BusinessLayerGenerator.Helpers;
 using Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions;
 using Havit.Business.BusinessLayerGenerator.Helpers.Types;
 using Havit.Business.BusinessLayerGenerator.TfsClient;
 using Havit.Business.BusinessLayerGenerator.Writers;
+using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata;
 using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Settings;
 using Microsoft.SqlServer.Management.Smo;
 
@@ -16,7 +18,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 	{
 		#region Generate
 
-		public static void Generate(Table table, CsprojFile modelCsprojFile, SourceControlClient sourceControlClient)
+		public static GeneratedModelClass Generate(Table table, CsprojFile modelCsprojFile, SourceControlClient sourceControlClient)
 		{
 			string fileName = FileHelper.GetFilename(table, ".cs", "");
 
@@ -27,21 +29,31 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 
 			CodeWriter writer = new CodeWriter(Path.Combine(GeneratorSettings.SolutionPath, "Model", fileName), sourceControlClient, true);
 
+			var modelClass = new GeneratedModelClass
+			{
+				Table = table
+			};
+
 			WriteUsings(writer, table);
-			WriteNamespaceClassBegin(writer, table, false);
-			if (!TableHelper.IsJoinTable(table))
+			WriteNamespaceClassBegin(writer, modelClass, false);
+			if (TableHelper.IsJoinTable(table))
 			{
-				WriteMembers(writer, table);
+
 			}
-			else
-			{
-				WriteJoinTableMembers(writer, table);
-			}
+			//{
+				WriteMembers(writer, modelClass);
+			//}
+			//else
+			//{
+			//	WriteJoinTableMembers(writer, table);
+			//}
 
 			WriteEnumClassMembers(writer, table);
 			WriteNamespaceClassEnd(writer);
 
 			writer.Save();
+
+			return modelClass;
 		}
 
 		#endregion
@@ -117,31 +129,33 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 
 		#region WriteNamespaceClassBegin
 
-		public static void WriteNamespaceClassBegin(CodeWriter writer, Table table, bool includeAttributes)
+		public static void WriteNamespaceClassBegin(CodeWriter writer, GeneratedModelClass modelClass, bool includeAttributes)
 		{
-			writer.WriteLine("namespace " + Helpers.NamingConventions.NamespaceHelper.GetNamespaceName(table, "Model"));
+			modelClass.Name = ClassHelper.GetClassName(modelClass.Table);
+
+			writer.WriteLine("namespace " + Helpers.NamingConventions.NamespaceHelper.GetNamespaceName(modelClass.Table, "Model"));
 			writer.WriteLine("{");
 
-			string comment = TableHelper.GetDescription(table);
+			string comment = TableHelper.GetDescription(modelClass.Table);
 			writer.WriteCommentSummary(comment);
 
 			string interfaceString = "";
-			if (LocalizationHelper.IsLocalizedTable(table))
+			if (LocalizationHelper.IsLocalizedTable(modelClass.Table))
 			{
-				interfaceString = String.Format("ILocalized<{0}>", ClassHelper.GetClassName(LocalizationHelper.GetLocalizationTable(table)));
+				interfaceString = String.Format("ILocalized<{0}>", ClassHelper.GetClassName(LocalizationHelper.GetLocalizationTable(modelClass.Table)));
 			}
-			else if (LocalizationHelper.IsLocalizationTable(table))
+			else if (LocalizationHelper.IsLocalizationTable(modelClass.Table))
 			{
-				interfaceString = String.Format("ILocalization<{0}>", ClassHelper.GetClassName(LocalizationHelper.GetLocalizationParentTable(table)));
+				interfaceString = String.Format("ILocalization<{0}>", ClassHelper.GetClassName(LocalizationHelper.GetLocalizationParentTable(modelClass.Table)));
 			}
-			else if (table.Name == "Language")
+			else if (modelClass.Name == "Language")
 			{
 				interfaceString = "ILanguage";
 			}
 
 			writer.WriteLine(String.Format("{0} class {1}{2}",
-				TableHelper.GetAccessModifier(table),
-				ClassHelper.GetClassName(table),
+				TableHelper.GetAccessModifier(modelClass.Table),
+				modelClass.Name,
 				String.IsNullOrEmpty(interfaceString) ? "" : " : " + interfaceString));
 			writer.WriteLine("{");
 		}
@@ -158,25 +172,64 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 			//writer.WriteLine();
 		}
 
-		private static void WriteMembers(CodeWriter writer, Table table)
+		private static void WriteMembers(CodeWriter writer, GeneratedModelClass modelClass)
 		{
+			Table table = modelClass.Table;
+
 			if (TableHelper.IsJoinTable(table))
 			{
-				foreach (Column column in table.Columns)
+				foreach (Column column in table.Columns.Cast<Column>().Where(c => c.InPrimaryKey))
 				{
-					writer.WriteLine(String.Format("public int {0}Id {{ get; set; }}", ColumnHelper.GetReferencedTable(column).Name));
-					writer.WriteLine(String.Format("public {0} {1} {{ get; set; }}", TypeHelper.GetPropertyTypeName(column).Replace("BusinessLayer", "Model"), ColumnHelper.GetReferencedTable(column).Name));
+					var pk = new EntityPrimaryKeyPart
+					{
+						Column = column,
+						PropertyName = String.Format("{0}Id", ColumnHelper.GetReferencedTable(column).Name)
+					};
+					var fk = new EntityForeignKey
+					{
+						Column = column,
+						ForeignKeyPropertyName = pk.PropertyName,
+						NavigationPropertyName = ColumnHelper.GetReferencedTable(column).Name,
+					};
+
+					writer.WriteLine(String.Format("public int {0} {{ get; set; }}", pk.PropertyName));
+					writer.WriteLine(String.Format("public {0} {1} {{ get; set; }}", TypeHelper.GetPropertyTypeName(column).Replace("BusinessLayer", "Model"), fk.NavigationPropertyName));
 					writer.WriteLine();
+
+					modelClass.PrimaryKeyParts.Add(pk);
+					modelClass.ForeignKeys.Add(fk);
 				}
 			}
 			else
 			{
 				writer.WriteLine("public int Id { get; set; }");
 				writer.WriteLine();
+
+				modelClass.PrimaryKeyParts.Add(new EntityPrimaryKeyPart
+				{
+					Column = TableHelper.GetPrimaryKey(table),
+					PropertyName = "Id"
+				});
 			}
 
 			foreach (Column column in TableHelper.GetPropertyColumns(table))
 			{
+				var entityProperty = new EntityProperty
+				{
+					Column = column,
+					Name = PropertyHelper.GetPropertyName(column, "Id")
+				};
+
+				if (entityProperty.Name == "UICulture")
+				{
+					entityProperty.Name = "UiCulture";
+				}
+
+				if (LocalizationHelper.IsLocalizationTable(table) && (LocalizationHelper.GetParentLocalizationColumn(table)) == column)
+				{
+					entityProperty.Name = "Parent";
+				}
+
 				string description = ColumnHelper.GetDescription(column);
 
 				writer.WriteCommentSummary(description);
@@ -185,13 +238,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 				// DatabaseGenerated (není třeba)
 				// ILocalized + ILocalization
 
-				string propertyName = PropertyHelper.GetPropertyName(column, "Id");
 				string propertyTypeName = TypeHelper.GetPropertyTypeName(column).Replace("BusinessLayer", "Model");
-
-				if (propertyName == "UICulture")
-				{
-					propertyName = "UiCulture";
-				}
 
 				if (TypeHelper.IsDateOnly(column.DataType))
 				{
@@ -209,18 +256,19 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 					//}
 				}
 
-				if (LocalizationHelper.IsLocalizationTable(table) && (LocalizationHelper.GetParentLocalizationColumn(table)) == column)
-				{
-					propertyName = "Parent";
-				}
-
-				writer.WriteLine(String.Format("{0} {1} {2} {{ get; set; }}", accesssModifierText, propertyTypeName, propertyName));
+				writer.WriteLine(String.Format("{0} {1} {2} {{ get; set; }}", accesssModifierText, propertyTypeName, entityProperty.Name));
 
 				if (TypeHelper.IsBusinessObjectReference(column))
 				{
+					var fk = new EntityForeignKey
+					{
+						Column = column,
+						ForeignKeyPropertyName = $"{entityProperty.Name}Id",
+						NavigationPropertyName = entityProperty.Name
+					};
+
 					string foreignKeyTypeName = column.Nullable ? "int?" : "int";
-					string foreignKeyPropertyName = propertyName + "Id";
-					writer.WriteLine(String.Format("{0} {1} {2} {{ get; set; }}", accesssModifierText, foreignKeyTypeName, foreignKeyPropertyName));
+					writer.WriteLine(String.Format("{0} {1} {2} {{ get; set; }}", accesssModifierText, foreignKeyTypeName, fk.ForeignKeyPropertyName));
 				}
 
 				writer.WriteLine();
@@ -237,6 +285,13 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 
 			foreach (CollectionProperty collectionProperty in TableHelper.GetCollectionColumns(table))
 			{
+				var entityCollectionProperty = new EntityCollectionProperty
+				{
+					Name = collectionProperty.PropertyName,
+					CollectionProperty = collectionProperty
+				};
+				modelClass.CollectionProperties.Add(entityCollectionProperty);
+
 				writer.WriteCommentSummary(collectionProperty.Description);
 
 				if (Helpers.NamingConventions.NamespaceHelper.GetNamespaceName(table, "Model") == Helpers.NamingConventions.NamespaceHelper.GetNamespaceName(collectionProperty.TargetTable, "Model"))

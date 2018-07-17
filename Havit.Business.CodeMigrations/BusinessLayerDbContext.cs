@@ -24,8 +24,7 @@ namespace Havit.Business.CodeMigrations
 		{
 			base.OnConfiguring(optionsBuilder);
 
-			optionsBuilder.ReplaceService<IMigrationsAnnotationProvider, ExtendedPropertiesMigrationsAnnotationProvider>();
-			optionsBuilder.ReplaceService<IMigrationsSqlGenerator, ExtendedPropertiesMigrationsSqlGenerator>();
+			ReplaceServicesForExtendedProperties(optionsBuilder);
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -102,6 +101,12 @@ namespace Havit.Business.CodeMigrations
 			{
 				annotatable.AddAnnotation(ExtendedPropertiesAnnotationsHelper.BuildAnnotationName(attribute), attribute.Value);
 			}
+		}
+
+		private static void ReplaceServicesForExtendedProperties(DbContextOptionsBuilder optionsBuilder)
+		{
+			optionsBuilder.ReplaceService<IMigrationsAnnotationProvider, ExtendedPropertiesMigrationsAnnotationProvider>();
+			optionsBuilder.ReplaceService<IMigrationsSqlGenerator, ExtendedPropertiesMigrationsSqlGenerator>();
 		}
 	}
 }

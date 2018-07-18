@@ -29,7 +29,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 
 			bool shouldSave = WriteTablePKs(writer, modelClass);
 			shouldSave |= WriteColumnMetadata(writer, modelClass);
-			shouldSave |= WritePrecisions(writer, table);
+			shouldSave |= WritePrecisions(writer, modelClass);
 			shouldSave |= WriteCollections(writer, table);
 			shouldSave |= WritePrincipals(writer, modelClass);
 			WriteNamespaceClassConstructorEnd(writer);
@@ -86,23 +86,25 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 		}
 		#endregion
 
-		private static bool WritePrecisions(CodeWriter writer, Table table)
+		private static bool WritePrecisions(CodeWriter writer, GeneratedModelClass modelClass)
 		{
 			bool result = false;
-			foreach (Column column in TableHelper.GetPropertyColumns(table))
+			foreach (EntityProperty property in modelClass.GetColumnProperties())
 			{
+				Column column = property.Column;
+
 				if (column.DataType.SqlDataType == SqlDataType.Money)
 				{
 					writer.WriteLine(String.Format("builder.Property({0} => {0}.{1}).HasColumnType(\"Money\");",
-						ConventionsHelper.GetCammelCase(ClassHelper.GetClassName(table)),
-						PropertyHelper.GetPropertyName(column)));
+						ConventionsHelper.GetCammelCase(modelClass.Name),
+						property.Name));
 					result = true;
 				}
 				else if ((column.DataType.SqlDataType == SqlDataType.Decimal) && ((column.DataType.NumericPrecision != 18) && column.DataType.NumericScale != 2))
 				{
 					writer.WriteLine(String.Format("builder.Property({0} => {0}.{1}).HasColumnType(\"decimal({2}, {3})\");",
-						ConventionsHelper.GetCammelCase(ClassHelper.GetClassName(table)),
-						PropertyHelper.GetPropertyName(column),
+						ConventionsHelper.GetCammelCase(modelClass.Name),
+						property.Name,
 						column.DataType.NumericPrecision,
 						column.DataType.NumericScale));
 					result = true;

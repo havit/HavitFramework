@@ -20,14 +20,14 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 
 		public static GeneratedModelClass Generate(Table table, CsprojFile modelCsprojFile, SourceControlClient sourceControlClient)
 		{
-			string fileName = FileHelper.GetFilename(table, ".cs", "");
+			string fileName = Helpers.FileHelper.GetFilename(table, "Model", ".cs", "");
 
 			//if (modelCsprojFile != null)
 			//{
 			//	modelCsprojFile.Ensures(fileName);
 			//}
 
-			CodeWriter writer = new CodeWriter(Path.Combine(GeneratorSettings.SolutionPath, "Model", fileName), sourceControlClient, true);
+			CodeWriter writer = new CodeWriter(Path.Combine(GeneratorSettings.SolutionPath, fileName), sourceControlClient, true);
 
 			var modelClass = new GeneratedModelClass
 			{

@@ -154,6 +154,7 @@
     <Compile Include="Generators\Generator.cs" />
     <Compile Include="Generators\EntityTypeConfigurationClass.cs" />
     <Compile Include="Generators\ModelClass.cs" />
+    <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Helpers\NamingConventions\ClassHelper.cs" />
     <Compile Include="Helpers\NamingConventions\NamespaceHelper.cs" />
     <Compile Include="Metadata\EntityCollectionProperty.cs" />

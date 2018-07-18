@@ -13,49 +13,84 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 {
-	[TestClass]
 	public class ExtendedPropertiesEndToEndTests
 	{
-		[Table("Table")]
-		private class AddingPropertyToTableSourceEntity
+		[TestClass]
+		public class AddingPropertyToTable
 		{
-			[Column("Id")]
-			public int Id { get; set; }
+			[Table("Table")]
+			private class AddingPropertyToTableSourceEntity
+			{
+				[Column("Id")]
+				public int Id { get; set; }
+			}
+
+			[TestExtendedProperty("Jiri", "Value")]
+			[Table("Table")]
+			private class AddingPropertyToTableTargetEntity
+			{
+				[Column("Id")]
+				public int Id { get; set; }
+			}
+
+			[TestMethod]
+			public void Test()
+			{
+				var source = new EndToEndDbContext<AddingPropertyToTableSourceEntity>();
+				var target = new EndToEndDbContext<AddingPropertyToTableTargetEntity>();
+				var migrations = Generate(source.Model, target.Model);
+
+				Assert.AreEqual(2, migrations.Count);
+				Assert.AreEqual(
+					"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table'",
+					migrations[1].CommandText);
+			}
 		}
 
-		[TestExtendedProperty("Jiri", "Value")]
-		[Table("Table")]
-		private class AddingPropertyToTableTargetEntity
+		[TestClass]
+		public class RemovingPropertyFromTable
 		{
-			[Column("Id")]
-			public int Id { get; set; }
+			[Table("Table")]
+			[TestExtendedProperty("Jiri", "Value")]
+			private class RemovingPropertyFromTableSourceEntity
+			{
+				[Column("Id")]
+				public int Id { get; set; }
+			}
+
+			[Table("Table")]
+			private class RemovingPropertyFromTableTargetEntity
+			{
+				[Column("Id")]
+				public int Id { get; set; }
+			}
+
+			[TestMethod]
+			public void Test()
+			{
+				var source = new EndToEndDbContext<RemovingPropertyFromTableSourceEntity>();
+				var target = new EndToEndDbContext<RemovingPropertyFromTableTargetEntity>();
+				var migrations = Generate(source.Model, target.Model);
+
+				Assert.AreEqual(2, migrations.Count);
+				Assert.AreEqual(
+					"EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table'",
+					migrations[1].CommandText);
+			}
 		}
 
-		[TestMethod]
-		public void AddingPropertyToTable()
-		{
-			var source = new EndToEndDbContext<AddingPropertyToTableSourceEntity>();
-			var target = new EndToEndDbContext<AddingPropertyToTableTargetEntity>();
-			var migrations = Generate(source.Model, target.Model);
-
-			Assert.AreEqual(2, migrations.Count);
-			Assert.AreEqual(
-				"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table'",
-				migrations[1].CommandText);
-		}
-
-		private IReadOnlyList<MigrationCommand> Generate(IModel source, IModel target)
+		private static IReadOnlyList<MigrationCommand> Generate(IModel source, IModel target)
 		{
 			using (var db = new TestDbContext())
 			{
 				var differ = db.GetService<IMigrationsModelDiffer>();
 				var generator = db.GetService<IMigrationsSqlGenerator>();
-				var diff =  differ.GetDifferences(source, target);
+				var diff = differ.GetDifferences(source, target);
 				return generator.Generate(diff, db.Model);
 			}
 		}
 
-		private class EndToEndDbContext<TEntity> : TestDbContext 
+		private class EndToEndDbContext<TEntity> : TestDbContext
 			where TEntity : class
 		{
 			public DbSet<TEntity> Entities { get; }

@@ -192,7 +192,7 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 				migrations[1].CommandText);
 		}
 
-		private IReadOnlyList<MigrationCommand> Generate(IReadOnlyList<MigrationOperation> operations)
+		private static IReadOnlyList<MigrationCommand> Generate(IReadOnlyList<MigrationOperation> operations)
 		{
 			using (var db = new TestDbContext())
 			{

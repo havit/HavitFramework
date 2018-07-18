@@ -193,7 +193,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 
 				var pk = new EntityPrimaryKeyPart
 				{
-					Property =
+					Property = new EntityProperty
 					{
 						Column = TableHelper.GetPrimaryKey(table),
 						Name = "Id"
@@ -210,6 +210,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 					Column = column,
 					Name = PropertyHelper.GetPropertyName(column, "Id")
 				};
+				modelClass.Properties.Add(entityProperty);
 
 				if (entityProperty.Name == "UICulture")
 				{
@@ -251,20 +252,26 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 
 				if (TypeHelper.IsBusinessObjectReference(column))
 				{
+					var fkProperty = new EntityProperty
+					{
+						Column = column,
+						Name = $"{entityProperty.Name}Id"
+					};
+
 					var fk = new EntityForeignKey
 					{
 						Column = column,
-						ForeignKeyPropertyName = $"{entityProperty.Name}Id",
+						ForeignKeyPropertyName = fkProperty.Name,
 						NavigationPropertyName = entityProperty.Name
 					};
 
 					string foreignKeyTypeName = column.Nullable ? "int?" : "int";
 					writer.WriteLine(String.Format("{0} {1} {2} {{ get; set; }}", accesssModifierText, foreignKeyTypeName, fk.ForeignKeyPropertyName));
+					modelClass.ForeignKeys.Add(fk);
+					modelClass.Properties.Add(fkProperty);
 				}
 
 				writer.WriteLine();
-
-				modelClass.Properties.Add(entityProperty);
 			}
 
 			Column symbolColumn = table.Columns["PropertyName"];

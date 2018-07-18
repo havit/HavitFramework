@@ -28,5 +28,10 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata
 		{
 			return Properties.FirstOrDefault(p => p.Column == column);
 		}
+
+		public IEnumerable<EntityProperty> GetColumnProperties()
+		{
+			return Properties.Where(prop => ForeignKeys.All(fk => fk.NavigationPropertyName != prop.Name) && CollectionProperties.All(collectionProperty => collectionProperty.Name != prop.Name));
+		}
 	}
 }

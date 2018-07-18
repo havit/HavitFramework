@@ -31,7 +31,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 			shouldSave |= WriteColumnMetadata(writer, modelClass);
 			shouldSave |= WritePrecisions(writer, table);
 			shouldSave |= WriteCollections(writer, table);
-			shouldSave |= WritePrincipals(writer, table);
+			shouldSave |= WritePrincipals(writer, modelClass);
 			WriteNamespaceClassConstructorEnd(writer);
 
 			if (shouldSave)
@@ -191,8 +191,10 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 			return result;
 		}
 
-		private static bool WritePrincipals(CodeWriter writer, Table table)
+		private static bool WritePrincipals(CodeWriter writer, GeneratedModelClass modelClass)
 		{
+			Table table = modelClass.Table;
+
 			if (TableHelper.IsJoinTable(table))
 			{
 				return false;
@@ -200,75 +202,65 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 
 			bool result = false;
 
-			foreach (Column column in table.Columns)
+			// TODO: if the check for JoinTable above is removed, need to carefully handle FKs that are part of composite PK
+			// (i.e. don't generate HasOne statements)
+			 foreach (EntityForeignKey foreignKey in modelClass.ForeignKeys)
 			{
-				if (TypeHelper.IsBusinessObjectReference(column))
+				Column column = foreignKey.Column;
+
+				Table referencedTable = ColumnHelper.GetReferencedTable(column);
+				//if (referencedTable.Columns.Cast<Column>().Any(referencedTableColumn => // v tabulce, kam se odkazujeme existuje sloupec
+				//		TypeHelper.IsBusinessObjectReference(referencedTableColumn) // který je cizím klíčem
+				//		&& (ColumnHelper.GetReferencedTable(referencedTableColumn) == table))  // do této tabulky
+				//	&& !TableHelper.GetCollectionColumns(referencedTable).Any(item => item.ReferenceColumn == column)) // v cílové tabulce ke sloupci není kolekce						
 				{
-					Table referencedTable = ColumnHelper.GetReferencedTable(column);
-					//if (referencedTable.Columns.Cast<Column>().Any(referencedTableColumn => // v tabulce, kam se odkazujeme existuje sloupec
-					//		TypeHelper.IsBusinessObjectReference(referencedTableColumn) // který je cizím klíčem
-					//		&& (ColumnHelper.GetReferencedTable(referencedTableColumn) == table))  // do této tabulky
-					//	&& !TableHelper.GetCollectionColumns(referencedTable).Any(item => item.ReferenceColumn == column)) // v cílové tabulce ke sloupci není kolekce						
+					var propertyName = foreignKey.NavigationPropertyName;
+
+					writer.WriteLine(String.Format("builder.HasOne({0} => {0}.{1})",
+						ConventionsHelper.GetCammelCase(modelClass.Name),
+						propertyName));
+					writer.Indent();
+
+					//Column referencedCollectionColumn = referencedTable.Columns.Cast<Column>().FirstOrDefault(referencedTableColumn => // v tabulce, kam se odkazujeme existuje sloupec
+					//	TypeHelper.IsBusinessObjectReference(referencedTableColumn) // který je cizím klíčem
+					//	&& (ColumnHelper.GetReferencedTable(referencedTableColumn) == table)); // do této tabulky;
+					var collectionProperty = TableHelper.GetCollectionColumns(referencedTable).FirstOrDefault(item => item.ReferenceColumn == column);
+					if (collectionProperty != null) // v cílové tabulce ke sloupci není kolekce	
 					{
-						var propertyName = PropertyHelper.GetPropertyName(column);
-						if (LocalizationHelper.IsLocalizationTable(table) && (LocalizationHelper.GetParentLocalizationColumn(table)) == column)
-						{
-							propertyName = "Parent";
-						}
-
-						writer.WriteLine(String.Format("builder.HasOne({0} => {0}.{1})",
-							ConventionsHelper.GetCammelCase(ClassHelper.GetClassName(table)),
-							propertyName));
-						writer.Indent();
-
-						//Column referencedCollectionColumn = referencedTable.Columns.Cast<Column>().FirstOrDefault(referencedTableColumn => // v tabulce, kam se odkazujeme existuje sloupec
-						//	TypeHelper.IsBusinessObjectReference(referencedTableColumn) // který je cizím klíčem
-						//	&& (ColumnHelper.GetReferencedTable(referencedTableColumn) == table)); // do této tabulky;
-						var collectionProperty = TableHelper.GetCollectionColumns(referencedTable).FirstOrDefault(item => item.ReferenceColumn == column);
-						if (collectionProperty != null) // v cílové tabulce ke sloupci není kolekce	
-						{
-							writer.WriteLine(String.Format(".WithMany({0} => {0}.{1})",
-								ConventionsHelper.GetCammelCase(ClassHelper.GetClassName(referencedTable)),
-								collectionProperty.PropertyName
-							));
-							writer.WriteLine(String.Format(".HasForeignKey({0} => {0}.{1})",
-								ConventionsHelper.GetCammelCase(ClassHelper.GetClassName(table)),
-								propertyName + "Id"
-							));
-						}
-						else
-						{
-							writer.WriteLine(".WithMany()");
-						}
-
-						// if there are multiple FKs to same table, it is possible it might trigger this error:
-						//	Introducing FOREIGN KEY constraint 'FK_Delegation_Employee_DelegatingEmployeeId' on table 'Delegation' may cause cycles or multiple cascade paths. 
-						//	Specify ON DELETE NO ACTION or ON UPDATE NO ACTION, or modify other FOREIGN KEY constraints.
-						//	Could not create constraint or index.
-
-						Column[] columns = table.Columns
-							.Cast<Column>()
-							.Where(tableColumn => TypeHelper.IsBusinessObjectReference(tableColumn) && ColumnHelper.GetReferencedTable(tableColumn) == referencedTable)
-							.ToArray();
-						//if (columns.Length > 1)
-						{
-							writer.WriteLine(".OnDelete(DeleteBehavior.Restrict)");
-						}
-
-						if (!column.Nullable)
-						{
-							writer.WriteLine(".IsRequired();");
-						}
-						else
-						{
-							writer.EndPreviousStatement();
-						}
-
-						writer.Unindent();
-						writer.WriteLine();
-
-						result = true;
+						writer.WriteLine(String.Format(".WithMany({0} => {0}.{1})",
+							ConventionsHelper.GetCammelCase(collectionProperty.ParentTable.Name),
+							collectionProperty.PropertyName
+						));
+						writer.WriteLine(String.Format(".HasForeignKey({0} => {0}.{1})",
+							ConventionsHelper.GetCammelCase(modelClass.Name),
+							foreignKey.ForeignKeyPropertyName
+						));
 					}
+					else
+					{
+						writer.WriteLine(".WithMany()");
+					}
+
+					// if there are multiple FKs to same table, it is possible it might trigger this error:
+					//	Introducing FOREIGN KEY constraint 'FK_Delegation_Employee_DelegatingEmployeeId' on table 'Delegation' may cause cycles or multiple cascade paths. 
+					//	Specify ON DELETE NO ACTION or ON UPDATE NO ACTION, or modify other FOREIGN KEY constraints.
+					//	Could not create constraint or index.
+
+					writer.WriteLine(".OnDelete(DeleteBehavior.Restrict)");
+
+					if (!column.Nullable)
+					{
+						writer.WriteLine(".IsRequired();");
+					}
+					else
+					{
+						writer.EndPreviousStatement();
+					}
+
+					writer.Unindent();
+					writer.WriteLine();
+
+					result = true;
 				}
 			}
 			return result;
@@ -288,9 +280,9 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 			//	writer.WriteLine();
 			//}
 
-			foreach (Column column in table.Columns)
+			foreach (EntityProperty property in modelClass.GetColumnProperties())
 			{
-				EntityProperty property = modelClass.GetPropertyFor(column);
+				Column column = property.Column;
 
 				//if (PropertyHelper.IsString(column) && (column.DefaultConstraint != null))
 				//{

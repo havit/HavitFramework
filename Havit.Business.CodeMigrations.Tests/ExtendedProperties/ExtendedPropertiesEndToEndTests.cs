@@ -21,7 +21,6 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 			[Table("Table")]
 			private class AddingPropertyToTableSourceEntity
 			{
-				[Column("Id")]
 				public int Id { get; set; }
 			}
 
@@ -29,7 +28,6 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 			[Table("Table")]
 			private class AddingPropertyToTableTargetEntity
 			{
-				[Column("Id")]
 				public int Id { get; set; }
 			}
 
@@ -40,28 +38,26 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 				var target = new EndToEndDbContext<AddingPropertyToTableTargetEntity>();
 				var migrations = Generate(source.Model, target.Model);
 
-				Assert.AreEqual(2, migrations.Count);
+				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
 					"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table'",
-					migrations[1].CommandText);
+					migrations[0].CommandText);
 			}
 		}
 
 		[TestClass]
 		public class RemovingPropertyFromTable
 		{
-			[Table("Table")]
 			[TestExtendedProperty("Jiri", "Value")]
+			[Table("Table")]
 			private class RemovingPropertyFromTableSourceEntity
 			{
-				[Column("Id")]
 				public int Id { get; set; }
 			}
 
 			[Table("Table")]
 			private class RemovingPropertyFromTableTargetEntity
 			{
-				[Column("Id")]
 				public int Id { get; set; }
 			}
 
@@ -72,29 +68,27 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 				var target = new EndToEndDbContext<RemovingPropertyFromTableTargetEntity>();
 				var migrations = Generate(source.Model, target.Model);
 
-				Assert.AreEqual(2, migrations.Count);
+				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
 					"EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table'",
-					migrations[1].CommandText);
+					migrations[0].CommandText);
 			}
 		}
 
 		[TestClass]
 		public class ChangingPropertyOnTable
 		{
-			[Table("Table")]
 			[TestExtendedProperty("Jiri", "OldValue")]
+			[Table("Table")]
 			private class ChangingPropertyOnTableSourceEntity
 			{
-				[Column("Id")]
 				public int Id { get; set; }
 			}
 
-			[Table("Table")]
 			[TestExtendedProperty("Jiri", "NewValue")]
+			[Table("Table")]
 			private class ChangingPropertyOnTableTargetEntity
 			{
-				[Column("Id")]
 				public int Id { get; set; }
 			}
 
@@ -105,9 +99,102 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 				var target = new EndToEndDbContext<ChangingPropertyOnTableTargetEntity>();
 				var migrations = Generate(source.Model, target.Model);
 
-				Assert.AreEqual(2, migrations.Count);
+				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
 					"EXEC sys.sp_updateextendedproperty @name=N'Jiri', @value=N'NewValue', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table'",
+					migrations[0].CommandText);
+			}
+		}
+
+		[TestClass]
+		public class AddingPropertyToColumn
+		{
+			[Table("Table")]
+			private class AddingPropertyToColumnSourceEntity
+			{
+				[Column("Id")]
+				public int Id { get; set; }
+			}
+
+			[Table("Table")]
+			private class AddingPropertyToColumnTargetEntity
+			{
+				[TestExtendedProperty("Jiri", "Value")]
+				[Column("Id")]
+				public int Id { get; set; }
+			}
+
+			[TestMethod]
+			public void Test()
+			{
+				var source = new EndToEndDbContext<AddingPropertyToColumnSourceEntity>();
+				var target = new EndToEndDbContext<AddingPropertyToColumnTargetEntity>();
+				var migrations = Generate(source.Model, target.Model);
+
+				Assert.AreEqual(2, migrations.Count);
+				Assert.AreEqual(
+					"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id'",
+					migrations[1].CommandText);
+			}
+		}
+
+		[TestClass]
+		public class RemovingPropertyFromColumn
+		{
+			[Table("Table")]
+			private class RemovingPropertyFromColumnSourceEntity
+			{
+				[TestExtendedProperty("Jiri", "Value")]
+				public int Id { get; set; }
+			}
+
+			[Table("Table")]
+			private class RemovingPropertyFromColumnTargetEntity
+			{
+				public int Id { get; set; }
+			}
+
+			[TestMethod]
+			public void Test()
+			{
+				var source = new EndToEndDbContext<RemovingPropertyFromColumnSourceEntity>();
+				var target = new EndToEndDbContext<RemovingPropertyFromColumnTargetEntity>();
+				var migrations = Generate(source.Model, target.Model);
+
+				Assert.AreEqual(2, migrations.Count);
+				Assert.AreEqual(
+					"EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id'",
+					migrations[1].CommandText);
+			}
+		}
+
+		[TestClass]
+		public class ChangingPropertyOnColumn
+		{
+			[Table("Table")]
+			private class ChangingPropertyOnColumnSourceEntity
+			{
+				[TestExtendedProperty("Jiri", "OldValue")]
+				public int Id { get; set; }
+			}
+
+			[Table("Table")]
+			private class ChangingPropertyOnColumnTargetEntity
+			{
+				[TestExtendedProperty("Jiri", "NewValue")]
+				public int Id { get; set; }
+			}
+
+			[TestMethod]
+			public void Test()
+			{
+				var source = new EndToEndDbContext<ChangingPropertyOnColumnSourceEntity>();
+				var target = new EndToEndDbContext<ChangingPropertyOnColumnTargetEntity>();
+				var migrations = Generate(source.Model, target.Model);
+
+				Assert.AreEqual(2, migrations.Count);
+				Assert.AreEqual(
+					"EXEC sys.sp_updateextendedproperty @name=N'Jiri', @value=N'NewValue', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id'",
 					migrations[1].CommandText);
 			}
 		}

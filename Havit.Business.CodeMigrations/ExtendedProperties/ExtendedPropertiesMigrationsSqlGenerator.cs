@@ -52,8 +52,8 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 		{
 			base.Generate(operation, model, builder);
 
-			var oldAnnotations = operation.OldTable.GetAnnotations().ToDictionary(x => x.Name, ExtendedPropertiesAnnotationsHelper.Comparer);
-			var newAnnotations = operation.GetAnnotations().ToDictionary(x => x.Name, ExtendedPropertiesAnnotationsHelper.Comparer);
+			var oldAnnotations = operation.OldTable.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.IsExtendedPropertyAnnotation).ToDictionary(x => x.Name, ExtendedPropertiesAnnotationsHelper.Comparer);
+			var newAnnotations = operation.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.IsExtendedPropertyAnnotation).ToDictionary(x => x.Name, ExtendedPropertiesAnnotationsHelper.Comparer);
 			foreach (var annotation in oldAnnotations.Where(x => !newAnnotations.ContainsKey(x.Key)).Select(x => x.Value))
 			{
 				var name = ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(annotation);
@@ -77,8 +77,8 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 		{
 			base.Generate(operation, model, builder);
 
-			var oldAnnotations = operation.OldColumn.GetAnnotations().ToDictionary(x => x.Name, ExtendedPropertiesAnnotationsHelper.Comparer);
-			var newAnnotations = operation.GetAnnotations().ToDictionary(x => x.Name, ExtendedPropertiesAnnotationsHelper.Comparer);
+			var oldAnnotations = operation.OldColumn.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.IsExtendedPropertyAnnotation).ToDictionary(x => x.Name, ExtendedPropertiesAnnotationsHelper.Comparer);
+			var newAnnotations = operation.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.IsExtendedPropertyAnnotation).ToDictionary(x => x.Name, ExtendedPropertiesAnnotationsHelper.Comparer);
 			foreach (var annotation in oldAnnotations.Where(x => !newAnnotations.ContainsKey(x.Key)).Select(x => x.Value))
 			{
 				var name = ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(annotation);

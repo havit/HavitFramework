@@ -28,7 +28,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 			WriteNamespaceClassConstructorBegin(writer, modelClass, false);
 
 			bool shouldSave = WriteTablePKs(writer, modelClass);
-			shouldSave |= WriteColumnMetadata(writer, table);
+			shouldSave |= WriteColumnMetadata(writer, modelClass);
 			shouldSave |= WritePrecisions(writer, table);
 			shouldSave |= WriteCollections(writer, table);
 			shouldSave |= WritePrincipals(writer, table);
@@ -274,8 +274,10 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 			return result;
 		}
 
-		private static bool WriteColumnMetadata(CodeWriter writer, Table table)
+		private static bool WriteColumnMetadata(CodeWriter writer, GeneratedModelClass modelClass)
 		{
+			Table table = modelClass.Table;
+
 			//if (!TableHelper.IsJoinTable(table))
 			//{
 			//	writer.WriteLine(String.Format("builder.Property({0} => {0}.Id)",
@@ -288,6 +290,8 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 
 			foreach (Column column in table.Columns)
 			{
+				EntityProperty property = modelClass.GetPropertyFor(column);
+
 				//if (PropertyHelper.IsString(column) && (column.DefaultConstraint != null))
 				//{
 				//	string propertyName = PropertyHelper.GetPropertyName(column);
@@ -307,14 +311,9 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 				// Generate HasDefaultValueSql. For String columns, generate only if if default is not empty (we use convention for such columns)
 				if ((column.DefaultConstraint != null) && (!column.DataType.IsStringType || (column.DefaultConstraint.Text != "('')")))
 				{
-					string propertyName = PropertyHelper.GetPropertyName(column);
-					if (column.Name == "UICulture")
-					{
-						propertyName = "UiCulture";
-					}
 					writer.WriteLine(String.Format("builder.Property({0} => {0}.{1})",
-						ConventionsHelper.GetCammelCase(ClassHelper.GetClassName(table)),
-						propertyName));
+						ConventionsHelper.GetCammelCase(modelClass.Name),
+						property.Name));
 					writer.Indent();
 					writer.WriteLine($".HasDefaultValueSql(\"{column.DefaultConstraint.Text}\");");
 					writer.Unindent();
@@ -325,18 +324,9 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 				if (!TableHelper.IsJoinTable(table) && (TableHelper.GetPrimaryKey(table) != column) && !TypeHelper.IsBusinessObjectReference(column)
 				    && !column.Nullable)
 				{
-					string propertyName = PropertyHelper.GetPropertyName(column);
-					if (column.Name == "UICulture")
-					{
-						propertyName = "UiCulture";
-					}
-					else if (column.Name == "PropertyName")
-					{
-						propertyName = "Symbol";
-					}
 					writer.WriteLine(String.Format("builder.Property({0} => {0}.{1})",
-						ConventionsHelper.GetCammelCase(ClassHelper.GetClassName(table)),
-						propertyName));
+						ConventionsHelper.GetCammelCase(modelClass.Name),
+						property.Name));
 					writer.Indent();
 					writer.WriteLine(".IsRequired();");
 					writer.Unindent();
@@ -346,7 +336,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 				if (LocalizationHelper.IsLocalizationTable(table) && (LocalizationHelper.GetParentLocalizationColumn(table)) == column)
 				{
 					writer.WriteLine(String.Format("builder.Property({0} => {0}.ParentId)",
-						ConventionsHelper.GetCammelCase(ClassHelper.GetClassName(table))));
+						ConventionsHelper.GetCammelCase(modelClass.Name)));
 					writer.Indent();
 					writer.WriteLine(String.Format(".HasColumnName(\"{0}\");", column.Name));
 					writer.Unindent();
@@ -364,7 +354,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 				string columns = String.Join(", ", modelClass.Table.Columns.Cast<Column>()
 					.Select(column => String.Format("{0}.{1}", 
 						ConventionsHelper.GetCammelCase(modelClass.Name), 
-						modelClass.GetPrimaryKeyPartFor(column).PropertyName)));
+						modelClass.GetPrimaryKeyPartFor(column).Property.Name)));
 
 				writer.WriteLine(String.Format("builder.HasKey({0} => new {{ {1} }});",
 					ConventionsHelper.GetCammelCase(modelClass.Name),

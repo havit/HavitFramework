@@ -164,22 +164,26 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 				{
 					var pk = new EntityPrimaryKeyPart
 					{
-						Column = column,
-						PropertyName = String.Format("{0}Id", ColumnHelper.GetReferencedTable(column).Name)
+						Property = new EntityProperty
+						{
+							Column = column,
+							Name = String.Format("{0}Id", ColumnHelper.GetReferencedTable(column).Name)
+						}
 					};
 					var fk = new EntityForeignKey
 					{
 						Column = column,
-						ForeignKeyPropertyName = pk.PropertyName,
+						ForeignKeyPropertyName = pk.Property.Name,
 						NavigationPropertyName = ColumnHelper.GetReferencedTable(column).Name,
 					};
 
-					writer.WriteLine(String.Format("public int {0} {{ get; set; }}", pk.PropertyName));
+					writer.WriteLine(String.Format("public int {0} {{ get; set; }}", pk.Property.Name));
 					writer.WriteLine(String.Format("public {0} {1} {{ get; set; }}", TypeHelper.GetPropertyTypeName(column).Replace("BusinessLayer", "Model"), fk.NavigationPropertyName));
 					writer.WriteLine();
 
 					modelClass.PrimaryKeyParts.Add(pk);
 					modelClass.ForeignKeys.Add(fk);
+					modelClass.Properties.Add(pk.Property);
 				}
 			}
 			else
@@ -187,11 +191,16 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 				writer.WriteLine("public int Id { get; set; }");
 				writer.WriteLine();
 
-				modelClass.PrimaryKeyParts.Add(new EntityPrimaryKeyPart
+				var pk = new EntityPrimaryKeyPart
 				{
-					Column = TableHelper.GetPrimaryKey(table),
-					PropertyName = "Id"
-				});
+					Property =
+					{
+						Column = TableHelper.GetPrimaryKey(table),
+						Name = "Id"
+					}
+				};
+				modelClass.PrimaryKeyParts.Add(pk);
+				modelClass.Properties.Add(pk.Property);
 			}
 
 			foreach (Column column in TableHelper.GetPropertyColumns(table))
@@ -254,11 +263,19 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 				}
 
 				writer.WriteLine();
+
+				modelClass.Properties.Add(entityProperty);
 			}
 
 			Column symbolColumn = table.Columns["PropertyName"];
 			if (symbolColumn != null)
 			{
+				var symbolProperty = new EntityProperty
+				{
+					Column = symbolColumn,
+					Name = "Symbol"
+				};
+				modelClass.Properties.Add(symbolProperty);
 				writer.WriteCommentSummary("Symbol.");
 				writer.WriteLine((symbolColumn.DataType.MaximumLength == -1) ? "[MaxLength(Int32.MaxValue)]" : $"[MaxLength({symbolColumn.DataType.MaximumLength})]");
 				writer.WriteLine("public string Symbol { get; set; }");

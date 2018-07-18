@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.SqlServer.Management.Common;
 using Microsoft.SqlServer.Management.Smo;
 
 namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata
@@ -20,7 +21,12 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata
 
 		public EntityPrimaryKeyPart GetPrimaryKeyPartFor(Column column)
 		{
-			return PrimaryKeyParts.FirstOrDefault(p => p.Column == column);
+			return PrimaryKeyParts.FirstOrDefault(p => p.Property.Column == column);
+		}
+
+		public EntityProperty GetPropertyFor(Column column)
+		{
+			return Properties.FirstOrDefault(p => p.Column == column);
 		}
 	}
 }

@@ -19,14 +19,14 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 		public class AddingPropertyToTable
 		{
 			[Table("Table")]
-			private class AddingPropertyToTableSourceEntity
+			private class SourceEntity
 			{
 				public int Id { get; set; }
 			}
 
 			[TestExtendedProperty("Jiri", "Value")]
 			[Table("Table")]
-			private class AddingPropertyToTableTargetEntity
+			private class TargetEntity
 			{
 				public int Id { get; set; }
 			}
@@ -34,8 +34,8 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext<AddingPropertyToTableSourceEntity>();
-				var target = new EndToEndDbContext<AddingPropertyToTableTargetEntity>();
+				var source = new EndToEndDbContext<SourceEntity>();
+				var target = new EndToEndDbContext<TargetEntity>();
 				var migrations = Generate(source.Model, target.Model);
 
 				Assert.AreEqual(1, migrations.Count);
@@ -50,13 +50,13 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 		{
 			[TestExtendedProperty("Jiri", "Value")]
 			[Table("Table")]
-			private class RemovingPropertyFromTableSourceEntity
+			private class SourceEntity
 			{
 				public int Id { get; set; }
 			}
 
 			[Table("Table")]
-			private class RemovingPropertyFromTableTargetEntity
+			private class TargetEntity
 			{
 				public int Id { get; set; }
 			}
@@ -64,8 +64,8 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext<RemovingPropertyFromTableSourceEntity>();
-				var target = new EndToEndDbContext<RemovingPropertyFromTableTargetEntity>();
+				var source = new EndToEndDbContext<SourceEntity>();
+				var target = new EndToEndDbContext<TargetEntity>();
 				var migrations = Generate(source.Model, target.Model);
 
 				Assert.AreEqual(1, migrations.Count);
@@ -80,14 +80,14 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 		{
 			[TestExtendedProperty("Jiri", "OldValue")]
 			[Table("Table")]
-			private class ChangingPropertyOnTableSourceEntity
+			private class SourceEntity
 			{
 				public int Id { get; set; }
 			}
 
 			[TestExtendedProperty("Jiri", "NewValue")]
 			[Table("Table")]
-			private class ChangingPropertyOnTableTargetEntity
+			private class TargetEntity
 			{
 				public int Id { get; set; }
 			}
@@ -95,8 +95,8 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext<ChangingPropertyOnTableSourceEntity>();
-				var target = new EndToEndDbContext<ChangingPropertyOnTableTargetEntity>();
+				var source = new EndToEndDbContext<SourceEntity>();
+				var target = new EndToEndDbContext<TargetEntity>();
 				var migrations = Generate(source.Model, target.Model);
 
 				Assert.AreEqual(1, migrations.Count);
@@ -110,14 +110,14 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 		public class AddingPropertyToColumn
 		{
 			[Table("Table")]
-			private class AddingPropertyToColumnSourceEntity
+			private class SourceEntity
 			{
 				[Column("Id")]
 				public int Id { get; set; }
 			}
 
 			[Table("Table")]
-			private class AddingPropertyToColumnTargetEntity
+			private class TargetEntity
 			{
 				[TestExtendedProperty("Jiri", "Value")]
 				[Column("Id")]
@@ -127,8 +127,8 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext<AddingPropertyToColumnSourceEntity>();
-				var target = new EndToEndDbContext<AddingPropertyToColumnTargetEntity>();
+				var source = new EndToEndDbContext<SourceEntity>();
+				var target = new EndToEndDbContext<TargetEntity>();
 				var migrations = Generate(source.Model, target.Model);
 
 				Assert.AreEqual(2, migrations.Count);
@@ -142,14 +142,14 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 		public class RemovingPropertyFromColumn
 		{
 			[Table("Table")]
-			private class RemovingPropertyFromColumnSourceEntity
+			private class SourceEntity
 			{
 				[TestExtendedProperty("Jiri", "Value")]
 				public int Id { get; set; }
 			}
 
 			[Table("Table")]
-			private class RemovingPropertyFromColumnTargetEntity
+			private class TargetEntity
 			{
 				public int Id { get; set; }
 			}
@@ -157,8 +157,8 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext<RemovingPropertyFromColumnSourceEntity>();
-				var target = new EndToEndDbContext<RemovingPropertyFromColumnTargetEntity>();
+				var source = new EndToEndDbContext<SourceEntity>();
+				var target = new EndToEndDbContext<TargetEntity>();
 				var migrations = Generate(source.Model, target.Model);
 
 				Assert.AreEqual(2, migrations.Count);
@@ -172,14 +172,14 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 		public class ChangingPropertyOnColumn
 		{
 			[Table("Table")]
-			private class ChangingPropertyOnColumnSourceEntity
+			private class SourceEntity
 			{
 				[TestExtendedProperty("Jiri", "OldValue")]
 				public int Id { get; set; }
 			}
 
 			[Table("Table")]
-			private class ChangingPropertyOnColumnTargetEntity
+			private class TargetEntity
 			{
 				[TestExtendedProperty("Jiri", "NewValue")]
 				public int Id { get; set; }
@@ -188,8 +188,8 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext<ChangingPropertyOnColumnSourceEntity>();
-				var target = new EndToEndDbContext<ChangingPropertyOnColumnTargetEntity>();
+				var source = new EndToEndDbContext<SourceEntity>();
+				var target = new EndToEndDbContext<TargetEntity>();
 				var migrations = Generate(source.Model, target.Model);
 
 				Assert.AreEqual(2, migrations.Count);
@@ -198,7 +198,7 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 					migrations[1].CommandText);
 			}
 		}
-
+		
 		private static IReadOnlyList<MigrationCommand> Generate(IModel source, IModel target)
 		{
 			using (var db = new TestDbContext())

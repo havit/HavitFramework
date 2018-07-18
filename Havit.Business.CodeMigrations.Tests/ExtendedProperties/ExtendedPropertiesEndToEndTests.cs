@@ -198,7 +198,153 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 					migrations[1].CommandText);
 			}
 		}
-		
+
+		[TestClass]
+		public class AddingColumnWithProperty
+		{
+			[Table("Table")]
+			private class SourceEntity
+			{
+				public int Id { get; set; }
+			}
+
+			[Table("Table")]
+			private class TargetEntity
+			{
+				public int Id { get; set; }
+				[TestExtendedProperty("Jiri", "Value")]
+				public int Column { get; set; }
+			}
+
+			[TestMethod]
+			public void Test()
+			{
+				var source = new EndToEndDbContext<SourceEntity>();
+				var target = new EndToEndDbContext<TargetEntity>();
+				var migrations = Generate(source.Model, target.Model);
+
+				Assert.AreEqual(2, migrations.Count);
+				Assert.AreEqual(
+					"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Column'",
+					migrations[1].CommandText);
+			}
+		}
+
+		[TestClass]
+		public class AddingColumnWithoutProperty
+		{
+			[Table("Table")]
+			private class SourceEntity
+			{
+				public int Id { get; set; }
+			}
+
+			[Table("Table")]
+			private class TargetEntity
+			{
+				public int Id { get; set; }
+				public int Column { get; set; }
+			}
+
+			[TestMethod]
+			public void Test()
+			{
+				var source = new EndToEndDbContext<SourceEntity>();
+				var target = new EndToEndDbContext<TargetEntity>();
+				var migrations = Generate(source.Model, target.Model);
+
+				Assert.AreEqual(1, migrations.Count);
+			}
+		}
+
+		[TestClass]
+		public class CreatingTableWithPropertyOnTable
+		{
+			[TestExtendedProperty("Jiri", "Value")]
+			[Table("Table")]
+			private class TargetEntity
+			{
+				public int Id { get; set; }
+			}
+
+			[TestMethod]
+			public void Test()
+			{
+				var source = new EndToEndDbContext();
+				var target = new EndToEndDbContext<TargetEntity>();
+				var migrations = Generate(source.Model, target.Model);
+
+				Assert.AreEqual(2, migrations.Count);
+				Assert.AreEqual(
+					"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table'",
+					migrations[1].CommandText);
+			}
+		}
+
+		[TestClass]
+		public class CreatingTableWithoutPropertyOnTable
+		{
+			[Table("Table")]
+			private class TargetEntity
+			{
+				public int Id { get; set; }
+			}
+
+			[TestMethod]
+			public void Test()
+			{
+				var source = new EndToEndDbContext();
+				var target = new EndToEndDbContext<TargetEntity>();
+				var migrations = Generate(source.Model, target.Model);
+
+				Assert.AreEqual(1, migrations.Count);
+			}
+		}
+
+		[TestClass]
+		public class CreatingTableWithPropertyOnColumn
+		{
+			[Table("Table")]
+			private class TargetEntity
+			{
+				[TestExtendedProperty("Jiri", "Value")]
+				public int Id { get; set; }
+			}
+
+			[TestMethod]
+			public void Test()
+			{
+				var source = new EndToEndDbContext();
+				var target = new EndToEndDbContext<TargetEntity>();
+				var migrations = Generate(source.Model, target.Model);
+
+				Assert.AreEqual(2, migrations.Count);
+				Assert.AreEqual(
+					"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id'",
+					migrations[1].CommandText);
+			}
+		}
+
+		[TestClass]
+		public class CreatingTableWithoutPropertyOnColumn
+		{
+			[Table("Table")]
+			private class TargetEntity
+			{
+				public int Id { get; set; }
+			}
+
+			[TestMethod]
+			public void Test()
+			{
+				var source = new EndToEndDbContext();
+				var target = new EndToEndDbContext<TargetEntity>();
+				var migrations = Generate(source.Model, target.Model);
+
+				Assert.AreEqual(1, migrations.Count);
+			}
+		}
+
 		private static IReadOnlyList<MigrationCommand> Generate(IModel source, IModel target)
 		{
 			using (var db = new TestDbContext())
@@ -210,7 +356,10 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 			}
 		}
 
-		private class EndToEndDbContext<TEntity> : TestDbContext
+		private class EndToEndDbContext : TestDbContext
+		{ }
+
+		private class EndToEndDbContext<TEntity> : EndToEndDbContext
 			where TEntity : class
 		{
 			public DbSet<TEntity> Entities { get; }

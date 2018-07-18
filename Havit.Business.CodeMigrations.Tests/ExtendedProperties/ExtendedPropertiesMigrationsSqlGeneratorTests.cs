@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Data.SqlClient;
 using Havit.Business.CodeMigrations.ExtendedProperties;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
@@ -192,27 +190,6 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 			Assert.AreEqual(
 				"EXEC sys.sp_addextendedproperty @name=N'OnTable', @value=N'NewValue', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'TableName', @level2type=N'COLUMN', @level2name=N'ColumnName'",
 				migrations[1].CommandText);
-		}
-
-		private class TestDbContext : BusinessLayerDbContext
-		{
-			protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-			{
-				base.OnConfiguring(optionsBuilder);
-				optionsBuilder.UseSqlServer(new SqlConnection("Database=DummyDatabase"));
-			}
-		}
-
-		private class TestExtendedPropertyAttribute : ExtendedPropertyAttribute
-		{
-			public override string Name { get; }
-			public override string Value { get; }
-
-			public TestExtendedPropertyAttribute(string name, string value)
-			{
-				Name = name;
-				Value = value;
-			}
 		}
 
 		private IReadOnlyList<MigrationCommand> Generate(IReadOnlyList<MigrationOperation> operations)

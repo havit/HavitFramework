@@ -343,10 +343,10 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 		{
 			if (TableHelper.IsJoinTable(modelClass.Table))
 			{
-				string columns = String.Join(", ", modelClass.Table.Columns.Cast<Column>()
-					.Select(column => String.Format("{0}.{1}", 
+				string columns = String.Join(", ", modelClass.PrimaryKeyParts
+					.Select(pk => String.Format("{0}.{1}", 
 						ConventionsHelper.GetCammelCase(modelClass.Name), 
-						modelClass.GetPrimaryKeyPartFor(column).Property.Name)));
+						pk.Property.Name)));
 
 				writer.WriteLine(String.Format("builder.HasKey({0} => new {{ {1} }});",
 					ConventionsHelper.GetCammelCase(modelClass.Name),

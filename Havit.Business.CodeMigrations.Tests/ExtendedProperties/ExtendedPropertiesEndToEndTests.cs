@@ -79,6 +79,39 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 			}
 		}
 
+		[TestClass]
+		public class ChangingPropertyOnTable
+		{
+			[Table("Table")]
+			[TestExtendedProperty("Jiri", "OldValue")]
+			private class ChangingPropertyOnTableSourceEntity
+			{
+				[Column("Id")]
+				public int Id { get; set; }
+			}
+
+			[Table("Table")]
+			[TestExtendedProperty("Jiri", "NewValue")]
+			private class ChangingPropertyOnTableTargetEntity
+			{
+				[Column("Id")]
+				public int Id { get; set; }
+			}
+
+			[TestMethod]
+			public void Test()
+			{
+				var source = new EndToEndDbContext<ChangingPropertyOnTableSourceEntity>();
+				var target = new EndToEndDbContext<ChangingPropertyOnTableTargetEntity>();
+				var migrations = Generate(source.Model, target.Model);
+
+				Assert.AreEqual(2, migrations.Count);
+				Assert.AreEqual(
+					"EXEC sys.sp_updateextendedproperty @name=N'Jiri', @value=N'NewValue', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table'",
+					migrations[1].CommandText);
+			}
+		}
+
 		private static IReadOnlyList<MigrationCommand> Generate(IModel source, IModel target)
 		{
 			using (var db = new TestDbContext())

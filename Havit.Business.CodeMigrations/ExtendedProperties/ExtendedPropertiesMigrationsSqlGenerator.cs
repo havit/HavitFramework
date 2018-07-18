@@ -95,7 +95,7 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 			}
 		}
 
-		private void AddExtendedPropertyLevel1(string name, string value, string level1Name, MigrationCommandListBuilder builder)
+		private void AddExtendedPropertyLevel1(string name, string value, string tableName, MigrationCommandListBuilder builder)
 		{
 			builder
 				.Append("EXEC sys.sp_addextendedproperty @name=")
@@ -103,12 +103,12 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 				.Append(", @value=")
 				.Append(GenerateSqlLiteral(value))
 				.Append(", @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=")
-				.Append(GenerateSqlLiteral(level1Name))
+				.Append(GenerateSqlLiteral(tableName))
 				.Append("")
 				.EndCommand();
 		}
 
-		private void UpdateExtendedPropertyLevel1(string name, string value, string level1Name, MigrationCommandListBuilder builder)
+		private void UpdateExtendedPropertyLevel1(string name, string value, string tableName, MigrationCommandListBuilder builder)
 		{
 			builder
 				.Append("EXEC sys.sp_updateextendedproperty @name=")
@@ -116,23 +116,23 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 				.Append(", @value=")
 				.Append(GenerateSqlLiteral(value))
 				.Append(", @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=")
-				.Append(GenerateSqlLiteral(level1Name))
+				.Append(GenerateSqlLiteral(tableName))
 				.Append("")
 				.EndCommand();
 		}
 
-		private void DropExtendedPropertyLevel1(string name, string level1Name, MigrationCommandListBuilder builder)
+		private void DropExtendedPropertyLevel1(string name, string tableName, MigrationCommandListBuilder builder)
 		{
 			builder
 				.Append("EXEC sys.sp_dropextendedproperty @name=")
 				.Append(GenerateSqlLiteral(name))
 				.Append(", @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=")
-				.Append(GenerateSqlLiteral(level1Name))
+				.Append(GenerateSqlLiteral(tableName))
 				.Append("")
 				.EndCommand();
 		}
 
-		private void AddExtendedPropertyLevel2(string name, string value, string level1Name, string level2Name, MigrationCommandListBuilder builder)
+		private void AddExtendedPropertyLevel2(string name, string value, string tableName, string columnName, MigrationCommandListBuilder builder)
 		{
 			builder
 				.Append("EXEC sys.sp_addextendedproperty @name=")
@@ -140,14 +140,14 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 				.Append(", @value=")
 				.Append(GenerateSqlLiteral(value))
 				.Append(", @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=")
-				.Append(GenerateSqlLiteral(level1Name))
+				.Append(GenerateSqlLiteral(tableName))
 				.Append(", @level2type=N'COLUMN', @level2name=")
-				.Append(GenerateSqlLiteral(level2Name))
+				.Append(GenerateSqlLiteral(columnName))
 				.Append("")
 				.EndCommand();
 		}
 
-		private void UpdateExtendedPropertyLevel2(string name, string value, string level1Name, string level2Name, MigrationCommandListBuilder builder)
+		private void UpdateExtendedPropertyLevel2(string name, string value, string tableName, string columnName, MigrationCommandListBuilder builder)
 		{
 			builder
 				.Append("EXEC sys.sp_updateextendedproperty @name=")
@@ -155,22 +155,22 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 				.Append(", @value=")
 				.Append(GenerateSqlLiteral(value))
 				.Append(", @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=")
-				.Append(GenerateSqlLiteral(level1Name))
+				.Append(GenerateSqlLiteral(tableName))
 				.Append(", @level2type=N'COLUMN', @level2name=")
-				.Append(GenerateSqlLiteral(level2Name))
+				.Append(GenerateSqlLiteral(columnName))
 				.Append("")
 				.EndCommand();
 		}
 
-		private void DropExtendedPropertyLevel2(string name, string level1Name, string level2Name, MigrationCommandListBuilder builder)
+		private void DropExtendedPropertyLevel2(string name, string tableName, string columnName, MigrationCommandListBuilder builder)
 		{
 			builder
 				.Append("EXEC sys.sp_dropextendedproperty @name=")
 				.Append(GenerateSqlLiteral(name))
 				.Append(", @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=")
-				.Append(GenerateSqlLiteral(level1Name))
+				.Append(GenerateSqlLiteral(tableName))
 				.Append(", @level2type=N'COLUMN', @level2name=")
-				.Append(GenerateSqlLiteral(level2Name))
+				.Append(GenerateSqlLiteral(columnName))
 				.Append("")
 				.EndCommand();
 		}

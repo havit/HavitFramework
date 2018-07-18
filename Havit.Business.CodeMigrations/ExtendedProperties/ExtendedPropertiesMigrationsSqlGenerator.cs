@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
@@ -8,6 +9,8 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 {
 	internal class ExtendedPropertiesMigrationsSqlGenerator : SqlServerMigrationsSqlGenerator
 	{
+		private const string DefaultSchemaName = "dbo";
+
 		public ExtendedPropertiesMigrationsSqlGenerator(MigrationsSqlGeneratorDependencies dependencies, IMigrationsAnnotationProvider migrationsAnnotations)
 			: base(dependencies, migrationsAnnotations)
 		{ }
@@ -20,7 +23,7 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 			{
 				var name = ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(annotation);
 				var value = (string)annotation.Value;
-				AddExtendedPropertyLevel1(name, value, operation.Name, builder);
+				AddExtendedPropertyLevel1(name, value, GetSchema(operation.Schema, model), operation.Name, builder);
 			}
 			foreach (var column in operation.Columns)
 			{
@@ -28,7 +31,7 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 				{
 					var name = ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(annotation);
 					var value = (string)annotation.Value;
-					AddExtendedPropertyLevel2(name, value, column.Table, column.Name, builder);
+					AddExtendedPropertyLevel2(name, value, GetSchema(operation.Schema, model), column.Table, column.Name, builder);
 				}
 			}
 		}
@@ -41,7 +44,7 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 			{
 				var name = ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(annotation);
 				var value = (string)annotation.Value;
-				AddExtendedPropertyLevel2(name, value, operation.Table, operation.Name, builder);
+				AddExtendedPropertyLevel2(name, value, GetSchema(operation.Schema, model), operation.Table, operation.Name, builder);
 			}
 		}
 
@@ -54,19 +57,19 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 			foreach (var annotation in oldAnnotations.Where(x => !newAnnotations.ContainsKey(x.Key)).Select(x => x.Value))
 			{
 				var name = ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(annotation);
-				DropExtendedPropertyLevel1(name, operation.Name, builder);
+				DropExtendedPropertyLevel1(name, GetSchema(operation.Schema, model), operation.Name, builder);
 			}
 			foreach (var annotation in newAnnotations.Where(x => oldAnnotations.ContainsKey(x.Key)).Select(x => x.Value))
 			{
 				var name = ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(annotation);
 				var value = (string)annotation.Value;
-				UpdateExtendedPropertyLevel1(name, value, operation.Name, builder);
+				UpdateExtendedPropertyLevel1(name, value, GetSchema(operation.Schema, model), operation.Name, builder);
 			}
 			foreach (var annotation in newAnnotations.Where(x => !oldAnnotations.ContainsKey(x.Key)).Select(x => x.Value))
 			{
 				var name = ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(annotation);
 				var value = (string)annotation.Value;
-				AddExtendedPropertyLevel1(name, value, operation.Name, builder);
+				AddExtendedPropertyLevel1(name, value, GetSchema(operation.Schema, model), operation.Name, builder);
 			}
 		}
 
@@ -79,67 +82,75 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 			foreach (var annotation in oldAnnotations.Where(x => !newAnnotations.ContainsKey(x.Key)).Select(x => x.Value))
 			{
 				var name = ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(annotation);
-				DropExtendedPropertyLevel2(name, operation.Table, operation.Name, builder);
+				DropExtendedPropertyLevel2(name, GetSchema(operation.Schema, model), operation.Table, operation.Name, builder);
 			}
 			foreach (var annotation in newAnnotations.Where(x => oldAnnotations.ContainsKey(x.Key)).Select(x => x.Value))
 			{
 				var name = ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(annotation);
 				var value = (string)annotation.Value;
-				UpdateExtendedPropertyLevel2(name, value, operation.Table, operation.Name, builder);
+				UpdateExtendedPropertyLevel2(name, value, GetSchema(operation.Schema, model), operation.Table, operation.Name, builder);
 			}
 			foreach (var annotation in newAnnotations.Where(x => !oldAnnotations.ContainsKey(x.Key)).Select(x => x.Value))
 			{
 				var name = ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(annotation);
 				var value = (string)annotation.Value;
-				AddExtendedPropertyLevel2(name, value, operation.Table, operation.Name, builder);
+				AddExtendedPropertyLevel2(name, value, GetSchema(operation.Schema, model), operation.Table, operation.Name, builder);
 			}
 		}
 
-		private void AddExtendedPropertyLevel1(string name, string value, string tableName, MigrationCommandListBuilder builder)
+		private void AddExtendedPropertyLevel1(string name, string value, string schemaName, string tableName, MigrationCommandListBuilder builder)
 		{
 			builder
 				.Append("EXEC sys.sp_addextendedproperty @name=")
 				.Append(GenerateSqlLiteral(name))
 				.Append(", @value=")
 				.Append(GenerateSqlLiteral(value))
-				.Append(", @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=")
+				.Append(", @level0type=N'SCHEMA', @level0name=")
+				.Append(GenerateSqlLiteral(schemaName))
+				.Append(", @level1type=N'TABLE', @level1name=")
 				.Append(GenerateSqlLiteral(tableName))
 				.Append("")
 				.EndCommand();
 		}
 
-		private void UpdateExtendedPropertyLevel1(string name, string value, string tableName, MigrationCommandListBuilder builder)
+		private void UpdateExtendedPropertyLevel1(string name, string value, string schemaName, string tableName, MigrationCommandListBuilder builder)
 		{
 			builder
 				.Append("EXEC sys.sp_updateextendedproperty @name=")
 				.Append(GenerateSqlLiteral(name))
 				.Append(", @value=")
 				.Append(GenerateSqlLiteral(value))
-				.Append(", @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=")
+				.Append(", @level0type=N'SCHEMA', @level0name=")
+				.Append(GenerateSqlLiteral(schemaName))
+				.Append(", @level1type=N'TABLE', @level1name=")
 				.Append(GenerateSqlLiteral(tableName))
 				.Append("")
 				.EndCommand();
 		}
 
-		private void DropExtendedPropertyLevel1(string name, string tableName, MigrationCommandListBuilder builder)
+		private void DropExtendedPropertyLevel1(string name, string schemaName, string tableName, MigrationCommandListBuilder builder)
 		{
 			builder
 				.Append("EXEC sys.sp_dropextendedproperty @name=")
 				.Append(GenerateSqlLiteral(name))
-				.Append(", @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=")
+				.Append(", @level0type=N'SCHEMA', @level0name=")
+				.Append(GenerateSqlLiteral(schemaName))
+				.Append(", @level1type=N'TABLE', @level1name=")
 				.Append(GenerateSqlLiteral(tableName))
 				.Append("")
 				.EndCommand();
 		}
 
-		private void AddExtendedPropertyLevel2(string name, string value, string tableName, string columnName, MigrationCommandListBuilder builder)
+		private void AddExtendedPropertyLevel2(string name, string value, string schemaName, string tableName, string columnName, MigrationCommandListBuilder builder)
 		{
 			builder
 				.Append("EXEC sys.sp_addextendedproperty @name=")
 				.Append(GenerateSqlLiteral(name))
 				.Append(", @value=")
 				.Append(GenerateSqlLiteral(value))
-				.Append(", @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=")
+				.Append(", @level0type=N'SCHEMA', @level0name=")
+				.Append(GenerateSqlLiteral(schemaName))
+				.Append(", @level1type=N'TABLE', @level1name=")
 				.Append(GenerateSqlLiteral(tableName))
 				.Append(", @level2type=N'COLUMN', @level2name=")
 				.Append(GenerateSqlLiteral(columnName))
@@ -147,14 +158,16 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 				.EndCommand();
 		}
 
-		private void UpdateExtendedPropertyLevel2(string name, string value, string tableName, string columnName, MigrationCommandListBuilder builder)
+		private void UpdateExtendedPropertyLevel2(string name, string value, string schemaName, string tableName, string columnName, MigrationCommandListBuilder builder)
 		{
 			builder
 				.Append("EXEC sys.sp_updateextendedproperty @name=")
 				.Append(GenerateSqlLiteral(name))
 				.Append(", @value=")
 				.Append(GenerateSqlLiteral(value))
-				.Append(", @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=")
+				.Append(", @level0type=N'SCHEMA', @level0name=")
+				.Append(GenerateSqlLiteral(schemaName))
+				.Append(", @level1type=N'TABLE', @level1name=")
 				.Append(GenerateSqlLiteral(tableName))
 				.Append(", @level2type=N'COLUMN', @level2name=")
 				.Append(GenerateSqlLiteral(columnName))
@@ -162,12 +175,14 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 				.EndCommand();
 		}
 
-		private void DropExtendedPropertyLevel2(string name, string tableName, string columnName, MigrationCommandListBuilder builder)
+		private void DropExtendedPropertyLevel2(string name, string schemaName, string tableName, string columnName, MigrationCommandListBuilder builder)
 		{
 			builder
 				.Append("EXEC sys.sp_dropextendedproperty @name=")
 				.Append(GenerateSqlLiteral(name))
-				.Append(", @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=")
+				.Append(", @level0type=N'SCHEMA', @level0name=")
+				.Append(GenerateSqlLiteral(schemaName))
+				.Append(", @level1type=N'TABLE', @level1name=")
 				.Append(GenerateSqlLiteral(tableName))
 				.Append(", @level2type=N'COLUMN', @level2name=")
 				.Append(GenerateSqlLiteral(columnName))
@@ -176,5 +191,7 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 		}
 
 		private string GenerateSqlLiteral(string s) => Dependencies.TypeMappingSource.GetMapping(typeof(string)).GenerateSqlLiteral(s);
+
+		private string GetSchema(string operationSchema, IModel model) => operationSchema ?? (string)model.FindAnnotation(RelationalAnnotationNames.DefaultSchema)?.Value ?? DefaultSchemaName;
 	}
 }

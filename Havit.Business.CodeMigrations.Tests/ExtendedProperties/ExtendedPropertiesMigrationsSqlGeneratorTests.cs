@@ -141,6 +141,7 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 				Name = "ColumnName",
 				ClrType = typeof(int),
 			};
+			columnOperation.OldColumn.ClrType = columnOperation.ClrType;
 			var attrOld = new TestExtendedPropertyAttribute("OnTable", "OldValue");
 			var attrNew = new TestExtendedPropertyAttribute("OnTable", "NewValue");
 			columnOperation.OldColumn.AddAnnotation(ExtendedPropertiesAnnotationsHelper.BuildAnnotationName(attrOld), attrOld.Value);
@@ -162,6 +163,7 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 				Name = "ColumnName",
 				ClrType = typeof(int),
 			};
+			columnOperation.OldColumn.ClrType = columnOperation.ClrType;
 			var attrOld = new TestExtendedPropertyAttribute("OnTable", "OldValue");
 			columnOperation.OldColumn.AddAnnotation(ExtendedPropertiesAnnotationsHelper.BuildAnnotationName(attrOld), attrOld.Value);
 			var migrations = Generate(new[] { columnOperation });
@@ -181,6 +183,7 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 				Name = "ColumnName",
 				ClrType = typeof(int),
 			};
+			columnOperation.OldColumn.ClrType = columnOperation.ClrType;
 			var attrNew = new TestExtendedPropertyAttribute("OnTable", "NewValue");
 			columnOperation.AddAnnotation(ExtendedPropertiesAnnotationsHelper.BuildAnnotationName(attrNew), attrNew.Value);
 			var migrations = Generate(new[] { columnOperation });
@@ -217,7 +220,7 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 			using (var db = new TestDbContext())
 			{
 				var generator = db.GetService<IMigrationsSqlGenerator>();
-				return generator.Generate(operations);
+				return generator.Generate(operations, db.Model);
 			}
 		}
 	}

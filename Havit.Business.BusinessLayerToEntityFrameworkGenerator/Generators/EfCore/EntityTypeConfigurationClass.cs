@@ -7,9 +7,13 @@ using Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions;
 using Havit.Business.BusinessLayerGenerator.Helpers.Types;
 using Havit.Business.BusinessLayerGenerator.TfsClient;
 using Havit.Business.BusinessLayerGenerator.Writers;
+using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Helpers;
 using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata;
 using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Settings;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.SqlServer.Management.Smo;
+using FileHelper = Havit.Business.BusinessLayerGenerator.Helpers.FileHelper;
+using TypeHelper = Havit.Business.BusinessLayerGenerator.Helpers.TypeHelper;
 
 namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCore
 {
@@ -93,20 +97,36 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 			{
 				Column column = property.Column;
 
+				string columnType = null;
+
 				if (column.DataType.SqlDataType == SqlDataType.Money)
 				{
-					writer.WriteLine(String.Format("builder.Property({0} => {0}.{1}).HasColumnType(\"Money\");",
-						ConventionsHelper.GetCammelCase(modelClass.Name),
-						property.Name));
-					result = true;
+					columnType = "Money";
 				}
 				else if ((column.DataType.SqlDataType == SqlDataType.Decimal) && ((column.DataType.NumericPrecision != 18) && column.DataType.NumericScale != 2))
 				{
-					writer.WriteLine(String.Format("builder.Property({0} => {0}.{1}).HasColumnType(\"decimal({2}, {3})\");",
-						ConventionsHelper.GetCammelCase(modelClass.Name),
-						property.Name,
+					columnType = String.Format("decimal({0}, {1})", 
 						column.DataType.NumericPrecision,
-						column.DataType.NumericScale));
+						column.DataType.NumericScale);
+				}
+				else
+				{
+				    Type type = Helpers.TypeHelper.GetPropertyType(property);
+					if (type != null)
+					{
+						RelationalTypeMapping mapping = Helpers.TypeHelper.GetMapping(type);
+						if (mapping == null || !column.DataType.IsSameAsTypeMapping(mapping))
+						{
+							columnType = column.DataType.GetStringRepresentation();
+						}
+					}
+				}
+
+				if (columnType != null)
+				{
+					writer.WriteLine(String.Format("builder.Property({0} => {0}.{1}).HasColumnType(\"{2}\");",
+						ConventionsHelper.GetCammelCase(modelClass.Name),
+						property.Name, columnType));
 					result = true;
 				}
 			}

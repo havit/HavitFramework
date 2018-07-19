@@ -7,5 +7,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata
 		public string Name { get; set; }
 
 		public Column Column { get; set; }
+
+		public string TypeName { get; set; }
 	}
 }

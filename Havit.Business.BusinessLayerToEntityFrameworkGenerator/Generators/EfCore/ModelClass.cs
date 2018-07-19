@@ -167,7 +167,8 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 						Property = new EntityProperty
 						{
 							Column = column,
-							Name = String.Format("{0}Id", ColumnHelper.GetReferencedTable(column).Name)
+							Name = String.Format("{0}Id", ColumnHelper.GetReferencedTable(column).Name),
+							TypeName = "int"
 						}
 					};
 					var fk = new EntityForeignKey
@@ -196,7 +197,8 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 					Property = new EntityProperty
 					{
 						Column = TableHelper.GetPrimaryKey(table),
-						Name = "Id"
+						Name = "Id",
+						TypeName = "int"
 					}
 				};
 				modelClass.PrimaryKeyParts.Add(pk);
@@ -225,12 +227,12 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 				string description = ColumnHelper.GetDescription(column);
 
 				writer.WriteCommentSummary(description);
-				string accesssModifierText = PropertyHelper.GetPropertyAccessModifier(column);
+				string accesssModifierText = "public"; //PropertyHelper.GetPropertyAccessModifier(column);
 
 				// DatabaseGenerated (není třeba)
 				// ILocalized + ILocalization
 
-				string propertyTypeName = TypeHelper.GetPropertyTypeName(column).Replace("BusinessLayer", "Model");
+				entityProperty.TypeName = TypeHelper.GetPropertyTypeName(column).Replace("BusinessLayer", "Model");
 
 				if (TypeHelper.IsDateOnly(column.DataType))
 				{
@@ -248,14 +250,15 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 					//}
 				}
 
-				writer.WriteLine(String.Format("{0} {1} {2} {{ get; set; }}", accesssModifierText, propertyTypeName, entityProperty.Name));
+				writer.WriteLine(String.Format("{0} {1} {2} {{ get; set; }}", accesssModifierText, entityProperty.TypeName, entityProperty.Name));
 
 				if (TypeHelper.IsBusinessObjectReference(column))
 				{
 					var fkProperty = new EntityProperty
 					{
 						Column = column,
-						Name = $"{entityProperty.Name}Id"
+						Name = $"{entityProperty.Name}Id",
+						TypeName = column.Nullable ? "int?" : "int"
 					};
 
 					var fk = new EntityForeignKey
@@ -265,8 +268,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 						NavigationPropertyName = entityProperty.Name
 					};
 
-					string foreignKeyTypeName = column.Nullable ? "int?" : "int";
-					writer.WriteLine(String.Format("{0} {1} {2} {{ get; set; }}", accesssModifierText, foreignKeyTypeName, fk.ForeignKeyPropertyName));
+					writer.WriteLine(String.Format("{0} {1} {2} {{ get; set; }}", accesssModifierText, fkProperty.TypeName, fk.ForeignKeyPropertyName));
 					modelClass.ForeignKeys.Add(fk);
 					modelClass.Properties.Add(fkProperty);
 				}
@@ -280,7 +282,8 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 				var symbolProperty = new EntityProperty
 				{
 					Column = symbolColumn,
-					Name = "Symbol"
+					Name = "Symbol",
+                    TypeName = "string"
 				};
 				modelClass.Properties.Add(symbolProperty);
 				writer.WriteCommentSummary("Symbol.");

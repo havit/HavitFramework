@@ -44,7 +44,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Helpers
 	        Type systemType = Type.GetType($"System.{typeName}", false);
 	        if (systemType != null)
 	        {
-		        return isNullable ? typeof(Nullable<>).MakeGenericType(systemType): systemType;
+		        return isNullable ? typeof(Nullable<>).MakeGenericType(systemType) : systemType;
 			}
 
             return Type.GetType(property.TypeName, false);

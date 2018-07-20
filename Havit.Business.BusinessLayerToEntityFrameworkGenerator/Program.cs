@@ -85,7 +85,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator
 				DatabaseHelper.Database = database;
 
 				// vygenerujeme, co je potřeba
-				Generators.Generator.Generate(database, modelCsprojFile, entityCsprojFile, sourceControlClient);
+				Generators.EfCoreGenerator.Generate(database, modelCsprojFile, entityCsprojFile, sourceControlClient);
 
 			}
 			catch (ApplicationException e)

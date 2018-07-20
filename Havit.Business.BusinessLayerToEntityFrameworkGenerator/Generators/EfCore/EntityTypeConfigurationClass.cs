@@ -20,7 +20,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 	public static class EntityTypeConfigurationClass
 	{
 		#region Generate
-		public static void Generate(GeneratedModelClass modelClass, CsprojFile entityCsprojFile, SourceControlClient sourceControlClient)
+		public static void Generate(GeneratedModel model, GeneratedModelClass modelClass, CsprojFile entityCsprojFile, SourceControlClient sourceControlClient)
 		{
 			Table table = modelClass.Table;
 
@@ -34,7 +34,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 			bool shouldSave = WriteTablePKs(writer, modelClass);
 			shouldSave |= WriteColumnMetadata(writer, modelClass);
 			shouldSave |= WritePrecisions(writer, modelClass);
-			shouldSave |= WriteCollections(writer, table);
+			shouldSave |= WriteCollections(writer, modelClass);
 			shouldSave |= WritePrincipals(writer, modelClass);
 			WriteNamespaceClassConstructorEnd(writer);
 
@@ -138,8 +138,10 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 			return result;
 		}
 
-		private static bool WriteCollections(CodeWriter writer, Table table)
+		private static bool WriteCollections(CodeWriter writer, GeneratedModelClass modelClass)
 		{
+			Table table = modelClass.Table;
+
 			bool result = false;
 			foreach (CollectionProperty collection in TableHelper.GetCollectionColumns(table))
 			{
@@ -236,7 +238,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 				//		&& (ColumnHelper.GetReferencedTable(referencedTableColumn) == table))  // do této tabulky
 				//	&& !TableHelper.GetCollectionColumns(referencedTable).Any(item => item.ReferenceColumn == column)) // v cílové tabulce ke sloupci není kolekce						
 				{
-					var propertyName = foreignKey.NavigationPropertyName;
+					var propertyName = foreignKey.NavigationProperty.Name;
 
 					writer.WriteLine(String.Format("builder.HasOne({0} => {0}.{1})",
 						ConventionsHelper.GetCammelCase(modelClass.Name),
@@ -255,7 +257,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 						));
 						writer.WriteLine(String.Format(".HasForeignKey({0} => {0}.{1})",
 							ConventionsHelper.GetCammelCase(modelClass.Name),
-							foreignKey.ForeignKeyPropertyName
+							foreignKey.ForeignKeyProperty.Name
 						));
 					}
 					else

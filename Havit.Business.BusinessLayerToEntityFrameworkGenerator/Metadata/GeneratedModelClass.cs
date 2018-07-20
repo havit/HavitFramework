@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using Microsoft.SqlServer.Management.Common;
 using Microsoft.SqlServer.Management.Smo;
 
 namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata
 {
+	[DebuggerDisplay("{Name}, Properties: {Properties.Count}")]
 	public class GeneratedModelClass
 	{
 		public string Name { get; set; }
@@ -31,7 +32,12 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata
 
 		public IEnumerable<EntityProperty> GetColumnProperties()
 		{
-			return Properties.Where(prop => ForeignKeys.All(fk => fk.NavigationPropertyName != prop.Name) && CollectionProperties.All(collectionProperty => collectionProperty.Name != prop.Name));
+			return Properties.Where(prop => ForeignKeys.All(fk => fk.NavigationProperty.Name != prop.Name) && CollectionProperties.All(collectionProperty => collectionProperty.Name != prop.Name));
+		}
+
+		public EntityForeignKey GetForeignKeyForColumn(Column column)
+		{
+			return ForeignKeys.FirstOrDefault(fk => fk.Column == column);
 		}
 	}
 }

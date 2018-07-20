@@ -4,9 +4,9 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata
 {
 	public class EntityForeignKey
 	{
-		public string ForeignKeyPropertyName { get; set; }
+		public EntityProperty ForeignKeyProperty { get; set; }
 
-		public string NavigationPropertyName { get; set; }
+		public EntityProperty NavigationProperty { get; set; }
 
 		public Column Column { get; set; }
 	}

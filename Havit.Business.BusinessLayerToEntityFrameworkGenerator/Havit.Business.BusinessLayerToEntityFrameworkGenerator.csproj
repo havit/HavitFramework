@@ -231,6 +231,7 @@
     <Compile Include="Generators\Generator.cs" />
     <Compile Include="Generators\EntityTypeConfigurationClass.cs" />
     <Compile Include="Generators\ModelClass.cs" />
+    <Compile Include="Helpers\DefaultValueParser.cs" />
     <Compile Include="Helpers\EfCoreAccessor.cs" />
     <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Helpers\NamingConventions\ClassHelper.cs" />

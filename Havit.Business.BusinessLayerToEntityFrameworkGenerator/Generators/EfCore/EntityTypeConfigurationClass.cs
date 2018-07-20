@@ -109,7 +109,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 						column.DataType.NumericPrecision,
 						column.DataType.NumericScale);
 				}
-				else
+				else if (!column.DataType.IsStringType)
 				{
 				    Type type = Helpers.TypeHelper.GetPropertyType(property);
 					if (type != null)
@@ -325,11 +325,13 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 				// Generate HasDefaultValueSql. For String columns, generate only if if default is not empty (we use convention for such columns)
 				if ((column.DefaultConstraint != null) && (!column.DataType.IsStringType || (column.DefaultConstraint.Text != "('')")))
 				{
+					string defaultValue = new DefaultValueParser().GetDefaultValue(column);
+
 					writer.WriteLine(String.Format("builder.Property({0} => {0}.{1})",
 						ConventionsHelper.GetCammelCase(modelClass.Name),
 						property.Name));
 					writer.Indent();
-					writer.WriteLine($".HasDefaultValueSql(\"{column.DefaultConstraint.Text}\");");
+					writer.WriteLine($".HasDefaultValueSql(\"{defaultValue}\");");
 					writer.Unindent();
 					writer.WriteLine();
 				}

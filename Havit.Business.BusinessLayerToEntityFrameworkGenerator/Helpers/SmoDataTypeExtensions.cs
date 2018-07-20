@@ -7,7 +7,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Helpers
 {
 	public static class SmoDataTypeExtensions
     {
-	    private static readonly string[] precisionTypes = new[] { "decimal", "numeric", "float", "real" };
+	    private static readonly string[] precisionTypes = new[] { "decimal", "numeric", "real" };
 
         public static bool IsSameAsTypeMapping(this DataType dataType, RelationalTypeMapping typeMapping)
         {
@@ -56,7 +56,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Helpers
 	    {
 		    if (dataType.IsStringType)
 		    {
-			    return $"{dataType.Name}({dataType.MaximumLength})";
+			    return $"{dataType.Name}({(dataType.MaximumLength == -1 ? "max" : dataType.MaximumLength.ToString())})";
 		    }
 
 		    if (dataType.IsNumericType)

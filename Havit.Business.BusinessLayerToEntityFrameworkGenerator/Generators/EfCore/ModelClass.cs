@@ -238,7 +238,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 				// DatabaseGenerated (není třeba)
 				// ILocalized + ILocalization
 
-				entityProperty.TypeName = TypeHelper.GetPropertyTypeName(column).Replace("BusinessLayer", "Model");
+				entityProperty.TypeName = Helpers.TypeHelper.GetPropertyTypeName(column).Replace("BusinessLayer", "Model");
 
 				if (TypeHelper.IsDateOnly(column.DataType))
 				{

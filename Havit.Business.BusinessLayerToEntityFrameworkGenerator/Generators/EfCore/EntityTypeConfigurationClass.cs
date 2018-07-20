@@ -292,16 +292,6 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 		{
 			Table table = modelClass.Table;
 
-			//if (!TableHelper.IsJoinTable(table))
-			//{
-			//	writer.WriteLine(String.Format("builder.Property({0} => {0}.Id)",
-			//		ConventionsHelper.GetCammelCase(ClassHelper.GetClassName(table))));
-			//	writer.Indent();
-			//	writer.WriteLine(String.Format(".HasColumnName(\"{0}ID\");", ClassHelper.GetClassName(table)));
-			//	writer.Unindent();
-			//	writer.WriteLine();
-			//}
-
 			foreach (EntityProperty property in modelClass.GetColumnProperties())
 			{
 				Column column = property.Column;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.SqlServer.Management.Smo;
 
 namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Helpers
 {
@@ -54,5 +55,16 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Helpers
         {
             return EfCoreAccessor.Use<IRelationalTypeMappingSource, RelationalTypeMapping>(s => s.FindMapping(type));
         }
+
+	    public static string GetPropertyTypeName(Column column)
+	    {
+		    string typeName = BusinessLayerGenerator.Helpers.TypeHelper.GetPropertyTypeName(column);
+		    if (typeName == "XmlDocument")
+		    {
+			    return "string";
+		    }
+
+		    return typeName;
+	    }
     }
 }

@@ -54,6 +54,10 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Helpers
 
 	    public static string GetStringRepresentation(this DataType dataType)
 	    {
+		    if (dataType.SqlDataType == SqlDataType.Xml)
+		    {
+			    return "xml";
+		    }
 		    if (dataType.IsStringType)
 		    {
 			    return $"{dataType.Name}({(dataType.MaximumLength == -1 ? "max" : dataType.MaximumLength.ToString())})";

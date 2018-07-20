@@ -43,6 +43,19 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		/// </summary>
 		public static Table GetReferencedTable(Column column)
 		{
+			ForeignKey foreignKey = GetForeignKey(column);
+
+			return DatabaseHelper.FindTable(foreignKey.ReferencedTable, foreignKey.ReferencedTableSchema);
+		}
+		#endregion
+
+		#region GetForeignKey
+		/// <summary>
+		/// Vrátí FK daného stĺpca.
+		/// Není-li sloupec FK, vyhodí výjimku.
+		/// </summary>
+		public static ForeignKey GetForeignKey(Column column)
+		{
 			if (!TypeHelper.IsBusinessObjectReference(column))
 			{
 				throw new ArgumentException(String.Format("Sloupec \"{0}\" v tabulce \"{1}\" není referencí.", column.Name, ((Table)column.Parent).Name));
@@ -54,12 +67,29 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			{
 				if (foreignKey.Columns.Count == 1 && foreignKey.Columns[0].Name == column.Name)
 				{
-					return DatabaseHelper.FindTable(foreignKey.ReferencedTable, foreignKey.ReferencedTableSchema);
+					return foreignKey;
 				}
 			}
 
 			throw new ApplicationException(String.Format("Tabulka {0}, Sloupec {1}: Referovanou tabulku se nepodařilo nalést.", ownerTable.Name, column.Name));
 		}
+		#endregion
+
+		#region GetReferencedColumn
+
+		/// <summary>
+		/// Vrátí referencovaný stĺpec z cieľovej tabuľky.
+		/// Není-li sloupec FK, vyhodí výjimku.
+		/// </summary>
+		public static Column GetReferencedColumn(Column column)
+		{
+			ForeignKey foreignKey = GetForeignKey(column);
+
+			Table table = DatabaseHelper.FindTable(foreignKey.ReferencedTable, foreignKey.ReferencedTableSchema);
+
+			return table.Columns[foreignKey.Columns[0].ReferencedColumn];
+		}
+
 		#endregion
 
 		#region GetParameterValue

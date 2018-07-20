@@ -162,13 +162,14 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 			{
 				foreach (Column column in table.Columns.Cast<Column>().Where(c => c.InPrimaryKey))
 				{
+					Column referencedColumn = ColumnHelper.GetReferencedColumn(column);
 					var pk = new EntityPrimaryKeyPart
 					{
 						Property = new EntityProperty
 						{
 							Column = column,
 							Name = String.Format("{0}Id", ColumnHelper.GetReferencedTable(column).Name),
-							TypeName = "int"
+							TypeName = TypeHelper.GetFieldSystemTypeName(referencedColumn)
 						}
 					};
 					var fk = new EntityForeignKey
@@ -178,7 +179,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 						NavigationPropertyName = ColumnHelper.GetReferencedTable(column).Name,
 					};
 
-					writer.WriteLine(String.Format("public int {0} {{ get; set; }}", pk.Property.Name));
+					writer.WriteLine(String.Format("public {0} {1} {{ get; set; }}", pk.Property.TypeName, pk.Property.Name));
 					writer.WriteLine(String.Format("public {0} {1} {{ get; set; }}", TypeHelper.GetPropertyTypeName(column).Replace("BusinessLayer", "Model"), fk.NavigationPropertyName));
 					writer.WriteLine();
 
@@ -189,24 +190,29 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 			}
 			else
 			{
-				writer.WriteLine("public int Id { get; set; }");
-				writer.WriteLine();
-
 				var pk = new EntityPrimaryKeyPart
 				{
 					Property = new EntityProperty
 					{
 						Column = TableHelper.GetPrimaryKey(table),
 						Name = "Id",
-						TypeName = "int"
 					}
 				};
+				pk.Property.TypeName = TypeHelper.GetFieldSystemTypeName(pk.Property.Column);
+				writer.WriteLine(String.Format("public {0} Id {{ get; set; }}", pk.Property.TypeName));
+				writer.WriteLine();
 				modelClass.PrimaryKeyParts.Add(pk);
 				modelClass.Properties.Add(pk.Property);
 			}
 
-			foreach (Column column in TableHelper.GetPropertyColumns(table))
+			foreach (Column column in table.Columns.Cast<Column>().Where(c => !c.InPrimaryKey))
 			{
+				if (column.Name == "PropertyName")
+				{
+					// PropertyName is column for enum tables, it's handled further below (PropertyName -> Symbol)
+					continue;
+				}
+
 				var entityProperty = new EntityProperty
 				{
 					Column = column,
@@ -254,11 +260,17 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 
 				if (TypeHelper.IsBusinessObjectReference(column))
 				{
+					Column referencedColumn = ColumnHelper.GetReferencedColumn(column);
+					string referencedColumnType = TypeHelper.GetFieldSystemTypeName(referencedColumn).Trim('?');
+					if (column.Nullable)
+					{
+						referencedColumnType += '?';
+					}
 					var fkProperty = new EntityProperty
 					{
 						Column = column,
 						Name = $"{entityProperty.Name}Id",
-						TypeName = column.Nullable ? "int?" : "int"
+						TypeName = referencedColumnType
 					};
 
 					var fk = new EntityForeignKey

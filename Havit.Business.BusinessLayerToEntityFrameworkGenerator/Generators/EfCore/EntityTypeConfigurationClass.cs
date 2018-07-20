@@ -34,7 +34,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 			bool shouldSave = WriteTablePKs(writer, modelClass);
 			shouldSave |= WriteColumnMetadata(writer, modelClass);
 			shouldSave |= WritePrecisions(writer, modelClass);
-			shouldSave |= WriteCollections(writer, modelClass);
+			shouldSave |= WriteCollections(writer, model, modelClass);
 			shouldSave |= WritePrincipals(writer, modelClass);
 			WriteNamespaceClassConstructorEnd(writer);
 
@@ -105,13 +105,13 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 				}
 				else if ((column.DataType.SqlDataType == SqlDataType.Decimal) && ((column.DataType.NumericPrecision != 18) && column.DataType.NumericScale != 2))
 				{
-					columnType = String.Format("decimal({0}, {1})", 
+					columnType = String.Format("decimal({0}, {1})",
 						column.DataType.NumericPrecision,
 						column.DataType.NumericScale);
 				}
 				else if (!column.DataType.IsStringType)
 				{
-				    Type type = Helpers.TypeHelper.GetPropertyType(property);
+					Type type = Helpers.TypeHelper.GetPropertyType(property);
 					if (type != null)
 					{
 						RelationalTypeMapping mapping = Helpers.TypeHelper.GetMapping(type);
@@ -138,78 +138,53 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 			return result;
 		}
 
-		private static bool WriteCollections(CodeWriter writer, GeneratedModelClass modelClass)
+		private static bool WriteCollections(CodeWriter writer, GeneratedModel model, GeneratedModelClass modelClass)
 		{
 			Table table = modelClass.Table;
 
 			bool result = false;
-			foreach (CollectionProperty collection in TableHelper.GetCollectionColumns(table))
+			foreach (EntityCollectionProperty collectionProperty in modelClass.CollectionProperties)
 			{
-				string hasMany = String.Format("builder.HasMany({0} => {0}.{1})",
-					ConventionsHelper.GetCammelCase(ClassHelper.GetClassName(table)),
-					collection.PropertyName);
+				CollectionProperty collection = collectionProperty.CollectionProperty;
+				Table targetTable = collection.IsManyToMany ? collection.JoinTable : collection.TargetTable;
 
-				if (collection.IsOneToMany)
+				if (LocalizationHelper.IsLocalizedTable(table) && (collection.PropertyName == "Localizations"))
 				{
-					if (LocalizationHelper.IsLocalizedTable(table) && (collection.PropertyName == "Localizations"))
-					{
-						continue;
-					}
-
-					// pokud je v cílové tabulce jen jeden klíč, není třeba
-					//               if (collection.TargetTable.Columns
-					//	.Cast<Column>()
-					//	.Any(column => TypeHelper.IsBusinessObjectReference(column) 
-					//		&& (ColumnHelper.GetReferencedTable(column) == table)
-					//		/*&& String.Equals(column.Name, table.Name + "Id", StringComparison.InvariantCultureIgnoreCase))*/))
-					//{ 
-					//	continue;						
-					//}
-
-					writer.WriteLine(hasMany);
-
-					writer.Indent();
-					writer.WriteLine(String.Format(".WithOne({0} => {0}.{1})",
-						ConventionsHelper.GetCammelCase(ClassHelper.GetClassName(collection.TargetTable)),
-						PropertyHelper.GetPropertyName(collection.ReferenceColumn)));
-					if (!collection.ReferenceColumn.Nullable)
-					{
-						writer.WriteLine(".IsRequired();");
-					}
-					else
-					{
-						writer.EndPreviousStatement();
-					}
-					writer.Unindent();
-
-					result = true;
+					continue;
 				}
 
-				//if (collection.IsManyToMany)
-				//{
-				//	writer.WriteLine(hasMany);
-
-				//	CollectionProperty reverseDirectionProperty = TableHelper.GetCollectionColumns(collection.TargetTable).Find(item => (item.JoinTable == collection.JoinTable));
-				//	writer.Indent();
-				//	if (reverseDirectionProperty != null)
-				//	{
-				//		writer.WriteLine(String.Format(".WithOne({0} => {0}.{1})",
-				//			ConventionsHelper.GetCammelCase(ClassHelper.GetClassName(collection.TargetTable)),
-				//			reverseDirectionProperty.PropertyName));
-				//	}
-				//	else
-				//	{
-				//		writer.WriteLine(".WithOne()");
-				//	}
-				//	//writer.WriteLine(".Map(m =>");
-				//	//writer.WriteLine("{");
-				//	//writer.WriteLine(String.Format("m.ToTable(\"{1}\", \"{0}\");", collection.JoinTable.Schema, collection.JoinTable.Name));
-				//	//writer.Unindent();
-				//	//writer.WriteLine("});");
-				//	writer.Unindent();
-
-				//	result = true;
+				// pokud je v cílové tabulce jen jeden klíč, není třeba
+				//               if (collection.TargetTable.Columns
+				//	.Cast<Column>()
+				//	.Any(column => TypeHelper.IsBusinessObjectReference(column) 
+				//		&& (ColumnHelper.GetReferencedTable(column) == table)
+				//		/*&& String.Equals(column.Name, table.Name + "Id", StringComparison.InvariantCultureIgnoreCase))*/))
+				//{ 
+				//	continue;						
 				//}
+
+				GeneratedModelClass targetEntity = model.GetEntityByTable(targetTable);
+				EntityForeignKey fk = targetEntity.GetForeignKeyForColumn(collection.ReferenceColumn);
+
+				writer.WriteLine(String.Format("builder.HasMany({0} => {0}.{1})",
+					ConventionsHelper.GetCammelCase(modelClass.Name),
+					collection.PropertyName));
+
+				writer.Indent();
+				writer.WriteLine(String.Format(".WithOne({0} => {0}.{1})",
+					ConventionsHelper.GetCammelCase(ClassHelper.GetClassName(targetTable)),
+					fk.NavigationProperty.Name));
+				if (!collection.ReferenceColumn.Nullable)
+				{
+					writer.WriteLine(".IsRequired();");
+				}
+				else
+				{
+					writer.EndPreviousStatement();
+				}
+				writer.Unindent();
+
+				result = true;
 				writer.WriteLine();
 			}
 			return result;
@@ -228,7 +203,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 
 			// TODO: if the check for JoinTable above is removed, need to carefully handle FKs that are part of composite PK
 			// (i.e. don't generate HasOne statements)
-			 foreach (EntityForeignKey foreignKey in modelClass.ForeignKeys)
+			foreach (EntityForeignKey foreignKey in modelClass.ForeignKeys)
 			{
 				Column column = foreignKey.Column;
 
@@ -330,7 +305,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 
 				// Set IsRequired, but only for non-FK, non-PK columns
 				if (!TableHelper.IsJoinTable(table) && (TableHelper.GetPrimaryKey(table) != column) && !TypeHelper.IsBusinessObjectReference(column)
-				    && !column.Nullable)
+					&& !column.Nullable)
 				{
 					writer.WriteLine(String.Format("builder.Property({0} => {0}.{1})",
 						ConventionsHelper.GetCammelCase(modelClass.Name),
@@ -360,8 +335,8 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 			if (TableHelper.IsJoinTable(modelClass.Table))
 			{
 				string columns = String.Join(", ", modelClass.PrimaryKeyParts
-					.Select(pk => String.Format("{0}.{1}", 
-						ConventionsHelper.GetCammelCase(modelClass.Name), 
+					.Select(pk => String.Format("{0}.{1}",
+						ConventionsHelper.GetCammelCase(modelClass.Name),
 						pk.Property.Name)));
 
 				writer.WriteLine(String.Format("builder.HasKey({0} => new {{ {1} }});",

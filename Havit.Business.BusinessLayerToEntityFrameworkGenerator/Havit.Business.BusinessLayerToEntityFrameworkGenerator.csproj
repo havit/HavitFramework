@@ -229,6 +229,7 @@
     <Compile Include="Generators\EfCoreGenerator.cs" />
     <Compile Include="Generators\EfCore\EntityTypeConfigurationClass.cs" />
     <Compile Include="Generators\EfCore\ModelClass.cs" />
+    <Compile Include="Generators\EfCore\StoredProcedureGenerator.cs" />
     <Compile Include="Generators\Generator.cs" />
     <Compile Include="Generators\EntityTypeConfigurationClass.cs" />
     <Compile Include="Generators\ModelClass.cs" />

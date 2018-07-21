@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Havit.Business.BusinessLayerGenerator.Csproj;
 using Havit.Business.BusinessLayerGenerator.Helpers;
 using Havit.Business.BusinessLayerGenerator.TfsClient;
+using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCore;
 using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata;
 using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata.MetadataSource;
 using Microsoft.SqlServer.Management.Smo;
@@ -27,6 +29,16 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 				ConsoleHelper.WriteLineInfo(modelClass.Name);
 				GeneratedModelClass generatedModelClass = EfCore.ModelClass.Generate(modelClass, modelCsprojFile, sourceControlClient);
 				EfCore.EntityTypeConfigurationClass.Generate(model, generatedModelClass, entityCsprojFile, sourceControlClient);
+			}
+
+			ConsoleHelper.WriteLineInfo("Generuji uložené procedury");
+			var storedProcedures = database.StoredProcedures.Cast<StoredProcedure>()
+				.Where(sp => !sp.IsSystemObject)
+				.ToArray();
+			foreach (StoredProcedure storedProcedure in storedProcedures)
+			{
+				ConsoleHelper.WriteLineInfo(storedProcedure.Name);
+				StoredProcedureGenerator.Generate(storedProcedure, entityCsprojFile);
 			}
 		}
 	}

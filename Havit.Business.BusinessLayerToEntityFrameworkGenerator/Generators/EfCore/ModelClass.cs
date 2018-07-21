@@ -156,6 +156,11 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 				foreach (EntityForeignKey fk in modelClass.ForeignKeys)
 				{
 					EntityPrimaryKeyPart pk = modelClass.GetPrimaryKeyPartFor(fk.Column);
+					if (pk == null)
+					{
+						// FKs that are not part of PK are handled below
+						continue;
+					}
 
 					writer.WriteLine(String.Format("public {0} {1} {{ get; set; }}", pk.Property.TypeName, pk.Property.Name));
 					writer.WriteLine(String.Format("public {0} {1} {{ get; set; }}", fk.NavigationProperty.TypeName, fk.NavigationProperty.Name));

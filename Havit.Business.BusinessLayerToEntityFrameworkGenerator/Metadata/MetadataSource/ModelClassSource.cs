@@ -9,11 +9,15 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata.Metada
 {
 	public class ModelClassSource
 	{
-		public List<GeneratedModelClass> GetModelClasses(List<Table> tables)
+		public List<GeneratedModelClass> GetModelClasses(Database database)
 		{
 			ConsoleHelper.WriteLineInfo("Vyhledávám tabulky");
+			var tables = database.Tables.Cast<Table>()
+				.Where(t => !t.IsSystemObject)
+				.OrderBy(t => t.Name, StringComparer.InvariantCultureIgnoreCase)
+				.ToArray();
 
-			var modelClasses = new List<GeneratedModelClass>(tables.Count);
+			var modelClasses = new List<GeneratedModelClass>(tables.Length);
 			foreach (Table table in tables)
 			{
 				ConsoleHelper.WriteLineInfo(table.Name);

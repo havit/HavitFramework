@@ -3,10 +3,11 @@ using System.Diagnostics;
 using Havit.Business.BusinessLayerGenerator.CommandLine.Utility;
 using Havit.Business.BusinessLayerGenerator.Csproj;
 using Havit.Business.BusinessLayerGenerator.Helpers;
+using Havit.Business.BusinessLayerGenerator.Settings;
 using Havit.Business.BusinessLayerGenerator.TfsClient;
-using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Settings;
 using Microsoft.SqlServer.Management.Common;
 using Microsoft.SqlServer.Management.Smo;
+using GeneratorSettings = Havit.Business.BusinessLayerToEntityFrameworkGenerator.Settings.GeneratorSettings;
 
 namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator
 {
@@ -32,6 +33,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator
 			GeneratorSettings.Username = commandLineArguments["username"];
 			GeneratorSettings.Password = commandLineArguments["password"];
 			BusinessLayerGenerator.Settings.GeneratorSettings.DatabaseName = GeneratorSettings.DatabaseName = commandLineArguments["database"];
+			BusinessLayerGenerator.Settings.GeneratorSettings.Strategy = GeneratorStrategy.HavitCodeFirst;
 			GeneratorSettings.SolutionPath = commandLineArguments["solutionpath"];
 			GeneratorSettings.Namespace = commandLineArguments["namespace"];
 

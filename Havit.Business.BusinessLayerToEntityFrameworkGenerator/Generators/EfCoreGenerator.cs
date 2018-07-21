@@ -16,11 +16,8 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 			// nalezneme tabulky, na jejichž základě se budou generovat třídy
 			Console.BufferHeight = Int16.MaxValue - 1;
 
-			ConsoleHelper.WriteLineInfo("Vyhledávám tabulky");
-			List<Table> tables = DatabaseHelper.GetWorkingTables();
-
 			var modelClassSource = new ModelClassSource();
-			var modelClasses = modelClassSource.GetModelClasses(tables);
+			var modelClasses = modelClassSource.GetModelClasses(DatabaseHelper.Database);
 
 			var model = new GeneratedModel(modelClasses);
 

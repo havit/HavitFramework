@@ -81,7 +81,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 				if (localizationTableName.EndsWith(localizationTableNameSuffix))
 				{
 					string parentName = localizationTableName.Substring(0, localizationTableName.Length - localizationTableNameSuffix.Length);
-					Table result = DatabaseHelper.FindTable(parentName, localizationTable.Schema);
+					Table result = DatabaseHelper.FindTable(parentName, localizationTable.Schema, includeIgnored: GeneratorSettings.Strategy == GeneratorStrategy.HavitCodeFirst);
 					if (result != null)
 					{
 						return result;

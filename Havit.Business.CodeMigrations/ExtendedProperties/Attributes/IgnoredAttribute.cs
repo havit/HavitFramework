@@ -2,7 +2,7 @@
 
 namespace Havit.Business.CodeMigrations.ExtendedProperties.Attributes
 {
-	public class IgnoredAttribute : ExtendedPropertyAttribute
+	public class IgnoredAttribute : ExtendedPropertiesAttribute
 	{
 		public override IDictionary<string, string> ExtendedProperties => new Dictionary<string, string>()
 		{

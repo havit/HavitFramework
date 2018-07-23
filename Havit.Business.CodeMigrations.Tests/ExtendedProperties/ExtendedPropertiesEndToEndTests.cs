@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Havit.Business.CodeMigrations.ExtendedProperties;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
@@ -36,6 +33,38 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 			{
 				var source = new EndToEndDbContext<SourceEntity>();
 				var target = new EndToEndDbContext<TargetEntity>();
+				var migrations = Generate(source.Model, target.Model);
+
+				Assert.AreEqual(1, migrations.Count);
+				Assert.AreEqual(
+					"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table'",
+					migrations[0].CommandText);
+			}
+		}
+
+		[TestClass]
+		public class AddingPropertyToTableUsingExtension
+		{
+			[Table("Table")]
+			private class SourceEntity
+			{
+				public int Id { get; set; }
+			}
+
+			[Table("Table")]
+			private class TargetEntity
+			{
+				public int Id { get; set; }
+			}
+
+			[TestMethod]
+			public void Test()
+			{
+				var source = new EndToEndDbContext<SourceEntity>();
+				var target = new EndToEndDbContext<TargetEntity>(builder =>
+				{
+					builder.Entity<TargetEntity>().AddExtendedProperties(new Dictionary<string, string>() { { "Jiri", "Value" } });
+				});
 				var migrations = Generate(source.Model, target.Model);
 
 				Assert.AreEqual(1, migrations.Count);
@@ -129,6 +158,40 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 			{
 				var source = new EndToEndDbContext<SourceEntity>();
 				var target = new EndToEndDbContext<TargetEntity>();
+				var migrations = Generate(source.Model, target.Model);
+
+				Assert.AreEqual(2, migrations.Count);
+				Assert.AreEqual(
+					"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id'",
+					migrations[1].CommandText);
+			}
+		}
+
+		[TestClass]
+		public class AddingPropertyToColumnUsingExtension
+		{
+			[Table("Table")]
+			private class SourceEntity
+			{
+				[Column("Id")]
+				public int Id { get; set; }
+			}
+
+			[Table("Table")]
+			private class TargetEntity
+			{
+				[Column("Id")]
+				public int Id { get; set; }
+			}
+
+			[TestMethod]
+			public void Test()
+			{
+				var source = new EndToEndDbContext<SourceEntity>();
+				var target = new EndToEndDbContext<TargetEntity>(builder =>
+				{
+					builder.Entity<TargetEntity>().Property(x => x.Id).AddExtendedProperties(new Dictionary<string, string>() { { "Jiri", "Value" } });
+				});
 				var migrations = Generate(source.Model, target.Model);
 
 				Assert.AreEqual(2, migrations.Count);
@@ -452,11 +515,28 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 		}
 
 		private class EndToEndDbContext : TestDbContext
-		{ }
+		{
+			private readonly Action<ModelBuilder> onModelCreating;
+
+			public EndToEndDbContext(Action<ModelBuilder> onModelCreating = default)
+			{
+				this.onModelCreating = onModelCreating;
+			}
+
+			protected override void OnModelCreating(ModelBuilder modelBuilder)
+			{
+				base.OnModelCreating(modelBuilder);
+				onModelCreating?.Invoke(modelBuilder);
+			}
+		}
 
 		private class EndToEndDbContext<TEntity> : EndToEndDbContext
 			where TEntity : class
 		{
+			public EndToEndDbContext(Action<ModelBuilder> onModelCreating = null)
+				: base(onModelCreating)
+			{ }
+
 			public DbSet<TEntity> Entities { get; }
 		}
 	}

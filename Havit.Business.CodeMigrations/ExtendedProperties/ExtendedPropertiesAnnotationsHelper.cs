@@ -20,7 +20,7 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 
 		internal static void AddExtendedPropertyAnnotations(IMutableAnnotatable annotatable, MemberInfo memberInfo)
 		{
-			var attributes = memberInfo.GetCustomAttributes(typeof(ExtendedPropertyAttribute), false).Cast<ExtendedPropertyAttribute>();
+			var attributes = memberInfo.GetCustomAttributes(typeof(ExtendedPropertiesAttribute), false).Cast<ExtendedPropertiesAttribute>();
 			foreach (var attribute in attributes)
 			{
 				AddExtendedPropertyAnnotations(annotatable, attribute.ExtendedProperties);

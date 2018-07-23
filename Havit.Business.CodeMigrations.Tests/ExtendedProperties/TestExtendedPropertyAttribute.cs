@@ -3,7 +3,7 @@ using Havit.Business.CodeMigrations.ExtendedProperties;
 
 namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 {
-	internal class TestExtendedPropertyAttribute : ExtendedPropertyAttribute
+	internal class TestExtendedPropertyAttribute : ExtendedPropertiesAttribute
 	{
 		private readonly IDictionary<string, string> _extendedProperties;
 

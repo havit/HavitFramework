@@ -2,7 +2,7 @@
 
 namespace Havit.Business.CodeMigrations.ExtendedProperties.Attributes
 {
-	public class NamespaceAttribute : ExtendedPropertyAttribute
+	public class NamespaceAttribute : ExtendedPropertiesAttribute
 	{
 		public const string PropertyName = "Namespace";
 		

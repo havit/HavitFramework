@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Havit.Business.CodeMigrations.ExtendedProperties
@@ -32,5 +33,11 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 				ExtendedPropertiesAnnotationsHelper.AddExtendedPropertyAnnotations(annotatable, extendedProperties);
 			}
 		}
+
+		public static void AddExtendedProperties(this EntityTypeBuilder entityTypeBuilder, IDictionary<string, string> extendedProperties)
+			=> entityTypeBuilder.Metadata.AddExtendedProperties(extendedProperties);
+
+		public static void AddExtendedProperties(this PropertyBuilder propertyBuilder, IDictionary<string, string> extendedProperties)
+			=> propertyBuilder.Metadata.AddExtendedProperties(extendedProperties);
 	}
 }

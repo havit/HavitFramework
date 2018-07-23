@@ -15,7 +15,8 @@ namespace Havit.Business.CodeMigrations.Conventions
 				if (parentIdProperty != null)
 				{
 					IMutableEntityType principalEntityType = parentIdProperty.GetContainingForeignKeys().FirstOrDefault().PrincipalEntityType;
-					parentIdProperty.Relational().ColumnName = $"{principalEntityType.Name}Id";
+					string pkColumnName = principalEntityType.FindPrimaryKey().Properties.First().Relational().ColumnName;
+					parentIdProperty.Relational().ColumnName = pkColumnName;
 				}
 			}
 		}

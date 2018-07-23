@@ -34,8 +34,8 @@ namespace Havit.Business.CodeMigrations
 
 		protected virtual void ApplyConventions(ModelBuilder modelBuilder)
 		{
-			LocalizationTablesConvention.Apply(modelBuilder);
 			RegularTablePrimaryKeysConvention.Apply(modelBuilder);
+			LocalizationTablesConvention.Apply(modelBuilder);
 			DefaultsForStringsConvention.Apply(modelBuilder);
 		}
 	}

@@ -141,7 +141,6 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 			[Table("Table")]
 			private class SourceEntity
 			{
-				[Column("Id")]
 				public int Id { get; set; }
 			}
 
@@ -149,7 +148,6 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 			private class TargetEntity
 			{
 				[TestExtendedProperty("Jiri", "Value")]
-				[Column("Id")]
 				public int Id { get; set; }
 			}
 
@@ -173,14 +171,12 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 			[Table("Table")]
 			private class SourceEntity
 			{
-				[Column("Id")]
 				public int Id { get; set; }
 			}
 
 			[Table("Table")]
 			private class TargetEntity
 			{
-				[Column("Id")]
 				public int Id { get; set; }
 			}
 

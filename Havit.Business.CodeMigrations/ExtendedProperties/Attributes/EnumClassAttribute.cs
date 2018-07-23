@@ -6,9 +6,23 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties.Attributes
 	[AttributeUsage(AttributeTargets.Class)]
 	public class EnumClassAttribute : ExtendedPropertiesAttribute
 	{
-		public override IDictionary<string, string> ExtendedProperties => new Dictionary<string, string>
+		private readonly Dictionary<string, string> props = new Dictionary<string, string>
 		{
 			{ "EnumMode", "EnumClass" }
 		};
+
+		public EnumClassAttribute()
+		{
+		}
+
+		public EnumClassAttribute(string enumPropertyName)
+		{
+			EnumPropertyName = enumPropertyName;
+			props.Add("EnumPropertyNameField", enumPropertyName);
+		}
+
+		public string EnumPropertyName { get; }
+
+		public override IDictionary<string, string> ExtendedProperties => props;
 	}
 }

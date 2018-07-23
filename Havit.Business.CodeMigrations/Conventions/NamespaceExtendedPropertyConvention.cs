@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Havit.Business.CodeMigrations.ExtendedProperties;
 using Havit.Business.CodeMigrations.ExtendedProperties.Attributes;
@@ -18,8 +19,10 @@ namespace Havit.Business.CodeMigrations.Conventions
 				{
 					continue;
 				}
-
-				//table.AddAnnotation(ExtendedPropertiesAnnotationsHelper.BuildAnnotationName(NamespaceAttribute.PropertyName), table.ClrType.Namespace);
+				table.AddExtendedProperties(new Dictionary<string, string>()
+				{
+					{ NamespaceAttribute.PropertyName, table.ClrType.Namespace },
+				});
 			}
 		}
 	}

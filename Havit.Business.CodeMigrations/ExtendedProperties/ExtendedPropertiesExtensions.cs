@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Havit.Business.CodeMigrations.ExtendedProperties
@@ -11,7 +13,7 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 			optionsBuilder.ReplaceService<IMigrationsSqlGenerator, ExtendedPropertiesMigrationsSqlGenerator>();
 		}
 
-		public static void ForSqlServerExtendedProperties(this ModelBuilder modelBuilder)
+		public static void ForSqlServerExtendedPropertiesAttributes(this ModelBuilder modelBuilder)
 		{
 			foreach (var entityType in modelBuilder.Model.GetEntityTypes())
 			{
@@ -20,6 +22,14 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 				{
 					ExtendedPropertiesAnnotationsHelper.AddExtendedPropertyAnnotations(property, property.PropertyInfo);
 				}
+			}
+		}
+
+		public static void AddExtendedProperties(this IMutableAnnotatable annotatable, IDictionary<string, string> extendedProperties)
+		{
+			foreach (var property in extendedProperties)
+			{
+				ExtendedPropertiesAnnotationsHelper.AddExtendedPropertyAnnotations(annotatable, extendedProperties);
 			}
 		}
 	}

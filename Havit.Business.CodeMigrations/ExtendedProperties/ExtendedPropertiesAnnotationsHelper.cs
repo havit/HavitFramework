@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -22,10 +23,20 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 			var attributes = memberInfo.GetCustomAttributes(typeof(ExtendedPropertyAttribute), false).Cast<ExtendedPropertyAttribute>();
 			foreach (var attribute in attributes)
 			{
-				foreach (var property in attribute.ExtendedProperties)
-				{
-					annotatable.AddAnnotation(BuildAnnotationName(property.Key), property.Value);
-				}
+				AddExtendedPropertyAnnotations(annotatable, attribute.ExtendedProperties);
+			}
+		}
+
+		internal static void AddExtendedPropertyAnnotations(IMutableAnnotatable annotatable, IDictionary<string, string> extendedProperties)
+		{
+			if (extendedProperties == null)
+			{
+				return;
+			}
+
+			foreach (var property in extendedProperties)
+			{
+				annotatable.AddAnnotation(BuildAnnotationName(property.Key), property.Value);
 			}
 		}
 

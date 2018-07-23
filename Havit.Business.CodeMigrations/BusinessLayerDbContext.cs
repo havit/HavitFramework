@@ -29,7 +29,7 @@ namespace Havit.Business.CodeMigrations
 
 			ApplyConventions(modelBuilder);
 
-			modelBuilder.ForSqlServerExtendedProperties();
+			modelBuilder.ForSqlServerExtendedPropertiesAttributes();
 		}
 
 		protected virtual void ApplyConventions(ModelBuilder modelBuilder)

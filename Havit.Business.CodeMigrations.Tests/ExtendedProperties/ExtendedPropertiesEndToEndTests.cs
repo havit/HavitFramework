@@ -171,14 +171,14 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 			[Table("Table")]
 			private class SourceEntity
 			{
-				public int Id { get; }
+				public int Id { get; set; }
 			}
 
 			[Table("Table")]
 			private class TargetEntity
 			{
 #pragma warning disable S3459 // Unassigned members should be removed
-				public int Id { get; }
+				public int Id { get; set; }
 #pragma warning restore S3459 // Unassigned members should be removed
 			}
 

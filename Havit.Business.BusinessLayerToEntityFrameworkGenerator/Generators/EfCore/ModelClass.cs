@@ -57,6 +57,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 			writer.WriteLine("using System.Globalization;");
 			writer.WriteLine("using System.Linq;");
 			writer.WriteLine("using System.Text;");
+			writer.WriteLine("using Havit.Business.CodeMigrations.ExtendedProperties.Attributes;");
 
 			if (LocalizationHelper.IsLocalizationTable(modelClass.Table) || LocalizationHelper.IsLocalizedTable(modelClass.Table))
 			{
@@ -136,6 +137,11 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 				interfaceString = "ILanguage";
 			}
 
+			if (TableHelper.IsIgnored(modelClass.Table))
+			{
+				writer.WriteLine("[Ignored]");
+			}
+
 			writer.WriteLine(String.Format("{0} class {1}{2}",
 				TableHelper.GetAccessModifier(modelClass.Table),
 				modelClass.Name,
@@ -162,6 +168,10 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 						continue;
 					}
 
+					if (ColumnHelper.IsIgnored(pk.Property.Column))
+					{
+						writer.WriteLine("[Ignored]");
+					}
 					writer.WriteLine(String.Format("public {0} {1} {{ get; set; }}", pk.Property.TypeName, pk.Property.Name));
 					writer.WriteLine(String.Format("public {0} {1} {{ get; set; }}", fk.NavigationProperty.TypeName, fk.NavigationProperty.Name));
 					writer.WriteLine();
@@ -170,6 +180,10 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 			else
 			{
 				EntityPrimaryKeyPart pk = modelClass.PrimaryKeyParts.First();
+				if (ColumnHelper.IsIgnored(pk.Property.Column))
+				{
+					writer.WriteLine("[Ignored]");
+				}
 				writer.WriteLine(String.Format("public {0} Id {{ get; set; }}", pk.Property.TypeName));
 				writer.WriteLine();
 			}
@@ -189,6 +203,11 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 
 				// DatabaseGenerated (není třeba)
 				// ILocalized + ILocalization
+
+				if (ColumnHelper.IsIgnored(column))
+				{
+					writer.WriteLine("[Ignored]");
+				}
 
 				if (TypeHelper.IsDateOnly(column.DataType))
 				{

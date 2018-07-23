@@ -144,12 +144,17 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 
 			if (TableHelper.IsReadOnly(modelClass.Table))
 			{
-				writer.WriteLine("[Readonly]");
+				writer.WriteLine("[ReadOnly]");
 			}
 
 			if (TableHelper.GetEnumMode(modelClass.Table) == EnumMode.EnumClass)
 			{
 				writer.WriteLine("[EnumClass]");
+			}
+
+			if (TableHelper.IsCachable(modelClass.Table))
+			{
+				writer.WriteLine("[Cache]");
 			}
 
 			writer.WriteLine(String.Format("{0} class {1}{2}",
@@ -221,7 +226,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 
 				if (ColumnHelper.IsReadOnly(column))
 				{
-					writer.WriteLine("[Readonly]");
+					writer.WriteLine("[ReadOnly]");
 				}
 
 				if (TypeHelper.IsDateOnly(column.DataType))

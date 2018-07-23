@@ -11,6 +11,10 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties.Attributes
 			{ "EnumMode", "EnumClass" }
 		};
 
+		public string EnumPropertyName { get; }
+
+		public override IDictionary<string, string> ExtendedProperties => props;
+
 		public EnumClassAttribute()
 		{
 		}
@@ -20,9 +24,5 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties.Attributes
 			EnumPropertyName = enumPropertyName;
 			props.Add("EnumPropertyNameField", enumPropertyName);
 		}
-
-		public string EnumPropertyName { get; }
-
-		public override IDictionary<string, string> ExtendedProperties => props;
 	}
 }

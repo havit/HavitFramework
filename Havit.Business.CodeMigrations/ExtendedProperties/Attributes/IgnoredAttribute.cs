@@ -1,9 +1,12 @@
-﻿namespace Havit.Business.CodeMigrations.ExtendedProperties.Attributes
+﻿using System.Collections.Generic;
+
+namespace Havit.Business.CodeMigrations.ExtendedProperties.Attributes
 {
 	public class IgnoredAttribute : ExtendedPropertyAttribute
 	{
-		public override string Name => "Ignored";
-
-		public override string Value => "true";
+		public override IDictionary<string, string> ExtendedProperties => new Dictionary<string, string>()
+		{
+			{ "Ignored", "true" },
+		};
 	}
 }

@@ -147,6 +147,11 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 				writer.WriteLine("[Readonly]");
 			}
 
+			if (TableHelper.GetEnumMode(modelClass.Table) == EnumMode.EnumClass)
+			{
+				writer.WriteLine("[EnumClass]");
+			}
+
 			writer.WriteLine(String.Format("{0} class {1}{2}",
 				TableHelper.GetAccessModifier(modelClass.Table),
 				modelClass.Name,

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Havit.Business.CodeMigrations.ExtendedProperties.Attributes
 {
 	[AttributeUsage(AttributeTargets.Class)]
-	public class EnumClassAttribute : ExtendedPropertyAttribute
+	public class EnumClassAttribute : ExtendedPropertiesAttribute
 	{
 		public override IDictionary<string, string> ExtendedProperties => new Dictionary<string, string>
 		{

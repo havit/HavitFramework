@@ -37,6 +37,7 @@ namespace Havit.Business.CodeMigrations
 			RegularTablePrimaryKeysConvention.Apply(modelBuilder);
 			LocalizationTablesConvention.Apply(modelBuilder);
 			DefaultsForStringsConvention.Apply(modelBuilder);
+			NamespaceExtendedPropertyConvention.Apply(modelBuilder);
 		}
 	}
 }

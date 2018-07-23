@@ -5,7 +5,7 @@ using Microsoft.SqlServer.Management.Smo;
 
 namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCore
 {
-	public class StoredProcedureGenerator
+	public static class StoredProcedureGenerator
 	{
 		public static void Generate(StoredProcedure storedProcedure, CsprojFile modelCsprojFile)
 		{

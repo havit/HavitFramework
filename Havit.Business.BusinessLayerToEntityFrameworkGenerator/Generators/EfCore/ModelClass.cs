@@ -142,6 +142,11 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 				writer.WriteLine("[Ignored]");
 			}
 
+			if (TableHelper.IsReadOnly(modelClass.Table))
+			{
+				writer.WriteLine("[Readonly]");
+			}
+
 			writer.WriteLine(String.Format("{0} class {1}{2}",
 				TableHelper.GetAccessModifier(modelClass.Table),
 				modelClass.Name,
@@ -207,6 +212,11 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 				if (ColumnHelper.IsIgnored(column))
 				{
 					writer.WriteLine("[Ignored]");
+				}
+
+				if (ColumnHelper.IsReadOnly(column))
+				{
+					writer.WriteLine("[Readonly]");
 				}
 
 				if (TypeHelper.IsDateOnly(column.DataType))

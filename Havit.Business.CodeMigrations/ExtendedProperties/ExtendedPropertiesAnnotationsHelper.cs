@@ -37,14 +37,17 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 
 		public static string ParseAnnotationName(IAnnotation annotation) => IsExtendedPropertyAnnotation(annotation) ? annotation.Name.Substring(AnnotationMarker.Length) : null;
 
-		internal static string BuildAnnotationName(ExtendedPropertyAttribute attribute) => $"{AnnotationMarker}{attribute.Name}";
+		private static string BuildAnnotationName(string name) => $"{AnnotationMarker}{name}";
 
 		private static void AddExtendedPropertyAnnotations(IMutableAnnotatable annotatable, MemberInfo memberInfo)
 		{
 			var attributes = memberInfo.GetCustomAttributes(typeof(ExtendedPropertyAttribute), false).Cast<ExtendedPropertyAttribute>();
 			foreach (var attribute in attributes)
 			{
-				annotatable.AddAnnotation(BuildAnnotationName(attribute), attribute.Value);
+				foreach (var property in attribute.ExtendedProperties)
+				{
+					annotatable.AddAnnotation(BuildAnnotationName(property.Key), property.Value);
+				}
 			}
 		}
 	}

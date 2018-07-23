@@ -19,7 +19,7 @@ namespace Havit.Business.CodeMigrations
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			base.OnConfiguring(optionsBuilder);
-			
+
 			optionsBuilder.UseSqlServerExtendedProperties();
 		}
 

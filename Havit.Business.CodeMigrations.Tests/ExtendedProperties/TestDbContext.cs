@@ -13,7 +13,6 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 		}
 
 		protected override void ApplyConventions(ModelBuilder modelBuilder)
-		{
-		}
+		{ }
 	}
 }

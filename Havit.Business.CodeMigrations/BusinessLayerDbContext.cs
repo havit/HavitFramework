@@ -1,11 +1,6 @@
-﻿using System.Linq;
-using System.Reflection;
-using Havit.Business.CodeMigrations.Conventions;
+﻿using Havit.Business.CodeMigrations.Conventions;
 using Havit.Business.CodeMigrations.ExtendedProperties;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.EntityFrameworkCore.Migrations;
 using DbContext = Havit.Data.Entity.DbContext;
 
 namespace Havit.Business.CodeMigrations
@@ -37,7 +32,7 @@ namespace Havit.Business.CodeMigrations
 			modelBuilder.ForSqlServerExtendedProperties();
 		}
 
-		private void ApplyConventions(ModelBuilder modelBuilder)
+		protected virtual void ApplyConventions(ModelBuilder modelBuilder)
 		{
 			LocalizationTablesConvention.Apply(modelBuilder);
 			RegularTablePrimaryKeysConvention.Apply(modelBuilder);

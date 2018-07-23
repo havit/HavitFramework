@@ -372,6 +372,74 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 			}
 		}
 
+		[TestClass]
+		public class ChangingTwoPropertiesOnColumn
+		{
+			[Table("Table")]
+			private class SourceEntity
+			{
+				[TestExtendedProperty("Jiri1", "OldValueA", "Jiri2", "OldValueB")]
+				public int Id { get; set; }
+			}
+
+			[Table("Table")]
+			private class TargetEntity
+			{
+				[TestExtendedProperty("Jiri1", "NewValueA", "Jiri2", "NewValueB")]
+				public int Id { get; set; }
+			}
+
+			[TestMethod]
+			public void Test()
+			{
+				var source = new EndToEndDbContext<SourceEntity>();
+				var target = new EndToEndDbContext<TargetEntity>();
+				var migrations = Generate(source.Model, target.Model);
+
+				Assert.AreEqual(3, migrations.Count);
+				Assert.AreEqual(
+					"EXEC sys.sp_updateextendedproperty @name=N'Jiri1', @value=N'NewValueA', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id'",
+					migrations[1].CommandText);
+				Assert.AreEqual(
+					"EXEC sys.sp_updateextendedproperty @name=N'Jiri2', @value=N'NewValueB', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id'",
+					migrations[2].CommandText);
+			}
+		}
+
+		[TestClass]
+		public class ChangingAndRemovingTwoPropertiesOnColumn
+		{
+			[Table("Table")]
+			private class SourceEntity
+			{
+				[TestExtendedProperty("Jiri1", "OldValueA", "Jiri2", "OldValueB")]
+				public int Id { get; set; }
+			}
+
+			[Table("Table")]
+			private class TargetEntity
+			{
+				[TestExtendedProperty("Jiri1", "NewValueA")]
+				public int Id { get; set; }
+			}
+
+			[TestMethod]
+			public void Test()
+			{
+				var source = new EndToEndDbContext<SourceEntity>();
+				var target = new EndToEndDbContext<TargetEntity>();
+				var migrations = Generate(source.Model, target.Model);
+
+				Assert.AreEqual(3, migrations.Count);
+				Assert.AreEqual(
+					"EXEC sys.sp_dropextendedproperty @name=N'Jiri2', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id'",
+					migrations[1].CommandText);
+				Assert.AreEqual(
+					"EXEC sys.sp_updateextendedproperty @name=N'Jiri1', @value=N'NewValueA', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id'",
+					migrations[2].CommandText);
+			}
+		}
+
 		private static IReadOnlyList<MigrationCommand> Generate(IModel source, IModel target)
 		{
 			using (var db = new TestDbContext())

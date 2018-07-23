@@ -4,6 +4,7 @@ using Havit.Data.Entity.Validators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using Havit.Data.Entity.Mapping.Internal;
+using System.Collections.Generic;
 
 namespace Havit.Data.Entity.Tests.Validators
 {
@@ -11,48 +12,64 @@ namespace Havit.Data.Entity.Tests.Validators
 	public class DbContextConventionsValidatorTests
 	{
 		[TestMethod]
-		public void DbContextConventionsValidator_CheckPrimaryKey_ReportsMorePrimaryKeys()
+		public void DbContextConventionsValidator_CheckPrimaryKeyIsNotComposite_ReportsMorePrimaryKeys()
 		{
 			// Arrange
 			ModelValidatingDbContext modelValidatingDbContext = new ModelValidatingDbContext();
 			ModelValidator modelValidator = new ModelValidator();
 
 			// Act
-			string[] errorsMoreInvalidKeysClass = modelValidator.CheckPrimaryKey(modelValidatingDbContext.GetRegisteredEntities(typeof(MoreInvalidKeysClass))).ToArray();
+			string[] errorsMoreInvalidKeysClass = modelValidator.CheckPrimaryKeyIsNotComposite(modelValidatingDbContext.GetRegisteredEntities(typeof(MoreInvalidKeysClass))).ToArray();
 
 			// Assert			
 			Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("only one is expected")));
-		}
+        }
 
-		[TestMethod]
-		public void DbContextConventionsValidator_CheckPrimaryKey_ReportsNonIntKeys()
-		{
-			// Arrange
-			ModelValidatingDbContext modelValidatingDbContext = new ModelValidatingDbContext();
-			ModelValidator modelValidator = new ModelValidator();
+        [TestMethod]
+        public void DbContextConventionsValidator_CheckPrimaryKey_ReportsNonIntKeys()
+        {
+            // Arrange
+            ModelValidatingDbContext modelValidatingDbContext = new ModelValidatingDbContext();
+            ModelValidator modelValidator = new ModelValidator();
 
-			// Act
-			string[] errorsMoreInvalidKeysClass = modelValidator.CheckPrimaryKey(modelValidatingDbContext.GetRegisteredEntities(typeof(StringIdClass))).ToArray();
+            // Act
+            string[] errorsMoreInvalidKeysClass = modelValidator.CheckPrimaryKeyType(modelValidatingDbContext.GetRegisteredEntities(typeof(StringIdClass))).ToArray();
 
-			// Assert			
-			Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("type int (System.Int32) is expected")));
-		}
+            // Assert			
+            Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("type int (System.Int32) is expected")));
+        }
 
-		[TestMethod]
-		public void DbContextConventionsValidator_CheckPrimaryKey_DoesNotReportOnePrimaryKeys()
-		{
-			// Arrange
-			ModelValidatingDbContext modelValidatingDbContext = new ModelValidatingDbContext();
-			ModelValidator modelValidator = new ModelValidator();
+        [TestMethod]
+        public void DbContextConventionsValidator_CheckPrimaryKeyName_ReportsInvalidNamedKeys()
+        {
+            // Arrange
+            ModelValidatingDbContext modelValidatingDbContext = new ModelValidatingDbContext();
+            ModelValidator modelValidator = new ModelValidator();
 
-			// Act
-			string[] errorsOneCorrectKeyClass = modelValidator.CheckPrimaryKey(modelValidatingDbContext.GetRegisteredEntities(typeof(OneCorrectKeyClass))).ToArray();
+            // Act
+            string[] errorsMoreInvalidKeysClass = modelValidator.CheckPrimaryKeyName(modelValidatingDbContext.GetRegisteredEntities(typeof(InvalidNameOfPrimaryKey))).ToArray();
 
-			// Assert			
-			Assert.IsFalse(errorsOneCorrectKeyClass.Any());
-		}
+            // Assert			
+            Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("but 'Id' is expected")));
+        }
 
-		[TestMethod]
+        [TestMethod]
+        public void DbContextConventionsValidator_CheckPrimaryKey_DoesNotReportOnePrimaryKeys()
+        {
+            // Arrange
+            ModelValidatingDbContext modelValidatingDbContext = new ModelValidatingDbContext();
+            ModelValidator modelValidator = new ModelValidator();
+
+            // Act
+            List<string> errorsOneCorrectKeyClass = modelValidator.CheckPrimaryKeyName(modelValidatingDbContext.GetRegisteredEntities(typeof(OneCorrectKeyClass))).ToList();
+            errorsOneCorrectKeyClass.AddRange(modelValidator.CheckPrimaryKeyType(modelValidatingDbContext.GetRegisteredEntities(typeof(OneCorrectKeyClass))));
+            errorsOneCorrectKeyClass.AddRange(modelValidator.CheckPrimaryKeyIsNotComposite(modelValidatingDbContext.GetRegisteredEntities(typeof(OneCorrectKeyClass))));
+
+            // Assert			
+            Assert.IsFalse(errorsOneCorrectKeyClass.Any());
+        }
+
+        [TestMethod]
 		public void DbContextConventionsValidator_CheckIdNamingConvention_ReportsCapitalId()
 		{
 			// Arrange
@@ -60,7 +77,7 @@ namespace Havit.Data.Entity.Tests.Validators
 			ModelValidator modelValidator = new ModelValidator();
 
 			// Act
-			string[] errorsMoreInvalidKeysClass = modelValidator.CheckIdNamingConvention(modelValidatingDbContext.GetRegisteredEntities(typeof(CapitalIDClass))).ToArray();
+			string[] errorsMoreInvalidKeysClass = modelValidator.CheckIdPascalCaseNamingConvention(modelValidatingDbContext.GetRegisteredEntities(typeof(CapitalIDClass))).ToArray();
 
 			// Assert			
 			Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("which ends with")));
@@ -74,7 +91,7 @@ namespace Havit.Data.Entity.Tests.Validators
 			ModelValidator modelValidator = new ModelValidator();
 
 			// Act
-			string[] errorsMoreInvalidKeysClass = modelValidator.CheckIdNamingConvention(modelValidatingDbContext.GetRegisteredEntities(typeof(OneCorrectKeyClass))).ToArray();
+			string[] errorsMoreInvalidKeysClass = modelValidator.CheckIdPascalCaseNamingConvention(modelValidatingDbContext.GetRegisteredEntities(typeof(OneCorrectKeyClass))).ToArray();
 
 			// Assert			
 			Assert.IsFalse(errorsMoreInvalidKeysClass.Any());
@@ -88,7 +105,7 @@ namespace Havit.Data.Entity.Tests.Validators
 			ModelValidator modelValidator = new ModelValidator();
 
 			// Act
-			string[] errorsMoreInvalidKeysClass = modelValidator.CheckStringMaxLengthConvention(modelValidatingDbContext.GetRegisteredEntities(typeof(NoMaxLengthAttributeClass))).ToArray();
+			string[] errorsMoreInvalidKeysClass = modelValidator.CheckStringsHaveMaxLengths(modelValidatingDbContext.GetRegisteredEntities(typeof(NoMaxLengthAttributeClass))).ToArray();
 
 			// Assert			
 			Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("MaxLengthAttribute on property is expected")));
@@ -102,7 +119,7 @@ namespace Havit.Data.Entity.Tests.Validators
 			ModelValidator modelValidator = new ModelValidator();
 
 			// Act
-			string[] errorsMoreInvalidKeysClass = modelValidator.CheckStringMaxLengthConvention(modelValidatingDbContext.GetRegisteredEntities(typeof(MaxLengthAttributeWithPositiveValueClass))).ToArray();
+			string[] errorsMoreInvalidKeysClass = modelValidator.CheckStringsHaveMaxLengths(modelValidatingDbContext.GetRegisteredEntities(typeof(MaxLengthAttributeWithPositiveValueClass))).ToArray();
 
 			// Assert			
 			Assert.IsFalse(errorsMoreInvalidKeysClass.Any());
@@ -116,7 +133,7 @@ namespace Havit.Data.Entity.Tests.Validators
 			ModelValidator modelValidator = new ModelValidator();
 
 			// Act
-			string[] errorsMoreInvalidKeysClass = modelValidator.CheckNestedMembers(modelValidatingDbContext.GetRegisteredEntities(typeof(WithNestedClassClass))).ToArray();
+			string[] errorsMoreInvalidKeysClass = modelValidator.CheckSupportedNestedTypes(modelValidatingDbContext.GetRegisteredEntities(typeof(WithNestedClassClass))).ToArray();
 
 			// Assert			
 			Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("unsupported nested type")));
@@ -130,7 +147,7 @@ namespace Havit.Data.Entity.Tests.Validators
 			ModelValidator modelValidator = new ModelValidator();
 
 			// Act
-			string[] errorsMoreInvalidKeysClass = modelValidator.CheckNestedMembers(modelValidatingDbContext.GetRegisteredEntities(typeof(WithNestedEnumOtherClass))).ToArray();
+			string[] errorsMoreInvalidKeysClass = modelValidator.CheckSupportedNestedTypes(modelValidatingDbContext.GetRegisteredEntities(typeof(WithNestedEnumOtherClass))).ToArray();
 
 			// Assert			
 			Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("unsupported nested type")));
@@ -144,7 +161,7 @@ namespace Havit.Data.Entity.Tests.Validators
 			ModelValidator modelValidator = new ModelValidator();
 
 			// Act
-			string[] errorsMoreInvalidKeysClass = modelValidator.CheckNestedMembers(modelValidatingDbContext.GetRegisteredEntities(typeof(WithNestedEnumEntryClass))).ToArray();
+			string[] errorsMoreInvalidKeysClass = modelValidator.CheckSupportedNestedTypes(modelValidatingDbContext.GetRegisteredEntities(typeof(WithNestedEnumEntryClass))).ToArray();
 
 			// Assert			
 			Assert.IsFalse(errorsMoreInvalidKeysClass.Any());
@@ -197,7 +214,7 @@ namespace Havit.Data.Entity.Tests.Validators
 			Assert.IsFalse(errorsEntryWithPrimaryKeyAndNoSymbol.Any()); // neobsahuje chybu
 			Assert.IsTrue(errorsEntryWithPrimaryKeyAndWithSymbol.Any()); // obsahuje chybu (duplicitní možnost párování)
 
-		}
-	}
+        }
+    }
 }
 

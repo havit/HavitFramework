@@ -91,6 +91,7 @@
     <Compile Include="Model\DataSeedVersion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validators\ModelValidator.cs" />
+    <Compile Include="Validators\ValidationRules.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

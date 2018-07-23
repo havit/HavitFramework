@@ -95,6 +95,7 @@
     <Compile Include="Validators\Infrastructure\Model\EntryWithGeneratedPrimaryKeyAndNoSymbol.cs" />
     <Compile Include="Validators\Infrastructure\Model\EntryWithGeneratedPrimaryKeyAndWithSymbol.cs" />
     <Compile Include="Validators\DbContextConventionsValidatorTests.cs" />
+    <Compile Include="Validators\Infrastructure\Model\InvalidNameOfPrimaryKey.cs" />
     <Compile Include="Validators\Infrastructure\Model\NavigationPropertyWithForeignKeyClass.cs" />
     <Compile Include="Validators\Infrastructure\Model\NavigationPropertyWithoutForeignKeyClass.cs" />
     <Compile Include="Validators\Infrastructure\Model\StringIdClass.cs" />

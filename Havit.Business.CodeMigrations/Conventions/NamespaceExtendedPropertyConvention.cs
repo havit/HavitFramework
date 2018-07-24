@@ -10,7 +10,7 @@ namespace Havit.Business.CodeMigrations.Conventions
 {
 	public static class NamespaceExtendedPropertyConvention
 	{
-		public static void Apply(ModelBuilder modelBuilder)
+		public static void ApplyDefaultNamespaces(this ModelBuilder modelBuilder)
 		{
 			var tables = modelBuilder.Model.GetEntityTypes();
 			foreach (IMutableEntityType table in tables)

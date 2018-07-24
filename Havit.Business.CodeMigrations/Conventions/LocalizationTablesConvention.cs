@@ -6,7 +6,7 @@ namespace Havit.Business.CodeMigrations.Conventions
 {
 	public static class LocalizationTablesConvention
 	{
-		public static void Apply(ModelBuilder modelBuilder)
+		public static void ApplyLocalizationTablesParentEntities(this ModelBuilder modelBuilder)
 		{
 			var localizationTables = modelBuilder.Model.GetEntityTypes().Where(t => t.Name.EndsWith("Localization") && (t.Name.Length > "Localization".Length));
 			foreach (IMutableEntityType entityType in localizationTables)

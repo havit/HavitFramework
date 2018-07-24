@@ -7,7 +7,7 @@ namespace Havit.Business.CodeMigrations.Conventions
 {
 	public static class DefaultsForStringsConvention
 	{
-		public static void Apply(ModelBuilder modelBuilder)
+		public static void ApplyDefaultsForStrings(this ModelBuilder modelBuilder)
 		{
 			var stringProperties = modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetDeclaredProperties().Where(prop => prop.ClrType == typeof(string)));
 			foreach (IMutableProperty property in stringProperties)

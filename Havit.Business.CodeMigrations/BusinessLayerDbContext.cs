@@ -34,10 +34,10 @@ namespace Havit.Business.CodeMigrations
 
 		protected virtual void ApplyConventions(ModelBuilder modelBuilder)
 		{
-			RegularTablePrimaryKeysConvention.Apply(modelBuilder);
-			LocalizationTablesConvention.Apply(modelBuilder);
-			DefaultsForStringsConvention.Apply(modelBuilder);
-			NamespaceExtendedPropertyConvention.Apply(modelBuilder);
+			modelBuilder.ApplyPrefixedTablePrimaryKeys();
+			modelBuilder.ApplyLocalizationTablesParentEntities();
+			modelBuilder.ApplyDefaultsForStrings();
+			modelBuilder.ApplyDefaultNamespaces();
 		}
 	}
 }

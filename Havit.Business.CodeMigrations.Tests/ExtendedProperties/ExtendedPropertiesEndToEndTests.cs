@@ -630,6 +630,8 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 			}
 		}
 
+		// TODO: test for create database
+
 		private static IReadOnlyList<MigrationCommand> Generate(IModel source, IModel target)
 		{
 			using (var db = new TestDbContext())

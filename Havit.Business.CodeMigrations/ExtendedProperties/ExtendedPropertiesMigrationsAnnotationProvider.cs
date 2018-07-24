@@ -15,20 +15,22 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 
 		public override IEnumerable<IAnnotation> For(IProperty property)
 		{
-			return base.For(property)
-				.Concat(property.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.IsExtendedPropertyAnnotation));
+			return Handle(property, base.For(property));
 		}
 
 		public override IEnumerable<IAnnotation> For(IEntityType entityType)
 		{
-			return base.For(entityType)
-				.Concat(entityType.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.IsExtendedPropertyAnnotation));
+			return Handle(entityType, base.For(entityType));
 		}
 
 		public override IEnumerable<IAnnotation> For(IModel model)
 		{
-			return base.For(model)
-				.Concat(model.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.IsExtendedPropertyAnnotation));
+			return Handle(model, base.For(model));
+		}
+
+		private static IEnumerable<IAnnotation> Handle(IAnnotatable annotatable, IEnumerable<IAnnotation> @base)
+		{
+			return @base.Concat(annotatable.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.IsExtendedPropertyAnnotation));
 		}
 	}
 }

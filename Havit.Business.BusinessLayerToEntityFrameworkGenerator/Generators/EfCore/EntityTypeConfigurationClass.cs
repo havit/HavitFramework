@@ -194,10 +194,10 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 		{
 			Table table = modelClass.Table;
 
-			if (TableHelper.IsJoinTable(table))
-			{
-				return false;
-			}
+			//if (TableHelper.IsJoinTable(table))
+			//{
+			//	return false;
+			//}
 
 			bool result = false;
 

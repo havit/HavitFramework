@@ -261,6 +261,6 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 
 		private string GenerateSqlLiteral(string s) => Dependencies.TypeMappingSource.GetMapping(typeof(string)).GenerateSqlLiteral(s);
 
-		private string GetSchema(string operationSchema, IModel model) => operationSchema ?? (string)model.FindAnnotation(RelationalAnnotationNames.DefaultSchema)?.Value ?? DefaultSchemaName;
+		private static string GetSchema(string operationSchema, IModel model) => operationSchema ?? (string)model.FindAnnotation(RelationalAnnotationNames.DefaultSchema)?.Value ?? DefaultSchemaName;
 	}
 }

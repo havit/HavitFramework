@@ -564,7 +564,7 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 		}
 
 		[TestClass]
-		public class AddingPropertyOnModel
+		public class UpdatingPropertyOnModel
 		{
 			[Table("Table")]
 			private class SourceEntity

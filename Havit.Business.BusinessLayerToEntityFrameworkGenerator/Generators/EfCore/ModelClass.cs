@@ -149,7 +149,10 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 
 			if (TableHelper.GetEnumMode(modelClass.Table) == EnumMode.EnumClass)
 			{
-				writer.WriteLine("[EnumClass]");
+				var attributeBuilder = new AttributeStringBuilder("EnumClass");
+				attributeBuilder.AddExtendedProperty(modelClass.Table, "", "EnumPropertyNameField");
+
+				writer.WriteLine(attributeBuilder.ToString());
 			}
 
 			if (TableHelper.GetBoolExtendedProperty(modelClass.Table, "Cache") == true)

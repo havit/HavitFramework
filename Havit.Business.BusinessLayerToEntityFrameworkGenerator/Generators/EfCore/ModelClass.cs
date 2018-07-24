@@ -154,38 +154,13 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 
 			if (TableHelper.GetBoolExtendedProperty(modelClass.Table, "Cache") == true)
 			{
-				var parameters = new Dictionary<string, string>();
-				if (TableHelper.GetBoolExtendedProperty(modelClass.Table, "Cache_SuppressPreload") == true)
-				{
-					parameters["SuppressPreload"] = "true";
-				}
+				var attributeBuilder = new AttributeStringBuilder("Cache");
+				attributeBuilder.AddBoolExtendedProperty(modelClass.Table, "Cache", "SuppressPreload");
+				attributeBuilder.AddExtendedProperty(modelClass.Table, "Cache", "Priority", priority => $"Havit.Services.Caching.CacheItemPriority.{priority}");
+				attributeBuilder.AddExtendedProperty(modelClass.Table, "Cache", "AbsoluteExpiration");
+				attributeBuilder.AddExtendedProperty(modelClass.Table, "Cache", "SlidingExpiration");
 
-				string priority = TableHelper.GetStringExtendedProperty(modelClass.Table, "Cache_Priority");
-				if (!string.IsNullOrEmpty(priority))
-				{
-					parameters["Priority"] = $"Havit.Services.Caching.CacheItemPriority.{priority}";
-				}
-
-				int? absoluteExpiration = TableHelper.GetIntExtendedProperty(modelClass.Table, "Cache_AbsoluteExpiration");
-				if (absoluteExpiration != null)
-				{
-					parameters["AbsoluteExpiration"] = absoluteExpiration.ToString();
-				}
-
-				int? slidingExpiration = TableHelper.GetIntExtendedProperty(modelClass.Table, "Cache_SlidingExpiration");
-				if (slidingExpiration != null)
-				{
-					parameters["SlidingExpiration"] = slidingExpiration.ToString();
-				}
-
-				var cacheAttribute = "[Cache";
-				if (parameters.Count > 0)
-				{
-					cacheAttribute += $"({string.Join(", ", parameters.Select(p => $"{p.Key} = {p.Value}"))})";
-				}
-				cacheAttribute += "]";
-
-				writer.WriteLine(cacheAttribute);
+				writer.WriteLine(attributeBuilder.ToString());
 			}
 
 			writer.WriteLine(String.Format("{0} class {1}{2}",

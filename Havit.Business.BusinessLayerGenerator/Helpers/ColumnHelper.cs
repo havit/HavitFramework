@@ -10,6 +10,10 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 {
 	public static class ColumnHelper
 	{
+		public static string GetStringExtendedProperty(Column column, string key)
+		{
+			return ExtendedPropertiesHelper.GetString(ExtendedPropertiesKey.FromColumn(column), key);
+		}
 		public static bool? GetBoolExtendedProperty(Column column, string key)
 		{
 			return ExtendedPropertiesHelper.GetBool(ExtendedPropertiesKey.FromColumn(column), key, ((Table)column.Parent).Name + "-" + column.Name);

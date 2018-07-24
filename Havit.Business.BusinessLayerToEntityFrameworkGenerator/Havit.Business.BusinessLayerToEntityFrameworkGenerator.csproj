@@ -226,6 +226,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Generators\AttributeStringBuilder.cs" />
+    <Compile Include="Generators\AttributeStringBuilderExtensions.cs" />
     <Compile Include="Generators\EfCoreGenerator.cs" />
     <Compile Include="Generators\EfCore\EntityTypeConfigurationClass.cs" />
     <Compile Include="Generators\EfCore\ModelClass.cs" />

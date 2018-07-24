@@ -137,12 +137,12 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 				interfaceString = "ILanguage";
 			}
 
-			if (ExtendedPropertiesHelper.GetBool(ExtendedPropertiesKey.FromTable(modelClass.Table), "Ignored", modelClass.Table.Name) == true)
+			if (TableHelper.GetBoolExtendedProperty(modelClass.Table, "Ignored") == true)
 			{
 				writer.WriteLine("[Ignored]");
 			}
 
-			if (ExtendedPropertiesHelper.GetBool(ExtendedPropertiesKey.FromTable(modelClass.Table), "ReadOnly", modelClass.Table.Name) == true)
+			if (TableHelper.GetBoolExtendedProperty(modelClass.Table, "ReadOnly") == true)
 			{
 				writer.WriteLine("[ReadOnly]");
 			}
@@ -152,7 +152,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 				writer.WriteLine("[EnumClass]");
 			}
 
-			if (ExtendedPropertiesHelper.GetBool(ExtendedPropertiesKey.FromTable(modelClass.Table), "Cache", modelClass.Table.Name) == true)
+			if (TableHelper.GetBoolExtendedProperty(modelClass.Table, "Cache") == true)
 			{
 				writer.WriteLine("[Cache]");
 			}
@@ -195,7 +195,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 			else
 			{
 				EntityPrimaryKeyPart pk = modelClass.PrimaryKeyParts.First();
-				if (ColumnHelper.IsIgnored(pk.Property.Column))
+				if (ColumnHelper.GetBoolExtendedProperty(pk.Property.Column, "Ignored") == true)
 				{
 					writer.WriteLine("[Ignored]");
 				}
@@ -219,12 +219,12 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 				// DatabaseGenerated (není třeba)
 				// ILocalized + ILocalization
 
-				if (ExtendedPropertiesHelper.GetBool(ExtendedPropertiesKey.FromColumn(column), "Ignored", column.Name) == true)
+				if (ColumnHelper.GetBoolExtendedProperty(column, "Ignored") == true)
 				{
 					writer.WriteLine("[Ignored]");
 				}
 
-				if (ExtendedPropertiesHelper.GetBool(ExtendedPropertiesKey.FromColumn(column), "ReadOnly", column.Name) == true)
+				if (ColumnHelper.GetBoolExtendedProperty(column, "ReadOnly") == true)
 				{
 					writer.WriteLine("[ReadOnly]");
 				}

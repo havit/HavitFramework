@@ -154,7 +154,38 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 
 			if (TableHelper.GetBoolExtendedProperty(modelClass.Table, "Cache") == true)
 			{
-				writer.WriteLine("[Cache]");
+				var parameters = new Dictionary<string, string>();
+				if (TableHelper.GetBoolExtendedProperty(modelClass.Table, "Cache_SuppressPreload") == true)
+				{
+					parameters["SuppressPreload"] = "true";
+				}
+
+				string priority = TableHelper.GetStringExtendedProperty(modelClass.Table, "Cache_Priority");
+				if (!string.IsNullOrEmpty(priority))
+				{
+					parameters["Priority"] = $"Havit.Services.Caching.CacheItemPriority.{priority}";
+				}
+
+				int? absoluteExpiration = TableHelper.GetIntExtendedProperty(modelClass.Table, "Cache_AbsoluteExpiration");
+				if (absoluteExpiration != null)
+				{
+					parameters["AbsoluteExpiration"] = absoluteExpiration.ToString();
+				}
+
+				int? slidingExpiration = TableHelper.GetIntExtendedProperty(modelClass.Table, "Cache_SlidingExpiration");
+				if (slidingExpiration != null)
+				{
+					parameters["SlidingExpiration"] = slidingExpiration.ToString();
+				}
+
+				var cacheAttribute = "[Cache";
+				if (parameters.Count > 0)
+				{
+					cacheAttribute += $"({string.Join(", ", parameters.Select(p => $"{p.Key} = {p.Value}"))})";
+				}
+				cacheAttribute += "]";
+
+				writer.WriteLine(cacheAttribute);
 			}
 
 			writer.WriteLine(String.Format("{0} class {1}{2}",

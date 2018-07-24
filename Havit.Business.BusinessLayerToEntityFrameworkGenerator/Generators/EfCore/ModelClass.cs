@@ -137,12 +137,12 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 				interfaceString = "ILanguage";
 			}
 
-			if (TableHelper.IsIgnored(modelClass.Table))
+			if (ExtendedPropertiesHelper.GetBool(ExtendedPropertiesKey.FromTable(modelClass.Table), "Ignored", modelClass.Table.Name) == true)
 			{
 				writer.WriteLine("[Ignored]");
 			}
 
-			if (TableHelper.IsReadOnly(modelClass.Table))
+			if (ExtendedPropertiesHelper.GetBool(ExtendedPropertiesKey.FromTable(modelClass.Table), "ReadOnly", modelClass.Table.Name) == true)
 			{
 				writer.WriteLine("[ReadOnly]");
 			}
@@ -152,7 +152,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 				writer.WriteLine("[EnumClass]");
 			}
 
-			if (TableHelper.IsCachable(modelClass.Table))
+			if (ExtendedPropertiesHelper.GetBool(ExtendedPropertiesKey.FromTable(modelClass.Table), "Cache", modelClass.Table.Name) == true)
 			{
 				writer.WriteLine("[Cache]");
 			}
@@ -219,12 +219,12 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 				// DatabaseGenerated (není třeba)
 				// ILocalized + ILocalization
 
-				if (ColumnHelper.IsIgnored(column))
+				if (ExtendedPropertiesHelper.GetBool(ExtendedPropertiesKey.FromColumn(column), "Ignored", column.Name) == true)
 				{
 					writer.WriteLine("[Ignored]");
 				}
 
-				if (ColumnHelper.IsReadOnly(column))
+				if (ExtendedPropertiesHelper.GetBool(ExtendedPropertiesKey.FromColumn(column), "ReadOnly", column.Name) == true)
 				{
 					writer.WriteLine("[ReadOnly]");
 				}

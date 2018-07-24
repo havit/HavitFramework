@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
@@ -98,6 +99,43 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 			}
 		}
 
+		protected override void Generate(AlterDatabaseOperation operation, IModel model, MigrationCommandListBuilder builder)
+		{
+			base.Generate(operation, model, builder);
+
+			var oldAnnotations = operation.OldDatabase.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.IsExtendedPropertyAnnotation).ToDictionary(x => x.Name, ExtendedPropertiesAnnotationsHelper.Comparer);
+			var newAnnotations = operation.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.IsExtendedPropertyAnnotation).ToDictionary(x => x.Name, ExtendedPropertiesAnnotationsHelper.Comparer);
+			foreach (var annotation in oldAnnotations.Where(x => !newAnnotations.ContainsKey(x.Key)).Select(x => x.Value))
+			{
+				var name = ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(annotation);
+				DropExtendedPropertyLevelNothing(name, builder);
+			}
+			foreach (var annotation in newAnnotations.Where(x => oldAnnotations.ContainsKey(x.Key)).Select(x => x.Value))
+			{
+				var name = ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(annotation);
+				var value = (string)annotation.Value;
+				UpdateExtendedPropertyLevelNothing(name, value, builder);
+			}
+			foreach (var annotation in newAnnotations.Where(x => !oldAnnotations.ContainsKey(x.Key)).Select(x => x.Value))
+			{
+				var name = ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(annotation);
+				var value = (string)annotation.Value;
+				AddExtendedPropertyLevelNothing(name, value, builder);
+			}
+		}
+
+		protected override void Generate(SqlServerCreateDatabaseOperation operation, IModel model, MigrationCommandListBuilder builder)
+		{
+			base.Generate(operation, model, builder);
+
+			foreach (var annotation in operation.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.IsExtendedPropertyAnnotation))
+			{
+				var name = ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(annotation);
+				var value = (string)annotation.Value;
+				AddExtendedPropertyLevelNothing(name, value, builder);
+			}
+		}
+
 		private void AddExtendedPropertyLevel1(string name, string value, string schemaName, string tableName, MigrationCommandListBuilder builder)
 		{
 			builder
@@ -186,6 +224,37 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 				.Append(GenerateSqlLiteral(tableName))
 				.Append(", @level2type=N'COLUMN', @level2name=")
 				.Append(GenerateSqlLiteral(columnName))
+				.Append("")
+				.EndCommand();
+		}
+
+		private void AddExtendedPropertyLevelNothing(string name, string value, MigrationCommandListBuilder builder)
+		{
+			builder
+				.Append("EXEC sys.sp_addextendedproperty @name=")
+				.Append(GenerateSqlLiteral(name))
+				.Append(", @value=")
+				.Append(GenerateSqlLiteral(value))
+				.Append("")
+				.EndCommand();
+		}
+
+		private void UpdateExtendedPropertyLevelNothing(string name, string value, MigrationCommandListBuilder builder)
+		{
+			builder
+				.Append("EXEC sys.sp_updateextendedproperty @name=")
+				.Append(GenerateSqlLiteral(name))
+				.Append(", @value=")
+				.Append(GenerateSqlLiteral(value))
+				.Append("")
+				.EndCommand();
+		}
+
+		private void DropExtendedPropertyLevelNothing(string name, MigrationCommandListBuilder builder)
+		{
+			builder
+				.Append("EXEC sys.sp_dropextendedproperty @name=")
+				.Append(GenerateSqlLiteral(name))
 				.Append("")
 				.EndCommand();
 		}

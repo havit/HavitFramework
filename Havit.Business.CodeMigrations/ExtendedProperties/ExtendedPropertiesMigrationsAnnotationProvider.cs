@@ -19,10 +19,16 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 				.Concat(property.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.IsExtendedPropertyAnnotation));
 		}
 
-		public override IEnumerable<IAnnotation> ForRemove(IEntityType entityType)
+		public override IEnumerable<IAnnotation> For(IEntityType entityType)
 		{
-			return base.ForRemove(entityType)
+			return base.For(entityType)
 				.Concat(entityType.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.IsExtendedPropertyAnnotation));
+		}
+
+		public override IEnumerable<IAnnotation> For(IModel model)
+		{
+			return base.For(model)
+				.Concat(model.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.IsExtendedPropertyAnnotation));
 		}
 	}
 }

@@ -39,5 +39,8 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 
 		public static void AddExtendedProperties(this PropertyBuilder propertyBuilder, IDictionary<string, string> extendedProperties)
 			=> propertyBuilder.Metadata.AddExtendedProperties(extendedProperties);
+
+		public static void AddExtendedProperties(this ModelBuilder modelBuilder, IDictionary<string, string> extendedProperties)
+			=> modelBuilder.Model.AddExtendedProperties(extendedProperties);
 	}
 }

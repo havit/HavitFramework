@@ -38,6 +38,7 @@ namespace Havit.Business.CodeMigrations
 			modelBuilder.ApplyLocalizationTablesParentEntities();
 			modelBuilder.ApplyDefaultsForStrings();
 			modelBuilder.ApplyDefaultNamespaces();
+			modelBuilder.ApplyCollectionExtendedProperties();
 		}
 	}
 }

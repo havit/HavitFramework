@@ -19,9 +19,11 @@ namespace Havit.Business.CodeMigrations.Conventions
 				{
 					continue;
 				}
+
+				string entityNamespace = table.ClrType.Namespace?.Replace(table.ClrType.Assembly.GetName().Name, "").Trim('.');
 				table.AddExtendedProperties(new Dictionary<string, string>()
 				{
-					{ NamespaceAttribute.PropertyName, table.ClrType.Namespace },
+					{ NamespaceAttribute.PropertyName, entityNamespace },
 				});
 			}
 		}

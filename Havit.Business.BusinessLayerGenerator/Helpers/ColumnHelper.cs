@@ -10,6 +10,15 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 {
 	public static class ColumnHelper
 	{
+		public static bool? GetBoolExtendedProperty(Column column, string key)
+		{
+			return ExtendedPropertiesHelper.GetBool(ExtendedPropertiesKey.FromColumn(column), key, ((Table)column.Parent).Name + "-" + column.Name);
+		}
+		public static int? GetIntExtendedProperty(Column column, string key)
+		{
+			return ExtendedPropertiesHelper.GetInt(ExtendedPropertiesKey.FromColumn(column), key, ((Table)column.Parent).Name + "-" + column.Name);
+		}
+
 		#region IsIgnored
 		/// <summary>
 		/// Vrací true, pokud je sloupec označena jako ignorovaný (Extended Property "Ignored").
@@ -22,7 +31,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			}
 
 			return (column.Name == "PropertyName")
-				|| (ExtendedPropertiesHelper.GetBool(ExtendedPropertiesKey.FromColumn(column), "Ignored", ((Table)column.Parent).Name + "-" + column.Name) ?? false);
+				|| (GetBoolExtendedProperty(column, "Ignored") ?? false);
 		}
 		#endregion
 
@@ -32,7 +41,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		/// </summary>
 		public static bool IsReadOnly(Column column)
 		{
-			return (ExtendedPropertiesHelper.GetBool(ExtendedPropertiesKey.FromColumn(column), "ReadOnly", ((Table)column.Parent).Name + "-" + column.Name) ?? (column.Name == "Created"));
+			return (GetBoolExtendedProperty(column, "ReadOnly") ?? (column.Name == "Created"));
 		}
 		#endregion
 

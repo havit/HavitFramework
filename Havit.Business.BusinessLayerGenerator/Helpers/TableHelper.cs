@@ -14,6 +14,19 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 {
 	public static class TableHelper
 	{
+		public static string GetStringExtendedProperty(Table table, string key)
+		{
+			return ExtendedPropertiesHelper.GetString(ExtendedPropertiesKey.FromTable(table), key);
+		}
+		public static bool? GetBoolExtendedProperty(Table table, string key)
+		{
+			return ExtendedPropertiesHelper.GetBool(ExtendedPropertiesKey.FromTable(table), key, table.Name);
+		}
+		public static int? GetIntExtendedProperty(Table table, string key)
+		{
+			return ExtendedPropertiesHelper.GetInt(ExtendedPropertiesKey.FromTable(table), key, table.Name);
+		}
+
 		#region IsIgnored
 		/// <summary>
 		/// Vrací true, pokud je tabulka označena jako ignorovaná (Extended Property "Ignored").
@@ -22,7 +35,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		public static bool IsIgnored(Table table)
 		{
 			return ((GeneratorSettings.Strategy == GeneratorStrategy.Exec) && table.Name.StartsWith("_"))
-				|| (ExtendedPropertiesHelper.GetBool(ExtendedPropertiesKey.FromTable(table), "Ignored", table.Name) ?? DatabaseHelper.GetDefaultIgnoredOnTables());
+				|| (GetBoolExtendedProperty(table, "Ignored") ?? DatabaseHelper.GetDefaultIgnoredOnTables());
 		}
 		#endregion
 

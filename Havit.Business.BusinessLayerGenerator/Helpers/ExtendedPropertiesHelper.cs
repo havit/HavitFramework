@@ -97,9 +97,36 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 
             throw new ArgumentException(String.Format("Neznámá bool hodnota \"{0}\" v extended property {1} - {2}.", value, location, key));
 
-        }
+		}
+		/// <summary>
+		/// Zjišťuje int hodnotu definovanou Extended Property s klíčem key.
+		/// </summary>
+		/// <param name="extendedProperties">Extended Properties, kde se extended property hledá.</param>
+		/// <param name="key">Klíč extended property.</param>
+		/// <param name="location">Kde se nacházíme - jen informační hodnota pro lepší identifikaci chyby (dostane se do výjimky).</param>
+		/// <returns>
+		///		Extended property nebyla podle klíče nalezena -> null.
+		///		Jinak vyhodí ArgumentException.
+		/// </returns>
+		public static int? GetInt(ExtendedPropertiesKey extendedProperties, string key, string location)
+		{
+			string value = GetString(extendedProperties, key);
 
-        /// <summary>
+			if (value == null)
+			{
+				return null;
+			}
+
+			if (int.TryParse(value, out int intValue))
+			{
+				return intValue;
+			}
+
+			throw new ArgumentException(String.Format("Neznámá int hodnota \"{0}\" v extended property {1} - {2}.", value, location, key));
+
+		}
+
+		/// <summary>
 		/// Vrátí komentář z extended properties.
 		/// </summary>
 		public static string GetDescription(ExtendedPropertiesKey extendedProperties)

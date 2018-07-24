@@ -564,6 +564,45 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 		}
 
 		[TestClass]
+		public class AddingTwoPropertiesToModel
+		{
+			[Table("Table")]
+			private class SourceEntity
+			{
+				public int Id { get; set; }
+			}
+
+			[Table("Table")]
+			private class TargetEntity
+			{
+				public int Id { get; set; }
+			}
+
+			[TestMethod]
+			public void Test()
+			{
+				var source = new EndToEndDbContext<SourceEntity>();
+				var target = new EndToEndDbContext<TargetEntity>(builder =>
+				{
+					builder.AddExtendedProperties(new Dictionary<string, string>()
+					{
+						{ "Jiri", "Model" },
+						{ "Scott", "Hanselman" }
+					});
+				});
+				var migrations = Generate(source.Model, target.Model);
+
+				Assert.AreEqual(2, migrations.Count);
+				Assert.AreEqual(
+					"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Model'",
+					migrations[0].CommandText);
+				Assert.AreEqual(
+					"EXEC sys.sp_addextendedproperty @name=N'Scott', @value=N'Hanselman'",
+					migrations[1].CommandText);
+			}
+		}
+
+		[TestClass]
 		public class UpdatingPropertyOnModel
 		{
 			[Table("Table")]

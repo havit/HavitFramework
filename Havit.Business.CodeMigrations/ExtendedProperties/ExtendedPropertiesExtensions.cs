@@ -28,10 +28,7 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 
 		public static void AddExtendedProperties(this IMutableAnnotatable annotatable, IDictionary<string, string> extendedProperties)
 		{
-			foreach (var property in extendedProperties)
-			{
-				ExtendedPropertiesAnnotationsHelper.AddExtendedPropertyAnnotations(annotatable, extendedProperties);
-			}
+			ExtendedPropertiesAnnotationsHelper.AddExtendedPropertyAnnotations(annotatable, extendedProperties);
 		}
 
 		public static void AddExtendedProperties(this EntityTypeBuilder entityTypeBuilder, IDictionary<string, string> extendedProperties)

@@ -1,17 +1,17 @@
 ﻿using System.Collections.Generic;
+using Havit.Business.CodeMigrations.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Havit.Business.CodeMigrations.ExtendedProperties
 {
-	public static class ExtendedPropertiesExtensions
+    public static class ExtendedPropertiesExtensions
 	{
 		public static void UseSqlServerExtendedProperties(this DbContextOptionsBuilder optionsBuilder)
 		{
-			optionsBuilder.ReplaceService<IMigrationsAnnotationProvider, ExtendedPropertiesMigrationsAnnotationProvider>();
-			optionsBuilder.ReplaceService<IMigrationsSqlGenerator, ExtendedPropertiesMigrationsSqlGenerator>();
+		    optionsBuilder.Options.GetExtension<CompositeMigrationsAnnotationProviderExtension>().WithAnnotationProvider<ExtendedPropertiesMigrationsAnnotationProvider>();
+			optionsBuilder.Options.GetExtension<CompositeMigrationsSqlGeneratorExtension>().WithGeneratorType<ExtendedPropertiesMigrationsSqlGenerator>();
 		}
 
 		public static void ForSqlServerExtendedPropertiesAttributes(this ModelBuilder modelBuilder)

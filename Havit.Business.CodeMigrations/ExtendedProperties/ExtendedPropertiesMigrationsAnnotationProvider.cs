@@ -3,11 +3,10 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.SqlServer.Migrations.Internal;
 
 namespace Havit.Business.CodeMigrations.ExtendedProperties
 {
-	internal class ExtendedPropertiesMigrationsAnnotationProvider : SqlServerMigrationsAnnotationProvider
+    internal class ExtendedPropertiesMigrationsAnnotationProvider : MigrationsAnnotationProvider
 	{
 		public ExtendedPropertiesMigrationsAnnotationProvider(MigrationsAnnotationProviderDependencies dependencies)
 			: base(dependencies)
@@ -15,22 +14,22 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 
 		public override IEnumerable<IAnnotation> For(IProperty property)
 		{
-			return Handle(property, base.For(property));
+			return Handle(property);
 		}
 
 		public override IEnumerable<IAnnotation> For(IEntityType entityType)
 		{
-			return Handle(entityType, base.For(entityType));
+			return Handle(entityType);
 		}
 
 		public override IEnumerable<IAnnotation> For(IModel model)
 		{
-			return Handle(model, base.For(model));
+			return Handle(model);
 		}
 
-		private static IEnumerable<IAnnotation> Handle(IAnnotatable annotatable, IEnumerable<IAnnotation> @base)
+		private static IEnumerable<IAnnotation> Handle(IAnnotatable annotatable)
 		{
-			return @base.Concat(annotatable.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.IsExtendedPropertyAnnotation));
+			return annotatable.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.IsExtendedPropertyAnnotation);
 		}
 	}
 }

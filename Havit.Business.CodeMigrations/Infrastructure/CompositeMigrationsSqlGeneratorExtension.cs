@@ -43,6 +43,7 @@ namespace Havit.Business.CodeMigrations.Infrastructure
 
         public void Validate(IDbContextOptions options)
         {
+            // no validation
         }
     }
 }

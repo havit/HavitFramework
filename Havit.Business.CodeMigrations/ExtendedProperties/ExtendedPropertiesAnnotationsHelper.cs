@@ -23,7 +23,7 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 			var attributes = memberInfo.GetCustomAttributes(typeof(ExtendedPropertiesAttribute), false).Cast<ExtendedPropertiesAttribute>();
 			foreach (var attribute in attributes)
 			{
-				AddExtendedPropertyAnnotations(annotatable, attribute.ExtendedProperties);
+				AddExtendedPropertyAnnotations(annotatable, attribute.GetExtendedProperties(memberInfo));
 			}
 		}
 

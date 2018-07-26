@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
 
 namespace Havit.Business.CodeMigrations.ExtendedProperties.Attributes
 {
@@ -27,7 +28,7 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties.Attributes
 		/// </summary>
 		public string CloneMode { get; set; }
 
-		public override IDictionary<string, string> ExtendedProperties => new Dictionary<string, string>()
+		public override IDictionary<string, string> GetExtendedProperties(MemberInfo memberInfo) => new Dictionary<string, string>()
 			.AddIfNotDefault("Collection_IncludeDeleted", IncludeDeleted)
 			.AddIfNotDefault("Collection_LoadAll", LoadAll)
 			.AddIfNotDefault("Collection_Sorting", Sorting)

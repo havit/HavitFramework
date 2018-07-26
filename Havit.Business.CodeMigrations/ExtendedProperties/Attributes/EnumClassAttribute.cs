@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Havit.Business.CodeMigrations.ExtendedProperties.Attributes
 {
@@ -13,7 +14,7 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties.Attributes
 
 		public string EnumPropertyName { get; }
 
-		public override IDictionary<string, string> ExtendedProperties => props;
+		public override IDictionary<string, string> GetExtendedProperties(MemberInfo memberInfo) => props;
 
 		public EnumClassAttribute()
 		{

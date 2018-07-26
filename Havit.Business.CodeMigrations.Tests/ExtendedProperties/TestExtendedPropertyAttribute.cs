@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
 using Havit.Business.CodeMigrations.ExtendedProperties;
 
 namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
@@ -25,6 +26,6 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 			_extendedProperties.Add(name2, value2);
 		}
 
-		public override IDictionary<string, string> ExtendedProperties => _extendedProperties;
+		public override IDictionary<string, string> GetExtendedProperties(MemberInfo memberInfo) => _extendedProperties;
 	}
 }

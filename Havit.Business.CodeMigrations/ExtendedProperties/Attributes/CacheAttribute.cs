@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Havit.Services.Caching;
 
 namespace Havit.Business.CodeMigrations.ExtendedProperties.Attributes
@@ -15,8 +16,7 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties.Attributes
 
 		public int SlidingExpiration { get; set; }
 
-
-		public override IDictionary<string, string> ExtendedProperties => new Dictionary<string, string>
+		public override IDictionary<string, string> GetExtendedProperties(MemberInfo memberInfo) => new Dictionary<string, string>
 			{
 				{ "Cache", "true" }
 			}.AddIfNotDefault("Cache_Priority", Priority)

@@ -126,7 +126,7 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 				AddExtendedPropertyLevelNothing(name, value, builder);
 			}
 		}
-
+		
 		private void AddExtendedPropertyLevel1(string name, string value, string schemaName, string tableName, MigrationCommandListBuilder builder)
 		{
 			builder

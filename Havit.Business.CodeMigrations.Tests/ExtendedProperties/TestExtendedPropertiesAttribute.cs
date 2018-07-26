@@ -4,22 +4,22 @@ using Havit.Business.CodeMigrations.ExtendedProperties;
 
 namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 {
-	internal class TestExtendedPropertyAttribute : ExtendedPropertiesAttribute
+	internal class TestExtendedPropertiesAttribute : ExtendedPropertiesAttribute
 	{
 		private readonly IDictionary<string, string> _extendedProperties;
 
-		private TestExtendedPropertyAttribute()
+		private TestExtendedPropertiesAttribute()
 		{
 			_extendedProperties = new Dictionary<string, string>();
 		}
 
-		public TestExtendedPropertyAttribute(string name, string value)
+		public TestExtendedPropertiesAttribute(string name, string value)
 			: this()
 		{
 			_extendedProperties.Add(name, value);
 		}
 
-		public TestExtendedPropertyAttribute(string name1, string value1, string name2, string value2)
+		public TestExtendedPropertiesAttribute(string name1, string value1, string name2, string value2)
 			: this()
 		{
 			_extendedProperties.Add(name1, value1);

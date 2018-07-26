@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection;
 using Havit.Business.CodeMigrations.ExtendedProperties;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -22,7 +23,7 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 				public int Id { get; set; }
 			}
 
-			[TestExtendedProperty("Jiri", "Value")]
+			[TestExtendedProperties("Jiri", "Value")]
 			[Table("Table")]
 			private class TargetEntity
 			{
@@ -78,7 +79,7 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 		[TestClass]
 		public class RemovingPropertyFromTable
 		{
-			[TestExtendedProperty("Jiri", "Value")]
+			[TestExtendedProperties("Jiri", "Value")]
 			[Table("Table")]
 			private class SourceEntity
 			{
@@ -108,14 +109,14 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 		[TestClass]
 		public class ChangingPropertyOnTable
 		{
-			[TestExtendedProperty("Jiri", "OldValue")]
+			[TestExtendedProperties("Jiri", "OldValue")]
 			[Table("Table")]
 			private class SourceEntity
 			{
 				public int Id { get; set; }
 			}
 
-			[TestExtendedProperty("Jiri", "NewValue")]
+			[TestExtendedProperties("Jiri", "NewValue")]
 			[Table("Table")]
 			private class TargetEntity
 			{
@@ -148,7 +149,7 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 			[Table("Table")]
 			private class TargetEntity
 			{
-				[TestExtendedProperty("Jiri", "Value")]
+				[TestExtendedProperties("Jiri", "Value")]
 				public int Id { get; set; }
 			}
 
@@ -212,7 +213,7 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 			[Table("Table")]
 			private class TargetEntity
 			{
-				[TestExtendedProperty("Jiri", "Val'ue")]
+				[TestExtendedProperties("Jiri", "Val'ue")]
 				public int Id { get; set; }
 			}
 
@@ -236,7 +237,7 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 			[Table("Table")]
 			private class SourceEntity
 			{
-				[TestExtendedProperty("Jiri", "Value")]
+				[TestExtendedProperties("Jiri", "Value")]
 				public int Id { get; set; }
 			}
 
@@ -266,14 +267,14 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 			[Table("Table")]
 			private class SourceEntity
 			{
-				[TestExtendedProperty("Jiri", "OldValue")]
+				[TestExtendedProperties("Jiri", "OldValue")]
 				public int Id { get; set; }
 			}
 
 			[Table("Table")]
 			private class TargetEntity
 			{
-				[TestExtendedProperty("Jiri", "NewValue")]
+				[TestExtendedProperties("Jiri", "NewValue")]
 				public int Id { get; set; }
 			}
 
@@ -304,7 +305,7 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 			private class TargetEntity
 			{
 				public int Id { get; set; }
-				[TestExtendedProperty("Jiri", "Value")]
+				[TestExtendedProperties("Jiri", "Value")]
 				public int Column { get; set; }
 			}
 
@@ -352,7 +353,7 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 		[TestClass]
 		public class CreatingTableWithPropertyOnTable
 		{
-			[TestExtendedProperty("Jiri", "Value")]
+			[TestExtendedProperties("Jiri", "Value")]
 			[Table("Table")]
 			private class TargetEntity
 			{
@@ -399,7 +400,7 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 			[Table("Table")]
 			private class TargetEntity
 			{
-				[TestExtendedProperty("Jiri", "Value")]
+				[TestExtendedProperties("Jiri", "Value")]
 				public int Id { get; set; }
 			}
 
@@ -413,6 +414,53 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 				Assert.AreEqual(2, migrations.Count);
 				Assert.AreEqual(
 					"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id'",
+					migrations[1].CommandText);
+			}
+		}
+
+		[TestClass]
+		public class CreatingTableWithPropertyOnCollection
+		{
+			[Table("T_Masters")]
+			public class Master
+			{
+				public int Id { get; set; }
+
+				[CollectionTest(FooBar = "Jiri")]
+				public List<Detail> Details { get; set; }
+			}
+
+			[Table("T_Details")]
+			public class Detail
+			{
+				public int Id { get; set; }
+			}
+
+			private class CollectionTestAttribute : ExtendedPropertiesAttribute
+			{
+#pragma warning disable S3459 // Unassigned members should be removed
+				public string FooBar { get; set; }
+#pragma warning restore S3459 // Unassigned members should be removed
+
+				public override IDictionary<string, string> GetExtendedProperties(MemberInfo memberInfo)
+				{
+					return new Dictionary<string, string>()
+					{
+						{ $"Test_{memberInfo.Name}_{nameof(FooBar)}", FooBar },
+					};
+				}
+			}
+
+			[TestMethod]
+			public void Test()
+			{
+				var source = new EndToEndDbContext();
+				var target = new EndToEndDbContext<Master>();
+				var migrations = Generate(source.Model, target.Model);
+
+				Assert.AreEqual(4, migrations.Count);
+				Assert.AreEqual(
+					"EXEC sys.sp_addextendedproperty @name=N'Test_Details_FooBar', @value=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'T_Masters'",
 					migrations[1].CommandText);
 			}
 		}
@@ -443,7 +491,7 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 			[Table("Table")]
 			private class TargetEntity
 			{
-				[TestExtendedProperty("Jiri1", "ValueA", "Jiri2", "ValueB")]
+				[TestExtendedProperties("Jiri1", "ValueA", "Jiri2", "ValueB")]
 				public int Id { get; set; }
 			}
 
@@ -470,14 +518,14 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 			[Table("Table")]
 			private class SourceEntity
 			{
-				[TestExtendedProperty("Jiri1", "OldValueA", "Jiri2", "OldValueB")]
+				[TestExtendedProperties("Jiri1", "OldValueA", "Jiri2", "OldValueB")]
 				public int Id { get; set; }
 			}
 
 			[Table("Table")]
 			private class TargetEntity
 			{
-				[TestExtendedProperty("Jiri1", "NewValueA", "Jiri2", "NewValueB")]
+				[TestExtendedProperties("Jiri1", "NewValueA", "Jiri2", "NewValueB")]
 				public int Id { get; set; }
 			}
 
@@ -504,14 +552,14 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 			[Table("Table")]
 			private class SourceEntity
 			{
-				[TestExtendedProperty("Jiri1", "OldValueA", "Jiri2", "OldValueB")]
+				[TestExtendedProperties("Jiri1", "OldValueA", "Jiri2", "OldValueB")]
 				public int Id { get; set; }
 			}
 
 			[Table("Table")]
 			private class TargetEntity
 			{
-				[TestExtendedProperty("Jiri1", "NewValueA")]
+				[TestExtendedProperties("Jiri1", "NewValueA")]
 				public int Id { get; set; }
 			}
 
@@ -690,6 +738,26 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 				Assert.AreEqual(
 					"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Model'",
 					migrations[2].CommandText);
+			}
+		}
+
+		[TestClass]
+		public class NoFKPropertyInCodeNoPropertyInfo
+		{
+			[Table("Table")]
+			private class TargetEntity
+			{
+				public int Id { get; set; }
+				public ICollection<TargetEntity> Sources { get; set; }
+			}
+
+			[TestMethod]
+			public void Test()
+			{
+				var source = new EndToEndDbContext();
+				var target = new EndToEndDbContext<TargetEntity>();
+				// should not throw
+				Generate(source.Model, target.Model);
 			}
 		}
 

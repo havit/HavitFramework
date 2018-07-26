@@ -43,6 +43,36 @@ namespace Havit.Business.CodeMigrations.Tests.StoredProcedures
             }
         }
 
+        [TestClass]
+        public class DeletingStoredProcedure
+        {
+            [Table("Dummy")]
+            private class DummySource
+            {
+                public int Id { get; set; }
+            }
+
+            [Table("Dummy")]
+            private class DummyTarget
+            {
+                public int Id { get; set; }
+            }
+
+            [TestMethod]
+            public void Test()
+            {
+                var source = new EndToEndDbContext<DummySource>(builder => builder.HasAnnotation("StoredProcedure:GetTables", "CREATE OR ALTER PROCEDURE [dbo].[GetTables]() AS BEGIN SELECT * FROM [sys].[tables] END"));
+                var target = new EndToEndDbContext<DummyTarget>();
+                var migrations = Generate(source.Model, target.Model);
+
+                Assert.AreEqual(1, migrations.Count);
+                Assert.AreEqual(
+                    "DROP PROCEDURE [dbo].[GetTables]",
+                    migrations[0].CommandText);
+            }
+        }
+
+
         private static IReadOnlyList<MigrationCommand> Generate(IModel source, IModel target)
         {
             using (var db = new TestDbContext())

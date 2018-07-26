@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -54,75 +56,63 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 		{
 			base.Generate(operation, model, builder);
 
-			var oldAnnotations = operation.OldTable.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.IsExtendedPropertyAnnotation).ToDictionary(x => x.Name, ExtendedPropertiesAnnotationsHelper.Comparer);
-			var newAnnotations = operation.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.IsExtendedPropertyAnnotation).ToDictionary(x => x.Name, ExtendedPropertiesAnnotationsHelper.Comparer);
-			foreach (var annotation in oldAnnotations.Where(x => !newAnnotations.ContainsKey(x.Key)).Select(x => x.Value))
-			{
-				var name = ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(annotation);
-				DropExtendedPropertyLevel1(name, GetSchema(operation.Schema, model), operation.Name, builder);
-			}
-			foreach (var annotation in newAnnotations.Where(x => oldAnnotations.ContainsKey(x.Key)).Select(x => x.Value))
-			{
-				var name = ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(annotation);
-				var value = (string)annotation.Value;
-				UpdateExtendedPropertyLevel1(name, value, GetSchema(operation.Schema, model), operation.Name, builder);
-			}
-			foreach (var annotation in newAnnotations.Where(x => !oldAnnotations.ContainsKey(x.Key)).Select(x => x.Value))
-			{
-				var name = ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(annotation);
-				var value = (string)annotation.Value;
-				AddExtendedPropertyLevel1(name, value, GetSchema(operation.Schema, model), operation.Name, builder);
-			}
+			AlterHelper(operation.OldTable.GetAnnotations(), operation.GetAnnotations(),
+				(a, name) =>
+				{
+					DropExtendedPropertyLevel1(name, GetSchema(operation.Schema, model), operation.Name, builder);
+				},
+				(a, name) =>
+				{
+					var value = (string)a.Value;
+					UpdateExtendedPropertyLevel1(name, value, GetSchema(operation.Schema, model), operation.Name, builder);
+				},
+				(a, name) =>
+				{
+					var value = (string)a.Value;
+					AddExtendedPropertyLevel1(name, value, GetSchema(operation.Schema, model), operation.Name, builder);
+				});
 		}
 
 		protected override void Generate(AlterColumnOperation operation, IModel model, MigrationCommandListBuilder builder)
 		{
 			base.Generate(operation, model, builder);
 
-			var oldAnnotations = operation.OldColumn.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.IsExtendedPropertyAnnotation).ToDictionary(x => x.Name, ExtendedPropertiesAnnotationsHelper.Comparer);
-			var newAnnotations = operation.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.IsExtendedPropertyAnnotation).ToDictionary(x => x.Name, ExtendedPropertiesAnnotationsHelper.Comparer);
-			foreach (var annotation in oldAnnotations.Where(x => !newAnnotations.ContainsKey(x.Key)).Select(x => x.Value))
-			{
-				var name = ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(annotation);
-				DropExtendedPropertyLevel2(name, GetSchema(operation.Schema, model), operation.Table, operation.Name, builder);
-			}
-			foreach (var annotation in newAnnotations.Where(x => oldAnnotations.ContainsKey(x.Key)).Select(x => x.Value))
-			{
-				var name = ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(annotation);
-				var value = (string)annotation.Value;
-				UpdateExtendedPropertyLevel2(name, value, GetSchema(operation.Schema, model), operation.Table, operation.Name, builder);
-			}
-			foreach (var annotation in newAnnotations.Where(x => !oldAnnotations.ContainsKey(x.Key)).Select(x => x.Value))
-			{
-				var name = ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(annotation);
-				var value = (string)annotation.Value;
-				AddExtendedPropertyLevel2(name, value, GetSchema(operation.Schema, model), operation.Table, operation.Name, builder);
-			}
+			AlterHelper(operation.OldColumn.GetAnnotations(), operation.GetAnnotations(),
+				(a, name) =>
+				{
+					DropExtendedPropertyLevel2(name, GetSchema(operation.Schema, model), operation.Table, operation.Name, builder);
+				},
+				(a, name) =>
+				{
+					var value = (string)a.Value;
+					UpdateExtendedPropertyLevel2(name, value, GetSchema(operation.Schema, model), operation.Table, operation.Name, builder);
+				},
+				(a, name) =>
+				{
+					var value = (string)a.Value;
+					AddExtendedPropertyLevel2(name, value, GetSchema(operation.Schema, model), operation.Table, operation.Name, builder);
+				});
 		}
 
 		protected override void Generate(AlterDatabaseOperation operation, IModel model, MigrationCommandListBuilder builder)
 		{
 			base.Generate(operation, model, builder);
 
-			var oldAnnotations = operation.OldDatabase.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.IsExtendedPropertyAnnotation).ToDictionary(x => x.Name, ExtendedPropertiesAnnotationsHelper.Comparer);
-			var newAnnotations = operation.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.IsExtendedPropertyAnnotation).ToDictionary(x => x.Name, ExtendedPropertiesAnnotationsHelper.Comparer);
-			foreach (var annotation in oldAnnotations.Where(x => !newAnnotations.ContainsKey(x.Key)).Select(x => x.Value))
-			{
-				var name = ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(annotation);
-				DropExtendedPropertyLevelNothing(name, builder);
-			}
-			foreach (var annotation in newAnnotations.Where(x => oldAnnotations.ContainsKey(x.Key)).Select(x => x.Value))
-			{
-				var name = ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(annotation);
-				var value = (string)annotation.Value;
-				UpdateExtendedPropertyLevelNothing(name, value, builder);
-			}
-			foreach (var annotation in newAnnotations.Where(x => !oldAnnotations.ContainsKey(x.Key)).Select(x => x.Value))
-			{
-				var name = ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(annotation);
-				var value = (string)annotation.Value;
-				AddExtendedPropertyLevelNothing(name, value, builder);
-			}
+			AlterHelper(operation.OldDatabase.GetAnnotations(), operation.GetAnnotations(),
+				(a, name) =>
+				{
+					DropExtendedPropertyLevelNothing(name, builder);
+				},
+				(a, name) =>
+				{
+					var value = (string)a.Value;
+					UpdateExtendedPropertyLevelNothing(name, value, builder);
+				},
+				(a, name) =>
+				{
+					var value = (string)a.Value;
+					AddExtendedPropertyLevelNothing(name, value, builder);
+				});
 		}
 
 		protected override void Generate(SqlServerCreateDatabaseOperation operation, IModel model, MigrationCommandListBuilder builder)
@@ -263,5 +253,26 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 		private string GenerateSqlLiteral(string s) => Dependencies.TypeMappingSource.GetMapping(typeof(string)).GenerateSqlLiteral(s);
 
 		private static string GetSchema(string operationSchema, IModel model) => operationSchema ?? (string)model.Relational().DefaultSchema ?? DefaultSchemaName;
+
+		private static void AlterHelper(IEnumerable<IAnnotation> oldAnnotations, IEnumerable<IAnnotation> newAnnotations,
+			Action<IAnnotation, string> dropAction, Action<IAnnotation, string> updateAction, Action<IAnnotation, string> addAction)
+		{
+			oldAnnotations = oldAnnotations.Where(ExtendedPropertiesAnnotationsHelper.IsExtendedPropertyAnnotation);
+			newAnnotations = newAnnotations.Where(ExtendedPropertiesAnnotationsHelper.IsExtendedPropertyAnnotation);
+			var oldAnnotationsLookup = oldAnnotations.ToDictionary(x => x.Name, ExtendedPropertiesAnnotationsHelper.Comparer);
+			var newAnnotationsLookup = newAnnotations.ToDictionary(x => x.Name, ExtendedPropertiesAnnotationsHelper.Comparer);
+			foreach (var annotation in oldAnnotations.Where(x => !newAnnotationsLookup.ContainsKey(x.Name)))
+			{
+				dropAction(annotation, ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(annotation));
+			}
+			foreach (var annotation in newAnnotations.Where(x => oldAnnotationsLookup.ContainsKey(x.Name)))
+			{
+				updateAction(annotation, ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(annotation));
+			}
+			foreach (var annotation in newAnnotations.Where(x => !oldAnnotationsLookup.ContainsKey(x.Name)))
+			{
+				addAction(annotation, ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(annotation));
+			}
+		}
 	}
 }

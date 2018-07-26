@@ -202,6 +202,54 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 		}
 
 		[TestClass]
+		public class AddingPropertyToCollection
+		{
+			[Table("T_Masters")]
+			public class SourceMaster
+			{
+				public int Id { get; set; }
+
+				[ForeignKey("Column")]
+				public List<TargetDetail> Details { get; set; }
+			}
+
+			[Table("T_Details")]
+			public class SourceDetail
+			{
+				public int Id { get; set; }
+			}
+
+			[Table("T_Masters")]
+			public class TargetMaster
+			{
+				public int Id { get; set; }
+
+				[CollectionTestExtendedProperties(FooBar = "Jiri")]
+				[ForeignKey("Column")]
+				public List<TargetDetail> Details { get; set; }
+			}
+
+			[Table("T_Details")]
+			public class TargetDetail
+			{
+				public int Id { get; set; }
+			}
+
+			[TestMethod]
+			public void Test()
+			{
+				var source = new EndToEndDbContext<SourceMaster>();
+				var target = new EndToEndDbContext<TargetMaster>();
+				var migrations = Generate(source.Model, target.Model);
+
+				Assert.AreEqual(1, migrations.Count);
+				Assert.AreEqual(
+					"EXEC sys.sp_addextendedproperty @name=N'Test_Details_FooBar', @value=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'T_Masters'",
+					migrations[0].CommandText);
+			}
+		}
+		
+		[TestClass]
 		public class AddingPropertyToColumnQuoting
 		{
 			[Table("Table")]
@@ -258,6 +306,54 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 				Assert.AreEqual(
 					"EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id'",
 					migrations[1].CommandText);
+			}
+		}
+
+		[TestClass]
+		public class RemovingPropertyFromCollection
+		{
+			[Table("T_Masters")]
+			public class SourceMaster
+			{
+				public int Id { get; set; }
+
+				[CollectionTestExtendedProperties(FooBar = "Jiri")]
+				[ForeignKey("Column")]
+				public List<TargetDetail> Details { get; set; }
+			}
+
+			[Table("T_Details")]
+			public class SourceDetail
+			{
+				public int Id { get; set; }
+			}
+
+			[Table("T_Masters")]
+			public class TargetMaster
+			{
+				public int Id { get; set; }
+
+				[ForeignKey("Column")]
+				public List<TargetDetail> Details { get; set; }
+			}
+
+			[Table("T_Details")]
+			public class TargetDetail
+			{
+				public int Id { get; set; }
+			}
+
+			[TestMethod]
+			public void Test()
+			{
+				var source = new EndToEndDbContext<SourceMaster>();
+				var target = new EndToEndDbContext<TargetMaster>();
+				var migrations = Generate(source.Model, target.Model);
+
+				Assert.AreEqual(1, migrations.Count);
+				Assert.AreEqual(
+					"EXEC sys.sp_dropextendedproperty @name=N'Test_Details_FooBar', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'T_Masters'",
+					migrations[0].CommandText);
 			}
 		}
 
@@ -422,40 +518,25 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 		public class CreatingTableWithPropertyOnCollection
 		{
 			[Table("T_Masters")]
-			public class Master
+			public class TargetMaster
 			{
 				public int Id { get; set; }
 
-				[CollectionTest(FooBar = "Jiri")]
-				public List<Detail> Details { get; set; }
+				[CollectionTestExtendedProperties(FooBar = "Jiri")]
+				public List<TargetDetail> Details { get; set; }
 			}
 
 			[Table("T_Details")]
-			public class Detail
+			public class TargetDetail
 			{
 				public int Id { get; set; }
-			}
-
-			private class CollectionTestAttribute : ExtendedPropertiesAttribute
-			{
-#pragma warning disable S3459 // Unassigned members should be removed
-				public string FooBar { get; set; }
-#pragma warning restore S3459 // Unassigned members should be removed
-
-				public override IDictionary<string, string> GetExtendedProperties(MemberInfo memberInfo)
-				{
-					return new Dictionary<string, string>()
-					{
-						{ $"Test_{memberInfo.Name}_{nameof(FooBar)}", FooBar },
-					};
-				}
 			}
 
 			[TestMethod]
 			public void Test()
 			{
 				var source = new EndToEndDbContext();
-				var target = new EndToEndDbContext<Master>();
+				var target = new EndToEndDbContext<TargetMaster>();
 				var migrations = Generate(source.Model, target.Model);
 
 				Assert.AreEqual(4, migrations.Count);

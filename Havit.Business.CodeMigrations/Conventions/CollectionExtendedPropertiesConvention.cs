@@ -16,7 +16,7 @@ namespace Havit.Business.CodeMigrations.Conventions
 				{
 					var extendedProperties = new Dictionary<string, string>
 					{
-						{ $"Collection_{navigation.PropertyInfo.Name}", navigation.ForeignKey.PrincipalEntityType.Relational().TableName + "." + navigation.ForeignKey.PrincipalKey.Properties[0].Relational().ColumnName }
+						{ $"Collection_{navigation.PropertyInfo.Name}", navigation.ForeignKey.DeclaringEntityType.Relational().TableName + "." + navigation.ForeignKey.PrincipalKey.Properties[0].Relational().ColumnName }
 					};
 
 					entity.AddExtendedProperties(extendedProperties);

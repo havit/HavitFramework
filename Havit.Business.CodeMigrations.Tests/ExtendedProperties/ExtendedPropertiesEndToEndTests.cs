@@ -389,7 +389,7 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 		}
 
 		[TestClass]
-		public class ChangingPropertyToCollection
+		public class ChangingPropertyOnCollection
 		{
 			[Table("T_Masters")]
 			public class SourceMaster

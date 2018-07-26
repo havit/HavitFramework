@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using JetBrains.Annotations;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
@@ -261,6 +262,6 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 
 		private string GenerateSqlLiteral(string s) => Dependencies.TypeMappingSource.GetMapping(typeof(string)).GenerateSqlLiteral(s);
 
-		private static string GetSchema(string operationSchema, IModel model) => operationSchema ?? (string)model.FindAnnotation(RelationalAnnotationNames.DefaultSchema)?.Value ?? DefaultSchemaName;
+		private static string GetSchema(string operationSchema, IModel model) => operationSchema ?? (string)model.Relational().DefaultSchema ?? DefaultSchemaName;
 	}
 }

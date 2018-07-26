@@ -1007,7 +1007,7 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 		private class EndToEndDbContext<TEntity> : EndToEndDbContext
 			where TEntity : class
 		{
-			public EndToEndDbContext(Action<ModelBuilder> onModelCreating = null)
+			public EndToEndDbContext(Action<ModelBuilder> onModelCreating = default)
 				: base(onModelCreating)
 			{ }
 

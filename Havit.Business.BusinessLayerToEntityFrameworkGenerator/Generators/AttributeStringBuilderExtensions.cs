@@ -12,7 +12,12 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 			return $"{prefix}{propertyName}";
 		}
 
-		public static AttributeStringBuilder AddExtendedProperty(this AttributeStringBuilder builder, Table table, string propertyPrefix, string propertyName)
+	    public static AttributeStringBuilder AddStringExtendedProperty(this AttributeStringBuilder builder, Table table, string propertyPrefix, string propertyName)
+	    {
+	        return AddExtendedProperty(builder, table, propertyPrefix, propertyName, value => $"\"{value}\"");
+	    }
+
+        public static AttributeStringBuilder AddExtendedProperty(this AttributeStringBuilder builder, Table table, string propertyPrefix, string propertyName)
 		{
 			return AddExtendedProperty(builder, table, propertyPrefix, propertyName, value => value);
 		}

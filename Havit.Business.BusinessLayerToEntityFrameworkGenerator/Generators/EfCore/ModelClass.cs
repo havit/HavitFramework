@@ -150,7 +150,20 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 			if (TableHelper.GetEnumMode(modelClass.Table) == EnumMode.EnumClass)
 			{
 				var attributeBuilder = new AttributeStringBuilder("EnumClass");
-				attributeBuilder.AddExtendedProperty(modelClass.Table, "", "EnumPropertyNameField");
+			    string enumPropertyName = TableHelper.GetStringExtendedProperty(modelClass.Table, "EnumPropertyNameField");
+			    if (!string.IsNullOrEmpty(enumPropertyName))
+			    {
+			        if (modelClass.Properties.Any(prop => prop.Name == enumPropertyName))
+			        {
+			            enumPropertyName = $"nameof({enumPropertyName})";
+			        }
+			        else
+			        {
+			            enumPropertyName = $"\"{enumPropertyName}\"";
+			        }
+
+			        attributeBuilder.AddParameter("EnumPropertyName", enumPropertyName);
+                }
 
 				writer.WriteLine(attributeBuilder.ToString());
 			}
@@ -271,7 +284,18 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 
 				writer.WriteCommentSummary(collection.Description);
 
-				if (Helpers.NamingConventions.NamespaceHelper.GetNamespaceName(table, "Model") == Helpers.NamingConventions.NamespaceHelper.GetNamespaceName(collectionProperty.TargetTable, "Model"))
+			    var attributeBuilder = new AttributeStringBuilder("Collection");
+			    attributeBuilder.AddBoolExtendedProperty(table, $"Collection_{collectionProperty.Name}", "IncludeDeleted");
+			    attributeBuilder.AddBoolExtendedProperty(table, $"Collection_{collectionProperty.Name}", "LoadAll");
+			    attributeBuilder.AddStringExtendedProperty(table, $"Collection_{collectionProperty.Name}", "Sorting");
+			    attributeBuilder.AddStringExtendedProperty(table, $"Collection_{collectionProperty.Name}", "CloneMode");
+
+			    if (attributeBuilder.Parameters.Any())
+			    {
+			        writer.WriteLine(attributeBuilder.ToString());
+			    }
+
+			    if (Helpers.NamingConventions.NamespaceHelper.GetNamespaceName(table, "Model") == Helpers.NamingConventions.NamespaceHelper.GetNamespaceName(collectionProperty.TargetTable, "Model"))
 				{
 					writer.WriteLine($"public List<{ClassHelper.GetClassName(collectionProperty.TargetTable)}> {collection.PropertyName} {{ get; set; }}");
 				}

@@ -389,6 +389,55 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 		}
 
 		[TestClass]
+		public class ChangingPropertyToCollection
+		{
+			[Table("T_Masters")]
+			public class SourceMaster
+			{
+				public int Id { get; set; }
+
+				[CollectionTestExtendedProperties(FooBar = "Jiri")]
+				[ForeignKey("Column")]
+				public List<TargetDetail> Details { get; set; }
+			}
+
+			[Table("T_Details")]
+			public class SourceDetail
+			{
+				public int Id { get; set; }
+			}
+
+			[Table("T_Masters")]
+			public class TargetMaster
+			{
+				public int Id { get; set; }
+
+				[CollectionTestExtendedProperties(FooBar = "Jiri2")]
+				[ForeignKey("Column")]
+				public List<TargetDetail> Details { get; set; }
+			}
+
+			[Table("T_Details")]
+			public class TargetDetail
+			{
+				public int Id { get; set; }
+			}
+
+			[TestMethod]
+			public void Test()
+			{
+				var source = new EndToEndDbContext<SourceMaster>();
+				var target = new EndToEndDbContext<TargetMaster>();
+				var migrations = Generate(source.Model, target.Model);
+
+				Assert.AreEqual(1, migrations.Count);
+				Assert.AreEqual(
+					"EXEC sys.sp_updateextendedproperty @name=N'Test_Details_FooBar', @value=N'Jiri2', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'T_Masters'",
+					migrations[0].CommandText);
+			}
+		}
+
+		[TestClass]
 		public class AddingColumnWithProperty
 		{
 			[Table("Table")]

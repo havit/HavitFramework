@@ -10,17 +10,19 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata
 	{
 		public string Name { get; set; }
 
-		public Table Table { get; set; }
+	    public string Namespace { get; set; }
 
-		public List<EntityPrimaryKeyPart> PrimaryKeyParts { get; } = new List<EntityPrimaryKeyPart>();
+	    public Table Table { get; set; }
 
-		public List<EntityProperty> Properties { get; } = new List<EntityProperty>();
+	    public List<EntityPrimaryKeyPart> PrimaryKeyParts { get; } = new List<EntityPrimaryKeyPart>();
 
-		public List<EntityCollectionProperty> CollectionProperties { get; } = new List<EntityCollectionProperty>();
+	    public List<EntityProperty> Properties { get; } = new List<EntityProperty>();
 
-		public List<EntityForeignKey> ForeignKeys { get; } = new List<EntityForeignKey>();
+	    public List<EntityCollectionProperty> CollectionProperties { get; } = new List<EntityCollectionProperty>();
 
-		public EntityPrimaryKeyPart GetPrimaryKeyPartFor(Column column)
+	    public List<EntityForeignKey> ForeignKeys { get; } = new List<EntityForeignKey>();
+
+	    public EntityPrimaryKeyPart GetPrimaryKeyPartFor(Column column)
 		{
 			return PrimaryKeyParts.FirstOrDefault(p => p.Property.Column == column);
 		}

@@ -230,8 +230,9 @@
     <Compile Include="Generators\AttributeStringBuilderExtensions.cs" />
     <Compile Include="Generators\EfCoreGenerator.cs" />
     <Compile Include="Generators\EfCore\EntityTypeConfigurationClass.cs" />
+    <Compile Include="Generators\EfCore\MethodBasedStoredProcedureGenerator.cs" />
     <Compile Include="Generators\EfCore\ModelClass.cs" />
-    <Compile Include="Generators\EfCore\StoredProcedureGenerator.cs" />
+    <Compile Include="Generators\EfCore\FileBasedStoredProcedureGenerator.cs" />
     <Compile Include="Generators\Generator.cs" />
     <Compile Include="Generators\EntityTypeConfigurationClass.cs" />
     <Compile Include="Generators\ModelClass.cs" />
@@ -241,13 +242,16 @@
     <Compile Include="Helpers\NamingConventions\ClassHelper.cs" />
     <Compile Include="Helpers\NamingConventions\NamespaceHelper.cs" />
     <Compile Include="Helpers\SmoDataTypeExtensions.cs" />
+    <Compile Include="Helpers\StoredProcedureHelper.cs" />
     <Compile Include="Helpers\TypeHelper.cs" />
+    <Compile Include="Metadata\DbStoredProcedure.cs" />
     <Compile Include="Metadata\EntityCollectionProperty.cs" />
     <Compile Include="Metadata\EntityForeignKey.cs" />
     <Compile Include="Metadata\GeneratedModel.cs" />
     <Compile Include="Metadata\GeneratedModelClass.cs" />
     <Compile Include="Metadata\EntityPrimaryKeyPart.cs" />
     <Compile Include="Metadata\EntityProperty.cs" />
+    <Compile Include="Metadata\MetadataSource\DbStoredProcedureSource.cs" />
     <Compile Include="Metadata\MetadataSource\ModelClassSource.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

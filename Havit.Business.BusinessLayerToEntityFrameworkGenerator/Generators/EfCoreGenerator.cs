@@ -11,7 +11,7 @@ using Microsoft.SqlServer.Management.Smo;
 
 namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 {
-	public static class EfCoreGenerator
+    public static class EfCoreGenerator
 	{
 		public static void Generate(Database database, CsprojFile modelCsprojFile, CsprojFile entityCsprojFile, SourceControlClient sourceControlClient)
 		{
@@ -21,9 +21,12 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 			var modelClassSource = new ModelClassSource();
 			var modelClasses = modelClassSource.GetModelClasses(DatabaseHelper.Database);
 
-			var model = new GeneratedModel(modelClasses);
+		    var dbStoredProcedureSource = new DbStoredProcedureSource();
 
-			ConsoleHelper.WriteLineInfo("Generuji model");
+		    var model = new GeneratedModel(modelClasses);
+		    var dbStoredProcedures = dbStoredProcedureSource.GetStoredProcedures(database, model);
+
+		    ConsoleHelper.WriteLineInfo("Generuji model");
 			foreach (GeneratedModelClass modelClass in modelClasses)
 			{
 				ConsoleHelper.WriteLineInfo(modelClass.Name);
@@ -32,14 +35,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 			}
 
 			ConsoleHelper.WriteLineInfo("Generuji uložené procedury");
-			var storedProcedures = database.StoredProcedures.Cast<StoredProcedure>()
-				.Where(sp => !sp.IsSystemObject)
-				.ToArray();
-			foreach (StoredProcedure storedProcedure in storedProcedures)
-			{
-				ConsoleHelper.WriteLineInfo(storedProcedure.Name);
-				StoredProcedureGenerator.Generate(storedProcedure, entityCsprojFile);
-			}
+			MethodBasedStoredProcedureGenerator.Generate(dbStoredProcedures, model, entityCsprojFile, sourceControlClient);
 		}
 	}
 }

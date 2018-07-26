@@ -39,8 +39,9 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata.Metada
 			var modelClass = new GeneratedModelClass
 			{
 				Table = table,
-				Name = ClassHelper.GetClassName(table)
-			};
+				Name = ClassHelper.GetClassName(table),
+                Namespace = Helpers.NamingConventions.NamespaceHelper.GetNamespaceName(table, "Model")
+            };
 
 			DiscoverPrimaryKeys(modelClass);
 			DiscoverProperties(modelClass);

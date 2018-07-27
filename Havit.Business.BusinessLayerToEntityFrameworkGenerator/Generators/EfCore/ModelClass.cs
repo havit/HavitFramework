@@ -117,7 +117,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 
 		public static void WriteNamespaceClassBegin(CodeWriter writer, GeneratedModelClass modelClass, bool includeAttributes)
 		{
-			writer.WriteLine("namespace " + Helpers.NamingConventions.NamespaceHelper.GetNamespaceName(modelClass.Table, "Model"));
+			writer.WriteLine("namespace " + modelClass.Namespace);
 			writer.WriteLine("{");
 
 			string comment = TableHelper.GetDescription(modelClass.Table);

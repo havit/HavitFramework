@@ -30,7 +30,7 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties.Attributes
 
 		public override IDictionary<string, string> GetExtendedProperties(MemberInfo memberInfo) => new Dictionary<string, string>()
 			.AddIfNotDefault($"Collection_{memberInfo.Name}_IncludeDeleted", IncludeDeleted)
-			.AddIfNotDefault($"Collection_{memberInfo.Name}_LoadAll", LoadAll)
+			//.AddIfNotDefault($"Collection_{memberInfo.Name}_LoadAll", LoadAll)
 			.AddIfNotDefault($"Collection_{memberInfo.Name}_Sorting", Sorting)
 			.AddIfNotDefault($"Collection_{memberInfo.Name}_CloneMode", CloneMode);
 	}

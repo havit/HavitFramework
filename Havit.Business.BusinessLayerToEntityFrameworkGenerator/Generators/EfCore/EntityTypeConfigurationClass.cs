@@ -79,7 +79,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 		#region WriteNamespaceClassConstructorBegin
 		public static void WriteNamespaceClassConstructorBegin(CodeWriter writer, GeneratedModelClass modelClass, bool includeAttributes)
 		{
-			writer.WriteLine("namespace " + modelClass.Namespace);
+			writer.WriteLine("namespace " + Helpers.NamingConventions.NamespaceHelper.GetNamespaceName(modelClass.Table, "Entity.Configurations"));
 			writer.WriteLine("{");
 
 			writer.WriteLine(String.Format("public class {0}Configuration : IEntityTypeConfiguration<{0}>", modelClass.Name));

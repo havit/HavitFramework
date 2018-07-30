@@ -21,7 +21,8 @@ namespace Havit.Business.CodeMigrations.DbInjections
             infrastructure.AddOrUpdateExtension(new DbInjectionsExtension()
                 .WithAnnotationProvider<StoredProcedureAnnotationProvider>()
                 .WithDropSqlGenerator<StoredProcedureDropSqlGenerator>()
-                .WithAnnotationProvider<ExtendedPropertiesAnnotationProvider>());
+                .WithAnnotationProvider<ExtendedPropertiesAnnotationProvider>()
+				.WithAnnotationProvider<StoredProcedureAttachPropertyAnnotationProvider>());
         }
 
         public static void ForDbInjections(this ModelBuilder modelBuilder, IDbInjectionAnnotationProvider dbInjectionAnnotationProvider, Assembly injectionsAssembly)

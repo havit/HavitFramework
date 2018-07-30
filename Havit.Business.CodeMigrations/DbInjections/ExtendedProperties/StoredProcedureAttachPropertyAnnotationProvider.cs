@@ -10,12 +10,12 @@ namespace Havit.Business.CodeMigrations.DbInjections.ExtendedProperties
 	{
 		protected override List<IAnnotation> GetAnnotations(StoredProcedureDbInjection dbAnnotation, MemberInfo memberInfo)
 		{
-			string tableName = ParseTableName(dbAnnotation.ProcedureName);
-			if (!String.IsNullOrEmpty(tableName))
+			Type attachedType = GetAttachedType(memberInfo);
+			if (attachedType != null)
 			{
 				return new List<IAnnotation>
 				{
-					new Annotation($"ExtendedProperty:PROCEDURE:{dbAnnotation.ProcedureName}:Attach", tableName)
+					new Annotation($"ExtendedProperty:PROCEDURE:{dbAnnotation.ProcedureName}:Attach", attachedType.Name)
 				};
 			}
 
@@ -27,10 +27,15 @@ namespace Havit.Business.CodeMigrations.DbInjections.ExtendedProperties
 			return new List<StoredProcedureDbInjection>();
 		}
 
-		private string ParseTableName(string procedureName)
+		private static Type GetAttachedType(MemberInfo method)
 		{
-			var split = procedureName.Split('_');
-			return split.Length == 1 ? null : split[0];
+			Type baseType = method.DeclaringType.BaseType;
+			if (baseType?.GetGenericTypeDefinition() != typeof(StoredProcedureDbInjector<>))
+			{
+				return null;
+			}
+
+			return baseType.GetGenericArguments()[0];
 		}
 	}
 }

@@ -11,11 +11,11 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 		public static void Generate(List<DbStoredProcedure> storedProcedures, CsprojFile modelCsprojFile)
 		{
 		    foreach (DbStoredProcedure dbStoredProcedure in storedProcedures)
-            {
-                string fileName = Path.Combine(Path.GetDirectoryName(modelCsprojFile.Path), "Entity", BusinessLayerGenerator.Helpers.FileHelper.GetFilename("Sql.StoredProcedures", dbStoredProcedure.Name, ".v01.sql", ""));
-                Directory.CreateDirectory(Path.GetDirectoryName(fileName));
+			{
+				string fileName = Path.Combine(Path.GetDirectoryName(modelCsprojFile.Path), dbStoredProcedure.GeneratedFile);
+				Directory.CreateDirectory(Path.GetDirectoryName(fileName));
                 dbStoredProcedure.StoredProcedure.Script(new ScriptingOptions() { FileName = fileName });
-            }
+			}
 		}
 	}
 }

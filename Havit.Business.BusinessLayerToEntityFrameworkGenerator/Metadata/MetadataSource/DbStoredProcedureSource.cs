@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Havit.Business.BusinessLayerGenerator.Helpers;
 using Microsoft.SqlServer.Management.Smo;
@@ -34,13 +35,15 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata.Metada
                 name = storedProcedure.Name;
             }
 
-            return new DbStoredProcedure
-            {
-                FullName = storedProcedure.Name,
-                Name = name,
-                EntityName = tableName,
-                StoredProcedure = storedProcedure
-            };
+	        return new DbStoredProcedure
+	        {
+		        FullName = storedProcedure.Name,
+		        Name = name,
+		        EntityName = tableName,
+		        StoredProcedure = storedProcedure,
+
+		        GeneratedFile = Path.Combine("Entity", BusinessLayerGenerator.Helpers.FileHelper.GetFilename("Sql.StoredProcedures", storedProcedure.Name, ".sql", ""))
+	        };
         }
 
         private (string tableName, string name) ParseStoredProcedureName(string storedProcedureName)

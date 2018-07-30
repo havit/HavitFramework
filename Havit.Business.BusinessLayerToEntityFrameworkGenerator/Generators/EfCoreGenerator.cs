@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Havit.Business.BusinessLayerGenerator.Csproj;
 using Havit.Business.BusinessLayerGenerator.Helpers;
 using Havit.Business.BusinessLayerGenerator.TfsClient;
@@ -11,7 +9,7 @@ using Microsoft.SqlServer.Management.Smo;
 
 namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 {
-    public static class EfCoreGenerator
+	public static class EfCoreGenerator
 	{
 		public static void Generate(Database database, CsprojFile modelCsprojFile, CsprojFile entityCsprojFile, SourceControlClient sourceControlClient)
 		{
@@ -35,6 +33,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 			}
 
 			ConsoleHelper.WriteLineInfo("Generuji uložené procedury");
+			FileBasedStoredProcedureGenerator.Generate(dbStoredProcedures, entityCsprojFile);
 			MethodBasedStoredProcedureGenerator.Generate(dbStoredProcedures, model, entityCsprojFile, sourceControlClient);
 		}
 	}

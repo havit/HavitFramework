@@ -10,6 +10,8 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata
 
         public string EntityName { get; set; }
 
+	    public string GeneratedFile { get; set; }
+
         public StoredProcedure StoredProcedure { get; set; }
     }
 }

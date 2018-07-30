@@ -2,19 +2,15 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using Havit.Business.BusinessLayerGenerator.Csproj;
-using Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions;
 using Havit.Business.BusinessLayerGenerator.TfsClient;
 using Havit.Business.BusinessLayerGenerator.Writers;
 using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata;
-using Microsoft.SqlServer.Management.Smo;
 using NamespaceHelper = Havit.Business.BusinessLayerToEntityFrameworkGenerator.Helpers.NamingConventions.NamespaceHelper;
 
 namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCore
 {
-    public static class MethodBasedStoredProcedureGenerator
+	public static class MethodBasedStoredProcedureGenerator
     {
         public static void Generate(List<DbStoredProcedure> storedProcedure, GeneratedModel model, CsprojFile modelCsprojFile, SourceControlClient sourceControlClient)
         {
@@ -43,12 +39,12 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
                 CodeWriter codeWriter = new CodeWriter(fileName, sourceControlClient);
 
                 WriteUsings(codeWriter, entityClass);
-                WriteNamespaceClassConstructorBegin(codeWriter, spClassName);
+                WriteNamespaceClassConstructorBegin(codeWriter, entityClass, spClassName);
 
                 foreach (DbStoredProcedure dbStoredProcedure in fileGroup)
                 {
                     WriteMethodBegin(codeWriter, dbStoredProcedure);
-                    WriteCreateOrAlterStatement(codeWriter, dbStoredProcedure);
+                    WriteProcedureStatement(codeWriter, dbStoredProcedure);
                     WriteMethodEnd(codeWriter);
                 }
 
@@ -67,6 +63,8 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
             writer.WriteLine("using System.Collections.Generic;");
             writer.WriteLine("using System.Linq;");
             writer.WriteLine("using System.Text;");
+			writer.WriteLine("using Havit.Business.CodeMigrations.DbInjections.ExtendedProperties.Attributes;");
+			writer.WriteLine("using Havit.Business.CodeMigrations.DbInjections.StoredProcedures;");
             if (entityClass != null)
             {
                 writer.WriteLine($"using {entityClass.Namespace};");
@@ -75,42 +73,26 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
             writer.WriteLine();
         }
 
-        private static void WriteNamespaceClassConstructorBegin(CodeWriter writer, string spClassName)
+        private static void WriteNamespaceClassConstructorBegin(CodeWriter writer, GeneratedModelClass entityClass, string spClassName)
         {
             writer.WriteLine("namespace " + String.Format("{0}.StoredProcedures", NamespaceHelper.GetDefaultNamespace("Entity")));
             writer.WriteLine("{");
 
-            writer.WriteLine(String.Format("public static class {0}", spClassName));
+            writer.WriteLine(String.Format("public class {0} : StoredProcedureDbInjector<{1}>", spClassName, entityClass.Name));
             writer.WriteLine("{");
         }
 
         private static void WriteMethodBegin(CodeWriter writer, DbStoredProcedure dbStoredProcedure)
         {
-            var parameterList = "";
-            if (!string.IsNullOrEmpty(dbStoredProcedure.EntityName))
-            {
-                parameterList = $"(this {dbStoredProcedure.EntityName} {ConventionsHelper.GetCammelCase(dbStoredProcedure.EntityName)})";
-            }
-
-            writer.WriteLine(String.Format("public static string {0}{1}", dbStoredProcedure.Name, parameterList));
+            writer.WriteLine(String.Format("public StoredProcedureDbInjection {0}()", dbStoredProcedure.Name));
             writer.WriteLine("{");
         }
 
-        private static void WriteCreateOrAlterStatement(CodeWriter writer, DbStoredProcedure dbStoredProcedure)
+        private static void WriteProcedureStatement(CodeWriter writer, DbStoredProcedure dbStoredProcedure)
         {
-            writer.WriteLine("return @\"");
-
-            var scriptingOptions = new ScriptingOptions();
-            //typeof(ScriptingOptions).GetProperty("ScriptForAlter", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(scriptingOptions, true);
-
-            string[] lines = dbStoredProcedure.StoredProcedure.Script(scriptingOptions)
-                .Cast<string>()
-                .SkipWhile(s => !s.Trim().StartsWith("CREATE"))
-                .ToArray();
-
-            writer.WriteLines(lines);
-
-            writer.WriteLine("\";");
+	        string directoryName = Path.GetDirectoryName(dbStoredProcedure.GeneratedFile).Replace(Path.DirectorySeparatorChar, '.').Replace("Entity.", "");
+	        var resourceName = String.Format("{0}.{1}.{2}", NamespaceHelper.GetDefaultNamespace("Entity"), directoryName, Path.GetFileName(dbStoredProcedure.GeneratedFile));
+	        writer.WriteLine($"return Procedure(\"{resourceName}\");");
         }
 
         private static void WriteMethodEnd(CodeWriter writer)

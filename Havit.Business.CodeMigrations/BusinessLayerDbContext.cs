@@ -1,12 +1,8 @@
-﻿using System.Reflection;
-using Havit.Business.CodeMigrations.Conventions;
+﻿using Havit.Business.CodeMigrations.Conventions;
+using Havit.Business.CodeMigrations.DbInjections;
 using Havit.Business.CodeMigrations.ExtendedProperties;
 using Havit.Business.CodeMigrations.Infrastructure;
-using Havit.Business.CodeMigrations.StoredProcedures;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.SqlServer.Migrations.Internal;
 using DbContext = Havit.Data.Entity.DbContext;
 
 namespace Havit.Business.CodeMigrations
@@ -28,7 +24,7 @@ namespace Havit.Business.CodeMigrations
 
 			optionsBuilder.UseCodeMigrationsInfrastructure();
 			optionsBuilder.UseSqlServerExtendedProperties();
-			optionsBuilder.UseStoredProcedures();
+			optionsBuilder.UseDbInjections();
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -47,11 +43,6 @@ namespace Havit.Business.CodeMigrations
 			modelBuilder.ApplyDefaultsForStrings();
 			modelBuilder.ApplyDefaultNamespaces();
 			modelBuilder.ApplyCollectionExtendedProperties();
-		}
-
-		protected virtual void AddStoredProceduresAnnotations(ModelBuilder modelBuilder, Assembly entityAssembly = null)
-		{
-			StoredProceduresAnnotationsHelper.AddStoredProcedureAnnotations(modelBuilder.Model, entityAssembly ?? GetType().Assembly);
 		}
 	}
 }

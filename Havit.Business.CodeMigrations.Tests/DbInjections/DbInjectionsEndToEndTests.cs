@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Havit.Business.CodeMigrations.Tests.StoredProcedures
+namespace Havit.Business.CodeMigrations.Tests.DbInjections
 {
-    public class StoredProceduresEndToEndTests
+    public class DbInjectionsEndToEndTests
     {
-        //[TestClass]
+        [TestClass]
         public class AddingStoredProcedure
         {
             [Table("Dummy")]
@@ -43,7 +43,37 @@ namespace Havit.Business.CodeMigrations.Tests.StoredProcedures
             }
         }
 
-        //[TestClass]
+        [TestClass]
+        public class ModifyingStoredProcedure
+        {
+            [Table("Dummy")]
+            private class DummySource
+            {
+                public int Id { get; set; }
+            }
+
+            [Table("Dummy")]
+            private class DummyTarget
+            {
+                public int Id { get; set; }
+            }
+
+            [TestMethod]
+            public void Test()
+            {
+                var source = new EndToEndDbContext<DummySource>(builder => builder.HasAnnotation("StoredProcedure:GetTables", "CREATE OR ALTER PROCEDURE [dbo].[GetTables]() AS BEGIN SELECT * FROM [sys].[tables] END"));
+                var newProcedure = "CREATE OR ALTER PROCEDURE [dbo].[GetTables]() AS BEGIN SELECT * FROM [sys].[tables] WHERE schema_id = 1 END";
+                var target = new EndToEndDbContext<DummyTarget>(builder => builder.HasAnnotation("StoredProcedure:GetTables", newProcedure));
+                var migrations = Generate(source.Model, target.Model);
+
+                Assert.AreEqual(1, migrations.Count);
+                Assert.AreEqual(
+                    newProcedure,
+                    migrations[0].CommandText);
+            }
+        }
+
+        [TestClass]
         public class DeletingStoredProcedure
         {
             [Table("Dummy")]
@@ -67,7 +97,7 @@ namespace Havit.Business.CodeMigrations.Tests.StoredProcedures
 
                 Assert.AreEqual(1, migrations.Count);
                 Assert.AreEqual(
-                    "DROP PROCEDURE [dbo].[GetTables]",
+                    "DROP PROCEDURE [GetTables]",
                     migrations[0].CommandText);
             }
         }
@@ -104,7 +134,7 @@ namespace Havit.Business.CodeMigrations.Tests.StoredProcedures
         private class EndToEndDbContext<TEntity> : EndToEndDbContext
             where TEntity : class
         {
-            public EndToEndDbContext(Action<ModelBuilder> onModelCreating = default)
+            public EndToEndDbContext(Action<ModelBuilder> onModelCreating = null)
                 : base(onModelCreating)
             { }
 

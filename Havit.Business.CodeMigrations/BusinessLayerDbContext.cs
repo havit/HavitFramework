@@ -1,4 +1,5 @@
-﻿using Havit.Business.CodeMigrations.Conventions;
+﻿using System.Reflection;
+using Havit.Business.CodeMigrations.Conventions;
 using Havit.Business.CodeMigrations.DbInjections;
 using Havit.Business.CodeMigrations.ExtendedProperties;
 using Havit.Business.CodeMigrations.Infrastructure;
@@ -44,5 +45,10 @@ namespace Havit.Business.CodeMigrations
 			modelBuilder.ApplyDefaultNamespaces();
 			modelBuilder.ApplyCollectionExtendedProperties();
 		}
+
+	    protected void RegisterDbInjections(ModelBuilder modelBuilder, Assembly injectionsAssembly = default)
+	    {
+            modelBuilder.ForDbInjections(injectionsAssembly ?? Assembly.GetCallingAssembly());
+	    }
 	}
 }

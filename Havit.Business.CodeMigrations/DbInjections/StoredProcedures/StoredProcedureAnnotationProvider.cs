@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
-namespace Havit.Business.CodeMigrations.DbInjections
+namespace Havit.Business.CodeMigrations.DbInjections.StoredProcedures
 {
     public class StoredProcedureAnnotationProvider : DbInjectionAnnotationProvider<StoredProcedureDbInjection>
     {

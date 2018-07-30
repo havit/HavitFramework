@@ -5,5 +5,7 @@
         public string CreateSql { get; set; }
 
         public string ProcedureName { get; set; }
+
+        string IDbInjection.ObjectName => ProcedureName;
     }
 }

@@ -2,5 +2,6 @@
 {
 	public interface IDbInjection
 	{
+        string ObjectName { get; }
 	}
 }

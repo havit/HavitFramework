@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Havit.Business.CodeMigrations.DbInjections.ExtendedProperties;
 using Havit.Business.CodeMigrations.DbInjections.StoredProcedures;
 using Havit.Business.CodeMigrations.Infrastructure;
 using Microsoft.EntityFrameworkCore;
@@ -13,11 +14,14 @@ namespace Havit.Business.CodeMigrations.DbInjections
     {
         public static void UseDbInjections(this DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.Options.GetExtension<CompositeMigrationsAnnotationProviderExtension>().WithAnnotationProvider<DbInjectionsAnnotationProvider>();
+            optionsBuilder.Options.GetExtension<CompositeMigrationsAnnotationProviderExtension>().WithAnnotationProvider<DbInjectionsMigrationsAnnotationProvider>();
             optionsBuilder.Options.GetExtension<CompositeMigrationsSqlGeneratorExtension>().WithGeneratorType<DbInjectionMigrationsGenerator>();
 
             IDbContextOptionsBuilderInfrastructure infrastructure = optionsBuilder;
-            infrastructure.AddOrUpdateExtension(new DbInjectionsExtension().With<StoredProcedureAnnotationProvider, StoredProcedureDropSqlGenerator>());
+            infrastructure.AddOrUpdateExtension(new DbInjectionsExtension()
+                .WithAnnotationProvider<StoredProcedureAnnotationProvider>()
+                .WithDropSqlGenerator<StoredProcedureDropSqlGenerator>()
+                .WithAnnotationProvider<ExtendedPropertiesAnnotationProvider>());
         }
 
         public static void ForDbInjections(this ModelBuilder modelBuilder, IDbInjectionAnnotationProvider dbInjectionAnnotationProvider, Assembly injectionsAssembly)

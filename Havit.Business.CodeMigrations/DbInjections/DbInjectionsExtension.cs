@@ -14,12 +14,17 @@ namespace Havit.Business.CodeMigrations.DbInjections
 
         public string LogFragment => "";
 
-        public DbInjectionsExtension With<TAnnotationProvider, TDropSqlGenerator>()
-            where TAnnotationProvider : IDbInjectionAnnotationProvider
-            where TDropSqlGenerator : IDbInjectionDropSqlGenerator
+        public DbInjectionsExtension WithAnnotationProvider<T>()
+            where T : IDbInjectionAnnotationProvider
         {
-            annotationProviders.Add(typeof(TAnnotationProvider));
-            dropSqlGenerators.Add(typeof(TDropSqlGenerator));
+            annotationProviders.Add(typeof(T));
+            return this;
+        }
+
+        public DbInjectionsExtension WithDropSqlGenerator<T>()
+            where T : IDbInjectionDropSqlGenerator
+        {
+            dropSqlGenerators.Add(typeof(T));
             return this;
         }
 

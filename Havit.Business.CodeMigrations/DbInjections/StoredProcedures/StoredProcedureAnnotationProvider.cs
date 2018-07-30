@@ -7,17 +7,19 @@ namespace Havit.Business.CodeMigrations.DbInjections.StoredProcedures
 {
     public class StoredProcedureAnnotationProvider : DbInjectionAnnotationProvider<StoredProcedureDbInjection>
     {
+        private const string AnnotationPrefix = "StoredProcedure:";
+
         protected override List<IAnnotation> GetAnnotations(StoredProcedureDbInjection dbAnnotation, MemberInfo memberInfo)
         {
             return new List<IAnnotation>
             {
-                new Annotation($"StoredProcedure:{memberInfo.Name}:{dbAnnotation.ProcedureName}", dbAnnotation.CreateSql)
+                new Annotation($"{AnnotationPrefix}{memberInfo.Name}:{dbAnnotation.ProcedureName}", dbAnnotation.CreateSql)
             };
         }
 
         protected override List<StoredProcedureDbInjection> GetDbInjections(List<IAnnotation> annotations)
         {
-            var spAnnotations = annotations.Where(annotation => annotation.Name.StartsWith("StoredProcedure:"));
+            var spAnnotations = annotations.Where(annotation => annotation.Name.StartsWith(AnnotationPrefix));
 
             return spAnnotations.Select(annotation => new StoredProcedureDbInjection
             {

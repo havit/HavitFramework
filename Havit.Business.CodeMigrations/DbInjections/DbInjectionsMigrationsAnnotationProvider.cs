@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Havit.Business.CodeMigrations.DbInjections
 {
-    public class DbInjectionsAnnotationProvider : MigrationsAnnotationProvider
+    public class DbInjectionsMigrationsAnnotationProvider : MigrationsAnnotationProvider
     {
         private readonly IDbInjectionAnnotationProvider annotationProvider;
 
-        public DbInjectionsAnnotationProvider(MigrationsAnnotationProviderDependencies dependencies, IDbInjectionAnnotationProvider annotationProvider)
+        public DbInjectionsMigrationsAnnotationProvider(MigrationsAnnotationProviderDependencies dependencies, IDbInjectionAnnotationProvider annotationProvider)
             : base(dependencies)
         {
             this.annotationProvider = annotationProvider;

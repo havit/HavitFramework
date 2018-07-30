@@ -14,14 +14,13 @@ namespace Havit.Business.CodeMigrations.DbInjections
         {
             optionsBuilder.Options.GetExtension<CompositeMigrationsAnnotationProviderExtension>().WithAnnotationProvider<DbInjectionsAnnotationProvider>();
             optionsBuilder.Options.GetExtension<CompositeMigrationsSqlGeneratorExtension>().WithGeneratorType<DbInjectionMigrationsGenerator>();
+
+            IDbContextOptionsBuilderInfrastructure infrastructure = optionsBuilder;
+            infrastructure.AddOrUpdateExtension(new DbInjectionsExtension().With<StoredProcedureAnnotationProvider, StoredProcedureDropSqlGenerator>());
         }
 
-        public static void ForDbInjections(this ModelBuilder modelBuilder, Assembly injectionsAssembly)
+        public static void ForDbInjections(this ModelBuilder modelBuilder, IDbInjectionAnnotationProvider dbInjectionAnnotationProvider, Assembly injectionsAssembly)
         {
-            var dbInjectionAnnotationProvider = new CompositeDbInjectionAnnotationProvider(new[]
-            {
-                new StoredProcedureAnnotationProvider()
-            });
             Type[] dbInjectorTypes = DbInjectionsTypeHelper.GetDbInjectors(injectionsAssembly).ToArray();
 
             foreach (Type dbInjectorType in dbInjectorTypes)

@@ -4,6 +4,7 @@ using Havit.Business.CodeMigrations.DbInjections;
 using Havit.Business.CodeMigrations.ExtendedProperties;
 using Havit.Business.CodeMigrations.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using DbContext = Havit.Data.Entity.DbContext;
 
 namespace Havit.Business.CodeMigrations
@@ -48,7 +49,7 @@ namespace Havit.Business.CodeMigrations
 
 	    protected void RegisterDbInjections(ModelBuilder modelBuilder, Assembly injectionsAssembly = default)
 	    {
-            modelBuilder.ForDbInjections(injectionsAssembly ?? Assembly.GetCallingAssembly());
+            modelBuilder.ForDbInjections(this.GetService<IDbInjectionAnnotationProvider>(), injectionsAssembly ?? Assembly.GetCallingAssembly());
 	    }
 	}
 }

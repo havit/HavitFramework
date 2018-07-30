@@ -11,22 +11,17 @@ namespace Havit.Business.CodeMigrations.DbInjections
     public class DbInjectionMigrationsGenerator : IMigrationsSqlGenerator
     {
         private readonly IDbInjectionAnnotationProvider dbInjectionAnnotationProvider;
-        private readonly IDbInjectionDropSqlResolver injectionDropSqlResolver;
+        private readonly IDbInjectionDropSqlResolver dbInjectionDropSqlResolver;
 
         public MigrationsSqlGeneratorDependencies Dependencies { get; }
 
-        public DbInjectionMigrationsGenerator(MigrationsSqlGeneratorDependencies dependencies)
+        public DbInjectionMigrationsGenerator(MigrationsSqlGeneratorDependencies dependencies,
+            IDbInjectionAnnotationProvider dbInjectionAnnotationProvider,
+            IDbInjectionDropSqlResolver dbInjectionDropSqlResolver)
         {
+            this.dbInjectionAnnotationProvider = dbInjectionAnnotationProvider;
+            this.dbInjectionDropSqlResolver = dbInjectionDropSqlResolver;
             Dependencies = dependencies;
-            dbInjectionAnnotationProvider = new CompositeDbInjectionAnnotationProvider(new[]
-            {
-                new StoredProcedureAnnotationProvider()
-            });
-            injectionDropSqlResolver = new DbInjectionDropSqlResolver(new[]
-            {
-                new StoredProcedureDropSqlGenerator()
-            });
-            
         }
 
         public IReadOnlyList<MigrationCommand> Generate(IReadOnlyList<MigrationOperation> operations, IModel model = null)
@@ -50,7 +45,7 @@ namespace Havit.Business.CodeMigrations.DbInjections
         {
             List<IDbInjection> dbInjections = dbInjectionAnnotationProvider.GetDbInjections(oldAnnotations);
 
-            List<string> scripts = injectionDropSqlResolver.ResolveSqlScripts(dbInjections);
+            List<string> scripts = dbInjectionDropSqlResolver.ResolveSqlScripts(dbInjections);
 
             foreach (string sql in scripts)
             {

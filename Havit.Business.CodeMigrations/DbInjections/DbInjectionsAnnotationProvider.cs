@@ -8,15 +8,12 @@ namespace Havit.Business.CodeMigrations.DbInjections
 {
     public class DbInjectionsAnnotationProvider : MigrationsAnnotationProvider
     {
-        private readonly CompositeDbInjectionAnnotationProvider annotationProvider;
+        private readonly IDbInjectionAnnotationProvider annotationProvider;
 
-        public DbInjectionsAnnotationProvider(MigrationsAnnotationProviderDependencies dependencies)
+        public DbInjectionsAnnotationProvider(MigrationsAnnotationProviderDependencies dependencies, IDbInjectionAnnotationProvider annotationProvider)
             : base(dependencies)
         {
-            annotationProvider = new CompositeDbInjectionAnnotationProvider(new[]
-            {
-                new StoredProcedureAnnotationProvider()
-            });
+            this.annotationProvider = annotationProvider;
         }
 
         public override IEnumerable<IAnnotation> For(IModel model)

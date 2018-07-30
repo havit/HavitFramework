@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace Havit.Business.CodeMigrations.ExtendedProperties.Attributes
 {
+	[AttributeUsage(AttributeTargets.Property)]
 	public class CollectionAttribute : ExtendedPropertiesAttribute
 	{
 		/// <summary>

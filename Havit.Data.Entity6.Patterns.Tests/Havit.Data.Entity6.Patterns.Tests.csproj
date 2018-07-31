@@ -107,8 +107,8 @@
     <Compile Include="Infrastructure\FakeItemWithDeletedDataSource.cs" />
     <Compile Include="Infrastructure\DbItemWithDeletedRepository.cs" />
     <Compile Include="Infrastructure\ItemWithNullableProperty.cs" />
-    <Compile Include="Seeds\DataSeedRunnerTests.cs" />
-    <Compile Include="Seeds\DbDataSeedPersisterTests.cs" />
+    <Compile Include="DataSeeds\DataSeedRunnerTests.cs" />
+    <Compile Include="DataSeeds\DbDataSeedPersisterTests.cs" />
     <Compile Include="SoftDeletes\SoftDeleteManagerTests.cs" />
     <Compile Include="DataSources\Fakes\FakeDataSourceTests.cs" />
     <Compile Include="Infrastructure\TestDbContext.cs" />

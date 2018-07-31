@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Havit.Data.Entity.Patterns.Tests.Seeds
+namespace Havit.Data.Entity.Patterns.Tests.DataSeeds
 {
 	[TestClass]
 	public class DbDataSeedPersisterTests

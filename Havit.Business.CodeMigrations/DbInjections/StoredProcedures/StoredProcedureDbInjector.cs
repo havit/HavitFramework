@@ -24,6 +24,6 @@ namespace Havit.Business.CodeMigrations.DbInjections.StoredProcedures
 
         protected virtual Assembly ResourceAssembly => GetType().Assembly;
 
-        private string ParseProcedureName(string createScript) => Regex.Match(createScript, @"CREATE(\s+)PROCEDURE(\s+)(\[.*?\]\.)?\[(?<proc_name>.*)\]").Groups["proc_name"].Value;
+        private string ParseProcedureName(string createScript) => Regex.Match(createScript, @"CREATE(\s+)PROCEDURE(\s+)(\[.*?\]\.)?\[?(?<proc_name>[\w]*)\]?").Groups["proc_name"].Value;
     }
 }

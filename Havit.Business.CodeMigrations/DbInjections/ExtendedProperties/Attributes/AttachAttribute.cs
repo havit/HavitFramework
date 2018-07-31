@@ -12,7 +12,7 @@ namespace Havit.Business.CodeMigrations.DbInjections.ExtendedProperties.Attribut
 
 		public AttachAttribute(string entityName)
 		{
-			Contract.Requires<ArgumentNullException>(string.IsNullOrEmpty(entityName));
+			Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(entityName));
 
 			EntityName = entityName;
 		}

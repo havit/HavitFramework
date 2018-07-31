@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using Havit.Business.CodeMigrations.DbInjections.ExtendedProperties.Attributes;
 using Havit.Business.CodeMigrations.DbInjections.StoredProcedures;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
@@ -10,12 +12,12 @@ namespace Havit.Business.CodeMigrations.DbInjections.ExtendedProperties
 	{
 		protected override List<IAnnotation> GetAnnotations(StoredProcedureDbInjection dbAnnotation, MemberInfo memberInfo)
 		{
-			Type attachedType = GetAttachedType(memberInfo);
-			if (attachedType != null)
+			string attachedEntityName = GetAttachedEntityName(memberInfo);
+			if (attachedEntityName != null)
 			{
 				return new List<IAnnotation>
 				{
-					new Annotation($"ExtendedProperty:PROCEDURE:{dbAnnotation.ProcedureName}:Attach", attachedType.Name)
+					new Annotation($"ExtendedProperty:PROCEDURE:{dbAnnotation.ProcedureName}:Attach", attachedEntityName)
 				};
 			}
 
@@ -27,15 +29,11 @@ namespace Havit.Business.CodeMigrations.DbInjections.ExtendedProperties
 			return new List<StoredProcedureDbInjection>();
 		}
 
-		private static Type GetAttachedType(MemberInfo method)
+		private static string GetAttachedEntityName(MemberInfo method)
 		{
-			Type baseType = method.DeclaringType.BaseType;
-			if (baseType?.GetGenericTypeDefinition() != typeof(StoredProcedureDbInjector<>))
-			{
-				return null;
-			}
+			AttachAttribute attachAttribute = method.DeclaringType.GetCustomAttributes<AttachAttribute>().FirstOrDefault();
 
-			return baseType.GetGenericArguments()[0];
+			return attachAttribute?.EntityName;
 		}
 	}
 }

@@ -76,17 +76,11 @@ namespace Havit.Data.Entity.Patterns.Tests.DataSeeds
             {
                 public override void SeedData()
                 {
-                    IDataSeedFor<ItemWithDeleted> dataSeed = For(
-                            new ItemWithDeleted() { Deleted = DateTime.Now },
+                    Seed(For(new ItemWithDeleted() { Deleted = DateTime.Now },
                             new ItemWithDeleted() { Deleted = DateTime.Now.AddDays(-1) },
                             new ItemWithDeleted() { Deleted = DateTime.Now.AddHours(-1) })
-                        .PairBy(s => s.Id);
-                    dataSeed.Configuration.ExcludeUpdateExpressions = new List<Expression<Func<ItemWithDeleted, object>>>()
-                    {
-                        (entity) => entity.Deleted
-                    };
-
-                    Seed(dataSeed);
+                        .PairBy(s => s.Id)
+                        .ExcludeUpdate(s => s.Deleted));
                 }
             }
         }

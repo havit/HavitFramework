@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace Havit.Business.CodeMigrations.DbInjections.StoredProcedures
 {
-    public class StoredProcedureDbInjector<T> : IDbInjector
+    public class StoredProcedureDbInjector : IDbInjector
     {
         protected StoredProcedureDbInjection Procedure(string createScriptResourceName)
         {

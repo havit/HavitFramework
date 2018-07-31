@@ -78,7 +78,11 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
             writer.WriteLine("namespace " + String.Format("{0}.StoredProcedures", NamespaceHelper.GetDefaultNamespace("Entity")));
             writer.WriteLine("{");
 
-            writer.WriteLine(String.Format("public class {0} : StoredProcedureDbInjector<{1}>", spClassName, entityClass.Name));
+	        if (entityClass != null)
+	        {
+				writer.WriteLine(String.Format("[Attach(nameof({0}))]", entityClass.Name));
+	        }
+            writer.WriteLine(String.Format("public class {0} : StoredProcedureDbInjector", spClassName));
             writer.WriteLine("{");
         }
 

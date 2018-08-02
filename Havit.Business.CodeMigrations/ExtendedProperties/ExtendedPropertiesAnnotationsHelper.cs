@@ -40,7 +40,7 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 				name = default;
 				return false;
 			}
-			schema = match.Groups[SchemaGroupName].Value;
+			schema = NullIfEmpty(match.Groups[SchemaGroupName].Value);
 			level1Type = match.Groups[Level1TypeGroupName].Value;
 			level1Name = match.Groups[Level1NameGroupName].Value;
 			name = match.Groups[NameGroupName].Value;
@@ -77,5 +77,7 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 		private static string BuildAnnotationName(string name) => $"{ExtendedPropertyName}{Separator}{name}";
 
 		private static string BuildExtraDatabaseObjectAnnotationName(string name, string schema, string level1Type, string level1Name) => $"{ExtendedPropertyName}{Separator}{SchemaKey}={schema}{Separator}{level1Type}={level1Name}{Separator}{name}";
+
+		private static string NullIfEmpty(string s) => string.IsNullOrEmpty(s) ? null : s;
 	}
 }

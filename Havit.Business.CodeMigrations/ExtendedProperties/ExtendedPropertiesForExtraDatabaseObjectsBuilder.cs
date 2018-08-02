@@ -20,5 +20,15 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 		{
 			return ForExtraDatabaseObject(extendedProperties, "PROCEDURE", procedure, schema);
 		}
+
+		public static IEnumerable<IAnnotation> ForView(IDictionary<string, string> extendedProperties, string view, string schema = null)
+		{
+			return ForExtraDatabaseObject(extendedProperties, "VIEW", view, schema);
+		}
+
+		public static IEnumerable<IAnnotation> ForFunction(IDictionary<string, string> extendedProperties, string function, string schema = null)
+		{
+			return ForExtraDatabaseObject(extendedProperties, "FUNCTION", function, schema);
+		}
 	}
 }

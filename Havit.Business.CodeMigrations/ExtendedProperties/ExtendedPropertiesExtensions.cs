@@ -4,6 +4,7 @@ using Havit.Business.CodeMigrations.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using static Havit.Business.CodeMigrations.ExtendedProperties.ExtendedPropertiesAnnotationsHelper;
 
 namespace Havit.Business.CodeMigrations.ExtendedProperties
 {
@@ -19,21 +20,21 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 		{
 			foreach (var entityType in modelBuilder.Model.GetEntityTypes())
 			{
-				ExtendedPropertiesAnnotationsHelper.AddExtendedPropertyAnnotations(entityType, entityType.ClrType);
+				AddExtendedPropertyAnnotations(entityType, entityType.ClrType);
 				foreach (var property in entityType.GetProperties().Where(x => !x.IsShadowProperty))
 				{
-					ExtendedPropertiesAnnotationsHelper.AddExtendedPropertyAnnotations(property, property.PropertyInfo);
+					AddExtendedPropertyAnnotations(property, property.PropertyInfo);
 				}
 				foreach (var navigation in entityType.GetNavigations())
 				{
-					ExtendedPropertiesAnnotationsHelper.AddExtendedPropertyAnnotations(entityType, navigation.PropertyInfo);
+					AddExtendedPropertyAnnotations(entityType, navigation.PropertyInfo);
 				}
 			}
 		}
 
 		public static void AddExtendedProperties(this IMutableAnnotatable annotatable, IDictionary<string, string> extendedProperties)
 		{
-			ExtendedPropertiesAnnotationsHelper.AddExtendedPropertyAnnotations(annotatable, extendedProperties);
+			AddExtendedPropertyAnnotations(annotatable, extendedProperties);
 		}
 
 		public static void AddExtendedProperties(this EntityTypeBuilder entityTypeBuilder, IDictionary<string, string> extendedProperties)

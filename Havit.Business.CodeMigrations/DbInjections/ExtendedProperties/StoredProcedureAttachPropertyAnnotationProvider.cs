@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Havit.Business.CodeMigrations.DbInjections.ExtendedProperties.Attributes;
 using Havit.Business.CodeMigrations.DbInjections.StoredProcedures;
+using Havit.Business.CodeMigrations.ExtendedProperties;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Havit.Business.CodeMigrations.DbInjections.ExtendedProperties
@@ -15,10 +16,10 @@ namespace Havit.Business.CodeMigrations.DbInjections.ExtendedProperties
 			string attachedEntityName = GetAttachedEntityName(memberInfo);
 			if (attachedEntityName != null)
 			{
-				return new List<IAnnotation>
+				return ExtendedPropertiesForExtraDatabaseObjectsBuilder.ForProcedure(new Dictionary<string, string>()
 				{
-					new Annotation($"ExtendedProperty:PROCEDURE:{dbAnnotation.ProcedureName}:Attach", attachedEntityName)
-				};
+					{ "Attach", attachedEntityName }
+				}, dbAnnotation.ProcedureName).ToList();
 			}
 
 			return new List<IAnnotation>();

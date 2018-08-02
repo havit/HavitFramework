@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using static Havit.Business.CodeMigrations.ExtendedProperties.ExtendedPropertiesAnnotationsHelper;
 
 namespace Havit.Business.CodeMigrations.ExtendedProperties
 {
@@ -29,7 +30,7 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 
 		private static IEnumerable<IAnnotation> Handle(IAnnotatable annotatable)
 		{
-			return annotatable.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.IsExtendedPropertyAnnotation);
+			return annotatable.GetAnnotations().Where(IsExtendedPropertyAnnotation);
 		}
 	}
 }

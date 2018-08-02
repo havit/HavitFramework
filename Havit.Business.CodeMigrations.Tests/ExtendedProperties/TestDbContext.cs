@@ -1,6 +1,6 @@
 ﻿using System.Data.SqlClient;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 {
@@ -9,10 +9,16 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			base.OnConfiguring(optionsBuilder);
+			optionsBuilder.ReplaceService<IModelCacheKeyFactory, NoCacheModelCacheKeyFactory>();
 			optionsBuilder.UseSqlServer(new SqlConnection("Database=Dummy"));
 		}
 
 		protected override void ApplyConventions(ModelBuilder modelBuilder)
 		{ }
+
+		private class NoCacheModelCacheKeyFactory : IModelCacheKeyFactory
+		{
+			public object Create(DbContext context) => context.GetHashCode();
+		}
 	}
 }

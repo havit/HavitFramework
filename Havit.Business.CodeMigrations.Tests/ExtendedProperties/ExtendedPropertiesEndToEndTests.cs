@@ -966,7 +966,7 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 		}
 
 		[TestClass]
-		public class AddingExtraDatabaseObjectsForProcedure
+		public class AddingPropertyUsingExtraDatabaseObjectsForProcedure
 		{
 			[TestMethod]
 			public void Test()
@@ -985,6 +985,90 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 				Assert.AreEqual(
 					"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'PROCEDURE', @level1name=N'ProcedureName'",
 					migrations[0].CommandText);
+			}
+		}
+
+		[TestClass]
+		public class UpdatingPropertyUsingExtraDatabaseObjectsForProcedure
+		{
+			[TestMethod]
+			public void Test()
+			{
+				var source = new EndToEndDbContext(builder =>
+				{
+					builder.Model.AddAnnotations(ExtendedPropertiesForExtraDatabaseObjectsBuilder.ForProcedure(new Dictionary<string, string>()
+					{
+						{ "Jiri", "OldValue" }
+					}, "ProcedureName"));
+				});
+				var target = new EndToEndDbContext(builder =>
+				{
+					builder.Model.AddAnnotations(ExtendedPropertiesForExtraDatabaseObjectsBuilder.ForProcedure(new Dictionary<string, string>()
+					{
+						{ "Jiri", "NewValue" }
+					}, "ProcedureName"));
+				});
+				var migrations = Generate(source.Model, target.Model);
+
+				Assert.AreEqual(1, migrations.Count);
+				Assert.AreEqual(
+					"EXEC sys.sp_updateextendedproperty @name=N'Jiri', @value=N'NewValue', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'PROCEDURE', @level1name=N'ProcedureName'",
+					migrations[0].CommandText);
+			}
+		}
+
+		[TestClass]
+		public class RemovingPropertyUsingExtraDatabaseObjectsForProcedure
+		{
+			[TestMethod]
+			public void Test()
+			{
+				var source = new EndToEndDbContext(builder =>
+				{
+					builder.Model.AddAnnotations(ExtendedPropertiesForExtraDatabaseObjectsBuilder.ForProcedure(new Dictionary<string, string>()
+					{
+						{ "Jiri", "Value" }
+					}, "ProcedureName"));
+				});
+				var target = new EndToEndDbContext();
+				var migrations = Generate(source.Model, target.Model);
+
+				Assert.AreEqual(1, migrations.Count);
+				Assert.AreEqual(
+					"EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'PROCEDURE', @level1name=N'ProcedureName'",
+					migrations[0].CommandText);
+			}
+		}
+
+		[TestClass]
+		public class ChangingProcedureNameExtraDatabaseObjectsForProcedure
+		{
+			[TestMethod]
+			public void Test()
+			{
+				var source = new EndToEndDbContext(builder =>
+				{
+					builder.Model.AddAnnotations(ExtendedPropertiesForExtraDatabaseObjectsBuilder.ForProcedure(new Dictionary<string, string>()
+					{
+						{ "Jiri", "Value" }
+					}, "OldProcedure"));
+				});
+				var target = new EndToEndDbContext(builder =>
+				{
+					builder.Model.AddAnnotations(ExtendedPropertiesForExtraDatabaseObjectsBuilder.ForProcedure(new Dictionary<string, string>()
+					{
+						{ "Jiri", "Value" }
+					}, "NewProcedure"));
+				});
+				var migrations = Generate(source.Model, target.Model);
+
+				Assert.AreEqual(2, migrations.Count);
+				Assert.AreEqual(
+					"EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'PROCEDURE', @level1name=N'OldProcedure'",
+					migrations[0].CommandText);
+				Assert.AreEqual(
+					"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'PROCEDURE', @level1name=N'NewProcedure'",
+					migrations[1].CommandText);
 			}
 		}
 

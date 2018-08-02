@@ -965,6 +965,29 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 			}
 		}
 
+		[TestClass]
+		public class AddingExtraDatabaseObjectsForProcedure
+		{
+			[TestMethod]
+			public void Test()
+			{
+				var source = new EndToEndDbContext();
+				var target = new EndToEndDbContext(builder =>
+				{
+					builder.Model.AddAnnotations(ExtendedPropertiesForExtraDatabaseObjectsBuilder.ForProcedure(new Dictionary<string, string>()
+					{
+						{ "Jiri", "Value" }
+					}, "ProcedureName"));
+				});
+				var migrations = Generate(source.Model, target.Model);
+
+				Assert.AreEqual(1, migrations.Count);
+				Assert.AreEqual(
+					"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'PROCEDURE', @level1name=N'ProcedureName'",
+					migrations[0].CommandText);
+			}
+		}
+
 		private static IReadOnlyList<MigrationCommand> Generate(IModel source, IModel target)
 		{
 			return Migrate(Diff(source, target));

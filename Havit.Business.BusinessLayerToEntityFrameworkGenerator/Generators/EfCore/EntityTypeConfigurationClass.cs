@@ -273,21 +273,17 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 			{
 				Column column = property.Column;
 
-				//if (PropertyHelper.IsString(column) && (column.DefaultConstraint != null))
-				//{
-				//	string propertyName = PropertyHelper.GetPropertyName(column);
-				//	if (column.Name == "UICulture")
-				//	{
-				//		propertyName = "UiCulture";
-				//	}
-				//	writer.WriteLine(String.Format("builder.Property({0} => {0}.{1})",
-				//		ConventionsHelper.GetCammelCase(ClassHelper.GetClassName(table)),
-				//		propertyName));
-				//	writer.Indent();
-				//	writer.WriteLine(".HasDefaultValue(\"\");");
-				//	writer.Unindent();
-				//	writer.WriteLine();
-				//}
+				var pkPart = modelClass.GetPrimaryKeyPartFor(column);
+				if (pkPart != null && !column.Identity)
+				{
+					writer.WriteLine(String.Format("builder.Property({0} => {0}.{1})",
+						ConventionsHelper.GetCammelCase(modelClass.Name),
+						property.Name));
+					writer.Indent();
+					writer.WriteLine(".ValueGeneratedNever();");
+					writer.Unindent();
+					writer.WriteLine();
+				}
 
 				// Generate HasDefaultValueSql. For String columns, generate only if if default is not empty (we use convention for such columns)
 				if ((column.DefaultConstraint != null) && (!column.DataType.IsStringType || (column.DefaultConstraint.Text != "('')")))
@@ -345,6 +341,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 
 				return true;
 			}
+
 			return false;
 		}
 

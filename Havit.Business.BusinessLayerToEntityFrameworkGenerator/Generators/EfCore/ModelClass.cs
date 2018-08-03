@@ -241,6 +241,12 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 				// DatabaseGenerated (není třeba)
 				// ILocalized + ILocalization
 
+				EntityForeignKey fk = modelClass.GetForeignKeyForColumn(column);
+				if (fk != null)
+				{
+					writer.WriteLine(String.Format("{0} {1} {2} {{ get; set; }}", accesssModifierText, fk.NavigationProperty.TypeName, fk.NavigationProperty.Name));
+				}
+
 				if (ColumnHelper.GetBoolExtendedProperty(column, "Ignored") == true)
 				{
 					writer.WriteLine("[Ignored]");
@@ -265,12 +271,6 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 					//{
 					//	writer.WriteLine("[Required(AllowEmptyStrings = true)]");					
 					//}
-				}
-
-				EntityForeignKey fk = modelClass.GetForeignKeyForColumn(column);
-				if (fk != null)
-				{
-					writer.WriteLine(String.Format("{0} {1} {2} {{ get; set; }}", accesssModifierText, fk.NavigationProperty.TypeName, fk.NavigationProperty.Name));
 				}
 
 				writer.WriteLine(String.Format("{0} {1} {2} {{ get; set; }}", accesssModifierText, entityProperty.TypeName, entityProperty.Name));

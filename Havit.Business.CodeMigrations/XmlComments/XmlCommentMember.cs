@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Havit.Business.CodeMigrations.XmlComments
@@ -9,7 +10,7 @@ namespace Havit.Business.CodeMigrations.XmlComments
 
 		public List<XmlMemberTag> Tags { get; } = new List<XmlMemberTag>();
 
-		public string Summary => Tags.FirstOrDefault(t => t.Name == "sumary")?.Content;
+		public string Summary => Tags.FirstOrDefault(t => string.Equals(t.Name, "summary", StringComparison.OrdinalIgnoreCase))?.Content;
 
 		public XmlCommentMember(string name)
 		{

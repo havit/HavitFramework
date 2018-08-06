@@ -45,6 +45,7 @@ namespace Havit.Business.CodeMigrations
 			modelBuilder.ApplyDefaultsForStrings();
 			modelBuilder.ApplyDefaultNamespaces();
 			modelBuilder.ApplyCollectionExtendedProperties();
+			modelBuilder.UseXmlCommentsForDescriptionProperty();
 		}
 
 	    protected void RegisterDbInjections(ModelBuilder modelBuilder, Assembly injectionsAssembly = default)

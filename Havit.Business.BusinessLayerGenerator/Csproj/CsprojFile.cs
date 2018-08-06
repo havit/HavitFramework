@@ -8,13 +8,15 @@ namespace Havit.Business.BusinessLayerGenerator.Csproj
 	public class CsprojFile
 	{
 		#region MSBuildNamespace
-		private readonly XNamespace MSBuildNamespace = "http://schemas.microsoft.com/developer/msbuild/2003";
+		protected virtual XNamespace MSBuildNamespace { get; } = "http://schemas.microsoft.com/developer/msbuild/2003";
 		#endregion
+
+		protected XDocument Content { get; }
+
 
 		#region Private fields 
 		private readonly string generatorIdentifier;
 		private bool contentChanged = false;
-		private readonly XDocument content;
 		private readonly List<string> ensuredFilenames = new List<string>();
 		#endregion
 
@@ -29,12 +31,12 @@ namespace Havit.Business.BusinessLayerGenerator.Csproj
 		#endregion
 
 		#region Constructors
-		public CsprojFile(string filename, string generatorIdentifier)
+		public CsprojFile(string filename, string generatorIdentifier, XDocument content)
 		{
 			this.generatorIdentifier = generatorIdentifier;
 			this.Filename = filename;
-			content = XDocument.Load(filename, LoadOptions.PreserveWhitespace);
-			content.Changed += Content_Changed;
+			this.Content = content;
+			this.Content.Changed += Content_Changed;
 		}
 
 		private CsprojFile()
@@ -48,13 +50,13 @@ namespace Havit.Business.BusinessLayerGenerator.Csproj
 			contentChanged = true;
 		}
 		#endregion
-		
+
 		#region Ensures
 		public virtual void Ensures(string filename)
 		{
 			ensuredFilenames.Add(filename);
 
-			XElement itemElement = content.Root.Elements(MSBuildNamespace + "ItemGroup").Elements(MSBuildNamespace + "Compile").Where(element => element.Attributes("Include").Any(attribute => String.Equals(filename, (string)attribute, StringComparison.CurrentCultureIgnoreCase))).FirstOrDefault();
+			XElement itemElement = Content.Root.Elements(MSBuildNamespace + "ItemGroup").Elements(MSBuildNamespace + "Compile").Where(element => element.Attributes("Include").Any(attribute => String.Equals(filename, (string)attribute, StringComparison.CurrentCultureIgnoreCase))).FirstOrDefault();
 
 			// abychom do kódu dostali metadata HavitBusinessLayerGenerator, tak položku, která jej nemá, odstraníme (a následně přidáme spolu s ní)
 			if (itemElement != null)
@@ -69,15 +71,15 @@ namespace Havit.Business.BusinessLayerGenerator.Csproj
 			if (itemElement == null)
 			{
 				// najdeme první element ItemGroup obsahující sub-element Compile.
-				XElement itemgroup = content.Root.Elements(MSBuildNamespace + "ItemGroup").Where(element => element.Elements(MSBuildNamespace + "Compile").Count() > 0).FirstOrDefault();
+				XElement itemgroup = Content.Root.Elements(MSBuildNamespace + "ItemGroup").Where(element => element.Elements(MSBuildNamespace + "Compile").Count() > 0).FirstOrDefault();
 
-				if (itemgroup != null)				
+				if (itemgroup != null)
 				{
 					// za poslední element dáme konec řádku, odsazení a element
 					itemgroup.Elements().Last().AddAfterSelf(
 						new XText("\n"),
 						new XText("    "),
-						new XElement(MSBuildNamespace + "Compile", 
+						new XElement(MSBuildNamespace + "Compile",
 							new XAttribute("Include", filename),
 							new XText("\n"),
 							new XText("      "),
@@ -92,12 +94,80 @@ namespace Havit.Business.BusinessLayerGenerator.Csproj
 		}
 		#endregion
 
+		public virtual void EnsuresEmbeddedResource(string filename)
+		{
+			XElement itemElement = Content.Root.Elements(MSBuildNamespace + "ItemGroup").Elements(MSBuildNamespace + "EmbeddedResource").Where(element => element.Attributes("Include").Any(attribute => String.Equals(filename, (string)attribute, StringComparison.CurrentCultureIgnoreCase))).FirstOrDefault();
+
+			// abychom do kódu dostali metadata HavitBusinessLayerGenerator, tak položku, která jej nemá, odstraníme (a následně přidáme spolu s ní)
+			if (itemElement != null)
+			{
+				if (itemElement.Elements(MSBuildNamespace + generatorIdentifier).Count() == 0)
+				{
+					this.RemoveWithNextWhitespace(itemElement);
+					itemElement = null;
+				}
+			}
+
+			if (itemElement == null)
+			{
+				// najdeme první element ItemGroup obsahující sub-element Compile.
+				XElement itemgroup = FindPositionForEmbeddedResources();
+
+				if (itemgroup != null)
+				{
+					// za poslední element dáme konec řádku, odsazení a element
+					var content = new List<object>
+					{
+						new XElement(MSBuildNamespace + "EmbeddedResource",
+							new XAttribute("Include", filename)),
+					};
+					XElement lastElement = itemgroup.Elements().LastOrDefault();
+					if (lastElement != null)
+					{
+						content.InsertRange(0, new object[]
+						{
+							new XText("\n"),
+							new XText("    ")
+						});
+
+						lastElement.AddAfterSelf(content);
+					}
+					else
+					{
+						content.InsertRange(0, new[]
+						{
+							new XText("\n"),
+							new XText("    "),
+						});
+						content.AddRange(new[]
+						{
+							new XText("\n"),
+							new XText("  ")
+						});
+
+						itemgroup.Add(content);
+					}
+				}
+			}
+		}
+
+		protected virtual XElement FindPositionForEmbeddedResources()
+		{
+			XElement itemGroup = Content.Root.Elements(MSBuildNamespace + "ItemGroup").FirstOrDefault(element => element.Elements(MSBuildNamespace + "EmbeddedResource").Any());
+			if (itemGroup == null)
+			{
+				itemGroup = Content.Root.Element(MSBuildNamespace + "Import")?.ElementsBeforeSelf().FirstOrDefault();
+			}
+
+			return itemGroup;
+		}
+
 		#region Remove
 		public virtual void Remove(string filename)
 		{
 			// Odstraníme všechny ItemGroupy, které obsahují jakýkoli element Compile s atributem Include rovným názvu souboru.
 			// protože odstranění za sebou nechá whitespaces (díky LoadOptions.PreserveWhitespaces), odstraníme element vč. následucího whitespace
-			content.Root.Elements(MSBuildNamespace + "ItemGroup").Elements(MSBuildNamespace + "Compile").Where(element => element.Attributes("Include").Any(attribute => attribute.Value == filename)).ToList().ForEach(element => this.RemoveWithNextWhitespace(element));
+			Content.Root.Elements(MSBuildNamespace + "ItemGroup").Elements(MSBuildNamespace + "Compile").Where(element => element.Attributes("Include").Any(attribute => attribute.Value == filename)).ToList().ForEach(element => this.RemoveWithNextWhitespace(element));
 		}
 		#endregion
 
@@ -105,7 +175,7 @@ namespace Havit.Business.BusinessLayerGenerator.Csproj
 		public void RemoveUnusedGeneratedFiles()
 		{
 			// najdeme všechny elementy Compile v ItemGroup, které mají sub-element HavitBusinessLayerGenerator, ale nejsou v seznamu generovaných souborů
-			content.Root
+			Content.Root
 				.Elements(MSBuildNamespace + "ItemGroup")
 				.Elements(MSBuildNamespace + "Compile")
 				.Where(element =>
@@ -121,8 +191,13 @@ namespace Havit.Business.BusinessLayerGenerator.Csproj
 		{
 			if (contentChanged)
 			{
-				content.Save(Filename);
+				SaveChangesCore();
 			}
+		}
+
+		protected virtual void SaveChangesCore()
+		{
+			Content.Save(Filename);
 		}
 		#endregion
 
@@ -167,7 +242,7 @@ namespace Havit.Business.BusinessLayerGenerator.Csproj
 			var files = System.IO.Directory.GetFiles(folder, "*.csproj");
 			if (files.Length == 1)
 			{
-				return new CsprojFile(files[0], generatorIdentifier);
+				return new CsprojFile(files[0], generatorIdentifier, XDocument.Load(files[0], LoadOptions.PreserveWhitespace));
 			}
 			return null;
 		}

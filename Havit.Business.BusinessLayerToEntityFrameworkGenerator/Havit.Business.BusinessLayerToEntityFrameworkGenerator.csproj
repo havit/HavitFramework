@@ -226,6 +226,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Csproj\CsprojFileFactory.cs" />
+    <Compile Include="Csproj\NetCoreCsprojFile.cs" />
     <Compile Include="Generators\AttributeStringBuilder.cs" />
     <Compile Include="Generators\AttributeStringBuilderExtensions.cs" />
     <Compile Include="Generators\EfCoreGenerator.cs" />

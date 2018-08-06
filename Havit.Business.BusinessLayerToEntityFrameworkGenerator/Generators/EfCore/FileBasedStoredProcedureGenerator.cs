@@ -10,11 +10,11 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 {
     public static class FileBasedStoredProcedureGenerator
 	{
-		public static void Generate(List<DbStoredProcedure> storedProcedures, CsprojFile modelCsprojFile)
+		public static void Generate(List<DbStoredProcedure> storedProcedures, CsprojFile entityCsprojFile)
 		{
 		    foreach (DbStoredProcedure dbStoredProcedure in storedProcedures)
 			{
-				string fileName = Path.Combine(Path.GetDirectoryName(modelCsprojFile.Path), dbStoredProcedure.GeneratedFile);
+				string fileName = Path.Combine(Path.GetDirectoryName(entityCsprojFile.Path), dbStoredProcedure.GeneratedFile);
 				Directory.CreateDirectory(Path.GetDirectoryName(fileName));
 
 				string[] lines = dbStoredProcedure.StoredProcedure.Script(new ScriptingOptions())
@@ -25,7 +25,11 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 					.ToArray();
 
 				File.WriteAllLines(fileName, lines);
+
+				entityCsprojFile.EnsuresEmbeddedResource(GetEntityProjectRelativePath(dbStoredProcedure.GeneratedFile));
 			}
 		}
+
+		private static string GetEntityProjectRelativePath(string file) => file.Substring(file.IndexOf('\\') + 1);
 	}
 }

@@ -5,6 +5,7 @@ using Havit.Business.BusinessLayerGenerator.Csproj;
 using Havit.Business.BusinessLayerGenerator.Helpers;
 using Havit.Business.BusinessLayerGenerator.Settings;
 using Havit.Business.BusinessLayerGenerator.TfsClient;
+using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Csproj;
 using Microsoft.SqlServer.Management.Common;
 using Microsoft.SqlServer.Management.Smo;
 using GeneratorSettings = Havit.Business.BusinessLayerToEntityFrameworkGenerator.Settings.GeneratorSettings;
@@ -37,8 +38,9 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator
 			GeneratorSettings.SolutionPath = commandLineArguments["solutionpath"];
 			GeneratorSettings.Namespace = commandLineArguments["namespace"];
 
-			CsprojFile modelCsprojFile = CsprojFile.GetByFolder(System.IO.Path.Combine(GeneratorSettings.SolutionPath, "Model"), "HavitBusinessLayerToEntityFrameworkGenerator");
-			CsprojFile entityCsprojFile = CsprojFile.GetByFolder(System.IO.Path.Combine(GeneratorSettings.SolutionPath, "Entity"), "HavitBusinessLayerToEntityFrameworkGenerator");
+			var csprojFileFactory = new CsprojFileFactory();
+			CsprojFile modelCsprojFile = csprojFileFactory.GetByFolder(System.IO.Path.Combine(GeneratorSettings.SolutionPath, "Model"), "HavitBusinessLayerToEntityFrameworkGenerator");
+			CsprojFile entityCsprojFile = csprojFileFactory.GetByFolder(System.IO.Path.Combine(GeneratorSettings.SolutionPath, "Entity"), "HavitBusinessLayerToEntityFrameworkGenerator");
 			SourceControlClient sourceControlClient = SourceControlClient.GetByFolder(GeneratorSettings.SolutionPath);
 
 			ConsoleHelper.WriteLineInfo("Business Layer To Entity Framework Generator");

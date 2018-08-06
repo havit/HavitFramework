@@ -87,7 +87,11 @@ namespace Havit.Business.CodeMigrations.Tests.XmlComments
 		{
 			try
 			{
-				return XDocument.Parse(XmlCommentsData.Havit_Business_CodeMigrations_Tests);
+				using (Stream input = typeof(XmlCommentParserTests).Assembly.GetManifestResourceStream("Havit.Business.CodeMigrations.Tests.XmlComments.Data.Havit.Business.CodeMigrations.Tests.xml"))
+				using (var reader = new StreamReader(input))
+				{
+					return XDocument.Parse(reader.ReadToEnd());
+				}
 			}
 			catch (Exception ex)
 			{

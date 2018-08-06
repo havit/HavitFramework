@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Havit.Business.CodeMigrations.Tests</name>
+    </assembly>
+    <members>
+        <member name="T:Havit.Business.CodeMigrations.Tests.XmlComments.Model.Location">
+            <summary>
+            Location object
+            </summary>
+        </member>
+        <member name="P:Havit.Business.CodeMigrations.Tests.XmlComments.Model.Location.Id">
+            <summary>
+            Primary key of <see cref="T:Havit.Business.CodeMigrations.Tests.XmlComments.Model.Location"/> object.
+            </summary>
+        </member>
+        <member name="T:Havit.Business.CodeMigrations.Tests.XmlComments.Model.Person">
+            <summary>
+            Person object
+            </summary>
+        </member>
+        <member name="P:Havit.Business.CodeMigrations.Tests.XmlComments.Model.Person.Id">
+            <summary>
+            Primary key of <see cref="T:Havit.Business.CodeMigrations.Tests.XmlComments.Model.Person"/> object.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.CodeMigrations.Tests.XmlComments.Model.Person.FirstName">
+            <summary>
+            First name
+            </summary>
+        </member>
+        <member name="P:Havit.Business.CodeMigrations.Tests.XmlComments.Model.Person.LastName">
+            <summary>
+            Last name
+            </summary>
+        </member>
+        <member name="P:Havit.Business.CodeMigrations.Tests.XmlComments.Model.Person.Birthday">
+            <summary>
+            Birthday of the person.
+            </summary>
+        </member>
+        <member name="T:Havit.Business.CodeMigrations.Tests.XmlComments.Model.PersonLocation">
+            <summary>
+            Location of a person.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.CodeMigrations.Tests.XmlComments.Model.PersonLocation.Id">
+            <summary>
+            Primary key of <see cref="T:Havit.Business.CodeMigrations.Tests.XmlComments.Model.PersonLocation"/> entity.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.CodeMigrations.Tests.XmlComments.Model.PersonLocation.Person">
+            <summary>
+            Navigation property for <see cref="P:Havit.Business.CodeMigrations.Tests.XmlComments.Model.PersonLocation.Person"/> entity.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.CodeMigrations.Tests.XmlComments.Model.PersonLocation.PersonId">
+            <summary>
+            Primary key of <see cref="P:Havit.Business.CodeMigrations.Tests.XmlComments.Model.PersonLocation.Person"/> entity.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.CodeMigrations.Tests.XmlComments.Model.PersonLocation.Location">
+            <summary>
+            Navigation property for <see cref="P:Havit.Business.CodeMigrations.Tests.XmlComments.Model.PersonLocation.Location"/> entity.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.CodeMigrations.Tests.XmlComments.Model.PersonLocation.LocationId">
+            <summary>
+            Primary key <see cref="P:Havit.Business.CodeMigrations.Tests.XmlComments.Model.PersonLocation.Location"/> entity.
+            </summary>
+        </member>
+        <member name="T:Havit.Business.CodeMigrations.Tests.XmlComments.XmlCommentsData">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.CodeMigrations.Tests.XmlComments.XmlCommentsData.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.CodeMigrations.Tests.XmlComments.XmlCommentsData.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Havit.Business.CodeMigrations.Tests.XmlComments.XmlCommentsData.Havit_Business_CodeMigrations_Tests">
+             <summary>
+               Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
+            &lt;doc&gt;
+                &lt;assembly&gt;
+                    &lt;name&gt;Havit.Business.CodeMigrations.Tests&lt;/name&gt;
+                &lt;/assembly&gt;
+                &lt;members&gt;
+                    &lt;member name=&quot;T:Havit.Business.CodeMigrations.Tests.XmlComments.Model.Location&quot;&gt;
+                        &lt;summary&gt;
+                        Location object
+                        &lt;/summary&gt;
+                    &lt;/member&gt;
+                    &lt;member name=&quot;P:Havit.Business.CodeMigrations.Tests.XmlComments.Model.Location.Id&quot;&gt;
+                        &lt;summary&gt;
+                        Primary key of &lt;see cref=&quot;T:Havit.Business.CodeMigrations.Tests [rest of string was truncated]&quot;;.
+             </summary>
+        </member>
+    </members>
+</doc>

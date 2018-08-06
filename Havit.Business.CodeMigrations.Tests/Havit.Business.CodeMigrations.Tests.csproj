@@ -9,8 +9,13 @@
 
   <PropertyGroup>
     <TargetFramework>net47</TargetFramework>
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\net47\Havit.Business.CodeMigrations.Tests.xml</DocumentationFile>
+    <NoWarn>1701;1702;1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,6 +30,21 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Havit.Business.CodeMigrations\Havit.Business.CodeMigrations.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="XmlComments\XmlCommentsData.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>XmlCommentsData.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="XmlComments\XmlCommentsData.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>XmlCommentsData.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

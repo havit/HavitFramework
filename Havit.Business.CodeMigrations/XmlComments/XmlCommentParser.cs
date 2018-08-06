@@ -24,6 +24,7 @@ namespace Havit.Business.CodeMigrations.XmlComments
 				var propertyFullName = propertyElement.Attribute("name").Value.Substring(2);
 
 				var xmlPropertyType = new XmlCommentMember(propertyFullName);
+				xmlPropertyType.Tags.AddRange(propertyElement.Elements().Select(e => new XmlMemberTag(e.Name.LocalName, e.Value)));
 
 				var currentTypeCandidate = xmlPropertyType.Name;
 				while (currentTypeCandidate.Length > 0)

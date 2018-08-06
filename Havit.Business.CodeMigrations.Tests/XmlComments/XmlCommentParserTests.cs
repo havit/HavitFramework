@@ -83,6 +83,18 @@ namespace Havit.Business.CodeMigrations.Tests.XmlComments
 			Assert.IsNotNull(personType.Properties.FirstOrDefault(p => p.Name == "Havit.Business.CodeMigrations.Tests.XmlComments.Model.Person.Birthday"));
 		}
 
+		[TestMethod]
+		public void XmlCommentParser_ParseFile_PersonClassPropertyHasCorrectSummary()
+		{
+			var parser = new XmlCommentParser();
+
+			var xmlCommentFile = parser.ParseFile(ParseXmlFile());
+
+			XmlCommentType personType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == "Havit.Business.CodeMigrations.Tests.XmlComments.Model.Person");
+			XmlCommentMember firstNameProperty = personType.Properties.FirstOrDefault(p => p.Name == "Havit.Business.CodeMigrations.Tests.XmlComments.Model.Person.FirstName");
+			Assert.IsNotNull(firstNameProperty.Summary, "First name");
+		}
+
 		private static XDocument ParseXmlFile()
 		{
 			try

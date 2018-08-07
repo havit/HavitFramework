@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Havit.Business.CodeMigrations.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -11,19 +12,20 @@ using static Havit.Business.CodeMigrations.ExtendedProperties.ExtendedProperties
 
 namespace Havit.Business.CodeMigrations.ExtendedProperties
 {
-	internal class ExtendedPropertiesMigrationsSqlGenerator : SqlServerMigrationsSqlGenerator
+	internal class ExtendedPropertiesMigrationOperationSqlGenerator : MigrationOperationSqlGenerator
 	{
-		private const string DefaultSchemaName = "dbo";
-		private const string TableLevel1Type = "TABLE";
+	    private const string DefaultSchemaName = "dbo";
+	    private const string TableLevel1Type = "TABLE";
 
-		public ExtendedPropertiesMigrationsSqlGenerator(MigrationsSqlGeneratorDependencies dependencies, IMigrationsAnnotationProvider migrationsAnnotations)
-			: base(dependencies, migrationsAnnotations)
-		{ }
+	    private readonly IRelationalTypeMappingSource typeMappingSource;
 
-		protected override void Generate(CreateTableOperation operation, IModel model, MigrationCommandListBuilder builder)
+	    public ExtendedPropertiesMigrationOperationSqlGenerator(IRelationalTypeMappingSource typeMappingSource)
 		{
-			base.Generate(operation, model, builder);
+		    this.typeMappingSource = typeMappingSource;
+		}
 
+        public override void Generate(CreateTableOperation operation, IModel model, MigrationCommandListBuilder builder)
+		{
 			foreach (var annotation in operation.GetAnnotations().Where(IsExtendedPropertyAnnotation))
 			{
 				var value = (string)annotation.Value;
@@ -39,10 +41,8 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 			}
 		}
 
-		protected override void Generate(AddColumnOperation operation, IModel model, MigrationCommandListBuilder builder)
+		public override void Generate(AddColumnOperation operation, IModel model, MigrationCommandListBuilder builder)
 		{
-			base.Generate(operation, model, builder);
-
 			foreach (var annotation in operation.GetAnnotations().Where(IsExtendedPropertyAnnotation))
 			{
 				var value = (string)annotation.Value;
@@ -50,10 +50,8 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 			}
 		}
 
-		protected override void Generate(AlterTableOperation operation, IModel model, MigrationCommandListBuilder builder)
+		public override void Generate(AlterTableOperation operation, IModel model, MigrationCommandListBuilder builder)
 		{
-			base.Generate(operation, model, builder);
-
 			AlterHelper(operation.OldTable.GetAnnotations(), operation.GetAnnotations(),
 				a =>
 				{
@@ -71,10 +69,8 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 				});
 		}
 
-		protected override void Generate(AlterColumnOperation operation, IModel model, MigrationCommandListBuilder builder)
+		public override void Generate(AlterColumnOperation operation, IModel model, MigrationCommandListBuilder builder)
 		{
-			base.Generate(operation, model, builder);
-
 			AlterHelper(operation.OldColumn.GetAnnotations(), operation.GetAnnotations(),
 				a =>
 				{
@@ -92,10 +88,8 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 				});
 		}
 
-		protected override void Generate(AlterDatabaseOperation operation, IModel model, MigrationCommandListBuilder builder)
+		public override void Generate(AlterDatabaseOperation operation, IModel model, MigrationCommandListBuilder builder)
 		{
-			base.Generate(operation, model, builder);
-
 			AlterHelper(operation.OldDatabase.GetAnnotations(), operation.GetAnnotations(),
 				a =>
 				{
@@ -134,10 +128,8 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 				});
 		}
 
-		protected override void Generate(SqlServerCreateDatabaseOperation operation, IModel model, MigrationCommandListBuilder builder)
+		public override void Generate(SqlServerCreateDatabaseOperation operation, IModel model, MigrationCommandListBuilder builder)
 		{
-			base.Generate(operation, model, builder);
-
 			foreach (var annotation in operation.GetAnnotations().Where(IsExtendedPropertyAnnotation))
 			{
 				var value = (string)annotation.Value;
@@ -293,7 +285,7 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 				.EndCommand();
 		}
 
-		private string GenerateSqlLiteral(string s) => Dependencies.TypeMappingSource.GetMapping(typeof(string)).GenerateSqlLiteral(s);
+		private string GenerateSqlLiteral(string s) => typeMappingSource.GetMapping(typeof(string)).GenerateSqlLiteral(s);
 
 		private static string GetSchema(string operationSchema, IModel model) => operationSchema ?? (string)model.Relational().DefaultSchema ?? DefaultSchemaName;
 

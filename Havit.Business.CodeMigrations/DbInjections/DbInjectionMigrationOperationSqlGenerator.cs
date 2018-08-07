@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Havit.Business.CodeMigrations.Infrastructure;
 using Havit.Business.CodeMigrations.StoredProcedures;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -8,37 +9,27 @@ using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
 namespace Havit.Business.CodeMigrations.DbInjections
 {
-    public class DbInjectionMigrationsGenerator : IMigrationsSqlGenerator
+    public class DbInjectionMigrationOperationSqlGenerator : MigrationOperationSqlGenerator
     {
         private readonly IDbInjectionAnnotationProvider dbInjectionAnnotationProvider;
         private readonly IDbInjectionDropSqlResolver dbInjectionDropSqlResolver;
 
-        public MigrationsSqlGeneratorDependencies Dependencies { get; }
-
-        public DbInjectionMigrationsGenerator(MigrationsSqlGeneratorDependencies dependencies,
+        public DbInjectionMigrationOperationSqlGenerator(
             IDbInjectionAnnotationProvider dbInjectionAnnotationProvider,
             IDbInjectionDropSqlResolver dbInjectionDropSqlResolver)
         {
             this.dbInjectionAnnotationProvider = dbInjectionAnnotationProvider;
             this.dbInjectionDropSqlResolver = dbInjectionDropSqlResolver;
-            Dependencies = dependencies;
         }
 
-        public IReadOnlyList<MigrationCommand> Generate(IReadOnlyList<MigrationOperation> operations, IModel model = null)
+        public override void Generate(AlterDatabaseOperation operation, IModel model, MigrationCommandListBuilder builder)
         {
-            MigrationCommandListBuilder builder = new MigrationCommandListBuilder(Dependencies.CommandBuilderFactory);
-            AlterDatabaseOperation alterDatabaseOperation = operations.OfType<AlterDatabaseOperation>().FirstOrDefault();
-            if (alterDatabaseOperation != null)
-            {
-                var oldAnnotations = alterDatabaseOperation.OldDatabase.GetAnnotations().Where(StoredProceduresAnnotationsHelper.IsStoredProcedureAnnotation).ToDictionary(x => x.Name, StoredProceduresAnnotationsHelper.Comparer);
-                var newAnnotations = alterDatabaseOperation.GetAnnotations().Where(StoredProceduresAnnotationsHelper.IsStoredProcedureAnnotation).ToDictionary(x => x.Name, StoredProceduresAnnotationsHelper.Comparer);
-                List<IAnnotation> deletedAnnotations = oldAnnotations.Where(x => !newAnnotations.ContainsKey(x.Key)).Select(x => x.Value).ToList<IAnnotation>();
+            var oldAnnotations = operation.OldDatabase.GetAnnotations().Where(StoredProceduresAnnotationsHelper.IsStoredProcedureAnnotation).ToDictionary(x => x.Name, StoredProceduresAnnotationsHelper.Comparer);
+            var newAnnotations = operation.GetAnnotations().Where(StoredProceduresAnnotationsHelper.IsStoredProcedureAnnotation).ToDictionary(x => x.Name, StoredProceduresAnnotationsHelper.Comparer);
+            List<IAnnotation> deletedAnnotations = oldAnnotations.Where(x => !newAnnotations.ContainsKey(x.Key)).Select(x => x.Value).ToList<IAnnotation>();
 
-                GenerateCreateAndUpdateCommands(newAnnotations.Values.ToList<IAnnotation>(), builder);
-                GenerateDropCommands(deletedAnnotations, builder);
-            }
-
-            return builder.GetCommandList();
+            GenerateCreateAndUpdateCommands(newAnnotations.Values.ToList<IAnnotation>(), builder);
+            GenerateDropCommands(deletedAnnotations, builder);
         }
 
         private void GenerateDropCommands(List<IAnnotation> oldAnnotations, MigrationCommandListBuilder builder)

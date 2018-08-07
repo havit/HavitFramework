@@ -8,7 +8,7 @@ namespace Havit.Business.CodeMigrations.StoredProcedures
         public static void UseStoredProcedures(this DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.Options.GetExtension<CompositeMigrationsAnnotationProviderExtension>().WithAnnotationProvider<StoredProceduresMigrationsAnnotationProvider>();
-            optionsBuilder.Options.GetExtension<CompositeMigrationsSqlGeneratorExtension>().WithGeneratorType<StoredProceduresMigrationsGenerator>();
+            optionsBuilder.Options.GetExtension<CompositeMigrationsSqlGeneratorExtension>().WithGeneratorType<StoredProceduresMigrationOperationSqlGenerator>();
         }
     }
 }

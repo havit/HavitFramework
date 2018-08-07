@@ -25,8 +25,8 @@ namespace Havit.Business.CodeMigrations
 			base.OnConfiguring(optionsBuilder);
 
 			optionsBuilder.UseCodeMigrationsInfrastructure();
-			optionsBuilder.UseSqlServerExtendedProperties();
 			optionsBuilder.UseDbInjections();
+			optionsBuilder.UseSqlServerExtendedProperties();
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)

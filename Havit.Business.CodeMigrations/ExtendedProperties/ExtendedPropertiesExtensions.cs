@@ -13,7 +13,7 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 		public static void UseSqlServerExtendedProperties(this DbContextOptionsBuilder optionsBuilder)
 		{
 			optionsBuilder.Options.GetExtension<CompositeMigrationsAnnotationProviderExtension>().WithAnnotationProvider<ExtendedPropertiesMigrationsAnnotationProvider>();
-			optionsBuilder.Options.GetExtension<CompositeMigrationsSqlGeneratorExtension>().WithGeneratorType<ExtendedPropertiesMigrationsSqlGenerator>();
+			optionsBuilder.Options.GetExtension<CompositeMigrationsSqlGeneratorExtension>().WithGeneratorType<ExtendedPropertiesMigrationOperationSqlGenerator>();
 		}
 
 		public static void ForSqlServerExtendedPropertiesAttributes(this ModelBuilder modelBuilder)

@@ -15,7 +15,7 @@ namespace Havit.Business.CodeMigrations.Infrastructure
         public string LogFragment => "";
 
         public CompositeMigrationsSqlGeneratorExtension WithGeneratorType<T>()
-            where T : IMigrationsSqlGenerator
+            where T : IMigrationOperationSqlGenerator
         {
             generatorTypes.Add(typeof(T));
             return this;
@@ -26,8 +26,8 @@ namespace Havit.Business.CodeMigrations.Infrastructure
             var currentProviderTypes = generatorTypes.ToArray();
             CompositeMigrationsSqlGenerator Factory(IServiceProvider serviceProvider)
             {
-                var generators = currentProviderTypes.Select(type => (IMigrationsSqlGenerator)serviceProvider.GetService(type)).ToArray();
-                return new CompositeMigrationsSqlGenerator(generators);
+                var generators = currentProviderTypes.Select(type => (IMigrationOperationSqlGenerator)serviceProvider.GetService(type)).ToArray();
+                return new CompositeMigrationsSqlGenerator(serviceProvider.GetService<MigrationsSqlGeneratorDependencies>(), serviceProvider.GetService<IMigrationsAnnotationProvider>(), generators);
             }
 
             services.Add(currentProviderTypes.Select(t => ServiceDescriptor.Singleton(t, t)));

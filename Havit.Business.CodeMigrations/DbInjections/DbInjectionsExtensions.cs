@@ -15,15 +15,15 @@ namespace Havit.Business.CodeMigrations.DbInjections
         public static void UseDbInjections(this DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.Options.GetExtension<CompositeMigrationsAnnotationProviderExtension>().WithAnnotationProvider<DbInjectionsMigrationsAnnotationProvider>();
-            optionsBuilder.Options.GetExtension<CompositeMigrationsSqlGeneratorExtension>().WithGeneratorType<DbInjectionMigrationsGenerator>();
+            optionsBuilder.Options.GetExtension<CompositeMigrationsSqlGeneratorExtension>().WithGeneratorType<DbInjectionMigrationOperationSqlGenerator>();
 
             IDbContextOptionsBuilderInfrastructure infrastructure = optionsBuilder;
             infrastructure.AddOrUpdateExtension(new DbInjectionsExtension()
                 .WithAnnotationProvider<StoredProcedureAnnotationProvider>()
                 .WithDropSqlGenerator<StoredProcedureDropSqlGenerator>()
                 .WithAnnotationProvider<ExtendedPropertiesAnnotationProvider>()
-				//.WithAnnotationProvider<StoredProcedureAttachPropertyAnnotationProvider>()
-            );
+				.WithAnnotationProvider<StoredProcedureAttachPropertyAnnotationProvider>()
+			);
         }
 
         public static void ForDbInjections(this ModelBuilder modelBuilder, IDbInjectionAnnotationProvider dbInjectionAnnotationProvider, Assembly injectionsAssembly)

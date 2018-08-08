@@ -62,23 +62,38 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata.Metada
 						Property = new EntityProperty
 						{
 							Column = column,
-							Name = String.Format("{0}Id", ColumnHelper.GetReferencedTable(column).Name),
 							TypeName = TypeHelper.GetFieldSystemTypeName(referencedColumn)
 						}
 					};
-					var fk = new EntityForeignKey
+
+				    if (column.Name.EndsWith("Id", StringComparison.OrdinalIgnoreCase))
+				    {
+				        pk.Property.Name = column.Name.Substring(0, column.Name.Length - 2) + "Id";
+				    }
+				    else
+				    {
+				        pk.Property.Name = $"{ColumnHelper.GetReferencedTable(column).Name}Id";
+				    }
+                    var fk = new EntityForeignKey
 					{
 						Column = column,
 						ForeignKeyProperty = pk.Property,
 						NavigationProperty = new EntityProperty
 						{
 							Column = column,
-							Name = ColumnHelper.GetReferencedTable(column).Name,
 							TypeName = TypeHelper.GetPropertyTypeName(column).Replace("BusinessLayer", "Model")
 						},
 					};
+				    if (column.Name.EndsWith("Id", StringComparison.OrdinalIgnoreCase))
+				    {
+				        fk.NavigationProperty.Name = column.Name.Substring(0, column.Name.Length - 2);
+				    }
+				    else
+				    {
+				        fk.NavigationProperty.Name = ColumnHelper.GetReferencedTable(column).Name;
+				    }
 
-					modelClass.PrimaryKeyParts.Add(pk);
+				    modelClass.PrimaryKeyParts.Add(pk);
 					modelClass.ForeignKeys.Add(fk);
 					modelClass.Properties.Add(pk.Property);
 				}
@@ -123,8 +138,10 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata.Metada
 					entityProperty.Name = "UiCulture";
 				}
 
+			    var isLocalizationColumn = false;
 				if (LocalizationHelper.IsLocalizationTable(table) && (LocalizationHelper.GetParentLocalizationColumn(table)) == column)
 				{
+				    isLocalizationColumn = true;
 					entityProperty.Name = "Parent";
 				}
 
@@ -138,14 +155,22 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata.Metada
 					{
 						referencedColumnType += '?';
 					}
+
 					var fkProperty = new EntityProperty
 					{
 						Column = column,
-						Name = $"{entityProperty.Name}Id",
 						TypeName = referencedColumnType
 					};
+                    if (!isLocalizationColumn && column.Name.EndsWith("Id", StringComparison.OrdinalIgnoreCase))
+				    {
+				        fkProperty.Name = column.Name.Substring(0, column.Name.Length - 2) + "Id";
+				    }
+                    else
+                    {
+                        fkProperty.Name = $"{entityProperty.Name}Id";
+                    }
 
-					var fk = new EntityForeignKey
+                    var fk = new EntityForeignKey
 					{
 						Column = column,
 						ForeignKeyProperty = fkProperty,

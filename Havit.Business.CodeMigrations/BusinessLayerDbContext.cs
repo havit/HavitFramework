@@ -41,6 +41,7 @@ namespace Havit.Business.CodeMigrations
 		protected virtual void ApplyConventions(ModelBuilder modelBuilder)
 		{
 			modelBuilder.ApplyPrefixedTablePrimaryKeys();
+			modelBuilder.ApplyForeignKeysColumnNames();
 			modelBuilder.ApplyLocalizationTablesParentEntities();
 			modelBuilder.ApplyDefaultsForStrings();
 			modelBuilder.ApplyDefaultNamespaces();

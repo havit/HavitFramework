@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Havit.Data.Entity.Helpers;
 using Havit.Data.Entity.Tests.Infrastructure.Model;
 
 namespace Havit.Data.Entity.Tests.Infrastructure
@@ -15,7 +16,7 @@ namespace Havit.Data.Entity.Tests.Infrastructure
 			System.Data.Entity.Database.SetInitializer(new DropCreateDatabaseAlways<ValidatingDbContext>());
 		}
 
-		public ValidatingDbContext() : base("Havit.Data.Entity6.Tests")
+		public ValidatingDbContext() : base(DatabaseNameHelper.GetDatabaseNameForUnitTest("Havit.Data.Entity6.Tests"))
 		{
 		}
 

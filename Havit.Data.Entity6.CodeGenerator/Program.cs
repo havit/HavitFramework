@@ -76,7 +76,6 @@ namespace Havit.Data.Entity.CodeGenerator
 				{
 					dbContext = new DbContextActivator().Activate(dbContextType);
 
-					// doNothingInitializer = new DoNothingInitializer<MyDbContext>();
 					Type nullDatabaseInitializerType = typeof(NullDatabaseInitializer<>).MakeGenericType(dbContextType);
 					object nullDatabaseInitializer = Activator.CreateInstance(nullDatabaseInitializerType);
 

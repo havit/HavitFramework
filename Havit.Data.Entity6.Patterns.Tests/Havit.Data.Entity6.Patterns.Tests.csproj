@@ -127,6 +127,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Havit.Data.Entity6.Tests\Havit.Data.Entity6.Tests.csproj">
+      <Project>{09db04ec-99a1-4341-a137-eb724d2b6b37}</Project>
+      <Name>Havit.Data.Entity6.Tests</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Havit.Data.Entity6\Havit.Data.Entity6.csproj">
       <Project>{d7232f24-9dcc-466f-b8ab-e3248e8edcc6}</Project>
       <Name>Havit.Data.Entity6</Name>
@@ -152,10 +156,7 @@
       <Name>Havit</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="QueryServices\" />
-    <Folder Include="Repositories\Model\" />
-  </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

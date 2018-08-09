@@ -2,6 +2,7 @@
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
+using Havit.Data.Entity.Helpers;
 
 namespace Havit.Data.Entity.Tests
 {
@@ -13,7 +14,7 @@ namespace Havit.Data.Entity.Tests
 		{
 			public DbSet<DataClass> DataClasses { get; set; }
 
-			public DbEntityValidationExceptionExtensionsTestDbContext() : base("Havit.Data.Entity6.Tests")
+			public DbEntityValidationExceptionExtensionsTestDbContext() : base(DatabaseNameHelper.GetDatabaseNameForUnitTest("Havit.Data.Entity6.Tests"))
 			{
 				Database.SetInitializer(new DropCreateDatabaseAlways<DbEntityValidationExceptionExtensionsTestDbContext>());
 			}

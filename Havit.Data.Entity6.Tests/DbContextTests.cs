@@ -115,7 +115,7 @@ namespace Havit.Data.Entity.Tests
 				Assert.AreEqual(1, master.Children.Count);
 			}
 		}
-
+		
 		[TestMethod]
 		public void DbContext_MigrationsDoNotCreateAnotherDatabase()
 		{

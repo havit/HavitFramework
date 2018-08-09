@@ -1,10 +1,12 @@
 ﻿using System.Data.Entity;
+using Havit.Data.Entity.Helpers;
+using Havit.Data.Entity.Tests;
 
 namespace Havit.Data.Entity.Patterns.Tests.Infrastructure
 {
-	public class TestDbContext : DbContext
+	public class TestDbContext : Havit.Data.Entity.DbContext
 	{
-		public TestDbContext() : base("Havit.Data.Entity6.Patterns.Tests")
+		public TestDbContext() : base(DatabaseNameHelper.GetDatabaseNameForUnitTest("Havit.Data.Entity6.Patterns.Tests"))
 		{
 			Database.SetInitializer(new DropCreateDatabaseAlways<TestDbContext>());
 		}

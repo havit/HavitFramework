@@ -340,7 +340,6 @@
     <Compile Include="Actions\Repositories\Templates\DbRepositoryGeneratedTemplateFactory.cs" />
     <Compile Include="Actions\Repositories\Templates\InterfaceRepositoryGeneratedTemplateFactory.cs" />
     <Compile Include="Entity\DbContextActivator.cs" />
-    <Compile Include="Entity\DoNothingInitializer.cs" />
     <Compile Include="Services\ITemplate.cs" />
     <Compile Include="Services\GenericGenerator.cs" />
     <Compile Include="Actions\ModelMetadataClasses\Model\MetadataClass.cs" />

@@ -1,4 +1,6 @@
 ﻿using System.Data.Entity;
+using Havit.Data.Entity.Helpers;
+using Havit.Data.Entity.Tests;
 
 namespace Havit.Data.Entity.Patterns.Tests.DataLoader.Model
 {
@@ -15,7 +17,7 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader.Model
 			Database.SetInitializer(new DropCreateDatabaseAlways<DataLoaderTestDbContext>());
 		}
 
-		public DataLoaderTestDbContext() : base("Havit.Data.Entity6.Patterns.Tests")
+		public DataLoaderTestDbContext() : base(DatabaseNameHelper.GetDatabaseNameForUnitTest("Havit.Data.Entity6.Patterns.Tests"))
 		{
 		}
 

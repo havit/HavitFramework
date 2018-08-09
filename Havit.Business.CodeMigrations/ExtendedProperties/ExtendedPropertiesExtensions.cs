@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Havit.Business.CodeMigrations.Infrastructure;
+using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -16,7 +18,35 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 			optionsBuilder.Options.GetExtension<CompositeMigrationsSqlGeneratorExtension>().WithGeneratorType<ExtendedPropertiesMigrationOperationSqlGenerator>();
 		}
 
-		public static void ForSqlServerExtendedPropertiesAttributes(this ModelBuilder modelBuilder)
+		public static IDictionary<string, string> GetExtendedProperties(this IMutableAnnotatable annotatable)
+		{
+			Contract.Requires<ArgumentNullException>(annotatable != null);
+
+			return annotatable.GetAnnotations().Where(IsExtendedPropertyAnnotation)
+				.ToDictionary(a => a.Name, a => (string)a.Value);
+	    }
+
+	    public static bool? GetBoolExtendedProperty(this IMutableAnnotatable annotatable, string key)
+	    {
+	        if (!GetExtendedProperties(annotatable).TryGetValue(key, out string value))
+	        {
+	            return null;
+	        }
+
+	        if (value.ToLowerInvariant() == "true" || value == "1")
+	        {
+	            return true;
+	        }
+
+	        if (value.ToLowerInvariant() == "false" || value == "0")
+	        {
+	            return false;
+	        }
+
+	        throw new ArgumentException($"Unknown bool value \"{value}\" in extended property {key}.");
+        }
+
+        public static void ForSqlServerExtendedPropertiesAttributes(this ModelBuilder modelBuilder)
 		{
 			foreach (var entityType in modelBuilder.Model.GetEntityTypes())
 			{

@@ -48,6 +48,7 @@ namespace Havit.Business.CodeMigrations
 			modelBuilder.ApplyCollectionExtendedProperties();
 			modelBuilder.UseXmlCommentsForDescriptionProperty();
             modelBuilder.UseSequencesForEnumClasses();
+            modelBuilder.ApplyBusinessLayerIndexes();
         }
 
 	    protected void RegisterDbInjections(ModelBuilder modelBuilder, Assembly injectionsAssembly = default)

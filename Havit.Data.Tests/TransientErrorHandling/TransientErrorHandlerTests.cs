@@ -23,11 +23,9 @@ namespace Havit.Data.Tests.TransientErrorHandling
 
 			// Act
 			int maxAttempts = 3;
-			int delayMs = 500;
-			TransientErrorRetryPolicy policy = new TransientErrorRetryPolicy(maxAttempts, new int[] { delayMs });
+			TransientErrorRetryPolicy policy = new TransientErrorRetryPolicy(maxAttempts, new int[] { 0 });
 			int i = 0;
 
-			Stopwatch stopwatch = Stopwatch.StartNew();
 			try
 			{
 				TransientErrorHandler.ExecuteAction<object>(
@@ -46,12 +44,9 @@ namespace Havit.Data.Tests.TransientErrorHandling
 					throw;
 				}
 			}
-			stopwatch.Stop();
 
 			// Assert
 			Assert.AreEqual(maxAttempts, i, "Max attempts");
-			Assert.IsTrue(stopwatch.ElapsedMilliseconds >= ((maxAttempts - 1) * delayMs), $"Delay {stopwatch.ElapsedMilliseconds} - lower limit {(maxAttempts - 1) * delayMs}");
-			Assert.IsTrue(stopwatch.ElapsedMilliseconds < (maxAttempts * delayMs), $"Delay {stopwatch.ElapsedMilliseconds} - upper limit {maxAttempts * delayMs}");
 		}
 
 		[TestMethod]

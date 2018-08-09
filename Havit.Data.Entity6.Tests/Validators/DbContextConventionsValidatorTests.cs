@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using Havit.Data.Entity.Mapping.Internal;
 using System.Collections.Generic;
+using Havit.Data.Entity.Tests.Helpers;
 using Havit.Data.Entity.Tests.Infrastructure;
 
 namespace Havit.Data.Entity.Tests.Validators

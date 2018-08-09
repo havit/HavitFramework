@@ -5,6 +5,7 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Havit.Data.Entity.Tests.Helpers;
 using Havit.Data.Entity.Tests.Infrastructure;
 using Havit.Data.Entity.Tests.Infrastructure.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

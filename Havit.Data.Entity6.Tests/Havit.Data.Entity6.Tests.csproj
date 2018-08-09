@@ -77,7 +77,7 @@
     <Compile Include="DbContextDatabaseTests.cs" />
     <Compile Include="DbContextTests.cs" />
     <Compile Include="DbEntityValidationExceptionExtensionsTests.cs" />
-    <Compile Include="Infrastructure\DeleteDatabaseHelper.cs" />
+    <Compile Include="Helpers\DeleteDatabaseHelper.cs" />
     <Compile Include="Infrastructure\EmptyDbContext.cs" />
     <Compile Include="Infrastructure\Model\Child.cs" />
     <Compile Include="Infrastructure\Model\Master.cs" />

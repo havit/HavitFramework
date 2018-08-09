@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Data.Entity.Tests.Infrastructure
+namespace Havit.Data.Entity.Tests.Helpers
 {
 	public static class DeleteDatabaseHelper
 	{

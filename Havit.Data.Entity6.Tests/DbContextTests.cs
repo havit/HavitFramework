@@ -7,6 +7,7 @@ using System.Data.Entity.Validation;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Havit.Data.Entity.Tests.Helpers;
 using Havit.Data.Entity.Tests.Infrastructure;
 using Havit.Data.Entity.Tests.Infrastructure.Model;
 using Havit.Data.Entity.Tests.Validators.Infrastructure;

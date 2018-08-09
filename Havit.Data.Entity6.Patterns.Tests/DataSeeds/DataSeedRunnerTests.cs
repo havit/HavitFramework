@@ -1,5 +1,6 @@
 ﻿using Havit.Data.Entity.Patterns.DataSeeds;
 using Havit.Data.Entity.Patterns.Tests.Infrastructure;
+using Havit.Data.Entity.Tests.Helpers;
 using Havit.Data.Entity.Tests.Infrastructure;
 using Havit.Data.Patterns.DataSeeds;
 using Havit.Data.Patterns.DataSeeds.Profiles;

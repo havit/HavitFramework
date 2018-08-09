@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using Havit.Data.Entity.Helpers;
+using Havit.Data.Entity.Tests.Infrastructure;
 
 namespace Havit.Data.Entity.Tests
 {
@@ -28,6 +29,12 @@ namespace Havit.Data.Entity.Tests
 			}
 		}
 		#endregion
+
+		[ClassCleanup]
+		public static void CleanUp()
+		{
+			DeleteDatabaseHelper.DeleteDatabase<DbEntityValidationExceptionExtensionsTestDbContext>();
+		}
 
 		[TestMethod]
 		public void DbEntityValidationException_FormatErrorMessage_FormatsValidationResults()

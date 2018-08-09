@@ -12,6 +12,7 @@ using Havit.Data.Entity.Patterns.Repositories;
 using Havit.Data.Entity.Patterns.SoftDeletes;
 using Havit.Data.Entity.Patterns.Tests.Infrastructure;
 using Havit.Data.Entity.Patterns.UnitOfWorks;
+using Havit.Data.Entity.Tests.Infrastructure;
 using Havit.Data.Patterns.DataLoaders;
 using Havit.Services.TimeServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -22,6 +23,12 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 	[TestClass]
 	public class DbRepositoryTests
 	{
+		[ClassCleanup]
+		public static void CleanUp()
+		{
+			DeleteDatabaseHelper.DeleteDatabase<TestDbContext>();
+		}
+
 		[TestMethod]
 		[ExpectedException(typeof(Havit.Data.Patterns.Exceptions.ObjectNotFoundException), AllowDerivedTypes = false)]
 		public void DbRepository_GetObject_ThrowsExceptionWhenNotFound()

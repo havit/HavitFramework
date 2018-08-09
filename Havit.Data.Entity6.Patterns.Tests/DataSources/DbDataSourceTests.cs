@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Havit.Data.Entity.Patterns.DataSources;
 using Havit.Data.Entity.Patterns.SoftDeletes;
 using Havit.Data.Entity.Patterns.Tests.Infrastructure;
+using Havit.Data.Entity.Tests.Infrastructure;
 using Havit.Services.TimeServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -14,6 +15,12 @@ namespace Havit.Data.Entity.Patterns.Tests.DataSources
 	[TestClass]
 	public class DbDataSourceTests
 	{
+		[ClassCleanup]
+		public static void CleanUp()
+		{
+			DeleteDatabaseHelper.DeleteDatabase<TestDbContext>();
+		}
+
 		[TestMethod]
 		public void DbDataSource_DataWithDeleted_IncludesDeleted()
 		{

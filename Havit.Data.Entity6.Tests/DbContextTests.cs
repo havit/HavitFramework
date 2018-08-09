@@ -19,38 +19,51 @@ namespace Havit.Data.Entity.Tests
 	[TestClass]
 	public class DbContextTests
 	{
+		[ClassCleanup]
+		public static void CleanUp()
+		{
+			DeleteDatabaseHelper.DeleteDatabase<EmptyDbContext>();
+			DeleteDatabaseHelper.DeleteDatabase<MasterChildDbContext>();
+			DeleteDatabaseHelper.DeleteDatabase<ValidatingDbContext>();
+		}
+
 		[TestMethod]
 		public void DbContext_SaveChanges_CallsRegisteresAfterSaveChangesActionsOnlyOnce()
 		{
 			// Arrange
-			EmptyDbContext dbContext = new EmptyDbContext();
-			int counter = 0;
+			using (EmptyDbContext dbContext = new EmptyDbContext())
+			{
+				int counter = 0;
 
-			// Act + Assert
-			dbContext.RegisterAfterSaveChangesAction(() => counter += 1);
+				// Act + Assert
+				dbContext.RegisterAfterSaveChangesAction(() => counter += 1);
 
-			dbContext.SaveChanges();
-			Assert.AreEqual(1, counter); // došlo k zaregistrované akci
+				dbContext.SaveChanges();
+				Assert.AreEqual(1, counter); // došlo k zaregistrované akci
 
-			dbContext.SaveChanges();
-			Assert.AreEqual(1, counter); // nedošlo k zaregistrované akci, registrace zrušena
+				dbContext.SaveChanges();
+				Assert.AreEqual(1, counter); // nedošlo k zaregistrované akci, registrace zrušena
+			}
+
 		}
 
 		[TestMethod]
 		public async Task DbContext_SaveChangesAsync_CallsRegisteresAfterSaveChangesActionsOnlyOnce()
 		{
 			// Arrange
-			EmptyDbContext dbContext = new EmptyDbContext();
-			int counter = 0;
+			using (EmptyDbContext dbContext = new EmptyDbContext())
+			{
+				int counter = 0;
 
-			// Act + Assert
-			dbContext.RegisterAfterSaveChangesAction(() => counter += 1);
+				// Act + Assert
+				dbContext.RegisterAfterSaveChangesAction(() => counter += 1);
 
-			await dbContext.SaveChangesAsync();
-			Assert.AreEqual(1, counter); // došlo k zaregistrované akci
+				await dbContext.SaveChangesAsync();
+				Assert.AreEqual(1, counter); // došlo k zaregistrované akci
 
-			await dbContext.SaveChangesAsync();
-			Assert.AreEqual(1, counter); // nedošlo k zaregistrované akci, registrace zrušena
+				await dbContext.SaveChangesAsync();
+				Assert.AreEqual(1, counter); // nedošlo k zaregistrované akci, registrace zrušena
+			}
 		}
 
 		[TestMethod]
@@ -115,10 +128,11 @@ namespace Havit.Data.Entity.Tests
 				Assert.AreEqual(1, master.Children.Count);
 			}
 		}
-		
+
 		[TestMethod]
 		public void DbContext_MigrationsDoNotCreateAnotherDatabase()
 		{
+			// v současné podobě není určen ke spouštění v rámci buildu
 			Assert.Inconclusive();
 
 			Contract.Assert(ConfigurationManager.ConnectionStrings["Havit.Data.Entity6.Tests.TwoContructorsDbContext1"] == null, "Pro účely testu nesmí existovat connection string Havit.Data.Entity6.Tests.TwoContructorsDbContext1.");

@@ -1,6 +1,7 @@
 ﻿using System.Data.Entity;
 using System.Linq;
 using Havit.Data.Entity.Patterns.Tests.DataLoader.Model;
+using Havit.Data.Entity.Tests.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.Entity.Patterns.Tests.DataLoader
@@ -8,11 +9,18 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 	[TestClass]
 	public class DbExtensionsIncludeTests
 	{
+		[ClassCleanup]
+		public static void CleanUp()
+		{
+			DeleteDatabaseHelper.DeleteDatabase<DataLoaderTestDbContext>();
+		}
+
 		[TestMethod]
 		public void DbExtensionsInclude_CheckSupportechPatterns()
 		{
 			// Arrange
 			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+			dbContext.Database.Initialize(true);
 
 			// Act
 

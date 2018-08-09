@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Havit.Data.Entity.Patterns.DataLoaders;
 using Havit.Data.Entity.Patterns.DataLoaders.Internal;
 using Havit.Data.Entity.Patterns.Tests.DataLoader.Model;
+using Havit.Data.Entity.Tests.Infrastructure;
 using Havit.Data.Patterns.DataLoaders;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -15,6 +16,12 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 	[TestClass]
 	public class DbDataLoaderTests
 	{
+		[ClassCleanup]
+		public static void CleanUp()
+		{
+			DeleteDatabaseHelper.DeleteDatabase<DataLoaderTestDbContext>();
+		}
+
 		[TestMethod]
 		public void DbDataLoader_Load_LoadsNotLoadedEntities()
 		{

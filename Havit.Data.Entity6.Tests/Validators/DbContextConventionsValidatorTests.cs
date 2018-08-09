@@ -5,12 +5,19 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using Havit.Data.Entity.Mapping.Internal;
 using System.Collections.Generic;
+using Havit.Data.Entity.Tests.Infrastructure;
 
 namespace Havit.Data.Entity.Tests.Validators
 {
 	[TestClass]
 	public class DbContextConventionsValidatorTests
 	{
+		[ClassCleanup]
+		public static void CleanUp()
+		{
+			DeleteDatabaseHelper.DeleteDatabase<ModelValidatingDbContext>();
+		}
+
 		[TestMethod]
 		public void DbContextConventionsValidator_CheckPrimaryKeyIsNotComposite_ReportsMorePrimaryKeys()
 		{

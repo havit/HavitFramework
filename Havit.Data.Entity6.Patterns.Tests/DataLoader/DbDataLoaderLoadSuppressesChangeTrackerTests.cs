@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Havit.Data.Entity.Patterns.DataLoaders;
 using Havit.Data.Entity.Patterns.DataLoaders.Internal;
 using Havit.Data.Entity.Patterns.Tests.DataLoader.Model;
+using Havit.Data.Entity.Tests.Infrastructure;
 using Havit.Data.Patterns.DataLoaders;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -22,6 +23,12 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 	[TestClass]
 	public class DbDataLoaderLoadSuppressesChangeTrackerTests
 	{
+		[ClassCleanup]
+		public static void CleanUp()
+		{
+			DeleteDatabaseHelper.DeleteDatabase<DataLoaderTestDbContext>();
+		}
+
 		/// <summary>
 		/// Proč v samostatné třídě s inicializací v konstruktoru? Pro korektnější měření času, viz 
 		/// http://stackoverflow.com/questions/7815534/how-can-i-precisely-time-a-test-run-in-visual-studio-2010

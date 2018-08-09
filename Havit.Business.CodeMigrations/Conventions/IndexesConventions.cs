@@ -20,6 +20,7 @@ namespace Havit.Business.CodeMigrations.Conventions
 
                 if (entityType.IsJoinEntity())
                 {
+					// TODO
                 }
                 else
                 {

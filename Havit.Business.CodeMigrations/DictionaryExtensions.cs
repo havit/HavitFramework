@@ -32,5 +32,18 @@ namespace Havit.Business.CodeMigrations
 
 			return dictionary;
 		}
+
+		public static Dictionary<string, string> AddIfNotDefault(this Dictionary<string, string> dictionary, string key, object value, object defaultValue)
+		{
+			Contract.Requires<ArgumentNullException>(dictionary != null);
+			Contract.Requires<ArgumentNullException>(key != null);
+
+			if (value != null && !value.Equals(defaultValue))
+			{
+				dictionary.Add(key, value.ToString());
+			}
+
+			return dictionary;
+		}
 	}
 }

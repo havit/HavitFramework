@@ -58,6 +58,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 			writer.WriteLine("using System.Linq;");
 			writer.WriteLine("using System.Text;");
 			writer.WriteLine("using Havit.Business.CodeMigrations.ExtendedProperties.Attributes;");
+			writer.WriteLine("using Havit.Business.CodeMigrations.Metadata;");
 
 			if (LocalizationHelper.IsLocalizationTable(modelClass.Table) || LocalizationHelper.IsLocalizedTable(modelClass.Table))
 			{
@@ -177,6 +178,11 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 				attributeBuilder.AddExtendedProperty(modelClass.Table, "Cache", "SlidingExpiration");
 
 				writer.WriteLine(attributeBuilder.ToString());
+			}
+
+			if (TableHelper.GetBoolExtendedProperty(modelClass.Table, "GenerateIndexes") == false)
+			{
+				writer.WriteLine("[GenerateIndexes(false)]");
 			}
 
 			writer.WriteLine(String.Format("{0} class {1}{2}",

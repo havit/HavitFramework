@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
-using Havit.Business.CodeMigrations.ExtendedProperties;
 using Havit.Business.CodeMigrations.ExtendedProperties.Attributes;
 using Havit.Business.CodeMigrations.Metadata;
 using Microsoft.EntityFrameworkCore;
@@ -9,27 +9,27 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Havit.Business.CodeMigrations.Conventions
 {
-    public static class IndexesConventions
+	public static class IndexesConventions
     {
-        private const string GenerateIndexesPropertyName = "GenerateIndexes";
-
-        public static void ApplyBusinessLayerIndexes(this ModelBuilder modelBuilder)
+	    public static void ApplyBusinessLayerIndexes(this ModelBuilder modelBuilder)
         {
-            foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypes()
-                .Where(e => e.GetBoolExtendedProperty(GenerateIndexesPropertyName) ?? true))
+            foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypes())
             {
 	            RenameForeignKeyIndexes(entityType.GetForeignKeys());
 
-                AddTableIndexes(entityType);
+	            if (ShouldGenerateIndexes(entityType.ClrType))
+	            {
+		            AddTableIndexes(entityType);
+	            }
             }
         }
 
-        private static void AddTableIndexes(IMutableEntityType entityType)
+	    private static void AddTableIndexes(IMutableEntityType entityType)
         {
             IMutableProperty deletedProperty = entityType.GetDeletedProperty();
 
             foreach (IMutableProperty property in entityType.GetNotIgnoredProperties()
-                .Where(e => e.GetBoolExtendedProperty(GenerateIndexesPropertyName) ?? true))
+                .Where(p => ShouldGenerateIndexes(p.PropertyInfo)))
             {
                 if (property.IsPrimaryKey() || !property.IsForeignKey())
                 {
@@ -123,12 +123,14 @@ namespace Havit.Business.CodeMigrations.Conventions
 		    }
 	    }
 
-        private static void ReplaceIndexPrefix(IMutableIndex index)
+	    private static void ReplaceIndexPrefix(IMutableIndex index)
         {
             if (index.Relational().Name.StartsWith("IX_"))
             {
                 index.Relational().Name = "FKX_" + index.Relational().Name.Substring(3);
             }
         }
+
+	    private static bool ShouldGenerateIndexes(MemberInfo memberInfo) => memberInfo.GetCustomAttribute<GenerateIndexesAttribute>()?.GenerateIndexes ?? true;
     }
 }

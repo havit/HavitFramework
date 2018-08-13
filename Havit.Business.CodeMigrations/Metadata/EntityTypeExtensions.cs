@@ -15,7 +15,7 @@ namespace Havit.Business.CodeMigrations.Metadata
         {
             Contract.Requires<ArgumentNullException>(entityType != null);
 
-            return GetNotIgnoredProperties(entityType).FirstOrDefault(p => (p.Name == "Deleted") && (p.ClrType == typeof(bool) || p.ClrType == typeof(DateTime)));
+            return GetNotIgnoredProperties(entityType).FirstOrDefault(p => (p.Name == "Deleted") && (p.ClrType == typeof(bool) || p.ClrType == typeof(DateTime) || p.ClrType == typeof(DateTime?)));
         }
 
         public static IEnumerable<IMutableProperty> GetNotIgnoredProperties(this IMutableEntityType entityType)

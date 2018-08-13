@@ -15,7 +15,7 @@ namespace Havit.Business.CodeMigrations.Conventions
         {
             foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypes())
             {
-	            RenameForeignKeyIndexes(entityType.GetForeignKeys());
+				RenameForeignKeyIndexes(entityType.GetForeignKeys());
 
 	            if (ShouldGenerateIndexes(entityType.ClrType))
 	            {
@@ -52,11 +52,15 @@ namespace Havit.Business.CodeMigrations.Conventions
 	        CreateCollectionOrderIndex(entityType);
 
 			if (entityType.IsLocalizationEntity())
-            {
-                IMutableProperty parentLocalizationProperty = entityType.FindProperty(entityType.GetLocalizationParentEntityType().FindPrimaryKey().Properties[0].Name);
+			{
+				IMutableEntityType parentEntity = entityType.GetLocalizationParentEntityType();
+				IMutableProperty parentLocalizationProperty = entityType.GetForeignKeys().FirstOrDefault(fk => fk.PrincipalEntityType == parentEntity)?.Properties?[0];
+
                 IMutableProperty languageProperty = entityType.GetLanguageProperty();
 
-                ReplaceIndexPrefix(entityType.GetOrAddIndex(new[] { parentLocalizationProperty, languageProperty }));
+				IMutableIndex index = entityType.GetOrAddIndex(new[] { parentLocalizationProperty, languageProperty });
+				index.IsUnique = true;
+				ReplaceIndexPrefix(index);
             }
 
             if (entityType.IsLanguageEntity())

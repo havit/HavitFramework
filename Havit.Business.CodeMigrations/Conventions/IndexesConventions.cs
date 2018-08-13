@@ -20,18 +20,11 @@ namespace Havit.Business.CodeMigrations.Conventions
             {
 	            RenameForeignKeyIndexes(entityType.GetForeignKeys());
 
-                if (entityType.IsJoinEntity())
-				{
-					// TODO
-				}
-                else
-                {
-                    AddNormalTableIndexes(entityType);
-                }
+                AddTableIndexes(entityType);
             }
         }
 
-        private static void AddNormalTableIndexes(IMutableEntityType entityType)
+        private static void AddTableIndexes(IMutableEntityType entityType)
         {
             IMutableProperty deletedProperty = entityType.GetDeletedProperty();
 

@@ -23,8 +23,14 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 			Contract.Requires<ArgumentNullException>(annotatable != null);
 
 			return annotatable.GetAnnotations().Where(IsExtendedPropertyAnnotation)
-				.ToDictionary(a => a.Name, a => (string)a.Value);
+				.ToDictionary(ParseAnnotationName, a => (string)a.Value);
 	    }
+
+		public static string GetStringExtendedProperty(this IMutableAnnotatable annotatable, string key)
+		{
+			GetExtendedProperties(annotatable).TryGetValue(key, out string value);
+			return value;
+		}
 
 	    public static bool? GetBoolExtendedProperty(this IMutableAnnotatable annotatable, string key)
 	    {

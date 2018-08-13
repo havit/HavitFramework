@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Havit.Business.CodeMigrations.ExtendedProperties;
+using Havit.Business.CodeMigrations.ExtendedProperties.Attributes;
 using Havit.Business.CodeMigrations.Metadata;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -19,9 +21,9 @@ namespace Havit.Business.CodeMigrations.Conventions
 	            RenameForeignKeyIndexes(entityType.GetForeignKeys());
 
                 if (entityType.IsJoinEntity())
-                {
+				{
 					// TODO
-                }
+				}
                 else
                 {
                     AddNormalTableIndexes(entityType);
@@ -54,7 +56,9 @@ namespace Havit.Business.CodeMigrations.Conventions
                 ReplaceIndexPrefix(index);
             }
 
-            if (entityType.IsLocalizationEntity())
+	        CreateCollectionOrderIndex(entityType);
+
+			if (entityType.IsLocalizationEntity())
             {
                 IMutableProperty parentLocalizationProperty = entityType.FindProperty(entityType.GetLocalizationParentEntityType().FindPrimaryKey().Properties[0].Name);
                 IMutableProperty languageProperty = entityType.GetLanguageProperty();
@@ -72,7 +76,51 @@ namespace Havit.Business.CodeMigrations.Conventions
             }
         }
 
-        private static void RenameForeignKeyIndexes(IEnumerable<IMutableForeignKey> foreignKeys)
+	    private static void CreateCollectionOrderIndex(IMutableEntityType entityType)
+	    {
+		    IMutableProperty deletedProperty = entityType.GetDeletedProperty();
+
+			// Find matching navigations using foreign keys
+			// We need navigations, since we want to extract Order By properties from Collection attribute (Sorting property)
+		    var collectionsIntoEntity = entityType.GetForeignKeys()
+			    .Select(fk => fk.PrincipalEntityType.GetNavigations().FirstOrDefault(n => n.ForeignKey == fk))
+			    .Where(n => n != null)
+			    .ToArray();
+
+			foreach (IMutableNavigation navigation in collectionsIntoEntity)
+		    {
+			    string sorting = new CollectionAttributeAccessor(navigation).Sorting;
+			    if (string.IsNullOrEmpty(sorting))
+			    {
+				    continue;
+			    }
+
+			    List<string> orderByProperties = Regex.Matches(sorting, "(^|[^{])({([^{}]*)}|\\[([^\\[\\]]*)\\])")
+				    .Cast<Match>()
+				    .Where(m => m.Success && m.Groups[4].Success)
+				    .Select(m => m.Groups[4].Value)
+				    .ToList();
+
+			    if (orderByProperties.Count == 0)
+			    {
+				    continue;
+			    }
+
+			    orderByProperties.Remove(navigation.ForeignKey.Properties[0].Name);
+			    orderByProperties.Insert(0, navigation.ForeignKey.Properties[0].Name);
+
+			    List<IMutableProperty> indexProperties = orderByProperties.Select(entityType.FindProperty).ToList();
+
+			    if (deletedProperty != null)
+			    {
+				    indexProperties.Add(deletedProperty);
+			    }
+
+			    entityType.GetOrAddIndex(indexProperties);
+		    }
+	    }
+
+	    private static void RenameForeignKeyIndexes(IEnumerable<IMutableForeignKey> foreignKeys)
 	    {
 		    foreach (IMutableIndex index in foreignKeys
 			    .Select(k => k.DeclaringEntityType.FindIndex(k.Properties))

@@ -61,6 +61,16 @@ namespace Havit.Business.CodeMigrations.Conventions
 				foreach (IMutableProperty property in entityType.GetProperties())
 				{
 					XmlCommentMember xmlCommentMember = xmlCommentType.Properties.FirstOrDefault(p => p.Name.EndsWith(property.Name));
+					if (xmlCommentMember == null)
+					{
+						var fk = entityType.FindForeignKeys(property).FirstOrDefault();
+						if (fk?.DependentToPrincipal != null)
+						{
+							xmlCommentMember = xmlCommentType.Properties.FirstOrDefault(p => p.Name.EndsWith(fk.DependentToPrincipal.PropertyInfo.Name));
+							Console.WriteLine("Using XML comment from {0} on property {1}", xmlCommentMember?.Name, fk.DependentToPrincipal.PropertyInfo.Name);
+						}
+					}
+
 					if (xmlCommentMember != null)
 					{
 						property.AddExtendedProperties(new Dictionary<string, string>

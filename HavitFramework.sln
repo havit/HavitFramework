@@ -202,11 +202,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Business.BusinessLaye
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EntityFrameworkCore.CodeGenerator", "Havit.Data.EntityFrameworkCore.CodeGenerator\Havit.Data.EntityFrameworkCore.CodeGenerator.csproj", "{9D793564-5C33-401F-8897-A68F698FD0B3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Business.CodeMigrations", "Havit.Business.CodeMigrations\Havit.Business.CodeMigrations.csproj", "{C6B51FC5-26D3-449C-AFD3-FB67ED3D4AA7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EntityFrameworkCore.BusinessLayer", "Havit.Data.EntityFrameworkCore.BusinessLayer\Havit.Data.EntityFrameworkCore.BusinessLayer.csproj", "{C6B51FC5-26D3-449C-AFD3-FB67ED3D4AA7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1EBE46EC-8DAE-46E6-8755-33A15B8D0FF3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Business.CodeMigrations.Tests", "Havit.Business.CodeMigrations.Tests\Havit.Business.CodeMigrations.Tests.csproj", "{ECA21C41-AA37-49F6-8B1D-7627F80CC9BB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests", "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests\Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.csproj", "{ECA21C41-AA37-49F6-8B1D-7627F80CC9BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -730,13 +730,13 @@ Global
 		SccProjectTopLevelParentUniqueName54 = HavitFramework.sln
 		SccProjectName54 = Havit.Data.EntityFrameworkCore.CodeGenerator
 		SccLocalPath54 = Havit.Data.EntityFrameworkCore.CodeGenerator
-		SccProjectUniqueName55 = Havit.Business.CodeMigrations\\Havit.Business.CodeMigrations.csproj
+		SccProjectUniqueName55 = Havit.Data.EntityFrameworkCore.BusinessLayer\\Havit.Data.EntityFrameworkCore.BusinessLayer.csproj
 		SccProjectTopLevelParentUniqueName55 = HavitFramework.sln
-		SccProjectName55 = Havit.Business.CodeMigrations
-		SccLocalPath55 = Havit.Business.CodeMigrations
-		SccProjectUniqueName56 = Havit.Business.CodeMigrations.Tests\\Havit.Business.CodeMigrations.Tests.csproj
+		SccProjectName55 = Havit.Data.EntityFrameworkCore.BusinessLayer
+		SccLocalPath55 = Havit.Data.EntityFrameworkCore.BusinessLayer
+		SccProjectUniqueName56 = Havit.Data.EntityFrameworkCore.BusinessLayer.Tests\\Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.csproj
 		SccProjectTopLevelParentUniqueName56 = HavitFramework.sln
-		SccProjectName56 = Havit.Business.CodeMigrations.Tests
-		SccLocalPath56 = Havit.Business.CodeMigrations.Tests
+		SccProjectName56 = Havit.Data.EntityFrameworkCore.BusinessLayer.Tests
+		SccLocalPath56 = Havit.Data.EntityFrameworkCore.BusinessLayer.Tests
 	EndGlobalSection
 EndGlobal

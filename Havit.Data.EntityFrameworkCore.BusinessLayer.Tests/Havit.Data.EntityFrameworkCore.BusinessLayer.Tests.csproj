@@ -33,7 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Havit.Business.CodeMigrations\Havit.Business.CodeMigrations.csproj" />
+    <ProjectReference Include="..\Havit.Data.EntityFrameworkCore.BusinessLayer\Havit.Data.EntityFrameworkCore.BusinessLayer.csproj" />
   </ItemGroup>
 
 </Project>

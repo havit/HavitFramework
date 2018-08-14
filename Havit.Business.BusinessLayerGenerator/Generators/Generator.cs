@@ -42,8 +42,11 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 							continue;
 						}
 
-						// vygenerujeme výchozí hodnoty
-						DefaultsBuilders.DefaultsBuilder.CreateDefaults(table);
+						if (GeneratorSettings.Strategy != GeneratorStrategy.HavitCodeFirst)
+						{
+							// vygenerujeme výchozí hodnoty
+							DefaultsBuilders.DefaultsBuilder.CreateDefaults(table);
+						}
 
 						// ověříme pravidla struktury databáze nad tabulkou
 						RulesChecker.CheckRules(table);
@@ -70,10 +73,14 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 						}
 
 					}
-					// vygenerujeme FK pro cizí klíče
-					// nebo pro kolekce...
-					IndexBuilders.IndexesBuilder.CreateIndexes(table);
-					ConstraintBuilders.ConstraintBuilder.CreateConstraints(table);
+
+					if (GeneratorSettings.Strategy != GeneratorStrategy.HavitCodeFirst)
+					{
+						// vygenerujeme FK pro cizí klíče
+						// nebo pro kolekce...
+						IndexBuilders.IndexesBuilder.CreateIndexes(table);
+						ConstraintBuilders.ConstraintBuilder.CreateConstraints(table);
+					}
 				}
 			}
 

@@ -78,6 +78,9 @@
     <None Include="..\PublishScripts\Publish-Havit.Data.Entity6.ps1">
       <Link>Publish-Havit.Data.Entity6.ps1</Link>
     </None>
+    <None Include="..\PublishScripts\Publish-Havit.Data.EntityFrameworkCore.ps1">
+      <Link>Publish-Havit.Data.EntityFrameworkCore.ps1</Link>
+    </None>
     <None Include="..\PublishScripts\Publish-Havit.Data.Glimpse.ps1">
       <Link>Publish-Havit.Data.Glimpse.ps1</Link>
     </None>
@@ -136,6 +139,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Havit.Business.BLGenerator.nuspec" />
+    <None Include="Havit.Data.EntityFrameworkCore.nuspec">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Havit.Extensions.DependencyInjection.Abstractions.nuspec">
       <SubType>Designer</SubType>
     </None>

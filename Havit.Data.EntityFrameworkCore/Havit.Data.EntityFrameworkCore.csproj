@@ -14,7 +14,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard2.0\Havit.Data.EFCore.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netstandard2.0\Havit.Data.EntityFrameworkCore.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Havit.Data.EFCore.Tests.Infrastructure.Entity;
+using Havit.Data.Entity.Tests.Infrastructure.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Havit.Data.EFCore.Tests
+namespace Havit.Data.Entity.Tests
 {
 	[TestClass]
 	public class DbContextTests

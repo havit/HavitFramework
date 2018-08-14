@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Havit.Data.EFCore.Tests.ModelValidation.Infrastructure.Model
+namespace Havit.Data.Entity.Tests.ModelValidation.Infrastructure.Model
 {
 	public class StringIdClass
 	{

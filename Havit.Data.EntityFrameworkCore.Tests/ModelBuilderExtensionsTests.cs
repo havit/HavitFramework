@@ -1,17 +1,11 @@
-﻿using System;
-using System.Diagnostics.Contracts;
-using System.Linq;
-using Havit.Data.EFCore.Tests.Infrastructure;
-using Havit.Data.EFCore.Tests.Infrastructure.Configurations;
-using Havit.Data.EFCore.Tests.Infrastructure.Model;
-using Havit.Data.Entity;
+﻿using Havit.Data.Entity.Tests.Infrastructure.Configurations;
+using Havit.Data.Entity.Tests.Infrastructure.Model;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Havit.Data.EFCore.Tests
+namespace Havit.Data.Entity.Tests
 {
 	[TestClass]
 	public class ModelBuilderExtensionsTests

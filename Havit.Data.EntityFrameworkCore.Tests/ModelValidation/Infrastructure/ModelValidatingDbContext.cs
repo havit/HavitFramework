@@ -1,9 +1,8 @@
-﻿using Havit.Data.EFCore.Tests.ModelValidation.Infrastructure.Model;
-using Havit.Data.Entity;
+﻿using Havit.Data.Entity.Tests.ModelValidation.Infrastructure.Model;
 using Microsoft.EntityFrameworkCore;
 using DbContext = Havit.Data.Entity.DbContext;
 
-namespace Havit.Data.EFCore.Tests.ModelValidation.Infrastructure
+namespace Havit.Data.Entity.Tests.ModelValidation.Infrastructure
 {
 	internal class ModelValidatingDbContext : DbContext
 	{

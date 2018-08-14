@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Havit.Data.EFCore.Tests.Infrastructure.Model;
+﻿using Havit.Data.Entity.Tests.Infrastructure.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Havit.Data.EFCore.Tests.Infrastructure.Configurations
+namespace Havit.Data.Entity.Tests.Infrastructure.Configurations
 {
 	internal class ModelClassConfiguration : IEntityTypeConfiguration<ModelClass>
 	{

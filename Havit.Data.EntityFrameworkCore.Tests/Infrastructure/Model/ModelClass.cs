@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Havit.Data.EFCore.Tests.Infrastructure.Model
+namespace Havit.Data.Entity.Tests.Infrastructure.Model
 {
 	public class ModelClass
 	{

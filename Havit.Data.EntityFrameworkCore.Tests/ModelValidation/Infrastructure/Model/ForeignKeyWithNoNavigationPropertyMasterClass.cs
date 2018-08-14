@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions.Internal;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using System.Collections.Generic;
 
-namespace Havit.Data.EFCore.Tests.ModelValidation.Infrastructure.Model
+namespace Havit.Data.Entity.Tests.ModelValidation.Infrastructure.Model
 {
     public class ForeignKeyWithNoNavigationPropertyMasterClass
     {

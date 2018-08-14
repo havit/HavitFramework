@@ -33,7 +33,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Havit.Data.EFCore.Patterns\Havit.Data.EFCore.Patterns.csproj" />
+	  <ProjectReference Include="..\Havit.Data.EntityFrameworkCore.Patterns\Havit.Data.EntityFrameworkCore.Patterns.csproj" />
 	  <ProjectReference Include="..\Havit.Services\Havit.Services.csproj" />
 	  <ProjectReference Include="..\Havit\Havit.csproj" />
 	</ItemGroup>

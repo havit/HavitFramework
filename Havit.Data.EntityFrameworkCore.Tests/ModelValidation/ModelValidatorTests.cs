@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Havit.Data.EFCore.Tests.ModelValidation.Infrastructure;
-using Havit.Data.EFCore.Tests.ModelValidation.Infrastructure.Model;
 using Havit.Data.Entity.ModelValidation;
+using Havit.Data.Entity.Tests.ModelValidation.Infrastructure;
+using Havit.Data.Entity.Tests.ModelValidation.Infrastructure.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Havit.Data.EFCore.Tests.ModelValidation
+namespace Havit.Data.Entity.Tests.ModelValidation
 {
 	[TestClass]
 	public class ModelValidatorTests

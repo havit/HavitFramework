@@ -23,7 +23,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Havit.Data.EFCore\Havit.Data.EFCore.csproj" />
+		<ProjectReference Include="..\Havit.Data.EntityFrameworkCore\Havit.Data.EntityFrameworkCore.csproj" />
 		<ProjectReference Include="..\Havit.Services\Havit.Services.csproj" />
 	</ItemGroup>
 

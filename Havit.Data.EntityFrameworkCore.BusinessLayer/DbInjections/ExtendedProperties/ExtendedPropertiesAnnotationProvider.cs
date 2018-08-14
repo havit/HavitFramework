@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Havit.Business.CodeMigrations.ExtendedProperties;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
-namespace Havit.Business.CodeMigrations.DbInjections.ExtendedProperties
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.ExtendedProperties
 {
     public class ExtendedPropertiesAnnotationProvider : IDbInjectionAnnotationProvider
     {

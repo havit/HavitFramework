@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Havit.Business.CodeMigrations.ExtendedProperties
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 {
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Property, Inherited = false, AllowMultiple = true)]
 	public abstract class ExtendedPropertiesAttribute : Attribute

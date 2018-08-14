@@ -2,12 +2,12 @@
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using Havit.Business.CodeMigrations.ExtendedProperties.Attributes;
-using Havit.Business.CodeMigrations.Metadata;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties.Attributes;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace Havit.Business.CodeMigrations.Conventions
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 {
 	public static class IndexesConventions
     {

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Reflection;
-using Havit.Business.CodeMigrations.ExtendedProperties;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -10,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 {
 	public class ExtendedPropertiesEndToEndTests
 	{

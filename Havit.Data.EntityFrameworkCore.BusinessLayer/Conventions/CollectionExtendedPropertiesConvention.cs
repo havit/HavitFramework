@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Havit.Business.CodeMigrations.ExtendedProperties;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace Havit.Business.CodeMigrations.Conventions
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 {
 	public static class CollectionExtendedPropertiesConvention
 	{

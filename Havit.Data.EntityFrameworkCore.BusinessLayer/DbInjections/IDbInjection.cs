@@ -1,4 +1,4 @@
-﻿namespace Havit.Business.CodeMigrations.DbInjections
+﻿namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
 {
 	public interface IDbInjection
 	{

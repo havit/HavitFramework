@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Havit.Business.CodeMigrations.DbInjections.ExtendedProperties;
-using Havit.Business.CodeMigrations.DbInjections.StoredProcedures;
-using Havit.Business.CodeMigrations.Infrastructure;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.ExtendedProperties;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.StoredProcedures;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
-namespace Havit.Business.CodeMigrations.DbInjections
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
 {
     public static class DbInjectionsExtensions
     {

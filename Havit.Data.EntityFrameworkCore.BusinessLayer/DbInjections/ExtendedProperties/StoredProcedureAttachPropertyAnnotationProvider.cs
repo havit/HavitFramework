@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Havit.Business.CodeMigrations.DbInjections.ExtendedProperties.Attributes;
-using Havit.Business.CodeMigrations.DbInjections.StoredProcedures;
-using Havit.Business.CodeMigrations.ExtendedProperties;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.ExtendedProperties.Attributes;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.StoredProcedures;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
-namespace Havit.Business.CodeMigrations.DbInjections.ExtendedProperties
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.ExtendedProperties
 {
 	public class StoredProcedureAttachPropertyAnnotationProvider : DbInjectionAnnotationProvider<StoredProcedureDbInjection>
 	{

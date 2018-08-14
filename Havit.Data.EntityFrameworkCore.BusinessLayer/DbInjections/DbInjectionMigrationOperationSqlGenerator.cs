@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Havit.Business.CodeMigrations.Infrastructure;
-using Havit.Business.CodeMigrations.StoredProcedures;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.Infrastructure;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.StoredProcedures;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
-namespace Havit.Business.CodeMigrations.DbInjections
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
 {
     public class DbInjectionMigrationOperationSqlGenerator : MigrationOperationSqlGenerator
     {

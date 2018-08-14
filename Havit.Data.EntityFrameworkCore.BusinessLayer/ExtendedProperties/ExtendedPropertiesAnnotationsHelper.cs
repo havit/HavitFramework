@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace Havit.Business.CodeMigrations.ExtendedProperties
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 {
 	internal static class ExtendedPropertiesAnnotationsHelper
 	{

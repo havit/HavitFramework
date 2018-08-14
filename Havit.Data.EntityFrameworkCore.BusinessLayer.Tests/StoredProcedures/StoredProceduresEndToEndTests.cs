@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using Havit.Business.CodeMigrations.Tests.ExtendedProperties;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Havit.Business.CodeMigrations.Tests.StoredProcedures
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.StoredProcedures
 {
     public class StoredProceduresEndToEndTests
     {

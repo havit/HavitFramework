@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Havit.Business.CodeMigrations.Infrastructure
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Infrastructure
 {
     public class CompositeMigrationsAnnotationProvider : MigrationsAnnotationProvider
 	{

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
-namespace Havit.Business.CodeMigrations.Conventions
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 {
 	public static class PrefixedTablePrimaryKeysConvention
 	{

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Havit.Business.CodeMigrations.Metadata
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata
 {
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Property)]
 	public class GenerateIndexesAttribute : Attribute

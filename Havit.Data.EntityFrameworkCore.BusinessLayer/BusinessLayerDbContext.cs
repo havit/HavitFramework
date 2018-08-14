@@ -1,13 +1,13 @@
 ﻿using System.Reflection;
-using Havit.Business.CodeMigrations.Conventions;
-using Havit.Business.CodeMigrations.DbInjections;
-using Havit.Business.CodeMigrations.ExtendedProperties;
-using Havit.Business.CodeMigrations.Infrastructure;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using DbContext = Havit.Data.Entity.DbContext;
 
-namespace Havit.Business.CodeMigrations
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 {
     public class BusinessLayerDbContext : DbContext
 	{

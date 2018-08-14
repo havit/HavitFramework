@@ -2,7 +2,7 @@
 using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace Havit.Business.CodeMigrations.Metadata
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata
 {
     public static class LanguageEntityExtensions
     {

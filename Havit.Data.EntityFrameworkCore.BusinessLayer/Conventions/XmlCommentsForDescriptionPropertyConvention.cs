@@ -4,12 +4,12 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
-using Havit.Business.CodeMigrations.ExtendedProperties;
-using Havit.Business.CodeMigrations.XmlComments;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.XmlComments;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace Havit.Business.CodeMigrations.Conventions
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 {
 	public static class XmlCommentsForDescriptionPropertyConvention
 	{

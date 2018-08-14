@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Havit.Services.Caching;
 
-namespace Havit.Business.CodeMigrations.ExtendedProperties.Attributes
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties.Attributes
 {
 	[AttributeUsage(AttributeTargets.Class)]
 	public class CacheAttribute : ExtendedPropertiesAttribute

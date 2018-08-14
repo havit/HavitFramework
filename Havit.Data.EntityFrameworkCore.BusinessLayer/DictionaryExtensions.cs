@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore.Internal;
 
-namespace Havit.Business.CodeMigrations
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 {
 	internal static class DictionaryExtensions
 	{

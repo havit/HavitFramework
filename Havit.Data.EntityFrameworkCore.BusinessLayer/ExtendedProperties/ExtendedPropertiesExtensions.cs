@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Havit.Business.CodeMigrations.Infrastructure;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.Infrastructure;
 using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using static Havit.Business.CodeMigrations.ExtendedProperties.ExtendedPropertiesAnnotationsHelper;
 
-namespace Havit.Business.CodeMigrations.ExtendedProperties
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 {
 	public static class ExtendedPropertiesExtensions
 	{
@@ -22,8 +21,8 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 		{
 			Contract.Requires<ArgumentNullException>(annotatable != null);
 
-			return annotatable.GetAnnotations().Where(IsExtendedPropertyAnnotation)
-				.ToDictionary(ParseAnnotationName, a => (string)a.Value);
+			return annotatable.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.IsExtendedPropertyAnnotation)
+				.ToDictionary(ExtendedPropertiesAnnotationsHelper.ParseAnnotationName, a => (string)a.Value);
 	    }
 
 		public static string GetStringExtendedProperty(this IMutableAnnotatable annotatable, string key)
@@ -56,21 +55,21 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 		{
 			foreach (var entityType in modelBuilder.Model.GetEntityTypes())
 			{
-				AddExtendedPropertyAnnotations(entityType, entityType.ClrType);
+				ExtendedPropertiesAnnotationsHelper.AddExtendedPropertyAnnotations(entityType, entityType.ClrType);
 				foreach (var property in entityType.GetProperties().Where(x => !x.IsShadowProperty))
 				{
-					AddExtendedPropertyAnnotations(property, property.PropertyInfo);
+					ExtendedPropertiesAnnotationsHelper.AddExtendedPropertyAnnotations(property, property.PropertyInfo);
 				}
 				foreach (var navigation in entityType.GetNavigations())
 				{
-					AddExtendedPropertyAnnotations(entityType, navigation.PropertyInfo);
+					ExtendedPropertiesAnnotationsHelper.AddExtendedPropertyAnnotations(entityType, navigation.PropertyInfo);
 				}
 			}
 		}
 
 		public static void AddExtendedProperties(this IMutableAnnotatable annotatable, IDictionary<string, string> extendedProperties)
 		{
-			AddExtendedPropertyAnnotations(annotatable, extendedProperties);
+			ExtendedPropertiesAnnotationsHelper.AddExtendedPropertyAnnotations(annotatable, extendedProperties);
 		}
 
 		public static void AddExtendedProperties(this EntityTypeBuilder entityTypeBuilder, IDictionary<string, string> extendedProperties)

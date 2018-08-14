@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
-namespace Havit.Business.CodeMigrations.Infrastructure
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Infrastructure
 {
 	public class CompositeMigrationsSqlGenerator : SqlServerMigrationsSqlGenerator
     {

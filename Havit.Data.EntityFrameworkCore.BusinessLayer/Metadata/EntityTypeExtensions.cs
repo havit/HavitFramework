@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Havit.Business.CodeMigrations.ExtendedProperties;
-using Havit.Business.CodeMigrations.ExtendedProperties.Attributes;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties.Attributes;
 using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace Havit.Business.CodeMigrations.Metadata
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata
 {
     public static class EntityTypeExtensions
     {

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace Havit.Business.CodeMigrations.Infrastructure
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Infrastructure
 {
     internal class CompositeMigrationsSqlGeneratorExtension : IDbContextOptionsExtension
     {

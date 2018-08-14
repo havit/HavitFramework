@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Havit.Business.CodeMigrations.ExtendedProperties.Attributes;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties.Attributes;
 using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
-namespace Havit.Business.CodeMigrations.Conventions
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 {
 	public static class SequencesForEnumClassesConvention
 	{

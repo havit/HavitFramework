@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Havit.Business.CodeMigrations.DbInjections.ExtendedProperties
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.ExtendedProperties
 {
     [AttributeUsage(AttributeTargets.Method)]
     public abstract class DbInjectionExtendedPropertiesAttribute : Attribute

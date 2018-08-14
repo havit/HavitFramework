@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
-namespace Havit.Business.CodeMigrations.Infrastructure
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Infrastructure
 {
 	public class MigrationOperationSqlGenerator : IMigrationOperationSqlGenerator
 	{

@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Havit.Business.CodeMigrations.Infrastructure;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using Microsoft.EntityFrameworkCore.Storage;
-using static Havit.Business.CodeMigrations.ExtendedProperties.ExtendedPropertiesAnnotationsHelper;
 
-namespace Havit.Business.CodeMigrations.ExtendedProperties
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 {
 	internal class ExtendedPropertiesMigrationOperationSqlGenerator : MigrationOperationSqlGenerator
 	{
@@ -26,27 +25,27 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 
         public override void Generate(CreateTableOperation operation, IModel model, MigrationCommandListBuilder builder)
 		{
-			foreach (var annotation in operation.GetAnnotations().Where(IsExtendedPropertyAnnotation))
+			foreach (var annotation in operation.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.IsExtendedPropertyAnnotation))
 			{
 				var value = (string)annotation.Value;
-				AddExtendedPropertyLevel1(ParseAnnotationName(annotation), value, GetSchema(operation.Schema, model), operation.Name, builder);
+				AddExtendedPropertyLevel1(ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(annotation), value, GetSchema(operation.Schema, model), operation.Name, builder);
 			}
 			foreach (var column in operation.Columns)
 			{
-				foreach (var annotation in column.GetAnnotations().Where(IsExtendedPropertyAnnotation))
+				foreach (var annotation in column.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.IsExtendedPropertyAnnotation))
 				{
 					var value = (string)annotation.Value;
-					AddExtendedPropertyLevel2(ParseAnnotationName(annotation), value, GetSchema(operation.Schema, model), column.Table, column.Name, builder);
+					AddExtendedPropertyLevel2(ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(annotation), value, GetSchema(operation.Schema, model), column.Table, column.Name, builder);
 				}
 			}
 		}
 
 		public override void Generate(AddColumnOperation operation, IModel model, MigrationCommandListBuilder builder)
 		{
-			foreach (var annotation in operation.GetAnnotations().Where(IsExtendedPropertyAnnotation))
+			foreach (var annotation in operation.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.IsExtendedPropertyAnnotation))
 			{
 				var value = (string)annotation.Value;
-				AddExtendedPropertyLevel2(ParseAnnotationName(annotation), value, GetSchema(operation.Schema, model), operation.Table, operation.Name, builder);
+				AddExtendedPropertyLevel2(ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(annotation), value, GetSchema(operation.Schema, model), operation.Table, operation.Name, builder);
 			}
 		}
 
@@ -55,17 +54,17 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 			AlterHelper(operation.OldTable.GetAnnotations(), operation.GetAnnotations(),
 				a =>
 				{
-					DropExtendedPropertyLevel1(ParseAnnotationName(a), GetSchema(operation.Schema, model), operation.Name, builder);
+					DropExtendedPropertyLevel1(ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(a), GetSchema(operation.Schema, model), operation.Name, builder);
 				},
 				a =>
 				{
 					var value = (string)a.Value;
-					UpdateExtendedPropertyLevel1(ParseAnnotationName(a), value, GetSchema(operation.Schema, model), operation.Name, builder);
+					UpdateExtendedPropertyLevel1(ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(a), value, GetSchema(operation.Schema, model), operation.Name, builder);
 				},
 				a =>
 				{
 					var value = (string)a.Value;
-					AddExtendedPropertyLevel1(ParseAnnotationName(a), value, GetSchema(operation.Schema, model), operation.Name, builder);
+					AddExtendedPropertyLevel1(ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(a), value, GetSchema(operation.Schema, model), operation.Name, builder);
 				});
 		}
 
@@ -74,17 +73,17 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 			AlterHelper(operation.OldColumn.GetAnnotations(), operation.GetAnnotations(),
 				a =>
 				{
-					DropExtendedPropertyLevel2(ParseAnnotationName(a), GetSchema(operation.Schema, model), operation.Table, operation.Name, builder);
+					DropExtendedPropertyLevel2(ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(a), GetSchema(operation.Schema, model), operation.Table, operation.Name, builder);
 				},
 				a =>
 				{
 					var value = (string)a.Value;
-					UpdateExtendedPropertyLevel2(ParseAnnotationName(a), value, GetSchema(operation.Schema, model), operation.Table, operation.Name, builder);
+					UpdateExtendedPropertyLevel2(ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(a), value, GetSchema(operation.Schema, model), operation.Table, operation.Name, builder);
 				},
 				a =>
 				{
 					var value = (string)a.Value;
-					AddExtendedPropertyLevel2(ParseAnnotationName(a), value, GetSchema(operation.Schema, model), operation.Table, operation.Name, builder);
+					AddExtendedPropertyLevel2(ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(a), value, GetSchema(operation.Schema, model), operation.Table, operation.Name, builder);
 				});
 		}
 
@@ -93,53 +92,53 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 			AlterHelper(operation.OldDatabase.GetAnnotations(), operation.GetAnnotations(),
 				a =>
 				{
-					if (TryParseExtraDatabaseObjectAnnotationName(a, out var schema, out var level1Type, out var level1Name, out var name))
+					if (ExtendedPropertiesAnnotationsHelper.TryParseExtraDatabaseObjectAnnotationName(a, out var schema, out var level1Type, out var level1Name, out var name))
 					{
 						DropExtendedPropertyLevel1WithType(name, GetSchema(schema, model), level1Type, level1Name, builder);
 					}
 					else
 					{
-						DropExtendedPropertyLevelNothing(ParseAnnotationName(a), builder);
+						DropExtendedPropertyLevelNothing(ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(a), builder);
 					}
 				},
 				a =>
 				{
 					var value = (string)a.Value;
-					if (TryParseExtraDatabaseObjectAnnotationName(a, out var schema, out var level1Type, out var level1Name, out var name))
+					if (ExtendedPropertiesAnnotationsHelper.TryParseExtraDatabaseObjectAnnotationName(a, out var schema, out var level1Type, out var level1Name, out var name))
 					{
 						UpdateExtendedPropertyLevel1WithType(name, value, GetSchema(schema, model), level1Type, level1Name, builder);
 					}
 					else
 					{
-						UpdateExtendedPropertyLevelNothing(ParseAnnotationName(a), value, builder);
+						UpdateExtendedPropertyLevelNothing(ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(a), value, builder);
 					}
 				},
 				a =>
 				{
 					var value = (string)a.Value;
-					if (TryParseExtraDatabaseObjectAnnotationName(a, out var schema, out var level1Type, out var level1Name, out var name))
+					if (ExtendedPropertiesAnnotationsHelper.TryParseExtraDatabaseObjectAnnotationName(a, out var schema, out var level1Type, out var level1Name, out var name))
 					{
 						AddExtendedPropertyLevel1WithType(name, value, GetSchema(schema, model), level1Type, level1Name, builder);
 					}
 					else
 					{
-						AddExtendedPropertyLevelNothing(ParseAnnotationName(a), value, builder);
+						AddExtendedPropertyLevelNothing(ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(a), value, builder);
 					}
 				});
 		}
 
 		public override void Generate(SqlServerCreateDatabaseOperation operation, IModel model, MigrationCommandListBuilder builder)
 		{
-			foreach (var annotation in operation.GetAnnotations().Where(IsExtendedPropertyAnnotation))
+			foreach (var annotation in operation.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.IsExtendedPropertyAnnotation))
 			{
 				var value = (string)annotation.Value;
-				if (TryParseExtraDatabaseObjectAnnotationName(annotation, out var schema, out var level1Type, out var level1Name, out var name))
+				if (ExtendedPropertiesAnnotationsHelper.TryParseExtraDatabaseObjectAnnotationName(annotation, out var schema, out var level1Type, out var level1Name, out var name))
 				{
 					AddExtendedPropertyLevel1WithType(name, value, schema, level1Type, level1Name, builder);
 				}
 				else
 				{
-					AddExtendedPropertyLevelNothing(ParseAnnotationName(annotation), value, builder);
+					AddExtendedPropertyLevelNothing(ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(annotation), value, builder);
 				}
 			}
 		}
@@ -292,10 +291,10 @@ namespace Havit.Business.CodeMigrations.ExtendedProperties
 		private static void AlterHelper(IEnumerable<IAnnotation> oldAnnotations, IEnumerable<IAnnotation> newAnnotations,
 			Action<IAnnotation> dropAction, Action<IAnnotation> updateAction, Action<IAnnotation> addAction)
 		{
-			oldAnnotations = oldAnnotations.Where(IsExtendedPropertyAnnotation);
-			newAnnotations = newAnnotations.Where(IsExtendedPropertyAnnotation);
-			var oldAnnotationsLookup = oldAnnotations.ToDictionary(x => x.Name, Comparer);
-			var newAnnotationsLookup = newAnnotations.ToDictionary(x => x.Name, Comparer);
+			oldAnnotations = oldAnnotations.Where(ExtendedPropertiesAnnotationsHelper.IsExtendedPropertyAnnotation);
+			newAnnotations = newAnnotations.Where(ExtendedPropertiesAnnotationsHelper.IsExtendedPropertyAnnotation);
+			var oldAnnotationsLookup = oldAnnotations.ToDictionary(x => x.Name, ExtendedPropertiesAnnotationsHelper.Comparer);
+			var newAnnotationsLookup = newAnnotations.ToDictionary(x => x.Name, ExtendedPropertiesAnnotationsHelper.Comparer);
 			foreach (var annotation in oldAnnotations.Where(x => !newAnnotationsLookup.ContainsKey(x.Name)))
 			{
 				dropAction(annotation);

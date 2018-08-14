@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 
-namespace Havit.Business.CodeMigrations.ExtendedProperties.Attributes
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties.Attributes
 {
 	public class IgnoredAttribute : ExtendedPropertiesAttribute
 	{

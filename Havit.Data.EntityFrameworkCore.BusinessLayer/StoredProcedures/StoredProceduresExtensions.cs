@@ -1,7 +1,7 @@
-﻿using Havit.Business.CodeMigrations.Infrastructure;
+﻿using Havit.Data.EntityFrameworkCore.BusinessLayer.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
-namespace Havit.Business.CodeMigrations.StoredProcedures
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.StoredProcedures
 {
     public static class StoredProceduresExtensions
     {

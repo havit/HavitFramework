@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
-using Havit.Business.CodeMigrations.ExtendedProperties;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
 
-namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 {
 	internal class CollectionTestExtendedPropertiesAttribute : ExtendedPropertiesAttribute
 	{

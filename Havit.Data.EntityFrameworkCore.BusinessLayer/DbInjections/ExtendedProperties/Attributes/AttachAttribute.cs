@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
 using Havit.Diagnostics.Contracts;
 
-namespace Havit.Business.CodeMigrations.DbInjections.ExtendedProperties.Attributes
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.ExtendedProperties.Attributes
 {
 	[AttributeUsage(AttributeTargets.Class)]
 	public class AttachAttribute : Attribute

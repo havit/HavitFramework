@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace Havit.Business.CodeMigrations.StoredProcedures
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.StoredProcedures
 {
 	internal static class StoredProceduresAnnotationsHelper
 	{

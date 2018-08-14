@@ -1,11 +1,11 @@
 ﻿using System.Linq;
-using Havit.Business.CodeMigrations.Infrastructure;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
-namespace Havit.Business.CodeMigrations.StoredProcedures
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.StoredProcedures
 {
     public class StoredProceduresMigrationOperationSqlGenerator : MigrationOperationSqlGenerator
 	{

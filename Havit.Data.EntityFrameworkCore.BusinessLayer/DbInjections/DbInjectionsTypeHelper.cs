@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Havit.Business.CodeMigrations.DbInjections
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
 {
     internal static class DbInjectionsTypeHelper
     {

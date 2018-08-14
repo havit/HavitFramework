@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
-namespace Havit.Business.CodeMigrations.DbInjections.StoredProcedures
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.StoredProcedures
 {
     public class StoredProcedureDbInjector : IDbInjector
     {

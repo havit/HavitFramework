@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace Havit.Business.CodeMigrations.DbInjections
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
 {
     public class DbInjectionsExtension : IDbContextOptionsExtension
     {

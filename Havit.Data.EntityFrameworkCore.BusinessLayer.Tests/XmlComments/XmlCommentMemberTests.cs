@@ -1,7 +1,7 @@
-﻿using Havit.Business.CodeMigrations.XmlComments;
+﻿using Havit.Data.EntityFrameworkCore.BusinessLayer.XmlComments;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Havit.Business.CodeMigrations.Tests.XmlComments
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments
 {
 	[TestClass]
 	public class XmlCommentMemberTests

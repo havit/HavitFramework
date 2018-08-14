@@ -6,7 +6,7 @@ using System.Xml.Linq;
 using System.Xml.XPath;
 using Havit.Diagnostics.Contracts;
 
-namespace Havit.Business.CodeMigrations.XmlComments
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.XmlComments
 {
 	public class XmlCommentParser
 	{

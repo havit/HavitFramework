@@ -3,7 +3,7 @@ using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.SqlServer.Migrations.Internal;
 
-namespace Havit.Business.CodeMigrations.Infrastructure
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Infrastructure
 {
 	public static class InfrastructureExtensions
 	{

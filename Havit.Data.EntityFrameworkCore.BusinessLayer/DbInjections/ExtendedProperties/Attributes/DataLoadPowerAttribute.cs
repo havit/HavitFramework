@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 
-namespace Havit.Business.CodeMigrations.DbInjections.ExtendedProperties.Attributes
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.ExtendedProperties.Attributes
 {
     public class DataLoadPowerAttribute : DbInjectionExtendedPropertiesAttribute
     {

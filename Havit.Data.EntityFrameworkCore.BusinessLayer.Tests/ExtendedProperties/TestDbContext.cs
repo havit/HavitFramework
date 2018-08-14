@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
-namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 {
 	internal class TestDbContext : BusinessLayerDbContext
 	{

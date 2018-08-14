@@ -1,4 +1,4 @@
-﻿namespace Havit.Business.CodeMigrations.DbInjections.StoredProcedures
+﻿namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.StoredProcedures
 {
     public class StoredProcedureDropSqlGenerator : DbInjectionDropSqlGenerator<StoredProcedureDbInjection>
     {

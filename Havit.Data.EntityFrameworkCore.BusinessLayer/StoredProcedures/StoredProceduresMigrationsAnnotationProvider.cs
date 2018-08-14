@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Havit.Business.CodeMigrations.StoredProcedures
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.StoredProcedures
 {
 	public class StoredProceduresMigrationsAnnotationProvider : MigrationsAnnotationProvider
 	{

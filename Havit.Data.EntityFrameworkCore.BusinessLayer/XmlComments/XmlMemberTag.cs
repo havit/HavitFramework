@@ -1,4 +1,4 @@
-﻿namespace Havit.Business.CodeMigrations.XmlComments
+﻿namespace Havit.Data.EntityFrameworkCore.BusinessLayer.XmlComments
 {
 	public class XmlMemberTag
 	{

@@ -139,6 +139,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Havit.Business.BLGenerator.nuspec" />
+    <None Include="Havit.Data.EntityFrameworkCore.BusinessLayer.nuspec">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Havit.Data.EntityFrameworkCore.nuspec">
       <SubType>Designer</SubType>
     </None>

@@ -182,17 +182,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.GoPay.Tests", "Havit.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EFCore", "EFCore", "{E30EB2C7-ECF5-4A27-A7F0-8AE37284A60C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EFCore", "Havit.Data.EFCore\Havit.Data.EFCore.csproj", "{124CBA3E-8841-4BDC-97D5-B00B6EA8EB74}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EntityFrameworkCore", "Havit.Data.EntityFrameworkCore\Havit.Data.EntityFrameworkCore.csproj", "{124CBA3E-8841-4BDC-97D5-B00B6EA8EB74}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{9881BA0D-DA46-469B-9E28-9F870A7D13D4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{FA03CDCB-AEFC-49D1-BBAE-5F623BD5A301}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EFCore.Tests", "Havit.Data.EFCore.Tests\Havit.Data.EFCore.Tests.csproj", "{D774171D-1F2C-4327-83F5-E110CBAF2F7C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EntityFrameworkCore.Tests", "Havit.Data.EntityFrameworkCore.Tests\Havit.Data.EntityFrameworkCore.Tests.csproj", "{D774171D-1F2C-4327-83F5-E110CBAF2F7C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EFCore.Patterns", "Havit.Data.EFCore.Patterns\Havit.Data.EFCore.Patterns.csproj", "{04779496-5B84-48B8-A4D8-EED5D739FA19}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EntityFrameworkCore.Patterns", "Havit.Data.EntityFrameworkCore.Patterns\Havit.Data.EntityFrameworkCore.Patterns.csproj", "{04779496-5B84-48B8-A4D8-EED5D739FA19}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EFCore.Patterns.Tests", "Havit.Data.EFCore.Patterns.Tests\Havit.Data.EFCore.Patterns.Tests.csproj", "{E5176E66-6915-43EC-A314-9DF304332532}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EntityFrameworkCore.Patterns.Tests", "Havit.Data.EntityFrameworkCore.Patterns.Tests\Havit.Data.EntityFrameworkCore.Patterns.Tests.csproj", "{E5176E66-6915-43EC-A314-9DF304332532}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Business Layer", "Business Layer", "{8B4383E1-89EA-46F4-A379-F728CA71A124}"
 EndProject
@@ -200,7 +200,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Business.BusinessLaye
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Business.BusinessLayerToEntityFrameworkGenerator", "Havit.Business.BusinessLayerToEntityFrameworkGenerator\Havit.Business.BusinessLayerToEntityFrameworkGenerator.csproj", "{0278F1F4-03A8-4D31-A823-44FEB4C568AB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EFCore.CodeGenerator", "Havit.Data.EFCore.CodeGenerator\Havit.Data.EFCore.CodeGenerator.csproj", "{9D793564-5C33-401F-8897-A68F698FD0B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EntityFrameworkCore.CodeGenerator", "Havit.Data.EntityFrameworkCore.CodeGenerator\Havit.Data.EntityFrameworkCore.CodeGenerator.csproj", "{9D793564-5C33-401F-8897-A68F698FD0B3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Business.CodeMigrations", "Havit.Business.CodeMigrations\Havit.Business.CodeMigrations.csproj", "{C6B51FC5-26D3-449C-AFD3-FB67ED3D4AA7}"
 EndProject
@@ -702,22 +702,22 @@ Global
 		SccProjectTopLevelParentUniqueName47 = HavitFramework.sln
 		SccProjectName47 = Havit.GoPay
 		SccLocalPath47 = Havit.GoPay
-		SccProjectUniqueName48 = Havit.Data.EFCore\\Havit.Data.EFCore.csproj
+		SccProjectUniqueName48 = Havit.Data.EntityFrameworkCore\\Havit.Data.EntityFrameworkCore.csproj
 		SccProjectTopLevelParentUniqueName48 = HavitFramework.sln
-		SccProjectName48 = Havit.Data.EFCore
-		SccLocalPath48 = Havit.Data.EFCore
-		SccProjectUniqueName49 = Havit.Data.EFCore.Tests\\Havit.Data.EFCore.Tests.csproj
+		SccProjectName48 = Havit.Data.EntityFrameworkCore
+		SccLocalPath48 = Havit.Data.EntityFrameworkCore
+		SccProjectUniqueName49 = Havit.Data.EntityFrameworkCore.Tests\\Havit.Data.EntityFrameworkCore.Tests.csproj
 		SccProjectTopLevelParentUniqueName49 = HavitFramework.sln
-		SccProjectName49 = Havit.Data.EFCore.Tests
-		SccLocalPath49 = Havit.Data.EFCore.Tests
-		SccProjectUniqueName50 = Havit.Data.EFCore.Patterns\\Havit.Data.EFCore.Patterns.csproj
+		SccProjectName49 = Havit.Data.EntityFrameworkCore.Tests
+		SccLocalPath49 = Havit.Data.EntityFrameworkCore.Tests
+		SccProjectUniqueName50 = Havit.Data.EntityFrameworkCore.Patterns\\Havit.Data.EntityFrameworkCore.Patterns.csproj
 		SccProjectTopLevelParentUniqueName50 = HavitFramework.sln
-		SccProjectName50 = Havit.Data.EFCore.Patterns
-		SccLocalPath50 = Havit.Data.EFCore.Patterns
-		SccProjectUniqueName51 = Havit.Data.EFCore.Patterns.Tests\\Havit.Data.EFCore.Patterns.Tests.csproj
+		SccProjectName50 = Havit.Data.EntityFrameworkCore.Patterns
+		SccLocalPath50 = Havit.Data.EntityFrameworkCore.Patterns
+		SccProjectUniqueName51 = Havit.Data.EntityFrameworkCore.Patterns.Tests\\Havit.Data.EntityFrameworkCore.Patterns.Tests.csproj
 		SccProjectTopLevelParentUniqueName51 = HavitFramework.sln
-		SccProjectName51 = Havit.Data.EFCore.Patterns.Tests
-		SccLocalPath51 = Havit.Data.EFCore.Patterns.Tests
+		SccProjectName51 = Havit.Data.EntityFrameworkCore.Patterns.Tests
+		SccLocalPath51 = Havit.Data.EntityFrameworkCore.Patterns.Tests
 		SccProjectUniqueName52 = Havit.Business.BusinessLayerGenerator\\Havit.Business.BusinessLayerGenerator.csproj
 		SccProjectTopLevelParentUniqueName52 = HavitFramework.sln
 		SccProjectName52 = Havit.Business.BusinessLayerGenerator
@@ -726,10 +726,10 @@ Global
 		SccProjectTopLevelParentUniqueName53 = HavitFramework.sln
 		SccProjectName53 = Havit.Business.BusinessLayerToEntityFrameworkGenerator
 		SccLocalPath53 = Havit.Business.BusinessLayerToEntityFrameworkGenerator
-		SccProjectUniqueName54 = Havit.Data.EFCore.CodeGenerator\\Havit.Data.EFCore.CodeGenerator.csproj
+		SccProjectUniqueName54 = Havit.Data.EntityFrameworkCore.CodeGenerator\\Havit.Data.EntityFrameworkCore.CodeGenerator.csproj
 		SccProjectTopLevelParentUniqueName54 = HavitFramework.sln
-		SccProjectName54 = Havit.Data.EFCore.CodeGenerator
-		SccLocalPath54 = Havit.Data.EFCore.CodeGenerator
+		SccProjectName54 = Havit.Data.EntityFrameworkCore.CodeGenerator
+		SccLocalPath54 = Havit.Data.EntityFrameworkCore.CodeGenerator
 		SccProjectUniqueName55 = Havit.Business.CodeMigrations\\Havit.Business.CodeMigrations.csproj
 		SccProjectTopLevelParentUniqueName55 = HavitFramework.sln
 		SccProjectName55 = Havit.Business.CodeMigrations

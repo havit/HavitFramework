@@ -3,31 +3,64 @@ using System.Threading.Tasks;
 using Havit.Data.Entity.Tests.Infrastructure.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Havit.Data.Entity.Tests
 {
 	[TestClass]
 	public class DbContextTests
 	{
+		/// <summary>
+		/// Ověřuje počet volání metody AfterSaveChanges po SaveChanges.
+		/// Cílem je ověřit, zda je správně ošetřeno volání SaveChanges(bool acceptAllChangesOnSuccess) z SaveChanges().
+		/// </summary>
 		[TestMethod]
-		public void DbContext_SaveChanges_CallsRegisteresAfterSaveChangesActionsOnlyOnce()
-		{
+		public void DbContext_SaveChanges_CallsAfterSaveChangesOnlyOnce()
+		{			
 			// Arrange
-			EmptyDbContext dbContext = new EmptyDbContext();
-			int counter = 0;
+			Mock<EmptyDbContext> dbContextMock1 = new Mock<EmptyDbContext>();
+			dbContextMock1.CallBase = true;
 
-			// Act + Assert
-			dbContext.RegisterAfterSaveChangesAction(() => counter += 1);
+			Mock<EmptyDbContext> dbContextMock2 = new Mock<EmptyDbContext>();
+			dbContextMock2.CallBase = true;
 
-			dbContext.SaveChanges();
-			Assert.AreEqual(1, counter); // došlo k zaregistrované akci
+			// Act
+			dbContextMock1.Object.SaveChanges();
+			dbContextMock2.Object.SaveChanges(true);
 
-			dbContext.SaveChanges();
-			Assert.AreEqual(1, counter); // nedošlo k zaregistrované akci, registrace zrušena
+			// Assert
+			dbContextMock1.Verify(m => m.AfterSaveChanges(), Times.Once, "dbContextMock1");
+			dbContextMock2.Verify(m => m.AfterSaveChanges(), Times.Once, "dbContextMock2");
 		}
 
+		/// <summary>
+		/// Ověřuje počet volání metody AfterSaveChanges po SaveChangesAsync.
+		/// Cílem je ověřit, zda je správně ošetřeno volání SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken) z SaveChangesAsync(CancellationToken cancellationToken).
+		/// </summary>
 		[TestMethod]
-		public async Task DbContext_SaveChangesAsync_CallsRegisteresAfterSaveChangesActionsOnlyOnce()
+		public async Task DbContext_SaveChangesAsync_CallsAfterSaveChangesOnlyOnce()
+		{
+			// Arrange
+			Mock<EmptyDbContext> dbContextMock1 = new Mock<EmptyDbContext>();
+			dbContextMock1.CallBase = true;
+
+			Mock<EmptyDbContext> dbContextMock2 = new Mock<EmptyDbContext>();
+			dbContextMock2.CallBase = true;
+
+			// Act
+			await dbContextMock1.Object.SaveChangesAsync();
+			await dbContextMock2.Object.SaveChangesAsync(true);
+
+			// Assert
+			dbContextMock1.Verify(m => m.AfterSaveChanges(), Times.Once, "dbContextMock1");
+			dbContextMock2.Verify(m => m.AfterSaveChanges(), Times.Once, "dbContextMock2");
+		}
+
+		/// <summary>
+		/// Ověřuje počet volání registrované akce po SaveChanges, cílem je, aby nebyla registrovaná akce spuštěna opakovaně (z více volání SaveChanges).
+		/// </summary>
+		[TestMethod]
+		public void DbContext_AfterSaveChanges_CallsRegisteresAfterSaveChangesActionsOnlyOnce()
 		{
 			// Arrange
 			EmptyDbContext dbContext = new EmptyDbContext();
@@ -36,10 +69,10 @@ namespace Havit.Data.Entity.Tests
 			// Act + Assert
 			dbContext.RegisterAfterSaveChangesAction(() => counter += 1);
 
-			await dbContext.SaveChangesAsync();
+			dbContext.AfterSaveChanges();
 			Assert.AreEqual(1, counter); // došlo k zaregistrované akci
 
-			await dbContext.SaveChangesAsync();
+			dbContext.AfterSaveChanges();
 			Assert.AreEqual(1, counter); // nedošlo k zaregistrované akci, registrace zrušena
 		}
 		

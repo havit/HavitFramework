@@ -80,18 +80,6 @@ namespace Havit.Data.Entity
 	    }
 
 	    /// <summary>
-	    /// Uloží registrované změny. Viz <see cref="Microsoft.EntityFrameworkCore.DbContext.SaveChanges()"/>.
-	    /// Při případném vyhození DbUpdateException dojde k jejímu přebalení s upřesněním Message.
-	    /// <seealso cref="DbContext.ExecuteWithDbUpdateExceptionHandling" />
-	    /// </summary>
-	    public override int SaveChanges()
-	    {
-		    int result = ExecuteWithDbUpdateExceptionHandling(base.SaveChanges);			
-		    AfterSaveChanges();
-		    return result;
-	    }
-
-	    /// <summary>
 	    /// Uloží registrované změny. Viz <see cref="Microsoft.EntityFrameworkCore.DbContext.SaveChanges(bool)"/>.
 	    /// Při případném vyhození DbUpdateException dojde k jejímu přebalení s upřesněním Message.
 	    /// <seealso cref="DbContext.ExecuteWithDbUpdateExceptionHandling" />
@@ -101,18 +89,6 @@ namespace Havit.Data.Entity
 		    int result = ExecuteWithDbUpdateExceptionHandling(() => base.SaveChanges(acceptAllChangesOnSuccess));			
 		    AfterSaveChanges();
 		    return result;		    
-	    }
-
-	    /// <summary>
-	    /// Uloží registrované změny. Viz <see cref="Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(System.Threading.CancellationToken)"/>.
-	    /// Při případném vyhození DbUpdateException dojde k jejímu přebalení s upřesněním Message.
-	    /// <seealso cref="DbContext.ExecuteWithDbUpdateExceptionHandling" />
-	    /// </summary>
-	    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
-	    {
-		    int result = await ExecuteWithDbUpdateExceptionHandling<Task<int>>(() => base.SaveChangesAsync(cancellationToken));
-		    AfterSaveChanges();
-		    return result;
 	    }
 
 		/// <summary>

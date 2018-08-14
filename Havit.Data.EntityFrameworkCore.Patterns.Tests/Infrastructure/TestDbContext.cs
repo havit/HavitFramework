@@ -11,9 +11,9 @@ namespace Havit.Data.Entity.Patterns.Tests.Infrastructure
 			optionsBuilder.UseInMemoryDatabase(nameof(TestDbContext));
 		}
 
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		protected override void CustomizeModelCreating(ModelBuilder modelBuilder)
 		{
-			base.OnModelCreating(modelBuilder);
+			base.CustomizeModelCreating(modelBuilder);
 
 			modelBuilder.Model.AddEntityType(typeof(ItemWithDeleted));
 			modelBuilder.Model.AddEntityType(typeof(ItemWithNullableProperty));

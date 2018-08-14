@@ -1361,9 +1361,9 @@ namespace Havit.Business.CodeMigrations.Tests.ExtendedProperties
 				this.onModelCreating = onModelCreating;
 			}
 
-			protected override void OnModelCreating(ModelBuilder modelBuilder)
+			protected override void CustomizeModelCreating(ModelBuilder modelBuilder)
 			{
-				base.OnModelCreating(modelBuilder);
+				base.CustomizeModelCreating(modelBuilder);
 				onModelCreating?.Invoke(modelBuilder);
 			}
 		}

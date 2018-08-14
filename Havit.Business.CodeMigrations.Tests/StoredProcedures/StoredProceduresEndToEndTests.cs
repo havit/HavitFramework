@@ -93,7 +93,7 @@ namespace Havit.Business.CodeMigrations.Tests.StoredProcedures
                 this.onModelCreating = onModelCreating;
             }
 
-            protected override void OnModelCreating(ModelBuilder modelBuilder)
+            protected override void CustomizeModelCreating(ModelBuilder modelBuilder)
             {
                 base.OnModelCreating(modelBuilder);
                 onModelCreating?.Invoke(modelBuilder);

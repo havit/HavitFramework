@@ -123,9 +123,9 @@ namespace Havit.Business.CodeMigrations.Tests.DbInjections
                 this.onModelCreating = onModelCreating;
             }
 
-            protected override void OnModelCreating(ModelBuilder modelBuilder)
+            protected override void CustomizeModelCreating(ModelBuilder modelBuilder)
             {
-                base.OnModelCreating(modelBuilder);
+                base.CustomizeModelCreating(modelBuilder);
                 onModelCreating?.Invoke(modelBuilder);
             }
         }

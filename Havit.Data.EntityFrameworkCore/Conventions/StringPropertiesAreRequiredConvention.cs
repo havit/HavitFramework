@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions.Internal;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
@@ -7,18 +10,24 @@ namespace Havit.Data.Entity.Conventions
 	/// <summary>
 	/// Všechny stringové vlastnosti jsou označeny jako povinné s výchozí hodnotou <see cref="string.Empty"/>.
 	/// </summary>
-    public class StringPropertiesAreRequiredConvention : IPropertyAddedConvention
+    public class StringPropertiesAreRequiredConvention : IModelConvention
     {
-		/// <inheritdoc />
-	    public InternalPropertyBuilder Apply(InternalPropertyBuilder propertyBuilder)
+	    /// <summary>
+	    /// Aplikuje konvenci.
+	    /// </summary>
+		public void Apply(ModelBuilder modelBuilder)
 	    {
-		    if (propertyBuilder.Metadata.ClrType == typeof(string))
-		    {
-			    propertyBuilder.IsRequired(true, ConfigurationSource.Convention);
-			    propertyBuilder.Relational(ConfigurationSource.Convention).HasDefaultValue(String.Empty);
-		    }
+		    var stringProperties = modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetDeclaredProperties().Where(prop => prop.ClrType == typeof(String))).ToList();
 
-		    return propertyBuilder;
+		    foreach (IMutableProperty stringProperty in stringProperties)
+		    {
+			    stringProperty.IsNullable = false;
+
+				if ((stringProperty.Relational().DefaultValue == null) && String.IsNullOrEmpty(stringProperty.Relational().DefaultValueSql))
+			    {
+				    stringProperty.Relational().DefaultValue = "";
+			    }
+		    }
 	    }
     }
 }

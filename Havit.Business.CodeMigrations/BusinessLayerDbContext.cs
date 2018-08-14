@@ -29,9 +29,9 @@ namespace Havit.Business.CodeMigrations
 			optionsBuilder.UseSqlServerExtendedProperties();
 		}
 
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		protected override void CustomizeModelCreating(ModelBuilder modelBuilder)
 		{
-			base.OnModelCreating(modelBuilder);
+			base.CustomizeModelCreating(modelBuilder);
 
 			modelBuilder.ForSqlServerExtendedPropertiesAttributes();
 
@@ -40,6 +40,7 @@ namespace Havit.Business.CodeMigrations
 
 		protected virtual void ApplyConventions(ModelBuilder modelBuilder)
 		{
+			// TODO JK: Refactoring do IModelConvention + přesunout GetModelConventions
 			modelBuilder.ApplyPrefixedTablePrimaryKeys();
 			modelBuilder.ApplyForeignKeysColumnNames();
 			modelBuilder.ApplyLocalizationTablesParentEntities();

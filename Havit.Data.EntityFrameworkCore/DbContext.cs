@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -6,7 +7,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Havit.Data.Entity.Conventions;
 using Havit.Data.Entity.Internal;
-using Havit.Data.Entity.Metadata.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
@@ -41,44 +41,42 @@ namespace Havit.Data.Entity
 	    /// <remarks>
 	    /// Zajistí nastavení služeb convencí.
 	    /// </remarks>
-	    protected override void OnModelCreating(ModelBuilder modelBuilder)
+	    protected override sealed void OnModelCreating(ModelBuilder modelBuilder)
 	    {			
 		    base.OnModelCreating(modelBuilder);			
 		    
 		    // TODO JK: System types (dataseed)
 
-		    ConventionSet conventionSet = modelBuilder.GetInfrastructure().GetConventionSet();
-		    SetConventions(conventionSet);
+		    CustomizeModelCreating(modelBuilder);
+
+		    var conventions = GetModelConventions().ToList();
+		    foreach (var convention in conventions)
+		    {
+			    convention.Apply(modelBuilder);
+		    }
 	    }
 
-		/// <summary>
-		/// Zajistí nastavení služeb convencí.
-		/// Aktuálně přidává tyto konvence:
-		/// <list type="bullet">
-		///		<item>
-		///			<term>DataTypeAttributeConvention</term>
-		///			<description><see cref="DataTypeAttributeConvention"/></description>
-		///		</item>
-		///		<item>
-		///			<term>SymbolPropertyIndexConvention</term>
-		///			<description><see cref="SymbolPropertyIndexConvention"/></description>
-		///		</item>
-		/// </list>
-		/// Žádné standardní konvence nejsou odebrány.
-		/// </summary>		
-		//TODO JK:  Odkomentovat po dodělání
-		//		<item>
-		//			<term>LocalizationTableIndexConvention</term>
-		//			<description><see cref="LocalizationTableIndexConvention"/></description>
-		//		</item>		 
-	    protected virtual void SetConventions(ConventionSet conventionSet)
+	    /// <summary>
+		/// Template metoda pro customizaci modelu.
+		/// </summary>
+	    protected virtual void CustomizeModelCreating(ModelBuilder modelBuilder)
 	    {
-			conventionSet.PropertyAddedConventions.Add(new DataTypeAttributeConvention());
-			conventionSet.PropertyAddedConventions.Add(new SymbolPropertyIndexConvention());
+			// NOOP - template method
+	    }
 
-			// TODO JK: Dopnit po zprovoznění implementace
-			//conventionSet.PropertyAddedConventions.Add(new LocalizationTableIndexConvention());
-			// TODO JK: Šlo by unikátním indexům přidat na začátek "U"?
+	    /// <summary>
+	    /// Vrací konvence použité v modelu.
+	    /// Aktuálně vrací tyto konvence:
+	    /// <list type="bullet">
+	    ///		<item>
+	    ///			<term>DataTypeAttributeConvention</term>
+	    ///			<description><see cref="DataTypeAttributeConvention"/></description>
+	    ///		</item>
+	    /// </list>
+	    /// </summary>
+	    protected virtual IEnumerable<IModelConvention> GetModelConventions()
+	    {
+		    yield return new DataTypeAttributeConvention();
 	    }
 
 	    /// <summary>

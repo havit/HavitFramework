@@ -6,9 +6,9 @@ namespace Havit.Data.Entity.Tests.ModelValidation.Infrastructure
 {
 	internal class ModelValidatingDbContext : DbContext
 	{
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		protected override void CustomizeModelCreating(ModelBuilder modelBuilder)
 		{
-			base.OnModelCreating(modelBuilder);
+			base.CustomizeModelCreating(modelBuilder);
 
 			modelBuilder.RegisterModelFromAssembly(typeof(ModelValidatingDbContext).Assembly, typeof(OneCorrectKeyClass).Namespace);
 			

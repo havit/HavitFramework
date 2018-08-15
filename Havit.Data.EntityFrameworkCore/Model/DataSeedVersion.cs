@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Havit.Data.Entity.Model
+namespace Havit.Data.EntityFrameworkCore.Model
 {
     /// <summary>
     /// Informace o naposledy spuštěné verzi seedování dat v daném profilu.

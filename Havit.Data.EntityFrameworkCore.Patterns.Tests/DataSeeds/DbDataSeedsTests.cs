@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using Havit.Data.Entity.Patterns.DataSeeds;
-using Havit.Data.Entity.Patterns.Tests.Infrastructure;
+using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.Infrastructure;
 using Havit.Data.Patterns.DataSeeds;
 using Havit.Data.Patterns.DataSeeds.Profiles;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Havit.Data.Entity.Patterns.Tests.DataSeeds
+namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
 {
     public class DbDataSeedsTests
     {

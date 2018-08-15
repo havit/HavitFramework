@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Havit.Data.Entity.Patterns.SoftDeletes;
-using Havit.Data.Entity.Patterns.UnitOfWorks.BeforeCommitProcessors;
-using Havit.Data.Entity.Patterns.UnitOfWorks.EntityValidation;
-using Havit.Data.Patterns.Repositories;
+using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
+using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors;
+using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.EntityValidation;
 using Havit.Data.Patterns.UnitOfWorks;
 using Havit.Diagnostics.Contracts;
-using Havit.Services;
 using Microsoft.EntityFrameworkCore;
 
-namespace Havit.Data.Entity.Patterns.UnitOfWorks
+namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks
 {
 	/// <summary>
 	/// Unit of Work postavená nad <see cref="DbContext" />.

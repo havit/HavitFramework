@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace Havit.Data.Entity.Internal
+namespace Havit.Data.EntityFrameworkCore.Internal
 {
 	/// <summary>
 	/// Poskytuje služby DbSetu pod interfacem IDbSet&lt;TEntity&gt;.

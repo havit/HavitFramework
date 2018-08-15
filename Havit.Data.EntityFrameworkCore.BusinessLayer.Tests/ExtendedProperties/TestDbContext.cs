@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-using Havit.Data.Entity.Conventions;
+using Havit.Data.EntityFrameworkCore.Conventions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
@@ -24,7 +24,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 
 		private class NoCacheModelCacheKeyFactory : IModelCacheKeyFactory
 		{
-			public object Create(DbContext context) => context.GetHashCode();
+			public object Create(Microsoft.EntityFrameworkCore.DbContext context) => context.GetHashCode();
 		}
 	}
 }

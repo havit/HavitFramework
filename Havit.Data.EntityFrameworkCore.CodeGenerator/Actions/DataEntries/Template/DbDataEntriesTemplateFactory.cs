@@ -1,7 +1,7 @@
-﻿using Havit.Data.Entity.CodeGenerator.Actions.DataEntries.Model;
-using Havit.Data.Entity.CodeGenerator.Services;
+﻿using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Model;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 
-namespace Havit.Data.Entity.CodeGenerator.Actions.DataEntries.Template
+namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Template
 {
 	public class DbDataEntriesTemplateFactory : ITemplateFactory<DataEntriesModel>
 	{

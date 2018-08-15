@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Havit.Data.Entity.Tests.Infrastructure.Model
+namespace Havit.Data.EntityFrameworkCore.Tests.Infrastructure.Model
 {
 	public class ModelClass
 	{

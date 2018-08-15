@@ -1,20 +1,17 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Havit.Data.Entity.Patterns.DataSources.Fakes;
-using Havit.Data.Entity.Patterns.SoftDeletes;
-using Havit.Data.Entity.Patterns.Tests.Infrastructure;
-using Havit.Data.Entity.Patterns.UnitOfWorks;
-using Havit.Data.Entity.Patterns.UnitOfWorks.BeforeCommitProcessors;
-using Havit.Data.Entity.Patterns.UnitOfWorks.EntityValidation;
-using Havit.Data.Patterns.DataLoaders.Fakes;
+using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.Infrastructure;
+using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
+using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors;
+using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.EntityValidation;
 using Havit.Services.TimeServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Havit.Data.Entity.Patterns.Tests.UnitOfWorks
+namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.UnitOfWorks
 {
 	[TestClass]
 	public class DbUnitOfWorkTests

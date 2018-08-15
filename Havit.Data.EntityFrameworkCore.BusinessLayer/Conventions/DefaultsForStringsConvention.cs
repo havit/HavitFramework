@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using Havit.Data.Entity.Conventions;
+using Havit.Data.EntityFrameworkCore.Conventions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;

@@ -6,7 +6,7 @@ using System.Reflection;
 using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore;
 
-namespace Havit.Data.Entity
+namespace Havit.Data.EntityFrameworkCore
 {
 	/// <summary>
 	/// Extension metody k <see cref="ModelBuilder" />.

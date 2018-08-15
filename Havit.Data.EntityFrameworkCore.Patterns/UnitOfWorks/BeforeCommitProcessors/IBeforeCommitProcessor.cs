@@ -1,4 +1,4 @@
-﻿namespace Havit.Data.Entity.Patterns.UnitOfWorks.BeforeCommitProcessors
+﻿namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors
 {
 	/// <summary>
 	/// Procesor, který se spustí před provedením Commitu na UoW.

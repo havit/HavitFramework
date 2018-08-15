@@ -1,4 +1,4 @@
-﻿namespace Havit.Data.Entity.CodeGenerator.Actions.Repositories.Model
+﻿namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Model
 {
 	public class RepositoryModel
 	{

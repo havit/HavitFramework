@@ -2,7 +2,7 @@
 using System.Xml.Linq;
 using Havit.Diagnostics.Contracts;
 
-namespace Havit.Data.Entity.CodeGenerator.Services
+namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services
 {
 	public class ProjectFactory
 	{

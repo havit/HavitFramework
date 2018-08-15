@@ -1,7 +1,7 @@
-﻿using Havit.Data.Entity.CodeGenerator.Actions.Repositories.Model;
-using Havit.Data.Entity.CodeGenerator.Services;
+﻿using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Model;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 
-namespace Havit.Data.Entity.CodeGenerator.Actions.Repositories.Templates
+namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Templates
 {
 	public class InterfaceRepositoryGeneratedTemplateFactory : ITemplateFactory<RepositoryModel>
 	{

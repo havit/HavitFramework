@@ -1,19 +1,15 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Havit.Data.Entity.Conventions;
-using Havit.Data.Entity.Internal;
+using Havit.Data.EntityFrameworkCore.Conventions;
+using Havit.Data.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 // TODO JK: Doplnit NotNullAttribute na všechna volání, overrides, atp.
 
-namespace Havit.Data.Entity
+namespace Havit.Data.EntityFrameworkCore
 {
 	/// <inheritdoc cref="Microsoft.EntityFrameworkCore.DbContext" />
 	public abstract class DbContext : Microsoft.EntityFrameworkCore.DbContext, IDbContext

@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 
-namespace Havit.Data.Entity
+namespace Havit.Data.EntityFrameworkCore
 {
 	/// <summary>
 	/// Extension metody k <see cref="DbUpdateException" />.

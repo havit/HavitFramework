@@ -1,6 +1,6 @@
-﻿using Havit.Data.Entity.Patterns.DataSources.Fakes;
+﻿using Havit.Data.EntityFrameworkCore.Patterns.DataSources.Fakes;
 
-namespace Havit.Data.Entity.Patterns.Tests.Infrastructure
+namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Infrastructure
 {
 	public class FakeLanguageDataSource : FakeDataSource<Language>
 	{

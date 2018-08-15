@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Havit.Data.Entity.CodeGenerator.Services
+namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services
 {
 	public interface IModelSource<TModel>
 	{

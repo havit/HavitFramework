@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Havit.Data.Entity.CodeGenerator.Actions.ModelMetadataClasses.Model
+namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.ModelMetadataClasses.Model
 {
 	public class MetadataClass
 	{

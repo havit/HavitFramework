@@ -2,11 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace Havit.Data.Entity
+namespace Havit.Data.EntityFrameworkCore
 {
 	/// <summary>
 	/// Interface DbContextu.

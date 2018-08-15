@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Havit.Data.Entity.Patterns.UnitOfWorks.BeforeCommitProcessors
+namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors
 {
 	/// <summary>
 	/// Spouští registrované IBeforeCommitProcessory.	

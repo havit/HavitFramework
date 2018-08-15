@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Havit.Data.Entity.ModelValidation
+namespace Havit.Data.EntityFrameworkCore.ModelValidation
 {
 	/// <summary>
 	/// Pravidla, která model validator spustí.

@@ -1,7 +1,7 @@
-﻿using Havit.Data.Entity.CodeGenerator.Actions.ModelMetadataClasses.Model;
-using Havit.Data.Entity.CodeGenerator.Services;
+﻿using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.ModelMetadataClasses.Model;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 
-namespace Havit.Data.Entity.CodeGenerator.Actions.ModelMetadataClasses.Template
+namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.ModelMetadataClasses.Template
 {
 	public class MetadataClassTemplateFactory : ITemplateFactory<MetadataClass>
 	{

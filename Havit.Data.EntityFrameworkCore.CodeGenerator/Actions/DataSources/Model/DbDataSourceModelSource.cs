@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Havit.Data.Entity.CodeGenerator.Services;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 
-namespace Havit.Data.Entity.CodeGenerator.Actions.DataSources.Model
+namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataSources.Model
 {
 	public class DbDataSourceModelSource : IModelSource<DbDataSourceModel>
 	{

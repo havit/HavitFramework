@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
-using Havit.Data.Entity.Conventions;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.Infrastructure;
+using Havit.Data.EntityFrameworkCore.Conventions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using DbContext = Havit.Data.Entity.DbContext;
+using DbContext = Havit.Data.EntityFrameworkCore.DbContext;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 {

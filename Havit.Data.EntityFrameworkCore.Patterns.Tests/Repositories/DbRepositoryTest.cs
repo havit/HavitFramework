@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Havit.Data.Entity.Patterns.Infrastructure;
-using Havit.Data.Entity.Patterns.Repositories;
-using Havit.Data.Entity.Patterns.SoftDeletes;
-using Havit.Data.Entity.Patterns.Tests.Infrastructure;
+using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
+using Havit.Data.EntityFrameworkCore.Patterns.Repositories;
+using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.Infrastructure;
 using Havit.Data.Patterns.DataLoaders.Fakes;
 using Havit.Services.TimeServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Havit.Data.Entity.Patterns.Tests.Repositories
+namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 {
 	[TestClass]
 	public class DbRepositoryTest

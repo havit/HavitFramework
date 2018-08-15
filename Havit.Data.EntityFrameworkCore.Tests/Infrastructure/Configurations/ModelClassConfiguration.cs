@@ -1,8 +1,8 @@
-﻿using Havit.Data.Entity.Tests.Infrastructure.Model;
+﻿using Havit.Data.EntityFrameworkCore.Tests.Infrastructure.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Havit.Data.Entity.Tests.Infrastructure.Configurations
+namespace Havit.Data.EntityFrameworkCore.Tests.Infrastructure.Configurations
 {
 	internal class ModelClassConfiguration : IEntityTypeConfiguration<ModelClass>
 	{

@@ -1,7 +1,7 @@
-﻿using Havit.Data.Entity.Patterns.DataSources;
-using Havit.Data.Entity.Patterns.SoftDeletes;
+﻿using Havit.Data.EntityFrameworkCore.Patterns.DataSources;
+using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 
-namespace Havit.Data.Entity.Patterns.Tests.Infrastructure
+namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Infrastructure
 {
 	public class DbItemWithDeletedDataSource : DbDataSource<ItemWithDeleted>
 	{

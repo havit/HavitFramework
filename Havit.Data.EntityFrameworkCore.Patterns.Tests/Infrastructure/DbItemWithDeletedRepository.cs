@@ -1,10 +1,10 @@
-﻿using Havit.Data.Entity.Patterns.Repositories;
-using Havit.Data.Entity.Patterns.SoftDeletes;
+﻿using Havit.Data.EntityFrameworkCore.Patterns.Repositories;
+using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 using Havit.Data.Patterns.DataLoaders;
 using Havit.Data.Patterns.DataSources;
 using Havit.Data.Patterns.Infrastructure;
 
-namespace Havit.Data.Entity.Patterns.Tests.Infrastructure
+namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Infrastructure
 {
 	public class DbItemWithDeletedRepository : DbRepository<ItemWithDeleted>
 	{

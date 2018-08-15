@@ -2,16 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using Havit.Data.Patterns.DataSeeds;
 using Havit.Diagnostics.Contracts;
 using Havit.Linq;
 using Havit.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
-namespace Havit.Data.Entity.Patterns.DataSeeds
+namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 {
     /// <summary>
     /// Persistence předpisu pro seedování dat.

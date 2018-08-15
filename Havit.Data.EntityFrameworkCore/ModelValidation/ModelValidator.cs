@@ -6,9 +6,8 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
-namespace Havit.Data.Entity.ModelValidation
+namespace Havit.Data.EntityFrameworkCore.ModelValidation
 {
 	/// <summary>
 	/// Kontroluje pravidla modelu.

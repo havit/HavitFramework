@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Havit.Data.Entity.CodeGenerator.Services
+namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services
 {
 	public class GenericGenerator<TModel>
 	{

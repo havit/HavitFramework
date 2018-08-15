@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Havit.Data.Entity.CodeGenerator.Actions.DataEntries.Model;
-using Havit.Data.Entity.CodeGenerator.Services;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Model;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 
-namespace Havit.Data.Entity.CodeGenerator.Actions.Repositories.Model
+namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Model
 {
 	public class RepositoryModelSource : IModelSource<RepositoryModel>
 	{

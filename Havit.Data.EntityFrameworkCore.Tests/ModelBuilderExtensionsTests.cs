@@ -1,11 +1,11 @@
-﻿using Havit.Data.Entity.Tests.Infrastructure.Configurations;
-using Havit.Data.Entity.Tests.Infrastructure.Model;
+﻿using Havit.Data.EntityFrameworkCore.Tests.Infrastructure.Configurations;
+using Havit.Data.EntityFrameworkCore.Tests.Infrastructure.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Havit.Data.Entity.Tests
+namespace Havit.Data.EntityFrameworkCore.Tests
 {
 	[TestClass]
 	public class ModelBuilderExtensionsTests

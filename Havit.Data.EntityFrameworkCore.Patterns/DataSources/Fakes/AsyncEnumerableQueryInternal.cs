@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Havit.Data.Entity.Patterns.DataSources.Fakes
+namespace Havit.Data.EntityFrameworkCore.Patterns.DataSources.Fakes
 {
 	/// <summary>
 	/// Podpora asychronním operací pro "in-memory queryable" - simulace IQueryable&lt;&gt; v paměti.

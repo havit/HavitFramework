@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using Havit.Data.Entity.Patterns.UnitOfWorks;
-using Havit.Data.Entity.Patterns.UnitOfWorks.BeforeCommitProcessors;
+using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
+using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Havit.Data.Entity.Patterns.Tests.UnitOfWorks.BeforeCommitProcessors
+namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.UnitOfWorks.BeforeCommitProcessors
 {
 	[TestClass]
 	public class BeforeCommitProcessorsRunnerTests

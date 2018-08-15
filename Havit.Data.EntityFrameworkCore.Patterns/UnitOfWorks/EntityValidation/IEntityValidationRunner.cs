@@ -1,4 +1,4 @@
-﻿namespace Havit.Data.Entity.Patterns.UnitOfWorks.EntityValidation
+﻿namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.EntityValidation
 {
 	/// <summary>
 	/// Spouští registrované validátory entit.

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Havit.Services;
+﻿using System.Collections.Generic;
 
-namespace Havit.Data.Entity.Patterns.UnitOfWorks.BeforeCommitProcessors
+namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors
 {
 	/// <summary>
 	/// Factory poskytující IBeforeCommitProcessors.

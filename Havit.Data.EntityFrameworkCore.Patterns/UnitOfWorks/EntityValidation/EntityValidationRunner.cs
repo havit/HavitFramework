@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Havit.Data.Entity.Patterns.UnitOfWorks.EntityValidation
+namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.EntityValidation
 {
 	/// <summary>
 	/// Spouští registrované entity validátory.	

@@ -9,7 +9,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <RootNamespace>Havit.Data.Entity.CodeGenerator</RootNamespace>
+    <RootNamespace>Havit.Data.EntityFrameworkCore.CodeGenerator</RootNamespace>
     <ApplicationIcon />
     <OutputType>Exe</OutputType>
     <StartupObject />

@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Havit.Data.Entity.Patterns.DataSources.Fakes
+namespace Havit.Data.EntityFrameworkCore.Patterns.DataSources.Fakes
 {
 	internal class AsyncEnumeratorInternal<T> : IAsyncEnumerator<T>
 	{

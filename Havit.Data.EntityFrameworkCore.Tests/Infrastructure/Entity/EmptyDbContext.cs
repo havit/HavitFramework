@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Havit.Data.Entity.Tests.Infrastructure.Entity
+namespace Havit.Data.EntityFrameworkCore.Tests.Infrastructure.Entity
 {
-	public class EmptyDbContext : Data.Entity.DbContext
+	public class EmptyDbContext : DbContext
 	{
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{

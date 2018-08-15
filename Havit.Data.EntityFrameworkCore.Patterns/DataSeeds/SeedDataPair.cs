@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Havit.Data.Entity.Patterns.DataSeeds
+﻿namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 {
     internal class SeedDataPair<TEntity>
     {

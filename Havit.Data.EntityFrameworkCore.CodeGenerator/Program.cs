@@ -4,28 +4,28 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Havit.Data.Entity.CodeGenerator.Actions.DataEntries;
-using Havit.Data.Entity.CodeGenerator.Actions.DataEntries.Model;
-using Havit.Data.Entity.CodeGenerator.Actions.DataEntries.Template;
-using Havit.Data.Entity.CodeGenerator.Actions.DataSources;
-using Havit.Data.Entity.CodeGenerator.Actions.DataSources.Model;
-using Havit.Data.Entity.CodeGenerator.Actions.DataSources.Template;
-using Havit.Data.Entity.CodeGenerator.Actions.ModelMetadataClasses;
-using Havit.Data.Entity.CodeGenerator.Actions.ModelMetadataClasses.Model;
-using Havit.Data.Entity.CodeGenerator.Actions.ModelMetadataClasses.Template;
-using Havit.Data.Entity.CodeGenerator.Actions.QueryableExtensions;
-using Havit.Data.Entity.CodeGenerator.Actions.QueryableExtensions.Model;
-using Havit.Data.Entity.CodeGenerator.Actions.QueryableExtensions.Template;
-using Havit.Data.Entity.CodeGenerator.Actions.Repositories;
-using Havit.Data.Entity.CodeGenerator.Actions.Repositories.Model;
-using Havit.Data.Entity.CodeGenerator.Actions.Repositories.Templates;
-using Havit.Data.Entity.CodeGenerator.Entity;
-using Havit.Data.Entity.CodeGenerator.Services;
-using Havit.Data.Entity.CodeGenerator.Services.SourceControl;
-using Havit.Data.Entity.Patterns.SoftDeletes;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Model;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Template;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataSources;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataSources.Model;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataSources.Template;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.ModelMetadataClasses;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.ModelMetadataClasses.Model;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.ModelMetadataClasses.Template;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.QueryableExtensions;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.QueryableExtensions.Model;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.QueryableExtensions.Template;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Model;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Templates;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Entity;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Services.SourceControl;
+using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 using Havit.Services.TimeServices;
 
-namespace Havit.Data.Entity.CodeGenerator
+namespace Havit.Data.EntityFrameworkCore.CodeGenerator
 {
 	internal static class Program
 	{
@@ -59,7 +59,7 @@ namespace Havit.Data.Entity.CodeGenerator
 			Console.WriteLine($"Using metadata from assembly {file}.");
 
 			Assembly assembly = Assembly.LoadFrom(file);
-			Type dbContextType = assembly.GetTypes().SingleOrDefault(type => !type.IsAbstract && type.GetInterfaces().Contains(typeof(Havit.Data.Entity.IDbContext)));
+			Type dbContextType = assembly.GetTypes().SingleOrDefault(type => !type.IsAbstract && type.GetInterfaces().Contains(typeof(IDbContext)));
 			if (dbContextType == null)
 			{
 				Console.WriteLine("No IDbContext implementation was found.");

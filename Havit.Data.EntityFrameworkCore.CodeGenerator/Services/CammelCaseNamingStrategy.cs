@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-namespace Havit.Data.Entity.CodeGenerator.Services
+﻿using System.Collections.Generic;
+
+namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services
 {
 	public class CammelCaseNamingStrategy
 	{

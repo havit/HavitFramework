@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Havit.Data.Entity.CodeGenerator.Services.SourceControl
+﻿namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services.SourceControl
 {
 	public class NullSourceControlClient : ISourceControlClient
 	{

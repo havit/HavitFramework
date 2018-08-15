@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
-using System.Xml.XPath;
-using Havit.Data.Entity.Patterns.SoftDeletes;
+using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 using Havit.Data.Patterns.DataLoaders;
 using Havit.Data.Patterns.DataSources;
 using Havit.Data.Patterns.Infrastructure;
@@ -15,7 +12,7 @@ using Havit.Data.Patterns.Repositories;
 using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore;
 
-namespace Havit.Data.Entity.Patterns.Repositories
+namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 {
 	/// <summary>
 	/// Repository objektů typu TEntity.

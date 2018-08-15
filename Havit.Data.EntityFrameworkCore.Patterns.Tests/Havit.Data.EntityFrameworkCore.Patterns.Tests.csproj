@@ -10,7 +10,8 @@
 	<PropertyGroup>
 		<TargetFramework>net47</TargetFramework>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<RootNamespace>Havit.Data.Entity.Patterns.Tests</RootNamespace>
+		<RootNamespace>Havit.Data.EntityFrameworkCore.Patterns.Tests</RootNamespace>
+		<AssemblyName>Havit.Data.EntityFrameworkCore.Patterns.Tests</AssemblyName>
 	</PropertyGroup>
 
 	<ItemGroup>

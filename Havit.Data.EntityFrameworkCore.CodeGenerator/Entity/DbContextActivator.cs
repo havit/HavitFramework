@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Havit.Data.Entity.CodeGenerator.Entity
+namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Entity
 {
 	public class DbContextActivator
 	{

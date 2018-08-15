@@ -1,10 +1,10 @@
 ﻿using System;
-using Havit.Data.Entity.Patterns.SoftDeletes;
+using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 using Havit.Services.TimeServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Havit.Data.Entity.Patterns.Tests.SoftDeletes
+namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.SoftDeletes
 {
 	[TestClass]
 	public class SoftDeleteManagerTest

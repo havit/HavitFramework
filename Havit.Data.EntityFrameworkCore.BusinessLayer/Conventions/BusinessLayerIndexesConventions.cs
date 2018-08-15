@@ -2,10 +2,10 @@
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using Havit.Data.Entity.Conventions;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProperties;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.Metadata;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata;
+using Havit.Data.EntityFrameworkCore.Conventions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 

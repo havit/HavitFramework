@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Havit.Data.Entity.CodeGenerator.Services;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 using Microsoft.EntityFrameworkCore;
 
-namespace Havit.Data.Entity.CodeGenerator.Actions.ModelMetadataClasses.Model
+namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.ModelMetadataClasses.Model
 {
 	public class MetadataClassModelSource : IModelSource<MetadataClass>
 	{

@@ -2,9 +2,9 @@
 using System.IO;
 using System.Linq;
 using System.Text;
-using Havit.Data.Entity.CodeGenerator.Services.SourceControl;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Services.SourceControl;
 
-namespace Havit.Data.Entity.CodeGenerator.Services
+namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services
 {
 	/// <summary>
 	/// Třída CodeWriter zajišťuje generování kódu. Zajišťuje odsazení, v budoucnu může zajišťovat ochranu před maximální délkou řádky kódu, apod.

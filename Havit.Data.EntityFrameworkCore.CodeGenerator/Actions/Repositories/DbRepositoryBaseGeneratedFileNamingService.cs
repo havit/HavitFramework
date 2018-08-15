@@ -1,7 +1,7 @@
-﻿using Havit.Data.Entity.CodeGenerator.Actions.Repositories.Model;
-using Havit.Data.Entity.CodeGenerator.Services;
+﻿using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Model;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 
-namespace Havit.Data.Entity.CodeGenerator.Actions.Repositories
+namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories
 {
 	public class DbRepositoryBaseGeneratedFileNamingService : FileNamingServiceBase<RepositoryModel>
 	{

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Havit.Data.Entity.Tests.ModelValidation.Infrastructure.Model
+namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation.Infrastructure.Model
 {
 	public class EntryWithGeneratedPrimaryKeyAndWithSymbol
 	{		

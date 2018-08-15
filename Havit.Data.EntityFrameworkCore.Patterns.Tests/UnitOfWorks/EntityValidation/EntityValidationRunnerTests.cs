@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Havit.Data.Entity.Patterns.UnitOfWorks;
-using Havit.Data.Entity.Patterns.UnitOfWorks.BeforeCommitProcessors;
-using Havit.Data.Entity.Patterns.UnitOfWorks.EntityValidation;
+using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
+using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.EntityValidation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Havit.Data.Entity.Patterns.Tests.UnitOfWorks.EntityValidation
+namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.UnitOfWorks.EntityValidation
 {
 	[TestClass]
 	public class EntityValidationRunnerTests

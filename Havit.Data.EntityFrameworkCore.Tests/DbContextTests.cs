@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Havit.Data.Entity.Tests.Infrastructure.Entity;
+using Havit.Data.EntityFrameworkCore.Tests.Infrastructure.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Havit.Data.Entity.Tests
+namespace Havit.Data.EntityFrameworkCore.Tests
 {
 	[TestClass]
 	public class DbContextTests

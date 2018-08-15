@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 
-namespace Havit.Data.Entity.CodeGenerator.Services
+namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services
 {
 	[DebuggerDisplay("{Filename}")]
 	public class LegacyProject : ProjectBase

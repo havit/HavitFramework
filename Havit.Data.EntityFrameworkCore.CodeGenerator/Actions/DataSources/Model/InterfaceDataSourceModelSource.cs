@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Havit.Data.Entity.CodeGenerator.Services;
-using Havit.Data.Entity.Patterns.SoftDeletes;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
+using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 
-namespace Havit.Data.Entity.CodeGenerator.Actions.DataSources.Model
+namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataSources.Model
 {
 	public class InterfaceDataSourceModelSource : IModelSource<InterfaceDataSourceModel>
 	{

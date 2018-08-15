@@ -7,15 +7,12 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace Havit.Data.Entity.CodeGenerator.Actions.DataEntries.Template
+
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Model;
+
+namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Template
 {
-    using System.Linq;
-    using System.Text;
-    using System.Collections.Generic;
-    using Havit.Data.Entity.CodeGenerator.Actions.DataEntries.Model;
-    using System;
-    
-    /// <summary>
+	/// <summary>
     /// Class to produce the template output
     /// </summary>
     

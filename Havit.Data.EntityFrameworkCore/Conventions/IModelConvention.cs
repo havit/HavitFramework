@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace Havit.Data.Entity.Conventions
+namespace Havit.Data.EntityFrameworkCore.Conventions
 {
 	/// <summary>
 	/// Konvence aplikovaná na model (model builder).

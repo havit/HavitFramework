@@ -2,7 +2,7 @@
 using System.Reflection;
 using Havit.Services.TimeServices;
 
-namespace Havit.Data.Entity.Patterns.UnitOfWorks.BeforeCommitProcessors
+namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors
 {
 	/// <summary>
 	/// Během operace Insert nad entitou, která má vlastnost Created typu DateTime s hodnotou default(DateTime),

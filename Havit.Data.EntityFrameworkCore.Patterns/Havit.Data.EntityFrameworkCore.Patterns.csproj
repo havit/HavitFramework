@@ -10,7 +10,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
 	  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-	  <RootNamespace>Havit.Data.Entity.Patterns</RootNamespace>
+	  <RootNamespace>Havit.Data.EntityFrameworkCore.Patterns</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

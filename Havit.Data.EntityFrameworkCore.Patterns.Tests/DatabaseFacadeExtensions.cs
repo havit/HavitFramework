@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Infrastructure;
 
-namespace Havit.Data.Entity.Patterns.Tests
+namespace Havit.Data.EntityFrameworkCore.Patterns.Tests
 {
 	/// <summary>
 	/// Extension metody k DatabaseFacade.

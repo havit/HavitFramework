@@ -1,4 +1,4 @@
-﻿namespace Havit.Data.Entity.CodeGenerator.Actions.DataSources.Model
+﻿namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataSources.Model
 {
 	public class InterfaceDataSourceModel
 	{

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Havit.Data.Entity.Tests.Infrastructure.Model
+namespace Havit.Data.EntityFrameworkCore.Tests.Infrastructure.Model
 {
 	[NotMapped]
 	public class NotMappedClass

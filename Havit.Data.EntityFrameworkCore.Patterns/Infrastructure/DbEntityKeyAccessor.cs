@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using Havit.Data.Patterns.Infrastructure;
 using Havit.Diagnostics.Contracts;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore;
 
-namespace Havit.Data.Entity.Patterns.Infrastructure
+namespace Havit.Data.EntityFrameworkCore.Patterns.Infrastructure
 {
 	/// <summary>
 	/// Služba pro získávání primárního klíče modelových objektů.

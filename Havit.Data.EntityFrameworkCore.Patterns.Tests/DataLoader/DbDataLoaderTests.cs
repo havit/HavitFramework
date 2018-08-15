@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Havit.Data.Entity.Internal;
 using Havit.Data.Entity.Patterns.DataLoaders;
 using Havit.Data.Entity.Patterns.DataLoaders.Internal;
 using Havit.Data.Entity.Patterns.Tests.DataLoader.Model;
+using Havit.Data.EntityFrameworkCore;
 using Havit.Data.Patterns.DataLoaders;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using DbContext = Havit.Data.EntityFrameworkCore.DbContext;
 
 namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 {

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Havit.Data.EntityFrameworkCore.Model;
 using Havit.Data.Patterns.DataSeeds;
 
-namespace Havit.Data.Entity.Patterns.DataSeeds
+namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 {
     /// <summary>
     /// Spravuje stav pro implementace DataSeedRunDecision.
@@ -33,7 +30,7 @@ namespace Havit.Data.Entity.Patterns.DataSeeds
         /// </remarks>
         public string ReadCurrentState(string profileName)
         {
-            Model.DataSeedVersion dataSeedVersion = dbContext.Set<Model.DataSeedVersion>().Find(profileName);
+            DataSeedVersion dataSeedVersion = dbContext.Set<DataSeedVersion>().Find(profileName);
             return dataSeedVersion?.Version;
         }
 
@@ -47,11 +44,11 @@ namespace Havit.Data.Entity.Patterns.DataSeeds
         /// </remarks>
         public void WriteCurrentState(string profileName, string currentState)
         {
-            Model.DataSeedVersion dataSeedVersion = dbContext.Set<Model.DataSeedVersion>().Find(profileName);
+            DataSeedVersion dataSeedVersion = dbContext.Set<DataSeedVersion>().Find(profileName);
             if (dataSeedVersion == null)
             {
-                dataSeedVersion = new Model.DataSeedVersion { ProfileName = profileName };
-                dbContext.Set<Model.DataSeedVersion>().UpdateRange(new[] { dataSeedVersion });
+                dataSeedVersion = new DataSeedVersion { ProfileName = profileName };
+                dbContext.Set<DataSeedVersion>().UpdateRange(new[] { dataSeedVersion });
             }
             dataSeedVersion.Version = currentState;
             dbContext.SaveChanges();

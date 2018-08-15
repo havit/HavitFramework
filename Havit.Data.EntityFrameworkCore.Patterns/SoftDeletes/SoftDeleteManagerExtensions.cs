@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Havit.Diagnostics.Contracts;
 
-namespace Havit.Data.Entity.Patterns.SoftDeletes
+namespace Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes
 {
 	/// <summary>
 	/// Extension metody pro snadné filtrování IQueryable&lt;T&gt; a IEnumerable&lt;T&gt; s pomocí ISoftDeleteManager.

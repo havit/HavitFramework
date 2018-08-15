@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Havit.Data.Entity.Tests
+namespace Havit.Data.EntityFrameworkCore.Tests
 {
 	[TestClass]
 	public class DbUpdateExceptionExtensionsTests

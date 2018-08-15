@@ -1,8 +1,7 @@
-﻿using Havit.Data.Entity.CodeGenerator.Actions.DataEntries.Model;
-using Havit.Data.Entity.CodeGenerator.Actions.QueryableExtensions.Model;
-using Havit.Data.Entity.CodeGenerator.Services;
+﻿using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.QueryableExtensions.Model;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 
-namespace Havit.Data.Entity.CodeGenerator.Actions.QueryableExtensions
+namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.QueryableExtensions
 {
 	public class QueryableExtensionsFileNamingService : FileNamingServiceBase<QueryableExtensionsModel>
 	{

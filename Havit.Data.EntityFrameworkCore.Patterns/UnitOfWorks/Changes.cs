@@ -1,4 +1,4 @@
-namespace Havit.Data.Entity.Patterns.UnitOfWorks
+namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks
 {
 	/// <summary>
 	/// Zmìny objektù v UnitOfWork.

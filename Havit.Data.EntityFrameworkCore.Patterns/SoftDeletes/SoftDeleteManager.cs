@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Havit.Diagnostics.Contracts;
 using Havit.Services.TimeServices;
 
-namespace Havit.Data.Entity.Patterns.SoftDeletes
+namespace Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes
 {
 	/// <summary>
 	/// Zajišťuje podporu mazání příznakem.

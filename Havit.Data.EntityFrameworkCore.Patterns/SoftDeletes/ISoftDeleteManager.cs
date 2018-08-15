@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace Havit.Data.Entity.Patterns.SoftDeletes
+namespace Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes
 {
 	/// <summary>
 	/// Zajišťuje podporu mazání příznakem.

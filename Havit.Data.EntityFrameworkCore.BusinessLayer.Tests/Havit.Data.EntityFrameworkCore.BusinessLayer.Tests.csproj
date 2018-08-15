@@ -33,6 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions\Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions.csproj" />
     <ProjectReference Include="..\Havit.Data.EntityFrameworkCore.BusinessLayer\Havit.Data.EntityFrameworkCore.BusinessLayer.csproj" />
   </ItemGroup>
 

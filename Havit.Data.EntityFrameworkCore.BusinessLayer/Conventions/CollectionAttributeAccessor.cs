@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties.Attributes
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProperties
 {
 	public class CollectionAttributeAccessor
 	{

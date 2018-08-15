@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Havit.Data.Entity.Conventions;
-using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties.Attributes;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProperties;
 using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;

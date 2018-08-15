@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup Label="Globals">
+		<SccProjectName>SAK</SccProjectName>
+		<SccProvider>SAK</SccProvider>
+		<SccAuxPath>SAK</SccAuxPath>
+		<SccLocalPath>SAK</SccLocalPath>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<LangVersion>latest</LangVersion>
+		<RootNamespace>Havit.Data.EntityFrameworkCore.BusinessLayer</RootNamespace>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DocumentationFile>bin\Release\netstandard2.0\Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions.xml</DocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
+	</ItemGroup>
+
+</Project>

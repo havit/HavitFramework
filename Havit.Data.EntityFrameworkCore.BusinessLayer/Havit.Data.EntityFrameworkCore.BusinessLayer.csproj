@@ -27,6 +27,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions\Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions.csproj" />
 		<ProjectReference Include="..\Havit.Data.EntityFrameworkCore\Havit.Data.EntityFrameworkCore.csproj" />
 		<ProjectReference Include="..\Havit.Services\Havit.Services.csproj" />
 	</ItemGroup>

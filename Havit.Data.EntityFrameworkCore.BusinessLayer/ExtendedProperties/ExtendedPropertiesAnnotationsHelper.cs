@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProperties;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 {

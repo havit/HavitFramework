@@ -2,24 +2,24 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
 	<id>Havit.Data.EntityFrameworkCore.BusinessLayer</id>
-	<version>1.8.0</version>
+	<version>1.0.1</version>
 	<title>Havit.Data.EntityFrameworkCore.BusinessLayer</title>
 	<authors>HAVIT</authors>
 	<owners>HAVIT</owners>
 	<iconUrl>https://www.gravatar.com/avatar/e59ffb10448162f0c6d6b5ae3fecd0ce?s=64</iconUrl>
 	<licenseUrl>https://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
 	<description>
-	  HAVIT Entity Framework Core Library to seed database for Havit.Business &amp; Havit.Business.BusinessLayerGenerator
+	  HAVIT Entity Framework Core Library to seed database schema for Havit.Business &amp; Havit.Business.BusinessLayerGenerator
 	</description>
 	<language>en-US</language>
 	<requireLicenseAcceptance>false</requireLicenseAcceptance>
 	<copyright>Copyright HAVIT, s.r.o. 2018</copyright>
 	<dependencies>
 	  <group targetFramework="netstandard2.0">
-		<dependency id="Havit" version="1.8.4" />
-		<dependency id="Havit.Model" version="1.8.2" />
-		<dependency id="Microsoft.EntityFrameworkCore" version="2.1.1" />
-		<dependency id="Microsoft.EntityFrameworkCore.Relational" version="2.1.1" />
+		<dependency id="Microsoft.EntityFrameworkCore.SqlServer" version="2.1.1" />
+		<dependency id="Havit.Services" version="1.8.2" />
+		<dependency id="Havit.Data.EntityFrameworkCore" version="1.0.1" />
+		<dependency id="Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions" version="1.0.1" />
 	  </group>
 	</dependencies>
 	<tags>HAVIT Data Entity Framework EF Core Business Layer BL BLG</tags>

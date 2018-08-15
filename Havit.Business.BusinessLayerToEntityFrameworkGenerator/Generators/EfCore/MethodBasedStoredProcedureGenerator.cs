@@ -63,8 +63,8 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
             writer.WriteLine("using System.Collections.Generic;");
             writer.WriteLine("using System.Linq;");
             writer.WriteLine("using System.Text;");
-			writer.WriteLine("using Havit.Business.CodeMigrations.DbInjections.ExtendedProperties.Attributes;");
-			writer.WriteLine("using Havit.Business.CodeMigrations.DbInjections.StoredProcedures;");
+			writer.WriteLine("using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.ExtendedProperties.Attributes;");
+			writer.WriteLine("using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.StoredProcedures;");
             if (entityClass != null)
             {
                 writer.WriteLine($"using {entityClass.Namespace};");

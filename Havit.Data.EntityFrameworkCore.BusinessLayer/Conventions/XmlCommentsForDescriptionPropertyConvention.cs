@@ -68,7 +68,6 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 						if (fk?.DependentToPrincipal != null)
 						{
 							xmlCommentMember = xmlCommentType.Properties.FirstOrDefault(p => p.Name.EndsWith(fk.DependentToPrincipal.PropertyInfo.Name));
-							Console.WriteLine("Using XML comment from {0} on property {1}", xmlCommentMember?.Name, fk.DependentToPrincipal.PropertyInfo.Name);
 						}
 					}
 

@@ -1,4 +1,4 @@
-﻿using System.Linq;
+﻿using System;
 using Havit.Data.Entity.Conventions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;

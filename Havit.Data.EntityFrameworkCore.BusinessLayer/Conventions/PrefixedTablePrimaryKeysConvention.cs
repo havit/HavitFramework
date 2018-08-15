@@ -17,13 +17,21 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 
 		public void Apply(ModelBuilder modelBuilder)
 		{
-			var tables = modelBuilder.Model.GetEntityTypes().Where(entityType => entityType.FindPrimaryKey()?.Properties.Count == 1);
-			foreach (IMutableEntityType table in tables)
+			foreach (IMutableEntityType table in modelBuilder.Model.GetEntityTypes())
 			{
-				IMutableProperty primaryKeyProperty = table.FindPrimaryKey().Properties[0];
-				if (primaryKeyProperty.Relational().ColumnName == "Id")
+				IMutableKey primaryKey = table.FindPrimaryKey();
+				foreach (IMutableProperty property in primaryKey.Properties)
 				{
-					primaryKeyProperty.Relational().ColumnName = $"{table.ShortName()}{tableSuffix}";
+					string columnName = property.Relational().ColumnName;
+					if (columnName.Equals("Id", StringComparison.OrdinalIgnoreCase))
+					{
+						columnName = $"{table.ShortName()}{tableSuffix}";
+					}
+					else if (columnName.EndsWith("ID", StringComparison.OrdinalIgnoreCase))
+					{
+						columnName = columnName.Substring(0, columnName.Length - 2) + tableSuffix;
+					}
+					property.Relational().ColumnName = columnName;
 				}
 			}
 		}

@@ -1,4 +1,7 @@
-﻿using System.Data.SqlClient;
+﻿using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Linq;
+using Havit.Data.Entity.Conventions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
@@ -13,8 +16,11 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			optionsBuilder.UseSqlServer(new SqlConnection("Database=Dummy"));
 		}
 
-		protected override void ApplyConventions(ModelBuilder modelBuilder)
-		{ }
+		protected override IEnumerable<IModelConvention> GetModelConventions()
+		{
+			// no base call
+			return Enumerable.Empty<IModelConvention>();
+		}
 
 		private class NoCacheModelCacheKeyFactory : IModelCacheKeyFactory
 		{

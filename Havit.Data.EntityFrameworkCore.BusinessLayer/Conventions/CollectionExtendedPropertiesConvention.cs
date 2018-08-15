@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Havit.Data.Entity.Conventions;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 {
-	public static class CollectionExtendedPropertiesConvention
+	public class CollectionExtendedPropertiesConvention : IModelConvention
 	{
-		public static void ApplyCollectionExtendedProperties(this ModelBuilder modelBuilder)
+		public void Apply(ModelBuilder modelBuilder)
 		{
 			foreach (IMutableEntityType entity in modelBuilder.Model.GetEntityTypes())
 			{

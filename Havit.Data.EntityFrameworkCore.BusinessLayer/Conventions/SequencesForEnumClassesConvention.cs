@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Havit.Data.Entity.Conventions;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties.Attributes;
 using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore;
@@ -10,13 +11,20 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 {
-	public static class SequencesForEnumClassesConvention
+	public class SequencesForEnumClassesConvention : IModelConvention
 	{
-		public static void UseSequencesForEnumClasses(this ModelBuilder modelBuilder, Func<string, string> namingConvention = null)
+		private readonly Func<string, string> namingConvention;
+
+		public SequencesForEnumClassesConvention(Func<string, string> namingConvention = null)
+		{
+			this.namingConvention = namingConvention;
+		}
+
+		public void Apply(ModelBuilder modelBuilder)
 		{
 			Contract.Requires<ArgumentNullException>(modelBuilder != null);
 
-			namingConvention = namingConvention ?? (entityTypeName => $"sq_{entityTypeName}");
+			var currentNamingConvention = namingConvention ?? (entityTypeName => $"sq_{entityTypeName}");
 
 			IEnumerable<IMutableEntityType> enumClassEntities = modelBuilder.Model.GetEntityTypes().Where(e => e.ClrType.GetCustomAttributes<EnumClassAttribute>().Any());
 
@@ -24,7 +32,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 			{
 				var pkProperty = entityType.FindPrimaryKey().Properties[0];
 
-				string sequenceName = namingConvention(entityType.ShortName());
+				string sequenceName = currentNamingConvention(entityType.ShortName());
 				modelBuilder.HasSequence(pkProperty.ClrType, sequenceName);
 
 				pkProperty.Relational().DefaultValueSql = $"NEXT VALUE FOR {sequenceName}";

@@ -1,13 +1,14 @@
 ﻿using System.Linq;
+using Havit.Data.Entity.Conventions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 {
-	public static class DefaultsForStringsConvention
+	public class DefaultsForStringsConvention : IModelConvention
 	{
-		public static void ApplyDefaultsForStrings(this ModelBuilder modelBuilder)
+		public void Apply(ModelBuilder modelBuilder)
 		{
 			var stringProperties = modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetDeclaredProperties().Where(prop => prop.ClrType == typeof(string)));
 			foreach (IMutableProperty property in stringProperties)

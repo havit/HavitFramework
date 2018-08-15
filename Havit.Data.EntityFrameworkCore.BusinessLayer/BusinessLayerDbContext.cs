@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using System.Collections.Generic;
+using System.Reflection;
+using Havit.Data.Entity.Conventions;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
@@ -29,28 +31,32 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 			optionsBuilder.UseSqlServerExtendedProperties();
 		}
 
+		/// <inheritdoc />
 		protected override void CustomizeModelCreating(ModelBuilder modelBuilder)
 		{
 			base.CustomizeModelCreating(modelBuilder);
 
 			modelBuilder.ForSqlServerExtendedPropertiesAttributes();
-
-			ApplyConventions(modelBuilder);
 		}
 
-		protected virtual void ApplyConventions(ModelBuilder modelBuilder)
+		/// <inheritdoc />
+		protected override IEnumerable<IModelConvention> GetModelConventions()
 		{
-			// TODO JK: Refactoring do IModelConvention + přesunout GetModelConventions
-			modelBuilder.ApplyPrefixedTablePrimaryKeys();
-			modelBuilder.ApplyForeignKeysColumnNames();
-			modelBuilder.ApplyLocalizationTablesParentEntities();
-			modelBuilder.ApplyDefaultsForStrings();
-			modelBuilder.ApplyDefaultNamespaces();
-			modelBuilder.ApplyCollectionExtendedProperties();
-			modelBuilder.UseXmlCommentsForDescriptionProperty();
-            modelBuilder.UseSequencesForEnumClasses();
-            modelBuilder.ApplyBusinessLayerIndexes();
-        }
+			foreach (var convention in base.GetModelConventions())
+			{
+				yield return convention;
+			}
+
+			yield return new PrefixedTablePrimaryKeysConvention();
+			yield return new ForeignKeysColumnNamesConvention();
+			yield return new LocalizationTablesParentEntitiesConvention();
+			yield return new DefaultsForStringsConvention();
+			yield return new NamespaceExtendedPropertyConvention();
+			yield return new CollectionExtendedPropertiesConvention();
+			yield return new XmlCommentsForDescriptionPropertyConvention();
+			yield return new SequencesForEnumClassesConvention(); 
+			yield return new BusinessLayerIndexesConventions(); 
+		}
 
 	    protected void RegisterDbInjections(ModelBuilder modelBuilder, Assembly injectionsAssembly = default)
 	    {

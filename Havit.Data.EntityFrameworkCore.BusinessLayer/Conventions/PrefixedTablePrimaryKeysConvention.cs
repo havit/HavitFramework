@@ -1,13 +1,21 @@
 ﻿using System.Linq;
+using Havit.Data.Entity.Conventions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 {
-	public static class PrefixedTablePrimaryKeysConvention
+	public class PrefixedTablePrimaryKeysConvention : IModelConvention
 	{
-		public static void ApplyPrefixedTablePrimaryKeys(this ModelBuilder modelBuilder, string tableSuffix = "ID")
+		private readonly string tableSuffix;
+
+		public PrefixedTablePrimaryKeysConvention(string tableSuffix = "ID")
+		{
+			this.tableSuffix = tableSuffix;
+		}
+
+		public void Apply(ModelBuilder modelBuilder)
 		{
 			var tables = modelBuilder.Model.GetEntityTypes().Where(entityType => entityType.FindPrimaryKey()?.Properties.Count == 1);
 			foreach (IMutableEntityType table in tables)

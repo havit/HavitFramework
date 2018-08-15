@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Havit.Data.Entity.Conventions;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties.Attributes;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata;
 using Microsoft.EntityFrameworkCore;
@@ -9,9 +10,9 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 {
-	public static class IndexesConventions
+	public class BusinessLayerIndexesConventions : IModelConvention
     {
-	    public static void ApplyBusinessLayerIndexes(this ModelBuilder modelBuilder)
+	    public void Apply(ModelBuilder modelBuilder)
         {
             foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypes())
             {

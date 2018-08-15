@@ -1,15 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Havit.Data.Entity.Conventions;
 using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 {
-    public static class ForeignKeysColumnNamesConvention
+    public class ForeignKeysColumnNamesConvention : IModelConvention
     {
-        public static void ApplyForeignKeysColumnNames(this ModelBuilder modelBuilder, string fkColumnSuffix = "ID")
+	    private readonly string fkColumnSuffix;
+
+	    public ForeignKeysColumnNamesConvention(string fkColumnSuffix = "ID")
+	    {
+		    this.fkColumnSuffix = fkColumnSuffix;
+	    }
+
+        public void Apply(ModelBuilder modelBuilder)
         {
             Contract.Requires<ArgumentNullException>(modelBuilder != null);
 

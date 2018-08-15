@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
+using Havit.Data.Entity.Conventions;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.XmlComments;
 using Microsoft.EntityFrameworkCore;
@@ -11,11 +12,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 {
-	public static class XmlCommentsForDescriptionPropertyConvention
+	public class XmlCommentsForDescriptionPropertyConvention : IModelConvention
 	{
 		private const string MsDescriptionExtendedProperty = "MS_Description";
 
-		public static void UseXmlCommentsForDescriptionProperty(this ModelBuilder modelBuilder)
+		public void Apply(ModelBuilder modelBuilder)
 		{
 			var xmlCommentParser = new XmlCommentParser();
 

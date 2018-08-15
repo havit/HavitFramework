@@ -1,12 +1,13 @@
 ﻿using System.Linq;
+using Havit.Data.Entity.Conventions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 {
-	public static class LocalizationTablesConvention
+	public class LocalizationTablesParentEntitiesConvention : IModelConvention
 	{
-		public static void ApplyLocalizationTablesParentEntities(this ModelBuilder modelBuilder)
+		public void Apply(ModelBuilder modelBuilder)
 		{
 			var localizationTables = modelBuilder.Model.GetEntityTypes().Where(t => t.Name.EndsWith("Localization") && (t.Name.Length > "Localization".Length));
 			foreach (IMutableEntityType entityType in localizationTables)

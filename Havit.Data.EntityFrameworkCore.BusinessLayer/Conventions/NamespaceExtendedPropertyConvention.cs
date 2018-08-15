@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
+using Havit.Data.Entity.Conventions;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 {
-    public static class NamespaceExtendedPropertyConvention
+    public class NamespaceExtendedPropertyConvention : IModelConvention
 	{
-		public static void ApplyDefaultNamespaces(this ModelBuilder modelBuilder)
+		public void Apply(ModelBuilder modelBuilder)
 		{
 			var tables = modelBuilder.Model.GetEntityTypes();
 			foreach (IMutableEntityType table in tables)

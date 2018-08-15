@@ -185,6 +185,12 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 				writer.WriteLine("[GenerateIndexes(false)]");
 			}
 
+			string businessObjectBaseType = TableHelper.GetStringExtendedProperty(modelClass.Table, "BusinessObjectBaseType");
+			if (!string.IsNullOrEmpty(businessObjectBaseType))
+			{
+				writer.WriteLine($"[BusinessObjectBaseType(\"{businessObjectBaseType}\")]");
+			}
+
 			writer.WriteLine(String.Format("{0} class {1}{2}",
 				TableHelper.GetAccessModifier(modelClass.Table),
 				modelClass.Name,

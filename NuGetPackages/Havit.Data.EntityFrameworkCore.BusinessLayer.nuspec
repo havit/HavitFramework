@@ -9,7 +9,7 @@
 	<iconUrl>https://www.gravatar.com/avatar/e59ffb10448162f0c6d6b5ae3fecd0ce?s=64</iconUrl>
 	<licenseUrl>https://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
 	<description>
-	  HAVIT Entity Framework Core Library to seed database for Havit.Business & Havit.Business.BusinessLayerGenerator
+	  HAVIT Entity Framework Core Library to seed database for Havit.Business &amp; Havit.Business.BusinessLayerGenerator
 	</description>
 	<language>en-US</language>
 	<requireLicenseAcceptance>false</requireLicenseAcceptance>

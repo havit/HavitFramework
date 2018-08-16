@@ -23,11 +23,6 @@
 
   <ItemGroup>
 	<ProjectReference Include="..\Havit.Data.Entity6.Patterns\Havit.Data.Entity6.Patterns.csproj" />
-	<ProjectReference Include="..\Havit.Data.Entity6\Havit.Data.Entity6.csproj" />
-	<ProjectReference Include="..\Havit.Data.Patterns\Havit.Data.Patterns.csproj" />
-	<ProjectReference Include="..\Havit.Model\Havit.Model.csproj" />
-	<ProjectReference Include="..\Havit.Services\Havit.Services.csproj" />
-	<ProjectReference Include="..\Havit\Havit.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -13,9 +13,7 @@
 	</description>
 	<language>en-US</language>
 	<projectUrl>http://wiki.havit.cz/Glimpse.ashx</projectUrl>
-	<iconUrl>http://getglimpse.com/content/glimpse100.png</iconUrl>
 	<requireLicenseAcceptance>false</requireLicenseAcceptance>
-	<!--<licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>-->
 	<copyright>Copyright HAVIT, s.r.o. 2018</copyright>
 	<dependencies>
 	  <group targetFramework="net46">

@@ -22,7 +22,7 @@
 	</dependencies>
   </metadata>
   <files>
-	<file src="..\Havit.Data.Entity6.CodeGenerator\bin\Release\**\*.*" target="tools\CodeGenerator" />
+	<file src="..\Havit.Data.Entity6.CodeGenerator\bin\Release\net46\**\*.*" target="tools\CodeGenerator" />
 	<file src="Havit.Data.Entity6.CodeGenerator\Content\RunCodeGenerator.ps1" target="content" />
   </files>
 </package>

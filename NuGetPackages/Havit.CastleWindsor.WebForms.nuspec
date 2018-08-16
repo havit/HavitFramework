@@ -12,7 +12,6 @@
 	  Installs Castle Windsor and WebForms extension to project.
 	</description>
 	<language>en-US</language>
-	<iconUrl>http://docs.castleproject.org/GetFile.aspx?File=/windsorLogo100px.png</iconUrl>
 	<requireLicenseAcceptance>false</requireLicenseAcceptance>
 	<copyright>Copyright HAVIT, s.r.o. 2018</copyright>
 	<dependencies>

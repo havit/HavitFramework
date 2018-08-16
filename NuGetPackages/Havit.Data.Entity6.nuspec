@@ -24,8 +24,8 @@
 	<tags>HAVIT Data Entity Framework EF EF6</tags>
   </metadata>
   <files>
-	<file src="..\Havit.Data.Entity6\bin\Release\Havit.Data.Entity6.dll" target="lib\net46" />
-	<file src="..\Havit.Data.Entity6\bin\Release\Havit.Data.Entity6.pdb" target="lib\net46" />
-	<file src="..\Havit.Data.Entity6\bin\Release\Havit.Data.Entity6.xml" target="lib\net46" />
+	<file src="..\Havit.Data.Entity6\bin\Release\net46\Havit.Data.Entity6.dll" target="lib\net46" />
+	<file src="..\Havit.Data.Entity6\bin\Release\net46\Havit.Data.Entity6.pdb" target="lib\net46" />
+	<file src="..\Havit.Data.Entity6\bin\Release\net46\Havit.Data.Entity6.xml" target="lib\net46" />
   </files>
 </package>

@@ -27,8 +27,8 @@
 	<tags>HAVIT Data Patterns Entity Framework EF EF6</tags>
   </metadata>
   <files>
-	<file src="..\Havit.Data.Entity6.Patterns.Windsor\bin\Release\Havit.Data.Entity6.Patterns.Windsor.dll" target="lib\net46" />
-	<file src="..\Havit.Data.Entity6.Patterns.Windsor\bin\Release\Havit.Data.Entity6.Patterns.Windsor.pdb" target="lib\net46" />
-	<file src="..\Havit.Data.Entity6.Patterns.Windsor\bin\Release\Havit.Data.Entity6.Patterns.Windsor.xml" target="lib\net46" />
+	<file src="..\Havit.Data.Entity6.Patterns.Windsor\bin\Release\net46\Havit.Data.Entity6.Patterns.Windsor.dll" target="lib\net46" />
+	<file src="..\Havit.Data.Entity6.Patterns.Windsor\bin\Release\net46\Havit.Data.Entity6.Patterns.Windsor.pdb" target="lib\net46" />
+	<file src="..\Havit.Data.Entity6.Patterns.Windsor\bin\Release\net46\Havit.Data.Entity6.Patterns.Windsor.xml" target="lib\net46" />
   </files>
 </package>

@@ -13,6 +13,10 @@
 	  <RootNamespace>Havit.Data.EntityFrameworkCore.Patterns</RootNamespace>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile></DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="DataSources\Fakes\**" />
     <EmbeddedResource Remove="DataSources\Fakes\**" />

@@ -14,6 +14,10 @@
 	<RootNamespace>Havit.Data.Patterns.Tests</RootNamespace>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\net46\Havit.Data.Patterns.Tests.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
 	<Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
   </ItemGroup>

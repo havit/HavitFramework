@@ -13,7 +13,6 @@
 	</description>
 	<language>en-US</language>
 	<projectUrl>http://hfw.havit.local/Havit.Web.Bootstrap.Tutorial</projectUrl>
-	<iconUrl>http://blog.getbootstrap.com/public/ico/apple-touch-icon-144-precomposed.png</iconUrl>
 	<requireLicenseAcceptance>false</requireLicenseAcceptance>
 	<!--<licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>-->
 	<copyright>Copyright HAVIT, s.r.o. 2018</copyright>

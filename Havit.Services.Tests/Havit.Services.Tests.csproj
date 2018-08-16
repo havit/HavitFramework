@@ -71,6 +71,7 @@
     <Compile Include="FileStorage\FileStorageServiceTestInternals.cs" />
     <Compile Include="FileStorage\FileSystemStorageServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceFactoryDisposableWrapperTests.cs" />
     <Compile Include="ServiceFactoryExtensionsTests.cs" />
     <Compile Include="StateAdministrationServices\IdentifikacniCisloServiceTests.cs" />
     <Compile Include="StateAdministrationServices\RodneCisloServiceTests.cs" />

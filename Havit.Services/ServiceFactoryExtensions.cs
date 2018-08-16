@@ -18,17 +18,24 @@ namespace Havit.Services
 		{
 			global::Havit.Diagnostics.Contracts.Contract.Requires(serviceFactory != null);
 
-			TService service = null;
-
-			try
+			using (var service = serviceFactory.CreateDisposableService())
 			{
-				service = serviceFactory.CreateService();
 				action(service);
 			}
-			finally
-			{
-				serviceFactory.ReleaseService(service);
-			}
+		}
+
+		/// <summary>
+		/// Creates a service from factory, wrapping the release logic into IDisposable pattern.
+		/// </summary>
+		/// <param name="serviceFactory">Service factory providing the service to be used.</param>
+		/// <returns>Disposable wrapper.</returns>
+		/// <typeparam name="TService">type of service managed by the service factory</typeparam>
+		public static ServiceFactoryDisposableWrapper<TService> CreateDisposableService<TService>(this IServiceFactory<TService> serviceFactory)
+			where TService : class
+		{
+			global::Havit.Diagnostics.Contracts.Contract.Requires(serviceFactory != null);
+
+			return new ServiceFactoryDisposableWrapper<TService>(serviceFactory);
 		}
 	}
 }

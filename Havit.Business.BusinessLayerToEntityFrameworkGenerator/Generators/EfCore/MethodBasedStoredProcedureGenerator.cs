@@ -67,6 +67,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
             writer.WriteLine("using System.Text;");
 			writer.WriteLine("using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.ExtendedProperties.Attributes;");
 			writer.WriteLine("using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.StoredProcedures;");
+			writer.WriteLine("using static Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.ExtendedProperties.Attributes.DataLoadPowerType;");
 			writer.WriteLine("using ResultType = Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.ExtendedProperties.Attributes.StoredProcedureResultType;");
             if (entityClass != null)
             {
@@ -95,6 +96,12 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 	        if (!string.IsNullOrEmpty(result))
 	        {
 				writer.WriteLine(String.Format("[Result(ResultType.{0})]", result));
+	        }
+
+	        string dataLoadPower = dbStoredProcedure.StoredProcedure.GetStringExtendedProperty("DataLoadPower");
+	        if (!string.IsNullOrEmpty(dataLoadPower))
+			{
+				writer.WriteLine(String.Format("[DataLoadPower({0})]", dataLoadPower));
 	        }
             writer.WriteLine(String.Format("public StoredProcedureDbInjection {0}()", dbStoredProcedure.Name));
             writer.WriteLine("{");

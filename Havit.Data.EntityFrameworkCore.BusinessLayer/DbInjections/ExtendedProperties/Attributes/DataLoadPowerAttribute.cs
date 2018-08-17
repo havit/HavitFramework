@@ -7,15 +7,20 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.ExtendedProp
 	[AttributeUsage(AttributeTargets.Method)]
     public class DataLoadPowerAttribute : DbInjectionExtendedPropertiesAttribute
     {
-        public override string ObjectType { get; } = "PROCEDURE";
+	    public override string ObjectType { get; } = "PROCEDURE";
 
-        public string Value { get; set; }
+	    public DataLoadPowerType PowerType { get; }
 
-        public override IDictionary<string, string> GetExtendedProperties(MemberInfo memberInfo)
+	    public DataLoadPowerAttribute(DataLoadPowerType powerType)
+	    {
+		    PowerType = powerType;
+	    }
+
+	    public override IDictionary<string, string> GetExtendedProperties(MemberInfo memberInfo)
         {
             return new Dictionary<string, string>
             {
-                { "DataLoadPower", Value }
+                { "DataLoadPower", PowerType.ToString() }
             };
         }
     }

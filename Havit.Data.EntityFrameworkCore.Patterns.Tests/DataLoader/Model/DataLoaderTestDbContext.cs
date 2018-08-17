@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Havit.Data.Entity.Patterns.Tests.DataLoader.Model
+namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Model
 {
-	public class DataLoaderTestDbContext : DbContext
+	public class DataLoaderTestDbContext : Havit.Data.EntityFrameworkCore.DbContext
 	{
 		public DbSet<Master> Master { get; set; }
 		public DbSet<Child> Child { get; set; }
@@ -17,9 +17,9 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader.Model
 			optionsBuilder.UseInMemoryDatabase(nameof(DataLoaderTestDbContext));
 		}
 
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		protected override void CustomizeModelCreating(ModelBuilder modelBuilder)
 		{
-			base.OnModelCreating(modelBuilder);
+			base.CustomizeModelCreating(modelBuilder);
 
 			// 1:N
 			modelBuilder.Entity<Master>().HasMany(master => master.Children).WithOne(child => child.Parent);

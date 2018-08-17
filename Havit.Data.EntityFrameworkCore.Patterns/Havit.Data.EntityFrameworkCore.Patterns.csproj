@@ -24,10 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="DataLoaders\DbDataLoaderWithLoadedPropertiesMemory.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
     <Compile Include="DataSources\Fakes\AsyncEnumeratorInternal.cs" />
     <Compile Include="DataSources\Fakes\FakeDataSource.cs" />

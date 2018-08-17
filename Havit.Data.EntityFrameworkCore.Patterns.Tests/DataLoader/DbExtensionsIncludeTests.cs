@@ -1,9 +1,9 @@
 ﻿using System.Linq;
-using Havit.Data.Entity.Patterns.Tests.DataLoader.Model;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Havit.Data.Entity.Patterns.Tests.DataLoader
+namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 {
 	[TestClass]
 	public class DbExtensionsIncludeTests

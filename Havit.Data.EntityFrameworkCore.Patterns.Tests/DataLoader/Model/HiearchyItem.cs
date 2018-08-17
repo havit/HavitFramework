@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace Havit.Data.Entity.Patterns.Tests.DataLoader.Model
+namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Model
 {
 	public class HiearchyItem
 	{

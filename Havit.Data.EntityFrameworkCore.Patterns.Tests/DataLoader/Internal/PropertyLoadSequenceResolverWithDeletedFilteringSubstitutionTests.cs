@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Havit.Data.Entity.Patterns.DataLoaders.Internal;
-using Havit.Data.Entity.Patterns.Tests.DataLoader.Model;
+using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Havit.Data.Entity.Patterns.Tests.DataLoader.Internal
+namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Internal
 {
 	[TestClass]
 	public class PropertyLoadSequenceResolverWithDeletedFilteringSubstitutionTests

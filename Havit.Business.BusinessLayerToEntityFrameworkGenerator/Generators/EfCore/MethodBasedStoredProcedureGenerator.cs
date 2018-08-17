@@ -5,7 +5,9 @@ using System.Linq;
 using Havit.Business.BusinessLayerGenerator.Csproj;
 using Havit.Business.BusinessLayerGenerator.TfsClient;
 using Havit.Business.BusinessLayerGenerator.Writers;
+using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Helpers;
 using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata;
+using Microsoft.SqlServer.Management.Smo;
 using NamespaceHelper = Havit.Business.BusinessLayerToEntityFrameworkGenerator.Helpers.NamingConventions.NamespaceHelper;
 
 namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCore
@@ -65,6 +67,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
             writer.WriteLine("using System.Text;");
 			writer.WriteLine("using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.ExtendedProperties.Attributes;");
 			writer.WriteLine("using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.StoredProcedures;");
+			writer.WriteLine("using ResultType = Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.ExtendedProperties.Attributes.StoredProcedureResultType;");
             if (entityClass != null)
             {
                 writer.WriteLine($"using {entityClass.Namespace};");
@@ -88,6 +91,11 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 
         private static void WriteMethodBegin(CodeWriter writer, DbStoredProcedure dbStoredProcedure)
         {
+	        string result = dbStoredProcedure.StoredProcedure.GetStringExtendedProperty("Result");
+	        if (!string.IsNullOrEmpty(result))
+	        {
+				writer.WriteLine(String.Format("[Result(ResultType.{0})]", result));
+	        }
             writer.WriteLine(String.Format("public StoredProcedureDbInjection {0}()", dbStoredProcedure.Name));
             writer.WriteLine("{");
         }

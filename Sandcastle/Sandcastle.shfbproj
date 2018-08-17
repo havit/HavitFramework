@@ -30,7 +30,7 @@
     </SandcastlePath>
     <WorkingPath>
     </WorkingPath>
-    <FrameworkVersion>.NET Framework 4.6</FrameworkVersion>
+    <FrameworkVersion>.NET Framework 4.7.2</FrameworkVersion>
     <HelpTitle>HAVIT .NET Framework</HelpTitle>
     <CopyrightHref>http://www.havit.cz</CopyrightHref>
     <CopyrightText>HAVIT, s.r.o., All rights reserved.</CopyrightText>
@@ -41,7 +41,7 @@
     <MSHelp2SdkLinkType>None</MSHelp2SdkLinkType>
     <MSHelpViewerSdkLinkType>None</MSHelpViewerSdkLinkType>
     <PresentationStyle>VS2010</PresentationStyle>
-    <SyntaxFilters>CSharp</SyntaxFilters>
+    <SyntaxFilters>C#</SyntaxFilters>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\Havit\Havit.csproj" />
       <DocumentationSource sourceFile="..\Havit.AspNet.Mvc\Havit.AspNet.Mvc.csproj" />
@@ -61,6 +61,15 @@
       <DocumentationSource sourceFile="..\Havit.Data.Entity6.Patterns\Havit.Data.Entity6.Patterns.csproj" />
       <DocumentationSource sourceFile="..\Havit.Data.Entity6.Patterns.Windsor\Havit.Data.Entity6.Patterns.Windsor.csproj" />
       <DocumentationSource sourceFile="..\Havit.ApplicationInsights.DependencyCollector\Havit.ApplicationInsights.DependencyCollector.csproj" />
+      <DocumentationSource sourceFile="..\Havit.Data.EntityFrameworkCore\Havit.Data.EntityFrameworkCore.csproj" />
+      <DocumentationSource sourceFile="..\Havit.Data.EntityFrameworkCore.BusinessLayer\Havit.Data.EntityFrameworkCore.BusinessLayer.csproj" />
+      <DocumentationSource sourceFile="..\Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions\Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions.csproj" />
+      <DocumentationSource sourceFile="..\Havit.Data.EntityFrameworkCore.Patterns\Havit.Data.EntityFrameworkCore.Patterns.csproj" />
+      <DocumentationSource sourceFile="..\Havit.AspNetCore.Mvc\Havit.AspNetCore.Mvc.csproj" />
+      <DocumentationSource sourceFile="..\Havit.Extensions.DependencyInjection.Abstractions\Havit.Extensions.DependencyInjection.Abstractions.csproj" />
+      <DocumentationSource sourceFile="..\Havit.Extensions.DependencyInjection.CastleWindsor\Havit.Extensions.DependencyInjection.CastleWindsor.csproj" />
+      <DocumentationSource sourceFile="..\Havit.Extensions.DependencyInjection.CastleWindsor.AspNetCore\Havit.Extensions.DependencyInjection.CastleWindsor.AspNetCore.csproj" />
+      <DocumentationSource sourceFile="..\Havit.GoPay\Havit.GoPay.csproj" />
     </DocumentationSources>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="(global)" isDocumented="True" />
@@ -177,6 +186,7 @@
     <RootNamespaceTitle>
     </RootNamespaceTitle>
     <ComponentPath />
+    <SaveComponentCacheCapacity>100</SaveComponentCacheCapacity>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional

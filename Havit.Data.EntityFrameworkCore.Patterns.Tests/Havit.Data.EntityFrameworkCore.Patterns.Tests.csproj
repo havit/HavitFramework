@@ -15,12 +15,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="DataLoader\**" />
-	  <EmbeddedResource Remove="DataLoader\**" />
-	  <None Remove="DataLoader\**" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
 	</ItemGroup>
 

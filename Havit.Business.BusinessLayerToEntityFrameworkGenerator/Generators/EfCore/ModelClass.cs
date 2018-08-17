@@ -57,8 +57,8 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 			writer.WriteLine("using System.Globalization;");
 			writer.WriteLine("using System.Linq;");
 			writer.WriteLine("using System.Text;");
-			writer.WriteLine("using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties.Attributes;");
-			writer.WriteLine("using Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata;");
+			writer.WriteLine("using Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProperties;");
+			writer.WriteLine("using Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.Metadata;");
 
 			if (LocalizationHelper.IsLocalizationTable(modelClass.Table) || LocalizationHelper.IsLocalizedTable(modelClass.Table))
 			{

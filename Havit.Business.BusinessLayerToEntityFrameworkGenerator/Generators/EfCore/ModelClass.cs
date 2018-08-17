@@ -173,7 +173,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 			{
 				var attributeBuilder = new AttributeStringBuilder("Cache");
 				attributeBuilder.AddBoolExtendedProperty(modelClass.Table, "Cache", "SuppressPreload");
-				attributeBuilder.AddExtendedProperty(modelClass.Table, "Cache", "Priority", priority => $"Havit.Services.Caching.CacheItemPriority.{priority}");
+				attributeBuilder.AddExtendedProperty(modelClass.Table, "Cache", "Priority", priority => $"CacheItemPriority.{priority}");
 				attributeBuilder.AddExtendedProperty(modelClass.Table, "Cache", "AbsoluteExpiration");
 				attributeBuilder.AddExtendedProperty(modelClass.Table, "Cache", "SlidingExpiration");
 

@@ -103,6 +103,14 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 			{
 				writer.WriteLine(String.Format("[DataLoadPower({0})]", dataLoadPower));
 	        }
+
+
+	        string methodAccessModifier = dbStoredProcedure.StoredProcedure.GetStringExtendedProperty("MethodAccessModifier");
+	        if (!string.IsNullOrEmpty(methodAccessModifier))
+			{
+				writer.WriteLine(String.Format("[MethodAccessModifier(\"{0}\")]", methodAccessModifier));
+	        }
+
             writer.WriteLine(String.Format("public StoredProcedureDbInjection {0}()", dbStoredProcedure.Name));
             writer.WriteLine("{");
         }

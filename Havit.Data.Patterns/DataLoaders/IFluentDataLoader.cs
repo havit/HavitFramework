@@ -7,7 +7,6 @@ namespace Havit.Data.Patterns.DataLoaders
 	/// Fluent API pro data loader.
 	/// Umožňuje zřetězený zápis pro načítání vlastností data loaderem.
 	/// </summary>
-	/// <typeparam name="TEntity"></typeparam>
 	public interface IFluentDataLoader<out TEntity>
 		where TEntity : class
 	{

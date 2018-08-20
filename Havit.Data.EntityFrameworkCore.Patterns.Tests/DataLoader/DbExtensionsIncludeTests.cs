@@ -18,6 +18,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 
 			// classic select
 			dbContext.Set<Child>().Include(c => c.Parent).ThenInclude(p => p.Children).ThenInclude(c => c.Parent).FirstOrDefault();
+			dbContext.Set<Child>().Include(c => c.Parent.Children).ThenInclude(c => c.Parent).FirstOrDefault();
 			dbContext.Set<HiearchyItem>().Include(c1 => c1.Children).ThenInclude(c2 => c2.Children).ThenInclude(c3 => c3.Children).FirstOrDefault();
 			
 			// Předchozí způsob načítání již není podporován

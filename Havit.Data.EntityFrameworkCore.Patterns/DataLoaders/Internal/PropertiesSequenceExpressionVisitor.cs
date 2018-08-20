@@ -35,31 +35,12 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal
 			{
 				case ExpressionType.Parameter:
 				case ExpressionType.Lambda:
-				case ExpressionType.Call:
 				case ExpressionType.MemberAccess:
 					return base.Visit(node);
 
 				default:
 					throw new NotSupportedException($"There is unsupported node \"{node.NodeType}\" in the expression \"{propertyPathString}\".");
             }
-		}
-
-		protected override Expression VisitMethodCall(MethodCallExpression node)
-		{
-			// podmínka vypadá "šíleně jednoduše", ale je opsána z EF (System.Data.Entity.Internal.DbHelpers.TryParsePath).
-			// viz DbExtensionsIncludeTest
-			if ((node.Method.Name == "Select") && (node.Arguments.Count == 2))
-			{
-				Visit(node.Arguments[0]);
-				Visit(node.Arguments[1]);
-
-				// NO BASE CALL! return base.VisitMethodCall(node);
-				return node;
-			}
-			else
-			{
-				throw new NotSupportedException($"There is an unsupported method call \"{node.Method.Name}\" in the expression \"{propertyPathString}\".");
-			}
 		}
 
 		protected override Expression VisitMember(MemberExpression node)

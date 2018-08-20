@@ -116,27 +116,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 			Assert.IsNotNull(master.Children, "DbDataLoader nenačetl hodnotu pro master.Children.");
 			Assert.AreEqual(5, master.Children.Count, "DbDataLoader nenačetl objekty do master.Children.");
 		}
-
-		//[TestMethod]
-		//public void DbDataLoader_Load_WithList_ManyToMany_LoadsNotLoadedCollections()
-		//{
-		//	// Arrange
-		//	SeedManyToManyTestData(false);
-
-		//	DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
-		//	LoginAccount loginAccount = dbContext.LoginAccount.First();
-
-		//	Assert.IsNull(loginAccount.Roles, "Pro ověření DbDataLoaderu se předpokládá, že hodnota loginAccount.Roles je null.");
-
-		//	// Act
-		//	IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
-		//	dataLoader.Load(loginAccount, item => item.Roles);
-
-		//	// Assert
-		//	Assert.IsNotNull(loginAccount.Roles, "DbDataLoader nenačetl hodnotu pro loginAccount.Roles.");
-		//	Assert.AreEqual(1, loginAccount.Roles.Count, "DbDataLoader nenačetl objekty do loginAccount.Roles.");
-		//}
-
+		
 		[TestMethod]
 		public void DbDataLoader_Load_WithObject_OneToMany_LoadsNotLoadedCollections()
 		{
@@ -158,26 +138,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 			Assert.AreEqual(5, master.Children.Count, "DbDataLoader nenačetl objekty do master.Children.");
 		}
 
-		//[TestMethod]
-		//public void DbDataLoader_Load_WithObject_ManyToMany_LoadsNotLoadedCollections()
-		//{
-		//	// Arrange
-		//	SeedManyToManyTestData(false);
-
-		//	DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
-		//	LoginAccount loginAccount = dbContext.LoginAccount.First();
-
-		//	Assert.IsNull(loginAccount.Roles, "Pro ověření DbDataLoaderu se předpokládá, že hodnota loginAccount.Roles je null.");
-
-		//	// Act
-		//	IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
-		//	dataLoader.Load(loginAccount, item => item.Roles);
-
-		//	// Assert
-		//	Assert.IsNotNull(loginAccount.Roles, "DbDataLoader nenačetl hodnotu pro loginAccount.Roles.");
-		//	Assert.AreEqual(1, loginAccount.Roles.Count, "DbDataLoader nenačetl objekty do loginAccount.Roles.");
-		//}
-
 		[TestMethod]
 		public void DbDataLoader_Load_WithList_OneToMany_DoesNotLoadExcessEntities()
 		{
@@ -197,26 +157,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 			Assert.AreEqual(1, dbContext.Master.Local.Count, "DbDataLoader načetl zbytečné objekty Master.");
 			Assert.AreEqual(5, dbContext.Child.Local.Count, "DbDataLoader načetl zbytečné objekty Child.");
 		}
-
-		//[TestMethod]
-		//public void DbDataLoader_Load_WithList_ManyToMany_DoesNotLoadExcessEntities()
-		//{
-		//	// Arrange
-		//	SeedManyToManyTestData(false);
-
-		//	DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
-		//	LoginAccount loginAccount = dbContext.LoginAccount.First();
-
-		//	Assert.IsNull(loginAccount.Roles, "Pro ověření DbDataLoaderu se předpokládá, že hodnota loginAccount.Roles je null.");
-
-		//	// Act
-		//	IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
-		//	dataLoader.Load(loginAccount, item => item.Roles);
-
-		//	// Assert
-		//	Assert.AreEqual(1, dbContext.LoginAccount.Local.Count, "DbDataLoader načetl zbytečné objekty LoginAccount.");
-		//	Assert.AreEqual(1, dbContext.Role.Local.Count, "DbDataLoader načetl zbytečné objekty Role.");
-		//}
 
 		[TestMethod]
 		public void DbDataLoader_Load_DoesNotLoadAlreadyLoaded()
@@ -281,37 +221,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 			dbContextMock.Verify(m => m.Set<Child>(), Times.Never);
 		}
 
-		//[TestMethod]
-		//public void DbDataLoader_Load_ManyToMany_DoesNotLoadAlreadyLoaded()
-		//{
-		//	// Arrange
-		//	SeedManyToManyTestData(false);
-
-		//	DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
-		//	LoginAccount loginAccount = dbContext.LoginAccount.First();
-
-		//	Mock<IDbContext> mockDbContext = new Mock<IDbContext>();
-		//	mockDbContext.Setup(m => m.Set<LoginAccount>()).Returns(dbContext.Set<LoginAccount>());
-		//	mockDbContext.Setup(m => m.Set<Role>()).Returns(dbContext.Set<Role>());
-		//	mockDbContext.Setup(m => m.IsEntityCollectionLoaded<LoginAccount>(It.IsAny<LoginAccount>(), It.IsAny<string>())).Returns<LoginAccount, string>((entity, propertyName) => ((IDbContext)dbContext).IsEntityCollectionLoaded(entity, propertyName));
-
-		//	// Act + Assert
-		//	IDataLoader dataLoader = new DbDataLoader(mockDbContext.Object, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
-
-		//	// Říkáme, že aby mohl DbDataLoader načíst data pro LoginAccount, musí si získat DbSet<LoginAccount> pomocí metody Set<LoginAccount>().
-		//	// Takže testujeme, že se na ní ani šáhl pouze jedenkrát - zde.
-		//	dataLoader.Load(loginAccount, item => item.Roles);
-		//	mockDbContext.Verify(m => m.Set<LoginAccount>(), Times.Once);
-
-		//	// Říkáme, že aby mohl DbDataLoader načíst data pro LoginAccount, musí si získat DbSet<LoginAccount> pomocí metody Set<LoginAccount>().
-		//	// Takže testujeme, že se na ní ani šáhl pouze jedenkrát výše, a již vícekrát ne.
-		//	dataLoader.Load(loginAccount, item => item.Roles);
-		//	mockDbContext.Verify(m => m.Set<LoginAccount>(), Times.Once);
-
-		//	// rolím nic nenačítáme, takže jen ověříme, že se nikdy na Set<Role> nešáhlo
-		//	mockDbContext.Verify(m => m.Set<Role>(), Times.Never);
-		//}
-
 		[TestMethod]
 		public void DbDataLoader_Load_LoadsChains()
 		{
@@ -324,7 +233,26 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 			Child child = dbContext.Child.First();
 
 			// Act
-			dbDataLoader.Load(child, c => c.Parent.Children.Select(item => item.Parent));
+			dbDataLoader.Load(child, c => c.Parent.Children);
+
+			// Assert
+			Assert.IsNotNull(child.Parent);
+			Assert.IsNotNull(child.Parent.Children);
+		}
+
+		[TestMethod]
+		public void DbDataLoader_LoadAndThenLoad_LoadsChains()
+		{
+			// Arrange
+			SeedOneToManyTestData();
+
+			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+			DbDataLoader dbDataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
+
+			Child child = dbContext.Child.First();
+
+			// Act
+			dbDataLoader.Load(child, c => c.Parent).ThenLoad(p => p.Children).ThenLoad(c => c.Parent);
 
 			// Assert
 			Assert.IsNotNull(child.Parent);
@@ -333,24 +261,23 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 		}
 
 		[TestMethod]
-		public void DbDataLoader_Load_LoadsHierarchy()
+		public async Task DbDataLoader_LoadAsyncAndThenLoadAsync_LoadsChains()
 		{
 			// Arrange
-			SeedHierarchyTestData();
+			SeedOneToManyTestData();
 
 			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
 			DbDataLoader dbDataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 
-			HiearchyItem hiearchyItem = dbContext.HiearchyItem.Where(item => item.ParentId == null).First();
+			Child child = dbContext.Child.First();
 
 			// Act
-			dbDataLoader.Load(hiearchyItem, hi => hi.Children.Select(hi2 => hi2.Children.Select(hi3 => hi3.Children)));
+			await dbDataLoader.LoadAsync(child, c => c.Parent).ThenLoadAsync(p => p.Children).ThenLoadAsync(c => c.Parent);
 
 			// Assert
-			Assert.IsNotNull(hiearchyItem.Children);
-			Assert.AreEqual(3, hiearchyItem.Children.Count);
-			Assert.AreEqual(3, hiearchyItem.Children.First().Children.Count);
-			Assert.AreEqual(3, hiearchyItem.Children.First().Children.First().Children.Count);
+			Assert.IsNotNull(child.Parent);
+			Assert.IsNotNull(child.Parent.Children);
+			Assert.IsTrue(child.Parent.Children.All(item => item.Parent != null));
 		}
 
 		[TestMethod]
@@ -365,13 +292,33 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 			Child child = await dbContext.Child.FirstAsync();
 
 			// Act
-			await dbDataLoader.LoadAsync(child, c => c.Parent.Children.Select(item => item.Parent));
+			await dbDataLoader.LoadAsync(child, c => c.Parent.Children);
 
 			// Assert
 			Assert.IsNotNull(child.Parent);
 			Assert.IsNotNull(child.Parent.Children);
-			Assert.IsTrue(child.Parent.Children.All(item => item.Parent != null));
 		}
+
+		// TODO JK: Dodělat async podporu
+		//[TestMethod]
+		//public async Task DbDataLoader_LoadAsyncAndThenLoadAsync_LoadsChains()
+		//{
+		//	// Arrange
+		//	SeedOneToManyTestData();
+
+		//	DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+		//	DbDataLoader dbDataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
+
+		//	Child child = await dbContext.Child.FirstAsync();
+
+		//	// Act
+		//	await dbDataLoader.LoadAsync(child, c => c.Parent).ThenLoadAsync(p => p.Children).ThenLoadAsync(c => c.Parent);
+
+		//	// Assert
+		//	Assert.IsNotNull(child.Parent);
+		//	Assert.IsNotNull(child.Parent.Children);
+		//	Assert.IsTrue(child.Parent.Children.All(item => item.Parent != null));
+		//}
 
 		[TestMethod]
 		public void DbDataLoader_Load_LoadWithManyAreReentrant()
@@ -638,76 +585,5 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 
 			dbContext.SaveChanges();
 		}
-
-		//private void SeedManyToManyTestData(bool deleted = false)
-		//{
-		//	DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
-		//	dbContext.Database.DropCreate();
-
-		//	for (int i = 0; i < 5; i++)
-		//	{
-		//		Role role = new Role();
-		//		if (deleted)
-		//		{
-		//			role.Deleted = DateTime.Now;
-		//		}
-
-		//		LoginAccount loginAccount = new LoginAccount();
-		//		loginAccount.Roles = new List<Role> { role };
-		//		if (deleted)
-		//		{
-		//			loginAccount.Deleted = DateTime.Now;
-		//		}
-
-		//		dbContext.LoginAccount.Add(loginAccount);
-		//		dbContext.Role.Add(role);
-		//	}
-
-		//	dbContext.SaveChanges();
-		//}
-
-		private void SeedHierarchyTestData()
-		{
-			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
-			dbContext.Database.DropCreate();
-
-			HiearchyItem root = new HiearchyItem();
-			SeedHierarchyTestData_CreateItems(root, 0);
-
-			dbContext.HiearchyItem.Add(root);
-			dbContext.SaveChanges();
-		}
-
-		private void SeedHierarchyTestData_CreateItems(HiearchyItem root, int level)
-		{
-			if (level > 2)
-			{
-				return;
-			}
-
-			root.Children = new List<HiearchyItem>();
-			for (int i = 0; i < 3; i++)
-			{
-				HiearchyItem hi = new HiearchyItem();
-				SeedHierarchyTestData_CreateItems(hi, level + 1);
-				root.Children.Add(hi);
-			}
-		}
-
-	    private void ExecuteWithDisabledDatabaseOperations(DbContext dbContext, Action action)
-	    {
-		    throw new NotImplementedException();
-	        //var originalLog = dbContext.Database.Log;
-
-            try
-	        {
-              //  dbContext.Database.Log = s => throw new InvalidOperationException("Databázové operace jsou zakázány.");
-	            action();
-	        }
-	        finally
-            {
-                //dbContext.Database.Log = originalLog;
-            }
-	    }
     }
 }

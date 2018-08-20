@@ -15,7 +15,18 @@ namespace Havit.Data.Patterns.DataLoaders.Fakes
     [Fake]    
     public class FakeDataLoader : IDataLoader, IDataLoaderAsync
     {
-        /// <summary>
+	    /// <summary>
+	    /// Contract: Načte vlastnosti objektů, pokud ještě nejsou načteny.        
+	    /// Implementace: Nic nedělá.
+	    /// </summary>
+	    public IFluentDataLoader<TProperty> Load<TEntity, TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> propertyPath)
+		    where TEntity : class
+		    where TProperty : class
+	    {			
+		    return new FakeFluentDataLoader<TProperty>();
+	    }
+
+	    /// <summary>
         /// Contract: Načte vlastnosti objektů, pokud ještě nejsou načteny.        
         /// Implementace: Nic nedělá.
         /// </summary>
@@ -25,7 +36,18 @@ namespace Havit.Data.Patterns.DataLoaders.Fakes
             // NOOP
         }
 
-        /// <summary>
+	    /// <summary>
+	    /// Contract: Načte vlastnosti objektů, pokud ještě nejsou načteny.        
+	    /// Implementace: Nic nedělá.
+	    /// </summary>
+	    public IFluentDataLoader<TProperty> LoadAll<TEntity, TProperty>(IEnumerable<TEntity> entities, Expression<Func<TEntity, TProperty>> propertyPath)
+		    where TEntity : class 
+			where TProperty : class
+	    {
+		    return new FakeFluentDataLoader<TProperty>();
+	    }
+
+	    /// <summary>
         /// Contract: Načte vlastnosti objektů, pokud ještě nejsou načteny.        
         /// Implementace: Nic nedělá.
         /// </summary>
@@ -35,7 +57,39 @@ namespace Havit.Data.Patterns.DataLoaders.Fakes
             // NOOP
         }
 
-        /// <summary>
+	    /// <summary>
+	    /// Contract: Načte vlastnosti objektů, pokud ještě nejsou načteny.        
+	    /// Implementace: Nic nedělá.
+	    /// </summary>
+	    public Task<IFluentDataLoaderAsync<TProperty>> LoadAsync<TEntity, TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> propertyPath)
+		    where TEntity : class
+		    where TProperty : class
+	    {
+		    return Task.FromResult((IFluentDataLoaderAsync<TProperty>)new FakeFluentDataLoader<TProperty>());
+	    }
+
+	    /// <summary>
+	    /// Contract: Načte vlastnosti objektů, pokud ještě nejsou načteny.        
+	    /// Implementace: Nic nedělá.
+	    /// </summary>
+	    public Task LoadAsync<TEntity>(TEntity entity, params Expression<Func<TEntity, object>>[] propertyPaths)
+		    where TEntity : class
+	    {
+		    return Task.CompletedTask;            
+	    }
+
+	    /// <summary>
+	    /// Contract: Načte vlastnosti objektů, pokud ještě nejsou načteny.        
+	    /// Implementace: Nic nedělá.
+	    /// </summary>
+	    public Task<IFluentDataLoaderAsync<TProperty>> LoadAllAsync<TEntity, TProperty>(IEnumerable<TEntity> entities, Expression<Func<TEntity, TProperty>> propertyPath)
+		    where TEntity : class
+		    where TProperty : class
+	    {
+		    return Task.FromResult((IFluentDataLoaderAsync<TProperty>)new FakeFluentDataLoader<TProperty>());
+	    }
+
+	    /// <summary>
         /// Contract: Načte vlastnosti objektů, pokud ještě nejsou načteny.        
         /// Implementace: Nic nedělá.
         /// </summary>
@@ -43,16 +97,6 @@ namespace Havit.Data.Patterns.DataLoaders.Fakes
             where TEntity : class
         {
             return Task.CompletedTask;
-        }
-
-        /// <summary>
-        /// Contract: Načte vlastnosti objektů, pokud ještě nejsou načteny.        
-        /// Implementace: Nic nedělá.
-        /// </summary>
-        public Task LoadAsync<TEntity>(TEntity entity, params Expression<Func<TEntity, object>>[] propertyPaths)
-            where TEntity : class
-        {
-            return Task.CompletedTask;            
         }
     }
 }

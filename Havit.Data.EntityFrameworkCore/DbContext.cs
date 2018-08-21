@@ -5,9 +5,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Havit.Data.EntityFrameworkCore.Conventions;
 using Havit.Data.EntityFrameworkCore.Internal;
+using Havit.Data.EntityFrameworkCore.Model;
 using Microsoft.EntityFrameworkCore;
-
-// TODO JK: Doplnit NotNullAttribute na všechna volání, overrides, atp.
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Havit.Data.EntityFrameworkCore
 {
@@ -41,15 +41,26 @@ namespace Havit.Data.EntityFrameworkCore
 	    {			
 		    base.OnModelCreating(modelBuilder);			
 		    
-		    // TODO JK: System types (dataseed)
-
-		    CustomizeModelCreating(modelBuilder);
+		    RegisterDataSeedVersion(modelBuilder);
+		    
+			CustomizeModelCreating(modelBuilder);
 
 		    var conventions = GetModelConventions().ToList();
 		    foreach (var convention in conventions)
 		    {
 			    convention.Apply(modelBuilder);
 		    }
+	    }
+
+		/// <summary>
+		/// Zaregistruje třídu DataSeedVersion do modelu
+		/// </summary>
+	    protected virtual void RegisterDataSeedVersion(ModelBuilder modelBuilder)
+	    {
+		    EntityTypeBuilder<DataSeedVersion> dataSeedVersionEntity = modelBuilder.Entity<DataSeedVersion>();
+		    dataSeedVersionEntity.ToTable("__DataSeed");
+		    dataSeedVersionEntity.HasKey(item => item.ProfileName);
+		    dataSeedVersionEntity.Property(item => item.Version);
 	    }
 
 	    /// <summary>
@@ -200,6 +211,7 @@ namespace Havit.Data.EntityFrameworkCore
 		    return ExecuteWithoutAutoDetectChanges(() => this.Entry(entity).Collection(propertyName).IsLoaded);
 	    }
 
+		// TODO JK: Nebude potřeba?
 	    //public void SetEntityCollectionLoaded<TEntity>(TEntity entity, string propertyName, bool isLoaded)
 		   // where TEntity : class
 	    //{

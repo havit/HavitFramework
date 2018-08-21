@@ -55,7 +55,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 			yield return new CollectionExtendedPropertiesConvention();
 			yield return new XmlCommentsForDescriptionPropertyConvention();
 			yield return new SequencesForEnumClassesConvention(); 
-			yield return new BusinessLayerIndexesConventions(); 
+			yield return new BusinessLayerIndexesConventions();
+            yield return new CharColumnTypeForCharPropertyConvention();
 		}
 
 	    protected void RegisterDbInjections(ModelBuilder modelBuilder, Assembly injectionsAssembly = default)

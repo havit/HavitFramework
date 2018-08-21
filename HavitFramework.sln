@@ -220,6 +220,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EntityFrameworkC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions", "Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions\Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions.csproj", "{EDD0CA2B-EB22-4A8B-A68E-4507B9A360A8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Data.EntityFrameworkCore.Patterns.Windsor", "Havit.Data.EntityFrameworkCore.Patterns.Windsor\Havit.Data.EntityFrameworkCore.Patterns.Windsor.csproj", "{1A82E2E8-407D-482A-91D4-0155D877CA6A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests", "Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests\Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests.csproj", "{EE685A1E-0F48-4523-98B9-4C9A3787A8F9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -452,6 +456,14 @@ Global
 		{EDD0CA2B-EB22-4A8B-A68E-4507B9A360A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDD0CA2B-EB22-4A8B-A68E-4507B9A360A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EDD0CA2B-EB22-4A8B-A68E-4507B9A360A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A82E2E8-407D-482A-91D4-0155D877CA6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A82E2E8-407D-482A-91D4-0155D877CA6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A82E2E8-407D-482A-91D4-0155D877CA6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A82E2E8-407D-482A-91D4-0155D877CA6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE685A1E-0F48-4523-98B9-4C9A3787A8F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE685A1E-0F48-4523-98B9-4C9A3787A8F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE685A1E-0F48-4523-98B9-4C9A3787A8F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE685A1E-0F48-4523-98B9-4C9A3787A8F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -522,12 +534,14 @@ Global
 		{1EBE46EC-8DAE-46E6-8755-33A15B8D0FF3} = {8B4383E1-89EA-46F4-A379-F728CA71A124}
 		{ECA21C41-AA37-49F6-8B1D-7627F80CC9BB} = {1EBE46EC-8DAE-46E6-8755-33A15B8D0FF3}
 		{EDD0CA2B-EB22-4A8B-A68E-4507B9A360A8} = {8B4383E1-89EA-46F4-A379-F728CA71A124}
+		{1A82E2E8-407D-482A-91D4-0155D877CA6A} = {E30EB2C7-ECF5-4A27-A7F0-8AE37284A60C}
+		{EE685A1E-0F48-4523-98B9-4C9A3787A8F9} = {FA03CDCB-AEFC-49D1-BBAE-5F623BD5A301}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {44656523-42B6-48E3-9E6D-6F075F0E7FD0}
 	EndGlobalSection
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 58
+		SccNumberOfProjects = 60
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://havit.visualstudio.com/
 		SccLocalPath0 = .
@@ -759,5 +773,13 @@ Global
 		SccProjectTopLevelParentUniqueName57 = HavitFramework.sln
 		SccProjectName57 = Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions
 		SccLocalPath57 = Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions
+		SccProjectUniqueName58 = Havit.Data.EntityFrameworkCore.Patterns.Windsor\\Havit.Data.EntityFrameworkCore.Patterns.Windsor.csproj
+		SccProjectTopLevelParentUniqueName58 = HavitFramework.sln
+		SccProjectName58 = Havit.Data.EntityFrameworkCore.Patterns.Windsor
+		SccLocalPath58 = Havit.Data.EntityFrameworkCore.Patterns.Windsor
+		SccProjectUniqueName59 = Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests\\Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests.csproj
+		SccProjectTopLevelParentUniqueName59 = HavitFramework.sln
+		SccProjectName59 = Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
+		SccLocalPath59 = Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 	EndGlobalSection
 EndGlobal

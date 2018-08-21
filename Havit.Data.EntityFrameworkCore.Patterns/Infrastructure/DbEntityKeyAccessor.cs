@@ -11,7 +11,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Infrastructure
 	/// <summary>
 	/// Služba pro získávání primárního klíče modelových objektů.
 	/// </summary>
-	internal class DbEntityKeyAccessor<TEntity, TKey> : IEntityKeyAccessor<TEntity, TKey>
+	public class DbEntityKeyAccessor<TEntity, TKey> : IEntityKeyAccessor<TEntity, TKey>
 		where TEntity : class
 	{
 		private readonly Lazy<PropertyInfo> primaryKeyPropertyInfoLazy;

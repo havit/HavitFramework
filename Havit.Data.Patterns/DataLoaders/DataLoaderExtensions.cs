@@ -46,19 +46,9 @@ namespace Havit.Data.Patterns.DataLoaders
 		// **************************************************************************************************************************************
 		//
 		// Protože Task<...> není Task<out ...>, není možné extension metody použít hezky, jako v případě synchronních metod na IEnumerable.
-		// Proto zde máme několik přetížení nad IEnumerable, ICollection, IList, List, atp.
+		// Proto zde máme několik přetížení nad ICollection, IList, List, atp.
 		//
 		// **************************************************************************************************************************************
-
-		/// <summary>
-		/// Načte vlastnosti objektů, pokud ještě nejsou načteny.
-		/// </summary>
-		public static async Task<IFluentDataLoaderAsync<TProperty>> ThenLoadAsync<TEntity, TProperty>(this Task<IFluentDataLoaderAsync<IEnumerable<TEntity>>> source, Expression<Func<TEntity, TProperty>> propertyPath)
-			where TEntity : class
-			where TProperty : class
-		{
-			return await (await source).Unwrap<TEntity>().LoadAsync<TProperty>(propertyPath);
-		}
 
 		/// <summary>
 		/// Načte vlastnosti objektů, pokud ještě nejsou načteny.

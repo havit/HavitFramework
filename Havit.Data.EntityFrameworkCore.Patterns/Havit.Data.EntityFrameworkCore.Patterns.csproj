@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup Label="Globals">
     <SccProjectName>SAK</SccProjectName>
@@ -18,16 +18,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="DataSources\Fakes\**" />
-    <EmbeddedResource Remove="DataSources\Fakes\**" />
-    <None Remove="DataSources\Fakes\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
-    <Compile Include="DataSources\Fakes\AsyncEnumeratorInternal.cs" />
-    <Compile Include="DataSources\Fakes\FakeDataSource.cs" />
-    <Compile Include="DataSources\Fakes\AsyncEnumerableQueryInternal.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,12 +28,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Havit.Data.EntityFrameworkCore\Havit.Data.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\Havit.Data.Patterns\Havit.Data.Patterns.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="SoftDeletes\SoftDeleteManager.cs">
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
 
 </Project>

@@ -28,7 +28,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 			container.Resolve<ILanguageService>();
 			container.Resolve<ILocalizationService>();
 
-			// Assert
+			// Assert			
 			// no exception was thrown
 		}
 

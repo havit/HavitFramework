@@ -48,7 +48,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine("{");
 			if (uiCultureColumn != null)
 			{
-				writer.WriteLine("culturesDictionary.Add(language.UICulture, language.ID);");
+				writer.WriteLine(String.Format("culturesDictionary.Add(language.{0}, language.ID);", PropertyHelper.GetPropertyName(uiCultureColumn)));
 				writer.WriteLine();
 				writer.WriteLine("// pokud není nastaveno UiCulture, jedná se o výchozí jazyk (invariant)");
 				writer.WriteLine(String.Format("if (String.IsNullOrEmpty(language.{0}))", PropertyHelper.GetPropertyName(uiCultureColumn)));

@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using Havit.Business.BusinessLayerGenerator.Helpers;
+using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Helpers;
 using Microsoft.SqlServer.Management.Smo;
 
 namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata.MetadataSource
@@ -23,12 +24,27 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata.Metada
                 dbProcedures.Add(CreateStoredProcedure(storedProcedure, model));
             }
 
+            PrefixConflictedNames(dbProcedures);
+
             return dbProcedures;
+        }
+
+        private void PrefixConflictedNames(List<DbStoredProcedure> dbProcedures)
+        {
+            var duplicatedStoredProcedures = dbProcedures.GroupBy(sp => (sp.EntityName, sp.Name))
+                .Where(g => g.Count() >= 2)
+                .SelectMany(g => g.Skip(1));
+
+            foreach (DbStoredProcedure storedProcedure in duplicatedStoredProcedures)
+            {
+                storedProcedure.Name = storedProcedure.FullName;
+            }
         }
 
         private DbStoredProcedure CreateStoredProcedure(StoredProcedure storedProcedure, GeneratedModel model)
         {
-            (string tableName, string name) = ParseStoredProcedureName(storedProcedure.Name);
+            string tableName = storedProcedure.GetStringExtendedProperty("Attach");
+            (var _, string name) = ParseStoredProcedureName(storedProcedure.Name);
             if (tableName != null && model.GetEntityByTable(tableName) == null)
             {
                 tableName = null;

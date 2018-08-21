@@ -7,13 +7,12 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Havit.Services.FileStorage;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using FileInfo = Havit.Services.FileStorage.FileInfo;
 using Havit.Diagnostics.Contracts;
 using Havit.Services.Azure.Storage.Blob;
+using Havit.Text.RegularExpressions;
 
 namespace Havit.Services.Azure.FileStorage
 {
@@ -228,14 +227,22 @@ namespace Havit.Services.Azure.FileStorage
 		/// </summary>
 		public override IEnumerable<FileInfo> EnumerateFiles(string searchPattern = null)
 		{
-			string prefix;
-			string newSearchPattern;
-			EnumerableFiles_GetPrefixAndSearchPattern(searchPattern, out prefix, out newSearchPattern);
+			if (!String.IsNullOrWhiteSpace(searchPattern))
+			{
+				// zamen souborova '\\' za '/', ktere lze pouzit v Azure blobu
+				searchPattern = searchPattern.Replace("\\", "/");
+			}
+
+			// ziskej prefix, uvodni cast cesty, ve kterem nejsou pouzite znaky '*' a '?'
+			string prefix = EnumerableFilesGetPrefix(searchPattern);
 
 			EnsureContainer();
 
+			// nacti soubory s danym prefixem - optimalizace na rychlost
 			IEnumerable<IListBlobItem> listBlobItems = GetContainerReference().ListBlobs(prefix, true);
-			return EnumerateFiles_FilterAndProjectCloudBlobs(listBlobItems, newSearchPattern);
+
+			// filtruj soubory podle masky
+			return EnumerateFiles_FilterAndProjectCloudBlobs(listBlobItems, searchPattern);
 		}
 
 		/// <summary>
@@ -243,41 +250,31 @@ namespace Havit.Services.Azure.FileStorage
 		/// </summary>
 		public override async Task<IEnumerable<FileInfo>> EnumerateFilesAsync(string searchPattern = null)
 		{
-			string prefix;
-			string newSearchPattern;
-			EnumerableFiles_GetPrefixAndSearchPattern(searchPattern, out prefix, out newSearchPattern);
+			if (!String.IsNullOrWhiteSpace(searchPattern))
+			{
+				// zamen souborova '\\' za '/', ktere lze pouzit v Azure blobu
+				searchPattern = searchPattern.Replace("\\", "/");
+			}
+
+			// ziskej prefix, uvodni cast cesty, ve kterem nejsou pouzite znaky '*' a '?'
+			string prefix = EnumerableFilesGetPrefix(searchPattern);
 
 			await EnsureContainerAsync();
 
+			// nacti soubory s danym prefixem - optimalizace na rychlost
 			List<IListBlobItem> listBlobItems = (await GetContainerReference().ListBlobsAsync(prefix, true));
-			return EnumerateFiles_FilterAndProjectCloudBlobs(listBlobItems, newSearchPattern);
-		}
 
-		private void EnumerableFiles_GetPrefixAndSearchPattern(string searchPattern, out string prefix, out string newSearchPattern)
-		{
-			prefix = null;
-			newSearchPattern = searchPattern;
-
-			if ((searchPattern != null) && searchPattern.Contains('/'))
-			{
-				int delimiter = searchPattern.LastIndexOf('/');
-				prefix = searchPattern.Substring(0, delimiter);
-				newSearchPattern = searchPattern.Remove(0, delimiter + 1);
-			}
+			// filtruj soubory podle masky
+			return EnumerateFiles_FilterAndProjectCloudBlobs(listBlobItems, searchPattern);
 		}
 
 		private IEnumerable<FileInfo> EnumerateFiles_FilterAndProjectCloudBlobs(IEnumerable<IListBlobItem> listBlobItems, string searchPattern)
 		{
 			IEnumerable<CloudBlob> cloudBlobs = listBlobItems.OfType<CloudBlob>();
-			if (!String.IsNullOrEmpty(searchPattern))
+
+			if (searchPattern != null)
 			{
-				// Operators.Like 
-				// - viz http://stackoverflow.com/questions/652037/how-do-i-check-if-a-filename-matches-a-wildcard-pattern
-				// - viz https://msdn.microsoft.com/cs-cz/library/swf8kaxw.aspx
-				string normalizedSearchPatterns = searchPattern
-					.Replace("[", "[[]") // pozor, zálěží na pořadí náhrad
-					.Replace("#", "[#]");
-				cloudBlobs = cloudBlobs.Where(item => Operators.LikeString(item.Name, normalizedSearchPatterns, CompareMethod.Text));
+				cloudBlobs = cloudBlobs.Where(item => RegexPatterns.IsFileWildcardMatch(item.Name, searchPattern));
 			}
 
 			return cloudBlobs.Select(blob => new FileInfo

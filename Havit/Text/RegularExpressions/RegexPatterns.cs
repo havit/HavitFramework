@@ -124,5 +124,16 @@ namespace Havit.Text.RegularExpressions
 		}
 		#endregion
 
+		#region MatchFileWildcardString
+		/// <summary>
+		/// Vratí, zda název souboru odpovídá souborove masce - podpora znaku '*' a '?'. Pouzivano v CMD.
+		/// </summary>
+		public static bool IsFileWildcardMatch(String fileName, String searchPattern)
+		{
+			// https://stackoverflow.com/questions/30299671/matching-strings-with-wildcard
+			string regular = "^" + Regex.Escape(searchPattern).Replace("\\?", ".").Replace("\\*", ".*") + "$";
+			return Regex.IsMatch(fileName, regular);
+		}
+		#endregion
 	}
 }

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Havit.Diagnostics.Contracts;
 using Havit.Services.FileStorage.Infrastructure;
@@ -182,6 +183,40 @@ namespace Havit.Services.FileStorage
 				{
 					await PerformSaveAsync(fileName, encryptingStream, contentType);
 				}
+			}
+		}
+
+		/// <summary>
+		/// Vrátí prefix pro vyhledání pomocí ListBlobs.
+		/// Prefix je úvodní část cesty po poslední '/', která neobsahuje '*' a '?'.
+		/// </summary>
+		protected internal string EnumerableFilesGetPrefix(string searchPattern)
+		{
+			if ((searchPattern != null) && searchPattern.Contains('/'))
+			{
+				// prvni vyskyt '*' nebo '?'
+				int firstIndexOfSearchToken = searchPattern.IndexOfAny(new char[] { '?', '*' });
+				if (firstIndexOfSearchToken == -1)
+				{
+					// neni zadny vyskyt '*' nebo '?', vrat vse do posledniho '/'
+					return searchPattern.Remove(searchPattern.LastIndexOf("/"));
+				}
+
+				// vrat posledni '/' pred vyskytem '*' nebo '?'
+				int lastIndexOfDelimiter = searchPattern.Remove(firstIndexOfSearchToken).LastIndexOf("/");
+				if (lastIndexOfDelimiter == -1)
+				{
+					// pred vyskytem '*' nebo '?' neexistuje zadny '/', vrat null, žádný prefix není
+					return null;
+				}
+
+				// vrat cast retezce do posledniho vyskytu '/' pred vyskytem '*' nebo '?'
+				return searchPattern.Substring(0, lastIndexOfDelimiter);
+			}
+			else
+			{
+				// pattern neobsahuje zadny znak '/', tudiz neni zadny prefix pro vyhledavani
+				return null;
 			}
 		}
 

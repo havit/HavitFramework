@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Havit.Diagnostics.Contracts;
+using Havit.Text.RegularExpressions;
 
 namespace Havit.Services.FileStorage
 {
@@ -151,15 +152,35 @@ namespace Havit.Services.FileStorage
 		}
 
 		/// <summary>
-		/// Vylistuje seznam souborů v úložišti.
-		/// ContentType položek je vždy null.
+		/// Vylistuje seznam souborů v úložišti. ContentType položek je vždy null.
 		/// </summary>
 		public override IEnumerable<FileInfo> EnumerateFiles(string searchPattern = null)
 		{
-			var filesEnumerable = new System.IO.DirectoryInfo(storagePath).EnumerateFiles(String.IsNullOrEmpty(searchPattern) ? "*" : searchPattern, SearchOption.TopDirectoryOnly);
+			if (!String.IsNullOrWhiteSpace(searchPattern))
+			{
+				// zamen azure blobova '/' za '\\', ktere lze pouzit v souborovem systemu
+				searchPattern = searchPattern.Replace("/", "\\");
+			}
+
+			// ziskej prefix, uvodni cast cesty, ve kterem nejsou pouzite znaky '*' a '?'
+			string prefix = EnumerableFilesGetPrefix(searchPattern);
+
+			// nacti soubory z oblasti dane storagePath a prefixem
+			IEnumerable<System.IO.FileInfo> filesEnumerable = 
+				new System.IO.DirectoryInfo(Path.Combine(storagePath, prefix ?? String.Empty))
+				.EnumerateFiles("*", SearchOption.AllDirectories);
+
+			if (searchPattern != null)
+			{
+				// vyfiltruj validni soubory podle souboroveho wildcards
+				filesEnumerable = filesEnumerable.Where(item => RegexPatterns.IsFileWildcardMatch(item.FullName.Substring(storagePath.Length + 1), searchPattern));
+			}
+
 			return filesEnumerable.Select(fileInfo => new FileInfo
 			{
-				Name = fileInfo.Name,
+				// Zamen souborova '\\' za azure blobova '/'. Toto je dohoda, ze interface IFileStorageService.EnumerateFiles vraci vzdy cestu s '/' a ne s '\\'.
+				// Odmaz storage path - misto, kde jsou soubory ulozeny fyzicky na disku. To je soucasti storagePath z konstruktoru.
+				Name = fileInfo.FullName.Substring(storagePath.Length + 1).Replace("\\", "/"),
 				LastModifiedUtc = fileInfo.LastWriteTimeUtc,
 				Size = fileInfo.Length,
 				ContentType = null

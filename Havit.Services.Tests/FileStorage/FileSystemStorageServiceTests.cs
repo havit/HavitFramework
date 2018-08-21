@@ -180,14 +180,13 @@ namespace Havit.Services.Tests.FileStorage
 		[TestMethod]
 		public void FileSystemStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder()
 		{
-			Assert.Inconclusive("Čeká na implementaci.");
-			//FileStorageServiceTestInternals.FileStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder(GetFileSystemStorageService());
+			FileStorageServiceTestInternals.FileStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder(GetFileSystemStorageService());
 		}
 
 		[TestMethod]
-		public void FileSystemStorageService_EnumerateFilesAsync_SupportsSearchPatternInSubfolder()
+		public async Task FileSystemStorageService_EnumerateFilesAsync_SupportsSearchPatternInSubfolder()
 		{
-			Assert.Inconclusive("Čeká na implementaci.");
+			await FileStorageServiceTestInternals.FileStorageService_EnumerateFilesAsync_SupportsSearchPatternInSubfolder(GetFileSystemStorageService());
 		}
 
 		[TestMethod]

@@ -132,15 +132,20 @@ namespace Havit.Services.Azure.Tests.FileStorage
 
 		[TestMethod]
 		public void AzureBlobStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder()
-		{
-			Assert.Inconclusive("Čeká na implementaci.");
-			//FileStorageServiceTestInternals.FileStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder(GetAzureBlobStorageService());
+		{			
+			FileStorageServiceTestInternals.FileStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder(GetAzureBlobStorageService());
 		}
 
 		[TestMethod]
-		public void AzureBlobStorageService_EnumerateFilesAsync_SupportsSearchPatternInSubfolder()
+		public async Task AzureBlobStorageService_EnumerateFilesAsync_SupportsSearchPatternInSubfolder()
 		{
-			Assert.Inconclusive("Čeká na implementaci.");
+			await FileStorageServiceTestInternals.FileStorageService_EnumerateFilesAsync_SupportsSearchPatternInSubfolder(GetAzureBlobStorageService());
+		}
+
+		[TestMethod]
+		public void AzureBlobStorageService_EnumerableFilesGetPrefix_CorrectlyGetPrefix()
+		{
+			FileStorageServiceTestInternals.AzureBlobStorageService_EnumerableFilesGetPrefix_CorrectlyGetPrefix();
 		}
 
 		[TestMethod]

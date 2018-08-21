@@ -77,6 +77,10 @@
     <Compile Include="StateAdministrationServices\RodneCisloServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Havit.Services.Azure\Havit.Services.Azure.csproj">
+      <Project>{7846ca68-e6b0-4943-9285-de1d48248b84}</Project>
+      <Name>Havit.Services.Azure</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Havit.Services\Havit.Services.csproj">
       <Project>{2E4AE0CF-FA21-4FBC-9274-E56BC5D9494E}</Project>
       <Name>Havit.Services</Name>

@@ -23,6 +23,7 @@ namespace Havit.Data.EntityFrameworkCore.Tests
 			// Assert
 			Assert.IsNotNull(modelBuilder.Model.FindEntityType(typeof(ModelClass)), "ModelClass is not a registered entity.");
 			Assert.IsNull(modelBuilder.Model.FindEntityType(typeof(NotMappedClass)), "NotMappedClass is a registered entity.");
+			Assert.IsNull(modelBuilder.Model.FindEntityType(typeof(StaticClass)), "StaticClass is a registered entity.");
 		}
 
 		[TestMethod]

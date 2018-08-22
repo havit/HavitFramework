@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
-  <metadata>
+  <metadata minClientVersion="4.0">
 	<id>Havit.Data.EntityFrameworkCore.CodeGenerator</id>
-	<version>1.0.1-beta</version>
+	<version>1.0.3-beta</version>
 	<title>Havit.Data.EntityFrameworkCore.CodeGenerator</title>
 	<authors>HAVIT</authors>
 	<owners>HAVIT</owners>
@@ -20,9 +20,15 @@
 		<dependency id="Havit.Data.EntityFrameworkCore.Patterns" version="1.0.2-beta" />
 	  </group>
 	</dependencies>
+	<!--
+	Soubor je vidět v solution exploreru, ale je v cestě s nuget balíčkem.
+	Nevím, jak bych jej spustil, aby měl cestu k projektu, proto od distribuce nuget balíčkem ustupuji.
+	<contentFiles>
+		<files include="any/any/images/RunCodeGenerator.ps1" buildAction="None" />
+	</contentFiles>-->
   </metadata>
   <files>
 	<file src="..\Havit.Data.EntityFrameworkCore.CodeGenerator\bin\Release\netcoreapp2.0\**\*.*" target="tools\CodeGenerator" />
-	<file src="Havit.Data.EntityFrameworkCore.CodeGenerator\Content\RunCodeGenerator.ps1" target="content" />
+	<!--<file src="Havit.Data.EntityFrameworkCore.CodeGenerator\Content\RunCodeGenerator.ps1" target="contentFiles\any\any" />-->
   </files>
 </package>

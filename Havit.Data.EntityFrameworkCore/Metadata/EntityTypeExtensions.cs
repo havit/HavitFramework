@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Havit.Data.EntityFrameworkCore.Metadata
 {
+	/// <summary>
+	/// Extension metody k IEntityType.
+	/// </summary>
     public static class EntityTypeExtensions
     {
 	    /// <summary>

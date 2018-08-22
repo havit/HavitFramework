@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
 	<id>Havit.AspNetCore.Mvc</id>
-	<version>1.7.2</version>
+	<version>1.7.3</version>
 	<title>Havit.AspNetCore.Mvc</title>
 	<authors>HAVIT</authors>
 	<owners>HAVIT</owners>
@@ -19,7 +19,12 @@
 	  <group targetFramework="net462">
 		<dependency id="Microsoft.AspNetCore.Mvc.Core" version="2.0.2" />
 		<dependency id="Microsoft.Extensions.Options.ConfigurationExtensions" version="2.0.0" />
-		<dependency id="Havit" version="1.7.4" />
+		<dependency id="Havit" version="1.8.4" />
+	  </group>
+	  <group targetFramework="netstandard2.0">
+		<dependency id="Microsoft.AspNetCore.Mvc.Core" version="2.0.2" />
+		<dependency id="Microsoft.Extensions.Options.ConfigurationExtensions" version="2.0.0" />
+		<dependency id="Havit" version="1.8.4" />
 	  </group>
 	</dependencies>
   </metadata>
@@ -27,5 +32,8 @@
 	<file src="..\Havit.AspNetCore.Mvc\bin\Release\net462\Havit.AspNetCore.Mvc.dll" target="lib\net462" />
 	<file src="..\Havit.AspNetCore.Mvc\bin\Release\net462\Havit.AspNetCore.Mvc.pdb" target="lib\net462" />
 	<file src="..\Havit.AspNetCore.Mvc\bin\Release\net462\Havit.AspNetCore.Mvc.xml" target="lib\net462" />
+	<file src="..\Havit.AspNetCore.Mvc\bin\Release\netstandard2.0\Havit.AspNetCore.Mvc.dll" target="lib\netstandard2.0" />
+	<file src="..\Havit.AspNetCore.Mvc\bin\Release\netstandard2.0\Havit.AspNetCore.Mvc.pdb" target="lib\netstandard2.0" />
+	<file src="..\Havit.AspNetCore.Mvc\bin\Release\netstandard2.0\Havit.AspNetCore.Mvc.xml" target="lib\netstandard2.0" />
   </files>
 </package>

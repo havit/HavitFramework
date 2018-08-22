@@ -17,7 +17,7 @@
 	<dependencies>
 	  <group targetFramework="netstandard2.0">
 		<dependency id="Castle.Windsor" version="4.1.0" />
-		<dependency id="Havit.Data.EntityFrameworkCore.Patterns" version="1.0.1" />
+		<dependency id="Havit.Data.EntityFrameworkCore.Patterns" version="1.0.1-beta" />
 	  </group>
 	</dependencies>
 	<tags>HAVIT Data Entity Framework Core EF</tags>

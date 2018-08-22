@@ -19,5 +19,8 @@
 	</ItemGroup>
 	<Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(PublishDirectory)\NuGet\%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>
+  <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
+  </ItemGroup>
 
 </Project>

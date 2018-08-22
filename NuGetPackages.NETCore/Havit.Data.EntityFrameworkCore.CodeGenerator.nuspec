@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+	<id>Havit.Data.EntityFrameworkCore.CodeGenerator</id>
+	<version>1.0.0</version>
+	<title>Havit.Data.EntityFrameworkCore.CodeGenerator</title>
+	<authors>HAVIT</authors>
+	<owners>HAVIT</owners>
+	<iconUrl>https://www.gravatar.com/avatar/e59ffb10448162f0c6d6b5ae3fecd0ce?s=64</iconUrl>
+	<licenseUrl>https://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+	<description>
+	  HAVIT Entity Framework Core Library CodeGenerator
+	</description>
+	<language>en-US</language>
+	<requireLicenseAcceptance>false</requireLicenseAcceptance>
+	<copyright>Copyright HAVIT, s.r.o. 2018</copyright>
+	<tags>HAVIT Data Patterns Entity Framework EF Core CodeGenerator</tags>
+	<dependencies>
+	  <group targetFramework="netcoreapp2.0">
+		<dependency id="Havit.Data.EntityFrameworkCore.Patterns" version="1.0.1" />
+	  </group>
+	</dependencies>
+  </metadata>
+  <files>
+	<file src="..\Havit.Data.EntityFrameworkCore.CodeGenerator\bin\Release\netcoreapp2.0\**\*.*" target="tools\CodeGenerator" />
+	<file src="Havit.Data.EntityFrameworkCore.CodeGenerator\Content\RunCodeGenerator.ps1" target="content" />
+  </files>
+</package>

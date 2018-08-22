@@ -1,0 +1,11 @@
+﻿<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="CreateNuGetPackages" AfterTargets="AfterBuild">
+    <Exec WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 -OutputPath $(OutputPath) -NuspecFile Havit.Data.EntityFrameworkCore.CodeGenerator.nuspec" />
+  </Target>
+  <Target Name="CleanNuGetPackages" BeforeTargets="Clean">
+    <ItemGroup>
+      <FilesToDelete Include="$(OutputPath)\*.nupkg" />
+    </ItemGroup>
+    <Delete Files="@(FilesToDelete)" />
+  </Target>
+</Project>

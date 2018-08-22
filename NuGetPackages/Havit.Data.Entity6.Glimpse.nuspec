@@ -16,7 +16,7 @@
 	<requireLicenseAcceptance>false</requireLicenseAcceptance>
 	<copyright>Copyright HAVIT, s.r.o. 2018</copyright>
 	<dependencies>
-	  <group targetFramework="net46">
+	  <group targetFramework="net45">
 		<dependency id="Glimpse" version="1.8.6" />
 		<dependency id="Glimpse.AspNet" version="1.9.1" />
 	  </group>
@@ -24,8 +24,8 @@
 	<tags>HAVIT ASP.NET Web WebForms Glimpse diagnostics performance profiling timing Entity Framework EF EF6</tags>
   </metadata>
   <files>
-	<file src="..\Havit.Data.Entity6.Glimpse\bin\Release\net46\Havit.Data.Entity6.Glimpse.dll" target="lib\net46" />
-	<file src="..\Havit.Data.Entity6.Glimpse\bin\Release\net46\Havit.Data.Entity6.Glimpse.pdb" target="lib\net46" />
+	<file src="..\Havit.Data.Entity6.Glimpse\bin\Release\net45\Havit.Data.Entity6.Glimpse.dll" target="lib\net45" />
+	<file src="..\Havit.Data.Entity6.Glimpse\bin\Release\net45\Havit.Data.Entity6.Glimpse.pdb" target="lib\net45" />
 	<file src="Havit.Data.Entity6.Glimpse\tools\" target="tools" />
 	<file src="Havit.Data.Entity6.Glimpse\content\" target="content" />
   </files>

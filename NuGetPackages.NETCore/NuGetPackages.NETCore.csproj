@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Globals">
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+	<Import Project="NuGetPackages.targets" />
+	<Target Name="TfsPublish" AfterTargets="AfterBuild;CreateNuGetPackage" Condition="'$(PublishDirectory)' != ''">
+		<ItemGroup>
+			<FilesToCopy Include="$(OutputPath)\*.nupkg" />
+		</ItemGroup>
+		<Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(PublishDirectory)\NuGet\%(RecursiveDir)%(Filename)%(Extension)')" />
+	</Target>
+	<ItemGroup>
+	  <Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
+	</ItemGroup>
+</Project>

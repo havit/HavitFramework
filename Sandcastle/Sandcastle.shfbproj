@@ -70,6 +70,8 @@
       <DocumentationSource sourceFile="..\Havit.Extensions.DependencyInjection.CastleWindsor\Havit.Extensions.DependencyInjection.CastleWindsor.csproj" />
       <DocumentationSource sourceFile="..\Havit.Extensions.DependencyInjection.CastleWindsor.AspNetCore\Havit.Extensions.DependencyInjection.CastleWindsor.AspNetCore.csproj" />
       <DocumentationSource sourceFile="..\Havit.GoPay\Havit.GoPay.csproj" />
+      <DocumentationSource sourceFile="..\Havit.Data.EntityFrameworkCore.Patterns\Havit.Data.EntityFrameworkCore.Patterns.csproj" />
+      <DocumentationSource sourceFile="..\Havit.Data.EntityFrameworkCore.Patterns.Windsor\Havit.Data.EntityFrameworkCore.Patterns.Windsor.csproj" />
     </DocumentationSources>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="(global)" isDocumented="True" />

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Model;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Entity;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Model
@@ -24,8 +25,8 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Mode
 		{
 		    IEnumerable<DataEntriesModel> dataEntriesModels = dataEntriesModelSource.GetModels();
 
-			return (from registeredEntity in dbContext.Model.GetEntityTypes()
-					select new RepositoryModel
+			return (from registeredEntity in dbContext.Model.GetApplicationEntityTypes()
+				select new RepositoryModel
 				{
 					NamespaceName = GetNamespaceName(registeredEntity.ClrType.Namespace),
 					DbRepositoryName = registeredEntity.ClrType.Name + "DbRepository",

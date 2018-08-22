@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Entity;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,7 +20,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.ModelMetadataClas
 
 		public IEnumerable<MetadataClass> GetModels()
 		{
-			List<MetadataClass> result = (from registeredEntity in dbContext.Model.GetEntityTypes()
+			List<MetadataClass> result = (from registeredEntity in dbContext.Model.GetApplicationEntityTypes()
 				select new MetadataClass
 				{
 					NamespaceName = GetNamespaceName(registeredEntity.ClrType.Namespace),

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Entity;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
+using Havit.Data.EntityFrameworkCore.Metadata;
 
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Model
 {
@@ -22,8 +24,8 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Model
 
 		public IEnumerable<DataEntriesModel> GetModels()
 		{
-			return (from registeredEntity in dbContext.Model.GetEntityTypes()
-				let entriesEnumType = GetEntriesEnum(registeredEntity.ClrType)
+			return (from registeredEntity in dbContext.Model.GetApplicationEntityTypes()
+					let entriesEnumType = GetEntriesEnum(registeredEntity.ClrType)
 				where (entriesEnumType != null)
 				select new DataEntriesModel
 				{

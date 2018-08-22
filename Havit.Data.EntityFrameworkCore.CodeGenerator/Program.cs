@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Loader;
 using System.Threading.Tasks;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Model;
@@ -13,9 +14,6 @@ using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataSources.Template;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.ModelMetadataClasses;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.ModelMetadataClasses.Model;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.ModelMetadataClasses.Template;
-using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.QueryableExtensions;
-using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.QueryableExtensions.Model;
-using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.QueryableExtensions.Template;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Model;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Templates;
@@ -58,7 +56,8 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator
 			string file = files.Where(item => !item.EndsWith("Havit.Entity.dll")).OrderByDescending(item => System.IO.File.GetLastAccessTime(item)).First();
 			Console.WriteLine($"Using metadata from assembly {file}.");
 
-			Assembly assembly = Assembly.LoadFrom(file);
+			Assembly assembly = AssemblyLoader.LoadFromAssemblyPath(file);
+
 			Type dbContextType = assembly.GetTypes().SingleOrDefault(type => !type.IsAbstract && type.GetInterfaces().Contains(typeof(IDbContext)));
 			if (dbContextType == null)
 			{
@@ -173,15 +172,6 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator
 			interfaceRepositoryGenerator.Generate();
 			dbRepositoryBaseGeneratedGenerator.Generate();
 			dbRepositoryGeneratedGenerator.Generate();
-			dbRepositoryGenerator.Generate();
-		}
-
-		private static void GenerateQueryExtensions(IProject dataLayerProject, ISourceControlClient sourceControlClient, DbContext dbContext)
-		{
-			CodeWriter codeWriter = new CodeWriter(dataLayerProject, sourceControlClient);
-			var queryableExtensionsModelSource = new QueryableExtensionsModelSource(dbContext, dataLayerProject);
-
-			var dbRepositoryGenerator = new GenericGenerator<QueryableExtensionsModel>(queryableExtensionsModelSource, new QueryableExtensionsTemplateFactory(), new QueryableExtensionsFileNamingService(dataLayerProject), codeWriter);
 			dbRepositoryGenerator.Generate();
 		}
 	}

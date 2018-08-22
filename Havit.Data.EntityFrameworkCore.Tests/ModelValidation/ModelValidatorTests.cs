@@ -13,17 +13,6 @@ namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation
 	public class ModelValidatorTests
 	{			
 		[TestMethod]
-		public void ModelValidator_IsSystemEntity()
-		{
-			// Arrange
-			ModelValidatingDbContext modelValidatingDbContext = new ModelValidatingDbContext();
-			ModelValidator modelValidator = new ModelValidator();
-
-			// Act + Assert
-			Assert.IsFalse(modelValidator.IsSystemEntity(modelValidatingDbContext.Model.FindEntityType(typeof(OneCorrectKeyClass))));
-		}
-
-		[TestMethod]
 		public void ModelValidator_CheckWhenEnabled()
 		{
 			// Arrange
@@ -33,19 +22,6 @@ namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation
 			// Act + Assert  
 			Assert.IsFalse(modelValidator.CheckWhenEnabled(false, () => throw new InvalidOperationException()).Any()); // jednak se nevolá action a jednak nic nevrátí
 			Assert.IsTrue(modelValidator.CheckWhenEnabled(true, () => new List<string> { "ok" }).Contains("ok")); // jednak se volá action a je jeho hodnota ve výsledku
-		}
-
-		[TestMethod]
-		public void ModelValidator_IsManyToManyEntity()
-		{
-			// Arrange
-			ModelValidatingDbContext modelValidatingDbContext = new ModelValidatingDbContext();
-			ModelValidator modelValidator = new ModelValidator();
-
-			// Act + Assert
-			Assert.IsTrue(modelValidator.IsManyToManyEntity(modelValidatingDbContext.Model.FindEntityType(typeof(UserRoleMembership))), typeof(UserRoleMembership).Name);
-			Assert.IsFalse(modelValidator.IsManyToManyEntity(modelValidatingDbContext.Model.FindEntityType(typeof(User))), typeof(User).Name);
-			Assert.IsFalse(modelValidator.IsManyToManyEntity(modelValidatingDbContext.Model.FindEntityType(typeof(MoreInvalidKeysClass))), typeof(MoreInvalidKeysClass).Name);
 		}
 
 		[TestMethod]

@@ -17,7 +17,7 @@
 	<tags>HAVIT Data Patterns Entity Framework EF Core CodeGenerator</tags>
 	<dependencies>
 	  <group targetFramework="netcoreapp2.0">
-		<dependency id="Havit.Data.EntityFrameworkCore.Patterns" version="1.0.1" />
+		<dependency id="Havit.Data.EntityFrameworkCore.Patterns" version="1.0.2-beta" />
 	  </group>
 	</dependencies>
   </metadata>

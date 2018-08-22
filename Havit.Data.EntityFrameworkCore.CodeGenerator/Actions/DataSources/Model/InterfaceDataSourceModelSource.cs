@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Entity;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 
@@ -22,7 +23,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataSources.Model
 
 		public IEnumerable<InterfaceDataSourceModel> GetModels()
 		{
-			return (from registeredEntity in dbContext.Model.GetEntityTypes()
+			return (from registeredEntity in dbContext.Model.GetApplicationEntityTypes()
 				select new InterfaceDataSourceModel
 				{
 					NamespaceName = GetNamespaceName(registeredEntity.ClrType.Namespace),

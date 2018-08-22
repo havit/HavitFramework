@@ -7,16 +7,19 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-
-using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Model;
-
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Template
 {
-	/// <summary>
+    using System.Linq;
+    using System.Text;
+    using System.Collections.Generic;
+    using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Model;
+    using System;
+    
+    /// <summary>
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "C:\Dev\002.HFW.HavitFramework\Havit.Data.EFCore.CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
+    #line 1 "D:\Dev\002.HFW-HFW\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "15.0.0.0")]
     public partial class InterfaceDataEntriesTemplate : InterfaceDataEntriesTemplateBase
     {
@@ -36,43 +39,43 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Templ
                     "ystem.Text;\r\nusing System.Threading.Tasks;\r\nusing Havit.Data.Patterns.DataEntrie" +
                     "s;\r\n\r\nnamespace ");
             
-            #line 16 "C:\Dev\002.HFW.HavitFramework\Havit.Data.EFCore.CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
+            #line 16 "D:\Dev\002.HFW-HFW\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.NamespaceName));
             
             #line default
             #line hidden
-            this.Write("\r\n{\r\n\t[System.CodeDom.Compiler.GeneratedCode(\"Havit.Entity.CodeGenerator\", \"2.0\")" +
-                    "]\r\n\tpublic interface ");
+            this.Write("\r\n{\r\n\t[System.CodeDom.Compiler.GeneratedCode(\"Havit.Data.EntityFrameworkCore.Code" +
+                    "Generator\", \"1.0\")]\r\n\tpublic interface ");
             
-            #line 19 "C:\Dev\002.HFW.HavitFramework\Havit.Data.EFCore.CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
+            #line 19 "D:\Dev\002.HFW-HFW\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.InterfaceName));
             
             #line default
             #line hidden
             this.Write(" : IDataEntries\r\n\t{\r\n");
             
-            #line 21 "C:\Dev\002.HFW.HavitFramework\Havit.Data.EFCore.CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
+            #line 21 "D:\Dev\002.HFW-HFW\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
  foreach (DataEntriesModel.Entry entry in Model.Entries) { 
             
             #line default
             #line hidden
             this.Write("\t\t");
             
-            #line 22 "C:\Dev\002.HFW.HavitFramework\Havit.Data.EFCore.CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
+            #line 22 "D:\Dev\002.HFW-HFW\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 22 "C:\Dev\002.HFW.HavitFramework\Havit.Data.EFCore.CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
+            #line 22 "D:\Dev\002.HFW-HFW\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entry.PropertyName));
             
             #line default
             #line hidden
             this.Write(" { get; }\r\n\t\t\t\r\n");
             
-            #line 24 "C:\Dev\002.HFW.HavitFramework\Havit.Data.EFCore.CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
+            #line 24 "D:\Dev\002.HFW-HFW\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
  } 
             
             #line default

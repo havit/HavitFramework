@@ -7,14 +7,18 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataSources.Template
 {
-	/// <summary>
+    using System.Linq;
+    using System.Text;
+    using System.Collections.Generic;
+    using System;
+    
+    /// <summary>
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "C:\Dev\002.HFW.HavitFramework\Havit.Data.EFCore.CodeGenerator\Actions\DataSources\Template\DbDataSourceTemplate.tt"
+    #line 1 "D:\Dev\002.HFW-HFW\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataSources\Template\DbDataSourceTemplate.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "15.0.0.0")]
     public partial class DbDataSourceTemplate : DbDataSourceTemplateBase
     {
@@ -37,42 +41,42 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Havit.Data.Entity;
-using Havit.Data.Entity.Patterns.DataSources;
-using Havit.Data.Entity.Patterns.SoftDeletes;
+using Havit.Data.EntityFrameworkCore;
+using Havit.Data.EntityFrameworkCore.Patterns.DataSources;
+using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 
 namespace ");
             
-            #line 17 "C:\Dev\002.HFW.HavitFramework\Havit.Data.EFCore.CodeGenerator\Actions\DataSources\Template\DbDataSourceTemplate.tt"
+            #line 17 "D:\Dev\002.HFW-HFW\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataSources\Template\DbDataSourceTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.NamespaceName));
             
             #line default
             #line hidden
-            this.Write("\r\n{\r\n\t[System.CodeDom.Compiler.GeneratedCode(\"Havit.Entity.CodeGenerator\", \"2.0\")" +
-                    "]\r\n\tpublic class ");
+            this.Write("\r\n{\r\n\t[System.CodeDom.Compiler.GeneratedCode(\"Havit.Data.EntityFrameworkCore.Code" +
+                    "Generator\", \"1.0\")]\r\n\tpublic class ");
             
-            #line 20 "C:\Dev\002.HFW.HavitFramework\Havit.Data.EFCore.CodeGenerator\Actions\DataSources\Template\DbDataSourceTemplate.tt"
+            #line 20 "D:\Dev\002.HFW-HFW\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataSources\Template\DbDataSourceTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.DbDataSourceClassName));
             
             #line default
             #line hidden
             this.Write(" : DbDataSource<");
             
-            #line 20 "C:\Dev\002.HFW.HavitFramework\Havit.Data.EFCore.CodeGenerator\Actions\DataSources\Template\DbDataSourceTemplate.tt"
+            #line 20 "D:\Dev\002.HFW-HFW\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataSources\Template\DbDataSourceTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
             
             #line default
             #line hidden
             this.Write(">, ");
             
-            #line 20 "C:\Dev\002.HFW.HavitFramework\Havit.Data.EFCore.CodeGenerator\Actions\DataSources\Template\DbDataSourceTemplate.tt"
+            #line 20 "D:\Dev\002.HFW-HFW\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataSources\Template\DbDataSourceTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.InterfaceDataSourceFullName));
             
             #line default
             #line hidden
             this.Write("\r\n\t{\r\n\t\tpublic ");
             
-            #line 22 "C:\Dev\002.HFW.HavitFramework\Havit.Data.EFCore.CodeGenerator\Actions\DataSources\Template\DbDataSourceTemplate.tt"
+            #line 22 "D:\Dev\002.HFW-HFW\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataSources\Template\DbDataSourceTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.DbDataSourceClassName));
             
             #line default

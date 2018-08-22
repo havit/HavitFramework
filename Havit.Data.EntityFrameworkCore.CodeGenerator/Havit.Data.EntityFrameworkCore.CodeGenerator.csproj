@@ -23,7 +23,6 @@
     <None Remove="Actions\DataSources\Template\FakeDataSourceTemplate.tt" />
     <None Remove="Actions\DataSources\Template\InterfaceDataSourceTemplate.tt" />
     <None Remove="Actions\ModelMetadataClasses\Template\MetadataClassTemplate.tt" />
-    <None Remove="Actions\QueryableExtensions\Template\QueryableExtensionsTemplate.tt" />
     <None Remove="Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt" />
     <None Remove="Actions\Repositories\Templates\DbRepositoryGeneratedTemplate.tt" />
     <None Remove="Actions\Repositories\Templates\DbRepositoryTemplate.tt" />
@@ -56,10 +55,6 @@
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>MetadataClassTemplate.cs</LastGenOutput>
     </Content>
-    <Content Include="Actions\QueryableExtensions\Template\QueryableExtensionsTemplate.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>QueryableExtensionsTemplate.cs</LastGenOutput>
-    </Content>
     <Content Include="Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>DbRepositoryBaseGeneratedTemplate.cs</LastGenOutput>
@@ -83,11 +78,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="2.1.0" />
     <PackageReference Include="System.CodeDom" Version="4.5.0" />
   </ItemGroup>
 
@@ -142,11 +138,6 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>MetadataClassTemplate.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Actions\QueryableExtensions\Template\QueryableExtensionsTemplate.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>QueryableExtensionsTemplate.tt</DependentUpon>
     </Compile>
     <Compile Update="Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.cs">
       <DesignTime>True</DesignTime>

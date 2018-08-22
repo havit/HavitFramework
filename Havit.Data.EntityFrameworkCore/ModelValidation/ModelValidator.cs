@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using Havit.Data.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -33,8 +34,8 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 			IModel model = dbContext.Model;
 
 			List<string> errors = model.GetEntityTypes()
-				.Where(entitytype => !IsSystemEntity(entitytype))
-				.Where(entitytype => !IsManyToManyEntity(entitytype))
+				.Where(entitytype => !entitytype.IsSystemEntity())
+				.Where(entitytype => !entitytype.IsManyToManyEntity())
 				.SelectMany(entityType => CheckWhenEnabled(validationRules.CheckPrimaryKeyIsNotComposite, () => CheckPrimaryKeyIsNotComposite(entityType))
 					.Concat(CheckWhenEnabled(validationRules.CheckPrimaryKeyName, () => CheckPrimaryKeyName(entityType)))
 					.Concat(CheckWhenEnabled(validationRules.CheckPrimaryKeyType, () => CheckPrimaryKeyType(entityType)))
@@ -46,27 +47,6 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 				.ToList();
 
 			return String.Join(Environment.NewLine, errors);
-		}
-
-		/// <summary>
-		/// Vrací true, pokud jde o systémovou entitu, tj. entitu zaregistrovanou HFW automaticky.
-		/// </summary>
-		internal bool IsSystemEntity(IEntityType entityType)
-		{
-			// TODO JK: DataSeedVersion
-			/*.Where(item => item.ClrType != typeof(DataSeedVersion))*/
-			return false;
-		}
-
-		/// <summary>
-		/// Vrací true, pokud je entita vztahovou entitou M:N vztahu.
-		/// </summary>
-		internal bool IsManyToManyEntity(IEntityType entityType)
-		{
-			// GetProperties neobsahuje vlastnosti z nadřazených tříd, v tomto scénáři to nevadí, dědičnost pro tabulky se dvěma sloupci primárního klíče neuvažujeme
-			return (entityType.FindPrimaryKey().Properties.Count == 2) // třída má složený primární klíč ze svou vlastností
-			       && (entityType.GetProperties().Count() == 2) // třída má právě dvě (skalární) vlastnosti
-			       && (entityType.GetProperties().All(item => item.IsForeignKey())); // všechny vlastnosti třídy jsou cizím klíčem
 		}
 
 		/// <summary>

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace <#= Model.NamespaceName #>
 {
-	[System.CodeDom.Compiler.GeneratedCode("Havit.Entity.CodeGenerator", "2.0")]
+	[System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
 	public static class <#= Model.ClassName #>
 	{
 <# foreach (var constant in Model.MaxLengthConstants) { #>

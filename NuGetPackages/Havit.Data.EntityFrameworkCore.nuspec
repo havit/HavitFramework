@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
 	<id>Havit.Data.EntityFrameworkCore</id>
-	<version>1.0.2-beta</version>
+	<version>1.0.3-beta</version>
 	<title>Havit.Data.EntityFrameworkCore</title>
 	<authors>HAVIT</authors>
 	<owners>HAVIT</owners>
@@ -18,8 +18,8 @@
 	  <group targetFramework="netstandard2.0">
 		<dependency id="Havit" version="1.8.4" />
 		<dependency id="Havit.Model" version="1.8.2" />
-		<dependency id="Microsoft.EntityFrameworkCore" version="2.1.1" />
-		<dependency id="Microsoft.EntityFrameworkCore.Relational" version="2.1.1" />
+		<dependency id="Microsoft.EntityFrameworkCore" version="2.1.2" />
+		<dependency id="Microsoft.EntityFrameworkCore.Relational" version="2.1.2" />
 	  </group>
 	</dependencies>
 	<tags>HAVIT Data Entity Framework EF Core</tags>

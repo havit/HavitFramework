@@ -10,14 +10,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Havit.Data.Entity.Patterns.DataSources.Fakes;
-using Havit.Data.Entity.Patterns.SoftDeletes;
+using Havit.Data.EntityFrameworkCore.Patterns.DataSources.Fakes;
+using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 using Havit.Data.Patterns.Attributes;
 
 namespace <#= Model.NamespaceName #>
 {
 	[Fake]
-	[System.CodeDom.Compiler.GeneratedCode("Havit.Entity.CodeGenerator", "2.0")]
+	[System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
 	public class <#= Model.FakeDataSourceClassName #> : FakeDataSource<<#= Model.ModelClassFullName #>>, <#= Model.InterfaceDataSourceFullName #>
 	{
 		public <#= Model.FakeDataSourceClassName #>(params <#= Model.ModelClassFullName #>[] data)

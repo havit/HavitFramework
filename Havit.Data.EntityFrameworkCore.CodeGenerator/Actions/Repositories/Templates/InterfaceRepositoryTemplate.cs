@@ -7,14 +7,18 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Templates
 {
-	/// <summary>
+    using System.Linq;
+    using System.Text;
+    using System.Collections.Generic;
+    using System;
+    
+    /// <summary>
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "C:\Dev\002.HFW.HavitFramework\Havit.Data.EFCore.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryTemplate.tt"
+    #line 1 "D:\Dev\002.HFW-HFW\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryTemplate.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "15.0.0.0")]
     public partial class InterfaceRepositoryTemplate : InterfaceRepositoryTemplateBase
     {
@@ -28,21 +32,21 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Temp
                     "m.Text;\r\nusing System.Threading.Tasks;\r\nusing Havit.Data.Patterns.Repositories;\r" +
                     "\nusing ");
             
-            #line 12 "C:\Dev\002.HFW.HavitFramework\Havit.Data.EFCore.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryTemplate.tt"
+            #line 12 "D:\Dev\002.HFW-HFW\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassNamespace));
             
             #line default
             #line hidden
             this.Write(";\r\n\r\nnamespace ");
             
-            #line 14 "C:\Dev\002.HFW.HavitFramework\Havit.Data.EFCore.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryTemplate.tt"
+            #line 14 "D:\Dev\002.HFW-HFW\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.NamespaceName));
             
             #line default
             #line hidden
             this.Write("\r\n{\r\n\tpublic partial interface ");
             
-            #line 16 "C:\Dev\002.HFW.HavitFramework\Havit.Data.EFCore.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryTemplate.tt"
+            #line 16 "D:\Dev\002.HFW-HFW\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.InterfaceRepositoryName));
             
             #line default

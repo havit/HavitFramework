@@ -59,7 +59,7 @@ namespace Havit.Data.EntityFrameworkCore
 	    {
 		    EntityTypeBuilder<DataSeedVersion> dataSeedVersionEntity = modelBuilder.Entity<DataSeedVersion>();
 		    dataSeedVersionEntity.ToTable("__DataSeed");
-		    dataSeedVersionEntity.HasKey(item => item.ProfileName);
+		    dataSeedVersionEntity.HasKey(item => item.ProfileName).HasName("PK_DataSeed");
 		    dataSeedVersionEntity.Property(item => item.Version);
 	    }
 

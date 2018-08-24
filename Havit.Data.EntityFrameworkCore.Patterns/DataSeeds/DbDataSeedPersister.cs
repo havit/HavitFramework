@@ -217,7 +217,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
             where TEntity : class
         {
             // current entity type from model
-            IEntityType entityType = dbContext.Model.FindRuntimeEntityType(typeof(TEntity));
+            IEntityType entityType = dbContext.Model.FindEntityType(typeof(TEntity));
 
             IEnumerable<IProperty> allPropertiesOfEntity = entityType.GetProperties().Where(item => !item.IsShadowProperty);
 
@@ -240,34 +240,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
                     DataBinderExt.SetValue(pair.DbEntity, property.Name, value);
                 }
             }
-
-            /*
-            List<EntityType> entityTypes = ((IObjectContextAdapter)dbContext).ObjectContext.MetadataWorkspace.GetItems<EntityType>(DataSpace.OSpace).ToList(); // TODO: Duplikace kódu
-            EntityType entityType = entityTypes.Single(item => typeof(TEntity) == (Type)item.GetType().GetProperty("ClrType", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).GetValue(item)); // TODO: Duplikace kódu!
-
-            List<string> properties = entityType.Properties.Except(entityType.KeyProperties.Where(item => item.StoreGeneratedPattern != StoreGeneratedPattern.None)).Select(item => item.Name).ToList();
-            List<string> updateProperties;
-            if (configuration.ExcludeUpdateExpressions != null)
-            {
-                // TODO: Hezčí kód
-                // TODO: Duplikace vyhození KeyProperties
-                List<string> exludedUpdateProperties = configuration.ExcludeUpdateExpressions.Select(item => GetPropertyName(item.Body.RemoveConvert())).ToList().Concat(entityType.KeyProperties.Select(item => item.Name)).ToList();
-                updateProperties = properties.Except(exludedUpdateProperties).ToList();
-            }
-            else
-            {
-                updateProperties = properties.Except(entityType.KeyProperties.Select(item => item.Name)).ToList();
-            }
-
-            foreach (SeedDataPair<TEntity> pair in pairs)
-            {
-                foreach (string property in (pair.IsNew ? properties : updateProperties))
-                {
-                    object value = DataBinderExt.GetValue(pair.SeedEntity, property);
-                    DataBinderExt.SetValue(pair.DbEntity, property, value);
-                }
-            }
-            */
         }
 
         /// <summary>

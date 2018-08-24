@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Havit.Data.EntityFrameworkCore
@@ -29,6 +30,13 @@ namespace Havit.Data.EntityFrameworkCore
 		/// Pro účely zjednodušení předáváme celý model. Pro účely lepšího mockování jako závislosti můžeme nahradit jednoúčelovými metodami.
 		/// </remarks>
 		IModel Model { get; }
+
+		/// <summary>
+		/// Provides access to database related information and operations for this context.
+		/// </summary>
+		/// <remarks>
+		/// Zveřejněno (bez wrapperu) pro možnost použít EF Core Migrations (a extension metodu Migrate()).</remarks>
+		DatabaseFacade Database { get; }
 
 		/// <summary>
 		/// Uloží změny.

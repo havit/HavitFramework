@@ -177,15 +177,15 @@ namespace Havit.Data.EntityFrameworkCore
 	    /// <summary>
 	    /// Vrátí objekty v daném stavu.
 	    /// </summary>
-	    public object[] GetObjectsInState(EntityState state, bool suppressDetectChanges)
+	    object[] IDbContext.GetObjectsInState(EntityState state, bool suppressDetectChanges)
 	    {
-		    return GetObjectsInStates(new EntityState[] { state }, suppressDetectChanges: suppressDetectChanges);
+		    return ((IDbContext)this).GetObjectsInStates(new EntityState[] { state }, suppressDetectChanges: suppressDetectChanges);
 	    }
 
 	    /// <summary>
 	    /// Vrátí objekty v daných stavech.
 	    /// </summary>
-	    public object[] GetObjectsInStates(EntityState[] states, bool suppressDetectChanges)
+	    object[] IDbContext.GetObjectsInStates(EntityState[] states, bool suppressDetectChanges)
 	    {
 		    Func<object[]> getObjectInStatesFunc = () => this.ChangeTracker.Entries().Where(entry => states.Contains(entry.State)).Select(item => item.Entity).ToArray();
 		    return suppressDetectChanges
@@ -196,8 +196,7 @@ namespace Havit.Data.EntityFrameworkCore
 	    /// <summary>
 	    /// Vrací true, pokud je EF považuje referenci za načtenou.
 	    /// </summary>
-	    public bool IsEntityReferenceLoaded<TEntity>(TEntity entity, string propertyName)
-		    where TEntity : class
+	    bool IDbContext.IsEntityReferenceLoaded<TEntity>(TEntity entity, string propertyName)
 	    {
 		    return ExecuteWithoutAutoDetectChanges(() => this.Entry(entity).Reference(propertyName).IsLoaded);
 	    }
@@ -205,8 +204,7 @@ namespace Havit.Data.EntityFrameworkCore
 	    /// <summary>
 	    /// Vrací true, pokud je EF považuje kolekci za načtenou.
 	    /// </summary>
-	    public bool IsEntityCollectionLoaded<TEntity>(TEntity entity, string propertyName)
-		    where TEntity : class
+	    bool IDbContext.IsEntityCollectionLoaded<TEntity>(TEntity entity, string propertyName)
 	    {
 		    return ExecuteWithoutAutoDetectChanges(() => this.Entry(entity).Collection(propertyName).IsLoaded);
 	    }
@@ -230,8 +228,7 @@ namespace Havit.Data.EntityFrameworkCore
 		/// <summary>
 		/// Vrátí stav entity v DbContextu (resp. v jeho ChangeTrackeru).
 		/// </summary>
-	    public EntityState GetEntityState<TEntity>(TEntity entity)
-			where TEntity : class
+	    EntityState IDbContext.GetEntityState<TEntity>(TEntity entity)
 	    {
 		    return ExecuteWithoutAutoDetectChanges(() => Entry(entity).State);
 	    }

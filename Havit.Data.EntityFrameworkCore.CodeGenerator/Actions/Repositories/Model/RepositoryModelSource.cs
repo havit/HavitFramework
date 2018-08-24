@@ -3,6 +3,7 @@ using System.Linq;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Model;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Entity;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Model
 {

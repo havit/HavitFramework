@@ -20,8 +20,7 @@ using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Template
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Entity;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Services.SourceControl;
-using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
-using Havit.Services.TimeServices;
+using Microsoft.EntityFrameworkCore.Design;
 
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator
 {
@@ -55,9 +54,9 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator
 
 			string file = files.Where(item => !item.EndsWith("Havit.Entity.dll")).OrderByDescending(item => System.IO.File.GetLastAccessTime(item)).First();
 			Console.WriteLine($"Using metadata from assembly {file}.");
-
-			Assembly assembly = AssemblyLoader.LoadFromAssemblyPath(file);
-
+			
+			AppDomain.CurrentDomain.AssemblyResolve += ResolveAssembly(System.IO.Path.GetDirectoryName(file));
+			Assembly assembly = Assembly.Load(new AssemblyName { Name = System.IO.Path.GetFileNameWithoutExtension(file) });
 			Type dbContextType = assembly.GetTypes().SingleOrDefault(type => !type.IsAbstract && type.GetInterfaces().Contains(typeof(IDbContext)));
 			if (dbContextType == null)
 			{
@@ -69,7 +68,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator
 				() => sourceControlClient = new NullSourceControlClient(), //new TfsSourceControlClientFactory().Create(solutionDirectory.FullName),
 				() =>
 				{
-					dbContext = new DbContextActivator().Activate(dbContextType);
+					dbContext = (DbContext)DbContextActivator.CreateInstance(dbContextType);
 				},
 				() => modelProject = new ProjectFactory().Create(Path.Combine(solutionDirectory.FullName, @"Model\Model.csproj")),
 				() => dataLayerProject = new ProjectFactory().Create(Path.Combine(solutionDirectory.FullName, @"DataLayer\DataLayer.csproj"))
@@ -138,8 +137,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator
 		private static void GenerateDataSources(IProject dataLayerProject, ISourceControlClient sourceControlClient, IProject modelProject, DbContext dbContext)
 		{
 			CodeWriter codeWriter = new CodeWriter(dataLayerProject, sourceControlClient);
-			SoftDeleteManager softDeleteManager = new SoftDeleteManager(new ServerTimeService());
-			IModelSource<InterfaceDataSourceModel> interfaceDataSourceModelSource = new InterfaceDataSourceModelSource(dbContext, modelProject, dataLayerProject, softDeleteManager);
+			IModelSource<InterfaceDataSourceModel> interfaceDataSourceModelSource = new InterfaceDataSourceModelSource(dbContext, modelProject, dataLayerProject);
 			IModelSource<DbDataSourceModel> dbDataSourceModelSource = new DbDataSourceModelSource(dbContext, modelProject, dataLayerProject);
 			IModelSource<FakeDataSourceModel> fakeDataSourceModelSource = new FakeDataSourceModelSource(dbContext, modelProject, dataLayerProject);
 			var interfaceDataSourceGenerator = new GenericGenerator<InterfaceDataSourceModel>(interfaceDataSourceModelSource, new InterfaceDataSourceTemplateFactory(), new InterfaceDataSourceFileNamingService(dataLayerProject), codeWriter);
@@ -174,5 +172,31 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator
 			dbRepositoryGeneratedGenerator.Generate();
 			dbRepositoryGenerator.Generate();
 		}
+
+		private static ResolveEventHandler ResolveAssembly(string appBasePath)
+		{
+			return (object sender, ResolveEventArgs args) =>
+			{
+				var assemblyName = new AssemblyName(args.Name);
+
+				foreach (var extension in new[] { ".dll", ".exe" })
+				{
+					var path = Path.Combine(appBasePath, assemblyName.Name + extension);
+					if (File.Exists(path))
+					{
+						try
+						{
+							return Assembly.LoadFrom(path);
+						}
+						catch
+						{
+							// NOOP
+						}
+					}
+				}
+				return null;
+			};
+		}
+
 	}
 }

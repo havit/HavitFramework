@@ -2,7 +2,7 @@
 using System.Linq;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Entity;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
-using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
+using Microsoft.EntityFrameworkCore;
 
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataSources.Model
 {
@@ -11,14 +11,12 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataSources.Model
 		private readonly DbContext dbContext;
 		private readonly IProject modelProject;
 		private readonly IProject dataLayerProject;
-		private readonly ISoftDeleteManager softDeleteManager;
 
-		public InterfaceDataSourceModelSource(DbContext dbContext, IProject modelProject, IProject dataLayerProject, ISoftDeleteManager softDeleteManager)
+		public InterfaceDataSourceModelSource(DbContext dbContext, IProject modelProject, IProject dataLayerProject)
 		{
 			this.dbContext = dbContext;
 			this.modelProject = modelProject;
 			this.dataLayerProject = dataLayerProject;
-			this.softDeleteManager = softDeleteManager;
 		}
 
 		public IEnumerable<InterfaceDataSourceModel> GetModels()

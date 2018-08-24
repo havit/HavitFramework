@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Xml.Linq;
-using Havit.Diagnostics.Contracts;
 
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services
 {
@@ -8,8 +7,6 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services
 	{
 		public IProject Create(string csprojPath)
 		{
-			Contract.Requires<ArgumentNullException>(csprojPath != null);
-
 			XDocument content = XDocument.Load(csprojPath, LoadOptions.PreserveWhitespace);
 			if (IsDotNetCoreProject(content))
 			{

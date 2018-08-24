@@ -222,8 +222,15 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
             IEnumerable<IProperty> allPropertiesOfEntity = entityType.GetProperties().Where(item => !item.IsShadowProperty);
 
             // properties that are NOT keys and are NOT generated in database in insert
-            IEnumerable<IProperty> propertiesToAdd = allPropertiesOfEntity.Where(p => !p.IsKey() && !p.ValueGenerated.HasFlag(ValueGenerated.OnAdd));
-            IEnumerable<IProperty> propertiesToUpdate = allPropertiesOfEntity.Where(p => !p.IsKey() && !p.ValueGenerated.HasFlag(ValueGenerated.OnUpdate));
+
+			// TODO JK: Ověřit, zda je kompatibilní s použitím sekvence (při použití sekvence chceme nastavit hodnotu primárního klíče při zakládání záznamu)
+			
+			// novým záznamům můžeme nastavit hodnotu primárního klíče - pokud jej seedovaná data obsahují, chceme ji rovněž nastavit
+			// nenastavujeme pouze hodnoty, které vznikají při uložení na serveru
+            IEnumerable<IProperty> propertiesToAdd = allPropertiesOfEntity.Where(p => !p.ValueGenerated.HasFlag(ValueGenerated.OnAdd));
+
+			// aktualizovaným záznamům hodnotu primárního klíče nikdy nenastavujeme, vznikla při založení záznamu
+            IEnumerable<IProperty> propertiesToUpdate = allPropertiesOfEntity.Where(p => !p.IsPrimaryKey() && !p.ValueGenerated.HasFlag(ValueGenerated.OnUpdate));
             
             // if there are any properties, that should NOT update, we must exclude them from update list. But they remain in insert
             if (configuration.ExcludeUpdateExpressions != null)

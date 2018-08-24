@@ -219,7 +219,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
             // current entity type from model
             IEntityType entityType = dbContext.Model.FindRuntimeEntityType(typeof(TEntity));
 
-            IEnumerable<IProperty> allPropertiesOfEntity = entityType.GetProperties();
+            IEnumerable<IProperty> allPropertiesOfEntity = entityType.GetProperties().Where(item => !item.IsShadowProperty);
 
             // properties that are NOT keys and are NOT generated in database in insert
             IEnumerable<IProperty> propertiesToAdd = allPropertiesOfEntity.Where(p => !p.IsKey() && !p.ValueGenerated.HasFlag(ValueGenerated.OnAdd));

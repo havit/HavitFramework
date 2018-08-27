@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
 	<id>Havit.Data.EntityFrameworkCore.Patterns</id>
-	<version>1.0.7-beta</version>
+	<version>1.8.0</version>
 	<title>Havit.Data.EntityFrameworkCore.Patterns</title>
 	<authors>HAVIT</authors>
 	<owners>HAVIT</owners>
@@ -16,8 +16,8 @@
 	<copyright>Copyright HAVIT, s.r.o. 2018</copyright>
 	<dependencies>
 	  <group targetFramework="netstandard2.0">
-		<dependency id="Havit.Data.Patterns" version="1.8.3-beta" />
-		<dependency id="Havit.Data.EntityFrameworkCore" version="1.0.3-beta" />
+		<dependency id="Havit.Data.Patterns" version="1.8.4" />
+		<dependency id="Havit.Data.EntityFrameworkCore" version="1.8.0" />
 	  </group>
 	</dependencies>
 	<tags>HAVIT Data Entity Framework Core EF</tags>

@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
 	<id>Havit.Data.EntityFrameworkCore.Patterns.Windsor</id>
-	<version>1.0.2-beta</version>
+	<version>1.8.0</version>
 	<title>Havit.Data.EntityFrameworkCore.Patterns.Windsor</title>
 	<authors>HAVIT</authors>
 	<owners>HAVIT</owners>
@@ -17,7 +17,7 @@
 	<dependencies>
 	  <group targetFramework="netstandard2.0">
 		<dependency id="Castle.Windsor" version="4.1.0" />
-		<dependency id="Havit.Data.EntityFrameworkCore.Patterns" version="1.0.1-beta" />
+		<dependency id="Havit.Data.EntityFrameworkCore.Patterns" version="1.8.0" />
 	  </group>
 	</dependencies>
 	<tags>HAVIT Data Entity Framework Core EF</tags>

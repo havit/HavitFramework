@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata minClientVersion="4.0">
 	<id>Havit.Data.EntityFrameworkCore.CodeGenerator</id>
-	<version>1.0.4-beta</version>
+	<version>1.8.0</version>
 	<title>Havit.Data.EntityFrameworkCore.CodeGenerator</title>
 	<authors>HAVIT</authors>
 	<owners>HAVIT</owners>
@@ -17,7 +17,7 @@
 	<tags>HAVIT Data Patterns Entity Framework EF Core CodeGenerator</tags>
 	<dependencies>
 	  <group targetFramework="netcoreapp2.0">
-		<dependency id="Havit.Data.EntityFrameworkCore.Patterns" version="1.0.2-beta" />
+		<dependency id="Havit.Data.EntityFrameworkCore.Patterns" version="1.8.0" />
 	  </group>
 	</dependencies>
 	<!--

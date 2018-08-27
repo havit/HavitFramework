@@ -6,8 +6,12 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 {
+	/// <summary>
+	/// Konvencia pre nastavenie Namespace extended property na všetky entity v modeli. Z namespace triedy sa odstráni názov assembly (Havit.{Projekt}.Model.Common -> Common).
+	/// </summary>
     public class NamespaceExtendedPropertyConvention : IModelConvention
 	{
+		/// <inheritdoc />
 		public void Apply(ModelBuilder modelBuilder)
 		{
 			var tables = modelBuilder.Model.GetEntityTypes();

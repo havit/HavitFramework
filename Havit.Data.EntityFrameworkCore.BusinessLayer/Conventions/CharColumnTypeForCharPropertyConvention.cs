@@ -5,9 +5,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 {
+	/// <summary>
+	/// Konvencia pre nastavenie typu stĺpca char(1), resp. nchar(1) pre property s typom Char (EF Core štandardne použije nvarchar(1)).
+	/// </summary>
     public class CharColumnTypeForCharPropertyConvention : IModelConvention
     {
-        public void Apply(ModelBuilder modelBuilder)
+	    /// <inheritdoc />
+	    public void Apply(ModelBuilder modelBuilder)
         {
             foreach (IMutableProperty property in modelBuilder.Model.GetEntityTypes()
                 .SelectMany(e => e.GetProperties())

@@ -11,15 +11,22 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 {
+	/// <summary>
+	/// Konvencia pre definovanie sekvencií pre EnumClasses entity (t.j. číselníkové entity). Taktiež definuje defaultnú hodnotu pre PK takýchto tabuliek (NEXT VALUE FOR {sequenceName}).
+	/// </summary>
 	public class SequencesForEnumClassesConvention : IModelConvention
 	{
 		private readonly Func<string, string> namingConvention;
 
+		/// <summary>
+		/// Konštruktor. Konvenciu pre definovanie názvu sekvencií je možné zmeniť pomocou parametra <paramref name="namingConvention"/>.
+		/// </summary>
 		public SequencesForEnumClassesConvention(Func<string, string> namingConvention = null)
 		{
 			this.namingConvention = namingConvention;
 		}
 
+		/// <inheritdoc />
 		public void Apply(ModelBuilder modelBuilder)
 		{
 			Contract.Requires<ArgumentNullException>(modelBuilder != null);

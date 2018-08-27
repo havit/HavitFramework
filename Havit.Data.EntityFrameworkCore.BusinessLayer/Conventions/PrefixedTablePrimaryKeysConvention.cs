@@ -6,15 +6,23 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 {
+	/// <summary>
+	/// Konvencia pre názvy stĺpcov s primárnym kľúčom. Pre normálne tabuľky nastaví názov PK na {TableName}ID a pre väzobné M:N len zmení suffix z Id na ID.
+	/// </summary>
 	public class PrefixedTablePrimaryKeysConvention : IModelConvention
 	{
 		private readonly string tableSuffix;
 
+		/// <summary>
+		/// Konštruktor. Parametrom <see cref="tableSuffix"/> je možné zmeniť suffix stĺpca s primárnym kľúčom.
+		/// </summary>
+		/// <param name="tableSuffix"></param>
 		public PrefixedTablePrimaryKeysConvention(string tableSuffix = "ID")
 		{
 			this.tableSuffix = tableSuffix;
 		}
 
+		/// <inheritdoc />
 		public void Apply(ModelBuilder modelBuilder)
 		{
 			foreach (IMutableEntityType table in modelBuilder.Model.GetEntityTypes())

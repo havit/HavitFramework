@@ -10,9 +10,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
 {
-    public static class DbInjectionsExtensions
+	/// <summary>
+	/// Extension metódy pre konfiguráciu DB Injections.
+	/// </summary>
+	public static class DbInjectionsExtensions
     {
-        public static void UseDbInjections(this DbContextOptionsBuilder optionsBuilder)
+		/// <summary>
+		/// Registruje služby používané podporou pre DB Injections. Je nutné, aby bola táto metóda volaná až po tom, ako boli zaregistrované infraštruktúrne služby pomocou <see cref="InfrastructureExtensions.UseCodeMigrationsInfrastructure"/>.
+		/// </summary>
+		public static void UseDbInjections(this DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.Options.GetExtension<CompositeMigrationsAnnotationProviderExtension>().WithAnnotationProvider<DbInjectionsMigrationsAnnotationProvider>();
             optionsBuilder.Options.GetExtension<CompositeMigrationsSqlGeneratorExtension>().WithGeneratorType<DbInjectionMigrationOperationSqlGenerator>();
@@ -26,6 +32,12 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
 			);
         }
 
+		/// <summary>
+		/// Registruje DB Injections do modelu pomocou <paramref name="modelBuilder"/> z <paramref name="injectionsAssembly"/>
+		/// </summary>
+		/// <param name="modelBuilder"><see cref="ModelBuilder"/> pomocou ktorého sa zaregistrujú DB Injections do modelu.</param>
+		/// <param name="dbInjectionAnnotationProvider">Infraštruktúrna služba <see cref="IDbInjectionAnnotationProvider"/>.</param>
+		/// <param name="injectionsAssembly"><see cref="Assembly"/>, v ktorej sú definované DB Injectory.</param>
         public static void ForDbInjections(this ModelBuilder modelBuilder, IDbInjectionAnnotationProvider dbInjectionAnnotationProvider, Assembly injectionsAssembly)
         {
             Type[] dbInjectorTypes = DbInjectionsTypeHelper.GetDbInjectors(injectionsAssembly).ToArray();

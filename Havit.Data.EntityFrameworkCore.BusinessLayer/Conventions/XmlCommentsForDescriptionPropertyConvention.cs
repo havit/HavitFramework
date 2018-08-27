@@ -12,10 +12,16 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 {
+	/// <summary>
+	/// Konvencia pre nastavenie MS_Description extended property na entitách pomocou XML komentárov. Je nutné, aby assembly s modelom mala zapnuté generovanie XML komentárov. Súbor s XML komentárom by mal byť umiestnený vedľa assembly samotnej s príponou .XML
+	/// 
+	/// <remarks>U properties pre cudzie kľúče sa vezme XML komentár z navigačnej property (ak existuje a na property pre cudzí kľúč nebol už definovaný komentár).</remarks>
+	/// </summary>
 	public class XmlCommentsForDescriptionPropertyConvention : IModelConvention
 	{
 		private const string MsDescriptionExtendedProperty = "MS_Description";
 
+		/// <inheritdoc />
 		public void Apply(ModelBuilder modelBuilder)
 		{
 			var xmlCommentParser = new XmlCommentParser();

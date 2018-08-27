@@ -8,8 +8,12 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 {
+	/// <summary>
+	/// Konvencia pre definovanie Collection_{propertyName} extended properties na entitách. Vynecháva kolekcie s názvom "Localizations", nakoľko by BusinessLayerGenerator vygeneroval kolekciu dvakrát.
+	/// </summary>
 	public class CollectionExtendedPropertiesConvention : IModelConvention
 	{
+		/// <inheritdoc />
 		public void Apply(ModelBuilder modelBuilder)
 		{
 			foreach (IMutableEntityType entity in modelBuilder.Model.GetEntityTypes())

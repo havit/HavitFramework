@@ -7,21 +7,30 @@ using Havit.Data.EntityFrameworkCore.BusinessLayer.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Conventions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using DbContext = Havit.Data.EntityFrameworkCore.DbContext;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 {
-    public class BusinessLayerDbContext : DbContext
+	/// <summary>
+	/// Bázová trieda pre <see cref="DbContext"/> používaný v Business Layer projektoch. Mal by sa používať výhradne pre správu schémy DB.
+	/// 
+	/// <remarks>
+	/// Pridáva podporu pre extended properties a DB Injections a ich spoločnú infraštruktúru. Definuje rôzne konvencie používané na Business Layer projektoch.
+	/// </remarks>
+	/// </summary>
+	public class BusinessLayerDbContext : DbContext
 	{
-	    public BusinessLayerDbContext()
+		/// <inheritdoc />
+		public BusinessLayerDbContext()
 		{
 		}
 
+		/// <inheritdoc />
 		public BusinessLayerDbContext(DbContextOptions options)
 			: base(options)
 		{
 		}
 
+		/// <inheritdoc />
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			base.OnConfiguring(optionsBuilder);
@@ -59,6 +68,9 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
             yield return new CharColumnTypeForCharPropertyConvention();
 		}
 
+		/// <summary>
+		/// Registruje DB injectors z <paramref name="injectionsAssembly"/>. Vyžaduje, aby v DbContexte bola zaregistrovaná služba <see cref="IDbInjectionAnnotationProvider"/> (štandardne je registrovaná v <see cref="OnConfiguring"/>.
+		/// </summary>
 	    protected void RegisterDbInjections(ModelBuilder modelBuilder, Assembly injectionsAssembly = default)
 	    {
             modelBuilder.ForDbInjections(this.GetService<IDbInjectionAnnotationProvider>(), injectionsAssembly ?? Assembly.GetCallingAssembly());

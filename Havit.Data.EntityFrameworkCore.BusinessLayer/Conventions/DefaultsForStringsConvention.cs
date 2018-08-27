@@ -6,8 +6,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 {
+	/// <summary>
+	/// Konvencia pre nastavenie defaultov pre stringy (tak ako ich definuje BusinessLayerGenerator): ak stringová property ešte nemá nastavený default, tak jej nastaví ako default prázdny string.
+	/// </summary>
 	public class DefaultsForStringsConvention : IModelConvention
 	{
+		/// <inheritdoc />
 		public void Apply(ModelBuilder modelBuilder)
 		{
 			var stringProperties = modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetDeclaredProperties().Where(prop => prop.ClrType == typeof(string)));

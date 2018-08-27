@@ -6,8 +6,16 @@ using System.Text.RegularExpressions;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.StoredProcedures
 {
-    public class StoredProcedureDbInjector : IDbInjector
+	/// <summary>
+	/// Bázová trieda pre definovanie DB Injections na uložené procedúry.
+	/// </summary>
+	public class StoredProcedureDbInjector : IDbInjector
     {
+		/// <summary>
+		/// Vytvorí <see cref="StoredProcedureDbInjection"/> objekt z create skriptu v resources.
+		/// </summary>
+		/// <param name="createScriptResourceName">Názov resource s create skriptom pre uloženú procedúru.</param>
+		/// <returns><see cref="StoredProcedureDbInjection"/> objekt reprezentujúci uloženú procedúru.</returns>
         protected StoredProcedureDbInjection Procedure(string createScriptResourceName)
         {
             if (!ResourceAssembly.GetManifestResourceNames().Contains(createScriptResourceName))
@@ -22,6 +30,9 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.StoredProced
             }
         }
 
+		/// <summary>
+		/// Assembly, ktorá obsahuje resources so skriptami. Štandardne je to assembly, v ktorej je definovaná trieda zdedená od <see cref="StoredProcedureDbInjection"/>.
+		/// </summary>
         protected virtual Assembly ResourceAssembly => GetType().Assembly;
 
         private string ParseProcedureName(string createScript) => Regex.Match(createScript, @"CREATE(\s+)PROCEDURE(\s+)(\[.*?\]\.)?\[?(?<proc_name>[\w]*)\]?").Groups["proc_name"].Value;

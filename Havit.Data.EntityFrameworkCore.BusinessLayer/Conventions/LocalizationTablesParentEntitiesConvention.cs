@@ -5,8 +5,12 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 {
+	/// <summary>
+	/// Konvencia pre názov stĺpca v tabuľke XyLocalization pre lokalizovanú entitu - použije sa názov primárneho kľúča z tabuľky pre lokalizovanú entitu.
+	/// </summary>
 	public class LocalizationTablesParentEntitiesConvention : IModelConvention
 	{
+		/// <inheritdoc />
 		public void Apply(ModelBuilder modelBuilder)
 		{
 			var localizationTables = modelBuilder.Model.GetEntityTypes().Where(t => t.Name.EndsWith("Localization") && (t.Name.Length > "Localization".Length));

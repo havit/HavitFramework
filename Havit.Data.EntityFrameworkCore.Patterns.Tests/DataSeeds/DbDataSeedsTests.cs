@@ -30,21 +30,23 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
                 using (TestDbContext dbContext = new TestDbContext())
                 {
                     dbContext.Database.DropCreate();
-                    DataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContext, new ItemWithDeletedSeed());
+                    DataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContext, new ItemWithNullablePropertySeed());
 
                     dataSeedRunner.SeedData<DefaultProfile>();
 
-                    var items = dbContext.Set<ItemWithDeleted>();
+                    var items = dbContext.Set<ItemWithNullableProperty>();
                     Assert.AreEqual(3, items.Count());
                 }
             }
 
-            private class ItemWithDeletedSeed : DataSeed<DefaultProfile>
+            private class ItemWithNullablePropertySeed : DataSeed<DefaultProfile>
             {
                 public override void SeedData()
                 {
-                    Seed(For(new ItemWithDeleted(), new ItemWithDeleted(), new ItemWithDeleted())
-                        .PairBy(s => s.Id));
+                    Seed(For(new ItemWithNullableProperty { NullableValue = 1 },
+		                    new ItemWithNullableProperty { NullableValue = 2 },
+		                    new ItemWithNullableProperty { NullableValue = 6 })
+                        .PairBy(s => s.NullableValue));
                 }
             }
         }
@@ -63,10 +65,10 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
 
                     dataSeedRunner.SeedData<DefaultProfile>();
 
-                    var items = dbContext.Set<ItemWithDeleted>();
+                    var items = dbContext.Set<ItemWithNullableProperty>();
 
                     // Assert that all items ARE deleted (property is not ignored) in INSERT even if it is set by ExcludeUpdateExpressions
-                    Assert.AreEqual(3, items.Where(i => i.Deleted != null).Count());
+                    Assert.AreEqual(3, items.Where(i => i.NullableValue != null).Count());
                 }
             }
 
@@ -74,11 +76,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
             {
                 public override void SeedData()
                 {
-                    Seed(For(new ItemWithDeleted() { Deleted = DateTime.Now },
-                            new ItemWithDeleted() { Deleted = DateTime.Now.AddDays(-1) },
-                            new ItemWithDeleted() { Deleted = DateTime.Now.AddHours(-1) })
-                        .PairBy(s => s.Id)
-                        .ExcludeUpdate(s => s.Deleted));
+                    Seed(For(new ItemWithNullableProperty() { NullableValue = 1, RequiredValue = 1 },
+                            new ItemWithNullableProperty() { NullableValue = 2, RequiredValue = 2 },
+                            new ItemWithNullableProperty() { NullableValue = 3, RequiredValue = 3 })
+                        .PairBy(s => s.RequiredValue)
+                        .ExcludeUpdate(s => s.NullableValue));
                 }
             }
         }
@@ -92,7 +94,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
                 using (TestDbContext dbContext = new TestDbContext())
                 {
                     dbContext.Database.DropCreate();
-                    dbContext.Add(new ItemWithDeleted() { Id = 1, Deleted = null });
+                    dbContext.Add(new ItemWithDeleted() { Symbol = "A", Deleted = null });
+                    dbContext.Add(new ItemWithDeleted() { Symbol = "B", Deleted = null });
                     dbContext.SaveChanges();
 
                     // Arrange
@@ -103,7 +106,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
                     var items = dbContext.Set<ItemWithDeleted>();
 
                     // Assert that item is NOT updated, because of ExcludeUpdateExpressions
-                    Assert.AreEqual(true, items.Single().Deleted == null);
+                    Assert.IsTrue(items.All(item => item.Deleted == null));
                 }
             }
 
@@ -111,15 +114,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
             {
                 public override void SeedData()
                 {
-                    IDataSeedFor<ItemWithDeleted> dataSeed = For(
-                            new ItemWithDeleted() { Id = 1, Deleted = DateTime.Now })
-                        .PairBy(s => s.Id);
-                    dataSeed.Configuration.ExcludeUpdateExpressions = new List<Expression<Func<ItemWithDeleted, object>>>()
-                    {
-                        (entity) => entity.Deleted
-                    };
-
-                    Seed(dataSeed);
+                    Seed(For(
+                            new ItemWithDeleted() { Symbol = "A", Deleted = DateTime.Now },
+                            new ItemWithDeleted() { Symbol = "B", Deleted = DateTime.Now })
+						.PairBy(s => s.Symbol)
+	                    .ExcludeUpdate(s => s.Deleted));
                 }
             }
         }
@@ -132,20 +131,20 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
             {
                 using (TestDbContext dbContext = new TestDbContext())
                 {
-                    dbContext.Database.DropCreate();
-                    dbContext.Add(new ItemWithDeleted() { Id = 1, Deleted = null });
-                    dbContext.Add(new ItemWithDeleted() { Id = 2, Deleted = null });
-                    dbContext.SaveChanges();
+	                dbContext.Database.DropCreate();
+	                dbContext.Add(new ItemWithDeleted() { Symbol = "A", Deleted = null });
+	                dbContext.Add(new ItemWithDeleted() { Symbol = "B", Deleted = null });
+	                dbContext.SaveChanges();
 
-                    // Arrange
-                    DataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContext, new ItemWithDeletedSeed());
+					// Arrange
+					DataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContext, new ItemWithDeletedSeed());
 
                     dataSeedRunner.SeedData<DefaultProfile>();
 
                     var items = dbContext.Set<ItemWithDeleted>();
 
                     // Assert that items ARE NOT updated, because of WithoutUpdate()
-                    Assert.AreEqual(2, items.Count(i => i.Deleted == null));
+                    Assert.AreEqual(true, items.All(item => item.Deleted == null));
                 }
             }
 
@@ -153,8 +152,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
             {
                 public override void SeedData()
                 {
-                    Seed(For(new ItemWithDeleted() { Id = 1, Deleted = DateTime.Now }, new ItemWithDeleted() { Id = 2, Deleted = DateTime.Now })
-                        .PairBy(s => s.Id).WithoutUpdate());
+	                Seed(For(
+			                new ItemWithDeleted() { Symbol = "A", Deleted = DateTime.Now },
+			                new ItemWithDeleted() { Symbol = "B", Deleted = DateTime.Now })
+		                .PairBy(s => s.Symbol)
+						.WithoutUpdate());
                 }
             }
         }
@@ -167,13 +169,13 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
             {
                 using (TestDbContext dbContext = new TestDbContext())
                 {
-                    dbContext.Database.DropCreate();
-                    dbContext.Add(new ItemWithDeleted() { Id = 1, Deleted = null });
-                    dbContext.Add(new ItemWithDeleted() { Id = 2, Deleted = null });
-                    dbContext.SaveChanges();
+	                dbContext.Database.DropCreate();
+	                dbContext.Add(new ItemWithDeleted() { Symbol = "A", Deleted = DateTime.Now });
+	                dbContext.Add(new ItemWithDeleted() { Symbol = "B", Deleted = DateTime.Now });
+	                dbContext.SaveChanges();
 
-                    // Arrange
-                    DataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContext, new ItemWithDeletedSeed());
+					// Arrange
+					DataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContext, new ItemWithDeletedSeed());
 
                     dataSeedRunner.SeedData<DefaultProfile>();
 
@@ -181,7 +183,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
 
                     // Assert that ALL items ARE paired and updated
                     Assert.AreEqual(2, items.Count());
-                    Assert.AreEqual(2, items.Count(i => i.Deleted != null));
+                    Assert.IsTrue(items.All(item => item.Deleted == null));
                 }
             }
 
@@ -189,10 +191,13 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
             {
                 public override void SeedData()
                 {
-                    Seed(For(new ItemWithDeleted() { Id = 1, Deleted = DateTime.Now }, new ItemWithDeleted() { Id = 2, Deleted = DateTime.Now })
-                        .PairBy(s => s.Id));
-                }
-            }
+	                Seed(For(
+			                new ItemWithDeleted() { Symbol = "A", Deleted = null },
+			                new ItemWithDeleted() { Symbol = "B", Deleted = null })
+		                .PairBy(s => s.Symbol));
+
+				}
+			}
         }
 
         [TestClass]
@@ -205,8 +210,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
                 {
                     dbContext.Database.DropCreate();
 
-                    dbContext.Add(new ItemWithDeleted() { Id = 1, Deleted = null });
-                    dbContext.Add(new ItemWithDeleted() { Id = 2, Deleted = DateTime.Now });
+                    dbContext.Add(new ItemWithDeleted() { Symbol = "A", Deleted = null });
+                    dbContext.Add(new ItemWithDeleted() { Symbol = "B", Deleted = DateTime.Now });
                     dbContext.SaveChanges();
 
                     // Arrange
@@ -218,10 +223,10 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
 
                     // Assert that first two items are updated and new two items are created
                     Assert.AreEqual(4, items.Length);
-                    Assert.AreEqual(true, items[0].Deleted != null);
-                    Assert.AreEqual(true, items[1].Deleted != null);
-                    Assert.AreEqual(true, items[2].Deleted == null);
-                    Assert.AreEqual(true, items[3].Deleted != null);
+	                Assert.AreEqual(true, items.Single(item => item.Symbol == "A").Deleted != null);
+                    Assert.AreEqual(true, items.Single(item => item.Symbol == "B").Deleted != null);
+                    Assert.AreEqual(true, items.Single(item => item.Symbol == "C").Deleted == null);
+                    Assert.AreEqual(true, items.Single(item => item.Symbol == "D").Deleted != null);
                 }
             }
 
@@ -229,11 +234,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
             {
                 public override void SeedData()
                 {
-                    Seed(For(new ItemWithDeleted() { Id = 1, Deleted = DateTime.Now },
-                        new ItemWithDeleted() { Id = 2, Deleted = DateTime.Now },
-                        new ItemWithDeleted() { Id = 3, Deleted = null },
-                        new ItemWithDeleted() { Id = 4, Deleted = DateTime.Now })
-                        .PairBy(s => s.Id));
+                    Seed(For(new ItemWithDeleted() { Symbol = "A", Deleted = DateTime.Now },
+                        new ItemWithDeleted() { Symbol = "B", Deleted = DateTime.Now },
+                        new ItemWithDeleted() { Symbol = "C", Deleted = null },
+                        new ItemWithDeleted() { Symbol = "D", Deleted = DateTime.Now })
+                        .PairBy(s => s.Symbol));
                 }
             }
         }

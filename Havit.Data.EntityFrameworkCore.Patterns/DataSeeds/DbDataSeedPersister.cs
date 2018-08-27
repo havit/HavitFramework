@@ -219,29 +219,16 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
             // current entity type from model
             IEntityType entityType = dbContext.Model.FindEntityType(typeof(TEntity));
 
-            IEnumerable<IProperty> allPropertiesOfEntity = entityType.GetProperties().Where(item => !item.IsShadowProperty);
+	        List<IProperty> propertiesForInserting = GetPropertiesForInserting(entityType);
+	        List<IProperty> propertiesForUpdating = GetPropertiesForUpdating<TEntity>(entityType,
+		        (configuration.ExcludeUpdateExpressions ?? Enumerable.Empty<Expression<Func<TEntity, object>>>())
+		        .Concat((configuration.PairByExpressions ?? Enumerable.Empty<Expression<Func<TEntity, object>>>()))
+		        .ToList());
 
-            // properties that are NOT keys and are NOT generated in database in insert
-
-			// TODO JK: Ověřit, zda je kompatibilní s použitím sekvence (při použití sekvence chceme nastavit hodnotu primárního klíče při zakládání záznamu)
-			
-			// novým záznamům můžeme nastavit hodnotu primárního klíče - pokud jej seedovaná data obsahují, chceme ji rovněž nastavit
-			// nenastavujeme pouze hodnoty, které vznikají při uložení na serveru
-            IEnumerable<IProperty> propertiesToAdd = allPropertiesOfEntity.Where(p => !p.ValueGenerated.HasFlag(ValueGenerated.OnAdd));
-
-			// aktualizovaným záznamům hodnotu primárního klíče nikdy nenastavujeme, vznikla při založení záznamu
-            IEnumerable<IProperty> propertiesToUpdate = allPropertiesOfEntity.Where(p => !p.IsPrimaryKey() && !p.ValueGenerated.HasFlag(ValueGenerated.OnUpdate));
-            
-            // if there are any properties, that should NOT update, we must exclude them from update list. But they remain in insert
-            if (configuration.ExcludeUpdateExpressions != null)
+			// we will set 
+			foreach (SeedDataPair<TEntity> pair in pairs)
             {
-                propertiesToUpdate = propertiesToUpdate.Where(p => !configuration.ExcludeUpdateExpressions.Select(exclude => GetPropertyName(exclude.Body.RemoveConvert())).Contains(p.Name));
-            }
-
-            // we will set 
-            foreach (SeedDataPair<TEntity> pair in pairs)
-            {
-                foreach (IProperty property in (pair.IsNew ? propertiesToAdd : propertiesToUpdate))
+                foreach (IProperty property in (pair.IsNew ? propertiesForInserting : propertiesForUpdating))
                 {
                     object value = DataBinderExt.GetValue(pair.SeedEntity, property.Name);
                     DataBinderExt.SetValue(pair.DbEntity, property.Name, value);
@@ -272,7 +259,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
         /// <summary>
         /// Vrátí název vlastnosti, která je reprezentována daným výrazem.
         /// </summary>
-        private string GetPropertyName(Expression item)
+        internal string GetPropertyName(Expression item)
         {
             if (item is MemberExpression)
             {
@@ -285,5 +272,31 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
             throw new NotSupportedException(item.ToString());
         }
 
-    }
+	    internal List<IProperty> GetPropertiesForInserting(IEntityType entityType)
+	    {
+		    return entityType
+			    .GetProperties()
+			    .Where(item => !item.IsShadowProperty)
+			    .Where(p => !p.ValueGenerated.HasFlag(ValueGenerated.OnAdd))
+			    .ToList();
+		}
+
+		internal List<IProperty> GetPropertiesForUpdating<TEntity>(IEntityType entityType, List<Expression<Func<TEntity, object>>> excludedProperties)
+		{
+			List<IProperty> result = entityType
+				.GetProperties()
+				.Where(item => !item.IsShadowProperty)
+				.Where(p => !p.ValueGenerated.HasFlag(ValueGenerated.OnAdd) && !p.ValueGenerated.HasFlag(ValueGenerated.OnUpdate))
+				.ToList();
+
+			if (excludedProperties != null)
+			{
+				result = result
+					.Where(p => !excludedProperties.Select(exclude => GetPropertyName(exclude.Body.RemoveConvert())).Contains(p.Name))
+					.ToList();
+			}
+
+			return result;
+		}
+	}
 }

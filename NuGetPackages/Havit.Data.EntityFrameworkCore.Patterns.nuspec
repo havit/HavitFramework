@@ -16,7 +16,7 @@
 	<copyright>Copyright HAVIT, s.r.o. 2018</copyright>
 	<dependencies>
 	  <group targetFramework="netstandard2.0">
-		<dependency id="Havit.Data.Patterns" version="1.8.2" />
+		<dependency id="Havit.Data.Patterns" version="1.8.3-beta" />
 		<dependency id="Havit.Data.EntityFrameworkCore" version="1.0.3-beta" />
 	  </group>
 	</dependencies>

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.Infrastructure;
-using Havit.Data.EntityFrameworkCore.BusinessLayer.StoredProcedures;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
@@ -24,15 +23,21 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
 
         public override void Generate(AlterDatabaseOperation operation, IModel model, MigrationCommandListBuilder builder)
         {
-            var oldAnnotations = operation.OldDatabase.GetAnnotations().Where(StoredProceduresAnnotationsHelper.IsStoredProcedureAnnotation).ToDictionary(x => x.Name, StoredProceduresAnnotationsHelper.Comparer);
-            var newAnnotations = operation.GetAnnotations().Where(StoredProceduresAnnotationsHelper.IsStoredProcedureAnnotation).ToDictionary(x => x.Name, StoredProceduresAnnotationsHelper.Comparer);
+	        var oldAnnotations = GetAnnotations(operation.OldDatabase.GetAnnotations());
+            var newAnnotations = GetAnnotations(operation.GetAnnotations());
             List<IAnnotation> deletedAnnotations = oldAnnotations.Where(x => !newAnnotations.ContainsKey(x.Key)).Select(x => x.Value).ToList<IAnnotation>();
 
             GenerateCreateAndUpdateCommands(newAnnotations.Values.ToList<IAnnotation>(), builder);
             GenerateDropCommands(deletedAnnotations, builder);
         }
 
-        private void GenerateDropCommands(List<IAnnotation> oldAnnotations, MigrationCommandListBuilder builder)
+	    private Dictionary<string, Annotation> GetAnnotations(IEnumerable<Annotation> annotations)
+	    {
+		    return annotations.Where(a => dbInjectionAnnotationProvider.GetDbInjections(new List<IAnnotation> { a }).Any())
+			    .ToDictionary(a => a.Name);
+	    }
+
+	    private void GenerateDropCommands(List<IAnnotation> oldAnnotations, MigrationCommandListBuilder builder)
         {
             List<IDbInjection> dbInjections = dbInjectionAnnotationProvider.GetDbInjections(oldAnnotations);
 

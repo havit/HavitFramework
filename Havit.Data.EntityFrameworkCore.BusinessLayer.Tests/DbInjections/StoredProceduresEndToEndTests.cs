@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
 {
-    public class DbInjectionsEndToEndTests
+    public class StoredProceduresEndToEndTests
     {
         [TestClass]
         public class AddingStoredProcedure

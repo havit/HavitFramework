@@ -49,11 +49,10 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
                 unpairedSeedDataPair.DbEntity = (TEntity)Activator.CreateInstance(typeof(TEntity));
                 unpairedSeedDataPair.IsNew = true;
             }
-            dbSet.AddRange(unpairedSeedDataPairs.Select(item => item.DbEntity).ToArray());
 
             Update(configuration, seedDataPairsToUpdate);
-
-            dbContext.SaveChanges();
+	        dbSet.AddRange(unpairedSeedDataPairs.Select(item => item.DbEntity).ToArray());
+			dbContext.SaveChanges();
 
             DoAfterSaveActions(configuration, seedDataPairs);
 

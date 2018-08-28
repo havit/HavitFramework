@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using Castle.Facilities.TypedFactory;
 using Castle.MicroKernel.Registration;
@@ -67,11 +68,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers
 			Type currentLanguageServiceType = typeof(LanguageService<>).MakeGenericType(typeof(TLanguage));
 			container.Register(
 				Component.For<ILanguageService>().ImplementedBy(currentLanguageServiceType).LifestyleSingleton(),
-				Component.For<ILocalizationService>().ImplementedBy<LocalizationService>().LifestyleSingleton(),
-
-				// Registrujeme jen pro TLanguage, možná bude časem třeba pro všechny modelové třídy (pak bychom přesunuli do jiné metody v této třídě).
-				// TODO JK: Neuděláme závislost skrytou?
-				Component.For<IEntityKeyAccessor<TLanguage, int>>().ImplementedBy<DbEntityKeyAccessor<TLanguage, int>>().LifestyleSingleton()
+				Component.For<ILocalizationService>().ImplementedBy<LocalizationService>().LifestyleSingleton()
 			);
 			return this;
 		}
@@ -122,13 +119,31 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers
 				Classes.FromAssembly(dataLayerAssembly).BasedOn(typeof(DbRepository<>)).If(IsNotAbstract).If(DoesNotHaveFakeAttribute).WithServiceConstructedInterface(typeof(IRepository<>)).WithServiceFromInterface(typeof(IRepository<>)).ApplyLifestyle(componentRegistrationOptions.RepositoriesLifestyle),
 				Classes.FromAssembly(dataLayerAssembly).BasedOn(typeof(IDataEntries)).If(IsNotAbstract).If(DoesNotHaveFakeAttribute).WithServiceFromInterface(typeof(IDataEntries)).ApplyLifestyle(componentRegistrationOptions.DataEntriesLifestyle)
 			);
+
+			// Potřebujeme zaregistrovat IEntityKeyAccessor<TEntity, int>.
+			// Nemáme seznam TEntity, tak je získáme z existujících implementací IRepository<>.
+			// Pak pro každou TEntity zaregistrujeme DbEntityKeyAccesor<TEntity, int> pod IEntityKeyAccessor<TEntity, int>.
+			dataLayerAssembly
+				.GetExportedTypes()
+				.SelectMany(type => type.GetInterfaces())
+				.Where(interfaceType => interfaceType.IsGenericType && (interfaceType.GetGenericTypeDefinition() == typeof(IRepository<>)))
+				.Select(repositoryInterfaceType => repositoryInterfaceType.GetGenericArguments().Single()) // IRepository<TEntity> --> TEntity (tj. výsledkem je neunikátní seznam modelových tříd)
+				.Distinct() // různé interface a třídy nám (DbRepository<Xy>, IXyRepository) nám dají stejné modelové třídy
+				.ToList() // aby šel použít foreach
+				.ForEach(modelType =>
+				{
+					Type interfaceType = typeof(IEntityKeyAccessor<,>).MakeGenericType(modelType, typeof(int)); // --> IEntityKeyAccessor<TEntity, int>
+					Type implementationType = typeof(DbEntityKeyAccessor<,>).MakeGenericType(modelType, typeof(int)); // --> DbEntityKeyAccessor<TEntity, int>
+					container.Register(Component.For(interfaceType).ImplementedBy(implementationType).LifestyleSingleton());
+				});
+
 			return this;
 		}
 
 		/// <summary>
-		/// Vrací true, pokud NEJDE o abstraktní typ.
-		/// </summary>
-		private static bool IsNotAbstract(Type type)
+			/// Vrací true, pokud NEJDE o abstraktní typ.
+			/// </summary>
+			private static bool IsNotAbstract(Type type)
 		{
 			return !type.IsAbstract;
 		}

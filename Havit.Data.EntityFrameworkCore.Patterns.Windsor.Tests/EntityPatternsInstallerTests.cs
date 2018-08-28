@@ -19,7 +19,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 	public class EntityPatternsInstallerTests
 	{
 		[TestMethod]
-		public void EntityPatternsInstaller_RegisterLocalizationServices_ShouldRegisterLanguageAndLocalizationServices()
+		public void EntityPatternsInstaller_ShouldRegisterLanguageAndLocalizationServices()
 		{
 			// Arrange
 			var container = CreateAndSetupWindsorContainer();
@@ -33,7 +33,33 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 		}
 
 		[TestMethod]
-		public void EntityPatternsInstaller_RegisterLocalizationServices_ShouldRegisterDataLoaderAndDependencies()
+		public void EntityPatternsInstaller_ShouldRegisterDataSourcesAndDependencies()
+		{
+			// Arrange
+			var container = CreateAndSetupWindsorContainer();
+
+			// Act
+			container.Resolve<ILanguageDataSource>();
+
+			// Assert			
+			// no exception was thrown
+		}
+
+		[TestMethod]
+		public void EntityPatternsInstaller_ShouldRegisterRepositoriesAndDependencies()
+		{
+			// Arrange
+			var container = CreateAndSetupWindsorContainer();
+
+			// Act
+			container.Resolve<ILanguageRepository>();
+
+			// Assert			
+			// no exception was thrown
+		}
+
+		[TestMethod]
+		public void EntityPatternsInstaller_ShouldRegisterDataLoaderAndDependencies()
 		{
 			// Arrange
 			var container = CreateAndSetupWindsorContainer();
@@ -46,7 +72,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 		}
 
 		[TestMethod]
-		public void EntityPatternsInstaller_RegisterLocalizationServices_ShouldRegisterUnitOfWorkAndDependencies()
+		public void EntityPatternsInstaller_ShouldRegisterUnitOfWorkAndDependencies()
 		{
 			// Arrange
 			var container = CreateAndSetupWindsorContainer();
@@ -59,7 +85,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 		}
 
 		[TestMethod]
-		public void EntityPatternsInstaller_RegisterLocalizationServices_ShouldRegisterBeforeCommitProcessorsServicesAndDependencies()
+		public void EntityPatternsInstaller_ShouldRegisterBeforeCommitProcessorsServicesAndDependencies()
 		{
 			// Arrange
 			WindsorContainer container = new WindsorContainer();

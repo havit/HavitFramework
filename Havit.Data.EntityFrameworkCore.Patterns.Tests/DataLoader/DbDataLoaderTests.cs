@@ -77,7 +77,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 		}
 
 		[TestMethod]
-		public void DbDataLoader_Load_WithList_OneToMany_LoadsPartiallyInitializedCollections()
+		public void DbDataLoader_Load_OneToMany_LoadsPartiallyInitializedCollections()
 		{
 			// Arrange
 			SeedOneToManyTestData();
@@ -98,7 +98,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 		}
 
 		[TestMethod]
-		public void DbDataLoader_Load_WithList_OneToMany_LoadsNotLoadedCollections()
+		public void DbDataLoader_Load_OneToMany_LoadsNotLoadedCollections()
 		{
 			// Arrange
 			SeedOneToManyTestData();
@@ -118,28 +118,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 		}
 		
 		[TestMethod]
-		public void DbDataLoader_Load_WithObject_OneToMany_LoadsNotLoadedCollections()
-		{
-			// Arrange
-			SeedOneToManyTestData();
-
-			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
-			Master master = dbContext.Master.First();
-
-			Assert.IsNull(master.Children, "Pro ověření DbDataLoaderu se předpokládá, že hodnota master.Children je null.");
-
-			// Act
-			IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
-
-			dataLoader.Load(master, item => item.Children);
-
-			// Assert
-			Assert.IsNotNull(master.Children, "DbDataLoader nenačetl hodnotu pro master.Children.");
-			Assert.AreEqual(5, master.Children.Count, "DbDataLoader nenačetl objekty do master.Children.");
-		}
-
-		[TestMethod]
-		public void DbDataLoader_Load_WithList_OneToMany_DoesNotLoadExcessEntities()
+		public void DbDataLoader_Load_OneToMany_DoesNotLoadExcessEntities()
 		{
 			// Arrange
 			SeedOneToManyTestData(deleted: false);
@@ -159,7 +138,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 		}
 
 		[TestMethod]
-		public void DbDataLoader_Load_WithList_ManyToMany_LoadsNotLoadedCollections()
+		public void DbDataLoader_Load_ManyToMany_LoadsNotLoadedCollections()
 		{
 			// Arrange
 			SeedManyToManyTestData(false);
@@ -322,7 +301,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 		}
 
 		[TestMethod]
-		public async Task DbDataLoader_LoadAsync_LoadsChains()
+		public async Task DbDataLoader_LoadAsync_OneToMany_LoadsChains()
 		{
 			// Arrange
 			SeedOneToManyTestData();
@@ -338,6 +317,27 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 			// Assert
 			Assert.IsNotNull(child.Parent);
 			Assert.IsNotNull(child.Parent.Children);
+		}
+
+		[TestMethod]
+		public async Task DbDataLoader_Load_ManyToMany_ManyToMany_LoadChains()
+		{
+			// Arrange
+			SeedManyToManyTestData(false);
+
+			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+			LoginAccount loginAccount = dbContext.LoginAccount.First();
+
+			Assert.IsNull(loginAccount.Roles, "Pro ověření DbDataLoaderu se předpokládá, že hodnota loginAccount.Roles je null.");
+
+			// Act
+			DbDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
+			await dataLoader.LoadAsync(loginAccount, item => item.Roles).ThenLoadAsync(membership => membership.Role);
+
+			// Assert
+			Assert.IsNotNull(loginAccount.Roles, "DbDataLoader nenačetl hodnotu pro loginAccount.Roles.");
+			Assert.AreEqual(1, loginAccount.Roles.Count, "DbDataLoader nenačetl objekty do loginAccount.Roles.");
+			Assert.IsNotNull(loginAccount.Roles[0].Role, "DbDataLoader nenačetl hodnotu pro loginAccount.Roles.Role.");
 		}
 
 		// TODO JK: Dodělat async podporu
@@ -641,7 +641,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 				}
 
 				LoginAccount loginAccount = new LoginAccount();
-				loginAccount.Roles = new List<Membership> { new Membership {LoginAccount = loginAccount, Role = role } };
+				loginAccount.Roles = new List<Membership> { new Membership { LoginAccount = loginAccount, Role = role } };
 				if (deleted)
 				{
 					loginAccount.Deleted = DateTime.Now;

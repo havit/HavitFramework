@@ -5,12 +5,16 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
+using Havit.Data.EntityFrameworkCore.Metadata;
 using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
 using Havit.Data.Patterns.DataLoaders;
 using Havit.Data.Patterns.Infrastructure;
 using Havit.Diagnostics.Contracts;
+using Havit.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 {
@@ -301,11 +305,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 		{
 			var propertyLambdaExpression = lambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TProperty>(propertyName);
 
-			List<int> ids = GetEntitiesIdsToLoadProperty(entities, propertyName, false);
+			List<EntityPrimaryKeyWithValues> primaryKeyWithValues = GetEntitiesKeysToLoadProperty(entities, propertyName, false);
 
-			if (ids.Count > 0)
+			if (primaryKeyWithValues != null)
 			{
-				IQueryable<TProperty> loadQuery = (IQueryable<TProperty>)GetLoadQuery(propertyLambdaExpression.LambdaExpression, ids, false);
+				IQueryable<TProperty> loadQuery = (IQueryable<TProperty>)GetLoadQuery(propertyLambdaExpression.LambdaExpression, primaryKeyWithValues, false);
 				loadQuery.Load();
 			}
 
@@ -326,11 +330,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 		{
 			var propertyLambdaExpression = lambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TProperty>(propertyName);
 
-			List<int> ids = GetEntitiesIdsToLoadProperty(entities, propertyName, false);
+			List<EntityPrimaryKeyWithValues> primaryKeyWithValues = GetEntitiesKeysToLoadProperty(entities, propertyName, false);
 
-			if (ids.Count > 0)
+			if (primaryKeyWithValues != null)
 			{
-				IQueryable<TProperty> loadQuery = (IQueryable<TProperty>)GetLoadQuery(propertyLambdaExpression.LambdaExpression, ids, false);
+				IQueryable<TProperty> loadQuery = (IQueryable<TProperty>)GetLoadQuery(propertyLambdaExpression.LambdaExpression, primaryKeyWithValues, false);
 				await loadQuery.LoadAsync();
 			}
 
@@ -354,11 +358,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 
 		    InitializeCollectionsForAddedEntities<TEntity, TPropertyCollection, TPropertyItem>(entities, propertyLambdaExpression.LambdaCompiled, propertyName);
 
-			List<int> ids = GetEntitiesIdsToLoadProperty(entities, propertyName, true);
+			List<EntityPrimaryKeyWithValues> primaryKeyWithValues = GetEntitiesKeysToLoadProperty(entities, propertyName, true);
 
-			if (ids.Count > 0)
+			if (primaryKeyWithValues != null)
 			{
-				IQueryable<TEntity> loadQuery = (IQueryable<TEntity>)GetLoadQuery(propertyLambdaExpression.LambdaExpression, ids, true);
+				IQueryable<TEntity> loadQuery = (IQueryable<TEntity>)GetLoadQuery(propertyLambdaExpression.LambdaExpression, primaryKeyWithValues, true);
 				loadQuery.Load();
 			}
 
@@ -381,11 +385,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 
 		    InitializeCollectionsForAddedEntities<TEntity, TPropertyCollection, TPropertyItem>(entities, propertyLambdaExpression.LambdaCompiled, propertyName);
 
-            List<int> ids = GetEntitiesIdsToLoadProperty(entities, propertyName, true);
+            List<EntityPrimaryKeyWithValues> primaryKeyWithValues = GetEntitiesKeysToLoadProperty(entities, propertyName, true);
 
-			if (ids.Count > 0)
+			if (primaryKeyWithValues != null)
 			{
-				IQueryable<TEntity> loadQuery = (IQueryable<TEntity>)GetLoadQuery(propertyLambdaExpression.LambdaExpression, ids, true);
+				IQueryable<TEntity> loadQuery = (IQueryable<TEntity>)GetLoadQuery(propertyLambdaExpression.LambdaExpression, primaryKeyWithValues, true);
 				await loadQuery.LoadAsync();
 			}
 
@@ -396,17 +400,34 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 			};
 		}
 
-	    /// <summary>
-		/// Vrátí seznam Id objektů, jejichž vlastnost má být načtena.
+		/// <summary>
+		/// Vrátí seznam názvů primárních klíčů a jejich hodnot objektů, jejichž vlastnost má být načtena.
+		/// Pokud není potřeba žádné objekty načítat, vrací null.
 		/// </summary>
-		protected virtual List<int> GetEntitiesIdsToLoadProperty<TEntity>(TEntity[] entities, string propertyName, bool isPropertyCollection)
+		protected virtual List<EntityPrimaryKeyWithValues> GetEntitiesKeysToLoadProperty<TEntity>(TEntity[] entities, string propertyName, bool isPropertyCollection)
 			where TEntity : class
-	    {
-	        IEnumerable<TEntity> entitiesNotInAddedState = entities.Where(item => dbContext.GetEntityState(item) != EntityState.Added);
-		    IEnumerable<TEntity> entitiesToLoadQuery = entitiesNotInAddedState.Where(entity => !IsEntityPropertyLoaded(entity, propertyName, isPropertyCollection));			
-			IEntityKeyAccessor<TEntity, int> entityKeyAccessor = new DbEntityKeyAccessor<TEntity, int>(dbContext);
-			return entitiesToLoadQuery.Select(entity => entityKeyAccessor.GetEntityKey(entity)).Distinct().ToList();
+		{
+			IEnumerable<TEntity> entitiesNotInAddedState = entities.Where(item => dbContext.GetEntityState(item) != EntityState.Added);
+			List<TEntity> entitiesToLoadQuery = entitiesNotInAddedState.Where(entity => !IsEntityPropertyLoaded(entity, propertyName, isPropertyCollection)).ToList();
+
+			if (!entitiesToLoadQuery.Any())
+			{
+				return null;
+			}
+			else
+			{
+				IKey primaryKey = dbContext.Model.FindEntityType(typeof(TEntity)).FindPrimaryKey();
+
+				return primaryKey.Properties.Select(primaryKeyProperty =>
+						new EntityPrimaryKeyWithValues
+						{
+							PrimaryKeyName = primaryKeyProperty.Name,
+							Values = entitiesToLoadQuery.Select(entity => (int)primaryKeyProperty.PropertyInfo.GetValue(entity)).ToList()
+						})
+					.ToList();
+			}
 		}
+
 
 		/// <summary>
 		/// Vrací true, pokud je vlastnost objektu již načtena.
@@ -424,55 +445,59 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 		/// Vrátí WHERE podmínku omezující množinu záznamů dle Id.
 		/// </summary>
 		/// <param name="ids">Identifikátory objektů, které mají být ve where klauzuli.</param>
-		private Expression<Func<TEntity, bool>> GetWhereExpression<TEntity>(List<int> ids)
+		private Expression<Func<TEntity, bool>> GetWhereExpression<TEntity>(List<EntityPrimaryKeyWithValues> primaryKeyWithValues)
 			where TEntity : class
 		{
-			Contract.Requires(ids != null);
-			Contract.Requires(ids.Count > 0);
+			Contract.Requires(primaryKeyWithValues != null);
+			Contract.Requires(primaryKeyWithValues.Count > 0);
 
 			ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "item");
+			return ExpressionExt.AndAlso<TEntity>(primaryKeyWithValues.Select(primaryKeyWithValuesItem =>
+				{
+					// jediný záznam - testujeme na rovnost
+					if (primaryKeyWithValuesItem.Values.Count == 1)
+					{
+						return (Expression<Func<TEntity, bool>>)Expression.Lambda(
+							Expression.Equal(
+								Expression.Property(parameter, typeof(TEntity), primaryKeyWithValuesItem.PrimaryKeyName),
+								Expression.Constant(primaryKeyWithValuesItem.Values[0])),
+							parameter);
+					}
 
-			// jediný záznam - testujeme na rovnost
-			if (ids.Count == 1)
-			{
-				return (Expression<Func<TEntity, bool>>)Expression.Lambda(
-					Expression.Equal(
-						Expression.Property(parameter, typeof(TEntity), "Id"),
-						Expression.Constant(ids[0])),
-					parameter);
-			}
+					// více záznamů
+					// pokud jde o řadu IDček (1, 2, 3, 4) bez přeskakování, pak použijeme porovnání >= a  <=.
+					int[] sortedIds = primaryKeyWithValuesItem.Values.OrderBy(item => item).Distinct().ToArray();
 
-			// více záznamů
-			// pokud jde o řadu IDček (1, 2, 3, 4) bez přeskakování, pak použijeme porovnání >= a  <=.
-			int[] sortedIds = ids.OrderBy(item => item).Distinct().ToArray();
+					//pro pole: 1, 2, 3, 4
+					// if 1 + 4 - 1 (4) == 4
+					if ((sortedIds[0] + sortedIds.Length - 1) == sortedIds[sortedIds.Length - 1]) // testujeme, zda jde o posloupnost IDček
+					{
+						return (Expression<Func<TEntity, bool>>)Expression.Lambda(
+							Expression.AndAlso(
+								Expression.GreaterThanOrEqual(Expression.Property(parameter, typeof(TEntity), primaryKeyWithValuesItem.PrimaryKeyName), Expression.Constant(sortedIds[0])),
+								Expression.LessThanOrEqual(Expression.Property(parameter, typeof(TEntity), primaryKeyWithValuesItem.PrimaryKeyName), Expression.Constant(sortedIds[sortedIds.Length - 1]))),
+							parameter);
+					}
 
-			//pro pole: 1, 2, 3, 4
-			// if 1 + 4 - 1 (4) == 4
-			if ((sortedIds[0] + sortedIds.Length - 1) == sortedIds[sortedIds.Length - 1]) // testujeme, zda jde o posloupnost IDček
-			{
-				return (Expression<Func<TEntity, bool>>)Expression.Lambda(
-					Expression.AndAlso(
-						Expression.GreaterThanOrEqual(Expression.Property(parameter, typeof(TEntity), "Id"), Expression.Constant(sortedIds[0])),
-						Expression.LessThanOrEqual(Expression.Property(parameter, typeof(TEntity), "Id"), Expression.Constant(sortedIds[sortedIds.Length - 1]))),
-					parameter);
-			}
-
-			// v obecném případě hledáme přes IN (...)
-			return (Expression<Func<TEntity, bool>>)Expression.Lambda(
-				Expression.Call(
-					Expression.Constant(ids),
-					typeof(List<int>).GetMethod("Contains"),
-					new List<Expression> { Expression.Property(parameter, typeof(TEntity), "Id") }),
-				parameter);
+					// v obecném případě hledáme přes IN (...)
+					return (Expression<Func<TEntity, bool>>)Expression.Lambda(
+						Expression.Call(
+							Expression.Constant(primaryKeyWithValuesItem.Values),
+							typeof(List<int>).GetMethod("Contains"),
+							new List<Expression> { Expression.Property(parameter, typeof(TEntity), primaryKeyWithValuesItem.PrimaryKeyName) }),
+						parameter);
+				})
+				.ToArray()
+			);
 		}
 
-	    /// <summary>
+		/// <summary>
 		/// Vrátí dotaz načítající vlastnosti objektů s daným identifikátorem.
 		/// </summary>
 		/// <param name="propertyPath">Načítaná vlastnost.</param>
-		/// <param name="ids">Identifikátory objektů, jejichž vlastnost má být načtena.</param>
+		/// <param name="keyValues">Identifikátory objektů, jejichž vlastnost má být načtena.</param>
 		/// <param name="isPropertyCollection">True, pokud vlastost v propertyPath vyjadřuje kolekci.</param>
-		private IQueryable GetLoadQuery<TEntity, TProperty>(Expression<Func<TEntity, TProperty>> propertyPath, List<int> ids, bool isPropertyCollection)
+		private IQueryable GetLoadQuery<TEntity, TProperty>(Expression<Func<TEntity, TProperty>> propertyPath, List<EntityPrimaryKeyWithValues> keyValues, bool isPropertyCollection)
 			where TEntity : class
 		{
 			IQueryable loadQuery;
@@ -482,14 +507,14 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 			{
 				loadQuery = dbContext.Set<TEntity>()
 					.AsQueryable()
-					.Where(GetWhereExpression<TEntity>(ids))
+					.Where(GetWhereExpression<TEntity>(keyValues))
 					.Include(propertyPath);
 			}
 			else
 			{
 				loadQuery = dbContext.Set<TEntity>()
 					.AsQueryable()
-					.Where(GetWhereExpression<TEntity>(ids))
+					.Where(GetWhereExpression<TEntity>(keyValues))
 					.Select(propertyPath);
 			}
 			return loadQuery;
@@ -529,6 +554,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 
 			// TODO JK: Dořešit.
 	        // addedNonLoadedEntities.ForEach(item => dbContext.SetEntityCollectionLoaded<TEntity>(item, propertyName, true));
-	    }
+	    }		
 	}
 }

@@ -159,6 +159,26 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 		}
 
 		[TestMethod]
+		public void DbDataLoader_Load_WithList_ManyToMany_LoadsNotLoadedCollections()
+		{
+			// Arrange
+			SeedManyToManyTestData(false);
+
+			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+			LoginAccount loginAccount = dbContext.LoginAccount.First();
+
+			Assert.IsNull(loginAccount.Roles, "Pro ověření DbDataLoaderu se předpokládá, že hodnota loginAccount.Roles je null.");
+
+			// Act
+			IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
+			dataLoader.Load(loginAccount, item => item.Roles);
+
+			// Assert
+			Assert.IsNotNull(loginAccount.Roles, "DbDataLoader nenačetl hodnotu pro loginAccount.Roles.");
+			Assert.AreEqual(1, loginAccount.Roles.Count, "DbDataLoader nenačetl objekty do loginAccount.Roles.");
+		}
+
+		[TestMethod]
 		public void DbDataLoader_Load_DoesNotLoadAlreadyLoaded()
 		{
 			// Arrange
@@ -222,7 +242,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 		}
 
 		[TestMethod]
-		public void DbDataLoader_Load_LoadsChains()
+		public void DbDataLoader_Load_OneToMany_LoadsChains()
 		{
 			// Arrange
 			SeedOneToManyTestData();
@@ -238,6 +258,27 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 			// Assert
 			Assert.IsNotNull(child.Parent);
 			Assert.IsNotNull(child.Parent.Children);
+		}
+
+		[TestMethod]
+		public void DbDataLoader_Load_ManyToMany_LoadChains()
+		{
+			// Arrange
+			SeedManyToManyTestData(false);
+
+			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+			LoginAccount loginAccount = dbContext.LoginAccount.First();
+
+			Assert.IsNull(loginAccount.Roles, "Pro ověření DbDataLoaderu se předpokládá, že hodnota loginAccount.Roles je null.");
+
+			// Act
+			IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
+			dataLoader.Load(loginAccount, item => item.Roles).ThenLoad(membership => membership.Role);
+
+			// Assert
+			Assert.IsNotNull(loginAccount.Roles, "DbDataLoader nenačetl hodnotu pro loginAccount.Roles.");
+			Assert.AreEqual(1, loginAccount.Roles.Count, "DbDataLoader nenačetl objekty do loginAccount.Roles.");
+			Assert.IsNotNull(loginAccount.Roles[0].Role, "DbDataLoader nenačetl hodnotu pro loginAccount.Roles.Role.");
 		}
 
 		[TestMethod]
@@ -585,5 +626,32 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 
 			dbContext.SaveChanges();
 		}
-    }
+
+		private void SeedManyToManyTestData(bool deleted = false)
+		{
+			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+			dbContext.Database.DropCreate();
+
+			for (int i = 0; i < 5; i++)
+			{
+				Role role = new Role();
+				if (deleted)
+				{
+					role.Deleted = DateTime.Now;
+				}
+
+				LoginAccount loginAccount = new LoginAccount();
+				loginAccount.Roles = new List<Membership> { new Membership {LoginAccount = loginAccount, Role = role } };
+				if (deleted)
+				{
+					loginAccount.Deleted = DateTime.Now;
+				}
+
+				dbContext.LoginAccount.Add(loginAccount);
+				dbContext.Role.Add(role);
+			}
+
+			dbContext.SaveChanges();
+		}
+	}
 }

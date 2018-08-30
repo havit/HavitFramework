@@ -8,6 +8,7 @@ using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.EntityValidation;
 using Havit.Services.TimeServices;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -219,10 +220,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.UnitOfWorks
 
 			// Act
 			dbUnitOfWork.AddForInsert(language);
-			Changes changes = dbUnitOfWork.GetRegisteredChanges();
 
 			// Assert
-			Assert.IsTrue(changes.Inserts.Contains(language));
+			Assert.AreEqual(EntityState.Added, ((IDbContext)testDbContext).GetEntityState(language));
 		}
 
 		[TestMethod]
@@ -236,14 +236,13 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.UnitOfWorks
 			Mock<IEntityValidationRunner> mockEntityValidationRunner = new Mock<IEntityValidationRunner>();
 
 			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(testDbContext, new SoftDeleteManager(new ServerTimeService()), mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object);
-			Language language = new Language();
+			Language language = new Language { Id = 100 };
 
 			// Act
 			dbUnitOfWork.AddForUpdate(language);
-			Changes changes = dbUnitOfWork.GetRegisteredChanges();
 
 			// Assert
-			Assert.IsTrue(changes.Updates.Contains(language));
+			Assert.AreEqual(EntityState.Modified, ((IDbContext)testDbContext).GetEntityState(language));
 		}
 
 		[TestMethod]
@@ -275,13 +274,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.UnitOfWorks
 				// Act
 				dbUnitOfWork.AddForDelete(language);
 				dbUnitOfWork.AddForDelete(itemWithDeleted);
-				Changes changes = dbUnitOfWork.GetRegisteredChanges();
 
 				// Assert
-				Assert.IsFalse(changes.Updates.Contains(language));
-				Assert.IsTrue(changes.Deletes.Contains(language));
-				Assert.IsTrue(changes.Updates.Contains(itemWithDeleted));
-				Assert.IsFalse(changes.Deletes.Contains(itemWithDeleted));
+				testDbContext.ChangeTracker.DetectChanges();
+				Assert.AreEqual(EntityState.Deleted, ((IDbContext)testDbContext).GetEntityState(language));
+				Assert.AreEqual(EntityState.Modified, ((IDbContext)testDbContext).GetEntityState(itemWithDeleted));
 			}
 		}
 

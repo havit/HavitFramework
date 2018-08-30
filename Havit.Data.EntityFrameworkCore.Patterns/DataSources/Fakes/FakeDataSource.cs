@@ -18,24 +18,12 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSources.Fakes
 		/// <summary>
 		/// Data z datového zdroje jako IQueryable.
 		/// </summary>
-		public virtual IQueryable<TEntity> Data
-		{
-			get
-			{
-				return new AsyncEnumerableQueryInternal<TEntity>(data.AsQueryable().WhereNotDeleted(softDeleteManager).ToList());
-			}
-		}
+		public virtual IQueryable<TEntity> Data => new AsyncEnumerableQueryInternal<TEntity>(data.AsQueryable().WhereNotDeleted(softDeleteManager).ToList());
 
 		/// <summary>
 		/// Data z datového zdroje jako IQueryable.
 		/// </summary>
-		public virtual IQueryable<TEntity> DataWithDeleted
-		{
-			get
-			{
-				return new AsyncEnumerableQueryInternal<TEntity>(data);
-			}
-		}
+		public virtual IQueryable<TEntity> DataWithDeleted => new AsyncEnumerableQueryInternal<TEntity>(data);
 
 		/// <summary>
 		/// Konstruktor.

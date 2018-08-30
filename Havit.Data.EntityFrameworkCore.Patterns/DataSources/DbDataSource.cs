@@ -18,25 +18,13 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSources
 		/// Vrací data z datového zdroje jako IQueryable.
 		/// Pokud zdroj obsahuje záznamy smazané příznakem, jsou odfiltrovány (nejsou v datech).
 		/// </summary>
-		public IQueryable<TEntity> Data
-		{
-			get
-			{
-				return dbSetLazy.Value.AsQueryable().WhereNotDeleted(softDeleteManager);
-			}
-		}
+		public IQueryable<TEntity> Data => dbSetLazy.Value.AsQueryable().WhereNotDeleted(softDeleteManager);
 
 		/// <summary>
 		/// Vrací data z datového zdroje jako IQueryable.
 		/// Pokud zdroj obsahuje záznamy smazané příznakem, jsou součástí dat.
 		/// </summary>
-		public IQueryable<TEntity> DataWithDeleted
-		{
-			get
-			{
-				return dbSetLazy.Value.AsQueryable();
-			}
-		}
+		public IQueryable<TEntity> DataWithDeleted => dbSetLazy.Value.AsQueryable();
 
 		/// <summary>
 		/// Konstruktor.

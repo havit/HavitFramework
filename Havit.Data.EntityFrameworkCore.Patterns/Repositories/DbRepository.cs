@@ -268,7 +268,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 					null,
 					typeof(System.Linq.Enumerable)
 							.GetMethods(BindingFlags.Public | BindingFlags.Static)
-							 .Where(m => m.Name == "Contains")
+							 .Where(m => m.Name == nameof(Enumerable.Contains))
 							 .Select(m => new
 								 {
 									 Method = m,
@@ -292,7 +292,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 		{
 			Contract.Requires(entities != null);
 
-			dataLoader.LoadAll(entities, GetLoadReferences().ToArray());
+			var loadReferences = GetLoadReferences().ToArray();
+			if (loadReferences.Any())
+			{
+				dataLoader.LoadAll(entities, loadReferences);
+			}
 		}
 
 		/// <summary>
@@ -302,7 +306,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 		{	
 			Contract.Requires(entities != null);
 
-			await dataLoaderAsync.LoadAllAsync(entities, GetLoadReferences().ToArray());			
+			var loadReferences = GetLoadReferences().ToArray();
+			if (loadReferences.Any())
+			{
+				await dataLoaderAsync.LoadAllAsync(entities, loadReferences);
+			}
 		}
 
 		/// <summary>

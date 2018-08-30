@@ -17,14 +17,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes
 			Contract.Requires(source != null);
 			Contract.Requires(softDeleteManager != null);
 
-			if (softDeleteManager.IsSoftDeleteSupported<TSource>())
-			{
-				return source.Where(softDeleteManager.GetNotDeletedExpressionLambda<TSource>()); 
-			}
-			else
-			{
-				return source;
-			}
+			return softDeleteManager.IsSoftDeleteSupported<TSource>()
+				? source.Where(softDeleteManager.GetNotDeletedExpressionLambda<TSource>())
+				: source;
 		}
 
 		/// <summary>
@@ -35,14 +30,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes
 			Contract.Requires(source != null);
 			Contract.Requires(softDeleteManager != null);
 
-			if (softDeleteManager.IsSoftDeleteSupported<TSource>())
-			{
-				return source.Where(softDeleteManager.GetNotDeletedCompiledLambda<TSource>());
-			}
-			else
-			{
-				return source;
-			}
+			return softDeleteManager.IsSoftDeleteSupported<TSource>()
+				? source.Where(softDeleteManager.GetNotDeletedCompiledLambda<TSource>())
+				: source;
 		}
 	}
 }

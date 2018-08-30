@@ -113,19 +113,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks
 		}
 
 		/// <summary>
-		/// Vrací změny registrované ke commitu, vychází pouze z registrací objektů a nepoužívá DbContext a jeho changetracker.
-		/// </summary>
-		protected internal Changes GetRegisteredChanges()
-		{
-			return new Changes
-			{
-				Inserts = insertRegistrations.ToArray(),
-				Updates = updateRegistrations.ToArray(),
-				Deletes = deleteRegistrations.ToArray()
-			};
-		}
-
-		/// <summary>
 		/// Vrací všechny známé změny ke commitu, vychází z registrací objektů a používá také DbContext a jeho changetracker.
 		/// </summary>
 		protected internal Changes GetAllKnownChanges()
@@ -223,7 +210,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks
 				// proto implementujeme tak, že trackované entity neřešíme (a předpokládáme, že svou práci provede change tracker)
 				// netrackované entity zaregistrujeme jako změněné
 
-				// z výkonových důvodů se očekává, že volané metody GetEntityState+SetEntityState nevolají change tracker
+				// z výkonových důvodů se očekává, že volaná metoda GetEntityState nevolá change tracker
 
 				DbContext.Set<TEntity>().UpdateRange(entities.Where(entity => DbContext.GetEntityState(entity) == EntityState.Detached).ToArray());
 				updateRegistrations.UnionWith(entities);
@@ -255,30 +242,5 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks
 			}
 		}
 
-		/// <summary>
-		/// Vyhazuje výjimku, pokud existuje objekt, který je registrován jako změněný v DbContextu (díky changetrackeru), ale není registrován v tomto UnitOfWorku.
-		/// </summary>
-		/// <exception cref="InvalidOperationException">Existuje objekt, který je registrován jako změněný v DbContextu (díky changetrackeru), ale není registrován v tomto UnitOfWorku.</exception>
-		protected void VerifyAllChangesAreRegistered()
-		{
-			object[] notRegisteredUpdates = GetNotRegisteredChanges();
-			if (notRegisteredUpdates.Any())
-			{
-				List<Type> types = notRegisteredUpdates.Select(item => item.GetType()).Distinct().ToList();
-				string typesMessage = String.Join(", ", types.Select(type => type.ToString()));
-
-				InvalidOperationException exception = new InvalidOperationException($"UnitOfWork does not have registered all changes. Missing are objects of type {typesMessage}.");
-				exception.Data.Add("NotRegisteredUpdates", notRegisteredUpdates);
-				throw exception;
-			}
-		}
-
-		/// <summary>
-		/// Vrací objekty, které jsou registrovány jako změněné v DbContextu (díky changetrackeru), ale není registrován v tomto UnitOfWorku.
-		/// </summary>
-		protected object[] GetNotRegisteredChanges()
-		{
-			return DbContext.GetObjectsInStates(new EntityState[] { EntityState.Added, EntityState.Modified, EntityState.Deleted }, suppressDetectChanges: false).Except(insertRegistrations).Except(updateRegistrations).Except(deleteRegistrations).ToArray();
-		}
 	}
 }

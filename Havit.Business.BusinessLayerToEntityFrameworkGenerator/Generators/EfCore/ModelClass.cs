@@ -296,7 +296,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 				}
 
 				// Generate HasDefaultValueSql. For String columns, generate only if if default is not empty (we use convention for such columns)
-				if ((column.DefaultConstraint != null) && (!column.DataType.IsStringType || (column.DefaultConstraint.Text != "('')")))
+				if ((column.DefaultConstraint != null) && (type != typeof(string) || (column.DefaultConstraint.Text != "('')")))
 				{
 					string defaultValue = new DefaultValueParser().GetDefaultValue(column);
 

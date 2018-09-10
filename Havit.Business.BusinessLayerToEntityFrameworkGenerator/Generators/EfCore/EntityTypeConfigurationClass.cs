@@ -285,33 +285,6 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 					writer.WriteLine();
 				}
 
-				// Generate HasDefaultValueSql. For String columns, generate only if if default is not empty (we use convention for such columns)
-				if ((column.DefaultConstraint != null) && (!column.DataType.IsStringType || (column.DefaultConstraint.Text != "('')")))
-				{
-					string defaultValue = new DefaultValueParser().GetDefaultValue(column);
-
-					writer.WriteLine(String.Format("builder.Property({0} => {0}.{1})",
-						ConventionsHelper.GetCammelCase(modelClass.Name),
-						property.Name));
-					writer.Indent();
-					writer.WriteLine($".HasDefaultValueSql(\"{defaultValue}\");");
-					writer.Unindent();
-					writer.WriteLine();
-				}
-
-				// Set IsRequired, but only for non-FK, non-PK columns
-				if (!TableHelper.IsJoinTable(table) && (TableHelper.GetPrimaryKey(table) != column) && !TypeHelper.IsBusinessObjectReference(column)
-					&& !column.Nullable)
-				{
-					writer.WriteLine(String.Format("builder.Property({0} => {0}.{1})",
-						ConventionsHelper.GetCammelCase(modelClass.Name),
-						property.Name));
-					writer.Indent();
-					writer.WriteLine(".IsRequired();");
-					writer.Unindent();
-					writer.WriteLine();
-				}
-
 				if (LocalizationHelper.IsLocalizationTable(table) && (LocalizationHelper.GetParentLocalizationColumn(table)) == column)
 				{
 					writer.WriteLine(String.Format("builder.Property({0} => {0}.ParentId)",

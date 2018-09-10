@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.SqlServer.Management.Smo;
@@ -66,5 +67,14 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Helpers
 
 		    return typeName;
 	    }
-    }
+
+	    public static bool IsNullableType(Type type)
+	    {
+		    TypeInfo typeInfo = type.GetTypeInfo();
+
+		    return !typeInfo.IsValueType
+		           || typeInfo.IsGenericType
+		           && typeInfo.GetGenericTypeDefinition() == typeof(Nullable<>);
+	    }
+	}
 }

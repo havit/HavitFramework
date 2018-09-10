@@ -8,6 +8,7 @@ using Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions;
 using Havit.Business.BusinessLayerGenerator.Helpers.Types;
 using Havit.Business.BusinessLayerGenerator.TfsClient;
 using Havit.Business.BusinessLayerGenerator.Writers;
+using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Helpers;
 using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata;
 using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Settings;
 using Microsoft.SqlServer.Management.Smo;
@@ -53,12 +54,14 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 			writer.WriteLine("using System;");
 			writer.WriteLine("using System.Collections.Generic;");
 			writer.WriteLine("using System.Collections.Specialized;");
+			writer.WriteLine("using System.ComponentModel;");
 			writer.WriteLine("using System.ComponentModel.DataAnnotations;");
 			writer.WriteLine("using System.Globalization;");
 			writer.WriteLine("using System.Linq;");
 			writer.WriteLine("using System.Text;");
 			writer.WriteLine("using Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProperties;");
 			writer.WriteLine("using Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.Metadata;");
+			writer.WriteLine("using ReadOnlyAttribute = Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProperties.ReadOnlyAttribute;");
 
 			if (LocalizationHelper.IsLocalizationTable(modelClass.Table) || LocalizationHelper.IsLocalizedTable(modelClass.Table))
 			{
@@ -281,9 +284,23 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 					writer.WriteLine("[ReadOnly]");
 				}
 
-				if (TypeHelper.IsDateOnly(column.DataType))
+				if (BusinessLayerGenerator.Helpers.TypeHelper.IsDateOnly(column.DataType))
 				{
 					writer.WriteLine("[DataType(DataType.Date)]");
+				}
+
+				Type type = Helpers.TypeHelper.GetPropertyType(fk?.ForeignKeyProperty ?? entityProperty);
+				if (!column.Nullable && type?.IsValueType == false)
+				{
+					writer.WriteLine("[Required]");
+				}
+
+				// Generate HasDefaultValueSql. For String columns, generate only if if default is not empty (we use convention for such columns)
+				if ((column.DefaultConstraint != null) && (!column.DataType.IsStringType || (column.DefaultConstraint.Text != "('')")))
+				{
+					string defaultValue = new DefaultValueParser().GetDefaultValue(column);
+
+					writer.WriteLine($"[DefaultValue(\"{defaultValue}\")]");
 				}
 
 				if (PropertyHelper.IsString(column))

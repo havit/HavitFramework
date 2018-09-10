@@ -13,7 +13,6 @@ using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Settings;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.SqlServer.Management.Smo;
 using FileHelper = Havit.Business.BusinessLayerGenerator.Helpers.FileHelper;
-using TypeHelper = Havit.Business.BusinessLayerGenerator.Helpers.TypeHelper;
 
 namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCore
 {
@@ -194,16 +193,19 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 		{
 			Table table = modelClass.Table;
 
-			//if (TableHelper.IsJoinTable(table))
-			//{
-			//	return false;
-			//}
-
 			bool result = false;
+
+			var fksToConfigure = modelClass.ForeignKeys.GroupBy(fk => ColumnHelper.GetReferencedTable(fk.Column)).Where(g => g.Count() >= 2).SelectMany(g => g);
+
+			var circularReferences = modelClass.ForeignKeys.Where(fk => ColumnHelper.GetReferencedTable(fk.Column).ForeignKeys.Cast<ForeignKey>().Any(fk1 => fk1.Parent != table && fk1.ReferencedTable == modelClass.Table.Name)).ToArray();
+			if (circularReferences.Length > 0)
+			{
+				fksToConfigure = fksToConfigure.Concat(circularReferences);
+			}
 
 			// TODO: if the check for JoinTable above is removed, need to carefully handle FKs that are part of composite PK
 			// (i.e. don't generate HasOne statements)
-			foreach (EntityForeignKey foreignKey in modelClass.ForeignKeys)
+			foreach (EntityForeignKey foreignKey in fksToConfigure)
 			{
 				Column column = foreignKey.Column;
 
@@ -240,13 +242,6 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 						writer.WriteLine(".WithMany()");
 					}
 
-					// if there are multiple FKs to same table, it is possible it might trigger this error:
-					//	Introducing FOREIGN KEY constraint 'FK_Delegation_Employee_DelegatingEmployeeId' on table 'Delegation' may cause cycles or multiple cascade paths. 
-					//	Specify ON DELETE NO ACTION or ON UPDATE NO ACTION, or modify other FOREIGN KEY constraints.
-					//	Could not create constraint or index.
-
-					writer.WriteLine(".OnDelete(DeleteBehavior.Restrict)");
-
 					if (!column.Nullable)
 					{
 						writer.WriteLine(".IsRequired();");
@@ -269,8 +264,11 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 		{
 			Table table = modelClass.Table;
 
+			bool shouldSave = false;
+
 			foreach (EntityProperty property in modelClass.GetColumnProperties())
 			{
+
 				Column column = property.Column;
 
 				var pkPart = modelClass.GetPrimaryKeyPartFor(column);
@@ -283,6 +281,8 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 					writer.WriteLine(".ValueGeneratedNever();");
 					writer.Unindent();
 					writer.WriteLine();
+
+					shouldSave = true;
 				}
 
 				if (LocalizationHelper.IsLocalizationTable(table) && (LocalizationHelper.GetParentLocalizationColumn(table)) == column)
@@ -293,10 +293,12 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 					writer.WriteLine(String.Format(".HasColumnName(\"{0}\");", column.Name));
 					writer.Unindent();
 					writer.WriteLine();
+
+					shouldSave = true;
 				}
 			}
 
-			return true;
+			return shouldSave;
 		}
 
 		private static bool WriteTablePKs(CodeWriter writer, GeneratedModelClass modelClass)

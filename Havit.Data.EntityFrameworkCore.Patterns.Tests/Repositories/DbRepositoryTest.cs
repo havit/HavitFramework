@@ -7,9 +7,11 @@ using Havit.Data.EntityFrameworkCore.Patterns.Repositories;
 using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.Infrastructure;
 using Havit.Data.Patterns.DataLoaders.Fakes;
+using Havit.Services;
 using Havit.Services.TimeServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 {
@@ -29,7 +31,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 			int maxId = testDbContext.Set<ItemWithDeleted>().Max(item => item.Id);
 
 			var dataLoader = new FakeDataLoader();
-			var entityKeyAccessor = new DbEntityKeyAccessor<ItemWithDeleted, int>(testDbContext);
+			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
 			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
 			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
@@ -52,7 +54,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 			int maxId = testDbContext.Set<ItemWithDeleted>().Max(item => item.Id);
 
 			var dataLoader = new FakeDataLoader();
-			var entityKeyAccessor = new DbEntityKeyAccessor<ItemWithDeleted, int>(testDbContext);
+			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
 			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
 			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
@@ -75,7 +77,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 			Assert.AreNotEqual(0, ids.Length, "Pro test jsou potřeba data smazaná příznakem.");
 
 			var dataLoader = new FakeDataLoader();
-			var entityKeyAccessor = new DbEntityKeyAccessor<ItemWithDeleted, int>(testDbContext);
+			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
 			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
 			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
@@ -99,7 +101,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 			Assert.AreNotEqual(0, ids.Length, "Pro test jsou potřeba data smazaná příznakem.");
 
 			var dataLoader = new FakeDataLoader();
-			var entityKeyAccessor = new DbEntityKeyAccessor<ItemWithDeleted, int>(testDbContext);
+			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
 			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
 			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
@@ -120,7 +122,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 			SeedData(true);
 
 			var dataLoader = new FakeDataLoader();
-			var entityKeyAccessor = new DbEntityKeyAccessor<ItemWithDeleted, int>(testDbContext);
+			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
 			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
 			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
@@ -139,7 +141,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 			testDbContext.Database.DropCreate();
 
 			var dataLoader = new FakeDataLoader();
-			var entityKeyAccessor = new DbEntityKeyAccessor<ItemWithDeleted, int>(testDbContext);
+			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
 			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
 			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
@@ -164,7 +166,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 			testDbContext.Database.DropCreate();
 
 			var dataLoader = new FakeDataLoader();
-			var entityKeyAccessor = new DbEntityKeyAccessor<ItemWithDeleted, int>(testDbContext);
+			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
 			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
 			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
@@ -191,7 +193,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 			SeedData(true);
 
 			var dataLoader = new FakeDataLoader();
-			var entityKeyAccessor = new DbEntityKeyAccessor<ItemWithDeleted, int>(testDbContext);
+			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
 			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
 			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
@@ -215,7 +217,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 			Assert.AreNotEqual(0, ids.Length, "Pro test jsou potřeba data.");
 
 			var dataLoader = new FakeDataLoader();
-			var entityKeyAccessor = new DbEntityKeyAccessor<ItemWithDeleted, int>(testDbContext);
+			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
 			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
 			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 			
@@ -239,7 +241,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 			Assert.AreNotEqual(0, ids.Length, "Pro test jsou potřeba data.");
 
 			var dataLoader = new FakeDataLoader();
-			var entityKeyAccessor = new DbEntityKeyAccessor<ItemWithDeleted, int>(testDbContext);
+			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
 			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
 			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
@@ -266,7 +268,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 			Assert.AreNotEqual(0, ids.Length, "Pro test jsou potřeba data smazaná příznakem.");
 
 			var dataLoader = new FakeDataLoader();
-			var entityKeyAccessor = new DbEntityKeyAccessor<ItemWithDeleted, int>(testDbContext);
+			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
 			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
 			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
@@ -293,7 +295,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 			Assert.AreNotEqual(0, ids.Length, "Pro test jsou potřeba data smazaná příznakem.");
 
 			var dataLoader = new FakeDataLoader();
-			var entityKeyAccessor = new DbEntityKeyAccessor<ItemWithDeleted, int>(testDbContext);
+			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
 			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
 			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
@@ -317,7 +319,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 			int maxId = testDbContext.Set<ItemWithDeleted>().Max(item => item.Id);
 
 			var dataLoader = new FakeDataLoader();
-			var entityKeyAccessor = new DbEntityKeyAccessor<ItemWithDeleted, int>(testDbContext);
+			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
 			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
 			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
@@ -340,7 +342,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 			int maxId = testDbContext.Set<ItemWithDeleted>().Max(item => item.Id);
 
 			var dataLoader = new FakeDataLoader();
-			var entityKeyAccessor = new DbEntityKeyAccessor<ItemWithDeleted, int>(testDbContext);
+			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
 			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
 			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
@@ -362,7 +364,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 			int id = testDbContext.Set<ItemWithDeleted>().Select(item => item.Id).First(); // načteme jen identifikátor, nikoliv objekt!
 
 			var dataLoader = new FakeDataLoader();
-			var entityKeyAccessor = new DbEntityKeyAccessor<ItemWithDeleted, int>(testDbContext);
+			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
 			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
 			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
@@ -386,7 +388,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 			int id = testDbContext.Set<ItemWithDeleted>().Select(item => item.Id).First(); // načteme jen identifikátor, nikoliv objekt!
 
 			var dataLoader = new FakeDataLoader();
-			var entityKeyAccessor = new DbEntityKeyAccessor<ItemWithDeleted, int>(testDbContext);
+			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
 			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
 			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
@@ -410,7 +412,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 			int id = testDbContext.Set<ItemWithDeleted>().Select(item => item.Id).First(); // načteme jen identifikátor, nikoliv objekt!
 
 			var dataLoader = new FakeDataLoader();
-			var entityKeyAccessor = new DbEntityKeyAccessor<ItemWithDeleted, int>(testDbContext);
+			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
 			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
 			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
@@ -435,7 +437,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 			int id = testDbContext.Set<ItemWithDeleted>().Select(item => item.Id).First(); // načteme jen identifikátor, nikoliv objekt!
 
 			var dataLoader = new FakeDataLoader();
-			var entityKeyAccessor = new DbEntityKeyAccessor<ItemWithDeleted, int>(testDbContext);
+			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
 			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
 			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
@@ -459,7 +461,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 			int id = testDbContext.Set<ItemWithDeleted>().Select(item => item.Id).First(); // načteme jen identifikátor, nikoliv objekt!
 
 			var dataLoader = new FakeDataLoader();
-			var entityKeyAccessor = new DbEntityKeyAccessor<ItemWithDeleted, int>(testDbContext);
+			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
 			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
 			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
@@ -483,7 +485,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 			int id = testDbContext.Set<ItemWithDeleted>().Select(item => item.Id).First(); // načteme jen identifikátor, nikoliv objekt!
 
 			var dataLoader = new FakeDataLoader();
-			var entityKeyAccessor = new DbEntityKeyAccessor<ItemWithDeleted, int>(testDbContext);
+			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
 			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
 			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
@@ -510,6 +512,16 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 				}
 				testDbContext.SaveChanges();
 			}
+		}
+
+		private DbEntityKeyAccessor<TEntity, int> CreateEntityKeyAccessor<TEntity>(IDbContext dbContext)
+			where TEntity : class
+		{
+			var testDbContextFactoryMock = new Mock<IServiceFactory<IDbContext>>(MockBehavior.Strict);
+			testDbContextFactoryMock.Setup(m => m.CreateService()).Returns(dbContext);
+			testDbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
+			return new DbEntityKeyAccessor<TEntity, int>(testDbContextFactoryMock.Object);
+
 		}
 	}
 }

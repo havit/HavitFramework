@@ -10,6 +10,7 @@ using Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests.Infrastructure.Model
 using Havit.Data.Patterns.DataLoaders;
 using Havit.Data.Patterns.Localizations;
 using Havit.Data.Patterns.UnitOfWorks;
+using Havit.Services;
 using Havit.Services.TimeServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -116,6 +117,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 			container.Kernel.Resolver.AddSubResolver(new CollectionResolver(container.Kernel));
 
 			container.AddFacility<TypedFactoryFacility>();
+			container.Register(Component.For(typeof(IServiceFactory<>)).AsFactory());
 			container.WithEntityPatternsInstaller(new ComponentRegistrationOptions { GeneralLifestyle = lf => lf.Singleton })
 				.RegisterEntityPatterns()
 				.RegisterDbContext<TestDbContext>()

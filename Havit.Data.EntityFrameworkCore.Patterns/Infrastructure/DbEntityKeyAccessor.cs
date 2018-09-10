@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Threading;
 using Havit.Data.Patterns.Infrastructure;
 using Havit.Diagnostics.Contracts;
+using Havit.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Infrastructure
@@ -19,10 +20,18 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Infrastructure
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public DbEntityKeyAccessor(IDbContext dbContext)
+		public DbEntityKeyAccessor(IServiceFactory<IDbContext> dbContextFactory)
 		{
 			// pro možnost použití jako singletonu pro všechny případy používáme LazyThreadSafetyMode.ExecutionAndPublication
-			primaryKeyPropertyInfoLazy = new Lazy<PropertyInfo>(() => dbContext.Model.FindEntityType(typeof(TEntity)).FindPrimaryKey().Properties.Single().PropertyInfo, LazyThreadSafetyMode.ExecutionAndPublication);
+			primaryKeyPropertyInfoLazy = new Lazy<PropertyInfo>(() =>
+			{
+				PropertyInfo result = null;
+				dbContextFactory.ExecuteAction(dbContext =>
+				{
+					result = dbContext.Model.FindEntityType(typeof(TEntity)).FindPrimaryKey().Properties.Single().PropertyInfo;
+				});					
+				return result;
+			}, LazyThreadSafetyMode.ExecutionAndPublication);
 		}
 
 		/// <summary>

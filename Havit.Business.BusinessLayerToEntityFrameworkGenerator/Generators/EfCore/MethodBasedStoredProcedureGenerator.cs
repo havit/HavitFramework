@@ -43,9 +43,13 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
                 WriteUsings(codeWriter, entityClass);
                 WriteNamespaceClassConstructorBegin(codeWriter, entityClass, spClassName);
 
-                foreach (DbStoredProcedure dbStoredProcedure in fileGroup)
-                {
-                    WriteMethodBegin(codeWriter, dbStoredProcedure);
+                foreach ((DbStoredProcedure dbStoredProcedure, int index) in fileGroup.Select((sp, i) => (sp, i)))
+				{
+					if (index > 0)
+					{
+						codeWriter.WriteLine();
+					}
+					WriteMethodBegin(codeWriter, dbStoredProcedure);
                     WriteProcedureStatement(codeWriter, dbStoredProcedure);
                     WriteMethodEnd(codeWriter);
                 }

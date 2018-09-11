@@ -33,7 +33,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 			bool shouldSave = WriteTablePKs(writer, modelClass);
 			shouldSave |= WriteColumnMetadata(writer, modelClass);
 			shouldSave |= WritePrecisions(writer, modelClass);
-			shouldSave |= WriteCollections(writer, model, modelClass);
+			// configuration directives for collections shouldn't be necessary, they're covered by EF Core conventions
 			shouldSave |= WritePrincipals(writer, modelClass);
 			WriteNamespaceClassConstructorEnd(writer);
 
@@ -132,58 +132,6 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 
 			if (result)
 			{
-				writer.WriteLine();
-			}
-			return result;
-		}
-
-		private static bool WriteCollections(CodeWriter writer, GeneratedModel model, GeneratedModelClass modelClass)
-		{
-			Table table = modelClass.Table;
-
-			bool result = false;
-			foreach (EntityCollectionProperty collectionProperty in modelClass.CollectionProperties)
-			{
-				CollectionProperty collection = collectionProperty.CollectionProperty;
-				Table targetTable = collection.IsManyToMany ? collection.JoinTable : collection.TargetTable;
-
-				if (LocalizationHelper.IsLocalizedTable(table) && (collection.PropertyName == "Localizations"))
-				{
-					continue;
-				}
-
-				// pokud je v cílové tabulce jen jeden klíč, není třeba
-				//               if (collection.TargetTable.Columns
-				//	.Cast<Column>()
-				//	.Any(column => TypeHelper.IsBusinessObjectReference(column) 
-				//		&& (ColumnHelper.GetReferencedTable(column) == table)
-				//		/*&& String.Equals(column.Name, table.Name + "Id", StringComparison.InvariantCultureIgnoreCase))*/))
-				//{ 
-				//	continue;						
-				//}
-
-				GeneratedModelClass targetEntity = model.GetEntityByTable(targetTable);
-				EntityForeignKey fk = targetEntity.GetForeignKeyForColumn(collection.ReferenceColumn);
-
-				writer.WriteLine(String.Format("builder.HasMany({0} => {0}.{1})",
-					ConventionsHelper.GetCammelCase(modelClass.Name),
-					collection.PropertyName));
-
-				writer.Indent();
-				writer.WriteLine(String.Format(".WithOne({0} => {0}.{1})",
-					ConventionsHelper.GetCammelCase(ClassHelper.GetClassName(targetTable)),
-					fk.NavigationProperty.Name));
-				if (!collection.ReferenceColumn.Nullable)
-				{
-					writer.WriteLine(".IsRequired();");
-				}
-				else
-				{
-					writer.EndPreviousStatement();
-				}
-				writer.Unindent();
-
-				result = true;
 				writer.WriteLine();
 			}
 			return result;

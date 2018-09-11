@@ -16,14 +16,16 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.StoredProced
 		/// </summary>
 		/// <param name="createScriptResourceName">Názov resource s create skriptom pre uloženú procedúru.</param>
 		/// <returns><see cref="StoredProcedureDbInjection"/> objekt reprezentujúci uloženú procedúru.</returns>
-        protected StoredProcedureDbInjection Procedure(string createScriptResourceName)
-        {
-            if (!ResourceAssembly.GetManifestResourceNames().Contains(createScriptResourceName))
+        protected StoredProcedureDbInjection Procedure(string createScriptResourceName, Assembly resourceAssembly = null)
+		{
+			resourceAssembly = resourceAssembly ?? GetDefaultResourceAssembly();
+
+            if (!resourceAssembly.GetManifestResourceNames().Contains(createScriptResourceName))
             {
                 throw new ArgumentException($"Invalid embedded resource name {createScriptResourceName}", nameof(createScriptResourceName));
             }
 
-            using (var textStream = new StreamReader(ResourceAssembly.GetManifestResourceStream(createScriptResourceName)))
+            using (var textStream = new StreamReader(resourceAssembly.GetManifestResourceStream(createScriptResourceName)))
             {
                 string createScript = textStream.ReadToEnd();
                 return new StoredProcedureDbInjection { CreateSql = createScript, ProcedureName = ParseProcedureName(createScript) };
@@ -33,7 +35,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.StoredProced
 		/// <summary>
 		/// Assembly, ktorá obsahuje resources so skriptami. Štandardne je to assembly, v ktorej je definovaná trieda zdedená od <see cref="StoredProcedureDbInjection"/>.
 		/// </summary>
-        protected virtual Assembly ResourceAssembly => GetType().Assembly;
+		private Assembly GetDefaultResourceAssembly() => GetType().Assembly;
 
         private string ParseProcedureName(string createScript) => Regex.Match(createScript, @"CREATE(\s+)PROCEDURE(\s+)(\[.*?\]\.)?\[?(?<proc_name>[\w]*)\]?").Groups["proc_name"].Value;
     }

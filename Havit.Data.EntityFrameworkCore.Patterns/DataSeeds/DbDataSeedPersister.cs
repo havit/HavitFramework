@@ -65,10 +65,15 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
             }
         }
 
-        private void CheckConditions<TEntity>(DataSeedConfiguration<TEntity> configuration)
+        internal void CheckConditions<TEntity>(DataSeedConfiguration<TEntity> configuration)
         {
             Contract.Requires<ArgumentNullException>(configuration != null, nameof(configuration));
             Contract.Requires<InvalidOperationException>((configuration.PairByExpressions != null) && (configuration.PairByExpressions.Count > 0), "Expression to pair object missing (missing PairBy method call).");
+
+	        var entityType = dbContext.Model.FindEntityType(typeof(TEntity));
+	        var propertiesForInserting = GetPropertiesForInserting(entityType).Select(item => item.PropertyInfo.Name).ToList();
+
+	        Contract.Assert<InvalidOperationException>(configuration.PairByExpressions.TrueForAll(expression => propertiesForInserting.Contains(GetPropertyName(expression.Body.RemoveConvert()))), "Expression to pair object contains not supported property (only properties which can be inserted are allowed).");
         }
 
         /// <summary>

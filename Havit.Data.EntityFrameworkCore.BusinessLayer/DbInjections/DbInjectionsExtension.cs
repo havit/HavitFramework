@@ -10,7 +10,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
     public class DbInjectionsExtension : IDbContextOptionsExtension
     {
         private readonly List<Type> annotationProviders = new List<Type>();
-        private readonly List<Type> dropSqlGenerators = new List<Type>();
+        private readonly List<Type> sqlGenerators = new List<Type>();
 
         public string LogFragment => "";
 
@@ -21,10 +21,10 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
             return this;
         }
 
-        public DbInjectionsExtension WithDropSqlGenerator<T>()
-            where T : IDbInjectionDropSqlGenerator
+        public DbInjectionsExtension WithSqlGenerator<T>()
+            where T : IDbInjectionSqlGenerator
         {
-            dropSqlGenerators.Add(typeof(T));
+            sqlGenerators.Add(typeof(T));
             return this;
         }
 
@@ -36,17 +36,17 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
                 var providers = currentProviderTypes.Select(type => (IDbInjectionAnnotationProvider)serviceProvider.GetService(type)).ToArray();
                 return new CompositeDbInjectionAnnotationProvider(providers);
             }
-            var currentDropSqlGeneratorTypes = dropSqlGenerators.ToArray();
-            DbInjectionDropSqlResolver DropSqlResolverFactory(IServiceProvider serviceProvider)
+            var currentSqlGeneratorTypes = sqlGenerators.ToArray();
+            DbInjectionSqlResolver DropSqlResolverFactory(IServiceProvider serviceProvider)
             {
-                var generators = currentDropSqlGeneratorTypes.Select(type => (IDbInjectionDropSqlGenerator)serviceProvider.GetService(type)).ToArray();
-                return new DbInjectionDropSqlResolver(generators);
+                var generators = currentSqlGeneratorTypes.Select(type => (IDbInjectionSqlGenerator)serviceProvider.GetService(type)).ToArray();
+                return new DbInjectionSqlResolver(generators);
             }
 
             services.Add(annotationProviders.ToArray().Select(t => ServiceDescriptor.Singleton(t, t)));
-            services.Add(dropSqlGenerators.ToArray().Select(t => ServiceDescriptor.Singleton(t, t)));
+            services.Add(sqlGenerators.ToArray().Select(t => ServiceDescriptor.Singleton(t, t)));
             services.AddSingleton<IDbInjectionAnnotationProvider, CompositeDbInjectionAnnotationProvider>(AnnotationProviderFactory);
-            services.AddSingleton<IDbInjectionDropSqlResolver, DbInjectionDropSqlResolver>(DropSqlResolverFactory);
+            services.AddSingleton<IDbInjectionSqlResolver, DbInjectionSqlResolver>(DropSqlResolverFactory);
 
             return false;
         }

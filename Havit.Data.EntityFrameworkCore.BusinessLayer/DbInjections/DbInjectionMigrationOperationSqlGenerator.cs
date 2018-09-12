@@ -11,23 +11,26 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
     public class DbInjectionMigrationOperationSqlGenerator : MigrationOperationSqlGenerator
     {
         private readonly IDbInjectionAnnotationProvider dbInjectionAnnotationProvider;
-        private readonly IDbInjectionDropSqlResolver dbInjectionDropSqlResolver;
+        private readonly IDbInjectionSqlResolver dbInjectionSqlResolver;
 
         public DbInjectionMigrationOperationSqlGenerator(
             IDbInjectionAnnotationProvider dbInjectionAnnotationProvider,
-            IDbInjectionDropSqlResolver dbInjectionDropSqlResolver)
+            IDbInjectionSqlResolver dbInjectionSqlResolver)
         {
             this.dbInjectionAnnotationProvider = dbInjectionAnnotationProvider;
-            this.dbInjectionDropSqlResolver = dbInjectionDropSqlResolver;
+            this.dbInjectionSqlResolver = dbInjectionSqlResolver;
         }
 
         public override void Generate(AlterDatabaseOperation operation, IModel model, MigrationCommandListBuilder builder)
         {
 	        var oldAnnotations = GetAnnotations(operation.OldDatabase.GetAnnotations());
-            var newAnnotations = GetAnnotations(operation.GetAnnotations());
-            List<IAnnotation> deletedAnnotations = oldAnnotations.Where(x => !newAnnotations.ContainsKey(x.Key)).Select(x => x.Value).ToList<IAnnotation>();
+            var currentAnnotations = GetAnnotations(operation.GetAnnotations());
+	        var newAnnotations = currentAnnotations.Where(x => !oldAnnotations.ContainsKey(x.Key)).Select(x => x.Value).ToList<IAnnotation>();
+            List<IAnnotation> deletedAnnotations = oldAnnotations.Where(x => !currentAnnotations.ContainsKey(x.Key)).Select(x => x.Value).ToList<IAnnotation>();
+            List<IAnnotation> existingAnnotations = oldAnnotations.Where(x => currentAnnotations.ContainsKey(x.Key)).Select(x => currentAnnotations[x.Key]).ToList<IAnnotation>();
 
-            GenerateCreateAndUpdateCommands(newAnnotations.Values.ToList<IAnnotation>(), builder);
+            GenerateCreateCommands(newAnnotations, builder);
+			GenerateAlterCommands(existingAnnotations, builder);
             GenerateDropCommands(deletedAnnotations, builder);
         }
 
@@ -41,7 +44,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
         {
             List<IDbInjection> dbInjections = dbInjectionAnnotationProvider.GetDbInjections(oldAnnotations);
 
-            List<string> scripts = dbInjectionDropSqlResolver.ResolveSqlScripts(dbInjections);
+            List<string> scripts = dbInjectionSqlResolver.ResolveDropSqlScripts(dbInjections);
 
             foreach (string sql in scripts)
             {
@@ -49,9 +52,20 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
             }
         }
 
-        protected void GenerateCreateAndUpdateCommands(List<IAnnotation> newAnnotations, MigrationCommandListBuilder builder)
+	    private void GenerateAlterCommands(List<IAnnotation> existingAnnotations, MigrationCommandListBuilder builder)
         {
-            // Both for create and update
+            List<IDbInjection> dbInjections = dbInjectionAnnotationProvider.GetDbInjections(existingAnnotations);
+
+            List<string> scripts = dbInjectionSqlResolver.ResolveAlterSqlScripts(dbInjections);
+
+            foreach (string sql in scripts)
+            {
+                builder.Append(sql).EndCommand();
+            }
+        }
+
+        protected void GenerateCreateCommands(List<IAnnotation> newAnnotations, MigrationCommandListBuilder builder)
+        {
             foreach (var annotation in newAnnotations)
             {
                 var sql = (string)annotation.Value;

@@ -26,7 +26,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
             IDbContextOptionsBuilderInfrastructure infrastructure = optionsBuilder;
             infrastructure.AddOrUpdateExtension(new DbInjectionsExtension()
                 .WithAnnotationProvider<StoredProcedureAnnotationProvider>()
-                .WithDropSqlGenerator<StoredProcedureDropSqlGenerator>()
+                .WithSqlGenerator<StoredProcedureSqlGenerator>()
                 .WithAnnotationProvider<ExtendedPropertiesAnnotationProvider>()
 				.WithAnnotationProvider<StoredProcedureAttachPropertyAnnotationProvider>()
 			);

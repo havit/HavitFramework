@@ -276,7 +276,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 		    return entityType
 			    .GetProperties()
 			    .Where(item => !item.IsShadowProperty)
-			    .Where(p => !p.ValueGenerated.HasFlag(ValueGenerated.OnAdd))
+				// hodnoty generované při zakládání objektu nemusíme párovat, protože jejich hodnota bude nastavena v databázi
+				// pokud však má entita použitou sekvenci (což detekujeme přes DefaultValueSql), pak ručně zapsanou hodnotu chceme párovat
+			    .Where(p => !p.ValueGenerated.HasFlag(ValueGenerated.OnAdd) || !String.IsNullOrEmpty(p.Relational().DefaultValueSql))
 			    .ToList();
 		}
 
@@ -285,7 +287,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 			List<IProperty> result = entityType
 				.GetProperties()
 				.Where(item => !item.IsShadowProperty)
-				.Where(p => !p.ValueGenerated.HasFlag(ValueGenerated.OnAdd) && !p.ValueGenerated.HasFlag(ValueGenerated.OnUpdate))
+			    .Where(p => !p.IsKey()) // hodnotu primárního klíče nelze aktualizovat
+			    .Where(p => !p.ValueGenerated.HasFlag(ValueGenerated.OnAdd))
+			    .Where(p => !p.ValueGenerated.HasFlag(ValueGenerated.OnUpdate))
 				.ToList();
 
 			if (excludedProperties != null)

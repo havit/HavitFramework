@@ -5,6 +5,7 @@ using System.Reflection;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.ExtendedProperties;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.StoredProcedures;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.Infrastructure;
+using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
@@ -14,21 +15,27 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
 	/// Extension metódy pre konfiguráciu DB Injections.
 	/// </summary>
 	public static class DbInjectionsExtensions
-    {
+	{
 		/// <summary>
 		/// Registruje služby používané podporou pre DB Injections. Je nutné, aby bola táto metóda volaná až po tom, ako boli zaregistrované infraštruktúrne služby pomocou <see cref="InfrastructureExtensions.UseCodeMigrationsInfrastructure"/>.
 		/// </summary>
-		public static void UseDbInjections(this DbContextOptionsBuilder optionsBuilder)
+		public static void UseDbInjections(this DbContextOptionsBuilder optionsBuilder, Action<DbInjectionsOptions> setupAction = null)
         {
+			Contract.Requires<ArgumentNullException>(optionsBuilder != null);
+
             optionsBuilder.Options.GetExtension<CompositeMigrationsAnnotationProviderExtension>().WithAnnotationProvider<DbInjectionsMigrationsAnnotationProvider>();
             optionsBuilder.Options.GetExtension<CompositeMigrationsSqlGeneratorExtension>().WithGeneratorType<DbInjectionMigrationOperationSqlGenerator>();
 
-            IDbContextOptionsBuilderInfrastructure infrastructure = optionsBuilder;
-            infrastructure.AddOrUpdateExtension(new DbInjectionsExtension()
+	        var options = new DbInjectionsOptions();
+	        setupAction?.Invoke(options);
+
+	        IDbContextOptionsBuilderInfrastructure infrastructure = optionsBuilder;
+	        infrastructure.AddOrUpdateExtension(new DbInjectionsExtension()
                 .WithAnnotationProvider<StoredProcedureAnnotationProvider>()
                 .WithSqlGenerator<StoredProcedureSqlGenerator>()
                 .WithAnnotationProvider<ExtendedPropertiesAnnotationProvider>()
 				.WithAnnotationProvider<StoredProcedureAttachPropertyAnnotationProvider>()
+		        .WithOptions(options)
 			);
         }
 

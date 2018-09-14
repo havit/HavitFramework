@@ -1,5 +1,4 @@
 ﻿using System;
-using Havit.Diagnostics.Contracts;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.ExtendedProperties.Attributes
 {
@@ -19,8 +18,6 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.ExtendedProp
 		/// </summary>
 		public AttachAttribute(string entityName)
 		{
-			Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(entityName));
-
 			EntityName = entityName;
 		}
 	}

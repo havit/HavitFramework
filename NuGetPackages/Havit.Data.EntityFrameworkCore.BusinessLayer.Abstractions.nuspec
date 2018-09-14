@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
 	<id>Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions</id>
-	<version>1.0.1-beta</version>
+	<version>1.0.2-beta</version>
 	<title>Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions</title>
 	<authors>HAVIT</authors>
 	<owners>HAVIT</owners>

@@ -336,14 +336,16 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 			        writer.WriteLine(attributeBuilder.ToString());
 			    }
 
-			    if (Helpers.NamingConventions.NamespaceHelper.GetNamespaceName(table, "Model") == Helpers.NamingConventions.NamespaceHelper.GetNamespaceName(collectionProperty.TargetTable, "Model"))
+				string className;
+				if (Helpers.NamingConventions.NamespaceHelper.GetNamespaceName(table, "Model") == Helpers.NamingConventions.NamespaceHelper.GetNamespaceName(collectionProperty.TargetTable, "Model"))
 				{
-					writer.WriteLine($"public List<{ClassHelper.GetClassName(collectionProperty.TargetTable)}> {collection.PropertyName} {{ get; set; }}");
+					className = ClassHelper.GetClassName(collectionProperty.TargetTable);
 				}
 				else
 				{
-					writer.WriteLine($"public List<{Helpers.NamingConventions.ClassHelper.GetClassFullName(collectionProperty.TargetTable, "Model")}> {collection.PropertyName} {{ get; set; }}");
+					className = Helpers.NamingConventions.ClassHelper.GetClassFullName(collectionProperty.TargetTable, "Model");
 				}
+				writer.WriteLine($"public List<{className}> {collection.PropertyName} {{ get; }} = new List<{className}>();");
 				writer.WriteLine();
 			}
 

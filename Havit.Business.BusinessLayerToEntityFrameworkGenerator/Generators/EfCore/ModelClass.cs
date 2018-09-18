@@ -105,11 +105,11 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 				}
 				if (i < (enumMembers.Count - 1))
 				{
-					writer.WriteLine(enumMember.MemberName + ",");
+					writer.WriteLine(String.Format("{0} = {1},", enumMember.MemberName, enumMember.MemberID));
 				}
 				else
 				{
-					writer.WriteLine(enumMember.MemberName);
+					writer.WriteLine(String.Format("{0} = {1}", enumMember.MemberName, enumMember.MemberID));
 				}
 			}
 			writer.WriteLine("}");

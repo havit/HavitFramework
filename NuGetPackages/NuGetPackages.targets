@@ -1,5 +1,5 @@
 ﻿<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Target Name="CreateNuGetPackages" AfterTargets="AfterBuild">
+  <Target Name="CreateNuGetPackages" AfterTargets="AfterBuild" Condition="'$(Configuration)' == 'Release'">
     <Exec WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 -OutputPath $(OutputPath) -NuspecFile Havit.ApplicationInsights.DependencyCollector.nuspec" />
 	<Exec WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 -OutputPath $(OutputPath) -NuspecFile Havit.AspNet.Mvc.nuspec" />
 	<Exec WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="false" Command="powershell \\topol\Library\NuGet\CommandLineUtility\NuGetPack.ps1 -OutputPath $(OutputPath) -NuspecFile Havit.AspNetCore.Mvc.nuspec" />

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Havit.Data.EntityFrameworkCore.Conventions;
+using Havit.Data.EntityFrameworkCore.Metadata;
 using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -29,7 +30,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
         {
             Contract.Requires<ArgumentNullException>(modelBuilder != null);
 
-	        foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypes())
+	        foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypesExcludingSystemTypes())
 	        {
 		        IEnumerable<IMutableProperty> foreignKeyProperties = entityType.GetForeignKeys()
 			        .SelectMany(fk => fk.Properties)

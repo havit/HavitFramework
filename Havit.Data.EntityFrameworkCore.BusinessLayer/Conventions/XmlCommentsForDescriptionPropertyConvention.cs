@@ -7,6 +7,7 @@ using System.Xml.Linq;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.XmlComments;
 using Havit.Data.EntityFrameworkCore.Conventions;
+using Havit.Data.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -26,7 +27,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 		{
 			var xmlCommentParser = new XmlCommentParser();
 
-			var groupedByAssemblies = modelBuilder.Model.GetEntityTypes().GroupBy(entityType => entityType.ClrType.Assembly);
+			var groupedByAssemblies = modelBuilder.Model.GetEntityTypesExcludingSystemTypes().GroupBy(entityType => entityType.ClrType.Assembly);
 
 			foreach (IGrouping<Assembly, IMutableEntityType> assemblyEntities in groupedByAssemblies)
 			{

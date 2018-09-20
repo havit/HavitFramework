@@ -16,7 +16,7 @@ namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation
 			ModelValidatingDbContext modelValidatingDbContext = new ModelValidatingDbContext();
 
 			// Act + Assert
-			Assert.IsFalse(modelValidatingDbContext.Model.FindEntityType(typeof(OneCorrectKeyClass)).IsSystemEntity());
+			Assert.IsFalse(modelValidatingDbContext.Model.FindEntityType(typeof(OneCorrectKeyClass)).IsSystemType());
 		}
 
 		[TestMethod]

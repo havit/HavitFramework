@@ -13,7 +13,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Entity
 	    {
 		    return model
 			    .GetEntityTypes()
-			    .Where(entityType => !entityType.IsSystemEntity())
+			    .Where(entityType => !entityType.IsSystemType())
 			    .Where(entityType => !entityType.IsManyToManyEntity());
 	    }
     }

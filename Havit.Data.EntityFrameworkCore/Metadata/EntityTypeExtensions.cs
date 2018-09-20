@@ -15,7 +15,7 @@ namespace Havit.Data.EntityFrameworkCore.Metadata
 	    /// <summary>
 	    /// Vrací true, pokud jde o systémovou entitu, tj. entitu zaregistrovanou HFW automaticky.
 	    /// </summary>
-	    public static bool IsSystemEntity(this IEntityType entityType)
+	    public static bool IsSystemType(this IEntityType entityType)
 	    {
 			return entityType.ClrType == typeof(Havit.Data.EntityFrameworkCore.Model.DataSeedVersion);
 		}

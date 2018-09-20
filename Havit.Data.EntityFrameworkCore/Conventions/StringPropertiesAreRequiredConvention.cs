@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Havit.Data.EntityFrameworkCore.Metadata;
 
 namespace Havit.Data.EntityFrameworkCore.Conventions
 {
@@ -16,7 +17,9 @@ namespace Havit.Data.EntityFrameworkCore.Conventions
 	    /// </summary>
 		public void Apply(ModelBuilder modelBuilder)
 	    {
-		    var stringProperties = modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetDeclaredProperties().Where(prop => prop.ClrType == typeof(String))).ToList();
+		    var stringProperties = modelBuilder.Model
+				.GetEntityTypesExcludingSystemTypes()
+				.SelectMany(entityType => entityType.GetDeclaredProperties().Where(prop => prop.ClrType == typeof(String))).ToList();
 
 		    foreach (IMutableProperty stringProperty in stringProperties)
 		    {

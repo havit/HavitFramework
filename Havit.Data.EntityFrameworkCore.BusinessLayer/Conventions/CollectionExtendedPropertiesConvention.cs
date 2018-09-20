@@ -3,6 +3,7 @@ using System.Linq;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata;
 using Havit.Data.EntityFrameworkCore.Conventions;
+using Havit.Data.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -16,9 +17,9 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 		/// <inheritdoc />
 		public void Apply(ModelBuilder modelBuilder)
 		{
-			foreach (IMutableEntityType entity in modelBuilder.Model.GetEntityTypes())
+			foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypesExcludingSystemTypes())
 			{
-				foreach (IMutableNavigation navigation in entity.GetNavigations().Where(n => n.IsCollection()))
+				foreach (IMutableNavigation navigation in entityType.GetNavigations().Where(n => n.IsCollection()))
 				{
 					if (navigation.Name == "Localizations" && navigation.ForeignKey.DeclaringEntityType.IsLocalizationEntity())
 					{
@@ -31,7 +32,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 						{ $"Collection_{navigation.PropertyInfo.Name}", navigation.ForeignKey.DeclaringEntityType.Relational().TableName + "." + navigation.ForeignKey.Properties[0].Relational().ColumnName }
 					};
 
-					entity.AddExtendedProperties(extendedProperties);
+					entityType.AddExtendedProperties(extendedProperties);
 				}
 			}
 		}

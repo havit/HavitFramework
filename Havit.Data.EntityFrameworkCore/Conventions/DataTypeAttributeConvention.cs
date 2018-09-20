@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Havit.Data.EntityFrameworkCore.Metadata;
 
 namespace Havit.Data.EntityFrameworkCore.Conventions
 {
@@ -17,7 +18,9 @@ namespace Havit.Data.EntityFrameworkCore.Conventions
 		public void Apply(ModelBuilder modelBuilder)
 		{
 			var propertiesWithDataTypeAttribute = 
-				(from property in modelBuilder.Model.GetEntityTypes().SelectMany(t => t.GetDeclaredProperties())
+				(from property in modelBuilder.Model
+				 .GetEntityTypesExcludingSystemTypes()
+				 .SelectMany(entityType => entityType.GetDeclaredProperties())
 				 where property.PropertyInfo != null // shadow properties
 				 from attribute in property.PropertyInfo.GetCustomAttributes(typeof(DataTypeAttribute), false).Cast<DataTypeAttribute>()
 				 select new { Property = property, DataTypeAttribute = attribute })

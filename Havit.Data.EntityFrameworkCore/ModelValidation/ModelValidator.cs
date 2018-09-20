@@ -34,7 +34,7 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 			IModel model = dbContext.Model;
 
 			List<string> errors = model.GetEntityTypes()
-				.Where(entitytype => !entitytype.IsSystemEntity())
+				.Where(entitytype => !entitytype.IsSystemType())
 				.Where(entitytype => !entitytype.IsManyToManyEntity())
 				.SelectMany(entityType => CheckWhenEnabled(validationRules.CheckPrimaryKeyIsNotComposite, () => CheckPrimaryKeyIsNotComposite(entityType))
 					.Concat(CheckWhenEnabled(validationRules.CheckPrimaryKeyName, () => CheckPrimaryKeyName(entityType)))

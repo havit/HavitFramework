@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Havit.Data.EntityFrameworkCore.Conventions;
+using Havit.Data.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -13,8 +14,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 	    /// <inheritdoc />
 	    public void Apply(ModelBuilder modelBuilder)
         {
-            foreach (IMutableProperty property in modelBuilder.Model.GetEntityTypes()
-                .SelectMany(e => e.GetProperties())
+            foreach (IMutableProperty property in modelBuilder.Model.GetEntityTypesExcludingSystemTypes()
+                .SelectMany(entityType => entityType.GetProperties())
                 .Where(p => p.ClrType == typeof(char)))
             {
                 //Regex.Match(property.Relational().ColumnType, "^(n)?varchar(\\(.*?\\))?$", RegexOptions.IgnoreCase);

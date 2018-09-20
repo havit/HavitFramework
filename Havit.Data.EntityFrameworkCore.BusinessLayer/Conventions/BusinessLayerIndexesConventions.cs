@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.Metadata;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata;
 using Havit.Data.EntityFrameworkCore.Conventions;
+using Havit.Data.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -28,7 +29,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 	    /// <inheritdoc />
 	    public void Apply(ModelBuilder modelBuilder)
         {
-            foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypes())
+            foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypesExcludingSystemTypes())
             {
 				RenameForeignKeyIndexes(entityType.GetForeignKeys());
 

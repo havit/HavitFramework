@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProperties;
 using Havit.Data.EntityFrameworkCore.Conventions;
+using Havit.Data.EntityFrameworkCore.Metadata;
 using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -33,7 +34,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 
 			var currentNamingConvention = namingConvention ?? (entityTypeName => $"sq_{entityTypeName}");
 
-			IEnumerable<IMutableEntityType> enumClassEntities = modelBuilder.Model.GetEntityTypes().Where(e => e.ClrType.GetCustomAttributes<EnumClassAttribute>().Any());
+			IEnumerable<IMutableEntityType> enumClassEntities = modelBuilder.Model.GetEntityTypesExcludingSystemTypes().Where(entityType => entityType.ClrType.GetCustomAttributes<EnumClassAttribute>().Any());
 
 			foreach (IMutableEntityType entityType in enumClassEntities)
 			{

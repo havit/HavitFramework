@@ -1,5 +1,6 @@
 ﻿using System;
 using Havit.Data.EntityFrameworkCore.Conventions;
+using Havit.Data.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -25,15 +26,15 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 		/// <inheritdoc />
 		public void Apply(ModelBuilder modelBuilder)
 		{
-			foreach (IMutableEntityType table in modelBuilder.Model.GetEntityTypes())
+			foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypesExcludingSystemTypes())
 			{
-				IMutableKey primaryKey = table.FindPrimaryKey();
+				IMutableKey primaryKey = entityType.FindPrimaryKey();
 				foreach (IMutableProperty property in primaryKey.Properties)
 				{
 					string columnName = property.Relational().ColumnName;
 					if (columnName.Equals("Id", StringComparison.OrdinalIgnoreCase))
 					{
-						columnName = $"{table.ShortName()}{tableSuffix}";
+						columnName = $"{entityType.ShortName()}{tableSuffix}";
 					}
 					else if (columnName.EndsWith("ID", StringComparison.OrdinalIgnoreCase))
 					{

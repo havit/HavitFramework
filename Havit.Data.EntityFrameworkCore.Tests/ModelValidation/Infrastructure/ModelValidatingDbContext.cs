@@ -14,6 +14,16 @@ namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation.Infrastructure
 			modelBuilder.Entity<MoreInvalidKeysClass>().HasKey(x => new { x.Id1, x.Id2 }); // složený primární klíč
 			modelBuilder.Entity<UserRoleMembership>().HasKey(x => new { x.UserId, x.RoleId }); // složený primární klíč
 			modelBuilder.Entity<ForeignKeyWithNoNavigationPropertyMasterClass>().HasMany(m => m.Children).WithOne().HasForeignKey(c => c.MasterId);
+
+			modelBuilder.Entity<GroupToGroup>().HasKey(groupHierarchy => new { groupHierarchy.ChildGroupId, groupHierarchy.ParentGroupId });
+
+			modelBuilder.Entity<GroupToGroup>().HasOne(groupHierarchy => groupHierarchy.ChildGroup)
+				.WithMany(group => group.Parents)
+				.OnDelete(DeleteBehavior.Restrict);
+
+			modelBuilder.Entity<GroupToGroup>().HasOne(groupHierarchy => groupHierarchy.ParentGroup)
+				.WithMany(group => group.Children)
+				.OnDelete(DeleteBehavior.Restrict);
 		}
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

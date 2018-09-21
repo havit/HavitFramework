@@ -27,6 +27,8 @@ namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation
 
 			// Act + Assert
 			Assert.IsTrue(modelValidatingDbContext.Model.FindEntityType(typeof(UserRoleMembership)).IsManyToManyEntity(), typeof(UserRoleMembership).Name);
+			Assert.IsTrue(modelValidatingDbContext.Model.FindEntityType(typeof(GroupToGroup)).IsManyToManyEntity(), typeof(GroupToGroup).Name);
+			Assert.IsFalse(modelValidatingDbContext.Model.FindEntityType(typeof(Group)).IsManyToManyEntity(), typeof(Group).Name);
 			Assert.IsFalse(modelValidatingDbContext.Model.FindEntityType(typeof(User)).IsManyToManyEntity(), typeof(User).Name);
 			Assert.IsFalse(modelValidatingDbContext.Model.FindEntityType(typeof(MoreInvalidKeysClass)).IsManyToManyEntity(), typeof(MoreInvalidKeysClass).Name);
 		}

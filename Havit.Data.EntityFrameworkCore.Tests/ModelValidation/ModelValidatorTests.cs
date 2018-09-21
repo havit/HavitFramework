@@ -11,7 +11,7 @@ namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation
 {
 	[TestClass]
 	public class ModelValidatorTests
-	{			
+	{
 		[TestMethod]
 		public void ModelValidator_CheckWhenEnabled()
 		{
@@ -33,7 +33,7 @@ namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation
 
 			// Act
 			string[] errorsMoreInvalidKeysClass = modelValidator.CheckPrimaryKeyName(modelValidatingDbContext.Model.FindEntityType(typeof(NonIdKeyClass))).ToArray();
-			
+
 			// Assert			
 			Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("has a primary key named")));
 		}
@@ -47,7 +47,7 @@ namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation
 
 			// Act
 			string[] errorsMoreInvalidKeysClass = modelValidator.CheckPrimaryKeyName(modelValidatingDbContext.Model.FindEntityType(typeof(OneCorrectKeyClass))).ToArray();
-			
+
 			// Assert			
 			Assert.IsFalse(errorsMoreInvalidKeysClass.Any());
 		}
@@ -61,7 +61,7 @@ namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation
 
 			// Act
 			string[] errorsMoreInvalidKeysClass = modelValidator.CheckPrimaryKeyIsNotComposite(modelValidatingDbContext.Model.FindEntityType(typeof(MoreInvalidKeysClass))).ToArray();
-			
+
 			// Assert			
 			Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("only one is expected")));
 		}
@@ -265,8 +265,62 @@ namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation
 			Assert.IsFalse(errorsEntryWithGeneratedPrimaryKeyAndWithSymbol.Any()); // neobsahuje chybu
 			Assert.IsFalse(errorsEntryWithPrimaryKeyAndNoSymbol.Any()); // neobsahuje chybu
 			Assert.IsTrue(errorsEntryWithPrimaryKeyAndWithSymbol.Any()); // obsahuje chybu (duplicitní možnost párování)
+		}
 
+		[TestMethod]
+		public void ModelValidator_CheckOnlyForeignKeysEndsWithId_ReportsNonForeignKeyWithId()
+		{
+			// Arrange
+			ModelValidatingDbContext modelValidatingDbContext = new ModelValidatingDbContext();
+			ModelValidator modelValidator = new ModelValidator();
+
+			// Act
+			string[] errors = modelValidator.CheckOnlyForeignKeysEndsWithId(modelValidatingDbContext.Model.FindEntityType(typeof(IdWithNoForeignKey))).ToArray();
+
+			// Assert
+			Assert.IsTrue(errors.Any());
+		}
+
+		[TestMethod]
+		public void ModelValidator_CheckOnlyForeignKeysEndsWithId_DoesNotReportForeignKeyWithId()
+		{
+			// Arrange
+			ModelValidatingDbContext modelValidatingDbContext = new ModelValidatingDbContext();
+			ModelValidator modelValidator = new ModelValidator();
+
+			// Act
+			string[] errors = modelValidator.CheckOnlyForeignKeysEndsWithId(modelValidatingDbContext.Model.FindEntityType(typeof(IdWithForeignKey))).ToArray();
+
+			// Assert
+			Assert.IsFalse(errors.Any());
+		}
+
+		[TestMethod]
+		public void ModelValidator_CheckAllForeignKeysEndsWithId_ReportsForeignKeyWithoutId()
+		{
+			// Arrange
+			ModelValidatingDbContext modelValidatingDbContext = new ModelValidatingDbContext();
+			ModelValidator modelValidator = new ModelValidator();
+
+			// Act
+			string[] errors = modelValidator.CheckAllForeignKeysEndsWithId(modelValidatingDbContext.Model.FindEntityType(typeof(IdWithPoorlyNamedForeignKey))).ToArray();
+
+			// Assert
+			Assert.IsTrue(errors.Any());
+		}
+
+		[TestMethod]
+		public void ModelValidator_CheckAllForeignKeysEndsWithId_DoesNotReportForeignKeyWithId()
+		{
+			// Arrange
+			ModelValidatingDbContext modelValidatingDbContext = new ModelValidatingDbContext();
+			ModelValidator modelValidator = new ModelValidator();
+
+			// Act
+			string[] errors = modelValidator.CheckAllForeignKeysEndsWithId(modelValidatingDbContext.Model.FindEntityType(typeof(IdWithForeignKey))).ToArray();
+
+			// Assert
+			Assert.IsFalse(errors.Any());
 		}
 	}
 }
-

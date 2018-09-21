@@ -48,5 +48,15 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 		/// Kontroluje třídy, které mají Entry. Třídy, které mají vlastnost symbol, nesmí mít generovaný klíč a zároveň naopak třídy, které nemají vlastnost Symbo, musí mít generovaný klíč.
 		/// </summary>
 		public bool CheckSymbolVsPrimaryKeyForEntries { get; set; } = true;
+
+		/// <summary>
+		/// Kontroluje, zda všechny vlastnosti, jejichž název končí 'Id' jsou cizím klíčem.
+		/// </summary>
+		public bool CheckOnlyForeignKeysEndWithId { get; set; } = false;
+
+		/// <summary>
+		/// Kontroluje, zda názvy všech cizích klíčů končí 'Id'.
+		/// </summary>
+		public bool CheckAllForeignKeysEndWithId { get; set; } = false;
 	}
 }

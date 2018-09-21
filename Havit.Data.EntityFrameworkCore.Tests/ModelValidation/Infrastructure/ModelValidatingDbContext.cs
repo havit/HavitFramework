@@ -24,6 +24,8 @@ namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation.Infrastructure
 			modelBuilder.Entity<GroupToGroup>().HasOne(groupHierarchy => groupHierarchy.ParentGroup)
 				.WithMany(group => group.Children)
 				.OnDelete(DeleteBehavior.Restrict);
+
+			modelBuilder.Entity<IdWithPoorlyNamedForeignKey>().HasOne(item => item.ForeignKey).WithMany().HasForeignKey(item => item.ForeignKeyCode);
 		}
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

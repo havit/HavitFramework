@@ -33,9 +33,7 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 		{
 			IModel model = dbContext.Model;
 
-			List<string> errors = model.GetEntityTypes()
-				.Where(entitytype => !entitytype.IsSystemType())
-				.Where(entitytype => !entitytype.IsManyToManyEntity())
+			List<string> errors = model.GetApplicationEntityTypes(includeManyToManyEntities: false)
 				.SelectMany(entityType => CheckWhenEnabled(validationRules.CheckPrimaryKeyIsNotComposite, () => CheckPrimaryKeyIsNotComposite(entityType))
 					.Concat(CheckWhenEnabled(validationRules.CheckPrimaryKeyName, () => CheckPrimaryKeyName(entityType)))
 					.Concat(CheckWhenEnabled(validationRules.CheckPrimaryKeyType, () => CheckPrimaryKeyType(entityType)))
@@ -43,7 +41,9 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 					.Concat(CheckWhenEnabled(validationRules.CheckNavigationPropertiesHaveForeignKeys, () => CheckNavigationPropertiesHaveForeignKeys(entityType)))
 					.Concat(CheckWhenEnabled(validationRules.CheckStringsHaveMaxLengths, () => CheckStringsHaveMaxLengths(entityType)))
 					.Concat(CheckWhenEnabled(validationRules.CheckSupportedNestedTypes, () => CheckSupportedNestedTypes(entityType)))
-					.Concat(CheckWhenEnabled(validationRules.CheckSymbolVsPrimaryKeyForEntries, () => CheckSymbolVsPrimaryKeyForEntries(entityType))))
+					.Concat(CheckWhenEnabled(validationRules.CheckSymbolVsPrimaryKeyForEntries, () => CheckSymbolVsPrimaryKeyForEntries(entityType)))
+					.Concat(CheckWhenEnabled(validationRules.CheckOnlyForeignKeysEndWithId, () => CheckOnlyForeignKeysEndsWithId(entityType)))
+					.Concat(CheckWhenEnabled(validationRules.CheckAllForeignKeysEndWithId, () => CheckAllForeignKeysEndsWithId(entityType))))
 				.ToList();
 
 			return String.Join(Environment.NewLine, errors);
@@ -172,7 +172,7 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 		}
 
 		/// <summary>
-		/// Kontroluje třídy, které mají Entry. Třídy, které mají vlastnost symbol, nesmí mít generovaný klíč a zároveň naopak třídy, které nemají vlastnost Symbo, musí mít generovaný klíč.
+		/// Kontroluje třídy, které mají Entry. Třídy, které mají vlastnost symbol, nesmí mít generovaný klíč a zároveň naopak třídy, které nemají vlastnost Symbol, musí mít generovaný klíč.
 		/// </summary>
 		internal IEnumerable<string> CheckSymbolVsPrimaryKeyForEntries(IEntityType entityType)
 		{
@@ -194,5 +194,34 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 				}
 			}
 		}
+
+		/// <summary>
+		/// Kontroluje, zda všechny vlastnosti, jejichž název končí 'Id' jsou cizím klíčem.
+		/// </summary>
+		internal IEnumerable<string> CheckOnlyForeignKeysEndsWithId(IEntityType entityType)
+		{
+			foreach (var property in entityType.GetProperties().Where(property => !property.IsShadowProperty))
+			{
+				if (property.Name.EndsWith("Id") && !property.IsForeignKey() && !property.IsKey())
+				{
+					yield return $"Class {entityType.ClrType.Name} has a property named {property.Name} which is not a foreign key. The property name ends with 'Id' which is enabled only for foreign keys.";
+				}
+			}
+		}
+
+		/// <summary>
+		/// Kontroluje, zda názvy všech cizích klíčů končí 'Id'.
+		/// </summary>
+		internal IEnumerable<string> CheckAllForeignKeysEndsWithId(IEntityType entityType)
+		{
+			foreach (var property in entityType.GetProperties().Where(property => !property.IsShadowProperty))
+			{
+				if (!property.Name.EndsWith("Id") && property.IsForeignKey())
+				{
+					yield return $"Class {entityType.ClrType.Name} has a property named {property.Name} which is a foreign key. The property name does not end with 'Id'.";
+				}
+			}
+		}
+
 	}
 }

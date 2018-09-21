@@ -31,7 +31,6 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 			WriteNamespaceClassConstructorBegin(writer, modelClass, false);
 
 			bool shouldSave = WriteTablePKs(writer, modelClass);
-			shouldSave |= WriteColumnMetadata(writer, modelClass);
 			// configuration directives for collections shouldn't be necessary, they're covered by EF Core conventions
 			shouldSave |= WritePrincipals(writer, modelClass);
 			WriteNamespaceClassConstructorEnd(writer);
@@ -157,33 +156,6 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 				}
 			}
 			return result;
-		}
-
-		private static bool WriteColumnMetadata(CodeWriter writer, GeneratedModelClass modelClass)
-		{
-			Table table = modelClass.Table;
-
-			bool shouldSave = false;
-
-			foreach (EntityProperty property in modelClass.GetColumnProperties())
-			{
-
-				Column column = property.Column;
-
-				if (LocalizationHelper.IsLocalizationTable(table) && (LocalizationHelper.GetParentLocalizationColumn(table)) == column)
-				{
-					writer.WriteLine(String.Format("builder.Property({0} => {0}.ParentId)",
-						ConventionsHelper.GetCammelCase(modelClass.Name)));
-					writer.Indent();
-					writer.WriteLine(String.Format(".HasColumnName(\"{0}\");", column.Name));
-					writer.Unindent();
-					writer.WriteLine();
-
-					shouldSave = true;
-				}
-			}
-
-			return shouldSave;
 		}
 
 		private static bool WriteTablePKs(CodeWriter writer, GeneratedModelClass modelClass)

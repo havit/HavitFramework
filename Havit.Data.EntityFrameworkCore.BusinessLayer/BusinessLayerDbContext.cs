@@ -66,6 +66,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 			yield return new SequencesForEnumClassesConvention(); 
 			yield return new BusinessLayerIndexesConventions();
             yield return new CharColumnTypeForCharPropertyConvention();
+			yield return new LocalizationParentColumnNameConvention();
 		}
 
 		/// <summary>

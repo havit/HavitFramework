@@ -11,6 +11,7 @@ using Havit.Business.BusinessLayerGenerator.Writers;
 using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Helpers;
 using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata;
 using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Settings;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.SqlServer.Management.Smo;
 
 namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCore
@@ -56,6 +57,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 			writer.WriteLine("using System.Collections.Specialized;");
 			writer.WriteLine("using System.ComponentModel;");
 			writer.WriteLine("using System.ComponentModel.DataAnnotations;");
+			writer.WriteLine("using System.ComponentModel.DataAnnotations.Schema;");
 			writer.WriteLine("using System.Globalization;");
 			writer.WriteLine("using System.Linq;");
 			writer.WriteLine("using System.Text;");
@@ -247,6 +249,10 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 				if (ColumnHelper.GetBoolExtendedProperty(pk.Property.Column, "Ignored") == true)
 				{
 					writer.WriteLine("[Ignored]");
+				}				
+				if (!pk.Property.Column.Identity)
+				{
+					writer.WriteLine("[DatabaseGenerated(DatabaseGeneratedOption.None)]");
 				}
 				writer.WriteLine(String.Format("public {0} Id {{ get; set; }}", pk.Property.TypeName));
 				writer.WriteLine();
@@ -284,11 +290,6 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 					writer.WriteLine("[ReadOnly]");
 				}
 
-				if (BusinessLayerGenerator.Helpers.TypeHelper.IsDateOnly(column.DataType))
-				{
-					writer.WriteLine("[DataType(DataType.Date)]");
-				}
-
 				Type type = Helpers.TypeHelper.GetPropertyType(fk?.ForeignKeyProperty ?? entityProperty);
 				if (!column.Nullable && type?.IsValueType == false)
 				{
@@ -312,6 +313,40 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 					//{
 					//	writer.WriteLine("[Required(AllowEmptyStrings = true)]");					
 					//}
+				}
+
+				string columnType = null;
+
+				if (BusinessLayerGenerator.Helpers.TypeHelper.IsDateOnly(column.DataType))
+				{
+					columnType = "Date";
+				}
+				else if (column.DataType.SqlDataType == SqlDataType.Money)
+				{
+					columnType = "Money";
+				}
+				else if ((column.DataType.SqlDataType == SqlDataType.Decimal) && ((column.DataType.NumericPrecision != 18) && column.DataType.NumericScale != 2))
+				{
+					columnType = String.Format("decimal({0}, {1})",
+						column.DataType.NumericPrecision,
+						column.DataType.NumericScale);
+				}
+				else if (!column.DataType.IsStringType)
+				{
+					Type propertyType = Helpers.TypeHelper.GetPropertyType(entityProperty);
+					if (propertyType != null)
+					{
+						RelationalTypeMapping mapping = Helpers.TypeHelper.GetMapping(propertyType);
+						if (mapping == null || !column.DataType.IsSameAsTypeMapping(mapping))
+						{
+							columnType = column.DataType.GetStringRepresentation();
+						}
+					}
+				}
+
+				if (columnType != null)
+				{
+					writer.WriteLine($"[Column(TypeName = \"{columnType}\")]");
 				}
 
 				writer.WriteLine(String.Format("{0} {1} {2} {{ get; set; }}", accesssModifierText, entityProperty.TypeName, entityProperty.Name));

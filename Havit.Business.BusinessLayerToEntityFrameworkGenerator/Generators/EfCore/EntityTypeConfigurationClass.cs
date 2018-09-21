@@ -89,54 +89,6 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 		}
 		#endregion
 
-		private static bool WritePrecisions(CodeWriter writer, GeneratedModelClass modelClass)
-		{
-			bool result = false;
-			foreach (EntityProperty property in modelClass.GetColumnProperties())
-			{
-				Column column = property.Column;
-
-				string columnType = null;
-
-				if (column.DataType.SqlDataType == SqlDataType.Money)
-				{
-					columnType = "Money";
-				}
-				else if ((column.DataType.SqlDataType == SqlDataType.Decimal) && ((column.DataType.NumericPrecision != 18) && column.DataType.NumericScale != 2))
-				{
-					columnType = String.Format("decimal({0}, {1})",
-						column.DataType.NumericPrecision,
-						column.DataType.NumericScale);
-				}
-				else if (!column.DataType.IsStringType)
-				{
-					Type type = Helpers.TypeHelper.GetPropertyType(property);
-					if (type != null)
-					{
-						RelationalTypeMapping mapping = Helpers.TypeHelper.GetMapping(type);
-						if (mapping == null || !column.DataType.IsSameAsTypeMapping(mapping))
-						{
-							columnType = column.DataType.GetStringRepresentation();
-						}
-					}
-				}
-
-				if (columnType != null)
-				{
-					writer.WriteLine(String.Format("builder.Property({0} => {0}.{1}).HasColumnType(\"{2}\");",
-						ConventionsHelper.GetCammelCase(modelClass.Name),
-						property.Name, columnType));
-					result = true;
-				}
-			}
-
-			if (result)
-			{
-				writer.WriteLine();
-			}
-			return result;
-		}
-
 		private static bool WritePrincipals(CodeWriter writer, GeneratedModelClass modelClass)
 		{
 			Table table = modelClass.Table;
@@ -218,20 +170,6 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 			{
 
 				Column column = property.Column;
-
-				var pkPart = modelClass.GetPrimaryKeyPartFor(column);
-				if (pkPart != null && !column.Identity)
-				{
-					writer.WriteLine(String.Format("builder.Property({0} => {0}.{1})",
-						ConventionsHelper.GetCammelCase(modelClass.Name),
-						property.Name));
-					writer.Indent();
-					writer.WriteLine(".ValueGeneratedNever();");
-					writer.Unindent();
-					writer.WriteLine();
-
-					shouldSave = true;
-				}
 
 				if (LocalizationHelper.IsLocalizationTable(table) && (LocalizationHelper.GetParentLocalizationColumn(table)) == column)
 				{

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Havit.Data.EntityFrameworkCore.CodeGenerator.Entity;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 using Microsoft.EntityFrameworkCore;
+using Havit.Data.EntityFrameworkCore.Metadata;
 
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.ModelMetadataClasses.Model
 {
@@ -20,7 +20,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.ModelMetadataClas
 
 		public IEnumerable<MetadataClass> GetModels()
 		{
-			List<MetadataClass> result = (from registeredEntity in dbContext.Model.GetApplicationEntityTypes()
+			List<MetadataClass> result = (from registeredEntity in dbContext.Model.GetApplicationEntityTypes(includeManyToManyEntities: false)
 				select new MetadataClass
 				{
 					NamespaceName = GetNamespaceName(registeredEntity.ClrType.Namespace),

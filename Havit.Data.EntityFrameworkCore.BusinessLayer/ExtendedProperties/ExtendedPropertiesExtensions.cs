@@ -54,7 +54,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 
         public static void ForSqlServerExtendedPropertiesAttributes(this ModelBuilder modelBuilder)
 		{
-			foreach (var entityType in modelBuilder.Model.GetEntityTypesExcludingSystemTypes())
+			foreach (var entityType in modelBuilder.Model.GetApplicationEntityTypes())
 			{
 				ExtendedPropertiesAnnotationsHelper.AddExtendedPropertyAnnotations(entityType, entityType.ClrType);
 				foreach (var property in entityType.GetProperties().Where(x => !x.IsShadowProperty))

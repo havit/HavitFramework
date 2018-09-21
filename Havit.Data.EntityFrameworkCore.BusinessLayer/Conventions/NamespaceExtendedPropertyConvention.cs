@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
 using Havit.Data.EntityFrameworkCore.Conventions;
 using Havit.Data.EntityFrameworkCore.Metadata;
@@ -15,7 +16,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 		/// <inheritdoc />
 		public void Apply(ModelBuilder modelBuilder)
 		{
-			foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypesExcludingSystemTypes())
+			foreach (IMutableEntityType entityType in modelBuilder.Model.GetApplicationEntityTypes())
 			{
 				string entityNamespace = entityType.ClrType.Namespace?.Replace(entityType.ClrType.Assembly.GetName().Name, "").Trim('.');
 				entityType.AddExtendedProperties(new Dictionary<string, string>()

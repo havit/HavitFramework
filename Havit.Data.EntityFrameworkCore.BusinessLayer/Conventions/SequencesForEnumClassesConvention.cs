@@ -34,7 +34,9 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 
 			var currentNamingConvention = namingConvention ?? (entityTypeName => $"sq_{entityTypeName}");
 
-			IEnumerable<IMutableEntityType> enumClassEntities = modelBuilder.Model.GetEntityTypesExcludingSystemTypes().Where(entityType => entityType.ClrType.GetCustomAttributes<EnumClassAttribute>().Any());
+			IEnumerable<IMutableEntityType> enumClassEntities = modelBuilder.Model
+				.GetApplicationEntityTypes()
+				.Where(entityType => entityType.ClrType.GetCustomAttributes<EnumClassAttribute>().Any());
 
 			foreach (IMutableEntityType entityType in enumClassEntities)
 			{

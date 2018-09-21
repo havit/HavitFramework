@@ -17,10 +17,10 @@ using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.ModelMetadataClasses.
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Model;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Templates;
-using Havit.Data.EntityFrameworkCore.CodeGenerator.Entity;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Services.SourceControl;
 using Microsoft.EntityFrameworkCore.Design;
+using Havit.Data.EntityFrameworkCore.Metadata;
 
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator
 {

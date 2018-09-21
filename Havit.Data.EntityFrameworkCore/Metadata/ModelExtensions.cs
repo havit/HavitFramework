@@ -8,16 +8,18 @@ using Havit.Linq;
 namespace Havit.Data.EntityFrameworkCore.Metadata
 {
 	/// <summary>
-	/// Extension metody k IMutableModel.
+	/// Extension metody k IModel.
 	/// </summary>
-	public static class MutableModelExtensions
+	public static class ModelExtension
 	{
 		/// <summary>
 		/// Vrací entity, které nejsou systémové, nejsou Owned a nejsou QueryType.
 		/// </summary>
-		public static IEnumerable<IMutableEntityType> GetApplicationEntityTypes(this IMutableModel model, bool includeManyToManyEntities = true)
+		public static IEnumerable<IEntityType> GetApplicationEntityTypes(this IModel model, bool includeManyToManyEntities = true)
 		{
-			return ((IModel)model).GetApplicationEntityTypes(includeManyToManyEntities: includeManyToManyEntities).Cast<IMutableEntityType>();
+			return model.GetEntityTypes()
+				.Where(entityType => entityType.IsApplicationEntity())
+				.WhereIf(!includeManyToManyEntities, entityType => !entityType.IsManyToManyEntity());
 		}
 	}
 }

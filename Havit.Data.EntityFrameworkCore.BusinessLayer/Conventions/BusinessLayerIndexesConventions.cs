@@ -29,7 +29,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 	    /// <inheritdoc />
 	    public void Apply(ModelBuilder modelBuilder)
         {
-            foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypesExcludingSystemTypes())
+            foreach (IMutableEntityType entityType in modelBuilder.Model.GetApplicationEntityTypes())
             {
 				RenameForeignKeyIndexes(entityType.GetForeignKeys());
 

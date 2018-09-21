@@ -27,7 +27,9 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 		{
 			var xmlCommentParser = new XmlCommentParser();
 
-			var groupedByAssemblies = modelBuilder.Model.GetEntityTypesExcludingSystemTypes().GroupBy(entityType => entityType.ClrType.Assembly);
+			var groupedByAssemblies = modelBuilder.Model
+				.GetApplicationEntityTypes()
+				.GroupBy(entityType => entityType.ClrType.Assembly);
 
 			foreach (IGrouping<Assembly, IMutableEntityType> assemblyEntities in groupedByAssemblies)
 			{

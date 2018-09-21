@@ -14,7 +14,10 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 		/// <inheritdoc />
 		public void Apply(ModelBuilder modelBuilder)
 		{
-			var localizationTables = modelBuilder.Model.GetEntityTypesExcludingSystemTypes().Where(entityType => entityType.Name.EndsWith("Localization") && (entityType.Name.Length > "Localization".Length));
+			var localizationTables = modelBuilder.Model
+				.GetApplicationEntityTypes()
+				.Where(entityType => entityType.Name.EndsWith("Localization") && (entityType.Name.Length > "Localization".Length));
+
 			foreach (IMutableEntityType entityType in localizationTables)
 			{
 				IMutableProperty parentIdProperty = entityType.GetProperties().FirstOrDefault(prop => prop.Name == "ParentId");

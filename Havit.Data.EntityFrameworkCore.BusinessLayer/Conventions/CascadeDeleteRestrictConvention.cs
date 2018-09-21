@@ -10,7 +10,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 	{
 		public void Apply(ModelBuilder modelBuilder)
 		{
-			foreach (IMutableForeignKey foreignKey in modelBuilder.Model.GetEntityTypesExcludingSystemTypes()
+			foreach (IMutableForeignKey foreignKey in modelBuilder.Model
+				.GetApplicationEntityTypes()
 				.SelectMany(entityType => entityType.GetForeignKeys())
 				.Where(fk => !fk.IsOwnership && fk.DeleteBehavior == DeleteBehavior.Cascade))
 			{

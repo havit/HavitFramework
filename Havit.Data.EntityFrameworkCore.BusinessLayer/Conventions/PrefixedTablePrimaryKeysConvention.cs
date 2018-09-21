@@ -26,21 +26,24 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 		/// <inheritdoc />
 		public void Apply(ModelBuilder modelBuilder)
 		{
-			foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypesExcludingSystemTypes())
+			foreach (IMutableEntityType entityType in modelBuilder.Model.GetApplicationEntityTypes())
 			{
 				IMutableKey primaryKey = entityType.FindPrimaryKey();
-				foreach (IMutableProperty property in primaryKey.Properties)
+				if (primaryKey != null)
 				{
-					string columnName = property.Relational().ColumnName;
-					if (columnName.Equals("Id", StringComparison.OrdinalIgnoreCase))
+					foreach (IMutableProperty property in primaryKey.Properties)
 					{
-						columnName = $"{entityType.ShortName()}{tableSuffix}";
+						string columnName = property.Relational().ColumnName;
+						if (columnName.Equals("Id", StringComparison.OrdinalIgnoreCase))
+						{
+							columnName = $"{entityType.ShortName()}{tableSuffix}";
+						}
+						else if (columnName.EndsWith("ID", StringComparison.OrdinalIgnoreCase))
+						{
+							columnName = columnName.Substring(0, columnName.Length - 2) + tableSuffix;
+						}
+						property.Relational().ColumnName = columnName;
 					}
-					else if (columnName.EndsWith("ID", StringComparison.OrdinalIgnoreCase))
-					{
-						columnName = columnName.Substring(0, columnName.Length - 2) + tableSuffix;
-					}
-					property.Relational().ColumnName = columnName;
 				}
 			}
 		}

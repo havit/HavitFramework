@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Havit.Data.EntityFrameworkCore.CodeGenerator.Entity;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 using Microsoft.EntityFrameworkCore;
+using Havit.Data.EntityFrameworkCore.Metadata;
 
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataSources.Model
 {
@@ -21,7 +21,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataSources.Model
 
 		public IEnumerable<InterfaceDataSourceModel> GetModels()
 		{
-			return (from registeredEntity in dbContext.Model.GetApplicationEntityTypes()
+			return (from registeredEntity in dbContext.Model.GetApplicationEntityTypes(includeManyToManyEntities: false)
 				select new InterfaceDataSourceModel
 				{
 					NamespaceName = GetNamespaceName(registeredEntity.ClrType.Namespace),

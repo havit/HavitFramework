@@ -17,7 +17,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 		/// <inheritdoc />
 		public void Apply(ModelBuilder modelBuilder)
 		{
-			foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypesExcludingSystemTypes())
+			foreach (IMutableEntityType entityType in modelBuilder.Model.GetApplicationEntityTypes())
 			{
 				foreach (IMutableNavigation navigation in entityType.GetNavigations().Where(n => n.IsCollection()))
 				{

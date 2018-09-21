@@ -26,9 +26,23 @@ namespace Havit.Data.EntityFrameworkCore.Metadata
 		public static bool IsManyToManyEntity(this IEntityType entityType)
 	    {
 		    // GetProperties neobsahuje vlastnosti z nadřazených tříd, v tomto scénáři to nevadí, dědičnost pro tabulky se dvěma sloupci primárního klíče neuvažujeme
-		    return (entityType.FindPrimaryKey().Properties.Count == 2) // třída má složený primární klíč ze svou vlastností
-		           && (entityType.GetProperties().Count() == 2) // třída má právě dvě (skalární) vlastnosti
-		           && (entityType.GetProperties().All(item => item.IsForeignKey())); // všechny vlastnosti třídy jsou cizím klíčem
+		    return !entityType.IsOwned()
+				&& !entityType.IsQueryType
+				&&  (entityType.FindPrimaryKey()?.Properties.Count == 2) // třída má složený primární klíč ze svou vlastností
+		        && (entityType.GetProperties().Count() == 2) // třída má právě dvě (skalární) vlastnosti
+		        && (entityType.GetProperties().All(item => item.IsForeignKey())); // všechny vlastnosti třídy jsou cizím klíčem
 	    }
+
+		/// <summary>
+		/// Vrací true, pokud jde o aplikační entitu - není systémová, nejde o QueryType a není Owned.
+		/// </summary>
+		/// <param name="entityType"></param>
+		/// <returns></returns>
+		internal static bool IsApplicationEntity(this IEntityType entityType)
+		{
+			return !entityType.IsQueryType
+				&& !entityType.IsOwned()
+				&& !entityType.IsSystemType();
+		}
 	}
 }

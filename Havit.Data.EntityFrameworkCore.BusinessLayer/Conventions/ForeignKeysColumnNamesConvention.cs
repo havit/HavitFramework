@@ -30,7 +30,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
         {
             Contract.Requires<ArgumentNullException>(modelBuilder != null);
 
-	        foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypesExcludingSystemTypes())
+	        foreach (IMutableEntityType entityType in modelBuilder.Model.GetApplicationEntityTypes())
 	        {
 		        IEnumerable<IMutableProperty> foreignKeyProperties = entityType.GetForeignKeys()
 			        .SelectMany(fk => fk.Properties)

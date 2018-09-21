@@ -18,7 +18,7 @@ namespace Havit.Data.EntityFrameworkCore.Conventions
 		public void Apply(ModelBuilder modelBuilder)
 	    {
 		    var stringProperties = modelBuilder.Model
-				.GetEntityTypesExcludingSystemTypes()
+				.GetApplicationEntityTypes()
 				.SelectMany(entityType => entityType.GetDeclaredProperties().Where(prop => prop.ClrType == typeof(String))).ToList();
 
 		    foreach (IMutableProperty stringProperty in stringProperties)

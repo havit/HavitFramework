@@ -14,8 +14,9 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 	    /// <inheritdoc />
 	    public void Apply(ModelBuilder modelBuilder)
         {
-            foreach (IMutableProperty property in modelBuilder.Model.GetEntityTypesExcludingSystemTypes()
-                .SelectMany(entityType => entityType.GetProperties())
+			foreach (IMutableProperty property in modelBuilder.Model
+				.GetApplicationEntityTypes()
+				.SelectMany(entityType => entityType.GetProperties())
                 .Where(p => p.ClrType == typeof(char)))
             {
                 //Regex.Match(property.Relational().ColumnType, "^(n)?varchar(\\(.*?\\))?$", RegexOptions.IgnoreCase);

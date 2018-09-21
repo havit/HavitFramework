@@ -15,7 +15,10 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 		/// <inheritdoc />
 		public void Apply(ModelBuilder modelBuilder)
 		{
-			var stringProperties = modelBuilder.Model.GetEntityTypesExcludingSystemTypes().SelectMany(entityType => entityType.GetDeclaredProperties().Where(prop => prop.ClrType == typeof(string)));
+			var stringProperties = modelBuilder.Model
+				.GetApplicationEntityTypes()
+				.SelectMany(entityType => entityType.GetDeclaredProperties().Where(prop => prop.ClrType == typeof(string)));
+
 			foreach (IMutableProperty property in stringProperties)
 			{
 				if ((property.Relational().DefaultValue == null) && string.IsNullOrEmpty(property.Relational().DefaultValueSql))

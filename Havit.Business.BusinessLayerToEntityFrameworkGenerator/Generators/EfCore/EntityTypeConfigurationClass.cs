@@ -32,7 +32,6 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 
 			bool shouldSave = WriteTablePKs(writer, modelClass);
 			shouldSave |= WriteColumnMetadata(writer, modelClass);
-			shouldSave |= WritePrecisions(writer, modelClass);
 			// configuration directives for collections shouldn't be necessary, they're covered by EF Core conventions
 			shouldSave |= WritePrincipals(writer, modelClass);
 			WriteNamespaceClassConstructorEnd(writer);

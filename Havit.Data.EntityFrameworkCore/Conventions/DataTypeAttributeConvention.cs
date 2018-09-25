@@ -20,7 +20,9 @@ namespace Havit.Data.EntityFrameworkCore.Conventions
 			var propertiesWithDataTypeAttribute = 
 				(from property in modelBuilder.Model
 				 .GetApplicationEntityTypes()
+				 .WhereNotConventionSuppressed(typeof(DataTypeAttributeConvention)) // testujeme entity types
 				 .SelectMany(entityType => entityType.GetDeclaredProperties())
+				 .WhereNotConventionSuppressed(typeof(DataTypeAttributeConvention)) // testujeme properties
 				 where property.PropertyInfo != null // shadow properties
 				 from attribute in property.PropertyInfo.GetCustomAttributes(typeof(DataTypeAttribute), false).Cast<DataTypeAttribute>()
 				 select new { Property = property, DataTypeAttribute = attribute })

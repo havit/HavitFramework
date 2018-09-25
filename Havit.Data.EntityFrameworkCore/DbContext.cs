@@ -84,7 +84,8 @@ namespace Havit.Data.EntityFrameworkCore
 	    protected virtual IEnumerable<IModelConvention> GetModelConventions()
 	    {
 		    yield return new DataTypeAttributeConvention();
-	    }
+		    yield return new CascadeDeleteToRestrictConvention();
+		}
 
 	    /// <summary>
 	    /// Uloží registrované změny. Viz <see cref="Microsoft.EntityFrameworkCore.DbContext.SaveChanges(bool)"/>.

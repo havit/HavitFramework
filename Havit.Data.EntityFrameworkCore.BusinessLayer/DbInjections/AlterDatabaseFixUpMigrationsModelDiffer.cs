@@ -47,6 +47,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
 		{
 			var alterDatabaseOperation = new AlterDatabaseOperation();
 
+			// leverages ValueTuples and GetHashCode/Equals implementation for removing duplicates
 			var annotations = originalOperation.GetAnnotations().ToDictionary(a => (a.Name, a.Value));
 			var oldAnnotations = originalOperation.OldDatabase.GetAnnotations().ToDictionary(a => (a.Name, a.Value));
 

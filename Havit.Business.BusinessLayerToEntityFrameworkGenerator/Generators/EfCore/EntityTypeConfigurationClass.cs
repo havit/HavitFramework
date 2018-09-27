@@ -93,9 +93,14 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 
 			bool result = false;
 
+			// select for configuration those FKs, which reference same table
 			var fksToConfigure = modelClass.ForeignKeys.GroupBy(fk => ColumnHelper.GetReferencedTable(fk.Column)).Where(g => g.Count() >= 2).SelectMany(g => g);
 
-			var circularReferences = modelClass.ForeignKeys.Where(fk => ColumnHelper.GetReferencedTable(fk.Column).ForeignKeys.Cast<ForeignKey>().Any(fk1 => fk1.Parent != table && fk1.ReferencedTable == modelClass.Table.Name)).ToArray();
+			// then we need to configure FKs, which are part of circular reference (Table1 <-> Table2)
+			var circularReferences = modelClass.ForeignKeys
+				.Where(fk => ColumnHelper.GetReferencedTable(fk.Column).ForeignKeys.Cast<ForeignKey>()
+					.Any(fk1 => fk1.Parent != table && fk1.ReferencedTable == modelClass.Table.Name))
+				.ToArray();
 			if (circularReferences.Length > 0)
 			{
 				fksToConfigure = fksToConfigure.Concat(circularReferences);

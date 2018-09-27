@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
 	<id>Havit.Data.EntityFrameworkCore.BusinessLayer</id>
-	<version>1.0.5-beta</version>
+	<version>1.0.6-beta</version>
 	<title>Havit.Data.EntityFrameworkCore.BusinessLayer</title>
 	<authors>HAVIT</authors>
 	<owners>HAVIT</owners>
@@ -19,7 +19,7 @@
 		<dependency id="Microsoft.EntityFrameworkCore.SqlServer" version="2.1.2" />
 		<dependency id="Havit.Services" version="1.8.2" />
 		<dependency id="Havit.Data.EntityFrameworkCore" version="1.8.1" />
-		<dependency id="Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions" version="1.0.1-beta" />
+		<dependency id="Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions" version="1.0.2-beta" />
 	  </group>
 	</dependencies>
 	<tags>HAVIT Data Entity Framework EF Core Business Layer BL BLG</tags>

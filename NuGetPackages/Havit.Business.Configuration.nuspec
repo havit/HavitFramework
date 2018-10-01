@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+	<id>Havit.Business.Configuration</id>
+	<version>1.0.1-beta</version>
+	<title>Havit.Business.Configuration</title>
+	<authors>HAVIT</authors>
+	<owners>HAVIT</owners>
+	<iconUrl>https://www.gravatar.com/avatar/e59ffb10448162f0c6d6b5ae3fecd0ce?s=64</iconUrl>
+	<licenseUrl>https://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+	<description>
+	  HAVIT Framework Library for configuration-related functionality.
+	</description>
+	<language>en-US</language>
+	<requireLicenseAcceptance>false</requireLicenseAcceptance>
+	<copyright>Copyright HAVIT, s.r.o. 2018</copyright>
+	<dependencies>
+	  <group targetFramework="net471">
+		  <dependency id="LibGit2Sharp" version="0.25.2" />
+		  <dependency id="System.Configuration.ConfigurationManager" version="4.5.0" />
+	  </group>
+	</dependencies>
+	<tags>HAVIT Framework Business Layer BL BLG Configuration ConfigurationBuilder</tags>
+  </metadata>
+  <files>
+	<file src="..\Havit.Business.Configuration\bin\Release\net471\Havit.Business.Configuration.dll" target="lib\net471" />
+	<file src="..\Havit.Business.Configuration\bin\Release\net471\Havit.Business.Configuration.pdb" target="lib\net471" />
+	<file src="..\Havit.Business.Configuration\bin\Release\net471\Havit.Business.Configuration.xml" target="lib\net471" />
+  </files>
+</package>

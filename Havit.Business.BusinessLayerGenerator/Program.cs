@@ -21,17 +21,49 @@ namespace Havit.Business.BusinessLayerGenerator
 			CommandLine.Utility.Arguments commandLineArguments = new CommandLine.Utility.Arguments(args);
 
 			// pokud jsou parametry špatně, oznámíme a končíme
-			if (commandLineArguments["sqlserver"] == null || commandLineArguments["database"] == null || commandLineArguments["outputpath"] == null)
+			var missingConnectionParameters = commandLineArguments["sqlserver"] == null || commandLineArguments["database"] == null;
+			var missingWebConfigPath = commandLineArguments["webconfig"] == null;
+			if ((missingConnectionParameters && missingWebConfigPath) || commandLineArguments["outputpath"] == null)
 			{
 				ConsoleHelper.WriteLineError(@"BusinessLayerGenerator.exe -sqlserver:<server> -database:<database> [-username:<username>] [-password:<password>] -outputpath:<outputpath> [-namespace:<namespace>] [-strategy=Havit|Exec] [-targetplatform=SqlServer2008|SqlServer2005|SqlServerCe35] [-key:true] [-table:string]");
 				return;
 			}
 
+			ConnectionParameters connectionParameters;
+			if (commandLineArguments["webconfig"] != null)
+			{
+				if (commandLineArguments["sqlserver"] != null)
+				{
+					ConsoleHelper.WriteLineError(@"BusinessLayerGenerator.exe -sqlserver:<server> -database:<database> [-username:<username>] [-password:<password>] -outputpath:<outputpath> [-namespace:<namespace>] [-strategy=Havit|Exec] [-targetplatform=SqlServer2008|SqlServer2005|SqlServerCe35] [-key:true] [-table:string]");
+					return;
+				}
+
+				try
+				{
+					connectionParameters = ConnectionParametersParser.ParseParametersFromWebConfig(commandLineArguments["webconfig"]);
+				}
+				catch (Exception e)
+				{
+					ConsoleHelper.WriteLineError(e.ToString());
+					return;
+				}
+			}
+			else
+			{
+				connectionParameters = new ConnectionParameters
+				{
+					ServerName = commandLineArguments["sqlserver"],
+					Username = commandLineArguments["username"],
+					Password = commandLineArguments["password"],
+					DatabaseName = commandLineArguments["database"]
+				};
+			}
+
 			// nastavíme GeneratorSettings na základě parametrù příkazové řádky
-			GeneratorSettings.SqlServerName = commandLineArguments["sqlserver"];
-			GeneratorSettings.Username = commandLineArguments["username"];
-			GeneratorSettings.Password = commandLineArguments["password"];
-			GeneratorSettings.DatabaseName = commandLineArguments["database"];
+			GeneratorSettings.SqlServerName = connectionParameters.ServerName;
+			GeneratorSettings.Username = connectionParameters.Username;
+			GeneratorSettings.Password = connectionParameters.Password;
+			GeneratorSettings.DatabaseName = connectionParameters.DatabaseName;
 			GeneratorSettings.OutputPath = commandLineArguments["outputpath"];
 			GeneratorSettings.Namespace = commandLineArguments["namespace"];
 			GeneratorSettings.TableName = commandLineArguments["table"];

@@ -298,6 +298,7 @@
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data.Linq" />
@@ -387,6 +388,8 @@
     <Compile Include="Helpers\Types\ResourceClass.cs" />
     <Compile Include="Helpers\Types\StoreProcedureResultType.cs" />
     <Compile Include="IndexBuilders\IndexesBuilder.cs" />
+    <Compile Include="Settings\ConnectionParameters.cs" />
+    <Compile Include="Settings\ConnectionParametersParser.cs" />
     <Compile Include="Settings\GeneratorSettings.cs" />
     <Compile Include="Settings\GeneratorStrategy.cs" />
     <Compile Include="Settings\TargetPlatform.cs" />
@@ -434,6 +437,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Havit.Business.Configuration\Havit.Business.Configuration.csproj">
+      <Project>{af2a778f-02a6-4060-9c42-e9cf47e2b4f7}</Project>
+      <Name>Havit.Business.Configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Havit.Web\Havit.Web.csproj">
       <Project>{52891fb3-ca20-403b-ac25-7d9ca5738b6b}</Project>
       <Name>Havit.Web</Name>

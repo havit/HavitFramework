@@ -26,7 +26,7 @@ namespace Havit.Business.Configuration.Tests
 			var builder = CreateBuilder(currentBranchName: "master");
 
 			var originalConnectionString = "Data Source=(localdb)\v14.0;Initial Catalog=AccacePayroll;Application Name=AccacePayroll";
-			string connString = builder.TransformConnectionString(originalConnectionString);
+			string connString = builder.TransformConnectionString(originalConnectionString, "");
 
 			Assert.AreEqual(originalConnectionString, connString);
 		}
@@ -37,7 +37,7 @@ namespace Havit.Business.Configuration.Tests
 		{
 			var builder = CreateBuilder(currentBranchName: "test");
 
-			string connString = builder.TransformConnectionString("Data Source=(localdb)\v14.0;Initial Catalog=AccacePayroll;Application Name=AccacePayroll");
+			string connString = builder.TransformConnectionString("Data Source=(localdb)\v14.0;Initial Catalog=AccacePayroll;Application Name=AccacePayroll", "");
 
 			Assert.AreEqual("Data Source=(localdb)\v14.0;Initial Catalog=AccacePayroll_test;Application Name=AccacePayroll", connString);
 		}
@@ -93,7 +93,7 @@ namespace Havit.Business.Configuration.Tests
 
 		private static BranchConnectionStringConfigurationBuilder CreateBuilder(string currentBranchName)
 		{
-			return new BranchConnectionStringConfigurationBuilder(Mock.Of<ICurrentGitRepositoryProvider>(f => f.GetCurrentBranch() == currentBranchName));
+			return new BranchConnectionStringConfigurationBuilder(Mock.Of<IGitRepositoryProvider>(f => f.GetBranch(It.IsAny<string>()) == currentBranchName));
 		}
 	}
 }

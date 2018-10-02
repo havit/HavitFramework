@@ -7,23 +7,23 @@ using LibGit2Sharp;
 namespace Havit.Business.Configuration
 {
 	/// <summary>
-	/// Implementation of <see cref="ICurrentGitRepositoryProvider"/> that uses LibGit2Sharp and supports ASP.NET Web projects and regular console/desktop projects (or Tests).
+	/// Implementation of <see cref="IGitRepositoryProvider"/> that uses LibGit2Sharp and supports ASP.NET Web projects and regular console/desktop projects (or Tests).
 	/// </summary>
-	public class WebCurrentGitRepositoryProvider : ICurrentGitRepositoryProvider
+	public class WebGitRepositoryProvider : IGitRepositoryProvider
 	{
 		/// <inheritdoc />
-		public string GetCurrentBranch()
+		public string GetBranch(string path)
 		{
-			var parentGitRepository = FindGitRepository(GetRepositorySearchDirectory());
+			var parentGitRepository = FindGitRepository(path);
+			if (parentGitRepository == null)
+			{
+				return null;
+			}
+
 			using (var repository = new Repository(parentGitRepository))
 			{
 				return repository.Head.FriendlyName;
 			}
-		}
-
-		private static string GetRepositorySearchDirectory()
-		{
-			return !string.IsNullOrEmpty(HttpRuntime.AppDomainAppId) ? HttpRuntime.AppDomainAppPath : Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 		}
 
 		private static string FindGitRepository(string directory)

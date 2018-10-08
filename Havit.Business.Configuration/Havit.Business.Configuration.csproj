@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net471</TargetFramework>
-	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-	<Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
+    <Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,10 +19,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Havit.Business.Configuration.NetCore\Havit.Business.Configuration.NetCore.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="System.Web" />
   </ItemGroup>
 
 </Project>

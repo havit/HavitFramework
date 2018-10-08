@@ -25,5 +25,7 @@
 	<file src="..\Havit.CastleWindsor.WebForms\bin\Release\net472\Havit.CastleWindsor.WebForms.dll" target="lib\net472" />
 	<file src="..\Havit.CastleWindsor.WebForms\bin\Release\net472\Havit.CastleWindsor.WebForms.pdb" target="lib\net472" />
 	<file src="..\Havit.CastleWindsor.WebForms\bin\Release\net472\Havit.CastleWindsor.WebForms.xml" target="lib\net472" />
+	<file src="Havit.CastleWindsor.WebForms\content\Web.config.install.xdt" target="content" />
+	<file src="Havit.CastleWindsor.WebForms\content\Web.config.uninstall.xdt" target="content" />
   </files>
 </package>

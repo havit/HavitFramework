@@ -1,6 +1,7 @@
 ﻿using System.Configuration;
 using System.IO;
 using System.Text.RegularExpressions;
+using Havit.Business.Configuration.NetCore;
 
 namespace Havit.Business.Configuration
 {
@@ -58,23 +59,8 @@ namespace Havit.Business.Configuration
 
 		internal string TransformConnectionString(string connectionString, string configPath)
 		{
-			// TODO: consider using System.Data.SqlClient.SqlConnectionStringBuilder
-			var match = Regex.Match(connectionString, "Initial Catalog=([^;]*)");
-			if (!match.Success)
-			{
-				return connectionString;
-			}
-			return connectionString.Replace(match.Value, $"Initial Catalog={DetermineDatabaseName(match.Groups[1].Value, configPath)}");
-		}
-
-		private string DetermineDatabaseName(string originalDbName, string configPath)
-		{
-			string repositoryBranch = gitRepositoryProvider.GetBranch(configPath);
-			if (repositoryBranch == "master" || repositoryBranch == null)
-			{
-				return originalDbName;
-			}
-			return $"{originalDbName}_{repositoryBranch}";
+			return new BranchConnectionStringTransformer(gitRepositoryProvider)
+				.ChangeDatabaseName(connectionString, configPath);
 		}
 	}
 }

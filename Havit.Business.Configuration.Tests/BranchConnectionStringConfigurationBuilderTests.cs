@@ -1,5 +1,6 @@
 using System.Configuration;
 using System.Linq;
+using Havit.Business.Configuration.NetCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

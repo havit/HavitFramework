@@ -14,8 +14,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="LibGit2Sharp" Version="0.25.2" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Havit.Business.Configuration.NetCore\Havit.Business.Configuration.NetCore.csproj" />
   </ItemGroup>
 
   <ItemGroup>

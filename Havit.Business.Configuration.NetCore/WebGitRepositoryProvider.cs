@@ -1,10 +1,8 @@
 ﻿using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Web;
 using LibGit2Sharp;
 
-namespace Havit.Business.Configuration
+namespace Havit.Business.Configuration.NetCore
 {
 	/// <summary>
 	/// Implementation of <see cref="IGitRepositoryProvider"/> that uses LibGit2Sharp and supports ASP.NET Web projects and regular console/desktop projects (or Tests).

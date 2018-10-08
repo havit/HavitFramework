@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Havit.Business.Configuration.NetCore\Havit.Business.Configuration.NetCore.csproj" />
     <ProjectReference Include="..\Havit.Business.Configuration\Havit.Business.Configuration.csproj" />
   </ItemGroup>
 

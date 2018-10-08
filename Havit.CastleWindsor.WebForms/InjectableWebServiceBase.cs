@@ -28,7 +28,7 @@ namespace Havit.CastleWindsor.WebForms
 
 			if (disposing)
 			{
-				DependencyInjectionWebFormsHelper.ReleaseDependencies(this);				
+				DependencyInjectionWebFormsHelper.ReleaseDependencies(this);
 			}
 		}
 	}

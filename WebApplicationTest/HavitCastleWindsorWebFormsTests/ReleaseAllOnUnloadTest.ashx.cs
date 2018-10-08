@@ -10,22 +10,24 @@ namespace Havit.WebApplicationTest.HavitCastleWindsorWebFormsTests
 	/// <summary>
 	/// Testovací handler pro release enumerace (pole) injected objetků.
 	/// </summary>
-	public class ReleaseAllOnUnloadTest : InjectableGenericHandlerBase
+	public class ReleaseAllOnUnloadTest : IHttpHandler
 	{
-		#region DisposableComponent
-		[Inject]
-		public IDisposableComponent[] DisposableComponents { get; set; }
-		#endregion
+		public readonly IDisposableComponent[] disposableComponents;
 
-		#region DoProcessRequest
-		protected override void DoProcessRequest(HttpContext context)
+		public ReleaseAllOnUnloadTest(IDisposableComponent[] disposableComponents)
 		{
-			foreach (IDisposableComponent disposableComponent in DisposableComponents)
+			this.disposableComponents = disposableComponents;
+		}
+
+		public bool IsReusable => false;
+
+		public void ProcessRequest(HttpContext context)
+		{
+			foreach (IDisposableComponent disposableComponent in disposableComponents)
 			{
 				context.Response.Write(disposableComponent.Hello());
 				context.Response.Write("<br />");
 			}
 		}
-		#endregion
 	}
 }

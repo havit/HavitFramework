@@ -30,7 +30,7 @@ namespace Havit.WebApplicationTest.HavitWebTests
 			{
 				TestGridView.DataSource = new int[] { 1, 2, 3 };
 				TestGridView.DataBind();
-				SudeLicheDDL.Items.AsEnumerable().ForEach(item => item.SetOptionGroup(int.Parse(item.Value) % 2 == 0 ? "Sudé" : "Liché"));
+				SudeLicheDDL.Items.AsEnumerable().ToList().ForEach(item => item.SetOptionGroup(int.Parse(item.Value) % 2 == 0 ? "Sudé" : "Liché"));
 			}
 		}
 		#endregion

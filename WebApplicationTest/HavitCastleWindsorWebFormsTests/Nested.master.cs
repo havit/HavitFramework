@@ -10,7 +10,11 @@ namespace Havit.WebApplicationTest.HavitCastleWindsorWebFormsTests
 {
 	public partial class Nested : System.Web.UI.MasterPage
 	{
-		[Inject]
-		public IDisposableComponent DisposableComponent { get; set; }
+		public IDisposableComponent DisposableComponent { get; } 
+
+		public Nested(IDisposableComponent disposableComponent)
+		{
+			this.DisposableComponent = disposableComponent;
+		}
 	}
 }

@@ -13,136 +13,18 @@ namespace Havit.CastleWindsor.WebForms
 	/// Pomocná třída pro resolve závislostí injektováním do existujícího objektu.
 	/// Svým způsobem funguje jako ServiceLocator pro WindsorContainer.
 	/// </summary>
-	public static class DependencyInjectionWebFormsHelper
+	internal static class DependencyInjectionWebFormsHelper
 	{
 		#region Fields
-		private static IWindsorContainer _resolver;
 		private static readonly ConcurrentDictionary<Type, PropertyInfo[]> cachedProperties = new ConcurrentDictionary<Type, PropertyInfo[]>();
 		#endregion
-
-		/// <summary>
-		/// Nastaví resolver (container) pro použití v Havit.CastleWindsor.WebForms.
-		/// Resolver je držen ve statickém fieldu až do konce životního cyklu aplikace.
-		/// </summary>
-		/// <remarks>
-		/// Metoda ReleseResolver() zatím neřešena, asi není praktický scénář využití.
-		/// </remarks>
-		public static void SetResolver(IWindsorContainer container)
-		{
-			if (_resolver != null)
-			{
-				throw new InvalidOperationException("Resolver je již nastaven!");
-			}
-			_resolver = container;
-		}
-
-		/// <summary>
-		/// Initializes the page (including child controls and master page).
-		/// Ensures releasing dependencies at OnUnload.
-		/// </summary>
-		internal static void InitializePage(Page page)
-		{
-			DependencyInjectionWebFormsHelper.InitializeControlInstance(page);
-
-			// Child controls are not created at this point.
-			// They will be when PreInit fires.
-			page.PreInit += (s, e) =>
-			{
-				DependencyInjectionWebFormsHelper.InitializeChildControls(page);
-
-				MasterPage master = page.Master;
-				while (master != null)
-				{
-					DependencyInjectionWebFormsHelper.InitializeControlInstance(master);
-					DependencyInjectionWebFormsHelper.InitializeChildControls(master);
-
-					master = master.Master;
-				}
-			};
-		}
-
-		/// <summary>
-		/// Initializes the control (including child controls).
-		/// Ensures releasing dependencies at OnUnload.
-		/// </summary>
-		/// <param name="control">Control to be initialized.</param>
-		public static void InitializeControl(Control control)
-		{
-			if (control == null)
-			{
-				throw new ArgumentNullException(nameof(control));
-			}
-
-			InitializeControlInstance(control);
-			InitializeChildControls(control);
-		}
-
-		/// <summary>
-		/// Initializes the controls and hooks the Unload. (doesn't care about children)
-		/// </summary>
-		internal static bool InitializeControlInstance(Control control)
-		{
-			bool anyInstanceDependency = InitializeInstance(control);
-
-			if (anyInstanceDependency)
-			{
-				control.Unload += (s, e) => { ReleaseDependencies(control); };
-			}
-			return anyInstanceDependency;
-		}
-
-		/// <summary>
-		/// Initializes child controls.
-		/// </summary>
-		internal static bool InitializeChildControls(Control control)
-		{
-			Control[] childControls = GetChildControls(control);
-			bool anyResolvedDependency = false;
-
-			foreach (Control childControl in childControls)
-			{
-				anyResolvedDependency = InitializeControlInstance(childControl) || anyResolvedDependency;
-			}
-
-			return anyResolvedDependency;
-		}
-
-		/// <summary>
-		/// Gets the child controls.
-		/// </summary>
-		private static Control[] GetChildControls(Control control)
-		{
-			// UserControls jsou vždycky "moje", začínající Havit mají reprezentovat controly, které jsou ve WebBase. Do této podmínky spadnou i controly HFW, což je relativně zbytečné
-			// možná optimalizace do budoucna je namísto "Havit." vzít jen ty, které NEJSOU z assembly Havit.Web ani System.Web. Pokud Havit.Web nezíská závislost na Castle Windsoru.
-			// Potřebuju vždy kontrolovat HasControls, protože procházení kolekce Controls před LoadViewState rozbije načtení viewstate u databindovaných controls ( http://forums.asp.net/t/1043999.aspx?GridView+losing+viewState+if+controls+collection+is+accessed+in+Page_Init+event )
-
-			return GetChildControlsRecursive(control)
-				.Where(c => (c != control) && ((c is UserControl) || c.GetType().FullName.StartsWith("Havit.")))
-				.ToArray();
-		}
-
-		private static List<Control> GetChildControlsRecursive(Control control)
-		{
-			if (control.HasControls())
-			{
-				List<Control> result = new List<Control>(control.Controls.Cast<Control>());
-				foreach (Control child in control.Controls)
-				{
-					result.AddRange(GetChildControlsRecursive(child));
-				}
-				return result;
-			}
-			else
-			{
-				return new List<Control>();
-			}
-		}
 
 		/// <summary>
 		/// Initializes the instance (Only the instance itself without child controls!).
 		/// </summary>
 		internal static bool InitializeInstance(object control)
 		{
+			IWindsorContainer resolver = WindsorContainerAdapter.GetWindsorContainer();
 			PropertyInfo[] props = GetInjectableProperties(control);
 
 			// inject the values to properties
@@ -150,18 +32,18 @@ namespace Havit.CastleWindsor.WebForms
 			{
 				IEnumerable<InjectOverrideAttribute> overrideAttribs = prop.GetCustomAttributes(typeof(InjectOverrideAttribute), false).Cast<InjectOverrideAttribute>();
 				Dictionary<string, object> resolvedSubdependencies = overrideAttribs
-					.ToDictionary(x => x.PropertyName, x => _resolver.Resolve(x.DependencyKey, x.DependencyServiceType, null));
+					.ToDictionary(x => x.PropertyName, x => resolver.Resolve(x.DependencyKey, x.DependencyServiceType, null));
 				try
 				{
 					object value;
 					Type enumerableType = GetEnumerableType(prop.PropertyType);
 					if (enumerableType != null)
 					{
-						value = resolvedSubdependencies.Count > 0 ? _resolver.ResolveAll(enumerableType, resolvedSubdependencies) : _resolver.ResolveAll(enumerableType);
+						value = resolvedSubdependencies.Count > 0 ? resolver.ResolveAll(enumerableType, resolvedSubdependencies) : resolver.ResolveAll(enumerableType);
 					}
 					else
 					{
-						value = resolvedSubdependencies.Count > 0 ? _resolver.Resolve(prop.PropertyType, resolvedSubdependencies) : _resolver.Resolve(prop.PropertyType);
+						value = resolvedSubdependencies.Count > 0 ? resolver.Resolve(prop.PropertyType, resolvedSubdependencies) : resolver.Resolve(prop.PropertyType);
 					}
 					prop.SetValue(control, value, null);
 				}
@@ -210,7 +92,9 @@ namespace Havit.CastleWindsor.WebForms
 		/// </summary>
 		internal static void ReleaseDependencies(object control)
 		{
+			IWindsorContainer resolver = WindsorContainerAdapter.GetWindsorContainer();
 			PropertyInfo[] props = GetInjectableProperties(control);
+
 			foreach (PropertyInfo propertyInfo in props)
 			{
 				object dependencyInstance = propertyInfo.GetValue(control);
@@ -221,12 +105,12 @@ namespace Havit.CastleWindsor.WebForms
 					IEnumerable dependencyInstanceEnumerable = (IEnumerable)dependencyInstance;
 					foreach (var dependencyInstanceItem in dependencyInstanceEnumerable)
 					{
-						_resolver.Release(dependencyInstanceItem);
+						resolver.Release(dependencyInstanceItem);
 					}
 				}
 				else if (dependencyInstance != null)
 				{
-					_resolver.Release(dependencyInstance);
+					resolver.Release(dependencyInstance);
 				}
 
 				propertyInfo.SetValue(control, null);

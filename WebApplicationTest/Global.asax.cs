@@ -16,7 +16,7 @@ namespace Havit.WebApplicationTest
 		{
 			DateTimeBox.GetDateTimeBoxCustomizationDefault += new DateTimeBox.DateTimeBoxDateCustomizationEventHandler(this.DateTimeBox_GetDateTimeBoxCustomizationDefaults);
 			ScriptManagerConfig.RegisterScriptResourceMappings();
-			WindsorCastleConfig.RegisterDiContainer();
+			WindsorCastleConfig.RegisterDiContainer(this);
 
 			Messenger.StorageType = MessengerStorageType.Cookies;
 

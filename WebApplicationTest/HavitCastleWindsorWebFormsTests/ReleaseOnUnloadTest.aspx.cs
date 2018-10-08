@@ -6,18 +6,18 @@ namespace Havit.WebApplicationTest.HavitCastleWindsorWebFormsTests
 {
 	public partial class ReleaseOnUnloadTest : System.Web.UI.Page
 	{
-		#region DisposableComponent
-		[Inject]
-		public IDisposableComponent DisposableComponent { get; set; }
-		#endregion
+		private readonly IDisposableComponent disposableComponent;
 
-		#region OnLoad
+		public ReleaseOnUnloadTest(IDisposableComponent disposableComponent)
+		{
+			this.disposableComponent = disposableComponent;
+		}
+
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
 
-			MyLabel.Text = this.DisposableComponent.Hello();
+			MyLabel.Text = this.disposableComponent.Hello();
 		}
-		#endregion
 	}
 }

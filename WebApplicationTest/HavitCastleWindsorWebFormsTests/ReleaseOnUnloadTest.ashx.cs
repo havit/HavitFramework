@@ -11,18 +11,20 @@ namespace Havit.WebApplicationTest.HavitCastleWindsorWebFormsTests
 	/// Testovadlo pro korektní release závislostí ashx handleru
 	/// </summary>
 	[SuppressMessage("StyleCop.Analyzers", "SA1649", Justification = "Máme ASPX a ASHX stejně pojmenované, potřebujeme různě pojmenované třídy, proto soubor neodpovídá třídě.")]
-	public class ReleaseOnUnloadTest1 : InjectableGenericHandlerBase
+	public class ReleaseOnUnloadTest1 : IHttpHandler
 	{
-		#region DisposableComponent
-		[Inject]
-		public IDisposableComponent DisposableComponent { get; set; }
-		#endregion
+		private readonly IDisposableComponent disposableComponent;
 
-		#region DoProcessRequest
-		protected override void DoProcessRequest(HttpContext context)
+		public ReleaseOnUnloadTest1(IDisposableComponent disposableComponent)
 		{
-			context.Response.Write(DisposableComponent.Hello());
+			this.disposableComponent = disposableComponent;
 		}
-		#endregion
+
+		public bool IsReusable => false;
+
+		public void ProcessRequest(HttpContext context)
+		{
+			context.Response.Write(disposableComponent.Hello());
+		}
 	}
 }

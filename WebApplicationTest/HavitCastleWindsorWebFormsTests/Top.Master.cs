@@ -9,8 +9,12 @@ using Havit.CastleWindsor.WebForms;
 namespace Havit.WebApplicationTest.HavitCastleWindsorWebFormsTests
 {
 	public partial class Top : System.Web.UI.MasterPage
-	{
-		[Inject]
-		public IDisposableComponent DisposableComponent { get; set; }
+	{		
+		public IDisposableComponent DisposableComponent { get; }
+
+		public Top(IDisposableComponent disposableComponent)
+		{
+			this.DisposableComponent = disposableComponent;
+		}
 	}
 }

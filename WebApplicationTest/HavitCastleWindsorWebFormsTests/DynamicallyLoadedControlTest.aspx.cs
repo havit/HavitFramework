@@ -11,7 +11,6 @@ namespace Havit.WebApplicationTest.HavitCastleWindsorWebFormsTests
 			base.OnInit(e);
 
 			Control loadedControl = this.LoadControl("./ReleaseOnUnloadControlTest.ascx");
-			DependencyInjectionWebFormsHelper.InitializeControl(loadedControl);
 			MyPH.Controls.Add(loadedControl);
 		}
 	}

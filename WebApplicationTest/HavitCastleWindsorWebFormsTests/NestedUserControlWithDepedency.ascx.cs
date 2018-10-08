@@ -6,17 +6,19 @@ namespace Havit.WebApplicationTest.HavitCastleWindsorWebFormsTests
 {
 	public partial class NestedUserControlWithDepedency : System.Web.UI.UserControl
 	{
-		#region DisposableComponent
-		[Inject]
-		public IDisposableComponent DisposableComponent { get; set; }
-		#endregion
+		private readonly IDisposableComponent disposableComponent;
+
+		public NestedUserControlWithDepedency(IDisposableComponent disposableComponent)
+		{
+			this.disposableComponent = disposableComponent;
+		}
 
 		#region OnLoad
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
 
-			MyLabel.Text = this.DisposableComponent.Hello();
+			MyLabel.Text = disposableComponent.Hello();
 		}
 		#endregion
 	}

@@ -12,14 +12,18 @@ namespace Havit.WebApplicationTest.HavitCastleWindsorWebFormsTests
 {
 	public partial class PageWithMaster : System.Web.UI.Page
 	{
-		[Inject]
-		public IDisposableComponent DisposableComponent { get; set; }
+		private readonly IDisposableComponent disposableComponent;
+
+		public PageWithMaster(IDisposableComponent disposableComponent)
+		{
+			this.disposableComponent = disposableComponent;
+		}
 
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
 
-			Contract.Assert(DisposableComponent != null, "Page");
+			Contract.Assert(disposableComponent != null, "Page");
 
 			Nested nesterMaster = (Nested)this.Master;
 			Contract.Assert(nesterMaster.DisposableComponent != null, "Nester.master");

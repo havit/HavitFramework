@@ -12,7 +12,7 @@ namespace Havit.WebApplicationTest.HavitCastleWindsorWebFormsTests
 	/// </summary>
 	public class ReleaseAllOnUnloadTest : IHttpHandler
 	{
-		public readonly IDisposableComponent[] disposableComponents;
+		private readonly IDisposableComponent[] disposableComponents;
 
 		public ReleaseAllOnUnloadTest(IDisposableComponent[] disposableComponents)
 		{

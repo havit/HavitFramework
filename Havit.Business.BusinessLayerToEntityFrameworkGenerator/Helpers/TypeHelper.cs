@@ -73,8 +73,8 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Helpers
 		    TypeInfo typeInfo = type.GetTypeInfo();
 
 		    return !typeInfo.IsValueType
-		           || typeInfo.IsGenericType
-		           && typeInfo.GetGenericTypeDefinition() == typeof(Nullable<>);
+		           || (typeInfo.IsGenericType
+		           && (typeInfo.GetGenericTypeDefinition() == typeof(Nullable<>)));
 	    }
 	}
 }

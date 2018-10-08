@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Havit.Business.Configuration.NetCore</id>
-    <version>1.0.0-beta</version>
+    <version>1.0.1-beta</version>
     <title>Havit.Business.Configuration.NetCore</title>
     <authors>HAVIT</authors>
     <owners>HAVIT</owners>
@@ -22,8 +22,8 @@
     <tags>HAVIT Framework Business Layer BL BLG Configuration ConfigurationBuilder</tags>
   </metadata>
   <files>
-    <file src="..\Havit.Business.Configuration\bin\Release\netstandard2.0\Havit.Business.Configuration.NetCore.dll" target="lib\netstandard2.0" />
-    <file src="..\Havit.Business.Configuration\bin\Release\netstandard2.0\Havit.Business.Configuration.NetCore.pdb" target="lib\netstandard2.0" />
-    <file src="..\Havit.Business.Configuration\bin\Release\netstandard2.0\Havit.Business.Configuration.NetCore.xml" target="lib\netstandard2.0" />
+    <file src="..\Havit.Business.Configuration.NetCore\bin\Release\netstandard2.0\Havit.Business.Configuration.NetCore.dll" target="lib\netstandard2.0" />
+    <file src="..\Havit.Business.Configuration.NetCore\bin\Release\netstandard2.0\Havit.Business.Configuration.NetCore.pdb" target="lib\netstandard2.0" />
+    <file src="..\Havit.Business.Configuration.NetCore\bin\Release\netstandard2.0\Havit.Business.Configuration.NetCore.xml" target="lib\netstandard2.0" />
   </files>
 </package>

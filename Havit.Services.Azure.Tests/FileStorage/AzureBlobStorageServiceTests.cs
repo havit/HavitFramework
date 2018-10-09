@@ -29,7 +29,7 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		public static void CleanUp()
 		{
 			var service = GetAzureBlobStorageService();
-			service.EnumerateFiles().ForEach(item => service.Delete(item.Name));
+			service.EnumerateFiles().ToList().ForEach(item => service.Delete(item.Name));
 		}
 
 		[TestMethod]

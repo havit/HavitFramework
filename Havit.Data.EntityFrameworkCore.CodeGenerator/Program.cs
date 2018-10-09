@@ -57,7 +57,40 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator
 			
 			AppDomain.CurrentDomain.AssemblyResolve += ResolveAssembly(System.IO.Path.GetDirectoryName(file));
 			Assembly assembly = Assembly.Load(new AssemblyName { Name = System.IO.Path.GetFileNameWithoutExtension(file) });
-			Type dbContextType = assembly.GetTypes().SingleOrDefault(type => !type.IsAbstract && type.GetInterfaces().Contains(typeof(IDbContext)));
+			
+			Type[] assemblyTypes = null;
+			try
+			{
+				assemblyTypes = assembly.GetTypes();
+			}
+			catch (ReflectionTypeLoadException reflectionTypeLoadException)
+			{
+				Console.ForegroundColor = ConsoleColor.Red;
+				Console.WriteLine($"There was an error during loading types from {file}.");
+				if (reflectionTypeLoadException.LoaderExceptions.All(exception => exception is FileLoadException))
+				{
+					reflectionTypeLoadException.LoaderExceptions
+						.Cast<FileLoadException>()
+						.Select(exception => exception.FileName)
+						.Distinct()
+						.OrderBy(message => message)
+						.ToList()
+						.ForEach(message => Console.WriteLine("Cannot load " + message));
+				}
+				else
+				{
+					reflectionTypeLoadException.LoaderExceptions
+						.Select(exception => exception.Message)
+						.Distinct()
+						.OrderBy(message => message)
+						.ToList()
+						.ForEach(message => Console.WriteLine(message));
+				}
+				Console.ResetColor();
+				return;
+			}
+
+			Type dbContextType = assemblyTypes.SingleOrDefault(type => !type.IsAbstract && type.GetInterfaces().Contains(typeof(IDbContext)));
 			if (dbContextType == null)
 			{
 				Console.WriteLine("No IDbContext implementation was found.");
@@ -188,7 +221,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator
 						{
 							return Assembly.LoadFrom(path);
 						}
-						catch
+						catch 
 						{
 							// NOOP
 						}

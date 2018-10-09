@@ -83,7 +83,7 @@ namespace Havit.Data.EntityFrameworkCore
 	    /// </summary>
 	    protected virtual IEnumerable<IModelConvention> GetModelConventions()
 	    {			
-			yield return new ManyToManyKeyDiscoverConvention();
+			yield return new ManyToManyEntityKeyDiscoveryConvention();
 			yield return new DataTypeAttributeConvention();
 		    yield return new CascadeDeleteToRestrictConvention();
 		}

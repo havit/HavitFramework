@@ -20,18 +20,23 @@ namespace Havit.Data.EntityFrameworkCore.Metadata
 			return entityType.ClrType == typeof(Havit.Data.EntityFrameworkCore.Model.DataSeedVersion);
 		}
 
+		internal static bool HasExactlyTwoPropertiesWhichAreAlsoForeignKeys(this IEntityType entityType)
+		{
+			return (entityType.GetProperties().Count() == 2) // třída má právě dvě (skalární) vlastnosti
+				&& (entityType.GetProperties().All(item => item.IsForeignKey())); // všechny vlastnosti třídy jsou cizím klíčem
+		}
+
 		/// <summary>
 		/// Vrací true, pokud je entita vztahovou entitou M:N vztahu.
 		/// </summary>
 		public static bool IsManyToManyEntity(this IEntityType entityType)
 	    {
-		    // GetProperties neobsahuje vlastnosti z nadřazených tříd, v tomto scénáři to nevadí, dědičnost pro tabulky se dvěma sloupci primárního klíče neuvažujeme
-		    return !entityType.IsOwned()
+			// GetProperties neobsahuje vlastnosti z nadřazených tříd, v tomto scénáři to nevadí, dědičnost pro tabulky se dvěma sloupci primárního klíče neuvažujeme
+			return !entityType.IsOwned()
 				&& !entityType.IsQueryType
-				&&  (entityType.FindPrimaryKey()?.Properties.Count == 2) // třída má složený primární klíč ze svou vlastností
-		        && (entityType.GetProperties().Count() == 2) // třída má právě dvě (skalární) vlastnosti
-		        && (entityType.GetProperties().All(item => item.IsForeignKey())); // všechny vlastnosti třídy jsou cizím klíčem
-	    }
+				&& (entityType.FindPrimaryKey()?.Properties.Count == 2) // třída má složený primární klíč ze svou vlastností
+				&& HasExactlyTwoPropertiesWhichAreAlsoForeignKeys(entityType); // třída má právě dvě (skalární) vlastnosti a ty jsou i cizím klíčem
+		}
 
 		/// <summary>
 		/// Vrací true, pokud jde o aplikační entitu - není systémová, nejde o QueryType a není Owned.

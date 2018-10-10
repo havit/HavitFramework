@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Havit.Business.Configuration</id>
-    <version>1.0.3-beta</version>
+    <version>1.0.4</version>
     <title>Havit.Business.Configuration</title>
     <authors>HAVIT</authors>
     <owners>HAVIT</owners>
@@ -16,7 +16,7 @@
     <copyright>Copyright HAVIT, s.r.o. 2018</copyright>
     <dependencies>
       <group targetFramework="net471">
-        <dependency id="Havit.Business.Configuration.NetCore" version="1.0.1-beta" />
+        <dependency id="Havit.Business.Configuration.NetCore" version="1.0.2" />
         <dependency id="System.Configuration.ConfigurationManager" version="4.5.0" />
       </group>
     </dependencies>

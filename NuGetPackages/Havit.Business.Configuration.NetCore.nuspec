@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Havit.Business.Configuration.NetCore</id>
-    <version>1.0.1-beta</version>
+    <version>1.0.2</version>
     <title>Havit.Business.Configuration.NetCore</title>
     <authors>HAVIT</authors>
     <owners>HAVIT</owners>
@@ -16,7 +16,6 @@
     <copyright>Copyright HAVIT, s.r.o. 2018</copyright>
     <dependencies>
       <group targetFramework="netstandard2.0">
-        <dependency id="LibGit2Sharp" version="0.25.2" />
       </group>
     </dependencies>
     <tags>HAVIT Framework Business Layer BL BLG Configuration ConfigurationBuilder</tags>

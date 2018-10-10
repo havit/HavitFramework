@@ -1127,9 +1127,9 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				writer.WriteLine();
 
 				Column primaryKeyColumn = TableHelper.GetPrimaryKey(table);
+				bool primaryKeyUsesDefaultInsteadOfIdentity = !primaryKeyColumn.Identity && !String.IsNullOrEmpty(primaryKeyColumn.DefaultConstraint?.Text);
 
 				StringBuilder commandBuilder = new StringBuilder();
-				StringBuilder commandBuilderWithID = new StringBuilder();
 				StringBuilder fields = new StringBuilder(); // sloupce, které se insertují, pokud použijeme autoincrement na ID
 				StringBuilder fieldsWithID = new StringBuilder(); // sloupce, které se insertují, pokud insertujeme i ID
 				StringBuilder values = new StringBuilder(); // sloupce, které se insertují, pokud použijeme autoincrement na ID
@@ -1168,28 +1168,50 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				}
 
 				// pro Havit i Exec generujeme proměnnou pro vrácení ID vloženého objektu
-				commandBuilder.AppendFormat("DECLARE @{0} INT; ", primaryKeyColumn.Name);
 
+				// ať už je použit autoincrement nebo deklarujeme hodnotu pro ID vloženého záznamu
+				// tu můžeme potřebovat pro vkládání položek M:N vztahu
+				commandBuilder.AppendFormat("DECLARE @{0} INT; ", primaryKeyColumn.Name);
+				if (primaryKeyUsesDefaultInsteadOfIdentity)
+				{
+					// pokud nepoužíváme identitu, tak se plně spoléháme na existenci defaultu (např. sekvence)
+					// vložené ID se dá do tabulky @inserted, odkud ho dáme do proměnné (protože můžé být potřeba pro uložení vazeb M:N)					
+
+					// teoreticky by šlo dopracovat podpora vložení objektů se známým ID, nyní není podporováno
+
+					commandBuilder.AppendFormat("DECLARE @inserted TABLE ({0} INT); ", primaryKeyColumn.Name);
+				}
+
+				string outputClause = primaryKeyUsesDefaultInsteadOfIdentity
+					? String.Format(" OUTPUT INSERTED.{0} into @inserted ({0})", primaryKeyColumn.Name) // začíná mezerou!
+					: "";
 				if ((GeneratorSettings.Strategy == GeneratorStrategy.Havit) || (GeneratorSettings.Strategy == GeneratorStrategy.HavitCodeFirst))
 				{
 					if (wasFirstColumn)
 					{
-						commandBuilder.AppendFormat("INSERT INTO {0} ({1}) VALUES ({2}); ",
+						commandBuilder.AppendFormat("INSERT INTO {0} ({2}){1} VALUES ({3}); ",
 							TableHelper.GetFullTableName(table),
+							outputClause,
 							fields,
 							values);
 					}
 					else
 					{
-						commandBuilder.AppendFormat("INSERT INTO {0} DEFAULT VALUES; ",
-							TableHelper.GetFullTableName(table));
+						commandBuilder.AppendFormat("INSERT INTO {0}{1} DEFAULT VALUES; ",
+							TableHelper.GetFullTableName(table),
+							outputClause);
 					}
-					commandBuilderWithID.AppendFormat("INSERT INTO {0} ({1}) VALUES ({2}); ",
-						TableHelper.GetFullTableName(table),
-						fieldsWithID,
-						valuesWithID);
 
-					commandBuilder.AppendFormat("SELECT @{0} = SCOPE_IDENTITY(); ", primaryKeyColumn.Name);
+					if (primaryKeyUsesDefaultInsteadOfIdentity)
+					{
+						// vyzvedneme vložené ID z tabulky @inserted, kam jsme jej uložili pomocí OUTPUT clause
+						commandBuilder.AppendFormat("SELECT @{0} = {0} FROM @inserted; ", primaryKeyColumn.Name);
+					}
+					else
+					{
+						// vyzvedneme ID z funkce
+						commandBuilder.AppendFormat("SELECT @{0} = SCOPE_IDENTITY(); ", primaryKeyColumn.Name);
+					}
 				}
 
 				if (GeneratorSettings.Strategy == GeneratorStrategy.Exec)
@@ -1239,7 +1261,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 						}
 					}
 				}
-				//commandBuilder.AppendFormat("SELECT SCOPE_IDENTITY(); ");
 
 				// pro SQL2005 generujeme normální insert
 				string commandText = commandBuilder.ToString() + (wasFirstCollection ? "\" + collectionCommandBuilder.ToString() + \"" : "");

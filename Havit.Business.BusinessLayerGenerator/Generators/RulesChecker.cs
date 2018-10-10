@@ -76,9 +76,11 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				return;
 			}
 
-			if (!TableHelper.GetPrimaryKey(table).Identity && !TableHelper.IsReadOnly(table) && !TableHelper.OmitCreateObjectMethod(table))
+			var primaryKeyColumn = TableHelper.GetPrimaryKey(table);
+
+			if (!primaryKeyColumn.Identity && String.IsNullOrEmpty(primaryKeyColumn.DefaultConstraint?.Text) && !TableHelper.IsReadOnly(table) && !TableHelper.OmitCreateObjectMethod(table))
 			{
-				ConsoleHelper.WriteLineWarning("Tabulka {0}: Primární klíč není autoincrement (a není zakázána metoda CreateObject a tabulka není readonly).", table.Name);
+				ConsoleHelper.WriteLineWarning("Tabulka {0}: Primární klíč není autoincrement a nemá default (a není zakázána metoda CreateObject a tabulka není readonly).", table.Name);
 			}
 		}
 		#endregion

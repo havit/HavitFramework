@@ -54,9 +54,9 @@ namespace Havit.Data.Entity.Patterns.DataSeeds
 			dbSet.AddRange(unpairedSeedDataPairs.Select(item => item.DbEntity));
 
 			Update(configuration, seedDataPairsToUpdate);
-
+			
+			DoBeforeSaveActions(configuration, seedDataPairs);
 			dbContext.SaveChanges();
-
 			DoAfterSaveActions(configuration, seedDataPairs);
 
 			if (configuration.ChildrenSeeds != null)
@@ -246,25 +246,39 @@ namespace Havit.Data.Entity.Patterns.DataSeeds
 		}
 
 		/// <summary>
+		/// Provede volání BeforeSaveActions.
+		/// </summary>
+		private void DoBeforeSaveActions<TEntity>(DataSeedConfiguration<TEntity> configuration, List<SeedDataPair<TEntity>> seedDataPairs)
+			where TEntity : class
+		{
+			DoBeforeAfterSaveAction(configuration.BeforeSaveActions, seedDataPairs, seedDataPair => new BeforeSaveDataArgs<TEntity>(seedDataPair.SeedEntity, seedDataPair.DbEntity, seedDataPair.IsNew));
+		}
+
+		/// <summary>
 		/// Provede volání AfterSaveActions.
 		/// </summary>
 		private void DoAfterSaveActions<TEntity>(DataSeedConfiguration<TEntity> configuration, List<SeedDataPair<TEntity>> seedDataPairs)
 			where TEntity : class
 		{
-			if (configuration.AfterSaveActions != null)
+			DoBeforeAfterSaveAction(configuration.AfterSaveActions, seedDataPairs, pair => new AfterSaveDataArgs<TEntity>(pair.SeedEntity, pair.DbEntity, pair.IsNew));
+		}
+
+		private void DoBeforeAfterSaveAction<TEntity, TEventArgs>(List<Action<TEventArgs>> actions, List<SeedDataPair<TEntity>> seedDataPairs, Func<SeedDataPair<TEntity>, TEventArgs> eventArgsCreator)
+			where TEntity : class
+		{
+			if (actions != null)
 			{
 				foreach (SeedDataPair<TEntity> pair in seedDataPairs)
 				{
-					AfterSaveDataArgs<TEntity> args = new AfterSaveDataArgs<TEntity>(pair.SeedEntity, pair.DbEntity, pair.IsNew);
+					TEventArgs args = eventArgsCreator(pair);
 
-					foreach (Action<AfterSaveDataArgs<TEntity>> afterSaveAction in configuration.AfterSaveActions)
+					foreach (Action<TEventArgs> action in actions)
 					{
-						afterSaveAction(args);
+						action(args);
 					}
 				}
 			}
 		}
-
 		/// <summary>
 		/// Vrátí název vlastnosti, která je reprezentována daným výrazem.
 		/// </summary>

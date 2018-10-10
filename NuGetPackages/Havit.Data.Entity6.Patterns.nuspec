@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
 	<id>Havit.Data.Entity6.Patterns</id>
-	<version>1.7.8</version>
+	<version>1.7.9</version>
 	<title>Havit.Data.Entity6.Patterns</title>
 	<authors>HAVIT</authors>
 	<owners>HAVIT</owners>
@@ -19,8 +19,8 @@
 		<dependency id="Havit" version="1.8.2" />
 		<dependency id="Havit.Model" version="1.8.2" />
 		<dependency id="Havit.Services" version="1.8.2" />
-		<dependency id="Havit.Data.Entity6" version="1.7.8" />
-		<dependency id="Havit.Data.Patterns" version="1.8.2" />
+		<dependency id="Havit.Data.Entity6" version="1.7.9" />
+		<dependency id="Havit.Data.Patterns" version="1.8.5" />
 	  </group>
 	</dependencies>
 	<tags>HAVIT Data Patterns Entity Framework EF EF6</tags>

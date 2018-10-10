@@ -31,6 +31,11 @@ namespace Havit.Data.Patterns.DataSeeds
 		public List<Expression<Func<TEntity, object>>> ExcludeUpdateExpressions { get; set; }
 
 		/// <summary>
+		/// Akce, které jsou provedeny před uložením (persistencí) seedovaných dat.
+		/// </summary>
+		public List<Action<BeforeSaveDataArgs<TEntity>>> BeforeSaveActions { get; set; }
+
+		/// <summary>
 		/// Akce, které jsou provedeny po uložení (persistenci) seedovaných dat.
 		/// </summary>
 		/// <example>Nastavení ParentId lokalizačních objektů (default u lokalizovaných objektů).</example>

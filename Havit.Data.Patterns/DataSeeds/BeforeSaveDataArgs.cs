@@ -1,9 +1,9 @@
 ﻿namespace Havit.Data.Patterns.DataSeeds
 {
 	/// <summary>
-	/// Argumenty pro callback po uložení seedovaného objektu.
+	/// Argumenty pro callback před uložením seedovaného objektu.
 	/// </summary>
-	public class AfterSaveDataArgs<TEntity>
+	public class BeforeSaveDataArgs<TEntity>
 	{
 		/// <summary>
 		/// Předpis objektu k seedování.
@@ -11,23 +11,23 @@
 		public TEntity SeedEntity { get; private set; }
 
 		/// <summary>
-		/// Objekt, který byl na základě předpisu seedování persistován.
+		/// Objekt, který bude na základě předpisu seedování persistován.
 		/// </summary>
 		public TEntity PersistedEntity { get; private set; }
 
 		/// <summary>
-		/// Pokud byl objekt založen, pak je hodnota true. Pokud byl aktualizován, pak má hodnotu false.
+		/// Pokud bude objekt založen, pak je hodnota true. Pokud bude aktualizován, pak má hodnotu false.
 		/// </summary>
-		public bool WasNew { get; private set; }
+		public bool IsNew { get; private set; }
 
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public AfterSaveDataArgs(TEntity seedEntity, TEntity persistedEntity, bool wasNew)
+		public BeforeSaveDataArgs(TEntity seedEntity, TEntity persistedEntity, bool isNew)
 		{
 			SeedEntity = seedEntity;
 			PersistedEntity = persistedEntity;
-			WasNew = wasNew;
+			IsNew = isNew;
 		}
 	}
 }

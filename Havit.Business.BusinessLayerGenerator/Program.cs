@@ -25,7 +25,8 @@ namespace Havit.Business.BusinessLayerGenerator
 			var missingWebConfigPath = commandLineArguments["webconfig"] == null;
 			if ((missingConnectionParameters && missingWebConfigPath) || commandLineArguments["outputpath"] == null)
 			{
-				ConsoleHelper.WriteLineError(@"BusinessLayerGenerator.exe -sqlserver:<server> -database:<database> [-username:<username>] [-password:<password>] -outputpath:<outputpath> [-namespace:<namespace>] [-strategy=Havit|Exec] [-targetplatform=SqlServer2008|SqlServer2005|SqlServerCe35] [-key:true] [-table:string]");
+				ConsoleHelper.WriteLineError("Missing connection parameters: either webconfig or sqlserver&database not specified... or output path is missing");
+				ConsoleHelper.WriteLineError(@"BusinessLayerGenerator.exe [-webconfig:<webconfig> | -sqlserver:<server> -database:<database> [-username:<username>] [-password:<password>]] -outputpath:<outputpath> [-namespace:<namespace>] [-strategy=Havit|Exec] [-targetplatform=SqlServer2008|SqlServer2005|SqlServerCe35] [-key:true] [-table:string]");
 				return;
 			}
 
@@ -34,7 +35,8 @@ namespace Havit.Business.BusinessLayerGenerator
 			{
 				if (commandLineArguments["sqlserver"] != null)
 				{
-					ConsoleHelper.WriteLineError(@"BusinessLayerGenerator.exe -sqlserver:<server> -database:<database> [-username:<username>] [-password:<password>] -outputpath:<outputpath> [-namespace:<namespace>] [-strategy=Havit|Exec] [-targetplatform=SqlServer2008|SqlServer2005|SqlServerCe35] [-key:true] [-table:string]");
+					ConsoleHelper.WriteLineError("Invalid connection parameters: both webconfig and sqlserver&database is specified");
+					ConsoleHelper.WriteLineError(@"BusinessLayerGenerator.exe [-webconfig:<webconfig> | -sqlserver:<server> -database:<database> [-username:<username>] [-password:<password>]] -outputpath:<outputpath> [-namespace:<namespace>] [-strategy=Havit|Exec] [-targetplatform=SqlServer2008|SqlServer2005|SqlServerCe35] [-key:true] [-table:string]");
 					return;
 				}
 

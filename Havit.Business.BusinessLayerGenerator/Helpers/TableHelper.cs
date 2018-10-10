@@ -222,7 +222,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 				}
 			}
 
-			if (LocalizationHelper.IsLocalizedTable(table) && (GeneratorSettings.TargetPlatform != TargetPlatform.SqlServerCe35))
+			if (LocalizationHelper.IsLocalizedTable(table))
 			{
 				Table targetTable = LocalizationHelper.GetLocalizationTable(table);
 

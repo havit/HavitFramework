@@ -45,7 +45,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			BusinessObjectProperties.WriteProperties(writer, table);
 			LocalizationGenerator.WriteLocalization(writer, table);
 			BusinessObjectMoneyProperties.Write(writer, table);
-			SqlCe35Localizations.Write(writer, table);
 			writer.WriteCloseRegion();
 
 			WriteIsDeleted(writer, table);
@@ -1138,19 +1137,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 
 				bool wasFirstColumn = false;
 
-				// pro SQLCE35 přidáme primární klíč
-				if (GeneratorSettings.TargetPlatform == TargetPlatform.SqlServerCe35)
-				{
-					writer.WriteLine();
-					writer.WriteLine("if (this.ID != BusinessObjectBase.NoID)");
-					writer.WriteLine("{");
-					BusinessObjectSqlParameter.WriteSqlParameter(writer, primaryKeyColumn, "this.ID");
-					fieldsWithID.AppendFormat("[{0}]", primaryKeyColumn.Name);
-					valuesWithID.AppendFormat("@{0}", primaryKeyColumn.Name);
-					writer.WriteLine("}");
-					writer.WriteLine();
-				}
-
 				foreach (Column column in TableHelper.GetDbReadWriteColumns(table))
 				{
 					// ukládat všechny sloupce, pokud jde o full insert
@@ -1181,12 +1167,8 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 					}
 				}
 
-				if (GeneratorSettings.TargetPlatform != TargetPlatform.SqlServerCe35)
-				{
-					// pro Havit i Exec generujeme proměnnou pro vrácení ID vloženého objektu
-					// ale ne pro SqlServerCe35, neumí více příkazů v dávce (neumí dávku)
-					commandBuilder.AppendFormat("DECLARE @{0} INT; ", primaryKeyColumn.Name);
-				}
+				// pro Havit i Exec generujeme proměnnou pro vrácení ID vloženého objektu
+				commandBuilder.AppendFormat("DECLARE @{0} INT; ", primaryKeyColumn.Name);
 
 				if ((GeneratorSettings.Strategy == GeneratorStrategy.Havit) || (GeneratorSettings.Strategy == GeneratorStrategy.HavitCodeFirst))
 				{
@@ -1207,10 +1189,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 						fieldsWithID,
 						valuesWithID);
 
-					if (GeneratorSettings.TargetPlatform != TargetPlatform.SqlServerCe35)
-					{
-						commandBuilder.AppendFormat("SELECT @{0} = SCOPE_IDENTITY(); ", primaryKeyColumn.Name);
-					}
+					commandBuilder.AppendFormat("SELECT @{0} = SCOPE_IDENTITY(); ", primaryKeyColumn.Name);
 				}
 
 				if (GeneratorSettings.Strategy == GeneratorStrategy.Exec)
@@ -1262,35 +1241,11 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				}
 				//commandBuilder.AppendFormat("SELECT SCOPE_IDENTITY(); ");
 
-				if (GeneratorSettings.TargetPlatform != TargetPlatform.SqlServerCe35)
-				{
-					// pro SQL2005 generujeme normální insert
-					string commandText = commandBuilder.ToString() + (wasFirstCollection ? "\" + collectionCommandBuilder.ToString() + \"" : "");
-					commandText += String.Format("SELECT @{0}; ", primaryKeyColumn.Name);
-					writer.WriteLine(String.Format("dbCommand.CommandText = \"{0}\";", commandText));
-					writer.WriteLine(String.Format("this.ID = (int){0}.ExecuteScalar(dbCommand);", DatabaseHelper.GetDbConnector()));
-				}
-				else
-				{
-					// pro SqlServerCe35 můžeme vložit PK!
-					string commandText = commandBuilder.ToString() + (wasFirstCollection ? "\" + collectionCommandBuilder.ToString() + \"" : "");
-					string commandTextWithID = commandBuilderWithID.ToString() + (wasFirstCollection ? "\" + collectionCommandBuilder.ToString() + \"" : "");
-					writer.WriteLine("if (this.ID == BusinessObjectBase.NoID)");
-					writer.WriteLine("{");
-					writer.WriteLine(String.Format("dbCommand.CommandText = \"{0}\";", commandText));
-					writer.WriteLine(String.Format("{0}.ExecuteNonQuery(dbCommand);", DatabaseHelper.GetDbConnector()));
-					writer.WriteLine();
-					writer.WriteLine(String.Format("dbCommand = {0}.ProviderFactory.CreateCommand();", DatabaseHelper.GetDbConnector()));
-					writer.WriteLine("dbCommand.Transaction = transaction;");
-					writer.WriteLine("dbCommand.CommandText = \"SELECT CAST(@@IDENTITY as int);\";");
-					writer.WriteLine(String.Format("this.ID = (int){0}.ExecuteScalar(dbCommand);", DatabaseHelper.GetDbConnector()));
-					writer.WriteLine("}");
-					writer.WriteLine("else");
-					writer.WriteLine("{");
-					writer.WriteLine(String.Format("dbCommand.CommandText = \"{0}\";", commandTextWithID));
-					writer.WriteLine(String.Format("{0}.ExecuteNonQuery(dbCommand);", DatabaseHelper.GetDbConnector()));
-					writer.WriteLine("}");
-				}
+				// pro SQL2005 generujeme normální insert
+				string commandText = commandBuilder.ToString() + (wasFirstCollection ? "\" + collectionCommandBuilder.ToString() + \"" : "");
+				commandText += String.Format("SELECT @{0}; ", primaryKeyColumn.Name);
+				writer.WriteLine(String.Format("dbCommand.CommandText = \"{0}\";", commandText));
+				writer.WriteLine(String.Format("this.ID = (int){0}.ExecuteScalar(dbCommand);", DatabaseHelper.GetDbConnector()));
 
 				writer.WriteLine("this.IsNew = false; // uložený objekt není už nový, dostal i přidělené ID");
 				writer.WriteLine();

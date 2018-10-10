@@ -108,6 +108,12 @@ namespace Havit.Business.BusinessLayerGenerator
 				return;				
 			}
 
+			if (GeneratorSettings.TargetPlatform == TargetPlatform.SqlServerCe35)
+			{
+				ConsoleHelper.WriteLineError("Target Platform SqlServerCe35 již není podporován.");
+				return;
+			}
+
 			// připojíme se k databázi
 			ServerConnection connection;
 			if (String.IsNullOrEmpty(GeneratorSettings.Username))

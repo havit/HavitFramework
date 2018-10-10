@@ -22,7 +22,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			CheckAccessModifier(table);
 			CheckDescriptionRules(table);
 			CheckDeprecatedTypes(table);
-			CheckSqlCe35Types(table);
 			CheckCacheExtendedPropertiesRule(table);
 			CheckPrimaryKeyHasIndexRule(table);
 			CheckForeignKeysNamingConvention(table);
@@ -31,7 +30,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			CheckDefaultValueRule(table);
 			CheckPropertyAccessorsRule(table);
 			CheckLocalizationRules(table);
-			CheckCollectionCompatibilityRules(table);
 			CheckCollectionForeignKeyRules(table);
 			CheckMoneyRules(table);
 			CheckResourceClassRules(table);
@@ -158,25 +156,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				if (ColumnHelper.IsDeprecatedType(column))
 				{
 					ConsoleHelper.WriteLineWarning("Tabulka {0}, Sloupec {1}: Použit zastaralý typ {2}.", table.Name, column.Name, column.DataType.SqlDataType.ToString());
-				}
-			}
-		}
-		#endregion
-
-		#region CheckSqlCe35Types
-		/// <summary>
-		/// Ověří, že použité datové typy jsou podporovány SqlServerCe35.
-		/// </summary>
-		private static void CheckSqlCe35Types(Table table)
-		{
-			if (GeneratorSettings.TargetPlatform == TargetPlatform.SqlServerCe35)
-			{
-				foreach (Column column in TableHelper.GetPropertyColumns(table))
-				{
-					if (!ColumnHelper.IsSqlCe35SupportedColumn(column))
-					{
-						ConsoleHelper.WriteLineWarning("Tabulka {0}, Sloupec {1}: Použit datový typ {2} nepodporovaný SqlServerCe35.", table.Name, column.Name, column.DataType.SqlDataType.ToString());
-					}
 				}
 			}
 		}
@@ -368,39 +347,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			if (!TypeHelper.IsBusinessObjectReference(languageColumn))
 			{
 				ConsoleHelper.WriteLineWarning(String.Format("Tabulka {0}, Sloupec LanguageID: Není nastavena reference.", table.Name));
-			}
-
-			if (GeneratorSettings.TargetPlatform == TargetPlatform.SqlServerCe35)
-			{
-				Table parentTable = LocalizationHelper.GetLocalizationParentTable(table);
-
-				if ((parentTable != null) && (!TableHelper.IsReadOnly(parentTable)))
-				{
-					ConsoleHelper.WriteLineWarning(String.Format("Tabulka {0} je lokalizována, není readonly a je požadována kompatibilita s SqlServerCe35.", table.Name));
-
-				}
-
-				if (!TableHelper.IsReadOnly(table))
-				{
-					ConsoleHelper.WriteLineWarning(String.Format("Tabulka {0} obsahuje lokalizace, není readonly a je požadována kompatibilita s SqlServerCe35.", table.Name));
-				}
-			}
-
-		}
-		#endregion
-
-		#region CheckCollectionCompatibilityRules
-		/// <summary>
-		/// Ověřuje pravidla pro kolekce tabulky tabulky.
-		/// </summary>
-		private static void CheckCollectionCompatibilityRules(Table table)
-		{
-			if (GeneratorSettings.TargetPlatform == TargetPlatform.SqlServerCe35)
-			{
-				if (TableHelper.GetCollectionColumns(table).Count > 0)
-				{
-					ConsoleHelper.WriteLineWarning("Tabulka {0} obsahuje kolekce a je vyžadována kompatibilita s SqlServerCe35.", table.Name);
-				}
 			}
 		}
 		#endregion

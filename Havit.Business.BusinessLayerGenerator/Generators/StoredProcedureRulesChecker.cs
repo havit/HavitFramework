@@ -14,14 +14,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 		{
 			Collection<StoredProcedure> procedures = StoredProcedureHelper.GetStoredProcedures(table);
 
-			if (GeneratorSettings.TargetPlatform == TargetPlatform.SqlServerCe35)
-			{
-				if (procedures.Count > 0)
-				{
-					ConsoleHelper.WriteLineWarning(String.Format("Tabulka {0} má připojené stored porcedury a je požadována kompatibilita s SqlServerCe35.", table.Name));
-				}
-			}
-
 			foreach (StoredProcedure procedure in procedures)
 			{
 				CheckRules(table, procedure);

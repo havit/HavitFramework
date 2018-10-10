@@ -123,7 +123,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
         /// </summary>
         public static bool IsDatabaseSchemaSupported()
         {
-            return GeneratorSettings.TargetPlatform != TargetPlatform.SqlServerCe35;
+			return true;
         }
     	#endregion
 

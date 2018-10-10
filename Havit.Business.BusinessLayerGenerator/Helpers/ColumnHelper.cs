@@ -278,13 +278,9 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		/// </summary>
 		public static bool IsDeprecatedType(Column column)
 		{
-			if (GeneratorSettings.TargetPlatform != TargetPlatform.SqlServerCe35)
-			{
-				return column.DataType.SqlDataType == SqlDataType.Image
-					|| column.DataType.SqlDataType == SqlDataType.NText
-					|| column.DataType.SqlDataType == SqlDataType.Text;
-			}
-			return false;
+			return column.DataType.SqlDataType == SqlDataType.Image
+				|| column.DataType.SqlDataType == SqlDataType.NText
+				|| column.DataType.SqlDataType == SqlDataType.Text;
 		}
 		#endregion
 
@@ -432,34 +428,6 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		public static bool GetGenerateIndexes(Column column)
 		{
 			return ExtendedPropertiesHelper.GetBool(ExtendedPropertiesKey.FromColumn(column), "GenerateIndexes", ((Table)column.Parent).Name + "-" + column.Name) ?? true;
-		}
-		#endregion
-
-		#region IsSqlCe35SupportedColumn
-		/// <summary>
-		/// Vrací true, pokud je datový typ podporován SqlServerCe35.
-		/// </summary>
-		public static bool IsSqlCe35SupportedColumn(Column column)
-		{
-			return column.DataType.SqlDataType == SqlDataType.BigInt
-				|| column.DataType.SqlDataType == SqlDataType.Int
-				|| column.DataType.SqlDataType == SqlDataType.SmallInt
-				|| column.DataType.SqlDataType == SqlDataType.TinyInt
-				|| column.DataType.SqlDataType == SqlDataType.Bit
-				|| column.DataType.SqlDataType == SqlDataType.Numeric
-				|| column.DataType.SqlDataType == SqlDataType.Decimal /* není uveden v DDL v editaci tabulky v SqlServerCe35. */
-				|| column.DataType.SqlDataType == SqlDataType.Money
-				|| column.DataType.SqlDataType == SqlDataType.Float
-				|| column.DataType.SqlDataType == SqlDataType.Real
-				|| column.DataType.SqlDataType == SqlDataType.DateTime
-				|| column.DataType.SqlDataType == SqlDataType.NChar
-				|| column.DataType.SqlDataType == SqlDataType.NVarChar
-				|| column.DataType.SqlDataType == SqlDataType.NText
-				|| column.DataType.SqlDataType == SqlDataType.Binary
-				|| column.DataType.SqlDataType == SqlDataType.VarBinary
-				|| column.DataType.SqlDataType == SqlDataType.Image
-				|| column.DataType.SqlDataType == SqlDataType.UniqueIdentifier
-				|| column.DataType.SqlDataType == SqlDataType.Timestamp;
 		}
 		#endregion
 

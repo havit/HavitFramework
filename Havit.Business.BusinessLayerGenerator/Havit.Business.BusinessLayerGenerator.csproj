@@ -343,7 +343,6 @@
     <Compile Include="Generators\MoneyPartialClass.cs" />
     <Compile Include="Generators\DatabaseRulesChecker.cs" />
     <Compile Include="Generators\DbResourcesPartialClass.cs" />
-    <Compile Include="Generators\SqlCe35Localizations.cs" />
     <Compile Include="Generators\StoredProcedureRulesChecker.cs" />
     <Compile Include="Helpers\ApplicationTimeHelper.cs" />
     <Compile Include="Helpers\CloneMode.cs" />

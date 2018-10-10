@@ -6,7 +6,7 @@ namespace Havit.Business.Configuration.NetCore
 	{
 		public static IConfigurationRoot BuildGitBranchConfiguration(this IConfigurationBuilder configurationBuilder)
 		{
-			return new BranchConnectionStringConfigurationRoot(configurationBuilder.Build(), configurationBuilder.GetFileProvider(), new WebGitRepositoryProvider());
+			return new BranchConnectionStringConfigurationRoot(configurationBuilder.Build(), configurationBuilder.GetFileProvider(), new HeadFileGitRepositoryProvider());
 		}
 	}
 }

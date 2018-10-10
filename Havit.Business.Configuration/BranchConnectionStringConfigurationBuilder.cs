@@ -19,7 +19,7 @@ namespace Havit.Business.Configuration
 		/// Creates instance of <see cref="BranchConnectionStringConfigurationBuilder"/>.
 		/// </summary>
 		public BranchConnectionStringConfigurationBuilder()
-			: this(new WebGitRepositoryProvider())
+			: this(new HeadFileGitRepositoryProvider())
 		{
 		}
 

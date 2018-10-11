@@ -41,8 +41,6 @@ namespace Havit.Data.EntityFrameworkCore.Metadata
 		/// <summary>
 		/// Vrací true, pokud jde o aplikační entitu - není systémová, nejde o QueryType a není Owned.
 		/// </summary>
-		/// <param name="entityType"></param>
-		/// <returns></returns>
 		internal static bool IsApplicationEntity(this IEntityType entityType)
 		{
 			return !entityType.IsQueryType

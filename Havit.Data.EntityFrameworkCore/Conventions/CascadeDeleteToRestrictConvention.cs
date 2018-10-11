@@ -6,12 +6,14 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Havit.Data.EntityFrameworkCore.Conventions
 {
+	/// <summary>
+	/// Všem cizím klíčům s nastaví DeleteBehavior na Restrict, čímž zamezí kaskádnímu delete.
+	/// </summary>
 	public class CascadeDeleteToRestrictConvention : IModelConvention
 	{
 		/// <summary>
-		/// Všem cizím klíčům s nastaví DeleteBehavior na Restrict, čímž zamezí kaskádnímu delete.
+		/// Aplikuje konvenci.
 		/// </summary>
-		/// <param name="modelBuilder"></param>
 		public void Apply(ModelBuilder modelBuilder)
 		{
 			foreach (IMutableForeignKey foreignKey in modelBuilder.Model

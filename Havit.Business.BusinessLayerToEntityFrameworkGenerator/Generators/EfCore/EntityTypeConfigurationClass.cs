@@ -165,7 +165,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 
 		private static bool WriteTablePKs(CodeWriter writer, GeneratedModelClass modelClass)
 		{
-			if (TableHelper.IsJoinTable(modelClass.Table))
+			if (TableHelper.IsJoinTable(modelClass.Table) && modelClass.Properties.Count > 2)
 			{
 				string columns = String.Join(", ", modelClass.PrimaryKeyParts
 					.Select(pk => String.Format("{0}.{1}",

@@ -30,8 +30,9 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 			WriteUsings(writer, table);
 			WriteNamespaceClassConstructorBegin(writer, modelClass, false);
 
+			bool shouldSave = WriteTablePKs(writer, modelClass);
 			// configuration directives for collections shouldn't be necessary, they're covered by EF Core conventions
-			bool shouldSave = WritePrincipals(writer, modelClass);
+			shouldSave |= WritePrincipals(writer, modelClass);
 			WriteNamespaceClassConstructorEnd(writer);
 
 			if (shouldSave)
@@ -160,6 +161,25 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCo
 				}
 			}
 			return result;
+		}
+
+		private static bool WriteTablePKs(CodeWriter writer, GeneratedModelClass modelClass)
+		{
+			if (TableHelper.IsJoinTable(modelClass.Table))
+			{
+				string columns = String.Join(", ", modelClass.PrimaryKeyParts
+					.Select(pk => String.Format("{0}.{1}",
+						ConventionsHelper.GetCammelCase(modelClass.Name),
+						pk.Property.Name)));
+
+				writer.WriteLine(String.Format("builder.HasKey({0} => new {{ {1} }});",
+					ConventionsHelper.GetCammelCase(modelClass.Name),
+					columns));
+
+				return true;
+			}
+
+			return false;
 		}
 
 		#region WriteNamespaceClassConstructorEnd

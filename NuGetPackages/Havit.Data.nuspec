@@ -22,8 +22,8 @@
 	<tags>HAVIT Framework Library</tags>
   </metadata>
   <files>
-	<file src="..\Havit.Data\bin\Release\Havit.Data.dll" target="lib\net46" />
-	<file src="..\Havit.Data\bin\Release\Havit.Data.pdb" target="lib\net46" />
-	<file src="..\Havit.Data\bin\Release\Havit.Data.xml" target="lib\net46" />
+	<file src="..\Havit.Data\bin\Release\net46\Havit.Data.dll" target="lib\net46" />
+	<file src="..\Havit.Data\bin\Release\net46\Havit.Data.pdb" target="lib\net46" />
+	<file src="..\Havit.Data\bin\Release\net46\Havit.Data.xml" target="lib\net46" />
   </files>
 </package>

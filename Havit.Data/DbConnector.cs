@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Data;
 using System.Data.Common;
-using System.Data.Linq;
 using System.Linq;
 using System.Text;
 using System.Threading;

@@ -22,8 +22,8 @@
 	<tags>HAVIT Framework Library</tags>
   </metadata>
   <files>
-	<file src="..\Havit.GoPay\bin\Release\Havit.GoPay.dll" target="lib\net46" />
-	<file src="..\Havit.GoPay\bin\Release\Havit.GoPay.pdb" target="lib\net46" />
-	<file src="..\Havit.GoPay\bin\Release\Havit.GoPay.xml" target="lib\net46" />
+	<file src="..\Havit.GoPay\bin\Release\net46\Havit.GoPay.dll" target="lib\net46" />
+	<file src="..\Havit.GoPay\bin\Release\net46\Havit.GoPay.pdb" target="lib\net46" />
+	<file src="..\Havit.GoPay\bin\Release\net46\Havit.GoPay.xml" target="lib\net46" />
   </files>
 </package>

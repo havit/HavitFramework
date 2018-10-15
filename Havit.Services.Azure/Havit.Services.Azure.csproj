@@ -2,9 +2,6 @@
   <PropertyGroup>
     <TargetFrameworks>net46</TargetFrameworks>
 	  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <Product />
-    <PackageId />
-    <Version>1</Version>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="WindowsAzure.Storage" Version="8.1.1" />

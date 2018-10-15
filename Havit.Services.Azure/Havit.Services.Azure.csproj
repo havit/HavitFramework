@@ -1,19 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net46</TargetFrameworks>
-	  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net46|AnyCPU'">
-    <DocumentationFile>C:\Dev\HWF\002.HFW-HavitFramework\Havit.Services.Azure\Havit.Services.Azure.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net46|AnyCPU'">
-    <DocumentationFile>C:\Dev\HWF\002.HFW-HavitFramework\Havit.Services.Azure\Havit.Services.Azure.xml</DocumentationFile>
+	<TargetFramework>net46</TargetFramework>
+	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="WindowsAzure.Storage" Version="8.1.1" />
+	<PackageReference Include="WindowsAzure.Storage" Version="8.1.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Havit.Services\Havit.Services.csproj" Version="1.7.0" />
-    <ProjectReference Include="..\Havit\Havit.csproj" Version="1.7.0" />
+	<ProjectReference Include="..\Havit.Services\Havit.Services.csproj" Version="1.7.0" />
+	<ProjectReference Include="..\Havit\Havit.csproj" Version="1.7.0" />
   </ItemGroup>
 </Project>

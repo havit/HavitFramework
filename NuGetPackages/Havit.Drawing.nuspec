@@ -21,8 +21,8 @@
 	</dependencies>
   </metadata>
   <files>
-	<file src="..\Havit.Drawing\bin\Release\Havit.Drawing.dll" target="lib\net46" />
-	<file src="..\Havit.Drawing\bin\Release\Havit.Drawing.pdb" target="lib\net46" />
-	<file src="..\Havit.Drawing\bin\Release\Havit.Drawing.xml" target="lib\net46" />
+	<file src="..\Havit.Drawing\bin\Release\net46\Havit.Drawing.dll" target="lib\net46" />
+	<file src="..\Havit.Drawing\bin\Release\net46\Havit.Drawing.pdb" target="lib\net46" />
+	<file src="..\Havit.Drawing\bin\Release\net46\Havit.Drawing.xml" target="lib\net46" />
   </files>
 </package>

@@ -3,6 +3,12 @@
     <TargetFrameworks>net46</TargetFrameworks>
 	  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net46|AnyCPU'">
+    <DocumentationFile>C:\Dev\HWF\002.HFW-HavitFramework\Havit.Services.Azure\Havit.Services.Azure.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net46|AnyCPU'">
+    <DocumentationFile>C:\Dev\HWF\002.HFW-HavitFramework\Havit.Services.Azure\Havit.Services.Azure.xml</DocumentationFile>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="WindowsAzure.Storage" Version="8.1.1" />
   </ItemGroup>

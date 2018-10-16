@@ -60,6 +60,23 @@ namespace Havit.Services.Caching
 		private CacheItemPriority priority = CacheItemPriority.Normal;
 
 		/// <summary>
+		/// Odhadovaná velikost položky v cache (použito jen pro IMemoryCache, bezrozměrná jednotka).
+		/// </summary>
+		public int? Size
+		{
+			get
+			{
+				return size;
+			}
+			set
+			{
+				ThrowIfFrozen();
+				size = value;
+			}
+		}
+		private int? size;
+
+		/// <summary>
 		/// Cache dependencies - Klíče, na kterých je položka závislá.
 		/// </summary>
 		public string[] CacheDependencyKeys

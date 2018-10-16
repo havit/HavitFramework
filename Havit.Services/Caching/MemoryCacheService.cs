@@ -114,6 +114,11 @@ namespace Havit.Services.Caching
 						cacheEntryOptions = cacheEntryOptions.AddExpirationToken(new CancellationChangeToken(cancellationToken));
 					}
 			    }
+
+				if (options.Size != null)
+				{
+					cacheEntryOptions = cacheEntryOptions.SetSize(options.Size.Value);
+				}
 			}
 
 			memoryCache.Set(key, SupportsCacheDependencies ? new CacheEntry(value, new CancellationTokenSource()) : value, cacheEntryOptions);

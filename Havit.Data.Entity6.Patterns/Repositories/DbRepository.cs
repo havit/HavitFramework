@@ -7,6 +7,7 @@ using System.Data.Entity.Core;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.XPath;
 using Havit.Data.Entity.Patterns.Infrastructure;
@@ -98,7 +99,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 			this.dataLoader = dataLoader;
 			this.dataLoaderAsync = dataLoaderAsync;
 			this.SoftDeleteManager = softDeleteManager;
-			this._dbSet = new Lazy<DbSet<TEntity>>(() => dbContext.Set<TEntity>());
+			this._dbSet = new Lazy<DbSet<TEntity>>(() => dbContext.Set<TEntity>(), LazyThreadSafetyMode.None);
 		}
 
 		private void DbSetLocal_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

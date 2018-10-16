@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Havit.Data.EntityFrameworkCore.Abstractions\Havit.Data.EntityFrameworkCore.Abstractions.csproj" />
     <ProjectReference Include="..\Havit.Model\Havit.Model.csproj" />
     <ProjectReference Include="..\Havit\Havit.csproj" />
   </ItemGroup>

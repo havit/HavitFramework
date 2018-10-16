@@ -7,6 +7,7 @@ using Havit.Data.EntityFrameworkCore.Conventions;
 using Havit.Data.EntityFrameworkCore.Internal;
 using Havit.Data.EntityFrameworkCore.Model;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Havit.Data.EntityFrameworkCore
@@ -86,6 +87,7 @@ namespace Havit.Data.EntityFrameworkCore
 			yield return new ManyToManyEntityKeyDiscoveryConvention();
 			yield return new DataTypeAttributeConvention();
 		    yield return new CascadeDeleteToRestrictConvention();
+			yield return new CacheAttributeToAnnotationConvention();
 		}
 
 	    /// <summary>
@@ -195,20 +197,22 @@ namespace Havit.Data.EntityFrameworkCore
 			    : getObjectInStatesFunc();
 	    }
 
+		// TODO JK: Extension method!
 	    /// <summary>
 	    /// Vrací true, pokud je EF považuje referenci za načtenou.
 	    /// </summary>
 	    bool IDbContext.IsEntityReferenceLoaded<TEntity>(TEntity entity, string propertyName)
 	    {
-		    return ExecuteWithoutAutoDetectChanges(() => this.Entry(entity).Reference(propertyName).IsLoaded);
+		     return GetEntry(entity, suppressDetectChanged: true).Reference(propertyName).IsLoaded;
 	    }
-
-	    /// <summary>
-	    /// Vrací true, pokud je EF považuje kolekci za načtenou.
-	    /// </summary>
-	    bool IDbContext.IsEntityCollectionLoaded<TEntity>(TEntity entity, string propertyName)
+		
+		// TODO JK: Extension method!
+		/// <summary>
+		/// Vrací true, pokud je EF považuje kolekci za načtenou.
+		/// </summary>
+		bool IDbContext.IsEntityCollectionLoaded<TEntity>(TEntity entity, string propertyName)
 	    {
-		    return ExecuteWithoutAutoDetectChanges(() => this.Entry(entity).Collection(propertyName).IsLoaded);
+		    return GetEntry(entity, suppressDetectChanged: true).Collection(propertyName).IsLoaded;
 	    }
 
 		// TODO JK: Nebude potřeba?
@@ -228,11 +232,23 @@ namespace Havit.Data.EntityFrameworkCore
 	    }
 
 		/// <summary>
+		/// Vrací EntityEntry pro danou entitu.
+		/// </summary>
+		public EntityEntry<TEntity> GetEntry<TEntity>(TEntity entity, bool suppressDetectChanged = true)
+			where TEntity : class
+		{
+			return suppressDetectChanged
+				? ExecuteWithoutAutoDetectChanges(() => this.Entry(entity))
+				: this.Entry(entity);
+		}
+
+		// TODO JK: Extension method!
+		/// <summary>
 		/// Vrátí stav entity v DbContextu (resp. v jeho ChangeTrackeru).
 		/// </summary>
-	    EntityState IDbContext.GetEntityState<TEntity>(TEntity entity)
+		EntityState IDbContext.GetEntityState<TEntity>(TEntity entity)
 	    {
-		    return ExecuteWithoutAutoDetectChanges(() => Entry(entity).State);
+			return GetEntry(entity, suppressDetectChanged: true).State;
 	    }
 
 	    /// <summary>

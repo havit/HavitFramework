@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
+using Havit.Data.EntityFrameworkCore.Patterns.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 using Havit.Data.Patterns.DataLoaders;
 using Havit.Data.Patterns.DataSources;
@@ -51,12 +53,17 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 		/// <summary>
 		/// SoftDeleteManager používaný repository.
 		/// </summary>
-		protected ISoftDeleteManager SoftDeleteManager { get; private set; }
+		protected ISoftDeleteManager SoftDeleteManager { get; }
+
+		/// <summary>
+		/// EntityCacheManager používaný repository.
+		/// </summary>
+		protected IEntityCacheManager EntityCacheManager { get; }
 
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		protected DbRepository(IDbContext dbContext, IDataSource<TEntity> dataSource, IEntityKeyAccessor<TEntity, int> entityKeyAccessor, IDataLoader dataLoader, IDataLoaderAsync dataLoaderAsync, ISoftDeleteManager softDeleteManager)
+		protected DbRepository(IDbContext dbContext, IDataSource<TEntity> dataSource, IEntityKeyAccessor<TEntity, int> entityKeyAccessor, IDataLoader dataLoader, IDataLoaderAsync dataLoaderAsync, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager)
 		{
 			Contract.Requires<ArgumentException>(dbContext != null);
 			Contract.Requires<ArgumentException>(dataSource != null);
@@ -68,7 +75,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 			this.dataLoader = dataLoader;
 			this.dataLoaderAsync = dataLoaderAsync;
 			this.SoftDeleteManager = softDeleteManager;
-			this.dbSetLazy = new Lazy<IDbSet<TEntity>>(() => dbContext.Set<TEntity>());
+			this.EntityCacheManager = entityCacheManager;
+			this.dbSetLazy = new Lazy<IDbSet<TEntity>>(() => dbContext.Set<TEntity>(), LazyThreadSafetyMode.None);
 		}
 
 		/// <summary>
@@ -80,7 +88,26 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 		{
 			Contract.Requires<ArgumentException>(id != default(int));
 
-			TEntity result = DbSet.Find(id);
+			// hledáme v identity mapě
+			TEntity result = DbSet.FindTracked(id);
+			
+			// není v identity mapě, hledáme v cache
+			if (result == null)
+			{
+				EntityCacheManager.TryGetEntity<TEntity>(id, out result);
+			}
+
+			// není ani v identity mapě, ani v cache, hledáme v databázi
+			if (result == null)
+			{
+				result = DbSet.Find(id);
+				if (result != null)
+				{
+					// načtený objekt uložíme do cache
+					EntityCacheManager.StoreEntity(result);
+				}
+			}
+
 			if (result == null)
 			{
 				ThrowObjectNotFoundException(id);
@@ -99,7 +126,25 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 		{
 			Contract.Requires<ArgumentException>(id != default(int));
 
-			TEntity result = await DbSet.FindAsync(id);
+			TEntity result = DbSet.FindTracked(id);
+
+			// není v identity mapě, hledáme v cache
+			if (result == null)
+			{
+				EntityCacheManager.TryGetEntity<TEntity>(id, out result);
+			}
+
+			// není ani v identity mapě, ani v cache, hledáme v databázi
+			if (result == null)
+			{
+				result = await DbSet.FindAsync(id);
+				if (result != null)
+				{
+					// načtený objekt uložíme do cache
+					EntityCacheManager.StoreEntity(result);
+				}
+			}
+
 			if (result == null)
 			{
 				ThrowObjectNotFoundException(id);					
@@ -131,7 +176,12 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 				{
 					loadedEntities.Add(trackedEntity);
 				}
-				else
+				// není v identity mapě, hledáme v cache
+				else if (EntityCacheManager.TryGetEntity<TEntity>(id, out TEntity cachedEntity))
+				{					
+					loadedEntities.Add(cachedEntity);
+				}
+				else // není ani v identity mapě, ani v cache, hledáme v databázi
 				{
 					idsToLoad.Add(id);
 				}
@@ -149,6 +199,12 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 				{
 					int[] missingObjectIds = idsToLoad.Except(loadedObjects.Select(entityKeyAccessor.GetEntityKey)).ToArray();
 					ThrowObjectNotFoundException(missingObjectIds);					
+				}
+
+				// načtené objekty uložíme do cache
+				foreach (TEntity loadedObject in loadedObjects)
+				{
+					EntityCacheManager.StoreEntity(loadedObject);
 				}
 
 				result.AddRange(loadedObjects);
@@ -179,7 +235,12 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 				{
 					loadedEntities.Add(trackedEntity);
 				}
-				else
+				// není v identity mapě, hledáme v cache
+				else if (EntityCacheManager.TryGetEntity<TEntity>(id, out TEntity cachedEntity))
+				{
+					loadedEntities.Add(cachedEntity);
+				}
+				else // není ani v identity mapě, ani v cache, hledáme v databázi
 				{
 					idsToLoad.Add(id);
 				}
@@ -199,6 +260,12 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 					ThrowObjectNotFoundException(missingObjectIds);
 				}
 
+				// načtené objekty uložíme do cache
+				foreach (TEntity loadedObject in loadedObjects)
+				{
+					EntityCacheManager.StoreEntity(loadedObject);
+				}
+
 				result.AddRange(loadedObjects);
 			}
 
@@ -215,7 +282,18 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 		{
 			if (_all == null)
 			{
-				_all = Data.ToArray();
+				// máme v cache klíče, která chceme načítat?
+				if (EntityCacheManager.TryGetAllKeys<TEntity>(out object keys))
+				{
+					// pokud ano, načteme je přes GetObjects (což umožní využití cache pro samotné entity)
+					_all = GetObjects((int[])keys).ToArray();
+				}
+				else
+				{
+					// pokd ne, načtene data a uložíme klíče do cache
+					_all = Data.ToArray();
+					EntityCacheManager.StoreAllKeys<TEntity>(_all.Select(entity => entityKeyAccessor.GetEntityKey(entity)).ToArray());
+				}
 				LoadReferences(_all);
 
 				if (!_allInitialized)
@@ -239,7 +317,18 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 		{
 			if (_all == null)
 			{
-				_all = await Data.ToArrayAsync();
+				// máme v cache klíče, která chceme načítat?
+				if (EntityCacheManager.TryGetAllKeys<TEntity>(out object keys))
+				{
+					// pokud ano, načteme je přes GetObjects (což umožní využití cache pro samotné entity)
+					_all = GetObjects((int[])keys).ToArray();
+				}
+				else
+				{
+					// pokd ne, načtene data a uložíme klíče do cache
+					_all = await Data.ToArrayAsync();
+					EntityCacheManager.StoreAllKeys<TEntity>(_all.Select(entity => entityKeyAccessor.GetEntityKey(entity)).ToArray());
+				}
 				await LoadReferencesAsync(_all);
 
 				if (!_allInitialized)

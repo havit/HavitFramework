@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using Havit.Data.EntityFrameworkCore.Metadata;
 using Havit.Data.Patterns.Infrastructure;
 using Havit.Diagnostics.Contracts;
 using Havit.Services;
@@ -12,10 +14,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Infrastructure
 	/// <summary>
 	/// Služba pro získávání primárního klíče modelových objektů.
 	/// </summary>
-	public class DbEntityKeyAccessor<TEntity, TKey> : IEntityKeyAccessor<TEntity, TKey>
-		where TEntity : class
+	public class DbEntityKeyAccessor : IEntityKeyAccessor
 	{
-		private readonly Lazy<PropertyInfo> primaryKeyPropertyInfoLazy;
+		private readonly Lazy<Dictionary<Type, PropertyInfo>> propertyInfos;
 
 		/// <summary>
 		/// Konstruktor.
@@ -23,35 +24,45 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Infrastructure
 		public DbEntityKeyAccessor(IServiceFactory<IDbContext> dbContextFactory)
 		{
 			// pro možnost použití jako singletonu pro všechny případy používáme LazyThreadSafetyMode.ExecutionAndPublication
-			primaryKeyPropertyInfoLazy = new Lazy<PropertyInfo>(() =>
+			propertyInfos = new Lazy<Dictionary<Type, PropertyInfo>>(() =>
 			{
-				PropertyInfo result = null;
+				Dictionary<Type, PropertyInfo> result = null;
 				dbContextFactory.ExecuteAction(dbContext =>
 				{
-					result = dbContext.Model.FindEntityType(typeof(TEntity)).FindPrimaryKey().Properties.Single().PropertyInfo;
-				});					
+					result = dbContext.Model.GetApplicationEntityTypes(includeManyToManyEntities: false).ToDictionary(entityType => entityType.ClrType, entityType => entityType.FindPrimaryKey().Properties.Single().PropertyInfo);
+				});
 				return result;
-			}, LazyThreadSafetyMode.ExecutionAndPublication);
+			}, LazyThreadSafetyMode.PublicationOnly);
 		}
 
 		/// <summary>
 		/// Vrátí hodnotu primárního klíče entity.
 		/// </summary>
 		/// <param name="entity">Entita.</param>
-		public TKey GetEntityKey(TEntity entity)
+		public object GetEntityKey(object entity)
 		{
 			Contract.Requires(entity != null);
-
-			return (TKey)primaryKeyPropertyInfoLazy.Value.GetValue(entity);
+			return GetPropertyInto(entity.GetType()).GetValue(entity);
 		}
 
 		/// <summary>
 		/// Vrátí název vlastnosti, která je primárním klíčem.
 		/// </summary>
-		public string GetEntityKeyPropertyName()
+		public string GetEntityKeyPropertyName(Type entityType)
 		{
-			return primaryKeyPropertyInfoLazy.Value.Name;
+			return GetPropertyInto(entityType).Name;
 		}
 
+		private PropertyInfo GetPropertyInto(Type entityType)
+		{
+			if (propertyInfos.Value.TryGetValue(entityType, out PropertyInfo propertyInfo))
+			{
+				return propertyInfo;
+			}
+			else
+			{
+				throw new InvalidOperationException(String.Format("Type {0} is not a supported type.", entityType.FullName));
+			}
+		}
 	}
 }

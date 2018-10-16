@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>net47</TargetFramework>
@@ -26,6 +26,5 @@
 	  <ProjectReference Include="..\Havit.Services\Havit.Services.csproj" />
 	  <ProjectReference Include="..\Havit\Havit.csproj" />
 	</ItemGroup>
-
 
 </Project>

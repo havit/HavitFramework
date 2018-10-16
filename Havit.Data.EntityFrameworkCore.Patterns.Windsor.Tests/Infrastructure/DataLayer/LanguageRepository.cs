@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Havit.Data.EntityFrameworkCore.Patterns.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.Repositories;
 using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 using Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests.Infrastructure.Model;
@@ -14,8 +15,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests.Infrastructure.D
 {
 	public class LanguageRepository : DbRepository<Language>, ILanguageRepository
 	{
-		public LanguageRepository(IDbContext dbContext, ILanguageDataSource dataSource, IEntityKeyAccessor<Language, int> entityKeyAccessor, IDataLoader dataLoader, IDataLoaderAsync dataLoaderAsync, ISoftDeleteManager softDeleteManager)
-			: base(dbContext, dataSource, entityKeyAccessor, dataLoader, dataLoaderAsync, softDeleteManager)
+		public LanguageRepository(IDbContext dbContext, ILanguageDataSource dataSource, IEntityKeyAccessor<Language, int> entityKeyAccessor, IDataLoader dataLoader, IDataLoaderAsync dataLoaderAsync, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager)
+			: base(dbContext, dataSource, entityKeyAccessor, dataLoader, dataLoaderAsync, softDeleteManager, entityCacheManager)
 		{
 			
 		}

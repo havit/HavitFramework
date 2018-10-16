@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Havit.Data.EntityFrameworkCore;
+using Havit.Data.EntityFrameworkCore.Patterns.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.Repositories;
 using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 using Havit.Data.Patterns.DataEntries;
@@ -22,8 +23,8 @@ namespace Havit.EFCoreTests.DataLayer.Repositories.Localizations
 	[System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
 	public partial class LanguageDbRepository : LanguageDbRepositoryBase, ILanguageRepository
 	{
-		public LanguageDbRepository(IDbContext dbContext, Havit.EFCoreTests.DataLayer.DataSources.Localizations.ILanguageDataSource dataSource, IEntityKeyAccessor<Havit.EFCoreTests.Model.Localizations.Language, int> entityKeyAccessor, IDataLoader dataLoader, IDataLoaderAsync dataLoaderAsync, ISoftDeleteManager softDeleteManager)
-			: base(dbContext, dataSource, entityKeyAccessor, dataLoader, dataLoaderAsync, softDeleteManager)
+		public LanguageDbRepository(IDbContext dbContext, Havit.EFCoreTests.DataLayer.DataSources.Localizations.ILanguageDataSource dataSource, IEntityKeyAccessor<Havit.EFCoreTests.Model.Localizations.Language, int> entityKeyAccessor, IDataLoader dataLoader, IDataLoaderAsync dataLoaderAsync, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager)
+			: base(dbContext, dataSource, entityKeyAccessor, dataLoader, dataLoaderAsync, softDeleteManager, entityCacheManager)
 		{
 		}
 	}

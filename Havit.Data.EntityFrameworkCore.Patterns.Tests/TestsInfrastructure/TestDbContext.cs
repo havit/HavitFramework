@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Infrastructure
+namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure
 {
 	public class TestDbContext : DbContext
 	{

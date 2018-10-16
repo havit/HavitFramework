@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -24,7 +25,7 @@ namespace Havit.Data.EntityFrameworkCore.Internal
 		{
 			this.dbContext = dbContext;
 			this.dbSet = dbContext.Set<TEntity>(); // zde můžeme bez Lazy - veškerá použití třídy jsou schovaná za lazy
-			this.primaryKeyLazy = new Lazy<IKey>(() => dbContext.Model.FindEntityType(typeof(TEntity)).FindPrimaryKey());
+			this.primaryKeyLazy = new Lazy<IKey>(() => dbContext.Model.FindEntityType(typeof(TEntity)).FindPrimaryKey(), LazyThreadSafetyMode.None);
 		}
 
 		/// <summary>
@@ -102,5 +103,21 @@ namespace Havit.Data.EntityFrameworkCore.Internal
 		{
 			dbSet.RemoveRange(entities);
 		}
+
+		/// <summary>
+		/// Begins tracking the given entities in the Unchanged state such that no operation will be
+		/// performed when SaveChanges() is called.
+		/// A recursive search of the navigation properties will be performed to find reachable entities
+		/// that are not already being tracked by the context.These entities will also begin to be tracked
+		/// by the context. If a reachable entity has its primary key value set then it will be tracked
+		/// in the Unchanged state.If the primary key value is not set then it will be tracked in the Added state.
+		/// An entity is considered to have its primary key value set if the primary key property is set
+		/// to anything other than the CLR default for the property type.
+		/// </summary>
+		public void AttachRange(TEntity[] entities)
+		{
+			dbSet.AttachRange(entities);
+		}
+
 	}
 }

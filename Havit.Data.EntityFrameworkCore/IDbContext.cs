@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -83,5 +84,12 @@ namespace Havit.Data.EntityFrameworkCore
 
 		//void SetEntityCollectionLoaded<TEntity>(TEntity entity, string propertyName, bool isLoaded)
 		//	where TEntity : class;
+			
+		/// <summary>
+		/// Vrací EntityEntry pro danou entitu bez provedení detekce změn change trackerem.
+		/// </summary>
+		EntityEntry<TEntity> GetEntry<TEntity>(TEntity entity, bool suppressDetectChanges)
+			where TEntity : class;
+		
 	}
 }

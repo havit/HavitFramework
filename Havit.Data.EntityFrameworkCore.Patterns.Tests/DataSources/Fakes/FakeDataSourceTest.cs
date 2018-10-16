@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Havit.Data.EntityFrameworkCore.Patterns.DataSources.Fakes;
-using Havit.Data.EntityFrameworkCore.Patterns.Tests.Infrastructure;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

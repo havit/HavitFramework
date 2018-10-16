@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Infrastructure
+namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure
 {
 	public class ItemWithDeleted
 	{

@@ -1,8 +1,11 @@
+using System;
 using System.ComponentModel.DataAnnotations;
+using Havit.Data.EntityFrameworkCore.Abstractions.Attributes;
 using Havit.Model.Localizations;
 
 namespace Havit.EFCoreTests.Model.Localizations
 {
+	[CacheAttribute(SlidingExpirationSeconds = 60, CacheAllKeys = false, AbsoluteExpirationSeconds = 5, Priority = CacheItemPriority.High)]
 	public class Language : ILanguage
 	{
 		public int Id { get; set; }

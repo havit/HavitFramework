@@ -2,6 +2,7 @@
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.Resolvers.SpecializedResolvers;
 using Castle.Windsor;
+using Havit.Data.EntityFrameworkCore.Patterns.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors;
 using Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers;
 using Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests.Infrastructure.DataLayer;
@@ -23,7 +24,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 		public void EntityPatternsInstaller_ShouldRegisterLanguageAndLocalizationServices()
 		{
 			// Arrange
-			var container = CreateAndSetupWindsorContainer();
+			var container = Helpers.CreateAndSetupWindsorContainer();
 
 			// Act
 			container.Resolve<ILanguageService>();
@@ -37,7 +38,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 		public void EntityPatternsInstaller_ShouldRegisterDataSourcesAndDependencies()
 		{
 			// Arrange
-			var container = CreateAndSetupWindsorContainer();
+			var container = Helpers.CreateAndSetupWindsorContainer();
 
 			// Act
 			container.Resolve<ILanguageDataSource>();
@@ -50,7 +51,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 		public void EntityPatternsInstaller_ShouldRegisterRepositoriesAndDependencies()
 		{
 			// Arrange
-			var container = CreateAndSetupWindsorContainer();
+			var container = Helpers.CreateAndSetupWindsorContainer();
 
 			// Act
 			container.Resolve<ILanguageRepository>();
@@ -63,7 +64,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 		public void EntityPatternsInstaller_ShouldRegisterDataLoaderAndDependencies()
 		{
 			// Arrange
-			var container = CreateAndSetupWindsorContainer();
+			var container = Helpers.CreateAndSetupWindsorContainer();
 
 			// Act
 			container.Resolve<IDataLoader>();
@@ -76,7 +77,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 		public void EntityPatternsInstaller_ShouldRegisterUnitOfWorkAndDependencies()
 		{
 			// Arrange
-			var container = CreateAndSetupWindsorContainer();
+			var container = Helpers.CreateAndSetupWindsorContainer();
 
 			// Act
 			container.Resolve<IUnitOfWork>();
@@ -86,20 +87,23 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 		}
 
 		[TestMethod]
+		public void EntityPatternsInstaller_ShouldRegisterEntityCacheManager()
+		{
+			// Arrange
+			var container = Helpers.CreateAndSetupWindsorContainer();
+
+			// Act
+			container.Resolve<IEntityCacheManager>();
+
+			// Assert
+			// no exception was thrown
+		}
+
+		[TestMethod]
 		public void EntityPatternsInstaller_ShouldRegisterBeforeCommitProcessorsServicesAndDependencies()
 		{
 			// Arrange
-			WindsorContainer container = new WindsorContainer();
-			container.Kernel.Resolver.AddSubResolver(new CollectionResolver(container.Kernel, false));
-
-			container.AddFacility<TypedFactoryFacility>();
-			container.WithEntityPatternsInstaller(new ComponentRegistrationOptions { GeneralLifestyle = lf => lf.Singleton })
-				.RegisterEntityPatterns()
-				.RegisterDbContext<TestDbContext>()
-				.RegisterLocalizationServices<Language>()
-				.RegisterDataLayer(typeof(ILanguageDataSource).Assembly);
-
-			container.Register(Component.For<ITimeService>().ImplementedBy<ServerTimeService>().LifestyleSingleton());
+			WindsorContainer container = Helpers.CreateAndSetupWindsorContainer();
 
 			// Act
 			IBeforeCommitProcessorsFactory factory = container.Resolve<IBeforeCommitProcessorsFactory>();
@@ -111,22 +115,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 			// no exception was thrown and...
 		}
 
-		private static WindsorContainer CreateAndSetupWindsorContainer()
-		{
-			WindsorContainer container = new WindsorContainer();
-			container.Kernel.Resolver.AddSubResolver(new CollectionResolver(container.Kernel));
 
-			container.AddFacility<TypedFactoryFacility>();
-			container.Register(Component.For(typeof(IServiceFactory<>)).AsFactory());
-			container.WithEntityPatternsInstaller(new ComponentRegistrationOptions { GeneralLifestyle = lf => lf.Singleton })
-				.RegisterEntityPatterns()
-				.RegisterDbContext<TestDbContext>()
-				.RegisterLocalizationServices<Language>()
-				.RegisterDataLayer(typeof(ILanguageDataSource).Assembly);
-
-			container.Register(Component.For<ITimeService>().ImplementedBy<ServerTimeService>().LifestyleSingleton());
-
-			return container;
-		}
 	}
 }

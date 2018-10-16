@@ -2,6 +2,7 @@
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.Registration.Lifestyle;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
+using Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers.Caching;
 using Havit.Diagnostics.Contracts;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers
@@ -135,12 +136,17 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers
 		private Func<LifestyleGroup<object>, ComponentRegistration<object>> dataLoaderLifestyle;
 
 		/// <summary>
+		/// Installer služeb pro cachování. Výchozí hodnotou je instance DefaultCachingInstalleru.
+		/// </summary>
+		public IWindsorInstaller CacheServiceInstaller { get; set; }
+
+		/// <summary>
 		/// Konstruktor.
 		/// </summary>
 		public ComponentRegistrationOptions()
 		{
 			UnitOfWorkType = typeof(DbUnitOfWork);
-		}
-
+			CacheServiceInstaller = new DefaultCachingInstaller();
+		}		
 	}
 }

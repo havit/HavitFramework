@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 using Havit.Data.Patterns.DataSources;
 
@@ -31,7 +32,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSources
 		/// </summary>
 		protected DbDataSource(IDbContext dbContext, ISoftDeleteManager softDeleteManager)
 		{
-			this.dbSetLazy = new Lazy<IDbSet<TEntity>>(() => dbContext.Set<TEntity>());
+			this.dbSetLazy = new Lazy<IDbSet<TEntity>>(() => dbContext.Set<TEntity>(), LazyThreadSafetyMode.None);
 			this.softDeleteManager = softDeleteManager;
 		}
 	}

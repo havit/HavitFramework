@@ -18,7 +18,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Temp
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\Dev\002.HFW-HFW\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt"
+    #line 1 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "15.0.0.0")]
     public partial class DbRepositoryBaseGeneratedTemplate : DbRepositoryBaseGeneratedTemplateBase
     {
@@ -42,6 +42,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Havit.Data.EntityFrameworkCore;
+using Havit.Data.EntityFrameworkCore.Patterns.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.Repositories;
 using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 using Havit.Data.Patterns.DataEntries;
@@ -50,7 +51,7 @@ using Havit.Data.Patterns.Infrastructure;
 
 namespace ");
             
-            #line 20 "D:\Dev\002.HFW-HFW\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt"
+            #line 21 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.NamespaceName));
             
             #line default
@@ -58,65 +59,68 @@ namespace ");
             this.Write("\r\n{\r\n\t[System.CodeDom.Compiler.GeneratedCode(\"Havit.Data.EntityFrameworkCore.Code" +
                     "Generator\", \"1.0\")]\r\n\tpublic abstract class ");
             
-            #line 23 "D:\Dev\002.HFW-HFW\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt"
+            #line 24 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.DbRepositoryBaseName));
             
             #line default
             #line hidden
             this.Write(" : DbRepository<");
             
-            #line 23 "D:\Dev\002.HFW-HFW\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt"
+            #line 24 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
             
             #line default
             #line hidden
             this.Write(">\r\n\t{\r\n\t\tprotected ");
             
-            #line 25 "D:\Dev\002.HFW-HFW\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt"
+            #line 26 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.DbRepositoryBaseName));
             
             #line default
             #line hidden
             this.Write("(IDbContext dbContext, ");
             
-            #line 25 "D:\Dev\002.HFW-HFW\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt"
+            #line 26 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.DataSourceDependencyFullName));
             
             #line default
             #line hidden
             this.Write(" dataSource, IEntityKeyAccessor<");
             
-            #line 25 "D:\Dev\002.HFW-HFW\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt"
+            #line 26 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
             
             #line default
             #line hidden
-            this.Write(", int> entityKeyAccessor, IDataLoader dataLoader, IDataLoaderAsync dataLoaderAsyn" +
-                    "c, ISoftDeleteManager softDeleteManager)\r\n\t\t\t: base(dbContext, dataSource, entit" +
-                    "yKeyAccessor, dataLoader, dataLoaderAsync, softDeleteManager)\r\n\t\t{\r\n\t\t}\r\n\r\n");
+            this.Write(@", int> entityKeyAccessor, IDataLoader dataLoader, IDataLoaderAsync dataLoaderAsync, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager)
+			: base(dbContext, dataSource, entityKeyAccessor, dataLoader, dataLoaderAsync, softDeleteManager, entityCacheManager)
+		{
+		}
+
+");
             
-            #line 30 "D:\Dev\002.HFW-HFW\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt"
+            #line 31 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt"
  if (Model.GenerateGetObjectByEntryEnumMethod) { 
             
             #line default
             #line hidden
             this.Write("\t\tpublic virtual ");
             
-            #line 31 "D:\Dev\002.HFW-HFW\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt"
+            #line 32 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
             
             #line default
             #line hidden
             this.Write(" GetObject(");
             
-            #line 31 "D:\Dev\002.HFW-HFW\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt"
+            #line 32 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
             
             #line default
             #line hidden
             this.Write(".Entry entry)\r\n\t\t{\r\n\t\t\treturn GetObject((int)entry);\r\n\t\t}\r\n\r\n");
             
-            #line 36 "D:\Dev\002.HFW-HFW\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt"
+            #line 37 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt"
  } 
             
             #line default

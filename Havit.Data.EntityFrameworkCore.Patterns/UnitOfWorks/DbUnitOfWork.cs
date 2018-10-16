@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Havit.Data.EntityFrameworkCore.Patterns.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.EntityValidation;
@@ -35,15 +36,21 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks
 		protected ISoftDeleteManager SoftDeleteManager { get; private set; }
 
 		/// <summary>
+		/// EntityCacheManager používaný repository.
+		/// </summary>
+		protected IEntityCacheManager EntityCacheManager { get; private set; }			
+
+		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public DbUnitOfWork(IDbContext dbContext, ISoftDeleteManager softDeleteManager, IBeforeCommitProcessorsRunner beforeCommitProcessorsRunner, IEntityValidationRunner entityValidationRunner)
+		public DbUnitOfWork(IDbContext dbContext, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager, IBeforeCommitProcessorsRunner beforeCommitProcessorsRunner, IEntityValidationRunner entityValidationRunner)
 		{
 			Contract.Requires(dbContext != null);
 			Contract.Requires(softDeleteManager != null);
 
 			DbContext = dbContext;
 			SoftDeleteManager = softDeleteManager;
+			EntityCacheManager = entityCacheManager;
 			this.beforeCommitProcessorsRunner = beforeCommitProcessorsRunner;
 			this.entityValidationRunner = entityValidationRunner;
 		}
@@ -55,9 +62,14 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks
 		{
 			BeforeCommit();
 			beforeCommitProcessorsRunner.Run(GetAllKnownChanges());
-			entityValidationRunner.Validate(GetAllKnownChanges()); // práme se na změny znovu, runnery mohli seznam objektů k uložení změnit
+
+			Changes allKnownChanges = GetAllKnownChanges(); // práme se na změny znovu, runnery mohli seznam objektů k uložení změnit
+			entityValidationRunner.Validate(allKnownChanges);
 			DbContext.SaveChanges();
+
 			ClearRegistrationHashSets();
+			InvalidateEntityCache(allKnownChanges);
+
 			AfterCommit();
 		}
 
@@ -68,9 +80,14 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks
 		{
 			BeforeCommit();
 			beforeCommitProcessorsRunner.Run(GetAllKnownChanges());
-			entityValidationRunner.Validate(GetAllKnownChanges()); // práme se na změny znovu, runnery mohli seznam objektů k uložení změnit
+
+			Changes allKnownChanges = GetAllKnownChanges(); // práme se na změny znovu, runnery mohli seznam objektů k uložení změnit
+			entityValidationRunner.Validate(allKnownChanges);
 			await DbContext.SaveChangesAsync();
+
 			ClearRegistrationHashSets();
+			InvalidateEntityCache(allKnownChanges);
+
 			AfterCommit();
 		}
 
@@ -240,6 +257,17 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks
 					deleteRegistrations.UnionWith(entities);
 				}
 			}
+		}
+
+		/// <summary>
+		/// Oznámí k invalidaci všechny změněné objekty.
+		/// </summary>
+		protected virtual void InvalidateEntityCache(Changes allKnownChanges)
+		{
+			IEntityCacheManager cacheManager = this.EntityCacheManager;
+			allKnownChanges.Inserts.ToList().ForEach(entity => cacheManager.InvalidateEntity(ChangeType.Insert, entity));
+			allKnownChanges.Updates.ToList().ForEach(entity => cacheManager.InvalidateEntity(ChangeType.Update, entity));
+			allKnownChanges.Deletes.ToList().ForEach(entity => cacheManager.InvalidateEntity(ChangeType.Delete, entity));
 		}
 
 	}

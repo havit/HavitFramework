@@ -1,6 +1,6 @@
 ﻿using Havit.Model.Localizations;
 
-namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Infrastructure
+namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure
 {
 	public class Language : ILanguage
 	{

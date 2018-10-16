@@ -4,6 +4,7 @@ using System.Reflection;
 using Castle.Facilities.TypedFactory;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
+using Havit.Data.EntityFrameworkCore.Patterns.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders;
 using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds;
@@ -78,6 +79,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers
 		/// </summary>
 		public IEntityPatternsInstaller RegisterEntityPatterns()
 		{
+			container.Install(componentRegistrationOptions.CacheServiceInstaller);
+
 			container.Register(
 				Component.For<ISoftDeleteManager>().ImplementedBy<SoftDeleteManager>().LifestyleSingleton(),
 				Component.For(typeof(IDataEntrySymbolStorage<>)).ImplementedBy(typeof(DataEntrySymbolStorage<>)).LifestyleSingleton(),
@@ -98,7 +101,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers
 				Component.For<IBeforeCommitProcessorsFactory>().AsFactory().LifestyleSingleton(),
 				Component.For<IBeforeCommitProcessor<object>>().ImplementedBy<SetCreatedToInsertingEntitiesBeforeCommitProcessor>().LifestyleSingleton(),
 				Component.For<IEntityValidationRunner>().ImplementedBy<EntityValidationRunner>().LifestyleSingleton(),
-				Component.For<IEntityValidatorsFactory>().AsFactory().LifestyleSingleton()
+				Component.For<IEntityValidatorsFactory>().AsFactory().LifestyleSingleton(),
+				Component.For<IEntityKeyAccessor>().ImplementedBy<DbEntityKeyAccessor>().LifestyleSingleton()
 			);
 			return this;
 		}
@@ -117,7 +121,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers
 				Classes.FromAssembly(dataLayerAssembly).BasedOn(typeof(DbDataSource<>)).WithServiceConstructedInterface(typeof(IDataSource<>)).If(IsNotAbstract).If(DoesNotHaveFakeAttribute).WithServiceFromInterface(typeof(IDataSource<>)).LifestyleTransient(),
 				// TODO: Async? Jen, pokud bychom potřebovali resolvovat IRepositoryAsync<T>
 				Classes.FromAssembly(dataLayerAssembly).BasedOn(typeof(DbRepository<>)).If(IsNotAbstract).If(DoesNotHaveFakeAttribute).WithServiceConstructedInterface(typeof(IRepository<>)).WithServiceFromInterface(typeof(IRepository<>)).ApplyLifestyle(componentRegistrationOptions.RepositoriesLifestyle),
-				Classes.FromAssembly(dataLayerAssembly).BasedOn(typeof(IDataEntries)).If(IsNotAbstract).If(DoesNotHaveFakeAttribute).WithServiceFromInterface(typeof(IDataEntries)).ApplyLifestyle(componentRegistrationOptions.DataEntriesLifestyle)
+				Classes.FromAssembly(dataLayerAssembly).BasedOn(typeof(IDataEntries)).If(IsNotAbstract).If(DoesNotHaveFakeAttribute).WithServiceFromInterface(typeof(IDataEntries)).ApplyLifestyle(componentRegistrationOptions.DataEntriesLifestyle)				
 			);
 
 			// Potřebujeme zaregistrovat IEntityKeyAccessor<TEntity, int>.

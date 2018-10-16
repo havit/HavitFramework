@@ -11,9 +11,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Business", "Havit.Bus
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.BusinessTest", "Havit.BusinessTest\Havit.BusinessTest.csproj", "{F71BDA61-8039-4E17-B4B8-0B8B553B89DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.CastleWindsor.WebForms", "Havit.CastleWindsor.WebForms\Havit.CastleWindsor.WebForms.csproj", "{D0FA41AE-B54A-4888-8478-35C4D0E0B60B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.CastleWindsor.WebForms", "Havit.CastleWindsor.WebForms\Havit.CastleWindsor.WebForms.csproj", "{D0FA41AE-B54A-4888-8478-35C4D0E0B60B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Data", "Havit.Data\Havit.Data.csproj", "{703235E0-86C0-44F3-95BB-3D9F39886966}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data", "Havit.Data\Havit.Data.csproj", "{703235E0-86C0-44F3-95BB-3D9F39886966}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.Entity6", "Havit.Data.Entity6\Havit.Data.Entity6.csproj", "{D7232F24-9DCC-466F-B8AB-E3248E8EDCC6}"
 EndProject
@@ -23,21 +23,21 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Data.Glimpse", "Havit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Documentation.Homepage", "Havit.Documentation.Homepage\Havit.Documentation.Homepage.csproj", "{3BDA4E00-6F3D-4181-BA7A-3FDE62EB367F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Drawing", "Havit.Drawing\Havit.Drawing.csproj", "{0A4C075E-E474-4AD5-8377-5F7C7E3488D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Drawing", "Havit.Drawing\Havit.Drawing.csproj", "{0A4C075E-E474-4AD5-8377-5F7C7E3488D8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Enterprise.Web", "Havit.Enterprise.Web\Havit.Enterprise.Web.csproj", "{7478BEA8-791F-47E9-ADD9-18F2D34619EA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Model", "Havit.Model\Havit.Model.csproj", "{72A78976-6B9F-4D96-A4C9-441066E44DE4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.PayMuzo", "Havit.PayMuzo\Havit.PayMuzo.csproj", "{23DD2985-0805-4A85-AE9F-DCF95416CF20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.PayMuzo", "Havit.PayMuzo\Havit.PayMuzo.csproj", "{23DD2985-0805-4A85-AE9F-DCF95416CF20}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.PayPal", "Havit.PayPal\Havit.PayPal.csproj", "{A05AEFC5-6A86-43B8-B9D2-58E557A225DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.PayPal", "Havit.PayPal\Havit.PayPal.csproj", "{A05AEFC5-6A86-43B8-B9D2-58E557A225DB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Services", "Havit.Services\Havit.Services.csproj", "{2E4AE0CF-FA21-4FBC-9274-E56BC5D9494E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Services.Azure", "Havit.Services.Azure\Havit.Services.Azure.csproj", "{7846CA68-E6B0-4943-9285-DE1D48248B84}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Services.Azure", "Havit.Services.Azure\Havit.Services.Azure.csproj", "{7846CA68-E6B0-4943-9285-DE1D48248B84}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Web", "Havit.Web\Havit.Web.csproj", "{52891FB3-CA20-403B-AC25-7D9CA5738B6B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Web", "Havit.Web\Havit.Web.csproj", "{52891FB3-CA20-403B-AC25-7D9CA5738B6B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Web.Bootstrap.Tutorial", "Havit.Web.Bootstrap.Tutorial\Havit.Web.Bootstrap.Tutorial.csproj", "{ABA477E6-DEF8-4215-B5DE-612B546AD1FB}"
 EndProject
@@ -165,13 +165,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.AspNet.Mvc.Tests", "H
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3C2FD345-B555-4C43-A930-761AC2517EFD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Services.Tests", "Havit.Services.Tests\Havit.Services.Tests.csproj", "{9B35568E-61D9-4B65-B113-44FE4525C182}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Services.Tests", "Havit.Services.Tests\Havit.Services.Tests.csproj", "{9B35568E-61D9-4B65-B113-44FE4525C182}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Services.Azure.Tests", "Havit.Services.Azure.Tests\Havit.Services.Azure.Tests.csproj", "{026046B9-4CD5-4F62-8572-52E044DB71F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Services.Azure.Tests", "Havit.Services.Azure.Tests\Havit.Services.Azure.Tests.csproj", "{026046B9-4CD5-4F62-8572-52E044DB71F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Data.Tests", "Havit.Data.Tests\Havit.Data.Tests.csproj", "{89BE7317-100F-4504-9A30-86907B65C1CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.Tests", "Havit.Data.Tests\Havit.Data.Tests.csproj", "{89BE7317-100F-4504-9A30-86907B65C1CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Tests", "Havit.Tests\Havit.Tests.csproj", "{70B34BD1-CE17-485E-B586-21859A8DB5DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Tests", "Havit.Tests\Havit.Tests.csproj", "{70B34BD1-CE17-485E-B586-21859A8DB5DC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.Entity6.Patterns.Windsor.Tests", "Havit.Data.Entity6.Patterns.Windsor.Tests\Havit.Data.Entity6.Patterns.Windsor.Tests.csproj", "{107D9E43-CD83-46CE-B027-249AF5BE912B}"
 EndProject
@@ -185,13 +185,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Extensions.Dependency
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.ApplicationInsights.DependencyCollector", "Havit.ApplicationInsights.DependencyCollector\Havit.ApplicationInsights.DependencyCollector.csproj", "{61B9D33E-D395-470F-B3AC-9875D001BFB0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Services.Redis", "Havit.Services.Redis\Havit.Services.Redis.csproj", "{C2608567-243E-4792-AFBF-E8D53D586C30}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Services.Redis", "Havit.Services.Redis\Havit.Services.Redis.csproj", "{C2608567-243E-4792-AFBF-E8D53D586C30}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.AspNetCore.Mvc", "Havit.AspNetCore.Mvc\Havit.AspNetCore.Mvc.csproj", "{85FFB71D-250D-48ED-8389-74BDF66F0201}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.GoPay", "Havit.GoPay\Havit.GoPay.csproj", "{81DC52EA-1B5D-496C-9C40-8565D42321D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.GoPay", "Havit.GoPay\Havit.GoPay.csproj", "{81DC52EA-1B5D-496C-9C40-8565D42321D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.GoPay.Tests", "Havit.GoPay.Tests\Havit.GoPay.Tests.csproj", "{66A7D372-A193-4B2D-9991-64687FBDDB63}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.GoPay.Tests", "Havit.GoPay.Tests\Havit.GoPay.Tests.csproj", "{66A7D372-A193-4B2D-9991-64687FBDDB63}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EFCore", "EFCore", "{E30EB2C7-ECF5-4A27-A7F0-8AE37284A60C}"
 EndProject
@@ -236,9 +236,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Business.Configuratio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Business.Configuration.Tests", "Havit.Business.Configuration.Tests\Havit.Business.Configuration.Tests.csproj", "{C9B9418B-A7E3-47DF-9415-13972850616D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFCoreTest", "EFCoreTest\EFCoreTest.csproj", "{122DAF4F-0DA6-4D36-B32E-7B37C25A1C4F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Business.Configuration.NetCore", "Havit.Business.Configuration.NetCore\Havit.Business.Configuration.NetCore.csproj", "{868654E4-E04B-4F35-9FCF-E99FD036FA98}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Business.Configuration.NetCore", "Havit.Business.Configuration.NetCore\Havit.Business.Configuration.NetCore.csproj", "{868654E4-E04B-4F35-9FCF-E99FD036FA98}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -492,10 +490,6 @@ Global
 		{C9B9418B-A7E3-47DF-9415-13972850616D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9B9418B-A7E3-47DF-9415-13972850616D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9B9418B-A7E3-47DF-9415-13972850616D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{122DAF4F-0DA6-4D36-B32E-7B37C25A1C4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{122DAF4F-0DA6-4D36-B32E-7B37C25A1C4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{122DAF4F-0DA6-4D36-B32E-7B37C25A1C4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{122DAF4F-0DA6-4D36-B32E-7B37C25A1C4F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{868654E4-E04B-4F35-9FCF-E99FD036FA98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{868654E4-E04B-4F35-9FCF-E99FD036FA98}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{868654E4-E04B-4F35-9FCF-E99FD036FA98}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -575,268 +569,9 @@ Global
 		{9C167F55-C571-4BAC-A86D-C0F5E8DC61E1} = {F0ACC2CB-2866-4760-9A29-958C8E30552D}
 		{AF2A778F-02A6-4060-9C42-E9CF47E2B4F7} = {8B4383E1-89EA-46F4-A379-F728CA71A124}
 		{C9B9418B-A7E3-47DF-9415-13972850616D} = {1EBE46EC-8DAE-46E6-8755-33A15B8D0FF3}
-		{122DAF4F-0DA6-4D36-B32E-7B37C25A1C4F} = {9D3050E0-20E0-4CE6-BCBE-CF095A71C394}
 		{868654E4-E04B-4F35-9FCF-E99FD036FA98} = {8B4383E1-89EA-46F4-A379-F728CA71A124}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {44656523-42B6-48E3-9E6D-6F075F0E7FD0}
-	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 64
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://havit.visualstudio.com/
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Havit\\Havit.csproj
-		SccProjectTopLevelParentUniqueName1 = HavitFramework.sln
-		SccProjectName1 = Havit
-		SccLocalPath1 = Havit
-		SccProjectUniqueName2 = Havit.Data\\Havit.Data.csproj
-		SccProjectTopLevelParentUniqueName2 = HavitFramework.sln
-		SccProjectName2 = Havit.Data
-		SccLocalPath2 = Havit.Data
-		SccProjectUniqueName3 = Havit.Services\\Havit.Services.csproj
-		SccProjectTopLevelParentUniqueName3 = HavitFramework.sln
-		SccProjectName3 = Havit.Services
-		SccLocalPath3 = Havit.Services
-		SccProjectUniqueName4 = Havit.Business\\Havit.Business.csproj
-		SccProjectTopLevelParentUniqueName4 = HavitFramework.sln
-		SccProjectName4 = Havit.Business
-		SccLocalPath4 = Havit.Business
-		SccProjectUniqueName5 = BusinessLayerTest\\BusinessLayerTest.csproj
-		SccProjectTopLevelParentUniqueName5 = HavitFramework.sln
-		SccProjectName5 = BusinessLayerTest
-		SccLocalPath5 = BusinessLayerTest
-		SccProjectUniqueName6 = Havit.BusinessTest\\Havit.BusinessTest.csproj
-		SccProjectTopLevelParentUniqueName6 = HavitFramework.sln
-		SccProjectName6 = Havit.BusinessTest
-		SccLocalPath6 = Havit.BusinessTest
-		SccProjectUniqueName7 = Havit.Data.Glimpse\\Havit.Data.Glimpse.csproj
-		SccProjectTopLevelParentUniqueName7 = HavitFramework.sln
-		SccProjectName7 = Havit.Data.Glimpse
-		SccLocalPath7 = Havit.Data.Glimpse
-		SccProjectUniqueName8 = Havit.Drawing\\Havit.Drawing.csproj
-		SccProjectTopLevelParentUniqueName8 = HavitFramework.sln
-		SccProjectName8 = Havit.Drawing
-		SccLocalPath8 = Havit.Drawing
-		SccProjectUniqueName9 = Havit.Web\\Havit.Web.csproj
-		SccProjectTopLevelParentUniqueName9 = HavitFramework.sln
-		SccProjectName9 = Havit.Web
-		SccLocalPath9 = Havit.Web
-		SccProjectUniqueName10 = Havit.Enterprise.Web\\Havit.Enterprise.Web.csproj
-		SccProjectTopLevelParentUniqueName10 = HavitFramework.sln
-		SccProjectName10 = Havit.Enterprise.Web
-		SccLocalPath10 = Havit.Enterprise.Web
-		SccProjectUniqueName11 = Havit.Model\\Havit.Model.csproj
-		SccProjectTopLevelParentUniqueName11 = HavitFramework.sln
-		SccProjectName11 = Havit.Model
-		SccLocalPath11 = Havit.Model
-		SccProjectUniqueName12 = Havit.PayMuzo\\Havit.PayMuzo.csproj
-		SccProjectTopLevelParentUniqueName12 = HavitFramework.sln
-		SccProjectName12 = Havit.PayMuzo
-		SccLocalPath12 = Havit.PayMuzo
-		SccProjectUniqueName13 = Havit.PayPal\\Havit.PayPal.csproj
-		SccProjectTopLevelParentUniqueName13 = HavitFramework.sln
-		SccProjectName13 = Havit.PayPal
-		SccLocalPath13 = Havit.PayPal
-		SccProjectUniqueName14 = Havit.Services.Azure\\Havit.Services.Azure.csproj
-		SccProjectTopLevelParentUniqueName14 = HavitFramework.sln
-		SccProjectName14 = Havit.Services.Azure
-		SccLocalPath14 = Havit.Services.Azure
-		SccProjectUniqueName15 = Havit.Web.Bootstrap.Tutorial\\Havit.Web.Bootstrap.Tutorial.csproj
-		SccProjectTopLevelParentUniqueName15 = HavitFramework.sln
-		SccProjectName15 = Havit.Web.Bootstrap.Tutorial
-		SccLocalPath15 = Havit.Web.Bootstrap.Tutorial
-		SccProjectUniqueName16 = Havit.WebTest\\Havit.WebTest.csproj
-		SccProjectTopLevelParentUniqueName16 = HavitFramework.sln
-		SccProjectName16 = Havit.WebTest
-		SccLocalPath16 = Havit.WebTest
-		SccProjectUniqueName17 = Havit.CastleWindsor.WebForms\\Havit.CastleWindsor.WebForms.csproj
-		SccProjectTopLevelParentUniqueName17 = HavitFramework.sln
-		SccProjectName17 = Havit.CastleWindsor.WebForms
-		SccLocalPath17 = Havit.CastleWindsor.WebForms
-		SccProjectUniqueName18 = WebApplicationTest\\WebApplicationTest.csproj
-		SccProjectTopLevelParentUniqueName18 = HavitFramework.sln
-		SccProjectName18 = WebApplicationTest
-		SccLocalPath18 = WebApplicationTest
-		SccProjectUniqueName19 = HavitTestConsoleApplication\\HavitTestConsoleApplication.csproj
-		SccProjectTopLevelParentUniqueName19 = HavitFramework.sln
-		SccProjectName19 = HavitTestConsoleApplication
-		SccLocalPath19 = HavitTestConsoleApplication
-		SccProjectUniqueName20 = TracingTest\\TracingTest.csproj
-		SccProjectTopLevelParentUniqueName20 = HavitFramework.sln
-		SccProjectName20 = TracingTest
-		SccLocalPath20 = TracingTest
-		SccProjectUniqueName21 = Havit.Data.Entity6\\Havit.Data.Entity6.csproj
-		SccProjectTopLevelParentUniqueName21 = HavitFramework.sln
-		SccProjectName21 = Havit.Data.Entity6
-		SccLocalPath21 = Havit.Data.Entity6
-		SccProjectUniqueName22 = Havit.Documentation.Homepage\\Havit.Documentation.Homepage.csproj
-		SccProjectTopLevelParentUniqueName22 = HavitFramework.sln
-		SccProjectName22 = Havit.Documentation.Homepage
-		SccLocalPath22 = Havit.Documentation.Homepage
-		SccProjectUniqueName23 = Havit.Data.Entity6.Glimpse\\Havit.Data.Entity6.Glimpse.csproj
-		SccProjectTopLevelParentUniqueName23 = HavitFramework.sln
-		SccProjectName23 = Havit.Data.Entity6.Glimpse
-		SccLocalPath23 = Havit.Data.Entity6.Glimpse
-		SccProjectUniqueName24 = Havit.Data.Entity6.Tests\\Havit.Data.Entity6.Tests.csproj
-		SccProjectTopLevelParentUniqueName24 = HavitFramework.sln
-		SccProjectName24 = Havit.Data.Entity6.Tests
-		SccLocalPath24 = Havit.Data.Entity6.Tests
-		SccProjectUniqueName25 = Havit.Data.Patterns\\Havit.Data.Patterns.csproj
-		SccProjectTopLevelParentUniqueName25 = HavitFramework.sln
-		SccProjectName25 = Havit.Data.Patterns
-		SccLocalPath25 = Havit.Data.Patterns
-		SccProjectUniqueName26 = Havit.Data.Patterns.Tests\\Havit.Data.Patterns.Tests.csproj
-		SccProjectTopLevelParentUniqueName26 = HavitFramework.sln
-		SccProjectName26 = Havit.Data.Patterns.Tests
-		SccLocalPath26 = Havit.Data.Patterns.Tests
-		SccProjectUniqueName27 = Havit.Data.Entity6.Patterns\\Havit.Data.Entity6.Patterns.csproj
-		SccProjectTopLevelParentUniqueName27 = HavitFramework.sln
-		SccProjectName27 = Havit.Data.Entity6.Patterns
-		SccLocalPath27 = Havit.Data.Entity6.Patterns
-		SccProjectUniqueName28 = Havit.Data.Entity6.Patterns.Tests\\Havit.Data.Entity6.Patterns.Tests.csproj
-		SccProjectTopLevelParentUniqueName28 = HavitFramework.sln
-		SccProjectName28 = Havit.Data.Entity6.Patterns.Tests
-		SccLocalPath28 = Havit.Data.Entity6.Patterns.Tests
-		SccProjectUniqueName29 = Havit.Data.Entity6.Patterns.Windsor\\Havit.Data.Entity6.Patterns.Windsor.csproj
-		SccProjectTopLevelParentUniqueName29 = HavitFramework.sln
-		SccProjectName29 = Havit.Data.Entity6.Patterns.Windsor
-		SccLocalPath29 = Havit.Data.Entity6.Patterns.Windsor
-		SccProjectUniqueName30 = Havit.AspNet.Mvc\\Havit.AspNet.Mvc.csproj
-		SccProjectTopLevelParentUniqueName30 = HavitFramework.sln
-		SccProjectName30 = Havit.AspNet.Mvc
-		SccLocalPath30 = Havit.AspNet.Mvc
-		SccProjectUniqueName31 = Havit.Data.Entity6.CodeGenerator\\Havit.Data.Entity6.CodeGenerator.csproj
-		SccProjectTopLevelParentUniqueName31 = HavitFramework.sln
-		SccProjectName31 = Havit.Data.Entity6.CodeGenerator
-		SccLocalPath31 = Havit.Data.Entity6.CodeGenerator
-		SccProjectUniqueName32 = Havit.AspNet.Mvc.Tests\\Havit.AspNet.Mvc.Tests.csproj
-		SccProjectTopLevelParentUniqueName32 = HavitFramework.sln
-		SccProjectName32 = Havit.AspNet.Mvc.Tests
-		SccLocalPath32 = Havit.AspNet.Mvc.Tests
-		SccProjectUniqueName33 = Havit.Data.Entity6.Patterns.Windsor.Tests\\Havit.Data.Entity6.Patterns.Windsor.Tests.csproj
-		SccProjectTopLevelParentUniqueName33 = HavitFramework.sln
-		SccProjectName33 = Havit.Data.Entity6.Patterns.Windsor.Tests
-		SccLocalPath33 = Havit.Data.Entity6.Patterns.Windsor.Tests
-		SccProjectUniqueName34 = Havit.Data.Tests\\Havit.Data.Tests.csproj
-		SccProjectTopLevelParentUniqueName34 = HavitFramework.sln
-		SccProjectName34 = Havit.Data.Tests
-		SccLocalPath34 = Havit.Data.Tests
-		SccProjectUniqueName35 = Havit.Services.Azure.Tests\\Havit.Services.Azure.Tests.csproj
-		SccProjectTopLevelParentUniqueName35 = HavitFramework.sln
-		SccProjectName35 = Havit.Services.Azure.Tests
-		SccLocalPath35 = Havit.Services.Azure.Tests
-		SccProjectUniqueName36 = Havit.Services.Tests\\Havit.Services.Tests.csproj
-		SccProjectTopLevelParentUniqueName36 = HavitFramework.sln
-		SccProjectName36 = Havit.Services.Tests
-		SccLocalPath36 = Havit.Services.Tests
-		SccProjectUniqueName37 = Havit.Tests\\Havit.Tests.csproj
-		SccProjectTopLevelParentUniqueName37 = HavitFramework.sln
-		SccProjectName37 = Havit.Tests
-		SccLocalPath37 = Havit.Tests
-		SccProjectUniqueName38 = NuGetPackages\\NuGetPackages.csproj
-		SccProjectTopLevelParentUniqueName38 = HavitFramework.sln
-		SccProjectName38 = NuGetPackages
-		SccLocalPath38 = NuGetPackages
-		SccProjectUniqueName39 = Sandcastle\\Sandcastle.shfbproj
-		SccProjectTopLevelParentUniqueName39 = HavitFramework.sln
-		SccProjectName39 = Sandcastle
-		SccLocalPath39 = Sandcastle
-		SccProjectUniqueName40 = Havit.Extensions.DependencyInjection.CastleWindsor.AspNetCore\\Havit.Extensions.DependencyInjection.CastleWindsor.AspNetCore.csproj
-		SccProjectTopLevelParentUniqueName40 = HavitFramework.sln
-		SccProjectName40 = Havit.Extensions.DependencyInjection.CastleWindsor.AspNetCore
-		SccLocalPath40 = Havit.Extensions.DependencyInjection.CastleWindsor.AspNetCore
-		SccProjectUniqueName41 = Havit.Extensions.DependencyInjection.CastleWindsor\\Havit.Extensions.DependencyInjection.CastleWindsor.csproj
-		SccProjectTopLevelParentUniqueName41 = HavitFramework.sln
-		SccProjectName41 = Havit.Extensions.DependencyInjection.CastleWindsor
-		SccLocalPath41 = Havit.Extensions.DependencyInjection.CastleWindsor
-		SccProjectUniqueName42 = Havit.Extensions.DependencyInjection.Abstractions\\Havit.Extensions.DependencyInjection.Abstractions.csproj
-		SccProjectTopLevelParentUniqueName42 = HavitFramework.sln
-		SccProjectName42 = Havit.Extensions.DependencyInjection.Abstractions
-		SccLocalPath42 = Havit.Extensions.DependencyInjection.Abstractions
-		SccProjectUniqueName43 = Havit.ApplicationInsights.DependencyCollector\\Havit.ApplicationInsights.DependencyCollector.csproj
-		SccProjectTopLevelParentUniqueName43 = HavitFramework.sln
-		SccProjectName43 = Havit.ApplicationInsights.DependencyCollector
-		SccLocalPath43 = Havit.ApplicationInsights.DependencyCollector
-		SccProjectUniqueName44 = Havit.Services.Redis\\Havit.Services.Redis.csproj
-		SccProjectTopLevelParentUniqueName44 = HavitFramework.sln
-		SccProjectName44 = Havit.Services.Redis
-		SccLocalPath44 = Havit.Services.Redis
-		SccProjectUniqueName45 = Havit.AspNetCore.Mvc\\Havit.AspNetCore.Mvc.csproj
-		SccProjectTopLevelParentUniqueName45 = HavitFramework.sln
-		SccProjectName45 = Havit.AspNetCore.Mvc
-		SccLocalPath45 = Havit.AspNetCore.Mvc
-		SccProjectUniqueName46 = Havit.GoPay.Tests\\Havit.GoPay.Tests.csproj
-		SccProjectTopLevelParentUniqueName46 = HavitFramework.sln
-		SccProjectName46 = Havit.GoPay.Tests
-		SccLocalPath46 = Havit.GoPay.Tests
-		SccProjectUniqueName47 = Havit.GoPay\\Havit.GoPay.csproj
-		SccProjectTopLevelParentUniqueName47 = HavitFramework.sln
-		SccProjectName47 = Havit.GoPay
-		SccLocalPath47 = Havit.GoPay
-		SccProjectUniqueName48 = Havit.Data.EntityFrameworkCore\\Havit.Data.EntityFrameworkCore.csproj
-		SccProjectTopLevelParentUniqueName48 = HavitFramework.sln
-		SccProjectName48 = Havit.Data.EntityFrameworkCore
-		SccLocalPath48 = Havit.Data.EntityFrameworkCore
-		SccProjectUniqueName49 = Havit.Data.EntityFrameworkCore.Tests\\Havit.Data.EntityFrameworkCore.Tests.csproj
-		SccProjectTopLevelParentUniqueName49 = HavitFramework.sln
-		SccProjectName49 = Havit.Data.EntityFrameworkCore.Tests
-		SccLocalPath49 = Havit.Data.EntityFrameworkCore.Tests
-		SccProjectUniqueName50 = Havit.Data.EntityFrameworkCore.Patterns\\Havit.Data.EntityFrameworkCore.Patterns.csproj
-		SccProjectTopLevelParentUniqueName50 = HavitFramework.sln
-		SccProjectName50 = Havit.Data.EntityFrameworkCore.Patterns
-		SccLocalPath50 = Havit.Data.EntityFrameworkCore.Patterns
-		SccProjectUniqueName51 = Havit.Data.EntityFrameworkCore.Patterns.Tests\\Havit.Data.EntityFrameworkCore.Patterns.Tests.csproj
-		SccProjectTopLevelParentUniqueName51 = HavitFramework.sln
-		SccProjectName51 = Havit.Data.EntityFrameworkCore.Patterns.Tests
-		SccLocalPath51 = Havit.Data.EntityFrameworkCore.Patterns.Tests
-		SccProjectUniqueName52 = Havit.Business.BusinessLayerGenerator\\Havit.Business.BusinessLayerGenerator.csproj
-		SccProjectTopLevelParentUniqueName52 = HavitFramework.sln
-		SccProjectName52 = Havit.Business.BusinessLayerGenerator
-		SccLocalPath52 = Havit.Business.BusinessLayerGenerator
-		SccProjectUniqueName53 = Havit.Business.BusinessLayerToEntityFrameworkGenerator\\Havit.Business.BusinessLayerToEntityFrameworkGenerator.csproj
-		SccProjectTopLevelParentUniqueName53 = HavitFramework.sln
-		SccProjectName53 = Havit.Business.BusinessLayerToEntityFrameworkGenerator
-		SccLocalPath53 = Havit.Business.BusinessLayerToEntityFrameworkGenerator
-		SccProjectUniqueName54 = Havit.Data.EntityFrameworkCore.CodeGenerator\\Havit.Data.EntityFrameworkCore.CodeGenerator.csproj
-		SccProjectTopLevelParentUniqueName54 = HavitFramework.sln
-		SccProjectName54 = Havit.Data.EntityFrameworkCore.CodeGenerator
-		SccLocalPath54 = Havit.Data.EntityFrameworkCore.CodeGenerator
-		SccProjectUniqueName55 = Havit.Data.EntityFrameworkCore.BusinessLayer\\Havit.Data.EntityFrameworkCore.BusinessLayer.csproj
-		SccProjectTopLevelParentUniqueName55 = HavitFramework.sln
-		SccProjectName55 = Havit.Data.EntityFrameworkCore.BusinessLayer
-		SccLocalPath55 = Havit.Data.EntityFrameworkCore.BusinessLayer
-		SccProjectUniqueName56 = Havit.Data.EntityFrameworkCore.BusinessLayer.Tests\\Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.csproj
-		SccProjectTopLevelParentUniqueName56 = HavitFramework.sln
-		SccProjectName56 = Havit.Data.EntityFrameworkCore.BusinessLayer.Tests
-		SccLocalPath56 = Havit.Data.EntityFrameworkCore.BusinessLayer.Tests
-		SccProjectUniqueName57 = Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions\\Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions.csproj
-		SccProjectTopLevelParentUniqueName57 = HavitFramework.sln
-		SccProjectName57 = Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions
-		SccLocalPath57 = Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions
-		SccProjectUniqueName58 = Havit.Data.EntityFrameworkCore.Patterns.Windsor\\Havit.Data.EntityFrameworkCore.Patterns.Windsor.csproj
-		SccProjectTopLevelParentUniqueName58 = HavitFramework.sln
-		SccProjectName58 = Havit.Data.EntityFrameworkCore.Patterns.Windsor
-		SccLocalPath58 = Havit.Data.EntityFrameworkCore.Patterns.Windsor
-		SccProjectUniqueName59 = Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests\\Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests.csproj
-		SccProjectTopLevelParentUniqueName59 = HavitFramework.sln
-		SccProjectName59 = Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
-		SccLocalPath59 = Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
-		SccProjectUniqueName60 = NuGetPackages.NETCore\\NuGetPackages.NETCore.csproj
-		SccProjectTopLevelParentUniqueName60 = HavitFramework.sln
-		SccProjectName60 = NuGetPackages.NETCore
-		SccLocalPath60 = NuGetPackages.NETCore
-		SccProjectUniqueName61 = Havit.Business.Configuration\\Havit.Business.Configuration.csproj
-		SccProjectTopLevelParentUniqueName61 = HavitFramework.sln
-		SccProjectName61 = Havit.Business.Configuration
-		SccLocalPath61 = Havit.Business.Configuration
-		SccProjectUniqueName62 = Havit.Business.Configuration.Tests\\Havit.Business.Configuration.Tests.csproj
-		SccProjectTopLevelParentUniqueName62 = HavitFramework.sln
-		SccProjectName62 = Havit.Business.Configuration.Tests
-		SccLocalPath62 = Havit.Business.Configuration.Tests
-		SccProjectUniqueName63 = EFCoreTest\\EFCoreTest.csproj
-		SccProjectTopLevelParentUniqueName63 = HavitFramework.sln
-		SccProjectName63 = EFCoreTest
-		SccLocalPath63 = EFCoreTest
 	EndGlobalSection
 EndGlobal

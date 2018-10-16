@@ -35,6 +35,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		public static bool IsIgnored(Table table)
 		{
 			return ((GeneratorSettings.Strategy == GeneratorStrategy.Exec) && table.Name.StartsWith("_"))
+				|| ((GeneratorSettings.Strategy == GeneratorStrategy.HavitCodeFirst) && table.Name.StartsWith("__")) // __DataSeed, __EFMigrationsHistory
 				|| (GetBoolExtendedProperty(table, "Ignored") ?? DatabaseHelper.GetDefaultIgnoredOnTables());
 		}
 		#endregion

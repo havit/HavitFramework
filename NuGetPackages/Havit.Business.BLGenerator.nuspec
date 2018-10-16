@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Havit.Business.BLGenerator</id>
-    <version>1.7.3</version>
+    <version>1.7.4</version>
     <title>Havit.Business.BLGenerator</title>
     <authors>HAVIT</authors>
     <owners>HAVIT</owners>

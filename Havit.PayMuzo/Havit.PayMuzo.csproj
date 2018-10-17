@@ -1,5 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  
+
+  <Import Project="..\Common.targets" />
+
   <PropertyGroup>
 	<TargetFramework>net46</TargetFramework>
 	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -7,8 +9,8 @@
   </PropertyGroup>
 
   <!-- NuGet -->
-  <Import Project="..\NuGet.targets" />
   <PropertyGroup>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<PackageVersion>1.7.0</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - PayMuzo Library</Description>
   </PropertyGroup>

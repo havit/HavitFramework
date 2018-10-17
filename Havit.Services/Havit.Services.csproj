@@ -1,5 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="..\Common.targets" />
+  
   <PropertyGroup>
 	<TargetFrameworks>net46;netstandard2.0</TargetFrameworks>
 	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -7,15 +9,12 @@
   </PropertyGroup>
 
   <!-- NuGet -->
-  <Import Project="..\NuGet.targets" />
   <PropertyGroup>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<PackageVersion>1.8.2</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Services</Description>
   </PropertyGroup>
-  
-  <ItemGroup>
-	<Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Havit\Havit.csproj" />

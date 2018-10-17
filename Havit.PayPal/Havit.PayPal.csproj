@@ -1,4 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\Common.targets" />
   
   <PropertyGroup>
 	<TargetFramework>net46</TargetFramework>
@@ -7,8 +9,8 @@
   </PropertyGroup>
   
   <!-- NuGet -->
-  <Import Project="..\NuGet.targets" />
   <PropertyGroup>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<PackageVersion>1.7.0</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - PayPal Library</Description>
   </PropertyGroup>

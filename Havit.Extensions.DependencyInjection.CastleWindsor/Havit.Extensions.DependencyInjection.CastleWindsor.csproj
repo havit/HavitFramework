@@ -1,21 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="..\Common.targets" />
+
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-	<GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
   
   <!-- NuGet -->
-  <Import Project="..\NuGet.targets" />
   <PropertyGroup>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<PackageVersion>1.7.2</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Dependency Injection Extensions for Castle Windsor</Description>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Castle.Core" Version="4.1.0" />
@@ -24,12 +20,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Havit.Extensions.DependencyInjection.Abstractions\Havit.Extensions.DependencyInjection.Abstractions.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
 
 </Project>

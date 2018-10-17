@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  
+
+  <Import Project="..\Common.targets" />
+
   <PropertyGroup>
 	<TargetFramework>net46</TargetFramework>
-	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-	<GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <!-- NuGet -->
-  <Import Project="..\NuGet.targets" />
   <PropertyGroup>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<PackageVersion>1.7.5</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Web Class Library</Description>
   </PropertyGroup>

@@ -99,8 +99,8 @@ Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "Sandcastle", "Sandcastle\Sa
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Solution Items", "_Solution Items", "{2E02AA74-2EA7-454D-9D09-FF4254BD0395}"
 	ProjectSection(SolutionItems) = preProject
+		Common.targets = Common.targets
 		CommonAssemblyInfo.cs = CommonAssemblyInfo.cs
-		nuget.targets = nuget.targets
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{345552D1-56B8-41F1-9513-AD2F31D2F985}"

@@ -1,21 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="..\Common.targets" />
+
   <PropertyGroup>
 	<TargetFrameworks>net462;netstandard2.0</TargetFrameworks>
-	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-	<GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <!-- NuGet -->
-  <Import Project="..\NuGet.targets" />
   <PropertyGroup>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<PackageVersion>1.7.0</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - ASP.NET Core Extensions</Description>
   </PropertyGroup>
-  
-  <ItemGroup>
-	<Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
-  </ItemGroup>
 
   <ItemGroup>
 	<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.0.2" />

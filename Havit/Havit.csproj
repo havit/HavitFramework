@@ -9,8 +9,8 @@
   <!-- NuGet configuration-->
   <Import Project="..\NuGet.targets" />
   <PropertyGroup>
-	<PackageVersion>1.2.3</PackageVersion>
-	<Description>HAVIT .NET Framework Extensions - Basic Class Library (Havit.dll)</Description>
+	<PackageVersion>1.8.4</PackageVersion>
+	<Description>HAVIT .NET Framework Extensions - Basic Class Library</Description>
 	<PackageTags>HAVIT Framework Library</PackageTags>
   </PropertyGroup>  
   

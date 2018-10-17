@@ -1,12 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard2.0\Havit.Extensions.DependencyInjection.Abstractions.xml</DocumentationFile>
+  <!-- NuGet -->
+  <Import Project="..\NuGet.targets" />
+  <PropertyGroup>
+	<PackageVersion>1.7.2</PackageVersion>
+	<Description>HAVIT .NET Framework Extensions - Dependency Injection Extensions - Abstractions</Description>
   </PropertyGroup>
 
   <ItemGroup>

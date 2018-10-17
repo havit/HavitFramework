@@ -1,13 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<PropertyGroup>
-		<TargetFramework>net46</TargetFramework>
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-	</PropertyGroup>
-	<ItemGroup>
-	  <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
-	</ItemGroup>
-	<ItemGroup>
-	  <Reference Include="System.Net.Http" />
-	</ItemGroup>
+  
+  <PropertyGroup>
+	<TargetFramework>net46</TargetFramework>
+	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <!-- NuGet -->
+  <Import Project="..\NuGet.targets" />
+  <PropertyGroup>
+	<PackageVersion>1.7.0</PackageVersion>
+	<Description>HAVIT .NET Framework Extensions - GoPay Library</Description>
+  </PropertyGroup>
+  
+  <ItemGroup>
+	<PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+  </ItemGroup>
+  
+  <ItemGroup>
+	<Reference Include="System.Net.Http" />
+  </ItemGroup>
+  
 </Project>

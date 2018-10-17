@@ -1,17 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<PropertyGroup>
-		<TargetFramework>net46</TargetFramework>
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-	</PropertyGroup>
-	<ItemGroup>
-		<ProjectReference Include="..\Havit\Havit.csproj" />
-	</ItemGroup>
-	<ItemGroup>
-	  <Reference Include="System.Configuration" />
-	  <Reference Include="System.ServiceModel" />
-	  <Reference Include="System.Web" />
-	  <Reference Include="System.Web.Extensions" />
-	  <Reference Include="System.Web.Services" />
-	</ItemGroup>
+  
+  <PropertyGroup>
+	<TargetFramework>net46</TargetFramework>
+	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <!-- NuGet -->
+  <Import Project="..\NuGet.targets" />
+  <PropertyGroup>
+	<PackageVersion>1.7.5</PackageVersion>
+	<Description>HAVIT .NET Framework Extensions - Web Class Library</Description>
+  </PropertyGroup>
+  
+  <ItemGroup>
+	<ProjectReference Include="..\Havit\Havit.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+	<Reference Include="System.Configuration" />
+	<Reference Include="System.ServiceModel" />
+	<Reference Include="System.Web" />
+	<Reference Include="System.Web.Extensions" />
+	<Reference Include="System.Web.Services" />
+  </ItemGroup>
+  
 </Project>

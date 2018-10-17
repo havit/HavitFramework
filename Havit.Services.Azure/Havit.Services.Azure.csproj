@@ -1,14 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  
   <PropertyGroup>
 	<TargetFramework>net46</TargetFramework>
 	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
+
+  <!-- NuGet -->
+  <Import Project="..\NuGet.targets" />
+  <PropertyGroup>
+	<PackageVersion>1.8.2</PackageVersion>
+	<Description>HAVIT .NET Framework Extensions - Azure Services</Description>
+  </PropertyGroup>
+  
   <ItemGroup>
 	<PackageReference Include="WindowsAzure.Storage" Version="8.1.1" />
   </ItemGroup>
+  
   <ItemGroup>
 	<ProjectReference Include="..\Havit.Services\Havit.Services.csproj" Version="1.7.0" />
 	<ProjectReference Include="..\Havit\Havit.csproj" Version="1.7.0" />
   </ItemGroup>
+  
 </Project>

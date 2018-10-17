@@ -3,14 +3,16 @@
   <PropertyGroup>
 	<TargetFrameworks>net46;netstandard2.0</TargetFrameworks>
 	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net46|AnyCPU'">
-    <DocumentationFile>bin\Release\net46\Havit.Services.xml</DocumentationFile>
+  <!-- NuGet -->
+  <Import Project="..\NuGet.targets" />
+  <PropertyGroup>
+	<PackageVersion>1.8.2</PackageVersion>
+	<Description>HAVIT .NET Framework Extensions - Services</Description>
   </PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
-		<DocumentationFile>bin\Release\netstandard2.0\Havit.Services.xml</DocumentationFile>
-	</PropertyGroup>
+  
   <ItemGroup>
 	<Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
   </ItemGroup>
@@ -26,9 +28,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions">
-      <Version>2.0.1</Version>
-    </PackageReference>
+	<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="2.0.1" />
   </ItemGroup>
 
 </Project>

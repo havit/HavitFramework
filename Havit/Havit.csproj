@@ -3,14 +3,17 @@
   <PropertyGroup>
 	<TargetFrameworks>net46;netstandard2.0</TargetFrameworks>
 	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>	
   </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net46|AnyCPU'">
-    <DocumentationFile>bin\Release\net46\Havit.xml</DocumentationFile>
-  </PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
-		<DocumentationFile>bin\Release\netstandard2.0\Havit.xml</DocumentationFile>
-	</PropertyGroup>
+  
+  <!-- NuGet configuration-->
+  <Import Project="..\NuGet.targets" />
+  <PropertyGroup>
+	<PackageVersion>1.2.3</PackageVersion>
+	<Description>HAVIT .NET Framework Extensions - Basic Class Library (Havit.dll)</Description>
+	<PackageTags>HAVIT Framework Library</PackageTags>
+  </PropertyGroup>  
+  
   <ItemGroup>
 	<Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
   </ItemGroup>
@@ -19,5 +22,5 @@
     <Reference Include="System.Web" Condition="'$(TargetFramework)' == 'net46'" />
 	<Reference Include="System.Windows.Forms" Condition="'$(TargetFramework)' == 'net46'" />
   </ItemGroup>
-
+  
 </Project>

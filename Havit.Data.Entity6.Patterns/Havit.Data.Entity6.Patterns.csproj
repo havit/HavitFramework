@@ -1,19 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="..\Common.targets" />
+  
   <PropertyGroup>
 	<TargetFramework>net46</TargetFramework>
-	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	<RootNamespace>Havit.Data.Entity.Patterns</RootNamespace>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\net46\Havit.Data.Entity6.Patterns.xml</DocumentationFile>
+  <!-- NuGet -->
+  <PropertyGroup>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<PackageVersion>1.7.9</PackageVersion>
+	<Description>HAVIT .NET Framework Extensions - Entity Framework 6 Extensions - Data Patterns</Description>
   </PropertyGroup>
-
-  <ItemGroup>
-	<Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
-  </ItemGroup>
-
+  
   <ItemGroup>
     <ProjectReference Include="..\Havit.Data.Entity6\Havit.Data.Entity6.csproj" />
     <ProjectReference Include="..\Havit.Data.Patterns\Havit.Data.Patterns.csproj" />

@@ -4,7 +4,6 @@
   
   <PropertyGroup>
 	<TargetFramework>net46</TargetFramework>
-	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
   

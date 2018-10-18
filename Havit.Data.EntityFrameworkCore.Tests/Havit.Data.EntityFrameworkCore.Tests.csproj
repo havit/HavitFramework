@@ -1,14 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="..\Common.targets" />
+  
   <PropertyGroup>
     <TargetFramework>net47</TargetFramework>
-	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-	<RootNamespace>Havit.Data.EntityFrameworkCore.Tests</RootNamespace>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.4" />

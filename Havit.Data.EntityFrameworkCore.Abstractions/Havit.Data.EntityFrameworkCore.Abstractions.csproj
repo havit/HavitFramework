@@ -1,15 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="..\Common.targets" />
+
   <PropertyGroup>
 	<TargetFramework>netstandard2.0</TargetFramework>
-	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>
-	<RootNamespace>Havit.Data.EntityFrameworkCore.Abstractions</RootNamespace>
-
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
-  </ItemGroup>
+  <!-- NuGet -->
+  <PropertyGroup>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<PackageVersion>1.8.0</PackageVersion>
+	<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Abstractions</Description>
+  </PropertyGroup>
 
 </Project>

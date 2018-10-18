@@ -1,19 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="..\Common.targets" />
+  
   <PropertyGroup>
 	<TargetFramework>net46</TargetFramework>
-	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-	<AssemblyName>Havit.Data.Patterns.Tests</AssemblyName>
-	<RootNamespace>Havit.Data.Patterns.Tests</RootNamespace>
   </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile></DocumentationFile>
-  </PropertyGroup>
-
-  <ItemGroup>
-	<Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Moq" Version="4.10.0" />

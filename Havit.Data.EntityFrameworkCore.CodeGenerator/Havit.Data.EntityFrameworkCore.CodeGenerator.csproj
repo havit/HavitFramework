@@ -1,14 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="..\Common.targets" />
+  
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <RootNamespace>Havit.Data.EntityFrameworkCore.CodeGenerator</RootNamespace>
-    <ApplicationIcon />
     <OutputType>Exe</OutputType>
-    <StartupObject />
 	<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
+  <!-- NuGet -->
+  <PropertyGroup>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<PackageVersion>1.8.2</PackageVersion>
+	<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Code Generator</Description>
+  </PropertyGroup>
+  
   <ItemGroup>
     <None Remove="Actions\DataEntries\Template\DbDataEntriesTemplate.tt" />
     <None Remove="Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt" />

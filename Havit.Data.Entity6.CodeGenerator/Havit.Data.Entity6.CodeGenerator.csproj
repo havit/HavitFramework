@@ -1,15 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="..\Common.targets" />
+  
   <PropertyGroup>
 	<TargetFramework>net46</TargetFramework>
-	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	<RootNamespace>Havit.Data.Entity.CodeGenerator</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
-	<Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
-  </ItemGroup>
-
+  <!-- NuGet -->
+  <PropertyGroup>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<PackageVersion>1.7.9</PackageVersion>
+	<Description>HAVIT .NET Framework Extensions - Entity Framework 6 Extensions - Code Generator</Description>
+  </PropertyGroup>
+  
   <ItemGroup>
     <PackageReference Include="Microsoft.TeamFoundationServer.ExtendedClient" Version="15.112.1" />
   </ItemGroup>

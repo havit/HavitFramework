@@ -1,26 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="..\Common.targets" />
+  
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-	  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-	  <RootNamespace>Havit.Data.EntityFrameworkCore.Patterns</RootNamespace>
+	<TargetFramework>netstandard2.0</TargetFramework>
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard2.0\Havit.Data.EntityFrameworkCore.Patterns.xml</DocumentationFile>
+  <!-- NuGet -->
+  <PropertyGroup>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<PackageVersion>1.8.0</PackageVersion>
+	<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Data Patterns</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
+	<PackageReference Include="System.Interactive.Async.Providers" Version="3.1.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Interactive.Async.Providers" Version="3.1.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Havit.Data.EntityFrameworkCore\Havit.Data.EntityFrameworkCore.csproj" />
-    <ProjectReference Include="..\Havit.Data.Patterns\Havit.Data.Patterns.csproj" />
+	<ProjectReference Include="..\Havit.Data.EntityFrameworkCore\Havit.Data.EntityFrameworkCore.csproj" />
+	<ProjectReference Include="..\Havit.Data.Patterns\Havit.Data.Patterns.csproj" />
   </ItemGroup>
 
 </Project>

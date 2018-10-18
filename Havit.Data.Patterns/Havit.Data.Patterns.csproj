@@ -2,25 +2,19 @@
 
   <PropertyGroup>
 	<TargetFrameworks>net46;netstandard2.0</TargetFrameworks>
-	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-	<AssemblyName>Havit.Data.Patterns</AssemblyName>
-	<RootNamespace>Havit.Data.Patterns</RootNamespace>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net46|AnyCPU'">
-    <DocumentationFile>bin\Release\net46\Havit.Data.Patterns.xml</DocumentationFile>
+  <!-- NuGet -->
+  <PropertyGroup>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<PackageVersion>1.7.9</PackageVersion>
+	<Description>HAVIT .NET Framework Extensions - Data Patterns</Description>
   </PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
-		<DocumentationFile>bin\Release\netstandard2.0\Havit.Data.Patterns.xml</DocumentationFile>
-	</PropertyGroup>
+  
   <ItemGroup>
 	<ProjectReference Include="..\Havit.Model\Havit.Model.csproj" />
 	<ProjectReference Include="..\Havit.Services\Havit.Services.csproj" />
 	<ProjectReference Include="..\Havit\Havit.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-	<Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
   </ItemGroup>
 
   <ItemGroup>

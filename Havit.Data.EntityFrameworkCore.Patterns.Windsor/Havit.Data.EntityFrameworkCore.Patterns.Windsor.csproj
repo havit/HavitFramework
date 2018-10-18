@@ -1,13 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="..\Common.targets" />
+  
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard2.0\Havit.Data.EntityFrameworkCore.Patterns.Windsor.xml</DocumentationFile>
+  <!-- NuGet -->
+  <PropertyGroup>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<PackageVersion>1.8.0</PackageVersion>
+	<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Installers for Castle Windsor</Description>
   </PropertyGroup>
-
+  
   <ItemGroup>
     <PackageReference Include="Castle.Windsor" Version="4.1.0" />
   </ItemGroup>

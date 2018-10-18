@@ -31,6 +31,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 		private readonly IServiceFactory<IDbContext> dbContextFactory;
 		private readonly IEntityKeyAccessor entityKeyAccessor;
 
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
 		public EntityCacheManager(ICacheService cacheService, IEntityCacheSupportDecision entityCacheSupportDecision, IEntityCacheKeyGenerator entityCacheKeyNamingService, IEntityCacheOptionsGenerator entityCacheOptionsGenerator, IEntityCacheDependencyManager entityCacheDependencyManager, IEntityKeyAccessor entityKeyAccessor, IServiceFactory<IDbContext> dbContextFactory)
 		{
 			this.cacheService = cacheService;
@@ -41,6 +44,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 			this.entityKeyAccessor = entityKeyAccessor;
 			this.dbContextFactory = dbContextFactory;
 		}
+
 		/// <inheritdoc />
 		public bool TryGetEntity<TEntity>(object key, out TEntity entity)
 			where TEntity : class

@@ -13,10 +13,29 @@ namespace Havit.Data.EntityFrameworkCore.Conventions
 	/// </summary>
 	public class CacheAttributeToAnnotationConvention : IModelConvention
 	{
+		/// <summary>
+		/// Název anotace určující, zda je na povoleno cachování entity.
+		/// </summary>
 		public const string CacheEntitiesAnnotationName = "Caching-EntitiesEnabled";
+
+		/// <summary>
+		/// Název anotace určující, zda je na povoleno cachování AllKeys.
+		/// </summary>
 		public const string CacheAllKeysAnnotationName = "Caching-AllKeysEnabled";
+
+		/// <summary>
+		/// Název anotace určující nastavení sliding expirace.
+		/// </summary>
 		public const string SlidingExpirationAnnotationName = "Caching-SlidingExpiration";
+
+		/// <summary>
+		/// Název anotace určující nastavení absolute expirace.
+		/// </summary>
 		public const string AbsoluteExpirationAnnotationName = "Caching-AbsoluteExpiration";
+
+		/// <summary>
+		/// Název anotace určující nastavení priority položek v cache.
+		/// </summary>
 		public const string PriorityAnnotationName = "Caching-Priority";
 
 		/// <inheritdoc />

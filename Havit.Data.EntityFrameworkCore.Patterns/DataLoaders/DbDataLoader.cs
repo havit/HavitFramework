@@ -441,10 +441,10 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 				: dbContext.IsEntityReferenceLoaded(entity, propertyName);
 		}
 
-	    /// <summary>
+		/// <summary>
 		/// Vrátí WHERE podmínku omezující množinu záznamů dle Id.
 		/// </summary>
-		/// <param name="ids">Identifikátory objektů, které mají být ve where klauzuli.</param>
+		/// <param name="primaryKeyWithValues">Identifikátory objektů, které mají být ve where klauzuli.</param>
 		private Expression<Func<TEntity, bool>> GetWhereExpression<TEntity>(List<EntityPrimaryKeyWithValues> primaryKeyWithValues)
 			where TEntity : class
 		{

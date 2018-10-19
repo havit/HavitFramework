@@ -4,8 +4,6 @@
 
   <PropertyGroup>
 	<TargetFramework>net46</TargetFramework>
-	<!-- Nechceme výchozí Compile, Content, None glob patterns, do NuGet balíčku dostaneme vše ručně, potřebujeme specifikovat PackagePath, viz níže -->
-	<EnableDefaultItems>false</EnableDefaultItems>
   </PropertyGroup>
 
   <!-- NuGet -->

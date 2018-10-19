@@ -12,7 +12,14 @@
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<PackageVersion>1.8.1</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Castle Windsor support for WebForms</Description>
+	<!-- Cílíme jen na WebForms, kde contentFiles nemá smysl (protože WebForms nepoužívají nový csproj, tudíž nepoužívají PackageReference, ale packages.config. -->
+	<ContentTargetFolders>content</ContentTargetFolders>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <Content Include="content\Web.config.install.xdt" PackagePath="content" />
+    <Content Include="content\Web.config.uninstall.xdt" PackagePath="content" />
+  </ItemGroup>
   
   <ItemGroup>
     <PackageReference Include="Castle.Windsor" Version="4.1.0" />

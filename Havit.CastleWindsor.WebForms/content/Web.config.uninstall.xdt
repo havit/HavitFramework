@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+	<system.webServer>
+		<modules>
+			<add name="PerRequestLifestyle" type="Castle.MicroKernel.Lifestyle.PerWebRequestLifestyleModule, Castle.Windsor" xdt:Locator="Match(name,type)" xdt:Transform="Remove" />
+		</modules>
+	</system.webServer>	
+</configuration>

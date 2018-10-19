@@ -20,6 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
+	<Content Include="tools\**\*.*" PackagePath="tools" />
+	<Content Include="content\**\*.*" PackagePath="content" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System.Web" />
   </ItemGroup>
 </Project>

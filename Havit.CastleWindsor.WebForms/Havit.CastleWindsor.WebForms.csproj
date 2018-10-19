@@ -1,26 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup Label="Globals">
-	<SccProjectName>SAK</SccProjectName>
-	<SccProvider>SAK</SccProvider>
-	<SccAuxPath>SAK</SccAuxPath>
-	<SccLocalPath>SAK</SccLocalPath>
-  </PropertyGroup>
-
+  <Import Project="..\Common.targets" />
+  
   <PropertyGroup>
 	<TargetFramework>net472</TargetFramework>
-	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-	<RootNamespace>Havit.CastleWindsor.WebForms</RootNamespace>
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>D:\Dev\002.HFW-HavitFramework\Havit.CastleWindsor.WebForms\Havit.CastleWindsor.WebForms.xml</DocumentationFile>
+  <!-- NuGet -->
+  <PropertyGroup>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<PackageVersion>1.8.1</PackageVersion>
+	<Description>HAVIT .NET Framework Extensions - Castle Windsor support for WebForms</Description>
   </PropertyGroup>
-
-  <ItemGroup>
-	<Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
-  </ItemGroup>
-
+  
   <ItemGroup>
     <PackageReference Include="Castle.Windsor" Version="4.1.0" />
   </ItemGroup>

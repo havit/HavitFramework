@@ -251,6 +251,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp", "EFCoreTests\C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EntityFrameworkCore.Abstractions", "Havit.Data.EntityFrameworkCore.Abstractions\Havit.Data.EntityFrameworkCore.Abstractions.csproj", "{9D7A1862-8FBD-4E8B-8E9B-535EAC0C6767}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Web.Bootstrap", "Havit.Web.Bootstrap\Havit.Web.Bootstrap.csproj", "{B18482B7-73D8-4943-A05B-C2E9DD366A70}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -527,6 +529,10 @@ Global
 		{9D7A1862-8FBD-4E8B-8E9B-535EAC0C6767}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D7A1862-8FBD-4E8B-8E9B-535EAC0C6767}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9D7A1862-8FBD-4E8B-8E9B-535EAC0C6767}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B18482B7-73D8-4943-A05B-C2E9DD366A70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B18482B7-73D8-4943-A05B-C2E9DD366A70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B18482B7-73D8-4943-A05B-C2E9DD366A70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B18482B7-73D8-4943-A05B-C2E9DD366A70}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -609,6 +615,7 @@ Global
 		{06614D61-6613-4339-B32C-3DAFD0D4EA49} = {CF4BD356-B8EB-4375-B017-5C5BF2835911}
 		{A4A1B2D5-7F5E-4B46-A633-08612CEA715A} = {CF4BD356-B8EB-4375-B017-5C5BF2835911}
 		{9D7A1862-8FBD-4E8B-8E9B-535EAC0C6767} = {E30EB2C7-ECF5-4A27-A7F0-8AE37284A60C}
+		{B18482B7-73D8-4943-A05B-C2E9DD366A70} = {DB76A91F-9059-4EB3-9389-C86486BB0DFC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {44656523-42B6-48E3-9E6D-6F075F0E7FD0}

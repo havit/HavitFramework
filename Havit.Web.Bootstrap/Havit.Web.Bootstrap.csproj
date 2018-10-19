@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\Common.targets" />
+
+  <PropertyGroup>
+	<TargetFramework>net46</TargetFramework>
+	<!-- Nechceme výchozí Compile, Content, None glob patterns, do NuGet balíčku dostaneme vše ručně, potřebujeme specifikovat PackagePath, viz níže -->
+	<EnableDefaultItems>false</EnableDefaultItems>
+  </PropertyGroup>
+
+  <!-- NuGet -->
+  <PropertyGroup>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<PackageVersion>1.7.0</PackageVersion>
+	<Description>HAVIT .NET Framework Extensions - Installs Bootstrap LESS files (via Twitter.Bootstrap.Less NuGet) and other client-side Bootstrap dependencies.</Description>
+	<!-- Projekt neobsahuje žádný C# kód a tudíž ani assembly k zabalení, jde čistě o klientský obsah -->
+	<IncludeBuildOutput>false</IncludeBuildOutput>
+	<!-- Cílíme jen na WebForms, kde contentFiles nemá smysl (protože WebForms nepoužívají nový csproj, tudíž nepoužívají PackageReference, ale packages.config. -->
+	<ContentTargetFolders>content</ContentTargetFolders>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<PackageReference Include="jQuery" Version="1.11.0" />
+	<PackageReference Include="Microsoft.AspNet.ScriptManager.WebForms" Version="5.0.0" />
+	<PackageReference Include="toastr" Version="2.0.1" />
+	<PackageReference Include="Twitter.Bootstrap.Less" Version="[3.2.0.1,4)" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<Content Include="..\Havit.Web\Bootstrap\content\less\*.less" PackagePath="content\Content\havit.web.bootstrap" />
+	<Content Include="..\Havit.Web\Bootstrap\content\js\*.js" PackagePath="content\Scripts\havit.web.bootstrap" />
+	<Content Include="content\Web.config.*.xdt" PackagePath="content" />
+  </ItemGroup>
+  
+</Project>

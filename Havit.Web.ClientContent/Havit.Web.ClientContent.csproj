@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\Common.targets" />
+
+  <PropertyGroup>
+	<TargetFramework>net46</TargetFramework>
+	<!-- Nechceme výchozí Compile, Content, None glob patterns, do NuGet balíčku dostaneme vše ručně, potřebujeme specifikovat PackagePath, viz níže -->
+	<EnableDefaultItems>false</EnableDefaultItems>
+  </PropertyGroup>
+
+  <!-- NuGet -->
+  <PropertyGroup>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<PackageVersion>1.7.4</PackageVersion>
+	<Description>HAVIT .NET Framework Extensions - Installs Havit.Web client side content and scripts to project.</Description>
+	<!-- Projekt neobsahuje žádný C# kód a tudíž ani assembly k zabalení, jde čistě o klientský obsah -->
+	<IncludeBuildOutput>false</IncludeBuildOutput>
+	<!-- Cílíme jen na WebForms, kde contentFiles nemá smysl (protože WebForms nepoužívají nový csproj, tudíž nepoužívají PackageReference, ale packages.config. -->
+	<ContentTargetFolders>content</ContentTargetFolders>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Havit.Web\Havit.Web.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<Content Include="..\Havit.Web\Content\styles\*.css" PackagePath="content\Content\havit.web.clientcontent" />
+	<Content Include="..\Havit.Web\Content\styles\*.less" PackagePath="content\Content\havit.web.clientcontent" />
+	<Content Include="..\Havit.Web\Content\styles\*.png" PackagePath="content\Content\havit.web.clientcontent" />
+	<Content Include="..\Havit.Web\Content\js\*.js" PackagePath="content\Scripts\havit.web.clientcontent" />
+  </ItemGroup>
+
+</Project>

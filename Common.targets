@@ -29,9 +29,9 @@
   <!-- /NuGet -->
   
   <!-- Publish NuGet -->
-  <ItemGroup>
+  <PropertyGroup>
 	<PackageOutputPath Condition="'$(PublishDirectory)' != ''">$(PublishDirectory)\NuGet</PackageOutputPath>
-  </ItemGroup>
+  </PropertyGroup>
   <!-- /Publish NuGet -->
 
 </Project>

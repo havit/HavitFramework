@@ -42,5 +42,5 @@
       <FilesToDelete Include="$(OutputPath)\*.nupkg" />
     </ItemGroup>
     <Delete Files="@(FilesToDelete)" />
-  </Target-->>
+  </Target-->
 </Project>

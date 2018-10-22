@@ -23,7 +23,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\Havit.Business.BusinessLayerGenerator\bin\Release\**\*.*" target="tools\BLG" />
+    <file src="..\Havit.Business.BusinessLayerGenerator\bin\Release\net471\**\*.*" target="tools\BLG" />
     <file src="Havit.Business.BLGenerator\Content\RunBLGenerator.ps1" target="content" />
   </files>
 </package>

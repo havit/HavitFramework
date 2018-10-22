@@ -15,8 +15,9 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.StoredProced
 		/// Vytvorí <see cref="StoredProcedureDbInjection"/> objekt z create skriptu v resources.
 		/// </summary>
 		/// <param name="createScriptResourceName">Názov resource s create skriptom pre uloženú procedúru.</param>
+		/// <param name="resourceAssembly">Assembly, ve které se resource hledá. Volitelný parametr. Není-li uveden, hledá se v assembly dle GetDefaultResourceAssembly().</param>
 		/// <returns><see cref="StoredProcedureDbInjection"/> objekt reprezentujúci uloženú procedúru.</returns>
-        protected StoredProcedureDbInjection Procedure(string createScriptResourceName, Assembly resourceAssembly = null)
+		protected StoredProcedureDbInjection Procedure(string createScriptResourceName, Assembly resourceAssembly = null)
 		{
 			resourceAssembly = resourceAssembly ?? GetDefaultResourceAssembly();
 

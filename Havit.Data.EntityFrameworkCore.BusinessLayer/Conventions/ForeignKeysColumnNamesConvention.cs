@@ -19,7 +19,6 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 		/// <summary>
 		/// Konštruktor. Parametrom <see cref="fkColumnSuffix"/> je možné prenastaviť nový suffix stĺpca s cudzím kľúčom.
 		/// </summary>
-		/// <param name="fkColumnSuffix"></param>
 	    public ForeignKeysColumnNamesConvention(string fkColumnSuffix = "ID")
 	    {
 		    this.fkColumnSuffix = fkColumnSuffix;

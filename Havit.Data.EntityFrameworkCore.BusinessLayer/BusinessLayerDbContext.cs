@@ -19,12 +19,16 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 	/// </summary>
 	public class BusinessLayerDbContext : DbContext
 	{
-		/// <inheritdoc />
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
 		public BusinessLayerDbContext()
 		{
 		}
 
-		/// <inheritdoc />
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
 		public BusinessLayerDbContext(DbContextOptions options)
 			: base(options)
 		{

@@ -17,7 +17,6 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 		/// <summary>
 		/// Konštruktor. Parametrom <see cref="tableSuffix"/> je možné zmeniť suffix stĺpca s primárnym kľúčom.
 		/// </summary>
-		/// <param name="tableSuffix"></param>
 		public PrefixedTablePrimaryKeysConvention(string tableSuffix = "ID")
 		{
 			this.tableSuffix = tableSuffix;

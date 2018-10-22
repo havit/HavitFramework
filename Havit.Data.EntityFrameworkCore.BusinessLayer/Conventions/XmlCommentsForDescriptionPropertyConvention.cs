@@ -5,11 +5,13 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.XmlComments;
 using Havit.Data.EntityFrameworkCore.Conventions;
 using Havit.Data.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 {
@@ -88,6 +90,26 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 						});
 					}
 				}
+
+				foreach (IMutableNavigation collection in entityType.GetNavigations().Where(n => n.IsCollection()))
+				{
+					if (collection.Name == "Localizations" && collection.ForeignKey.DeclaringEntityType.IsLocalizationEntity())
+					{
+						// Localizations property cannot have Collection_Description extended property defined
+						continue;
+					}
+
+					XmlCommentMember xmlCommentCollection = xmlCommentType.Properties.FirstOrDefault(p => p.Name.EndsWith(collection.PropertyInfo.Name));
+
+					if (xmlCommentCollection != null)
+					{
+						entityType.AddExtendedProperties(new Dictionary<string, string>
+						{
+							{ $"Collection_{collection.PropertyInfo.Name}_Description", EncodeValue(xmlCommentCollection.Summary) }
+						});
+					}
+				}
+
 			}
 		}
 

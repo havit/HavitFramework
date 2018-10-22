@@ -18,8 +18,8 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <Content Include="content\Web.config.install.xdt" PackagePath="content" />
-    <Content Include="content\Web.config.uninstall.xdt" PackagePath="content" />
+    <Content Include="Package\content\Web.config.install.xdt" PackagePath="content" />
+    <Content Include="Package\content\Web.config.uninstall.xdt" PackagePath="content" />
   </ItemGroup>
   
   <ItemGroup>

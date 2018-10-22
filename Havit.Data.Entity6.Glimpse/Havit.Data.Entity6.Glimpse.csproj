@@ -21,8 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
-	<Content Include="tools\**\*.*" PackagePath="tools" />
-	<Content Include="content\**\*.*" PackagePath="content" />
+	<Content Include="Package\tools\**\*.*" PackagePath="tools" />
+	<Content Include="Package\content\**\*.*" PackagePath="content" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Web" />

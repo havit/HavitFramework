@@ -1,23 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<TargetFramework>net46</TargetFramework>
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-	</PropertyGroup>
+  <Import Project="..\Common.targets" />
 
-	<ItemGroup>
-		<Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
-	</ItemGroup>
+  <PropertyGroup>
+	<TargetFramework>net46</TargetFramework>
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+  
+  <!-- NuGet -->
+  <PropertyGroup>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<PackageVersion>1.7.0</PackageVersion>
+	<Description>HAVIT .NET Framework Extensions - Web Class Library for HAVIT Business Layer</Description>
+  </PropertyGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\Havit.Business\Havit.Business.csproj" />
-		<ProjectReference Include="..\Havit.Web\Havit.Web.csproj" />
-		<ProjectReference Include="..\Havit\Havit.csproj" />
-	</ItemGroup>
+  <ItemGroup>
+	<ProjectReference Include="..\Havit.Business\Havit.Business.csproj" />
+	<ProjectReference Include="..\Havit.Web\Havit.Web.csproj" />
+	<ProjectReference Include="..\Havit\Havit.csproj" />
+  </ItemGroup>
 
-	<ItemGroup>
-		<Reference Include="System.Web" />
-	</ItemGroup>
+  <ItemGroup>
+	<Reference Include="System.Web" />
+  </ItemGroup>
 
 </Project>

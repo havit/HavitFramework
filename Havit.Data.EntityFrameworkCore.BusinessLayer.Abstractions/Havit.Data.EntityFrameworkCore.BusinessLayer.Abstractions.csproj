@@ -1,18 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<TargetFramework>netstandard2.0</TargetFramework>
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<LangVersion>latest</LangVersion>
-		<RootNamespace>Havit.Data.EntityFrameworkCore.BusinessLayer</RootNamespace>
-	</PropertyGroup>
+  <Import Project="..\Common.targets" />
 
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<DocumentationFile>bin\Release\netstandard2.0\Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions.xml</DocumentationFile>
-	</PropertyGroup>
+  <PropertyGroup>
+	<TargetFramework>netstandard2.0</TargetFramework>
+	<LangVersion>latest</LangVersion>
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	<RootNamespace>Havit.Data.EntityFrameworkCore.BusinessLayer</RootNamespace>
+  </PropertyGroup>
 
-	<ItemGroup>
-		<Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
-	</ItemGroup>
-
+  <!-- NuGet -->
+  <PropertyGroup>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<PackageVersion>1.0.2-beta</PackageVersion>
+	<Description>HAVIT .NET Framework Extensions - Database schema and data seeding for application with HAVIT Business Layer - Abstractions</Description>
+  </PropertyGroup>
+  
 </Project>

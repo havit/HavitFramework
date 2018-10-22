@@ -1,15 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="..\Common.targets" />
+  
   <PropertyGroup>
 	<TargetFramework>net46</TargetFramework>
-	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
-  <ItemGroup>
-	<Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
-  </ItemGroup>
-
+  <!-- NuGet -->
+  <PropertyGroup>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<PackageVersion>1.7.3</PackageVersion>
+	<Description>HAVIT .NET Framework Extensions - Business Class Library</Description>
+  </PropertyGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\Havit.Data\Havit.Data.csproj" />
     <ProjectReference Include="..\Havit.Services\Havit.Services.csproj" />

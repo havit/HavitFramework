@@ -19,8 +19,8 @@
   </ItemGroup>
   
   <ItemGroup>
-	<ProjectReference Include="..\Havit.Services\Havit.Services.csproj" Version="1.7.0" />
-	<ProjectReference Include="..\Havit\Havit.csproj" Version="1.7.0" />
+	<ProjectReference Include="..\Havit.Services\Havit.Services.csproj" />
+	<ProjectReference Include="..\Havit\Havit.csproj" />
   </ItemGroup>
   
 </Project>

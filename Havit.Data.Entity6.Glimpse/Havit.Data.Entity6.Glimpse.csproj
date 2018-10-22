@@ -11,6 +11,7 @@
   <PropertyGroup>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<PackageVersion>1.7.0</PackageVersion>
+	<IncludeContentInPack>true</IncludeContentInPack>
 	<Description>HAVIT .NET Framework Extensions - Entity Framework 6 Extensions - Plugin for Glimpse</Description>
   </PropertyGroup>
   

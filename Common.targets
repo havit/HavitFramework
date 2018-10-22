@@ -14,7 +14,11 @@
 	<Authors>HAVIT</Authors>
 	<PackageLicenseUrl>https://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
 	<PackageIconUrl>https://www.gravatar.com/avatar/e59ffb10448162f0c6d6b5ae3fecd0ce?s=64</PackageIconUrl>
-
+	
+	<!-- Jako default nebudeme dávat content do balíčků (stačí ukliknutí a máme content v nuget balíčku).
+		 V projektech, ve kterých content do nuget balíčku chceme, si jej povolíme. -->
+	<IncludeContentInPack>false</IncludeContentInPack>
+	
 	<!-- Source: https://github.com/dotnet/sourcelink/#using-sourcelink -->
 	<!-- Optional: Publish the repository URL in the built .nupkg (in the NuSpec <Repository> element) -->
 	<PublishRepositoryUrl>true</PublishRepositoryUrl>

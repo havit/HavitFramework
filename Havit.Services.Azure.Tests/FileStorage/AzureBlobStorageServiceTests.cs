@@ -145,7 +145,31 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		[TestMethod]
 		public void AzureBlobStorageService_EnumerableFilesGetPrefix_CorrectlyGetPrefix()
 		{
-			FileStorageServiceTestInternals.AzureBlobStorageService_EnumerableFilesGetPrefix_CorrectlyGetPrefix();
+			// Arrange
+			AzureBlobStorageService azureBlobStorageService = GetAzureBlobStorageService();
+
+			// Act + Assert
+			Assert.AreEqual(null, azureBlobStorageService.EnumerableFilesGetPrefix(null));
+			Assert.AreEqual(null, azureBlobStorageService.EnumerableFilesGetPrefix(""));
+			Assert.AreEqual(null, azureBlobStorageService.EnumerableFilesGetPrefix("test.txt"));
+			Assert.AreEqual(String.Empty, azureBlobStorageService.EnumerableFilesGetPrefix("/test.*"));
+			Assert.AreEqual(String.Empty, azureBlobStorageService.EnumerableFilesGetPrefix("/test.txt"));
+
+			Assert.AreEqual("SubFolder1/Subfolder2", azureBlobStorageService.EnumerableFilesGetPrefix("SubFolder1/Subfolder2/test.txt"));
+			Assert.AreEqual("SubFolder1/Subfolder2", azureBlobStorageService.EnumerableFilesGetPrefix("SubFolder1/Subfolder2/*.txt"));
+			Assert.AreEqual("SubFolder1/Subfolder2", azureBlobStorageService.EnumerableFilesGetPrefix("SubFolder1/Subfolder2/t*.txt"));
+			Assert.AreEqual("SubFolder1", azureBlobStorageService.EnumerableFilesGetPrefix("SubFolder1/Sub*/*.txt"));
+			Assert.AreEqual(null, azureBlobStorageService.EnumerableFilesGetPrefix("Sub*/Sub*/*.txt"));
+			Assert.AreEqual("Subfolder1", azureBlobStorageService.EnumerableFilesGetPrefix("Subfolder1/Sub*/test.txt"));
+			Assert.AreEqual(null, azureBlobStorageService.EnumerableFilesGetPrefix("Sub*/Sub/test.txt"));
+			Assert.AreEqual(String.Empty, azureBlobStorageService.EnumerableFilesGetPrefix("/Sub*/test.txt"));
+
+			Assert.AreEqual("SubFolder1/Subfolder2", azureBlobStorageService.EnumerableFilesGetPrefix("SubFolder1/Subfolder2/??.txt"));
+			Assert.AreEqual("SubFolder1/Subfolder2", azureBlobStorageService.EnumerableFilesGetPrefix("SubFolder1/Subfolder2/t??.txt"));
+			Assert.AreEqual("SubFolder1", azureBlobStorageService.EnumerableFilesGetPrefix("SubFolder1/Sub??/??.txt"));
+			Assert.AreEqual(null, azureBlobStorageService.EnumerableFilesGetPrefix("Sub??/Sub??/??.txt"));
+			Assert.AreEqual("Subfolder1", azureBlobStorageService.EnumerableFilesGetPrefix("Subfolder1/Sub??/test.txt"));
+			Assert.AreEqual(null, azureBlobStorageService.EnumerableFilesGetPrefix("Sub??/Sub/test.txt"));
 		}
 
 		[TestMethod]
@@ -255,5 +279,7 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		{
 			return new AzureBlobStorageService("DefaultEndpointsProtocol=https;AccountName=hfwtestsstorage;AccountKey=3yuNhy/gYB6JDZ+bljB+vNBs4DrjjgvK7ZFfCR2QrZWoy4dEuYuSAApkQ2GkmKb01U2bidXq5/SpNDFm8uflDw==;", container, options, (EncryptionOptions)encryptionOptions);
 		}
+
+
 	}
 }

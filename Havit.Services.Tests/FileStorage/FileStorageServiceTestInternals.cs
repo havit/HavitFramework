@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Havit.Diagnostics.Contracts;
-using Havit.Services.Azure.FileStorage;
 using Havit.Services.FileStorage;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FileInfo = Havit.Services.FileStorage.FileInfo;
@@ -409,35 +408,6 @@ namespace Havit.Services.Tests.FileStorage
 
 			// Clean-up
 			await fileStorageService.DeleteAsync(testFilename);
-		}
-
-		internal static void AzureBlobStorageService_EnumerableFilesGetPrefix_CorrectlyGetPrefix()
-		{
-			// Arrange
-			AzureBlobStorageService azureBlobStorageService = new AzureBlobStorageService("fake", "fake");
-
-			// Act + Assert
-			Assert.AreEqual(null, azureBlobStorageService.EnumerableFilesGetPrefix(null));
-			Assert.AreEqual(null, azureBlobStorageService.EnumerableFilesGetPrefix(""));
-			Assert.AreEqual(null, azureBlobStorageService.EnumerableFilesGetPrefix("test.txt"));
-			Assert.AreEqual(String.Empty, azureBlobStorageService.EnumerableFilesGetPrefix("/test.*"));
-			Assert.AreEqual(String.Empty, azureBlobStorageService.EnumerableFilesGetPrefix("/test.txt"));
-
-			Assert.AreEqual("SubFolder1/Subfolder2", azureBlobStorageService.EnumerableFilesGetPrefix("SubFolder1/Subfolder2/test.txt"));
-			Assert.AreEqual("SubFolder1/Subfolder2", azureBlobStorageService.EnumerableFilesGetPrefix("SubFolder1/Subfolder2/*.txt"));
-			Assert.AreEqual("SubFolder1/Subfolder2", azureBlobStorageService.EnumerableFilesGetPrefix("SubFolder1/Subfolder2/t*.txt"));
-			Assert.AreEqual("SubFolder1", azureBlobStorageService.EnumerableFilesGetPrefix("SubFolder1/Sub*/*.txt"));
-			Assert.AreEqual(null, azureBlobStorageService.EnumerableFilesGetPrefix("Sub*/Sub*/*.txt"));
-			Assert.AreEqual("Subfolder1", azureBlobStorageService.EnumerableFilesGetPrefix("Subfolder1/Sub*/test.txt"));
-			Assert.AreEqual(null, azureBlobStorageService.EnumerableFilesGetPrefix("Sub*/Sub/test.txt"));
-			Assert.AreEqual(String.Empty, azureBlobStorageService.EnumerableFilesGetPrefix("/Sub*/test.txt"));
-
-			Assert.AreEqual("SubFolder1/Subfolder2", azureBlobStorageService.EnumerableFilesGetPrefix("SubFolder1/Subfolder2/??.txt"));
-			Assert.AreEqual("SubFolder1/Subfolder2", azureBlobStorageService.EnumerableFilesGetPrefix("SubFolder1/Subfolder2/t??.txt"));
-			Assert.AreEqual("SubFolder1", azureBlobStorageService.EnumerableFilesGetPrefix("SubFolder1/Sub??/??.txt"));
-			Assert.AreEqual(null, azureBlobStorageService.EnumerableFilesGetPrefix("Sub??/Sub??/??.txt"));
-			Assert.AreEqual("Subfolder1", azureBlobStorageService.EnumerableFilesGetPrefix("Subfolder1/Sub??/test.txt"));
-			Assert.AreEqual(null, azureBlobStorageService.EnumerableFilesGetPrefix("Sub??/Sub/test.txt"));
 		}
 
 		internal static void FileStorageService_EnumerateFiles_HasLastModifiedUtcAndSize(IFileStorageService fileStorageService)

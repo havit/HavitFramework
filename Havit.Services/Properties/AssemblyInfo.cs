@@ -2,3 +2,4 @@
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("Havit.Services.Tests")]
+[assembly: InternalsVisibleTo("Havit.Services.Azure.Tests")]

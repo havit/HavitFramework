@@ -19,8 +19,8 @@
   </ItemGroup>
   
   <ItemGroup>
-	<Reference Include="System.Web" />
-	<Reference Include="System.Web.Services" />
+	<Reference Include="System.Web" Pack="false" />
+	<Reference Include="System.Web.Services" Pack="false" />
   </ItemGroup>
   
 </Project>

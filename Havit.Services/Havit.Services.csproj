@@ -19,9 +19,9 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net46'">
-	<Reference Include="System.DirectoryServices" />
-	<Reference Include="System.Runtime.Caching" />
-	<Reference Include="System.Web" />
+	<Reference Include="System.DirectoryServices" Pack="false" />
+	<Reference Include="System.Runtime.Caching" Pack="false" />
+	<Reference Include="System.Web" Pack="false" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">

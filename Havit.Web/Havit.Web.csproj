@@ -19,11 +19,11 @@
   </ItemGroup>
 
   <ItemGroup>
-	<Reference Include="System.Configuration" />
-	<Reference Include="System.ServiceModel" />
-	<Reference Include="System.Web" />
-	<Reference Include="System.Web.Extensions" />
-	<Reference Include="System.Web.Services" />
+	<Reference Include="System.Configuration" Pack="false" />
+	<Reference Include="System.ServiceModel" Pack="false" />
+	<Reference Include="System.Web" Pack="false" />
+	<Reference Include="System.Web.Extensions" Pack="false" />
+	<Reference Include="System.Web.Services" Pack="false" />
   </ItemGroup>
 
   <ItemGroup>

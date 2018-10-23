@@ -19,7 +19,7 @@
   </ItemGroup>
   
   <ItemGroup>
-	<Reference Include="System.Data.DataSetExtensions" />
-	<Reference Include="System.Web" />
+	<Reference Include="System.Data.DataSetExtensions" Pack="false" />
+	<Reference Include="System.Web" Pack="false" />
   </ItemGroup>
 </Project>

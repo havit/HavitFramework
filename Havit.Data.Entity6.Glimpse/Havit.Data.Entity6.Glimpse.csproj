@@ -25,6 +25,6 @@
 	<Content Include="Package\content\**\*.*" PackagePath="content" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.Web" />
+    <Reference Include="System.Web" Pack="false" />
   </ItemGroup>
 </Project>

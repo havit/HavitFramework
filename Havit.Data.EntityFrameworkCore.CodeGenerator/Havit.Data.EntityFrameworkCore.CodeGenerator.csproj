@@ -7,15 +7,6 @@
     <RootNamespace>Havit.Data.EntityFrameworkCore.CodeGenerator</RootNamespace>
     <OutputType>Exe</OutputType>
   </PropertyGroup>
-
-  <!-- NuGet -->
-  <PropertyGroup>
-	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageVersion>1.8.3</PackageVersion>
-	<PackAsTool>true</PackAsTool>
-	<IncludeContentInPack>false</IncludeContentInPack>
-	<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Code Generator</Description>
-  </PropertyGroup>
   
   <ItemGroup>
     <None Remove="Actions\DataEntries\Template\DbDataEntriesTemplate.tt" />

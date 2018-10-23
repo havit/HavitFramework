@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\Common.targets" />
+  
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <!-- NuGet -->
+  <PropertyGroup>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<PackageId>Havit.Data.EntityFrameworkCore.CodeGenerator</PackageId>
+	<PackageVersion>1.8.3</PackageVersion>
+	<!-- Publikujeme výstup buildu jiného projektu. -->
+	<IncludeBuildOutput>false</IncludeBuildOutput>
+	<!-- Výstup je publikován jako content, musíme jeho publikaci povolit. -->
+	<IncludeContentInPack>true</IncludeContentInPack>
+	<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Code Generator</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<Content Include="..\Havit.Data.EntityFrameworkCore.CodeGenerator\bin\$(Configuration)\netcoreapp2.1\**">
+	  <Pack>true</Pack>
+	  <PackagePath>tools\CodeGenerator</PackagePath>
+	</Content>
+  </ItemGroup>
+
+</Project>

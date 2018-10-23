@@ -19,13 +19,11 @@
 	<!-- Výstup je publikován jako content, musíme jeho publikaci povolit. -->
 	<IncludeContentInPack>true</IncludeContentInPack>
   </PropertyGroup>
+  
   <ItemGroup>
 	<Content Include="..\Havit.Business.BusinessLayerGenerator\$(OutputPath)">
 	  <Pack>true</Pack>
 	  <PackagePath>tools\BLG</PackagePath>
-	</Content>
-	<Content Include="Package\Content\RunBLGenerator.ps1">
-	  <PackagePath>content</PackagePath>
 	</Content>
   </ItemGroup>
   

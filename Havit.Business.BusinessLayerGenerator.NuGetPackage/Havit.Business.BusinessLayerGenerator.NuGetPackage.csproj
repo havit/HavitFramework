@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\Common.targets" />
+  
+  <PropertyGroup>
+    <TargetFramework>net471</TargetFramework>
+  </PropertyGroup>
+
+  <!-- NuGet -->
+  <PropertyGroup>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<PackageId>Havit.Business.BLGenerator</PackageId>
+	<PackageVersion>1.7.9</PackageVersion>
+	<Description>HAVIT .NET Framework Extensions - Business Layer - Code Generator</Description>
+	<!-- Výstupem je konzolovka, nechceme ji do složky lib, ale tools a nejen zkompilované exe, ale i závislosti. -->
+	<!-- IncludeBuildOutput dává do nuget balíčku jen *.exe a *.pdb, IsTool přepíná složku lib na tools. -->
+	<!-- Proto úplně vypneme přidání zkompilované aplikace do nuget balíčku a přidáme si ji přes Content. -->
+	<IncludeBuildOutput>false</IncludeBuildOutput>
+	<!-- Výstup je publikován jako content, musíme jeho publikaci povolit. -->
+	<IncludeContentInPack>true</IncludeContentInPack>
+  </PropertyGroup>
+  <ItemGroup>
+	<Content Include="..\Havit.Business.BusinessLayerGenerator\$(OutputPath)">
+	  <Pack>true</Pack>
+	  <PackagePath>tools\BLG</PackagePath>
+	</Content>
+	<Content Include="Package\Content\RunBLGenerator.ps1">
+	  <PackagePath>content</PackagePath>
+	</Content>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Havit.Business.BusinessLayerGenerator\Havit.Business.BusinessLayerGenerator.csproj" PrivateAssets="true" />
+  </ItemGroup>
+
+</Project>

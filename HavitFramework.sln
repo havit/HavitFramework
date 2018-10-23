@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.Entity6", "Havit
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.Entity6.Glimpse", "Havit.Data.Entity6.Glimpse\Havit.Data.Entity6.Glimpse.csproj", "{B847560E-3FEA-419D-BFAC-D7E3544C1F70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Data.Glimpse", "Havit.Data.Glimpse\Havit.Data.Glimpse.csproj", "{C5C6607E-644A-468F-A6C2-CDCF8A1D23DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.Glimpse", "Havit.Data.Glimpse\Havit.Data.Glimpse.csproj", "{C5C6607E-644A-468F-A6C2-CDCF8A1D23DC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Documentation.Homepage", "Havit.Documentation.Homepage\Havit.Documentation.Homepage.csproj", "{3BDA4E00-6F3D-4181-BA7A-3FDE62EB367F}"
 EndProject
@@ -158,11 +158,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.Entity6.CodeGene
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AspNet", "AspNet", "{AFA902A5-BD34-46C8-BE50-5A32299B5DFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.AspNet.Mvc", "Havit.AspNet.Mvc\Havit.AspNet.Mvc.csproj", "{CB302A69-BA6C-4FED-AF21-63FCBEA5A0C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.AspNet.Mvc", "Havit.AspNet.Mvc\Havit.AspNet.Mvc.csproj", "{CB302A69-BA6C-4FED-AF21-63FCBEA5A0C3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{333BDF5B-A87C-47B2-A418-BF0F0C9313D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.AspNet.Mvc.Tests", "Havit.AspNet.Mvc.Tests\Havit.AspNet.Mvc.Tests.csproj", "{6C670A85-4AAB-44CE-8F45-BF9495020C56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.AspNet.Mvc.Tests", "Havit.AspNet.Mvc.Tests\Havit.AspNet.Mvc.Tests.csproj", "{6C670A85-4AAB-44CE-8F45-BF9495020C56}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3C2FD345-B555-4C43-A930-761AC2517EFD}"
 EndProject
@@ -254,6 +254,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Web.Bootstrap", "Havit.Web.Bootstrap\Havit.Web.Bootstrap.csproj", "{B18482B7-73D8-4943-A05B-C2E9DD366A70}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Web.ClientContent", "Havit.Web.ClientContent\Havit.Web.ClientContent.csproj", "{4BC8EF13-57B4-4805-95A9-D4DDB691B4D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Business.BusinessLayerGenerator.NuGetPackage", "Havit.Business.BusinessLayerGenerator.NuGetPackage\Havit.Business.BusinessLayerGenerator.NuGetPackage.csproj", "{E3B66D72-4E10-47F4-B8DF-DD8189438D7E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -539,6 +541,10 @@ Global
 		{4BC8EF13-57B4-4805-95A9-D4DDB691B4D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4BC8EF13-57B4-4805-95A9-D4DDB691B4D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4BC8EF13-57B4-4805-95A9-D4DDB691B4D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3B66D72-4E10-47F4-B8DF-DD8189438D7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3B66D72-4E10-47F4-B8DF-DD8189438D7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3B66D72-4E10-47F4-B8DF-DD8189438D7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3B66D72-4E10-47F4-B8DF-DD8189438D7E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -623,6 +629,7 @@ Global
 		{9D7A1862-8FBD-4E8B-8E9B-535EAC0C6767} = {E30EB2C7-ECF5-4A27-A7F0-8AE37284A60C}
 		{B18482B7-73D8-4943-A05B-C2E9DD366A70} = {DB76A91F-9059-4EB3-9389-C86486BB0DFC}
 		{4BC8EF13-57B4-4805-95A9-D4DDB691B4D7} = {DB76A91F-9059-4EB3-9389-C86486BB0DFC}
+		{E3B66D72-4E10-47F4-B8DF-DD8189438D7E} = {8B4383E1-89EA-46F4-A379-F728CA71A124}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {44656523-42B6-48E3-9E6D-6F075F0E7FD0}

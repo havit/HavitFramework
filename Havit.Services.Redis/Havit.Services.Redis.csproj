@@ -9,7 +9,7 @@
 
   <!-- NuGet -->
   <PropertyGroup>
-	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 	<PackageVersion>1.8.0</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Redis Services</Description>
   </PropertyGroup>

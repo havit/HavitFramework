@@ -10,7 +10,7 @@
   <!-- NuGet -->
   <PropertyGroup>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageVersion>1.7.2</PackageVersion>
+	<PackageVersion>1.7.3</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Dependency Injection Extensions - Abstractions</Description>
   </PropertyGroup>
 

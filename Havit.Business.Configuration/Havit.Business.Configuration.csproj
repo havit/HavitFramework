@@ -10,7 +10,7 @@
   <!-- NuGet -->
   <PropertyGroup>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageVersion>1.0.4</PackageVersion>
+	<PackageVersion>1.0.5</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Manages configuration (connection strings) in Business Layer projects</Description>
   </PropertyGroup>
   

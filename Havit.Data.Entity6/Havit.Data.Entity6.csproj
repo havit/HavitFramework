@@ -12,7 +12,7 @@
   <!-- NuGet -->
   <PropertyGroup>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageVersion>1.7.9</PackageVersion>
+	<PackageVersion>1.7.10</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Entity Framework 6 Extensions</Description>
   </PropertyGroup>
   

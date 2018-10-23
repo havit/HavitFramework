@@ -10,7 +10,7 @@
   <PropertyGroup>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<PackageId>Havit.Business.BLGenerator</PackageId>
-	<PackageVersion>1.7.9</PackageVersion>
+	<PackageVersion>1.7.5</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Business Layer - Code Generator</Description>
 	<!-- Výstupem je konzolovka, nechceme ji do složky lib, ale tools a nejen zkompilované exe, ale i závislosti. -->
 	<!-- IncludeBuildOutput dává do nuget balíčku jen *.exe a *.pdb, IsTool přepíná složku lib na tools. -->

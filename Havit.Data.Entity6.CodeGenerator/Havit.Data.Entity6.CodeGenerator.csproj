@@ -11,7 +11,7 @@
   <!-- NuGet -->
   <PropertyGroup>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageVersion>1.7.9</PackageVersion>
+	<PackageVersion>1.7.10</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Entity Framework 6 Extensions - Code Generator</Description>
 	<!-- Výstupem je konzolovka, nechceme ji do složky lib, ale tools a nejen zkompilované exe, ale i závislosti. -->
 	<!-- IncludeBuildOutput dává do nuget balíčku jen *.exe a *.pdb, IsTool přepíná složku lib na tools. -->
@@ -28,7 +28,7 @@
   </ItemGroup>
   <ItemGroup>
 	<!-- Přidáme výstup buildu do nuget balíčku. Jako side effect se zobrazí složka bin v Solution Exploreru. -->
-	<Content Include="$(OutputPath)">
+	<Content Include="$(OutputPath)\**">
 	  <Pack>true</Pack>
 	  <PackagePath>tools\CodeGenerator</PackagePath>
 	</Content>

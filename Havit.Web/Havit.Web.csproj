@@ -10,7 +10,7 @@
   <!-- NuGet -->
   <PropertyGroup>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageVersion>1.7.5</PackageVersion>
+	<PackageVersion>1.7.6</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Web Class Library</Description>
   </PropertyGroup>
 

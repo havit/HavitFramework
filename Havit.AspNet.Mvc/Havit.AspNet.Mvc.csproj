@@ -10,10 +10,9 @@
   <!-- NuGet -->
   <PropertyGroup>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageVersion>1.7.0</PackageVersion>
+	<PackageVersion>1.7.1</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - ASP.NET MVC Extensions</Description>
   </PropertyGroup>
-
   
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.3" />

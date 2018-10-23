@@ -6,6 +6,7 @@
 	<TargetFramework>net46</TargetFramework>
 	<RootNamespace>Havit.Data.Entity.CodeGenerator</RootNamespace>
 	<OutputType>Exe</OutputType>
+	<NoWarn>1701;1702;NU5110;NU5111</NoWarn>
   </PropertyGroup>
 
   <!-- NuGet -->
@@ -20,9 +21,6 @@
 	<!-- Výstup je publikován jako content, musíme jeho publikaci povolit. -->
 	<IncludeContentInPack>true</IncludeContentInPack>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <NoWarn>1701;1702;NU5110;NU5111</NoWarn>
-  </PropertyGroup>
   <ItemGroup>
     <None Remove="Package\Content\RunCodeGenerator.ps1" />
   </ItemGroup>
@@ -35,10 +33,6 @@
 	<Content Include="Package\Content\RunCodeGenerator.ps1" PackagePath="content" />
   </ItemGroup>
   
-  <ItemGroup>
-	<PackageReference Include="Microsoft.TeamFoundationServer.ExtendedClient" Version="15.112.1" PrivateAssets="All" />
-  </ItemGroup>
-
   <ItemGroup>
 	<ProjectReference Include="..\Havit.Data.Entity6.Patterns\Havit.Data.Entity6.Patterns.csproj" PrivateAssets="All" />
   </ItemGroup>

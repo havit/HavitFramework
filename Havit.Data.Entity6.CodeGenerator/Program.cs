@@ -39,7 +39,7 @@ namespace Havit.Data.Entity.CodeGenerator
 			Project modelProject = null;
 			Project dataLayerProject = null;
 			DbContext dbContext = null;
-			ISourceControlClient sourceControlClient = null;
+			ISourceControlClient sourceControlClient = new NullSourceControlClient();
 
 			DirectoryInfo solutionDirectory = new DirectoryInfo(Environment.CurrentDirectory);// @"D:\Dev\002.HFW-NewProjectTemplate";
 			
@@ -71,7 +71,6 @@ namespace Havit.Data.Entity.CodeGenerator
 			}
 
 			Parallel.Invoke(
-				() => sourceControlClient = new TfsSourceControlClientFactory().Create(solutionDirectory.FullName),
 				() =>
 				{
 					dbContext = new DbContextActivator().Activate(dbContextType);

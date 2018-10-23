@@ -3,16 +3,17 @@
   <Import Project="..\Common.targets" />
   
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
     <RootNamespace>Havit.Data.EntityFrameworkCore.CodeGenerator</RootNamespace>
     <OutputType>Exe</OutputType>
-	<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
   <!-- NuGet -->
   <PropertyGroup>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<PackageVersion>1.8.2</PackageVersion>
+	<PackAsTool>true</PackAsTool>
+	<IncludeContentInPack>false</IncludeContentInPack>
 	<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Code Generator</Description>
   </PropertyGroup>
   

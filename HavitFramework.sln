@@ -212,8 +212,11 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Web.ClientContent", "Havit.Web.ClientContent\Havit.Web.ClientContent.csproj", "{4BC8EF13-57B4-4805-95A9-D4DDB691B4D7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Business.BusinessLayerGenerator.NuGetPackage", "Havit.Business.BusinessLayerGenerator.NuGetPackage\Havit.Business.BusinessLayerGenerator.NuGetPackage.csproj", "{E3B66D72-4E10-47F4-B8DF-DD8189438D7E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D5B7B479-45B7-4D1F-9C72-63FBC4D21114} = {D5B7B479-45B7-4D1F-9C72-63FBC4D21114}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Data.EntityFrameworkCore.CodeGenerator.NuGetPackage", "Havit.Data.EntityFrameworkCore.CodeGenerator.NuGetPackage\Havit.Data.EntityFrameworkCore.CodeGenerator.NuGetPackage.csproj", "{96DE4420-4CB5-4316-886B-C6C90A25FDEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EntityFrameworkCore.CodeGenerator.NuGetPackage", "Havit.Data.EntityFrameworkCore.CodeGenerator.NuGetPackage\Havit.Data.EntityFrameworkCore.CodeGenerator.NuGetPackage.csproj", "{96DE4420-4CB5-4316-886B-C6C90A25FDEF}"
 	ProjectSection(ProjectDependencies) = postProject
 		{9D793564-5C33-401F-8897-A68F698FD0B3} = {9D793564-5C33-401F-8897-A68F698FD0B3}
 	EndProjectSection

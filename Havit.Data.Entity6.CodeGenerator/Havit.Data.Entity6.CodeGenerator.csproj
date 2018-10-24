@@ -6,33 +6,8 @@
 	<TargetFramework>net46</TargetFramework>
 	<RootNamespace>Havit.Data.Entity.CodeGenerator</RootNamespace>
 	<OutputType>Exe</OutputType>
-	<NoWarn>1701;1702;NU5110;NU5111</NoWarn>
   </PropertyGroup>
 
-  <!-- NuGet -->
-  <PropertyGroup>
-	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageVersion>1.7.10</PackageVersion>
-	<Description>HAVIT .NET Framework Extensions - Entity Framework 6 Extensions - Code Generator</Description>
-	<!-- Výstupem je konzolovka, nechceme ji do složky lib, ale tools a nejen zkompilované exe, ale i závislosti. -->
-	<!-- IncludeBuildOutput dává do nuget balíčku jen *.exe a *.pdb, IsTool přepíná složku lib na tools. -->
-	<!-- Proto úplně vypneme přidání zkompilované aplikace do nuget balíčku a přidáme si ji přes Content. -->
-	<IncludeBuildOutput>false</IncludeBuildOutput>
-	<!-- Výstup je publikován jako content, musíme jeho publikaci povolit. -->
-	<IncludeContentInPack>true</IncludeContentInPack>
-  </PropertyGroup>
-  <ItemGroup>
-    <None Remove="Package\Content\RunCodeGenerator.ps1" />
-  </ItemGroup>
-  <ItemGroup>
-	<!-- Přidáme výstup buildu do nuget balíčku. Jako side effect se zobrazí složka bin v Solution Exploreru. -->
-	<Content Include="$(OutputPath)\**">
-	  <Pack>true</Pack>
-	  <PackagePath>tools\CodeGenerator</PackagePath>
-	</Content>
-	<Content Include="Package\Content\RunCodeGenerator.ps1" PackagePath="content" />
-  </ItemGroup>
-  
   <ItemGroup>
 	<ProjectReference Include="..\Havit.Data.Entity6.Patterns\Havit.Data.Entity6.Patterns.csproj" PrivateAssets="All" />
   </ItemGroup>

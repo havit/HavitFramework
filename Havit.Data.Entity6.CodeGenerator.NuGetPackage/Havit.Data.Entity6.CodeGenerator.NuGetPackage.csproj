@@ -1,29 +1,31 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="..\Common.targets" />
-  
+
   <PropertyGroup>
-	<!-- CodeGenerator, přestože sám je implementován jako NET Core App 2.1, chceme umožnit nainstalovat do projektů targetující .NET Standard 2.0. -->
-	<TargetFramework>netstandard2.0</TargetFramework>
+	<TargetFramework>net46</TargetFramework>
+	<NoWarn>1701;1702;NU5110;NU5111</NoWarn>
   </PropertyGroup>
 
   <!-- NuGet -->
   <PropertyGroup>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageId>Havit.Data.EntityFrameworkCore.CodeGenerator</PackageId>
-	<PackageVersion>1.8.3</PackageVersion>
+	<PackageVersion>1.7.10</PackageVersion>
+	<PackageId>Havit.Data.Entity6.CodeGenerator</PackageId>
+	<Description>HAVIT .NET Framework Extensions - Entity Framework 6 Extensions - Code Generator</Description>
+
 	<!-- Publikujeme výstup buildu jiného projektu. -->
 	<IncludeBuildOutput>false</IncludeBuildOutput>
 	<!-- Výstup je publikován jako content, musíme jeho publikaci povolit. -->
 	<IncludeContentInPack>true</IncludeContentInPack>
-	<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Code Generator</Description>
   </PropertyGroup>
 
   <ItemGroup>
-	<Content Include="..\Havit.Data.EntityFrameworkCore.CodeGenerator\bin\$(Configuration)\netcoreapp2.1\**">
+	<Content Include="..\Havit.Data.Entity6.CodeGenerator\bin\$(Configuration)\net46\**">
 	  <Pack>true</Pack>
 	  <PackagePath>tools\CodeGenerator</PackagePath>
 	</Content>
+	<Content Include="Package\Content\RunCodeGenerator.ps1" PackagePath="content" />
   </ItemGroup>
 
 </Project>

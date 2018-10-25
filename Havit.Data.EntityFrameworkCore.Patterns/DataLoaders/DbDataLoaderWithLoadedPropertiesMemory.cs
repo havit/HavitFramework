@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Havit.Data.EntityFrameworkCore.Patterns.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
@@ -14,7 +15,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public DbDataLoaderWithLoadedPropertiesMemory(IDbContext dbContext, IPropertyLoadSequenceResolver propertyLoadSequenceResolver, IPropertyLambdaExpressionManager lambdaExpressionManager) : base(dbContext, propertyLoadSequenceResolver, lambdaExpressionManager)
+		public DbDataLoaderWithLoadedPropertiesMemory(IDbContext dbContext, IPropertyLoadSequenceResolver propertyLoadSequenceResolver, IPropertyLambdaExpressionManager lambdaExpressionManager, IEntityCacheManager entityCacheManager) : base(dbContext, propertyLoadSequenceResolver, lambdaExpressionManager, entityCacheManager)
 		{
 		}
 

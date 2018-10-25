@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 using Havit.Data.EntityFrameworkCore.Metadata;
+using Havit.Data.EntityFrameworkCore.Patterns.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
 using Havit.Data.Patterns.DataLoaders;
@@ -28,20 +29,23 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 		private readonly IDbContext dbContext;
 		private readonly IPropertyLoadSequenceResolver propertyLoadSequenceResolver;
 		private readonly IPropertyLambdaExpressionManager lambdaExpressionManager;
-		
+		private readonly IEntityCacheManager entityCacheManager;
+
 		/// <summary>
 		/// Konstructor.
 		/// </summary>
 		/// <param name="dbContext">DbContext, pomocí něhož budou objekty načítány.</param>
 		/// <param name="propertyLoadSequenceResolver">Služba, která poskytne vlastnosti, které mají být načteny, a jejich pořadí.</param>
 		/// <param name="lambdaExpressionManager">LambdaExpressionManager, pomocí něhož jsou získávány expression trees a kompilované expression trees pro lambda výrazy přístupu k vlastnostem objektů.</param>
-		public DbDataLoader(IDbContext dbContext, IPropertyLoadSequenceResolver propertyLoadSequenceResolver, IPropertyLambdaExpressionManager lambdaExpressionManager)
+		/// <param name="entityCacheManager">Zajišťuje získávání a ukládání entit z/do cache.</param>
+		public DbDataLoader(IDbContext dbContext, IPropertyLoadSequenceResolver propertyLoadSequenceResolver, IPropertyLambdaExpressionManager lambdaExpressionManager, IEntityCacheManager entityCacheManager)
 		{
 			Contract.Requires(dbContext != null);
 
 			this.dbContext = dbContext;
 			this.propertyLoadSequenceResolver = propertyLoadSequenceResolver;
 			this.lambdaExpressionManager = lambdaExpressionManager;
+			this.entityCacheManager = entityCacheManager;
 		}
 
 		#region IDataLoader implementation (Load + LoadAll)
@@ -118,7 +122,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 		{
 			Contract.Requires(propertyPath != null);
 
-			return await LoadInternalAsync(new TEntity[] { entity }, propertyPath);			
+			return await LoadInternalAsync(new TEntity[] { entity }, propertyPath);
 		}
 
 		/// <summary>
@@ -182,7 +186,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 			{
 				// ověříme, že jsou všechny objekty sledované change trackerem (na který spoléháme)
 				Contract.Assert<InvalidOperationException>(entitiesToLoadWithoutNulls.All(item => dbContext.GetEntityState(item) != EntityState.Detached), "DbDataLoader can be used only for objects tracked by a change tracker.");
-				
+
 				// vytáhneme posloupnost vlastností, které budeme načítat
 				PropertyToLoad[] propertiesSequenceToLoad = propertyLoadSequenceResolver.GetPropertiesToLoad(propertyPath);
 
@@ -303,22 +307,16 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 			where TEntity : class
 			where TProperty : class
 		{
-			var propertyLambdaExpression = lambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TProperty>(propertyName);
+			LoadReferencePropertyInternal_GetFromCache<TEntity, TProperty>(propertyName, entities, out List<object> keysToQuery);
 
-			List<EntityPrimaryKeyWithValues> primaryKeyWithValues = GetEntitiesKeysToLoadProperty(entities, propertyName, false);
-
-			if (primaryKeyWithValues != null)
+			if ((keysToQuery != null) && keysToQuery.Any()) // zůstalo nám, na co se ptát do databáze?
 			{
-				IQueryable<TProperty> loadQuery = (IQueryable<TProperty>)GetLoadQuery(propertyLambdaExpression.LambdaExpression, primaryKeyWithValues, false);
-				loadQuery.Load();
+				List<TProperty> loadedProperties = LoadReferencePropertyInternal_GetQuery<TProperty>(keysToQuery).ToList();
+				LoadReferencePropertyInternal_StoreToCache(loadedProperties);
 			}
 
-			var loadedEntities = entities.Select(item => propertyLambdaExpression.LambdaCompiled(item)).Where(item => item != null).ToArray();
-			return new LoadPropertyInternalResult
-			{
-				Entities = loadedEntities,
-				FluentDataLoader = new DbFluentDataLoader<TProperty>(this, loadedEntities)
-			};
+			return LoadReferencePropertyInternal_GetResult<TEntity, TProperty>(propertyName, entities);
+			
 		}
 
 		/// <summary>
@@ -328,16 +326,92 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 			where TEntity : class
 			where TProperty : class
 		{
-			var propertyLambdaExpression = lambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TProperty>(propertyName);
+			LoadReferencePropertyInternal_GetFromCache<TEntity, TProperty>(propertyName, entities, out List<object> keysToQuery);
 
-			List<EntityPrimaryKeyWithValues> primaryKeyWithValues = GetEntitiesKeysToLoadProperty(entities, propertyName, false);
-
-			if (primaryKeyWithValues != null)
+			if ((keysToQuery != null) && keysToQuery.Any()) // zůstalo nám, na co se ptát do databáze?
 			{
-				IQueryable<TProperty> loadQuery = (IQueryable<TProperty>)GetLoadQuery(propertyLambdaExpression.LambdaExpression, primaryKeyWithValues, false);
-				await loadQuery.LoadAsync();
+				List<TProperty> loadedProperties = await LoadReferencePropertyInternal_GetQuery<TProperty>(keysToQuery).ToListAsync();
+				LoadReferencePropertyInternal_StoreToCache(loadedProperties);
 			}
 
+			return LoadReferencePropertyInternal_GetResult<TEntity, TProperty>(propertyName, entities);
+		}
+
+		private void LoadReferencePropertyInternal_GetFromCache<TEntity, TProperty>(string propertyName, TEntity[] entities, out List<object> keysToLoad)
+			where TEntity : class
+			where TProperty : class
+		{
+			IEnumerable<TEntity> entitiesNotInAddedState = entities.Where(item => dbContext.GetEntityState(item) != EntityState.Added);
+			List<TEntity> entitiesToLoadReference = entitiesNotInAddedState.Where(entity => !IsEntityPropertyLoaded(entity, propertyName, false)).ToList();
+
+			if (entitiesToLoadReference.Count > 0)
+			{
+				// získáme cizí klíč reprezentující referenci (Navigation)
+				IProperty foreignKeyForReference = dbContext.Model.FindEntityType(typeof(TEntity)).FindNavigation(propertyName).ForeignKey.Properties.Single();
+
+				// získáme klíče objektů, které potřebujeme načíst (z "běžných vlastností" nebo z shadow properties)
+				// ignorujeme nenastavené reference (null)
+				object[] foreignKeyValues = entitiesToLoadReference.Select(entity => dbContext.GetEntry(entity, true).CurrentValues[foreignKeyForReference]).Where(value => value != null).ToArray();
+
+				IDbSet<TProperty> dbSet = dbContext.Set<TProperty>();
+
+				List<TProperty> loadedReferences = new List<TProperty>(entitiesToLoadReference.Count);
+				keysToLoad = new List<object>(entitiesToLoadReference.Count);
+
+				foreach (object foreignKeyValue in foreignKeyValues)
+				{
+					// Čistě teoreticky nemusela dosud proběhnout detekce změn (resp. fixup), proto se musíme podívat do identity map před tím,
+					// než budeme řešit cache (cache by se mohla pokoušet o vytažení objektu, který je již v identity mapě a došlo by ke kolizi).
+					// Spoléháme na provedení fixupu pomocí changetrackeru.
+					// Možnost tohoto scénáře se však nepodařilo po potvrdit, k této situaci nikdy nedojde.
+					//TProperty trackedEntity = dbSet.FindTracked(foreignKeyValue);
+					//if (trackedEntity != null)
+					//{
+					//	loadedReferences.Add(trackedEntity);
+					//}
+					//else
+					if (entityCacheManager.TryGetEntity<TProperty>(foreignKeyValue, out TProperty cachedEntity))
+					{
+						loadedReferences.Add(cachedEntity);
+					}
+					else // není ani v identity mapě, ani v cache, hledáme v databázi
+					{
+						keysToLoad.Add(foreignKeyValue);
+					}
+				}
+			}
+			else
+			{
+				keysToLoad = null;
+			}
+		}
+
+		private IQueryable<TProperty> LoadReferencePropertyInternal_GetQuery<TProperty>(List<object> keysToQuery)
+			where TProperty : class
+		{
+			// získáme název vlastnosti primárního klíče třídy načítané vlastnosti (obvykle "Id")
+			string propertyPrimaryKey = dbContext.Model.FindEntityType(typeof(TProperty)).FindPrimaryKey().Properties.Single().Name;
+
+			// získáme query pro načtení objektů
+			return dbContext.Set<TProperty>().AsQueryable().Where(p => keysToQuery.Contains(EF.Property<object>(p, propertyPrimaryKey)));
+		}
+
+		private void LoadReferencePropertyInternal_StoreToCache<TProperty>(List<TProperty> loadedProperties)
+			where TProperty : class
+		{
+			// uložíme do cache, pokud je cachovaná
+			foreach (TProperty loadedEntity in loadedProperties)
+			{
+				entityCacheManager.StoreEntity(loadedEntity);
+			}
+		}
+
+		private LoadPropertyInternalResult LoadReferencePropertyInternal_GetResult<TEntity, TProperty>(string propertyName, TEntity[] entities)
+			where TEntity : class
+			where TProperty : class
+		{
+			var propertyLambdaExpression = lambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TProperty>(propertyName);
+			// zde spoléháme na proběhnutí fixupu
 			var loadedEntities = entities.Select(item => propertyLambdaExpression.LambdaCompiled(item)).Where(item => item != null).ToArray();
 			return new LoadPropertyInternalResult
 			{

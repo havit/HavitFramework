@@ -6,6 +6,7 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <RootNamespace>Havit.Data.EntityFrameworkCore.CodeGenerator</RootNamespace>
     <OutputType>Exe</OutputType>
+	<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
   
   <ItemGroup>

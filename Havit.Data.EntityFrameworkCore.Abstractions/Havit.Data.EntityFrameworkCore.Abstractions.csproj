@@ -12,6 +12,7 @@
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<PackageVersion>1.8.1</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Abstractions</Description>
+	<RootNamespace>Havit.Data.EntityFrameworkCore</RootNamespace>
   </PropertyGroup>
 
 </Project>

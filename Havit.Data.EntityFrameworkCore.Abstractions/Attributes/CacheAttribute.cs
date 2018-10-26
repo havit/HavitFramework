@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Havit.Data.EntityFrameworkCore.Abstractions.Attributes
+namespace Havit.Data.EntityFrameworkCore.Attributes
 {
 	/// <summary>
 	/// Nastavuje cachování pro entitu.

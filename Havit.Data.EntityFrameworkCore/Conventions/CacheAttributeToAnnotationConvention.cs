@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Havit.Data.EntityFrameworkCore.Abstractions.Attributes;
+using Havit.Data.EntityFrameworkCore.Attributes;
 using Havit.Data.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore;
 

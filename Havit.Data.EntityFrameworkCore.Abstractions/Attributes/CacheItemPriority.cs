@@ -1,4 +1,4 @@
-﻿namespace Havit.Data.EntityFrameworkCore.Abstractions.Attributes
+﻿namespace Havit.Data.EntityFrameworkCore.Attributes
 {
 	/// <summary>
 	/// Priorita položky v cache.

@@ -164,8 +164,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 		{			
 			Contract.Requires(ids != null);
 
-			List<TEntity> loadedEntities = new List<TEntity>(ids.Length);
-			List<int> idsToLoad = new List<int>(ids.Length);
+			HashSet<TEntity> loadedEntities = new HashSet<TEntity>();
+			HashSet<int> idsToLoad = new HashSet<int>();
 
 			foreach (int id in ids)
 			{

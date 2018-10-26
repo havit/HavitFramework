@@ -1,6 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using Havit.Data.EntityFrameworkCore.Abstractions.Attributes;
+using Havit.Data.EntityFrameworkCore.Attributes;
 using Havit.Model.Localizations;
 
 namespace Havit.EFCoreTests.Model.Localizations

@@ -69,7 +69,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 		{
 			int? absoluteExpiration = (int?)entityType.FindAnnotation(CacheAttributeToAnnotationConvention.AbsoluteExpirationAnnotationName)?.Value;
 			int? slidingExpiration = (int?)entityType.FindAnnotation(CacheAttributeToAnnotationConvention.SlidingExpirationAnnotationName)?.Value;
-			Havit.Data.EntityFrameworkCore.Abstractions.Attributes.CacheItemPriority? priority = (Havit.Data.EntityFrameworkCore.Abstractions.Attributes.CacheItemPriority?)entityType.FindAnnotation(CacheAttributeToAnnotationConvention.PriorityAnnotationName)?.Value;
+			Havit.Data.EntityFrameworkCore.Attributes.CacheItemPriority? priority = (Havit.Data.EntityFrameworkCore.Attributes.CacheItemPriority?)entityType.FindAnnotation(CacheAttributeToAnnotationConvention.PriorityAnnotationName)?.Value;
 
 			if ((absoluteExpiration != null) || (slidingExpiration != null) || (priority != null))
 			{
@@ -84,21 +84,21 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 			return null;
 		}
 
-		private Havit.Services.Caching.CacheItemPriority GetPriority(Havit.Data.EntityFrameworkCore.Abstractions.Attributes.CacheItemPriority? priority)
+		private Havit.Services.Caching.CacheItemPriority GetPriority(Havit.Data.EntityFrameworkCore.Attributes.CacheItemPriority? priority)
 		{
 			switch (priority)
 			{
 				case null:
-				case Havit.Data.EntityFrameworkCore.Abstractions.Attributes.CacheItemPriority.Normal:
+				case Havit.Data.EntityFrameworkCore.Attributes.CacheItemPriority.Normal:
 					return Havit.Services.Caching.CacheItemPriority.Normal;
 
-				case Havit.Data.EntityFrameworkCore.Abstractions.Attributes.CacheItemPriority.Low:
+				case Havit.Data.EntityFrameworkCore.Attributes.CacheItemPriority.Low:
 					return Havit.Services.Caching.CacheItemPriority.Low;
 
-				case Havit.Data.EntityFrameworkCore.Abstractions.Attributes.CacheItemPriority.High:
+				case Havit.Data.EntityFrameworkCore.Attributes.CacheItemPriority.High:
 					return Havit.Services.Caching.CacheItemPriority.High;
 
-				case Havit.Data.EntityFrameworkCore.Abstractions.Attributes.CacheItemPriority.NotRemovable:
+				case Havit.Data.EntityFrameworkCore.Attributes.CacheItemPriority.NotRemovable:
 					return Havit.Services.Caching.CacheItemPriority.NotRemovable;
 
 				default:

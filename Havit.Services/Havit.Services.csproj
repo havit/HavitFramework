@@ -26,6 +26,7 @@
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
 	<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="2.0.1" />
+	<PackageReference Include="System.Runtime.Caching" Version="4.5.0" />
   </ItemGroup>
 
 </Project>

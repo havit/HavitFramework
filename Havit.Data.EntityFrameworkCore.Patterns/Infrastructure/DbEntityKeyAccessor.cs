@@ -29,7 +29,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Infrastructure
 				Dictionary<Type, PropertyInfo[]> result = null;
 				dbContextFactory.ExecuteAction(dbContext =>
 				{
-					result = dbContext.Model.GetApplicationEntityTypes(includeManyToManyEntities: false).ToDictionary(entityType => entityType.ClrType, entityType => entityType.FindPrimaryKey().Properties.Select(property => property.PropertyInfo).ToArray());
+					result = dbContext.Model.GetApplicationEntityTypes().ToDictionary(entityType => entityType.ClrType, entityType => entityType.FindPrimaryKey().Properties.Select(property => property.PropertyInfo).ToArray());
 				});
 				return result;
 			}, LazyThreadSafetyMode.PublicationOnly);

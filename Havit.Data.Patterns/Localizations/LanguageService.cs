@@ -100,7 +100,7 @@ namespace Havit.Data.Patterns.Localizations
 						IRepository<TLanguage> languageRepository = languageRepositoryFactory.Create();
 						try
 						{
-							languages = languageRepository.GetAll().ToDictionary(item => item.UiCulture, item => entityKeyAccessor.GetEntityKey(item));
+							languages = languageRepository.GetAll().ToDictionary(item => item.UiCulture, item => entityKeyAccessor.GetEntityKeyValue(item));
 						}
 						finally
 						{

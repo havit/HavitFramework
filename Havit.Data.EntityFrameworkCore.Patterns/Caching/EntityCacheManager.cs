@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Text;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
@@ -80,7 +81,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 			// pokud je entitu možné uložit do cache, uložíme ji
 			if (entityCacheSupportDecision.ShouldCacheEntity(entity))
 			{
-				string cacheKey = entityCacheKeyNamingService.GetEntityCacheKey(typeof(TEntity), entityKeyAccessor.GetEntityKey(entity));
+				string cacheKey = entityCacheKeyNamingService.GetEntityCacheKey(typeof(TEntity), entityKeyAccessor.GetEntityKeyValues(entity).Single());
 				EntityEntry entry = null;
 				dbContextFactory.ExecuteAction(dbContext =>
 				{
@@ -132,12 +133,19 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 
 			// invalidate entity cache
 			Type entityType = entity.GetType();
-			object entityKey = entityKeyAccessor.GetEntityKey(entity);
+
+			object[] entityKeyValues = entityKeyAccessor.GetEntityKeyValues(entity);
+			if (entityKeyValues.Length > 1)
+			{
+				// entity se složeným klíčem nejsou podporovány (zatím ani entity reprezentující vztah ManyToMany)
+				return;
+			}
+			object entityKeyValue = entityKeyValues.Single();
 
 			if (changeType != ChangeType.Insert)
 			{
 				// nové záznamy nemohou být v cache, neinvalidujeme
-				InvalidateEntityInternal(entityType, entityKey);
+				InvalidateEntityInternal(entityType, entityKeyValue);
 			}
 			InvalidateGetAllInternal(entityType);
 
@@ -148,7 +156,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 			if (changeType != ChangeType.Insert)
 			{
 				// na nových záznamech nemohou být závislosti, neinvalidujeme
-				InvalidateSaveCacheDependencyKeyInternal(entityType, entityKey);
+				InvalidateSaveCacheDependencyKeyInternal(entityType, entityKeyValue);
 			}
 			InvalidateAnySaveCacheDependencyKeyInternal(entityType);		
 		}

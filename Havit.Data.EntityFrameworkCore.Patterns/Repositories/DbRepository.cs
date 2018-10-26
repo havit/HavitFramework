@@ -197,7 +197,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 
 				if (idsToLoad.Count != loadedObjects.Count)
 				{
-					int[] missingObjectIds = idsToLoad.Except(loadedObjects.Select(entityKeyAccessor.GetEntityKey)).ToArray();
+					int[] missingObjectIds = idsToLoad.Except(loadedObjects.Select(entityKeyAccessor.GetEntityKeyValue)).ToArray();
 					ThrowObjectNotFoundException(missingObjectIds);					
 				}
 
@@ -256,7 +256,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 
 				if (idsToLoad.Count != loadedObjects.Count)
 				{
-					int[] missingObjectIds = idsToLoad.Except(loadedObjects.Select(entityKeyAccessor.GetEntityKey)).ToArray();
+					int[] missingObjectIds = idsToLoad.Except(loadedObjects.Select(entityKeyAccessor.GetEntityKeyValue)).ToArray();
 					ThrowObjectNotFoundException(missingObjectIds);
 				}
 
@@ -292,7 +292,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 				{
 					// pokd ne, načtene data a uložíme klíče do cache
 					_all = Data.ToArray();
-					EntityCacheManager.StoreAllKeys<TEntity>(_all.Select(entity => entityKeyAccessor.GetEntityKey(entity)).ToArray());
+					EntityCacheManager.StoreAllKeys<TEntity>(_all.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());
 				}
 				LoadReferences(_all);
 
@@ -327,7 +327,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 				{
 					// pokd ne, načtene data a uložíme klíče do cache
 					_all = await Data.ToArrayAsync();
-					EntityCacheManager.StoreAllKeys<TEntity>(_all.Select(entity => entityKeyAccessor.GetEntityKey(entity)).ToArray());
+					EntityCacheManager.StoreAllKeys<TEntity>(_all.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());
 				}
 				await LoadReferencesAsync(_all);
 

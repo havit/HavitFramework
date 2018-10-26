@@ -25,7 +25,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Infrastructure
 			DbEntityKeyAccessor dbEntityKeyAccessor = new DbEntityKeyAccessor(dbContextFactoryMock.Object);			
 
 			// Act + Assert
-			Assert.AreEqual(nameof(Language.Id), dbEntityKeyAccessor.GetEntityKeyPropertyName(typeof(Language)));
+			Assert.AreEqual(nameof(Language.Id), dbEntityKeyAccessor.GetEntityKeyPropertyNames(typeof(Language)).Single());
 		}
 
 		[TestMethod]
@@ -40,7 +40,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Infrastructure
 			Language language = new Language() { Id = 999 };
 
 			// Act + Assert
-			Assert.AreEqual(language.Id, dbEntityKeyAccessor.GetEntityKey(language));
+			Assert.AreEqual(language.Id, dbEntityKeyAccessor.GetEntityKeyValues(language).Single());
 		}
 
 	}

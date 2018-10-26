@@ -6,8 +6,11 @@ using System.Text;
 namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 {
 	/// <summary>
-	/// Zajišťuje cachování entit pro metody GetObject[s][Async] v repozitářích.
-	/// Dále zajišťuje cachování klíčů objektů pro metody GetAll[Async].
+	/// Zajišťuje 
+	/// <list>
+	///		<item>cachování entit pro metody GetObject[s][Async] v repozitářích a referencí (navigations) v data loaderu,</item>
+	///		<item>cachování klíčů objektů pro metody GetAll[Async]</item>
+	/// </list>
 	/// Metody se volají pro každou entitu. Je na implementaci, aby se rozhodla, zda bude danou entitu cachovat, či nikoliv.
 	/// </summary>
 	public interface IEntityCacheManager

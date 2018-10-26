@@ -14,7 +14,7 @@ namespace Havit.Data.Entity.Patterns.Infrastructure
 		/// Vrátí hodnotu primárního klíče entity.
 		/// </summary>
 		/// <param name="entity">Entita.</param>
-		public int GetEntityKey(TEntity entity)
+		public int GetEntityKeyValue(TEntity entity)
 		{
 			return ((dynamic)entity).Id;
 		}

@@ -15,9 +15,10 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure
 		{
 			base.CustomizeModelCreating(modelBuilder);
 
-			modelBuilder.Model.AddEntityType(typeof(ItemWithDeleted));
-			modelBuilder.Model.AddEntityType(typeof(ItemWithNullableProperty));
-            modelBuilder.Model.AddEntityType(typeof(Language));
+			modelBuilder.Entity(typeof(ItemWithDeleted));
+			modelBuilder.Entity(typeof(ItemWithNullableProperty));
+            modelBuilder.Entity(typeof(Language));
+            modelBuilder.Entity(typeof(ManyToMany)).HasKey(nameof(ManyToMany.LanguageId), nameof(ManyToMany.ItemWithDeletedId));
 		}
 	}
 }

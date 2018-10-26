@@ -16,7 +16,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Infrastructure
 	/// </summary>
 	public class DbEntityKeyAccessor : IEntityKeyAccessor
 	{
-		private readonly Lazy<Dictionary<Type, PropertyInfo>> propertyInfos;
+		private readonly Lazy<Dictionary<Type, PropertyInfo[]>> propertyInfos;
 
 		/// <summary>
 		/// Konstruktor.
@@ -24,12 +24,12 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Infrastructure
 		public DbEntityKeyAccessor(IServiceFactory<IDbContext> dbContextFactory)
 		{
 			// pro možnost použití jako singletonu pro všechny případy používáme LazyThreadSafetyMode.ExecutionAndPublication
-			propertyInfos = new Lazy<Dictionary<Type, PropertyInfo>>(() =>
+			propertyInfos = new Lazy<Dictionary<Type, PropertyInfo[]>>(() =>
 			{
-				Dictionary<Type, PropertyInfo> result = null;
+				Dictionary<Type, PropertyInfo[]> result = null;
 				dbContextFactory.ExecuteAction(dbContext =>
 				{
-					result = dbContext.Model.GetApplicationEntityTypes(includeManyToManyEntities: false).ToDictionary(entityType => entityType.ClrType, entityType => entityType.FindPrimaryKey().Properties.Single().PropertyInfo);
+					result = dbContext.Model.GetApplicationEntityTypes(includeManyToManyEntities: false).ToDictionary(entityType => entityType.ClrType, entityType => entityType.FindPrimaryKey().Properties.Select(property => property.PropertyInfo).ToArray());
 				});
 				return result;
 			}, LazyThreadSafetyMode.PublicationOnly);
@@ -39,23 +39,23 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Infrastructure
 		/// Vrátí hodnotu primárního klíče entity.
 		/// </summary>
 		/// <param name="entity">Entita.</param>
-		public object GetEntityKey(object entity)
+		public object[] GetEntityKeyValues(object entity)
 		{
 			Contract.Requires(entity != null);
-			return GetPropertyInto(entity.GetType()).GetValue(entity);
+			return GetPropertyInfos(entity.GetType()).Select(propertyInfo => propertyInfo.GetValue(entity)).ToArray();
 		}
 
 		/// <summary>
 		/// Vrátí název vlastnosti, která je primárním klíčem.
 		/// </summary>
-		public string GetEntityKeyPropertyName(Type entityType)
+		public string[] GetEntityKeyPropertyNames(Type entityType)
 		{
-			return GetPropertyInto(entityType).Name;
+			return GetPropertyInfos(entityType).Select(propertyInfo => propertyInfo.Name).ToArray();
 		}
 
-		private PropertyInfo GetPropertyInto(Type entityType)
+		private PropertyInfo[] GetPropertyInfos(Type entityType)
 		{
-			if (propertyInfos.Value.TryGetValue(entityType, out PropertyInfo propertyInfo))
+			if (propertyInfos.Value.TryGetValue(entityType, out PropertyInfo[] propertyInfo))
 			{
 				return propertyInfo;
 			}

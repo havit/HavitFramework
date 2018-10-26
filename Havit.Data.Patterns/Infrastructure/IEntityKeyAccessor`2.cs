@@ -12,7 +12,7 @@ namespace Havit.Data.Patterns.Infrastructure
 		/// Vrátí hodnotu primárního klíče entity.
 		/// </summary>
 		/// <param name="entity">Entita.</param>
-		TEntityKey GetEntityKey(TEntity entity);
+		TEntityKey GetEntityKeyValue(TEntity entity);
 
 		/// <summary>
 		/// Vrátí název vlastnosti, která je primárním klíčem.

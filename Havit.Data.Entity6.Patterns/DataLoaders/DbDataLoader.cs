@@ -368,7 +368,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 	        IEnumerable<TEntity> entitiesNotInAddedState = entities.Where(item => dbContext.GetEntityState(item) != EntityState.Added);
 		    IEnumerable<TEntity> entitiesToLoadQuery = entitiesNotInAddedState.Where(entity => !IsEntityPropertyLoaded(entity, propertyName, isPropertyCollection));			
 			IEntityKeyAccessor<TEntity, int> entityKeyAccessor = new EntityKeyAccessor<TEntity>();
-			return entitiesToLoadQuery.Select(entity => entityKeyAccessor.GetEntityKey(entity)).Distinct().ToList();
+			return entitiesToLoadQuery.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).Distinct().ToList();
 		}
 
 		/// <summary>

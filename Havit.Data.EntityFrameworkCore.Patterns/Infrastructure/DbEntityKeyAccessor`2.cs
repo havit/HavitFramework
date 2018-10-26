@@ -29,11 +29,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Infrastructure
 		/// Vrátí hodnotu primárního klíče entity.
 		/// </summary>
 		/// <param name="entity">Entita.</param>
-		public TKey GetEntityKey(TEntity entity)
+		public TKey GetEntityKeyValue(TEntity entity)
 		{
 			Contract.Requires(entity != null);
 
-			return (TKey)entityKeyAccessor.GetEntityKey(entity);
+			return (TKey)entityKeyAccessor.GetEntityKeyValues(entity).Single();
 		}
 
 		/// <summary>
@@ -41,7 +41,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Infrastructure
 		/// </summary>
 		public string GetEntityKeyPropertyName()
 		{
-			return entityKeyAccessor.GetEntityKeyPropertyName(typeof(TEntity));
+			return entityKeyAccessor.GetEntityKeyPropertyNames(typeof(TEntity)).Single();
 		}
 
 	}

@@ -34,7 +34,7 @@ namespace Havit.Data.Patterns.Tests.Localizations
 			mockRepositoryFactory.Setup(m => m.Create()).Returns(mockRepository.Object);
 
 			Mock<IEntityKeyAccessor<Language, int>> dataEntryIdentifierAccessorMock = new Mock<IEntityKeyAccessor<Language, int>>();
-			dataEntryIdentifierAccessorMock.Setup(m => m.GetEntityKey(It.IsAny<Language>())).Returns<Language>(language => language.Id);
+			dataEntryIdentifierAccessorMock.Setup(m => m.GetEntityKeyValue(It.IsAny<Language>())).Returns<Language>(language => language.Id);
 
 			// Act
 			LanguageService<Language> dbLanguageService = new LanguageService<Language>(mockRepositoryFactory.Object, dataEntryIdentifierAccessorMock.Object);
@@ -72,7 +72,7 @@ namespace Havit.Data.Patterns.Tests.Localizations
 			mockRepositoryFactory.Setup(m => m.Create()).Returns(mockRepository.Object);
 
 			Mock<IEntityKeyAccessor<Language, int>> dataEntryIdentifierAccessorMock = new Mock<IEntityKeyAccessor<Language, int>>();
-			dataEntryIdentifierAccessorMock.Setup(m => m.GetEntityKey(It.IsAny<Language>())).Returns<Language>(language => language.Id);
+			dataEntryIdentifierAccessorMock.Setup(m => m.GetEntityKeyValue(It.IsAny<Language>())).Returns<Language>(language => language.Id);
 
 			// Act
 			LanguageService<Language> dbLanguageService = new LanguageService<Language>(mockRepositoryFactory.Object, dataEntryIdentifierAccessorMock.Object);

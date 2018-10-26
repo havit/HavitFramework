@@ -50,7 +50,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 						_dbSetLocalsDictionaryInitialized = true;
 					}
 
-					_dbSetLocalsDictionary = dbSetLocal.Where(EntityNotInAddedState).ToDictionary(entity => entityKeyAccessor.GetEntityKey(entity));
+					_dbSetLocalsDictionary = dbSetLocal.Where(EntityNotInAddedState).ToDictionary(entity => entityKeyAccessor.GetEntityKeyValue(entity));
 				}
 				return _dbSetLocalsDictionary;
 			}
@@ -112,7 +112,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 					case NotifyCollectionChangedAction.Add:
 						if (_dbSetLocalsDictionary != null)
 						{							
-							e.NewItems.Cast<TEntity>().Where(EntityNotInAddedState).ToList().ForEach(entity => _dbSetLocalsDictionary.Add(entityKeyAccessor.GetEntityKey(entity), entity));
+							e.NewItems.Cast<TEntity>().Where(EntityNotInAddedState).ToList().ForEach(entity => _dbSetLocalsDictionary.Add(entityKeyAccessor.GetEntityKeyValue(entity), entity));
 						}
 						break;
 
@@ -123,7 +123,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 					case NotifyCollectionChangedAction.Remove:
 						foreach (TEntity item in e.OldItems)
 						{
-							_dbSetLocalsDictionary.Remove(entityKeyAccessor.GetEntityKey(item));
+							_dbSetLocalsDictionary.Remove(entityKeyAccessor.GetEntityKeyValue(item));
 						}
 
 						break;
@@ -148,7 +148,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 
 		private bool EntityNotInAddedState(TEntity entity)
 		{
-			return entityKeyAccessor.GetEntityKey(entity) != default(int);
+			return entityKeyAccessor.GetEntityKeyValue(entity) != default(int);
 		}
 
 		/// <summary>
@@ -225,7 +225,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 
 				if (idsToLoad.Count != loadedObjects.Count)
 				{
-					int[] missingObjectIds = idsToLoad.Except(loadedObjects.Select(entityKeyAccessor.GetEntityKey)).ToArray();
+					int[] missingObjectIds = idsToLoad.Except(loadedObjects.Select(entityKeyAccessor.GetEntityKeyValue)).ToArray();
 					ThrowObjectNotFoundException(missingObjectIds);					
 				}
 
@@ -272,7 +272,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 
 				if (idsToLoad.Count != loadedObjects.Count)
 				{
-					int[] missingObjectIds = idsToLoad.Except(loadedObjects.Select(entityKeyAccessor.GetEntityKey)).ToArray();
+					int[] missingObjectIds = idsToLoad.Except(loadedObjects.Select(entityKeyAccessor.GetEntityKeyValue)).ToArray();
 					ThrowObjectNotFoundException(missingObjectIds);
 				}
 

@@ -282,6 +282,29 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 			cacheServiceMock.Verify(m => m.Remove(cacheKey), Times.Once); // volá se ještě pro entitu a AllKeys, tak musíme kontrolovat jen klíč pro entitu
 		}
 
+		[TestMethod]
+		public void EntityCacheManager_InvalidateEntity_SupportsManyToMany()
+		{
+			// Arrange
+			TestDbContext testDbContext = new TestDbContext();
+			ManyToMany manyToMany = new ManyToMany { LanguageId = 100, ItemWithDeletedId = 999 };
+			testDbContext.Attach(manyToMany);
+
+			Mock<IServiceFactory<IDbContext>> dbContextFactoryMock = new Mock<IServiceFactory<IDbContext>>(MockBehavior.Strict);
+			dbContextFactoryMock.Setup(m => m.CreateService()).Returns(testDbContext);
+			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
+
+			ICacheService cacheService = new DictionaryCacheService();
+
+			EntityCacheManager entityCacheManager = new EntityCacheManager(cacheService, new CacheAllEntitiesEntityCacheSupportDecision(), new EntityCacheKeyGenerator(), new AnnotationsEntityCacheOptionsGenerator(dbContextFactoryMock.Object), new EntityCacheDependencyManager(cacheService), new DbEntityKeyAccessor(dbContextFactoryMock.Object), dbContextFactoryMock.Object);
+
+			// Act
+			entityCacheManager.InvalidateEntity(Patterns.UnitOfWorks.ChangeType.Delete, manyToMany);
+
+			// Assert
+			// no exception was thrown
+		}
+
 		private class DictionaryCacheService : ICacheService
 		{
 			private Dictionary<string, object> values = new Dictionary<string, object>();

@@ -118,7 +118,12 @@ namespace Havit.Data.Entity.Mapping.Internal
 				.First()
 				.BaseEntitySets
 				.OfType<EntitySet>()
-				.Single(item => item.Name == entityType.Name);
+				.SingleOrDefault(item => item.Name == entityType.Name);
+
+			if (entitySet == null)
+			{
+				return false;
+			}
 
 			return entitySet.ElementType.KeyProperties.Any(item => item.IsStoreGeneratedIdentity);
 		}

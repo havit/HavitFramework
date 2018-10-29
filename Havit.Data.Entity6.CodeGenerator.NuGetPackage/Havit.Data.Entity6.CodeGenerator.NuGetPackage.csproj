@@ -10,7 +10,7 @@
   <!-- NuGet -->
   <PropertyGroup>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageVersion>1.7.10</PackageVersion>
+	<PackageVersion>1.7.11</PackageVersion>
 	<PackageId>Havit.Data.Entity6.CodeGenerator</PackageId>
 	<Description>HAVIT .NET Framework Extensions - Entity Framework 6 Extensions - Code Generator</Description>
 

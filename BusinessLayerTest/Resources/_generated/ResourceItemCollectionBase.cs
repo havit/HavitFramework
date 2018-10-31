@@ -188,7 +188,10 @@ namespace Havit.BusinessLayerTest.Resources
 			ResourceItemLocalizationCollection localizations = new ResourceItemLocalizationCollection();
 			foreach (ResourceItem resourceItem in this)
 			{
-				localizations.AddRange(resourceItem.Localizations);
+				if (resourceItem != null)
+				{
+					localizations.AddRange(resourceItem.Localizations);
+				}
 			}
 			localizations.LoadAll(transaction);
 			

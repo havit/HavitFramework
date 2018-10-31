@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "Havit.Business.BusinessLayerGenerator": {
+      "commandName": "Project",
+      "commandLineArgs": "-sqlserver:sqldev -database:HavitTest -outputpath:D:\\Dev\\002.HFW-HavitFramework\\BusinessLayerTest"
+    },
+    "123.AEP": {
+      "commandName": "Project",
+      "commandLineArgs": "-sqlserver:sqldev -database:AccacePayroll -outputpath:D:\\Dev\\123.AEP\\BusinessLayer"
+    }
+  }
+}

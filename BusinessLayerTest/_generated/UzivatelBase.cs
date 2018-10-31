@@ -118,13 +118,13 @@ namespace Havit.BusinessLayerTest
 			set
 			{
 				EnsureLoaded();
-				if (value == null)
+				
+				string newValue = value ?? String.Empty;
+				if (!Object.Equals(_UsernamePropertyHolder.Value, newValue))
 				{
-					_UsernamePropertyHolder.Value = String.Empty;
-				}
-				else
-				{
-					_UsernamePropertyHolder.Value = value;
+					string oldValue = _UsernamePropertyHolder.Value;
+					_UsernamePropertyHolder.Value = newValue;
+					OnPropertyChanged(new PropertyChangedEventArgs(nameof(Username), oldValue, newValue));
 				}
 			}
 		}
@@ -147,13 +147,13 @@ namespace Havit.BusinessLayerTest
 			set
 			{
 				EnsureLoaded();
-				if (value == null)
+				
+				string newValue = value ?? String.Empty;
+				if (!Object.Equals(_PasswordPropertyHolder.Value, newValue))
 				{
-					_PasswordPropertyHolder.Value = String.Empty;
-				}
-				else
-				{
-					_PasswordPropertyHolder.Value = value;
+					string oldValue = _PasswordPropertyHolder.Value;
+					_PasswordPropertyHolder.Value = newValue;
+					OnPropertyChanged(new PropertyChangedEventArgs(nameof(Password), oldValue, newValue));
 				}
 			}
 		}
@@ -176,13 +176,13 @@ namespace Havit.BusinessLayerTest
 			set
 			{
 				EnsureLoaded();
-				if (value == null)
+				
+				string newValue = value ?? String.Empty;
+				if (!Object.Equals(_DisplayAsPropertyHolder.Value, newValue))
 				{
-					_DisplayAsPropertyHolder.Value = String.Empty;
-				}
-				else
-				{
-					_DisplayAsPropertyHolder.Value = value;
+					string oldValue = _DisplayAsPropertyHolder.Value;
+					_DisplayAsPropertyHolder.Value = newValue;
+					OnPropertyChanged(new PropertyChangedEventArgs(nameof(DisplayAs), oldValue, newValue));
 				}
 			}
 		}
@@ -205,13 +205,13 @@ namespace Havit.BusinessLayerTest
 			set
 			{
 				EnsureLoaded();
-				if (value == null)
+				
+				string newValue = value ?? String.Empty;
+				if (!Object.Equals(_EmailPropertyHolder.Value, newValue))
 				{
-					_EmailPropertyHolder.Value = String.Empty;
-				}
-				else
-				{
-					_EmailPropertyHolder.Value = value;
+					string oldValue = _EmailPropertyHolder.Value;
+					_EmailPropertyHolder.Value = newValue;
+					OnPropertyChanged(new PropertyChangedEventArgs(nameof(Email), oldValue, newValue));
 				}
 			}
 		}
@@ -234,7 +234,13 @@ namespace Havit.BusinessLayerTest
 			set
 			{
 				EnsureLoaded();
-				_DisabledPropertyHolder.Value = value;
+				
+				if (!Object.Equals(_DisabledPropertyHolder.Value, value))
+				{
+					bool oldValue = _DisabledPropertyHolder.Value;
+					_DisabledPropertyHolder.Value = value;
+					OnPropertyChanged(new PropertyChangedEventArgs(nameof(Disabled), oldValue, value));
+				}
 			}
 		}
 		/// <summary>
@@ -257,7 +263,13 @@ namespace Havit.BusinessLayerTest
 			set
 			{
 				EnsureLoaded();
-				_LockedTimePropertyHolder.Value = value;
+				
+				if (!Object.Equals(_LockedTimePropertyHolder.Value, value))
+				{
+					DateTime? oldValue = _LockedTimePropertyHolder.Value;
+					_LockedTimePropertyHolder.Value = value;
+					OnPropertyChanged(new PropertyChangedEventArgs(nameof(LockedTime), oldValue, value));
+				}
 			}
 		}
 		/// <summary>
@@ -279,7 +291,13 @@ namespace Havit.BusinessLayerTest
 			set
 			{
 				EnsureLoaded();
-				_LoginLastPropertyHolder.Value = value;
+				
+				if (!Object.Equals(_LoginLastPropertyHolder.Value, value))
+				{
+					DateTime? oldValue = _LoginLastPropertyHolder.Value;
+					_LoginLastPropertyHolder.Value = value;
+					OnPropertyChanged(new PropertyChangedEventArgs(nameof(LoginLast), oldValue, value));
+				}
 			}
 		}
 		/// <summary>
@@ -301,7 +319,13 @@ namespace Havit.BusinessLayerTest
 			set
 			{
 				EnsureLoaded();
-				_LoginCountPropertyHolder.Value = value;
+				
+				if (!Object.Equals(_LoginCountPropertyHolder.Value, value))
+				{
+					int oldValue = _LoginCountPropertyHolder.Value;
+					_LoginCountPropertyHolder.Value = value;
+					OnPropertyChanged(new PropertyChangedEventArgs(nameof(LoginCount), oldValue, value));
+				}
 			}
 		}
 		/// <summary>
@@ -323,7 +347,13 @@ namespace Havit.BusinessLayerTest
 			private set
 			{
 				EnsureLoaded();
-				_CreatedPropertyHolder.Value = value;
+				
+				if (!Object.Equals(_CreatedPropertyHolder.Value, value))
+				{
+					DateTime oldValue = _CreatedPropertyHolder.Value;
+					_CreatedPropertyHolder.Value = value;
+					OnPropertyChanged(new PropertyChangedEventArgs(nameof(Created), oldValue, value));
+				}
 			}
 		}
 		/// <summary>

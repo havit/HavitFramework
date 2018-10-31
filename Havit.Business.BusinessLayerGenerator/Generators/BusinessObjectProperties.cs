@@ -47,7 +47,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 					readonlyDescription, // 3
 					defaultDescrption); // 4
 
-				WritePropertyHolder(writer, table, column, PropertyHelper.GetPropertyName(column), TypeHelper.GetPropertyTypeName(column), readonlyTable || ColumnHelper.IsReadOnly(column), description);
+				WriteProperty(writer, table, column, PropertyHelper.GetPropertyName(column), TypeHelper.GetPropertyTypeName(column), readonlyTable || ColumnHelper.IsReadOnly(column), description);
 			}
 
 			foreach (CollectionProperty collectionProperty in TableHelper.GetCollectionColumns(table))
@@ -57,8 +57,8 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 		}
 		#endregion
 
-		#region WritePropertyHolder
-		public static void WritePropertyHolder(CodeWriter writer, Table table, Column column, string propertyName, string typeName, bool isReadOnly, string description)
+		#region WriteProperty
+		public static void WriteProperty(CodeWriter writer, Table table, Column column, string propertyName, string typeName, bool isReadOnly, string description)
 		{
 			writer.WriteCommentSummary(description);
 			string accessModifierText = PropertyHelper.GetPropertyAccessModifier(column);
@@ -108,63 +108,61 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine(String.Format("{0} set", setterAccessModifierText).Trim());
 			writer.WriteLine("{");
 			writer.WriteLine("EnsureLoaded();");
+			writer.WriteLine();
+
+			bool useNewValue;
 			if (TypeHelper.IsXml(column))
 			{
 				writer.WriteLine(String.Format("if ({0}.Value != null)", PropertyHelper.GetPropertyHolderName(propertyName)));
 				writer.WriteLine("{");
 				writer.WriteLine(String.Format("{0}.Value.NodeChanged -= {1}_NodeChanged;", PropertyHelper.GetPropertyHolderName(propertyName), propertyName));
 				writer.WriteLine("}");
-			}
-
-			if (typeName == "string")
-			{
-				writer.WriteLine("if (value == null)");
-				writer.WriteLine("{");
-				writer.WriteLine(PropertyHelper.GetPropertyHolderName(propertyName) + ".Value = String.Empty;");
-				writer.WriteLine("}");
-				writer.WriteLine("else");
-				writer.WriteLine("{");
-				string trim = "";
-				if (ColumnHelper.IsStringTrimming(column))
-				{
-					trim = ".Trim()";
-				}
-				writer.WriteLine(String.Format("{0}.Value = value{1};", PropertyHelper.GetPropertyHolderName(propertyName), trim));
-				writer.WriteLine("}");
-			}
-			else
-				if (TypeHelper.IsDateTime(column) && TypeHelper.IsDateOnly(column.DataType))
-				{
-					if (column.Nullable)
-					{
-						writer.WriteLine(PropertyHelper.GetPropertyHolderName(propertyName) + ".Value = (value == null) ? (DateTime?)null : value.Value.Date;");
-					}
-					else
-					{
-						writer.WriteLine(PropertyHelper.GetPropertyHolderName(propertyName) + ".Value = value.Date;");
-					}
-				}
-				else
-				{
-					if (MoneyHelper.FormsMoneyStructure(column))
-					{
-
-						writer.WriteLine(String.Format("if (value != {0}.Value)", PropertyHelper.GetPropertyHolderName(column)));
-						writer.WriteLine("{");
-						writer.WriteLine(String.Format("{0}IsUpToDate = false;", MoneyHelper.GetMoneyFieldName(MoneyHelper.ShortcutColumnNameToMoneyPropertyName(column.Name))));
-						writer.WriteLine("}");
-					}
-
-					writer.WriteLine(PropertyHelper.GetPropertyHolderName(propertyName) + ".Value = value;");
-				}
-
-			if (TypeHelper.IsXml(column))
-			{
 				writer.WriteLine("if (value != null)");
 				writer.WriteLine("{");
 				writer.WriteLine(String.Format("value.NodeChanged += {0}_NodeChanged;", propertyName));
 				writer.WriteLine("}");
+				useNewValue = false;
 			}
+			else if (typeName == "string")
+			{
+				string trim = ColumnHelper.IsStringTrimming(column) ? "?.Trim()" : String.Empty;
+				writer.WriteLine(String.Format("{0} newValue = value{1} ?? String.Empty;", typeName, trim));
+				useNewValue = true;
+
+			}
+			else if (TypeHelper.IsDateTime(column) && TypeHelper.IsDateOnly(column.DataType))
+			{
+				if (column.Nullable)
+				{
+					writer.WriteLine(String.Format("{0} newValue = value?.Date;", typeName));
+				}
+				else
+				{
+					writer.WriteLine(String.Format("{0} newValue = value.Date;", typeName));
+				}
+				useNewValue = true;
+			}
+			else if (MoneyHelper.FormsMoneyStructure(column))
+			{
+
+				writer.WriteLine(String.Format("if (value != {0}.Value)", PropertyHelper.GetPropertyHolderName(column)));
+				writer.WriteLine("{");
+				writer.WriteLine(String.Format("{0}IsUpToDate = false;", MoneyHelper.GetMoneyFieldName(MoneyHelper.ShortcutColumnNameToMoneyPropertyName(column.Name))));
+				writer.WriteLine("}");
+				useNewValue = false;
+			}
+			else
+			{
+				useNewValue = false;
+			}
+
+			string valueField = useNewValue ? "newValue" : "value";
+			writer.WriteLine(String.Format("if (!Object.Equals({0}.Value, {1}))", PropertyHelper.GetPropertyHolderName(propertyName), valueField));
+			writer.WriteLine("{");
+			writer.WriteLine(String.Format("{0} oldValue = {1}.Value;", typeName, PropertyHelper.GetPropertyHolderName(propertyName)));
+			writer.WriteLine(String.Format("{0}.Value = {1};", PropertyHelper.GetPropertyHolderName(propertyName), valueField));
+			writer.WriteLine(String.Format("OnPropertyChanged(new PropertyChangedEventArgs(nameof({0}), oldValue, {1}));", propertyName, valueField));
+			writer.WriteLine("}");
 
 			writer.WriteLine("}");
 

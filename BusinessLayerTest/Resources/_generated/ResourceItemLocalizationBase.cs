@@ -108,7 +108,13 @@ namespace Havit.BusinessLayerTest.Resources
 			set
 			{
 				EnsureLoaded();
-				_ResourceItemPropertyHolder.Value = value;
+				
+				if (!Object.Equals(_ResourceItemPropertyHolder.Value, value))
+				{
+					Havit.BusinessLayerTest.Resources.ResourceItem oldValue = _ResourceItemPropertyHolder.Value;
+					_ResourceItemPropertyHolder.Value = value;
+					OnPropertyChanged(new PropertyChangedEventArgs(nameof(ResourceItem), oldValue, value));
+				}
 			}
 		}
 		/// <summary>
@@ -130,7 +136,13 @@ namespace Havit.BusinessLayerTest.Resources
 			set
 			{
 				EnsureLoaded();
-				_LanguagePropertyHolder.Value = value;
+				
+				if (!Object.Equals(_LanguagePropertyHolder.Value, value))
+				{
+					Havit.BusinessLayerTest.Language oldValue = _LanguagePropertyHolder.Value;
+					_LanguagePropertyHolder.Value = value;
+					OnPropertyChanged(new PropertyChangedEventArgs(nameof(Language), oldValue, value));
+				}
 			}
 		}
 		/// <summary>
@@ -152,13 +164,13 @@ namespace Havit.BusinessLayerTest.Resources
 			set
 			{
 				EnsureLoaded();
-				if (value == null)
+				
+				string newValue = value ?? String.Empty;
+				if (!Object.Equals(_ValuePropertyHolder.Value, newValue))
 				{
-					_ValuePropertyHolder.Value = String.Empty;
-				}
-				else
-				{
-					_ValuePropertyHolder.Value = value;
+					string oldValue = _ValuePropertyHolder.Value;
+					_ValuePropertyHolder.Value = newValue;
+					OnPropertyChanged(new PropertyChangedEventArgs(nameof(Value), oldValue, newValue));
 				}
 			}
 		}
@@ -374,6 +386,8 @@ namespace Havit.BusinessLayerTest.Resources
 			IdentityMap currentIdentityMap = IdentityMapScope.Current;
 			global::Havit.Diagnostics.Contracts.Contract.Assert(currentIdentityMap != null, "currentIdentityMap != null");
 			currentIdentityMap.Store(this);
+			
+			RemoveAllIDsFromCache();
 		}
 		
 		/// <summary>
@@ -516,7 +530,6 @@ namespace Havit.BusinessLayerTest.Resources
 			}
 			
 			RemoveDataRecordFromCache();
-			RemoveAllIDsFromCache();
 			InvalidateSaveCacheDependencyKey();
 			InvalidateAnySaveCacheDependencyKey();
 		}

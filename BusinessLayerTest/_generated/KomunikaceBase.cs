@@ -106,7 +106,13 @@ namespace Havit.BusinessLayerTest
 			set
 			{
 				EnsureLoaded();
-				_SubjektPropertyHolder.Value = value;
+				
+				if (!Object.Equals(_SubjektPropertyHolder.Value, value))
+				{
+					Havit.BusinessLayerTest.Subjekt oldValue = _SubjektPropertyHolder.Value;
+					_SubjektPropertyHolder.Value = value;
+					OnPropertyChanged(new PropertyChangedEventArgs(nameof(Subjekt), oldValue, value));
+				}
 			}
 		}
 		/// <summary>
@@ -128,7 +134,13 @@ namespace Havit.BusinessLayerTest
 			set
 			{
 				EnsureLoaded();
-				_ObjednavkaSepsaniPropertyHolder.Value = value;
+				
+				if (!Object.Equals(_ObjednavkaSepsaniPropertyHolder.Value, value))
+				{
+					Havit.BusinessLayerTest.ObjednavkaSepsani oldValue = _ObjednavkaSepsaniPropertyHolder.Value;
+					_ObjednavkaSepsaniPropertyHolder.Value = value;
+					OnPropertyChanged(new PropertyChangedEventArgs(nameof(ObjednavkaSepsani), oldValue, value));
+				}
 			}
 		}
 		/// <summary>

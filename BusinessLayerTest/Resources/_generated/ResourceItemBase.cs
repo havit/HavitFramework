@@ -111,7 +111,13 @@ namespace Havit.BusinessLayerTest.Resources
 			set
 			{
 				EnsureLoaded();
-				_ResourceClassPropertyHolder.Value = value;
+				
+				if (!Object.Equals(_ResourceClassPropertyHolder.Value, value))
+				{
+					Havit.BusinessLayerTest.Resources.ResourceClass oldValue = _ResourceClassPropertyHolder.Value;
+					_ResourceClassPropertyHolder.Value = value;
+					OnPropertyChanged(new PropertyChangedEventArgs(nameof(ResourceClass), oldValue, value));
+				}
 			}
 		}
 		/// <summary>
@@ -133,13 +139,13 @@ namespace Havit.BusinessLayerTest.Resources
 			set
 			{
 				EnsureLoaded();
-				if (value == null)
+				
+				string newValue = value ?? String.Empty;
+				if (!Object.Equals(_ResourceKeyPropertyHolder.Value, newValue))
 				{
-					_ResourceKeyPropertyHolder.Value = String.Empty;
-				}
-				else
-				{
-					_ResourceKeyPropertyHolder.Value = value;
+					string oldValue = _ResourceKeyPropertyHolder.Value;
+					_ResourceKeyPropertyHolder.Value = newValue;
+					OnPropertyChanged(new PropertyChangedEventArgs(nameof(ResourceKey), oldValue, newValue));
 				}
 			}
 		}
@@ -162,13 +168,13 @@ namespace Havit.BusinessLayerTest.Resources
 			set
 			{
 				EnsureLoaded();
-				if (value == null)
+				
+				string newValue = value ?? String.Empty;
+				if (!Object.Equals(_DescriptionPropertyHolder.Value, newValue))
 				{
-					_DescriptionPropertyHolder.Value = String.Empty;
-				}
-				else
-				{
-					_DescriptionPropertyHolder.Value = value;
+					string oldValue = _DescriptionPropertyHolder.Value;
+					_DescriptionPropertyHolder.Value = newValue;
+					OnPropertyChanged(new PropertyChangedEventArgs(nameof(Description), oldValue, newValue));
 				}
 			}
 		}
@@ -459,6 +465,8 @@ namespace Havit.BusinessLayerTest.Resources
 			IdentityMap currentIdentityMap = IdentityMapScope.Current;
 			global::Havit.Diagnostics.Contracts.Contract.Assert(currentIdentityMap != null, "currentIdentityMap != null");
 			currentIdentityMap.Store(this);
+			
+			RemoveAllIDsFromCache();
 		}
 		
 		/// <summary>
@@ -618,7 +626,6 @@ namespace Havit.BusinessLayerTest.Resources
 			}
 			
 			RemoveDataRecordFromCache();
-			RemoveAllIDsFromCache();
 			InvalidateSaveCacheDependencyKey();
 			InvalidateAnySaveCacheDependencyKey();
 		}

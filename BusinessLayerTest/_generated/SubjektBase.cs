@@ -107,13 +107,13 @@ namespace Havit.BusinessLayerTest
 			set
 			{
 				EnsureLoaded();
-				if (value == null)
+				
+				string newValue = value ?? String.Empty;
+				if (!Object.Equals(_NazevPropertyHolder.Value, newValue))
 				{
-					_NazevPropertyHolder.Value = String.Empty;
-				}
-				else
-				{
-					_NazevPropertyHolder.Value = value;
+					string oldValue = _NazevPropertyHolder.Value;
+					_NazevPropertyHolder.Value = newValue;
+					OnPropertyChanged(new PropertyChangedEventArgs(nameof(Nazev), oldValue, newValue));
 				}
 			}
 		}
@@ -136,7 +136,13 @@ namespace Havit.BusinessLayerTest
 			set
 			{
 				EnsureLoaded();
-				_UzivatelPropertyHolder.Value = value;
+				
+				if (!Object.Equals(_UzivatelPropertyHolder.Value, value))
+				{
+					Havit.BusinessLayerTest.Uzivatel oldValue = _UzivatelPropertyHolder.Value;
+					_UzivatelPropertyHolder.Value = value;
+					OnPropertyChanged(new PropertyChangedEventArgs(nameof(Uzivatel), oldValue, value));
+				}
 			}
 		}
 		/// <summary>
@@ -158,7 +164,13 @@ namespace Havit.BusinessLayerTest
 			private set
 			{
 				EnsureLoaded();
-				_CreatedPropertyHolder.Value = value;
+				
+				if (!Object.Equals(_CreatedPropertyHolder.Value, value))
+				{
+					DateTime oldValue = _CreatedPropertyHolder.Value;
+					_CreatedPropertyHolder.Value = value;
+					OnPropertyChanged(new PropertyChangedEventArgs(nameof(Created), oldValue, value));
+				}
 			}
 		}
 		/// <summary>
@@ -180,7 +192,13 @@ namespace Havit.BusinessLayerTest
 			protected set
 			{
 				EnsureLoaded();
-				_DeletedPropertyHolder.Value = value;
+				
+				if (!Object.Equals(_DeletedPropertyHolder.Value, value))
+				{
+					DateTime? oldValue = _DeletedPropertyHolder.Value;
+					_DeletedPropertyHolder.Value = value;
+					OnPropertyChanged(new PropertyChangedEventArgs(nameof(Deleted), oldValue, value));
+				}
 			}
 		}
 		/// <summary>

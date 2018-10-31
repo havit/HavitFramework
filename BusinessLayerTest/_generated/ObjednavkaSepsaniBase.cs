@@ -102,7 +102,13 @@ namespace Havit.BusinessLayerTest
 			set
 			{
 				EnsureLoaded();
-				_StornoKomunikacePropertyHolder.Value = value;
+				
+				if (!Object.Equals(_StornoKomunikacePropertyHolder.Value, value))
+				{
+					Havit.BusinessLayerTest.Komunikace oldValue = _StornoKomunikacePropertyHolder.Value;
+					_StornoKomunikacePropertyHolder.Value = value;
+					OnPropertyChanged(new PropertyChangedEventArgs(nameof(StornoKomunikace), oldValue, value));
+				}
 			}
 		}
 		/// <summary>

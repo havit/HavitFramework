@@ -103,11 +103,17 @@ namespace Havit.BusinessLayerTest
 			set
 			{
 				EnsureLoaded();
+				
 				if (value != _CenaAmountPropertyHolder.Value)
 				{
 					_cenaIsUpToDate = false;
 				}
-				_CenaAmountPropertyHolder.Value = value;
+				if (!Object.Equals(_CenaAmountPropertyHolder.Value, value))
+				{
+					Decimal oldValue = _CenaAmountPropertyHolder.Value;
+					_CenaAmountPropertyHolder.Value = value;
+					OnPropertyChanged(new PropertyChangedEventArgs(nameof(CenaAmount), oldValue, value));
+				}
 			}
 		}
 		/// <summary>
@@ -129,11 +135,17 @@ namespace Havit.BusinessLayerTest
 			set
 			{
 				EnsureLoaded();
+				
 				if (value != _CenaCurrencyPropertyHolder.Value)
 				{
 					_cenaIsUpToDate = false;
 				}
-				_CenaCurrencyPropertyHolder.Value = value;
+				if (!Object.Equals(_CenaCurrencyPropertyHolder.Value, value))
+				{
+					Havit.BusinessLayerTest.Currency oldValue = _CenaCurrencyPropertyHolder.Value;
+					_CenaCurrencyPropertyHolder.Value = value;
+					OnPropertyChanged(new PropertyChangedEventArgs(nameof(CenaCurrency), oldValue, value));
+				}
 			}
 		}
 		/// <summary>

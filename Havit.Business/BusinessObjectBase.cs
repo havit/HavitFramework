@@ -7,6 +7,7 @@ using System.Data.Common;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 
 namespace Havit.Business
 {
@@ -19,7 +20,7 @@ namespace Havit.Business
 	/// při první potřebě je iniciováno jeho úplné načtení.<br/>
 	/// </remarks>
 	[DebuggerDisplay("{GetType().FullName,nq} (ID={IsNew ? \"New\" : ID.ToString(),nq}, IsLoaded={IsLoaded,nq}, IsDirty={IsDirty,nq}, IsDisconnected={IsDisconnected,nq})")]
-	public abstract class BusinessObjectBase
+	public abstract class BusinessObjectBase : INotifyPropertyChanged
 	{
 		#region Consts
 		/// <summary>
@@ -128,6 +129,13 @@ namespace Havit.Business
 			get { return _isDisconnected; }
 		}
 		private bool _isDisconnected = false;
+		#endregion
+		
+		#region Events
+		/// <summary>
+		/// Oznamuje změnu hodnoty vlastnosti.
+		/// </summary>
+		public event PropertyChangedEventHandler PropertyChanged;
 		#endregion
 
 		#region Constructors
@@ -612,6 +620,14 @@ namespace Havit.Business
 		protected virtual void CleanDirty()
 		{
 			// NOOP
+		}
+
+		/// <summary>
+		/// Oznamuje změnu hodnoty vlastnosti, pokud došlo ke změně.
+		/// </summary>
+		protected virtual void OnPropertyChanged(PropertyChangedEventArgs eventArgs)
+		{
+			PropertyChanged?.Invoke(this, eventArgs);
 		}
 
 		/**********************************************************************************/

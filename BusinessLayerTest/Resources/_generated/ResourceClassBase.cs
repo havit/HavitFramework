@@ -103,13 +103,13 @@ namespace Havit.BusinessLayerTest.Resources
 			set
 			{
 				EnsureLoaded();
-				if (value == null)
+				
+				string newValue = value ?? String.Empty;
+				if (!Object.Equals(_NamePropertyHolder.Value, newValue))
 				{
-					_NamePropertyHolder.Value = String.Empty;
-				}
-				else
-				{
-					_NamePropertyHolder.Value = value;
+					string oldValue = _NamePropertyHolder.Value;
+					_NamePropertyHolder.Value = newValue;
+					OnPropertyChanged(new PropertyChangedEventArgs(nameof(Name), oldValue, newValue));
 				}
 			}
 		}
@@ -132,13 +132,13 @@ namespace Havit.BusinessLayerTest.Resources
 			set
 			{
 				EnsureLoaded();
-				if (value == null)
+				
+				string newValue = value ?? String.Empty;
+				if (!Object.Equals(_DescriptionPropertyHolder.Value, newValue))
 				{
-					_DescriptionPropertyHolder.Value = String.Empty;
-				}
-				else
-				{
-					_DescriptionPropertyHolder.Value = value;
+					string oldValue = _DescriptionPropertyHolder.Value;
+					_DescriptionPropertyHolder.Value = newValue;
+					OnPropertyChanged(new PropertyChangedEventArgs(nameof(Description), oldValue, newValue));
 				}
 			}
 		}
@@ -161,7 +161,13 @@ namespace Havit.BusinessLayerTest.Resources
 			protected set
 			{
 				EnsureLoaded();
-				_DeletedPropertyHolder.Value = value;
+				
+				if (!Object.Equals(_DeletedPropertyHolder.Value, value))
+				{
+					DateTime? oldValue = _DeletedPropertyHolder.Value;
+					_DeletedPropertyHolder.Value = value;
+					OnPropertyChanged(new PropertyChangedEventArgs(nameof(Deleted), oldValue, value));
+				}
 			}
 		}
 		/// <summary>
@@ -387,6 +393,8 @@ namespace Havit.BusinessLayerTest.Resources
 			IdentityMap currentIdentityMap = IdentityMapScope.Current;
 			global::Havit.Diagnostics.Contracts.Contract.Assert(currentIdentityMap != null, "currentIdentityMap != null");
 			currentIdentityMap.Store(this);
+			
+			RemoveAllIDsFromCache();
 		}
 		
 		/// <summary>
@@ -450,6 +458,7 @@ namespace Havit.BusinessLayerTest.Resources
 			commandBuilder.Append("UPDATE [dbo].[ResourceClass] SET ");
 			
 			bool dirtyFieldExists = false;
+			bool deletedFieldIsDirty = false;
 			if (_NamePropertyHolder.IsDirty)
 			{
 				if (dirtyFieldExists)
@@ -504,6 +513,7 @@ namespace Havit.BusinessLayerTest.Resources
 				dbCommand.Parameters.Add(dbParameterDeleted);
 				
 				dirtyFieldExists = true;
+				deletedFieldIsDirty = true;
 			}
 			
 			if (dirtyFieldExists)
@@ -531,7 +541,10 @@ namespace Havit.BusinessLayerTest.Resources
 			}
 			
 			RemoveDataRecordFromCache();
-			RemoveAllIDsFromCache();
+			if (deletedFieldIsDirty)
+			{
+				RemoveAllIDsFromCache();
+			}
 			InvalidateSaveCacheDependencyKey();
 			InvalidateAnySaveCacheDependencyKey();
 		}

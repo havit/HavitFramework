@@ -100,13 +100,13 @@ namespace Havit.BusinessLayerTest
 			private set
 			{
 				EnsureLoaded();
-				if (value == null)
+				
+				string newValue = value ?? String.Empty;
+				if (!Object.Equals(_SymbolPropertyHolder.Value, newValue))
 				{
-					_SymbolPropertyHolder.Value = String.Empty;
-				}
-				else
-				{
-					_SymbolPropertyHolder.Value = value;
+					string oldValue = _SymbolPropertyHolder.Value;
+					_SymbolPropertyHolder.Value = newValue;
+					OnPropertyChanged(new PropertyChangedEventArgs(nameof(Symbol), oldValue, newValue));
 				}
 			}
 		}
@@ -364,13 +364,6 @@ namespace Havit.BusinessLayerTest
 			Havit.Business.BusinessLayerContext.BusinessLayerCacheService.AddAllIDsToCache(typeof(Role), GetAllIDsCacheKey(), ids, options);
 		}
 		
-		/// <summary>
-		/// Odstraní pole IDs metody GetAll z cache.
-		/// </summary>
-		private static void RemoveAllIDsFromCache()
-		{
-			Havit.Business.BusinessLayerContext.BusinessLayerCacheService.RemoveAllIDsFromCache(typeof(Role), GetAllIDsCacheKey());
-		}
 		#endregion
 		
 		#region Enum members

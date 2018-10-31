@@ -110,13 +110,13 @@ namespace Havit.BusinessLayerTest
 			private set
 			{
 				EnsureLoaded();
-				if (value == null)
+				
+				string newValue = value ?? String.Empty;
+				if (!Object.Equals(_UICulturePropertyHolder.Value, newValue))
 				{
-					_UICulturePropertyHolder.Value = String.Empty;
-				}
-				else
-				{
-					_UICulturePropertyHolder.Value = value;
+					string oldValue = _UICulturePropertyHolder.Value;
+					_UICulturePropertyHolder.Value = newValue;
+					OnPropertyChanged(new PropertyChangedEventArgs(nameof(UICulture), oldValue, newValue));
 				}
 			}
 		}
@@ -139,13 +139,13 @@ namespace Havit.BusinessLayerTest
 			private set
 			{
 				EnsureLoaded();
-				if (value == null)
+				
+				string newValue = value ?? String.Empty;
+				if (!Object.Equals(_CulturePropertyHolder.Value, newValue))
 				{
-					_CulturePropertyHolder.Value = String.Empty;
-				}
-				else
-				{
-					_CulturePropertyHolder.Value = value;
+					string oldValue = _CulturePropertyHolder.Value;
+					_CulturePropertyHolder.Value = newValue;
+					OnPropertyChanged(new PropertyChangedEventArgs(nameof(Culture), oldValue, newValue));
 				}
 			}
 		}
@@ -168,13 +168,13 @@ namespace Havit.BusinessLayerTest
 			private set
 			{
 				EnsureLoaded();
-				if (value == null)
+				
+				string newValue = value ?? String.Empty;
+				if (!Object.Equals(_NamePropertyHolder.Value, newValue))
 				{
-					_NamePropertyHolder.Value = String.Empty;
-				}
-				else
-				{
-					_NamePropertyHolder.Value = value;
+					string oldValue = _NamePropertyHolder.Value;
+					_NamePropertyHolder.Value = newValue;
+					OnPropertyChanged(new PropertyChangedEventArgs(nameof(Name), oldValue, newValue));
 				}
 			}
 		}
@@ -197,7 +197,13 @@ namespace Havit.BusinessLayerTest
 			private set
 			{
 				EnsureLoaded();
-				_AktivniPropertyHolder.Value = value;
+				
+				if (!Object.Equals(_AktivniPropertyHolder.Value, value))
+				{
+					bool oldValue = _AktivniPropertyHolder.Value;
+					_AktivniPropertyHolder.Value = value;
+					OnPropertyChanged(new PropertyChangedEventArgs(nameof(Aktivni), oldValue, value));
+				}
 			}
 		}
 		/// <summary>
@@ -219,7 +225,13 @@ namespace Havit.BusinessLayerTest
 			private set
 			{
 				EnsureLoaded();
-				_EditacePovolenaPropertyHolder.Value = value;
+				
+				if (!Object.Equals(_EditacePovolenaPropertyHolder.Value, value))
+				{
+					bool oldValue = _EditacePovolenaPropertyHolder.Value;
+					_EditacePovolenaPropertyHolder.Value = value;
+					OnPropertyChanged(new PropertyChangedEventArgs(nameof(EditacePovolena), oldValue, value));
+				}
 			}
 		}
 		/// <summary>
@@ -241,7 +253,13 @@ namespace Havit.BusinessLayerTest
 			private set
 			{
 				EnsureLoaded();
-				_PoradiPropertyHolder.Value = value;
+				
+				if (!Object.Equals(_PoradiPropertyHolder.Value, value))
+				{
+					int oldValue = _PoradiPropertyHolder.Value;
+					_PoradiPropertyHolder.Value = value;
+					OnPropertyChanged(new PropertyChangedEventArgs(nameof(Poradi), oldValue, value));
+				}
 			}
 		}
 		/// <summary>
@@ -545,13 +563,6 @@ namespace Havit.BusinessLayerTest
 			Havit.Business.BusinessLayerContext.BusinessLayerCacheService.AddAllIDsToCache(typeof(Language), GetAllIDsCacheKey(), ids);
 		}
 		
-		/// <summary>
-		/// Odstraní pole IDs metody GetAll z cache.
-		/// </summary>
-		private static void RemoveAllIDsFromCache()
-		{
-			Havit.Business.BusinessLayerContext.BusinessLayerCacheService.RemoveAllIDsFromCache(typeof(Language), GetAllIDsCacheKey());
-		}
 		#endregion
 		
 		#region GetFirst, GetList, GetAll

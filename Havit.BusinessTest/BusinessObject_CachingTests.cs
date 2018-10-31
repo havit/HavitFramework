@@ -127,22 +127,24 @@ namespace Havit.BusinessTest
 		}
 
 		[TestMethod]
-		public void BusinessObject_Save_ExistingObject_RemovesAllRecordsCacheItemFromCache()
+		public void BusinessObject_Save_ExistingObject_DoesNotRemoveAllRecordsCacheItemFromCacheForNonSoftDeletableObjects()
 		{
+			// Poznámka: K vyhození z cache dojde pouze v případě označení objektu za smazaný (ev. naopak k označení smazaného objektu za nesmazaný).
+
 			// Arrange
+			CurrencyCollection currencies = Currency.GetAll();
 			string cacheKey = (string)(typeof(CurrencyBase).GetMethod("GetAllIDsCacheKey", BindingFlags.NonPublic | BindingFlags.Static).Invoke(null, null));
 
 			// Precondition
-			CurrencyCollection currencies = Currency.GetAll();
 			Assert.IsTrue(cacheService.Contains(cacheKey));
 
-			// Act
+			// Act			
 			Currency currency = currencies.First();
 			currency.Nazev = Guid.NewGuid().ToString();
 			currency.Save();
 
 			// Assert
-			Assert.IsFalse(cacheService.Contains(cacheKey));
+			Assert.IsTrue(cacheService.Contains(cacheKey));
 		}
 
 		[TestMethod]

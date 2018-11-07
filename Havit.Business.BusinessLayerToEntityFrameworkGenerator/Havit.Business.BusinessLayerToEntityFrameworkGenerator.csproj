@@ -230,14 +230,11 @@
     <Compile Include="Csproj\NetCoreCsprojFile.cs" />
     <Compile Include="Generators\AttributeStringBuilder.cs" />
     <Compile Include="Generators\AttributeStringBuilderExtensions.cs" />
-    <Compile Include="Generators\EfCoreGenerator.cs" />
-    <Compile Include="Generators\EfCore\EntityTypeConfigurationClass.cs" />
-    <Compile Include="Generators\EfCore\MethodBasedStoredProcedureGenerator.cs" />
-    <Compile Include="Generators\EfCore\ModelClass.cs" />
-    <Compile Include="Generators\EfCore\FileBasedStoredProcedureGenerator.cs" />
     <Compile Include="Generators\Generator.cs" />
     <Compile Include="Generators\EntityTypeConfigurationClass.cs" />
+    <Compile Include="Generators\MethodBasedStoredProcedureGenerator.cs" />
     <Compile Include="Generators\ModelClass.cs" />
+    <Compile Include="Generators\FileBasedStoredProcedureGenerator.cs" />
     <Compile Include="Helpers\DefaultValueParser.cs" />
     <Compile Include="Helpers\EfCoreAccessor.cs" />
     <Compile Include="Helpers\FileHelper.cs" />

@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Havit.Business.BusinessLayerGenerator.Csproj;
 using Havit.Business.BusinessLayerGenerator.Helpers;
 using Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions;
 using Havit.Business.BusinessLayerGenerator.Helpers.Types;
 using Havit.Business.BusinessLayerGenerator.TfsClient;
 using Havit.Business.BusinessLayerGenerator.Writers;
+using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Helpers;
+using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata;
 using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Settings;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.SqlServer.Management.Smo;
 
 namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
@@ -16,24 +20,27 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 	{
 		#region Generate
 
-		public static void Generate(Table table, CsprojFile modelCsprojFile, SourceControlClient sourceControlClient)
+		public static GeneratedModelClass Generate(GeneratedModelClass modelClass, CsprojFile modelCsprojFile, SourceControlClient sourceControlClient)
 		{
-			string fileName = FileHelper.GetFilename(table, ".cs", "");
+			string fileName = Helpers.FileHelper.GetFilename(modelClass.Table, "Model", ".cs", "");
 
-			if (modelCsprojFile != null)
-			{
-				modelCsprojFile.Ensures(fileName);
-			}
+			//if (modelCsprojFile != null)
+			//{
+			//	modelCsprojFile.Ensures(fileName);
+			//}
 
-			CodeWriter writer = new CodeWriter(Path.Combine(GeneratorSettings.SolutionPath, "Model", fileName), sourceControlClient, true);
+			CodeWriter writer = new CodeWriter(Path.Combine(GeneratorSettings.SolutionPath, fileName), sourceControlClient, true);
 
-			WriteUsings(writer, table);
-			WriteNamespaceClassBegin(writer, table, false);
-			WriteMembers(writer, table);
-			WriteEnumClassMembers(writer, table);
+			WriteUsings(writer, modelClass);
+			WriteNamespaceClassBegin(writer, modelClass, false);
+			WriteMembers(writer, modelClass);
+
+			WriteEnumClassMembers(writer, modelClass);
 			WriteNamespaceClassEnd(writer);
 
 			writer.Save();
+
+			return modelClass;
 		}
 
 		#endregion
@@ -43,22 +50,27 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 		/// <summary>
 		/// Zapíše usings na všechny možné potřebné namespace.
 		/// </summary>
-		public static void WriteUsings(CodeWriter writer, Table table)
+		public static void WriteUsings(CodeWriter writer, GeneratedModelClass modelClass)
 		{
 			writer.WriteLine("using System;");
 			writer.WriteLine("using System.Collections.Generic;");
 			writer.WriteLine("using System.Collections.Specialized;");
-			writer.WriteLine("using System.ComponentModel.DataAnnotations;");			
+			writer.WriteLine("using System.ComponentModel;");
+			writer.WriteLine("using System.ComponentModel.DataAnnotations;");
+			writer.WriteLine("using System.ComponentModel.DataAnnotations.Schema;");
 			writer.WriteLine("using System.Globalization;");
 			writer.WriteLine("using System.Linq;");
 			writer.WriteLine("using System.Text;");
+			writer.WriteLine("using Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProperties;");
+			writer.WriteLine("using Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.Metadata;");
+			writer.WriteLine("using ReadOnlyAttribute = Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProperties.ReadOnlyAttribute;");
 
-			if (LocalizationHelper.IsLocalizationTable(table) || LocalizationHelper.IsLocalizedTable(table))
+			if (LocalizationHelper.IsLocalizationTable(modelClass.Table) || LocalizationHelper.IsLocalizedTable(modelClass.Table))
 			{
 				writer.WriteLine($"using {Helpers.NamingConventions.NamespaceHelper.GetDefaultNamespace("Model")}.Localizations;");
 			}
 
-			if (table.Name == "Language")
+			if (modelClass.Name == "Language")
 			{
 				writer.WriteLine("using Havit.Model.Localizations;");
 			}
@@ -70,16 +82,16 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 
 		#region WriteEnumClassMembers
 
-		private static void WriteEnumClassMembers(CodeWriter writer, Table table)
+		private static void WriteEnumClassMembers(CodeWriter writer, GeneratedModelClass modelClass)
 		{
-			if (TableHelper.GetEnumMode(table) != EnumMode.EnumClass)
+			if (TableHelper.GetEnumMode(modelClass.Table) != EnumMode.EnumClass)
 			{
 				return;
 			}
 
 			writer.WriteLine("public enum Entry");
 			writer.WriteLine("{");
-			List<EnumMember> enumMembers = TableHelper.GetEnumMembers(table);
+			List<EnumMember> enumMembers = TableHelper.GetEnumMembers(modelClass.Table);
 
 			for (int i = 0; i < enumMembers.Count; i++)
 			{
@@ -95,11 +107,11 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 				}
 				if (i < (enumMembers.Count - 1))
 				{
-					writer.WriteLine(enumMember.MemberName + ",");
+					writer.WriteLine(String.Format("{0} = {1},", enumMember.MemberName, enumMember.MemberID));
 				}
 				else
 				{
-					writer.WriteLine(enumMember.MemberName);
+					writer.WriteLine(String.Format("{0} = {1}", enumMember.MemberName, enumMember.MemberID));
 				}
 			}
 			writer.WriteLine("}");
@@ -109,31 +121,96 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 
 		#region WriteNamespaceClassBegin
 
-		public static void WriteNamespaceClassBegin(CodeWriter writer, Table table, bool includeAttributes)
+		public static void WriteNamespaceClassBegin(CodeWriter writer, GeneratedModelClass modelClass, bool includeAttributes)
 		{
-			writer.WriteLine("namespace " + Helpers.NamingConventions.NamespaceHelper.GetNamespaceName(table, "Model"));
+			writer.WriteLine("namespace " + modelClass.Namespace);
 			writer.WriteLine("{");
 
-			string comment = TableHelper.GetDescription(table);
+			string comment = TableHelper.GetDescription(modelClass.Table);
 			writer.WriteCommentSummary(comment);
 
 			string interfaceString = "";
-			if (LocalizationHelper.IsLocalizedTable(table))
+			if (LocalizationHelper.IsLocalizedTable(modelClass.Table))
 			{
-				interfaceString = String.Format("ILocalized<{0}>", ClassHelper.GetClassName(LocalizationHelper.GetLocalizationTable(table)));
+				interfaceString = String.Format("ILocalized<{0}>", ClassHelper.GetClassName(LocalizationHelper.GetLocalizationTable(modelClass.Table)));
 			}
-			else if (LocalizationHelper.IsLocalizationTable(table))
+			else if (LocalizationHelper.IsLocalizationTable(modelClass.Table))
 			{
-				interfaceString = String.Format("ILocalization<{0}>", ClassHelper.GetClassName(LocalizationHelper.GetLocalizationParentTable(table)));
+				interfaceString = String.Format("ILocalization<{0}>", ClassHelper.GetClassName(LocalizationHelper.GetLocalizationParentTable(modelClass.Table)));
 			}
-			else if (table.Name == "Language")
+			else if (modelClass.Name == "Language")
 			{
 				interfaceString = "ILanguage";
 			}
 
+			if (TableHelper.GetBoolExtendedProperty(modelClass.Table, "Ignored") == true)
+			{
+				writer.WriteLine("[Ignored]");
+			}
+
+			if (TableHelper.GetBoolExtendedProperty(modelClass.Table, "ReadOnly") == true)
+			{
+				writer.WriteLine("[ReadOnly]");
+			}
+
+			if (TableHelper.GetEnumMode(modelClass.Table) == EnumMode.EnumClass)
+			{
+				var attributeBuilder = new AttributeStringBuilder("EnumClass");
+			    string enumPropertyName = TableHelper.GetStringExtendedProperty(modelClass.Table, "EnumPropertyNameField");
+			    if (!string.IsNullOrEmpty(enumPropertyName))
+			    {
+			        if (modelClass.Properties.Any(prop => prop.Name == enumPropertyName))
+			        {
+			            enumPropertyName = $"nameof({enumPropertyName})";
+			        }
+			        else
+			        {
+			            enumPropertyName = $"\"{enumPropertyName}\"";
+			        }
+
+			        attributeBuilder.AddParameter("EnumPropertyName", enumPropertyName);
+                }
+
+				writer.WriteLine(attributeBuilder.ToString());
+			}
+
+			if (TableHelper.GetBoolExtendedProperty(modelClass.Table, "Cache") == true)
+			{
+				var attributeBuilder = new AttributeStringBuilder("Cache");
+				attributeBuilder.AddBoolExtendedProperty(modelClass.Table, "Cache", "SuppressPreload");
+				attributeBuilder.AddExtendedProperty(modelClass.Table, "Cache", "Priority", priority => $"CacheItemPriority.{priority}");
+				attributeBuilder.AddExtendedProperty(modelClass.Table, "Cache", "AbsoluteExpiration");
+				attributeBuilder.AddExtendedProperty(modelClass.Table, "Cache", "SlidingExpiration");
+
+				writer.WriteLine(attributeBuilder.ToString());
+			}
+
+			if (TableHelper.GetBoolExtendedProperty(modelClass.Table, "GenerateIndexes") == false)
+			{
+				writer.WriteLine("[GenerateIndexes(false)]");
+			}
+
+			string businessObjectBaseType = TableHelper.GetStringExtendedProperty(modelClass.Table, "BusinessObjectBaseType");
+			if (!string.IsNullOrEmpty(businessObjectBaseType))
+			{
+				writer.WriteLine($"[BusinessObjectBaseType(\"{businessObjectBaseType}\")]");
+			}
+
+			if (TableHelper.GetBoolExtendedProperty(modelClass.Table, "CloneMethod") == true)
+			{
+				var attributeBuilder = new AttributeStringBuilder("CloneMethod");
+				string accessModifier = TableHelper.GetStringExtendedProperty(modelClass.Table, "CloneMethodAccessModifier");
+				if (!string.IsNullOrWhiteSpace(accessModifier))
+				{
+					attributeBuilder.AddParameter("AccessModifier", $"\"{accessModifier}\"");
+				}
+
+				writer.WriteLine(attributeBuilder.ToString());
+			}
+
 			writer.WriteLine(String.Format("{0} class {1}{2}",
-				TableHelper.GetAccessModifier(table),
-				ClassHelper.GetClassName(table),
+				TableHelper.GetAccessModifier(modelClass.Table),
+				modelClass.Name,
 				String.IsNullOrEmpty(interfaceString) ? "" : " : " + interfaceString));
 			writer.WriteLine("{");
 		}
@@ -142,31 +219,89 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 
 		#region WriteMembers
 
-		private static void WriteMembers(CodeWriter writer, Table table)
+		private static void WriteMembers(CodeWriter writer, GeneratedModelClass modelClass)
 		{
-			writer.WriteLine("public int Id { get; set; }");
-			writer.WriteLine();
-			foreach (Column column in TableHelper.GetPropertyColumns(table))
+			Table table = modelClass.Table;
+
+			if (TableHelper.IsJoinTable(table))
 			{
-				string description = ColumnHelper.GetDescription(column);
+				foreach (EntityForeignKey fk in modelClass.ForeignKeys)
+				{
+					EntityPrimaryKeyPart pk = modelClass.GetPrimaryKeyPartFor(fk.Column);
+					if (pk == null)
+					{
+						// FKs that are not part of PK are handled below
+						continue;
+					}
+
+					if (ColumnHelper.IsIgnored(pk.Property.Column))
+					{
+						writer.WriteLine("[Ignored]");
+					}
+					writer.WriteLine(String.Format("public {0} {1} {{ get; set; }}", pk.Property.TypeName, pk.Property.Name));
+					writer.WriteLine(String.Format("public {0} {1} {{ get; set; }}", fk.NavigationProperty.TypeName, fk.NavigationProperty.Name));
+					writer.WriteLine();
+				}
+			}
+			else
+			{
+				EntityPrimaryKeyPart pk = modelClass.PrimaryKeyParts.First();
+				if (ColumnHelper.GetBoolExtendedProperty(pk.Property.Column, "Ignored") == true)
+				{
+					writer.WriteLine("[Ignored]");
+				}				
+				if (!pk.Property.Column.Identity)
+				{
+					writer.WriteLine("[DatabaseGenerated(DatabaseGeneratedOption.None)]");
+				}
+				writer.WriteLine(String.Format("public {0} Id {{ get; set; }}", pk.Property.TypeName));
+				writer.WriteLine();
+			}
+
+			foreach (EntityProperty entityProperty in modelClass.GetColumnProperties().Where(prop => !prop.Column.InPrimaryKey))
+			{
+				Column column = entityProperty.Column;
+
+				string description = ColumnHelper.GetDescription(entityProperty.Column);
+				if (column.Name == "PropertyName")
+				{
+					description = "Symbol.";
+				}
 
 				writer.WriteCommentSummary(description);
-				string accesssModifierText = PropertyHelper.GetPropertyAccessModifier(column);
+				string accesssModifierText = "public"; //PropertyHelper.GetPropertyAccessModifier(column);
 
 				// DatabaseGenerated (není třeba)
 				// ILocalized + ILocalization
 
-				string propertyName = PropertyHelper.GetPropertyName(column, "Id");
-				string propertyTypeName = TypeHelper.GetPropertyTypeName(column).Replace("BusinessLayer", "Model");
-
-				if (propertyName == "UICulture")
+				EntityForeignKey fk = modelClass.GetForeignKeyForColumn(column);
+				if (fk != null)
 				{
-					propertyName = "UiCulture";
+					writer.WriteLine(String.Format("{0} {1} {2} {{ get; set; }}", accesssModifierText, fk.NavigationProperty.TypeName, fk.NavigationProperty.Name));
 				}
 
-				if (TypeHelper.IsDateOnly(column.DataType))
+				if (ColumnHelper.GetBoolExtendedProperty(column, "Ignored") == true)
 				{
-					writer.WriteLine("[DataType(DataType.Date)]");
+					writer.WriteLine("[Ignored]");
+				}
+
+				if (ColumnHelper.GetBoolExtendedProperty(column, "ReadOnly") == true)
+				{
+					writer.WriteLine("[ReadOnly]");
+				}
+
+				Type type = Helpers.TypeHelper.GetPropertyType(fk?.ForeignKeyProperty ?? entityProperty);
+				if (!column.Nullable && type?.IsValueType == false)
+				{
+					writer.WriteLine("[Required]");
+				}
+
+				// Generate HasDefaultValueSql. For String columns, generate only if if default is not empty (we use convention for such columns)
+				if ((column.DefaultConstraint != null) && (type != typeof(string) || (column.DefaultConstraint.Text != "('')")))
+				{
+					string defaultValue = new DefaultValueParser().GetDefaultValue(column);
+
+					writer.WriteLine($"[DefaultValue(\"{defaultValue}\")]");
 				}
 
 				if (PropertyHelper.IsString(column))
@@ -180,44 +315,72 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 					//}
 				}
 
-				if (LocalizationHelper.IsLocalizationTable(table) && (LocalizationHelper.GetParentLocalizationColumn(table)) == column)
+				string columnType = null;
+
+				if (BusinessLayerGenerator.Helpers.TypeHelper.IsDateOnly(column.DataType))
 				{
-					propertyName = "Parent";
+					columnType = "Date";
+				}
+				else if (column.DataType.SqlDataType == SqlDataType.Money)
+				{
+					columnType = "Money";
+				}
+				else if ((column.DataType.SqlDataType == SqlDataType.Decimal) && ((column.DataType.NumericPrecision != 18) && column.DataType.NumericScale != 2))
+				{
+					columnType = String.Format("decimal({0}, {1})",
+						column.DataType.NumericPrecision,
+						column.DataType.NumericScale);
+				}
+				else if (!column.DataType.IsStringType)
+				{
+					Type propertyType = Helpers.TypeHelper.GetPropertyType(entityProperty);
+					if (propertyType != null)
+					{
+						RelationalTypeMapping mapping = Helpers.TypeHelper.GetMapping(propertyType);
+						if (mapping == null || !column.DataType.IsSameAsTypeMapping(mapping))
+						{
+							columnType = column.DataType.GetStringRepresentation();
+						}
+					}
 				}
 
-				writer.WriteLine(String.Format("{0} {1} {2} {{ get; set; }}", accesssModifierText, propertyTypeName, propertyName));
-
-				if (TypeHelper.IsBusinessObjectReference(column))
+				if (columnType != null)
 				{
-					string foreignKeyTypeName = column.Nullable ? "int?" : "int";
-					string foreignKeyPropertyName = propertyName + "Id";
-					writer.WriteLine(String.Format("{0} {1} {2} {{ get; set; }}", accesssModifierText, foreignKeyTypeName, foreignKeyPropertyName));
+					writer.WriteLine($"[Column(TypeName = \"{columnType}\")]");
 				}
+
+				writer.WriteLine(String.Format("{0} {1} {2} {{ get; set; }}", accesssModifierText, entityProperty.TypeName, entityProperty.Name));
 
 				writer.WriteLine();
 			}
 
-			Column symbolColumn = table.Columns["PropertyName"];
-			if (symbolColumn != null)
+			foreach (EntityCollectionProperty collectionProperty in modelClass.CollectionProperties)
 			{
-				writer.WriteCommentSummary("Symbol.");
-				writer.WriteLine((symbolColumn.DataType.MaximumLength == -1) ? "[MaxLength(Int32.MaxValue)]" : $"[MaxLength({symbolColumn.DataType.MaximumLength})]");
-				writer.WriteLine("public string Symbol { get; set; }");
-				writer.WriteLine();
-			}
+				var collection = collectionProperty.CollectionProperty;
 
-			foreach (CollectionProperty collectionProperty in TableHelper.GetCollectionColumns(table))
-			{
-				writer.WriteCommentSummary(collectionProperty.Description);
+				writer.WriteCommentSummary(collection.Description);
 
+			    var attributeBuilder = new AttributeStringBuilder("Collection");
+			    attributeBuilder.AddBoolExtendedProperty(table, $"Collection_{collectionProperty.Name}", "IncludeDeleted");
+			    attributeBuilder.AddBoolExtendedProperty(table, $"Collection_{collectionProperty.Name}", "LoadAll");
+			    attributeBuilder.AddStringExtendedProperty(table, $"Collection_{collectionProperty.Name}", "Sorting");
+			    attributeBuilder.AddStringExtendedProperty(table, $"Collection_{collectionProperty.Name}", "CloneMode");
+
+			    if (attributeBuilder.Parameters.Any())
+			    {
+			        writer.WriteLine(attributeBuilder.ToString());
+			    }
+
+				string className;
 				if (Helpers.NamingConventions.NamespaceHelper.GetNamespaceName(table, "Model") == Helpers.NamingConventions.NamespaceHelper.GetNamespaceName(collectionProperty.TargetTable, "Model"))
 				{
-					writer.WriteLine($"public List<{ClassHelper.GetClassName(collectionProperty.TargetTable)}> {collectionProperty.PropertyName} {{ get; set; }}");
+					className = ClassHelper.GetClassName(collectionProperty.TargetTable);
 				}
 				else
 				{
-					writer.WriteLine($"public List<{Helpers.NamingConventions.ClassHelper.GetClassFullName(collectionProperty.TargetTable, "Model")}> {collectionProperty.PropertyName} {{ get; set; }}");
+					className = Helpers.NamingConventions.ClassHelper.GetClassFullName(collectionProperty.TargetTable, "Model");
 				}
+				writer.WriteLine($"public List<{className}> {collection.PropertyName} {{ get; }} = new List<{className}>();");
 				writer.WriteLine();
 			}
 

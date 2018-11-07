@@ -10,7 +10,7 @@ using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata;
 using Microsoft.SqlServer.Management.Smo;
 using NamespaceHelper = Havit.Business.BusinessLayerToEntityFrameworkGenerator.Helpers.NamingConventions.NamespaceHelper;
 
-namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCore
+namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 {
 	public static class MethodBasedStoredProcedureGenerator
     {

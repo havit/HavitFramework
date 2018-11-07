@@ -6,7 +6,7 @@ using Havit.Business.BusinessLayerGenerator.Csproj;
 using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata;
 using Microsoft.SqlServer.Management.Smo;
 
-namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators.EfCore
+namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 {
     public static class FileBasedStoredProcedureGenerator
 	{

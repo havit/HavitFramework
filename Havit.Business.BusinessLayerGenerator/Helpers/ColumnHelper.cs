@@ -58,7 +58,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		{
 			ForeignKey foreignKey = GetForeignKey(column);
 
-			return DatabaseHelper.FindTable(foreignKey.ReferencedTable, foreignKey.ReferencedTableSchema);
+			return DatabaseHelper.FindTable(foreignKey.ReferencedTable, foreignKey.ReferencedTableSchema, includeIgnored: true);
 		}
 		#endregion
 
@@ -98,7 +98,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		{
 			ForeignKey foreignKey = GetForeignKey(column);
 
-			Table table = DatabaseHelper.FindTable(foreignKey.ReferencedTable, foreignKey.ReferencedTableSchema);
+			Table table = DatabaseHelper.FindTable(foreignKey.ReferencedTable, foreignKey.ReferencedTableSchema, includeIgnored: true);
 
 			return table.Columns[foreignKey.Columns[0].ReferencedColumn];
 		}

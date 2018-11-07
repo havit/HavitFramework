@@ -17,7 +17,7 @@ using Havit.Data.Entity.Patterns.SoftDeletes;
 namespace <#= Model.NamespaceName #>
 {
 	[System.CodeDom.Compiler.GeneratedCode("Havit.Entity.CodeGenerator", "2.0")]
-	public class <#= Model.DbDataSourceClassName #> : DbDataSource<<#= Model.ModelClassFullName #>>, <#= Model.InterfaceDataSourceFullName #>
+	public partial class <#= Model.DbDataSourceClassName #> : DbDataSource<<#= Model.ModelClassFullName #>>, <#= Model.InterfaceDataSourceFullName #>
 	{
 		public <#= Model.DbDataSourceClassName #>(IDbContext dbContext, ISoftDeleteManager softDeleteManager)
 			: base(dbContext, softDeleteManager)

@@ -296,6 +296,12 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 					writer.WriteLine("[Required]");
 				}
 
+				var cloneMode = ColumnHelper.GetCloneMode(column);
+				if (cloneMode != CloneMode.Shallow)
+				{
+					writer.WriteLine($"[CloneMode(CloneMode.{cloneMode.ToString()})]");
+				}
+
 				// Generate HasDefaultValueSql. For String columns, generate only if if default is not empty (we use convention for such columns)
 				if ((column.DefaultConstraint != null) && (type != typeof(string) || (column.DefaultConstraint.Text != "('')")))
 				{
@@ -364,12 +370,17 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 			    attributeBuilder.AddBoolExtendedProperty(table, $"Collection_{collectionProperty.Name}", "IncludeDeleted");
 			    attributeBuilder.AddBoolExtendedProperty(table, $"Collection_{collectionProperty.Name}", "LoadAll");
 			    attributeBuilder.AddStringExtendedProperty(table, $"Collection_{collectionProperty.Name}", "Sorting");
-			    attributeBuilder.AddStringExtendedProperty(table, $"Collection_{collectionProperty.Name}", "CloneMode");
 
 			    if (attributeBuilder.Parameters.Any())
 			    {
 			        writer.WriteLine(attributeBuilder.ToString());
 			    }
+
+				if ((collectionProperty.CollectionProperty.IsOneToMany && (collectionProperty.CollectionProperty.CloneMode != CloneMode.No))
+					|| (collectionProperty.CollectionProperty.IsManyToMany && (collectionProperty.CollectionProperty.CloneMode != CloneMode.Shallow)))
+				{
+					writer.WriteLine($"[CloneMode(CloneMode.{collectionProperty.CollectionProperty.CloneMode.ToString()})]");
+				}
 
 				string className;
 				if (Helpers.NamingConventions.NamespaceHelper.GetNamespaceName(table, "Model") == Helpers.NamingConventions.NamespaceHelper.GetNamespaceName(collectionProperty.TargetTable, "Model"))

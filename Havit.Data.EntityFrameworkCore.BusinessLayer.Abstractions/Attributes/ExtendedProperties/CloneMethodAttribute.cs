@@ -15,12 +15,12 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProper
 		/// <summary>
 		/// Nastavuje přístupový modifikátor ke generované funkci Clone.
 		/// </summary>
-		public string AccessModifier { get; set; } = null;
+		public string AccessModifier { get; set; } = "protected internal";
 
 		/// <inheritdoc />
 		public override IDictionary<string, string> GetExtendedProperties(MemberInfo memberInfo) => new Dictionary<string, string>
 		{
 			{ "CloneMethod", "true" }
-		}.AddIfNotDefault("CloneMethodAccessModifier", AccessModifier);
+		}.AddIfNotDefault("CloneMethodAccessModifier", AccessModifier, "protected internal");
 	}
 }

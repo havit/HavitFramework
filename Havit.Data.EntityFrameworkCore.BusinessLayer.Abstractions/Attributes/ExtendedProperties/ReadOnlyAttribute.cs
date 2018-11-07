@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProperties
@@ -9,6 +10,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProper
 	/// <remarks>
 	/// ReadOnly = true
 	/// </remarks>
+	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Property)]
 	public class ReadOnlyAttribute : ExtendedPropertiesAttribute
 	{
 		/// <inheritdoc />

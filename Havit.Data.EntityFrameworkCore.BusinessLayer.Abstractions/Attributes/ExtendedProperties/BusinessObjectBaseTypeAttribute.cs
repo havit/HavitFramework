@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProperties
@@ -8,6 +9,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProper
 	/// 
 	/// Určuje bázovou třídu pro generovaný kód business objektu.
 	/// </summary>
+	[AttributeUsage(AttributeTargets.Class)]
 	public class BusinessObjectBaseTypeAttribute : ExtendedPropertiesAttribute
 	{
 		/// <summary>

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProperties
@@ -8,6 +9,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProper
 	/// 
 	/// Určuje, zda se má generovat metoda Clone pro klonování objektu. Metoda se generuje jen pro ne-readonly objekty.
 	/// </summary>
+	[AttributeUsage(AttributeTargets.Class)]
 	public class CloneMethodAttribute : ExtendedPropertiesAttribute
 	{
 		/// <summary>

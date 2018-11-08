@@ -72,7 +72,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 
 				foreach (IMutableProperty property in entityType.GetProperties())
 				{
-					XmlCommentMember xmlCommentMember = xmlCommentType.Properties.FirstOrDefault(p => p.Name.EndsWith(property.Name));
+					XmlCommentMember xmlCommentMember = xmlCommentType.Properties.FirstOrDefault(p => p.Name == (xmlCommentType.Name + "." + property.Name));
 					if (xmlCommentMember == null)
 					{
 						var fk = entityType.FindForeignKeys(property).FirstOrDefault();

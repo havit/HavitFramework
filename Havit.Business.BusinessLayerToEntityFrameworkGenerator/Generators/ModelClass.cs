@@ -126,7 +126,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 			writer.WriteLine("namespace " + modelClass.Namespace);
 			writer.WriteLine("{");
 
-			string comment = TableHelper.GetDescription(modelClass.Table);
+			string comment = TableHelper.GetDescription(modelClass.Table, suppressDefaults: true);
 			writer.WriteCommentSummary(comment);
 
 			string interfaceString = "";
@@ -262,7 +262,11 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 			{
 				Column column = entityProperty.Column;
 
-				string description = ColumnHelper.GetDescription(entityProperty.Column);
+				string description = ColumnHelper.GetDescription(entityProperty.Column, suppressDefaults: true);
+				//if (column.Name == "PropertyName")
+				//{
+				//	description = "Symbol.";
+				//}
 
 				writer.WriteCommentSummary(description);
 				string accesssModifierText = "public"; //PropertyHelper.GetPropertyAccessModifier(column);

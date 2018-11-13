@@ -300,7 +300,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		/// <summary>
 		/// Vrátí popis sloupce dle databáze nebo výchozí hodnotu.
 		/// </summary>
-		public static string GetDescription(Column column)
+		public static string GetDescription(Column column, bool suppressDefaults = false)
 		{            
 			string description = ExtendedPropertiesHelper.GetDescription(ExtendedPropertiesKey.FromColumn(column));
 
@@ -309,69 +309,72 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 				return description;
 			}
 
-			if (column.InPrimaryKey)
+			if (!suppressDefaults)
 			{
-				return "Identifikátor objektu.";
-			}
-
-			Table table = (Table)column.Parent;
-
-			if ((PropertyHelper.GetPropertyName(column) == "Culture") && LanguageHelper.IsLanguageTable(table))
-			{
-				return "Název culture. Zpravidla pětipísmený kód, např. cs-CZ, en-US, apod.";
-			}
-
-			if (LocalizationHelper.IsLocalizationTable(table))
-			{
-				if (column.Name == LocalizationHelper.LanguageForeignKeyColumnName)
+				if (column.InPrimaryKey)
 				{
-					return "Jazyk lokalizovaných dat.";
+					return "Identifikátor objektu.";
 				}
-				if (column.Name == TableHelper.GetPrimaryKey(LocalizationHelper.GetLocalizationParentTable(table)).Name)
+
+				Table table = (Table)column.Parent;
+
+				if ((PropertyHelper.GetPropertyName(column) == "Culture") && LanguageHelper.IsLanguageTable(table))
 				{
-					return "Lokalizovaný objekt.";
+					return "Název culture. Zpravidla pětipísmený kód, např. cs-CZ, en-US, apod.";
 				}
-			}
 
-			if (MoneyHelper.FormsMoneyStructure(column) && (column == MoneyHelper.GetMoneyCurrencyColumn(table, MoneyHelper.ShortcutColumnNameToMoneyPropertyName(column.Name))))
-			{
-				Column amountColumn = MoneyHelper.GetMoneyAmountColumn(table, MoneyHelper.ShortcutColumnNameToMoneyPropertyName(column.Name));
-				string amountDescription = ColumnHelper.GetDescription(amountColumn);
-				if (!String.IsNullOrEmpty(amountDescription))
+				if (LocalizationHelper.IsLocalizationTable(table))
 				{
-					amountDescription += " [Měna]";
-					return amountDescription;
+					if (column.Name == LocalizationHelper.LanguageForeignKeyColumnName)
+					{
+						return "Jazyk lokalizovaných dat.";
+					}
+					if (column.Name == TableHelper.GetPrimaryKey(LocalizationHelper.GetLocalizationParentTable(table)).Name)
+					{
+						return "Lokalizovaný objekt.";
+					}
 				}
-			}
 
-			if (column.Name == "Nazev")
-			{
-				return "Název.";
-			}
+				if (MoneyHelper.FormsMoneyStructure(column) && (column == MoneyHelper.GetMoneyCurrencyColumn(table, MoneyHelper.ShortcutColumnNameToMoneyPropertyName(column.Name))))
+				{
+					Column amountColumn = MoneyHelper.GetMoneyAmountColumn(table, MoneyHelper.ShortcutColumnNameToMoneyPropertyName(column.Name));
+					string amountDescription = ColumnHelper.GetDescription(amountColumn);
+					if (!String.IsNullOrEmpty(amountDescription))
+					{
+						amountDescription += " [Měna]";
+						return amountDescription;
+					}
+				}
 
-			if (IsDeletedColumn(column) && column.DataType.SqlDataType == SqlDataType.Bit)
-			{
-				return "Indikuje smazaný záznam.";
-			}
+				if (column.Name == "Nazev")
+				{
+					return "Název.";
+				}
 
-			if (IsDeletedColumn(column))
-			{
-				return "Čas smazání objektu.";
-			}
+				if (IsDeletedColumn(column) && column.DataType.SqlDataType == SqlDataType.Bit)
+				{
+					return "Indikuje smazaný záznam.";
+				}
 
-			if (column.Name == "Created")
-			{
-				return "Čas vytvoření objektu.";
-			}
+				if (IsDeletedColumn(column))
+				{
+					return "Čas smazání objektu.";
+				}
 
-			if (column.Name == "CreatedBy")
-			{
-				return "Zakladatel objektu.";
-			}
+				if (column.Name == "Created")
+				{
+					return "Čas vytvoření objektu.";
+				}
 
-			if (column.Name == "Symbol")
-			{
-				return "Symbol.";
+				if (column.Name == "CreatedBy")
+				{
+					return "Zakladatel objektu.";
+				}
+
+				if (column.Name == "Symbol")
+				{
+					return "Symbol.";
+				}
 			}
 
 			return null;

@@ -667,7 +667,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		/// Vrátí desctiption k tabulce, 
 		/// pro tabulku "Language" a lokalizační tabulky vrací výchozí hodnotu, pokud description neexistuje.
 		/// </summary>
-		public static string GetDescription(Table table)
+		public static string GetDescription(Table table, bool suppressDefaults = false)
 		{
 			string description = ExtendedPropertiesHelper.GetDescription(ExtendedPropertiesKey.FromTable(table));
 
@@ -676,14 +676,17 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 				return description;
 			}
 
-			if (LanguageHelper.IsLanguageTable(table))
+			if (!suppressDefaults)
 			{
-				return "Jazyk (lokalizace).";
-			}
+				if (LanguageHelper.IsLanguageTable(table))
+				{
+					return "Jazyk (lokalizace).";
+				}
 
-			if (LocalizationHelper.IsLocalizationTable(table))
-			{
-				return String.Format("Lokalizace objektu {0}.", ClassHelper.GetClassFullName(LocalizationHelper.GetLocalizationParentTable(table)));
+				if (LocalizationHelper.IsLocalizationTable(table))
+				{
+					return String.Format("Lokalizace objektu {0}.", ClassHelper.GetClassFullName(LocalizationHelper.GetLocalizationParentTable(table)));
+				}
 			}
 
 			return null;

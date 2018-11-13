@@ -164,7 +164,8 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 		{
 			foreach (INavigation navigationProperty in entityType.GetNavigations())
 			{
-				if (navigationProperty.ForeignKey.Properties.Any(item => item.IsShadowProperty))
+				// Pro Owned types nemůžeme mít cizí klíč (Bug 41479).
+				if ((!navigationProperty.ForeignKey.IsOwnership) && navigationProperty.ForeignKey.Properties.Any(item => item.IsShadowProperty))
 				{
 					yield return $"Class {entityType.ClrType.Name} has a navigation property {navigationProperty.Name} with no foreign key.";
 				}

@@ -234,6 +234,20 @@ namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation
 		}
 
 		[TestMethod]
+		public void ModelValidator_CheckNavigationPropertiesHaveForeignKeys_DoNotReportsOwnedTypes()
+		{
+			// Arrange
+			ModelValidatingDbContext modelValidatingDbContext = new ModelValidatingDbContext();
+			ModelValidator modelValidator = new ModelValidator();
+
+			// Act
+			string[] errorsMoreInvalidKeysClass = modelValidator.CheckNavigationPropertiesHaveForeignKeys(modelValidatingDbContext.Model.FindEntityType(typeof(NavigationPropertyByOwnedType))).ToArray();
+
+			// Assert			
+			Assert.IsFalse(errorsMoreInvalidKeysClass.Any(item => item.Contains("no foreign key")));
+		}
+
+		[TestMethod]
 		public void ModelValidator_CheckNavigationPropertiesHaveForeignKeys_DoesNotReportNavigationPropertyWithForeignKey()
 		{
 			// Arrange

@@ -112,8 +112,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks
 		/// </summary>
 		protected internal virtual void AfterCommit()
 		{
-			afterCommits?.ForEach(item => item.Invoke());
+			List<Action> registeredAfterCommitActiond = afterCommits;
+			// Neprve vyčistíme afterCommits, pak je teprve spustíme.
+			// Tím umožníme rekurzivní volání Commitu (resp. volání Commitu z AfterCommitAction), při opačném pořadí (nejdřív spustit, pak vyčistit) dojde k zacyklení.
 			afterCommits = null;
+			registeredAfterCommitActiond?.ForEach(item => item.Invoke());
 		}
 
 		/// <summary>

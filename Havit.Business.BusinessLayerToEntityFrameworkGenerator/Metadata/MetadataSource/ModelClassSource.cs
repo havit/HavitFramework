@@ -120,12 +120,6 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata.Metada
 
 			foreach (Column column in table.Columns.Cast<Column>().Where(c => !c.InPrimaryKey))
 			{
-				if (column.Name == "PropertyName")
-				{
-					// PropertyName is column for enum tables, it's handled further below (PropertyName -> Symbol)
-					continue;
-				}
-
 				var entityProperty = new EntityProperty
 				{
 					Column = column,
@@ -180,18 +174,6 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata.Metada
 					modelClass.ForeignKeys.Add(fk);
 					modelClass.Properties.Add(fkProperty);
 				}
-			}
-
-			Column symbolColumn = table.Columns["PropertyName"];
-			if (symbolColumn != null)
-			{
-				var symbolProperty = new EntityProperty
-				{
-					Column = symbolColumn,
-					Name = "Symbol",
-					TypeName = "string"
-				};
-				modelClass.Properties.Add(symbolProperty);
 			}
 		}
 

@@ -263,10 +263,6 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 				Column column = entityProperty.Column;
 
 				string description = ColumnHelper.GetDescription(entityProperty.Column);
-				if (column.Name == "PropertyName")
-				{
-					description = "Symbol.";
-				}
 
 				writer.WriteCommentSummary(description);
 				string accesssModifierText = "public"; //PropertyHelper.GetPropertyAccessModifier(column);

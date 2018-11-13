@@ -262,11 +262,13 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 			{
 				Column column = entityProperty.Column;
 
+				if (PropertyHelper.IsString(column) && (column.DataType.SqlDataType != SqlDataType.NVarChar) && (column.DataType.SqlDataType != SqlDataType.NVarCharMax))
+				{
+					ConsoleHelper.WriteLineWarning(String.Format("Tabulka {0} obsahuje sloupec {1} s nepodporovaným typem {2}.",
+						table.Name, column.Name, column.DataType));
+				}
+
 				string description = ColumnHelper.GetDescription(entityProperty.Column, suppressDefaults: true);
-				//if (column.Name == "PropertyName")
-				//{
-				//	description = "Symbol.";
-				//}
 
 				writer.WriteCommentSummary(description);
 				string accesssModifierText = "public"; //PropertyHelper.GetPropertyAccessModifier(column);

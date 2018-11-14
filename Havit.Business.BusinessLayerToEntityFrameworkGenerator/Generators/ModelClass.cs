@@ -185,11 +185,6 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 				writer.WriteLine(attributeBuilder.ToString());
 			}
 
-			if (TableHelper.GetBoolExtendedProperty(modelClass.Table, "GenerateIndexes") == false)
-			{
-				writer.WriteLine("[GenerateIndexes(false)]");
-			}
-
 			string businessObjectBaseType = TableHelper.GetStringExtendedProperty(modelClass.Table, "BusinessObjectBaseType");
 			if (!string.IsNullOrEmpty(businessObjectBaseType))
 			{
@@ -261,12 +256,6 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 			foreach (EntityProperty entityProperty in modelClass.GetColumnProperties().Where(prop => !prop.Column.InPrimaryKey))
 			{
 				Column column = entityProperty.Column;
-
-				if (PropertyHelper.IsString(column) && (column.DataType.SqlDataType != SqlDataType.NVarChar) && (column.DataType.SqlDataType != SqlDataType.NVarCharMax))
-				{
-					ConsoleHelper.WriteLineWarning(String.Format("Tabulka {0} obsahuje sloupec {1} s nepodporovaným typem {2}.",
-						table.Name, column.Name, column.DataType));
-				}
 
 				string description = ColumnHelper.GetDescription(entityProperty.Column, suppressDefaults: true);
 

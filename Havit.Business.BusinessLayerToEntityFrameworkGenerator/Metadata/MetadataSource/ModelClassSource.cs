@@ -28,10 +28,29 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata.Metada
 
 				ConsoleHelper.WriteLineInfo(table.Name);
 
+				CheckRules(table);
+
 				modelClasses.Add(GetModelClass(table));
 			}
 
 			return modelClasses;
+		}
+
+		private void CheckRules(Table table)
+		{
+			if (!TableHelper.GetGenerateIndexes(table))
+			{
+				ConsoleHelper.WriteLineWarning(String.Format("Tabulka {0} má vypnuto generování indexů, což není podporováno.", table.Name));
+			}
+
+			foreach (Column column in table.Columns)
+			{
+				if (PropertyHelper.IsString(column) && (column.DataType.SqlDataType != SqlDataType.NVarChar) && (column.DataType.SqlDataType != SqlDataType.NVarCharMax))
+				{
+					ConsoleHelper.WriteLineWarning(String.Format("Tabulka {0} obsahuje sloupec {1} s nepodporovaným typem {2}.",
+						table.Name, column.Name, column.DataType));
+				}
+			}
 		}
 
 		private static GeneratedModelClass GetModelClass(Table table)

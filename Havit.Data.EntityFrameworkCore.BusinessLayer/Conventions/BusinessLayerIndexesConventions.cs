@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.Metadata;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata;
 using Havit.Data.EntityFrameworkCore.Conventions;
 using Havit.Data.EntityFrameworkCore.Metadata;
@@ -33,10 +32,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
             {
 				RenameForeignKeyIndexes(entityType.GetForeignKeys());
 
-	            if (ShouldGenerateIndexes(entityType.ClrType))
-	            {
-		            AddTableIndexes(entityType);
-	            }
+		        AddTableIndexes(entityType);
             }
         }
 
@@ -44,8 +40,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
         {
             IMutableProperty deletedProperty = entityType.GetDeletedProperty();
 
-            foreach (IMutableProperty property in entityType.GetNotIgnoredProperties()
-                .Where(p => ShouldGenerateIndexes(p.PropertyInfo)))
+            foreach (IMutableProperty property in entityType.GetNotIgnoredProperties())
             {
                 if (property.IsPrimaryKey() || !property.IsForeignKey())
                 {
@@ -150,7 +145,5 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
                 index.Relational().Name = "FKX_" + index.Relational().Name.Substring(3);
             }
         }
-
-	    private static bool ShouldGenerateIndexes(MemberInfo memberInfo) => memberInfo.GetCustomAttribute<GenerateIndexesAttribute>()?.GenerateIndexes ?? true;
     }
 }

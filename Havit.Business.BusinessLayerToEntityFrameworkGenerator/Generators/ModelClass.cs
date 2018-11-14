@@ -191,6 +191,11 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 				writer.WriteLine($"[BusinessObjectBaseType(\"{businessObjectBaseType}\")]");
 			}
 
+			if (TableHelper.GetCreateObjectAccessModifier(modelClass.Table) != "public")
+			{
+				writer.WriteLine(String.Format("[CreateObjectAccessModifier(\"{0}\")]", TableHelper.GetCreateObjectAccessModifier(modelClass.Table)));
+			}
+
 			if (TableHelper.GetBoolExtendedProperty(modelClass.Table, "CloneMethod") == true)
 			{
 				var attributeBuilder = new AttributeStringBuilder("CloneMethod");

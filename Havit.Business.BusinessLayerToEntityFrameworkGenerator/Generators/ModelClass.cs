@@ -62,7 +62,6 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 			writer.WriteLine("using System.Linq;");
 			writer.WriteLine("using System.Text;");
 			writer.WriteLine("using Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProperties;");
-			writer.WriteLine("using Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.Metadata;");
 			writer.WriteLine("using ReadOnlyAttribute = Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProperties.ReadOnlyAttribute;");
 
 			if (LocalizationHelper.IsLocalizationTable(modelClass.Table) || LocalizationHelper.IsLocalizedTable(modelClass.Table))
@@ -77,7 +76,6 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 
 			writer.WriteLine();
 		}
-
 		#endregion
 
 		#region WriteEnumClassMembers
@@ -298,10 +296,9 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 					writer.WriteLine($"[CloneMode(CloneMode.{cloneMode.ToString()})]");
 				}
 
-				// Generate HasDefaultValueSql. For String columns, generate only if if default is not empty (we use convention for such columns)
-				if ((column.DefaultConstraint != null) && (type != typeof(string) || (column.DefaultConstraint.Text != "('')")))
+				if ((column.DefaultConstraint != null) && ((type != typeof(string)) || (column.DefaultConstraint.Text != "('')")))
 				{
-					string defaultValue = new DefaultValueParser().GetDefaultValue(column);
+					string defaultValue = column.DefaultConstraint.Text;
 
 					writer.WriteLine($"[DefaultValue(\"{defaultValue}\")]");
 				}
@@ -310,11 +307,6 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 				{
 					int maxLength = column.DataType.MaximumLength;
 					writer.WriteLine((maxLength == -1) ? "[MaxLength(Int32.MaxValue)]" : $"[MaxLength({maxLength})]");
-
-					//if (column.Nullable)
-					//{
-					//	writer.WriteLine("[Required(AllowEmptyStrings = true)]");					
-					//}
 				}
 
 				string columnType = null;

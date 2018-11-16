@@ -173,6 +173,83 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Conventions
 			}
 		}
 
+		[TestClass]
+		public class ForeignKeyPropertyWithXmlComment_ForeignKeyPropertyHasCorrectMsDescription
+		{
+			/// <summary>
+			/// A comment
+			/// </summary>
+			private class Parent
+			{
+				public int Id { get; set; }
+
+				public List<Child> Children { get; set; }
+			}
+
+			/// <summary>
+			/// Child class comment
+			/// </summary>
+			private class Child
+			{
+				public int Id { get; set; }
+
+				public Parent Parent { get; set; }
+
+				/// <summary>
+				/// Parent comment FK
+				/// </summary>
+				public int ParentId { get; set; }
+			}
+
+			[TestMethod]
+			public void Test()
+			{
+				var context = new EndToEndDbContext<Parent>();
+
+				var entityType = context.Model.FindEntityType(typeof(Child));
+
+				Assert.AreEqual("Parent comment FK", entityType.FindProperty(nameof(Child.ParentId)).GetStringExtendedProperty(MsDescriptionExtendedProperty));
+			}
+		}
+
+		[TestClass]
+		public class LocalizationsNavigationPropertyWithXmlComment_NoMsDescriptionDefined
+		{
+			/// <summary>
+			/// A comment
+			/// </summary>
+			private class Parent
+			{
+				public int Id { get; set; }
+
+				/// <summary>
+				/// Localizations of Parent entity
+				/// </summary>
+				public List<ParentLocalization> Localizations { get; set; }
+			}
+
+			/// <summary>
+			/// Child class comment
+			/// </summary>
+			private class ParentLocalization
+			{
+				public int Id { get; set; }
+
+				public Parent Parent { get; set; }
+				public int ParentId { get; set; }
+			}
+
+			[TestMethod]
+			public void Test()
+			{
+				var context = new EndToEndDbContext<Parent>();
+
+				var entityType = context.Model.FindEntityType(typeof(Parent));
+
+				Assert.IsNull(entityType.GetStringExtendedProperty($"Collection_{nameof(Parent.Localizations)}_Description"));
+			}
+		}
+
 		private class EndToEndDbContext<TEntity> : TestDbContext
 			where TEntity : class
 		{

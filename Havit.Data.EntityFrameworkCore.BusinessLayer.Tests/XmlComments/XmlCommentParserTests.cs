@@ -92,7 +92,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments
 
 			var personType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person");
 			XmlCommentMember firstNameProperty = personType.Properties.FirstOrDefault(p => p.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person.FirstName");
-			Assert.IsNotNull(firstNameProperty.Summary, "First name");
+			Assert.AreEqual("First name", firstNameProperty.Summary.Trim());
 		}
 
 		private static XDocument ParseXmlFile()

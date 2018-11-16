@@ -59,8 +59,11 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Helpers
 
 	    public static string GetPropertyTypeName(Column column)
 	    {
-		    string typeName = BusinessLayerGenerator.Helpers.TypeHelper.GetPropertyTypeName(column);
-		    if (typeName == "XmlDocument")
+			string typeName = !BusinessLayerGenerator.Helpers.TypeHelper.IsNonstandardType(column)
+					? BusinessLayerGenerator.Helpers.TypeHelper.GetPropertyTypeName(column)
+					: BusinessLayerGenerator.Helpers.TypeHelper.GetFieldSystemTypeName(column);
+
+			if (typeName == "XmlDocument")
 		    {
 			    return "string";
 		    }

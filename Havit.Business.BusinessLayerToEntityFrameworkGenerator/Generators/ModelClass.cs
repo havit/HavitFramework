@@ -312,7 +312,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 					int maxLength = column.DataType.MaximumLength;
 					writer.WriteLine((maxLength == -1) ? "[MaxLength(Int32.MaxValue)]" : $"[MaxLength({maxLength})]");
 				}
-
+				
 				string columnType = null;
 
 				if (BusinessLayerGenerator.Helpers.TypeHelper.IsDateOnly(column.DataType))
@@ -345,6 +345,11 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 				if (columnType != null)
 				{
 					writer.WriteLine($"[Column(TypeName = \"{columnType}\")]");
+				}
+
+				if (BusinessLayerGenerator.Helpers.TypeHelper.IsNonstandardType(column))
+				{
+					writer.WriteLine($"[PropertyType(\"{BusinessLayerGenerator.Helpers.TypeHelper.GetPropertyTypeName(column)}\")]");
 				}
 
 				writer.WriteLine(String.Format("{0} {1} {2} {{ get; set; }}", accesssModifierText, entityProperty.TypeName, entityProperty.Name));

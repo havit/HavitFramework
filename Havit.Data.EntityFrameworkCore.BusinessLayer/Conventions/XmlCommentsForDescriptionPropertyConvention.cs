@@ -78,7 +78,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 						var fk = entityType.FindForeignKeys(property).FirstOrDefault();
 						if (fk?.DependentToPrincipal != null)
 						{
-							xmlCommentMember = xmlCommentType.Properties.FirstOrDefault(p => p.Name.EndsWith(fk.DependentToPrincipal.PropertyInfo.Name));
+							xmlCommentMember = xmlCommentType.Properties.FirstOrDefault(p => p.Name == (xmlCommentType.Name + "." + fk.DependentToPrincipal.PropertyInfo.Name));
 						}
 					}
 
@@ -99,7 +99,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 						continue;
 					}
 
-					XmlCommentMember xmlCommentCollection = xmlCommentType.Properties.FirstOrDefault(p => p.Name.EndsWith(collection.PropertyInfo.Name));
+					XmlCommentMember xmlCommentCollection = xmlCommentType.Properties.FirstOrDefault(p => p.Name == (xmlCommentType.Name + "." + collection.PropertyInfo.Name));
 
 					if (xmlCommentCollection != null)
 					{

@@ -48,6 +48,131 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Conventions
 			}
 		}
 
+		[TestClass]
+		public class PrimaryKeyPropertyWithXmlComment_PropertyHasCorrectMsDescription
+		{
+			/// <summary>
+			/// A comment
+			/// </summary>
+			private class AClass
+			{
+				/// <summary>
+				/// Primary key
+				/// </summary>
+				public int Id { get; set; }
+			}
+
+			[TestMethod]
+			public void Test()
+			{
+				var context = new EndToEndDbContext<AClass>();
+
+				var entityType = context.Model.FindEntityType(typeof(AClass));
+
+				Assert.AreEqual("Primary key", entityType.FindProperty(nameof(AClass.Id)).GetStringExtendedProperty(MsDescriptionExtendedProperty));
+			}
+		}
+
+		[TestClass]
+		public class RegularPropertyWithXmlComment_PropertyHasCorrectMsDescription
+		{
+			/// <summary>
+			/// A comment
+			/// </summary>
+			private class AClass
+			{
+				public int Id { get; set; }
+
+				/// <summary>
+				/// Some comment
+				/// </summary>
+				public string Name { get; set; }
+			}
+
+			[TestMethod]
+			public void Test()
+			{
+				var context = new EndToEndDbContext<AClass>();
+
+				var entityType = context.Model.FindEntityType(typeof(AClass));
+
+				Assert.AreEqual("Some comment", entityType.FindProperty(nameof(AClass.Name)).GetStringExtendedProperty(MsDescriptionExtendedProperty));
+			}
+		}
+
+		[TestClass]
+		public class NavigationPropertyWithXmlComment_CollectionHasCorrectMsDescription
+		{
+			/// <summary>
+			/// A comment
+			/// </summary>
+			private class Parent
+			{
+				public int Id { get; set; }
+
+				/// <summary>
+				/// Some comment for collection
+				/// </summary>
+				public List<Child> Children { get; set; }
+			}
+
+			private class Child
+			{
+				public int Id { get; set; }
+
+				public Parent Parent { get; set; }
+				public int ParentId { get; set; }
+			}
+
+			[TestMethod]
+			public void Test()
+			{
+				var context = new EndToEndDbContext<Parent>();
+
+				var entityType = context.Model.FindEntityType(typeof(Parent));
+
+				Assert.AreEqual("Some comment for collection", entityType.GetStringExtendedProperty($"Collection_{nameof(Parent.Children)}_Description"));
+			}
+		}
+
+		[TestClass]
+		public class NavigationPropertyWithXmlComment_ForeignKeyPropertyHasCorrectMsDescription
+		{
+			/// <summary>
+			/// A comment
+			/// </summary>
+			private class Parent
+			{
+				public int Id { get; set; }
+
+				public List<Child> Children { get; set; }
+			}
+
+			/// <summary>
+			/// Child class comment
+			/// </summary>
+			private class Child
+			{
+				public int Id { get; set; }
+
+				/// <summary>
+				/// Parent comment
+				/// </summary>
+				public Parent Parent { get; set; }
+				public int ParentId { get; set; }
+			}
+
+			[TestMethod]
+			public void Test()
+			{
+				var context = new EndToEndDbContext<Parent>();
+
+				var entityType = context.Model.FindEntityType(typeof(Child));
+
+				Assert.AreEqual("Parent comment", entityType.FindProperty(nameof(Child.ParentId)).GetStringExtendedProperty(MsDescriptionExtendedProperty));
+			}
+		}
+
 		private class EndToEndDbContext<TEntity> : TestDbContext
 			where TEntity : class
 		{

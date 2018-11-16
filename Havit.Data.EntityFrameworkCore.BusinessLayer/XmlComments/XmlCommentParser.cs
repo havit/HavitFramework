@@ -26,21 +26,18 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.XmlComments
 				var xmlPropertyType = new XmlCommentMember(propertyFullName);
 				xmlPropertyType.Tags.AddRange(propertyElement.Elements().Select(e => new XmlMemberTag(e.Name.LocalName, e.Value)));
 
-				var currentTypeCandidate = xmlPropertyType.Name;
-				while (currentTypeCandidate.Length > 0)
+				int lastDotIndex = xmlPropertyType.Name.LastIndexOf('.');
+				if (lastDotIndex == -1)
 				{
-					int lastDotIndex = currentTypeCandidate.LastIndexOf('.');
-					if (lastDotIndex == -1)
-					{
-						break;
-					}
-					currentTypeCandidate = currentTypeCandidate.Substring(0, lastDotIndex);
+					Console.WriteLine($"Property '{propertyFullName}' (XML) has not any matching any parent type, skipping");
+					continue;
+				}
 
-					if (types.TryGetValue(currentTypeCandidate, out XmlCommentType xmlCommentType))
-					{
-						xmlCommentType.Properties.Add(xmlPropertyType);
-						break;
-					}
+				var currentTypeCandidate = propertyFullName.Substring(0, lastDotIndex);
+
+				if (types.TryGetValue(currentTypeCandidate, out XmlCommentType xmlCommentType))
+				{
+					xmlCommentType.Properties.Add(xmlPropertyType);
 				}
 			}
 

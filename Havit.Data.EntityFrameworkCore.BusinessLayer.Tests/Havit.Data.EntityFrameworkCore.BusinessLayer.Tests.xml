@@ -9,6 +9,51 @@
             A comment
             </summary>
         </member>
+        <member name="T:Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Conventions.XmlCommentsForDescriptionPropertyConventionTests.PrimaryKeyPropertyWithXmlComment_PropertyHasCorrectMsDescription.AClass">
+            <summary>
+            A comment
+            </summary>
+        </member>
+        <member name="P:Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Conventions.XmlCommentsForDescriptionPropertyConventionTests.PrimaryKeyPropertyWithXmlComment_PropertyHasCorrectMsDescription.AClass.Id">
+            <summary>
+            Primary key
+            </summary>
+        </member>
+        <member name="T:Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Conventions.XmlCommentsForDescriptionPropertyConventionTests.RegularPropertyWithXmlComment_PropertyHasCorrectMsDescription.AClass">
+            <summary>
+            A comment
+            </summary>
+        </member>
+        <member name="P:Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Conventions.XmlCommentsForDescriptionPropertyConventionTests.RegularPropertyWithXmlComment_PropertyHasCorrectMsDescription.AClass.Name">
+            <summary>
+            Some comment
+            </summary>
+        </member>
+        <member name="T:Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Conventions.XmlCommentsForDescriptionPropertyConventionTests.NavigationPropertyWithXmlComment_CollectionHasCorrectMsDescription.Parent">
+            <summary>
+            A comment
+            </summary>
+        </member>
+        <member name="P:Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Conventions.XmlCommentsForDescriptionPropertyConventionTests.NavigationPropertyWithXmlComment_CollectionHasCorrectMsDescription.Parent.Children">
+            <summary>
+            Some comment for collection
+            </summary>
+        </member>
+        <member name="T:Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Conventions.XmlCommentsForDescriptionPropertyConventionTests.NavigationPropertyWithXmlComment_ForeignKeyPropertyHasCorrectMsDescription.Parent">
+            <summary>
+            A comment
+            </summary>
+        </member>
+        <member name="T:Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Conventions.XmlCommentsForDescriptionPropertyConventionTests.NavigationPropertyWithXmlComment_ForeignKeyPropertyHasCorrectMsDescription.Child">
+            <summary>
+            Child class comment
+            </summary>
+        </member>
+        <member name="P:Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Conventions.XmlCommentsForDescriptionPropertyConventionTests.NavigationPropertyWithXmlComment_ForeignKeyPropertyHasCorrectMsDescription.Child.Parent">
+            <summary>
+            Parent comment
+            </summary>
+        </member>
         <member name="T:Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Conventions.XmlTestEntity">
             <summary>
             A comment

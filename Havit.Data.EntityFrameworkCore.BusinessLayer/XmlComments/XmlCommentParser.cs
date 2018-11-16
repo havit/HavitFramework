@@ -35,10 +35,14 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.XmlComments
 
 				var currentTypeCandidate = propertyFullName.Substring(0, lastDotIndex);
 
-				if (types.TryGetValue(currentTypeCandidate, out XmlCommentType xmlCommentType))
+				if (!types.TryGetValue(currentTypeCandidate, out XmlCommentType xmlCommentType))
 				{
-					xmlCommentType.Properties.Add(xmlPropertyType);
+					// create "shadow type" for this property (and any other down the road). This type won't have any tags and clients should be aware of this.
+					xmlCommentType = new XmlCommentType(currentTypeCandidate);
+					types.Add(currentTypeCandidate, xmlCommentType);
 				}
+
+				xmlCommentType.Properties.Add(xmlPropertyType);
 			}
 
 			XmlCommentFile xmlCommentFile = new XmlCommentFile();

@@ -66,10 +66,14 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 					continue;
 				}
 
-				entityType.AddExtendedProperties(new Dictionary<string, string>
+				// XmlCommentType can be "shadow type" - i.e. it has no tags on its own (and does not exist in source XML file)
+				if (!string.IsNullOrWhiteSpace(xmlCommentType.Summary))
 				{
-					{ MsDescriptionExtendedProperty, EncodeValue(xmlCommentType.Summary) }
-				});
+					entityType.AddExtendedProperties(new Dictionary<string, string>
+					{
+						{ MsDescriptionExtendedProperty, EncodeValue(xmlCommentType.Summary) }
+					});
+				}
 
 				foreach (IMutableProperty property in entityType.GetProperties())
 				{

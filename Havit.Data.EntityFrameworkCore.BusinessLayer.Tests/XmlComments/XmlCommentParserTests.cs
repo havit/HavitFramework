@@ -99,6 +99,21 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments
 			Assert.AreEqual("First name", firstNameProperty.Summary.Trim());
 		}
 
+		/// <summary>
+		/// Scenario with parent class having no XML comment (Bug 41564)
+		/// </summary>
+		[TestMethod]
+		public void XmlCommentParser_ParseFile_LoginAccountClassPropertyHasCorrectSummary()
+		{
+			var parser = new XmlCommentParser();
+
+			var xmlCommentFile = parser.ParseFile(ParseXmlFile());
+
+			var loginAccountType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.LoginAccount");
+			XmlCommentMember userNameProperty = loginAccountType.Properties.FirstOrDefault(p => p.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.LoginAccount.Username");
+			Assert.AreEqual(userNameProperty.Summary.Trim(), "LoginAccount's user name");
+		}
+
 		private static XDocument ParseXmlFile()
 		{
 			try

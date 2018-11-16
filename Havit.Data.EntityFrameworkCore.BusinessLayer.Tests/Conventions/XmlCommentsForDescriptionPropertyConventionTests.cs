@@ -250,6 +250,60 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Conventions
 			}
 		}
 
+		/// <summary>
+		/// Scenario with parent class having no XML comment (Bug 41564)
+		/// </summary>
+		[TestClass]
+		public class ParentClassWithoutXmlComment_RegularPropertyWithXmlComment_PropertyHasCorrectMsDescription
+		{
+			private class AClass
+			{
+				public int Id { get; set; }
+
+				/// <summary>
+				/// Short comment
+				/// </summary>
+				public string Name { get; set; }
+			}
+
+			[TestMethod]
+			public void Test()
+			{
+				var context = new EndToEndDbContext<AClass>();
+
+				var entityType = context.Model.FindEntityType(typeof(AClass));
+
+				Assert.AreEqual("Short comment", entityType.FindProperty(nameof(AClass.Name)).GetStringExtendedProperty(MsDescriptionExtendedProperty));
+			}
+		}
+
+		/// <summary>
+		/// Scenario with parent class having no XML comment (Bug 41564)
+		/// </summary>
+		[TestClass]
+		public class ParentClassWithoutXmlComment_RegularPropertyWithXmlComment_ParentClassHasNoMsDescription
+		{
+			private class AClass
+			{
+				public int Id { get; set; }
+
+				/// <summary>
+				/// Short comment
+				/// </summary>
+				public string Name { get; set; }
+			}
+
+			[TestMethod]
+			public void Test()
+			{
+				var context = new EndToEndDbContext<AClass>();
+
+				var entityType = context.Model.FindEntityType(typeof(AClass));
+
+				Assert.IsNull(entityType.GetStringExtendedProperty(MsDescriptionExtendedProperty));
+			}
+		}
+
 		private class EndToEndDbContext<TEntity> : TestDbContext
 			where TEntity : class
 		{

@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Havit.Data.EntityFrameworkCore.BusinessLayer.Tests</name>
+    </assembly>
+    <members>
+        <member name="T:Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Conventions.XmlCommentsForDescriptionPropertyConventionTests.NestedTypeWithXmlComment_EntityHasCorrectMsDescription.NestedType">
+            <summary>
+            A comment
+            </summary>
+        </member>
+        <member name="T:Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Conventions.XmlTestEntity">
+            <summary>
+            A comment
+            </summary>
+        </member>
+        <member name="T:Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Location">
+            <summary>
+            Location object
+            </summary>
+        </member>
+        <member name="P:Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Location.Id">
+            <summary>
+            Primary key of <see cref="T:Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Location"/> object.
+            </summary>
+        </member>
+        <member name="T:Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person">
+            <summary>
+            Person object
+            </summary>
+        </member>
+        <member name="P:Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person.Id">
+            <summary>
+            Primary key of <see cref="T:Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person"/> object.
+            </summary>
+        </member>
+        <member name="P:Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person.FirstName">
+            <summary>
+            First name
+            </summary>
+        </member>
+        <member name="P:Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person.LastName">
+            <summary>
+            Last name
+            </summary>
+        </member>
+        <member name="P:Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person.Birthday">
+            <summary>
+            Birthday of the person.
+            </summary>
+        </member>
+        <member name="T:Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.PersonLocation">
+            <summary>
+            Location of a person.
+            </summary>
+        </member>
+        <member name="P:Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.PersonLocation.Id">
+            <summary>
+            Primary key of <see cref="T:Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.PersonLocation"/> entity.
+            </summary>
+        </member>
+        <member name="P:Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.PersonLocation.Person">
+            <summary>
+            Navigation property for <see cref="P:Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.PersonLocation.Person"/> entity.
+            </summary>
+        </member>
+        <member name="P:Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.PersonLocation.PersonId">
+            <summary>
+            Primary key of <see cref="P:Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.PersonLocation.Person"/> entity.
+            </summary>
+        </member>
+        <member name="P:Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.PersonLocation.Location">
+            <summary>
+            Navigation property for <see cref="P:Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.PersonLocation.Location"/> entity.
+            </summary>
+        </member>
+        <member name="P:Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.PersonLocation.LocationId">
+            <summary>
+            Primary key <see cref="P:Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.PersonLocation.Location"/> entity.
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -22,7 +22,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 	/// </summary>
 	public class XmlCommentsForDescriptionPropertyConvention : IModelConvention
 	{
-		private const string MsDescriptionExtendedProperty = "MS_Description";
+		internal const string MsDescriptionExtendedProperty = "MS_Description";
 
 		/// <inheritdoc />
 		public void Apply(ModelBuilder modelBuilder)
@@ -59,7 +59,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 		{
 			foreach (IMutableEntityType entityType in entities)
 			{
-				XmlCommentType xmlCommentType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == entityType.ClrType.FullName);
+				string preprocessedTypeName = entityType.ClrType.FullName.Replace('+', '.');
+				XmlCommentType xmlCommentType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == preprocessedTypeName);
 				if (xmlCommentType == null)
 				{
 					continue;

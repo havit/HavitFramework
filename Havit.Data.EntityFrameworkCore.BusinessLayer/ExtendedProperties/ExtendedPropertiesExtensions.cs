@@ -5,6 +5,7 @@ using Havit.Data.EntityFrameworkCore.BusinessLayer.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Metadata;
 using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -18,7 +19,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 			optionsBuilder.Options.GetExtension<CompositeMigrationsSqlGeneratorExtension>().WithGeneratorType<ExtendedPropertiesMigrationOperationSqlGenerator>();
 		}
 
-		public static IDictionary<string, string> GetExtendedProperties(this IMutableAnnotatable annotatable)
+		public static IDictionary<string, string> GetExtendedProperties(this IAnnotatable annotatable)
 		{
 			Contract.Requires<ArgumentNullException>(annotatable != null);
 
@@ -26,13 +27,13 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 				.ToDictionary(ExtendedPropertiesAnnotationsHelper.ParseAnnotationName, a => (string)a.Value);
 	    }
 
-		public static string GetStringExtendedProperty(this IMutableAnnotatable annotatable, string key)
+		public static string GetStringExtendedProperty(this IAnnotatable annotatable, string key)
 		{
 			GetExtendedProperties(annotatable).TryGetValue(key, out string value);
 			return value;
 		}
 
-	    public static bool? GetBoolExtendedProperty(this IMutableAnnotatable annotatable, string key)
+	    public static bool? GetBoolExtendedProperty(this IAnnotatable annotatable, string key)
 	    {
 	        if (!GetExtendedProperties(annotatable).TryGetValue(key, out string value))
 	        {

@@ -41,7 +41,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments
 
 			var xmlCommentFile = parser.ParseFile(ParseXmlFile());
 
-			XmlCommentType personType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person");
+			var personType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person");
 			Assert.AreEqual(1, personType.Tags.Count);
 		}
 
@@ -52,7 +52,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments
 
 			var xmlCommentFile = parser.ParseFile(ParseXmlFile());
 
-			XmlCommentType personType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person");
+			var personType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person");
 			Assert.AreEqual(1, personType.Tags.Count);
 			Assert.AreEqual("summary", personType.Tags[0].Name);
 			Assert.AreEqual("Person object", personType.Tags[0].Content.Trim());
@@ -65,7 +65,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments
 
 			var xmlCommentFile = parser.ParseFile(ParseXmlFile());
 
-			XmlCommentType personType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person");
+			var personType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person");
 			Assert.AreEqual(4, personType.Properties.Count);
 		}
 
@@ -76,7 +76,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments
 
 			var xmlCommentFile = parser.ParseFile(ParseXmlFile());
 
-			XmlCommentType personType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person");
+			var personType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person");
 			Assert.IsNotNull(personType.Properties.FirstOrDefault(p => p.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person.Id"));
 			Assert.IsNotNull(personType.Properties.FirstOrDefault(p => p.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person.FirstName"));
 			Assert.IsNotNull(personType.Properties.FirstOrDefault(p => p.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person.LastName"));
@@ -90,7 +90,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments
 
 			var xmlCommentFile = parser.ParseFile(ParseXmlFile());
 
-			XmlCommentType personType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person");
+			var personType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person");
 			XmlCommentMember firstNameProperty = personType.Properties.FirstOrDefault(p => p.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person.FirstName");
 			Assert.IsNotNull(firstNameProperty.Summary, "First name");
 		}

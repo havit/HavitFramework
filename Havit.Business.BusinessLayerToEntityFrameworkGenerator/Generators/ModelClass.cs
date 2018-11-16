@@ -244,6 +244,10 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 			else
 			{
 				EntityPrimaryKeyPart pk = modelClass.PrimaryKeyParts.First();
+
+				string description = ColumnHelper.GetDescription(pk.Property.Column, suppressDefaults: true);
+				writer.WriteCommentSummary(description); // vypisuje jen neprázdné
+
 				if (ColumnHelper.GetBoolExtendedProperty(pk.Property.Column, "Ignored") == true)
 				{
 					writer.WriteLine("[Ignored]");

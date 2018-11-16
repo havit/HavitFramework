@@ -113,6 +113,9 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 			}
 		}
 
-		private static string EncodeValue(string value) => value.Trim().Replace("\n", "\\n");
+		private static string EncodeValue(string value)
+		{
+			return String.Join("\n", value.Trim().Trim('\n', '\r').Split('\n').Select(item => item.Trim()));
+		}
 	}
 }

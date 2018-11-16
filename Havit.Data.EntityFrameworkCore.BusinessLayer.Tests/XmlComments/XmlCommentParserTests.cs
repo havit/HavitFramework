@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Xml.Linq;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.XmlComments;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -11,14 +12,17 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments
 	public class XmlCommentParserTests
 	{
 		[TestMethod]
-		public void XmlCommentParser_ParseFile_ParsedFileHasCorrectNumberOfTypes()
+		public void XmlCommentParser_ParseFile_ParsedFileHasCorrectTypes()
 		{
 			var parser = new XmlCommentParser();
 
 			var xmlCommentFile = parser.ParseFile(ParseXmlFile());
 
 			Assert.IsNotNull(xmlCommentFile);
-			Assert.IsTrue(xmlCommentFile.Types.Count == 4);
+			Assert.IsNotNull(xmlCommentFile.Types.FirstOrDefault(t => t.Name == typeof(Model.Location).FullName));
+			Assert.IsNotNull(xmlCommentFile.Types.FirstOrDefault(t => t.Name == typeof(Model.PersonLocation).FullName));
+			Assert.IsNotNull(xmlCommentFile.Types.FirstOrDefault(t => t.Name == typeof(Model.Person).FullName));
+			Assert.IsNotNull(xmlCommentFile.Types.FirstOrDefault(t => t.Name == typeof(Model.LoginAccount).FullName));
 		}
 
 		[TestMethod]
@@ -99,16 +103,19 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments
 		{
 			try
 			{
-				using (Stream input = typeof(XmlCommentParserTests).Assembly.GetManifestResourceStream("Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Data.Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.xml"))
-				using (var reader = new StreamReader(input))
-				{
-					return XDocument.Parse(reader.ReadToEnd());
-				}
+				return XDocument.Parse(File.ReadAllText(GetXmlCommentsFileFromAssembly(typeof(XmlCommentParserTests).Assembly)));
 			}
 			catch (Exception ex)
 			{
 				throw new InvalidOperationException("Could not parse test XML file: " + ex.Message, ex);
 			}
+		}
+
+		private static string GetXmlCommentsFileFromAssembly(Assembly assembly)
+		{
+			var assemblyFile = new FileInfo(new Uri(assembly.Location).LocalPath);
+			var xmlFile = $"{Path.GetFileNameWithoutExtension(assemblyFile.Name)}.xml";
+			return assemblyFile.Directory?.GetFiles(xmlFile).FirstOrDefault()?.FullName;
 		}
 	}
 }

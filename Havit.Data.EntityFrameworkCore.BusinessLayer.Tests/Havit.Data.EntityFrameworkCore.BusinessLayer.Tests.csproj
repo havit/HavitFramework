@@ -8,8 +8,13 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>C:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.BusinessLayer.Tests\Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.xml</DocumentationFile>
+    <DocumentationFile>obj\Debug\net47\Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.xml</DocumentationFile>
     <NoWarn>1701;1702;CS1591</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	<DocumentationFile>obj\Release\net47\Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.xml</DocumentationFile>
+	<NoWarn>CS1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

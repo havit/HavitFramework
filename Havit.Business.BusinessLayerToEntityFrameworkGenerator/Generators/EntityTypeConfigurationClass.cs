@@ -33,6 +33,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 			bool shouldSave = WriteTablePKs(writer, modelClass);
 			// configuration directives for collections shouldn't be necessary, they're covered by EF Core conventions
 			shouldSave |= WritePrincipals(writer, modelClass);
+			shouldSave |= WriteCustomIndexes(writer, modelClass);
 			WriteNamespaceClassConstructorEnd(writer);
 
 			if (shouldSave)
@@ -191,6 +192,86 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 			}
 
 			return false;
+		}
+
+		private static bool WriteCustomIndexes(CodeWriter writer, GeneratedModelClass modelClass)
+		{
+			bool result = false;
+			foreach (Index index in modelClass.Table.Indexes)
+			{
+				// přeskakujeme indexy primárního klíče a automaticky vygenerované indexy
+				if (index.Name.StartsWith("PK_") || index.Name.StartsWith("FKX_"))
+				{
+					continue;
+				}
+
+				if (index.IsUnique && !index.Name.StartsWith("UIDX_"))
+				{
+					ConsoleHelper.WriteLineWarning(String.Format("Název unikátního indexu {0} na tabulce {1} nezačíná UIDX_.", index.Name, modelClass.Table.Name));
+				}
+
+				if (!index.IsUnique && !index.Name.StartsWith("IDX_"))
+				{
+					ConsoleHelper.WriteLineWarning(String.Format("Název indexu {0} na tabulce {1} nezačíná IDX_.", index.Name, modelClass.Table.Name));
+				}
+
+				//if (LocalizationHelper.IsLocalizationTable(modelClass.Table))
+				//{
+				//	if (index.IsUnique && (index.IndexedColumns.Count == 2)
+				//		&& index.IndexedColumns.Cast<IndexedColumn>().All(indexedColumn => !indexedColumn.IsIncluded)
+				//		&& index.IndexedColumns.Cast<IndexedColumn>().All(indexedColumn => !indexedColumn.IsIncluded)
+				//		)
+				//}
+
+				var indexedColumns = index.IndexedColumns.Cast<IndexedColumn>().Where(column => !column.IsIncluded).ToList();
+				var includedIndexedColumns = index.IndexedColumns.Cast<IndexedColumn>().Where(column => column.IsIncluded).ToList();
+
+				writer.WriteLine("builder");
+				writer.Indent();
+
+				WriteIndexesColumns(writer, modelClass, indexedColumns, ".ForSqlServerHasIndex");
+				if (includedIndexedColumns.Count > 0)
+				{
+					WriteIndexesColumns(writer, modelClass, includedIndexedColumns, ".ForSqlServerInclude");
+				}
+				if (index.IsUnique)
+				{
+					writer.WriteLine(".IsUnique()");
+				}
+				writer.WriteLine($".HasName(\"{index.Name}\");");
+				writer.Unindent();
+				writer.WriteLine();
+
+				result = true;
+			}
+
+			return result;
+		}
+
+		private static void WriteIndexesColumns(CodeWriter writer, GeneratedModelClass modelClass, System.Collections.Generic.List<IndexedColumn> indexedColumns, string code)
+		{
+			string entityCammelCase = ConventionsHelper.GetCammelCase(ClassHelper.GetClassName(modelClass.Table));
+			if (indexedColumns.Count == 1)
+			{
+				Column column = modelClass.Table.Columns[indexedColumns.Single().Name];
+				writer.WriteLine(String.Format("{0}({1} => {1}.{2})", code, entityCammelCase, PropertyHelper.GetPropertyName(column, "Id")));
+			}
+			else
+			{
+				writer.WriteLine(String.Format("{0}({1} => new", code, ConventionsHelper.GetCammelCase(ClassHelper.GetClassName(modelClass.Table))));
+				writer.WriteLine("{");
+				for (int i = 0; i < indexedColumns.Count; i++)
+				{
+					IndexedColumn indexedColumn = indexedColumns[i];
+					Column column = modelClass.Table.Columns[indexedColumn.Name];
+					writer.WriteLine(String.Format("{0}.{1}{2}",
+						entityCammelCase, //0
+						PropertyHelper.GetPropertyName(column, "Id"), // 1
+						(i < (indexedColumns.Count - 1)) ? "," : "")); // 2
+				}
+				writer.Unindent();
+				writer.WriteLine("})");
+			}
 		}
 
 		#region WriteNamespaceClassConstructorEnd

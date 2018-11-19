@@ -294,6 +294,29 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 					writer.WriteLine("[Required]");
 				}
 
+				string propertyAccessModifier = ExtendedPropertiesHelper.GetString(ExtendedPropertiesKey.FromColumn(column), "PropertyAccessModifier");
+				string getAccessModifier = ExtendedPropertiesHelper.GetString(ExtendedPropertiesKey.FromColumn(column), "GetAccessModifier");
+				string setAccessModifier = ExtendedPropertiesHelper.GetString(ExtendedPropertiesKey.FromColumn(column), "SetAccessModifier");
+				var accessModifierAttributeBuilder = new AttributeStringBuilder("AccessModifier");
+				if (!String.IsNullOrEmpty(propertyAccessModifier))
+				{
+					accessModifierAttributeBuilder.AddParameter("PropertyAccessModifier", $"\"{propertyAccessModifier}\"");
+				}
+				if (!String.IsNullOrEmpty(getAccessModifier))
+				{
+					accessModifierAttributeBuilder.AddParameter("GetAccessModifier", $"\"getAccessModifier\"");
+				}
+
+				if (!String.IsNullOrEmpty(setAccessModifier))
+				{
+					accessModifierAttributeBuilder.AddParameter("SetAccessModifier", $"\"setAccessModifier\"");
+				}
+
+				if (accessModifierAttributeBuilder.Parameters.Count > 0)
+				{
+					writer.WriteLine(accessModifierAttributeBuilder.ToString());
+				}
+
 				var cloneMode = ColumnHelper.GetCloneMode(column);
 				if (cloneMode != CloneMode.Shallow)
 				{

@@ -21,7 +21,8 @@ namespace Havit.Data.EntityFrameworkCore.Conventions
 				.Where(entityType => entityType.FindPrimaryKey() == null)
 				.Where(entityType => entityType.HasExactlyTwoPropertiesWhichAreAlsoForeignKeys()))
 			{
-				manyToManyCandidateEntityType.SetPrimaryKey(manyToManyCandidateEntityType.GetProperties().ToList().AsReadOnly());
+				// OrderBy - chceme properties v pořadí, v jakém jsou definovány v kódu (nikoliv výchozí = abecední pořadí)
+				manyToManyCandidateEntityType.SetPrimaryKey(manyToManyCandidateEntityType.GetProperties().OrderBy(property => property.DeclaringEntityType.ClrType.GetProperties().ToList().IndexOf(property.PropertyInfo)).ToList().AsReadOnly());
 			}
 		}
 	}

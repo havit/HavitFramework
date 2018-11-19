@@ -46,19 +46,28 @@ namespace Havit.Data.EntityFrameworkCore.Conventions
 		/// <summary>
 		/// Označí konvenci na entitě jako potlačenou.
 		/// </summary>
-		public static void HasConventionSuppressed<TConvention>(this EntityTypeBuilder entityTypeBuilder)
+		public static EntityTypeBuilder HasConventionSuppressed<TConvention>(this EntityTypeBuilder entityTypeBuilder)
 			where TConvention : IModelConvention
 		{
-			entityTypeBuilder.HasAnnotation(GetAnnotationName(typeof(TConvention)), "");
+			return entityTypeBuilder.HasAnnotation(GetAnnotationName(typeof(TConvention)), "");
 		}
 
 		/// <summary>
 		/// Označí konvenci na vlastnosti jako potlačenou.
 		/// </summary>
-		public static void HasConventionSuppressed<TConvention>(this PropertyBuilder propertyBuilder)
+		public static PropertyBuilder HasConventionSuppressed<TConvention>(this PropertyBuilder propertyBuilder)
 			where TConvention : IModelConvention
 		{
-			propertyBuilder.HasAnnotation(GetAnnotationName(typeof(TConvention)), "");
+			return propertyBuilder.HasAnnotation(GetAnnotationName(typeof(TConvention)), "");
+		}
+
+		/// <summary>
+		/// Označí konvenci na vlastnosti jako potlačenou.
+		/// </summary>
+		public static ReferenceCollectionBuilder HasConventionSuppressed<TConvention>(this Microsoft.EntityFrameworkCore.Metadata.Builders.ReferenceCollectionBuilder referenceCollectionBuilder)
+			where TConvention : IModelConvention
+		{
+			return referenceCollectionBuilder.HasAnnotation(GetAnnotationName(typeof(TConvention)), "");
 		}
 
 		private static void ValidateConventionType(Type conventionType)

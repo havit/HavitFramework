@@ -66,6 +66,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 			writer.WriteLine("using System.Text;");
 			writer.WriteLine("using Microsoft.EntityFrameworkCore;");
 			writer.WriteLine("using Microsoft.EntityFrameworkCore.Metadata.Builders;");
+			writer.WriteLine("using Havit.Data.EntityFrameworkCore.Conventions;");			
 			writer.WriteLine($"using {Helpers.NamingConventions.NamespaceHelper.GetNamespaceName(table, "Model")};");
 
 			writer.WriteLine();
@@ -101,16 +102,22 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 				.Where(fk => ColumnHelper.GetReferencedTable(fk.Column).ForeignKeys.Cast<ForeignKey>()
 					.Any(fk1 => fk1.Parent != table && fk1.ReferencedTable == modelClass.Table.Name))
 				.ToArray();
-			if (circularReferences.Length > 0)
-			{
-				fksToConfigure = fksToConfigure.Concat(circularReferences);
-			}
+
+			var cascadeActions = modelClass.ForeignKeys
+				.Where(fk => table.ForeignKeys.AsEnumerable()
+								.Where(item => item.Columns.Contains(fk.Column.Name))
+								.Where(item => item.DeleteAction == ForeignKeyAction.Cascade)
+								.Any())
+				.ToList();
+
+			fksToConfigure = fksToConfigure.Union(circularReferences).Union(cascadeActions).ToList();
+			
 
 			// TODO: if the check for JoinTable above is removed, need to carefully handle FKs that are part of composite PK
 			// (i.e. don't generate HasOne statements)
 			foreach (EntityForeignKey foreignKey in fksToConfigure)
 			{
-				Column column = foreignKey.Column;
+				Column column = foreignKey.Column;				
 
 				Table referencedTable = ColumnHelper.GetReferencedTable(column);
 				//if (referencedTable.Columns.Cast<Column>().Any(referencedTableColumn => // v tabulce, kam se odkazujeme existuje sloupec
@@ -147,12 +154,16 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 
 					if (!column.Nullable)
 					{
-						writer.WriteLine(".IsRequired();");
+						writer.WriteLine(".IsRequired()");
 					}
-					else
-					{
-						writer.EndPreviousStatement();
+
+					if (cascadeActions.Contains(foreignKey))
+					{ 
+						writer.WriteLine(".OnDelete(DeleteBehavior.Cascade)");
+						writer.WriteLine(".HasConventionSuppressed<CascadeDeleteToRestrictConvention>()");
 					}
+
+					writer.EndPreviousStatement();
 
 					writer.Unindent();
 					writer.WriteLine();

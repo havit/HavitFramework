@@ -16,14 +16,14 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 	/// </summary>
 	public class DbDataSeedPersister : IDataSeedPersister
 	{
-		private readonly IDbContext dbContext;
+		internal IDbContext DbContext { get; }
 
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
 		public DbDataSeedPersister(IDbContext dbContext)
 		{
-			this.dbContext = dbContext;
+			this.DbContext = dbContext;
 		}
 
 		/// <summary>
@@ -34,7 +34,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 		{
 			CheckConditions(configuration);
 
-			IDbSet<TEntity> dbSet = dbContext.Set<TEntity>();
+			IDbSet<TEntity> dbSet = DbContext.Set<TEntity>();
 			List<SeedDataPair<TEntity>> seedDataPairs = PairWithDbData(dbSet.AsQueryable(), configuration);
 			List<SeedDataPair<TEntity>> seedDataPairsToUpdate = new List<SeedDataPair<TEntity>>(seedDataPairs);
 
@@ -54,7 +54,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 			dbSet.AddRange(unpairedSeedDataPairs.Select(item => item.DbEntity).ToArray());
 			
 			DoBeforeSaveActions(configuration, seedDataPairs);
-			dbContext.SaveChanges();
+			DbContext.SaveChanges();
 			DoAfterSaveActions(configuration, seedDataPairs);
 
 			if (configuration.ChildrenSeeds != null)
@@ -74,7 +74,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 			Contract.Requires<ArgumentNullException>(configuration != null, nameof(configuration));
 			Contract.Requires<InvalidOperationException>((configuration.PairByExpressions != null) && (configuration.PairByExpressions.Count > 0), "Expression to pair object missing (missing PairBy method call).");
 
-			var entityType = dbContext.Model.FindEntityType(typeof(TEntity));
+			var entityType = DbContext.Model.FindEntityType(typeof(TEntity));
 			var propertiesForInserting = GetPropertiesForInserting(entityType).Select(item => item.PropertyInfo.Name).ToList();
 
 			Contract.Assert<InvalidOperationException>(configuration.PairByExpressions.TrueForAll(expression => propertiesForInserting.Contains(GetPropertyName(expression.Body.RemoveConvert()))), "Expression to pair object contains not supported property (only properties which can be inserted are allowed).");
@@ -225,7 +225,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 			where TEntity : class
 		{
 			// current entity type from model
-			IEntityType entityType = dbContext.Model.FindEntityType(typeof(TEntity));
+			IEntityType entityType = DbContext.Model.FindEntityType(typeof(TEntity));
 
 			List<IProperty> propertiesForInserting = GetPropertiesForInserting(entityType);
 			List<IProperty> propertiesForUpdating = GetPropertiesForUpdating<TEntity>(entityType,

@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers
 {
@@ -16,7 +17,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers
 		///		</item>
 		/// </list>
 		/// </summary>
-		IEntityPatternsInstaller RegisterDbContext<TDbContext>()
+		IEntityPatternsInstaller RegisterDbContext<TDbContext>(DbContextOptions options = null)
 			where TDbContext : class, IDbContext;
 
 		/// <summary>

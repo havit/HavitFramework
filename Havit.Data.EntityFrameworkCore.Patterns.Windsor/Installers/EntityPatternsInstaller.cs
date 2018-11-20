@@ -25,6 +25,7 @@ using Havit.Data.Patterns.Repositories;
 using Havit.Data.Patterns.UnitOfWorks;
 using Havit.Diagnostics.Contracts;
 using Havit.Model.Localizations;
+using Microsoft.EntityFrameworkCore;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers
 {
@@ -33,6 +34,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers
 	/// </summary>
 	internal class EntityPatternsInstaller : IEntityPatternsInstaller
 	{
+		/// <summary>
+		/// Název komponenty pro zaregistrování transientního DbContextu.
+		/// </summary>
+		public const string DbContextTransientComponentName = "DbContext_Transient";
+
 		private readonly IWindsorContainer container;
 		private readonly ComponentRegistrationOptions componentRegistrationOptions;
 
@@ -53,10 +59,27 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers
 		/// <summary>
 		/// Viz <see cref="IEntityPatternsInstaller"/>
 		/// </summary>
-		public IEntityPatternsInstaller RegisterDbContext<TDbContext>()
+		public IEntityPatternsInstaller RegisterDbContext<TDbContext>(DbContextOptions dbContextOptions = null)
 			where TDbContext : class, IDbContext
 		{
-			container.Register(Component.For(typeof(IDbContext)).ImplementedBy(typeof(TDbContext)).ApplyLifestyle(componentRegistrationOptions.DbContextLifestyle));
+			var defaultRegistration = Component.For(typeof(IDbContext))
+				.ImplementedBy(typeof(TDbContext))
+				.ApplyLifestyle(componentRegistrationOptions.DbContextLifestyle);
+
+			// Pro odizolování jednotlivých dataseedů od sebe zaregistrujeme též t
+			var transientRegistration = Component.For(typeof(IDbContext))
+				.ImplementedBy(typeof(TDbContext))
+				.LifestyleTransient()
+				.Named(DbContextTransientComponentName);
+
+			if (dbContextOptions != null)
+			{
+				defaultRegistration = defaultRegistration.DependsOn(Dependency.OnValue("options", dbContextOptions));
+				transientRegistration = transientRegistration.DependsOn(Dependency.OnValue("options", dbContextOptions));
+			}
+
+			container.Register(defaultRegistration, transientRegistration);
+
 			return this;
 		}
 
@@ -88,7 +111,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers
 				Component.For<IDataSeedRunner>().ImplementedBy<DataSeedRunner>().LifestyleTransient(),
 				Component.For<IDataSeedRunDecision>().ImplementedBy<OncePerVersionDataSeedRunDecision>().LifestyleTransient(),
 				Component.For<IDataSeedRunDecisionStatePersister>().ImplementedBy<DbDataSeedRunDecisionStatePersister>().LifestyleTransient(),
-				Component.For<IDataSeedPersister>().ImplementedBy<DbDataSeedPersister>().LifestyleTransient(),
+				Component.For<IDataSeedPersister>().ImplementedBy<DbDataSeedPersister>().LifestyleTransient().DependsOn(Dependency.OnComponent(typeof(IDbContext), DbContextTransientComponentName)),
 				Component.For(typeof(IDataSourceFactory<>)).AsFactory(),
 				Component.For(typeof(IRepositoryFactory<>)).AsFactory(),
 				Component.For(typeof(IUnitOfWork), typeof(IUnitOfWorkAsync)).ImplementedBy(componentRegistrationOptions.UnitOfWorkType).ApplyLifestyle(componentRegistrationOptions.UnitOfWorkLifestyle),

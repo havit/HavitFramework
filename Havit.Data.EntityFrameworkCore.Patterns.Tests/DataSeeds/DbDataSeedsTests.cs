@@ -6,7 +6,9 @@ using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure;
 using Havit.Data.Patterns.DataSeeds;
 using Havit.Data.Patterns.DataSeeds.Profiles;
+using Havit.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
 {
@@ -18,7 +20,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
             IDataSeedRunDecision dataSeedRunDecision = new AlwaysRunDecision();
             IDataSeedPersister dataSeedPersister = new DbDataSeedPersister(dbContext);
 
-            return new DataSeedRunner(dataSeeds, dataSeedRunDecision, dataSeedPersister);
+			Mock<IServiceFactory<IDataSeedPersister>> dataSeedPersisterFactoryMock = new Mock<IServiceFactory<IDataSeedPersister>>(MockBehavior.Strict);
+			dataSeedPersisterFactoryMock.Setup(m => m.CreateService()).Returns(dataSeedPersister);
+			dataSeedPersisterFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDataSeedPersister>()));
+
+			return new DataSeedRunner(dataSeeds, dataSeedRunDecision, dataSeedPersisterFactoryMock.Object);
         }
 
         [TestClass]

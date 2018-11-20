@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using Havit.Data.Patterns.DataSeeds;
 using Havit.Data.Patterns.DataSeeds.Profiles;
 using Havit.Diagnostics.Contracts;
+using Havit.Services;
 
 namespace Havit.Data.Patterns.DataSeeds
 {
@@ -15,7 +16,7 @@ namespace Havit.Data.Patterns.DataSeeds
 	{
 		private readonly List<IDataSeed> dataSeeds;
 		private readonly IDataSeedRunDecision dataSeedRunDecision;
-		private readonly IDataSeedPersister dataSeedPersister;
+		private readonly IServiceFactory<IDataSeedPersister> dataSeedPersisterFactory;
 
 	    /// <summary>
 	    /// Konstruktor.
@@ -23,11 +24,11 @@ namespace Havit.Data.Patterns.DataSeeds
 	    /// <param name="dataSeeds">Předpisy seedování objektů.</param>
 	    /// <param name="dataSeedRunDecision">Služba vracející, zda se má dataseed spustit. Lze takto spouštění potlačit (např. pokud již bylo spuštěno).</param>
 	    /// <param name="dataSeedPersister">Persister seedovaných objektů.</param>
-	    public DataSeedRunner(IEnumerable<IDataSeed> dataSeeds, IDataSeedRunDecision dataSeedRunDecision, IDataSeedPersister dataSeedPersister)
+	    public DataSeedRunner(IEnumerable<IDataSeed> dataSeeds, IDataSeedRunDecision dataSeedRunDecision, IServiceFactory<IDataSeedPersister> dataSeedPersisterFactory)
 	    {
 	        Contract.Requires(dataSeeds != null);
 	        Contract.Requires(dataSeedRunDecision != null);
-	        Contract.Requires(dataSeedPersister != null);
+	        Contract.Requires(dataSeedPersisterFactory != null);
 
 	        this.dataSeeds = dataSeeds.ToList();
 
@@ -37,7 +38,7 @@ namespace Havit.Data.Patterns.DataSeeds
 	        }
 
 	        this.dataSeedRunDecision = dataSeedRunDecision;
-	        this.dataSeedPersister = dataSeedPersister;
+	        this.dataSeedPersisterFactory = dataSeedPersisterFactory;
 	    }
 
 	    /// <summary>
@@ -179,7 +180,7 @@ namespace Havit.Data.Patterns.DataSeeds
 		/// <param name="dataSeed">Předpis seedování dat.</param>
 		private void Seed(IDataSeed dataSeed)
 		{
-			dataSeed.SeedData(dataSeedPersister);
+			dataSeedPersisterFactory.ExecuteAction(dataSeedPersister => dataSeed.SeedData(dataSeedPersister));
 		}
 
 		/// <summary>

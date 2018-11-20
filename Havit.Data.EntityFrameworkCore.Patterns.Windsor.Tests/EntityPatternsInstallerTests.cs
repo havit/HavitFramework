@@ -3,12 +3,14 @@ using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.Resolvers.SpecializedResolvers;
 using Castle.Windsor;
 using Havit.Data.EntityFrameworkCore.Patterns.Caching;
+using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors;
 using Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers;
 using Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests.Infrastructure.DataLayer;
 using Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests.Infrastructure.Entity;
 using Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests.Infrastructure.Model;
 using Havit.Data.Patterns.DataLoaders;
+using Havit.Data.Patterns.DataSeeds;
 using Havit.Data.Patterns.Localizations;
 using Havit.Data.Patterns.UnitOfWorks;
 using Havit.Services;
@@ -115,6 +117,20 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 			// no exception was thrown and...
 		}
 
+		[TestMethod]
+		public void EntityPatternsInstaller_DbDataSeedPersister_DbContextDependencyIsTransient()
+		{
+			// Arrange
+			WindsorContainer container = Helpers.CreateAndSetupWindsorContainer();
 
+			// Act
+			var dataSeedPersister1  = container.Resolve<IDataSeedPersister>();
+			var dataSeedPersister2 = container.Resolve<IDataSeedPersister>();
+
+			// Assert
+			Assert.IsInstanceOfType(dataSeedPersister1, typeof(DbDataSeedPersister));
+			Assert.IsInstanceOfType(dataSeedPersister2, typeof(DbDataSeedPersister));
+			Assert.AreNotSame(((DbDataSeedPersister)dataSeedPersister1).DbContext, ((DbDataSeedPersister)dataSeedPersister2).DbContext);
+		}
 	}
 }

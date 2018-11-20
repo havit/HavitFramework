@@ -46,6 +46,15 @@ namespace ConsoleApp1
 
 		private static IWindsorContainer ConfigureAndCreateWindsorContainer()
 		{
+			var loggerFactory = new LoggerFactory();
+			loggerFactory.AddConsole((categoryName, logLevel) => (logLevel == LogLevel.Information) && (categoryName == DbLoggerCategory.Database.Command.Name));
+
+			DbContextOptions options = new DbContextOptionsBuilder<ApplicationDbContext>()
+				.UseSqlServer("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=EFCoreTests;Application Name=EFCoreTests-Entity")
+				//.UseInMemoryDatabase("ConsoleApp")
+				.UseLoggerFactory(loggerFactory)
+				.Options;
+
 			IWindsorContainer container = new WindsorContainer();
 
 			container.Kernel.Resolver.AddSubResolver(new CollectionResolver(container.Kernel));
@@ -54,21 +63,9 @@ namespace ConsoleApp1
 
 			container.WithEntityPatternsInstaller(new ComponentRegistrationOptions { GeneralLifestyle = lf => lf.Scoped() }.ConfigureCacheAllEntitiesWithDefaultSlidingExpirationCaching(TimeSpan.FromMinutes(5)))
 				.RegisterDataLayer(typeof(ILanguageRepository).Assembly)
-				//.RegisterDbContext<Havit.EFCoreTests.Entity.ApplicationDbContext>()
+				.RegisterDbContext<Havit.EFCoreTests.Entity.ApplicationDbContext>(options)
 				.RegisterEntityPatterns();
 
-			var loggerFactory = new LoggerFactory();
-			loggerFactory.AddConsole((categoryName, logLevel) => (logLevel == LogLevel.Information) && (categoryName == DbLoggerCategory.Database.Command.Name));
-
-			// TODO: Connection string
-			container.Register(Component.For<IDbContext>()
-								.ImplementedBy<ApplicationDbContext>()
-								.LifestyleScoped()
-								.DependsOn(Dependency.OnValue("options", new DbContextOptionsBuilder<ApplicationDbContext>()
-									.UseSqlServer("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=EFCoreTests;Application Name=EFCoreTests-Entity")
-									//.UseInMemoryDatabase("ConsoleApp")
-									.UseLoggerFactory(loggerFactory)
-									.Options)));
 			container.Register(Component.For<ITimeService>().ImplementedBy<ServerTimeService>().LifestyleSingleton());
 			container.Register(Component.For<ICacheService>().ImplementedBy<MemoryCacheService>().LifestyleSingleton());
 			container.Register(Component.For<IOptions<MemoryCacheOptions>>().ImplementedBy<OptionsManager<MemoryCacheOptions>>().LifestyleSingleton());

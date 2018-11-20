@@ -74,8 +74,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers
 
 			if (dbContextOptions != null)
 			{
-				defaultRegistration = defaultRegistration.DependsOn(Dependency.OnValue("options", dbContextOptions));
-				transientRegistration = transientRegistration.DependsOn(Dependency.OnValue("options", dbContextOptions));
+				defaultRegistration = defaultRegistration.DependsOn(Dependency.OnValue<DbContextOptions>(dbContextOptions));
+				transientRegistration = transientRegistration.DependsOn(Dependency.OnValue<DbContextOptions>(dbContextOptions));
 			}
 
 			container.Register(defaultRegistration, transientRegistration);

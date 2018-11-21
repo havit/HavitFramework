@@ -17,19 +17,19 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 	/// Pridáva podporu pre extended properties a DB Injections a ich spoločnú infraštruktúru. Definuje rôzne konvencie používané na Business Layer projektoch.
 	/// </remarks>
 	/// </summary>
-	public class BusinessLayerDbContext : DbContext
+	public abstract class BusinessLayerDbContext : DbContext
 	{
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public BusinessLayerDbContext()
+		protected BusinessLayerDbContext()
 		{
 		}
 
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public BusinessLayerDbContext(DbContextOptions options)
+		protected BusinessLayerDbContext(DbContextOptions options)
 			: base(options)
 		{
 		}
@@ -45,11 +45,10 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 		}
 
 		/// <inheritdoc />
-		protected override void CustomizeModelCreating(ModelBuilder modelBuilder)
+		protected override void ModelCreatingCompleting(ModelBuilder modelBuilder)
 		{
-			base.CustomizeModelCreating(modelBuilder);
-
 			modelBuilder.ForSqlServerExtendedPropertiesAttributes();
+			base.ModelCreatingCompleting(modelBuilder);
 		}
 
 		/// <inheritdoc />

@@ -45,18 +45,13 @@ namespace Havit.Data.EntityFrameworkCore
 		    RegisterDataSeedVersion(modelBuilder);
 		    
 			CustomizeModelCreating(modelBuilder);
-
-		    var conventions = GetModelConventions().ToList();
-		    foreach (var convention in conventions)
-		    {
-			    convention.Apply(modelBuilder);
-		    }
+			ModelCreatingCompleting(modelBuilder);
 	    }
 
 		/// <summary>
 		/// Zaregistruje třídu DataSeedVersion do modelu
 		/// </summary>
-	    protected virtual void RegisterDataSeedVersion(ModelBuilder modelBuilder)
+		protected virtual void RegisterDataSeedVersion(ModelBuilder modelBuilder)
 	    {
 		    EntityTypeBuilder<DataSeedVersion> dataSeedVersionEntity = modelBuilder.Entity<DataSeedVersion>();
 		    dataSeedVersionEntity.ToTable("__DataSeed");
@@ -64,25 +59,38 @@ namespace Havit.Data.EntityFrameworkCore
 		    dataSeedVersionEntity.Property(item => item.Version);
 	    }
 
-	    /// <summary>
-		/// Template metoda pro customizaci modelu.
+		/// <summary>
+		/// Template metoda pro registraci modelu.
 		/// </summary>
-	    protected virtual void CustomizeModelCreating(ModelBuilder modelBuilder)
-	    {
+		protected virtual void CustomizeModelCreating(ModelBuilder modelBuilder)
+		{
 			// NOOP - template method
-	    }
+		}
 
-	    /// <summary>
-	    /// Vrací konvence použité v modelu.
-	    /// Aktuálně vrací tyto konvence:
-	    /// <list type="bullet">
-	    ///		<item>
-	    ///			<term>DataTypeAttributeConvention</term>
-	    ///			<description><see cref="DataTypeAttributeConvention"/></description>
-	    ///		</item>
-	    /// </list>
-	    /// </summary>
-	    protected virtual IEnumerable<IModelConvention> GetModelConventions()
+		/// <summary>
+		/// Metoda volaná po registraci modelu.
+		/// Zajišťuje volání konvencí.
+		/// </summary>
+		protected virtual void ModelCreatingCompleting(ModelBuilder modelBuilder)
+		{
+			var conventions = GetModelConventions().ToList();
+			foreach (var convention in conventions)
+			{
+				convention.Apply(modelBuilder);
+			}
+		}
+
+		/// <summary>
+		/// Vrací konvence použité v modelu.
+		/// Aktuálně vrací tyto konvence:
+		/// <list type="bullet">
+		///		<item>
+		///			<term>DataTypeAttributeConvention</term>
+		///			<description><see cref="DataTypeAttributeConvention"/></description>
+		///		</item>
+		/// </list>
+		/// </summary>
+		protected virtual IEnumerable<IModelConvention> GetModelConventions()
 	    {			
 			yield return new ManyToManyEntityKeyDiscoveryConvention();
 			yield return new DataTypeAttributeConvention();

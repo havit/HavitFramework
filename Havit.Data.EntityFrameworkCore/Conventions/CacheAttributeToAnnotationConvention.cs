@@ -44,7 +44,7 @@ namespace Havit.Data.EntityFrameworkCore.Conventions
 			var entityTypesWithCacheAttribute =
 				(from entityType in modelBuilder.Model
 					.GetApplicationEntityTypes()
-					.WhereNotConventionSuppressed(typeof(CacheAttributeToAnnotationConvention)) // testujeme entity types
+					.WhereNotConventionSuppressed(this) // testujeme entity types
 					let cacheAttribute = entityType.ClrType.GetCustomAttributes(false).OfType<CacheAttribute>().SingleOrDefault()
 					where cacheAttribute != null
 					select new { EntityType = entityType, CacheAttribute = cacheAttribute }

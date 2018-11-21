@@ -17,7 +17,7 @@ namespace Havit.Data.EntityFrameworkCore.Conventions
 		{
 			foreach (var manyToManyCandidateEntityType in modelBuilder.Model
 				.GetApplicationEntityTypes()
-				.WhereNotConventionSuppressed(typeof(ManyToManyEntityKeyDiscoveryConvention)) // testujeme entity types
+				.WhereNotConventionSuppressed(this) // testujeme entity types
 				.Where(entityType => entityType.FindPrimaryKey() == null)
 				.Where(entityType => entityType.HasExactlyTwoPropertiesWhichAreAlsoForeignKeys()))
 			{

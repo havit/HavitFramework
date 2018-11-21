@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+﻿using Havit.Diagnostics.Contracts;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -17,11 +18,13 @@ namespace Havit.Data.EntityFrameworkCore.Conventions
 		/// <summary>
 		/// Vrací jen ty objekty modelu, které nemají danou konvenci potlačenu.
 		/// </summary>
-		public static IEnumerable<TSource> WhereNotConventionSuppressed<TSource>(this IEnumerable<TSource> source, Type conventionType)
+		public static IEnumerable<TSource> WhereNotConventionSuppressed<TSource>(this IEnumerable<TSource> source, IModelConvention modelConvention)
 			where TSource : IAnnotatable
 		{
-			ValidateConventionType(conventionType);
-			return source.Where(annotatable => !annotatable.IsConventionSuppressed(conventionType));
+			Contract.Requires(source != null);
+			Contract.Requires(modelConvention != null);
+
+			return source.Where(annotatable => !annotatable.IsConventionSuppressed(modelConvention.GetType()));
 		}
 
 		/// <summary>

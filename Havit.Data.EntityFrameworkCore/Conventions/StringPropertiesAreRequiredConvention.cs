@@ -19,9 +19,9 @@ namespace Havit.Data.EntityFrameworkCore.Conventions
 	    {
 		    var stringProperties = modelBuilder.Model
 				.GetApplicationEntityTypes()
-				.WhereNotConventionSuppressed(typeof(StringPropertiesAreRequiredConvention)) // testujeme entity types
+				.WhereNotConventionSuppressed(this) // testujeme entity types
 				.SelectMany(entityType => entityType.GetDeclaredProperties()
-				.WhereNotConventionSuppressed(typeof(StringPropertiesAreRequiredConvention)) // testujeme properties
+				.WhereNotConventionSuppressed(this) // testujeme properties
 				.Where(prop => prop.ClrType == typeof(String))).ToList();
 
 		    foreach (IMutableProperty stringProperty in stringProperties)

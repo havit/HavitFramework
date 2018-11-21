@@ -10,7 +10,7 @@ namespace Havit.Data.EntityFrameworkCore.Conventions
 	/// <summary>
 	/// Všechny stringové vlastnosti jsou označeny jako povinné s výchozí hodnotou <see cref="string.Empty"/>.
 	/// </summary>
-    public class StringPropertiesAreRequiredConvention : IModelConvention
+    public class StringPropertiesDefaultValueConvention : IModelConvention
     {
 	    /// <summary>
 	    /// Aplikuje konvenci.
@@ -26,11 +26,9 @@ namespace Havit.Data.EntityFrameworkCore.Conventions
 
 		    foreach (IMutableProperty stringProperty in stringProperties)
 		    {
-			    stringProperty.IsNullable = false;
-
 				if ((stringProperty.Relational().DefaultValue == null) && String.IsNullOrEmpty(stringProperty.Relational().DefaultValueSql))
 			    {
-				    stringProperty.Relational().DefaultValue = "";
+				    stringProperty.Relational().DefaultValue = String.Empty;
 			    }
 		    }
 	    }

@@ -11,18 +11,10 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProper
 	/// <remarks>
 	/// CheckForeignKeyName = true/false
 	/// </remarks>
-	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Property)]
+	[AttributeUsage(AttributeTargets.Property)]
 	public class CheckForeignKeyNameAttribute : ExtendedPropertiesAttribute
 	{
 		private readonly bool value;
-
-		/// <summary>
-		/// Konstruktor.
-		/// </summary>
-		public CheckForeignKeyNameAttribute() : this(false)
-		{
-			// NOOP
-		}
 
 		/// <summary>
 		/// Konstruktor.
@@ -35,7 +27,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProper
 		/// <inheritdoc />
 		public override IDictionary<string, string> GetExtendedProperties(MemberInfo memberInfo) => new Dictionary<string, string>
 		{
-			{ "ReadOnly", value.ToString().ToLower() }
+			{ "CheckForeignKeyName", value.ToString().ToLower() }
 		};
 	}
 }

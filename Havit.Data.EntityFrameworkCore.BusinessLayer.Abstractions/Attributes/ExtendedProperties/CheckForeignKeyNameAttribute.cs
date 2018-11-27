@@ -1,24 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Text;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProperties
 {
 	/// <summary>
-	/// ExtendedProperty pro označení business objektů jako read only.
+	/// ExtendedProperty pro označení business objektů, aby nedocházelo ke kontrole konvencí pojmenování cizích klíčů (resp. resp. aby vlastnosti nekončily "ID" a nebyly cizím klíčem).
 	/// </summary>
 	/// <remarks>
-	/// ReadOnly = true/false
+	/// CheckForeignKeyName = true/false
 	/// </remarks>
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Property)]
-	public class ReadOnlyAttribute : ExtendedPropertiesAttribute
+	public class CheckForeignKeyNameAttribute : ExtendedPropertiesAttribute
 	{
 		private readonly bool value;
 
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public ReadOnlyAttribute() : this(true)
+		public CheckForeignKeyNameAttribute() : this(false)
 		{
 			// NOOP
 		}
@@ -26,7 +27,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProper
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public ReadOnlyAttribute(bool value)
+		public CheckForeignKeyNameAttribute(bool value)
 		{
 			this.value = value;
 		}

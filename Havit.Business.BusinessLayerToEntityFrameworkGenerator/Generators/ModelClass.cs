@@ -206,6 +206,11 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 				writer.WriteLine(attributeBuilder.ToString());
 			}
 
+			if (TableHelper.GetBoolExtendedProperty(modelClass.Table, "CheckForeignKeyName") == false)
+			{
+				writer.WriteLine("[CheckForeignKeyName(false)]");
+			}
+
 			writer.WriteLine(String.Format("{0} class {1}{2}",
 				TableHelper.GetAccessModifier(modelClass.Table),
 				modelClass.Name,
@@ -286,6 +291,11 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 				if (ColumnHelper.GetBoolExtendedProperty(column, "ReadOnly") == true)
 				{
 					writer.WriteLine("[ReadOnly]");
+				}
+
+				if (ColumnHelper.GetBoolExtendedProperty(column, "ReadOnly") == false)
+				{
+					writer.WriteLine("[ReadOnly(false)]");
 				}
 
 				Type type = Helpers.TypeHelper.GetPropertyType(fk?.ForeignKeyProperty ?? entityProperty);

@@ -220,6 +220,26 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
 			});
 		}
 
+		[TestMethod]
+		[ExpectedException(typeof(InvalidOperationException))]
+		public void DbDataSeedPersister_Save_ThrowsExceptionWhenSeedDataContainsDuplicate()
+		{
+			// Arrange
+			var dbContext = GetDbContexts().First();
+			var persister = new DbDataSeedPersister(dbContext);
+
+			DataSeedConfiguration<ItemWithoutGeneratedKey> configuration = new DataSeedConfiguration<ItemWithoutGeneratedKey>(new ItemWithoutGeneratedKey[] { new ItemWithoutGeneratedKey { Id = 1 }, new ItemWithoutGeneratedKey { Id = 1 } } ); // duplicate
+			configuration.PairByExpressions = new List<Expression<Func<ItemWithoutGeneratedKey, object>>> { item => item.Id };
+
+			// Act
+			persister.Save(configuration);
+
+			// Assert
+			// exception was thrown
+		}
+
+
+
 		private List<DbContext> GetDbContexts()
 		{
 			return new List<DbContext>

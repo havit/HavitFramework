@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds.Internal;
 using Havit.Data.Patterns.DataSeeds;
 using Havit.Diagnostics.Contracts;
 using Havit.Linq;
@@ -35,7 +36,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 			CheckConditions(configuration);
 
 			IDbSet<TEntity> dbSet = DbContext.Set<TEntity>();
-			List<SeedDataPair<TEntity>> seedDataPairs = PairWithDbData(dbSet.AsQueryable(), configuration);
+			List<PairExpressionWithCompilation<TEntity>> pairByExpressionsWithCompilations = configuration.PairByExpressions.ToPairByExpressionsWithCompilations();
+			List<SeedDataPair<TEntity>> seedDataPairs = PairWithDbData(configuration.SeedData, dbSet.AsQueryable(), pairByExpressionsWithCompilations);
 			List<SeedDataPair<TEntity>> seedDataPairsToUpdate = new List<SeedDataPair<TEntity>>(seedDataPairs);
 
 			if (!configuration.UpdateEnabled)
@@ -83,20 +85,53 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 		/// <summary>
 		/// Provede párování předpisu seedovaných dat s existujícími objekty.
 		/// </summary>
-		internal List<SeedDataPair<TEntity>> PairWithDbData<TEntity>(IQueryable<TEntity> dataQueryable, DataSeedConfiguration<TEntity> configuration)
+		internal List<SeedDataPair<TEntity>> PairWithDbData<TEntity>(IEnumerable<TEntity> seedData, IQueryable<TEntity> databaseDataQueryable, List<PairExpressionWithCompilation<TEntity>> pairByExpressions)
 			where TEntity : class
 		{
-			return PairWithDbData_LoadChunksStrategy<TEntity>(dataQueryable, configuration);
+			// vezmeme data k seedování, přidáme k nim klíč pro párování (pro pohodlný left join)
+			List<DataWithPairByValues<TEntity>> seedDataWithPairByValues = ToDataWithPairByValues(seedData, pairByExpressions);
+			// zkontrolujeme, zda data k seedování neobsahují duplicity
+			seedDataWithPairByValues.ThrowIfContainsDuplicates("Source data contains duplicates in pair by expression.");
+
+			// načteme databázová data k seedovaným datům
+			List<TEntity> databaseData = PairWithDbData_LoadDatabaseData(seedData, databaseDataQueryable, pairByExpressions);
+
+			// vezmeme databázová data, přidáme k nim klíč pro párování (pro pohodlný left join)
+			List<DataWithPairByValues<TEntity>> databaseDataWithPairByValues = ToDataWithPairByValues(databaseData, pairByExpressions);
+			// zkontrolujeme, zda databázová data neobsahují duplicity
+			databaseDataWithPairByValues.ThrowIfContainsDuplicates("Database data contains duplicates in pair by expression.");
+
+			// ke zdrojovám datům připojíme databázová, porovnání proběhne podle PairBy
+			return seedDataWithPairByValues.LeftJoin(
+				databaseDataWithPairByValues,
+				seedDataItem => seedDataItem.PairByValues, // overrides Equals
+				databaseDataItem => databaseDataItem.PairByValues, // overrides Equals
+				(seedDataItem, databaseDataItem) => new SeedDataPair<TEntity>
+				{
+					SeedEntity = seedDataItem.OriginalItem,
+					DbEntity = databaseDataItem?.OriginalItem // ? ... null, pokud ke zdrojovám datům neexistuje záznam v databázi
+				}).ToList();
+		}
+
+		/// <summary>
+		/// Ke každému objektu přidáme hodnotu (resp. hodnoty) dle PairBy.
+		/// </summary>
+		private List<DataWithPairByValues<TEntity>> ToDataWithPairByValues<TEntity>(IEnumerable<TEntity> seedData, List<PairExpressionWithCompilation<TEntity>> pairByExpressions)
+			where TEntity : class
+		{
+			return seedData.Select(item => new DataWithPairByValues<TEntity>
+			{
+				OriginalItem = item,
+				PairByValues = new PairByValues(pairByExpressions.Select(pairByExpression => pairByExpression.CompiledLambda.Invoke(item)).ToArray())
+			}).ToList();
 		}
 
 		/// <summary>
 		/// Provede párování předpisu seedovaných dat tak, že jsou objekty načteny v dávkách, čímž dochází k optimalizaci množství prováděných databázových operací.
 		/// </summary>
-		private List<SeedDataPair<TEntity>> PairWithDbData_LoadChunksStrategy<TEntity>(IQueryable<TEntity> dataQueryable, DataSeedConfiguration<TEntity> configuration)
+		private List<TEntity> PairWithDbData_LoadDatabaseData<TEntity>(IEnumerable<TEntity> seedData, IQueryable<TEntity> databaseDataQueryable, List<PairExpressionWithCompilation<TEntity>> pairByExpressionsWithCompilations)
 			where TEntity : class
 		{
-			IEnumerable<TEntity> seedData = configuration.SeedData;
-			Func<TEntity, object>[] pairByLambdas = configuration.PairByExpressions.Select(item => item.Compile()).ToArray();
 			ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "item");
 			List<TEntity> dbEntities = new List<TEntity>();
 
@@ -107,10 +142,10 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 				{
 					Expression<Func<TEntity, bool>> seedEntityWhereExpression = null;
 
-					for (int i = 0; i < configuration.PairByExpressions.Count; i++)
+					for (int i = 0; i < pairByExpressionsWithCompilations.Count; i++)
 					{
-						Expression<Func<TEntity, object>> expression = configuration.PairByExpressions[i];
-						Func<TEntity, object> lambda = pairByLambdas[i];
+						Expression<Func<TEntity, object>> expression = pairByExpressionsWithCompilations[i].Expression;
+						Func<TEntity, object> lambda = pairByExpressionsWithCompilations[i].CompiledLambda;
 
 						object value = lambda.Invoke(seedEntity);
 
@@ -143,80 +178,12 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 						chunkWhereExpression = seedEntityWhereExpression;
 					}
 				}
-				dbEntities.AddRange(dataQueryable.Where(chunkWhereExpression).ToList());
+				dbEntities.AddRange(databaseDataQueryable.Where(chunkWhereExpression).ToList());
 			}
 
-			return PairWithDbData_PairOneByOneStrategy(dbEntities.AsQueryable(), configuration);
+			return dbEntities;
 		}
 
-		/// <summary>
-		/// Provede párování předpisu seedovaných dat, párování se provádí "po jednom".
-		/// </summary>
-		private List<SeedDataPair<TEntity>> PairWithDbData_PairOneByOneStrategy<TEntity>(IQueryable<TEntity> dataQueryable, DataSeedConfiguration<TEntity> configuration)
-			where TEntity : class
-		{
-			// V existujícím kódu je voláno jen z PairWithDbData_LoadChunksStrategy a dataQueryable je in-memory úložiště. Tato metoda tedy při současném použití neprovádí dotazy do databáze.
-
-			IEnumerable<TEntity> seedData = configuration.SeedData;
-
-			List<SeedDataPair<TEntity>> result = new List<SeedDataPair<TEntity>>();
-
-			Func<TEntity, object>[] pairByLambdas = configuration.PairByExpressions.Select(item => item.Compile()).ToArray();
-
-			foreach (TEntity seedEntity in seedData)
-			{
-				ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "item");
-
-				Expression<Func<TEntity, bool>> whereExpression = null;
-
-				for (int i = 0; i < configuration.PairByExpressions.Count; i++)
-				{
-					Expression<Func<TEntity, object>> expression = configuration.PairByExpressions[i];
-					Func<TEntity, object> lambda = pairByLambdas[i];
-
-					object value = lambda.Invoke(seedEntity);
-
-					Type expressionBodyType = expression.Body.RemoveConvert().Type;
-
-					Expression valueExpression = ((value != null) && (value.GetType() != expressionBodyType))
-						? (Expression)Expression.Convert(Expression.Constant(value), expressionBodyType)
-						: (Expression)Expression.Constant(value);
-
-					Expression<Func<TEntity, bool>> pairByConditionExpression = (Expression<Func<TEntity, bool>>)Expression.Lambda(
-						Expression.Equal(ExpressionExt.ReplaceParameter(expression.Body, expression.Parameters[0], parameter).RemoveConvert(), valueExpression), // Expression.Constant nejde pro references
-						parameter);
-
-					if (whereExpression != null)
-					{
-						whereExpression = (Expression<Func<TEntity, bool>>)Expression.Lambda(Expression.AndAlso(whereExpression.Body, pairByConditionExpression.Body), parameter);
-					}
-					else
-					{
-						whereExpression = pairByConditionExpression;
-					}
-				}
-
-				TEntity dbEntity;
-				IQueryable<TEntity> pairExpression = dataQueryable.Where(whereExpression);
-
-				try
-				{
-					dbEntity = pairExpression.SingleOrDefault();
-				}
-				catch (InvalidOperationException) // The input sequence contains more than one element.
-				{
-					throw new InvalidOperationException($"More than one object found for \"{whereExpression}\".");
-				}
-
-				result.Add(new SeedDataPair<TEntity>
-				{
-					SeedEntity = seedEntity,
-					DbEntity = dbEntity
-				});
-			}
-
-			return result;
-		}
 
 		/// <summary>
 		/// Provede vytvoření či aktualizaci dat dle předpisu seedování.

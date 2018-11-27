@@ -206,11 +206,6 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 				writer.WriteLine(attributeBuilder.ToString());
 			}
 
-			if (TableHelper.GetBoolExtendedProperty(modelClass.Table, "CheckForeignKeyName") == false)
-			{
-				writer.WriteLine("[CheckForeignKeyName(false)]");
-			}
-
 			writer.WriteLine(String.Format("{0} class {1}{2}",
 				TableHelper.GetAccessModifier(modelClass.Table),
 				modelClass.Name,
@@ -384,6 +379,12 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 				{
 					writer.WriteLine($"[PropertyType(\"{BusinessLayerGenerator.Helpers.TypeHelper.GetPropertyTypeName(column)}\")]");
 				}
+
+				if (ColumnHelper.GetBoolExtendedProperty(column, "CheckForeignKeyName") == false)
+				{
+					writer.WriteLine("[CheckForeignKeyName(false)]");
+				}
+
 
 				writer.WriteLine(String.Format("{0} {1} {2} {{ get; set; }}", accesssModifierText, entityProperty.TypeName, entityProperty.Name));
 

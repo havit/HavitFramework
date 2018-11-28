@@ -96,26 +96,49 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 
         private static void WriteMethodBegin(CodeWriter writer, DbStoredProcedure dbStoredProcedure)
         {
-	        string result = dbStoredProcedure.StoredProcedure.GetStringExtendedProperty("Result");
-	        if (!string.IsNullOrEmpty(result))
+			string methodName = dbStoredProcedure.StoredProcedure.GetStringExtendedProperty("MethodName");
+			if (!String.IsNullOrEmpty(methodName))
+			{
+				if (methodName == dbStoredProcedure.Name)
+				{
+					writer.WriteLine(String.Format("[MethodName(nameof({0}))]", methodName));
+				}
+				else
+				{
+					writer.WriteLine(String.Format("[MethodName(\"{0}\")]", methodName));
+				}
+			}
+
+			string result = dbStoredProcedure.StoredProcedure.GetStringExtendedProperty("Result");
+	        if (!String.IsNullOrEmpty(result))
 	        {
 				writer.WriteLine(String.Format("[Result(ResultType.{0})]", result));
 	        }
 
-	        string dataLoadPower = dbStoredProcedure.StoredProcedure.GetStringExtendedProperty("DataLoadPower");
-	        if (!string.IsNullOrEmpty(dataLoadPower))
+			string resultTypeTable = dbStoredProcedure.StoredProcedure.GetStringExtendedProperty("ResultTypeTable");
+			if (!String.IsNullOrEmpty(resultTypeTable))
+			{
+				writer.WriteLine(String.Format("[ResultTypeTable(\"{0}\")]", resultTypeTable));
+			}
+			string dataLoadPower = dbStoredProcedure.StoredProcedure.GetStringExtendedProperty("DataLoadPower");
+	        if (!String.IsNullOrEmpty(dataLoadPower))
 			{
 				writer.WriteLine(String.Format("[DataLoadPower({0})]", dataLoadPower));
 	        }
 
 
 	        string methodAccessModifier = dbStoredProcedure.StoredProcedure.GetStringExtendedProperty("MethodAccessModifier");
-	        if (!string.IsNullOrEmpty(methodAccessModifier))
+	        if (!String.IsNullOrEmpty(methodAccessModifier))
 			{
 				writer.WriteLine(String.Format("[MethodAccessModifier(\"{0}\")]", methodAccessModifier));
 	        }
 
-            writer.WriteLine(String.Format("public StoredProcedureDbInjection {0}()", dbStoredProcedure.Name));
+			string comment = dbStoredProcedure.StoredProcedure.GetStringExtendedProperty("MS_Description");
+			if (!String.IsNullOrEmpty(comment))
+			{
+				writer.WriteCommentSummary(comment);
+			}
+			writer.WriteLine(String.Format("public StoredProcedureDbInjection {0}()", dbStoredProcedure.Name));
             writer.WriteLine("{");
         }
 

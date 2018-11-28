@@ -10,7 +10,7 @@
   <!-- NuGet -->
   <PropertyGroup>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageVersion>1.8.9</PackageVersion>
+	<PackageVersion>1.8.10</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Data Patterns</Description>
   </PropertyGroup>
 

@@ -1,10 +1,9 @@
 using System.Configuration;
 using System.Linq;
-using Havit.Business.Configuration.NetCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Havit.Business.Configuration.Tests
+namespace Havit.Extensions.Configuration.ConnectionStrings.Git.Tests
 {
 	[TestClass]
 	public class BranchConnectionStringConfigurationBuilderTests

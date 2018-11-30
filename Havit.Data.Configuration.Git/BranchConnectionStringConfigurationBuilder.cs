@@ -1,9 +1,9 @@
-﻿using System.Configuration;
+﻿using Havit.Data.Configuration.Git.Core;
+using System.Configuration;
 using System.IO;
 using System.Text.RegularExpressions;
-using Havit.Business.Configuration.NetCore;
 
-namespace Havit.Business.Configuration
+namespace Havit.Data.Configuration.Git
 {
 	/// <summary>
 	/// Configuration Builder implementation that modifies connection strings according to current Git branch (i.e. changes DB name).

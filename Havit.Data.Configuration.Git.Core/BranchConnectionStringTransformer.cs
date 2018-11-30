@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace Havit.Business.Configuration.NetCore
+namespace Havit.Data.Configuration.Git.Core
 {
 	public class BranchConnectionStringTransformer
 	{

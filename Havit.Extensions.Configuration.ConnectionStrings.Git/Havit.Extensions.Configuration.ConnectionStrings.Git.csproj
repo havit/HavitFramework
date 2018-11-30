@@ -10,8 +10,8 @@
   <!-- NuGet -->
   <PropertyGroup>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageVersion>1.0.3</PackageVersion>
-	<Description>HAVIT .NET Framework Extensions - Manages configuration (connection strings) in Business Layer projects</Description>
+	<PackageVersion>1.0.7-beta</PackageVersion>
+	<Description>HAVIT .NET Framework Extensions - Applies git branch into connection strings (for .NET Core projects with Microsoft.Extensions.Configuration)</Description>
   </PropertyGroup>
   
   <PropertyGroup>
@@ -21,6 +21,10 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.1.1" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Havit.Data.Configuration.Git.Core\Havit.Data.Configuration.Git.Core.csproj" />
   </ItemGroup>
 
 </Project>

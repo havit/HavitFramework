@@ -1,4 +1,4 @@
-﻿namespace Havit.Business.Configuration.NetCore
+﻿namespace Havit.Data.Configuration.Git.Core
 {
 	/// <summary>
 	/// Abstraction for retrieving current branch in a specified Git repository.

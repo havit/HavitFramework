@@ -1,6 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Havit.Data.Configuration.Git.Core;
+using Microsoft.Extensions.Configuration;
 
-namespace Havit.Business.Configuration.NetCore
+namespace Havit.Extensions.Configuration.ConnectionStrings.Git
 {
 	public static class ConfigurationBuilderExtensions
 	{

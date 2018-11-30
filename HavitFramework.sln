@@ -189,12 +189,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EntityFrameworkC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests", "Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests\Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests.csproj", "{EE685A1E-0F48-4523-98B9-4C9A3787A8F9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Business.Configuration", "Havit.Business.Configuration\Havit.Business.Configuration.csproj", "{AF2A778F-02A6-4060-9C42-E9CF47E2B4F7}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Business.Configuration.Tests", "Havit.Business.Configuration.Tests\Havit.Business.Configuration.Tests.csproj", "{C9B9418B-A7E3-47DF-9415-13972850616D}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Business.Configuration.NetCore", "Havit.Business.Configuration.NetCore\Havit.Business.Configuration.NetCore.csproj", "{868654E4-E04B-4F35-9FCF-E99FD036FA98}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EFCoreTests", "EFCoreTests", "{CF4BD356-B8EB-4375-B017-5C5BF2835911}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "EFCoreTests\Model\Model.csproj", "{30B68AD2-DD6A-485F-AD1A-D5297FDAEBF1}"
@@ -211,7 +205,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Web.Bootstrap", "Havi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Web.ClientContent", "Havit.Web.ClientContent\Havit.Web.ClientContent.csproj", "{4BC8EF13-57B4-4805-95A9-D4DDB691B4D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Business.BusinessLayerGenerator.NuGetPackage", "Havit.Business.BusinessLayerGenerator.NuGetPackage\Havit.Business.BusinessLayerGenerator.NuGetPackage.csproj", "{E3B66D72-4E10-47F4-B8DF-DD8189438D7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Business.BusinessLayerGenerator.NuGetPackage", "Havit.Business.BusinessLayerGenerator.NuGetPackage\Havit.Business.BusinessLayerGenerator.NuGetPackage.csproj", "{E3B66D72-4E10-47F4-B8DF-DD8189438D7E}"
 	ProjectSection(ProjectDependencies) = postProject
 		{D5B7B479-45B7-4D1F-9C72-63FBC4D21114} = {D5B7B479-45B7-4D1F-9C72-63FBC4D21114}
 	EndProjectSection
@@ -221,10 +215,20 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EntityFrameworkC
 		{9D793564-5C33-401F-8897-A68F698FD0B3} = {9D793564-5C33-401F-8897-A68F698FD0B3}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Data.Entity6.CodeGenerator.NuGetPackage", "Havit.Data.Entity6.CodeGenerator.NuGetPackage\Havit.Data.Entity6.CodeGenerator.NuGetPackage.csproj", "{72537877-F968-4889-90F6-920975E0632B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.Entity6.CodeGenerator.NuGetPackage", "Havit.Data.Entity6.CodeGenerator.NuGetPackage\Havit.Data.Entity6.CodeGenerator.NuGetPackage.csproj", "{72537877-F968-4889-90F6-920975E0632B}"
 	ProjectSection(ProjectDependencies) = postProject
 		{1DAACB7D-93B2-41D2-9B97-37DA3D38A89B} = {1DAACB7D-93B2-41D2-9B97-37DA3D38A89B}
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.Configuration.Git", "Havit.Data.Configuration.Git\Havit.Data.Configuration.Git.csproj", "{9ED7C3F5-09E5-444A-AAFC-A90FD84D50AD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.Configuration.Git.Core", "Havit.Data.Configuration.Git.Core\Havit.Data.Configuration.Git.Core.csproj", "{AB4F5DC5-9AD8-4F35-A914-F0AF2C8843B6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Extensions.Configuration.ConnectionStrings.Git.Tests", "Havit.Extensions.Configuration.ConnectionStrings.Git.Tests\Havit.Extensions.Configuration.ConnectionStrings.Git.Tests.csproj", "{63AE977B-0F09-457A-9E38-DF53F2EBA2A0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C7AE4385-F52F-4F60-BAE9-19490D36172A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Extensions.Configuration.ConnectionStrings.Git", "Havit.Extensions.Configuration.ConnectionStrings.Git\Havit.Extensions.Configuration.ConnectionStrings.Git.csproj", "{FB4ADA46-F241-4C5D-9349-D401002928C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -463,18 +467,6 @@ Global
 		{EE685A1E-0F48-4523-98B9-4C9A3787A8F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE685A1E-0F48-4523-98B9-4C9A3787A8F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE685A1E-0F48-4523-98B9-4C9A3787A8F9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AF2A778F-02A6-4060-9C42-E9CF47E2B4F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AF2A778F-02A6-4060-9C42-E9CF47E2B4F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AF2A778F-02A6-4060-9C42-E9CF47E2B4F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AF2A778F-02A6-4060-9C42-E9CF47E2B4F7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C9B9418B-A7E3-47DF-9415-13972850616D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C9B9418B-A7E3-47DF-9415-13972850616D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C9B9418B-A7E3-47DF-9415-13972850616D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C9B9418B-A7E3-47DF-9415-13972850616D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{868654E4-E04B-4F35-9FCF-E99FD036FA98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{868654E4-E04B-4F35-9FCF-E99FD036FA98}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{868654E4-E04B-4F35-9FCF-E99FD036FA98}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{868654E4-E04B-4F35-9FCF-E99FD036FA98}.Release|Any CPU.Build.0 = Release|Any CPU
 		{30B68AD2-DD6A-485F-AD1A-D5297FDAEBF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{30B68AD2-DD6A-485F-AD1A-D5297FDAEBF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30B68AD2-DD6A-485F-AD1A-D5297FDAEBF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -515,6 +507,22 @@ Global
 		{72537877-F968-4889-90F6-920975E0632B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72537877-F968-4889-90F6-920975E0632B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72537877-F968-4889-90F6-920975E0632B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9ED7C3F5-09E5-444A-AAFC-A90FD84D50AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9ED7C3F5-09E5-444A-AAFC-A90FD84D50AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9ED7C3F5-09E5-444A-AAFC-A90FD84D50AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9ED7C3F5-09E5-444A-AAFC-A90FD84D50AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB4F5DC5-9AD8-4F35-A914-F0AF2C8843B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB4F5DC5-9AD8-4F35-A914-F0AF2C8843B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB4F5DC5-9AD8-4F35-A914-F0AF2C8843B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB4F5DC5-9AD8-4F35-A914-F0AF2C8843B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63AE977B-0F09-457A-9E38-DF53F2EBA2A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63AE977B-0F09-457A-9E38-DF53F2EBA2A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63AE977B-0F09-457A-9E38-DF53F2EBA2A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63AE977B-0F09-457A-9E38-DF53F2EBA2A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB4ADA46-F241-4C5D-9349-D401002928C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB4ADA46-F241-4C5D-9349-D401002928C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB4ADA46-F241-4C5D-9349-D401002928C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB4ADA46-F241-4C5D-9349-D401002928C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -586,9 +594,6 @@ Global
 		{EDD0CA2B-EB22-4A8B-A68E-4507B9A360A8} = {8B4383E1-89EA-46F4-A379-F728CA71A124}
 		{1A82E2E8-407D-482A-91D4-0155D877CA6A} = {E30EB2C7-ECF5-4A27-A7F0-8AE37284A60C}
 		{EE685A1E-0F48-4523-98B9-4C9A3787A8F9} = {FA03CDCB-AEFC-49D1-BBAE-5F623BD5A301}
-		{AF2A778F-02A6-4060-9C42-E9CF47E2B4F7} = {8B4383E1-89EA-46F4-A379-F728CA71A124}
-		{C9B9418B-A7E3-47DF-9415-13972850616D} = {1EBE46EC-8DAE-46E6-8755-33A15B8D0FF3}
-		{868654E4-E04B-4F35-9FCF-E99FD036FA98} = {8B4383E1-89EA-46F4-A379-F728CA71A124}
 		{CF4BD356-B8EB-4375-B017-5C5BF2835911} = {9D3050E0-20E0-4CE6-BCBE-CF095A71C394}
 		{30B68AD2-DD6A-485F-AD1A-D5297FDAEBF1} = {CF4BD356-B8EB-4375-B017-5C5BF2835911}
 		{775B195E-6C1B-4719-A197-87AC3A409529} = {CF4BD356-B8EB-4375-B017-5C5BF2835911}
@@ -600,6 +605,11 @@ Global
 		{E3B66D72-4E10-47F4-B8DF-DD8189438D7E} = {8B4383E1-89EA-46F4-A379-F728CA71A124}
 		{96DE4420-4CB5-4316-886B-C6C90A25FDEF} = {E30EB2C7-ECF5-4A27-A7F0-8AE37284A60C}
 		{72537877-F968-4889-90F6-920975E0632B} = {2C3C8291-8C00-49AC-A914-BC4B74D3DACE}
+		{9ED7C3F5-09E5-444A-AAFC-A90FD84D50AD} = {3D976DB4-23C7-4B7B-8646-C53DAFB813EE}
+		{AB4F5DC5-9AD8-4F35-A914-F0AF2C8843B6} = {3D976DB4-23C7-4B7B-8646-C53DAFB813EE}
+		{63AE977B-0F09-457A-9E38-DF53F2EBA2A0} = {C7AE4385-F52F-4F60-BAE9-19490D36172A}
+		{C7AE4385-F52F-4F60-BAE9-19490D36172A} = {3D976DB4-23C7-4B7B-8646-C53DAFB813EE}
+		{FB4ADA46-F241-4C5D-9349-D401002928C3} = {3D976DB4-23C7-4B7B-8646-C53DAFB813EE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {44656523-42B6-48E3-9E6D-6F075F0E7FD0}

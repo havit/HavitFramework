@@ -266,7 +266,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Havit.Business.BusinessLayerGenerator\Havit.Business.BusinessLayerGenerator.csproj">
       <Project>{d5b7b479-45b7-4d1f-9c72-63fbc4d21114}</Project>
-      <Name>Havit.BusinessLayerGenerator</Name>
+      <Name>Havit.Business.BusinessLayerGenerator</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

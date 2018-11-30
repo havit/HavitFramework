@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Havit.Business.Configuration.NetCore
+namespace Havit.Data.Configuration.Git.Core
 {
 	/// <summary>
 	/// Implementation of <see cref="IGitRepositoryProvider"/> that reads current branch from .git/HEAD.

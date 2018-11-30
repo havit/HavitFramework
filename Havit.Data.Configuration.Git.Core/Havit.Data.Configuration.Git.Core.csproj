@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\Common.targets" />
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <!-- NuGet -->
+  <PropertyGroup>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<PackageVersion>1.0.1-beta</PackageVersion>
+	<Description>HAVIT .NET Framework Extensions - Retrieves current git working tree branch and sets it into connection strings (not intended to be used in projects directly)</Description>
+  </PropertyGroup>
+</Project>

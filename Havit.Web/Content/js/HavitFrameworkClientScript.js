@@ -503,13 +503,14 @@ var havitAutoCompleteTextBoxExtensions = {
 var havitControlFocusPersisterExtensions = {
     init: function () {
         var lastFocusPersister = $("#_lastFocusPersister");
-        var lastFocusedControl = $("#" + lastFocusPersister.val());
-        if (lastFocusedControl != null) {
-            try {
-                lastFocusedControl.focus();
+        if (lastFocusPersister.val() != '') {
+            var lastFocusedControl = $("#" + lastFocusPersister.val());
+            if (lastFocusedControl != null) {
+                try {
+                    lastFocusedControl.focus();
+                }
+                catch (ex) { }
             }
-            catch (ex) { }
-            ;
         }
         $("body")
             .off("focus.hfw", ":focusable")

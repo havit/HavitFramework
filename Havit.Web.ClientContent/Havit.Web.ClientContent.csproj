@@ -9,7 +9,7 @@
   <!-- NuGet -->
   <PropertyGroup>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageVersion>1.7.5</PackageVersion>
+	<PackageVersion>1.7.6</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Installs Havit.Web client side content and scripts to project.</Description>
 	<!-- Projekt neobsahuje žádný C# kód a tudíž ani assembly k zabalení, jde čistě o klientský obsah -->
 	<IncludeBuildOutput>false</IncludeBuildOutput>

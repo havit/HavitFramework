@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Havit.Extensions.Configuration.ConnectionStrings.Git\Havit.Extensions.Configuration.ConnectionStrings.Git.csproj" />
+    <ProjectReference Include="..\Havit.Data.Configuration.Git\Havit.Data.Configuration.Git.csproj" />
   </ItemGroup>
 
 </Project>

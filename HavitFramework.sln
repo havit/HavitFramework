@@ -230,6 +230,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Extensions.Configurat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.Configuration.Git.Tests", "Havit.Data.Configuration.Git.Tests\Havit.Data.Configuration.Git.Tests.csproj", "{5D680D82-D254-4974-9AF7-332AA29D12DE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Model.Tests", "Havit.Model.Tests\Havit.Model.Tests.csproj", "{7FA56A1E-993A-4DC0-9A02-222E9787743C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -523,6 +525,10 @@ Global
 		{5D680D82-D254-4974-9AF7-332AA29D12DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D680D82-D254-4974-9AF7-332AA29D12DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D680D82-D254-4974-9AF7-332AA29D12DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FA56A1E-993A-4DC0-9A02-222E9787743C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FA56A1E-993A-4DC0-9A02-222E9787743C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FA56A1E-993A-4DC0-9A02-222E9787743C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FA56A1E-993A-4DC0-9A02-222E9787743C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -610,6 +616,7 @@ Global
 		{C7AE4385-F52F-4F60-BAE9-19490D36172A} = {3D976DB4-23C7-4B7B-8646-C53DAFB813EE}
 		{FB4ADA46-F241-4C5D-9349-D401002928C3} = {3D976DB4-23C7-4B7B-8646-C53DAFB813EE}
 		{5D680D82-D254-4974-9AF7-332AA29D12DE} = {C7AE4385-F52F-4F60-BAE9-19490D36172A}
+		{7FA56A1E-993A-4DC0-9A02-222E9787743C} = {345552D1-56B8-41F1-9513-AD2F31D2F985}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {44656523-42B6-48E3-9E6D-6F075F0E7FD0}

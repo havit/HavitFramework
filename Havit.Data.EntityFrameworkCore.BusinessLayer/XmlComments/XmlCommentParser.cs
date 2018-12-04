@@ -21,61 +21,73 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.XmlComments
 
 			foreach (XElement propertyElement in properties)
 			{
-				var propertyFullName = propertyElement.Attribute("name").Value.Substring(2);
-
-				var xmlPropertyType = new XmlCommentMember(propertyFullName);
-				xmlPropertyType.Tags.AddRange(propertyElement.Elements().Select(e => new XmlMemberTag(e.Name.LocalName, e.Value)));
-
-				int lastDotIndex = xmlPropertyType.Name.LastIndexOf('.');
-				if (lastDotIndex == -1)
+				var xmlMember = ParseXmlMember(propertyElement);
+				var (xmlCommentType, isShadowType) = GetMatchingParentType(xmlMember, types);
+				if (xmlCommentType == null)
 				{
-					Console.WriteLine($"Property '{propertyFullName}' (XML) has not any matching any parent type, skipping");
 					continue;
 				}
-
-				var currentTypeCandidate = propertyFullName.Substring(0, lastDotIndex);
-
-				if (!types.TryGetValue(currentTypeCandidate, out XmlCommentType xmlCommentType))
+				if (isShadowType)
 				{
-					// create "shadow type" for this property (and any other down the road). This type won't have any tags and clients should be aware of this.
-					xmlCommentType = new XmlCommentType(currentTypeCandidate);
-					types.Add(currentTypeCandidate, xmlCommentType);
+					types[xmlCommentType.Name] = xmlCommentType;
 				}
 
-				xmlCommentType.Properties.Add(xmlPropertyType);
+				xmlCommentType.Properties.Add(xmlMember);
 			}
 
 			IEnumerable<XElement> methods = document.XPathSelectElements("doc/members/member[starts-with(@name,'M:')]");
 
 			foreach (XElement methodElement in methods)
 			{
-				var methodFullName = methodElement.Attribute("name").Value.Substring(2);
-
-				var xmlMethodType = new XmlCommentMember(methodFullName);
-				xmlMethodType.Tags.AddRange(methodElement.Elements().Select(e => new XmlMemberTag(e.Name.LocalName, e.Value)));
-
-				int lastDotIndex = xmlMethodType.Name.LastIndexOf('.');
-				if (lastDotIndex == -1)
+				var xmlMember = ParseXmlMember(methodElement);
+				var (xmlCommentType, isShadowType) = GetMatchingParentType(xmlMember, types);
+				if (xmlCommentType == null)
 				{
-					Console.WriteLine($"Method '{methodFullName}' (XML) has not any matching any parent type, skipping");
 					continue;
 				}
 
-				var currentTypeCandidate = methodFullName.Substring(0, lastDotIndex);
-
-				if (!types.TryGetValue(currentTypeCandidate, out XmlCommentType xmlCommentType))
+				if (isShadowType)
 				{
-					// create "shadow type" for this method (and any other down the road). This type won't have any tags and clients should be aware of this.
-					xmlCommentType = new XmlCommentType(currentTypeCandidate);
-					types.Add(currentTypeCandidate, xmlCommentType);
+					types[xmlCommentType.Name] = xmlCommentType;
 				}
 
-				xmlCommentType.Methods.Add(xmlMethodType);
+				xmlCommentType.Methods.Add(xmlMember);
 			}
 
 			XmlCommentFile xmlCommentFile = new XmlCommentFile();
 			xmlCommentFile.Types.AddRange(types.Values);
 			return xmlCommentFile;
+		}
+
+		private static (XmlCommentType, bool) GetMatchingParentType(XmlCommentMember xmlMemberType, Dictionary<string, XmlCommentType> types)
+		{
+			int lastDotIndex = xmlMemberType.Name.LastIndexOf('.');
+			if (lastDotIndex == -1)
+			{
+				Console.WriteLine($"Member '{xmlMemberType.Name}' (XML) has not any matching any parent type, skipping");
+				return (null, false);
+			}
+
+			var currentTypeCandidate = xmlMemberType.Name.Substring(0, lastDotIndex);
+
+			bool isShadowType = false;
+			if (!types.TryGetValue(currentTypeCandidate, out XmlCommentType xmlParentType))
+			{
+				// create "shadow type" for this method (and any other down the road). This type won't have any tags and clients should be aware of this.
+				xmlParentType = new XmlCommentType(currentTypeCandidate);
+				isShadowType = true;
+			}
+
+			return (xmlParentType, isShadowType);
+		}
+
+		private static XmlCommentMember ParseXmlMember(XElement element)
+		{
+			var methodFullName = element.Attribute("name").Value.Substring(2);
+
+			var xmlMemberType = new XmlCommentMember(methodFullName);
+			xmlMemberType.Tags.AddRange(element.Elements().Select(e => new XmlMemberTag(e.Name.LocalName, e.Value)));
+			return xmlMemberType;
 		}
 
 		private static XmlCommentType ParseXmlCommentType(XElement element, string name)

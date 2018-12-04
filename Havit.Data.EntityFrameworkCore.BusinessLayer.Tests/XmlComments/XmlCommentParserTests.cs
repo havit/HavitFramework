@@ -99,6 +99,53 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments
 			Assert.AreEqual("First name", firstNameProperty.Summary.Trim());
 		}
 
+		[TestMethod]
+		public void XmlCommentParser_ParseFile_PersonClassHasCorrectMethods()
+		{
+			var parser = new XmlCommentParser();
+
+			var xmlCommentFile = parser.ParseFile(ParseXmlFile());
+
+			var personType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person");
+			Assert.IsNotNull(personType.Methods.FirstOrDefault(p => p.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person.GetFullName"));
+		}
+
+		[TestMethod]
+		public void XmlCommentParser_ParseFile_PersonClassMethodHasCorrectSummary()
+		{
+			var parser = new XmlCommentParser();
+
+			var xmlCommentFile = parser.ParseFile(ParseXmlFile());
+
+			var personType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person");
+			XmlCommentMember getFullNameMethod = personType.Methods.FirstOrDefault(p => p.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person.GetFullName");
+			Assert.AreEqual("Concatenates first and last name of the person.", getFullNameMethod.Summary.Trim());
+		}
+
+		[TestMethod]
+		public void XmlCommentParser_ParseFile_PersonClassMethodHasReturnsTag()
+		{
+			var parser = new XmlCommentParser();
+
+			var xmlCommentFile = parser.ParseFile(ParseXmlFile());
+
+			var personType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person");
+			XmlCommentMember getFullNameMethod = personType.Methods.FirstOrDefault(p => p.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person.GetFullName");
+			Assert.IsNotNull(getFullNameMethod.Tags.FirstOrDefault(tag => tag.Name == "returns"), "Person.GetFullName method does not contain 'returns' tag");
+		}
+
+		[TestMethod]
+		public void XmlCommentParser_ParseFile_PersonClassMethodHasCorrectReturnsTag()
+		{
+			var parser = new XmlCommentParser();
+
+			var xmlCommentFile = parser.ParseFile(ParseXmlFile());
+
+			var personType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person");
+			XmlCommentMember getFullNameMethod = personType.Methods.FirstOrDefault(p => p.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person.GetFullName");
+			Assert.AreEqual("Person's full name.", getFullNameMethod.Tags.FirstOrDefault(tag => tag.Name == "returns").Content.Trim());
+		}
+
 		/// <summary>
 		/// Scenario with parent class having no XML comment (Bug 41564)
 		/// </summary>

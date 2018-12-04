@@ -45,6 +45,34 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.XmlComments
 				xmlCommentType.Properties.Add(xmlPropertyType);
 			}
 
+			IEnumerable<XElement> methods = document.XPathSelectElements("doc/members/member[starts-with(@name,'M:')]");
+
+			foreach (XElement methodElement in methods)
+			{
+				var methodFullName = methodElement.Attribute("name").Value.Substring(2);
+
+				var xmlMethodType = new XmlCommentMember(methodFullName);
+				xmlMethodType.Tags.AddRange(methodElement.Elements().Select(e => new XmlMemberTag(e.Name.LocalName, e.Value)));
+
+				int lastDotIndex = xmlMethodType.Name.LastIndexOf('.');
+				if (lastDotIndex == -1)
+				{
+					Console.WriteLine($"Method '{methodFullName}' (XML) has not any matching any parent type, skipping");
+					continue;
+				}
+
+				var currentTypeCandidate = methodFullName.Substring(0, lastDotIndex);
+
+				if (!types.TryGetValue(currentTypeCandidate, out XmlCommentType xmlCommentType))
+				{
+					// create "shadow type" for this method (and any other down the road). This type won't have any tags and clients should be aware of this.
+					xmlCommentType = new XmlCommentType(currentTypeCandidate);
+					types.Add(currentTypeCandidate, xmlCommentType);
+				}
+
+				xmlCommentType.Methods.Add(xmlMethodType);
+			}
+
 			XmlCommentFile xmlCommentFile = new XmlCommentFile();
 			xmlCommentFile.Types.AddRange(types.Values);
 			return xmlCommentFile;

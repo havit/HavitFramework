@@ -26,5 +26,14 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model
 		/// Birthday of the person.
 		/// </summary>
 		public DateTime Birthday { get; set; }
+
+		/// <summary>
+		/// Concatenates first and last name of the person.
+		/// </summary>
+		/// <returns>Person's full name.</returns>
+		public string GetFullName()
+		{
+			return FirstName + " " + LastName;
+		}
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using Havit.Diagnostics.Contracts;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.SqlServer.Migrations.Internal;
 
@@ -13,12 +14,14 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Infrastructure
 		/// <summary>
 		/// Registruje infraštruktúrne služby používané podporou pre extended properties a DB Injections.
 		/// </summary>
-		public static void UseCodeMigrationsInfrastructure(this IDbContextOptionsBuilderInfrastructure optionsBuilder)
+		public static void UseCodeMigrationsInfrastructure(this DbContextOptionsBuilder optionsBuilder)
 		{
 			Contract.Requires<ArgumentNullException>(optionsBuilder != null);
 
-			optionsBuilder.AddOrUpdateExtension(new CompositeMigrationsAnnotationProviderExtension().WithAnnotationProvider<SqlServerMigrationsAnnotationProvider>());
-			optionsBuilder.AddOrUpdateExtension(new CompositeMigrationsSqlGeneratorExtension());
+			IDbContextOptionsBuilderInfrastructure builder = optionsBuilder;
+
+			builder.AddOrUpdateExtension(new CompositeMigrationsAnnotationProviderExtension().WithAnnotationProvider<SqlServerMigrationsAnnotationProvider>());
+			builder.AddOrUpdateExtension(new CompositeMigrationsSqlGeneratorExtension());
 		}
 	}
 }

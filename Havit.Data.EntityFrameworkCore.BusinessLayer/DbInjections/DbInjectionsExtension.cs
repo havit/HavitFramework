@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -9,34 +9,55 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
 {
-    public class DbInjectionsExtension : IDbContextOptionsExtension
+	public class DbInjectionsExtension : IDbContextOptionsExtension
     {
-        private readonly List<Type> annotationProviders = new List<Type>();
-        private readonly List<Type> sqlGenerators = new List<Type>();
+        private ImmutableList<Type> annotationProviders = ImmutableList.Create<Type>();
+        private ImmutableList<Type> sqlGenerators = ImmutableList.Create<Type>();
 
 	    public string LogFragment => "";
 
 	    public DbInjectionsOptions Options { get; private set; } = new DbInjectionsOptions();
 
+	    public DbInjectionsExtension()
+	    {
+	    }
+
+	    protected DbInjectionsExtension(DbInjectionsExtension copyFrom)
+	    {
+		    annotationProviders = copyFrom.annotationProviders;
+		    sqlGenerators = copyFrom.sqlGenerators;
+		    Options = copyFrom.Options;
+	    }
+
+		protected virtual DbInjectionsExtension Clone() => new DbInjectionsExtension(this);
+
 	    public DbInjectionsExtension WithAnnotationProvider<T>()
             where T : IDbInjectionAnnotationProvider
-        {
-            annotationProviders.Add(typeof(T));
-            return this;
-        }
+	    {
+			// clone with new IDbInjectionAnnotationProvider
+			// https://github.com/aspnet/EntityFrameworkCore/issues/10559#issuecomment-351753702
+		    // https://github.com/aspnet/EntityFrameworkCore/blob/779d43731773d59ecd5f899a6330105879263cf3/src/EFCore.InMemory/Infrastructure/Internal/InMemoryOptionsExtension.cs#L47
+			var clone = Clone();
+		    clone.annotationProviders = clone.annotationProviders.Add(typeof(T));
+		    return clone;
+	    }
 
 	    public DbInjectionsExtension WithSqlGenerator<T>()
             where T : IDbInjectionSqlGenerator
-        {
-            sqlGenerators.Add(typeof(T));
-            return this;
-        }
+		{
+			// clone with new IDbInjectionSqlGenerator 
+			var clone = Clone();
+			clone.sqlGenerators = clone.sqlGenerators.Add(typeof(T));
+			return clone;
+		}
 
 	    public DbInjectionsExtension WithOptions(DbInjectionsOptions options)
 	    {
 			Contract.Requires<ArgumentNullException>(options != null);
-		    Options = options;
-		    return this;
+			// clone with new options 
+		    var clone = Clone();
+		    clone.Options = options;
+		    return clone;
 	    }
 
 	    public bool ApplyServices(IServiceCollection services)

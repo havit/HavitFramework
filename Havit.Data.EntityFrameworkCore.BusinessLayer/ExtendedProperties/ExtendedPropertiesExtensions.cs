@@ -15,8 +15,14 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 	{
 		public static void UseSqlServerExtendedProperties(this DbContextOptionsBuilder optionsBuilder)
 		{
-			optionsBuilder.Options.GetExtension<CompositeMigrationsAnnotationProviderExtension>().WithAnnotationProvider<ExtendedPropertiesMigrationsAnnotationProvider>();
-			optionsBuilder.Options.GetExtension<CompositeMigrationsSqlGeneratorExtension>().WithGeneratorType<ExtendedPropertiesMigrationOperationSqlGenerator>();
+			Contract.Requires<ArgumentNullException>(optionsBuilder != null);
+
+			IDbContextOptionsBuilderInfrastructure builder = optionsBuilder;
+
+			builder.AddOrUpdateExtension(optionsBuilder.Options.FindExtension<CompositeMigrationsAnnotationProviderExtension>()
+				.WithAnnotationProvider<ExtendedPropertiesMigrationsAnnotationProvider>());
+			builder.AddOrUpdateExtension(optionsBuilder.Options.FindExtension<CompositeMigrationsSqlGeneratorExtension>()
+				.WithGeneratorType<ExtendedPropertiesMigrationOperationSqlGenerator>());
 		}
 
 		public static IDictionary<string, string> GetExtendedProperties(this IAnnotatable annotatable)

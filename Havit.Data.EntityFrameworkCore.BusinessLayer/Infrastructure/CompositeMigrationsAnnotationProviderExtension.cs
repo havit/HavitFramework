@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
@@ -8,17 +8,29 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Infrastructure
 {
-    internal class CompositeMigrationsAnnotationProviderExtension : IDbContextOptionsExtension
+	internal class CompositeMigrationsAnnotationProviderExtension : IDbContextOptionsExtension
     {
-        private readonly List<Type> providers = new List<Type>();
+        private ImmutableList<Type> providers = ImmutableList.Create<Type>();
 
         public string LogFragment => "";
 
-        public CompositeMigrationsAnnotationProviderExtension WithAnnotationProvider<T>()
+	    public CompositeMigrationsAnnotationProviderExtension()
+	    {
+	    }
+
+	    protected CompositeMigrationsAnnotationProviderExtension(CompositeMigrationsAnnotationProviderExtension copyFrom)
+	    {
+		    providers = copyFrom.providers;
+	    }
+
+	    protected virtual CompositeMigrationsAnnotationProviderExtension Clone() => new CompositeMigrationsAnnotationProviderExtension(this);
+
+	    public CompositeMigrationsAnnotationProviderExtension WithAnnotationProvider<T>()
             where T : IMigrationsAnnotationProvider
-        {
-            providers.Add(typeof(T));
-            return this;
+	    {
+		    var clone = Clone();
+		    clone.providers = providers.Add(typeof(T));
+			return clone;
         }
 
         public bool ApplyServices(IServiceCollection services)

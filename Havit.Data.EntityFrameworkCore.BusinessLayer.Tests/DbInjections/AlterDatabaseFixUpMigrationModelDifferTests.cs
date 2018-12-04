@@ -151,7 +151,10 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
 			{
 				base.OnConfiguring(optionsBuilder);
 
-				optionsBuilder.Options.GetExtension<CompositeMigrationsAnnotationProviderExtension>().WithAnnotationProvider<AllAnnotationsMigrationsAnnotationProvider>();
+				IDbContextOptionsBuilderInfrastructure builder = optionsBuilder;
+
+				builder.AddOrUpdateExtension(optionsBuilder.Options.FindExtension<CompositeMigrationsAnnotationProviderExtension>()
+					.WithAnnotationProvider<AllAnnotationsMigrationsAnnotationProvider>());
 				optionsBuilder.Options.GetExtension<DbInjectionsExtension>().WithOptions(new DbInjectionsOptions { RemoveUnnecessaryStatementsForMigrationsAnnotationsForModel = true });
 			}
 

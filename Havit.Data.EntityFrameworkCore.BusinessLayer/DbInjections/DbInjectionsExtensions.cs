@@ -23,14 +23,19 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
         {
 			Contract.Requires<ArgumentNullException>(optionsBuilder != null);
 
-            optionsBuilder.Options.GetExtension<CompositeMigrationsAnnotationProviderExtension>().WithAnnotationProvider<DbInjectionsMigrationsAnnotationProvider>();
-            optionsBuilder.Options.GetExtension<CompositeMigrationsSqlGeneratorExtension>().WithGeneratorType<DbInjectionMigrationOperationSqlGenerator>();
+	        IDbContextOptionsBuilderInfrastructure builder = optionsBuilder;
+
+			builder.AddOrUpdateExtension(
+				optionsBuilder.Options.FindExtension<CompositeMigrationsAnnotationProviderExtension>()
+			        .WithAnnotationProvider<DbInjectionsMigrationsAnnotationProvider>());
+	        builder.AddOrUpdateExtension(
+		        optionsBuilder.Options.FindExtension<CompositeMigrationsSqlGeneratorExtension>()
+			        .WithGeneratorType<DbInjectionMigrationOperationSqlGenerator>());
 
 	        var options = new DbInjectionsOptions();
 	        setupAction?.Invoke(options);
 
-	        IDbContextOptionsBuilderInfrastructure infrastructure = optionsBuilder;
-	        infrastructure.AddOrUpdateExtension(new DbInjectionsExtension()
+	        builder.AddOrUpdateExtension(new DbInjectionsExtension()
                 .WithAnnotationProvider<StoredProcedureAnnotationProvider>()
                 .WithSqlGenerator<StoredProcedureSqlGenerator>()
                 .WithAnnotationProvider<ExtendedPropertiesAnnotationProvider>()

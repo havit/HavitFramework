@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
@@ -8,18 +8,30 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Infrastructure
 {
-    internal class CompositeMigrationsSqlGeneratorExtension : IDbContextOptionsExtension
-    {
-        private readonly List<Type> generatorTypes = new List<Type>();
+	internal class CompositeMigrationsSqlGeneratorExtension : IDbContextOptionsExtension
+	{
+		private ImmutableList<Type> generatorTypes = ImmutableList.Create<Type>();
 
-        public string LogFragment => "";
+		public string LogFragment => "";
 
-        public CompositeMigrationsSqlGeneratorExtension WithGeneratorType<T>()
+		public CompositeMigrationsSqlGeneratorExtension()
+		{
+		}
+
+		protected CompositeMigrationsSqlGeneratorExtension(CompositeMigrationsSqlGeneratorExtension copyFrom)
+		{
+			generatorTypes = copyFrom.generatorTypes;
+		}
+
+		protected virtual CompositeMigrationsSqlGeneratorExtension Clone() => new CompositeMigrationsSqlGeneratorExtension(this);
+
+		public CompositeMigrationsSqlGeneratorExtension WithGeneratorType<T>()
             where T : IMigrationOperationSqlGenerator
-        {
-            generatorTypes.Add(typeof(T));
-            return this;
-        }
+		{
+			var clone = Clone();
+			clone.generatorTypes = generatorTypes.Add(typeof(T));
+			return clone;
+		}
 
         public bool ApplyServices(IServiceCollection services)
         {

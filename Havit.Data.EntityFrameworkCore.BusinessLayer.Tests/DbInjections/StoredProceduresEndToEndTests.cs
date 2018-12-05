@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.ExtendedProperties.Attributes;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.StoredProcedures;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections.Model;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -103,8 +108,45 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
             }
         }
 
+	    [TestClass]
+	    public class StoredProcedureWithMsDescriptionExtendedProperty
+		{
+			[Attach(nameof(Invoice))]
+			public class InvoiceStoredProcedures : StoredProcedureDbInjector
+			{
+				/// <summary>
+				/// Calculates total amount.
+				/// </summary>
+				/// <returns>Total amount</returns>
+				[MethodName(nameof(TotalAmount))]
+				[Result(StoredProcedureResultType.DataTable)]
+				[MethodAccessModifier("public")]
+				public StoredProcedureDbInjection TotalAmount()
+				{
+					return new StoredProcedureDbInjection { CreateSql = "", ProcedureName = nameof(TotalAmount) };
+				}
+			}
 
-        private static IReadOnlyList<MigrationCommand> Generate(IModel source, IModel target)
+			[Table("Dummy")]
+			private class Invoice
+			{
+				public int Id { get; set; }
+
+				public DateTime Created { get; set; }
+			}
+
+		    [TestMethod]
+		    public void Test()
+		    {
+			    var source = new EndToEndDbInjectionsDbContext<Invoice>();
+			    var model = source.Model;
+
+			    IDictionary<string, string> extendedProperties = model.GetExtendedProperties();
+			    Assert.AreEqual("Calculates total amount.", extendedProperties.FirstOrDefault(a => a.Key.EndsWith("MS_Description")).Value?.Trim());
+		    }
+	    }
+
+		private static IReadOnlyList<MigrationCommand> Generate(IModel source, IModel target)
         {
             using (var db = new TestDbContext())
             {
@@ -141,5 +183,17 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
 
             public DbSet<TEntity> Entities { get; }
         }
-    }
+
+
+	    private class EndToEndDbInjectionsDbContext<TEntity> : EndToEndDbContext
+		    where TEntity : class
+	    {
+		    protected override void ModelCreatingCompleting(ModelBuilder modelBuilder)
+		    {
+				RegisterDbInjections(modelBuilder, this.GetType().Assembly);
+		    }
+
+		    public DbSet<TEntity> Entities { get; }
+	    }
+	}
 }

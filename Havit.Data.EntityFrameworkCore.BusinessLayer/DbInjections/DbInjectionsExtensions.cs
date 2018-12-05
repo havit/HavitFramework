@@ -40,6 +40,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
                 .WithSqlGenerator<StoredProcedureSqlGenerator>()
                 .WithAnnotationProvider<ExtendedPropertiesAnnotationProvider>()
 				.WithAnnotationProvider<StoredProcedureAttachPropertyAnnotationProvider>()
+				.WithAnnotationProvider<StoredProcedureMsDescriptionPropertyAnnotationProvider>()
 		        .WithOptions(options)
 			);
         }

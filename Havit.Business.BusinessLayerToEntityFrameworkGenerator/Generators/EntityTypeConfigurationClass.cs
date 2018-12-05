@@ -18,7 +18,6 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 {
 	public static class EntityTypeConfigurationClass
 	{
-		#region Generate
 		public static void Generate(GeneratedModel model, GeneratedModelClass modelClass, CsprojFile entityCsprojFile, SourceControlClient sourceControlClient)
 		{
 			Table table = modelClass.Table;
@@ -50,10 +49,6 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 			}
 		}
 
-		#endregion
-
-		#region WriteUsings
-
 		/// <summary>
 		/// Zapíše usings na všechny možné potřebné namespace.
 		/// </summary>
@@ -73,9 +68,6 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 			writer.WriteLine();
 		}
 
-		#endregion
-
-		#region WriteNamespaceClassConstructorBegin
 		public static void WriteNamespaceClassConstructorBegin(CodeWriter writer, GeneratedModelClass modelClass, bool includeAttributes)
 		{
 			writer.WriteLine("namespace " + Helpers.NamingConventions.NamespaceHelper.GetNamespaceName(modelClass.Table, "Entity.Configurations"));
@@ -87,7 +79,6 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 			writer.WriteLine(String.Format("public void Configure(EntityTypeBuilder<{0}> builder)", modelClass.Name));
 			writer.WriteLine("{");
 		}
-		#endregion
 
 		private static bool WritePrincipals(CodeWriter writer, GeneratedModelClass modelClass)
 		{
@@ -234,6 +225,11 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 				{
 					WriteIndexesColumns(writer, modelClass, includedIndexedColumns, ".ForSqlServerInclude");
 				}
+				if (index.HasFilter)
+				{
+					writer.WriteLine($".HasFilter(\"{index.FilterDefinition}\")");
+
+				}
 				if (index.IsUnique)
 				{
 					writer.WriteLine(".IsUnique()");
@@ -254,7 +250,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 			if (indexedColumns.Count == 1)
 			{
 				Column column = modelClass.Table.Columns[indexedColumns.Single().Name];
-				writer.WriteLine(String.Format("{0}({1} => {1}.{2})", code, entityCammelCase, PropertyHelper.GetPropertyName(column, "Id")));
+				writer.WriteLine(String.Format("{0}({1} => {1}.{2})", code, entityCammelCase, GetPropertyForIndex(column)));
 			}
 			else
 			{
@@ -266,7 +262,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 					Column column = modelClass.Table.Columns[indexedColumn.Name];
 					writer.WriteLine(String.Format("{0}.{1}{2}",
 						entityCammelCase, //0
-						PropertyHelper.GetPropertyName(column, "Id"), // 1
+						GetPropertyForIndex(column), // 1
 						(i < (indexedColumns.Count - 1)) ? "," : "")); // 2
 				}
 				writer.Unindent();
@@ -274,14 +270,21 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 			}
 		}
 
-		#region WriteNamespaceClassConstructorEnd
 		public static void WriteNamespaceClassConstructorEnd(CodeWriter writer)
 		{
 			writer.WriteLine("}");
 			writer.WriteLine("}");
 			writer.WriteLine("}");
 		}
-		#endregion
+
+		private static string GetPropertyForIndex(Column column)
+		{
+			return column.InPrimaryKey
+				? "Id"
+				: column.IsForeignKey
+					? PropertyHelper.GetPropertyName(column, "Id") + "Id" // + "Id" je hack, jak z databáze pro ClientID udělat Client a z něj ClientId
+					: column.Name;
+		}
 
 	}
 }

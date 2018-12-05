@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Havit.Business.BusinessLayerGenerator.Csproj;
 using Havit.Business.BusinessLayerGenerator.Helpers;
 using Havit.Business.BusinessLayerGenerator.Settings;
@@ -16,7 +17,14 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			DatabaseRulesChecker.CheckRules(database);
 
 			// nalezneme tabulky, na jejichž základě se budou generovat třídy
-			Console.BufferHeight = Int16.MaxValue - 1;
+			try
+			{
+				Console.BufferHeight = Int16.MaxValue - 1;
+			}
+			catch (IOException) // Powershell ISE vyhazuje výjimku
+			{
+				// NOOP
+			}
 
 			ConsoleHelper.WriteLineInfo("Vyhledávám tabulky");
 			List<Table> tables = DatabaseHelper.GetWorkingTables();

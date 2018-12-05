@@ -5,7 +5,6 @@ using System.Linq;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.ExtendedProperties.Attributes;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.StoredProcedures;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
-using Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections.Model;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -15,7 +14,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
 {
-    public class StoredProceduresEndToEndTests
+	public class StoredProceduresEndToEndTests
     {
         [TestClass]
         public class AddingStoredProcedure

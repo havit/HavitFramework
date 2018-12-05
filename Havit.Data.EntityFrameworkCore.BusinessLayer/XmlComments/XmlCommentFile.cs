@@ -10,14 +10,19 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.XmlComments
 	{
 		public List<XmlCommentType> Types { get; } = new List<XmlCommentType>();
 
-		public XmlCommentMember GetMember(MemberInfo memberInfo)
+		public XmlCommentMember FindMethod(MethodInfo methodInfo)
 		{
-			Contract.Requires<ArgumentNullException>(memberInfo != null);
+			Contract.Requires<ArgumentNullException>(methodInfo != null);
 
-			string preprocessedTypeName = memberInfo.DeclaringType.FullName.Replace('+', '.');
+			XmlCommentType xmlCommentType = FindType(methodInfo);
+			return xmlCommentType?.Methods.FirstOrDefault(member => member.Name == (xmlCommentType.Name + "." + methodInfo.Name));
+		}
+
+		private XmlCommentType FindType(MethodInfo methodInfo)
+		{
+			string preprocessedTypeName = methodInfo.DeclaringType.FullName.Replace('+', '.');
 			XmlCommentType xmlCommentType = Types.FirstOrDefault(t => t.Name == preprocessedTypeName);
-
-			return xmlCommentType?.Properties.FirstOrDefault(member => member.Name == (xmlCommentType.Name + "." + memberInfo.Name));
+			return xmlCommentType;
 		}
 	}
 }

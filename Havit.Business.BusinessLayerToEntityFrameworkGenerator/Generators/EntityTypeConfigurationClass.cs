@@ -225,6 +225,12 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 				{
 					WriteIndexesColumns(writer, modelClass, includedIndexedColumns, ".ForSqlServerInclude");
 				}
+
+				if (index.IsUnique)
+				{
+					writer.WriteLine(".IsUnique()");
+				}
+
 				if (!String.IsNullOrEmpty(index.FilterDefinition))
 				{
 					writer.WriteLine($".HasFilter(\"{index.FilterDefinition}\")");
@@ -232,10 +238,6 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 				else if (index.IsUnique && index.IndexedColumns.Cast<IndexedColumn>().Any(ic => modelClass.Table.Columns[ic.Name].Nullable))
 				{
 					writer.WriteLine($".HasFilter(null)");
-				}
-				if (index.IsUnique)
-				{
-					writer.WriteLine(".IsUnique()");
 				}
 				writer.WriteLine($".HasName(\"{index.Name}\");");
 				writer.Unindent();

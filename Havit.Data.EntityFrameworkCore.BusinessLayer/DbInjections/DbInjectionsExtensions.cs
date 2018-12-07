@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.ExtendedProperties;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.StoredProcedures;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.Views;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.Infrastructure;
 using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore;
@@ -41,6 +42,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
                 .WithAnnotationProvider<ExtendedPropertiesAnnotationProvider>()
 				.WithAnnotationProvider<StoredProcedureAttachPropertyAnnotationProvider>()
 				.WithAnnotationProvider<StoredProcedureMsDescriptionPropertyAnnotationProvider>()
+		        .WithAnnotationProvider<ViewAnnotationProvider>()
+		        .WithSqlGenerator<ViewSqlGenerator>()
 		        .WithOptions(options)
 			);
         }

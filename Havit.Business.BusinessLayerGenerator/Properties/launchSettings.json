@@ -6,7 +6,8 @@
     },
     "123.AEP": {
       "commandName": "Project",
-      "commandLineArgs": "-sqlserver:sqldev -database:AccacePayroll -outputpath:D:\\Dev\\123.AEP\\BusinessLayer"
+      "commandLineArgs": "-outputpath:D:\\Dev\\123.AEP\\BusinessLayer -webconfig=D:\\Dev\\123.AEP\\Web\\web.config -targetplatform:SqlServer2008 -strategy:HavitCodeFirst",
+      "workingDirectory": "D:\\Temp"
     }
   }
 }

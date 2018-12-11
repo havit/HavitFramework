@@ -24,8 +24,14 @@ namespace Havit.Business.BusinessLayerGenerator.DefaultsBuilders
 				if (PropertyHelper.IsString(column) && (column.DefaultConstraint == null) && String.IsNullOrEmpty(column.Default))
 				{
 					column.AddDefaultConstraint();
-					column.DefaultConstraint.Text = "('')";
+					column.DefaultConstraint.Text = "(N'')";
 					column.DefaultConstraint.Create();
+				}
+
+				if ((column.DefaultConstraint != null) && (column.DefaultConstraint.Text == "('')"))
+				{
+					column.DefaultConstraint.Text = "N('')";
+					column.DefaultConstraint.Alter();
 				}
 			}
 		}

@@ -14,12 +14,11 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 		/// <inheritdoc />
 		public void Apply(ModelBuilder modelBuilder)
 		{
-			var localizationTableEntityTypes = modelBuilder.Model
+			var localizationTables = modelBuilder.Model
 				.GetApplicationEntityTypes()
-				.Where(entityType => entityType.ClrType.GetInterfaces().Any(itype => itype.IsGenericType && itype.GetGenericTypeDefinition() == typeof(Havit.Model.Localizations.ILocalization<,>)))
-				.ToList();
+				.Where(entityType => entityType.Name.EndsWith("Localization") && (entityType.Name.Length > "Localization".Length));
 
-			foreach (IMutableEntityType entityType in localizationTableEntityTypes)
+			foreach (IMutableEntityType entityType in localizationTables)
 			{
 				IMutableProperty parentIdProperty = entityType.GetProperties().FirstOrDefault(prop => prop.Name == "ParentId");
 				if (parentIdProperty != null)

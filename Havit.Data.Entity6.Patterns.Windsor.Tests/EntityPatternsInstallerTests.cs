@@ -13,8 +13,10 @@ using Havit.Data.Entity6.Patterns.Windsor.Tests.Infrastructure.DataLayer;
 using Havit.Data.Entity6.Patterns.Windsor.Tests.Infrastructure.Entity;
 using Havit.Data.Entity6.Patterns.Windsor.Tests.Infrastructure.Model;
 using Havit.Data.Patterns.DataLoaders;
+using Havit.Data.Patterns.DataSeeds;
 using Havit.Data.Patterns.Localizations;
 using Havit.Data.Patterns.UnitOfWorks;
+using Havit.Services;
 using Havit.Services.TimeServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -24,7 +26,7 @@ namespace Havit.Data.Entity6.Patterns.Windsor.Tests
 	public class EntityPatternsInstallerTests
 	{
 		[TestMethod]
-		public void EntityPatternsInstaller_RegisterLocalizationServices_ShouldRegisterLanguageAndLocalizationServices()
+		public void EntityPatternsInstaller_ShouldRegisterLanguageAndLocalizationServices()
 		{
 			// Arrange
 			var container = CreateAndSetupWindsorContainer();
@@ -38,7 +40,7 @@ namespace Havit.Data.Entity6.Patterns.Windsor.Tests
 		}
 
 		[TestMethod]
-		public void EntityPatternsInstaller_RegisterLocalizationServices_ShouldRegisterDataLoaderAndDependencies()
+		public void EntityPatternsInstaller_ShouldRegisterDataLoaderAndDependencies()
 		{
 			// Arrange
 			var container = CreateAndSetupWindsorContainer();
@@ -51,7 +53,7 @@ namespace Havit.Data.Entity6.Patterns.Windsor.Tests
 		}
 
 		[TestMethod]
-		public void EntityPatternsInstaller_RegisterLocalizationServices_ShouldRegisterUnitOfWorkAndDependencies()
+		public void EntityPatternsInstaller_ShouldRegisterUnitOfWorkAndDependencies()
 		{
 			// Arrange
 			var container = CreateAndSetupWindsorContainer();
@@ -64,7 +66,21 @@ namespace Havit.Data.Entity6.Patterns.Windsor.Tests
 		}
 
 		[TestMethod]
-		public void EntityPatternsInstaller_RegisterLocalizationServices_ShouldRegisterBeforeCommitProcessorsServicesAndDependencies()
+		public void EntityPatternsInstaller_ShouldRegisterDataSeedRunnerAndDependencies()
+		{
+			// Arrange
+			var container = CreateAndSetupWindsorContainer();
+
+			// Act
+			container.Resolve<IDataSeedRunner>();
+
+			// Assert
+			// no exception was thrown
+		}
+
+
+		[TestMethod]
+		public void EntityPatternsInstaller__ShouldRegisterBeforeCommitProcessorsServicesAndDependencies()
 		{
 			// Arrange
 			WindsorContainer container = new WindsorContainer();
@@ -95,6 +111,7 @@ namespace Havit.Data.Entity6.Patterns.Windsor.Tests
 			container.Kernel.Resolver.AddSubResolver(new CollectionResolver(container.Kernel));
 
 			container.AddFacility<TypedFactoryFacility>();
+			container.Register(Component.For(typeof(IServiceFactory<>)).AsFactory());
 			container.WithEntityPatternsInstaller(new WebApplicationComponentRegistrationOptions())
 				.RegisterEntityPatterns()
 				.RegisterDbContext<TestDbContext>()

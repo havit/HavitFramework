@@ -118,6 +118,19 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 		}
 
 		[TestMethod]
+		public void EntityPatternsInstaller_ShouldRegisterDataSeedRunnerAndDependencies()
+		{
+			// Arrange
+			WindsorContainer container = Helpers.CreateAndSetupWindsorContainer();
+
+			// Act
+			container.Resolve<IDataSeedRunner>();
+
+			// Assert
+			// no exception was thrown and...
+		}
+
+		[TestMethod]
 		public void EntityPatternsInstaller_DbDataSeedPersister_DbContextDependencyIsTransient()
 		{
 			// Arrange

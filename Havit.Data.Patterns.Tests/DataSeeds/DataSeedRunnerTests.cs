@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Havit.Data.Patterns.DataSeeds;
 using Havit.Data.Patterns.DataSeeds.Profiles;
+using Havit.Data.Patterns.Transactions.Internal;
 using Havit.Data.Patterns.Tests.DataSeeds.Infrastructure;
 using Havit.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -27,7 +28,7 @@ namespace Havit.Data.Patterns.Tests.DataSeeds
 			dataSeedPersisterFactoryMock.Setup(m => m.CreateService()).Returns(dataSeedPersisterMock.Object);
 			dataSeedPersisterFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDataSeedPersister>()));
 
-			DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedMock.Object }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object);
+			DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedMock.Object }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object, new NullTransactionWrapper());
 			
 			// Act
 			runner.SeedData<DefaultProfile>();
@@ -51,7 +52,7 @@ namespace Havit.Data.Patterns.Tests.DataSeeds
 			dataSeedPersisterFactoryMock.Setup(m => m.CreateService()).Returns(dataSeedPersisterMock.Object);
 			dataSeedPersisterFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDataSeedPersister>()));
 
-	        DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedMock.Object }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object);
+	        DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedMock.Object }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object, new NullTransactionWrapper());
 
 	        // Act
 	        runner.SeedData<ProfileWithPrerequisite>();
@@ -70,7 +71,7 @@ namespace Havit.Data.Patterns.Tests.DataSeeds
 
 			Mock<IServiceFactory<IDataSeedPersister>> dataSeedPersisterFactoryMock = new Mock<IServiceFactory<IDataSeedPersister>>(MockBehavior.Strict);
 
-			DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedCycleA, dataSeedCycleB }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object);
+			DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedCycleA, dataSeedCycleB }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object, new NullTransactionWrapper());
 
 			// Act
 			runner.SeedData<DefaultProfile>();
@@ -87,7 +88,7 @@ namespace Havit.Data.Patterns.Tests.DataSeeds
 
 			Mock<IServiceFactory<IDataSeedPersister>> dataSeedPersisterFactoryMock = new Mock<IServiceFactory<IDataSeedPersister>>(MockBehavior.Strict);
 
-			DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedDependentOnItself }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object);
+			DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedDependentOnItself }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object, new NullTransactionWrapper());
 
 			// Act
 			runner.SeedData<DefaultProfile>();
@@ -104,7 +105,7 @@ namespace Havit.Data.Patterns.Tests.DataSeeds
 
 			Mock<IServiceFactory<IDataSeedPersister>> dataSeedPersisterFactoryMock = new Mock<IServiceFactory<IDataSeedPersister>>(MockBehavior.Strict);
 
-			DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedMock.Object, dataSeedMock.Object }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object);
+			DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedMock.Object, dataSeedMock.Object }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object, new NullTransactionWrapper());
 
 			// Act
 			runner.SeedData<DefaultProfile>();
@@ -121,7 +122,7 @@ namespace Havit.Data.Patterns.Tests.DataSeeds
 
 			Mock<IServiceFactory<IDataSeedPersister>> dataSeedPersisterFactoryMock = new Mock<IServiceFactory<IDataSeedPersister>>(MockBehavior.Strict);
 
-			DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedCycleA }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object);
+			DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedCycleA }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object, new NullTransactionWrapper());
 
 			// Act
 			runner.SeedData<DefaultProfile>();

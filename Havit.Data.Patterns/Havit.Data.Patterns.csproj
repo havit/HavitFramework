@@ -9,7 +9,7 @@
   <!-- NuGet -->
   <PropertyGroup>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageVersion>1.8.7</PackageVersion>
+	<PackageVersion>1.8.8</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Data Patterns</Description>
   </PropertyGroup>
   
@@ -21,6 +21,10 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Transactions" Condition="'$(TargetFramework)' == 'net46'" />
   </ItemGroup>
 
 </Project>

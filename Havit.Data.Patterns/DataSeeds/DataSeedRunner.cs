@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Net.Sockets;
 using Havit.Data.Patterns.DataSeeds;
 using Havit.Data.Patterns.DataSeeds.Profiles;
+using Havit.Data.Patterns.Transactions.Internal;
 using Havit.Diagnostics.Contracts;
 using Havit.Services;
 
@@ -17,14 +19,15 @@ namespace Havit.Data.Patterns.DataSeeds
 		private readonly List<IDataSeed> dataSeeds;
 		private readonly IDataSeedRunDecision dataSeedRunDecision;
 		private readonly IServiceFactory<IDataSeedPersister> dataSeedPersisterFactory;
+		private readonly ITransactionWrapper transactionWrapper;
 
-	    /// <summary>
-	    /// Konstruktor.
-	    /// </summary>
-	    /// <param name="dataSeeds">Předpisy seedování objektů.</param>
-	    /// <param name="dataSeedRunDecision">Služba vracející, zda se má dataseed spustit. Lze takto spouštění potlačit (např. pokud již bylo spuštěno).</param>
-	    /// <param name="dataSeedPersister">Persister seedovaných objektů.</param>
-	    public DataSeedRunner(IEnumerable<IDataSeed> dataSeeds, IDataSeedRunDecision dataSeedRunDecision, IServiceFactory<IDataSeedPersister> dataSeedPersisterFactory)
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
+		/// <param name="dataSeeds">Předpisy seedování objektů.</param>
+		/// <param name="dataSeedRunDecision">Služba vracející, zda se má dataseed spustit. Lze takto spouštění potlačit (např. pokud již bylo spuštěno).</param>
+		/// <param name="dataSeedPersister">Persister seedovaných objektů.</param>
+		public DataSeedRunner(IEnumerable<IDataSeed> dataSeeds, IDataSeedRunDecision dataSeedRunDecision, IServiceFactory<IDataSeedPersister> dataSeedPersisterFactory, ITransactionWrapper transactionWrapper)
 	    {
 	        Contract.Requires(dataSeeds != null);
 	        Contract.Requires(dataSeedRunDecision != null);
@@ -39,7 +42,8 @@ namespace Havit.Data.Patterns.DataSeeds
 
 	        this.dataSeedRunDecision = dataSeedRunDecision;
 	        this.dataSeedPersisterFactory = dataSeedPersisterFactory;
-	    }
+			this.transactionWrapper = transactionWrapper;
+		}
 
 	    /// <summary>
 		/// Provede seedování dat daného profilu.
@@ -55,7 +59,10 @@ namespace Havit.Data.Patterns.DataSeeds
         /// </summary>
 	    public void SeedData(Type dataSeedProfileType, bool forceRun = false)
 	    {
-	        SeedProfileWithPrequisites(dataSeedProfileType, forceRun, new Stack<Type>(), new List<Type>());
+			transactionWrapper.ExecuteWithTransaction(() =>
+			{
+				SeedProfileWithPrequisites(dataSeedProfileType, forceRun, new Stack<Type>(), new List<Type>());
+			});
 	    }
 
         /// <summary>

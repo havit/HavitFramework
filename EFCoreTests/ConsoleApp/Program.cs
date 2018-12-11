@@ -30,6 +30,10 @@ using System.Collections.Generic;
 using Havit.EFCoreTests.Model.Security;
 using Microsoft.Extensions.Logging;
 using Havit.Data.EntityFrameworkCore.Patterns.Caching;
+using System.Transactions;
+using Havit.Data.Patterns.DataSeeds;
+using Havit.Data.Patterns.DataSeeds.Profiles;
+using Havit.EFCoreTests.DataLayer.Seeds.Core;
 
 namespace ConsoleApp1
 {
@@ -42,13 +46,16 @@ namespace ConsoleApp1
 			//GenerateSecurity(100, 10, 3, container);
 			//DebugModelInfo(container);
 			//DebugDataLoader(container);
-			DebugFlagClass(container);
+			//DebugFlagClass(container);
+			//DebugTransactions(container);
+			DebugSeeding(container);
 		}
 
 		private static IWindsorContainer ConfigureAndCreateWindsorContainer()
 		{
 			var loggerFactory = new LoggerFactory();
 			loggerFactory.AddConsole((categoryName, logLevel) => (logLevel == LogLevel.Information) && (categoryName == DbLoggerCategory.Database.Command.Name));
+			loggerFactory.AddConsole((categoryName, logLevel) => (categoryName == DbLoggerCategory.Database.Transaction.Name));
 
 			DbContextOptions options = new DbContextOptionsBuilder<ApplicationDbContext>()
 				.UseSqlServer("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=EFCoreTests;Application Name=EFCoreTests-Entity")
@@ -186,7 +193,45 @@ namespace ConsoleApp1
 				FlagClass flagClass = new FlagClass();
 				flagClass.MyFlag = false;
 				dbContext.Set<FlagClass>().AddRange(new FlagClass[] { flagClass });
-				dbContext.SaveChanges();
+				dbContext.SaveChanges();			
+			}
+		}
+
+		private static void DebugTransactions(IWindsorContainer container)
+		{
+			Action<IDbContext> action = (IDbContext dbContext) =>
+			{
+				Console.WriteLine(dbContext.GetHashCode());
+				//dbContext.Database.Migrate();
+
+				dbContext.Set<FlagClass>().AsQueryable().ToList();
+			};
+
+			using (var transactionScope = new TransactionScope(TransactionScopeOption.Required))
+			{
+				using (var scope = container.BeginScope())
+				{
+					var dbContext = container.Resolve<IDbContext>();
+					action(dbContext);
+				}
+
+				using (var scope = container.BeginScope())
+				{
+					var dbContext = container.Resolve<IDbContext>();
+					action(dbContext);
+				}
+
+				transactionScope.Complete();
+			}
+			System.Threading.Thread.Sleep(1000);
+		}
+
+		private static void DebugSeeding(IWindsorContainer container)
+		{
+			using (var scope = container.BeginScope())
+			{
+				var dataSeedRunner = container.Resolve<IDataSeedRunner>();
+				dataSeedRunner.SeedData<CoreProfile>();
 			}
 		}
 

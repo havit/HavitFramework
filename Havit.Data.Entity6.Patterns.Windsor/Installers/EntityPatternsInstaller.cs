@@ -22,6 +22,7 @@ using Havit.Data.Patterns.DataSources;
 using Havit.Data.Patterns.Infrastructure;
 using Havit.Data.Patterns.Localizations;
 using Havit.Data.Patterns.Repositories;
+using Havit.Data.Patterns.Transactions.Internal;
 using Havit.Data.Patterns.UnitOfWorks;
 using Havit.Diagnostics.Contracts;
 using Havit.Model.Localizations;
@@ -87,6 +88,7 @@ namespace Havit.Data.Entity.Patterns.Windsor.Installers
 				Component.For(typeof(IDataEntrySymbolStorage<>)).ImplementedBy(typeof(DataEntrySymbolStorage<>)).LifestyleSingleton(),
 				Component.For<ICurrentCultureService>().ImplementedBy<CurrentCultureService>().LifestyleSingleton(),
 				Component.For<IDataSeedRunner>().ImplementedBy<DataSeedRunner>().LifestyleTransient(),
+				Component.For<ITransactionWrapper>().ImplementedBy<TransactionScopeTransactionWrapper>().LifestyleTransient(),
 				Component.For<IDataSeedRunDecision>().ImplementedBy<OncePerVersionDataSeedRunDecision>().LifestyleTransient(),
 				Component.For<IDataSeedRunDecisionStatePersister>().ImplementedBy<DbDataSeedRunDecisionStatePersister>().LifestyleTransient(),
 				Component.For<IDataSeedPersister>().ImplementedBy<DbDataSeedPersister>().LifestyleTransient(),

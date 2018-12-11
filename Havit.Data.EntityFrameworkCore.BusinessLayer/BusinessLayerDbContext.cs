@@ -68,7 +68,6 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 			yield return new XmlCommentsForDescriptionPropertyConvention();
 			yield return new BusinessLayerIndexesConventions();
             yield return new CharColumnTypeForCharPropertyConvention();
-			yield return new LocalizationParentColumnNameConvention();
 		}
 
 		/// <summary>

@@ -41,7 +41,8 @@ namespace ConsoleApp1
 			//GenerateLanguages(1, container);
 			//GenerateSecurity(100, 10, 3, container);
 			//DebugModelInfo(container);
-			DebugDataLoader(container);
+			//DebugDataLoader(container);
+			DebugFlagClass(container);
 		}
 
 		private static IWindsorContainer ConfigureAndCreateWindsorContainer()
@@ -173,6 +174,19 @@ namespace ConsoleApp1
 			using (var scope = container.BeginScope())
 			{
 				
+			}
+		}
+
+		private static void DebugFlagClass(IWindsorContainer container)
+		{
+			using (var scope = container.BeginScope())
+			{
+				var dbContext = container.Resolve<IDbContext>();
+				dbContext.Database.Migrate();
+				FlagClass flagClass = new FlagClass();
+				flagClass.MyFlag = false;
+				dbContext.Set<FlagClass>().AddRange(new FlagClass[] { flagClass });
+				dbContext.SaveChanges();
 			}
 		}
 

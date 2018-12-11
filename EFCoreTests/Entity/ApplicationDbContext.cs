@@ -1,5 +1,6 @@
 ﻿using System;
 using Havit.Data.EntityFrameworkCore;
+using Havit.EFCoreTests.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace Havit.EFCoreTests.Entity
@@ -30,6 +31,8 @@ namespace Havit.EFCoreTests.Entity
 
 			modelBuilder.RegisterModelFromAssembly(typeof(Havit.EFCoreTests.Model.Localizations.Language).Assembly);
 			modelBuilder.ApplyConfigurationsFromAssembly(this.GetType().Assembly);
+
+			modelBuilder.Entity<FlagClass>().Property(fc => fc.MyFlag).HasDefaultValue(true).ValueGeneratedNever();
 		}
 	}
 }

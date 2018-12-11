@@ -33,6 +33,7 @@ namespace Havit.Data.EntityFrameworkCore.Conventions
 				}
 
 				prop.Property.Relational().DefaultValueSql = prop.Attribute.Value?.ToString();
+				prop.Property.ValueGenerated = Microsoft.EntityFrameworkCore.Metadata.ValueGenerated.Never; // https://stackoverflow.com/questions/40655968/how-to-force-default-values-in-an-insert-with-entityframework-core
 			}
 		}
 	}

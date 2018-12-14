@@ -53,10 +53,10 @@ namespace Havit.BusinessLayerTest
 	/// 	[Username] ASC
 	/// )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 	/// ) ON [PRIMARY]
-	/// ALTER TABLE [dbo].[Uzivatel] ADD  CONSTRAINT [DF_Uzivatel_Username]  DEFAULT ('') FOR [Username]
+	/// ALTER TABLE [dbo].[Uzivatel] ADD  CONSTRAINT [DF_Uzivatel_Username]  DEFAULT (N'') FOR [Username]
 	/// ALTER TABLE [dbo].[Uzivatel] ADD  CONSTRAINT [DF_Uzivatel_Password]  DEFAULT (N'DefaultS&quot;UvozovkouA''Apostrofem') FOR [Password]
-	/// ALTER TABLE [dbo].[Uzivatel] ADD  CONSTRAINT [DF_Uzivatel_DisplayAs]  DEFAULT ('') FOR [DisplayAs]
-	/// ALTER TABLE [dbo].[Uzivatel] ADD  CONSTRAINT [DF_Uzivatel_Email]  DEFAULT ('') FOR [Email]
+	/// ALTER TABLE [dbo].[Uzivatel] ADD  CONSTRAINT [DF_Uzivatel_DisplayAs]  DEFAULT (N'') FOR [DisplayAs]
+	/// ALTER TABLE [dbo].[Uzivatel] ADD  CONSTRAINT [DF_Uzivatel_Email]  DEFAULT (N'') FOR [Email]
 	/// ALTER TABLE [dbo].[Uzivatel] ADD  CONSTRAINT [DF_Uzivatel_Disabled]  DEFAULT ((0)) FOR [Disabled]
 	/// ALTER TABLE [dbo].[Uzivatel] ADD  CONSTRAINT [DF_Uzivatel_LoginCount]  DEFAULT ((0)) FOR [LoginCount]
 	/// ALTER TABLE [dbo].[Uzivatel] ADD  CONSTRAINT [DF_Uzivatel_Created]  DEFAULT (getdate()) FOR [Created]
@@ -106,7 +106,7 @@ namespace Havit.BusinessLayerTest
 		
 		#region Properties dle sloupců databázové tabulky
 		/// <summary>
-		/// Uživatelské jméno, kterým se uživatel přihlašuje. [varchar(50), not-null, default '']
+		/// Uživatelské jméno, kterým se uživatel přihlašuje. [varchar(50), not-null, default N'']
 		/// </summary>
 		public virtual string Username
 		{
@@ -164,7 +164,7 @@ namespace Havit.BusinessLayerTest
 		protected PropertyHolder<string> _PasswordPropertyHolder;
 		
 		/// <summary>
-		/// Jméno uživatele, jak se má zobrazovat pro přihlášení. [nvarchar(50), not-null, default '']
+		/// Jméno uživatele, jak se má zobrazovat pro přihlášení. [nvarchar(50), not-null, default N'']
 		/// </summary>
 		public virtual string DisplayAs
 		{
@@ -193,7 +193,7 @@ namespace Havit.BusinessLayerTest
 		protected PropertyHolder<string> _DisplayAsPropertyHolder;
 		
 		/// <summary>
-		/// Email uživatele. [nvarchar(100), not-null, default '']
+		/// Email uživatele. [nvarchar(100), not-null, default N'']
 		/// </summary>
 		public virtual string Email
 		{

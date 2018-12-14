@@ -46,9 +46,9 @@ namespace Havit.BusinessLayerTest
 	/// 	[LanguageID] ASC
 	/// )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 	/// ) ON [PRIMARY]
-	/// ALTER TABLE [dbo].[Language] ADD  CONSTRAINT [DF_Language_UICulture]  DEFAULT ('') FOR [UICulture]
-	/// ALTER TABLE [dbo].[Language] ADD  CONSTRAINT [DF_Language_Culture]  DEFAULT ('') FOR [Culture]
-	/// ALTER TABLE [dbo].[Language] ADD  CONSTRAINT [DF_Language_Name]  DEFAULT ('') FOR [Name]
+	/// ALTER TABLE [dbo].[Language] ADD  CONSTRAINT [DF_Language_UICulture]  DEFAULT (N'') FOR [UICulture]
+	/// ALTER TABLE [dbo].[Language] ADD  CONSTRAINT [DF_Language_Culture]  DEFAULT (N'') FOR [Culture]
+	/// ALTER TABLE [dbo].[Language] ADD  CONSTRAINT [DF_Language_Name]  DEFAULT (N'') FOR [Name]
 	/// ALTER TABLE [dbo].[Language] ADD  CONSTRAINT [DF_Language_Aktivni]  DEFAULT ((1)) FOR [Aktivni]
 	/// ALTER TABLE [dbo].[Language] ADD  CONSTRAINT [DF_Language_EditacePovolena]  DEFAULT ((1)) FOR [EditacePovolena]
 	/// ALTER TABLE [dbo].[Language] ADD  CONSTRAINT [DF_Language_Poradi]  DEFAULT ((0)) FOR [Poradi]
@@ -98,7 +98,7 @@ namespace Havit.BusinessLayerTest
 		
 		#region Properties dle sloupců databázové tabulky
 		/// <summary>
-		/// CultrueName pro UICulture v podobě jako resources. Tedypro výchozí jazyk prázdné, &quot;en&quot; pro všechny angličtiny, &quot;en-US&quot; pro americkou angličtinu. [varchar(6), not-null, default '']
+		/// CultrueName pro UICulture v podobě jako resources. Tedypro výchozí jazyk prázdné, &quot;en&quot; pro všechny angličtiny, &quot;en-US&quot; pro americkou angličtinu. [varchar(6), not-null, default N'']
 		/// </summary>
 		public virtual string UICulture
 		{
@@ -127,7 +127,7 @@ namespace Havit.BusinessLayerTest
 		protected PropertyHolder<string> _UICulturePropertyHolder;
 		
 		/// <summary>
-		/// CultureName v plné podobě, např. cs-CZ. Formát &quot;&lt;languagecode2&gt;-&lt;country/regioncode2&gt;&quot;. [varchar(6), not-null, default '']
+		/// CultureName v plné podobě, např. cs-CZ. Formát &quot;&lt;languagecode2&gt;-&lt;country/regioncode2&gt;&quot;. [varchar(6), not-null, default N'']
 		/// </summary>
 		public virtual string Culture
 		{
@@ -156,7 +156,7 @@ namespace Havit.BusinessLayerTest
 		protected PropertyHolder<string> _CulturePropertyHolder;
 		
 		/// <summary>
-		/// Název pro UI [nvarchar(50), nullable, default '']
+		/// Název pro UI [nvarchar(50), nullable, default N'']
 		/// </summary>
 		public virtual string Name
 		{

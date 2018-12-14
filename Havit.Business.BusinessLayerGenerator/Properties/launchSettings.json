@@ -6,7 +6,7 @@
     },
     "123.AEP": {
       "commandName": "Project",
-      "commandLineArgs": "-outputpath:D:\\Dev\\095.LPO\\BusinessLayer -targetplatform:SqlServer2008 -sqlserver sqldev -database LachnitPohledavky",
+      "commandLineArgs": "-outputpath:D:\\Dev\\002.HFW-HavitFramework\\BusinessLayerTest -sqlserver sqldev -database HavitBusinessLayerTest",
       "workingDirectory": "D:\\Temp"
     }
   }

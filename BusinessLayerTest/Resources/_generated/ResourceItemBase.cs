@@ -48,8 +48,8 @@ namespace Havit.BusinessLayerTest.Resources
 	/// 	[ResourceKey] ASC
 	/// )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 	/// ) ON [PRIMARY]
-	/// ALTER TABLE [dbo].[ResourceItem] ADD  CONSTRAINT [DF_ResourceItem_ResourceKey]  DEFAULT ('') FOR [ResourceKey]
-	/// ALTER TABLE [dbo].[ResourceItem] ADD  CONSTRAINT [DF_ResourceItem_Description]  DEFAULT ('') FOR [Description]
+	/// ALTER TABLE [dbo].[ResourceItem] ADD  CONSTRAINT [DF_ResourceItem_ResourceKey]  DEFAULT (N'') FOR [ResourceKey]
+	/// ALTER TABLE [dbo].[ResourceItem] ADD  CONSTRAINT [DF_ResourceItem_Description]  DEFAULT (N'') FOR [Description]
 	/// ALTER TABLE [dbo].[ResourceItem]  WITH NOCHECK ADD  CONSTRAINT [FK_ResourceItem_ResourceClass] FOREIGN KEY([ResourceClassID])
 	/// REFERENCES [dbo].[ResourceClass] ([ResourceClassID])
 	/// ALTER TABLE [dbo].[ResourceItem] CHECK CONSTRAINT [FK_ResourceItem_ResourceClass]
@@ -127,7 +127,7 @@ namespace Havit.BusinessLayerTest.Resources
 		protected PropertyHolder<Havit.BusinessLayerTest.Resources.ResourceClass> _ResourceClassPropertyHolder;
 		
 		/// <summary>
-		/// Klíč položky v rámci ResourceClass [varchar(100), not-null, default '']
+		/// Klíč položky v rámci ResourceClass [varchar(100), not-null, default N'']
 		/// </summary>
 		public virtual string ResourceKey
 		{
@@ -156,7 +156,7 @@ namespace Havit.BusinessLayerTest.Resources
 		protected PropertyHolder<string> _ResourceKeyPropertyHolder;
 		
 		/// <summary>
-		/// Popis pro administraci. [nvarchar(200), nullable, default '']
+		/// Popis pro administraci. [nvarchar(200), nullable, default N'']
 		/// </summary>
 		public virtual string Description
 		{

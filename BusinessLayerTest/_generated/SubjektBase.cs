@@ -44,7 +44,7 @@ namespace Havit.BusinessLayerTest
 	/// 	[SubjektID] ASC
 	/// )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 	/// ) ON [PRIMARY]
-	/// ALTER TABLE [dbo].[Subjekt] ADD  CONSTRAINT [DF_Subjekt_Nazev]  DEFAULT ('') FOR [Nazev]
+	/// ALTER TABLE [dbo].[Subjekt] ADD  CONSTRAINT [DF_Subjekt_Nazev]  DEFAULT (N'') FOR [Nazev]
 	/// ALTER TABLE [dbo].[Subjekt] ADD  CONSTRAINT [DF_Subjekt_Created]  DEFAULT (getdate()) FOR [Created]
 	/// ALTER TABLE [dbo].[Subjekt]  WITH NOCHECK ADD  CONSTRAINT [FK_Subjekt_Uzivatel] FOREIGN KEY([UzivatelID])
 	/// REFERENCES [dbo].[Uzivatel] ([UzivatelID])
@@ -95,7 +95,7 @@ namespace Havit.BusinessLayerTest
 		
 		#region Properties dle sloupců databázové tabulky
 		/// <summary>
-		/// Název. [nvarchar(50), nullable, default '']
+		/// Název. [nvarchar(50), nullable, default N'']
 		/// </summary>
 		public virtual string Nazev
 		{

@@ -41,7 +41,7 @@ namespace Havit.BusinessLayerTest
 	/// 	[RoleID] ASC
 	/// )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 	/// ) ON [PRIMARY]
-	/// ALTER TABLE [dbo].[Role] ADD  CONSTRAINT [DF_Role_Symbol]  DEFAULT ('') FOR [Symbol]
+	/// ALTER TABLE [dbo].[Role] ADD  CONSTRAINT [DF_Role_Symbol]  DEFAULT (N'') FOR [Symbol]
 	/// </code>
 	/// </remarks>
 	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
@@ -88,7 +88,7 @@ namespace Havit.BusinessLayerTest
 		
 		#region Properties dle sloupců databázové tabulky
 		/// <summary>
-		/// Symbol role (název pro ASP.NET autrhorization) [varchar(50), nullable, default '']
+		/// Symbol role (název pro ASP.NET autrhorization) [varchar(50), nullable, default N'']
 		/// </summary>
 		public virtual string Symbol
 		{

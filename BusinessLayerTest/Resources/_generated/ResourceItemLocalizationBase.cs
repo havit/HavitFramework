@@ -43,7 +43,7 @@ namespace Havit.BusinessLayerTest.Resources
 	/// 	[ResourceItemLocalizationID] ASC
 	/// )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 	/// ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-	/// ALTER TABLE [dbo].[ResourceItemLocalization] ADD  CONSTRAINT [DF_ResourceItemLocalization_Value]  DEFAULT ('') FOR [Value]
+	/// ALTER TABLE [dbo].[ResourceItemLocalization] ADD  CONSTRAINT [DF_ResourceItemLocalization_Value]  DEFAULT (N'') FOR [Value]
 	/// ALTER TABLE [dbo].[ResourceItemLocalization]  WITH NOCHECK ADD  CONSTRAINT [FK_ResourceItemLocalization_Language] FOREIGN KEY([LanguageID])
 	/// REFERENCES [dbo].[Language] ([LanguageID])
 	/// ALTER TABLE [dbo].[ResourceItemLocalization] CHECK CONSTRAINT [FK_ResourceItemLocalization_Language]
@@ -152,7 +152,7 @@ namespace Havit.BusinessLayerTest.Resources
 		protected PropertyHolder<Havit.BusinessLayerTest.Language> _LanguagePropertyHolder;
 		
 		/// <summary>
-		/// Hodnota. [nvarchar(MAX), not-null, default '']
+		/// Hodnota. [nvarchar(MAX), not-null, default N'']
 		/// </summary>
 		public virtual string Value
 		{

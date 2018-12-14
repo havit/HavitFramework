@@ -43,8 +43,8 @@ namespace Havit.BusinessLayerTest.Resources
 	/// 	[ResourceClassID] ASC
 	/// )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 	/// ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-	/// ALTER TABLE [dbo].[ResourceClass] ADD  CONSTRAINT [DF_ResourceClass_Name]  DEFAULT ('') FOR [Name]
-	/// ALTER TABLE [dbo].[ResourceClass] ADD  CONSTRAINT [DF_ResourceClass_Description]  DEFAULT ('') FOR [Description]
+	/// ALTER TABLE [dbo].[ResourceClass] ADD  CONSTRAINT [DF_ResourceClass_Name]  DEFAULT (N'') FOR [Name]
+	/// ALTER TABLE [dbo].[ResourceClass] ADD  CONSTRAINT [DF_ResourceClass_Description]  DEFAULT (N'') FOR [Description]
 	/// </code>
 	/// </remarks>
 	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
@@ -91,7 +91,7 @@ namespace Havit.BusinessLayerTest.Resources
 		
 		#region Properties dle sloupců databázové tabulky
 		/// <summary>
-		/// Název třídy (pro .NET!) [nvarchar(100), not-null, default '']
+		/// Název třídy (pro .NET!) [nvarchar(100), not-null, default N'']
 		/// </summary>
 		public virtual string Name
 		{
@@ -120,7 +120,7 @@ namespace Havit.BusinessLayerTest.Resources
 		protected PropertyHolder<string> _NamePropertyHolder;
 		
 		/// <summary>
-		/// Popis pro administraci. [nvarchar(MAX), not-null, default '']
+		/// Popis pro administraci. [nvarchar(MAX), not-null, default N'']
 		/// </summary>
 		public virtual string Description
 		{

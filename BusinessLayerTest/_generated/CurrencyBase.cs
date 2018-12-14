@@ -43,8 +43,8 @@ namespace Havit.BusinessLayerTest
 	/// 	[CurrencyID] ASC
 	/// )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 	/// ) ON [PRIMARY]
-	/// ALTER TABLE [dbo].[Currency] ADD  CONSTRAINT [DF_Currency_Nazev]  DEFAULT ('') FOR [Nazev]
-	/// ALTER TABLE [dbo].[Currency] ADD  CONSTRAINT [DF_Currency_Zkratka]  DEFAULT ('') FOR [Zkratka]
+	/// ALTER TABLE [dbo].[Currency] ADD  CONSTRAINT [DF_Currency_Nazev]  DEFAULT (N'') FOR [Nazev]
+	/// ALTER TABLE [dbo].[Currency] ADD  CONSTRAINT [DF_Currency_Zkratka]  DEFAULT (N'') FOR [Zkratka]
 	/// ALTER TABLE [dbo].[Currency] ADD  CONSTRAINT [DF_Currency_Created]  DEFAULT (getdate()) FOR [Created]
 	/// </code>
 	/// </remarks>
@@ -92,7 +92,7 @@ namespace Havit.BusinessLayerTest
 		
 		#region Properties dle sloupců databázové tabulky
 		/// <summary>
-		/// Název měny. [nvarchar(50), not-null, default '']
+		/// Název měny. [nvarchar(50), not-null, default N'']
 		/// </summary>
 		public virtual string Nazev
 		{
@@ -121,7 +121,7 @@ namespace Havit.BusinessLayerTest
 		protected PropertyHolder<string> _NazevPropertyHolder;
 		
 		/// <summary>
-		/// Zkratka měny, běžná, např. Kč. [nvarchar(5), not-null, default '']
+		/// Zkratka měny, běžná, např. Kč. [nvarchar(5), not-null, default N'']
 		/// </summary>
 		public virtual string Zkratka
 		{

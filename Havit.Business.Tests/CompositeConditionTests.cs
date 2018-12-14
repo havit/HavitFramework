@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Havit.Business.Query;
 using Havit.BusinessLayerTest;
 
-namespace Havit.BusinessTest
+namespace Havit.Business.Tests
 {
 	/// <summary>
 	/// Test kompozitních podmínek.

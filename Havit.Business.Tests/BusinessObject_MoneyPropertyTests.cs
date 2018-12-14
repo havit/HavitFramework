@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Havit.BusinessLayerTest;
 using Havit.Business;
 
-namespace Havit.BusinessTest
+namespace Havit.Business.Tests
 {
 	/// <summary>
 	/// Unit test generovaných vlastností typu Money.

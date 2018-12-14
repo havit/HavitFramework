@@ -8,7 +8,7 @@ using Havit.Business;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Havit.BusinessTest
+namespace Havit.Business.Tests
 {
 	[TestClass]
 	public class BusinessCalendarWeekendStrategiesTests

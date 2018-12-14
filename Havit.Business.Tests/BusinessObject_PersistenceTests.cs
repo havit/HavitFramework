@@ -9,7 +9,7 @@ using Havit.BusinessLayerTest;
 using Havit.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Havit.BusinessTest
+namespace Havit.Business.Tests
 {
 	[TestClass]
 	public class BusinessObject_PersistenceTests

@@ -7,7 +7,7 @@ using Havit.Data;
 using System.Data.Common;
 using Havit.Business;
 
-namespace Havit.BusinessTest
+namespace Havit.Business.Tests
 {
 	/// <summary>
 	/// Unit test na ActiveRecordBusinessObjectBase

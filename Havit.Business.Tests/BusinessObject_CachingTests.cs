@@ -10,7 +10,6 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-using System.Web.Security;
 using Havit.Business;
 using Havit.Business.Caching;
 using Havit.Business.Query;
@@ -20,7 +19,7 @@ using Havit.Data;
 using Havit.Services.Caching;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Havit.BusinessTest
+namespace Havit.Business.Tests
 {
 	[TestClass]
 	public class BusinessObject_CachingTests

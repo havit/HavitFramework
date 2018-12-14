@@ -7,7 +7,7 @@ using Havit.Business;
 using Havit.BusinessLayerTest;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Havit.BusinessTest
+namespace Havit.Business.Tests
 {
 	[TestClass]
 	public class BusinessObject_EqualityTests

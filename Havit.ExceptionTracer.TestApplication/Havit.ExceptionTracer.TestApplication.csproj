@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\Common.targets" />
+
+  <PropertyGroup>
+	<TargetFramework>net46</TargetFramework>
+	<ApplicationIcon />
+	<OutputType>Exe</OutputType>
+	<StartupObject />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Havit\Havit.csproj" />
+  </ItemGroup>
+
+</Project>

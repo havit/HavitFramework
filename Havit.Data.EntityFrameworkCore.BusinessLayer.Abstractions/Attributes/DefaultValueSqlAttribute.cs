@@ -6,7 +6,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes
 {
 	/// <summary>
 	/// Specifies the default value for a property as a SQL statement (expression).
-	/// </summary>	
+	/// </summary>
+	[AttributeUsage(AttributeTargets.Property)]
 	public class DefaultValueSqlAttribute : Attribute
 	{
 		/// <summary>

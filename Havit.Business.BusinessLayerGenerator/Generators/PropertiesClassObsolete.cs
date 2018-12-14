@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using Havit.Business.BusinessLayerGenerator.Csproj;
 using Havit.Business.BusinessLayerGenerator.Helpers;
-using Havit.Business.BusinessLayerGenerator.TfsClient;
 using Microsoft.SqlServer.Management.Smo;
 
 namespace Havit.Business.BusinessLayerGenerator.Generators
@@ -9,7 +8,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 	public static class PropertiesClassObsolete
 	{
 		#region RemoveObsolete
-		public static void RemoveObsolete(Table table, CsprojFile csprojFile, SourceControlClient sourceControlClient)
+		public static void RemoveObsolete(Table table, CsprojFile csprojFile)
 		{
 			string fileName = FileHelper.GetFilename(table, "Properties.cs", "_properties");
 
@@ -45,27 +44,13 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			//if (writer.AlreadyExistsTheSame())
 			//{
 				string targetFilename = FileHelper.ResolvePath(fileName);
-				if (sourceControlClient != null)
-				{
-					sourceControlClient.PendDelete(targetFilename);
-				}
-				else
-				{
-					File.Delete(targetFilename);					
-				}
+				File.Delete(targetFilename);					
 
 				// odmažeme ještě prázdnou složku
 				string folder = Path.GetDirectoryName(targetFilename);
 				if (Directory.GetFileSystemEntries(folder).Length == 0)
 				{
-					if (sourceControlClient != null)
-					{
-						sourceControlClient.PendDelete(folder);
-					}
-					else
-					{
-						Directory.Delete(folder);						
-					}
+					Directory.Delete(folder);						
 				}
 			//}
 			//else

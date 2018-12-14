@@ -12,12 +12,7 @@
   <!-- Pro různé komplikovanosti s publikováním konzolovky s použití SMO delegujeme generování do samostatného projektu. -->	
   
   <ItemGroup>
-	<PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.3" />
-	<PackageReference Include="Microsoft.IdentityModel.Clients.ActiveDirectory" Version="3.17.1" />
 	<PackageReference Include="Microsoft.SqlServer.SqlManagementObjects" Version="140.17199.0" />
-	<PackageReference Include="Microsoft.TeamFoundationServer.ExtendedClient" Version="15.112.1" />
-	<PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
-	<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.1.4" />
   </ItemGroup>
 
   <ItemGroup>

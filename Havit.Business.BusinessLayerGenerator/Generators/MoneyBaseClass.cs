@@ -2,7 +2,6 @@
 using Havit.Business.BusinessLayerGenerator.Csproj;
 using Havit.Business.BusinessLayerGenerator.Helpers;
 using Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions;
-using Havit.Business.BusinessLayerGenerator.TfsClient;
 using Havit.Business.BusinessLayerGenerator.Writers;
 using Microsoft.SqlServer.Management.Smo;
 
@@ -11,7 +10,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 	public static class MoneyBaseClass
 	{
 		#region Generate
-		public static void Generate(Table currencyTable, CsprojFile csprojFile, SourceControlClient sourceControlClient)
+		public static void Generate(Table currencyTable, CsprojFile csprojFile)
 		{
 			string fileName = FileHelper.GetFilename(NamespaceHelper.GetNamespaceName(currencyTable, false), "Money", "Base.cs", FileHelper.GeneratedFolder);
 
@@ -20,7 +19,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				csprojFile.Ensures(fileName);
 			}
 
-			CodeWriter writer = new CodeWriter(FileHelper.ResolvePath(fileName), sourceControlClient);
+			CodeWriter writer = new CodeWriter(FileHelper.ResolvePath(fileName));
 
 			BusinessObjectUsings.WriteUsings(writer);
 

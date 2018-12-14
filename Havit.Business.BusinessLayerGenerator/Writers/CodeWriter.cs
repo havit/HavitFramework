@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Havit.Business.BusinessLayerGenerator.TfsClient;
 using Havit.Web;
 
 namespace Havit.Business.BusinessLayerGenerator.Writers
@@ -37,8 +36,6 @@ namespace Havit.Business.BusinessLayerGenerator.Writers
 		/// </summary>
 		private readonly StringBuilder code;
 		
-		private readonly SourceControlClient sourceControlClient;
-
 		private readonly bool eliminateEmptyLinesBeforeClosingParenthesis;
 
 		private int emtpyLinesBeforeClosingParenthesisCounter = 0;
@@ -46,11 +43,10 @@ namespace Havit.Business.BusinessLayerGenerator.Writers
 		#endregion
 
 		#region Constructor
-		public CodeWriter(string fullPath, SourceControlClient sourceControlClient, bool eliminateEmptyLinesBeforeClosingParenthesis = false)
+		public CodeWriter(string fullPath, bool eliminateEmptyLinesBeforeClosingParenthesis = false)
 		{
 			this.fullPath = fullPath;
 			this.code = new StringBuilder(51200);
-			this.sourceControlClient = sourceControlClient;
 			this.eliminateEmptyLinesBeforeClosingParenthesis = eliminateEmptyLinesBeforeClosingParenthesis;
 		    preloadFileTask = Task.Factory.StartNew(() =>
 		    {
@@ -316,15 +312,7 @@ namespace Havit.Business.BusinessLayerGenerator.Writers
 					Directory.CreateDirectory(directory);
 				}
 
-				if (!fileExists && (sourceControlClient != null))
-				{
-					File.WriteAllText(this.fullPath, this.GetContent(), Encoding.UTF8);
-					sourceControlClient.PendAdd(this.fullPath);
-				}
-				else
-				{
-					File.WriteAllText(this.fullPath, this.GetContent(), Encoding.UTF8);					
-				}
+				File.WriteAllText(this.fullPath, this.GetContent(), Encoding.UTF8);					
 			}
 		}
 		#endregion

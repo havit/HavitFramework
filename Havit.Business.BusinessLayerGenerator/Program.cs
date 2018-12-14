@@ -3,7 +3,6 @@ using System.Diagnostics;
 using Havit.Business.BusinessLayerGenerator.Csproj;
 using Havit.Business.BusinessLayerGenerator.Helpers;
 using Havit.Business.BusinessLayerGenerator.Settings;
-using Havit.Business.BusinessLayerGenerator.TfsClient;
 using Microsoft.SqlServer.Management.Common;
 using Microsoft.SqlServer.Management.Smo;
 
@@ -86,7 +85,6 @@ namespace Havit.Business.BusinessLayerGenerator
 			}
 
 			CsprojFile csprojFile = CsprojFile.GetByFolder(GeneratorSettings.OutputPath);
-			SourceControlClient sourceControlClient = SourceControlClient.GetByFolder(GeneratorSettings.OutputPath);
 		
 			ConsoleHelper.WriteLineInfo("Business Layer Generator");
 			ConsoleHelper.WriteLineInfo("Sql Server: {0}", GeneratorSettings.SqlServerName);
@@ -99,7 +97,6 @@ namespace Havit.Business.BusinessLayerGenerator
 			ConsoleHelper.WriteLineInfo("Strategy: {0}", GeneratorSettings.Strategy);
 			ConsoleHelper.WriteLineInfo("Output Path: {0}", GeneratorSettings.OutputPath);
 			ConsoleHelper.WriteLineInfo("CSPROJ File: {0}", (csprojFile != null) ? System.IO.Path.GetFileName(csprojFile.Filename) : "");
-			ConsoleHelper.WriteLineInfo("Workspace: {0}", (sourceControlClient != null) ? sourceControlClient.WorkspaceName : "");
 			ConsoleHelper.WriteLineInfo("");
 
 			if (GeneratorSettings.TargetPlatform == TargetPlatform.SqlServer2005)
@@ -150,7 +147,7 @@ namespace Havit.Business.BusinessLayerGenerator
 				DatabaseHelper.Database = database;
 
 				// vygenerujeme, co je potřeba
-				Generators.Generator.Generate(database, csprojFile, sourceControlClient);
+				Generators.Generator.Generate(database, csprojFile);
 
 			}
 			catch (ApplicationException e)

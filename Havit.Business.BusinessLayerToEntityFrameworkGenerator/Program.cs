@@ -4,7 +4,6 @@ using Havit.Business.BusinessLayerGenerator.CommandLine.Utility;
 using Havit.Business.BusinessLayerGenerator.Csproj;
 using Havit.Business.BusinessLayerGenerator.Helpers;
 using Havit.Business.BusinessLayerGenerator.Settings;
-using Havit.Business.BusinessLayerGenerator.TfsClient;
 using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Csproj;
 using Microsoft.SqlServer.Management.Common;
 using Microsoft.SqlServer.Management.Smo;
@@ -41,7 +40,6 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator
 			var csprojFileFactory = new CsprojFileFactory();
 			CsprojFile modelCsprojFile = csprojFileFactory.GetByFolder(System.IO.Path.Combine(GeneratorSettings.SolutionPath, "Model"), "HavitBusinessLayerToEntityFrameworkGenerator");
 			CsprojFile entityCsprojFile = csprojFileFactory.GetByFolder(System.IO.Path.Combine(GeneratorSettings.SolutionPath, "Entity"), "HavitBusinessLayerToEntityFrameworkGenerator");
-			SourceControlClient sourceControlClient = SourceControlClient.GetByFolder(GeneratorSettings.SolutionPath);
 
 			ConsoleHelper.WriteLineInfo("Business Layer To Entity Framework Generator");
 			ConsoleHelper.WriteLineInfo("Sql Server: {0}", GeneratorSettings.SqlServerName);
@@ -49,7 +47,6 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator
 			ConsoleHelper.WriteLineInfo("Solution Path: {0}", GeneratorSettings.SolutionPath);
 			ConsoleHelper.WriteLineInfo("Model CSPROJ File: {0}", (modelCsprojFile != null) ? System.IO.Path.GetFileName(modelCsprojFile.Filename) : "");
 			ConsoleHelper.WriteLineInfo("Entity CSPROJ File: {0}", (entityCsprojFile != null) ? System.IO.Path.GetFileName(entityCsprojFile.Filename) : "");
-			ConsoleHelper.WriteLineInfo("Workspace: {0}", (sourceControlClient != null) ? sourceControlClient.WorkspaceName : "");
 			ConsoleHelper.WriteLineInfo("");
 
 			// připojíme se k databázi
@@ -89,7 +86,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator
 				DatabaseHelper.Database = database;
 
 				// vygenerujeme, co je potřeba
-				Generators.Generator.Generate(database, modelCsprojFile, entityCsprojFile, sourceControlClient);
+				Generators.Generator.Generate(database, modelCsprojFile, entityCsprojFile);
 
 			}
 			catch (ApplicationException e)

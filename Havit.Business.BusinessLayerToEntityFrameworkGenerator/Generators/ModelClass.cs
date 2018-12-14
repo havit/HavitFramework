@@ -7,7 +7,6 @@ using Havit.Business.BusinessLayerGenerator.Csproj;
 using Havit.Business.BusinessLayerGenerator.Helpers;
 using Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions;
 using Havit.Business.BusinessLayerGenerator.Helpers.Types;
-using Havit.Business.BusinessLayerGenerator.TfsClient;
 using Havit.Business.BusinessLayerGenerator.Writers;
 using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Helpers;
 using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata;
@@ -19,7 +18,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 {	
 	public static class ModelClass
 	{
-		public static GeneratedModelClass Generate(GeneratedModelClass modelClass, CsprojFile modelCsprojFile, SourceControlClient sourceControlClient)
+		public static GeneratedModelClass Generate(GeneratedModelClass modelClass, CsprojFile modelCsprojFile)
 		{
 			string fileName = Helpers.FileHelper.GetFilename(modelClass.Table, "Model", ".cs", "");
 
@@ -28,7 +27,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 			//	modelCsprojFile.Ensures(fileName);
 			//}
 
-			CodeWriter writer = new CodeWriter(Path.Combine(GeneratorSettings.SolutionPath, fileName), sourceControlClient, true);
+			CodeWriter writer = new CodeWriter(Path.Combine(GeneratorSettings.SolutionPath, fileName), true);
 
 			WriteUsings(writer, modelClass);
 			WriteNamespaceClassBegin(writer, modelClass, false);

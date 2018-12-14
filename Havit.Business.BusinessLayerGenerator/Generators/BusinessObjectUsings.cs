@@ -40,14 +40,14 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 		#endregion
 
 		#region RemoveObsoleteUsings
-		public static void RemoveObsoleteUsings(string fileName, TfsClient.SourceControlClient sourceControlClient)
+		public static void RemoveObsoleteUsings(string fileName)
 		{
 			List<string> lines = File.ReadLines(FileHelper.ResolvePath(fileName)).ToList();
 			int linesRemoved = lines.RemoveAll(line => line.StartsWith("using Havit.Data.SqlClient;"));
 
 			if (linesRemoved > 0)
 			{
-				CodeWriter writer = new CodeWriter(FileHelper.ResolvePath(fileName), sourceControlClient);
+				CodeWriter writer = new CodeWriter(FileHelper.ResolvePath(fileName));
 				writer.WriteRawLines(lines);
 				writer.Save();
 			}

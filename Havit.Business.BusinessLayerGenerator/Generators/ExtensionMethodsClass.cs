@@ -4,7 +4,6 @@ using System.Linq;
 using Havit.Business.BusinessLayerGenerator.Csproj;
 using Havit.Business.BusinessLayerGenerator.Helpers;
 using Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions;
-using Havit.Business.BusinessLayerGenerator.TfsClient;
 using Havit.Business.BusinessLayerGenerator.Writers;
 using Microsoft.SqlServer.Management.Smo;
 
@@ -13,7 +12,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 	public static class ExtensionMethodsClass
 	{
 		#region Generate
-		public static void Generate(List<Table> tables, CsprojFile csprojFile, SourceControlClient sourceControlClient)
+		public static void Generate(List<Table> tables, CsprojFile csprojFile)
 		{
 			tables.RemoveAll(table => TableHelper.IsJoinTable(table));
 
@@ -34,7 +33,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 					csprojFile.Ensures(filename);
 				}
 
-				CodeWriter writer = new CodeWriter(FileHelper.ResolvePath(filename), sourceControlClient);
+				CodeWriter writer = new CodeWriter(FileHelper.ResolvePath(filename));
 
 				BusinessObjectUsings.WriteUsings(writer);
 

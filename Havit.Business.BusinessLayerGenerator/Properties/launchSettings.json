@@ -6,7 +6,7 @@
     },
     "123.AEP": {
       "commandName": "Project",
-      "commandLineArgs": "-outputpath:D:\\Dev\\123.AEP\\BusinessLayer -webconfig=D:\\Dev\\123.AEP\\Web\\web.config -targetplatform:SqlServer2008 -strategy:HavitCodeFirst",
+      "commandLineArgs": "-outputpath:D:\\Dev\\095.LPO\\BusinessLayer -targetplatform:SqlServer2008 -sqlserver sqldev -database LachnitPohledavky",
       "workingDirectory": "D:\\Temp"
     }
   }

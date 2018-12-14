@@ -5,7 +5,6 @@ using Havit.Business.BusinessLayerGenerator.Csproj;
 using Havit.Business.BusinessLayerGenerator.Helpers;
 using Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions;
 using Havit.Business.BusinessLayerGenerator.Helpers.Types;
-using Havit.Business.BusinessLayerGenerator.TfsClient;
 using Havit.Business.BusinessLayerGenerator.Writers;
 using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Helpers;
 using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata;
@@ -18,13 +17,13 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 {
 	public static class EntityTypeConfigurationClass
 	{
-		public static void Generate(GeneratedModel model, GeneratedModelClass modelClass, CsprojFile entityCsprojFile, SourceControlClient sourceControlClient)
+		public static void Generate(GeneratedModel model, GeneratedModelClass modelClass, CsprojFile entityCsprojFile)
 		{
 			Table table = modelClass.Table;
 
 			string fileName = Path.Combine("Configurations", FileHelper.GetFilename(Helpers.NamingConventions.NamespaceHelper.GetNamespaceName(table, "Entity.Configurations", false), ClassHelper.GetClassName(table) + "Configuration", ".cs", ""));
 
-			CodeWriter writer = new CodeWriter(Path.Combine(GeneratorSettings.SolutionPath, @"Entity", fileName), sourceControlClient, true);
+			CodeWriter writer = new CodeWriter(Path.Combine(GeneratorSettings.SolutionPath, @"Entity", fileName), true);
 
 			WriteUsings(writer, table);
 			WriteNamespaceClassConstructorBegin(writer, modelClass, false);

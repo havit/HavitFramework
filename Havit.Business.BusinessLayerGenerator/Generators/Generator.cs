@@ -4,7 +4,6 @@ using System.IO;
 using Havit.Business.BusinessLayerGenerator.Csproj;
 using Havit.Business.BusinessLayerGenerator.Helpers;
 using Havit.Business.BusinessLayerGenerator.Settings;
-using Havit.Business.BusinessLayerGenerator.TfsClient;
 using Microsoft.SqlServer.Management.Smo;
 
 namespace Havit.Business.BusinessLayerGenerator.Generators
@@ -12,7 +11,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 	public static class Generator
 	{
 		#region Generate
-		public static void Generate(Database database, CsprojFile csprojFile, SourceControlClient sourceControlClient)
+		public static void Generate(Database database, CsprojFile csprojFile)
 		{
 			DatabaseRulesChecker.CheckRules(database);
 
@@ -59,25 +58,25 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 						// ověříme pravidla struktury databáze nad tabulkou
 						RulesChecker.CheckRules(table);
 
-						BusinessObjectBaseClass.Generate(table, csprojFile, sourceControlClient); // vygeneruje _generated\{Table}Base.cs
-						BusinessObjectPartialClass.Generate(table, csprojFile, sourceControlClient); // vygeneruje _generated\{Table}.partial.cs
-						BusinessObjectClass.Generate(table, csprojFile, sourceControlClient); // vygeneruje {Table}.cs pokud neexistuje (nepřepíše existující soubor)
-						CollectionBaseClass.Generate(table, csprojFile, sourceControlClient); // vygeneruje _generated\{Table}CollectionBase.cs
-						CollectionPartialClass.Generate(table, csprojFile, sourceControlClient); // vygeneruje _generated\{Table}Collection.partial.cs
-						CollectionClass.Generate(table, csprojFile, sourceControlClient); // vygeneruje {Table}Collection.cs pokud neexistuje (nepřepíše existující soubor)
-						PropertiesClass.Generate(table, csprojFile, sourceControlClient); // vygeneruje _generated\{Table}Properties.cs
-						PropertiesClassObsolete.RemoveObsolete(table, csprojFile, sourceControlClient); // odstraňuje soubor _properties\{Table}Properties.cs pokud neexistuje se standardním obsahem
+						BusinessObjectBaseClass.Generate(table, csprojFile); // vygeneruje _generated\{Table}Base.cs
+						BusinessObjectPartialClass.Generate(table, csprojFile); // vygeneruje _generated\{Table}.partial.cs
+						BusinessObjectClass.Generate(table, csprojFile); // vygeneruje {Table}.cs pokud neexistuje (nepřepíše existující soubor)
+						CollectionBaseClass.Generate(table, csprojFile); // vygeneruje _generated\{Table}CollectionBase.cs
+						CollectionPartialClass.Generate(table, csprojFile); // vygeneruje _generated\{Table}Collection.partial.cs
+						CollectionClass.Generate(table, csprojFile); // vygeneruje {Table}Collection.cs pokud neexistuje (nepřepíše existující soubor)
+						PropertiesClass.Generate(table, csprojFile); // vygeneruje _generated\{Table}Properties.cs
+						PropertiesClassObsolete.RemoveObsolete(table, csprojFile); // odstraňuje soubor _properties\{Table}Properties.cs pokud neexistuje se standardním obsahem
 
 						if (table.Name == "Currency")
 						{
-							MoneyBaseClass.Generate(table, csprojFile, sourceControlClient);
-							MoneyClass.Generate(table, csprojFile, sourceControlClient);
-							MoneyPartialClass.Generate(table, csprojFile, sourceControlClient);
+							MoneyBaseClass.Generate(table, csprojFile);
+							MoneyClass.Generate(table, csprojFile);
+							MoneyPartialClass.Generate(table, csprojFile);
 						}
 
 						if ((table.Name == "ResourceClass") && (DatabaseHelper.FindTable("ResourceItem", "dbo") != null))
 						{
-							DbResourcesPartialClass.Generate(table, csprojFile, sourceControlClient);
+							DbResourcesPartialClass.Generate(table, csprojFile);
 						}
 
 					}
@@ -94,8 +93,8 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 
 			if (String.IsNullOrEmpty(GeneratorSettings.TableName))
 			{
-				ExtensionMethodsClass.Generate(tables, csprojFile, sourceControlClient);
-				CacheHelperClass.Generate(tables, csprojFile, sourceControlClient);
+				ExtensionMethodsClass.Generate(tables, csprojFile);
+				CacheHelperClass.Generate(tables, csprojFile);
 			}
 
 		}

@@ -1,7 +1,6 @@
 ﻿using System;
 using Havit.Business.BusinessLayerGenerator.Csproj;
 using Havit.Business.BusinessLayerGenerator.Helpers;
-using Havit.Business.BusinessLayerGenerator.TfsClient;
 using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata;
 using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata.MetadataSource;
 using Microsoft.SqlServer.Management.Smo;
@@ -10,7 +9,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 {
 	public static class Generator
 	{
-		public static void Generate(Database database, CsprojFile modelCsprojFile, CsprojFile entityCsprojFile, SourceControlClient sourceControlClient)
+		public static void Generate(Database database, CsprojFile modelCsprojFile, CsprojFile entityCsprojFile)
 		{
 			// nalezneme tabulky, na jejichž základě se budou generovat třídy
 			Console.BufferHeight = Int16.MaxValue - 1;
@@ -27,13 +26,13 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 			foreach (GeneratedModelClass modelClass in modelClasses)
 			{
 				ConsoleHelper.WriteLineInfo(modelClass.Name);
-				GeneratedModelClass generatedModelClass = ModelClass.Generate(modelClass, modelCsprojFile, sourceControlClient);
-				EntityTypeConfigurationClass.Generate(model, generatedModelClass, entityCsprojFile, sourceControlClient);
+				GeneratedModelClass generatedModelClass = ModelClass.Generate(modelClass, modelCsprojFile);
+				EntityTypeConfigurationClass.Generate(model, generatedModelClass, entityCsprojFile);
 			}
 
 			ConsoleHelper.WriteLineInfo("Generuji uložené procedury");
 			FileBasedStoredProcedureGenerator.Generate(dbStoredProcedures, entityCsprojFile);
-			MethodBasedStoredProcedureGenerator.Generate(dbStoredProcedures, model, entityCsprojFile, sourceControlClient);
+			MethodBasedStoredProcedureGenerator.Generate(dbStoredProcedures, model, entityCsprojFile);
 		}
 	}
 }

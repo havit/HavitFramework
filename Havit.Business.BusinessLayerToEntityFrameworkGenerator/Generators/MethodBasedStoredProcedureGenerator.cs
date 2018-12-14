@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Havit.Business.BusinessLayerGenerator.Csproj;
-using Havit.Business.BusinessLayerGenerator.TfsClient;
 using Havit.Business.BusinessLayerGenerator.Writers;
 using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Helpers;
 using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata;
@@ -14,7 +13,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 {
 	public static class MethodBasedStoredProcedureGenerator
     {
-        public static void Generate(List<DbStoredProcedure> storedProcedure, GeneratedModel model, CsprojFile modelCsprojFile, SourceControlClient sourceControlClient)
+        public static void Generate(List<DbStoredProcedure> storedProcedure, GeneratedModel model, CsprojFile modelCsprojFile)
         {
             var groupedProcedures = storedProcedure
                 .GroupBy(sp => sp.EntityName);
@@ -38,7 +37,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
                 string fileName = Path.Combine(Path.GetDirectoryName(modelCsprojFile.Path), "Entity", relativeFilePath);
                 Directory.CreateDirectory(Path.GetDirectoryName(fileName));
 
-                CodeWriter codeWriter = new CodeWriter(fileName, sourceControlClient);
+                CodeWriter codeWriter = new CodeWriter(fileName);
 
                 WriteUsings(codeWriter, entityClass);
                 WriteNamespaceClassConstructorBegin(codeWriter, entityClass, spClassName);

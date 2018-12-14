@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using Havit.Business.BusinessLayerGenerator.Csproj;
@@ -15,11 +16,9 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.SqlServer.Management.Smo;
 
 namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
-{
+{	
 	public static class ModelClass
 	{
-		#region Generate
-
 		public static GeneratedModelClass Generate(GeneratedModelClass modelClass, CsprojFile modelCsprojFile, SourceControlClient sourceControlClient)
 		{
 			string fileName = Helpers.FileHelper.GetFilename(modelClass.Table, "Model", ".cs", "");
@@ -42,10 +41,6 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 
 			return modelClass;
 		}
-
-		#endregion
-
-		#region WriteUsings
 
 		/// <summary>
 		/// Zapíše usings na všechny možné potřebné namespace.
@@ -76,9 +71,6 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 
 			writer.WriteLine();
 		}
-		#endregion
-
-		#region WriteEnumClassMembers
 
 		private static void WriteEnumClassMembers(CodeWriter writer, GeneratedModelClass modelClass)
 		{
@@ -114,10 +106,6 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 			}
 			writer.WriteLine("}");
 		}
-
-		#endregion
-
-		#region WriteNamespaceClassBegin
 
 		public static void WriteNamespaceClassBegin(CodeWriter writer, GeneratedModelClass modelClass, bool includeAttributes)
 		{
@@ -212,10 +200,6 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 				String.IsNullOrEmpty(interfaceString) ? "" : " : " + interfaceString));
 			writer.WriteLine("{");
 		}
-
-		#endregion
-
-		#region WriteMembers
 
 		private static void WriteMembers(CodeWriter writer, GeneratedModelClass modelClass)
 		{
@@ -328,17 +312,12 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 					writer.WriteLine($"[CloneMode(CloneMode.{cloneMode.ToString()})]");
 				}
 
-				if ((column.DefaultConstraint != null) && ((type != typeof(string)) || (column.DefaultConstraint.Text != "('')")))
-				{
-					string defaultValue = column.DefaultConstraint.Text;
-
-					writer.WriteLine($"[DefaultValue(\"{defaultValue}\")]");
-				}
+				WriteDefault(writer, modelClass.Table, column, type);
 
 				if (PropertyHelper.IsString(column))
 				{
 					int maxLength = column.DataType.MaximumLength;
-					writer.WriteLine((maxLength == -1) ? "[MaxLength(Int32.MaxValue)]" : $"[MaxLength({maxLength})]");
+					writer.WriteLine((maxLength == -1) ? "[MaxLength]" : $"[MaxLength({maxLength})]");
 				}
 				
 				string columnType = null;
@@ -428,17 +407,66 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 
 		}
 
-		#endregion
+		private static void WriteDefault(CodeWriter writer, Table table, Column column, Type type)
+		{
+			if ((column.DefaultConstraint != null) && ((type != typeof(string)) || (column.DefaultConstraint.Text != "('')")))
+			{
+				string defaultValue = column.DefaultConstraint.Text;
+				Action warningAction = () => ConsoleHelper.WriteLineWarning("Tabulka {0}, sloupec {1}: Výchozí hodnotu {2} se nepodařilo zpracovat.", table.Name, column.Name, defaultValue);
 
-		#region WriteNamespaceClassEnd
+				string defaultValueTrimmed = defaultValue.TrimStart('(').TrimEnd(')');
+
+				if (column.DataType.SqlDataType == SqlDataType.Bit)
+				{
+					switch (defaultValueTrimmed)
+					{
+						case "0":
+							writer.WriteLine("[DefaultValue(false)]");
+							return;
+						case "1":
+							writer.WriteLine("[DefaultValue(true)]");
+							return;
+						default:
+							// NOOP
+							break; // spadne do warningu níže
+					}
+				}
+
+				if ((column.DataType.SqlDataType == SqlDataType.Int) || (column.DataType.SqlDataType == SqlDataType.SmallInt) || (column.DataType.SqlDataType == SqlDataType.Float) || (column.DataType.SqlDataType == SqlDataType.Decimal) || (column.DataType.SqlDataType == SqlDataType.Money))
+				{
+					// u floatu, decimalu a money spoléháme, že je zapsáno rozumně (neotřebujeme f či M na konci, tj. stačí 0, 0.0 a netřeba 0f, 0.0f, 0M, 0.0M);
+					writer.WriteLine($"[DefaultValue({defaultValueTrimmed})]");
+					return;
+				}
+			
+				if (defaultValue.ToLower() == "(getdate())")
+				{
+					writer.WriteLine("[DefaultValueSql(DefaultValueSql.GetDate)]");
+					return;
+				}
+
+				if ((column.DataType.SqlDataType == SqlDataType.DateTime) || (column.DataType.SqlDataType == SqlDataType.SmallDateTime) || (column.DataType.SqlDataType == SqlDataType.Date))
+				{
+					var dateTimeDefault = defaultValueTrimmed.Trim('\'');
+					writer.WriteLine($"[DefaultValue(typeof(DateTime), \"{dateTimeDefault}\")]");
+					return;
+				}
+
+				if ((column.DataType.SqlDataType == SqlDataType.NVarChar) || (column.DataType.SqlDataType == SqlDataType.NVarCharMax))
+				{
+					var stringDefault = defaultValueTrimmed.TrimStart('N').Trim('\'').Replace("\\", "\\\\").Replace("\"", "\\\"");
+					writer.WriteLine($"[DefaultValue(\"{stringDefault}\")]");
+					return;
+				}
+
+				warningAction();
+			}
+		}
 
 		public static void WriteNamespaceClassEnd(CodeWriter writer)
 		{
 			writer.WriteLine("}");
 			writer.WriteLine("}");
 		}
-
-		#endregion
-
 	}
 }

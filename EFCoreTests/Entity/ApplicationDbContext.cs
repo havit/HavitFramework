@@ -33,6 +33,13 @@ namespace Havit.EFCoreTests.Entity
 			modelBuilder.ApplyConfigurationsFromAssembly(this.GetType().Assembly);
 
 			modelBuilder.Entity<FlagClass>().Property(fc => fc.MyFlag).HasDefaultValue(true).ValueGeneratedNever();
+			modelBuilder.Entity<ClassWithDefaults>(cb =>
+			{
+				cb.Property(fc => fc.DateTimeValue).HasDefaultValue(new DateTime(2018, 12, 24)).ValueGeneratedNever();
+				cb.Property(fc => fc.StringValue).HasDefaultValue("ABC").ValueGeneratedNever();
+				cb.Property(fc => fc.IntValue).HasDefaultValue(0).ValueGeneratedNever();
+				cb.Property(fc => fc.BoolValue).HasDefaultValue(true).ValueGeneratedNever();
+			});
 		}
 	}
 }

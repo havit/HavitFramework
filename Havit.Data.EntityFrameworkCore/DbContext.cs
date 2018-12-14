@@ -94,7 +94,6 @@ namespace Havit.Data.EntityFrameworkCore
 	    {			
 			yield return new ManyToManyEntityKeyDiscoveryConvention();
 			yield return new DataTypeAttributeConvention();
-			yield return new DefaultValueAttributeConvention();
 		    yield return new CascadeDeleteToRestrictConvention();
 			yield return new CacheAttributeToAnnotationConvention();
 		}

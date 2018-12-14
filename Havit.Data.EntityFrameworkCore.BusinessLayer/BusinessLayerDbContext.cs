@@ -62,6 +62,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 			yield return new PrefixedTablePrimaryKeysConvention();
 			yield return new ForeignKeysColumnNamesConvention();
 			yield return new LocalizationTablesParentEntitiesConvention();
+			yield return new DefaultValueSqlAttributeConvention();
+			yield return new DefaultValueAttributeConvention();
 			yield return new StringPropertiesDefaultValueConvention();
 			yield return new NamespaceExtendedPropertyConvention();
 			yield return new CollectionExtendedPropertiesConvention();

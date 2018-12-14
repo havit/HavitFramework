@@ -1,7 +1,7 @@
 ﻿using Havit.Web.UI.WebControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace HavitTest
+namespace Havit.Web.Tests
 {
 	[TestClass]
 	public class BooleandFieldTests

@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace Havit.WebTest
+namespace Havit.Web.Tests
 {
 
 	/// <summary>

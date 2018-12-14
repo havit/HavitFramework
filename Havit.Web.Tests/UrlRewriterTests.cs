@@ -7,7 +7,7 @@ using System.Xml;
 using Havit.Web.UrlRewriter.Config;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Havit.WebTest
+namespace Havit.Web.Tests
 {
 	[TestClass]
 	public class UrlRewriterTests

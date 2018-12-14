@@ -20,9 +20,9 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata.Metada
 			var modelClasses = new List<GeneratedModelClass>(tables.Length);
 			foreach (Table table in tables)
 			{
-				if (table.Name.StartsWith("TulipReports_"))
+				if (table.Name.StartsWith("TulipReports_") || table.Name.StartsWith("__"))
 				{
-					ConsoleHelper.WriteLineWarning("Ignoring table: {0}", table.Name);
+					ConsoleHelper.WriteLineInfo("Ignoring table: {0}", table.Name);
 					continue;
 				}
 

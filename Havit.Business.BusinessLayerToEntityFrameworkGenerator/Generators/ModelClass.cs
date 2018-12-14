@@ -56,6 +56,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 			writer.WriteLine("using System.Globalization;");
 			writer.WriteLine("using System.Linq;");
 			writer.WriteLine("using System.Text;");
+			writer.WriteLine("using Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes;");
 			writer.WriteLine("using Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProperties;");
 			writer.WriteLine("using ReadOnlyAttribute = Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProperties.ReadOnlyAttribute;");
 
@@ -430,6 +431,16 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 							// NOOP
 							break; // spadne do warningu níže
 					}
+				}
+
+				if (column.Nullable && ((column.DataType.SqlDataType == SqlDataType.Decimal) || (column.DataType.SqlDataType == SqlDataType.Money)))
+				{
+					// [DefaultValue(0)]
+					// public Decimal? TotalAmountAmount { get; set; }
+					// Cannot set default value '0' of type 'System.Int32' on property 'TotalAmountAmount' of type 'System.Nullable`1[System.Decimal]' in entity type '
+					// workaround:
+					writer.WriteLine($"[DefaultValue(typeof(Decimal), \"{defaultValueTrimmed}\")]");
+					return;
 				}
 
 				if ((column.DataType.SqlDataType == SqlDataType.Int) || (column.DataType.SqlDataType == SqlDataType.SmallInt) || (column.DataType.SqlDataType == SqlDataType.Float) || (column.DataType.SqlDataType == SqlDataType.Decimal) || (column.DataType.SqlDataType == SqlDataType.Money))

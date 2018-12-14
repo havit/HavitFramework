@@ -10,7 +10,7 @@
   <!-- NuGet -->
   <PropertyGroup>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageVersion>1.0.7-beta</PackageVersion>
+	<PackageVersion>1.8.0</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Applies git branch into connection strings (for .NET Core projects with Microsoft.Extensions.Configuration)</Description>
   </PropertyGroup>
   

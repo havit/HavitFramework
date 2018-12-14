@@ -9,7 +9,7 @@
   <!-- NuGet -->
   <PropertyGroup>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageVersion>1.0.1-beta</PackageVersion>
+	<PackageVersion>1.8.0</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Retrieves current git working tree branch and sets it into connection strings (not intended to be used in projects directly)</Description>
   </PropertyGroup>
 </Project>

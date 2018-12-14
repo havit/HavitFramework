@@ -4,7 +4,6 @@ using Havit.Business.BusinessLayerGenerator.CommandLine.Utility;
 using Havit.Business.BusinessLayerGenerator.Csproj;
 using Havit.Business.BusinessLayerGenerator.Helpers;
 using Havit.Business.BusinessLayerGenerator.Settings;
-using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Csproj;
 using Microsoft.SqlServer.Management.Common;
 using Microsoft.SqlServer.Management.Smo;
 using GeneratorSettings = Havit.Business.BusinessLayerToEntityFrameworkGenerator.Settings.GeneratorSettings;

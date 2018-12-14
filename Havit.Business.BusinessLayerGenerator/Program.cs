@@ -84,8 +84,8 @@ namespace Havit.Business.BusinessLayerGenerator
 				ConsoleHelper.WriteLineWarning("Parametr CollectionSaveStrategy byl zrušen.");
 			}
 
-			CsprojFile csprojFile = CsprojFile.GetByFolder(GeneratorSettings.OutputPath);
-		
+			CsprojFile csprojFile = new CsprojFileFactory().GetByFolder(GeneratorSettings.OutputPath, "HavitBusinessLayerGenerator");
+
 			ConsoleHelper.WriteLineInfo("Business Layer Generator");
 			ConsoleHelper.WriteLineInfo("Sql Server: {0}", GeneratorSettings.SqlServerName);
 			ConsoleHelper.WriteLineInfo("Database: {0}", GeneratorSettings.DatabaseName);

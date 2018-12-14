@@ -3,7 +3,7 @@ using System.Linq;
 using System.Xml.Linq;
 using Havit.Business.BusinessLayerGenerator.Csproj;
 
-namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Csproj
+namespace Havit.Business.BusinessLayerGenerator.Csproj
 {
 	public class NetCoreCsprojFile : CsprojFile
 	{

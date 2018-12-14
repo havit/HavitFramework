@@ -55,7 +55,7 @@ namespace Havit.Business.BusinessLayerGenerator.Csproj
 		public virtual void Ensures(string filename)
 		{
 			ensuredFilenames.Add(filename);
-
+			
 			XElement itemElement = Content.Root.Elements(MSBuildNamespace + "ItemGroup").Elements(MSBuildNamespace + "Compile").Where(element => element.Attributes("Include").Any(attribute => String.Equals(filename, (string)attribute, StringComparison.CurrentCultureIgnoreCase))).FirstOrDefault();
 
 			// abychom do kódu dostali metadata HavitBusinessLayerGenerator, tak položku, která jej nemá, odstraníme (a následně přidáme spolu s ní)
@@ -234,19 +234,6 @@ namespace Havit.Business.BusinessLayerGenerator.Csproj
 			}
 			element.Remove();
 		}
-		#endregion
-
-		#region GetByFolder
-		public static CsprojFile GetByFolder(string folder, string generatorIdentifier = "HavitBusinessLayerGenerator")
-		{
-			var files = System.IO.Directory.GetFiles(folder, "*.csproj");
-			if (files.Length == 1)
-			{
-				return new CsprojFile(files[0], generatorIdentifier, XDocument.Load(files[0], LoadOptions.PreserveWhitespace));
-			}
-			return null;
-		}
-		#endregion
-
+		#endregion	
 	}
 }

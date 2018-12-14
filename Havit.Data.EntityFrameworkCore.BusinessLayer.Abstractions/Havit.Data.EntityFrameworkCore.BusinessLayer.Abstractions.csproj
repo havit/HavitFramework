@@ -4,7 +4,6 @@
 
   <PropertyGroup>
 	<TargetFramework>netstandard2.0</TargetFramework>
-	<LangVersion>latest</LangVersion>
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	<RootNamespace>Havit.Data.EntityFrameworkCore.BusinessLayer</RootNamespace>
   </PropertyGroup>

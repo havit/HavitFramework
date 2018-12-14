@@ -3,8 +3,7 @@
   <Import Project="..\Common.targets" />
 
   <PropertyGroup>
-	<TargetFramework>net46</TargetFramework>
-	<LangVersion>latest</LangVersion>
+	<TargetFramework>net46</TargetFramework>	
   </PropertyGroup>
 
   <PropertyGroup>

@@ -32,7 +32,7 @@ namespace Havit.Tests.GoPay.Matchers
 	        {
 				return false;
 			}
-            string actualContent = message.Content.ReadAsStringAsync().Result;
+            string actualContent = message.Content.ReadAsStringAsync().GetAwaiter().GetResult();
             return actualContent == content;
         }
     }

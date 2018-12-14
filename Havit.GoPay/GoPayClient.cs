@@ -175,7 +175,7 @@ namespace Havit.GoPay
 		/// <returns>GoPayResponse</returns>
 		public async Task<GoPayResponse> CapturePaymentAsync(long paymentId, string accessToken)
 		{
-			return await SendPostAsync(String.Format(CapturePaymentUrlFormat, paymentId), accessToken);
+			return await SendPostAsync(String.Format(CapturePaymentUrlFormat, paymentId), accessToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -211,7 +211,7 @@ namespace Havit.GoPay
 		private async Task<GoPayResponse> SendPostAsync(string apiPartialUrl, string accessToken, HttpContent content = null)
 		{
 			httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-			return await SendPostInternalAsync(apiPartialUrl, content);
+			return await SendPostInternalAsync(apiPartialUrl, content).ConfigureAwait(false);
 		}
 
 		private GoPayResponse SendGetInternal(string apiPartialUrl)
@@ -223,22 +223,22 @@ namespace Havit.GoPay
 
 		private GoPayResponse SendPostInternal(string apiPartialUrl, HttpContent content = null)
 		{
-			HttpResponseMessage message = httpClient.PostAsync(apiPartialUrl, content).Result;
+			HttpResponseMessage message = httpClient.PostAsync(apiPartialUrl, content).GetAwaiter().GetResult();
 			GoPayResponse response = ProcessResponse(message);
 			return response;
 		}
 
 		private async Task<GoPayResponse> SendPostInternalAsync(string apiPartialUrl, HttpContent content = null)
 		{
-			HttpResponseMessage message = await httpClient.PostAsync(apiPartialUrl, content);
-			GoPayResponse response = await ProcessResponseAsync(message);
+			HttpResponseMessage message = await httpClient.PostAsync(apiPartialUrl, content).ConfigureAwait(false);
+			GoPayResponse response = await ProcessResponseAsync(message).ConfigureAwait(false);
 			return response;
 		}
 
 		private static GoPayResponse ProcessResponse(HttpResponseMessage result)
 		{
 			GoPayResponse response;
-			using (Stream responseStream = result.Content.ReadAsStreamAsync().Result)
+			using (Stream responseStream = result.Content.ReadAsStreamAsync().GetAwaiter().GetResult())
 			using (TextReader textReader = new StreamReader(responseStream))
 			{
 				string resultStringValue = textReader.ReadToEnd();
@@ -259,7 +259,7 @@ namespace Havit.GoPay
 		private static async Task<GoPayResponse> ProcessResponseAsync(HttpResponseMessage result)
 		{
 			GoPayResponse response;
-			using (Stream responseStream = await result.Content.ReadAsStreamAsync())
+			using (Stream responseStream = await result.Content.ReadAsStreamAsync().ConfigureAwait(false))
 			using (TextReader textReader = new StreamReader(responseStream))
 			{
 				string resultStringValue = textReader.ReadToEnd();

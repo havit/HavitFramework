@@ -10,7 +10,7 @@
   <!-- NuGet -->
   <PropertyGroup>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageVersion>1.8.3</PackageVersion>
+	<PackageVersion>1.8.4</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Services</Description>
   </PropertyGroup>
 
@@ -29,4 +29,7 @@
 	<PackageReference Include="System.Runtime.Caching" Version="4.5.0" />
   </ItemGroup>
 
+  <ItemGroup>
+	<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="2.0.0" PrivateAssets="all" />
+  </ItemGroup>
 </Project>

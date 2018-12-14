@@ -151,7 +151,7 @@ namespace Havit.Data.Entity
 		/// </summary>
 		public override async Task<int> SaveChangesAsync()
 		{
-			int result = await ExecuteWithSaveChangesExceptionHandling<Task<int>>(base.SaveChangesAsync);
+			int result = await ExecuteWithSaveChangesExceptionHandling<Task<int>>(base.SaveChangesAsync).ConfigureAwait(false);
 			AfterSaveChanges();
 			return result;
 		}

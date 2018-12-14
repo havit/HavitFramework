@@ -90,7 +90,7 @@ namespace Havit.Services.FileStorage
 		{
 			using (Stream fileStream = PerformRead(fileName))
 			{
-				await fileStream.CopyToAsync(stream);
+				await fileStream.CopyToAsync(stream).ConfigureAwait(false);
 			}
 		}
 
@@ -116,7 +116,7 @@ namespace Havit.Services.FileStorage
 
 			using (FileStream fileStream = File.Create(GetFullPath(fileName)))
 			{
-				await fileContent.CopyToAsync(fileStream);
+				await fileContent.CopyToAsync(fileStream).ConfigureAwait(false);
 			}
 		}
 

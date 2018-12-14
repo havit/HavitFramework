@@ -72,7 +72,7 @@ namespace Havit.Services.FileStorage
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
 
-			Stream s = await PerformReadAsync(fileName);
+			Stream s = await PerformReadAsync(fileName).ConfigureAwait(false);
 			return Read_EnsureDecryption(s);
 		}
 
@@ -121,7 +121,7 @@ namespace Havit.Services.FileStorage
 
 			if (!SupportsBasicEncryption)
 			{
-				await PerformReadToStreamAsync(fileName, stream);
+				await PerformReadToStreamAsync(fileName, stream).ConfigureAwait(false);
 			}
 			else
 			{
@@ -129,7 +129,7 @@ namespace Havit.Services.FileStorage
 				using (Stream notClosingWrappingStream = new NonClosingWrappingStream(stream))
 				using (CryptoStream decryptingStream = new InternalCryptoStream(notClosingWrappingStream, new InternalCryptoTransform(EncryptionOptions.CreateDecryptor()), CryptoStreamMode.Write))
 				{
-					await PerformReadToStreamAsync(fileName, decryptingStream);
+					await PerformReadToStreamAsync(fileName, decryptingStream).ConfigureAwait(false);
 				}
 			}
 		}
@@ -175,13 +175,13 @@ namespace Havit.Services.FileStorage
 
 			if (!SupportsBasicEncryption)
 			{
-				await PerformSaveAsync(fileName, fileContent, contentType);
+				await PerformSaveAsync(fileName, fileContent, contentType).ConfigureAwait(false);
 			}
 			else
 			{
 				using (CryptoStream encryptingStream = new CryptoStream(fileContent, EncryptionOptions.CreateEncryptor(), CryptoStreamMode.Read))
 				{
-					await PerformSaveAsync(fileName, encryptingStream, contentType);
+					await PerformSaveAsync(fileName, encryptingStream, contentType).ConfigureAwait(false);
 				}
 			}
 		}

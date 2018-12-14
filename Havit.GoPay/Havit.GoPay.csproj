@@ -10,11 +10,12 @@
   <!-- NuGet -->
   <PropertyGroup>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageVersion>1.7.1</PackageVersion>
+	<PackageVersion>1.7.2</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - GoPay Library</Description>
   </PropertyGroup>
   
   <ItemGroup>
+	<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="2.0.0" PrivateAssets="all" />
 	<PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
   </ItemGroup>
   

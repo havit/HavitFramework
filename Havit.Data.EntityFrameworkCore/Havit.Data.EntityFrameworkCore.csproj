@@ -10,12 +10,13 @@
   <!-- NuGet -->
   <PropertyGroup>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageVersion>1.8.13</PackageVersion>
+	<PackageVersion>1.8.14</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions</Description>
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.0" />
+	<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="2.0.0" PrivateAssets="all" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>

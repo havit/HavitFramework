@@ -9,7 +9,7 @@
   <!-- NuGet -->
   <PropertyGroup>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageVersion>1.8.8</PackageVersion>
+	<PackageVersion>1.8.9</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Data Patterns</Description>
   </PropertyGroup>
   
@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="2.0.0" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
   </ItemGroup>
 

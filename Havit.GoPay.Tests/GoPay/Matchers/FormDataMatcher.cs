@@ -57,7 +57,7 @@ namespace Havit.Tests.GoPay.Matchers
                     .SelectMany(GetFormData);
             }
 
-            string rawFormData = content.ReadAsStringAsync().Result;
+            string rawFormData = content.ReadAsStringAsync().GetAwaiter().GetResult();
 
             return QueryStringMatcher.ParseQueryString(rawFormData);
         }

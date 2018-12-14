@@ -129,7 +129,7 @@ namespace Havit.Services.Azure.FileStorage
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
 
 			CloudBlockBlob blob = GetBlobReference(fileName);
-			return await blob.ExistsAsync();
+			return await blob.ExistsAsync().ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -147,7 +147,7 @@ namespace Havit.Services.Azure.FileStorage
 		protected override async Task PerformReadToStreamAsync(string fileName, Stream stream)
 		{
 			CloudBlockBlob blob = GetBlobReference(fileName);
-			await blob.DownloadToStreamAsync(stream, options: GetBlobRequestOptions(), accessCondition: null, operationContext: null);
+			await blob.DownloadToStreamAsync(stream, options: GetBlobRequestOptions(), accessCondition: null, operationContext: null).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -163,7 +163,7 @@ namespace Havit.Services.Azure.FileStorage
 		/// </summary>
 		protected override async Task<Stream> PerformReadAsync(string fileName)
 		{
-			return await GetBlobReference(fileName).OpenReadAsync(options: GetBlobRequestOptions(), accessCondition: null, operationContext: null);
+			return await GetBlobReference(fileName).OpenReadAsync(options: GetBlobRequestOptions(), accessCondition: null, operationContext: null).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -184,12 +184,12 @@ namespace Havit.Services.Azure.FileStorage
 		/// </summary>
 		protected override async Task PerformSaveAsync(string fileName, Stream fileContent, string contentType)
 		{
-			await EnsureContainerAsync();
+			await EnsureContainerAsync().ConfigureAwait(false);
 
 			CloudBlockBlob blob = GetBlobReference(fileName);
 			blob.Properties.ContentType = contentType;
 			PerformSave_SetProperties(blob);
-			await blob.UploadFromStreamAsync(fileContent, options: GetBlobRequestOptions(), accessCondition: null, operationContext: null);
+			await blob.UploadFromStreamAsync(fileContent, options: GetBlobRequestOptions(), accessCondition: null, operationContext: null).ConfigureAwait(false);
 		}
 
 		private void PerformSave_SetProperties(CloudBlockBlob blob)
@@ -219,7 +219,7 @@ namespace Havit.Services.Azure.FileStorage
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
 
 			CloudBlockBlob blob = GetBlobReference(fileName);
-			await blob.DeleteAsync();
+			await blob.DeleteAsync().ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -259,10 +259,10 @@ namespace Havit.Services.Azure.FileStorage
 			// ziskej prefix, uvodni cast cesty, ve kterem nejsou pouzite znaky '*' a '?'
 			string prefix = EnumerableFilesGetPrefix(searchPattern);
 
-			await EnsureContainerAsync();
+			await EnsureContainerAsync().ConfigureAwait(false);
 
 			// nacti soubory s danym prefixem - optimalizace na rychlost
-			List<IListBlobItem> listBlobItems = (await GetContainerReference().ListBlobsAsync(prefix, true));
+			List<IListBlobItem> listBlobItems = (await GetContainerReference().ListBlobsAsync(prefix, true).ConfigureAwait(false));
 
 			// filtruj soubory podle masky
 			return EnumerateFiles_FilterAndProjectCloudBlobs(listBlobItems, searchPattern);
@@ -306,7 +306,7 @@ namespace Havit.Services.Azure.FileStorage
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
 
 			CloudBlobContainer container =  GetContainerReference();
-			ICloudBlob blob = await container.GetBlobReferenceFromServerAsync(fileName);			
+			ICloudBlob blob = await container.GetBlobReferenceFromServerAsync(fileName).ConfigureAwait(false);
 			return blob.Properties.LastModified?.UtcDateTime;
 		}
 
@@ -350,7 +350,7 @@ namespace Havit.Services.Azure.FileStorage
 		{
 			if (!containerAlreadyCreated)
 			{
-				await GetContainerReference().CreateIfNotExistsAsync(BlobContainerPublicAccessType.Off, options: null, operationContext: null);
+				await GetContainerReference().CreateIfNotExistsAsync(BlobContainerPublicAccessType.Off, options: null, operationContext: null).ConfigureAwait(false);
 				containerAlreadyCreated = true;
 			}
 		}

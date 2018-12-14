@@ -83,7 +83,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks
 
 			Changes allKnownChanges = GetAllKnownChanges(); // práme se na změny znovu, runnery mohli seznam objektů k uložení změnit
 			entityValidationRunner.Validate(allKnownChanges);
-			await DbContext.SaveChangesAsync();
+			await DbContext.SaveChangesAsync().ConfigureAwait(false);
 
 			ClearRegistrationHashSets();
 			InvalidateEntityCache(allKnownChanges);

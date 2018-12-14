@@ -179,13 +179,13 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		{
 			Contract.Requires<ArgumentException>(id != default(int));
 
-			TEntity result = await dbContext.ExecuteWithoutAutoDetectChanges(() => DbSet.FindAsync(id));
+			TEntity result = await dbContext.ExecuteWithoutAutoDetectChanges(() => DbSet.FindAsync(id)).ConfigureAwait(false);
 			if (result == null)
 			{
 				ThrowObjectNotFoundException(id);					
 			}
 
-			await LoadReferencesAsync(new TEntity[] { result });
+			await LoadReferencesAsync(new TEntity[] { result }).ConfigureAwait(false);
 			return result;
 		}
 
@@ -268,7 +268,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 			if (idsToLoad.Count > 0)
 			{
 				var query = GetInQuery(idsToLoad.ToArray());
-				var loadedObjects = await query.ToListAsync();
+				var loadedObjects = await query.ToListAsync().ConfigureAwait(false);
 
 				if (idsToLoad.Count != loadedObjects.Count)
 				{
@@ -279,7 +279,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 				result.AddRange(loadedObjects);
 			}
 
-			await LoadReferencesAsync(result.ToArray());
+			await LoadReferencesAsync(result.ToArray()).ConfigureAwait(false);
 			return result;
 		}
 
@@ -316,8 +316,8 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		{
 			if (_all == null)
 			{
-				_all = await Data.ToArrayAsync();
-				await LoadReferencesAsync(_all);
+				_all = await Data.ToArrayAsync().ConfigureAwait(false);
+				await LoadReferencesAsync(_all).ConfigureAwait(false);
 
 				if (!_allInitialized)
 				{
@@ -379,7 +379,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		{	
 			Contract.Requires(entities != null);
 
-			await dataLoaderAsync.LoadAllAsync(entities, GetLoadReferences().ToArray());
+			await dataLoaderAsync.LoadAllAsync(entities, GetLoadReferences().ToArray()).ConfigureAwait(false);
 		}
 
 		/// <summary>

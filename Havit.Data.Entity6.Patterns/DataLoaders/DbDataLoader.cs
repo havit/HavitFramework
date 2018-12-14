@@ -117,7 +117,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 		{
 			Contract.Requires(propertyPath != null);
 
-			await LoadInternalAsync(new TEntity[] { entity }, propertyPath);
+			await LoadInternalAsync(new TEntity[] { entity }, propertyPath).ConfigureAwait(false);
 			return new NotSuportedFluentDataLoader<TProperty>();
 		}
 
@@ -133,7 +133,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 
 			foreach (Expression<Func<TEntity, object>> propertyPath in propertyPaths)
 			{
-				await LoadInternalAsync(new TEntity[] { entity }, propertyPath);
+				await LoadInternalAsync(new TEntity[] { entity }, propertyPath).ConfigureAwait(false);
 			}
 		}
 
@@ -148,7 +148,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 		{
 			Contract.Requires(propertyPath != null);
 
-			await LoadInternalAsync(entities, propertyPath);
+			await LoadInternalAsync(entities, propertyPath).ConfigureAwait(false);
 
 			return new NotSuportedFluentDataLoader<TProperty>();
 		}
@@ -165,7 +165,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 
 			foreach (Expression<Func<TEntity, object>> propertyPath in propertyPaths)
 			{
-				await LoadInternalAsync(entities, propertyPath);
+				await LoadInternalAsync(entities, propertyPath).ConfigureAwait(false);
 			}
 		}
 		#endregion
@@ -261,8 +261,8 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 								propertyToLoad.CollectionItemType)
 							.Invoke(this, new object[] { propertyToLoad.PropertyName, entities });
 					}
-					await task;
-					entities = (Array)((dynamic)task).Result;
+					await task.ConfigureAwait(false);
+					entities = (Array)((dynamic)task).Result; // task je již dokončen
 
 					if (entities.Length == 0)
 					{
@@ -306,7 +306,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 			if (ids.Count > 0)
 			{
 				IQueryable loadQuery = GetLoadQuery(propertyLambdaExpression.LambdaExpression, ids, false);
-				await loadQuery.LoadAsync();
+				await loadQuery.LoadAsync().ConfigureAwait(false);
 			}
 
 			return entities.Select(item => propertyLambdaExpression.LambdaCompiled(item)).Where(item => item != null).ToArray();
@@ -352,7 +352,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 			if (ids.Count > 0)
 			{
 				IQueryable loadQuery = GetLoadQuery(propertyLambdaExpression.LambdaExpression, ids, true);
-				await loadQuery.LoadAsync();
+				await loadQuery.LoadAsync().ConfigureAwait(false);
 			}
 
 			TPropertyItem[] result = entities.SelectMany(item => (IEnumerable<TPropertyItem>)propertyLambdaExpression.LambdaCompiled(item)).ToArray();

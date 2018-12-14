@@ -12,12 +12,13 @@
   <!-- NuGet -->
   <PropertyGroup>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageVersion>1.7.12</PackageVersion>
+	<PackageVersion>1.7.13</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Entity Framework 6 Extensions</Description>
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="EntityFramework" Version="6.2.0" />
+	<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="2.0.0" PrivateAssets="all" />
+	<PackageReference Include="EntityFramework" Version="6.2.0" />
   </ItemGroup>
 
   <ItemGroup>

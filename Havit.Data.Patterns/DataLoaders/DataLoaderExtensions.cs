@@ -40,7 +40,7 @@ namespace Havit.Data.Patterns.DataLoaders
 			where TEntity : class
 			where TProperty : class
 		{
-			return await (await source).LoadAsync<TProperty>(propertyPath);
+			return await (await source.ConfigureAwait(false)).LoadAsync<TProperty>(propertyPath).ConfigureAwait(false);
 		}
 
 		// **************************************************************************************************************************************
@@ -57,7 +57,7 @@ namespace Havit.Data.Patterns.DataLoaders
 			where TEntity : class
 			where TProperty : class
 		{
-			return await (await source).Unwrap<TEntity>().LoadAsync<TProperty>(propertyPath);
+			return await (await source.ConfigureAwait(false)).Unwrap<TEntity>().LoadAsync<TProperty>(propertyPath).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -67,7 +67,7 @@ namespace Havit.Data.Patterns.DataLoaders
 			where TEntity : class
 			where TProperty : class
 		{
-			return await (await source).Unwrap<TEntity>().LoadAsync<TProperty>(propertyPath);
+			return await (await source.ConfigureAwait(false)).Unwrap<TEntity>().LoadAsync<TProperty>(propertyPath).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -77,7 +77,7 @@ namespace Havit.Data.Patterns.DataLoaders
 			where TEntity : class
 			where TProperty : class
 		{
-			return await (await source).Unwrap<TEntity>().LoadAsync<TProperty>(propertyPath);
+			return await (await source.ConfigureAwait(false)).Unwrap<TEntity>().LoadAsync<TProperty>(propertyPath).ConfigureAwait(false);
 		}
 		#endregion
 	}

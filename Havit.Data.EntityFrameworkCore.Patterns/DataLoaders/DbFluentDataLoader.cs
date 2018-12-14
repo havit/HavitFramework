@@ -35,7 +35,7 @@ namespace Havit.Data.Patterns.DataLoaders
 		/// <inheritdoc />
 		async Task<IFluentDataLoaderAsync<TProperty>> IFluentDataLoaderAsync<TEntity>.LoadAsync<TProperty>(Expression propertyPath)
 		{
-			return await loader.LoadAllAsync(data, (Expression<Func<TEntity, TProperty>>)propertyPath);
+			return await loader.LoadAllAsync(data, (Expression<Func<TEntity, TProperty>>)propertyPath).ConfigureAwait(false);
 		}
 
 		/// <inheritdoc />

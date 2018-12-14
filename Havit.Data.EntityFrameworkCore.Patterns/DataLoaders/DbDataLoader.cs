@@ -122,7 +122,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 		{
 			Contract.Requires(propertyPath != null);
 
-			return await LoadInternalAsync(new TEntity[] { entity }, propertyPath);
+			return await LoadInternalAsync(new TEntity[] { entity }, propertyPath).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -137,7 +137,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 
 			foreach (Expression<Func<TEntity, object>> propertyPath in propertyPaths)
 			{
-				await LoadInternalAsync(new TEntity[] { entity }, propertyPath);
+				await LoadInternalAsync(new TEntity[] { entity }, propertyPath).ConfigureAwait(false);
 			}
 		}
 
@@ -152,7 +152,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 		{
 			Contract.Requires(entities != null);
 			Contract.Requires(propertyPath != null);
-			return await LoadInternalAsync(entities, propertyPath);
+			return await LoadInternalAsync(entities, propertyPath).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -167,7 +167,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 
 			foreach (Expression<Func<TEntity, object>> propertyPath in propertyPaths)
 			{
-				await LoadInternalAsync(entities, propertyPath);
+				await LoadInternalAsync(entities, propertyPath).ConfigureAwait(false);
 			}
 		}
 		#endregion
@@ -279,8 +279,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 								propertyToLoad.CollectionItemType)
 							.Invoke(this, new object[] { propertyToLoad.PropertyName, entities });
 					}
-					await task;
-					LoadPropertyInternalResult loadPropertyInternalResult = (LoadPropertyInternalResult)((dynamic)task).Result;
+					await task.ConfigureAwait(false);
+					LoadPropertyInternalResult loadPropertyInternalResult = (LoadPropertyInternalResult)((dynamic)task).Result; // task je již dokončen
 
 					entities = loadPropertyInternalResult.Entities;
 					fluentDataLoader = loadPropertyInternalResult.FluentDataLoader;
@@ -330,7 +330,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 
 			if ((keysToQuery != null) && keysToQuery.Any()) // zůstalo nám, na co se ptát do databáze?
 			{
-				List<TProperty> loadedProperties = await LoadReferencePropertyInternal_GetQuery<TProperty>(keysToQuery).ToListAsync();
+				List<TProperty> loadedProperties = await LoadReferencePropertyInternal_GetQuery<TProperty>(keysToQuery).ToListAsync().ConfigureAwait(false);
 				LoadReferencePropertyInternal_StoreToCache(loadedProperties);
 			}
 
@@ -464,7 +464,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 			if (primaryKeyWithValues != null)
 			{
 				IQueryable<TEntity> loadQuery = (IQueryable<TEntity>)GetLoadQuery(propertyLambdaExpression.LambdaExpression, primaryKeyWithValues, true);
-				await loadQuery.LoadAsync();
+				await loadQuery.LoadAsync().ConfigureAwait(false);
 			}
 
 			return new LoadPropertyInternalResult

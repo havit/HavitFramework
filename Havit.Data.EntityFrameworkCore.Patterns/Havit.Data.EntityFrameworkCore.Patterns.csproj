@@ -10,11 +10,12 @@
   <!-- NuGet -->
   <PropertyGroup>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageVersion>1.8.11</PackageVersion>
+	<PackageVersion>1.8.12</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Data Patterns</Description>
   </PropertyGroup>
 
   <ItemGroup>
+	<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="2.0.0" PrivateAssets="all" />
 	<PackageReference Include="System.Interactive.Async.Providers" Version="3.1.1" />
   </ItemGroup>
 

@@ -137,7 +137,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 			// není ani v identity mapě, ani v cache, hledáme v databázi
 			if (result == null)
 			{
-				result = await DbSet.FindAsync(id);
+				result = await DbSet.FindAsync(id).ConfigureAwait(false);
 				if (result != null)
 				{
 					// načtený objekt uložíme do cache
@@ -150,7 +150,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 				ThrowObjectNotFoundException(id);					
 			}
 
-			await LoadReferencesAsync(new TEntity[] { result });
+			await LoadReferencesAsync(new TEntity[] { result }).ConfigureAwait(false);
 			return result;
 		}
 
@@ -252,7 +252,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 			if (idsToLoad.Count > 0)
 			{
 				var query = GetInQuery(idsToLoad.ToArray());
-				var loadedObjects = await query.ToListAsync();
+				var loadedObjects = await query.ToListAsync().ConfigureAwait(false);
 
 				if (idsToLoad.Count != loadedObjects.Count)
 				{
@@ -269,7 +269,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 				result.AddRange(loadedObjects);
 			}
 
-			await LoadReferencesAsync(result.ToArray());
+			await LoadReferencesAsync(result.ToArray()).ConfigureAwait(false);
 			return result;
 		}
 
@@ -326,10 +326,10 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 				else
 				{
 					// pokd ne, načtene data a uložíme klíče do cache
-					_all = await Data.ToArrayAsync();
+					_all = await Data.ToArrayAsync().ConfigureAwait(false);
 					EntityCacheManager.StoreAllKeys<TEntity>(_all.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());
 				}
-				await LoadReferencesAsync(_all);
+				await LoadReferencesAsync(_all).ConfigureAwait(false);
 
 				if (!_allInitialized)
 				{
@@ -398,7 +398,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 			var loadReferences = GetLoadReferences().ToArray();
 			if (loadReferences.Any())
 			{
-				await dataLoaderAsync.LoadAllAsync(entities, loadReferences);
+				await dataLoaderAsync.LoadAllAsync(entities, loadReferences).ConfigureAwait(false);
 			}
 		}
 

@@ -11,12 +11,16 @@
   <!-- NuGet -->
   <PropertyGroup>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageVersion>1.7.10</PackageVersion>
+	<PackageVersion>1.7.11</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Entity Framework 6 Extensions - Data Patterns</Description>
   </PropertyGroup>
   
   <ItemGroup>
     <ProjectReference Include="..\Havit.Data.Entity6\Havit.Data.Entity6.csproj" />
     <ProjectReference Include="..\Havit.Data.Patterns\Havit.Data.Patterns.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="2.0.0" PrivateAssets="all" />
   </ItemGroup>
 </Project>  

@@ -582,6 +582,14 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 				}
 
 				string defaultValue = column.DefaultConstraint.Text;
+
+				// (CONVERT([smallint], (1)))
+				// Fix defaultů generovaných EF Core
+				if (defaultValue.StartsWith("(CONVERT(", StringComparison.InvariantCultureIgnoreCase))
+				{
+					defaultValue = defaultValue.Substring(defaultValue.IndexOf(',') + 1); // odstraníme vše po čárku včetně
+					defaultValue = defaultValue.Left(defaultValue.Length - 2); // odstranímě dvě zavírací závorky na konci
+				}
 				string trimmedQuotesDefaultValue = defaultValue.TrimStart('(');
 				trimmedQuotesDefaultValue = trimmedQuotesDefaultValue.Substring(0, trimmedQuotesDefaultValue.Length - (defaultValue.Length - trimmedQuotesDefaultValue.Length));
 

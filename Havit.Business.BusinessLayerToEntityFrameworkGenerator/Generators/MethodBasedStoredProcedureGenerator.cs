@@ -95,6 +95,12 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 
         private static void WriteMethodBegin(CodeWriter writer, DbStoredProcedure dbStoredProcedure)
         {
+	        string comment = dbStoredProcedure.StoredProcedure.GetStringExtendedProperty("MS_Description");
+			if (!String.IsNullOrEmpty(comment))
+			{
+				writer.WriteCommentSummary(comment);
+			}
+
 			string methodName = dbStoredProcedure.StoredProcedure.GetStringExtendedProperty("MethodName");
 			if (!String.IsNullOrEmpty(methodName))
 			{
@@ -125,18 +131,12 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 				writer.WriteLine(String.Format("[DataLoadPower({0})]", dataLoadPower));
 	        }
 
-
 	        string methodAccessModifier = dbStoredProcedure.StoredProcedure.GetStringExtendedProperty("MethodAccessModifier");
 	        if (!String.IsNullOrEmpty(methodAccessModifier))
 			{
 				writer.WriteLine(String.Format("[MethodAccessModifier(\"{0}\")]", methodAccessModifier));
 	        }
 
-			string comment = dbStoredProcedure.StoredProcedure.GetStringExtendedProperty("MS_Description");
-			if (!String.IsNullOrEmpty(comment))
-			{
-				writer.WriteCommentSummary(comment);
-			}
 			writer.WriteLine(String.Format("public StoredProcedureDbInjection {0}()", dbStoredProcedure.Name));
             writer.WriteLine("{");
         }

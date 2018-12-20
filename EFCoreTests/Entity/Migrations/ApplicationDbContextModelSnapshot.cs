@@ -128,9 +128,7 @@ namespace Havit.EFCoreTests.Entity.Migrations
 
             modelBuilder.Entity("Havit.EFCoreTests.Model.Security.Role", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("Id");
 
                     b.Property<string>("Name");
 

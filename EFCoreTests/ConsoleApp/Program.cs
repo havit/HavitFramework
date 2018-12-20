@@ -34,6 +34,8 @@ using System.Transactions;
 using Havit.Data.Patterns.DataSeeds;
 using Havit.Data.Patterns.DataSeeds.Profiles;
 using Havit.EFCoreTests.DataLayer.Seeds.Core;
+using Havit.EFCoreTests.DataLayer.Repositories.Security;
+using System.Data.SqlClient;
 
 namespace ConsoleApp1
 {
@@ -42,6 +44,7 @@ namespace ConsoleApp1
 		public static void Main(string[] args)
 		{
 			var container = ConfigureAndCreateWindsorContainer();
+			UpdateDatabase(container);
 			//GenerateLanguages(1, container);
 			//GenerateSecurity(100, 10, 3, container);
 			//DebugModelInfo(container);
@@ -49,6 +52,7 @@ namespace ConsoleApp1
 			//DebugFlagClass(container);
 			//DebugTransactions(container);
 			DebugSeeding(container);
+			//DebugCaching(container);
 		}
 
 		private static IWindsorContainer ConfigureAndCreateWindsorContainer()
@@ -69,7 +73,7 @@ namespace ConsoleApp1
 			container.AddFacility<TypedFactoryFacility>();
 			container.Register(Component.For(typeof(IServiceFactory<>)).AsFactory());
 
-			container.WithEntityPatternsInstaller(new ComponentRegistrationOptions { GeneralLifestyle = lf => lf.Scoped() }.ConfigureCacheAllEntitiesWithDefaultSlidingExpirationCaching(TimeSpan.FromMinutes(5)))
+			container.WithEntityPatternsInstaller(new ComponentRegistrationOptions { GeneralLifestyle = lf => lf.Scoped() })
 				.RegisterDataLayer(typeof(ILanguageRepository).Assembly)
 				.RegisterDbContext<Havit.EFCoreTests.Entity.ApplicationDbContext>(options)
 				.RegisterEntityPatterns();
@@ -81,6 +85,15 @@ namespace ConsoleApp1
 			container.Register(Component.For<IMemoryCache>().ImplementedBy<MemoryCache>().LifestyleSingleton());
 
 			return container;
+		}
+
+		private static void UpdateDatabase(IWindsorContainer container)
+		{
+			using (var scope = container.BeginScope())
+			{
+				var dbContext = container.Resolve<IDbContext>();
+				dbContext.Database.Migrate();
+			}
 		}
 
 		private static void GenerateLanguages(int targetCount, IWindsorContainer container)
@@ -162,7 +175,7 @@ namespace ConsoleApp1
 				var firstMembership = loginAccount.Memberships.First();
 				Console.WriteLine(firstMembership.RoleId);
 				Console.WriteLine(firstMembership.Role);
-				
+
 				addToCache(loginAccount.Memberships[0].RoleId);
 				//addToCache(loginAccount.Memberships[1].RoleId);
 				//addToCache(loginAccount.Memberships[2].RoleId);				
@@ -180,7 +193,7 @@ namespace ConsoleApp1
 		{
 			using (var scope = container.BeginScope())
 			{
-				
+
 			}
 		}
 
@@ -193,7 +206,7 @@ namespace ConsoleApp1
 				FlagClass flagClass = new FlagClass();
 				flagClass.MyFlag = false;
 				dbContext.Set<FlagClass>().AddRange(new FlagClass[] { flagClass });
-				dbContext.SaveChanges();			
+				dbContext.SaveChanges();
 			}
 		}
 
@@ -201,9 +214,6 @@ namespace ConsoleApp1
 		{
 			Action<IDbContext> action = (IDbContext dbContext) =>
 			{
-				Console.WriteLine(dbContext.GetHashCode());
-				//dbContext.Database.Migrate();
-
 				dbContext.Set<FlagClass>().AsQueryable().ToList();
 			};
 
@@ -235,6 +245,44 @@ namespace ConsoleApp1
 			}
 		}
 
+		private static void DebugCaching(IWindsorContainer container)
+		{
+			//DebugSeeding(container); // seed role
+			// do cache
 
+			//using (var scope = container.BeginScope())
+			//{
+			//	var dbContext = container.Resolve<IDbContext>();
+			//	var role = dbContext.Set<Role>().Find(1);
+			//	Console.WriteLine(dbContext.GetEntry(role, suppressDetectChanges: true).State);
+			//}
+
+			// do cache
+			using (var scope = container.BeginScope())
+			{
+				var roleRepository = container.Resolve<IRoleRepository>();
+				roleRepository.GetObject(1);
+			}
+
+			// z cache
+			using (var scope = container.BeginScope())
+			{
+				var roleRepository = container.Resolve<IRoleRepository>();
+				Role role = roleRepository.GetObject(1);
+
+				// invalidace
+				role.Name += "0";
+
+				var unitOfWork = container.Resolve<IUnitOfWork>();
+				unitOfWork.Commit();
+			}
+
+			// do cache
+			using (var scope = container.BeginScope())
+			{
+				var roleRepository = container.Resolve<IRoleRepository>();
+				roleRepository.GetObject(1);
+			}
+		}
 	}
 }

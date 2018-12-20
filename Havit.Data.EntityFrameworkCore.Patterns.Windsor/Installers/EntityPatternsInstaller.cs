@@ -108,9 +108,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers
 			container.Register(
 				Component.For<ISoftDeleteManager>().ImplementedBy<SoftDeleteManager>().LifestyleSingleton(),
 				Component.For(typeof(IDataEntrySymbolStorage<>)).ImplementedBy(typeof(DataEntrySymbolStorage<>)).LifestyleSingleton(),
-				Component.For<ICurrentCultureService>().ImplementedBy<CurrentCultureService>().LifestyleSingleton(),
+				Component.For<ICurrentCultureService>().ImplementedBy<CurrentCultureService>().LifestyleSingleton(),				
 				Component.For<IDataSeedRunner>().ImplementedBy<DataSeedRunner>().LifestyleTransient(),
-				Component.For<ITransactionWrapper>().ImplementedBy<TransactionScopeTransactionWrapper>().LifestyleTransient(),
+				System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription.StartsWith(".NET Framework") // NET Framework vs .NET Core
+					? Component.For<ITransactionWrapper>().ImplementedBy<TransactionScopeTransactionWrapper>().LifestyleTransient() // Podpora transaction scope ve full frameworku je dostatečná
+					: Component.For<ITransactionWrapper>().ImplementedBy<NullTransactionWrapper>().LifestyleTransient(), // v .NET Core nám aktuálně nefunguje dostatečně dobře podpora transaction scope
 				Component.For<IDataSeedRunDecision>().ImplementedBy<OncePerVersionDataSeedRunDecision>().LifestyleTransient(),
 				Component.For<IDataSeedRunDecisionStatePersister>().ImplementedBy<DbDataSeedRunDecisionStatePersister>().LifestyleTransient(),
 				Component.For<IDataSeedPersister>().ImplementedBy<DbDataSeedPersister>().LifestyleTransient().DependsOn(Dependency.OnComponent(typeof(IDbContext), DbContextTransientComponentName)),

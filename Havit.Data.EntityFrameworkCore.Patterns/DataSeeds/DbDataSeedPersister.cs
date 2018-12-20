@@ -184,7 +184,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 			return dbEntities;
 		}
 
-
 		/// <summary>
 		/// Provede vytvoření či aktualizaci dat dle předpisu seedování.
 		/// </summary>

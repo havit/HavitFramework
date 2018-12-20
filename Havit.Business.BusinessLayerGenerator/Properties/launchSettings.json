@@ -6,7 +6,7 @@
     },
     "123.AEP": {
       "commandName": "Project",
-      "commandLineArgs": "-outputpath:D:\\Dev\\002.HFW-HavitFramework\\BusinessLayerTest -sqlserver sqldev -database HavitBusinessLayerTest",
+      "commandLineArgs": "-outputpath:D:\\Temp -sqlserver:(localdb)\\mssqllocaldb -database:AccacePayroll -strategy:HavitCodeFirst",
       "workingDirectory": "D:\\Temp"
     }
   }

@@ -27,6 +27,9 @@ namespace Havit.Data.Patterns.DataSeeds
 		/// <param name="dataSeeds">Předpisy seedování objektů.</param>
 		/// <param name="dataSeedRunDecision">Služba vracející, zda se má dataseed spustit. Lze takto spouštění potlačit (např. pokud již bylo spuštěno).</param>
 		/// <param name="dataSeedPersister">Persister seedovaných objektů.</param>
+		/// <remarks>
+		/// IServiceFactory&lt;IDataSeedPersister&gt; vs https://github.com/volosoft/castle-windsor-ms-adapter/issues/32		
+		/// </remarks>
 		public DataSeedRunner(IEnumerable<IDataSeed> dataSeeds, IDataSeedRunDecision dataSeedRunDecision, IServiceFactory<IDataSeedPersister> dataSeedPersisterFactory, ITransactionWrapper transactionWrapper)
 	    {
 	        Contract.Requires(dataSeeds != null);

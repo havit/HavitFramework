@@ -5,7 +5,6 @@ using System.Linq;
 using System.Net.Sockets;
 using Havit.Data.Patterns.DataSeeds;
 using Havit.Data.Patterns.DataSeeds.Profiles;
-using Havit.Data.Patterns.Transactions.Internal;
 using Havit.Diagnostics.Contracts;
 using Havit.Services;
 
@@ -19,7 +18,6 @@ namespace Havit.Data.Patterns.DataSeeds
 		private readonly List<IDataSeed> dataSeeds;
 		private readonly IDataSeedRunDecision dataSeedRunDecision;
 		private readonly IServiceFactory<IDataSeedPersister> dataSeedPersisterFactory;
-		private readonly ITransactionWrapper transactionWrapper;
 
 		/// <summary>
 		/// Konstruktor.
@@ -30,7 +28,7 @@ namespace Havit.Data.Patterns.DataSeeds
 		/// <remarks>
 		/// IServiceFactory&lt;IDataSeedPersister&gt; vs https://github.com/volosoft/castle-windsor-ms-adapter/issues/32		
 		/// </remarks>
-		public DataSeedRunner(IEnumerable<IDataSeed> dataSeeds, IDataSeedRunDecision dataSeedRunDecision, IServiceFactory<IDataSeedPersister> dataSeedPersisterFactory, ITransactionWrapper transactionWrapper)
+		public DataSeedRunner(IEnumerable<IDataSeed> dataSeeds, IDataSeedRunDecision dataSeedRunDecision, IServiceFactory<IDataSeedPersister> dataSeedPersisterFactory)
 	    {
 	        Contract.Requires(dataSeeds != null);
 	        Contract.Requires(dataSeedRunDecision != null);
@@ -45,7 +43,6 @@ namespace Havit.Data.Patterns.DataSeeds
 
 	        this.dataSeedRunDecision = dataSeedRunDecision;
 	        this.dataSeedPersisterFactory = dataSeedPersisterFactory;
-			this.transactionWrapper = transactionWrapper;
 		}
 
 	    /// <summary>
@@ -62,10 +59,7 @@ namespace Havit.Data.Patterns.DataSeeds
         /// </summary>
 	    public void SeedData(Type dataSeedProfileType, bool forceRun = false)
 	    {
-			transactionWrapper.ExecuteWithTransaction(() =>
-			{
-				SeedProfileWithPrequisites(dataSeedProfileType, forceRun, new Stack<Type>(), new List<Type>());
-			});
+			SeedProfileWithPrequisites(dataSeedProfileType, forceRun, new Stack<Type>(), new List<Type>());
 	    }
 
         /// <summary>

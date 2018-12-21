@@ -29,13 +29,13 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 		private readonly IEntityCacheKeyGenerator entityCacheKeyNamingService;
 		private readonly IEntityCacheOptionsGenerator entityCacheOptionsGenerator;
 		private readonly IEntityCacheDependencyManager entityCacheDependencyManager;
-		private readonly IServiceFactory<IDbContext> dbContextFactory;
+		private readonly IDbContext dbContext;
 		private readonly IEntityKeyAccessor entityKeyAccessor;
 
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public EntityCacheManager(ICacheService cacheService, IEntityCacheSupportDecision entityCacheSupportDecision, IEntityCacheKeyGenerator entityCacheKeyNamingService, IEntityCacheOptionsGenerator entityCacheOptionsGenerator, IEntityCacheDependencyManager entityCacheDependencyManager, IEntityKeyAccessor entityKeyAccessor, IServiceFactory<IDbContext> dbContextFactory)
+		public EntityCacheManager(ICacheService cacheService, IEntityCacheSupportDecision entityCacheSupportDecision, IEntityCacheKeyGenerator entityCacheKeyNamingService, IEntityCacheOptionsGenerator entityCacheOptionsGenerator, IEntityCacheDependencyManager entityCacheDependencyManager, IEntityKeyAccessor entityKeyAccessor, IDbContext dbContext)
 		{
 			this.cacheService = cacheService;
 			this.entityCacheSupportDecision = entityCacheSupportDecision;
@@ -43,7 +43,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 			this.entityCacheOptionsGenerator = entityCacheOptionsGenerator;
 			this.entityCacheDependencyManager = entityCacheDependencyManager;
 			this.entityKeyAccessor = entityKeyAccessor;
-			this.dbContextFactory = dbContextFactory;
+			this.dbContext = dbContext;
 		}
 
 		/// <inheritdoc />
@@ -58,13 +58,13 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 				{
 					// pokud je entita v cache, materializujeme ji a vrátíme ji
 					TEntity result = Activator.CreateInstance<TEntity>();
-					dbContextFactory.ExecuteAction(dbContext =>
-					{
-						var entry = dbContext.GetEntry(result, suppressDetectChanges: true);
-						entry.OriginalValues.SetValues(cacheValues); // aby při případném update byly známy změněné vlastnosti
-						entry.CurrentValues.SetValues(cacheValues); // aby byly naplněny vlastnosti entity
-						dbContext.Set<TEntity>().AttachRange(new TEntity[] { result }); // nutno volat až po materializaci, jinak registruje entitu s nenastavenou hodnotou primárního klíče
-					});
+					//dbContextFactory.ExecuteAction(dbContext =>
+					//{
+					var entry = dbContext.GetEntry(result, suppressDetectChanges: true);
+					entry.OriginalValues.SetValues(cacheValues); // aby při případném update byly známy změněné vlastnosti
+					entry.CurrentValues.SetValues(cacheValues); // aby byly naplněny vlastnosti entity
+					dbContext.Set<TEntity>().AttachRange(new TEntity[] { result }); // nutno volat až po materializaci, jinak registruje entitu s nenastavenou hodnotou primárního klíče
+					//});
 					entity = result;
 					return true;
 
@@ -83,10 +83,10 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 			{
 				string cacheKey = entityCacheKeyNamingService.GetEntityCacheKey(typeof(TEntity), entityKeyAccessor.GetEntityKeyValues(entity).Single());
 				EntityEntry entry = null;
-				dbContextFactory.ExecuteAction(dbContext =>
-				{
-					entry = dbContext.GetEntry(entity, suppressDetectChanges: true);
-				});
+				//dbContextFactory.ExecuteAction(dbContext =>
+				//{
+				entry = dbContext.GetEntry(entity, suppressDetectChanges: true);
+				//});
 				Contract.Assert<InvalidOperationException>(entry.State != Microsoft.EntityFrameworkCore.EntityState.Detached, "Entity must be attached to DbContext."); // abychom mohli získat smysluplné entry.OriginalValues, musí být entita trackovaná (podmínka nutná, nikoliv postačující - neříká, zda má OriginalValues dobře nastaveny).
 
 				// entry.OriginalValues vrací abstraktní PropertyValues, ten nese spoustu vlastostí vč. DbContextu.

@@ -16,7 +16,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers.Caching
 		/// <inheritdoc />
 		public void Install(IWindsorContainer container, IConfigurationStore store)
 		{
-			container.Register(Component.For<IEntityCacheManager>().ImplementedBy<EntityCacheManager>().LifestyleSingleton());
+			container.Register(Component.For<IEntityCacheManager>().ImplementedBy<EntityCacheManager>().LifestyleTransient()); // kvůli https://github.com/volosoft/castle-windsor-ms-adapter/issues/32 nemůžeme být singleton, protože potřebujeme AKTUÁLNÍ DbContext, ale přes factory dostáváme vždy nový
 			RegisterEntityCacheOptionsGenerator(container);
 			RegisterEntityCacheKeyGenerator(container);
 			RegisterEntityCacheSupportDecision(container);

@@ -135,7 +135,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 			ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "item");
 			List<TEntity> dbEntities = new List<TEntity>();
 
-			foreach (TEntity[] chunk in seedData.Chunkify(1000))
+			// Chunkify(1000) --> SQL Server 2008: Some part of your SQL statement is nested too deeply. Rewrite the query or break it up into smaller queries.
+			// Proto došlo ke změně na .Chunkify(100), správné číslo hledáme.
+			foreach (TEntity[] chunk in seedData.Chunkify(100))
 			{
 				Expression<Func<TEntity, bool>> chunkWhereExpression = null;
 				foreach (TEntity seedEntity in chunk)

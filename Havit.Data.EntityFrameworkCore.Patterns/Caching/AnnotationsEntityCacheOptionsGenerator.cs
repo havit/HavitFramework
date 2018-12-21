@@ -52,8 +52,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 						entityType => entityType.ClrType,
 						entityType =>
 						{
-							var options = GetCacheOptions(entityType);
-							options.Freeze();
+							var options = GetCacheOptions(entityType);							
+							options?.Freeze();
 							return options;
 						});
 				});

@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.ExtendedProperties.Attributes;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.Views;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
@@ -128,20 +126,11 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
 			// TODO: support for XML comments / MS_Description on views
 		    public void Test()
 		    {
-			    var source = new EndToEndTestDbInjectionsDbContext<Invoice>();
+			    var source = new EndToEndTestDbInjectionsDbContext<Invoice>(typeof(InvoiceViews));
 			    var model = source.Model;
 
 			    IDictionary<string, string> extendedProperties = model.GetExtendedProperties();
 			    Assert.AreEqual("Gets all unpaid invoices.", extendedProperties.FirstOrDefault(a => a.Key.EndsWith("MS_Description")).Value?.Trim());
-		    }
-	    }
-
-	    private class EndToEndTestDbInjectionsDbContext<TEntity> : EndToEndTestDbContext<TEntity>
-		    where TEntity : class
-	    {
-		    protected override void ModelCreatingCompleting(ModelBuilder modelBuilder)
-		    {
-				RegisterDbInjections(modelBuilder, this.GetType().Assembly);
 		    }
 	    }
 	}

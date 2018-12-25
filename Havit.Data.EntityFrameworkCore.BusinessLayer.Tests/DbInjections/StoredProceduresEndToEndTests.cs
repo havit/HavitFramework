@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.ExtendedProperties.Attributes;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.StoredProcedures;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
@@ -191,21 +188,5 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
 				Assert.AreEqual("Calculates total amount.", Regex.Match(command.CommandText, "@value=N'(.*?)'", RegexOptions.Singleline).Groups[1].Value.Trim('\r', '\n', ' '));
 		    }
 	    }
-
-	    private class EndToEndTestDbInjectionsDbContext<TEntity> : EndToEndTestDbContext<TEntity>
-		    where TEntity : class
-	    {
-		    private readonly Type[] dbInjectorTypes;
-
-		    public EndToEndTestDbInjectionsDbContext(params Type[] dbInjectorTypes)
-		    {
-			    this.dbInjectorTypes = dbInjectorTypes;
-		    }
-
-		    protected override void ModelCreatingCompleting(ModelBuilder modelBuilder)
-			{
-				modelBuilder.ForDbInjections(this.GetService<IDbInjectionAnnotationProvider>(), dbInjectorTypes);
-			}
-	    }
-	}
+    }
 }

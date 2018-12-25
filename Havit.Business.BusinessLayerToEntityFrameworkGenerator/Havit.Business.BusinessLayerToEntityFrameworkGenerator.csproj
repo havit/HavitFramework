@@ -9,7 +9,8 @@
 
   <ItemGroup>
 	<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.0" />
-	<PackageReference Include="Microsoft.SqlServer.SqlManagementObjects" Version="140.17199.0" />
+	<PackageReference Include="Microsoft.SqlServer.SqlManagementObjects" Version="140.17283.0" />
+	<PackageReference Include="System.Diagnostics.DiagnosticSource" Version="4.5.1" />
   </ItemGroup>
 
   <ItemGroup>

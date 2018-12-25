@@ -58,19 +58,27 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
         {
             Type[] dbInjectorTypes = DbInjectionsTypeHelper.GetDbInjectors(injectionsAssembly).ToArray();
 
-            foreach (Type dbInjectorType in dbInjectorTypes)
-            {
-                object dbInjector = Activator.CreateInstance(dbInjectorType);
-                IEnumerable<MethodInfo> publicMethods = dbInjectorType.GetMethods(BindingFlags.Instance | BindingFlags.Public)
-                    .Where(m => typeof(IDbInjection).IsAssignableFrom(m.ReturnType));
-
-                foreach (MethodInfo method in publicMethods)
-                {
-                    var dbInjection = (IDbInjection)method.Invoke(dbInjector, new object[0]);
-                    List<IAnnotation> annotations = dbInjectionAnnotationProvider.GetAnnotations(dbInjection, method);
-                    modelBuilder.Model.AddAnnotations(annotations);
-                }
-            }
+	        ForDbInjections(modelBuilder, dbInjectionAnnotationProvider, dbInjectorTypes);
         }
-    }
+
+		/// <summary>
+		/// Registruje DB Injections do modelu pomocou <paramref name="modelBuilder"/> priamym definovaním DbInjector typov. Pre účely testovania.
+		/// </summary>
+		internal static void ForDbInjections(this ModelBuilder modelBuilder, IDbInjectionAnnotationProvider dbInjectionAnnotationProvider, params Type[] dbInjectorTypes)
+		{
+			foreach (Type dbInjectorType in dbInjectorTypes)
+			{
+				object dbInjector = Activator.CreateInstance(dbInjectorType);
+				IEnumerable<MethodInfo> publicMethods = dbInjectorType.GetMethods(BindingFlags.Instance | BindingFlags.Public)
+					.Where(m => typeof(IDbInjection).IsAssignableFrom(m.ReturnType));
+
+				foreach (MethodInfo method in publicMethods)
+				{
+					var dbInjection = (IDbInjection)method.Invoke(dbInjector, new object[0]);
+					List<IAnnotation> annotations = dbInjectionAnnotationProvider.GetAnnotations(dbInjection, method);
+					modelBuilder.Model.AddAnnotations(annotations);
+				}
+			}
+		}
+	}
 }

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Text.RegularExpressions;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.ExtendedProperties.Attributes;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.StoredProcedures;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
@@ -137,11 +139,59 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
 		    [TestMethod]
 		    public void Test()
 		    {
-			    var source = new EndToEndDbInjectionsDbContext<Invoice>();
+			    var source = new EndToEndDbInjectionsDbContext<Invoice>(typeof(InvoiceStoredProcedures));
 			    var model = source.Model;
 
 			    IDictionary<string, string> extendedProperties = model.GetExtendedProperties();
 			    Assert.AreEqual("Calculates total amount.", extendedProperties.FirstOrDefault(a => a.Key.EndsWith("MS_Description")).Value?.Trim());
+		    }
+		}
+
+		/// <summary>
+		/// Checks, whether XML comment actually yields SQL statement for adding extended property to stored procedure.
+		/// </summary>
+	    [TestClass]
+	    public class StoredProcedureWithXmlCommentMsDescriptionAdded
+	    {
+		    [Attach(nameof(Invoice))]
+		    public class InvoiceStoredProcedures : StoredProcedureDbInjector
+		    {
+			    /// <summary>
+			    /// Calculates total amount.
+			    /// </summary>
+			    /// <returns>Total amount</returns>
+			    [MethodName(nameof(TotalAmount))]
+			    [Result(StoredProcedureResultType.DataTable)]
+			    [MethodAccessModifier("public")]
+			    public StoredProcedureDbInjection TotalAmount()
+			    {
+				    return new StoredProcedureDbInjection { CreateSql = $"CREATE PROCEDURE [{nameof(TotalAmount)}]", ProcedureName = nameof(TotalAmount) };
+			    }
+		    }
+
+		    [Table("Dummy")]
+		    private class Invoice
+		    {
+			    public int Id { get; set; }
+
+			    public DateTime Created { get; set; }
+		    }
+
+		    [TestMethod]
+		    public void Test()
+		    {
+			    var source = new EndToEndDbContext<Invoice>();
+			    var target = new EndToEndDbInjectionsDbContext<Invoice>(typeof(InvoiceStoredProcedures));
+
+				var commands = Generate(source.Model, target.Model);
+
+				Assert.AreNotEqual(0, commands.Count);
+
+			    var addExtendedPropertyCommands = commands.Where(c => c.CommandText.StartsWith("EXEC sys.sp_addextendedproperty @name=N'MS_Description'"));
+			    var command = addExtendedPropertyCommands.FirstOrDefault(c => c.CommandText.EndsWith($"@level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'PROCEDURE', @level1name=N'{nameof(InvoiceStoredProcedures.TotalAmount)}'"));
+
+				Assert.IsNotNull(command, $"MS_Description extended property for stored procedure '{nameof(InvoiceStoredProcedures.TotalAmount)}' is missing.");
+				Assert.AreEqual("Calculates total amount.", Regex.Match(command.CommandText, "@value=N'(.*?)'", RegexOptions.Singleline).Groups[1].Value.Trim('\r', '\n', ' '));
 		    }
 	    }
 
@@ -187,10 +237,17 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
 	    private class EndToEndDbInjectionsDbContext<TEntity> : EndToEndDbContext
 		    where TEntity : class
 	    {
-		    protected override void ModelCreatingCompleting(ModelBuilder modelBuilder)
+		    private readonly Type[] dbInjectorTypes;
+
+		    public EndToEndDbInjectionsDbContext(params Type[] dbInjectorTypes)
 		    {
-				RegisterDbInjections(modelBuilder, this.GetType().Assembly);
+			    this.dbInjectorTypes = dbInjectorTypes;
 		    }
+
+		    protected override void ModelCreatingCompleting(ModelBuilder modelBuilder)
+			{
+				modelBuilder.ForDbInjections(this.GetService<IDbInjectionAnnotationProvider>(), dbInjectorTypes);
+			}
 
 		    public DbSet<TEntity> Entities { get; }
 	    }

@@ -32,8 +32,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
             {
                 var procedure = "CREATE VIEW [dbo].[GetTables]() AS BEGIN SELECT * FROM [sys].[tables] END";
 
-                var source = new EndToEndDbContext<DummySource>();
-                var target = new EndToEndDbContext<DummyTarget>(builder => builder.HasAnnotation("View:GetTables", procedure));
+                var source = new EndToEndTestDbContext<DummySource>();
+                var target = new EndToEndTestDbContext<DummyTarget>(builder => builder.HasAnnotation("View:GetTables", procedure));
                 var migrations = source.Migrate(target);
 
                 Assert.AreEqual(1, migrations.Count);
@@ -61,10 +61,10 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
             [TestMethod]
             public void Test()
             {
-                var source = new EndToEndDbContext<DummySource>(builder => builder.HasAnnotation("View:GetTables", "CREATE VIEW [dbo].[GetTables]() AS BEGIN SELECT * FROM [sys].[tables] END"));
+                var source = new EndToEndTestDbContext<DummySource>(builder => builder.HasAnnotation("View:GetTables", "CREATE VIEW [dbo].[GetTables]() AS BEGIN SELECT * FROM [sys].[tables] END"));
                 var newProcedure = "CREATE VIEW [dbo].[GetTables]() AS BEGIN SELECT * FROM [sys].[tables] WHERE schema_id = 1 END";
 	            var newProcedureAlter = "ALTER VIEW [dbo].[GetTables]() AS BEGIN SELECT * FROM [sys].[tables] WHERE schema_id = 1 END";
-				var target = new EndToEndDbContext<DummyTarget>(builder => builder.HasAnnotation("View:GetTables", newProcedure));
+				var target = new EndToEndTestDbContext<DummyTarget>(builder => builder.HasAnnotation("View:GetTables", newProcedure));
                 var migrations = source.Migrate(target);
 
                 Assert.AreEqual(1, migrations.Count);
@@ -92,8 +92,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
             [TestMethod]
             public void Test()
             {
-                var source = new EndToEndDbContext<DummySource>(builder => builder.HasAnnotation("View:GetTables", "CREATE VIEW [dbo].[GetTables]() AS BEGIN SELECT * FROM [sys].[tables] END"));
-                var target = new EndToEndDbContext<DummyTarget>();
+                var source = new EndToEndTestDbContext<DummySource>(builder => builder.HasAnnotation("View:GetTables", "CREATE VIEW [dbo].[GetTables]() AS BEGIN SELECT * FROM [sys].[tables] END"));
+                var target = new EndToEndTestDbContext<DummyTarget>();
                 var migrations = source.Migrate(target);
 
                 Assert.AreEqual(1, migrations.Count);
@@ -128,7 +128,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
 			// TODO: support for XML comments / MS_Description on views
 		    public void Test()
 		    {
-			    var source = new EndToEndDbInjectionsDbContext<Invoice>();
+			    var source = new EndToEndTestDbInjectionsDbContext<Invoice>();
 			    var model = source.Model;
 
 			    IDictionary<string, string> extendedProperties = model.GetExtendedProperties();
@@ -136,7 +136,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
 		    }
 	    }
 
-	    private class EndToEndDbInjectionsDbContext<TEntity> : EndToEndDbContext<TEntity>
+	    private class EndToEndTestDbInjectionsDbContext<TEntity> : EndToEndTestDbContext<TEntity>
 		    where TEntity : class
 	    {
 		    protected override void ModelCreatingCompleting(ModelBuilder modelBuilder)

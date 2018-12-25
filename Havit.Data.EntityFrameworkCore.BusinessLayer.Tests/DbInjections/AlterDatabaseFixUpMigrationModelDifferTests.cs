@@ -34,9 +34,9 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext<DummySource>(builder => 
+				var source = new EndToEndTestDbContext<DummySource>(builder => 
 					builder.HasAnnotation("Annotation1", "ValueA"));
-				var target = new EndToEndDbContext<DummyTarget>(builder =>
+				var target = new EndToEndTestDbContext<DummyTarget>(builder =>
 					builder.HasAnnotation("Annotation1", "ValueA"));
 				var operations = source.Diff(target);
 
@@ -50,9 +50,9 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext<DummySource>(builder =>
+				var source = new EndToEndTestDbContext<DummySource>(builder =>
 					builder.HasAnnotation("Annotation1", "ValueA").HasAnnotation("Annotation2", "ValueB"));
-				var target = new EndToEndDbContext<DummyTarget>(builder =>
+				var target = new EndToEndTestDbContext<DummyTarget>(builder =>
 					builder.HasAnnotation("Annotation1", "ValueA").HasAnnotation("Annotation2", "ValueB_amended"));
 				var operations = source.Diff(target);
 
@@ -67,9 +67,9 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext<DummySource>(builder =>
+				var source = new EndToEndTestDbContext<DummySource>(builder =>
 					builder.HasAnnotation("Annotation1", "ValueA").HasAnnotation("Annotation2", "ValueB"));
-				var target = new EndToEndDbContext<DummyTarget>(builder =>
+				var target = new EndToEndTestDbContext<DummyTarget>(builder =>
 					builder.HasAnnotation("Annotation1", "ValueA").HasAnnotation("Annotation2", "ValueB_amended"));
 				var operations = source.Diff(target);
 
@@ -90,9 +90,9 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext<DummySource>(builder =>
+				var source = new EndToEndTestDbContext<DummySource>(builder =>
 					builder.HasAnnotation("Annotation1", "ValueA").HasAnnotation("Annotation2", "ValueB"));
-				var target = new EndToEndDbContext<DummyTarget>(builder =>
+				var target = new EndToEndTestDbContext<DummyTarget>(builder =>
 					builder.HasAnnotation("Annotation1", "ValueA"));
 				var operations = source.Diff(target);
 
@@ -112,9 +112,9 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext<DummySource>(builder =>
+				var source = new EndToEndTestDbContext<DummySource>(builder =>
 					builder.HasAnnotation("Annotation1", "ValueA").HasAnnotation("Annotation2", "ValueB"));
-				var target = new EndToEndDbContext<DummyTarget>(builder =>
+				var target = new EndToEndTestDbContext<DummyTarget>(builder =>
 					builder.HasAnnotation("Annotation1", "ValueA").HasAnnotation("Annotation2", "ValueB").HasAnnotation("Annotation3", "Something"));
 				var operations = source.Diff(target);
 
@@ -128,10 +128,10 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
 			}
 		}
 
-		private class EndToEndDbContext<TEntity> : Tests.EndToEndDbContext<TEntity>
+		private class EndToEndTestDbContext<TEntity> : Tests.EndToEndTestDbContext<TEntity>
 			where TEntity : class
 		{
-			public EndToEndDbContext(Action<ModelBuilder> onModelCreating = null)
+			public EndToEndTestDbContext(Action<ModelBuilder> onModelCreating = null)
 				: base(onModelCreating)
 			{ }
 

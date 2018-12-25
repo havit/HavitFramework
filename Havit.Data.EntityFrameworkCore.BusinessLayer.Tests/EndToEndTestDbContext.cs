@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
@@ -8,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests
 {
-	internal class EndToEndDbContext : TestDbContext
+	internal class EndToEndTestDbContext : TestDbContext
 	{
 		private readonly Action<ModelBuilder> onModelCreating;
 
-		public EndToEndDbContext(Action<ModelBuilder> onModelCreating = default)
+		public EndToEndTestDbContext(Action<ModelBuilder> onModelCreating = default)
 		{
 			this.onModelCreating = onModelCreating;
 		}

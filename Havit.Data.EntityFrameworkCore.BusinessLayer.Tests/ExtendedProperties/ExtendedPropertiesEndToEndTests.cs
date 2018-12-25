@@ -30,8 +30,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext<SourceEntity>();
-				var target = new EndToEndDbContext<TargetEntity>();
+				var source = new EndToEndTestDbContext<SourceEntity>();
+				var target = new EndToEndTestDbContext<TargetEntity>();
 				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
@@ -59,8 +59,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext<SourceEntity>();
-				var target = new EndToEndDbContext<TargetEntity>(builder =>
+				var source = new EndToEndTestDbContext<SourceEntity>();
+				var target = new EndToEndTestDbContext<TargetEntity>(builder =>
 				{
 					builder.Entity<TargetEntity>().AddExtendedProperties(new Dictionary<string, string>() { { "Jiri", "Value" } });
 				});
@@ -92,8 +92,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext<SourceEntity>();
-				var target = new EndToEndDbContext<TargetEntity>();
+				var source = new EndToEndTestDbContext<SourceEntity>();
+				var target = new EndToEndTestDbContext<TargetEntity>();
 				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
@@ -123,8 +123,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext<SourceEntity>();
-				var target = new EndToEndDbContext<TargetEntity>();
+				var source = new EndToEndTestDbContext<SourceEntity>();
+				var target = new EndToEndTestDbContext<TargetEntity>();
 				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
@@ -153,8 +153,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext<SourceEntity>();
-				var target = new EndToEndDbContext<TargetEntity>();
+				var source = new EndToEndTestDbContext<SourceEntity>();
+				var target = new EndToEndTestDbContext<TargetEntity>();
 				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(2, migrations.Count);
@@ -184,8 +184,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext<SourceEntity>();
-				var target = new EndToEndDbContext<TargetEntity>(builder =>
+				var source = new EndToEndTestDbContext<SourceEntity>();
+				var target = new EndToEndTestDbContext<TargetEntity>(builder =>
 				{
 					builder.Entity<TargetEntity>().Property(x => x.Id).AddExtendedProperties(new Dictionary<string, string>() { { "Jiri", "Value" } });
 				});
@@ -235,8 +235,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext<SourceMaster>();
-				var target = new EndToEndDbContext<TargetMaster>();
+				var source = new EndToEndTestDbContext<SourceMaster>();
+				var target = new EndToEndTestDbContext<TargetMaster>();
 				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
@@ -265,8 +265,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext<SourceEntity>();
-				var target = new EndToEndDbContext<TargetEntity>();
+				var source = new EndToEndTestDbContext<SourceEntity>();
+				var target = new EndToEndTestDbContext<TargetEntity>();
 				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(2, migrations.Count);
@@ -295,8 +295,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext<SourceEntity>();
-				var target = new EndToEndDbContext<TargetEntity>();
+				var source = new EndToEndTestDbContext<SourceEntity>();
+				var target = new EndToEndTestDbContext<TargetEntity>();
 				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(2, migrations.Count);
@@ -343,8 +343,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext<SourceMaster>();
-				var target = new EndToEndDbContext<TargetMaster>();
+				var source = new EndToEndTestDbContext<SourceMaster>();
+				var target = new EndToEndTestDbContext<TargetMaster>();
 				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
@@ -374,8 +374,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext<SourceEntity>();
-				var target = new EndToEndDbContext<TargetEntity>();
+				var source = new EndToEndTestDbContext<SourceEntity>();
+				var target = new EndToEndTestDbContext<TargetEntity>();
 				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(2, migrations.Count);
@@ -423,8 +423,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext<SourceMaster>();
-				var target = new EndToEndDbContext<TargetMaster>();
+				var source = new EndToEndTestDbContext<SourceMaster>();
+				var target = new EndToEndTestDbContext<TargetMaster>();
 				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
@@ -454,8 +454,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext<SourceEntity>();
-				var target = new EndToEndDbContext<TargetEntity>();
+				var source = new EndToEndTestDbContext<SourceEntity>();
+				var target = new EndToEndTestDbContext<TargetEntity>();
 				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(2, migrations.Count);
@@ -484,8 +484,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext<SourceEntity>();
-				var target = new EndToEndDbContext<TargetEntity>();
+				var source = new EndToEndTestDbContext<SourceEntity>();
+				var target = new EndToEndTestDbContext<TargetEntity>();
 				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
@@ -520,8 +520,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext<SourceMaster>();
-				var target = new EndToEndDbContext<TargetMaster>();
+				var source = new EndToEndTestDbContext<SourceMaster>();
+				var target = new EndToEndTestDbContext<TargetMaster>();
 				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(3, migrations.Count);
@@ -558,8 +558,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext<SourceMaster>();
-				var target = new EndToEndDbContext<TargetMaster>();
+				var source = new EndToEndTestDbContext<SourceMaster>();
+				var target = new EndToEndTestDbContext<TargetMaster>();
 				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(2, migrations.Count);
@@ -579,8 +579,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext();
-				var target = new EndToEndDbContext<TargetEntity>();
+				var source = new EndToEndTestDbContext();
+				var target = new EndToEndTestDbContext<TargetEntity>();
 				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(2, migrations.Count);
@@ -602,8 +602,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext();
-				var target = new EndToEndDbContext<TargetEntity>();
+				var source = new EndToEndTestDbContext();
+				var target = new EndToEndTestDbContext<TargetEntity>();
 				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
@@ -623,8 +623,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext();
-				var target = new EndToEndDbContext<TargetEntity>();
+				var source = new EndToEndTestDbContext();
+				var target = new EndToEndTestDbContext<TargetEntity>();
 				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(2, migrations.Count);
@@ -655,8 +655,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext();
-				var target = new EndToEndDbContext<TargetMaster>();
+				var source = new EndToEndTestDbContext();
+				var target = new EndToEndTestDbContext<TargetMaster>();
 				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(4, migrations.Count);
@@ -678,8 +678,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext();
-				var target = new EndToEndDbContext<TargetEntity>();
+				var source = new EndToEndTestDbContext();
+				var target = new EndToEndTestDbContext<TargetEntity>();
 				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
@@ -699,8 +699,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext();
-				var target = new EndToEndDbContext<TargetEntity>();
+				var source = new EndToEndTestDbContext();
+				var target = new EndToEndTestDbContext<TargetEntity>();
 				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(3, migrations.Count);
@@ -733,8 +733,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext<SourceEntity>();
-				var target = new EndToEndDbContext<TargetEntity>();
+				var source = new EndToEndTestDbContext<SourceEntity>();
+				var target = new EndToEndTestDbContext<TargetEntity>();
 				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(3, migrations.Count);
@@ -767,8 +767,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext<SourceEntity>();
-				var target = new EndToEndDbContext<TargetEntity>();
+				var source = new EndToEndTestDbContext<SourceEntity>();
+				var target = new EndToEndTestDbContext<TargetEntity>();
 				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(3, migrations.Count);
@@ -799,8 +799,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext<SourceEntity>();
-				var target = new EndToEndDbContext<TargetEntity>(builder =>
+				var source = new EndToEndTestDbContext<SourceEntity>();
+				var target = new EndToEndTestDbContext<TargetEntity>(builder =>
 				{
 					builder.AddExtendedProperties(new Dictionary<string, string>() { { "Jiri", "Model" } });
 				});
@@ -831,8 +831,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext<SourceEntity>();
-				var target = new EndToEndDbContext<TargetEntity>(builder =>
+				var source = new EndToEndTestDbContext<SourceEntity>();
+				var target = new EndToEndTestDbContext<TargetEntity>(builder =>
 				{
 					builder.AddExtendedProperties(new Dictionary<string, string>()
 					{
@@ -870,11 +870,11 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext<SourceEntity>(builder =>
+				var source = new EndToEndTestDbContext<SourceEntity>(builder =>
 				{
 					builder.AddExtendedProperties(new Dictionary<string, string>() { { "Jiri", "OldValue" } });
 				});
-				var target = new EndToEndDbContext<TargetEntity>(builder =>
+				var target = new EndToEndTestDbContext<TargetEntity>(builder =>
 				{
 					builder.AddExtendedProperties(new Dictionary<string, string>() { { "Jiri", "NewValue" } });
 				});
@@ -905,11 +905,11 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext<SourceEntity>(builder =>
+				var source = new EndToEndTestDbContext<SourceEntity>(builder =>
 				{
 					builder.AddExtendedProperties(new Dictionary<string, string>() { { "Jiri", "Model" } });
 				});
-				var target = new EndToEndDbContext<TargetEntity>();
+				var target = new EndToEndTestDbContext<TargetEntity>();
 				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
@@ -955,8 +955,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext();
-				var target = new EndToEndDbContext<TargetEntity>();
+				var source = new EndToEndTestDbContext();
+				var target = new EndToEndTestDbContext<TargetEntity>();
 				// should not throw
 				source.Migrate(target);
 			}
@@ -968,8 +968,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext();
-				var target = new EndToEndDbContext(builder =>
+				var source = new EndToEndTestDbContext();
+				var target = new EndToEndTestDbContext(builder =>
 				{
 					builder.Model.AddAnnotations(ExtendedPropertiesForExtraDatabaseObjectsBuilder.ForExtraDatabaseObject(new Dictionary<string, string>()
 					{
@@ -991,14 +991,14 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext(builder =>
+				var source = new EndToEndTestDbContext(builder =>
 				{
 					builder.Model.AddAnnotations(ExtendedPropertiesForExtraDatabaseObjectsBuilder.ForExtraDatabaseObject(new Dictionary<string, string>()
 					{
 						{ "Jiri", "OldValue" }
 					}, "TYPE", "Name"));
 				});
-				var target = new EndToEndDbContext(builder =>
+				var target = new EndToEndTestDbContext(builder =>
 				{
 					builder.Model.AddAnnotations(ExtendedPropertiesForExtraDatabaseObjectsBuilder.ForExtraDatabaseObject(new Dictionary<string, string>()
 					{
@@ -1020,14 +1020,14 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext(builder =>
+				var source = new EndToEndTestDbContext(builder =>
 				{
 					builder.Model.AddAnnotations(ExtendedPropertiesForExtraDatabaseObjectsBuilder.ForExtraDatabaseObject(new Dictionary<string, string>()
 					{
 						{ "Jiri", "Value" }
 					}, "TYPE", "Name"));
 				});
-				var target = new EndToEndDbContext();
+				var target = new EndToEndTestDbContext();
 				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
@@ -1043,14 +1043,14 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext(builder =>
+				var source = new EndToEndTestDbContext(builder =>
 				{
 					builder.Model.AddAnnotations(ExtendedPropertiesForExtraDatabaseObjectsBuilder.ForExtraDatabaseObject(new Dictionary<string, string>()
 					{
 						{ "Jiri", "Value" }
 					}, "TYPE", "OldName"));
 				});
-				var target = new EndToEndDbContext(builder =>
+				var target = new EndToEndTestDbContext(builder =>
 				{
 					builder.Model.AddAnnotations(ExtendedPropertiesForExtraDatabaseObjectsBuilder.ForExtraDatabaseObject(new Dictionary<string, string>()
 					{
@@ -1075,14 +1075,14 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext(builder =>
+				var source = new EndToEndTestDbContext(builder =>
 				{
 					builder.Model.AddAnnotations(ExtendedPropertiesForExtraDatabaseObjectsBuilder.ForExtraDatabaseObject(new Dictionary<string, string>()
 					{
 						{ "Jiri", "Value" }
 					}, "OLD_TYPE", "Name"));
 				});
-				var target = new EndToEndDbContext(builder =>
+				var target = new EndToEndTestDbContext(builder =>
 				{
 					builder.Model.AddAnnotations(ExtendedPropertiesForExtraDatabaseObjectsBuilder.ForExtraDatabaseObject(new Dictionary<string, string>()
 					{
@@ -1107,8 +1107,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext();
-				var target = new EndToEndDbContext(builder =>
+				var source = new EndToEndTestDbContext();
+				var target = new EndToEndTestDbContext(builder =>
 				{
 					builder.Model.AddAnnotations(ExtendedPropertiesForExtraDatabaseObjectsBuilder.ForProcedure(new Dictionary<string, string>()
 					{
@@ -1130,14 +1130,14 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext(builder =>
+				var source = new EndToEndTestDbContext(builder =>
 				{
 					builder.Model.AddAnnotations(ExtendedPropertiesForExtraDatabaseObjectsBuilder.ForProcedure(new Dictionary<string, string>()
 					{
 						{ "Jiri", "OldValue" }
 					}, "ProcedureName"));
 				});
-				var target = new EndToEndDbContext(builder =>
+				var target = new EndToEndTestDbContext(builder =>
 				{
 					builder.Model.AddAnnotations(ExtendedPropertiesForExtraDatabaseObjectsBuilder.ForProcedure(new Dictionary<string, string>()
 					{
@@ -1159,14 +1159,14 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext(builder =>
+				var source = new EndToEndTestDbContext(builder =>
 				{
 					builder.Model.AddAnnotations(ExtendedPropertiesForExtraDatabaseObjectsBuilder.ForProcedure(new Dictionary<string, string>()
 					{
 						{ "Jiri", "Value" }
 					}, "ProcedureName"));
 				});
-				var target = new EndToEndDbContext();
+				var target = new EndToEndTestDbContext();
 				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
@@ -1182,8 +1182,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext();
-				var target = new EndToEndDbContext(builder =>
+				var source = new EndToEndTestDbContext();
+				var target = new EndToEndTestDbContext(builder =>
 				{
 					builder.Model.AddAnnotations(ExtendedPropertiesForExtraDatabaseObjectsBuilder.ForView(new Dictionary<string, string>()
 					{
@@ -1205,14 +1205,14 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext(builder =>
+				var source = new EndToEndTestDbContext(builder =>
 				{
 					builder.Model.AddAnnotations(ExtendedPropertiesForExtraDatabaseObjectsBuilder.ForView(new Dictionary<string, string>()
 					{
 						{ "Jiri", "OldValue" }
 					}, "ViewName"));
 				});
-				var target = new EndToEndDbContext(builder =>
+				var target = new EndToEndTestDbContext(builder =>
 				{
 					builder.Model.AddAnnotations(ExtendedPropertiesForExtraDatabaseObjectsBuilder.ForView(new Dictionary<string, string>()
 					{
@@ -1234,14 +1234,14 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext(builder =>
+				var source = new EndToEndTestDbContext(builder =>
 				{
 					builder.Model.AddAnnotations(ExtendedPropertiesForExtraDatabaseObjectsBuilder.ForView(new Dictionary<string, string>()
 					{
 						{ "Jiri", "Value" }
 					}, "ViewName"));
 				});
-				var target = new EndToEndDbContext();
+				var target = new EndToEndTestDbContext();
 				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
@@ -1257,8 +1257,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext();
-				var target = new EndToEndDbContext(builder =>
+				var source = new EndToEndTestDbContext();
+				var target = new EndToEndTestDbContext(builder =>
 				{
 					builder.Model.AddAnnotations(ExtendedPropertiesForExtraDatabaseObjectsBuilder.ForFunction(new Dictionary<string, string>()
 					{
@@ -1280,14 +1280,14 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext(builder =>
+				var source = new EndToEndTestDbContext(builder =>
 				{
 					builder.Model.AddAnnotations(ExtendedPropertiesForExtraDatabaseObjectsBuilder.ForFunction(new Dictionary<string, string>()
 					{
 						{ "Jiri", "OldValue" }
 					}, "FunctionName"));
 				});
-				var target = new EndToEndDbContext(builder =>
+				var target = new EndToEndTestDbContext(builder =>
 				{
 					builder.Model.AddAnnotations(ExtendedPropertiesForExtraDatabaseObjectsBuilder.ForFunction(new Dictionary<string, string>()
 					{
@@ -1309,14 +1309,14 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			[TestMethod]
 			public void Test()
 			{
-				var source = new EndToEndDbContext(builder =>
+				var source = new EndToEndTestDbContext(builder =>
 				{
 					builder.Model.AddAnnotations(ExtendedPropertiesForExtraDatabaseObjectsBuilder.ForFunction(new Dictionary<string, string>()
 					{
 						{ "Jiri", "Value" }
 					}, "FunctionName"));
 				});
-				var target = new EndToEndDbContext();
+				var target = new EndToEndTestDbContext();
 				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);

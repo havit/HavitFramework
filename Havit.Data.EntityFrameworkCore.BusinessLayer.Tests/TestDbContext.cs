@@ -5,7 +5,7 @@ using Havit.Data.EntityFrameworkCore.Conventions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
-namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests
 {
 	internal class TestDbContext : BusinessLayerDbContext
 	{

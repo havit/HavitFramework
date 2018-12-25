@@ -35,8 +35,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
             {
                 var procedure = "CREATE OR ALTER PROCEDURE [dbo].[GetTables]() AS BEGIN SELECT * FROM [sys].[tables] END";
 
-                var source = new EndToEndDbContext<DummySource>();
-                var target = new EndToEndDbContext<DummyTarget>(builder => builder.HasAnnotation("StoredProcedure:GetTables", procedure));
+                var source = new EndToEndTestDbContext<DummySource>();
+                var target = new EndToEndTestDbContext<DummyTarget>(builder => builder.HasAnnotation("StoredProcedure:GetTables", procedure));
                 var migrations = source.Migrate(target);
 
                 Assert.AreEqual(1, migrations.Count);
@@ -64,10 +64,10 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
             [TestMethod]
             public void Test()
             {
-                var source = new EndToEndDbContext<DummySource>(builder => builder.HasAnnotation("StoredProcedure:GetTables", "CREATE PROCEDURE [dbo].[GetTables]() AS BEGIN SELECT * FROM [sys].[tables] END"));
+                var source = new EndToEndTestDbContext<DummySource>(builder => builder.HasAnnotation("StoredProcedure:GetTables", "CREATE PROCEDURE [dbo].[GetTables]() AS BEGIN SELECT * FROM [sys].[tables] END"));
                 var newProcedure = "CREATE PROCEDURE [dbo].[GetTables]() AS BEGIN SELECT * FROM [sys].[tables] WHERE schema_id = 1 END";
 	            var newProcedureAlter = "ALTER PROCEDURE [dbo].[GetTables]() AS BEGIN SELECT * FROM [sys].[tables] WHERE schema_id = 1 END";
-				var target = new EndToEndDbContext<DummyTarget>(builder => builder.HasAnnotation("StoredProcedure:GetTables", newProcedure));
+				var target = new EndToEndTestDbContext<DummyTarget>(builder => builder.HasAnnotation("StoredProcedure:GetTables", newProcedure));
                 var migrations = source.Migrate(target);
 
                 Assert.AreEqual(1, migrations.Count);
@@ -95,8 +95,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
             [TestMethod]
             public void Test()
             {
-                var source = new EndToEndDbContext<DummySource>(builder => builder.HasAnnotation("StoredProcedure:GetTables", "CREATE OR ALTER PROCEDURE [dbo].[GetTables]() AS BEGIN SELECT * FROM [sys].[tables] END"));
-                var target = new EndToEndDbContext<DummyTarget>();
+                var source = new EndToEndTestDbContext<DummySource>(builder => builder.HasAnnotation("StoredProcedure:GetTables", "CREATE OR ALTER PROCEDURE [dbo].[GetTables]() AS BEGIN SELECT * FROM [sys].[tables] END"));
+                var target = new EndToEndTestDbContext<DummyTarget>();
                 var migrations = source.Migrate(target);
 
                 Assert.AreEqual(1, migrations.Count);
@@ -136,7 +136,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
 		    [TestMethod]
 		    public void Test()
 		    {
-			    var source = new EndToEndDbInjectionsDbContext<Invoice>(typeof(InvoiceStoredProcedures));
+			    var source = new EndToEndTestDbInjectionsDbContext<Invoice>(typeof(InvoiceStoredProcedures));
 			    var model = source.Model;
 
 			    IDictionary<string, string> extendedProperties = model.GetExtendedProperties();
@@ -177,8 +177,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
 		    [TestMethod]
 		    public void Test()
 		    {
-			    var source = new EndToEndDbContext<Invoice>();
-			    var target = new EndToEndDbInjectionsDbContext<Invoice>(typeof(InvoiceStoredProcedures));
+			    var source = new EndToEndTestDbContext<Invoice>();
+			    var target = new EndToEndTestDbInjectionsDbContext<Invoice>(typeof(InvoiceStoredProcedures));
 
 				var commands = source.Migrate(target);
 
@@ -192,12 +192,12 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
 		    }
 	    }
 
-	    private class EndToEndDbInjectionsDbContext<TEntity> : EndToEndDbContext<TEntity>
+	    private class EndToEndTestDbInjectionsDbContext<TEntity> : EndToEndTestDbContext<TEntity>
 		    where TEntity : class
 	    {
 		    private readonly Type[] dbInjectorTypes;
 
-		    public EndToEndDbInjectionsDbContext(params Type[] dbInjectorTypes)
+		    public EndToEndTestDbInjectionsDbContext(params Type[] dbInjectorTypes)
 		    {
 			    this.dbInjectorTypes = dbInjectorTypes;
 		    }

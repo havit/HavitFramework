@@ -1351,21 +1351,6 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			}
 		}
 
-		private class EndToEndDbContext : TestDbContext
-		{
-			private readonly Action<ModelBuilder> onModelCreating;
-
-			public EndToEndDbContext(Action<ModelBuilder> onModelCreating = default)
-			{
-				this.onModelCreating = onModelCreating;
-			}
-
-			protected override void CustomizeModelCreating(ModelBuilder modelBuilder)
-			{
-				base.CustomizeModelCreating(modelBuilder);
-				onModelCreating?.Invoke(modelBuilder);
-			}
-		}
 
 		private class EndToEndDbContext<TEntity> : EndToEndDbContext
 			where TEntity : class

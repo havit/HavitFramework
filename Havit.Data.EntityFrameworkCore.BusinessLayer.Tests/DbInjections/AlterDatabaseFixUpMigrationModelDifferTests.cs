@@ -128,14 +128,12 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
 			}
 		}
 
-		private class EndToEndDbContext<TEntity> : EndToEndDbContext
+		private class EndToEndDbContext<TEntity> : Tests.EndToEndDbContext<TEntity>
 			where TEntity : class
 		{
 			public EndToEndDbContext(Action<ModelBuilder> onModelCreating = null)
 				: base(onModelCreating)
 			{ }
-
-			public DbSet<TEntity> Entities { get; }
 
 			protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 			{

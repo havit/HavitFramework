@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
 using Microsoft.EntityFrameworkCore;
@@ -1334,17 +1333,6 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 				var generator = db.GetService<IMigrationsSqlGenerator>();
 				return generator.Generate(diff, db.Model);
 			}
-		}
-
-
-		private class EndToEndDbContext<TEntity> : EndToEndDbContext
-			where TEntity : class
-		{
-			public EndToEndDbContext(Action<ModelBuilder> onModelCreating = default)
-				: base(onModelCreating)
-			{ }
-
-			public DbSet<TEntity> Entities { get; }
 		}
 	}
 }

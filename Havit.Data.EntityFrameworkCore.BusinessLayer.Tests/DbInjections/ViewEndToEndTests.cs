@@ -136,27 +136,13 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
 		    }
 	    }
 
-
-        private class EndToEndDbContext<TEntity> : EndToEndDbContext
-            where TEntity : class
-        {
-            public EndToEndDbContext(Action<ModelBuilder> onModelCreating = null)
-                : base(onModelCreating)
-            { }
-
-            public DbSet<TEntity> Entities { get; }
-        }
-
-
-	    private class EndToEndDbInjectionsDbContext<TEntity> : EndToEndDbContext
+	    private class EndToEndDbInjectionsDbContext<TEntity> : EndToEndDbContext<TEntity>
 		    where TEntity : class
 	    {
 		    protected override void ModelCreatingCompleting(ModelBuilder modelBuilder)
 		    {
 				RegisterDbInjections(modelBuilder, this.GetType().Assembly);
 		    }
-
-		    public DbSet<TEntity> Entities { get; }
 	    }
 	}
 }

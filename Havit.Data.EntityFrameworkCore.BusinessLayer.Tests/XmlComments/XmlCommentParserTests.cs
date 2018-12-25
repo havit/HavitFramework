@@ -22,26 +22,13 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments
 		}
 
 		[TestMethod]
-		public void XmlCommentParser_ParseFile_ParsedFileHasClasses()
-		{
-			var parser = new XmlCommentParser();
-
-			var xmlCommentFile = parser.ParseFile(ParseXmlFile());
-
-			Assert.IsNotNull(xmlCommentFile);
-			Assert.IsNotNull(xmlCommentFile.Types.FirstOrDefault(t => t.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Location"));
-			Assert.IsNotNull(xmlCommentFile.Types.FirstOrDefault(t => t.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person"));
-			Assert.IsNotNull(xmlCommentFile.Types.FirstOrDefault(t => t.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.PersonLocation"));
-		}
-
-		[TestMethod]
 		public void XmlCommentParser_ParseFile_PersonClassHasCorrectNumberOfCommentTags()
 		{
 			var parser = new XmlCommentParser();
 
 			var xmlCommentFile = parser.ParseFile(ParseXmlFile());
 
-			var personType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person");
+			var personType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == typeof(Model.Person).FullName);
 			Assert.AreEqual(1, personType.Tags.Count);
 		}
 
@@ -52,7 +39,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments
 
 			var xmlCommentFile = parser.ParseFile(ParseXmlFile());
 
-			var personType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person");
+			var personType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == typeof(Model.Person).FullName);
 			Assert.AreEqual(1, personType.Tags.Count);
 			Assert.AreEqual("summary", personType.Tags[0].Name);
 			Assert.AreEqual("Person object", personType.Tags[0].Content.Trim());
@@ -65,7 +52,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments
 
 			var xmlCommentFile = parser.ParseFile(ParseXmlFile());
 
-			var personType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person");
+			var personType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == typeof(Model.Person).FullName);
 			Assert.AreEqual(4, personType.Properties.Count);
 		}
 
@@ -76,11 +63,11 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments
 
 			var xmlCommentFile = parser.ParseFile(ParseXmlFile());
 
-			var personType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person");
-			Assert.IsNotNull(personType.Properties.FirstOrDefault(p => p.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person.Id"));
-			Assert.IsNotNull(personType.Properties.FirstOrDefault(p => p.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person.FirstName"));
-			Assert.IsNotNull(personType.Properties.FirstOrDefault(p => p.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person.LastName"));
-			Assert.IsNotNull(personType.Properties.FirstOrDefault(p => p.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person.Birthday"));
+			var personType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == typeof(Model.Person).FullName);
+			Assert.IsNotNull(personType.Properties.FirstOrDefault(p => p.Name == typeof(Model.Person).GetProperty(nameof(Model.Person.Id)).FullName()));
+			Assert.IsNotNull(personType.Properties.FirstOrDefault(p => p.Name == typeof(Model.Person).GetProperty(nameof(Model.Person.FirstName)).FullName()));
+			Assert.IsNotNull(personType.Properties.FirstOrDefault(p => p.Name == typeof(Model.Person).GetProperty(nameof(Model.Person.LastName)).FullName()));
+			Assert.IsNotNull(personType.Properties.FirstOrDefault(p => p.Name == typeof(Model.Person).GetProperty(nameof(Model.Person.Birthday)).FullName()));
 		}
 
 		[TestMethod]
@@ -90,8 +77,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments
 
 			var xmlCommentFile = parser.ParseFile(ParseXmlFile());
 
-			var personType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person");
-			XmlCommentMember firstNameProperty = personType.Properties.FirstOrDefault(p => p.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person.FirstName");
+			var personType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == typeof(Model.Person).FullName);
+			XmlCommentMember firstNameProperty = personType.Properties.FirstOrDefault(p => p.Name == typeof(Model.Person).GetProperty(nameof(Model.Person.FirstName)).FullName());
 			Assert.AreEqual("First name", firstNameProperty.Summary.Trim());
 		}
 
@@ -101,9 +88,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments
 			var parser = new XmlCommentParser();
 
 			var xmlCommentFile = parser.ParseFile(ParseXmlFile());
-
-			var personType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person");
-			Assert.IsNotNull(personType.Methods.FirstOrDefault(p => p.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person.GetFullName"));
+			var personType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == typeof(Model.Person).FullName);
+			Assert.IsNotNull(personType.Methods.FirstOrDefault(p => p.Name == typeof(Model.Person).GetMethod(nameof(Model.Person.GetFullName)).FullName()));
 		}
 
 		[TestMethod]
@@ -113,8 +99,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments
 
 			var xmlCommentFile = parser.ParseFile(ParseXmlFile());
 
-			var personType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person");
-			XmlCommentMember getFullNameMethod = personType.Methods.FirstOrDefault(p => p.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person.GetFullName");
+			var personType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == typeof(Model.Person).FullName);
+			XmlCommentMember getFullNameMethod = personType.Methods.FirstOrDefault(p => p.Name == typeof(Model.Person).GetMethod(nameof(Model.Person.GetFullName)).FullName());
 			Assert.AreEqual("Concatenates first and last name of the person.", getFullNameMethod.Summary.Trim());
 		}
 
@@ -125,8 +111,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments
 
 			var xmlCommentFile = parser.ParseFile(ParseXmlFile());
 
-			var personType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person");
-			XmlCommentMember getFullNameMethod = personType.Methods.FirstOrDefault(p => p.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person.GetFullName");
+			var personType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == typeof(Model.Person).FullName);
+			XmlCommentMember getFullNameMethod = personType.Methods.FirstOrDefault(p => p.Name == typeof(Model.Person).GetMethod(nameof(Model.Person.GetFullName)).FullName());
 			Assert.IsNotNull(getFullNameMethod.Tags.FirstOrDefault(tag => tag.Name == "returns"), "Person.GetFullName method does not contain 'returns' tag");
 		}
 
@@ -137,8 +123,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments
 
 			var xmlCommentFile = parser.ParseFile(ParseXmlFile());
 
-			var personType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person");
-			XmlCommentMember getFullNameMethod = personType.Methods.FirstOrDefault(p => p.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Person.GetFullName");
+			var personType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == typeof(Model.Person).FullName);
+			XmlCommentMember getFullNameMethod = personType.Methods.FirstOrDefault(p => p.Name == typeof(Model.Person).GetMethod(nameof(Model.Person.GetFullName)).FullName());
 			Assert.AreEqual("Person's full name.", getFullNameMethod.Tags.FirstOrDefault(tag => tag.Name == "returns").Content.Trim());
 		}
 
@@ -152,8 +138,9 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments
 
 			var xmlCommentFile = parser.ParseFile(ParseXmlFile());
 
-			var loginAccountType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.LoginAccount");
-			XmlCommentMember userNameProperty = loginAccountType.Properties.FirstOrDefault(p => p.Name == "Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.LoginAccount.Username");
+			var loginAccountType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == typeof(Model.LoginAccount).FullName);
+			XmlCommentMember userNameProperty = loginAccountType.Properties.FirstOrDefault(p => 
+				p.Name == typeof(Model.LoginAccount).GetProperty(nameof(Model.LoginAccount.Username)).FullName());
 			Assert.AreEqual(userNameProperty.Summary.Trim(), "LoginAccount's user name");
 		}
 	}

@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -34,7 +33,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			{
 				var source = new EndToEndDbContext<SourceEntity>();
 				var target = new EndToEndDbContext<TargetEntity>();
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
@@ -66,7 +65,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 				{
 					builder.Entity<TargetEntity>().AddExtendedProperties(new Dictionary<string, string>() { { "Jiri", "Value" } });
 				});
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
@@ -96,7 +95,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			{
 				var source = new EndToEndDbContext<SourceEntity>();
 				var target = new EndToEndDbContext<TargetEntity>();
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
@@ -127,7 +126,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			{
 				var source = new EndToEndDbContext<SourceEntity>();
 				var target = new EndToEndDbContext<TargetEntity>();
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
@@ -157,7 +156,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			{
 				var source = new EndToEndDbContext<SourceEntity>();
 				var target = new EndToEndDbContext<TargetEntity>();
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(2, migrations.Count);
 				Assert.AreEqual(
@@ -191,7 +190,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 				{
 					builder.Entity<TargetEntity>().Property(x => x.Id).AddExtendedProperties(new Dictionary<string, string>() { { "Jiri", "Value" } });
 				});
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(2, migrations.Count);
 				Assert.AreEqual(
@@ -239,7 +238,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			{
 				var source = new EndToEndDbContext<SourceMaster>();
 				var target = new EndToEndDbContext<TargetMaster>();
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
@@ -269,7 +268,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			{
 				var source = new EndToEndDbContext<SourceEntity>();
 				var target = new EndToEndDbContext<TargetEntity>();
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(2, migrations.Count);
 				Assert.AreEqual(
@@ -299,7 +298,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			{
 				var source = new EndToEndDbContext<SourceEntity>();
 				var target = new EndToEndDbContext<TargetEntity>();
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(2, migrations.Count);
 				Assert.AreEqual(
@@ -347,7 +346,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			{
 				var source = new EndToEndDbContext<SourceMaster>();
 				var target = new EndToEndDbContext<TargetMaster>();
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
@@ -378,7 +377,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			{
 				var source = new EndToEndDbContext<SourceEntity>();
 				var target = new EndToEndDbContext<TargetEntity>();
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(2, migrations.Count);
 				Assert.AreEqual(
@@ -427,7 +426,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			{
 				var source = new EndToEndDbContext<SourceMaster>();
 				var target = new EndToEndDbContext<TargetMaster>();
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
@@ -458,7 +457,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			{
 				var source = new EndToEndDbContext<SourceEntity>();
 				var target = new EndToEndDbContext<TargetEntity>();
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(2, migrations.Count);
 				Assert.AreEqual(
@@ -488,7 +487,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			{
 				var source = new EndToEndDbContext<SourceEntity>();
 				var target = new EndToEndDbContext<TargetEntity>();
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
 			}
@@ -524,7 +523,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			{
 				var source = new EndToEndDbContext<SourceMaster>();
 				var target = new EndToEndDbContext<TargetMaster>();
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(3, migrations.Count);
 				Assert.AreEqual(
@@ -562,7 +561,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			{
 				var source = new EndToEndDbContext<SourceMaster>();
 				var target = new EndToEndDbContext<TargetMaster>();
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(2, migrations.Count);
 			}
@@ -583,7 +582,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			{
 				var source = new EndToEndDbContext();
 				var target = new EndToEndDbContext<TargetEntity>();
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(2, migrations.Count);
 				Assert.AreEqual(
@@ -606,7 +605,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			{
 				var source = new EndToEndDbContext();
 				var target = new EndToEndDbContext<TargetEntity>();
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
 			}
@@ -627,7 +626,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			{
 				var source = new EndToEndDbContext();
 				var target = new EndToEndDbContext<TargetEntity>();
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(2, migrations.Count);
 				Assert.AreEqual(
@@ -659,7 +658,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			{
 				var source = new EndToEndDbContext();
 				var target = new EndToEndDbContext<TargetMaster>();
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(4, migrations.Count);
 				Assert.AreEqual(
@@ -682,7 +681,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			{
 				var source = new EndToEndDbContext();
 				var target = new EndToEndDbContext<TargetEntity>();
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
 			}
@@ -703,7 +702,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			{
 				var source = new EndToEndDbContext();
 				var target = new EndToEndDbContext<TargetEntity>();
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(3, migrations.Count);
 				Assert.AreEqual(
@@ -737,7 +736,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			{
 				var source = new EndToEndDbContext<SourceEntity>();
 				var target = new EndToEndDbContext<TargetEntity>();
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(3, migrations.Count);
 				Assert.AreEqual(
@@ -771,7 +770,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			{
 				var source = new EndToEndDbContext<SourceEntity>();
 				var target = new EndToEndDbContext<TargetEntity>();
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(3, migrations.Count);
 				Assert.AreEqual(
@@ -806,7 +805,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 				{
 					builder.AddExtendedProperties(new Dictionary<string, string>() { { "Jiri", "Model" } });
 				});
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
@@ -842,7 +841,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 						{ "Scott", "Hanselman" }
 					});
 				});
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(2, migrations.Count);
 				Assert.AreEqual(
@@ -880,7 +879,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 				{
 					builder.AddExtendedProperties(new Dictionary<string, string>() { { "Jiri", "NewValue" } });
 				});
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
@@ -912,7 +911,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 					builder.AddExtendedProperties(new Dictionary<string, string>() { { "Jiri", "Model" } });
 				});
 				var target = new EndToEndDbContext<TargetEntity>();
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
@@ -960,7 +959,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 				var source = new EndToEndDbContext();
 				var target = new EndToEndDbContext<TargetEntity>();
 				// should not throw
-				Generate(source.Model, target.Model);
+				source.Migrate(target);
 			}
 		}
 
@@ -978,7 +977,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 						{ "Jiri", "Value" }
 					}, "TYPE", "Name"));
 				});
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
@@ -1007,7 +1006,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 						{ "Jiri", "NewValue" }
 					}, "TYPE", "Name"));
 				});
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
@@ -1030,7 +1029,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 					}, "TYPE", "Name"));
 				});
 				var target = new EndToEndDbContext();
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
@@ -1059,7 +1058,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 						{ "Jiri", "Value" }
 					}, "TYPE", "NewName"));
 				});
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(2, migrations.Count);
 				Assert.AreEqual(
@@ -1091,7 +1090,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 						{ "Jiri", "Value" }
 					}, "NEW_TYPE", "Name"));
 				});
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(2, migrations.Count);
 				Assert.AreEqual(
@@ -1117,7 +1116,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 						{ "Jiri", "Value" }
 					}, "ProcedureName"));
 				});
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
@@ -1146,7 +1145,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 						{ "Jiri", "NewValue" }
 					}, "ProcedureName"));
 				});
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
@@ -1169,7 +1168,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 					}, "ProcedureName"));
 				});
 				var target = new EndToEndDbContext();
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
@@ -1192,7 +1191,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 						{ "Jiri", "Value" }
 					}, "ViewName"));
 				});
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
@@ -1221,7 +1220,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 						{ "Jiri", "NewValue" }
 					}, "ViewName"));
 				});
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
@@ -1244,7 +1243,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 					}, "ViewName"));
 				});
 				var target = new EndToEndDbContext();
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
@@ -1267,7 +1266,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 						{ "Jiri", "Value" }
 					}, "FunctionName"));
 				});
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
@@ -1296,7 +1295,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 						{ "Jiri", "NewValue" }
 					}, "FunctionName"));
 				});
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
@@ -1319,26 +1318,12 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 					}, "FunctionName"));
 				});
 				var target = new EndToEndDbContext();
-				var migrations = Generate(source.Model, target.Model);
+				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
 					"EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'FUNCTION', @level1name=N'FunctionName'",
 					migrations[0].CommandText);
-			}
-		}
-
-		private static IReadOnlyList<MigrationCommand> Generate(IModel source, IModel target)
-		{
-			return Migrate(Diff(source, target));
-		}
-
-		private static IReadOnlyList<MigrationOperation> Diff(IModel source, IModel target)
-		{
-			using (var db = new TestDbContext())
-			{
-				var differ = db.GetService<IMigrationsModelDiffer>();
-				return differ.GetDifferences(source, target);
 			}
 		}
 

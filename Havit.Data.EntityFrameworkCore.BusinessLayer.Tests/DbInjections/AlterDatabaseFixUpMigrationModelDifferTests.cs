@@ -38,9 +38,9 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
 					builder.HasAnnotation("Annotation1", "ValueA"));
 				var target = new EndToEndDbContext<DummyTarget>(builder =>
 					builder.HasAnnotation("Annotation1", "ValueA"));
-				var migrations = Generate(source, target);
+				var operations = source.Diff(target);
 
-				Assert.AreEqual(0, migrations.Count);
+				Assert.AreEqual(0, operations.Count);
 			}
 		}
 
@@ -54,7 +54,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
 					builder.HasAnnotation("Annotation1", "ValueA").HasAnnotation("Annotation2", "ValueB"));
 				var target = new EndToEndDbContext<DummyTarget>(builder =>
 					builder.HasAnnotation("Annotation1", "ValueA").HasAnnotation("Annotation2", "ValueB_amended"));
-				var operations = Generate(source, target);
+				var operations = source.Diff(target);
 
 				Assert.AreEqual(1, operations.Count);
 				Assert.IsInstanceOfType(operations[0], typeof(AlterDatabaseOperation));
@@ -71,7 +71,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
 					builder.HasAnnotation("Annotation1", "ValueA").HasAnnotation("Annotation2", "ValueB"));
 				var target = new EndToEndDbContext<DummyTarget>(builder =>
 					builder.HasAnnotation("Annotation1", "ValueA").HasAnnotation("Annotation2", "ValueB_amended"));
-				var operations = Generate(source, target);
+				var operations = source.Diff(target);
 
 				Assert.AreEqual(1, operations.Count);
 
@@ -94,7 +94,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
 					builder.HasAnnotation("Annotation1", "ValueA").HasAnnotation("Annotation2", "ValueB"));
 				var target = new EndToEndDbContext<DummyTarget>(builder =>
 					builder.HasAnnotation("Annotation1", "ValueA"));
-				var operations = Generate(source, target);
+				var operations = source.Diff(target);
 
 				Assert.AreEqual(1, operations.Count);
 
@@ -116,7 +116,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
 					builder.HasAnnotation("Annotation1", "ValueA").HasAnnotation("Annotation2", "ValueB"));
 				var target = new EndToEndDbContext<DummyTarget>(builder =>
 					builder.HasAnnotation("Annotation1", "ValueA").HasAnnotation("Annotation2", "ValueB").HasAnnotation("Annotation3", "Something"));
-				var operations = Generate(source, target);
+				var operations = source.Diff(target);
 
 				Assert.AreEqual(1, operations.Count);
 
@@ -126,12 +126,6 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
 				Assert.AreEqual("Annotation3", operation.GetAnnotations().First().Name);
 				Assert.AreEqual("Something", operation.GetAnnotations().First().Value);
 			}
-		}
-
-		private static IReadOnlyList<MigrationOperation> Generate(DbContext source, DbContext target)
-		{
-			var differ = source.GetService<IMigrationsModelDiffer>();
-			return differ.GetDifferences(source.Model, target.Model);
 		}
 
 		private class EndToEndDbContext<TEntity> : EndToEndDbContext

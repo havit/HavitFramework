@@ -5,11 +5,7 @@ using System.Linq;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.ExtendedProperties.Attributes;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.Views;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
-using Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
@@ -38,7 +34,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
 
                 var source = new EndToEndDbContext<DummySource>();
                 var target = new EndToEndDbContext<DummyTarget>(builder => builder.HasAnnotation("View:GetTables", procedure));
-                var migrations = Generate(source.Model, target.Model);
+                var migrations = source.Migrate(target);
 
                 Assert.AreEqual(1, migrations.Count);
                 Assert.AreEqual(
@@ -69,7 +65,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
                 var newProcedure = "CREATE VIEW [dbo].[GetTables]() AS BEGIN SELECT * FROM [sys].[tables] WHERE schema_id = 1 END";
 	            var newProcedureAlter = "ALTER VIEW [dbo].[GetTables]() AS BEGIN SELECT * FROM [sys].[tables] WHERE schema_id = 1 END";
 				var target = new EndToEndDbContext<DummyTarget>(builder => builder.HasAnnotation("View:GetTables", newProcedure));
-                var migrations = Generate(source.Model, target.Model);
+                var migrations = source.Migrate(target);
 
                 Assert.AreEqual(1, migrations.Count);
                 Assert.AreEqual(
@@ -98,7 +94,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
             {
                 var source = new EndToEndDbContext<DummySource>(builder => builder.HasAnnotation("View:GetTables", "CREATE VIEW [dbo].[GetTables]() AS BEGIN SELECT * FROM [sys].[tables] END"));
                 var target = new EndToEndDbContext<DummyTarget>();
-                var migrations = Generate(source.Model, target.Model);
+                var migrations = source.Migrate(target);
 
                 Assert.AreEqual(1, migrations.Count);
                 Assert.AreEqual(
@@ -139,17 +135,6 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
 			    Assert.AreEqual("Gets all unpaid invoices.", extendedProperties.FirstOrDefault(a => a.Key.EndsWith("MS_Description")).Value?.Trim());
 		    }
 	    }
-
-		private static IReadOnlyList<MigrationCommand> Generate(IModel source, IModel target)
-        {
-            using (var db = new TestDbContext())
-            {
-                var differ = db.GetService<IMigrationsModelDiffer>();
-                var generator = db.GetService<IMigrationsSqlGenerator>();
-                var diff = differ.GetDifferences(source, target);
-                return generator.Generate(diff, db.Model);
-            }
-        }
 
 
         private class EndToEndDbContext<TEntity> : EndToEndDbContext

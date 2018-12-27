@@ -91,7 +91,9 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
 
 	    public long GetServiceProviderHashCode()
         {
-            return annotationProviders.Aggregate(358, (current, next) => current ^ next.GetHashCode());
+            var hashCode = annotationProviders.Aggregate(358, (current, next) => current ^ next.GetHashCode());
+	        hashCode = sqlGenerators.Aggregate(hashCode, (current, next) => current ^ next.GetHashCode());
+	        return hashCode;
         }
 
 	    public void Validate(IDbContextOptions options)

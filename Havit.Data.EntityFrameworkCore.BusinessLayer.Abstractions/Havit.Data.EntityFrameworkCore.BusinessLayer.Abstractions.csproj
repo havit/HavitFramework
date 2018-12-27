@@ -11,7 +11,7 @@
   <!-- NuGet -->
   <PropertyGroup>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageVersion>1.8.0</PackageVersion>
+	<PackageVersion>1.8.1</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Database schema and data seeding for application with HAVIT Business Layer - Abstractions</Description>
   </PropertyGroup>
   

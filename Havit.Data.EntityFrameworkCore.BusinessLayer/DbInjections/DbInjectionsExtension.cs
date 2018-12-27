@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Immutable;
 using System.Linq;
-using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,25 +12,35 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
     {
         private ImmutableList<Type> annotationProviders = ImmutableList.Create<Type>();
         private ImmutableList<Type> sqlGenerators = ImmutableList.Create<Type>();
+	    private bool consolidateStatementsForMigrationsAnnotationsForModel = true;
 
 	    public string LogFragment => "";
-
-	    public DbInjectionsOptions Options { get; private set; } = new DbInjectionsOptions();
 
 	    public DbInjectionsExtension()
 	    {
 	    }
 
-	    protected DbInjectionsExtension(DbInjectionsExtension copyFrom)
+	    // NB: When adding new options, make sure to update the copy ctor below.
+
+		protected DbInjectionsExtension(DbInjectionsExtension copyFrom)
 	    {
 		    annotationProviders = copyFrom.annotationProviders;
 		    sqlGenerators = copyFrom.sqlGenerators;
-		    Options = copyFrom.Options;
+		    consolidateStatementsForMigrationsAnnotationsForModel = copyFrom.consolidateStatementsForMigrationsAnnotationsForModel;
 	    }
 
 		protected virtual DbInjectionsExtension Clone() => new DbInjectionsExtension(this);
 
-	    public DbInjectionsExtension WithAnnotationProvider<T>()
+	    public bool ConsolidateStatementsForMigrationsAnnotationsForModel => consolidateStatementsForMigrationsAnnotationsForModel;
+
+		public DbInjectionsExtension WithConsolidateStatementsForMigrationsAnnotationsForModel(bool consolidateStatementsForMigrationsAnnotationsForModel)
+	    {
+		    var clone = Clone();
+		    clone.consolidateStatementsForMigrationsAnnotationsForModel = consolidateStatementsForMigrationsAnnotationsForModel;
+		    return clone;
+	    }
+
+		public DbInjectionsExtension WithAnnotationProvider<T>()
             where T : IDbInjectionAnnotationProvider
 	    {
 			// clone with new IDbInjectionAnnotationProvider
@@ -50,15 +59,6 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
 			clone.sqlGenerators = clone.sqlGenerators.Add(typeof(T));
 			return clone;
 		}
-
-	    public DbInjectionsExtension WithOptions(DbInjectionsOptions options)
-	    {
-			Contract.Requires<ArgumentNullException>(options != null);
-			// clone with new options 
-		    var clone = Clone();
-		    clone.Options = options;
-		    return clone;
-	    }
 
 	    public bool ApplyServices(IServiceCollection services)
         {
@@ -79,7 +79,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
             services.Add(sqlGenerators.ToArray().Select(t => ServiceDescriptor.Singleton(t, t)));
             services.AddSingleton<IDbInjectionAnnotationProvider, CompositeDbInjectionAnnotationProvider>(AnnotationProviderFactory);
             services.AddSingleton<IDbInjectionSqlResolver, DbInjectionSqlResolver>(DropSqlResolverFactory);
-	        if (Options.RemoveUnnecessaryStatementsForMigrationsAnnotationsForModel)
+	        if (ConsolidateStatementsForMigrationsAnnotationsForModel)
 	        {
 		        var serviceCharacteristics = EntityFrameworkRelationalServicesBuilder.RelationalServices[typeof(IMigrationsModelDiffer)];
 

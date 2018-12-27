@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.ExtendedProperties;
-using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.StoredProcedures;
-using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.Views;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.Infrastructure;
 using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore;
@@ -18,34 +15,32 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
 	public static class DbInjectionsExtensions
 	{
 		/// <summary>
-		/// Registruje služby používané podporou pre DB Injections. Je nutné, aby bola táto metóda volaná až po tom, ako boli zaregistrované infraštruktúrne služby pomocou <see cref="InfrastructureExtensions.UseCodeMigrationsInfrastructure"/>.
+		/// Registruje služby používané podporou pre DB Injections. Je nutné, aby bola táto metóda volaná až po tom, ako boli zaregistrované infraštruktúrne služby pomocou <see cref="InfrastructureExtensions.UseCodeMigrationsInfrastructure"/>. Pomocou <paramref name="setupAction"/> je možné aktivovať rôzne funkčnosti DbInjections.
 		/// </summary>
-		public static void UseDbInjections(this DbContextOptionsBuilder optionsBuilder, Action<DbInjectionsOptions> setupAction = null)
+		public static DbContextOptionsBuilder UseDbInjections(this DbContextOptionsBuilder optionsBuilder, Action<DbInjectionsExtensionBuilder> setupAction = null)
         {
 			Contract.Requires<ArgumentNullException>(optionsBuilder != null);
 
 	        IDbContextOptionsBuilderInfrastructure builder = optionsBuilder;
 
-			builder.AddOrUpdateExtension(
-				optionsBuilder.Options.FindExtension<CompositeMigrationsAnnotationProviderExtension>()
-			        .WithAnnotationProvider<DbInjectionsMigrationsAnnotationProvider>());
-	        builder.AddOrUpdateExtension(
-		        optionsBuilder.Options.FindExtension<CompositeMigrationsSqlGeneratorExtension>()
-			        .WithGeneratorType<DbInjectionMigrationOperationSqlGenerator>());
+			var annotationProviderExtension = optionsBuilder.Options.FindExtension<CompositeMigrationsAnnotationProviderExtension>();
+			if (annotationProviderExtension == null)
+			{
+				throw new InvalidOperationException("Necessary extension (CompositeMigrationsAnnotationProviderExtension) not found, please make sure infrastructure has been registered into DbContextOptionsBuilder (extension method UseCodeMigrationsInfrastructure on this object is called)");
+			}
 
-	        var options = new DbInjectionsOptions();
-	        setupAction?.Invoke(options);
+	        builder.AddOrUpdateExtension(annotationProviderExtension.WithAnnotationProvider<DbInjectionsMigrationsAnnotationProvider>());
 
-	        builder.AddOrUpdateExtension(new DbInjectionsExtension()
-                .WithAnnotationProvider<StoredProcedureAnnotationProvider>()
-                .WithSqlGenerator<StoredProcedureSqlGenerator>()
-                .WithAnnotationProvider<ExtendedPropertiesAnnotationProvider>()
-				.WithAnnotationProvider<StoredProcedureAttachPropertyAnnotationProvider>()
-				.WithAnnotationProvider<StoredProcedureMsDescriptionPropertyAnnotationProvider>()
-		        .WithAnnotationProvider<ViewAnnotationProvider>()
-		        .WithSqlGenerator<ViewSqlGenerator>()
-		        .WithOptions(options)
-			);
+			var sqlGeneratorExtension = optionsBuilder.Options.FindExtension<CompositeMigrationsSqlGeneratorExtension>();
+			if (sqlGeneratorExtension == null)
+			{
+				throw new InvalidOperationException("Necessary extension (CompositeMigrationsSqlGeneratorExtension) not found, please make sure infrastructure has been registered into DbContextOptionsBuilder (extension method UseCodeMigrationsInfrastructure on this object is called)");
+			}
+			builder.AddOrUpdateExtension(sqlGeneratorExtension.WithGeneratorType<DbInjectionMigrationOperationSqlGenerator>());
+
+	        setupAction?.Invoke(new DbInjectionsExtensionBuilder(optionsBuilder));
+
+	        return optionsBuilder;
         }
 
 		/// <summary>

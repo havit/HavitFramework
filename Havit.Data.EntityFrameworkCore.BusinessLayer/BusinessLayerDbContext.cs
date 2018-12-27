@@ -40,7 +40,11 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 			base.OnConfiguring(optionsBuilder);
 
 			optionsBuilder.UseCodeMigrationsInfrastructure();
-			optionsBuilder.UseDbInjections();
+			optionsBuilder.UseDbInjections(builder => builder
+				.UseStoredProcedures()
+				.UseExtendedProperties()
+				.UseBusinessLayerStoredProcedures()
+				.UseViews());
 			optionsBuilder.UseSqlServerExtendedProperties();
 		}
 

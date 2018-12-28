@@ -1,10 +1,7 @@
-﻿using System;
-using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.ExtendedProperties;
+﻿using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.ExtendedProperties;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.StoredProcedures;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.Views;
-using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
 {
@@ -13,16 +10,12 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
 	/// <para>Inštancie tejto triedy vznikajú pomocou extension metódy <see cref="DbInjectionsExtensions.UseDbInjections"/>. Táto trieda nie je navrhnutá tak, aby jej inštancie boli priamo vytvárané v aplikačnom kóde.</para>
 	/// 
 	/// </summary>
-	public class DbInjectionsExtensionBuilder
+	public class DbInjectionsExtensionBuilder : DbInjectionsExtensionBuilderBase<DbInjectionsExtensionBuilder>
 	{
-		protected virtual DbContextOptionsBuilder OptionsBuilder { get; }
-
 		/// <inheritdoc />
-		public DbInjectionsExtensionBuilder(DbContextOptionsBuilder optionsBuilder)
+		public DbInjectionsExtensionBuilder(DbContextOptionsBuilder optionsBuilder) 
+			: base(optionsBuilder)
 		{
-			Contract.Requires<ArgumentNullException>(optionsBuilder != null);
-
-			OptionsBuilder = optionsBuilder;
 		}
 
 		/// <summary>
@@ -64,14 +57,6 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
 		{
 			return WithOption(e => e.WithAnnotationProvider<ViewAnnotationProvider>()
 				.WithSqlGenerator<ViewSqlGenerator>());
-		}
-
-		protected virtual DbInjectionsExtensionBuilder WithOption(Func<DbInjectionsExtension, DbInjectionsExtension> setAction)
-		{
-			((IDbContextOptionsBuilderInfrastructure)OptionsBuilder).AddOrUpdateExtension(
-				setAction(OptionsBuilder.Options.FindExtension<DbInjectionsExtension>() ?? new DbInjectionsExtension()));
-
-			return this;
 		}
 	}
 }

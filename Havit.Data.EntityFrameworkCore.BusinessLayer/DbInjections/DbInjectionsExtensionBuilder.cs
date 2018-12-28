@@ -50,6 +50,14 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
 				.WithAnnotationProvider<StoredProcedureMsDescriptionPropertyAnnotationProvider>());
 
 		/// <summary>
+		/// Umožňuje vypnúť alebo zapnúť odstraňovanie duplicitných párov aktuálnych a starých anotácii v prípade AlterDatabaseOperation.
+		/// Štandardne je táto funkcionalita zapnutá.
+		/// </summary>
+		/// <returns>Inštancia <see cref="DbInjectionsExtensionBuilder"/>, kvôli implementácii Fluent API.</returns>
+		public DbInjectionsExtensionBuilder ConsolidateStatementsForMigrationsAnnotationsForModel(bool consolidateStatementsForMigrationsAnnotationsForModel) =>
+			WithOption(e => e.WithConsolidateStatementsForMigrationsAnnotationsForModel(consolidateStatementsForMigrationsAnnotationsForModel));
+
+		/// <summary>
 		/// WORK IN PROGRESS: Zapne podporu pre <see cref="IDbInjector"/> objekty pre pohľady. Umožňuje automaticky spravovať uložené procedúry pomocou migrácii.
 		/// </summary>
 		/// <returns>Inštancia <see cref="DbInjectionsExtensionBuilder"/>, kvôli implementácii Fluent API.</returns>

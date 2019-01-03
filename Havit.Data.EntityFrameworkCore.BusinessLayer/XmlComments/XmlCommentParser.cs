@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
@@ -86,7 +87,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.XmlComments
 			var methodFullName = element.Attribute("name").Value.Substring(2);
 
 			var xmlMemberType = new XmlCommentMember(methodFullName);
-			xmlMemberType.Tags.AddRange(element.Elements().Select(e => new XmlMemberTag(e.Name.LocalName, e.Value)));
+			xmlMemberType.Tags.AddRange(element.Elements().Select(e => new XmlMemberTag(e.Name.LocalName, ParseTagValue(e))));
 			return xmlMemberType;
 		}
 
@@ -94,10 +95,26 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.XmlComments
 		{
 			var xmlCommentType = new XmlCommentType(name);
 
-			IEnumerable<XmlMemberTag> tags = element.Elements().Select(e => new XmlMemberTag(e.Name.LocalName, e.Value));
+			IEnumerable<XmlMemberTag> tags = element.Elements().Select(e => new XmlMemberTag(e.Name.LocalName, ParseTagValue(element)));
 			xmlCommentType.Tags.AddRange(tags);
 
 			return xmlCommentType;
+		}
+
+		private static string ParseTagValue(XElement element)
+		{
+			if (element?.Parent?.Attribute("name")?.Value == "P:Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model.Location.Description")
+			{
+				element.ToString();
+			}
+
+			var lines = element.Value
+				.Replace("\r", "")
+				.Split('\n')
+				.Select(line => line.Trim())
+				.Where(line => line.Length > 0);
+
+			return string.Join(Environment.NewLine, lines);
 		}
 	}
 }

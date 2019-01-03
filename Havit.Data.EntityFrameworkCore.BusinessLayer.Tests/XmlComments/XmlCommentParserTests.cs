@@ -141,7 +141,24 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments
 			var loginAccountType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == typeof(Model.LoginAccount).FullName);
 			XmlCommentMember userNameProperty = loginAccountType.Properties.FirstOrDefault(p => 
 				p.Name == typeof(Model.LoginAccount).GetProperty(nameof(Model.LoginAccount.Username)).FullName());
-			Assert.AreEqual(userNameProperty.Summary.Trim(), "LoginAccount's user name");
+			Assert.AreEqual("LoginAccount's user name", userNameProperty.Summary.Trim());
+		}
+
+		/// <summary>
+		/// Scenario with extra whitespace - new lines. (Bug 42144)
+		/// </summary>
+		[TestMethod]
+		public void XmlCommentParser_ParseFile_LocationClassDescriptionPropertyHasTrimmedSummary()
+		{
+			var parser = new XmlCommentParser();
+
+			var xmlCommentFile = parser.ParseFile(ParseXmlFile());
+
+			var locationType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == typeof(Model.Location).FullName);
+			XmlCommentMember descriptionProperty = locationType.Properties.FirstOrDefault(p => 
+				p.Name == typeof(Model.Location).GetProperty(nameof(Model.Location.Description)).FullName());
+			Assert.AreEqual(@"Summary tag with
+new lines and whitespace.", descriptionProperty.Summary);
 		}
 	}
 }

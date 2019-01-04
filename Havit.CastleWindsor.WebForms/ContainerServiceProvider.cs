@@ -52,9 +52,12 @@ namespace Havit.CastleWindsor.WebForms
 				typeof(IHttpHandler).IsAssignableFrom(serviceType)) &&   // Geneirc handlers (.ashx) and also pages (.aspx) inherit from IHttpHandler
 				!Container.Kernel.HasComponent(serviceType))
 			{
-				// Lifestyle is *PerWebRequest*, because Castle Windsor can then release this component at the end of request and also child dependencies are release
-				Container.Register(Component.For(serviceType).ImplementedBy(serviceType).LifestylePerWebRequest());
-			}
+                // Lifestyle is *Transient* 
+                // If it would be PerWebRequest, we couldn't use the same control on one page twice - resolved would be only the first, and the second would be reused)
+                // And because transient, we must release component on end request - else we would make memory leaks
+				Container.Register(Component.For(serviceType).ImplementedBy(serviceType).LifestyleTransient());
+                HttpContext.Current.AddOnRequestCompleted(_ => Container.Release(result)); // release objektu na konci requestu, abychom předešli memory-leaks
+            }
 
 			// If we have component registered, we will resolve the service
 			if (Container.Kernel.HasComponent(serviceType))

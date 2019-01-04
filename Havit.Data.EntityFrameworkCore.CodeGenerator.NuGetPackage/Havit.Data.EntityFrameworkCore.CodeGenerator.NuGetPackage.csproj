@@ -1,7 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\Common.targets" />
-  
   <PropertyGroup>
 	<!-- CodeGenerator, přestože sám je implementován jako NET Core App 2.1, chceme umožnit nainstalovat do projektů targetující .NET Standard 2.0. -->
 	<TargetFramework>netstandard2.0</TargetFramework>

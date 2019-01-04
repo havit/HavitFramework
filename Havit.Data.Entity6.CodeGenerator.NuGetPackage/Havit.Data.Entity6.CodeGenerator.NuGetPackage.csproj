@@ -1,7 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\Common.targets" />
-
   <PropertyGroup>
 	<TargetFramework>net46</TargetFramework>
 	<NoWarn>1701;1702;NU5110;NU5111</NoWarn>

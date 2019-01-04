@@ -1,12 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\Common.targets" />
-
   <PropertyGroup>
     <TargetFramework>net47</TargetFramework>
     <LangVersion>latest</LangVersion>
 	
-	<!-- Unit testy používají dokumentaci projektu -->
 	<!-- Unit testy používají dokumentaci projektu -->
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>

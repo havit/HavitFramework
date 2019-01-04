@@ -1,24 +1,7 @@
 <Project>
 
-  <PropertyGroup>
-	<Company>HAVIT, s.r.o.</Company>
-	<Copyright>Copyright HAVIT, s.r.o. 2018</Copyright>
-	<FileVersion>2.0.0.0</FileVersion>
-	<AssemblyVersion>2.0.0.0</AssemblyVersion>
-	<Product>HAVIT .NET Framework Extensions</Product>
-	<AssemblyTitle>HAVIT .NET Framework Extensions</AssemblyTitle>
-  </PropertyGroup>
-
   <!-- NuGet -->
-  <PropertyGroup>
-	<Authors>HAVIT</Authors>
-	<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>	
-	<PackageIconUrl>https://www.gravatar.com/avatar/e59ffb10448162f0c6d6b5ae3fecd0ce?s=64</PackageIconUrl>
-	
-	<!-- Jako default nebudeme dávat content do balíčků (stačí ukliknutí a máme content v nuget balíčku).
-		 V projektech, ve kterých content do nuget balíčku chceme, si jej povolíme. -->
-	<IncludeContentInPack>false</IncludeContentInPack>
-	
+  <PropertyGroup Condition="'$(GeneratePackageOnBuild)' == 'true'">
 	<!-- Source: https://github.com/dotnet/sourcelink/#using-sourcelink -->
 	<!-- Optional: Publish the repository URL in the built .nupkg (in the NuSpec <Repository> element) -->
 	<PublishRepositoryUrl>true</PublishRepositoryUrl>
@@ -27,13 +10,13 @@
 	<!-- Optional: Include the PDB in the built .nupkg -->
 	<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
-  <ItemGroup>
+  <ItemGroup Condition="'$(GeneratePackageOnBuild)' == 'true'">
 	<PackageReference Include="Microsoft.SourceLink.Vsts.Git" Version="1.0.0-beta-63127-02" PrivateAssets="All" />
   </ItemGroup>
   <!-- /NuGet -->
   
   <!-- Publish NuGet -->
-  <PropertyGroup>
+  <PropertyGroup Condition="'$(GeneratePackageOnBuild)' == 'true'">
 	<PackageOutputPath Condition="'$(PublishDirectory)' != ''">$(PublishDirectory)\NuGet</PackageOutputPath>
   </PropertyGroup>
   <!-- /Publish NuGet -->

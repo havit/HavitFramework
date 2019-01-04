@@ -1,0 +1,24 @@
+<Project>
+
+  <PropertyGroup>
+	<Company>HAVIT, s.r.o.</Company>
+	<Copyright>Copyright HAVIT, s.r.o. 2018</Copyright>
+	<FileVersion>2.0.0.0</FileVersion>
+	<AssemblyVersion>2.0.0.0</AssemblyVersion>
+	<Product>HAVIT .NET Framework Extensions</Product>
+	<AssemblyTitle>HAVIT .NET Framework Extensions</AssemblyTitle>
+  </PropertyGroup>
+
+  <!-- NuGet -->
+  <PropertyGroup>
+	<Authors>HAVIT</Authors>
+	<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>	
+	<PackageIconUrl>https://www.gravatar.com/avatar/e59ffb10448162f0c6d6b5ae3fecd0ce?s=64</PackageIconUrl>
+	
+	<!-- Jako default nebudeme dávat content do balíčků (stačí ukliknutí a máme content v nuget balíčku).
+		 V projektech, ve kterých content do nuget balíčku chceme, si jej povolíme. -->
+	<IncludeContentInPack>false</IncludeContentInPack>
+  </PropertyGroup>
+  <!-- /NuGet -->
+  
+</Project>

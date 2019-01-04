@@ -47,22 +47,27 @@ namespace Havit.CastleWindsor.WebForms
 			// Try the container
 			object result = null;
 
-			// We must register dynamically compiled resources (pages, controls, master pages, handlers ...)
-			if ((typeof(UserControl).IsAssignableFrom(serviceType) ||    // User controls (.ascx) and event Master Pages (.master) inherit from UserControl
-				typeof(IHttpHandler).IsAssignableFrom(serviceType)) &&   // Geneirc handlers (.ashx) and also pages (.aspx) inherit from IHttpHandler
-				!Container.Kernel.HasComponent(serviceType))
+			lock (serviceType) // chrání před pokusem o opakovanou registraci do CastleWindsor při prvním paralelním přístupu na stránku
 			{
-                // Lifestyle is *Transient* 
-                // If it would be PerWebRequest, we couldn't use the same control on one page twice - resolved would be only the first, and the second would be reused)
-                // And because transient, we must release component on end request - else we would make memory leaks
-				Container.Register(Component.For(serviceType).ImplementedBy(serviceType).LifestyleTransient());
-                HttpContext.Current.AddOnRequestCompleted(_ => Container.Release(result)); // release objektu na konci requestu, abychom předešli memory-leaks
-            }
+				// We must register dynamically compiled resources (pages, controls, master pages, handlers ...)
+				if ((typeof(UserControl).IsAssignableFrom(serviceType) ||    // User controls (.ascx) and event Master Pages (.master) inherit from UserControl
+					typeof(IHttpHandler).IsAssignableFrom(serviceType)) &&   // Generic handlers (.ashx) and also pages (.aspx) inherit from IHttpHandler
+					!Container.Kernel.HasComponent(serviceType))
+				{
+					// Lifestyle is *Transient* 
+					// If it would be PerWebRequest, we couldn't use the same control on one page twice - resolved would be only the first, and the second would be reused)
+					Container.Register(Component.For(serviceType).ImplementedBy(serviceType).LifestyleTransient());
+				}
+			}
 
 			// If we have component registered, we will resolve the service
 			if (Container.Kernel.HasComponent(serviceType))
 			{
 				result = Container.Resolve(serviceType);
+				// And because transient, we must release component on end request - else we would make memory leaks
+				HttpContext.Current.AddOnRequestCompleted(_ => Container.Release(result)); // release objektu na konci requestu, abychom předešli memory-leaks
+				
+				return result;
 			}
 
 			// Try the next provider if we don't have result

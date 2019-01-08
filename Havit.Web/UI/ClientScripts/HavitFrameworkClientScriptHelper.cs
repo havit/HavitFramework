@@ -75,7 +75,7 @@ namespace Havit.Web.UI.ClientScripts
 					if (_version == null)
 					{
 						Assembly assembly = Assembly.GetAssembly(typeof(HavitFrameworkClientScriptHelper));
-						string fileVersion = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location).FileVersion;
+						string fileVersion = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location).ProductVersion;
 						_version = fileVersion.Replace(".", "_");
 					}
 				}

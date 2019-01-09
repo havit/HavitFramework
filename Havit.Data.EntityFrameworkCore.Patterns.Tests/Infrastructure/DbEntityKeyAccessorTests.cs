@@ -19,7 +19,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Infrastructure
 		public void GetEntityKeyPropertyName_GetEntityKeyPropertyName()
 		{
 			// Arrange
-			Mock<IServiceFactory<IDbContext>> dbContextFactoryMock = new Mock<IServiceFactory<IDbContext>>(MockBehavior.Strict);
+			Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>(MockBehavior.Strict);
 			dbContextFactoryMock.Setup(m => m.CreateService()).Returns(new TestDbContext());
 			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
 			DbEntityKeyAccessor dbEntityKeyAccessor = new DbEntityKeyAccessor(dbContextFactoryMock.Object);			
@@ -32,7 +32,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Infrastructure
 		public void GetEntityKeyPropertyName_GetEntityKey()
 		{
 			// Arrange
-			Mock<IServiceFactory<IDbContext>> dbContextFactoryMock = new Mock<IServiceFactory<IDbContext>>(MockBehavior.Strict);
+			Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>(MockBehavior.Strict);
 			dbContextFactoryMock.Setup(m => m.CreateService()).Returns(new TestDbContext());
 			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
 			DbEntityKeyAccessor dbEntityKeyAccessor = new DbEntityKeyAccessor(dbContextFactoryMock.Object);

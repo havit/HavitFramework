@@ -15,6 +15,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 	/// <summary>
 	/// Výchozí strategie definující, zda může být entita cachována. Řídí se anotacemi.
 	/// </summary>
+	/// <remarks>
+	/// Revize použití s ohledem na https://github.com/volosoft/castle-windsor-ms-adapter/issues/32:
+	/// DbContext je registrován scoped, proto se této factory popsaná issue týká.
+	/// Z DbContextu jen čteme metadata (ta jsou pro každý DbContext stejná), issue tedy nemá žádný dopad.
+	/// </remarks>	
 	public class AnnotationsEntityCacheSupportDecision : IEntityCacheSupportDecision
 	{
 		private readonly Lazy<Dictionary<Type, bool>> shouldCacheEntities;
@@ -23,7 +28,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public AnnotationsEntityCacheSupportDecision(IServiceFactory<IDbContext> dbContextFactory)
+		public AnnotationsEntityCacheSupportDecision(IDbContextFactory dbContextFactory)
 		{
 			shouldCacheEntities = GetLazyDictionary(dbContextFactory, entityType => ((bool?)(entityType.FindAnnotation(CacheAttributeToAnnotationConvention.CacheEntitiesAnnotationName)?.Value)).GetValueOrDefault(false));
 			shouldCacheAllKeys = GetLazyDictionary(dbContextFactory, entityType => ((bool?)(entityType.FindAnnotation(CacheAttributeToAnnotationConvention.CacheEntitiesAnnotationName)?.Value)).GetValueOrDefault(false));
@@ -50,7 +55,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 			return GetValueFromDictionary(shouldCacheAllKeys.Value, typeof(TEntity));
 		}
 
-		private Lazy<Dictionary<Type, TResult>> GetLazyDictionary<TResult>(IServiceFactory<IDbContext> dbContextFactory, Func<IEntityType, TResult> valueFunc)
+		private Lazy<Dictionary<Type, TResult>> GetLazyDictionary<TResult>(IDbContextFactory dbContextFactory, Func<IEntityType, TResult> valueFunc)
 		{
 			return new Lazy<Dictionary<Type, TResult>>(() =>
 			{

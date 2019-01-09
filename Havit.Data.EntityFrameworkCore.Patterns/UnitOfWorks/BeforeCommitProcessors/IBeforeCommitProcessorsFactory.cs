@@ -5,6 +5,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProces
 	/// <summary>
 	/// Factory poskytující IBeforeCommitProcessors.
 	/// </summary>
+	/// <remarks>
+	/// Revize použití s ohledem na https://github.com/volosoft/castle-windsor-ms-adapter/issues/32:
+	/// Implementované služby musí být bezstavové. 
+	/// Pokud budou registrované jako transient nebo singleton (což budou), pak se této factory popsaná issue netýká.
+	/// </remarks>
 	public interface IBeforeCommitProcessorsFactory
 	{
 		/// <summary>

@@ -23,6 +23,19 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 	public class EntityPatternsInstallerTests
 	{
 		[TestMethod]
+		public void EntityPatternsInstaller_ShouldRegisterDbContextFactory()
+		{
+			// Arrange
+			var container = Helpers.CreateAndSetupWindsorContainer();
+
+			// Act
+			container.Resolve<IDbContextFactory>();
+
+			// Assert			
+			// no exception was thrown
+		}
+
+		[TestMethod]
 		public void EntityPatternsInstaller_ShouldRegisterLanguageAndLocalizationServices()
 		{
 			// Arrange

@@ -9,7 +9,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 {
 	/// <summary>
 	/// Strategie definující, zda může být entita cachována. Řídí se anotacemi, ke kterým doplňuje výchozí hodnoty.
-	/// </summary>
+	/// </summary>	
 	public class AnnotationsWithDefaultsEntityCacheOptionsGenerator : AnnotationsEntityCacheOptionsGenerator
 	{
 		private readonly TimeSpan? absoluteExpiration;
@@ -18,7 +18,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public AnnotationsWithDefaultsEntityCacheOptionsGenerator(IServiceFactory<IDbContext> dbContextFactory, TimeSpan absoluteExpiration, TimeSpan slidingExpiration) : base(dbContextFactory)
+		public AnnotationsWithDefaultsEntityCacheOptionsGenerator(IDbContextFactory dbContextFactory, TimeSpan absoluteExpiration, TimeSpan slidingExpiration) : base(dbContextFactory)
 		{
 			this.absoluteExpiration = (absoluteExpiration == TimeSpan.Zero) ? (TimeSpan?)null : absoluteExpiration;
 			this.slidingExpiration = (slidingExpiration == TimeSpan.Zero) ? (TimeSpan?)null : slidingExpiration;

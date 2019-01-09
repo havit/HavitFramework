@@ -14,6 +14,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Infrastructure
 	/// <summary>
 	/// Služba pro získávání primárního klíče modelových objektů.
 	/// </summary>
+	/// <remarks>
+	/// Revize použití s ohledem na https://github.com/volosoft/castle-windsor-ms-adapter/issues/32:
+	/// DbContext je registrován scoped, proto se této factory popsaná issue týká.
+	/// Z DbContextu jen čteme metadata (ta jsou pro každý DbContext stejná), issue tedy nemá žádný dopad.
+	/// </remarks>
 	public class DbEntityKeyAccessor : IEntityKeyAccessor
 	{
 		private readonly Lazy<Dictionary<Type, PropertyInfo[]>> propertyInfos;
@@ -21,7 +26,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Infrastructure
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public DbEntityKeyAccessor(IServiceFactory<IDbContext> dbContextFactory)
+		public DbEntityKeyAccessor(IDbContextFactory dbContextFactory)
 		{
 			// pro možnost použití jako singletonu pro všechny případy používáme LazyThreadSafetyMode.ExecutionAndPublication
 			propertyInfos = new Lazy<Dictionary<Type, PropertyInfo[]>>(() =>

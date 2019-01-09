@@ -23,7 +23,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 			Language language = new Language { Id = 100 };
 			testDbContext.Attach(language);
 			
-			Mock<IServiceFactory<IDbContext>> dbContextFactoryMock = new Mock<IServiceFactory<IDbContext>>(MockBehavior.Strict);
+			Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>(MockBehavior.Strict);
 			dbContextFactoryMock.Setup(m => m.CreateService()).Returns(testDbContext);
 			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
 
@@ -49,8 +49,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 			TestDbContext testDbContext = new TestDbContext();
 			Language language = new Language { Id = 100 };
 			testDbContext.Attach(language);
-
-			Mock<IServiceFactory<IDbContext>> dbContextFactoryMock = new Mock<IServiceFactory<IDbContext>>(MockBehavior.Strict);
+			
+			Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>(MockBehavior.Strict);
 			dbContextFactoryMock.Setup(m => m.CreateService()).Returns(testDbContext);
 			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
 
@@ -75,7 +75,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 			Language language = new Language { Id = 100 };
 			testDbContext.Attach(language);
 
-			Mock<IServiceFactory<IDbContext>> dbContextFactoryMock = new Mock<IServiceFactory<IDbContext>>(MockBehavior.Strict);
+			Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>(MockBehavior.Strict);
 			dbContextFactoryMock.Setup(m => m.CreateService()).Returns(testDbContext);
 			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
 
@@ -101,7 +101,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 		{
 			TestDbContext testDbContext = new TestDbContext();
 
-			Mock<IServiceFactory<IDbContext>> dbContextFactoryMock = new Mock<IServiceFactory<IDbContext>>(MockBehavior.Strict);
+			Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>(MockBehavior.Strict);
 			dbContextFactoryMock.Setup(m => m.CreateService()).Returns(testDbContext);
 			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
 
@@ -125,7 +125,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 		{
 			TestDbContext testDbContext = new TestDbContext();
 
-			Mock<IServiceFactory<IDbContext>> dbContextFactoryMock = new Mock<IServiceFactory<IDbContext>>(MockBehavior.Strict);
+			Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>(MockBehavior.Strict);
 			dbContextFactoryMock.Setup(m => m.CreateService()).Returns(testDbContext);
 			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
 
@@ -154,7 +154,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 
 			Func<IDbContext, EntityCacheManager> entityCacheManagerCreator = dbContext =>
 			{
-				Mock<IServiceFactory<IDbContext>> dbContextFactoryMock = new Mock<IServiceFactory<IDbContext>>(MockBehavior.Strict);
+				Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>(MockBehavior.Strict);
 				dbContextFactoryMock.Setup(m => m.CreateService()).Returns(dbContext);
 				dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
 
@@ -195,7 +195,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 			Language language = new Language { Id = 100 };
 			testDbContext.Attach(language);
 
-			Mock<IServiceFactory<IDbContext>> dbContextFactoryMock = new Mock<IServiceFactory<IDbContext>>(MockBehavior.Strict);
+			Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>(MockBehavior.Strict);
 			dbContextFactoryMock.Setup(m => m.CreateService()).Returns(testDbContext);
 			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
 
@@ -226,7 +226,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 			Language language = new Language { Id = 100 };
 			testDbContext.Attach(language);
 
-			Mock<IServiceFactory<IDbContext>> dbContextFactoryMock = new Mock<IServiceFactory<IDbContext>>(MockBehavior.Strict);
+			Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>(MockBehavior.Strict);
 			dbContextFactoryMock.Setup(m => m.CreateService()).Returns(testDbContext);
 			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
 
@@ -257,7 +257,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 			Language language = new Language { Id = 100 };
 			testDbContext.Attach(language);
 
-			Mock<IServiceFactory<IDbContext>> dbContextFactoryMock = new Mock<IServiceFactory<IDbContext>>(MockBehavior.Strict);
+			Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>(MockBehavior.Strict);
 			dbContextFactoryMock.Setup(m => m.CreateService()).Returns(testDbContext);
 			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
 
@@ -290,7 +290,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 			ManyToMany manyToMany = new ManyToMany { LanguageId = 100, ItemWithDeletedId = 999 };
 			testDbContext.Attach(manyToMany);
 
-			Mock<IServiceFactory<IDbContext>> dbContextFactoryMock = new Mock<IServiceFactory<IDbContext>>(MockBehavior.Strict);
+			Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>(MockBehavior.Strict);
 			dbContextFactoryMock.Setup(m => m.CreateService()).Returns(testDbContext);
 			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
 

@@ -14,6 +14,12 @@ namespace Havit.Data.Patterns.Localizations
 	/// Služba vrací aktuální jazyk.
 	/// Jazykem se rozumí instance třídy modelu (implementující <see cref="ILanguage"/>).
 	/// </summary>
+	/// <remarks>
+	/// Revize použití s ohledem na https://github.com/volosoft/castle-windsor-ms-adapter/issues/32:
+	/// Repository je registrována jako scoped, proto se této factory popsaná issue týká.
+	/// Použití v metodě EnsureLanguages: Jde o přečtení dat z databáze a jejich zpracování. Použití je zde bezpečné, použití nové Repositorya DbContextu zde nevadí.
+	/// Použití v metode GetLanguageById: Zde díky použití nové Repository a jeho DbContextu (ignorováním lifestyle) dojde k implementační chybě - vrátí se instance z nepředpokládaného DbContextu.
+	/// </remarks>	
 	public class LanguageService<TLanguage> : ILanguageService
 		where TLanguage : class, ILanguage
 	{

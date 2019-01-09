@@ -519,7 +519,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 		private DbEntityKeyAccessor<TEntity, int> CreateEntityKeyAccessor<TEntity>(IDbContext dbContext)
 			where TEntity : class
 		{
-			var testDbContextFactoryMock = new Mock<IServiceFactory<IDbContext>>(MockBehavior.Strict);
+			Mock<IDbContextFactory> testDbContextFactoryMock = new Mock<IDbContextFactory>(MockBehavior.Strict);
 			testDbContextFactoryMock.Setup(m => m.CreateService()).Returns(dbContext);
 			testDbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
 			return new DbEntityKeyAccessor<TEntity, int>(new DbEntityKeyAccessor(testDbContextFactoryMock.Object));

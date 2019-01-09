@@ -78,7 +78,10 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers
 				transientRegistration = transientRegistration.DependsOn(Dependency.OnValue<DbContextOptions>(dbContextOptions));
 			}
 
-			container.Register(defaultRegistration, transientRegistration);
+			container.Register(
+				defaultRegistration,
+				transientRegistration,
+				Component.For<IDbContextFactory>().AsFactory());
 
 			return this;
 		}

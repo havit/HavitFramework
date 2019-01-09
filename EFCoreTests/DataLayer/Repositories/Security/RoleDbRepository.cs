@@ -12,7 +12,7 @@ using Havit.EFCoreTests.Model.Security;
 
 namespace Havit.EFCoreTests.DataLayer.Repositories.Security
 {
-	public partial class RoleDbRepository
+	public partial class RoleDbRepository : IRoleRepository
 	{
 		
 	}

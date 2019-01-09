@@ -12,7 +12,7 @@ using Havit.EFCoreTests.Model.Localizations;
 
 namespace Havit.EFCoreTests.DataLayer.Repositories.Localizations
 {
-	public partial class LanguageDbRepository
+	public partial class LanguageDbRepository : ILanguageRepository
 	{
 		
 	}

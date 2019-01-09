@@ -12,7 +12,7 @@ using Havit.EFCoreTests.Model;
 
 namespace Havit.EFCoreTests.DataLayer.Repositories
 {
-	public partial class ClassWithDefaultsDbRepository
+	public partial class ClassWithDefaultsDbRepository : IClassWithDefaultsRepository
 	{
 		
 	}

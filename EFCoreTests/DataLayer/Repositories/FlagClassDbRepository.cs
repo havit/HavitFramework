@@ -12,7 +12,7 @@ using Havit.EFCoreTests.Model;
 
 namespace Havit.EFCoreTests.DataLayer.Repositories
 {
-	public partial class FlagClassDbRepository
+	public partial class FlagClassDbRepository : IFlagClassRepository
 	{
 		
 	}

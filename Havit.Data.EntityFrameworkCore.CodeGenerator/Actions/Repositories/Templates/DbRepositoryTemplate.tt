@@ -17,7 +17,7 @@ using <#= Model.ModelClassNamespace #>;
 
 namespace <#= Model.NamespaceName #>
 {
-	public partial class <#= Model.DbRepositoryName #>
+	public partial class <#= Model.DbRepositoryName #> : <#= Model.InterfaceRepositoryName #>
 	{
 		
 	}

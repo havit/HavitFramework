@@ -9,7 +9,7 @@
   <PropertyGroup>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<PackageId>Havit.Data.EntityFrameworkCore.CodeGenerator</PackageId>
-	<PackageVersion>1.8.6</PackageVersion>
+	<PackageVersion>1.8.7</PackageVersion>
 	<!-- Publikujeme výstup buildu jiného projektu. -->
 	<IncludeBuildOutput>false</IncludeBuildOutput>
 	<!-- Výstup je publikován jako content, musíme jeho publikaci povolit. -->

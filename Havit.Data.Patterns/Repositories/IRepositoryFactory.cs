@@ -3,7 +3,11 @@
 	/// <summary>
 	/// Factory pro získávání a vracení repository objektů typu TEtity.
 	/// </summary>
-    public interface IRepositoryFactory<TEntity>
+	/// <remarks>
+	/// Revize použití s ohledem na https://github.com/volosoft/castle-windsor-ms-adapter/issues/32:
+	/// Repositories jsou registrovány scoped, proto se této factory popsaná issue týká. Je třeba na každém místě, kde je factory použita, ověřit dopady.
+	/// </remarks>
+	public interface IRepositoryFactory<TEntity>
 		where TEntity : class
 	{
 		/// <summary>

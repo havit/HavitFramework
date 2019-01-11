@@ -8,14 +8,14 @@ namespace Havit.AspNetCore.Mvc.Filters.ErrorToJson
     /// Filtr zajišťující konverzi výjimky na JSON odpověď.
     /// </summary>
     [SuppressMessage("SonarLint", "S3376", Justification = "V ASP.NET Core MVC je toto zamýšleno jako globální filtr, pak se slovo Attribute na konci názvu nevyžaduje.")]
-    public class ErrorJoJsonFilter : ExceptionFilterAttribute
+    public class ErrorToJsonFilter : ExceptionFilterAttribute
     {
         private readonly ErrorToJsonConfiguration configuration;
 
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-        public ErrorJoJsonFilter(Action<ErrorToJsonSetup> setupAction)
+        public ErrorToJsonFilter(Action<ErrorToJsonSetup> setupAction)
         {
             ErrorToJsonSetup setup = new ErrorToJsonSetup();
             setupAction.Invoke(setup);

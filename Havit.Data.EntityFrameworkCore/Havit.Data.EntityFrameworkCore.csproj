@@ -13,7 +13,7 @@
   </PropertyGroup>
   
   <ItemGroup>
-	<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="2.0.0" PrivateAssets="all" />
+	<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="2.0.1" PrivateAssets="all" />
 	<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.0" />
   </ItemGroup>
 

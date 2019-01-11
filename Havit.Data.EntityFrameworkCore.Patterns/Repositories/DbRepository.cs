@@ -290,10 +290,16 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 				}
 				else
 				{
-					// pokd ne, načtene data a uložíme klíče do cache
+					// pokud ne, načtene data a uložíme data a klíče do cache
 					_all = Data.ToArray();
-					EntityCacheManager.StoreAllKeys<TEntity>(_all.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());
+
+					EntityCacheManager.StoreAllKeys<TEntity>(_all.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());										
+					foreach (var entity in _all) // performance: Pokud již objekty jsou v cache je jejich ukládání do cache zbytečné. Pro většinový scénář však nemáme ani klíče ani entity v cache, proto je jejich uložení do cache na místě).
+					{						
+						EntityCacheManager.StoreEntity<TEntity>(entity);
+					}
 				}
+
 				LoadReferences(_all);
 
 				if (!_allInitialized)

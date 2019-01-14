@@ -51,8 +51,9 @@ namespace ConsoleApp1
 			//DebugDataLoader(container);
 			//DebugFlagClass(container);
 			//DebugTransactions(container);
-			DebugSeeding(container);
-			//DebugCaching(container);
+			//DebugSeeding(container);
+			//DebugCaching(container)
+			DebugOwnedTypes(container);
 		}
 
 		private static IWindsorContainer ConfigureAndCreateWindsorContainer()
@@ -284,5 +285,19 @@ namespace ConsoleApp1
 				roleRepository.GetObject(1);
 			}
 		}
+
+		private static void DebugOwnedTypes(IWindsorContainer container)
+		{
+			using (var scope = container.BeginScope())
+			{
+				Subject subject = new Subject { Name = "Name", HomeAddress = new Address { City = "City", Street = "Street", ZipCode = "Zip" } };
+				var unitOfWork = container.Resolve<IUnitOfWork>();
+				unitOfWork.AddForInsert(subject);
+				unitOfWork.Commit();
+				subject.HomeAddress.City = "New City";
+				unitOfWork.Commit();
+			}
+		}
+
 	}
 }

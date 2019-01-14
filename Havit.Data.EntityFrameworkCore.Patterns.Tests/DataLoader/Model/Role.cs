@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Havit.Data.EntityFrameworkCore.Attributes;
+using System;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Model
 {

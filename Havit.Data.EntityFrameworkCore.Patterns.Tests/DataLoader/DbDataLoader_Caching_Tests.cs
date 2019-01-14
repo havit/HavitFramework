@@ -1,7 +1,10 @@
-﻿using Havit.Data.EntityFrameworkCore.Patterns.Caching;
+﻿using Havit.Data.EntityFrameworkCore.Attributes;
+using Havit.Data.EntityFrameworkCore.Patterns.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders;
 using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
+using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Model;
+using Havit.Services.Caching;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -20,29 +23,85 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 		/// </summary>
 		[TestMethod]
 		public void DbDataLoader_Load_GetsObjectFromCache()
-		{			
+		{
 			// Arrange
-			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+			DictionaryCacheService cacheService = new DictionaryCacheService();
 
-			LoginAccount loginAccount = new LoginAccount { Id = 1 };
-			Membership membership = new Membership { LoginAccountId = 1, RoleId = 1 };
+			// uložíme objekt Role do cache
 			Role role = new Role { Id = 1 };
+			StoreRoleToCache(cacheService, role);
 
-			Mock<IEntityCacheManager> entityCacheManagerMock = new Mock<IEntityCacheManager>(MockBehavior.Strict);
-			entityCacheManagerMock.Setup(m => m.TryGetEntity<Role>(1, out role)).Callback(() => dbContext.Set<Role>().Attach(role)).Returns(true); // roli zaregistrujeme do dbContextu až při odbavování z cache (jinak neplatí precondition)
+			// vytvoříme nový dbContext pro membership, do které načteme roli z cache
+			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+			Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>();
+			dbContextFactoryMock.Setup(m => m.CreateService()).Returns(dbContext);
+			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
 
-			DbDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), entityCacheManagerMock.Object);
-			dbContext.Update(loginAccount);
-			dbContext.Update(membership);			
+			EntityCacheManager entityCacheManager = new EntityCacheManager(cacheService, new CacheAllEntitiesEntityCacheSupportDecision(), new EntityCacheKeyGenerator(), new NullEntityCacheOptionsGenerator(), new EntityCacheDependencyManager(cacheService), new DbEntityKeyAccessor(dbContextFactoryMock.Object), dbContext);
+			DbDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), entityCacheManager);
+
+			// vytvoříme si objekt membership s odkazem na neexistující LoginAccount a Roli, tento objekt si připojíme k DbContextu jako existující (avšak není v databázi)
+			Membership membership = new Membership { LoginAccountId = 1, RoleId = 1 };
+			dbContext.Attach(membership);
+
+			// Preconditions
+			Assert.IsNull(membership.Role); // v tento okamžik musí být nenačtená, chceme ověřit dočítání
 
 			// Act
-			Assert.IsNull(membership.Role); // precondition - v tento okamžik musí být nenačtená, chceme ověřit dočítání
+			// Pokusíme se načíst objekt Role.
+			// Není v databázi, takže jediná šance, jak jej odbavit je získat jej z cache.
 			dataLoader.Load(membership, m => m.Role);
 
 			// Assert
-			Assert.AreSame(role, membership.Role); // je použit objekt z cache
+			Assert.IsNotNull(membership.Role);
 			Assert.IsTrue(dbContext.Entry(membership).Reference(nameof(Membership.Role)).IsLoaded); // vlastnost je označena jako načtená
-			entityCacheManagerMock.Verify(m => m.TryGetEntity<Role>(1, out role), Times.Once); // použil se objekt z cache
+		}
+
+		/// <summary>
+		/// Cílem je ověřit, že dojde k fixupu při použití objektu z cache.
+		/// </summary>
+		/// <remarks>
+		/// Bug 42346: Cachování padá po druhém requestu - dataLoader.Load() =The instance of entity type 'EventType' cannot be tracked because another instance with the same key value for {'Id'} is already being tracked. 
+		/// </remarks>
+		[TestMethod]
+		public void DbDataLoader_Load_GetsObjectFromCacheForMultipleReferences()
+		{
+			// Arrange
+			DictionaryCacheService cacheService = new DictionaryCacheService();
+
+			// uložíme objekt Role do cache
+			Role role = new Role { Id = 1 };
+			StoreRoleToCache(cacheService, role);
+
+			// vytvoříme nový dbContext pro membership, do které načteme roli z cache
+			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+			Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>();
+			dbContextFactoryMock.Setup(m => m.CreateService()).Returns(dbContext);
+			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
+
+			EntityCacheManager entityCacheManager = new EntityCacheManager(cacheService, new CacheAllEntitiesEntityCacheSupportDecision(), new EntityCacheKeyGenerator(), new NullEntityCacheOptionsGenerator(), new EntityCacheDependencyManager(cacheService), new DbEntityKeyAccessor(dbContextFactoryMock.Object), dbContext);
+			DbDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), entityCacheManager);
+
+			// vytvoříme si objekt membership s odkazem na neexistující LoginAccount a Roli, tento objekt si připojíme k DbContextu jako existující (avšak není v databázi)
+			Membership membership1 = new Membership { LoginAccountId = 1, RoleId = 1 };
+			Membership membership2 = new Membership { LoginAccountId = 2, RoleId = 1 };
+			dbContext.Attach(membership1);
+			dbContext.Attach(membership2);
+
+			// Preconditions
+			Assert.IsNull(membership1.Role); // v tento okamžik musí být nenačtená, chceme ověřit dočítání
+			Assert.IsNull(membership2.Role); // v tento okamžik musí být nenačtená, chceme ověřit dočítání
+
+			// Act
+			// Pokusíme se načíst objekt Role.
+			// Není v databázi, takže jediná šance, jak jej odbavit je získat jej z cache.
+			dataLoader.LoadAll(new Membership[] { membership1, membership2 }, m => m.Role);
+
+			// Assert
+			Assert.IsNotNull(membership1.Role);
+			Assert.IsNotNull(membership2.Role);
+			Assert.IsTrue(dbContext.Entry(membership1).Reference(nameof(Membership.Role)).IsLoaded); // vlastnost je označena jako načtená
+			Assert.IsTrue(dbContext.Entry(membership2).Reference(nameof(Membership.Role)).IsLoaded); // vlastnost je označena jako načtená
 		}
 
 		/// <summary>
@@ -52,27 +111,58 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 		public async Task DbDataLoader_LoadAsync_GetsObjectFromCache()
 		{
 			// Arrange
-			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+			DictionaryCacheService cacheService = new DictionaryCacheService();
 
-			LoginAccount loginAccount = new LoginAccount { Id = 1 };
-			Membership membership = new Membership { LoginAccountId = 1, RoleId = 1 };
+			// uložíme objekt Role do cache
 			Role role = new Role { Id = 1 };
+			StoreRoleToCache(cacheService, role);
 
-			Mock<IEntityCacheManager> entityCacheManagerMock = new Mock<IEntityCacheManager>(MockBehavior.Strict);
-			entityCacheManagerMock.Setup(m => m.TryGetEntity<Role>(1, out role)).Callback(() => dbContext.Set<Role>().Attach(role)).Returns(true); // roli zaregistrujeme do dbContextu až při odbavování z cache (jinak neplatí precondition)
+			// vytvoříme nový dbContext pro membership, do které načteme roli z cache
+			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+			Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>();
+			dbContextFactoryMock.Setup(m => m.CreateService()).Returns(dbContext);
+			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
 
-			DbDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), entityCacheManagerMock.Object);
-			dbContext.Update(loginAccount);
-			dbContext.Update(membership);
+			EntityCacheManager entityCacheManager = new EntityCacheManager(cacheService, new CacheAllEntitiesEntityCacheSupportDecision(), new EntityCacheKeyGenerator(), new NullEntityCacheOptionsGenerator(), new EntityCacheDependencyManager(cacheService), new DbEntityKeyAccessor(dbContextFactoryMock.Object), dbContext);
+			DbDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), entityCacheManager);
+
+			// vytvoříme si objekt membership s odkazem na neexistující LoginAccount a Roli, tento objekt si připojíme k DbContextu jako existující (avšak není v databázi)
+			Membership membership = new Membership { LoginAccountId = 1, RoleId = 1 };
+			dbContext.Attach(membership);
+
+			// Preconditions
+			Assert.IsNull(membership.Role); // v tento okamžik musí být nenačtená, chceme ověřit dočítání
 
 			// Act
-			Assert.IsNull(membership.Role); // precondition - v tento okamžik musí být nenačtená, chceme ověřit dočítání
+			// Pokusíme se načíst objekt Role.
+			// Není v databázi, takže jediná šance, jak jej odbavit je získat jej z cache.
 			await dataLoader.LoadAsync(membership, m => m.Role);
 
 			// Assert
-			Assert.AreSame(role, membership.Role); // je použit objekt z cache
+			Assert.IsNotNull(membership.Role);
 			Assert.IsTrue(dbContext.Entry(membership).Reference(nameof(Membership.Role)).IsLoaded); // vlastnost je označena jako načtená
-			entityCacheManagerMock.Verify(m => m.TryGetEntity<Role>(1, out role), Times.Once); // použil se objekt z cache
 		}
+
+		private static void StoreRoleToCache(ICacheService cacheService, Role role)
+		{
+			DataLoaderTestDbContext dbContextInitial = new DataLoaderTestDbContext();
+			dbContextInitial.Database.DropCreate(); // smažeme obsah databáze
+
+			// pro použití v závslostech EntityCacheManageru
+			Mock<IDbContextFactory> dbContextInitialFactoryMock = new Mock<IDbContextFactory>();
+			dbContextInitialFactoryMock.Setup(m => m.CreateService()).Returns(dbContextInitial);
+			dbContextInitialFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
+
+			// připojíme objekt Role k DbContextu jako existující (avšak není v databázi)
+			dbContextInitial.Attach(role);
+
+			// a tento in memory objekt uložíme do cache (přestože není v databázi)
+			EntityCacheManager entityCacheManagerInitial = new EntityCacheManager(cacheService, new CacheAllEntitiesEntityCacheSupportDecision(), new EntityCacheKeyGenerator(), new NullEntityCacheOptionsGenerator(), new EntityCacheDependencyManager(cacheService), new DbEntityKeyAccessor(dbContextInitialFactoryMock.Object), dbContextInitial);
+			entityCacheManagerInitial.StoreEntity(role);
+
+			// nyní máme objekt Role v cache
+			Assert.IsTrue(cacheService.Contains(new EntityCacheKeyGenerator().GetEntityCacheKey(role.GetType(), role.Id))); // pokud selže, nedostal se objekt do cache
+		}
+
 	}
 }

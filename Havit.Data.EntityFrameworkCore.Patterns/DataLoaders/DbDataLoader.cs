@@ -351,7 +351,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 
 				// získáme klíče objektů, které potřebujeme načíst (z "běžných vlastností" nebo z shadow properties)
 				// ignorujeme nenastavené reference (null)
-				object[] foreignKeyValues = entitiesToLoadReference.Select(entity => dbContext.GetEntry(entity, true).CurrentValues[foreignKeyForReference]).Where(value => value != null).ToArray();
+				object[] foreignKeyValues = entitiesToLoadReference.Select(entity => dbContext.GetEntry(entity, true).CurrentValues[foreignKeyForReference]).Where(value => value != null).Distinct().ToArray();
 
 				IDbSet<TProperty> dbSet = dbContext.Set<TProperty>();
 

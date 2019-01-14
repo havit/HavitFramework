@@ -26,7 +26,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 	{
 		private readonly ICacheService cacheService;
 		private readonly IEntityCacheSupportDecision entityCacheSupportDecision;
-		private readonly IEntityCacheKeyGenerator entityCacheKeyNamingService;
+		private readonly IEntityCacheKeyGenerator entityCacheKeyGenerator;
 		private readonly IEntityCacheOptionsGenerator entityCacheOptionsGenerator;
 		private readonly IEntityCacheDependencyManager entityCacheDependencyManager;
 		private readonly IDbContext dbContext;
@@ -35,11 +35,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public EntityCacheManager(ICacheService cacheService, IEntityCacheSupportDecision entityCacheSupportDecision, IEntityCacheKeyGenerator entityCacheKeyNamingService, IEntityCacheOptionsGenerator entityCacheOptionsGenerator, IEntityCacheDependencyManager entityCacheDependencyManager, IEntityKeyAccessor entityKeyAccessor, IDbContext dbContext)
+		public EntityCacheManager(ICacheService cacheService, IEntityCacheSupportDecision entityCacheSupportDecision, IEntityCacheKeyGenerator entityCacheKeyGenerator, IEntityCacheOptionsGenerator entityCacheOptionsGenerator, IEntityCacheDependencyManager entityCacheDependencyManager, IEntityKeyAccessor entityKeyAccessor, IDbContext dbContext)
 		{
 			this.cacheService = cacheService;
 			this.entityCacheSupportDecision = entityCacheSupportDecision;
-			this.entityCacheKeyNamingService = entityCacheKeyNamingService;
+			this.entityCacheKeyGenerator = entityCacheKeyGenerator;
 			this.entityCacheOptionsGenerator = entityCacheOptionsGenerator;
 			this.entityCacheDependencyManager = entityCacheDependencyManager;
 			this.entityKeyAccessor = entityKeyAccessor;
@@ -53,7 +53,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 			// pokud vůbec kdy může být entita cachována, budeme se ptát do cache
 			if (entityCacheSupportDecision.ShouldCacheEntity<TEntity>())
 			{
-				string cacheKey = entityCacheKeyNamingService.GetEntityCacheKey(typeof(TEntity), key);
+				string cacheKey = entityCacheKeyGenerator.GetEntityCacheKey(typeof(TEntity), key);
 				if (cacheService.TryGet(cacheKey, out object cacheValues))
 				{
 					// pokud je entita v cache, materializujeme ji a vrátíme ji
@@ -81,7 +81,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 			// pokud je entitu možné uložit do cache, uložíme ji
 			if (entityCacheSupportDecision.ShouldCacheEntity(entity))
 			{
-				string cacheKey = entityCacheKeyNamingService.GetEntityCacheKey(typeof(TEntity), entityKeyAccessor.GetEntityKeyValues(entity).Single());
+				string cacheKey = entityCacheKeyGenerator.GetEntityCacheKey(typeof(TEntity), entityKeyAccessor.GetEntityKeyValues(entity).Single());
 				EntityEntry entry = null;
 				//dbContextFactory.ExecuteAction(dbContext =>
 				//{
@@ -106,7 +106,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 			// pokud mohou být klíče v cache, budeme je hledat
 			if (entityCacheSupportDecision.ShouldCacheAllKeys<TEntity>())
 			{
-				string cacheKey = entityCacheKeyNamingService.GetAllKeysCacheKey(typeof(TEntity));
+				string cacheKey = entityCacheKeyGenerator.GetAllKeysCacheKey(typeof(TEntity));
 				return cacheService.TryGet(cacheKey, out keys);
 			}
 
@@ -121,7 +121,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 			// pokud je možné klíče uložit do cache, uložíme je
 			if (entityCacheSupportDecision.ShouldCacheAllKeys<TEntity>())
 			{
-				string cacheKey = entityCacheKeyNamingService.GetAllKeysCacheKey(typeof(TEntity));
+				string cacheKey = entityCacheKeyGenerator.GetAllKeysCacheKey(typeof(TEntity));
 				cacheService.Add(cacheKey, (object)keys, entityCacheOptionsGenerator.GetAllKeysCacheOptions<TEntity>());
 			}
 		}
@@ -163,12 +163,12 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 
 		private void InvalidateEntityInternal(Type entityType, object entityKey)
 		{
-			cacheService.Remove(entityCacheKeyNamingService.GetEntityCacheKey(entityType, entityKey));
+			cacheService.Remove(entityCacheKeyGenerator.GetEntityCacheKey(entityType, entityKey));
 		}
 
 		private void InvalidateGetAllInternal(Type type)
 		{
-			cacheService.Remove(entityCacheKeyNamingService.GetAllKeysCacheKey(type));
+			cacheService.Remove(entityCacheKeyGenerator.GetAllKeysCacheKey(type));
 		}
 
 		private void InvalidateSaveCacheDependencyKeyInternal(Type entityType, object entityKey)

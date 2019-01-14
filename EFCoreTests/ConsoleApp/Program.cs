@@ -44,28 +44,28 @@ namespace ConsoleApp1
 		public static void Main(string[] args)
 		{
 			var container = ConfigureAndCreateWindsorContainer();
-			UpdateDatabase(container);
+			//UpdateDatabase(container);
 			//GenerateLanguages(1, container);
 			//GenerateSecurity(100, 10, 3, container);
 			//DebugModelInfo(container);
-			//DebugDataLoader(container);
+			DebugDataLoader(container);
 			//DebugFlagClass(container);
 			//DebugTransactions(container);
 			//DebugSeeding(container);
 			//DebugCaching(container)
-			DebugOwnedTypes(container);
+			//DebugOwnedTypes(container);
 		}
 
 		private static IWindsorContainer ConfigureAndCreateWindsorContainer()
 		{
-			var loggerFactory = new LoggerFactory();
+			//var loggerFactory = new LoggerFactory();
 			//loggerFactory.AddConsole((categoryName, logLevel) => (logLevel == LogLevel.Information) && (categoryName == DbLoggerCategory.Database.Command.Name));
 			//loggerFactory.AddConsole((categoryName, logLevel) => (categoryName == DbLoggerCategory.Database.Transaction.Name));
 
 			DbContextOptions options = new DbContextOptionsBuilder<ApplicationDbContext>()
 				.UseSqlServer("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=EFCoreTests;Application Name=EFCoreTests-Entity")
 				//.UseInMemoryDatabase("ConsoleApp")
-				.UseLoggerFactory(loggerFactory)
+				//.UseLoggerFactory(loggerFactory)
 				.Options;
 
 			IWindsorContainer container = new WindsorContainer();
@@ -93,6 +93,7 @@ namespace ConsoleApp1
 			using (var scope = container.BeginScope())
 			{
 				var dbContext = container.Resolve<IDbContext>();
+				//dbContext.Database.EnsureDeleted();
 				dbContext.Database.Migrate();
 			}
 		}
@@ -128,7 +129,7 @@ namespace ConsoleApp1
 				var unitOfWork = container.Resolve<IUnitOfWork>();
 
 				List<LoginAccount> loginAccounts = Enumerable.Range(0, loginAccountsCount).Select(i => new LoginAccount { Username = Guid.NewGuid().ToString() }).ToList();
-				List<Role> roles = Enumerable.Range(0, rolesCount).Select(i => new Role { Name = Guid.NewGuid().ToString() }).ToList();
+				List<Role> roles = Enumerable.Range(0, rolesCount).Select(i => new Role { Id = i + 1, Name = Guid.NewGuid().ToString() }).ToList();
 
 				foreach (LoginAccount loginAccount in loginAccounts)
 				{
@@ -172,21 +173,10 @@ namespace ConsoleApp1
 				var dataLoader = container.Resolve<IDataLoader>();
 				var entityCacheManager = container.Resolve<IEntityCacheManager>();
 
-				dataLoader.Load(loginAccount, la => la.Memberships);
+				dataLoader.Load(loginAccount, la => la.Memberships).ThenLoad(m => m.Role);
 				var firstMembership = loginAccount.Memberships.First();
 				Console.WriteLine(firstMembership.RoleId);
 				Console.WriteLine(firstMembership.Role);
-
-				addToCache(loginAccount.Memberships[0].RoleId);
-				//addToCache(loginAccount.Memberships[1].RoleId);
-				//addToCache(loginAccount.Memberships[2].RoleId);				
-				dbContext.Set<Role>().UpdateRange(new Role[] { new Role { Id = loginAccount.Memberships[1].RoleId, Name = "Manually attached" } });
-
-				Console.WriteLine(firstMembership.RoleId);
-				Console.WriteLine(firstMembership.Role);
-
-				dataLoader.Load(loginAccount, la => la.Memberships).ThenLoad(m => m.Role);
-				loginAccount.Memberships.ForEach(m => Console.WriteLine(m.Role.Name));
 			}
 		}
 

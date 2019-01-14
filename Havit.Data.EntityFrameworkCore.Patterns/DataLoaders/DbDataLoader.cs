@@ -393,7 +393,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 			string propertyPrimaryKey = dbContext.Model.FindEntityType(typeof(TProperty)).FindPrimaryKey().Properties.Single().Name;
 
 			// získáme query pro načtení objektů
-			return dbContext.Set<TProperty>().AsQueryable().Where(p => keysToQuery.Contains(EF.Property<object>(p, propertyPrimaryKey)));
+
+			// https://github.com/aspnet/EntityFrameworkCore/issues/14408
+			// Jako workadound stačí místo v EF.Property<object> namísto object zvolit skutečný typ. Aktuálně používáme jen int, hardcoduji tedy int bez vynakládání většího úsilí na obecnější řešení.
+			//return dbContext.Set<TProperty>().AsQueryable().Where(p => keysToQuery.Contains(EF.Property<object>(p, propertyPrimaryKey)));
+			return dbContext.Set<TProperty>().AsQueryable().Where(p => keysToQuery.Contains(EF.Property<int>(p, propertyPrimaryKey)));
 		}
 
 		private void LoadReferencePropertyInternal_StoreToCache<TProperty>(List<TProperty> loadedProperties)

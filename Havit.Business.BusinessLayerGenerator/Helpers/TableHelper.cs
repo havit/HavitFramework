@@ -827,20 +827,13 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 	            scriptingOptions.AnsiPadding = false;
 	            scriptingOptions.AgentJobId = false;
 	            scriptingOptions.DriAll = false;
-				if (Settings.GeneratorSettings.Strategy == Settings.GeneratorStrategy.HavitCodeFirst)
-				{
-					scriptingOptions.NoCollation = true;
-				}
-				else
-				{
-					scriptingOptions.DriChecks = true;
-					scriptingOptions.DriDefaults = true;
-					scriptingOptions.DriForeignKeys = true;
-					scriptingOptions.DriPrimaryKey = true;
-					scriptingOptions.DriUniqueKeys = true;
-					scriptingOptions.DriWithNoCheck = true;
-				}
-	            scriptingOptions.Statistics = false;
+				scriptingOptions.DriChecks = true;
+				scriptingOptions.DriDefaults = true;
+				scriptingOptions.DriForeignKeys = true;
+				scriptingOptions.DriPrimaryKey = true;
+				scriptingOptions.DriUniqueKeys = true;
+				scriptingOptions.DriWithNoCheck = true;
+				scriptingOptions.Statistics = false;
 	            scriptingOptions.TargetServerVersion = SqlServerVersion.Version140;
 
 	            Urn[] tableUrns = DatabaseHelper.GetWorkingTables().Select(item => item.Urn).ToArray();

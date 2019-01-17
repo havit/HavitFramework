@@ -265,19 +265,21 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			}
 
 			writer.WriteCommentSummary(classComment + typeComment);
-		
-			writer.WriteCommentLine("<remarks>");
-			writer.WriteCommentLine("<code>");
 
-		    List<string> createScript = TableHelper.Script(table);
-
-			foreach (string scriptLine in createScript)
+			if (Settings.GeneratorSettings.Strategy != Settings.GeneratorStrategy.HavitCodeFirst)
 			{
-				writer.WriteCommentLine(HttpUtilityExt.HtmlEncode(scriptLine, HtmlEncodeOptions.IgnoreNonASCIICharacters));
-			}
-			writer.WriteCommentLine("</code>");
-			writer.WriteCommentLine("</remarks>");
+				writer.WriteCommentLine("<remarks>");
+				writer.WriteCommentLine("<code>");
 
+				List<string> createScript = TableHelper.Script(table);
+
+				foreach (string scriptLine in createScript)
+				{
+					writer.WriteCommentLine(HttpUtilityExt.HtmlEncode(scriptLine, HtmlEncodeOptions.IgnoreNonASCIICharacters));
+				}
+				writer.WriteCommentLine("</code>");
+				writer.WriteCommentLine("</remarks>");
+			}
 			string interfaces = "";
 			if (LanguageHelper.IsLanguageTable(table))
 			{

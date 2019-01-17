@@ -238,7 +238,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			Table resultTypeTable = StoredProcedureHelper.GetResultTypeTable(procedure);
 
 			writer.WriteCommentSummary(ExtendedPropertiesHelper.GetDescription(ExtendedPropertiesKey.FromStoredProcedure(procedure)));
-			if (withTransactionParameter)
+			if (withTransactionParameter && (Settings.GeneratorSettings.Strategy != Settings.GeneratorStrategy.HavitCodeFirst))
 			{
 				writer.WriteCommentLine("<remarks>");
 				writer.WriteCommentLine("<code>");

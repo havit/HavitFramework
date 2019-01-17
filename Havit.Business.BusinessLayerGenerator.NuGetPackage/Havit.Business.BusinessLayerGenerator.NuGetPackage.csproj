@@ -9,7 +9,7 @@
   <PropertyGroup>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<PackageId>Havit.Business.BLGenerator</PackageId>
-	<PackageVersion>1.7.10</PackageVersion>
+	<PackageVersion>1.7.11</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Business Layer - Code Generator</Description>
 	<!-- Publikujeme výstup buildu jiného projektu. -->
 	<IncludeBuildOutput>false</IncludeBuildOutput>

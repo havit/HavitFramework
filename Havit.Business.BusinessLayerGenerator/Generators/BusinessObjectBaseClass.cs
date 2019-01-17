@@ -265,7 +265,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			}
 
 			writer.WriteCommentSummary(classComment + typeComment);
-
+		
 			writer.WriteCommentLine("<remarks>");
 			writer.WriteCommentLine("<code>");
 

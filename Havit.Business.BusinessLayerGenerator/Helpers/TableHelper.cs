@@ -223,6 +223,10 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 				}
 			}
 
+			// seřadíme kolekce dle atributů (v praxi se ukazuje, že jsou již seřazené)			
+			result = result.OrderBy(item => item.PropertyName).ToList();
+
+			// abychom neměnili spoustu existujícího kódu, neměníme pořadí lokalizačních tabulek a necháváme je na konci
 			if (LocalizationHelper.IsLocalizedTable(table))
 			{
 				Table targetTable = LocalizationHelper.GetLocalizationTable(table);
@@ -262,8 +266,6 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 
 			//	}
 			//}
-			result = result.OrderBy(item => item.PropertyName).ToList();
-
 			return result;
 		}
 		//private static List<Table> _getCollectionColumns_CheckedTables = new List<Table>();

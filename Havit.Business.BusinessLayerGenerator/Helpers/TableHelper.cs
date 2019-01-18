@@ -110,7 +110,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			}
 
 			List<Column> result = new List<Column>();
-			foreach (Column column in table.Columns)
+			foreach (Column column in table.Columns.SortIfNecessary())
 			{
 				if (!column.InPrimaryKey && !ColumnHelper.IsIgnored(column))
 				{
@@ -132,7 +132,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		public static List<Column> GetNotIgnoredColumns(Table table)
 		{
 			List<Column> result = new List<Column>();
-			foreach (Column column in table.Columns)
+			foreach (Column column in table.Columns.SortIfNecessary())
 			{
 				if (!ColumnHelper.IsIgnored(column))
 				{
@@ -259,9 +259,11 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 
 			//	foreach (var item in result)
 			//	{
-					
+
 			//	}
 			//}
+			result = result.OrderBy(item => item.PropertyName).ToList();
+
 			return result;
 		}
 		//private static List<Table> _getCollectionColumns_CheckedTables = new List<Table>();
@@ -851,5 +853,28 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 	    }
 	    private static List<string> _tableScripts;
 
+		internal static List<Column> SortIfNecessary(this ColumnCollection columnCollection)
+		{
+			return columnCollection.Cast<Column>().ToList().SortIfNecessary();
+		}
+
+		internal static List<Column> SortIfNecessary(this List<Column> columnCollection)
+		{			
+			List<Column> result = columnCollection.Cast<Column>().ToList();
+			// Pro HavitCodeFirst strategii budeme generovat sloupce v abecedním pořadí (s výjimkou PK), abychom omezili vznik konfliktů a udělali generování s EF Core Migrations determinističtější.
+			if (GeneratorSettings.Strategy == GeneratorStrategy.HavitCodeFirst)
+			{
+				var pkColumnsInReverseOrder = result.Where(column => column.InPrimaryKey).ToList();
+				pkColumnsInReverseOrder.ForEach(pkColumn => result.Remove(pkColumn)); // sloupce s PK se neúčastní řazení
+				
+				result = result.OrderBy(column => column.Name).ToList(); // seřadíme sloupce abecedně
+				
+				// vložíme zpět sloupce s PK
+				pkColumnsInReverseOrder.Reverse();
+				pkColumnsInReverseOrder.ToList().ForEach(pkColumn => result.Insert(0, pkColumn)); // protože můžeme vkládat více sloupců a vkládáme je na pozici 0, vkládáme je v opačném pořadí (Reverse)
+			}
+			
+			return result;
+		}
 	}
 }

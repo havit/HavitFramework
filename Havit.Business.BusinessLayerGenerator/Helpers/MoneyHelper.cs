@@ -129,7 +129,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		{
 			List<string> result = new List<string>();
 
-			foreach (Column column in table.Columns)
+			foreach (Column column in table.Columns.SortIfNecessary())
 			{
 				if (!ColumnHelper.IsIgnored(column))
 				{

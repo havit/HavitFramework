@@ -123,7 +123,7 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 		/// <summary>
 		/// Vrací změny registrované ke commitu, vychází pouze z registrací objektů a nepoužívá DbContext a jeho changetracker.
 		/// </summary>
-		protected internal Changes GetRegisteredChanges()
+		protected internal virtual Changes GetRegisteredChanges()
 		{
 			return new Changes
 			{
@@ -136,7 +136,7 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 		/// <summary>
 		/// Vrací všechny známé změny ke commitu, vychází z registrací objektů a používá také DbContext a jeho changetracker.
 		/// </summary>
-		protected internal Changes GetAllKnownChanges()
+		protected internal virtual Changes GetAllKnownChanges()
 		{
 			return new Changes
 			{
@@ -261,7 +261,7 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 		/// Vyhazuje výjimku, pokud existuje objekt, který je registrován jako změněný v DbContextu (díky changetrackeru), ale není registrován v tomto UnitOfWorku.
 		/// </summary>
 		/// <exception cref="InvalidOperationException">Existuje objekt, který je registrován jako změněný v DbContextu (díky changetrackeru), ale není registrován v tomto UnitOfWorku.</exception>
-		protected void VerifyAllChangesAreRegistered()
+		protected virtual void VerifyAllChangesAreRegistered()
 		{
 			object[] notRegisteredUpdates = GetNotRegisteredChanges();
 			if (notRegisteredUpdates.Any())
@@ -278,7 +278,7 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 		/// <summary>
 		/// Vrací objekty, které jsou registrovány jako změněné v DbContextu (díky changetrackeru), ale není registrován v tomto UnitOfWorku.
 		/// </summary>
-		protected object[] GetNotRegisteredChanges()
+		protected virtual object[] GetNotRegisteredChanges()
 		{
 			return DbContext.GetObjectsInState(EntityState.Added | EntityState.Modified | EntityState.Deleted).Except(insertRegistrations).Except(updateRegistrations).Except(deleteRegistrations).ToArray();
 		}

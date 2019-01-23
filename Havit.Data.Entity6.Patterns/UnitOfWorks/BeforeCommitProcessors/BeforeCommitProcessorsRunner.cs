@@ -26,7 +26,7 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks.BeforeCommitProcessors
 		/// <summary>
 		/// Spustí IBeforeCommitProcessory pro zadané změny.
 		/// </summary>
-		public void Run(Changes changes)
+		public virtual void Run(Changes changes)
 		{
 			// z výkonových důvodů - omezení procházení pole processorů - seskupíme objekty podle typu,
 			// vyhledáme procesor pro daný typ a spustíme jej nad všemi objekty ve skupině.

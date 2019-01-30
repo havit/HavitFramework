@@ -5,7 +5,6 @@ using Havit.Web.Security;
 using Havit.Web.UI;
 using Havit.Web.UI.WebControls;
 using Havit.WebApplicationTest;
-using Havit.WebApplicationTest.App_Start;
 
 namespace Havit.WebApplicationTest
 {
@@ -16,7 +15,6 @@ namespace Havit.WebApplicationTest
 		{
 			DateTimeBox.GetDateTimeBoxCustomizationDefault += new DateTimeBox.DateTimeBoxDateCustomizationEventHandler(this.DateTimeBox_GetDateTimeBoxCustomizationDefaults);
 			ScriptManagerConfig.RegisterScriptResourceMappings();
-			WindsorCastleConfig.RegisterDiContainer(this);
 
 			Messenger.StorageType = MessengerStorageType.Cookies;
 

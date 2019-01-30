@@ -5,6 +5,7 @@ using Havit.AspNetCore.Mvc.ExceptionMonitoring.Formatters;
 using Havit.AspNetCore.Mvc.ExceptionMonitoring.Processors;
 using Havit.AspNetCore.Mvc.ExceptionMonitoring.Services;
 using Microsoft.Extensions.Configuration;
+using System;
 
 // Správný namespace je Microsoft.Extensions.DependencyInjection!
 
@@ -18,8 +19,12 @@ namespace Microsoft.Extensions.DependencyInjection
 		/// <summary>
 		/// Zaregistruje služby pro ErrorToJson.
 		/// </summary>
-        public static void AddErrorToJson(this IServiceCollection services, ErrorToJsonConfiguration configuration)
+        public static void AddErrorToJson(this IServiceCollection services, Action<ErrorToJsonSetup> setupAction)
         {
+			ErrorToJsonSetup setup = new ErrorToJsonSetup();
+			setupAction.Invoke(setup);
+			var configuration = setup.GetConfiguration();
+
 			services.AddSingleton<IErrorToJsonService>(new ErrorToJsonService(configuration));
         }
     }

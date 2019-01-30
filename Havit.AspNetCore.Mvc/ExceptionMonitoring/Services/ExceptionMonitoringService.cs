@@ -3,7 +3,7 @@ using Havit.AspNetCore.Mvc.ExceptionMonitoring.Filters;
 using Havit.AspNetCore.Mvc.ExceptionMonitoring.Processors;
 using Microsoft.Extensions.Logging;
 
-namespace Havit.AspNetCore.Mvc.ExceptionMonitoring
+namespace Havit.AspNetCore.Mvc.ExceptionMonitoring.Services
 {
 	/// <summary>
 	/// Exception monitoring.

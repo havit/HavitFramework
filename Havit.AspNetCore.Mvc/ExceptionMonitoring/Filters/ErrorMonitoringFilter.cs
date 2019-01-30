@@ -1,5 +1,8 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using Havit.AspNetCore.Mvc.ExceptionMonitoring.Services;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Logging;
 
 namespace Havit.AspNetCore.Mvc.ExceptionMonitoring.Filters
 {
@@ -10,22 +13,33 @@ namespace Havit.AspNetCore.Mvc.ExceptionMonitoring.Filters
     public class ErrorMonitoringFilter : ExceptionFilterAttribute
     {
         private readonly IExceptionMonitoringService exceptionMonitoringService;
+		private readonly ILogger<ErrorMonitoringFilter> logger;
 
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-        public ErrorMonitoringFilter(IExceptionMonitoringService exceptionMonitoringService)
+		public ErrorMonitoringFilter(IExceptionMonitoringService exceptionMonitoringService, ILogger<ErrorMonitoringFilter> logger)
         {
             this.exceptionMonitoringService = exceptionMonitoringService;
-        }
+			this.logger = logger;
+		}
 
 		/// <summary>
 		/// Předá výjimku od "ExceptionMonitoringu".
 		/// </summary>
         public override void OnException(ExceptionContext context)
         {
-            exceptionMonitoringService.HandleException(context.Exception);
-        }
+			logger.LogDebug(context.Exception, "Monitoring exception.");
+
+			try
+			{
+				exceptionMonitoringService.HandleException(context.Exception);
+			}
+			catch (Exception handleExceptionException)
+			{
+				logger.LogWarning(handleExceptionException, "An exception occured during exception handling.");
+			}
+		}
 
     }
 }

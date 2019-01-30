@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Havit.AspNetCore.Mvc.Filters.ErrorToJson
+namespace Havit.AspNetCore.Mvc.ErrorToJson.Configuration
 {
 	/// <summary>
 	/// Zajišuje konfiguraci mapování z uivatelského kódu.

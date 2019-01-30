@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Threading;
 using Havit.AspNetCore.Mvc.ExceptionMonitoring.Formatters;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Havit.AspNetCore.Mvc.ExceptionMonitoring.Processors
@@ -14,17 +15,19 @@ namespace Havit.AspNetCore.Mvc.ExceptionMonitoring.Processors
     public class SmtpExceptionMonitoringProcessor : IExceptionMonitoringProcessor
     {
         private readonly IExceptionFormatter exceptionFormatter;
-        private readonly SmtpExceptionMonitoringOptions options;
+		private readonly ILogger<SmtpExceptionMonitoringProcessor> logger;
+		private readonly SmtpExceptionMonitoringOptions options;
 
         private int _mailCounter = 0;
 
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-        public SmtpExceptionMonitoringProcessor(IExceptionFormatter exceptionFormatter, IOptions<SmtpExceptionMonitoringOptions> options)
+        public SmtpExceptionMonitoringProcessor(IExceptionFormatter exceptionFormatter, IOptions<SmtpExceptionMonitoringOptions> options, ILogger<SmtpExceptionMonitoringProcessor> logger)
         {
             this.exceptionFormatter = exceptionFormatter;
-            this.options = options.Value;
+			this.logger = logger;
+			this.options = options.Value;
         }
 
 		/// <summary>
@@ -33,7 +36,11 @@ namespace Havit.AspNetCore.Mvc.ExceptionMonitoring.Processors
 		/// </summary>
         public void ProcessException(Exception exception)
         {
-            if (options.Enabled)
+			bool enabled = options.Enabled;
+
+			logger.LogTrace(enabled ? "SmtpExceptionMonitoringProcessor enabled." : "SmtpExceptionMonitoringProcessor disabled.");
+
+			if (enabled)
             {
                 MailMessage mailMessage = PrepareMailMessage(exception);
 
@@ -50,9 +57,12 @@ namespace Havit.AspNetCore.Mvc.ExceptionMonitoring.Processors
                        smtpClient.Credentials = new NetworkCredential(options.SmtpUsername, options.SmtpPassword);
                     }
 
-                    smtpClient.Send(mailMessage);
-                }
-            }
+					logger.LogTrace("Sending message.");
+					smtpClient.Send(mailMessage);
+					logger.LogInformation("Message sent.");
+
+				}
+			}
         }
 
 		/// <summary>

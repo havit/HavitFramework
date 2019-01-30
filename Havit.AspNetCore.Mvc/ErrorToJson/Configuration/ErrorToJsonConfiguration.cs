@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Havit.AspNetCore.Mvc.Filters.ErrorToJson
+namespace Havit.AspNetCore.Mvc.ErrorToJson.Configuration
 {
 	/// <summary>
 	/// Vnitřní konfigurace mapování výjimek na JSON odpovědi.

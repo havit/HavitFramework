@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Havit.AspNetCore.Mvc.Filters.ErrorToJson
+namespace Havit.AspNetCore.Mvc.ErrorToJson.Configuration
 {
 	/// <summary>
 	/// Položka mapování výjimky

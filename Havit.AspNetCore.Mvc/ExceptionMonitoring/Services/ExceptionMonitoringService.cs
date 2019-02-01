@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Havit.AspNetCore.Mvc.ExceptionMonitoring.Filters;
 using Havit.AspNetCore.Mvc.ExceptionMonitoring.Processors;
 using Microsoft.Extensions.Logging;
@@ -17,9 +19,9 @@ namespace Havit.AspNetCore.Mvc.ExceptionMonitoring.Services
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-        public ExceptionMonitoringService(IExceptionMonitoringProcessor[] exceptionMonitoringProcessors, ILogger<ErrorMonitoringFilter> logger)
+        public ExceptionMonitoringService(IEnumerable<IExceptionMonitoringProcessor> exceptionMonitoringProcessors, ILogger<ErrorMonitoringFilter> logger)
         {
-            this.exceptionMonitoringProcessors = exceptionMonitoringProcessors;
+            this.exceptionMonitoringProcessors = exceptionMonitoringProcessors.ToArray();
             this.logger = logger;
         }
 

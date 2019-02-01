@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Castle.Facilities.TypedFactory;
+using Castle.MicroKernel.Lifestyle;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.Resolvers.SpecializedResolvers;
 using Castle.Windsor;
@@ -32,9 +33,11 @@ namespace Havit.Data.Entity6.Patterns.Windsor.Tests
 			var container = CreateAndSetupWindsorContainer();
 
 			// Act
-			container.Resolve<ILanguageService>();
-			container.Resolve<ILocalizationService>();
-
+			using (container.BeginScope())
+			{
+				container.Resolve<ILanguageService>();
+				container.Resolve<ILocalizationService>();
+			}
 			// Assert
 			// no exception was thrown
 		}
@@ -46,7 +49,10 @@ namespace Havit.Data.Entity6.Patterns.Windsor.Tests
 			var container = CreateAndSetupWindsorContainer();
 
 			// Act
-			container.Resolve<IDataLoader>();
+			using (container.BeginScope())
+			{
+				container.Resolve<IDataLoader>();
+			}
 
 			// Assert
 			// no exception was thrown
@@ -59,7 +65,10 @@ namespace Havit.Data.Entity6.Patterns.Windsor.Tests
 			var container = CreateAndSetupWindsorContainer();
 
 			// Act
-			container.Resolve<IUnitOfWork>();
+			using (container.BeginScope())
+			{
+				container.Resolve<IUnitOfWork>();
+			}
 
 			// Assert
 			// no exception was thrown
@@ -72,7 +81,10 @@ namespace Havit.Data.Entity6.Patterns.Windsor.Tests
 			var container = CreateAndSetupWindsorContainer();
 
 			// Act
-			container.Resolve<IDataSeedRunner>();
+			using (container.BeginScope())
+			{
+				container.Resolve<IDataSeedRunner>();
+			}
 
 			// Assert
 			// no exception was thrown
@@ -80,20 +92,10 @@ namespace Havit.Data.Entity6.Patterns.Windsor.Tests
 
 
 		[TestMethod]
-		public void EntityPatternsInstaller__ShouldRegisterBeforeCommitProcessorsServicesAndDependencies()
+		public void EntityPatternsInstaller_ShouldRegisterBeforeCommitProcessorsServicesAndDependencies()
 		{
 			// Arrange
-			WindsorContainer container = new WindsorContainer();
-			container.Kernel.Resolver.AddSubResolver(new CollectionResolver(container.Kernel, false));
-
-			container.AddFacility<TypedFactoryFacility>();
-			container.WithEntityPatternsInstaller(new WebApplicationComponentRegistrationOptions())
-				.RegisterEntityPatterns()
-				.RegisterDbContext<TestDbContext>()
-				.RegisterLocalizationServices<Language>()
-				.RegisterDataLayer(typeof(ILanguageDataSource).Assembly);
-
-			container.Register(Component.For<ITimeService>().ImplementedBy<ServerTimeService>().LifestyleSingleton());
+			WindsorContainer container = CreateAndSetupWindsorContainer();
 
 			// Act
 			IBeforeCommitProcessorsFactory factory = container.Resolve<IBeforeCommitProcessorsFactory>();
@@ -112,7 +114,7 @@ namespace Havit.Data.Entity6.Patterns.Windsor.Tests
 
 			container.AddFacility<TypedFactoryFacility>();
 			container.Register(Component.For(typeof(IServiceFactory<>)).AsFactory());
-			container.WithEntityPatternsInstaller(new WebApplicationComponentRegistrationOptions())
+			container.WithEntityPatternsInstaller(new ComponentRegistrationOptions { GeneralLifestyle = l => l.Scoped() })
 				.RegisterEntityPatterns()
 				.RegisterDbContext<TestDbContext>()
 				.RegisterLocalizationServices<Language>()

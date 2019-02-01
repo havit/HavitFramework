@@ -224,7 +224,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			}
 
 			// seřadíme kolekce dle atributů (v praxi se ukazuje, že jsou již seřazené)			
-			result = result.OrderBy(item => item.PropertyName).ToList();
+			result = result.OrderBy(item => item.PropertyName, StringComparer.InvariantCultureIgnoreCase).ToList();
 
 			// abychom neměnili spoustu existujícího kódu, neměníme pořadí lokalizačních tabulek a necháváme je na konci
 			if (LocalizationHelper.IsLocalizedTable(table))
@@ -869,7 +869,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 				var pkColumnsInReverseOrder = result.Where(column => column.InPrimaryKey).ToList();
 				pkColumnsInReverseOrder.ForEach(pkColumn => result.Remove(pkColumn)); // sloupce s PK se neúčastní řazení
 				
-				result = result.OrderBy(column => column.Name).ToList(); // seřadíme sloupce abecedně
+				result = result.OrderBy(column => column.Name, StringComparer.InvariantCultureIgnoreCase).ToList(); // seřadíme sloupce abecedně
 				
 				// vložíme zpět sloupce s PK
 				pkColumnsInReverseOrder.Reverse();

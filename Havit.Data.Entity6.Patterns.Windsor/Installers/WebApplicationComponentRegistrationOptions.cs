@@ -9,7 +9,7 @@ namespace Havit.Data.Entity.Patterns.Windsor.Installers
 	/// Výchozí GeneralLifestyle je HybridPerWebRequestPerThread.
 	/// </summary>
 	[Obsolete("Používá lifestyle HybridPerWebRequestPerThread, který je díky \"PerThread\" nežádoucí - nefunguje ve scénářích s async/await, nefunguje v (background) Tasku, atp. "
-		+ "Náhradou je použití lifestyle HybridPerWebRequestScoped z Havit.CastleWindsor.WebForms, nahradit tedy WebApplicationComponentRegistrationOptions za použití: new ComponentRegistrationOptions { GeneralLifestyle = lifestyle => lifestyle.HybridPerWebRequestScope() }. "
+		+ "Náhradou je použití lifestyle HybridPerWebRequestScoped z Havit.CastleWindsor.WebForms 1.8.7+, nahradit tedy WebApplicationComponentRegistrationOptions za použití: new ComponentRegistrationOptions { GeneralLifestyle = lifestyle => lifestyle.HybridPerWebRequestScope() }. "
 		+ "Pro resolvování mimo web request (při startu aplikace, v Tasku) je třeba založit scope (using (container.BeginScope())). "
 		+ "Pokud v aplikaci není třeba resolvovat závislosti mimo web request (při startu aplikace, Tasky) je možné použít lifestyle PerWebRequest.")]
 	public class WebApplicationComponentRegistrationOptions : ComponentRegistrationOptions

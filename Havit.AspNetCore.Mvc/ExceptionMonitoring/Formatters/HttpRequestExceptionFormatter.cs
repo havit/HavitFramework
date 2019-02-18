@@ -49,15 +49,22 @@ namespace Havit.AspNetCore.Mvc.ExceptionMonitoring.Formatters
 
         private void AppendRequestInformation(StringBuilder sb, HttpContext context)
         {
-            sb.AppendLine("Request information");
-            AppendValueLine(sb, "Request URL", () => context.Request.Path);
-            AppendValueLine(sb, "Request verb", () => context.Request.Method);
-            AppendValueLine(sb, "User host address", () => context.Connection.RemoteIpAddress.ToString());
-            AppendValueLine(sb, "Username", () => context.User.Identity.Name);
-            AppendValueLine(sb, "IsAuthenticated", () => context.User.Identity.IsAuthenticated.ToString());
-            AppendValueLine(sb, "AuthenticationType",  () => context.User.Identity.AuthenticationType);
-            AppendValueLine(sb, "Referrer",  () => context.Request.Headers["Referrer"]);
-            AppendValueLine(sb, "User agent", () => context.Request.Headers["User-Agent"]);
+			sb.AppendLine("Request information");
+			if (context == null)
+			{				
+				sb.AppendLine("No request information available.");
+			}
+			else
+			{
+				AppendValueLine(sb, "Request URL", () => context.Request.Path);
+				AppendValueLine(sb, "Request verb", () => context.Request.Method);
+				AppendValueLine(sb, "User host address", () => context.Connection.RemoteIpAddress.ToString());
+				AppendValueLine(sb, "Username", () => context.User.Identity.Name);
+				AppendValueLine(sb, "IsAuthenticated", () => context.User.Identity.IsAuthenticated.ToString());
+				AppendValueLine(sb, "AuthenticationType", () => context.User.Identity.AuthenticationType);
+				AppendValueLine(sb, "Referrer", () => context.Request.Headers["Referrer"]);
+				AppendValueLine(sb, "User agent", () => context.Request.Headers["User-Agent"]);
+			}
             //AppendValueLine(sb, "Culture", () => context.Features.Get<IRequestCultureFeature>().RequestCulture.Culture.Name);
             //AppendValueLine(sb, "UI Culture", () => context.Features.Get<IRequestCultureFeature>().RequestCulture.UICulture.Name);
             sb.AppendLine();

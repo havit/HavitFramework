@@ -58,14 +58,14 @@ namespace ConsoleApp1
 
 		private static IWindsorContainer ConfigureAndCreateWindsorContainer()
 		{
-			//var loggerFactory = new LoggerFactory();
-			//loggerFactory.AddConsole((categoryName, logLevel) => (logLevel == LogLevel.Information) && (categoryName == DbLoggerCategory.Database.Command.Name));
+			var loggerFactory = new LoggerFactory();
+			loggerFactory.AddConsole((categoryName, logLevel) => (logLevel == LogLevel.Information) && (categoryName == DbLoggerCategory.Database.Command.Name));
 			//loggerFactory.AddConsole((categoryName, logLevel) => (categoryName == DbLoggerCategory.Database.Transaction.Name));
 
 			DbContextOptions options = new DbContextOptionsBuilder<ApplicationDbContext>()
 				.UseSqlServer("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=EFCoreTests;Application Name=EFCoreTests-Entity")
 				//.UseInMemoryDatabase("ConsoleApp")
-				//.UseLoggerFactory(loggerFactory)
+				.UseLoggerFactory(loggerFactory)
 				.Options;
 
 			IWindsorContainer container = new WindsorContainer();
@@ -153,30 +153,17 @@ namespace ConsoleApp1
 
 		private static void DebugDataLoader(IWindsorContainer container)
 		{
-			Action<int> addToCache = (int roleId) =>
-			{
-				using (var scope = container.BeginScope())
-				{
-					var dbContext = container.Resolve<IDbContext>();
-					var entityCacheManager = container.Resolve<IEntityCacheManager>();
-					Role role = new Role { Id = roleId, Name = "Cached entity" };
-					dbContext.Set<Role>().AttachRange(new Role[] { role });
-					entityCacheManager.StoreEntity(role);
-				}
-			};
-
 			using (var scope = container.BeginScope())
 			{
 				var dbContext = container.Resolve<IDbContext>();
-				var unitOfWork = container.Resolve<IUnitOfWork>();
-				var loginAccount = dbContext.Set<LoginAccount>().AsQueryable().First();
+				var memberships = dbContext.Set<Membership>().AsQueryable().Take(3).ToList();
 				var dataLoader = container.Resolve<IDataLoader>();
-				var entityCacheManager = container.Resolve<IEntityCacheManager>();
 
-				dataLoader.Load(loginAccount, la => la.Memberships).ThenLoad(m => m.Role);
-				var firstMembership = loginAccount.Memberships.First();
-				Console.WriteLine(firstMembership.RoleId);
-				Console.WriteLine(firstMembership.Role);
+				dataLoader.LoadAll(memberships, m => m.LoginAccount);
+				dataLoader.LoadAll(memberships, m => m.LoginAccount);
+				dataLoader.LoadAll(memberships, m => m.LoginAccount);
+				dataLoader.LoadAll(memberships, m => m.LoginAccount);
+				dataLoader.LoadAll(memberships, m => m.LoginAccount).ThenLoad(la => la.Memberships).ThenLoad(m => m.Role);
 			}
 		}
 

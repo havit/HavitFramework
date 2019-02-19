@@ -34,6 +34,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 
 			// Assert
 			Assert.IsNotNull(child.Parent, "DbDataLoader nenačetl hodnotu pro child.Parent.");
+			Assert.IsTrue(dbContext.GetEntry(child, suppressDetectChanged: false).Reference(nameof(Child.Parent)).IsLoaded, "DbContext nepovažuje vlastnost za načtenou.");
 		}
 
 		[TestMethod]

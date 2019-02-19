@@ -396,8 +396,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 
 			// https://github.com/aspnet/EntityFrameworkCore/issues/14408
 			// Jako workadound stačí místo v EF.Property<object> namísto object zvolit skutečný typ. Aktuálně používáme jen int, hardcoduji tedy int bez vynakládání většího úsilí na obecnější řešení.
-			//return dbContext.Set<TProperty>().AsQueryable().Where(p => keysToQuery.Contains(EF.Property<object>(p, propertyPrimaryKey)));
-			return dbContext.Set<TProperty>().AsQueryable().Where(p => keysToQuery.Contains(EF.Property<int>(p, propertyPrimaryKey)));
+			List<int> keysToQueryInt = keysToQuery.Cast<int>().ToList();
+			return dbContext.Set<TProperty>().AsQueryable().Where(keysToQueryInt.ContainsEffective<TProperty>(item => EF.Property<int>(item, propertyPrimaryKey)));
 		}
 
 		private void LoadReferencePropertyInternal_StoreToCache<TProperty>(List<TProperty> loadedProperties)
@@ -532,38 +532,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 			ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "item");
 			return ExpressionExt.AndAlso<TEntity>(primaryKeyWithValues.Select(primaryKeyWithValuesItem =>
 				{
-					// jediný záznam - testujeme na rovnost
-					if (primaryKeyWithValuesItem.Values.Count == 1)
-					{
-						return (Expression<Func<TEntity, bool>>)Expression.Lambda(
-							Expression.Equal(
-								Expression.Property(parameter, typeof(TEntity), primaryKeyWithValuesItem.PrimaryKeyName),
-								Expression.Constant(primaryKeyWithValuesItem.Values[0])),
-							parameter);
-					}
-
-					// více záznamů
-					// pokud jde o řadu IDček (1, 2, 3, 4) bez přeskakování, pak použijeme porovnání >= a  <=.
-					int[] sortedIds = primaryKeyWithValuesItem.Values.OrderBy(item => item).Distinct().ToArray();
-
-					//pro pole: 1, 2, 3, 4
-					// if 1 + 4 - 1 (4) == 4
-					if ((sortedIds[0] + sortedIds.Length - 1) == sortedIds[sortedIds.Length - 1]) // testujeme, zda jde o posloupnost IDček
-					{
-						return (Expression<Func<TEntity, bool>>)Expression.Lambda(
-							Expression.AndAlso(
-								Expression.GreaterThanOrEqual(Expression.Property(parameter, typeof(TEntity), primaryKeyWithValuesItem.PrimaryKeyName), Expression.Constant(sortedIds[0])),
-								Expression.LessThanOrEqual(Expression.Property(parameter, typeof(TEntity), primaryKeyWithValuesItem.PrimaryKeyName), Expression.Constant(sortedIds[sortedIds.Length - 1]))),
-							parameter);
-					}
-
-					// v obecném případě hledáme přes IN (...)
-					return (Expression<Func<TEntity, bool>>)Expression.Lambda(
-						Expression.Call(
-							Expression.Constant(primaryKeyWithValuesItem.Values),
-							typeof(List<int>).GetMethod("Contains"),
-							new List<Expression> { Expression.Property(parameter, typeof(TEntity), primaryKeyWithValuesItem.PrimaryKeyName) }),
-						parameter);
+					Expression<Func<TEntity, int>> propertyAccessor = item => EF.Property<int>(item, primaryKeyWithValuesItem.PrimaryKeyName);
+					return primaryKeyWithValuesItem.Values.ContainsEffective(propertyAccessor);
 				})
 				.ToArray()
 			);

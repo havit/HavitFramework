@@ -38,6 +38,27 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 		}
 
 		[TestMethod]
+		public void DbDataLoader_Load_LoadNotLoadedEntities_OnNewObject()
+		{
+			// Arrange
+			SeedOneToManyTestData();
+
+			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+			IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), new NoCachingEntityCacheManager());
+
+			Child child1 = dbContext.Child.First();
+			Child child2 = new Child { ParentId = child1.ParentId };
+			dbContext.Child.Add(child2); // Added
+
+			// Act
+			dataLoader.Load(child2, c => c.Parent);
+
+			// Assert
+			Assert.IsNotNull(child2.Parent, "Child2.Parent není načtena, ačkoliv bylo o načtení požádáno.");
+			Assert.IsNotNull(child1.Parent, "Child1.Parent není načtena, ačkoliv se předpokládá, že došlo k fixupu.");
+		}
+
+		[TestMethod]
 		public void DbDataLoader_Load_DoesNotLoadExcessEntities()
 		{
 			// Arrange
@@ -79,6 +100,26 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 		}
 
 		[TestMethod]
+		public void DbDataLoader_Load_OneToMany_LoadsNotLoadedCollections()
+		{
+			// Arrange
+			SeedOneToManyTestData();
+
+			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+			Master master = dbContext.Master.First();
+
+			Assert.IsNull(master.Children, "Pro ověření DbDataLoaderu se předpokládá, že hodnota master.Children je null.");
+
+			// Act
+			IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), new NoCachingEntityCacheManager());
+			dataLoader.Load(master, item => item.Children);
+
+			// Assert
+			Assert.IsNotNull(master.Children, "DbDataLoader nenačetl hodnotu pro master.Children.");
+			Assert.AreEqual(5, master.Children.Count, "DbDataLoader nenačetl objekty do master.Children.");
+		}
+
+		[TestMethod]
 		public void DbDataLoader_Load_OneToMany_LoadsPartiallyInitializedCollections()
 		{
 			// Arrange
@@ -99,26 +140,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 			Assert.AreEqual(5, master.Children.Count, "DbDataLoader nenačetl objekty do master.Children.");
 		}
 
-		[TestMethod]
-		public void DbDataLoader_Load_OneToMany_LoadsNotLoadedCollections()
-		{
-			// Arrange
-			SeedOneToManyTestData();
-
-			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
-			Master master = dbContext.Master.First();
-
-			Assert.IsNull(master.Children, "Pro ověření DbDataLoaderu se předpokládá, že hodnota master.Children je null.");
-
-			// Act
-			IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), new NoCachingEntityCacheManager());
-			dataLoader.Load(master, item => item.Children);
-
-			// Assert
-			Assert.IsNotNull(master.Children, "DbDataLoader nenačetl hodnotu pro master.Children.");
-			Assert.AreEqual(5, master.Children.Count, "DbDataLoader nenačetl objekty do master.Children.");
-		}
-		
 		[TestMethod]
 		public void DbDataLoader_Load_OneToMany_DoesNotLoadExcessEntities()
 		{
@@ -595,7 +616,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 			// Assert by method attribute 
 		}
 
-		private void SeedOneToManyTestData(DataLoaderTestDbContext dbContext = null, bool deleted = false)
+		protected void SeedOneToManyTestData(DataLoaderTestDbContext dbContext = null, bool deleted = false)
 		{
 			if (dbContext == null)
 			{
@@ -629,7 +650,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 			dbContext.SaveChanges();
 		}
 
-		private void SeedManyToManyTestData(bool deleted = false)
+		protected void SeedManyToManyTestData(bool deleted = false)
 		{
 			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
 			dbContext.Database.DropCreate();

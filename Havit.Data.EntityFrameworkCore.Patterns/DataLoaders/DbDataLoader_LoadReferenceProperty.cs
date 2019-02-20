@@ -52,8 +52,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 			where TEntity : class
 			where TProperty : class
 		{
-			IEnumerable<TEntity> entitiesNotInAddedState = entities.Where(item => dbContext.GetEntityState(item) != EntityState.Added);
-			List<TEntity> entitiesToLoadReference = entitiesNotInAddedState.Where(entity => !IsEntityPropertyLoaded(entity, propertyName, false)).ToList();
+			List<TEntity> entitiesToLoadReference = entities.Where(entity => !IsEntityPropertyLoaded(entity, propertyName, false)).ToList();
 
 			if (entitiesToLoadReference.Count > 0)
 			{

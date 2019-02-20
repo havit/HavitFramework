@@ -126,6 +126,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 			where TProperty : class
 		{
 			var propertyLambdaExpression = lambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TProperty>(propertyName);
+			
 			// zde spoléháme na proběhnutí fixupu
 			var loadedEntities = entities.Select(item => propertyLambdaExpression.LambdaCompiled(item)).Where(item => item != null).ToArray();
 			return new LoadPropertyInternalResult

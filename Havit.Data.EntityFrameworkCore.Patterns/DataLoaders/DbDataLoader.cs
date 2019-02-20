@@ -173,7 +173,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 		#endregion
 
 		/// <summary>
-		/// Načte vlastnosti objektů, pokud ještě nejsou načteny.
+		/// Deleguje načtení objektů do metody pro načtení referencí nebo metody pro načtení kolekce.
 		/// </summary>
 		private IFluentDataLoader<TProperty> LoadInternal<TEntity, TProperty>(IEnumerable<TEntity> entitiesToLoad, Expression<Func<TEntity, TProperty>> propertyPath)
 			where TEntity : class
@@ -182,62 +182,60 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 			// přeskočíme prázdné
 			TEntity[] entitiesToLoadWithoutNulls = entitiesToLoad.Where(entity => entity != null).ToArray();
 
-			if (entitiesToLoadWithoutNulls.Length > 0) // pokud máme, co načítat
-			{
-				// ověříme, že jsou všechny objekty sledované change trackerem (na který spoléháme)
-				Contract.Assert<InvalidOperationException>(entitiesToLoadWithoutNulls.All(item => dbContext.GetEntityState(item) != EntityState.Detached), "DbDataLoader can be used only for objects tracked by a change tracker.");
-
-				// vytáhneme posloupnost vlastností, které budeme načítat
-				PropertyToLoad[] propertiesSequenceToLoad = propertyLoadSequenceResolver.GetPropertiesToLoad(propertyPath);
-
-				Array entities = entitiesToLoadWithoutNulls;
-				object fluentDataLoader = null;
-
-				foreach (PropertyToLoad propertyToLoad in propertiesSequenceToLoad)
-				{
-					LoadPropertyInternalResult loadPropertyInternalResult;
-
-					if (!propertyToLoad.IsCollection)
-					{
-						loadPropertyInternalResult = (LoadPropertyInternalResult)typeof(DbDataLoader)
-							.GetMethod(nameof(LoadReferencePropertyInternal), BindingFlags.Instance | BindingFlags.NonPublic)
-							.MakeGenericMethod(
-								propertyToLoad.SourceType,
-								propertyToLoad.TargetType)
-							.Invoke(this, new object[] { propertyToLoad.PropertyName, entities });
-					}
-					else
-					{
-						loadPropertyInternalResult = (LoadPropertyInternalResult)typeof(DbDataLoader)
-							.GetMethod(nameof(LoadCollectionPropertyInternal), BindingFlags.Instance | BindingFlags.NonPublic)
-							.MakeGenericMethod(
-								propertyToLoad.SourceType,
-								propertyToLoad.TargetType,
-								propertyToLoad.CollectionItemType)
-							.Invoke(this, new object[] { propertyToLoad.PropertyName, entities });
-
-					}
-
-					entities = loadPropertyInternalResult.Entities;
-					fluentDataLoader = loadPropertyInternalResult.FluentDataLoader;
-
-					if (entities.Length == 0)
-					{
-						// shortcut
-						return new DbFluentDataLoader<TProperty>(this, new TProperty[0]);
-					}
-				}
-
-				return (IFluentDataLoader<TProperty>)fluentDataLoader;
-			}
-			else
+			if (entitiesToLoadWithoutNulls.Length == 0) // pokud ne máme, co načítat
 			{
 				return new DbFluentDataLoader<TProperty>(this, new TProperty[0]);
 			}
+
+			// ověříme, že jsou všechny objekty sledované change trackerem (na který spoléháme)
+			Contract.Assert<InvalidOperationException>(entitiesToLoadWithoutNulls.All(item => dbContext.GetEntityState(item) != EntityState.Detached), "DbDataLoader can be used only for objects tracked by a change tracker.");
+
+			// vytáhneme posloupnost vlastností, které budeme načítat
+			PropertyToLoad[] propertiesSequenceToLoad = propertyLoadSequenceResolver.GetPropertiesToLoad(propertyPath);
+
+			Array entities = entitiesToLoadWithoutNulls;
+			object fluentDataLoader = null;
+
+			foreach (PropertyToLoad propertyToLoad in propertiesSequenceToLoad)
+			{
+				LoadPropertyInternalResult loadPropertyInternalResult;
+
+				if (!propertyToLoad.IsCollection)
+				{
+					loadPropertyInternalResult = (LoadPropertyInternalResult)typeof(DbDataLoader)
+						.GetMethod(nameof(LoadReferencePropertyInternal), BindingFlags.Instance | BindingFlags.NonPublic)
+						.MakeGenericMethod(
+							propertyToLoad.SourceType,
+							propertyToLoad.TargetType)
+						.Invoke(this, new object[] { propertyToLoad.PropertyName, entities });
+				}
+				else
+				{
+					loadPropertyInternalResult = (LoadPropertyInternalResult)typeof(DbDataLoader)
+						.GetMethod(nameof(LoadCollectionPropertyInternal), BindingFlags.Instance | BindingFlags.NonPublic)
+						.MakeGenericMethod(
+							propertyToLoad.SourceType,
+							propertyToLoad.TargetType,
+							propertyToLoad.CollectionItemType)
+						.Invoke(this, new object[] { propertyToLoad.PropertyName, entities });
+
+				}
+
+				entities = loadPropertyInternalResult.Entities;
+				fluentDataLoader = loadPropertyInternalResult.FluentDataLoader;
+
+				if (entities.Length == 0)
+				{
+					// shortcut
+					return new DbFluentDataLoader<TProperty>(this, new TProperty[0]);
+				}
+			}
+
+			return (IFluentDataLoader<TProperty>)fluentDataLoader;
 		}
 
 		/// <summary>
-		/// Načte vlastnosti objektů, pokud ještě nejsou načteny.
+		/// Deleguje načtení objektů do asynchronní metody pro načtení referencí nebo asynchronní metody pro načtení kolekce.
 		/// </summary>
 		private async Task<IFluentDataLoaderAsync<TProperty>> LoadInternalAsync<TEntity, TProperty>(IEnumerable<TEntity> entitiesToLoad, Expression<Func<TEntity, TProperty>> propertyPath)
 			where TEntity : class
@@ -246,59 +244,69 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 			// přeskočíme prázdné
 			TEntity[] entitiesToLoadWithoutNulls = entitiesToLoad.Where(entity => entity != null).ToArray();
 
-			if (entitiesToLoadWithoutNulls.Length > 0) // pokud máme, co načítat
-			{
-				// ověříme, že jsou všechny objekty sledované change trackerem (na který spoléháme)
-				Contract.Assert<InvalidOperationException>(entitiesToLoadWithoutNulls.All(item => dbContext.GetEntityState(item) != EntityState.Detached), "DbDataLoader can be used only for objects tracked by a change tracker.");
-
-				// vytáhneme posloupnost vlastností, které budeme načítat
-				PropertyToLoad[] propertiesSequenceToLoad = propertyLoadSequenceResolver.GetPropertiesToLoad(propertyPath);
-
-				Array entities = entitiesToLoadWithoutNulls;
-				object fluentDataLoader = null;
-
-				Task task;
-				foreach (PropertyToLoad propertyToLoad in propertiesSequenceToLoad)
-				{
-					if (!propertyToLoad.IsCollection)
-					{
-						task = (Task)typeof(DbDataLoader)
-							.GetMethod(nameof(LoadReferencePropertyInternalAsync), BindingFlags.Instance | BindingFlags.NonPublic)
-							.MakeGenericMethod(
-								propertyToLoad.SourceType,
-								propertyToLoad.TargetType)
-							.Invoke(this, new object[] { propertyToLoad.PropertyName, entities });
-					}
-					else
-					{
-						task = (Task)typeof(DbDataLoader)
-							.GetMethod(nameof(LoadCollectionPropertyInternalAsync), BindingFlags.Instance | BindingFlags.NonPublic)
-							.MakeGenericMethod(
-								propertyToLoad.SourceType,
-								propertyToLoad.TargetType,
-								propertyToLoad.CollectionItemType)
-							.Invoke(this, new object[] { propertyToLoad.PropertyName, entities });
-					}
-					await task.ConfigureAwait(false);
-					LoadPropertyInternalResult loadPropertyInternalResult = (LoadPropertyInternalResult)((dynamic)task).Result; // task je již dokončen
-
-					entities = loadPropertyInternalResult.Entities;
-					fluentDataLoader = loadPropertyInternalResult.FluentDataLoader;
-
-					if (entities.Length == 0)
-					{
-						// shortcut
-						return new DbFluentDataLoader<TProperty>(this, new TProperty[0]);
-					}
-				}
-
-				return (IFluentDataLoaderAsync<TProperty>)fluentDataLoader;
-			}
-			else
+			if (entitiesToLoadWithoutNulls.Length == 0) // pokud ne máme, co načítat
 			{
 				return new DbFluentDataLoader<TProperty>(this, new TProperty[0]);
 			}
+
+			// ověříme, že jsou všechny objekty sledované change trackerem (na který spoléháme)
+			Contract.Assert<InvalidOperationException>(entitiesToLoadWithoutNulls.All(item => dbContext.GetEntityState(item) != EntityState.Detached), "DbDataLoader can be used only for objects tracked by a change tracker.");
+
+			// vytáhneme posloupnost vlastností, které budeme načítat
+			PropertyToLoad[] propertiesSequenceToLoad = propertyLoadSequenceResolver.GetPropertiesToLoad(propertyPath);
+
+			Array entities = entitiesToLoadWithoutNulls;
+			object fluentDataLoader = null;
+
+			Task task;
+			foreach (PropertyToLoad propertyToLoad in propertiesSequenceToLoad)
+			{
+				if (!propertyToLoad.IsCollection)
+				{
+					task = (Task)typeof(DbDataLoader)
+						.GetMethod(nameof(LoadReferencePropertyInternalAsync), BindingFlags.Instance | BindingFlags.NonPublic)
+						.MakeGenericMethod(
+							propertyToLoad.SourceType,
+							propertyToLoad.TargetType)
+						.Invoke(this, new object[] { propertyToLoad.PropertyName, entities });
+				}
+				else
+				{
+					task = (Task)typeof(DbDataLoader)
+						.GetMethod(nameof(LoadCollectionPropertyInternalAsync), BindingFlags.Instance | BindingFlags.NonPublic)
+						.MakeGenericMethod(
+							propertyToLoad.SourceType,
+							propertyToLoad.TargetType,
+							propertyToLoad.CollectionItemType)
+						.Invoke(this, new object[] { propertyToLoad.PropertyName, entities });
+				}
+				await task.ConfigureAwait(false);
+				LoadPropertyInternalResult loadPropertyInternalResult = (LoadPropertyInternalResult)((dynamic)task).Result; // task je již dokončen
+
+				entities = loadPropertyInternalResult.Entities;
+				fluentDataLoader = loadPropertyInternalResult.FluentDataLoader;
+
+				if (entities.Length == 0)
+				{
+					// shortcut
+					return new DbFluentDataLoader<TProperty>(this, new TProperty[0]);
+				}
+			}
+
+			return (IFluentDataLoaderAsync<TProperty>)fluentDataLoader;
 		}
 
+		/// <summary>
+		/// Vrací true, pokud je vlastnost objektu již načtena.
+		/// Řídí se pomocí IDbContext.IsEntityCollectionLoaded, DbContext.IsEntityReferenceLoaded.
+		/// Pozor na předefinování metody v potomku - DbDataLoaderWithLoadedPropertiesMemory. Díky tomu nesmí být tato metoda volána opakovaně (poprvé vrací skutečnou hodnotu, v dalších voláních vrací vždy true).
+		/// </summary>
+		protected virtual bool IsEntityPropertyLoaded<TEntity>(TEntity entity, string propertyName, bool isPropertyCollection)
+			where TEntity : class
+		{
+			return isPropertyCollection
+				? dbContext.IsEntityCollectionLoaded(entity, propertyName)
+				: dbContext.IsEntityReferenceLoaded(entity, propertyName);
+		}
 	}
 }

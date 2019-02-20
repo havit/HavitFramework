@@ -54,45 +54,43 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 		{
 			List<TEntity> entitiesToLoadReference = entities.Where(entity => !IsEntityPropertyLoaded(entity, propertyName, false)).ToList();
 
-			if (entitiesToLoadReference.Count > 0)
-			{
-				// získáme cizí klíč reprezentující referenci (Navigation)
-				IProperty foreignKeyForReference = dbContext.Model.FindEntityType(typeof(TEntity)).FindNavigation(propertyName).ForeignKey.Properties.Single();
-
-				// získáme klíče objektů, které potřebujeme načíst (z "běžných vlastností" nebo z shadow properties)
-				// ignorujeme nenastavené reference (null)
-				object[] foreignKeyValues = entitiesToLoadReference.Select(entity => dbContext.GetEntry(entity, true).CurrentValues[foreignKeyForReference]).Where(value => value != null).Distinct().ToArray();
-
-				IDbSet<TProperty> dbSet = dbContext.Set<TProperty>();
-
-				List<TProperty> loadedReferences = new List<TProperty>(entitiesToLoadReference.Count);
-				keysToLoad = new List<object>(entitiesToLoadReference.Count);
-
-				foreach (object foreignKeyValue in foreignKeyValues)
-				{
-					// Čistě teoreticky nemusela dosud proběhnout detekce změn (resp. fixup), proto se musíme podívat do identity map před tím,
-					// než budeme řešit cache (cache by se mohla pokoušet o vytažení objektu, který je již v identity mapě a došlo by ke kolizi).
-					// Spoléháme na provedení fixupu pomocí changetrackeru.
-					// Možnost tohoto scénáře se však nepodařilo po potvrdit, k této situaci nikdy nedojde.
-					//TProperty trackedEntity = dbSet.FindTracked(foreignKeyValue);
-					//if (trackedEntity != null)
-					//{
-					//	loadedReferences.Add(trackedEntity);
-					//}
-					//else
-					if (entityCacheManager.TryGetEntity<TProperty>(foreignKeyValue, out TProperty cachedEntity))
-					{
-						loadedReferences.Add(cachedEntity);
-					}
-					else // není ani v identity mapě, ani v cache, hledáme v databázi
-					{
-						keysToLoad.Add(foreignKeyValue);
-					}
-				}
-			}
-			else
+			if (entitiesToLoadReference.Count == 0)
 			{
 				keysToLoad = null;
+				return;
+			}
+
+			// získáme cizí klíč reprezentující referenci (Navigation)
+			IProperty foreignKeyForReference = dbContext.Model.FindEntityType(typeof(TEntity)).FindNavigation(propertyName).ForeignKey.Properties.Single();
+
+			// získáme klíče objektů, které potřebujeme načíst (z "běžných vlastností" nebo z shadow properties)
+			// ignorujeme nenastavené reference (null)
+			object[] foreignKeyValues = entitiesToLoadReference.Select(entity => dbContext.GetEntry(entity, true).CurrentValues[foreignKeyForReference]).Where(value => value != null).Distinct().ToArray();
+
+			IDbSet<TProperty> dbSet = dbContext.Set<TProperty>();
+
+			keysToLoad = new List<object>(entitiesToLoadReference.Count);
+
+			foreach (object foreignKeyValue in foreignKeyValues)
+			{
+				// Čistě teoreticky nemusela dosud proběhnout detekce změn (resp. fixup), proto se musíme podívat do identity map před tím,
+				// než budeme řešit cache (cache by se mohla pokoušet o vytažení objektu, který je již v identity mapě a došlo by ke kolizi).
+				// Spoléháme na provedení fixupu pomocí changetrackeru.
+				// Možnost tohoto scénáře se však nepodařilo po potvrdit, k této situaci nikdy nedojde.
+				//TProperty trackedEntity = dbSet.FindTracked(foreignKeyValue);
+				//if (trackedEntity != null)
+				//{
+				//	loadedReferences.Add(trackedEntity);
+				//}
+				//else
+				if (entityCacheManager.TryGetEntity<TProperty>(foreignKeyValue, out TProperty cachedEntity))
+				{
+					// NOOP
+				}
+				else // není ani v identity mapě, ani v cache, hledáme v databázi
+				{
+					keysToLoad.Add(foreignKeyValue);
+				}
 			}
 		}
 

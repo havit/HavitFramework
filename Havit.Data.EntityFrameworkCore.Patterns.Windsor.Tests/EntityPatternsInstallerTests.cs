@@ -11,7 +11,9 @@ using Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests.Infrastructure.Entit
 using Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests.Infrastructure.Model;
 using Havit.Data.Patterns.DataLoaders;
 using Havit.Data.Patterns.DataSeeds;
+using Havit.Data.Patterns.DataSources;
 using Havit.Data.Patterns.Localizations;
+using Havit.Data.Patterns.Repositories;
 using Havit.Data.Patterns.UnitOfWorks;
 using Havit.Services;
 using Havit.Services.TimeServices;
@@ -57,6 +59,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 
 			// Act
 			container.Resolve<ILanguageDataSource>();
+			container.Resolve<IDataSource<Language>>();
 
 			// Assert			
 			// no exception was thrown
@@ -70,6 +73,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 
 			// Act
 			container.Resolve<ILanguageRepository>();
+			container.Resolve<IRepository<Language>>();
+			container.Resolve<IRepositoryAsync<Language>>();
 
 			// Assert			
 			// no exception was thrown
@@ -83,6 +88,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 
 			// Act
 			container.Resolve<IDataLoader>();
+			container.Resolve<IDataLoaderAsync>();
 
 			// Assert
 			// no exception was thrown
@@ -96,6 +102,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 
 			// Act
 			container.Resolve<IUnitOfWork>();
+			container.Resolve<IUnitOfWorkAsync>();
 
 			// Assert
 			// no exception was thrown

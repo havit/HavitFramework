@@ -71,18 +71,11 @@ namespace Havit.Data.EntityFrameworkCore
 		object[] GetObjectsInStates(EntityState[] states, bool suppressDetectChanges);
 
 		/// <summary>
-		/// Vrací true, pokud je EF považuje referenci za načtenou.
+		/// Vrací true, pokud je EF považuje vlastnost za načtenou.
 		/// </summary>
-		bool IsEntityReferenceLoaded<TEntity>(TEntity entity, string propertyName)
+		bool IsNavigationLoaded<TEntity>(TEntity entity, string propertyName)
 			where TEntity : class;
 	
-		// TODO JK: Sjednotit Collection + Reference na Navigaci
-		/// <summary>
-		/// Vrací true, pokud je EF považuje kolekci za načtenou.
-		/// </summary>
-		bool IsEntityCollectionLoaded<TEntity>(TEntity entity, string propertyName)
-			where TEntity : class;
-
 		/// <summary>
 		/// Nastaví navigation property (kolekce, reference) jako načtenou.
 		/// </summary>

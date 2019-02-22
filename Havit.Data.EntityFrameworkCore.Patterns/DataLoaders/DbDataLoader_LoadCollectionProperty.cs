@@ -76,9 +76,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 		private void LoadCollectionPropertyInternal_GetFromCache<TEntity>(string propertyName, TEntity[] entities, out List<object> primaryKeysToLoad)
 			where TEntity : class
 		{			
-			List<TEntity> entitiesToLoadReference = entities.Where(entity => !IsEntityPropertyLoaded(entity, propertyName, true)).ToList();
+			List<TEntity> entitiesToLoadReference = entities.Where(entity => !IsEntityPropertyLoaded(entity, propertyName)).ToList();
 			IEnumerable<TEntity> entitiesNotInAddedState = entities.Where(item => dbContext.GetEntityState(item) != EntityState.Added);
-			List<TEntity> entitiesToLoadQuery = entitiesNotInAddedState.Where(entity => !IsEntityPropertyLoaded(entity, propertyName, true)).ToList();
+			List<TEntity> entitiesToLoadQuery = entitiesNotInAddedState.Where(entity => !IsEntityPropertyLoaded(entity, propertyName)).ToList();
 			
 			if (entitiesToLoadReference.Count == 0)
 			{

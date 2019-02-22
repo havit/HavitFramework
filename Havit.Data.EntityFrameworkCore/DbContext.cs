@@ -207,22 +207,13 @@ namespace Havit.Data.EntityFrameworkCore
 
 		// TODO JK: Extension method!
 	    /// <summary>
-	    /// Vrací true, pokud je EF považuje referenci za načtenou.
+	    /// Vrací true, pokud je EF považuje vlastnosti za načtenou.
 	    /// </summary>
-	    bool IDbContext.IsEntityReferenceLoaded<TEntity>(TEntity entity, string propertyName)
+	    bool IDbContext.IsNavigationLoaded<TEntity>(TEntity entity, string propertyName)
 	    {
-		     return GetEntry(entity, suppressDetectChanged: true).Reference(propertyName).IsLoaded;
+		     return GetEntry(entity, suppressDetectChanged: true).Navigation(propertyName).IsLoaded;
 	    }
 		
-		// TODO JK: Extension method!
-		/// <summary>
-		/// Vrací true, pokud je EF považuje kolekci za načtenou.
-		/// </summary>
-		bool IDbContext.IsEntityCollectionLoaded<TEntity>(TEntity entity, string propertyName)
-	    {
-		    return GetEntry(entity, suppressDetectChanged: true).Collection(propertyName).IsLoaded;
-	    }
-
 	    void IDbContext.MarkNavigationAsLoaded<TEntity>(TEntity entity, string propertyName)
 	    {
 		   ExecuteWithoutAutoDetectChanges(() => this.Entry(entity).Navigation(propertyName).IsLoaded = true);

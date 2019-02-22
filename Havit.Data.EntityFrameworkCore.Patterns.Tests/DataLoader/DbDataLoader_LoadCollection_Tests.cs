@@ -291,8 +291,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 		[TestMethod]
 		public void DbDataLoader_Load_Collection_LoadDependenciesFromNotSubstituedProperty()
 		{
-			Assert.Inconclusive("Dosud neimplementováno. Task 40690: DbDataLoader - Podpora pro WithDeleted - načíst všechny objekty, ale reference načíst jen nesmazaným");
-
 			// Arrange
 			SeedOneToManyTestData(deleted: true);
 
@@ -306,7 +304,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 			Master master = dbContext.Master.First();
 
 			// Act
-			DbFluentDataLoader<Child> fluentDataLoader = (DbFluentDataLoader<Child>)dataLoader.Load(master, m => m.Children).Unwrap<Child>();
+			DbFluentDataLoader<ICollection<Child>> fluentDataLoader = (DbFluentDataLoader<ICollection<Child>>)dataLoader.Load(master, m => m.Children);
 
 			// Assert
 			Assert.AreEqual(0, fluentDataLoader.Data.Count(), "Jsou vybráni smazané Child k načítání závislostí.");

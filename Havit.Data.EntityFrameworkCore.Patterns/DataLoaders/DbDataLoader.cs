@@ -304,7 +304,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 		/// Řídí se pomocí IDbContext.IsEntityCollectionLoaded, DbContext.IsEntityReferenceLoaded.
 		/// Pozor na předefinování metody v potomku - DbDataLoaderWithLoadedPropertiesMemory. Díky tomu nesmí být tato metoda volána opakovaně (poprvé vrací skutečnou hodnotu, v dalších voláních vrací vždy true).
 		/// </summary>
-		// TODO JK: Bool -> Odstranit
 		protected virtual bool IsEntityPropertyLoaded<TEntity>(TEntity entity, string propertyName)
 			where TEntity : class
 		{

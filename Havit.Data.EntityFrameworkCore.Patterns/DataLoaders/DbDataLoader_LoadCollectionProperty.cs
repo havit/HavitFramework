@@ -1,5 +1,7 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
 using Havit.Data.Patterns.DataLoaders;
+using Havit.Data.Patterns.Infrastructure;
+using Havit.Linq;
 using Havit.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -26,15 +28,17 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 		{
 			var propertyLambdaExpression = lambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TPropertyCollection>(propertyName);
 
-			LoadCollectionPropertyInternal_InitializeCollectionsForAddedEntities<TEntity, TPropertyCollection, TPropertyItem>(entities, propertyLambdaExpression.LambdaCompiled, propertyName);
-
-			List<EntityPrimaryKeyWithValues> primaryKeyWithValues = LoadCollectionPropertyInternal_GetEntitiesKeysToLoadProperty(entities, propertyName, true);
-
-			if (primaryKeyWithValues != null)
+			LoadCollectionPropertyInternal_GetFromCache<TEntity>(propertyName, entities, out var primaryKeysToLoad);
+			if ((primaryKeysToLoad != null) && primaryKeysToLoad.Any()) // zůstalo nám, na co se ptát do databáze?
 			{
-				IQueryable<TEntity> loadQuery = (IQueryable<TEntity>)LoadCollectionPropertyInternal_GetLoadQuery(propertyLambdaExpression.LambdaExpression, primaryKeyWithValues);
-				loadQuery.Load();
+				List<TPropertyItem> loadedProperties = LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(primaryKeysToLoad, propertyName).ToList();
+
+				// TODO JK: Pozor, do cache potřebujeme dostat i prázdné kolekce!
+				//LoadCollectionPropertyInternal_StoreToCache(...);
 			}
+			
+			LoadCollectionPropertyInternal_InitializeCollections<TEntity, TPropertyCollection, TPropertyItem>(entities, propertyLambdaExpression.LambdaCompiled, propertyName);
+			LoadCollectionPropertyInternal_MarkAsLoaded(entities, propertyName); // potřebujeme označit všechny kolekce za načtené (načtené + založené prázdné + odbavené z cache)
 
 			return LoadCollectionPropertyInternal_GetResult<TEntity, TPropertyCollection, TPropertyItem>(entities, propertyLambdaExpression);
 		}
@@ -49,115 +53,103 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 		{
 			var propertyLambdaExpression = lambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TPropertyCollection>(propertyName);
 
-			LoadCollectionPropertyInternal_InitializeCollectionsForAddedEntities<TEntity, TPropertyCollection, TPropertyItem>(entities, propertyLambdaExpression.LambdaCompiled, propertyName);
-
-			List<EntityPrimaryKeyWithValues> primaryKeyWithValues = LoadCollectionPropertyInternal_GetEntitiesKeysToLoadProperty(entities, propertyName, true);
-
-			if (primaryKeyWithValues != null)
+			LoadCollectionPropertyInternal_GetFromCache<TEntity>(propertyName, entities, out var primaryKeysToLoad);
+			if ((primaryKeysToLoad != null) && primaryKeysToLoad.Any()) // zůstalo nám, na co se ptát do databáze?
 			{
-				IQueryable<TEntity> loadQuery = (IQueryable<TEntity>)LoadCollectionPropertyInternal_GetLoadQuery(propertyLambdaExpression.LambdaExpression, primaryKeyWithValues);
-				await loadQuery.LoadAsync().ConfigureAwait(false);
+				List<TPropertyItem> loadedProperties = await LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(primaryKeysToLoad, propertyName).ToListAsync().ConfigureAwait(false);
+
+				// TODO JK: Pozor, do cache potřebujeme dostat i prázdné kolekce!
+				//LoadCollectionPropertyInternal_StoreToCache(...);
 			}
+
+			LoadCollectionPropertyInternal_InitializeCollections<TEntity, TPropertyCollection, TPropertyItem>(entities, propertyLambdaExpression.LambdaCompiled, propertyName);
+			LoadCollectionPropertyInternal_MarkAsLoaded(entities, propertyName); // potřebujeme označit všechny kolekce za načtené (načtené + založené prázdné + odbavené z cache)
 
 			return LoadCollectionPropertyInternal_GetResult<TEntity, TPropertyCollection, TPropertyItem>(entities, propertyLambdaExpression);
 		}
 
 		/// <summary>
-		/// Entity, které jsou ve stavu Added nemá cenu dotazovat do databáze, protože tam ještě nejsou.
-		/// Tato metoda objektům ve stavu added inicializuje kolekce a nastavuje je jako Loaded.
+		/// Zkouší načíst objekty z cache.
+		/// Klíče objektů, které se nepodařilo načíst z cache, nastavuje out parametru.
+		/// Aktuálně s cache nic nedělá, do out parametru vrací všechny entity.
 		/// </summary>
-		private void LoadCollectionPropertyInternal_InitializeCollectionsForAddedEntities<TEntity, TPropertyCollection, TPropertyItem>(TEntity[] entities, Func<TEntity, TPropertyCollection> propertyPathLambda, string propertyName)
+		private void LoadCollectionPropertyInternal_GetFromCache<TEntity>(string propertyName, TEntity[] entities, out List<object> primaryKeysToLoad)
+			where TEntity : class
+		{			
+			List<TEntity> entitiesToLoadReference = entities.Where(entity => !IsEntityPropertyLoaded(entity, propertyName, true)).ToList();
+			IEnumerable<TEntity> entitiesNotInAddedState = entities.Where(item => dbContext.GetEntityState(item) != EntityState.Added);
+			List<TEntity> entitiesToLoadQuery = entitiesNotInAddedState.Where(entity => !IsEntityPropertyLoaded(entity, propertyName, true)).ToList();
+			
+			if (entitiesToLoadReference.Count == 0)
+			{
+				primaryKeysToLoad = null;
+				return;
+			}
+
+			// TODO JK: Caching
+
+			primaryKeysToLoad = entitiesToLoadReference.Select(entityToLoadReference => entityKeyAccessor.GetEntityKeyValues(entityToLoadReference).Single()).ToList();
+		}
+
+		/// <summary>
+		/// Vrátí dotaz načítající vlastnosti objektů pro dané primární klíče.
+		/// </summary>
+		private IQueryable<TProperty> LoadCollectionPropertyInternal_GetQuery<TEntity, TProperty>(List<object> primaryKeysToLoad, string propertyName)
+			where TEntity : class
+			where TProperty : class
+		{
+			var foreignKeyProperty = dbContext.Model.FindEntityType(typeof(TEntity)).FindNavigation(propertyName).ForeignKey.Properties.Single();
+	
+			List<int> primaryKeysToLoadInt = primaryKeysToLoad.Cast<int>().ToList();
+			return dbContext.Set<TProperty>()
+					.AsQueryable()
+					// workaround: Bez následujícího řádku může při vykonávání dotazu dojít System.InvalidOperationException: Objekt povolující hodnotu Null musí mít hodnotu.
+					// Chráněno testy DbDataLoader_Load_Collection_SupportsNullableForeignKeysInMemory a DbDataLoader_Load_Collection_SupportsNullableForeignKeysInDatabase (pokud odebereme následující řádek, budou tyto testy failovat).
+					.WhereIf(foreignKeyProperty.ClrType == typeof(int?), item => null != EF.Property<int?>(item, foreignKeyProperty.Name))
+					.Where(primaryKeysToLoadInt.ContainsEffective<TProperty>(item => EF.Property<int>(item, foreignKeyProperty.Name)));
+		}
+
+		/// <summary>
+		/// Tato metoda inicializuje kolekce (nastaví nové instance), pokud jsou null.
+		/// </summary>
+		private void LoadCollectionPropertyInternal_InitializeCollections<TEntity, TPropertyCollection, TPropertyItem>(TEntity[] entities, Func<TEntity, TPropertyCollection> propertyPathLambda, string propertyName)
 			where TEntity : class
 			where TPropertyCollection : class
 			where TPropertyItem : class
 		{
-			List<TEntity> addedNonLoadedEntities = entities.Where(item => (dbContext.GetEntityState<TEntity>(item) == EntityState.Added) && !dbContext.IsEntityCollectionLoaded<TEntity>(item, propertyName)).ToList();
-			List<TEntity> addedNonLoadedEntitiesWithNullEntity = addedNonLoadedEntities.Where(item => propertyPathLambda(item) == null).ToList();
+			List<TEntity> entitiesWithNullReference = entities.Where(item => propertyPathLambda(item) == null).ToList();
 
-			if (addedNonLoadedEntitiesWithNullEntity.Count > 0)
+			if (entitiesWithNullReference.Count > 0)
 			{
 				if (typeof(TPropertyCollection) == typeof(List<TPropertyItem>) || typeof(TPropertyCollection) == typeof(IList<TPropertyItem>))
 				{
 					MethodInfo setter = typeof(TEntity).GetProperty(propertyName).GetSetMethod();
 					if (setter == null)
 					{
-						throw new InvalidOperationException($"DataLoader on new objects (EntityState.Added) of type {typeof(TEntity).FullName} cannot set collection property {propertyName} while it does not have a public setter.");
+						throw new InvalidOperationException($"DataLoader cannot set collection property {propertyName} on type {{typeof(TEntity).FullName}} while it does not have a public setter.");
 					}
-					foreach (var item in addedNonLoadedEntitiesWithNullEntity)
+					foreach (var item in entitiesWithNullReference)
 					{
 						setter.Invoke(item, new object[] { new List<TPropertyItem>() });
 					}
 				}
 				else
 				{
-					throw new InvalidOperationException($"DataLoader on new objects (EntityState.Added) of type {typeof(TEntity).FullName} cannot set collection property {propertyName} while it is not type of List<{typeof(TPropertyItem).Name}> or IList<{typeof(TPropertyItem).Name}.");
+					throw new InvalidOperationException($"DataLoader cannot set collection property {propertyName} on type {typeof(TEntity).FullName} while it is not type of List<{typeof(TPropertyItem).Name}> or IList<{typeof(TPropertyItem).Name}.");
 				}
 			}
-
-			// TODO JK: Dořešit.
-			// addedNonLoadedEntities.ForEach(item => dbContext.SetEntityCollectionLoaded<TEntity>(item, propertyName, true));
 		}
 
 		/// <summary>
-		/// Vrátí seznam názvů primárních klíčů a jejich hodnot objektů, jejichž vlastnost má být načtena.
-		/// Pokud není potřeba žádné objekty načítat, vrací null.
+		/// Označí entitám vlatnost propertyName jako načtenou.
 		/// </summary>
-		protected virtual List<EntityPrimaryKeyWithValues> LoadCollectionPropertyInternal_GetEntitiesKeysToLoadProperty<TEntity>(TEntity[] entities, string propertyName, bool isPropertyCollection)
+		private void LoadCollectionPropertyInternal_MarkAsLoaded<TEntity>(TEntity[] entities, string propertyName)
 			where TEntity : class
 		{
-			IEnumerable<TEntity> entitiesNotInAddedState = entities.Where(item => dbContext.GetEntityState(item) != EntityState.Added);
-			List<TEntity> entitiesToLoadQuery = entitiesNotInAddedState.Where(entity => !IsEntityPropertyLoaded(entity, propertyName, isPropertyCollection)).ToList();
-
-			if (!entitiesToLoadQuery.Any())
+			foreach (var entity in entities)
 			{
-				return null;
+				dbContext.MarkNavigationAsLoaded(entity, propertyName);
 			}
-			else
-			{
-				IKey primaryKey = dbContext.Model.FindEntityType(typeof(TEntity)).FindPrimaryKey();
-
-				return primaryKey.Properties.Select(primaryKeyProperty =>
-						new EntityPrimaryKeyWithValues
-						{
-							PrimaryKeyName = primaryKeyProperty.Name,
-							Values = entitiesToLoadQuery.Select(entity => (int)primaryKeyProperty.PropertyInfo.GetValue(entity)).ToList()
-						})
-					.ToList();
-			}
-		}		
-
-		/// <summary>
-		/// Vrátí dotaz načítající vlastnosti objektů s daným identifikátorem.
-		/// </summary>
-		/// <param name="propertyPath">Načítaná vlastnost.</param>
-		/// <param name="keyValues">Identifikátory objektů, jejichž vlastnost má být načtena.</param>
-		private IQueryable LoadCollectionPropertyInternal_GetLoadQuery<TEntity, TProperty>(Expression<Func<TEntity, TProperty>> propertyPath, List<EntityPrimaryKeyWithValues> keyValues)
-			where TEntity : class
-		{
-			return dbContext.Set<TEntity>()
-					.AsQueryable()
-					.Where(LoadCollectionPropertyInternal_GetWhereExpression<TEntity>(keyValues))
-					.Include(propertyPath);
-		}
-
-		/// <summary>
-		/// Vrátí WHERE podmínku omezující množinu záznamů dle Id.
-		/// </summary>
-		/// <param name="primaryKeyWithValues">Identifikátory objektů, které mají být ve where klauzuli.</param>
-		private Expression<Func<TEntity, bool>> LoadCollectionPropertyInternal_GetWhereExpression<TEntity>(List<EntityPrimaryKeyWithValues> primaryKeyWithValues)
-			where TEntity : class
-		{
-			Contract.Requires(primaryKeyWithValues != null);
-			Contract.Requires(primaryKeyWithValues.Count > 0);
-
-			ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "item");
-			return ExpressionExt.AndAlso<TEntity>(primaryKeyWithValues.Select(primaryKeyWithValuesItem =>
-			{
-				Expression<Func<TEntity, int>> propertyAccessor = item => EF.Property<int>(item, primaryKeyWithValuesItem.PrimaryKeyName);
-				return primaryKeyWithValuesItem.Values.ContainsEffective(propertyAccessor);
-			})
-				.ToArray()
-			);
 		}
 
 		private LoadPropertyInternalResult LoadCollectionPropertyInternal_GetResult<TEntity, TPropertyCollection, TPropertyItem>(TEntity[] entities, PropertyLambdaExpression<TEntity, TPropertyCollection> propertyLambdaExpression)

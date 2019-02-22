@@ -38,7 +38,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
 
 			EntityCacheManager entityCacheManager = new EntityCacheManager(cacheService, new CacheAllEntitiesEntityCacheSupportDecision(), new EntityCacheKeyGenerator(), new NullEntityCacheOptionsGenerator(), new EntityCacheDependencyManager(cacheService), new DbEntityKeyAccessor(dbContextFactoryMock.Object), dbContext);
-			DbDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), entityCacheManager);
+			DbDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolverWithDeletedFilteringCollectionsSubstitution(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), entityCacheManager, new DbEntityKeyAccessor(dbContextFactoryMock.Object));
 
 			// vytvoříme si objekt membership s odkazem na neexistující LoginAccount a Roli, tento objekt si připojíme k DbContextu jako existující (avšak není v databázi)
 			Membership membership = new Membership { LoginAccountId = 1, RoleId = 1 };
@@ -80,7 +80,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
 
 			EntityCacheManager entityCacheManager = new EntityCacheManager(cacheService, new CacheAllEntitiesEntityCacheSupportDecision(), new EntityCacheKeyGenerator(), new NullEntityCacheOptionsGenerator(), new EntityCacheDependencyManager(cacheService), new DbEntityKeyAccessor(dbContextFactoryMock.Object), dbContext);
-			DbDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), entityCacheManager);
+			DbDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolverWithDeletedFilteringCollectionsSubstitution(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), entityCacheManager, new DbEntityKeyAccessor(dbContextFactoryMock.Object));
 
 			// vytvoříme si objekt membership s odkazem na neexistující LoginAccount a Roli, tento objekt si připojíme k DbContextu jako existující (avšak není v databázi)
 			Membership membership1 = new Membership { LoginAccountId = 1, RoleId = 1 };
@@ -124,7 +124,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
 
 			EntityCacheManager entityCacheManager = new EntityCacheManager(cacheService, new CacheAllEntitiesEntityCacheSupportDecision(), new EntityCacheKeyGenerator(), new NullEntityCacheOptionsGenerator(), new EntityCacheDependencyManager(cacheService), new DbEntityKeyAccessor(dbContextFactoryMock.Object), dbContext);
-			DbDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), entityCacheManager);
+			DbDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolverWithDeletedFilteringCollectionsSubstitution(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), entityCacheManager, new DbEntityKeyAccessor(dbContextFactoryMock.Object));
 
 			// vytvoříme si objekt membership s odkazem na neexistující LoginAccount a Roli, tento objekt si připojíme k DbContextu jako existující (avšak není v databázi)
 			Membership membership = new Membership { LoginAccountId = 1, RoleId = 1 };

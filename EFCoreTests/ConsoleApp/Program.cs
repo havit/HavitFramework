@@ -156,15 +156,14 @@ namespace ConsoleApp1
 			using (var scope = container.BeginScope())
 			{
 				var dbContext = container.Resolve<IDbContext>();
-				var memberships = dbContext.Set<Membership>().AsQueryable().Take(3).ToList();
+				var loginAccounts = dbContext.Set<LoginAccount>().AsQueryable().Take(3).ToList();
 				var dataLoader = container.Resolve<IDataLoader>();
 
-				dataLoader.LoadAll(memberships, m => m.LoginAccount);
-				dataLoader.LoadAll(memberships, m => m.LoginAccount);
-				dataLoader.LoadAll(memberships, m => m.LoginAccount);
-				dataLoader.LoadAll(memberships, m => m.LoginAccount);
-				dataLoader.LoadAll(memberships, m => m.LoginAccount).ThenLoad(la => la.Memberships).ThenLoad(m => m.Role);
+				dataLoader.LoadAll(loginAccounts, m => m.Memberships).ThenLoad(m => m.Role);
+				dataLoader.LoadAll(loginAccounts, m => m.Memberships).ThenLoad(m => m.Role);
+				dataLoader.LoadAll(loginAccounts, m => m.Memberships).ThenLoad(m => m.Role);
 			}
+
 		}
 
 		private static void DebugModelInfo(IWindsorContainer container)

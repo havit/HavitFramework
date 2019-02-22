@@ -19,11 +19,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 			where TEntity : class
 			where TProperty : class
 		{
-			LoadReferencePropertyInternal_GetFromCache<TEntity, TProperty>(propertyName, entities, out List<object> keysToQuery);
+			LoadReferencePropertyInternal_GetFromCache<TEntity, TProperty>(propertyName, entities, out List<object> foreignKeysToLoad);
 
-			if ((keysToQuery != null) && keysToQuery.Any()) // zůstalo nám, na co se ptát do databáze?
+			if ((foreignKeysToLoad != null) && foreignKeysToLoad.Any()) // zůstalo nám, na co se ptát do databáze?
 			{
-				List<TProperty> loadedProperties = LoadReferencePropertyInternal_GetQuery<TProperty>(keysToQuery).ToList();
+				List<TProperty> loadedProperties = LoadReferencePropertyInternal_GetQuery<TProperty>(foreignKeysToLoad).ToList();
 				LoadReferencePropertyInternal_StoreToCache(loadedProperties);
 			}
 
@@ -37,18 +37,18 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 			where TEntity : class
 			where TProperty : class
 		{
-			LoadReferencePropertyInternal_GetFromCache<TEntity, TProperty>(propertyName, entities, out List<object> keysToQuery);
+			LoadReferencePropertyInternal_GetFromCache<TEntity, TProperty>(propertyName, entities, out List<object> foreignKeysToLoad);
 
-			if ((keysToQuery != null) && keysToQuery.Any()) // zůstalo nám, na co se ptát do databáze?
+			if ((foreignKeysToLoad != null) && foreignKeysToLoad.Any()) // zůstalo nám, na co se ptát do databáze?
 			{
-				List<TProperty> loadedProperties = await LoadReferencePropertyInternal_GetQuery<TProperty>(keysToQuery).ToListAsync().ConfigureAwait(false);
+				List<TProperty> loadedProperties = await LoadReferencePropertyInternal_GetQuery<TProperty>(foreignKeysToLoad).ToListAsync().ConfigureAwait(false);
 				LoadReferencePropertyInternal_StoreToCache(loadedProperties);
 			}
 
 			return LoadReferencePropertyInternal_GetResult<TEntity, TProperty>(propertyName, entities);
 		}
 
-		private void LoadReferencePropertyInternal_GetFromCache<TEntity, TProperty>(string propertyName, TEntity[] entities, out List<object> keysToLoad)
+		private void LoadReferencePropertyInternal_GetFromCache<TEntity, TProperty>(string propertyName, TEntity[] entities, out List<object> foreignKeysToLoad)
 			where TEntity : class
 			where TProperty : class
 		{
@@ -56,7 +56,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 
 			if (entitiesToLoadReference.Count == 0)
 			{
-				keysToLoad = null;
+				foreignKeysToLoad = null;
 				return;
 			}
 
@@ -69,7 +69,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 
 			IDbSet<TProperty> dbSet = dbContext.Set<TProperty>();
 
-			keysToLoad = new List<object>(entitiesToLoadReference.Count);
+			foreignKeysToLoad = new List<object>(entitiesToLoadReference.Count);
 
 			foreach (object foreignKeyValue in foreignKeyValues)
 			{
@@ -89,12 +89,12 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 				}
 				else // není ani v identity mapě, ani v cache, hledáme v databázi
 				{
-					keysToLoad.Add(foreignKeyValue);
+					foreignKeysToLoad.Add(foreignKeyValue);
 				}
 			}
 		}
 
-		private IQueryable<TProperty> LoadReferencePropertyInternal_GetQuery<TProperty>(List<object> keysToQuery)
+		private IQueryable<TProperty> LoadReferencePropertyInternal_GetQuery<TProperty>(List<object> foreignKeysToLoad)
 			where TProperty : class
 		{
 			// získáme název vlastnosti primárního klíče třídy načítané vlastnosti (obvykle "Id")
@@ -104,8 +104,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 
 			// https://github.com/aspnet/EntityFrameworkCore/issues/14408
 			// Jako workadound stačí místo v EF.Property<object> namísto object zvolit skutečný typ. Aktuálně používáme jen int, hardcoduji tedy int bez vynakládání většího úsilí na obecnější řešení.
-			List<int> keysToQueryInt = keysToQuery.Cast<int>().ToList();
-			return dbContext.Set<TProperty>().AsQueryable().Where(keysToQueryInt.ContainsEffective<TProperty>(item => EF.Property<int>(item, propertyPrimaryKey)));
+			List<int> foreignKeysToQueryInt = foreignKeysToLoad.Cast<int>().ToList();
+			return dbContext.Set<TProperty>().AsQueryable().Where(foreignKeysToQueryInt.ContainsEffective<TProperty>(item => EF.Property<int>(item, propertyPrimaryKey)));
 		}
 
 		private void LoadReferencePropertyInternal_StoreToCache<TProperty>(List<TProperty> loadedProperties)

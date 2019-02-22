@@ -223,12 +223,10 @@ namespace Havit.Data.EntityFrameworkCore
 		    return GetEntry(entity, suppressDetectChanged: true).Collection(propertyName).IsLoaded;
 	    }
 
-		// TODO JK: Nebude potřeba?
-	    //public void SetEntityCollectionLoaded<TEntity>(TEntity entity, string propertyName, bool isLoaded)
-		   // where TEntity : class
-	    //{
-		   // ExecuteWithoutAutoDetectChanges(() => this.Entry(entity).Collection(propertyName).IsLoaded = isLoaded);
-	    //}
+	    void IDbContext.MarkNavigationAsLoaded<TEntity>(TEntity entity, string propertyName)
+	    {
+		   ExecuteWithoutAutoDetectChanges(() => this.Entry(entity).Navigation(propertyName).IsLoaded = true);
+	    }
 
 	    /// <summary>
 		/// Vrací DbSet pro danou entitu.

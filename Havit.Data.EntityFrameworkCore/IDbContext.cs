@@ -76,14 +76,18 @@ namespace Havit.Data.EntityFrameworkCore
 		bool IsEntityReferenceLoaded<TEntity>(TEntity entity, string propertyName)
 			where TEntity : class;
 	
+		// TODO JK: Sjednotit Collection + Reference na Navigaci
 		/// <summary>
 		/// Vrací true, pokud je EF považuje kolekci za načtenou.
 		/// </summary>
 		bool IsEntityCollectionLoaded<TEntity>(TEntity entity, string propertyName)
 			where TEntity : class;
 
-		//void SetEntityCollectionLoaded<TEntity>(TEntity entity, string propertyName, bool isLoaded)
-		//	where TEntity : class;
+		/// <summary>
+		/// Nastaví navigation property (kolekce, reference) jako načtenou.
+		/// </summary>
+		void MarkNavigationAsLoaded<TEntity>(TEntity entity, string propertyName)
+			where TEntity : class;
 			
 		/// <summary>
 		/// Vrací EntityEntry pro danou entitu bez provedení detekce změn change trackerem.

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Havit.Data.EntityFrameworkCore.Patterns.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders;
 using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
+using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Model;
 using Havit.Data.Patterns.DataLoaders;
 using Microsoft.EntityFrameworkCore;
@@ -23,13 +24,17 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 			SeedOneToManyTestData(deleted: false);
 
 			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+			Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>();
+			dbContextFactoryMock.Setup(m => m.CreateService()).Returns(dbContext);
+			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
+
 			Child child = dbContext.Child.First();
 
 			Assert.IsNull(child.Parent, "Pro ověření DbDataLoaderu se předpokládá, že hodnota child.Parent je null.");
 			Assert.AreNotEqual(0, child.ParentId, "Pro ověření DbDataLoaderu se předpokládá, že hodnota child.ParentId není nula.");
 
 			// Act
-			IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), new NoCachingEntityCacheManager());
+			IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolverWithDeletedFilteringCollectionsSubstitution(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), new NoCachingEntityCacheManager(), new DbEntityKeyAccessor(dbContextFactoryMock.Object));
 			dataLoader.Load(child, item => item.Parent);
 
 			// Assert
@@ -44,7 +49,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 			SeedOneToManyTestData();
 
 			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
-			IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), new NoCachingEntityCacheManager());
+			Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>();
+			dbContextFactoryMock.Setup(m => m.CreateService()).Returns(dbContext);
+			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
+
+			IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolverWithDeletedFilteringCollectionsSubstitution(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), new NoCachingEntityCacheManager(), new DbEntityKeyAccessor(dbContextFactoryMock.Object));
 
 			Child child1 = dbContext.Child.First();
 			Child child2 = new Child { ParentId = child1.ParentId };
@@ -65,13 +74,17 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 			SeedOneToManyTestData(deleted: false);
 
 			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+			Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>();
+			dbContextFactoryMock.Setup(m => m.CreateService()).Returns(dbContext);
+			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
+
 			Child child = dbContext.Child.First();
 
 			Assert.IsNull(child.Parent, "Pro ověření DbDataLoaderu se předpokládá, že hodnota child.Parent je null.");
 			Assert.AreNotEqual(0, child.ParentId, "Pro ověření DbDataLoaderu se předpokládá, že hodnota child.ParentId není nula.");
 
 			// Act
-			IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), new NoCachingEntityCacheManager());
+			IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolverWithDeletedFilteringCollectionsSubstitution(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), new NoCachingEntityCacheManager(), new DbEntityKeyAccessor(dbContextFactoryMock.Object));
 			dataLoader.Load(child, item => item.Parent);
 
 			// Assert
@@ -86,13 +99,17 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 			SeedOneToManyTestData(deleted: true);
 
 			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+			Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>();
+			dbContextFactoryMock.Setup(m => m.CreateService()).Returns(dbContext);
+			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
+
 			Child child = dbContext.Child.First();
 
 			Assert.IsNull(child.Parent, "Pro ověření DbDataLoaderu se předpokládá, že hodnota child.Parent je null.");
 			Assert.AreNotEqual(0, child.ParentId, "Pro ověření DbDataLoaderu se předpokládá, že hodnota child.ParentId není nula.");
 
 			// Act
-			IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), new NoCachingEntityCacheManager());
+			IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolverWithDeletedFilteringCollectionsSubstitution(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), new NoCachingEntityCacheManager(), new DbEntityKeyAccessor(dbContextFactoryMock.Object));
 			dataLoader.Load(child, item => item.Parent);
 
 			// Assert
@@ -105,8 +122,12 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 		{
 			// Arrange
 			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+			Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>();
+			dbContextFactoryMock.Setup(m => m.CreateService()).Returns(dbContext);
+			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
+
 			dbContext.Database.DropCreate();
-			IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), new NoCachingEntityCacheManager());
+			IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolverWithDeletedFilteringCollectionsSubstitution(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), new NoCachingEntityCacheManager(), new DbEntityKeyAccessor(dbContextFactoryMock.Object));
 
 			// Act
 			dataLoader.Load(new Child() /* nontracked object */, item => item.Parent);
@@ -120,6 +141,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 			// Arrange
 			Mock<DataLoaderTestDbContext> dbContextMock = new Mock<DataLoaderTestDbContext>();
 			dbContextMock.CallBase = true;
+
+			Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>();
+			dbContextFactoryMock.Setup(m => m.CreateService()).Returns(dbContextMock.Object);
+			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
+			
 			dbContextMock.Object.Database.DropCreate();
 
 			Child child = new Child
@@ -134,7 +160,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 			dbContextMock.Object.Attach(child);
 
 			// Act
-			IDataLoader dataLoader = new DbDataLoader(dbContextMock.Object, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), new NoCachingEntityCacheManager());
+			IDataLoader dataLoader = new DbDataLoader(dbContextMock.Object, new PropertyLoadSequenceResolverWithDeletedFilteringCollectionsSubstitution(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), new NoCachingEntityCacheManager(), new DbEntityKeyAccessor(dbContextFactoryMock.Object));
 			dataLoader.Load(child, item => item.Parent);
 
 			// Assert

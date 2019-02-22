@@ -30,6 +30,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 		private readonly IPropertyLoadSequenceResolver propertyLoadSequenceResolver;
 		private readonly IPropertyLambdaExpressionManager lambdaExpressionManager;
 		private readonly IEntityCacheManager entityCacheManager;
+		private readonly IEntityKeyAccessor entityKeyAccessor;
 
 		/// <summary>
 		/// Konstructor.
@@ -38,7 +39,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 		/// <param name="propertyLoadSequenceResolver">Služba, která poskytne vlastnosti, které mají být načteny, a jejich pořadí.</param>
 		/// <param name="lambdaExpressionManager">LambdaExpressionManager, pomocí něhož jsou získávány expression trees a kompilované expression trees pro lambda výrazy přístupu k vlastnostem objektů.</param>
 		/// <param name="entityCacheManager">Zajišťuje získávání a ukládání entit z/do cache.</param>
-		public DbDataLoader(IDbContext dbContext, IPropertyLoadSequenceResolver propertyLoadSequenceResolver, IPropertyLambdaExpressionManager lambdaExpressionManager, IEntityCacheManager entityCacheManager)
+		/// <param name="entityKeyAccessor">Zajišťuje získávání hodnot primárního klíče entit.</param>
+		public DbDataLoader(IDbContext dbContext, IPropertyLoadSequenceResolver propertyLoadSequenceResolver, IPropertyLambdaExpressionManager lambdaExpressionManager, IEntityCacheManager entityCacheManager, IEntityKeyAccessor entityKeyAccessor)
 		{
 			Contract.Requires(dbContext != null);
 
@@ -46,6 +48,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 			this.propertyLoadSequenceResolver = propertyLoadSequenceResolver;
 			this.lambdaExpressionManager = lambdaExpressionManager;
 			this.entityCacheManager = entityCacheManager;
+			this.entityKeyAccessor = entityKeyAccessor;
 		}
 
 		#region IDataLoader implementation (Load + LoadAll)
@@ -301,6 +304,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 		/// Řídí se pomocí IDbContext.IsEntityCollectionLoaded, DbContext.IsEntityReferenceLoaded.
 		/// Pozor na předefinování metody v potomku - DbDataLoaderWithLoadedPropertiesMemory. Díky tomu nesmí být tato metoda volána opakovaně (poprvé vrací skutečnou hodnotu, v dalších voláních vrací vždy true).
 		/// </summary>
+		// TODO JK: Bool -> Odstranit
 		protected virtual bool IsEntityPropertyLoaded<TEntity>(TEntity entity, string propertyName, bool isPropertyCollection)
 			where TEntity : class
 		{

@@ -8,9 +8,14 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal
 	public class PropertyToLoad
 	{
 		/// <summary>
-		/// Název naèítané vlasntosti.
+		/// Název naèítané vlastnosti (po pøípadné substituci).
 		/// </summary>
 		public string PropertyName { get; set; }
+
+		/// <summary>
+		/// Název naèítané vlastnosti (pøed pøípadnou substitucí).
+		/// </summary>
+		public string OriginalPropertyName { get; set; }
 
 		/// <summary>
 		/// Typ, jeho vlastnost je naèítána.
@@ -18,7 +23,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal
 		public Type SourceType { get; set; }
 
 		/// <summary>
-		/// Typ naèítané vlasnosti.
+		/// Typ naèítané vlastnosti  (po pøípadné substituci).
 		/// V pøípadì kolekcí jde o kolekci prvkù (napø. pro LoginAccount.Roles bude obsahovat List&lt;Role&gt;.
 		/// </summary>
 		public Type TargetType { get; set; }

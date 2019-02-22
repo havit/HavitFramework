@@ -20,12 +20,14 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Internal
 			Assert.AreEqual(typeof(Child), propertiesToLoad[0].SourceType);
 			Assert.AreEqual(typeof(Master), propertiesToLoad[0].TargetType);
 			Assert.AreEqual(nameof(Child.Parent), propertiesToLoad[0].PropertyName);
+			Assert.AreEqual(nameof(Child.Parent), propertiesToLoad[0].OriginalPropertyName);
 			Assert.IsFalse(propertiesToLoad[0].IsCollection);
 
 			Assert.AreEqual(typeof(Master), propertiesToLoad[1].SourceType);
 			Assert.AreEqual(typeof(ICollection<Child>), propertiesToLoad[1].TargetType);
 			Assert.AreEqual(typeof(Child), propertiesToLoad[1].CollectionItemType);
 			Assert.AreEqual(nameof(Master.Children), propertiesToLoad[1].PropertyName);
+			Assert.AreEqual(nameof(Master.Children), propertiesToLoad[1].OriginalPropertyName);
 			Assert.IsTrue(propertiesToLoad[1].IsCollection);
 
 		}

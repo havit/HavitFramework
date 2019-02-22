@@ -14,28 +14,28 @@ namespace Havit.Data.Patterns.DataLoaders
 	internal class DbFluentDataLoader<TEntity> : IFluentDataLoader<TEntity>, IFluentDataLoaderAsync<TEntity>
 		where TEntity : class
 	{
-		private readonly DbDataLoader loader;
-		private readonly TEntity[] data;
+		internal DbDataLoader Loader { get; }
+		internal TEntity[] Data { get; }
 
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
 		public DbFluentDataLoader(DbDataLoader loader, TEntity[] data)
 		{
-			this.loader = loader;
-			this.data = data;
+			this.Loader = loader;
+			this.Data = data;
 		}
 
 		/// <inheritdoc />
 		IFluentDataLoader<TProperty> IFluentDataLoader<TEntity>.Load<TProperty>(Expression propertyPath)
 		{
-			return loader.LoadAll(data, (Expression<Func<TEntity, TProperty>>)propertyPath);
+			return Loader.LoadAll(Data, (Expression<Func<TEntity, TProperty>>)propertyPath);
 		}
 
 		/// <inheritdoc />
 		async Task<IFluentDataLoaderAsync<TProperty>> IFluentDataLoaderAsync<TEntity>.LoadAsync<TProperty>(Expression propertyPath)
 		{
-			return await loader.LoadAllAsync(data, (Expression<Func<TEntity, TProperty>>)propertyPath).ConfigureAwait(false);
+			return await Loader.LoadAllAsync(Data, (Expression<Func<TEntity, TProperty>>)propertyPath).ConfigureAwait(false);
 		}
 
 		/// <inheritdoc />
@@ -55,8 +55,8 @@ namespace Havit.Data.Patterns.DataLoaders
 		{
 			if (typeof(IEnumerable<TWrappedEntity>).IsAssignableFrom(typeof(TEntity)))
 			{
-				TWrappedEntity[] unwrappedData = data.Cast<IEnumerable<TWrappedEntity>>().SelectMany(item => item).ToArray();
-				return new DbFluentDataLoader<TWrappedEntity>(this.loader, unwrappedData);
+				TWrappedEntity[] unwrappedData = Data.Cast<IEnumerable<TWrappedEntity>>().SelectMany(item => item).ToArray();
+				return new DbFluentDataLoader<TWrappedEntity>(this.Loader, unwrappedData);
 			}
 			else
 			{

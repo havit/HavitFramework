@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using Havit.Data.Entity.Patterns.DataLoaders.Internal;
 using Havit.Data.Entity.Patterns.Infrastructure;
@@ -184,7 +185,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 			{
 				// ověříme, že jsou všechny objekty sledované change trackerem (na který spoléháme)
 				Contract.Assert<InvalidOperationException>(entitiesToLoadWithoutNulls.All(item => dbContext.GetEntityState(item) != EntityState.Detached), "DbDataLoader can be used only for objects tracked by a change tracker.");
-				
+
 				// vytáhneme posloupnost vlastností, které budeme načítat
 				PropertyToLoad[] propertiesSequenceToLoad = propertyLoadSequenceResolver.GetPropertiesToLoad(propertyPath);
 
@@ -194,22 +195,36 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 				{
 					if (!propertyToLoad.IsCollection)
 					{
-						entities = (Array)typeof(DbDataLoader)
-							.GetMethod(nameof(LoadReferencePropertyInternal), BindingFlags.Instance | BindingFlags.NonPublic)
-							.MakeGenericMethod(
-								propertyToLoad.SourceType,
-								propertyToLoad.TargetType)
-							.Invoke(this, new object[] { propertyToLoad.PropertyName, entities });
+						try
+						{
+							entities = (Array)typeof(DbDataLoader)
+								.GetMethod(nameof(LoadReferencePropertyInternal), BindingFlags.Instance | BindingFlags.NonPublic)
+								.MakeGenericMethod(
+									propertyToLoad.SourceType,
+									propertyToLoad.TargetType)
+								.Invoke(this, new object[] { propertyToLoad.PropertyName, entities });
+						}
+						catch (TargetInvocationException ex)
+						{
+							ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
+						}
 					}
 					else
 					{
-						entities = (Array)typeof(DbDataLoader)
+						try
+						{
+							entities = (Array)typeof(DbDataLoader)
 							.GetMethod(nameof(LoadCollectionPropertyInternal), BindingFlags.Instance | BindingFlags.NonPublic)
 							.MakeGenericMethod(
 								propertyToLoad.SourceType,
 								propertyToLoad.TargetType,
 								propertyToLoad.CollectionItemType)
 							.Invoke(this, new object[] { propertyToLoad.PropertyName, entities });
+						}
+						catch (TargetInvocationException ex)
+						{
+							ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
+						}
 					}
 
 					if (entities.Length == 0)
@@ -239,27 +254,41 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 				PropertyToLoad[] propertiesSequenceToLoad = propertyLoadSequenceResolver.GetPropertiesToLoad(propertyPath);
 
 				Array entities = entitiesToLoadWithoutNulls;
-				Task task;
+				Task task = null;
 				foreach (PropertyToLoad propertyToLoad in propertiesSequenceToLoad)
 				{
 					if (!propertyToLoad.IsCollection)
 					{
-						task = (Task)typeof(DbDataLoader)
-							.GetMethod(nameof(LoadReferencePropertyInternalAsync), BindingFlags.Instance | BindingFlags.NonPublic)
-							.MakeGenericMethod(
-								propertyToLoad.SourceType,
-								propertyToLoad.TargetType)
-							.Invoke(this, new object[] { propertyToLoad.PropertyName, entities });
+						try
+						{
+							task = (Task)typeof(DbDataLoader)
+								.GetMethod(nameof(LoadReferencePropertyInternalAsync), BindingFlags.Instance | BindingFlags.NonPublic)
+								.MakeGenericMethod(
+									propertyToLoad.SourceType,
+									propertyToLoad.TargetType)
+								.Invoke(this, new object[] { propertyToLoad.PropertyName, entities });
+						}
+						catch (TargetInvocationException targetInvocationException)
+						{
+							ExceptionDispatchInfo.Capture(targetInvocationException.InnerException).Throw();
+						}
 					}
 					else
 					{
-						task = (Task)typeof(DbDataLoader)
-							.GetMethod(nameof(LoadCollectionPropertyInternalAsync), BindingFlags.Instance | BindingFlags.NonPublic)
-							.MakeGenericMethod(
-								propertyToLoad.SourceType,
-								propertyToLoad.TargetType,
-								propertyToLoad.CollectionItemType)
-							.Invoke(this, new object[] { propertyToLoad.PropertyName, entities });
+						try
+						{
+							task = (Task)typeof(DbDataLoader)
+								.GetMethod(nameof(LoadCollectionPropertyInternalAsync), BindingFlags.Instance | BindingFlags.NonPublic)
+								.MakeGenericMethod(
+									propertyToLoad.SourceType,
+									propertyToLoad.TargetType,
+									propertyToLoad.CollectionItemType)
+								.Invoke(this, new object[] { propertyToLoad.PropertyName, entities });
+						}
+						catch (TargetInvocationException targetInvocationException)
+						{
+							ExceptionDispatchInfo.Capture(targetInvocationException.InnerException).Throw();
+						}
 					}
 					await task.ConfigureAwait(false);
 					entities = (Array)((dynamic)task).Result; // task je již dokončen

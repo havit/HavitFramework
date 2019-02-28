@@ -48,6 +48,15 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 			return ShouldCacheEntity<TEntity>();
 		}
 
+
+		/// <inheritdoc />
+		public bool ShouldCacheCollection<TEntity, TPropertyItem>(TEntity entity, string propertyName)
+			where TEntity : class
+			where TPropertyItem : class
+		{
+			return ShouldCacheEntity<TPropertyItem>() && ShouldCacheEntity<TEntity>(entity);
+		}
+
 		/// <inheritdoc />
 		public bool ShouldCacheAllKeys<TEntity>()
 			where TEntity : class
@@ -82,5 +91,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 				throw new InvalidOperationException(String.Format("Type {0} is not a supported type.", type.FullName));
 			}
 		}
+
 	}
 }

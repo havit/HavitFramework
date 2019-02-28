@@ -17,14 +17,22 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 		}
 
 		/// <inheritdoc/> 
-		public bool ShouldCacheAllKeys<TEntity>()
+		public bool ShouldCacheEntity<TEntity>(TEntity entity)
 			where TEntity : class
 		{
 			return true;
 		}
 
 		/// <inheritdoc/> 
-		public bool ShouldCacheEntity<TEntity>(TEntity entity)
+		public bool ShouldCacheCollection<TEntity, TPropertyItem>(TEntity entity, string propertyName)
+			where TEntity : class
+			where TPropertyItem : class
+		{
+			return true;
+		}
+
+		/// <inheritdoc/> 
+		public bool ShouldCacheAllKeys<TEntity>()
 			where TEntity : class
 		{
 			return true;

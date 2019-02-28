@@ -11,15 +11,22 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 	public class EntityCacheKeyGenerator : IEntityCacheKeyGenerator
 	{
 		/// <inheritdoc />
+		public string GetEntityCacheKey(Type entityType, object key)
+		{			
+			return entityType.FullName + "|ID=" + key.ToString();
+		}
+
+		/// <inheritdoc />
+		public string GetCollectionCacheKey(Type entityType, object key, string propertyName)
+		{
+			return entityType.FullName + "|ID=" + key.ToString() + "|PropertyName" + propertyName;
+		}
+
+		/// <inheritdoc />
 		public string GetAllKeysCacheKey(Type entityType)
 		{
 			return entityType.FullName + "|AllKeys";
 		}
 
-		/// <inheritdoc />
-		public string GetEntityCacheKey(Type entityType, object key)
-		{			
-			return entityType.FullName + "|ID=" + key.ToString();
-		}
 	}
 }

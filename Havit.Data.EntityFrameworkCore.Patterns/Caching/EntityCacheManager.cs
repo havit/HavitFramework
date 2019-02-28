@@ -1,8 +1,11 @@
-﻿using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
+﻿using Havit.Data.EntityFrameworkCore.Metadata;
+using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
+using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 using Havit.Data.Patterns.Infrastructure;
 using Havit.Diagnostics.Contracts;
 using Havit.Services;
 using Havit.Services.Caching;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
@@ -31,11 +34,12 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 		private readonly IEntityCacheDependencyManager entityCacheDependencyManager;
 		private readonly IDbContext dbContext;
 		private readonly IEntityKeyAccessor entityKeyAccessor;
+		private readonly IPropertyLambdaExpressionManager propertyLambdaExpressionManager;
 
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public EntityCacheManager(ICacheService cacheService, IEntityCacheSupportDecision entityCacheSupportDecision, IEntityCacheKeyGenerator entityCacheKeyGenerator, IEntityCacheOptionsGenerator entityCacheOptionsGenerator, IEntityCacheDependencyManager entityCacheDependencyManager, IEntityKeyAccessor entityKeyAccessor, IDbContext dbContext)
+		public EntityCacheManager(ICacheService cacheService, IEntityCacheSupportDecision entityCacheSupportDecision, IEntityCacheKeyGenerator entityCacheKeyGenerator, IEntityCacheOptionsGenerator entityCacheOptionsGenerator, IEntityCacheDependencyManager entityCacheDependencyManager, IEntityKeyAccessor entityKeyAccessor, IPropertyLambdaExpressionManager propertyLambdaExpressionManager, IDbContext dbContext)
 		{
 			this.cacheService = cacheService;
 			this.entityCacheSupportDecision = entityCacheSupportDecision;
@@ -43,6 +47,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 			this.entityCacheOptionsGenerator = entityCacheOptionsGenerator;
 			this.entityCacheDependencyManager = entityCacheDependencyManager;
 			this.entityKeyAccessor = entityKeyAccessor;
+			this.propertyLambdaExpressionManager = propertyLambdaExpressionManager;
 			this.dbContext = dbContext;
 		}
 
@@ -67,7 +72,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 					//});
 					entity = result;
 					return true;
-
 				}
 			}
 			entity = null;
@@ -125,7 +129,69 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 				cacheService.Add(cacheKey, (object)keys, entityCacheOptionsGenerator.GetAllKeysCacheOptions<TEntity>());
 			}
 		}
-			   
+
+		/// <inheritdoc />
+		public bool TryGetCollection<TEntity, TPropertyItem>(TEntity entity, string propertyName)
+			where TEntity : class
+			where TPropertyItem : class
+		{
+			if (entityCacheSupportDecision.ShouldCacheCollection<TEntity, TPropertyItem>(entity, propertyName))
+			{
+				string cacheKey = entityCacheKeyGenerator.GetCollectionCacheKey(typeof(TEntity), entityKeyAccessor.GetEntityKeyValues(entity).Single(), propertyName);
+
+				if (cacheService.TryGet(cacheKey, out object cacheEntityPropertyMembersKeys))
+				{
+					object[][] entityPropertyMembersKeys = (object[][])cacheEntityPropertyMembersKeys;
+
+					bool isManyToManyEntity = dbContext.Model.FindEntityType(typeof(TPropertyItem)).IsManyToManyEntity();
+
+					var dbSet = dbContext.Set<TPropertyItem>();
+					if (isManyToManyEntity)
+					{
+						var propertyNames = entityKeyAccessor.GetEntityKeyPropertyNames(typeof(TPropertyItem));
+
+						foreach (object[] entityPropertyMemberKey in entityPropertyMembersKeys)
+						{
+							if (dbSet.FindTracked(entityPropertyMemberKey) != null) // už je načtený, nemůžeme volat TryGetEntity
+							{
+								TPropertyItem instance = Activator.CreateInstance<TPropertyItem>();
+								for (int i = 0; i < propertyNames.Length; i++)
+								{
+									typeof(TPropertyItem).GetProperty(propertyNames[i]).SetValue(instance, entityPropertyMemberKey[i]);
+								}
+								dbSet.AttachRange(new TPropertyItem[] { instance });
+							}
+						}
+						return true;
+					}
+					else
+					{
+						return entityPropertyMembersKeys.All(entityPropertyMemberKey =>
+							(dbSet.FindTracked(entityPropertyMemberKey) != null) // už je načtený, nemůžeme volat TryGetEntity
+							|| TryGetEntity<TPropertyItem>(entityPropertyMemberKey, out _));
+					}
+				}
+			}
+			return false;
+		}
+
+		/// <inheritdoc />
+		public void StoreCollection<TEntity, TPropertyItem>(TEntity entity, string propertyName)
+			where TEntity : class
+			where TPropertyItem : class
+		{
+			if (entityCacheSupportDecision.ShouldCacheCollection<TEntity, TPropertyItem>(entity, propertyName))
+			{
+				string cacheKey = entityCacheKeyGenerator.GetCollectionCacheKey(typeof(TEntity), entityKeyAccessor.GetEntityKeyValues(entity).Single(), propertyName);
+
+				var propertyLambda = propertyLambdaExpressionManager.GetPropertyLambdaExpression<TEntity, IEnumerable<TPropertyItem>>(propertyName).LambdaCompiled;
+				var entityPropertyMembers = propertyLambda(entity) ?? Enumerable.Empty<TPropertyItem>();
+
+				object[][] entityPropertyMembersKeys = entityPropertyMembers.Select(entityPropertyMember => entityKeyAccessor.GetEntityKeyValues(entityPropertyMember)).ToArray();
+				cacheService.Add(cacheKey, entityPropertyMembersKeys);
+			}
+		}
+
 		/// <inheritdoc />
 		public void InvalidateEntity(ChangeType changeType, object entity)
 		{

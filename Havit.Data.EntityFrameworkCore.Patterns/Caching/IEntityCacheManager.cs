@@ -31,11 +31,26 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 		/// Přijme notifikaci o změně entity a zajistí její invalidaci v cache.
 		/// </summary>
 		/// <remarks>
-		/// Tato metoda není generická (na rorzdíl od ostatních), kvůli zamýšlenému použití.
+		/// Tato metoda není generická (na rozdíl od ostatních), kvůli zamýšlenému použití.
 		/// Pro pohodlné volání této metody z DbUnitOfWork.Commit, kde máme k dispozici jen pole objektů,
 		/// nepoužijeme tedy generikum, abychom nemuseli metodu volat reflexí pro každou entitu.
 		/// </remarks>
-		void InvalidateEntity(ChangeType changeType, object entity); 
+		void InvalidateEntity(ChangeType changeType, object entity);
+
+
+		/// <summary>
+		/// Pokusí se z cache načíst kolekci dané entity. Pokud je kolekce entity v cache nalezena a vrácena, vrací true. Jinak false. 
+		/// </summary>
+		bool TryGetCollection<TEntity, TPropertyItem>(TEntity entityToLoad, string propertyName)
+			where TEntity : class
+			where TPropertyItem : class;
+
+		/// <summary>
+		/// Uloží do cache kolekci předané entity.
+		/// </summary>
+		void StoreCollection<TEntity, TPropertyItem>(TEntity entity, string propertyName)
+			where TEntity : class
+			where TPropertyItem : class;
 
 		/// <summary>
 		/// Pokusí se vrátit z objekt reprezentující klíče všech entity (pro metodu GetAll). Pokud je objekt v cache nalezen a vrácen, vrací true. Jinak false.

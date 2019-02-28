@@ -43,6 +43,27 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 		/// Nic nedělá, nehledá v cache.
 		/// Vrací vždy false.
 		/// </summary>
+		public bool TryGetCollection<TEntity, TPropertyItem>(TEntity entityToLoad, string propertyName)
+			where TEntity : class
+			where TPropertyItem : class
+		{
+			return false;
+		}
+
+		/// <summary>
+		/// Nic nedělá, neukládá do cache.
+		/// </summary>
+		public void StoreCollection<TEntity, TPropertyItem>(TEntity entity, string propertyName)
+			where TEntity : class
+			where TPropertyItem : class
+		{
+			// NOOP
+		}
+
+		/// <summary>
+		/// Nic nedělá, nehledá v cache.
+		/// Vrací vždy false.
+		/// </summary>
 		public bool TryGetAllKeys<TEntity>(out object keys)
 			where TEntity : class
 		{

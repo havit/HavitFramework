@@ -17,8 +17,14 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 		string GetEntityCacheKey(Type entityType, object key);
 
 		/// <summary>
+		/// Vrací klíč pro cachování prvků kolekce dané entity.
+		/// </summary>
+		string GetCollectionCacheKey(Type entityType, object key, string propertyName);
+
+		/// <summary>
 		/// Vrací klíč pro cachování klíčů všech entit daného typu.
 		/// </summary>
 		string GetAllKeysCacheKey(Type entityType);
+
 	}
 }

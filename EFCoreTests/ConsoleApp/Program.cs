@@ -59,7 +59,7 @@ namespace ConsoleApp1
 		private static IWindsorContainer ConfigureAndCreateWindsorContainer()
 		{
 			var loggerFactory = new LoggerFactory();
-			//loggerFactory.AddConsole((categoryName, logLevel) => (logLevel == LogLevel.Information) && (categoryName == DbLoggerCategory.Database.Command.Name));
+			loggerFactory.AddConsole((categoryName, logLevel) => (logLevel == LogLevel.Information) && (categoryName == DbLoggerCategory.Database.Command.Name));
 			//loggerFactory.AddConsole((categoryName, logLevel) => (categoryName == DbLoggerCategory.Database.Transaction.Name));
 
 			DbContextOptions options = new DbContextOptionsBuilder<ApplicationDbContext>()
@@ -74,7 +74,7 @@ namespace ConsoleApp1
 			container.AddFacility<TypedFactoryFacility>();
 			container.Register(Component.For(typeof(IServiceFactory<>)).AsFactory());
 
-			container.WithEntityPatternsInstaller(new ComponentRegistrationOptions { GeneralLifestyle = lf => lf.Scoped() })
+			container.WithEntityPatternsInstaller(new ComponentRegistrationOptions { GeneralLifestyle = lf => lf.Scoped() }.ConfigureCacheAllEntitiesWithDefaultSlidingExpirationCaching(TimeSpan.FromHours(1)))
 				.RegisterDataLayer(typeof(ILanguageRepository).Assembly)
 				.RegisterDbContext<Havit.EFCoreTests.Entity.ApplicationDbContext>(options)
 				.RegisterEntityPatterns();
@@ -153,15 +153,16 @@ namespace ConsoleApp1
 
 		private static void DebugDataLoader(IWindsorContainer container)
 		{
-			using (var scope = container.BeginScope())
+			for (int i = 0; i < 3; i++)
 			{
-				var dbContext = container.Resolve<IDbContext>();
-				var loginAccounts = dbContext.Set<LoginAccount>().AsQueryable().Take(3).ToList();
-				var dataLoader = container.Resolve<IDataLoader>();
+				using (var scope = container.BeginScope())
+				{
+					var dbContext = container.Resolve<IDbContext>();
+					var dataLoader = container.Resolve<IDataLoader>();
 
-				dataLoader.LoadAll(loginAccounts, m => m.Memberships).ThenLoad(m => m.Role);
-				dataLoader.LoadAll(loginAccounts, m => m.Memberships).ThenLoad(m => m.Role);
-				dataLoader.LoadAll(loginAccounts, m => m.Memberships).ThenLoad(m => m.Role);
+					var loginAccounts = dbContext.Set<LoginAccount>().AsQueryable().Take(3).ToList();
+					dataLoader.LoadAll(loginAccounts, m => m.Memberships).ThenLoad(m => m.Role);
+				}
 			}
 
 		}

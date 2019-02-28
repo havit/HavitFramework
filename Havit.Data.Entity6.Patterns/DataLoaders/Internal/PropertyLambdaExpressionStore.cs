@@ -41,7 +41,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders.Internal
 
 		private StoreKey GetStoreKey<TEntity, TProperty>(string propertyName)
 		{
-			return new StoreKey(typeof(TEntity), propertyName);
+			return new StoreKey(typeof(TEntity), typeof(TProperty), propertyName);
 		}
 
 		/// <summary>
@@ -50,19 +50,21 @@ namespace Havit.Data.Entity.Patterns.DataLoaders.Internal
 		internal sealed class StoreKey
 		{
 			public Type EntityType { get; }
+			public Type PropertyType { get; }
 			public string PropertyName { get; }
 
-			public StoreKey(Type entityType, string propertyName)
+			public StoreKey(Type entityType, Type propertyType, string propertyName)
 			{
 				EntityType = entityType;
+				PropertyType = propertyType;
 				PropertyName = propertyName;
 			}
 
 			public override int GetHashCode()
 			{
-				return EntityType.GetHashCode() ^ PropertyName.GetHashCode();
+				return EntityType.GetHashCode() ^ PropertyType.GetHashCode() ^ PropertyName.GetHashCode();
 			}
-			
+
 			public override bool Equals(object obj)
 			{
 				StoreKey objStoreKey = obj as StoreKey;
@@ -71,7 +73,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders.Internal
 					return false;
 				}
 
-				return (this.EntityType == objStoreKey.EntityType) && (this.PropertyName == objStoreKey.PropertyName);
+				return (this.EntityType == objStoreKey.EntityType) && (this.PropertyType == objStoreKey.PropertyType) && (this.PropertyName == objStoreKey.PropertyName);
 			}
 		}
 	}

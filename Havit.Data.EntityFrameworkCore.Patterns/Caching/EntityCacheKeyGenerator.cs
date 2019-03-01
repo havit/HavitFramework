@@ -19,7 +19,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 		/// <inheritdoc />
 		public string GetCollectionCacheKey(Type entityType, object key, string propertyName)
 		{
-			return entityType.FullName + "|ID=" + key.ToString() + "|PropertyName" + propertyName;
+			return entityType.FullName + "|ID=" + key.ToString() + "|" + propertyName;
 		}
 
 		/// <inheritdoc />

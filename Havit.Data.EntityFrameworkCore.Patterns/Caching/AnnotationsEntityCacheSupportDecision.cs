@@ -54,7 +54,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 			where TEntity : class
 			where TPropertyItem : class
 		{
-			return ShouldCacheEntity<TPropertyItem>() && ShouldCacheEntity<TEntity>(entity);
+			return ShouldCacheEntity<TPropertyItem>();
 		}
 
 		/// <inheritdoc />

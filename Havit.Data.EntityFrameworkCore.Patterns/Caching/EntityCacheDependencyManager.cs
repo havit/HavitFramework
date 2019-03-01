@@ -13,7 +13,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 	public class EntityCacheDependencyManager : IEntityCacheDependencyManager
 	{
 		private readonly ICacheService cacheService;
-		private static readonly object StaticCacheValue = new object();
+		private static readonly object staticCacheValue = new object();
 
 		/// <summary>
 		/// Konstruktor.
@@ -60,7 +60,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 			// kdybychom se nezeptali a došlo jen k Addu, invalidoval by se dosavadní klíč a vzal by s sebou své závislosti.
 			if (!cacheService.Contains(dependencyKey))
 			{
-				cacheService.Add(dependencyKey, StaticCacheValue);
+				cacheService.Add(dependencyKey, staticCacheValue);
 			}
 		}
 	}

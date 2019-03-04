@@ -228,6 +228,7 @@ namespace Havit.Data.EntityFrameworkCore
 		    return new DbSetInternal<TEntity>(this);
 	    }
 
+        // TODO JK: Skutečně potřebujeme generickou variantu?
 		/// <summary>
 		/// Vrací EntityEntry pro danou entitu.
 		/// </summary>
@@ -239,11 +240,21 @@ namespace Havit.Data.EntityFrameworkCore
 				: this.Entry(entity);
 		}
 
-		// TODO JK: Extension method!
-		/// <summary>
-		/// Vrátí stav entity v DbContextu (resp. v jeho ChangeTrackeru).
-		/// </summary>
-		EntityState IDbContext.GetEntityState<TEntity>(TEntity entity)
+        /// <summary>
+        /// Vrací EntityEntry pro danou entitu.
+        /// </summary>
+        public EntityEntry GetEntry(object entity, bool suppressDetectChanged = true)
+        {
+            return suppressDetectChanged
+                ? ExecuteWithoutAutoDetectChanges(() => this.Entry(entity))
+                : this.Entry(entity);
+        }
+
+        // TODO JK: Extension method!
+        /// <summary>
+        /// Vrátí stav entity v DbContextu (resp. v jeho ChangeTrackeru).
+        /// </summary>
+        EntityState IDbContext.GetEntityState<TEntity>(TEntity entity)
 	    {
 			return GetEntry(entity, suppressDetectChanged: true).State;
 	    }

@@ -3,6 +3,7 @@ using Havit.Data.EntityFrameworkCore.Patterns.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders;
 using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Model;
 using Havit.Services.Caching;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -33,12 +34,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 
 			// vytvoříme nový dbContext pro membership, do které načteme roli z cache
 			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
-			Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>();
-			dbContextFactoryMock.Setup(m => m.CreateService()).Returns(dbContext);
-			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
 
-			EntityCacheManager entityCacheManager = new EntityCacheManager(cacheService, new CacheAllEntitiesEntityCacheSupportDecision(), new EntityCacheKeyGenerator(), new NullEntityCacheOptionsGenerator(), new EntityCacheDependencyManager(cacheService), new DbEntityKeyAccessor(dbContextFactoryMock.Object), dbContext);
-			DbDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolverWithDeletedFilteringCollectionsSubstitution(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), entityCacheManager, new DbEntityKeyAccessor(dbContextFactoryMock.Object));
+            EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext, cacheService: cacheService);
+            DbDataLoader dataLoader = DataLoaderTestHelper.CreateDataLoader(dbContext: dbContext, entityCacheManager: entityCacheManager);			
 
 			// vytvoříme si objekt membership s odkazem na neexistující LoginAccount a Roli, tento objekt si připojíme k DbContextu jako existující (avšak není v databázi)
 			Membership membership = new Membership { LoginAccountId = 1, RoleId = 1 };
@@ -56,7 +54,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 			Assert.IsNotNull(membership.Role);
 			Assert.IsTrue(dbContext.Entry(membership).Reference(nameof(Membership.Role)).IsLoaded); // vlastnost je označena jako načtená
 		}
-
+        
 		/// <summary>
 		/// Cílem je ověřit, že dojde k fixupu při použití objektu z cache.
 		/// </summary>
@@ -75,12 +73,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 
 			// vytvoříme nový dbContext pro membership, do které načteme roli z cache
 			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
-			Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>();
-			dbContextFactoryMock.Setup(m => m.CreateService()).Returns(dbContext);
-			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
 
-			EntityCacheManager entityCacheManager = new EntityCacheManager(cacheService, new CacheAllEntitiesEntityCacheSupportDecision(), new EntityCacheKeyGenerator(), new NullEntityCacheOptionsGenerator(), new EntityCacheDependencyManager(cacheService), new DbEntityKeyAccessor(dbContextFactoryMock.Object), dbContext);
-			DbDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolverWithDeletedFilteringCollectionsSubstitution(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), entityCacheManager, new DbEntityKeyAccessor(dbContextFactoryMock.Object));
+			EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(
+                dbContext: dbContext,
+                cacheService: cacheService);
+            DbDataLoader dataLoader = DataLoaderTestHelper.CreateDataLoader(dbContext: dbContext, entityCacheManager: entityCacheManager);
 
 			// vytvoříme si objekt membership s odkazem na neexistující LoginAccount a Roli, tento objekt si připojíme k DbContextu jako existující (avšak není v databázi)
 			Membership membership1 = new Membership { LoginAccountId = 1, RoleId = 1 };
@@ -103,7 +100,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 			Assert.IsTrue(dbContext.Entry(membership1).Reference(nameof(Membership.Role)).IsLoaded); // vlastnost je označena jako načtená
 			Assert.IsTrue(dbContext.Entry(membership2).Reference(nameof(Membership.Role)).IsLoaded); // vlastnost je označena jako načtená
 		}
-
+        
 		/// <summary>
 		/// Cílem je ověřit, že dojde k fixupu při použití objektu z cache.
 		/// </summary>
@@ -119,15 +116,15 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 
 			// vytvoříme nový dbContext pro membership, do které načteme roli z cache
 			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
-			Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>();
-			dbContextFactoryMock.Setup(m => m.CreateService()).Returns(dbContext);
-			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
 
-			EntityCacheManager entityCacheManager = new EntityCacheManager(cacheService, new CacheAllEntitiesEntityCacheSupportDecision(), new EntityCacheKeyGenerator(), new NullEntityCacheOptionsGenerator(), new EntityCacheDependencyManager(cacheService), new DbEntityKeyAccessor(dbContextFactoryMock.Object), dbContext);
-			DbDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolverWithDeletedFilteringCollectionsSubstitution(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), entityCacheManager, new DbEntityKeyAccessor(dbContextFactoryMock.Object));
+			EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(
+                dbContext: dbContext,
+                cacheService: cacheService);
 
-			// vytvoříme si objekt membership s odkazem na neexistující LoginAccount a Roli, tento objekt si připojíme k DbContextu jako existující (avšak není v databázi)
-			Membership membership = new Membership { LoginAccountId = 1, RoleId = 1 };
+            DbDataLoader dataLoader = DataLoaderTestHelper.CreateDataLoader(dbContext: dbContext, entityCacheManager: entityCacheManager);
+
+            // vytvoříme si objekt membership s odkazem na neexistující LoginAccount a Roli, tento objekt si připojíme k DbContextu jako existující (avšak není v databázi)
+            Membership membership = new Membership { LoginAccountId = 1, RoleId = 1 };
 			dbContext.Attach(membership);
 
 			// Preconditions
@@ -156,13 +153,19 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 			// připojíme objekt Role k DbContextu jako existující (avšak není v databázi)
 			dbContextInitial.Attach(role);
 
-			// a tento in memory objekt uložíme do cache (přestože není v databázi)
-			EntityCacheManager entityCacheManagerInitial = new EntityCacheManager(cacheService, new CacheAllEntitiesEntityCacheSupportDecision(), new EntityCacheKeyGenerator(), new NullEntityCacheOptionsGenerator(), new EntityCacheDependencyManager(cacheService), new DbEntityKeyAccessor(dbContextInitialFactoryMock.Object), dbContextInitial);
-			entityCacheManagerInitial.StoreEntity(role);
+            EntityCacheKeyGenerator entityCacheKeyGenerator = new EntityCacheKeyGenerator();
+
+            // a tento in memory objekt uložíme do cache (přestože není v databázi)
+            EntityCacheManager entityCacheManagerInitial = CachingTestHelper.CreateEntityCacheManager(
+                dbContext: dbContextInitial,
+                cacheService: cacheService,
+                entityCacheKeyGenerator: entityCacheKeyGenerator);
+
+            entityCacheManagerInitial.StoreEntity(role);
 
 			// nyní máme objekt Role v cache
-			Assert.IsTrue(cacheService.Contains(new EntityCacheKeyGenerator().GetEntityCacheKey(role.GetType(), role.Id))); // pokud selže, nedostal se objekt do cache
+			Assert.IsTrue(cacheService.Contains(entityCacheKeyGenerator.GetEntityCacheKey(role.GetType(), role.Id))); // pokud selže, nedostal se objekt do cache
 		}
-
+        
 	}
 }

@@ -1,4 +1,6 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.Caching;
+using Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
+using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure;
 using Havit.Services;
@@ -19,24 +21,20 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 		[TestMethod]
 		public void EntityCacheManager_Store_CallsShouldCacheEntity()
 		{
+            // Arrange
 			TestDbContext testDbContext = new TestDbContext();
 			Language language = new Language { Id = 100 };
 			testDbContext.Attach(language);
 			
-			Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>(MockBehavior.Strict);
-			dbContextFactoryMock.Setup(m => m.CreateService()).Returns(testDbContext);
-			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
-
-			ICacheService cacheService = new NullCacheService();
-
 			Mock<IEntityCacheSupportDecision> entityCacheSupportDecisionMock = new Mock<IEntityCacheSupportDecision>(MockBehavior.Strict);
 			entityCacheSupportDecisionMock.Setup(m => m.ShouldCacheEntity(language)).Returns(false);
 
-			Mock<IEntityCacheOptionsGenerator> entityCacheOptionsGeneratorMock = new Mock<IEntityCacheOptionsGenerator>(MockBehavior.Strict);
-			entityCacheOptionsGeneratorMock.Setup(m => m.GetEntityCacheOptions<Language>(It.IsAny<Language>())).Returns((CacheOptions)null);
+			EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(
+                dbContext: testDbContext,
+                entityCacheSupportDecision: entityCacheSupportDecisionMock.Object
+            );
 
-			EntityCacheManager entityCacheManager = new EntityCacheManager(cacheService, entityCacheSupportDecisionMock.Object, new EntityCacheKeyGenerator(), entityCacheOptionsGeneratorMock.Object, new EntityCacheDependencyManager(cacheService), new DbEntityKeyAccessor(dbContextFactoryMock.Object), testDbContext);
-
+            // Act
 			entityCacheManager.StoreEntity(language);
 
 			// Assert
@@ -50,17 +48,12 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 			Language language = new Language { Id = 100 };
 			testDbContext.Attach(language);
 			
-			Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>(MockBehavior.Strict);
-			dbContextFactoryMock.Setup(m => m.CreateService()).Returns(testDbContext);
-			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
-
 			Mock<ICacheService> cacheServiceMock = new Mock<ICacheService>(MockBehavior.Strict);
 			cacheServiceMock.Setup(m => m.Add(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CacheOptions>()));
 
-			Mock<IEntityCacheOptionsGenerator> entityCacheOptionsGeneratorMock = new Mock<IEntityCacheOptionsGenerator>(MockBehavior.Strict);
-			entityCacheOptionsGeneratorMock.Setup(m => m.GetEntityCacheOptions<Language>(It.IsAny<Language>())).Returns((CacheOptions)null);
-
-			EntityCacheManager entityCacheManager = new EntityCacheManager(cacheServiceMock.Object, new CacheAllEntitiesEntityCacheSupportDecision(), new EntityCacheKeyGenerator(), entityCacheOptionsGeneratorMock.Object, new EntityCacheDependencyManager(cacheServiceMock.Object), new DbEntityKeyAccessor(dbContextFactoryMock.Object), testDbContext);
+			EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(
+                dbContext: testDbContext,
+                cacheService: cacheServiceMock.Object);
 
 			entityCacheManager.StoreEntity(language);
 
@@ -71,13 +64,10 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 		[TestMethod]
 		public void EntityCacheManager_Store_DoesNotCallCacheServiceAddWhenShouldNotCache()
 		{
+            // Arrange
 			TestDbContext testDbContext = new TestDbContext();
 			Language language = new Language { Id = 100 };
 			testDbContext.Attach(language);
-
-			Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>(MockBehavior.Strict);
-			dbContextFactoryMock.Setup(m => m.CreateService()).Returns(testDbContext);
-			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
 
 			Mock<ICacheService> cacheServiceMock = new Mock<ICacheService>(MockBehavior.Strict);
 			cacheServiceMock.Setup(m => m.Add(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CacheOptions>()));
@@ -85,50 +75,39 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 			Mock<IEntityCacheSupportDecision> entityCacheSupportDecisionMock = new Mock<IEntityCacheSupportDecision>(MockBehavior.Strict);
 			entityCacheSupportDecisionMock.Setup(m => m.ShouldCacheEntity(language)).Returns(false);
 
-			Mock<IEntityCacheOptionsGenerator> entityCacheOptionsGeneratorMock = new Mock<IEntityCacheOptionsGenerator>(MockBehavior.Strict);
-			entityCacheOptionsGeneratorMock.Setup(m => m.GetEntityCacheOptions<Language>(It.IsAny<Language>())).Returns((CacheOptions)null);
+            EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(
+                dbContext: testDbContext,
+                entityCacheSupportDecision: entityCacheSupportDecisionMock.Object,
+                cacheService: cacheServiceMock.Object);
 
-			EntityCacheManager entityCacheManager = new EntityCacheManager(cacheServiceMock.Object, entityCacheSupportDecisionMock.Object, new EntityCacheKeyGenerator(), entityCacheOptionsGeneratorMock.Object, new EntityCacheDependencyManager(cacheServiceMock.Object), new DbEntityKeyAccessor(dbContextFactoryMock.Object), testDbContext);
-
+            // Act
 			entityCacheManager.StoreEntity(language);
 
 			// Assert
 			cacheServiceMock.Verify(m => m.Add(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CacheOptions>()), Times.Never);
 		}
-
+        
 		[TestMethod]
 		public void EntityCacheManager_TryGet_CallsCacheServiceTryGetWhenCouldCache()
 		{
-			TestDbContext testDbContext = new TestDbContext();
-
-			Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>(MockBehavior.Strict);
-			dbContextFactoryMock.Setup(m => m.CreateService()).Returns(testDbContext);
-			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
-
+            // Arrange
 			Mock<ICacheService> cacheServiceMock = new Mock<ICacheService>(MockBehavior.Strict);
 			object tryGetOutParameter;
 			cacheServiceMock.Setup(m => m.TryGet(It.IsAny<string>(), out tryGetOutParameter)).Returns(false);
 
-			Mock<IEntityCacheOptionsGenerator> entityCacheOptionsGeneratorMock = new Mock<IEntityCacheOptionsGenerator>(MockBehavior.Strict);
-			entityCacheOptionsGeneratorMock.Setup(m => m.GetEntityCacheOptions<Language>(It.IsAny<Language>())).Returns((CacheOptions)null);
+			EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(cacheService: cacheServiceMock.Object);
 
-			EntityCacheManager entityCacheManager = new EntityCacheManager(cacheServiceMock.Object, new CacheAllEntitiesEntityCacheSupportDecision(), new EntityCacheKeyGenerator(), entityCacheOptionsGeneratorMock.Object, new EntityCacheDependencyManager(cacheServiceMock.Object), new DbEntityKeyAccessor(dbContextFactoryMock.Object), testDbContext);
-
-			var result = entityCacheManager.TryGetEntity<Language>(555, out Language langauge);
+            // Act
+            var result = entityCacheManager.TryGetEntity<Language>(555, out Language langauge);
 
 			// Assert
 			cacheServiceMock.Verify(m => m.TryGet(It.IsAny<string>(), out tryGetOutParameter), Times.Once);
 		}
-
+        
 		[TestMethod]
 		public void EntityCacheManager_TryGet_DoesNotCallCacheServiceTryGetWhenShouldNotCache()
 		{
-			TestDbContext testDbContext = new TestDbContext();
-
-			Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>(MockBehavior.Strict);
-			dbContextFactoryMock.Setup(m => m.CreateService()).Returns(testDbContext);
-			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
-
+            // Arrange
 			Mock<ICacheService> cacheServiceMock = new Mock<ICacheService>(MockBehavior.Strict);
 			object tryGetOutParameter;
 			cacheServiceMock.Setup(m => m.TryGet(It.IsAny<string>(), out tryGetOutParameter)).Returns(false);
@@ -136,41 +115,30 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 			Mock<IEntityCacheSupportDecision> entityCacheSupportDecisionMock = new Mock<IEntityCacheSupportDecision>(MockBehavior.Strict);
 			entityCacheSupportDecisionMock.Setup(m => m.ShouldCacheEntity<Language>()).Returns(false);
 
-			Mock<IEntityCacheOptionsGenerator> entityCacheOptionsGeneratorMock = new Mock<IEntityCacheOptionsGenerator>(MockBehavior.Strict);
-			entityCacheOptionsGeneratorMock.Setup(m => m.GetEntityCacheOptions<Language>(It.IsAny<Language>())).Returns((CacheOptions)null);
+			EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(
+                cacheService: cacheServiceMock.Object, 
+                entityCacheSupportDecision: entityCacheSupportDecisionMock.Object);
 
-			EntityCacheManager entityCacheManager = new EntityCacheManager(cacheServiceMock.Object, entityCacheSupportDecisionMock.Object, new EntityCacheKeyGenerator(), entityCacheOptionsGeneratorMock.Object, new EntityCacheDependencyManager(cacheServiceMock.Object), new DbEntityKeyAccessor(dbContextFactoryMock.Object), testDbContext);
-
-			var result = entityCacheManager.TryGetEntity<Language>(555, out Language langauge);
+            // Act
+            var result = entityCacheManager.TryGetEntity<Language>(555, out Language langauge);
 
 			// Assert
 			cacheServiceMock.Verify(m => m.TryGet(It.IsAny<string>(), out tryGetOutParameter), Times.Never);
 		}
-
+        
 		[TestMethod]
 		public void EntityCacheManager_Scenarion_Store_And_TryGet()
 		{
+            // Arrange
 			ICacheService cacheService = new DictionaryCacheService();
 
-			Func<IDbContext, EntityCacheManager> entityCacheManagerCreator = dbContext =>
-			{
-				Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>(MockBehavior.Strict);
-				dbContextFactoryMock.Setup(m => m.CreateService()).Returns(dbContext);
-				dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
-
-				Mock<IEntityCacheOptionsGenerator> entityCacheOptionsGeneratorMock = new Mock<IEntityCacheOptionsGenerator>(MockBehavior.Strict);
-				entityCacheOptionsGeneratorMock.Setup(m => m.GetEntityCacheOptions<Language>(It.IsAny<Language>())).Returns((CacheOptions)null);
-
-				return new EntityCacheManager(cacheService, new CacheAllEntitiesEntityCacheSupportDecision(), new EntityCacheKeyGenerator(), entityCacheOptionsGeneratorMock.Object, new EntityCacheDependencyManager(cacheService), new DbEntityKeyAccessor(dbContextFactoryMock.Object), dbContext);
-			};
-
 			TestDbContext dbContext1 = new TestDbContext();
-			var entityCacheManager1 = entityCacheManagerCreator(dbContext1);
+			var entityCacheManager1 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext1, cacheService: cacheService);
 
 			TestDbContext dbContext2 = new TestDbContext();
-			var entityCacheManager2 = entityCacheManagerCreator(dbContext2);
+			var entityCacheManager2 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext2, cacheService: cacheService);
 
-			Language language = new Language { Id = 100, Culture = "cs-cz" };
+            Language language = new Language { Id = 100, Culture = "cs-cz" };
 			dbContext1.Attach(language);
 
 			// Act
@@ -186,7 +154,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 			Assert.AreEqual(dbContext1.Entry(language).OriginalValues.GetValue<string>(nameof(Language.Culture)), dbContext2.Entry(languageResult).OriginalValues.GetValue<string>(nameof(Language.Culture)));
 			Assert.AreEqual(Microsoft.EntityFrameworkCore.EntityState.Unchanged, dbContext2.Entry(languageResult).State);
 		}
-
+        
 		[TestMethod]
 		public void EntityCacheManager_InvalidateEntity_RemovesEntityOnUpdate()
 		{
@@ -195,10 +163,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 			Language language = new Language { Id = 100 };
 			testDbContext.Attach(language);
 
-			Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>(MockBehavior.Strict);
-			dbContextFactoryMock.Setup(m => m.CreateService()).Returns(testDbContext);
-			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
-
 			Mock<ICacheService> cacheServiceMock = new Mock<ICacheService>(MockBehavior.Strict);
 			cacheServiceMock.Setup(m => m.Remove(It.IsAny<string>()));
 			cacheServiceMock.SetupGet(m => m.SupportsCacheDependencies).Returns(false);
@@ -206,10 +170,10 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 			var entityCacheKeyGenerator = new EntityCacheKeyGenerator();
 			string cacheKey = entityCacheKeyGenerator.GetEntityCacheKey(typeof(Language), language.Id);
 
-			Mock<IEntityCacheOptionsGenerator> entityCacheOptionsGeneratorMock = new Mock<IEntityCacheOptionsGenerator>(MockBehavior.Strict);
-			entityCacheOptionsGeneratorMock.Setup(m => m.GetEntityCacheOptions<Language>(It.IsAny<Language>())).Returns((CacheOptions)null);
-
-			EntityCacheManager entityCacheManager = new EntityCacheManager(cacheServiceMock.Object, new CacheAllEntitiesEntityCacheSupportDecision(), entityCacheKeyGenerator, entityCacheOptionsGeneratorMock.Object, new EntityCacheDependencyManager(cacheServiceMock.Object), new DbEntityKeyAccessor(dbContextFactoryMock.Object), testDbContext);
+			EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(
+                dbContext: testDbContext,
+                cacheService: cacheServiceMock.Object,
+                entityCacheKeyGenerator: entityCacheKeyGenerator);
 
 			// Act
 			entityCacheManager.InvalidateEntity(Patterns.UnitOfWorks.ChangeType.Update, language);
@@ -217,7 +181,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 			// Assert
 			cacheServiceMock.Verify(m => m.Remove(cacheKey), Times.Once); // volá se ještě pro AllKeys, tak musíme kontrolovat jen klíč pro entitu
 		}
-
+        
 		[TestMethod]
 		public void EntityCacheManager_InvalidateEntity_DoesNotRemoveEntityOnInsert()
 		{
@@ -226,10 +190,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 			Language language = new Language { Id = 100 };
 			testDbContext.Attach(language);
 
-			Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>(MockBehavior.Strict);
-			dbContextFactoryMock.Setup(m => m.CreateService()).Returns(testDbContext);
-			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
-
 			Mock<ICacheService> cacheServiceMock = new Mock<ICacheService>(MockBehavior.Strict);
 			cacheServiceMock.Setup(m => m.Remove(It.IsAny<string>()));
 			cacheServiceMock.SetupGet(m => m.SupportsCacheDependencies).Returns(false);
@@ -237,10 +197,10 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 			var entityCacheKeyGenerator = new EntityCacheKeyGenerator();
 			string cacheKey = entityCacheKeyGenerator.GetEntityCacheKey(typeof(Language), language.Id);
 
-			Mock<IEntityCacheOptionsGenerator> entityCacheOptionsGeneratorMock = new Mock<IEntityCacheOptionsGenerator>(MockBehavior.Strict);
-			entityCacheOptionsGeneratorMock.Setup(m => m.GetEntityCacheOptions<Language>(It.IsAny<Language>())).Returns((CacheOptions)null);
-
-			EntityCacheManager entityCacheManager = new EntityCacheManager(cacheServiceMock.Object, new CacheAllEntitiesEntityCacheSupportDecision(), entityCacheKeyGenerator, entityCacheOptionsGeneratorMock.Object, new EntityCacheDependencyManager(cacheServiceMock.Object), new DbEntityKeyAccessor(dbContextFactoryMock.Object), testDbContext);
+			EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(
+                dbContext: testDbContext,
+                cacheService: cacheServiceMock.Object,
+                entityCacheKeyGenerator: entityCacheKeyGenerator);
 
 			// Act
 			entityCacheManager.InvalidateEntity(Patterns.UnitOfWorks.ChangeType.Insert, language);
@@ -248,7 +208,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 			// Assert
 			cacheServiceMock.Verify(m => m.Remove(cacheKey), Times.Never); // volá se ještě pro AllKeys, tak musíme kontrolovat jen klíč pro entitu
 		}
-
+        
 		[TestMethod]
 		public void EntityCacheManager_InvalidateEntity_RemovesDependencies()
 		{
@@ -256,10 +216,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 			TestDbContext testDbContext = new TestDbContext();
 			Language language = new Language { Id = 100 };
 			testDbContext.Attach(language);
-
-			Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>(MockBehavior.Strict);
-			dbContextFactoryMock.Setup(m => m.CreateService()).Returns(testDbContext);
-			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
 
 			Mock<ICacheService> cacheServiceMock = new Mock<ICacheService>(MockBehavior.Strict);
 			cacheServiceMock.Setup(m => m.Contains(It.IsAny<string>())).Returns(false);
@@ -270,10 +226,10 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 			EntityCacheDependencyManager entityCacheDependencyManager = new EntityCacheDependencyManager(cacheServiceMock.Object);
 			string cacheKey = entityCacheDependencyManager.GetSaveCacheDependencyKey(typeof(Language), language.Id);
 
-			Mock<IEntityCacheOptionsGenerator> entityCacheOptionsGeneratorMock = new Mock<IEntityCacheOptionsGenerator>(MockBehavior.Strict);
-			entityCacheOptionsGeneratorMock.Setup(m => m.GetEntityCacheOptions<Language>(It.IsAny<Language>())).Returns((CacheOptions)null);
-
-			EntityCacheManager entityCacheManager = new EntityCacheManager(cacheServiceMock.Object, new CacheAllEntitiesEntityCacheSupportDecision(), new EntityCacheKeyGenerator(), entityCacheOptionsGeneratorMock.Object, entityCacheDependencyManager, new DbEntityKeyAccessor(dbContextFactoryMock.Object), testDbContext);
+			EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(
+                dbContext: testDbContext,
+                cacheService: cacheServiceMock.Object,
+                entityCacheDependencyManager: entityCacheDependencyManager);
 
 			// Act
 			entityCacheManager.InvalidateEntity(Patterns.UnitOfWorks.ChangeType.Update, language);
@@ -281,7 +237,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 			// Assert
 			cacheServiceMock.Verify(m => m.Remove(cacheKey), Times.Once); // volá se ještě pro entitu a AllKeys, tak musíme kontrolovat jen klíč pro entitu
 		}
-
+       
 		[TestMethod]
 		public void EntityCacheManager_InvalidateEntity_SupportsManyToMany()
 		{
@@ -290,19 +246,13 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 			ManyToMany manyToMany = new ManyToMany { LanguageId = 100, ItemWithDeletedId = 999 };
 			testDbContext.Attach(manyToMany);
 
-			Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>(MockBehavior.Strict);
-			dbContextFactoryMock.Setup(m => m.CreateService()).Returns(testDbContext);
-			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
-
-			ICacheService cacheService = new DictionaryCacheService();
-
-			EntityCacheManager entityCacheManager = new EntityCacheManager(cacheService, new CacheAllEntitiesEntityCacheSupportDecision(), new EntityCacheKeyGenerator(), new AnnotationsEntityCacheOptionsGenerator(dbContextFactoryMock.Object), new EntityCacheDependencyManager(cacheService), new DbEntityKeyAccessor(dbContextFactoryMock.Object), testDbContext);
+            EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(dbContext: testDbContext);
 
 			// Act
 			entityCacheManager.InvalidateEntity(Patterns.UnitOfWorks.ChangeType.Delete, manyToMany);
 
 			// Assert
 			// no exception was thrown
-		}
+		}       
 	}
 }

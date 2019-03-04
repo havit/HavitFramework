@@ -81,12 +81,16 @@ namespace Havit.Data.EntityFrameworkCore
 		/// </summary>
 		void MarkNavigationAsLoaded<TEntity>(TEntity entity, string propertyName)
 			where TEntity : class;
-			
-		/// <summary>
-		/// Vrací EntityEntry pro danou entitu bez provedení detekce změn change trackerem.
-		/// </summary>
-		EntityEntry<TEntity> GetEntry<TEntity>(TEntity entity, bool suppressDetectChanges)
-			where TEntity : class;
-		
-	}
+
+        /// <summary>
+        /// Vrací EntityEntry pro danou entitu bez provedení detekce změn change trackerem.
+        /// </summary>
+        EntityEntry<TEntity> GetEntry<TEntity>(TEntity entity, bool suppressDetectChanges)
+            where TEntity : class;
+
+        /// <summary>
+        /// Vrací EntityEntry pro danou entitu bez provedení detekce změn change trackerem.
+        /// </summary>
+        EntityEntry GetEntry(object entity, bool suppressDetectChanges);
+    }
 }

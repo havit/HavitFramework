@@ -1,4 +1,5 @@
 ﻿using Havit.Data.EntityFrameworkCore.Metadata;
+using Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 using Havit.Data.Patterns.Infrastructure;
@@ -33,13 +34,14 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 		private readonly IEntityCacheOptionsGenerator entityCacheOptionsGenerator;
 		private readonly IEntityCacheDependencyManager entityCacheDependencyManager;
 		private readonly IDbContext dbContext;
-		private readonly IEntityKeyAccessor entityKeyAccessor;
+        private readonly IReferencingCollectionsStore referencingCollectionsStore;
+        private readonly IEntityKeyAccessor entityKeyAccessor;
 		private readonly IPropertyLambdaExpressionManager propertyLambdaExpressionManager;
 
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public EntityCacheManager(ICacheService cacheService, IEntityCacheSupportDecision entityCacheSupportDecision, IEntityCacheKeyGenerator entityCacheKeyGenerator, IEntityCacheOptionsGenerator entityCacheOptionsGenerator, IEntityCacheDependencyManager entityCacheDependencyManager, IEntityKeyAccessor entityKeyAccessor, IPropertyLambdaExpressionManager propertyLambdaExpressionManager, IDbContext dbContext)
+		public EntityCacheManager(ICacheService cacheService, IEntityCacheSupportDecision entityCacheSupportDecision, IEntityCacheKeyGenerator entityCacheKeyGenerator, IEntityCacheOptionsGenerator entityCacheOptionsGenerator, IEntityCacheDependencyManager entityCacheDependencyManager, IEntityKeyAccessor entityKeyAccessor, IPropertyLambdaExpressionManager propertyLambdaExpressionManager, IDbContext dbContext, IReferencingCollectionsStore referencingCollectionsStore)
 		{
 			this.cacheService = cacheService;
 			this.entityCacheSupportDecision = entityCacheSupportDecision;
@@ -49,7 +51,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 			this.entityKeyAccessor = entityKeyAccessor;
 			this.propertyLambdaExpressionManager = propertyLambdaExpressionManager;
 			this.dbContext = dbContext;
-		}
+            this.referencingCollectionsStore = referencingCollectionsStore;
+        }
 
 		/// <inheritdoc />
 		public bool TryGetEntity<TEntity>(object key, out TEntity entity)
@@ -199,32 +202,38 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 
 			// invalidate entity cache
 			Type entityType = entity.GetType();
-
+            
 			object[] entityKeyValues = entityKeyAccessor.GetEntityKeyValues(entity);
-			if (entityKeyValues.Length > 1)
-			{
-				// entity se složeným klíčem nejsou podporovány (zatím ani entity reprezentující vztah ManyToMany)
-				return;
-			}
-			object entityKeyValue = entityKeyValues.Single();
 
-			if (changeType != ChangeType.Insert)
-			{
-				// nové záznamy nemohou být v cache, neinvalidujeme
-				InvalidateEntityInternal(entityType, entityKeyValue);
-			}
-			InvalidateGetAllInternal(entityType);
+            // entity se složeným klíčem (ManyToMany)
+            // TODO: Ověřit si, že jde o ManyToMany, nejen o složený klíč
+            if (entityKeyValues.Length > 1)
+            {
+                // odebereme všechny prvky, které mohou mít objekt v kolekci
+                InvalidateCollectionsInternal(entityType, entity);
+                
+                // GetAll a GetEntity není nutné řešit, objekty reprezentující vztah ManyToMany se do cache nedostávají
+            }
+            else
+            {
+                object entityKeyValue = entityKeyValues.Single();
 
-			// až budeme řešit dataloader...
-			//InvalidateOneToMany();
-			//InvalidateManyToMany();
+                if (changeType != ChangeType.Insert)
+                {
+                    // nové záznamy nemohou být v cache, neinvalidujeme
+                    InvalidateEntityInternal(entityType, entityKeyValue);
+                }
 
-			if (changeType != ChangeType.Insert)
-			{
-				// na nových záznamech nemohou být závislosti, neinvalidujeme
-				InvalidateSaveCacheDependencyKeyInternal(entityType, entityKeyValue);
-			}
-			InvalidateAnySaveCacheDependencyKeyInternal(entityType);		
+                InvalidateCollectionsInternal(entityType, entity);
+                InvalidateGetAllInternal(entityType);
+
+                if (changeType != ChangeType.Insert)
+                {
+                    // na nových záznamech nemohou být závislosti, neinvalidujeme
+                    InvalidateSaveCacheDependencyKeyInternal(entityType, entityKeyValue);
+                }
+                InvalidateAnySaveCacheDependencyKeyInternal(entityType);
+            }
 		}
 
 		private void InvalidateEntityInternal(Type entityType, object entityKey)
@@ -232,7 +241,20 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 			cacheService.Remove(entityCacheKeyGenerator.GetEntityCacheKey(entityType, entityKey));
 		}
 
-		private void InvalidateGetAllInternal(Type type)
+        private void InvalidateCollectionsInternal(Type entityType, object entity)
+        {
+            // získáme všechny kolekce odkazující na tuto entitu (obvykle maximálně jeden)
+            var referencingCollections = referencingCollectionsStore.GetReferencingCollections(entityType);            
+            foreach (var referencingCollection in referencingCollections)
+            {
+                // získáme hodnotu cizího klíče
+                // z ní klíč pro cachování property objektu s daným klíčem
+                // a odebereme z cache
+                cacheService.Remove(entityCacheKeyGenerator.GetCollectionCacheKey(referencingCollection.EntityType, referencingCollection.GetForeignKeyValue(dbContext, entity), referencingCollection.CollectionPropertyName));
+            }            
+        }
+
+        private void InvalidateGetAllInternal(Type type)
 		{
 			cacheService.Remove(entityCacheKeyGenerator.GetAllKeysCacheKey(type));
 		}
@@ -252,5 +274,5 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 				cacheService.Remove(entityCacheDependencyManager.GetAnySaveCacheDependencyKey(entityType, false));
 			}
 		}
-	}
+    }
 }

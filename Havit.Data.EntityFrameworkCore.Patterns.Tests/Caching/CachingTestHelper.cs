@@ -2,6 +2,7 @@
 using Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Model;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure;
 using Havit.Services.Caching;
 using Moq;
@@ -25,7 +26,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
         {
             if (dbContext == null)
             {
-                dbContext = new TestDbContext();
+                dbContext = new DataLoaderTestDbContext();
             }
 
             Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>(MockBehavior.Strict);

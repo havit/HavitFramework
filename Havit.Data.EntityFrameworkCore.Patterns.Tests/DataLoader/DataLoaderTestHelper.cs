@@ -3,6 +3,7 @@ using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders;
 using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Model;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure;
 using Moq;
 using System;
@@ -19,7 +20,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
         {
             if (dbContext == null)
             {
-                dbContext = new TestDbContext();
+                dbContext = new DataLoaderTestDbContext();
             }
 
             if (entityCacheManager == null)

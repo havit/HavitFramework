@@ -171,7 +171,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 					{
 						return entityPropertyMembersKeys.All(entityPropertyMemberKey =>
 							(dbSet.FindTracked(entityPropertyMemberKey) != null) // už je načtený, nemůžeme volat TryGetEntity
-							|| TryGetEntity<TPropertyItem>(entityPropertyMemberKey, out _));
+							|| TryGetEntity<TPropertyItem>(entityPropertyMemberKey.Single(), out _));
 					}
 				}
 			}

@@ -145,11 +145,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 			DataLoaderTestDbContext dbContextInitial = new DataLoaderTestDbContext();
 			dbContextInitial.Database.DropCreate(); // smažeme obsah databáze
 
-			// pro použití v závslostech EntityCacheManageru
-			Mock<IDbContextFactory> dbContextInitialFactoryMock = new Mock<IDbContextFactory>();
-			dbContextInitialFactoryMock.Setup(m => m.CreateService()).Returns(dbContextInitial);
-			dbContextInitialFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
-
 			// připojíme objekt Role k DbContextu jako existující (avšak není v databázi)
 			dbContextInitial.Attach(role);
 

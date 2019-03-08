@@ -28,11 +28,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
                 entityCacheManager = CachingTestHelper.CreateEntityCacheManager(dbContext);
             }
 
-            Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>(MockBehavior.Strict);
-            dbContextFactoryMock.Setup(m => m.CreateService()).Returns(dbContext);
-            dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
-
-            return new DbDataLoader(dbContext, new PropertyLoadSequenceResolverWithDeletedFilteringCollectionsSubstitution(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), entityCacheManager, new DbEntityKeyAccessor(dbContextFactoryMock.Object));
+            return new DbDataLoader(dbContext, new PropertyLoadSequenceResolverWithDeletedFilteringCollectionsSubstitution(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), entityCacheManager, new DbEntityKeyAccessor(dbContext.CreateDbContextFactory()));
         }
     }
 }

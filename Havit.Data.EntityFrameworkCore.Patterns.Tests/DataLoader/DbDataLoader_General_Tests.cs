@@ -24,11 +24,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 			SeedOneToManyTestData();
 
 			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
-			Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>();
-			dbContextFactoryMock.Setup(m => m.CreateService()).Returns(dbContext);
-			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
 
-			IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolverWithDeletedFilteringCollectionsSubstitution(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), new NoCachingEntityCacheManager(), new DbEntityKeyAccessor(dbContextFactoryMock.Object));
+			IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolverWithDeletedFilteringCollectionsSubstitution(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), new NoCachingEntityCacheManager(), new DbEntityKeyAccessor(dbContext.CreateDbContextFactory()));
 
 			// Act
 			dataLoader.Load((Child)null, c => c.Parent);

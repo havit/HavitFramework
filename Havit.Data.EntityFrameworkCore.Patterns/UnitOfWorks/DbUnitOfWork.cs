@@ -268,9 +268,30 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks
 		protected virtual void InvalidateEntityCache(Changes allKnownChanges)
 		{
 			IEntityCacheManager cacheManager = this.EntityCacheManager;
-			allKnownChanges.Inserts.ToList().ForEach(entity => cacheManager.InvalidateEntity(ChangeType.Insert, entity));
-			allKnownChanges.Updates.ToList().ForEach(entity => cacheManager.InvalidateEntity(ChangeType.Update, entity));
-			allKnownChanges.Deletes.ToList().ForEach(entity => cacheManager.InvalidateEntity(ChangeType.Delete, entity));
+            
+            if (allKnownChanges.Inserts.Length > 0)
+            {
+                foreach (var insertedEntity in allKnownChanges.Inserts)
+                {
+                    cacheManager.InvalidateEntity(ChangeType.Insert, insertedEntity);
+                }
+            }
+
+            if (allKnownChanges.Updates.Length > 0)
+            {
+                foreach (var updatedEntity in allKnownChanges.Updates)
+                {
+                    cacheManager.InvalidateEntity(ChangeType.Update, updatedEntity);
+                }
+            }
+
+            if (allKnownChanges.Deletes.Length > 0)
+            {
+                foreach (var deletedEntity in allKnownChanges.Deletes)
+                {
+                    cacheManager.InvalidateEntity(ChangeType.Delete, deletedEntity);
+                }
+            }
 		}
 
 	}

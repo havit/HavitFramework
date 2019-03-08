@@ -44,15 +44,16 @@ namespace ConsoleApp1
 		public static void Main(string[] args)
 		{
 			var container = ConfigureAndCreateWindsorContainer();
-			//UpdateDatabase(container);
-			//GenerateLanguages(1, container);
-			//GenerateSecurity(100, 10, 3, container);
-			//DebugModelInfo(container);
-			DebugDataLoader(container);
-			//DebugFlagClass(container);
-			//DebugTransactions(container);
-			//DebugSeeding(container);
-			//DebugCaching(container)
+            //UpdateDatabase(container);
+            //GenerateLanguages(1, container);
+            //GenerateSecurity(100, 10, 3, container);
+            //DebugModelInfo(container);
+            DebugDataLoader(container);
+            //DebugFlagClass(container);
+            //DebugTransactions(container);
+            //DebugSeeding(container);
+			//DebugSeeding(container); // seed role
+            DebugCaching(container);
 			//DebugOwnedTypes(container);
 		}
 
@@ -79,9 +80,9 @@ namespace ConsoleApp1
 				.RegisterDbContext<Havit.EFCoreTests.Entity.ApplicationDbContext>(options)
 				.RegisterEntityPatterns();
 
-			container.Register(Component.For<ITimeService>().ImplementedBy<ServerTimeService>().LifestyleSingleton());
+            container.Register(Component.For<ITimeService>().ImplementedBy<ServerTimeService>().LifestyleSingleton());
 			container.Register(Component.For<ICacheService>().ImplementedBy<MemoryCacheService>().LifestyleSingleton());
-			container.Register(Component.For<IOptions<MemoryCacheOptions>>().ImplementedBy<OptionsManager<MemoryCacheOptions>>().LifestyleSingleton());
+            container.Register(Component.For<IOptions<MemoryCacheOptions>>().ImplementedBy<OptionsManager<MemoryCacheOptions>>().LifestyleSingleton());
 			container.Register(Component.For<IOptionsFactory<MemoryCacheOptions>>().Instance(new OptionsFactory<MemoryCacheOptions>(Enumerable.Empty<IConfigureOptions<MemoryCacheOptions>>(), Enumerable.Empty<IPostConfigureOptions<MemoryCacheOptions>>())));
 			container.Register(Component.For<IMemoryCache>().ImplementedBy<MemoryCache>().LifestyleSingleton());
 
@@ -153,7 +154,7 @@ namespace ConsoleApp1
 
 		private static void DebugDataLoader(IWindsorContainer container)
 		{
-			for (int i = 0; i < 3; i++)
+			for (int i = 0; i < 5; i++)
 			{
 				using (var scope = container.BeginScope())
 				{
@@ -171,9 +172,12 @@ namespace ConsoleApp1
 		{
 			using (var scope = container.BeginScope())
 			{
-
-			}
-		}
+                var dbContext = container.Resolve<IDbContext>();
+                var navigation = dbContext.Model.FindEntityType(typeof(LoginAccount)).FindNavigation(nameof(LoginAccount.Memberships));
+                Console.WriteLine(navigation.IsCollection());
+                Console.WriteLine(navigation.GetTargetType());
+            }
+        }
 
 		private static void DebugFlagClass(IWindsorContainer container)
 		{
@@ -225,43 +229,54 @@ namespace ConsoleApp1
 
 		private static void DebugCaching(IWindsorContainer container)
 		{
-			//DebugSeeding(container); // seed role
-			// do cache
+            //// do cache
+            //using (var scope = container.BeginScope())
+            //{
+            //	var dbContext = container.Resolve<IDbContext>();
+            //	var role = dbContext.Set<Role>().Find(1);
+            //	Console.WriteLine(dbContext.GetEntry(role, suppressDetectChanges: true).State);
+            //}
 
-			//using (var scope = container.BeginScope())
-			//{
-			//	var dbContext = container.Resolve<IDbContext>();
-			//	var role = dbContext.Set<Role>().Find(1);
-			//	Console.WriteLine(dbContext.GetEntry(role, suppressDetectChanges: true).State);
-			//}
+            //// do cache
+            //using (var scope = container.BeginScope())
+            //{
+            //	var roleRepository = container.Resolve<IRoleRepository>();
+            //	roleRepository.GetObject(1);
+            //}
 
-			// do cache
-			using (var scope = container.BeginScope())
-			{
-				var roleRepository = container.Resolve<IRoleRepository>();
-				roleRepository.GetObject(1);
-			}
+            //// z cache
+            //using (var scope = container.BeginScope())
+            //{
+            //	var roleRepository = container.Resolve<IRoleRepository>();
+            //	Role role = roleRepository.GetObject(1);
 
-			// z cache
-			using (var scope = container.BeginScope())
-			{
-				var roleRepository = container.Resolve<IRoleRepository>();
-				Role role = roleRepository.GetObject(1);
+            //	// invalidace
+            //	role.Name += "0";
 
-				// invalidace
-				role.Name += "0";
+            //	var unitOfWork = container.Resolve<IUnitOfWork>();
+            //	unitOfWork.Commit();
+            //}
 
-				var unitOfWork = container.Resolve<IUnitOfWork>();
-				unitOfWork.Commit();
-			}
+            //// do cache
+            //using (var scope = container.BeginScope())
+            //{
+            //	var roleRepository = container.Resolve<IRoleRepository>();
+            //	roleRepository.GetObject(1);
+            //}
 
-			// do cache
-			using (var scope = container.BeginScope())
-			{
-				var roleRepository = container.Resolve<IRoleRepository>();
-				roleRepository.GetObject(1);
-			}
-		}
+            // invalidace
+            for (int iteration = 0; iteration < 100; iteration++)
+            {
+                LoginAccount loginAccount = new LoginAccount();
+                using (var scope = container.BeginScope())
+                {
+                    var uow = container.Resolve<IUnitOfWork>();
+                    uow.AddForInsert(loginAccount);
+                    uow.AddRangeForInsert(Enumerable.Range(1, 1000).Select(roleId => new Membership { LoginAccount = loginAccount, RoleId = roleId }));// peklo, LoginAccountID není nastaveno!
+                    uow.Commit();
+                }
+            }
+        }
 
 		private static void DebugOwnedTypes(IWindsorContainer container)
 		{

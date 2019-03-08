@@ -1,7 +1,9 @@
 ﻿using Havit.Data.EntityFrameworkCore.Conventions;
 using Havit.Data.EntityFrameworkCore.Metadata;
+using Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
 using Havit.Services;
 using Havit.Services.Caching;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System;
 using System.Collections.Generic;
@@ -24,41 +26,56 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 	{
 		private readonly Lazy<Dictionary<Type, bool>> shouldCacheEntities;
 		private readonly Lazy<Dictionary<Type, bool>> shouldCacheAllKeys;
+        private readonly Lazy<Dictionary<TypePropertyName, Type>> collectionTargetTypes;
 
-		/// <summary>
-		/// Konstruktor.
-		/// </summary>
-		public AnnotationsEntityCacheSupportDecision(IDbContextFactory dbContextFactory)
+        /// <summary>
+        /// Konstruktor.
+        /// </summary>
+        public AnnotationsEntityCacheSupportDecision(IDbContextFactory dbContextFactory)
 		{
 			shouldCacheEntities = GetLazyDictionary(dbContextFactory, entityType => ((bool?)(entityType.FindAnnotation(CacheAttributeToAnnotationConvention.CacheEntitiesAnnotationName)?.Value)).GetValueOrDefault(false));
 			shouldCacheAllKeys = GetLazyDictionary(dbContextFactory, entityType => ((bool?)(entityType.FindAnnotation(CacheAttributeToAnnotationConvention.CacheEntitiesAnnotationName)?.Value)).GetValueOrDefault(false));
-		}
+            collectionTargetTypes = GetLazyCollectionTargetTypesDictionary(dbContextFactory);
+        }
 
 		/// <inheritdoc />
 		public virtual bool ShouldCacheEntity<TEntity>()
 			where TEntity : class
 		{
-			return GetValueFromDictionary(shouldCacheEntities.Value, typeof(TEntity));
+            return ShouldCacheEntityInternal(typeof(TEntity));
 		}
 
 		/// <inheritdoc />
 		public virtual bool ShouldCacheEntity<TEntity>(TEntity entity)
 			where TEntity : class
 		{
-			return ShouldCacheEntity<TEntity>();
+            return ShouldCacheEntityInternal(typeof(TEntity));
 		}
-
-
+        
 		/// <inheritdoc />
-		public bool ShouldCacheCollection<TEntity, TPropertyItem>(TEntity entity, string propertyName)
+		public bool ShouldCacheCollection<TEntity>(TEntity entity, string propertyName)
 			where TEntity : class
-			where TPropertyItem : class
 		{
-			return ShouldCacheEntity<TPropertyItem>();
+            if (collectionTargetTypes.Value.TryGetValue(new TypePropertyName(typeof(TEntity), propertyName), out var targetType))
+            {
+                return ShouldCacheEntityInternal(targetType);
+            }
+            else
+            {
+                throw new InvalidOperationException($"Cannot resolve target type for {typeof(TEntity).Name}.{propertyName}.");
+            }
 		}
 
-		/// <inheritdoc />
-		public bool ShouldCacheAllKeys<TEntity>()
+        /// <summary>
+		/// Vrací true, pokud může být entita daného typu cachována.
+        /// </summary>
+        protected bool ShouldCacheEntityInternal(Type targetType)
+        {
+            return GetValueFromDictionary(shouldCacheEntities.Value, targetType);
+        }
+
+        /// <inheritdoc />
+        public bool ShouldCacheAllKeys<TEntity>()
 			where TEntity : class
 		{
 			return GetValueFromDictionary(shouldCacheAllKeys.Value, typeof(TEntity));
@@ -79,7 +96,26 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 			}, LazyThreadSafetyMode.PublicationOnly);
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private Lazy<Dictionary<TypePropertyName, Type>> GetLazyCollectionTargetTypesDictionary(IDbContextFactory dbContextFactory)
+        {
+            return new Lazy<Dictionary<TypePropertyName, Type>>(() =>
+            {
+                Dictionary<TypePropertyName, Type> result = null;
+                dbContextFactory.ExecuteAction(dbContext =>
+                {
+                    result = dbContext.Model.GetApplicationEntityTypes()
+                    .SelectMany(entityType => entityType.GetNavigations())
+                    .Where(navigation => navigation.IsCollection())
+                    .ToDictionary(
+                        navigation => new TypePropertyName(navigation.DeclaringEntityType.ClrType, navigation.Name),
+                        navigation => navigation.GetTargetType().ClrType);
+                });
+                return result;
+            }, LazyThreadSafetyMode.PublicationOnly);
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private bool GetValueFromDictionary(Dictionary<Type, bool> valuesDictionary, Type type)
 		{
 			if (valuesDictionary.TryGetValue(type, out bool result))

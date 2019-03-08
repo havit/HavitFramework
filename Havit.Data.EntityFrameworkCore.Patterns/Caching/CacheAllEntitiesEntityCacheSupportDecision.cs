@@ -24,9 +24,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 		}
 
 		/// <inheritdoc/> 
-		public bool ShouldCacheCollection<TEntity, TPropertyItem>(TEntity entity, string propertyName)
+		public bool ShouldCacheCollection<TEntity>(TEntity entity, string propertyName)
 			where TEntity : class
-			where TPropertyItem : class
 		{
 			return true;
 		}

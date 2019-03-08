@@ -31,12 +31,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 		bool ShouldCacheEntity<TEntity>(TEntity entity)
 			where TEntity : class;
 
-		/// <summary>
-		/// Vrací true, pokud půže být daná kolekce dané entity cachována.
-		/// </summary>
-		bool ShouldCacheCollection<TEntity, TPropertyItem>(TEntity entity, string propertyName)
-			where TEntity : class
-			where TPropertyItem : class;
+        /// <summary>
+        /// Vrací true, pokud půže být daná kolekce dané entity cachována.
+        /// </summary>
+        bool ShouldCacheCollection<TEntity>(TEntity entity, string propertyName)
+            where TEntity : class;
 
 		/// <summary>
 		/// Vrací true, pokud mohou být klíče všech entita daného typu cachovány.

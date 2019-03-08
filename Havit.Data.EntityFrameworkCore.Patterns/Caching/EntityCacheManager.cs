@@ -138,7 +138,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 			where TEntity : class
 			where TPropertyItem : class
 		{
-			if (entityCacheSupportDecision.ShouldCacheCollection<TEntity, TPropertyItem>(entity, propertyName))
+			if (entityCacheSupportDecision.ShouldCacheCollection<TEntity>(entity, propertyName))
 			{
 				string cacheKey = entityCacheKeyGenerator.GetCollectionCacheKey(typeof(TEntity), entityKeyAccessor.GetEntityKeyValues(entity).Single(), propertyName);
 
@@ -155,7 +155,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 
 						foreach (object[] entityPropertyMemberKey in entityPropertyMembersKeys)
 						{
-							if (dbSet.FindTracked(entityPropertyMemberKey) != null) // už je načtený, nemůžeme volat TryGetEntity
+							if (dbSet.FindTracked(entityPropertyMemberKey) == null) // už je načtený, nemůžeme volat TryGetEntity
 							{
 								TPropertyItem instance = Activator.CreateInstance<TPropertyItem>();
 								for (int i = 0; i < propertyNames.Length; i++)
@@ -183,7 +183,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 			where TEntity : class
 			where TPropertyItem : class
 		{
-			if (entityCacheSupportDecision.ShouldCacheCollection<TEntity, TPropertyItem>(entity, propertyName))
+			if (entityCacheSupportDecision.ShouldCacheCollection<TEntity>(entity, propertyName))
 			{
 				string cacheKey = entityCacheKeyGenerator.GetCollectionCacheKey(typeof(TEntity), entityKeyAccessor.GetEntityKeyValues(entity).Single(), propertyName);
 

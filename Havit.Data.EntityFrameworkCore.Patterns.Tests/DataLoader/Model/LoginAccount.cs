@@ -7,8 +7,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Model
 	{
 		public int Id { get; set; }
 
-        // TODO JK: Rename
-        public List<Membership> Roles { get; set; }
+        public List<Membership> Memberships { get; set; }
 
 		public DateTime? Deleted { get; set; }
 	}

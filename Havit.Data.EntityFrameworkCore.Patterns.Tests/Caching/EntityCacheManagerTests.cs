@@ -222,7 +222,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
             
             LoginAccount loginAccount = new LoginAccount { Id = 1 };
             Membership membership = new Membership { LoginAccountId = 1, RoleId = 1234 };
-            loginAccount.Roles = new List<Membership> { membership };
+            loginAccount.Memberships = new List<Membership> { membership };
 
             var entityCacheManager1 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext1, cacheService: cacheService);
 
@@ -233,14 +233,14 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
             var entityCacheManager2 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext2, cacheService: cacheService);
 
             // Act
-            entityCacheManager1.StoreCollection<LoginAccount, Membership>(loginAccount, nameof(LoginAccount.Roles));
-            bool success = entityCacheManager2.TryGetCollection<LoginAccount, Membership>(loginAccountResult, nameof(LoginAccount.Roles));
+            entityCacheManager1.StoreCollection<LoginAccount, Membership>(loginAccount, nameof(LoginAccount.Memberships));
+            bool success = entityCacheManager2.TryGetCollection<LoginAccount, Membership>(loginAccountResult, nameof(LoginAccount.Memberships));
 
             // Assert
             Assert.IsTrue(success);
-            Assert.AreEqual(1, loginAccountResult.Roles.Count);
-            Assert.AreEqual(membership.RoleId, loginAccountResult.Roles[0].RoleId);
-            Assert.AreNotSame(loginAccount.Roles[0], loginAccountResult.Roles[0]);
+            Assert.AreEqual(1, loginAccountResult.Memberships.Count);
+            Assert.AreEqual(membership.RoleId, loginAccountResult.Memberships[0].RoleId);
+            Assert.AreNotSame(loginAccount.Memberships[0], loginAccountResult.Memberships[0]);
         }
         
         [TestMethod]

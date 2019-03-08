@@ -238,11 +238,13 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 
 		private void InvalidateEntityInternal(Type entityType, object entityKey)
 		{
-			cacheService.Remove(entityCacheKeyGenerator.GetEntityCacheKey(entityType, entityKey));
+            // TODO JK: Pro omezení zasílání informace o Remove při distribuované cache bychom se měli omezit jen na ty objekty, které mohou být cachované
+            cacheService.Remove(entityCacheKeyGenerator.GetEntityCacheKey(entityType, entityKey));
 		}
 
         private void InvalidateCollectionsInternal(Type entityType, object entity)
         {
+            // TODO JK: Pro omezení zasílání informace o Remove při distribuované cache bychom se měli omezit jen na ty objekty, které mohou být cachované
             // získáme všechny kolekce odkazující na tuto entitu (obvykle maximálně jeden)
             var referencingCollections = referencingCollectionsStore.GetReferencingCollections(entityType);            
             foreach (var referencingCollection in referencingCollections)
@@ -256,8 +258,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 
         private void InvalidateGetAllInternal(Type type)
 		{
+            // TODO JK: Pro omezení zasílání informace o Remove při distribuované cache bychom se měli omezit jen na ty objekty, které mohou být cachované
 			cacheService.Remove(entityCacheKeyGenerator.GetAllKeysCacheKey(type));
-		}
+        }
 
 		private void InvalidateSaveCacheDependencyKeyInternal(Type entityType, object entityKey)
 		{

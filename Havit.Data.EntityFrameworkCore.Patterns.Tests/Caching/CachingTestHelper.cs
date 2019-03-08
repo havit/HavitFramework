@@ -29,10 +29,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
                 dbContext = new DataLoaderTestDbContext();
             }
 
-            Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>(MockBehavior.Strict);
-            dbContextFactoryMock.Setup(m => m.CreateService()).Returns(dbContext);
-            dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
-
             if (entityCacheSupportDecision == null)
             {
                 entityCacheSupportDecision = new CacheAllEntitiesEntityCacheSupportDecision();
@@ -40,12 +36,12 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 
             if (entityCacheOptionsGenerator == null)
             {
-                entityCacheOptionsGenerator = new AnnotationsEntityCacheOptionsGenerator(dbContextFactoryMock.Object);
+                entityCacheOptionsGenerator = new AnnotationsEntityCacheOptionsGenerator(dbContext.CreateDbContextFactory());
             }
 
             if (entityCacheKeyGenerator == null)
             {
-                entityCacheKeyGenerator = new EntityCacheKeyGenerator();
+                entityCacheKeyGenerator = new EntityCacheKeyGenerator(dbContext.CreateDbContextFactory());
             }
 
             if (cacheService == null)
@@ -59,7 +55,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
             }
 
             IPropertyLambdaExpressionManager propertyLambdaExpressionManager = new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder());
-            IReferencingCollectionsStore referencingCollectionStore = new ReferencingCollectionsStore(dbContextFactoryMock.Object);
+            IReferencingCollectionsStore referencingCollectionStore = new ReferencingCollectionsStore(dbContext.CreateDbContextFactory());
 
             return new EntityCacheManager(
                 cacheService,
@@ -67,7 +63,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
                 entityCacheKeyGenerator,
                 entityCacheOptionsGenerator,
                 entityCacheDependencyManager,
-                new DbEntityKeyAccessor(dbContextFactoryMock.Object),
+                new DbEntityKeyAccessor(dbContext.CreateDbContextFactory()),
                 propertyLambdaExpressionManager,
                 dbContext,
                 referencingCollectionStore);

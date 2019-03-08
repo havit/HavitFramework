@@ -255,7 +255,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 			cacheServiceMock.Setup(m => m.Remove(It.IsAny<string>()));
 			cacheServiceMock.SetupGet(m => m.SupportsCacheDependencies).Returns(false);
 
-			var entityCacheKeyGenerator = new EntityCacheKeyGenerator();
+			var entityCacheKeyGenerator = new EntityCacheKeyGenerator(dbContext.CreateDbContextFactory());
 			string cacheKey = entityCacheKeyGenerator.GetEntityCacheKey(typeof(LoginAccount), loginAccount.Id);
 
 			EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(
@@ -282,7 +282,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 			cacheServiceMock.Setup(m => m.Remove(It.IsAny<string>()));
 			cacheServiceMock.SetupGet(m => m.SupportsCacheDependencies).Returns(false);
 
-			var entityCacheKeyGenerator = new EntityCacheKeyGenerator();
+			var entityCacheKeyGenerator = new EntityCacheKeyGenerator(dbContext.CreateDbContextFactory());
 			string cacheKey = entityCacheKeyGenerator.GetEntityCacheKey(typeof(LoginAccount), loginAccount.Id);
 
 			EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(

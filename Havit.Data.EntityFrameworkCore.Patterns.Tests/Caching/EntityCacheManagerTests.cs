@@ -186,8 +186,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
             master.ChildrenWithDeleted.Add(child1);
             master.ChildrenWithDeleted.Add(child2);
             dbContext1.Attach(master);
-            //dbContext1.Attach(child1);
-            //dbContext1.Attach(child2);
 
             var entityCacheManager1 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext1, cacheService: cacheService);
 
@@ -198,14 +196,13 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
             var entityCacheManager2 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext2, cacheService: cacheService);
 
             // Act
-            // TODO JK: Testy failují, protože nejsou v cache položky, ale jen jejich ID. Pokud je do cache přidáme (následující dva zakomentované řádky), testy jsou v pořádku.
-            //entityCacheManager1.StoreEntity(child1);
-            //entityCacheManager1.StoreEntity(child2);
             entityCacheManager1.StoreCollection<Master, Child>(master, nameof(Master.ChildrenWithDeleted));
+            entityCacheManager1.StoreEntity(child1);
+            entityCacheManager1.StoreEntity(child2);
             bool success = entityCacheManager2.TryGetCollection<Master, Child>(masterResult, nameof(Master.ChildrenWithDeleted));
 
             // Assert
-            Assert.IsTrue(success);
+            Assert.IsTrue(success, "Načtění kolekce z cache nebylo úspěšné.");
             Assert.AreEqual(master.ChildrenWithDeleted.Count, masterResult.ChildrenWithDeleted.Count);
             Assert.IsTrue(masterResult.ChildrenWithDeleted.Any(child => child.Id == child1.Id));
             Assert.IsTrue(masterResult.ChildrenWithDeleted.Any(child => child.Id == child2.Id));

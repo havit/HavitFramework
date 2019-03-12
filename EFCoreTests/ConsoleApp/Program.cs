@@ -53,7 +53,7 @@ namespace ConsoleApp1
             //DebugTransactions(container);
             //DebugSeeding(container);
 			//DebugSeeding(container); // seed role
-            DebugCaching(container);
+            //DebugCaching(container);
 			//DebugOwnedTypes(container);
 		}
 

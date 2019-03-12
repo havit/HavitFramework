@@ -110,7 +110,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 			cacheServiceMock.Setup(m => m.TryGet(It.IsAny<string>(), out tryGetOutParameter)).Returns(false);
 
 			Mock<IEntityCacheSupportDecision> entityCacheSupportDecisionMock = new Mock<IEntityCacheSupportDecision>(MockBehavior.Strict);
-			entityCacheSupportDecisionMock.Setup(m => m.ShouldCacheEntity<Role>()).Returns(false);
+			entityCacheSupportDecisionMock.Setup(m => m.ShouldCacheEntityType(typeof(Role))).Returns(false);
 
 			EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(
                 cacheService: cacheServiceMock.Object, 

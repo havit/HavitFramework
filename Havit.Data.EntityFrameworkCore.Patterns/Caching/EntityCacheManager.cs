@@ -59,20 +59,19 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 			where TEntity : class
 		{
 			// pokud vůbec kdy může být entita cachována, budeme se ptát do cache
-			if (entityCacheSupportDecision.ShouldCacheEntity<TEntity>())
+			if (entityCacheSupportDecision.ShouldCacheEntityType(typeof(TEntity)))
 			{
 				string cacheKey = entityCacheKeyGenerator.GetEntityCacheKey(typeof(TEntity), key);
 				if (cacheService.TryGet(cacheKey, out object cacheValues))
 				{
 					// pokud je entita v cache, materializujeme ji a vrátíme ji
 					TEntity result = Activator.CreateInstance<TEntity>();
-					//dbContextFactory.ExecuteAction(dbContext =>
-					//{
+
 					var entry = dbContext.GetEntry(result, suppressDetectChanges: true);
 					entry.OriginalValues.SetValues(cacheValues); // aby při případném update byly známy změněné vlastnosti
 					entry.CurrentValues.SetValues(cacheValues); // aby byly naplněny vlastnosti entity
 					dbContext.Set<TEntity>().AttachRange(new TEntity[] { result }); // nutno volat až po materializaci, jinak registruje entitu s nenastavenou hodnotou primárního klíče
-					//});
+
 					entity = result;
 					return true;
 				}
@@ -89,12 +88,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 			if (entityCacheSupportDecision.ShouldCacheEntity(entity))
 			{
 				string cacheKey = entityCacheKeyGenerator.GetEntityCacheKey(typeof(TEntity), entityKeyAccessor.GetEntityKeyValues(entity).Single());
-				EntityEntry entry = null;
-				//dbContextFactory.ExecuteAction(dbContext =>
-				//{
-				entry = dbContext.GetEntry(entity, suppressDetectChanges: true);
-				//});
-				Contract.Assert<InvalidOperationException>(entry.State != Microsoft.EntityFrameworkCore.EntityState.Detached, "Entity must be attached to DbContext."); // abychom mohli získat smysluplné entry.OriginalValues, musí být entita trackovaná (podmínka nutná, nikoliv postačující - neříká, zda má OriginalValues dobře nastaveny).
+				EntityEntry entry = dbContext.GetEntry(entity, suppressDetectChanges: true);
+				
+                Contract.Assert<InvalidOperationException>(entry.State != Microsoft.EntityFrameworkCore.EntityState.Detached, "Entity must be attached to DbContext."); // abychom mohli získat smysluplné entry.OriginalValues, musí být entita trackovaná (podmínka nutná, nikoliv postačující - neříká, zda má OriginalValues dobře nastaveny).
 
 				// entry.OriginalValues vrací abstraktní PropertyValues, ten nese spoustu vlastostí vč. DbContextu.
 				// Držením těchto instancí v cache bychom zabránili GC vyčistit je z paměti.
@@ -111,7 +107,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 			where TEntity : class
 		{
 			// pokud mohou být klíče v cache, budeme je hledat
-			if (entityCacheSupportDecision.ShouldCacheAllKeys<TEntity>())
+			if (entityCacheSupportDecision.ShouldCacheAllKeys(typeof(TEntity)))
 			{
 				string cacheKey = entityCacheKeyGenerator.GetAllKeysCacheKey(typeof(TEntity));
 				return cacheService.TryGet(cacheKey, out keys);
@@ -126,7 +122,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 			where TEntity : class
 		{
 			// pokud je možné klíče uložit do cache, uložíme je
-			if (entityCacheSupportDecision.ShouldCacheAllKeys<TEntity>())
+			if (entityCacheSupportDecision.ShouldCacheAllKeys(typeof(TEntity)))
 			{
 				string cacheKey = entityCacheKeyGenerator.GetAllKeysCacheKey(typeof(TEntity));
 				cacheService.Add(cacheKey, (object)keys, entityCacheOptionsGenerator.GetAllKeysCacheOptions<TEntity>());
@@ -138,7 +134,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 			where TEntity : class
 			where TPropertyItem : class
 		{
-			if (entityCacheSupportDecision.ShouldCacheCollection<TEntity>(entity, propertyName))
+			if (entityCacheSupportDecision.ShouldCacheEntityCollection(entity, propertyName))
 			{
 				string cacheKey = entityCacheKeyGenerator.GetCollectionCacheKey(typeof(TEntity), entityKeyAccessor.GetEntityKeyValues(entity).Single(), propertyName);
 
@@ -146,6 +142,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 				{
 					object[][] entityPropertyMembersKeys = (object[][])cacheEntityPropertyMembersKeys;
 
+                    // TODO JK: Performance?
 					bool isManyToManyEntity = dbContext.Model.FindEntityType(typeof(TPropertyItem)).IsManyToManyEntity();
 
 					var dbSet = dbContext.Set<TPropertyItem>();
@@ -183,7 +180,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 			where TEntity : class
 			where TPropertyItem : class
 		{
-			if (entityCacheSupportDecision.ShouldCacheCollection<TEntity>(entity, propertyName))
+			if (entityCacheSupportDecision.ShouldCacheEntityCollection(entity, propertyName))
 			{
 				string cacheKey = entityCacheKeyGenerator.GetCollectionCacheKey(typeof(TEntity), entityKeyAccessor.GetEntityKeyValues(entity).Single(), propertyName);
 
@@ -221,7 +218,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
                 if (changeType != ChangeType.Insert)
                 {
                     // nové záznamy nemohou být v cache, neinvalidujeme
-                    InvalidateEntityInternal(entityType, entityKeyValue);
+                    InvalidateEntityInternal(entityType, entity, entityKeyValue);
                 }
 
                 InvalidateCollectionsInternal(entityType, entity);
@@ -236,30 +233,39 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
             }
 		}
 
-		private void InvalidateEntityInternal(Type entityType, object entityKey)
+		private void InvalidateEntityInternal(Type entityType, object entity, object entityKey)
 		{
-            // TODO JK: Pro omezení zasílání informace o Remove při distribuované cache bychom se měli omezit jen na ty objekty, které mohou být cachované
-            cacheService.Remove(entityCacheKeyGenerator.GetEntityCacheKey(entityType, entityKey));
+            // Pro omezení zasílání informace o Remove při distribuované cache bychom se měli omezit jen na ty objekty, které mohou být cachované.
+            if (entityCacheSupportDecision.ShouldCacheEntity(entity))
+            {
+                cacheService.Remove(entityCacheKeyGenerator.GetEntityCacheKey(entityType, entityKey));
+            }
 		}
 
         private void InvalidateCollectionsInternal(Type entityType, object entity)
-        {
-            // TODO JK: Pro omezení zasílání informace o Remove při distribuované cache bychom se měli omezit jen na ty objekty, které mohou být cachované
-            // získáme všechny kolekce odkazující na tuto entitu (obvykle maximálně jeden)
+        {            
             var referencingCollections = referencingCollectionsStore.GetReferencingCollections(entityType);            
             foreach (var referencingCollection in referencingCollections)
             {
-                // získáme hodnotu cizího klíče
-                // z ní klíč pro cachování property objektu s daným klíčem
-                // a odebereme z cache
-                cacheService.Remove(entityCacheKeyGenerator.GetCollectionCacheKey(referencingCollection.EntityType, referencingCollection.GetForeignKeyValue(dbContext, entity), referencingCollection.CollectionPropertyName));
+                // Pro omezení zasílání informace o Remove při distribuované cache bychom se měli omezit jen na ty objekty, které mohou být cachované.
+                // Zde nejsme schopni vždy ověřit instanci, doptáme se tedy na typ.
+                if (entityCacheSupportDecision.ShouldCacheEntityTypeCollection(referencingCollection.EntityType, referencingCollection.CollectionPropertyName))
+                {
+                    // získáme hodnotu cizího klíče
+                    // z ní klíč pro cachování property objektu s daným klíčem
+                    // a odebereme z cache
+                    cacheService.Remove(entityCacheKeyGenerator.GetCollectionCacheKey(referencingCollection.EntityType, referencingCollection.GetForeignKeyValue(dbContext, entity), referencingCollection.CollectionPropertyName));
+                }
             }            
         }
 
         private void InvalidateGetAllInternal(Type type)
 		{
-            // TODO JK: Pro omezení zasílání informace o Remove při distribuované cache bychom se měli omezit jen na ty objekty, které mohou být cachované
-			cacheService.Remove(entityCacheKeyGenerator.GetAllKeysCacheKey(type));
+            // Pro omezení zasílání informace o Remove při distribuované cache bychom se měli omezit jen na ty objekty, které mohou být cachované.
+            if (entityCacheSupportDecision.ShouldCacheAllKeys(type))
+            {
+                cacheService.Remove(entityCacheKeyGenerator.GetAllKeysCacheKey(type));
+            }
         }
 
 		private void InvalidateSaveCacheDependencyKeyInternal(Type entityType, object entityKey)

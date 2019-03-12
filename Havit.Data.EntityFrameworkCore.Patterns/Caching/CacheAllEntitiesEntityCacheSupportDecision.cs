@@ -10,31 +10,33 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 	public sealed class CacheAllEntitiesEntityCacheSupportDecision : IEntityCacheSupportDecision
 	{
 		/// <inheritdoc/> 
-		public bool ShouldCacheEntity<TEntity>()
-			where TEntity : class
+		public bool ShouldCacheEntityType(Type entityType)
 		{
 			return true;
 		}
 
 		/// <inheritdoc/> 
-		public bool ShouldCacheEntity<TEntity>(TEntity entity)
-			where TEntity : class
+		public bool ShouldCacheEntity(object entity)
+		{
+			return true;
+		}
+
+        /// <inheritdoc/> 
+        public bool ShouldCacheEntityTypeCollection(Type entityType, string propertyName)
+        {
+            return true;
+        }
+
+        /// <inheritdoc/> 
+        public bool ShouldCacheEntityCollection(object entity, string propertyName)
 		{
 			return true;
 		}
 
 		/// <inheritdoc/> 
-		public bool ShouldCacheCollection<TEntity>(TEntity entity, string propertyName)
-			where TEntity : class
+		public bool ShouldCacheAllKeys(Type entityType)
 		{
 			return true;
 		}
-
-		/// <inheritdoc/> 
-		public bool ShouldCacheAllKeys<TEntity>()
-			where TEntity : class
-		{
-			return true;
-		}
-	}
+    }
 }

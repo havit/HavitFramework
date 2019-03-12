@@ -39,46 +39,40 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
         }
 
 		/// <inheritdoc />
-		public virtual bool ShouldCacheEntity<TEntity>()
-			where TEntity : class
+		public virtual bool ShouldCacheEntityType(Type entityType)
 		{
-            return ShouldCacheEntityInternal(typeof(TEntity));
+            return GetValueFromDictionary(shouldCacheEntities.Value, entityType);
 		}
 
 		/// <inheritdoc />
-		public virtual bool ShouldCacheEntity<TEntity>(TEntity entity)
-			where TEntity : class
+		public virtual bool ShouldCacheEntity(object entity)
 		{
-            return ShouldCacheEntityInternal(typeof(TEntity));
+            return ShouldCacheEntityType(entity.GetType());
 		}
-        
-		/// <inheritdoc />
-		public bool ShouldCacheCollection<TEntity>(TEntity entity, string propertyName)
-			where TEntity : class
-		{
-            if (collectionTargetTypes.Value.TryGetValue(new TypePropertyName(typeof(TEntity), propertyName), out var targetType))
+
+        /// <inheritdoc />
+        public virtual bool ShouldCacheEntityTypeCollection(Type entityType, string propertyName)
+        {
+            if (collectionTargetTypes.Value.TryGetValue(new TypePropertyName(entityType, propertyName), out var targetType))
             {
-                return ShouldCacheEntityInternal(targetType);
+                return ShouldCacheEntityType(targetType);
             }
             else
             {
-                throw new InvalidOperationException($"Cannot resolve target type for {typeof(TEntity).Name}.{propertyName}.");
+                throw new InvalidOperationException($"Cannot resolve target type for {entityType.Name}.{propertyName}.");
             }
-		}
-
-        /// <summary>
-		/// Vrací true, pokud může být entita daného typu cachována.
-        /// </summary>
-        protected bool ShouldCacheEntityInternal(Type targetType)
-        {
-            return GetValueFromDictionary(shouldCacheEntities.Value, targetType);
         }
 
         /// <inheritdoc />
-        public bool ShouldCacheAllKeys<TEntity>()
-			where TEntity : class
+        public virtual bool ShouldCacheEntityCollection(object entity, string propertyName)
 		{
-			return GetValueFromDictionary(shouldCacheAllKeys.Value, typeof(TEntity));
+            return ShouldCacheEntityTypeCollection(entity.GetType(), propertyName);
+        }
+
+        /// <inheritdoc />
+        public virtual bool ShouldCacheAllKeys(Type entityType)
+		{
+			return GetValueFromDictionary(shouldCacheAllKeys.Value, entityType);
 		}
 
 		private Lazy<Dictionary<Type, TResult>> GetLazyDictionary<TResult>(IDbContextFactory dbContextFactory, Func<IEntityType, TResult> valueFunc)
@@ -128,5 +122,5 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 			}
 		}
 
-	}
+    }
 }

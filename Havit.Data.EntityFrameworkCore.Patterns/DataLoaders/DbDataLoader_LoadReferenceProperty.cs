@@ -60,8 +60,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 				return;
 			}
 
-			// získáme cizí klíč reprezentující referenci (Navigation)
-			IProperty foreignKeyForReference = dbContext.Model.FindEntityType(typeof(TEntity)).FindNavigation(propertyName).ForeignKey.Properties.Single();
+            // získáme cizí klíč reprezentující referenci (Navigation)
+            // TODO JK: Performance? Každý pokus o načtení z cache?            
+            IProperty foreignKeyForReference = dbContext.Model.FindEntityType(typeof(TEntity)).FindNavigation(propertyName).ForeignKey.Properties.Single();
 
 			// získáme klíče objektů, které potřebujeme načíst (z "běžných vlastností" nebo z shadow properties)
 			// ignorujeme nenastavené reference (null)
@@ -97,8 +98,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 		private IQueryable<TProperty> LoadReferencePropertyInternal_GetQuery<TProperty>(List<object> foreignKeysToLoad)
 			where TProperty : class
 		{
-			// získáme název vlastnosti primárního klíče třídy načítané vlastnosti (obvykle "Id")
-			string propertyPrimaryKey = dbContext.Model.FindEntityType(typeof(TProperty)).FindPrimaryKey().Properties.Single().Name;
+            // získáme název vlastnosti primárního klíče třídy načítané vlastnosti (obvykle "Id")
+            // Performance: No big issue.
+            string propertyPrimaryKey = dbContext.Model.FindEntityType(typeof(TProperty)).FindPrimaryKey().Properties.Single().Name;
 
 			// získáme query pro načtení objektů
 

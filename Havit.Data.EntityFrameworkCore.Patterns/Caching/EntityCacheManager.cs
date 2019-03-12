@@ -142,7 +142,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 				{
 					object[][] entityPropertyMembersKeys = (object[][])cacheEntityPropertyMembersKeys;
 
-                    // TODO JK: Performance?
+                    // TODO JK: Performance? Každý pokus o načtení z cache?
 					bool isManyToManyEntity = dbContext.Model.FindEntityType(typeof(TPropertyItem)).IsManyToManyEntity();
 
 					var dbSet = dbContext.Set<TPropertyItem>();

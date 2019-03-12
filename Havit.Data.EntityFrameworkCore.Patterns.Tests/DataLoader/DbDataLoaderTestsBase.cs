@@ -57,7 +57,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 				}
 
 				LoginAccount loginAccount = new LoginAccount();
-				loginAccount.Roles = new List<Membership> { new Membership { LoginAccount = loginAccount, Role = role } };
+                loginAccount.Memberships = new List<Membership> { new Membership { LoginAccount = loginAccount, Role = role } };
 				if (deleted)
 				{
 					loginAccount.Deleted = DateTime.Now;

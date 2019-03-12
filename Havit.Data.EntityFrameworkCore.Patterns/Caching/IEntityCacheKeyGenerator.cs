@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 {
 	/// <summary>
-	/// Služba pro poskytnutí strinkových klíčů do cache.
+	/// Služba pro poskytnutí stringových klíčů do cache.
+	/// Pro distribuovanou invalidaci musí být klíče deterministické.
 	/// </summary>
 	public interface IEntityCacheKeyGenerator
 	{
@@ -17,8 +18,14 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 		string GetEntityCacheKey(Type entityType, object key);
 
 		/// <summary>
+		/// Vrací klíč pro cachování prvků kolekce dané entity.
+		/// </summary>
+		string GetCollectionCacheKey(Type entityType, object key, string propertyName);
+
+		/// <summary>
 		/// Vrací klíč pro cachování klíčů všech entit daného typu.
 		/// </summary>
 		string GetAllKeysCacheKey(Type entityType);
+
 	}
 }

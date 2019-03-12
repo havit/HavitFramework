@@ -10,6 +10,7 @@
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<PackageVersion>1.8.19</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Data Patterns</Description>
+	<LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

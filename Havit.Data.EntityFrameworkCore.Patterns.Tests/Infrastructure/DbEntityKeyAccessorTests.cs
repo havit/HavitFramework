@@ -19,10 +19,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Infrastructure
 		public void GetEntityKeyPropertyName_GetEntityKeyPropertyName()
 		{
 			// Arrange
-			Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>(MockBehavior.Strict);
-			dbContextFactoryMock.Setup(m => m.CreateService()).Returns(new TestDbContext());
-			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
-			DbEntityKeyAccessor dbEntityKeyAccessor = new DbEntityKeyAccessor(dbContextFactoryMock.Object);			
+			DbEntityKeyAccessor dbEntityKeyAccessor = new DbEntityKeyAccessor(new TestDbContext().CreateDbContextFactory());			
 
 			// Act + Assert
 			Assert.AreEqual(nameof(Language.Id), dbEntityKeyAccessor.GetEntityKeyPropertyNames(typeof(Language)).Single());
@@ -32,10 +29,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Infrastructure
 		public void GetEntityKeyPropertyName_GetEntityKey()
 		{
 			// Arrange
-			Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>(MockBehavior.Strict);
-			dbContextFactoryMock.Setup(m => m.CreateService()).Returns(new TestDbContext());
-			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
-			DbEntityKeyAccessor dbEntityKeyAccessor = new DbEntityKeyAccessor(dbContextFactoryMock.Object);
+			DbEntityKeyAccessor dbEntityKeyAccessor = new DbEntityKeyAccessor(new TestDbContext().CreateDbContextFactory());
 
 			Language language = new Language() { Id = 999 };
 

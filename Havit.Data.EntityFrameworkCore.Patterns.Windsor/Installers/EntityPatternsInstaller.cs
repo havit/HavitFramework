@@ -5,6 +5,7 @@ using Castle.Facilities.TypedFactory;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using Havit.Data.EntityFrameworkCore.Patterns.Caching;
+using Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders;
 using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds;
@@ -128,7 +129,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers
 				Component.For<IBeforeCommitProcessor<object>>().ImplementedBy<SetCreatedToInsertingEntitiesBeforeCommitProcessor>().LifestyleSingleton(),
 				Component.For<IEntityValidationRunner>().ImplementedBy<EntityValidationRunner>().LifestyleSingleton(),
 				Component.For<IEntityValidatorsFactory>().AsFactory().LifestyleSingleton(),
-				Component.For<IEntityKeyAccessor>().ImplementedBy<DbEntityKeyAccessor>().LifestyleSingleton()
+				Component.For<IEntityKeyAccessor>().ImplementedBy<DbEntityKeyAccessor>().LifestyleSingleton(),
+				Component.For<IReferencingCollectionsStore>().ImplementedBy<ReferencingCollectionsStore>().LifestyleSingleton()
 			);
 			return this;
 		}

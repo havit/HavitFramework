@@ -111,8 +111,11 @@ namespace Havit.Data.Entity.Patterns.Repositories
 				{
 					case NotifyCollectionChangedAction.Add:
 						if (_dbSetLocalsDictionary != null)
-						{							
-							e.NewItems.Cast<TEntity>().Where(EntityNotInAddedState).ToList().ForEach(entity => _dbSetLocalsDictionary.Add(entityKeyAccessor.GetEntityKeyValue(entity), entity));
+						{
+                            foreach (var entity in e.NewItems.Cast<TEntity>().Where(EntityNotInAddedState))
+                            {
+                                _dbSetLocalsDictionary.Add(entityKeyAccessor.GetEntityKeyValue(entity), entity);
+                            }
 						}
 						break;
 

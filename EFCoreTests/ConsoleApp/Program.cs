@@ -44,22 +44,23 @@ namespace ConsoleApp1
 		public static void Main(string[] args)
 		{
 			var container = ConfigureAndCreateWindsorContainer();
-			//UpdateDatabase(container);
-			//GenerateLanguages(1, container);
-			//GenerateSecurity(100, 10, 3, container);
-			//DebugModelInfo(container);
-			DebugDataLoader(container);
-			//DebugFlagClass(container);
-			//DebugTransactions(container);
-			//DebugSeeding(container);
-			//DebugCaching(container)
+            //UpdateDatabase(container);
+            //GenerateLanguages(1, container);
+            //GenerateSecurity(100, 10, 3, container);
+            //DebugModelInfo(container);
+            DebugDataLoader(container);
+            //DebugFlagClass(container);
+            //DebugTransactions(container);
+            //DebugSeeding(container);
+			//DebugSeeding(container); // seed role
+            //DebugCaching(container);
 			//DebugOwnedTypes(container);
 		}
 
 		private static IWindsorContainer ConfigureAndCreateWindsorContainer()
 		{
 			var loggerFactory = new LoggerFactory();
-			//loggerFactory.AddConsole((categoryName, logLevel) => (logLevel == LogLevel.Information) && (categoryName == DbLoggerCategory.Database.Command.Name));
+			loggerFactory.AddConsole((categoryName, logLevel) => (logLevel == LogLevel.Information) && (categoryName == DbLoggerCategory.Database.Command.Name));
 			//loggerFactory.AddConsole((categoryName, logLevel) => (categoryName == DbLoggerCategory.Database.Transaction.Name));
 
 			DbContextOptions options = new DbContextOptionsBuilder<ApplicationDbContext>()
@@ -74,14 +75,14 @@ namespace ConsoleApp1
 			container.AddFacility<TypedFactoryFacility>();
 			container.Register(Component.For(typeof(IServiceFactory<>)).AsFactory());
 
-			container.WithEntityPatternsInstaller(new ComponentRegistrationOptions { GeneralLifestyle = lf => lf.Scoped() })
+			container.WithEntityPatternsInstaller(new ComponentRegistrationOptions { GeneralLifestyle = lf => lf.Scoped() }.ConfigureCacheAllEntitiesWithDefaultSlidingExpirationCaching(TimeSpan.FromHours(1)))
 				.RegisterDataLayer(typeof(ILanguageRepository).Assembly)
 				.RegisterDbContext<Havit.EFCoreTests.Entity.ApplicationDbContext>(options)
 				.RegisterEntityPatterns();
 
-			container.Register(Component.For<ITimeService>().ImplementedBy<ServerTimeService>().LifestyleSingleton());
+            container.Register(Component.For<ITimeService>().ImplementedBy<ServerTimeService>().LifestyleSingleton());
 			container.Register(Component.For<ICacheService>().ImplementedBy<MemoryCacheService>().LifestyleSingleton());
-			container.Register(Component.For<IOptions<MemoryCacheOptions>>().ImplementedBy<OptionsManager<MemoryCacheOptions>>().LifestyleSingleton());
+            container.Register(Component.For<IOptions<MemoryCacheOptions>>().ImplementedBy<OptionsManager<MemoryCacheOptions>>().LifestyleSingleton());
 			container.Register(Component.For<IOptionsFactory<MemoryCacheOptions>>().Instance(new OptionsFactory<MemoryCacheOptions>(Enumerable.Empty<IConfigureOptions<MemoryCacheOptions>>(), Enumerable.Empty<IPostConfigureOptions<MemoryCacheOptions>>())));
 			container.Register(Component.For<IMemoryCache>().ImplementedBy<MemoryCache>().LifestyleSingleton());
 
@@ -153,15 +154,16 @@ namespace ConsoleApp1
 
 		private static void DebugDataLoader(IWindsorContainer container)
 		{
-			using (var scope = container.BeginScope())
+			for (int i = 0; i < 5; i++)
 			{
-				var dbContext = container.Resolve<IDbContext>();
-				var loginAccounts = dbContext.Set<LoginAccount>().AsQueryable().Take(3).ToList();
-				var dataLoader = container.Resolve<IDataLoader>();
+				using (var scope = container.BeginScope())
+				{
+					var dbContext = container.Resolve<IDbContext>();
+					var dataLoader = container.Resolve<IDataLoader>();
 
-				dataLoader.LoadAll(loginAccounts, m => m.Memberships).ThenLoad(m => m.Role);
-				dataLoader.LoadAll(loginAccounts, m => m.Memberships).ThenLoad(m => m.Role);
-				dataLoader.LoadAll(loginAccounts, m => m.Memberships).ThenLoad(m => m.Role);
+					var loginAccounts = dbContext.Set<LoginAccount>().AsQueryable().Take(3).ToList();
+					dataLoader.LoadAll(loginAccounts, m => m.Memberships).ThenLoad(m => m.Role);
+				}
 			}
 
 		}
@@ -170,9 +172,12 @@ namespace ConsoleApp1
 		{
 			using (var scope = container.BeginScope())
 			{
-
-			}
-		}
+                var dbContext = container.Resolve<IDbContext>();
+                var navigation = dbContext.Model.FindEntityType(typeof(LoginAccount)).FindNavigation(nameof(LoginAccount.Memberships));
+                Console.WriteLine(navigation.IsCollection());
+                Console.WriteLine(navigation.GetTargetType());
+            }
+        }
 
 		private static void DebugFlagClass(IWindsorContainer container)
 		{
@@ -224,43 +229,54 @@ namespace ConsoleApp1
 
 		private static void DebugCaching(IWindsorContainer container)
 		{
-			//DebugSeeding(container); // seed role
-			// do cache
+            //// do cache
+            //using (var scope = container.BeginScope())
+            //{
+            //	var dbContext = container.Resolve<IDbContext>();
+            //	var role = dbContext.Set<Role>().Find(1);
+            //	Console.WriteLine(dbContext.GetEntry(role, suppressDetectChanges: true).State);
+            //}
 
-			//using (var scope = container.BeginScope())
-			//{
-			//	var dbContext = container.Resolve<IDbContext>();
-			//	var role = dbContext.Set<Role>().Find(1);
-			//	Console.WriteLine(dbContext.GetEntry(role, suppressDetectChanges: true).State);
-			//}
+            //// do cache
+            //using (var scope = container.BeginScope())
+            //{
+            //	var roleRepository = container.Resolve<IRoleRepository>();
+            //	roleRepository.GetObject(1);
+            //}
 
-			// do cache
-			using (var scope = container.BeginScope())
-			{
-				var roleRepository = container.Resolve<IRoleRepository>();
-				roleRepository.GetObject(1);
-			}
+            //// z cache
+            //using (var scope = container.BeginScope())
+            //{
+            //	var roleRepository = container.Resolve<IRoleRepository>();
+            //	Role role = roleRepository.GetObject(1);
 
-			// z cache
-			using (var scope = container.BeginScope())
-			{
-				var roleRepository = container.Resolve<IRoleRepository>();
-				Role role = roleRepository.GetObject(1);
+            //	// invalidace
+            //	role.Name += "0";
 
-				// invalidace
-				role.Name += "0";
+            //	var unitOfWork = container.Resolve<IUnitOfWork>();
+            //	unitOfWork.Commit();
+            //}
 
-				var unitOfWork = container.Resolve<IUnitOfWork>();
-				unitOfWork.Commit();
-			}
+            //// do cache
+            //using (var scope = container.BeginScope())
+            //{
+            //	var roleRepository = container.Resolve<IRoleRepository>();
+            //	roleRepository.GetObject(1);
+            //}
 
-			// do cache
-			using (var scope = container.BeginScope())
-			{
-				var roleRepository = container.Resolve<IRoleRepository>();
-				roleRepository.GetObject(1);
-			}
-		}
+            // invalidace
+            for (int iteration = 0; iteration < 100; iteration++)
+            {
+                LoginAccount loginAccount = new LoginAccount();
+                using (var scope = container.BeginScope())
+                {
+                    var uow = container.Resolve<IUnitOfWork>();
+                    uow.AddForInsert(loginAccount);
+                    uow.AddRangeForInsert(Enumerable.Range(1, 1000).Select(roleId => new Membership { LoginAccount = loginAccount, RoleId = roleId }));// peklo, LoginAccountID není nastaveno!
+                    uow.Commit();
+                }
+            }
+        }
 
 		private static void DebugOwnedTypes(IWindsorContainer container)
 		{

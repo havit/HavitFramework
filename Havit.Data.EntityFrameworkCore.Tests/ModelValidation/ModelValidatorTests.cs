@@ -336,5 +336,34 @@ namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation
 			// Assert
 			Assert.IsFalse(errors.Any());
 		}
-	}
+
+        [TestMethod]
+        public void ModelValidator_CheckNoOwnedIsRegistered_DoesNotReportNonOwnedType()
+        {
+            // Arrange
+            ModelValidatingDbContext modelValidatingDbContext = new ModelValidatingDbContext();
+            ModelValidator modelValidator = new ModelValidator();
+
+            // Act
+            string[] errors = modelValidator.CheckNoOwnedIsRegistered(modelValidatingDbContext.Model.FindEntityType(typeof(NonOwnedType))).ToArray();
+
+            // Assert
+            Assert.IsFalse(errors.Any());
+        }
+
+        [TestMethod]
+        public void ModelValidator_CheckNoOwnedIsRegistered_ReportsOwnedType()
+        {
+            // Arrange
+            ModelValidatingDbContext modelValidatingDbContext = new ModelValidatingDbContext();
+            ModelValidator modelValidator = new ModelValidator();
+
+            // Act
+            string[] errors = modelValidator.CheckNoOwnedIsRegistered(modelValidatingDbContext.Model.FindEntityType(typeof(OwnedType))).ToArray();
+
+            // Assert
+            Assert.IsTrue(errors.Any());
+        }
+
+    }
 }

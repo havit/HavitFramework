@@ -58,5 +58,11 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 		/// Kontroluje, zda názvy všech cizích klíčů končí 'Id'.
 		/// </summary>
 		public bool CheckAllForeignKeysEndWithId { get; set; } = false;
-	}
+
+        /// <summary>
+        /// Kontroluje, zda v modelu není registrovaný žádný OwnedType.
+        /// </summary>
+        public bool CheckNoOwnedIsRegistered { get; set; } = true;
+
+    }
 }

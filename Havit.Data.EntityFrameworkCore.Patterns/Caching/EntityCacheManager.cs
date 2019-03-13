@@ -1,6 +1,6 @@
 ﻿using Havit.Data.EntityFrameworkCore.Metadata;
 using Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
-using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
+using Havit.Data.EntityFrameworkCore.Patterns.PropertyLambdaExpressions.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 using Havit.Data.Patterns.Infrastructure;
 using Havit.Diagnostics.Contracts;

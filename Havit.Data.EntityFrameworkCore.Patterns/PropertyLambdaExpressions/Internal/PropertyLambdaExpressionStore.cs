@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 
-namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal
+namespace Havit.Data.EntityFrameworkCore.Patterns.PropertyLambdaExpressions.Internal
 {
 	/// <summary>
 	/// Úložiště PropertyLambdaExpression.

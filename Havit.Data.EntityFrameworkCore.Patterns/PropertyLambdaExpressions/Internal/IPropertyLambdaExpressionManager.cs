@@ -1,7 +1,5 @@
-﻿namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal
+﻿namespace Havit.Data.EntityFrameworkCore.Patterns.PropertyLambdaExpressions.Internal
 {
-	// TODO JK: Přesun do jiného namespace? Už nejen dataloader, ale taky caching.
-
 	/// <summary>
 	/// Poskytuje PropertyLambdaExpression.
 	/// </summary>

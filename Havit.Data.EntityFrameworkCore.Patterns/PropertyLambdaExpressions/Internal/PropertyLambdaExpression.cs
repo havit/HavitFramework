@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal
+namespace Havit.Data.EntityFrameworkCore.Patterns.PropertyLambdaExpressions.Internal
 {
 	/// <summary>
 	/// Lambda expression jako expression tree a zkompilovaný.

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Havit.Data.EntityFrameworkCore.Patterns.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
+using Havit.Data.EntityFrameworkCore.Patterns.PropertyLambdaExpressions.Internal;
 using Havit.Data.Patterns.Infrastructure;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders

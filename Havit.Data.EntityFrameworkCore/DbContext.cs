@@ -228,18 +228,6 @@ namespace Havit.Data.EntityFrameworkCore
 		    return new DbSetInternal<TEntity>(this);
 	    }
 
-        // TODO JK: Skutečně potřebujeme generickou variantu?
-		/// <summary>
-		/// Vrací EntityEntry pro danou entitu.
-		/// </summary>
-		public EntityEntry<TEntity> GetEntry<TEntity>(TEntity entity, bool suppressDetectChanged = true)
-			where TEntity : class
-		{
-			return suppressDetectChanged
-				? ExecuteWithoutAutoDetectChanges(() => this.Entry(entity))
-				: this.Entry(entity);
-		}
-
         /// <summary>
         /// Vrací EntityEntry pro danou entitu.
         /// </summary>

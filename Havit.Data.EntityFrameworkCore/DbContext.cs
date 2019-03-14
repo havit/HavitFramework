@@ -205,7 +205,6 @@ namespace Havit.Data.EntityFrameworkCore
 			    : getObjectInStatesFunc();
 	    }
 
-		// TODO JK: Extension method!
 	    /// <summary>
 	    /// Vrací true, pokud je EF považuje vlastnosti za načtenou.
 	    /// </summary>
@@ -238,7 +237,6 @@ namespace Havit.Data.EntityFrameworkCore
                 : this.Entry(entity);
         }
 
-        // TODO JK: Extension method!
         /// <summary>
         /// Vrátí stav entity v DbContextu (resp. v jeho ChangeTrackeru).
         /// </summary>

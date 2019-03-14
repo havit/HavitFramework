@@ -635,7 +635,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				writer.WriteLine();
 			}
 
-			foreach (CollectionProperty collectionProperty in TableHelper.GetCollectionColumns(table))
+            foreach (CollectionProperty collectionProperty in TableHelper.GetCollectionColumns(table))
 			{
 				writer.WriteLine(String.Format("string _temp{0};", collectionProperty.PropertyName));
 				writer.WriteLine(String.Format("if (record.TryGet<string>(\"{0}\", out _temp{0}))", collectionProperty.PropertyName));
@@ -645,22 +645,44 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				writer.WriteLine(String.Format("if (_temp{0} != null)", collectionProperty.PropertyName));
 				writer.WriteLine("{");
 				writer.WriteLine(String.Format("{0}.Value.AllowDuplicates = true; // Z výkonových důvodů. Víme, že duplicity nepřidáme.", PropertyHelper.GetPropertyHolderName(collectionProperty.PropertyName)));
-				writer.WriteLine(String.Format("string[] _temp{0}Items = _temp{0}.Split('|');", collectionProperty.PropertyName));
+
+                if (GeneratorSettings.SystemMemorySpanSupported)
+                {
+                    writer.WriteLine();
+                    writer.WriteLine(String.Format("if (_temp{0}.Length > 25)", collectionProperty.PropertyName));
+                    writer.WriteLine("{");
+                    writer.WriteLine(String.Format("Span<byte> _temp{0}Span = Encoding.UTF8.GetBytes(_temp{0});", collectionProperty.PropertyName));
+                    writer.WriteLine(String.Format("while (_temp{0}Span.Length > 0)", collectionProperty.PropertyName));
+                    writer.WriteLine("{");
+                    writer.WriteLine(String.Format("System.Buffers.Text.Utf8Parser.TryParse(_temp{0}Span, out int  _{1}ID, out int _{1}BytesConsumed);", collectionProperty.PropertyName, ConventionsHelper.GetCammelCase(collectionProperty.PropertyName)));
+                    writer.WriteLine(String.Format("{0}.Value.Add({1}.GetObject(_{2}ID));",
+                        PropertyHelper.GetPropertyHolderName(collectionProperty.PropertyName), // 0
+                        ClassHelper.GetClassFullName(collectionProperty.TargetTable), // 1
+                        ConventionsHelper.GetCammelCase(collectionProperty.PropertyName))); // 2
+
+                    writer.WriteLine();
+                    writer.WriteLine(String.Format("_temp{0}Span = _temp{0}Span.Slice(_{1}BytesConsumed + 1); // za každou (i za poslední) položkou je oddělovač", collectionProperty.PropertyName, ConventionsHelper.GetCammelCase(collectionProperty.PropertyName)));
+
+                    writer.WriteLine("}");
+                    writer.WriteLine("}");
+                    writer.WriteLine("else");
+                    writer.WriteLine("{");
+                }
+
+                writer.WriteLine(String.Format("string[] _temp{0}Items = _temp{0}.Split('|');", collectionProperty.PropertyName));
 				writer.WriteLine(String.Format("int _temp{0}ItemsLength = _temp{0}Items.Length - 1; // za každou (i za poslední) položkou je oddělovač", collectionProperty.PropertyName));
 				writer.WriteLine(String.Format("for (int i = 0; i < _temp{0}ItemsLength; i++)", collectionProperty.PropertyName));
 				writer.WriteLine("{");
 				writer.WriteLine(String.Format("{0}.Value.Add({1}.GetObject(BusinessObjectBase.FastIntParse(_temp{2}Items[i])));", PropertyHelper.GetPropertyHolderName(collectionProperty.PropertyName), ClassHelper.GetClassFullName(collectionProperty.TargetTable), collectionProperty.PropertyName));
 				writer.WriteLine("}");
 
-				//				writer.WriteLine(String.Format("for (int i = 0; i < _temp{0}.Count; i++)", collectionProperty.PropertyName));
-				//writer.WriteLine("{");
-				//writer.WriteLine(String.Format("if (!_temp{0}[i].IsNull)", collectionProperty.PropertyName));
-				//writer.WriteLine("{");
-				//writer.WriteLine(String.Format("{0}.Value.Add({1}.GetObject(_temp{2}[i].Value));", PropertyHelper.GetPropertyHolderName(collectionProperty.PropertyName), ClassHelper.GetClassFullName(collectionProperty.TargetTable), collectionProperty.PropertyName));
-				//writer.WriteLine("}");  // if IsNull
-				//writer.WriteLine("}");  // for
+                if (GeneratorSettings.SystemMemorySpanSupported)
+                {
+                    writer.WriteLine("}");
+                    writer.WriteLine();
+                }
 
-				writer.WriteLine(String.Format("{0}.Value.AllowDuplicates = false;", PropertyHelper.GetPropertyHolderName(collectionProperty.PropertyName))); // přesunuto sem z frameworku
+                writer.WriteLine(String.Format("{0}.Value.AllowDuplicates = false;", PropertyHelper.GetPropertyHolderName(collectionProperty.PropertyName))); // přesunuto sem z frameworku
 
 				if (TableHelper.IsReadOnly(table))
 				{

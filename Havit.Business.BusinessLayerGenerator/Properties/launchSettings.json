@@ -2,7 +2,7 @@
   "profiles": {
     "Havit.Business.BusinessLayerGenerator": {
       "commandName": "Project",
-      "commandLineArgs": "-sqlserver:sqldev -database:HavitTest -outputpath:D:\\Dev\\002.HFW-HavitFramework\\BusinessLayerTest"
+      "commandLineArgs": "-sqlserver:sqldev -database:HavitBusinessLayerTest -outputpath:D:\\Dev\\002.HFW-HavitFramework\\BusinessLayerTest"
     },
     "123.AEP": {
       "commandName": "Project",

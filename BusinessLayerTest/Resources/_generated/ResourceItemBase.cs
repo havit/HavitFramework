@@ -373,12 +373,28 @@ namespace Havit.BusinessLayerTest.Resources
 				if (_tempLocalizations != null)
 				{
 					_LocalizationsPropertyHolder.Value.AllowDuplicates = true; // Z výkonových důvodů. Víme, že duplicity nepřidáme.
-					string[] _tempLocalizationsItems = _tempLocalizations.Split('|');
-					int _tempLocalizationsItemsLength = _tempLocalizationsItems.Length - 1; // za každou (i za poslední) položkou je oddělovač
-					for (int i = 0; i < _tempLocalizationsItemsLength; i++)
+					
+					if (_tempLocalizations.Length > 25)
 					{
-						_LocalizationsPropertyHolder.Value.Add(Havit.BusinessLayerTest.Resources.ResourceItemLocalization.GetObject(BusinessObjectBase.FastIntParse(_tempLocalizationsItems[i])));
+						Span<byte> _tempLocalizationsSpan = Encoding.UTF8.GetBytes(_tempLocalizations);
+						while (_tempLocalizationsSpan.Length > 0)
+						{
+							System.Buffers.Text.Utf8Parser.TryParse(_tempLocalizationsSpan, out int  _localizationsID, out int _localizationsBytesConsumed);
+							_LocalizationsPropertyHolder.Value.Add(Havit.BusinessLayerTest.Resources.ResourceItemLocalization.GetObject(_localizationsID));
+							
+							_tempLocalizationsSpan = _tempLocalizationsSpan.Slice(_localizationsBytesConsumed + 1); // za každou (i za poslední) položkou je oddělovač
+						}
 					}
+					else
+					{
+						string[] _tempLocalizationsItems = _tempLocalizations.Split('|');
+						int _tempLocalizationsItemsLength = _tempLocalizationsItems.Length - 1; // za každou (i za poslední) položkou je oddělovač
+						for (int i = 0; i < _tempLocalizationsItemsLength; i++)
+						{
+							_LocalizationsPropertyHolder.Value.Add(Havit.BusinessLayerTest.Resources.ResourceItemLocalization.GetObject(BusinessObjectBase.FastIntParse(_tempLocalizationsItems[i])));
+						}
+					}
+					
 					_LocalizationsPropertyHolder.Value.AllowDuplicates = false;
 					_loadedLocalizationsValues = new Havit.BusinessLayerTest.Resources.ResourceItemLocalizationCollection(_LocalizationsPropertyHolder.Value);
 				}

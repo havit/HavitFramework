@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Buffers" Version="4.5.0" />
+    <PackageReference Include="System.Memory" Version="4.5.2" />
+  </ItemGroup>
+
+  <ItemGroup>
 	<ProjectReference Include="..\Havit.Business\Havit.Business.csproj" />
   </ItemGroup>
 

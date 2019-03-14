@@ -387,12 +387,28 @@ namespace Havit.BusinessLayerTest
 				if (_tempKomunikace != null)
 				{
 					_KomunikacePropertyHolder.Value.AllowDuplicates = true; // Z výkonových důvodů. Víme, že duplicity nepřidáme.
-					string[] _tempKomunikaceItems = _tempKomunikace.Split('|');
-					int _tempKomunikaceItemsLength = _tempKomunikaceItems.Length - 1; // za každou (i za poslední) položkou je oddělovač
-					for (int i = 0; i < _tempKomunikaceItemsLength; i++)
+					
+					if (_tempKomunikace.Length > 25)
 					{
-						_KomunikacePropertyHolder.Value.Add(Havit.BusinessLayerTest.Komunikace.GetObject(BusinessObjectBase.FastIntParse(_tempKomunikaceItems[i])));
+						Span<byte> _tempKomunikaceSpan = Encoding.UTF8.GetBytes(_tempKomunikace);
+						while (_tempKomunikaceSpan.Length > 0)
+						{
+							System.Buffers.Text.Utf8Parser.TryParse(_tempKomunikaceSpan, out int  _komunikaceID, out int _komunikaceBytesConsumed);
+							_KomunikacePropertyHolder.Value.Add(Havit.BusinessLayerTest.Komunikace.GetObject(_komunikaceID));
+							
+							_tempKomunikaceSpan = _tempKomunikaceSpan.Slice(_komunikaceBytesConsumed + 1); // za každou (i za poslední) položkou je oddělovač
+						}
 					}
+					else
+					{
+						string[] _tempKomunikaceItems = _tempKomunikace.Split('|');
+						int _tempKomunikaceItemsLength = _tempKomunikaceItems.Length - 1; // za každou (i za poslední) položkou je oddělovač
+						for (int i = 0; i < _tempKomunikaceItemsLength; i++)
+						{
+							_KomunikacePropertyHolder.Value.Add(Havit.BusinessLayerTest.Komunikace.GetObject(BusinessObjectBase.FastIntParse(_tempKomunikaceItems[i])));
+						}
+					}
+					
 					_KomunikacePropertyHolder.Value.AllowDuplicates = false;
 					_loadedKomunikaceValues = new Havit.BusinessLayerTest.KomunikaceCollection(_KomunikacePropertyHolder.Value);
 				}

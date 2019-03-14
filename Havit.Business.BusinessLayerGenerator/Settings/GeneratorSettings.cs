@@ -47,5 +47,10 @@
 		/// </summary>
 		public static TargetPlatform TargetPlatform { get; set; } = TargetPlatform.SqlServer2008;
 
+        /// <summary>
+        /// Indikuje, zda je možno použít System.Memory.Span&lt;T&gt; pro vygenerování optimalizovaného parsování dat do kolekcí.
+        /// </summary>
+        public static bool SystemMemorySpanSupported { get; set; } = true;
+
 	}
 }

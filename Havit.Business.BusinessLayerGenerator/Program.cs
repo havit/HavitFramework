@@ -25,7 +25,7 @@ namespace Havit.Business.BusinessLayerGenerator
 			if ((missingConnectionParameters && missingWebConfigPath) || commandLineArguments["outputpath"] == null)
 			{
 				ConsoleHelper.WriteLineError("Missing connection parameters: either webconfig or sqlserver&database not specified... or output path is missing");
-				ConsoleHelper.WriteLineError(@"BusinessLayerGenerator.exe [-webconfig:<webconfig> | -sqlserver:<server> -database:<database> [-username:<username>] [-password:<password>]] -outputpath:<outputpath> [-namespace:<namespace>] [-strategy=Havit|Exec] [-targetplatform=SqlServer2008|SqlServer2005|SqlServerCe35] [-key:true] [-table:string]");
+				ConsoleHelper.WriteLineError(@"BusinessLayerGenerator.exe [-webconfig:<webconfig> | -sqlserver:<server> -database:<database> [-username:<username>] [-password:<password>]] -outputpath:<outputpath> [-namespace:<namespace>] [-strategy=Havit|Exec] [-targetplatform=SqlServer2008|SqlServer2005|SqlServerCe35] [-systemmemoryspansupported:false] [-key:true] [-table:string]");
 				return;
 			}
 
@@ -35,7 +35,7 @@ namespace Havit.Business.BusinessLayerGenerator
 				if (commandLineArguments["sqlserver"] != null)
 				{
 					ConsoleHelper.WriteLineError("Invalid connection parameters: both webconfig and sqlserver&database is specified");
-					ConsoleHelper.WriteLineError(@"BusinessLayerGenerator.exe [-webconfig:<webconfig> | -sqlserver:<server> -database:<database> [-username:<username>] [-password:<password>]] -outputpath:<outputpath> [-namespace:<namespace>] [-strategy=Havit|Exec] [-targetplatform=SqlServer2008|SqlServer2005|SqlServerCe35] [-key:true] [-table:string]");
+                    ConsoleHelper.WriteLineError(@"BusinessLayerGenerator.exe [-webconfig:<webconfig> | -sqlserver:<server> -database:<database> [-username:<username>] [-password:<password>]] -outputpath:<outputpath> [-namespace:<namespace>] [-strategy=Havit|Exec] [-targetplatform=SqlServer2008|SqlServer2005|SqlServerCe35] [-systemmemoryspansupported:false] [-key:true] [-table:string]");
 					return;
 				}
 
@@ -79,7 +79,13 @@ namespace Havit.Business.BusinessLayerGenerator
 				GeneratorSettings.TargetPlatform = (TargetPlatform)Enum.Parse(typeof(TargetPlatform), commandLineArguments["targetplatform"], true);
 			}
 
-			if (!String.IsNullOrEmpty(commandLineArguments["collectionsavestrategy"]))
+            if (!String.IsNullOrEmpty(commandLineArguments["systemmemoryspansupported"]))
+            {
+                GeneratorSettings.SystemMemorySpanSupported = bool.Parse(commandLineArguments["systemmemoryspansupported"]);
+            }
+
+
+            if (!String.IsNullOrEmpty(commandLineArguments["collectionsavestrategy"]))
 			{
 				ConsoleHelper.WriteLineWarning("Parametr CollectionSaveStrategy byl zrušen.");
 			}

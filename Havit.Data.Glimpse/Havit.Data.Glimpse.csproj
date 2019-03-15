@@ -1,31 +1,32 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	<TargetFramework>net46</TargetFramework>
-	<GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <TargetFramework>net46</TargetFramework>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <!-- NuGet -->
   <PropertyGroup>
-	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageVersion>1.7.1</PackageVersion>
-	<IncludeContentInPack>true</IncludeContentInPack>
-	<Description>HAVIT .NET Framework Extensions - DbConnector extension for Glimpse</Description>
-	<!-- Cílíme jen na WebForms, kde contentFiles nemá smysl (protože WebForms nepoužívají nový csproj, tudíž nepoužívají PackageReference, ale packages.config. -->
-	<ContentTargetFolders>content</ContentTargetFolders>
+    <!-- Glimpse ke obsolete, již nepublikujeme nové verze. -->
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageVersion>1.7.1</PackageVersion>
+    <IncludeContentInPack>true</IncludeContentInPack>
+    <Description>HAVIT .NET Framework Extensions - DbConnector extension for Glimpse</Description>
+    <!-- Cílíme jen na WebForms, kde contentFiles nemá smysl (protože WebForms nepoužívají nový csproj, tudíž nepoužívají PackageReference, ale packages.config. -->
+    <ContentTargetFolders>content</ContentTargetFolders>
   </PropertyGroup>
 
   <ItemGroup>
-	<PackageReference Include="Glimpse" Version="1.8.6" />
+    <PackageReference Include="Glimpse" Version="1.8.6" />
   </ItemGroup>
 
   <ItemGroup>
-	<ProjectReference Include="..\Havit.Data\Havit.Data.csproj" />
+    <ProjectReference Include="..\Havit.Data\Havit.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-	<Content Include="Package\tools\**\*.*" PackagePath="tools" />
-	<Content Include="Package\content\**\*.*" PackagePath="content" />
+    <Content Include="Package\tools\**\*.*" PackagePath="tools" />
+    <Content Include="Package\content\**\*.*" PackagePath="content" />
   </ItemGroup>
 
 </Project>

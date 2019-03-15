@@ -8,7 +8,7 @@
   <!-- NuGet -->
   <PropertyGroup>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageVersion>1.7.4</PackageVersion>
+	<PackageVersion>2.0.0</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Dependency Injection Extensions for Castle Windsor</Description>
   </PropertyGroup>
 

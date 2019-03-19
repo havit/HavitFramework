@@ -25,7 +25,7 @@ namespace Havit.Scopes
 	/// </code>
 	/// </example>
 	/// <remarks>
-	/// Implementace vycházející z MSDN Magazine článku <a href="http://msdn.microsoft.com/msdnmag/issues/06/09/netmatters/default.aspx">Stephen Toub: Scope&lt;T&gt; and More</a>.
+	/// Implementace vycházející z MSDN Magazine článku <a href="http://msdn.microsoft.com/msdnmag/issues/06/09/netmatters/default.aspx">Stephen Toub: Scope&lt;T&gt; and More</a> (již nedostupný).
 	/// </remarks>
 	/// <typeparam name="T">typ objektu, jehož scope řešíme</typeparam>
 	public class Scope<T> : IDisposable
@@ -98,7 +98,7 @@ namespace Havit.Scopes
 		public void Dispose()
 		{
 			Dispose(true);
-			GC.SuppressFinalize(this);
+			// no unmanaged resources owned, not needed: Finalize() + GC.SuppressFinalize(this);
 		}
 
 		/// <summary>
@@ -130,14 +130,5 @@ namespace Havit.Scopes
 				}
 			}
 		}
-
-		/// <summary>
-		/// Destructor.
-		/// </summary>
-		~Scope()
-		{
-			Dispose(false);
-		}
 	}
-
 }

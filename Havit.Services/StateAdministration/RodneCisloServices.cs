@@ -12,14 +12,10 @@ namespace Havit.Services.StateAdministration
 	/// </summary>
 	public static class RodneCisloServices
 	{
-		#region Validate
 		/// <summary>
 		/// Zkontroluje formát rodného čísla. Vrací true, pokud jde o platné RČ.
 		/// Používá algoritmus popsaný na http://phpfashion.com/jak-overit-platne-ic-a-rodne-cislo
 		/// </summary>
-		/// <remarks>
-		/// ...
-		/// </remarks>
 		public static bool Validate(string rodneCislo)
 		{
 			Match match = Regex.Match(rodneCislo, @"^\s*(?<year>\d\d)(?<month>\d\d)(?<day>\d\d)[ /]?(?<ext>\d\d\d)(?<checksum>\d?)\s*$");
@@ -72,7 +68,6 @@ namespace Havit.Services.StateAdministration
 			}
 
 			// vyhodnocení správnosti
-
 			if ((month < 1) || (month > 12))
 			{
 				return false;
@@ -85,6 +80,5 @@ namespace Havit.Services.StateAdministration
 
 			return true;
 		}
-		#endregion
 	}
 }

@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using Havit.Diagnostics.Contracts;
 
 namespace Havit.Business
 {
@@ -191,10 +192,7 @@ namespace Havit.Business
 			connectionMode == ConnectionMode.Disconnected,	// IsLoaded
 			connectionMode == ConnectionMode.Disconnected)	// IsOffline
 		{
-			if (id == NoID)
-			{
-				throw new InvalidOperationException("Nelze vytvořit objekt, který by nebyl nový a měl NoID.");
-			}
+			Contract.Requires<InvalidOperationException>(id != NoID, "Nelze vytvořit objekt, který by nebyl nový a měl NoID.");
 
 			/*
 			this._id = id;

@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("HAVIT, s.r.o.")]
 [assembly: AssemblyProduct("WebApplicationTest")]
-[assembly: AssemblyCopyright("Copyright © HAVIT, s.r.o. 2007")]
+[assembly: AssemblyCopyright("Copyright © HAVIT, s.r.o., 2007")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

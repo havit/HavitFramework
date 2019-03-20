@@ -17,7 +17,7 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateEquals(IOperand operand, DateTime? dateTime)
 		{
-			Contract.Requires<ArgumentNullException>(operand != null, "operand");
+			Contract.Requires<ArgumentNullException>(operand != null, nameof(operand));
 
 			if (dateTime == null)
 			{
@@ -34,7 +34,7 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateEquals(IOperand operand, DateTime dateTime)
 		{
-			Contract.Requires<ArgumentNullException>(operand != null, "operand");
+			Contract.Requires<ArgumentNullException>(operand != null, nameof(operand));
 
 			return CreateEquals(operand, ValueOperand.Create(dateTime));
 		} 
@@ -44,8 +44,8 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateEquals(IOperand operand1, IOperand operand2)
 		{
-			Contract.Requires<ArgumentNullException>(operand1 != null, "operand1");
-			Contract.Requires<ArgumentNullException>(operand2 != null, "operand2");
+			Contract.Requires<ArgumentNullException>(operand1 != null, nameof(operand1));
+			Contract.Requires<ArgumentNullException>(operand2 != null, nameof(operand2));
 
 			return new BinaryCondition(operand1, BinaryCondition.EqualsPattern, operand2);
 		} 
@@ -57,7 +57,7 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition Create(IOperand operand, ComparisonOperator comparisonOperator, DateTime value)
 		{
-			Contract.Requires<ArgumentNullException>(operand != null, "operand");
+			Contract.Requires<ArgumentNullException>(operand != null, nameof(operand));
 
 			return Create(operand, comparisonOperator, ValueOperand.Create(value));
 		} 
@@ -67,8 +67,8 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition Create(IOperand operand1, ComparisonOperator comparisonOperator, IOperand operand2)
 		{
-			Contract.Requires<ArgumentNullException>(operand1 != null, "operand1");
-			Contract.Requires<ArgumentNullException>(operand2 != null, "operand2");
+			Contract.Requires<ArgumentNullException>(operand1 != null, nameof(operand1));
+			Contract.Requires<ArgumentNullException>(operand2 != null, nameof(operand2));
 
 			return new BinaryCondition(operand1, BinaryCondition.GetComparisonPattern(comparisonOperator), operand2);
 		}

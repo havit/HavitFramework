@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Havit.Diagnostics.Contracts;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -82,10 +83,7 @@ namespace Havit.Business
 		/// <param name="owner">objekt, kterému PropertyHolder patří</param>
 		protected PropertyHolderBase(BusinessObjectBase owner)
 		{
-			if (owner == null)
-			{
-				throw new ArgumentNullException("owner");
-			}
+			Contract.Requires<ArgumentNullException>(owner != null, nameof(owner));
 
 			this._owner = owner;
 		}

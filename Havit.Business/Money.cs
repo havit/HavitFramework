@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Havit.Diagnostics.Contracts;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -146,17 +147,11 @@ namespace Havit.Business
 				BusinessObjectBase businessObjectCurrency1 = currency1 as BusinessObjectBase;
 				BusinessObjectBase businessObjectCurrency2 = currency2 as BusinessObjectBase;
 
-				if (businessObjectCurrency1 != businessObjectCurrency2)
-				{
-					throw new InvalidOperationException("Assertion failed: Currencies are not same.");
-				}
+				Contract.Requires<InvalidOperationException>(businessObjectCurrency1 == businessObjectCurrency2, "Currencies are not same.");
 			}
 			else
 			{
-				if (currency1 != currency2)
-				{
-					throw new InvalidOperationException("Assertion failed: Currencies are not same.");
-				}
+				Contract.Requires<InvalidOperationException>(currency1 == currency2, "Currencies are not same.");
 			}
 		}
 		#endregion
@@ -167,10 +162,7 @@ namespace Havit.Business
 		/// </summary>
 		private static void AssertNotNull(object value, string parameterName)
 		{
-			if (value == null)
-			{
-				throw new ArgumentNullException(parameterName, String.Format("Assertion failed: Value ({0}) is null.", parameterName));
-			}
+			Contract.Requires<ArgumentNullException>(value != null, parameterName);
 		}
 		#endregion
 
@@ -277,10 +269,10 @@ namespace Havit.Business
 		public static TResult SumMoney<TResult>(Money<TCurrency> money1, Money<TCurrency> money2)
 			where TResult : Money<TCurrency>, new()
 		{
-			AssertNotNull(money1, "money1");
-			AssertNotNull(money1.Amount, "money1.Amount");
-			AssertNotNull(money2, "money2");
-			AssertNotNull(money2.Amount, "money2.Amount");
+			AssertNotNull(money1, nameof(money1));
+			AssertNotNull(money1.Amount, nameof(money1) + "." + nameof(money1.Amount));
+			AssertNotNull(money2, nameof(money2));
+			AssertNotNull(money2.Amount, nameof(money2) + "." + nameof(money2.Amount));
 			AssertSameCurrencies(money1.Currency, money2.Currency);
 
 			TResult result = new TResult();
@@ -298,10 +290,10 @@ namespace Havit.Business
 		public static TResult SubtractMoney<TResult>(Money<TCurrency> money1, Money<TCurrency> money2)
 			where TResult : Money<TCurrency>, new()
 		{
-			AssertNotNull(money1, "money1");
-			AssertNotNull(money1.Amount, "money1.Amount");
-			AssertNotNull(money2, "money2");
-			AssertNotNull(money2.Amount, "money2.Amount");
+			AssertNotNull(money1, nameof(money1));
+			AssertNotNull(money1.Amount, nameof(money1) + "." + nameof(money1.Amount));
+			AssertNotNull(money2, nameof(money2));
+			AssertNotNull(money2.Amount, nameof(money2) + "." + nameof(money2.Amount));
 			AssertSameCurrencies(money1.Currency, money2.Currency);
 
 			TResult result = new TResult();
@@ -319,8 +311,8 @@ namespace Havit.Business
 		public static TResult MultipleMoney<TResult>(Money<TCurrency> money, decimal multiplicand)
 			where TResult : Money<TCurrency>, new()
 		{
-			AssertNotNull(money, "money");
-			AssertNotNull(money.Amount, "money.Amount");
+			AssertNotNull(money, nameof(money));
+			AssertNotNull(money.Amount, nameof(money) + "." + nameof(money.Amount));
 
 			TResult result = new TResult();
 			result.Amount = money.Amount * multiplicand;
@@ -337,8 +329,8 @@ namespace Havit.Business
 		public static TResult DivideMoney<TResult>(Money<TCurrency> money, decimal divisor)
 			where TResult : Money<TCurrency>, new()
 		{
-			AssertNotNull(money, "money");
-			AssertNotNull(money.Amount, "money.Amount");
+			AssertNotNull(money, nameof(money));
+			AssertNotNull(money.Amount, nameof(money) + "." + nameof(money.Amount));
 
 			TResult result = new TResult();
 			result.Amount = money.Amount / divisor;
@@ -351,11 +343,11 @@ namespace Havit.Business
 		/// </summary>
 		public static decimal DivideMoney(Money<TCurrency> dividend, Money<TCurrency> divisor)			
 		{
-			AssertNotNull(dividend, "dividend");
-			AssertNotNull(dividend.Amount, "dividend.Amount");
+			AssertNotNull(dividend, nameof(dividend));
+			AssertNotNull(dividend.Amount, nameof(dividend) + "." + nameof(dividend.Amount));
 
-			AssertNotNull(divisor, "divisor");
-			AssertNotNull(divisor.Amount, "divisor.Amount");			
+			AssertNotNull(divisor, nameof(divisor));
+			AssertNotNull(divisor.Amount, nameof(divisor) + "." + nameof(divisor.Amount));			
 			
 			AssertSameCurrencies(dividend.Currency, divisor.Currency);
 

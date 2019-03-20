@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Collections;
+using Havit.Diagnostics.Contracts;
 
 namespace Havit.Business
 {
@@ -34,15 +35,8 @@ namespace Havit.Business
 		/// <param name="businessObject">business objekt</param>
 		public void Store(BusinessObjectBase businessObject)
 		{
-			if (businessObject == null)
-			{
-				throw new ArgumentNullException("businessObject");
-			}
-
-			if (businessObject.IsNew)
-			{
-				throw new ArgumentException("businessObject ukládaný do IdentityMap nesmí být nový.", "businessObject");
-			}
+			Contract.Requires<ArgumentNullException>(businessObject != null, nameof(businessObject));
+			Contract.Requires<ArgumentException>(!businessObject.IsNew, "businessObject ukládaný do IdentityMap nesmí být nový.");
 
 			Type businessObjectType = businessObject.GetType();
 			Dictionary<int, WeakReference> typeDictionary;

@@ -39,7 +39,7 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static IOperand Create(int[] ids)
 		{
-			Contract.Requires<ArgumentNullException>(ids != null, "ids");
+			Contract.Requires<ArgumentNullException>(ids != null, nameof(ids));
 			
 			return new IntTableOperand(ids);
 		}

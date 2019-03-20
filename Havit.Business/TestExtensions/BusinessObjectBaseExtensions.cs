@@ -21,6 +21,7 @@ namespace Havit.Business.TestExtensions
 		public static void SetDisconnected(this BusinessObjectBase businessObject)
 		{
 			Contract.Requires<ArgumentNullException>(businessObject != null, nameof(businessObject));
+
 			businessObject.SetDisconnected();
 		}
 		#endregion
@@ -32,10 +33,7 @@ namespace Havit.Business.TestExtensions
 		public static void SetProperty<TBusinessObject, TValue>(this TBusinessObject businessObject, Expression<Func<TBusinessObject, TValue>> propertyPath, TValue value)
 			where TBusinessObject : BusinessObjectBase
 		{
-			if (!businessObject.IsLoaded)
-			{
-				throw new InvalidOperationException("SetProperty nelze volat na ghost objektu. Objekt musí být nejprve přepnut do stavu Disconnected.");
-			}
+			Contract.Requires<InvalidOperationException>(businessObject.IsLoaded, "SetProperty nelze volat na ghost objektu. Objekt musí být nejprve přepnut do stavu Disconnected.");
 
 			// vytvoříme přiřazení "propertyPath = value"
 			// nejprve musíme TypedParameterExpression propertyPath vyměnit za businessObject

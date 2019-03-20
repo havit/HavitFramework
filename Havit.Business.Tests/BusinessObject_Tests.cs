@@ -11,10 +11,6 @@ using Havit.Business.TestExtensions;
 
 namespace Havit.Business.Tests
 {
-	/// <summary>
-	/// This is a test class for Havit.Business.BusinessObjectBase and is intended
-	/// to contain all Havit.Business.BusinessObjectBase Unit Tests
-	/// </summary>
 	[TestClass]
 	public class BusinessObject_Tests
 	{

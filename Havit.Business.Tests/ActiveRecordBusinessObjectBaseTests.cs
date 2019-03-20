@@ -9,9 +9,6 @@ using Havit.Business;
 
 namespace Havit.Business.Tests
 {
-	/// <summary>
-	/// Unit test na ActiveRecordBusinessObjectBase
-	/// </summary>
 	[TestClass]
 	public class ActiveRecordBusinessObjectBaseTests
 	{

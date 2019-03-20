@@ -169,7 +169,7 @@ namespace Havit.Business
 
 		#region Constructors
 		/// <summary>
-		/// Vytvoøí novou instanci kolekce bez prvkù - prázdnou.
+		/// Vytvoří novou instanci kolekce bez prvků - prázdnou.
 		/// </summary>
 		/// <remarks>
 		/// Použit je wrappující constructor Collection(Of T), abychom si vynutili List(Of T).
@@ -181,7 +181,7 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Vytvoøí novou instanci kolekce wrapnutím Listu prvkù (neklonuje!).
+		/// Vytvoří novou instanci kolekce wrapnutím Listu prvků (neklonuje!).
 		/// </summary>
 		/// <remarks>
 		/// Je to rychlé! Nikam se nic nekopíruje, ale pozor, ani neklonuje!
@@ -194,7 +194,7 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Vytvoøí novou instanci kolekce a zkopíruje do ní prvky z pøedané kolekce.
+		/// Vytvoří novou instanci kolekce a zkopíruje do ní prvky z předané kolekce.
 		/// </summary>
 		/// <param name="collection">kolekce, jejíž prvky se mají do naší kolekce zkopírovat</param>
 		public BusinessObjectCollection(IEnumerable<TItem> collection)
@@ -216,7 +216,7 @@ namespace Havit.Business
 		/// Prohledá kolekci a vrátí první nalezený prvek s požadovaným ID.
 		/// </summary>
 		/// <remarks>
-		/// Vzhledem k tomu, že jsou prvky v kolekci obvykle unikátní, najde prostì zadané ID.
+		/// Vzhledem k tomu, že jsou prvky v kolekci obvykle unikátní, najde prostě zadané ID.
 		/// </remarks>
 		/// <param name="id">ID prvku</param>
 		/// <returns>první nalezený prvek s požadovaným ID; null, pokud nic nenalezeno</returns>
@@ -264,7 +264,7 @@ namespace Havit.Business
 		/// Metoda pouze publikuje metodu FindAll() inner-listu Items.
 		/// </remarks>
 		/// <param name="match">kritérium ve formì predikátu</param>
-		/// <returns>kolekce všech prvkù odpovídajících kritériu match</returns>
+		/// <returns>kolekce všech prvků odpovídajících kritériu match</returns>
 		public virtual TCollection FindAll(Predicate<TItem> match)
 		{
 			//Contract.Ensures(Contract.Result<TCollection>() != null);

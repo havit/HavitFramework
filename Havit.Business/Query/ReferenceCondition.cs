@@ -18,7 +18,7 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateEquals(IOperand operand, int? id)
 		{
-			Contract.Requires<ArgumentNullException>(operand != null, "operand");
+			Contract.Requires<ArgumentNullException>(operand != null, nameof(operand));
 
 			if (id == BusinessObjectBase.NoID)
 			{
@@ -40,7 +40,7 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateEquals(IOperand operand, BusinessObjectBase businessObject)
 		{
-			Contract.Requires<ArgumentNullException>(operand != null, "operand");
+			Contract.Requires<ArgumentNullException>(operand != null, nameof(operand));
 
 			if (businessObject == null)
 			{
@@ -60,8 +60,8 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateEquals(IOperand operand1, IOperand operand2)
 		{
-			Contract.Requires<ArgumentNullException>(operand1 != null, "operand1");
-			Contract.Requires<ArgumentNullException>(operand2 != null, "operand2");
+			Contract.Requires<ArgumentNullException>(operand1 != null, nameof(operand1));
+			Contract.Requires<ArgumentNullException>(operand2 != null, nameof(operand2));
 
 			return NumberCondition.CreateEquals(operand1, operand2);
 		}
@@ -74,7 +74,7 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateNotEquals(IOperand operand, int? id)
 		{
-			Contract.Requires<ArgumentNullException>(operand != null, "operand");
+			Contract.Requires<ArgumentNullException>(operand != null, nameof(operand));
 
 			if (id == BusinessObjectBase.NoID)
 			{
@@ -96,7 +96,7 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateNotEquals(IOperand operand, BusinessObjectBase businessObject)
 		{
-			Contract.Requires<ArgumentNullException>(operand != null, "operand");
+			Contract.Requires<ArgumentNullException>(operand != null, nameof(operand));
 
 			if (businessObject == null)
 			{
@@ -116,8 +116,8 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateNotEquals(IOperand operand1, IOperand operand2)
 		{
-			Contract.Requires<ArgumentNullException>(operand1 != null, "operand1");
-			Contract.Requires<ArgumentNullException>(operand2 != null, "operand2");
+			Contract.Requires<ArgumentNullException>(operand1 != null, nameof(operand1));
+			Contract.Requires<ArgumentNullException>(operand2 != null, nameof(operand2));
 
 			return NumberCondition.Create(operand1, ComparisonOperator.NotEquals, operand2);
 		}
@@ -133,8 +133,8 @@ namespace Havit.Business.Query
 		/// <returns>Podmínka testující existenci hodnoty v poli ID objektů.</returns>
 		public static Condition CreateIn(IOperand operand, int[] ids)
 		{
-			Contract.Requires<ArgumentNullException>(operand != null, "operand");
-			Contract.Requires<ArgumentNullException>(ids != null, "ids");
+			Contract.Requires<ArgumentNullException>(operand != null, nameof(operand));
+			Contract.Requires<ArgumentNullException>(ids != null, nameof(ids));
 
 			return NumberCondition.CreateIn(operand, ids);
 		}
@@ -162,8 +162,8 @@ namespace Havit.Business.Query
 		/// <returns>Podmínka testující neexistenci hodnoty v poli ID objektů.</returns>
 		public static Condition CreateNotIn(IOperand operand, int[] ids)
 		{
-			Contract.Requires<ArgumentNullException>(operand != null, "operand");
-			Contract.Requires<ArgumentNullException>(ids != null, "ids");
+			Contract.Requires<ArgumentNullException>(operand != null, nameof(operand));
+			Contract.Requires<ArgumentNullException>(ids != null, nameof(ids));
 
 			if (ids.Length == 0)
 			{

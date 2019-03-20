@@ -7,10 +7,6 @@ using Havit.BusinessLayerTest;
 
 namespace Havit.Business.Tests
 {
-	/// <summary>
-	/// This is a test class for Havit.Business.IdentityMap and is intended
-	/// to contain all Havit.Business.IdentityMap Unit Tests
-	/// </summary>
 	[TestClass]
 	public class IdentityMapTests
 	{

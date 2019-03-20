@@ -45,10 +45,7 @@ namespace Havit.Extensions.DependencyInjection.CastleWindsor
         /// </param>
         public static void InstallByServiceAttibute(this IWindsorContainer container, Assembly assembly, string[] profiles, Func<LifestyleGroup<object>, ComponentRegistration<object>> scopedLifetimeConfigurer = null)
         {
-            if (profiles == null)
-            {
-                throw new ArgumentNullException(nameof(profiles));
-            }
+			Contract.Requires<ArgumentNullException>(profiles != null, nameof(profiles));
 
             foreach (string profile in profiles)
             {
@@ -69,15 +66,8 @@ namespace Havit.Extensions.DependencyInjection.CastleWindsor
         /// </param>
         public static void InstallByServiceAttibute(this IWindsorContainer container, Assembly assembly, string profile, Func<LifestyleGroup<object>, ComponentRegistration<object>> scopedLifetimeConfigurer = null)
         {
-            if (container == null)
-            {
-                throw new ArgumentNullException(nameof(container));
-            }
-
-            if (assembly == null)
-            {
-                throw new ArgumentNullException(nameof(assembly));
-            }
+			Contract.Requires<ArgumentNullException>(container != null, nameof(container));
+			Contract.Requires<ArgumentNullException>(assembly != null, nameof(assembly));
 
             var itemsToRegister = GetTypesWithServiceAttribute(assembly, profile);
 
@@ -124,6 +114,5 @@ namespace Havit.Extensions.DependencyInjection.CastleWindsor
 
             public ServiceLifetime Lifetime { get; set; }
         }
-
     }
 }

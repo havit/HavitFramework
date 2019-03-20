@@ -39,7 +39,7 @@ namespace Havit.Business
 		protected ActiveRecordBusinessObjectBase(int id, ConnectionMode connectionMode = ConnectionMode.Connected) : base(id, connectionMode)
 		{			
 			IdentityMap currentIdentityMap = IdentityMapScope.Current;
-			Contract.Assert(currentIdentityMap != null);
+			Contract.Assert<InvalidOperationException>(currentIdentityMap != null);
 			currentIdentityMap.Store(this);
 		}
 
@@ -66,7 +66,7 @@ namespace Havit.Business
 			if ((record.DataLoadPower == DataLoadPower.Ghost) || (record.DataLoadPower == DataLoadPower.FullLoad))
 			{
 				IdentityMap currentIdentityMap = IdentityMapScope.Current;
-				Contract.Assert(currentIdentityMap != null);
+				Contract.Assert<InvalidOperationException>(currentIdentityMap != null);
 				currentIdentityMap.Store(this);
 			}
 
@@ -88,7 +88,7 @@ namespace Havit.Business
 		/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu načtenými z databáze.</param>
 		public void Load(DataRecord record)
 		{
-			Contract.Requires<ArgumentNullException>(record != null);
+			Contract.Requires<ArgumentNullException>(record != null, nameof(record));
 			Contract.Requires<InvalidOperationException>(!this.IsLoaded, "Nelze nastavit objektu hodnoty z DataRecordu, pokud objekt není ghostem.");
 
 			Load_ParseDataRecord(record);
@@ -110,7 +110,7 @@ namespace Havit.Business
 		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		protected override sealed bool TryLoad_Perform(DbTransaction transaction)
 		{
-			Contract.Requires(!IsDisconnected, "Nelze načítat z databáze objekt, který je disconnected.");
+			Contract.Requires<InvalidOperationException>(!IsDisconnected, "Nelze načítat z databáze objekt, který je disconnected.");
 
 			DataRecord record = Load_GetDataRecord(transaction);
 
@@ -322,17 +322,12 @@ namespace Havit.Business
 			IsMinimalInserting = true;
 		}
 
-		/// <summary>
-		/// Identifikuje, zda probíhá Save_Insert_InsertRequiredForMinimalInsert (nesmí se zacyklit).
-		/// </summary>
-		[EditorBrowsable(EditorBrowsableState.Advanced)]
-		[SuppressMessage("Havit.StyleCop.Rules.HavitRules", "HA0002:MembersOrder", Justification = "Související kóh ohledně insertingu je pohromadě v bloku save logiky.")]
-		protected bool IsMinimalInserting
-		{
-			get { return isMinimalInserting; }
-			set { isMinimalInserting = value; }
-		}
-		private bool isMinimalInserting = false;
+        /// <summary>
+        /// Identifikuje, zda probíhá Save_Insert_InsertRequiredForMinimalInsert (nesmí se zacyklit).
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        [SuppressMessage("Havit.StyleCop.Rules.HavitRules", "HA0002:MembersOrder", Justification = "Související kóh ohledně insertingu je pohromadě v bloku save logiky.")]
+        protected bool IsMinimalInserting { get; set; } = false;
 
 		#endregion
 	}

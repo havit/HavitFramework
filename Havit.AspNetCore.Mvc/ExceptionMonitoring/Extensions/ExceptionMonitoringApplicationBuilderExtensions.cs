@@ -1,4 +1,5 @@
 ﻿using Havit.AspNetCore.Mvc.ExceptionMonitoring.Middlewares;
+using Havit.Diagnostics.Contracts;
 using Microsoft.AspNetCore.Builder;
 using System;
 using System.Collections.Generic;
@@ -20,10 +21,7 @@ namespace Microsoft.AspNetCore.Builder
 		/// </summary>
 		public static IApplicationBuilder UseExceptionMonitoring(this IApplicationBuilder app)
 		{
-			if (app == null)
-			{
-				throw new ArgumentNullException(nameof(app));
-			}
+			Contract.Requires<ArgumentNullException>(app != null, nameof(app));
 
 			return app.UseMiddleware<ExceptionMonitoringMiddleware>();
 		}

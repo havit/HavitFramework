@@ -8,9 +8,6 @@ using Havit.Business;
 
 namespace Havit.Business.Tests
 {
-	/// <summary>
-	/// Unit test generovaných vlastností typu Money.
-	/// </summary>
 	[TestClass]
 	public class BusinessObject_MoneyPropertyTests
 	{

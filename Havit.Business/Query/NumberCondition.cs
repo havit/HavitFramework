@@ -19,7 +19,7 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateEquals(IOperand operand, int value)
 		{
-			Contract.Requires<ArgumentNullException>(operand != null, "operand");
+			Contract.Requires<ArgumentNullException>(operand != null, nameof(operand));
 
 			return CreateEquals(operand, ValueOperand.Create(value));
 		}
@@ -29,7 +29,7 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateEquals(IOperand operand, decimal value)
 		{
-			Contract.Requires<ArgumentNullException>(operand != null, "operand");
+			Contract.Requires<ArgumentNullException>(operand != null, nameof(operand));
 
 			return CreateEquals(operand, ValueOperand.Create(value));
 		}
@@ -39,8 +39,8 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateEquals(IOperand operand1, IOperand operand2)
 		{
-			Contract.Requires<ArgumentNullException>(operand1 != null, "operand1");
-			Contract.Requires<ArgumentNullException>(operand2 != null, "operand2");
+			Contract.Requires<ArgumentNullException>(operand1 != null, nameof(operand1));
+			Contract.Requires<ArgumentNullException>(operand2 != null, nameof(operand2));
 
 			return new BinaryCondition(operand1, BinaryCondition.EqualsPattern, operand2);
 		} 
@@ -52,8 +52,8 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateIn(IOperand operand, int[] values)
 		{
-			Contract.Requires<ArgumentNullException>(operand != null, "operand");
-			Contract.Requires<ArgumentNullException>(values != null, "values");
+			Contract.Requires<ArgumentNullException>(operand != null, nameof(operand));
+			Contract.Requires<ArgumentNullException>(values != null, nameof(values));
 
 			if (values.Length == 0)
 			{
@@ -93,8 +93,8 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateIn(IOperand operand, IEnumerable<int> values)
 		{
-			Contract.Requires<ArgumentNullException>(operand != null, "operand");
-			Contract.Requires<ArgumentNullException>(values != null, "values");
+			Contract.Requires<ArgumentNullException>(operand != null, nameof(operand));
+			Contract.Requires<ArgumentNullException>(values != null, nameof(values));
 
 			return CreateIn(operand, values.ToArray());
 		}
@@ -106,7 +106,7 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateRange(IOperand operand, int valueFrom, int valueTo)
 		{
-			Contract.Requires<ArgumentNullException>(operand != null, "operand");
+			Contract.Requires<ArgumentNullException>(operand != null, nameof(operand));
 
 			return CreateRange(operand, ValueOperand.Create(valueFrom), ValueOperand.Create(valueTo));
 		}
@@ -116,7 +116,7 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateRange(IOperand operand, decimal valueFrom, decimal valueTo)
 		{
-			Contract.Requires<ArgumentNullException>(operand != null, "operand");
+			Contract.Requires<ArgumentNullException>(operand != null, nameof(operand));
 
 			return CreateRange(operand, ValueOperand.Create(valueFrom), ValueOperand.Create(valueTo));
 		}
@@ -126,9 +126,9 @@ namespace Havit.Business.Query
 		/// </summary>
 		private static Condition CreateRange(IOperand operand, IOperand operandFrom, IOperand operandTo)
 		{
-			Contract.Requires<ArgumentNullException>(operand != null, "operand");
-			Contract.Requires<ArgumentNullException>(operandFrom != null, "operandFrom");
-			Contract.Requires<ArgumentNullException>(operandTo != null, "operandTo");
+			Contract.Requires<ArgumentNullException>(operand != null, nameof(operand));
+			Contract.Requires<ArgumentNullException>(operandFrom != null, nameof(operandFrom));
+			Contract.Requires<ArgumentNullException>(operandTo != null, nameof(operandTo));
 
 			return new TernaryCondition(TernaryCondition.BetweenPattern, operand, operandFrom, operandTo);
 		}
@@ -140,7 +140,7 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition Create(IOperand operand, ComparisonOperator comparisonOperator, int value)
 		{
-			Contract.Requires<ArgumentNullException>(operand != null, "operand");
+			Contract.Requires<ArgumentNullException>(operand != null, nameof(operand));
 
 			return Create(operand, comparisonOperator, ValueOperand.Create(value));
 		}
@@ -150,7 +150,7 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition Create(IOperand operand, ComparisonOperator comparisonOperator, decimal value)
 		{
-			Contract.Requires<ArgumentNullException>(operand != null, "operand");
+			Contract.Requires<ArgumentNullException>(operand != null, nameof(operand));
 
 			return Create(operand, comparisonOperator, ValueOperand.Create(value));
 		}
@@ -160,8 +160,8 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition Create(IOperand operand1, ComparisonOperator comparisonOperator, IOperand operand2)
 		{
-			Contract.Requires<ArgumentNullException>(operand1 != null, "operand1");
-			Contract.Requires<ArgumentNullException>(operand2 != null, "operand2");
+			Contract.Requires<ArgumentNullException>(operand1 != null, nameof(operand1));
+			Contract.Requires<ArgumentNullException>(operand2 != null, nameof(operand2));
 
 			return new BinaryCondition(operand1, BinaryCondition.GetComparisonPattern(comparisonOperator), operand2);
 		} 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Havit.Diagnostics.Contracts;
+using System;
 using System.Collections;
 
 namespace Havit.Business
@@ -33,10 +34,7 @@ namespace Havit.Business
 		/// <param name="value">Prvek, který má být přidán do slovníku.</param>
 		public void Add(DateInfo value)
 		{
-			if (value == null)
-			{
-				throw new ArgumentNullException("value");
-			}
+			Contract.Requires<ArgumentNullException>(value != null, nameof(value));
 
 			Dictionary.Add(value.Date, value);
 		}

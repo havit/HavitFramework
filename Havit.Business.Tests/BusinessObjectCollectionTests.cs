@@ -177,7 +177,5 @@ namespace Havit.Business.Tests
 				Assert.IsFalse(subjekt.IsDirty);
 			}
 		}
-
 	}
-
 }

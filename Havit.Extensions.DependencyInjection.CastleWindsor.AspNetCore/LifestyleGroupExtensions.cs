@@ -19,5 +19,4 @@ namespace Havit.Extensions.DependencyInjection.CastleWindsor.AspNetCore
             return lifestyleGroup.Custom<MsScopedLifestyleManager>();
         }
     }
-
 }

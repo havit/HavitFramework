@@ -11,12 +11,12 @@ using System.Web.Mvc;
 namespace Havit.AspNet.Mvc.Html
 {
 	/// <summary>
-	/// Extension metody pro Messenger.
+	/// Extension metods for Messenger.
 	/// </summary>
 	public static class MessengerExtensions
 	{
 		/// <summary>
-		/// Render html for messenger.
+		/// Renders HTML for messenger.
 		/// </summary>
 		public static MvcHtmlString Messenger(this HtmlHelper helper)
 		{

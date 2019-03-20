@@ -17,7 +17,7 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateIsNull(IOperand operand)
 		{
-			Contract.Requires<NullReferenceException>(operand != null, "operand");
+			Contract.Requires<ArgumentNullException>(operand != null, nameof(operand));
 
 			return new UnaryCondition(UnaryCondition.IsNullPattern, operand);
 		} 
@@ -29,7 +29,7 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateIsNotNull(IOperand operand)
 		{
-			Contract.Requires<NullReferenceException>(operand != null, "operand");
+			Contract.Requires<ArgumentNullException>(operand != null, nameof(operand));
 
 			return new UnaryCondition(UnaryCondition.IsNotNullPattern, operand);
 		} 

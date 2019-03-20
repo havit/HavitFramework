@@ -8,7 +8,6 @@ using Havit.Services.Caching;
 
 namespace Havit.Business.Caching
 {
-
 	/// <summary>
 	/// Služba zajišťující cachování pouze GetAllIDs business objektu. Ostatní nejsou cachovány.
 	/// Cache dependency není podporováno.

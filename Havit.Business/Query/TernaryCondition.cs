@@ -38,7 +38,7 @@ namespace Havit.Business.Query
 		/// </summary>
 		public TernaryCondition(string conditionPattern, IOperand operand1, IOperand operand2, IOperand operand3) : base(conditionPattern, operand1, operand2)
 		{
-			Contract.Requires<ArgumentNullException>(operand3 != null, "operand3");
+			Contract.Requires<ArgumentNullException>(operand3 != null, nameof(operand3));
 
 			this.Operand3 = operand3;
 		}

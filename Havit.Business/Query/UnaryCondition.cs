@@ -54,8 +54,8 @@ namespace Havit.Business.Query
 		/// </summary>
 		public UnaryCondition(string conditionPattern, IOperand operand)
 		{
-			Contract.Requires<ArgumentNullException>(conditionPattern != null, "conditionPattern");
-			Contract.Requires<ArgumentNullException>(operand != null, "operand");
+			Contract.Requires<ArgumentNullException>(conditionPattern != null, nameof(conditionPattern));
+			Contract.Requires<ArgumentNullException>(operand != null, nameof(operand));
 
 			Operand1 = operand;
 			ConditionPattern = conditionPattern;

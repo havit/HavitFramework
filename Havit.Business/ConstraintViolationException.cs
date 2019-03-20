@@ -4,6 +4,7 @@ using System.Text;
 using System.Runtime.Serialization;
 using System.Diagnostics;
 using System.Security.Permissions;
+using Havit.Diagnostics.Contracts;
 
 namespace Havit.Business
 {
@@ -81,10 +82,7 @@ namespace Havit.Business
 		protected ConstraintViolationException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
 			: base(info, context)
 		{
-			if (info == null)
-			{
-				throw new ArgumentNullException(nameof(info));
-			}
+			Contract.Requires<ArgumentNullException>(info != null, nameof(info));
 
 			_businessObject = (BusinessObjectBase)info.GetValue("BusinessObject", typeof(BusinessObjectBase));
 		}
@@ -99,10 +97,7 @@ namespace Havit.Business
 		[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
 		public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
 		{
-			if (info == null)
-			{
-				throw new ArgumentNullException("info");
-			}
+			Contract.Requires<ArgumentNullException>(info != null, nameof(info));
 
 			base.GetObjectData(info, context);
 

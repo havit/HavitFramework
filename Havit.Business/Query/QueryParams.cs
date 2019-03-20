@@ -122,7 +122,7 @@ namespace Havit.Business.Query
 		/// </summary>
 		public void PrepareCommand(DbCommand command, SqlServerPlatform sqlServerPlatform, CommandBuilderOptions commandBuilderOptions)
 		{
-			Contract.Requires<ArgumentNullException>(command != null, "command");
+			Contract.Requires<ArgumentNullException>(command != null, nameof(command));
 
 			OnBeforePrepareCommand();
 

@@ -1,3 +1,4 @@
+using Havit.Diagnostics.Contracts;
 using System;
 using System.Collections.Generic;
 
@@ -18,10 +19,7 @@ namespace Havit.AspNetCore.Mvc.ErrorToJson.Configuration
 		/// <param name="markExceptionAsHandled">Indikace, zda má být výjimka oznaèena za zpracovanou.</param>
         public void Map(Type exceptionType, int statusCode, bool markExceptionAsHandled = false)
         {
-	        if (!typeof(Exception).IsAssignableFrom(exceptionType))
-	        {
-		        throw new ArgumentException("Only exception types can be used.", nameof(exceptionType));
-	        }
+	        Contract.Requires<ArgumentException>(typeof(Exception).IsAssignableFrom(exceptionType), $"{nameof(exceptionType)}: Only exception types can be used.");
 
 			this.Map(e => exceptionType.IsAssignableFrom(e.GetType()), e => statusCode, e => new { StatusCode = statusCode, Message = e.Message }, e => markExceptionAsHandled);
         }

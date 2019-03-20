@@ -17,7 +17,7 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition Create(IOperand operand, DateTime? date1, DateTime? date2)
 		{
-			Contract.Requires<ArgumentNullException>(operand != null, "operand");
+			Contract.Requires<ArgumentNullException>(operand != null, nameof(operand));
 
 			if ((date1 == null) && (date2 == null))
 			{
@@ -51,7 +51,7 @@ namespace Havit.Business.Query
 		/// </summary>
 		public static Condition CreateDays(IOperand operand, DateTime? date1, DateTime? date2)
 		{
-			Contract.Requires<ArgumentNullException>(operand != null, "operand");
+			Contract.Requires<ArgumentNullException>(operand != null, nameof(operand));
 
 			if ((date1 == null) && (date2 == null))
 			{

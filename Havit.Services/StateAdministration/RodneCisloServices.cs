@@ -18,6 +18,11 @@ namespace Havit.Services.StateAdministration
 		/// </summary>
 		public static bool Validate(string rodneCislo)
 		{
+			if (String.IsNullOrWhiteSpace(rodneCislo))
+			{
+				return false;
+			}
+
 			Match match = Regex.Match(rodneCislo, @"^\s*(?<year>\d\d)(?<month>\d\d)(?<day>\d\d)[ /]?(?<ext>\d\d\d)(?<checksum>\d?)\s*$");
 
 			if (!match.Success)

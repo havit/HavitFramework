@@ -1,23 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	<TargetFramework>net46</TargetFramework>
-	<GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <TargetFramework>net46</TargetFramework>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <!-- NuGet -->
   <PropertyGroup>
-	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageVersion>2.0.0</PackageVersion>
-	<Description>HAVIT .NET Framework Extensions - Data Class Library</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageVersion>2.0.0</PackageVersion>
+    <Description>HAVIT .NET Framework Extensions - Data Class Library</Description>
   </PropertyGroup>
-  
   <ItemGroup>
-	<ProjectReference Include="..\Havit\Havit.csproj" />
+    <ProjectReference Include="..\Havit.Core\Havit.Core.csproj" />
   </ItemGroup>
-  
+
   <ItemGroup>
-	<Reference Include="System.Configuration" Pack="false" />
+    <Reference Include="System.Configuration" Pack="false" />
   </ItemGroup>
-  
+
 </Project>

@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net46;netstandard2.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <!-- NuGet -->
+  <PropertyGroup>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>Havit</PackageId>
+    <PackageVersion>1.9.0</PackageVersion>
+    <Description>HAVIT .NET Framework Extensions. This package is OBSOLETE, use Havit.Core package instead of this one.</Description>
+    <!-- Nepublikujeme výstup buildu projektu. -->
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Havit.Core\Havit.Core.csproj" />
+  </ItemGroup>
+
+</Project>

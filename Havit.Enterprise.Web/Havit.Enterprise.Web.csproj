@@ -15,7 +15,6 @@
   <ItemGroup>
 	<ProjectReference Include="..\Havit.Business\Havit.Business.csproj" />
 	<ProjectReference Include="..\Havit.Web\Havit.Web.csproj" />
-	<ProjectReference Include="..\Havit\Havit.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -11,9 +11,8 @@
 	<PackageVersion>2.0.0</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - PayPal Library</Description>
   </PropertyGroup>
-
   <ItemGroup>
-	<ProjectReference Include="..\Havit\Havit.csproj" />
+    <ProjectReference Include="..\Havit.Core\Havit.Core.csproj" />
   </ItemGroup>
   
   <ItemGroup>

@@ -12,10 +12,6 @@
 	<Description>HAVIT .NET Framework Extensions - Services</Description>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Havit\Havit.csproj" />
-  </ItemGroup>
-
   <ItemGroup Condition="'$(TargetFramework)' == 'net46'">
 	<Reference Include="System.DirectoryServices" Pack="false" />
 	<Reference Include="System.Runtime.Caching" Pack="false" />
@@ -29,5 +25,9 @@
 
   <ItemGroup>
 	<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="2.0.1" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Havit.Core\Havit.Core.csproj" />
   </ItemGroup>
 </Project>

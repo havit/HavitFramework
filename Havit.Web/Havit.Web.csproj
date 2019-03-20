@@ -13,10 +13,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-	<ProjectReference Include="..\Havit\Havit.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
 	<Reference Include="System.Configuration" Pack="false" />
 	<Reference Include="System.ServiceModel" Pack="false" />
 	<Reference Include="System.Web" Pack="false" />
@@ -106,6 +102,9 @@
 	<None Include="Content\styles\checkbox-dropdown-list-chevron-down.png" />
 	<None Include="UI\Scriptlets\IControlExtender.xml" />
 	<None Include="UI\Scriptlets\IScriptletParameter.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Havit.Core\Havit.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
 	<TypeScriptCompile Include="Bootstrap\Content\js\ModalExtension.ts" />

@@ -14,7 +14,6 @@
 
   <ItemGroup>
 	<ProjectReference Include="..\Havit.Data\Havit.Data.csproj" />
-	<ProjectReference Include="..\Havit\Havit.csproj" />
   </ItemGroup>
 
 </Project>

@@ -24,8 +24,9 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>    
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -310,13 +311,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Havit.Core\Havit.Core.csproj">
+      <Project>{9f542d56-262c-4569-96fd-84ad9aa7b381}</Project>
+      <Name>Havit.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Havit.Web\Havit.Web.csproj">
       <Project>{52891fb3-ca20-403b-ac25-7d9ca5738b6b}</Project>
       <Name>Havit.Web</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Havit\Havit.csproj">
-      <Project>{9acc94b9-b8fd-47c1-abf8-0658c7673905}</Project>
-      <Name>Havit</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

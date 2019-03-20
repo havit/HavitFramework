@@ -14,7 +14,6 @@ namespace Havit.ComponentModel
 	/// </summary>
 	public static partial class UniversalTypeConverter
 	{
-		#region CanConvertTo<T>
 		/// <summary>
 		/// Determines whether the given value can be converted to the specified type using the current CultureInfo.
 		/// </summary>
@@ -39,9 +38,7 @@ namespace Havit.ComponentModel
 			T result;
 			return TryConvertTo(value, out result, culture);
 		}
-		#endregion
 
-		#region TryConvertTo<T>
 		/// <summary>
 		/// Converts the given value to the given type using the current CultureInfo.
 		/// A return value indicates whether the operation succeeded.
@@ -70,9 +67,7 @@ namespace Havit.ComponentModel
 		    result = success ? (T)objectResult : default(T);
 		    return success;
 		}
-		#endregion
 
-		#region ConvertTo<T>
 		/// <summary>
 		/// Converts the given value to the given type using the current CultureInfo.
 		/// </summary>
@@ -95,9 +90,7 @@ namespace Havit.ComponentModel
 		{
 			return (T)ConvertTo(value, typeof(T), culture);
 		}
-		#endregion
 
-		#region CanConvertTo
 		/// <summary>
 		/// Determines whether the given value can be converted to the specified type using the current CultureInfo.
 		/// </summary>
@@ -122,9 +115,7 @@ namespace Havit.ComponentModel
 			object result;
 			return TryConvertTo(value, targetType, out result, culture);
 		}
-		#endregion
 
-		#region TryConvertTo
 		/// <summary>
 		/// Converts the given value to the given type using the current CultureInfo.
 		/// A return value indicates whether the operation succeeded.
@@ -137,9 +128,7 @@ namespace Havit.ComponentModel
 		{
 			return TryConvertTo(value, targetType, out result, CultureInfo.CurrentCulture);
 		}
-		#endregion
 
-		#region ConvertTo
 		/// <summary>
 		/// Converts the given value to the given type using the current CultureInfo.
 		/// </summary>
@@ -167,6 +156,5 @@ namespace Havit.ComponentModel
 			}
 			throw new InvalidConversionException(value, targetType);
 		}
-		#endregion	
 	}
 }

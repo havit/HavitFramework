@@ -16,7 +16,6 @@ namespace Havit.Web.UI.WebControls
     /// </summary>
 	public class EnterpriseCheckBoxList : CheckBoxListExt
 	{
-		#region ItemPropertyInfo
 		/// <summary>
 		/// ReferenceFieldPropertyInfo property, jejíž hodnota se tímto CheckBoxListem vybírá.
 		/// Nastavení této hodnoty rovněž přepíše hodnoty vlastností ItemObjectInfo a Nullable.
@@ -40,9 +39,7 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		private ReferenceFieldPropertyInfo itemPropertyInfo;
-		#endregion
 
-		#region ItemObjectInfo
 		/// <summary>
 		/// Udává metodu, kterou se získá objekt na základě ID.
 		/// Hodnota vlastnosti je automaticky nastavena nastavením vlastnosti PropertyInfo.
@@ -65,9 +62,6 @@ namespace Havit.Web.UI.WebControls
 		}
 		private ObjectInfo itemObjectInfo;
 
-		#endregion
-
-		#region AutoSort
 		/// <summary>
 		/// Udává, zda je zapnuto automatické řazení položek při databindingu. Výchozí hodnota je true.
 		/// </summary>
@@ -76,9 +70,7 @@ namespace Havit.Web.UI.WebControls
 			get { return (bool)(ViewState["AutoSort"] ?? true); }
 			set { ViewState["AutoSort"] = value; }
 		}
-		#endregion
 
-		#region AutoDataBind
 		/// <summary>
 		/// Udává, zda je zapnuto automatické nabindování položek při prvním načtení stránky. Výchozí hodnota je false.
 		/// </summary>
@@ -87,9 +79,7 @@ namespace Havit.Web.UI.WebControls
 			get { return (bool)(ViewState["AutoDataBind"] ?? false); }
 			set { ViewState["AutoDataBind"] = value; }
 		}
-		#endregion
 
-		#region SortExpression
 		/// <summary>
 		/// Určuje, podle jaké property jsou řazena. Pokud není žádná hodnota nastavena použije se hodnota vlastnosti DataSortField a SortDirection.
 		/// Může obsahovat více vlastností oddělených čárkou, směr řazení ASC/DESC. Má tedy význam podobný jako DefaultSortExpression u GridViewExt.
@@ -99,9 +89,7 @@ namespace Havit.Web.UI.WebControls
 			get { return (string)ViewState["SortExpression"] ?? DataTextField; }
 			set { ViewState["SortExpression"] = value; }
 		}
-		#endregion
 
-		#region DataSortField
 		/// <summary>
 		/// Určuje, podle jaké property jsou řazena. Pokud není žádná hodnota nastavena použije se hodnota vlastnosti DataTextField.
 		/// </summary>
@@ -111,9 +99,7 @@ namespace Havit.Web.UI.WebControls
 			get { throw new NotSupportedException(); }
 			set { throw new NotSupportedException(); }
 		}
-		#endregion
 
-		#region SortDirection
 		/// <summary>
 		/// Udává směr řazení položek.
 		/// Výchozí je vzestupné řazení (Ascending).
@@ -124,9 +110,7 @@ namespace Havit.Web.UI.WebControls
 			get { throw new NotSupportedException(); }
 			set { throw new NotSupportedException(); }
 		}
-		#endregion
 
-		#region SelectedIds
 		/// <summary>
 		/// Vrací pole ID vybraných položek. Není-li žádná položka vybraná, vrací prázdné pole.
 		/// </summary>
@@ -145,9 +129,7 @@ namespace Havit.Web.UI.WebControls
 				return result.ToArray();
 			}
 		}
-		#endregion
 
-		#region SelectedObjects
 		/// <summary>
 		/// Vrací výčet s vybranými objekty (na základě zaškrtnutí CheckBoxů). Objekt se získává metodou ve vlastnosti ItemObjectInfo.
 		/// </summary>
@@ -213,9 +195,7 @@ namespace Havit.Web.UI.WebControls
 				}
 			}
 		}
-		#endregion
 
-		#region Private properties
 		/// <summary>
 		/// Indikuje, zda již došlo k navázání dat.
 		/// </summary>
@@ -250,32 +230,19 @@ namespace Havit.Web.UI.WebControls
 		/// </remarks>
 		private bool delayedSetSelectedObjectSet = false;
 
-		#endregion
-
-		#region ---------------------------------------------------------------------------------------------
-		#endregion
-
-		#region Constructors (static)
 		static EnterpriseCheckBoxList()
 		{
 			Havit.Web.UI.WebControls.ControlsValues.PersisterControlExtenderRepository.Default.Add(new EnterpriseCheckBoxListPersisterControlExtender());
 		}
-		#endregion
 
-		#region ---------------------------------------------------------------------------------------------
-		#endregion
-
-		#region Constructor
 		/// <summary>
 		/// Vytvoří instanci EnterpriseCheckBoxList.
 		/// </summary>
 		public EnterpriseCheckBoxList()
 		{
 			DataValueField = "ID";
-		} 
-		#endregion
+		}
 
-		#region OnLoad
 		/// <summary>
 		/// Pokud jde o první načtení stránky a není nastaveno AutoDataBind, zavolá DataBindAll.
 		/// </summary>
@@ -284,9 +251,7 @@ namespace Havit.Web.UI.WebControls
 			base.OnLoad(e);
 			EnsureAutoDataBind();
 		}
-		#endregion
 
-		#region DataBind
 		/// <summary>
 		/// Provádí databinding a řeší odložené nastavení SelectedObject.
 		/// </summary>
@@ -308,9 +273,7 @@ namespace Havit.Web.UI.WebControls
 				delayedSetSelectedObjects = null;
 			}
 		}
-		#endregion
 
-		#region DataBindAll
 		/// <summary>
 		/// Naváže na CheckBoxList všechny (nasmazané) business objekty určitého typu
 		/// (zavolá metodu GetAll(), nastaví výsledek je jako DataSource a zavolá DataBind).
@@ -324,9 +287,7 @@ namespace Havit.Web.UI.WebControls
 
 			PerformDataBinding(itemObjectInfo.GetAllMethod());
 		}
-		#endregion
 
-		#region EnsureAutoDataBind
 		/// <summary>
 		/// Zajistí nabindování dat pro režim AutoDataBind.
 		/// </summary>
@@ -337,9 +298,7 @@ namespace Havit.Web.UI.WebControls
 				DataBindAll();
 			}
 		}
-		#endregion
 
-		#region PerformDataBinding
 		/// <summary>
 		/// Zajistí, aby byl po databindingu doplněn řádek pro výběr prázdné hodnoty.
 		/// </summary>
@@ -371,9 +330,7 @@ namespace Havit.Web.UI.WebControls
 			DataBindPerformed = true;
 			
 		}
-		#endregion
 
-		#region SelectExistingItems
 		/// <summary>
 		/// Vybere objekt dle ID, pokud je objekt s tímto ID mezi daty.
 		/// Pokud není, neprovede nic. Výslední kolekce objektů nastaví výběr (SelectedObjects).
@@ -397,7 +354,6 @@ namespace Havit.Web.UI.WebControls
 
 			// Nastavení vybraných položek
 			SelectedObjects = objectsList.ToArray();
-		} 
-		#endregion
+		}
 	}
 }

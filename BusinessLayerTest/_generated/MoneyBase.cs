@@ -28,8 +28,6 @@ namespace Havit.BusinessLayerTest
 	[System.Diagnostics.DebuggerDisplay("{GetType().FullName,nq} (Amount={Amount, nq}, Currency={Currency == null ? \"null\" : Currency.ID.ToString(), nq})")]
 	public class MoneyBase : Havit.Business.MoneyImplementationBase<Currency, Money>
 	{
-		
-		#region Constructors
 		/// <summary>
 		/// Inicializuje třídu money s prázdními hodnotami (Amount i Currency jsou null).
 		/// </summary>
@@ -43,7 +41,5 @@ namespace Havit.BusinessLayerTest
 		public MoneyBase(decimal? amount, Currency currency) : base(amount, currency)
 		{
 		}
-		#endregion
-		
 	}
 }

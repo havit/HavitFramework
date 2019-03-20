@@ -12,7 +12,6 @@ namespace Havit.PayPal
 	/// </summary>
 	public class PayPalSetExpressCheckoutResponse : PayPalResponseBase
 	{
-		#region Constructor
 		/// <summary>
 		/// Initializes a new instance of the PayPalSetExpressCheckoutResponse class.
 		/// </summary>
@@ -21,9 +20,7 @@ namespace Havit.PayPal
 			: base(rawResponseData)
 		{
 		}
-		#endregion
 
-		#region ParseResponseData
 		/// <summary>
 		/// Rozparsuje data do strong-type properties.		
 		/// </summary>
@@ -32,6 +29,5 @@ namespace Havit.PayPal
 			// Stačí zavolat base metodu. Tady nám jde jenom o TOKEN.
 			base.ParseResponseData(rawResponseData);
 		}
-		#endregion	
 	}
 }

@@ -13,7 +13,6 @@ namespace Havit.Data.Glimpse.SerializationConverters
     /// </summary>
  	public class SqlDataRecordArrayConverter : ISerializationConverter
 	{
-		#region SupportedTypes
 		/// <summary>
 		/// Gets the supported types the converter will be invoked for.
 		/// </summary>
@@ -27,9 +26,7 @@ namespace Havit.Data.Glimpse.SerializationConverters
 				yield return typeof(SqlDataRecord[]);
 			}
 		}
-		#endregion
 
-		#region Convert
 		/// <summary>
 		/// Converts the specified SqlDataRecord[] into string.
 		/// </summary>
@@ -53,6 +50,5 @@ namespace Havit.Data.Glimpse.SerializationConverters
 				return null;
 			}
 		}
-		#endregion
-    }
+	}
 }

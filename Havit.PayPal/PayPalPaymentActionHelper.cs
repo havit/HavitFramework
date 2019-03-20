@@ -31,7 +31,6 @@ namespace Havit.PayPal
 	/// </summary>
 	public static class PayPalPaymentActionHelper
 	{
-		#region GetPayPalPaymentActionCode
 		/// <summary>
 		/// Constructor.
 		/// </summary>
@@ -48,6 +47,5 @@ namespace Havit.PayPal
 					return "Sale";
 			}
 		}
-		#endregion		
 	}
 }

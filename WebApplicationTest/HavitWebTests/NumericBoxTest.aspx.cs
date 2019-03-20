@@ -16,24 +16,19 @@ namespace Havit.WebApplicationTest.HavitWebTests
 {
 	public partial class NumericBoxTest : System.Web.UI.Page
 	{
-		#region OnInit
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
 			ExtractButton.Click += ExtractButton_Click;
 		}
-		#endregion
 
-		#region ExtractButton_Click
 		private void ExtractButton_Click(object sender, EventArgs e)
 		{			
 			DataClass data = new DataClass();
 			MyFormView.ExtractValues(data);
 			Debugger.Break();
 		}
-		#endregion
 
-		#region OnLoad
 		protected override void OnLoad(EventArgs e)
 		{
 			if (!Page.IsPostBack)
@@ -42,9 +37,7 @@ namespace Havit.WebApplicationTest.HavitWebTests
 				MyFormView.DataBind();
 			}
 		}
-		#endregion
 
-		#region OnPreRender
 		protected override void OnPreRender(EventArgs e)
 		{
 			base.OnPreRender(e);
@@ -53,7 +46,6 @@ namespace Havit.WebApplicationTest.HavitWebTests
 				CallBackButton.Text = Page.IsValid.ToString();
 			}
 		}
-		#endregion
 
 		public class DataClass
 		{

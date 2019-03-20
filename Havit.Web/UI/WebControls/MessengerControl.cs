@@ -12,7 +12,6 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class MessengerControl : Literal
 	{
-		#region Messenger
 		/// <summary>
 		/// Messenger použitý pro zprávy k zobrazení.
 		/// Není-li nastaven, vrací Messenger.Default.
@@ -29,9 +28,7 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		private Messenger _messenger;
-		#endregion
 
-		#region Enabled
 		/// <summary>
 		/// Indikuje, zda se budou zprávy messengeru zobrazovat (bez ohledu na způsob) a čistit z fronty zpráv.
 		/// </summary>
@@ -40,9 +37,7 @@ namespace Havit.Web.UI.WebControls
 			get { return (bool)(ViewState["Enabled"] ?? true); }
 			set { ViewState["Enabled"] = value; }
 		}
-		#endregion
 
-		#region ShowMessageBox
 		/// <summary>
 		/// Indikuje, zda se budou zprávy messengeru zobrazovat v message boxu (alert).
 		/// </summary>
@@ -50,10 +45,8 @@ namespace Havit.Web.UI.WebControls
 		{
 			get { return (bool)(ViewState["ShowMessageBox"] ?? false); }
 			set { ViewState["ShowMessageBox"] = value; }
-		} 
-		#endregion
+		}
 
-		#region ShowSummary
 		/// <summary>
 		/// Indikuje, zda se budou zprávy messengeru renderovat do stránky.
 		/// </summary>
@@ -61,10 +54,8 @@ namespace Havit.Web.UI.WebControls
 		{
 			get { return (bool)(ViewState["ShowSummary"] ?? true); }
 			set { ViewState["ShowSummary"] = value; }
-		} 
-		#endregion
+		}
 
-		#region ShowToastr
 		/// <summary>
 		/// Indikuje, zda se budou zprávy messengeru renderovat pro toastr (https://github.com/CodeSeven/toastr).
 		/// </summary>
@@ -73,9 +64,7 @@ namespace Havit.Web.UI.WebControls
 			get { return (bool)(ViewState["ShowToastr"] ?? false); }
 			set { ViewState["ShowToastr"] = value; }
 		}
-		#endregion
 
-		#region OnInit
 		/// <summary>
 		/// OnInit.
 		/// </summary>
@@ -84,9 +73,7 @@ namespace Havit.Web.UI.WebControls
 			base.OnInit(e);
 			this.Page.PreRenderComplete += Page_PreRenderComplete;
 		}
-		#endregion
 
-		#region OnPreRender
 		/// <summary>
 		/// Registrace knihoven jquery a toastru, pokud je použit toastr (PreRenderComplete je pozdě).
 		/// </summary>
@@ -100,9 +87,7 @@ namespace Havit.Web.UI.WebControls
 				ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, "toastr");
 			}
 		}
-		#endregion
 
-		#region Page_PreRenderComplete
 		/// <summary>
 		/// Vyrenderuje html a/nebo script messengeru.
 		/// </summary>
@@ -145,9 +130,7 @@ namespace Havit.Web.UI.WebControls
 				}
 			}
 		}
-		#endregion
 
-		#region GetSummaryHtml, AddMessageHtml
 		/// <summary>
 		/// Vrátí obsah messengeru (HTML kód) připravený k vyrenderování do stránky.
 		/// </summary>
@@ -205,9 +188,7 @@ namespace Havit.Web.UI.WebControls
 
 			sb.Append("</div>");
 		}
-		#endregion
 
-		#region GetMessageBoxText, AddMessageAlertText
 		/// <summary>
 		/// Vrátí obsah messengeru (text) připravený k zobrazení v message boxu (alert).
 		/// </summary>
@@ -233,9 +214,7 @@ namespace Havit.Web.UI.WebControls
 			sb.Append(message.Text.TrimEnd().Replace("\n", "\\n").Replace("\r", ""));
 			sb.Append("\\n");
 		}
-		#endregion
 
-		#region GetToastrScript, AddToastrScript
 		/// <summary>
 		/// Vrací script pro vyrenderování obsahu pro toastr.
 		/// </summary>
@@ -277,6 +256,5 @@ namespace Havit.Web.UI.WebControls
 			string toasterMessage = message.Text.TrimEnd().Replace("'", "\\'").Replace("\n", "<br />").Replace("\r", "");
 			sb.AppendFormat("toastr.{0}('{1}');", toasterMessageType, toasterMessage);
 		}
-		#endregion
 	}
 }

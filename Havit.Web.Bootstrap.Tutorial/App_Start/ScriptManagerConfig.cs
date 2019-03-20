@@ -8,12 +8,10 @@ namespace Havit.Web.Bootstrap.Tutorial
 {
 	public static class ScriptManagerConfig
 	{
-		#region RegisterScriptResourceMappings
 		public static void RegisterScriptResourceMappings()
 		{
 			// není nutno registrovat jquery - zajišťuje AspNet.Scriptmanager.jquery
 			// není nutno registrovat bootstrap - zajišťuje Havit.Web.Bootstrap
 		}
-		#endregion
 	}
 }

@@ -65,12 +65,9 @@ namespace Havit.Diagnostics
 	/// </summary>
 	public class ExceptionTracer
 	{
-		#region Private consts
 		private const TraceEventType traceExceptionMethodDefaultEventType = TraceEventType.Error;
 		private const int traceExceptionMethodDefaultEventId = 0;
-		#endregion
 
-		#region TraceSourceName
 		/// <summary>
 		/// Jméno TraceSource, přes který se budou výjimky emitovat.
 		/// </summary>
@@ -86,16 +83,12 @@ namespace Havit.Diagnostics
 			}
 		}
 		private string _traceSourceName;
-		#endregion
 
-		#region DefaultTraceSourceName (const)
 		/// <summary>
 		/// Název výchozího TraceSource, přes který jsou výjimky emitovány.
 		/// </summary>
 		public const string DefaultTraceSourceName = "Exceptions";
-		#endregion
 
-		#region Default (static singleton)
 		/// <summary>
 		/// Výchozí ExceptionTracer směřující výstup přes TraceSource s DefaultTraceSourceName.
 		/// </summary>
@@ -122,9 +115,7 @@ namespace Havit.Diagnostics
 		}
 		private static ExceptionTracer _default;
 		private static readonly object defaultLock = new object();
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Vytvoří instanci ExceptionTraceru, který bude svůj výstup směřovat přes TraceSource se zadaným jménem.
 		/// </summary>
@@ -133,9 +124,7 @@ namespace Havit.Diagnostics
 		{
 			this._traceSourceName = traceSourceName;
 		}
-		#endregion
 
-		#region SubscribeToUnhandledExceptions
 		/// <summary>
 		/// Přihlásí ExceptionTracer k odběru všech neobsloužených výjimek (event AppDomain.CurrentDomain.UnhandledException).
 		/// </summary>
@@ -161,9 +150,7 @@ namespace Havit.Diagnostics
 				TraceException((Exception)e.ExceptionObject, TraceEventType.Critical);
 			}
 		}
-		#endregion
 
-		#region SubscribeToWindowsFormsThreadExceptions
 		/// <summary>
 		/// Přihlásí ExceptionTracer k odběru všech neobsloužených výjimek WinForm (event Application.ThreadException).
 		/// </summary>
@@ -191,9 +178,7 @@ namespace Havit.Diagnostics
 				}
 			}
 		}
-		#endregion
 
-		#region TraceException
 		/// <summary>
 		/// Pošle do trace zadanou výjimku.
 		/// </summary>
@@ -231,9 +216,7 @@ namespace Havit.Diagnostics
 		{
 			TraceException(exception, traceExceptionMethodDefaultEventType, traceExceptionMethodDefaultEventId);
 		}
-		#endregion
 
-		#region FormatException (private)
 		/// <summary>
 		/// Naformátuje výjimku pro zápis do trace.
 		/// </summary>
@@ -244,9 +227,7 @@ namespace Havit.Diagnostics
 			// do budoucna je možné rozšířit objektový model o ExceptionTraceFormatter, atp.
 			return exception.ToString();
 		}
-		#endregion
 
-		#region RunUsingTraceSource (private)
 		/// <summary>
 		/// Vykoná akci pomocí TraceSource používaného ExceptionListenerem.
 		/// </summary>
@@ -262,8 +243,6 @@ namespace Havit.Diagnostics
 			ts.Flush();
 			ts.Close();
 		}
-		#endregion
-
 	}
 }
 #endif

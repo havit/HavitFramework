@@ -10,7 +10,6 @@ namespace Havit.PayMuzo
 	/// </summary>
 	public class PayMuzoCreateOrderResponse : PayMuzoRawResponse
 	{
-		#region Properties
 		/// <summary>
 		/// Číslo objednávky na straně PayMUZO.
 		/// </summary>
@@ -47,9 +46,7 @@ namespace Havit.PayMuzo
 			set { _resultText = value; }
 		}
 		private string _resultText;
-		#endregion
 
-		#region IsDigestUrlEncoded
 		/// <summary>
 		/// Gets a value indicating whether this instance is digest URL encoded.
 		/// </summary>
@@ -60,9 +57,7 @@ namespace Havit.PayMuzo
 		{
 			get { return true; }
 		}
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Initializes a new instance of the <see cref="PayMuzoCreateOrderResponse"/> class.
 		/// </summary>
@@ -71,9 +66,7 @@ namespace Havit.PayMuzo
 			: base(rawResponseData)
 		{
 		}
-		#endregion
 
-		#region NormalizeData
 		/// <summary>
 		/// Normalizuje data na vstupu, do správného pořadí.
 		/// </summary>
@@ -151,9 +144,7 @@ namespace Havit.PayMuzo
 
 			return data;
 		}
-		#endregion
 
-		#region ParseResponseData
 		/// <summary>
 		/// Rozparsuje data do strong-type properties.
 		/// </summary>
@@ -190,6 +181,5 @@ namespace Havit.PayMuzo
 			// RESULTTEXT
 			_resultText = responseData["RESULTTEXT"];
 		}
-		#endregion
 	}
 }

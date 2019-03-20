@@ -8,11 +8,8 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 {
 	public static class FileHelper
 	{
-		#region GeneratedFolder (const)
 		public const string GeneratedFolder = "_generated";
-		#endregion
 
-		#region GetFilename
 		/// <summary>
 		/// Vrátí jméno generovaného souboru, namespaces tvoří adresářovou strukturu.
 		/// </summary>
@@ -33,9 +30,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 
 			return path + suffix;
 		}
-		#endregion
 
-		#region ResolvePath
 		/// <summary>
 		/// Zkombinuje zadanou cestu s cestou v GeneratorSettings.
 		/// </summary>
@@ -43,7 +38,5 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		{
 			return Path.Combine(GeneratorSettings.OutputPath, path);
 		}
-		#endregion
-
 	}
 }

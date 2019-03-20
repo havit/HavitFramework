@@ -10,7 +10,6 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 	/// </summary>
 	public class ControlValueEventArgs : EventArgs
 	{
-		#region Control
 		/// <summary>
 		/// Control, ke kterému se událost vztahuje.
 		/// </summary>
@@ -18,10 +17,8 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 		{
 			get;
 			private set;
-		} 
-		#endregion
+		}
 
-		#region Value
 		/// <summary>
 		/// Hodnota, která se k události vztahuje.
 		/// </summary>
@@ -29,10 +26,8 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 		{
 			get;
 			private set;
-		} 
-		#endregion
+		}
 
-		#region ControlValueEventArgs
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
@@ -40,7 +35,6 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 		{
 			this.Control = control;
 			this.Value = value;
-		} 
-		#endregion
+		}
 	}
 }

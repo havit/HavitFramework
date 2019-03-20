@@ -10,7 +10,6 @@ namespace Havit.Web
 	/// </summary>
 	public static class HttpResponseExt
 	{
-		#region MovedPermanently
 		/// <summary>
 		/// Provede redirect pomocí HTTP status kódu 301 - Moved Permanently.
 		/// Klasický <see cref="System.Web.HttpResponse.Redirect(string)"/> provádí redirect přes 302 - Found (Object Moved).
@@ -76,9 +75,7 @@ namespace Havit.Web
 		{
 			HttpResponseExt.MovedPermanently(url, true);
 		}
-		#endregion
 
-		#region Gone
 		/// <summary>
 		/// Odešle klientovi odezvu se status kódem 410 - Gone, tj. "stránka byla zrušena bez náhrady".
 		/// </summary>
@@ -114,6 +111,5 @@ namespace Havit.Web
 		{
 			HttpResponseExt.Gone(true);
 		}
-		#endregion
 	}
 }

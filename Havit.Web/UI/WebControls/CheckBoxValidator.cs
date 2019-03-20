@@ -13,7 +13,6 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class CheckBoxValidator : BaseValidator
 	{
-		#region ValidCheckedState
 		/// <summary>
 		/// Udává validní hodnotu - zaškrtnutý [default] nebo odškrtnutý.
 		/// </summary>
@@ -28,9 +27,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["ValidCheckedState"] = value;
 			}
 		}
-		#endregion
 
-		#region CheckBoxToValidate
 		/// <summary>
 		/// CheckBox, který se bude validovat, získán z ControlToValidate.
 		/// </summary>
@@ -47,9 +44,7 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		private CheckBox _checkBoxToValidate = null;
-		#endregion
 
-		#region ControlPropertiesValid
 		/// <summary>
 		/// Zkontroluje, zda je validátor nastaven správně, jinak vyhodí vyjímku.
 		/// </summary>
@@ -67,9 +62,7 @@ namespace Havit.Web.UI.WebControls
 
 			return true;
 		}
-		#endregion
 
-		#region EvaluateIsValid
 		/// <summary>
 		/// Vyhodnotí validátor
 		/// </summary>
@@ -77,9 +70,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			return CheckBoxToValidate.Checked == ValidCheckedState;
 		}
-		#endregion
 
-		#region AddAttributesToRender
 		/// <summary>
 		/// Přidá renderované atributy potřebné pro klientskou validaci
 		/// </summary>
@@ -93,9 +84,7 @@ namespace Havit.Web.UI.WebControls
 				writer.AddAttribute("data-val-validCheckedState", ValidCheckedState ? "true" : "false", false);
 			}
 		}
-		#endregion
 
-		#region OnPreRender
 		/// <summary>
 		/// Registruje script validátoru.
 		/// </summary>
@@ -117,7 +106,5 @@ namespace Havit.Web.UI.WebControls
 
 					return control.checked == validCheckedState;
 				}";
-
-		#endregion
 	}
 }

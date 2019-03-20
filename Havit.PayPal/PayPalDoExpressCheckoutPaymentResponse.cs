@@ -15,7 +15,6 @@ namespace Havit.PayPal
 	{
 		// DoExpressCheckoutPayment Response Fields
 
-		#region Properties (DoExpressCheckoutPayment Response Fields)
 		/// <summary>
 		/// The text entered by the buyer on the PayPal website if the ALLOWNOTE field was set to 1 in SetExpressCheckout.
 		/// </summary>
@@ -46,9 +45,7 @@ namespace Havit.PayPal
 			protected set { _successPageRedirectRequested = value; }
 		}
 		private bool _successPageRedirectRequested;
-		#endregion
 
-		#region Properties (Payment Information Fields)
 		/// <summary>
 		/// Identifikátor transakce.
 		/// </summary>
@@ -184,9 +181,7 @@ namespace Havit.PayPal
 			protected set { _paymentErrorCode = value; }
 		}
 		private string _paymentErrorCode;
-		#endregion
 
-		#region Properties (UserSelectedOptions Fields)
 		/// <summary>
 		/// The Yes/No option that you chose for insurance.
 		/// </summary>
@@ -206,9 +201,7 @@ namespace Havit.PayPal
 			protected set { _shippingOptionIsDefault = value; }
 		}
 		private string _shippingOptionIsDefault;
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Initializes a new instance of the PayPalDoExpressCheckoutPaymentResponse class.
 		/// </summary>
@@ -217,9 +210,7 @@ namespace Havit.PayPal
 			: base(rawResponseData)
 		{
 		}
-		#endregion
 
-		#region ParseResponseData
 		/// <summary>
 		/// Rozparsuje data do strong-type properties.
 		/// Poznámka: Parsuje jenom základní informace, které potřebujeme.
@@ -330,6 +321,5 @@ namespace Havit.PayPal
 				this.ShippingOptionIsDefault = rawResponseData["SHIPPINGOPTIONISDEFAULT"];
 			}
 		}
-		#endregion
 	}
 }

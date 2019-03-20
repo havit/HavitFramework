@@ -11,11 +11,8 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class EnumDropDownList : DropDownListExt
 	{
-		#region Private const fields
 		private const string EnumValueFormatString = "d";
-		#endregion
 
-		#region Private fields
 		/// <summary>
 		/// Indikuje, zda již došlo k navázání dat.
 		/// </summary>
@@ -55,9 +52,7 @@ namespace Havit.Web.UI.WebControls
 		/// nemusí být v Items ještě data. 
 		/// </remarks>
 		private bool delayedSetSelectedEnumValueNeeded = false;
-		#endregion
 
-		#region EnumType
 		/// <summary>
 		/// Typ enum, který obsluhujeme.
 		/// </summary>
@@ -78,9 +73,7 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		private Type _enumType;
-		#endregion
 
-		#region SelectedEnumValue
 		/// <summary>
 		/// Hodnota typu enum, která je nastavena DropDownListu
 		/// </summary>
@@ -128,9 +121,7 @@ namespace Havit.Web.UI.WebControls
 				}
 			}
 		}
-		#endregion
 
-		#region Nullable, NullableText
 		/// <summary>
 		/// Udává, zda má být na výběr prázdná hodnota. Výchozí hodnota je true.
 		/// </summary>
@@ -160,9 +151,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["NullableText"] = value;
 			}
 		}
-		#endregion
 
-		#region DataTextFormatString
 		/// <summary>
 		/// Format-string pro Text itemů. Lze skinovat a použít syntaxi $resources. Jako data jsou poskytnuta {0} = dataItem, {1} = EnumType.Name, {2} = EnumType.Namespace.
 		/// </summary>
@@ -181,9 +170,7 @@ namespace Havit.Web.UI.WebControls
 				base.DataTextFormatString = value;
 			}
 		}
-		#endregion
 
-		#region DataOptionGroupField
 		/// <summary>
 		/// Na EnumDropDownList není vlastnost podporována, vyhazuje výjimku NotSupportedException.
 		/// </summary>
@@ -199,9 +186,7 @@ namespace Havit.Web.UI.WebControls
 				throw new NotSupportedException("EnumDropDownList nepodporuje DataOptionGroupField.");
 			}
 		}
-		#endregion
 
-		#region OnLoad
 		/// <summary>
 		/// Handles the <see cref="E:System.Web.UI.Control.Load"/> event.
 		/// </summary>
@@ -211,9 +196,7 @@ namespace Havit.Web.UI.WebControls
 			base.OnLoad(e);
 			EnsureAutoDataBind();
 		}
-		#endregion
 
-		#region EnsureAutoDataBind (protected)
 		/// <summary>
 		/// Zajistí nabindování dat.
 		/// </summary>
@@ -224,9 +207,7 @@ namespace Havit.Web.UI.WebControls
 				DataBindAll();
 			}
 		}
-		#endregion
 
-		#region DataBind
 		/// <summary>
 		/// Provádí databinding a řeší odložené nastavení SelectedObject.
 		/// </summary>
@@ -243,9 +224,7 @@ namespace Havit.Web.UI.WebControls
 				delayedSetSelectedEnumValue = null;
 			}
 		}
-		#endregion
 
-		#region DataBindAll (private)
 		/// <summary>
 		/// Naváže na DropDownList všechny hodnoty enumu.
 		/// </summary>
@@ -257,9 +236,7 @@ namespace Havit.Web.UI.WebControls
 			}
 			PerformDataBinding(Enum.GetValues(this.EnumType));
 		}
-		#endregion
 
-		#region PerformDataBinding (override)
 		/// <summary>
 		/// Zajistí, aby byl po databindingu doplněn řádek pro výběr prázdné hodnoty.
 		/// </summary>
@@ -277,9 +254,7 @@ namespace Havit.Web.UI.WebControls
 				DataBindPerformed = true;
 			}
 		}
-		#endregion
 
-		#region CreateItem (override)
 		/// <summary>
 		/// Vytvoří ListItem, součást PerformDataBindingu.
 		/// </summary>
@@ -302,9 +277,7 @@ namespace Havit.Web.UI.WebControls
 
 			return item;
 		}
-		#endregion
 
-		#region EnsureEmptyItem (private)
 		/// <summary>
 		/// Přidá na začátek seznamu řádek pro výběr prázdné hodnoty, pokud tam již není.
 		/// </summary>
@@ -315,6 +288,5 @@ namespace Havit.Web.UI.WebControls
 				Items.Insert(0, new ListItem(NullableText, String.Empty));
 			}
 		}
-		#endregion
 	}
 }

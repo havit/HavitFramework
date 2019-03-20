@@ -12,8 +12,7 @@ namespace Havit.Business.Query
 	/// Konstanta jako operand databázového dotazu 
 	/// </summary>
 	public static class ValueOperand
-	{	
-		#region Create - Boolean
+	{
 		/// <summary>
 		/// Vytvoří operand z logické hodnoty.
 		/// </summary>
@@ -21,9 +20,7 @@ namespace Havit.Business.Query
 		{
 			return new GenericDbTypeValueOperand(value, DbType.Boolean);
 		}
-		#endregion
 
-		#region Create - DateTime
 		/// <summary>
 		/// Vytvoří operand z DateTime.
 		/// </summary>
@@ -31,9 +28,7 @@ namespace Havit.Business.Query
 		{
 			return new DateTimeValueOperand(value);
 		}
-		#endregion
 
-		#region Create - Int16, Int32, Int64
 		/// <summary>
 		/// Vytvoří operand z celého čísla.
 		/// </summary>
@@ -57,9 +52,7 @@ namespace Havit.Business.Query
 		{
 			return new GenericDbTypeValueOperand(value, DbType.Int64);
 		}
-		#endregion
 
-		#region Create - Single, Double, Decimal
 		/// <summary>
 		/// Vytvoří operand z čísla.
 		/// </summary>
@@ -83,9 +76,7 @@ namespace Havit.Business.Query
 		{
 			return new GenericDbTypeValueOperand(value, DbType.Decimal);
 		}
-		#endregion
 
-		#region Create - GUID
 		/// <summary>
 		/// Vytvoří operand z GUIDu.
 		/// </summary>
@@ -93,9 +84,7 @@ namespace Havit.Business.Query
 		{
 			return new GenericDbTypeValueOperand(value, DbType.Guid);
 		}
-		#endregion
 
-		#region Create - String
 		/// <summary>
 		/// Vytvoří operand z řetězce.
 		/// </summary>
@@ -103,9 +92,7 @@ namespace Havit.Business.Query
 		{
 			return new GenericDbTypeValueOperand(value, DbType.String);
 		}
-		#endregion
 
-		#region GetParameterName
 		/// <summary>
 		/// Vrátí jméno pro nový parametr.
 		/// </summary>
@@ -122,6 +109,5 @@ namespace Havit.Business.Query
 
 			return parameterName;
 		}
-		#endregion
 	}
 }

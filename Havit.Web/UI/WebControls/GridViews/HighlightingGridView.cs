@@ -17,7 +17,6 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public abstract class HighlightingGridView : GridView
 	{
-		#region Properties
 		/// <summary>
 		/// Vlastnosti pro zvýraznění řádku.
 		/// </summary>
@@ -33,9 +32,7 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		private Highlighting hightlighting;
-		#endregion
 
-		#region SaveViewState, LoadViewState
 		/// <summary>
 		/// Zajistí uložení ViewState. Je přidáno uložení property Hightlighting.
 		/// </summary>
@@ -61,9 +58,7 @@ namespace Havit.Web.UI.WebControls
 				hightlighting = (Highlighting)viewStateData.Second;
 			}
 		}
-		#endregion
 
-		#region Zvýraznění řádku
 		/// <summary>
 		/// Zajistí zvýraznění řádku.
 		/// </summary>
@@ -126,6 +121,5 @@ namespace Havit.Web.UI.WebControls
 			}
 			SelectedIndex = -1;
 		}
-		#endregion
 	}
 }

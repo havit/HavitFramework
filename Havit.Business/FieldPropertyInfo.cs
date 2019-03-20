@@ -15,7 +15,6 @@ namespace Havit.Business
 	/// </summary>
 	public class FieldPropertyInfo : PropertyInfo, IFieldsBuilder, IOperand
 	{
-		#region FieldName
 		/// <summary>
 		/// Název sloupce v databázi.
 		/// </summary>
@@ -27,10 +26,8 @@ namespace Havit.Business
 				return fieldName;
 			}
 		}
-		private string fieldName; 
-		#endregion
+		private string fieldName;
 
-		#region Nullable
 		/// <summary>
 		/// Udává, zda je možné uložit null hodnotu.
 		/// </summary>
@@ -42,10 +39,8 @@ namespace Havit.Business
 				return nullable;
 			}
 		}
-		private bool nullable; 
-		#endregion
+		private bool nullable;
 
-		#region FieldType
 		/// <summary>
 		/// Typ sloupce v databázi.
 		/// </summary>
@@ -57,10 +52,8 @@ namespace Havit.Business
 				return fieldType;
 			}
 		}
-		private SqlDbType fieldType; 
-		#endregion
+		private SqlDbType fieldType;
 
-		#region IsPrimaryKey
 		/// <summary>
 		/// Udává, zda je sloupec primárním klíčem.
 		/// </summary>
@@ -72,10 +65,8 @@ namespace Havit.Business
 				return isPrimaryKey;
 			}
 		}
-		private bool isPrimaryKey; 
-		#endregion
+		private bool isPrimaryKey;
 
-		#region MaximumLength
 		/// <summary>
 		/// Maximální délka řetězce (u typů varchar, nvarchar, apod.), případně velikost datového typu (u číselných typů).
 		/// </summary>
@@ -89,9 +80,7 @@ namespace Havit.Business
 
 		}
 		private int maximumLength;
-		#endregion
 
-		#region Initialize
 		/// <summary>
 		/// Inicializuje instanci sloupce.
 		/// </summary>
@@ -112,9 +101,7 @@ namespace Havit.Business
 			this.isPrimaryKey = isPrimaryKey;
 			this.maximumLength = maximumLength;
 		}
-		#endregion
 
-		#region GetSelectFieldStatement
 		/// <summary>
 		/// Vrátí řetězec pro vytažení daného sloupce z databáze.
 		/// </summary>
@@ -122,15 +109,12 @@ namespace Havit.Business
 		{
 			CheckInitialization();
 			return "[" + fieldName + "]";
-		} 
-		#endregion
+		}
 
-		#region IOperand.GetCommandValue
 		string IOperand.GetCommandValue(DbCommand command, SqlServerPlatform sqlServerPlatform)
 		{
 			CheckInitialization();
 			return "[" + fieldName + "]";
-		} 
-		#endregion
+		}
 	}
 }

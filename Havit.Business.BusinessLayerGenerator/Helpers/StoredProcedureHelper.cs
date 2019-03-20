@@ -10,7 +10,6 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 	/// </summary>
 	public static class StoredProcedureHelper
 	{
-		#region GetStoredProcedures
 		/// <summary>
 		/// Vrátí stored procedury připojené k tabulce pomocí Extended property Attach.
 		/// </summary>
@@ -44,9 +43,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			}
 			return result;
 		}
-		#endregion
 
-		#region IsIgnored
 		/// <summary>
 		/// Vrátí hodnotu extended property "Ignored" u stored procedury.
 		/// </summary>
@@ -54,9 +51,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		{
 			return ExtendedPropertiesHelper.GetBool(ExtendedPropertiesKey.FromStoredProcedure(procedure), "Ignored", procedure.Name) ?? false;
 		}
-		#endregion
 
-		#region GetAttach
 		/// <summary>
 		/// Vrátí hodnotu extended property "Attach" u stored procedury.
 		/// </summary>
@@ -69,9 +64,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			//}
 			return result;
 		}
-		#endregion
 
-		#region GetDataLoadPower
 		/// <summary>
 		/// Vrátí DataLoadPower z Extended property u procedury. 
 		/// Není-li hodnota uvedena, vrací se "Ghost".
@@ -85,9 +78,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			//}
 			return dataLoadPower;
 		}
-		#endregion
 
-		#region GetMethodName
 		/// <summary>
 		/// Vrátí DataLoadPower z Extended property "MethodName" u procedury. 
 		/// Není-li hodnota uvedena, vrací se název SP.
@@ -101,9 +92,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			}
 			return methodName;
 		}
-		#endregion
 
-		#region GetResult
 		/// <summary>
 		/// Vrátí hodnotu vlastnosti Result.
 		/// </summary>
@@ -112,9 +101,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			string result = ExtendedPropertiesHelper.GetString(ExtendedPropertiesKey.FromStoredProcedure(procedure), "Result");
 			return result;
 		}
-		#endregion
 
-		#region GetResultType
 		/// <summary>
 		/// Vrátí informaci, co je výstupem SP.
 		/// Není-li uvedeno, vrací None.
@@ -128,9 +115,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			}
 			return (StoreProcedureResultType)Enum.Parse(typeof(StoreProcedureResultType), result, true);
 		}
-		#endregion
 
-		#region GetResultTypeTable
 		/// <summary>
 		/// Vrátí tabulku, která je návratovou hodnotou výsledku procedury.
 		/// </summary>
@@ -155,9 +140,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			}
 			return result;
 		}
-		#endregion
 
-		#region GetMethodAccessModifier
 		/// <summary>
 		/// Vrátí přístupový modifikátor pro metodu wrapující Stored proceduru.
 		/// </summary>
@@ -170,9 +153,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			}
 			return result;
 		}
-		#endregion
 
-		#region GetLoadGhosts
 		/// <summary>
 		/// Vrátí příznak, zda se má nad ghosty vrácenými SP automaticky provést LoadAll.
 		/// </summary>
@@ -180,7 +161,5 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		{
 			return ExtendedPropertiesHelper.GetBool(ExtendedPropertiesKey.FromStoredProcedure(procedure), "LoadGhosts", procedure.Name) ?? true;
 		}
-		#endregion
-
 	}
 }

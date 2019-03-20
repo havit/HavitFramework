@@ -9,42 +9,31 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class GridViewRowCustomizingCommandButtonEventArgs : EventArgs
 	{
-		#region CommandName
 		/// <summary>
 		/// Vrátí CommandName tlačítka.
 		/// </summary>
 		public string CommandName { get; private set; }
-		#endregion
 
-		#region Visible
 		/// <summary>
 		/// Vlastnost Visible tlačítka.
 		/// </summary>
 		public bool Visible { get; set; }
-		#endregion
 
-		#region Enabled
 		/// <summary>
 		/// Vlastnosti Enabled tlačítka.
 		/// </summary>
 		public bool Enabled { get; set; }
-		#endregion
 
-		#region RowIndex
 		/// <summary>
 		/// Index řádku, kterého se událost týká.
 		/// </summary>
 		public int RowIndex { get; private set; }
-		#endregion
 
-		#region DataItem
 		/// <summary>
 		/// DataItem řádku, kterého se událost týká.
 		/// </summary>
 		public object DataItem { get; private set; }
-		#endregion
 
-		#region GridViewRowCustomizingCommandButtonEventArgs
 		/// <summary>
 		/// Vytvoří instanci třídy <see cref="GridViewRowCustomizingCommandButtonEventArgs"/>.
 		/// </summary>
@@ -57,6 +46,5 @@ namespace Havit.Web.UI.WebControls
 			this.RowIndex = rowIndex;
 			this.DataItem = dataItem;
 		}
-		#endregion
 	}
 }

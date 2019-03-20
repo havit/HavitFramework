@@ -14,7 +14,6 @@ namespace Havit.Data.Glimpse
 	/// </summary>
 	public class DbConnectorTraceListener : System.Diagnostics.TraceListener
 	{
-		#region MessageBroker
 		internal IMessageBroker MessageBroker
 		{
 			get
@@ -33,9 +32,7 @@ namespace Havit.Data.Glimpse
 			}
 		}
 		private IMessageBroker messageBroker;
-		#endregion
 
-		#region Constructors
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
@@ -57,9 +54,7 @@ namespace Havit.Data.Glimpse
 		{
 			MessageBroker = messageBroker;
 		}
-		#endregion
 
-		#region TraceData
 		/// <summary>
 		/// For DbCommandTraceData in data, writes data to iMessageBroker to display in DbConnectorTab.
 		/// </summary>
@@ -79,9 +74,7 @@ namespace Havit.Data.Glimpse
 				}
 			}
 		}
-		#endregion
 
-		#region Write
 		/// <summary>
 		/// Does nothing (NOOP).
 		/// </summary>
@@ -89,9 +82,7 @@ namespace Havit.Data.Glimpse
 		{
 			// NOOP
 		}
-		#endregion
 
-		#region WriteLine
 		/// <summary>
 		/// Does nothing (NOOP).
 		/// </summary>
@@ -99,6 +90,5 @@ namespace Havit.Data.Glimpse
 		{
 			// NOOP
 		}
-		#endregion
 	}
 }

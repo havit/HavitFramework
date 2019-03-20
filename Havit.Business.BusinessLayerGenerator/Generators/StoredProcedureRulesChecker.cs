@@ -9,7 +9,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 {
 	public static class StoredProcedureRulesChecker
 	{
-		#region CheckRules
 		public static void CheckRules(Table table)
 		{
 			Collection<StoredProcedure> procedures = StoredProcedureHelper.GetStoredProcedures(table);
@@ -29,9 +28,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			CheckParameterType(table, procedure);
 			CheckGetResourceValuesForLanguage(table, procedure);
 		}
-		#endregion
 
-		#region CheckDescription
 		private static void CheckDescription(Table table, StoredProcedure procedure)
 		{
 			string description = ExtendedPropertiesHelper.GetDescription(ExtendedPropertiesKey.FromStoredProcedure(procedure));
@@ -40,9 +37,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				ConsoleHelper.WriteLineWarning("SP {0}: Chybí popis (description).", procedure.Name);
 			}
 		}
-		#endregion
 
-		#region CheckMethodName
 		private static void CheckMethodName(Table table, StoredProcedure procedure)
 		{
 			string methodName = StoredProcedureHelper.GetMethodName(procedure);
@@ -51,9 +46,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				ConsoleHelper.WriteLineWarning("SP {0}: Chybí vlastnost MethodName.", procedure.Name);
 			}
 		}
-		#endregion
 
-		#region CheckResultType
 		private static void CheckResultType(object talbe, StoredProcedure procedure)
 		{
 			string resultname = StoredProcedureHelper.GetResult(procedure);
@@ -67,9 +60,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				ConsoleHelper.WriteLineWarning("SP {0}: Neznámá hodnota vlastnosti Result.", procedure.Name);
 			}
 		}
-		#endregion
 
-		#region CheckDataLoadPower
 		private static void CheckDataLoadPower(Table table, StoredProcedure procedure)
 		{
 			if ((StoredProcedureHelper.GetResultType(procedure) == StoreProcedureResultType.Object)
@@ -86,9 +77,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				}
 			}
 		}
-		#endregion
 
-		#region CheckParameterType
 		private static void CheckParameterType(Table table, StoredProcedure procedure)
 		{
 			foreach (StoredProcedureParameter parameter in procedure.Parameters)
@@ -99,9 +88,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				}
 			}
 		}
-		#endregion
 
-		#region CheckGetResourceValuesForLanguage
 		private static void CheckGetResourceValuesForLanguage(Table table, StoredProcedure procedure)
 		{
 			if (procedure.Name == "ResourceClass_GetResourceValuesForLanguage")
@@ -109,6 +96,5 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				ConsoleHelper.WriteLineWarning("SP {0}: Procedure nahrazena wrapperem resourců měla by být odstraněna (včetně třídy ResourceHelper a dalších závislostí).", procedure.Name);
 			}
 		}
-		#endregion
 	}
 }

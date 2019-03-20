@@ -20,15 +20,12 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	[ParseChildren(true)]
 	internal class NavbarSectionInternal : HierarchicalDataBoundControl
 	{
-		#region MenuItems
 		/// <summary>
 		///  Navbar items.
 		/// </summary>
 		[PersistenceMode(PersistenceMode.InnerProperty)]
 		public NavbarItemCollection MenuItems { get; private set; }
-		#endregion
 
-		#region ShowCaret
 		/// <summary>
 		/// Indicates whether render caret for submenus.
 		/// Default false.
@@ -44,9 +41,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ViewState["ShowCaret"] = value;
 			}
 		}
-		#endregion
 
-		#region TagKey
 		/// <summary>
 		/// Returns HtmlTextWriterTag.Ul to be used for control rendering.
 		/// </summary>
@@ -54,9 +49,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			get { return HtmlTextWriterTag.Ul; }
 		}
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Constructor.
 		/// </summary>
@@ -64,9 +57,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			MenuItems = new NavbarItemCollection();
 		}
-		#endregion
 
-		#region OnInit
 		/// <summary>
 		/// Sets default value to CssClass.
 		/// </summary>
@@ -75,9 +66,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			base.OnInit(e);
 			CssClass = "nav navbar-nav";
 		}
-		#endregion
 
-		#region PerformDataBinding
 		/// <summary>
 		/// Creates menu items from data source.
 		/// </summary>
@@ -93,9 +82,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				CreateMenuItems(menuDataSource, MenuItems, 1);
 			}
 		}
-		#endregion
 
-		#region CreateMenuItems
 		/// <summary>
 		/// Create menu items from data source to menu collection. Creating is limited to two levels of nesting.
 		/// </summary>
@@ -133,9 +120,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				}
 			}
 		}
-		#endregion
 
-		#region RenderContents
 		/// <summary>
 		/// Renders menu items.
 		/// </summary>
@@ -150,9 +135,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				}
 			}
 		}
-		#endregion
 
-		#region TrackViewState, SaveViewState, LoadViewState
 		/// <summary>
 		/// Set tracking of viewstae for menu items.
 		/// </summary>
@@ -199,6 +182,5 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			base.LoadViewState(baseState);
 			((IStateManager)MenuItems).LoadViewState(menuItemsState);
 		}
-		#endregion
 	}
 }

@@ -4,25 +4,20 @@ using System.Collections.Generic;
 namespace Havit.Services.Ares
 {
 	/// <summary>
-	/// Vısledek s daty z odpovìdi ze slueb ARES - pøehled ekonomickıch subjektù, pøehled osob.
+	/// VÃ½sledek s daty z odpovÃ¬di ze sluÅ¾eb ARES - pÃ¸ehled ekonomickÃ½ch subjektÃ¹, pÃ¸ehled osob.
 	/// </summary>
 	public class AresPrehledSubjektuResult
 	{
-		#region PrilisMnohoVysledku
 		/// <summary>
-		/// Nalezeno pøíliš mnoho vısledkù
+		/// Nalezeno pÃ¸Ã­liÅ¡ mnoho vÃ½sledkÃ¹
 		/// </summary>
 		public bool PrilisMnohoVysledku { get; set; }
-		#endregion
 
-		#region Data
 		/// <summary>
-		/// Data vyhledanıch subjektù
+		/// Data vyhledanÃ½ch subjektÃ¹
 		/// </summary>
 		public List<AresPrehledSubjektuItem> Data { get; set; }
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
@@ -31,6 +26,5 @@ namespace Havit.Services.Ares
 			Data = new List<AresPrehledSubjektuItem>();
 			PrilisMnohoVysledku = false;
 		}
-		#endregion
 	}
 }

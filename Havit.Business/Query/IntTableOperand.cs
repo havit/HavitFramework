@@ -16,14 +16,11 @@ namespace Havit.Business.Query
 	/// </summary>
 	public sealed class IntTableOperand : IOperand
 	{
-		#region Private fields
 		/// <summary>
 		/// Hodnota konstanty ValueOperandu.
 		/// </summary>
 		private readonly int[] value;
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Vytvoří instanci třídy IntTableOperand.
 		/// </summary>
@@ -31,9 +28,7 @@ namespace Havit.Business.Query
 		{
 			this.value = value;
 		}
-		#endregion
 
-		#region Create
 		/// <summary>
 		/// Vytvoří operand z pole integerů.
 		/// </summary>
@@ -43,9 +38,7 @@ namespace Havit.Business.Query
 			
 			return new IntTableOperand(ids);
 		}
-		#endregion
 
-		#region IOperand Members
 		string IOperand.GetCommandValue(System.Data.Common.DbCommand command, SqlServerPlatform sqlServerPlatform)
 		{
 			Debug.Assert(command != null);
@@ -67,6 +60,5 @@ namespace Havit.Business.Query
 
 			return parameter.ParameterName;
 		}
-		#endregion
 	}
 }

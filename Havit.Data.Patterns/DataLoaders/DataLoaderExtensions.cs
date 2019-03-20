@@ -10,7 +10,6 @@ namespace Havit.Data.Patterns.DataLoaders
 	/// </summary>
 	public static class DataLoaderExtensions
 	{
-		#region ThenLoad
 		/// <summary>
 		/// Načte vlastnosti objektů, pokud ještě nejsou načteny.
 		/// </summary>
@@ -30,9 +29,7 @@ namespace Havit.Data.Patterns.DataLoaders
 		{
 			return source.Unwrap<TEntity>().Load<TProperty>(propertyPath);
 		}
-		#endregion
 
-		#region ThenLoadAsync
 		/// <summary>
 		/// Načte vlastnosti objektů, pokud ještě nejsou načteny.
 		/// </summary>
@@ -79,6 +76,5 @@ namespace Havit.Data.Patterns.DataLoaders
 		{
 			return await (await source.ConfigureAwait(false)).Unwrap<TEntity>().LoadAsync<TProperty>(propertyPath).ConfigureAwait(false);
 		}
-		#endregion
 	}
 }

@@ -5,7 +5,6 @@
 	/// </summary>
 	public class EnumMember
 	{
-		#region MemberID
 		/// <summary>
 		/// ID položky výčtu.
 		/// </summary>
@@ -14,9 +13,7 @@
 			get { return memberID; }
 		}
 		private readonly int memberID;
-		#endregion
 
-		#region MemberName
 		/// <summary>
 		/// Název položky výčtu.
 		/// </summary>
@@ -26,9 +23,7 @@
 			set { memberName = value; }
 		}
 		private string memberName;
-		#endregion
 
-		#region Comment
 		/// <summary>
 		/// Komentář
 		/// </summary>
@@ -37,9 +32,7 @@
 			get { return comment; }
 		}
 		private readonly string comment;
-		#endregion
 
-		#region EnumMember
 		public EnumMember(int memberID, string memberName, /*string description, */string comment)
 		{
 			this.memberID = memberID;
@@ -47,6 +40,5 @@
 			//			this.description = description;
 			this.comment = comment;
 		}
-		#endregion
 	}
 }

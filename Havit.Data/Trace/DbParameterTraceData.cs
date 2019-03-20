@@ -13,35 +13,26 @@ namespace Havit.Data.Trace
 	/// </summary>
 	public class DbParameterTraceData
 	{
-		#region ParameterName
 		/// <summary>
 		/// Parameter name.
 		/// </summary>
 		public string ParameterName { get; private set; }
-		#endregion
 
-		#region Direction
 		/// <summary>
 		/// Parameter direction.
 		/// </summary>
 		public ParameterDirection Direction { get; private set; }
-		#endregion
 
-		#region DbType
 		/// <summary>
 		/// Parameter type.
 		/// </summary>
 		public DbType DbType { get; private set; }
-		#endregion
 
-		#region Value
 		/// <summary>
 		/// Parameter value.
 		/// </summary>
 		public object Value { get; private set; }
-		#endregion
 
-		#region Create
 		/// <summary>
 		/// Creates an instance of DbParameterTraceData from DbParameter.
 		/// </summary>
@@ -56,6 +47,5 @@ namespace Havit.Data.Trace
 
 			return result;
 		}
-		#endregion
 	}
 }

@@ -19,15 +19,12 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	[Themeable(true)]
 	public partial class ModalDialog : ModalDialogBase, IPostBackEventHandler
 	{
-		#region Private fiels
 		private readonly Control dialogContainer;
 		private readonly UpdatePanel updatePanel;
 		private readonly Control contentContainer;
 		private H4 headerH4;
 		private readonly Button closeButton;
-		#endregion
 
-		#region HeaderTemplate
 		/// <summary>
 		/// Dialog header template.
 		/// </summary>
@@ -45,9 +42,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			}
 		}
 		private ITemplate headerTemplate;
-		#endregion
 
-		#region HeaderTemplateContainer
 		internal Control HeaderTemplateContainer
 		{
 			get
@@ -56,9 +51,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			}
 		}
 		private readonly Control headerContainer;
-		#endregion
 
-		#region FooterTemplate
 		/// <summary>
 		/// Dialog footer template.
 		/// </summary>
@@ -76,9 +69,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			}
 		}
 		private ITemplate footerTemplate;
-		#endregion
 
-		#region FooterTemplateContainer
 		internal Control FooterTemplateContainer
 		{
 			get
@@ -87,9 +78,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			}
 		}
 		private readonly Control footerContainer;
-		#endregion
 
-		#region HeaderText
 		/// <summary>
 		/// Dialog header text. Used only when HeaderTemplate not used.
 		/// HeaderText is rendered in &lt;h4&gt; element with css class "modal-title".
@@ -105,9 +94,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ViewState["HeaderText"] = value;
 			}
 		}
-		#endregion
 
-		#region Triggers
 		/// <summary>
 		/// Nested UpdatePanel's triggers.
 		/// </summary>
@@ -119,9 +106,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				return updatePanel.Triggers;
 			}
 		}
-		#endregion
 
-		#region Width
 		/// <summary>
 		/// Šířka dialogu v pixelech.
 		/// </summary>
@@ -136,9 +121,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ViewState["Width"] = value;
 			}
 		}
-		#endregion
 
-		#region UseAnimations
 		/// <summary>
 		/// Get or sets whether use animations when showing and hiding dialog.
 		/// Animation are not supported on nested modals.
@@ -155,9 +138,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ViewState["UseAnimations"] = value;
 			}
 		}
-		#endregion
 
-		#region CssClass
 		/// <summary>
 		/// Css class to be used for dialog - used in element with modal-dialog class.
 		/// </summary>
@@ -173,9 +154,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ViewState["CssClass"] = value;
 			}
 		}
-		#endregion
 
-		#region HeaderCssClass
 		/// <summary>
 		/// Css class to be used for header - used in element with modal-header class.
 		/// </summary>
@@ -191,9 +170,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ViewState["HeaderCssClass"] = value;
 			}
 		}
-		#endregion
 
-		#region ContentCssClass
 		/// <summary>
 		/// Css class to be used for content - used in element with modal-body class.
 		/// </summary>
@@ -209,9 +186,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ViewState["ContentCssClass"] = value;
 			}
 		}
-		#endregion
 
-		#region FooterCssClass
 		/// <summary>
 		/// Css class to be used for footer - used in element with modal-footer class.
 		/// </summary>
@@ -227,9 +202,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ViewState["FooterCssClass"] = value;
 			}
 		}
-		#endregion
 
-		#region ShowCloseButton
 		/// <summary>
 		/// Indicates whether to show close button.
 		/// Default value is true.
@@ -246,9 +219,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ViewState["ShowCloseButton"] = value;
 			}
 		}
-		#endregion
 
-		#region CloseOnEscapeKey
 		/// <summary>
 		/// Indicates whether to close dialog on escape key pressed.
 		/// </summary>
@@ -264,9 +235,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ViewState["CloseOnEscapeKey"] = value;
 			}
 		}
-		#endregion
 
-		#region DragMode
 		/// <summary>
 		/// Modal dialog drag mode.
 		/// Default value is ModalDialogDragMode.IfAvailable.
@@ -283,13 +252,9 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ViewState["DragMode"] = value;
 			}
 		}
-		#endregion
 
-		#region CurrentyShowing
 		internal bool CurrentyShowing { get; set; }
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Constructor.
 		/// </summary>
@@ -311,9 +276,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			closeButton.CausesValidation = false;
 			closeButton.Click += CloseButton_Click;
 		}
-		#endregion
 
-		#region CreateChildControls
 		/// <summary>
 		/// Creates nested controls.
 		/// </summary>
@@ -360,9 +323,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 
 			dialogContainer.Controls.Add(updatePanel);
 		}
-		#endregion
 
-		#region GetContentContainer
 		/// <summary>
 		/// Returns control to which to instantiate content template.
 		/// </summary>
@@ -370,9 +331,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			return contentContainer;
 		}
-		#endregion
 
-		#region GetDialogContainer
 		/// <summary>
 		/// Returns control which handles dialog behavior and operations.
 		/// </summary>
@@ -380,9 +339,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			return dialogContainer;
 		}
-		#endregion
 
-		#region OnDialogShown
 		/// <summary>
 		/// Handles show dialog event.
 		/// And updates nested UpdatePanel.
@@ -393,9 +350,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			base.OnDialogShown(eventArgs);
 			updatePanel.Update();
 		}
-		#endregion
 
-		#region OnDialogHidden
 		/// <summary>
 		/// Handles hide dialog event.
 		/// And updates nested UpdatePanel.
@@ -405,9 +360,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			base.OnDialogHidden(eventArgs);
 			updatePanel.Update();
 		}
-		#endregion
 
-		#region OnPreRender
 		/// <summary>
 		/// PreRender.
 		/// </summary>
@@ -436,9 +389,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				headerH4.Text = HeaderText;
 			}
 		}
-		#endregion
 
-		#region RegisterHideScriptFromPreRenderComplete
 		/// <summary>
 		/// Ensures modal dialog is hidden.
 		/// </summary>
@@ -446,9 +397,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			RegisterHideScript();
 		}
-		#endregion
 
-		#region GetShowScript, GetHideScript
 		/// <summary>
 		/// Vrátí skript pro zobrazení dialogu na klientské straně.
 		/// </summary>
@@ -488,16 +437,12 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			string script = String.Format(scriptPattern, DialogPanelClientIDMemento ?? dialogContainer.ClientID);
 			return script;
 		}
-		#endregion
 
-		#region CloseButton_Click
 		private void CloseButton_Click(object sender, EventArgs e)
 		{
 			Hide();
 		}
-		#endregion
 
-		#region IPostBackEventHandler.RaisePostBackEvent
 		void IPostBackEventHandler.RaisePostBackEvent(string eventArgument)
 		{
 			if (eventArgument == "Escape")
@@ -505,6 +450,5 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				Hide();
 			}
 		}
-		#endregion
 	}
 }

@@ -10,7 +10,6 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public abstract class Messenger
 	{
-		#region Default (static)
 		/// <summary>
 		/// Výchozí instance messengera.
 		/// </summary>
@@ -33,9 +32,7 @@ namespace Havit.Web.UI.WebControls
 		}
 		private static Messenger _default;
 		private static readonly object _defaultLock = new object();
-		#endregion
 
-		#region StorageType
 		/// <summary>
 		/// Typ úložiště messengera (Session, Cookies).
 		/// </summary>
@@ -59,9 +56,7 @@ namespace Havit.Web.UI.WebControls
 
 		}
 		private static MessengerStorageType _messengerStorageType = MessengerStorageType.Session;
-		#endregion
 
-		#region GetMessengerByStorageType
 		private static Messenger GetMessengerByStorageType()
 		{
 			switch (_messengerStorageType)
@@ -74,16 +69,12 @@ namespace Havit.Web.UI.WebControls
 					throw new InvalidOperationException("Neznamy typ StorageType.");
 			}
 		}
-		#endregion
 
-		#region GetMessages
 		/// <summary>
 		/// Zprávy k zobrazení.
 		/// </summary>
 		public abstract List<MessengerMessage> GetMessages();
-		#endregion
 
-		#region AddMessage
 		/// <summary>
 		/// Přidá zprávu do messengeru.
 		/// </summary>
@@ -133,9 +124,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			AddMessage(MessageType.Information, message);
 		}
-		#endregion
 
-		#region AddGlobalResourceMessage
 		/// <summary>
 		/// Přidá zprávu z App_GlobalResources.
 		/// </summary>
@@ -156,15 +145,10 @@ namespace Havit.Web.UI.WebControls
 		{
 			AddGlobalResourceMessage(MessageType.Information, classKey, resourceKey);
 		}
-		#endregion
 
-		#region Clear
 		/// <summary>
 		/// Vyčistí kolekci zpráv.
 		/// </summary>
 		public abstract void Clear();
-		
-		#endregion
-
 	}
 }

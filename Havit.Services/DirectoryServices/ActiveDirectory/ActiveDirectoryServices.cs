@@ -18,13 +18,10 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 	/// </summary>
 	public class ActiveDirectoryServices
 	{
-		#region Private fields
 		private readonly string domainController;
 		private readonly string directoryServicesUsername;
 		private readonly string directoryServicesPassword;
-		#endregion
 
-		#region Constructors
 		/// <summary>
 		/// Creates an instance of ActiveDirectoryServices class.
 		/// </summary>
@@ -53,9 +50,7 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 			this.directoryServicesPassword = directoryServicesPassword;
 			this.domainController = domainController;
 		}
-		#endregion
 
-		#region GetGroupMembers, GetGroupMembersInternal
 		/// <summary>
 		/// Returns group members.
 		/// Supports multi-domain environment.
@@ -174,9 +169,7 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 				}
 			}
 		}
-		#endregion
 
-		#region GetUserMembership
 		/// <summary>
 		/// Returns users membership (groups of which is a member).
 		/// Does not support BUILTIN\\... groups.
@@ -273,9 +266,7 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 			return result.ToArray();
 		}
 		private readonly Dictionary<string, List<string>> _getUserDomainMembershipCache = new Dictionary<string, List<string>>();
-		#endregion
 
-		#region GetUserCrossDomainMembership
 		/// <summary>
 		/// Returns groups from parameter of which user is a member.
 		/// Support multidomain envinronment.
@@ -303,9 +294,7 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 				
 			return result.ToArray();
 		}
-		#endregion
 
-		#region GetUserInfo
 		/// <summary>
 		/// Return user info.
 		/// </summary>
@@ -386,9 +375,7 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 
 			return userInfo;
 		}
-		#endregion
 
-		#region GetDirectorySearcher
 		/// <summary>
 		/// Returns directory searcher for given domain name.
 		/// </summary>
@@ -430,9 +417,7 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 				}
 			}
 		}
-		#endregion
 
-		#region SplitNameToDomainAndAccountName
 		/// <summary>
 		/// Splits name to domain name and account name.
 		/// </summary>
@@ -452,9 +437,7 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 				accountName = nameParts[1];
 			}
 		}
-		#endregion
 
-		#region TryGetAccountName
 		/// <summary>
 		/// Retrieves object sid and translates it to name (using NTAccount class) in HAVIT\\everyone format.
 		/// When translation succedes returns true, otherwise false.
@@ -478,9 +461,7 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 				return false;
 			}
 		}
-		#endregion
 
-		#region TryGetAccountClass
 		/// <summary>
 		/// Returns account class (user, group).
 		/// </summary>
@@ -537,9 +518,7 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 			public bool IsGroup { get; set; }
 			public bool Result { get; set; }
 		}
-		#endregion
 
-		#region GetPrimaryGroupForSid
 		/// <summary>
 		/// Returns primary group for user.
 		/// </summary>
@@ -561,8 +540,6 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 			}			
 			return null;
 		}
-		#endregion
-
 	}
 }
 #endif

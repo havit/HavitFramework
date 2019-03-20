@@ -10,7 +10,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 {
 	public static class Generator
 	{
-		#region Generate
 		public static void Generate(Database database, CsprojFile csprojFile)
 		{
 			DatabaseRulesChecker.CheckRules(database);
@@ -98,6 +97,5 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			}
 
 		}
-		#endregion
 	}
 }

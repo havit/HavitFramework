@@ -41,8 +41,6 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 			this.lambdaExpressionManager = lambdaExpressionManager;
 		}
 
-		#region IDataLoader implementation (Load + LoadAll)
-
 		/// <summary>
 		/// Načte vlastnosti objektů, pokud ještě nejsou načteny.
 		/// </summary>
@@ -103,10 +101,6 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 			}
 		}
 
-		#endregion
-
-		#region IDataLoaderAsync implementation (LoadAsync + LoadAllAsync)
-		
 		/// <summary>
 		/// Načte vlastnosti objektů, pokud ještě nejsou načteny.
 		/// </summary>
@@ -169,7 +163,6 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 				await LoadInternalAsync(entities, propertyPath).ConfigureAwait(false);
 			}
 		}
-		#endregion
 
 		/// <summary>
 		/// Načte vlastnosti objektů, pokud ještě nejsou načteny.

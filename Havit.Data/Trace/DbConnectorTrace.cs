@@ -13,12 +13,9 @@ namespace Havit.Data.Trace
 	/// </summary>
 	internal class DbConnectorTrace
 	{
-		#region Private fields
 		private readonly Stopwatch durationStopWatch;
 		private readonly DbCommandTraceData traceData;
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
@@ -27,9 +24,7 @@ namespace Havit.Data.Trace
 			traceData = DbCommandTraceData.Create(dbCommand, operation);
 			durationStopWatch = Stopwatch.StartNew();
 		}
-		#endregion
 
-		#region SetResult
 		/// <summary>
 		/// Set command result.
 		/// </summary>
@@ -38,9 +33,7 @@ namespace Havit.Data.Trace
 			traceData.ResultSet = true;
 			traceData.Result = result;
 		}
-		#endregion
 
-		#region Trace
 		/// <summary>
 		/// Set DurationProperty and traces on TraceSource.
 		/// </summary>
@@ -50,7 +43,5 @@ namespace Havit.Data.Trace
 			traceData.DurationTicks = durationStopWatch.Elapsed.Ticks;
 			traceSource.TraceData(TraceEventType.Information, 0, traceData);
 		}
-		#endregion		
-
 	}	
 }

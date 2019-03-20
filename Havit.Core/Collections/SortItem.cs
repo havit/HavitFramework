@@ -11,7 +11,6 @@ namespace Havit.Collections
 	[Serializable]	
 	public class SortItem
 	{
-		#region Properties
 		/// <summary>
 		/// Výraz, dle kterého se řadí.
 		/// </summary>
@@ -31,9 +30,7 @@ namespace Havit.Collections
 			set { direction = value; }
 		}
 		private SortDirection direction = SortDirection.Ascending;
-		#endregion
 
-		#region Constructors
 		/// <summary>
 		/// Vytvoří prázdnou instanci pořadí.
 		/// </summary>
@@ -50,6 +47,5 @@ namespace Havit.Collections
 			this.expression = expression;
 			this.direction = direction;
 		}
-		#endregion
 	}
 }

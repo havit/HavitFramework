@@ -11,7 +11,6 @@ namespace Havit.PayMuzo
 	/// </summary>
 	public class PayMuzoSecondaryReturnCode : PayMuzoReturnCode
 	{
-		#region Return Codes
 		public static PayMuzoSecondaryReturnCode None { get { return FindByValue(0); } }
 		public static PayMuzoSecondaryReturnCode OrderNumber { get { return FindByValue(1); } }
 		public static PayMuzoSecondaryReturnCode MerchantNumber { get { return FindByValue(2); } }
@@ -40,9 +39,7 @@ namespace Havit.PayMuzo
 		public static PayMuzoSecondaryReturnCode DeclinedInAuthorizationCenterCardProblem { get { return FindByValue(1003); } }
 		public static PayMuzoSecondaryReturnCode DeclinedInAuthorizationCenterTechnicalProblem { get { return FindByValue(1004); } }
 		public static PayMuzoSecondaryReturnCode DeclinedInAuthorizationCenterAccountProblem { get { return FindByValue(1005); } }
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Vytvoří instanci <see cref="PayMuzoSecondaryReturnCode"/>.
 		/// </summary>
@@ -53,9 +50,7 @@ namespace Havit.PayMuzo
 			: base(value, csText, enText)
 		{
 		}
-		#endregion
 
-		#region Static constructor
 		/// <summary>
 		/// Statický constructor
 		/// </summary>
@@ -95,9 +90,7 @@ namespace Havit.PayMuzo
 			RegisterCode(new PayMuzoSecondaryReturnCode(1004, "Zamítnuto v autorizačním centru, technický problém.", "Declined in AC, technical problem in authorization process."));
 			RegisterCode(new PayMuzoSecondaryReturnCode(1005, "Zamítnuto v autorizačním centru, problém účtu.", "Declined in AC, accout problem"));
 		}
-		#endregion
 
-		#region FindByValue
 		/// <summary>
 		/// Najde instanci podle numerické hodnoty kódu. Pokud není nalezen, vrací <c>null</c>.
 		/// </summary>
@@ -106,7 +99,6 @@ namespace Havit.PayMuzo
 		{
 			return PayMuzoReturnCode.FindByValueInternal<PayMuzoSecondaryReturnCode>(value);
 		}
-		#endregion
 	}
 }
 #pragma warning restore 1591

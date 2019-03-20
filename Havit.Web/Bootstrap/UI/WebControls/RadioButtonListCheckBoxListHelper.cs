@@ -14,7 +14,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	/// </summary>
 	internal static class RadioButtonListCheckBoxListHelper
 	{
-		#region Render
 		/// <summary>
 		/// Renders control.
 		/// </summary>
@@ -37,9 +36,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			// ukončíme obalující SPAN
 			writer.RenderEndTag();
 		}
-		#endregion
 
-		#region RenderItem
 		/// <summary>
 		/// Rendres checkboxlist/radiobuttonlist item.
 		/// </summary>
@@ -81,7 +78,5 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			item.Text = text; // restore item text (it is not necessary to restore item value)
 			writer.RenderEndTag(); // end LABEL
 		}
-		#endregion
-
 	}
 }

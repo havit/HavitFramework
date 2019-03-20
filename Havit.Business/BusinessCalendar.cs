@@ -19,8 +19,6 @@ namespace Havit.Business
 	/// </remarks>
 	public class BusinessCalendar
 	{
-		#region Private fields
-
 		/// <summary>
 		/// Interní seznam významných dnů, tj. dnů, které se liší od běžného pracovního dne (např. svátků, atp.).<br/>
 		/// Klíč je DateTime, hodnota je DateInfo.
@@ -31,9 +29,7 @@ namespace Havit.Business
 		/// Strategie používaná pro zjištění, zda je daný den podle kalendáře víkendem.
 		/// </summary>
 		private readonly IIsWeekendStrategy isWeekendStrategy;
-		#endregion
 
-		#region Constructors
 		/// <summary>
 		/// Vytvoří instanci <see cref="BusinessCalendar"/> bez významných dnů.<br/>
 		/// Pracovními dny budou všechny dny mimo víkendů, dokud nebudou přidány nějaké svátky.
@@ -55,9 +51,7 @@ namespace Havit.Business
 			this.dateInfos = new Dictionary<DateTime, IDateInfo>();
 			this.isWeekendStrategy = isWeekendStrategy;
 		}
-		#endregion
 
-		#region FillDates
 		/// <summary>
 		/// Přidá do nastavení <see cref="BusinessCalendar"/> významné dny. Pokud již některý den v kalendáři existuje, přepíše ho. 
 		/// </summary>
@@ -72,9 +66,7 @@ namespace Havit.Business
 				this.dateInfos[item.Date.Date] = item;
 			}
 		}
-		#endregion
 
-		#region GetDateInfo
 		/// <summary>
 		/// Vrací IDateInfo pro daný den. Pokud není záznam pro daný den evidován, vrací null.
 		/// </summary>
@@ -87,9 +79,7 @@ namespace Havit.Business
 			}
 			return null;
 		}
-		#endregion
 
-		#region GetNextBusinessDay, GetPreviousBusinessDay
 		/// <summary>
 		/// Určí následující pracovní den.
 		/// </summary>
@@ -123,9 +113,7 @@ namespace Havit.Business
 
 			return time;
 		}
-		#endregion
 
-		#region AddBusinessDays
 		/// <summary>
 		/// Určí den, který je x-tým následujícím pracovním dnem po dni zadaném.
 		/// </summary>
@@ -151,9 +139,7 @@ namespace Havit.Business
 			}
 			return time;
 		}
-		#endregion
 
-		#region IsBusinessDay
 		/// <summary>
 		/// Určí, zdali je zadaný den dnem pracovním. Za pracovní považujeme den, který není ani víkendem, ani svátkem.		
 		/// </summary>
@@ -165,9 +151,7 @@ namespace Havit.Business
 			}
 			return true;
 		}
-		#endregion
 
-		#region IsHoliday
 		/// <summary>
 		/// Zjistí, zdali je den svátkem.
 		/// </summary>
@@ -180,9 +164,7 @@ namespace Havit.Business
 			}
 			return false;
 		}
-		#endregion
 
-		#region IsWeekend
 		/// <summary>
 		/// Určí, zdali je zadaný den víkendem.
 		/// </summary>
@@ -190,9 +172,7 @@ namespace Havit.Business
 		{
 			return isWeekendStrategy.IsWeekend(time.Date);
 		}
-		#endregion
 
-		#region CountBusinessDays
 		/// <summary>
 		/// Spočítá počet pracovních dní mezi dvěma daty. 
 		/// </summary>
@@ -229,6 +209,5 @@ namespace Havit.Business
 
 			return counter;
 		}
-		#endregion
 	}
 }

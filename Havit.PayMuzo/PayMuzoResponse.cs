@@ -11,7 +11,6 @@ namespace Havit.PayMuzo
 	/// </summary>
 	public abstract class PayMuzoResponse
 	{
-		#region Digest, PrimaryReturnCode, SecondaryReturnCode
 		/// <summary>
 		/// Podpis.
 		/// </summary>
@@ -47,9 +46,7 @@ namespace Havit.PayMuzo
 			protected set { _secondaryReturnCode = value; }
 		}
 		private PayMuzoSecondaryReturnCode _secondaryReturnCode;
-		#endregion
 
-		#region NormalizedRawData
 		/// <summary>
 		/// Data v normalizované podobě (správné pořadí, všechny parametry).
 		/// </summary>
@@ -59,9 +56,7 @@ namespace Havit.PayMuzo
 			get { return _normalizedRawData; }
 		}
 		private PayMuzoRequestData _normalizedRawData;
-		#endregion
 
-		#region IsDigestUrlEncoded
 		/// <summary>
 		/// Gets a value indicating whether this instance is digest URL encoded.
 		/// </summary>
@@ -69,9 +64,7 @@ namespace Havit.PayMuzo
 		/// 	<c>true</c> if this instance is digest URL encoded; otherwise, <c>false</c>.
 		/// </value>
 		public abstract bool IsDigestUrlEncoded { get; }
-		#endregion
 
-		#region VerifyDigest
 		/// <summary>
 		/// Ověří správnost podpisu.
 		/// </summary>
@@ -81,6 +74,5 @@ namespace Havit.PayMuzo
 		{
 			return PayMuzoHelper.VerifyDigest(this.NormalizedRawData.GetPipedRawData(), this.Digest, certificate, this.IsDigestUrlEncoded);
 		}
-		#endregion
 	}
 }

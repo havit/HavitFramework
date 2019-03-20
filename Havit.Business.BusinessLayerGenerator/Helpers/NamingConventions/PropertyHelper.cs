@@ -11,11 +11,8 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions
 {
 	public static class PropertyHelper
 	{
-		#region Private fields
 		private static Hashtable propertyNamesCache = new Hashtable();
-		#endregion
 
-		#region GetPropertyName
 		/// <summary>
 		/// Vrátí název pro property na základě jména sloupce.
 		/// Pokud je sloupec cizím klíčema a končí na ID, je toto ID odebráno.
@@ -77,9 +74,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions
 			propertyNamesCache[column] = result;
 			return result;
 		}
-		#endregion
 
-		#region GetPropertyHolderName
 		/// <summary>
 		/// Vrátí název pro property holder na základě názvu property
 		/// </summary>
@@ -95,9 +90,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions
 		{
 			return GetPropertyHolderName(GetPropertyName(column));
 		}
-		#endregion
 
-		#region IsString
 		/// <summary>
 		/// Vrátí true, pokud pro ukládání hodnoty ve sloupci je používát datový typ String.
 		/// </summary>
@@ -105,9 +98,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions
 		{
 			return TypeHelper.GetPropertyTypeName(column) == "string";
 		}
-		#endregion
 
-		#region IsDecimal
 		/// <summary>
 		/// Vrátí true, pokud pro ukládání hodnoty ve sloupci je používát datový typ Decimal.
 		/// </summary>
@@ -115,9 +106,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions
 		{
 			return TypeHelper.GetPropertyTypeName(column).StartsWith("Decimal");
 		}
-		#endregion
 
-		#region IsDateTime
 		/// <summary>
 		/// Vrátí true, pokud pro ukládání hodnoty ve sloupci je používát datový typ DateTime.
 		/// </summary>
@@ -125,9 +114,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions
 		{
 			return TypeHelper.GetPropertyTypeName(column).StartsWith("DateTime");
 		}
-		#endregion
 
-		#region IsBoolean
 		/// <summary>
 		/// Vrátí true, pokud pro ukládání hodnoty ve sloupci je používát datový typ bool.
 		/// </summary>
@@ -135,9 +122,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions
 		{
 			return TypeHelper.GetPropertyTypeName(column).StartsWith("bool");
 		}
-		#endregion
 
-		#region GetPropertyAccessModifier
 		/// <summary>
 		/// Vrátí přístupový modifikátor pro getter property.
 		/// </summary>
@@ -168,9 +153,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions
 
 			return modifier;
 		}
-		#endregion
 
-		#region GetPropertyGetterAccessModifier
 		/// <summary>
 		/// Vrátí přístupový modifikátor pro getter property.
 		/// </summary>
@@ -183,9 +166,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions
 			}
 			return result ?? String.Empty;
 		}
-		#endregion
 
-		#region GetPropertySetterAccessModifier
 		/// <summary>
 		/// Vrátí přístupový modifikátor pro setter property.
 		/// </summary>
@@ -202,9 +183,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions
 			}
 			return result ?? String.Empty;
 		}
-		#endregion
 
-		#region ExistsPropertyInBaseType
 		/// <summary>
 		/// Vrací true, pokud property existuje v base třídě business objektu.
 		/// Jde o podporu pro override.
@@ -228,9 +207,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions
 			}
 			return false;
 		}
-		#endregion
 
-		#region IsInternalDueCollectionClonning
 		/// <summary>
 		/// Vrací true, pokud je sloupec uveden v některé z kolekcí jako cíl reference kolekce (CollectionProperty.ReferenceColumn).
 		/// </summary>
@@ -250,6 +227,5 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions
 			return _internalDueCollectionClonningColumns.Contains(column);
 		}
 		private static List<Column> _internalDueCollectionClonningColumns;
-		#endregion
 	}
 }

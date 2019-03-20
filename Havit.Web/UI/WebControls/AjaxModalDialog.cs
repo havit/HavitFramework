@@ -15,13 +15,10 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class AjaxModalDialog : BasicModalDialog
 	{
-		#region Private fiels
 		private readonly UpdatePanel _updatePanel;
 		private readonly PlaceHolder _contentPlaceHolder;
 		private Control _basicContainer;
-		#endregion
 
-		#region Triggers
 		/// <summary>
 		/// Triggery zapouzdřeného UpdatePanelu.
 		/// </summary>
@@ -33,9 +30,7 @@ namespace Havit.Web.UI.WebControls
 				return _updatePanel.Triggers;
 			}
 		}
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Konstuktor.
 		/// </summary>
@@ -46,9 +41,7 @@ namespace Havit.Web.UI.WebControls
 
 			_contentPlaceHolder = new PlaceHolder();
 		}
-		#endregion
 
-		#region CreateChildControls
 		/// <summary>
 		/// Inicializuje podstrom controlů.
 		/// </summary>
@@ -62,9 +55,7 @@ namespace Havit.Web.UI.WebControls
 			_basicContainer.Controls.Add(_updatePanel);
 			base.CreateChildControls();
 		}
-		#endregion
 
-		#region GetContentContainer
 		/// <summary>
 		/// Vrací control, který je kontejnerem, do kterého se bude instanciovat šablona obsahu.
 		/// </summary>
@@ -72,9 +63,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			return _contentPlaceHolder;
 		}
-		#endregion
 
-		#region OnDialogShown
 		/// <summary>
 		/// Obsluhuje událost zobrazení dialogu.
 		/// Provádí update vnořeného UpdatePanelu.
@@ -84,9 +73,7 @@ namespace Havit.Web.UI.WebControls
 			base.OnDialogShown(eventArgs);
 			_updatePanel.Update();
 		}
-		#endregion
 
-		#region OnDialogHidden
 		/// <summary>
 		/// Obsluhuje událost skrytí dialogu.
 		/// Provádí update vnořeného UpdatePanelu.
@@ -96,9 +83,7 @@ namespace Havit.Web.UI.WebControls
 			base.OnDialogHidden(eventArgs);
 			_updatePanel.Update();
 		}
-		#endregion
 
-		#region OnPreRender
 		/// <summary>
 		/// PreRender.
 		/// </summary>
@@ -107,9 +92,7 @@ namespace Havit.Web.UI.WebControls
 			_contentPlaceHolder.Visible = DialogVisible;
 			base.OnPreRender(e);
 		}
-		#endregion
 
-		#region CheckDialogSize
 		/// <summary>
 		/// Ověří zadání velikosti dialogu.
 		/// Kontrola probíhá jen, pokud je dialog zobrazen.
@@ -122,6 +105,5 @@ namespace Havit.Web.UI.WebControls
 				base.CheckDialogSize();
 			}
 		}
-		#endregion
 	}
 }

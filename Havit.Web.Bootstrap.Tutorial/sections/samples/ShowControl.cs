@@ -13,7 +13,6 @@ namespace Havit.Web.Bootstrap.Tutorial.Section.Samples
 {
 	public class ShowControl : LiteralControl
 	{
-		#region Title
 		/// <summary>
 		/// Title.
 		/// </summary>
@@ -28,9 +27,7 @@ namespace Havit.Web.Bootstrap.Tutorial.Section.Samples
 				ViewState["Title"] = value;
 			}
 		}
-		#endregion
 
-		#region Filename
 		public string Filename
 		{
 			get
@@ -42,9 +39,7 @@ namespace Havit.Web.Bootstrap.Tutorial.Section.Samples
 				ViewState["Filename"] = value;
 			}
 		}
-		#endregion
 
-		#region ShowControlID
 		public string ShowControlID
 		{
 			get
@@ -56,9 +51,7 @@ namespace Havit.Web.Bootstrap.Tutorial.Section.Samples
 				ViewState["ShowControlID"] = value;
 			}
 		}
-		#endregion
 
-		#region OnPreRender
 		protected override void OnPreRender(EventArgs e)
 		{
 			base.OnPreRender(e);
@@ -104,9 +97,7 @@ namespace Havit.Web.Bootstrap.Tutorial.Section.Samples
 			Text = html.ToString();
 
 		}
-		#endregion
 
-		#region RenderFileToString
 		private string RenderFileToString(string filename)
 		{
 			// check url validity
@@ -119,6 +110,5 @@ namespace Havit.Web.Bootstrap.Tutorial.Section.Samples
 			string content = String.Join(Environment.NewLine, lines).Trim();
 			return HttpUtility.HtmlEncode(content);
 		}
-		#endregion
 	}
 }

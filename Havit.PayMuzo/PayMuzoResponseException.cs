@@ -10,7 +10,6 @@ namespace Havit.PayMuzo
 	[global::System.Serializable]
 	public class PayMuzoResponseException : PayMuzoException
 	{
-		#region Response
 		/// <summary>
 		/// Odpověď PayMUZO.
 		/// </summary>
@@ -20,9 +19,7 @@ namespace Havit.PayMuzo
 			set { _response = value; }
 		}
 		private PayMuzoResponse _response;
-		#endregion
 
-		#region Default exception constructors
 		/// <summary>
 		/// Initializes a new instance of the <see cref="PayMuzoResponseException"/> class.
 		/// </summary>
@@ -52,9 +49,7 @@ namespace Havit.PayMuzo
 		  System.Runtime.Serialization.SerializationInfo info,
 		  System.Runtime.Serialization.StreamingContext context)
 			: base(info, context) { }
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Initializes a new instance of the <see cref="PayMuzoResponseException"/> class.
 		/// </summary>
@@ -62,6 +57,5 @@ namespace Havit.PayMuzo
 		{
 			_response = response;
 		}
-		#endregion
 	}
 }

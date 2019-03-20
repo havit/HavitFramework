@@ -19,13 +19,10 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	[Themeable(true)]
 	public class SwitchButton : Control, INamingContainer
 	{
-		#region Private fields
 		private readonly RadioButtonList radioButtonList;
 		private readonly ListItem yesItem;
 		private readonly ListItem noItem;
-		#endregion
 
-		#region Value
 		/// <summary>
 		/// Returns true if "yes" choice is selected.
 		/// Default value is false.		
@@ -43,9 +40,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				noItem.Selected = !value;
 			}
 		}
-		#endregion
 
-		#region ValueChanged, OnValueChanged
 		/// <summary>
 		/// Occurs when the value of the Value property changes between posts to the server.
 		/// </summary>
@@ -61,9 +56,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ValueChanged(this, eventArgs);
 			}
 		}
-		#endregion
 
-		#region AutoPostBack
 		/// <summary>
 		/// Gets or sets a value indicating whether an automatic postback to the server will occur whenever the user changes the selection of the list.
 		/// </summary>
@@ -73,9 +66,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			get { return radioButtonList.AutoPostBack; }
 			set { radioButtonList.AutoPostBack = value; }
 		}
-		#endregion
 
-		#region CausesValidation
 		/// <summary>
 		/// Gets or sets a value indicating whether validation is performed when a control that is derived from the <see cref="T:System.Web.UI.WebControls.ListControl"/> class is clicked.
 		/// </summary>
@@ -84,9 +75,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			get { return radioButtonList.CausesValidation; }
 			set { radioButtonList.CausesValidation = value; }
 		}
-		#endregion
 
-		#region ValidationGroup
 		/// <summary>
 		/// Gets or sets the group of controls for which the control that is derived from the <see cref="T:System.Web.UI.WebControls.ListControl"/> class causes validation when it posts back to the server.
 		/// </summary>
@@ -95,9 +84,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			get { return radioButtonList.ValidationGroup; }
 			set { radioButtonList.ValidationGroup = value; }
 		}
-		#endregion
 
-		#region YesText
 		/// <summary>
 		/// Text for "Yes" choice.
 		/// Supports localization pattern.
@@ -108,9 +95,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			get { return yesItem.Text; }
 			set { yesItem.Text = value; }
 		}
-		#endregion
-
-		#region NoText
 
 		/// <summary>
 		/// Text for "No" choice.
@@ -123,9 +107,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			set { noItem.Text = value; }
 		}
 
-		#endregion
-
-		#region YesCssClass
 		/// <summary>
 		/// CssClass for yes item.
 		/// Default value is "yes".
@@ -142,9 +123,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ViewState["YesCssClass"] = value;
 			}
 		}
-		#endregion
 
-		#region NoCssClass
 		/// <summary>
 		/// CssClass for no item.
 		/// Default value is "no".
@@ -161,9 +140,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ViewState["NoCssClass"] = value;
 			}
 		}
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Constructor.
 		/// </summary>
@@ -187,16 +164,12 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			radioButtonList.Items.Add(noItem);
 			radioButtonList.SelectedIndexChanged += RadioButtonList_SelectedIndexChanged;
 		}
-		#endregion
 
-		#region RadioButtonList_SelectedIndexChanged
 		private void RadioButtonList_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			OnValueChanged(e);
 		}
-		#endregion
 
-		#region OnInit
 		/// <summary>
 		/// Raises the Init event. This notifies the control to perform any steps necessary for its creation on a page request.
 		/// </summary>
@@ -205,9 +178,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			base.OnInit(e);
 			EnsureChildControls();
 		}
-		#endregion
 
-		#region CreateChildControls
 		/// <summary>
 		/// Notifies any controls that use composition-based implementation to create any
 		/// child controls they contain in preperation for postback or rendering.
@@ -217,9 +188,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			base.CreateChildControls();
 			Controls.Add(radioButtonList);
 		}
-		#endregion
 
-		#region Render
 		/// <summary>
 		/// Outputs control content to a provided HTMLTextWriter output stream.
 		/// </summary>
@@ -230,6 +199,5 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 
 			base.Render(writer);
 		}
-		#endregion
 	}
 }

@@ -12,15 +12,12 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	/// </summary>
 	public abstract class NavbarItem : IStateManager
 	{
-		#region ID
 		/// <summary>
 		/// Item ID.
 		/// (enableds to generate property in ASP.NET codebehind designer file).
 		/// </summary>
 		public string ID { get; set; }
-		#endregion
 
-		#region ViewState
 		/// <summary>
 		/// ViewState for storing item state.
 		/// </summary>
@@ -40,9 +37,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			}
 		}
 		private StateBag _viewstate;
-		#endregion
 
-		#region Visible
 		/// <summary>
 		/// When false, item is hidden (not rendered) not rendered.
 		/// </summary>
@@ -57,23 +52,17 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ViewState["Visible"] = value;
 			}
 		}
-		#endregion
 
-		#region VisibleFunc
 		/// <summary>
 		/// When function returns false, item is hidden (not rendered).
 		/// </summary>
 		public Func<bool> VisibleFunc { get; set; }
-		#endregion
 
-		#region IsDecoration
 		/// <summary>
 		/// Returns true when item is a decoration.		
 		/// </summary>
 		public abstract bool IsDecoration { get; }
-		#endregion
 
-		#region IsTrackingViewState
 		/// <summary>
 		/// Gets an indicator whether tracking viewstate changes is on.
 		/// </summary>
@@ -82,9 +71,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			get { return _isTrackingViewState; }
 		}
 		private bool _isTrackingViewState = false;
-		#endregion
 
-		#region IsVisible
 		/// <summary>
 		/// Returns true if item should be rendered. Includes evaluation of Visible property and VisibleFunc delegate.
 		/// </summary>
@@ -92,24 +79,17 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			get { return Visible && ((VisibleFunc == null) || VisibleFunc()); }
 		}
-		#endregion
 
-		#region SetDirty
-		
 		internal virtual void SetDirty()
 		{
 			this.ViewState.SetDirty(true);
 		}
-		#endregion
 
-		#region Render
 		/// <summary>
 		/// Renders navbar item.
 		/// </summary>
 		public abstract void Render(HtmlTextWriter writer, Control container, bool showCaret, int nestingLevel);
-		#endregion
 
-		#region TrackViewState, SaveViewState, LoadViewState
 		/// <summary>
 		/// Switches tracking viewstate changes on.
 		/// </summary>
@@ -140,7 +120,5 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				((IStateManager)ViewState).LoadViewState(state);
 			}
 		}
-		#endregion
-
 	}
 }

@@ -13,14 +13,11 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	internal class DateTimeBoxStyle : Style
 	{
-		#region UseWhiteSpaceNoWrap
 		/// <summary>
 		/// Indikuje, zda má metoda FillStyleAttributes renderovat style "white-space: nowrap;".
 		/// </summary>
 		public bool UseWhiteSpaceNoWrap { get; set; }
-		#endregion
 
-		#region FillStyleAttributes
 		/// <summary>
 		/// Zajistí vyrenderování hodnoty "white-space: nowrap".
 		/// </summary>
@@ -33,6 +30,5 @@ namespace Havit.Web.UI.WebControls
 				attributes.Add(HtmlTextWriterStyle.WhiteSpace, "nowrap");
 			}
 		}
-		#endregion
 	}
 }

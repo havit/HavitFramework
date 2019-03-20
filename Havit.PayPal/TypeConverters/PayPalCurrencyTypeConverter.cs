@@ -11,7 +11,6 @@ namespace Havit.PayPal.TypeConverters
 	/// </summary>
 	public class PayPalCurrencyTypeConverter : ITypeConverter<PayPalCurrency> 	
 	{
-		#region CanConvertTo, CanConvertFrom
 		/// <summary>
 		/// Returns whether this converter can convert the object to the specified type.
 		/// </summary>
@@ -43,9 +42,7 @@ namespace Havit.PayPal.TypeConverters
 			}
 			return false;
 		}
-		#endregion
 
-		#region ConvertFrom
 		/// <summary>
 		/// Converts the given value to the type of this converter.
 		/// </summary>
@@ -74,9 +71,7 @@ namespace Havit.PayPal.TypeConverters
 
 			return result;
 		}
-		#endregion
 
-		#region ConvertTo
 		/// <summary>
 		/// Converts the given value object to the specified type, using the arguments.
 		/// </summary>
@@ -106,6 +101,5 @@ namespace Havit.PayPal.TypeConverters
 
 			return value.NumericCode;
 		}
-		#endregion
 	}
 }

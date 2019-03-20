@@ -5,7 +5,6 @@
 	/// </summary>
 	public enum GoPayResponseErrorType
 	{
-		#region GLOBAL   
 		/// <summary>
 		/// Systémová chyba
 		/// </summary>
@@ -40,9 +39,7 @@
 		/// Nejednoznačné
 		/// </summary>
 		Ambiguous = 115,
-		#endregion
 
-		#region AUTHENTICATION, AUTHORIZATION
 		/// <summary>
 		/// Neoprávněný přístup
 		/// </summary>
@@ -62,9 +59,7 @@
 		/// Přístup přes PIN byl deaktivován
 		/// </summary>
 		AccessByPinDeactivated = 203,
-		#endregion
 
-		#region PAYMENT
 		/// <summary>
 		/// Platbu nelze vytvořit
 		/// </summary>
@@ -139,6 +134,5 @@
 		/// Zrušení předautorizace provedeno
 		/// </summary>
 		CancelingPreauthorizationSuccess = 353
-		#endregion
 	}
 }

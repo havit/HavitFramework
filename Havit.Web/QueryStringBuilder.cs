@@ -14,7 +14,6 @@ namespace Havit.Web
 	[Serializable]
 	public class QueryStringBuilder : NameValueCollection
 	{
-		#region ctor
 		/// <summary>
 		/// Vytvoří instanci.
 		/// </summary>
@@ -25,9 +24,7 @@ namespace Havit.Web
 			: base(StringComparer.OrdinalIgnoreCase)
 		{
 		}
-		#endregion
 
-		#region Add
 		/// <summary>
 		/// Přidá hodnotu do QueryStringu. Pokud již hodnota existuje, potom přidá další a QueryString bude obsahovat hodnot více.
 		/// Pokud chcete nastavit hodnoty bez možnosti duplicit, použijte metodu Set().
@@ -44,9 +41,7 @@ namespace Havit.Web
 
 			base.Add(name, value);
 		}
-		#endregion
 
-		#region Set
 		/// <summary>
 		/// Nastaví hodnotu do QueryStringu. Pokud již hodnota existuje, potom ji přenastaví na novou hodnotu.
 		/// Pokud hodnota neexistuje, založí ji. Pokud chcete přidávat hodnoty s možnosti duplicit, použijte metodu Add().
@@ -63,9 +58,7 @@ namespace Havit.Web
 
 			base.Set(name, value);
 		}
-		#endregion
 
-		#region ToString
 		/// <summary>
 		/// Převede na QueryString, neobsahuje úvodní ? (otazník).
 		/// </summary>
@@ -137,9 +130,7 @@ namespace Havit.Web
 		{
 			return this.ToString(true);
 		}
-		#endregion
 
-		#region GetUrlWithQueryString
 		/// <summary>
 		/// Sestaví URL s QueryStringem na základě zadaného URL (které již může nějaký QueryString obsahovat).
 		/// Pokud chcete získat samotný QueryString, použijte metodu ToString().
@@ -167,9 +158,7 @@ namespace Havit.Web
 			}
 			return (url + this.ToString()).TrimEnd('?');
 		}
-		#endregion
 
-		#region FillFromString
 		/// <summary>
 		/// Načte data z queryStringu. Dosavadní data v instanci se nemažou, pouze se provádí Add() nových.
 		/// </summary>
@@ -232,11 +221,9 @@ namespace Havit.Web
 		{
 			this.FillFromString(queryString, true);
 		}
-		#endregion
 
 		/**********************************************************/
 
-		#region Parse (static)
 		/// <summary>
 		/// Rozparsuje vstupní queryString a vrátí ho jako QueryStringBuilder.
 		/// </summary>
@@ -259,6 +246,5 @@ namespace Havit.Web
 		{
 			return Parse(queryString, true);
 		}
-		#endregion
 	}
 }

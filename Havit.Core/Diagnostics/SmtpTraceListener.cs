@@ -59,7 +59,6 @@ namespace Havit.Diagnostics
 		private readonly string _smtpPassword;
 		private readonly bool? _smtpEnableSsl = false;
 
-		#region Constructors
 		/// <summary>
 		/// Constructor, který je volán při použití TraceListerneru z app.configu a předává se do něj hodnota atributu initializeData.
 		/// </summary>
@@ -107,9 +106,7 @@ namespace Havit.Diagnostics
 				}
 			}
 		}
-		#endregion
 
-		#region SendMessage
 		/// <summary>
 		/// Interní implementace odesílání mailu.
 		/// </summary>
@@ -142,9 +139,7 @@ namespace Havit.Diagnostics
 			// goofy problem perhaps someone knows why?
 			this.Flush();
 		}
-		#endregion
 
-		#region GetSmtpClient
 		/// <summary>
 		/// Vrací kompletně nakonfigurovanou instanci SmtpClient pro odeslání emailu.
 		/// </summary>
@@ -164,9 +159,7 @@ namespace Havit.Diagnostics
 			smtpClient.EnableSsl = _smtpEnableSsl.GetValueOrDefault(false);
 			return smtpClient;
 		}
-		#endregion
 
-		#region GetMailMessage
 		/// <summary>
 		/// Vrací kompletně nakonfigurovanou MailMessage k odeslání.
 		/// </summary>
@@ -192,9 +185,7 @@ namespace Havit.Diagnostics
 			mailMessage.Body = message;
 			return mailMessage;
 		}
-		#endregion
 
-		#region SendTrace
 		/// <summary>
 		/// Hlavní interní implementace sestavení mailu.
 		/// </summary>
@@ -262,9 +253,7 @@ namespace Havit.Diagnostics
 
 			SendMessage(message.ToString());
 		}
-		#endregion
 
-		#region TraceData (override)
 		/// <summary>
 		/// Writes trace information, an array of data objects and event information to the listener specific output.
 		/// </summary>
@@ -304,9 +293,7 @@ namespace Havit.Diagnostics
 				SendTrace(eventCache, source, eventType, id, data);
 			}
 		}
-		#endregion
 
-		#region TraceEvent (override)
 		/// <summary>
 		/// Writes trace information, a message, and event information to the listener specific output.
 		/// </summary>
@@ -347,9 +334,7 @@ namespace Havit.Diagnostics
 				SendTrace(eventCache, source, eventType, id, String.Format(CultureInfo.InvariantCulture, format, args));
 			}
 		}
-		#endregion
 
-		#region TraceTransfer (override)
 		/// <summary>
 		/// Writes trace information, a message, a related activity identity and event information to the listener specific output.
 		/// </summary>
@@ -362,9 +347,7 @@ namespace Havit.Diagnostics
 		{
 			SendTrace(eventCache, source, TraceEventType.Transfer, id, String.Format("{0} : {1}", message, relatedActivityId));
 		}
-		#endregion
 
-		#region Write, WriteLine (override)
 		/// <summary>
 		/// When overridden in a derived class, writes the specified message to the listener you create in the derived class.
 		/// </summary>
@@ -382,6 +365,5 @@ namespace Havit.Diagnostics
 		{
 			this.Write(message);
 		}
-		#endregion
 	}
 }

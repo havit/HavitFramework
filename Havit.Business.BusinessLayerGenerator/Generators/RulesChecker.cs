@@ -11,7 +11,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 {
 	public static class RulesChecker
 	{
-		#region CheckRules
 		/// <summary>
 		/// Ověří pravidla nad tabulkou.
 		/// </summary>
@@ -37,9 +36,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 
 			StoredProcedureRulesChecker.CheckRules(table);
 		}
-		#endregion
 
-		#region CheckPrimaryKeyNamingRules
 		/// <summary>
 		/// Ověří, že název sloupce, který je cizím klíčem, končí na "ID".
 		/// </summary>
@@ -62,9 +59,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			}
 
 		}
-		#endregion
 
-		#region CheckPrimaryIsAutoincrementRule
 		/// <summary>
 		/// Ověřuje, zda má tabulka primární klíč autoincrement, pokud není readonly. Pokud nemá, zapisuje do chybové konzole.
 		/// Při strategii pro Exec netestuje nic.
@@ -83,9 +78,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				ConsoleHelper.WriteLineWarning("Tabulka {0}: Primární klíč není autoincrement a nemá default (a není zakázána metoda CreateObject a tabulka není readonly).", table.Name);
 			}
 		}
-		#endregion
 
-		#region CheckAccessModifier
 		/// <summary>
 		/// Ověřuje, zda má tabulka korektně nastaven AccessModifier. Pokud nemá, zapisuje do chybové konzole.
 		/// </summary>
@@ -98,9 +91,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				ConsoleHelper.WriteLineWarning("Tabulka {0}: AccessModifier má neznámou hodnotu. Povoleno je public a internal.", table.Name);
 			}
 		}
-		#endregion
 
-		#region CheckDescriptionRules
 		/// <summary>
 		/// Ověřuje, zda má tabulka a všechny sloupečky, ze kterých budou generovány vlastnosti, popis (description),
 		/// který slouží jako komentář v C# kódu.
@@ -139,9 +130,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				}
 			}
 		}
-		#endregion
 
-		#region CheckDeprecatedTypes
 		/// <summary>
 		/// Ověřuje, zda pro některý sloupeček není použit zastaralý datový typ.
 		/// Při strategii pro Exec netestuje nic.
@@ -161,9 +150,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				}
 			}
 		}
-		#endregion
 
-		#region CheckCacheExtendedPropertiesRule
 		/// <summary>
 		/// Ověří pravidla extended properties.
 		/// Nyní se testuje, zda nejsou přítomny hodnoty pro cache - absolute expiration a sliding expiration - zároveň.
@@ -175,9 +162,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				ConsoleHelper.WriteLineWarning("Tabulka {0}: Nastaveno Cache_AbsolutniExpiration i Cache_SlidingExpiration.", table.Name);
 			}
 		}
-		#endregion
 
-		#region CheckPrimaryKeyHasIndexRule
 		/// <summary>
 		/// Ověří, zda má tabulka s autoincrement PK clusterovaný index.
 		/// </summary>
@@ -202,9 +187,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				ConsoleHelper.WriteLineWarning(String.Format("Tabulka {0}: Nenalezen index primárního klíče.", table.Name));
 			}
 		}
-		#endregion
 
-		#region CheckForeignKeysNamingConvention
 		/// <summary>
 		/// Ověří, že název sloupce, který je cizím klíčem, končí na "ID".
 		/// </summary>
@@ -231,9 +214,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				}
 			}
 		}
-		#endregion
 
-		#region CheckDeletedColumnDataTypeRule
 		/// <summary>
 		/// Ověří datový typ sloupce, který se jmenuje "Deleted". Očekává se bit, datetime nebo smalldatetime.
 		/// </summary>
@@ -253,9 +234,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				}
 			}
 		}
-		#endregion
 
-		#region CheckCreatedColumnDataTypeRule
 		/// <summary>
 		/// Ověří existenci datový typ sloupce "Created" a existenci výchozí hodnoty.
 		/// </summary>
@@ -282,9 +261,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 
 			}
 		}
-		#endregion
 
-		#region CheckDefaultValueRule
 		private static void CheckDefaultValueRule(Table table)
 		{
 			foreach (Column column in TableHelper.GetPropertyColumns(table))
@@ -297,9 +274,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				}
 			}
 		}
-		#endregion
 
-		#region CheckPropertyAccessorsRule
 		/// <summary>
 		/// Ověřuje zda není uvedena rozšířená vlastnost GetAccessot a SetAccessor současně.
 		/// </summary>
@@ -313,9 +288,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				}
 			}
 		}
-		#endregion
 
-		#region CheckLocalizationRules
 		/// <summary>
 		/// Pokud jde o lokalizační tabulku, ověřuje pravidla pro tuto tabulku.
 		/// </summary>
@@ -351,9 +324,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				ConsoleHelper.WriteLineWarning(String.Format("Tabulka {0}, Sloupec LanguageID: Není nastavena reference.", table.Name));
 			}
 		}
-		#endregion
 
-		#region CheckCollectionForeignKeyRules
 		/// <summary>
 		/// Ověří, zda existuje cizí klíč odpovídající kolekci.
 		/// </summary>
@@ -378,9 +349,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				}
 			}
 		}
-		#endregion
 
-		#region CheckMoneyRules
 		/// <summary>
 		/// Zkontroluje pravidla pro sloupce typu Money.
 		/// </summary>
@@ -398,9 +367,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				}
 			}
 		}
-		#endregion
 
-		#region CheckResourceClassRules
 		private static void CheckResourceClassRules(Table table)
 		{
 			if (table.Name == "ResourceClass")
@@ -416,9 +383,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				}
 			}
 		}
-		#endregion
 
-		#region CheckResourceItemRules
 		private static void CheckResourceItemRules(Table table)
 		{
 			if (table.Name == "ResourceItem")
@@ -429,6 +394,5 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				}
 			}			
 		}
-		#endregion
 	}
 }

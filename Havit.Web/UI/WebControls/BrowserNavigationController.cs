@@ -17,7 +17,6 @@ namespace Havit.Web.UI.WebControls
 	/// </remarks>
 	public class BrowserNavigationController : Control
 	{
-		#region DefaultUrl
 		/// <summary>
 		/// Url použitá pro návrat, pokud není v PageNavigatoru, kam se vrátit.
 		/// Pokud není hodnodnota nastavena, zůstane se na aktuální stránce.
@@ -33,9 +32,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["DefaultUrl"] = value;
 			}
 		}
-		#endregion
 
-		#region OnPreRender
 		/// <summary>
 		/// Zaregistruje klientský skript pro ovládání tlačítka zpět.
 		/// </summary>
@@ -54,6 +51,5 @@ namespace Havit.Web.UI.WebControls
 
 			ScriptManager.RegisterStartupScript(this.Page, typeof(BrowserNavigationController), "StartUp", script, true);
 		}
-		#endregion
 	}
 }

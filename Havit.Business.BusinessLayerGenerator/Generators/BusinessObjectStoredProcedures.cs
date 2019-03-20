@@ -14,7 +14,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 {
 	public static class BusinessObjectStoredProcedures
 	{
-		#region WriteStoredProcedures
 		public static void WriteStoredProcedures(CodeWriter writer, Table table)
 		{
 			Collection<StoredProcedure> procedures = StoredProcedureHelper.GetStoredProcedures(table);
@@ -28,9 +27,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				writer.WriteCloseRegion();
 			}
 		}
-		#endregion
 
-		#region WriteStoredProcedureMethod
 		private static void WriteStoredProcedureMethod(CodeWriter writer, Table table, StoredProcedure procedure)
 		{
 			Table resultTypeTable = StoredProcedureHelper.GetResultTypeTable(procedure);
@@ -230,9 +227,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine();
 
 		}
-		#endregion
 
-		#region WriteStoredProcedureMethodHeader
 		private static void WriteStoredProcedureMethodHeader(CodeWriter writer, StoredProcedure procedure, bool withTransactionParameter)
 		{
 			Table resultTypeTable = StoredProcedureHelper.GetResultTypeTable(procedure);
@@ -331,6 +326,5 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			}
 
 		}
-		#endregion
 	}
 }

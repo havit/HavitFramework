@@ -16,7 +16,6 @@ namespace Havit.Web.Services.Extensions
 	/// </summary>
 	public class SoapExceptionHealthMonitoringHandler : SoapExceptionExceptionHandler
 	{
-		#region ProcessMessageException
 		/// <summary>
 		/// Zpracovává SoapMessage, která obsahuje výjimku.
 		/// Volá ShouldRaiseEvent a pokud je vráceno true, volá RaiseEvent.
@@ -32,9 +31,7 @@ namespace Havit.Web.Services.Extensions
 				}
 			}
 		}
-		#endregion
 
-		#region ShouldRaiseEvent
 		/// <summary>
 		/// Vrací true, pokud má dojít k vyvolání událost v metodě RaiseEvent.
 		/// Implementace vrací vždy true.
@@ -43,9 +40,7 @@ namespace Havit.Web.Services.Extensions
 		{
 			return true;
 		}
-		#endregion
 
-		#region RaiseEvent
 		/// <summary>
 		/// Vyvolá událost vytvořením WebRequestErrorEventExt a zavoláním Raise.
 		/// </summary>
@@ -53,6 +48,5 @@ namespace Havit.Web.Services.Extensions
 		{
 			new WebRequestErrorEventExt(exception.Message, message, exception, HttpContext.Current).Raise();
 		}
-		#endregion
 	}
 }

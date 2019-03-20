@@ -12,7 +12,6 @@ namespace Havit.Web.UI.HtmlControls
 	/// </summary>
 	public class HtmlFormExt : System.Web.UI.HtmlControls.HtmlForm
 	{
-		#region Data members
 		/// <summary>
 		/// Vrátí nebo nastaví cílové URL formuláře. Atribut Action formuláře.
 		/// Pokud není explicitně nastaveno, vrací automaticky Microsoft implementaci (včetně QueryStringu).
@@ -36,9 +35,7 @@ namespace Havit.Web.UI.HtmlControls
 				}
 			}
 		}
-		#endregion
 
-		#region Page_ClientOnSubmitEvent
 		/// <summary>
 		/// Pomocí reflexe vrátí internal ClientOnSubmitEvent vlastnost Page
 		/// </summary>
@@ -49,9 +46,7 @@ namespace Havit.Web.UI.HtmlControls
 				return (string)Reflector.GetPropertyValue(this.Page, typeof(System.Web.UI.Page), "ClientOnSubmitEvent");
 			}
 		}
-		#endregion
 
-		#region RenderAttributes
 		/// <summary>
 		/// Overriden. Zajišťuje vlastní renderování atributu Action
 		/// </summary>
@@ -90,9 +85,7 @@ namespace Havit.Web.UI.HtmlControls
 			// voláno v HtmlControl
 			this.Attributes.Render(writer);
 		}
-		#endregion
 
-		#region GetBaseActionAttribute
 		/// <summary>
 		/// Pomocí reflexe vrátí původní private base.GetActionAttribute()
 		/// </summary>
@@ -104,6 +97,5 @@ namespace Havit.Web.UI.HtmlControls
 			object result = actionMethod.Invoke(this, null);
 			return (string)result;
 		}
-		#endregion
 	}
 }

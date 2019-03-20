@@ -16,7 +16,6 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class AutoFilterTextBox : TextBoxExt, IAutoFilterControl
 	{
-		#region DataFilterField
 		/// <summary>
 		/// Vlastnost, ve které se vyhledává.
 		/// </summary>
@@ -31,9 +30,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["DataFilterField"] = value;
 			}
 		}
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Konstructor.
 		/// </summary>
@@ -41,9 +38,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			AutoPostBack = true;
 		}
-		#endregion
 
-		#region ValueChanged, OnValueChanged
 		/// <summary>
 		/// Událost oznamuje změnu hodnoty filtru.
 		/// </summary>
@@ -71,9 +66,7 @@ namespace Havit.Web.UI.WebControls
 				handler(this, e);
 			}
 		}
-		#endregion
 
-		#region FilterData
 		/// <summary>
 		/// Provede filtrování dat na základě nastavení filtru.
 		/// </summary>
@@ -89,9 +82,7 @@ namespace Havit.Web.UI.WebControls
 				return data;
 			}
 		}
-		#endregion
 
-		#region OnInit
 		/// <summary>
 		/// Inicializuje control.
 		/// Vyvoláním události s argumentem AutoFilterControlCreatedEventArgs.Empty se registruje jak control pro automatický databind.
@@ -101,9 +92,7 @@ namespace Havit.Web.UI.WebControls
 			base.OnInit(e);
 			this.RaiseBubbleEvent(this, AutoFilterControlCreatedEventArgs.Empty); // registrace autofilter controlu
 		}
-		#endregion
 
-		#region OnTextChanged
 		/// <summary>
 		/// Při změně hodnoty vyvolá událost ValueChanged.
 		/// </summary>
@@ -112,7 +101,5 @@ namespace Havit.Web.UI.WebControls
 			base.OnTextChanged(e);
 			this.OnValueChanged(EventArgs.Empty); // oznámení změny hodnoty filtru
 		}
-		#endregion
-		
 	}
 }

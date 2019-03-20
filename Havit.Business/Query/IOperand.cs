@@ -12,7 +12,6 @@ namespace Havit.Business.Query
 	/// </summary>
 	public interface IOperand
 	{
-		#region GetCommandValue
 		/// <summary>
 		/// Vrací řetězec, který reprezentuje hodnotu operandu v SQL dotazu.
 		/// Může přidávat databázové parametry do commandu.
@@ -20,7 +19,6 @@ namespace Havit.Business.Query
 		/// <param name="command">Databázový příkaz. Je možné do něj přidávat databázové parametry.</param>
 		/// <param name="sqlServerPlatform">Platforma, pro kterou je hodnota operandu vytvářena.</param>
 		/// <returns>Řetězec reprezentující hodnotu operandu v SQL dotazu.</returns>
-		string GetCommandValue(DbCommand command, SqlServerPlatform sqlServerPlatform); 
-		#endregion
+		string GetCommandValue(DbCommand command, SqlServerPlatform sqlServerPlatform);
 	}
 }

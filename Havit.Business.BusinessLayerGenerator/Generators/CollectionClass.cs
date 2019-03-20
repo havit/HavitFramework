@@ -10,7 +10,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 {
 	public static class CollectionClass
 	{
-		#region Generate
 		public static void Generate(Table table, CsprojFile csprojFile)
 		{
 			string fileName = FileHelper.GetFilename(table, "Collection.cs", "");
@@ -37,9 +36,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				writer.Save();
 			}
 		}
-		#endregion
 
-		#region WriteClassBegin
 		public static void WriteClassBegin(CodeWriter writer, Table table, bool partial)
 		{
 			writer.WriteCommentSummary(String.Format("Kolekce business objektů typu {0}.", ClassHelper.GetClassFullName(table)));
@@ -64,7 +61,5 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine("{");
 			writer.WriteLine("");
 		}
-		#endregion
-
 	}
 }

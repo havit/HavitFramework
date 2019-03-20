@@ -9,7 +9,6 @@ namespace Havit.WebApplicationTest.HavitWebBootstrapTests
 {
 	public partial class TabsTest : System.Web.UI.Page
 	{
-		#region OnLoad
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
@@ -20,6 +19,5 @@ namespace Havit.WebApplicationTest.HavitWebBootstrapTests
 				TabContainersRepeater.DataBind();
 			}
 		}
-		#endregion
 	}
 }

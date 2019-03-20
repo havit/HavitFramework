@@ -11,7 +11,6 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 	/// </summary>
 	public class PersisterControlExtenderRepository : List<IPersisterControlExtender>
 	{
-		#region Default
 		/// <summary>
 		/// Výchozí repository. Obsahuje "standardní" IPersisterControlExtendery.
 		/// </summary>
@@ -46,9 +45,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 		}
 		private static PersisterControlExtenderRepository _default;
 		private static readonly object _defaultLock = new object();
-		#endregion
 
-		#region FindExtender
 		/// <summary>
 		/// Vyhledá pro předaný control IPersisterControlExtender, který bude control zpracovávat.
 		/// Pokud není žádný vhodný extender nalezen, je vrácena hodnota null.
@@ -73,9 +70,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 
 			return bestExtender;
 		}
-		#endregion
 
-		#region GetExtenderValuesTypes
 		/// <summary>
 		/// Vrací seznam návratových typů extenderů, které se nachází v repository.
 		/// </summary>
@@ -94,7 +89,5 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 
 			return valueTypes.ToArray();
 		}
-		#endregion
-		
 	}
 }

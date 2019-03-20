@@ -16,11 +16,8 @@ namespace Havit.Web.UI.WebControls
 	[PersistChildren(false)]
 	public class BasicModalDialog : ModalDialogBase
 	{
-		#region Private fields
 		private readonly Panel _dialogPanel;
-		#endregion
 
-		#region Width, Height, MarginLeft, MarginTop
 		/// <summary>
 		/// Šířka dialogu v pixelech.
 		/// </summary>
@@ -72,9 +69,7 @@ namespace Havit.Web.UI.WebControls
 				return new Unit(-1 * Height.Value / 2, Height.Type);
 			}
 		}
-		#endregion
 
-		#region Constructors
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
@@ -83,9 +78,7 @@ namespace Havit.Web.UI.WebControls
 			_dialogPanel = new Panel();
 			_dialogPanel.CssClass = "webdialog";
 		}
-		#endregion
 
-		#region GetContentContainer
 		/// <summary>
 		/// Vrací control/kontejner, do kterého je instanciována šablona obsahu.
 		/// </summary>
@@ -93,9 +86,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			return _dialogPanel;
 		}
-		#endregion
 
-		#region GetDialogContainer
 		/// <summary>
 		/// Vrací control/kontejner, který reprezentuje dialog jako celek. Tento control je ovládán klientskými skripty pro zobrazení a schování obsahu.
 		/// </summary>
@@ -103,9 +94,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			return _dialogPanel;
 		}
-		#endregion
 
-		#region GetShowScript, GetHideScript
 		/// <summary>
 		/// Vrátí skript pro zobrazení dialogu na klientské straně.
 		/// </summary>
@@ -128,9 +117,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			return String.Format("havitHideDialog('{0}');", DialogPanelClientIDMemento ?? GetDialogContainer().ClientID);
 		}
-		#endregion
 
-		#region OnPreRender
 		/// <summary>
 		/// OnPreRender.
 		/// </summary>
@@ -151,9 +138,7 @@ namespace Havit.Web.UI.WebControls
 
 			base.OnPreRender(e);
 		}
-		#endregion
 
-		#region RegisterHideScriptFromPreRenderComplete
 		/// <summary>
 		/// Zajistí schování dialogu.
 		/// </summary>
@@ -167,9 +152,7 @@ namespace Havit.Web.UI.WebControls
 				RegisterHideScript();
 			}
 		}
-		#endregion
 
-		#region CheckDialogSize
 		/// <summary>
 		/// Ověří správné nastavení vlastností controlu.
 		/// Ověřuje nastavení vlastností Width a Height, 
@@ -207,6 +190,5 @@ namespace Havit.Web.UI.WebControls
 				throw new InvalidOperationException("Vlastnost Height nesmí obsahovat desetinné číslo.");
 			}
 		}
-		#endregion
 	}
 }

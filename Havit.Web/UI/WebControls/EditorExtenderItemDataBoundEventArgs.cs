@@ -12,14 +12,11 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class EditorExtenderItemDataBoundEventArgs : EventArgs
 	{
-		#region SavedObject
 		/// <summary>
 		/// Bidnovaný datový objekt.
 		/// </summary>
 		public object DataItem { get; set; }
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
@@ -27,7 +24,6 @@ namespace Havit.Web.UI.WebControls
 		{
 			this.DataItem = dataItem;
 		}
-		#endregion
 	}
 
 	/// <summary>

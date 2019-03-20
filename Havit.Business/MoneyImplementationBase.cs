@@ -14,7 +14,6 @@ namespace Havit.Business
 		where TCurrency : class
 		where TResult : MoneyImplementationBase<TCurrency, TResult>, new()
 	{
-		#region Operátory +, -, *, /
 		/// <summary>
 		/// Sečte dvě hodnoty Money. Pokud se neshoduje měna, operace vyvolá výjimku.
 		/// </summary>
@@ -71,9 +70,6 @@ namespace Havit.Business
 			return DivideMoney(dividend, divisor);
 		}
 
-		#endregion
-
-		#region Constructors
 		/// <summary>
 		/// Inicializuje třídu money s prázdními hodnotami (Amount i Currency jsou null).
 		/// </summary>
@@ -88,6 +84,5 @@ namespace Havit.Business
 			: base(amount, currency)
 		{
 		}
-		#endregion
 	}
 }

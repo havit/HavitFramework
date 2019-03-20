@@ -10,11 +10,8 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	internal class SessionMessenger : Messenger
 	{
-		#region SessionKey
 		private const string SessionKey = "Messenger_Messages";
-		#endregion
 
-		#region Messages
 		private List<MessengerMessage> Messages
 		{
 			get
@@ -28,9 +25,7 @@ namespace Havit.Web.UI.WebControls
 				return messages;
 			}
 		}
-		#endregion
 
-		#region AddMessage
 		/// <summary>
 		/// Přidá zprávu do messengeru.
 		/// </summary>
@@ -39,9 +34,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			Messages.Add(message);
 		}
-		#endregion
 
-		#region GetMessages
 		/// <summary>
 		/// Zprávy k zobrazení.
 		/// </summary>
@@ -49,9 +42,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			return new List<MessengerMessage>(Messages);
 		}
-		#endregion
 
-		#region Clear
 		/// <summary>
 		/// Vyčistí kolekci zpráv.
 		/// </summary>
@@ -59,9 +50,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			Messages.Clear();
 		}
-		#endregion
 
-		#region GetCurrentContext
 		private static HttpContext GetCurrentContext()
 		{
 			HttpContext currentContext = HttpContext.Current;
@@ -75,6 +64,5 @@ namespace Havit.Web.UI.WebControls
 			}
 			return currentContext;
 		}
-		#endregion
 	}
 }

@@ -12,11 +12,8 @@ namespace Havit.Business.Query
 {
 	internal sealed class DateTimeValueOperand : IOperand
 	{
-		#region Private fields
 		private readonly DateTime value;
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Vytvoří instanci třídy DateTimeValueOperand.
 		/// </summary>
@@ -24,9 +21,7 @@ namespace Havit.Business.Query
 		{
 			this.value = value;
 		}
-		#endregion
 
-		#region IOperand Members
 		string IOperand.GetCommandValue(System.Data.Common.DbCommand command, SqlServerPlatform sqlServerPlatform)
 		{
 			Debug.Assert(command != null);
@@ -39,6 +34,5 @@ namespace Havit.Business.Query
 
 			return parameter.ParameterName;
 		}
-		#endregion
 	}
 }

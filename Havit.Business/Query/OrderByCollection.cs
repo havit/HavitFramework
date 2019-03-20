@@ -11,7 +11,6 @@ namespace Havit.Business.Query
 	/// </summary>
 	public class OrderByCollection : Havit.Collections.SortItemCollection
 	{
-		#region Add
 		/// <summary>
 		/// Přidá na konec kolekce položku pro vzestupné řazení.
 		/// </summary>
@@ -26,10 +25,8 @@ namespace Havit.Business.Query
 		public void Add(FieldPropertyInfo propertyInfo, SortDirection direction)
 		{
 			Add(new FieldPropertySortItem(propertyInfo, direction));
-		} 
-		#endregion
+		}
 
-		#region Insert
 		/// <summary>
 		/// Přidá do kolekce položku pro vzestuné řazení.
 		/// </summary>
@@ -44,7 +41,6 @@ namespace Havit.Business.Query
 		public void Insert(int index, FieldPropertyInfo propertyInfo, SortDirection direction)
 		{
 			Insert(index, new FieldPropertySortItem(propertyInfo, direction));
-		} 
-		#endregion
+		}
 	}
 }

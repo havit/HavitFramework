@@ -21,8 +21,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 	/// </remarks>
 	public class CssMenuAdapter : System.Web.UI.WebControls.Adapters.MenuAdapter
     {
-		#region Extender
-		private WebControlAdapterExtender Extender
+	    private WebControlAdapterExtender Extender
 		{
 			get
 			{
@@ -37,9 +36,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 			}
 		}
 		private WebControlAdapterExtender _extender = null;
-		#endregion
 
-		#region OnInit
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
@@ -50,9 +47,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				RegisterStyles();
 			}
 		}
-		#endregion
 
-		#region RegisterScripts
 		private void RegisterScripts()
 		{
 			Extender.RegisterScripts();
@@ -67,9 +62,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 			//string filePath = folderPath.EndsWith("/") ? folderPath + "MenuAdapter.js" : folderPath + "/MenuAdapter.js";
 			//Page.ClientScript.RegisterClientScriptInclude(GetType(), GetType().ToString(), Page.ResolveUrl(filePath));
 		}
-		#endregion
 
-		#region RegisterStyles
 		private void RegisterStyles()
 		{
 			HttpContext context = HttpContext.Current;
@@ -99,9 +92,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				}
 			}
 		}
-		#endregion
 
-		#region RenderBeginTag
 		protected override void RenderBeginTag(HtmlTextWriter writer)
 		{
 			if (Extender.AdapterEnabled)
@@ -113,9 +104,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				base.RenderBeginTag(writer);
 			}
 		}
-		#endregion
 
-		#region RenderEndTag
 		protected override void RenderEndTag(HtmlTextWriter writer)
 		{
 			if (Extender.AdapterEnabled)
@@ -127,9 +116,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				base.RenderEndTag(writer);
 			}
 		}
-		#endregion
 
-		#region RenderContents
 		protected override void RenderContents(HtmlTextWriter writer)
 		{
 			if (Extender.AdapterEnabled)
@@ -144,9 +131,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				base.RenderContents(writer);
 			}
 		}
-		#endregion
 
-		#region BuildItems
 		private void BuildItems(MenuItemCollection items, bool isRoot, HtmlTextWriter writer)
 		{
 			if (items.Count > 0)
@@ -172,9 +157,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				writer.WriteEndTag("ul");
 			}
 		}
-		#endregion
 
-		#region BuildItem
 		private void BuildItem(MenuItem item, HtmlTextWriter writer)
 		{
 			Menu menu = Control as Menu;
@@ -291,16 +274,12 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				writer.WriteEndTag("li");
 			}
 		}
-		#endregion
 
-		#region IsLink
 		private bool IsLink(MenuItem item)
 		{
 			return (item != null) && item.Enabled && ((!String.IsNullOrEmpty(item.NavigateUrl)) || item.Selectable);
 		}
-		#endregion
 
-		#region GetItemClass
 		private string GetItemClass(Menu menu, MenuItem item)
 		{
 			string value = "AspNet-Menu-NonLink";
@@ -323,9 +302,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 			}
 			return value;
 		}
-		#endregion
 
-		#region GetSelectStatusClass
 		private string GetSelectStatusClass(MenuItem item)
 		{
 			string value = "";
@@ -343,9 +320,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 			}
 			return value;
 		}
-		#endregion
 
-		#region IsChildItemSelected
 		private bool IsChildItemSelected(MenuItem item)
 		{
 			bool bRet = false;
@@ -357,9 +332,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 
 			return bRet;
 		}
-		#endregion
 
-		#region IsChildItemSelected
 		private bool IsChildItemSelected(MenuItemCollection items)
 		{
 			bool bRet = false;
@@ -378,9 +351,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 
 			return bRet;
 		}
-		#endregion
 
-		#region IsParentItemSelected
 		private bool IsParentItemSelected(MenuItem item)
 		{
 			bool bRet = false;
@@ -399,7 +370,6 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 
 			return bRet;
 		}
-		#endregion
     }
 }
 #pragma warning restore 1591

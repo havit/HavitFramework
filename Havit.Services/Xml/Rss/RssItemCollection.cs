@@ -7,7 +7,6 @@ namespace Havit.Services.Xml.Rss
 	/// </summary>
 	public class RssItemCollection : CollectionBase
 	{
-		#region Add
 		/// <summary>
 		/// Přidá nový item do kolekce
 		/// </summary>
@@ -16,9 +15,7 @@ namespace Havit.Services.Xml.Rss
 		{
 			this.List.Add(newItem);
 		}
-		#endregion
 
-		#region CopyTo
 		/// <summary>
 		/// Vykopíruje prvky kolekce do pole.
 		/// </summary>
@@ -28,9 +25,7 @@ namespace Havit.Services.Xml.Rss
 		{
 			((ICollection)this).CopyTo(array, index);
 		}
-		#endregion 
-       
-		#region Insert
+
 		/// <summary>
 		/// Vloží prvek do kolekce na zadanou pozici.
 		/// </summary>
@@ -40,9 +35,7 @@ namespace Havit.Services.Xml.Rss
 		{
 			((IList)this).Insert(index, value);
 		}
-		#endregion
 
-		#region IndexOf
 		/// <summary>
 		/// Zjistí pozici prvku v kolekci
 		/// </summary>
@@ -52,9 +45,7 @@ namespace Havit.Services.Xml.Rss
 		{
 			return ((IList)this).IndexOf(value);
 		}
-		#endregion
 
-		#region Remove
 		/// <summary>
 		/// Odebere prvke z kolekce.
 		/// </summary>
@@ -63,9 +54,7 @@ namespace Havit.Services.Xml.Rss
 		{
 			((IList)this).Remove(value);
 		}
-		#endregion
 
-		#region Contains
 		/// <summary>
 		/// Zjistí, zdali je prvek v kolekci.
 		/// </summary>
@@ -75,9 +64,7 @@ namespace Havit.Services.Xml.Rss
 		{
 			return ((IList)this).Contains(value);
 		}
-		#endregion
 
-		#region Indexer this[int]
 		/// <summary>
 		/// Indexer na kolekci zpřístupňující prvek na požadované pozici.
 		/// </summary>
@@ -88,6 +75,5 @@ namespace Havit.Services.Xml.Rss
 				return (RssItem)this.List[index];
 			}
 		}
-		#endregion
 	}
 }

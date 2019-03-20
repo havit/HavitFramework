@@ -21,7 +21,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	[ParseChildren(true)]
 	public class TabPanel : WebControl
 	{
-		#region ContentTemplate
 		/// <summary>
 		/// Gets or sets the template for displaying the content of TabPanel.
 		/// When content template set it cannot be changed anymore.
@@ -49,9 +48,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		}
 		private ITemplate _contentTemplate;
 		private Control _contentTemplateContainer;
-		#endregion
 
-		#region HeaderTemplate
 		/// <summary>
 		/// Gets or sets the template for displaying the header of TabPanel.
 		/// If not set, HeaderText is used instead of HeaderTemplate.
@@ -78,9 +75,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		}
 		private ITemplate _headerTemplate;
 		private Control _headerTemplateContainer;
-		#endregion
 
-		#region HeaderText
 		/// <summary>
 		/// Header text of TabPanel. This property is ignored when HeaderTemplate is used.
 		/// </summary>
@@ -96,9 +91,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ViewState["HeaderText"] = value;
 			}
 		}
-		#endregion
 
-		#region Active, ActiveInternal
 		/// <summary>
 		/// Indicates whether TabPanel is active (selected).
 		/// Use TabContainer.ActiveTabPanel to set active container.
@@ -137,18 +130,14 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ViewState["Active"] = value;
 			}
 		}
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Constructor.
 		/// </summary>
 		public TabPanel() : base(HtmlTextWriterTag.Div)
 		{
 		}
-		#endregion
 
-		#region OnInit
 		/// <summary>
 		/// Raises the Init event. This notifies the control to perform any steps necessary for its creation on a page request.
 		/// </summary>
@@ -157,9 +146,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			RegisterToParentTabs();
 			base.OnInit(e);
 		}
-		#endregion
-		
-		#region RegisterToParentTabs
+
 		/// <summary>
 		/// Registers TabPanel to closest parent TabContainer.
 		/// </summary>
@@ -186,9 +173,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			throw new HttpException(String.Format("TabPanel '{0}' does not have TabContainer parent.", this.ID));
 		}
 		private TabContainer _tabContainer;
-		#endregion
 
-		#region RenderHeader
 		/// <summary>
 		/// Renders TabPanel header.
 		/// </summary>
@@ -233,9 +218,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				writer.RenderEndTag(); // LI
 			}
 		}
-		#endregion
 
-		#region AddAttributesToRender
 		/// <summary>
 		/// Adds to the specified writer those HTML attributes and styles that need to be rendered.
 		/// </summary>
@@ -250,9 +233,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				.Trim();
 			base.AddAttributesToRender(writer);
 		}
-		#endregion
 
-		#region Render
 		/// <summary>
 		/// Ensures not rendering content of disabled TabPanel.
 		/// </summary>
@@ -263,9 +244,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				base.Render(writer);
 			}
 		}
-		#endregion
 
-		#region RenderContents
 		/// <summary>
 		/// Renders the control content into the specified writer.
 		/// </summary>
@@ -277,9 +256,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				_contentTemplateContainer.RenderControl(writer);
 			}
 		}
-		#endregion
 
-		#region OnUnload
 		/// <summary>
 		/// Occures when control unloads from page.
 		/// </summary>
@@ -291,6 +268,5 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				_tabContainer.UnregisterTabPanel(this);
 			}
 		}
-		#endregion
 	}
 }

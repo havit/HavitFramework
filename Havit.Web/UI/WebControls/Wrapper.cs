@@ -13,7 +13,6 @@ namespace Havit.Web.UI.WebControls
 	[Themeable(true)]
 	public sealed class Wrapper : System.Web.UI.Control, IAttributeAccessor
 	{
-		#region BeginHtml
 		/// <summary>
 		/// Html, které je renderováno před obsahem wrapperu.
 		/// </summary>
@@ -28,9 +27,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["BeginHtml"] = value;
 			}
 		}
-		#endregion
 
-		#region EndHtml
 		/// <summary>
 		/// Html, které je renderováno za obsahem wrapperu.
 		/// </summary>
@@ -45,9 +42,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["EndHtml"] = value;
 			}
 		}
-		#endregion
 
-		#region Render
 		/// <summary>
 		/// Sends server control content to a provided <see cref="T:System.Web.UI.HtmlTextWriter"/> object, which writes the content to be rendered on the client.
 		/// </summary>
@@ -58,9 +53,7 @@ namespace Havit.Web.UI.WebControls
 			base.Render(writer);
 			writer.Write(DoAttributeReplacements(EndHtml));
 		}
-		#endregion
 
-		#region DoAttributeReplacements
 		/// <summary>
 		/// Provede v textu náhrady dle hodnot v attributech dle IAttributeAccessoru.
 		/// </summary>
@@ -80,9 +73,7 @@ namespace Havit.Web.UI.WebControls
 			}
 			return result;
 		}
-		#endregion
 
-		#region IAttributeAccessor: GetAttribute, SetAttribute
 		private StateBag _attributesValues;
 
 		string IAttributeAccessor.GetAttribute(string key)
@@ -102,6 +93,5 @@ namespace Havit.Web.UI.WebControls
 			}
 			_attributesValues[key.ToUpper()] = value;
 		}
-		#endregion
 	}
 }

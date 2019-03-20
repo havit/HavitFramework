@@ -11,7 +11,6 @@ namespace Havit.Data.Entity.Tests
 	[TestClass]
 	public class DbEntityValidationExceptionExtensionsTests
 	{
-		#region DbEntityValidationExceptionExtensionsTestDbContext (internal class)
 		internal class DbEntityValidationExceptionExtensionsTestDbContext : DbContext
 		{
 			public DbSet<DataClass> DataClasses { get; set; }
@@ -29,7 +28,6 @@ namespace Havit.Data.Entity.Tests
 				public int Id { get; set; }
 			}
 		}
-		#endregion
 
 		[ClassCleanup]
 		public static void CleanUp()

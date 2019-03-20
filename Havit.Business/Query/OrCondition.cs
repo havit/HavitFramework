@@ -9,25 +9,20 @@ namespace Havit.Business.Query
 	/// </summary>
 	public class OrCondition : CompositeCondition
 	{
-        #region Constructors
-        /// <summary>
+		/// <summary>
         /// Vytvoří kompozitní podmínku. Lze inicializovat sadou členských podmínek.
         /// </summary>		
         public OrCondition(params Condition[] conditions)
             : base("OR", conditions)
         {
         }
-        #endregion
 
-        #region Create (static)
-        /// <summary>
+		/// <summary>
         /// Vytvoří kompozitní podmínku. Lze inicializovat sadou členských podmínek.
         /// </summary>
         public static OrCondition Create(params Condition[] conditions)
         {
             return new OrCondition(conditions);
         }
-        #endregion
-
 	}
 }

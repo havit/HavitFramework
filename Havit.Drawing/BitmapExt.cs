@@ -10,7 +10,6 @@ namespace Havit.Drawing
 	/// </summary>
 	public static class BitmapExt
 	{
-		#region RotateFlip
 		/// <summary>
 		/// Metoda rotuje a/nebo překlápí obrázek.
 		/// </summary>
@@ -56,9 +55,7 @@ namespace Havit.Drawing
 			imageCopy.Save(filename);
 			imageCopy.Dispose();
 		}
-		#endregion
 
-		#region Resize
 		/// <summary>
 		/// Změní rozměry obrázku.
 		/// </summary>
@@ -232,6 +229,5 @@ namespace Havit.Drawing
 		{
 			return Resize(filename, filename, width, height, resizeMode, 75);
 		}
-		#endregion
 	}
 }

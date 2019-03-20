@@ -18,7 +18,6 @@ namespace Havit.WebApplicationTest.HavitWebTests
 {
 	public partial class GridViewExtTest : System.Web.UI.Page
 	{
-		#region OnInit
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
@@ -49,23 +48,16 @@ namespace Havit.WebApplicationTest.HavitWebTests
 			// NOOP
 		}
 
-		#endregion
-
-		#region HideButton_Click
 		private void HideButton_Click(object sender, EventArgs e)
 		{
 			TestGV4.Visible = false;
 		}
-		#endregion
 
-		#region SRDBButton_Click
 		private void SRDBButton_Click(object sender, EventArgs e)
 		{
 			TestGV4.SetRequiresDatabinding();
 		}
-		#endregion
 
-		#region TestGV_RowCustomizingCommandButton
 		private void TestGV_RowCustomizingCommandButton(object sender, GridViewRowCustomizingCommandButtonEventArgs e)
 		{
 			if ((e.CommandName == CommandNames.Delete) && (e.RowIndex == 1))
@@ -77,9 +69,7 @@ namespace Havit.WebApplicationTest.HavitWebTests
 				e.Visible = false;
 			}
 		}
-		#endregion
 
-		#region TestGV_DataBinding
 		private void TestGV_DataBinding(object sender, EventArgs e)
 		{
 			//((GridView)sender).DataSource = new object[]
@@ -90,21 +80,15 @@ namespace Havit.WebApplicationTest.HavitWebTests
 			//									};
 			((GridView)sender).DataSource = Subjekt.GetAll().ToList();
 		}
-		#endregion
 
-		#region TestGV1_GetInsertRowDataItem
 		private object TestGV1_GetInsertRowDataItem()
 		{
 			return Subjekt.CreateObject();
 		}
-		#endregion
 
-		#region TestGV1_RowDeleting
 		private void TestGV1_RowDeleting(object sender, GridViewDeleteEventArgs e)
 		{
 			Messenger.Default.AddMessage("Delete clicked");
 		}
-		#endregion
-
 	}
 }

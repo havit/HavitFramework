@@ -11,11 +11,8 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	internal class CookieMessenger : Messenger
 	{
-		#region CookieKey
 		private const string CookieKey = "Messenger";
-		#endregion
 
-		#region GetMessagesFromCookie
 		private List<MessengerMessage> GetMessagesFromCookie()
 		{
 			List<MessengerMessage> messages = new List<MessengerMessage>();
@@ -32,9 +29,7 @@ namespace Havit.Web.UI.WebControls
 			}
 			return messages;
 		}
-		#endregion
 
-		#region SaveMessagesToCookie
 		private void SaveMessagesToCookie(List<MessengerMessage> messages)
 		{
 			HttpCookie msgCookie = new HttpCookie(CookieKey);
@@ -58,9 +53,7 @@ namespace Havit.Web.UI.WebControls
 			}
 			GetCurrentContext().Response.Cookies.Set(msgCookie);
 		}
-		#endregion
 
-		#region AddMessage
 		/// <summary>
 		/// Přidá zprávu do messengeru.
 		/// </summary>
@@ -71,9 +64,7 @@ namespace Havit.Web.UI.WebControls
 			messages.Add(message);
 			SaveMessagesToCookie(messages);
 		}
-		#endregion
 
-		#region GetMessages
 		/// <summary>
 		/// Zprávy k zobrazení.
 		/// </summary>
@@ -81,9 +72,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			return GetMessagesFromCookie();
 		}
-		#endregion
 
-		#region Clear
 		/// <summary>
 		/// Vyčistí kolekci zpráv.
 		/// </summary>
@@ -91,9 +80,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			SaveMessagesToCookie(new List<MessengerMessage>());
 		}
-		#endregion
 
-		#region GetCurrentContext
 		private static HttpContext GetCurrentContext()
 		{
 			HttpContext currentContext = HttpContext.Current;
@@ -103,7 +90,6 @@ namespace Havit.Web.UI.WebControls
 			}
 			return currentContext;
 		}
-		#endregion
 	}
 
 }

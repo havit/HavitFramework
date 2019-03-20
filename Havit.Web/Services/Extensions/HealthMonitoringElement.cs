@@ -12,7 +12,6 @@ namespace Havit.Web.Services.Extensions
 	/// </summary>
 	public class HealthMonitoringElement : BehaviorExtensionElement
 	{
-		#region BehaviorType
 		/// <summary>
 		/// Gets the type of behavior.
 		/// </summary>
@@ -23,9 +22,7 @@ namespace Havit.Web.Services.Extensions
 		{
 			get { return typeof(HealthMonitoringBehaviorAttribute); }
 		}
-		#endregion
 
-		#region CreateBehavior
 		/// <summary>
 		/// Creates a behavior extension based on the current configuration settings.
 		/// </summary>
@@ -36,6 +33,5 @@ namespace Havit.Web.Services.Extensions
 		{
 			return new HealthMonitoringBehaviorAttribute();
 		}
-		#endregion
 	}
 }

@@ -13,12 +13,9 @@ namespace Havit.Data.TransientErrorHandling
 	/// </summary>
 	internal class TransientErrorRetryPolicy : IRetryPolicy
 	{
-		#region Private fields
 		private readonly int maxAttempts;
 		private readonly int[] delays;
-		#endregion
 
-		#region Constructors
 		/// <summary>
 		/// Konstruktor pro výchozí chování - 3 pokusy, druhý a třetí pokus jsou s odstupem 10 sekund.
 		/// </summary>
@@ -38,9 +35,7 @@ namespace Havit.Data.TransientErrorHandling
 			this.maxAttempts = maxAttempts;
 			this.delays = delays ?? new int[] { 0 };
 		}
-		#endregion
 
-		#region GetRetryPolicyInfo
 		/// <summary>
 		/// Vrací informaci o tom, jestli má být proveden další pokus a s jakým odstupem.
 		/// </summary>
@@ -54,6 +49,5 @@ namespace Havit.Data.TransientErrorHandling
 
 			return result;
 		}
-		#endregion
 	}
 }

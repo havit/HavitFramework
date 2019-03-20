@@ -13,13 +13,10 @@ namespace Havit.Web.UI
 	/// </summary>
 	public partial class FilePageStatePersister : PageStatePersister
 	{
-		#region Private fields
 		private readonly Page _page;
 		private readonly IFileNamingStrategy _fileNamingStrategy;
 		private readonly ILogService _logService;
-		#endregion
 
-		#region Constructors
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
@@ -41,9 +38,7 @@ namespace Havit.Web.UI
 			: this(page, new PerUserNamingStrategy(root))
 		{
 		}
-		#endregion
 
-		#region Save
 		/// <summary>
 		/// Uložení viewstate/controlstate.
 		/// </summary>
@@ -67,9 +62,7 @@ namespace Havit.Web.UI
 			hiddenFieldPageStatePersister.ControlState = storageSymbol;
 			hiddenFieldPageStatePersister.Save();
 		}
-		#endregion
 
-		#region Load
 		/// <summary>
 		/// Načtení viewstate/controlstate.
 		/// </summary>
@@ -99,9 +92,7 @@ namespace Havit.Web.UI
 				throw new ViewStateLoadFailedException("Nepodařilo se načíst viewstate.", e);
 			}
 		}
-		#endregion
 
-		#region IFileNamingStrategy (interface)
 		/// <summary>
 		/// Strategie pro pojmenování souborů.
 		/// </summary>
@@ -117,9 +108,7 @@ namespace Havit.Web.UI
 			/// </summary>
 			string GetFilename(string storageSymbol);
 		}
-		#endregion
 
-		#region ILogService (interface)
 		/// <summary>
 		/// Služba pro logování operací file page persisteru.
 		/// </summary>
@@ -130,6 +119,5 @@ namespace Havit.Web.UI
 			/// </summary>
 			void Log(string message);
 		}
-		#endregion
 	}
 }

@@ -7,8 +7,6 @@ namespace Havit.Services.Xml.Rss
 	/// </summary>
 	public class RssImage
 	{
-		#region Fields
-
 		private string url;
 		private string title;
 		private string link;
@@ -120,10 +118,6 @@ namespace Havit.Services.Xml.Rss
 			}
 		}
 
-		#endregion
-
-		#region Constructor
-
 		/// <summary>
 		/// Default constructor musí být kvůli XmlSerializeru.
 		/// Nutné zadat Url, Title a Link.
@@ -141,7 +135,5 @@ namespace Havit.Services.Xml.Rss
 			this.Title = title;
 			this.Link = link;
 		}
-
-		#endregion
 	}
 }

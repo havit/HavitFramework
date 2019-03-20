@@ -13,7 +13,6 @@ namespace Havit.Web.UI.WebControls
 	[DataContract]
 	public class SuggestionItem
 	{
-		#region Properties
 		/// <summary>
 		/// Identifikátor položky.
 		/// </summary>
@@ -24,10 +23,8 @@ namespace Havit.Web.UI.WebControls
 		/// Textová hodnota položky.
 		/// </summary>
 		[DataMember(Name = "value")]
-		public string Text { get; set; } 
-		#endregion
+		public string Text { get; set; }
 
-		#region Properties
 		/// <summary>
 		/// Initializes a new instance of the <see cref="SuggestionItem"/> class.
 		/// </summary>
@@ -35,7 +32,6 @@ namespace Havit.Web.UI.WebControls
 		{
 			Value = data;
 			Text = text;
-		} 
-		#endregion
+		}
 	}
 }

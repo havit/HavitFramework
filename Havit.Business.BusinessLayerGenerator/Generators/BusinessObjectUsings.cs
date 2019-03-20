@@ -8,7 +8,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 {
 	public static class BusinessObjectUsings
 	{
-		#region WriteUsings
 		/// <summary>
 		/// Zapíše usings na všechny možné potřebné namespace.
 		/// </summary>
@@ -37,9 +36,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine();
 
 		}
-		#endregion
 
-		#region RemoveObsoleteUsings
 		public static void RemoveObsoleteUsings(string fileName)
 		{
 			List<string> lines = File.ReadLines(FileHelper.ResolvePath(fileName)).ToList();
@@ -52,7 +49,5 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				writer.Save();
 			}
 		}
-		#endregion
-
 	}
 }

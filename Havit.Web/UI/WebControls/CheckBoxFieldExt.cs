@@ -10,7 +10,6 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class CheckBoxFieldExt : CheckBoxField, IIdentifiableField
 	{
-		#region ID (IIdentifiableField Members)
 		/// <summary>
 		/// Identifikátor fieldu na který se lze odkazovat pomocí <see cref="GridViewExt.FindColumn(string)"/>.
 		/// </summary>
@@ -30,7 +29,5 @@ namespace Havit.Web.UI.WebControls
 				ViewState["ID"] = value;
 			}
 		}
-
-		#endregion
 	}
 }

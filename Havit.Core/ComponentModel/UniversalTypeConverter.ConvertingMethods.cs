@@ -9,7 +9,6 @@ namespace Havit.ComponentModel
 {
 	public static partial class UniversalTypeConverter
 	{
-		#region TryConvertByIConvertibleImplementation
 		/// <summary>
 		/// Pokusí se provést převedení typu pomocí IConvertible.
 		/// Implementace převzata z UniversalTypeConverter.
@@ -99,9 +98,7 @@ namespace Havit.ComponentModel
 			}
 			return false;
 		}
-		#endregion
 
-		#region TryConvertByDefaultTypeConverters
 		/// <summary>
 		/// Pokusí se provést převedení typu pomocí TypeConverterů.
 		/// Implementace převzata z UniversalTypeConverter.
@@ -148,7 +145,5 @@ namespace Havit.ComponentModel
 			}
 			return false;
 		}
-		#endregion
-
 	}
 }

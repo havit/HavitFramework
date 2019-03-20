@@ -13,8 +13,7 @@ namespace Havit.Web.UI.Scriptlets
     /// </summary>
     internal static class BrowserHelper
     {
-		#region IsInternetExplorer
-		/// <summary>
+	    /// <summary>
 		/// Vrací <c>true</c>, pokud byl aktuální <see cref="System.Web.HttpRequest">HttpRequest</see> pochází z Internet Exploreru 
 		/// (nebo shodně se identifikujícího browseru).
 		/// </summary>
@@ -26,10 +25,8 @@ namespace Havit.Web.UI.Scriptlets
 				return (browser == "IE") || (browser == "InternetExplorer");
 			}
 		}
-		#endregion
 
-		#region GetAttachEventScript
-		/// <summary>
+	    /// <summary>
 		/// Vrátí příkaz pro připojení události k objektu.
 		/// Detekuji IE, který připojuje události jinak než ostatní prohlížeče.
 		/// </summary>
@@ -47,10 +44,8 @@ namespace Havit.Web.UI.Scriptlets
 
 			return String.Format("$({0}).on('{1}', {2});", attachingObject, eventName.Substring(2), functionDelegateName);
 		}
-		#endregion
 
-		#region GetDetachEventScript
-		/// <summary>
+	    /// <summary>
 		/// Vrátí příkaz pro odpojení události od objektu.
 		/// Detekuji IE, který odpojuje události jinak než ostatní prohlížeče.
 		/// </summary>
@@ -68,10 +63,8 @@ namespace Havit.Web.UI.Scriptlets
 
 			return String.Format("$({0}).off('{1}', {2});", detachingObject, eventName.Substring(2), functionDelegateName);
 		}
-		#endregion
 
-		#region GetAttachDetachEventScriptEventHandler (internal)
-		/// <summary>
+	    /// <summary>
 		/// Delegát funkcí GetAttachEventScript a GetDetachEventScript.
 		/// </summary>
 		/// <param name="manipulatingObject">Cílový objekt pro navázání/odvázání události.</param>
@@ -79,7 +72,5 @@ namespace Havit.Web.UI.Scriptlets
 		/// <param name="functionDelegateName">Delegát, který je připojován.</param>
 		/// <returns>Příkaz připojující událost k objektu.</returns>
 		internal delegate string GetAttachDetachEventScriptEventHandler(string manipulatingObject, string eventName, string functionDelegateName);
-		#endregion
-
-	}
+    }
 }

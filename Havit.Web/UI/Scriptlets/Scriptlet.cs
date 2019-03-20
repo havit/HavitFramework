@@ -15,20 +15,15 @@ namespace Havit.Web.UI.Scriptlets
 	[ControlBuilder(typeof(NoLiteralContolBuilder))]	
 	public sealed class Scriptlet : Control, IScriptControl
 	{
-		#region Private readonly fields
 		private readonly string[] _clientScriptScriptletFunctionParameters = new string[] { "parameters" };
 		private readonly string[] _clientScriptGetParametersFunctionParameters = new string[] { };
 		private readonly string[] _clientScriptAttachDetachEventsFunctionParameters = new string[] { "data", "delegate", "handler" };
-		#endregion
 
-		#region Private fields
 		private ClientScript clientScript = null;
 		private readonly List<IScriptletParameter> scriptletParameters = new List<IScriptletParameter>();
-		#endregion
 
 		/* Parametry Scriptletu *************** */
 
-		#region ControlExtenderRepository
 		/// <summary>
 		/// Vrací nebo nastavuje repository extenderů pro parametry.
 		/// </summary>
@@ -38,10 +33,7 @@ namespace Havit.Web.UI.Scriptlets
 			set { controlExtenderRepository = value; }
 		}
 		private IControlExtenderRepository controlExtenderRepository;
-		
-		#endregion
 
-		#region ScriptSubstitution
 		/// <summary>
 		/// Vrací nebo nastavuje substituci použitou pro tvorbu klienského skriptu.
 		/// </summary>
@@ -51,11 +43,9 @@ namespace Havit.Web.UI.Scriptlets
 			set { scriptSubstitution = value; }
 		}
 		private IScriptSubstitution scriptSubstitution;
-		#endregion
 
 		/* ScriptManager *************** */
 
-		#region IsInAsyncPostBack (internal)
 		/// <summary>
 		/// Vrací true, pokud je zpracováván asynchronní postback (callback).
 		/// </summary>
@@ -72,9 +62,7 @@ namespace Havit.Web.UI.Scriptlets
 			}
 		}
 		private bool? _isInAsyncPostBack = null;
-		#endregion
 
-		#region IsScriptManager (internal)
 		/// <summary>
 		/// Vrací true, pokud je k dispozici ScriptManager.
 		/// </summary>
@@ -90,9 +78,7 @@ namespace Havit.Web.UI.Scriptlets
 			}
 		}
 		private bool? _isScriptManager = null;
-		#endregion
 
-		#region AsyncPostBackEnabled (internal)
 		/// <summary>
 		/// Vrací true, pokud může dojít k asynchronnímu postbacku (callbacku).
 		/// </summary>
@@ -109,11 +95,9 @@ namespace Havit.Web.UI.Scriptlets
 			}
 		}
 		private bool? _asyncPostBackEnabled = null;
-		#endregion
 
 		/* *************** */
 
-		#region Constructor
 		/// <summary>
 		/// Vytvoří instanci scriptletu a nastaví výchozí hodnoty
 		/// <see cref="ControlExtenderRepository">ControlExtenderRepository</see>
@@ -128,9 +112,6 @@ namespace Havit.Web.UI.Scriptlets
 			scriptSubstitution = ScriptSubstitutionRepository.Default;
 		}
 
-		#endregion
-
-		#region AddedControl (override)
 		/// <summary>
 		/// Zavoláno, když je do kolekce Controls přidán Control.
 		/// Zajišťuje, aby nebyl přidán control neimplementující 
@@ -165,11 +146,9 @@ namespace Havit.Web.UI.Scriptlets
 				scriptletParameters.Add((IScriptletParameter)control);
 			}
 		}
-		#endregion
 
 		/* Renderování *************** */
 
-		#region OnPreRender (override)
 		/// <summary>
 		/// Zajistí tvorbu klienstkého skriptu.
 		/// </summary>
@@ -187,9 +166,7 @@ namespace Havit.Web.UI.Scriptlets
 			CheckControlConditions();
 			PrepareAndRegisterClientScript();
 		}
-		#endregion
-		
-		#region CheckControlConditions (protected)
+
 		/// <summary>
 		/// Ověří, zda jsou správně zadány parametry scriptletu (testuje, zda byl zadán ClientScript).
 		/// </summary>
@@ -200,9 +177,7 @@ namespace Havit.Web.UI.Scriptlets
 				throw new HttpException("ClientScript nebyl zadán.");
 			}
 		}
-		#endregion
-		
-		#region PrepareAndRegisterClientScript (private)
+
 		/// <summary>
 		/// Sestaví kompletní klientský skript seskládáním funkce, vytvoření objektu 
 		/// a jeho parametrů. Zaregistruje skripty do stránky
@@ -231,9 +206,7 @@ namespace Havit.Web.UI.Scriptlets
 					true);
 			}
 		}
-		#endregion
 
-		#region OnLoad
 		/// <summary>
 		/// Pokud jsme v (synchronním) postbacku, stránka se celá refreshne, přicházíme o možnost znovupoužití funkcí
 		/// </summary>
@@ -249,9 +222,7 @@ namespace Havit.Web.UI.Scriptlets
 				ViewState["DetachEventsHash"] = null;
 			}
 		}
-		#endregion
 
-		#region PrepareClientSideScripts (private)
 		/// <summary>
 		/// Vrátí klientský skript scriptletu.
 		/// </summary>
@@ -316,9 +287,7 @@ namespace Havit.Web.UI.Scriptlets
 				builder.AppendLineFormat("{0}();", handlerDelegate);
 			}
 		}
-		#endregion
 
-		#region PrepareClientSideScripts_GetParametersFunctionCode (private)
 		/// <summary>
 		/// Vrátí kód funkce pro získání parametrů scriptletu.
 		/// </summary>
@@ -334,9 +303,7 @@ namespace Havit.Web.UI.Scriptlets
 			builder.AppendLine("return result;");
 			return builder.ToString();
 		}
-		#endregion
 
-		#region PrepareClientSideScripts_GetAttachEventsFunctionCode (private)
 		/// <summary>
 		/// Vrátí kód funkce pro navázání událostí na parametry scriptletu.
 		/// </summary>
@@ -357,9 +324,7 @@ namespace Havit.Web.UI.Scriptlets
 
 			return attachBuilder.ToString();
 		}
-		#endregion
 
-		#region PrepareClientSideScripts_GetDetachEventsFunctionCode (private)
 		/// <summary>
 		/// Vrátí kód funkce pro odpojení událostí od parametrů scriptletu.
 		/// </summary>
@@ -377,9 +342,7 @@ namespace Havit.Web.UI.Scriptlets
 
 			return detachBuilder.ToString();
 		}
-		#endregion		
 
-		#region PrepareClientSideScripts_WriteScriptWithReuse (private)
 		/// <summary>
 		/// Zaregistruje funkci. Před registrací zkouší, zda je funkce v cache či zda je možné provést reuse.
 		/// </summary>
@@ -439,11 +402,8 @@ namespace Havit.Web.UI.Scriptlets
 				ViewState[hashIdentifier] = currentHashValue;
 			}
 		}
-		#endregion
 
 		/* IScriptControl interface *************** */
-		
-		#region IScriptControl Members
 
 		IEnumerable<ScriptDescriptor> IScriptControl.GetScriptDescriptors()
 		{
@@ -454,8 +414,5 @@ namespace Havit.Web.UI.Scriptlets
 		{
 			return null;
 		}
-
-		#endregion
-
 	}
 }

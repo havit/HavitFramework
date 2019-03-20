@@ -10,7 +10,6 @@ namespace Havit.Business.BusinessLayerGenerator
 {
 	internal static class Program
 	{
-		#region Main
 		private static void Main(string[] args)
 		{
 			Stopwatch stopwatch = new Stopwatch();
@@ -198,7 +197,6 @@ namespace Havit.Business.BusinessLayerGenerator
 			}
 
 			ConsoleHelper.WriteLineInfo("");
-		}		
-		#endregion
+		}
 	}
 }

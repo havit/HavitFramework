@@ -12,14 +12,11 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 	/// </summary>
 	public class UserNotFoundException : Exception
 	{
-		#region UserName
 		/// <summary>
 		/// User which was not found.
 		/// </summary>
 		public string UserName { get; private set; }
-		#endregion
 
-		#region Message
 		/// <summary>
 		/// Gets a message that describes the current exception.
 		/// </summary>
@@ -30,9 +27,7 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 				return String.Format("User {0} not found.", this.UserName);
 			}
 		}
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
@@ -40,6 +35,5 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 		{
 			this.UserName = userName;
 		}
-		#endregion
 	}
 }

@@ -13,14 +13,11 @@ namespace Havit.Business.BusinessLayerGenerator.Writers
 	/// </summary>
 	public class CodeWriter
 	{
-		#region Private const - IndentString
 		/// <summary>
 		/// Řetězec reprezentující úroveň odsazení.
 		/// </summary>
 		private const string IndentString = "\t";
-		#endregion
 
-		#region Private fields
 		/// <summary>
 		/// Celá cílová cesta pro zapisovaný kód.
 		/// </summary>
@@ -40,9 +37,6 @@ namespace Havit.Business.BusinessLayerGenerator.Writers
 
 		private int emtpyLinesBeforeClosingParenthesisCounter = 0;
 
-		#endregion
-
-		#region Constructor
 		public CodeWriter(string fullPath, bool eliminateEmptyLinesBeforeClosingParenthesis = false)
 		{
 			this.fullPath = fullPath;
@@ -58,9 +52,7 @@ namespace Havit.Business.BusinessLayerGenerator.Writers
 		        }
 		    });
 		}
-		#endregion
 
-		#region Metody pro výpis - Write...
 		/// <summary>
 		/// Vypíše prázdný řádek. Odsazení je dodrženo.
 		/// </summary>
@@ -254,9 +246,6 @@ namespace Havit.Business.BusinessLayerGenerator.Writers
 			}
 		}
 
-		#endregion
-
-		#region Indend
 		/// <summary>
 		/// Aktuální odsazení.
 		/// </summary>
@@ -284,9 +273,7 @@ namespace Havit.Business.BusinessLayerGenerator.Writers
 
 			indentLevel -= 1;
 		}
-		#endregion
 
-		#region GetContent
 		/// <summary>
 		/// Vrátí obsah (kód) ve writeru.
 		/// </summary>
@@ -294,9 +281,7 @@ namespace Havit.Business.BusinessLayerGenerator.Writers
 		{
 			return code.ToString();
 		}
-		#endregion
 
-		#region Save
 		/// <summary>
 		/// Zapíšeme obsah do souboru (jen tehdy, pokud se neliší od současného obsahu souboru).
 		/// </summary>
@@ -315,9 +300,7 @@ namespace Havit.Business.BusinessLayerGenerator.Writers
 				File.WriteAllText(this.fullPath, this.GetContent(), Encoding.UTF8);					
 			}
 		}
-		#endregion
 
-		#region AlreadyExistsTheSame
 		/// <summary>
 		/// Vrací true, pokud již existuje soubor se stejným jménem a obsahem.
 		/// </summary>
@@ -326,9 +309,7 @@ namespace Havit.Business.BusinessLayerGenerator.Writers
 		    preloadFileTask.Wait();
             return (fileExists && (fileContent == this.GetContent()));
 		}
-		#endregion
 
-		#region HasByteOrderMask
 		/// <summary>
 		/// Vrací true, pokud soubor již existuje a má UTF-8 byte order mask.
 		/// </summary>
@@ -350,6 +331,5 @@ namespace Havit.Business.BusinessLayerGenerator.Writers
 			}
 			return utf8BOM.SequenceEqual(fileBOM);
 		}
-		#endregion
 	}
 }

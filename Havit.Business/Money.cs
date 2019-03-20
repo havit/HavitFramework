@@ -12,8 +12,7 @@ namespace Havit.Business
 	[Serializable]
 	public class Money<TCurrency>
 		where TCurrency : class
-	{		
-		#region Amount
+	{
 		/// <summary>
 		/// Částka v jednotkách měny. Udává se hodnota v základní
 		/// jednotce a zlomky měny (např. haléře) se zadávají za desetinou tečkou (např.
@@ -31,9 +30,7 @@ namespace Havit.Business
 			}
 		}
 		private decimal? _amount;
-		#endregion
 
-		#region Currency
 		/// <summary>
 		/// Měna částky.
 		/// </summary>
@@ -49,9 +46,7 @@ namespace Havit.Business
 			}
 		}
 		private TCurrency _currency;
-		#endregion
 
-		#region Constructors
 		/// <summary>
 		/// Inicializuje třídu money s prázdními hodnotami (Amount i Currency jsou null).
 		/// </summary>
@@ -67,9 +62,7 @@ namespace Havit.Business
 			this._amount = amount;
 			this._currency = currency;
 		}
-		#endregion
 
-		#region Equals, operátory == a !=
 		/// <summary>
 		/// Vrátí true, pokud se hodnoty aktuální instance rovnají hodnotám instance v parametru. Porovnává se částka a měna.
 		/// </summary>
@@ -110,9 +103,7 @@ namespace Havit.Business
 		{
 			return !Object.Equals(objA, objB);
 		}
-		#endregion
 
-		#region GetHashCode
 		/// <summary>
 		/// HashCode je složen jako XOR hash kódů amount a currency, pokud tyto hodnoty nejsou null.
 		/// </summary>
@@ -132,9 +123,7 @@ namespace Havit.Business
 
 			return result;
 		}
-		#endregion
 
-		#region AssertSameCurrencies
 		/// <summary>
 		/// Porovná měny zadané v parametrech. Pokud se liší, je vyhozena výjimka.
 		/// </summary>
@@ -154,9 +143,7 @@ namespace Havit.Business
 				Contract.Requires<InvalidOperationException>(currency1 == currency2, "Currencies are not same.");
 			}
 		}
-		#endregion
 
-		#region AssertNotNull
 		/// <summary>
 		/// Vyvolá výjimku, pokud má parametr hodnotu null.
 		/// </summary>
@@ -164,9 +151,7 @@ namespace Havit.Business
 		{
 			Contract.Requires<ArgumentNullException>(value != null, parameterName);
 		}
-		#endregion
 
-		#region Operátory porovnání <, >, <=, >=
 		/// <summary>
 		/// Porovná se částka. Pokud se neshoduje měna, operace vyvolá výjimku.
 		/// </summary>
@@ -200,9 +185,7 @@ namespace Havit.Business
 		{
 			return (money1 < money2) || (money1 == money2);
 		}
-		#endregion
 
-		#region Operátory +, -, *, /
 		/// <summary>
 		/// Sečte dvě hodnoty Money. Pokud se neshoduje měna, operace vyvolá výjimku.
 		/// </summary>
@@ -259,9 +242,6 @@ namespace Havit.Business
 			return DivideMoney(dividend, divisor);
 		}
 
-		#endregion
-
-		#region SumMoney
 		/// <summary>
 		/// Sečte dvě hodnoty Money. Pokud se neshoduje měna, operace vyvolá výjimku.	
 		/// </summary>
@@ -280,9 +260,7 @@ namespace Havit.Business
 			result.Currency = money1.Currency;
 			return result;
 		}
-		#endregion
 
-		#region SubtractMoney
 		/// <summary>
 		/// Odečte měny (odčítá se money2 od money1). Pokud se neshoduje měna, operace vyvolá výjimku.
 		/// </summary>
@@ -301,9 +279,7 @@ namespace Havit.Business
 			result.Currency = money1.Currency;
 			return result;
 		}
-		#endregion
 
-		#region MultipleMoney
 		/// <summary>
 		/// Vynásobí částku konstantou.
 		/// </summary>
@@ -319,9 +295,7 @@ namespace Havit.Business
 			result.Currency = money.Currency;
 			return result;
 		}
-		#endregion
 
-		#region DivideMoney
 		/// <summary>
 		/// Vydělí částku konstantou.
 		/// </summary>
@@ -354,7 +328,5 @@ namespace Havit.Business
 			decimal result = dividend.Amount.Value / divisor.Amount.Value;
 			return result;
 		}
-
-		#endregion
 	}	
 }

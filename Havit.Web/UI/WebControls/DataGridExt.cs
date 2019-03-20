@@ -11,7 +11,6 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class DataGridExt : System.Web.UI.WebControls.DataGrid
 	{
-		#region Data members (podle abecedy)
 		/// <summary>
 		/// Povoluje/zakazuje automatické zpracování události <see cref="DataGrid.CancelCommand"/>.
 		/// </summary>
@@ -203,9 +202,6 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 
-		#endregion
-
-		#region DataBindRequest (event)
 		/// <summary>
 		/// Vyskytne se, když DataGridExt potřebuje přebindovat data.
 		/// </summary>
@@ -226,9 +222,7 @@ namespace Havit.Web.UI.WebControls
 				this.DataBindRequest(this, e);
 			}
 		}
-		#endregion
 
-		#region OnSortCommand
 		/// <summary>
 		/// Default implementace sortění.
 		/// Při zapnutém ViewStatu zajišťuje obousměrné přepínání SortExpression.
@@ -303,9 +297,7 @@ namespace Havit.Web.UI.WebControls
 
 			this.OnDataBindRequest(EventArgs.Empty);
 		}
-		#endregion
 
-		#region OnPageIndexChanged
 		/// <summary>
 		/// Zajišťuje volání události PageIndexChanged.
 		/// Při povoleném AutoHandlePageIndexChanged nejprve zavolá AutoPageIndexChangedHandler.
@@ -330,9 +322,7 @@ namespace Havit.Web.UI.WebControls
 			this.CurrentPageIndex = e.NewPageIndex;
 			this.OnDataBindRequest(EventArgs.Empty);
 		}
-		#endregion
 
-		#region OnItemCreated
 		/// <summary>
 		/// Zajišťuje volání události ItemCreated.
 		/// Implementace přidává do Headeru symboly směru sortění.
@@ -407,9 +397,7 @@ namespace Havit.Web.UI.WebControls
 				}
 			}
 		}
-		#endregion
 
-		#region OnEditCommand
 		/// <summary>
 		/// Zajistí volání obsluhy události EditCommand.
 		/// Pokud je AutoHandleEditCommand true, provede default obsluhu AutoEditCommandHandler().
@@ -433,9 +421,7 @@ namespace Havit.Web.UI.WebControls
 			this.EditItemIndex = e.Item.ItemIndex;
 			this.OnDataBindRequest(EventArgs.Empty);
 		}
-		#endregion
 
-		#region OnCancelCommand
 		/// <summary>
 		/// Zajistí volání obsluhy události CancelCommand.
 		/// Pokud je AutoHandleCancelCommand true, provede default obsluhu AutoCancelCommandHandler().
@@ -459,6 +445,5 @@ namespace Havit.Web.UI.WebControls
 			this.EditItemIndex = -1;
 			this.OnDataBindRequest(EventArgs.Empty);
 		}
-		#endregion
 	}
 }

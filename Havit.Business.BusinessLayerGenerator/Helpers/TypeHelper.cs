@@ -9,7 +9,6 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 {
 	public static class TypeHelper
 	{
-		#region GetFieldSystemTypeName
 		/// <summary>
 		/// Získá systémový typ na základě typu sloupce;
 		/// </summary>
@@ -17,9 +16,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		{
 			return GetFieldSystemTypeName(column.DataType, column.Nullable);
 		}
-		#endregion
 
-		#region GetFieldSystemTypeName
 		/// <summary>
 		/// Získá systémový typ na základě SqlDbType (string) a příznaku, zda je povoleno ukládání hodnoty null;
 		/// </summary>
@@ -264,9 +261,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			}
 			return nullable ? result : result.Replace("?", "");
 		}
-		#endregion
 
-		#region ToSqlDbType
 		/// <summary>
 		/// Převede SqlDataType na SqlDbType.
 		/// </summary>
@@ -360,9 +355,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 				default: throw new ArgumentException(String.Format("Nepodařilo se přeložit SqlDataType \"{0}\" na SqlDbType.", dataType.SqlDataType.ToString()));
 			}
 		}
-		#endregion
 
-		#region ToDbType
 		/// <summary>
 		/// Převede SqlDataType na DbType.
 		/// </summary>
@@ -431,9 +424,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 				default: throw new ArgumentException(String.Format("Nepodařilo se přeložit SqlDataType \"{0}\" na DbType.", dataType.SqlDataType.ToString()));
 			}
 		}
-		#endregion
 
-		#region IsDateTime
 		/// <summary>
 		/// Vrátí true, pokud je typ sloupce DateTime nebo SmallDateTime.
 		/// </summary>
@@ -441,9 +432,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		{
 			return GetFieldSystemTypeName(column).StartsWith("DateTime");
 		}
-		#endregion
 
-		#region IsNonstandardType
 		/// <summary>
 		/// Vrací true, pokud má být sloupec reprezentován jako datový typ Enum.
 		/// </summary>
@@ -451,9 +440,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		{
 			return !String.IsNullOrEmpty(GetNonstandardPropertyTypeName(column));
 		}
-		#endregion
 
-		#region GetNonstandardPropertyTypeName
 		/// <summary>
 		/// Vrací název datového typu Enum, kterým je reprezentována hodnota daného sloupce v C#.
 		/// </summary>
@@ -461,9 +448,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		{
 			return ExtendedPropertiesHelper.GetString(ExtendedPropertiesKey.FromColumn(column), "PropertyType");
 		}
-		#endregion
 
-		#region GetNonstandarPropertyTypeConverterName
 		/// <summary>
 		/// Vrací název konvertoru přiřazeného k danému sloupci.
 		/// </summary>
@@ -471,9 +456,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		{
 			return ExtendedPropertiesHelper.GetString(ExtendedPropertiesKey.FromColumn(column), "PropertyTypeConverter");
 		}
-		#endregion
 
-		#region GetPropertyTypeName
 		/// <summary>
 		/// Vrací typ property na základě sloupce.
 		/// Je-li sloupec cizím klíčem, použije se referencovaná tabulka na určení třídy.
@@ -497,9 +480,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 
 			return TypeHelper.GetFieldSystemTypeName(column);
 		}
-		#endregion
 
-		#region IsBusinessObjectReference
 		/// <summary>
 		/// Vrací true, pokud sloupec referencuje business object.
 		/// </summary>
@@ -507,9 +488,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		{
 			return column.IsForeignKey && String.IsNullOrEmpty(GetNonstandardPropertyTypeName(column));
 		}
-		#endregion
 
-		#region IsNumeric
 		/// <summary>
 		/// Vrací true, pokud je být sloupec reprezentován jako číselný datový typ.
 		/// </summary>
@@ -531,9 +510,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 					return false;
 			}
 		}
-		#endregion
 
-		#region IsDateOnly
 		/// <summary>
 		/// Vrací true, pokud jde o typ, který ořezává hodnotu datetime na datum.
 		/// </summary>
@@ -558,9 +535,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			}
 			return false;
 		}
-		#endregion
 
-		#region IsXml
 		/// <summary>
 		/// Vrací true, pokud jde o typ ukládající XML hodnotu (dokument/fragmenty).
 		/// </summary>
@@ -568,7 +543,5 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		{
 			return (column.DataType.SqlDataType == SqlDataType.Xml) && (GetFieldSystemTypeName(column) == "XmlDocument");
 		}
-		#endregion
-     
 	}
 }

@@ -11,7 +11,6 @@ namespace Havit.Business.BusinessLayerGenerator.IndexBuilders
 {
 	public static class IndexesBuilder
 	{
-		#region CreateIndexes
 		/// <summary>
 		/// Vytvoří indexy k tabulce.
 		/// </summary>
@@ -38,9 +37,7 @@ namespace Havit.Business.BusinessLayerGenerator.IndexBuilders
 				RemoveOldIndexes(table, generatorIndexes);
 			}
 		}
-		#endregion
 
-		#region CreateJoinTableIndexes
 		/// <summary>
 		/// Vytvoří indexy k tabulce, která je spojkou (realizuje vztah M:N).
 		/// </summary>
@@ -52,9 +49,7 @@ namespace Havit.Business.BusinessLayerGenerator.IndexBuilders
 			CreateJoinTableIndex(table, column1, column2, generatorIndexes);
 			CreateJoinTableIndex(table, column2, column1, generatorIndexes);
 		}
-		#endregion
 
-		#region CreateJoinTableIndex
 		/// <summary>
 		/// Vytvoří indexy k tabulce, která je spojkou (realizuje vztah M:N) pro sloupce v daném pořadí.
 		/// </summary>
@@ -84,9 +79,7 @@ namespace Havit.Business.BusinessLayerGenerator.IndexBuilders
 				generatorIndexes.Add(index.Name); // pokud kritérium splnil jiný index, tak jej zapíšeme do seznamu generátorem podporovaných dotazů
 			}
 		}
-		#endregion
 
-		#region CreateNormalTableIndexes
 		private static void CreateNormalTableIndexes(Table table, List<string> generatorIndexes)
 		{
 			foreach (Column column in TableHelper.GetNotIgnoredColumns(table))
@@ -113,9 +106,7 @@ namespace Havit.Business.BusinessLayerGenerator.IndexBuilders
 			}
 
 		}
-		#endregion
 
-		#region CreateColumnIndex
 		private static void CreateColumnIndex(Table table, Column column, List<string> generatorIndexes)
 		{
 			if (ColumnHelper.GetGenerateIndexes(column))
@@ -157,9 +148,7 @@ namespace Havit.Business.BusinessLayerGenerator.IndexBuilders
 				IndexHelper.CreateOrUpdate(table, index, generatorIndexes);
 			}
 		}
-		#endregion
 
-		#region CreateCollectionOrderIndex
 		private static void CreateCollectionOrderIndex(Table table, CollectionProperty collectionProperty, List<string> generatorIndexes)
 		{
 			if (collectionProperty.IsManyToMany)
@@ -212,9 +201,7 @@ namespace Havit.Business.BusinessLayerGenerator.IndexBuilders
 			}
 
 		}
-		#endregion
 
-		#region CreateLocalizationIndex
 		private static void CreateLocalizationIndex(Table table, List<string> generatorIndexes)
 		{
 			Column parentLocalizationColumn = LocalizationHelper.GetParentLocalizationColumn(table);
@@ -239,9 +226,7 @@ namespace Havit.Business.BusinessLayerGenerator.IndexBuilders
 
 			IndexHelper.CreateOrUpdate(table, index, generatorIndexes);
 		}
-		#endregion
 
-		#region CreateLanguageIndex
 		private static void CreateLanguageIndex(Table table, List<string> generatorIndexes)
 		{
 			Column uiCultureColumn = LanguageHelper.GetUICultureColumn();
@@ -258,9 +243,7 @@ namespace Havit.Business.BusinessLayerGenerator.IndexBuilders
 				IndexHelper.CreateOrUpdate(table, index, generatorIndexes);
 			}
 		}
-		#endregion
 
-		#region RemoveOldIndexes
 		private static void RemoveOldIndexes(Table table, List<string> generatorIndexes)
 		{
 			List<string> currentGeneratorIndexes = new List<string>();
@@ -279,7 +262,5 @@ namespace Havit.Business.BusinessLayerGenerator.IndexBuilders
 			}
 
 		}
-		#endregion
-
 	}
 }

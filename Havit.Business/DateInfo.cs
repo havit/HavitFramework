@@ -7,7 +7,6 @@ namespace Havit.Business
 	/// </summary>
 	public class DateInfo : IDateInfo
 	{
-		#region Data Fields - hodnoty
 		/// <summary>
 		/// Vrátí den, kterému DateInfo patří.
 		/// </summary>
@@ -34,9 +33,7 @@ namespace Havit.Business
 			get { return _holidayDescription; }
 		}
 		private string _holidayDescription;
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Vytvoří instanci <see cref="DateInfo"/>.
 		/// </summary>
@@ -45,9 +42,7 @@ namespace Havit.Business
 		{
 			this._date = date.Date;
 		}
-		#endregion
 
-		#region SetAsHoliday
 		/// <summary>
 		/// Nastaví den jako svátek.
 		/// </summary>
@@ -65,6 +60,5 @@ namespace Havit.Business
 		{
 			SetAsHoliday(null);
 		}
-		#endregion
 	}
 }

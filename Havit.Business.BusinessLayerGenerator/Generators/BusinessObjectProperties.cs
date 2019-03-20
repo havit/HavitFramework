@@ -9,7 +9,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 {
 	public static class BusinessObjectProperties
 	{
-		#region WriteProperties
 		public static void WriteProperties(CodeWriter writer, Table table)
 		{
 			bool readonlyTable = TableHelper.IsReadOnly(table);
@@ -55,9 +54,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				WriteCollectionProperty(writer, table, collectionProperty);
 			}
 		}
-		#endregion
 
-		#region WriteProperty
 		public static void WriteProperty(CodeWriter writer, Table table, Column column, string propertyName, string typeName, bool isReadOnly, string description)
 		{
 			writer.WriteCommentSummary(description);
@@ -194,9 +191,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			}
 
 		}
-		#endregion
 
-		#region WriteCollectionProperty
 		public static void WriteCollectionProperty(CodeWriter writer, Table table, CollectionProperty collectionProperty)
 		{
 			writer.WriteCommentSummary(collectionProperty.Description);
@@ -249,6 +244,5 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			}
 			writer.WriteLine();
 		}
-		#endregion
 	}
 }

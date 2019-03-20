@@ -19,11 +19,8 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// </summary>
 		internal class DialogSectionControl : Control
 		{
-			#region Private fields
 			private readonly Func<string> getSectionCssClass;
-			#endregion
 
-			#region Constructor
 			/// <summary>
 			/// Constructor.
 			/// </summary>
@@ -32,9 +29,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				Contract.Assert(getSectionCssClass != null);
 				this.getSectionCssClass = getSectionCssClass;
 			}
-			#endregion
 
-			#region Render
 			protected override void Render(HtmlTextWriter writer)
 			{
 				if (HasControls())
@@ -48,7 +43,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 					writer.RenderEndTag(); // div.sectionCssClass
 				}
 			}
-			#endregion
 		}
 	}
 }

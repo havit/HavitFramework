@@ -10,7 +10,6 @@ namespace Havit.Web
 	/// </summary>
 	public static class HttpServerUtilityExt
 	{
-		#region ClearCache
 		/// <summary>
 		/// Vyčistí cache aplikace.
 		/// </summary>
@@ -22,9 +21,7 @@ namespace Havit.Web
 				cache.Remove(de.Key.ToString());
 			}
 		}
-		#endregion
 
-		#region ResolveUrl
 		/// <summary>
 		/// Converts a URL into one that is usable on the requesting client.
 		/// </summary>
@@ -103,6 +100,5 @@ namespace Havit.Web
 			
 			return ResolveUrl(context.Request.ApplicationPath, url);
 		}
-		#endregion
 	}
 }

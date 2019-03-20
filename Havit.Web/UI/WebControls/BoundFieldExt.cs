@@ -14,7 +14,6 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class BoundFieldExt : System.Web.UI.WebControls.BoundField, IIdentifiableField, IFilterField
 	{
-		#region ID (IIdentifiableField Members)
 		/// <summary>
 		/// Identifikátor fieldu na který se lze odkazovat pomocí <see cref="GridViewExt.FindColumn(string)"/>.
 		/// </summary>
@@ -34,9 +33,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["ID"] = value;
 			}
 		}
-		#endregion
 
-		#region Properties
 		/// <summary>
 		/// Css třída vygenerované buňky.	
 		/// Zamýšleno např. pro omezení šírky sloupce.
@@ -64,9 +61,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["EmptyText"] = value;
 			}
 		}
-		#endregion
 
-		#region DataFormatString
 		/// <summary>
 		/// Gets or sets the string that specifies the display format for the value of the field.
 		/// </summary>
@@ -90,9 +85,7 @@ namespace Havit.Web.UI.WebControls
 				}
 			}
 		}
-		#endregion
 
-		#region FilterMode
 		/// <summary>
 		/// Režim automatického filteru.
 		/// Výchozí hodnota je None.
@@ -108,9 +101,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["FilterMode"] = value;
 			}
 		}
-		#endregion
 
-		#region DataFilterField
 		/// <summary>
 		/// Field, který se používá ve filtru.
 		/// Pokud není nastaveno, použije se DataField.
@@ -126,9 +117,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["DataFilterField"] = value;
 			}
 		}
-		#endregion
 
-		#region FilterStyle
 		/// <summary>
 		/// Styl buňky filtru.
 		/// </summary>
@@ -151,9 +140,7 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		private TableItemStyle _filterStyle;
-		#endregion
 
-		#region CreateField - override, v potomcích rovněž nutný override.
 		/// <summary>
 		/// Vyžadováno implementací Fieldu v .NETu. V potomcích nutno přepsat.
 		/// </summary>
@@ -162,9 +149,6 @@ namespace Havit.Web.UI.WebControls
 		{
 			return new Havit.Web.UI.WebControls.BoundFieldExt();
 		}
-		#endregion
-
-		#region GetValue, FormatValue, GetNotFoundDataItem
 
 		private static readonly char[] indexExprStartChars = new char[] { '[', '(' };
 
@@ -269,9 +253,7 @@ namespace Havit.Web.UI.WebControls
 
 			throw new InvalidOperationException(String.Format("Při zpracování hodnoty z DataFieldu \"{0}\" byla získána hodnota null nebo DBNull.Value, ale není nastavena hodnota vlastnosti EmptyText.", DataField));
 		}
-		#endregion
 
-		#region InitializeDataCell, InitializeDataCellContent
 		/// <summary>
 		/// Pokud není CellCssClass prázdné, generuje se do buňky tabulky &lt;div="CellCssClass"&gt;...&lt;/div&gt;.
 		/// Jinak se použije normálně samotná buňka tabulky.
@@ -307,9 +289,6 @@ namespace Havit.Web.UI.WebControls
 			};
 		}
 
-		#endregion
-
-		#region CopyProperties
 		/// <summary>
 		/// Copies the properties of the current System.Web.UI.WebControls.BoundField object to the specified System.Web.UI.WebControls.DataControlField object.
 		/// </summary>
@@ -321,9 +300,7 @@ namespace Havit.Web.UI.WebControls
 				((IFilterField)newField).FilterStyle.CopyFrom(this.FilterStyle);
 			}
 		}
-		#endregion
 
-		#region SaveViewState, LoadViewState, TrackViewState
 		/// <summary>
 		/// Saves the changes made to the System.Web.UI.WebControls.DataControlField view state since the time the page was posted back to the server.
 		/// </summary>
@@ -362,16 +339,12 @@ namespace Havit.Web.UI.WebControls
 				((IStateManager)_filterStyle).TrackViewState();
 			}
 		}
-		#endregion
 
-		#region IFilterField.FilterStyleInternal
 		TableItemStyle IFilterField.FilterStyleInternal
 		{
 			get { return _filterStyle; }
 		}
-		#endregion
 
-		#region IFilterField.InitializeFilterCell
 		/// <summary>
 		/// Vloží do buňky instanci controlu automatického filtru.
 		/// </summary>
@@ -399,6 +372,5 @@ namespace Havit.Web.UI.WebControls
 				default: throw new ApplicationException("Neznámá hodnota vlastnosti FilterMode.");
 			}
 		}
-		#endregion
 	}
 }

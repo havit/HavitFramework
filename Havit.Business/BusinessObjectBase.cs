@@ -23,15 +23,12 @@ namespace Havit.Business
 	[DebuggerDisplay("{GetType().FullName,nq} (ID={IsNew ? \"New\" : ID.ToString(),nq}, IsLoaded={IsLoaded,nq}, IsDirty={IsDirty,nq}, IsDisconnected={IsDisconnected,nq})")]
 	public abstract class BusinessObjectBase : INotifyPropertyChanged
 	{
-		#region Consts
 		/// <summary>
 		/// Hodnota, kterou má ID objektu neuloženého v databázi (bez perzistence).
 		/// </summary>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1706:ShortAcronymsShouldBeUppercase", MessageId = "Member", Justification = "Hodnotu ID povolujeme (a vyžadujeme).")]
 		public const int NoID = Int32.MinValue;
-		#endregion
 
-		#region Property - ID
 		/// <summary>
 		/// Primární klíč objektu.
 		/// </summary>
@@ -42,9 +39,7 @@ namespace Havit.Business
 			protected set { _id = value; }
 		}
 		private int _id;
-		#endregion
 
-		#region Properties - Stav objektu (IsDirty, IsLoaded, IsNew, IsDeleted, IsDisconnected)
 		/// <summary>
 		/// Indikuje, zdali byla data objektu změněna oproti datům v databázi.
 		/// Při nastavení na false zruší zavolá CleanDirty.
@@ -130,16 +125,12 @@ namespace Havit.Business
 			get { return _isDisconnected; }
 		}
 		private bool _isDisconnected = false;
-		#endregion
-		
-		#region Events
+
 		/// <summary>
 		/// Oznamuje změnu hodnoty vlastnosti.
 		/// </summary>
 		public event PropertyChangedEventHandler PropertyChanged;
-		#endregion
 
-		#region Constructors
 		/// <summary>
 		/// Implementační konstruktor.
 		/// </summary>
@@ -202,9 +193,7 @@ namespace Havit.Business
 			Init();
 			 */
 		}
-		#endregion
 
-		#region Load logika
 		// zámek pro inicializaci zámku pro načítání objektů
 		private static readonly object loadLockInitializerLock = new object();
 		// zámek pro načítání objektů
@@ -310,9 +299,7 @@ namespace Havit.Business
 		/// <returns>True, pokud se podařilo objekt načíst, jinak false.</returns>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member", Justification = "Jde o template metodu volanou z metody TryLoad.")]
 		protected abstract bool TryLoad_Perform(DbTransaction transaction);
-		#endregion
 
-		#region Save logika
 		/// <summary>
 		/// Uloží objekt do databáze, s případným použitím VNĚJŠÍ transakce.
 		/// </summary>
@@ -402,9 +389,6 @@ namespace Havit.Business
 			// az budeme potrebovat, implementujeme udalost oznamujici okamzik pred ulozeni objektu (a pred jeho validaci).
 		}
 
-		#endregion
-
-		#region Delete logika
 		/// <summary>
 		/// Smaže objekt, nebo ho označí jako smazaný, podle zvolené logiky. Změnu uloží do databáze, v transakci.
 		/// </summary>
@@ -451,9 +435,6 @@ namespace Havit.Business
 		/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které se smazání provede; null, pokud bez transakce</param>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member", Justification = "Jde o template metodu volanou z metody Save.")]
 		protected abstract void Delete_Perform(DbTransaction transaction);
-		#endregion
-
-		#region Implementační metody - EnsureLoaded
 
 		/// <summary>
 		/// Ověří, jestli jsou data objektu načtena z databáze (IsLoaded). Pokud nejsou, provede jejich načtení.
@@ -505,9 +486,7 @@ namespace Havit.Business
 			return false;
 		}
 		 */
-		#endregion
 
-		#region Equals, GetHashCode, operátory == a != (override)
 		/// <summary>
 		/// Zjistí rovnost druhého objektu s instancí. Základní implementace porovná jejich ID.
 		/// Nové objekty jsou si rovny v případě identity (stejná reference).
@@ -580,9 +559,7 @@ namespace Havit.Business
 		{
 			return this.ID;
 		}
-		#endregion
 
-		#region CheckConstraints
 		/// <summary>
 		/// Kontroluje konzistenci objektu jako celku.
 		/// </summary>
@@ -592,9 +569,7 @@ namespace Havit.Business
 		protected virtual void CheckConstraints()
 		{
 		}
-		#endregion
 
-		#region Init
 		/// <summary>
 		/// Inicializační metoda, která je volána při vytvoření objektu (přímo z konstruktorů).
 		/// Připravena pro override potomky.
@@ -606,7 +581,6 @@ namespace Havit.Business
 		{
 			// NOOP
 		}
-		#endregion
 
 		/// <summary>
 		/// Metoda, která je volána při změně stavu objektu z Dirty na čisty (IsDirty: true -> false).
@@ -630,7 +604,6 @@ namespace Havit.Business
 
 		/**********************************************************************************/
 
-		#region GetNullableID (static)
 		/// <summary>
 		/// Vrátí ID objektu, nebo null, pokud je vstupní objekt null.
 		/// Určeno pro přehledné získávání ID, obvykle při předávání do DB.
@@ -645,9 +618,7 @@ namespace Havit.Business
 			}
 			return businessObject.ID;
 		}
-		#endregion
 
-		#region FastIntParse (static)
 		/// <summary>
 		/// Převede text na číslo.
 		/// Předpokládá se korektnost hodnoty, neprovádí se žádná kontrola.
@@ -671,7 +642,6 @@ namespace Havit.Business
 				return negative == 0 ? result : -1 * result;
 			}
 		}
-		#endregion
 
 		/// <summary>
 		/// Přepne objekt do stavu disconnected.

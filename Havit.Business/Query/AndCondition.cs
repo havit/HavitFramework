@@ -10,7 +10,6 @@ namespace Havit.Business.Query
 	/// </summary>
 	public class AndCondition : CompositeCondition
 	{
-		#region Constructors
 		/// <summary>
 		/// Vytvoří kompozitní podmínku. Lze inicializovat sadou členských podmínek.
 		/// </summary>		
@@ -18,16 +17,13 @@ namespace Havit.Business.Query
 			: base("AND", conditions)
 		{
 		}
-		#endregion
 
-        #region Create (static)
-        /// <summary>
+		/// <summary>
         /// Vytvoří kompozitní podmínku. Lze inicializovat sadou členských podmínek.
         /// </summary>
         public static AndCondition Create(params Condition[] conditions)
         {
             return new AndCondition(conditions);
-        } 
-        #endregion
+        }
 	}
 }

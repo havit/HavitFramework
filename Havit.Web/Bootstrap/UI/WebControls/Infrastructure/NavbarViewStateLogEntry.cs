@@ -12,7 +12,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls.Infrastructure
 	/// </summary>	
 	internal class NavbarViewStateLogEntry : IStateManager
 	{
-		#region ViewState
 		protected StateBag ViewState
 		{
 			get
@@ -21,25 +20,19 @@ namespace Havit.Web.Bootstrap.UI.WebControls.Infrastructure
 			}
 		}
 		private readonly StateBag _viewstate;
-		#endregion
 
-		#region EntryType
 		public LogItemType EntryType
 		{
 			get { return (LogItemType)ViewState["EntryType"]; }
 			private set { ViewState["EntryType"] = value; }
 		}
-		#endregion
 
-		#region Index
 		public int? Index
 		{
 			get { return (int?)ViewState["Index"]; }
 			private set { ViewState["Index"] = value; }
 		}
-		#endregion
 
-		#region ItemType
 		public Type ItemType
 		{
 			get
@@ -52,16 +45,12 @@ namespace Havit.Web.Bootstrap.UI.WebControls.Infrastructure
 				ViewState["ItemType"] = (value == null) ? null : new IndexedString(value.FullName);
 			}
 		}
-		#endregion
 
-		#region IsTrackingViewState
 		public bool IsTrackingViewState
 		{
 			get { return ((IStateManager)_viewstate).IsTrackingViewState; }
 		}
-		#endregion
 
-		#region Constructors
 		/// <summary>
 		/// Constructor.
 		/// </summary>
@@ -92,9 +81,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls.Infrastructure
 				this.ItemType = itemType;
 			}
 		}
-		#endregion
 
-		#region TrackViewState, SaveViewState, LoadViewState
 		/// <summary>
 		/// Switches tracking viewstate changes on.
 		/// </summary>
@@ -118,9 +105,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls.Infrastructure
 		{
 			((IStateManager)_viewstate).LoadViewState(state);
 		}
-		#endregion
 
-		#region SetDirty
 		public void SetDirty()
 		{
 			_viewstate.SetDirty(true);
@@ -129,6 +114,5 @@ namespace Havit.Web.Bootstrap.UI.WebControls.Infrastructure
 				TrackViewState();
 			}
 		}
-		#endregion
 	}
 }

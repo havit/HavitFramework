@@ -10,7 +10,6 @@ namespace Havit.Business
 	/// </summary>
 	public class ObjectInfo
 	{
-		#region ReadOnly
 		/// <summary>
 		/// Indikuje, zda je objekt určen jen ke čtení.
 		/// </summary>
@@ -22,10 +21,8 @@ namespace Havit.Business
 				return readOnly;
 			}
 		}
-		private bool readOnly; 
-		#endregion
+		private bool readOnly;
 
-		#region DbSchema
 		/// <summary>
 		/// Název schématu databázové tabulky.
 		/// </summary>
@@ -37,10 +34,8 @@ namespace Havit.Business
 				return dbSchema;
 			}
 		}
-		private string dbSchema; 
-		#endregion
+		private string dbSchema;
 
-		#region DbTable
 		/// <summary>
 		/// Název databázové tabulky.
 		/// </summary>
@@ -52,10 +47,8 @@ namespace Havit.Business
 				return dbTable;
 			}
 		}
-		private string dbTable; 
-		#endregion
+		private string dbTable;
 
-		#region ClassName
 		/// <summary>
 		/// Název třídy dle databázové tabulky. Bez namespace.
 		/// </summary>
@@ -68,9 +61,7 @@ namespace Havit.Business
 			}
 		}
 		private string className;
-		#endregion
 
-		#region Namespace
 		/// <summary>
 		/// Namespace třídy dle databázové tabulky. Bez názvu samotné třídy.
 		/// </summary>
@@ -83,9 +74,7 @@ namespace Havit.Business
 			}
 		}
 		private string namespaceName;
-		#endregion
 
-		#region Properties
 		/// <summary>
 		/// Property ve třídě.
 		/// </summary>
@@ -97,10 +86,8 @@ namespace Havit.Business
 				return properties;
 			}
 		}
-		private PropertyInfoCollection properties; 
-		#endregion
+		private PropertyInfoCollection properties;
 
-		#region DeletedProperty
 		/// <summary>
 		/// Property, která označuje smazané záznamy.
 		/// </summary>
@@ -112,10 +99,8 @@ namespace Havit.Business
 				return deletedProperty;
 			}
 		}
-		private FieldPropertyInfo deletedProperty; 
-		#endregion
+		private FieldPropertyInfo deletedProperty;
 
-		#region CreateObjectMethod
 		/// <summary>
 		/// Delegát metody (bez parametrů) vracující nový objekt.
 		/// </summary>
@@ -127,10 +112,8 @@ namespace Havit.Business
 				return createObjectMethod;
 			}
 		}
-		private CreateObjectDelegate createObjectMethod; 
-		#endregion
+		private CreateObjectDelegate createObjectMethod;
 
-		#region GetObjectMethod
 		/// <summary>
 		/// Delegát metody vracující instanci objektu.
 		/// </summary>
@@ -142,10 +125,8 @@ namespace Havit.Business
 				return getObjectMethod;
 			}
 		}
-		private GetObjectDelegate getObjectMethod; 
-		#endregion
+		private GetObjectDelegate getObjectMethod;
 
-		#region GetAllMethod
 		/// <summary>
 		/// Metoda vracející seznam všech instancí.
 		/// </summary>
@@ -158,9 +139,7 @@ namespace Havit.Business
 			}
 		}
 		private GetAllDelegate getAllMethod;
-		#endregion
 
-		#region Initialize
 		/// <summary>
 		/// Nastaví instanci třídy.
 		/// </summary>
@@ -201,9 +180,7 @@ namespace Havit.Business
 			this.isInitialized = true;
 		}
 		private bool isInitialized = false;
-		#endregion
 
-		#region CheckInitialization
 		/// <summary>
 		/// Ověří, že byla instance inicializována. Pokud ne, vyhodí výjimku.
 		/// </summary>
@@ -213,8 +190,6 @@ namespace Havit.Business
 			{
 				throw new InvalidOperationException("Instance nebyla inicializována.");
 			}
-		} 
-		#endregion
-
+		}
 	}
 }

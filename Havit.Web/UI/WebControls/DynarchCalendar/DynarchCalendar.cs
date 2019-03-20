@@ -12,7 +12,6 @@ using Havit.Web.UI.ClientScripts;
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar_stripped.js", "text/javascript")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-setup_stripped.js", "text/javascript")]
 
-#region WebResources - Languages
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-cs-utf8.js", "text/javascript")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-cs-win.js", "text/javascript")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-af.js", "text/javascript")]
@@ -50,15 +49,12 @@ using Havit.Web.UI.ClientScripts;
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-sv.js", "text/javascript")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-tr.js", "text/javascript")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-zh.js", "text/javascript")]
-#endregion
 
-#region WebResources - Styles
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-blue.css", "text/css")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-blue2.css", "text/css")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-brown.css", "text/css")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-green.css", "text/css")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-system.css", "text/css")]
-#endregion
 
 namespace Havit.Web.UI.WebControls
 {
@@ -90,8 +86,7 @@ namespace Havit.Web.UI.WebControls
 	/// </code>
 	/// </example>
 	public class DynarchCalendar : System.Web.UI.Control
-	{		
-		#region Static Properties
+	{
 		/// <summary>
 		/// Cesta k hlavnímu skriptu calendar[_stripped].js
 		/// Prázdná hodnota způsobí použití skriptu přes WebResource.axd.
@@ -144,9 +139,6 @@ namespace Havit.Web.UI.WebControls
 		private static readonly System.Collections.Generic.Dictionary<string, string> supportedLanguages;
 		private static readonly object supportedLanguagesLock = new object();
 
-		#endregion
-
-		#region Originální vlastnosti kalendáře odpovídající JavaScript
 		/// <summary>
 		/// The ID of your input field.
 		/// </summary>
@@ -652,9 +644,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["ShowOthers"] = value;
 			}
 		}
-		#endregion
 
-		#region Přidané vlastnosti
 		/// <summary>
 		/// Enables/disables whole calendar.
 		/// </summary>
@@ -675,9 +665,6 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 
-		#endregion		
-
-		#region Constructor (static)
 		static DynarchCalendar()
 		{
 			// inicializujeme kolekci podporovaných jazyků
@@ -719,9 +706,7 @@ namespace Havit.Web.UI.WebControls
 			supportedLanguages.Add("tr", null);
 			supportedLanguages.Add("zh", null);
 		}
-		#endregion
 
-		#region ValidateControlProperties
 		/// <summary>
 		/// Zkontroluje, zda jsou vlastnosti controlu správně nastaveny a mohou být použity.
 		/// </summary>
@@ -738,9 +723,7 @@ namespace Havit.Web.UI.WebControls
 				throw new InvalidOperationException("Alespoň jedna z vlastností InputField, DisplayArea, Button nebo Flat musí být nastavena.");
 			}
 		}
-		#endregion
 
-		#region RegisterClientScript
 		/// <summary>
 		/// Zaregistruje klientské skripty kalendáře.
 		/// </summary>
@@ -751,9 +734,7 @@ namespace Havit.Web.UI.WebControls
 			this.RegisterLanguageScript();
 			this.RegisterSetupScript();
 		}
-		#endregion
 
-		#region RegisterMainScript
 		/// <summary>
 		/// Zaregistruje hlavní klientský skript calendar.js.
 		/// </summary>
@@ -768,9 +749,7 @@ namespace Havit.Web.UI.WebControls
 				ScriptManager.RegisterClientScriptInclude(this, typeof(DynarchCalendar), "DynarchCalendar.MainScriptUrl", this.ResolveUrl(MainScriptUrl));
 			}
 		}
-		#endregion
 
-		#region RegisterLanguageScript
 		/// <summary>
 		/// Zaregistruje klientský skript odpovídající jazykové mutace kalendáře,
 		/// tj calendar-en.js, calendar-de.js, atp.
@@ -831,9 +810,7 @@ namespace Havit.Web.UI.WebControls
 				ScriptManager.RegisterClientScriptInclude(this, typeof(DynarchCalendar), "DynarchCalendar.LanguageScript", this.ResolveUrl(DynarchCalendar.LanguageScriptUrl));
 			}
 		}
-		#endregion
 
-		#region RegisterSetupScript
 		/// <summary>
 		/// Zaregistruje klientský setup-skript pro funkčnost Calendar.setup, tj calendar-setup.js.		
 		/// </summary>
@@ -849,9 +826,7 @@ namespace Havit.Web.UI.WebControls
 				ScriptManager.RegisterClientScriptInclude(this, typeof(DynarchCalendar), "DynarchCalendar.SetupScript", this.ResolveUrl(DynarchCalendar.SetupScriptUrl));
 			}
 		}
-		#endregion
 
-		#region CreateControlCollection (override)
 		/// <summary>
 		/// Creates a new ControlCollection object to hold the child controls
 		/// (both literal and server) of the server control.
@@ -861,9 +836,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			return new EmptyControlCollection(this);
 		}
-		#endregion
 
-		#region OnPreRender
 		/// <summary>
 		/// Raises the PreRender event.
 		/// Zkontroluje platnost properties a zaregistruje klientské skripty kalendáře.
@@ -878,9 +851,7 @@ namespace Havit.Web.UI.WebControls
 				this.RegisterClientScript();
 			}
 		}
-		#endregion
 
-		#region Render
 		/// <summary>
 		/// Emituje script pro inicializace komponenty DynarchCalendar.
 		/// </summary>
@@ -894,9 +865,7 @@ namespace Havit.Web.UI.WebControls
 			}
 			base.Render(writer);
 		}
-		#endregion
 
-		#region RegisterCss
 		/// <summary>
 		/// Zaregistruje css pro zobrazení kalendáře.
 		/// </summary>
@@ -904,9 +873,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			RegisterCalendarSkinStylesheets(this.Page);
 		}
-		#endregion
 
-		#region RegisterCalendarSetupScript
 		/// <summary>
 		/// Emituje script nastavení kalendáře přes Calendar.setup(...).
 		/// </summary>
@@ -1124,9 +1091,7 @@ namespace Havit.Web.UI.WebControls
 
 			ScriptManager.RegisterStartupScript(this, typeof(DynarchCalendar), this.ClientID + "-Calendar.setup", sb.ToString(), true);
 		}
-		#endregion
 
-		#region ResolveID
 		/// <summary>
 		/// Pokud ID patří controlu, pak vrátí jeho ClientID, jinak vrátí zpět původní ID.
 		/// </summary>
@@ -1141,9 +1106,7 @@ namespace Havit.Web.UI.WebControls
 			}
 			return id;
 		}
-		#endregion
 
-		#region TransformDatePatternToClientScript
 		/// <summary>
 		/// Transformuje .NETový Date pattern do formátu používáného DynarchCalendarem.
 		/// </summary>
@@ -1232,9 +1195,7 @@ namespace Havit.Web.UI.WebControls
 
 			return String.Join("", sections);
 		}
-		#endregion
 
-		#region RegisterCssForCalendarSkin (static)
 		/// <summary>
 		/// Zaregistruje css pro zobrazení kalendáře.
 		/// Statická metoda je určena k řešení situace, kdy se kalendář ve stránce zobrazuje až v asynchronním postbacku.
@@ -1260,6 +1221,5 @@ namespace Havit.Web.UI.WebControls
 				}
 			}
 		}
-		#endregion		
 	}
 }

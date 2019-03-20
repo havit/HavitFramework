@@ -13,7 +13,6 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class ButtonColumnExt : System.Web.UI.WebControls.ButtonColumn
 	{
-		#region Data Members (abecedně)
 		/// <summary>
 		/// Vrátí/nastaví statický text, který se má zobrazovat do confirmation dialogu při kliknutí tlačítka.
 		/// </summary>
@@ -88,9 +87,6 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 
-		#endregion
-
-		#region InitializeCell
 		/// <summary>
 		/// Resets a cell in the ButtonColumn to its initial state.
 		/// </summary>
@@ -112,9 +108,7 @@ namespace Havit.Web.UI.WebControls
 				button.DataBinding += new EventHandler(this.OnDataBindColumn);
 			}
 		}
-		#endregion
 
-		#region OnDataBindColumn
 		private PropertyDescriptor _confirmationFieldDescriptor;
 
 		/// <summary>
@@ -162,6 +156,5 @@ namespace Havit.Web.UI.WebControls
 				control.Attributes.Add("onClick", "return confirm('" + confirmationText + "');");
 			}
 		}
-		#endregion
 	}
 }

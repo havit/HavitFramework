@@ -193,8 +193,6 @@ namespace Havit.Data.Entity
 			afterSaveChangesActions.Add(action);
 		}
 
-		#region IDbContext interface explicit implementation
-
 		/// <summary>
 		/// Vrátí objekt pro přímý přístup k databázi.
 		/// </summary>
@@ -297,9 +295,8 @@ namespace Havit.Data.Entity
 		{
 			this.ChangeTracker.DetectChanges();
 		}
-		#endregion
 
-		/// <summary>
+        /// <summary>
 		/// Provede akci s AutoDetectChangesEnabled nastaveným na false, přičemž je poté AutoDetectChangesEnabled nastaven na původní hodnotu.
 		/// </summary>
 		public TResult ExecuteWithoutAutoDetectChanges<TResult>(Func<TResult> action)

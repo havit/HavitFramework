@@ -14,15 +14,12 @@ namespace Havit.Web.UI.WebControls
 	[DataContract]
 	public class GetSuggestionsResult
 	{
-		#region Properties
 		/// <summary>
 		/// Položky našeptávače.
 		/// </summary>
 		[DataMember(Name = "suggestions")]
 		public List<SuggestionItem> Suggestions { get; private set; }
-		#endregion
 
-		#region Constructors
 		/// <summary>
 		/// Initializes a new instance of the <see cref="GetSuggestionsResult"/> class.
 		/// </summary>
@@ -41,9 +38,7 @@ namespace Havit.Web.UI.WebControls
 
 			Suggestions = suggestions.ToList();
 		}
-		#endregion
 
-		#region Fill
 		/// <summary>
 		/// Přidá položky do kolegce Suggestions.
 		/// </summary>
@@ -54,6 +49,5 @@ namespace Havit.Web.UI.WebControls
 		{
 			Suggestions.AddRange(items.Select(i => new SuggestionItem(valueSelector(i), textSelector(i))));
 		}
-		#endregion
 	}
 }

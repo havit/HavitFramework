@@ -10,7 +10,6 @@ namespace Havit.Business
 	/// </summary>
 	public class BeforeSaveEventArgs : DbTransactionEventArgs
 	{
-		#region Constructors
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
@@ -18,7 +17,6 @@ namespace Havit.Business
 			: base(transaction)
 		{
 
-		} 
-		#endregion
+		}
 	}
 }

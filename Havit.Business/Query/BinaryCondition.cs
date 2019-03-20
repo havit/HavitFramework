@@ -14,7 +14,6 @@ namespace Havit.Business.Query
 	/// </summary>
 	public class BinaryCondition : UnaryCondition
 	{
-		#region Patterns
 		/// <summary>
 		/// Vzor pro podmínku LIKE.
 		/// </summary>
@@ -29,9 +28,7 @@ namespace Havit.Business.Query
 		/// Vzor pro podmínku nerovnosti.
 		/// </summary>
 		public const string NotEqualsPattern = "({0} <> {1})";
-		#endregion
 
-		#region Operand2
 		/// <summary>
 		/// Druhý operand.
 		/// </summary>
@@ -40,10 +37,8 @@ namespace Havit.Business.Query
 			get { return _operand2; }
 			set { _operand2 = value; }
 		}
-		private IOperand _operand2; 
-		#endregion
+		private IOperand _operand2;
 
-		#region Constructors
 		/// <summary>
 		/// Vytvoří binární (dvojoperandovou) podmínku.
 		/// </summary>
@@ -62,9 +57,7 @@ namespace Havit.Business.Query
 			: this(conditionPattern, operand1, operand2)
 		{
 		}
-		#endregion
 
-		#region GetWhereStatement
 		/// <summary>
 		/// Přidá část SQL příkaz pro sekci WHERE
 		/// </summary>
@@ -77,9 +70,7 @@ namespace Havit.Business.Query
 				Operand1.GetCommandValue(command, sqlServerPlatform),
 				Operand2.GetCommandValue(command, sqlServerPlatform));
 		}
-		#endregion
 
-		#region GetComparisonPattern
 		/// <summary>
 		/// Vrátí vzor podmínky pro běžné porovnání dvou hodnot (vrací např. "({0} = {1})").
 		/// </summary>
@@ -88,6 +79,5 @@ namespace Havit.Business.Query
 			const string comparisonOperatorFormatPattern = "({{0}} {0} {{1}})";
 			return String.Format(CultureInfo.InvariantCulture, comparisonOperatorFormatPattern, ComparisonOperatorHelper.GetOperatorText(comparisonOperator));
 		}
-		#endregion
 	}
 }

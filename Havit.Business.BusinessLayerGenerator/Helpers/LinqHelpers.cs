@@ -9,7 +9,6 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 	/// </summary>
 	public static class LinqHelpers
 	{
-		#region AsEnumerable (ForeignKeyCollection)
 		/// <summary>
 		/// AsEnumerable pro ForeignKeyCollection.
 		/// </summary>
@@ -25,6 +24,5 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 				yield return fk;
 			}
 		}
-		#endregion
 	}
 }

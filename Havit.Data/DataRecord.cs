@@ -19,7 +19,6 @@ namespace Havit.Data
 	[Serializable]
 	public class DataRecord
 	{
-		#region Properties
 		/// <summary>
 		/// Indikuje, zdali je požadována 100% úspěšnost pro načítání položek (true), nebo zdali se mají neúspěchy ignorovat.
 		/// </summary>
@@ -39,17 +38,12 @@ namespace Havit.Data
 			set { dataLoadPower = value; }
 		}
 		private DataLoadPower dataLoadPower;
-		
-		#endregion
 
-		#region private data fields
 		/// <summary>
 		/// Data z databáze.
 		/// </summary>
 		private readonly Dictionary<string, object> dataDictionary;
-		#endregion
 
-		#region Constructors
 		/// <summary>
 		/// Vytvoří instanci DataRecordu a načte do ní data z <see cref="System.Data.DataRow"/>.
 		/// </summary>
@@ -124,9 +118,7 @@ namespace Havit.Data
 		public DataRecord(IDataRecord record) : this(record, true)
 		{			
 		}
-		#endregion
 
-		#region Indexer
 		/// <summary>
 		/// Indexer pro získání k prvku pomocí názvu pole.
 		/// </summary>
@@ -139,9 +131,7 @@ namespace Havit.Data
 				return this.dataDictionary[field];
 			}
 		}
-		#endregion
 
-		#region Get<T>, TryGet<T>, Load<T>
 		/// <summary>
 		/// Načte parametr zadaného generického typu T.
 		/// </summary>
@@ -284,9 +274,7 @@ namespace Havit.Data
 			}
 			return false;
 		}
-		#endregion
 
-		#region LoadObject, GetObject
 		/// <summary>
 		/// Načte parametr typu Object.
 		/// </summary>
@@ -308,9 +296,7 @@ namespace Havit.Data
 		{
 			return Get<object>(fieldName);
 		}
-		#endregion
 
-		#region LoadString, GetString
 		/// <summary>
 		/// Načte parametr typu string.
 		/// </summary>
@@ -332,9 +318,7 @@ namespace Havit.Data
 		{
 			return Get<string>(fieldName);
 		}
-		#endregion
 
-		#region LoadInt32, GetNullableInt32
 		/// <summary>
 		/// Načte parametr typu Int32.
 		/// </summary>
@@ -356,9 +340,7 @@ namespace Havit.Data
 		{
 			return Get<Int32?>(fieldName);
 		}
-		#endregion
 
-		#region LoadDouble, GetNullableDouble
 		/// <summary>
 		/// Načte parametr typu Double.
 		/// </summary>
@@ -381,9 +363,6 @@ namespace Havit.Data
 			return Get<double?>(fieldName);
 		}
 
-		#endregion
-
-		#region LoadBoolean, GetNullableBoolean
 		/// <summary>
 		/// Načte parametr typu Boolean.
 		/// </summary>
@@ -405,9 +384,7 @@ namespace Havit.Data
 		{
 			return Get<bool?>(fieldName);
 		}
-		#endregion
 
-		#region LoadDateTime, GetNullableDateTime
 		/// <summary>
 		/// Načte parametr typu DateTime.
 		/// </summary>
@@ -429,6 +406,5 @@ namespace Havit.Data
 		{
 			return Get<DateTime?>(fieldName);
 		}
-		#endregion
 	}
 }

@@ -13,14 +13,11 @@ namespace Havit.Business.Query
 	/// </summary>
 	public class TernaryCondition : BinaryCondition
 	{
-		#region Patterns
 		/// <summary>
 		/// Vzor pro podmínku LIKE.
 		/// </summary>
 		internal const string BetweenPattern = "({0} BETWEEN {1} AND {2})";
-		#endregion
 
-		#region Protected fields
 		/// <summary>
 		/// Třetí operand.
 		/// </summary>
@@ -30,9 +27,7 @@ namespace Havit.Business.Query
 			set { _operand3 = value; }
 		}
 		private IOperand _operand3;
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Vytvoří instanci ternární podmínky.
 		/// </summary>
@@ -42,9 +37,7 @@ namespace Havit.Business.Query
 
 			this.Operand3 = operand3;
 		}
-		#endregion
 
-		#region GetWhereStatement
 		/// <summary>
 		/// Přidá část SQL příkaz pro sekci WHERE.
 		/// </summary>
@@ -58,6 +51,5 @@ namespace Havit.Business.Query
 				Operand2.GetCommandValue(command, sqlServerPlatform),
 				Operand3.GetCommandValue(command, sqlServerPlatform));
 		}
-		#endregion
 	}
 }

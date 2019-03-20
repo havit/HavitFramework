@@ -7,7 +7,6 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 {
 	public static class MoneyHelper
 	{
-		#region GetMoneyFieldName
 		/// <summary>
 		/// Vrátí název fieldu pro danou property.
 		/// </summary>
@@ -15,9 +14,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		{
 			return ConventionsHelper.GetUnderScoped(ConventionsHelper.GetCammelCase(moneyProperty));
 		}
-		#endregion
 
-		#region GetMoneyTypeName
 		/// <summary>
 		/// Vrátí jméno typu, které má být použito pro datový typ Money.
 		/// </summary>
@@ -32,9 +29,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			result += "Money";
 			return result;
 		}
-		#endregion
 
-		#region GetCurrencyTable
 		/// <summary>
 		/// Vrátí název typu pro měnu.
 		/// </summary>
@@ -47,9 +42,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			}
 			return currencyTable;
 		}
-		#endregion
 
-		#region FormsMoneyStructure
 		/// <summary>
 		/// Vrátí true, pokud daný sloupec tvoří složenou vlastnost typu Měna.
 		/// </summary>
@@ -65,9 +58,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 
 			return false;
 		}
-		#endregion
 
-		#region ShortcutColumnNameToMoneyPropertyName
 		/// <summary>
 		/// Vrátí název property pro vlastnost typu Money z daného sloupce. Pokud daný sloupec nemůže být 
 		/// </summary>
@@ -91,9 +82,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 
 			return result;
 		}
-		#endregion
 
-		#region ExistMoney
 		/// <summary>
 		/// Vrací true, pokud v tabulce existuje dvojice sloupců určující vlastnost typu měna daného jména.
 		/// </summary>
@@ -119,9 +108,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 
 			return false;
 		}
-		#endregion
 
-		#region GetListMoneyProperties
 		/// <summary>
 		/// Vrátí seznam struktur typu Money, které mají ve třídě k dané tabulce existovat.
 		/// </summary>
@@ -145,9 +132,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			}
 			return result.ToArray();
 		}
-		#endregion
 
-		#region GetMoneyAmountColumn
 		/// <summary>
 		/// Vrátí sloupec pro částku dané property typu Money.
 		/// </summary>
@@ -160,9 +145,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			}
 			return column;
 		}
-		#endregion
 
-		#region GetMoneyCurrencyColumn
 		/// <summary>
 		/// Vrátí sloupec pro měnu dané property typu Money.
 		/// </summary>
@@ -175,6 +158,5 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			}
 			return column;
 		}
-		#endregion
 	}
 }

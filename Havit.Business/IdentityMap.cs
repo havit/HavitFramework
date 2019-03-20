@@ -11,14 +11,11 @@ namespace Havit.Business
 	/// </summary>
 	public class IdentityMap
 	{
-		#region private fields
 		/// <summary>
 		/// Hashtable obsahující hashtable pro každý typ.
 		/// </summary>
 		private readonly Dictionary<Type, Dictionary<int, WeakReference>> types;
-		#endregion
 
-		#region Constructors
 		/// <summary>
 		/// Vytvoří instanci třídy <see cref="IdentityMap"/>.
 		/// </summary>
@@ -26,9 +23,7 @@ namespace Havit.Business
 		{
 			types = new Dictionary<Type, Dictionary<int, WeakReference>>();
 		}
-		#endregion
 
-		#region Store
 		/// <summary>
 		/// Uloží business-objekt do identity-map.
 		/// </summary>
@@ -66,9 +61,7 @@ namespace Havit.Business
 				typeDictionary.Add(businessObject.ID, new WeakReference(businessObject));
 			}
 		}
-		#endregion
 
-		#region TryGet<T>
 		/// <summary>
 		/// Načte business-objekt z identity-map.
 		/// </summary>
@@ -96,9 +89,7 @@ namespace Havit.Business
 			target = (T)reference.Target;
 			return (target != null);
 		}
-		#endregion
 
-		#region Get<T>
 		/// <summary>
 		/// Vrátí business-objekt z identity-map.
 		/// </summary>
@@ -122,6 +113,5 @@ namespace Havit.Business
 
 			return (T)reference.Target;
 		}
-		#endregion
 	}
 }

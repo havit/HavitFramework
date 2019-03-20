@@ -19,7 +19,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	[PersistChildren(true)]
 	public class ToolTip : System.Web.UI.WebControls.WebControl
 	{
-		#region ToolTipPosition
 		/// <summary>
 		/// ToolTip position.
 		/// </summary>
@@ -35,9 +34,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ViewState["ToolTipPosition"] = value;
 			}
 		}
-		#endregion
 
-		#region Constuctor
 		/// <summary>
 		/// Constructor.
 		/// </summary>
@@ -45,9 +42,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			: base(HtmlTextWriterTag.Span)
 		{
 		}
-		#endregion
 
-		#region AddAttributesToRender
 		/// <summary>
 		/// Adds to the specified writer those HTML attributes and styles that need to be rendered.
 		/// </summary>
@@ -60,9 +55,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			}
 			base.AddAttributesToRender(writer);
 		}
-		#endregion
 
-		#region OnPreRender
 		/// <summary>
 		/// Raises the PreRender event. This method uses event arguments to pass the event data to the control.
 		/// </summary>
@@ -71,6 +64,5 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			base.OnPreRender(e);
 			ScriptManager.RegisterStartupScript(this, typeof(ToolTip), "ToolTipInitialization", @"$(function() { $('[data-toggle=""tooltip""]').tooltip(); });", true);
 		}
-		#endregion
 	}
 }

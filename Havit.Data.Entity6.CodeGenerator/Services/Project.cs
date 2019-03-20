@@ -11,10 +11,8 @@ namespace Havit.Data.Entity.CodeGenerator.Services
 	[DebuggerDisplay("{Filename}")]
 	public class Project
 	{
-		#region Private consts
 		private readonly XNamespace MSBuildNamespace = "http://schemas.microsoft.com/developer/msbuild/2003";
 		private const string CodeGeneratorIdentifier = "HavitEntityCodeGenerator";
-		#endregion
 
 		private bool contentChanged = false;
 		private readonly XDocument content;

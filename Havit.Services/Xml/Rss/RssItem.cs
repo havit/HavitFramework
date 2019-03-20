@@ -8,8 +8,6 @@ namespace Havit.Services.Xml.Rss
 	[XmlRoot("item")]
 	public class RssItem
 	{
-		#region Fields
-
 		private string title = "";
 		private string link = "";
 		private string description = "";
@@ -158,10 +156,6 @@ namespace Havit.Services.Xml.Rss
 			}
 		}
 
-		#endregion
-
-		#region Contructor
-
 		/// <summary>
 		/// Default constructor.
 		/// Nutno nastavit Title, Link a Description !!!
@@ -182,7 +176,5 @@ namespace Havit.Services.Xml.Rss
 			this.Link = link;
 			this.Description = description;
 		}
-
-		#endregion
 	}
 }

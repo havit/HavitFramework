@@ -13,7 +13,6 @@ namespace Havit.Web
 	/// </summary>
 	public static class HttpUtilityExt
 	{
-		#region HtmlEncode
 		/// <summary>
 		/// Zkonvertuje string do HTML-encoded podoby.
 		/// Oproti standardnímu <see cref="System.Web.HttpUtility.HtmlEncode(string)"/> může encodovat všechny non-ASCII znaky
@@ -142,9 +141,7 @@ namespace Havit.Web
 		{
 			return HtmlEncode(unicodeText, HtmlEncodeOptions.None);
 		}
-		#endregion
 
-		#region UrlEncodeSpaces
 		/// <summary>
 		/// Encoduje řetězec tak, že vymění mezery za %20.
 		/// </summary>
@@ -161,9 +158,7 @@ namespace Havit.Web
 			}
 			return str;
 		}
-		#endregion
 
-		#region UrlEncodeNonAscii, UrlEncodeBytesToBytesNonAscii
 		/// <summary>
 		/// Encoduje všechny non-ACSII znaky v zadaném řetězci pro bezpečný přenos v URL.
 		/// Lze použít na již sestavený QueryString, nezlikviduje totiž &amp;, =, atp.
@@ -231,9 +226,7 @@ namespace Havit.Web
 			}
 			return buffer1;
 		}
-		#endregion
 
-		#region UrlEncodePathWithQueryString
 		/// <summary>
 		/// Encoduje všechny non-ACSII znaky v zadaném poli bytů pro bezpečný přenos v URL.
 		/// Lze použít na již sestavený QueryString, nezlikviduje totiž &amp;, =, atp.
@@ -263,9 +256,7 @@ namespace Havit.Web
 			urlWithQueryString = HttpUtilityExt.UrlEncodeSpaces(HttpUtilityExt.UrlEncodeNonAscii(urlWithQueryString, Encoding.UTF8));
 			return urlWithQueryString;
 		}
-		#endregion
 
-		#region GetResourceString
 		/// <summary>
 		/// Vrátí resource-řetězec (lokalizaci) resolvovanou ze standardizované podoby resource odkazu používané např. ve web.sitemap, skinech, menu, atp.
 		/// </summary>
@@ -323,9 +314,7 @@ namespace Havit.Web
 			}
 			return resourceExpression;
 		}
-		#endregion
 
-		#region GetApplicationRootUri
 		/// <summary>
 		/// Vrátí Uri rootu webové aplikace vytvořené na základě aktuálního requestu!
 		/// (WebSite může poslouchat pro více hostnames a nikde není řečeno, který je primární.)
@@ -349,10 +338,8 @@ namespace Havit.Web
 
 			return ub.Uri;
 		}
-		#endregion
 	}
 
-	#region HtmlEncodeOptions (enum)
 	/// <summary>
 	/// Poskytuje množinu hodnot k nastavení voleb metody <see cref="Havit.Web.HttpUtilityExt.HtmlEncode(string, HtmlEncodeOptions)"/>
 	/// </summary>
@@ -398,5 +385,4 @@ namespace Havit.Web
 		/// </remarks>
 		XmlApostropheEntity = 4
 	}
-	#endregion
 }

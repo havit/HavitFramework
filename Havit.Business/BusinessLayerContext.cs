@@ -14,8 +14,6 @@ namespace Havit.Business
 	/// </summary>
 	public static class BusinessLayerContext
 	{
-		#region BusinessLayerCacheService		
-
 		/// <summary>
 		/// Služba pro práci s cache v Business Layer.
 		/// </summary>
@@ -58,6 +56,5 @@ namespace Havit.Business
 
 			_businessLayerCacheServiceFunc = businessLayerCacheServiceFunc;
 		}
-		#endregion
 	}
 }

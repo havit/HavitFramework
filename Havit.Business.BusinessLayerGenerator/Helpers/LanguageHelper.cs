@@ -5,7 +5,6 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 {
 	public static class LanguageHelper
 	{
-		#region LanguageTableName (const)
 		/// <summary>
 		/// Název tabulky jazyků.
 		/// </summary>
@@ -15,9 +14,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		/// Schéma tabulky jazyků.
 		/// </summary>
 		public const string LanguageTableSchemaName = "dbo";
-		#endregion
 
-		#region IsLanguageTable
 		/// <summary>
 		/// Vrací true, pokud jde o tabulku jazyků.
 		/// </summary>
@@ -29,9 +26,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			}
 			return table.Name == LanguageTableName;
 		}
-		#endregion
 
-		#region GetLanguageTable
 		/// <summary>
 		/// Vrátí tabulku jazyků.
 		/// </summary>
@@ -44,9 +39,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 
 			return DatabaseHelper.FindTable(LanguageTableName, LanguageTableSchemaName);
 		}
-		#endregion
 
-		#region GetUICultureColumn
 		/// <summary>
 		/// Vrátí sloupec pro UICulture.
 		/// </summary>
@@ -60,6 +53,5 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			}
 			return null;
 		}
-		#endregion
 	}
 }

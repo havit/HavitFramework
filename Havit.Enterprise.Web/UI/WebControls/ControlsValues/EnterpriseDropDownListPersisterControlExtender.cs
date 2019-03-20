@@ -13,7 +13,6 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 	/// </summary>
 	public class EnterpriseDropDownListPersisterControlExtender : IPersisterControlExtender
 	{
-		#region GetValue
 		/// <summary>
 		/// Získá hodnotu (stav) zadaného controlu.		
 		/// </summary>
@@ -22,19 +21,15 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 			BusinessObjectBase selectedObject = ((EnterpriseDropDownList)control).SelectedObject;
 			return (selectedObject == null) ? null : (int?)selectedObject.ID;
 		}
-		#endregion
 
-		#region GetValueType
 		/// <summary>
 		/// Získá typ hodnoty zadaného controlu.
 		/// </summary>		
 		public Type GetValueType()
 		{
 			return typeof(int);
-		} 
-		#endregion
+		}
 
-		#region SetValue
 		/// <summary>
 		/// Nastaví hodnotu do controlu.
 		/// </summary>
@@ -44,9 +39,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 			EnterpriseDropDownList enterpriseDropDownList = (EnterpriseDropDownList)control;
 			enterpriseDropDownList.SelectObjectIfPresent(valueToSet);
 		}
-		#endregion
 
-		#region GetPriority
 		/// <summary>
 		/// Vrací prioritu se kterou je tento IPersisterControlExtender použitelný
 		/// pro zpracování daného controlu. 
@@ -64,9 +57,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 			}
 			return null;
 		}
-		#endregion
 
-		#region PersistsChilds
 		/// <summary>
 		/// Pokud je true, ControlsValuesPersister rekursivně projde i child controly.
 		/// Implicitně vrací false.
@@ -75,6 +66,5 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 		{
 			return false;
 		}
-		#endregion
 	}
 }

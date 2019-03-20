@@ -26,8 +26,6 @@ namespace Havit.Web.UI.WebControls
 	/// </remarks>
 	public class GridViewExt : HighlightingGridView, ICommandFieldStyle, IEditorExtensible
 	{
-		#region Private fields
-
 		/// <summary>
 		/// Slouží k evidenci controlů automatických filtrů.
 		/// </summary>
@@ -37,9 +35,7 @@ namespace Havit.Web.UI.WebControls
 		/// Předává CommandFields z PerformDataBinding do PrepareControlHierarchy, které nemají být vidět.
 		/// </summary>
 		private List<CommandField> commandFieldsToHide;
-		#endregion
 
-		#region GetInsertRowDataItem (delegate)
 		/// <summary>
 		/// Metoda, která vrací data-item nového Insert řádku. Obvykle přednastaveno default hodnotami.
 		/// </summary>
@@ -55,9 +51,7 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		private GetInsertRowDataItemDelegate _getInsertRowDataItem;
-		#endregion
 
-		#region AllowInserting
 		/// <summary>
 		/// Indikuje, zdali je povoleno přidávání nových položek řádkem Insert.
 		/// </summary>
@@ -80,9 +74,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["_AllowInserting"] = value;
 			}
 		}
-		#endregion
 
-		#region IsInsertingByInsertRow
 		/// <summary>
 		/// Vrací true, pokud je použito vkládání nového záznamu inline editací.
 		/// To není povoleno, pokud je použit externí editor.
@@ -94,9 +86,7 @@ namespace Havit.Web.UI.WebControls
 				return AllowInserting && (EditorExtender == null);
 			}
 		}
-		#endregion
 
-		#region InsertPosition
 		/// <summary>
 		/// Indikuje, zdali je povoleno přidávání nových položek.
 		/// </summary>
@@ -112,9 +102,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["_InsertRowPosition"] = value;
 			}
 		}
-		#endregion
 
-		#region InsertRowDataSourceIndex
 		/// <summary>
 		/// Pozice řádku pro insert.
 		/// </summary>
@@ -133,9 +121,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["_InsertRowDataSourceIndex"] = value;
 			}
 		}
-		#endregion
 
-		#region AutoSort
 		/// <summary>
 		/// Nastavuje, zda má při databindingu dojít k seřazení položek podle nastavení.
 		/// </summary>
@@ -144,9 +130,7 @@ namespace Havit.Web.UI.WebControls
 			get { return (bool)(ViewState["AutoSort"] ?? true); }
 			set { ViewState["AutoSort"] = value; }
 		}
-		#endregion
 
-		#region DefaultSortExpression
 		/// <summary>
 		/// Výchozí řazení, které se použije, pokud je povoleno automatické řazení nastavením vlastnosti AutoSort 
 		/// a uživatel dosuž žádné řazení nezvolil.
@@ -156,9 +140,7 @@ namespace Havit.Web.UI.WebControls
 			get { return (string)(ViewState["DefaultSortExpression"] ?? String.Empty); }
 			set { ViewState["DefaultSortExpression"] = value; }
 		}
-		#endregion
 
-		#region SortExpressions
 		/// <summary>
 		/// Zajišťuje práci se seznamem položek, podle kterých se řadí.
 		/// </summary>
@@ -170,9 +152,7 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		private SortExpressions _sortExpressions = new SortExpressions();
-		#endregion
 
-		#region AutoDataBind
 		/// <summary>
 		/// Nastavuje automatický databind na GridView.		
 		/// </summary>
@@ -187,9 +167,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["AutoDataBind"] = value;
 			}
 		}
-		#endregion
 
-		#region InsertIndex
 		/// <summary>
 		/// Index řádku (RowIndex) vkládaného prvku. Pokud nejsme v insert módu, je -1.
 		/// </summary>
@@ -201,17 +179,13 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		private int insertRowIndex = -1;
-		#endregion
 
-		#region EditorExtender
 		/// <summary>
 		/// Externí editor připojený k GridView.
 		/// Pro připojení slouží metoda RegisterExtender.
 		/// </summary>
 		public IEditorExtender EditorExtender { get; private set; }
-		#endregion
 
-		#region EditorExtenderEditIndex
 		/// <summary>
 		/// Index řádku editovaného externím editorem.
 		/// Pro insert nabývá hodnoty -1.
@@ -234,9 +208,7 @@ namespace Havit.Web.UI.WebControls
 			}
 
 		}
-		#endregion
 
-		#region EditorExtenderEditIndexInternal
 		/// <summary>
 		/// Index řádku editovaného externím editorem.
 		/// Pro insert nabývá hodnoty -1.
@@ -261,9 +233,7 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		private bool _editorExtenderEditIndexInternalChanged = false;
-		#endregion
 
-		#region EditorExtenderMode
 		/// <summary>
 		/// Vrací režim editace záznamu v externím editoru.
 		/// </summary>
@@ -274,9 +244,7 @@ namespace Havit.Web.UI.WebControls
 				return (this.EditorExtenderEditIndex == -1) ? WebControls.EditorExtenderMode.Insert : WebControls.EditorExtenderMode.Edit;
 			}
 		}
-		#endregion
 
-		#region EditorExtenderEditCssClass
 		/// <summary>
 		/// Css třída pro aktuálně editovaný záznam v externím editoru.
 		/// </summary>
@@ -291,9 +259,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["EditorExtenderEditCssClass"] = value;
 			}
 		}
-		#endregion
 
-		#region CommandFieldStyle
 		/// <summary>
 		/// Skinovatelné vlastnosti, které se mají předat CommandFieldu.
 		/// </summary>
@@ -317,9 +283,7 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		private CommandFieldStyle _commandFieldStyle;
-		#endregion
 
-		#region PagerRenderMode
 		/// <summary>
 		/// Pager render mode.
 		/// V případě, že je použita (nastavena) vlastnost PagerTemplate, hodnota se ignoruje a použije se standardní renderování.
@@ -335,9 +299,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["PagerRenderMode"] = value;
 			}
 		}
-		#endregion
 
-		#region PagerSettingsAllPagesButtonImageUrl
 		/// <summary>
 		/// ImageUrl tlačítka pro vypnutí stránkování. Má přednost před PagerSettingsAllPagesButtonText.
 		/// </summary>
@@ -352,9 +314,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["PagerSettingsAllPagesButtonImageUrl"] = value;
 			}
 		}
-		#endregion
 
-		#region PagerSettingsShowAllPagesButton
 		/// <summary>
 		/// Povoluje/zakazuje zobrazení tlačítka pro vypnutí stránkování.
 		/// </summary>
@@ -369,9 +329,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["PagerSettingsShowAllPagesButton"] = value;
 			}
 		}
-		#endregion
 
-		#region PagerSettingsAllPagesButtonText
 		/// <summary>
 		/// Text tlačítka pro vypnutí stránkování. Pokud je nastaveno PagerSettingsAllPagesButtonImageUrl, má toto přednost a tlačítko bude obrázkové.
 		/// </summary>
@@ -386,9 +344,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["PagerSettingsAllPagesButtonText"] = value;
 			}
 		}
-		#endregion
 
-		#region AllPagesShowing
 		/// <summary>
 		/// Událost, která se volá při obsluze kliknutí na tlačítko "All Pages" (tlačítko, vypínající stránkování). Dává možnost zrušit akci.
 		/// </summary>
@@ -398,9 +354,7 @@ namespace Havit.Web.UI.WebControls
 			add { Events.AddHandler(eventAllPagesShowing, value); }
 			remove { Events.RemoveHandler(eventAllPagesShowing, value); }
 		}
-		#endregion
 
-		#region ShowFilter
 		/// <summary>
 		/// Indikuje, zda je zobrazen řádek filtru.
 		/// </summary>
@@ -415,9 +369,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["ShowFilter"] = value;
 			}
 		}
-		#endregion
 
-		#region FilterRow
 		/// <summary>
 		/// Filtrovací řádek.
 		/// </summary>
@@ -429,9 +381,7 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		private GridViewRow _filterRow;
-		#endregion
 
-		#region FilterStyle
 		/// <summary>
 		/// Styl řádku filtru.
 		/// </summary>
@@ -455,9 +405,7 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		private TableItemStyle _filterStyle;
-		#endregion
 
-		#region ShowHeaderWhenEmpty
 		/// <summary>
 		/// Gets or sets a value that indicates whether the heading of a column in the System.Web.UI.WebControls.GridView control is visible when the column has no data.
 		/// </summary>
@@ -474,9 +422,7 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		private bool overrideShowHeaderWhenEmptyToTrue = false;
-		#endregion
 
-		#region FirstDisplayedPageIndex
 		/// <summary>
 		/// Pomocná vlastnost pro perzistenci stavu bootstrap pageru
 		/// </summary>
@@ -491,9 +437,7 @@ namespace Havit.Web.UI.WebControls
 				this.ViewState["FirstDisplayedPageIndexExt"] = value;
 			}
 		}
-		#endregion
 
-		#region ContainerCssClass
 		/// <summary>
 		/// Pokud je nastaveno, generuje se okolo tabulky gridu další DIV, který má nastavenu tuto css třídu.
 		/// By default je již tabulka jedním DIVem obalena, toto přidává druhý DIV.
@@ -509,9 +453,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["ContainerCssClass"] = value;
 			}
 		}
-		#endregion
 
-		#region RequiresDataBinding (new), SetRequiresDatabinding
 		/// <summary>
 		/// Zpřístupňuje pro čtení chráněnou vlastnost RequiresDataBinding.
 		/// </summary>
@@ -526,11 +468,7 @@ namespace Havit.Web.UI.WebControls
 				base.RequiresDataBinding = value;
 			}
 		}
-		#endregion
 
-		#region Events - RowInserting, RowInserted, RowCustomizingCommandButton, FilterRowCreated, FilterRowDataBound, GridViewDataFiltering, AllPagesShown
-
-		#region RowInserting
 		/// <summary>
 		/// Událost, která se volá při vložení nového řádku (kliknutí na tlačítko Insert).
 		/// </summary>
@@ -543,9 +481,7 @@ namespace Havit.Web.UI.WebControls
 			add { Events.AddHandler(eventItemInserting, value); }
 			remove { Events.RemoveHandler(eventItemInserting, value); }
 		}
-		#endregion
 
-		#region RowInserted
 		/// <summary>
 		/// Událost, která se volá po vložení nového řádku (po události RowInserting).
 		/// </summary>
@@ -555,9 +491,7 @@ namespace Havit.Web.UI.WebControls
 			add { Events.AddHandler(eventItemInserted, value); }
 			remove { Events.RemoveHandler(eventItemInserted, value); }
 		}
-		#endregion
 
-		#region NewProcessing
 		/// <summary>
 		/// Událost, která se volá při začátku události pro založení nového záznamu.
 		/// </summary>
@@ -571,9 +505,7 @@ namespace Havit.Web.UI.WebControls
 			add { Events.AddHandler(eventNewProcessing, value); }
 			remove { Events.RemoveHandler(eventNewProcessing, value); }
 		}
-		#endregion
 
-		#region NewProcessed
 		/// <summary>
 		/// Událost, která se volá po události pro založení nového záznamu (po události NewProcessing).
 		/// </summary>
@@ -586,9 +518,7 @@ namespace Havit.Web.UI.WebControls
 			add { Events.AddHandler(eventNewProcessed, value); }
 			remove { Events.RemoveHandler(eventNewProcessed, value); }
 		}
-		#endregion
 
-		#region RowCustomizingCommandButton
 		/// <summary>
 		/// Událost, která se volá při customizaci command-buttonu řádku (implementováno v <see cref="GridViewCommandField"/>).
 		/// </summary>
@@ -604,9 +534,7 @@ namespace Havit.Web.UI.WebControls
 				Events.RemoveHandler(eventRowCustomizingCommandButton, value);
 			}
 		}
-		#endregion
 
-		#region FilterRowCreated
 		/// <summary>
 		/// Událost je vyvolána při založení filtrovacího řádku, před vložením do stromu controlů.
 		/// </summary>
@@ -621,9 +549,7 @@ namespace Havit.Web.UI.WebControls
 				Events.RemoveHandler(eventFilterRowCreated, value);
 			}
 		}
-		#endregion
 
-		#region FilterRowDataBound
 		/// <summary>
 		/// Událost je vložena po provedení DataBindu na filtrovacím řádku.
 		/// </summary>
@@ -638,9 +564,7 @@ namespace Havit.Web.UI.WebControls
 				Events.RemoveHandler(eventFilterRowDataBound, value);
 			}
 		}
-		#endregion
 
-		#region FilterRowDataBound
 		/// <summary>
 		/// Událost je zaválána v případě zapnutého filtrování dat a dává k dispozici další bod pro možnost omezení množiny zobrazených dat. V případě změny zobrazených dat se očekává změna vlastnosti Data argumentů události.
 		/// </summary>
@@ -655,9 +579,7 @@ namespace Havit.Web.UI.WebControls
 				Events.RemoveHandler(eventGridViewDataFiltering, value);
 			}
 		}
-		#endregion
 
-		#region AllPagesShown
 		/// <summary>
 		/// Událost oznamující obsloužení kliknutí na tlačítko "All Pages" (tlačítko, vypínající stránkování).
 		/// </summary>
@@ -666,8 +588,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			add { Events.AddHandler(eventAllPagesShown, value); }
 			remove { Events.RemoveHandler(eventAllPagesShown, value); }
-		} 
-		#endregion
+		}
 
 		private static readonly object eventItemInserting = new object();
 		private static readonly object eventItemInserted = new object();
@@ -680,9 +601,6 @@ namespace Havit.Web.UI.WebControls
 		private static readonly object eventFilterRowDataBound = new object();
 		private static readonly object eventGridViewDataFiltering = new object();
 
-		#endregion
-
-		#region AllowRowClick
 		/// <summary>
 		/// Indikuje, zda je povoleno rozkliknutí celého řádku.
 		/// Výchozí hodnota je false.
@@ -710,9 +628,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["AllowRowClick"] = value;
 			}
 		}
-		#endregion
 
-		#region RowClickCommandName
 		/// <summary>
 		/// CommandName, který se provede při rozkliknutí řádku.
 		/// Výchozí hodnota je Edit.
@@ -728,9 +644,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["RowClickCommandName"] = value;
 			}
 		}
-		#endregion
 
-		#region RowClickCssClass
 		/// <summary>
 		/// CssClass pro řádky, na kterých je povoleno rozkliknutí celého řádku (pomocí AllowRowClick).
 		/// Výchozí hodnotou je prázdný text.
@@ -746,16 +660,12 @@ namespace Havit.Web.UI.WebControls
 				ViewState["RowClickCssClass"] = value;
 			}
 		}
-		#endregion
 
-		#region ChildTable
 		/// <summary>
 		/// Child Table.
 		/// </summary>
 		protected Table ChildTable { get; set; }
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Vytvoří instanci GridViewExt. Nastavuje defaultně AutoGenerateColumns na false.
 		/// </summary>
@@ -763,9 +673,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			AutoGenerateColumns = false;
 		}
-		#endregion
 
-		#region OnInit (EventBlackHole)
 		/// <summary>
 		/// Inicializuje EnterpriseGridView.
 		/// </summary>
@@ -788,9 +696,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			// NOOP
 		}
-		#endregion
 
-		#region GetKeyValue - Hledání klíče položky
 		/// <summary>
 		/// Nalezne hodnotu klíče položky, ve kterém se nachází control.
 		/// </summary>
@@ -847,9 +753,7 @@ namespace Havit.Web.UI.WebControls
 
 			return this.DataKeys[rowIndex];
 		}
-		#endregion
 
-		#region GetRow
 		/// <summary>
 		/// Najde GridViewRow obsahující daný control.
 		/// Pokud není Control v GridView, vyvolá výjimku.
@@ -870,9 +774,7 @@ namespace Havit.Web.UI.WebControls
 
 			return GetRow(control.NamingContainer);
 		}
-		#endregion
 
-		#region FindColumn - Hledání sloupců
 		/// <summary>
 		/// Vyhledá sloupec (field) podle id. Vyhledává jen sloupce implementující rozhraní IEnterpriseField.
 		/// </summary>
@@ -889,9 +791,7 @@ namespace Havit.Web.UI.WebControls
 			}
 			return null;
 		}
-		#endregion
 
-		#region LoadViewState, SaveViewState - Načítání a ukládání ViewState (sorting, CommandFieldStyle)
 		/// <summary>
 		/// Zajistí uložení ViewState. Je přidáno uložení property Sorting.
 		/// </summary>
@@ -906,7 +806,6 @@ namespace Havit.Web.UI.WebControls
 			};
 		}
 
-		#region TrackViewState
 		/// <summary>
 		/// Spouští sledování ViewState.
 		/// </summary>
@@ -916,7 +815,6 @@ namespace Havit.Web.UI.WebControls
 			((IStateManager)this.CommandFieldStyle).TrackViewState();
 			((IStateManager)this.FilterStyle).TrackViewState();
 		}
-		#endregion
 
 		/// <summary>
 		/// Zajistí načtení ViewState. Je přidáno načtení property Sorting.
@@ -937,9 +835,7 @@ namespace Havit.Web.UI.WebControls
 				((IStateManager)this.FilterStyle).LoadViewState(viewStateData[3]);
 			}
 		}
-		#endregion
 
-		#region CreateChildControls
 		/// <summary>
 		/// Creates the control hierarchy used to render the <see cref="T:System.Web.UI.WebControls.GridView"/> control using the specified data source.
 		/// </summary>
@@ -969,9 +865,7 @@ namespace Havit.Web.UI.WebControls
 			
 			return result;
 		}
-		#endregion
 
-		#region CreateChildTable
 		/// <summary>
 		/// Vytvoří ChildTable.
 		/// </summary>
@@ -980,9 +874,7 @@ namespace Havit.Web.UI.WebControls
 			ChildTable = base.CreateChildTable();
 			return ChildTable;
 		}
-		#endregion
 
-		#region CreateFilterChildControls
 		/// <summary>
 		/// Přidá filtrovací řádek do gridu.
 		/// </summary>
@@ -1036,9 +928,7 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		private GridViewRow _filterRowCreatedInPerformDataBindingFakeCall;
-		#endregion
 
-		#region RaisePostBackEvent
 		/// <summary>
 		/// Rozšiřuje RaisePostBackEvent o obsluhu událostí RowClick.
 		/// </summary>
@@ -1052,9 +942,7 @@ namespace Havit.Web.UI.WebControls
 				HandleRowClick(rowIndex);
 			}
 		}
-		#endregion
 
-		#region InitializeRow, InitializeFilterRow
 		/// <summary>
 		/// Inicializuje řádek gridu danými fieldy. Není použito pro filtrovací řádek, ten řeší samostatná metoda InitializeFilterRow
 		/// (tato metoda používá row.RowType a row.RowState, pro filtr nemáme hodnoty enumu, které by byly použitelné).
@@ -1084,9 +972,7 @@ namespace Havit.Web.UI.WebControls
 				row.Cells.Add(cell);
 			}
 		}
-		#endregion
 
-		#region PerformDataBinding (override - Insert)
 		/// <summary>
 		/// Zajišťuje data-binding dat na GridView.
 		/// </summary>
@@ -1275,9 +1161,7 @@ namespace Havit.Web.UI.WebControls
 		private IEnumerable _performDataBindingData;
 		private bool _performDataBindingDataInFakeCall;
 		private ControlsValuesHolder _previousFilterRowData;
-		#endregion
 
-		#region CreateRow (override - Insert, řešení THEAD, apod.)
 		/// <summary>
 		/// CreateRow.
 		/// </summary>
@@ -1307,9 +1191,7 @@ namespace Havit.Web.UI.WebControls
 
 			return row;
 		}
-		#endregion
 
-		#region OnRowCreated
 		/// <summary>
 		/// Vyvolá událost RowCreated.
 		/// </summary>
@@ -1321,9 +1203,7 @@ namespace Havit.Web.UI.WebControls
 				base.OnRowCreated(e);
 			}
 		}
-		#endregion
 
-		#region OnRowDataBound
 		/// <summary>
 		/// Vyvolá událost RowDataBound
 		/// </summary>
@@ -1350,9 +1230,7 @@ namespace Havit.Web.UI.WebControls
 				base.OnRowDataBound(e);
 			}
 		}
-		#endregion
 
-		#region (On)RowClick
 		/// <summary>
 		/// Událost vyvolaná připadě rozkliknutí řádku.
 		/// </summary>
@@ -1368,9 +1246,7 @@ namespace Havit.Web.UI.WebControls
 		/// Událost vyvolaná připadě rozkliknutí řádku.
 		/// </summary>
 		public event GridViewRowClickEventHandler RowClick;
-		#endregion
 
-		#region OnDataBound
 		/// <summary>
 		/// Pokud je povoleno AllowRowClick, pak nastavením atributu data-suppressrowclick zajistí, aby nemohlo být kliknutí propagováno do nadřazeného gridu.
 		/// </summary>
@@ -1387,9 +1263,7 @@ namespace Havit.Web.UI.WebControls
 
 			base.OnDataBound(e);
 		}
-		#endregion
 
-		#region SetRequiresDatabinding
 		/// <summary>
 		/// Nastaví RequiresDataBinding na true.
 		/// Zajistí zavolání databindingu ještě v aktuálním requestu. Běžně v OnPreRender,
@@ -1406,9 +1280,7 @@ namespace Havit.Web.UI.WebControls
 		/// Nastavováno (na true) v metodě SetRequiresDataBinding, vypínáno v metodě PerformDataBinding.
 		/// </summary>
 		private bool _currentlyRequiresDataBinding = false;
-		#endregion
 
-		#region OnFilterRowCreated
 		/// <summary>
 		/// Vyvolá událost FilterRowCreated.
 		/// </summary>
@@ -1420,9 +1292,7 @@ namespace Havit.Web.UI.WebControls
 				handler(this, e);
 			}
 		}
-		#endregion
 
-		#region OnFilterRowDataBound
 		/// <summary>
 		/// Vyvolá událost FiltrerRowDataBound.
 		/// </summary>
@@ -1434,9 +1304,7 @@ namespace Havit.Web.UI.WebControls
 				handler(this, e);
 			}
 		}
-		#endregion
 
-		#region OnGridViewDataFiltering
 		/// <summary>
 		/// Vyvolá událost GridViewDataFiltering.
 		/// </summary>
@@ -1448,9 +1316,7 @@ namespace Havit.Web.UI.WebControls
 				handler(this, e);
 			}
 		}
-		#endregion
 
-		#region PerformAutoFiltering
 		/// <summary>
 		/// Provede filtrování dat automatickými filtry.
 		/// </summary>
@@ -1463,9 +1329,7 @@ namespace Havit.Web.UI.WebControls
 			}
 			return result;
 		}
-		#endregion
 
-		#region OnRowCommand (override - Insert)
 		/// <summary>
 		/// Metoda, která spouští událost RowCommand.
 		/// </summary>
@@ -1503,9 +1367,7 @@ namespace Havit.Web.UI.WebControls
 					break;
 			}
 		}
-		#endregion
 
-		#region HandleInsert
 		/// <summary>
 		/// Metoda, která řídí logiku příkazu Insert.
 		/// </summary>
@@ -1530,9 +1392,7 @@ namespace Havit.Web.UI.WebControls
 				}
 			}
 		}
-		#endregion
 
-		#region HandleNew
 		/// <summary>
 		/// Metoda, která řídí logiku příkazu New.
 		/// </summary>
@@ -1550,9 +1410,7 @@ namespace Havit.Web.UI.WebControls
 				}
 			}
 		}
-		#endregion
 
-		#region HandleRowClick
 		/// <summary>
 		/// Zajistí obluhu události RowClick. Tj. vyvolá událost pomocí OnRowClick a pokud není zrušená (Cancel) a zároveň je zadáno RowClickCommandName, pak se pokusí vyvolat událost dle RowClickCommandName pomocí OnBubbleEvent.
 		/// </summary>
@@ -1568,9 +1426,7 @@ namespace Havit.Web.UI.WebControls
 				OnBubbleEvent(this, e);
 			}
 		}
-		#endregion
 
-		#region OnBubbleEvent
 		/// <summary>
 		/// Determines whether the event for the Web server control is passed up the page's user interface (UI) server control hierarchy.
 		/// </summary>
@@ -1616,9 +1472,7 @@ namespace Havit.Web.UI.WebControls
 
 			return result;
 		}
-		#endregion
 
-		#region OnRowEditing
 		/// <summary>
 		/// Spouští událost RowEditing.
 		/// </summary>
@@ -1647,8 +1501,6 @@ namespace Havit.Web.UI.WebControls
 
 					// .NET 4.0 má vlastní logiku, která nastavuje EditIndex po volání této metody. 
 					// My zde opravujeme nastavení NewEditIndex, čímž řešíme logiku změny při insert řádku nahoře
-
-					#region Komentář - HandleEdit vykopírované z .NET 3.5 a .NET 4.0
 
 					// ASP.NET 3.5 
 
@@ -1680,8 +1532,6 @@ namespace Havit.Web.UI.WebControls
 					//    }
 					//}
 
-					#endregion
-
 					this.EditIndex = newEditIndex;
 					e.NewEditIndex = newEditIndex;
 
@@ -1690,9 +1540,7 @@ namespace Havit.Web.UI.WebControls
 				}
 			}
 		}
-		#endregion
 
-		#region OnRowUpdating
 		/// <summary>
 		/// Raises the System.Web.UI.WebControls.GridView.RowUpdating event.
 		/// Výchozí chování RowUpdating - pokud není zvoleno e.Cancel, pak vypne editaci řádku.
@@ -1708,9 +1556,7 @@ namespace Havit.Web.UI.WebControls
 				this.SetRequiresDatabinding();
 			}
 		}
-		#endregion
 
-		#region OnRowCancelingEdit
 		/// <summary>
 		/// Výchozí chování RowUpdating - pokud není zvoleno e.Cancel, pak vypne editaci řádku.
 		/// </summary>
@@ -1724,9 +1570,7 @@ namespace Havit.Web.UI.WebControls
 				this.EditIndex = -1;
 			}
 		}
-		#endregion
 
-		#region OnPageIndexChanging
 		/// <summary>
 		/// Výchozí chování události OnPageIndexChanging Pokud není stránkování stornováno, změníme stránku na cílovou.
 		/// </summary>
@@ -1741,9 +1585,7 @@ namespace Havit.Web.UI.WebControls
 				RequiresDataBinding = true;
 			}
 		}
-		#endregion
 
-		#region OnRowDeleting
 		/// <summary>
 		/// Spouští událost RowDeleting.
 		/// </summary>
@@ -1761,9 +1603,7 @@ namespace Havit.Web.UI.WebControls
 				this.SetRequiresDatabinding();
 			}
 		}
-		#endregion
 
-		#region OnRowInserting, OnRowInserted
 		/// <summary>
 		/// Spouští událost RowInserting.
 		/// </summary>
@@ -1789,9 +1629,7 @@ namespace Havit.Web.UI.WebControls
 				h(this, e);
 			}
 		}
-		#endregion
 
-		#region OnNewProcessing
 		/// <summary>
 		/// Spouští událost RowNewBeginning. Událost zahajuje začátek zakládání nového záznamu.		
 		/// </summary>
@@ -1812,9 +1650,7 @@ namespace Havit.Web.UI.WebControls
 				EditorExtender.StartEditor();
 			}
 		}
-		#endregion
 
-		#region OnNewProcessed
 		/// <summary>
 		/// Spouští událost RowNewCompleted. Událost ukončuje začátek zakládání nového záznamu. Vzhledek k jazykové nemožnosti použití konvence Editing/Edited, Inserting/Inserted pro "New" je zde dvojice NewBeginning/NewCompleted.
 		/// </summary>
@@ -1829,9 +1665,7 @@ namespace Havit.Web.UI.WebControls
 				h(this, e);
 			}
 		}
-		#endregion
 
-		#region	OnSorting
 		/// <summary>
 		/// Při požadavku na řazení si zapamatujeme, jak chtěl uživatel řadit a nastavíme RequiresDataBinding na true.
 		/// </summary>
@@ -1846,9 +1680,7 @@ namespace Havit.Web.UI.WebControls
 				base.RequiresDataBinding = true;
 			}
 		}
-		#endregion
 
-		#region OnSorted
 		/// <summary>
 		/// Po setřídění podle sloupce zajistí u vícestránkových gridů návrat na první stránku
 		/// </summary>
@@ -1859,9 +1691,7 @@ namespace Havit.Web.UI.WebControls
 			PageIndex = 0;
 			this.EditIndex = -1;
 		}
-		#endregion
 
-		#region OnPreRender
 		/// <summary>
 		/// Zajistíme DataBinding, pokud mají vlastnosti AutoDataBind a RequiresDataBinding hodnotu true.
 		/// </summary>
@@ -1876,9 +1706,7 @@ namespace Havit.Web.UI.WebControls
 
 			this.RegisterClientScripts();
 		}
-		#endregion
 
-		#region RegisterClientScripts
 		private void RegisterClientScripts()
 		{
 			HavitFrameworkClientScriptHelper.RegisterHavitFrameworkClientScript(this.Page);
@@ -1899,9 +1727,7 @@ namespace Havit.Web.UI.WebControls
 				ScriptManager.RegisterStartupScript(this, typeof(GridViewExt), String.Format("InitializeRowClick-{0}", this.ClientID), script, true);
 			}
 		}
-		#endregion
 
-		#region Page_PreRenderComplete
 		private void Page_PreRenderComplete(object sender, EventArgs e)
 		{
 			// pokud je control schovaný (není visible), nevolá se jeho OnPreRender.
@@ -1912,9 +1738,7 @@ namespace Havit.Web.UI.WebControls
 				DataBind();
 			}
 		}
-		#endregion
 
-		#region OnRowCustomizingCommandButton
 		/// <summary>
 		/// Spouští událost <see cref="RowCustomizingCommandButton"/>.
 		/// </summary>
@@ -1927,9 +1751,7 @@ namespace Havit.Web.UI.WebControls
 				h(this, e);
 			}
 		}
-		#endregion
 
-		#region InitializePager
 		/// <summary>
 		/// Pokud je nastavena PagerTemplate nebo PagerRenderMode Standard, pouižje se vestavěný způsob generování pageru.
 		/// Pokud je PagerRenderMode BootstrapPagination, použije se způsob renderování odpovídající Pagination v bootstrapu.
@@ -1957,9 +1779,7 @@ namespace Havit.Web.UI.WebControls
 				}
 			}
 		}
-		#endregion
 
-		#region InitializeStandardPager
 		/// <summary>
 		/// Vytvoří standardní pager a (pokud je to povoleno a není použito PagerTemplate) přidá do něj tlačítko pro zobrazení všech stránek.
 		/// </summary>
@@ -2005,10 +1825,7 @@ namespace Havit.Web.UI.WebControls
 				}
 			}
 		}
-		#endregion
 
-		#region Bootstrap pagination - InitializeBootstrapPagination, CreateBootstrapNumericPagination, CreateBootstrapNextPrevPagination, AddBootstrapPagerButton
-		#region InitializeBootstrapPagination
 		/// <summary>
 		/// Vytvoří stránkování pomocí Pagionation v bootstrapu.
 		/// Tato metoda jen rozděluje práci na další metody (deleguje).
@@ -2060,16 +1877,13 @@ namespace Havit.Web.UI.WebControls
 			cell.Controls.Add(paginationControl);
 			row.Cells.Add(cell);
 		}
-		#endregion
 
-		#region CreateBootstrapNumericPagination
 		/// <summary>
 		/// Vytvoří pagination s čísly stránek.
 		/// </summary>
 		private void CreateBootstrapNumericPagination(Control container, PagedDataSource pagedDataSource, bool addFirstLastPageButtons)
 		{
 			PagerSettings pagerSettings = this.PagerSettings;
-			#region Určení položek, které budou v pageru - vykopírováno Reflectorem.
 			int pageCount = pagedDataSource.PageCount;
 			int currentPageIndexDenormalized = pagedDataSource.CurrentPageIndex + 1;
 			int pageButtonCount = pagerSettings.PageButtonCount;
@@ -2105,9 +1919,7 @@ namespace Havit.Web.UI.WebControls
 				}
 				this.FirstDisplayedPageIndex = firstVisiblePageIndexDenormalized - 1;
 			}
-			#endregion
 
-			#region Prototyp pageru s aktuální stránkou vždy uprostřed
 			//int firstVisiblePageIndexDenormalized;
 			//int lastVisiblePageIndexDenormalized;
 			//if (pagedDataSource.PageCount <= pageButtonCount)
@@ -2130,7 +1942,6 @@ namespace Havit.Web.UI.WebControls
 			//	firstVisiblePageIndexDenormalized = currentPageIndexDenormalized - pageButtonCount / 2;
 			//	lastVisiblePageIndexDenormalized = firstVisiblePageIndexDenormalized + pageButtonCount - 1;
 			//}
-			#endregion
 
 			if (addFirstLastPageButtons)
 			{
@@ -2157,9 +1968,7 @@ namespace Havit.Web.UI.WebControls
 				AddBootstrapPagerButton(container, pagerSettings.LastPageText, "last", "Last", !pagedDataSource.IsLastPage);
 			}
 		}
-		#endregion
 
-		#region CreateBootstrapNextPrevPagination
 		/// <summary>
 		/// Vytvoří pagination s navigací na předchozí/následující stránku.
 		/// </summary>
@@ -2181,9 +1990,7 @@ namespace Havit.Web.UI.WebControls
 				AddBootstrapPagerButton(container, pagerSettings.LastPageText, "last", "Last", !isLastPage);
 			}
 		}
-		#endregion
 
-		#region AddBootstrapPagerButton
 		/// <summary>
 		/// Přidá do kontejnetu tlačítko pageru dle požadovaných parametrů.
 		/// </summary>
@@ -2211,10 +2018,7 @@ namespace Havit.Web.UI.WebControls
 			liControl.Controls.Add(pagingButton);
 			container.Controls.Add(liControl);
 		}
-		#endregion
-		#endregion
 
-		#region AllPagesImageButton_Click, AllPagesLinkButton_Click, HandleAllPagesClicked
 		private void AllPagesImageButton_Click(object sender, ImageClickEventArgs e)
 		{
 			HandleAllPagesClicked();
@@ -2236,10 +2040,7 @@ namespace Havit.Web.UI.WebControls
 				OnAllPagesShown(EventArgs.Empty);
 			}
 		}
-		
-		#endregion
 
-		#region IsRowClickEnabled
 		/// <summary>
 		/// Vrací true, pokud je povoleno kliknutí do celého řádku.
 		/// </summary>
@@ -2247,9 +2048,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			return AllowRowClick && IsEnabled;
 		}
-		#endregion
 
-		#region OnAllPagesShowing, OnAllPagesShown
 		/// <summary>
 		/// Obsluha událost při obsluze kliknutí na tlačítko "All Pages" (tlačítko, vypínající stránkování). Dává možnost zrušit akci.
 		/// </summary>
@@ -2273,10 +2072,7 @@ namespace Havit.Web.UI.WebControls
 				h(this, eventArgs);
 			}
 		}
-		
-		#endregion		
-		
-		#region ExtractRowValues
+
 		/// <summary>
 		/// Vyzvedne z řádku GridView hodnoty, které jsou nabidnované způsobem pro two-way databinding.
 		/// Hodnoty nastaví jako vlastnosti předanému datovému objektu.
@@ -2292,9 +2088,7 @@ namespace Havit.Web.UI.WebControls
 			this.ExtractRowValues(fieldValues, row, false, false);
 			DataBinderExt.SetValues(dataObject, fieldValues);
 		}
-		#endregion
 
-		#region Render, RenderContents, PrepareControlHierarchy
 		/// <summary>
 		/// Renders the Web server control content to the client's browser using the specified System.Web.UI.HtmlTextWriter object.
 		/// </summary>
@@ -2380,9 +2174,7 @@ namespace Havit.Web.UI.WebControls
 			}
 			base.PrepareControlHierarchy();
 		}
-		#endregion
 
-		#region RegisterEditor
 		/// <summary>
 		/// Registruje editor pro použití s GridView.
 		/// </summary>
@@ -2405,9 +2197,7 @@ namespace Havit.Web.UI.WebControls
 				editorExtenderWithPreviousNextNavigation.GetCanNavigateNext += EditorExtenderGetCanNavigateNext;
 			}
 		}
-		#endregion
 
-		#region EditorExtenderEditClosed
 		/// <summary>
 		/// Ukončí režim editace externím editorem.
 		/// </summary>
@@ -2415,9 +2205,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			EditorExtenderEditIndexInternal = null;
 		}
-		#endregion
 
-		#region EditorExtenderItemSaved
 		private void EditorExtenderItemSaved(object sender, EditorExtenderItemSavedEventArgs e)
 		{
 			// SetRequiresDatabinding(); - nemá význam - TrySetEditorExtenderEditIndex volá DataBind
@@ -2427,9 +2215,7 @@ namespace Havit.Web.UI.WebControls
 			// zároveň je potřeba najít nově založený objekt, což je mj. ochrana proti opakovanému klikání na tlačítko save v editoru
 			TrySetEditorExtenderEditIndex(e.SavedObject);
 		}
-		#endregion
 
-		#region UpdateParentUpdatePanel
 		/// <summary>
 		/// Aktualizuje nejbližší nadřazený update panel. Pokud neexistuje, je vyhozena výjimka.
 		/// </summary>
@@ -2453,9 +2239,7 @@ namespace Havit.Web.UI.WebControls
 				}
 			}
 		}
-		#endregion
 
-		#region TrySetEditorExtenderEditIndex
 		private bool TrySetEditorExtenderEditIndex(object dataObject)
 		{
 			int i = 0;
@@ -2522,9 +2306,7 @@ namespace Havit.Web.UI.WebControls
 			}
 			return true;
 		}
-		#endregion
 
-		#region CanCreateNew, EditorExtenderGetCreateNew
 		/// <summary>
 		/// Vrací true, pokud lze založit nový objekt.
 		/// </summary>
@@ -2540,9 +2322,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			e.Data = CanCreateNew();
 		}
-		#endregion
 
-		#region CanNavigatePrevious, CanNavigateNext, EditorExtenderGetCanNavigatePrevious, EditorExtenderGetCanNavigateNext
 		/// <summary>
 		/// Vrací true, pokud lze navigovat na předchozí položku.
 		/// </summary>
@@ -2579,9 +2359,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			e.Data = CanNavigateNext();
 		}
-		#endregion
 
-		#region EditorExtenderNewProcessing
 		private void EditorExtenderNewProcessing(object sender, CancelEventArgs e)
 		{
 			if (!AllowInserting)
@@ -2592,9 +2370,7 @@ namespace Havit.Web.UI.WebControls
 
 			EditorExtenderEditIndex = -1;
 		}
-		#endregion
 
-		#region EditorExtenderPreviousNavigating, EditorExtenderNextNavigating
 		/// <summary>
 		/// Zajišťuje navigaci na předchozí položku.
 		/// </summary>
@@ -2642,8 +2418,6 @@ namespace Havit.Web.UI.WebControls
 				EditorExtenderEditIndex = EditorExtenderEditIndex + 1;
 			}
 		}
-		#endregion
-
 	}
 
 	/// <summary>

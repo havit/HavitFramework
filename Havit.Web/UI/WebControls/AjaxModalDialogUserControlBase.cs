@@ -12,7 +12,6 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public abstract class AjaxModalDialogUserControlBase : ModalDialogUserControlBase
 	{
-		#region AjaxModalDialog
 		/// <summary>
 		/// Zapouzdřený ModalDialog zajišťující zobrazování a schovávání obsahu stránky.
 		/// </summary>
@@ -21,9 +20,7 @@ namespace Havit.Web.UI.WebControls
 			get { return _ajaxModalDialog; }
 		}
 		private readonly AjaxModalDialog _ajaxModalDialog = new AjaxModalDialog();
-		#endregion
 
-		#region Triggers
 		/// <summary>
 		/// Triggery zapouzdřeného UpdatePanelu.
 		/// </summary>
@@ -35,9 +32,7 @@ namespace Havit.Web.UI.WebControls
 				return AjaxModalDialog.Triggers;
 			}
 		}
-		#endregion
 
-		#region Width, Height
 		/// <summary>
 		/// Šířka dialogu v pixelech.
 		/// </summary>
@@ -67,9 +62,7 @@ namespace Havit.Web.UI.WebControls
 				AjaxModalDialog.Height = value;
 			}
 		}
-		#endregion
 
-		#region GetModalDialogControl (override)
 		/// <summary>
 		/// Zapouzdřený ModalDialog zajišťující zobrazování a schovávání obsahu dialogu.
 		/// </summary>
@@ -77,9 +70,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			return AjaxModalDialog;
 		}
-		#endregion
 
-		#region FrameworkInitialize, AddParsedSubObject
 		/// <summary>
 		/// FrameworkInitialize.
 		/// </summary>
@@ -97,6 +88,5 @@ namespace Havit.Web.UI.WebControls
 		{
 			AjaxModalDialog.ContentTemplateContainer.Controls.Add((Control)obj);
 		}
-		#endregion
 	}
 }

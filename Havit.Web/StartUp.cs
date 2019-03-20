@@ -21,7 +21,6 @@ using Havit.Web.UI.ClientScripts;
 [SuppressMessage("SonarLint", "S3903", Justification = "Je to špatně, ale z důvodu zpětné kompatibility neměním.")]
 public static class StartUp
 {
-	#region Start
 	/// <summary>
 	/// Called on application startup. Run by PreApplicationStartMethodAttribute.
 	/// Registers script resources.
@@ -31,5 +30,4 @@ public static class StartUp
 		HavitFrameworkClientScriptHelper.RegisterScriptResourceMappings();
 		BootstrapClientScriptHelper.RegisterScriptResourceMappings();
 	}
-	#endregion
 }

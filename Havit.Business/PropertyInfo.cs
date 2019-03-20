@@ -10,11 +10,8 @@ namespace Havit.Business
 	/// </summary>
 	public abstract class PropertyInfo
 	{
-		#region isInitialized (private field)
 		private bool isInitialized = false;
-		#endregion
 
-		#region Owner
 		/// <summary>
 		/// Třída, které property náleží.
 		/// </summary>
@@ -23,9 +20,7 @@ namespace Havit.Business
 			get { return owner; }
 		}
 		private ObjectInfo owner;
-		#endregion
 
-		#region PropertyName
 		/// <summary>
 		/// Název property reprezentované instancí.
 		/// </summary>
@@ -34,9 +29,7 @@ namespace Havit.Business
 			get { return propertyName; }
 		}
 		private string propertyName;
-		#endregion
 
-		#region Initialize
 		/// <summary>
 		/// Inicializuje instanci.
 		/// </summary>
@@ -49,9 +42,7 @@ namespace Havit.Business
 			this.propertyName = propertyName;
 			this.isInitialized = true;
 		}
-		#endregion
 
-		#region CheckInitialization
 		/// <summary>
 		/// Ověří, že byla instance inicializována. Pokud ne, vyhodí výjimku.
 		/// </summary>
@@ -62,7 +53,5 @@ namespace Havit.Business
 				throw new InvalidOperationException("Instance nebyla inicializována.");
 			}
 		}
-		#endregion
-
 	}
 }

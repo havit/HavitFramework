@@ -12,7 +12,6 @@ namespace Havit.Business.Query
 {
 	internal sealed class GenericDbTypeValueOperand : IOperand
 	{
-		#region Private fields
 		/// <summary>
 		/// Hodnota konstanty ValueOperandu.
 		/// </summary>
@@ -22,9 +21,7 @@ namespace Havit.Business.Query
 		/// Databázový typ nesený ValueOperandem.
 		/// </summary>
 		private readonly DbType dbType;
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Vytvoří instanci třídy ValueOperand.
 		/// </summary>
@@ -33,9 +30,7 @@ namespace Havit.Business.Query
 			this.value = value;
 			this.dbType = dbType;
 		}
-		#endregion
 
-		#region IOperand Members
 		string IOperand.GetCommandValue(System.Data.Common.DbCommand command, SqlServerPlatform sqlServerPlatform)
 		{
 			Debug.Assert(command != null);
@@ -48,6 +43,5 @@ namespace Havit.Business.Query
 
 			return parameter.ParameterName;
 		}
-		#endregion
 	}
 }

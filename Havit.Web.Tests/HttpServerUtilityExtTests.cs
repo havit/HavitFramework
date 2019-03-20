@@ -12,7 +12,6 @@ namespace Havit.Web.Tests
 	[TestClass]
 	public class HttpServerUtilityExtTests
 	{
-		#region ResolveUrlTest_Standard
 		/// <summary>
 		/// A test for ResolveUrl
 		/// </summary>
@@ -26,9 +25,7 @@ namespace Havit.Web.Tests
 			actual = HttpServerUtilityExt.ResolveUrl(appPath, url);
 			Assert.AreEqual(expected, actual);
 		}
-		#endregion
 
-		#region ResolveUrlTest_SlashEndingAppPath
 		/// <summary>
 		/// A test for ResolveUrl
 		/// </summary>
@@ -42,6 +39,5 @@ namespace Havit.Web.Tests
 			actual = HttpServerUtilityExt.ResolveUrl(appPath, url);
 			Assert.AreEqual(expected, actual);
 		}
-		#endregion
 	}
 }

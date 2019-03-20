@@ -10,7 +10,6 @@ namespace Havit.PayMuzo.TypeConverters
 	/// </summary>
 	public class PayMuzoCurrencyTypeConverter : ITypeConverter<PayMuzoCurrency>
 	{
-		#region CanConvertTo, CanConvertFrom
 		/// <summary>
 		/// Returns whether this converter can convert the object to the specified type.
 		/// </summary>
@@ -42,9 +41,7 @@ namespace Havit.PayMuzo.TypeConverters
 			}
 			return false;
 		}
-		#endregion
 
-		#region ConvertFrom
 		/// <summary>
 		/// Converts the given value to the type of this converter.
 		/// </summary>
@@ -73,9 +70,7 @@ namespace Havit.PayMuzo.TypeConverters
 
 			return result;
 		}
-		#endregion
 
-		#region ConvertTo
 		/// <summary>
 		/// Converts the given value object to the specified type, using the arguments.
 		/// </summary>
@@ -105,6 +100,5 @@ namespace Havit.PayMuzo.TypeConverters
 
 			return value.NumericCode;
 		}
-		#endregion
 	}
 }

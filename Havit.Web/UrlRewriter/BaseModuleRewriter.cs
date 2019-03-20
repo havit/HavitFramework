@@ -10,7 +10,6 @@ namespace Havit.Web.UrlRewriter
 	[Obsolete("Upgrade to ASP.NET Routing.")]
 	public abstract class BaseModuleRewriter : IHttpModule
 	{
-		#region Init
 		/// <summary>
 		/// Executes when the module is initialized.
 		/// </summary>
@@ -23,16 +22,12 @@ namespace Havit.Web.UrlRewriter
 			// If you are using Windows authentication, change to app.BeginRequest
 			app.AuthorizeRequest += new EventHandler(this.BaseModuleRewriter_AuthorizeRequest);
 		}
-		#endregion
 
-		#region Dispose
 		/// <summary>
 		/// Prázdná implementace, vyžadováno IHttpModule.
 		/// </summary>
 		public virtual void Dispose() { }
-		#endregion
 
-		#region BaseModuleRewriter_AuthorizeRequest
 		/// <summary>
 		/// Called when the module's AuthorizeRequest event fires.
 		/// </summary>
@@ -43,9 +38,7 @@ namespace Havit.Web.UrlRewriter
 			HttpApplication app = (HttpApplication)sender;
 			Rewrite(app.Request.Path, app);
 		}
-		#endregion
 
-		#region Rewrite
 		/// <summary>
 		/// The <b>Rewrite</b> method must be overriden.  It is where the logic for rewriting an incoming
 		/// URL is performed.
@@ -53,6 +46,5 @@ namespace Havit.Web.UrlRewriter
 		/// <param name="requestedPath">The requested path.</param>
 		/// <param name="app">The HttpApplication instance.</param>
 		protected abstract void Rewrite(string requestedPath, HttpApplication app);
-		#endregion
 	}
 }

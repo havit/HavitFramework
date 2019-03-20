@@ -17,7 +17,6 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class ControlFocusPersister : Control
 	{
-		#region OnLoad		
 		/// <summary>
 		/// Zaregistruje hidden field, ve kterém se drží poslední control, na kterém byl focus.
 		/// </summary>
@@ -27,9 +26,7 @@ namespace Havit.Web.UI.WebControls
 
 			Page.ClientScript.RegisterHiddenField("_lastFocusPersister", this.Context.Request.Form["_lastFocusPersister"] ?? String.Empty);
 		}
-		#endregion
 
-		#region OnPreRender		
 		/// <summary>
 		/// Zaregistruje javascript zajišťující chování ControlFocusPersisteru.
 		/// </summary>
@@ -42,6 +39,5 @@ namespace Havit.Web.UI.WebControls
 
 			ScriptManager.RegisterStartupScript(this.Page, typeof(ControlFocusPersister), "ControlFocusPersister", "$(document).ready(function () { havitControlFocusPersisterExtensions.init(); });", true);
 		}
-		#endregion
 	}
 }

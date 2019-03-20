@@ -14,7 +14,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	/// </summary>
 	public class NavbarTextItem : NavbarItem
 	{
-		#region Text
 		/// <summary>
 		/// Header item text.
 		/// Supports resources pattern.
@@ -30,9 +29,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ViewState["Text"] = value;
 			}
 		}
-		#endregion
 
-		#region IsDecoration
 		/// <summary>
 		/// Returns false - text item is not a decoration.
 		/// </summary>
@@ -40,9 +37,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			get { return false; }
 		}
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Constructor.
 		/// </summary>
@@ -57,9 +52,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			this.Text = text;
 		}
-		#endregion
 
-		#region Render
 		/// <summary>
 		/// Renders menu items.
 		/// </summary>
@@ -79,6 +72,5 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			writer.RenderEndTag(); // Span
 			writer.RenderEndTag(); // Li
 		}
-		#endregion
 	}
 }

@@ -13,14 +13,11 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	[AttributeUsage(AttributeTargets.Class)]
 	public class ValidationDisplayTargetAttribute : Attribute
 	{
-		#region DisplayTargetControl
 		/// <summary>
 		/// Control ID to be used as a target control in user control validation.
 		/// </summary>
 		public string DisplayTargetControl { get; private set; }
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Constructor.
 		/// </summary>
@@ -30,6 +27,5 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 
 			this.DisplayTargetControl = displayTargetControl;
 		}
-		#endregion
 	}
 }

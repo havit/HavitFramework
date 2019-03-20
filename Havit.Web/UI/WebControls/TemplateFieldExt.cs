@@ -12,7 +12,6 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class TemplateFieldExt : TemplateField, IIdentifiableField, IFilterField
 	{
-		#region ID (IIdentifiableField Members)
 		/// <summary>
 		/// Identifikátor fieldu na který se lze odkazovat pomocí <see cref="GridViewExt.FindColumn(string)"/>.
 		/// </summary>
@@ -32,18 +31,14 @@ namespace Havit.Web.UI.WebControls
 				ViewState["ID"] = value;
 			}
 		}
-		#endregion
 
-		#region FilterTemplate
 		/// <summary>
 		/// Template pro filtr.
 		/// </summary>
 		[TemplateContainer(typeof(IDataItemContainer))]
 		[PersistenceMode(PersistenceMode.InnerProperty)]
 		public virtual ITemplate FilterTemplate { get; set; }
-		#endregion
 
-		#region FilterStyle
 		/// <summary>
 		/// Styl buňky filtru.
 		/// </summary>
@@ -66,9 +61,7 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		private TableItemStyle _filterStyle;
-		#endregion
 
-		#region CopyProperties
 		/// <summary>
 		/// Copies the properties of the current System.Web.UI.WebControls.TemplateField-derived object to the specified System.Web.UI.WebControls.DataControlField object.
 		/// </summary>
@@ -80,9 +73,7 @@ namespace Havit.Web.UI.WebControls
 				((IFilterField)newField).FilterStyle.CopyFrom(this.FilterStyle);
 			}
 		}
-		#endregion
 
-		#region SaveViewState, LoadViewState, TrackViewState
 		/// <summary>
 		/// Saves the changes made to the System.Web.UI.WebControls.DataControlField view state since the time the page was posted back to the server.
 		/// </summary>
@@ -120,16 +111,12 @@ namespace Havit.Web.UI.WebControls
 				((IStateManager)_filterStyle).TrackViewState();
 			}
 		}
-		#endregion
 
-		#region IFilterField.FilterStyleInternal
 		TableItemStyle IFilterField.FilterStyleInternal
 		{
 			get { return _filterStyle; }
 		}
-		#endregion
 
-		#region IFilterField.InitializeFilterCell
 		/// <summary>
 		/// Inicializuje buňku filtru.
 		/// </summary>
@@ -140,7 +127,5 @@ namespace Havit.Web.UI.WebControls
 				FilterTemplate.InstantiateIn(cell);
 			}
 		}
-		#endregion
-
 	}
 }

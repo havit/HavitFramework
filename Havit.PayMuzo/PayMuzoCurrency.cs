@@ -11,7 +11,6 @@ namespace Havit.PayMuzo
 	/// </summary>
 	public class PayMuzoCurrency
 	{
-		#region Hodnoty měn
 		/// <summary>
 		/// CZK, 203, Koruna česká.
 		/// </summary>
@@ -38,9 +37,7 @@ namespace Havit.PayMuzo
 				return FindByNumericCode(840);
 			}
 		}
-		#endregion
 
-		#region Properties
 		/// <summary>
 		/// Kód měny, např. "CZK". 
 		/// </summary>
@@ -67,9 +64,7 @@ namespace Havit.PayMuzo
 			get { return _smallestUnits; }
 		}
 		private readonly int _smallestUnits;
-		#endregion
 
-		#region Constructors
 		/// <summary>
 		/// Initializes a new instance of the <see cref="PayMuzoCurrency"/> class.
 		/// </summary>
@@ -82,18 +77,14 @@ namespace Havit.PayMuzo
 			_numericCode = numericCode;
 			_smallestUnits = smallestUnits;
 		}
-		#endregion
 
 		/*******************************************************************************************************/
 
-		#region currencies (static, private)
 		/// <summary>
 		/// Hashtabulka s unikátními sdílenými instancemi.
 		/// </summary>
 		private static readonly Hashtable currencies;
-		#endregion
 
-		#region Static constructor
 		/// <summary>
 		/// Statický constructor
 		/// </summary>
@@ -105,9 +96,7 @@ namespace Havit.PayMuzo
 			RegisterCurrency(new PayMuzoCurrency("EUR", 978, 100));
 			RegisterCurrency(new PayMuzoCurrency("USD", 840, 100));
 		}
-		#endregion
 
-		#region RegisterCurrency (static, private)
 		/// <summary>
 		/// Zaregistruje měnu do interní Hashtable.
 		/// </summary>
@@ -124,9 +113,7 @@ namespace Havit.PayMuzo
 				currencies.Add(currency.NumericCode, currency);
 			}
 		}
-		#endregion
 
-		#region FindByValue (static)
 		/// <summary>
 		/// Najde měnu podle numerického kódu a vrátí ji. Pokud není nalezena, vrací <c>null</c>.
 		/// </summary>
@@ -135,6 +122,5 @@ namespace Havit.PayMuzo
 		{
 			return (PayMuzoCurrency)currencies[numericCode];
 		}
-		#endregion
 	}
 }

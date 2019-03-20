@@ -8,7 +8,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 {
 	public static class MoneyPartialClass
 	{
-		#region Generate
 		public static void Generate(Table currencyTable, CsprojFile csprojFile)
 		{
 			string fileName = FileHelper.GetFilename(NamespaceHelper.GetNamespaceName(currencyTable, false), "Money", ".partial.cs", FileHelper.GeneratedFolder);
@@ -35,6 +34,5 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			
 			writer.Save();
 		}
-		#endregion
 	}
 }

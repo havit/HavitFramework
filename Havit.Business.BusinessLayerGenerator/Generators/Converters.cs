@@ -9,7 +9,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 {
 	public static class Converters
 	{
-		#region WriteConverters
 		public static void WriteConverters(CodeWriter writer, Table table)
 		{
 			List<Column> list = new List<Column>();
@@ -36,7 +35,5 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				writer.WriteCloseRegion();
 			}
 		}
-		#endregion
-
 	}
 }

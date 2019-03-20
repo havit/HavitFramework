@@ -13,7 +13,6 @@ namespace Havit.Data.SqlTypes
 	/// </summary>
 	public static class IntTable
 	{
-		#region GetSqlParameterValue
 		/// <summary>
 		/// Vytvoří hodnotu pro SqlParameter předávající dané pole integerů.
 		/// Pokud je ids null nebo neobsahuje žádný záznam, vrací null.
@@ -42,6 +41,5 @@ namespace Havit.Data.SqlTypes
 				return result;
 			}
 		}
-		#endregion
 	}
 }

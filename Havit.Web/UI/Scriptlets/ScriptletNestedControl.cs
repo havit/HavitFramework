@@ -11,7 +11,6 @@ namespace Havit.Web.UI.Scriptlets
 	/// </summary>
 	public abstract class ScriptletNestedControl : Control
 	{
-		#region Scriptlet
 		/// <include file='IScriptletParameter.xml' path='doc/members/member[starts-with(@name,"P:Havit.Web.UI.Scriptlets.IScriptletParameter.Scriptlet")]/*' />
 		[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1604:ElementDocumentationMustHaveSummary", Justification = "Bráno z externího souboru.")]
 		public Scriptlet Scriptlet
@@ -31,6 +30,5 @@ namespace Havit.Web.UI.Scriptlets
 				return (Scriptlet)Parent;
 			}
 		}
-		#endregion
 	}
 }

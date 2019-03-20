@@ -18,7 +18,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// </summary>
 		internal class DialogControl : Control
 		{
-			#region Constructor
 			/// <summary>
 			/// Constructor
 			/// </summary>
@@ -27,18 +26,14 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				this.modalDialog = modalDialog;
 			}
 			private readonly ModalDialog modalDialog;
-			#endregion
 
-			#region Render
 			protected override void Render(HtmlTextWriter writer)
 			{
 				RenderBeginTags(writer);
 				base.Render(writer); // render children
 				RenderEndTags(writer);
 			}
-			#endregion
 
-			#region RenderBeginTags
 			private void RenderBeginTags(HtmlTextWriter writer)
 			{
 				writer.AddAttribute("id", this.ClientID);
@@ -59,16 +54,13 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				writer.AddAttribute(HtmlTextWriterAttribute.Class, "modal-content");
 				writer.RenderBeginTag(HtmlTextWriterTag.Div);
 			}
-			#endregion
 
-			#region RenderEndTags
 			private void RenderEndTags(HtmlTextWriter writer)
 			{
 				writer.RenderEndTag(); // modal-content
 				writer.RenderEndTag(); // modal-dialog
 				writer.RenderEndTag(); // modal
 			}
-			#endregion
 		}
 	}
 }

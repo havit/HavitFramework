@@ -13,21 +13,16 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 	/// </summary>
 	internal class ListBoxPersisterControlExtender : IPersisterControlExtender
 	{
-		#region GetValue
 		public object GetValue(Control control)
 		{
 			return ((ListBox)control).Items.Cast<ListItem>().Where(item => item.Selected).Select(item => item.Value).ToArray();
-		} 
-		#endregion
+		}
 
-		#region GetValueType
 		public Type GetValueType()
 		{
 			return typeof(String[]);
-		} 
-		#endregion
+		}
 
-		#region SetValue
 		public void SetValue(Control control, object value)
 		{
 			ListBox listBox = (ListBox)control;
@@ -42,10 +37,8 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 					listItem.Selected = true;
 				}
 			}
-		} 
-		#endregion
+		}
 
-		#region GetPriority
 		public int? GetPriority(System.Web.UI.Control control)
 		{
 			if (control is ListBox)
@@ -54,9 +47,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 			}
 			return null;
 		}
-		#endregion
 
-		#region PersistsChildren
 		/// <summary>
 		/// Pokud je true, ControlsValuesPersister se pokusí uložit i hodnoty child controlů.
 		/// Implicitně vrací false.
@@ -65,6 +56,5 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 		{
 			return false;
 		}
-		#endregion
 	}
 }

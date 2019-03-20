@@ -13,7 +13,6 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class FormViewExt : FormView
 	{
-		#region AutoDataBind
 		/// <summary>
 		/// Nastavuje automatický databind na FormView.		
 		/// </summary>
@@ -28,9 +27,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["AutoDataBind"] = value;
 			}
 		}
-		#endregion
 
-		#region DataSource
 		/// <summary>
 		/// Nastaví objekt nebo kolekci jako datový zdroj FormView.
 		/// </summary>
@@ -52,9 +49,7 @@ namespace Havit.Web.UI.WebControls
 				}
 			}
 		}
-		#endregion
 
-		#region RequiresDataBinding (new), SetRequiresDatabinding
 		/// <summary>
 		/// Zpřístupňuje pro čtení chráněnou vlastnost RequiresDataBinding.
 		/// </summary>
@@ -86,9 +81,7 @@ namespace Havit.Web.UI.WebControls
 		/// Nastavováno (na true) v metodě SetRequiresDataBinding, vypínáno v metodě PerformDataBinding.
 		/// </summary>
 		private bool _currentlyRequiresDataBinding = false;
-		#endregion
 
-		#region OnInit
 		/// <summary>
 		/// Inicializuje FormViewExt.
 		/// </summary>
@@ -109,9 +102,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			// NOOP
 		}
-		#endregion
 
-		#region OnModeChanging
 		/// <summary>
 		/// Zajišťuje automatické přecházení mezi režimy FormView (FormViewMode).
 		/// </summary>
@@ -131,9 +122,7 @@ namespace Havit.Web.UI.WebControls
 				SetRequiresDatabinding();
 			}
 		}
-		#endregion
 
-		#region OnPageIndexChanging
 		/// <summary>
 		/// Zajišťuje automatické stránkování - přechod mezi záznamy.
 		/// </summary>
@@ -146,9 +135,7 @@ namespace Havit.Web.UI.WebControls
 				SetRequiresDatabinding();
 			}
 		}
-		#endregion
 
-		#region PerformDataBinding
 		/// <summary>
 		/// Zajišťuje data-binding dat na FormView.
 		/// </summary>
@@ -162,9 +149,7 @@ namespace Havit.Web.UI.WebControls
 				_currentlyRequiresDataBinding = false;
 			}
 		}
-		#endregion
 
-		#region OnPreRender
 		/// <summary>
 		/// Zajistíme DataBinding, pokud mají vlastnosti AutoDataBind a RequiresDataBinding hodnotu true.
 		/// </summary>
@@ -177,9 +162,7 @@ namespace Havit.Web.UI.WebControls
 
 			base.OnPreRender(e);
 		}
-		#endregion
 
-		#region Page_PreRenderComplete
 		private void Page_PreRenderComplete(object sender, EventArgs e)
 		{
 			// pokud je control schovaný (není visible), nevolá se jeho OnPreRender.
@@ -190,9 +173,7 @@ namespace Havit.Web.UI.WebControls
 				DataBind();
 			}
 		}
-		#endregion
 
-		#region ExtractValues
 		/// <summary>
 		/// Vyzvedne hodnoty, které jsou nabidnované způsobem pro two-way databinding.
 		/// Hodnoty nastaví jako vlastnosti předanému datovému objektu.
@@ -206,6 +187,5 @@ namespace Havit.Web.UI.WebControls
 			this.ExtractRowValues(fieldValues, false);
 			DataBinderExt.SetValues(dataObject, fieldValues);
 		}
-		#endregion
 	}
 }

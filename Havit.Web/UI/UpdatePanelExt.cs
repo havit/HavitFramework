@@ -13,14 +13,11 @@ namespace Havit.Web.UI
 	/// </summary>
 	public class UpdatePanelExt : UpdatePanel
 	{
-		#region Private fields
 		/// <summary>
 		/// Přiznak, zda již proběhl PreRenderComplete.
 		/// </summary>
 		private bool pagePreRenderCompleted = false;
-		#endregion
 
-		#region OnInit
 		/// <summary>
 		/// Raises the <see cref="E:System.Web.UI.Control.Init"/> event.
 		/// </summary>
@@ -30,17 +27,13 @@ namespace Havit.Web.UI
 			base.OnInit(e);
 			this.Page.PreRenderComplete += new EventHandler(Page_PreRenderComplete);			
 		}
-		#endregion
 
-		#region Page_PreRenderComplete
 		private void Page_PreRenderComplete(object sender, EventArgs e)
 		{
 			// Zaznamenáme si, že již proběhl PreRenderComplete.
 			pagePreRenderCompleted = true;
 		}
-		#endregion
 
-		#region OnUnload
 		/// <summary>
 		/// Raises the base <see cref="E:System.Web.UI.Control.Unload"/> event.
 		/// </summary>
@@ -60,6 +53,5 @@ namespace Havit.Web.UI
 			}
 			base.OnUnload(e);
 		}
-		#endregion
 	}
 }

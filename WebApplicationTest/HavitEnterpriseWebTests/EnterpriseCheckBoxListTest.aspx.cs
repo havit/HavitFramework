@@ -15,11 +15,8 @@ namespace Havit.WebApplicationTest.HavitEnterpriseWebTests
 {
 	public partial class EnterpriseCheckBoxListTest : System.Web.UI.Page
 	{
-		#region Protected fields (controls)
 		protected EnterpriseCheckBoxList E1;
-		#endregion
 
-		#region OnLoad
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
@@ -37,6 +34,5 @@ namespace Havit.WebApplicationTest.HavitEnterpriseWebTests
 
 			}
 		}
-		#endregion
 	}
 }

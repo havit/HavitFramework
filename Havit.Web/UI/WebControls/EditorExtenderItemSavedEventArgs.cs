@@ -12,14 +12,11 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class EditorExtenderItemSavedEventArgs : EventArgs
 	{
-		#region SavedObject
 		/// <summary>
 		/// Editovaný datový objekt. Slouží k použití v obsluze události ukládání objektu.
 		/// </summary>
 		public object SavedObject { get; set; }
-		#endregion
 
-		#region Constructors
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
@@ -35,7 +32,6 @@ namespace Havit.Web.UI.WebControls
 		{
 			this.SavedObject = savedObject;
 		}
-		#endregion
 	}
 
 	/// <summary>

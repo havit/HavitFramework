@@ -11,7 +11,6 @@ namespace Havit.Business
 	/// </summary>
 	public abstract class PropertyHolderBase
 	{
-		#region Owner
 		/// <summary>
 		/// Objekt, kterému property patří.
 		/// </summary>
@@ -20,9 +19,7 @@ namespace Havit.Business
 			get { return _owner; }
 		}
 		private readonly BusinessObjectBase _owner;
-		#endregion
 
-		#region IsDirty
 		/// <summary>
 		/// Indikuje, zda došlo ke změně hodnoty.
 		/// </summary>
@@ -42,9 +39,7 @@ namespace Havit.Business
 			}
 		}
 		private bool _isDirty = false;
-		#endregion
 
-		#region IsInitialized
 		/// <summary>
 		/// Indikuje, zda je hodnota property nastavena.
 		/// </summary>
@@ -60,9 +55,7 @@ namespace Havit.Business
 			}
 		}
 		private bool _isInitialized = false;
-		#endregion
 
-		#region CheckInitialization
 		/// <summary>
 		/// Pokud nebyla hodnota PropertyHolderu nastavena, vyhodí InvalidOperationException.
 		/// Pokud byla hodnota PropertyHolderu nastavena, neudělá nic (projde).
@@ -74,9 +67,7 @@ namespace Havit.Business
 				throw new InvalidOperationException("Hodnota nebyla inicializována.");
 			}
 		}
-		#endregion
 
-		#region Constructors
 		/// <summary>
 		/// Založí instanci PropertyHolderu.
 		/// </summary>
@@ -87,6 +78,5 @@ namespace Havit.Business
 
 			this._owner = owner;
 		}
-		#endregion
 	}
 }

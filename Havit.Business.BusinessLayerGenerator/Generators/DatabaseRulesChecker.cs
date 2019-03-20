@@ -7,7 +7,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 {
 	public static class DatabaseRulesChecker
 	{
-		#region CheckRules
 		/// <summary>
 		/// Ověří pravidla nad tabulkou.
 		/// </summary>
@@ -16,9 +15,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			CheckNamespace(database);
 			CheckDefinedTypes(database);
 		}
-		#endregion
 
-		#region CheckNamespace
 		/// <summary>
 		/// Ověří existenci pravidla pro namespace.
 		/// </summary>
@@ -40,9 +37,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				}
 			}
 		}
-		#endregion
 
-		#region CheckDefinedTypes
 		private static void CheckDefinedTypes(Database database)
 		{
 			if (!CheckDefinedClrIntArray(database) || !CheckDefinedIntArrayTableType(database))
@@ -52,9 +47,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				ConsoleHelper.WriteLineWithColor(Console.Error, ConsoleHelper.WarningColor, @"SQL Skripty na přechod z SQL 2005 na SQL 2008 a další jsou k dispozici ve složce \\topol.havit.local\Library\SQL.");
 			}
 		}
-		#endregion
 
-		#region CheckDefinedClrIntArray
 		private static bool CheckDefinedClrIntArray(Database database)
 		{
 			UserDefinedType dataType = database.UserDefinedTypes["IntArray"];
@@ -72,9 +65,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 
 			return true;
 		}
-		#endregion
 
-		#region CheckDefinedIntArrayTableType
 		private static bool CheckDefinedIntArrayTableType(Database database)
 		{
 			UserDefinedTableType dataType = database.UserDefinedTableTypes["IntTable"];
@@ -86,7 +77,5 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 
 			return true;
 		}
-		#endregion
-
 	}
 }

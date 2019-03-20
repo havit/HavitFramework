@@ -16,7 +16,6 @@ namespace Havit.Web.Services.Extensions
 	/// </summary>
 	public class HealthMonitoringBehaviorAttribute : Attribute, IServiceBehavior
 	{
-		#region Validate
 		/// <summary>
 		/// Provides the ability to inspect the service host and the service description to confirm that the service can run successfully.
 		/// </summary>
@@ -25,9 +24,6 @@ namespace Havit.Web.Services.Extensions
 		{
 			// NOOP
 		}
-		#endregion
-
-		#region AddBindingParameters
 
 		/// <summary>
 		/// Provides the ability to pass custom data to binding elements to support the contract implementation.
@@ -38,9 +34,6 @@ namespace Havit.Web.Services.Extensions
 			// NOOP
 		}
 
-		#endregion
-
-		#region ApplyDispatchBehavior
 		/// <summary>
 		/// Provides the ability to change run-time property values or insert custom extension objects such as error handlers, message or parameter interceptors, security extensions, and other custom extension objects.
 		/// </summary>
@@ -57,6 +50,5 @@ namespace Havit.Web.Services.Extensions
 				channelDispatcher.ErrorHandlers.Add(new HealthMonitoringErrorHandler());
 			}
 		}
-		#endregion
 	}
 }

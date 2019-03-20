@@ -14,7 +14,6 @@ namespace Havit.PayMuzo
 	/// </summary>
 	public static class PayMuzoHelper
 	{
-		#region CreateOrder
 		/// <summary>
 		/// Vrátí <see cref="PayMuzoRequestData"/> s daty pro request CREATE_ORDER. Následně lze podepsat a použít pro GET (QueryString) nebo POST (form).
 		/// </summary>
@@ -136,9 +135,7 @@ namespace Havit.PayMuzo
 
 			return request;
 		}
-		#endregion
 
-		#region AddDigestToRequest
 		/// <summary>
 		/// Podepíše data requestu a přidá podpis do requestu.
 		/// </summary>
@@ -162,9 +159,7 @@ namespace Havit.PayMuzo
 
 			requestData.Add("DIGEST", digest);
 		}
-		#endregion
 
-		#region CreateDigest
 		/// <summary>
 		/// Podepíše data (pipe-delimitted) a vrátí podpis (již UrlEncoded!).
 		/// </summary>
@@ -222,9 +217,7 @@ namespace Havit.PayMuzo
 			// a hotovo
 			return digest;
 		}
-		#endregion
 
-		#region VerifyDigest
 		/// <summary>
 		/// Ověří vygenerovaný podpis.
 		/// </summary>
@@ -265,9 +258,7 @@ namespace Havit.PayMuzo
 			// verifikace
 			return pkcs1SignDef.VerifySignature(dataHash, decodedDigest);
 		}
-		#endregion
 
-		#region ExtractRawDataFromRawQueryString
 		/// <summary>
 		/// Z textového řetězce ve formátu query-stringu vyextrahuje raw-data.
 		/// </summary>
@@ -291,6 +282,5 @@ namespace Havit.PayMuzo
 			}
 			return data;
 		}
-		#endregion
 	}
 }

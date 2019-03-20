@@ -14,7 +14,6 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class ListBoxExt : ListBox
 	{
-		#region ItemDataBound (event)
 		/// <summary>
 		/// Událost, která se volá po vytvoření itemu a jeho data-bindingu.
 		/// </summary>
@@ -30,9 +29,7 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		private static readonly object eventItemDataBound = new object();
-		#endregion
 
-		#region SelectedIndex, SelectedValue (override)
 		private int cachedSelectedIndex = -1;
 		private string cachedSelectedValue;
 
@@ -71,9 +68,7 @@ namespace Havit.Web.UI.WebControls
 				cachedSelectedValue = value;
 			}
 		}
-		#endregion
 
-		#region DataOptionGroupField
 		/// <summary>
 		/// Gets or sets the field of the data source that provides the opting group content of the list items.
 		/// </summary>
@@ -88,9 +83,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["DataOptionGroupField"] = value;
 			}
 		}
-		#endregion
 
-		#region ListBoxExt
 		/// <summary>
 		/// Konstruktor. Nastavuje výchozí režim výběru na Multiple.
 		/// </summary>
@@ -98,9 +91,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			SelectionMode = ListSelectionMode.Multiple;
 		}
-		#endregion
 
-		#region PerformDataBinding (override)
 		/// <summary>
 		/// Binds the specified data source to the control that is derived from the <see cref="T:System.Web.UI.WebControls.ListControl"/> class.
 		/// </summary>
@@ -169,9 +160,7 @@ namespace Havit.Web.UI.WebControls
 			}
 			return -1;
 		}
-		#endregion
 
-		#region OnItemDataBound
 		/// <summary>
 		/// Raises the <see cref="ItemDataBound"/> event.
 		/// </summary>
@@ -184,9 +173,7 @@ namespace Havit.Web.UI.WebControls
 				h(this, e);
 			}
 		}
-		#endregion
 
-		#region RenderContents
 		/// <summary>
 		/// Renderuje položky ListBoxu.
 		/// Podporuje option groups.
@@ -196,9 +183,7 @@ namespace Havit.Web.UI.WebControls
 			// no base call
 			ListControlExtensions.RenderContents(writer, this, this.Page, this.VerifyMultiSelect);
 		}
-		#endregion
 
-		#region SaveViewState
 		/// <summary>
 		/// Uloží viewstate. Persistuje Option Groups položek.
 		/// </summary>
@@ -206,9 +191,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			return ListControlExtensions.SaveViewState(base.SaveViewState, this.Items);
 		}
-		#endregion
 
-		#region LoadViewState
 		/// <summary>
 		/// Načte viewstate vč. Option Groups položek.
 		/// </summary>
@@ -216,6 +199,5 @@ namespace Havit.Web.UI.WebControls
 		{
 			ListControlExtensions.LoadViewState(savedState, base.LoadViewState, () => this.Items);
 		}
-		#endregion
 	}
 }

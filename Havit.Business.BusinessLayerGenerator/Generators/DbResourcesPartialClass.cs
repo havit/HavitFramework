@@ -11,7 +11,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 {
 	public static class DbResourcesPartialClass
 	{
-		#region Generate
 		public static void Generate(Table table, CsprojFile csprojFile)
 		{
 			string fileName = FileHelper.GetFilename(NamespaceHelper.GetNamespaceName(table, false), "DbResources", ".partial.cs", FileHelper.GeneratedFolder);
@@ -45,18 +44,14 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine("}");
 			writer.Save();
 		}
-		#endregion
 
-		#region WritePrivateFields
 		private static void WritePrivateFields(CodeWriter writer)
 		{
 			writer.WriteOpenRegion("Private fields");
 			writer.WriteLine("private Func<System.Globalization.CultureInfo> getCultureInfoMethod;");
 			writer.WriteCloseRegion();
 		}
-		#endregion
 
-		#region WriteCurrent
 		private static void WriteCurrent(CodeWriter writer)
 		{
 			writer.WriteOpenRegion("Current");
@@ -71,9 +66,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine("private static DbResources _current;");
 			writer.WriteCloseRegion();
 		}
-		#endregion
 
-		#region WriteConstructors
 		private static void WriteConstructors(CodeWriter writer)
 		{
 			writer.WriteOpenRegion("Constructor (static)");
@@ -106,9 +99,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 
 			writer.WriteCloseRegion();
 		}
-		#endregion
 
-		#region WriteGetString
 		private static void WriteGetString(CodeWriter writer)
 		{
 			writer.WriteOpenRegion("GetString");
@@ -163,9 +154,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine("private static object _getStringLock = new object();");
 			writer.WriteCloseRegion();
 		}
-		#endregion
 
-		#region WriteGetResourceClassLanguageData
 		private static void WriteGetResourceClassLanguageData(CodeWriter writer, Table resourceClassTable)
 		{
 				string resourceClassNameColumn = ColumnHelper.FindFirstExistingColumn(resourceClassTable, "ClassName", "Name", "Nazev");
@@ -234,9 +223,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteCloseRegion();
 
 		}
-		#endregion
 
-		#region WriteResourceProperties, WriteResourceProperty
 		public static void WriteResourceProperties(CodeWriter writer, Table resourceClassTable)
 		{
 			foreach (ResourceClass resourceClass in ResourceHelper.GetResourceClasses(resourceClassTable))
@@ -271,9 +258,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine(String.Format("private ResourceClasses.{1} {0};", fieldName, resourceClass.ClassName));
 			writer.WriteCloseRegion();
 		}
-		#endregion
 
-		#region WriteResourceClassesDefinition, WriteResourceClassDefinition
 		private static void WriteResourceClassesDefinition(CodeWriter writer, Table resourceClassTable)
 		{
 			writer.WriteOpenRegion("ResourceClasses (nested class)");
@@ -351,9 +336,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine("}");
 			writer.WriteCloseRegion();
 		}
-		#endregion
 
-		#region WriteCacheDbResourcesMethods
 		private static void WriteCacheDbResourcesMethods(CodeWriter writer, Table table)
 		{
 			Table resourceItemTable = DatabaseHelper.FindTable("ResourceItem", "dbo");
@@ -410,7 +393,5 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				writer.WriteCloseRegion();
 			}
 		}
-		#endregion
-
 	}
 }

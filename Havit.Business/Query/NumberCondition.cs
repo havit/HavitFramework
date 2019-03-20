@@ -13,7 +13,6 @@ namespace Havit.Business.Query
 	/// </summary>
 	public static class NumberCondition
 	{
-		#region CreateEquals
 		/// <summary>
 		/// Vytvoří podmínku testující rovnost hodnoty.
 		/// </summary>
@@ -43,10 +42,8 @@ namespace Havit.Business.Query
 			Contract.Requires<ArgumentNullException>(operand2 != null, nameof(operand2));
 
 			return new BinaryCondition(operand1, BinaryCondition.EqualsPattern, operand2);
-		} 
-		#endregion
+		}
 
-		#region CreateIn
 		/// <summary>
 		/// Vytvoří podmínku testující existence hodnoty v poli integerů.
 		/// </summary>
@@ -98,9 +95,7 @@ namespace Havit.Business.Query
 
 			return CreateIn(operand, values.ToArray());
 		}
-		#endregion
 
-		#region CreateRange
 		/// <summary>
 		/// Vytvoří podmínku testující hodnotu v rozsahu od-do (včetně krajních hodnot).
 		/// </summary>
@@ -132,9 +127,7 @@ namespace Havit.Business.Query
 
 			return new TernaryCondition(TernaryCondition.BetweenPattern, operand, operandFrom, operandTo);
 		}
-		#endregion
 
-		#region Create
 		/// <summary>
 		/// Vytvoří podmínku testující hodnoty pomocí zadaného operátoru.
 		/// </summary>
@@ -164,7 +157,6 @@ namespace Havit.Business.Query
 			Contract.Requires<ArgumentNullException>(operand2 != null, nameof(operand2));
 
 			return new BinaryCondition(operand1, BinaryCondition.GetComparisonPattern(comparisonOperator), operand2);
-		} 
-		#endregion
+		}
 	}
 }

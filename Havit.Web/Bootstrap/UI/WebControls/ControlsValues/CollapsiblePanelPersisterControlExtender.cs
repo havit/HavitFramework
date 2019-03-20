@@ -14,7 +14,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls.ControlsValues
 	/// </summary>
 	public class CollapsiblePanelPersisterControlExtender : IPersisterControlExtender
 	{
-		#region GetValue
 		/// <summary>
 		/// Získá hodnotu (stav) zadaného controlu.		
 		/// </summary>
@@ -23,9 +22,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls.ControlsValues
 			CollapsiblePanel collapsiblePanel = (CollapsiblePanel)control;
 			return collapsiblePanel.Collapsed;
 		}
-		#endregion
 
-		#region GetValueType
 		/// <summary>
 		/// Získá typ hodnoty zadaného controlu.
 		/// </summary>		
@@ -33,9 +30,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls.ControlsValues
 		{
 			return typeof(bool);
 		}
-		#endregion
 
-		#region SetValue
 		/// <summary>
 		/// Nastaví hodnotu do controlu.
 		/// </summary>
@@ -44,9 +39,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls.ControlsValues
 			CollapsiblePanel collapsiblePanel = (CollapsiblePanel)control;
 			collapsiblePanel.Collapsed = (bool)value;
 		}
-		#endregion
 
-		#region GetPriority
 		/// <summary>
 		/// Vrací prioritu se kterou je tento IPersisterControlExtender použitelný
 		/// pro zpracování daného controlu. 
@@ -64,9 +57,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls.ControlsValues
 			}
 			return null;
 		}
-		#endregion
 
-		#region PersistChilds
 		/// <summary>
 		/// Pokud je true, ControlsValuesPersister rekursivně projde i child controly.
 		/// Implicitně vrací false.
@@ -75,6 +66,5 @@ namespace Havit.Web.Bootstrap.UI.WebControls.ControlsValues
 		{
 			return true;
 		}
-		#endregion
 	}
 }

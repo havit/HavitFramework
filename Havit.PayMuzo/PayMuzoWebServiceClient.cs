@@ -11,15 +11,12 @@ namespace Havit.PayMuzo
 	/// </summary>
 	public class PayMuzoWebServiceClient
 	{
-		#region private fields
 		private readonly handleWSService webServiceProxy;
 		private readonly X509Certificate2 merchantCertificate;
 		private readonly X509Certificate2 payMuzoGateCertificate;
 		private readonly ulong merchantNumber;
 		private readonly string serviceUrl;
-		#endregion
 
-		#region LastResponse
 		/// <summary>
 		/// Response poslední provedené operace. Pozor, není thread-safe!
 		/// </summary>
@@ -29,9 +26,7 @@ namespace Havit.PayMuzo
 			protected set { _lastResponse = value; }
 		}
 		private PayMuzoResponse _lastResponse;
-		#endregion
 
-		#region LastRawResponse
 		/// <summary>
 		/// Raw-Response poslední provedené operace. Pozor, není thread-safe!
 		/// </summary>
@@ -41,9 +36,7 @@ namespace Havit.PayMuzo
 			protected set { _lastRawResponse = value; }
 		}
 		private Havit.PayMuzo.WebServiceProxies.Response _lastRawResponse;
-		#endregion
 
-		#region PayMuzoWebServiceClient
 		/// <summary>
 		/// Vytvoří instanci WebClienta a nastaví základní parametry komunikace.
 		/// </summary>
@@ -83,9 +76,7 @@ namespace Havit.PayMuzo
 			this.merchantNumber = merchantNumber;
 			this.payMuzoGateCertificate = payMuzoGateCertificate;
 		}
-		#endregion
 
-		#region QueryOrderState
 		/// <summary>
 		/// Queries the state of the order.
 		/// </summary>
@@ -124,6 +115,5 @@ namespace Havit.PayMuzo
 
 			return response.OrderState;
 		}
-		#endregion
 	}
 }

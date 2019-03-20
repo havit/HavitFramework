@@ -12,37 +12,30 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 	/// </summary>
 	public class CheckBoxPersisterControlExtender : IPersisterControlExtender
 	{
-		#region GetValue
 		/// <summary>
 		/// Získá hodnotu (stav) zadaného controlu.		
 		/// </summary>
 		public object GetValue(Control control)
 		{
 			return ((CheckBox)control).Checked;
-		} 
-		#endregion
+		}
 
-		#region GetValueType
 		/// <summary>
 		/// Získá typ hodnoty zadaného controlu.
 		/// </summary>		
 		public Type GetValueType()
 		{
 			return typeof(bool);
-		} 
-		#endregion
+		}
 
-		#region SetValue
 		/// <summary>
 		/// Nastaví hodnotu do controlu.
 		/// </summary>
 		public void SetValue(Control control, object value)
 		{
 			((CheckBox)control).Checked = (bool)value;
-		} 
-		#endregion
+		}
 
-		#region GetPriority
 		/// <summary>
 		/// Vrací prioritu se kterou je tento IPersisterControlExtender použitelný
 		/// pro zpracování daného controlu. 
@@ -60,9 +53,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 			}
 			return null;
 		}
-		#endregion
 
-		#region PersistsChildren
 		/// <summary>
 		/// Pokud je true, ControlsValuesPersister se pokusí uložit i hodnoty child controlů.
 		/// Implicitně vrací false.
@@ -71,6 +62,5 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 		{
 			return false;
 		}
-		#endregion
 	}
 }

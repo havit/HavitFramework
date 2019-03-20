@@ -8,7 +8,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 {
 	public static class LanguageClass
 	{
-		#region WriteLanguage
 		public static void WriteLanguage(CodeWriter writer, Table table)
 		{
 			if (LanguageHelper.IsLanguageTable(table))
@@ -19,9 +18,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				writer.WriteCloseRegion();
 			}
 		}
-		#endregion
 
-		#region WriteGetByCulture
 		private static void WriteGetByCulture(CodeWriter writer, Table table)
 		{
 			Column uiCultureColumn = LanguageHelper.GetUICultureColumn();
@@ -118,9 +115,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine("}");
 			writer.WriteLine();
 		}
-		#endregion
 
-		#region WriteCurrentProperty
 		private static void WriteCurrentProperty(CodeWriter writer, Table table)
 		{
 			writer.WriteCommentLine("<summary>");
@@ -153,7 +148,5 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine(String.Format("private static {0} _current{0};", ClassHelper.GetClassName(table)));
 			writer.WriteLine();
 		}
-		#endregion
-
 	}
 }

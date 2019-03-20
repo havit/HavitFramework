@@ -10,7 +10,6 @@ namespace Havit.WebApplicationTest
 {
 	public class Global : System.Web.HttpApplication
 	{
-		#region Application_Start
 		protected void Application_Start(object sender, EventArgs e)
 		{
 			DateTimeBox.GetDateTimeBoxCustomizationDefault += new DateTimeBox.DateTimeBoxDateCustomizationEventHandler(this.DateTimeBox_GetDateTimeBoxCustomizationDefaults);
@@ -20,9 +19,7 @@ namespace Havit.WebApplicationTest
 
 			FilePageStatePersister.PerUserNamingStrategy.DeleteOldAnonymousFiles(@"\\TOPOL\Workspace\002.HFW\ViewState");
 		}
-		#endregion
 
-		#region IdentityMapScope management (Application_PostAcquireRequestState, Application_PreRequestHandlerExecute, Application_EndRequest)
 		protected void Application_PostAcquireRequestState(object sender, EventArgs e)
 		{
 			this.Context.Items["IdentityMapScope"] = new Havit.Business.IdentityMapScope();
@@ -36,9 +33,7 @@ namespace Havit.WebApplicationTest
 				identityMapScope.Dispose();
 			}
 		}
-		#endregion
 
-		#region Application_Error
 		private void Application_Error(object sender, EventArgs e)
 		{
 			Exception exception = this.Server.GetLastError();
@@ -48,16 +43,12 @@ namespace Havit.WebApplicationTest
 				customEvent.Raise();
 			}
 		}
-		#endregion
 
-		#region Application_AuthenticateRequest
 		private void Application_AuthenticateRequest()
 		{
 			FormsRolesAuthentication.ApplyAuthenticationTicket();
 		}
-		#endregion
 
-		#region DateTimeBox_GetDateTimeBoxCustomizationDefaults
 		private void DateTimeBox_GetDateTimeBoxCustomizationDefaults(object sender, DateTimeBoxDateCustomizationEventArgs args)
 		{
 			if (this.specialDatesDefault == null)
@@ -85,6 +76,5 @@ namespace Havit.WebApplicationTest
 			args.DateCustomization = this.specialDatesDefault;
 		}
 		private SpecialDateCustomization specialDatesDefault;
-		#endregion
 	}
 }

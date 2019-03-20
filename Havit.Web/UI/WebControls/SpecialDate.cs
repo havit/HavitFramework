@@ -7,28 +7,21 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class SpecialDate
 	{
-		#region Datum
 		/// <summary>
 		/// Datum.
 		/// </summary>
 		public DateTime Datum { get; private set; }
-		#endregion
 
-		#region Disabled
 		/// <summary>
 		/// Příznak zakázání výběru data.
 		/// </summary>		
 		public bool Disabled { get; private set; }
-		#endregion
 
-		#region CssClass
 		/// <summary>
 		/// CSS class.
 		/// </summary>
 		public string CssClass { get; private set; }
-		#endregion
 
-		#region SpecialDate
 		/// <summary>
 		/// SpecialDate (ctor)
 		/// </summary>		
@@ -38,6 +31,5 @@ namespace Havit.Web.UI.WebControls
 			Disabled = disabled;
 			CssClass = cssClass;
 		}
-		#endregion
 	}
 }

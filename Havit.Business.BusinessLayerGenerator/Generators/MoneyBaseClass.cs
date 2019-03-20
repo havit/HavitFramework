@@ -9,7 +9,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 {
 	public static class MoneyBaseClass
 	{
-		#region Generate
 		public static void Generate(Table currencyTable, CsprojFile csprojFile)
 		{
 			string fileName = FileHelper.GetFilename(NamespaceHelper.GetNamespaceName(currencyTable, false), "Money", "Base.cs", FileHelper.GeneratedFolder);
@@ -40,9 +39,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 
 			writer.Save();
 		}
-		#endregion
 
-		#region WriteConstructors
 		public static void WriteConstructors(CodeWriter writer, Table table, string className, bool baseClass)
 		{
 			writer.WriteOpenRegion("Constructors");
@@ -73,6 +70,5 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteCloseRegion();
 
 		}
-		#endregion
 	}
 }

@@ -13,7 +13,6 @@ namespace Havit.Data.Extensions
 	/// </summary>
 	internal static class DbConnectionExt
 	{
-		#region OpenWithRetry
 		/// <summary>
 		/// Otevírá databázové spojení. V případě neúspěchu z důvodu transientní chyby pokus o otevření opakuje.
 		/// </summary>
@@ -28,6 +27,5 @@ namespace Havit.Data.Extensions
 				() => true // vždy můžeme opakovat
 			);
 		}
-		#endregion
 	}
 }

@@ -15,7 +15,6 @@ namespace Havit.Data.Glimpse.SerializationConverters
 	/// </summary>
 	public class DbCommandTraceDataSerializationConverter : SerializationConverter<IEnumerable<Havit.Data.Trace.DbCommandTraceData>>
 	{
-		#region Convert
 		/// <summary>
 		/// Converts the specified object.
 		/// </summary>
@@ -55,9 +54,7 @@ namespace Havit.Data.Glimpse.SerializationConverters
 
 			return section.Build();
 		}
-		#endregion
 
-		#region GetParametersSection
 		/// <summary>
 		/// Converts data for DbCommandTraceData.Parameters.
 		/// </summary>
@@ -79,9 +76,7 @@ namespace Havit.Data.Glimpse.SerializationConverters
 			}
 			return section;
 		}
-		#endregion
 
-		#region GetDisplayValue
 		/// <summary>
 		/// Konvertuje hodnotu null a DBNull.Value na zobrazitelný text.
 		/// </summary>
@@ -101,6 +96,5 @@ namespace Havit.Data.Glimpse.SerializationConverters
 			}
 
 		}
-		#endregion
 	}
 }

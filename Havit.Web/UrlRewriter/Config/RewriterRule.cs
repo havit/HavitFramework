@@ -10,7 +10,6 @@ namespace Havit.Web.UrlRewriter.Config
 	[Obsolete("Upgrade to ASP.NET Routing.")]
 	public class RewriterRule
 	{
-		#region Public Properties
 		/// <summary>
 		/// Gets or sets the pattern to look for.
 		/// </summary>
@@ -50,6 +49,5 @@ namespace Havit.Web.UrlRewriter.Config
 			}
 		}
 		private string sendTo;
-		#endregion
 	}
 }

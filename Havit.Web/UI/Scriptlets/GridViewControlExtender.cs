@@ -14,12 +14,9 @@ namespace Havit.Web.UI.Scriptlets
 	/// </summary>
     public class GridViewControlExtender : IControlExtender
     {
-		#region Private fields
-		private readonly int priority;		
-		#endregion
+	    private readonly int priority;
 
-		#region Constructors
-		/// <summary>
+	    /// <summary>
 		/// Vytvoří extender s danou prioritou.
 		/// </summary>
 		/// <param name="priority">Priorita extenderu.</param>
@@ -27,10 +24,8 @@ namespace Havit.Web.UI.Scriptlets
 		{
 			this.priority = priority;
 		}
-		#endregion		
-		
-		#region GetPriority
-		/// <summary>
+
+	    /// <summary>
 		/// Vrátí prioritu extenderu pro daný control.
 		/// Pokud je control Repeaterem, vrátí prioritu zadanou v konstruktoru,
 		/// jinak vrací null.
@@ -40,11 +35,9 @@ namespace Havit.Web.UI.Scriptlets
 		public int? GetPriority(Control control)
 		{
 			return (control is GridView) ? (int?)priority : null;
-		}		
-		#endregion
+		}
 
-		#region GetInitializeClientSideValueScript
-		/// <summary>
+	    /// <summary>
 		/// Vytvoří klientský parametr pro předaný control.
 		/// </summary>
 		/// <param name="parameterPrefix">Název objektu na klientské straně.</param>
@@ -82,10 +75,8 @@ namespace Havit.Web.UI.Scriptlets
                 }
             }
         }
-		#endregion
 
-		#region GetAttachEventsScript
-		/// <include file='IControlExtender.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetAttachEventsScript")]/*' />
+	    /// <include file='IControlExtender.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetAttachEventsScript")]/*' />
 		[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1604:ElementDocumentationMustHaveSummary", Justification = "Bráno z externího souboru.")]
 		public void GetAttachEventsScript(string parameterPrefix, IScriptletParameter parameter, Control control, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder)
 		{
@@ -96,10 +87,7 @@ namespace Havit.Web.UI.Scriptlets
 				});
 		}
 
-		#endregion
-
-		#region GetDetachEventsScript
-		/// <include file='IControlExtender.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetDetachEventsScript")]/*' />
+	    /// <include file='IControlExtender.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetDetachEventsScript")]/*' />
 		[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1604:ElementDocumentationMustHaveSummary", Justification = "Bráno z externího souboru.")]
 		public void GetDetachEventsScript(string parameterPrefix, IScriptletParameter parameter, Control control, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder)
 		{
@@ -109,10 +97,8 @@ namespace Havit.Web.UI.Scriptlets
 				nestedParameter.GetDetachEventsScript(nestedParameterPrefix, nestedParentControl, nestedScriptletFunctionCallDelegate, nestedScriptBuilder);
 			});
 		}
-		#endregion
 
-		#region GetEventsScript
-		private void GetEventsScript(string parameterPrefix, IScriptletParameter parameter, Control control, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder, JobOnNestedParameterEventHandler jobOnNestedParameter)
+	    private void GetEventsScript(string parameterPrefix, IScriptletParameter parameter, Control control, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder, JobOnNestedParameterEventHandler jobOnNestedParameter)
 		{
 			GridView gridView = (GridView)control;
 
@@ -137,6 +123,5 @@ namespace Havit.Web.UI.Scriptlets
 		}
 
 		private delegate void JobOnNestedParameterEventHandler(IScriptletParameter nestedParameter, string nestedParameterPrefix, Control nestedParentControl, string scriptletFunctionCallDelegate, ScriptBuilder nestedScriptBuilder);
-		#endregion		
-	}
+    }
 }

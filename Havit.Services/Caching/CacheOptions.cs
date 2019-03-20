@@ -93,7 +93,6 @@ namespace Havit.Services.Caching
 		}
 		private string[] cacheDependencyKeys;
 
-		#region Freeze, ThrowIfFrozen
 		/// <summary>
 		/// Zamkne kolekci vůči změnám. Od toho okamžiku není možné změnit položky v kolekci.
 		/// </summary>
@@ -114,6 +113,5 @@ namespace Havit.Services.Caching
 				throw new InvalidOperationException("CacheOptions are frozen, cannot be modified.");
 			}
 		}
-		#endregion
 	}
 }

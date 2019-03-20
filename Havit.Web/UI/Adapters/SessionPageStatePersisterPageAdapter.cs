@@ -12,7 +12,6 @@ namespace Havit.Web.UI.Adapters
 	/// </summary>
 	public class SessionPageStatePersisterPageAdapter : PageAdapter
 	{
-		#region GetStatePersister
 		/// <summary>
 		/// Returns an object that is used by the Web page to maintain the control and view states. 
 		/// </summary>
@@ -23,6 +22,5 @@ namespace Havit.Web.UI.Adapters
 		{
 			return new SessionPageStatePersister(this.Page);
 		}
-		#endregion
 	}
 }

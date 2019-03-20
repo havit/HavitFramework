@@ -18,7 +18,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 {
 	public static class BusinessObjectBaseClass
 	{
-		#region Generate
 		public static void Generate(Table table, CsprojFile csprojFile)
 		{
 			string fileName = FileHelper.GetFilename(table, "Base.cs", FileHelper.GeneratedFolder);
@@ -94,9 +93,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 
 			writer.Save();
 		}
-		#endregion
 
-		#region WriteIsDeleted
 		private static void WriteIsDeleted(CodeWriter writer, Table table)
 		{
 			Column deletedColumn = TableHelper.GetDeletedColumn(table);
@@ -123,9 +120,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				writer.WriteCloseRegion();
 			}
 		}
-		#endregion
 
-		#region WriteSaveInsertInsertRequiredForFullInsert
 		private static void WriteSaveInsertInsertRequiredForFullInsert(CodeWriter writer, Table table)
 		{
 			writer.WriteCommentSummary("Ukládá hodnoty potřebné pro provedení plného insertu.");
@@ -169,9 +164,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine("}");
 			writer.WriteLine();
 		}
-		#endregion
 
-		#region WriteSaveInsertInsertRequiredForMinimalInsert
 		private static void WriteSaveInsertInsertRequiredForMinimalInsert(CodeWriter writer, Table table)
 		{
 			writer.WriteCommentSummary("Ukládá hodnoty potřebné pro provedení minimálního insertu. Volá Save_Insert_SaveRequiredForMinimalInsert.");
@@ -198,9 +191,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine("}");
 			writer.WriteLine();
 		}
-		#endregion
 
-		#region WriteStaticConstructor
 		private static void WriteStaticConstructor(CodeWriter writer, Table table)
 		{
 			Column deletedColumn = TableHelper.GetDeletedColumn(table);
@@ -236,9 +227,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine("}");
 			writer.WriteCloseRegion();
 		}
-		#endregion
 
-		#region WriteNamespaceClassBegin
 		private static void WriteNamespaceClassBegin(CodeWriter writer, Table table)
 		{
 			writer.WriteLine("namespace " + NamespaceHelper.GetNamespaceName(table));
@@ -301,17 +290,13 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				interfaces));
 			writer.WriteLine("{");
 		}
-		#endregion
 
-		#region WriteNamespaceClassEnd
 		public static void WriteNamespaceClassEnd(CodeWriter writer)
 		{
 			writer.WriteLine("}");
 			writer.WriteLine("}");
 		}
-		#endregion
 
-		#region WriteInit
 		private static void WriteInit(CodeWriter writer, Table table)
 		{
 			writer.WriteOpenRegion("Init");
@@ -358,7 +343,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine("}");
 			writer.WriteCloseRegion();
 		}
-		#endregion
 
 		private static void WriteCleanDirty(CodeWriter writer, Table table)
 		{
@@ -384,7 +368,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteCloseRegion();
 		}
 
-		#region WriteCheckConstraints
 		private static void WriteCheckConstraints(CodeWriter writer, Table table)
 		{
 			writer.WriteOpenRegion("CheckConstraints");
@@ -475,9 +458,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine("}");
 			writer.WriteCloseRegion();
 		}
-		#endregion
 
-		#region WriteLoadGetDataRecord
 		private static void WriteLoadGetDataRecord(CodeWriter writer, Table table)
 		{
 			writer.WriteCommentSummary("Načte data objektu z DB a vrátí je ve formě DataRecordu.");
@@ -530,9 +511,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine("}");
 			writer.WriteLine();
 		}
-		#endregion
 
-		#region WriteLoadParseDataRecord
 		private static void WriteLoadParseDataRecord(CodeWriter writer, Table table)
 		{
 			writer.WriteCommentSummary("Vytahá data objektu z DataRecordu.");
@@ -720,9 +699,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			}
 
 		}
-		#endregion
 
-		#region WriteSaveSaveMembers
 		public static void WriteSaveSaveMembers(CodeWriter writer, Table table)
 		{
 			writer.WriteCommentSummary("Ukládá member-objekty.");
@@ -762,9 +739,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine();
 
 		}
-		#endregion
 
-		#region WriteSaveSaveCollections
 		public static void WriteSaveSaveCollections(CodeWriter writer, Table table)
 		{
 			writer.WriteCommentSummary("Ukládá member-kolekce objektu.");
@@ -801,9 +776,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine("}");
 			writer.WriteLine();
 		}
-		#endregion
 
-		#region WriteSaveUpdate
 		public static void WriteSaveUpdate(CodeWriter writer, Table table)
 		{
 			writer.WriteCommentSummary("Implementace metody aktualizuje data objektu v databázi.");
@@ -902,9 +875,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine("}");
 			writer.WriteLine();
 		}
-		#endregion
 
-		#region WriteSaveUpdate_Collections
 		private static void WriteSaveUpdate_Collections(CodeWriter writer, Table table, bool deleteMode, out bool shouldWriteDeletedDateTimeSqlParameter)
 		{
 			shouldWriteDeletedDateTimeSqlParameter = false;
@@ -1100,23 +1071,17 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				writer.WriteLine();
 			}
 		}
-		#endregion
 
-		#region WriteSaveFullInsert
 		public static void WriteSaveFullInsert(CodeWriter writer, Table table)
 		{
 			WriteSaveInsert(writer, table, true);
 		}
-		#endregion
 
-		#region WriteSaveMinimalInsert
 		public static void WriteSaveMinimalInsert(CodeWriter writer, Table table)
 		{
 			WriteSaveInsert(writer, table, false);
 		}
-		#endregion
 
-		#region WriteSaveInsert
 		private static void WriteSaveInsert(CodeWriter writer, Table table, bool fullInsert)
 		{
 			// hlavička metody
@@ -1324,9 +1289,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine("}");
 			writer.WriteLine();
 		}
-		#endregion
 
-		#region WriteDelete
 		public static void WriteDelete(CodeWriter writer, Table table)
 		{
 			List<Column> ownerColumns = TableHelper.GetOwnerColumns(table);
@@ -1389,9 +1352,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				writer.WriteLine();
 			}
 		}
-		#endregion
 
-		#region WriteDeletePerform
 		public static void WriteDeletePerform(CodeWriter writer, Table table)
 		{
 			if (TableHelper.IsReadOnly(table))
@@ -1459,9 +1420,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine("}");
 			writer.WriteLine();
 		}
-		#endregion
 
-		#region WriteExceptionForReadOnlyTables
 		private static bool WriteExceptionForReadOnlyTables(CodeWriter writer, Table table)
 		{
 			if (TableHelper.IsReadOnly(table))
@@ -1471,9 +1430,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			}
 			return false;
 		}
-		#endregion
 
-		#region WriteCacheBusinessObjectMethods
 		public static void WriteCacheBusinessObjectMethods(CodeWriter writer, Table table)
 		{
 			if (TableHelper.IsCachable(table) && TableHelper.CanCacheBusinessObjectInstances(table))
@@ -1512,9 +1469,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				writer.WriteCloseRegion();
 			}
 		}
-		#endregion
 
-		#region WriteCacheDataRecordsMethods
 		public static void WriteCacheDataRecordsMethods(CodeWriter writer, Table table)
 		{
 			if (TableHelper.IsCachable(table) && !TableHelper.CanCacheBusinessObjectInstances(table))
@@ -1562,9 +1517,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				writer.WriteCloseRegion();
 			}
 		}
-		#endregion
-		
-		#region WriteCacheAllIDsMethods
+
 		private static void WriteCacheAllIDsMethods(CodeWriter writer, Table table)
 		{
 			if (TableHelper.IsCachable(table))
@@ -1573,7 +1526,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 
 				writer.WriteOpenRegion("GetAll IDs cache access methods");
 
-				#region GetAllIDsCacheKey
 				writer.WriteCommentSummary("Vrátí název klíče pro kolekci IDs metody GetAll.");
 				writer.WriteLine(String.Format("private static string GetAllIDsCacheKey({0})", hasDeletedColumn ? "bool includeDeleted" : ""));
 				writer.WriteLine("{");
@@ -1589,9 +1541,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				
 				writer.WriteLine("}");
 				writer.WriteLine();
-				#endregion
 
-				#region GetAllIDsFromCache
 				writer.WriteCommentSummary("Vyhledá v cache pole IDs metody GetAll a vrátí jej. Není-li v cache nalezena, vrací null.");
 				writer.WriteLine(String.Format("private static int[] GetAllIDsFromCache({0})", hasDeletedColumn ? "bool includeDeleted" : ""));
 				writer.WriteLine("{");
@@ -1600,9 +1550,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 					hasDeletedColumn ? "includeDeleted" : ""));
 				writer.WriteLine("}");
 				writer.WriteLine();
-				#endregion
 
-				#region AddAllIDsToCache
 				writer.WriteCommentSummary("Přidá pole IDs metody GetAll do cache.");
 				writer.WriteLine(String.Format("private static void AddAllIDsToCache(int[] ids{0})", hasDeletedColumn ? ", bool includeDeleted" : ""));
 				writer.WriteLine("{");
@@ -1613,9 +1561,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 					String.IsNullOrEmpty(cacheOptions)  ? "" : ", " + cacheOptions));
 				writer.WriteLine("}");
 				writer.WriteLine();
-				#endregion
 
-				#region RemoveAllIDsFromCache
 				if (!TableHelper.IsReadOnly(table))
 				{
 					writer.WriteCommentSummary("Odstraní pole IDs metody GetAll z cache.");
@@ -1632,14 +1578,11 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 					}
 					writer.WriteLine("}");
 				}
-				#endregion
 
 				writer.WriteCloseRegion();
 			}
 		}
-		#endregion
 
-		#region WriteCacheDependencyMethods
 		private static void WriteCacheDependencyMethods(CodeWriter writer, Table table)
 		{
 			if (!TableHelper.IsReadOnly(table))
@@ -1714,9 +1657,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				writer.WriteCloseRegion();
 			}
 		}
-		#endregion
 
-		#region WriteEnumClassMembers
 		public static void WriteEnumClassMembers(CodeWriter writer, Table table)
 		{
 			if (TableHelper.GetEnumMode(table) != EnumMode.EnumClass)
@@ -1748,9 +1689,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 
 			writer.WriteCloseRegion();
 		}
-		#endregion
 
-		#region WriteEnumClassEnumIDs
 		public static void WriteEnumClassEnumIDs(CodeWriter writer, Table table)
 		{
 			if (TableHelper.GetEnumMode(table) != EnumMode.EnumClass)
@@ -1774,9 +1713,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine("}");
 			writer.WriteCloseRegion();
 		}
-		#endregion
 
-		#region WriteGetFirst
 		public static void WriteGetFirst(CodeWriter writer, Table table)
 		{
 			string className = ClassHelper.GetClassName(table);
@@ -1808,9 +1745,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine("}");
 			writer.WriteLine();
 		}
-		#endregion
 
-		#region WriteGetLists
 		public static void WriteGetLists(CodeWriter writer, Table table)
 		{
 			string className = ClassHelper.GetClassName(table);
@@ -1893,9 +1828,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine("}");
 			writer.WriteLine();
 		}
-		#endregion
 
-		#region WriteGetAlls
 		public static void WriteGetAlls(CodeWriter writer, Table table)
 		{
 			string className = ClassHelper.GetClassName(table);
@@ -2030,9 +1963,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine();
 
 		}
-		#endregion
 
-		#region WriteGetAllLocalizations
 		public static void WriteGetAllLocalizations(CodeWriter writer, Table table)
 		{
 			if (LocalizationHelper.IsLocalizedTable(table))
@@ -2045,9 +1976,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				}
 			}
 		}
-		#endregion
 
-		#region WriteToString
 		public static void WriteToString(CodeWriter writer, Table table)
 		{
 			string className = ClassHelper.GetClassName(table);
@@ -2086,9 +2015,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine("}");
 			writer.WriteCloseRegion();
 		}
-		#endregion
 
-		#region WriteObjectInfo
 		public static void WriteObjectInfo(CodeWriter writer, Table table)
 		{
 			writer.WriteOpenRegion("ObjectInfo");
@@ -2105,9 +2032,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine("private static ObjectInfo objectInfo;");
 			writer.WriteCloseRegion();
 		}
-		#endregion
 
-		#region WritePropertiesInfo
 		public static void WritePropertiesInfo(CodeWriter writer, Table table)
 		{
 			writer.WriteOpenRegion("Properties");
@@ -2125,9 +2050,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 
 			writer.WriteCloseRegion();
 		}
-		#endregion
 
-		#region WriteInsertMNCollectionData
 		private static void WriteInsertMNCollectionData(CodeWriter writer, Table table, CollectionProperty collectionProperty, string queryBuilderVariableName)
 		{
 			BusinessObjectSqlParameter.WriteCollectionSqlParameter(writer, collectionProperty);
@@ -2154,9 +2077,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			//		queryBuilderVariableName)); // 5
 			//}					
 		}
-		#endregion
 
-		#region WriteClone
 		private static void WriteClone(CodeWriter writer, Table table)
 		{
 			if (!TableHelper.IsReadOnly(table) && TableHelper.GetCloneMethod(table))
@@ -2278,7 +2199,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				writer.WriteCloseRegion();
 			}
 		}
-		#endregion
 
 		//private static void WriteSetProperty(CodeWriter writer, Table table)
 		//{

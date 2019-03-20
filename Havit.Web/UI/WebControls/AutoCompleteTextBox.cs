@@ -27,7 +27,6 @@ namespace Havit.Web.UI.WebControls
 	[Themeable(true)]
 	public class AutoCompleteTextBox : Control, INamingContainer, IPostBackDataHandler
 	{
-		#region (On)ValueChanged
 		/// <summary>
 		/// Událost nastane v okamžiku změny vybrané položky.
 		/// </summary>
@@ -43,9 +42,7 @@ namespace Havit.Web.UI.WebControls
 				SelectedValueChanged(this, e);
 			}
 		}
-		#endregion
 
-		#region (On)TextChanged
 		/// <summary>
 		/// Událost nastane v okamžiku změny textu vybrané položky.
 		/// </summary>
@@ -61,16 +58,12 @@ namespace Havit.Web.UI.WebControls
 				TextChanged(this, e);
 			}
 		}
-		#endregion
 
-		#region Fields (private)
 		private readonly TextBox valueTextBox;
 		private readonly HiddenField valueHiddenField;
         private readonly HyperLink clearTextLink;
-		#endregion
 
-		#region AutoPostBack
-		/// <summary>
+        /// <summary>
 		/// Udává, zda má po změně hodnoty V ui dojít k postbacku.
 		/// </summary>
 		public bool AutoPostBack
@@ -78,10 +71,8 @@ namespace Havit.Web.UI.WebControls
 			get { return (bool?)ViewState["AutoPostBack"] ?? false; }
 			set { ViewState["AutoPostBack"] = value; }
 		}
-		#endregion
 
-		#region ServiceUrl
-		/// <summary>
+        /// <summary>
 		/// URL Služby poskytující data.
 		/// </summary>
 		public string ServiceUrl
@@ -89,10 +80,8 @@ namespace Havit.Web.UI.WebControls
 			get { return (string)ViewState["ServiceUrl"]; }
 			set { ViewState["ServiceUrl"] = value; }
 		}
-		#endregion
 
-		#region Context
-		/// <summary>
+        /// <summary>
 		/// Kontext prvku. Předává se službě v parametru "context".
 		/// </summary>
 		public new string Context
@@ -106,10 +95,8 @@ namespace Havit.Web.UI.WebControls
 				ViewState["Context"] = value;
 			}
 		}
-		#endregion
 
-		#region MinSuggestedChars
-		/// <summary>
+        /// <summary>
 		/// Minimální počet znaků při kterých se nabídnou položky. Default = 1
 		/// </summary>
 		public int MinSuggestedChars
@@ -117,10 +104,8 @@ namespace Havit.Web.UI.WebControls
 			get { return (int?)ViewState["MinSuggestedChars"] ?? 1; }
 			set { ViewState["MinSuggestedChars"] = value; }
 		}
-		#endregion
 
-		#region UseClientCache
-		/// <summary>
+        /// <summary>
 		/// Udává, zda se používá klientská cache. Default = false.
 		/// </summary>
 		public bool UseClientCache
@@ -128,10 +113,8 @@ namespace Havit.Web.UI.WebControls
 			get { return (bool?)ViewState["UseClientCache"] ?? false; }
 			set { ViewState["UseClientCache"] = value; }
 		}
-		#endregion
 
-		#region MaxHeight
-		/// <summary>
+        /// <summary>
 		/// Maximální výška našeptávače v px.
 		/// </summary>
 		public int MaxHeight
@@ -139,10 +122,8 @@ namespace Havit.Web.UI.WebControls
 			get { return (int?)ViewState["MaxHeight"] ?? 300; }
 			set { ViewState["MaxHeight"] = value; }
 		}
-		#endregion
 
-		#region DeferRequest
-		/// <summary>
+        /// <summary>
 		/// Čas v milsekundách o který se zpozdí dotaz do služby.
 		/// </summary>
 		public int DeferRequest
@@ -150,10 +131,8 @@ namespace Havit.Web.UI.WebControls
 			get { return (int?)ViewState["DeferRequest"] ?? 0; }
 			set { ViewState["DeferRequest"] = value; }
 		}
-		#endregion
 
-		#region Text
-		/// <summary>
+        /// <summary>
 		/// Vyplněný text
 		/// </summary>
 		public string Text
@@ -161,10 +140,8 @@ namespace Havit.Web.UI.WebControls
 			get { return valueTextBox.Text; }
 			set { valueTextBox.Text = value; }
 		}
-		#endregion
 
-		#region SelectedValue
-		/// <summary>
+        /// <summary>
 		/// Vyplněná hodnota
 		/// </summary>
 		public string SelectedValue
@@ -178,20 +155,16 @@ namespace Havit.Web.UI.WebControls
 				ViewState["SelectedValue"] = value;
 			}
 		}
-		#endregion
 
-		#region TextBoxStyle
-		/// <summary>
+        /// <summary>
 		/// Styly vnitřního textboxu.
 		/// </summary>
 		public Style TextBoxStyle
 		{
 			get { return valueTextBox.ControlStyle; }
 		}
-		#endregion
 
-		#region TabIndex
-		/// <summary>
+        /// <summary>
 		/// Gets or sets the tab order of the control within its container.
 		/// </summary>
 		public short TabIndex
@@ -205,10 +178,8 @@ namespace Havit.Web.UI.WebControls
 				valueTextBox.TabIndex = value;
 			}
 		}
-		#endregion
 
-		#region ToolTip
-		/// <summary>
+        /// <summary>
 		/// Gets or sets the text displayed when the mouse pointer hovers over the Web server control.
 		/// </summary>
 		public string ToolTip
@@ -222,10 +193,8 @@ namespace Havit.Web.UI.WebControls
 				valueTextBox.ToolTip = value;
 			}
 		}
-		#endregion
 
-		#region PlaceHolderText
-		/// <summary>
+        /// <summary>
 		/// Set text, which is shown before text is entered
 		/// </summary>
 		public string PlaceHolderText
@@ -233,10 +202,8 @@ namespace Havit.Web.UI.WebControls
 			get { return valueTextBox.Attributes["placeholder"]; }
 			set { valueTextBox.Attributes["placeholder"] = value; }
 		}
-		#endregion
 
-		#region Enabled
-		/// <summary>
+        /// <summary>
 		/// Gets or sets a value indicating whether this <see cref="AutoCompleteTextBox"/> is enabled.
 		/// </summary>
 		public bool Enabled
@@ -251,10 +218,8 @@ namespace Havit.Web.UI.WebControls
                 clearTextLink.Visible = value;
             }
 		}
-		#endregion
 
-		#region Orientation
-		/// <summary>
+        /// <summary>
 		/// Orientace našeptávacího dialogu. Default = bottom
 		/// </summary>
 		public AutoCompleteTextBoxOrientation Orientation
@@ -268,10 +233,8 @@ namespace Havit.Web.UI.WebControls
 				ViewState["Orientation"] = value;
 			}
 		}
-		#endregion
 
-		#region AllowInvalidSelection
-		/// <summary>
+        /// <summary>
 		/// Pokud je hodnota false (default), při opuštění textového pole, se nevalidní hodnota vymaže.
 		/// Pokud je hodnota true, nevymaže se v textovém poli nevalidní hodnota při opuštění editace. Určeno pro možnost zakládání nových položek.
 		/// </summary>
@@ -286,9 +249,8 @@ namespace Havit.Web.UI.WebControls
 				ViewState["AllowInvalidSelection"] = value;
 			}
 		}
-		#endregion
 
-		/// <summary>
+        /// <summary>
 		/// Pokud je hodnota false (default), tak prázdná hodnota v textovém poli není považována za validní
 		/// Pokud je hodnota true, tak je prázdná hodnota považována za validní
 		/// </summary>
@@ -304,8 +266,7 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 
-		#region ShowNoSuggestionNotice
-		/// <summary>
+        /// <summary>
 		/// Udává, zda se má zobrazit v nabídkovém pruhu informace o prázdné nabídce. (nejsou nabídnuty žádné položky)
 		/// </summary>
 		public bool ShowNoSuggestionNotice
@@ -319,10 +280,8 @@ namespace Havit.Web.UI.WebControls
 				ViewState["ShowNoSuggestionNotice"] = value;
 			}
 		}
-		#endregion
 
-		#region NoSuggestionNotice
-		/// <summary>
+        /// <summary>
 		/// Informace, která se zobrazí v nabídkovém pruhu v případě, že žádná položka neodpovídá zadanému řetězci. (nejsou nabídnuty žádné položky)
 		/// </summary>
 		public string NoSuggestionNotice
@@ -336,10 +295,8 @@ namespace Havit.Web.UI.WebControls
 				ViewState["NoSuggestionNotice"] = value;
 			}
 		}
-		#endregion
 
-		#region ValidationGroup
-		/// <summary>
+        /// <summary>
 		/// ValidationGroup pro validaci.
 		/// </summary>
 		public string ValidationGroup
@@ -353,10 +310,8 @@ namespace Havit.Web.UI.WebControls
 				valueTextBox.ValidationGroup = value;
 			}
 		}
-		#endregion
 
-		#region CausesValidation
-		/// <summary>
+        /// <summary>
 		/// Určuje, zda dochází k validaci při postbacku způsobeným tímto controlem (autopostback).
 		/// </summary>
 		public bool CausesValidation
@@ -370,10 +325,8 @@ namespace Havit.Web.UI.WebControls
 				valueTextBox.CausesValidation = value;
 			}
 		}
-		#endregion
 
-		#region OnClientSelectScript
-		/// <summary>
+        /// <summary>
 		/// Skript vyvolaný v případě výběru hodnoty. Pokud script vrátí false, potom neproběhne AutoPostBack.
 		/// </summary>
 		public string OnClientSelectScript
@@ -387,10 +340,8 @@ namespace Havit.Web.UI.WebControls
 				ViewState["OnClientSelectScript"] = value;
 			}
 		}
-		#endregion
 
-		#region ClientID (override)
-		/// <summary>
+        /// <summary>
 		/// ClientID (overriden).
 		/// Vrací ClientID obsaženého TextBoxu pro zadávání hodnoty.
 		/// To řeší klientské validátory, které natrvdo předpokládají, že validovaný control (podle ClientID)
@@ -414,10 +365,8 @@ namespace Havit.Web.UI.WebControls
 				return valueHiddenField.ClientID;
 			}
 		}
-        #endregion
 
-        #region AutoRegisterStyleSheets
-        /// <summary>
+		/// <summary>
         /// Indikuje, zda má dojít k automatické registraci CSS v OnPreRenderu.
         /// Výchozí hodnota je true.
         /// </summary>
@@ -432,10 +381,8 @@ namespace Havit.Web.UI.WebControls
                 ViewState["AutoRegisterStyleSheets"] = value;
             }
         }
-        #endregion
 
-        #region Constructor
-        /// <summary>
+		/// <summary>
         /// Initializes a new instance of the <see cref="AutoCompleteTextBox"/> class.
         /// </summary>
         public AutoCompleteTextBox()
@@ -455,9 +402,7 @@ namespace Havit.Web.UI.WebControls
             clearTextLink.Attributes.Add("data-clearText", "true");
             clearTextLink.Attributes.Add("tabindex", "-1"); // skip the link in page navigation            
         }
-		#endregion
 
-		#region ClearSelection
 		/// <summary>
 		/// Vyčistí vybranou hodnotu.
 		/// </summary>
@@ -466,9 +411,7 @@ namespace Havit.Web.UI.WebControls
 			Text = String.Empty;
 			SelectedValue = String.Empty;
 		}
-		#endregion
 
-		#region CreateChildControls (protected)
 		/// <summary>
 		/// Called by the ASP.NET page framework to notify server controls that use composition-based implementation to create any child controls they contain in preparation for posting back or rendering.
 		/// </summary>
@@ -480,9 +423,7 @@ namespace Havit.Web.UI.WebControls
 			Controls.Add(valueHiddenField);
 			Controls.Add(clearTextLink);
         }
-		#endregion
 
-		#region RenderControl
 		/// <summary>
 		/// Outputs server control content to a provided <see cref="T:System.Web.UI.HtmlTextWriter" /> object and stores tracing information about the control if tracing is enabled.
 		/// </summary>
@@ -529,9 +470,7 @@ namespace Havit.Web.UI.WebControls
 			base.RenderControl(writer);
 			writer.RenderEndTag();
 		}
-		#endregion
 
-		#region OnInit
 		/// <summary>
 		/// Raises the Init event.
 		/// </summary>
@@ -544,9 +483,7 @@ namespace Havit.Web.UI.WebControls
 
 			EnsureChildControls();
 		}
-		#endregion
 
-		#region OnPreRender
 		/// <summary>
 		/// Raises the <see cref="E:System.Web.UI.Control.PreRender" /> event.
 		/// </summary>
@@ -567,10 +504,8 @@ namespace Havit.Web.UI.WebControls
                 RegisterStylesheets(this.Page);
             }
         }
-        #endregion
 
-        #region RegisterStylesheets
-        /// <summary>
+		/// <summary>
         /// Vytvoří do head odkaz na CSS menu.
         /// </summary>
         public static void RegisterStylesheets(Page page)
@@ -588,10 +523,8 @@ namespace Havit.Web.UI.WebControls
                 HttpContext.Current.Items["Havit.Web.UI.WebControls.AutoCompleteTextBox.RegisterCss_registered"] = true;
             }
         }
-        #endregion
 
-        #region LoadPostData
-        /// <summary>
+		/// <summary>
         /// Loads the post data.
         /// </summary>
         /// <param name="postDataKey">The post data key.</param>
@@ -607,16 +540,12 @@ namespace Havit.Web.UI.WebControls
 
 			return false;
 		}
-		#endregion
 
-		#region ValueTextBox_TextChanged
 		private void ValueTextBox_TextChanged(object sender, EventArgs e)
 		{
 			OnTextChanged(EventArgs.Empty);
 		}
-		#endregion
 
-		#region RaisePostDataChangedEvent
 		/// <summary>
 		/// When implemented by a class, signals the server control to notify the ASP.NET application that the state of the control has changed.
 		/// </summary>
@@ -624,9 +553,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			OnSelectedValueChanged(EventArgs.Empty);
 		}
-		#endregion
 
-		#region RegisterClientScripts (static)
 		/// <summary>
 		/// Zaregistruje klienské scripty, které control vyžaduje. Nutné volat před přidáním prvku do stránky v asynchronním volání.
 		/// </summary>
@@ -634,6 +561,5 @@ namespace Havit.Web.UI.WebControls
 		{
 			ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(page, HavitFrameworkClientScriptHelper.JQueryAutoCompleteResourceMappingName);
 		}
-		#endregion
 	}
 }

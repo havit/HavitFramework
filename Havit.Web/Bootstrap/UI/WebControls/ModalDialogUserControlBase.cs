@@ -16,7 +16,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	/// </summary>
 	public abstract class ModalDialogUserControlBase : Havit.Web.UI.WebControls.ModalDialogUserControlBase
 	{
-		#region ModalDialog
 		/// <summary>
 		/// Modal dialog control handling dialog behavior and operations.
 		/// </summary>
@@ -41,9 +40,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			}
 		}
 		private ModalDialog _modalDialog;
-		#endregion
 
-		#region Triggers
 		/// <summary>
 		/// Nested UpdatePanel's Triggers.
 		/// </summary>
@@ -55,9 +52,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				return ModalDialog.Triggers;
 			}
 		}
-		#endregion
 
-		#region GetModalDialogControl
 		/// <summary>
 		/// Return nested ModalDialog handling dialog behavior and appereance.
 		/// </summary>
@@ -65,6 +60,5 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			return ModalDialog;
 		}
-		#endregion
 	}
 }

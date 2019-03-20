@@ -15,11 +15,8 @@ namespace Havit.Services.Ares
 	/// </summary>
 	public class AresStandardService
 	{
-		#region Const
 		private const string AresStandardServiceRequestByNameUrl = "http://wwwinfo.mfcr.cz/cgi-bin/ares/darv_std.cgi?obchodni_firma=";
-		#endregion
 
-		#region Timeout
 		/// <summary>
 		/// Timeout (v milisekundách) jednoho requestu při načítání dat z ARESu.
 		/// Pokud není hodnota nastavena, není délka requestu omezována (resp. je použito standardní nastavení .NETu).
@@ -29,9 +26,7 @@ namespace Havit.Services.Ares
 			get;
 			set;
 		}
-		#endregion
 
-		#region GetData
 		/// <summary>
 		/// Načte data z AREsu dle názvu firmy
 		/// </summary>
@@ -77,9 +72,6 @@ namespace Havit.Services.Ares
 			}
 		}
 
-		#endregion
-
-		#region GetElementValue
 		private string GetElementValue(XElement element, XName name)
 		{
 			XElement value = element.Element(name);
@@ -93,9 +85,6 @@ namespace Havit.Services.Ares
 			}
 		}
 
-		#endregion
-
-		#region GetAresResponseXDocument
 		/// <summary>
 		/// Odešle dotaz do obchodního rejstříku a vrátí odpověd jako XDocument objekt.
 		/// </summary>
@@ -123,7 +112,5 @@ namespace Havit.Services.Ares
 
 			return aresResponseXDocument;
 		}
-
-		#endregion
 	}
 }

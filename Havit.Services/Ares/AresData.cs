@@ -3,69 +3,52 @@ using System;
 namespace Havit.Services.Ares
 {
 	/// <summary>
-	/// Obálka pro data z odpovìdi ze sluby ARES - Obchodní rejstøík.
+	/// ObÃ¡lka pro data z odpovÃ¬di ze sluÅ¾by ARES - ObchodnÃ­ rejstÃ¸Ã­k.
 	/// </summary>
 	public class AresData
 	{
-		#region SubjektZanikl
 		/// <summary>
-		/// Udává, zda subjekt zanikl (a jeho údaje se v registru nenachází).
+		/// UdÃ¡vÃ¡, zda subjekt zanikl (a jeho Ãºdaje se v registru nenachÃ¡zÃ­).
 		/// </summary>
 		public bool? SubjektZanikl { get; set; }
-		#endregion
 
-		#region Ico
 		/// <summary>
-		/// IÈO obchodní firmy zapsané v OR.
+		/// IÃˆO obchodnÃ­ firmy zapsanÃ© v OR.
 		/// </summary>
 		public string Ico { get; set; }
-		#endregion
 
-		#region Dic
 		/// <summary>
-		/// DIÈ obchodní firmy zapsané v OR.
+		/// DIÃˆ obchodnÃ­ firmy zapsanÃ© v OR.
 		/// </summary>
 		public string Dic { get; set; }
-		#endregion
 
-		#region NazevObchodniFirmy
 		/// <summary>
-		/// Název pod kterım je firma zapsaná v OR.
+		/// NÃ¡zev pod kterÃ½m je firma zapsanÃ¡ v OR.
 		/// </summary>
 		public string NazevObchodniFirmy { get; set; }
-		#endregion
 
-		#region PravniForma
 		/// <summary>
-		/// Právní forma.
+		/// PrÃ¡vnÃ­ forma.
 		/// </summary>
 		public Classes.PravniForma PravniForma { get; set; }
-		#endregion
 
-		#region RegistraceOR
 		/// <summary>
 		/// Registrace do OR.
 		/// </summary>
 		public Classes.RegistraceOR RegistraceOR { get; set; }
-		#endregion
 
-		#region Sidlo
 		/// <summary>
-		/// Sídlo firmy.
+		/// SÃ­dlo firmy.
 		/// </summary>
 		public Classes.Sidlo Sidlo { get; set; }
-		#endregion
 
-		#region StatutarniOrgan
 		/// <summary>
-		/// Statutární orgán.
+		/// StatutÃ¡rnÃ­ orgÃ¡n.
 		/// </summary>
 		public Classes.StatutarniOrgan StatutarniOrgan { get; set; }
-		#endregion
 
-		#region Nested classes
 		/// <summary>
-		/// Tøídy (nested classes) pro odpovìd ARES OR.
+		/// TÃ¸Ã­dy (nested classes) pro odpovÃ¬d ARES OR.
 		/// </summary>
 		public static class Classes
 		{
@@ -75,79 +58,79 @@ namespace Havit.Services.Ares
 			public class RegistraceOR
 			{
 				/// <summary>
-				/// Název soudu kterım je firma registrovaná v OR.
+				/// NÃ¡zev soudu kterÃ½m je firma registrovanÃ¡ v OR.
 				/// </summary>
 				public string NazevSoudu { get; set; }
 
 				/// <summary>
-				/// Kód soudu kterım je firma registrovaná v OR.
+				/// KÃ³d soudu kterÃ½m je firma registrovanÃ¡ v OR.
 				/// </summary>
 				public string KodSoudu { get; set; }
 
 				/// <summary>
-				/// Spisová znaèka pod kterou je firma v OR vedena (oddíl + vloka).
+				/// SpisovÃ¡ znaÃ¨ka pod kterou je firma v OR vedena (oddÃ­l + vloÅ¾ka).
 				/// </summary>
 				public string SpisovaZnacka { get; set; }
 			}
 
 			/// <summary>
-			/// Právní forma.
+			/// PrÃ¡vnÃ­ forma.
 			/// </summary>
 			public class PravniForma
 			{
 				/// <summary>
-				/// Právní forma firmy.
+				/// PrÃ¡vnÃ­ forma firmy.
 				/// </summary>
 				public string Nazev { get; set; }
 			}
 
 			/// <summary>
-			/// Sídlo obchodní firmy.
+			/// SÃ­dlo obchodnÃ­ firmy.
 			/// </summary>
 			public class Sidlo
 			{
 				/// <summary>
-				/// Ulice sídla firmy.
+				/// Ulice sÃ­dla firmy.
 				/// </summary>
 				public string Ulice { get; set; }
 
 				/// <summary>
-				/// Èíslo do adresy.
+				/// ÃˆÃ­slo do adresy.
 				/// </summary>
 				public string CisloDoAdresy { get; set; }
 				
 				/// <summary>
-				/// Popisné èíslo sídla firmy.
+				/// PopisnÃ© Ã¨Ã­slo sÃ­dla firmy.
 				/// </summary>
 				public string CisloPopisne { get; set; }
 
 				/// <summary>
-				/// Orientaèní èíslo sídla firmy.
+				/// OrientaÃ¨nÃ­ Ã¨Ã­slo sÃ­dla firmy.
 				/// </summary>
 				public string CisloOrientacni { get; set; }
 
 				/// <summary>
-				/// Mìsto sídla firmy.
+				/// MÃ¬sto sÃ­dla firmy.
 				/// </summary>
 				public string Mesto { get; set; }
 
 				/// <summary>
-				/// Mìstká èást sídla firmy.
+				/// MÃ¬stkÃ¡ Ã¨Ã¡st sÃ­dla firmy.
 				/// </summary>
 				public string MestskaCast { get; set; }
 
 				/// <summary>
-				/// PSÈ sídla firmy.
+				/// PSÃˆ sÃ­dla firmy.
 				/// </summary>
 				public string Psc { get; set; }
 
 				/// <summary>
-				/// Stát sídla firmy.
+				/// StÃ¡t sÃ­dla firmy.
 				/// </summary>
 				public string Stat { get; set; }
 
 				/// <summary>
-				/// Adresa textovì. Mnohé adresy nejsou strukturované, ale pøedány jen jako nestrukturovanı text.
+				/// Adresa textovÃ¬. MnohÃ© adresy nejsou strukturovanÃ©, ale pÃ¸edÃ¡ny jen jako nestrukturovanÃ½ text.
 				/// </summary>
 				public string AdresaTextem { get; set; }
 			}
@@ -158,21 +141,20 @@ namespace Havit.Services.Ares
 			public class StatutarniOrgan
 			{
 				/// <summary>
-				/// Popis statutárního orgánu (obsahuje text, jakım zpùsobem orgán statutární orgán jedná).
+				/// Popis statutÃ¡rnÃ­ho orgÃ¡nu (obsahuje text, jakÃ½m zpÃ¹sobem orgÃ¡n statutÃ¡rnÃ­ orgÃ¡n jednÃ¡).
 				/// </summary>
 				public string Text { get; set; }
 
 				/// <summary>
-				/// Køstní jméno
+				/// KÃ¸stnÃ­ jmÃ©no
 				/// </summary>
 				public string KrestniJmeno { get; set; }
 
 				/// <summary>
-				/// Pøíjmení
+				/// PÃ¸Ã­jmenÃ­
 				/// </summary>
 				public string Prijmeni { get; set; }
 			}
 		}
-#endregion
 	}
 }

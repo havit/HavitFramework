@@ -28,7 +28,6 @@ namespace Havit.Web.UrlRewriter.Config
 	[Obsolete("Upgrade to ASP.NET Routing.")]
 	public class RewriterRuleCollection : CollectionBase
 	{
-		#region Add
 		/// <summary>
 		/// Adds a new RewriterRule to the collection.
 		/// </summary>
@@ -37,9 +36,7 @@ namespace Havit.Web.UrlRewriter.Config
 		{
 			this.InnerList.Add(r);
 		}
-		#endregion
 
-		#region Indexer[int]
 		/// <summary>
 		/// Gets or sets a RewriterRule at a specified ordinal index.
 		/// </summary>
@@ -54,6 +51,5 @@ namespace Havit.Web.UrlRewriter.Config
 				this.InnerList[index] = value;
 			}
 		}
-		#endregion
 	}
 }

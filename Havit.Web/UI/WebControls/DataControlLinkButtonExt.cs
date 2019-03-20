@@ -15,15 +15,12 @@ namespace Havit.Web.UI.WebControls
 	{
 		// Fields
 
-		#region Private fields
 		private string _callbackArgument;
 		private readonly IPostBackContainer _container;
 		private bool _enableCallback;
-		#endregion
 
 		// Properties
 
-		#region CausesValidation
 		public override bool CausesValidation
 		{
 			get
@@ -43,26 +40,20 @@ namespace Havit.Web.UI.WebControls
 				base.CausesValidation = value;
 			}
 		}
-		#endregion
 
 		// Methods
 
-		#region DataControlLinkButtonExt
 		internal DataControlLinkButtonExt(IPostBackContainer container)
 		{
 			this._container = container;
 		}
-		#endregion
 
-		#region EnableCallback
 		internal void EnableCallback(string argument)
 		{
 			this._enableCallback = true;
 			this._callbackArgument = argument;
 		}
-		#endregion
 
-		#region GetPostBackOptions
 		protected override PostBackOptions GetPostBackOptions()
 		{
 			if (this._container != null)
@@ -71,18 +62,14 @@ namespace Havit.Web.UI.WebControls
 			}
 			return base.GetPostBackOptions();
 		}
-		#endregion
 
-		#region Render
 		protected override void Render(HtmlTextWriter writer)
 		{
 			this.SetCallbackProperties();
 			this.SetForeColor();
 			base.Render(writer);
 		}
-		#endregion
 
-		#region SetCallbackProperties
 		private void SetCallbackProperties()
 		{
 			if (this._enableCallback)
@@ -98,9 +85,7 @@ namespace Havit.Web.UI.WebControls
 				}
 			}
 		}
-		#endregion
 
-		#region SetForeColor
 		protected virtual void SetForeColor()
 		{
 			if (ControlStyle.ForeColor == Color.Empty) // (!base.ControlStyle.IsSet(4))
@@ -118,7 +103,5 @@ namespace Havit.Web.UI.WebControls
 				}
 			}
 		}
-		#endregion
-
 	}
 }

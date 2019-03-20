@@ -6,7 +6,6 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions
 {
 	public static class NamespaceHelper
 	{
-		#region GetNamespaceName
 		/// <summary>
 		/// Vrací namespace pro třídu dle dané tabulky. 
 		/// Pokud je parametr withDefaultNamespace true, připojí na začátek názvu namespace 
@@ -37,9 +36,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions
 				return String.Format("{0}.{1}", GetDefaultNamespace(), tableNamespace);
 			}
 		}
-		#endregion
 
-		#region GetDefaultNamespace
 		public static string GetDefaultNamespace()
 		{
 			string databaseNamespace = ExtendedPropertiesHelper.GetString(ExtendedPropertiesKey.FromDatabase(), "Namespace");
@@ -49,6 +46,5 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions
 			}
 			return GeneratorSettings.Namespace;
 		}
-		#endregion
 	}
 }

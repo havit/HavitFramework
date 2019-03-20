@@ -14,7 +14,6 @@ namespace Havit.WebApplicationTest.HavitWebTests
 {
 	public partial class WebDialogsTestPage : Page
 	{
-		#region OnInit
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
@@ -28,59 +27,43 @@ namespace Havit.WebApplicationTest.HavitWebTests
 
 			EnlargeButton.Click += new EventHandler(EnlargeButton_Click);
 		}
-		#endregion
 
-		#region OnLoad
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
 			this.DataBind();
 		}
-		#endregion
 
-		#region ServerOpen1Button_Click
 		private void ServerOpen1Button_Click(object sender, EventArgs e)
 		{
 			MyBasicModalDialog.Show();
 		}
-		#endregion
 
-		#region ServerClose1Button_Click
 		private void ServerClose1Button_Click(object sender, EventArgs e)
 		{
 			MyBasicModalDialog.Hide();
 		}
-		#endregion
 
-		#region ServerOpen2Button_Click
 		private void ServerOpen2Button_Click(object sender, EventArgs e)
 		{
 			MyAjaxModalDialog.Show();
 		}
-		#endregion
 
-		#region ServerClose2Button_Click
 		private void ServerClose2Button_Click(object sender, EventArgs e)
 		{
 			MyAjaxModalDialog.Hide();
 		}
-		#endregion
 
-		#region CloseOpenButton_Click
 		private void CloseOpenButton_Click(object sender, EventArgs e)
 		{
 			MyAjaxModalDialog.Hide();
 			MyAjaxModalDialog.Show();
 		}
-		#endregion
 
-		#region EnlargeButton_Click
 		private void EnlargeButton_Click(object sender, EventArgs e)
 		{
 			MyAjaxModalDialog.Width = new Unit(MyAjaxModalDialog.Width.Value + 10, UnitType.Pixel);
 			MyAjaxModalDialog.Height = new Unit(MyAjaxModalDialog.Height.Value + 10, UnitType.Pixel);
 		}
-		#endregion
-
 	}
 }

@@ -10,7 +10,6 @@ namespace Havit.Business
 	/// </summary>
 	public class AfterSaveEventArgs : DbTransactionEventArgs
 	{
-		#region WasNew
 		/// <summary>
 		/// Indikuje, zda byl objekt před uložením nový.
 		/// </summary>
@@ -18,10 +17,8 @@ namespace Havit.Business
 		{
 			get { return _wasNew; }
 		}
-		private readonly bool _wasNew; 
-		#endregion
-	
-		#region Constructors
+		private readonly bool _wasNew;
+
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
@@ -29,7 +26,6 @@ namespace Havit.Business
 			: base(transaction)
 		{
 			_wasNew = wasNew;
-		} 
-		#endregion
+		}
 	}
 }

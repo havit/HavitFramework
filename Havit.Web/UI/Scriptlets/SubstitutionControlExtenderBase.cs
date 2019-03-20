@@ -12,7 +12,6 @@ namespace Havit.Web.UI.Scriptlets
 	/// </summary>
 	public abstract class SubstitutionControlExtenderBase : IControlExtender
 	{
-		#region GetPriorityValue (virtual)
 		/// <summary>
 		/// Vrátí hodnotu priority ControlExtenderu, která se použije, pokud je 
 		/// ControlExtender použitelný pro zpracování controlu.
@@ -24,9 +23,7 @@ namespace Havit.Web.UI.Scriptlets
 				return 100;
 			}
 		}
-		#endregion
 
-		#region GetPriority
 		/// <summary>
 		/// Vrací priotitu vhodnosti extenderu pro zpracování controlu.
 		/// Pokud extender není vhodný pro zpracování controlu, vrací null.
@@ -37,9 +34,7 @@ namespace Havit.Web.UI.Scriptlets
 		{
 			return (GetSupportedControlType().IsInstanceOfType(control)) ? (int?)this.GetPriorityValue : null;
 		}
-		#endregion
-		
-		#region IControlExtender Members
+
 		/// <summary>
 		/// Vytvoří klientský parametr pro předaný control.
 		/// </summary>
@@ -68,20 +63,15 @@ namespace Havit.Web.UI.Scriptlets
 			Control substitutedControl = GetSubstitutedControl(control);
 			parameter.Scriptlet.ControlExtenderRepository.FindControlExtender(substitutedControl).GetDetachEventsScript(parameterPrefix, parameter, substitutedControl, scriptletFunctionCallDelegate, scriptBuilder);
 		}
-		#endregion
 
-		#region GetSubstitutedControl (abstract)
 		/// <summary>
 		/// Vrací substituovaný control.
 		/// </summary>
 		protected abstract Control GetSubstitutedControl(Control control);
-		#endregion
 
-		#region GetSupportedControlType (abstract)
 		/// <summary>
 		/// Vrací typ, který je třídou podporován k substituci.
 		/// </summary>
 		protected abstract Type GetSupportedControlType();
-		#endregion
 	}
 }

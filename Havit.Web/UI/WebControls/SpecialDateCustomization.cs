@@ -5,15 +5,12 @@ using System.Text;
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
-	/// Tøída implementující customizaci DateTimeBox-u pro special date collection. 
+	/// TÃ¸Ã­da implementujÃ­cÃ­ customizaci DateTimeBox-u pro special date collection. 
 	/// </summary>
 	public class SpecialDateCustomization : DateTimeBoxDateCustomization
 	{
-		#region SpecialDates (private property)
 		private List<SpecialDate> SpecialDates { get; set; }
-		#endregion
 
-		#region SpecialDateCustomization
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
@@ -21,11 +18,9 @@ namespace Havit.Web.UI.WebControls
 		{
 			this.SpecialDates = specialDates;
 		}
-		#endregion
 
-		#region RenderDateStatusHandlerContent
 		/// <summary>
-		/// Renderuje funkci pro customizaci hodnot v kalendáøi.
+		/// Renderuje funkci pro customizaci hodnot v kalendÃ¡Ã¸i.
 		/// </summary>
 		public override string RenderDateStatusHandlerContent()
 		{
@@ -90,6 +85,5 @@ namespace Havit.Web.UI.WebControls
 
 			return result.ToString();
 		}
-		#endregion
 	}
 }

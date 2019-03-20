@@ -12,12 +12,9 @@ namespace Havit.Collections
 	/// <typeparam name="T">Typ objektu, jehož hodnoty jsou porovnávány.</typeparam>
 	public class GenericPropertyComparer<T> : IComparer<T>
 	{
-		#region Private fields
 		private readonly IList<SortItem> sortItems;
 		private readonly Dictionary<object, IComparable>[] getValueCacheList;
-		#endregion
 
-		#region Constructors
 		/// <summary>
 		/// Vytvoří instanci compareru pro řazení dle dané property.
 		/// </summary>
@@ -50,9 +47,7 @@ namespace Havit.Collections
 				getValueCacheList[i] = new Dictionary<object, IComparable>();
 			}
 		}
-		#endregion
 
-		#region Compare methods
 		/// <summary>
 		/// Porovná vlastnosti instancí dvou objektů.
 		/// </summary>
@@ -150,6 +145,5 @@ namespace Havit.Collections
 				return result;
 			}
 		}
-		#endregion
 	}
 }

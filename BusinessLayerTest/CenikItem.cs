@@ -26,7 +26,6 @@ namespace Havit.BusinessLayerTest
 	/// </summary>
 	public partial class CenikItem : CenikItemBase
 	{
-		#region CenaAmount
 		public new Decimal CenaAmount
 		{
 			get
@@ -38,9 +37,7 @@ namespace Havit.BusinessLayerTest
 				base.CenaAmount = value;
 			}
 		}
-		#endregion
 
-		#region CenaCurrency
 		public new Currency CenaCurrency
 		{
 			get
@@ -52,6 +49,5 @@ namespace Havit.BusinessLayerTest
 				base.CenaCurrency = value;
 			}
 		}
-		#endregion
 	}
 }

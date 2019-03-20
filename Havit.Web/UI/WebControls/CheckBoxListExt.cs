@@ -15,7 +15,6 @@ namespace Havit.Web.UI.WebControls
 	[ValidationProperty("SelectedValue")]
 	public class CheckBoxListExt : CheckBoxList
 	{
-		#region ItemDataBound (event)
 		/// <summary>
 		/// Událost, která se volá po vytvoření itemu a jeho data-bindingu.
 		/// </summary>
@@ -31,9 +30,7 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		private static readonly object eventItemDataBound = new object();
-		#endregion
 
-		#region SelectedIndex, SelectedValue (override)
 		private int cachedSelectedIndex = -1;
 		private string cachedSelectedValue;
 
@@ -72,9 +69,7 @@ namespace Havit.Web.UI.WebControls
 				cachedSelectedValue = value;
 			}
 		}
-		#endregion
 
-		#region PerformDataBinding (override)
 		/// <summary>
 		/// Binds the specified data source to the control that is derived from the <see cref="T:System.Web.UI.WebControls.ListControl"/> class.
 		/// </summary>
@@ -144,9 +139,7 @@ namespace Havit.Web.UI.WebControls
 			}
 			return -1;
 		}
-		#endregion
 
-		#region OnItemDataBound
 		/// <summary>
 		/// Raises the <see cref="ItemDataBound"/> event.
 		/// </summary>
@@ -159,6 +152,5 @@ namespace Havit.Web.UI.WebControls
 				h(this, e);
 			}
 		}
-		#endregion
 	}
 }

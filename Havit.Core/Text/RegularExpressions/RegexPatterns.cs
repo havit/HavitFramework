@@ -8,7 +8,6 @@ namespace Havit.Text.RegularExpressions
 	/// </summary>
 	public static class RegexPatterns
 	{
-		#region EmailStrict
 		/// <summary>
 		/// Pattern pro kontrolu běžného e-mailu:
 		/// <list type="bullet">
@@ -26,25 +25,19 @@ namespace Havit.Text.RegularExpressions
 		/// </remarks>
 		public const string EmailStrict = @"^(([A-Za-z0-9]+_+)|([A-Za-z0-9]+\-+)|([A-Za-z0-9]+\.)|([A-Za-z0-9]+\++)|([A-Za-z0-9]+'+))*[A-Za-z0-9]+"
 										+ @"@(([A-Za-z0-9]+\-+)|([A-Za-z0-9]+\.))*[A-Za-z0-9]{1,63}\.[a-zA-Z]{2,20}$";
-		#endregion
-		
-		#region Identifier
+
 		/// <summary>
 		/// Pattern pro kontrolu identifikátorů.
 		/// Identifikátor musí začínat písmenem nebo podtržítkem, nesledovat mohou i číslice.
 		/// </summary>
 		public const string Identifier = @"^[a-zA-Z_]{1}[a-zA-Z0-9_]+$";
-		#endregion
 
-		#region Time24h
 		/// <summary>
 		/// Pattern pro kontrolu času. 24-hodinnový formát, odělovač dvojtečka, nepovinné vteřiny. Např. 23:59:00.
 		/// Nepřijímá 24:00.
 		/// </summary>
 		public const string Time24h = @"^(20|21|22|23|[01]\d|\d)(([:][0-5]\d){1,2})$";
-		#endregion
 
-		#region IPAddress
 		/// <summary>
 		/// Pattern pro kontrolu IP adresy v4.
 		/// </summary>
@@ -52,9 +45,7 @@ namespace Havit.Text.RegularExpressions
 										+ @"(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\."
 										+ @"(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\."
 										+ @"(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$";
-		#endregion
 
-		#region Integer
 		/// <summary>
 		/// Pattern pro ověření celých čísel.
 		/// </summary>
@@ -63,9 +54,7 @@ namespace Havit.Text.RegularExpressions
 		/// Odmítá: [1.0], [abc], [+], [1,15]
 		/// </remarks>
 		public const string Integer = @"^[-+]?\d+$";
-		#endregion
 
-		#region GetWildcardRegex, IsWildcardMatch, GetWildcardRegexPattern (private)
 		/// <summary>
 		/// Vrátí regulární výraz pro hledání v textu.
 		/// Více o myšlence wildcardů je uvedeno u metody TextCondition.CreateWildcards.
@@ -122,9 +111,7 @@ namespace Havit.Text.RegularExpressions
 
 			return regexPattern;
 		}
-		#endregion
 
-		#region MatchFileWildcardString
 		/// <summary>
 		/// Vratí, zda název souboru odpovídá souborove masce - podpora znaku '*' a '?'. Pouzivano v CMD.
 		/// </summary>
@@ -134,6 +121,5 @@ namespace Havit.Text.RegularExpressions
 			string regular = "^" + Regex.Escape(searchPattern).Replace("\\?", ".").Replace("\\*", ".*") + "$";
 			return Regex.IsMatch(fileName, regular);
 		}
-		#endregion
 	}
 }

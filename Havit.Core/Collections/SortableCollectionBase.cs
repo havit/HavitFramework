@@ -11,7 +11,6 @@ namespace Havit.Collections
 	[Obsolete]
 	public abstract class SortableCollectionBase : System.Collections.CollectionBase
 	{
-		#region Sort
 		/// <summary>
 		/// Seřadí prvky dle požadované property, která implementuje IComparable.
 		/// </summary>
@@ -21,9 +20,7 @@ namespace Havit.Collections
 		{
 			InnerList.Sort(new GenericPropertySort(propertyName, ascending));
 		}
-		#endregion
 
-		#region IndexOf
 		/// <summary>
 		/// Vrátí polohu prvku v seřazené collection.
 		/// </summary>
@@ -41,19 +38,15 @@ namespace Havit.Collections
 			}
 			return -1;
 		}
-		#endregion
 
 		/// <summary>
 		/// Comparer pro řazení dle libobovolné IComparable property.
 		/// </summary>
 		internal class GenericPropertySort : System.Collections.IComparer
 		{
-			#region Private fields
 			private readonly bool sortAscending = true;
 			private readonly string sortPropertyName = String.Empty;
-			#endregion
 
-			#region GenericPropertySort
 			/// <summary>
 			/// Vytvoří instanci compareru pro řazení dle dané property.
 			/// </summary>
@@ -64,9 +57,7 @@ namespace Havit.Collections
 				this.sortPropertyName = sortPropertyName;
 				this.sortAscending = ascending;
 			}
-			#endregion
 
-			#region Compare
 			/// <summary>
 			/// Porovná dva objekty.
 			/// </summary>
@@ -104,7 +95,6 @@ namespace Havit.Collections
 					return ic2.CompareTo(ic1);
 				}
 			}
-			#endregion
 		}
 
 	}

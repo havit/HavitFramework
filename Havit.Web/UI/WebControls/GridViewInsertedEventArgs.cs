@@ -9,7 +9,6 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class GridViewInsertedEventArgs : EventArgs
 	{
-		#region KeepInEditMode
 		/// <summary>
 		/// Indikuje, zdali má GridView zůstat po zpracování událost v režimu editace nového řádku.
 		/// </summary>
@@ -25,6 +24,5 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		private bool _keepInEditMode = false;
-		#endregion
 	}
 }

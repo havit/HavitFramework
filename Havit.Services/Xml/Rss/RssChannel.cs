@@ -8,8 +8,6 @@ namespace Havit.Services.Xml.Rss
 	[XmlRoot("channel")]
 	public class RssChannel
 	{
-		#region Fields
-
 		private string title = "";
 		private string link = "";
 		private string description = "";
@@ -290,10 +288,6 @@ namespace Havit.Services.Xml.Rss
 			}
 		}
 
-		#endregion
-
-		#region Constructor
-
 		/// <summary>
 		/// Default constructor nutný pro XmlSerializer.
 		/// Nutno nastavit required položky Title, Link a Description.
@@ -313,7 +307,5 @@ namespace Havit.Services.Xml.Rss
 			this.Description = description;
 			this.items = new RssItemCollection();
 		}
-
-		#endregion
 	}
 }

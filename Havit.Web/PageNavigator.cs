@@ -14,14 +14,11 @@ namespace Havit.Web
 	/// </summary>
 	public class PageNavigator
 	{
-		#region PageNavigatorUrlsQueryParameterName (private const)
 		/// <summary>
 		/// Název parametru používaného v QueryStringu, hodnota nese adresy historie.
 		/// </summary>
 		private const string UrlsQueryParameterName = "NavigatorUrls";
- 		#endregion
 
-		#region Current (static)
 		/// <summary>
 		/// Vrací instanci PageNavigatoru pro aktuální HttpContext. "HttpContext signleton".
 		/// </summary>
@@ -45,13 +42,9 @@ namespace Havit.Web
 				return result;
 			}
 		}
-		#endregion
 
-		#region Private fields
 		private readonly HttpContext _currentContext;
-		#endregion
 
-		#region HistoryUrls
 		/// <summary>
 		/// Seznam adres historie navigace (protected)
 		/// </summary>
@@ -67,10 +60,8 @@ namespace Havit.Web
             }
 		}
         private List<string> _historyUrls;
-		#endregion
 
-		#region Constructors
-		/// <summary>
+        /// <summary>
 		/// Konstruktor.
 		/// Inicializuje kolekci HistoryUrls.
 		/// </summary>
@@ -79,10 +70,8 @@ namespace Havit.Web
 			_currentContext = context;
 			InitializeHistoryUrls();
 		}
-		#endregion
 
-		#region InitializeHistoryUrls
-		/// <summary>
+        /// <summary>
 		/// Inicializuje kolekci HistoryUrls, voláno z konstruktoru.
 		/// </summary>
 		private void InitializeHistoryUrls()
@@ -118,10 +107,8 @@ namespace Havit.Web
 				}
 			}
 		}
-		#endregion
 
-		#region NavigateFromTo
-		/// <summary>
+        /// <summary>
 		/// Provede přesměrování s předáním adres navigace. Do historie adres navigace není přidána žádná adresa.
 		/// </summary>
 		/// <param name="toUrl">Adresa, na kterou bude přesměrováno.</param>
@@ -133,10 +120,8 @@ namespace Havit.Web
 			string redirectUrl = GetTransitionalNavigationUrlTo(toUrl);
 			_currentContext.Response.Redirect(redirectUrl);
 		}
-		#endregion
 
-		#region NavigateFromTo
-		/// <summary>
+        /// <summary>
 		/// Provede přesměrování s předáním adres navigace. Do historie adres navigace ja přidána adresa v parametru fromUrls.
 		/// </summary>
 		/// <param name="fromUrl">Adresa, která bude přidána do adres navigace (slouží pro návrat na aktuální stránku).</param>
@@ -152,10 +137,8 @@ namespace Havit.Web
 			string redirectUrl = GetNavigationUrlFromTo(fromUrl, toUrl);
 			_currentContext.Response.Redirect(redirectUrl);
 		}
-		#endregion
 
-		#region NavigateFromRawUrlTo
-		/// <summary>
+        /// <summary>
 		/// Provede přesměrování s předáním adres navigace. Jako adresa pro návrat na aktuální stránku se použije HttpRequest.RawUrl.
 		/// </summary>
 		/// <param name="toUrl">Adresa, na kterou bude přesměrováno.</param>
@@ -167,10 +150,8 @@ namespace Havit.Web
 			string redirectUrl = GetNavigationUrlFromRawUrlTo(toUrl);
 			_currentContext.Response.Redirect(redirectUrl);
 		}
-		#endregion
 
-		#region NavigateBack
-		/// <summary>
+        /// <summary>
 		/// Provede přesměrování na poslední adresu v historii adres.
 		/// </summary>
 		/// <exception cref="System.InvalidOperationException">
@@ -186,20 +167,16 @@ namespace Havit.Web
 			string targetUrl = GetNavigationBackUrl();
 			_currentContext.Response.Redirect(targetUrl);
 		}
-		#endregion
 
-		#region CanNavigateBack
-		/// <summary>
+        /// <summary>
 		/// Udává, zda je možné provést navigaci zpět (tj. zda je k dispozici adresa pro návrat).
 		/// </summary>
 		public bool CanNavigateBack()
 		{
 			return HistoryUrls.Count > 0;
-		} 
-		#endregion
+		}
 
-		#region GetTransitionalNavigationUrlTo
-		/// <summary>
+        /// <summary>
 		/// Vrátí adresu pro přesměrování s předáním adres navigace. Do historie adres navigace není přidána žádná adresa.
 		/// </summary>
 		/// <param name="toUrl">Adresa, na kterou bude přesměrováno.</param>
@@ -216,10 +193,8 @@ namespace Havit.Web
 			toUrl = GetUrlWithoutNavigationUrlParameter(toUrl);
 			return GetNavigationToUrlInternal(null, toUrl, true);
 		}
-		#endregion
 
-		#region GetNavigationUrlFromTo
-		/// <summary>
+        /// <summary>
 		/// Vrátí url pro přesměrování s předáním adres navigace.
 		/// </summary>
 		/// <param name="fromUrl">Adresa, která bude přidána do adres navigace (slouží pro návrat na aktuální stránku).</param>
@@ -247,11 +222,8 @@ namespace Havit.Web
 
 			return GetNavigationToUrlInternal(fromUrl, toUrl, true);
 		}
-		
-		#endregion
 
-		#region GetNavigationUrlFromRawUrlTo
-		/// <summary>
+        /// <summary>
 		/// Vrátí adresu pro přesměrování s předáním adres navigace. Jako adresa pro návrat na aktuální stránku se použije HttpRequest.RawUrl.
 		/// </summary>
 		/// <param name="toUrl">Adresa, na kterou bude přesměrováno.</param>
@@ -270,11 +242,8 @@ namespace Havit.Web
 
             return GetNavigationToUrlInternal(fromUrl, toUrl, true);
 		}
-		
-		#endregion
 
-		#region GetNavigationBackUrl
-		/// <summary>
+        /// <summary>
 		/// Vrátí adresu pro přesměrování zpět. Adresa pro návrat zpět se bere z historie, ostatních adres v historie se zachovají.
 		/// </summary>
 		/// <exception cref="InvalidOperationException">
@@ -293,10 +262,8 @@ namespace Havit.Web
 			HistoryUrls.Insert(0, url);
 			return targetUrl;
 		}
-		#endregion
 
-		#region GetNavigationToUrlInternal (private)
-		/// <summary>
+        /// <summary>
 		/// Vrátí adresu pro přesměrování s předáním adres navigace.
 		/// </summary>
 		/// <param name="fromUrl">Adresa, která bude přidána do adres navigace (slouží pro návrat na aktuální stránku).</param>
@@ -351,10 +318,8 @@ namespace Havit.Web
 				}
 			}
 		}
-		#endregion
 
-		#region GetNavigationUrlsValue (private)
-		/// <summary>
+        /// <summary>
 		/// Vrací hodnotu parametru, který nese seznam adres historie.
 		/// </summary>
 		/// <param name="fromUrl">Url pro návrat na aktuální stránku.</param>
@@ -385,11 +350,9 @@ namespace Havit.Web
 		        memoryStream.Read(buffer, 0, buffer.Length);
 		    }
 		    return HttpServerUtility.UrlTokenEncode(buffer);
-		} 
-		#endregion
+		}
 
-		#region GetUrlWithoutNavigationUrlParameter (private)
-		/// <summary>
+        /// <summary>
 		/// Vrátí url adresu bez parametru s historií adres navigace.
 		/// </summary>
 		private string GetUrlWithoutNavigationUrlParameter(string url)
@@ -415,7 +378,5 @@ namespace Havit.Web
 			return qsb.GetUrlWithQueryString(urlParts[0]);
 
 		}
-		
-		#endregion
 	}
 }

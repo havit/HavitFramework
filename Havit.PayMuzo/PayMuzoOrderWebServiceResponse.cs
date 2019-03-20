@@ -9,7 +9,6 @@ namespace Havit.PayMuzo
 	/// </summary>
 	public class PayMuzoOrderWebServiceResponse : PayMuzoWebServiceResponse
 	{
-		#region OrderNumber
 		/// <summary>
 		/// Číslo objednávky v systému PayMUZO.
 		/// </summary>
@@ -19,9 +18,7 @@ namespace Havit.PayMuzo
 			protected set { _orderNumber = value; }
 		}
 		private int _orderNumber;
-		#endregion
 
-		#region IsDigestUrlEncoded
 		/// <summary>
 		/// Gets a value indicating whether this instance is digest URL encoded.
 		/// </summary>
@@ -32,9 +29,7 @@ namespace Havit.PayMuzo
 		{
 			get { return false; }
 		}
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Initializes a new instance of the <see cref="PayMuzoOrderWebServiceResponse"/> class.
 		/// </summary>
@@ -43,9 +38,7 @@ namespace Havit.PayMuzo
 			: base(response)
 		{
 		}
-		#endregion
 
-		#region ParseResponse
 		/// <summary>
 		/// Vytahá z web-servicové response data do properties.
 		/// </summary>
@@ -58,9 +51,7 @@ namespace Havit.PayMuzo
 
 			this.OrderNumber = Convert.ToInt32(orderResponse.orderNumber);
 		}
-		#endregion
 
-		#region CreateNormalizedData
 		/// <summary>
 		/// Vytvoří normalizovaná data pro ověření podpisu.
 		/// </summary>
@@ -75,6 +66,5 @@ namespace Havit.PayMuzo
 
 			return data;
 		}
-		#endregion
 	}
 }

@@ -13,7 +13,6 @@ namespace Havit.Business
 		where BusinessObjectType : BusinessObjectBase
 		where CollectionType : BusinessObjectCollection<BusinessObjectType, CollectionType>, new()		
 	{
-		#region Constructors
 		/// <summary>
 		/// Založí instanci CollectionPropertyHolderu.
 		/// </summary>
@@ -22,9 +21,7 @@ namespace Havit.Business
 			: base(owner)
 		{
 		}
-		#endregion
 
-		#region Value
 		/// <summary>
 		/// Hodnota, kterou CollectionPropertyHolder nese.
 		/// </summary>
@@ -37,9 +34,7 @@ namespace Havit.Business
 			}
 		}
 		private CollectionType _value;
-		#endregion
 
-		#region Initialize
 		/// <summary>
 		/// Inicializuje obsaženou kolekci.
 		/// </summary>
@@ -57,6 +52,5 @@ namespace Havit.Business
 				};
 			}
 		}
-		#endregion
 	}
 }

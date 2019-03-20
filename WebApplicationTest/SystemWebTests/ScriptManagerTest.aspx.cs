@@ -13,7 +13,6 @@ namespace Havit.WebApplicationTest.HavitWebTests
 {
 	public partial class ScriptManagerTest : System.Web.UI.Page
 	{
-		#region OnInit
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
@@ -26,9 +25,7 @@ namespace Havit.WebApplicationTest.HavitWebTests
 
 			ScriptManager.ScriptResourceMapping.AddDefinition("WebApplicationTest.a.js", new ScriptResourceDefinition { Path = ClientScript.GetWebResourceUrl(typeof(ScriptManagerTest), "WebApplicationTest.a.js") });
 		}
-		#endregion
 
-		#region OnPreRender
 		protected override void OnPreRender(EventArgs e)
 		{
 			base.OnPreRender(e);
@@ -53,6 +50,5 @@ namespace Havit.WebApplicationTest.HavitWebTests
 			//ScriptManager.RegisterNamedClientScriptResource(this, "WebApplicationTest.a.js");
 			//ScriptManager.GetCurrent(this).Scripts.Add(new ScriptReference("WebApplicationTest.a.js", "WebApplicationTest"));
 		}
-		#endregion
 	}
 }

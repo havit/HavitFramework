@@ -10,7 +10,6 @@ namespace Havit.Business
 	/// <typeparam name="T">typ property, jíž je PropertyHolder nosičem</typeparam>
 	public class PropertyHolder<T> : PropertyHolderBase
 	{
-		#region Constructors
 		/// <summary>
 		/// Založí instanci PropertyHolderu.
 		/// </summary>
@@ -19,9 +18,7 @@ namespace Havit.Business
 			: base(owner)
 		{
 		}
-		#endregion
 
-		#region Value
 		/// <summary>
 		/// Hodnota, kterou PropertyHolder nese.
 		/// </summary>
@@ -49,6 +46,5 @@ namespace Havit.Business
 			}
 		}
 		private T _value;
-		#endregion
 	}
 }

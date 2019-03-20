@@ -11,7 +11,6 @@ namespace Havit.PayMuzo
 	[Serializable]
 	public class PayMuzoRequestData : NameValueCollection
 	{
-		#region GetPipedRawData
 		/// <summary>
 		/// Vrátí raw-data requestu jako pipe-separated-string.
 		/// </summary>
@@ -27,9 +26,7 @@ namespace Havit.PayMuzo
 			string rawDataString = rawData.ToString();
 			return rawDataString;
 		}
-		#endregion
 
-		#region GetUrlWithQueryString
 		/// <summary>
 		/// Vrátí URL s QueryStringem s daty requestu. Lze následně použít pro GET volání, např. Response.Redirect.
 		/// </summary>
@@ -51,6 +48,5 @@ namespace Havit.PayMuzo
 			}
 			return requestUrl.ToString();
 		}
-		#endregion
 	}
 }

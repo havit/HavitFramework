@@ -11,18 +11,14 @@ namespace Havit.Business.Query
 	/// </summary>
 	public abstract class Condition
 	{
-		#region GetWhereStatement
 		/// <summary>
 		/// Přidá část SQL příkaz pro sekci WHERE. Je VELMI doporučeno, aby byla podmínka přidána včetně závorek.
 		/// </summary>
-		public abstract void GetWhereStatement(System.Data.Common.DbCommand command, StringBuilder whereBuilder, SqlServerPlatform sqlServerPlatform, CommandBuilderOptions commandBuilderOptions); 
-		#endregion
+		public abstract void GetWhereStatement(System.Data.Common.DbCommand command, StringBuilder whereBuilder, SqlServerPlatform sqlServerPlatform, CommandBuilderOptions commandBuilderOptions);
 
-		#region IsEmptyCondition
 		/// <summary>
 		/// Udává, zda podmínka reprezentuje prázdnou podmínku, která nebude renderována (např. prázdná AndCondition).
 		/// </summary>
-		public abstract bool IsEmptyCondition(); 
-		#endregion
+		public abstract bool IsEmptyCondition();
 	}
 }

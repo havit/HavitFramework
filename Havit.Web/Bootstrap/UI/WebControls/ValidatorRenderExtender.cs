@@ -18,21 +18,16 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	/// </summary>
 	internal static class ValidatorRenderExtender
 	{
-		#region DefaultControlToValidateInvalidCssClass (const)
 		/// <summary>
 		/// Default CssClass for control with failed validation (validators sets this css class).
 		/// </summary>
 		internal const string DefaultControlToValidateInvalidCssClass = "validation-invalid";
-		#endregion
 
-		#region DefaultControlToValidateInvalidToolTipCssClass (const)
 		/// <summary>
 		/// Default CssClass for validation tooltip.
 		/// </summary>
 		internal const string DefaultControlToValidateInvalidToolTipCssClass = "validation-tooltip";
-		#endregion
 
-		#region Setup
 		/// <summary>
 		/// Sets up validator (used from constructor).
 		/// Changes validator default values to:
@@ -43,9 +38,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			validator.Display = ValidatorDisplay.None;
 			validator.SetFocusOnError = false;
 		}
-		#endregion
 
-		#region OnPreRender
 		/// <summary>
 		/// Entends OnPreRender method.
 		/// </summary>
@@ -67,9 +60,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			// register hookup script - in every request (must be included also in asynchronnous requests!)
 			ScriptManager.RegisterStartupScript(baseValidator, typeof(ValidatorRenderExtender), "StartUp", "$(function() { Havit_Validation_StartUp(); });", true);
 		}
-		#endregion
 
-		#region AddAttributesToRender
 		/// <summary>
 		/// Extends AddAttributesToRender method.
 		/// </summary>
@@ -128,6 +119,5 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				}
 			}
 		}
-		#endregion
 	}
 }

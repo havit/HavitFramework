@@ -7,7 +7,6 @@ namespace Havit.Business.BusinessLayerGenerator.ConstraintBuilders
 {
 	public static class DateConstraintBuilder
 	{
-		#region CreateConstraints
 		public static void CreateConstraints(Table table)
 		{
 			if (GeneratorSettings.Strategy != GeneratorStrategy.Havit)
@@ -86,6 +85,5 @@ namespace Havit.Business.BusinessLayerGenerator.ConstraintBuilders
 				}
 			}
 		}
-		#endregion
 	}
 }

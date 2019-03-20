@@ -14,7 +14,6 @@ namespace Havit.Web.Services.Extensions
 	/// </summary>
 	internal class HealthMonitoringErrorHandler : IErrorHandler
 	{
-		#region ProvideFault
 		/// <summary>
 		/// Enables the creation of a custom <see cref="T:System.ServiceModel.FaultException`1"/> that is returned from an exception in the course of a service method.
 		/// </summary>
@@ -23,9 +22,7 @@ namespace Havit.Web.Services.Extensions
 		{
 			// NOOP
 		}
-		#endregion
 
-		#region HandleError
 		/// <summary>
 		/// Enables error-related processing and returns a value that indicates whether the dispatcher aborts the session and the instance context in certain cases. 
 		/// </summary>
@@ -46,6 +43,5 @@ namespace Havit.Web.Services.Extensions
 			}
 			return false;
 		}
-		#endregion
 	}
 }

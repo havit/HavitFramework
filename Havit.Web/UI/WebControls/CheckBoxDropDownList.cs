@@ -24,11 +24,8 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class CheckBoxDropDownList : ListBoxExt
 	{
-		#region Private fields
 		private bool renderIsOpen = false;
-		#endregion
 
-		#region ShowSelectAll
 		/// <summary>
 		/// Indikuje, zda má být zobrazena volba pro rychlé zvolení všech hodnot.
 		/// </summary>
@@ -43,9 +40,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["ShowSelectAll"] = value;
 			}
 		}
-		#endregion
 
-		#region SelectAllText
 		/// <summary>
 		/// Text pro výběr všech hodnot. Použije se jen v případě nastavení vlastnosti ShowSelectAll na true.
 		/// Podporuje syntaxi $resources.
@@ -61,9 +56,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["SelectAllText"] = value;
 			}
 		}
-		#endregion
 
-		#region AllSelectedText
 		/// <summary>
 		/// Text zobrazený v případě, že jsou vybrány všechny hodnoty.
 		/// Pokud není hodnota vlastnosti nastavena, zobrazí se vybrané hodnoty.
@@ -80,9 +73,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["AllSelectedText"] = value;
 			}
 		}
-		#endregion
 
-		#region PlaceHolder
 		/// <summary>
 		/// Text zobrazovaný, pokud není vybrána žádná hodnota.
 		/// Podporuje syntaxi $resources.
@@ -98,9 +89,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["PlaceHolder"] = value;
 			}
 		}
-		#endregion
 
-		#region ItemWidth
 		/// <summary>
 		/// Pokud je uvedeno, řadí se položky za sebe (float) s tím, že každá má šířku dle hodnoty této vlastnosti.
 		/// Pokud není hodnota nastavena, řadí se položky pod sebe.
@@ -116,9 +105,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["ItemWidth"] = value;				
 			}
 		}
-		#endregion
 
-		#region LeaveOpenInAutoPostBack
 		/// <summary>
 		/// Pokud je true, bude po autopostbacku stále otevřen.
 		/// </summary>
@@ -133,9 +120,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["LeaveOpenInAutoPostBack"] = value;
 			}
 		}
-		#endregion
 
-		#region ShowFilter
 		/// <summary>
 		/// Zobrazí inline filter položek checkbox listu.
 		/// </summary>
@@ -150,9 +135,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["ShowFilter"] = value;
 			}
 		}
-		#endregion
 
-		#region NoMatchesFoundText
 		/// <summary>
 		/// Text, který se zobrazí, pokud při vyhledávání (viz ShowFilter) není nalezena žádná položka.
 		/// </summary>
@@ -167,9 +150,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["NoMatchesFoundText"] = value;
 			}
 		}
-		#endregion
 
-		#region OnClientDropDownClick
 		/// <summary>
 		/// Klientský kód pro obsluhu kliknutí na javascriptový dropdown.
 		/// </summary>
@@ -184,9 +165,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["OnClientDropDownClick"] = value;
 			}
 		}
-		#endregion
 
-		#region OnClientDropDownBlur
 		/// <summary>
 		/// Klientský kód pro obsluhu opuštění javascriptového dropdownu.
 		/// </summary>
@@ -201,9 +180,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["OnClientDropDownBlur"] = value;
 			}
 		}
-		#endregion
 
-		#region OnClientDropDownOpen
 		/// <summary>
 		/// Klientský kód pro obsluhu otevření javascriptového dropdownu.
 		/// </summary>
@@ -218,9 +195,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["OnClientDropDownOpen"] = value;
 			}
 		}
-		#endregion
 
-		#region OnClientDropDownClose
 		/// <summary>
 		/// Klientský kód pro obsluhu uzavření javascriptového dropdownu.
 		/// </summary>
@@ -235,9 +210,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["OnClientDropDownClose"] = value;
 			}
 		}
-		#endregion
 
-		#region SupportsDisabledAttribute
 		/// <summary>
 		/// Indikuje, zda je povolen atribut "disabled". Vrací vždy true (na rozdíl od výchozí hodnoty .NET Frameworku, která vrací true jen při režimu kompatibility před 4.0.
 		/// </summary>
@@ -249,9 +222,7 @@ namespace Havit.Web.UI.WebControls
 			}
 
 		}
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
@@ -259,9 +230,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			SelectionMode = ListSelectionMode.Multiple;
 		}
-		#endregion
 
-		#region OnSelectedIndexChanged
 		/// <summary>
 		/// Occurs when the selection from the list control changes between posts to the server.
 		/// </summary>
@@ -274,9 +243,7 @@ namespace Havit.Web.UI.WebControls
 				renderIsOpen = true;
 			}
 		}
-		#endregion
 
-		#region OnPreRender
 		/// <summary>
 		/// Zajišťuje validaci vlastností controlu a registraci klientských skriptů.
 		/// </summary>
@@ -290,9 +257,7 @@ namespace Havit.Web.UI.WebControls
 			ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, HavitFrameworkClientScriptHelper.JQueryMultipleSelectResourceMappingName);
 			ScriptManager.RegisterStartupScript(this.Page, typeof(CheckBoxDropDownList), "Startup", "havitDropDownCheckBoxListExtensions.init();", true);
 		}
-		#endregion
 
-		#region ValidateControlProperties
 		/// <summary>
 		/// Validuje hodnoty vlastností.
 		/// </summary>
@@ -308,9 +273,7 @@ namespace Havit.Web.UI.WebControls
 				throw new HttpException(String.Format("Hodnota vlastnosti SelectionMode controlu '{0}' je nastavena na Single, což není podporováno.", this.ID));
 			}
 		}
-		#endregion
 
-		#region AddAttributesToRender
 		/// <summary>
 		/// Zajišťuje vyrenderování html atributů pro klienský skript dropdowncheckboxlistu.
 		/// </summary>
@@ -390,6 +353,5 @@ namespace Havit.Web.UI.WebControls
 			}
 
 		}
-		#endregion
 	}
 }

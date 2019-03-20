@@ -27,8 +27,6 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 	/// </remarks>
 	internal class WebControlAdapterExtender
 	{
-
-		#region AdaptedControl
 		public WebControl AdaptedControl
 		{
 			get
@@ -41,9 +39,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 			}
 		}
 		private readonly WebControl _adaptedControl = null;
-		#endregion
 
-		#region AdapterEnabled
 		public bool AdapterEnabled
 		{
 			get
@@ -62,9 +58,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				return bReturn;
 			}
 		}
-		#endregion
 
-		#region AutoAccessKey
 		public bool AutoAccessKey
 		{
 			get
@@ -90,16 +84,11 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 	
 		private bool _disableAutoAccessKey = false; // used when dealing with things like read-only textboxes that should not have access keys
 
-		#endregion
-
-		#region Constructor
 		public WebControlAdapterExtender(WebControl adaptedControl)
 		{
 			_adaptedControl = adaptedControl;
 		}
-		#endregion
 
-		#region RegisterScripts
 		public void RegisterScripts()
 		{
 			_adaptedControl.Page.ClientScript.RegisterClientScriptResource(
@@ -113,9 +102,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 			//string filePath = folderPath.EndsWith("/") ? folderPath + "AdapterUtils.js" : folderPath + "/AdapterUtils.js";
 			//AdaptedControl.Page.ClientScript.RegisterClientScriptInclude(GetType(), GetType().ToString(), AdaptedControl.Page.ResolveUrl(filePath));
 		}
-		#endregion
 
-		#region ResolveUrl
 		public string ResolveUrl(string url)
 		{
 			string urlToResolve = url;
@@ -155,9 +142,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 
 			return newUrl;
 		}
-		#endregion
 
-		#region RaiseAdaptedEvent
 		public void RaiseAdaptedEvent(string eventName, EventArgs e)
 		{
 			string attr = "OnAdapted" + eventName;
@@ -180,9 +165,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				}
 			}
 		}
-		#endregion
 
-		#region RenderBeginTag
 		public void RenderBeginTag(HtmlTextWriter writer, string cssClass)
 		{
 			string id = (AdaptedControl != null) ? AdaptedControl.ClientID : "";
@@ -195,9 +178,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 
 			WriteBeginDiv(writer, cssClass, id);
 		}
-		#endregion
 
-		#region RenderEndTag
 		public void RenderEndTag(HtmlTextWriter writer)
 		{
 			WriteEndDiv(writer);
@@ -207,17 +188,13 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				WriteEndDiv(writer);
 			}
 		}
-		#endregion
 
-		#region RemoveProblemChildren
 		public static void RemoveProblemChildren(Control ctrl, List<ControlRestorationInfo> stashedControls)
 		{
 			RemoveProblemTypes(ctrl.Controls, stashedControls);
 		}
-		#endregion
 
-		#region RemoveProblemTypes
-        [SuppressMessage("SonarLint", "S2219", Justification = "Převzatý kód, nechci do něj zasahovat.")]
+		[SuppressMessage("SonarLint", "S2219", Justification = "Převzatý kód, nechci do něj zasahovat.")]
 		public static void RemoveProblemTypes(ControlCollection coll, List<ControlRestorationInfo> stashedControls)
 		{
 			foreach (Control ctrl in coll)
@@ -239,9 +216,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				}
 			}
 		}
-		#endregion
 
-		#region RestoreProblemChildren
 		public static void RestoreProblemChildren(List<ControlRestorationInfo> stashedControls)
 		{
 			foreach (ControlRestorationInfo cri in stashedControls)
@@ -249,16 +224,12 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				cri.Restore();
 			}
 		}
-		#endregion
 
-		#region MakeChildId
 		public string MakeChildId(string postfix)
 		{
 			return AdaptedControl.ClientID + "_" + postfix;
 		}
-		#endregion
 
-		#region MakeNameFromId
 		public static string MakeNameFromId(string id)
 		{
 			string name = "";
@@ -289,9 +260,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 			}
 			return name;
 		}
-		#endregion
 
-		#region MakeIdWithButtonType
 		public static string MakeIdWithButtonType(string id, ButtonType type)
 		{
 			string idWithType = id;
@@ -311,16 +280,12 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 			}
 			return idWithType;
 		}
-		#endregion
 
-		#region MakeChildName
 		public string MakeChildName(string postfix)
 		{
 			return MakeNameFromId(MakeChildId(postfix));
 		}
-		#endregion
 
-		#region WriteBeginDiv
 		public static void WriteBeginDiv(HtmlTextWriter writer, string className, string id)
 		{
 			writer.WriteLine();
@@ -336,18 +301,14 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 			writer.Write(HtmlTextWriter.TagRightChar);
 			writer.Indent++;
 		}
-		#endregion
 
-		#region WriteEndDiv
 		public static void WriteEndDiv(HtmlTextWriter writer)
 		{
 			writer.Indent--;
 			writer.WriteLine();
 			writer.WriteEndTag("div");
 		}
-		#endregion
 
-		#region WriteSpan
 		public static void WriteSpan(HtmlTextWriter writer, string className, string content)
 		{
 			if (!String.IsNullOrEmpty(content))
@@ -363,9 +324,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				writer.WriteEndTag("span");
 			}
 		}
-		#endregion
 
-		#region WriteImage
 		public static void WriteImage(HtmlTextWriter writer, string url, string alt)
 		{
 			if (!String.IsNullOrEmpty(url))
@@ -377,9 +336,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				writer.Write(HtmlTextWriter.SelfClosingTagEnd);
 			}
 		}
-		#endregion
 
-		#region WriteLink
 		public static void WriteLink(HtmlTextWriter writer, string className, string url, string title, string content)
 		{
 			if ((!String.IsNullOrEmpty(url)) && (!String.IsNullOrEmpty(content)))
@@ -397,9 +354,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				writer.WriteEndTag("a");
 			}
 		}
-		#endregion
 
-		#region WriteLabel
 		//  Can't be static because it uses MakeChildId
 		public void WriteLabel(HtmlTextWriter writer, string className, string text, string forId)
 		{
@@ -433,9 +388,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				writer.WriteEndTag("label");
 			}
 		}
-		#endregion
 
-		#region WriteTextBox
 		//  Can't be static because it uses MakeChildId
 		public void WriteTextBox(
 			HtmlTextWriter writer,
@@ -465,9 +418,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 
 			writer.Write(HtmlTextWriter.SelfClosingTagEnd);
 		}
-		#endregion
 
-		#region WriteReadOnlyTextBox
 		//  Can't be static because it uses MakeChildId
 		public void WriteReadOnlyTextBox(
 			HtmlTextWriter writer, string labelClassName, string labelText, string inputClassName, string value)
@@ -489,9 +440,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 
 			_disableAutoAccessKey = oldDisableAutoAccessKey;
 		}
-		#endregion
 
-		#region WriteCheckBox
 		//  Can't be static because it uses MakeChildId
 		public void WriteCheckBox(
 			HtmlTextWriter writer, string labelClassName, string labelText, string inputClassName, string id, bool isChecked)
@@ -517,9 +466,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 
 			WriteLabel(writer, labelClassName, labelText, id);
 		}
-		#endregion
 
-		#region WriteSubmit
 		//  Can't be static because it uses MakeChildId
 		public void WriteSubmit(
 			HtmlTextWriter writer,
@@ -597,9 +544,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				writer.Write(HtmlTextWriter.SelfClosingTagEnd);
 			}
 		}
-		#endregion
 
-		#region WriteRequiredFieldValidator
 		public static void WriteRequiredFieldValidator(
 			HtmlTextWriter writer, RequiredFieldValidator rfv, string className, string controlToValidate, string msg)
 		{
@@ -611,9 +556,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				rfv.RenderControl(writer);
 			}
 		}
-		#endregion
 
-		#region WriteRegularExpressionValidator
 		public static void WriteRegularExpressionValidator(
 			HtmlTextWriter writer,
 			RegularExpressionValidator rev,
@@ -631,9 +574,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				rev.RenderControl(writer);
 			}
 		}
-		#endregion
 
-		#region WriteCompareValidator
 		public static void WriteCompareValidator(
 			HtmlTextWriter writer,
 			CompareValidator cv,
@@ -651,9 +592,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				cv.RenderControl(writer);
 			}
 		}
-		#endregion
 
-		#region WriteTargetAttribute
 		public static void WriteTargetAttribute(HtmlTextWriter writer, string targetValue)
 		{
 			if ((writer != null) && (!String.IsNullOrEmpty(targetValue)))
@@ -677,16 +616,12 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				}
 			}
 		}
-		#endregion
 
 		public class ControlRestorationInfo
 		{
-			#region Private fields
 			private readonly Control _ctrl = null;
 			private readonly ControlCollection _coll = null;
-			#endregion
 
-			#region Control
 			public Control Control
 			{
 				get
@@ -694,9 +629,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 					return _ctrl;
 				}
 			}
-			#endregion
 
-			#region Collection
 			public ControlCollection Collection
 			{
 				get
@@ -704,9 +637,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 					return _coll;
 				}
 			}
-			#endregion
 
-			#region IsValid
 			public bool IsValid
 			{
 				get
@@ -714,17 +645,13 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 					return (Control != null) && (Collection != null);
 				}
 			}
-			#endregion
 
-			#region ControlRestorationInfo
 			public ControlRestorationInfo(Control ctrl, ControlCollection coll)
 			{
 				_ctrl = ctrl;
 				_coll = coll;
 			}
-			#endregion
 
-			#region Restore
 			public void Restore()
 			{
 				if (IsValid)
@@ -732,7 +659,6 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 					_coll.Add(_ctrl);
 				}
 			}
-			#endregion
 		}
 	}
 }

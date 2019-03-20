@@ -11,7 +11,6 @@ namespace Havit.Web.UrlRewriter
 	[Obsolete("Upgrade to ASP.NET Routing.")]
 	internal static class RewriterUtils
 	{
-		#region RewriteUrl
 		/// <summary>
 		/// Rewrite's a URL using <b>HttpContext.RewriteUrl()</b>.
 		/// </summary>
@@ -67,6 +66,5 @@ namespace Havit.Web.UrlRewriter
 			// If you are using .NET Framework 1.0, use the below form instead:
 			// context.RewritePath(sendToUrl);
 		}
-		#endregion
 	}
 }

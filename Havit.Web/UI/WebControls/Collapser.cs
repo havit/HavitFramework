@@ -30,7 +30,6 @@ namespace Havit.Web.UI.WebControls
 	[ParseChildren(false)]
 	public class Collapser : WebControl
 	{
-		#region Properties
 		/// <summary>
 		/// Text ovládací prvku.
 		/// </summary>
@@ -140,9 +139,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["Collapsed"] = value;
 			}
 		}
-		#endregion
 
-		#region private properties
 		/// <summary>
 		/// Úplná CssClass pro stav Collapsed
 		/// </summary>
@@ -164,9 +161,7 @@ namespace Havit.Web.UI.WebControls
 				return (this.CssClass + " " + this.CssClassExpanded).Trim();
 			}
 		}
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Vytvoří instanci controlu.
 		/// </summary>
@@ -174,9 +169,7 @@ namespace Havit.Web.UI.WebControls
 			: base(HtmlTextWriterTag.Span)
 		{
 		}
-		#endregion
 
-		#region AddParsedSubObject
 		/// <summary>
 		/// Zajišťuje pronesení inner-textu controlu do property <see cref="Text"/>.
 		/// </summary>
@@ -188,9 +181,7 @@ namespace Havit.Web.UI.WebControls
 			}
 			this.Text = ((LiteralControl)obj).Text;
 		}
-		#endregion
 
-		#region OnLoad
 		/// <summary>
 		/// Raises the <see cref="E:System.Web.UI.Control.Load"/> event.
 		/// </summary>
@@ -209,9 +200,7 @@ namespace Havit.Web.UI.WebControls
 
 			base.OnLoad(e);
 		}
-		#endregion
 
-		#region OnPreRender
 		/// <summary>
 		/// Voláno před renderováním.
 		/// </summary>
@@ -226,9 +215,7 @@ namespace Havit.Web.UI.WebControls
 
 			base.OnPreRender(e);
 		}
-		#endregion
 
-		#region AddAttributesToRender
 		/// <summary>
 		/// Doplní Attributes o hodnoty z properties.
 		/// </summary>
@@ -251,9 +238,7 @@ namespace Havit.Web.UI.WebControls
 			}
 			base.AddAttributesToRender(writer);
 		}
-		#endregion
 
-		#region RenderContents
 		/// <summary>
 		/// Renderuje obsahu elementu.
 		/// </summary>
@@ -261,9 +246,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			writer.Write(this.Text);
 		}
-		#endregion
 
-		#region RegisterClientScript
 		private void RegisterClientScript()
 		{
 			const string clientScriptKey = "Havit.Web.UI.WebControls.Collapser";
@@ -340,9 +323,7 @@ function havitCollapserExpand(collapserElementId, collapserStateElementId, conte
 					collapseScript, true);
 			}
 		}
-		#endregion
 
-		#region ResolveID
 		/// <summary>
 		/// Pokud ID patří controlu, pak vrátí jeho ClientID, jinak vrátí zpět původní ID.
 		/// </summary>
@@ -357,6 +338,5 @@ function havitCollapserExpand(collapserElementId, collapserStateElementId, conte
 			}
 			return id;
 		}
-		#endregion
 	}
 }

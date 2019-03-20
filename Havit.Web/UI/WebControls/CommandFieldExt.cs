@@ -12,7 +12,6 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class CommandFieldExt : CommandField, IIdentifiableField
 	{
-		#region ID (IIdentifiableField Members)
 		/// <summary>
 		/// Identifikátor fieldu na který se lze odkazovat pomocí <see cref="GridViewExt.FindColumn(string)"/>.
 		/// </summary>
@@ -32,6 +31,5 @@ namespace Havit.Web.UI.WebControls
 				ViewState["ID"] = value;
 			}
 		}
-		#endregion
 	}
 }

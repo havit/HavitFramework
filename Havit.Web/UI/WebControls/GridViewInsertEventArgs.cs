@@ -10,7 +10,6 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class GridViewInsertEventArgs : CancelEventArgs
 	{
-		#region RowIndex
 		/// <summary>
 		/// Vrací index řádku GridView, v kterém se odehrává Insert.
 		/// </summary>
@@ -22,9 +21,7 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		private readonly int _rowIndex;
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Vytvoří instanci.
 		/// </summary>
@@ -34,7 +31,5 @@ namespace Havit.Web.UI.WebControls
 		{
 			this._rowIndex = rowIndex;
 		}
-		#endregion
-
 	}
 }

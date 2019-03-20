@@ -11,7 +11,6 @@ namespace Havit.Business.Query
 	/// </summary>
 	public static class NullCondition
 	{
-		#region CreateIsNull
 		/// <summary>
 		/// Vytvoří podmínku testující hodnotu na NULL.
 		/// </summary>
@@ -20,10 +19,8 @@ namespace Havit.Business.Query
 			Contract.Requires<ArgumentNullException>(operand != null, nameof(operand));
 
 			return new UnaryCondition(UnaryCondition.IsNullPattern, operand);
-		} 
-		#endregion
+		}
 
-		#region CreateIsNotNull
 		/// <summary>
 		/// Vytvoří podmínku testující hodnotu na NOT NULL.
 		/// </summary>
@@ -32,7 +29,6 @@ namespace Havit.Business.Query
 			Contract.Requires<ArgumentNullException>(operand != null, nameof(operand));
 
 			return new UnaryCondition(UnaryCondition.IsNotNullPattern, operand);
-		} 
-		#endregion
+		}
 	}
 }

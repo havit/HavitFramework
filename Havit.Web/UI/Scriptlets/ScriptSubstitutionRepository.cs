@@ -14,8 +14,7 @@ namespace Havit.Web.UI.Scriptlets
 	/// </summary>
     public class ScriptSubstitutionRepository : List<IScriptSubstitution>, IScriptSubstitution
     {
-		#region Default (static)
-		/// <summary>
+	    /// <summary>
 		/// Výchozí substituce. Použita, pokud není scriptletu nastaveno jinak.
 		/// </summary>
 		public static ScriptSubstitutionRepository Default
@@ -34,9 +33,7 @@ namespace Havit.Web.UI.Scriptlets
 		}
 		private static ScriptSubstitutionRepository _default = null;
 		private static readonly object _defaultLock = new object();
-		#endregion
 
-		#region Substitute
 		/// <summary>
 		/// Provede substituci tím způsobem, že zavolá postupně substituce
 		/// na všech instancích v repository.
@@ -52,6 +49,5 @@ namespace Havit.Web.UI.Scriptlets
 			}
             return result;                
         }
-		#endregion
-	}
+    }
 }

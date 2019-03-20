@@ -8,77 +8,56 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers.Types
 	/// </summary>
 	public class CollectionProperty
 	{
-		#region PropertyName
 		/// <summary>
 		/// Název property typu kolekce.
 		/// </summary>
 		public string PropertyName { get; private set; }
-		#endregion
 
-		#region ParentTable
 		/// <summary>
 		/// Parent prvků kolekce.
 		/// </summary>
 		public Table ParentTable { get; private set; }
-		#endregion
 
-		#region TargetTable
 		/// <summary>
 		/// Typ prvků kolekce.
 		/// </summary>
 		public Table TargetTable { get; private set; }
-		#endregion
 
-		#region JoinTable
 		/// <summary>
 		/// Je-li kolekce typu M:N je zde spojovací tabulka.
 		/// </summary>
 		public Table JoinTable { get; private set; }
-		#endregion
 
-		#region ReferenceColumn
 		/// <summary>
 		/// Sloupeček, který referencuje kolekci (určuje, že záznamy jsou prvky kolekce).
 		/// </summary>
 		public Column ReferenceColumn { get; private set; }
-		#endregion
 
-		#region Description
 		/// <summary>
 		/// Komentář k vlastnosti.
 		/// </summary>
 		public string Description { get; private set; }
-		#endregion
 
-		#region LoadAll
 		/// <summary>
 		/// Určuje, zda se mají načíst hodnoty objektů kolekce (LoadAll).
 		/// </summary>
 		public bool LoadAll { get; private set; }
-		#endregion
 
-		#region PropertyAccessModifier
 		/// <summary>
 		/// Přístupový modifikátor pro getter property.
 		/// </summary>
 		public string PropertyAccessModifier { get; private set; }
-		#endregion
 
-		#region Sorting
 		/// <summary>
 		/// Řazení prvků kolekce po načtení z databáze.
 		/// </summary>
 		public string Sorting { get; private set; }
-		#endregion
 
-		#region IncludeDeleted
 		/// <summary>
 		/// Říká, zda se mají do kolekce načítat i smazané záznamy.
 		/// </summary>
 		public bool IncludeDeleted { get; private set; }
-		#endregion
 
-		#region IsOneToMany
 		/// <summary>
 		/// Vrací true, pokud jde o kolekci typu 1:N.
 		/// </summary>
@@ -89,9 +68,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers.Types
 				return this.JoinTable == null;
 			}
 		}
-		#endregion
 
-		#region IsManyToMany
 		/// <summary>
 		/// Vrací true, pokud jde o kolekci typu M:N.
 		/// </summary>
@@ -102,9 +79,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers.Types
 				return JoinTable != null;
 			}
 		}
-		#endregion
 
-		#region CloneMode
 		/// <summary>
 		/// Režim klonování prvků kolekce.
 		/// </summary>
@@ -135,9 +110,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers.Types
 			}
 		}
 		private CloneMode? cloneMode;
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Vytvoří inicializovanou instanci.
 		/// </summary>
@@ -154,7 +127,5 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers.Types
 			this.Sorting = sorting;
 			this.IncludeDeleted = includeDeleted;
 		}
-		#endregion
-
 	}
 }

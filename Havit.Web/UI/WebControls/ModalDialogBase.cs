@@ -17,11 +17,8 @@ namespace Havit.Web.UI.WebControls
 	[PersistChildren(false)]
 	public abstract class ModalDialogBase : Control
 	{
-		#region Private fields
 		private bool _dialogCurrentlyHiding = false;
-		#endregion
 
-		#region DialogPanelClientIDMemento
 		/// <summary>
 		/// Paměť pro _dialogPanel.ClientID.
 		/// Využívá metoda RegisterHideScript (volána z Page_PreRenderComplete) pro registraci scriptu pro schování dialogu na klientské straně.
@@ -38,9 +35,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["DialogPanelClientIDMemento"] = value;
 			}
 		}
-		#endregion
 
-		#region ContentTemplate
 		/// <summary>
 		/// Šablona obsahu dialogu. Instancovaný obsah šablony je v ContentTemplateContainer (instancováno v průběhu OnInit).
 		/// </summary>
@@ -59,9 +54,7 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		private ITemplate _contentTemplate;
-		#endregion		
 
-		#region ContentTemplateContainer
 		/// <summary>
 		/// Instancovaný obsah dialogu.
 		/// </summary>
@@ -72,10 +65,8 @@ namespace Havit.Web.UI.WebControls
 				EnsureChildControls();
 				return GetContentContainer();
 			}
-		}		
-		#endregion
+		}
 
-		#region Controls
 		/// <summary>
 		/// Kolekce controlů.
 		/// Přístup k property zajistí inicializaci podstromu controlů (EnsureChildControls).
@@ -88,9 +79,7 @@ namespace Havit.Web.UI.WebControls
 				return base.Controls;
 			}
 		}
-		#endregion		
 
-		#region DialogVisible
 		/// <summary>
 		/// Udává, zda je dialog viditelný.
 		/// </summary>
@@ -105,9 +94,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["DialogVisible"] = value;
 			}
 		}
-		#endregion
 
-		#region OnInit
 		/// <summary>
 		/// OnInit.
 		/// </summary>
@@ -117,9 +104,7 @@ namespace Havit.Web.UI.WebControls
 			EnsureChildControls();
 			this.Page.PreRenderComplete += new EventHandler(Page_PreRenderComplete);
 		}
-		#endregion
 
-		#region CreateChildControls
 		/// <summary>
 		/// Inicializuje podstrom controlů.
 		/// </summary>
@@ -139,23 +124,17 @@ namespace Havit.Web.UI.WebControls
 			}
 			dialogContainer.ID = this.ID + "__DC";
 		}
-		#endregion	
 
-		#region GetContentContainer (abstract)
 		/// <summary>
 		/// Vrací control/kontejner, do kterého je instanciována šablona obsahu.
 		/// </summary>
 		protected abstract Control GetContentContainer();
-		#endregion		
-		
-		#region GetDialogContainer (abstract)
+
 		/// <summary>
 		/// Vrací control/kontejner, který reprezentuje dialog jako celek. Tento control je ovládán klientskými skripty pro zobrazení a schování obsahu.
 		/// </summary>
 		protected abstract Control GetDialogContainer();
-		#endregion
 
-		#region Show, Hide, OnDialogShowing, OnDialogShown, OnDialoginHiding, OnDialogHidden
 		/// <summary>
 		/// Zobrazí dialog.
 		/// </summary>
@@ -235,9 +214,7 @@ namespace Havit.Web.UI.WebControls
 				DialogHidden(this, eventArgs);
 			}
 		}
-		#endregion
 
-		#region GetShowScript, GetHideScript, RegisterShowScript, RegisterHideScript
 		/// <summary>
 		/// Vrátí skript pro zobrazení dialogu na klientské straně.
 		/// </summary>
@@ -274,9 +251,7 @@ namespace Havit.Web.UI.WebControls
 				GetHideScript());
 			ScriptManager.RegisterStartupScript(this.Page, typeof(BasicModalDialog), this.ClientID, script, true);
 		}
-		#endregion
 
-		#region DialogShowing, DialogShown, DialogHiding, DialogHidden
 		/// <summary>
 		/// Událost oznamující začátek zobrazení dialogu.
 		/// </summary>
@@ -296,9 +271,7 @@ namespace Havit.Web.UI.WebControls
 		/// Událost oznamující skrytí dialogu.
 		/// </summary>
 		public event EventHandler DialogHidden;
-		#endregion
 
-		#region OnPreRender
 		/// <summary>
 		/// OnPreRender.
 		/// </summary>
@@ -313,9 +286,7 @@ namespace Havit.Web.UI.WebControls
 				RegisterShowScript();
 			}
 		}
-		#endregion
 
-		#region Page_PreRenderComplete
 		private void Page_PreRenderComplete(object sender, EventArgs e)
 		{
 			// Dialog nemá být vidět a právě jej schováváme.
@@ -330,13 +301,9 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 
-		#region RegisterHideScriptFromPreRenderComplete
 		/// <summary>
 		/// Zajistí schování dialogu
 		/// </summary>
 		protected abstract void RegisterHideScriptFromPreRenderComplete();
-		#endregion
-
-		#endregion
 	}
 }

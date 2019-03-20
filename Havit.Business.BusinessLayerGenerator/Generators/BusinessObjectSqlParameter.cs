@@ -12,7 +12,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 {
 	public static class BusinessObjectSqlParameter
 	{
-		#region WriteSqlParameter
 		/// <summary>
 		/// Vygeneruje kód pro přidání parametru.
 		/// </summary>
@@ -28,9 +27,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 		{
 			writer.WriteLines(GetSqlParameterCode(column.Name, column.DataType, parameterValue, ParameterDirection.Input));
 		}
-		#endregion
 
-		#region GetSqlParameterCode
 		/// <summary>
 		/// Vrátí kód pro vytvoření instance sql parametru.
 		/// </summary>
@@ -100,9 +97,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 
 			return lines.ToArray();
 		}
-		#endregion
 
-		#region WriteCollectionSqlParameter
 		/// <summary>
 		/// Vygeneruje kód pro vytvoření parametru typu kolekce.
 		/// </summary>
@@ -133,13 +128,10 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				writer.WriteLine(String.Format("dbCommand.Parameters.Add({0});", sqlParameterName));
 			}
 		}
-		#endregion
 
-		#region WriteDeletedDateTimeSqlParameter
 		public static void WriteDeletedDateTimeSqlParameter(CodeWriter writer)
 		{
 			writer.WriteLines(BusinessObjectSqlParameter.GetSqlParameterCode("DeletedDateTime", DataType.DateTime, ApplicationTimeHelper.GetApplicationCurrentTimeExpression(), ParameterDirection.Input));
 		}
-		#endregion
 	}
 }

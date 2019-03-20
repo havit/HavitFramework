@@ -26,7 +26,6 @@ namespace Havit.PayPal
 	/// </summary>
 	public static class PayPalLandingPageHelper
 	{
-		#region GetPayPalLandingPageCode
 		/// <summary>
 		/// Contructor.
 		/// </summary>
@@ -41,6 +40,5 @@ namespace Havit.PayPal
 					return "Login";
 			}
 		}
-		#endregion
 	}
 }

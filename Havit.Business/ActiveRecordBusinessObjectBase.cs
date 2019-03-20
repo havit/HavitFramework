@@ -23,7 +23,6 @@ namespace Havit.Business
 	/// </remarks>
 	public abstract class ActiveRecordBusinessObjectBase : BusinessObjectBase
 	{
-		#region Constructors
 		/// <summary>
 		/// Konstruktor pro nový objekt (bez perzistence v databázi).
 		/// </summary>
@@ -78,9 +77,7 @@ namespace Havit.Business
 			//this.IsLoaded = true;
 			//this.IsDirty = false;
 		}
-		#endregion
 
-		#region Load logika
 		/// <summary>
 		/// Nastaví objektu hodnoty z DataRecordu.
 		/// Pokud je objekt již načten, vyhodí výjimku.
@@ -137,9 +134,7 @@ namespace Havit.Business
 		/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu načtenými z databáze; null, pokud nenalezeno</param>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", MessageId = "Member", Justification = "Jde o template metodu volanou z metody Load.")]
 		protected abstract void Load_ParseDataRecord(DataRecord record);
-		#endregion
 
-		#region Save logika
 		private WeakReference lastSaveTransaction;
 
 		/// <summary>
@@ -328,7 +323,5 @@ namespace Havit.Business
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         [SuppressMessage("Havit.StyleCop.Rules.HavitRules", "HA0002:MembersOrder", Justification = "Související kóh ohledně insertingu je pohromadě v bloku save logiky.")]
         protected bool IsMinimalInserting { get; set; } = false;
-
-		#endregion
 	}
 }

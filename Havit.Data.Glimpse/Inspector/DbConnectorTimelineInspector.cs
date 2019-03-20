@@ -20,23 +20,16 @@ namespace Havit.Data.Glimpse.Inspector
 	/// </summary>
 	public class DbConnectorTimelineInspector : IInspector
 	{
-		#region MessageBroker
-		#region MessageBroker
 		/// <summary>
 		/// Message broker.
 		/// </summary>
 		protected IMessageBroker MessageBroker { get; private set; }
-		#endregion
-		#endregion
 
-		#region TimerStrategy
 		/// <summary>
 		/// Timer - strategy pattern.
 		/// </summary>
 		protected Func<IExecutionTimer> TimerStrategy { get; private set; }
-		#endregion
 
-		#region Setup
 		/// <summary>
 		/// Sets up inspector.
 		/// </summary>
@@ -46,9 +39,7 @@ namespace Havit.Data.Glimpse.Inspector
 			this.TimerStrategy = context.TimerStrategy;
 			context.MessageBroker.Subscribe<DbCommandTraceData>(ProcessMessage);
 		}
-		#endregion
 
-		#region ProcessMessage
 		/// <summary>
 		/// Writes dbCommandTraceData to timeline.
 		/// </summary>
@@ -78,7 +69,5 @@ namespace Havit.Data.Glimpse.Inspector
 
 			this.MessageBroker.Publish(message);
 		}
-		#endregion
-
 	}
 }

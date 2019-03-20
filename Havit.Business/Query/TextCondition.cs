@@ -11,7 +11,6 @@ namespace Havit.Business.Query
 	/// </summary>
 	public static class TextCondition
 	{
-		#region CreateEquals
 		/// <summary>
 		/// Vytvoří podmínku testující řetězec na rovnost. Citlivost na velká a malá písmena, diakritiku apod. vychází z nastavení serveru.
 		/// </summary>
@@ -32,9 +31,7 @@ namespace Havit.Business.Query
 
 			return new BinaryCondition(BinaryCondition.EqualsPattern, operand1, operand2);
 		}
-		#endregion
 
-		#region CreateLike
 		/// <summary>
 		/// Vytvoří podmínku testující řetězec na podobnost operátorem LIKE. Citlivost na velká a malá písmena, diakritiku apod. vychází z nastavení serveru.
 		/// </summary>
@@ -44,9 +41,7 @@ namespace Havit.Business.Query
 
 			return new BinaryCondition(BinaryCondition.LikePattern, operand, ValueOperand.Create(value));
 		}
-		#endregion
 
-		#region CreateWildcards
 		/// <summary>
 		/// Vytvoří podmínku testující řetězec na podobnost operátorem LIKE.
 		/// </summary>
@@ -91,9 +86,7 @@ namespace Havit.Business.Query
 
 			return new BinaryCondition(BinaryCondition.LikePattern, operand, ValueOperand.Create(GetWildCardsLikeExpression(value, wildCardsLikeExpressionMode)));
 		}
-		#endregion
 
-		#region Create
 		/// <summary>
 		/// Vytvoří podmínku testující hodnoty pomocí zadaného operátoru.
 		/// </summary>
@@ -114,9 +107,7 @@ namespace Havit.Business.Query
 
 			return new BinaryCondition(operand1, BinaryCondition.GetComparisonPattern(comparisonOperator), operand2);
 		}
-		#endregion
 
-		#region CreateIsNullOrEmpty, CreateIsNotNullOrEmpty
 		/// <summary>
 		/// Vytvoří podmínku testující řetězec na prázdnou hodnotu - null nebo empty.
 		/// </summary>
@@ -140,9 +131,7 @@ namespace Havit.Business.Query
 				NullCondition.CreateIsNotNull(operand),
 				TextCondition.Create(operand, ComparisonOperator.NotEquals, string.Empty));
 		}
-		#endregion
-		
-		#region GetLikeExpression, GetWildCardsLikeExpression
+
 		/// <summary>
 		/// Transformuje řetězec nařetězec, který je možné použít jako hodnota k operátoru like. Tj. nahrazuje % na [%] a _ na [_].
 		/// Nepřidává % na konec, to dělá GetWildCardsLikeExpression().
@@ -201,7 +190,5 @@ namespace Havit.Business.Query
 
 			return result;
 		}
-		#endregion
-
 	}
 }

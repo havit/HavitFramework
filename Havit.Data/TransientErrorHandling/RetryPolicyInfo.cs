@@ -11,18 +11,14 @@ namespace Havit.Data.TransientErrorHandling
 	/// </summary>
 	internal class RetryPolicyInfo
 	{
-		#region RetryAttempt
 		/// <summary>
 		/// Indikuje, zda má být pokus opakován.
 		/// </summary>
 		public bool RetryAttempt { get; set; }
-		#endregion
 
-		#region DelayBeforeRetry
 		/// <summary>
 		/// Indikuje čas čekání před dalším pokusem.
 		/// </summary>
 		public int DelayBeforeRetry { get; set; }
-		#endregion
 	}
 }

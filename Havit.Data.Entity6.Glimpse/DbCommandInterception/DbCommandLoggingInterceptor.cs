@@ -16,18 +16,13 @@ namespace Havit.Data.Entity.Glimpse.DbCommandInterception
 	/// </summary>
 	internal class DbCommandLoggingInterceptor : IDbCommandInterceptor
 	{
-		#region Private fields
 		private readonly IMessageBroker messageBroker;
-		#endregion
 
-		#region Constructor
 		public DbCommandLoggingInterceptor(IMessageBroker messageBroker)
 		{
 			this.messageBroker = messageBroker;
 		}
-		#endregion
 
-		#region NonQueryExecuting, NonQueryExecuted
 		public void NonQueryExecuting(DbCommand command, DbCommandInterceptionContext<int> interceptionContext)
 		{
 			StoreUserData(interceptionContext);
@@ -38,9 +33,7 @@ namespace Havit.Data.Entity.Glimpse.DbCommandInterception
 			InterceptionUserData interceptionUserData = RestoreUserData(interceptionContext);
 			LogOperation("ExecuteNonQuery", command, interceptionContext.IsAsync, interceptionContext.Exception, interceptionContext.Result, interceptionUserData.Stopwatch.ElapsedTicks);
         }
-		#endregion
 
-		#region ReaderExecuting, ReaderExecuted
 		public void ReaderExecuting(DbCommand command, DbCommandInterceptionContext<DbDataReader> interceptionContext)
 		{
 			StoreUserData(interceptionContext);
@@ -56,9 +49,7 @@ namespace Havit.Data.Entity.Glimpse.DbCommandInterception
 
 			LogOperation("ExecuteReader", command, interceptionContext.IsAsync, interceptionContext.Exception, interceptionContext.OriginalResult, interceptionUserData.Stopwatch.ElapsedTicks);
 		}
-		#endregion
 
-		#region ScalarExecuting, ScalarExecuted
 		public void ScalarExecuting(DbCommand command, DbCommandInterceptionContext<object> interceptionContext)
 		{
 			StoreUserData(interceptionContext);
@@ -69,9 +60,7 @@ namespace Havit.Data.Entity.Glimpse.DbCommandInterception
 			InterceptionUserData interceptionUserData = RestoreUserData(interceptionContext);
 			LogOperation("ScalarExecuted", command, interceptionContext.IsAsync, interceptionContext.Exception, interceptionContext.Result, interceptionUserData.Stopwatch.ElapsedTicks);
 		}
-		#endregion
 
-		#region StoreUserData, RestoreUserData
 		/// <summary>
 		/// Uloží do UserData interceptionContextu stopky a zajistí (spolu s RestoreUserData), aby dosavadní hodnota ostatních interceptorů v UserState byla zachována.
 		/// </summary>
@@ -92,9 +81,7 @@ namespace Havit.Data.Entity.Glimpse.DbCommandInterception
 
 			return interceptionUserData;
 		}
-		#endregion
 
-		#region LogOperation
 		/// <summary>
 		/// Zapíše zprávu o provedeném databázovém dotazu do MessageBrokeru.
 		/// </summary>
@@ -115,6 +102,5 @@ namespace Havit.Data.Entity.Glimpse.DbCommandInterception
 				messageBroker.Publish(logItem);
 			}
 		}
-		#endregion LogDbCommand
 	}
 }

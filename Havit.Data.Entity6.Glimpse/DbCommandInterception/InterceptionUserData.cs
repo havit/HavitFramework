@@ -15,18 +15,14 @@ namespace Havit.Data.Entity.Glimpse.DbCommandInterception
 	/// </summary>
 	internal class InterceptionUserData
 	{
-		#region OriginalUserData
 		/// <summary>
 		/// Slouží k zachování původních hodnoty v UserData, která mohla být nastavena jiným interceptorem.
 		/// </summary>
 		public object OriginalUserData { get; set; }
-		#endregion
 
-		#region Stopwatch
 		/// <summary>
 		/// Stopky pro měření doby trvání dotazu.
 		/// </summary>
 		public Stopwatch Stopwatch { get; set; }
-		#endregion
 	}
 }

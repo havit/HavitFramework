@@ -13,7 +13,6 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public abstract class ModalDialogUserControlBase : UserControl
 	{
-		#region DialogVisible
 		/// <summary>
 		/// Udává, zda je dialog viditelný.
 		/// </summary>
@@ -24,9 +23,7 @@ namespace Havit.Web.UI.WebControls
 				return GetModalDialogControl().DialogVisible;
 			}
 		}
-		#endregion
 
-		#region OnInit
 		/// <summary>
 		/// OnInit.
 		/// </summary>
@@ -40,17 +37,13 @@ namespace Havit.Web.UI.WebControls
 			modalDialog.DialogHiding += ModalDialog_DialogHiding;
 			modalDialog.DialogHidden += MainWebModalDialog_DialogHidden;
 		}
-		#endregion
 
-		#region GetModalDialogControl
 		/// <summary>
 		/// Vrací zapouzdřený ModalDialog zajišťující zobrazování a schovávání obsahu dialogu.
 		/// </summary>
 		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		protected abstract ModalDialogBase GetModalDialogControl();
-		#endregion
 
-		#region DialogShowing, DialogShown, DialogHidding, DialogHidden
 		/// <summary>
 		/// Událost oznamující před zobrazením dialogu.
 		/// </summary>
@@ -70,9 +63,7 @@ namespace Havit.Web.UI.WebControls
 		/// Událost oznamující skrytí dialogu.
 		/// </summary>
 		public event EventHandler DialogHidden;
-		#endregion
 
-		#region MainWebModalDialog_DialogShown, MainWebModalDialog_DialogHidden
 		private void ModalDialog_DialogShowing(object sender, CancelEventArgs e)
 		{
 			OnDialogShowing(e);
@@ -92,9 +83,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			OnDialogHidden(e);
 		}
-		#endregion
 
-		#region Show, Hide, OnDialogShowing, OnDialogShown, OnDialogHiding, OnDialogHidden
 		/// <summary>
 		/// Zobrazí dialog.
 		/// </summary>
@@ -154,6 +143,5 @@ namespace Havit.Web.UI.WebControls
 				DialogHidden(this, eventArgs);
 			}
 		}
-		#endregion
 	}
 }

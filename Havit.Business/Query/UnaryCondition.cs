@@ -13,7 +13,6 @@ namespace Havit.Business.Query
 	/// </summary>
 	public class UnaryCondition : Condition
 	{
-		#region Patterns
 		/// <summary>
 		/// Vzor pro podmínku IS NULL.
 		/// </summary>
@@ -23,9 +22,7 @@ namespace Havit.Business.Query
 		/// Vzor pro podmínku IS NOT NULL.
 		/// </summary>
 		public const string IsNotNullPattern = "({0} IS NOT NULL)";
-		#endregion
 
-		#region Protected fields
 		/// <summary>
 		/// Operand.
 		/// </summary>
@@ -46,9 +43,7 @@ namespace Havit.Business.Query
 			set { _conditionPattern = value; }
 		}
 		private string _conditionPattern;
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Vytvoří instanci unární podmínky.
 		/// </summary>
@@ -60,9 +55,7 @@ namespace Havit.Business.Query
 			Operand1 = operand;
 			ConditionPattern = conditionPattern;
 		}
-		#endregion
 
-		#region GetWhereStatement
 		/// <summary>
 		/// Přidá část SQL příkaz pro sekci WHERE.
 		/// </summary>
@@ -73,10 +66,7 @@ namespace Havit.Business.Query
 
 			whereBuilder.AppendFormat(ConditionPattern, Operand1.GetCommandValue(command, sqlServerPlatform));
 		}
-		
-		#endregion
 
-		#region IsEmptyCondition
 		/// <summary>
 		/// Udává, zda je podmínka prázdná.
 		/// Vrací vždy false.
@@ -85,6 +75,5 @@ namespace Havit.Business.Query
 		{
 			return false;
 		}
-		#endregion
 	}
 }

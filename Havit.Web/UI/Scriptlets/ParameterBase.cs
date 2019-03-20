@@ -15,7 +15,6 @@ namespace Havit.Web.UI.Scriptlets
 	[ControlBuilder(typeof(NoLiteralContolBuilder))]
 	public abstract class ParameterBase : ScriptletNestedControl, IScriptletParameter
 	{
-		#region Name
 		/// <include file='IScriptletParameter.xml' path='doc/members/member[starts-with(@name,"P:Havit.Web.UI.Scriptlets.IScriptletParameter.Name")]/*' />
 		[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1604:ElementDocumentationMustHaveSummary", Justification = "Bráno z externího souboru.")]
 		public virtual string Name
@@ -23,9 +22,7 @@ namespace Havit.Web.UI.Scriptlets
 			get { return (string)ViewState["Name"]; }
 			set { ViewState["Name"] = value; }
 		}
-		#endregion
 
-		#region CheckProperties
 		/// <include file='IScriptletParameter.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IScriptletParameter.CheckProperties")]/*' />
 		[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1604:ElementDocumentationMustHaveSummary", Justification = "Bráno z externího souboru.")]
 		public virtual void CheckProperties()
@@ -33,9 +30,7 @@ namespace Havit.Web.UI.Scriptlets
 			// zkontrolujeme property Name
 			CheckNameProperty();
 		}
-		#endregion
 
-		#region CheckNameProperty
 		/// <summary>
 		/// Testuje nastavení hodnoty property Name.
 		/// Pokud není hodnota nastavena, je vyhozena výjimka.
@@ -47,9 +42,7 @@ namespace Havit.Web.UI.Scriptlets
 				throw new ArgumentException("Property Name není nastavena.");
 			}
 		}
-		#endregion
 
-		#region AddedControl
 		/// <summary>
 		/// Zavoláno, když je do kolekce Controls přidán Control.
 		/// Zajišťuje, aby nebyl přidán control neimplementující 
@@ -66,25 +59,17 @@ namespace Havit.Web.UI.Scriptlets
 				throw new ArgumentException(String.Format("Do parametru scriptletu je vkládán nepodporovaný control {0}.", control));
 			}
 		}
-		#endregion
 
-		#region GetInitializeClientSideValueScript (abstract, IScriptletParameter)
 		/// <include file='IScriptletParameter.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IScriptletParameter.GetInitializeClientSideValueScript")]/*' />
 		[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1604:ElementDocumentationMustHaveSummary", Justification = "Bráno z externího souboru.")]
 		public abstract void GetInitializeClientSideValueScript(string parameterPrefix, Control parentControl, ScriptBuilder scriptBuilder);
-		#endregion
 
-		#region GetAttachEventsScript (abstract, IScriptletParameter)
 		/// <include file='IScriptletParameter.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IScriptletParameter.GetAttachEventsScript")]/*' />
 		[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1604:ElementDocumentationMustHaveSummary", Justification = "Bráno z externího souboru.")]
 		public abstract void GetAttachEventsScript(string parameterPrefix, Control parentControl, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder);
-		#endregion
 
-		#region GetDetachEventsScript (abstract, IScriptletParameter)
 		/// <include file='IScriptletParameter.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IScriptletParameter.GetDetachEventsScript")]/*' />
 		[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1604:ElementDocumentationMustHaveSummary", Justification = "Bráno z externího souboru.")]
 		public abstract void GetDetachEventsScript(string parameterPrefix, Control parentControl, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder);
-		#endregion
-
 	}
 }

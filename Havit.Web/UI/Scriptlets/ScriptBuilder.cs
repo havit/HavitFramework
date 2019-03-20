@@ -11,11 +11,8 @@ namespace Havit.Web.UI.Scriptlets
     /// </summary>
 	public class ScriptBuilder
 	{
-		#region Private fields
 		private readonly StringBuilder builder = new StringBuilder();
-		#endregion
 
-		#region IsEmpty
 		/// <summary>
 		/// Vrací true, ScriptBuilder neobsahuje žádný text. Jinak false.
 		/// </summary>
@@ -26,9 +23,7 @@ namespace Havit.Web.UI.Scriptlets
 				return builder.Length == 0;
 			}
 		}
-		#endregion
 
-		#region Append, AppendLine, AppendFormat
 		/// <summary>
 		/// Připojí řetězec na konec textu.
 		/// </summary>
@@ -68,9 +63,7 @@ namespace Havit.Web.UI.Scriptlets
 			this.AppendFormat(value, parameters);
 			builder.Append(Environment.NewLine);
 		}
-		#endregion
 
-		#region ToString
 		/// <summary>
         /// Vrátí složený text.
         /// </summary>
@@ -79,6 +72,5 @@ namespace Havit.Web.UI.Scriptlets
 		{
 			return builder.ToString();
 		}
-		#endregion
 	}
 }

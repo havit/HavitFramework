@@ -10,7 +10,6 @@ namespace Havit.Business
 	/// </summary>
 	public class CollectionPropertyInfo : PropertyInfo, IFieldsBuilder
 	{
-		#region ItemType
 		/// <summary>
 		/// Typ prvků kolekce.
 		/// </summary>
@@ -23,9 +22,7 @@ namespace Havit.Business
 			}
 		}
 		private Type itemType;
-		#endregion
 
-		#region CollectionSelectFieldStatement
 		/// <summary>
 		/// Část SQL dotazu pro vytažení hodnoty daného sloupce.
 		/// </summary>
@@ -38,9 +35,7 @@ namespace Havit.Business
 			}
 		}
 		private string collectionSelectFieldStatement;
-		#endregion
 
-		#region Initialize
 		/// <summary>
 		/// Vytvoří instanci CollectionProperty.
 		/// </summary>
@@ -55,9 +50,7 @@ namespace Havit.Business
 			this.itemType = itemType;
 			this.collectionSelectFieldStatement = collectionSelectFieldStatement;
 		}
-		#endregion
 
-		#region GetSelectFieldStatement
 		/// <summary>
 		/// Vrátí řetězec pro vytažení daného sloupce z databáze.
 		/// </summary>
@@ -65,7 +58,6 @@ namespace Havit.Business
 		{
 			CheckInitialization();
 			return collectionSelectFieldStatement;
-		} 
-		#endregion
+		}
 	}
 }

@@ -53,8 +53,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 			this.entityKeyAccessor = entityKeyAccessor;
 		}
 
-		#region IDataLoader implementation (Load + LoadAll)
-
 		/// <summary>
 		/// Načte vlastnosti objektů, pokud ještě nejsou načteny.
 		/// </summary>
@@ -111,10 +109,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 				LoadInternal(entities, propertyPath);
 			}
 		}
-
-		#endregion
-
-		#region IDataLoaderAsync implementation (LoadAsync + LoadAllAsync)
 
 		/// <summary>
 		/// Načte vlastnosti objektů, pokud ještě nejsou načteny.
@@ -175,7 +169,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 				await LoadInternalAsync(entities, propertyPath).ConfigureAwait(false);
 			}
 		}
-		#endregion
 
 		/// <summary>
 		/// Deleguje načtení objektů do metody pro načtení referencí nebo metody pro načtení kolekce.

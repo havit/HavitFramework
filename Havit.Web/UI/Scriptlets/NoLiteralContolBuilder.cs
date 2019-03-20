@@ -14,21 +14,17 @@ namespace Havit.Web.UI.Scriptlets
     /// </summary>
     internal class NoLiteralContolBuilder : ControlBuilder
     {
-		#region AllowWhitespaceLiterals
-		public override bool AllowWhitespaceLiterals()
+	    public override bool AllowWhitespaceLiterals()
 		{
 			return false;
 		}
-		#endregion
 
-		#region AppendLiteralString
-		public override void AppendLiteralString(string s)
+	    public override void AppendLiteralString(string s)
 		{
 			if (s.Trim().Length > 0)
 			{
 				throw new HttpException("Textový literál je na nepovoleném místě.");
 			}
 		}
-		#endregion        
     }
 }

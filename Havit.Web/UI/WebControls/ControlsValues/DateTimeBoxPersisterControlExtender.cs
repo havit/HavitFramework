@@ -11,7 +11,6 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 	/// </summary>
 	public class DateTimeBoxPersisterControlExtender : IPersisterControlExtender
 	{
-		#region GetValue
 		/// <summary>
 		/// Získá hodnotu (stav) zadaného controlu.		
 		/// </summary>
@@ -23,20 +22,16 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 				return null;
 			}
 			return dateTimeBox.Value;
-		} 
-		#endregion
+		}
 
-		#region GetValueType
 		/// <summary>
 		/// Získá typ hodnoty zadaného controlu.
 		/// </summary>		
 		public Type GetValueType()
 		{
 			return typeof(DateTime?);
-		} 
-		#endregion
+		}
 
-		#region SetValue
 		/// <summary>
 		/// Nastaví hodnotu do controlu.
 		/// </summary>
@@ -45,10 +40,8 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 			DateTimeBox dateTimeBox = ((DateTimeBox)control);
 			DateTime? dateTimeValue = (DateTime?)value;
 			dateTimeBox.Value = dateTimeValue;
-		} 
-		#endregion
+		}
 
-		#region GetPriority
 		/// <summary>
 		/// Vrací prioritu se kterou je tento IPersisterControlExtender použitelný
 		/// pro zpracování daného controlu. 
@@ -66,9 +59,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 			}
 			return null;
 		}
-		#endregion
 
-		#region PersistsChildren
 		/// <summary>
 		/// Pokud je true, ControlsValuesPersister se pokusí uložit i hodnoty child controlů.
 		/// Implicitně vrací false.
@@ -77,6 +68,5 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 		{
 			return false;
 		}
-		#endregion
 	}
 }

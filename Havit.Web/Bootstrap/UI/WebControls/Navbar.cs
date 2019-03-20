@@ -15,13 +15,10 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	[ParseChildren(true)]
 	public class Navbar : Control
 	{
-		#region Private fields - nested controls and control containers
 		private readonly NavbarSection _mainMenuSection;
 		private Control _brandContainer;
 		private readonly NavbarSection _rightMenuSection;
-		#endregion
 
-		#region MenuItems
 		/// <summary>
 		///  Navbar items.
 		/// </summary>
@@ -30,9 +27,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			get { return _mainMenuSection.MenuItems; }
 		}
-		#endregion
 
-		#region BrandTemplate
 		/// <summary>
 		/// Brand template - template for rendering brand section of menu.
 		/// </summary>
@@ -50,9 +45,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			}
 		}
 		private ITemplate _brandTemplate;
-		#endregion		
 
-		#region BrandUrl
 		/// <summary>
 		/// Url for rendering in brand.
 		/// If value is empty string, element A for navbar-brand is not rendered.
@@ -70,9 +63,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ViewState["BrandUrl"] = value;
 			}
 		}
-		#endregion
 
-		#region RightSectionItems
 		/// <summary>
 		///  Right navbar items.
 		/// </summary>
@@ -84,9 +75,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				return _rightMenuSection.MenuItems;
 			}
 		}
-		#endregion
 
-		#region ShowCaret
 		/// <summary>
 		/// Indicates whether render caret for submenus.
 		/// Default false.
@@ -96,9 +85,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			get { return _mainMenuSection.ShowCaret; }
 			set { _mainMenuSection.ShowCaret = value; }
 		}
-		#endregion
 
-		#region CssClass
 		/// <summary>
 		/// Css class for menu element.
 		/// Default value is &quot;navbar navbar-default&quot;.
@@ -115,9 +102,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ViewState["CssClass"] = value;
 			}
 		}
-		#endregion
 
-		#region ContainerMode
 		/// <summary>
 		/// Container element mode.
 		/// Default value ContainerFluid.
@@ -134,9 +119,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ViewState["ContainerMode"] = value;
 			}
 		}
-		#endregion
 
-		#region ToggleNavigationText
 		/// <summary>
 		/// Text to be rendered as navigation toggle (&lt;span class=&amp;sr-only&amp;&gt;Toggle navigation&lt;/span&gt;). Support resources pattern. Default value is empty string.
 		/// </summary>
@@ -151,9 +134,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ViewState["ToggleNavigationText"] = value;
 			}
 		}
-		#endregion
 
-		#region DataSource, DataSourceID
 		/// <summary>
 		/// Gets or sets the data source for menu items.
 		/// </summary>
@@ -171,9 +152,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			get { return _mainMenuSection.DataSourceID; }
 			set { _mainMenuSection.DataSourceID = value; }
 		}
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Constructor.
 		/// </summary>
@@ -182,9 +161,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			_mainMenuSection = new NavbarSection();
 			_rightMenuSection = new NavbarSection();
 		}
-		#endregion
 
-		#region OnInit
 		/// <summary>
 		/// Ensures child control creation.
 		/// </summary>
@@ -193,9 +170,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			base.OnInit(e);
 			EnsureChildControls();
 		}
-		#endregion
 
-		#region CreateChildControls
 		/// <summary>
 		/// Ensures child control creation.
 		/// </summary>
@@ -213,9 +188,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				this.Controls.Add(_brandContainer);
 			}
 		}
-		#endregion
 
-		#region Render
 		/// <summary>
 		/// Renders menu with brand template, menu items and right menu section.
 		/// </summary>
@@ -239,13 +212,11 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				writer.RenderBeginTag(HtmlTextWriterTag.Div);
 			}
 
-			#region Header section
 			writer.AddAttribute(HtmlTextWriterAttribute.Class, "navbar-header");
 			writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
 			string collapseID = this.ClientID + "_collapse";
 
-			#region Button
 			writer.AddAttribute(HtmlTextWriterAttribute.Type, "button");
 			writer.AddAttribute(HtmlTextWriterAttribute.Class, "navbar-toggle");
 			writer.AddAttribute("data-toggle", "collapse");
@@ -269,9 +240,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			}
 
 			writer.RenderEndTag(); // button
-			#endregion
-
-			#region Brand section
 
 			if (_brandContainer != null)
 			{
@@ -291,11 +259,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				}
 			}
 
-			#endregion // brand section
-
 			writer.RenderEndTag(); // div.navbar-header
-
-			#endregion // header
 
 			writer.AddAttribute(HtmlTextWriterAttribute.Class, "collapse navbar-collapse");
 			writer.AddAttribute(HtmlTextWriterAttribute.Id, collapseID);
@@ -303,7 +267,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 
 			_mainMenuSection.RenderControl(writer);
 
-			#region Right section
 			if (_rightMenuSection.MenuItems.Count > 0)
 			{
 				writer.AddAttribute(HtmlTextWriterAttribute.Class, "nav navbar-nav navbar-right");
@@ -313,7 +276,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 
 				writer.RenderEndTag(); // ul
 			}
-			#endregion
 
 			writer.RenderEndTag(); // div.collapse
 
@@ -324,6 +286,5 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 
 			writer.RenderEndTag(); // nav
 		}
-		#endregion
 	}
 }

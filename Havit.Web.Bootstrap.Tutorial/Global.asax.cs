@@ -10,15 +10,12 @@ namespace Havit.Web.Bootstrap.Tutorial
 {
 	public class Global : System.Web.HttpApplication
 	{
-		#region Application_Start
 		private void Application_Start(object sender, EventArgs e)
 		{
 			RouteConfig.RegisterRoutes(RouteTable.Routes); // configures ASP.NET Friendly Urls
 			ScriptManagerConfig.RegisterScriptResourceMappings();
 		}
-		#endregion
 
-		#region Application_Error
 		private void Application_Error(object sender, EventArgs e)
 		{
 			Exception exception = Server.GetLastError();
@@ -28,7 +25,5 @@ namespace Havit.Web.Bootstrap.Tutorial
 				customEvent.Raise();
 			}
 		}
-		#endregion
-
 	}
 }

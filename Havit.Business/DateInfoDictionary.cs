@@ -9,7 +9,6 @@ namespace Havit.Business
 	/// </summary>
 	public class DateInfoDictionary : DictionaryBase
 	{
-		#region Indexer
 		/// <summary>
 		/// Indexer přes klíče <see cref="System.DateTime"/>.
 		/// </summary>
@@ -24,9 +23,7 @@ namespace Havit.Business
 				Dictionary[key] = value;
 			}
 		}
-		#endregion
 
-		#region Add
 		/// <summary>
 		/// Přidá <see cref="DateInfo"/> do slovníku.<br/>
 		/// Klíčem je <see cref="DateInfo.Date"/>.
@@ -38,9 +35,7 @@ namespace Havit.Business
 
 			Dictionary.Add(value.Date, value);
 		}
-		#endregion
 
-		#region Constains
 		/// <summary>
 		/// Zjistí, zdali je ve slovníku požadovaný den.
 		/// </summary>
@@ -49,6 +44,5 @@ namespace Havit.Business
 		{
 			return Dictionary.Contains(key);
 		}
-		#endregion
 	}
 }

@@ -33,13 +33,10 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	[Themeable(true)]
 	public class ModalEditorExtender : DataBoundControlWithHiddenPublicMembersFromIntellisence, IEditorExtenderWithPreviousNextNavigation, INamingContainer
 	{
-		#region Private fields
 		private readonly ModalDialog modalDialog;
 		private readonly FormViewExt headerFormView;
 		private readonly FormViewExt contentFormView;
-		#endregion
 
-		#region HeaderText
 		/// <summary>
 		/// Editor dialog header text.
 		/// </summary>
@@ -55,9 +52,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				modalDialog.HeaderText = value;
 			}
 		}
-		#endregion
 
-		#region HeaderTemplate
 		/// <summary>
 		/// Editor dialog header template.
 		/// </summary>
@@ -74,9 +69,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				headerFormView.ItemTemplate = value;
 			}
 		}
-		#endregion
 
-		#region ContentTemplate
 		/// <summary>
 		/// Editor dialog content template.
 		/// </summary>
@@ -93,9 +86,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				contentFormView.EditItemTemplate = value;
 			}
 		}
-		#endregion
 
-		#region FooterTemplate
 		/// <summary>
 		/// Editor dialog footer template.
 		/// </summary>
@@ -111,9 +102,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				modalDialog.FooterTemplate = value;
 			}
 		}
-		#endregion
 
-		#region TargetControlID
 		/// <summary>
 		/// Control to which is editor attached.
 		/// </summary>
@@ -133,9 +122,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ViewState["TargetControlID"] = value;
 			}
 		}
-		#endregion
 
-		#region TargetControl
 		/// <summary>
 		/// TargetControlID control as IEditorExtensible.
 		/// </summary>
@@ -162,9 +149,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				return (IEditorExtensible)forControl;
 			}
 		}
-		#endregion
 
-		#region Triggers
 		/// <summary>
 		/// Nested UpdatePanel's triggers.
 		/// </summary>
@@ -176,9 +161,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				return modalDialog.Triggers;
 			}
 		}
-		#endregion
 
-		#region Width
 		/// <summary>
 		/// Šířka dialogu v pixelech.
 		/// </summary>
@@ -195,9 +178,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				modalDialog.Width = value;
 			}
 		}
-		#endregion
 
-		#region UseAnimations
 		/// <summary>
 		/// Get or sets whether use animations when showing and hiding dialog.
 		/// </summary>
@@ -212,9 +193,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				modalDialog.UseAnimations = value;
 			}
 		}
-		#endregion
 
-		#region CssClass
 		/// <summary>
 		/// Css class to be used for dialog - used in element with modal-dialog class.
 		/// </summary>
@@ -231,9 +210,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				modalDialog.CssClass = value;
 			}
 		}
-		#endregion
 
-		#region HeaderCssClass
 		/// <summary>
 		/// Css class to be used for header - used in element with modal-header class.
 		/// </summary>
@@ -248,9 +225,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				modalDialog.HeaderCssClass = value;
 			}
 		}
-		#endregion
 
-		#region ContentCssClass
 		/// <summary>
 		/// Css class to be used for content - used in element with modal-body class.
 		/// </summary>
@@ -265,9 +240,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				modalDialog.ContentCssClass = value;
 			}
 		}
-		#endregion
 
-		#region FooterCssClass
 		/// <summary>
 		/// Css class to be used for footer - used in element with modal-footer class.
 		/// </summary>
@@ -282,9 +255,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				modalDialog.FooterCssClass = value;
 			}
 		}
-		#endregion
 
-		#region ShowCloseButton
 		/// <summary>
 		/// Indicates whether to show close button.
 		/// Default value is true.
@@ -300,9 +271,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				modalDialog.ShowCloseButton = value;
 			}
 		}
-		#endregion
 
-		#region CloseOnEscapeKey
 		/// <summary>
 		/// Indicates whether to close dialog on escape key pressed.
 		/// </summary>
@@ -317,9 +286,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				modalDialog.CloseOnEscapeKey = value;
 			}
 		}
-		#endregion
 
-		#region DragMode
 		/// <summary>
 		/// Modal dialog drag mode.
 		/// Default value is ModalDialogDragMode.IfAvailable.
@@ -335,9 +302,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				modalDialog.DragMode = value;
 			}
 		}
-		#endregion
 
-		#region ValidationGroup
 		/// <summary>
 		/// Validation Group to be automaticaly set to buttons with CommandName Previous, Next, New, OK or Save.
 		/// If property value not set (neither empty string), validation group is not set to buttons.
@@ -354,9 +319,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ViewState["ValidationGroup"] = value;
 			}
 		}
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Constructor.
 		/// </summary>
@@ -374,9 +337,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			modalDialog = new ModalDialog();
 			modalDialog.DialogHidden += ModalDialogDialogHidden;
 		}
-		#endregion
 
-		#region OnInit
 		/// <summary>
 		/// Ensures child controls and registers editor to a TargetControlID control.
 		/// </summary>
@@ -389,9 +350,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			TargetControl.RegisterEditor(this);
 		}
 		private bool initPerformed = false;
-		#endregion
 
-		#region CreateChildControls
 		/// <summary>
 		/// Creates child controls.
 		/// </summary>
@@ -408,9 +367,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 
 			this.Controls.Add(modalDialog);
 		}
-		#endregion
 
-		#region OnBubbleEvent
 		/// <summary>
 		/// Handles events Save, OK, Cancel from children.
 		/// </summary>
@@ -460,9 +417,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 
 			return base.OnBubbleEvent(source, args);
 		}
-		#endregion
 
-		#region StartEditor
 		/// <summary>
 		/// Shows editor and databinds it (header and content section).
 		/// </summary>
@@ -474,9 +429,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			DataBind();
 			modalDialog.Show();
 		}
-		#endregion
 
-		#region OnDataBinding
 		/// <summary>
 		/// In DataSource not set, gets the edited object via OnGetEditedObject.
 		/// </summary>
@@ -490,9 +443,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				this.DataSource = new object[] { dataEventArgs.Data };
 			}
 		}
-		#endregion
 
-		#region PerformDataBinding
 		/// <summary>
 		/// Binds data to dialog header and content.
 		/// </summary>
@@ -516,9 +467,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			EditorExtenderItemDataBoundEventArgs args = new EditorExtenderItemDataBoundEventArgs(dataItem);
 			OnItemDataBound(args);
 		}
-		#endregion
 
-		#region SetValidationGroup
 		/// <summary>
 		/// Nastaví validační skupinu tlačítkům OK a Save.
 		/// </summary>
@@ -541,9 +490,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				validationButtons.ForEach(button => button.ValidationGroup = this.ValidationGroup);
 			}
 		}
-		#endregion
 
-		#region SetPreviousNextButtons
 		/// <summary>
 		/// Povolí zakáže tlačítka pro navigaci na další záznam.
 		/// </summary>
@@ -568,9 +515,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				nextButtons.ForEach(button => button.Enabled = canNavigateNext);
 			}
 		}
-		#endregion
 
-		#region SetNewButtons
 		/// <summary>
 		/// Povolí zakáže tlačítka pro založení nové položky.
 		/// </summary>
@@ -586,9 +531,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				newButtons.ForEach(button => button.Enabled = canCreateNewItem);
 			}
 		}
-		#endregion
 
-		#region ExtractValues
 		/// <summary>
 		/// Extract editor values to dataObject.
 		/// Uses two-way databinding.
@@ -597,9 +540,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			contentFormView.ExtractValues(dataObject);
 		}
-		#endregion
 
-		#region Save
 		/// <summary>
 		/// Handles save (ItemSaving, ItemSaved events).
 		/// </summary>
@@ -617,9 +558,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			}
 			return false;
 		}
-		#endregion
 
-		#region CloseEditor
 		/// <summary>
 		/// Closes editor (with EditClosed event).
 		/// </summary>
@@ -627,9 +566,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			modalDialog.Hide();
 		}
-		#endregion
 
-		#region NavigatePrevious
 		/// <summary>
 		/// Navigates to previous record.
 		/// </summary>
@@ -643,9 +580,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				OnPreviousNavigated(EventArgs.Empty);
 			}
 		}
-		#endregion
 
-		#region NavigateNext
 		/// <summary>
 		/// Navigates to next record.
 		/// </summary>
@@ -659,9 +594,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				OnNextNavigated(EventArgs.Empty);
 			}
 		}
-		#endregion
 
-		#region EditNew
 		/// <summary>
 		/// Starts editing new record.
 		/// </summary>
@@ -675,9 +608,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				OnNewProcessed(EventArgs.Empty);
 			}
 		}
-		#endregion
 
-		#region ModalDialogDialogHidden
 		/// <summary>
 		/// When dialog hidden, notify ebout editor close.
 		/// </summary>
@@ -685,9 +616,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			OnEditClosed(EventArgs.Empty);
 		}
-		#endregion
 
-		#region ContentFormViewItemCreated
 		/// <summary>
 		/// Propagates Item Created event from nested form view.
 		/// </summary>
@@ -695,9 +624,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			OnItemCreated(e);
 		}
-		#endregion
 
-		#region HandleSaveCommand
 		/// <summary>
 		/// Handles Save command, processes item save. Returns true if item successfully saved (meaning item is not canceled).
 		/// Handles command only if if Page is valid (or not validated).
@@ -713,9 +640,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				}
 			}
 		}
-		#endregion
 
-		#region HandleOKCommand
 		/// <summary>
 		/// Handles OK command.
 		/// Handles command only if if Page is valid (or not validated).
@@ -730,9 +655,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				}
 			}
 		}
-		#endregion
 
-		#region HandleCancelCommand
 		/// <summary>
 		/// Handle Cancel command.
 		/// Handles command only if if Page is valid (or not validated).
@@ -744,9 +667,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				this.CloseEditor();
 			}
 		}
-		#endregion
 
-		#region HandlePreviousCommand
 		/// <summary>
 		/// Handles Previous command.
 		/// Handles command only if if Page is valid (or not validated).
@@ -761,9 +682,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				}
 			}
 		}
-		#endregion
 
-		#region HandleNextCommand
 		/// <summary>
 		/// Handles Next command.
 		/// Handles command only if if Page is valid (or not validated).
@@ -778,9 +697,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				}
 			}
 		}
-		#endregion
 
-		#region HandleNewCommand
 		private void HandleNewCommand(bool causesValidation)
 		{
 			if ((!causesValidation || (this.Page == null)) || this.Page.IsValid)
@@ -791,9 +708,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				}
 			}
 		}
-		#endregion
 
-		#region FindControl, FindHeaderControl, FindContentControl
 		/// <summary>
 		/// Searches the for a control with the specified id.
 		/// If not found by stardard method, tries search control in modal dialog content control and header control.
@@ -822,9 +737,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			EnsureChildControls();
 			return contentFormView.FindControl(id);
 		}
-		#endregion
 
-		#region (On)GetEditedObject
 		/// <summary>
 		/// Notifies request for edited object. 
 		/// Event handler GetEditedObject must be hadnled.
@@ -844,9 +757,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Event handler GetEditedObject must be hadnled.
 		/// </summary>
 		public event DataEventHandler<object> GetEditedObject;
-		#endregion
 
-		#region (On)EditClosed
 		/// <summary>
 		/// Notifies edit mode close (whatever reason).
 		/// </summary>
@@ -862,9 +773,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Notifies edit mode close (whatever reason).
 		/// </summary>
 		public event EventHandler EditClosed;
-		#endregion
 
-		#region (On)ItemSaving
 		/// <summary>
 		/// Notifies beginning of item save.
 		/// Event handler ItemSaving must be handled.
@@ -882,9 +791,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Notifies item save start.
 		/// </summary>
 		public event EditorExtenderItemSavingEventHandler ItemSaving;
-		#endregion
 
-		#region (On)ItemSaved
 		/// <summary>
 		/// Notifies item save completion.
 		/// </summary>
@@ -900,9 +807,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Notifies item save completion.
 		/// </summary>
 		public event EditorExtenderItemSavedEventHandler ItemSaved;
-		#endregion
 
-		#region (On)ItemCreated
 		/// <summary>
 		/// Notifies item creation.
 		/// </summary>
@@ -918,9 +823,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Notifies item creation.
 		/// </summary>
 		public event EventHandler ItemCreated;
-		#endregion
 
-		#region (On)ItemDataBound
 		/// <summary>
 		/// Notifies item databound event.
 		/// </summary>
@@ -936,9 +839,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Notifies item databound event.
 		/// </summary>
 		public event EditorExtenderItemDataBoundEventHandler ItemDataBound;
-		#endregion
 
-		#region (On)NewProcessing
 		/// <summary>
 		/// Notifies request to start editing a new record.
 		/// </summary>
@@ -955,9 +856,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Notifies request to start editing a new record.
 		/// </summary>
 		public event CancelEventHandler NewProcessing;
-		#endregion
 
-		#region (On)NewProcessed
 		/// <summary>
 		/// Notifies completion of the start editiong a new record.
 		/// </summary>
@@ -973,9 +872,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Notifies about completion of the new record editing start.
 		/// </summary>
 		public event EventHandler NewProcessed;
-		#endregion
 
-		#region (On)PreviousNavigating
 		/// <summary>
 		/// Notifies request to navigate to previous record.
 		/// </summary>
@@ -992,9 +889,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Notifies request to navigate to previous record.
 		/// </summary>
 		public event CancelEventHandler PreviousNavigating;
-		#endregion
 
-		#region (On)PreviousNavigated
 		/// <summary>
 		/// Notifies about navigation to previous record.
 		/// </summary>
@@ -1010,9 +905,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Notifies about navigation to previous record.
 		/// </summary>
 		public event EventHandler PreviousNavigated;
-		#endregion
 
-		#region (On)NextNavigating
 		/// <summary>
 		/// Notifies request to navigate to next record.
 		/// </summary>
@@ -1029,9 +922,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Notifies request to navigate to next record.
 		/// </summary>
 		public event CancelEventHandler NextNavigating;
-		#endregion
 
-		#region (On)NextNavigated
 		/// <summary>
 		/// Notifies about navigation to next record.
 		/// </summary>
@@ -1047,9 +938,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Notifies about navigation to next record.
 		/// </summary>
 		public event EventHandler NextNavigated;
-		#endregion
 
-		#region Render
 		/// <summary>
 		/// Ensures rendering dialog only.
 		/// </summary>
@@ -1057,9 +946,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			modalDialog.RenderControl(writer);
 		}
-		#endregion
 
-		#region (On)GetCanCreateNew
 		/// <summary>
 		/// Asks if it is possible to create a new record.
 		/// </summary>
@@ -1076,9 +963,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Asks if it is possible to create a new record.
 		/// </summary>
 		public event DataEventHandler<bool> GetCanCreateNew;
-		#endregion
 
-		#region (On)GetCanNavigatePrevious
 		/// <summary>
 		/// Asks if it is possible to navigate to previous item.
 		/// </summary>
@@ -1095,9 +980,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Asks if it is possible to navigate to previous item.
 		/// </summary>
 		public event DataEventHandler<bool> GetCanNavigatePrevious;
-		#endregion
 
-		#region (On)GetCanNavigateNext
 		/// <summary>
 		/// Asks if it is possible to navigate to next item.
 		/// </summary>
@@ -1114,7 +997,5 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Asks if it is possible to navigate to next item.
 		/// </summary>
 		public event DataEventHandler<bool> GetCanNavigateNext;
-		#endregion
-
 	}
 }

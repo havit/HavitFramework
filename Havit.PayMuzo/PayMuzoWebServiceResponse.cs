@@ -9,7 +9,6 @@ namespace Havit.PayMuzo
 	/// </summary>
 	public abstract class PayMuzoWebServiceResponse : PayMuzoResponse
 	{
-		#region Ok, RequestID
 		/// <summary>
 		/// OK pole z odpovědi web-service.
 		/// </summary>
@@ -29,9 +28,7 @@ namespace Havit.PayMuzo
 			protected set { _requestId = value; }
 		}
 		private long _requestId;
-		#endregion
 
-		#region Costructor
 		/// <summary>
 		/// Inicializuje novou instanci třídy <see cref="PayMuzoWebServiceResponse"/> na základě odpovědi z WebService.
 		/// </summary>
@@ -46,9 +43,7 @@ namespace Havit.PayMuzo
 			ParseResponse(response);
 			this.NormalizedRawData = CreateNormalizedData(response);
 		}
-		#endregion
 
-		#region ParseResponse
 		/// <summary>
 		/// Vytahá z web-servicové response data do properties.
 		/// </summary>
@@ -61,14 +56,11 @@ namespace Havit.PayMuzo
 			this.Ok = response.ok;
 			this.RequestId = response.requestId;
 		}
-		#endregion
 
-		#region CreateNormalizedData
 		/// <summary>
 		/// Vytvoří normalizovaná data pro ověření podpisu.
 		/// </summary>
 		/// <param name="response">odpověď z WebService</param>
 		public abstract PayMuzoRequestData CreateNormalizedData(Havit.PayMuzo.WebServiceProxies.Response response);
-		#endregion
 	}
 }

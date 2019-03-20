@@ -13,21 +13,16 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class GridViewDataFilteringEventArgs : EventArgs
 	{
-		#region Data
 		/// <summary>
 		/// Data, která jsou bindována na grid.
 		/// </summary>
 		public IEnumerable Data { get; set; }
-		#endregion
 
-		#region FilterRow
 		/// <summary>
 		/// Filtrační řádek gridu.
 		/// </summary>
 		public GridViewRow FilterRow { get; private set; }
-		#endregion
 
-		#region FilterGridViewDataEventArgs
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
@@ -36,6 +31,5 @@ namespace Havit.Web.UI.WebControls
 			this.Data = data;
 			this.FilterRow = filterRow;
 		}
-		#endregion
 	}
 }

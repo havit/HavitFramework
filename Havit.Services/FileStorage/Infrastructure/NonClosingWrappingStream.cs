@@ -16,8 +16,6 @@ namespace Havit.Services.FileStorage.Infrastructure
 			// NOOP
 		}
 
-		#region Stream abstract method implementation (delegated to wrapped stream)
-
 		public override bool CanRead
 		{
 			get { return stream.CanRead; }
@@ -68,6 +66,5 @@ namespace Havit.Services.FileStorage.Infrastructure
 		{
 			stream.Write(buffer, offset, count);
 		}
-		#endregion
 	}
 }

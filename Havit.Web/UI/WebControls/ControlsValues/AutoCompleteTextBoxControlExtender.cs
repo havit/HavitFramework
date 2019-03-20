@@ -11,7 +11,6 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 	/// </summary>
 	public class AutoCompleteTextBoxControlExtender : IPersisterControlExtender
 	{
-		#region GetValue
 		/// <summary>
 		/// Získá hodnotu (stav) zadaného controlu.
 		/// </summary>
@@ -24,9 +23,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 				SelectedValue = box.SelectedValue
 			};
 		}
-		#endregion
 
-		#region GetValueType
 		/// <summary>
 		/// Získá typ hodnoty zadaného controlu.
 		/// </summary>
@@ -34,9 +31,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 		{
 			return typeof(Tuple<string, string>);
 		}
-		#endregion
 
-		#region SetValue
 		/// <summary>
 		/// Nastaví hodnotu do controlu.
 		/// </summary>
@@ -47,9 +42,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 			box.SelectedValue = data.SelectedValue;
 			box.Text = data.Text;
 		}
-		#endregion
 
-		#region GetPriority
 		/// <summary>
 		/// Vrací prioritu se kterou je tento IPersisterControlExtender použitelný
 		/// pro zpracování daného controlu.
@@ -67,9 +60,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 			}
 			return null;
 		}
-		#endregion
 
-		#region PersistsChildren
 		/// <summary>
 		/// Pokud je true, ControlsValuesPersister se pokusí uložit i hodnoty child controlů.
 		/// Implicitně vrací false.
@@ -78,6 +69,5 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 		{
 			return false;
 		}
-		#endregion
 	}
 }

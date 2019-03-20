@@ -23,7 +23,6 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class EnterpriseGridView : GridViewExt
 	{
-		#region Constructor
 		/// <summary>
 		/// Vytvoří instanci EnterpriseGridView. Nastavuje defaultní DataKeyNames na ID.
 		/// </summary>
@@ -31,18 +30,14 @@ namespace Havit.Web.UI.WebControls
 		{
 			DataKeyNames = new string[] { "ID" };
 		}
-		#endregion
 
-		#region dataItemTypes (private field)
 		/// <summary>
 		/// Slouží pro uložení datový typu bindovaných objektu.
 		/// Řešeno s optimalizací, abychom neukládali pro každý řádek stejnou hodnotu.
 		/// Ukládáno do ViewState metodami LoadViewState/SaveViewState.
 		/// </summary>
 		private List<DataItemTypeEntry> dataItemTypes;
-		#endregion
 
-		#region AutoCrudOperations
 		/// <summary>
 		/// Nastavuje, zda Grid automaticky provádí CRUD operace na řádku. Hodnoty jsou z UI extrahovány pomocí two-way databindingu.
 		/// Pokud je zapnuto, potom:
@@ -59,9 +54,7 @@ namespace Havit.Web.UI.WebControls
 			get { return (bool)(ViewState["AutoCrudOperations"] ?? false); }
 			set { ViewState["AutoCrudOperations"] = value; }
 		}
-		#endregion
 
-		#region MessengerUpdatedMessage, MessengerInsertedMessage, MessengerDeletedMessage
 		/// <summary>
 		/// Zpráva zobrazená v messengeru při uložení objektu. Zobrazuje se při aktualizaci objektu pomocí AutoCrud operace.
 		/// </summary>
@@ -106,9 +99,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["MessengerDeletedMessage"] = value;
 			}
 		}
-		#endregion
 
-		#region GetRowID - Hledání klíče položky
 		/// <summary>
 		/// Nalezne hodnotu ID klíče položky, ve kterém se nachází control.
 		/// </summary>
@@ -138,9 +129,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			return (int)GetRowKey(rowIndex).Value;
 		}
-		#endregion
 
-		#region GetRowBusinessObject, GetInsertRowBusinessObject
 		/// <summary>
 		/// Vrátí business object nabindovaný na daný řádek.
 		/// Pokud jde o nový záznam, pak jej získá udáslostí GetInsertRowDataItem.
@@ -195,9 +184,7 @@ namespace Havit.Web.UI.WebControls
 
 			return (BusinessObjectBase)insertRowDataItem;
 		}
-		#endregion
 
-		#region ExtractRowValues
 		/// <summary>
 		/// Extrahuje hodnoty z daného řádku do business objektu, který byl na řádek nabidnován.
 		/// Vrátí tento business objekt.
@@ -228,9 +215,6 @@ namespace Havit.Web.UI.WebControls
 			return ExtractRowValues<T>(row);
 		}
 
-		#endregion
-
-		#region PerformDataBinding
 		/// <summary>
 		/// Zajišťuje data-binding dat na GridView.
 		/// </summary>
@@ -239,9 +223,7 @@ namespace Havit.Web.UI.WebControls
 			dataItemTypes = new List<DataItemTypeEntry>(); // vyčistíme hodnotu dataItemTypes
 			base.PerformDataBinding(data);
 		}
-		#endregion
 
-		#region OnRowDataBound
 		/// <summary>
 		/// Raises the System.Web.UI.WebControls.GridView.RowDataBound event.
 		/// </summary>		
@@ -261,9 +243,7 @@ namespace Havit.Web.UI.WebControls
 				}
 			}
 		}
-		#endregion
 
-		#region OnRowUpdating
 		/// <summary>
 		/// Výchozí chování RowUpdating - pokud není zvoleno e.Cancel, pak vypne editaci řádku.
 		/// V režimu AutoCrudOperations zajišťuje extrakci hodnot a jejich uložení.
@@ -282,9 +262,7 @@ namespace Havit.Web.UI.WebControls
 				ShowMessengerMessage(MessengerUpdatedMessage);
 			}
 		}
-		#endregion
 
-		#region OnRowInserting
 		/// <summary>
 		/// Spouští událost RowInserting.
 		/// V režimu AutoCrudOperations zajišťuje extrakci hodnot a jejich uložení.
@@ -303,9 +281,7 @@ namespace Havit.Web.UI.WebControls
 				ShowMessengerMessage(MessengerInsertedMessage);
 			}
 		}
-		#endregion
 
-		#region OnRowDeleting
 		/// <summary>
 		/// Spouští událost RowDeleting.
 		/// V režimu AutoCrudOperations zajišťuje smazání objektu.
@@ -324,9 +300,7 @@ namespace Havit.Web.UI.WebControls
 				ShowMessengerMessage(MessengerDeletedMessage);
 			}
 		}
-		#endregion
 
-		#region ShowMessengerMessage
 		private void ShowMessengerMessage(string messengerMessage)
 		{
 			string message = HttpUtilityExt.GetResourceString(messengerMessage);
@@ -335,9 +309,7 @@ namespace Havit.Web.UI.WebControls
 				Messenger.Default.AddMessage(message);
 			}
 		}
-		#endregion
 
-		#region SaveViewState, LoadViewState
 		/// <summary>
 		/// Zajišťuje uložení vlastních hodnot objektu (dataItemTypes) do ViewState.
 		/// </summary>
@@ -355,9 +327,7 @@ namespace Havit.Web.UI.WebControls
 			base.LoadViewState(savedStateArray[0]);
 			dataItemTypes = (List<DataItemTypeEntry>)savedStateArray[1];
 		}
-		#endregion
 
-		#region DataItemTypeEntry (nested class)
 		/// <summary>
 		/// Slouží pro uložení typu datového objektu k řádkům gridu.
 		/// </summary>
@@ -367,9 +337,7 @@ namespace Havit.Web.UI.WebControls
 			public Type Type { get; set; }
 			public int StartingRowIndex { get; set; }
 		}
-		#endregion
 
-		#region IEditorExtensible.RegisterEditor
 		/// <summary>
 		/// Registruje editor pro použití s GridView.
 		/// </summary>
@@ -383,9 +351,7 @@ namespace Havit.Web.UI.WebControls
 				editorExtender.ItemSaving += EditorExtenderItemSavingAutoCrudOperations;
 			}
 		}
-		#endregion
 
-		#region EditorExtenderGetEditedObject, GetEditorExtenderEditedObject
 		/// <summary>
 		/// Vrací (nastavuje) externí editovaný objekt pro editor.
 		/// </summary>
@@ -393,9 +359,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			e.Data = GetEditorExtenderEditedObject();
 		}
-		#endregion
 
-		#region GetEditorExtenderEditedObject
 		/// <summary>
 		/// Vrací editovaný business objekt pro externí editor.
 		/// </summary>
@@ -403,9 +367,6 @@ namespace Havit.Web.UI.WebControls
 		{
 			return (this.EditorExtenderMode == WebControls.EditorExtenderMode.Insert) ? GetInsertRowBusinessObject() : GetRowBusinessObject(Rows[EditorExtenderEditIndex]);
 		}
-		#endregion
-
-		#region EditorExtenderItemSavingAutoCrudOperations
 
 		/// <summary>
 		/// Obsluha Save operace pokud je povoleno AutoCrudOperations.
@@ -421,7 +382,5 @@ namespace Havit.Web.UI.WebControls
 				ShowMessengerMessage((this.EditorExtenderMode == WebControls.EditorExtenderMode.Insert) ? MessengerInsertedMessage : MessengerUpdatedMessage);
 			}
 		}
-		#endregion
-		
 	}
 }

@@ -10,7 +10,6 @@ namespace Havit.Collections
 	/// </summary>
 	public static class SortHelper
 	{
-		#region PropertySort
 		/// <summary>
 		/// Vrátí data seřazená podle properties v sortItemCollection.
 		/// Pokud je sortItemCollection prázdná kolekce, vrací parametr data.
@@ -49,7 +48,5 @@ namespace Havit.Collections
 			sortItemCollection.Add(new SortItem(property, SortDirection.Ascending));
 			return PropertySort(data, sortItemCollection);
 		}
-
-		#endregion
 	}
 }

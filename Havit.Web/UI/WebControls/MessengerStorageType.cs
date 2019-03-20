@@ -4,8 +4,7 @@ using System.Text;
 
 namespace Havit.Web.UI.WebControls
 {
-    #region MessengerStorageType (enum)
-    /// <summary>
+	/// <summary>
     /// Typ úložiště zpráv používané Messengerem.
     /// </summary>
     public enum MessengerStorageType
@@ -20,5 +19,4 @@ namespace Havit.Web.UI.WebControls
         /// </summary>
         Cookies = 1
     }
-    #endregion
 }

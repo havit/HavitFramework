@@ -12,14 +12,11 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 	/// </summary>
 	public class GroupNotFoundException : Exception
 	{
-		#region GroupName
 		/// <summary>
 		/// Group which was not found.
 		/// </summary>
 		public string GroupName { get; private set; }
-		#endregion
 
-		#region Message
 		/// <summary>
 		/// Gets a message that describes the current exception.
 		/// </summary>
@@ -30,9 +27,7 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 				return String.Format("Group {0} not found.", this.GroupName);
 			}
 		}
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
@@ -40,6 +35,5 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 		{
 			this.GroupName = groupName;
 		}
-		#endregion
 	}
 }

@@ -13,7 +13,6 @@ namespace Havit.Business
 	/// </summary>
 	public class ReferenceFieldPropertyInfo : FieldPropertyInfo
 	{
-		#region TargetType
 		/// <summary>
 		/// Typ, jenž property nese.
 		/// </summary>
@@ -21,10 +20,8 @@ namespace Havit.Business
 		{
 			get { return targetType; }
 		}
-		private Type targetType; 
-		#endregion
+		private Type targetType;
 
-		#region TargetObjectInfo
 		/// <summary>
 		/// Delegát na metodu vracející objekt na základě ID.
 		/// </summary>
@@ -36,9 +33,7 @@ namespace Havit.Business
 			}
 		}
 		private ObjectInfo targetObjectInfo;
-		#endregion
 
-		#region Initialize
 		/// <summary>
 		/// Inicializuje instanci sloupce.
 		/// </summary>
@@ -58,7 +53,5 @@ namespace Havit.Business
 			this.targetType = targetType;
 			this.targetObjectInfo = targetObjectInfo;
 		}
-		#endregion
-
 	}
 }

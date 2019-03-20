@@ -36,20 +36,14 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	[ParseChildren(true)]
 	public class CollapsiblePanel : Control, INamingContainer
 	{
-		#region Events
 		/// <summary>
 		/// Vyvolá se, pokud je změněn stav panelu (z collapsible na expanded a obráceně).
 		/// </summary>
 		public event EventHandler CollapsedStateChanged;
-		#endregion
 
-		#region Constants	
 		private const bool DefaultCollapsionPanelState = true;
-		#endregion
 
-		#region Controls
 		private readonly HiddenField collapsedHiddenField;
-		#endregion
 
 		/// <summary>
 		/// Je polozka sbalena?
@@ -88,7 +82,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			}
 		}
 
-		#region HeaderText
 		/// <summary>
 		/// Header text of CollapsiblePanel. This property is ignored when HeaderTemplate is used.
 		/// </summary>
@@ -104,9 +97,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ViewState["HeaderText"] = value;
 			}
 		}
-		#endregion
 
-		#region ContentTemplate
 		/// <summary>
 		/// Gets or sets the template for displaying the content of CollapsiblePanel.
 		/// When content template set it cannot be changed anymore.
@@ -134,9 +125,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		}
 		private ITemplate _contentTemplate;
 		private Control _contentTemplateContainer;
-		#endregion
 
-		#region HeaderTemplate
 		/// <summary>
 		/// Gets or sets the template for displaying the header of CollapsiblePanel.
 		/// If not set, HeaderText is used instead of HeaderTemplate.
@@ -164,9 +153,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		}
 		private ITemplate _headerTemplate;
 		private Control _headerTemplateContainer;
-		#endregion
 
-		#region CollapsiblePanel
 		/// <summary>
 		/// Public constructor.
 		/// </summary>
@@ -174,9 +161,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			collapsedHiddenField = new HiddenField();
 		}
-		#endregion
 
-		#region CreateChildControls
 		/// <summary>
 		/// Called by the ASP.NET page framework to notify server controls that use composition-based
 		/// implementation to create any child controls they contain in preparation for posting
@@ -188,9 +173,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 
 			Controls.Add(collapsedHiddenField);
 		}
-		#endregion
 
-		#region OnInit
 		/// <summary>
 		/// Raises the System.Web.UI.Control.Init event.
 		/// </summary>
@@ -202,9 +185,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 
 			collapsedHiddenField.ValueChanged += CollapsedHiddenField_ValueChanged;
 		}
-		#endregion
 
-		#region OnCollapsedStateChanged
 		/// <summary>
 		/// Occurs when the value of the Value property changes between posts to the server.
 		/// </summary>
@@ -215,16 +196,12 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				CollapsedStateChanged(this, eventArgs);
 			}
 		}
-		#endregion
 
-		#region CollapsedHiddenField_ValueChanged
 		private void CollapsedHiddenField_ValueChanged(object sender, EventArgs e)
 		{
 			OnCollapsedStateChanged(e);
 		}
-		#endregion
 
-		#region OnPreRender
 		/// <summary>
 		/// Raises the System.Web.UI.Control.PreRender event.
 		/// </summary>
@@ -250,9 +227,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 					""{autoPostBackScript}""
 				); ", true);		
 		}
-		#endregion
 
-		#region RenderHeader
 		/// <summary>
 		/// Renders CollapsiblePanel header.
 		/// </summary>
@@ -277,9 +252,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 
 			writer.RenderEndTag(); // div
 		}
-		#endregion
 
-		#region RenderHeader
 		/// <summary>
 		/// Renders CollapsiblePanel header.
 		/// </summary>
@@ -305,9 +278,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			writer.RenderEndTag(); // div
 			writer.RenderEndTag(); // div
 		}
-		#endregion
 
-		#region Render
 		/// <summary>
 		/// Sends server control content to a provided System.Web.UI.HtmlTextWriter object,
 		/// which writes the content to be rendered on the client.
@@ -336,6 +307,5 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 
 			writer.RenderEndTag(); // div
 		}
-		#endregion
 	}
 }

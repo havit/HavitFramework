@@ -12,7 +12,6 @@ namespace Havit.PayPal
 	/// </summary>
 	public class PayPalResponseData : NameValueCollection
 	{
-		#region Constructor
 		/// <summary>
 		/// Contructor.
 		/// </summary>
@@ -20,9 +19,7 @@ namespace Havit.PayPal
 		{
 			Decode(result);
 		}
-		#endregion
 
-		#region Decode
 		/// <summary>
 		/// Dekódování NVP řetezce.
 		/// </summary>
@@ -40,6 +37,5 @@ namespace Havit.PayPal
 				}
 			}
 		}
-		#endregion
 	}
 }

@@ -13,7 +13,6 @@ namespace Havit.Security
 	/// </summary>
 	public static class PasswordHashService
 	{
-		#region CreateSalt
 		/// <summary>
 		/// Generuje náhodnou sůl.
 		/// Implemnetováno pomocí PasswordGeneratoru.
@@ -24,9 +23,7 @@ namespace Havit.Security
 		{
 			return PasswordGenerator.Generate(saltLength, saltLength, passwordCharacterSet, true, true);
 		}
-		#endregion
 
-		#region ComputeSHA512HashString
 		/// <summary>
 		/// Kalkuluje hash algoritmem SHA512.
 		/// Z hodnoty sestavené z hesla a soli (a to nejprve je sůl, poté heslo) je získána UTF-16 little endien posloupnost bytů (Encoding.Unicode.GetBytes), jejíž hash je kalkulován.
@@ -51,9 +48,7 @@ namespace Havit.Security
 			var hash = sha.ComputeHash(Encoding.Unicode.GetBytes(value));
 			return String.Join("", hash.Select(x => x.ToString("X2")));
 		}
-		#endregion
 
-		#region VerifySHA512HashString
 		/// <summary>
 		/// Vrací true, pokud passwordHash odpovídá hashi zkalkulovanému z plainTextPasswordu s danou solí.
 		/// </summary>
@@ -65,6 +60,5 @@ namespace Havit.Security
 			string computedPasswordHash = ComputeSHA512HashString(plainTextPassword, salt);
 			return String.Equals(computedPasswordHash, passwordHash, StringComparison.InvariantCultureIgnoreCase);
 		}
-		#endregion
 	}
 }

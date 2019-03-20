@@ -28,7 +28,6 @@ namespace Havit.Web.UI.WebControls
     [ToolboxData("<{0}:AutoSuggestMenu runat=server></{0}:AutoSuggestMenu>")]
 	public class AutoSuggestMenu : WebControl, INamingContainer
 	{
-		#region Private fields
 		private string _targetControlID;
 		private AutoSuggestMenuMode _mode = AutoSuggestMenuMode.Classic;
 		private string _messageOnClearText;
@@ -57,12 +56,8 @@ namespace Havit.Web.UI.WebControls
 
 	    //Internal
         private HiddenField _hdnSelectedValue;
-		#endregion
 
-		#region Class Properties
-
-		#region AutoRegisterStyleSheets
-		/// <summary>
+        /// <summary>
 		/// Indikuje, zda má dojít k automatické registraci CSS v OnPreRenderu.
 		/// Výchozí hodnota je true.
 		/// </summary>
@@ -77,9 +72,8 @@ namespace Havit.Web.UI.WebControls
 				ViewState["AutoRegisterStyleSheets"] = value;
 			}
 		}
-		#endregion
 
-		public AutoSuggestMenuMode Mode
+        public AutoSuggestMenuMode Mode
 		{
 			get { return _mode; }
 			set { _mode = value; }
@@ -221,10 +215,8 @@ namespace Havit.Web.UI.WebControls
                 _hdnSelectedValue.Value = value;
             }
         }
-		#endregion
 
-		#region ServicePath
-		/// <summary>
+        /// <summary>
 		/// Cesta k webové službě, která má být přilinkována.
 		/// </summary>
 		public string ServicePath
@@ -239,9 +231,7 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		private string _servicePath;
-		#endregion
 
-		#region Constructor
 		/// <summary>Initializes new instance of AutoSuggestMenu/// </summary>
 		/// <remarks>Wire the events so the control can participate in them</remarks>
 		public AutoSuggestMenu()
@@ -273,9 +263,7 @@ namespace Havit.Web.UI.WebControls
 
 			this.Attributes["autocomplete"] = "off";
 		}
-		#endregion
 
-		#region CreateChildControls
 		/// <summary>This member overrides <see cref="Control.CreateChildControls"/></summary>
 		protected override void CreateChildControls()
 		{
@@ -284,9 +272,7 @@ namespace Havit.Web.UI.WebControls
 
 			Controls.Add(_hdnSelectedValue);
 		}
-		#endregion
 
-		#region LoadViewState
 		/// <summary>This member overrides <see cref="Control.LoadViewState"/></summary>
 		/// <remarks>Loads date from view-state saved in previous page into date control properties</remarks>
 		protected override void LoadViewState(object savedState)
@@ -322,9 +308,7 @@ namespace Havit.Web.UI.WebControls
 
 			_servicePath = (string)ViewState["ServicePath"];
 		}
-		#endregion
 
-		#region SaveViewState
 		/// <summary>This member overrides <see cref="Control.SaveViewState"/></summary>
 		/// <remarks>Stores date control properties in view-state for future page</remarks>
 		protected override object SaveViewState()
@@ -360,7 +344,6 @@ namespace Havit.Web.UI.WebControls
 
 			return base.SaveViewState();
 		}
-		#endregion
 
 		//internal string GetAbsoluteResourcesDir()
 		//{
@@ -377,7 +360,6 @@ namespace Havit.Web.UI.WebControls
 		//    return resourcesDir;
 		//}
 
-		#region WriteJSIncludes
 		protected void WriteJSIncludes()
 		{
 			ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, "jquery");
@@ -400,9 +382,7 @@ namespace Havit.Web.UI.WebControls
 			ScriptManager.RegisterClientScriptResource(this, typeof(AutoSuggestMenu), "Havit.Web.UI.WebControls.AutoSuggestMenu.AutoSuggestMenuItem.js");
 			//} 
 		}
-		#endregion
 
-		#region WriteMenu
 		protected void WriteMenu()
 		{
 			HtmlTextWriter writer = new HtmlTextWriter(new System.IO.StringWriter());
@@ -494,9 +474,7 @@ namespace Havit.Web.UI.WebControls
 
 			RegisterClientStartupScript("AutoSuggestMenu_" + this.UniqueID, writer.InnerWriter.ToString());
 		}
-		#endregion
 
-		#region CheckRequiredProperties
 		protected void CheckRequiredProperties()
 		{
 			if (_targetControlID == null)
@@ -521,9 +499,7 @@ namespace Havit.Web.UI.WebControls
 			//if (!System.IO.Directory.Exists(dir))
 			//    throw new Exception("ResourcesDir '" + _resourcesDir + "' doesn't exist");
 		}
-		#endregion
 
-		#region OnPreRender
 		/// <summary>
 		/// Raises the <see cref="E:System.Web.UI.Control.PreRender"/> event.
 		/// </summary>
@@ -541,9 +517,7 @@ namespace Havit.Web.UI.WebControls
 				RegisterStylesheets(this.Page);
 			}
 		}
-		#endregion
 
-		#region RegisterServicePath
 		private void RegisterServicePath()
 		{
 			if (!String.IsNullOrEmpty(this.ServicePath))
@@ -551,9 +525,7 @@ namespace Havit.Web.UI.WebControls
 				ScriptManager.GetCurrent(this.Page).Services.Add(new ServiceReference(this.ServicePath));
 			}
 		}
-		#endregion
 
-		#region Render
 		/// <summary>Renders AutoSuggestMenu to the output HTML parameter specified.</summary>
 		/// <param name="output"> The HTML writer to write out to</param>
 		protected override void Render(HtmlTextWriter output)
@@ -568,9 +540,7 @@ namespace Havit.Web.UI.WebControls
 
 			_hdnSelectedValue.RenderControl(output);
 		}
-		#endregion
 
-		#region RegisterStylesheets
 		/// <summary>
 		/// Vytvoří do head odkaz na CSS menu.
 		/// </summary>
@@ -589,9 +559,7 @@ namespace Havit.Web.UI.WebControls
 				HttpContext.Current.Items["Havit.Web.UI.WebControls.AutoSuggestMenu.RegisterCss_registered"] = true;
 			}
 		}
-		#endregion
 
-		#region WriteMenuItemsToJSON
 		internal static void WriteMenuItemsToJSON(List<AutoSuggestMenuItem> menuItems, int totalResults, XJsonWriter writer)
 		{
 			List<string> jsonMenuItems = new List<string>();
@@ -609,9 +577,7 @@ namespace Havit.Web.UI.WebControls
 			//Add total results
 			writer.WriteNameValue("totalResults", totalResults, true);
 		}
-		#endregion
 
-		#region ConvertMenuItemsToJSON
 		/// <summary>
 		///     Used to send data back to browser.
 		/// </summary>
@@ -631,14 +597,12 @@ namespace Havit.Web.UI.WebControls
 			WriteMenuItemsToJSON(menuItems, totalResults, writer);
 			return writer.ToString();
 		}
-		#endregion
 
-        //==========================================
+		//==========================================
         //Utility methods for registering javascript
         //==========================================
 
-		#region IsInPartialRendering
-		//Methods for handling Client Script in both scenarious - when using partial postback and when not using it
+        //Methods for handling Client Script in both scenarious - when using partial postback and when not using it
 		private bool IsInPartialRendering()
 		{
 			ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);
@@ -649,9 +613,7 @@ namespace Havit.Web.UI.WebControls
 
 			return false;
 		}
-		#endregion
 
-		#region RegisterClientScriptInclude
 		private void RegisterClientScriptInclude(string key, string url)
 		{
 			if (IsInPartialRendering())
@@ -663,9 +625,7 @@ namespace Havit.Web.UI.WebControls
 				this.Page.ClientScript.RegisterClientScriptInclude(key, url);
 			}
 		}
-		#endregion
 
-		#region RegisterClientStartupScript
 		private void RegisterClientStartupScript(string key, string script)
 		{
 			if (IsInPartialRendering())
@@ -677,7 +637,6 @@ namespace Havit.Web.UI.WebControls
 				this.Page.ClientScript.RegisterStartupScript(this.GetType(), key, script, true);
 			}
 		}
-		#endregion
 	}
 }
 #pragma warning restore 1591

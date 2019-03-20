@@ -7,7 +7,6 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 	/// </summary>
 	public static class ApplicationTimeHelper
 	{
-		#region GetApplicationCurrentTimeExpression
 		/// <summary>
 		/// Vrátí výraz pro získání aktuálního aplikačního času.
 		/// </summary>
@@ -24,7 +23,5 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			return _applicationCurrentTimeExpression;
 		}
 		private static string _applicationCurrentTimeExpression;
-		#endregion
-
 	}
 }

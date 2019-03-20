@@ -10,7 +10,6 @@ namespace Havit.PayMuzo
 	/// </summary>
 	public abstract class PayMuzoRawResponse : PayMuzoResponse
 	{
-		#region Constructor
 		/// <summary>
 		/// Initializes a new instance of the <see cref="PayMuzoResponse"/> class.
 		/// </summary>
@@ -28,9 +27,7 @@ namespace Havit.PayMuzo
 		/// <param name="rawResponseData">data k normalizaci</param>
 		/// <returns>data v normalizované podobě</returns>
 		public abstract PayMuzoRequestData NormalizeData(NameValueCollection rawResponseData);
-		#endregion
 
-		#region ParseResponseData
 		/// <summary>
 		/// Rozparsuje data do strong-type properties.
 		/// </summary>
@@ -59,6 +56,5 @@ namespace Havit.PayMuzo
 				}
 			}
 		}
-		#endregion
 	}
 }

@@ -12,21 +12,16 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class EditorExtenderItemSavingEventArgs : CancelEventArgs
 	{
-		#region EditedObject
 		/// <summary>
 		/// Ukládaný datový objekt.
 		/// </summary>
 		public object EditedObject { get; set; }
-		#endregion
 
-		#region SavedObject
 		/// <summary>
 		/// Skutečně uložený objekt. Slouží pro vyjímečné případy, kdy je obsluhou události nakonec uložen jiný objekt než SavedObject (typicky při zakládání nového objektu). Účelem obsluhy události je nastavit tuto vlastnost na skutečně editovaný objekt, pokud je jiný, než SavedObject.
 		/// </summary>
 		public object SavedObject { get; set; }
-		#endregion
 
-		#region Constructors
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
@@ -41,7 +36,6 @@ namespace Havit.Web.UI.WebControls
 		{
 			this.EditedObject = editedObject;
 		}
-		#endregion
 	}
 
 	/// <summary>

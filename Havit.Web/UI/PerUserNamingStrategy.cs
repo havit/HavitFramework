@@ -15,19 +15,14 @@ namespace Havit.Web.UI
 		/// </summary>
 		public class PerUserNamingStrategy : FilePageStatePersister.IFileNamingStrategy
 		{
-			#region Private consts
 			private const string FolderNamePattern = "viewstate.{0}";
 			private const string AnonymousUserFolderName = "_anonymous";
-			#endregion
 
-			#region Root
 			/// <summary>
 			/// Root, do kterého se ukládá viewstate/controlstate.
 			/// </summary>
 			protected string Root { get; private set; }
-			#endregion
 
-			#region PerUserNamingStrategy
 			/// <summary>
 			/// Konstruktor.
 			/// </summary>
@@ -35,9 +30,7 @@ namespace Havit.Web.UI
 			{
 				Root = root;
 			}
-			#endregion
 
-			#region DeleteUserFiles (static)
 			/// <summary>
 			/// Smaže soubory konkrétního uživatele.
 			/// Pokud není uživatel zadán (String.IsNullOrEmpty), maže soubory anonymního uživatele.
@@ -76,9 +69,7 @@ namespace Havit.Web.UI
 					}
 				}
 			}
-			#endregion
 
-			#region DeleteOldAnonymousFiles
 			/// <summary>
 			/// Smaže soubory starší dnou dnů anonymního uživatele uživatele.
 			/// V případě, že se některý soubor nepodaří smazat, je mazání ukončeno, ale není vyhozena výjimka.
@@ -87,9 +78,7 @@ namespace Havit.Web.UI
 			{
 				DeleteUserFiles(root, null, new TimeSpan(2, 0, 0, 0)); // 2 dny
 			}
-			#endregion
 
-			#region GetFolderForUserName (static)
 			/// <summary>
 			/// Vrátí název SLOŽKY pro uložení viewstate pro daného uživatele (ale nikoliv celou cestu).
 			/// </summary>
@@ -108,9 +97,7 @@ namespace Havit.Web.UI
 
 				return String.Format(FolderNamePattern, userFolder);
 			}
-			#endregion
 
-			#region FilePageStatePersister.IFileNamingStrategy implementation
 			/// <summary>
 			/// Viz IFileNamingStrategy.GetStorageSymbol.
 			/// </summary>
@@ -144,8 +131,6 @@ namespace Havit.Web.UI
 
 				return System.IO.Path.Combine(Root, symbol);
 			}
-			#endregion
-
 		}
 	}
 }

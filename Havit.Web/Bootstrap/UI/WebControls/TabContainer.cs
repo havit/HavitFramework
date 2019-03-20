@@ -18,8 +18,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	/// Renders only TabPanels in the Child controls (or Child of Child - Child can be nested in Repeater control, etc.).
 	/// </summary>
 	public class TabContainer : Control
-	{		
-		#region Private fields
+	{
 		/// <summary>
 		/// List of child TabPanels.
 		/// </summary>
@@ -29,9 +28,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// Hidden field for reading active tab set by client.
 		/// </summary>
 		private readonly HiddenField _activeTabHiddenField;
-		#endregion
 
-		#region TabMode
 		/// <summary>
 		/// Tab mode (tabs vs. pills).
 		/// </summary>
@@ -47,9 +44,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ViewState["TabMode"] = value;
 			}
 		}
-		#endregion
 
-		#region Justified
 		/// <summary>
 		/// Justified Tabs/Pills. 
 		/// Bootstrap documentation: Easily make tabs or pills equal widths of their parent at screens wider than 768px with .nav-justified. On smaller screens, the nav links are stacked.
@@ -66,7 +61,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ViewState["Justified"] = value;
 			}
 		}
-		#endregion
 
 		/*#region AutoPostBack
 		/// <summary>
@@ -86,7 +80,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		}
 		#endregion*/
 
-		#region ActiveTabPanel
 		/// <summary>
 		/// Gets or sets active TabPanel.
 		/// </summary>
@@ -105,9 +98,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				}
 			}
 		}
-		#endregion
 
-		#region ActiveTabPanelChanged, OnActiveTabPanelChanged
 		/// <summary>
 		/// Occurs when TabPanel change between post to the server.
 		/// </summary>
@@ -123,9 +114,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ActiveTabPanelChanged(this, args);
 			}
 		}
-		#endregion
 
-		#region UseAnimations
 		/// <summary>
 		/// Get or sets whether use animations when changing TabPanels.
 		/// Not used when TabPanel changed on server side.
@@ -142,9 +131,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ViewState["UseAnimations"] = value;
 			}
 		}
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Constructor.
 		/// </summary>
@@ -153,9 +140,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			_activeTabHiddenField = new HiddenField();			
 			_activeTabHiddenField.ValueChanged += ActiveTabHiddenField_ValueChanged;
 		}
-		#endregion
 
-		#region OnInit
 		/// <summary>
 		/// Raises the Init event. This notifies the control to perform any steps necessary for its creation on a page request.
 		/// </summary>
@@ -164,9 +149,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			base.OnInit(e);
 			EnsureChildControls();
 		}
-		#endregion
 
-		#region CreateChildControls
 		/// <summary>
 		/// Notifies any controls that use composition-based implementation to create any child controls they contain in preperation for postback or rendering.
 		/// </summary>
@@ -175,9 +158,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			base.CreateChildControls();
 			this.Controls.Add(_activeTabHiddenField);
 		}
-		#endregion
 
-		#region RegisterTabPanel, UnregisterTabPanel
 		/// <summary>
 		/// Used from TabPanel to register in container.
 		/// </summary>
@@ -197,9 +178,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			tabPanels.Remove(tabPanel);
 		}
-		#endregion
 
-		#region ActiveTabHiddenField_ValueChanged
 		private void ActiveTabHiddenField_ValueChanged(object sender, EventArgs e)
 		{
 			TabPanel oldActiveTabPanel = this.ActiveTabPanel;
@@ -213,9 +192,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				OnActiveTabPanelChanged(e);
 			}
 		}
-		#endregion
 
-		#region OnPreRender
 		/// <summary>
 		/// Raises the <see langword='PreRender'/> event. This method uses event arguments to pass the event data to the control.
 		/// </summary>
@@ -242,9 +219,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			// register Tab Extensions script
 			ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, ClientScripts.BootstrapClientScriptHelper.TabPanelExtensionScriptResourceMappingName);
 		}
-		#endregion
 
-		#region Render, RenderHeader, RenderContent
 		/// <summary>
 		/// Outputs control content to a provided HTMLTextWriter output stream.
 		/// </summary>
@@ -280,9 +255,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			base.Render(writer);
 			writer.RenderEndTag();
 		}
-		#endregion
 
-		#region OrderTabPanelsInOrderOfAppearanceInPage*
 		/// <summary>
 		/// Order TabPanels in order of appearance in page.
 		/// </summary>
@@ -309,7 +282,5 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				}				
 			}
 		}
-		#endregion
-
 	}
 }

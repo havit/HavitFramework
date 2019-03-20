@@ -12,8 +12,7 @@ namespace Havit.Data.Glimpse.Message
 	/// Timeline category for DbConnector.
 	/// </summary>
 	public static class DbConnectorTimelineCategory
-	{		
-		#region TimelineCategory
+	{
 		/// <summary>
 		/// Timeline category for DbConnector.
 		/// </summary>
@@ -25,7 +24,6 @@ namespace Havit.Data.Glimpse.Message
 			}
 		}
 		private static readonly TimelineCategoryItem _timelineCategory = new TimelineCategoryItem("DbConnector", "#233D91", "#118DD5");
-		#endregion
 	}
 
 }

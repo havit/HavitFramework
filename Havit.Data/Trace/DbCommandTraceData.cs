@@ -13,56 +13,41 @@ namespace Havit.Data.Trace
 	/// </summary>
 	public class DbCommandTraceData
 	{
-		#region Operation
 		/// <summary>
 		/// Command operation.
 		/// </summary>
 		public string Operation { get; private set; }
-		#endregion
 
-		#region CommandText
 		/// <summary>
 		/// Command text.
 		/// </summary>
 		public string CommandText { get; private set; }
-		#endregion
 
-		#region TransactionHashCode
 		/// <summary>
 		/// Transaction hash code.
 		/// </summary>
 		public int? TransactionHashCode { get; private set; }
-		#endregion
 
-		#region Parameters
 		/// <summary>
 		/// Command parameters.
 		/// </summary>
 		public List<DbParameterTraceData> Parameters { get; private set; }
-		#endregion
 
-		#region DurationTicks
 		/// <summary>
 		/// Command execution duration (ticks).
 		/// </summary>
 		public long DurationTicks { get; internal set; }
-		#endregion
 
-		#region ResultSet
 		/// <summary>
 		/// Command result set flag.
 		/// </summary>
 		public bool ResultSet { get; internal set; }
-		#endregion
 
-		#region Result
 		/// <summary>
 		/// Command result.
 		/// </summary>
 		public object Result { get; internal set; }
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
@@ -70,9 +55,7 @@ namespace Havit.Data.Trace
 		{
 			Parameters = new List<DbParameterTraceData>();
 		}
-		#endregion
 
-		#region ToString
 		/// <summary>
 		/// Returns a string that represents the current object.
 		/// </summary>
@@ -101,9 +84,7 @@ namespace Havit.Data.Trace
 
 			return sb.ToString();
 		}
-		#endregion
 
-		#region Create
 		/// <summary>
 		/// Creates an instance of DbCommandTraceData from DbCommand.
 		/// </summary>
@@ -117,6 +98,5 @@ namespace Havit.Data.Trace
 			result.ResultSet = false;
 			return result;
 		}
-		#endregion
 	}	
 }

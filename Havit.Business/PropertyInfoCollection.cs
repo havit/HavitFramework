@@ -12,7 +12,6 @@ namespace Havit.Business
 	/// </summary>
 	public class PropertyInfoCollection : Collection<PropertyInfo>
 	{
-		#region Constructors
 		/// <summary>
 		/// Vyvoří prázdnou kolekci.
 		/// </summary>
@@ -30,10 +29,8 @@ namespace Havit.Business
 			{
 				this.Add(propertyInfo);
 			}
-		} 
-		#endregion
+		}
 
-		#region InsertItem
 		/// <summary>
 		/// Přidá prvek do kolekce, pokud v kolekci již není.
 		/// </summary>
@@ -45,7 +42,6 @@ namespace Havit.Business
 			}
 
 			base.InsertItem(index, item);
-		} 
-		#endregion
+		}
 	}
 }

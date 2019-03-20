@@ -13,16 +13,13 @@ namespace Havit.WebApplicationTest.HavitWebBootstrapTests
 
 	public partial class GridViewExtTest : System.Web.UI.Page
 	{
-		#region OnInit
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
 			MainGV.DataBinding += MainGV_DataBinding;
 			MainGV.GetInsertRowDataItem += MainGV_GetInsertRowDataItem;
 		}
-		#endregion
 
-		#region OnLoad
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
@@ -31,16 +28,12 @@ namespace Havit.WebApplicationTest.HavitWebBootstrapTests
 				BindValues();
 			}
 		}
-		#endregion
 
-		#region BindValues
 		private void BindValues()
 		{
 			MainGV.SetRequiresDatabinding();
 		}
-		#endregion
 
-		#region MainGV_DataBinding
 		private void MainGV_DataBinding(object sender, EventArgs e)
 		{
             if (mainGVDataBindingCalled)
@@ -55,14 +48,10 @@ namespace Havit.WebApplicationTest.HavitWebBootstrapTests
 
         }
         private bool mainGVDataBindingCalled = false;
-        #endregion
 
-        #region MainGV_GetInsertRowDataItem
         private object MainGV_GetInsertRowDataItem()
 		{
 			return Subjekt.CreateObject();
 		}
-		#endregion
-
 	}
 }

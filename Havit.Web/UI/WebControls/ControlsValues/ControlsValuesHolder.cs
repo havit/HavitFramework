@@ -19,11 +19,8 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 	[Serializable]
 	public class ControlsValuesHolder
 	{
-		#region Private fields
-		private readonly Dictionary<string, object> _values; 
-		#endregion
-	
-		#region Constructor
+		private readonly Dictionary<string, object> _values;
+
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
@@ -31,19 +28,15 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 		{
 			_values = new Dictionary<string, object>();			
 		}
-		#endregion
 
-		#region ContainsKey
 		/// <summary>
 		/// Vrací true, pokud v kolekci hodnot existuje záznam s daným klíčem. Jinak false.
 		/// </summary>
 		public bool ContainsKey(string key)
 		{
 			return _values.ContainsKey(key);
-		} 
-		#endregion
+		}
 
-		#region GetValue
 		/// <summary>
 		/// Vrací hodnotu pro daný klíč.
 		/// Pokud v kolekci hodnot neexistuje záznam s daným klíčem, vyhazuje výjimku.
@@ -51,10 +44,8 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 		public object GetValue(string key)
 		{
 			return _values[key];
-		} 
-		#endregion
+		}
 
-		#region SetValue
 		/// <summary>
 		/// Přidá do kolekce záznam s daným klíčem a hodnotou.
 		/// Pokud již záznam s daným klíčem existuje, je jeho hodnota přepsána.
@@ -62,10 +53,8 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 		public void SetValue(string key, object value)
 		{
 			_values[key] = value;			
-		} 
-		#endregion
+		}
 
-		#region ToXmlDocument
 		/// <summary>
 		/// Převede reprezentaci hodnot controlů z ControlsValuesHolderu do XmlDocumentu.
 		/// </summary>
@@ -75,7 +64,6 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 
 			XmlDocument result;
 
-			#region Verze 1
 			//Type[] extenderTypes = PersisterControlExtenderRepository.Default.GetExtenderValuesTypes();
 			
 			//XmlSerializer valueSerializer = new XmlSerializer(typeof(object), extenderTypes);
@@ -110,9 +98,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 			//    result = new XmlDocument();
 			//    result.Load(memoryStream);
 			//}
-			#endregion
 
-			#region Verze 2
 			using (MemoryStream memoryStream = new MemoryStream())
 			{
 			    XmlWriterSettings xmlWriterSettings = new XmlWriterSettings();
@@ -164,12 +150,10 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 			    result = new XmlDocument();
 			    result.Load(memoryStream);
 			}
-			#endregion
+
 			return result;
 		}
-		#endregion
 
-		#region FromXmlDocument
 		/// <summary>
 		/// Převede reprezentaci hodnot controlů z XmlDocumentu do ControlsValuesHolderu.
 		/// </summary>
@@ -194,9 +178,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 
 			}
 		}
-		#endregion
 
-		#region FromXmlDocument_Version1
 		/// <summary>
 		/// Verze 1
 		/// Snažila se o to, aby se nevytvářela znovu a znovu třída XmlSerializer pro každou hodnotu v datech.
@@ -231,9 +213,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 			
 			return result;
 		}
-		#endregion
 
-		#region FromXmlDocument_Version2
 		/// <summary>
 		/// Verze 2
 		/// Snaží se vyřešit výkonový problém verze 1 i s pravděpodobným memory leakem (viz tamní komentář).
@@ -306,7 +286,5 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 			return result;
 
 		}
-		#endregion
-
 	}
 }

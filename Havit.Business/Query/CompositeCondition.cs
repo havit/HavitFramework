@@ -14,11 +14,8 @@ namespace Havit.Business.Query
 	/// </summary>
 	public abstract class CompositeCondition : Condition
 	{
-		#region Private fields
 		private readonly string operatorBetweenOperands = null;
-		#endregion
 
-		#region Conditions
 		/// <summary>
 		/// Podmínky v kompozitu.
 		/// </summary>
@@ -27,10 +24,8 @@ namespace Havit.Business.Query
 			get { return conditions; }
 		}
         private readonly ConditionList conditions;
-		#endregion
 
-		#region Constructors
-		/// <summary>
+        /// <summary>
 		/// Vytvoří instanci.
 		/// </summary>
 		protected CompositeCondition(string operatorBetweenOperands, params Condition[] conditions)
@@ -45,10 +40,8 @@ namespace Havit.Business.Query
                 }
             }
 		}
-		#endregion
 
-		#region IsEmptyCondition
-		/// <summary>
+        /// <summary>
 		/// Vrací true, pokud jde o prázdnou podmínku a to i v případě, že jde například o zanořené AndCondition a OrCondition bez žádných "funkčních" podmínek.
 		/// </summary>
 		public override bool IsEmptyCondition()
@@ -62,10 +55,8 @@ namespace Havit.Business.Query
 			}
 			return true;
 		}
-		#endregion
 
-		#region GetWhereStatement
-		/// <summary>
+        /// <summary>
 		/// Poskládá členské podmínky. Mezi podmínkami (operandy) je operátor zadaný v konstruktoru.
 		/// </summary>
 		public override void GetWhereStatement(System.Data.Common.DbCommand command, StringBuilder whereBuilder, SqlServerPlatform sqlServerPlatform, CommandBuilderOptions commandBuilderOptions)
@@ -101,7 +92,5 @@ namespace Havit.Business.Query
 			}
 			whereBuilder.Append(")");
 		}
-		#endregion
-
 	}
 }

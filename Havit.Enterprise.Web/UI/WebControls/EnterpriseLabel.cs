@@ -14,14 +14,11 @@ namespace Havit.Web.UI.WebControls
 	[Themeable(true)]
 	public class EnterpriseLabel : Label
 	{
-		#region ItemPropertyInfo
 		/// <summary>
 		/// ItemPropertyInfo. Na základě něj se určuje povinnost pole nebo text labelu z resourců.
 		/// </summary>
-		public Havit.Business.PropertyInfo ItemPropertyInfo { get; set; } 
-		#endregion
+		public Havit.Business.PropertyInfo ItemPropertyInfo { get; set; }
 
-		#region IsRequired
 		/// <summary>
 		/// Indikuje, zda bude pole renderováno jako povinné.
 		/// Pokud není explicitně nastavena hodnota, vrací se hodnota dle ItemPropertyInfo (s výjimkou dle SupressIsRequiresForBooleanType).
@@ -66,10 +63,8 @@ namespace Havit.Web.UI.WebControls
 			{
 				ViewState["IsRequired"] = value;
 			}
-		} 
-		#endregion
+		}
 
-		#region SupressIsRequiresForBooleanType
 		/// <summary>
 		/// Potlačuje povinnost datového typu boolean pro UI.
 		/// (Boolean je sice typicky povinný, ale edituje se obvykle checkboxem, který se nepovažuje za nutný z hlediska uživatele vyplňovat - uživatel by mohl povinnost chápat jako nutnost zaškrtnutí.)
@@ -79,9 +74,7 @@ namespace Havit.Web.UI.WebControls
 			get { return (bool)(ViewState["SupressIsRequiresForBooleanType"] ?? true); }
 			set { ViewState["SupressIsRequiresForBooleanType"] = value; }
 		}
-		#endregion
 
-		#region RequiredCssClass
 		/// <summary>
 		/// CssClass pro povinné pole (použito na celém labelu).
 		/// </summary>
@@ -89,10 +82,8 @@ namespace Havit.Web.UI.WebControls
 		{
 			get { return (string)ViewState["RequiredCssClass"] ?? String.Empty; }
 			set { ViewState["RequiredCssClass"] = value; }
-		} 
-		#endregion
+		}
 
-		#region ShowRequired
 		/// <summary>
 		/// Indikuje, zda se má pro povinná pole renderovat symbol povinného pole a zda se má nastavovat css třída pro povinné pole.
 		/// </summary>
@@ -101,9 +92,7 @@ namespace Havit.Web.UI.WebControls
 			get { return (bool)(ViewState["ShowRequired"] ?? false); }
 			set { ViewState["ShowRequired"] = value; }
 		}
-		#endregion
 
-		#region RequiredSignCssClass
 		/// <summary>
 		/// CssClass použitý pro symbol povinného pole.
 		/// </summary>
@@ -111,10 +100,8 @@ namespace Havit.Web.UI.WebControls
 		{
 			get { return (string)ViewState["RequiredSignCssClass"] ?? String.Empty; }
 			set { ViewState["RequiredSignCssClass"] = value; }
-		} 
-		#endregion
+		}
 
-		#region RequiredSignText
 		/// <summary>
 		/// Text (symbol) označující povinná pole.
 		/// </summary>
@@ -122,10 +109,8 @@ namespace Havit.Web.UI.WebControls
 		{
 			get { return (string)ViewState["RequiredSignText"] ?? String.Empty; }
 			set { ViewState["RequiredSignText"] = value; }
-		} 
-		#endregion
+		}
 
-		#region Render, RenderContents
 		/// <summary>
 		/// Renderuje enterprise label (nastavuje css class, text, atp.).
 		/// </summary>
@@ -167,7 +152,5 @@ namespace Havit.Web.UI.WebControls
 				writer.RenderEndTag();
 			}
 		}
-		#endregion
-
 	}
 }

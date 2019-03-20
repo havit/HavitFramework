@@ -20,11 +20,8 @@ namespace Havit.Data
 	/// </summary>	
 	public class DbConnector
 	{
-		#region commandExecutionTrace (private field)
 		private readonly TraceSource commandExecutionTrace = new TraceSource("DbConnector Command Execution Trace", SourceLevels.All);
-		#endregion
 
-		#region ConnectionString
 		/// <summary>
 		/// Vrátí connection-string, který spolu s <see cref="DbConnector.ProviderFactory"/> určuje parametry DbConnectoru.
 		/// </summary>
@@ -38,9 +35,7 @@ namespace Havit.Data
 			}
 		}
 		private readonly string _connectionString;
-		#endregion
 
-		#region ProviderFactory
 		/// <summary>
 		/// Vrátí <see cref="DbProviderFactory"/>, která spolu s <see cref="DbConnector.ConnectionString"/>em určuje parametry DbConnectoru.
 		/// </summary>
@@ -53,9 +48,7 @@ namespace Havit.Data
 			}
 		}
 		private readonly DbProviderFactory _providerFactory;
-		#endregion
 
-		#region Constructors
 		/// <summary>
 		/// Inicializuje instanci třídy <see cref="DbConnector"/>.
 		/// </summary>
@@ -103,9 +96,7 @@ namespace Havit.Data
 				this._providerFactory = DbProviderFactories.GetFactory(connectionStringSettings.ProviderName);
 			}
 		}
-		#endregion
 
-		#region CreateCommand, SetCommandDefaults (private)
 		/// <summary>
 		/// Vytvoří DbCommand dle zadaných parametrů. Nenastavuje spojení ani jiné vlastnosti.
 		/// </summary>
@@ -144,9 +135,7 @@ namespace Havit.Data
 				command.Connection = GetConnection();
 			}
 		}
-		#endregion
 
-		#region GetConnection
 		/// <summary>
 		/// Vrátí novou instanci provider-specific potomka <see cref="DbConnection"/> a pokud to požadujeme, tak ji rovnou otevře.
 		/// </summary>
@@ -172,9 +161,7 @@ namespace Havit.Data
 		{
 			return GetConnection(false);
 		}
-		#endregion
 
-		#region ExecuteNonQuery
 		/// <summary>
 		/// Vykoná <see cref="DbCommand"/> a vrátí počet dotčených řádek.
 		/// Nejobecnější metoda, kterou používají ostatní overloady.
@@ -247,9 +234,7 @@ namespace Havit.Data
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmí být null ani String.Empty");
 			return ExecuteNonQuery(commandText, CommandType.Text);
 		}
-		#endregion
 
-		#region ExecuteDataSet
 		/// <summary>
 		/// Vykoná <see cref="DbCommand"/> a vrátí resultset ve formě <see cref="DataSet"/>u.
 		/// </summary>
@@ -317,9 +302,6 @@ namespace Havit.Data
 			return ExecuteDataSet(commandText, CommandType.Text);
 		}
 
-		#endregion
-
-		#region ExecuteDataTable
 		/// <summary>
 		/// Vykoná <see cref="DbCommand"/> a vrátí první resultset ve formě <see cref="System.Data.DataTable"/>.
 		/// </summary>
@@ -375,9 +357,7 @@ namespace Havit.Data
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmí být null ani String.Empty");
 			return ExecuteDataTable(commandText, CommandType.Text);
 		}
-		#endregion
 
-		#region ExecuteReader
 		/// <summary>
 		/// Donastaví a vykoná <see cref="DbCommand"/> pomocí <see cref="CommandBehavior"/> a vrátí výsledný resultset ve formě <see cref="DbDataReader"/>u.
 		/// </summary>
@@ -463,9 +443,7 @@ namespace Havit.Data
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmí být null ani String.Empty");
 			return ExecuteReader(commandText, CommandType.Text);
 		}
-		#endregion
 
-		#region ExecuteDataRecord
 		/// <summary>
 		/// Donastaví a vykoná <see cref="DbCommand"/> pomocí <see cref="CommandBehavior"/> a vrátí první řádek první tabulky resultsetu
 		/// ve formě <see cref="Havit.Data.DataRecord"/>. Pokud neexistuje, vrátí <c>null</c>.
@@ -555,9 +533,6 @@ namespace Havit.Data
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmí být null ani String.Empty");
 			return ExecuteDataRecord(commandText, CommandType.Text);
 		}
-		#endregion
-
-		#region ExecuteScalar
 
 		/// <summary>
 		/// Donastaví a vykoná <see cref="DbCommand"/> a vrátí první sloupec prvního řádku první tabulky jeho resultsetu.
@@ -629,9 +604,6 @@ namespace Havit.Data
 			return ExecuteScalar(CreateCommand(commandText, CommandType.Text));
 		}
 
-		#endregion
-
-		#region ExecuteTransaction
 		/// <summary>
 		/// Vykoná požadované kroky v rámci transakce.
 		/// Pokud je outerTransaction <c>null</c>, je spuštěna a commitována nová.
@@ -755,11 +727,9 @@ namespace Havit.Data
 			Contract.Requires<ArgumentNullException>(transactionWork != null, "transactionWork");
 			ExecuteTransaction(transactionWork, null, IsolationLevel.Unspecified);
 		}
-		#endregion
 
 		/**********************************************************************************************************/
 
-		#region Default (static)
 		/// <summary>
 		/// Defaultní <see cref="DbConnector"/>. Pokud není nastaven ručně, pak se vytvoří při prvním přístupu z defaultního connection-stringu načteného z .config souboru.
 		/// Nastavením na null mohu pro příští přístup vynutit opětovnou inicializaci z .config souboru.
@@ -828,7 +798,5 @@ namespace Havit.Data
 				return new DbConnector(appSettingsConnectionString, "System.Data.SqlClient");
 			}
 		}
-		#endregion
-
 	}
 }

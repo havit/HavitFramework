@@ -17,7 +17,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	/// </summary>
 	public class ValidationSummary : System.Web.UI.WebControls.ValidationSummary
 	{
-		#region ShowToastr
 		/// <summary>
 		/// Indicates whether to show error messages in toastr.
 		/// </summary>
@@ -26,9 +25,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			get { return (bool)(ViewState["ShowToastr"] ?? true); }
 			set { ViewState["ShowToastr"] = value; }
 		}
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Initializes ValidationSummary.
 		/// </summary>
@@ -38,9 +35,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			this.DisplayMode = ValidationSummaryDisplayMode.List;
 			this.CssClass = "alert alert-danger";
 		}
-		#endregion
 
-		#region OnPreRender
 		/// <summary>
 		/// Registers jquery and toastr scripts and script for displaying error message in toastr when ShowToastr is True.
 		/// Registers message box (alert) script with error messages when ShowMessageBox is True.
@@ -61,9 +56,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				RegisterShowMessageBoxScripts();
 			}
 		}
-		#endregion
 
-		#region AddAttributesToRender
 		/// <summary>
 		/// Adds attribute "data-showtoastr" when ShowToastr is True.
 		/// </summary>
@@ -76,9 +69,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				writer.AddAttribute("data-showtoastr", "True");
 			}
 		}
-		#endregion
 
-		#region RegisterShowMessageBoxScripts
 		/// <summary>
 		/// Registers script for display validation error on client side page load.
 		/// </summary>
@@ -95,9 +86,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			}
 
 		}
-		#endregion
 
-		#region RegisterShowToastrScripts
 		/// <summary>
 		/// Registers script for display validation error on client side page load.
 		/// Cannot be calculated on client sides because validators with has EnableClientScript set to false are not supported on the client side.
@@ -114,9 +103,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ScriptManager.RegisterStartupScript(this.Page, typeof(ValidationSummary), this.ClientID + "Toastr", script, true);
 			}
 		}
-		#endregion
 
-		#region GetValidationErrorMessages
 		/// <summary>
 		/// Returns ErrorMessages for display in validation summary.
 		/// Only messages of validators with failed validation (IsValid = false) are returned.
@@ -134,6 +121,5 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			}
 			return lines.ToArray();
 		}
-		#endregion
 	}
 }

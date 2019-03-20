@@ -16,7 +16,6 @@ namespace Havit.Web.UI.ClientScripts
 	/// </summary>
 	internal static class HavitFrameworkClientScriptHelper
 	{
-		#region Consts
 		/// <summary>
 		/// Script Resource Definition name for HavitFrameworkClientScript.js.
 		/// </summary>
@@ -31,9 +30,7 @@ namespace Havit.Web.UI.ClientScripts
 		/// JQueryAutoComplete script.
 		/// </summary>
 		internal const string JQueryAutoCompleteResourceMappingName = "Havit.Web.ClientContent.JQueryAutoComplete";
-		#endregion
 
-		#region RegisterScriptResourceMappings
 		/// <summary>
 		/// Register script map resource mapping for framework script.
 		/// Method called at application startup.
@@ -45,9 +42,7 @@ namespace Havit.Web.UI.ClientScripts
 			ScriptManager.ScriptResourceMapping.AddDefinition(JQueryMultipleSelectResourceMappingName, new ScriptResourceDefinition { Path = String.Format("~/Scripts/havit.web.clientcontent/jquery.multiple.select.js?version={0}", version) });
 			ScriptManager.ScriptResourceMapping.AddDefinition(JQueryAutoCompleteResourceMappingName, new ScriptResourceDefinition { Path = String.Format("~/Scripts/havit.web.clientcontent/jquery.autocomplete.min.js?version={0}", version) });
 		}
-		#endregion
-		
-		#region RegisterHavitFrameworkClientScript
+
 		/// <summary>
 		/// Register Havit Framework Extensions Client Script to the page. Uses ScriptResourceMapping.
 		/// Ensures registration of "jquery".
@@ -57,9 +52,7 @@ namespace Havit.Web.UI.ClientScripts
 			ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(page, "jquery");
 			ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(page, HavitFrameworkClientScriptResourceMappingName);
 		}
-		#endregion
 
-		#region GetVersionString
 		/// <summary>
 		/// Vrací verzi z assembly pro přidání do URL.
 		/// Vzhledem k tomu, že skripty se do projetu dostávají jinými balíčky, než Havit.Web, není toto rozhodně dokonalé.
@@ -84,6 +77,5 @@ namespace Havit.Web.UI.ClientScripts
 		}
 		private static string _version;
 		private static readonly object _versionLock = new object();
-		#endregion
 	}
 }

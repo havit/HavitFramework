@@ -7,20 +7,15 @@ namespace Havit.Business.BusinessLayerGenerator.Csproj
 {
 	public class CsprojFile
 	{
-		#region MSBuildNamespace
 		protected virtual XNamespace MSBuildNamespace { get; } = "http://schemas.microsoft.com/developer/msbuild/2003";
-		#endregion
 
 		protected XDocument Content { get; }
 
 
-		#region Private fields 
 		private readonly string generatorIdentifier;
 		private bool contentChanged = false;
 		private readonly List<string> ensuredFilenames = new List<string>();
-		#endregion
 
-		#region Filename
 		public string Filename
 		{
 			get;
@@ -28,9 +23,7 @@ namespace Havit.Business.BusinessLayerGenerator.Csproj
 		}
 
 		public string Path => System.IO.Path.GetDirectoryName(Filename);
-		#endregion
 
-		#region Constructors
 		public CsprojFile(string filename, string generatorIdentifier, XDocument content)
 		{
 			this.generatorIdentifier = generatorIdentifier;
@@ -42,16 +35,12 @@ namespace Havit.Business.BusinessLayerGenerator.Csproj
 		private CsprojFile()
 		{
 		}
-		#endregion
 
-		#region Content_Changed
 		private void Content_Changed(object sender, XObjectChangeEventArgs e)
 		{
 			contentChanged = true;
 		}
-		#endregion
 
-		#region Ensures
 		public virtual void Ensures(string filename)
 		{
 			ensuredFilenames.Add(filename);
@@ -92,7 +81,6 @@ namespace Havit.Business.BusinessLayerGenerator.Csproj
 				}
 			}
 		}
-		#endregion
 
 		public virtual void EnsuresEmbeddedResource(string filename)
 		{
@@ -162,16 +150,13 @@ namespace Havit.Business.BusinessLayerGenerator.Csproj
 			return itemGroup;
 		}
 
-		#region Remove
 		public virtual void Remove(string filename)
 		{
 			// Odstraníme všechny ItemGroupy, které obsahují jakýkoli element Compile s atributem Include rovným názvu souboru.
 			// protože odstranění za sebou nechá whitespaces (díky LoadOptions.PreserveWhitespaces), odstraníme element vč. následucího whitespace
 			Content.Root.Elements(MSBuildNamespace + "ItemGroup").Elements(MSBuildNamespace + "Compile").Where(element => element.Attributes("Include").Any(attribute => attribute.Value == filename)).ToList().ForEach(element => this.RemoveWithNextWhitespace(element));
 		}
-		#endregion
 
-		#region RemoveUnusedGeneratedFiles
 		public void RemoveUnusedGeneratedFiles()
 		{
 			// najdeme všechny elementy Compile v ItemGroup, které mají sub-element HavitBusinessLayerGenerator, ale nejsou v seznamu generovaných souborů
@@ -184,9 +169,7 @@ namespace Havit.Business.BusinessLayerGenerator.Csproj
 				.ToList()
 				.ForEach(element => this.RemoveWithNextWhitespace(element));
 		}
-		#endregion
 
-		#region SaveChanges
 		public virtual void SaveChanges()
 		{
 			if (contentChanged)
@@ -199,9 +182,7 @@ namespace Havit.Business.BusinessLayerGenerator.Csproj
 		{
 			Content.Save(Filename);
 		}
-		#endregion
 
-		#region RemoveWithNextWhitespace
 		private void RemoveWithNextWhitespace(XElement element)
 		{
 			IEnumerable<XNode> textNodes
@@ -234,6 +215,5 @@ namespace Havit.Business.BusinessLayerGenerator.Csproj
 			}
 			element.Remove();
 		}
-		#endregion	
 	}
 }

@@ -12,7 +12,6 @@ namespace Havit.Services.StateAdministration
 	/// </summary>
 	public static class IdentifikacniCisloServices
 	{
-		#region Validate
 		/// <summary>
 		/// Zkontroluje formát identifikačního čísla. Vrací true, pokud jde o platné IČ.
 		/// Používá algoritmus popsaný na http://phpfashion.com/jak-overit-platne-ic-a-rodne-cislo
@@ -53,6 +52,5 @@ namespace Havit.Services.StateAdministration
 				|| ((zbytek == 1) && (posledniCislice == 0))
 				|| ((zbytek > 1) && (zbytek < 10) && ((11 - zbytek) == posledniCislice));
 		}
-		#endregion 
 	}
 }

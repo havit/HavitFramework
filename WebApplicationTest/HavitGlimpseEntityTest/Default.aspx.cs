@@ -12,7 +12,6 @@ namespace Havit.WebApplicationTest.HavitGlimpseEntityTest
 {
 	public partial class Default : System.Web.UI.Page
 	{
-		#region OnLoad
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
@@ -20,9 +19,7 @@ namespace Havit.WebApplicationTest.HavitGlimpseEntityTest
 			SyncButton.Click += SyncButton_Click;
 			AsyncButton.Click += AsyncButton_Click;
 		}
-		#endregion
 
-		#region SyncButton_Click
 		private void SyncButton_Click(object sender, EventArgs e)
 		{
 			MyDbContext myDbContext = new MyDbContext();
@@ -32,9 +29,7 @@ namespace Havit.WebApplicationTest.HavitGlimpseEntityTest
 			myDbContext.MyClasses.Add(new MyClass { Value = "hello" });
 			myDbContext.SaveChanges();
 		}
-		#endregion
 
-		#region AsyncButton_Click
 		private void AsyncButton_Click(object sender, EventArgs e)
 		{		
 			//RegisterAsyncTask(new PageAsyncTask(() => myDbContext.MyClasses.CountAsync()));
@@ -51,25 +46,17 @@ namespace Havit.WebApplicationTest.HavitGlimpseEntityTest
 				return myDbContext2.SaveChangesAsync();
 			}));
 		}
-		#endregion
 
-		#region MyDbContext (nested class)
 		public class MyDbContext : DbContext
 		{
-			#region Properies
 			public DbSet<MyClass> MyClasses { get; set; }
-			#endregion
 
-			#region Constructor
 			public MyDbContext() : base("HavitEntityGlimpse")
 			{
 				Database.SetInitializer<MyDbContext>(new CreateDatabaseIfNotExists<MyDbContext>());
 			}
-			#endregion
 		}
-		#endregion
 
-		#region MyClass (nested class)
 		public class MyClass
 		{
 			public int Id { get; set; }
@@ -77,6 +64,5 @@ namespace Havit.WebApplicationTest.HavitGlimpseEntityTest
 			[MaxLength(Int32.MaxValue)]
 			public string Value { get; set; }
 		}
-		#endregion
 	}
 }

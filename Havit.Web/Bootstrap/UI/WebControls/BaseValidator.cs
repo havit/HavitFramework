@@ -13,9 +13,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
     /// </summary>
     public abstract class BaseValidator : System.Web.UI.WebControls.BaseValidator, IValidatorExtension
 	{
-		#region Common validator extensions
-
-		#region ShowToolTip
 		/// <summary>
 		/// Shows ToolTip (or Text if ToolTip not set) as a Bootstrap ToolTip at ControlToValidate when validation fails.
 		/// </summary>
@@ -31,9 +28,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			}
 		}
 
-		#endregion
-
-		#region ToolTipPosition
 		/// <summary>
 		/// ToolTip position.
 		/// </summary>
@@ -50,9 +44,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			}
 		}
 
-		#endregion
-
-		#region ControlToValidateInvalidCssClass
 		/// <summary>
 		/// CssClass name which is added to ControlToValidate when validation fails.
 		/// </summary>
@@ -69,9 +60,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			}
 		}
 
-		#endregion
-
-		#region ControlToValidateInvalidToolTipCssClass
 		/// <summary>
 		/// CssClass name which is added to a validation tooltip.
 		/// </summary>
@@ -88,9 +76,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			}
 		}
 
-		#endregion
-
-		#region Constructor
 		/// <summary>
 		/// Constructor.
 		/// </summary>
@@ -99,9 +84,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			ValidatorRenderExtender.Setup(this);
 		}
 
-		#endregion
-
-		#region AddAttributesToRender
 		/// <summary>
 		/// Adds the attributes of this control to the output stream for rendering on the client.
 		/// </summary>
@@ -111,9 +93,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			ValidatorRenderExtender.AddAttributesToRender(this, writer);
 		}
 
-		#endregion
-
-		#region OnPreRender
 		/// <summary>
 		/// Checks the client brower and configures the validator for compatibility prior to rendering.
 		/// </summary>
@@ -122,9 +101,5 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			base.OnPreRender(e);
 			ValidatorRenderExtender.OnPreRender(this);
 		}
-
-		#endregion
-
-		#endregion
 	}
 }

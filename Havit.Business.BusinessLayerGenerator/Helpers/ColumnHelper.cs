@@ -23,7 +23,6 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			return ExtendedPropertiesHelper.GetInt(ExtendedPropertiesKey.FromColumn(column), key, ((Table)column.Parent).Name + "-" + column.Name);
 		}
 
-		#region IsIgnored
 		/// <summary>
 		/// Vrací true, pokud je sloupec označena jako ignorovaný (Extended Property "Ignored").
 		/// </summary>
@@ -37,9 +36,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			return (column.Name == "PropertyName")
 				|| (GetBoolExtendedProperty(column, "Ignored") ?? false);
 		}
-		#endregion
 
-		#region IsReadOnly
 		/// <summary>
 		/// Vrací true, pokud je sloupec označena jako ReadOnly (Extended Property "ReadOnly").
 		/// </summary>
@@ -47,9 +44,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		{
 			return (GetBoolExtendedProperty(column, "ReadOnly") ?? (column.Name == "Created"));
 		}
-		#endregion
 
-		#region GetReferencedTable
 		/// <summary>
 		/// Vrací tabulku, kterou referencuje cizí klíč.
 		/// Není-li sloupec FK, vyhodí výjimku.
@@ -60,9 +55,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 
 			return DatabaseHelper.FindTable(foreignKey.ReferencedTable, foreignKey.ReferencedTableSchema, includeIgnored: true);
 		}
-		#endregion
 
-		#region GetForeignKey
 		/// <summary>
 		/// Vrátí FK daného stĺpca.
 		/// Není-li sloupec FK, vyhodí výjimku.
@@ -86,9 +79,6 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 
 			throw new ApplicationException(String.Format("Tabulka {0}, Sloupec {1}: Referovanou tabulku se nepodařilo nalést.", ownerTable.Name, column.Name));
 		}
-		#endregion
-
-		#region GetReferencedColumn
 
 		/// <summary>
 		/// Vrátí referencovaný stĺpec z cieľovej tabuľky.
@@ -103,9 +93,6 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			return table.Columns[foreignKey.Columns[0].ReferencedColumn];
 		}
 
-		#endregion
-
-		#region GetParameterValue
 		/// <summary>
 		/// Vrátí řetězec, kterým se získává hodnota pro SqlParameter z hodnoty property k danému sloupci.
 		/// </summary>
@@ -156,9 +143,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			// hodnota parametru je hodnotou property holderu
 			return String.Format("{0}.Value", PropertyHelper.GetPropertyHolderName(column));
 		}
-		#endregion
 
-		#region FindFirstExistingColumn
 		/// <summary>
 		/// Vrátí ze seznamu názvů sloupců první sloupec, který existuje v tabulce. Není-li žádný nalezen, vrátí null.
 		/// </summary>
@@ -173,9 +158,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			}
 			return null;
 		}
-		#endregion
 
-		#region GetSqlSelectFieldStatementForCollectionProperty
 		/// <summary>
 		/// Vrátí field do sekce SQL dotazu SELECT pro danou kolekci.
 		/// </summary>
@@ -270,9 +253,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			}
 
 		}
-		#endregion
 
-		#region IsDeprecatedType
 		/// <summary>
 		/// Vrátí true, pokud je předán sloupec, jehož typ je zastaralý.
 		/// </summary>
@@ -282,9 +263,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 				|| column.DataType.SqlDataType == SqlDataType.NText
 				|| column.DataType.SqlDataType == SqlDataType.Text;
 		}
-		#endregion
 
-		#region IsDeletedColumn
 		/// <summary>
 		/// Vrací true, pokud je sloupec identifikuje příznakem smazaný záznam.
 		/// </summary>
@@ -294,9 +273,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 				&& ((column.DataType.SqlDataType == SqlDataType.Bit) || TypeHelper.IsDateTime(column))
 				&& (!ColumnHelper.IsIgnored(column));
 		}
-		#endregion
 
-		#region GetDescription
 		/// <summary>
 		/// Vrátí popis sloupce dle databáze nebo výchozí hodnotu.
 		/// </summary>
@@ -379,9 +356,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 
 			return null;
 		}
-		#endregion
 
-		#region IsStringTrimming
 		/// <summary>
 		/// Udává, zda se má na sloupci provádět string trimming.
 		/// </summary>
@@ -399,9 +374,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 				return stringTrimming.Value;
 			}
 		}
-		#endregion
 
-		#region IsForeignKeyCheckSuppressed
 		public static bool CheckForeignKeyName(Column column)
 		{
 			if ((GeneratorSettings.Strategy != GeneratorStrategy.Havit) && (GeneratorSettings.Strategy != GeneratorStrategy.HavitCodeFirst))
@@ -422,9 +395,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 
 			return ExtendedPropertiesHelper.GetBool(ExtendedPropertiesKey.FromTable((Table)column.Parent), "CheckForeignKeyName", ((Table)column.Parent).Name) ?? true;
 		}
-		#endregion
 
-		#region GetGenerateIndexes
 		/// <summary>
 		/// Určuje, zda se ke sloupci mají tvořit indexy.
 		/// </summary>
@@ -432,9 +403,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		{
 			return ExtendedPropertiesHelper.GetBool(ExtendedPropertiesKey.FromColumn(column), "GenerateIndexes", ((Table)column.Parent).Name + "-" + column.Name) ?? true;
 		}
-		#endregion
 
-		#region GetColumnMaximumLength
 		/// <summary>
 		/// Vrátí "délku" dat sloupce.
 		/// Pro sloupce "neomezené" délky vrací  2^31 - 1.
@@ -450,9 +419,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			}
 			return column.DataType.MaximumLength;
 		}
-		#endregion
 
-		#region IsLengthUnlimitedTextColumn
 		/// <summary>
 		/// Vrátí true, pokud je typ VarCharMax, NVarCharMax, VarBinaryMax, Text nebo NText.
 		/// </summary>
@@ -473,9 +440,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 				|| column.DataType.SqlDataType == SqlDataType.Text
 				|| column.DataType.SqlDataType == SqlDataType.NText;
 		}
-		#endregion
 
-		#region GetCloneMode
 		/// <summary>
 		/// Vrátí mód klonování property.
 		/// Vrací hodnotu dle extended property "CloneMode". Výchozí hodnotou je CloneMode.Shallow.
@@ -490,9 +455,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			CloneMode result = (CloneMode)Enum.Parse(typeof(CloneMode), cloneMode, true);
 			return result;
 		}
-		#endregion
 
-		#region GetColumnDefaultValueText
 		/// <summary>
 		/// Vrátí hodnoty defualt na databázi.
 		/// Ořezanou o uvozovky.
@@ -511,9 +474,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			}
 			return defaultText;
 		}
-		#endregion
 
-		#region GetDefaultValueExpression
 		/// <summary>
 		/// Vrátí kód reprezentující výchozí hodnotu pro daný sloupec.
 		/// Hodnota se zjišťuje postupně z extended property na sloupci, poté z výchozí hodnoty na sloupci v databázi, dále z extended property v databázi. Není-li výchozí hodnota uvedena, vrací se kód pro výchozí hodnotu daného datového typu.
@@ -564,9 +525,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 
 			return result;
 		}
-		#endregion
 
-		#region GetDefaultValueExpressionByDatabaseColumn
 		/// <summary>
 		/// Vrací výchozí hodnotu dle databázového sloupce. Pokud není výchozí hodnota uvedena, vrací null.
 		/// Použito v GetDefaultValueExpression.
@@ -653,9 +612,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			}
 			return null;
 		}
-		#endregion
 
-		#region GetDefaultValueExpressionForUnspecifiedDefaultValue
 		/// <summary>
 		/// Vrací výchozí hodnotu pro daný typ databázového sloupce.
 		/// Použito v GetDefaultValueExpression.
@@ -684,6 +641,5 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 
 			return String.Format("default({0})", TypeHelper.GetPropertyTypeName(column));
 		}
-		#endregion
 	}
 }

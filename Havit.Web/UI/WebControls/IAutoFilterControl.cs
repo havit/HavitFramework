@@ -13,18 +13,14 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public interface IAutoFilterControl
 	{
-		#region ValueChanged
 		/// <summary>
 		/// Oznamuje změnu filtru.
 		/// </summary>
 		event EventHandler ValueChanged;
-		#endregion
 
-		#region FilterData
 		/// <summary>
 		/// Filtruje data dle nastavení filtru.
 		/// </summary>
 		IEnumerable FilterData(IEnumerable data);
-		#endregion
 	}
 }

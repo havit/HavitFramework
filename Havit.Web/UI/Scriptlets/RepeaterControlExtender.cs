@@ -14,12 +14,9 @@ namespace Havit.Web.UI.Scriptlets
 	/// </summary>
     public class RepeaterControlExtender : IControlExtender
     {
-		#region Private fields
-		private readonly int priority;		
-		#endregion
+	    private readonly int priority;
 
-		#region Constructors
-		/// <summary>
+	    /// <summary>
 		/// Vytvoří extender s danou prioritou.
 		/// </summary>
 		/// <param name="priority">Priorita extenderu.</param>
@@ -27,19 +24,15 @@ namespace Havit.Web.UI.Scriptlets
 		{
 			this.priority = priority;
 		}
-		#endregion		
-		
-		#region GetPriority
-		/// <include file='IControlExtender.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetPriority")]/*' />
+
+	    /// <include file='IControlExtender.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetPriority")]/*' />
 		[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1604:ElementDocumentationMustHaveSummary", Justification = "Bráno z externího souboru.")]
 		public int? GetPriority(Control control)
 		{
 			return (control is Repeater) ? (int?)priority : null;
-		}		
-		#endregion
+		}
 
-		#region GetInitializeClientSideValueScript
-		/// <include file='IControlExtender.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetInitializeClientSideValueScript")]/*' />
+	    /// <include file='IControlExtender.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetInitializeClientSideValueScript")]/*' />
 		[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1604:ElementDocumentationMustHaveSummary", Justification = "Bráno z externího souboru.")]
 		public void GetInitializeClientSideValueScript(string parameterPrefix, IScriptletParameter parameter, Control control, ScriptBuilder scriptBuilder)
         {
@@ -72,10 +65,8 @@ namespace Havit.Web.UI.Scriptlets
                 }
             }
         }
-		#endregion
 
-		#region GetAttachEventsScript
-		/// <include file='IControlExtender.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetAttachEventsScript")]/*' />
+	    /// <include file='IControlExtender.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetAttachEventsScript")]/*' />
 		[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1604:ElementDocumentationMustHaveSummary", Justification = "Bráno z externího souboru.")]
 		public void GetAttachEventsScript(string parameterPrefix, IScriptletParameter parameter, Control control, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder)
 		{
@@ -85,10 +76,8 @@ namespace Havit.Web.UI.Scriptlets
 					nestedParameter.GetAttachEventsScript(nestedParameterPrefix, nestedParentControl, nestedScriptletFunctionCallDelegate, nestedScriptBuilder);
 				});
 		}
-		#endregion
 
-		#region GetDetachEventsScript
-		/// <include file='IControlExtender.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetDetachEventsScript")]/*' />
+	    /// <include file='IControlExtender.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetDetachEventsScript")]/*' />
 		[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1604:ElementDocumentationMustHaveSummary", Justification = "Bráno z externího souboru.")]
 		public void GetDetachEventsScript(string parameterPrefix, IScriptletParameter parameter, Control control, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder)
 		{
@@ -98,10 +87,8 @@ namespace Havit.Web.UI.Scriptlets
 				nestedParameter.GetDetachEventsScript(nestedParameterPrefix, nestedParentControl, nestedScriptletFunctionCallDelegate, nestedScriptBuilder);
 			});
 		}
-		#endregion
 
-		#region GetEventsScript
-		private void GetEventsScript(string parameterPrefix, IScriptletParameter parameter, Control control, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder, JobOnNesterParameterEventHandler jobOnNestedParameter)
+	    private void GetEventsScript(string parameterPrefix, IScriptletParameter parameter, Control control, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder, JobOnNesterParameterEventHandler jobOnNestedParameter)
 		{
 			Repeater repeater = (Repeater)control;
 
@@ -126,6 +113,5 @@ namespace Havit.Web.UI.Scriptlets
 		}
 
 		private delegate void JobOnNesterParameterEventHandler(IScriptletParameter nestedParameter, string nestedParameterPrefix, Control nestedParentControl, string nestedScriptletFunctionCallDelegate, ScriptBuilder nestedScriptBuilder);
-		#endregion		
-	}
+    }
 }

@@ -12,7 +12,6 @@ namespace Havit.PayPal
 	/// </summary>
 	public class PayPalRequestData : NameValueCollection
 	{
-		#region GetQueryString
 		/// <summary>
 		/// Vrátí QueryString (NVP řetezec všech name/value hodnot z hash tabulky) bez Url.
 		/// </summary>
@@ -54,6 +53,5 @@ namespace Havit.PayPal
 			}
 			return sb.ToString();
 		}
-		#endregion
 	}
 }

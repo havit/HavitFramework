@@ -12,7 +12,6 @@ namespace Havit.Web.UI.Scriptlets
     /// </summary>
     public class ControlExtenderRepository : List<IControlExtender>, IControlExtenderRepository
 	{
-		#region Default (static)
 		/// <summary>
 		/// Výchozí seznam control extenderů.
 		/// </summary>
@@ -47,9 +46,7 @@ namespace Havit.Web.UI.Scriptlets
 		}
 		private static ControlExtenderRepository _default;
 		private static readonly object _defaultLock = new object();
-		#endregion
 
-		#region FindControlExtender
 		/// <summary>
 		/// Nalezne pro control extender, který bude control zpracovávat.
 		/// Pokud není žádný vhodný extender nalezen, je vyhozena výjimka HttpException.
@@ -78,6 +75,5 @@ namespace Havit.Web.UI.Scriptlets
 
 			return bestExtender;
 		}
-		#endregion
-    }
+	}
 }

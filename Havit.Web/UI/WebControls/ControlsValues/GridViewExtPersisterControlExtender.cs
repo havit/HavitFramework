@@ -14,7 +14,6 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 	/// </summary>	
 	internal class GridViewExtPersisterControlExtender : IPersisterControlExtender
 	{
-		#region GetValue
 		public object GetValue(Control control)
 		{
 			GridViewExt gridView = ((GridViewExt)control);
@@ -24,17 +23,13 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 			gridViewExtValue.AllowPaging = gridView.AllowPaging;
 
 			return gridViewExtValue;
-		} 
-		#endregion
+		}
 
-		#region GetValueType
 		public Type GetValueType()
 		{
 			return typeof(GridViewExtValue);
-		} 
-		#endregion
+		}
 
-		#region SetValue
 		public void SetValue(System.Web.UI.Control control, object value)
 		{
 			GridViewExt gridView = (GridViewExt)control;			
@@ -49,9 +44,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 				gridView.SortExpressions.SortItems.Add(sortItem);
 			}			
 		}
-		#endregion
 
-		#region GetPriority
 		public int? GetPriority(Control control)
 		{
 			if (control is GridViewExt)
@@ -60,9 +53,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 			}
 			return null;
 		}
-		#endregion
 
-		#region PersistsChildren
 		/// <summary>
 		/// Pokud je true, ControlsValuesPersister se pokusí uložit i hodnoty child controlů.
 		/// Implicitně vrací false.
@@ -71,7 +62,5 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 		{
 			return false;
 		}
-		#endregion
-
 	}
 }

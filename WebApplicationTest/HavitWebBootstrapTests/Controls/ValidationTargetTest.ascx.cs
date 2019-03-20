@@ -12,11 +12,9 @@ namespace Havit.WebApplicationTest.HavitWebBootstrapTests.Controls
 	[ValidationDisplayTarget("MyTextBox")]
 	public partial class ValidationTargetTest : System.Web.UI.UserControl
 	{
-		#region Text
 		public string Text
 		{
 			get { return MyTextBox.Text; }
 		}
-		#endregion
 	}
 }

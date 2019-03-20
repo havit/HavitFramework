@@ -14,7 +14,6 @@ namespace Havit.Business
 	[Serializable]
 	public class ConstraintViolationException : Exception, ISerializable
 	{
-		#region BusinessObject
 		/// <summary>
 		/// BusinessObject, ve kterém došlo k porušení pravidla.
 		/// </summary>
@@ -23,9 +22,7 @@ namespace Havit.Business
 			get { return _businessObject; }
 		}
 		private readonly BusinessObjectBase _businessObject;
-		#endregion
 
-		#region Constructors
 		/// <summary>
 		/// Vytvoří instanci výjimky
 		/// </summary>
@@ -86,9 +83,7 @@ namespace Havit.Business
 
 			_businessObject = (BusinessObjectBase)info.GetValue("BusinessObject", typeof(BusinessObjectBase));
 		}
-		#endregion
 
-		#region ISerializable
 		/// <summary>
 		/// Vrátí data pro serializaci výjimky.
 		/// </summary>
@@ -103,6 +98,5 @@ namespace Havit.Business
 
 			info.AddValue("BusinessObject", _businessObject);
 		}
-		#endregion
 	}
 }

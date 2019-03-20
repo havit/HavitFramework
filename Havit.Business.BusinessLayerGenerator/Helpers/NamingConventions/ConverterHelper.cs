@@ -4,7 +4,6 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions
 {
 	public static class ConverterHelper
 	{
-		#region GetFieldConvertorName
 		/// <summary>
 		/// Vrátí název converteru k danému sloupci.
 		/// </summary>
@@ -12,7 +11,5 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions
 		{
 			return "_" + NamingConventions.ConventionsHelper.GetCammelCase(PropertyHelper.GetPropertyName(column)) + "Converter";
 		}
-		#endregion
-
 	}
 }

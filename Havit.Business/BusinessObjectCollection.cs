@@ -26,7 +26,6 @@ namespace Havit.Business
 		where TItem : BusinessObjectBase
 		where TCollection : BusinessObjectCollection<TItem, TCollection>, new()
 	{
-		#region Event - CollectionChanged
 		/// <summary>
 		/// Událost vyvolaná po jakékoliv zmìnì kolekce (Insert, Remove, Set, Clear).
 		/// </summary>
@@ -49,9 +48,7 @@ namespace Havit.Business
 				CollectionChanged(this, e);
 			}
 		}
-		#endregion
-		
-		#region AllowDuplicates
+
 		/// <summary>
 		/// Urèuje, zda je možné do kolekce vložit hodnotu, která již v kolekci je.
 		/// Pokud je nastaveno na true, pøidání hodnoty, která v kolekci již je, vyvolá výjimku.
@@ -77,9 +74,7 @@ namespace Havit.Business
 		}
 
 		private bool _allowDuplicates = true;
-		#endregion
-		
-		#region InsertItem (override)
+
 		/// <summary>
 		/// Inserts an element into the <see cref="T:System.Collections.ObjectModel.Collection`1"></see> at the specified index.
 		/// When AllowDuplicates is false, checks whether item already is in the collection. If so, throws an ArgumentException.
@@ -105,9 +100,7 @@ namespace Havit.Business
 
 			OnCollectionChanged(EventArgs.Empty);
 		}
-		#endregion
 
-		#region RemoveItem (override)
 		/// <summary>
 		/// Removes the element at the specified index of the <see cref="T:System.Collections.ObjectModel.Collection`1"></see>.
 		/// </summary>
@@ -119,9 +112,7 @@ namespace Havit.Business
 			base.RemoveItem(index);
 			OnCollectionChanged(EventArgs.Empty);
 		}
-		#endregion
 
-		#region SetItem (override)
 		/// <summary>
 		/// Replaces the element at the specified index.
 		/// When AllowDuplicates is false, checks whether item already is in the collection. If so, throws an ArgumentException.
@@ -149,9 +140,7 @@ namespace Havit.Business
 
 			OnCollectionChanged(EventArgs.Empty);
 		}
-		#endregion
 
-		#region ClearItems (override)
 		/// <summary>
 		/// Removes all elements from the <see cref="T:System.Collections.ObjectModel.Collection`1"></see>.
 		/// </summary>
@@ -165,9 +154,7 @@ namespace Havit.Business
 				OnCollectionChanged(EventArgs.Empty);
 			}
 		}
-		#endregion
 
-		#region Constructors
 		/// <summary>
 		/// Vytvoří novou instanci kolekce bez prvků - prázdnou.
 		/// </summary>
@@ -209,9 +196,7 @@ namespace Havit.Business
 				LoadAllRequired = this.Any(item => (item != null) && !item.IsLoaded);				
 			}
 		}
-		#endregion
 
-		#region FindByID
 		/// <summary>
 		/// Prohledá kolekci a vrátí první nalezený prvek s požadovaným ID.
 		/// </summary>
@@ -238,9 +223,7 @@ namespace Havit.Business
 
 			return result;
 		}
-		#endregion
 
-		#region Find
 		/// <summary>
 		/// Prohledá kolekci a vrátí první nalezený prvek odpovídající kritériu match.
 		/// </summary>
@@ -254,9 +237,7 @@ namespace Havit.Business
 			List<TItem> innerList = (List<TItem>)Items;
 			return innerList.Find(match);
 		}
-		#endregion
 
-		#region FindAll
 		/// <summary>
 		/// Prohledá kolekci a vrátí všechny prvky odpovídající kritériu match.
 		/// </summary>
@@ -275,9 +256,7 @@ namespace Havit.Business
 			result.AddRange(found);
 			return result;
 		}
-		#endregion
 
-		#region ForEach
 		/// <summary>
 		/// Spustí akci nad všemi prvky kolekce.
 		/// </summary>
@@ -296,9 +275,7 @@ namespace Havit.Business
 			List<TItem> innerList = (List<TItem>)Items;
 			innerList.ForEach(action);
 		}
-		#endregion
 
-		#region AddRange
 		/// <summary>
 		/// Pøidá do kolekce prvky pøedané kolekce.
 		/// </summary>
@@ -326,9 +303,7 @@ namespace Havit.Business
 				OnCollectionChanged(EventArgs.Empty);
 			}
 		}
-		#endregion
 
-		#region RemoveAll
 		/// <summary>
 		/// Odstraní z kolekce všechny prvky odpovídající kritériu match.
 		/// </summary>
@@ -350,9 +325,7 @@ namespace Havit.Business
 
 			return itemsRemovedCount;
 		}
-		#endregion
 
-		#region RemoveRange
 		/// <summary>
 		/// Odstraní z kolekce požadované prvky.
 		/// </summary>
@@ -376,9 +349,7 @@ namespace Havit.Business
 			}
 			return count;
 		}
-		#endregion
 
-		#region Sort
 		/// <summary>
 		/// Seøadí prvky kolekce dle požadované property, která implementuje IComparable.
 		/// </summary>
@@ -421,9 +392,7 @@ namespace Havit.Business
 			List<TItem> innerList = (List<TItem>)Items;
 			innerList.Sort(comparsion);
 		}
-		#endregion
 
-		#region SaveAll
 		/// <summary>
 		/// Uloží všechny prvky kolekce, v transakci (pokud je null, založí si samo novou).
 		/// </summary>
@@ -446,9 +415,7 @@ namespace Havit.Business
 		{
 			SaveAll(null);
 		}
-		#endregion
 
-		#region Freeze, ThrowIfFrozen, IsReadOnly
 		/// <summary>
 		/// Zamkne kolekci vůči změnám. Od toho okamžiku není možné změnit položky v kolekci.
 		/// </summary>
@@ -469,9 +436,7 @@ namespace Havit.Business
 				throw new InvalidOperationException("Kolekce je zamčena, nelze ji modifikovat.");
 			}
 		}
-		#endregion
 
-		#region GetIDs
 		/// <summary>
 		/// Vrátí pole hodnot ID všech prvkù kolekce.
 		/// </summary>
@@ -486,11 +451,9 @@ namespace Havit.Business
 			}
 			return array;
 		}
-		#endregion
 
 		/***********************************************************************/
 
-		#region CheckDuplicates (private)
 		/// <summary>
 		/// Vrací true, pokud kolekce obsahuje duplicity.
 		/// </summary>		
@@ -531,9 +494,7 @@ namespace Havit.Business
 			// nenašli jsme duplicitu
 			return false;			
 		}
-		#endregion
 
-		#region ICollection<TItem>.IsReadOnly
 		[SuppressMessage("Havit.StyleCop.Rules.HavitRules", "HA0002:MembersOrder", Justification = "Související kód ohledně readonly kolekcí je pohromadě.")]
 		bool ICollection<TItem>.IsReadOnly
 		{
@@ -542,11 +503,9 @@ namespace Havit.Business
 				return isFrozen;
 			}
 		}
-		#endregion
 
 		/***********************************************************************/
 
-		#region IDataBinderExtSetValue.SetValue
 		void IDataBinderExtSetValue.SetValue(object value)
 		{
 			if (value == null)
@@ -573,6 +532,5 @@ namespace Havit.Business
 				throw new NotSupportedException("Nepodařilo se nastavit hodnotu.");
 			}
 		}
-		#endregion
 	}
 }

@@ -8,12 +8,9 @@ namespace Havit.Business.BusinessLayerGenerator.CommandLine.Utility
 	/// </summary>
 	public class Arguments
 	{
-		#region Private fields
 		// Variables
 		private readonly StringDictionary parameters;
-		#endregion
 
-		#region Constructor
 		public Arguments(string[] args)
 		{
 			parameters = new StringDictionary();
@@ -103,9 +100,7 @@ namespace Havit.Business.BusinessLayerGenerator.CommandLine.Utility
 				}
 			}
 		}
-		#endregion
 
-		#region Indexer
 		// Retrieve a parameter value if it exists 
 		// (overriding C# indexer property)
 		public string this[string arg]
@@ -115,6 +110,5 @@ namespace Havit.Business.BusinessLayerGenerator.CommandLine.Utility
 				return (parameters[arg]);
 			}
 		}
-		#endregion
 	}
 }

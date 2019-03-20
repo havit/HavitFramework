@@ -17,12 +17,9 @@ namespace Havit.Services.Ares
 	/// </summary>
 	public class AresPrehledSubjektuService
 	{
-		#region Const
 		// http://wwwinfo.mfcr.cz/ares/ares_xml_es.html.cz
 		private const string AresEkonomickySubjektRequestUrl = "http://wwwinfo.mfcr.cz/cgi-bin/ares/ares_es.cgi?obch_jm={0}&obec={1}&cestina=cestina&maxpoc=200&filtr=1&setrid=OBCHJM";
-		#endregion
 
-		#region Private members
 		/// <summary>
 		/// název subjektu, kterého údaje chceme získat.
 		/// </summary>
@@ -32,9 +29,7 @@ namespace Havit.Services.Ares
 		/// Obec/Město, kde se subjekt nachází.
 		/// </summary>
 		private string Obec { get; set; }
-		#endregion
 
-		#region Timeout
 		/// <summary>
 		/// Timeout (v milisekundách) jednoho requestu při načítání dat z ARESu.
 		/// Pokud není hodnota nastavena, není délka requestu omezována (resp. je použito standardní nastavení .NETu).
@@ -43,9 +38,7 @@ namespace Havit.Services.Ares
 		{
 			get; set;
 		}
-		#endregion
 
-		#region GetData
 		/// <summary>
 		/// Vrací strukturovanou odpověd z obchodního rejstříku. Pouze existující subjekty, seřazené dle obchodního jména, max. 200 výsledků.
 		/// </summary>
@@ -78,17 +71,13 @@ namespace Havit.Services.Ares
 
 			return result;
 		}
-		#endregion
 
-		#region LoadEkonomickySubjektData
 		private void LoadEkonomickySubjektData(object state)
 		{
 			string requestUrl = String.Format(AresEkonomickySubjektRequestUrl, System.Web.HttpUtility.UrlEncode(Nazev, Encoding.GetEncoding("windows-1250")), System.Web.HttpUtility.UrlEncode(Obec, Encoding.GetEncoding("windows-1250")));
 			LoadData(requestUrl, state);
 		}
-		#endregion
 
-		#region LoadData
 		private void LoadData(String requestUrl, object state)
 		{
 			AresPrehledSubjektuResult result = (AresPrehledSubjektuResult)state;
@@ -120,9 +109,7 @@ namespace Havit.Services.Ares
 				this.ParseData(aresResponseXDocument, aresDT, result);
 			}
 		}
-		#endregion
 
-		#region ParseData
 		private void ParseData(XDocument aresResponse, XNamespace aresDT, AresPrehledSubjektuResult result)
 		{
 			// Výpis BASIC (element).
@@ -142,9 +129,7 @@ namespace Havit.Services.Ares
 				}
 			}
 		}
-		#endregion
 
-		#region GetAresResponseXDocument
 		/// <summary>
 		/// Odešle dotaz do obchodního rejstříku pro dané IČ a vrátí odpověd jako XDocument objekt.
 		/// </summary>
@@ -171,7 +156,5 @@ namespace Havit.Services.Ares
 
 			return aresResponseXDocument;
 		}
-		#endregion
-
 	}
 }

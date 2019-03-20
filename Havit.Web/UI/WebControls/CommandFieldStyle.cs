@@ -13,7 +13,6 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class CommandFieldStyle : IStateManager
 	{
-		#region Properties CommandFieldu
 		/// <summary>
 		/// Gets or sets text that is rendered as the AbbreviatedText property value in some controls.
 		/// </summary>
@@ -954,9 +953,6 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 
-		#region Tooltips
-
-		#region CancelTooltip
 		/// <summary>
 		/// Tooltip tlačítka pro zrušení editačního režimu bez úpravy záznamu (cancel).
 		/// </summary>
@@ -971,9 +967,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["CancelTooltip"] = value;
 			}
 		}
-		#endregion
 
-		#region DeleteTooltip
 		/// <summary>
 		/// Tooltip tlačítka pro smazání záznamu.
 		/// </summary>
@@ -990,9 +984,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["DeleteTooltip"] = value;
 			}
 		}
-		#endregion
 
-		#region EditTooltip
 		/// <summary>
 		/// Tooltip tlačítka pro vstup do editace záznamu.
 		/// </summary>
@@ -1009,9 +1001,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["EditTooltip"] = value;
 			}
 		}
-		#endregion
 
-		#region InsertTooltip
 		/// <summary>
 		/// Tooltip tlačítka pro vložení nového záznamu.
 		/// </summary>
@@ -1028,9 +1018,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["InsertTooltip"] = value;
 			}
 		}
-		#endregion
 
-		#region InsertTooltip
 		/// <summary>
 		/// Tooltip tlačítka pro vložení nového záznamu.
 		/// </summary>
@@ -1047,9 +1035,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["NewTooltip"] = value;
 			}
 		}
-		#endregion
 
-		#region SelectTooltip
 		/// <summary>
 		/// Tooltip tlačítka pro výběr řádku.
 		/// </summary>
@@ -1066,9 +1052,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["SelectTooltip"] = value;
 			}
 		}
-		#endregion
 
-		#region UpdateTooltip
 		/// <summary>
 		/// Tooltip  tlačítka pro potvrzení úpravy záznamu.
 		/// </summary>
@@ -1085,12 +1069,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["UpdateTooltip"] = value;
 			}
 		}
-		#endregion
-		#endregion
 
-		#region CssClasses
-
-		#region CancelCssClass
 		/// <summary>
 		/// CssClass povoleného tlačítka pro zrušení editačního režimu bez úpravy záznamu (cancel). Je-li hodnota vlastnosti CancelDisabledCssClass prázdná, použije se i pro zakázané tlačítko.
 		/// </summary>
@@ -1105,9 +1084,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["CancelCssClass"] = value;
 			}
 		}
-		#endregion
 
-		#region CancelDisabledCssClass
 		/// <summary>
 		/// CssClass zakázaného tlačítka pro zrušení editačního režimu bez úpravy záznamu (cancel). Je-li hodnota prázdná, použije se vlastnost CancelCssClass i pro zakázané tlačítko.
 		/// </summary>
@@ -1122,9 +1099,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["CancelDisabledCssClass"] = value;
 			}
 		}
-		#endregion
 
-		#region DeleteCssClass
 		/// <summary>
 		/// CssClass povoleného tlačítka pro smazání záznamu. Je-li hodnota vlastnosti DeleteDisabledCssClass prázdná, použije se i pro zakázané tlačítko.
 		/// </summary>
@@ -1141,9 +1116,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["DeleteCssClass"] = value;
 			}
 		}
-		#endregion
 
-		#region DeleteDisabledCssClass
 		/// <summary>
 		/// CssClass zakázaného tlačítka pro smazání záznamu. Je-li hodnota prázdná, použije se vlastnost DeleteCssClass i pro zakázané tlačítko.
 		/// </summary>
@@ -1160,9 +1133,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["DeleteDisabledCssClass"] = value;
 			}
 		}
-		#endregion
 
-		#region EditCssClass
 		/// <summary>
 		/// CssClass povolené tlačítka pro vstup do editace záznamu. Je-li hodnota vlastnosti EditDisabledCssClass prázdná, použije se i pro zakázané tlačítko.
 		/// </summary>
@@ -1179,9 +1150,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["EditCssClass"] = value;
 			}
 		}
-		#endregion
 
-		#region EditDisabledCssClass
 		/// <summary>
 		/// CssClass zakázané tlačítka pro vstup do editace záznamu. Je-li hodnota prázdná, použije se vlastnost EditCssClass i pro zakázané tlačítko.
 		/// </summary>
@@ -1198,9 +1167,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["EditDisabledCssClass"] = value;
 			}
 		}
-		#endregion
 
-		#region InsertCssClass
 		/// <summary>
 		/// CssClass povoleného tlačítka pro vložení nového záznamu. Je-li hodnota vlastnosti InsertDisabledCssClass prázdná, použije se i pro zakázané tlačítko.
 		/// </summary>
@@ -1217,9 +1184,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["InsertCssClass"] = value;
 			}
 		}
-		#endregion
 
-		#region InsertDisabledCssClass
 		/// <summary>
 		/// CssClass zakázaného tlačítka pro vložení nového záznamu. Je-li hodnota prázdná, použije se vlastnost InsertCssClass i pro zakázané tlačítko.
 		/// </summary>
@@ -1236,9 +1201,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["InsertDisabledCssClass"] = value;
 			}
 		}
-		#endregion
 
-		#region SelectCssClass
 		/// <summary>
 		/// CssClass povoleného tlačítka pro výběr řádku. Je-li hodnota vlastnosti SelectDisabledCssClass prázdná, použije se i pro zakázané tlačítko.
 		/// </summary>
@@ -1255,9 +1218,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["SelectCssClass"] = value;
 			}
 		}
-		#endregion
 
-		#region SelectDisabledCssClass
 		/// <summary>
 		/// CssClass zakázaného tlačítka pro výběr řádku. Je-li hodnota prázdná, použije se vlastnost SelectCssClass i pro zakázané tlačítko.
 		/// </summary>
@@ -1274,9 +1235,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["SelectDisabledCssClass"] = value;
 			}
 		}
-		#endregion
 
-		#region UpdateCssClass
 		/// <summary>
 		/// CssClass povoleného tlačítka pro potvrzení úpravy záznamu. Je-li hodnota vlastnosti UpdateDisabledCssClass prázdná, použije se i pro zakázané tlačítko.
 		/// </summary>
@@ -1347,7 +1306,6 @@ namespace Havit.Web.UI.WebControls
 				}
 			}
 		}
-		#endregion
 
 		/// <summary>
 		/// Gets or sets the CssClass for the header cell with new button in a CommandField field.
@@ -1403,7 +1361,6 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 
-		#region UpdateDisabledCssClass
 		/// <summary>
 		/// CssClass zakázaného tlačítka pro potvrzení úpravy záznamu. Je-li hodnota prázdná, použije se vlastnost UpdateCssClass i pro zakázané tlačítko.
 		/// </summary>
@@ -1420,13 +1377,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["UpdateDisabledCssClass"] = value;
 			}
 		}
-		#endregion
 
-		#endregion
-
-		#endregion
-
-		#region ViewState
 		/// <summary>
 		/// ViewState pro ukládání hodnot.
 		/// </summary>
@@ -1438,16 +1389,12 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		private readonly StateBag _viewState;
-		#endregion
 
-		#region PropertyChanged (event)
 		/// <summary>
 		/// Událost, která se zavolá při změně některé property.
 		/// </summary>
 		public event EventHandler PropertyChanged;
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Vytvoří instanci.
 		/// </summary>
@@ -1455,9 +1402,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			this._viewState = new StateBag();
 		}
-		#endregion
 
-		#region OnPropertyChanged 
 		/// <summary>
 		/// Zajišťuje spuštění události <see cref="PropertyChanged"/>.
 		/// </summary>
@@ -1468,9 +1413,7 @@ namespace Havit.Web.UI.WebControls
 				this.PropertyChanged(this, EventArgs.Empty);
 			}
 		}
-		#endregion
 
-		#region IStateManager interface implementation
 		bool IStateManager.IsTrackingViewState
 		{
 			get
@@ -1545,7 +1488,5 @@ namespace Havit.Web.UI.WebControls
 				((IStateManager)this._controlStyle).TrackViewState();
 			}
 		}
-		#endregion
-
 	}
 }

@@ -13,7 +13,6 @@ namespace Havit.Data.Entity.Glimpse.SerializationConverters
 	/// </summary>
 	public class EfTabDataSerializationConverter : SerializationConverter<EntityFrameworkTabData>
 	{
-		#region Convert
 		public override object Convert(EntityFrameworkTabData data)
 		{
 			var section = new TabSection("Operation", "Command Text", "Parameters", "Async", "Result", "Duration"); // záhlaví sloupců
@@ -33,9 +32,7 @@ namespace Havit.Data.Entity.Glimpse.SerializationConverters
 			
 			return section.Build();
 		}
-		#endregion
 
-		#region GetParametersSection
 		/// <summary>
 		/// Converts data for DbCommandTraceData.Parameters.
 		/// </summary>
@@ -57,9 +54,7 @@ namespace Havit.Data.Entity.Glimpse.SerializationConverters
 			}
 			return section;
 		}
-		#endregion
 
-		#region GetDisplayValue
 		/// <summary>
 		/// Konvertuje hodnotu null a DBNull.Value na zobrazitelný text.
 		/// </summary>
@@ -83,6 +78,5 @@ namespace Havit.Data.Entity.Glimpse.SerializationConverters
 				return data;
 			}
 		}
-		#endregion
 	}
 }

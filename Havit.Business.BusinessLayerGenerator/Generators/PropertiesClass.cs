@@ -11,7 +11,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 {
 	public static class PropertiesClass
 	{
-		#region Generate
 		public static void Generate(Table table, CsprojFile csprojFile)
 		{
 			RenameObsoleteFileIfExists(table, csprojFile);
@@ -212,9 +211,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 
 			writer.Save();
 		}
-		#endregion
 
-		#region RenameObsoleteFileIfExists
 		private static void RenameObsoleteFileIfExists(Table table, CsprojFile csprojFile)
 		{
 			string oldFilename = FileHelper.GetFilename(table, "PropertiesBase.cs", FileHelper.GeneratedFolder);
@@ -234,7 +231,5 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				System.IO.File.Delete(FileHelper.ResolvePath(oldFilename));
 			}
 		}
-		#endregion
-
 	}
 }

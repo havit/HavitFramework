@@ -8,7 +8,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 {
 	public static class BusinessObjectMoneyProperties
 	{
-		#region Write
 		public static void Write(CodeWriter writer, Table table)
 		{
 			string[] moneys = MoneyHelper.GetListMoneyProperties(table);
@@ -24,9 +23,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			}
 
 		}
-		#endregion
 
-		#region WriteMoneyProperty
 		private static void WriteMoneyProperty(CodeWriter writer, Table table, string moneyProperty)
 		{
 			string moneyField = MoneyHelper.GetMoneyFieldName(moneyProperty);
@@ -108,6 +105,5 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine(String.Format("private bool {0}IsUpToDate;", moneyField));
 			writer.WriteLine();
 		}
-		#endregion
 	}
 }

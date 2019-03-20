@@ -9,7 +9,6 @@ namespace Havit.Web.UI.Scriptlets
 	/// </summary>
 	public class ClientScriptSubstituingEventArgs : EventArgs
 	{
-		#region Constructor
 		/// <summary>
 		/// Konstuktor.
 		/// </summary>
@@ -18,9 +17,7 @@ namespace Havit.Web.UI.Scriptlets
 		{
 			this.clientScript = clientScript;
 		}
-		#endregion
 
-		#region ClientScript
 		/// <summary>
 		/// Klientský skript k substituci.
 		/// </summary>
@@ -30,6 +27,5 @@ namespace Havit.Web.UI.Scriptlets
 			set { clientScript = value; }
 		}
 		private string clientScript;
-		#endregion
 	}
 }

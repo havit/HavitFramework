@@ -10,7 +10,6 @@ namespace Havit.PayPal
 	/// </summary>
 	public class PayPalApiCredentials
 	{
-		#region Properties
 		/// <summary>
 		/// Url pro volání PayPal API.
 		/// </summary>
@@ -34,10 +33,8 @@ namespace Havit.PayPal
 		/// <summary>
 		/// Verze PayPal API (vrací aktuální verzi API pro použití v Havit.PayPal).
 		/// </summary>
-		public string ApiVersion { get { return "63.0"; } }		
-		#endregion
+		public string ApiVersion { get { return "63.0"; } }
 
-		#region Constructor
 		/// <summary>
 		/// Vytvoří instanci třídy PayPalApiCredentials.		
 		/// </summary>
@@ -52,6 +49,5 @@ namespace Havit.PayPal
 			this.ApiPassword = apiPassword;
 			this.ApiSignature = apiSignature;			
 		}
-		#endregion
 	}
 }

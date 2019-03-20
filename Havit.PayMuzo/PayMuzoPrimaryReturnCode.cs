@@ -11,7 +11,6 @@ namespace Havit.PayMuzo
 	/// </summary>
 	public class PayMuzoPrimaryReturnCode : PayMuzoReturnCode
 	{
-		#region Return Codes
 		public static PayMuzoPrimaryReturnCode Ok { get { return FindByValue(0); } }
 		public static PayMuzoPrimaryReturnCode FieldTooLong { get { return FindByValue(1); } }
 		public static PayMuzoPrimaryReturnCode FieldTooShort { get { return FindByValue(2); } }
@@ -30,9 +29,7 @@ namespace Havit.PayMuzo
 		public static PayMuzoPrimaryReturnCode DeclinedInAuthorizationCenter { get { return FindByValue(30); } }
 		public static PayMuzoPrimaryReturnCode WrongDigest { get { return FindByValue(31); } }
 		public static PayMuzoPrimaryReturnCode TechnicalProblem { get { return FindByValue(1000); } }
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Vytvoří instanci <see cref="PayMuzoPrimaryReturnCode"/>.
 		/// </summary>
@@ -43,9 +40,7 @@ namespace Havit.PayMuzo
 			: base(value, csText, enText)
 		{
 		}
-		#endregion
 
-		#region Static constructor
 		/// <summary>
 		/// Statický constructor
 		/// </summary>
@@ -70,9 +65,7 @@ namespace Havit.PayMuzo
 			RegisterCode(new PayMuzoPrimaryReturnCode(31, "Chybný podpis", "Wrong digest"));
 			RegisterCode(new PayMuzoPrimaryReturnCode(1000, "Technický problém", "Technical problem"));
 		}
-		#endregion
 
-		#region FindByValue
 		/// <summary>
 		/// Najde instanci podle numerické hodnoty kódu. Pokud není nalezen, vrací <c>null</c>.
 		/// </summary>
@@ -81,7 +74,6 @@ namespace Havit.PayMuzo
 		{
 			return PayMuzoReturnCode.FindByValueInternal<PayMuzoPrimaryReturnCode>(value);
 		}
-		#endregion
 	}
 }
 #pragma warning restore 1591

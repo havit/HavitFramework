@@ -11,7 +11,6 @@ namespace Havit.Web.UI
 	[Serializable]
 	public class ViewStateLoadFailedException : Exception
 	{
-		#region Constructors
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
@@ -37,7 +36,5 @@ namespace Havit.Web.UI
 		{
 
 		}
-		#endregion
-
 	}
 }

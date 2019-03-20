@@ -4,8 +4,7 @@ using System.Text;
 
 namespace Havit.Web.UI.WebControls
 {
-    #region MessageType (enum)
-    /// <summary>
+	/// <summary>
     /// Typ zprávy Messengeru.
     /// </summary>
     public enum MessageType
@@ -25,5 +24,4 @@ namespace Havit.Web.UI.WebControls
         /// </summary>
         Error = 2
     }
-    #endregion
 }

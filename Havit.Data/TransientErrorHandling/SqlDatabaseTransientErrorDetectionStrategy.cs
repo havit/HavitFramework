@@ -12,8 +12,6 @@ namespace Havit.Data
 	/// </summary>
 	public static class SqlDatabaseTransientErrorDetectionStrategy
 	{
-		#region ProcessNetLibErrorCode enumeration
-
 		/// <summary>
 		/// Error codes reported by the DBNETLIB module.
 		/// </summary>
@@ -65,10 +63,6 @@ namespace Havit.Data
 
 			EncryptionNotSupported = 20
 		}
-
-		#endregion
-
-		#region ITransientErrorDetectionStrategy implementation
 
 		/// <summary>
 		/// Determines whether the specified exception represents a transient failure that can be compensated by a retry.
@@ -182,7 +176,5 @@ namespace Havit.Data
 
 			return false;
 		}
-
-		#endregion
 	}
 }

@@ -10,7 +10,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 {
 	public static class CollectionBaseClass
 	{
-		#region Generate
 		public static void Generate(Table table, CsprojFile csprojFile)
 		{
 			string fileName = FileHelper.GetFilename(table, "CollectionBase.cs", FileHelper.GeneratedFolder);
@@ -38,17 +37,13 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			
 			writer.Save();
 		}
-		#endregion
 
-		#region WriteNamespaceBegin
 		public static void WriteNamespaceBegin(CodeWriter writer, Table table)
 		{
 			writer.WriteLine(String.Format("namespace {0}", NamespaceHelper.GetNamespaceName(table)));
 			writer.WriteLine("{");
 		}
-		#endregion
 
-		#region WriteClassBegin
 		private static void WriteClassBegin(CodeWriter writer, Table table)
 		{
 			string interfaces = "";
@@ -66,23 +61,17 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				interfaces));
 			writer.WriteLine("{");
 		}
-		#endregion
 
-		#region WriteClassEnd
 		public static void WriteClassEnd(CodeWriter writer)
 		{
 			writer.WriteLine("}");
 		}
-		#endregion
 
-		#region WriteNamespaceEnd
 		public static void WriteNamespaceEnd(CodeWriter writer)
 		{
 			writer.WriteLine("}");
 		}
-		#endregion
 
-		#region WriteFind
 		private static void WriteFind(CodeWriter writer, Table table)
 		{
 			writer.WriteOpenRegion("Find & FindAll");
@@ -103,9 +92,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 
 			writer.WriteCloseRegion();
 		}
-		#endregion
 
-		#region WriteSort
 		private static void WriteSort(CodeWriter writer, Table table)
 		{
 			writer.WriteOpenRegion("Sort");
@@ -160,9 +147,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteCloseRegion();
 
 		}
-		#endregion
 
-		#region WriteLoadAll
 		private static void WriteLoadAll(CodeWriter writer, Table table)
 		{
 			bool loadAllLocalizations = (LocalizationHelper.IsLocalizedTable(table) && (TableHelper.GetLoadAllIncludeLocalizations(table)));
@@ -268,9 +253,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine("}"); // method
 			writer.WriteCloseRegion();
 		}
-		#endregion
 
-		#region WriteConstructors
 		public static void WriteConstructors(CodeWriter writer, Table table, bool baseClass)
 		{
 			string className = ClassHelper.GetClassName(table);
@@ -304,7 +287,5 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 
 			writer.WriteCloseRegion();
 		}
-		#endregion
-
 	}
 }

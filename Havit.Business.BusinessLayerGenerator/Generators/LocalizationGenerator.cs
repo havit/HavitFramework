@@ -8,7 +8,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 {
 	public static class LocalizationGenerator
 	{
-		#region WriteLocalization
 		public static void WriteLocalization(CodeWriter writer, Table table)
 		{
 			if (LocalizationHelper.IsLocalizedTable(table))
@@ -49,6 +48,5 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				writer.WriteCloseRegion();
 			}
 		}
-		#endregion
 	}
 }

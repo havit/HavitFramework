@@ -15,7 +15,6 @@ namespace Havit.Web.UI.WebControls
 
 	public abstract class DataBoundControlWithHiddenPublicMembersFromIntellisence : DataBoundControl
 	{
-		#region Properties
 		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public override string AccessKey
@@ -273,17 +272,13 @@ namespace Havit.Web.UI.WebControls
 				base.Width = value;
 			}
 		}
-		#endregion
 
-		#region Methods
 		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		public override void DataBind()
 		{
 			base.DataBind();
 		}
-		#endregion
 
-		#region Events
 		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		public new event CreatingModelDataSourceEventHandler CreatingModelDataSource
 		{
@@ -335,7 +330,6 @@ namespace Havit.Web.UI.WebControls
 				base.DataBinding -= value;
 			}
 		}
-		#endregion
 	}
 
 	#pragma warning restore 1591

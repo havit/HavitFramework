@@ -14,7 +14,6 @@ namespace Havit.Web.Services.Extensions
 	/// </summary>
 	public abstract class SoapExceptionExceptionHandler : System.Web.Services.Protocols.SoapExtension
 	{
-		#region ProcessMessage
 		/// <summary>
 		/// When overridden in a derived class, allows a SOAP extension to receive a <see cref="T:System.Web.Services.Protocols.SoapMessage"/> to process at each <see cref="T:System.Web.Services.Protocols.SoapMessageStage"/>.
 		/// </summary>
@@ -36,16 +35,12 @@ namespace Havit.Web.Services.Extensions
 				// NOOP
 			}
 		}
-		#endregion
 
-		#region ProcessMessageException
 		/// <summary>
 		/// Je voláno, pokud SoapMessage obsahuje výjimku.
 		/// </summary>
 		protected abstract void ProcessMessageException(System.Web.Services.Protocols.SoapMessage message);
-		#endregion
 
-		#region GetInitializer
 		/// <summary>
 		/// When overridden in a derived class, allows a SOAP extension to initialize data specific to a class implementing an XML Web service at a one time performance cost.
 		/// </summary>
@@ -69,9 +64,7 @@ namespace Havit.Web.Services.Extensions
 		{
 			return null;
 		}
-		#endregion
 
-		#region Initialize
 		/// <summary>
 		/// When overridden in a derived class, allows a SOAP extension to initialize itself using the data cached in the <see cref="M:System.Web.Services.Protocols.SoapExtension.GetInitializer(System.Web.Services.Protocols.LogicalMethodInfo,System.Web.Services.Protocols.SoapExtensionAttribute)"/> method.
 		/// </summary>
@@ -80,7 +73,6 @@ namespace Havit.Web.Services.Extensions
 		{
 			// NOOP
 		}
-		#endregion
 	}
 
 }

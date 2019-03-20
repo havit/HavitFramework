@@ -10,14 +10,12 @@ namespace Havit.Business.Query
 	/// </summary>
 	public static class EmptyCondition
 	{
-		#region Create
 		/// <summary>
 		/// Vytvoří podmínku reprezentující prázdnou podmínku (nic není testováno). Nyní vrací null.
 		/// </summary>
 		public static Condition Create()
 		{
 			return null;
-		} 
-		#endregion
+		}
 	}
 }

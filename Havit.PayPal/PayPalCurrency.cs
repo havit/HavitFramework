@@ -11,7 +11,6 @@ namespace Havit.PayPal
 	/// </summary>
 	public class PayPalCurrency
 	{
-		#region Hodnoty měn
 		/// <summary>
 		/// CZK, 203, Koruna česká.
 		/// </summary>
@@ -46,9 +45,7 @@ namespace Havit.PayPal
 		/// CAD
 		/// </summary>
 		public static PayPalCurrency Cad { get { return FindByCurrencyCode("CAD"); } }
-		#endregion
 
-		#region Properties
 		/// <summary>
 		/// Kód měny, např. "CZK". 
 		/// </summary>
@@ -66,10 +63,7 @@ namespace Havit.PayPal
 			get { return _numericCode; }
 		}
 		private readonly int _numericCode;
-		
-		#endregion
 
-		#region Constructors
 		/// <summary>
 		/// Initializes a new instance of the <see cref="PayPalCurrency"/> class.
 		/// https://cms.paypal.com/us/cgi-bin/?cmd=_render-content&amp;content_ID=developer/e_howto_api_nvp_currency_codes
@@ -81,19 +75,15 @@ namespace Havit.PayPal
 			_code = code;
 			_numericCode = numericCode;			
 		}
-		#endregion
 
 		/*******************************************************************************************************/
 
-		#region currencyCodes, numericCodes (static, private)
 		/// <summary>
 		/// Hashtabulky s unikátními sdílenými instancemi.
 		/// </summary>		
 		private static readonly Hashtable currencyCodes;
 		private static readonly Hashtable numericCodes;
-		#endregion
 
-		#region Static constructor
 		/// <summary>
 		/// Statický constructor
 		/// </summary>
@@ -110,9 +100,7 @@ namespace Havit.PayPal
 			RegisterCurrency(new PayPalCurrency("PLN", 985));
 			RegisterCurrency(new PayPalCurrency("CAD", 124));
 		}
-		#endregion
 
-		#region RegisterCurrency (static, private)
 		/// <summary>
 		/// Zaregistruje měnu do interní Hashtable.
 		/// </summary>
@@ -134,9 +122,7 @@ namespace Havit.PayPal
 				numericCodes.Add(currency.NumericCode, currency);
 			}	
 		}
-		#endregion
 
-		#region FindByCurrencyCode
 		/// <summary>
 		/// Najde měnu podle numerického kódu a vrátí ji. Pokud není nalezena, vrací <c>null</c>.
 		/// </summary>
@@ -145,9 +131,7 @@ namespace Havit.PayPal
 		{
 			return (PayPalCurrency)numericCodes[numericCode];
 		}
-		#endregion
 
-		#region FindByCurrencyCode
 		/// <summary>
 		/// Najde měnu podle třípísmenového kódu měny dle ISO 4217.
 		/// </summary>
@@ -156,6 +140,5 @@ namespace Havit.PayPal
 		{
 			return (PayPalCurrency)currencyCodes[currencyCode.ToUpper()];		
 		}
-		#endregion
 	}
 }

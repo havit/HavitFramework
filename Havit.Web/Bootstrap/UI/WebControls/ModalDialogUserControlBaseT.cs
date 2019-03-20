@@ -17,7 +17,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	[SuppressMessage("StyleCop.Analyzers", "SA1649", Justification = "Máme i negenerickou variantu (viz předek), která je v požadovaném souboru.")]
 	public class ModalDialogUserControlBase<T> : ModalDialogUserControlBase
 	{
-		#region OnDialogShown
 		/// <summary>
 		/// Sets result value to type T default value.
 		/// </summary>
@@ -26,9 +25,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			base.OnDialogShown(eventArgs);
 			Result = default(T);
 		}
-		#endregion
 
-		#region Result
 		/// <summary>
 		/// User result of modal dialog activity.
 		/// Result value is automatically reset when the dialog in shown, it is set to the type T default value.
@@ -45,6 +42,5 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ViewState["Result"] = value;
 			}
 		}
-		#endregion
 	}
 }

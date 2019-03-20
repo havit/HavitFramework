@@ -10,11 +10,8 @@ namespace Havit.PayMuzo
 	/// </summary>
 	public abstract class PayMuzoReturnCode
 	{
-		#region Private fields
 		private static readonly Hashtable codeTypes = new Hashtable();
-		#endregion
 
-		#region Properties
 		/// <summary>
 		/// Český význam.
 		/// </summary>
@@ -44,9 +41,7 @@ namespace Havit.PayMuzo
 			set { _value = value; }
 		}
 		private int _value;
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Vytvoří instanci return-code a nastaví počáteční hodnoty.
 		/// </summary>
@@ -59,9 +54,7 @@ namespace Havit.PayMuzo
 			this._csText = csText;
 			this._enText = enText;
 		}
-		#endregion
 
-		#region FindByValue (static)
 		/// <summary>
 		/// Najde kód a vrátí ho. Pokud není nalezen, vrací <c>null</c>.
 		/// </summary>
@@ -77,9 +70,7 @@ namespace Havit.PayMuzo
 			}
 			return (T)codes[value];
 		}
-		#endregion
 
-		#region RegisterCode (static)
 		/// <summary>
 		/// Zaregistruje return-code do interní Hashtable.
 		/// </summary>
@@ -96,6 +87,5 @@ namespace Havit.PayMuzo
 				codes.Add(code.Value, code);
 			}
 		}
-		#endregion
 	}
 }

@@ -15,7 +15,6 @@ namespace Havit.Web.UI
 	/// </summary>
 	public static class ScriptResourceMappingExt
 	{
-		#region EnsureScriptRegistration
 		/// <summary>
 		/// Zajistí registraci ClientScriptResource.
 		/// </summary>
@@ -43,9 +42,7 @@ namespace Havit.Web.UI
 					break;
 			}
 		}
-		#endregion
 
-		#region TryEnsureScriptRegistration
 		/// <summary>
 		/// Pokusí se zaregistrovat ClientScriptResource. Pokud neuspěje, vrací false.
 		/// </summary>
@@ -80,9 +77,7 @@ namespace Havit.Web.UI
 				return TryEnsureScriptRegistrationResult.OK;
 			}
 		}
-		#endregion
 
-		#region EnsureScriptRegistrationForEmbeddedResource
 		/// <summary>
 		/// Zajistí registraci ClientScriptResource pomocí ScriptResourceMappingu pro embedded resource.
 		/// </summary>
@@ -151,7 +146,5 @@ namespace Havit.Web.UI
 
 			EnsureScriptRegistrationForEmbeddedResource(scriptResourceMapping, control.Page, control, type, embeddedResourceName);
 		}
-		#endregion
-
 	}
 }

@@ -15,7 +15,6 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class TextBoxExt : System.Web.UI.WebControls.TextBox
 	{
-		#region AddAttributesToRender
 		/// <summary>
 		/// Adds HTML attributes and styles that need to be rendered to the specified HtmlTextWriterTag.
 		/// </summary>
@@ -35,9 +34,7 @@ namespace Havit.Web.UI.WebControls
 
 			base.AddAttributesToRender(writer);
 		}
-		#endregion		
 
-		#region Render
 		/// <summary>
 		/// Zajistí přidání atributu autocomplete="off" pro IE lt;10.
 		/// </summary>
@@ -54,6 +51,5 @@ namespace Havit.Web.UI.WebControls
 			// nyní provedeme skutečné vyrenderování controlu
 			base.Render(writer);
 		}
-		#endregion
 	}
 }

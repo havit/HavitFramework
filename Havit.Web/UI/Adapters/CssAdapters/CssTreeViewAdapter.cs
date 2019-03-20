@@ -25,14 +25,11 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 	/// </remarks>
 	public class CssTreeViewAdapter : System.Web.UI.WebControls.Adapters.HierarchicalDataBoundControlAdapter, IPostBackEventHandler, IPostBackDataHandler
 	{
-		#region Private fields
 		private int _checkboxIndex = 1;
 		private readonly HiddenField _viewState = null;
 		private bool _updateViewState = false;
 		private string _newViewState = "";
-		#endregion
 
-		#region Extender
 		private WebControlAdapterExtender Extender
 		{
 			get
@@ -48,9 +45,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 			}
 		}
 		private WebControlAdapterExtender _extender = null;
-		#endregion
 
-		#region Constructor
 		public CssTreeViewAdapter()
 		{
 			if (_viewState == null)
@@ -58,17 +53,13 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				_viewState = new HiddenField();
 			}
 		}
-		#endregion
 
-		#region LoadPostData
 		// Implementation of IPostBackDataHandler
 		public virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
 		{
 			return true;
 		}
-		#endregion
 
-		#region RaisePostDataChangedEvent
 		public virtual void RaisePostDataChangedEvent()
 		{
 			TreeView treeView = Control as TreeView;
@@ -79,9 +70,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				UpdateCheckmarks(items);
 			}
 		}
-		#endregion
 
-		#region RaisePostBackEvent
 		// Implementation of IPostBackEventHandler
 		public void RaisePostBackEvent(string eventArgument)
 		{
@@ -123,9 +112,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				}
 			}
 		}
-		#endregion
 
-		#region SaveAdapterViewState
 		protected override Object SaveAdapterViewState()
 		{
 			string retStr = "";
@@ -144,9 +131,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 			}
 			return retStr;
 		}
-		#endregion
 
-		#region LoadAdapterViewState
 		protected override void LoadAdapterViewState(Object state)
 		{
 			TreeView treeView = Control as TreeView;
@@ -167,9 +152,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				}
 			}
 		}
-		#endregion
 
-		#region OnInit
 		protected override void OnInit(EventArgs e)
 		{
 			if (Extender.AdapterEnabled)
@@ -192,9 +175,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				RegisterStyles();
 			}
 		}
-		#endregion
 
-		#region OnLoad
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
@@ -207,9 +188,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				_updateViewState = false;
 			}
 		}
-		#endregion
 
-		#region RegisterScripts
 		private void RegisterScripts()
 		{
 			Extender.RegisterScripts();
@@ -225,9 +204,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 			//string filePath = folderPath.EndsWith("/") ? folderPath + "TreeViewAdapter.js" : folderPath + "/TreeViewAdapter.js";
 			//Page.ClientScript.RegisterClientScriptInclude(GetType(), GetType().ToString(), Page.ResolveUrl(filePath));
 		}
-		#endregion
 
-		#region RegisterStyles
 		private void RegisterStyles()
 		{
 			HttpContext context = HttpContext.Current;
@@ -248,9 +225,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				}
 			}
 		}
-		#endregion
 
-		#region RenderBeginTag
 		protected override void RenderBeginTag(HtmlTextWriter writer)
 		{
 			if (Extender.AdapterEnabled)
@@ -262,9 +237,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				base.RenderBeginTag(writer);
 			}
 		}
-		#endregion
 
-		#region RenderEndTag
 		protected override void RenderEndTag(HtmlTextWriter writer)
 		{
 			if (Extender.AdapterEnabled)
@@ -276,9 +249,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				base.RenderEndTag(writer);
 			}
 		}
-		#endregion
 
-		#region RenderContents
 		protected override void RenderContents(HtmlTextWriter writer)
 		{
 			if (Extender.AdapterEnabled)
@@ -298,9 +269,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				base.RenderContents(writer);
 			}
 		}
-		#endregion
 
-		#region BuildItems
 		private void BuildItems(TreeNodeCollection items, bool isRoot, bool isExpanded, HtmlTextWriter writer)
 		{
 			if (items.Count > 0)
@@ -330,9 +299,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				writer.WriteEndTag("ul");
 			}
 		}
-		#endregion
 
-		#region BuildItem
 		private void BuildItem(TreeNode item, HtmlTextWriter writer)
 		{
 			TreeView treeView = Control as TreeView;
@@ -373,9 +340,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				writer.WriteEndTag("li");
 			}
 		}
-		#endregion
 
-		#region WriteNodeExpander
 		private void WriteNodeExpander(TreeView treeView, TreeNode item, HtmlTextWriter writer)
 		{
 			writer.WriteBeginTag("span");
@@ -393,9 +358,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 			writer.WriteEndTag("span");
 			writer.WriteLine();
 		}
-		#endregion
 
-		#region WriteNodeImage
 		private void WriteNodeImage(TreeView treeView, TreeNode item, HtmlTextWriter writer)
 		{
 			string imgSrc = GetImageSrc(treeView, item);
@@ -407,9 +370,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				writer.Write(HtmlTextWriter.SelfClosingTagEnd);
 			}
 		}
-		#endregion
 
-		#region WriteNodeCheckbox
 		private void WriteNodeCheckbox(TreeView treeView, TreeNode item, HtmlTextWriter writer)
 		{
 			writer.WriteBeginTag("input");
@@ -440,9 +401,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 
 			_checkboxIndex++;
 		}
-		#endregion
 
-		#region WriteNodeLink
 		private void WriteNodeLink(TreeView treeView, TreeNode item, HtmlTextWriter writer)
 		{
 			writer.WriteBeginTag("a");
@@ -489,9 +448,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 			writer.Indent--;
 			writer.WriteEndTag("a");
 		}
-		#endregion
 
-		#region WriteNodePlain
 		private void WriteNodePlain(TreeView treeView, TreeNode item, HtmlTextWriter writer)
 		{
 			writer.WriteBeginTag("span");
@@ -517,9 +474,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 			writer.Indent--;
 			writer.WriteEndTag("span");
 		}
-		#endregion
 
-		#region UpdateCheckmarks
 		private void UpdateCheckmarks(TreeNodeCollection items)
 		{
 			TreeView treeView = Control as TreeView;
@@ -546,16 +501,12 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				}
 			}
 		}
-		#endregion
 
-		#region IsLink
 		private bool IsLink(TreeNode item)
 		{
 			return (item != null) && ((!String.IsNullOrEmpty(item.NavigateUrl)) || item.PopulateOnDemand || (item.SelectAction == TreeNodeSelectAction.Select) || (item.SelectAction == TreeNodeSelectAction.SelectExpand));
 		}
-		#endregion
 
-		#region IsCheckbox
 		private bool IsCheckbox(TreeView treeView, TreeNode item)
 		{
 			bool bItemCheckBoxDisallowed = (item.ShowCheckBox != null) && (item.ShowCheckBox.Value == false);
@@ -568,9 +519,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 
 			return (!bItemCheckBoxDisallowed) && (bItemCheckBoxWanted || bTreeCheckBoxWanted);
 		}
-		#endregion
 
-		#region GetNodeClass
 		private string GetNodeClass(TreeNode item)
 		{
 			string value = "AspNet-TreeView-Leaf";
@@ -607,9 +556,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 			}
 			return value;
 		}
-		#endregion
 
-		#region GetImageSrc
 		private string GetImageSrc(TreeView treeView, TreeNode item)
 		{
 			string imgSrc = "";
@@ -654,23 +601,17 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 
 			return imgSrc;
 		}
-		#endregion
 
-		#region HasChildren
 		private bool HasChildren(TreeNode item)
 		{
 			return ((item != null) && ((item.ChildNodes != null) && (item.ChildNodes.Count > 0)));
 		}
-		#endregion
 
-		#region IsExpandable
 		private bool IsExpandable(TreeNode item)
 		{
 			return (HasChildren(item) || ((item != null) && item.PopulateOnDemand));
 		}
-		#endregion
 
-		#region ClearSelectedNode
 		private void ClearSelectedNode(TreeNodeCollection nodes)
 		{
 			if (nodes != null)
@@ -688,9 +629,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				}
 			}
 		}
-		#endregion
 
-		#region IsChildNodeSelected
 		private bool IsChildNodeSelected(TreeNode item)
 		{
 			bool bRet = false;
@@ -702,9 +641,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 
 			return bRet;
 		}
-		#endregion
 
-		#region IsChildNodeSelected
 		private bool IsChildNodeSelected(TreeNodeCollection nodes)
 		{
 			bool bRet = false;
@@ -723,9 +660,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 
 			return bRet;
 		}
-		#endregion
 
-		#region IsParentNodeSelected
 		private bool IsParentNodeSelected(TreeNode item)
 		{
 			bool bRet = false;
@@ -744,9 +679,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 
 			return bRet;
 		}
-		#endregion
 
-		#region ComposeViewState
 		private string ComposeViewState(TreeNodeCollection nodes, string state)
 		{
 			if (nodes != null)
@@ -770,9 +703,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 
 			return state;
 		}
-		#endregion
 
-		#region ExpandToState
 		private string ExpandToState(TreeNodeCollection nodes, string state)
 		{
 			if ((nodes != null) && (!String.IsNullOrEmpty(state)))
@@ -794,9 +725,7 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 
 			return state;
 		}
-		#endregion
 
-		#region ExpandToDepth
 		static public void ExpandToDepth(TreeNodeCollection nodes, int expandDepth)
 		{
 			if (nodes != null)
@@ -811,7 +740,6 @@ namespace Havit.Web.UI.Adapters.CssAdapters
 				}
 			}
 		}
-		#endregion
-    }
+	}
 }
 #pragma warning restore 1591

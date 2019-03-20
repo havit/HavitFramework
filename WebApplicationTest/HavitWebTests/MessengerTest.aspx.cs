@@ -10,23 +10,18 @@ namespace Havit.WebApplicationTest.HavitWebTests
 {
 	public partial class MessengerTest : System.Web.UI.Page
 	{
-		#region OnInit
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
 			MessagesButton.Click += new EventHandler(MessagesButton_Click);
 			MessagesWithRedirectButton.Click += new EventHandler(MessagesWithRedirectButton_Click);
 		}
-		#endregion
 
-		#region MessagesButton_Click
 		private void MessagesButton_Click(object sender, EventArgs e)
 		{
 			AddMessages();
 		}
-		#endregion
 
-		#region MessagesWithRedirectButton_Click
 		private void MessagesWithRedirectButton_Click(object sender, EventArgs e)
 		{
 			AddMessages();
@@ -34,9 +29,7 @@ namespace Havit.WebApplicationTest.HavitWebTests
 			builder.Add("AfterRedirect", "Yes");
 			Response.Redirect(builder.GetUrlWithQueryString(Request.RawUrl));
 		}
-		#endregion
 
-		#region AddMessages
 		private void AddMessages()
 		{
 			Messenger.Default.AddMessage("1- Je právě: " + DateTime.Now.ToString("g"));
@@ -45,7 +38,5 @@ namespace Havit.WebApplicationTest.HavitWebTests
 			Messenger.Default.AddMessage(MessageType.Error, "4- Error message\"s testing single quotation mark.");
 			Messenger.Default.AddMessage(MessageType.Error, "5- Error message'\"\"'s testing single quotation mark.");
 		}
-		#endregion
-
 	}
 }

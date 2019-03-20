@@ -9,18 +9,13 @@ namespace Havit.Web.UI
 	/// </summary>
 	internal class FilePageStatePersisterLogService : FilePageStatePersister.ILogService
 	{
-		#region Prifate fields
 		private readonly TraceSource traceSource;
-		#endregion
 
-		#region Constructor
 		public FilePageStatePersisterLogService()
 		{
 			traceSource = new TraceSource("FilePageStatePersister", SourceLevels.All);				
 		}
-		#endregion
 
-		#region Log
 		/// <summary>
 		/// Zapíše zprávu do logu.
 		/// </summary>
@@ -29,6 +24,5 @@ namespace Havit.Web.UI
 			traceSource.TraceInformation(message);
 			traceSource.Flush();
 		}
-		#endregion
 	}
 }

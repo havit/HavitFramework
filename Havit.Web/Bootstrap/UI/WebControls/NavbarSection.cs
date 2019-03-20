@@ -19,14 +19,11 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	[ParseChildren(true)]
 	public class NavbarSection : Control
 	{
-		#region Private fields
 		/// <summary>
 		/// Nested NavbarSectionInternal control.
 		/// </summary>
 		private readonly NavbarSectionInternal _navbarSectionInternal;
-		#endregion
 
-		#region MenuItems
 		/// <summary>
 		///  Navbar items.
 		/// </summary>
@@ -35,9 +32,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			get { return _navbarSectionInternal.MenuItems; }
 		}
-		#endregion
 
-		#region DataSource, DataSourceID
 		/// <summary>
 		/// Gets or sets the data source for menu items.
 		/// </summary>		
@@ -55,9 +50,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			get { return _navbarSectionInternal.DataSourceID; }
 			set { _navbarSectionInternal.DataSourceID = value; }
 		}
-		#endregion
 
-		#region ShowCaret
 		/// <summary>
 		/// Indicates whether render caret for submenus.
 		/// Default false.
@@ -67,9 +60,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			get { return _navbarSectionInternal.ShowCaret; }
 			set { _navbarSectionInternal.ShowCaret = value; }
 		}
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Constructor.
 		/// </summary>
@@ -77,9 +68,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			_navbarSectionInternal = new NavbarSectionInternal();
 		}
-		#endregion
 
-		#region OnInit
 		/// <summary>
 		/// Ensures child controls created.
 		/// </summary>
@@ -88,9 +77,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			base.OnInit(e);
 			EnsureChildControls();
 		}
-		#endregion
 
-		#region CreateChildControls
 		/// <summary>
 		/// Adds NavbarSectionInternal control to control tree.
 		/// </summary>
@@ -99,6 +86,5 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			base.CreateChildControls();
 			Controls.Add(_navbarSectionInternal);
 		}
-		#endregion
 	}
 }

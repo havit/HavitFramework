@@ -74,7 +74,6 @@ namespace Havit.AspNet.Mvc.Messenger.Storages
 			SaveMessagesToCookie(new List<Message>());
 		}
 
-		#region SaveMessagesToCookie
 		private void SaveMessagesToCookie(List<Message> messages)
 		{
 			HttpCookie messageCookie = new HttpCookie(StorageKey);
@@ -98,6 +97,5 @@ namespace Havit.AspNet.Mvc.Messenger.Storages
 			}
 			this.httpContext.Response.Cookies.Set(messageCookie);
 		}
-		#endregion
 	}
 }

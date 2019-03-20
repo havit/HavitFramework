@@ -14,13 +14,10 @@ namespace Havit.Web.UI.Scriptlets
     /// </summary>
     public class SimpleControlExtender : IControlExtender
     {
-		#region Private fields
-		private readonly Type controlType;
+	    private readonly Type controlType;
 		private readonly int priority;
 		private readonly string[] changeEvents;
-		#endregion
-		
-		#region Constructors
+
 		/// <summary>
 		/// Vytvoří extender pro daný typ s danou prioritou.
 		/// </summary>
@@ -33,18 +30,14 @@ namespace Havit.Web.UI.Scriptlets
 			this.priority = priority;
 			this.changeEvents = changeEvents;
 		}
-		#endregion
-		
-		#region GetPriority
+
 		/// <include file='IControlExtender.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetPriority")]/*' />
 		[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1604:ElementDocumentationMustHaveSummary", Justification = "Bráno z externího souboru.")]
 		public virtual int? GetPriority(Control control)
 		{
 			return (controlType.IsInstanceOfType(control)) ? (int?)this.priority : null;
 		}
-		#endregion
 
-		#region GetInitializeClientSideValueScript
 		/// <include file='IControlExtender.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetInitializeClientSideValueScript")]/*' />
 		[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1604:ElementDocumentationMustHaveSummary", Justification = "Bráno z externího souboru.")]
 		public void GetInitializeClientSideValueScript(string parameterPrefix, IScriptletParameter parameter, Control control, ScriptBuilder scriptBuilder)
@@ -52,28 +45,21 @@ namespace Havit.Web.UI.Scriptlets
             // vytvoříme objekt
 			scriptBuilder.AppendFormat("{0}.{1} = document.getElementById(\"{2}\");\n", parameterPrefix, parameter.Name, control.ClientID);
         }
-		#endregion
 
-		#region GetAttachEventsScript
 		/// <include file='IControlExtender.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetAttachEventsScript")]/*' />
 		[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1604:ElementDocumentationMustHaveSummary", Justification = "Bráno z externího souboru.")]
 		public void GetAttachEventsScript(string parameterPrefix, IScriptletParameter parameter, Control control, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder)
 		{
 			GetEventsScript(BrowserHelper.GetAttachEventScript, parameterPrefix, parameter, control, scriptletFunctionCallDelegate, scriptBuilder);
 		}
-		
-		#endregion
 
-		#region GetDetachEventsScript
 		/// <include file='IControlExtender.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetDetachEventsScript")]/*' />
 		[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1604:ElementDocumentationMustHaveSummary", Justification = "Bráno z externího souboru.")]
 		public void GetDetachEventsScript(string parameterPrefix, IScriptletParameter parameter, Control control, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder)
 		{
 			GetEventsScript(BrowserHelper.GetDetachEventScript, parameterPrefix, parameter, control, scriptletFunctionCallDelegate, scriptBuilder);
 		}
-		#endregion
-		
-		#region GetEventsScript
+
 		private void GetEventsScript(BrowserHelper.GetAttachDetachEventScriptEventHandler getEventScript, string parameterPrefix, IScriptletParameter parameter, Control control, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder)
 		{
 			// pokud se má volat klienský skript při změně hodnoty prvku
@@ -95,7 +81,6 @@ namespace Havit.Web.UI.Scriptlets
 						scriptletFunctionCallDelegate));
 				}
 			}	
-		} 
-		#endregion
-	}
+		}
+    }
 }

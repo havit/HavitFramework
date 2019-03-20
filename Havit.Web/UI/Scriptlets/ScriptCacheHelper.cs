@@ -10,7 +10,6 @@ namespace Havit.Web.UI.Scriptlets
 	/// </summary>
 	internal static class ScriptCacheHelper
 	{
-		#region FunctionCache (private)
 		/// <summary>
 		/// Cache pro klientské skripty. Klíčem je skript a parametry funkce, hodnotou je název funkce,
 		/// ve které je skript registrován.
@@ -33,9 +32,7 @@ namespace Havit.Web.UI.Scriptlets
 				return result;
 			}
 		}
-		#endregion
 
-		#region AddFunctionToCache
 		/// <summary>
 		/// Přidá kód s parametry (klíč) do cache pod zadaný název funkce (hodnota).
 		/// </summary>
@@ -45,10 +42,8 @@ namespace Havit.Web.UI.Scriptlets
 		public static void AddFunctionToCache(string functionName, string[] functionParameters, string functionCode)
 		{
 			FunctionCache.Add(GetCacheKey(functionParameters, functionCode), functionName);
-		}		
-		#endregion
+		}
 
-		#region GetFunctionNameFromCache
 		/// <summary>
 		/// Vyhledá v cache a vrátí název funkce, se stejnými parametry a kódem skriptu.
 		/// Pokud není název funkce nalezen, vrací null.
@@ -67,9 +62,7 @@ namespace Havit.Web.UI.Scriptlets
 				return null;
 			}
 		}
-		#endregion
 
-		#region GetCacheKey (private)
 		/// <summary>
 		/// Vrátí klíč do cache z parametrů.
 		/// </summary>
@@ -77,6 +70,5 @@ namespace Havit.Web.UI.Scriptlets
 		{
 			return String.Join("|", parameters) + "|" + code;
 		}
-		#endregion
 	}
 }

@@ -11,11 +11,9 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class AutoFilterControlCreatedEventArgs : EventArgs
 	{
-		#region Empty
 		/// <summary>
 		/// Parametr bez hodnot.
 		/// </summary>
 		public new static readonly AutoFilterControlCreatedEventArgs Empty = new AutoFilterControlCreatedEventArgs();
-		#endregion
 	}
 }

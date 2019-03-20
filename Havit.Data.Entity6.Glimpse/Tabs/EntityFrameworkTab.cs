@@ -17,7 +17,6 @@ namespace Havit.Data.Entity.Glimpse.Tabs
 	/// </summary>
 	public class EntityFrameworkTab : ITab, ITabLayout, ITabSetup/*, IKey*/
 	{
-		#region ExecuteOn
 		/// <summary>
 		/// Gets when the <see cref="ITab.GetData" /> method should run.
 		/// </summary>
@@ -29,9 +28,7 @@ namespace Havit.Data.Entity.Glimpse.Tabs
 				return RuntimeEvent.EndRequest;
 			}
 		}
-		#endregion
 
-		#region RequestContextType
 		/// <summary>
 		/// Gets the type of the request context that the Tab relies on. If
 		/// returns null, the tab can be used in any context.
@@ -44,9 +41,7 @@ namespace Havit.Data.Entity.Glimpse.Tabs
 				return null;
 			}
 		}
-		#endregion
 
-		#region Name
 		/// <summary>
 		/// Gets the name that will show in the tab.
 		/// </summary>
@@ -58,9 +53,7 @@ namespace Havit.Data.Entity.Glimpse.Tabs
 				return "EF";
 			}
 		}
-		#endregion
 
-		#region GetData
 		/// <summary>
 		/// Gets the data that should be shown in the UI.
 		/// </summary>
@@ -74,9 +67,7 @@ namespace Havit.Data.Entity.Glimpse.Tabs
 			};
 			// objekt je dále naformátován/zobrazen pomocí SerializactionConverteru
 		}
-		#endregion
 
-		#region GetLayout
 		/// <summary>
 		/// Layout.
 		/// </summary>
@@ -98,9 +89,6 @@ namespace Havit.Data.Entity.Glimpse.Tabs
 		}
 		private object _layout;
 
-		#endregion
-
-		#region Setup
 		/// <summary>
 		/// Setups the targeted tab using the specified context.
 		/// </summary>
@@ -109,8 +97,6 @@ namespace Havit.Data.Entity.Glimpse.Tabs
 		{
 			context.PersistMessages<DbCommandMessage>();
 		}
-		#endregion
-
 	}
 
 }

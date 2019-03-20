@@ -14,7 +14,6 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 	[Serializable]
 	public class GridViewExtValue
 	{
-		#region Constructor
 		/// <summary>
 		/// Constructor.
 		/// </summary>
@@ -22,9 +21,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 		{
 			AllowPaging = true; // default value (zpětná kompatibilita)
 		}
-		#endregion
 
-		#region AllowPaging
 		/// <summary>
 		/// Indikuje povolení stránkovat.
 		/// Nutné pro sledování v situaci, kdy uživatel klikne ve stránkování na zobrazení "vše".
@@ -34,9 +31,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 			get;
 			set;
 		}
-		#endregion
 
-		#region PageIndex
 		/// <summary>
 		/// Index zobrazené stránky dat.
 		/// </summary>
@@ -45,9 +40,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 			get;
 			set;
 		}
-		#endregion
 
-		#region SortItems
 		/// <summary>
 		/// Řazení.
 		/// </summary>
@@ -56,7 +49,5 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 			get;
 			set;
 		}
-		#endregion
-		
 	}
 }

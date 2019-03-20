@@ -11,7 +11,6 @@ namespace Havit.PayPal
 	/// </summary>
 	public abstract class PayPalResponseBase
 	{
-		#region Properties (Main Reponse Fields)
 		/// <summary>
 		/// Token PayPal transkakce.
 		/// </summary>
@@ -121,9 +120,7 @@ namespace Havit.PayPal
 			protected set { _isSuccess = value; }
 		}
 		private bool _isSuccess;
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Initializes a new instance of the PayPalRawResponse class.
 		/// </summary>
@@ -131,10 +128,8 @@ namespace Havit.PayPal
 		protected PayPalResponseBase(NameValueCollection rawResponseData)
 		{
 			ParseResponseData(rawResponseData);
-		}			
-		#endregion
+		}
 
-		#region ParseResponseData
 		/// <summary>
 		/// Rozparsuje data do strong-type properties.
 		/// </summary>
@@ -188,6 +183,5 @@ namespace Havit.PayPal
 			}			
 			
 		}
-		#endregion	
 	}
 }

@@ -13,7 +13,6 @@ namespace Havit.PayPal
 	/// </summary>
 	public class PayPalGetExpressCheckoutDetailsResponse : PayPalResponseBase
 	{
-		#region Properties (GetExpressCheckoutDetails Response Fields)
 		/// <summary>
 		/// A free-form field for your own use, as set by you in the Custom element of SetExpressCheckout request.
 		/// </summary>
@@ -142,9 +141,7 @@ namespace Havit.PayPal
 			protected set { _surveyChoiceSelected = value; }
 		}
 		private string _surveyChoiceSelected;
-		#endregion
 
-		#region Properties (Payer Information Fields)
 		/// <summary>
 		/// Email address of payer. Character length and limitations: 127 single-byte characters.
 		/// </summary>
@@ -194,9 +191,7 @@ namespace Havit.PayPal
 			protected set { _business = value; }
 		}
 		private string _business;
-		#endregion
 
-		#region Properties (Payer Name Fields)
 		/// <summary>
 		/// Payer’s salutation. Character length and limitations: 20 single-byte characters.
 		/// </summary>
@@ -246,11 +241,7 @@ namespace Havit.PayPal
 			protected set { _suffix = value; }
 		}
 		private string _suffix;
-		#endregion
 
-		#region Properties (Address Type Fields)
-
-		#region ShipToName
 		/// <summary>
 		/// Person’s name associated with this shipping address. Character length and limitations: 32 single-byte characters.
 		/// </summary>
@@ -260,9 +251,7 @@ namespace Havit.PayPal
 			protected set { _shipToName = value; }
 		}
 		private string _shipToName;
-		#endregion
 
-		#region ShipToStreet
 		/// <summary>
 		/// First street address. Character length and limitations: 100 single-byte characters.
 		/// </summary>
@@ -272,9 +261,7 @@ namespace Havit.PayPal
 			protected set { _shipToStreet = value; }
 		}
 		private string _shipToStreet;
-		#endregion
 
-		#region ShipToStreet2
 		/// <summary>
 		/// Second street address. Character length and limitations: 100 single-byte characters.
 		/// </summary>
@@ -284,9 +271,7 @@ namespace Havit.PayPal
 			protected set { _shipToStreet2 = value; }
 		}
 		private string _shipToStreet2;
-		#endregion
 
-		#region ShipToCity
 		/// <summary>
 		/// Name of city. Character length and limitations: 40 single-byte characters.
 		/// </summary>
@@ -296,9 +281,7 @@ namespace Havit.PayPal
 			protected set { _shipToCity = value; }
 		}
 		private string _shipToCity;
-		#endregion
 
-		#region ShipToState
 		/// <summary>
 		/// State or province. Character length and limitations: 40 single-byte characters.
 		/// </summary>
@@ -308,9 +291,7 @@ namespace Havit.PayPal
 			protected set { _shipToState = value; }
 		}
 		private string _shipToState;
-		#endregion
 
-		#region ShipToZip
 		/// <summary>
 		/// U.S. ZIP code or other country-specific postal code. Character length and limitations: 20 single-byte characters.
 		/// </summary>
@@ -320,9 +301,7 @@ namespace Havit.PayPal
 			protected set { _shipToZip = value; }
 		}
 		private string _shipToZip;
-		#endregion
 
-		#region ShipToCountry
 		/// <summary>
 		/// Country code. Character limit: 2 single-byte characters.
 		/// </summary>
@@ -332,9 +311,7 @@ namespace Havit.PayPal
 			protected set { _shipToCountry = value; }
 		}
 		private string _shipToCountry;
-		#endregion
 
-		#region ShipToPhoneNumber
 		/// <summary>
 		/// Phone number. Character length and limit: 20 single-byte characters.
 		/// </summary>
@@ -344,9 +321,7 @@ namespace Havit.PayPal
 			protected set { _shipToPhoneNumber = value; }
 		}
 		private string _shipToPhoneNumber;
-		#endregion
 
-		#region AddressStatus
 		/// <summary>
 		/// Status of street address on file with PayPal. Valid values are: none/Confirmed/Unconfirmed
 		/// </summary>
@@ -356,11 +331,7 @@ namespace Havit.PayPal
 			protected set { _addressStatus = value; }
 		}
 		private string _addressStatus;
-		#endregion
 
-		#endregion
-
-		#region Properties (Payment Details Type Fields)
 		/// <summary>
 		/// Kompletní částka transkace.
 		/// </summary>
@@ -420,9 +391,7 @@ namespace Havit.PayPal
 			protected set { _taxAmount = value; }
 		}
 		private decimal _taxAmount;
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Initializes a new instance of the PayPalGetExpressCheckoutDetailsResponse class.
 		/// </summary>
@@ -431,9 +400,7 @@ namespace Havit.PayPal
 			: base(rawResponseData)
 		{
 		}
-		#endregion
 
-		#region ParseResponseData
 		/// <summary>
 		/// Rozparsuje data do strong-type properties.
 		/// Poznámka: Parsuje jenom základní informace, které potřebujeme.
@@ -564,6 +531,5 @@ namespace Havit.PayPal
 			}
 
 		}
-		#endregion
 	}
 }

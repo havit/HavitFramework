@@ -18,7 +18,6 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class AutoFilterDropDownList : DropDownListExt, IAutoFilterControl
 	{
-		#region NoFilterText
 		/// <summary>
 		/// Text pro řádek "nerozhoduje".
 		/// Pokud bude hodnota zadána, použije se text "---".	
@@ -34,9 +33,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["NoFilterText"] = value;				
 			}
 		}
-		#endregion
 
-		#region DataFilterField
 		/// <summary>
 		/// Vlastnost, ve které se vyhledává.
 		/// </summary>
@@ -51,9 +48,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["DataFilterField"] = value;
 			}
 		}
-		#endregion
 
-		#region SortExpression
 		/// <summary>
 		/// Určuje, podle jaké property jsou řazena.
 		/// Může obsahovat více vlastností oddělených čárkou, směr řazení ASC/DESC. Má tedy význam podobný jako DefaultSortExpression u GridViewExt.
@@ -63,9 +58,7 @@ namespace Havit.Web.UI.WebControls
 			get { return (string)ViewState["SortExpression"] ?? String.Empty; }
 			set { ViewState["SortExpression"] = value; }
 		}
-		#endregion
 
-		#region ValueChanged, OnValueChanged
 		/// <summary>
 		/// Událost oznamuje změnu hodnoty filtru.
 		/// </summary>
@@ -93,9 +86,7 @@ namespace Havit.Web.UI.WebControls
 				handler(this, e);
 			}
 		}
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
@@ -103,9 +94,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			AutoPostBack = true;
 		}
-		#endregion
 
-		#region FilterData
 		/// <summary>
 		/// Provede filtrování dat na základě nastavení filtru.
 		/// </summary>
@@ -121,9 +110,7 @@ namespace Havit.Web.UI.WebControls
 				return data;
 			}
 		}
-		#endregion
 
-		#region OnInit
 		/// <summary>
 		/// Inicializuje control.
 		/// Vyvoláním události s argumentem AutoFilterControlCreatedEventArgs.Empty se registruje jak control pro automatický databind.
@@ -133,9 +120,7 @@ namespace Havit.Web.UI.WebControls
 			base.OnInit(e);
 			this.RaiseBubbleEvent(this, AutoFilterControlCreatedEventArgs.Empty);
 		}
-		#endregion
 
-		#region OnSelectedIndexChanged
 		/// <summary>
 		/// Při změně hodnoty DDL vyvolá událost ValueChanged.
 		/// </summary>
@@ -144,9 +129,7 @@ namespace Havit.Web.UI.WebControls
 			base.OnSelectedIndexChanged(e);
 			this.OnValueChanged(EventArgs.Empty);
 		}
-		#endregion
 
-		#region DataBind
 		/// <summary>
 		/// Naplní DDL hodnotami pro filtr.
 		/// </summary>
@@ -212,6 +195,5 @@ namespace Havit.Web.UI.WebControls
 				}
 			}
 		}
-		#endregion
 	}
 }

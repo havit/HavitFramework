@@ -13,7 +13,6 @@ namespace Havit.Data.Glimpse.Message
 	/// </summary>
 	public class DbConnectorTimelineMessage : MessageBase, ITimelineMessage
 	{
-		#region EventCategory
 		/// <summary>
 		/// Event category (should be always DbConnetorTimelineCategory.TimelineCategory.
 		/// </summary>
@@ -22,9 +21,7 @@ namespace Havit.Data.Glimpse.Message
 			get;
 			set;
 		}
-		#endregion
 
-		#region EventName
 		/// <summary>
 		/// Event name
 		/// </summary>
@@ -33,9 +30,7 @@ namespace Havit.Data.Glimpse.Message
 			get;
 			set;
 		}
-		#endregion
 
-		#region EventSubText
 		/// <summary>
 		/// Event sub text (detailed description)
 		/// </summary>
@@ -44,9 +39,7 @@ namespace Havit.Data.Glimpse.Message
 			get;
 			set;
 		}
-		#endregion
 
-		#region Duration
 		/// <summary>
 		/// Duration.
 		/// </summary>
@@ -55,9 +48,7 @@ namespace Havit.Data.Glimpse.Message
 			get;
 			set;
 		}
-		#endregion
 
-		#region Offset
 		/// <summary>
 		/// Time offset of the event.
 		/// </summary>
@@ -66,9 +57,7 @@ namespace Havit.Data.Glimpse.Message
 			get;
 			set;
 		}
-		#endregion
 
-		#region StartTime
 		/// <summary>
 		/// Event start time.
 		/// </summary>
@@ -77,7 +66,5 @@ namespace Havit.Data.Glimpse.Message
 			get;
 			set;
 		}
-		#endregion
-
 	}
 }

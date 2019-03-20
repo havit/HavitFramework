@@ -12,7 +12,6 @@ namespace Havit.Services.Ares
 	/// </summary>	
 	public abstract class AresBaseException : ApplicationException
 	{
-		#region Construktor
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
@@ -34,7 +33,5 @@ namespace Havit.Services.Ares
 			: base(message, innerException)
 		{
 		}
-
-		#endregion
 	}
 }

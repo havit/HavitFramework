@@ -18,7 +18,6 @@ namespace Havit.Web.Security
 	/// </remarks>
 	public static class FormsRolesAuthentication
 	{
-		#region Timeout
 		/// <summary>
 		/// Timeout pro authentication-ticket (web.config: system.web/authentication/forms/timeout).
 		/// </summary>
@@ -38,9 +37,7 @@ namespace Havit.Web.Security
 			}
 		}
 		private static int? _timeout;
-		#endregion
 
-		#region ApplyAuthenticationTicket
 		/// <summary>
 		/// Aplikuje autentizační ticket, tj. vytáhne z něj informace o přihlášeném uživateli
 		/// a jeho rolích a naplní jimi objekt User.
@@ -100,9 +97,7 @@ namespace Havit.Web.Security
 				ApplyAuthenticationTicket(ticket);
 			}
 		}
-		#endregion
 
-		#region GetAuthTicket
 		/// <summary>
 		/// Vytvoří autentizační ticket pro forms-authentication s ukládáním rolí do userData.
 		/// </summary>
@@ -172,9 +167,7 @@ namespace Havit.Web.Security
 		{
 			return GetAuthTicket(username, roles, createPersistent, cookiePath, createPersistent ? (int?)null : Timeout);
 		}
-		#endregion
 
-		#region GetAuthCookie
 		/// <summary>
 		/// Vytvoří authentizační cookie pro forms-authentication s ukládáním rolí do userData.
 		/// </summary>
@@ -219,9 +212,7 @@ namespace Havit.Web.Security
 
 			return authCookie;
 		}
-		#endregion
 
-		#region RedirectFromLoginPage
 		/// <summary>
 		/// Redirektuje autentizovaného uživatele zpět na původní URL (nebo default URL).
 		/// Součástí response je autentizační cookie s příslušným autentizačním ticketem.
@@ -273,9 +264,7 @@ namespace Havit.Web.Security
 		{
 			RedirectFromLoginPage(username, roles, false, null, null);
 		}
-		#endregion
 
-		#region AddAuthCookie
 		/// <summary>
 		/// Přidá do Response autentizační cookie s příslušným autentizačním ticketem.
 		/// </summary>
@@ -324,6 +313,5 @@ namespace Havit.Web.Security
 		{
 			return AddAuthCookie(username, roles, createPersistentCookie, null);
 		}
-		#endregion
 	}
 }

@@ -5,7 +5,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 {
 	public static class BusinessObjectConstructors
 	{
-		#region WriteConstructors
 		public static void WriteConstructors(CodeWriter writer, string className, string pkFieldName, bool readOnly, bool baseClass)
 		{
 			writer.WriteOpenRegion("Constructors");
@@ -70,6 +69,5 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 
 			writer.WriteCloseRegion();
 		}
-		#endregion
 	}
 }

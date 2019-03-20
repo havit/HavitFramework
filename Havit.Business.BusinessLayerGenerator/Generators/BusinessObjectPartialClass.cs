@@ -12,7 +12,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 {
 	public static class BusinessObjectPartialClass
 	{
-		#region Generate
 		public static void Generate(Table table, CsprojFile csprojFile)
 		{
 			string fileName = FileHelper.GetFilename(table, ".partial.cs", FileHelper.GeneratedFolder);
@@ -38,9 +37,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			
 			writer.Save();
 		}
-		#endregion
 
-		#region WriteNamespaceClassBegin
 		public static void WriteNamespaceClassBegin(CodeWriter writer, Table table, bool includeAttributes)
 		{
 			writer.WriteLine("namespace " + NamespaceHelper.GetNamespaceName(table));
@@ -58,9 +55,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				ClassHelper.GetBaseClassName(table)));
 			writer.WriteLine("{");
 		}
-		#endregion
 
-		#region WriteCreateObject
 		private static void WriteCreateObject(CodeWriter writer, Table table)
 		{
 			if (!TableHelper.IsReadOnly(table) && !TableHelper.OmitCreateObjectMethod(table))
@@ -112,9 +107,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				writer.WriteCloseRegion();
 			}
 		}
-		#endregion
 
-		#region WriteGetObject
 		private static void WriteGetObject(CodeWriter writer, Table table)
 		{
 			bool cachableInstances = TableHelper.CanCacheBusinessObjectInstances(table);
@@ -222,9 +215,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine();
 			writer.WriteCloseRegion();
 		}
-		#endregion
 
-		#region WriteGetObjectOrDefault
 		private static void WriteGetObjectOrDefault(CodeWriter writer, Table table)
 		{
 			writer.WriteOpenRegion("GetObjectOrDefault (static)");
@@ -241,9 +232,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine();
 			writer.WriteCloseRegion();
 		}
-		#endregion
 
-		#region WriteGetObjects
 		private static void WriteGetObjects(CodeWriter writer, Table table)
 		{
 			writer.WriteOpenRegion("GetObjects (static)");
@@ -264,9 +253,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine();
 			writer.WriteCloseRegion();
 		}
-		#endregion
 
-		#region WriteCreateDisconnectedObject
 		private static void WriteCreateDisconnectedObject(CodeWriter writer, Table table)
 		{
 			writer.WriteOpenRegion("CreateDisconnectedObject (static)");
@@ -295,14 +282,11 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 
 			writer.WriteCloseRegion();
 		}
-		#endregion
 
-		#region WriteNamespaceClassEnd
 		public static void WriteNamespaceClassEnd(CodeWriter writer)
 		{
 			writer.WriteLine("}");
 			writer.WriteLine("}");
 		}
-		#endregion
 	}
 }

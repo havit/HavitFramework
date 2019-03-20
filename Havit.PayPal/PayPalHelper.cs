@@ -15,12 +15,9 @@ namespace Havit.PayPal
 	/// </summary>
 	public static class PayPalHelper
 	{
-		#region Constants
 		// HttpWebRequest Timeout specified in milliseconds 
 		private const int Timeout = 10000;
-		#endregion
 
-		#region CreateSetExpressCheckoutRequest
 		/// <summary>
 		/// Vytvoří request pro volání SetExpressCheckout API (inicializace PayPal platby - basic verze bez shipping info) 
 		/// </summary>
@@ -44,9 +41,7 @@ namespace Havit.PayPal
 
 			return request;			
 		}
-		#endregion
 
-		#region CreateSetExpressCheckoutRequest
 		/// <summary>
 		/// Vytvoří request pro volání SetExpressCheckout API (inicializace PayPal platby)
 		/// </summary>
@@ -173,9 +168,7 @@ namespace Havit.PayPal
 
 			return request;
 		}
-		#endregion
 
-		#region CreateGetExpressCheckoutDetailsRequest
 		/// <summary>
 		/// Vytvoří request pro volání GetExpressCheckoutDetails API
 		/// </summary>
@@ -189,9 +182,7 @@ namespace Havit.PayPal
 
 			return request;
 		}
-		#endregion
 
-		#region CreateDoExpressCheckoutRequest
 		/// <summary>
 		/// Vytvoří request pro volání DoExpressCheckoutPayment API
 		/// </summary>
@@ -208,9 +199,7 @@ namespace Havit.PayPal
 
 			return request;
 		}
-		#endregion
 
-		#region ExecutePayPalRequest
 		/// <summary>
 		/// Metoda vykoná volání PayPal API funkce a vrátí výsledek v podobě NVP data.
 		/// </summary>
@@ -243,9 +232,7 @@ namespace Havit.PayPal
 			
 			return responseData;
 		}
-		#endregion
 
-		#region GetPayPalUrl
 		/// <summary>
 		/// GetPayPalUrl
 		/// </summary>
@@ -255,6 +242,5 @@ namespace Havit.PayPal
 		{
 			return payPalUrl + "&token=" + token;
 		}
-		#endregion
 	}
 }

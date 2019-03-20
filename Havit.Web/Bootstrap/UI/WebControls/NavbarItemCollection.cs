@@ -19,12 +19,9 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	/// </summary>
 	public class NavbarItemCollection : IList<NavbarItem>, IStateManager, ICollection
 	{
-		#region Private fields
 		private readonly List<NavbarItem> items; // menu items
 		private readonly List<NavbarViewStateLogEntry> log; // logged changes are used for serializaton to viewstate
-		#endregion
 
-		#region Count
 		/// <summary>
 		/// Return count of collection items.
 		/// </summary>
@@ -32,9 +29,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			get { return items.Count; }
 		}
-		#endregion
 
-		#region IsReadOnly
 		/// <summary>
 		/// Always returns false.
 		/// </summary>
@@ -42,9 +37,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			get { return false; }
 		}
-		#endregion
 
-		#region Indexed[int]
 		/// <summary>
 		/// Returns item at the index.
 		/// </summary>
@@ -65,9 +58,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				this.log.Add(new NavbarViewStateLogEntry(this._isTrackingViewState, LogItemType.Set, index, value == null ? null : value.GetType()));
 			}
 		}
-		#endregion
 
-		#region Constructors
 		/// <summary>
 		/// Constructor.
 		/// </summary>
@@ -85,9 +76,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			this.items = new List<NavbarItem>(items);
 			log = new List<NavbarViewStateLogEntry>();
 		}
-		#endregion
 
-		#region GetEnumerator
 		/// <summary>
 		/// Returns an enumerator that iterates through the collection.
 		/// </summary>
@@ -95,9 +84,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			return items.GetEnumerator();
 		}
-		#endregion
 
-		#region Add
 		/// <summary>
 		/// Adds item to the end of collection.
 		/// </summary>
@@ -105,9 +92,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			this.Insert(items.Count, item);
 		}
-		#endregion
 
-		#region Insert
 		/// <summary>
 		/// Insert item at the index.
 		/// </summary>
@@ -122,9 +107,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			}
 			this.log.Add(new NavbarViewStateLogEntry(this._isTrackingViewState, LogItemType.Insert, index, item == null ? null : item.GetType()));
 		}
-		#endregion
 
-		#region Clear
 		/// <summary>
 		/// Clears collection.
 		/// </summary>
@@ -141,9 +124,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				this.log.Add(new NavbarViewStateLogEntry(_isTrackingViewState, LogItemType.Clear));
 			}
 		}
-		#endregion
 
-		#region IndexOf
 		/// <summary>
 		/// Returns index of item in collection.
 		/// </summary>
@@ -151,9 +132,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			return items.IndexOf(item);
 		}
-		#endregion
 
-		#region Contains
 		/// <summary>
 		/// Returns true if item is in collection.
 		/// </summary>
@@ -161,9 +140,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			return items.Contains(item);
 		}
-		#endregion
 
-		#region CopyTo
 		/// <summary>
 		/// Copies items to array.
 		/// </summary>
@@ -171,9 +148,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			items.CopyTo(array, arrayIndex);
 		}
-		#endregion
 
-		#region Remove
 		/// <summary>
 		/// If item is in collection it is removed.
 		/// Returns true, if item was removed.
@@ -191,9 +166,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				return false;
 			}
 		}
-		#endregion
 
-		#region RemoveAt
 		/// <summary>
 		/// Remove item at the index.
 		/// </summary>
@@ -202,9 +175,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			items.RemoveAt(index);
 			this.log.Add(new NavbarViewStateLogEntry(this._isTrackingViewState, LogItemType.Remove, index));
 		}
-		#endregion
 
-		#region SetDirty
 		/// <summary>
 		/// Set all log items dirty (to be stored in viewstate) including all children.
 		/// </summary>
@@ -219,9 +190,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				this[i].SetDirty();
 			}
 		}
-		#endregion
 
-		#region ICollection implementation
 		/// <summary>
 		/// Gets an object that can be used to synchronize access to the collection.
 		/// </summary>
@@ -245,9 +214,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			((ICollection)items).CopyTo(array, index);
 		}
-		#endregion
 
-		#region IEnumerable implementation
 		/// <summary>
 		/// Returns an enumerator that iterates through the collection.
 		/// </summary>
@@ -255,9 +222,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			return items.GetEnumerator();
 		}
-		#endregion
 
-		#region IStateManager implementation
 		bool IStateManager.IsTrackingViewState
 		{
 			get { return _isTrackingViewState; }
@@ -359,6 +324,5 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				}
 			}
 		}
-		#endregion
 	}
 }

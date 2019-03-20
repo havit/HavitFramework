@@ -15,13 +15,11 @@ namespace Havit.Data.Entity.Glimpse.SerializationConverters
 	/// </summary>
 	internal class DbDataReaderResultSerializationConverter : SerializationConverter<DbDataReaderResult>
 	{
-		#region Convert
 		public override object Convert(DbDataReaderResult dbDataReaderResult)
 		{
 			return (dbDataReaderResult.RecordsCount == null)
 				? String.Empty
 				: String.Format("{0} record{1}", dbDataReaderResult.RecordsCount.Value, (dbDataReaderResult.RecordsCount.Value == 1) ? "" : "s");
 		}
-		#endregion
 	}
 }

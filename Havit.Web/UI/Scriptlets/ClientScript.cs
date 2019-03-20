@@ -19,7 +19,6 @@ namespace Havit.Web.UI.Scriptlets
 
 		/* Parametry ClientScriptu *************** */
 
-		#region Script
 		/// <summary>
 		/// Klientský skript. Okolo skriptu je vytvořena obálka a případně je spuštěn po načtení stránky či callbacku.
 		/// </summary>
@@ -30,9 +29,7 @@ namespace Havit.Web.UI.Scriptlets
 			get { return (string)ViewState["Script"] ?? String.Empty; }
 			set { ViewState["Script"] = value; }
 		}
-		#endregion
 
-		#region StartOnLoad
 		/// <summary>
 		/// Udává, zda má po načtení stránky dojít k automatickému spuštění skriptu. Výchozí hodnota je <c>false</c>.
 		/// </summary>				
@@ -44,9 +41,7 @@ namespace Havit.Web.UI.Scriptlets
 			get { return (bool)(ViewState["StartOnLoad"] ?? false); }
 			set { ViewState["StartOnLoad"] = value; }
 		}
-		#endregion
 
-		#region StartOnAjaxCallback
 		/// <summary>
 		/// Udává, zda má po dojít k automatickému spuštění skriptu po asynchronním postbacku (ajax callback). Výchozí hodnota je <b>false</b>.
 		/// </summary>
@@ -54,12 +49,10 @@ namespace Havit.Web.UI.Scriptlets
 		{
 			get { return (bool)(ViewState["StartOnAjaxCallback"] ?? false); }
 			set { ViewState["StartOnAjaxCallback"] = value; }
-		}		
-		#endregion		
+		}
 
 		/*  *************** */
 
-		#region GetAutoStart
 		/// <summary>
 		/// Vrací true, pokud má být renderován skript pro automatické spuštění funkce scriptletu.
 		/// </summary>
@@ -74,9 +67,7 @@ namespace Havit.Web.UI.Scriptlets
 				return StartOnLoad;
 			}
 		}
-		#endregion
 
-		#region GetClientSideFunctionCode
 		/// <summary>
 		/// Vrátí kód pro hlavní funkci skriptletu.
 		/// </summary>
@@ -84,11 +75,9 @@ namespace Havit.Web.UI.Scriptlets
 		{
 			return GetSubstitutedScript();
 		}
-		#endregion
-		
+
 		/* SUBSTITUCE *************** */
 
-		#region GetSubstitutedScript (protected)
 		/// <summary>
 		/// Vrátí připravený klientský skript. Provede nad skriptem substituce.
 		/// </summary>
@@ -99,9 +88,7 @@ namespace Havit.Web.UI.Scriptlets
 			OnClientScriptSubstituing(eventArgs);
 			return Scriptlet.ScriptSubstitution.Substitute(eventArgs.ClientScript);
 		}
-		#endregion
 
-		#region ClientScriptSubstituingEventArgs (protected)
 		/// <summary>
 		/// Obslouží událost ClientScriptSubstituing.
 		/// </summary>
@@ -112,9 +99,7 @@ namespace Havit.Web.UI.Scriptlets
 				_clientScriptSubstituing.Invoke(this, eventArgs);
 			}
 		}
-		#endregion
 
-		#region ClientScriptSubstituing
 		/// <summary>
 		/// Událost pro provedení substituce v klietském skriptu.
 		/// </summary>
@@ -130,8 +115,5 @@ namespace Havit.Web.UI.Scriptlets
 			}
 		}
 		private ClientScriptSubstituingEventHandler _clientScriptSubstituing;
-		
-		#endregion
-
 	}
 }

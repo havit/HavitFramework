@@ -7,7 +7,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 {
 	public static class CollectionPartialClass
 	{
-		#region Generate
 		public static void Generate(Table table, CsprojFile csprojFile)
 		{
 			string fileName = FileHelper.GetFilename(table, "Collection.partial.cs", FileHelper.GeneratedFolder);
@@ -32,6 +31,5 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			
 			writer.Save();
 		}
-		#endregion
 	}
 }

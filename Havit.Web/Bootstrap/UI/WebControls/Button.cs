@@ -18,7 +18,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
     [PersistChildren(true)] // Enables child controls
 	public class Button : System.Web.UI.WebControls.Button
 	{
-		#region IconCssClass
 		/// <summary>
 		/// Css class for icon.
 		/// When set Button renders &lt;span class=&amp;IconCssClass&amp;&gt;&lt;span /&gt; at the beginning of button element content (before child controls).
@@ -36,9 +35,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ViewState["IconCssClass"] = value;
 			}
 		}
-		#endregion
 
-		#region IconPosition
 		/// <summary>
 		/// Position of the icon (when IconCssClass is set).
 		/// Default value is Left.
@@ -48,9 +45,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			get { return (IconPosition)(ViewState["IconPosition"] ?? IconPosition.Left); }
 			set { ViewState["IconPosition"] = value; }
 		}
-		#endregion
 
-		#region TagKey
 		/// <summary>
 		/// Esures rendering as button element instead of input element.
 		/// </summary>
@@ -58,9 +53,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			get { return HtmlTextWriterTag.Button; }
 		}
-		#endregion
 
-		#region UseSubmitBehavior
 		/// <summary>
 		/// Ensures rendering type="button" instead of type="submit".
 		/// </summary>
@@ -78,9 +71,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				}
 			}
 		}
-		#endregion
 
-		#region OnPreRender
 		/// <summary>
 		/// Checks if there is not both Text property and child control used at one time.
 		/// </summary>
@@ -93,9 +84,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				throw new HttpException(String.Format("Button with ID '{0}' contains child controls and has nonempty Text property thats not supported.'", this.ID));
 			}
 		}
-		#endregion
 
-		#region AddAttributesToRender
 		/// <summary>
 		/// Ensures localization of ToolTip property (via HttpUtilityExt.GetResourceString).
 		/// </summary>
@@ -104,9 +93,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			ToolTip = HttpUtilityExt.GetResourceString(ToolTip); // viewstate already serialized
 			base.AddAttributesToRender(writer);
 		}
-		#endregion
 
-		#region RenderContents
 		/// <summary>
 		/// Add support for child control rendering, text rendering and span with IconCssClass rendering.
 		/// </summary>
@@ -171,9 +158,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				RenderIcon(writer);
 			}
 		}
-		#endregion
 
-		#region RenderIcon		
 		/// <summary>
 		/// Renders the (bootstrap) icon.
 		/// By default the icon is rendered as span with css class (IconCssClass).
@@ -184,6 +169,5 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			writer.RenderBeginTag(HtmlTextWriterTag.Span);
 			writer.RenderEndTag();
 		}
-		#endregion
 	}
 }

@@ -11,7 +11,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 {
 	public static class ExtensionMethodsClass
 	{
-		#region Generate
 		public static void Generate(List<Table> tables, CsprojFile csprojFile)
 		{
 			tables.RemoveAll(table => TableHelper.IsJoinTable(table));
@@ -59,9 +58,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				writer.Save();
 			}
 		}
-		#endregion
 
-		#region WriteExtensionMethods
 		private static void WriteExtensionMethods(CodeWriter writer, Table table)
 		{
 			writer.WriteOpenRegion(String.Format("IEnumerable<{0}>.ToCollection", ClassHelper.GetCollectionClassFullName(table)));
@@ -75,6 +72,5 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine("}"); // method
 			writer.WriteCloseRegion();
 		}
-		#endregion
 	}
 }

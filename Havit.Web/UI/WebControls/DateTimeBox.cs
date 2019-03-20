@@ -22,14 +22,10 @@ namespace Havit.Web.UI.WebControls
 	[Themeable(true)]
 	public class DateTimeBox : Control, INamingContainer
 	{
-		#region Private consts
 		/// <summary>
 		/// Slouží k reprezentaci chybné hodnoty v metodě GetValueMemento.
 		/// </summary>
 		private const string InvalidValueMemento = "invalid";
-		#endregion
-
-		#region Nested controls (private)
 
 		private readonly TextBox valueTextBox;
 		private readonly LiteralControl seperatorLiteralControl;
@@ -37,11 +33,6 @@ namespace Havit.Web.UI.WebControls
 		private readonly WebControl dateTimePickerIcon;
 		private readonly DynarchCalendar dateTimePickerDynarchCalendar;
 
-		#endregion
-
-		#region Behavior properties
-
-		#region AutoPostBack
 		/// <summary>
 		/// Udává, zda má po změně hodnoty V ui dojít k postbacku.
 		/// </summary>
@@ -50,9 +41,7 @@ namespace Havit.Web.UI.WebControls
 			get { return valueTextBox.AutoPostBack; }
 			set { valueTextBox.AutoPostBack = value; }
 		}
-		#endregion
 
-		#region FirstDayOfWeek
 		/// <summary>
 		/// První den v týdnu.
 		/// Výchozí hodnota se bere z CurrentUICulture.
@@ -69,9 +58,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["FirstDayOfWeek"] = value;
 			}
 		}
-		#endregion
 
-		#region ShowWeekNumbers
 		/// <summary>
 		/// Indikuje, zda jsou zobrazena čísla týdnů. Vychozí hodnota je true.
 		/// </summary>
@@ -86,9 +73,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["ShowWeekNumbers"] = value;
 			}
 		}
-		#endregion
 
-		#region Enabled
 		/// <summary>
 		/// Udává, zda je control pro výběr data/data a času povolen.
 		/// Pokud je zakázán, není možné zadávat hodnotu ani v textboxu, ani pomocí kalendáře.
@@ -98,9 +83,7 @@ namespace Havit.Web.UI.WebControls
 			get { return (bool)(ViewState["_Enabled"] ?? true); }
 			set { ViewState["_Enabled"] = value; }
 		}
-		#endregion
 
-		#region DateTimeMode
 		/// <summary>
 		/// Režim zobrazení data/data a času.
 		/// </summary>
@@ -108,10 +91,8 @@ namespace Havit.Web.UI.WebControls
 		{
 			get { return (DateTimeMode)(ViewState["DateTimeMode"] ?? DateTimeMode.Date); }
 			set { ViewState["DateTimeMode"] = value; }
-		}		
-		#endregion
+		}
 
-		#region KeyBlockingClientScriptEnabled
 		/// <summary>
 		/// Udává, zda se pro zapouzdřený textbox použije javascript, který brání vložení nepovolených znaků. Výchozí hodnota je true.
 		/// </summary>
@@ -126,9 +107,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["KeyBlockingClientScriptEnabled"] = value;
 			}
 		}
-		#endregion
 
-		#region SelectOnClick
 		/// <summary>
 		/// Indikuje, zda se při kliknutí do textboxu označí vepsaný text.
 		/// Výchozí hodnota je true.
@@ -144,13 +123,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["SelectOnClick"] = value;
 			}
 		}
-		#endregion
 
-		#endregion
-
-		#region Appereance properties
-
-		#region ShowDateTimePicker
 		/// <summary>
 		/// True, pokud má být zobrazen kalendář pro výběr data.
 		/// </summary>
@@ -159,9 +132,7 @@ namespace Havit.Web.UI.WebControls
 			get { return (bool)(ViewState["ShowDateTimePicker"] ?? true); }
 			set { ViewState["ShowDateTimePicker"] = value; }
 		}
-		#endregion
 
-		#region DateTimePickerElement
 		/// <summary>
 		/// Určuje element, který bude použit zobrazení ikonky pro otevření kalendáře. Zajišťuje možnost použití buď obrázku nebo icony z nějakého iconsetu (glyphicons, awesome icons). Styl použité ikony (ať už obrázku nebo elementu &lt;i&gt; lze nastavit pomocí vlastnosti DateTimePickerStyle.CssClass.
 		/// Výchozí hodnota je Image.
@@ -171,9 +142,7 @@ namespace Havit.Web.UI.WebControls
 			get { return (DateTimePickerElement)(ViewState["DateTimePickerElement"] ?? DateTimePickerElement.Image); }
 			set { ViewState["DateTimePickerElement"] = value; }
 		}
-		#endregion
 
-		#region DateTimePickerStyle
 		/// <summary>
 		/// Styl obrázku nebo ikonky (dle nastavení vlastnosti DateTimePickerElement) pro zobrazení kalendáře.
 		/// </summary>
@@ -195,9 +164,7 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		private Style _dateTimePickerStyle;
-		#endregion
 
-		#region DateTimePickerEnabledImageUrl
 		/// <summary>
 		/// Url obrázku pro ikonku vyvolávající kalendář (pokud je DateTimeBox povolen).
 		/// Pokud není Url nastavena, použije se výchozí obrázek z resources.
@@ -207,9 +174,7 @@ namespace Havit.Web.UI.WebControls
 			get { return (string)ViewState["DateTimePickerEnabledImageUrl"] ?? String.Empty; }
 			set { ViewState["DateTimePickerEnabledImageUrl"] = value; }
 		}
-		#endregion
 
-		#region DateTimePickerDisabledImageUrl
 		/// <summary>
 		/// Url obrázku pro ikonku vyvolávající kalendář (pokud je DateTimeBox zakázán).
 		/// Pokud není Url nastavena, použije se výchozí obrázek z resources.
@@ -219,9 +184,7 @@ namespace Havit.Web.UI.WebControls
 			get { return (string)(ViewState["DateTimePickerDisabledImageUrl"] ?? String.Empty); }
 			set { ViewState["DateTimePickerDisabledImageUrl"] = value; }
 		}
-		#endregion
 
-		#region ContainerStyle
 		/// <summary>
 		/// Stylování obálky html numeric boxu (SPAN).
 		/// </summary>
@@ -242,9 +205,7 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		private DateTimeBoxStyle _containerStyle;
-		#endregion
 
-		#region ContainerRenderMode
 		/// <summary>
 		/// Mód renderování struktury DateTimeBoxu.
 		/// </summary>
@@ -259,9 +220,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["ContainerRenderMode"] = value;
 			}
 		}
-		#endregion
 
-		#region ValueBoxStyle
 		/// <summary>
 		/// Stylování ValueTextBoxu.
 		/// </summary>
@@ -272,9 +231,7 @@ namespace Havit.Web.UI.WebControls
 				return valueTextBox.ControlStyle;
 			}
 		}
-		#endregion
 
-		#region TabIndex
 		/// <summary>
 		/// Gets or sets the tab order of the control within its container.		
 		/// </summary>
@@ -289,9 +246,7 @@ namespace Havit.Web.UI.WebControls
 				valueTextBox.TabIndex = value;
 			}
 		}
-		#endregion
 
-		#region ToolTip
 		/// <summary>
 		/// Gets or sets the text displayed when the mouse pointer hovers over the Web server control.
 		/// </summary>
@@ -305,10 +260,8 @@ namespace Havit.Web.UI.WebControls
 			{
 				valueTextBox.ToolTip = value;
 			}
-		} 
-		#endregion
+		}
 
-		#region AddOnText
 		/// <summary>
 		/// AddOnText - text zobrazený v rámci DateTimeBoxu - vlevo (či vpravo) od inputu pro zadání hodnoty.
 		/// Lze použít pouze v režimech BootstrapInputGroupButtonOnLeft a BootstrapInputGroupButtonOnRight.
@@ -324,13 +277,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["AddOnText"] = value;
 			}
 		}
-		#endregion
 
-		#endregion
-
-		#region Value properties
-
-		#region Value
 		/// <summary>
 		/// Vrací zadané datum. Není-li zadán žádný text, vrací null.
 		/// Je-li zadán neplatný datum, vyhodí výjimku.
@@ -359,9 +306,7 @@ namespace Havit.Web.UI.WebControls
 				SetValue(value, true);
 			}
 		}
-		#endregion
 
-		#region ValueText
 		/// <summary>
 		/// Hodnota zadaná v textovém políčku.
 		/// Vlastnost není určena pro zpracování, slouží jen pro validátory.
@@ -373,9 +318,7 @@ namespace Havit.Web.UI.WebControls
 				return valueTextBox.Text;
 			}
 		}
-		#endregion
 
-		#region IsValid
 		/// <summary>
 		/// Vrací true, pokud obsahuje platné datum (tj. prázdnou hodnotu NEBO "validní" datum).
 		/// </summary>
@@ -386,15 +329,12 @@ namespace Havit.Web.UI.WebControls
 				return _isValid;
 			}
 		}
-		#endregion
 
 		private DateTime? _value;
 		private bool _isValid = true;
 		private bool _setValueCallsSetValueToNestedTextBox = false;
 		private string _dateStatusFunction;
-		#endregion
 
-		#region ValueChanged
 		/// <summary>
 		/// Událost je vyvolána, kdykoliv uživatel změní editovanou hodnotu, resp. kdykoliv se po uživatelově zásahu změní hodnota Value.
 		/// (programová změna Value nevyvolá událost ValueChanged).
@@ -424,16 +364,12 @@ namespace Havit.Web.UI.WebControls
 		}
 		[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Privátní event nemusí začínat velkým písmenem.")]
 		private event EventHandler _valueChanged;
-		#endregion		
 
-		#region DateTimeBoxDateCustomizationEventHandler
 		/// <summary>
 		/// Delegát pro získání customizace renderování hodnot v kalendáři.
 		/// </summary>
 		public delegate void DateTimeBoxDateCustomizationEventHandler(object sender, DateTimeBoxDateCustomizationEventArgs e);
-		#endregion
 
-		#region GetDateTimeBoxCustomization
 		/// <summary>
 		/// EventHandler pro získání customizace renderování hodnot v kalendáři.
 		/// </summary>
@@ -443,9 +379,7 @@ namespace Havit.Web.UI.WebControls
 		/// EventHandler pro získání výchozí customizace renderování hodnot v kalendáři.
 		/// </summary>
 		public static event DateTimeBoxDateCustomizationEventHandler GetDateTimeBoxCustomizationDefault;
-		#endregion		
 
-		#region ValidationGroup
 		/// <summary>
 		/// ValidationGroup pro validaci.
 		/// </summary>
@@ -460,9 +394,7 @@ namespace Havit.Web.UI.WebControls
 				valueTextBox.ValidationGroup = value;
 			}
 		}
-		#endregion
 
-		#region CausesValidation
 		/// <summary>
 		/// Určuje, zda dochází k validaci při postbacku způsobeným tímto controlem (autopostback).
 		/// </summary>
@@ -477,9 +409,7 @@ namespace Havit.Web.UI.WebControls
 				valueTextBox.CausesValidation = value;
 			}
 		}
-		#endregion
 
-		#region Controls
 		/// <summary>
 		/// Controls (overriden).
 		/// </summary>
@@ -491,9 +421,7 @@ namespace Havit.Web.UI.WebControls
 				return base.Controls;
 			}
 		}
-		#endregion
 
-		#region ClientID
 		/// <summary>
 		/// ClientID (overriden).
 		/// Vrací ClientID obsaženého TextBoxu pro zadávání hodnoty.
@@ -507,9 +435,7 @@ namespace Havit.Web.UI.WebControls
 				return valueTextBox.ClientID;
 			}
 		}
-		#endregion
 
-		#region IsEnabled
 		/// <summary>
 		/// Vrací false, pokud je control sám zakázaný nebo pokud některý z parentů controlu je zakázaným WebControlem.
 		/// Jinak vrací true.
@@ -538,12 +464,7 @@ namespace Havit.Web.UI.WebControls
 				return true;
 			}
 		}
-		#endregion
 
-		#region --------------------------------------------------------------------------------
-		#endregion
-
-		#region Constructor
 		/// <summary>
 		/// Konstruktor. Vytvoří instance nested controlů.
 		/// </summary>
@@ -566,9 +487,7 @@ namespace Havit.Web.UI.WebControls
 			dateTimePickerDynarchCalendar.Electric = false;			
 			dateTimePickerDynarchCalendar.InputField = "ValueTextBox";
 		}
-		#endregion
-		
-		#region OnInit
+
 		/// <summary>
 		/// OnInit (overriden).
 		/// </summary>
@@ -579,9 +498,7 @@ namespace Havit.Web.UI.WebControls
 			valueTextBox.TextChanged += new EventHandler(ValueTextBox_TextChanged);
 			EnsureChildControls();
 		}
-		#endregion
-		
-		#region Page_PreLoad
+
 		private void Page_PreLoad(object sender, EventArgs e)
 		{
 			if (ViewState["ValueMemento"] != null)
@@ -591,9 +508,7 @@ namespace Havit.Web.UI.WebControls
 				SetValueFromNestedTextBox();
 			}
 		}
-		#endregion
 
-		#region OnLoad
 		/// <summary>
 		/// Raises the <see cref="E:System.Web.UI.Control.Load"/> event.
 		/// </summary>
@@ -605,10 +520,8 @@ namespace Havit.Web.UI.WebControls
 			// nastavíme hodnotu z předchozích kroků životního cyklu do vnořeného textboxu
 			SetValueToNestedTextBox();
 			this._setValueCallsSetValueToNestedTextBox = true;
-		} 
-		#endregion
+		}
 
-		#region SetValueFromNestedTextBox
 		/// <summary>
 		/// Nastaví Value a IsValue na základě hodnoty ve vnořeném texboxu.
 		/// </summary>
@@ -631,10 +544,8 @@ namespace Havit.Web.UI.WebControls
 					SetValue(null, false);
 				}
 			}
-		} 
-		#endregion
+		}
 
-		#region SetValueToNestedTextBox
 		/// <summary>
 		/// Nastaví hodnotu z Value do DateTimeBoxu.		
 		/// </summary>
@@ -664,10 +575,8 @@ namespace Havit.Web.UI.WebControls
 					}
 				}
 			}
-		} 
-		#endregion
+		}
 
-		#region CreateChildControls
 		/// <summary>
 		/// CreateChildControls (overriden).
 		/// Vytvoří kolekci controlů obsahující TextBox, LiteralControl (mezera), Image a na něj navěšený DynarchCalendar.
@@ -682,9 +591,7 @@ namespace Havit.Web.UI.WebControls
 			this.Controls.Add(dateTimePickerIcon);
 			this.Controls.Add(dateTimePickerDynarchCalendar);
 		}
-		#endregion
 
-		#region OnPreRender
 		/// <summary>
 		/// OnPreRender (overriden).
 		/// </summary>
@@ -720,9 +627,7 @@ namespace Havit.Web.UI.WebControls
 				HavitFrameworkClientScriptHelper.RegisterHavitFrameworkClientScript(this.Page);
 			}
 		}
-		#endregion
-		
-		#region Render
+
 		/// <summary>
 		/// Render (overriden).
 		/// </summary>
@@ -747,7 +652,6 @@ namespace Havit.Web.UI.WebControls
 
 			dateTimePickerDynarchCalendar.Button = this.GetDynarchCalendarButton();
 
-			#region Nastavení DateTimePickerImage.ImageUrl
 			if (this.IsEnabled)
 			{
 				string url = DateTimePickerEnabledImageUrl;
@@ -772,7 +676,6 @@ namespace Havit.Web.UI.WebControls
 					dateTimePickerImage.ImageUrl = Page.ClientScript.GetWebResourceUrl(typeof(DateTimeBox), "Havit.Web.UI.WebControls.DateTimeBox_DateTimePickerDisabled.gif");
 				}
 			}
-			#endregion
 
 			dateTimePickerDynarchCalendar.Enabled = IsEnabled;
 			dateTimePickerDynarchCalendar.Visible = ShowDateTimePicker;
@@ -843,9 +746,7 @@ namespace Havit.Web.UI.WebControls
 
 			base.Render(writer);
 		}
-		#endregion
 
-		#region RenderChildren, RenderChildren_BootstrapInputGroupAddOnZone
 		/// <summary>
 		/// Zajišťuje renderování struktury HTML dle nastavení ContainerRenderMode.
 		/// </summary>
@@ -937,9 +838,7 @@ namespace Havit.Web.UI.WebControls
 			writer.RenderEndTag(); // .btn.btn-default
 			writer.RenderEndTag(); // .input-group-btn
 		}
-		#endregion
 
-		#region LoadViewState, TrackViewState, SaveViewState
 		/// <summary>
 		/// Zajistí načtení ViewState vč. ContainerStyle.
 		/// </summary>
@@ -976,9 +875,7 @@ namespace Havit.Web.UI.WebControls
 			};
 			return result;
 		}
-		#endregion
 
-		#region ValueTextBox_TextChanged
 		/// <summary>
 		/// Obsluha změny textu v nested controlu.
 		/// Ověřuje, zda došlo ke změně hodnoty a pokud ano, vyvolá prostřednictvím metody OnValueChanged událost ValueChanged.
@@ -990,9 +887,7 @@ namespace Havit.Web.UI.WebControls
 				OnValueChanged(EventArgs.Empty);
 			}
 		}
-		#endregion
 
-		#region GetValueMemento
 		/// <summary>
 		/// Metoda vrací editovanou hodnotu jako stav.
 		/// Slouží k detekci, zda došlo ke změně hodnoty mezi postbacky.
@@ -1008,9 +903,7 @@ namespace Havit.Web.UI.WebControls
 				return DateTimeBox.InvalidValueMemento;
 			}
 		}
-		#endregion
 
-		#region SetValue
 		/// <summary>
 		/// Nastaví hodnoty vlastností Value a IsValid.
 		/// </summary>
@@ -1024,9 +917,7 @@ namespace Havit.Web.UI.WebControls
 				SetValueToNestedTextBox();
 			}
 		}
-		#endregion
 
-		#region OnValueChanged
 		/// <summary>
 		/// Vyvolává událost ValueChanged. Více viz ValueChanged.
 		/// </summary>
@@ -1037,9 +928,7 @@ namespace Havit.Web.UI.WebControls
 				_valueChanged(this, e);
 			}
 		}
-		#endregion
 
-		#region GetDynarchCalendarButton
 		/// <summary>
 		/// Vrací ID controlu, který bude sloužit jako button DynarchCalendare, tj. na který contrl musí uživatel kliknout, aby se zobrazil DynarchCalendar.
 		/// </summary>
@@ -1073,7 +962,5 @@ namespace Havit.Web.UI.WebControls
 					}
 			}
 		}
-		#endregion
-
 	}
 }

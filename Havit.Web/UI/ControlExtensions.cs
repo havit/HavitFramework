@@ -12,7 +12,6 @@ namespace Havit.Web.UI
 	/// </summary>
 	internal static class ControlExtensions
 	{
-		#region FindControls
 		/// <summary>
 		/// Vrátí všechny vnořené controls, které splňují podmínku predicate. Prohledává do hloubky, avšak do INamingContainer jde pouze, pokud je to určeno parametrem traverseNestedNamingContainers.
 		/// </summary>
@@ -39,6 +38,5 @@ namespace Havit.Web.UI
 				}
 			}
 		}
-		#endregion
 	}
 }

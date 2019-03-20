@@ -18,7 +18,6 @@ namespace Havit.Business.Query
 	/// </summary>
 	public class QueryParams
 	{
-		#region Parametry dotazu
 		/// <summary>
 		/// Instance třídy ObjectInfo nesoucí informace o tom, z jaké tabulky se bude dotaz dotazovat.
 		/// </summary>
@@ -88,9 +87,7 @@ namespace Havit.Business.Query
 			}
 		}
 		private readonly OrderByCollection orderBy = new OrderByCollection();
-		#endregion
 
-		#region GetDataLoadPower
 		/// <summary>
 		/// Podle kolekce properties určí režim záznamů, které budou vráceny.
 		/// Pro prázdnou kolekci vrací FullLoad, pro kolekci o jednom prvku, který je primárním klíčem, vrací Ghost. Jinak vrací PartialLoad.
@@ -113,9 +110,7 @@ namespace Havit.Business.Query
 			
 			return DataLoadPower.PartialLoad;
 		}
-		#endregion
 
-		#region PrepareCommand
 		/// <summary>
 		/// Vytvoří dotaz, nastaví jej do commandu.
 		/// Přidá parametry.
@@ -151,9 +146,6 @@ namespace Havit.Business.Query
 			command.CommandText = command.CommandText + commandBuilder.ToString();
 		}
 
-		#endregion
-
-		#region OnBeforePrepareCommand, OnAfterPrepareCommand
 		/// <summary>
 		/// Slouží k přípravě objektu před začátkem skládání databázového dotazu.
 		/// </summary>
@@ -170,9 +162,7 @@ namespace Havit.Business.Query
 		public virtual void OnAfterPrepareCommand(DbCommand command, StringBuilder commandBuilder)
 		{
 		}
-		#endregion
 
-		#region SQL Statement builder
 		/// <summary>
 		/// Vrátí sekci SQL dotazu SELECT.
 		/// </summary>
@@ -305,7 +295,6 @@ namespace Havit.Business.Query
 			}
 			return orderByBuilder.ToString();
 		}
-		#endregion
 
 		//#region GetOptionStatementStatement
 		///// <summary>

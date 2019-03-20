@@ -12,8 +12,7 @@ namespace Havit.Business.Query
     /// </summary>
     public class NotCondition : Condition
     {
-        #region Conditions
-        /// <summary>
+	    /// <summary>
         /// Podmínky, které jsou negovány. Mezi podmínkami je operátor AND.
         /// </summary>
         public ConditionList Conditions
@@ -23,10 +22,8 @@ namespace Havit.Business.Query
                 return _andConditions.Conditions;
             }
         }
-        private readonly AndCondition _andConditions; 
-        #endregion
+        private readonly AndCondition _andConditions;
 
-        #region Constructors
         /// <summary>
         /// Vytvoří instanci podmínky NotCondition a případně ji inicializuje zadanými vnitřními podmínkami.
         /// </summary>
@@ -41,9 +38,7 @@ namespace Havit.Business.Query
                 }
             }
         }
-        #endregion
 
-        #region GetWhereStatement
         /// <summary>
         /// Přidá část SQL příkaz pro sekci WHERE.
         /// </summary>
@@ -60,10 +55,8 @@ namespace Havit.Business.Query
             whereBuilder.Append("NOT ("); 
             _andConditions.GetWhereStatement(command, whereBuilder, sqlServerPlatform, commandBuilderOptions);
             whereBuilder.Append(")");
-        } 
-        #endregion
+        }
 
-        #region IsEmptyCondition
         /// <summary>
         /// Udává, zda podmínka reprezentuje prázdnou podmínku, která nebude renderována.
         /// </summary>
@@ -71,9 +64,7 @@ namespace Havit.Business.Query
         {
             return _andConditions.IsEmptyCondition();
         }
-        #endregion
 
-        #region Create (static)
         /// <summary>
         /// Vytvoří instanci podmínky NotCondition a případně ji inicializuje zadanými vnitřními podmínkami.
         /// </summary>
@@ -81,6 +72,5 @@ namespace Havit.Business.Query
         {
             return new NotCondition(conditions);
         }
-        #endregion
     }
 }

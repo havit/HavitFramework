@@ -13,15 +13,12 @@ namespace Havit.WebApplicationTest.HavitWebTests
 {
 	public partial class DropDownListTest : System.Web.UI.Page
 	{
-		#region OnInit
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
 			TestGridView.RowDataBound += new GridViewRowEventHandler(TestGridView_RowDataBound);
 		}
-		#endregion
 
-		#region OnLoad
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
@@ -33,9 +30,7 @@ namespace Havit.WebApplicationTest.HavitWebTests
 				SudeLicheDDL.Items.AsEnumerable().ToList().ForEach(item => item.SetOptionGroup(int.Parse(item.Value) % 2 == 0 ? "Sudé" : "Liché"));
 			}
 		}
-		#endregion
 
-		#region TestGridView_RowDataBound
 		private void TestGridView_RowDataBound(object sender, GridViewRowEventArgs e)
 		{
 			EnterpriseDropDownList roleDDL = (EnterpriseDropDownList)e.Row.FindControl("RoleDDL");
@@ -45,7 +40,5 @@ namespace Havit.WebApplicationTest.HavitWebTests
 				roleDDL.DataBind();
 			}
 		}
-		#endregion
-
 	}
 }

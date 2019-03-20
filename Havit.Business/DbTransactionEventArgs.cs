@@ -10,8 +10,7 @@ namespace Havit.Business
     /// </summary>
     public class DbTransactionEventArgs : EventArgs
     {
-        #region Transaction
-        /// <summary>
+	    /// <summary>
         /// Transakce.
 		/// Pro OnBeforeSave a OnAfterSave nemůže být v případě ActiveRecordBusinessObjectBase null, v případě holého BusinessObjectBase ano.
         /// </summary>
@@ -19,17 +18,14 @@ namespace Havit.Business
         {
             get { return _transaction; }
         }
-        private readonly DbTransaction _transaction; 
-        #endregion
+        private readonly DbTransaction _transaction;
 
-        #region Constructors
-		/// <summary>
+        /// <summary>
 		/// Konstruktor.
 		/// </summary>
         public DbTransactionEventArgs(DbTransaction transaction)
         {
             this._transaction = transaction;
-        } 
-        #endregion
+        }
     }
 }

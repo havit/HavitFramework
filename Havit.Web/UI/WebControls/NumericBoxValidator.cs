@@ -11,7 +11,6 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class NumericBoxValidator : BaseValidator
 	{
-		#region MinValue
 		/// <summary>
 		/// Minimální hodnota, která je považována za platnou hodnotu.
 		/// </summary>
@@ -20,9 +19,7 @@ namespace Havit.Web.UI.WebControls
 			get { return (decimal?)ViewState["MinValue"]; }
 			set { ViewState["MinValue"] = value; }
 		}
-		#endregion
 
-		#region MaxValue
 		/// <summary>
 		/// Maximální hodnota, která je považována za platnou hodnotu.
 		/// </summary>
@@ -31,9 +28,7 @@ namespace Havit.Web.UI.WebControls
 			get { return (decimal?)ViewState["MaxValue"]; }
 			set { ViewState["MaxValue"] = value; }
 		}
-		#endregion
 
-		#region EvaluateIsValid (overriden)
 		/// <summary>
 		/// Testuje platnost čísla.
 		/// </summary>
@@ -105,6 +100,5 @@ namespace Havit.Web.UI.WebControls
 
 			return true;
 		}
-		#endregion
 	}
 }

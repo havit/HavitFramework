@@ -10,7 +10,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 {
 	public static class CacheHelperClass
 	{
-		#region Generate
 		public static void Generate(List<Table> tables, CsprojFile csprojFile)
 		{
 			ConsoleHelper.WriteLineInfo("CacheHelper");
@@ -101,6 +100,5 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 
 			writer.Save();
 		}
-		#endregion
 	}
 }

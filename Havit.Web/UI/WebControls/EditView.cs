@@ -20,11 +20,8 @@ namespace Havit.Web.UI.WebControls
 	[PersistChildren(false)]
 	internal class EditView /* nebo FormEdit??? */ : Control
 	{
-		#region Private fields
 		private readonly FormViewExt formViewExt;
-		#endregion
 
-		#region ContentTemplate
 		/// <summary>
 		/// Šablona pro editaci.
 		/// </summary>
@@ -42,9 +39,7 @@ namespace Havit.Web.UI.WebControls
 				formViewExt.EditItemTemplate = value;
 			}
 		}
-		#endregion
 
-		#region ItemType
 		/// <summary>
 		/// Item type. Pro strong type databinding.
 		/// </summary>
@@ -65,9 +60,7 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		private string _itemType;
-		#endregion
 
-		#region AutoDataBind
 		/// <summary>
 		/// Nastavuje automatický databind.
 		/// </summary>
@@ -83,9 +76,7 @@ namespace Havit.Web.UI.WebControls
 				formViewExt.AutoDataBind = value;
 			}
 		}
-		#endregion
 
-		#region DataSource
 		/// <summary>
 		/// Nastaví objekt nebo kolekci jako datový zdroj FormView.
 		/// </summary>
@@ -100,9 +91,7 @@ namespace Havit.Web.UI.WebControls
 				formViewExt.DataSource = value;
 			}
 		}
-		#endregion
 
-		#region RenderOuterTable
 		public bool RenderOuterTable
 		{
 			get
@@ -114,9 +103,7 @@ namespace Havit.Web.UI.WebControls
 				formViewExt.RenderOuterTable = value;
 			}
 		}
-		#endregion
 
-		#region RequiresDatabinding
 		/// <summary>
 		/// Indikuje, zda je vyžadován DataBinding.
 		/// </summary>
@@ -127,9 +114,7 @@ namespace Havit.Web.UI.WebControls
 				return formViewExt.RequiresDataBinding;
 			}
 		}
-		#endregion
 
-		#region DataBinding
 		public new event EventHandler DataBinding
 		{
 			add
@@ -141,9 +126,7 @@ namespace Havit.Web.UI.WebControls
 				formViewExt.DataBinding -= value;
 			}
 		}
-		#endregion
 
-		#region DataBound
 		public event EventHandler DataBound
 		{
 			add
@@ -156,9 +139,7 @@ namespace Havit.Web.UI.WebControls
 
 			}
 		}
-		#endregion
 
-		#region ItemUpdating
 		public event FormViewUpdateEventHandler ItemUpdating
 		{
 			add
@@ -170,9 +151,7 @@ namespace Havit.Web.UI.WebControls
 				formViewExt.ItemUpdating -= value;
 			}
 		}
-		#endregion
 
-		#region ItemUpdated
 		public event FormViewUpdatedEventHandler ItemUpdated
 		{
 			add
@@ -184,9 +163,7 @@ namespace Havit.Web.UI.WebControls
 				formViewExt.ItemUpdated -= value;
 			}
 		}
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Constructor.
 		/// </summary>
@@ -196,9 +173,7 @@ namespace Havit.Web.UI.WebControls
 			formViewExt.ChangeMode(FormViewMode.Edit);
 			formViewExt.ModeChanging += this.FormViewExt_ModeChanging;
 		}
-		#endregion
 
-		#region FormViewExt_ModeChanging
 		/// <summary>
 		/// Zamezí změně módu zobrazení ve FormView.
 		/// </summary>
@@ -206,9 +181,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			e.Cancel = true;
 		}
-		#endregion
 
-		#region CreateChildControls
 		/// <summary>
 		/// Vloží zapouzdřený FormViewExt do stromu controlů.
 		/// </summary>
@@ -217,9 +190,7 @@ namespace Havit.Web.UI.WebControls
 			base.CreateChildControls();
 			this.Controls.Add(formViewExt);
 		}
-		#endregion
 
-		#region OnInit
 		/// <summary>
 		/// Zajistí volání CreateChildControls.
 		/// </summary>
@@ -228,9 +199,7 @@ namespace Havit.Web.UI.WebControls
 			base.OnInit(e);
 			EnsureChildControls();
 		}
-		#endregion
 
-		#region ExtractValues
 		/// <summary>
 		/// Vyzvedne hodnoty, které jsou nabidnované způsobem pro two-way databinding.
 		/// Hodnoty nastaví jako vlastnosti předanému datovému objektu.
@@ -240,9 +209,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			formViewExt.ExtractValues(dataObject);
 		}
-		#endregion
 
-		#region FindControl
 		/// <summary>
 		/// Hledá control se zadaným ID ve FormView.
 		/// </summary>
@@ -250,9 +217,7 @@ namespace Havit.Web.UI.WebControls
 		{
 			return formViewExt.Row.FindControl(id);
 		}
-		#endregion
 
-		#region SetRequiresDatabinding
 		/// <summary>
 		/// Nastaví RequiresDataBinding na true.
 		/// Zajistí zavolání databindingu ještě v aktuálním requestu. Běžně v OnPreRender,
@@ -263,6 +228,5 @@ namespace Havit.Web.UI.WebControls
 			formViewExt.SetRequiresDatabinding();
 
 		}
-		#endregion
 	}
 }

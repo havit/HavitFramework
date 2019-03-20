@@ -23,13 +23,10 @@ namespace Havit.Data.Entity.Glimpse.Inspectors
 	/// </summary>
 	public class DbCommandLogItemInspector : IInspector, IDisposable
 	{
-		#region Private fields
 		private IMessageBroker messageBroker;
 		private Func<IExecutionTimer> timerStrategy;
 		private DbCommandLoggingInterceptor dbCommandLoggingInterceptor;
-		#endregion
 
-		#region Setup
 		public void Setup(IInspectorContext context)
 		{
 			messageBroker = context.MessageBroker;
@@ -40,9 +37,7 @@ namespace Havit.Data.Entity.Glimpse.Inspectors
 			dbCommandLoggingInterceptor = new DbCommandLoggingInterceptor(messageBroker);
             DbInterception.Add(dbCommandLoggingInterceptor);
 		}
-		#endregion
 
-		#region ProcessMessage
 		private void ProcessMessage(DbCommandLogItem dbCommandLogItem)
 		{
 			DateTime now = DateTime.Now;
@@ -73,9 +68,7 @@ namespace Havit.Data.Entity.Glimpse.Inspectors
 				messageBroker.Publish(message);
 			}
 		}
-		#endregion
 
-		#region Dispose
 		public void Dispose()
 		{
 			if (dbCommandLoggingInterceptor != null)
@@ -84,6 +77,5 @@ namespace Havit.Data.Entity.Glimpse.Inspectors
 				dbCommandLoggingInterceptor = null;
 			}
 		}
-		#endregion
 	}
 }

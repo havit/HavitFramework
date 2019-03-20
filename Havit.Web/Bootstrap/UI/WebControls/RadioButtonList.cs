@@ -17,7 +17,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	/// </summary>
 	public class RadioButtonList : System.Web.UI.WebControls.RadioButtonList, IRadioButtonListCheckBoxList
 	{
-		#region ItemCssClass
 		/// <summary>
 		/// Css class for list items.
 		/// Default value is "btn btn-default".
@@ -33,9 +32,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ViewState["ItemCssClass"] = value;
 			}
 		}
-		#endregion
 
-		#region HtmlEncode
 		/// <summary>
 		/// Indikuje, zda dochází k encode textu k zobrazení.
 		/// Výchozí hodnota je true.
@@ -51,9 +48,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ViewState["HtmlEncode"] = value;
 			}
 		}
-		#endregion
-		
-		#region Constructor
+
 		/// <summary>
 		/// Constructor.
 		/// </summary>
@@ -62,9 +57,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			this.RepeatLayout = RepeatLayout.Flow;
 			this.RepeatDirection = RepeatDirection.Horizontal;			
 		}
-		#endregion
 
-		#region OnPreRender
 		/// <summary>
 		/// Configures the RadioButtonList prior to rendering on the client.
 		/// </summary>
@@ -73,9 +66,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			base.OnPreRender(e);
 			BootstrapClientScriptHelper.RegisterBootstrapClientScript(this.Page);
 		}
-		#endregion
 
-		#region Render
 		/// <summary>
 		/// Displays the RadioButtonList on the client.
 		/// </summary>
@@ -84,9 +75,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			// No base call
 			RadioButtonListCheckBoxListHelper.Render(this, writer);
 		}
-		#endregion
 
-		#region RenderItem
 		/// <summary>
 		/// Called to render each item.
 		/// </summary>
@@ -94,9 +83,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			RadioButtonListCheckBoxListHelper.RenderItem(this, itemType, repeatIndex, repeatInfo, writer, () => base.RenderItem(itemType, repeatIndex, repeatInfo, writer));
 		}
-		#endregion
 
-		#region IRadioButtonListCheckBoxList implementation
 		void IRadioButtonListCheckBoxList.AddAttributesToRender(HtmlTextWriter writer)
 		{
 			this.AddAttributesToRender(writer);
@@ -106,7 +93,5 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			this.RenderItem(itemType, repeatIndex, repeatInfo, writer);
 		}
-		#endregion
-
 	}
 }

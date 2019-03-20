@@ -16,7 +16,6 @@ namespace Havit.Web.UrlRewriter
 	[Obsolete("Upgrade to ASP.NET Routing.")]
 	public class RewriterFactoryHandler : IHttpHandlerFactory
 	{
-		#region GetHandler
 		/// <summary>
 		/// GetHandler is executed by the ASP.NET pipeline after the associated HttpModules have run.  The job of
 		/// GetHandler is to return an instance of an HttpHandler that can process the page.
@@ -71,9 +70,7 @@ namespace Havit.Web.UrlRewriter
 			context.Trace.Write("RewriterFactoryHandler", "Exiting RewriterFactoryHandler");	// log info to the Trace object...
 			return PageParser.GetCompiledPageInstance(url, filePath, context);
 		}
-		#endregion
 
-		#region ReleaseHandler
 		/// <summary>
 		/// Prázdná implementace, je však vyžadována IHttpHandlerFactory.
 		/// </summary>
@@ -81,6 +78,5 @@ namespace Havit.Web.UrlRewriter
 		public virtual void ReleaseHandler(IHttpHandler handler)
 		{
 		}
-		#endregion
 	}
 }

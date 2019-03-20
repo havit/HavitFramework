@@ -12,7 +12,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	/// </summary>
 	public sealed class NavbarSeparatorItem : NavbarItem
 	{
-		#region IsDecoration
 		/// <summary>
 		/// Navbar separator is a decoration.
 		/// </summary>
@@ -20,9 +19,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			get { return true; }
 		}
-		#endregion
 
-		#region Render
 		/// <summary>
 		/// Renders navbar separator.
 		/// </summary>
@@ -32,6 +29,5 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			writer.RenderBeginTag(HtmlTextWriterTag.Li);
 			writer.RenderEndTag();
 		}
-		#endregion
 	}
 }

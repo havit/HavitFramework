@@ -13,7 +13,6 @@ namespace Havit.Security
 	/// </remarks>
 	public class PasswordGenerator
 	{
-		#region MinimumLength
 		/// <summary>
 		/// Minimální délka hesla. Default 6.
 		/// </summary>
@@ -29,9 +28,7 @@ namespace Havit.Security
 			}
 		}
 		private int _mininumLength;
-		#endregion
 
-		#region MaximumLength
 		/// <summary>
 		/// Maximální délka hesla. Default 10.
 		/// </summary>
@@ -47,9 +44,7 @@ namespace Havit.Security
 			}
 		}
 		private int _maximumLength;
-		#endregion
 
-		#region PasswordCharacterSet
 		/// <summary>
 		/// Sada znaků, z níž se mají vybírat znaky pro generované heslo.
 		/// </summary>
@@ -67,9 +62,7 @@ namespace Havit.Security
 		}
 		private PasswordCharacterSet _passwordCharacterSet;
 		private int passwordCharArrayUpperBound;
-		#endregion
 
-		#region AllowRepeatingCharacters
 		/// <summary>
 		/// Indikuje, zdali se smí v heslu opakovat znaky. zdali může být některý znak v heslu vícekrát. Default <c>true</c>.
 		/// </summary>
@@ -79,9 +72,7 @@ namespace Havit.Security
 			set { this._allowRepeatingCharacters = value; }
 		}
 		private bool _allowRepeatingCharacters;
-		#endregion
 
-		#region AllowConsecutiveCharacters
 		/// <summary>
 		/// Indikuje, zdali smí heslo obsahovat shluky stejných znaků. Default <c>false</c>.
 		/// </summary>
@@ -91,9 +82,7 @@ namespace Havit.Security
 			set { this._allowConsecutiveCharacters = value; }
 		}
 		private bool _allowConsecutiveCharacters;
-		#endregion
 
-		#region Exclusions
 		/// <summary>
 		/// Řetězec znaků, které nechceme mít v heslu.
 		/// </summary>
@@ -103,17 +92,13 @@ namespace Havit.Security
 			set { this._exclusions = value; }
 		}
 		private string _exclusions;
-		#endregion
 
-		#region Private consts
 		private const int DefaultMinimum = 6;
 		private const int DefaultMaximum = 10;
 		private const int LowerCaseLettersUpperBound = 25;
 		private const int LettersUpperBound = 51;
 		private const int LettersAndDigitsUpperBound = 61;
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Vytvoří instanci PasswordGeneratoru a nastaví výchozí hodnoty pro složitost generovaného hesla.
 		/// </summary>
@@ -128,9 +113,7 @@ namespace Havit.Security
 
 			rng = new RNGCryptoServiceProvider();
 		}
-		#endregion
 
-		#region GetCharacterArrayUpperBound
 		/// <summary>
 		/// Vrátí horní index pole znaků, do kterého se smí provádět výběr pro generované heslo.
 		/// </summary>
@@ -157,9 +140,7 @@ namespace Havit.Security
 			}
 			return upperBound;
 		}
-		#endregion
 
-		#region GetCryptographicRandomNumber (protected)
 		/// <summary>
 		/// Vygeneruje náhodné číslo pomocí crypto-API.
 		/// </summary>
@@ -188,9 +169,7 @@ namespace Havit.Security
 
 			return (int)(urndnum % (uBound - lBound)) + lBound;
 		}
-		#endregion
 
-		#region GetRandomCharacter (protected)
 		/// <summary>
 		/// Vrátí náhodný znak.
 		/// </summary>
@@ -204,9 +183,7 @@ namespace Havit.Security
 
 			return randomChar;
 		}
-		#endregion
 
-		#region Generate
 		/// <summary>
 		/// Vygeneruje heslo složitosti dle nastaveného generátoru.
 		/// </summary>
@@ -288,9 +265,7 @@ namespace Havit.Security
 				return String.Empty;
 			}
 		}
-		#endregion
 
-		#region ValidateSettings
 		/// <summary>
 		/// Kontroluje nastavení generátoru a vyhazuje případné výjimky.
 		/// </summary>
@@ -306,14 +281,10 @@ namespace Havit.Security
 				throw new InvalidOperationException("Není dostatek znaků pro vygenerování hesla požadované délky.");
 			}
 		}
-		#endregion
 
-		#region private fields
 		private readonly RNGCryptoServiceProvider rng;
 		private readonly char[] pwdCharArray = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789`~!@#$%^&*()-_=+[]{}\\|;:'\",<.>/?".ToCharArray();
-		#endregion
 
-		#region Generate (static)
 		/// <summary>
 		/// Vygeneruje heslo složitosti dle požadovaných parametrů.
 		/// </summary>
@@ -367,6 +338,5 @@ namespace Havit.Security
 
 			return passwordGenerator.Generate();
 		}
-		#endregion
 	}
 }

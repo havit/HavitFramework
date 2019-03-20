@@ -17,7 +17,6 @@ namespace Havit.Web.UI.Scriptlets
 
 		/* Parametry ControlParametru *************** */
 
-		#region Control
 		/// <summary>
 		/// Controlu, který je zdrojem pro vytvoření klientského parametru.
 		/// Nesmí být zadáno současně s ControlName.
@@ -35,9 +34,7 @@ namespace Havit.Web.UI.Scriptlets
 			}
 		}
 		private Control _control;
-		#endregion
 
-		#region ControlName
 		/// <summary>
 		/// Název controlu, který je zdrojem pro vytvoření klientského parametru.
 		/// Pro vyhledávání ve vnořeném naming containeru lze názvy controlů oddělit tečkou.
@@ -48,19 +45,15 @@ namespace Havit.Web.UI.Scriptlets
 			get { return (string)ViewState["ControlName"]; }
 			set { ViewState["ControlName"] = value; }
 		}
-		#endregion
 
-		#region Name
 		/// <include file='IScriptletParameter.xml' path='doc/members/member[starts-with(@name,"P:Havit.Web.UI.Scriptlets.IScriptletParameter.Name")]/*' />        
 		[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1604:ElementDocumentationMustHaveSummary", Justification = "Bráno z externího souboru.")]
 		public override string Name
 		{
 			get { return base.Name ?? ControlName.Replace(".", "_"); }
 			set { base.Name = value; }
-		}		
-		#endregion
+		}
 
-		#region StartOnChange
 		/// <summary>
 		/// Udává, zda v případě změny hodnoty prvku (zaškrtnutí, změna textu, apod.)
 		/// dojde ke spuštění skriptu.
@@ -71,11 +64,9 @@ namespace Havit.Web.UI.Scriptlets
 			get { return (bool)(ViewState["StartOnChange"] ?? false); }
 			set { ViewState["StartOnChange"] = value; }
 		}
-		#endregion
 
 		/* Kontrola platnosti parametrů *************** */
 
-		#region CheckProperties (overriden)
 		/// <include file='IScriptletParameter.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IScriptletParameter.CheckProperties")]/*' />
 		[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1604:ElementDocumentationMustHaveSummary", Justification = "Bráno z externího souboru.")]
 		public override void CheckProperties()
@@ -83,10 +74,8 @@ namespace Havit.Web.UI.Scriptlets
 			base.CheckProperties();
 			// navíc zkontrolujeme nastavení ControlName
 			CheckControlAndControlNameProperty();
-		}		
-		#endregion
+		}
 
-		#region CheckNameProperty
 		/// <summary>
 		/// Testuje nastavení hodnoty property Name.
 		/// Přepisuje chování předka tím způsobem, že zde není property Name povinná
@@ -97,9 +86,7 @@ namespace Havit.Web.UI.Scriptlets
 			// narozdíl od zde definujeme jméno jako nepovinné
 			// nebudeme zde tedy jméno kontrolovat
 		}
-		#endregion
 
-		#region CheckControlAndControlNameProperty
 		/// <summary>
 		/// Zkontroluje nastavení property <see cref="Control">Control</see> a <see cref="ControlName">ControlName</see>.
 		/// Pokud není nastavena hodnota právě jedné vlastnosti, vyhodí výjimku.
@@ -115,11 +102,9 @@ namespace Havit.Web.UI.Scriptlets
 				throw new HttpException("Není možné určit control vlastnostmi Control a ControlName zároveň.");
 			}
 		}
-		#endregion
 
 		/* Parametry IScriptletParameter *************** */
 
-		#region GetInitializeClientSideValueScript
 		/// <include file='IScriptletParameter.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IScriptletParameter.GetInitializeClientSideValueScript")]/*' />        
 		[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1604:ElementDocumentationMustHaveSummary", Justification = "Bráno z externího souboru.")]
 		public override void GetInitializeClientSideValueScript(string parameterPrefix, Control parentControl, ScriptBuilder scriptBuilder)
@@ -131,9 +116,7 @@ namespace Havit.Web.UI.Scriptlets
 				extender.GetInitializeClientSideValueScript(parameterPrefix, this, control, scriptBuilder);
 			});
 		}
-		#endregion
 
-		#region GetAttachEventsScript
 		/// <include file='IScriptletParameter.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IScriptletParameter.GetAttachEventsScript")]/*' />
 		[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1604:ElementDocumentationMustHaveSummary", Justification = "Bráno z externího souboru.")]
 		public override void GetAttachEventsScript(string parameterPrefix, Control parentControl, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder)
@@ -145,9 +128,7 @@ namespace Havit.Web.UI.Scriptlets
 				extender.GetAttachEventsScript(parameterPrefix, this, control, scriptletFunctionCallDelegate, scriptBuilder);
 			});
 		}
-		#endregion
 
-		#region GetDetachEventsScript
 		/// <include file='IScriptletParameter.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IScriptletParameter.GetDetachEventsScript")]/*' />
 		[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1604:ElementDocumentationMustHaveSummary", Justification = "Bráno z externího souboru.")]
 		public override void GetDetachEventsScript(string parameterPrefix, Control parentControl, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder)
@@ -159,9 +140,7 @@ namespace Havit.Web.UI.Scriptlets
 				extender.GetDetachEventsScript(parameterPrefix, this, control, scriptletFunctionCallDelegate, scriptBuilder);
 			});
 		}
-		#endregion
 
-		#region DoJobOnExtender (ExtenderJobEventHandler)
 		private void DoJobOnExtender(Control control, ExtenderJobEventHandler job)
 		{
 			// ak když je viditelný
@@ -174,12 +153,9 @@ namespace Havit.Web.UI.Scriptlets
 			}
 		}
 		private delegate void ExtenderJobEventHandler(IControlExtender extender);
-		
-		#endregion		
 
 		/* *************** */
 
-		#region GetControl
 		/// <summary>
 		/// Nalezne Control, který má být zpracován.
 		/// Pokud není Control nalezen, vyhodí výjimku HttpException.
@@ -212,7 +188,5 @@ namespace Havit.Web.UI.Scriptlets
 
 			return result;
 		}
-		#endregion        
-		
     }
 }

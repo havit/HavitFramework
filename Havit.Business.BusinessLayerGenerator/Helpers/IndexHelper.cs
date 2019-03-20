@@ -8,7 +8,6 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 {
 	public static class IndexHelper
 	{
-		#region CreateOrUpdate
 		/// <summary>
 		/// Vytvoří index, pokud neexistuje.
 		/// Pokud existuje a je jiný, je původní index odstraněn.
@@ -38,9 +37,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 				index.Create();
 			}
 		}
-		#endregion
 
-		#region FindByStructure
 		/// <summary>
 		/// Najde v tabulce existující index ve stejné struktury.
 		/// Vrací nalezený index nebo null, není-li nalezen.
@@ -56,9 +53,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			}
 			return null;
 		}
-		#endregion
 
-		#region AreSame
 		/// <summary>
 		/// Porovná strukturu indexů. Vrací true, pokud je struktura shodná, jinak false.
 		/// </summary>
@@ -131,9 +126,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			}
 			return result;
 		}
-		#endregion
 
-		#region GetIndexName
 		public static string GetIndexName(string prefix, string tableName, params string[] columnNames)
 		{
 			StringBuilder result = new StringBuilder();
@@ -168,6 +161,5 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 
 			return result.ToString();
 		}
-		#endregion
 	}
 }

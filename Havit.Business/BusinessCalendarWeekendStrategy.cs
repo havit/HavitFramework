@@ -10,7 +10,6 @@ namespace Havit.Business
 	/// </summary>
 	public static class BusinessCalendarWeekendStrategy
 	{
-		#region GetSaturdaySundayStrategy
 		/// <summary>
 		/// Vrací strategii, která považuje za víkend sobotu a neděli.
 		/// </summary>
@@ -18,9 +17,7 @@ namespace Havit.Business
 		{
 			return new BusinessCalendarSaturdaySundayWeekendStrategy();
 		}
-		#endregion
 
-		#region GetFridaySaturdayStrategy
 		/// <summary>
 		/// Vrací strategii, která považuje za víkend pátek a sobotu.
 		/// </summary>
@@ -28,7 +25,5 @@ namespace Havit.Business
 		{
 			return new BusinessCalendarFridaySaturdayWeekendStrategy();
 		}
-		#endregion
-
 	}
 }

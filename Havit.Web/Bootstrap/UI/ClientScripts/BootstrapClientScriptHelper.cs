@@ -14,7 +14,6 @@ namespace Havit.Web.Bootstrap.UI.ClientScripts
 	/// </summary>
 	public static class BootstrapClientScriptHelper
 	{
-		#region Consts (internal)
 		/// <summary>
 		/// Script Resource Definition name for WebUIValidationExtension.js.
 		/// </summary>
@@ -34,9 +33,7 @@ namespace Havit.Web.Bootstrap.UI.ClientScripts
 		/// Script Resource Definition name for CollabsiblePanel.js.
 		/// </summary>
 		internal const string CollapsiblePanelScriptResourceMappingName = "Havit.Web.Bootstrap.CollapsiblePanel";
-		#endregion
 
-		#region RegisterScriptResourceMappings
 		/// <summary>
 		/// Register script map resource mapping for "bootstrap", "toastr" and other system names.
 		/// Bootstrap script are ~/Scripts/bootstrap.min.js, for debug ~/Scripts/bootstrap.js.
@@ -55,9 +52,7 @@ namespace Havit.Web.Bootstrap.UI.ClientScripts
 			ScriptManager.ScriptResourceMapping.AddDefinition(ModalScriptResourceMappingName, new ScriptResourceDefinition { Path = String.Format("~/Scripts/havit.web.bootstrap/ModalExtension.js?version={0}", version) });
 			ScriptManager.ScriptResourceMapping.AddDefinition(CollapsiblePanelScriptResourceMappingName, new ScriptResourceDefinition { Path = String.Format("~/Scripts/havit.web.bootstrap/CollapsiblePanel.js?version={0}", version) });
 		}
-		#endregion
 
-		#region RegisterBootstrapClientScript
 		/// <summary>
 		/// Register Bootstrap Client Script to the page. Uses ScriptResourceMapping.
 		/// Ensures registration of "jquery".
@@ -67,6 +62,5 @@ namespace Havit.Web.Bootstrap.UI.ClientScripts
 			ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(page, "jquery");
 			ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(page, "bootstrap");
 		}
-		#endregion
 	}
 }

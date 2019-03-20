@@ -7,7 +7,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 {
 	public static class PropertiesClassObsolete
 	{
-		#region RemoveObsolete
 		public static void RemoveObsolete(Table table, CsprojFile csprojFile)
 		{
 			string fileName = FileHelper.GetFilename(table, "Properties.cs", "_properties");
@@ -59,6 +58,5 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			//}
 			
 		}
-		#endregion
 	}
 }

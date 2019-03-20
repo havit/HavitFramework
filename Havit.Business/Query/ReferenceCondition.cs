@@ -12,7 +12,6 @@ namespace Havit.Business.Query
 	/// </summary>
 	public static class ReferenceCondition
 	{
-		#region CreateEquals
 		/// <summary>
 		/// Vytvoří podmínku na rovnost reference.
 		/// </summary>
@@ -65,10 +64,7 @@ namespace Havit.Business.Query
 
 			return NumberCondition.CreateEquals(operand1, operand2);
 		}
-		
-		#endregion
 
-		#region CreateNotEquals
 		/// <summary>
 		/// Vytvoří podmínku na nerovnost reference.
 		/// </summary>
@@ -121,10 +117,7 @@ namespace Havit.Business.Query
 
 			return NumberCondition.Create(operand1, ComparisonOperator.NotEquals, operand2);
 		}
-		
-		#endregion
 
-		#region CreateIn
 		/// <summary>
 		/// Vytvoří podmínku existence hodnoty v poli ID objektů.
 		/// </summary>
@@ -151,9 +144,7 @@ namespace Havit.Business.Query
 		{
 			return CreateIn(operand, ids);
 		}
-		#endregion
 
-		#region CreateNotIn
 		/// <summary>
 		/// Vytvoří podmínku neexistence hodnoty v poli ID objektů.
 		/// </summary>
@@ -187,6 +178,5 @@ namespace Havit.Business.Query
 		{
 			return CreateNotIn(operand, ids);
 		}
-		#endregion
 	}
 }

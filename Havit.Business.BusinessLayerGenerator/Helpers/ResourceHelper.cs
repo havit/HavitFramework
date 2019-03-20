@@ -9,7 +9,6 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 {
 	public static class ResourceHelper
 	{
-		#region GetResourceClasses
 		public static List<ResourceClass> GetResourceClasses(Table resourceClass)
 		{
 			if (_getResourceClassesResult == null)
@@ -40,9 +39,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			return _getResourceClassesResult;
 		}
 		private static List<ResourceClass> _getResourceClassesResult;
-		#endregion
 
-		#region GetResourceClasses_GetSqlCommand
 		private static SqlCommand GetResourceClasses_GetSqlCommand(Table resourceClass)
 		{
 			string idColumn = TableHelper.GetPrimaryKey(resourceClass).Name;
@@ -59,9 +56,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			return new SqlCommand(commandText);
 
 		}
-		#endregion
 
-		#region GetResourceItems
 		public static List<ResourceItem> GetResourceItems(int resourceClassID)
 		{
 			if (_getResourceItemsResult == null)
@@ -91,9 +86,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			return _getResourceItemsResult.FindAll(item => item.ResourceClassID == resourceClassID);
 		}
 		private static List<ResourceItem> _getResourceItemsResult;
-		#endregion
 
-		#region GetResourceClasses_GetSqlCommand
 		private static SqlCommand GetResourceItems_GetSqlCommand()
 		{
 			Table resourceItem = DatabaseHelper.FindTable("ResourceItem", "dbo");
@@ -112,6 +105,5 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			return new SqlCommand(commandText);
 
 		}
-		#endregion
 	}
 }

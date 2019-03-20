@@ -6,11 +6,8 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions
 {
 	public static class ClassHelper
 	{
-		#region Private fields
 		private static Hashtable typeNamesCache = new Hashtable();
-		#endregion
 
-		#region GetClassName
 		/// <summary>
 		/// Vrací název třídy tabulky.
 		/// </summary>
@@ -41,9 +38,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions
 			typeNamesCache[table] = result;
 			return result;
 		}
-		#endregion
 
-		#region GetBaseClassName
 		/// <summary>
 		/// Vrací název předka třídy tabulky.
 		/// </summary>
@@ -51,9 +46,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions
 		{
 			return GetClassName(table) + "Base";
 		}
-		#endregion
 
-		#region GetClassFullName
 		/// <summary>
 		/// Vrací název třídy včetně namespace.
 		/// </summary>
@@ -61,9 +54,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions
 		{
 			return CombineNamespaceClassNames(NamespaceHelper.GetNamespaceName(table, withDefaultNamespace), GetClassName(table));
 		}
-		#endregion
 
-		#region GetCollectionClassName
 		/// <summary>
 		/// Vrátí jméno třídy pro kolekci objektů.
 		/// </summary>
@@ -71,9 +62,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions
 		{
 			return GetClassName(table) + "Collection";
 		}
-		#endregion
 
-		#region GetCollectionBaseClassName
 		/// <summary>
 		/// Vrátí jméno třídy pro předka kolekce objektů.
 		/// </summary>
@@ -81,9 +70,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions
 		{
 			return GetClassName(table) + "CollectionBase";
 		}
-		#endregion
 
-		#region GetCollectionClassFullName
 		/// <summary>
 		/// Vrátí jméno třídy pro kolekci objektů.
 		/// </summary>
@@ -91,9 +78,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions
 		{
 			return CombineNamespaceClassNames(NamespaceHelper.GetNamespaceName(table, withDefaultNamespace), GetClassName(table) + "Collection");
 		}
-		#endregion
 
-		#region CombineNamespaceClassNames
 		/// <summary>
 		/// Vrátí celý název třídy jako kombinaci namespace a třídy v daném namespace. 
 		/// Pokud je namespace prázdný, vrací název třídy.
@@ -106,9 +91,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions
 			}
 			return String.Format("{0}.{1}", namespaceName, className);
 		}
-		#endregion
 
-		#region GetPropertiesClassName
 		/// <summary>
 		/// Vrátí jméno třídy nesoucí Properties pro danou tabulku.
 		/// </summary>
@@ -116,9 +99,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions
 		{
 			return GetClassName(table) + "Properties";
 		}
-		#endregion
 
-		#region GetPropertiesBaseClassName
 		/// <summary>
 		/// Vrátí jméno předka třídy nesoucí Properties pro danou tabulku.
 		/// </summary>
@@ -126,9 +107,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions
 		{
 			return GetPropertiesClassName(table) + "Base";
 		}
-		#endregion
 
-		#region GetBusinessObjectBaseType
 		/// <summary>
 		/// Vrací jméno předka business objektu pro danou tabulku.
 		/// Pokud není nastaveno na tabulce, bere se default z databáze. Není-li ani na databázi,
@@ -151,9 +130,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions
 			return "ActiveRecordBusinessObjectBase";
 
 		}
-		#endregion
 
-		#region GetBusinessObjectLayerCollectionSupertype
 		/// <summary>
 		/// Vrací jméno layer supertype kolekce business objektů.
 		/// Výchozí hodnota je "BusinessObjectCollection&lt;business object&gt;".
@@ -170,6 +147,5 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions
 			layerSupertype = layerSupertype.Replace("{BusinessObjectCollectionClassName}", ClassHelper.GetCollectionClassName(table));
 			return layerSupertype;
 		}
-		#endregion		
 	}
 }

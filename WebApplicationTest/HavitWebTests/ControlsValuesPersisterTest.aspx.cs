@@ -10,7 +10,6 @@ namespace Havit.WebApplicationTest.HavitWebTests
 {
 	public partial class ControlsValuesPersisterTest : System.Web.UI.Page
 	{
-		#region OnInit
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
@@ -25,9 +24,7 @@ namespace Havit.WebApplicationTest.HavitWebTests
 		{
 			TestGVE.DataSource = Enumerable.Range(0, 5);
 		}
-		#endregion
 
-		#region ClearButton_Click
 		private void ClearButton_Click(object sender, EventArgs e)
 		{
 			TestTextBox.Text = "";
@@ -45,17 +42,13 @@ namespace Havit.WebApplicationTest.HavitWebTests
 				}
 			}
 		}
-		#endregion
 
-		#region SaveButton_Click
 		private void SaveButton_Click(object sender, EventArgs e)
 		{		
 			ControlsValuesHolder data = MainControlsValuesPersister.RetrieveValues();
 			ViewState["Data"] = data;
 		}
-		#endregion
 
-		#region LoadButton_Click
 		private void LoadButton_Click(object sender, EventArgs e)
 		{			
 			ControlsValuesHolder data = (ControlsValuesHolder)ViewState["Data"];
@@ -64,7 +57,5 @@ namespace Havit.WebApplicationTest.HavitWebTests
 				MainControlsValuesPersister.ApplyValues(data);
 			}
 		}
-		#endregion
-
 	}
 }

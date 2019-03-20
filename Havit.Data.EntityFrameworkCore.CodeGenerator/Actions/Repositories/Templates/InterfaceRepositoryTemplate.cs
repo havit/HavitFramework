@@ -58,22 +58,19 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Temp
     
     #line default
     #line hidden
-    #region Base class
-    /// <summary>
+	/// <summary>
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "15.0.0.0")]
     public class InterfaceRepositoryTemplateBase
     {
-        #region Fields
-        private global::System.Text.StringBuilder generationEnvironmentField;
+	    private global::System.Text.StringBuilder generationEnvironmentField;
         private global::System.CodeDom.Compiler.CompilerErrorCollection errorsField;
         private global::System.Collections.Generic.List<int> indentLengthsField;
         private string currentIndentField = "";
         private bool endsWithNewline;
         private global::System.Collections.Generic.IDictionary<string, object> sessionField;
-        #endregion
-        #region Properties
+
         /// <summary>
         /// The string builder that generation-time code is using to assemble generated output
         /// </summary>
@@ -144,8 +141,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Temp
                 this.sessionField = value;
             }
         }
-        #endregion
-        #region Transform-time helpers
+
         /// <summary>
         /// Write text directly into the generated output
         /// </summary>
@@ -268,8 +264,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Temp
             this.indentLengths.Clear();
             this.currentIndentField = "";
         }
-        #endregion
-        #region ToString Helpers
+
         /// <summary>
         /// Utility class to produce culture-oriented representation of an object as a string.
         /// </summary>
@@ -327,7 +322,5 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Temp
                 return this.toStringHelperField;
             }
         }
-        #endregion
     }
-    #endregion
 }

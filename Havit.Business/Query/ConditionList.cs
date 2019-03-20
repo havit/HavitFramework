@@ -10,7 +10,6 @@ namespace Havit.Business.Query
 	/// </summary>
 	public class ConditionList : Collection<Condition>
 	{
-		#region InsertItem
 		/// <summary>
 		/// Předefinování metody pro vkládání podmínek. Není možné vložit null (hodnota null je ignorována a není přidána do kolekce.
 		/// </summary>
@@ -20,7 +19,6 @@ namespace Havit.Business.Query
 			{
 				base.InsertItem(index, item);
 			}
-		} 
-		#endregion
+		}
 	}
 }

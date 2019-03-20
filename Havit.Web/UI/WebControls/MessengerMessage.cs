@@ -10,8 +10,7 @@ namespace Havit.Web.UI.WebControls
     [Serializable]
     public class MessengerMessage
     {
-        #region Text
-        /// <summary>
+	    /// <summary>
         /// Text zprávy.
         /// </summary>
         public string Text
@@ -26,9 +25,7 @@ namespace Havit.Web.UI.WebControls
             }
         }
         private string _text;
-        #endregion
 
-        #region MessageType
         /// <summary>
         /// Typ zprávy.
         /// </summary>
@@ -44,9 +41,7 @@ namespace Havit.Web.UI.WebControls
             }
         }
         private MessageType _messageType;
-        #endregion
 
-        #region Constructors
         /// <summary>
         /// Vytvoří instanci zprávy a nastaví typ zprávy na Information.
         /// </summary>
@@ -70,7 +65,6 @@ namespace Havit.Web.UI.WebControls
             this._messageType = messageType;
             this._text = text;
         }
-        #endregion
     }
 
 }

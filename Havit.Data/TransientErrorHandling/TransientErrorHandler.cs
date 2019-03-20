@@ -11,7 +11,6 @@ namespace Havit.Data.TransientErrorHandling
 	/// </summary>
 	internal static class TransientErrorHandler
 	{
-		#region ExecuteAction
 		/// <summary>
 		/// Provádí danou akci, opakování se řídí výchozí TransientErrorRetryPolicy.
 		/// </summary>
@@ -49,6 +48,5 @@ namespace Havit.Data.TransientErrorHandling
 				}
 			}
 		}
-		#endregion
 	}
 }

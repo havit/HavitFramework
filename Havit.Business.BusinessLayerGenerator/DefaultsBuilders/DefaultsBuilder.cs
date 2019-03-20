@@ -8,7 +8,6 @@ namespace Havit.Business.BusinessLayerGenerator.DefaultsBuilders
 {
 	public static class DefaultsBuilder
 	{
-		#region CreateDefaults
 		/// <summary>
 		/// Vytvoří výchozí hodnoty k tabulce.
 		/// </summary>
@@ -35,7 +34,5 @@ namespace Havit.Business.BusinessLayerGenerator.DefaultsBuilders
 
 			}
 		}
-		#endregion
-
 	}
 }

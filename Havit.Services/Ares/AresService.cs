@@ -15,20 +15,14 @@ namespace Havit.Services.Ares
 	/// </summary>
 	public class AresService
 	{
-		#region Const
 		private const string AresBasicDataRequestUrl = "http://wwwinfo.mfcr.cz/cgi-bin/ares/darv_bas.cgi?ico=";
 		private const string AresObchodniRejstrikDataRequestUrl = "http://wwwinfo.mfcr.cz/cgi-bin/ares/darv_or.cgi?ico=";
-		#endregion
 
-		#region Private members
 		/// <summary>
 		/// IČ subjektu, kterého údaje chceme získat.
 		/// </summary>
 		private string Ico { get; set; }
 
-		#endregion
-
-		#region Timeout
 		/// <summary>
 		/// Timeout (v milisekundách) jednoho requestu při načítání dat z ARESu.
 		/// Pokud není hodnota nastavena, není délka requestu omezována (resp. je použito standardní nastavení .NETu).
@@ -37,9 +31,7 @@ namespace Havit.Services.Ares
 		{
 			get; set;
 		}
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
@@ -48,9 +40,6 @@ namespace Havit.Services.Ares
 		{
 			Ico = ico;
 		}
-		#endregion
-
-		#region GetData
 
 		/// <summary>
 		/// Vrací strukturovanou odpověd z obchodního rejstříku.
@@ -89,9 +78,7 @@ namespace Havit.Services.Ares
 
 			return result;
 		}
-		#endregion
 
-		#region LoadBasicData, ParseBasicData
 		private void LoadBasicData(object state)
 		{
 			AresData result = (AresData)state;
@@ -186,9 +173,7 @@ namespace Havit.Services.Ares
 				}
 			}
 		}
-		#endregion
 
-		#region LoadObchodniRejstrikData, ParseObchodniRejstrikData
 		private void LoadObchodniRejstrikData(object state)
 		{
 			AresData result = (AresData)state;
@@ -344,9 +329,7 @@ namespace Havit.Services.Ares
 				}
 			}
 		}
-		#endregion
 
-		#region GetAresResponseXDocument
 		/// <summary>
 		/// Odešle dotaz do obchodního rejstříku pro dané IČ a vrátí odpověd jako XDocument objekt.
 		/// </summary>
@@ -374,7 +357,5 @@ namespace Havit.Services.Ares
 
 			return aresResponseXDocument;
 		}
-		#endregion
-
 	}
 }

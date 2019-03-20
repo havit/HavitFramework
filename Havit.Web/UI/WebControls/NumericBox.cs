@@ -17,19 +17,12 @@ namespace Havit.Web.UI.WebControls
 	[ValidationProperty("NumberText")]
 	public class NumericBox : Control, INamingContainer
 	{
-		#region Constants
 		private const string clientScriptBlockName = "Havit.DsvCommerce.WebBase.UI.WebControls.NumericBox_Script";
 		private readonly Regex whitespaceremover = new Regex("\\s");
 		private const string InvalidMemento = "invalid";
-		#endregion
 
-		#region Nested controls
 		private readonly TextBox valueTextBox;
-		#endregion
 
-		#region Behavior properties
-
-		#region AutoPostBack
 		/// <summary>
 		/// Udává, zda má po změně hodnoty v UI dojít k postbacku.
 		/// </summary>
@@ -38,9 +31,7 @@ namespace Havit.Web.UI.WebControls
 			get { return valueTextBox.AutoPostBack; }
 			set { valueTextBox.AutoPostBack = value; }
 		}
-		#endregion
 
-		#region Enabled
 		/// <summary>
 		/// Udává, zda je control pro zadání čísla povolen.
 		/// Pokud je zakázán, není možné v UI zadávat hodnotu.
@@ -50,9 +41,7 @@ namespace Havit.Web.UI.WebControls
 			get { return (bool)(ViewState["_Enabled"] ?? true); }
 			set { ViewState["_Enabled"] = value; }
 		}
-		#endregion
 
-		#region Decimals
 		/// <summary>
 		/// Nastavuje počet desetinných míst, které lze v UI zadat. Na tento počet desetinných míst se číslo formátuje pro zobrazení.
 		/// Výchozí hodnota je 0.
@@ -63,9 +52,6 @@ namespace Havit.Web.UI.WebControls
 			set { ViewState["Decimals"] = value; }
 		}
 
-		#endregion
-
-		#region AllowNegativeNumber
 		/// <summary>
 		/// Udává, zda je povoleno zadávat v UI záporná čísla (tj. znak "-").
 		/// Výchozí hodnota je false.
@@ -76,9 +62,6 @@ namespace Havit.Web.UI.WebControls
 			set { ViewState["AllowNegativeNumber"] = value; }
 		}
 
-		#endregion
-
-		#region ZeroAsEmpty
 		/// <summary>
 		/// Zobrazí editovací okno jako prázdné, pokud je v nastavena hodnota nula a naopak (prázdná hodnota je vracena jako nula).
 		/// Výchozí hodnota je false.
@@ -88,9 +71,7 @@ namespace Havit.Web.UI.WebControls
 			get { return (bool)(ViewState["ZeroAsEmpty"] ?? false); }
 			set { ViewState["ZeroAsEmpty"] = value; }
 		}
-		#endregion
 
-		#region ReadOnly
 		/// <summary>
 		/// Udává, zda lze hodnotu v textovém políčku editovat.
 		/// </summary>
@@ -105,9 +86,7 @@ namespace Havit.Web.UI.WebControls
 				valueTextBox.ReadOnly = value;
 			}
 		}
-		#endregion
 
-		#region KeyBlockingClientScriptEnabled
 		/// <summary>
 		/// Udává, zda se pro zapouzdřený textbox použije javascript, který brání vložení nepovolených znaků. Výchozí hodnota je true.
 		/// </summary>
@@ -122,9 +101,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["KeyBlockingClientScriptEnabled"] = value;
 			}
 		}
-		#endregion
 
-		#region SelectOnClick
 		/// <summary>
 		/// Indikuje, zda se při kliknutí do textboxu označí vepsaný text.
 		/// Výchozí hodnota je true.
@@ -140,12 +117,7 @@ namespace Havit.Web.UI.WebControls
 				ViewState["SelectOnClick"] = value;
 			}
 		}
-		#endregion
-	
-		#endregion
 
-		#region Appereance properties
-		#region Style
 		/// <summary>
 		/// Stylování ValueTextBoxu.
 		/// </summary>
@@ -157,9 +129,6 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 
-		#endregion
-
-		#region ToolTip
 		/// <summary>
 		/// Gets or sets the text displayed when the mouse pointer hovers over the Web server control.
 		/// </summary>
@@ -174,9 +143,7 @@ namespace Havit.Web.UI.WebControls
 				valueTextBox.ToolTip = value;
 			}
 		}
-		#endregion
 
-		#region MaxLength
 		/// <summary>
 		/// Maximální délka <strong>textu</strong> zapsatelná do NumericBoxu.
 		/// </summary>
@@ -185,12 +152,7 @@ namespace Havit.Web.UI.WebControls
 			get { return valueTextBox.MaxLength; }
 			set { valueTextBox.MaxLength = value; }
 		}
-		#endregion
-		#endregion
 
-		#region Function properties
-
-		#region Value
 		/// <summary>
 		/// Vrací zadané číslo. Není-li zadán žádný text, vrací null (pokud je ZeroAsEmpty, vrací nulu).
 		/// Je-li zadáno neplatné číslo, vyhodí výjimku.
@@ -219,9 +181,7 @@ namespace Havit.Web.UI.WebControls
 				}
 			}
 		}
-		#endregion
 
-		#region ValueAsInt
 		/// <summary>
 		/// Vrací zadané číslo jako Int32. Není-li zadán žádný text, vrací null (pokud je ZeroAsEmpty, vrací nulu).
 		/// Je-li zadáno neplatné číslo, vyhodí výjimku.
@@ -243,9 +203,7 @@ namespace Havit.Web.UI.WebControls
 				this.Value = value;
 			}
 		}
-		#endregion
 
-		#region IsValid
 		/// <summary>
 		/// Vrací true, pokud obsahuje platné číslo (tj. prázdnou hodnotu NEBO "validní" číslo).
 		/// </summary>
@@ -265,9 +223,7 @@ namespace Havit.Web.UI.WebControls
 				return Decimal.TryParse(numberText, NumberStyles.Number, Thread.CurrentThread.CurrentCulture.NumberFormat, out resultDecimal);
 			}
 		}
-		#endregion
 
-		#region NumberText
 		/// <summary>
 		/// Hodnota zadaná v textovém políčku ořezanou o whitespaces (i z prostředka textu, nikoliv prostý trim).
 		/// Vlastnost není určena pro zpracování, slouží pro validátory a pro parsování hodnoty na číslo.
@@ -279,10 +235,7 @@ namespace Havit.Web.UI.WebControls
 				return whitespaceremover.Replace(valueTextBox.Text, String.Empty);
 			}
 		}
-		#endregion
-		#endregion
 
-		#region ValueChanged
 		/// <summary>
 		/// Událost je vyvolána, kdykoliv uživatel změní editovanou hodnotu, resp. kdykoliv se po uživatelově zásahu změní hodnota Value.
 		/// (programová změna Value nevyvolá událost ValueChanged).
@@ -311,9 +264,7 @@ namespace Havit.Web.UI.WebControls
 			}
 		}
 		private EventHandler _valueChanged;
-		#endregion
 
-		#region TabIndex
 		/// <summary>
 		/// Gets or sets the tab order of the control within its container.		
 		/// </summary>
@@ -328,9 +279,7 @@ namespace Havit.Web.UI.WebControls
 				valueTextBox.TabIndex = value;
 			}
 		}
-		#endregion
 
-		#region ValidationGroup
 		/// <summary>
 		/// ValidationGroup pro validaci.
 		/// </summary>
@@ -345,9 +294,7 @@ namespace Havit.Web.UI.WebControls
 				valueTextBox.ValidationGroup = value;
 			}
 		}
-		#endregion
 
-		#region CausesValidation
 		/// <summary>
 		/// Určuje, zda dochází k validaci při postbacku způsobeným tímto controlem (autopostback).
 		/// </summary>
@@ -362,9 +309,7 @@ namespace Havit.Web.UI.WebControls
 				valueTextBox.CausesValidation = value;
 			}
 		}
-		#endregion
 
-		#region ClientID
 		/// <summary>
 		/// ClientID (overriden).
 		/// Vrací ClientID obsaženého TextBoxu pro zadávání hodnoty.
@@ -378,12 +323,7 @@ namespace Havit.Web.UI.WebControls
 				return valueTextBox.ClientID;
 			}
 		}
-		#endregion
 
-		#region --------------------------------------------------------------------------------
-		#endregion
-
-		#region Constructor
 		/// <summary>
 		/// Kontruktor.
 		/// </summary>
@@ -392,9 +332,7 @@ namespace Havit.Web.UI.WebControls
 			valueTextBox = new TextBoxExt();
 			valueTextBox.ID = "ValueTextBox";
 		}
-		#endregion
 
-		#region OnInit
 		/// <summary>
 		/// OnInit (overriden).
 		/// </summary>
@@ -404,9 +342,7 @@ namespace Havit.Web.UI.WebControls
 			valueTextBox.TextChanged += new EventHandler(ValueTextBox_TextChanged);
 			EnsureChildControls();
 		}
-		#endregion
 
-		#region Controls
 		/// <summary>
 		/// Controls (overriden).
 		/// </summary>
@@ -418,9 +354,7 @@ namespace Havit.Web.UI.WebControls
 				return base.Controls;
 			}
 		}
-		#endregion
 
-		#region CreateChildControls
 		/// <summary>
 		/// CreateChildControls (overriden).
 		/// </summary>
@@ -429,9 +363,7 @@ namespace Havit.Web.UI.WebControls
 			base.CreateChildControls();
 			this.Controls.Add(valueTextBox);
 		}
-		#endregion
 
-		#region OnPreRender
 		/// <summary>
 		/// OnPreRender (overriden).
 		/// </summary>
@@ -445,9 +377,7 @@ namespace Havit.Web.UI.WebControls
 			}
 			ViewState["ValueMemento"] = GetValueMemento();
 		}
-		#endregion
 
-		#region Render
 		/// <summary>
 		/// Sends server control content to a provided HtmlTextWriter object, which writes the content to be rendered on the client.
 		/// </summary>
@@ -495,9 +425,7 @@ namespace Havit.Web.UI.WebControls
 
 			base.Render(writer);
 		}
-		#endregion
 
-		#region ValueTextBox_TextChanged
 		/// <summary>
 		/// Obsluha změny textu v nested controlu.
 		/// Ověřuje, zda došlo ke změně hodnoty a pokud ano, vyvolá prostřednictvím metody OnValueChanged událost ValueChanged.
@@ -509,9 +437,7 @@ namespace Havit.Web.UI.WebControls
 				OnValueChanged(EventArgs.Empty);
 			}
 		}
-		#endregion
 
-		#region GetValueMemento
 		/// <summary>
 		/// Metoda vrací editovanou hodnotu jako stav.
 		/// Slouží k detekci, zda došlo ke změně hodnoty mezi postbacky.
@@ -527,9 +453,7 @@ namespace Havit.Web.UI.WebControls
 				return InvalidMemento;
 			}
 		}
-		#endregion
 
-		#region OnValueChanged
 		/// <summary>
 		/// Vyvolává událost ValueChanged. Více viz ValueChanged.
 		/// </summary>
@@ -540,6 +464,5 @@ namespace Havit.Web.UI.WebControls
 				_valueChanged(this, eventArgs);
 			}
 		}
-		#endregion
 	}
 }

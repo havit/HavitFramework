@@ -14,7 +14,6 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class BooleanField : BoundFieldExt
 	{
-		#region Properties
 		/// <summary>
 		/// Text zobrazený, pokud je hodnota true.
 		/// </summary>
@@ -44,9 +43,6 @@ namespace Havit.Web.UI.WebControls
 				ViewState["FalseText"] = value; 
 			}
 		}
-		#endregion
-
-		#region FormatDataValue
 
 		/// <summary>
 		/// Zajistí transformaci boolean hodnoty na text s použitím vlastností TrueText, FalseText.
@@ -64,6 +60,5 @@ namespace Havit.Web.UI.WebControls
 				return base.FormatDataValue(value);
 			}
 		}
-		#endregion
 	}
 }

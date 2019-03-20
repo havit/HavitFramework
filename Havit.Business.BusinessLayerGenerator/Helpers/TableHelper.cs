@@ -27,7 +27,6 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			return ExtendedPropertiesHelper.GetInt(ExtendedPropertiesKey.FromTable(table), key, table.Name);
 		}
 
-		#region IsIgnored
 		/// <summary>
 		/// Vrací true, pokud je tabulka označena jako ignorovaná (Extended Property "Ignored").
 		/// Pokud je strategie generování kódu pro Exec, pak se ignorují i všechny tabulky začínající podtržítkem.
@@ -38,9 +37,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 				|| ((GeneratorSettings.Strategy == GeneratorStrategy.HavitCodeFirst) && table.Name.StartsWith("__")) // __DataSeed, __EFMigrationsHistory
 				|| (GetBoolExtendedProperty(table, "Ignored") ?? DatabaseHelper.GetDefaultIgnoredOnTables());
 		}
-		#endregion
 
-		#region IsJoinTable
 		/// <summary>
 		/// Vrací true, pokud jde o spojovací tabulku (dekompozice M:N).
 		/// Ta se pozná tak, že má právě dva sloupce a oba jsou PFK.
@@ -58,9 +55,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 
 			return pfkCounter == 2;
 		}
-		#endregion
 
-		#region GetPrimaryKey
 		/// <summary>
 		/// Vrátí sloupec, který je primárním klíčem tabulky.
 		/// Neni-li PK tvořen právě jedním sloupcem, je vyhozena výjimka.
@@ -95,9 +90,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			return result;
 		}
 		private static Dictionary<Table, Column> getPrimaryKeyCache = new Dictionary<Table, Column>();
-		#endregion
 
-		#region GetPropertyColumns
 		/// <summary>
 		/// Vrátí sloupce, kterým se bude generovat property.
 		/// Nevrací sloupce primárního klíče a ignorované sloupce.
@@ -123,9 +116,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		}
 		private static Table lastGetPropertyColumnsTable;
 		private static List<Column> lastGetPropertyColumnsResult;
-		#endregion
-		
-		#region GetNotIgnoredColumns
+
 		/// <summary>
 		/// Vrací sloupce tabulky bez ignorovaných sloupců.
 		/// </summary>
@@ -141,9 +132,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			}
 			return result;
 		}
-		#endregion
 
-		#region GetDbReadWriteColumns
 		/// <summary>
 		/// Vrátí sloupce, kterým se bude ukládat hodnota do databáze.
 		/// Nevrací sloupce primárního klíče, ignorované sloupce.
@@ -153,9 +142,6 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			return GetPropertyColumns(table);
 		}
 
-		#endregion
-
-		#region GetCollectionColumns
 		/// <summary>
 		/// Vrátí seznam vlastností typu kolekce, které mají v BusinessObjektu existovat.
 		/// Automaticky přidává property Localization, je-li tabulka lokalizována jinou tabulkou.
@@ -269,9 +255,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			return result;
 		}
 		//private static List<Table> _getCollectionColumns_CheckedTables = new List<Table>();
-		#endregion
 
-		#region GetCollectionColumns
 		/// <summary>
 		/// Vrátí seznam vlastností typu kolekce, které mají v BusinessObjektu existovat.
 		///
@@ -291,9 +275,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			}
 			return result;
 		}
-		#endregion
 
-		#region GetSecondJoinEnd
 		/// <summary>
 		/// Spojka (spojovací tabulka) má dva klíče, které referují dvě tabulky.
 		/// Tato metoda najde ke spojce a tabulce druhou tabulku, která je referována.
@@ -312,9 +294,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			// pokud je referována jen jedna tabulka (např. návrhovy vzor Composit), musíme ji vrátit.
 			return firstEndTable;
 		}
-		#endregion
 
-		#region GetSecondColumn
 		/// <summary>
 		/// Vrátí druhý sloupec v tabulce vůči zadanému sloupci. Vyžaduje se, aby tabulka měla právě 2 sloupečky.
 		/// </summary>
@@ -344,9 +324,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 
 			throw new ApplicationException("Chyba v programu.");
 		}
-		#endregion
 
-		#region IsReadOnly
 		/// <summary>
 		/// Udává, zda je tabulka určena jen pro čtení.
 		/// Výchozí hodnota je false.
@@ -373,9 +351,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 
 			return false;
 		}
-		#endregion
 
-		#region GetEnumMode
 		/// <summary>
 		/// Vrátí typ výčtu generovaného pro tabulku.
 		/// </summary>
@@ -387,9 +363,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 				default: return EnumMode.NoEnum;
 			}
 		}
-		#endregion
 
-		#region GetEnumMembers
 		/// <summary>
 		/// Vrátí seznam členů výčtu k tabulce.
 		/// </summary>
@@ -459,9 +433,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 
 			return result;
 		}
-		#endregion
 
-		#region GetSqlSelectFields
 		/// <summary>
 		/// Vrátí fieldy do sekce SQL dotazu SELECT a to včetně kolekcí.
 		/// </summary>
@@ -490,9 +462,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			}
 			return fieldsBuilder.ToString();
 		}
-		#endregion
 
-		#region IsCachable
 		/// <summary>
 		/// Vrátí true, pokud se mají záznamy z tabulky cachovat.
 		/// Výchozí hodnota je false.
@@ -518,9 +488,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 
 			return false;
 		}
-		#endregion
 
-		#region CanCacheBusinessObjectInstances
 		/// <summary>
 		/// Vrací true, pokud mohou být cachovány celé instance business objektů (pro cachované readonly tabulky, které neodkazují do non-readonly tabulky (netranzitivně)).
 		/// V opačném případě jsou cachovány DataRecords.
@@ -554,9 +522,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 
 			return false; // tabulka není cachovaná (ani readonly), nemůžeme cachovat instance
 		}
-		#endregion
 
-		#region GetCachePriority
 		/// <summary>
 		/// Vrátí prioritu s jakou se cachují záznamy tabulky.
 		/// </summary>
@@ -564,9 +530,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		{
 			return ExtendedPropertiesHelper.GetString(ExtendedPropertiesKey.FromTable(table), "Cache_Priority");
 		}
-		#endregion
 
-		#region GetCacheAbsoluteExpirationSeconds
 		/// <summary>
 		/// Vrátí délku absolutní expirace pro cachování záznamů tabulky v sekundách.
 		/// </summary>
@@ -582,9 +546,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 				return int.Parse(expiration);
 			}
 		}
-		#endregion
 
-		#region GetCacheSlidingExpirationSeconds
 		/// <summary>
 		/// Vrátí délku sliding expirace pro cachování záznamů tabulky v sekundách.
 		/// </summary>
@@ -600,9 +562,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 				return int.Parse(expiration);
 			}
 		}
-		#endregion
 
-		#region GetDeletedColumn
 		/// <summary>
 		/// Nalezne v tabulce sloupec identifikující příznakem smazané záznamy.
 		/// Pokud není sloupec nalezen, vrací false.
@@ -618,9 +578,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			}
 			return null;
 		}
-		#endregion
 
-		#region GetOwnerColumns
 		/// <summary>
 		/// Vrátí sloupce, které určují ownera (ownery) záznamu.
 		/// V tabulce musí být extended property OwnerField s názvem sloupce, který nese hodnotu ownera.
@@ -664,9 +622,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			}
 			return result;
 		}
-		#endregion
 
-		#region GetDescription
 		/// <summary>
 		/// Vrátí desctiption k tabulce, 
 		/// pro tabulku "Language" a lokalizační tabulky vrací výchozí hodnotu, pokud description neexistuje.
@@ -695,9 +651,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 
 			return null;
 		}
-		#endregion
 
-		#region GetGenerateIndexes
 		/// <summary>
 		/// Určuje, zda se k tabulce mají tvořit indexy.
 		/// </summary>
@@ -705,9 +659,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		{
 			return ExtendedPropertiesHelper.GetBool(ExtendedPropertiesKey.FromTable(table), "GenerateIndexes", table.Name) ?? true;
 		}
-		#endregion
 
-		#region GetGetAllIncludeLocalizations
 		/// <summary>
 		/// Vrací hodnotu extended property GetAll_IncludeLocalizations tabulky. Není-li uvedena, vrací výchozí nastavení databáze.
 		/// </summary>
@@ -716,9 +668,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			return ExtendedPropertiesHelper.GetBool(ExtendedPropertiesKey.FromTable(table), "GetAll_IncludeLocalizations", table.Name)
 				?? DatabaseHelper.GetGetAllIncludeLocalizations();
 		}
-		#endregion
 
-		#region GetLoadAllIncludeLocalizations
 		/// <summary>
 		/// Vrací hodnotu extended property GetAll_IncludeLocalizations tabulky. Není-li uvedena, vrací výchozí nastavení databáze.
 		/// </summary>
@@ -727,9 +677,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			return ExtendedPropertiesHelper.GetBool(ExtendedPropertiesKey.FromTable(table), "LoadAll_IncludeLocalizations", table.Name)
 				?? DatabaseHelper.GetLoadAllIncludeLocalizations();
 		}
-		#endregion
 
-		#region GetAccessModifier
 		/// <summary>
 		/// Vrátí přístupový modifikátor pro třídu generovanou k tabulce.
 		/// </summary>
@@ -749,9 +697,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			return "public";
 
 		}
-		#endregion
 
-		#region GetCreateObjectAccessModifier
 		/// <summary>
 		/// Vrací přístupový modifikátor pro metodu CreateObject.
 		/// Čte extended property CreateObjectAccessModifier.
@@ -766,9 +712,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			}
 			return modifier;
 		}
-		#endregion
 
-		#region OmitCreateObjectMethod
 		/// <summary>
 		/// Vrací true, pokud má být vynechána metoda CreateObject (true -> nemá být generována).
 		/// </summary>
@@ -776,10 +720,8 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		{
 			return GetCreateObjectAccessModifier(table).ToLower() == "none";
 		}
-		#endregion
 
-        #region GetFullTableName
-        /// <summary>
+		/// <summary>
         /// Vrátí celý název databázové tabulky vč. názvu schématu, pokud je schéma v cílové platformě podporováno.
         /// Pokud není podporováno, vrací jen název tabulky.
         /// </summary>
@@ -793,10 +735,8 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
             {
                 return String.Format("[{0}]", table.Name);
             }
-        } 
-        #endregion
+        }
 
-		#region GetCloneMethod
 		/// <summary>
 		/// Vrátí příznak, zda se má generovat method pro klonování objektu.
 		/// </summary>
@@ -804,9 +744,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		{
 			return ExtendedPropertiesHelper.GetBool(ExtendedPropertiesKey.FromTable(table), "CloneMethod", table.Name) ?? false;
 		}
-		#endregion
 
-		#region GetCloneMethodAccessModifier
 		/// <summary>
 		/// Vrátí přístupový modifikátor pro danou třídu.
 		/// </summary>
@@ -820,9 +758,8 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 
 			return methodAccessModifier;
 		}
-		#endregion
 
-	    public static List<String> Script(Table table)
+		public static List<String> Script(Table table)
 	    {
 	        if (_tableScripts == null)
 	        {

@@ -14,12 +14,9 @@ namespace Havit.Business.Query
 	/// </summary>
 	internal class InIntegersCondition : Condition
 	{
-		#region Private field
 		private readonly IOperand operand;
 		private readonly int[] ids;
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Konstruktor
 		/// </summary>
@@ -28,9 +25,7 @@ namespace Havit.Business.Query
 			this.operand = operand;
 			this.ids = ids;
 		}
-		#endregion
 
-		#region IsEmptyCondition
 		/// <summary>
 		/// Udává, zda podmínka reprezentuje prázdnou podmínku, která nebude renderována (např. prázdná AndCondition).
 		/// </summary>
@@ -38,9 +33,7 @@ namespace Havit.Business.Query
 		{
 			return false;
 		}
-		#endregion IsEmptyCondition
 
-		#region GetWhereStatement
 		/// <summary>
 		/// Přidá část SQL příkaz pro sekci WHERE. Je VELMI doporučeno, aby byla podmínka přidána včetně závorek.
 		/// </summary>
@@ -63,9 +56,7 @@ namespace Havit.Business.Query
 					break;
 			}
 		}
-		#endregion
 
-		#region GetWhereStatementForSqlServerCe35
 		/// <summary>
 		/// Řeší variantu podmínky where pro SQL Server CE 3.5.
 		/// </summary>
@@ -73,9 +64,7 @@ namespace Havit.Business.Query
 		{
 			whereBuilder.AppendFormat("({{0}} IN ({0})", String.Join(",", Array.ConvertAll<int, string>(ids, item => item.ToString())));
 		}
-		#endregion		
 
-		#region GetWhereStatementForSqlServer2008
 		/// <summary>
 		/// Řeší variantu podmínky where pro SQL Server 2008.
 		/// </summary>
@@ -86,7 +75,5 @@ namespace Havit.Business.Query
 				operand.GetCommandValue(command, sqlServerPlatform),
 				idsOperand.GetCommandValue(command, sqlServerPlatform));
 		}
-		#endregion
-
 	}
 }

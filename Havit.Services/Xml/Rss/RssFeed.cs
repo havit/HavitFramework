@@ -15,8 +15,6 @@ namespace Havit.Services.Xml.Rss
 	[XmlRoot("rss")]
 	public class RssFeed
 	{
-		#region Fields
-
 		private string version = "";
 		private readonly RssChannelCollection channels;
 
@@ -48,10 +46,6 @@ namespace Havit.Services.Xml.Rss
 			}
 		}
 
-		#endregion
-
-		#region Constructor
-		
 		/// <summary>
 		/// Vytvoří novou instanci RSS feedu.
 		/// </summary>
@@ -61,9 +55,6 @@ namespace Havit.Services.Xml.Rss
 			this.version = "2.0";
 			
 		}
-		#endregion
-
-		#region Seralization to XML
 
 		/// <summary>
 		/// Vrátí RSS feed jako XmlDocument
@@ -105,7 +96,5 @@ namespace Havit.Services.Xml.Rss
 
 			return result;
 		}
-
-		#endregion
 	}
 }

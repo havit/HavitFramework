@@ -14,7 +14,6 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 	/// </summary>
 	public class ControlsValuesPersister : Control
 	{
-		#region PersisterExtenders
 		/// <summary>
 		/// Vrací úložiště extenderů.
 		/// Extendery získávají/nastavují hodnoty controlům.
@@ -27,18 +26,14 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 			{
 				return PersisterControlExtenderRepository.Default;
 			}
-		} 
-		#endregion
+		}
 
-		#region ControlValueSet
 		/// <summary>
 		/// Událost oznamuje každé nastavení hodnoty do controlu.
 		/// Je vyvolána poté, co PersisterControlExtender nastaví do controlu hodnotu.
 		/// </summary>
-		public event ControlValueSetEventHandler ControlValueSet; 
-		#endregion
+		public event ControlValueSetEventHandler ControlValueSet;
 
-		#region ApplyValues
 		/// <summary>
 		/// Nastaví stav controlů dle předaných hodnot.
 		/// </summary>
@@ -46,9 +41,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 		{			
 			ApplyValues(dataHolder, this, this, this.PersisterExtenders, (args) => this.OnControlValueSet(args));
 		}
-		#endregion
 
-		#region RetrieveValues
 		/// <summary>
 		/// Získá stav controlů a vrátí jej.		
 		/// </summary>
@@ -65,10 +58,8 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 		public void RetrieveValues(ControlsValuesHolder dataHolder)
 		{			
 			RetrieveValues(dataHolder, this, this, PersisterExtenders);
-		} 
-		#endregion
+		}
 
-		#region OnControlValueSet
 		/// <summary>
 		/// Oznamuje nastavení hodnoty do controlu.
 		/// </summary>
@@ -79,9 +70,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 				this.ControlValueSet(this, eventArgs);
 			}
 		}
-		#endregion
 
-		#region RetrieveValues (internal static)
 		/// <summary>
 		/// Uloží stav controlu do předaného úložiště.
 		/// Není-li pro control nalezen IPersisterControlExtender, ukládá stav rekurzivně do hloubky.
@@ -115,9 +104,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 				}
 			}			
 		}
-		#endregion
 
-		#region ApplyValues (internal static)
 		/// <summary>
 		/// Nastaví stav controlů dle předaných hodnot.
 		/// Controly se zpracovávají rekurzivně. Rekurze je zastavena nastavením 
@@ -163,9 +150,7 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 				}
 			}
 		}
-		#endregion
 
-		#region GetControlKey, GetControlID (static)
 		/// <summary>
 		/// Vrátí klíč použitý pro uložení hodnoty pro zadaný control.
 		/// Klíč se získává složením ID controlu a nadřazených naming containerů od ControlsValuesPersisteru dolu,
@@ -214,6 +199,5 @@ namespace Havit.Web.UI.WebControls.ControlsValues
 			}
 			return result;
 		}
-		#endregion
 	}
 }

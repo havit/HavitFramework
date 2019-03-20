@@ -15,18 +15,13 @@ namespace Havit.Web.Management
 	/// </summary>
 	public class WebRequestErrorEventExt : WebRequestErrorEvent
 	{
-		#region Constants (private)
 		private const string ExceptionText = "(exception)";
-		#endregion
 
-		#region Private fields
 		private readonly HttpContext _currentHttpContext;
 		private readonly Type _currentApplicationInstanceType;
 		private readonly CultureInfo _currentCulture;
 		private readonly CultureInfo _currentUiCulture;
-		#endregion
 
-		#region Constructors
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
@@ -49,9 +44,7 @@ namespace Havit.Web.Management
 			_currentCulture = CultureInfo.CurrentCulture;
 			_currentUiCulture = CultureInfo.CurrentUICulture;
 		}
-		#endregion
 
-		#region UnwrapException
 		private static Exception UnwrapException(Exception exception)
 		{
 			if (((exception is SoapException) || (exception is HttpUnhandledException))
@@ -61,9 +54,7 @@ namespace Havit.Web.Management
 			}
 			return exception;
 		}
-		#endregion
 
-		#region ToString
 		/// <summary>
 		/// Vrátí log události
 		/// </summary>
@@ -108,9 +99,6 @@ namespace Havit.Web.Management
 			return sb.ToString();
 		}
 
-		#endregion
-
-		#region FormatToString
 		/// <summary>
 		/// Zapíše do StringBuilderu obecné informace o události
 		/// </summary>
@@ -118,10 +106,8 @@ namespace Havit.Web.Management
 		{
 			sb.AppendLine("    Event time: " + this.EventTime.ToString(CultureInfo.InstalledUICulture));
 			sb.AppendLine("    Event UTC time: " + this.EventTimeUtc.ToString(CultureInfo.InstalledUICulture));
-		} 
-		#endregion
+		}
 
-		#region FormatProcessInformation
 		/// <summary>
 		/// Zapíše do StringBuilderu informace o procesu
 		/// </summary>
@@ -130,10 +116,8 @@ namespace Havit.Web.Management
 			sb.AppendLine("    Process ID: " + processInformation.ProcessID.ToString(CultureInfo.InstalledUICulture));
 			sb.AppendLine("    Process name: " + processInformation.ProcessName);
 			sb.AppendLine("    Account name: " + processInformation.AccountName);
-		} 
-		#endregion
+		}
 
-		#region FormatExceptionInformation
 		/// <summary>
 		/// Zapíše do StringBuilderu informace o výjimce
 		/// </summary>
@@ -142,9 +126,7 @@ namespace Havit.Web.Management
 			sb.AppendLine("    Exception type: " + exception.GetType().ToString());
 			sb.AppendLine("    Exception message: " + exception.Message);
 		}
-		#endregion
 
-		#region FormatRequestInformation
 		/// <summary>
 		/// Zapíše do StringBuilderu informace o requestu
 		/// </summary>
@@ -228,9 +210,7 @@ namespace Havit.Web.Management
 				sb.AppendLine("    User agent: " + userAgent);
 			}
 		}
-		#endregion
 
-		#region FormatApplicationInformation
 		/// <summary>
 		/// Zapíše informace o aplikaci
 		/// </summary>
@@ -243,9 +223,7 @@ namespace Havit.Web.Management
 				sb.AppendLine("    Product Version: " + System.Diagnostics.FileVersionInfo.GetVersionInfo(_currentApplicationInstanceType.Assembly.Location).ProductVersion);
 			}
 		}
-		#endregion
 
-		#region FormatThreadInformation
 		/// <summary>
 		/// Zapíše do StringBuilderu informace o threadu
 		/// </summary>
@@ -257,9 +235,7 @@ namespace Havit.Web.Management
 			sb.AppendLine("    Culture: " + _currentCulture.Name);
 			sb.AppendLine("    UI Culture: " + _currentUiCulture.Name);
 		}
-		#endregion
 
-		#region FormatException
 		/// <summary>
 		/// Zapíše do StringBuilderu informace o výjimce.
 		/// </summary>
@@ -270,6 +246,5 @@ namespace Havit.Web.Management
 				sb.AppendLine(exception.ToString());
 			}
 		}
-		#endregion
 	}
 }

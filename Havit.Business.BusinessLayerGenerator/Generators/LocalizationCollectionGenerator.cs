@@ -8,7 +8,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 {
 	public static class LocalizationCollectionGenerator
 	{
-		#region WriteLocalizations
 		public static void WriteLocalizations(CodeWriter writer, Table table)
 		{
 			if (LocalizationHelper.IsLocalizationTable(table))
@@ -20,9 +19,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				writer.WriteCloseRegion();
 			}
 		}
-		#endregion
 
-		#region WriteIndexer
 		private static void WriteIndexer(CodeWriter writer, Table table)
 		{
 			writer.WriteCommentSummary("Vrací objekt s lokalizovanými daty na základě jazyka, který je předán.");
@@ -44,9 +41,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine("}");
 			writer.WriteLine();
 		}
-		#endregion
 
-		#region WriteCurrentProperty
 		private static void WriteCurrentProperty(CodeWriter writer, Table table)
 		{
 			writer.WriteCommentSummary("Vrací objekt s lokalizovanými daty na základě aktuálního jazyka (aktuální jazyk se hledá na základě CurrentUICulture).");
@@ -61,9 +56,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine("}");
 			writer.WriteLine("");
 		}
-		#endregion
 
-		#region WriteInterfaceMethods
 		private static void WriteInterfaceMethods(CodeWriter writer, Table table)
 		{
 			//writer.WriteOpenRegion("ILocalizationCollection interface implementation");
@@ -87,7 +80,5 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			//writer.WriteCloseRegion();
 
 		}
-		#endregion
-
 	}
 }

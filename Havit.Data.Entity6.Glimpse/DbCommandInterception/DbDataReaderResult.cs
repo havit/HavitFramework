@@ -11,12 +11,10 @@ namespace Havit.Data.Entity.Glimpse.DbCommandInterception
 	/// </summary>
 	internal class DbDataReaderResult
 	{
-		#region RecordsCount 
 		/// <summary>
 		/// Počet záznamů v DbDataReaderu.
 		/// Pokud je hodnota null, není hodnota dosud známá (DbDataReader nebyl dosud uzavřen).
 		/// </summary>
 		public int? RecordsCount { get; internal set; }
-		#endregion
 	}
 }

@@ -14,14 +14,11 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 	/// </summary>
 	public class NavbarLinkItem : NavbarItem
 	{
-		#region Items
 		/// <summary>
 		/// Child items.
 		/// </summary>
 		public NavbarItemCollection Items { get; private set; }
-		#endregion
 
-		#region AutoHide
 		/// <summary>
 		/// Enables item autohide when set to true.
 		/// When menu item has not any visible children (or has visible only decoration items)
@@ -38,9 +35,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ViewState["AutoHide"] = value;
 			}
 		}
-		#endregion
 
-		#region Text
 		/// <summary>
 		/// Header item text.
 		/// Supports resources pattern.
@@ -56,9 +51,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ViewState["Text"] = value;
 			}
 		}
-		#endregion
 
-		#region Url
 		/// <summary>
 		/// Header item url.
 		/// </summary>
@@ -73,9 +66,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ViewState["Url"] = value;
 			}
 		}
-		#endregion
 
-		#region IsDecoration
 		/// <summary>
 		/// Returns false - menu item is not a decoration.
 		/// </summary>
@@ -83,9 +74,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			get { return false; }
 		}
-		#endregion
 
-		#region Enabled
 		/// <summary>
 		/// Indicates whether the item is enabled.
 		/// Default value is true.
@@ -101,9 +90,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ViewState["Enabled"] = value;
 			}
 		}
-		#endregion
 
-		#region CssClass
 		/// <summary>
 		/// Gets or sets the CSS class.
 		/// </summary>
@@ -118,16 +105,12 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				ViewState["CssClass"] = value;
 			}
 		}
-		#endregion
 
-		#region EnabledFunc
 		/// <summary>
 		/// When function returns false, item is disabled.
 		/// </summary>
 		public Func<bool> EnabledFunc { get; set; }
-		#endregion
 
-		#region IsEnabled
 		/// <summary>
 		/// Returns true if item should be rendered. Includes evaluation of Visible property and VisibleFunc delegate.
 		/// </summary>
@@ -135,9 +118,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			get { return Enabled && ((EnabledFunc == null) || EnabledFunc()); }
 		}
-		#endregion
 
-		#region IsVisible
 		/// <summary>
 		/// Returns true if item is visible.
 		/// </summary>
@@ -152,9 +133,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				return base.IsVisible;
 			}
 		}
-		#endregion
 
-		#region Constructor
 		/// <summary>
 		/// Constructor.
 		/// </summary>
@@ -180,9 +159,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		public NavbarLinkItem(string text, string url, params NavbarItem[] childItems) : this(text, url, null, childItems)
 		{
 		}
-		#endregion
 
-		#region HasVisibleNonDecorationChildItem
 		/// <summary>
 		/// Returns true if has visible (non decoration) child item.
 		/// </summary>
@@ -190,9 +167,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		{
 			return Items.Any(item => item.IsVisible && !item.IsDecoration);
 		}
-		#endregion
 
-		#region SetDirty
 		/// <summary>
 		/// Set child items dirty.
 		/// Used internally for tracking items state.
@@ -205,9 +180,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				this.Items.SetDirty();
 			}
 		}
-		#endregion
 
-		#region Render
 		/// <summary>
 		/// Renders menu items.
 		/// </summary>
@@ -268,9 +241,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			}
 			writer.RenderEndTag(); // Li
 		}
-		#endregion
 
-		#region RenderChildren
 		/// <summary>
 		/// Renders child items.
 		/// </summary>
@@ -301,9 +272,6 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 				lastWasSeparator = item is NavbarSeparatorItem;
 			}
 		}
-		#endregion
-
-		#region TrackViewState, SaveViewState, LoadViewState
 
 		/// <summary>
 		/// Switches tracking viewstate changes on.
@@ -351,6 +319,5 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 			base.LoadViewState(baseState);
 			((IStateManager)Items).LoadViewState(itemsState);
 		}
-		#endregion
 	}
 }

@@ -8,7 +8,6 @@ namespace Havit.Services.Xml.Rss
 	/// </summary>
 	public class RssChannelCollection : CollectionBase
 	{
-		#region Add
 		/// <summary>
 		/// Přidá nový kanál do kolekce
 		/// </summary>
@@ -17,9 +16,7 @@ namespace Havit.Services.Xml.Rss
 		{
 			this.List.Add(channel);
 		}
-		#endregion
 
-		#region CopyTo
 		/// <summary>
 		/// Zkopíruje kanály do array, na pozici index
 		/// </summary>
@@ -29,9 +26,7 @@ namespace Havit.Services.Xml.Rss
 		{
 			((ICollection)this).CopyTo(array, index);
 		}
-		#endregion
 
-		#region Insert
 		/// <summary>
 		/// Vloží na určené místo v kolekci kanál.
 		/// </summary>
@@ -41,9 +36,7 @@ namespace Havit.Services.Xml.Rss
 		{
 			((IList)this).Insert(index, value);
 		}
-		#endregion        
 
-		#region IndexOf
 		/// <summary>
 		/// Vyhledá pozici kanálu v kolekci
 		/// </summary>
@@ -53,9 +46,7 @@ namespace Havit.Services.Xml.Rss
 		{
 			return ((IList)this).IndexOf(value);
 		}
-		#endregion
 
-		#region Remove
 		/// <summary>
 		/// Odstraní kanál z kolekce.
 		/// </summary>
@@ -64,9 +55,7 @@ namespace Havit.Services.Xml.Rss
 		{
 			((IList)this).Remove(value);
 		}
-		#endregion
 
-		#region Contains
 		/// <summary>
 		/// Zjistí, zdali se kanál nachází v kolekci
 		/// </summary>
@@ -76,9 +65,7 @@ namespace Havit.Services.Xml.Rss
 		{
 			return ((IList)this).Contains(value);
 		}
-		#endregion
 
-		#region Indexer this[int]
 		/// <summary>
 		/// Indexer zpřístupňující kanál na dané pozici kolekce.
 		/// </summary>
@@ -89,6 +76,5 @@ namespace Havit.Services.Xml.Rss
 				return (RssChannel)this.List[index];
 			}
 		}
-		#endregion
 	}
 }

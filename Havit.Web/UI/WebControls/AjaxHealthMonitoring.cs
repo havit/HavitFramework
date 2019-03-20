@@ -15,7 +15,6 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public class AjaxHealthMonitoring : Control
 	{
-		#region OnInit
 		/// <summary>
 		/// Raises the <see cref="E:System.Web.UI.Control.Init"/> event.
 		/// </summary>
@@ -31,9 +30,7 @@ namespace Havit.Web.UI.WebControls
 			}
 			scriptManager.AsyncPostBackError += new EventHandler<AsyncPostBackErrorEventArgs>(ScriptManager_AsyncPostBackError);
 		}
-		#endregion
 
-		#region ScriptManager_AsyncPostBackError
 		/// <summary>
 		/// Obsluha události AsyncPostBackError ScriptManageru. Zajistí vyvolání události health monitoringu.
 		/// </summary>
@@ -44,6 +41,5 @@ namespace Havit.Web.UI.WebControls
 				new WebRequestErrorEventExt(e.Exception.Message, this, e.Exception, HttpContext.Current).Raise();
 			}
 		}
-		#endregion
 	}
 }

@@ -11,7 +11,6 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	public abstract class DateTimeBoxDateCustomization
 	{
-		#region DateCustomizationFunctionName
 		/// <summary>
 		/// Název javascript funkce pro customizaci DateTimeBoxu.
 		/// </summary>
@@ -19,10 +18,8 @@ namespace Havit.Web.UI.WebControls
 		{
 			get;
 			set;
-		} 
-		#endregion
+		}
 
-		#region DateCustomizationFunctionContent
 		/// <summary>
 		/// Obsah (tělo) javascript funkce pro customizaci DateTimeBoxu.
 		/// </summary>
@@ -31,9 +28,7 @@ namespace Havit.Web.UI.WebControls
 			get;
 			set;
 		}
-		#endregion
 
-		#region GetDatesCustomizationFunction
 		/// <summary>
 		/// Vygeneruje funkci se special dates.
 		/// </summary>		
@@ -63,13 +58,10 @@ namespace Havit.Web.UI.WebControls
 			return DateCustomizationFunctionName;
 		}
 		private static readonly object _getDatesCustomizationFunctionLock = new object();
-		#endregion
 
-		#region RenderDateStatusHandlerContent (abstract)
 		/// <summary>
 		/// Template metoda pro vyrenderování html pro customizaci hodnot v kalendáři.
 		/// </summary>
 		public abstract string RenderDateStatusHandlerContent();
-		#endregion
 	}
 }

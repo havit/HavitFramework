@@ -13,18 +13,12 @@ namespace Havit.Web.UI.WebControls
     /// <remarks>This class inherits from System.Web.UI.HtmlTextWriter class which contains many methods for writing out Html.</remarks>
     internal class XJsonWriter : StringWriter
     {
-        #region Class Properties
-        #endregion
-
-		#region WriteNameValue
-		public void WriteNameValue(string name, object value)
+	    public void WriteNameValue(string name, object value)
 		{
 			WriteNameValue(name, value, true);
 		}
-		#endregion
 
-		#region WriteNameValue
-		public void WriteNameValue(string name, object value, bool formatValue)
+	    public void WriteNameValue(string name, object value, bool formatValue)
 		{
 			string valueText = GetValueText(value, formatValue);
 
@@ -42,17 +36,13 @@ namespace Havit.Web.UI.WebControls
 
 			this.Write("\"" + name + "\": " + valueText);
 		}
-		#endregion
 
-		#region WriteList
-		public void WriteList(string name, IList list)
+	    public void WriteList(string name, IList list)
 		{
 			WriteList(name, list, true);
 		}
-		#endregion
 
-		#region WriteList
-		public void WriteList(string name, IList list, bool formatValues)
+	    public void WriteList(string name, IList list, bool formatValues)
 		{
 			string valueText;
 			StringBuilder sb = new StringBuilder();
@@ -72,10 +62,8 @@ namespace Havit.Web.UI.WebControls
 			string listText = this.NewLine + "[" + this.NewLine + sb.ToString() + this.NewLine + "]";
 			WriteNameValue(name, listText, false);
 		}
-		#endregion
 
-		#region GetValueText
-		private string GetValueText(object value, bool formatValue)
+	    private string GetValueText(object value, bool formatValue)
 		{
 			string valueText;
 			if (value == null)
@@ -106,15 +94,12 @@ namespace Havit.Web.UI.WebControls
 
 			return valueText;
 		}
-		#endregion
 
-		#region ToString
-		public override string ToString()
+	    public override string ToString()
 		{
 			string result = base.ToString();
 			result = "{" + this.NewLine + result + this.NewLine + "}";
 			return result;
 		}
-		#endregion
     }
 }

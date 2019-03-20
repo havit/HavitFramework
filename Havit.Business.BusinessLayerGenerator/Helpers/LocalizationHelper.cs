@@ -8,7 +8,6 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 	/// </summary>
 	public static class LocalizationHelper
 	{
-		#region Constants
 		/// <summary>
 		/// Suffix názvu tabulky - identifikuje, že tabulka obsahuje lokalizační data.
 		/// </summary>
@@ -18,9 +17,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		/// Název sloupce odkazující na tabulku jazyků v lokalizační tabulce.
 		/// </summary>
 		public const string LanguageForeignKeyColumnName = "LanguageID";
-		#endregion
 
-		#region IsLocalizationTable
 		/// <summary>
 		/// Vrací true, pokud jde o tabulku nesoucí lokalizovaná data.
 		/// </summary>
@@ -40,9 +37,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			}
 			return false;
 		}
-		#endregion
 
-		#region IsLocalizedTable
 		/// <summary>
 		/// Vrací true, pokud jde o tabulku vlastnící jinou tabulku s lokalizovanými daty.
 		/// </summary>
@@ -62,9 +57,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			}
 			return false;
 		}
-		#endregion
 
-		#region GetLocalizationParentTable
 		/// <summary>
 		/// Vrátí tabulku, která je lokalizována tabulkou, která je předána jako parametr.
 		/// </summary>
@@ -90,9 +83,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			}
 			return null;
 		}
-		#endregion
 
-		#region GetLocalizationTable
 		/// <summary>
 		/// Vrátí tabulku, která lokalizuje tabulku, která je předána jako parametr.
 		/// </summary>
@@ -113,9 +104,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			}
 			return null;
 		}
-		#endregion
 
-		#region GetParentLocalizationColumn
 		/// <summary>
 		/// Vrátí sloupec odkazující na tabulku, která je lokalizována.
 		/// </summary>
@@ -132,9 +121,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			}
 			return table.Columns[TableHelper.GetPrimaryKey(LocalizationHelper.GetLocalizationParentTable(table)).Name];
 		}
-		#endregion
 
-		#region GetLanguageColumn
 		/// <summary>
 		/// Vrátí sloupec odkazující do tabulky jazyků (dle konvence pojmenování, vrací tedy sloupec "LanguageID").
 		/// </summary>
@@ -142,7 +129,5 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		{
 			return table.Columns[LanguageForeignKeyColumnName];
 		}
-		#endregion
-
 	}
 }

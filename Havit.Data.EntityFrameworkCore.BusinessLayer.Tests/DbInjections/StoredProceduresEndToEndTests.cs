@@ -28,7 +28,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
             }
 
             [TestMethod]
-            public void Test()
+            public void StoredProceduresDbInjections_EndToEnd_AddingStoredProcedure()
             {
                 var procedure = "CREATE OR ALTER PROCEDURE [dbo].[GetTables]() AS BEGIN SELECT * FROM [sys].[tables] END";
 
@@ -59,7 +59,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
             }
 
             [TestMethod]
-            public void Test()
+            public void StoredProceduresDbInjections_EndToEnd_ModifyingStoredProcedure()
             {
                 var source = new EndToEndTestDbContext<DummySource>(builder => builder.HasAnnotation("StoredProcedure:GetTables", "CREATE PROCEDURE [dbo].[GetTables]() AS BEGIN SELECT * FROM [sys].[tables] END"));
                 var newProcedure = "CREATE PROCEDURE [dbo].[GetTables]() AS BEGIN SELECT * FROM [sys].[tables] WHERE schema_id = 1 END";
@@ -90,7 +90,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
             }
 
             [TestMethod]
-            public void Test()
+            public void StoredProceduresDbInjections_EndToEnd_DeletingStoredProcedure()
             {
                 var source = new EndToEndTestDbContext<DummySource>(builder => builder.HasAnnotation("StoredProcedure:GetTables", "CREATE OR ALTER PROCEDURE [dbo].[GetTables]() AS BEGIN SELECT * FROM [sys].[tables] END"));
                 var target = new EndToEndTestDbContext<DummyTarget>();
@@ -131,7 +131,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
 			}
 
 		    [TestMethod]
-		    public void Test()
+		    public void StoredProceduresDbInjections_EndToEnd_StoredProcedureWithMsDescriptionExtendedProperty()
 		    {
 			    var source = new EndToEndTestDbInjectionsDbContext<Invoice>(typeof(InvoiceStoredProcedures));
 			    var model = source.Model;
@@ -172,7 +172,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
 		    }
 
 		    [TestMethod]
-		    public void Test()
+		    public void StoredProceduresDbInjections_EndToEnd_StoredProcedureWithXmlCommentMsDescriptionAdded()
 		    {
 			    var source = new EndToEndTestDbContext<Invoice>();
 			    var target = new EndToEndTestDbInjectionsDbContext<Invoice>(typeof(InvoiceStoredProcedures));

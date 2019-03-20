@@ -32,7 +32,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
 		public class NoChange_NoMigration
 		{
 			[TestMethod]
-			public void Test()
+			public void AlterDatabaseFixUpMigrationModelDiffer_NoChange_NoMigration()
 			{
 				var source = new EndToEndTestDbContext<DummySource>(builder => 
 					builder.HasAnnotation("Annotation1", "ValueA"));
@@ -48,7 +48,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
 		public class TwoAnnotationsOneChanged_OneOperation
 		{
 			[TestMethod]
-			public void Test()
+			public void AlterDatabaseFixUpMigrationModelDiffer_TwoAnnotationsOneChanged_OneOperation()
 			{
 				var source = new EndToEndTestDbContext<DummySource>(builder =>
 					builder.HasAnnotation("Annotation1", "ValueA").HasAnnotation("Annotation2", "ValueB"));
@@ -65,7 +65,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
 		public class TwoAnnotationsOneChanged_OneOperationWithOnlyOneCurrentAnnotation
 		{
 			[TestMethod]
-			public void Test()
+			public void AlterDatabaseFixUpMigrationModelDiffer_TwoAnnotationsOneChanged_OneOperationWithOnlyOneCurrentAnnotation()
 			{
 				var source = new EndToEndTestDbContext<DummySource>(builder =>
 					builder.HasAnnotation("Annotation1", "ValueA").HasAnnotation("Annotation2", "ValueB"));
@@ -88,7 +88,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
 		public class TwoAnnotationsOneDeleted_OneOperationWithOnlyOneOldAnnotation
 		{
 			[TestMethod]
-			public void Test()
+			public void AlterDatabaseFixUpMigrationModelDiffer_TwoAnnotationsOneDeleted_OneOperationWithOnlyOneOldAnnotation()
 			{
 				var source = new EndToEndTestDbContext<DummySource>(builder =>
 					builder.HasAnnotation("Annotation1", "ValueA").HasAnnotation("Annotation2", "ValueB"));
@@ -110,7 +110,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
 		public class TwoAnnotationsOneAdded_OneOperationWithOnlyOneCurrentAnnotation
 		{
 			[TestMethod]
-			public void Test()
+			public void AlterDatabaseFixUpMigrationModelDiffer_TwoAnnotationsOneAdded_OneOperationWithOnlyOneCurrentAnnotation()
 			{
 				var source = new EndToEndTestDbContext<DummySource>(builder =>
 					builder.HasAnnotation("Annotation1", "ValueA").HasAnnotation("Annotation2", "ValueB"));

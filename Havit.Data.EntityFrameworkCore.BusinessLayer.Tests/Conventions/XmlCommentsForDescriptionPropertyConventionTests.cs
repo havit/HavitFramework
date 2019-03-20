@@ -24,7 +24,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Conventions
 			}
 
 			[TestMethod]
-			public void Test()
+			public void XmlCommentsForDescriptionPropertyConvention_NestedTypeWithXmlComment_EntityHasCorrectMsDescription()
 			{
 				var context = new EndToEndDbContext<NestedType>();
 
@@ -38,7 +38,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Conventions
 		public class NonNestedTypeWithXmlComment_EntityHasCorrectMsDescription
 		{
 			[TestMethod]
-			public void Test()
+			public void XmlCommentsForDescriptionPropertyConvention_NonNestedTypeWithXmlComment_EntityHasCorrectMsDescription()
 			{
 				var context = new EndToEndDbContext<XmlTestEntity>();
 
@@ -63,7 +63,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Conventions
 			}
 
 			[TestMethod]
-			public void Test()
+			public void XmlCommentsForDescriptionPropertyConvention_PrimaryKeyPropertyWithXmlComment_PropertyHasCorrectMsDescription()
 			{
 				var context = new EndToEndDbContext<AClass>();
 
@@ -90,7 +90,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Conventions
 			}
 
 			[TestMethod]
-			public void Test()
+			public void XmlCommentsForDescriptionPropertyConvention_RegularPropertyWithXmlComment_PropertyHasCorrectMsDescription()
 			{
 				var context = new EndToEndDbContext<AClass>();
 
@@ -125,7 +125,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Conventions
 			}
 
 			[TestMethod]
-			public void Test()
+			public void XmlCommentsForDescriptionPropertyConvention_NavigationPropertyWithXmlComment_CollectionHasCorrectMsDescription()
 			{
 				var context = new EndToEndDbContext<Parent>();
 
@@ -163,7 +163,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Conventions
 			}
 
 			[TestMethod]
-			public void Test()
+			public void XmlCommentsForDescriptionPropertyConvention_NavigationPropertyWithXmlComment_ForeignKeyPropertyHasCorrectMsDescription()
 			{
 				var context = new EndToEndDbContext<Parent>();
 
@@ -202,7 +202,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Conventions
 			}
 
 			[TestMethod]
-			public void Test()
+			public void XmlCommentsForDescriptionPropertyConvention_ForeignKeyPropertyWithXmlComment_ForeignKeyPropertyHasCorrectMsDescription()
 			{
 				var context = new EndToEndDbContext<Parent>();
 
@@ -240,7 +240,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Conventions
 			}
 
 			[TestMethod]
-			public void Test()
+			public void XmlCommentsForDescriptionPropertyConvention_LocalizationsNavigationPropertyWithXmlComment_NoMsDescriptionDefined()
 			{
 				var context = new EndToEndDbContext<Parent>();
 
@@ -267,7 +267,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Conventions
 			}
 
 			[TestMethod]
-			public void Test()
+			public void XmlCommentsForDescriptionPropertyConvention_ParentClassWithoutXmlComment_RegularPropertyWithXmlComment_PropertyHasCorrectMsDescription()
 			{
 				var context = new EndToEndDbContext<AClass>();
 
@@ -294,7 +294,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Conventions
 			}
 
 			[TestMethod]
-			public void Test()
+			public void XmlCommentsForDescriptionPropertyConvention_ParentClassWithoutXmlComment_RegularPropertyWithXmlComment_ParentClassHasNoMsDescription()
 			{
 				var context = new EndToEndDbContext<AClass>();
 

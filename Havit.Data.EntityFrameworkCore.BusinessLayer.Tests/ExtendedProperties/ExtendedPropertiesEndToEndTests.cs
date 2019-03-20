@@ -28,7 +28,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			}
 
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_AddingPropertyToTable()
 			{
 				var source = new EndToEndTestDbContext<SourceEntity>();
 				var target = new EndToEndTestDbContext<TargetEntity>();
@@ -57,7 +57,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			}
 
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_AddingPropertyToTableUsingExtension()
 			{
 				var source = new EndToEndTestDbContext<SourceEntity>();
 				var target = new EndToEndTestDbContext<TargetEntity>(builder =>
@@ -90,7 +90,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			}
 
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_RemovingPropertyFromTable()
 			{
 				var source = new EndToEndTestDbContext<SourceEntity>();
 				var target = new EndToEndTestDbContext<TargetEntity>();
@@ -121,7 +121,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			}
 
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_ChangingPropertyOnTable()
 			{
 				var source = new EndToEndTestDbContext<SourceEntity>();
 				var target = new EndToEndTestDbContext<TargetEntity>();
@@ -151,7 +151,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			}
 
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_AddingPropertyToColumn()
 			{
 				var source = new EndToEndTestDbContext<SourceEntity>();
 				var target = new EndToEndTestDbContext<TargetEntity>();
@@ -182,7 +182,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			}
 
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_AddingPropertyToColumnUsingExtension()
 			{
 				var source = new EndToEndTestDbContext<SourceEntity>();
 				var target = new EndToEndTestDbContext<TargetEntity>(builder =>
@@ -233,7 +233,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			}
 
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_AddingPropertyToCollection()
 			{
 				var source = new EndToEndTestDbContext<SourceMaster>();
 				var target = new EndToEndTestDbContext<TargetMaster>();
@@ -263,7 +263,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			}
 
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_AddingPropertyToColumnQuoting()
 			{
 				var source = new EndToEndTestDbContext<SourceEntity>();
 				var target = new EndToEndTestDbContext<TargetEntity>();
@@ -293,7 +293,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			}
 
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_RemovingPropertyFromColumn()
 			{
 				var source = new EndToEndTestDbContext<SourceEntity>();
 				var target = new EndToEndTestDbContext<TargetEntity>();
@@ -341,7 +341,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			}
 
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_RemovingPropertyFromCollection()
 			{
 				var source = new EndToEndTestDbContext<SourceMaster>();
 				var target = new EndToEndTestDbContext<TargetMaster>();
@@ -372,7 +372,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			}
 
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_ChangingPropertyOnColumn()
 			{
 				var source = new EndToEndTestDbContext<SourceEntity>();
 				var target = new EndToEndTestDbContext<TargetEntity>();
@@ -421,7 +421,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			}
 
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_ChangingPropertyOnCollection()
 			{
 				var source = new EndToEndTestDbContext<SourceMaster>();
 				var target = new EndToEndTestDbContext<TargetMaster>();
@@ -452,7 +452,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			}
 
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_AddingColumnWithProperty()
 			{
 				var source = new EndToEndTestDbContext<SourceEntity>();
 				var target = new EndToEndTestDbContext<TargetEntity>();
@@ -482,7 +482,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			}
 
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_AddingColumnWithoutProperty()
 			{
 				var source = new EndToEndTestDbContext<SourceEntity>();
 				var target = new EndToEndTestDbContext<TargetEntity>();
@@ -518,7 +518,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			}
 
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_AddingCollectionWithProperty()
 			{
 				var source = new EndToEndTestDbContext<SourceMaster>();
 				var target = new EndToEndTestDbContext<TargetMaster>();
@@ -556,7 +556,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			}
 
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_AddingCollectionWithoutProperty()
 			{
 				var source = new EndToEndTestDbContext<SourceMaster>();
 				var target = new EndToEndTestDbContext<TargetMaster>();
@@ -577,7 +577,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			}
 
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_CreatingTableWithPropertyOnTable()
 			{
 				var source = new EndToEndTestDbContext();
 				var target = new EndToEndTestDbContext<TargetEntity>();
@@ -600,7 +600,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			}
 
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_CreatingTableWithoutPropertyOnTable()
 			{
 				var source = new EndToEndTestDbContext();
 				var target = new EndToEndTestDbContext<TargetEntity>();
@@ -621,7 +621,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			}
 
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_CreatingTableWithPropertyOnColumn()
 			{
 				var source = new EndToEndTestDbContext();
 				var target = new EndToEndTestDbContext<TargetEntity>();
@@ -653,7 +653,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			}
 
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_CreatingTableWithPropertyOnCollection()
 			{
 				var source = new EndToEndTestDbContext();
 				var target = new EndToEndTestDbContext<TargetMaster>();
@@ -676,7 +676,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			}
 
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_CreatingTableWithoutPropertyOnColumn()
 			{
 				var source = new EndToEndTestDbContext();
 				var target = new EndToEndTestDbContext<TargetEntity>();
@@ -697,7 +697,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			}
 
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_CreatingTableWithTwoPropertiesOnColumn()
 			{
 				var source = new EndToEndTestDbContext();
 				var target = new EndToEndTestDbContext<TargetEntity>();
@@ -731,7 +731,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			}
 
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_ChangingTwoPropertiesOnColumn()
 			{
 				var source = new EndToEndTestDbContext<SourceEntity>();
 				var target = new EndToEndTestDbContext<TargetEntity>();
@@ -765,7 +765,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			}
 
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_ChangingAndRemovingTwoPropertiesOnColumn()
 			{
 				var source = new EndToEndTestDbContext<SourceEntity>();
 				var target = new EndToEndTestDbContext<TargetEntity>();
@@ -797,7 +797,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			}
 
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_AddingPropertyToModel()
 			{
 				var source = new EndToEndTestDbContext<SourceEntity>();
 				var target = new EndToEndTestDbContext<TargetEntity>(builder =>
@@ -829,7 +829,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			}
 
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_AddingTwoPropertiesToModel()
 			{
 				var source = new EndToEndTestDbContext<SourceEntity>();
 				var target = new EndToEndTestDbContext<TargetEntity>(builder =>
@@ -868,7 +868,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			}
 
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_UpdatingPropertyOnModel()
 			{
 				var source = new EndToEndTestDbContext<SourceEntity>(builder =>
 				{
@@ -903,7 +903,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			}
 
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_RemovingPropertyFromModel()
 			{
 				var source = new EndToEndTestDbContext<SourceEntity>(builder =>
 				{
@@ -926,7 +926,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			// for more info see XxxRelationalDatabaseCreator
 
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_CreateDatabaseWithProperty()
 			{
 				var operation = new SqlServerCreateDatabaseOperation()
 				{
@@ -953,7 +953,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 			}
 
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_NoFKPropertyInCodeNoPropertyInfo()
 			{
 				var source = new EndToEndTestDbContext();
 				var target = new EndToEndTestDbContext<TargetEntity>();
@@ -966,7 +966,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 		public class AddingPropertyUsingExtraDatabaseObjectsForExtraDatabaseObject
 		{
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_AddingPropertyUsingExtraDatabaseObjectsForExtraDatabaseObject()
 			{
 				var source = new EndToEndTestDbContext();
 				var target = new EndToEndTestDbContext(builder =>
@@ -989,7 +989,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 		public class UpdatingPropertyUsingExtraDatabaseObjectsForExtraDatabaseObject
 		{
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_UpdatingPropertyUsingExtraDatabaseObjectsForExtraDatabaseObject()
 			{
 				var source = new EndToEndTestDbContext(builder =>
 				{
@@ -1018,7 +1018,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 		public class RemovingPropertyUsingExtraDatabaseObjectsForExtraDatabaseObject
 		{
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_RemovingPropertyUsingExtraDatabaseObjectsForExtraDatabaseObject()
 			{
 				var source = new EndToEndTestDbContext(builder =>
 				{
@@ -1041,7 +1041,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 		public class ChangingObjectNameExtraDatabaseObjectsForExtraDatabaseObject
 		{
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_ChangingObjectNameExtraDatabaseObjectsForExtraDatabaseObject()
 			{
 				var source = new EndToEndTestDbContext(builder =>
 				{
@@ -1073,7 +1073,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 		public class ChangingObjectTypeExtraDatabaseObjectsForExtraDatabaseObject
 		{
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_ChangingObjectTypeExtraDatabaseObjectsForExtraDatabaseObject()
 			{
 				var source = new EndToEndTestDbContext(builder =>
 				{
@@ -1105,7 +1105,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 		public class AddingPropertyUsingExtraDatabaseObjectsForProcedure
 		{
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_AddingPropertyUsingExtraDatabaseObjectsForProcedure()
 			{
 				var source = new EndToEndTestDbContext();
 				var target = new EndToEndTestDbContext(builder =>
@@ -1128,7 +1128,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 		public class UpdatingPropertyUsingExtraDatabaseObjectsForProcedure
 		{
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_UpdatingPropertyUsingExtraDatabaseObjectsForProcedure()
 			{
 				var source = new EndToEndTestDbContext(builder =>
 				{
@@ -1157,7 +1157,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 		public class RemovingPropertyUsingExtraDatabaseObjectsForProcedure
 		{
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_RemovingPropertyUsingExtraDatabaseObjectsForProcedure()
 			{
 				var source = new EndToEndTestDbContext(builder =>
 				{
@@ -1180,7 +1180,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 		public class AddingPropertyUsingExtraDatabaseObjectsForView
 		{
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_AddingPropertyUsingExtraDatabaseObjectsForView()
 			{
 				var source = new EndToEndTestDbContext();
 				var target = new EndToEndTestDbContext(builder =>
@@ -1203,7 +1203,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 		public class UpdatingPropertyUsingExtraDatabaseObjectsForView
 		{
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_UpdatingPropertyUsingExtraDatabaseObjectsForView()
 			{
 				var source = new EndToEndTestDbContext(builder =>
 				{
@@ -1232,7 +1232,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 		public class RemovingPropertyUsingExtraDatabaseObjectsForView
 		{
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_RemovingPropertyUsingExtraDatabaseObjectsForView()
 			{
 				var source = new EndToEndTestDbContext(builder =>
 				{
@@ -1255,7 +1255,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 		public class AddingPropertyUsingExtraDatabaseObjectsForFunction
 		{
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_AddingPropertyUsingExtraDatabaseObjectsForFunction()
 			{
 				var source = new EndToEndTestDbContext();
 				var target = new EndToEndTestDbContext(builder =>
@@ -1278,7 +1278,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 		public class UpdatingPropertyUsingExtraDatabaseObjectsForFunction
 		{
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_UpdatingPropertyUsingExtraDatabaseObjectsForFunction()
 			{
 				var source = new EndToEndTestDbContext(builder =>
 				{
@@ -1307,7 +1307,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 		public class RemovingPropertyUsingExtraDatabaseObjectsForFunction
 		{
 			[TestMethod]
-			public void Test()
+			public void ExtendedPropertiesDbMigrations_EndToEnd_RemovingPropertyUsingExtraDatabaseObjectsForFunction()
 			{
 				var source = new EndToEndTestDbContext(builder =>
 				{

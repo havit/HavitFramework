@@ -26,7 +26,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
             }
 
             [TestMethod]
-            public void Test()
+            public void ViewDbInjections_EndToEnd_AddingView()
             {
                 var procedure = "CREATE VIEW [dbo].[GetTables]() AS BEGIN SELECT * FROM [sys].[tables] END";
 
@@ -57,7 +57,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
             }
 
             [TestMethod]
-            public void Test()
+            public void ViewDbInjections_EndToEnd_ModifyingView()
             {
                 var source = new EndToEndTestDbContext<DummySource>(builder => builder.HasAnnotation("View:GetTables", "CREATE VIEW [dbo].[GetTables]() AS BEGIN SELECT * FROM [sys].[tables] END"));
                 var newProcedure = "CREATE VIEW [dbo].[GetTables]() AS BEGIN SELECT * FROM [sys].[tables] WHERE schema_id = 1 END";
@@ -88,7 +88,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
             }
 
             [TestMethod]
-            public void Test()
+            public void ViewDbInjections_EndToEnd_DeletingView()
             {
                 var source = new EndToEndTestDbContext<DummySource>(builder => builder.HasAnnotation("View:GetTables", "CREATE VIEW [dbo].[GetTables]() AS BEGIN SELECT * FROM [sys].[tables] END"));
                 var target = new EndToEndTestDbContext<DummyTarget>();
@@ -124,7 +124,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
 
 		    //[TestMethod]
 			// TODO: support for XML comments / MS_Description on views
-		    public void Test()
+		    public void ViewDbInjections_EndToEnd_ViewWithMsDescriptionExtendedProperty()
 		    {
 			    var source = new EndToEndTestDbInjectionsDbContext<Invoice>(typeof(InvoiceViews));
 			    var model = source.Model;

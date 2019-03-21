@@ -32,9 +32,9 @@ namespace Havit.Data.Patterns.DataSeeds
 		/// </remarks>
 		public DataSeedRunner(IEnumerable<IDataSeed> dataSeeds, IDataSeedRunDecision dataSeedRunDecision, IServiceFactory<IDataSeedPersister> dataSeedPersisterFactory)
 	    {
-	        Contract.Requires(dataSeeds != null);
-	        Contract.Requires(dataSeedRunDecision != null);
-	        Contract.Requires(dataSeedPersisterFactory != null);
+	        Contract.Requires<ArgumentNullException>(dataSeeds != null, nameof(dataSeeds));
+	        Contract.Requires<ArgumentNullException>(dataSeedRunDecision != null, nameof(dataSeedRunDecision));
+	        Contract.Requires<ArgumentNullException>(dataSeedPersisterFactory != null, nameof(dataSeedPersisterFactory));
 
 	        this.dataSeeds = dataSeeds.ToList();
 

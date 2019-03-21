@@ -11,9 +11,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers
 	{
 		internal static BasedOnDescriptor WithServiceConstructedInterface(this BasedOnDescriptor basedOnDescriptor, Type genericInterfaceType)
 		{
-			Contract.Requires(basedOnDescriptor != null);
-			Contract.Requires(genericInterfaceType != null);
-			Contract.Requires(genericInterfaceType.IsInterface);
+			Contract.Requires<ArgumentNullException>(basedOnDescriptor != null, nameof(basedOnDescriptor));
+			Contract.Requires<ArgumentNullException>(genericInterfaceType != null, nameof(genericInterfaceType));
+			Contract.Requires<ArgumentException>(genericInterfaceType.IsInterface, nameof(genericInterfaceType));
 
 			return basedOnDescriptor.WithService.Select((type, baseTypes) => GetClosedConstructedType(type, genericInterfaceType));
 		}
@@ -30,7 +30,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers
 
 		private static IEnumerable<Type> GetClosedConstructedType(Type registeredType, Type openConstructedInterfaceType)
 		{
-			Contract.Requires(registeredType != null);
+			Contract.Requires<ArgumentNullException>(registeredType != null, nameof(registeredType));
 
 			// Terms: https://msdn.microsoft.com/en-us/library/system.type.isgenerictype.aspx
 

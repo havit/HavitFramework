@@ -49,7 +49,7 @@ namespace Havit.Data.Patterns.DataEntries
 			}
 			else
 			{
-				throw new Havit.Data.Patterns.Exceptions.ObjectNotFoundException(String.Format("Identifier for entry {0} in {1} was not found.", entry.ToString(), typeof(TEntity).Name));
+				throw new ObjectNotFoundException(String.Format("Identifier for entry {0} in {1} was not found.", entry.ToString(), typeof(TEntity).Name));
 			}
 		}
 

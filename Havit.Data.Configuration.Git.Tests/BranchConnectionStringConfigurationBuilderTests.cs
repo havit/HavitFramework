@@ -27,7 +27,7 @@ namespace Havit.Data.Configuration.Git.Tests
 		{
 			var builder = CreateBuilder(currentBranchName: "master");
 
-			var originalConnectionString = "Data Source=(localdb)\v14.0;Initial Catalog=AccacePayroll;Application Name=AccacePayroll";
+			var originalConnectionString = "Data Source=(localdb)\v14.0;Initial Catalog=MyName;Application Name=MyName";
 			string connString = builder.TransformConnectionString(originalConnectionString, "");
 
 			Assert.AreEqual(originalConnectionString, connString);
@@ -39,9 +39,9 @@ namespace Havit.Data.Configuration.Git.Tests
 		{
 			var builder = CreateBuilder(currentBranchName: "test");
 
-			string connString = builder.TransformConnectionString("Data Source=(localdb)\v14.0;Initial Catalog=AccacePayroll;Application Name=AccacePayroll", "");
+			string connString = builder.TransformConnectionString("Data Source=(localdb)\v14.0;Initial Catalog=MyName;Application Name=MyName", "");
 
-			Assert.AreEqual("Data Source=(localdb)\v14.0;Initial Catalog=AccacePayroll_test;Application Name=AccacePayroll", connString);
+			Assert.AreEqual("Data Source=(localdb)\v14.0;Initial Catalog=MyName_test;Application Name=MyName", connString);
 		}
 
 		[TestMethod]
@@ -51,7 +51,7 @@ namespace Havit.Data.Configuration.Git.Tests
 
 			var configurationSection = new ConnectionStringsSection()
 			{
-				ConnectionStrings = { new ConnectionStringSettings("DefaultConnectionString", "Data Source=(localdb)\v14.0;Initial Catalog=AccacePayroll;Application Name=AccacePayroll") }
+				ConnectionStrings = { new ConnectionStringSettings("DefaultConnectionString", "Data Source=(localdb)\v14.0;Initial Catalog=MyName;Application Name=MyName") }
 			};
 
 			ConfigurationSection modifiedSection = builder.ProcessConfigurationSection(configurationSection);
@@ -65,14 +65,14 @@ namespace Havit.Data.Configuration.Git.Tests
 
 			var configurationSection = new ConnectionStringsSection
 			{
-				ConnectionStrings = { new ConnectionStringSettings("DefaultConnectionString", "Data Source=(localdb)\v14.0;Initial Catalog=AccacePayroll;Application Name=AccacePayroll") }
+				ConnectionStrings = { new ConnectionStringSettings("DefaultConnectionString", "Data Source=(localdb)\v14.0;Initial Catalog=MyName;Application Name=MyName") }
 			};
 
 			var modifiedSection = (ConnectionStringsSection)builder.ProcessConfigurationSection(configurationSection);
 
 			ConnectionStringSettings connString = modifiedSection.ConnectionStrings.Cast<ConnectionStringSettings>().FirstOrDefault(s => s.Name == "DefaultConnectionString");
 			Assert.IsNotNull(connString);
-			Assert.AreEqual("Data Source=(localdb)\v14.0;Initial Catalog=AccacePayroll_test;Application Name=AccacePayroll", connString.ConnectionString);
+			Assert.AreEqual("Data Source=(localdb)\v14.0;Initial Catalog=MyName_test;Application Name=MyName", connString.ConnectionString);
 		}
 
 		[TestMethod]

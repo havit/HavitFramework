@@ -49,10 +49,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes
 		/// <exception cref="NotSupportedException">Na typu TEntity není podporováno mazání příznakem.</exception>
 		public void SetDeleted<TEntity>(TEntity entity)
 		{
-			if (!IsSoftDeleteSupported<TEntity>())
-			{
-				throw new NotSupportedException(String.Format("Soft Delete is not supported on type {0}.", typeof(TEntity).FullName));
-			}
+			Contract.Requires<NotSupportedException>(IsSoftDeleteSupported<TEntity>(), String.Format("Soft Delete is not supported on type {0}.", typeof(TEntity).FullName));
 
 			dynamic d = entity;
 			if ((DateTime?)d.Deleted == null)
@@ -67,10 +64,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes
 		/// <exception cref="NotSupportedException">Na typu TEntity není podporováno mazání příznakem.</exception>
 		public void SetNotDeleted<TEntity>(TEntity entity)
 		{
-			if (!IsSoftDeleteSupported<TEntity>())
-			{
-				throw new NotSupportedException(String.Format("Soft Delete is not supported on type {0}.", typeof(TEntity).FullName));
-			}
+			Contract.Requires<NotSupportedException>(IsSoftDeleteSupported<TEntity>(), String.Format("Soft Delete is not supported on type {0}.", typeof(TEntity).FullName));
 
 			dynamic d = entity;
 			d.Deleted = null;
@@ -82,11 +76,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes
 		/// <exception cref="NotSupportedException">Na typu TEntity není podporováno mazání příznakem.</exception>
 		public Expression<Func<TEntity, bool>> GetNotDeletedExpressionLambda<TEntity>()
 		{
-			if (!IsSoftDeleteSupported<TEntity>())
-			{
-				throw new NotSupportedException(String.Format("Soft Delete is not supported on type {0}.", typeof(TEntity).FullName));
-			}
-			
+			Contract.Requires<NotSupportedException>(IsSoftDeleteSupported<TEntity>(), String.Format("Soft Delete is not supported on type {0}.", typeof(TEntity).FullName));
+
 			if (_getNotDeletedExpressionLambdaDictionary.TryGetValue(typeof(TEntity), out var result))
 			{
 				return (Expression<Func<TEntity, bool>>)result;

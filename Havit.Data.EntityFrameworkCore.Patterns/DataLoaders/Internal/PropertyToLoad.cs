@@ -1,35 +1,35 @@
-using System;
+ï»¿using System;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal
 {
 	/// <summary>
-	/// Informace o vlastnosti, která má byt DataLoaderem naètena.
+	/// Informace o vlastnosti, kterÃ¡ mÃ¡ byt DataLoaderem naÄtena.
 	/// </summary>
 	public class PropertyToLoad
 	{
 		/// <summary>
-		/// Název naèítané vlasntosti.
+		/// NÃ¡zev naÄÃ­tanÃ© vlasntosti.
 		/// </summary>
 		public string PropertyName { get; set; }
 
 		/// <summary>
-		/// Typ, jeho vlastnost je naèítána.
+		/// Typ, jehoÅ¾ vlastnost je naÄÃ­tÃ¡na.
 		/// </summary>
 		public Type SourceType { get; set; }
 
 		/// <summary>
-		/// Typ naèítané vlasnosti.
-		/// V pøípadì kolekcí jde o kolekci prvkù (napø. pro LoginAccount.Roles bude obsahovat List&lt;Role&gt;.
+		/// Typ naÄÃ­tanÃ© vlasnosti.
+		/// V pÅ™Ã­padÄ› kolekcÃ­ jde o kolekci prvkÅ¯ (napÅ™. pro LoginAccount.Roles bude obsahovat List&lt;Role&gt;.
 		/// </summary>
 		public Type TargetType { get; set; }
 
 		/// <summary>
-		/// Typ prvku naèítané kolekce.
+		/// Typ prvku naÄÃ­tanÃ© kolekce.
 		/// </summary>
 		public Type CollectionItemType { get; set; }
 
 		/// <summary>
-		/// Indikuje, zda je naèítána kolekce. V opaèném pøípadì je naèítána reference.
+		/// Indikuje, zda je naÄÃ­tÃ¡na kolekce. V opaÄnÃ©m pÅ™Ã­padÄ› je naÄÃ­tÃ¡na reference.
 		/// </summary>
 		public bool IsCollection => CollectionItemType != null;
 	}

@@ -21,8 +21,8 @@ namespace Havit.Data.Patterns.UnitOfWorks
 		public static void AddUpdateFromResult<TTarget>(this IUnitOfWork unitOfWork, UpdateFromResult<TTarget> updateFromResult)
 			where TTarget : class
 		{
-			Contract.Requires<ArgumentNullException>(unitOfWork != null);
-			Contract.Requires<ArgumentNullException>(updateFromResult != null);
+			Contract.Requires<ArgumentNullException>(unitOfWork != null, nameof(unitOfWork));
+			Contract.Requires<ArgumentNullException>(updateFromResult != null, nameof(updateFromResult));
 
 			unitOfWork.AddRangeForInsert(updateFromResult.ItemsAdding);
 			unitOfWork.AddRangeForUpdate(updateFromResult.ItemsUpdating);
@@ -37,8 +37,8 @@ namespace Havit.Data.Patterns.UnitOfWorks
 		public static void AddUpdateFromResult<TTarget>(this IUnitOfWorkAsync unitOfWork, UpdateFromResult<TTarget> updateFromResult)
 			where TTarget : class
 		{
-			Contract.Requires<ArgumentNullException>(unitOfWork != null);
-			Contract.Requires<ArgumentNullException>(updateFromResult != null);
+			Contract.Requires<ArgumentNullException>(unitOfWork != null, nameof(unitOfWork));
+			Contract.Requires<ArgumentNullException>(updateFromResult != null, nameof(updateFromResult));
 
 			unitOfWork.AddRangeForInsert(updateFromResult.ItemsAdding);
 			unitOfWork.AddRangeForUpdate(updateFromResult.ItemsUpdating);

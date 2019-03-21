@@ -14,6 +14,7 @@ namespace Havit.Services.StateAdministration
 	{
 		/// <summary>
 		/// Zkontroluje formát rodného čísla. Vrací true, pokud jde o platné RČ.
+		/// Akceptuje verzi s lomítkem i bez něj.
 		/// Používá algoritmus popsaný na http://phpfashion.com/jak-overit-platne-ic-a-rodne-cislo
 		/// </summary>
 		public static bool Validate(string rodneCislo)

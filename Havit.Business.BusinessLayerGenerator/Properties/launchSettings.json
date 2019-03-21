@@ -4,9 +4,9 @@
       "commandName": "Project",
       "commandLineArgs": "-sqlserver:sqldev -database:HavitBusinessLayerTest -outputpath:D:\\Dev\\002.HFW-HavitFramework\\BusinessLayerTest"
     },
-    "123.AEP": {
+    "003.GOR": {
       "commandName": "Project",
-      "commandLineArgs": "-outputpath:D:\\Temp -sqlserver:(localdb)\\mssqllocaldb -database:AccacePayroll -strategy:HavitCodeFirst",
+      "commandLineArgs": "-outputpath:D:\\Temp -sqlserver:(localdb)\\mssqllocaldb -database:Goran -strategy:HavitCodeFirst",
       "workingDirectory": "D:\\Temp"
     }
   }

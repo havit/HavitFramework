@@ -44,8 +44,8 @@ namespace Havit.Data.Patterns.Localizations
 		public virtual TLocalizationEntity GetLocalization<TLocalizationEntity>(ILocalized<TLocalizationEntity, ILanguage> entity, ILanguage language)
 				where TLocalizationEntity : class, ILocalization<object, ILanguage>
 		{
-			Contract.Requires<ArgumentNullException>(entity != null, "entity");
-			Contract.Requires<ArgumentNullException>(language != null, "language");
+			Contract.Requires<ArgumentNullException>(entity != null, nameof(entity));
+			Contract.Requires<ArgumentNullException>(language != null, nameof(language));
 			Contract.Requires<InvalidOperationException>(entity.Localizations != null, "Localized items (entity.Localization) cannot be null.");
 
 			TLocalizationEntity result = entity.Localizations.SingleOrDefault(item => language.Equals(item.Language)); // pokusíme se nalézt lokalizaci pro daný jazyk
